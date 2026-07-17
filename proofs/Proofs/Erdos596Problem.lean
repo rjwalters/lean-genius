@@ -36,14 +36,14 @@ def GraphProperty := SimpleGraph ℕ → Prop
 def FiniteRamseyProperty (isForbiddenFree : GraphProperty) (containsTarget : GraphProperty) : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ H : SimpleGraph ℕ,
     isForbiddenFree H ∧
-    ∀ coloring : (Σ v w : ℕ, H.Adj v w) → Fin n,
+    ∀ coloring : (Σ' v w : ℕ, H.Adj v w) → Fin n,
       ∃ c : Fin n, containsTarget (H)
 
 /-- Property (2): Every G₁-free graph H has a countable edge coloring
     with no monochromatic G₂. -/
 def CountableColoringProperty (isForbiddenFree : GraphProperty) (containsTarget : GraphProperty) : Prop :=
   ∀ H : SimpleGraph ℕ, isForbiddenFree H →
-    ∃ coloring : (Σ v w : ℕ, H.Adj v w) → ℕ,
+    ∃ coloring : (Σ' v w : ℕ, H.Adj v w) → ℕ,
       ∀ c : ℕ, ¬containsTarget (H)
 
 /-- The full dichotomy: a pair (G₁, G₂) satisfies both properties. -/
@@ -95,7 +95,7 @@ def ErdosProblem596 : Prop :=
       characterization (isForbiddenFree, containsTarget) ↔
       HasDichotomy isForbiddenFree containsTarget
 
-/-- The problem is open: no complete characterization is known. -/
+/-  The problem is open: no complete characterization is known. -/
 /-
 ## Part V: Related Problem (K₄, K₃)
 -/
@@ -111,7 +111,7 @@ def ContainsK3 : GraphProperty := fun G =>
   ∃ (a b c : ℕ), a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
     G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
 
-/-- Problem #595: Does the pair (K₄, K₃) have the dichotomy?
+/-  Problem #595: Does the pair (K₄, K₃) have the dichotomy?
     This is a specific instance related to Problem #596. -/
 /-
 ## Part VI: Properties

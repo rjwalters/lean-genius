@@ -43,12 +43,12 @@ theorem doubleExp_tail_pos (N : ℕ) :
     · have hexp : k ≤ 2 ^ (k + N + 1) :=
         (nat_le_two_pow k).trans (Nat.pow_le_pow_right (by norm_num) (by omega))
       have h_pow_le : (2 : ℝ) ^ k ≤ (2 : ℝ) ^ (2 ^ (k + N + 1)) :=
-        pow_le_pow_right (by norm_num) hexp
+        pow_le_pow_right₀ (by norm_num) hexp
       calc (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))
           ≤ 1 / (2 : ℝ) ^ k :=
               one_div_le_one_div_of_le (pow_pos (by norm_num) k) h_pow_le
         _ = (1 / 2) ^ k := by simp [div_pow, one_div]
-  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
+  exact Summable.tsum_pos hsum (fun k => by positivity) 0 (by positivity)
 
 -- Tail bound: 2^{2^N} * Σ_{k≥0} 1/2^{2^(k+N+1)} < 1 / (2^{2^N} - 1).
 -- Geometric bound: each term 1/D^{2^{k+1}} ≤ (1/D²)^{k+1} via 2*(k+1) ≤ 2^{k+1}.
@@ -61,7 +61,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
   have hD_ge2 : (2 : ℝ) ≤ D := by
     have h1 : 1 ≤ 2 ^ N := Nat.one_le_pow N 2 (by norm_num)
     calc (2 : ℝ) = 2 ^ 1 := by norm_num
-      _ ≤ 2 ^ (2 ^ N) := pow_le_pow_right (by norm_num) (by exact_mod_cast h1)
+      _ ≤ 2 ^ (2 ^ N) := pow_le_pow_right₀ (by norm_num) (by exact_mod_cast h1)
   have hD_ge1 : (1 : ℝ) ≤ D := by linarith
   have hD1_pos : (0 : ℝ) < D - 1 := by linarith
   have hD2_pos : (0 : ℝ) < D ^ 2 - 1 := by nlinarith
@@ -92,9 +92,9 @@ theorem doubleExp_tail_bound (N : ℕ) :
     intro k
     calc (1 : ℝ) / D ^ (2 ^ (k + 1))
         ≤ 1 / D ^ (2 * (k + 1)) :=
-            one_div_le_one_div_of_le (by positivity) (pow_le_pow_right hD_ge1 (key_arith k))
+            one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ hD_ge1 (key_arith k))
       _ = r ^ (k + 1) := by
-            simp only [hr_def]; rw [div_pow, one_pow, ← pow_mul]
+            rw [hr_def, div_pow, one_pow, hD_def, ← pow_mul, ← pow_mul, ← pow_mul]
   -- Summability
   have hTsumm : Summable (fun k : ℕ => r ^ (k + 1)) :=
     (summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one hr_nn hr_lt1)
@@ -109,25 +109,24 @@ theorem doubleExp_tail_bound (N : ℕ) :
     have h1r_pos : (0 : ℝ) < 1 - 1 / D ^ 2 := by
       rw [sub_pos, div_lt_one (by positivity)]; nlinarith
     field_simp [hD2_ne, h1r_pos.ne']
-    ring
   -- Rewrite tsum in goal using hterm, then bound
   rw [show (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) =
           (fun k => 1 / D ^ (2 ^ (k + 1))) from funext hterm]
   have hT_le : ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1)) ≤ 1 / (D ^ 2 - 1) := by
-    rw [← hgeo]; exact tsum_le_tsum hterm_bound hTsumm' hTsumm
+    rw [← hgeo]; exact Summable.tsum_le_tsum hterm_bound hTsumm' hTsumm
   calc D * ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1))
       ≤ D * (1 / (D ^ 2 - 1)) := mul_le_mul_of_nonneg_left hT_le hD_pos.le
     _ = D / (D ^ 2 - 1) := by ring
     _ < 1 / (D - 1) := by
-          rw [div_lt_div_iff hD2_pos hD1_pos]; nlinarith
+          rw [div_lt_div_iff₀ hD2_pos hD1_pos]; nlinarith
 
--- Sum splitting: ∑' n, f n = (∑ n in range N, f n) + f N + ∑' n, f (n + N + 1).
--- This is a standard Mathlib result (tsum_eq_zero_add, sum_add_tsum_compl, etc.).
+-- Sum splitting: ∑' n, f n = (∑ n ∈ range N, f n) + f N + ∑' n, f (n + N + 1).
+-- This is a standard Mathlib result (Summable.tsum_eq_zero_add, sum_add_tsum_compl, etc.).
 theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     ∑' n, f n = (∑ n ∈ Finset.range N, f n) + f N + ∑' n, f (n + N + 1) := by
   -- hshift: ∑' n, f (n + k) = f k + ∑' n, f (n + k + 1)
   have hshift : ∀ k, ∑' n, f (n + k) = f k + ∑' n, f (n + k + 1) := fun k => by
-    have h := tsum_eq_zero_add ((summable_nat_add_iff k).mpr hf)
+    have h := Summable.tsum_eq_zero_add ((summable_nat_add_iff k).mpr hf)
     simp only [zero_add] at h
     rw [h]
     congr 1
@@ -140,8 +139,6 @@ theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     | succ k ih =>
       rw [ih, Finset.sum_range_succ, hshift k, ← add_assoc]
       congr 1
-      apply tsum_congr
-      intro n; ring
   linarith [hsplit N, hshift N]
 
 end Erdos263Aristotle

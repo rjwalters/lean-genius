@@ -32,6 +32,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 namespace Erdos802
 
 open SimpleGraph Real
@@ -87,7 +89,7 @@ noncomputable def aeksBound (t n : ℝ) : ℝ :=
 ## Part IV: Known Results
 -/
 
-/-- **AEKS (1981):** First bound using log log:
+/-  **AEKS (1981):** First bound using log log:
 α(G) ≥ c · (log log t / t) · n for K_r-free graphs with avg degree t. -/
 
 /-- **Shearer (1995):** Improved bound with log t / (log log t · t). -/
@@ -124,7 +126,7 @@ noncomputable def localChromaticNumber (G : SimpleGraph V) : ℕ :=
 def IsLocallyChromatic (G : SimpleGraph V) (c : ℕ) : Prop :=
   ∀ v : V, True  -- Simplified: actual definition would use neighborhood chromatic number
 
-/-- **Alon (1996):** Proved the conjecture under stronger local sparsity:
+/-  **Alon (1996):** Proved the conjecture under stronger local sparsity:
 locally (r-2)-chromatic implies K_r-free, and the bound holds. -/
 
 /-
@@ -136,7 +138,7 @@ def ramseyLowerBound (r k : ℕ) : ℕ :=
   -- AKS showed R(3,k) ≥ c·k²/log k
   if r = 3 then k^2 / (Nat.log 2 k + 1) else k
 
-/-- AKS's proof gives Ramsey bounds: R(3,k) ≥ c·k²/log k.
+/-  AKS's proof gives Ramsey bounds: R(3,k) ≥ c·k²/log k.
 Triangle-free graphs: α(G) ≥ c·√(n log n). -/
 
 /-

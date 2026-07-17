@@ -217,15 +217,17 @@ theorem schauder_fixed_point_normed
         fun n => hxseq_approx (φ n)
       -- The bound 1/(φ(n)+1) → 0 as n → ∞ since φ is strictly monotone
       have h_bound_to_zero : Tendsto (fun n => (1 : ℝ) / (↑(φ n) + 1))
-          atTop (nhds 0) := by
-        apply tendsto_const_div_atTop_nhds_0_nat.comp
-        exact Tendsto.atTop_add (hφ_strict.tendsto_atTop) tendsto_const_nhds
+          atTop (nhds 0) :=
+        tendsto_one_div_add_atTop_nhds_zero_nat.comp hφ_strict.tendsto_atTop
       -- f(xseq(φ(n))) - xseq(φ(n)) → f(x*) - x* by continuity
       have h_diff_tends : Tendsto (fun n => f (xseq (φ n)) - xseq (φ n))
           atTop (nhds (f x_star - x_star)) := by
         apply Tendsto.sub
-        · exact (hf.continuousAt (hK.isClosed.mem_of_isSeqLimit
-            (fun n => hseq_in_K (φ n)) hφ_tendsto)).tendsto.comp hφ_tendsto
+        · have hx_star_in_K : x_star ∈ K := hx_star_mem
+          have hwithin : Tendsto (fun n => xseq (φ n)) atTop (nhdsWithin x_star K) :=
+            tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hφ_tendsto
+              (Eventually.of_forall (fun n => hseq_in_K (φ n)))
+          exact (hf x_star hx_star_in_K).tendsto.comp hwithin
         · exact hφ_tendsto
       -- So ‖f(xseq(φ(n))) - xseq(φ(n))‖ → ‖f(x*) - x*‖
       have h_norm_tends : Tendsto (fun n => ‖f (xseq (φ n)) - xseq (φ n)‖)
@@ -234,7 +236,8 @@ theorem schauder_fixed_point_normed
       -- But ‖f(xseq(φ(n))) - xseq(φ(n))‖ ≤ 1/(φ(n)+1) → 0
       have h_norm_to_zero : Tendsto (fun n => ‖f (xseq (φ n)) - xseq (φ n)‖)
           atTop (nhds 0) := by
-        apply squeeze_zero_norm'
+        apply squeeze_zero'
+        · filter_upwards with n using norm_nonneg _
         · filter_upwards with n
           exact le_of_lt (h_approx_subseq n)
         · exact h_bound_to_zero
@@ -303,7 +306,7 @@ theorem schauder_fixed_point_normed
     -- hence closed in V, hence closed in E.
     -- For the formal proof, we use that hull ⊆ V, V is closed, and within V
     -- the hull is compact (hence closed).
-    exact (Set.finite_range pts).isClosed_convexHull
+    exact (Set.finite_range pts).isClosed_convexHull ℝ
   -- hull is nonempty (it contains the points, which are in K)
   have hull_ne : hull.Nonempty := by
     rcases hne with ⟨x, hx⟩
@@ -311,8 +314,7 @@ theorem schauder_fixed_point_normed
     -- Actually, we need to handle the case m = 0 separately
     -- If m = 0, then hull = convexHull(∅) = ∅, but π maps K → hull,
     -- so hull must be nonempty (since K is nonempty and π maps K to hull)
-    exact ⟨π (Classical.choice (hne.to_subtype)).val,
-      hπ_hull _ (Classical.choice (hne.to_subtype)).property⟩
+    exact ⟨π x, hπ_hull x hx⟩
   -- hull is convex
   have hull_conv : Convex ℝ hull := convex_convexHull ℝ (range pts)
   -- g = π ∘ f is continuous on hull
@@ -329,7 +331,7 @@ theorem schauder_fixed_point_normed
   have hfx₀_in_K : f x₀ ∈ K := hmaps hx₀_in_K
   -- hx₀_fp : (π ∘ f) x₀ = x₀, i.e., π(f(x₀)) = x₀
   change π (f x₀) = x₀ at hx₀_fp
-  rw [← hx₀_fp]
+  nth_rewrite 2 [← hx₀_fp]
   -- Goal: ‖f x₀ - π(f x₀)‖ < ε
   rw [norm_sub_rev]
   exact hπ_close (f x₀) hfx₀_in_K
@@ -516,15 +518,14 @@ theorem banach_contraction_has_fixed_point
   have hK_nnreal : K < 1 := by exact_mod_cast hK
   -- Build LipschitzWith from our hypothesis
   have hlip' : LipschitzWith K f := by
+    apply LipschitzWith.of_dist_le_mul
     intro x y
-    simp only [edist_dist]
-    rw [ENNReal.ofReal_le_ofReal_iff (dist_nonneg)]
     exact hlip x y
   have hcontr : ContractingWith K f := ⟨hK_nnreal, hlip'⟩
   -- Apply Mathlib's Banach contraction principle
   exact ⟨hcontr.fixedPoint f,
     hcontr.fixedPoint_isFixedPt,
-    fun y hy => (hcontr.fixedPoint_unique hy).symm⟩
+    fun y hy => hcontr.fixedPoint_unique hy⟩
 
 -- ============================================================
 -- PART 9: The Hierarchy Diagram

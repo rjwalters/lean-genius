@@ -91,7 +91,7 @@ theorem empty_graph_choosable (a b : ℕ) (h : b ≤ a) :
 theorem empty_graph_disjoint (S : ColorSelection V a) :
     SelectionsDisjoint (⊥ : SimpleGraph V) S := by
   intro u v hadj
-  exact absurd hadj (SimpleGraph.not_adj_bot u v)
+  exact absurd hadj ((SimpleGraph.bot_adj u v).mp)
 
 -- Routine: A complete graph K₁ (single vertex) is (a,b)-choosable for any b ≤ a
 theorem complete_one_choosable (a b : ℕ) (h : b ≤ a) :

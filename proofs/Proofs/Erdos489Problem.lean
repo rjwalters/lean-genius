@@ -19,10 +19,11 @@ References:
   Magyar Tud. Akad. Mat. Kutató Int. Közl. (1961), 221-254.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.NumberTheory.Squarefree
+
+open scoped Classical
 
 open Asymptotics Filter
 
@@ -36,7 +37,7 @@ namespace Erdos489
 **Counting Function:**
 |A ∩ [1,x]| = number of elements of A up to x.
 -/
-def countingFunction (A : Set ℕ) (x : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (x : ℕ) : ℕ :=
   (Finset.filter (fun n => n ∈ A) (Finset.range (x + 1))).card
 
 /--
@@ -77,7 +78,7 @@ axiom nthElement (B : Set ℕ) (n : ℕ) : ℕ
 **Gap Function:**
 g_i = b_{i+1} - b_i is the gap between consecutive elements.
 -/
-def gap (B : Set ℕ) (i : ℕ) : ℕ :=
+noncomputable def gap (B : Set ℕ) (i : ℕ) : ℕ :=
   nthElement B (i + 1) - nthElement B i
 
 /--
@@ -85,7 +86,7 @@ def gap (B : Set ℕ) (i : ℕ) : ℕ :=
 S(x) = Σ_{bᵢ < x} (b_{i+1} - bᵢ)²
 -/
 noncomputable def gapSquaredSum (B : Set ℕ) (x : ℕ) : ℝ :=
-  ∑ i in Finset.range x, ((gap B i : ℕ) : ℝ) ^ 2
+  ∑ i ∈ Finset.range x, ((gap B i : ℕ) : ℝ) ^ 2
 
 /--
 **Normalized Gap Statistic:**
@@ -126,7 +127,7 @@ A = {p² : p prime}
 def PrimeSquares : Set ℕ :=
   {n : ℕ | ∃ p : ℕ, p.Prime ∧ n = p ^ 2}
 
-/--
+/- 
 **Squarefree Numbers:**
 When A = prime squares, B = squarefree numbers.
 -/
@@ -137,7 +138,7 @@ When A = {p² : p prime}, the limit exists.
 axiom erdos_squarefree_limit :
   LimitExists PrimeSquares
 
-/--
+/- 
 **Density of Squarefree Numbers:**
 The density of squarefree numbers is 6/π² ≈ 0.6079.
 -/

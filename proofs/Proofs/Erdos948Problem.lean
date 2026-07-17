@@ -24,6 +24,8 @@ direction and growth constraints.
 
 import Mathlib
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos948
@@ -37,7 +39,7 @@ of distinct finite subsets.
 
 -- The set of finite subsums of a sequence
 def FiniteSubsums (a : ℕ → ℕ) : Set ℕ :=
-  {s | ∃ S : Finset ℕ, s = ∑ i in S, a i}
+  {s | ∃ S : Finset ℕ, s = ∑ i ∈ S, a i}
 
 -- Alternative definition using sets
 def FiniteSubsums' (a : ℕ → ℕ) : Set ℕ :=
@@ -45,7 +47,7 @@ def FiniteSubsums' (a : ℕ → ℕ) : Set ℕ :=
 
 -- The sum over a finite set of indices
 noncomputable def sumOverSet (a : ℕ → ℕ) (S : Finset ℕ) : ℕ :=
-  ∑ i in S, a i
+  ∑ i ∈ S, a i
 
 -- Basic property: 0 is always a subsum (empty set)
 theorem zero_mem_finite_subsums (a : ℕ → ℕ) : 0 ∈ FiniteSubsums a :=
@@ -180,7 +182,7 @@ def CountableColorsVersion : Prop :=
   ∃ f : ℕ → ℕ, ∀ c : ℕ → ℕ, ∃ a : ℕ → ℕ,
     StrictlyIncreasing a ∧
     BoundedInfinitelyOften a f ∧
-    {c n | n ∈ FiniteSubsums a}.ncard < ⊤
+    {c n | n ∈ FiniteSubsums a}.Finite
 
 /-
 # Part 9: Summary

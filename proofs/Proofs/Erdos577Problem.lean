@@ -30,6 +30,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Fintype.Card
 
+open scoped Classical
+
 namespace Erdos577
 
 open SimpleGraph
@@ -38,15 +40,12 @@ open SimpleGraph
 ## Part I: Basic Definitions
 -/
 
-/-- A finite simple graph on vertex set V. -/
+/- A finite simple graph on vertex set V. -/
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
-/-- The minimum degree of a graph. -/
+/-- The minimum degree of a graph (with the empty-graph convention `0`). -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.min' (Finset.univ.image fun v => G.degree v)
-    ⟨(Finset.univ.image fun v => G.degree v).choose
-      (Finset.Nonempty.image Finset.univ_nonempty _),
-     Finset.choose_mem _ _⟩
+  (Finset.univ.image fun v => G.degree v).min.getD 0
 
 /-- A 4-cycle (quadrilateral) in a graph is a cycle of length 4. -/
 structure FourCycle (G : SimpleGraph V) where
@@ -122,7 +121,7 @@ axiom four_cycle_base_case :
       (∀ v : V, G.degree v ≥ 2) →
       Nonempty (FourCycle G)
 
-/-- **Sharpness of the degree condition:**
+/-  **Sharpness of the degree condition:**
     The minimum degree bound 2k is sharp. There exist graphs with
     minimum degree 2k - 1 that do not contain k disjoint 4-cycles. -/
 /-
@@ -150,7 +149,7 @@ axiom four_cycle_base_case :
 ## Part VI: Proof Techniques
 -/
 
-/-- **Wang's proof approach:**
+/-  **Wang's proof approach:**
     The proof proceeds by analyzing the structure of a
     minimal counterexample and showing no such graph exists. -/
 /- **Algorithmic aspect:**

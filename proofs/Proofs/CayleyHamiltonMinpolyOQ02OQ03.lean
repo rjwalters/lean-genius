@@ -1,4 +1,4 @@
-import Mathlib.LinearAlgebra.Matrix.CharacteristicPolynomial
+import Mathlib
 import Mathlib.LinearAlgebra.Charpoly.Basic
 import Mathlib.Tactic
 
@@ -41,7 +41,8 @@ theorem charpoly_similar (A B P : Matrix n n F) (hP : IsUnit P)
     B.charpoly = A.charpoly := by
   -- Similar matrices have the same characteristic polynomial
   subst hSim
-  rw [Matrix.charpoly_conj_of_isUnit A hP]
+  have key := Matrix.charpoly_units_conj' hP.unit A
+  rwa [hP.unit_spec] at key
 
 /-- **Similar matrices have the same minimal polynomial**.
 If B = P⁻¹AP and p(A) = 0 then p(B) = P⁻¹p(A)P = 0. -/
@@ -49,7 +50,15 @@ theorem minpoly_similar (A B : Matrix n n F) (P : Matrix n n F) (hP : IsUnit P)
     (hSim : B = P⁻¹ * A * P) :
     minpoly F B = minpoly F A := by
   subst hSim
-  exact minpoly_conj_of_isUnit A hP
+  -- Conjugation by the unit P is an F-algebra automorphism of Matrix n n F;
+  -- minpoly is invariant under algebra equivalences (minpoly.algEquiv_eq).
+  let e : Matrix n n F ≃ₐ[F] Matrix n n F :=
+    MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)
+  have he : e A = P⁻¹ * A * P := by
+    show ConjAct.toConjAct hP.unit⁻¹ • A = P⁻¹ * A * P
+    rw [ConjAct.units_smul_def]
+    simp only [ConjAct.ofConjAct_toConjAct, inv_inv, Matrix.coe_units_inv, hP.unit_spec]
+  rw [← he, minpoly.algEquiv_eq]
 
 /-! ## Part 2: Invariant Factors -/
 
@@ -71,7 +80,7 @@ This is necessary but not sufficient for full invariant factor equality
 (which requires the full Smith normal form computation). -/
 theorem similar_implies_invariant_data (A B P : Matrix n n F) (hP : IsUnit P)
     (hSim : B = P⁻¹ * A * P) : InvariantFactorsEqual A B :=
-  ⟨charpoly_similar A B P hP hSim, minpoly_similar A B P hP hSim⟩
+  ⟨(charpoly_similar A B P hP hSim).symm, (minpoly_similar A B P hP hSim).symm⟩
 
 /-! ## Part 3: Companion Matrices -/
 

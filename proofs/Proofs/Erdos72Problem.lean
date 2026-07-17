@@ -25,13 +25,14 @@
   Tags: graph-theory, extremal-combinatorics, cycles, density
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
+
+open scoped Classical
 
 namespace Erdos72
 
@@ -40,7 +41,7 @@ open SimpleGraph Finset Filter
 /- ## Part I: Density of Sets of Natural Numbers -/
 
 /-- The counting function for a set A up to n. -/
-def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   (Finset.filter (· ∈ A) (Finset.range (n + 1))).card
 
 /-- A set A ⊂ ℕ has density 0 if |A ∩ [1,n]|/n → 0 as n → ∞. -/
@@ -87,7 +88,7 @@ def containsCycleIn (G : SimpleGraph V) (A : Set ℕ) : Prop :=
 /-- A set A ⊂ ℕ is unavoidable with threshold c if every sufficiently large graph
     with average degree ≥ c contains a cycle whose length is in A. -/
 def isUnavoidable (A : Set ℕ) (c : ℝ) : Prop :=
-  ∃ n₀ : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  ∃ n₀ : ℕ, ∀ (V : Type) [Fintype V] [DecidableEq V],
     Fintype.card V ≥ n₀ →
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       hasAverageDegreeAtLeast G c → containsCycleIn G A
@@ -109,7 +110,7 @@ def Erdos72Statement : Prop :=
 
 /- ## Part V: Known Results (Axiomatized) -/
 
-/-- **Bollobás (1977)**
+/-  **Bollobás (1977)**
 
     If A is an infinite arithmetic progression containing even numbers,
     then A is strongly unavoidable.
@@ -117,7 +118,7 @@ def Erdos72Statement : Prop :=
     Note: Arithmetic progressions have positive density, so this doesn't
     directly solve the problem, but shows the cycle-forcing phenomenon.
 -/
-/-- **Verstraëte (2005)**
+/-  **Verstraëte (2005)**
 
     Non-constructively proved that Erdős Problem #72 has an affirmative answer.
     Some density-0 set A exists with the required property.
@@ -172,7 +173,7 @@ theorem powersOfTwo_all_even (n : ℕ) (hn : n ∈ powersOfTwo) (hn_pos : n > 0)
 noncomputable def optimalThreshold (A : Set ℕ) : ℝ :=
   sInf {c : ℝ | c > 0 ∧ isUnavoidable A c}
 
-/-- Liu-Montgomery gives some explicit bound for powers of 2. -/
+/-  Liu-Montgomery gives some explicit bound for powers of 2. -/
 /-- Finding the exact optimal threshold for powers of 2 remains open. -/
 def openQuestion_optimal_threshold : Prop :=
   ∃ c : ℝ, optimalThreshold powersOfTwo = c ∧ c < 100
@@ -183,7 +184,7 @@ def openQuestion_optimal_threshold : Prop :=
 def hasControlledGrowth (A : Set ℕ) (f : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, countingFunction A n ≤ f n
 
-/-- Liu-Montgomery actually proves a more general result for sets with
+/- Liu-Montgomery actually proves a more general result for sets with
     logarithmic growth of even numbers. -/
 end Erdos72
 

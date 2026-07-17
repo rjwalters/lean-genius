@@ -189,9 +189,9 @@ theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
       induction k with
       | zero => simp
       | succ j ihj =>
-        rw [Finset.range_succ, Finset.filter_insert]
+        rw [Finset.range_add_one, Finset.filter_insert]
         split_ifs with hmod
-        · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+        · rw [Finset.card_insert_of_notMem (by simp [Finset.mem_filter, Finset.mem_range])]
           omega
         · omega
     exact key (n + 1)

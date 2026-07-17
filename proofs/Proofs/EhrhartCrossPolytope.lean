@@ -262,7 +262,7 @@ private lemma eval_descPochhammer_natCast (k n : ℕ) :
     rw [descPochhammer_succ_right]
     simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X,
                Polynomial.eval_natCast, ih]
-    rcases le_or_lt k n with hkn | hkn
+    rcases le_or_gt k n with hkn | hkn
     · -- k ≤ n: descFactorial unfolds nicely
       rw [Nat.descFactorial_succ, Nat.cast_mul, Nat.cast_sub hkn]
       ring

@@ -24,9 +24,7 @@ References:
 - Kierstead-Szemerédi-Trotter [KST84]: Complete proof
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos921
 
@@ -43,13 +41,13 @@ structure Graph (V : Type*) where
   symm : ∀ v w, adj v w → adj w v
   loopless : ∀ v, ¬adj v v
 
-/--
+/- 
 **Chromatic number:**
 χ(G) is the minimum k such that G has a proper k-coloring.
 A proper k-coloring assigns colors 1,...,k to vertices such that
 adjacent vertices get different colors.
 -/
-/--
+/- 
 **Odd girth:**
 The length of the shortest odd cycle in G, or 0 if G is bipartite.
 -/
@@ -63,7 +61,7 @@ graphs on n vertices.
 -/
 axiom f (k n : ℕ) : ℕ
 
-/--
+/- 
 **Basic property: f_k(n) is well-defined for k ≥ 4:**
 Graphs with high chromatic number but large odd girth exist.
 -/
@@ -119,7 +117,7 @@ f_4(n) ≍ n^{1/2}.
 -/
 theorem k4_case :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ n ≥ 4, c₁ * Real.sqrt n ≤ f 4 n ∧ (f 4 n : ℝ) ≤ c₂ * Real.sqrt n := by
+    ∀ n : ℕ, n ≥ 4 → c₁ * Real.sqrt n ≤ f 4 n ∧ (f 4 n : ℝ) ≤ c₂ * Real.sqrt n := by
   obtain ⟨c, hc, hlow⟩ := gallai_lower_bound
   obtain ⟨C, hC, hup⟩ := erdos_upper_bound
   exact ⟨c, C, hc, hC, fun n hn => ⟨hlow n hn, hup n hn⟩⟩
@@ -128,11 +126,11 @@ theorem k4_case :
 ## Part IV: General k Case
 -/
 
-/--
+/- 
 **Lower bound for general k:**
 f_k(n) ≫ n^{1/(k-2)} for all k ≥ 4.
 -/
-/--
+/- 
 **Upper bound for general k:**
 f_k(n) ≪ n^{1/(k-2)} for all k ≥ 4.
 -/

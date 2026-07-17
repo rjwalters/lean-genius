@@ -79,7 +79,7 @@ private lemma mul_rpow_pred (α : ℝ) {x : ℝ} (hx : 0 < x) :
     x * x ^ (α - 1) = x ^ α := by
   have : x * x ^ (α - 1) = x ^ (1 : ℝ) * x ^ (α - 1) := by
     rw [Real.rpow_one]
-  rw [this, ← Real.rpow_add hx.ne']
+  rw [this, ← Real.rpow_add hx]
   norm_num
 
 /-- **Core identity**: Σ pᵢ · pᵢ^(α-1) = Σ pᵢ^α when all pᵢ > 0.
@@ -105,7 +105,9 @@ private lemma selfPowerMean_pos
     0 < selfPowerMean s p r hr := by
   unfold selfPowerMean
   apply Real.rpow_pos_of_pos
-  rw [renyi_sum_eq_powerMean_sum s p hp]
+  have h := renyi_sum_eq_powerMean_sum s p hp (r + 1)
+  rw [add_sub_cancel_right] at h
+  rw [h]
   exact renyi_sum_pos s p hp hs (r + 1)
 
 -- ============================================================
@@ -218,8 +220,7 @@ theorem renyi_two_eq_neg_log_collision
   simp [renyiEntropy]
   have hpos : 0 < ∑ i ∈ s, p i ^ (2 : ℝ) :=
     renyi_sum_pos s p hp hs 2
-  rw [Real.log_inv]
-  ring
+  norm_num
 
 /-- Connection: H_2(p) = -log(M_1(p,p)) is the negative log of the arithmetic
     self-mean (since M_1 = Σ pᵢ · pᵢ = Σ pᵢ²). -/
@@ -227,6 +228,8 @@ theorem renyi_two_eq_neg_log_self_mean
     (hp : ∀ i ∈ s, 0 < p i) (hs : s.Nonempty) :
     renyiEntropy s p 2 (by norm_num) =
     -Real.log (selfPowerMean s p 1 (by norm_num)) := by
-  exact renyi_eq_neg_log_powerMean s p hp hs 2 (by norm_num)
+  have h := renyi_eq_neg_log_powerMean s p hp hs 2 (by norm_num)
+  convert h using 4
+  norm_num
 
 end RenyiPowerMean

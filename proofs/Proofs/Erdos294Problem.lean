@@ -31,11 +31,13 @@ References:
   arXiv:2404.07113
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+
+open scoped Classical
 
 open Finset BigOperators Nat Real
 
@@ -65,7 +67,7 @@ A finite set S of distinct positive integers with ∑_{n ∈ S} 1/n = 1.
 def isEgyptianRepresentationOf1 (S : Finset ℕ) : Prop :=
   S.Nonempty ∧ (∀ n ∈ S, n ≥ 1) ∧ egyptianSum S = 1
 
-/--
+/- 
 **Example: {2, 3, 6} represents 1**
 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1.
 -/
@@ -83,7 +85,7 @@ def hasConstrainedRepresentation (t N : ℕ) : Prop :=
     (∀ n ∈ S, t ≤ n ∧ n ≤ N) ∧
     egyptianSum S = 1
 
-/--
+/- 
 **The t(N) function:**
 t(N) = min{t ≥ 1 : there is NO Egyptian representation of 1 with denominators in [t, N]}.
 
@@ -100,7 +102,7 @@ axiom t_func_exists (N : ℕ) : ∃ t, ¬hasConstrainedRepresentation t N
 noncomputable def t_func (N : ℕ) : ℕ :=
   Nat.find (t_func_exists N)
 
-/--
+/- 
 **Key property: t(N) is where representations stop being possible.**
 -/
 
@@ -108,12 +110,12 @@ noncomputable def t_func (N : ℕ) : ℕ :=
 ## Part III: Small Values
 -/
 
-/--
+/- 
 **t(2) = 2:**
 Only {2} gives 1/2, not 1. So t(2) = 2.
 -/
 
-/--
+/- 
 **t(6) analysis:**
 {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1, so t(6) > 2.
 {3, 4, 5, 6} gives 1/3 + 1/4 + 1/5 + 1/6 = 20/60 + 15/60 + 12/60 + 10/60 = 57/60 ≠ 1.
@@ -126,7 +128,7 @@ H_N = ∑_{k=1}^N 1/k.
 noncomputable def harmonicSum (N : ℕ) : ℚ :=
   ∑ k ∈ Finset.range (N + 1), if k ≥ 1 then unitFraction k else 0
 
-/--
+/- 
 **Harmonic sum bounds:**
 H_N ≈ log(N) + γ where γ ≈ 0.577 is Euler's constant.
 -/
@@ -221,7 +223,7 @@ axiom f_func_exists (n : ℕ) (hn : n ≥ 6) :
 noncomputable def f_func (n : ℕ) (hn : n ≥ 6) : ℕ :=
   Nat.find (f_func_exists n hn)
 
-/--
+/- 
 **Relationship between t and f:**
 If f(N) exists, then t(N) > 1.
 -/
@@ -239,7 +241,7 @@ noncomputable def greedyStep (q : ℚ) : ℕ :=
   if hq : q > 0 then Nat.ceil (1 / q) else 0
   -- The smallest n with 1/n ≤ q, i.e., n ≥ 1/q
 
-/--
+/- 
 **Greedy algorithm property:**
 The greedy algorithm always terminates but may produce long representations.
 -/
@@ -288,7 +290,8 @@ theorem erdos_294_summary :
     erdosGrahamUpperBound ∧
     -- Liu-Sawhney lower bound
     liuSawhneyLowerBound := by
-  exact liu_sawhney_2024
+  have h : liuSawhneyLowerBound ∧ erdosGrahamUpperBound := liu_sawhney_2024
+  exact ⟨h.2, h.1⟩
 
 /-
 **Key insight:**

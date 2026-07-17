@@ -130,8 +130,8 @@ theorem buDim_le_formula_semiprime (p q d : ℕ)
     buDim (p * q) d ≤ buDimFormula (p * q) d := by
   rw [buDimFormula]
   rw [Nat.primeFactors_mul hp.ne_zero hq.ne_zero,
-      Nat.primeFactors_prime hp, Nat.primeFactors_prime hq]
-  simp only [Finset.sup_insert, Finset.sup_singleton]
+      Nat.Prime.primeFactors hp, Nat.Prime.primeFactors hq]
+  simp only [Finset.sup_union, Finset.sup_singleton]
   exact buDim_crt_semiprime p q d hp hq hpq
 
 -- ============================================================
@@ -144,9 +144,9 @@ theorem buDim_le_formula_semiprime (p q d : ℕ)
 theorem not_exotic_semiprime (p q d : ℕ)
     (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p ≠ q) :
     ¬ IsExotic (p * q) d := by
-  intro ⟨hexot⟩
+  intro hexot
   have hle := buDim_le_formula_semiprime p q d hp hq hpq
-  exact absurd hle hexot
+  exact absurd hle (not_le.mpr hexot)
 
 /-- Specific case: 6 = 2 × 3 has buDim equal to max(buDim 2, buDim 3). -/
 theorem buDim_six_eq_max' (d : ℕ) :

@@ -163,7 +163,7 @@ geometric considerations.
 axiom trivial_upper_bound (r : ℝ) (hr : r > 0) :
     ∃ C : ℝ, C > 0 ∧ maxMeasure r ≤ ENNReal.ofReal (C * r)
 
-/--
+/- 
 **Circle Argument:**
 A key observation is that a set avoiding integer distances cannot
 contain two points at distances r₁ and r₁+1 from the same center
@@ -214,7 +214,7 @@ def annulus (r₁ r₂ : ℝ) : Set (ℝ × ℝ) :=
 theorem annulus_subset_openDisk (r₁ r₂ : ℝ) : annulus r₁ r₂ ⊆ openDisk r₂ :=
   fun _ ⟨_, hlt⟩ => hlt
 
-/--
+/- 
 **Thin Annulus Avoids Integers:**
 If an annulus has thickness < 1, any two points in it have distance < 2,
 so integers > 1 are automatically avoided. We only need to avoid distance 1.
@@ -242,11 +242,11 @@ theorem avoidsInteger_is_forbiddenDistances (A : Set (ℝ × ℝ)) :
   · intro h a b ha hb hab ⟨n, hn⟩
     exact h a b ha hb hab ⟨n, hn⟩
 
-/--
+/- 
 **Erdős #465 (Related):**
 Upper bounds for sets avoiding unit distances.
 -/
-/--
+/- 
 **Erdős #466 (Related):**
 Lower bounds for sets avoiding unit distances.
 -/
@@ -254,7 +254,7 @@ Lower bounds for sets avoiding unit distances.
 ## Part VIII: The Main Open Question
 -/
 
-/--
+/- 
 **Erdős #953 Conjecture:**
 The true asymptotic behavior of maxMeasure(r) is unknown.
 Is it closer to the upper bound O(r) or the lower bound r^{0.26}?
@@ -285,7 +285,7 @@ theorem erdos_953_summary :
       ∀ r : ℝ, r ≥ 1 → ENNReal.ofReal (C * r ^ α) ≤ maxMeasure r) :=
   ⟨trivial_upper_bound, kovac_lower_bound⟩
 
-/--
+/-
 The main open question.
 -/
 end Erdos953

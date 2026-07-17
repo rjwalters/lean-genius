@@ -60,26 +60,24 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   have hDiff : Differentiable ℝ f := by apply hf.differentiable; norm_num
   have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
     have h : ContDiff ℝ 1 (fderiv ℝ f) := by apply hf.fderiv_right; norm_num
-    exact h.differentiable le_rfl
-  -- HasDerivAt for embeddings: HasFDerivAt.prod (standalone, not dot notation) + .hasDerivAt
+    exact h.differentiable one_ne_zero
+  -- HasDerivAt for embeddings: HasFDerivAt.prodMk (standalone, not dot notation) + .hasDerivAt
   -- HasDerivAt.prod / HasFDerivAtFilter.prod do NOT exist in Lean 4 Mathlib
   have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
     ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
-      (HasFDerivAt.prod (hasFDerivAt_const p.2 x) (hasFDerivAt_id ℝ p.2)).hasDerivAt
-      rfl).deriv
+      (HasFDerivAt.prodMk (hasFDerivAt_const x p.2) (hasFDerivAt_id p.2)).hasDerivAt).deriv
   have hDX : ∀ y, deriv (fun x => f (x, y)) p.1 = fderiv ℝ f (p.1, y) (1, 0) := fun y =>
     ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
-      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 y)).hasDerivAt
-      rfl).deriv
+      (HasFDerivAt.prodMk (hasFDerivAt_id p.1) (hasFDerivAt_const y p.1)).hasDerivAt).deriv
   simp_rw [hDY, hDX]
   have hStep1 : HasDerivAt (fun x => fderiv ℝ f (x, p.2))
       (fderiv ℝ (fderiv ℝ f) p (1, 0)) p.1 :=
     (hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
-      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 p.2)).hasDerivAt rfl
+      (HasFDerivAt.prodMk (hasFDerivAt_id p.1) (hasFDerivAt_const p.2 p.1)).hasDerivAt
   have hStep2 : HasDerivAt (fun y => fderiv ℝ f (p.1, y))
       (fderiv ℝ (fderiv ℝ f) p (0, 1)) p.2 :=
     (hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
-      (HasFDerivAt.prod (hasFDerivAt_const p.2 p.1) (hasFDerivAt_id ℝ p.2)).hasDerivAt rfl
+      (HasFDerivAt.prodMk (hasFDerivAt_const p.1 p.2) (hasFDerivAt_id p.2)).hasDerivAt
   -- Evaluate at (0,1) and (1,0) using HasDerivAt.clm_apply (product rule with constant vector)
   have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
       (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 := by
@@ -95,7 +93,7 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   -- ContDiffAt.isSymmSndFDerivAt (hf : ContDiffAt 𝕜 n f x) (hn : minSmoothness 𝕜 2 ≤ n)
   --   : IsSymmSndFDerivAt 𝕜 f x = ∀ v w, fderiv(fderiv f)(x)(v)(w) = fderiv(fderiv f)(x)(w)(v)
   -- minSmoothness ℝ 2 = 2, so le_rfl proves 2 ≤ 2
-  exact (hf.contDiffAt.isSymmSndFDerivAt le_rfl) (1, 0) (0, 1)
+  exact (hf.contDiffAt.isSymmSndFDerivAt (le_of_eq minSmoothness_of_isRCLikeNormedField)) (1, 0) (0, 1)
 
 /-- Green's theorem for rectangles in Stokes form: ∫_{∂R} ω = ∫_R dω.
 

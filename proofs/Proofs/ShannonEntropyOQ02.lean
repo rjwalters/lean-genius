@@ -160,6 +160,10 @@ theorem entropy_le_expected_K_times_ln2 {n : ℕ} {p : Fin n → ℝ}
     shannonEntropy p ≤ expectedComplexity p K * log 2 := by
   unfold shannonEntropy expectedComplexity
   have h := avg_length_ge_entropy hp hpsum hk
+  have heq : (∑ i : Fin n, if p i = 0 then (0 : ℝ) else p i * log (p i))
+      = ∑ i : Fin n, p i * log (p i) :=
+    Finset.sum_congr rfl (fun i _ => if_neg (ne_of_gt (hp i)))
+  rw [heq]
   linarith
 
 -- ════════════════════════════════════════════════════════════════
@@ -255,6 +259,7 @@ theorem shannon_length_upper_bound {n : ℕ} {p : Fin n → ℝ}
   simp_rw [h_term_eq, Finset.sum_add_distrib, ← Finset.sum_mul, hpsum, one_mul]
   -- Since p i > 0, the if-then-else simplifies
   congr 1
+  simp only [mul_neg]
   rw [Finset.sum_neg_distrib]
   congr 1
   apply Finset.sum_congr rfl
@@ -304,8 +309,8 @@ theorem expected_complexity_le_entropy_plus_const {n : ℕ} {p : Fin n → ℝ}
       intro i
       apply mul_le_mul_of_nonneg_left _ (le_of_lt (hp i))
       have := hc i
-      push_cast
-      linarith
+      unfold shannonLength
+      exact_mod_cast this
     calc ∑ i, p i * (kolmogorovComplexity (Fin n) i : ℝ)
         ≤ ∑ i, p i * ((shannonLength p i : ℝ) + (c : ℝ)) :=
           sum_le_sum fun i _ => h_term i
@@ -355,13 +360,13 @@ theorem uniform_entropy_eq_log_card {n : ℕ} (hn : 0 < n)
     (hp_pos : ∀ i, 0 < p i) :
     shannonEntropy p = log n := by
   unfold shannonEntropy
-  simp_rw [hp, ne_of_gt (hp_pos _), if_false]
+  simp_rw [if_neg (ne_of_gt (hp_pos _)), hp]
   rw [Finset.sum_const, Finset.card_fin]
   simp only [nsmul_eq_mul]
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   rw [log_div one_ne_zero (ne_of_gt hn_pos)]
   simp [log_one]
-  ring
+  rw [mul_inv_cancel_left₀ (ne_of_gt hn_pos)]
 
 /-- For the uniform distribution on n elements, E[K(X)] ≈ log₂ n.
     This means most elements x have K(x) ≈ log₂ n — the incompressibility
@@ -377,7 +382,7 @@ theorem uniform_complexity_approx_log {n : ℕ} (hn : 0 < n)
     simp_rw [hp]; rw [Finset.sum_const, Finset.card_fin, nsmul_eq_mul]
     field_simp
   obtain ⟨c, hlb, hub⟩ := entropy_complexity_equivalence hp_pos hp1 hpsum hn
-  exact ⟨c, by rwa [uniform_entropy_eq_log_card hn p hp hp_pos],
-             by rwa [uniform_entropy_eq_log_card hn p hp hp_pos] at hub⟩
+  rw [uniform_entropy_eq_log_card hn p hp hp_pos] at hlb hub
+  exact ⟨c, hlb, hub⟩
 
 end InformationTheory.KolmogorovEntropy

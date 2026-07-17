@@ -28,11 +28,7 @@ References:
           Combinatorica (1999), 453-472.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Basic
+import Mathlib
 
 open SimpleGraph Finset
 
@@ -81,12 +77,12 @@ noncomputable def listChromaticNumber (G : SimpleGraph V) : ℕ :=
 ## Part II: Comparison with Ordinary Chromatic Number
 -/
 
-/--
+/- 
 **χ_L(G) ≥ χ(G):**
 The list chromatic number is at least the ordinary chromatic number.
 This is because we can give every vertex the same list of χ(G) colors.
 -/
-/--
+/- 
 **The gap can be arbitrarily large:**
 There exist bipartite graphs (χ = 2) with arbitrarily large χ_L.
 The complete bipartite graph K_{n,n} satisfies χ_L(K_{n,n}) ≥ ⌊log₂ n⌋ + 1.
@@ -101,7 +97,7 @@ We axiomatize the almost-sure behavior rather than the probability model.
 -/
 axiom listChromaticRandom (n : ℕ) : ℕ
 
-/--
+/- 
 **Chromatic number of random graphs:**
 For G ∈ G(n, 1/2), χ(G) ≍ n / (2 log₂ n) almost surely.
 -/
@@ -109,7 +105,7 @@ For G ∈ G(n, 1/2), χ(G) ≍ n / (2 log₂ n) almost surely.
 ## Part IV: Alon's 1992 Result
 -/
 
-/--
+/- 
 **Alon's Theorem (1992):**
 For the random graph G on n vertices with edge probability 1/2:
   χ_L(G) ≪ (log log n / log n) · n almost surely.
@@ -117,7 +113,7 @@ For the random graph G on n vertices with edge probability 1/2:
 This was the first proof that χ_L(G) = o(n) for random graphs, using
 the probabilistic method and the Lovász Local Lemma.
 -/
-/--
+/- 
 **Corollary: χ_L(G) = o(n) Almost Surely.**
 Alon's theorem implies that χ_L(G) grows slower than linearly in n.
 -/
@@ -143,7 +139,7 @@ axiom alon_krivelevich_sudakov_1999 :
 ## Part VI: Comparison: χ_L(G) vs χ(G) for Random Graphs
 -/
 
-/--
+/- 
 **Asymptotic Ratio:**
 For G ∈ G(n, 1/2):
 - χ(G) ≈ n / (2 log₂ n)

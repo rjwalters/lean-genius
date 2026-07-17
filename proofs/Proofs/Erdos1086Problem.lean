@@ -31,6 +31,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 namespace Erdos1086
 
 open Real
@@ -86,7 +88,7 @@ noncomputable def maxTrianglesWithSameArea (S : Finset Point2D) : ℕ :=
 
 /-- The function g(n): max over all n-point sets of maxTrianglesWithSameArea -/
 noncomputable def g (n : ℕ) : ℕ :=
-  sSup { maxTrianglesWithSameArea S | S : Finset Point2D // S.card = n }
+  sSup { k | ∃ S : Finset Point2D, S.card = n ∧ maxTrianglesWithSameArea S = k }
 
 /- ## Part 3: Known Bounds
 -/
@@ -97,10 +99,10 @@ axiom lower_bound_erdos_purdy (n : ℕ) (hn : n ≥ 16) :
 
 /-- Improved upper bound by Raz-Sharir (2017): g(n) ≪ n^{20/9} -/
 axiom upper_bound_raz_sharir_2017 (n : ℕ) (hn : n ≥ 2) :
-  ∃ C > 0, g n ≤ C * n^(20/9 : ℝ)
+  ∃ C > 0, g n ≤ C * (n:ℝ)^(20/9 : ℝ)
 
 /-- The exponent 20/9 ≈ 2.222 is the current best upper bound -/
-def bestUpperExponent : ℝ := 20 / 9
+noncomputable def bestUpperExponent : ℝ := 20 / 9
 
 /- ## Part 4: Higher-Dimensional Generalizations
 
@@ -115,7 +117,7 @@ axiom g_dim (d r : ℕ) (n : ℕ) : ℕ
 
 /-- Dumitrescu-Sharir-Tóth (2009): g_3^2(n) ≪ n^{2.4286} -/
 axiom bound_g3_2_dst (n : ℕ) (hn : n ≥ 2) :
-  ∃ C > 0, g_dim 3 2 n ≤ C * n^(2.4286 : ℝ)
+  ∃ C > 0, g_dim 3 2 n ≤ C * (n:ℝ)^(2.4286 : ℝ)
 
 /- ## Part 5: Simple Examples
 -/
@@ -131,7 +133,7 @@ theorem erdos_1086_statement (n : ℕ) (hn : n ≥ 16) :
     -- Lower bound: n² log log n ≪ g(n)
     (∃ C > 0, g n ≥ C * n^2 * Real.log (Real.log n)) ∧
     -- Upper bound: g(n) ≪ n^{20/9}
-    (∃ C > 0, g n ≤ C * n^(20/9 : ℝ)) :=
+    (∃ C > 0, g n ≤ C * (n:ℝ)^(20/9 : ℝ)) :=
   ⟨lower_bound_erdos_purdy n hn,
    upper_bound_raz_sharir_2017 n (by omega)⟩
 
@@ -140,9 +142,9 @@ theorem erdos_1086_summary (n : ℕ) (hn : n ≥ 16) :
     -- 1. Lower bound: n² log log n ≪ g(n) (Erdős-Purdy 1971)
     (∃ C > 0, g n ≥ C * n^2 * Real.log (Real.log n)) ∧
     -- 2. Upper bound: g(n) ≪ n^{20/9} (Raz-Sharir 2017)
-    (∃ C > 0, g n ≤ C * n^(20/9 : ℝ)) ∧
+    (∃ C > 0, g n ≤ C * (n:ℝ)^(20/9 : ℝ)) ∧
     -- 3. In 3D: g_3^2(n) ≪ n^{2.4286}
-    (∃ C > 0, g_dim 3 2 n ≤ C * n^(2.4286 : ℝ)) :=
+    (∃ C > 0, g_dim 3 2 n ≤ C * (n:ℝ)^(2.4286 : ℝ)) :=
   ⟨lower_bound_erdos_purdy n hn,
    upper_bound_raz_sharir_2017 n (by omega),
    bound_g3_2_dst n (by omega)⟩

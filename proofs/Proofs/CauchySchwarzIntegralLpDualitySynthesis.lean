@@ -9,7 +9,7 @@ representation for an **arbitrary** measure `μ` (1 < p < ∞) as a single axiom
 
     axiom riesz_lp_surjective (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
       (hpq : p.toReal.HolderConjugate q.toReal) :
-      ∀ φ : Lp ℝ p μ →L[ℝ] ℝ, ∃ g : α → ℝ, Memℒp g q μ ∧
+      ∀ φ : Lp ℝ p μ →L[ℝ] ℝ, ∃ g : α → ℝ, MemLp g q μ ∧
         ∀ f, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ
 
 This file works toward eliminating that axiom by **reducing the arbitrary-measure
@@ -412,7 +412,7 @@ theorem riesz_representer_on_sigmaFinite_set
     represented by integration against some `g ∈ Lq(μ)`.
 
     This is the statement of the parent file's `riesz_lp_surjective` axiom (modulo the
-    `Memℒp`/`MemLp` spelling), here **discharged** as a theorem from the σ-finite Riesz
+    `MemLp`/`MemLp` spelling), here **discharged** as a theorem from the σ-finite Riesz
     theorem via the Folland-6.16 maximality argument documented at the top of this file.
     No `sorry`: it feeds the σ-finite chain's extension CLM and representer into the
     ext-agnostic assembly `RieszLpDualityMaximal.riesz_general`.

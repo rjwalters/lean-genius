@@ -78,13 +78,14 @@ theorem sumDivisors_one : σ(1) = 1 := by
 
 /-- σ(p) = 1 + p for prime p -/
 theorem sumDivisors_prime (p : ℕ) (hp : p.Prime) : σ(p) = 1 + p := by
-  simp only [sumDivisors, Nat.divisors_prime_eq hp, Finset.sum_pair hp.one_lt.ne', id]
+  simp only [sumDivisors, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne', id]
+  exact Finset.sum_pair hp.one_lt.ne
 
 /-- σ(n) ≥ n for all n ≥ 1 -/
 theorem sumDivisors_ge (n : ℕ) (hn : n ≥ 1) : σ(n) ≥ n := by
   unfold sumDivisors
   have : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
-  exact le_trans (le_of_eq rfl) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) this)
+  exact Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) this
 
 /-- σ(n) > n for n > 1 (n divides itself and 1 divides n) -/
 theorem sumDivisors_gt (n : ℕ) (hn : n > 1) : σ(n) > n := by
@@ -109,10 +110,10 @@ theorem totient_prime (p : ℕ) (hp : p.Prime) : p.totient = p - 1 :=
   Nat.totient_prime hp
 
 /-- φ(n) < n for n > 1 -/
-theorem totient_lt (n : ℕ) (hn : n > 1) : n.totient < n := Nat.totient_lt (by omega)
+theorem totient_lt (n : ℕ) (hn : n > 1) : n.totient < n := Nat.totient_lt n (by omega)
 
 /-- φ(n) ≥ 1 for n ≥ 1 -/
-theorem totient_pos (n : ℕ) (hn : n ≥ 1) : n.totient ≥ 1 := Nat.totient_pos (by omega)
+theorem totient_pos (n : ℕ) (hn : n ≥ 1) : n.totient ≥ 1 := Nat.totient_pos.mpr (by omega)
 
 /-
 ## Part III: The Totient-Sigma Pair Set
@@ -299,7 +300,7 @@ theorem twin_prime_gives_pair (p : ℕ) (hp : p.Prime) (hp2 : (p + 2).Prime) :
   rw [h1, h2]
   ring
 
-/--
+/- 
 **Twin Prime Conjecture Implication:**
 If there are infinitely many twin primes, then Erdős #48 follows.
 -/
@@ -414,7 +415,7 @@ theorem twelve_is_common : (12 : ℕ) ∈ commonValues := by
 ## Part X: Multiplicativity
 -/
 
-/--
+/- 
 **σ is Multiplicative:**
 For coprime m, n: σ(m·n) = σ(m)·σ(n).
 -/

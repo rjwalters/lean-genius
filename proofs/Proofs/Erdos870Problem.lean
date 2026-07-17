@@ -134,7 +134,7 @@ If A is a basis of order 2 satisfying the EN condition, then A contains a minima
 axiom erdos_nathanson_k2 (A : AdditiveSet) :
     IsAdditiveBasis A 2 → SatisfiesENCondition A → ContainsMinimalBasis A 2
 
-/--
+/- 
 **Implication of logarithmic growth for k = 2:**
 The EN condition is implied by certain logarithmic growth conditions.
 -/
@@ -160,7 +160,7 @@ The conjecture holds for all k ≥ 3.
 def FullConjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 → ErdosConjecture870 k
 
-/--
+/- 
 **Status: OPEN**
 The conjecture remains unresolved for k ≥ 3.
 -/
@@ -227,7 +227,7 @@ Removing finitely many elements from a basis may or may not preserve the basis p
 def FiniteRemoval (A : AdditiveSet) (S : Finset ℕ) : AdditiveSet :=
   A \ (S : Set ℕ)
 
-/--
+/- 
 **Threshold phenomenon:**
 Bases with logarithmic representation counts exhibit threshold behavior.
 -/
@@ -253,7 +253,7 @@ def IsSidonSet (A : AdditiveSet) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a + b = c + d → ({a, b} : Set ℕ) = {c, d}
 
-/--
+/- 
 **Sidon sets have controlled representations:**
 A Sidon set has r₂(n) ≤ 1 for sums of two distinct elements.
 -/

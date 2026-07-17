@@ -8,7 +8,7 @@
 4. But (r² - 5)/2 is rational, contradicting √6 irrational
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 

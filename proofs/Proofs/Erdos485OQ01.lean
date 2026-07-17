@@ -4,6 +4,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 set_option maxHeartbeats 800000
 
 /-
@@ -71,10 +73,10 @@ theorem f_zero : f 0 = 0 := by
     exact ⟨0, by simp [Polynomial.support_eq_empty], by simp [Polynomial.support_eq_empty]⟩
   · exact Nat.zero_le _
 
-/-- f is monotone: more input terms means at least as many output terms.
+/-  f is monotone: more input terms means at least as many output terms.
     This is NOT obvious and may not hold in general — it's a structural claim. -/
 
-/-- The trivial upper bound: f(k) ≤ k² (each cross-term is distinct in the worst case,
+/-  The trivial upper bound: f(k) ≤ k² (each cross-term is distinct in the worst case,
     but many coincide, so the real bound is much lower). -/
 
 /-
@@ -104,7 +106,7 @@ axiom erdos_upper :
 axiom f_diverges :
     Filter.Tendsto (fun k => (f k : ℝ)) Filter.atTop Filter.atTop
 
-/-- **The Open Question**: is the true growth rate closer to log k or to k^α?
+/-  **The Open Question**: is the true growth rate closer to log k or to k^α?
 
     Formalizing the possibilities:
     (a) f(k) = Θ(log k)  [growth is logarithmic]
@@ -153,7 +155,7 @@ theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
   rw [hexpand]
   -- Step 2: Compute support via coefficient characterization
   suffices hsup : (1 + C 2 * X ^ d + X ^ (2 * d) : Polynomial ℚ).support = {0, d, 2 * d} by
-    rw [hsup, Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+    rw [hsup, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
         Finset.card_singleton]
     · simp only [Finset.mem_singleton]; omega
     · simp only [Finset.mem_insert, Finset.mem_singleton]; omega
@@ -182,7 +184,7 @@ theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
     · -- m = 2d: coeff = (if 2d=0 ...) + 2·(if 2d=d ...) + 1
       simp [show 2 * d ≠ 0 from by omega, show 2 * d ≠ d from by omega]
 
-/-- **FALSE — REMOVED**: The lacunary lower bound as originally stated is INCORRECT.
+/-  **FALSE — REMOVED**: The lacunary lower bound as originally stated is INCORRECT.
     Counterexample: p = 1 - x² - (1/2)x⁴ has support {0,2,4} with all gaps ≥ 2,
     but p² = 1 - 2x² + x⁶ + (1/4)x⁸ has only 4 terms (the x⁴ coefficient cancels:
     b² + 2ac = 1 + 2·1·(-1/2) = 0). This is less than 2·3 - 1 = 5.
@@ -300,7 +302,7 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
   -- Three positions are in support of p²
   suffices hsub : {2 * i, i + j, 2 * j} ⊆ (p ^ 2).support by
     have hcard : ({2 * i, i + j, 2 * j} : Finset ℕ).card = 3 := by
-      rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem, Finset.card_singleton]
+      rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem, Finset.card_singleton]
       · simp only [Finset.mem_singleton]; omega
       · simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨by omega, by omega⟩
     linarith [Finset.card_le_card hsub]
@@ -324,8 +326,8 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
             have hb : b ∉ p.support := by
               rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
               exact ⟨by omega, by omega⟩
-            rw [Polynomial.not_mem_support_iff.mp hb]; ring
-        · rw [Polynomial.not_mem_support_iff.mp ha]; ring)
+            rw [Polynomial.notMem_support_iff.mp hb]; ring
+        · rw [Polynomial.notMem_support_iff.mp ha]; ring)
       (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : i + i = 2 * i)) h)
     rw [this]; exact mul_ne_zero hi hi
   · -- Position i+j: coeff = 2 * (p.coeff i) * (p.coeff j) ≠ 0
@@ -352,7 +354,7 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
         rcases ha with rfl | rfl
         · exact absurd (Prod.ext rfl (show b = j by omega)) hab_ne2
         · exact absurd (Prod.ext rfl (show b = i by omega)) hab_ne1
-      · rw [Polynomial.not_mem_support_iff.mp ha]; ring
+      · rw [Polynomial.notMem_support_iff.mp ha]; ring
     rw [hrest, add_zero]
     have : p.coeff i * p.coeff j + p.coeff j * p.coeff i =
         2 * (p.coeff i * p.coeff j) := by ring
@@ -370,10 +372,10 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
           · have hb : b ∉ p.support := by
               rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
               exact ⟨by omega, by omega⟩
-            rw [Polynomial.not_mem_support_iff.mp hb]; ring
+            rw [Polynomial.notMem_support_iff.mp hb]; ring
           · have hb : b = j := by omega
             rcases hne with h | h <;> exact absurd hb h
-        · rw [Polynomial.not_mem_support_iff.mp ha]; ring)
+        · rw [Polynomial.notMem_support_iff.mp ha]; ring)
       (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : j + j = 2 * j)) h)
     rw [this]; exact mul_ne_zero hj hj
 

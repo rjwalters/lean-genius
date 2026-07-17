@@ -49,7 +49,7 @@ theorem dihedralGroup_not_isCyclic {n : ℕ} (hn : 2 < n) :
   haveI := hcyc
   -- A cyclic group is commutative, so `r 1` and `sr 0` would commute.
   have hcomm : (r 1 : DihedralGroup n) * sr 0 = sr 0 * r 1 :=
-    (IsCyclic.commutative (α := DihedralGroup n)).comm (r 1) (sr 0)
+    (IsCyclic.isMulCommutative (α := DihedralGroup n)).is_comm.comm (r 1) (sr 0)
   rw [r_mul_sr, sr_mul_r, zero_sub, zero_add, sr.injEq] at hcomm
   -- Now `hcomm : (-1 : ZMod n) = 1`, forcing `(2 : ZMod n) = 0`, i.e. `n ∣ 2`.
   have h2 : ((2 : ℕ) : ZMod n) = 0 := by

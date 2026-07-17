@@ -35,6 +35,8 @@ Licensed under the Apache License, Version 2.0.
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Set Filter Finset
 
 namespace Erdos417
@@ -112,7 +114,6 @@ theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
   · -- m > 2: φ(m) is even, contradicts odd n
     push_neg at hm2
     have heven := totient_even hm2
-    rw [← hm_eq] at heven
     obtain ⟨k₁, hk₁⟩ := heven
     obtain ⟨k₂, hk₂⟩ := hodd
     omega
@@ -130,7 +131,7 @@ theorem V_mono {x y : ℕ} (h : x ≤ y) : V x ≤ V y := by
 /-- 0 is not a totient value (φ(m) ≥ 1 for all m ≥ 1). -/
 theorem zero_not_totient_value : ¬IsTotientValue 0 := by
   intro ⟨m, hm, heq⟩
-  have := Nat.totient_pos hm
+  have := Nat.totient_pos.mpr hm
   omega
 
 /-- 4 is a totient value: φ(5) = 4. -/
@@ -197,7 +198,7 @@ theorem erdos_417_ratio_gt_one : erdos417RatioGtOne :=
 
 /- ## Part IV: Intuition for the Conjecture -/
 
-/--
+/- 
 **Why V(x) Might Be Much Larger Than V'(x)**
 
 V'(x) only counts totients from small inputs (m ≤ x).
@@ -211,7 +212,7 @@ Example: 2^10 = 1024, but φ(2^10) = 512. So 512 ∈ V(600) but 512 ∉ V'(600).
 
 /- ## Part V: Connection to Problem #416 -/
 
-/--
+/- 
 **Problem #416**
 
 Problem #416 asks about the structure of the totient range more directly.
@@ -224,7 +225,7 @@ Both problems concern understanding which integers appear as totient values.
 theorem pow_two_totient_value (k : ℕ) : IsTotientValue (2^k) := by
   use 2^(k+1)
   constructor
-  · exact Nat.pos_pow_of_pos (k+1) (by norm_num)
+  · exact pow_pos (by norm_num) (k+1)
   · rw [Nat.totient_prime_pow_succ Nat.prime_two]
     ring
 
@@ -237,7 +238,7 @@ theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 
     This structural constraint limits V(x) to counting at most 0, 1, and even numbers. -/
 theorem totient_zero_one_or_even (m : ℕ) :
     totient m = 0 ∨ totient m = 1 ∨ Even (totient m) := by
-  rcases le_or_lt m 2 with hm | hm
+  rcases le_or_gt m 2 with hm | hm
   · interval_cases m
     · left; decide
     · right; left; exact totient_one
@@ -261,7 +262,7 @@ theorem prime_sub_one_even (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) : Even (p - 1
 
 /- ## Part VII: Asymptotic Estimates -/
 
-/--
+/- 
 **Asymptotic Behavior**
 
 Known: V(x) ~ cx/log(x) for some constant c (density of totient values).
@@ -271,7 +272,7 @@ The question is whether their ratio has a limit and what it is.
 
 /- ## Part VIII: Why This Is Hard -/
 
-/--
+/- 
 **The Challenge**
 
 Understanding V(x)/V'(x) requires knowing:

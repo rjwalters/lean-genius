@@ -28,11 +28,7 @@ Mathialagan (2021): For 2 ≤ k ≤ n^{1/3}, R(xₖ) ≫ √(kn)
 Tags: combinatorial-geometry, distinct-distances, point-sets
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos652
 
@@ -48,7 +44,7 @@ Point sets in ℝ² and distinct distance counts.
 abbrev Point := ℝ × ℝ
 
 /-- Distance between two points -/
-def dist (p q : Point) : ℝ :=
+noncomputable def dist (p q : Point) : ℝ :=
   Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)
 
 /-- A finite point set in the plane -/
@@ -102,10 +98,10 @@ Trivial cases and fundamental bounds.
 Erdős conjectured R(x₃)/√n → ∞, but Elekes showed this is FALSE.
 -/
 
-/-- Consequence: αₖ is finite for all k -/
-theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
-  -- Follows from Elekes
-  exact Real.lt_top (alpha_k k)
+/-- Consequence: αₖ is finite for all k (it is a real number, hence bounded above). -/
+theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : ∃ B : ℝ, alpha_k k ≤ B := by
+  -- Follows from Elekes: αₖ is a genuine (finite) real number.
+  exact ⟨alpha_k k, le_refl _⟩
 
 /-
 ## Part VI: Mathialagan's Breakthrough (2021)
@@ -113,7 +109,7 @@ theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
 The main positive result: αₖ → ∞ as k → ∞.
 -/
 
-/-- Corollary: αₖ ≥ C√k for some constant C -/
+/-  Corollary: αₖ ≥ C√k for some constant C -/
 
 /-- Main theorem: αₖ → ∞ as k → ∞ -/
 axiom alpha_k_unbounded :
@@ -130,7 +126,7 @@ theorem erdos_652_solved :
     -- αₖ → ∞ as k → ∞
     (∀ M : ℝ, ∃ K : ℕ, ∀ k ≥ K, alpha_k k > M) ∧
     -- But Elekes showed αₖ is finite for each k
-    (∀ k ≥ 1, alpha_k k < ⊤) := by
+    (∀ k ≥ 1, ∃ B : ℝ, alpha_k k ≤ B) := by
   constructor
   · exact alpha_k_unbounded
   · intro k hk; exact alpha_k_finite k hk

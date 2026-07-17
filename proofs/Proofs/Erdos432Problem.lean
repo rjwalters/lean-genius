@@ -22,12 +22,11 @@ We define sumsets, pairwise coprimality, counting functions, and
 state the conjecture on density bounds.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos432
+
+open scoped Classical
 
 /- ## Part I: Sumsets -/
 
@@ -117,7 +116,7 @@ theorem prime_divides_at_most_one :
   have hpg : p ∣ Nat.gcd x y := Nat.dvd_gcd hpx hpy
   rw [hxy] at hpg
   -- p ∣ 1 contradicts p ≥ 2
-  exact absurd hpg (Nat.Prime.one_lt hp |>.not_le ∘ Nat.le_of_dvd one_pos)
+  exact absurd (Nat.le_of_dvd one_pos hpg) (Nat.not_le.mpr (Nat.Prime.one_lt hp))
 
 /--
 A pairwise coprime set S ⊆ {1, …, n} has at most π(n) + 1
@@ -133,7 +132,7 @@ theorem coprime_set_bound :
   unfold countingFn
   calc ((Finset.range (n + 1)).filter (fun m => m ∈ S ∧ m ≥ 1)).card
       ≤ ((Finset.range (n + 1)).filter (fun m => m ≥ 1)).card :=
-        Finset.card_filter_le_card_filter _ _ _ (fun m _ h => h.2)
+        Finset.card_le_card (Finset.monotone_filter_right _ (fun m _ h => h.2))
     _ ≤ ((Finset.range n).image (· + 1)).card := by
         apply Finset.card_le_card
         intro m hm
@@ -143,7 +142,7 @@ theorem coprime_set_bound :
     _ ≤ (Finset.range n).card := Finset.card_image_le
     _ = n := Finset.card_range n
 
-/--
+/- 
 Ostmann's related problem (#431): if A + B = ℕ (an additive
 complement pair), can A + B be pairwise coprime? Clearly not
 for A + B = ℕ, but the question is about near-complements.
@@ -156,7 +155,7 @@ for A + B = ℕ, but the question is about near-complements.
 
 /- ## Part VI: Summary -/
 
-/--
+/-
 **Summary:**
 Erdős Problem #432 asks how dense the sumset A + B can be when all
 its elements are pairwise coprime. The pairwise coprime constraint

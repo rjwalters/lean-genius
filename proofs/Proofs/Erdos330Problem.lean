@@ -35,8 +35,8 @@ def IsAsympBasis (A : Set ℕ) (h : ℕ) : Prop :=
 /-- The upper density of a set S ⊆ ℕ. Axiomatized. -/
 axiom upperDensity (S : Set ℕ) : ℝ
 
-/-- upperDensity is nonneg. -/
-/-- upperDensity is at most 1. -/
+/-  upperDensity is nonneg. -/
+/-  upperDensity is at most 1. -/
 /-- A has positive upper density. -/
 def HasPosDensity (A : Set ℕ) : Prop := 0 < upperDensity A
 
@@ -52,14 +52,14 @@ def unrepresentableWithout (A : Set ℕ) (n h : ℕ) : Set ℕ :=
 
 /- ## Known Results -/
 
-/-- For a minimal basis, removing any element leaves infinitely many
+/-  For a minimal basis, removing any element leaves infinitely many
     integers unrepresentable (by definition of minimality). -/
-/-- There exist minimal bases of every order h ≥ 2. -/
-/-- There exist minimal bases with positive density (Härtter 1956,
+/-  There exist minimal bases of every order h ≥ 2. -/
+/-  There exist minimal bases with positive density (Härtter 1956,
     Stöhr 1955 for h = 2). Whether the stronger property holds is open. -/
 /- ## The Open Question -/
 
-/-- Erdős Problem #330 (Erdős–Nathanson): Does there exist a minimal
+/- Erdős Problem #330 (Erdős–Nathanson): Does there exist a minimal
     basis A of order h with positive density such that for every n ∈ A,
     the set of integers unrepresentable without n also has positive
     upper density? -/

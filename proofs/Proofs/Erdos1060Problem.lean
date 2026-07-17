@@ -269,14 +269,14 @@ theorem g_gt_k (k : ℕ) (hk : k ≥ 2) : g k > k := by
 ## Part VI: Upper Bound Conjectures (OPEN)
 -/
 
-/--
+/- 
 **Weak Conjecture:**
 f(n) ≤ n^{o(1/log log n)} as n → ∞.
 
 This means: For any ε > 0, there exists N such that for all n > N,
 f(n) ≤ n^{ε/log log n}.
 -/
-/--
+/- 
 **Strong Conjecture:**
 f(n) ≤ (log n)^C for some constant C.
 
@@ -382,6 +382,6 @@ theorem f_le_sqrt (n : ℕ) (hn : n > 0) : f n ≤ Nat.sqrt n := by
         rw [Finset.mem_Icc]
         exact ⟨hk.1.1, solution_le_sqrt n k hk.1.1 hk.2⟩
     _ ≤ Nat.sqrt n := by
-        simp only [Finset.card_Icc]; omega
+        rw [Nat.card_Icc]; omega
 
 end Erdos1060

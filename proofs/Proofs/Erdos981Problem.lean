@@ -28,13 +28,13 @@ References:
          (addresses an alternative formulation)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.NumberTheory.LegendreSymbol.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 
 open Filter Asymptotics Nat
+open scoped Topology
 
 namespace Erdos981
 
@@ -52,7 +52,7 @@ noncomputable def legendreInt (n : ℤ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
 
 /-- Character sum up to N: ∑_{n≤N} (n/p). -/
 noncomputable def characterSum (N : ℕ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
-  ∑ n in Finset.range N, legendreInt n p
+  ∑ n ∈ Finset.range N, legendreInt n p
 
 /- ## Part II: The Stabilization Threshold f_ε(p)
 
@@ -98,22 +98,22 @@ axiom elliott_1969 (ε : ℝ) (hε : ε > 0) :
     ∃ c : ℝ, c > 0 ∧
       Tendsto (fun x => sumFEps ε x / asymptoticFunc x) atTop (𝓝 c)
 
-/-- Alternative formulation: the ratio is eventually bounded between c±δ. -/
+/-  Alternative formulation: the ratio is eventually bounded between c±δ. -/
 /- ## Part V: Properties of Character Sums
 -/
 
-/-- Character sums are bounded by √p · log p (Pólya-Vinogradov inequality).
+/-  Character sums are bounded by √p · log p (Pólya-Vinogradov inequality).
     This is weaker than what we need but is a classical result. -/
-/-- Character sums exhibit square-root cancellation on average.
+/-  Character sums exhibit square-root cancellation on average.
     This is key to Elliott's proof. -/
-/-- For any ε > 0 and prime p, f_ε(p) is finite (well-defined).
+/-  For any ε > 0 and prime p, f_ε(p) is finite (well-defined).
     Eventually the cancellation dominates. -/
 /- ## Part VI: Burgess Bounds
 
 Classical bounds on character sums provide context for the problem.
 -/
 
-/-- Burgess (1962): Improved bounds for short character sums. -/
+/-  Burgess (1962): Improved bounds for short character sums. -/
 /- ## Part VII: Related Concepts
 -/
 
@@ -121,7 +121,7 @@ Classical bounds on character sums provide context for the problem.
 def isQuadraticResidue (a : ℤ) (p : ℕ) : Prop :=
   ∃ x : ℤ, x^2 ≡ a [ZMOD p]
 
-/-- The character sum over a complete period is 0. -/
+/-  The character sum over a complete period is 0. -/
 /- ## Part VIII: The Alternative Formulation
 
 Tang and Zhang (2025) studied a different formulation.

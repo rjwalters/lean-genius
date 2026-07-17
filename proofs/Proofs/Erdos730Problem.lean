@@ -20,6 +20,7 @@ have the same set of prime divisors?
 
 import Mathlib.Data.Nat.Choose.Central
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Factorial
 import Mathlib.Data.Nat.Factors
 import Mathlib.Tactic
 
@@ -43,13 +44,13 @@ def CentralBinomPairs : Set (ℕ × ℕ) :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #730** (OPEN): There are infinitely many pairs
+/-  **Erdős Problem #730** (OPEN): There are infinitely many pairs
     n < m with C(2n,n) and C(2m,m) having the same prime divisor set. -/
 /- ## Known Examples -/
 
-/-- The pair (87, 88): C(174, 87) and C(176, 88) have the same prime
+/-  The pair (87, 88): C(174, 87) and C(176, 88) have the same prime
     divisor set. -/
-/-- The pair (607, 608): another known example. -/
+/-  The pair (607, 608): another known example. -/
 /-- The triple (10003, 10004, 10005): three consecutive values sharing
     prime divisor sets. -/
 axiom triple_10003 :
@@ -63,7 +64,7 @@ theorem delta_ne_one : ∃ p ∈ CentralBinomPairs, p.2 ≠ p.1 + 1 := by
 
 /- ## Prime Divisor Structure -/
 
-/-- For prime p ≤ 2n, p | C(2n, n) iff at least one digit of n in
+/-  For prime p ≤ 2n, p | C(2n, n) iff at least one digit of n in
     base p has a carry when doubled (Kummer's theorem). -/
 /-- C(2n, n) is always even for n ≥ 1.
     Proof: By Pascal's rule, C(2n, n) = C(2n-1, n-1) + C(2n-1, n).
@@ -72,11 +73,12 @@ theorem two_divides_central (n : ℕ) (hn : n ≥ 1) : 2 ∣ centralBinom n := b
   unfold centralBinom
   have key : Nat.choose (2 * n) n = 2 * Nat.choose (2 * n - 1) (n - 1) := by
     have h1 := Nat.choose_succ_succ (2 * n - 1) (n - 1)
+    simp only [Nat.succ_eq_add_one] at h1
     rw [show 2 * n - 1 + 1 = 2 * n from by omega,
         show n - 1 + 1 = n from by omega] at h1
     have hsymm : Nat.choose (2 * n - 1) n = Nat.choose (2 * n - 1) (n - 1) := by
-      rw [Nat.choose_symm (show n ≤ 2 * n - 1 by omega)]
-      congr 1; omega
+      rw [show n - 1 = (2 * n - 1) - n from by omega,
+          Nat.choose_symm (show n ≤ 2 * n - 1 by omega)]
     rw [hsymm] at h1; linarith
   rw [key]; exact dvd_mul_right 2 _
 
@@ -90,10 +92,11 @@ theorem large_prime_not_dividing (p n : ℕ) (hp : Nat.Prime p) (hgt : p > 2 * n
   intro hdvd
   -- C(2n, n) * n! * (2n - n)! = (2n)!
   have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at hfact
   -- p | C(2n,n) implies p | C(2n,n) * n! * n!
-  have hdvd_prod : p ∣ Nat.choose (2 * n) n * n.factorial * (2 * n - n).factorial := by
-    exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hdvd _) _
-  rw [show 2 * n - n = n from by omega, hfact] at hdvd_prod
+  have hdvd_prod : p ∣ Nat.choose (2 * n) n * n.factorial * n.factorial :=
+    dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hdvd _) _
+  rw [hfact] at hdvd_prod
   -- But p ∤ (2n)! since p > 2n
   have hnotdvd : ¬(p ∣ (2 * n).factorial) := by
     rw [hp.dvd_factorial]; omega
@@ -113,7 +116,7 @@ theorem middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p
   have hndvd : ¬(p ∣ n.factorial) := by
     intro h; exact absurd (hp.dvd_factorial.mp h) (by omega)
   -- C(2n,n) * n! * n! = (2n)! and p | (2n)!
-  rw [← hfact, mul_assoc] at hdvd
+  rw [← hfact] at hdvd
   -- Factor out n! twice using primality
   have h3 : p ∣ Nat.choose (2 * n) n * n.factorial :=
     (hp.prime.dvd_mul.mp hdvd).resolve_right hndvd
@@ -121,16 +124,20 @@ theorem middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p
 
 /- ## Spacing Conjecture -/
 
-/-- Stronger conjecture: for every k ≥ 1, there exist infinitely many n
+/-  Stronger conjecture: for every k ≥ 1, there exist infinitely many n
     with C(2n, n) and C(2(n+k), n+k) having the same prime divisors. -/
 /-- The spacing-1 case implies the main conjecture. -/
 theorem spacing1_implies_main
     (h : Set.Infinite {n : ℕ | SamePrimeDivisors (centralBinom n) (centralBinom (n + 1))}) :
     Set.Infinite CentralBinomPairs := by
-  apply Set.Infinite.mono _ (Set.Infinite.image (fun n => (n, n + 1)) h (by
-    intro a b hab; simp at hab; omega))
-  intro ⟨a, b⟩ ⟨n, hn, heq⟩
-  simp at heq
+  have hinj : Set.InjOn (fun n => (n, n + 1))
+      {n : ℕ | SamePrimeDivisors (centralBinom n) (centralBinom (n + 1))} := by
+    intro a _ b _ hab
+    simp only [Prod.mk.injEq] at hab
+    exact hab.1
+  apply Set.Infinite.mono _ (Set.Infinite.image hinj h)
+  rintro ⟨a, b⟩ ⟨n, hn, heq⟩
+  simp only [Prod.mk.injEq] at heq
   obtain ⟨rfl, rfl⟩ := heq
   exact ⟨by omega, hn⟩
 

@@ -46,38 +46,38 @@ noncomputable def heilbronn (n : ℕ) : ℝ :=
 
 /- ## Trivial Bounds -/
 
-/-- Erdős's observation: α(n) ≫ 1/n² from a greedy argument.
+/-  Erdős's observation: α(n) ≫ 1/n² from a greedy argument.
     Place points one at a time; each new point avoids O(n²) thin
     strips of total area O(1/n). -/
 
-/-- Trivial upper bound: α(n) ≪ 1/n from pigeonhole.
+/-  Trivial upper bound: α(n) ≪ 1/n from pigeonhole.
     Divide the disk into n/3 strips of width O(1/n); some strip
     contains 3 points forming a thin triangle. -/
 
 /- ## Komlós–Pintz–Szemerédi Lower Bound -/
 
-/-- The KPS (1982) lower bound: α(n) ≫ (log n)/n².
+/-  The KPS (1982) lower bound: α(n) ≫ (log n)/n².
     This improves the trivial 1/n² bound by a logarithmic factor,
     using a sophisticated probabilistic argument. -/
 
 /- ## Upper Bounds -/
 
-/-- Komlós–Pintz–Szemerédi (1981): α(n) ≪ n^{-8/7}.
+/-  Komlós–Pintz–Szemerédi (1981): α(n) ≪ n^{-8/7}.
     The first improvement over the trivial 1/n bound, using
     the Szemerédi regularity lemma. -/
 
-/-- Cohen–Pohoata–Zakharov (2024): α(n) ≪ n^{-7/6-o(1)}.
+/-  Cohen–Pohoata–Zakharov (2024): α(n) ≪ n^{-7/6-o(1)}.
     The current best upper bound, improving the KPS exponent
     from 8/7 ≈ 1.143 to 7/6 ≈ 1.167. Uses incidence geometry
     and the polynomial method. -/
 
 /- ## Main Open Question -/
 
-/-- The gap between (log n)/n² and 1/n^{7/6} is enormous.
+/-  The gap between (log n)/n² and 1/n^{7/6} is enormous.
     The true exponent β such that α(n) = n^{-β+o(1)} is unknown.
     We have 7/6 ≤ β ≤ 2. -/
 
 /- ## Related Results -/
 
-/-- In higher dimensions d ≥ 3, the analogous problem asks for
+/- In higher dimensions d ≥ 3, the analogous problem asks for
     the minimum volume simplex. Less is known; the gap is wider. -/

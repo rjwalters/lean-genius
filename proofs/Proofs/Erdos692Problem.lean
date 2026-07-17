@@ -29,12 +29,13 @@ Further: Cambie showed δ₁(n,m) has superpolynomially many local maxima.
 Reference: https://erdosproblems.com/692
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Divisors
-import Mathlib.Topology.Instances.Real
 import Mathlib.Order.Filter.Basic
+
+open scoped Classical
 
 open Nat Real Filter Finset
 
@@ -99,7 +100,7 @@ axiom erdos_delta1_bound (n m : ℕ) (hn : n ≥ 2) :
 Kevin Ford (2008) improved Erdős's bounds.
 -/
 
-/--
+/- 
 **Ford's Refinement (2008):**
 Sharper bounds on δ₁(n,m) for various ranges of n and m.
 
@@ -115,7 +116,7 @@ Erdős asked whether δ₁(n,m) is unimodal in m.
 /--
 **Unimodal Sequence:**
 A sequence f : ℕ → ℝ is unimodal if it increases then decreases.
-That is, ∃ m₀ such that f increases on [n+2, m₀] and decreases on [m₀, ∞).
+That is, ∃ m₀ such that f increases on (_ : n+2, m₀) and decreases on [m₀, ∞).
 -/
 def IsUnimodal (f : ℕ → ℝ) (start : ℕ) : Prop :=
   ∃ peak : ℕ, peak > start ∧
@@ -135,7 +136,7 @@ def erdosUnimodalityQuestion (n : ℕ) : Prop :=
 Cambie disproved unimodularity with explicit examples.
 -/
 
-/--
+/- 
 **Cambie's Counterexample Values:**
 For n = 3, the sequence is not monotonic on either side of any peak.
 
@@ -159,7 +160,7 @@ Specifically, δ₁(3, m) fails to be unimodal.
 -/
 axiom cambie_n3_not_unimodal : ¬ erdosUnimodalityQuestion 3
 
-/--
+/- 
 **Also fails for n = 2:**
 Cambie verified unimodality fails for n = 2 as well.
 -/
@@ -191,7 +192,7 @@ eventually g(n) > p(n).
 def SuperpolynomialGrowth (g : ℕ → ℕ) : Prop :=
   ∀ k : ℕ, ∃ C : ℕ, ∀ n ≥ C, (g n : ℝ) > n ^ k
 
-/--
+/- 
 **Cambie's Theorem: Superpolynomially Many Local Maxima**
 For fixed n, the sequence δ₁(n,m) has superpolynomially many local maxima.
 
@@ -224,7 +225,7 @@ def fordDistribution (x y z : ℕ) : ℕ :=
 Understanding why unimodularity fails.
 -/
 
-/--
+/- 
 **Why Unimodality Fails:**
 The density δ₁(n,m) counts integers with EXACTLY ONE divisor in (n,m).
 
@@ -262,7 +263,7 @@ Is δ₁(n,m) unimodal in m for m > n + 1?
 -/
 theorem erdos_692 :
     -- Upper bound exists
-    (∀ n m, n ≥ 2 → ∃ c > 0, delta1 n m ≤ 1 / (Real.log n) ^ c) ∧
+    (∀ n m, n ≥ 2 → ∃ c : ℝ, c > 0 ∧ delta1 n m ≤ 1 / (Real.log n) ^ c) ∧
     -- Unimodality is FALSE
     ¬(∀ n ≥ 2, erdosUnimodalityQuestion n) := by
   constructor

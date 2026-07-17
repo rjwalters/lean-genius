@@ -107,7 +107,7 @@ having the Ramsey property for (F₁, F₂). Axiomatized since computing the
 minimum over all graphs is not feasible. -/
 axiom sizeRamseyNumber (F₁ F₂ : StarUnion) : ℕ
 
-/-- **Existence:**
+/-  **Existence:**
 The size Ramsey number always exists (and is finite). -/
 /-
 ## Part V: The Conjectured Formula
@@ -127,7 +127,7 @@ noncomputable def maxForIndexSum (F₁ F₂ : StarUnion) (k : ℕ) : ℕ :=
     if i ≤ F₁.stars.length ∧ j ≤ F₂.stars.length
     then some ((F₁.stars.getD (i - 1) 0) + (F₂.stars.getD (j - 1) 0) - 1)
     else none)
-  values.maximum?.getD 0
+  values.max?.getD 0
 
 /-- **The Conjectured Formula:**
 R̂(F₁, F₂) = Σ_{k=2}^{s+t} max{n_i + m_j - 1 : i + j = k} -/
@@ -152,7 +152,7 @@ def StarUnion.isUniform (F : StarUnion) : Prop :=
 
 /-- **Uniform Star Union Constructor:** s copies of K_{1,n}. -/
 def uniformStarUnion (s n : ℕ) (hs : s ≥ 1) (hn : n ≥ 1) : StarUnion :=
-  ⟨List.replicate s n, by simp [hs]⟩
+  ⟨List.replicate s n, by simp; omega⟩
 
 /-- **BEFRS78 Theorem:**
 The conjecture holds when both F₁ and F₂ are uniform. -/
@@ -183,7 +183,7 @@ R̂(F₁, F₂) ≥ max(|E(F₁)|, |E(F₂)|) since H must contain F₁ or F₂.
 axiom sizeRamsey_lower_bound (F₁ F₂ : StarUnion) :
     sizeRamseyNumber F₁ F₂ ≥ max F₁.totalEdges F₂.totalEdges
 
-/-- **Upper Bound from Complete Graph:**
+/-  **Upper Bound from Complete Graph:**
 Taking N = R(F₁, F₂) (the classical Ramsey number), the complete graph K_N
 has the Ramsey property, providing an upper bound. -/
 /-
@@ -196,7 +196,7 @@ a red G₁ or blue G₂. Axiomatized since the full theory requires
 substantial infrastructure. -/
 axiom classicalRamseyNumber (F₁ F₂ : StarUnion) : ℕ
 
-/-- **Relationship:**
+/-  **Relationship:**
 R̂(F₁, F₂) ≤ (R(F₁, F₂) choose 2) since K_{R(F₁,F₂)} works.
 But size Ramsey numbers can be much smaller than this bound. -/
 /-

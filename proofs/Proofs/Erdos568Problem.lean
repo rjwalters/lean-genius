@@ -21,6 +21,8 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
@@ -54,7 +56,7 @@ def IsTree {n : ℕ} (T : SGraph n) : Prop :=
   numEdges T = n - 1 ∧ n ≥ 1  -- simplified characterization
 
 /-- A graph is a complete graph if all distinct vertices are adjacent. -/
-def IsComplete {n : ℕ} (G : SGraph n) : Prop :=
+def SGraph.IsComplete {n : ℕ} (G : SGraph n) : Prop :=
   ∀ i j : Fin n, i ≠ j → G.adj i j
 
 /- ## Tree and Clique Ramsey Conditions -/
@@ -66,7 +68,7 @@ def LinearTreeRamsey {nG : ℕ} (G : SGraph nG) : Prop :=
 
 /-- G has quadratic Ramsey number against all complete graphs: R(G, Kₙ) ≤ C·n². -/
 def QuadraticCliqueRamsey {nG : ℕ} (G : SGraph nG) : Prop :=
-  ∃ C : ℝ, 0 < C ∧ ∀ (nH : ℕ) (K : SGraph nH), IsComplete K →
+  ∃ C : ℝ, 0 < C ∧ ∀ (nH : ℕ) (K : SGraph nH), K.IsComplete →
     (ramseyNumber nG nH G K : ℝ) ≤ C * nH ^ 2
 
 /- ## Size Linearity -/

@@ -35,6 +35,7 @@ moments) as well as subsuming the explicit `hIdent` hypothesis of
 `iid_satisfies_lyapunov`.
 -/
 
+import Mathlib
 import Mathlib.Probability.Martingale.Basic
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic

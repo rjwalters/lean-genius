@@ -9,7 +9,7 @@
   - Clean theorem statement with no definition sorries
   - No axioms (use theorem ... := by sorry instead)
 -/
-import Mathlib.Analysis.Calculus.LagrangeInterpolation
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.MetricSpace.Basic
 

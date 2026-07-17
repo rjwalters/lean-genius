@@ -44,7 +44,7 @@ def completeEdgeCount (n : ℕ) : ℕ := n * (n - 1) / 2
 structure EdgeColoring (n m : ℕ) where
   color : Fin n → Fin n → Fin m
   symmetric : ∀ u v, color u v = color v u
-  irrefl : ∀ v, color v v = ⟨0, by omega⟩  -- diagonal doesn't matter
+  irrefl : ∀ v, color v v = ⟨0, (color v v).pos⟩  -- diagonal doesn't matter (Fin m is inhabited via color v v)
 
 /-- Color degree: number of edges of color c incident to vertex v -/
 noncomputable def colorDegree (χ : EdgeColoring n m) (v : Fin n) (c : Fin m) : ℕ :=
@@ -58,7 +58,7 @@ noncomputable def colorDegree (χ : EdgeColoring n m) (v : Fin n) (c : Fin m) : 
 def IsBalanced (χ : EdgeColoring n m) : Prop :=
   ∀ v : Fin n, ∀ c : Fin m, colorDegree χ v c = (n - 1) / m
 
-/-- Balanced colorings exist only when n ≡ 1 (mod m) -/
+/-  Balanced colorings exist only when n ≡ 1 (mod m) -/
 /-
 ## Part 3: Rainbow Subgraphs
 -/
@@ -119,7 +119,7 @@ def AxenovichClemenConjecture : Prop :=
     that guarantees a rainbow copy of G -/
 axiom rainbowMinDegree (G : SimpleGraph (Fin k)) (n : ℕ) : ℕ
 
-/-- Erdős-Tuza bound for C_4:
+/-  Erdős-Tuza bound for C_4:
     ⌊n/6⌋ ≤ d_{C_4}(n) ≤ (1/4 - c)n for some constant c > 0 -/
 /-
 ## Part 7: Erdős's Specific Challenge
@@ -134,13 +134,13 @@ def ErdosChallenge : Prop :=
     ContainsRainbow (⊤ : SimpleGraph (Fin 6)) χ ∨
     ContainsRainbow (⊤ : SimpleGraph (Fin 4)) χ
 
-/-- The K_4 part is false (Clemen-Wagner), so the question reduces to C_6 -/
+/-  The K_4 part is false (Clemen-Wagner), so the question reduces to C_6 -/
 /-
 ## Part 8: Small Cases
 -/
 
-/-- Trees have the rainbow property (folklore) -/
-/-- Stars K_{1,m} have the rainbow property -/
+/-  Trees have the rainbow property (folklore) -/
+/-  Stars K_{1,m} have the rainbow property -/
 /-
 ## Part 9: Summary
 -/

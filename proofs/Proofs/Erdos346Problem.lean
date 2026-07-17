@@ -17,10 +17,10 @@ lim a_{n+1}/a_n = φ = (1 + √5)/2?
 Reference: https://erdosproblems.com/346
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Fib.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Complete sequences -/
@@ -30,18 +30,18 @@ def subsetSums (A : Set ℕ) : Set ℕ :=
     { s | ∃ (S : Finset ℕ), (↑S : Set ℕ) ⊆ A ∧ S.sum id = s }
 
 /-- A set is complete if it represents all sufficiently large integers. -/
-def IsComplete (A : Set ℕ) : Prop :=
+def IsCompleteSet (A : Set ℕ) : Prop :=
     ∃ m : ℕ, ∀ n : ℕ, m ≤ n → n ∈ subsetSums A
 
 /- ## Strong completeness and fragility -/
 
 /-- A is strongly complete: removing any finite subset preserves completeness. -/
 def IsStronglyComplete (A : Set ℕ) : Prop :=
-    ∀ B : Finset ℕ, IsComplete (A \ (↑B : Set ℕ))
+    ∀ B : Finset ℕ, IsCompleteSet (A \ (↑B : Set ℕ))
 
 /-- A is fragile: removing any infinite subset destroys completeness. -/
 def IsFragile (A : Set ℕ) : Prop :=
-    ∀ B : Set ℕ, Set.Infinite B → ¬IsComplete (A \ B)
+    ∀ B : Set ℕ, Set.Infinite B → ¬IsCompleteSet (A \ B)
 
 /- ## Lacunary sequences -/
 
@@ -58,11 +58,11 @@ noncomputable def goldenRatio : ℚ := 1618 / 1000
 def grahamSeq (n : ℕ) : ℕ :=
     if n % 2 = 0 then Nat.fib n - 1 else Nat.fib n + 1
 
-/-- Graham (1964): grahamSeq satisfies strong completeness. -/
-/-- Graham (1964): grahamSeq satisfies fragility. -/
+/-  Graham (1964): grahamSeq satisfies strong completeness. -/
+/-  Graham (1964): grahamSeq satisfies fragility. -/
 /- ## Golden ratio threshold -/
 
-/-- If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
+/-  If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
 /- ## Main conjecture -/
 
 /-- Erdős Problem 346: if A is lacunary, strongly complete, and fragile,
@@ -76,5 +76,5 @@ def ErdosProblem346 : Prop :=
         ∀ δ : ℚ, 0 < δ → ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n → 0 < a n →
           |((a (n + 1) : ℚ) / (a n : ℚ)) - goldenRatio| < δ
 
-/-- There exist very irregular sequences satisfying both properties
+/- There exist very irregular sequences satisfying both properties
     whose ratio does not converge. -/

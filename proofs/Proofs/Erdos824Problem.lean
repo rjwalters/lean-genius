@@ -29,12 +29,9 @@ References:
 - Pollack-Pomerance [PoPo16]: Trans. Amer. Math. Soc. Ser. B (2016)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset BigOperators Filter
 
@@ -60,9 +57,9 @@ def sigma (n : ℕ) : ℕ := (n.divisors).sum id
 -/
 theorem sigma_ge_n_plus_one (n : ℕ) (hn : n > 1) : sigma n ≥ n + 1 := by
   unfold sigma
-  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (Nat.one_le_iff_ne_zero.mpr (ne_of_gt hn))
-  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (ne_of_gt hn)
-  have hne : (1 : ℕ) ≠ n := ne_of_lt hn
+  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (by omega)
+  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (by omega)
+  have hne : (1 : ℕ) ≠ n := by omega
   calc (n.divisors).sum id
       ≥ ({1, n} : Finset ℕ).sum id := by
         apply Finset.sum_le_sum_of_subset
@@ -116,11 +113,11 @@ def hCount (x : ℕ) : ℕ :=
 /- ## Part III: Known Results
 -/
 
-/--
+/- 
 **Erdős 1974: h(x)/x → ∞ (limsup)**
 Erdős proved that the ratio h(x)/x is unbounded.
 -/
-/--
+/- 
 **Pollack-Pomerance 2016: h(x)/x → ∞ (limit)**
 They strengthened Erdős's result to show h(x)/x → ∞.
 -/
@@ -183,7 +180,7 @@ than coprimality.
 def IsSquarefree (n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → ¬(p^2 ∣ n)
 
-def hSquarefree (x : ℕ) : ℕ :=
+noncomputable def hSquarefree (x : ℕ) : ℕ :=
   (Finset.filter (fun p : ℕ × ℕ =>
     1 ≤ p.1 ∧ p.1 < p.2 ∧ p.2 < x ∧
     IsSquarefree p.1 ∧ IsSquarefree p.2 ∧ sigma p.1 = sigma p.2)

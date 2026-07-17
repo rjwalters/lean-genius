@@ -21,10 +21,9 @@ References:
 - Liu and Sawhney [LiSa24]: "On further questions regarding unit fractions" (2024)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Rat.Order
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Real.Basic
 
@@ -106,7 +105,7 @@ axiom liu_sawhney_theorem :
             S.Nonempty ∧
             hasBoundedDenom (unitFractionSum S) C
 
-/--
+/- 
 **Bloom's Theorem (2021):**
 The set of integers that can be written as a sum of distinct unit fractions
 summing to 1 has positive density among all integers.
@@ -176,7 +175,7 @@ theorem even_sum_small : (1 : ℚ) / 2 + 1 / 4 + 1 / 6 = 11 / 12 := by
 Liu and Sawhney also showed the bound b ≤ exp(O(1/α)) is optimal.
 -/
 
-/--
+/- 
 **Sharpness Theorem:**
 The dependence b ≤ exp(O(1/α)) is sharp: there exist dense subsets A
 where the minimum achievable denominator requires b ≥ exp(Ω(1/α)).
@@ -190,14 +189,14 @@ Every positive rational can be written as a sum of distinct unit fractions
 (this is the classical Egyptian fraction representation).
 -/
 
-/--
+/- 
 **Egyptian Fraction Representation:**
 Every positive rational q can be written as q = Σ_{n∈S} 1/n
 for some finite set S of distinct positive integers.
 
 This is a classical result, provable by the greedy algorithm.
 -/
-/--
+/- 
 The greedy algorithm: repeatedly subtract the largest unit fraction ≤ q.
 This terminates and produces a valid representation.
 -/
@@ -262,9 +261,8 @@ theorem erdos_310 : erdosGrahamConjecture := by
     have hA' : isDense A N (1/2) := by
       constructor
       · exact hA.1
-      · calc (A.card : ℚ) ≥ α * N := hA.2
-          _ > (1/2) * N := by nlinarith
-          _ ≥ (1/2) * N := le_refl _
+      · have h2 : α * (N : ℚ) ≥ (1/2) * N := by nlinarith [Nat.cast_nonneg (α := ℚ) N]
+        linarith [hA.2]
     obtain ⟨S, hSA, _, hBound⟩ := hMain N hN A ⟨hA'.1, by linarith [hA'.2]⟩
     exact ⟨S, hSA, hBound⟩
 
@@ -277,7 +275,7 @@ theorem erdos_310_answer : erdosGrahamConjecture := erdos_310
 ## Part X: Related Results
 -/
 
-/--
+/- 
 **Croot's Theorem:**
 Every set of positive integers with density > 0 contains a finite
 subset whose reciprocals sum to 1.
@@ -294,7 +292,7 @@ theorem erdos_310_summary :
       ∃ C : ℕ, ∀ N A, isDense A N α →
         ∃ S ⊆ A, hasBoundedDenom (unitFractionSum S) C) :=
   ⟨erdos_310, fun α hα hle => by
-    obtain ⟨C, _, hMain⟩ := liu_sawhney_theorem α hα hle
+    obtain ⟨C, hC, hMain⟩ := liu_sawhney_theorem α hα hle
     exact ⟨C, fun N A hA => by
       by_cases hN : N > 0
       · obtain ⟨S, hS, _, hB⟩ := hMain N hN A hA
@@ -303,6 +301,8 @@ theorem erdos_310_summary :
         simp only [Nat.le_zero] at hN
         subst hN
         refine ⟨∅, empty_subset _, ?_⟩
-        simp [hasBoundedDenom, unitFractionSum]⟩⟩
+        have hz : unitFractionSum ∅ = 0 := by simp [unitFractionSum]
+        rw [hasBoundedDenom, hz]
+        refine ⟨?_, ?_⟩ <;> simp <;> omega⟩⟩
 
 end Erdos310

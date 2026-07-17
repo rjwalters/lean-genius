@@ -14,7 +14,7 @@ import Proofs.KonigsbergOQ02
   examples, demonstrating that directed Eulerian circuit counting reduces to
   arborescence counting (computable in polynomial time via matrix determinants).
 
-  Parent: KonigsbergOQ02.lean (Digraph, Walk, isEulerian)
+  Parent: KonigsbergOQ02.lean (KonigsbergOQ02.Digraph, Walk, isEulerian)
 -/
 
 set_option linter.unusedVariables false
@@ -29,12 +29,12 @@ open KonigsbergOQ02
 
 /-- An Eulerian circuit from w: a closed walk using every arc exactly once. -/
 def EulerianCircuit {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj] (w : V) :=
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj] (w : V) :=
   { p : D.Walk w w // p.isEulerian }
 
 /-- Number of distinct Eulerian circuits from w (as distinct arc sequences). -/
 noncomputable def eulerianCircuitCount {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj] (w : V) : ℕ :=
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj] (w : V) : ℕ :=
   Nat.card (EulerianCircuit D w)
 
 -- ============================================================
@@ -47,7 +47,7 @@ noncomputable def eulerianCircuitCount {V : Type*} [Fintype V] [DecidableEq V]
     The number of arborescences can be computed in polynomial time via
     Kirchhoff's Matrix Tree Theorem (cofactor of the directed Laplacian). -/
 structure Arborescence {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) (w : V) where
+    (D : KonigsbergOQ02.Digraph V) (w : V) where
   /-- Parent assignment: each vertex's successor toward the root -/
   parent : V → V
   /-- Each non-root vertex has a valid arc to its parent -/
@@ -59,7 +59,7 @@ structure Arborescence {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- Number of in-arborescences rooted at w. -/
 noncomputable def arborescenceCount {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) (w : V) : ℕ :=
+    (D : KonigsbergOQ02.Digraph V) (w : V) : ℕ :=
   Nat.card (Arborescence D w)
 
 -- ============================================================
@@ -83,7 +83,7 @@ noncomputable def arborescenceCount {V : Type*} [Fintype V] [DecidableEq V]
     Axiomatized because the proof requires the Matrix Tree Theorem and a
     bijective decomposition of circuits into arborescences + local orderings. -/
 axiom best_theorem {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v) (w : V) :
     eulerianCircuitCount D w =
       D.outDegree w * arborescenceCount D w *
@@ -105,7 +105,7 @@ def triCircuit : triDigraph.Walk A A where
     rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> trivial
   starts_at := fun _ => rfl
   ends_at := fun _ => rfl
-  consecutive := by decide
+  consecutive := by change List.IsChain _ _; decide
   empty_at := fun _ => rfl
 
 /-- The circuit is Eulerian: covers all arcs with no repeats. -/
@@ -135,7 +135,7 @@ theorem tri_best_consistent :
 -- ============================================================
 
 /-- K3: complete bidirectional digraph on 3 vertices (6 arcs). -/
-def k3Digraph : Digraph TriVerts where
+def k3Digraph : KonigsbergOQ02.Digraph TriVerts where
   adj u v := match u, v with
     | A, B | A, C | B, A | B, C | C, A | C, B => True
     | _, _ => False
@@ -150,7 +150,7 @@ theorem k3_outDeg (v : TriVerts) : k3Digraph.outDegree v = 2 := by
 
 /-- K3 is balanced at every vertex. -/
 theorem k3_balanced (v : TriVerts) : k3Digraph.isBalanced v := by
-  unfold Digraph.isBalanced; cases v <;> native_decide
+  unfold KonigsbergOQ02.Digraph.isBalanced; cases v <;> native_decide
 
 /-- An explicit Eulerian circuit in K3: A->B->A->C->B->C->A. -/
 def k3Circuit : k3Digraph.Walk A A where
@@ -164,7 +164,7 @@ def k3Circuit : k3Digraph.Walk A A where
     all_goals trivial
   starts_at := fun _ => rfl
   ends_at := fun _ => rfl
-  consecutive := by decide
+  consecutive := by change List.IsChain _ _; decide
   empty_at := fun _ => rfl
 
 /-- The K3 circuit is Eulerian. -/
@@ -172,7 +172,7 @@ theorem k3Circuit_isEulerian : k3Circuit.isEulerian := by
   refine ⟨by decide, fun a b hadj => ?_⟩
   cases a <;> cases b <;> simp_all [k3Digraph, k3Circuit]
 
-/-- Three arborescences rooted at A in K3. -/
+/-  Three arborescences rooted at A in K3. -/
 
 /-- Arborescence 1: B->A, C->A (both go directly to root). -/
 def k3Arb1 : Arborescence k3Digraph A where
@@ -218,18 +218,18 @@ theorem k3_arb_complete (arb : Arborescence k3Digraph A) :
   have hB : arb.parent B = A ∨ arb.parent B = C := by
     have hv := arb.parent_valid B (by decide)
     have hne : arb.parent B ≠ B := fun h => by rw [h] at hv; exact k3Digraph.loopless B hv
-    match arb.parent B with
+    match hpb : arb.parent B with
     | .A => left; rfl
-    | .B => exact absurd rfl hne
+    | .B => exact absurd hpb hne
     | .C => right; rfl
   -- parent(C) in {A, B}: C->C violates loopless
   have hC : arb.parent C = A ∨ arb.parent C = B := by
     have hv := arb.parent_valid C (by decide)
     have hne : arb.parent C ≠ C := fun h => by rw [h] at hv; exact k3Digraph.loopless C hv
-    match arb.parent C with
+    match hpc : arb.parent C with
     | .A => left; rfl
     | .B => right; rfl
-    | .C => exact absurd rfl hne
+    | .C => exact absurd hpc hne
   -- Four cases: three valid, one invalid (B<->C cycle)
   rcases hB with hBp | hBp <;> rcases hC with hCp | hCp
   · -- B->A, C->A: arb1
@@ -247,7 +247,7 @@ theorem k3_arb_complete (arb : Arborescence k3Digraph A) :
       intro m; induction m with
       | zero => left; rfl
       | succ k ih =>
-        simp only [Function.iterate_succ']
+        simp only [Function.iterate_succ', Function.comp_apply]
         rcases ih with hk | hk
         · right; rw [hk]; exact hBp
         · left; rw [hk]; exact hCp
@@ -288,15 +288,17 @@ the Eulerian circuit space) has no undirected analogue.
 -/
 
 /-- The decision problem is trivially decidable: just check balance at each vertex. -/
-theorem euler_circuit_decidable {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj] :
+def euler_circuit_decidable {V : Type*} [Fintype V] [DecidableEq V]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj] :
     Decidable (∀ v : V, D.isBalanced v) :=
+  haveI : DecidablePred D.isBalanced :=
+    fun v => inferInstanceAs (Decidable (D.inDegree v = D.outDegree v))
   Fintype.decidableForallFintype
 
 /-- For K3, the decision is easy: all vertices are balanced. -/
 example : ∀ v : TriVerts, k3Digraph.isBalanced v := k3_balanced
 
-/-- But the counting problem asks: how many circuits exist?
+/- But the counting problem asks: how many circuits exist?
     For K3, the BEST theorem gives 6 (verified above). -/
 
 -- ============================================================

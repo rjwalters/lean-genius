@@ -17,10 +17,15 @@ always converges to the function in the ball of analyticity.
 
 > If f is analytic at x₀, does the Taylor remainder Rₙ(x) → 0 as n → ∞?
 
-**Answer**: Yes, in the ball of analyticity. More precisely, if `HasFPowerSeriesAt f p x₀`,
-then for y with ‖y‖ inside p's radius of convergence:
+**Answer**: Yes, in the ball of analyticity. More precisely, if `HasFPowerSeriesOnBall f p x₀ r`
+(f is known to agree with its power series `p` throughout the ball of radius `r` around x₀),
+then for y with ‖y‖ < r:
 
   HasSum (fun n => (∂ⁿf/∂xⁿ)(x₀) / n! · yⁿ) (f (x₀ + y))
+
+(Note: `r` here is the radius of the *known* representation, not `p.radius` — the abstract
+radius of convergence of `p`'s coefficients. `p.radius` can strictly exceed `r`, since `f` need
+not be analytic beyond the region it is actually known to agree with `p`'s sum.)
 
 ## Mathematical Structure
 
@@ -92,10 +97,10 @@ lemma fps_coeff_eq_taylor_coeff {f : ℝ → ℝ} {p : FormalMultilinearSeries �
   -- Step 1: Apply iteratedFDeriv_eq_sum_of_completeSpace (no global AnalyticOn needed)
   have key := hr.iteratedFDeriv_eq_sum_of_completeSpace (v := fun _ : Fin n => (1 : ℝ))
   -- Step 2: Simplify — (fun _ => 1)(σ i) = 1 for any permutation σ (constant function)
-  simp only [Function.const_apply] at key
   -- key : iteratedFDeriv ℝ n f x₀ (fun _ => 1) = ∑ _ : Perm(Fin n), p n (fun _ => 1)
   -- Step 3: Sum of constant over Perm(Fin n) = n! copies
-  rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul] at key
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin,
+    nsmul_eq_mul] at key
   -- key : iteratedFDeriv ℝ n f x₀ (fun _ => 1) = ↑(n !) * p n (fun _ => 1)
   -- Step 4: Rewrite iteratedDeriv using its definition = iteratedFDeriv (...) (fun _ => 1)
   rw [iteratedDeriv_eq_iteratedFDeriv, key]
@@ -118,23 +123,24 @@ lemma fps_eval_eq_taylor_term {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ
 
 /-- **Taylor Series Convergence for Analytic Functions** (Main Result)
 
-For f with convergent power series at x₀, the Taylor series converges:
+For f with a power series `p` known to converge to f throughout the ball of radius `r`
+around x₀, the Taylor series converges:
   HasSum (fun n => (∂ⁿf/∂xⁿ)(x₀) / n! · yⁿ) (f (x₀ + y))
-for all y with ‖y‖ inside the radius of convergence.
+for all y with ‖y‖ < r.
 
-**Proof**: `HasFPowerSeriesAt.hasSum` gives HasSum of `p n (fun _ => y)` to f(x₀ + y).
+**Proof**: `HasFPowerSeriesOnBall.hasSum` gives HasSum of `p n (fun _ => y)` to f(x₀ + y).
 `fps_eval_eq_taylor_term` rewrites each term to the Taylor form.
-`HasSum.congr` completes the proof. -/
+`HasSum.congr_fun` completes the proof. -/
 theorem taylor_hasSum_of_hasFPS {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
-    {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) {y : ℝ}
-    (hy : y ∈ EMetric.ball (0 : ℝ) p.radius) :
+    {x₀ : ℝ} {r : ℝ≥0∞} (h : HasFPowerSeriesOnBall f p x₀ r) {y : ℝ}
+    (hy : y ∈ Metric.eball (0 : ℝ) r) :
     HasSum (fun n => iteratedDeriv n f x₀ / (n ! : ℝ) * y ^ n) (f (x₀ + y)) :=
-  (h.hasSum hy).congr fun n => (fps_eval_eq_taylor_term h n y).symm
+  (h.hasSum hy).congr_fun fun n => (fps_eval_eq_taylor_term h.hasFPowerSeriesAt n y).symm
 
 /-- **Taylor Partial Sums Converge to f** -/
 theorem taylor_tendsto_of_hasFPS {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
-    {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) {y : ℝ}
-    (hy : y ∈ EMetric.ball (0 : ℝ) p.radius) :
+    {x₀ : ℝ} {r : ℝ≥0∞} (h : HasFPowerSeriesOnBall f p x₀ r) {y : ℝ}
+    (hy : y ∈ Metric.eball (0 : ℝ) r) :
     Filter.Tendsto
       (fun n => ∑ k ∈ Finset.range n, iteratedDeriv k f x₀ / (k ! : ℝ) * y ^ k)
       Filter.atTop (nhds (f (x₀ + y))) :=
@@ -142,28 +148,32 @@ theorem taylor_tendsto_of_hasFPS {f : ℝ → ℝ} {p : FormalMultilinearSeries 
 
 /-- **Taylor Remainder Vanishes for Analytic Functions** (OQ-02 Answer)
 
-For f analytic at x₀ with power series convergent at y:
+For f with power series `p` known to converge to f throughout the ball of radius `r`
+around x₀, and y in that ball:
   f(x₀ + y) − Σ_{k<n} (∂ᵏf/∂xᵏ)(x₀) / k! · yᵏ → 0  as n → ∞
 
 This answers OQ-02: for analytic functions, the Taylor remainder does not
-merely stay bounded—it converges to zero in the ball of analyticity. -/
+merely stay bounded—it converges to zero throughout the region where the power
+series is known to represent f. -/
 theorem taylor_remainder_tendsto_zero {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
-    {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) {y : ℝ}
-    (hy : y ∈ EMetric.ball (0 : ℝ) p.radius) :
+    {x₀ : ℝ} {r : ℝ≥0∞} (h : HasFPowerSeriesOnBall f p x₀ r) {y : ℝ}
+    (hy : y ∈ Metric.eball (0 : ℝ) r) :
     Filter.Tendsto
       (fun n => f (x₀ + y) -
         ∑ k ∈ Finset.range n, iteratedDeriv k f x₀ / (k ! : ℝ) * y ^ k)
       Filter.atTop (nhds 0) := by
   have htend := taylor_tendsto_of_hasFPS h hy
-  simpa [sub_self] using tendsto_const_nhds.sub htend
+  have hconst : Filter.Tendsto (fun _ : ℕ => f (x₀ + y)) Filter.atTop (nhds (f (x₀ + y))) :=
+    tendsto_const_nhds
+  simpa using hconst.sub htend
 
 /-- **Tsum Form**: The Taylor series sum equals f
 
 For analytic f, the infinite Taylor series converges to f:
   ∑' n, (∂ⁿf/∂xⁿ)(x₀) / n! · yⁿ = f(x₀ + y) -/
 theorem taylor_tsum_eq {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
-    {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) {y : ℝ}
-    (hy : y ∈ EMetric.ball (0 : ℝ) p.radius) :
+    {x₀ : ℝ} {r : ℝ≥0∞} (h : HasFPowerSeriesOnBall f p x₀ r) {y : ℝ}
+    (hy : y ∈ Metric.eball (0 : ℝ) r) :
     ∑' n, iteratedDeriv n f x₀ / (n ! : ℝ) * y ^ n = f (x₀ + y) :=
   (taylor_hasSum_of_hasFPS h hy).tsum_eq
 
@@ -171,25 +181,24 @@ theorem taylor_tsum_eq {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ �
 
 /-- **Existence of Taylor Convergence for Analytic Functions**
 
-Every analytic function at x₀ has a power series p such that in the ball of
-p.radius, the Taylor series of f converges to f(x₀ + y).
+Every analytic function at x₀ has a power series p and a radius r > 0 such that
+throughout the ball of radius r, the Taylor series of f converges to f(x₀ + y).
 
 This is the main statement of OQ-02 from the gallery perspective. -/
 theorem analyticAt_taylor_convergence {f : ℝ → ℝ} {x₀ : ℝ} (hf : AnalyticAt ℝ f x₀) :
-    ∃ p : FormalMultilinearSeries ℝ ℝ ℝ, 0 < p.radius ∧
-      ∀ y : ℝ, y ∈ EMetric.ball (0 : ℝ) p.radius →
+    ∃ (_p : FormalMultilinearSeries ℝ ℝ ℝ) (r : ℝ≥0∞), 0 < r ∧
+      ∀ y : ℝ, y ∈ Metric.eball (0 : ℝ) r →
         HasSum (fun n => iteratedDeriv n f x₀ / (n ! : ℝ) * y ^ n) (f (x₀ + y)) := by
   obtain ⟨p, r, hr⟩ := hf
-  refine ⟨p, ?_, fun y hy => taylor_hasSum_of_hasFPS ⟨r, hr⟩ hy⟩
-  -- p.radius ≥ r > 0, so p.radius > 0
-  exact lt_of_lt_of_le hr.r_pos hr.le_radius
+  exact ⟨p, r, hr.r_pos, fun y hy => taylor_hasSum_of_hasFPS hr hy⟩
 
 /-- **Taylor Series as Tsum (AnalyticAt version)**
 
-For f analytic at x₀, the infinite Taylor sum represents f in the ball of analyticity. -/
-theorem analyticAt_tsum_eq {f : ℝ → ℝ} {x₀ : ℝ} (hf : AnalyticAt ℝ f x₀)
-    {p : FormalMultilinearSeries ℝ ℝ ℝ} (hp : HasFPowerSeriesAt f p x₀)
-    {y : ℝ} (hy : y ∈ EMetric.ball (0 : ℝ) p.radius) :
+For f with power series `p` valid on the ball of radius `r` around x₀, the infinite
+Taylor sum represents f throughout that ball. -/
+theorem analyticAt_tsum_eq {f : ℝ → ℝ} {x₀ : ℝ}
+    {p : FormalMultilinearSeries ℝ ℝ ℝ} {r : ℝ≥0∞} (hp : HasFPowerSeriesOnBall f p x₀ r)
+    {y : ℝ} (hy : y ∈ Metric.eball (0 : ℝ) r) :
     ∑' n, iteratedDeriv n f x₀ / (n ! : ℝ) * y ^ n = f (x₀ + y) :=
   taylor_tsum_eq hp hy
 

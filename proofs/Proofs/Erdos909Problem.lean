@@ -18,6 +18,7 @@ Tags: topology, dimension-theory, product-spaces
 
 import Mathlib.Topology.Basic
 import Mathlib.Topology.Separation.Basic
+import Mathlib.Topology.Metrizable.Basic
 import Mathlib.Data.Nat.Basic
 
 open TopologicalSpace
@@ -41,7 +42,7 @@ notation "dimLeq" => coveringDimension
 def hasDimensionExactly (X : Type*) (n : ℕ) : Prop :=
   dimLeq X n ∧ (n > 0 → ¬dimLeq X (n - 1))
 
-/--
+/- 
 **Product Dimension Inequality:**
 For 'nice' spaces: dim(X × Y) ≤ dim(X) + dim(Y).
 The problem asks when this can be a strict inequality.
@@ -83,7 +84,7 @@ have 'pathological' properties that cause the product dimension
 to be strictly less than the sum.
 -/
 axiom anderson_keisler_theorem :
-    ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S) (_ : MetrizableSpace S),
+    ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S) (_ : TopologicalSpace.MetrizableSpace S),
       hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n
 
 /--
@@ -97,8 +98,8 @@ theorem erdos_909 : erdos909Statement := by
 
 /- ## Part V: Supporting Results -/
 
-/-- dim(ℝ^n) = n (standard result) -/
-/-- If Y ⊆ X, then dim(Y) ≤ dim(X) (monotonicity) -/
+/-  dim(ℝ^n) = n (standard result) -/
+/-  If Y ⊆ X, then dim(Y) ≤ dim(X) (monotonicity) -/
 /- ## Part VI: Summary -/
 
 /--

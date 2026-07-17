@@ -30,8 +30,7 @@ theorem de_moivre_real_exponent (θ α : ℝ)
     (Complex.exp (↑θ * Complex.I)) ^ (α : ℂ) =
     Complex.exp (↑(α * θ) * Complex.I) := by
   rw [cpow_def_of_ne_zero (exp_ne_zero _)]
-  have him : (↑θ * Complex.I).im = θ := by simp
-  rw [Complex.log_exp (him ▸ hθ_lo) (him ▸ hθ_hi)]
+  rw [Complex.log_exp (by simpa using hθ_lo) (by simpa using hθ_hi)]
   congr 1; push_cast; ring
 
 -- ============================================================
@@ -68,7 +67,7 @@ axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
 /-- The map θ ↦ e^{iαθ} is a continuous group homomorphism
     from (ℝ, +) to (S¹, ·) for any real α. -/
 theorem continuous_rotation (α : ℝ) :
-    Continuous (fun θ : ℝ => Complex.exp (↑(α * θ) * Complex.I)) :=
-  Complex.continuous_exp.comp (continuous_const.mul continuous_ofReal |>.mul continuous_const)
+    Continuous (fun θ : ℝ => Complex.exp (↑(α * θ) * Complex.I)) := by
+  fun_prop
 
 end DeMoivreOQ03OQ01

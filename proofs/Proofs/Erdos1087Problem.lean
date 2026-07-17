@@ -117,6 +117,7 @@ A finite set of n points in the plane.
 -/
 def PointSet (n : ℕ) := {S : Finset Point // S.card = n}
 
+open scoped Classical in
 /--
 **Count of Degenerate Quadruples:**
 For a point set S, count how many 4-element subsets are degenerate.
@@ -125,10 +126,10 @@ noncomputable def countDegenerateQuadruples (S : Finset Point) : ℕ :=
   ((S.powersetCard 4).filter (fun T =>
     ∃ (h : T.card = 4), isDegenerate (
       let pts := T.toList
-      (pts.get ⟨0, by simp [h]⟩,
-       pts.get ⟨1, by simp [h]⟩,
-       pts.get ⟨2, by simp [h]⟩,
-       pts.get ⟨3, by simp [h]⟩)
+      (pts.get ⟨0, by simp [pts, h]⟩,
+       pts.get ⟨1, by simp [pts, h]⟩,
+       pts.get ⟨2, by simp [pts, h]⟩,
+       pts.get ⟨3, by simp [pts, h]⟩)
     )
   )).card
 
@@ -227,7 +228,7 @@ structure RepeatedDistance where
   multiplicity : ℕ
   hpos : distance > 0
 
-/--
+/- 
 **Connection to Unit Distances:**
 Degenerate quadruples relate to repeated distances:
 If distance d appears m times, it contributes Θ(m²) to degenerate quadruples.
@@ -247,7 +248,11 @@ theorem total_quadruples (n : ℕ) (hn : n ≥ 4) :
              show m + 4 - 2 = m + 2 from by omega,
              show m + 4 - 3 = m + 1 from by omega]
   rw [Nat.choose_eq_descFactorial_div_factorial]
-  simp [Nat.descFactorial, Nat.factorial]
+  congr 1
+  simp only [Nat.descFactorial, Nat.sub_zero,
+             show m + 4 - 1 = m + 3 from by omega,
+             show m + 4 - 2 = m + 2 from by omega,
+             show m + 4 - 3 = m + 1 from by omega]
   ring
 
 /--
@@ -259,7 +264,7 @@ theorem trivial_upper_bound (n : ℕ) (hn : n ≥ 4) :
   simp only [f, maxDegenerateQuadruples, Nat.cast_zero]
   positivity
 
-/--
+/- 
 **Non-trivial Lower Bound Exists:**
 There exist configurations with many degenerate quadruples.
 The integer lattice grid gives Ω(n² log n) unit distances.
@@ -276,11 +281,11 @@ Erdős conjectured g(n) ∼ n/√(log n), proved by Guth-Katz (2015).
 noncomputable def distinctDistances (S : Finset Point) : ℕ :=
   ((S ×ˢ S).image (fun p => dist' p.1 p.2)).card
 
-/--
+/- 
 **Guth-Katz Theorem (2015):**
 Any n-point set has Ω(n/log n) distinct distances.
 -/
-/--
+/- 
 **Relation to Problem 1087:**
 Few distinct distances means many repeated distances,
 which leads to more degenerate quadruples.

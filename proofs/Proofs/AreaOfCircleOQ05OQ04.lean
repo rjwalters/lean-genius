@@ -87,6 +87,7 @@ import Mathlib.MeasureTheory.Integral.Pi
 import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Probability.Moments.Variance
 import Proofs.AreaOfCircleOQ05
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
 namespace ComplexGaussianCircle
 

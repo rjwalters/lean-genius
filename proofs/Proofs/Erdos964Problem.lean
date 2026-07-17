@@ -25,11 +25,10 @@ Historical:
 Tags: number-theory, divisor-function, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Topology.Order.Basic
 
 open Set Real
@@ -53,10 +52,11 @@ def tau (n : ℕ) : ℕ :=
 τ(1) = 1, τ(p) = 2 for prime p, τ(p^k) = k+1
 -/
 theorem tau_one : tau 1 = 1 := by
-  simp [tau, Nat.divisors]
+  rw [tau, Nat.divisors_one, Finset.card_singleton]
 
 theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
-  simp [tau, Nat.divisors_prime hp]
+  rw [tau, hp.divisors]
+  exact Finset.card_pair_eq_two_iff.mpr hp.one_lt.ne
 
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
     tau (p ^ k) = k + 1 := by
@@ -68,7 +68,8 @@ theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
 -/
 theorem tau_multiplicative (m n : ℕ) (h : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
-  simp only [tau, h.divisors_mul, Finset.card_product]
+  simp only [tau]
+  exact h.card_divisors_mul
 
 /-
 ## Part II: Ratios of Consecutive Values
@@ -156,18 +157,18 @@ theorem rationals_dense_in_positives :
   have hceil_lt : (↑p : ℝ) < r * ↑q + 1 := Nat.ceil_lt_add_one (le_of_lt hrq_pos)
   -- 1/q < ε since q > 1/ε
   have h_inv_lt : 1 / (↑q : ℝ) < ε := by
-    rw [div_lt_iff hq_pos, mul_comm ε ↑q]
-    exact (div_lt_iff hε).mp (lt_of_le_of_lt (le_max_left _ _) hq)
+    rw [div_lt_iff₀ hq_pos, mul_comm ε ↑q]
+    exact (div_lt_iff₀ hε).mp (lt_of_le_of_lt (le_max_left _ _) hq)
   use ↑p / ↑q
   refine ⟨⟨p, q, hp_ge, hq_ge, rfl⟩, ?_⟩
   -- |p/q - r| = p/q - r (since p/q ≥ r) and p/q - r < 1/q < ε
   have h_nonneg : (↑p : ℝ) / ↑q - r ≥ 0 := by
-    rw [sub_nonneg, le_div_iff hq_pos]
+    rw [ge_iff_le, sub_nonneg, le_div_iff₀ hq_pos]
     exact hceil_ge
   rw [abs_of_nonneg h_nonneg]
   calc (↑p : ℝ) / ↑q - r
       < (r * ↑q + 1) / ↑q - r := by
-        exact sub_lt_sub_right ((div_lt_div_right hq_pos).mpr hceil_lt) r
+        gcongr
     _ = 1 / ↑q := by field_simp; ring
     _ < ε := h_inv_lt
 
@@ -224,11 +225,11 @@ example : divisorRatio 3 = 3/2 := by
     ne_eq, not_false_eq_true, dite_true, Nat.cast_ofNat]
   norm_num
 
-/--
+/- 
 **Small ratios:**
 τ(n+1)/τ(n) can be arbitrarily small.
 -/
-/--
+/- 
 **Large ratios:**
 τ(n+1)/τ(n) can be arbitrarily large.
 -/
@@ -246,11 +247,11 @@ def PrimeKTupleConjecture : Prop :=
     (∀ p : ℕ, Nat.Prime p → ∃ i, (h i : ℤ) % p ≠ 0) →
     ∃ᶠ n in Filter.atTop, ∀ i, Nat.Prime (n + h i)
 
-/--
+/- 
 **The conjecture implies density:**
 Under the prime k-tuple conjecture, density follows easily.
 -/
-/--
+/- 
 **Eberhard's unconditional proof:**
 Eberhard proved the density result without assuming any unproved conjectures.
 -/
@@ -280,7 +281,7 @@ theorem eberhard_strong : AllRationalsAppear := by
   rw [div_eq_div_iff (Nat.cast_ne_zero.mpr htau_ne) (Nat.cast_ne_zero.mpr (by omega : q ≠ 0))]
   exact_mod_cast heq.trans (mul_comm (tau n) p)
 
-/--
+/- 
 **Related: Problem #946:**
 Problem 946 asks related questions about divisor function values.
 -/
@@ -296,11 +297,11 @@ The average value of τ(n+1)/τ(n) over n ≤ N.
 noncomputable def averageRatio (N : ℕ) : ℝ :=
   (∑ n ∈ Finset.range N, divisorRatio (n + 1)) / N
 
-/--
+/- 
 **The average is 1:**
 On average, τ(n+1) ≈ τ(n).
 -/
-/--
+/- 
 **Distribution of log ratios:**
 log(τ(n+1)/τ(n)) has a limiting distribution.
 -/
@@ -330,7 +331,9 @@ theorem erdos_964 : ErdosConjecture964 := erdos_964_true
 **The answer:**
 -/
 theorem erdos_964_answer :
-    ∀ r : ℝ, r > 0 → ∀ ε > 0, ∃ n : ℕ, n ≥ 1 ∧ |divisorRatio n - r| < ε :=
-  erdos_964
+    ∀ r : ℝ, r > 0 → ∀ ε > 0, ∃ n : ℕ, n ≥ 1 ∧ |divisorRatio n - r| < ε := by
+  intro r hr ε hε
+  obtain ⟨s, ⟨n, hn, hs⟩, hdist⟩ := erdos_964 r hr ε hε
+  exact ⟨n, hn, by rw [hs]; exact hdist⟩
 
 end Erdos964

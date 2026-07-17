@@ -5,6 +5,8 @@ import Mathlib.Data.Set.Countable
 import Mathlib.Data.Rat.Denumerable
 import Mathlib.Logic.Denumerable
 import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib.Analysis.Real.Cardinality
+import Mathlib.Analysis.Complex.Cardinality
 import Mathlib.Tactic
 
 /-

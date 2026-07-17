@@ -75,7 +75,9 @@ theorem arithProg_infinite (a d : ℕ) (hd : d > 0) : Set.Infinite (ArithProg a 
   have : ArithProg a d = Set.range (fun k : ℕ => a + k * d) := by
     ext n; simp [ArithProg, Set.mem_range, eq_comm]
   rw [this]
-  exact Set.infinite_range_of_injective (fun _ _ h => by omega)
+  refine Set.infinite_range_of_injective (fun x y h => ?_)
+  simp only [add_right_inj] at h
+  exact Nat.eq_of_mul_eq_mul_right hd h
 
 /-
 ## Graph Definitions
@@ -178,8 +180,8 @@ def optimalConstantQuestion : Prop :=
 ## Related Results
 -/
 
-/-- Bondy-Simonovits: High minimum degree implies cycles of consecutive even lengths. -/
-/-- High average degree implies high minimum degree in a subgraph. -/
+/-  Bondy-Simonovits: High minimum degree implies cycles of consecutive even lengths. -/
+/-  High average degree implies high minimum degree in a subgraph. -/
 /-
 ## Why Even Numbers Matter
 
@@ -192,7 +194,7 @@ The condition that P contains even numbers is necessary. Consider:
 This is why Erdős-Burr specifically required P to contain even numbers.
 -/
 
-/-- Bipartite graphs have no odd cycles.
+/-  Bipartite graphs have no odd cycles.
 
     Proof: Let G be bipartite with parts A and B (2-coloring).
     In any cycle v₀ → v₁ → ... → vₖ₋₁ → v₀, vertices alternate between A and B.
@@ -201,7 +203,7 @@ This is why Erdős-Burr specifically required P to contain even numbers.
     we need vₖ₋₁ ∈ B, i.e., k-1 is odd, i.e., k is even.
 
     This is a classical result; we state it as an axiom. -/
-/-- The even condition is necessary: no constant works for odd-only progressions.
+/-  The even condition is necessary: no constant works for odd-only progressions.
 
     Proof: Consider P = {3, 7, 11, ...} = {3 + 4k : k ∈ ℕ}, which consists entirely
     of odd numbers. We show no constant c works:

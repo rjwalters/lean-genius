@@ -47,11 +47,13 @@ theorem pigeonhole_bound_value (k d : ℕ) (hk : 0 < k) :
 
 /-- The pigeonhole bound grows linearly in d. -/
 theorem pigeonhole_linear_in_d (k d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
-    (k - 1) * d₁ + 1 ≤ (k - 1) * d₂ + 1 := by omega
+    (k - 1) * d₁ + 1 ≤ (k - 1) * d₂ + 1 := by
+  have := Nat.mul_le_mul_left (k - 1) h; omega
 
 /-- The pigeonhole bound grows linearly in k (for fixed d). -/
 theorem pigeonhole_linear_in_k (k₁ k₂ d : ℕ) (h : k₁ ≤ k₂) :
-    (k₁ - 1) * d + 1 ≤ (k₂ - 1) * d + 1 := by omega
+    (k₁ - 1) * d + 1 ≤ (k₂ - 1) * d + 1 := by
+  have := Nat.mul_le_mul_right d (Nat.sub_le_sub_right h 1); omega
 
 -- ============================================================
 -- Part II: The Scaling Exponent
@@ -76,7 +78,7 @@ theorem scalingExponent_lt_one (k : ℕ) (hk : 1 ≤ k) : scalingExponent k < 1 
   unfold scalingExponent
   simp only [show k ≠ 0 from by omega, ite_false]
   rw [div_lt_one (by positivity : (k : ℝ) > 0)]
-  simp; omega
+  simp
 
 /-- The scaling exponent is strictly increasing in k for k ≥ 1. -/
 theorem scalingExponent_mono {k₁ k₂ : ℕ} (hk₁ : 1 ≤ k₁) (h : k₁ ≤ k₂) :
@@ -85,9 +87,11 @@ theorem scalingExponent_mono {k₁ k₂ : ℕ} (hk₁ : 1 ≤ k₁) (h : k₁ �
   simp only [show k₁ ≠ 0 from by omega, show k₂ ≠ 0 from by omega, ite_false]
   -- (k₁-1)/k₁ ≤ (k₂-1)/k₂ iff k₂(k₁-1) ≤ k₁(k₂-1)
   -- iff k₁k₂ - k₂ ≤ k₁k₂ - k₁ iff k₁ ≤ k₂
-  rw [div_le_div_iff (by positivity : (k₁ : ℝ) > 0) (by positivity : (k₂ : ℝ) > 0)]
-  push_cast
-  nlinarith
+  have hk1 : (0 : ℝ) < (k₁ : ℝ) := by exact_mod_cast hk₁
+  have hk2 : (0 : ℝ) < (k₂ : ℝ) := by exact_mod_cast lt_of_lt_of_le hk₁ h
+  have hle : (k₁ : ℝ) ≤ (k₂ : ℝ) := by exact_mod_cast h
+  rw [div_le_div_iff₀ hk1 hk2]
+  nlinarith [hk1, hk2, hle]
 
 /-- For k=2, the scaling exponent is 1/2 (the square-root law). -/
 theorem scalingExponent_two : scalingExponent 2 = 1 / 2 := by
@@ -124,7 +128,7 @@ theorem thresholdPower_mono_d (k : ℕ) (hk : 1 ≤ k) {d₁ d₂ : ℕ} (h : d�
     thresholdPower k d₁ ≤ thresholdPower k d₂ := by
   unfold thresholdPower
   apply mul_le_mul_of_nonneg_left
-  · exact pow_le_pow_left (Nat.cast_nonneg d₁) (Nat.cast_le.mpr h) _
+  · exact pow_le_pow_left₀ (Nat.cast_nonneg d₁) (Nat.cast_le.mpr h) _
   · exact Nat.cast_nonneg (k.factorial)
 
 /-- Threshold formula is monotone in k: higher k → higher threshold (for d ≥ 2).
@@ -134,22 +138,23 @@ theorem thresholdPower_mono_k (k : ℕ) (hk : 1 ≤ k) (d : ℕ) (hd : 2 ≤ d) 
   unfold thresholdPower
   rw [Nat.factorial_succ, show k + 1 - 1 = k from by omega]
   push_cast
-  rw [show (↑(k + 1) * ↑k.factorial) * (↑d) ^ k =
-      ↑k.factorial * ((↑d) ^ (k - 1) * ((↑(k + 1)) * ↑d)) from by
-    rw [show (↑d : ℝ) ^ k = (↑d) ^ (k - 1) * ↑d from by
-      rw [← pow_succ]; congr 1; omega]
-    ring]
-  apply mul_le_mul_of_nonneg_left
-  · apply le_mul_of_one_le_right
-    · exact pow_nonneg (Nat.cast_nonneg d) _
-    · calc (1 : ℝ) ≤ 2 * 2 := by norm_num
-        _ ≤ (↑(k + 1)) * ↑d := by
-          apply mul_le_mul
-          · exact Nat.cast_le.mpr (by omega)
-          · exact Nat.cast_le.mpr hd
-          · norm_num
-          · positivity
-  · exact Nat.cast_nonneg (k.factorial)
+  have hdk : (↑d : ℝ) ^ k = (↑d : ℝ) ^ (k - 1) * ↑d := by
+    rw [← pow_succ]; congr 1; omega
+  rw [hdk]
+  have hfac : (0 : ℝ) ≤ (↑k.factorial : ℝ) := Nat.cast_nonneg _
+  have hpow : (0 : ℝ) ≤ (↑d : ℝ) ^ (k - 1) := pow_nonneg (Nat.cast_nonneg d) _
+  have hcoef : (1 : ℝ) ≤ (↑k + 1) * ↑d := by
+    have hk1 : (1 : ℝ) ≤ (↑k : ℝ) + 1 := by
+      have : (0 : ℝ) ≤ (↑k : ℝ) := Nat.cast_nonneg _
+      linarith
+    have hd1 : (1 : ℝ) ≤ (↑d : ℝ) := by exact_mod_cast (by omega : 1 ≤ d)
+    nlinarith
+  -- Goal: k! * d^(k-1) ≤ (k+1)*k! * (d^(k-1) * d)
+  calc (↑k.factorial : ℝ) * (↑d) ^ (k - 1)
+      = ↑k.factorial * (↑d) ^ (k - 1) * 1 := by ring
+    _ ≤ ↑k.factorial * (↑d) ^ (k - 1) * ((↑k + 1) * ↑d) :=
+        mul_le_mul_of_nonneg_left hcoef (mul_nonneg hfac hpow)
+    _ = (↑k + 1) * ↑k.factorial * ((↑d) ^ (k - 1) * ↑d) := by ring
 
 -- ============================================================
 -- Part IV: Classical Recovery (k = 2)
@@ -165,19 +170,19 @@ theorem threshold_k2 (d : ℕ) : thresholdPower 2 d = 2 * (d : ℝ) := by
     So n₃ ≈ (6d²)^{1/3} ≈ 1.82 · d^{2/3}. -/
 theorem threshold_k3 (d : ℕ) : thresholdPower 3 d = 6 * (d : ℝ) ^ 2 := by
   unfold thresholdPower
-  simp [Nat.factorial]; ring
+  simp [Nat.factorial]; try ring
 
 /-- For k=4: n₄^4 ≈ 4! · d³ = 24d³.
     So n₄ ≈ (24d³)^{1/4}. -/
 theorem threshold_k4 (d : ℕ) : thresholdPower 4 d = 24 * (d : ℝ) ^ 3 := by
   unfold thresholdPower
-  simp [Nat.factorial]; ring
+  simp [Nat.factorial]; try ring
 
 -- ============================================================
 -- Part V: Ratio to Pigeonhole Bound
 -- ============================================================
 
-/-- The pigeonhole bound (k-1)d exceeds the true threshold for moderate d.
+/-  The pigeonhole bound (k-1)d exceeds the true threshold for moderate d.
     We prove this for specific k values where the algebra is clean. -/
 
 /-- For k=2: the threshold 2d is less than the pigeonhole bound (d)² = d². -/
@@ -191,8 +196,8 @@ theorem pigeonhole_vs_threshold_k2 (d : ℕ) (hd : 2 ≤ d) :
 theorem pigeonhole_vs_threshold_k3 (d : ℕ) (hd : 1 ≤ d) :
     thresholdPower 3 d ≤ (2 * (d : ℝ)) ^ 3 := by
   rw [threshold_k3]
-  have hd' : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr hd
-  nlinarith [sq_nonneg (d : ℝ)]
+  have hd' : (1 : ℝ) ≤ (d : ℝ) := Nat.one_le_cast.mpr hd
+  nlinarith [sq_nonneg (d : ℝ), mul_nonneg (sq_nonneg (d : ℝ)) (by linarith : (0:ℝ) ≤ (d:ℝ))]
 
 -- ============================================================
 -- Part VI: Concrete Threshold Values
@@ -206,7 +211,7 @@ theorem concrete_365_k2 : thresholdPower 2 365 = 730 := by
   rw [threshold_k2]; norm_num
 
 theorem concrete_365_k3 : thresholdPower 3 365 = 6 * 365 ^ 2 := by
-  rw [threshold_k3]
+  rw [threshold_k3]; norm_num
 
 -- ============================================================
 -- Part VII: Exponent Approaches 1
@@ -230,12 +235,14 @@ theorem exponent_approaches_one (ε : ℝ) (hε : 0 < ε) :
   -- Need: 1 - ε < 1 - 1/k, i.e., 1/k < ε
   have hk_pos : (0 : ℝ) < k := by positivity
   linarith [show (1 : ℝ) / k ≤ 1 / (⌈1 / ε⌉₊ + 1 : ℝ) from by
-    apply div_le_div_of_nonneg_left one_pos (by positivity) (by exact_mod_cast hk),
+    apply one_div_le_one_div_of_le (by positivity) (by exact_mod_cast hk),
     show (1 : ℝ) / (⌈1 / ε⌉₊ + 1 : ℝ) < ε from by
-    rw [div_lt_iff (by positivity : (⌈1 / ε⌉₊ + 1 : ℝ) > 0)]
+    rw [div_lt_iff₀ (by positivity : (⌈1 / ε⌉₊ + 1 : ℝ) > 0)]
     calc ε * (⌈1 / ε⌉₊ + 1 : ℝ) > ε * (1 / ε) := by
           apply mul_lt_mul_of_pos_left _ hε
-          exact_mod_cast Nat.lt_add_one_iff.mpr (Nat.le_ceil _)
+          have h1 : (1 / ε : ℝ) ≤ ↑⌈1 / ε⌉₊ := Nat.le_ceil _
+          push_cast
+          linarith
         _ = 1 := by field_simp]
 
 end BirthdayScaling

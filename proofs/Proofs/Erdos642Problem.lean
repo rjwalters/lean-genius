@@ -41,7 +41,7 @@ structure Cycle (G : SimpleGraph V) where
   vertices : List V
   length_ge_3 : vertices.length ≥ 3
   is_cycle : ∀ i : Fin vertices.length,
-    G.Adj (vertices.get i) (vertices.get ⟨(i.val + 1) % vertices.length, by omega⟩)
+    G.Adj (vertices.get i) (vertices.get ⟨(i.val + 1) % vertices.length, Nat.mod_lt _ (by omega)⟩)
   no_repeated : vertices.Nodup
 
 /-- The length (number of vertices) of a cycle. -/
@@ -65,6 +65,7 @@ def IsDiagonal {G : SimpleGraph V} (C : Cycle G) (e : Sym2 V) : Prop :=
     e = s(C.vertices.get i, C.vertices.get j) ∧
     G.Adj (C.vertices.get i) (C.vertices.get j)
 
+open scoped Classical in
 /-- Count of diagonals in a cycle. -/
 noncomputable def diagonalCount {G : SimpleGraph V} [DecidableEq V] [Fintype V]
     [DecidableRel G.Adj] (C : Cycle G) : ℕ :=
@@ -115,10 +116,10 @@ theorem max_diagonals_in_cycle (k : ℕ) (hk : k ≥ 3) :
 The first non-trivial upper bound.
 -/
 
-/-- **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
+/-  **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
 
 /-- The CES exponent is 3/2. -/
-def ces_exponent : ℝ := 3/2
+noncomputable def ces_exponent : ℝ := 3/2
 
 /-
 ## Part VI: Draganić-Methuku-Munhá Correia-Sudakov Bound (2024)
@@ -171,7 +172,7 @@ theorem girth_5_satisfies [DecidableEq V] [Fintype V]
     SatisfiesCycleDiagonalCondition G := by
   sorry
 
-/-- The Turán problem for C₄-free graphs. -/
+/-  The Turán problem for C₄-free graphs. -/
 /-- This shows f(n) ≥ Ω(n^(3/2)) from girth-5 graphs. -/
 theorem f_lower_bound (n : ℕ) (hn : n ≥ 10) :
     f n ≥ Nat.floor ((n : ℝ)^(3/2 : ℝ) / 4) := by
@@ -184,19 +185,19 @@ The key tool in the DMMS improvement.
 -/
 
 /-- A graph is an (n, d, λ)-expander if it's d-regular with spectral gap. -/
-def IsExpander (G : SimpleGraph (Fin n)) (d : ℕ) (λ : ℝ) : Prop :=
+def IsExpander (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (d : ℕ) (lam : ℝ) : Prop :=
   -- All vertices have degree d
   (∀ v, G.degree v = d) ∧
-  -- Second eigenvalue is at most λ (spectral gap property)
-  λ < d
+  -- Second eigenvalue is at most lam (spectral gap property)
+  lam < d
 
 /-- Sublinear expanders (d = n^ε for some ε < 1). -/
-def IsSublinearExpander (G : SimpleGraph (Fin n)) : Prop :=
+def IsSublinearExpander (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] : Prop :=
   ∃ ε : ℝ, 0 < ε ∧ ε < 1 ∧
     ∃ d : ℕ, d ≥ Nat.floor ((n : ℝ)^ε) ∧
-      ∃ λ : ℝ, IsExpander G d λ
+      ∃ lam : ℝ, IsExpander G d lam
 
-/-- **Key Lemma (DMMS)**: Random walks in expanders find cycles with many diagonals. -/
+/-  **Key Lemma (DMMS)**: Random walks in expanders find cycles with many diagonals. -/
 /-
 ## Part X: Short Cycles vs Long Cycles
 
@@ -215,7 +216,8 @@ theorem pentagon_all_diags_violates :
 /-- Critical transition at length 5. -/
 theorem critical_length : ∀ k : ℕ, k ≥ 5 → k ≤ k * (k - 3) / 2 := by
   intro k hk
-  omega
+  rw [Nat.le_div_iff_mul_le (by norm_num : 0 < 2)]
+  exact Nat.mul_le_mul (le_refl k) (by omega)
 
 /-
 ## Part XI: Main Results
@@ -252,10 +254,17 @@ def erdos_642_status : String :=
 
 /-- Gap between known bounds. -/
 theorem bounds_gap : ∃ gap : ℝ → ℝ,
-    (∀ n : ℝ, n ≥ 10 → gap n = n * (Real.log n)^8 / n^(3/2)) ∧
-    (∀ n : ℝ, n ≥ 10 → gap n = (Real.log n)^8 / n^(1/2)) := by
+    (∀ n : ℝ, n ≥ 10 → gap n = n * (Real.log n)^8 / n^(3/2 : ℝ)) ∧
+    (∀ n : ℝ, n ≥ 10 → gap n = (Real.log n)^8 / n^(1/2 : ℝ)) := by
   use fun n => (Real.log n)^8 / n^(1/2 : ℝ)
-  constructor <;> intro n hn <;> ring_nf
+  refine ⟨fun n hn => ?_, fun n hn => rfl⟩
+  have hn0 : (0:ℝ) < n := by linarith
+  have hp : n ^ (1/2 : ℝ) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hn0 _)
+  have hn' : n ≠ 0 := ne_of_gt hn0
+  have h32 : n ^ (3/2 : ℝ) = n * n ^ (1/2 : ℝ) := by
+    rw [show (3/2 : ℝ) = 1 + 1/2 by norm_num, Real.rpow_add hn0, Real.rpow_one]
+  rw [h32]
+  field_simp
 
 #check erdos_642_bounds
 #check dmms_2024

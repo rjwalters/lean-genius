@@ -1,9 +1,5 @@
 import Proofs.CantorsTheoremOQ01
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Order.SuccPred.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # |𝒫(𝒫(ℝ))| = ℶ₃: The Iterated Power Set Hierarchy
@@ -81,8 +77,8 @@ theorem card_powerSet_powerSet_real_eq_beth_three :
 /-- |𝒫(𝒫(ℝ))| > |𝒫(ℝ)| > |ℝ|: the hierarchy is strictly increasing. -/
 theorem powerSet_powerSet_gt_powerSet_real :
     (#(Set ℝ) : Cardinal.{0}) < #(Set (Set ℝ)) := by
-  rw [Cardinal.mk_set]
-  exact Cardinal.cantor (#(Set ℝ))
+  have h := Cardinal.cantor (#(Set ℝ))
+  rwa [← Cardinal.mk_set] at h
 
 /-- |𝒫(𝒫(ℝ))| > |ℝ|: two levels of power sets strictly exceed ℝ. -/
 theorem powerSet_powerSet_gt_real :
@@ -127,14 +123,12 @@ theorem card_iteratedPowerSet_eq_beth (n : ℕ) :
   | zero =>
     -- |ℝ| = 𝔠 = ℶ₁
     simp only [iteratedPowerSet]
-    rw [CantorsTheoremOQ01.card_real_eq_continuum,
-        CantorsTheoremOQ01.beth_one_eq_continuum]
+    rw [CantorsTheoremOQ01.card_real_eq_continuum]
+    norm_num [CantorsTheoremOQ01.beth_one_eq_continuum]
   | succ n ih =>
     -- |𝒫(iteratedPowerSet n)| = 2^|iteratedPowerSet n| = 2^ℶ_{n+1} = ℶ_{n+2}
     simp only [iteratedPowerSet]
     rw [Cardinal.mk_set, ih, ← beth_nat_succ (n + 1)]
-    push_cast
-    ring_nf
 
 -- ============================================================
 -- PART 4: Strict Tower Inequality
@@ -219,7 +213,7 @@ theorem konig_constraint_beth (n : ℕ) :
   -- ℵ₀ = ℶ₀ ≤ ℶₙ (beth is monotone, 0 ≤ n in Ordinal)
   calc (ℵ₀ : Cardinal.{0}) = Cardinal.beth 0 := Cardinal.beth_zero.symm
     _ ≤ Cardinal.beth (↑n : Ordinal) :=
-        Cardinal.beth_strictMono.monotone (Ordinal.zero_le _)
+        Cardinal.beth_strictMono.monotone (zero_le)
 
 /-- The aleph-index of ℶ₂ (if it equals ℵ_α) must satisfy cf(ℵ_α) > 𝔠.
     Under GCH + CH, ℶ₂ = ℵ₂ which satisfies cf(ℵ₂) = ℵ₂ > 𝔠 = ℵ₁. -/

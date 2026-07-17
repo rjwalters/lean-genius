@@ -293,7 +293,7 @@ descends to an `m`-colouring of the base graph — the iterated form of
 `mycielskian_colorable_of_succ`. -/
 theorem mycielskianIter_colorable_of_add {V : Type u} {G : SimpleGraph V} {m : ℕ} :
     ∀ k, (mycielskianIter G k).Colorable (m + k) → G.Colorable m
-  | 0     => fun h => by simpa using h
+  | 0     => fun h => by rw [Nat.add_zero] at h; exact h
   | k + 1 => fun h => by
       have hk : m + (k + 1) = (m + k) + 1 := by omega
       rw [hk] at h

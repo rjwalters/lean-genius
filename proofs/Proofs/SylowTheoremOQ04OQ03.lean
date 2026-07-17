@@ -1044,7 +1044,11 @@ theorem not_isSolvable_PSL (hp : 5 ≤ p) :
     ¬ IsSolvable (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
   intro hsolv
   haveI := hsolv
-  -- A solvable quotient and (automatically) solvable central kernel force the middle
+  -- `Subgroup.center` no longer bundles a `CommGroup` instance in this Mathlib version,
+  -- only the mixin `IsMulCommutative`; derive `IsSolvable` from it explicitly.
+  haveI : IsSolvable (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+    isSolvable_of_comm mul_comm'
+  -- A solvable quotient and (now explicitly) solvable central kernel force the middle
   -- group `SL(2, p)` to be solvable via the central extension.
   haveI : IsSolvable (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
     solvable_of_ker_le_range
@@ -1639,7 +1643,7 @@ theorem torusDiag_inv_conj_unipotentUpper (a : (ZMod p)ˣ) (t : ZMod p) :
 unipotent subgroup onto itself (both directions), so `diag(a) ∈ N(U)`.  This is the
 subgroup-level form of `torus_normalizes_unipotent`. -/
 theorem torusDiag_mem_normalizer_unipotent (a : (ZMod p)ˣ) :
-    torusDiag a ∈ (unipotentSubgroup (p := p)).normalizer := by
+    torusDiag a ∈ Subgroup.normalizer (unipotentSubgroup (p := p)) := by
   rw [Subgroup.mem_normalizer_iff]
   intro n
   constructor
@@ -1674,7 +1678,7 @@ normaliser of `U`: `U` normalises itself, and every torus element normalises `U`
 (`torusDiag_mem_normalizer_unipotent`).  Since the normaliser is a subgroup, the
 generated subgroup `B` is contained in it. -/
 theorem borel_le_normalizer_unipotent :
-    borel (p := p) ≤ (unipotentSubgroup (p := p)).normalizer := by
+    borel (p := p) ≤ Subgroup.normalizer (unipotentSubgroup (p := p)) := by
   have hb : borel (p := p) = Subgroup.closure
       (Set.range (unipotentUpper (p := p)) ∪ Set.range (torusDiag (p := p))) := rfl
   rw [hb, Subgroup.closure_le]

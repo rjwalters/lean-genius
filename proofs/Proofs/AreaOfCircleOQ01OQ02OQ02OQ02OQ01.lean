@@ -148,7 +148,7 @@ theorem norm_fourierCoeffOn_iteratedDeriv
     identity on `{n ≠ 0}`.  Generalizes the parent's `k = 2, 4` kernel lemmas
     (`fourierCoeffOn_deriv2_eq_zero_iff`, `fourierCoeffOn_deriv4_eq_zero_iff`): the whole
     derivative tower `f, f', f'', …` shares the same nonzero-mode support. -/
-theorem fourierCoeffOn_iteratedDeriv_eq_zero_iff
+theorem fourierCoeffOn_iteratedDeriv_eq_zero_iff_infty
     (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
     (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) (k : ℕ) :
     fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n = 0 ↔
@@ -234,7 +234,7 @@ theorem fourierCoeffOn_iteratedDeriv_zero
   rw [hstep]
   have hg1 : ContDiff ℝ 1 (deriv^[k] f) := hg_smooth.of_le (by exact_mod_cast le_top)
   have hg_diff : ∀ x, DifferentiableAt ℝ (deriv^[k] f) x :=
-    fun x => (hg1.differentiable (le_refl 1)).differentiableAt
+    fun x => (hg1.differentiable one_ne_zero).differentiableAt
   have hcont : Continuous (deriv (deriv^[k] f)) := hg1.continuous_deriv (le_refl 1)
   have hint : IntervalIntegrable (deriv (deriv^[k] f)) volume 0 (2 * π) :=
     hcont.intervalIntegrable 0 (2 * π)
@@ -1024,7 +1024,7 @@ theorem two_mul_integral_mul_deriv_le_integral_add_sq_deriv
     HSdef.nonneg (fun n => by
       convert area_deficit_summand_nonneg
         (fourierCoeffOn hab (ofReal ∘ f) n) (fourierCoeffOn hab (ofReal ∘ g) n) n using 1
-      ring)
+      all_goals first | rfl | ring)
   -- Clear the positive `(2π)⁻¹` scaling.
   simp only [smul_eq_mul, sub_zero] at htot_nonneg
   set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
@@ -1190,7 +1190,8 @@ theorem fourierCoeff_eq_zero_of_wirtinger_saturation
   intro n hn
   have hle := le_hasSum HSdef n (fun m _ => by
     convert area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) m)
-      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1; ring)
+      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1
+    all_goals first | rfl | ring)
   have hge := area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) n)
     (fourierCoeffOn hab (ofReal ∘ g) n) n
   exact fourierAmp_eq_zero_of_deficit_zero (fourierCoeffOn hab (ofReal ∘ f) n)
@@ -1330,7 +1331,8 @@ private theorem deficit_summand_eq_zero_of_wirtinger_saturation
   intro n
   have hle := le_hasSum HSdef n (fun m _ => by
     convert area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) m)
-      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1; ring)
+      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1
+    all_goals first | rfl | ring)
   have hge := area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) n)
     (fourierCoeffOn hab (ofReal ∘ g) n) n
   exact le_antisymm (by nlinarith [hle]) hge
@@ -1705,7 +1707,7 @@ theorem two_mul_normSq_fourierCoeffOn_le_normalized_deficit
   have hle := le_hasSum HSdef n (fun m _ => by
     convert area_deficit_summand_nonneg
       (fourierCoeffOn hab (ofReal ∘ f) m) (fourierCoeffOn hab (ofReal ∘ g) m) m using 1
-    ring)
+    all_goals first | rfl | ring)
   simp only [smul_eq_mul, sub_zero] at hle
   set a := fourierCoeffOn hab (ofReal ∘ f) n with ha
   set b := fourierCoeffOn hab (ofReal ∘ g) n with hb

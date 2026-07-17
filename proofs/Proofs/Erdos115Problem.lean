@@ -17,8 +17,8 @@ Known bounds:
 Reference: https://erdosproblems.com/115
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Polynomial and Lemniscate Abstractions -/
@@ -32,12 +32,12 @@ axiom IsLemniscateConnected : {n : ℕ} → ComplexPoly n → Prop
 /-- The maximum of |p'(z)| over the lemniscate {z : |p(z)| ≤ 1} -/
 axiom maxDerivOnLemniscate : {n : ℕ} → ComplexPoly n → ℝ
 
-/-- The maximum of |p'(z)| is always non-negative -/
+/-  The maximum of |p'(z)| is always non-negative -/
 /- ## Known Bounds -/
 
-/-- Lower bound: the maximum derivative on a connected lemniscate is at least n.
+/-  Lower bound: the maximum derivative on a connected lemniscate is at least n.
     Equality is achieved by p(z) = zⁿ. -/
-/-- Pommerenke's bound: max |p'| ≤ (e/2) · n² on connected lemniscates -/
+/-  Pommerenke's bound: max |p'| ≤ (e/2) · n² on connected lemniscates -/
 /-- Chebyshev polynomials of degree n -/
 axiom chebyshev_poly : (n : ℕ) → ComplexPoly n
 axiom chebyshev_connected (n : ℕ) (hn : 1 ≤ n) :
@@ -51,7 +51,7 @@ axiom chebyshev_deriv_asymptotic :
 
 /- ## The Eremenko–Lempert Theorem -/
 
-/-- Erdős Problem 115 (PROVED by Eremenko–Lempert):
+/-  Erdős Problem 115 (PROVED by Eremenko–Lempert):
     For connected lemniscates, max |p'| ≤ (1/2 + o(1)) · n² -/
 /-- The bound is sharp: Chebyshev polynomials show n²/2 is the correct constant -/
 theorem ErdosProblem115_sharp :
@@ -60,5 +60,7 @@ theorem ErdosProblem115_sharp :
         (1 / 2 - ε) * ((n : ℝ) ^ 2) ≤ maxDerivOnLemniscate p := by
   intro ε hε
   obtain ⟨N, hN⟩ := chebyshev_deriv_asymptotic ε hε
-  exact ⟨N, fun n hn => ⟨chebyshev_poly n, chebyshev_connected n (by omega),
-    (hN n hn).1⟩⟩
+  -- Return max N 1 so n ≥ threshold gives both N ≤ n (for hN) and 1 ≤ n
+  -- (needed by chebyshev_connected, which requires 1 ≤ n).
+  exact ⟨max N 1, fun n hn => ⟨chebyshev_poly n, chebyshev_connected n (by omega),
+    (hN n (by omega)).1⟩⟩

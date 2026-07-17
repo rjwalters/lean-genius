@@ -59,11 +59,11 @@ axiom sylvester_k3 :
 ## Part III: The k ≥ 4 Case (Open)
 -/
 
-/--
+/- 
 **Known lower bound**: f_k(n) ≫ n^{2 - c/√(log n)} for some constant c > 0.
 This is close to n² but not quite o(n²).
 -/
-/--
+/- 
 **Erdős's Conjecture (OPEN)**: f_k(n) = o(n²) for k ≥ 4.
 
 That is, requiring at most k collinear points (k ≥ 4) should force

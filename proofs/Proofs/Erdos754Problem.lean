@@ -46,7 +46,7 @@ noncomputable def pointDist {d : ℕ} (x y : EuclideanSpace ℝ (Fin d)) : ℝ :
   dist x y
 
 /-- The set of points equidistant from x at distance r. -/
-def equidistantSet {d n : ℕ} (A : PointConfig d n) (x : Fin n) (r : ℝ) : Finset (Fin n) :=
+noncomputable def equidistantSet {d n : ℕ} (A : PointConfig d n) (x : Fin n) (r : ℝ) : Finset (Fin n) :=
   Finset.univ.filter (fun y => y ≠ x ∧ pointDist (A x) (A y) = r)
 
 /-- The "favorite distance" of point x: the distance appearing most frequently. -/
@@ -74,7 +74,7 @@ noncomputable def minFavoriteCount {d n : ℕ} (A : PointConfig d n) : ℕ :=
 axiom avis_erdos_pach_lower_bound (n : ℕ) (hn : n ≥ 4) :
     f 4 n ≥ n / 2 + 2
 
-/-- Avis-Erdős-Pach (1988) upper bound: f(n) ≤ (1 + o(1))n/2. -/
+/- Avis-Erdős-Pach (1988) upper bound: f(n) ≤ (1 + o(1))n/2. -/
 /- ## Part IV: Swanepoel's Theorem (2013) -/
 
 /-- A distance assignment: for each point, a "favorite" distance. -/
@@ -86,7 +86,7 @@ noncomputable def favoriteDistancePairs {d n : ℕ}
   (Finset.univ.filter (fun p : Fin n × Fin n =>
     p.1 ≠ p.2 ∧ pointDist (A p.1) (A p.2) = dist_assign p.1)).card
 
-/-- Swanepoel's main theorem (2013): The total count of favorite distance pairs
+/- Swanepoel's main theorem (2013): The total count of favorite distance pairs
     is at most (1/2)n² + O(n). -/
 /-- Swanepoel's answer to Erdős's question: f(n) ≤ n/2 + O(1). -/
 axiom swanepoel_erdos_754 (n : ℕ) (hn : n ≥ 4) :
@@ -102,7 +102,7 @@ theorem erdos_754_solved (n : ℕ) (hn : n ≥ 4) :
 
 /- ## Part V: Higher Dimensions -/
 
-/-- Swanepoel also proved analogous results for higher dimensions. -/
+/- Swanepoel also proved analogous results for higher dimensions. -/
 /- ## Summary
 
 **Erdős Problem #754: SOLVED (YES)**

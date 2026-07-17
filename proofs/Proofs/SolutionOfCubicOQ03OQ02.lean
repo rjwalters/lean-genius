@@ -71,7 +71,9 @@ theorem cardanoD_neg_of_casus (p q : ℝ) (h : isCasusIrreducibilis p q) :
 theorem p_neg_of_casus (p q : ℝ) (h : isCasusIrreducibilis p q) :
     p < 0 := by
   simp only [isCasusIrreducibilis, discriminant] at h
-  nlinarith [sq_nonneg q]
+  by_contra hp
+  push_neg at hp
+  nlinarith [sq_nonneg q, pow_nonneg hp 3, mul_nonneg hp (mul_nonneg hp hp)]
 
 -- ============================================================
 -- Section 3: Cardano's Formula Involves Complex Numbers
@@ -124,14 +126,14 @@ def trigRoot (p q : ℝ) (k : Fin 3) : ℝ :=
 theorem trigRoots_are_real (p q : ℝ) (h : isCasusIrreducibilis p q) (k : Fin 3) :
     trigRoot p q k ∈ Set.univ := Set.mem_univ _
 
-/-- The trigonometric roots are distinct in the casus irreducibilis.
+/-  The trigonometric roots are distinct in the casus irreducibilis.
     Axiomatized: the proof requires showing the cosine values at angles
     θ/3, (θ+2π)/3, (θ+4π)/3 are all different, which follows from
     θ ∈ (0, π) and the injectivity of cos on [0, π]. -/
-/-- Each trigonometric root satisfies the depressed cubic.
+/-  Each trigonometric root satisfies the depressed cubic.
     Axiomatized: the verification requires expanding cos³ and using
     the identity 4cos³θ - 3cosθ = cos(3θ). -/
-/-- **Wantzel's Theorem (1843)**: In the casus irreducibilis, the three real
+/-  **Wantzel's Theorem (1843)**: In the casus irreducibilis, the three real
     roots of x³ + px + q = 0 CANNOT be expressed using only real-valued
     radicals (nth roots of positive reals) and field operations.
 

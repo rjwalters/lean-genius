@@ -75,7 +75,7 @@ theorem scale_ratio_tendsto_one :
     have hc1 : Tendsto (fun k : ℕ => 1 + (k : ℝ)⁻¹) atTop (𝓝 1) := by
       simpa using tendsto_const_nhds.add hinv0
     have := ((Real.continuousAt_log (one_ne_zero)).tendsto).comp hc1
-    simpa [Real.log_one] using this
+    simpa [Function.comp_def, Real.log_one] using this
   have hquotlog : Tendsto (fun k : ℕ => Real.log (1 + (k : ℝ)⁻¹) / Real.log k)
       atTop (𝓝 0) := hnum.div_atTop hlog
   have hlogratio : Tendsto (fun k : ℕ => Real.log (k + 1) / Real.log k) atTop (𝓝 1) := by
@@ -120,7 +120,7 @@ theorem ratio_tendsto_one {h : ℕ → ℝ} {c : ℝ} (hc : 0 < c)
     (hasym : HasAsymptoticConstant h c) :
     Tendsto (fun k => h (k + 1) / h k) atTop (𝓝 1) := by
   have hshift : Tendsto (fun k : ℕ => h (k + 1) / scale (k + 1)) atTop (𝓝 c) := by
-    simpa [Function.comp] using hasym.comp (tendsto_add_atTop_nat 1)
+    simpa [Function.comp_def] using hasym.comp (tendsto_add_atTop_nat 1)
   have hnum : Tendsto
       (fun k : ℕ => (h (k + 1) / scale (k + 1)) * (scale (k + 1) / scale k))
       atTop (𝓝 (c * 1)) := hshift.mul scale_ratio_tendsto_one

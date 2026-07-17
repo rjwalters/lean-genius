@@ -1,12 +1,7 @@
 /-
 Test file for hl_conjectures_tension proof approach
 -/
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Basic
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Tactic
+import Mathlib
 
 namespace TestHLTension
 
@@ -42,27 +37,22 @@ theorem count_primes_in_range (S : Finset ℕ) (a b : ℕ) (hab : a ≤ b + 1)
     rw [Nat.count_eq_card_filter_range, Nat.count_eq_card_filter_range]
     have hsub : S ⊆ (Finset.range (b + 1)).filter Nat.Prime \ (Finset.range a).filter Nat.Prime := by
       intro s hs
+      have hs' := hS s hs
       rw [Finset.mem_sdiff, Finset.mem_filter, Finset.mem_range,
           Finset.mem_filter, Finset.mem_range]
-      exact ⟨⟨by omega, hprime s hs⟩, fun ⟨hlt, _⟩ => by have := (hS s hs).1; omega⟩
+      exact ⟨⟨by omega, hprime s hs⟩, fun ⟨hlt, _⟩ => by omega⟩
+    have hsubset : (Finset.range a).filter Nat.Prime ⊆
+                  (Finset.range (b + 1)).filter Nat.Prime := by
+      intro i hi
+      rw [Finset.mem_filter, Finset.mem_range] at hi ⊢
+      exact ⟨by omega, hi.2⟩
     calc S.card ≤ ((Finset.range (b + 1)).filter Nat.Prime \
                    (Finset.range a).filter Nat.Prime).card := Finset.card_le_card hsub
       _ = ((Finset.range (b + 1)).filter Nat.Prime).card -
-          ((Finset.range a).filter Nat.Prime ∩
-           (Finset.range (b + 1)).filter Nat.Prime).card := by
-            rw [Finset.card_sdiff_eq_card_sub_card_inter]
-      _ ≤ ((Finset.range (b + 1)).filter Nat.Prime).card -
           ((Finset.range a).filter Nat.Prime).card := by
-            have hsubset : (Finset.range a).filter Nat.Prime ⊆
-                          (Finset.range (b + 1)).filter Nat.Prime := by
-              intro i hi
-              rw [Finset.mem_filter, Finset.mem_range] at hi ⊢
-              exact ⟨by omega, hi.2⟩
-            have hinter : (Finset.range a).filter Nat.Prime ∩
-                          (Finset.range (b + 1)).filter Nat.Prime =
-                          (Finset.range a).filter Nat.Prime :=
-              Finset.inter_eq_left.mpr hsubset
-            rw [hinter]
+            rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsubset]
+  have hmono : Nat.count Nat.Prime a ≤ Nat.count Nat.Prime (b + 1) :=
+    Nat.count_monotone Nat.Prime (by omega)
   omega
 
 /-- Corrected version: π(d+1) ≥ k (not π(d) ≥ k).
@@ -88,13 +78,13 @@ theorem hl_conjectures_tension_corrected (hHL1 : HardyLittlewoodConjecture)
   rw [heq] at hhl2
   -- The primes {n+h : h ∈ H} are all in [n, n+d]
   -- Build the Finset of these primes
-  have hprimes_range : ∀ h ∈ H, n ≤ n + h ∧ n + h ≤ n + d := by
+  have hprimes_range : ∀ h ∈ H, n ≤ h + n ∧ h + n ≤ n + d := by
     intro h hh
-    exact ⟨by omega, by have := hle h hh; omega⟩
+    have := hle h hh
+    omega
   -- The map h ↦ n+h is injective on H
-  have hinj : (H.image (· + n)).card = H.card := by
-    rw [Finset.card_image_of_injective]
-    intro a b hab; omega
+  have hinj : (H.image (· + n)).card = H.card :=
+    Finset.card_image_of_injective H (fun a b hab => by omega)
   -- count(n+d+1) ≥ count(n) + |H|
   have hcount : Nat.count Nat.Prime (n + d + 1) ≥ Nat.count Nat.Prime n + H.card := by
     rw [← hinj]
@@ -116,9 +106,10 @@ theorem hl_conjectures_tension_corrected (hHL1 : HardyLittlewoodConjecture)
   -- So count(d+2) ≥ |H|
   -- primeCounting(d+1) = count(d+2) ≥ |H|
   unfold Nat.primeCounting Nat.primeCounting'
+  have hn' : n - 1 + 1 = n := by omega
+  rw [hn'] at hhl2
   have hpc : Nat.count Nat.Prime (n + d + 1) ≤
-      Nat.count Nat.Prime n + Nat.count Nat.Prime (d + 2) := by
-    convert hhl2 using 2 <;> omega
+      Nat.count Nat.Prime n + Nat.count Nat.Prime (d + 1 + 1) := hhl2
   omega
 
 end TestHLTension

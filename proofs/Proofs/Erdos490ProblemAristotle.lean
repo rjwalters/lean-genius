@@ -87,7 +87,7 @@ Key Mathlib lemmas:
 /-- Products a·p are distinct when p is a prime exceeding all elements of A.
     This justifies the construction in the optimal example for Problem #490. -/
 theorem optimal_works_because_primes_ari (N a₁ a₂ p₁ p₂ : ℕ)
-    (ha₁ : a₁ ≤ N / 2) (ha₂ : a₂ ≤ N / 2)
+    (ha₁ : a₁ ≤ N / 2) (ha₂ : a₂ ≤ N / 2) (ha₂pos : 0 < a₂)
     (hp₁ : Nat.Prime p₁) (hp₂ : Nat.Prime p₂)
     (hp₁_large : N / 2 < p₁) (hp₂_large : N / 2 < p₂)
     (heq : a₁ * p₁ = a₂ * p₂) : a₁ = a₂ ∧ p₁ = p₂ := by
@@ -96,13 +96,12 @@ theorem optimal_works_because_primes_ari (N a₁ a₂ p₁ p₂ : ℕ)
   -- Since p₁ is prime: p₁ | a₂ ∨ p₁ | p₂
   rcases hp₁.dvd_mul.mp hdvd with h | h
   · -- Case p₁ | a₂: but then a₂ ≥ p₁ > N/2 ≥ a₂, contradiction
-    have : p₁ ≤ a₂ := Nat.le_of_dvd (Nat.pos_of_ne_zero (by
-      intro ha₂z; simp [ha₂z] at heq; exact hp₁.ne_zero (Nat.eq_zero_of_mul_eq_zero_left heq))) h
+    have : p₁ ≤ a₂ := Nat.le_of_dvd ha₂pos h
     omega
   · -- Case p₁ | p₂: since both are prime, p₁ = p₂
-    have heqp : p₁ = p₂ := (hp₁.eq_of_dvd_of_prime hp₂ h).symm ▸ rfl
+    have heqp : p₁ = p₂ := (Nat.prime_dvd_prime_iff_eq hp₁ hp₂).mp h
+    subst heqp
     -- Cancel to get a₁ = a₂
-    have heqa : a₁ = a₂ := Nat.eq_of_mul_eq_mul_right hp₁.pos (heqp ▸ heq)
-    exact ⟨heqa, heqp⟩
+    exact ⟨Nat.eq_of_mul_eq_mul_right hp₁.pos heq, rfl⟩
 
 end Erdos490Aristotle

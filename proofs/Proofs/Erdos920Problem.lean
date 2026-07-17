@@ -30,13 +30,9 @@ References:
 - [MaVe23] Mattheus, Verstraete, arXiv:2306.04007 (2023)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Fintype.Basic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph Real
 
@@ -61,9 +57,9 @@ The minimum number of colors needed to properly color the vertices
 so that no two adjacent vertices share the same color.
 -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  G.chromaticNumber
+  G.chromaticNumber.toNat
 
-/--
+/- 
 **Maximum Chromatic Number g_k(n):**
 The largest chromatic number among all K_k-free graphs on n vertices.
 -/
@@ -74,12 +70,12 @@ axiom maxChromaticKFree (k n : ℕ) : ℕ
 ## Part II: Known Upper Bounds
 -/
 
-/--
+/- 
 **Graver-Yackel Upper Bound (1968):**
 g_k(n) ≪ (n · log log n / log n)^{1-1/(k-1)}
 -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 g_k(n) ≤ n (at most n colors needed).
 -/
@@ -88,13 +84,13 @@ g_k(n) ≤ n (at most n colors needed).
 ## Part III: Known Lower Bounds
 -/
 
-/--
+/- 
 **Erdős Lower Bound for k=3 (1959):**
 g_3(n) ≫ n^{1/2} / log n
 Via the Ramsey bound R(3,m) ≫ (m/log m)^2.
 -/
 
-/--
+/- 
 **Shearer's Improved Bound for k=3:**
 g_3(n) ≫ (n/log n)^{1/2}
 -/
@@ -135,7 +131,7 @@ def ErdosConjecture (k : ℕ) : Prop :=
       ∀ n : ℕ, n ≥ 2 →
         (maxChromaticKFree k n : ℝ) ≥ C * (n : ℝ) ^ (1 - 1 / (k - 1 : ℝ)) / (Real.log n) ^ c
 
-/--
+/- 
 **The Gap:**
 Current lower bound exponent: 1 - 2/(k+1)
 Conjectured lower bound exponent: 1 - 1/(k-1)
@@ -155,18 +151,18 @@ either a red K_k or a blue K_m.
 -/
 axiom RamseyNumber (k m : ℕ) : ℕ
 
-/--
+/- 
 **Ramsey-Chromatic Connection:**
 If R(k,m) ≥ c · m^α / (log m)^β, then
 g_k(n) ≥ c' · n^{1-1/α} / (log n)^{β/α}.
 This is the key bridge between Ramsey theory and chromatic numbers. -/
 
-/--
+/- 
 **Erdős Ramsey Bound (1959):**
 R(3,m) ≫ (m/log m)^2
 -/
 
-/--
+/- 
 **Mattheus-Verstraete Ramsey Bound (2023):**
 R(4,m) ≫ m^3 / (log m)^4
 This was a breakthrough for k=4.

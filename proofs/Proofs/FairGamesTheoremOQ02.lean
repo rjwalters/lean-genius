@@ -13,6 +13,7 @@
 -/
 
 import Mathlib
+import Proofs.FairGamesTheoremOQ01
 
 namespace FairGamesOQ02
 
@@ -51,7 +52,7 @@ def game_1_10 : GamblersRuin where
 
 /-- The underdog (1 vs 9) has only 10% chance of winning. -/
 theorem game_1_10_win_prob : ruinProbWin game_1_10 = 1 / 10 := by
-  simp [ruinProbWin, game_1_10]; norm_num
+  simp [ruinProbWin, game_1_10] <;> norm_num
 
 /-- The underdog game has expected duration 9. -/
 theorem game_1_10_expected_time : expectedRuinTime game_1_10 = 9 := by
@@ -84,14 +85,14 @@ theorem doubling_total_invested (k : ℕ) : ∑ i ∈ Finset.range k, doublingBe
   induction k with
   | zero => simp [doublingBet]
   | succ n ih =>
-    rw [Finset.sum_range_succ, ih, doublingBet]
+    rw [Finset.sum_range_succ, ih, doublingBet, pow_succ]
     omega
 
 /-- If you win after k consecutive losses, your net gain is exactly 1.
     Invested 2^k - 1, received 2^k from the winning bet, net = +1. -/
 theorem doubling_win_gain (k : ℕ) :
     (doublingBet k : ℤ) - (2 ^ k - 1 : ℤ) = 1 := by
-  simp [doublingBet]; omega
+  simp [doublingBet] <;> omega
 
 /-- Maximum number of doublings possible with bankroll B: ⌊log₂(B+1)⌋ rounds. -/
 def maxDoublings (B : ℕ) : ℕ := Nat.log 2 (B + 1)
@@ -101,13 +102,14 @@ def maxDoublings (B : ℕ) : ℕ := Nat.log 2 (B + 1)
 theorem doubling_bankroll_limit (B : ℕ) (hB : 0 < B) :
     2 ^ maxDoublings B - 1 ≤ B := by
   unfold maxDoublings
-  have h := Nat.pow_log_le_self 2 (B + 1)
+  have h := Nat.pow_log_le_self 2 (x := B + 1) (by omega)
   omega
 
 /-- With bankroll B = 2^n - 1, exactly n doublings are possible. -/
 theorem maxDoublings_power_of_two_minus_one (n : ℕ) (hn : 0 < n) :
     maxDoublings (2 ^ n - 1) = n := by
   unfold maxDoublings
+  have hpow : 1 ≤ 2 ^ n := Nat.one_le_two_pow
   have h : 2 ^ n - 1 + 1 = 2 ^ n := by omega
   rw [h, Nat.log_pow (by norm_num)]
 
@@ -130,9 +132,9 @@ The Fair Games Theorem guarantees this without computing!
     is exactly 0. This is a direct computation confirming the Fair Games Theorem. -/
 theorem doubling_expected_value_zero (n : ℕ) (hn : 0 < n) :
     (1 - (1 / 2 : ℝ) ^ n) * 1 + (1 / 2 : ℝ) ^ n * (-(2 ^ n - 1 : ℝ)) = 0 := by
-  have h2 : (2 : ℝ) ≠ 0 := by norm_num
-  field_simp
-  ring
+  have hpow : (1 / 2 : ℝ) ^ n * 2 ^ n = 1 := by
+    rw [← mul_pow]; norm_num
+  nlinarith [hpow]
 
 end FairGamesOQ02
 

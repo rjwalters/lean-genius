@@ -18,11 +18,7 @@ References:
 - https://erdosproblems.com/790
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib
 
 open Nat Finset
 
@@ -51,16 +47,16 @@ sum-free subset size. Axiomatized since computing this requires
 quantifying over all n-element subsets of ℤ. -/
 axiom l (n : ℕ) : ℕ
 
-/-- l(n) is a valid lower bound: every n-set has a sum-free subset
+/-  l(n) is a valid lower bound: every n-set has a sum-free subset
 of size at least l(n). -/
-/-- l(n) is optimal: for any k > l(n), there exists an n-set where
+/-  l(n) is optimal: for any k > l(n), there exists an n-set where
 no sum-free subset reaches size k. -/
 /- ## Lower Bounds -/
 
-/-- **Erdős's observation:** l(n) ≥ √(n/2).
+/-  **Erdős's observation:** l(n) ≥ √(n/2).
 In {1,...,n}, the upper half is nearly sum-free since sums of
 large numbers exceed n. A careful selection yields √(n/2) elements. -/
-/-- **Choi's improvement:** l(n) > (1+c)√n for some c > 0.
+/-  **Choi's improvement:** l(n) > (1+c)√n for some c > 0.
 This beats Erdős's √(n/2) ≈ 0.707√n by a constant factor,
 using a more refined combinatorial argument. -/
 /-- **CKS Lower Bound (1975):**

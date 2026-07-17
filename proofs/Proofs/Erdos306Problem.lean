@@ -150,11 +150,13 @@ example : ArithmeticFunction.cardDistinctFactors 6 = 2 := by native_decide
 /-- Check: 6 = 2 × 3 has Ω(6) = 2. -/
 example : ArithmeticFunction.cardFactors 6 = 2 := by native_decide
 
-/-- Example: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 1
-This shows 1 can be represented with 2-distinct-prime denominators.
-(6 terms: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7) -/
+/-- Example: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 101/210
+These 6 denominators (6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7) are the
+products of two distinct primes drawn from {2,3,5,7}; their reciprocal sum is
+101/210 (the original claim "= 1" was arithmetically incorrect, LCD 210 giving
+35+21+15+14+10+6 = 101). -/
 theorem example_one_representation :
-    (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1 := by norm_num
+    (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 101 / 210 := by norm_num
 
 /-- The first few products of 3 distinct primes. -/
 def threePrimeProducts : List ℕ := [30, 42, 66, 70, 78, 102, 105, 110, 114, 130]
@@ -175,7 +177,7 @@ appear exactly once, which may interact well with the constraint
 on denominators.
 -/
 
-/-- Every positive rational can be written with squarefree denominator
+/-  Every positive rational can be written with squarefree denominator
 (by reducing to lowest terms). -/
 /-
 ## The Density of k-Distinct-Prime Products
@@ -190,8 +192,8 @@ This sparsity affects the difficulty of the problem.
 /-- The number of products of 2 distinct primes up to n. -/
 axiom twoPrimeProductCount : ℕ → ℕ
 
-/-- The number of products of 3 distinct primes up to n. -/
-/-- Asymptotic density of products of k distinct primes.
+/-  The number of products of 3 distinct primes up to n. -/
+/-  Asymptotic density of products of k distinct primes.
 The count is roughly n × (log log n)^(k-1) / ((k-1)! × log n). -/
 /-
 ## Why 2 Primes is Harder than 3 Primes
@@ -206,7 +208,7 @@ The squarefree denominator condition may be necessary to ensure
 the representation exists.
 -/
 
-/-- The 2-prime case is open. -/
+/-  The 2-prime case is open. -/
 /-- The 3-prime integer version is solved. -/
 theorem three_prime_status : three_prime_integer_version := three_prime_solved
 
@@ -223,7 +225,7 @@ doesn't guarantee any structure on the denominators.
 For the constrained problem, we need more sophisticated methods.
 -/
 
-/-- The greedy algorithm gives an Egyptian fraction, but without
+/- The greedy algorithm gives an Egyptian fraction, but without
 guarantees on the prime structure of denominators. -/
 /-
 ## Summary

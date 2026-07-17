@@ -25,10 +25,7 @@ References:
 - Erdős, P. (1976): Problems and results in combinatorial analysis [Er76]
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open Finset
 
@@ -109,7 +106,7 @@ def IsAdmissible (n : ℕ) : Prop :=
 A Steiner triple system of order n exists if and only if n ≡ 1, 3 (mod 6).
 -/
 axiom kirkman_theorem (n : ℕ) :
-    (∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+    (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
       Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔
     (n ≥ 1 ∧ IsAdmissible n)
 
@@ -127,7 +124,7 @@ theorem sts_triple_count_formula (n : ℕ) (hn : IsAdmissible n) :
   · -- n ≡ 3 (mod 6): 3 | n and 2 | (n - 1), so n*(n-1) = 3a * 2b = 6ab
     obtain ⟨a, ha⟩ := Nat.dvd_of_mod_eq_zero (show n % 3 = 0 by omega)
     obtain ⟨b, hb⟩ := Nat.dvd_of_mod_eq_zero (show (n - 1) % 2 = 0 by omega)
-    exact ⟨a * b, by rw [ha, hb]; ring⟩
+    exact ⟨a * b, by rw [hb, ha]; ring⟩
 
 /-
 ## Part IV: The Erdős Conjecture
@@ -140,7 +137,7 @@ there exists an STS(n) with girth at least g.
 -/
 def erdos207Conjecture : Prop :=
   ∀ g : ℕ, g ≥ 2 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N → IsAdmissible n →
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
       Fintype.card V = n ∧ IsSteinerTripleSystem H ∧ HasGirthAtLeast H g
 
 /-
@@ -192,7 +189,7 @@ theorem girth_3_iff_pasch_free {V : Type*} [Fintype V] [DecidableEq V]
     HasGirthAtLeast H 3 ↔ IsPaschFree H := by
   sorry
 
-/--
+/- 
 **Anti-Pasch STS:**
 Steiner triple systems avoiding the Pasch configuration have been studied
 extensively. The KSSS result generalizes this to arbitrary girth.
@@ -237,7 +234,7 @@ Related to resolvable STS - can 15 schoolgirls walk in groups of 3 for 7 days
 without any pair walking together twice?
 -/
 def kirkmanSchoolgirlProblem : Prop :=
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
     Fintype.card V = 15 ∧ IsSteinerTripleSystem H ∧ IsResolvable H
 
 /-
@@ -259,8 +256,8 @@ theorem erdos_207_summary :
     -- The conjecture is true
     erdos207Conjecture ∧
     -- Kirkman's condition is necessary and sufficient for STS existence
-    (∀ n : ℕ, n ≥ 1 → (∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
-      Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔ IsAdmissible n) := by
+    (∀ n : ℕ, n ≥ 1 → ((∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
+      Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔ IsAdmissible n)) := by
   constructor
   · exact kwan_sah_sawhney_simkin_2022
   · intro n hn

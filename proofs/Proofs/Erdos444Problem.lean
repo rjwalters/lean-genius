@@ -22,9 +22,8 @@ References:
 - Erdős-Sárközy [ErSa80]: Complete solution
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Basic
+import Mathlib
+open scoped Classical
 
 namespace Erdos444
 
@@ -43,7 +42,7 @@ def InfiniteSubset (A : Set ℕ) : Prop :=
 **The generalized divisor function d_A(n):**
 d_A(n) = |{a ∈ A : a | n}|, the number of divisors of n that belong to A.
 -/
-def d_A (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def d_A (A : Set ℕ) (n : ℕ) : ℕ :=
   (Finset.filter (fun a => a ∈ A ∧ a ∣ n) (Finset.range (n + 1))).card
 
 /--
@@ -57,7 +56,7 @@ noncomputable def H_A (A : Set ℕ) (x : ℕ) : ℝ :=
 **Maximum divisor count:**
 M_A(x) = max_{n < x} d_A(n), the maximum of d_A over [1, x).
 -/
-def M_A (A : Set ℕ) (x : ℕ) : ℕ :=
+noncomputable def M_A (A : Set ℕ) (x : ℕ) : ℕ :=
   (Finset.range x).sup (d_A A)
 
 /-
@@ -88,7 +87,7 @@ axiom erdos_graham_conjecture_true : erdos_graham_conjecture
 ## Part III: Special Cases
 -/
 
-/-- When A = ℕ, d_A(n) = d(n), the standard divisor function.
+/-  When A = ℕ, d_A(n) = d(n), the standard divisor function.
     H_A(x) ≈ log x. The maximum max_{n<x} d(n) grows like
     exp(c log x / log log x), much faster than any (log x)^k. -/
 /-- When A = primes, d_A(n) = ω(n), the number of distinct prime factors.
@@ -99,12 +98,12 @@ def IsPrime (n : ℕ) : Prop := Nat.Prime n
 ## Part IV: Structural Properties
 -/
 
-/-- Highly composite numbers relative to A achieve large d_A values.
+/-  Highly composite numbers relative to A achieve large d_A values.
     For any A and any target, there exist n with d_A(n) exceeding
     any power of H_A. -/
-/-- The maximum M_A grows at least exponentially relative to H_A:
+/-  The maximum M_A grows at least exponentially relative to H_A:
     M_A(x) ≥ exp(c · H_A(x)) for some c > 0 depending on A. -/
-/-- There is no universal function f bounding M_A(x) in terms of H_A(x)
+/-  There is no universal function f bounding M_A(x) in terms of H_A(x)
     for all infinite A: for any f, some A violates M_A(x) ≤ f(H_A(x)). -/
 /-
 ## Part V: Summary

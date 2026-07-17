@@ -47,18 +47,19 @@ def IsBlockingSet {P L : Type*} [Membership P L] (S : Set P) : Prop :=
 
 /-- If S is a blocking set and S ⊆ T, then T is also a blocking set. -/
 theorem blocking_set_mono {P L : Type*} [Membership P L]
-    {S T : Set P} (hST : S ⊆ T) (hS : IsBlockingSet S) : IsBlockingSet (L := L) T := by
+    {S T : Set P} (hST : S ⊆ T) (hS : IsBlockingSet (L := L) S) :
+    IsBlockingSet (L := L) T := by
   intro l
   obtain ⟨p, hpS, hpl⟩ := hS l
   exact ⟨p, hST hpS, hpl⟩
 
 /-- The empty set is not a blocking set in any nontrivial configuration. -/
 theorem empty_not_blocking_set {P L : Type*} [Membership P L] [Nonempty L] :
-    ¬IsBlockingSet (∅ : Set P) := by
+    ¬IsBlockingSet (L := L) (∅ : Set P) := by
   intro h
   obtain ⟨l⟩ := ‹Nonempty L›
   obtain ⟨p, hp, _⟩ := h l
-  exact Set.not_mem_empty p hp
+  exact Set.notMem_empty p hp
 
 -- ## Part III: Structural Results (Proved from Mathlib)
 
@@ -66,7 +67,7 @@ theorem empty_not_blocking_set {P L : Type*} [Membership P L] [Nonempty L] :
 theorem pointCount_eq' {P L : Type*} [Membership P L] [ProjectivePlane P L]
     [Finite P] [Finite L] (l : L) :
     pointCount P l = ProjectivePlane.order P L + 1 :=
-  ProjectivePlane.pointCount_eq P L l
+  ProjectivePlane.pointCount_eq P l
 
 /-- In a projective plane, every point lies on exactly order + 1 lines. -/
 theorem lineCount_eq' {P L : Type*} [Membership P L] [ProjectivePlane P L]
@@ -100,7 +101,7 @@ axiom ess_log_blocking_set :
     ∀ (P L : Type*) [Membership P L] [inst : ProjectivePlane P L]
       [Fintype P] [Fintype L],
     ∃ (S : Set P),
-      IsBlockingSet S ∧
+      IsBlockingSet (L := L) S ∧
       ∀ l : L, Nat.card {p : P | p ∈ S ∧ p ∈ l} ≤
         3 * (Nat.log 2 (ProjectivePlane.order P L) + 1)
 
@@ -120,7 +121,7 @@ def BoundedBlockingSetConjecture : Prop :=
   ∃ C : ℕ, ∀ (P L : Type*) [Membership P L] [ProjectivePlane P L]
     [Fintype P] [Fintype L],
     ∃ S : Set P,
-      IsBlockingSet S ∧
+      IsBlockingSet (L := L) S ∧
       ∀ l : L, Nat.card {p : P | p ∈ S ∧ p ∈ l} ≤ C
 
 /-- The ESS result implies that no counterexample exists at any fixed order:
@@ -130,7 +131,7 @@ theorem ess_implies_per_order_bound :
     ∀ (P L : Type*) [Membership P L] [inst : ProjectivePlane P L]
       [Fintype P] [Fintype L],
     ∃ C : ℕ, ∃ S : Set P,
-      IsBlockingSet S ∧
+      IsBlockingSet (L := L) S ∧
       ∀ l : L, Nat.card {p : P | p ∈ S ∧ p ∈ l} ≤ C := by
   intro P L _ _ _ _
   obtain ⟨S, hblock, hbound⟩ := ess_log_blocking_set P L

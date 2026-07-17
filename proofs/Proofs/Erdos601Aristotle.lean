@@ -21,35 +21,35 @@ open Ordinal Cardinal
 theorem transfinite_induction (P : Ordinal → Prop)
     (h0 : P 0)
     (hS : ∀ α, P α → P (α + 1))
-    (hL : ∀ α, α.IsLimit → (∀ β < α, P β) → P α) :
+    (hL : ∀ α, Order.IsSuccLimit α → (∀ β < α, P β) → P α) :
     ∀ α, P α := by
   intro α
   induction α using Ordinal.induction with
   | h α ih =>
-    rcases Ordinal.zero_or_succ_or_limit α with rfl | ⟨β, rfl⟩ | hα
+    rcases Ordinal.zero_or_succ_or_isSuccLimit α with rfl | ⟨β, rfl⟩ | hα
     · exact h0
-    · exact hS β (ih β (Ordinal.lt_succ β))
+    · exact hS β (ih β (Order.lt_succ β))
     · exact hL α hα ih
 
 /-- The ordinal hierarchy: ω < ω₁. -/
-theorem omega_lt_omega1 : ω < Ordinal.omega1 :=
-  Ordinal.omega0_lt_omega1
+theorem omega_lt_omega1 : ω < ω₁ :=
+  Ordinal.omega0_lt_omega_one
 
-private theorem one_lt_omega1 : (1 : Ordinal) < Ordinal.omega1 :=
-  Ordinal.one_lt_omega.trans Ordinal.omega0_lt_omega1
+private theorem one_lt_omega1 : (1 : Ordinal) < ω₁ :=
+  Ordinal.one_lt_omega0.trans Ordinal.omega0_lt_omega_one
 
 /-- ω₁ < ω₁ ^ ω (ordinal exponentiation). -/
-theorem omega1_lt_omega1_pow_omega : Ordinal.omega1 < Ordinal.omega1 ^ ω := by
-  conv_lhs => rw [← Ordinal.opow_one Ordinal.omega1]
-  exact Ordinal.opow_lt_opow_right one_lt_omega1 Ordinal.one_lt_omega
+theorem omega1_lt_omega1_pow_omega : ω₁ < ω₁ ^ ω := by
+  conv_lhs => rw [← Ordinal.opow_one ω₁]
+  exact (Ordinal.opow_lt_opow_iff_right one_lt_omega1).mpr Ordinal.one_lt_omega0
 
 /-- ω₁ ^ ω < ω₁ ^ (ω + 1). -/
-theorem omega1_pow_omega_lt_succ : Ordinal.omega1 ^ ω < Ordinal.omega1 ^ (ω + 1) :=
-  Ordinal.opow_lt_opow_right one_lt_omega1 (Ordinal.lt_succ ω)
+theorem omega1_pow_omega_lt_succ : ω₁ ^ ω < ω₁ ^ (ω + 1) :=
+  (Ordinal.opow_lt_opow_iff_right one_lt_omega1).mpr (by simpa [Order.succ_eq_add_one] using Order.lt_succ ω)
 
 /-- ω₁ ^ (ω + 1) < ω₁ ^ (ω + 2). -/
-theorem omega1_pow_succ_lt : Ordinal.omega1 ^ (ω + 1) < Ordinal.omega1 ^ (ω + 2) :=
-  Ordinal.opow_lt_opow_right one_lt_omega1 (Ordinal.lt_succ (ω + 1))
+theorem omega1_pow_succ_lt : ω₁ ^ (ω + 1) < ω₁ ^ (ω + 2) :=
+  (Ordinal.opow_lt_opow_iff_right one_lt_omega1).mpr (by simpa [Order.succ_eq_add_one, add_assoc, one_add_one_eq_two] using Order.lt_succ (ω + 1))
 
 /-- A disjunction P ∨ Q is equivalent to (¬P → Q) when decidable. -/
 theorem or_iff_not_imp {P Q : Prop} : (P ∨ Q) ↔ (¬P → Q) :=
@@ -76,20 +76,20 @@ theorem ordinal_lt_ne {α β : Ordinal} (h : α < β) : α ≠ β :=
   ne_of_lt h
 
 /-- ω + 1 > ω (successor ordinal). -/
-theorem omega_lt_omega_succ : ω < ω + 1 :=
-  Ordinal.lt_succ ω
+theorem omega_lt_omega_succ : ω < ω + 1 := by
+  simpa [Order.succ_eq_add_one] using Order.lt_succ ω
 
 /-- ω + 2 = (ω + 1) + 1. -/
 theorem omega_add_two : ω + 2 = (ω + 1) + 1 := by
-  omega
+  rw [add_assoc, one_add_one_eq_two]
 
 /-- ω + 1 < ω + 2 (strict ordinal inequality). -/
-theorem omega_succ_lt_omega_add_two : ω + 1 < ω + 2 :=
-  Ordinal.lt_succ (ω + 1)
+theorem omega_succ_lt_omega_add_two : ω + 1 < ω + 2 := by
+  simpa [Order.succ_eq_add_one, add_assoc, one_add_one_eq_two] using Order.lt_succ (ω + 1)
 
 /-- If a property holds for all β < α and α is a limit ordinal,
     then the property is determined by its values below α. -/
-theorem limit_determined_by_below (α : Ordinal) (hα : α.IsLimit)
+theorem limit_determined_by_below (α : Ordinal) (hα : Order.IsSuccLimit α)
     (P : Ordinal → Prop) (h : ∀ β < α, P β) : ∀ β < α, P β :=
   h
 

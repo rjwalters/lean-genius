@@ -83,13 +83,13 @@ theorem approx_to_exact {f : ℝ → ℝ} (hf : Continuous f)
   push_neg at habs
   -- habs : 0 < |f x_star - x_star|
   -- We'll get a contradiction by choosing ε = |f x_star - x_star|/2
-  set ε := |f x_star - x_star| / 2
+  set ε := |f x_star - x_star| / 2 with hε_def
   have hε : 0 < ε := by positivity
   -- Pick N large enough from tendsto
   rw [Metric.tendsto_atTop] at hdiff
   obtain ⟨N₁, hN₁⟩ := hdiff (ε / 2) (by linarith)
   -- Pick N₂ large enough that 1/N₂ < ε/2
-  obtain ⟨N₂_pred, _⟩ := exists_nat_gt (2 / ε)
+  obtain ⟨N₂_pred, hN₂_pred⟩ := exists_nat_gt (2 / ε)
   set N₂ := N₂_pred + 1 with hN₂_def
   have hN₂_pos : 0 < N₂ := by omega
   set m := max N₁ N₂ with hm_def
@@ -107,7 +107,7 @@ theorem approx_to_exact {f : ℝ → ℝ} (hf : Continuous f)
       |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := by
     calc |f x_star - x_star|
         = |(f x_star - x_star - (f (x m) - x m)) + (f (x m) - x m)| := by ring_nf
-      _ ≤ |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := abs_add _ _
+      _ ≤ |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := abs_add_le _ _
   -- |f(x*) - x* - (f(xₘ) - xₘ)| = |(f(xₘ) - xₘ) - (f(x*) - x*)| < ε/2
   have hsym : |f x_star - x_star - (f (x m) - x m)| =
       |f (x m) - x m - (f x_star - x_star)| := abs_sub_comm _ _
@@ -115,13 +115,14 @@ theorem approx_to_exact {f : ℝ → ℝ} (hf : Continuous f)
   have hm_cast_pos : (0 : ℝ) < ↑m := by exact_mod_cast hm_pos
   have hN2_cast_pos : (0 : ℝ) < ↑N₂ := by exact_mod_cast hN₂_pos
   have inv_m_le : 1 / (↑m : ℝ) ≤ 1 / ↑N₂ := by
-    apply div_le_div_of_nonneg_left (by norm_num : (0:ℝ) < 1) hN2_cast_pos
+    apply div_le_div_of_nonneg_left (by norm_num : (0:ℝ) ≤ 1) hN2_cast_pos
     exact_mod_cast hm_ge_N2
   have inv_N2_le : 1 / (↑N₂ : ℝ) ≤ ε / 2 := by
-    rw [div_le_div_iff hN2_cast_pos (by norm_num : (0:ℝ) < 2)]
-    have : 2 / ε < ↑N₂_pred + 1 := by exact_mod_cast Nat.lt_succ_of_lt (by exact_mod_cast ‹_›)
-    nlinarith
-  linarith [hsym]
+    rw [div_le_div_iff₀ hN2_cast_pos (by norm_num : (0:ℝ) < 2)]
+    have hcast : (↑N₂ : ℝ) = ↑N₂_pred + 1 := by rw [hN₂_def]; push_cast; ring
+    have hεN : (2:ℝ) < ↑N₂_pred * ε := (div_lt_iff₀ hε).mp hN₂_pred
+    nlinarith [hcast, hεN, hε]
+  linarith [hsym, hε_def]
 
 -- ============================================================
 -- SECTION IV: Contraction Convergence
@@ -169,7 +170,7 @@ theorem contraction_cauchy {f : ℝ → ℝ} {L : ℝ}
     rw [Real.dist_eq, sub_zero, abs_of_nonneg (pow_nonneg hL n)] at hdist
     calc |f^[n + 1] x₀ - f^[n] x₀|
         = |f (f^[n] x₀) - f^[n] x₀| := by
-          simp [Function.iterate_succ', Function.comp_apply]
+          simp [Function.iterate_succ_apply']
       _ ≤ L ^ n * |f x₀ - x₀| := hiter
       _ < (ε / |f x₀ - x₀|) * |f x₀ - x₀| :=
           mul_lt_mul_of_pos_right hdist hd_pos
@@ -269,28 +270,28 @@ private lemma PPADInstance.followPath_injective {V : Type*} [DecidableEq V]
       -- succ(followPath j') = some source, so pred source ≠ none
       simp [followPath] at hi
       simp [followPath] at hj
-      obtain ⟨w, hw, hsw⟩ := Option.bind_eq_some.mp hj
+      obtain ⟨w, hw, hsw⟩ := Option.bind_eq_some_iff.mp hj
       have := G.consistent_succ w G.source (by rwa [← hi] at hsw)
       rw [G.source_no_pred] at this
       exact absurd this (by simp)
     | i' + 1, 0 =>
       -- Symmetric: v = source, followPath (i'+1) = some source → contradiction
       simp [followPath] at hi hj
-      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some.mp hi
+      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some_iff.mp hi
       have := G.consistent_succ u G.source (by rwa [← hj] at hsu)
       rw [G.source_no_pred] at this
       exact absurd this (by simp)
     | i' + 1, j' + 1 =>
       -- Both i, j > 0: predecessors must match
       simp [followPath] at hi hj
-      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some.mp hi
-      obtain ⟨w, hw, hsw⟩ := Option.bind_eq_some.mp hj
+      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some_iff.mp hi
+      obtain ⟨w, hw, hsw⟩ := Option.bind_eq_some_iff.mp hj
       -- pred v = some u and pred v = some w, so u = w
       have hp1 := G.consistent_succ u v hsu
       have hp2 := G.consistent_succ w v hsw
       have huw : u = w := Option.some_injective V (by rw [← hp1, ← hp2])
       -- By IH: followPath i' = followPath j' = some u, so i' = j'
-      have : i' = j' := ih i' j' (by omega) u hu (by rwa [huw] at hw)
+      have : i' = j' := ih i' j' (by omega) u hu (by rwa [← huw] at hw)
       omega
 
 /-- In a finite type, the path must eventually reach none (by pigeonhole). -/
@@ -320,12 +321,17 @@ private lemma PPADInstance.exists_first_none {V : Type*} [Fintype V] [DecidableE
     (G : PPADInstance V) :
     ∃ k, G.followPath k ≠ none ∧ G.followPath (k + 1) = none := by
   obtain ⟨n, hn⟩ := G.followPath_eventually_none
-  -- Find the minimum such n
-  obtain ⟨k, hk, hmin⟩ := Nat.exists_least_of_bex ⟨n, by omega, hn⟩
-  rcases k with _ | k'
+  classical
+  -- Find the minimum such n via `Nat.find`
+  have hex : ∃ k, G.followPath k = none := ⟨n, hn⟩
+  have hk : G.followPath (Nat.find hex) = none := Nat.find_spec hex
+  have hmin : ∀ m, m < Nat.find hex → G.followPath m ≠ none := fun m hm => Nat.find_min hex hm
+  rcases hk' : Nat.find hex with _ | k'
   · -- k = 0: followPath 0 = none, but followPath 0 = some source ≠ none
+    rw [hk'] at hk
     simp at hk
-  · exact ⟨k', fun h => absurd (hmin k' (by omega) h) (by omega), hk⟩
+  · refine ⟨k', hmin k' (by omega), ?_⟩
+    rw [← hk']; exact hk
 
 /-- **PPAD principle** (proved): every finite PPAD instance has a solution.
     Proof: follow the succ chain from source. The path visits distinct vertices
@@ -342,22 +348,22 @@ theorem ppad_solution_exists {V : Type*} [Fintype V] [DecidableEq V]
   · -- v ≠ source: source has succ ≠ none, but succ v = none
     intro heq
     -- followPath (k+1) = (followPath k).bind succ = (some v).bind succ = succ v
-    simp [followPath, hv] at hk_none
+    simp [PPADInstance.followPath, hv] at hk_none
     -- succ source ≠ none
     rw [heq] at hk_none
     exact G.source_has_succ hk_none
   · -- succ v = none: followPath (k+1) = (some v).bind succ = succ v = none
-    simp [followPath, hv] at hk_none
+    simp [PPADInstance.followPath, hv] at hk_none
     exact hk_none
   · -- pred v ≠ none: v was reached from the path (v = succ(path(k-1)))
     rcases k with _ | k'
     · -- k = 0: v = source, but we showed v ≠ source above — contradiction
       simp at hv
       intro _
-      exact G.source_has_succ (by simp [followPath, ← hv] at hk_none; exact hk_none)
+      exact G.source_has_succ (by simp [PPADInstance.followPath, ← hv] at hk_none; exact hk_none)
     · -- k = k' + 1: followPath (k'+1) = (followPath k').bind succ = some v
-      simp [followPath] at hv
-      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some.mp hv
+      simp [PPADInstance.followPath] at hv
+      obtain ⟨u, hu, hsu⟩ := Option.bind_eq_some_iff.mp hv
       -- succ u = some v, so pred v = some u ≠ none
       have := G.consistent_succ u v hsu
       rw [this]

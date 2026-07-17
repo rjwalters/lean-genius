@@ -194,7 +194,7 @@ axiom cramer_conjecture :
 axiom legendre_conjecture (n : ℕ) (hn : n ≥ 1) :
     ∃ p : ℕ, Nat.Prime p ∧ n ^ 2 < p ∧ p ≤ (n + 1) ^ 2
 
-/-- Bertrand's Postulate is weaker than Legendre's Conjecture for large n.
+/-  Bertrand's Postulate is weaker than Legendre's Conjecture for large n.
     Bertrand gives: prime in (n, 2n].
     Legendre gives: prime in (n², (n+1)²].
     For n ≥ 2: the Legendre interval (n², (n+1)²] is inside (n, 2n²) ⊂ (n², 2n²) which

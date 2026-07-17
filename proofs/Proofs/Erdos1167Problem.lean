@@ -54,12 +54,14 @@ namespace Erdos1167
 
 open Cardinal Set
 
+universe u v
+
 -- An r-element subset of a type α
-def RSubset (α : Type*) (r : ℕ) : Type* :=
+def RSubset (α : Type u) (r : ℕ) : Type u :=
   { s : Finset α // s.card = r }
 
 -- A coloring of r-element subsets of a type into γ colors
-def Coloring (α : Type*) (r : ℕ) (γ : Type*) :=
+def Coloring (α : Type u) (r : ℕ) (γ : Type v) : Type (max u v) :=
   RSubset α r → γ
 
 -- A set H is monochromatic under coloring f with color c:
@@ -71,12 +73,12 @@ def IsMonochromatic {α : Type*} {r : ℕ} {γ : Type*}
 -- The partition relation κ → (λ)^r_γ:
 -- Every γ-coloring of r-subsets of a set of size κ has a
 -- monochromatic set of size ≥ λ in some color
-def PartitionRelation (κ λ_target : Cardinal) (r : ℕ) (γ : Cardinal) : Prop :=
+def PartitionRelation (κ lamTarget : Cardinal) (r : ℕ) (γ : Cardinal) : Prop :=
   ∀ (α : Type*) (_ : #α = κ)
     (β : Type*) (_ : #β = γ)
     (f : Coloring α r β),
     ∃ (c : β) (H : Set α),
-      IsMonochromatic f H c ∧ #H ≥ λ_target
+      IsMonochromatic f H c ∧ #H ≥ lamTarget
 
 -- The indexed partition relation κ → (κ_i)^r_{i < γ}:
 -- For every coloring into γ colors, there exists a color i < γ
@@ -102,20 +104,17 @@ theorem partition_one_color (κ : Cardinal) (r : ℕ) :
     PartitionRelation κ κ r 1 := by
   intro α hα β hβ f
   -- β has exactly one element, so any two values are equal
-  have : Subsingleton β := by
-    rwa [Cardinal.eq_one_iff_unique] at hβ
-  -- β is nonempty (has cardinality 1)
-  have hne : Nonempty β := by
-    rwa [Cardinal.mk_ne_zero_iff, ← hβ]
-    exact one_ne_zero
+  rw [Cardinal.eq_one_iff_unique] at hβ
+  obtain ⟨hss, hne⟩ := hβ
+  haveI : Subsingleton β := hss
   obtain ⟨c⟩ := hne
   exact ⟨c, univ, fun s _ => Subsingleton.elim _ _, by simp [hα]⟩
 
--- Monotonicity in target: if κ → (λ)^r_γ and λ' ≤ λ, then κ → (λ')^r_γ
-theorem partition_monotone_target {κ λ_target λ' : Cardinal} {r : ℕ}
+-- Monotonicity in target: if κ → (λ)^r_γ and lamPrime ≤ λ, then κ → (lamPrime)^r_γ
+theorem partition_monotone_target {κ lamTarget lamPrime : Cardinal} {r : ℕ}
     {γ : Cardinal}
-    (h : PartitionRelation κ λ_target r γ) (hle : λ' ≤ λ_target) :
-    PartitionRelation κ λ' r γ := by
+    (h : PartitionRelation κ lamTarget r γ) (hle : lamPrime ≤ lamTarget) :
+    PartitionRelation κ lamPrime r γ := by
   intro α hα β hβ f
   obtain ⟨c, H, hmono, hcard⟩ := h α hα β hβ f
   exact ⟨c, H, hmono, le_trans hle hcard⟩
@@ -127,7 +126,7 @@ theorem partition_zero_target (κ : Cardinal) (r : ℕ) (hr : 0 < r)
     PartitionRelation κ 0 r γ := by
   intro α _hα β hβ f
   have hne : Nonempty β := by
-    rwa [Cardinal.mk_ne_zero_iff, ← hβ]
+    rw [← Cardinal.mk_ne_zero_iff, hβ]; exact hγ
   obtain ⟨c⟩ := hne
   refine ⟨c, ∅, fun s hs => ?_, by simp⟩
   exfalso
@@ -171,11 +170,11 @@ but meaningful for finite ones.
 -- This shows the "+1" in the conjecture is only relevant for finite targets
 theorem infinite_card_add_one (κ : Cardinal) (hκ : ℵ₀ ≤ κ) :
     κ + 1 = κ := by
-  have h1 : (1 : Cardinal) ≤ ℵ₀ := by exact one_le_aleph0
-  have := Cardinal.add_eq_self hκ
-  rw [add_comm] at this ⊢
-  calc 1 + κ ≤ κ + κ := by exact add_le_add_right (le_trans h1 hκ) κ
-    _ = κ := this
+  have h1 : (1 : Cardinal) ≤ ℵ₀ := one_le_aleph0
+  have hself := Cardinal.add_eq_self hκ
+  refine le_antisymm ?_ (self_le_add_right κ 1)
+  calc κ + 1 ≤ κ + κ := by gcongr; exact le_trans h1 hκ
+    _ = κ := hself
 
 -- For natural numbers, κ + 1 is genuinely larger
 theorem finite_card_add_one (n : ℕ) :
@@ -188,24 +187,25 @@ theorem finite_card_add_one (n : ℕ) :
 -- because κ_α + 1 = κ_α for infinite κ_α
 theorem conjecture_simplifies_infinite_targets
     (r : ℕ) (_hr : r ≥ 2)
-    (λ_card : Cardinal.{u}) (_hλ : ℵ₀ ≤ λ_card)
+    (lamCard : Cardinal.{u}) (_hlam : ℵ₀ ≤ lamCard)
     (γ : Ordinal) (targets : Ordinal → Cardinal.{u})
     (htargets : ∀ i, i < γ → ℵ₀ ≤ targets i)
-    (h : IndexedPartitionRelation (2 ^ λ_card) targets (r + 1) γ) :
-    IndexedPartitionRelation (2 ^ λ_card)
+    (h : IndexedPartitionRelation (2 ^ lamCard) targets (r + 1) γ) :
+    IndexedPartitionRelation (2 ^ lamCard)
       (fun α => targets α + 1) (r + 1) γ := by
   intro α hα β hβ f
   obtain ⟨c, H, i, hi, hmono, hcard⟩ := h α hα β hβ f
   refine ⟨c, H, i, hi, hmono, ?_⟩
+  show #↑H ≥ targets i + 1
   rw [infinite_card_add_one (targets i) (htargets i hi)]
   exact hcard
 
 -- For infinite λ, 2^λ is also infinite (and strictly larger)
 -- This is relevant because the conjecture's hypothesis involves 2^λ
-theorem two_pow_infinite (λ_card : Cardinal) (hλ : ℵ₀ ≤ λ_card) :
-    ℵ₀ ≤ 2 ^ λ_card := by
-  calc ℵ₀ ≤ λ_card := hλ
-    _ ≤ 2 ^ λ_card := Cardinal.cantor λ_card
+theorem two_pow_infinite (lamCard : Cardinal) (hlam : ℵ₀ ≤ lamCard) :
+    ℵ₀ ≤ 2 ^ lamCard := by
+  calc ℵ₀ ≤ lamCard := hlam
+    _ ≤ 2 ^ lamCard := (Cardinal.cantor lamCard).le
 
 /-
 ## Section 3: The Erdős-Hajnal-Rado Conjecture and Remaining Axioms
@@ -219,10 +219,10 @@ is a deep result about stepping UP that remains axiomatized.
 -- OPEN: This remains unresolved
 axiom erdos_1167_conjecture
     (r : ℕ) (hr : r ≥ 2)
-    (λ_card : Cardinal.{u}) (hλ : ℵ₀ ≤ λ_card)
+    (lamCard : Cardinal.{u}) (hlam : ℵ₀ ≤ lamCard)
     (γ : Ordinal) (targets : Ordinal → Cardinal.{u}) :
-    IndexedPartitionRelation (2 ^ λ_card) (fun α => targets α + 1) (r + 1) γ →
-    IndexedPartitionRelation λ_card targets r γ
+    IndexedPartitionRelation (2 ^ lamCard) (fun α => targets α + 1) (r + 1) γ →
+    IndexedPartitionRelation lamCard targets r γ
 
 -- Erdős-Rado theorem: (2^κ)⁺ → (κ⁺)²_κ
 -- The classical result from "A partition calculus in set theory" (1956)
@@ -267,11 +267,7 @@ theorem infinite_ramsey_one (k : ℕ) (hk : k ≥ 1) :
   -- Map each element to the color of its singleton subset
   let g : α → β := fun x => f ⟨{x}, Finset.card_singleton x⟩
   -- α is infinite (ℵ₀ elements)
-  haveI hInfα : Infinite α := by
-    by_contra h
-    simp only [not_infinite] at h
-    exact absurd (Cardinal.lt_aleph0_iff_finite.mpr h)
-      (not_lt.mpr (le_of_eq hα.symm))
+  haveI hInfα : Infinite α := Cardinal.infinite_iff.mpr hα.ge
   -- β is finite (k elements)
   haveI hFinβ : Finite β := Cardinal.lt_aleph0_iff_finite.mp
     (hβ ▸ Cardinal.nat_lt_aleph0 k)
@@ -288,24 +284,21 @@ theorem infinite_ramsey_one (k : ℕ) (hk : k ≥ 1) :
     rw [show s = ⟨{x}, Finset.card_singleton x⟩ from Subtype.ext hx]
     exact hxH
   · -- The fiber has cardinality ≥ ℵ₀
-    by_contra hlt
-    simp only [not_le] at hlt
-    haveI := Cardinal.lt_aleph0_iff_finite.mp hlt
-    exact hc (Set.toFinite _)
+    exact Cardinal.infinite_iff.mp hc
 
 -- The Ramsey step: given an infinite set S and an (r+1)-coloring f,
 -- extract a vertex v ∈ S, a color c, and an infinite subset H ⊆ S \ {v}
 -- that is monochromatic for the reduced coloring g(T) = f({v} ∪ T).
-private lemma ramsey_step {α : Type*} [DecidableEq α] {β : Type*}
+private lemma ramsey_step {α : Type u} [DecidableEq α] {β : Type v}
     {r k : ℕ} (hα : #α = ℵ₀)
     (f : Coloring α (r + 1) β) (hβ : #β = ↑k)
-    (ih : PartitionRelation ℵ₀ ℵ₀ r ↑k)
+    (ih : PartitionRelation (ℵ₀ : Cardinal.{u}) (ℵ₀ : Cardinal.{u}) r (↑k : Cardinal.{v}))
     (S : Set α) (hS : Set.Infinite S) :
     ∃ (v : α) (c : β) (H : Set α),
       v ∈ S ∧ Set.Infinite H ∧ H ⊆ S ∧ v ∉ H ∧
-      (∀ (T : Finset α), T.card = r → (↑T : Set α) ⊆ H → v ∉ T →
-        f ⟨Finset.cons v T ‹v ∉ T›,
-          by rw [Finset.card_cons]; omega⟩ = c) := by
+      (∀ (T : Finset α) (hcardT : T.card = r), (↑T : Set α) ⊆ H → (hvT : v ∉ T) →
+        f ⟨Finset.cons v T hvT,
+          by rw [Finset.card_cons, hcardT]⟩ = c) := by
   obtain ⟨v, hv⟩ := hS.nonempty
   have hS' : Set.Infinite (S \ {v}) := hS.diff (Set.finite_singleton v)
   have hS'_card : #↥(S \ {v}) = ℵ₀ := le_antisymm
@@ -316,20 +309,20 @@ private lemma ramsey_step {α : Type*} [DecidableEq α] {β : Type*}
   let g : Coloring ↥(S \ {v}) r β := fun s =>
     have hv_not : v ∉ s.val.map emb := by
       simp only [Finset.mem_map, emb, Function.Embedding.coeFn_mk]
-      rintro ⟨⟨x, hx⟩, _, rfl⟩; exact hx.2 rfl
+      rintro ⟨⟨x, hx⟩, -, hxv⟩; exact hx.2 (Set.mem_singleton_iff.mpr hxv)
     f ⟨Finset.cons v (s.val.map emb) hv_not,
       by rw [Finset.card_cons, Finset.card_map, s.2]⟩
   -- Apply IH to get monochromatic subset of ↥(S \ {v})
   obtain ⟨c, H_sub, hH_mono, hH_card⟩ := ih ↥(S \ {v}) hS'_card β hβ g
   -- Map H_sub back to Set α
   have hH_inf : Set.Infinite H_sub :=
-    Set.infinite_coe_iff.mpr (Cardinal.infinite_iff.mpr hH_card)
+    Set.infinite_coe_iff.mp (Cardinal.infinite_iff.mpr hH_card)
   refine ⟨v, c, Subtype.val '' H_sub, hv, hH_inf.image Subtype.val_injective.injOn,
     ?_, ?_, ?_⟩
   · -- Subtype.val '' H_sub ⊆ S
     rintro x ⟨⟨y, hy⟩, _, rfl⟩; exact hy.1
   · -- v ∉ Subtype.val '' H_sub
-    rintro ⟨⟨y, hy⟩, _, rfl⟩; exact hy.2 rfl
+    rintro ⟨⟨y, hy⟩, -, hyv⟩; exact hy.2 (Set.mem_singleton_iff.mpr hyv)
   · -- Monochromaticity: for r-subsets T ⊆ H with v ∉ T, f(cons v T) = c
     intro T hT hT_sub hv_not_T
     -- Each element of T is in Subtype.val '' H_sub, hence in S \ {v}
@@ -343,11 +336,11 @@ private lemma ramsey_step {α : Type*} [DecidableEq α] {β : Type*}
       simp only [T', Finset.card_map, Finset.card_attach]; exact hT
     -- T'.map emb = T (lifting then projecting recovers the original)
     have hT'_map : T'.map emb = T := by
-      ext x; constructor
-      · rintro ⟨⟨y, _⟩, ⟨⟨z, hz⟩, _, rfl⟩, rfl⟩; exact hz
-      · intro hx
-        exact ⟨⟨x, hT_diff x hx⟩,
-          ⟨⟨x, hx⟩, Finset.mem_attach _ _, rfl⟩, rfl⟩
+      simp only [T', Finset.map_map]
+      convert Finset.attach_map_val (s := T) using 2
+      apply Function.Embedding.ext
+      rintro ⟨a, ha⟩
+      rfl
     -- T' elements are in H_sub (by proof irrelevance on subtype proofs)
     have hT'_sub : (↑T' : Set ↥(S \ {v})) ⊆ H_sub := by
       intro ⟨y, hy⟩ hy_mem
@@ -362,10 +355,10 @@ private lemma ramsey_step {α : Type*} [DecidableEq α] {β : Type*}
     have hmono := hH_mono ⟨T', hT'_card⟩ hT'_sub
     -- g ⟨T', _⟩ = f ⟨cons v (T'.map emb) _, _⟩ = f ⟨cons v T _, _⟩ = c
     simp only [g] at hmono
-    rw [hT'_map] at hmono
-    -- The two RSubset values are equal by proof irrelevance
-    convert hmono using 1
-    exact Subtype.ext rfl
+    -- The two RSubset values are equal (T = T'.map emb, proofs irrelevant)
+    convert hmono using 2
+    apply Subtype.ext
+    simp only [Finset.cons_eq_insert, hT'_map]
 
 -- The full infinite Ramsey theorem: ℵ₀ → (ℵ₀)^r_k for all finite r, k.
 -- Proved by induction on r with Ramsey's diagonal argument.
@@ -376,8 +369,8 @@ theorem infinite_ramsey (r k : ℕ) :
   | zero => exact infinite_ramsey_zero k
   | succ r ih =>
     intro α hα β hβ f
-    haveI : DecidableEq α := Classical.dec _
-    haveI : Infinite α := Cardinal.infinite_iff.mp (hα ▸ le_refl _)
+    haveI : DecidableEq α := Classical.decEq α
+    haveI : Infinite α := Cardinal.infinite_iff.mpr hα.ge
     -- Handle k = 0: β is empty, no coloring can exist (vacuously true)
     by_cases hk : k = 0
     · subst hk; simp only [Nat.cast_zero] at hβ
@@ -403,8 +396,8 @@ theorem infinite_ramsey (r k : ℕ) :
       have step : ∀ S : Set α, Set.Infinite S →
           ∃ (v : α) (c : β) (H : Set α),
             v ∈ S ∧ Set.Infinite H ∧ H ⊆ S ∧ v ∉ H ∧
-            (∀ T : Finset α, T.card = r → (↑T : Set α) ⊆ H → v ∉ T →
-              f ⟨Finset.cons v T ‹_›, by rw [Finset.card_cons]; omega⟩ = c) :=
+            (∀ (T : Finset α) (hcardT : T.card = r), (↑T : Set α) ⊆ H → (hvT : v ∉ T) →
+              f ⟨Finset.cons v T hvT, by rw [Finset.card_cons, hcardT]⟩ = c) :=
         fun S hS => ramsey_step hα f hβ ih S hS
       -- Step 2: Build the Ramsey sequence by iterating the step
       -- Helper: extract the monochromatic subset from the step
@@ -414,11 +407,9 @@ theorem infinite_ramsey (r k : ℕ) :
           Set.Infinite (stepH S hS) :=
         (step S hS).choose_spec.choose_spec.choose_spec.2.1
       -- Build state sequence via Nat.rec
-      let rec stateRec : ℕ → { S : Set α // Set.Infinite S }
-        | 0 => ⟨Set.univ, Set.infinite_univ⟩
-        | n + 1 =>
-          let ⟨S, hS⟩ := stateRec n
-          ⟨stepH S hS, stepH_inf S hS⟩
+      let stateRec : ℕ → { S : Set α // Set.Infinite S } := fun n =>
+        Nat.rec ⟨Set.univ, Set.infinite_univ⟩
+          (fun _ prev => ⟨stepH prev.1 prev.2, stepH_inf prev.1 prev.2⟩) n
       -- Extract vertex and color sequences
       let vertex : ℕ → α := fun n =>
         (step (stateRec n).1 (stateRec n).2).choose
@@ -440,10 +431,10 @@ theorem infinite_ramsey (r k : ℕ) :
       have vertex_excluded : ∀ n, vertex n ∉ (stateRec (n + 1)).1 := by
         intro n; rw [state_eq]; exact (stepProps n).2.2.2.1
       -- Monochromaticity at each step
-      have mono_at : ∀ n (T : Finset α), T.card = r →
-          (↑T : Set α) ⊆ (stateRec (n + 1)).1 → vertex n ∉ T →
-          f ⟨Finset.cons (vertex n) T ‹_›,
-            by rw [Finset.card_cons]; omega⟩ = color n := by
+      have mono_at : ∀ n (T : Finset α) (hcardT : T.card = r),
+          (↑T : Set α) ⊆ (stateRec (n + 1)).1 → (hvnT : vertex n ∉ T) →
+          f ⟨Finset.cons (vertex n) T hvnT,
+            by rw [Finset.card_cons, hcardT]⟩ = color n := by
         intro n T hT hTsub hvnT
         rw [state_eq] at hTsub
         exact (stepProps n).2.2.2.2 T hT hTsub hvnT
@@ -460,7 +451,7 @@ theorem infinite_ramsey (r k : ℕ) :
       have vertex_inj : Function.Injective vertex := by
         intro m n h
         by_contra hmn
-        rcases Ne.lt_or_lt hmn with hlt | hlt
+        rcases lt_or_gt_of_ne hmn with hlt | hlt
         · -- m < n: vertex n ∈ stateRec(m+1) but vertex m ∉ stateRec(m+1)
           exact vertex_excluded m (h ▸ vertex_later (m + 1) n hlt)
         · -- n < m: vertex m ∈ stateRec(n+1) but vertex n ∉ stateRec(n+1)
@@ -471,7 +462,7 @@ theorem infinite_ramsey (r k : ℕ) :
       -- Step 4: The monochromatic set H = vertex '' {n | color n = c_star}
       let H_final := vertex '' (color ⁻¹' {c_star})
       have hH_inf : Set.Infinite H_final :=
-        (Set.infinite_coe_iff.mpr hc_star).image vertex_inj.injOn
+        (Set.infinite_coe_iff.mp hc_star).image vertex_inj.injOn
       refine ⟨c_star, H_final, ?_, ?_⟩
       · -- IsMonochromatic: every (r+1)-subset from H_final gets color c_star
         intro s hs
@@ -482,7 +473,7 @@ theorem infinite_ramsey (r k : ℕ) :
           fun n => vertex_inj (Function.invFun_eq ⟨n, rfl⟩)
         -- For x ∈ H_final, vertex (invV x) = x
         have invV_recover : ∀ x, x ∈ H_final → vertex (invV x) = x := by
-          rintro _ ⟨n, _, rfl⟩; rw [invV_spec]; rfl
+          rintro _ ⟨n, _, rfl⟩; rw [invV_spec]
         -- For x ∈ H_final, color (invV x) = c_star
         have invV_color : ∀ x, x ∈ H_final → color (invV x) = c_star := by
           rintro _ ⟨n, hn, rfl⟩; rw [invV_spec]; exact hn
@@ -514,16 +505,18 @@ theorem infinite_ramsey (r k : ℕ) :
           -- invV y ≠ n_min (otherwise y = x_min, contradiction)
           have hne : invV y ≠ n_min := by
             intro heq
-            have := invV_recover y hy_in_H  -- vertex (invV y) = y
-            have := invV_recover x_min hx_min_in_H  -- vertex n_min = x_min
-            exact hy_ne (vertex_inj (by rw [heq, n_min_def]; exact this ▸ ‹vertex (invV y) = y›))
+            apply hy_ne
+            have h1 : vertex (invV y) = y := invV_recover y hy_in_H
+            calc y = vertex (invV y) := h1.symm
+              _ = vertex n_min := by rw [heq]
+              _ = x_min := hpivot
           -- So invV y > n_min, i.e., invV y ≥ n_min + 1
           have hgt : n_min + 1 ≤ invV y := by omega
           -- vertex (invV y) = y ∈ stateRec (n_min + 1)
           have := vertex_later (n_min + 1) (invV y) hgt
           rwa [invV_recover y hy_in_H] at this
         -- vertex n_min ∉ rest (since x_min ∉ s.val.erase x_min)
-        have hpivot_not : vertex n_min ∉ rest := hpivot ▸ Finset.not_mem_erase x_min s.val
+        have hpivot_not : vertex n_min ∉ rest := hpivot ▸ Finset.notMem_erase x_min s.val
         -- Apply monochromaticity at step n_min
         have hmono := mono_at n_min rest hrest_card hrest_sub hpivot_not
         -- Reconstruct: s.val = cons (vertex n_min) rest
@@ -543,9 +536,8 @@ theorem infinite_ramsey (r k : ℕ) :
           congr 1; exact Subtype.ext hrecon
         rw [this, ← hpivot_color]
         convert hmono using 1
-        exact Subtype.ext rfl
       · -- #H_final ≥ ℵ₀
-        exact Cardinal.infinite_iff.mp (Set.infinite_coe_iff.mp hH_inf)
+        exact Cardinal.infinite_iff.mp (Set.infinite_coe_iff.mpr hH_inf)
 
 /-
 ## Section 5: Consequences and Consistency Checks
@@ -553,19 +545,19 @@ theorem infinite_ramsey (r k : ℕ) :
 
 -- The r = 2 case follows from the main conjecture
 theorem erdos_1167_r2_case
-    (λ_card : Cardinal.{u}) (hλ : ℵ₀ ≤ λ_card)
+    (lamCard : Cardinal.{u}) (hlam : ℵ₀ ≤ lamCard)
     (γ : Ordinal) (targets : Ordinal → Cardinal.{u})
-    (h : IndexedPartitionRelation (2 ^ λ_card) (fun α => targets α + 1) 3 γ) :
-    IndexedPartitionRelation λ_card targets 2 γ :=
-  erdos_1167_conjecture 2 (by omega) λ_card hλ γ targets h
+    (h : IndexedPartitionRelation (2 ^ lamCard) (fun α => targets α + 1) 3 γ) :
+    IndexedPartitionRelation lamCard targets 2 γ :=
+  erdos_1167_conjecture 2 (by omega) lamCard hlam γ targets h
 
 -- General r case: instantiation of the conjecture for any specific r ≥ 2
 theorem erdos_1167_general_case (r : ℕ) (hr : r ≥ 2)
-    (λ_card : Cardinal.{u}) (hλ : ℵ₀ ≤ λ_card)
+    (lamCard : Cardinal.{u}) (hlam : ℵ₀ ≤ lamCard)
     (γ : Ordinal) (targets : Ordinal → Cardinal.{u})
-    (h : IndexedPartitionRelation (2 ^ λ_card) (fun α => targets α + 1) (r + 1) γ) :
-    IndexedPartitionRelation λ_card targets r γ :=
-  erdos_1167_conjecture r hr λ_card hλ γ targets h
+    (h : IndexedPartitionRelation (2 ^ lamCard) (fun α => targets α + 1) (r + 1) γ) :
+    IndexedPartitionRelation lamCard targets r γ :=
+  erdos_1167_conjecture r hr lamCard hlam γ targets h
 
 -- Consistency check: the conjecture is consistent with infinite Ramsey
 -- ℵ₀ → (ℵ₀)²_2 is known true (infinite Ramsey theorem)

@@ -27,17 +27,17 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- Adjacency in the path graph is symmetric: if i→j then j→i. -/
 theorem pathGraph_adj_symm (n : ℕ) (i j : Fin n) :
-    (pathGraph n).Adj i j ↔ (pathGraph n).Adj j i := by
+    (Erdos548.pathGraph n).Adj i j ↔ (Erdos548.pathGraph n).Adj j i := by
   sorry
 
 /-- The center vertex (index 0) is adjacent to every leaf in the star graph. -/
 theorem starGraph_center_adj (k : ℕ) (hk : k ≥ 1) (j : Fin (k + 1))
-    (hj : j.val ≠ 0) : (starGraph k).Adj ⟨0, Nat.zero_lt_succ k⟩ j := by
+    (hj : j.val ≠ 0) : (Erdos548.starGraph k).Adj ⟨0, Nat.zero_lt_succ k⟩ j := by
   sorry
 
 /-- Adjacency in the star graph is symmetric. -/
 theorem starGraph_adj_symm (k : ℕ) (i j : Fin (k + 1)) :
-    (starGraph k).Adj i j ↔ (starGraph k).Adj j i := by
+    (Erdos548.starGraph k).Adj i j ↔ (Erdos548.starGraph k).Adj j i := by
   sorry
 
 /-- The handshaking lemma: sum of degrees equals twice the edge count.

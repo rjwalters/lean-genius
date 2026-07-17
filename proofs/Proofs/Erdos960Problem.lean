@@ -275,7 +275,7 @@ theorem allOrdinary_pair_iff (P : PointConfig) (p q : ℕ × ℕ) (hpq : p ≠ q
       rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
       · exact absurd rfl hab
       · exact h
-      · exact isOrdinaryLine_symm P p q h
+      · exact isOrdinaryLine_symm _ _ _ h
       · exact absurd rfl hab
 
 /-- The linear conjecture also fails for r ≥ 3, k ≥ 4 (contrapositive of linear_implies_littleo). -/

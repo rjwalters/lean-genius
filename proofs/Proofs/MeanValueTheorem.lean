@@ -1,6 +1,4 @@
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Analysis.Calculus.Deriv.Slope
+import Mathlib
 
 /-!
 # Mean Value Theorem

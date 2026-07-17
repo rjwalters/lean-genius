@@ -77,7 +77,7 @@ def ErdosProblem400 : Prop :=
 ## Section IV: Known Upper Bound
 -/
 
-/-- Erdős–Graham: g_k(n) ≪ log n. -/
+/-  Erdős–Graham: g_k(n) ≪ log n. -/
 /-
 ## Section V: Proved Properties
 -/
@@ -167,5 +167,5 @@ theorem g2_binomial_connection (n : ℕ) :
 ## Section VI: The k = 2 Case
 -/
 
-/-- For k = 2, the supremum is attained by some pair (a, b). -/
-/-- The average of g₂ over [1,x] is asymptotically c₂ · log x. -/
+/-  For k = 2, the supremum is attained by some pair (a, b). -/
+/- The average of g₂ over [1,x] is asymptotically c₂ · log x. -/

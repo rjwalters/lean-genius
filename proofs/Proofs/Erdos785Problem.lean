@@ -23,10 +23,10 @@ Key Results:
 Tags: additive-combinatorics, sumsets, complement-sets
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 
 open Nat Set Finset
 
@@ -140,7 +140,7 @@ theorem erdos_danzer_solved : ErdosDanzerQuestion :=
 ## Part VI: Ruzsa's Refinement
 -/
 
-/--
+/- 
 **Ruzsa (2017): Tight Characterization**
 For ANY function w : ℕ → ℝ with w(x) → ∞,
 there exist exact additive complements A, B such that
@@ -157,7 +157,7 @@ r(n) = |{(a,b) : a ∈ A, b ∈ B, a+b = n}|.
 noncomputable def representationFunction (A B : Set ℕ) (n : ℕ) : ℕ :=
   {(a, b) : ℕ × ℕ | a ∈ A ∧ b ∈ B ∧ a + b = n}.ncard
 
-/--
+/- 
 **Average Representation:**
 For exact complements, average r(n) for n ≤ x is close to 1.
 -/

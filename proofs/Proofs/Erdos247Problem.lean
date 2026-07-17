@@ -31,7 +31,6 @@ import Mathlib.Topology.Algebra.InfiniteSum.Ring
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.Tactic
-import Proofs.LiouvilleTheorem
 
 set_option maxHeartbeats 800000
 
@@ -225,8 +224,8 @@ theorem problem_247_summary :
 /- ## Part VIII: Axiom-Free Factorial Transcendence via Liouville Numbers
 
 The key observation: lacunarySum (fun k => (k+1)!) = liouvilleNumber 2 - 1/2.
-Since liouvilleNumber 2 is transcendental (proved in LiouvilleTheorem.lean via
-Mathlib's Liouville theory), and subtracting a rational preserves transcendence,
+Since liouvilleNumber 2 is transcendental (Mathlib's `transcendental_liouvilleNumber`),
+and subtracting a rational preserves transcendence,
 the factorial lacunary sum is transcendental WITHOUT the erdos_transcendence_strong axiom.
 -/
 
@@ -294,7 +293,7 @@ theorem lacunarySum_factorial_split (N : ℕ) :
     conv_rhs => rw [Finset.sum_range_succ]
     rw [add_assoc]
     congr 1
-    -- tail_n = f(n+1) + tail_{n+1}, use tsum_eq_zero_add
+    -- tail_n = f(n+1) + tail_{n+1}, use Summable.tsum_eq_zero_add
     have h := (factorial_tail_summable n).tsum_eq_zero_add
     -- Normalize arithmetic in h to match goal
     simp only [show n + 1 + 0 + 1 = n + 1 + 1 from by omega] at h
@@ -379,8 +378,10 @@ theorem factorial_sum_eq_liouville_sub :
 theorem factorial_sum_transcendental_axiom_free :
     Transcendental ℚ (lacunarySum (fun k => (k + 1).factorial)) := by
   rw [factorial_sum_eq_liouville_sub]
-  have h1 : Transcendental ℚ (liouvilleNumber 2) :=
-    transcendental_int_to_rat LiouvilleTheorem.liouville_base_2_transcendental
+  have h1 : Transcendental ℚ (liouvilleNumber 2) := by
+    have h := transcendental_liouvilleNumber (m := 2) le_rfl
+    norm_num at h
+    exact transcendental_int_to_rat h
   convert Transcendental.sub_rat h1 (1/2) using 1
   push_cast; ring
 

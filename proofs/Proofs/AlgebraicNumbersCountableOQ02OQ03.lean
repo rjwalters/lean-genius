@@ -42,6 +42,7 @@ import Mathlib.Data.Set.Countable
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 import Proofs.AlgebraicNumbersCountableOQ02
+import Mathlib.Analysis.Real.Cardinality
 
 namespace AlgebraicNumbersCountableOQ02OQ03
 
@@ -104,9 +105,8 @@ private theorem card_transcendentals_ge_aleph0 :
     Proof: ℵ₀ + κ ≤ κ + κ = κ (by Cardinal.add_eq_self), and κ ≤ ℵ₀ + κ trivially. -/
 private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ :=
   le_antisymm
-    (calc ℵ₀ + κ ≤ κ + κ := add_le_add_right h κ
-              _ = κ := Cardinal.add_eq_self h)
-    (le_add_left κ ℵ₀)
+    (le_trans (add_le_add h le_rfl) (le_of_eq (Cardinal.add_eq_self h)))
+    (self_le_add_left κ ℵ₀)
 
 /-- **Lower bound**: 𝔠 ≤ #transcendentalReals.
 
@@ -133,7 +133,7 @@ theorem continuum_le_card_transcendentals :
     _ ≤ #(↑{x : ℝ | IsAlgebraic ℚ x} : Set ℝ) + #(↑transcendentalReals : Set ℝ) :=
           h_union_le
     _ ≤ ℵ₀ + #(↑transcendentalReals : Set ℝ) :=
-          add_le_add_right h_alg _
+          add_le_add h_alg le_rfl
     _ = #(↑transcendentalReals : Set ℝ) := h_absorb
 
 -- ============================================================

@@ -73,7 +73,7 @@ axiom olson_prime_case :
       HasZeroSumSubset A
 
 /-- Olson's constant: √2 ≈ 1.414 -/
-def olsonConstant : ℝ := Real.sqrt 2
+noncomputable def olsonConstant : ℝ := Real.sqrt 2
 
 theorem olson_constant_value : olsonConstant = Real.sqrt 2 := rfl
 
@@ -99,7 +99,7 @@ Balandraud proved that √(2p) is the exact threshold for primes:
 both necessary and sufficient.
 -/
 
-/-- Balandraud (2012): for p prime, √(2p) is the exact threshold.
+/-  Balandraud (2012): for p prime, √(2p) is the exact threshold.
     Above √(2p), every set has a zero-sum subset; below it,
     there exist sets avoiding zero-sums. -/
 /-
@@ -108,7 +108,7 @@ both necessary and sufficient.
 For arbitrary N, the asymptotically optimal (1+o(1))√(2N) bound holds.
 -/
 
-/-- Hamidoune–Zémor (1996): (1+ε)√(2N) works for sufficiently large N.
+/-  Hamidoune–Zémor (1996): (1+ε)√(2N) works for sufficiently large N.
     This shows the optimal constant for the general case is
     asymptotically √2, matching the prime case. -/
 /-
@@ -123,9 +123,9 @@ theorem case_N_1 : ∀ A : Finset (ZMod 1), A.Nonempty → HasZeroSumSubset A :=
   · exact Subset.refl A
   constructor
   · exact hA
-  · simp [subsetSum]
+  · exact Subsingleton.elim (subsetSum A) 0
 
-/-- The Davenport constant D(ℤ/Nℤ) = N: the smallest d such that every
+/-  The Davenport constant D(ℤ/Nℤ) = N: the smallest d such that every
     sequence of length ≥ d has a zero-sum subsequence.
     The Erdős-Heilbronn result is sharper (√N instead of N)
     because it considers subsets rather than sequences. -/
@@ -133,7 +133,7 @@ theorem case_N_1 : ∀ A : Finset (ZMod 1), A.Nonempty → HasZeroSumSubset A :=
 ## Part 8: Generalization to Abelian Groups
 -/
 
-/-- Szemerédi's result extends to arbitrary finite abelian groups:
+/-  Szemerédi's result extends to arbitrary finite abelian groups:
     if |A| > c·√|G| for a suitable constant c, then A has a zero-sum subset.
     This is the most general form of the theorem. -/
 /-

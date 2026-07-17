@@ -153,9 +153,9 @@ theorem fib_le_of_euclidSteps (a : ℕ) :
         rw [hr0, euclidSteps_zero_right] at hsteps'
         subst hsteps'
         -- need fib 2 ≤ b and fib 3 ≤ a, i.e. 1 ≤ b and 2 ≤ a
-        refine ⟨by simpa using hb, ?_⟩
-        have : 2 ≤ a := by omega
-        simpa using this
+        refine ⟨by rw [show Nat.fib 2 = 1 from rfl]; omega, ?_⟩
+        rw [show Nat.fib 3 = 2 from rfl]
+        omega
       · -- a % b > 0: apply IH to (b, a % b) with b < a.
         obtain ⟨hr_fib, hb_fib⟩ := ih b hba (a % b) m hrpos hr_lt hsteps'
         -- hr_fib : fib (m+1) ≤ a % b,  hb_fib : fib (m+2) ≤ b

@@ -1,6 +1,4 @@
-import Mathlib.Combinatorics.Enumerative.Partition.Basic
-import Mathlib.RingTheory.PowerSeries.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Rogers-Ramanujan and Schur Partition Identities (OQ-01)
@@ -2369,14 +2367,14 @@ theorem partitionsFrom_zero (S : Finset ℕ) :
 /-- No partition of n > 0 has all parts in ∅. -/
 theorem partitionsFrom_empty_card {n : ℕ} (hn : 0 < n) :
     (partitionsFrom ∅ n).card = 0 := by
-  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
   intro p hp
   simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
   -- p must have at least one part since n > 0
   have hne : p.parts ≠ 0 := by
     intro heq; have := p.parts_sum; rw [heq] at this; simp at this; omega
   obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
-  exact absurd (hp a ha) (Finset.not_mem_empty a)
+  exact absurd (hp a ha) (Finset.notMem_empty a)
 
 /-- **RR1 mod partitions are partitionsFrom the appropriate set.**
     rr1Mod5Partitions n = partitionsFrom {k ∈ [0..n] | k > 0 ∧ (k%5=1 ∨ k%5=4)} n -/
@@ -2851,7 +2849,7 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     · intro h
       subst h
       refine ⟨by omega, ?_⟩
-      have := Nat.div_mul_cancel hd; omega
+      exact Nat.mul_div_cancel' hd
   · simp only [hd, if_neg, not_false_eq_true]
     rw [Finset.card_eq_zero]
     ext j
@@ -2916,7 +2914,8 @@ theorem geomSeries_functional_eq (k : ℕ) (hk : 0 < k) :
             rcases m with _ | m'
             · simp at hm; omega
             · omega
-          exact ⟨m - 1, by rw [hm]; zify [hm1]; ring⟩
+          have hkm : k ≤ k * m := Nat.le_mul_of_pos_right k hm1
+          exact ⟨m - 1, by rw [hm]; zify [hm1, hkm]; ring⟩
         · intro h
           have := dvd_add h (dvd_refl k)
           rwa [Nat.sub_add_cancel hnk] at this
@@ -3060,25 +3059,13 @@ open Finset Nat PowerSeries
 
 noncomputable section
 
-/-- Subsets of S that sum to n. -/
-def subsetsWithSum (S : Finset ℕ) (n : ℕ) : Finset (Finset ℕ) :=
-  S.powerset.filter (fun T => T.sum id = n)
-
-/-- Base case: subsets of ∅ summing to 0 is {∅}, summing to n > 0 is ∅. -/
+/-- Base case: subsets of ∅ summing to 0 is {∅}, summing to n > 0 is ∅.
+    (Uses `subsetsWithSum` from `SubsetSum` above — not redefined here.) -/
 theorem subsetsWithSum_empty (n : ℕ) :
     subsetsWithSum ∅ n = if n = 0 then {∅} else ∅ := by
-  ext T
-  simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset,
-    Finset.subset_empty, Finset.mem_singleton, Finset.mem_empty]
-  constructor
-  · intro ⟨hT, hsum⟩
-    subst hT; simp at hsum
-    split_ifs with h
-    · exact h ▸ rfl
-    · exact absurd hsum h
-  · split_ifs with h
-    · intro hT; subst hT; simp [h]
-    · exact False.elim
+  split_ifs with h
+  · subst h; exact subsetsWithSum_empty_zero
+  · exact subsetsWithSum_empty_pos (Nat.pos_of_ne_zero h)
 
 /-- Insert recursion: subsets of (insert k S) summing to n decompose into
     those not containing k (subsets of S summing to n) and those containing k
@@ -3087,48 +3074,52 @@ theorem subsetsWithSum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (n : ℕ
     (subsetsWithSum (insert k S) n).card =
     (subsetsWithSum S n).card +
     if k ≤ n then (subsetsWithSum S (n - k)).card else 0 := by
-  -- Split powerset of (insert k S) into subsets containing k and not containing k
-  rw [subsetsWithSum, Finset.powerset_insert]
-  rw [Finset.filter_union]
-  -- Subsets NOT containing k: same as powerset of S filtered
-  have hcard1 : (Finset.filter (fun T => T.sum id = n) S.powerset).card =
-      (subsetsWithSum S n).card := by rfl
-  -- Subsets containing k: image of adding k to subsets of S
-  -- Their sum = k + sum of the inner subset
-  -- So they sum to n iff the inner subset sums to n - k
-  rw [Finset.card_union_of_disjoint]
-  · congr 1
-    · rfl
-    · -- Count subsets of form (insert k T) with sum = n, where T ⊆ S
-      rw [Finset.filter_image]
-      split_ifs with hkn
-      · -- k ≤ n: count = subsets of S summing to n - k
-        have : (Finset.filter (fun x => (insert k x).sum id = n) S.powerset).card =
-            (subsetsWithSum S (n - k)).card := by
-          congr 1; ext T
-          simp only [Finset.mem_filter, Finset.mem_powerset, subsetsWithSum]
-          constructor
-          · intro ⟨hTS, hsum⟩
-            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))] at hsum; omega⟩
-          · intro ⟨hTS, hsum⟩
-            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))]; omega⟩
-        exact this
-      · -- k > n: no subsets can sum to n (since k alone exceeds n)
-        push_neg at hkn
-        rw [Finset.card_eq_zero]
-        ext T
-        simp only [Finset.mem_filter, Finset.mem_powerset, Finset.not_mem_empty, iff_false,
-          not_and]
-        intro _
-        rw [Finset.sum_insert (fun h => hk (by assumption))]
-        omega
-  · -- Disjointness: subsets of S.powerset vs images of insert k
-    rw [Finset.disjoint_filter]
-    intro T hT1 hT2
-    simp only [Finset.mem_image, Finset.mem_powerset] at hT1 hT2
-    obtain ⟨U, _, hU⟩ := hT2
-    rw [← hU] at hT1
-    exact hk (hT1 (Finset.mem_insert_self k U))
+  -- Partition subsetsWithSum (insert k S) n by k-membership (mirrors
+  -- subsetsWithSum_insert_card above, without the unused positivity hypotheses).
+  set s := subsetsWithSum (insert k S) n with hs_def
+  have hunion : s = s.filter (fun T => k ∈ T) ∪ s.filter (fun T => k ∉ T) := by
+    ext x; simp only [Finset.mem_union, Finset.mem_filter]
+    exact ⟨fun h => if hk : k ∈ x then Or.inl ⟨h, hk⟩ else Or.inr ⟨h, hk⟩,
+           fun h => h.elim And.left And.left⟩
+  have hdisj : Disjoint (s.filter (fun T => k ∈ T)) (s.filter (fun T => k ∉ T)) :=
+    Finset.disjoint_filter.mpr fun _ _ h1 h2 => h2 h1
+  have hcard : s.card = (s.filter (fun T => k ∈ T)).card +
+      (s.filter (fun T => k ∉ T)).card := by
+    conv_lhs => rw [hunion]
+    exact Finset.card_union_of_disjoint hdisj
+  rw [hcard, subsetsWithSum_insert_not_mem hk n, Nat.add_comm]
+  congr 1
+  split_ifs with h
+  · -- k ≤ n: containing-k subsets biject with subsetsWithSum S (n-k)
+    rw [subsetsWithSum_insert_mem_image hk h]
+    apply Finset.card_image_of_injOn
+    intro a ha b hb hab
+    rw [Finset.mem_coe] at ha hb
+    have hka : k ∉ a := by
+      intro hka
+      simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset] at ha
+      exact hk (ha.1 hka)
+    have hkb : k ∉ b := by
+      intro hkb
+      simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset] at hb
+      exact hk (hb.1 hkb)
+    have herase : Finset.erase (insert k a) k = Finset.erase (insert k b) k := by
+      congr 1
+    rwa [Finset.erase_insert hka, Finset.erase_insert hkb] at herase
+  · -- k > n: no subsets can contain k
+    push_neg at h
+    have hempty : (s.filter (fun T => k ∈ T)) = ∅ := by
+      rw [hs_def]
+      ext T
+      simp only [Finset.mem_filter, subsetsWithSum, Finset.mem_powerset, Finset.notMem_empty,
+        iff_false, not_and]
+      intro ⟨hsub, hsum⟩ hkT
+      have hk_le : k ≤ T.sum id := by
+        calc k = id k := rfl
+        _ ≤ T.sum id := Finset.single_le_sum (fun x _ => Nat.zero_le _) hkT
+      omega
+    rw [hempty]
+    simp
 
 /-- **Bridge Theorem**: The coefficient of X^n in distinctPartGF S equals the
     number of subsets of S that sum to n.
@@ -3182,11 +3173,13 @@ theorem partitionsFrom_singleton_card (k n : ℕ) (hk : 0 < k) :
     rw [Finset.card_eq_one]
     -- The unique partition: n/k copies of k
     obtain ⟨m, rfl⟩ := hdvd
-    have hsum : (Multiset.replicate m k).sum = m * k := by
-      simp [Multiset.sum_replicate]
-    have hpos : ∀ a ∈ (Multiset.replicate m k), 0 < a := by
-      simp; exact hk
-    refine ⟨⟨Multiset.replicate m k, hsum, hpos⟩, ?_⟩
+    have hsum : (Multiset.replicate m k).sum = k * m := by
+      simp [Multiset.sum_replicate, mul_comm]
+    have hpos : ∀ {a}, a ∈ (Multiset.replicate m k) → 0 < a := by
+      intro a ha
+      rw [Multiset.eq_of_mem_replicate ha]
+      exact hk
+    refine ⟨⟨Multiset.replicate m k, hpos, hsum⟩, ?_⟩
     ext p
     simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and,
                Finset.mem_singleton]
@@ -3194,41 +3187,35 @@ theorem partitionsFrom_singleton_card (k n : ℕ) (hk : 0 < k) :
     · intro hp
       ext a
       -- All parts of p are k (since parts ∈ {k})
-      have hall : ∀ a ∈ p.parts, a = k := fun a ha => by
-        have := hp a ha; simp at this; exact this
+      have hall : ∀ a ∈ p.parts, a = k := hp
       simp only [Multiset.count_replicate]
       by_cases hak : a = k
-      · subst hak
-        -- Count of k in p = m, since all parts are k and sum = m*k
-        have hparts : p.parts = Multiset.replicate (Multiset.card p.parts) k := by
-          ext b
-          simp only [Multiset.count_replicate]
-          split_ifs with hbk
-          · subst hbk; rfl
-          · exact Multiset.count_eq_zero.mpr (fun h => hbk (hall b h))
+      · -- Count of k in p = m, since all parts are k and sum = m*k
+        have hparts : p.parts = Multiset.replicate (Multiset.card p.parts) k :=
+          Multiset.eq_replicate_of_mem hall
         have hcard : Multiset.card p.parts = m := by
-          have := p.parts_sum
-          rw [hparts, Multiset.sum_replicate] at this
-          omega
-        rw [hparts, Multiset.count_replicate, if_pos rfl, hcard]
-      · rw [if_neg hak]
+          have hp_sum := p.parts_sum
+          rw [hparts, Multiset.sum_replicate, smul_eq_mul] at hp_sum
+          have hp_sum' : k * Multiset.card p.parts = k * m := by
+            rw [mul_comm]; exact hp_sum
+          exact Nat.eq_of_mul_eq_mul_left hk hp_sum'
+        rw [hak, hparts, Multiset.count_replicate, hcard]
+      · rw [if_neg (fun h => hak h.symm)]
         exact Multiset.count_eq_zero.mpr (fun h => hak (hall a h))
     · intro hp; subst hp
-      simp [Multiset.mem_replicate, hk.ne']
+      intro a ha
+      exact Multiset.eq_of_mem_replicate ha
   · -- k ∤ n: no partitions
-    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
     intro p hp
     simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
     have hall : ∀ a ∈ p.parts, a = k := fun a ha => by
       have := hp a ha; simp at this; exact this
     have : p.parts.sum = Multiset.card p.parts * k := by
-      rw [show p.parts = Multiset.replicate (Multiset.card p.parts) k from by
-        ext b; simp [Multiset.count_replicate]; by_cases hbk : b = k
-        · subst hbk; rfl
-        · exact Multiset.count_eq_zero.mpr (fun h => hbk (hall b h))]
+      rw [Multiset.eq_replicate_of_mem hall]
       simp [Multiset.sum_replicate]
     rw [p.parts_sum] at this
-    exact hdvd ⟨Multiset.card p.parts, this.symm⟩
+    exact hdvd ⟨Multiset.card p.parts, this.trans (mul_comm _ _)⟩
 
 /-- **partGF coefficient for singleton agrees with partitionsFrom count**.
     This is the base case for the partGF_coeff induction. -/
@@ -3237,7 +3224,7 @@ theorem partGF_coeff_eq_partitionsFrom_singleton (k : ℕ) (hk : 0 < k) (n : ℕ
     ↑(partitionsFrom {k} n).card := by
   rw [partitionsFrom_singleton_card k n hk]
   simp only [partGF, Finset.prod_singleton]
-  rw [geomSeries_coeff k n hk]
+  rw [geomPow_coeff hk]
   split_ifs <;> simp
 
 end PartitionsFromStructural
@@ -3252,7 +3239,7 @@ The analogous bridge theorem for partitions with repetition:
 
 This requires decomposing partitions by the multiplicity of each element,
 which is the combinatorial content of the identity
-  ∏_{k ∈ S} 1/(1-X^k) = ∑_n |{partitions of n with parts in S}| X^n
+  ∏_{k ∈ S} 1/(1-X^k) = ∑_n |{partitions of n with parts ∈ S}| X^n
 
 The proof proceeds by Finset.induction on S:
 - Base: coeff n (partGF ∅) = [n = 0] = |partitionsFrom ∅ n|
@@ -3536,6 +3523,7 @@ theorem rr1Mod_card_eq_gf_coeff (n : ℕ) :
     PowerSeries.coeff (R := ℤ) n (partGF (rr1ModSet n)) := by
   rw [rr1Mod5_eq_partitionsFrom n]
   rw [partGF_coeff_eq_card (rr1ModSet n) (rr1ModSet_pos n) n]
+  rfl
 
 /-- **RR2 Mod-Side GF Bridge**: The count of RR2 mod partitions equals the
     coefficient of X^n in partGF over the appropriate residue class set.
@@ -3546,6 +3534,7 @@ theorem rr2Mod_card_eq_gf_coeff (n : ℕ) :
     PowerSeries.coeff (R := ℤ) n (partGF (rr2ModSet n)) := by
   rw [rr2Mod5_eq_partitionsFrom n]
   rw [partGF_coeff_eq_card (rr2ModSet n) (rr2ModSet_pos n) n]
+  rfl
 
 end
 

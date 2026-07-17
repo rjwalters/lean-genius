@@ -98,12 +98,12 @@ section SkolemNoetherProof
 
 -- Key helper: matrix unit multiplication (routine computation)
 private theorem stdBasis_entry (i₀ j₀ : n) (c : K) (a₀ b₀ : n) :
-    Matrix.stdBasisMatrix i₀ j₀ c a₀ b₀ = if i₀ = a₀ ∧ j₀ = b₀ then c else 0 := by
-  simp [Matrix.stdBasisMatrix, Matrix.single]
+    Matrix.single i₀ j₀ c a₀ b₀ = if i₀ = a₀ ∧ j₀ = b₀ then c else 0 := by
+  simp [Matrix.single]
 
 private theorem stdBasis_mul (i j k l : n) :
-    Matrix.stdBasisMatrix i j (1 : K) * Matrix.stdBasisMatrix k l 1 =
-      if j = k then Matrix.stdBasisMatrix i l 1 else 0 := by
+    Matrix.single i j (1 : K) * Matrix.single k l 1 =
+      if j = k then Matrix.single i l 1 else 0 := by
   ext a b
   simp only [Matrix.mul_apply, Matrix.zero_apply, stdBasis_entry]
   by_cases hjk : j = k
@@ -118,17 +118,17 @@ private theorem stdBasis_mul (i j k l : n) :
 
 -- Key helper: phi preserves matrix unit multiplication
 private theorem f_mul (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i j k l : n) :
-    φ (Matrix.stdBasisMatrix i j 1) * φ (Matrix.stdBasisMatrix k l 1) =
-      if j = k then φ (Matrix.stdBasisMatrix i l 1) else 0 := by
+    φ (Matrix.single i j 1) * φ (Matrix.single k l 1) =
+      if j = k then φ (Matrix.single i l 1) else 0 := by
   rw [← map_mul φ, stdBasis_mul]; split_ifs <;> simp [map_zero]
 
 -- Key helper: intertwining property
 private theorem intertwine_prop
     (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i₀ : n) (v₀ : n → K)
     (i j k : n) :
-    (φ (Matrix.stdBasisMatrix i j 1)).mulVec
-      ((φ (Matrix.stdBasisMatrix k i₀ 1)).mulVec v₀) =
-    if j = k then (φ (Matrix.stdBasisMatrix i i₀ 1)).mulVec v₀ else 0 := by
+    (φ (Matrix.single i j 1)).mulVec
+      ((φ (Matrix.single k i₀ 1)).mulVec v₀) =
+    if j = k then (φ (Matrix.single i i₀ 1)).mulVec v₀ else 0 := by
   rw [Matrix.mulVec_mulVec, f_mul φ i j k i₀]
   split_ifs
   · rfl
@@ -137,8 +137,8 @@ private theorem intertwine_prop
 -- Key helper: each p_j is nonzero
 private theorem p_ne_zero
     (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i₀ : n)
-    (v₀ : n → K) (hv₀ : (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v₀ ≠ 0)
-    (j : n) : (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀ ≠ 0 := by
+    (v₀ : n → K) (hv₀ : (φ (Matrix.single i₀ i₀ 1)).mulVec v₀ ≠ 0)
+    (j : n) : (φ (Matrix.single j i₀ 1)).mulVec v₀ ≠ 0 := by
   intro hpj
   -- By intertwine_prop: phi(E_{i0,j}).mulVec(p_j) = p_{i0} (nonzero)
   have h := intertwine_prop φ i₀ v₀ i₀ j j
@@ -151,23 +151,23 @@ private theorem p_ne_zero
 -- Key helper: linear independence of constructed vectors
 private theorem p_linearIndependent
     (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i₀ : n)
-    (v₀ : n → K) (hv₀ : (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v₀ ≠ 0) :
+    (v₀ : n → K) (hv₀ : (φ (Matrix.single i₀ i₀ 1)).mulVec v₀ ≠ 0) :
     LinearIndependent K
-      (fun j : n => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) := by
+      (fun j : n => (φ (Matrix.single j i₀ 1)).mulVec v₀) := by
   rw [Fintype.linearIndependent_iff]
   intro c hsum k
   -- hsum: ∑ j, c j • p_j = 0
   -- Apply phi(E_{k,k}).mulVec to both sides via the linear map mulVecLin
-  set M := Matrix.mulVecLin (φ (Matrix.stdBasisMatrix k k 1)) with hM_def
-  have key : M (∑ j : n, c j • (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) = 0 := by
+  set M := Matrix.mulVecLin (φ (Matrix.single k k 1)) with hM_def
+  have key : M (∑ j : n, c j • (φ (Matrix.single j i₀ 1)).mulVec v₀) = 0 := by
     rw [hsum]; exact map_zero M
   -- Distribute: M(∑ c_j • p_j) = ∑ c_j • M(p_j)
   rw [map_sum] at key
   simp only [map_smul] at key
   -- Apply intertwine_prop: M(p_j) = phi(E_{k,k}).mulVec(p_j) = delta_{k,j} * p_k
-  simp only [hM_def, show ∀ j, Matrix.mulVecLin (φ (Matrix.stdBasisMatrix k k 1))
-      ((φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) =
-      if k = j then (φ (Matrix.stdBasisMatrix k i₀ 1)).mulVec v₀ else 0 from
+  simp only [hM_def, show ∀ j, Matrix.mulVecLin (φ (Matrix.single k k 1))
+      ((φ (Matrix.single j i₀ 1)).mulVec v₀) =
+      if k = j then (φ (Matrix.single k i₀ 1)).mulVec v₀ else 0 from
       fun j => intertwine_prop φ i₀ v₀ k k j] at key
   -- Sum collapses: ∑ c_j • (if k=j then p_k else 0) = c_k • p_k
   simp only [smul_ite, smul_zero] at key
@@ -186,9 +186,9 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
   obtain ⟨i₀⟩ := ‹Nonempty n›
   -- phi(E_{i0,i0}) != 0, so find v0 with nonzero action
   obtain ⟨v₀, hv₀⟩ : ∃ v : n → K,
-      (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v ≠ 0 := by
+      (φ (Matrix.single i₀ i₀ 1)).mulVec v ≠ 0 := by
     by_contra hall; push_neg at hall
-    have hzero : φ (Matrix.stdBasisMatrix i₀ i₀ 1) = 0 := by
+    have hzero : φ (Matrix.single i₀ i₀ 1) = 0 := by
       have mulvec_single : ∀ (M : Matrix n n K) (i j : n),
           M.mulVec (Pi.single j 1) i = M i j := by
         intro M i j
@@ -198,12 +198,12 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
       have key := congr_fun (hall (Pi.single b 1)) a
       simp only [Pi.zero_apply] at key
       rwa [mulvec_single] at key
-    have hne : Matrix.stdBasisMatrix i₀ i₀ (1 : K) ≠ 0 := by
+    have hne : Matrix.single i₀ i₀ (1 : K) ≠ 0 := by
       intro h; have := congr_fun (congr_fun h i₀) i₀
-      simp [Matrix.stdBasisMatrix, Matrix.of_apply] at this
+      simp [Matrix.single, Matrix.of_apply] at this
     exact hne (φ.injective (hzero.trans (map_zero φ).symm))
   -- Define column vectors p_j and matrix P
-  set p : n → (n → K) := fun j => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀
+  set p : n → (n → K) := fun j => (φ (Matrix.single j i₀ 1)).mulVec v₀
   set Pmat : Matrix n n K := Matrix.of (fun i j => p j i)
   -- P is invertible (linearly independent columns)
   obtain ⟨Pu, hPu⟩ : IsUnit Pmat := by
@@ -211,38 +211,37 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
     -- Pmat.mulVec w = ∑ j, w_j • p_j (columns of P are the p_j vectors)
     have hmulvec : ∀ w : n → K, Pmat.mulVec w = ∑ j : n, w j • p j := by
       intro w; ext i
-      simp only [Matrix.mulVec, Matrix.dotProduct, Pmat, Matrix.of_apply,
+      simp only [Matrix.mulVec, dotProduct, Pmat, Matrix.of_apply,
                   Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+      exact Finset.sum_congr rfl (fun x _ => mul_comm _ _)
     -- mulVec is injective from linear independence of columns
-    have hinj : Function.Injective (Matrix.mulVecLin Pmat) := by
+    have hinj : Function.Injective Pmat.mulVec := by
       intro u v huv
       have h0 : Pmat.mulVec (u - v) = 0 := by
-        show (Matrix.mulVecLin Pmat) (u - v) = 0
-        rw [map_sub, sub_eq_zero]; exact huv
+        rw [Matrix.mulVec_sub, huv, sub_self]
       rw [hmulvec] at h0
       have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
-      ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
-    -- Injective endomorphism of fin-dim space → surjective → IsUnit
-    have hbij : Function.Bijective (Matrix.mulVecLin Pmat) :=
-      ⟨hinj, (LinearMap.injective_iff_surjective.mp hinj)⟩
-    rw [Matrix.isUnit_iff_isUnit_det]
-    rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
+      ext j
+      have hj := hcoeff j
+      simpa [Pi.sub_apply, sub_eq_zero] using hj
+    -- Injective endomorphism of fin-dim space → IsUnit (field case)
+    exact Matrix.mulVec_injective_iff_isUnit.mp hinj
   -- The intertwining: phi(A) * P = P * A for all A
   -- (from phi(E_ij)*P = P*E_ij on generators, extended by K-linearity)
   have hintertwine : ∀ A : Matrix n n K, φ A * Pu.val = Pu.val * A := by
     -- Step 1: Intertwining for basis elements E_{ij}
     have hbasis_intertwine : ∀ i j : n,
-        φ (Matrix.stdBasisMatrix i j 1) * Pmat = Pmat * Matrix.stdBasisMatrix i j 1 := by
+        φ (Matrix.single i j 1) * Pmat = Pmat * Matrix.single i j 1 := by
       intro i j; ext a b
       -- Column b of LHS = φ(E_ij).mulVec(column_b(P)) = φ(E_ij).mulVec(p_b)
       simp only [Matrix.mul_apply, Pmat, Matrix.of_apply]
       -- LHS: ∑_m φ(E_ij)_{a,m} * p_b_m = (φ(E_ij).mulVec(p_b))_a
       -- RHS: ∑_m P_{a,m} * E_ij_{m,b} = P_{a,j} * δ_{j,b} = δ_{jb} * p_j_a
       -- By intertwine_prop: φ(E_ij).mulVec(p_b) = δ_{jb} * p_i
-      have hlhs : ∑ m : n, φ (Matrix.stdBasisMatrix i j 1) a m * p b m =
-          (φ (Matrix.stdBasisMatrix i j 1)).mulVec (p b) a := by
-        simp [Matrix.mulVec, Matrix.dotProduct]
-      have hrhs : ∑ m : n, p m a * Matrix.stdBasisMatrix i j (1 : K) m b =
+      have hlhs : ∑ m : n, φ (Matrix.single i j 1) a m * p b m =
+          (φ (Matrix.single i j 1)).mulVec (p b) a := by
+        simp [Matrix.mulVec, dotProduct]
+      have hrhs : ∑ m : n, p m a * Matrix.single i j (1 : K) m b =
           if j = b then p i a else 0 := by
         rw [Finset.sum_eq_single i (fun m _ hm => by simp [stdBasis_entry, Ne.symm hm])
             (fun h => absurd (Finset.mem_univ _) h)]
@@ -250,23 +249,20 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
       rw [hlhs, hrhs]
       have := congr_fun (intertwine_prop φ i₀ v₀ i j b) a
       simp only [p] at this ⊢
-      exact this
+      rw [this]; split_ifs <;> rfl
     -- Step 2: Every matrix decomposes as A = ∑_{i,j} A_ij • E_ij
     have hdecomp : ∀ A : Matrix n n K,
-        A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by
+        A = ∑ i : n, ∑ j : n, A i j • Matrix.single i j 1 := by
       intro A; ext a b
-      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, stdBasis_entry]
-      rw [Finset.sum_eq_single a (fun m _ hm => by simp [Ne.symm hm])
-          (fun h => absurd (Finset.mem_univ _) h)]
-      simp [Finset.sum_eq_single b (fun m _ hm => by simp [Ne.symm hm])
-          (fun h => absurd (Finset.mem_univ _) h)]
+      simp [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, ite_and,
+            Finset.sum_ite_eq']
     -- Step 3: Extend by K-linearity
     intro A
-    conv_lhs => rw [hdecomp A]
-    rw [map_sum]; simp_rw [map_sum, map_smul]
-    simp_rw [Matrix.smul_mul_assoc, Matrix.mul_smul_comm]
+    rw [hdecomp A]
+    simp only [map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]
     -- Now both sides have ∑∑ A_ij • (φ(E_ij) * P) vs ∑∑ A_ij • (P * E_ij)
-    congr 1; ext i; congr 1; ext j
+    refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
+    congr 1
     rw [hPu]; exact hbasis_intertwine i j
   -- Conclude: phi(A) = P * A * P⁻¹
   refine ⟨Pu⁻¹, fun A => ?_⟩
@@ -356,32 +352,32 @@ section MatrixUnitProducts
 /-- Right-multiplying by the matrix unit E_ij extracts column i of A and
     places it in column j. Uses Finset.sum_eq_single for clean computation. -/
 theorem mul_eij_entry (A : Matrix n n K) (i j : n) (k l : n) :
-    (A * Matrix.stdBasisMatrix i j (1 : K)) k l = if l = j then A k i else 0 := by
+    (A * Matrix.single i j (1 : K)) k l = if l = j then A k i else 0 := by
   simp only [Matrix.mul_apply]
   by_cases hlj : l = j
   · subst hlj; rw [if_pos rfl]
     rw [Finset.sum_eq_single i]
-    · simp [Matrix.stdBasisMatrix, Matrix.of_apply]
-    · intro m _ hm; simp [Matrix.stdBasisMatrix, Matrix.of_apply, Ne.symm hm]
+    · simp [Matrix.single, Matrix.of_apply]
+    · intro m _ hm; simp [Matrix.single, Matrix.of_apply, Ne.symm hm]
     · intro h; exact absurd (Finset.mem_univ i) h
   · rw [if_neg hlj]
     apply Finset.sum_eq_zero
-    intro m _; simp [Matrix.stdBasisMatrix, Matrix.of_apply, Ne.symm hlj]
+    intro m _; simp [Matrix.single, Matrix.of_apply, Ne.symm hlj]
 
 /-- Left-multiplying by the matrix unit E_ij extracts row j of A and
     places it in row i. -/
 theorem eij_mul_entry (A : Matrix n n K) (i j : n) (k l : n) :
-    (Matrix.stdBasisMatrix i j (1 : K) * A) k l = if k = i then A j l else 0 := by
+    (Matrix.single i j (1 : K) * A) k l = if k = i then A j l else 0 := by
   simp only [Matrix.mul_apply]
   by_cases hki : k = i
   · subst hki; rw [if_pos rfl]
     rw [Finset.sum_eq_single j]
-    · simp [Matrix.stdBasisMatrix, Matrix.of_apply]
-    · intro m _ hm; simp [Matrix.stdBasisMatrix, Matrix.of_apply, Ne.symm hm]
+    · simp [Matrix.single, Matrix.of_apply]
+    · intro m _ hm; simp [Matrix.single, Matrix.of_apply, Ne.symm hm]
     · intro h; exact absurd (Finset.mem_univ j) h
   · rw [if_neg hki]
     apply Finset.sum_eq_zero
-    intro m _; simp [Matrix.stdBasisMatrix, Matrix.of_apply, Ne.symm hki]
+    intro m _; simp [Matrix.single, Matrix.of_apply, Ne.symm hki]
 
 end MatrixUnitProducts
 
@@ -409,7 +405,7 @@ theorem scalar_commutes (c : K) (B : Matrix n n K) :
 theorem off_diagonal_vanish_of_center (A : Matrix n n K)
     (hcomm : ∀ B : Matrix n n K, A * B = B * A)
     (i j : n) (hij : i ≠ j) : A i j = 0 := by
-  have h := congr_fun (congr_fun (hcomm (Matrix.stdBasisMatrix j i (1 : K))) i) i
+  have h := congr_fun (congr_fun (hcomm (Matrix.single j i (1 : K))) i) i
   rw [mul_eij_entry, eij_mul_entry] at h
   simp only [if_pos rfl] at h
   rwa [if_neg hij] at h
@@ -423,7 +419,7 @@ theorem diagonal_constant_of_center [Nonempty n] (A : Matrix n n K)
     (i j : n) : A i i = A j j := by
   by_cases hij : i = j
   · rw [hij]
-  · have h := congr_fun (congr_fun (hcomm (Matrix.stdBasisMatrix i j (1 : K))) i) j
+  · have h := congr_fun (congr_fun (hcomm (Matrix.single i j (1 : K))) i) j
     rw [mul_eij_entry, eij_mul_entry] at h
     simp only [if_pos rfl] at h
     exact h

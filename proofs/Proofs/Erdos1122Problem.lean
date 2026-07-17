@@ -22,11 +22,9 @@ References:
   conjecture of Erdős. Ramanujan J., 1023-1090.
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
+
+open scoped Classical
 
 open Nat Real Filter
 
@@ -106,8 +104,10 @@ theorem zero_is_logarithmic : hasLogarithmicForm (fun _ => 0) := by
 theorem logarithmic_is_additive (f : ℕ → ℝ) (hf : hasLogarithmicForm f) : IsAdditive f := by
   obtain ⟨c, hc⟩ := hf
   intro a b ha hb _
-  simp only [hc a ha, hc b hb, hc (a * b) (Nat.one_le_iff_ne_zero.mpr (by omega))]
-  rw [Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]
+  simp only [hc a ha, hc b hb,
+    hc (a * b) (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)))]
+  push_cast
+  rw [Real.log_mul (by positivity) (by positivity)]
   ring
 
 /- ## Erdős's Known Results -/
@@ -150,23 +150,25 @@ axiom mangerel_2022 (f : ℕ → ℝ) (hf : IsAdditive f)
 def erdos1122Conjecture : Prop :=
   ∀ f : ℕ → ℝ, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f
 
-/-- The conjecture is axiomatized as the problem is OPEN. -/
+/-  The conjecture is axiomatized as the problem is OPEN. -/
 /- ## Condition Hierarchy -/
 
 /-- If A = ∅, then |A ∩ [1,X]| = 0 = o(X). -/
 theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defectIsLittleO f := by
   intro ε hε
   use 1
-  intro X _
-  have : defectCount f X = 0 := by
+  intro X hX
+  have hzero : defectCount f X = 0 := by
     unfold defectCount
     simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
     intro n _
     rw [h]
-    exact Set.not_mem_empty n
-  simp [this, hε]
+    exact Set.notMem_empty n
+  rw [hzero, Nat.cast_zero]
+  have hXpos : (0 : ℝ) < X := by exact_mod_cast (by omega : 0 < X)
+  positivity
 
-/-- Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
+/-  Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
 /-- The hierarchy of conditions:
     empty defect ⊂ Mangerel density ⊂ o(X) density (each strictly weaker). -/
 def conditionHierarchy : Prop :=
@@ -187,8 +189,8 @@ theorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by
 /-- ω(n) = number of distinct prime factors is additive (but not logarithmic). -/
 def omega (n : ℕ) : ℕ := n.primeFactors.card
 
-/-- ω is additive: ω(ab) = ω(a) + ω(b) for coprime a, b. -/
-/-- ω is not logarithmic: it grows much slower than log. -/
+/-  ω is additive: ω(ab) = ω(a) + ω(b) for coprime a, b. -/
+/-  ω is not logarithmic: it grows much slower than log. -/
 /- ## Summary of Known Results -/
 
 /-- Consolidation of the three known positive results:

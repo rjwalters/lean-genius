@@ -300,7 +300,7 @@ lemma u_seq_gap {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (h_ge : ∀ i, 2 �
   have h_gap : d i ^ e_seq d (n + 1) i ≤ 1 + ∑ j ∈ Finset.univ, (d j ^ e_seq d (n + 1) j - 1) / (d j - 1) := by
     have h_gap : d i ^ e_seq d (n + 1) i ≤ 1 + ∑ j ∈ Finset.univ, ((d j ^ e_seq d (n + 1) j - 1) / (d j - 1) : ℚ) := by
       have h_lower_bound : ∑ j ∈ Finset.univ, ((d j ^ e_seq d (n + 1) j - 1) / (d j - 1) : ℚ) ≥ ∑ j ∈ Finset.univ, ((d i ^ e_seq d (n + 1) i - 1) / (d j - 1) : ℚ) := by
-        gcongr; aesop
+        gcongr with i_1; aesop
         generalize_proofs at *; linarith [h_ge i_1]
         exact_mod_cast hi _
       generalize_proofs at *

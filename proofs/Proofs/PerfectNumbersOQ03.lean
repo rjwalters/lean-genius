@@ -85,7 +85,7 @@ theorem mersenne_prime_exp_prime {n : ℕ} (hM : Nat.Prime (M n)) : Nat.Prime n 
   -- Establish n ≥ 2: M(0)=0 and M(1)=1 are not prime
   have hn2 : 2 ≤ n := by
     rcases n with _ | _ | _
-    · simp [M] at hM
+    · norm_num [M, Nat.not_prime_zero] at hM
     · norm_num [M] at hM
     · omega
   -- n ≥ 2 and not prime: get prime factor a with a ∣ n, a < n
@@ -130,20 +130,20 @@ theorem factor_cong_one_mod_p {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q)
   have hp1 : 1 ≤ 2 ^ p := Nat.one_le_pow p 2 (by norm_num)
   -- (2 : ZMod q) ≠ 0: q ∣ 2^p-1 which is odd, so q is odd, so q ∤ 2
   have h2_ne : (2 : ZMod q) ≠ 0 := by
-    rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) by norm_cast, Ne, ZMod.natCast_eq_zero_iff]
     intro hq2  -- assume q ∣ 2 for contradiction
     -- q prime and q ∣ 2 forces q = 2
     have hq2' : q = 2 := le_antisymm (Nat.le_of_dvd (by norm_num) hq2) hq.two_le
     rw [hq2'] at hdvd  -- now 2 ∣ M p = 2^p - 1
     -- 2 ∣ 2^p (trivially) and 2 ∣ 2^p - M p forces 2 ∣ 1: contradiction
     have h2p : 2 ∣ 2 ^ p := dvd_pow_self 2 hp.pos.ne'
-    have h12 : 2 ∣ 2 ^ p - M p := Nat.dvd_sub' h2p hdvd
+    have h12 : 2 ∣ 2 ^ p - M p := Nat.dvd_sub h2p hdvd
     have hval : 2 ^ p - M p = 1 := by simp only [M]; omega
     exact absurd (hval ▸ h12) (by norm_num)
   -- Convert q ∣ 2^p - 1 to (2 : ZMod q)^p = 1
   have h2p_eq : (2 : ZMod q) ^ p = 1 := by
     have hzero : ((2 ^ p - 1 : ℕ) : ZMod q) = 0 := by
-      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hdvd
+      rw [ZMod.natCast_eq_zero_iff]; exact hdvd
     rw [Nat.cast_sub hp1, Nat.cast_pow, Nat.cast_ofNat, Nat.cast_one] at hzero
     exact sub_eq_zero.mp hzero
   -- orderOf (2 : ZMod q) divides p
@@ -159,9 +159,8 @@ theorem factor_cong_one_mod_p {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q)
     exact absurd h1eq0 one_ne_zero
   · -- orderOf (2 : ZMod q) = p; Fermat gives orderOf ∣ q - 1
     rw [← h_eq_p]
-    have hfermat : (2 : ZMod q) ^ (Fintype.card (ZMod q) - 1) = 1 :=
+    have hfermat : (2 : ZMod q) ^ (q - 1) = 1 :=
       ZMod.pow_card_sub_one_eq_one h2_ne
-    rw [ZMod.card q] at hfermat
     exact orderOf_dvd_of_pow_eq_one hfermat
 
 /-- Special case: for p = 2, factors of M(2) = 3 satisfy 2 | q - 1. -/
@@ -235,8 +234,6 @@ lemma first_four_mersenne_primes :
 /-- M(11) = 2047 = 23 × 89 is NOT prime (11 is prime but M(11) is composite). -/
 lemma M_eleven_composite : ¬ Nat.Prime (M 11) := by
   norm_num [M]
-  -- 2047 = 23 × 89
-  decide
 
 /-
 ## Summary

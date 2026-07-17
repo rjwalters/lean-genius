@@ -198,7 +198,7 @@ theorem packing_singleton (s : UnitSegment) (h : SegmentInSquare s) :
   constructor
   · intro t ht; rwa [Set.mem_singleton_iff.mp ht]
   · intro a ha b hb hab
-    exact absurd ((Set.mem_singleton_iff.mp ha).symm.trans (Set.mem_singleton_iff.mp hb)) hab
+    exact absurd ((Set.mem_singleton_iff.mp ha).trans (Set.mem_singleton_iff.mp hb).symm) hab
 
 /-- There exists a non-empty packing (witness: horizontal mid-segment) -/
 theorem exists_nonempty_packing :
@@ -213,10 +213,10 @@ theorem maximal_packing_nonempty (S : Set UnitSegment) (hmax : IsMaximalPacking 
   by_contra h
   rw [Set.not_nonempty_iff_eq_empty] at h
   have hblock := hmax.2 horizontalMidSegment horizontalMidSegment_in_square
-    (by rw [h]; exact Set.not_mem_empty _)
+    (by rw [h]; exact Set.notMem_empty _)
   obtain ⟨t, ht, _⟩ := hblock
   rw [h] at ht
-  exact Set.not_mem_empty _ ht
+  exact Set.notMem_empty _ ht
 
 /-
 # Part 5: Existence of Maximal Packings via Zorn's Lemma
@@ -274,13 +274,13 @@ theorem exists_maximal_packing : ∃ S : Set UnitSegment, IsMaximalPacking S := 
     · rcases Set.mem_insert_iff.mp ht with rfl | ht
       · exact hs_sq
       · exact hmax.1.1 t ht
-    · rcases Set.mem_insert_iff.mp ha with rfl | ha
-      · rcases Set.mem_insert_iff.mp hb with rfl | hb
+    · rcases Set.mem_insert_iff.mp ha with rfl | ham
+      · rcases Set.mem_insert_iff.mp hb with rfl | hbm
         · exact absurd rfl hab
-        · exact hall b hb
-      · rcases Set.mem_insert_iff.mp hb with rfl | hb
-        · exact disjoint_symm s a (hall a ha)
-        · exact hmax.1.2 a ha b hb hab
+        · exact hall b hbm
+      · rcases Set.mem_insert_iff.mp hb with rfl | hbm
+        · exact disjoint_symm _ _ (hall a ham)
+        · exact hmax.1.2 a ham b hbm hab
   -- By Zorn maximality, insert s m ⊆ m, so s ∈ m — contradiction
   exact hs_nm (hmax.2 h_ins (Set.subset_insert s m) (Set.mem_insert s m))
 

@@ -26,6 +26,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Tactic
 
+set_option maxRecDepth 40000
+
 namespace SophieGermain
 
 /-!
@@ -34,6 +36,9 @@ namespace SophieGermain
 
 /-- A natural number p is a Sophie Germain prime if both p and 2p+1 are prime -/
 def IsSophieGermainPrime (p : ℕ) : Prop := Nat.Prime p ∧ Nat.Prime (2 * p + 1)
+
+instance (p : ℕ) : Decidable (IsSophieGermainPrime p) :=
+  inferInstanceAs (Decidable (Nat.Prime p ∧ Nat.Prime (2 * p + 1)))
 
 /-- The safe prime corresponding to a Sophie Germain prime p is q = 2p + 1 -/
 def SafePrime (p : ℕ) : ℕ := 2 * p + 1

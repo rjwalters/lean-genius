@@ -25,8 +25,8 @@ the family be closed under taking unions.
 Reference: [Er78, p.39], https://erdosproblems.com/1183
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Finset.Lattice
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
@@ -108,25 +108,28 @@ theorem stdChain_isChain (n : ℕ) : IsChain (stdChain n) := by
   simp only [stdChain, Finset.mem_image, Finset.mem_univ, true_and] at hA hB
   obtain ⟨j, rfl⟩ := hA
   obtain ⟨k, rfl⟩ := hB
-  rcases le_or_lt j k with h | h
+  rcases le_or_gt j k with h | h
   · left; exact initialSeg_mono h
   · right; exact initialSeg_mono (le_of_lt h)
 
 /-- Initial segments are injective: distinct indices give distinct sets. -/
 theorem initialSeg_injective (n : ℕ) : Function.Injective (initialSeg n) := by
+  -- Key: if j < k then initialSeg j ≠ initialSeg k, since ⟨j.val, _⟩ lies in
+  -- initialSeg k but not in initialSeg j.
+  have key : ∀ j k : Fin (n + 1), j < k → initialSeg n j = initialSeg n k → False := by
+    intro j k h hjk
+    have hj_lt_n : j.val < n := by omega
+    have hmem : (⟨j.val, hj_lt_n⟩ : Fin n) ∈ initialSeg n k := by
+      simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact h
+    rw [← hjk] at hmem
+    simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    omega
   intro j k hjk
   by_contra hne
-  wlog h : j < k with
-  | _ => exact this n k j hjk.symm (Ne.symm hne) (lt_of_le_of_ne (le_of_not_lt h) (Ne.symm hne))
-  -- j < k, but initialSeg j = initialSeg k
-  -- The element ⟨j.val, ...⟩ : Fin n is in initialSeg k but not initialSeg j
-  have hj_lt_n : j.val < n := by omega
-  have : (⟨j.val, hj_lt_n⟩ : Fin n) ∈ initialSeg n k := by
-    simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact h
-  rw [← hjk] at this
-  simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and] at this
-  omega
+  rcases lt_or_gt_of_ne hne with h | h
+  · exact key j k h hjk
+  · exact key k j h hjk.symm
 
 /-- The standard chain has exactly n+1 elements. -/
 theorem stdChain_card (n : ℕ) : (stdChain n).card = n + 1 := by
@@ -150,9 +153,12 @@ theorem exists_mono_color_class {α : Type*} [DecidableEq α]
       constructor
       · rintro (⟨hx, _⟩ | ⟨hx, _⟩) <;> exact hx
       · intro hx
-        fin_cases (χ x)
-        · left; exact ⟨hx, rfl⟩
-        · right; exact ⟨hx, rfl⟩
+        have h2 : χ x = 0 ∨ χ x = 1 := by
+          have hall : ∀ c : Fin 2, c = 0 ∨ c = 1 := by decide
+          exact hall (χ x)
+        rcases h2 with h | h
+        · left; exact ⟨hx, h⟩
+        · right; exact ⟨hx, h⟩
     · exact Finset.disjoint_filter.mpr (fun x _ h0 h1 => by simp_all)
   -- By pigeonhole one of them has ≥ half
   by_contra h
@@ -187,7 +193,7 @@ theorem erdos1183_chain_bound (n : ℕ) (χ : SubsetColoring n) :
     exact hA.2
   · -- Size bound: ⌈(n+1)/2⌉ = (n + 2) / 2
     rw [stdChain_card] at hc
-    linarith
+    omega
 
 /-- F(n) bound follows since every sublattice is union-closed. -/
 theorem erdos1183_F_chain_bound (n : ℕ) (χ : SubsetColoring n) :
@@ -260,9 +266,9 @@ theorem erdos1183_F_ge_f (n : ℕ) : erdos1183_F n ≥ erdos1183_f n := by
   apply csSup_le_csSup (achievableUnionClosed_bddAbove n)
   · -- achievableSublattice n is nonempty: 0 is achievable (empty family works)
     refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · exact achievableSublattice_subset_unionClosed n
 
 /-- **Trivial upper bound:** f(n) ≤ 2^n, since any monochromatic family is a
@@ -272,9 +278,9 @@ theorem erdos1183_f_upper_bound (n : ℕ) : erdos1183_f n ≤ 2 ^ n := by
   apply csSup_le
   · -- nonempty: 0 is achievable (every family has size ≥ 0)
     refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · intro k hk
     obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
     have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=
@@ -289,8 +295,8 @@ theorem erdos1183_F_upper_bound (n : ℕ) : erdos1183_F n ≤ 2 ^ n := by
   apply csSup_le
   · -- nonempty: 0 is achievable
     refine ⟨0, fun χ => ⟨∅, ?_, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · intro k hk
     obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
     have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=

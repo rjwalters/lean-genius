@@ -16,10 +16,7 @@ that the "upper half" residues contribute exactly half of Mertens' sum.
 **Reference:** erdosproblems.com/726, EGRS75
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Core Definitions
@@ -80,7 +77,6 @@ theorem residue_bound (n p : ℕ) (hp : p > 0) : n % p < p :=
 theorem zero_not_upper_half (p : ℕ) (hp : p ≥ 2) : ¬isUpperHalfResidue 0 p := by
   unfold isUpperHalfResidue
   simp
-  omega
 
 /-- If n % p = 0 (i.e., p | n), then n is not an upper half residue. -/
 theorem dvd_not_upper_half (n p : ℕ) (h : p ∣ n) : ¬isUpperHalfResidue n p := by
@@ -98,7 +94,7 @@ theorem upper_half_count (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
   have h_eq : (Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r) =
       Finset.Icc (p / 2 + 1) (p - 1) := by
     ext r; simp only [Finset.mem_filter, Finset.mem_Icc]; omega
-  rw [h_eq, Finset.Nat.card_Icc]
+  rw [h_eq, Nat.card_Icc]
   omega
 
 /-- For p = 2, no integer is in the upper half: n % 2 ∈ {0, 1} and
@@ -182,10 +178,13 @@ theorem heuristic_half_fraction (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
   rw [upper_half_count p hp hp3]
   have hp1 : (p : ℝ) - 1 ≠ 0 := by
     have : (3 : ℝ) ≤ (p : ℝ) := Nat.ofNat_le_cast.mpr hp3; linarith
-  have hodd : ¬ 2 ∣ p := Nat.Prime.not_dvd_of_lt hp (by omega)
+  have hodd : ¬ 2 ∣ p := by
+    have := Nat.odd_iff.mp (hp.odd_of_ne_two (by omega)); omega
   have heven : 2 ∣ (p - 1) := by omega
   rw [Nat.cast_div heven (by norm_num)]
   field_simp
+  push_cast [Nat.cast_sub (show 1 ≤ p by omega)]
+  ring
 
 /-
 ## Sum Partition and Implications
@@ -282,8 +281,8 @@ theorem ratio_converges_to_half :
   -- |u/m − 1/2| = |2u − m|/(2m) < ε/(2m) ≤ ε (since 2m > 1)
   have h2m_pos : (0 : ℝ) < 2 * m := by linarith
   rw [show u / m - 1 / 2 = (2 * u - m) / (2 * m) from by
-    have : m ≠ 0 := ne_of_gt hm_pos; field_simp; ring]
-  rw [abs_div, abs_of_pos h2m_pos, div_lt_iff h2m_pos]
+    have : m ≠ 0 := ne_of_gt hm_pos; field_simp]
+  rw [abs_div, abs_of_pos h2m_pos, div_lt_iff₀ h2m_pos]
   calc |2 * u - m| < ε := h_num
     _ ≤ ε * (2 * m) := le_mul_of_one_le_right (le_of_lt hε) (by linarith)
 
@@ -304,10 +303,13 @@ theorem mertensSum_mono (m n : ℕ) (h : m ≤ n) : mertensSum m ≤ mertensSum 
 /-- For n ≥ 2, the Mertens sum is positive (at least 1/2 from p=2). -/
 theorem mertensSum_pos (n : ℕ) (hn : n ≥ 2) : 0 < mertensSum n := by
   unfold mertensSum primesUpTo
-  apply lt_of_lt_of_le _ (Finset.single_le_sum (fun p _ => by positivity) _)
-  · simp
-  · simp only [Finset.mem_filter, Finset.mem_Icc]
-    exact ⟨⟨le_refl 2, hn⟩, Nat.prime_iff.mpr ⟨by omega, fun d hd => by omega⟩⟩
+  have hmem : (2 : ℕ) ∈ Finset.filter Nat.Prime (Finset.Icc 2 n) := by
+    simp only [Finset.mem_filter, Finset.mem_Icc]
+    exact ⟨⟨le_refl 2, hn⟩, Nat.prime_two⟩
+  have hle := Finset.single_le_sum (f := fun p : ℕ => (1 : ℝ) / p)
+    (fun p _ => one_div_nonneg.mpr (Nat.cast_nonneg _)) hmem
+  have h2 : (0 : ℝ) < (1 : ℝ) / ((2 : ℕ) : ℝ) := by norm_num
+  exact lt_of_lt_of_le h2 hle
 
 /-
 ## Problem Status

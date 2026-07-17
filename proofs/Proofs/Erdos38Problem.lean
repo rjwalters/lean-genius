@@ -50,7 +50,7 @@ noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
 noncomputable def schnirelmannDensity (A : Set ℕ) : ℝ :=
   ⨅ N : { n : ℕ // n ≥ 1 }, (countingFunction A N : ℝ) / N
 
-/-- Basic property: Schnirelmann density is in [0, 1] -/
+/-  Basic property: Schnirelmann density is in [0, 1] -/
 /- ## Additive Bases
 
 A set B is an additive basis of order k if every natural number can be
@@ -99,12 +99,12 @@ def Erdos38Problem : Prop :=
 
 /- ## Known Related Results -/
 
-/-- **Erdős [1936]**: Additive bases of order k satisfy the property with
+/-  **Erdős [1936]**: Additive bases of order k satisfy the property with
     f(α) = α(1-α)/(2k). This shows bases DO have the density-boost property. -/
-/-- **Linnik [1942]**: There exists an essential component that is not
+/-  **Linnik [1942]**: There exists an essential component that is not
     an additive basis. However, "essential component" is a weaker notion
     than the density-boost property asked here. -/
-/-- The random set result: For B = ℕ, the factor α(1-α) in Erdős's bound
+/-  The random set result: For B = ℕ, the factor α(1-α) in Erdős's bound
     cannot be improved. -/
 /- ## Problem Status
 

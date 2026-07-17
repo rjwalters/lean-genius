@@ -23,7 +23,7 @@
   Tags: number-theory, additive-functions, logarithm, characterization
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -136,7 +136,6 @@ theorem non_example_bounded_diff :
   · norm_num
   · intro n
     simp [nonExample]
-    norm_num
 
 /- ## Part VIII: Connection to Prime Factorization
 
@@ -168,8 +167,9 @@ theorem erdos_491_summary :
     -- Erdős's 1946 results are special cases
     (∀ f : ℕ → ℝ, IsAdditive f → DifferencesTendToZero f →
       ∃ c : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n) ∧
-    -- The coefficient c' is unique
-    (∀ f : ℕ → ℝ, ∀ c' c'' : ℝ, IsLogPlusO1 f c' → IsLogPlusO1 f c'' → c' = c'') := by
+    -- The coefficient c' is unique (for additive f)
+    (∀ f : ℕ → ℝ, IsAdditive f → ∀ c' c'' : ℝ,
+      IsLogPlusO1 f c' → IsLogPlusO1 f c'' → c' = c'') := by
   exact ⟨wirsing_theorem, erdos_1946_o1, wirsing_constant_unique⟩
 
 /-- Erdős Problem #491: SOLVED by Wirsing (1970)

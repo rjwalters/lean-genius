@@ -80,9 +80,9 @@ axiom g_well_defined :
 Known exact values of g_d(n).
 -/
 
-/-- g_1(3) = 4: four points on a line give 3 distinct distances -/
-/-- g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
-/-- g_3(3) = 7 (Croft 1962) -/
+/-  g_1(3) = 4: four points on a line give 3 distinct distances -/
+/-  g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
+/-  g_3(3) = 7 (Croft 1962) -/
 /-- Trivial: g_d(1) = 2 (any two distinct points give 1 distance) -/
 theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
   apply le_antisymm
@@ -129,7 +129,7 @@ theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
         rw [hempty, Finset.card_empty] at this
         omega
 
-/-- NOTE: The previous axiom `g_d_2 : ∀ d ≥ 1, g d 2 = 3` was INCORRECT.
+/-  NOTE: The previous axiom `g_d_2 : ∀ d ≥ 1, g d 2 = 3` was INCORRECT.
     In ℝ^d, d+1 points can be mutually equidistant (regular d-simplex), giving only 1
     distinct distance. So g_d(2) = d + 2, not 3. The correct values: g_1(2) = 3
     (on a line, 3 points always have ≥ 2 distinct distances since equidistant triples
@@ -284,12 +284,14 @@ private noncomputable def embedPoint {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
 private lemma embedPoint_injective {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) :
     Function.Injective (embedPoint hd : Point d₁ → Point d₂) := by
   intro p q hpq
-  have h := congr_arg (EuclideanSpace.equiv (Fin d₂) ℝ) hpq
-  simp only [embedPoint, Equiv.apply_symm_apply] at h
-  ext ⟨i, hi⟩
-  have := congr_fun h ⟨i, by omega⟩
-  simp only [dif_pos hi] at this
-  exact this
+  ext i
+  have h := congr_fun (congr_arg (fun x : Point d₂ => (x : Fin d₂ → ℝ)) hpq) ⟨i.val, by omega⟩
+  simpa [embedPoint, i.isLt] using h
+
+/-- Coordinate-wise formula for embedPoint (zero-padding). -/
+private lemma embedPoint_apply {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) (p : Point d₁) (j : Fin d₂) :
+    embedPoint hd p j = if hj : j.val < d₁ then p ⟨j.val, hj⟩ else 0 := by
+  simp [embedPoint]
 
 /-- embedPoint preserves Euclidean distance -/
 private lemma embedPoint_dist {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
@@ -298,31 +300,24 @@ private lemma embedPoint_dist {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
   -- Express both norms using EuclideanSpace.norm_eq: ‖v‖ = √(∑ i, ‖v i‖²)
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   congr 1
-  -- Goal: ∑ i, ‖(embedPoint hd p - embedPoint hd q) i‖² = ∑ i, ‖(p - q) i‖²
-  -- Step 1: Simplify LHS coordinates using the zero-padding structure
-  have hcoord : ∀ j : Fin d₂,
-      ‖(embedPoint hd p - embedPoint hd q) j‖ ^ 2 =
-        if j.val < d₁ then ‖(p - q) (⟨j.val, by omega⟩ : Fin d₁)‖ ^ 2 else 0 := by
+  -- F is the "junk-padded" coordinate value shared by both sides
+  set F : ℕ → ℝ := fun k => if h : k < d₁ then ‖(p - q) (⟨k, h⟩ : Fin d₁)‖ ^ 2 else 0 with hF
+  have hL : ∀ j : Fin d₂, ‖(embedPoint hd p - embedPoint hd q) j‖ ^ 2 = F (j : ℕ) := by
     intro j
-    simp only [embedPoint, Pi.sub_apply, EuclideanSpace.equiv, PiLp.equiv_symm_apply]
-    split_ifs with h <;> simp
-  simp_rw [hcoord]
-  -- Step 2: Convert to range sums and decompose
-  rw [Fin.sum_univ_eq_sum_range, Fin.sum_univ_eq_sum_range]
-  -- LHS: ∑ k ∈ range d₂, (if k < d₁ then ‖(p-q) ⟨k, _⟩‖² else 0)
-  -- RHS: ∑ k ∈ range d₁, ‖(p-q) ⟨k, _⟩‖²
-  -- Split range d₂ = range d₁ + range [d₁, d₂)
-  conv_lhs => rw [show d₂ = d₁ + (d₂ - d₁) from by omega, Finset.sum_range_add]
-  -- Second part is 0 (all indices ≥ d₁)
-  have hzero : ∀ k ∈ Finset.range (d₂ - d₁),
-      (if (d₁ + k) < d₁ then ‖(p - q) ⟨d₁ + k, by omega⟩‖ ^ 2 else 0) = 0 := by
-    intro k _; simp [show ¬(d₁ + k < d₁) from by omega]
+    rw [PiLp.sub_apply, embedPoint_apply, embedPoint_apply, hF]
+    by_cases h : j.val < d₁ <;> simp [h]
+  have hR : ∀ x : Fin d₁, ‖(p - q) x‖ ^ 2 = F (x : ℕ) := by
+    intro x
+    simp [hF, x.isLt]
+  simp_rw [hL, hR]
+  -- Convert both sides to range sums and decompose
+  rw [Fin.sum_univ_eq_sum_range F d₂, Fin.sum_univ_eq_sum_range F d₁,
+    show d₂ = d₁ + (d₂ - d₁) from by omega, Finset.sum_range_add]
+  -- Tail part (indices ≥ d₁) is 0
+  have hzero : ∀ k ∈ Finset.range (d₂ - d₁), F (d₁ + k) = 0 := by
+    intro k _
+    simp [hF, show ¬(d₁ + k < d₁) from by omega]
   rw [Finset.sum_eq_zero hzero, add_zero]
-  -- First part matches: both sum the same values over range d₁
-  apply Finset.sum_congr rfl
-  intro k hk
-  simp only [Finset.mem_range] at hk
-  simp [hk]
 
 /-- g_d(n) is non-decreasing in d: more dimensions → more equidistant configurations →
     more points needed to guarantee n distinct distances.
@@ -348,18 +343,23 @@ theorem g_mono_d :
     have hP'det := hmem P' (hP'card.trans hP)
     -- Distances are preserved by embedding
     unfold determinesNDistances numDistinctDistances at hP'det ⊢
-    -- distinctDistances P' contains same values as distinctDistances P
-    suffices hcard : (distinctDistances P').card ≥ (distinctDistances P).card by
+    -- distinctDistances P' ⊆ distinctDistances P (every distance realized in the
+    -- embedded copy is already realized in P, since embedPoint preserves eucDist),
+    -- so #(distinctDistances P) ≥ #(distinctDistances P') ≥ n.
+    suffices hcard : (distinctDistances P).card ≥ (distinctDistances P').card by
       omega
     apply Finset.card_le_card
     intro r hr
-    simp only [distinctDistances, Finset.mem_filter, Finset.mem_image,
-      Finset.mem_product] at hr ⊢
-    obtain ⟨⟨⟨p, q⟩, ⟨hp, hq⟩, rfl⟩, hr_pos⟩ := hr
-    refine ⟨⟨(embedPoint hd p, embedPoint hd q),
-      ⟨Finset.mem_image_of_mem _ hp, Finset.mem_image_of_mem _ hq⟩, ?_⟩, ?_⟩
-    · exact (embedPoint_dist hd p q).symm
-    · rw [embedPoint_dist hd]; exact hr_pos
+    unfold distinctDistances at hr ⊢
+    rw [Finset.mem_filter] at hr ⊢
+    obtain ⟨hr_mem, hr_pos⟩ := hr
+    refine ⟨?_, hr_pos⟩
+    rw [Finset.mem_image] at hr_mem ⊢
+    obtain ⟨⟨p', q'⟩, hpq_mem, rfl⟩ := hr_mem
+    have ⟨hp', hq'⟩ := Finset.mem_product.mp hpq_mem
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hp'
+    obtain ⟨q, hq, rfl⟩ := Finset.mem_image.mp hq'
+    exact ⟨(p, q), Finset.mk_mem_product hp hq, (embedPoint_dist hd p q).symm⟩
 
 /-
 ## Connection to f_d(n)
@@ -371,7 +371,7 @@ The inverse function from problem #1083.
 noncomputable def f (d n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : Finset (Point d), P.card = n ∧ numDistinctDistances P = k}
 
-/-- Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
+/-  Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
 /-
 ## The Open Problem
 

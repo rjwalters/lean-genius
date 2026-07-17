@@ -26,12 +26,11 @@ References:
 - [RoTr25] Roney-Dougal-Tracey, "The number of subgroups of the symmetric group" (2025)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.GroupTheory.Perm.Basic
 import Mathlib.GroupTheory.Perm.Finite
-import Mathlib.GroupTheory.Subgroup.Basic
-import Mathlib.GroupTheory.Subgroup.Finite
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
@@ -59,11 +58,11 @@ theorem numSubgroups_pos (n : ℕ) : 0 < numSubgroups n := by
 
 /- ## Part II: Trivial Bounds -/
 
-/-- **Trivial Upper Bound:**
+/-  **Trivial Upper Bound:**
     f(n) ≤ 2^(n!) since each subgroup is a subset of S_n.
     Provable once numSubgroups is made concrete (each subgroup ↔ subset of S_n). -/
 
-/-- **Lower Bound from Elementary Abelian 2-Groups:**
+/-  **Lower Bound from Elementary Abelian 2-Groups:**
     S_n contains (Z/2Z)^⌊n/2⌋ as a subgroup (transpositions on disjoint pairs).
     This subgroup has 2^⌊n/2⌋ elements and hence many subgroups. -/
 
@@ -73,7 +72,7 @@ theorem numSubgroups_pos (n : ℕ) : 0 < numSubgroups n := by
     This arises because the dominant contribution to subgroup count comes from
     elementary abelian 2-subgroups of the symmetric group on ⌊n/4⌋ points,
     and (1/4)² = 1/16 of the n² term. -/
-def asymptoticConstant : ℝ := 1/16
+noncomputable def asymptoticConstant : ℝ := 1/16
 
 /-- **Roney-Dougal-Tracey Theorem (2025):**
     log f(n) = (1/16 + o(1)) · n².
@@ -109,8 +108,8 @@ theorem rdt_implies_pyber :
       have := le_antisymm hle (sq_nonneg _)
       rw [this, div_zero] at h_lo; linarith
     constructor
-    · rw [lt_div_iff hn2] at h_lo; linarith
-    · rw [div_lt_iff hn2] at h_hi; linarith⟩
+    · rw [lt_div_iff₀ hn2] at h_lo; linarith
+    · rw [div_lt_iff₀ hn2] at h_hi; linarith⟩
 
 /- ## Part IV: Pyber's Theorem (1993) -/
 
@@ -130,10 +129,10 @@ theorem pyber_theorem :
     This is ⌊n/2⌋ (achieved by disjoint transpositions). -/
 def maxElem2Rank (n : ℕ) : ℕ := n / 2
 
-/-- The subgroup (Z/2Z)^⌊n/2⌋ in S_n: products of disjoint transpositions.
+/-  The subgroup (Z/2Z)^⌊n/2⌋ in S_n: products of disjoint transpositions.
     This is the largest elementary abelian 2-subgroup. -/
 
-/-- Number of subgroups of (Z/2Z)^k.
+/-  Number of subgroups of (Z/2Z)^k.
     The Gaussian binomial coefficient sum grows as 2^(k²/4).
     Not axiomatized: would need a concrete definition via the subgroup lattice
     of (ZMod 2)^k, plus Gaussian binomial coefficient asymptotics. -/
@@ -147,10 +146,10 @@ theorem constant_explanation :
 
 /- ## Part VI: Subgroup Orders -/
 
-/-- The "statistical theorem on their order" part of the problem:
+/-  The "statistical theorem on their order" part of the problem:
     What is the distribution of |H| as H ranges over subgroups of S_n? -/
 
-/-- Most subgroups of S_n are 2-groups (qualitative observation).
+/-  Most subgroups of S_n are 2-groups (qualitative observation).
     The elementary abelian 2-subgroups dominate the count.
     A precise formalization would require defining the proportion of 2-group
     subgroups among all subgroups of S_n, which needs a Fintype instance

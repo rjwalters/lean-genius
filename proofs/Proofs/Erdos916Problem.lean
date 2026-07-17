@@ -21,9 +21,9 @@ References:
   in a graph", Arch. Math. (Basel) 25, 210-215
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
-import Mathlib.Data.Fintype.Card
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph
 
@@ -92,7 +92,7 @@ def hasCycle (G : SimpleGraph V) : Prop :=
   ∃ (vertices : List V), vertices.length ≥ 3 ∧
     vertices.Nodup ∧
     ∀ i : Fin vertices.length,
-      G.Adj (vertices[i]) (vertices[(i.val + 1) % vertices.length])
+      G.Adj (vertices[i]) (vertices[(i.val + 1) % vertices.length]'(Nat.mod_lt _ i.pos))
 
 /--
 **Vertex Adjacent to Three Cycle Vertices:**
@@ -105,7 +105,7 @@ def hasVertexTriplyAdjacentToCycle (G : SimpleGraph V) : Prop :=
     cycle.length ≥ 3 ∧
     cycle.Nodup ∧
     (∀ i : Fin cycle.length,
-      G.Adj (cycle[i]) (cycle[(i.val + 1) % cycle.length])) ∧
+      G.Adj (cycle[i]) (cycle[(i.val + 1) % cycle.length]'(Nat.mod_lt _ i.pos))) ∧
     -- v is not on the cycle
     v ∉ cycle ∧
     -- v is adjacent to at least 3 vertices on the cycle
@@ -194,7 +194,7 @@ def edgeThreshold (n : ℕ) : ℕ := 2 * n - 2
 **Tree Lower Bound:**
 A tree on n vertices has exactly n-1 edges.
 -/
-theorem tree_edge_count (n : ℕ) (hn : n ≥ 1) :
+theorem tree_edge_count (n : ℕ) (hn : n ≥ 2) :
     n - 1 < edgeThreshold n := by
   simp only [edgeThreshold]
   omega
@@ -212,7 +212,6 @@ any 3 vertices form a cycle, the 4th is adjacent to all 3.
 theorem case_n_eq_4 :
     edgeThreshold 4 = 6 := by
   simp only [edgeThreshold]
-  norm_num
 
 /--
 **Case n = 5:**
@@ -221,7 +220,6 @@ theorem case_n_eq_4 :
 theorem case_n_eq_5 :
     edgeThreshold 5 = 8 := by
   simp only [edgeThreshold]
-  norm_num
 
 /--
 **Case n = 6:**
@@ -230,7 +228,6 @@ theorem case_n_eq_5 :
 theorem case_n_eq_6 :
     edgeThreshold 6 = 10 := by
   simp only [edgeThreshold]
-  norm_num
 
 /-
 ## Part VIII: Average Degree Analysis

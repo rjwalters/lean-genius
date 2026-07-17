@@ -67,6 +67,26 @@ namespace Erdos1012OQ03
 
 open Finset
 
+/-! v4.31 migration note: `List.Nodup.insertIdx` and the old ad-hoc `insertIdx_getElem_eq`
+helper no longer exist as such in Mathlib; rebuilt here (generically, ahead of first use)
+from core's `List.perm_insertIdx` / `List.getElem_insertIdx`. -/
+
+/-- `insertIdx` at position `j` behaves as `l[j]`, `a`, or `l[j-1]` depending on where
+`j` sits relative to `i` (v4.31: delegates to core's `List.getElem_insertIdx`). -/
+private lemma insertIdx_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
+    (hi : i ≤ l.length) (j : ℕ) (hj : j < (l.insertIdx i a).length) :
+    (l.insertIdx i a)[j]'hj =
+      if hlt : j < i then l[j]'(by simp [List.length_insertIdx] at hj; split at hj <;> omega)
+      else if heq : j = i then a
+      else l[j - 1]'(by simp [List.length_insertIdx] at hj; split at hj <;> omega) :=
+  List.getElem_insertIdx hj
+
+/-- Nodup is preserved by `insertIdx` when the inserted element is fresh
+(v4.31: `List.Nodup.insertIdx` was removed from Mathlib; rebuilt via the `Perm` route). -/
+private lemma nodup_insertIdx {α : Type*} {a : α} {l : List α} {i : ℕ}
+    (ha : a ∉ l) (hnd : l.Nodup) (hi : i ≤ l.length) : (l.insertIdx i a).Nodup :=
+  (List.perm_insertIdx a l hi).nodup_iff.mpr (List.nodup_cons.mpr ⟨ha, hnd⟩)
+
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART I: DIRECTED GRAPH DEFINITIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -158,11 +178,11 @@ lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
     (l : List V) (hl : 0 < l.length) (hp : IsDirectedPathList D l)
     (u : V) (hu : u ∉ l) :
     ∃ k, k ≤ l.length ∧ IsDirectedPathList D (l.insertIdx k u) := by
-  obtain ⟨hnd, harcs⟩ := hp
   induction l with
-  | nil => omega
+  | nil => simp at hl
   | cons a t ih =>
-    have ha_ne_u : a ≠ u := fun h => hu (h ▸ List.mem_cons_self a t)
+    obtain ⟨hnd, harcs⟩ := hp
+    have ha_ne_u : a ≠ u := fun h => hu (h ▸ List.mem_cons_self)
     have hu_t : u ∉ t := fun h => hu (List.mem_cons_of_mem a h)
     by_cases harc_ua : D.arc u a
     · -- Case 1: u beats head → prepend u (insert at position 0)
@@ -173,16 +193,22 @@ lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
         | 0 => exact harc_ua
         | i + 1 =>
           simp only [List.length_cons, List.insertIdx_zero] at hi ⊢
-          exact harcs i (by omega)
+          exact harcs i (by simp only [List.length_cons]; omega)
     · -- Case 2: u doesn't beat head → head beats u (tournament)
       have harc_au : D.arc a u :=
         D.arc_of_not_arc hT ha_ne_u.symm harc_ua
       by_cases ht_empty : t = []
       · -- Subcase 2a: tail empty → l = [a], insert u at end
         subst ht_empty
+        have hins : ([a] : List V).insertIdx 1 u = [a, u] := List.insertIdx_length_self
         refine ⟨1, le_refl _, ?_, ?_⟩
-        · exact List.Nodup.cons (by simp [ha_ne_u.symm]) (List.nodup_singleton u)
-        · intro i hi; simp at hi; interval_cases i; simpa using harc_au
+        · rw [hins]; exact List.Nodup.cons (by simp [ha_ne_u]) (List.nodup_singleton u)
+        · rw [hins]
+          intro i hi
+          have hi0 : i = 0 := by
+            simp only [List.length_cons, List.length_nil] at hi; omega
+          subst hi0
+          simpa using harc_au
       · -- Subcase 2b: tail nonempty → recurse on tail, insert at k_t + 1
         have ht_pos : 0 < t.length := by
           cases t with | nil => exact absurd rfl ht_empty | cons _ _ => simp
@@ -191,36 +217,38 @@ lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
           have := harcs (i + 1) (by simp [List.length_cons]; omega)
           simpa [List.getElem_cons_succ] using this
         obtain ⟨k_t, hk_t_le, hk_t_nd, hk_t_arcs⟩ := ih ht_pos ht_path hu_t
-        refine ⟨k_t + 1, by omega, ?_, ?_⟩
+        have hins2 : (t.insertIdx k_t u).length = t.length + 1 :=
+          List.length_insertIdx_of_le_length hk_t_le u
+        refine ⟨k_t + 1, by simp only [List.length_cons]; omega, ?_, ?_⟩
         · -- Nodup of a :: (t.insertIdx k_t u)
+          show (a :: t.insertIdx k_t u).Nodup
           apply List.Nodup.cons
           · intro hmem
-            rw [List.mem_insertIdx (by omega)] at hmem
+            rw [List.mem_insertIdx hk_t_le] at hmem
             rcases hmem with rfl | hmem
             · exact ha_ne_u rfl
             · exact (List.nodup_cons.mp hnd).1 hmem
           · exact hk_t_nd
         · -- Arcs in a :: (t.insertIdx k_t u)
           intro i hi
+          simp only [List.insertIdx_succ_cons, List.length_cons, hins2] at hi
           match i with
           | 0 =>
             -- Arc: a → first element of (t.insertIdx k_t u)
             by_cases hk0 : k_t = 0
-            · -- Inserted at start of tail: first element is u
-              subst hk0; simp [List.insertIdx_zero]; exact harc_au
+            · -- Inserted at start of tail: first element is u (fully defeq: insertIdx_zero,
+              -- getElem_cons_zero/succ are all `rfl`)
+              subst hk0
+              exact harc_au
             · -- k_t > 0: first element of tail unchanged (t[0])
               have hlt : 0 < k_t := Nat.pos_of_ne_zero hk0
-              conv_lhs => simp only [List.getElem_cons_zero]
-              rw [show (a :: t.insertIdx k_t u)[0 + 1]'(by omega) =
-                (t.insertIdx k_t u)[0]'(by omega) from List.getElem_cons_succ ..]
-              rw [List.getElem_insertIdx_of_lt (by omega)]
-              exact harcs 0 (by simp [List.length_cons]; omega)
+              have heq : (t.insertIdx k_t u)[0]'(by omega) = t[0]'(by omega) :=
+                List.getElem_insertIdx_of_lt hlt (by omega)
+              exact heq.symm ▸ harcs 0 (by simp only [List.length_cons]; omega)
           | i + 1 =>
-            -- Arc within t.insertIdx k_t u (from IH)
-            show D.arc ((a :: t.insertIdx k_t u)[i + 1]'(by omega))
-              ((a :: t.insertIdx k_t u)[i + 2]'(by omega))
-            simp only [List.getElem_cons_succ]
-            exact hk_t_arcs i (by simp [List.length_cons] at hi; omega)
+            -- Arc within t.insertIdx k_t u (from IH); fully defeq via insertIdx_succ_cons
+            -- and getElem_cons_succ (both `rfl`)
+            exact hk_t_arcs i (by omega)
 
 /-- Build a full Hamiltonian path by iterating tournament insertion.
 Induction on path length: start with one vertex, extend by 1 each step. -/
@@ -240,7 +268,7 @@ lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
     · -- Base: path of length 1 = any single vertex
       subst hm
       obtain ⟨v⟩ := Fintype.card_pos_iff.mp hn
-      exact ⟨[v], rfl, List.nodup_singleton v, fun _ hi => by omega⟩
+      exact ⟨[v], rfl, List.nodup_singleton v, fun _ hi => by simp at hi⟩
     · -- Inductive step: extend a path of length m to length m + 1
       obtain ⟨l, hlen, hp⟩ := ih (by omega) (Nat.pos_of_ne_zero hm)
       -- A nodup list shorter than card V misses at least one vertex
@@ -253,7 +281,7 @@ lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
             _ = l.length := l.toFinset_card_of_nodup hp.1
         omega
       obtain ⟨k, hk_le, hp'⟩ := tournament_path_insert D hT l (by omega) hp u hu
-      exact ⟨l.insertIdx k u, by rw [List.length_insertIdx (by omega)]; omega, hp'⟩
+      exact ⟨l.insertIdx k u, by rw [List.length_insertIdx_of_le_length (by omega) _]; omega, hp'⟩
 
 /-- Convert a list-based Hamiltonian path to the equivalence-based definition.
     A nodup list of length (card V) gives a bijection Fin (card V) → V
@@ -269,14 +297,14 @@ lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
       Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen])
     exact this ▸ Finset.mem_univ v
   -- l defines a bijection Fin (card V) → V via index lookup
-  let f : Fin (Fintype.card V) → V := fun i => l[i.val]'(hlen ▸ i.isLt)
+  let f : Fin (Fintype.card V) → V := fun i => l[i.val]'(by omega)
   have hf_bij : Function.Bijective f := by
     constructor
     · -- Injective: distinct indices give distinct elements (nodup)
       intro ⟨i, hi⟩ ⟨j, hj⟩ heq
       simp only [f] at heq
-      have hi' : i < l.length := hlen ▸ hi
-      have hj' : j < l.length := hlen ▸ hj
+      have hi' : i < l.length := by omega
+      have hj' : j < l.length := by omega
       ext
       exact List.Nodup.getElem_inj_iff hnd |>.mp heq
     · -- Surjective: every vertex is in l, so has a valid index
@@ -284,9 +312,9 @@ lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
       have hv := hmem v
       rw [List.mem_iff_getElem] at hv
       obtain ⟨i, hi, hvi⟩ := hv
-      exact ⟨⟨i, hlen ▸ hi⟩, hvi.symm⟩
+      exact ⟨⟨i, by omega⟩, hvi⟩
   -- Build the equivalence: σ.symm i = l[i]
-  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i hi => hp.2 i.val (hlen ▸ hi)⟩
+  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i hi => hp.2 i.val (by omega)⟩
 
 /-- A directed cycle as a list: nodup vertices with consecutive arcs
 including wrap-around (last → first) via modular indexing. -/
@@ -430,14 +458,12 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
           have hmod : (i + 1) % (p.length - j) = 0 := by rw [hwrap]; exact Nat.mod_self _
           simp only [hmod]
           simp only [hget j hj_lt 0 (by omega), Nat.add_zero]
-          convert hu_arc using 2
-          · congr 1  -- j + i = p.length - 1
-          · exact hj_get.symm
+          convert hu_arc using 2 <;> first | exact hj_get | omega
         · -- Interior: use path arcs
           have hmod : (i + 1) % (p.length - j) = i + 1 := Nat.mod_eq_of_lt (by omega)
           simp only [hmod]
           rw [hget j hj_lt (i + 1) (by omega)]
-          convert hp_arcs (j + i) (by omega) using 2 <;> congr 1 <;> omega
+          convert hp_arcs (j + i) (by omega) using 2 <;> omega
     · -- Extend: u ∉ p, append u to build a longer path, then apply IH
       -- p ++ [u] has length ≤ card V, so the deficit decreases
       have hlen_lt : p.length < Fintype.card V := by
@@ -453,9 +479,10 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
       have hp_ext_nd : (p ++ [u]).Nodup := by
         rw [List.nodup_append]
         refine ⟨hp_nd, List.nodup_singleton _, ?_⟩
-        intro x hxp hxu
-        simp at hxu
-        exact hu_mem (hxu ▸ hxp)
+        intro x hxp y hxu
+        have hyu : y = u := List.mem_singleton.mp hxu
+        intro heq
+        exact hu_mem ((heq.trans hyu) ▸ hxp)
       have hp_ext_arcs : ∀ i, (hi : i + 1 < (p ++ [u]).length) →
           D.arc ((p ++ [u])[i]'(by omega)) ((p ++ [u])[i + 1]'hi) := by
         intro i hi
@@ -465,12 +492,12 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
           exact hp_arcs i hi'
         · -- i = p.length - 1, arc from v to u
           have hi_eq : i = p.length - 1 := by omega
-          have h_lhs : (p ++ [u])[i]'(by rw [List.length_append, List.length_singleton]; omega) =
-              p[p.length - 1]'(by omega) := by
+          have h_lhs : (p ++ [u])[i]'(by omega) = p[p.length - 1]'(by omega) := by
             rw [List.getElem_append_left (by omega)]; congr 1
-          have h_rhs : (p ++ [u])[i + 1]'hi = u := by
-            have h1 : i + 1 = p.length := by omega
-            simp [h1, List.getElem_append_right]
+          have h_rhs : (p ++ [u])[i + 1]'(by omega) = u := by
+            rw [List.getElem_append_right (by omega)]
+            have h0 : i + 1 - p.length = 0 := by omega
+            simp [h0]
           rw [h_lhs, h_rhs, ← hv_def]
           exact hu_arc
       exact ih (Fintype.card V - (p ++ [u]).length)
@@ -579,60 +606,74 @@ private theorem gh_cycle_extendable_small_k
     obtain ⟨w, hw_nl, i, hi, harc_iw, harc_wi⟩ := h_any_ins
     use l.insertIdx (i + 1) w
     have hlen_ins : (l.insertIdx (i + 1) w).length = k + 1 :=
-      List.length_insertIdx (by omega)
-    refine ⟨⟨List.Nodup.insertIdx hw_nl hnd, by simp [hlen_ins]; omega, ?_⟩,
+      List.length_insertIdx_of_le_length (by omega) _
+    refine ⟨⟨nodup_insertIdx hw_nl hnd (by omega), by simp [hlen_ins]; omega, ?_⟩,
             by simp [hlen_ins]⟩
-    intro j hj; simp only [hlen_ins] at hj
-    have heli : ∀ m (hm : m < k + 1),
-        (l.insertIdx (i + 1) w)[m]'hm =
-          if m < i + 1 then l[m]'(by omega)
-          else if m = i + 1 then w
-          else l[m - 1]'(by omega) := fun m hm =>
-      insertIdx_getElem_eq l w (i+1) (by omega) m (by rwa [hlen_ins])
-    rw [heli j hj]
-    set jnext := (j + 1) % (k + 1)
-    have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
-    rw [heli jnext hjnext_lt]
+    intro j hj; simp only [hlen_ins] at hj ⊢
     by_cases hji : j < i
-    · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
-      simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
-                 hjnext, ↓reduceIte, dite_true]; exact harcs j (by omega)
+    · -- j < i: both j and j+1 are below the insertion point i+1
+      have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+      have heq1 : (l.insertIdx (i + 1) w)[j]'(by omega) = l[j]'(by omega) :=
+        List.getElem_insertIdx_of_lt (by omega) (by omega)
+      have heq2 : (l.insertIdx (i + 1) w)[(j + 1) % (k + 1)]'(by omega) = l[j + 1]'(by omega) := by
+        simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+      rw [heq1, heq2]
+      have hmodL : (j + 1) % l.length = j + 1 := Nat.mod_eq_of_lt (by omega)
+      convert harcs j (by omega) using 2
+      omega
     · by_cases hji2 : j = i
       · subst hji2
-        have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
-        simp [hjnext]; exact harc_iw
+        have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+        have heq1 : (l.insertIdx (j + 1) w)[j]'(by omega) = l[j]'(by omega) :=
+          List.getElem_insertIdx_of_lt (by omega) (by omega)
+        have heq2 : (l.insertIdx (j + 1) w)[(j + 1) % (k + 1)]'(by omega) = w := by
+          simp only [hmod]; exact List.getElem_insertIdx_self (by omega)
+        rw [heq1, heq2]
+        exact harc_iw
       · by_cases hji3 : j = i + 1
         · subst hji3
-          have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
-            simp only [jnext]; split_ifs with h
-            · exact Nat.mod_eq_of_lt h
-            · push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
-          simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
-                     if_false, if_true]
-          split_ifs at hjnext with h
-          · rw [hjnext]
-            simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
-                       if_false, show i + 2 - 1 = i + 1 from by omega]
-            convert harc_wi using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+          have heq1 : (l.insertIdx (i + 1) w)[i + 1]'(by omega) = w :=
+            List.getElem_insertIdx_self (by omega)
+          by_cases hwrap : i + 2 < k + 1
+          · have hmod : (i + 2) % (k + 1) = i + 2 := Nat.mod_eq_of_lt (by omega)
+            have heq2 : (l.insertIdx (i + 1) w)[(i + 2) % (k + 1)]'(by omega) = l[i + 1]'(by omega) := by
+              simp only [hmod]
+              exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+            rw [heq1, heq2]
+            convert harc_wi using 2
+            exact (Nat.mod_eq_of_lt (by omega)).symm
           · have hik : i + 1 = k := by omega
-            rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
-            convert harc_wi using 2; simp [hik, Nat.mod_self]
+            have hmod : (i + 2) % (k + 1) = 0 := by
+              rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+            have heq2 : (l.insertIdx (i + 1) w)[(i + 2) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+              simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+            rw [heq1, heq2]
+            convert harc_wi using 2
+            simp [hik, Nat.mod_self]
         · have hjgt : i + 1 < j := by omega
+          have heq1 : (l.insertIdx (i + 1) w)[j]'(by omega) = l[j - 1]'(by omega) :=
+            List.getElem_insertIdx_of_gt (by omega) (by omega)
           by_cases hwrap : j + 1 < k + 1
-          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
-            rw [hjnext]
-            simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
-                       show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
-                       if_false]; exact harcs (j - 1) (by omega)
+          · have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+            have heq2 : (l.insertIdx (i + 1) w)[(j + 1) % (k + 1)]'(by omega) = l[j]'(by omega) := by
+              simp only [hmod]
+              exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+            rw [heq1, heq2]
+            have hmodL : (j - 1 + 1) % l.length = j := by
+              rw [show j - 1 + 1 = j from by omega]; exact Nat.mod_eq_of_lt (by omega)
+            convert harcs (j - 1) (by omega) using 2
+            omega
           · have hjk : j = k := by omega
-            have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
-            rw [hjnext, hjk]
-            simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
-                       show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+            have hmod : (j + 1) % (k + 1) = 0 := by
+              rw [show j + 1 = k + 1 from by omega, Nat.mod_self]
+            have heq2 : (l.insertIdx (i + 1) w)[(j + 1) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+              simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+            rw [heq1, heq2]
             have : k - 1 < k := by omega
             convert harcs (k - 1) this using 2
-            · simp; omega
-            · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+            · omega
+            · rw [show k - 1 + 1 = k from by omega, ← hk_def]
+              exact (Nat.mod_self k).symm
   · -- Case 2: No non-cycle vertex is directly insertable.
     -- Use longest-cycle argument: take C* of max length, show it's Hamiltonian.
     push_neg at h_any_ins
@@ -648,7 +689,7 @@ private theorem gh_cycle_extendable_small_k
     · exact absurd (gh_longest_cycle_is_hamiltonian D hsc hout hin l_max hl_max h_max_bound)
         (by omega)
 
-/-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
+/-  In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
 
 **Proof strategy for the case k = n-1** (one vertex missing):
@@ -680,6 +721,7 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
   -- Count in-neighbors and out-neighbors of v on C
   -- Since v is the only non-cycle vertex, all neighbors of v are on C.
   -- in-deg(v) = |{i : arc(l[i], v)}| and out-deg(v) = |{j : arc(v, l[j])}|
+  classical
   let A := Finset.filter (fun i : Fin k => D.arc (l[i.val]'i.isLt) v) Finset.univ
   let B := Finset.filter (fun j : Fin k => D.arc v (l[j.val]'j.isLt)) Finset.univ
   -- Non-insertable: shift(A) ∩ B = ∅ where shift sends i ↦ (i+1)%k
@@ -694,24 +736,33 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
   have h_shift_inj : Function.Injective shift := by
     intro ⟨a, ha⟩ ⟨b, hb⟩ h
     simp only [shift, Fin.mk.injEq] at h
-    ext; omega
+    simp only [Fin.mk.injEq]
+    have hka : (a + 1) % k = if a + 1 = k then 0 else a + 1 := by
+      split_ifs with hc
+      · rw [hc, Nat.mod_self]
+      · exact Nat.mod_eq_of_lt (by omega)
+    have hkb : (b + 1) % k = if b + 1 = k then 0 else b + 1 := by
+      split_ifs with hc
+      · rw [hc, Nat.mod_self]
+      · exact Nat.mod_eq_of_lt (by omega)
+    rw [hka, hkb] at h
+    split_ifs at h <;> omega
   -- shift(A) and B are disjoint subsets of Fin k
   have h_card : A.card + B.card ≤ k := by
     have h_img := Finset.card_image_of_injective A h_shift_inj
     have h_sub : Finset.image shift A ∪ B ⊆ Finset.univ := Finset.subset_univ _
     have h_disj' : Disjoint (Finset.image shift A) B := by
-      rw [Finset.disjoint_filter]
-      intro x _
-      simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at *
-      intro ⟨⟨i, hi_mem⟩, hshift⟩ hB
+      rw [Finset.disjoint_left]
+      intro x hx hB
+      simp only [Finset.mem_image] at hx
+      obtain ⟨i, hi_mem, hshift⟩ := hx
       have hi_A : D.arc (l[i.val]'i.isLt) v := by
         simp only [A, Finset.mem_filter, Finset.mem_univ, true_and] at hi_mem
         exact hi_mem
-      have : ¬D.arc v (l[((i.val + 1) % k)]'(Nat.mod_lt _ (by omega))) := h_disj i hi_A
-      simp only [shift, Fin.mk.injEq] at hshift
+      have hnotB : ¬D.arc v (l[((i.val + 1) % k)]'(Nat.mod_lt _ (by omega))) := h_disj i hi_A
       rw [← hshift] at hB
-      simp only [B, Finset.mem_filter, Finset.mem_univ, true_and] at hB
-      exact this hB
+      simp only [shift, B, Finset.mem_filter, Finset.mem_univ, true_and] at hB
+      exact hnotB hB
     calc A.card + B.card = (Finset.image shift A).card + B.card := by rw [h_img]
       _ = (Finset.image shift A ∪ B).card := (Finset.card_union_of_disjoint h_disj').symm
       _ ≤ Finset.univ.card := Finset.card_le_card h_sub
@@ -720,24 +771,27 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
   have h_l_eq : l.toFinset = Finset.univ \ {v} :=
     Finset.eq_of_subset_of_card_le
       (by intro x hx; exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ x,
-           fun heq => hv (heq ▸ List.mem_toFinset.mp hx)⟩)
-      (by rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_univ v)),
-              Finset.card_univ, Finset.card_singleton, l.toFinset_card_of_nodup hnd]; omega)
+           fun heq => hv ((Finset.mem_singleton.mp heq) ▸ List.mem_toFinset.mp hx)⟩)
+      (by rw [Finset.card_sdiff, Finset.card_univ, Finset.inter_univ, Finset.card_singleton,
+              l.toFinset_card_of_nodup hnd]; omega)
   have hmem : ∀ w : V, w ≠ v → w ∈ l :=
-    fun w hw => List.mem_toFinset.mp (h_l_eq ▸ Finset.mem_sdiff.mpr ⟨Finset.mem_univ w, hw⟩)
-  -- indexOf is injective on l (since l is nodup)
+    fun w hw => List.mem_toFinset.mp (h_l_eq ▸ Finset.mem_sdiff.mpr
+      ⟨Finset.mem_univ w, fun h => hw (Finset.mem_singleton.mp h)⟩)
+  -- idxOf is injective on l (since l is nodup)
   have h_indexOf_inj : ∀ w₁ w₂ : V, w₁ ∈ l → w₂ ∈ l →
-      l.indexOf w₁ = l.indexOf w₂ → w₁ = w₂ := by
+      l.idxOf w₁ = l.idxOf w₂ → w₁ = w₂ := by
     intro w₁ w₂ h₁ h₂ heq
-    have := List.getElem_indexOf h₁; rw [heq] at this
-    rw [← this, List.getElem_indexOf h₂]
+    have e1 : l[l.idxOf w₁]'(List.idxOf_lt_length_of_mem h₁) = w₁ := List.getElem_idxOf _
+    have e2 : l[l.idxOf w₂]'(List.idxOf_lt_length_of_mem h₂) = w₂ := List.getElem_idxOf _
+    rw [← e1, ← e2]
+    simp only [heq]
   -- Position lookup for cycle membership
   let pos : V → Fin k := fun w =>
-    if h : w ∈ l then ⟨l.indexOf w, List.indexOf_lt_length.mpr h⟩ else ⟨0, by omega⟩
+    if h : w ∈ l then ⟨l.idxOf w, List.idxOf_lt_length_of_mem h⟩ else ⟨0, by omega⟩
   -- Degree lower bounds: |A| ≥ in-deg(v) and |B| ≥ out-deg(v)
   have hA_card : (n + 1) / 2 ≤ A.card := by
     calc (n + 1) / 2 ≤ D.inDegree v := hin v
-      _ = (Finset.filter (fun w => D.arc w v) Finset.univ).card := rfl
+      _ = (Finset.filter (fun w => D.arc w v) Finset.univ).card := Fintype.card_subtype _
       _ ≤ A.card := by
           apply Finset.card_le_card_of_injOn pos
           · -- Maps into A: pos(w) ∈ A when D.arc w v
@@ -746,7 +800,7 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
             have h_mem_l : w ∈ l := hmem w (fun h => D.loopless v (h ▸ harc))
             exact Finset.mem_coe.mpr (by
               simp only [pos, dif_pos h_mem_l, A, Finset.mem_filter, Finset.mem_univ, true_and]
-              rwa [List.getElem_indexOf h_mem_l])
+              rwa [List.getElem_idxOf (List.idxOf_lt_length_of_mem h_mem_l)])
           · -- InjOn: pos is injective on in-neighbors of v
             intro w₁ hw₁ w₂ hw₂ hpos
             have h₁ : w₁ ∈ l := hmem w₁ (fun h => D.loopless v
@@ -757,7 +811,7 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
             exact h_indexOf_inj w₁ w₂ h₁ h₂ hpos
   have hB_card : (n + 1) / 2 ≤ B.card := by
     calc (n + 1) / 2 ≤ D.outDegree v := hout v
-      _ = (Finset.filter (fun w => D.arc v w) Finset.univ).card := rfl
+      _ = (Finset.filter (fun w => D.arc v w) Finset.univ).card := Fintype.card_subtype _
       _ ≤ B.card := by
           apply Finset.card_le_card_of_injOn pos
           · -- Maps into B: pos(w) ∈ B when D.arc v w
@@ -766,7 +820,7 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
             have h_mem_l : w ∈ l := hmem w (fun h => D.loopless v (h ▸ harc))
             exact Finset.mem_coe.mpr (by
               simp only [pos, dif_pos h_mem_l, B, Finset.mem_filter, Finset.mem_univ, true_and]
-              rwa [List.getElem_indexOf h_mem_l])
+              rwa [List.getElem_idxOf (List.idxOf_lt_length_of_mem h_mem_l)])
           · -- InjOn: pos is injective on out-neighbors of v
             intro w₁ hw₁ w₂ hw₂ hpos
             have h₁ : w₁ ∈ l := hmem w₁ (fun h => D.loopless v
@@ -802,59 +856,73 @@ private lemma ghouila_houri_cycle_extendable (D : Digraph V)
     -- Insert v at position i+1 (same construction as tournament case)
     use l.insertIdx (i + 1) v
     have hlen_ins : (l.insertIdx (i + 1) v).length = k + 1 :=
-      List.length_insertIdx (by omega)
-    refine ⟨⟨List.Nodup.insertIdx hv hnd, by simp [hlen_ins]; omega, ?_⟩, by simp [hlen_ins]⟩
-    intro j hj; simp only [hlen_ins] at hj
-    have heli : ∀ m (hm : m < k + 1),
-        (l.insertIdx (i + 1) v)[m]'hm =
-          if m < i + 1 then l[m]'(by omega)
-          else if m = i + 1 then v
-          else l[m - 1]'(by omega) := fun m hm =>
-      insertIdx_getElem_eq l v (i+1) (by omega) m (by rwa [hlen_ins])
-    rw [heli j hj]
-    set jnext := (j + 1) % (k + 1)
-    have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
-    rw [heli jnext hjnext_lt]
+      List.length_insertIdx_of_le_length (by omega) _
+    refine ⟨⟨nodup_insertIdx hv hnd (by omega), by simp [hlen_ins]; omega, ?_⟩, by simp [hlen_ins]⟩
+    intro j hj; simp only [hlen_ins] at hj ⊢
     by_cases hji : j < i
-    · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
-      simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
-                 hjnext, ↓reduceIte, dite_true]; exact harcs j (by omega)
+    · -- j < i: both j and j+1 are below the insertion point i+1
+      have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+      have heq1 : (l.insertIdx (i + 1) v)[j]'(by omega) = l[j]'(by omega) :=
+        List.getElem_insertIdx_of_lt (by omega) (by omega)
+      have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[j + 1]'(by omega) := by
+        simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+      rw [heq1, heq2]
+      have hmodL : (j + 1) % l.length = j + 1 := Nat.mod_eq_of_lt (by omega)
+      convert harcs j (by omega) using 2
+      omega
     · by_cases hji2 : j = i
       · subst hji2
-        have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
-        simp [hjnext]; exact harc_iv
+        have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+        have heq1 : (l.insertIdx (j + 1) v)[j]'(by omega) = l[j]'(by omega) :=
+          List.getElem_insertIdx_of_lt (by omega) (by omega)
+        have heq2 : (l.insertIdx (j + 1) v)[(j + 1) % (k + 1)]'(by omega) = v := by
+          simp only [hmod]; exact List.getElem_insertIdx_self (by omega)
+        rw [heq1, heq2]
+        exact harc_iv
       · by_cases hji3 : j = i + 1
         · subst hji3
-          have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
-            simp only [jnext]; split_ifs with h
-            · exact Nat.mod_eq_of_lt h
-            · push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
-          simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
-                     if_false, if_true]
-          split_ifs at hjnext with h
-          · rw [hjnext]
-            simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
-                       if_false, show i + 2 - 1 = i + 1 from by omega]
-            convert harc_vi using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+          have heq1 : (l.insertIdx (i + 1) v)[i + 1]'(by omega) = v :=
+            List.getElem_insertIdx_self (by omega)
+          by_cases hwrap : i + 2 < k + 1
+          · have hmod : (i + 2) % (k + 1) = i + 2 := Nat.mod_eq_of_lt (by omega)
+            have heq2 : (l.insertIdx (i + 1) v)[(i + 2) % (k + 1)]'(by omega) = l[i + 1]'(by omega) := by
+              simp only [hmod]
+              exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+            rw [heq1, heq2]
+            convert harc_vi using 2
+            exact (Nat.mod_eq_of_lt (by omega)).symm
           · have hik : i + 1 = k := by omega
-            rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
-            convert harc_vi using 2; simp [hik, Nat.mod_self]
+            have hmod : (i + 2) % (k + 1) = 0 := by
+              rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+            have heq2 : (l.insertIdx (i + 1) v)[(i + 2) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+              simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+            rw [heq1, heq2]
+            convert harc_vi using 2
+            rw [hik]; exact (Nat.mod_self k).symm
         · have hjgt : i + 1 < j := by omega
+          have heq1 : (l.insertIdx (i + 1) v)[j]'(by omega) = l[j - 1]'(by omega) :=
+            List.getElem_insertIdx_of_gt (by omega) (by omega)
           by_cases hwrap : j + 1 < k + 1
-          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
-            rw [hjnext]
-            simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
-                       show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
-                       if_false]; exact harcs (j - 1) (by omega)
+          · have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+            have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[j]'(by omega) := by
+              simp only [hmod]
+              exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+            rw [heq1, heq2]
+            have hmodL : (j - 1 + 1) % l.length = j := by
+              rw [show j - 1 + 1 = j from by omega]; exact Nat.mod_eq_of_lt (by omega)
+            convert harcs (j - 1) (by omega) using 2
+            omega
           · have hjk : j = k := by omega
-            have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
-            rw [hjnext, hjk]
-            simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
-                       show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+            have hmod : (j + 1) % (k + 1) = 0 := by
+              rw [show j + 1 = k + 1 from by omega, Nat.mod_self]
+            have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+              simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+            rw [heq1, heq2]
             have : k - 1 < k := by omega
             convert harcs (k - 1) this using 2
-            · simp; omega
-            · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+            · omega
+            · rw [show k - 1 + 1 = k from by omega, ← hk_def]
+              exact (Nat.mod_self k).symm
   · -- k < n-1: delegate to axiom (SC routing through off-cycle vertices)
     -- Proof requires careful path surgery: find last cycle-exit and first cycle-entry
     -- vertices on SC paths to/from off-cycle vertices, build simple closed walk,
@@ -929,11 +997,11 @@ private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V
     · simp at hw_head
     · simp only [List.head?, Option.some.injEq, List.getLast?] at hw_head hw_last
       exact absurd (hw_head ▸ hw_last) (Ne.symm hne)
-    · omega
+    · simp only [List.length_cons]; omega
   -- walk[0] = hl[n-1] by hw_head
   have hw0 : walk[0]'(by omega) = hl[n-1]'hn1lt := by
     rcases walk with _ | ⟨a, t⟩
-    · exact absurd hwlen (by omega)
+    · exact absurd hwlen (by simp)
     · simp only [List.head?, Option.some.injEq] at hw_head
       simpa [hw_head]
   -- First arc of walk: hl[n-1] → w₁ = walk[1]
@@ -945,10 +1013,10 @@ private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V
     rw [show hl.toFinset = Finset.univ from
       Finset.eq_univ_of_card _ (by rw [List.toFinset_card_of_nodup hl_nd, hlen])]
     exact Finset.mem_univ _
-  -- j = indexOf w₁ in hl
-  set j := hl.indexOf w₁ with hj_def
-  have hj_lt_hl : j < hl.length := List.indexOf_lt_length.mpr hw1_mem
-  have hj_get : hl[j]'hj_lt_hl = w₁ := List.getElem_indexOf hw1_mem
+  -- j = idxOf w₁ in hl
+  set j := hl.idxOf w₁ with hj_def
+  have hj_lt_hl : j < hl.length := List.idxOf_lt_length_of_mem hw1_mem
+  have hj_get : hl[j]'hj_lt_hl = w₁ := List.getElem_idxOf hj_lt_hl
   -- j < n-1 since w₁ ≠ hl[n-1] (loopless)
   have hw1_ne_last : w₁ ≠ hl[n-1]'hn1lt := fun h => D.loopless _ (h ▸ harc_to_w1)
   have hj_lt_last : j < n - 1 := by
@@ -956,12 +1024,13 @@ private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V
     apply hw1_ne_last
     have hjeq : j = n - 1 := by omega
     calc w₁ = hl[j]'hj_lt_hl := hj_get.symm
-      _ = hl[n-1]'hn1lt := by congr 1; omega
+      _ = hl[n-1]'hn1lt := by congr 1
   -- hl.drop j is a directed cycle of length n - j ≥ 2
-  refine ⟨hl.drop j, List.Nodup.drop j hl_nd, ?_, ?_⟩
+  refine ⟨hl.drop j, (List.drop_sublist j hl).nodup hl_nd, ?_, ?_⟩
   · simp only [List.length_drop, hlen]; omega
   · intro i hi
-    simp only [List.length_drop, hlen] at hi
+    simp only [List.length_drop, hlen] at hi ⊢
+    have hdroplen : (List.drop j hl).length = n - j := by simp [List.length_drop, hlen]
     -- (hl.drop j)[m] = hl[j + m]
     have hget : ∀ m (hm : m < n - j),
         (hl.drop j)[m]'(by simp [List.length_drop, hlen]; omega) = hl[j + m]'(by omega) :=
@@ -971,15 +1040,20 @@ private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V
     · -- Closing arc: hl[j+i] = hl[n-1] → hl[j] = w₁
       have hmod : (i + 1) % (n - j) = 0 := by
         rw [show i + 1 = n - j from hwrap, Nat.mod_self]
-      rw [hget 0 (by omega), hmod, Nat.zero_add]
+      have heq2 : (List.drop j hl)[(i + 1) % (n - j)]'(by omega) = hl[j]'(by omega) := by
+        simp only [hmod]; exact hget 0 (by omega)
+      rw [heq2]
       -- Goal: D.arc (hl[j+i]'_) (hl[j]'_)
       have hjieq : j + i = n - 1 := by omega
-      convert harc_to_w1 using 2
-      · exact congrArg (hl[·]'(by omega)) hjieq
-      · exact hj_get.symm
+      convert harc_to_w1 using 2 <;>
+        first
+        | exact congrArg (hl[·]'(by omega)) hjieq
+        | exact hj_get.symm
     · -- Interior arc: hl[j+i] → hl[j+i+1] from Hamiltonian path
       have hmod : (i + 1) % (n - j) = i + 1 := Nat.mod_eq_of_lt (by omega)
-      rw [hget (i + 1) (by omega), hmod]
+      have heq2 : (List.drop j hl)[(i + 1) % (n - j)]'(by omega) = hl[j + i + 1]'(by omega) := by
+        simp only [hmod]; exact hget (i + 1) (by omega)
+      rw [heq2]
       convert hl_arcs (j + i) (by omega) using 2 <;> omega
 
 /-! ── IV.B: Non-Insertable Vertex Dichotomy ─────────────────────────────── -/
@@ -1006,42 +1080,46 @@ private lemma tournament_cycle_non_insertable (D : Digraph V)
   have h_succ : ∀ i (hi : i < l.length), D.arc (l[i]'hi) u →
       D.arc (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega))) u := by
     intro i hi harc_iu
-    have hmem : l[(i + 1) % l.length] ∈ l := List.getElem_mem ..
-    have hne : l[(i + 1) % l.length] ≠ u := fun h => hu (h ▸ hmem)
+    have hmem : l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega)) ∈ l :=
+      List.getElem_mem _
+    have hne : l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega)) ≠ u := fun h => hu (h ▸ hmem)
     exact D.arc_of_not_arc hT hne.symm (fun h => h_ni i hi ⟨harc_iu, h⟩)
   -- Split on whether arc(l[0], u) holds
   by_cases h0 : D.arc (l[0]'(by omega)) u
   · -- Case: l[0] beats u. Iterate successor forward to show all beat u.
     left; intro j hj
     -- By induction: for all m ≤ j, arc(l[m], u)
-    suffices ∀ m, m ≤ j → D.arc (l[m]'(by omega)) u from this j le_rfl
+    suffices ∀ m (hmj : m ≤ j), D.arc (l[m]'(by omega)) u from this j le_rfl
     intro m hm; induction m with
     | zero => exact h0
     | succ m ih =>
-      have := h_succ m (by omega) (ih (by omega))
-      rwa [Nat.mod_eq_of_lt (by omega : m + 1 < l.length)] at this
+      have hstep := h_succ m (by omega) (ih (by omega))
+      convert hstep using 2
+      exact (Nat.mod_eq_of_lt (by omega)).symm
   · -- Case: l[0] does NOT beat u. Show u beats all cycle vertices.
     right; intro j hj
     -- Contrapositive: if arc(l[j], u), iterate forward to reach index 0
     have hnu : ¬D.arc (l[j]'hj) u := by
       intro harc_j; apply h0
       -- Forward iteration: arc(l[j+d], u) for all d with j+d < l.length
-      have h_fwd : ∀ d, j + d < l.length →
+      have h_fwd : ∀ d (hjd : j + d < l.length),
           D.arc (l[j + d]'(by omega)) u := by
         intro d; induction d with
         | zero => intro _; simpa
         | succ d ih =>
           intro hd
-          have := h_succ (j + d) (by omega) (ih (by omega))
-          rwa [Nat.mod_eq_of_lt (show j + d + 1 < l.length from by omega)] at this
+          have hstep := h_succ (j + d) (by omega) (ih (by omega))
+          convert hstep using 2
+          exact (Nat.mod_eq_of_lt (by omega)).symm
       -- Get arc(l[k-1], u) from forward iteration
       have h_last := h_fwd (l.length - 1 - j) (by omega)
       have h_last' : D.arc (l[l.length - 1]'(by omega)) u := by
         convert h_last using 2; omega
       -- One more step: index k-1 → 0 (wraps around)
-      have := h_succ (l.length - 1) (by omega) h_last'
-      rwa [show (l.length - 1 + 1) % l.length = 0 from by
-        rw [show l.length - 1 + 1 = l.length from by omega, Nat.mod_self]] at this
+      have hstep2 := h_succ (l.length - 1) (by omega) h_last'
+      convert hstep2 using 2
+      exact (show (l.length - 1 + 1) % l.length = 0 from by
+        rw [show l.length - 1 + 1 = l.length from by omega, Nat.mod_self]).symm
     -- ¬arc(l[j], u) → arc(u, l[j]) by tournament property
     have hmem : l[j] ∈ l := List.getElem_mem ..
     have hne : l[j] ≠ u := fun h => hu (h ▸ hmem)
@@ -1054,7 +1132,7 @@ can be extended. This is the key step for Moon-Moser.
 
 **Proof sketch** (longest cycle argument):
 Given cycle C of length k < n, pick any u ∉ C.
-• If ∃ i with arc(C[i],u) ∧ arc(u,C[(i+1)%k]): insert u → cycle of length k+1.
+• If ∃ i with arc(C[i],u) ∧ arc(u,C(_ : (i+1)%k)): insert u → cycle of length k+1.
 • Otherwise, by `tournament_cycle_non_insertable`: either all of C beats u
   or u beats all of C.
   – Partition non-cycle vertices into S⁺ (beats all of C) and S⁻ (beaten by all).
@@ -1063,26 +1141,7 @@ Given cycle C of length k < n, pick any u ∉ C.
   – Both nonempty: if ∃ a∈S⁺, b∈S⁻ with arc(b,a): form cycle
     a→w₁→⋯→wₖ→b→a of length k+2, contradicting maximality.
     Otherwise all S⁺ beat all S⁻, trapping S⁻ → contradicts SC. -/
--- Helper: getElem of insertNth decomposes as three cases
-private lemma insertIdx_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
-    (hi : i ≤ l.length) (j : ℕ) (hj : j < (l.insertIdx i a).length) :
-    (l.insertIdx i a)[j]'hj =
-      if hlt : j < i then l[j]'(by simp [List.length_insertIdx hi] at hj; omega)
-      else if heq : j = i then a
-      else l[j - 1]'(by simp [List.length_insertIdx hi] at hj; omega) := by
-  induction i generalizing l j with
-  | zero =>
-    simp only [List.insertIdx_zero, Nat.not_lt_zero, ↓reduceDite, Nat.zero_le, le_refl]
-    rcases j with _ | j <;> simp
-  | succ i ih =>
-    rcases l with _ | ⟨a', t⟩
-    · simp [List.length_nil] at hi
-    · simp only [List.insertIdx_succ_cons]
-      rcases j with _ | j
-      · simp
-      · simp only [List.getElem_cons_succ]
-        rw [ih t (by simpa using hi) j (by simp [List.length_insertIdx (by simpa using hi)] at hj ⊢; omega)]
-        by_cases hlt : j < i <;> by_cases heq : j = i <;> simp_all <;> omega
+-- (`insertIdx_getElem_eq`, `nodup_insertIdx` moved earlier, ahead of first use — see top of file)
 
 private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
@@ -1103,82 +1162,77 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     -- l.insertIdx (i+1) u is a cycle of length k+1
     use l.insertIdx (i + 1) u
     have hlen_ins : (l.insertIdx (i + 1) u).length = k + 1 :=
-      List.length_insertIdx (by omega)
-    refine ⟨?_, ?_, ?_⟩
-    · exact List.Nodup.insertIdx hu hnd
+      List.length_insertIdx_of_le_length (by omega) _
+    refine ⟨⟨?_, ?_, ?_⟩, by simp [hlen_ins]⟩
+    · exact nodup_insertIdx hu hnd (by omega)
     · simp [hlen_ins]; omega
     · -- Arc condition: split by position relative to i+1
       intro j hj
-      simp only [hlen_ins] at hj
-      -- Get elements via the helper lemma
-      have heli : ∀ m (hm : m < k + 1),
-          (l.insertIdx (i + 1) u)[m]'hm =
-            if m < i + 1 then l[m]'(by omega)
-            else if m = i + 1 then u
-            else l[m - 1]'(by omega) := by
-        intro m hm; exact insertIdx_getElem_eq l u (i+1) (by omega) m (by rwa [hlen_ins])
-      rw [heli j hj]
-      -- Determine (j+1) % (k+1) and the element there
-      set jnext := (j + 1) % (k + 1) with hjnext_def
-      have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
-      rw [heli jnext hjnext_lt]
-      -- Now split into 5 cases based on j vs i+1
+      simp only [hlen_ins] at hj ⊢
       by_cases hji : j < i
-      · -- j < i: both j and jnext = j+1 are below i+1
-        have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
-        simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
-                   hjnext, ↓reduceIte, dite_true]
-        exact harcs j (by omega)
+      · -- j < i: both j and j+1 are below the insertion point i+1
+        have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+        have heq1 : (l.insertIdx (i + 1) u)[j]'(by omega) = l[j]'(by omega) :=
+          List.getElem_insertIdx_of_lt (by omega) (by omega)
+        have heq2 : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(by omega) = l[j + 1]'(by omega) := by
+          simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+        rw [heq1, heq2]
+        have hmodL : (j + 1) % l.length = j + 1 := Nat.mod_eq_of_lt (by omega)
+        convert harcs j (by omega) using 2
+        omega
       · by_cases hji2 : j = i
-        · -- j = i: new[i] = l[i], new[i+1] = u (next is i+1)
-          subst hji2
-          have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
-          simp [hjnext]
+        · subst hji2
+          have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+          have heq1 : (l.insertIdx (j + 1) u)[j]'(by omega) = l[j]'(by omega) :=
+            List.getElem_insertIdx_of_lt (by omega) (by omega)
+          have heq2 : (l.insertIdx (j + 1) u)[(j + 1) % (k + 1)]'(by omega) = u := by
+            simp only [hmod]; exact List.getElem_insertIdx_self (by omega)
+          rw [heq1, heq2]
           exact harc_liu
         · by_cases hji3 : j = i + 1
-          · -- j = i+1: new[j] = u
-            subst hji3
-            have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
-              simp [hjnext_def]
-              split_ifs with h
-              · exact Nat.mod_eq_of_lt h
-              · push_neg at h
-                rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
-            simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
-                       if_false, if_true]
-            split_ifs at hjnext with h
-            · -- i + 2 < k + 1: new[i+2] = l[i+1]
-              rw [hjnext]
-              simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
-                         if_false, show i + 2 - 1 = i + 1 from by omega]
+          · subst hji3
+            have heq1 : (l.insertIdx (i + 1) u)[i + 1]'(by omega) = u :=
+              List.getElem_insertIdx_self (by omega)
+            by_cases hwrap : i + 2 < k + 1
+            · have hmod : (i + 2) % (k + 1) = i + 2 := Nat.mod_eq_of_lt (by omega)
+              have heq2 : (l.insertIdx (i + 1) u)[(i + 2) % (k + 1)]'(by omega) = l[i + 1]'(by omega) := by
+                simp only [hmod]
+                exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+              rw [heq1, heq2]
               convert harc_ul using 2
               exact (Nat.mod_eq_of_lt (by omega)).symm
-            · -- i + 2 = k + 1: new[0] = l[0] (wrap)
-              have hik : i + 1 = k := by omega
-              rw [hjnext]
-              simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
+            · have hik : i + 1 = k := by omega
+              have hmod : (i + 2) % (k + 1) = 0 := by
+                rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+              have heq2 : (l.insertIdx (i + 1) u)[(i + 2) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+                simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+              rw [heq1, heq2]
               convert harc_ul using 2
               simp [hik, Nat.mod_self]
-          · -- j > i + 1: new[j] = l[j-1]
-            have hjgt : i + 1 < j := by omega
+          · have hjgt : i + 1 < j := by omega
+            have heq1 : (l.insertIdx (i + 1) u)[j]'(by omega) = l[j - 1]'(by omega) :=
+              List.getElem_insertIdx_of_gt (by omega) (by omega)
             by_cases hwrap : j + 1 < k + 1
-            · -- No wrap: jnext = j + 1
-              have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
-              rw [hjnext]
-              simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
-                         show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
-                         if_false]
-              exact harcs (j - 1) (by omega)
-            · -- Wrap: j = k, jnext = 0
-              have hjk : j = k := by omega
-              have hjnext : jnext = 0 := by simp [hjnext_def, hjk, Nat.mod_self]
-              rw [hjnext, hjk]
-              simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
-                         show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+            · have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+              have heq2 : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(by omega) = l[j]'(by omega) := by
+                simp only [hmod]
+                exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+              rw [heq1, heq2]
+              have hmodL : (j - 1 + 1) % l.length = j := by
+                rw [show j - 1 + 1 = j from by omega]; exact Nat.mod_eq_of_lt (by omega)
+              convert harcs (j - 1) (by omega) using 2
+              omega
+            · have hjk : j = k := by omega
+              have hmod : (j + 1) % (k + 1) = 0 := by
+                rw [show j + 1 = k + 1 from by omega, Nat.mod_self]
+              have heq2 : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+                simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+              rw [heq1, heq2]
               have : k - 1 < k := by omega
               convert harcs (k - 1) this using 2
-              · simp; omega
-              · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+              · omega
+              · rw [show k - 1 + 1 = k from by omega, ← hk_def]
+                exact (Nat.mod_self k).symm
   · -- Case 2: u is not insertable anywhere
     push_neg at h_ins
     -- Classify non-l vertices into S⁻ (beaten by all C) and S⁺ (beats all C)
@@ -1186,76 +1240,90 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     let S_plus  : V → Prop := fun v => ∀ (i : ℕ) (hi : i < k), D.arc v (l[i]'hi)
     -- u ∈ S⁻ or u ∈ S⁺
     have h_ni : S_minus u ∨ S_plus u :=
-      tournament_cycle_non_insertable D hT l hc u hu
-        (fun i hi ⟨h1, h2⟩ => h_ins i hi ⟨h1, h2⟩)
+      tournament_cycle_non_insertable D hT l ⟨hnd, hlen2, harcs⟩ u hu
+        (fun i hi hab => h_ins i hi hab.1 hab.2)
     -- Sub-case 2a: some non-l vertex IS insertable → k+1 cycle (same construction as Case 1)
     by_cases h_any_ins : ∃ (v : V) (hv : v ∉ l) (i : ℕ) (hi : i < k),
         D.arc (l[i]'hi) v ∧ D.arc v (l[(i + 1) % k]'(Nat.mod_lt _ (by omega)))
     · obtain ⟨v, hv_nl, i, hi, harc_lv, harc_vl⟩ := h_any_ins
       use l.insertIdx (i + 1) v
       have hlen_ins : (l.insertIdx (i + 1) v).length = k + 1 :=
-        List.length_insertIdx (by omega)
-      refine ⟨?_, ?_, ?_⟩
-      · exact List.Nodup.insertIdx hv_nl hnd
+        List.length_insertIdx_of_le_length (by omega) _
+      refine ⟨⟨?_, ?_, ?_⟩, by simp [hlen_ins]⟩
+      · exact nodup_insertIdx hv_nl hnd (by omega)
       · simp [hlen_ins]; omega
       · intro j hj
-        simp only [hlen_ins] at hj
-        have heli : ∀ m (hm : m < k + 1),
-            (l.insertIdx (i + 1) v)[m]'hm =
-              if m < i + 1 then l[m]'(by omega)
-              else if m = i + 1 then v
-              else l[m - 1]'(by omega) := fun m hm =>
-          insertIdx_getElem_eq l v (i+1) (by omega) m (by rwa [hlen_ins])
-        rw [heli j hj]
-        set jnext := (j + 1) % (k + 1)
-        have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
-        rw [heli jnext hjnext_lt]
+        simp only [hlen_ins] at hj ⊢
         by_cases hji : j < i
-        · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
-          simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
-                     hjnext, ↓reduceIte, dite_true]; exact harcs j (by omega)
+        · -- j < i: both j and j+1 are below the insertion point i+1
+          have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+          have heq1 : (l.insertIdx (i + 1) v)[j]'(by omega) = l[j]'(by omega) :=
+            List.getElem_insertIdx_of_lt (by omega) (by omega)
+          have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[j + 1]'(by omega) := by
+            simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+          rw [heq1, heq2]
+          have hmodL : (j + 1) % l.length = j + 1 := Nat.mod_eq_of_lt (by omega)
+          convert harcs j (by omega) using 2
+          omega
         · by_cases hji2 : j = i
           · subst hji2
-            have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
-            simp [hjnext]; exact harc_lv
+            have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+            have heq1 : (l.insertIdx (j + 1) v)[j]'(by omega) = l[j]'(by omega) :=
+              List.getElem_insertIdx_of_lt (by omega) (by omega)
+            have heq2 : (l.insertIdx (j + 1) v)[(j + 1) % (k + 1)]'(by omega) = v := by
+              simp only [hmod]; exact List.getElem_insertIdx_self (by omega)
+            rw [heq1, heq2]
+            exact harc_lv
           · by_cases hji3 : j = i + 1
             · subst hji3
-              have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
-                simp only [jnext]; split_ifs with h
-                · exact Nat.mod_eq_of_lt h
-                · push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
-              simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
-                         if_false, if_true]
-              split_ifs at hjnext with h
-              · rw [hjnext]
-                simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
-                           if_false, show i + 2 - 1 = i + 1 from by omega]
-                convert harc_vl using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+              have heq1 : (l.insertIdx (i + 1) v)[i + 1]'(by omega) = v :=
+                List.getElem_insertIdx_self (by omega)
+              by_cases hwrap : i + 2 < k + 1
+              · have hmod : (i + 2) % (k + 1) = i + 2 := Nat.mod_eq_of_lt (by omega)
+                have heq2 : (l.insertIdx (i + 1) v)[(i + 2) % (k + 1)]'(by omega) = l[i + 1]'(by omega) := by
+                  simp only [hmod]
+                  exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+                rw [heq1, heq2]
+                convert harc_vl using 2
+                exact (Nat.mod_eq_of_lt (by omega)).symm
               · have hik : i + 1 = k := by omega
-                rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
-                convert harc_vl using 2; simp [hik, Nat.mod_self]
+                have hmod : (i + 2) % (k + 1) = 0 := by
+                  rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+                have heq2 : (l.insertIdx (i + 1) v)[(i + 2) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+                  simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+                rw [heq1, heq2]
+                convert harc_vl using 2
+                simp [hik, Nat.mod_self]
             · have hjgt : i + 1 < j := by omega
+              have heq1 : (l.insertIdx (i + 1) v)[j]'(by omega) = l[j - 1]'(by omega) :=
+                List.getElem_insertIdx_of_gt (by omega) (by omega)
               by_cases hwrap : j + 1 < k + 1
-              · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
-                rw [hjnext]
-                simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
-                           show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
-                           if_false]
-                exact harcs (j - 1) (by omega)
+              · have hmod : (j + 1) % (k + 1) = j + 1 := Nat.mod_eq_of_lt (by omega)
+                have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[j]'(by omega) := by
+                  simp only [hmod]
+                  exact (List.getElem_insertIdx_of_gt (by omega) (by omega)).trans (by congr 1 <;> omega)
+                rw [heq1, heq2]
+                have hmodL : (j - 1 + 1) % l.length = j := by
+                  rw [show j - 1 + 1 = j from by omega]; exact Nat.mod_eq_of_lt (by omega)
+                convert harcs (j - 1) (by omega) using 2
+                omega
               · have hjk : j = k := by omega
-                have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
-                rw [hjnext, hjk]
-                simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
-                           show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
-                convert harcs (k - 1) (by omega) using 2
-                · simp; omega
-                · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+                have hmod : (j + 1) % (k + 1) = 0 := by
+                  rw [show j + 1 = k + 1 from by omega, Nat.mod_self]
+                have heq2 : (l.insertIdx (i + 1) v)[(j + 1) % (k + 1)]'(by omega) = l[0]'(by omega) := by
+                  simp only [hmod]; exact List.getElem_insertIdx_of_lt (by omega) (by omega)
+                rw [heq1, heq2]
+                have : k - 1 < k := by omega
+                convert harcs (k - 1) this using 2
+                · omega
+                · rw [show k - 1 + 1 = k from by omega, ← hk_def]
+                  exact (Nat.mod_self k).symm
     · -- Sub-case 2b: no non-l vertex is insertable → all non-l in S⁺ ∪ S⁻
       push_neg at h_any_ins
       -- Every non-l vertex is in S⁻ or S⁺ (by non-insertable dichotomy)
       have h_partition : ∀ v, v ∉ l → S_minus v ∨ S_plus v := fun v hv_nl =>
-        tournament_cycle_non_insertable D hT l hc v hv_nl
-          (fun i hi ⟨h1, h2⟩ => h_any_ins v hv_nl i hi ⟨h1, h2⟩)
+        tournament_cycle_non_insertable D hT l ⟨hnd, hlen2, harcs⟩ v hv_nl
+          (fun i hi hab => h_any_ins v hv_nl i hi hab.1 hab.2)
       -- S⁺ and S⁻ vertices can't be in l (loopless: arc(l[r], l[r]) is false)
       have h_sm_not_l : ∀ v, S_minus v → v ∉ l := fun v hsm hmem => by
         obtain ⟨r, hr, rfl⟩ := List.mem_iff_getElem.mp hmem
@@ -1280,27 +1348,27 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
         · -- Nodup: l Nodup, a ∉ l, b ∉ l, a ≠ b
           rw [List.nodup_append]
           refine ⟨hnd, by simp [hab_ne], ?_⟩
-          intro v hv_l hv_ab
-          simp only [List.mem_cons, List.mem_singleton] at hv_ab
+          intro v hv_l w hv_ab
+          simp at hv_ab
           rcases hv_ab with rfl | rfl
-          · exact ha_nl hv_l
-          · exact hb_nl hv_l
+          · exact fun h => ha_nl (h ▸ hv_l)
+          · exact fun h => hb_nl (h ▸ hv_l)
         · simp [hlen2]
         · -- Arc condition for l ++ [a, b]
           intro i hi
-          rw [hlen2] at hi
-          have hget : ∀ m (hm : m < k + 2), (l ++ [a, b])[m]'hm =
+          simp only [hlen2] at hi ⊢
+          have hget : ∀ m (hm : m < k + 2), (l ++ [a, b])[m]'(by omega) =
               if hlt : m < k then l[m]'hlt else if m = k then a else b := by
             intro m hm
             split_ifs with hlt heq
             · exact List.getElem_append_left hlt
             · subst heq
               rw [List.getElem_append_right (le_refl k)]
-              simp [Nat.sub_self]
+              simp [← hk_def, Nat.sub_self]
             · have hmeq : m = k + 1 := by omega
               subst hmeq
               rw [List.getElem_append_right (by omega : k ≤ k + 1)]
-              simp
+              simp [← hk_def, show k + 1 - k = 1 from by omega]
           set inext := (i + 1) % (k + 2) with hinext_def
           have hinext_lt : inext < k + 2 := Nat.mod_lt _ (by omega)
           rw [hget i (by omega), hget inext hinext_lt]
@@ -1309,36 +1377,35 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
           rcases hi4 with hilt | rfl | rfl | rfl
           · -- i < k-1: arc(l[i], l[i+1]) from interior arcs of l
             have hinext_eq : inext = i + 1 := by
-              simp [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
+              simp only [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show i < k from by omega, show i + 1 < k from by omega, ↓reduceDite]
+            simp only [show i < k from by omega, show i + 1 < k from by omega, ↓reduceDIte]
             convert harcs i (by omega) using 2
             exact (Nat.mod_eq_of_lt (show i + 1 < k from by omega)).symm
           · -- i = k-1: arc(l[k-1], a)
             have hinext_eq : inext = k := by
-              simp [hinext_def, show k - 1 + 1 = k from by omega]
+              simp only [hinext_def, show k - 1 + 1 = k from by omega]
               exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show k - 1 < k from by omega, ↓reduceDite,
-                       show k = k from rfl, if_true]
+            simp only [show k - 1 < k from by omega, show ¬(k < k) from lt_irrefl k,
+                       ↓reduceDIte, if_pos rfl, if_true]
             exact ha_sm (k - 1) (by omega)
           · -- i = k: arc(a, b)
             have hinext_eq : inext = k + 1 := by
-              simp [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
+              simp only [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show ¬(k < k) from lt_irrefl k, ↓reduceDite,
-                       show k = k from rfl, if_true,
+            simp only [show ¬(k < k) from lt_irrefl k, ↓reduceDIte, if_pos rfl, if_true,
                        show ¬(k + 1 < k) from by omega, show k + 1 ≠ k from by omega, if_false]
             exact harc_ab
           · -- i = k+1: arc(b, l[0])
             have hinext_eq : inext = 0 := by
-              simp [hinext_def, show k + 1 + 1 = k + 2 from by omega, Nat.mod_self]
+              simp only [hinext_def, show k + 1 + 1 = k + 2 from by omega, Nat.mod_self]
             rw [hinext_eq]
             simp only [show ¬(k + 1 < k) from by omega, show k + 1 ≠ k from by omega, if_false,
-                       show (0 : ℕ) < k from by omega, ↓reduceDite]
+                       show (0 : ℕ) < k from by omega, ↓reduceDIte]
             exact hb_sp 0 (by omega)
         · -- l.length < (l ++ [a, b]).length
-          simp [hlen2]; omega
+          simp [hlen2]
       -- Prove ∃ a ∈ S⁻, b ∈ S⁺ with arc(a,b) using strong connectivity
       -- (1) Tournament antisymmetry
       have h_anti : ∀ (a b : V), a ≠ b → D.arc a b → ¬D.arc b a :=
@@ -1759,7 +1826,7 @@ Proof structure (grow-cycle approach):
 
 **Future work** (path surgery to eliminate the axiom):
 1. Cross condition (PROVED via `gh_cross_gives_longer_cycle`):
-   If ∃ i with arc(l_max[i], v) AND arc(w, l_max[(i+1)%k]), then
+   If ∃ i with arc(l_max[i], v) AND arc(w, l_max(_ : (i+1)%k)), then
    l_max.rotate(i+1) ++ [v, w] is a cycle of length k+2. Contradicts maximality.
 2. No-cross case: needs SC path surgery (Menger's theorem), ~150-200 lines.
 

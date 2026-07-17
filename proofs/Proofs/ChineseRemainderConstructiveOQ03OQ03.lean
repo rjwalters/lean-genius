@@ -60,7 +60,7 @@ open RNSBases
     then extend to `2^k` via `Nat.Coprime.pow_left`. -/
 theorem pow2_coprime_odd (k : ℕ) {m : ℕ} (hm : m % 2 = 1) :
     Nat.Coprime (2 ^ k) m :=
-  Nat.Coprime.pow_left k (Nat.coprime_two_right.mpr (Nat.odd_iff.mpr hm))
+  Nat.Coprime.pow_left k (Nat.coprime_two_right.mpr (Nat.odd_iff.mpr hm)).symm
 
 /-- Symmetric form: odd `m` is coprime to `2^k`. -/
 theorem odd_coprime_pow2 (k : ℕ) {m : ℕ} (hm : m % 2 = 1) :

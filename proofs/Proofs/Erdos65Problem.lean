@@ -90,7 +90,7 @@ noncomputable def cycleLengthReciprocalSum (G : SimpleGraph V) : ℝ :=
 Erdős and Hajnal asked two related questions about cycle lengths.
 -/
 
-/--
+/- 
 **Question 1 (PROVED)**: The Gyárfás-Komlós-Szemerédi Theorem
 
 For any graph G with n vertices and kn edges (k ≥ 1), the sum of reciprocals
@@ -133,7 +133,7 @@ We use Mathlib's definition: G.IsBipartite
 noncomputable def bipartiteCycleSum (r s : ℕ) : ℝ :=
   ∑ i ∈ Finset.Icc 2 (min r s), (1 : ℝ) / (2 * i)
 
-/-- The bipartite cycle sum is 1/2 times a partial harmonic sum. -/
+/-  The bipartite cycle sum is 1/2 times a partial harmonic sum. -/
 
 /-
 ## Lower Bounds on Cycle Variety
@@ -155,7 +155,7 @@ The GKS result uses similar extremal graph theory techniques.
 ## Special Cases
 -/
 
-/-- For k = 1 (n edges, average degree 2), the graph has a cycle.
+/-  For k = 1 (n edges, average degree 2), the graph has a cycle.
 
     Proof: A forest (acyclic graph) on n vertices has at most n-1 edges.
     With n edges, the graph cannot be acyclic, so it contains a cycle. -/
@@ -174,7 +174,7 @@ However, proving this minimization property requires understanding
 the structure of ALL graphs with given edge count, not just bipartite ones.
 -/
 
-/-- The parity observation: bipartite graphs only have even cycle lengths.
+/-  The parity observation: bipartite graphs only have even cycle lengths.
 
     Proof: In a 2-coloring, adjacent vertices have different colors.
     Walking around a cycle of length k, colors alternate, so after k steps

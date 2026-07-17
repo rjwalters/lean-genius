@@ -224,7 +224,7 @@ noncomputable instance instLT : LT ZsqrtNegTwo :=
 
 /-- ℤ[√-2] is a Euclidean domain. -/
 noncomputable instance instEuclideanDomain : EuclideanDomain ZsqrtNegTwo :=
-  { inferInstanceAs (CommRing ZsqrtNegTwo) with
+  { (inferInstance : CommRing ZsqrtNegTwo), (inferInstance : Nontrivial ZsqrtNegTwo) with
     quotient := (· / ·)
     remainder := (· % ·)
     quotient_zero := by

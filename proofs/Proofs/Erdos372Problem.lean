@@ -19,11 +19,13 @@ Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?
 **Reference:** https://erdosproblems.com/372
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Instances.Nat
 import Mathlib.Data.Real.Basic
+
+open scoped Classical
 
 open Filter
 
@@ -36,9 +38,9 @@ namespace Erdos372
 P(n) is the largest prime that divides n.
 For n = 1, we define P(1) = 1 (convention).
 -/
-noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
-  if n ≤ 1 then 1
-  else (n.primeFactors).max' (Nat.primeFactors_nonempty (by omega))
+def largestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n ≤ 1 then 1
+  else (n.primeFactors).max' (Nat.nonempty_primeFactors.mpr (by omega))
 
 -- Convenient notation
 notation "P" => largestPrimeFactor
@@ -48,7 +50,7 @@ P(n) is always a prime for n > 1.
 -/
 theorem largestPrimeFactor_prime {n : ℕ} (hn : n > 1) : (P n).Prime := by
   unfold largestPrimeFactor
-  simp [hn]
+  rw [dif_neg (by omega : ¬ n ≤ 1)]
   exact Nat.prime_of_mem_primeFactors (Finset.max'_mem _ _)
 
 /--
@@ -56,8 +58,8 @@ P(n) divides n for n > 1.
 -/
 theorem largestPrimeFactor_dvd {n : ℕ} (hn : n > 1) : P n ∣ n := by
   unfold largestPrimeFactor
-  simp [hn]
-  have := Finset.max'_mem (n.primeFactors) (Nat.primeFactors_nonempty (by omega))
+  rw [dif_neg (by omega : ¬ n ≤ 1)]
+  have := Finset.max'_mem (n.primeFactors) (Nat.nonempty_primeFactors.mpr (by omega))
   exact Nat.dvd_of_mem_primeFactors this
 
 /--
@@ -66,7 +68,7 @@ For any prime p dividing n, we have p ≤ P(n).
 theorem prime_le_largestPrimeFactor {n p : ℕ} (hn : n > 1) (hp : p.Prime) (hdvd : p ∣ n) :
     p ≤ P n := by
   unfold largestPrimeFactor
-  simp [hn]
+  rw [dif_neg (by omega : ¬ n ≤ 1)]
   have hmem : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hdvd, by omega⟩
   exact Finset.le_max' _ _ hmem
 
@@ -159,7 +161,7 @@ and by symmetry each ordering should occur with density 1/6.
 def balog_density_conjecture : Prop :=
   ∃ (density : ℝ), density = 1/6 ∧
     Tendsto (fun x : ℕ =>
-      (Finset.filter (fun n => isDescendingTriple n) (Finset.range (x + 1))).card / x)
+      ((Finset.filter (fun n => isDescendingTriple n) (Finset.range (x + 1))).card : ℝ) / x)
       atTop (nhds density)
 
 /- ## Part VII: Related Properties -/

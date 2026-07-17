@@ -36,10 +36,13 @@ References:
 - See also Problem #498
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.Normed.Field.Basic
-import Mathlib.Probability.ProbabilityMassFunction.Basic
-import Mathlib.Data.Complex.Basic
+import Mathlib
+
+open scoped Classical
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Complex
 
@@ -75,7 +78,7 @@ How many sign choices give |sum| ≤ √2?
 
 /-- The number of sign vectors giving |sum| ≤ √2. -/
 noncomputable def countSmallSums (z : Fin n → ℂ) : ℕ :=
-  Finset.card {ε : Fin n → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ Real.sqrt 2}.toFinset
+  Set.ncard {ε : Fin n → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ Real.sqrt 2}
 
 /-- The probability that a random sign choice gives |sum| ≤ √2. -/
 noncomputable def probSmallSum (z : Fin n → ℂ) : ℝ :=
@@ -90,8 +93,8 @@ def erdos_original_question (n : ℕ) : Prop :=
   n > 0 →
   ∃ (c : ℝ), c > 0 ∧
   ∀ (z : Fin n → ℂ), isUnitVector z →
-  (Finset.card {ε : Fin n → ℤ | isSignVector ε ∧
-    signedSumAbs z ε ≤ 1}.toFinset : ℝ) / (2 : ℝ) ^ n ≥ c / n
+  (Set.ncard {ε : Fin n → ℤ | isSignVector ε ∧
+    signedSumAbs z ε ≤ 1} : ℝ) / (2 : ℝ) ^ n ≥ c / n
 
 /-- Carnielli-Carolino counterexample: z₁ = 1, zₖ = i for k ≥ 2.
     For this configuration, |sum| ≥ √2 always when n is even. -/
@@ -99,7 +102,7 @@ def carnielli_carolino_counterexample (n : ℕ) (hn : Even n) (hn2 : n ≥ 2) :
     Fin n → ℂ :=
   fun i => if i.val = 0 then 1 else Complex.I
 
-/-- The counterexample always has |sum| ≥ √2.
+/-  The counterexample always has |sum| ≥ √2.
 Axiomatized because verifying this requires complex norm estimates. -/
 /-- Erdős's original question is FALSE.
 Axiomatized: Carnielli-Carolino (2011) showed the counterexample works. -/

@@ -428,7 +428,7 @@ theorem representable3_consecutive_iff (n m : ℕ) :
           = (n * x + (n + 1) * y + (n + 2) * z) + (2 * x + y) := by ring
       omega
   · rintro ⟨s, h1, h2⟩
-    rcases le_or_lt (m - n * s) s with ht | ht
+    rcases le_or_gt (m - n * s) s with ht | ht
     · -- remainder `t := m - n*s` satisfies `t ≤ s`: use `x = s - t, y = t, z = 0`.
       obtain ⟨u, hu⟩ : ∃ u, s = u + (m - n * s) := ⟨s - (m - n * s), by omega⟩
       refine ⟨u, m - n * s, 0, ?_⟩
@@ -597,7 +597,7 @@ theorem representable3_ap_iff (a d m : ℕ) :
   · rintro ⟨x, y, z, rfl⟩
     exact ⟨x + y + z, y + 2 * z, by ring, by omega⟩
   · rintro ⟨s, t, hm, ht⟩
-    rcases le_or_lt t s with hts | hts
+    rcases le_or_gt t s with hts | hts
     · -- excess `t ≤ s`: use `x = s - t, y = t, z = 0`.
       obtain ⟨u, hu⟩ : ∃ u, s = u + t := ⟨s - t, by omega⟩
       refine ⟨u, t, 0, ?_⟩

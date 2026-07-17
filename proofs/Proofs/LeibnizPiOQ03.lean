@@ -117,8 +117,7 @@ theorem midpoint_tendsto : Tendsto midpoint atTop (nhds (π / 4)) := by
 theorem gap_eq (k : ℕ) : S (2 * k + 1) - S (2 * k) = 1 / (4 * (k : ℝ) + 1) := by
   have h := S_step (2 * k)
   rw [neg_one_pow_even k] at h
-  convert h using 2
-  push_cast; ring
+  convert h using 2 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
 
 /-- **Midpoint error bound**: |M(k) - π/4| ≤ 1/(2·(4k+1)). -/
 theorem midpoint_error_bound (k : ℕ) :
@@ -213,7 +212,8 @@ theorem arctan_integral : ∫ t in (0 : ℝ)..1, 1 / (1 + t ^ 2) = π / 4 := by
   have hint : IntervalIntegrable (fun t => 1 / (1 + t ^ 2)) volume 0 1 :=
     ((continuous_const.div
       (continuous_const.add (continuous_id.pow 2))
-      (fun x => by positivity)).continuousOn).intervalIntegrable
+      (fun x => by have : (0:ℝ) < 1 + x ^ 2 := by positivity
+                   exact this.ne')).continuousOn).intervalIntegrable
   rw [integral_eq_sub_of_hasDerivAt hderiv hint]
   simp [arctan_one, arctan_zero]
 

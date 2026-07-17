@@ -18,10 +18,8 @@ References:
   - Swan (1962): Hilbert's theorem on positive ternary quartics (simplified proof)
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Eval
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Tactic
 
 open Polynomial Finset
@@ -81,7 +79,6 @@ theorem sq_plus_one_is_two_squares :
     IsSumOfKSquares (Polynomial.X ^ 2 + 1 : Polynomial ℝ) 2 := by
   refine ⟨![Polynomial.X, 1], ?_⟩
   simp [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
-  ring
 
 /-- Sum of two PSD polynomials is PSD. -/
 theorem psd_add (p q : Polynomial ℝ) (hp : IsPSD p) (hq : IsPSD q) :
@@ -104,7 +101,6 @@ theorem sum_of_k_squares_mono (p : Polynomial ℝ) (k : ℕ)
   obtain ⟨q, hq⟩ := h
   refine ⟨Fin.cons 0 (fun i => q i), ?_⟩
   simp [Fin.sum_univ_succ, hq]
-  ring
 
 /-- A sum of k squares is a sum of any m ≥ k squares. -/
 theorem sum_of_squares_le (p : Polynomial ℝ) (k m : ℕ) (hkm : k ≤ m)

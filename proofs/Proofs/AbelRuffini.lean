@@ -1,6 +1,7 @@
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.FieldTheory.Galois.Basic
 
 /-!
@@ -62,9 +63,9 @@ If α ∈ E is solvable by radicals over F, and q is an irreducible polynomial
 over F with q(α) = 0, then the Galois group of q is a solvable group.
 -/
 theorem galois_bridge (α : E) (q : Polynomial F) (hq : Irreducible q)
-    (hroot : Polynomial.aeval α q = 0) (hrad : IsSolvableByRad F α) :
+    (hroot : Polynomial.aeval α q = 0) (hrad : α ∈ solvableByRad F E) :
     IsSolvable q.Gal :=
-  solvableByRad.isSolvable' hq hroot hrad
+  isSolvable_gal_of_irreducible hrad hq hroot
 
 /-!
 ## Part III: Non-Solvability of Large Symmetric Groups
@@ -144,7 +145,7 @@ solvable Galois group, so unsolvable Galois group implies not solvable by radica
 -/
 theorem not_solvable_by_rad_of_not_solvable_gal (α : E) (q : Polynomial F)
     (hq : Irreducible q) (hroot : Polynomial.aeval α q = 0)
-    (hns : ¬ IsSolvable q.Gal) : ¬ IsSolvableByRad F α := by
+    (hns : ¬ IsSolvable q.Gal) : α ∉ solvableByRad F E := by
   intro hrad
   exact hns (galois_bridge α q hq hroot hrad)
 

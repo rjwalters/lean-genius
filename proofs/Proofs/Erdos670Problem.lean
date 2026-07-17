@@ -33,7 +33,7 @@ open Finset Real
 /- ## Part 1: Basic Definitions -/
 
 /-- A point configuration in ℝ^d -/
-def PointSet (d : ℕ) := Finset (Fin d → ℝ)
+abbrev PointSet (d : ℕ) := Finset (Fin d → ℝ)
 
 /-- The Euclidean distance between two points -/
 noncomputable def dist' {d : ℕ} (p q : Fin d → ℝ) : ℝ :=
@@ -58,7 +58,7 @@ def numPairs (n : ℕ) : ℕ := n.choose 2
 
 /- ## Part 2: The Trivial Lower Bound -/
 
-/-- The trivial lower bound: diameter ≥ n(n-1)/2.
+/-  The trivial lower bound: diameter ≥ n(n-1)/2.
     With C(n,2) distinct distances all differing by ≥ 1, the largest must be ≥ C(n,2). -/
 /- ## Part 3: The Main Conjecture -/
 
@@ -82,7 +82,7 @@ axiom trivial_gives_half {d : ℕ} : WeakConjecture d
 /- ## Part 4: The One-Dimensional Case (SOLVED) -/
 
 /-- Point set on the real line -/
-def RealPointSet := Finset ℝ
+abbrev RealPointSet := Finset ℝ
 
 /-- Distance on ℝ -/
 noncomputable def realDist (x y : ℝ) : ℝ := |x - y|
@@ -104,18 +104,18 @@ axiom erdos_1997_d1 :
     A.card = n → n ≥ N → RealDistinctDistances A 1 →
     realDiameter A hne ≥ (1 - ε) * n^2
 
-/-- Stronger form for d = 1: exact asymptotic diameter ≥ n(n-1)/2. -/
+/-  Stronger form for d = 1: exact asymptotic diameter ≥ n(n-1)/2. -/
 /- ## Part 5: Constructions -/
 
 /-- Arithmetic progression showing the conjecture is tight.
     {0, n, 2n, ..., (n-1)n} has diameter (n-1)n with all distances ≥ n. -/
-def arithmeticProgression (n : ℕ) : RealPointSet :=
-  (Finset.range n).image (fun k => (k : ℝ) * (n - 1 + 1))
+noncomputable def arithmeticProgression (n : ℕ) : RealPointSet :=
+  (Finset.range n).image (fun k : ℕ => (k : ℝ) * (n - 1 + 1))
 
-/-- AP has distinct distances differing by at least 1.
+/-  AP has distinct distances differing by at least 1.
     Distances are multiples of n, all at least n apart. -/
-/-- AP has diameter ≈ n². -/
-/-- The construction shows the conjecture is tight:
+/-  AP has diameter ≈ n². -/
+/-  The construction shows the conjecture is tight:
     there exist n-point sets with diameter ≤ n² and distance gaps ≥ 1. -/
 /- ## Part 6: Higher Dimensions -/
 
@@ -131,9 +131,9 @@ def SuperlinearConjecture (d : ℕ) : Prop :=
 def DistinctDistancesProblem (d : ℕ) (n : ℕ) (A : PointSet d) : Prop :=
   (pairwiseDistances A).card ≥ n / Real.sqrt (Real.log n)
 
-/-- If distances differ by ≥ 1, they are automatically distinct,
+/-  If distances differ by ≥ 1, they are automatically distinct,
     giving exactly C(n,2) distinct distances. -/
-/-- Pigeonhole: C(n,2) distances differing by ≥ 1 forces large diameter. -/
+/-  Pigeonhole: C(n,2) distances differing by ≥ 1 forces large diameter. -/
 /- ## Part 8: Summary -/
 
 /-- Erdős Problem #670: OPEN.
@@ -149,6 +149,7 @@ theorem erdos_670_summary :
   constructor
   · intro ε hε
     obtain ⟨N, hN⟩ := erdos_1997_d1 ε hε
+    refine ⟨N, ?_⟩
     intro A n hn hne hcard hDistinct
     exact hN A n hne hcard hn hDistinct
   · intro d

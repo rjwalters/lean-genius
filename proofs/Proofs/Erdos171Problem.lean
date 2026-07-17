@@ -79,8 +79,8 @@ namespace Erdos171
     pairs at distance exactly 1. -/
 def UnitDistanceGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   Adj x y := dist x y = 1
-  symm _ _ h := by simp [dist_comm]; exact h
-  loopless x h := by simp [dist_self] at h
+  symm.symm _ _ h := by simp [dist_comm]; exact h
+  loopless.irrefl x h := by simp [dist_self] at h
 
 /- ## Chromatic Number -/
 
@@ -133,14 +133,14 @@ private theorem moser_not_3_colorable :
 
 /-- The 7 vertices of the Moser spindle in ℝ². -/
 private noncomputable def moserPt : Fin 7 → EuclideanSpace ℝ (Fin 2)
-  | 0 => ![0, 0]
-  | 1 => ![1, 0]
-  | 2 => ![1/2, Real.sqrt 3 / 2]
-  | 3 => ![3/2, Real.sqrt 3 / 2]
-  | 4 => ![5/6, Real.sqrt 11 / 6]
-  | 5 => ![(5 - Real.sqrt 3 * Real.sqrt 11) / 12,
+  | 0 => !₂[0, 0]
+  | 1 => !₂[1, 0]
+  | 2 => !₂[1/2, Real.sqrt 3 / 2]
+  | 3 => !₂[3/2, Real.sqrt 3 / 2]
+  | 4 => !₂[5/6, Real.sqrt 11 / 6]
+  | 5 => !₂[(5 - Real.sqrt 3 * Real.sqrt 11) / 12,
            (5 * Real.sqrt 3 + Real.sqrt 11) / 12]
-  | 6 => ![(15 - Real.sqrt 3 * Real.sqrt 11) / 12,
+  | 6 => !₂[(15 - Real.sqrt 3 * Real.sqrt 11) / 12,
            (5 * Real.sqrt 3 + 3 * Real.sqrt 11) / 12]
 
 private theorem sqrt3_sq' : (Real.sqrt 3) ^ 2 = 3 := Real.sq_sqrt (by norm_num)
@@ -168,10 +168,10 @@ private theorem moserPt_injective : Function.Injective moserPt := by
   intro i j h
   have h0 := congr_arg (fun x : EuclideanSpace ℝ (Fin 2) => x 0) h
   fin_cases i <;> fin_cases j <;>
-    simp only [moserPt, Matrix.cons_val_zero, Matrix.head_cons] at h0 ⊢ <;>
+    simp only [moserPt, WithLp.ofLp_toLp, Matrix.cons_val_zero, Matrix.head_cons] at h0 ⊢ <;>
     first
     | rfl
-    | (exfalso; norm_num at h0)
+    | (exfalso; norm_num at h0; done)
     | (exfalso; exact moser_x5_ne _ (by norm_num) h0)
     | (exfalso; exact moser_x5_ne _ (by norm_num) h0.symm)
     | (exfalso; exact moser_x6_ne _ (by norm_num) h0)
@@ -182,14 +182,15 @@ private theorem moserPt_injective : Function.Injective moserPt := by
 private theorem moser_coord_sq (i j : Fin 7) (h : moserAdj i j = true) :
     (moserPt i 0 - moserPt j 0) ^ 2 + (moserPt i 1 - moserPt j 1) ^ 2 = 1 := by
   fin_cases i <;> fin_cases j <;> simp_all [moserAdj] <;>
-    simp only [moserPt, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+    simp only [moserPt, WithLp.ofLp_toLp, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons] <;>
     ring_nf <;> nlinarith [sqrt3_sq', sqrt11_sq']
 
 /-- Each edge of the Moser spindle has unit Euclidean distance. -/
 private theorem moser_edges_unit (i j : Fin 7) (h : moserAdj i j = true) :
     dist (moserPt i) (moserPt j) = 1 := by
   rw [dist_eq_norm, EuclideanSpace.norm_eq]
-  simp only [Fin.sum_univ_two, Pi.sub_apply, Real.norm_eq_abs, sq_abs]
+  simp only [Fin.sum_univ_two, WithLp.ofLp_sub, Pi.sub_apply, Real.norm_eq_abs, sq_abs]
   rw [moser_coord_sq i j h, Real.sqrt_one]
 
 /-- **Nelson (1950)**: The Moser spindle shows 4 colors are necessary.
@@ -220,7 +221,9 @@ theorem lower_bound_4 : chromaticNumberPlane ≥ 4 := by
   obtain ⟨V, -, hno⟩ := moser_spindle
   obtain ⟨x, y, hdist, heq⟩ :=
     hno (fun v => ⟨(c v.val).val, lt_of_lt_of_le (c v.val).isLt hle⟩)
-  exact absurd (Fin.ext (congr_arg Fin.val heq)) (hc x.val y.val hdist)
+  have hval : (c x.val).val = (c y.val).val :=
+    congrArg (fun z : Fin 3 => z.val) heq
+  exact absurd (Fin.ext hval) (hc x.val y.val hdist)
 
 /-- **de Grey (2018)**: There exists a finite graph in ℝ² requiring 5 colors. -/
 axiom de_grey_graph :
@@ -240,7 +243,9 @@ theorem de_grey : chromaticNumberPlane ≥ 5 := by
   obtain ⟨V, -, hno⟩ := de_grey_graph
   obtain ⟨x, y, hdist, heq⟩ :=
     hno (fun v => ⟨(c v.val).val, lt_of_lt_of_le (c v.val).isLt hle⟩)
-  exact absurd (Fin.ext (congr_arg Fin.val heq)) (hc x.val y.val hdist)
+  have hval : (c x.val).val = (c y.val).val :=
+    congrArg (fun z : Fin 4 => z.val) heq
+  exact absurd (Fin.ext hval) (hc x.val y.val hdist)
 
 /- ## Current State -/
 
@@ -262,8 +267,8 @@ theorem current_bounds : 5 ≤ chromaticNumberPlane ∧ chromaticNumberPlane ≤
 theorem clique_number_3 :
     ∃ (a b c : EuclideanSpace ℝ (Fin 2)), dist a b = 1 ∧ dist b c = 1 ∧ dist a c = 1 := by
   -- We can construct such points by taking vertices of an equilateral triangle in the Euclidean plane.
-  use ![0, 0], ![1, 0], ![1 / 2, Real.sqrt 3 / 2];
-  norm_num [ dist_eq_norm, EuclideanSpace.norm_eq ];
+  use !₂[0, 0], !₂[1, 0], !₂[1 / 2, Real.sqrt 3 / 2];
+  norm_num [ dist_eq_norm, EuclideanSpace.norm_eq, WithLp.ofLp_sub, WithLp.ofLp_toLp ];
   norm_num [ div_pow ]
 
 theorem no_4_clique :

@@ -103,14 +103,14 @@ axiom littlewood_rational_case :
       ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ n ≥ 1 ∧
         littlewoodProduct n ((p : ℝ) / (q : ℝ)) β < ε
 
-/--
+/- 
 Cassels–Swinnerton-Dyer (1955): the conjecture holds when
 α, β lie in the same cubic number field.
 E.g., α = ∛2 and β = (∛2)².
 -/
 /- ## Part V: The EKL Theorem -/
 
-/--
+/- 
 **Einsiedler–Katok–Lindenstrauss (2006):**
 The set of pairs (α, β) for which the Littlewood conjecture fails
 has Hausdorff dimension zero. Counterexamples, if they exist, are
@@ -148,7 +148,7 @@ def PAdicLittlewood (p : ℕ) (_ : p.Prime) : Prop :=
     ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ n ≥ 1 ∧
       (n : ℝ) * distInt ((n : ℝ) * α) < ε * (n : ℝ)
 
-/--
+/- 
 Badziahin–Velani (2014) proved the p-adic Littlewood conjecture
 for a class of badly approximable numbers.
 -/

@@ -71,7 +71,6 @@ theorem edgeBoundary_card_ge_two {S : Finset ℤ} (h : 2 ≤ S.card) :
     · intro hcontra
       have := S.min'_le _ hcontra
       simp [← hm_def] at this
-      linarith
   have h_hi : M + 1 ∈ edgeBoundary S := by
     rw [mem_edgeBoundary]
     refine ⟨Or.inr ?_, ?_⟩
@@ -79,7 +78,6 @@ theorem edgeBoundary_card_ge_two {S : Finset ℤ} (h : 2 ≤ S.card) :
     · intro hcontra
       have := S.le_max' _ hcontra
       simp [← hM_def] at this
-      linarith
   have h_ne : m - 1 ≠ M + 1 := by linarith
   have h_sub : ({m - 1, M + 1} : Finset ℤ) ⊆ edgeBoundary S := by
     intro x hx
@@ -88,7 +86,7 @@ theorem edgeBoundary_card_ge_two {S : Finset ℤ} (h : 2 ≤ S.card) :
     · rw [Finset.mem_singleton] at hx
       rw [hx]; exact h_hi
   have h_card : ({m - 1, M + 1} : Finset ℤ).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by simp [h_ne]), Finset.card_singleton]
+    rw [Finset.card_insert_of_notMem (by simp [h_ne]), Finset.card_singleton]
   calc 2 = ({m - 1, M + 1} : Finset ℤ).card := h_card.symm
     _ ≤ (edgeBoundary S).card := Finset.card_le_card h_sub
 
@@ -126,7 +124,7 @@ theorem edgeBoundary_Icc {a b : ℤ} (h : a ≤ b) :
 theorem edgeBoundary_Icc_card {a b : ℤ} (h : a ≤ b) :
     (edgeBoundary (Finset.Icc a b)).card = 2 := by
   rw [edgeBoundary_Icc h]
-  rw [Finset.card_insert_of_not_mem (by simp; linarith), Finset.card_singleton]
+  rw [Finset.card_insert_of_notMem (by simp; linarith), Finset.card_singleton]
 
 /-- The discrete 1D isoperimetric inequality: for finite `S ⊆ ℤ` with at least
     2 elements, `|∂S| ≥ 2`, and intervals achieve this bound. -/

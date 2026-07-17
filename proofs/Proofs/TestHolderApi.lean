@@ -1,10 +1,5 @@
 -- Test Hölder inequality API availability in Docker Mathlib
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.MeanInequalitiesPow
-import Mathlib.Tactic
+import Mathlib
 
 -- Available:
 #check NNReal.young_inequality
@@ -24,19 +19,19 @@ import Mathlib.Tactic
 
 -- Lp spaces for general p
 #check @MeasureTheory.Lp
-#check @MeasureTheory.Memℒp
+#check @MeasureTheory.MemLp
 
--- snorm (Lp norm for general p)
-#check @MeasureTheory.snorm
-#check @MeasureTheory.snorm_le_snorm_mul_snorm_of_nq
+-- eLpNorm (Lp norm for general p)
+#check @MeasureTheory.eLpNorm
+#check @MeasureTheory.eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
 
 -- Complex inner product
 #check @inner_self_eq_norm_sq
 
 -- Minkowski/triangle inequality on Lp
-#check @MeasureTheory.snorm_add_le
+#check @MeasureTheory.eLpNorm_add_le
 
 -- Check NNReal Hölder conjugate for p=q=2
 example : NNReal.HolderConjugate 2 2 := by
-  rw [NNReal.HolderConjugate]
+  rw [NNReal.holderConjugate_iff]
   norm_num

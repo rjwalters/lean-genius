@@ -213,7 +213,7 @@ theorem erdos_286 :
 
 /- ## Asymptotic Optimality -/
 
-/-- The constant (e - 1) is asymptotically optimal: one cannot do better than
+/-  The constant (e - 1) is asymptotically optimal: one cannot do better than
 (e - 1 - ε)k for any ε > 0 and all sufficiently large k.
 Deep result from Croot (2001). -/
 /- ## Related Concepts -/
@@ -232,7 +232,7 @@ theorem egyptian_eq_unit_fraction (S : Finset ℕ) (q : ℚ) :
   unfold IsEgyptianFraction IsUnitFractionSum
   exact Iff.rfl
 
-/-- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
+/- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
 representation for any positive rational ≤ 1. Known classical result. -/
 /- ## Summary
 

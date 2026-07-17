@@ -26,9 +26,7 @@ References:
          Combinatorica (1983), pp. 133-134
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open SimpleGraph Cardinal
 
@@ -42,11 +40,11 @@ We axiomatize chromatic number and cycle predicates since full
 formalization of these for infinite graphs is beyond Mathlib.
 -/
 
-variable {V : Type*} (G : SimpleGraph V)
+variable {V : Type} (G : SimpleGraph V)
 
 /-- The chromatic number of a graph G, axiomatized.
     For infinite graphs this requires careful set-theoretic treatment. -/
-axiom chromaticNumber (G : SimpleGraph V) : Cardinal
+axiom chromaticNumber (G : SimpleGraph V) : Cardinal.{0}
 
 /-- G has chromatic number exactly ℵ₁. -/
 def hasChromaticNumberAleph1 : Prop :=

@@ -56,6 +56,8 @@ This is fundamental for:
 
 namespace LawsOfLargeNumbersOQ01
 
+open scoped ENNReal
+
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : MeasureTheory.Measure Ω}
 variable [MeasureTheory.IsProbabilityMeasure μ]
 
@@ -173,7 +175,7 @@ For Pareto(α, x_m): E[X] = αx_m/(α-1) < ∞ iff α > 1.
     (e.g., Pareto(α, x_m) with 1 < α ≤ 2 has finite mean but infinite variance). -/
 theorem finite_variance_implies_slln_applicable
     (X : ℕ → Ω → ℝ)
-    (hL2 : ∀ i, MeasureTheory.Memℒp (X i) 2 μ) :
+    (hL2 : ∀ i, MeasureTheory.MemLp (X i) 2 μ) :
     MeasureTheory.Integrable (X 0) μ :=
   (hL2 0).integrable (by norm_num)
 
@@ -238,7 +240,7 @@ So SLLN applies whenever E[|X|ᵖ] < ∞ for ANY p ≥ 1.
 /-- **SLLN for Lᵖ distributions** (p ≥ 1).
 
     If X has finite p-th moment for some p ≥ 1, then Kolmogorov's SLLN applies.
-    The key: `Memℒp X p μ` with `p ≥ 1` implies `Integrable X μ` (finite first moment).
+    The key: `MemLp X p μ` with `p ≥ 1` implies `Integrable X μ` (finite first moment).
 
     This covers all classical cases:
     - p = 1: L¹ (finite mean) — minimum for LLN
@@ -247,7 +249,7 @@ So SLLN applies whenever E[|X|ᵖ] < ∞ for ANY p ≥ 1.
 theorem slln_for_Lp_distributions
     {p : ℝ≥0∞} (hp : 1 ≤ p)
     (X : ℕ → Ω → ℝ)
-    (hLp : ∀ i, MeasureTheory.Memℒp (X i) p μ)
+    (hLp : ∀ i, MeasureTheory.MemLp (X i) p μ)
     (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
     (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
     ∀ᵐ ω ∂μ, Filter.Tendsto
@@ -294,7 +296,7 @@ Corollaries and extensions of Kolmogorov's SLLN under various conditions.
     Chebyshev's WLLN applies too, but Kolmogorov gives the stronger a.s. result. -/
 theorem slln_for_Linfty
     (X : ℕ → Ω → ℝ)
-    (hLinfty : ∀ i, MeasureTheory.Memℒp (X i) ∞ μ)
+    (hLinfty : ∀ i, MeasureTheory.MemLp (X i) ∞ μ)
     (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
     (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
     ∀ᵐ ω ∂μ, Filter.Tendsto
@@ -353,7 +355,7 @@ theorem slln_negated_integral_eq
       (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, -X i ω)
       Filter.atTop
       (nhds (-(∫ x, X 0 x ∂μ))) := by
-  simp only [MeasureTheory.integral_neg]
+  rw [← MeasureTheory.integral_neg]
   exact slln_negated X hint hindep hident
 
 /-- **SLLN for affinely transformed distributions**.
@@ -374,6 +376,7 @@ theorem slln_affine_transform
   slln_for_composed X (fun x => a * x + b) (by fun_prop)
     ((hint.const_mul a).add (MeasureTheory.integrable_const b)) hindep hident
 
+set_option maxHeartbeats 800000 in
 /-- **SLLN for bounded measurable functions** of i.i.d. variables.
 
     If X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with |f| ≤ M everywhere,
@@ -392,9 +395,9 @@ theorem slln_for_bounded_measurable
       (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, f (X i ω))
       Filter.atTop
       (nhds (∫ x, f (X 0 x) ∂μ)) := by
-  apply slln_for_composed hf
+  apply slln_for_composed X f hf
   · apply MeasureTheory.Integrable.mono' (MeasureTheory.integrable_const M)
-    · exact hf.comp_aemeasurable hmeas0.aemeasurable
+    · exact (hf.comp_aemeasurable hmeas0.aemeasurable).aestronglyMeasurable
     · filter_upwards with ω
       exact hbound (X 0 ω)
   · exact hindep

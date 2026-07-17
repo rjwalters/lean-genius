@@ -54,7 +54,7 @@ vertices that differ in exactly one coordinate.
 -/
 
 /-- Vertices of the n-dimensional hypercube: binary strings of length n -/
-def HypercubeVertex (n : ℕ) := Fin n → Bool
+abbrev HypercubeVertex (n : ℕ) := Fin n → Bool
 
 /-- Two hypercube vertices are adjacent if they differ in exactly one coordinate -/
 def hypercubeAdj (n : ℕ) (u v : HypercubeVertex n) : Prop :=
@@ -64,12 +64,14 @@ def hypercubeAdj (n : ℕ) (u v : HypercubeVertex n) : Prop :=
 def hypercubeGraph (n : ℕ) : SimpleGraph (HypercubeVertex n) where
   Adj := hypercubeAdj n
   symm := by
+    constructor
     intro u v h
     simp only [hypercubeAdj] at h ⊢
-    convert h using 2
-    ext i
-    constructor <;> (intro h'; exact h'.symm)
+    have hfilt : univ.filter (fun i => v i ≠ u i) = univ.filter (fun i => u i ≠ v i) := by
+      ext i; simp only [Finset.mem_filter, ne_comm]
+    rw [hfilt]; exact h
   loopless := by
+    constructor
     intro v h
     simp only [hypercubeAdj] at h
     have : (Finset.univ.filter (fun i => v i ≠ v i)).card = 0 := by
@@ -79,10 +81,9 @@ def hypercubeGraph (n : ℕ) : SimpleGraph (HypercubeVertex n) where
 /-- Number of vertices in Qₙ is 2ⁿ -/
 theorem hypercube_vertex_count (n : ℕ) :
     Fintype.card (HypercubeVertex n) = 2^n := by
-  simp [HypercubeVertex]
-  exact Fintype.card_fun
+  rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
 
-/-- Number of edges in Qₙ is n·2^(n-1) -/
+/-  Number of edges in Qₙ is n·2^(n-1) -/
 /-
 ## 4-Cycles in Hypercubes
 
@@ -91,12 +92,12 @@ two coordinates i,j vary independently while others are fixed.
 -/
 
 /-- A 4-cycle in a graph -/
-def hasC4 (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
+def hasC4 (G : SimpleGraph V) : Prop :=
   ∃ a b c d : V, a ≠ b ∧ b ≠ c ∧ c ≠ d ∧ d ≠ a ∧ a ≠ c ∧ b ≠ d ∧
     G.Adj a b ∧ G.Adj b c ∧ G.Adj c d ∧ G.Adj d a
 
 /-- A graph is C₄-free -/
-def isC4Free (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
+def isC4Free (G : SimpleGraph V) : Prop :=
   ¬hasC4 G
 
 /-
@@ -110,8 +111,7 @@ def HypercubeSubgraph (n : ℕ) := { G : SimpleGraph (HypercubeVertex n) // G �
 
 /-- f(n): maximum edges in a C₄-free subgraph of Qₙ -/
 noncomputable def f (n : ℕ) : ℕ :=
-  sSup { G.val.edgeFinset.card | G : HypercubeSubgraph n //
-         ∀ [DecidableRel G.val.Adj], isC4Free G.val }
+  sSup { m : ℕ | ∃ G : HypercubeSubgraph n, isC4Free G.val ∧ m = G.val.edgeSet.ncard }
 
 /-
 ## Known Bounds
@@ -119,7 +119,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 The best known bounds leave a gap between 1/2 and ~0.603.
 -/
 
-/-- Erdős's lower bound (1991): f(n) ≥ (1/2 + c/n)·n·2^(n-1) -/
+/-  Erdős's lower bound (1991): f(n) ≥ (1/2 + c/n)·n·2^(n-1) -/
 /-- Brass-Harborth-Nienborg lower bound (1995): f(n) ≥ (1/2 + c/√n)·n·2^(n-1) -/
 axiom bhn_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 2, (f n : ℝ) ≥ (1/2 + c/Real.sqrt n) * n * 2^(n-1)
@@ -135,11 +135,15 @@ theorem f_bounds_summary (n : ℕ) (hn : n ≥ 2) :
   · -- Lower bound from BHN
     have ⟨c, hc, hbound⟩ := bhn_lower_bound
     have h := hbound n hn
+    have hn0 : (0:ℝ) < (n:ℝ) := by exact_mod_cast (by omega : 0 < n)
+    have hpos : (0:ℝ) < (n:ℝ) * 2^(n-1) := mul_pos hn0 (by positivity)
+    have hlt : (1/2 : ℝ) < 1/2 + c/Real.sqrt n :=
+      lt_add_of_pos_right _ (div_pos hc (Real.sqrt_pos.mpr hn0))
     calc (1/2 : ℝ) * n * 2^(n-1)
         < (1/2 + c/Real.sqrt n) * n * 2^(n-1) := by
-          apply mul_lt_mul_of_pos_right
-          · linarith [Real.sqrt_pos.mpr (by linarith : (n : ℝ) > 0)]
-          · positivity
+          calc (1/2 : ℝ) * n * 2^(n-1) = (1/2) * ((n:ℝ) * 2^(n-1)) := by ring
+            _ < (1/2 + c/Real.sqrt n) * ((n:ℝ) * 2^(n-1)) := mul_lt_mul_of_pos_right hlt hpos
+            _ = (1/2 + c/Real.sqrt n) * n * 2^(n-1) := by ring
       _ ≤ f n := h
   · exact baber_upper_bound n (by omega)
 
@@ -177,8 +181,11 @@ theorem conjecture_implies_limit (h : erdos86Conjecture) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       |(f n : ℝ) / (n * 2^(n-1)) - 1/2| < ε := by
   intro ε hε
-  rw [Metric.tendsto_atTop] at h
-  exact h ε hε
+  unfold erdos86Conjecture at h
+  obtain ⟨N, hN⟩ := (Metric.tendsto_atTop.mp h) ε hε
+  refine ⟨N, fun n hn => ?_⟩
+  rw [← Real.dist_eq]
+  exact hN n hn
 
 #check erdos86Conjecture
 #check @f_bounds_summary

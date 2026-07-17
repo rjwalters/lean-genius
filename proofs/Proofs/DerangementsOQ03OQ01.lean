@@ -31,6 +31,7 @@ import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
+import Proofs.DerangementsOQ03
 
 open Finset Nat Real BigOperators Filter Topology
 
@@ -55,8 +56,6 @@ theorem tsum_tail_split (m : ℕ) :
     congr 1; ext k; ring_nf]
   conv_lhs => arg 1; ext k; rw [show m + (0 + k) = m + k from by ring]
   rw [eq_comm]
-  have h0 : altFactTerm (m + 0) = altFactTerm m := by ring_nf
-  rw [h0]
   have hshift : HasSum (fun k => altFactTerm (m + 1 + k))
       (∑' k, altFactTerm (m + k) - altFactTerm m) := by
     have hfull := hs.hasSum
@@ -64,10 +63,9 @@ theorem tsum_tail_split (m : ℕ) :
     have h0eq : ∑' k, altFactTerm (m + k) =
         altFactTerm m + ∑' k, altFactTerm (m + (k + 1)) := by
       have := hs.hasSum
-      rw [tsum_eq_zero_add hs]
-      simp only [Nat.zero_add]
-    rw [h0eq]
-    ring_nf
+      rw [Summable.tsum_eq_zero_add hs]
+      simp only [Nat.add_zero]
+    rw [h0eq, add_sub_cancel_left]
     have : Summable (fun k => altFactTerm (m + (k + 1))) := by
       exact hs.comp_injective (fun a b h => by omega)
     convert this.hasSum using 1
@@ -158,11 +156,9 @@ theorem second_order_lower_bound (n : ℕ) :
   -- We need: |first term| - |rest| ≤ |first term + rest|
   have h1 : |altFactTerm (n + 1)| - |∑' k, altFactTerm (n + 1 + 1 + k)| ≤
       |altFactTerm (n + 1) + ∑' k, altFactTerm (n + 1 + 1 + k)| := by
-    have := abs_sub_abs_le_abs_sub
-      (altFactTerm (n + 1) + ∑' k, altFactTerm (n + 1 + 1 + k))
-      (∑' k, altFactTerm (n + 1 + 1 + k))
-    simp only [add_sub_cancel_right] at this
-    linarith [abs_nonneg (∑' k, altFactTerm (n + 1 + 1 + k))]
+    have := abs_sub_abs_le_abs_sub (altFactTerm (n + 1))
+      (-(∑' k, altFactTerm (n + 1 + 1 + k)))
+    simpa [abs_neg, sub_neg_eq_add] using this
   -- |altFactTerm(n+1)| = 1/(n+1)!
   rw [altFactTerm_abs] at h1
   -- |tail from n+2| ≤ 1/(n+2)!
@@ -217,8 +213,7 @@ theorem second_order_bound_n0 :
      1 / (Nat.factorial 1 : ℝ)| ≤ 1 / 2 := by
   have h := second_order_convergence_rate 0
   simp only [pow_zero, one_div] at h
-  convert h using 2
-  norm_num
+  convert h using 2 <;> norm_num [Nat.factorial]
 
 /-- Second-order error bound for n = 1: |D(1)/1! - e^{-1} - (-1)/2!| ≤ 1/6 -/
 theorem second_order_bound_n1 :
@@ -226,8 +221,7 @@ theorem second_order_bound_n1 :
      (-1 : ℝ) / (Nat.factorial 2 : ℝ)| ≤ 1 / 6 := by
   have h := second_order_convergence_rate 1
   simp only [pow_one, neg_one_mul, one_div] at h
-  convert h using 2
-  norm_num
+  convert h using 2 <;> norm_num [Nat.factorial]
 
 /-- Second-order error bound for n = 2: |D(2)/2! - e^{-1} - 1/3!| ≤ 1/24 -/
 theorem second_order_bound_n2 :
@@ -235,8 +229,7 @@ theorem second_order_bound_n2 :
      1 / (Nat.factorial 3 : ℝ)| ≤ 1 / 24 := by
   have h := second_order_convergence_rate 2
   simp only [pow_succ, pow_zero, one_mul, neg_one_mul, neg_neg, one_div] at h
-  convert h using 2
-  norm_num
+  convert h using 2 <;> norm_num [Nat.factorial]
 
 end DerangementsOQ03
 

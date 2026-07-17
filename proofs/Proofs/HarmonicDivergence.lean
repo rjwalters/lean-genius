@@ -110,7 +110,7 @@ theorem group_sum_ge_half (k : ℕ) (hk : k ≥ 1) :
       have h3 : i ≥ 1 := Nat.le_trans h1 h2
       exact Nat.cast_pos.mpr h3
     have h2k1_pos : (0 : ℝ) < 2^(k+1) := by positivity
-    rw [ge_iff_le, div_le_div_iff h2k1_pos hi_pos]
+    rw [ge_iff_le, div_le_div_iff₀ h2k1_pos hi_pos]
     simp only [one_mul]
     have hle : i ≤ 2^(k+1) - 1 := hi.2
     have h2k1_ge : (2 : ℕ)^(k+1) ≥ 1 := Nat.one_le_two_pow
@@ -138,8 +138,8 @@ theorem group_sum_ge_half (k : ℕ) (hk : k ≥ 1) :
     have h2k_pos : (2 : ℝ)^k > 0 := by positivity
     have h2k1_pos : (2 : ℝ)^(k+1) > 0 := by positivity
     field_simp
-    have : (2 : ℝ)^(k+1) = 2 * 2^k := by ring
-    linarith
+    push_cast
+    ring
   linarith [hsum, hconst, hcard]
 
 /-! ## Contrast with Convergent Series

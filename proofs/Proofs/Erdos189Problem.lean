@@ -40,8 +40,8 @@ def FiniteColoring (n : ℕ) := Plane → Fin n
     three consecutive right angles (which implies the fourth). -/
 def IsRectangle (a b c d : Plane) : Prop :=
   -- a-b perpendicular to b-c and b-c perpendicular to c-d
-  inner (a - b) (c - b) = 0 ∧
-  inner (b - c) (d - c) = 0 ∧
+  inner ℝ (a - b) (c - b) = 0 ∧
+  inner ℝ (b - c) (d - c) = 0 ∧
   -- Form a proper quadrilateral (non-degenerate)
   a ≠ b ∧ b ≠ c ∧ c ≠ d ∧ d ≠ a
 
@@ -100,13 +100,13 @@ theorem erdos_189_is_false : ¬ Erdos189Statement := by
 
 /- ## Related Results -/
 
-/--
+/- 
 **Graham's Theorem (1980)**: For right-angled triangles, the answer is YES.
 
 For any finite coloring of ℝ², some color class contains the vertices
 of a right-angled triangle of every area.
 -/
-/--
+/- 
 **Squares are also false**: The statement fails even more strongly for squares.
 This is "easy to see" according to Graham.
 -/
@@ -122,7 +122,7 @@ def ParallelogramQuestion : Prop :=
       -- Parallelogram: opposite sides parallel
       (a - b) = (d - c) ∧
       -- Area A (using cross product formula)
-      |det ![a - b, a - d]| = A
+      |Matrix.det ![a - b, a - d]| = A
 
 /- ## Historical Notes
 

@@ -2,6 +2,7 @@ import Mathlib
 import Proofs.AbelRuffiniGaloisExtensions
 import Proofs.InverseGaloisA5
 import Proofs.AbelRuffiniOQ04OQ01
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 /-
 # Inverse Galois Problem: Non-Solvable Frontier (OQ-01)

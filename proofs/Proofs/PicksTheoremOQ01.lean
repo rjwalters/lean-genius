@@ -124,11 +124,21 @@ theorem picks_additivity
     (i₁ b₁ i₂ b₂ k : ℕ) (A₁ A₂ : ℚ)
     (h₁ : A₁ = i₁ + b₁ / 2 - 1)
     (h₂ : A₂ = i₂ + b₂ / 2 - 1)
-    (hk : 2 ≤ b₁ ∧ 2 ≤ b₂) :
+    (hk : 2 ≤ b₁ ∧ 2 ≤ b₂)
+    -- Gluing two polygons along k+1 shared boundary points forces this bound;
+    -- required so the ℕ-subtraction below matches the true integer boundary count.
+    (hglue : 2 * k + 2 ≤ b₁ + b₂) :
     -- Union has: i₁+i₂+k interior, b₁+b₂-2k-2 boundary, A₁+A₂ area
     A₁ + A₂ = ((i₁ + i₂ + k : ℕ) : ℚ) + ((b₁ + b₂ - 2 * k - 2 : ℕ) : ℚ) / 2 - 1 := by
   -- This is pure algebra from h₁, h₂
-  push_cast at *
+  have hsub : ((b₁ + b₂ - 2 * k - 2 : ℕ) : ℚ) = (b₁ : ℚ) + b₂ - 2 * k - 2 := by
+    have : 2 * k + 2 ≤ b₁ + b₂ := hglue
+    push_cast [Nat.sub_sub]
+    rw [Nat.cast_sub (by omega)]
+    push_cast
+    ring
+  rw [hsub]
+  push_cast at h₁ h₂ ⊢
   linarith
 
 -- ═══════════════════════════════════════════════════════════════
@@ -148,7 +158,11 @@ theorem primitive_area (x₁ y₁ x₂ y₂ x₃ y₃ : ℤ)
     (h : IsPrimitive x₁ y₁ x₂ y₂ x₃ y₃) :
     shoelaceTriangle x₁ y₁ x₂ y₂ x₃ y₃ = 1 / 2 := by
   unfold shoelaceTriangle IsPrimitive at *
-  rw [h]; norm_num
+  have hcast : ((|x₁ * (y₂ - y₃) + x₂ * (y₃ - y₁) + x₃ * (y₁ - y₂)| : ℤ) : ℚ) = 1 := by
+    rw [h]; norm_num
+  rw [Int.cast_abs] at hcast
+  push_cast at hcast
+  rw [hcast]
 
 /-- Pick's formula holds for every primitive lattice triangle:
     Area = 1/2, i = 0, b = 3, so 0 + 3/2 - 1 = 1/2. -/

@@ -103,7 +103,7 @@ theorem erdos_946 : consecutiveEqualDivisors.Infinite :=
 
 /- ## Variants -/
 
-/-- **Axiom (Spiro 1981):**
+/- **Axiom (Spiro 1981):**
     There are infinitely many n such that τ(n) = τ(n + 5040).
 
     This was the first breakthrough, using properties of highly composite numbers.

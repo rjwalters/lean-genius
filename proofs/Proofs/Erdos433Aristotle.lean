@@ -106,7 +106,7 @@ theorem frobenius_ub_pair (a b n : ℕ) (hn : n ≥ 3)
   have hnn : n ^ 2 ≥ 3 * n - 1 := g_two_nonneg n hn
   have hn3 : 3 * n ≤ n ^ 2 := by nlinarith
   -- Case split: does ℕ subtraction a*b - a - b underflow?
-  rcases le_or_lt (a + b) (a * b) with h | h
+  rcases le_or_gt (a + b) (a * b) with h | h
   · -- No underflow: use zify with side conditions to convert to ℤ
     have ha_le : a ≤ a * b := by omega
     have hb_le : b ≤ a * b - a := by omega

@@ -70,8 +70,9 @@ theorem trace_conj (U : (Matrix n n R)ˣ) (N : Matrix n n R) :
 /-- **Characteristic polynomial is a similarity invariant**:
 `charpoly (U N U⁻¹) = charpoly N`. -/
 theorem charpoly_conj (U : (Matrix n n R)ˣ) (N : Matrix n n R) :
-    (conj U N).charpoly = N.charpoly :=
-  Matrix.charpoly_units_conj U N
+    (conj U N).charpoly = N.charpoly := by
+  rw [conj_apply, Matrix.coe_units_inv]
+  exact Matrix.charpoly_units_conj U N
 
 -- ============================================================================
 -- Part II: The packaged statement

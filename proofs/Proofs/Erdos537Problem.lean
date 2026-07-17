@@ -29,6 +29,10 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Order.Filter.AtTopBot.Defs
+import Mathlib.SetTheory.Cardinal.Finite
+
+open scoped Classical
 
 namespace Erdos537
 
@@ -41,7 +45,7 @@ namespace Erdos537
 A set A ⊆ ℕ has positive lower density if liminf |A ∩ [1,N]| / N > 0.
 -/
 def HasPositiveDensity (A : Set ℕ) : Prop :=
-  ∃ ε > 0, ∀ᶠ N in Filter.atTop, (Nat.card (A ∩ Finset.Icc 1 N).toSet : ℝ) / N ≥ ε
+  ∃ ε > 0, ∀ᶠ N : ℕ in Filter.atTop, (Nat.card (A ∩ Finset.Icc 1 N : Set ℕ) : ℝ) / N ≥ ε
 
 /--
 **Dense Subset:**
@@ -130,12 +134,15 @@ If a₂ > a₃ are in (N/2, N), then a₂/a₃ ∈ (1, 2).
 theorem ratio_bound {a₂ a₃ N : ℕ} (h₂ : N / 2 < a₂ ∧ a₂ ≤ N)
     (h₃ : N / 2 < a₃ ∧ a₃ ≤ N) (hgt : a₂ > a₃) :
     (a₂ : ℚ) / a₃ > 1 ∧ (a₂ : ℚ) / a₃ < 2 := by
+  have ha3_pos : 0 < a₃ := by omega
+  have ha3_posQ : (0 : ℚ) < a₃ := by exact_mod_cast ha3_pos
   constructor
-  · simp only [gt_iff_lt, one_lt_div (by omega : (0 : ℚ) < a₃)]
-    exact Nat.cast_lt.mpr hgt
-  · rw [div_lt_iff (by omega : (0 : ℚ) < a₃)]
-    have : (a₂ : ℚ) ≤ N := Nat.cast_le.mpr h₂.2
-    have : (a₃ : ℚ) > N / 2 := by exact_mod_cast h₃.1
+  · rw [gt_iff_lt, one_lt_div ha3_posQ]
+    exact_mod_cast hgt
+  · rw [div_lt_iff₀ ha3_posQ]
+    have h1 : (a₂ : ℚ) ≤ N := Nat.cast_le.mpr h₂.2
+    have hN2a3 : N < 2 * a₃ := by omega
+    have h2 : (N : ℚ) < 2 * a₃ := by exact_mod_cast hN2a3
     linarith
 
 /--
@@ -169,7 +176,7 @@ theorem ruzsa_no_three_products (N : ℕ) (hN : N > 0) :
   intro A h
   obtain ⟨a₁, a₂, a₃, p₁, p₂, p₃, ha₁, ha₂, ha₃, hp₁, hp₂, hp₃, hd₁, hd₂, hd₃, heq₁, heq₂⟩ := h
   -- Extract membership conditions
-  simp only [Finset.mem_filter, Finset.mem_Ioc] at ha₁ ha₂ ha₃
+  simp only [A, Finset.mem_filter, Finset.mem_Ioc] at ha₁ ha₂ ha₃
   exact ruzsa_contradiction N a₁ a₂ a₃ p₁ p₂ p₃
     ⟨ha₁.2, ha₁.1⟩ ⟨ha₂.2, ha₂.1⟩ ⟨ha₃.2, ha₃.1⟩
     hp₁ hp₂ hp₃ ⟨hd₁, hd₂, hd₃⟩ ⟨heq₁, heq₂⟩
@@ -194,7 +201,8 @@ theorem erdos_537_disproved : ¬Erdos537Conjecture := by
   have hN_pos : N > 0 := by omega
   have hN3 : N ≥ 3 := by omega
   -- Ruzsa's set is dense enough
-  have hA := hLarge N hN₀
+  have hA : ((Finset.Ioc (N / 2) N).filter IsLacunarySquarefree).card ≥ ε * ((N : ℝ) / 2) :=
+    hLarge N hN₀
   -- But has no three products
   have hNoProducts := ruzsa_no_three_products N hN_pos
   -- Build IsDenseSubset: A ⊆ Icc 1 N and A.card ≥ (ε/3) * N
@@ -203,13 +211,11 @@ theorem erdos_537_disproved : ¬Erdos537Conjecture := by
     simp only [Finset.mem_filter, Finset.mem_Ioc] at hx
     simp only [Finset.mem_Icc]
     omega
-  have hN2_bound : 3 * (N / 2) ≥ N := by omega
   have hCard : ((Finset.Ioc (N / 2) N).filter IsLacunarySquarefree).card ≥ ε / 3 * ↑N := by
-    have h1 : (3 : ℝ) * ↑(N / 2) ≥ ↑N := by exact_mod_cast hN2_bound
-    have h2 : (↑(N / 2) : ℝ) ≥ ↑N / 3 := by linarith
+    have hNnn : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
     calc ((Finset.Ioc (N / 2) N).filter IsLacunarySquarefree).card
-          ≥ ε * ↑(N / 2) := hA
-      _ ≥ ε * (↑N / 3) := by nlinarith
+          ≥ ε * ((N : ℝ) / 2) := hA
+      _ ≥ ε * ((N : ℝ) / 3) := by nlinarith
       _ = ε / 3 * ↑N := by ring
   exact hNoProducts (hConj' N hN₁ _ ⟨hSub, hCard⟩)
 

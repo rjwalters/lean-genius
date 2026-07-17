@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 

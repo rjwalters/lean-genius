@@ -44,8 +44,14 @@ open Finset
 /-- A point in the Euclidean plane R². -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
-/-- The Euclidean distance between two points. -/
-noncomputable def dist (p q : Point) : ℝ := ‖p - q‖
+/-- The Euclidean distance between two points.
+
+    Marked `irreducible`: it is used only structurally (inside `distanceSet` and
+    `multiplicity`), never unfolded in any proof.  Under the v4.31 `WithLp`
+    refactor, leaving it reducible makes `whnf` unfold the `‖·‖` coercion chain
+    on `EuclideanSpace` during decidable-equality defeq checks, blowing up
+    elaboration of `sum_multiplicities`. -/
+@[irreducible] noncomputable def dist (p q : Point) : ℝ := ‖p - q‖
 
 /-- A finite point configuration in R². -/
 structure PointConfig where
@@ -76,13 +82,11 @@ noncomputable def multiplicity (P : PointConfig) (d : ℝ) : ℕ :=
 theorem sum_multiplicities (P : PointConfig) :
     (distanceSet P).sum (multiplicity P) = P.points.card * (P.points.card - 1) := by
   -- Fibre decomposition: `offDiag.card = ∑_{d ∈ distanceSet} (fibre over d).card`.
-  have hmem : ∀ pq ∈ P.points.offDiag, dist pq.1 pq.2 ∈ distanceSet P :=
-    fun pq hpq => Finset.mem_image_of_mem _ hpq
   -- The fibre sum over the distance set recovers `offDiag.card` (each `multiplicity P d`
-  -- is, by definition, the size of the fibre over `d`).
+  -- is, by definition, the size of the fibre over `d`).  `card_eq_sum_card_image` needs
+  -- no `MapsTo` hypothesis and matches `distanceSet`/`multiplicity` definitionally.
   have hfib : P.points.offDiag.card = (distanceSet P).sum (multiplicity P) :=
-    Finset.card_eq_sum_card_fiberwise (f := fun pq => dist pq.1 pq.2)
-      (t := distanceSet P) hmem
+    Finset.card_eq_sum_card_image (fun pq : Point × Point => dist pq.1 pq.2) P.points.offDiag
   rw [← hfib, Finset.offDiag_card]
   -- `offDiag_card` gives the `n*n - n` form; bridge to `n*(n-1)`.
   cases h : P.points.card with
@@ -105,7 +109,7 @@ noncomputable def sumSquaredMultiplicities (P : PointConfig) : ℕ :=
 
     This says distance multiplicities cannot be too concentrated. -/
 def ErdosConjecture : Prop :=
-  ∀ ε > 0, ∃ C > 0, ∀ P : PointConfig,
+  ∀ ε : ℝ, ε > 0 → ∃ C > 0, ∀ P : PointConfig,
     (sumSquaredMultiplicities P : ℝ) ≤ C * (P.points.card : ℝ)^(3 + ε)
 
 /-

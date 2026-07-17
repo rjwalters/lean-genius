@@ -65,15 +65,17 @@ def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
     | Sum.inr ⟨(a, b), _⟩, Sum.inl i => i = a ∨ i = b
     | _, _ => False
   symm := by
+    constructor
     intro v w h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩ <;> exact h
   loopless := by
+    constructor
     intro v h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> exact h
 
 /-- G_k is bipartite by construction: every edge connects a primary to a pair vertex. -/
 theorem Gk_bipartite (k : ℕ) : ∀ v w : Gk_vertex k,
-    (Gk k).Adj v w → (∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j) := by
+    (Gk k).Adj v w → ((∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j)) := by
   intro v w h
   rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩
   · simp [Gk] at h       -- inl/inl: Adj is False
@@ -90,12 +92,16 @@ When k = 3, G_3 is the 6-cycle.
 /-- The cycle graph C_n. -/
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := fun i j h => by simp only [or_comm]; exact h
-  loopless := fun i h => by
-    simp at h
-    omega
+  symm.symm := fun i j h => by simp only [or_comm]; exact h
+  loopless.irrefl := fun i h => by
+    have hi : i.val < n := i.isLt
+    have hh : (i.val + 1) % n = i.val := h.elim id id
+    rcases Nat.lt_or_ge (i.val + 1) n with hlt | hge
+    · rw [Nat.mod_eq_of_lt hlt] at hh; omega
+    · have he : i.val + 1 = n := by omega
+      rw [he, Nat.mod_self] at hh; omega
 
-/-- G_3 is isomorphic to C_6. -/
+/-  G_3 is isomorphic to C_6. -/
 /-
 ## Extremal Numbers
 
@@ -108,9 +114,9 @@ def isFree (G : SimpleGraph V) (H : SimpleGraph W) : Prop :=
 
 /-- The extremal number ex(n, H): max edges in n-vertex H-free graph. -/
 noncomputable def extremalNumber (n : ℕ) (H : SimpleGraph W) : ℕ :=
-  sSup { m : ℕ | ∃ (V : Type*) [Fintype V] [DecidableEq V],
+  sSup { m : ℕ | ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
     Fintype.card V = n ∧
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj], isFree G H ∧ edgeCount G = m }
+    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj), isFree G H ∧ edgeCount G = m }
 
 /-
 ## Asymptotic Notation
@@ -126,8 +132,11 @@ def isAsympBounded (f g : ℕ → ℝ) : Prop :=
 def isLittleO (f g : ℕ → ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, f n ≤ ε * g n
 
-notation:50 f " ≪ " g => isAsympBounded f g
-notation:50 f " = o(" g ")" => isLittleO f g
+notation:50 f:51 " ≪ " g:51 => isAsympBounded f g
+/-- `f =ₒ g` denotes `isLittleO f g` (v4.31: the earlier `f = o(g)` notation used
+    an atom the parser now rejects; operands are pinned to level 51 so a trailing
+    `→` is not absorbed into the right operand). -/
+notation:50 f:51 " =ₒ " g:51 => isLittleO f g
 
 /-
 ## The Conjecture
@@ -157,7 +166,7 @@ def exponentVanishes : Prop :=
     (∃ c > 0, (fun n => exGk k n) ≪ (fun n => powerBound c n)) →
     ∀ c, (fun n => exGk k n) ≪ (fun n => powerBound c n) → c < ε
 
-/-- Erdős-Simonovits: if the conjecture holds, c_k → 0. -/
+/-  Erdős-Simonovits: if the conjecture holds, c_k → 0. -/
 /-
 ## Weak Conjecture
 
@@ -166,7 +175,7 @@ Even ex(n, G_k) = o(n^(3/2)) is unknown.
 
 /-- The weak conjecture: ex(n, G_k) = o(n^(3/2)). -/
 def weak_conjecture : Prop :=
-  ∀ k ≥ 3, (fun n => exGk k n) = o(fun n => (n : ℝ) ^ (3/2 : ℝ))
+  ∀ k ≥ 3, (fun n => exGk k n) =ₒ (fun n => (n : ℝ) ^ (3/2 : ℝ))
 
 /-- The main conjecture implies the weak conjecture.
     Proof reduces to showing C·n^{3/2-c} ≤ ε·n^{3/2} for large n,
@@ -196,7 +205,7 @@ For C_6, ex(n, C_6) ≪ n^(7/6) is known.
 /-- The extremal number for C_6. -/
 noncomputable def exC6 (n : ℕ) : ℝ := extremalNumber n (cycleGraph 6 (by omega))
 
-/-- Erdős, Bondy-Simonovits: ex(n, C_6) ≪ n^(7/6). -/
+/-  Erdős, Bondy-Simonovits: ex(n, C_6) ≪ n^(7/6). -/
 /-- The exponent 7/6 = 3/2 - 1/3, so c_3 = 1/3 works. -/
 theorem c3_value : (7 : ℝ) / 6 = 3/2 - 1/3 := by norm_num
 
@@ -211,7 +220,7 @@ theorem k3_case_solved : ∃ c : ℝ, c > 0 ∧
 Basic extremal theory gives n^(3/2) as an upper bound.
 -/
 
-/-- The Kővári-Sós-Turán theorem gives ex(n, K_{s,t}) ≤ C · n^(2-1/s). -/
+/-  The Kővári-Sós-Turán theorem gives ex(n, K_{s,t}) ≤ C · n^(2-1/s). -/
 /-- G_k contains K_{2, C(k,2)}, giving a trivial n^(3/2) bound. -/
 theorem trivial_bound (k : ℕ) (hk : k ≥ 3) :
     ∃ C > 0, ∀ n, exGk k n ≤ C * (n : ℝ) ^ (3/2 : ℝ) := by

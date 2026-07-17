@@ -28,6 +28,10 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Sqrt
+
+open scoped Classical
 
 open Real Finset
 
@@ -74,7 +78,11 @@ The minimum number of distinct distances achievable by any n-point set.
 -/
 noncomputable def minDistinctDistances (n : ℕ) : ℕ :=
   if h : ∃ A : Finset Point, A.card = n then
-    Nat.find ⟨numDistinctDistances (Classical.choose h), ⟨Classical.choose h, rfl⟩⟩
+    haveI : DecidablePred (fun m => ∃ A : Finset Point, A.card = n ∧
+      numDistinctDistances A = m) := Classical.decPred _
+    Nat.find (p := fun m => ∃ A : Finset Point, A.card = n ∧ numDistinctDistances A = m)
+      ⟨numDistinctDistances (Classical.choose h),
+        Classical.choose h, Classical.choose_spec h, rfl⟩
   else 0
   -- Note: This is a simplified definition; actual minimum is complex
 

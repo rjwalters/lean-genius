@@ -159,9 +159,6 @@ theorem realSumset_empty : realSumset ∅ = ∅ := by
 /-- The sumset of a singleton {x} is {2x}. -/
 theorem realSumset_singleton (x : ℝ) : realSumset {x} = {x + x} := by
   ext y; simp [realSumset]
-  constructor
-  · rintro ⟨a, rfl, b, rfl, rfl⟩; rfl
-  · rintro rfl; exact ⟨x, rfl, x, rfl, rfl⟩
 
 /-- The sumset contains all doubles: if a ∈ A then 2a ∈ A + A. -/
 theorem mem_realSumset_of_mem {A : Set ℝ} {a : ℝ} (ha : a ∈ A) :
@@ -170,7 +167,7 @@ theorem mem_realSumset_of_mem {A : Set ℝ} {a : ℝ} (ha : a ∈ A) :
 
 /-- {0} is NOT sum-free: 0 + 0 = 0. -/
 theorem zero_not_sum_free : ¬IsSumFreeSet {(0 : ℝ)} := by
-  intro h; exact h 0 rfl 0 rfl rfl
+  intro h; exact h 0 rfl 0 rfl (by simp)
 
 -- ## The Sidon Variant (Solved by Dillies/AlphaProof)
 

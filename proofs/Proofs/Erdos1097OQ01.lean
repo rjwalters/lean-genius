@@ -25,6 +25,9 @@ For k ≥ 4 the bounds should be different since k-APs are rarer.
 import Mathlib.Tactic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+open scoped Pointwise
+
 open Finset
 
 /- ## Core Definitions -/
@@ -99,8 +102,8 @@ theorem commonDiffK_subset_mono {A B : Set ℤ} {k : ℕ} (h : A ⊆ B) :
 theorem neg_mem_commonDiffK {A : Set ℤ} {k : ℕ} {d : ℤ}
     (hk : 2 ≤ k) (hd : d ∈ commonDiffK A k) : -d ∈ commonDiffK A k := by
   obtain ⟨a, ha⟩ := hd
-  refine ⟨a + ((k : ���) - 1) * d, fun i hi => ?_⟩
-  have hcast : (��(k - 1 - i) : ℤ) = (k : ℤ) - 1 - (i : ℤ) := by omega
+  refine ⟨a + ((k : ℤ) - 1) * d, fun i hi => ?_⟩
+  have hcast : (↑(k - 1 - i) : ℤ) = (k : ℤ) - 1 - (i : ℤ) := by omega
   have key : a + ((k : ℤ) - 1) * d + (i : ℤ) * (-d) = a + ↑(k - 1 - i) * d := by
     rw [hcast]; ring
   rw [key]
@@ -166,7 +169,7 @@ theorem isKAP_three_iff (A : Set ℤ) (a d : ℤ) :
     · have := h 1 (by omega); simpa using this
     · have := h 2 (by omega); simpa using this
   · intro ⟨h0, h1, h2⟩ i hi
-    interval_cases i <;> simpa using *
+    interval_cases i <;> simp_all
 
 /- ## Main Open Question -/
 

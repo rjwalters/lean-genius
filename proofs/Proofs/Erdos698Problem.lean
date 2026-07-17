@@ -64,7 +64,7 @@ A pair (i, j) is valid for n if 2 ≤ i < j ≤ n/2.
 def isValidPair (n i j : ℕ) : Prop :=
   2 ≤ i ∧ i < j ∧ j ≤ n / 2
 
-/--
+/- 
 **Erdős-Szekeres Lower Bound (1978):**
 For valid pairs (i,j), gcd(C(n,i), C(n,j)) ≥ C(n,i)/C(j,i) ≥ 2^i.
 
@@ -95,7 +95,7 @@ theorem gcd_always_gt_one (n i j : ℕ) (h : isValidPair n i j) :
 ## Part III: Sharpness of the Erdős-Szekeres Bound
 -/
 
-/--
+/- 
 **Sharpness Example:**
 The Erdős-Szekeres bound is sharp for i=1, j=p, n=2p
 where p is prime.
@@ -128,13 +128,13 @@ def erdos698Question : Prop :=
 ## Part V: Bergman's Theorem (2011)
 -/
 
-/--
+/- 
 **Bergman's Bound:**
 For any valid pair (i,j), the GCD satisfies:
 gcd(C(n,i), C(n,j)) ≥ c · n^{1/2} · 2^i / i^{3/2}
 for some absolute constant c > 0.
 -/
-/--
+/- 
 **Bergman's Theorem (Main Result):**
 For any valid pair, gcd ≫ n^{1/2} · 2^i / i^{3/2}.
 Taking i = 2 (the minimum), this gives gcd ≥ c · n^{1/2} · 4 / 2^{3/2} ≈ c · n^{1/2}.
@@ -236,7 +236,7 @@ The GCD of binomial coefficients relates to:
 ## Part VIII: Kummer's Theorem Connection
 -/
 
-/--
+/- 
 **Kummer's Theorem:**
 The largest power of prime p dividing C(m+n, m) equals
 the number of carries in adding m and n in base p.
@@ -247,7 +247,7 @@ the number of carries in adding m and n in base p.
   (Placeholder — full Lean proof requires digit-carry formalization.)
 -/
 
-/--
+/- 
 **Lucas' Theorem:**
 C(m, n) mod p can be computed from base-p digits of m and n.
 -/

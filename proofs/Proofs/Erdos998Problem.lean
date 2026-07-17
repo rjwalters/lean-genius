@@ -30,11 +30,10 @@ References:
 Tags: analysis, diophantine-approximation, equidistribution
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Analysis.SpecialFunctions.Integrals
-import Mathlib.Algebra.Order.Floor
 
 open Set
 
@@ -61,6 +60,7 @@ theorem frac_nonneg (x : ℝ) : 0 ≤ frac x := by
 theorem frac_lt_one (x : ℝ) : frac x < 1 := by
   unfold frac
   simp [sub_lt_iff_lt_add, Int.lt_floor_add_one]
+  exact Int.fract_lt_one x
 
 /--
 **Irrational number:**
@@ -77,7 +77,7 @@ def Irrational (α : ℝ) : Prop := ¬∃ (p q : ℤ), q ≠ 0 ∧ α = p / q
 The number of m ∈ {1, ..., n} such that {αm} ∈ [u, v).
 -/
 noncomputable def countingFunction (α : ℝ) (u v : ℝ) (n : ℕ) : ℕ :=
-  Finset.card (Finset.filter (fun m => u ≤ frac (α * m) ∧ frac (α * m) < v)
+  Finset.card (Finset.filter (fun (m : ℕ) => u ≤ frac (α * m) ∧ frac (α * m) < v)
     (Finset.range (n + 1) \ {0}))
 
 /--
@@ -98,7 +98,7 @@ def hasBoundedDiscrepancy (α : ℝ) (u v : ℝ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     |((countingFunction α u v n : ℝ) - n * (v - u))| ≤ C
 
-/--
+/- 
 **Weyl's equidistribution gives O(√n) for generic intervals:**
 For most intervals, the discrepancy is O(√n), not O(1).
 -/
@@ -145,7 +145,7 @@ theorem erdos_szusz_characterization (α : ℝ) (hα : Irrational α) (u v : ℝ
 ## Part V: Three-Distance Theorem Connection
 -/
 
-/--
+/- 
 **Three-Distance Theorem:**
 The fractional parts {α}, {2α}, ..., {nα} partition [0,1) into n+1 intervals
 of at most 3 distinct lengths. This is fundamental to understanding the orbit structure.
@@ -154,7 +154,7 @@ of at most 3 distinct lengths. This is fundamental to understanding the orbit st
 ## Part VI: Weyl's Equidistribution
 -/
 
-/-- **Weyl's theorem:** {mα} is equidistributed in [0,1) for irrational α.
+/-  **Weyl's theorem:** {mα} is equidistributed in [0,1) for irrational α.
     This is the starting point for discrepancy theory. -/
 /-
 ## Part VII: Summary

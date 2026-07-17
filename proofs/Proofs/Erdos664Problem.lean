@@ -28,12 +28,12 @@
   - Related: Problem #1159 (stronger variant)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators Real
 

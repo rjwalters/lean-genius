@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Gaussian Characteristic Function exp(iμt - σ²t²/2)
 
@@ -26,7 +29,7 @@ open Complex Real
 
 /-- The Gaussian characteristic function φ(t) = exp(iμt - σ²t²/2). -/
 noncomputable def gaussianCharFn (μ σ_sq : ℝ) (t : ℝ) : ℂ :=
-  Complex.exp (↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2))
+  Complex.exp (↑(μ * t) * Complex.I - (↑(σ_sq * t ^ 2 / 2 : ℝ) : ℂ))
 
 /-- At t = 0, the characteristic function equals 1. -/
 theorem gaussianCharFn_at_zero (μ σ_sq : ℝ) :
@@ -35,18 +38,20 @@ theorem gaussianCharFn_at_zero (μ σ_sq : ℝ) :
 
 /-- The exponent of the Gaussian characteristic function. -/
 noncomputable def gaussianExponent (μ σ_sq t : ℝ) : ℂ :=
-  ↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2)
+  ↑(μ * t) * Complex.I - (↑(σ_sq * t ^ 2 / 2 : ℝ) : ℂ)
 
 /-- The real part of the exponent is -σ²t²/2. -/
 theorem gaussianExponent_re (μ σ_sq t : ℝ) :
     (gaussianExponent μ σ_sq t).re = -(σ_sq * t ^ 2 / 2) := by
-  simp [gaussianExponent, Complex.sub_re, Complex.mul_re]
+  simp only [gaussianExponent, Complex.sub_re, Complex.mul_re, Complex.ofReal_re,
+        Complex.ofReal_im, Complex.I_re, Complex.I_im]
   ring
 
 /-- The imaginary part of the exponent is μt. -/
 theorem gaussianExponent_im (μ σ_sq t : ℝ) :
     (gaussianExponent μ σ_sq t).im = μ * t := by
-  simp [gaussianExponent, Complex.sub_im, Complex.mul_im]
+  simp only [gaussianExponent, Complex.sub_im, Complex.mul_im, Complex.ofReal_re,
+        Complex.ofReal_im, Complex.I_re, Complex.I_im]
   ring
 
 -- ============================================================
@@ -58,16 +63,20 @@ theorem gaussianExponent_im (μ σ_sq t : ℝ) :
 theorem gaussianCharFn_abs (μ σ_sq t : ℝ) :
     Complex.abs (gaussianCharFn μ σ_sq t) =
       Real.exp (-(σ_sq * t ^ 2 / 2)) := by
-  simp only [gaussianCharFn, map_exp, Complex.abs_exp]
-  rw [gaussianExponent_re μ σ_sq t]
-  rfl
+  show ‖gaussianCharFn μ σ_sq t‖ = Real.exp (-(σ_sq * t ^ 2 / 2))
+  rw [gaussianCharFn, Complex.norm_exp]
+  congr 1
+  simp only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        Complex.I_re, Complex.I_im]
+  ring
 
 /-- For σ² > 0 and t ≠ 0, the modulus is strictly less than 1. -/
 theorem gaussianCharFn_abs_lt_one {σ_sq : ℝ} (hσ : σ_sq > 0) {t : ℝ} (ht : t ≠ 0)
     (μ : ℝ) : Complex.abs (gaussianCharFn μ σ_sq t) < 1 := by
   rw [gaussianCharFn_abs]
   rw [show (1 : ℝ) = Real.exp 0 from (Real.exp_zero).symm]
-  exact Real.exp_lt_exp_of_lt (by nlinarith [sq_nonneg t])
+  have ht2 : 0 < t ^ 2 := by positivity
+  exact Real.exp_lt_exp.mpr (by nlinarith)
 
 /-- The characteristic function has unit modulus when σ² = 0
     (degenerate/point mass distribution). -/
@@ -100,7 +109,7 @@ theorem gaussianCharFn_pow (μ σ_sq : ℝ) (t : ℝ) (n : ℕ) :
   | zero => simp [gaussianCharFn]
   | succ n ih =>
     rw [pow_succ, ih, gaussianCharFn_mul]
-    congr 1 <;> ring
+    congr 1 <;> push_cast <;> ring
 
 -- ============================================================
 -- Part IV: Symmetry Properties
@@ -110,17 +119,22 @@ theorem gaussianCharFn_pow (μ σ_sq : ℝ) (t : ℝ) (n : ℕ) :
     This reflects that the Gaussian density is a real-valued function. -/
 theorem gaussianCharFn_neg (μ σ_sq t : ℝ) :
     gaussianCharFn μ σ_sq (-t) = starRingEnd ℂ (gaussianCharFn μ σ_sq t) := by
-  simp only [gaussianCharFn, map_exp, Complex.conj_ofReal, neg_mul,
-             Complex.star_def]
+  rw [gaussianCharFn, gaussianCharFn, ← Complex.exp_conj]
   congr 1
-  ext <;> simp [Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im,
-                Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im] <;> ring
+  simp only [map_sub, map_mul, Complex.conj_ofReal, Complex.conj_I]
+  push_cast
+  ring
 
 /-- For μ = 0 (centered Gaussian), the characteristic function is real-valued.
     φ(t) = exp(-σ²t²/2) ∈ ℝ. -/
 theorem gaussianCharFn_real_of_centered (σ_sq t : ℝ) :
     (gaussianCharFn 0 σ_sq t).im = 0 := by
-  simp [gaussianCharFn]
+  have h : gaussianCharFn 0 σ_sq t = Complex.exp (↑(-(σ_sq * t ^ 2 / 2) : ℝ)) := by
+    rw [gaussianCharFn]
+    congr 1
+    push_cast
+    ring
+  rw [h, Complex.exp_ofReal_im]
 
 -- ============================================================
 -- Part V: Scaling and Standardization
@@ -130,26 +144,29 @@ theorem gaussianCharFn_real_of_centered (σ_sq t : ℝ) :
     At the level of characteristic functions:
     φ_{0,1}(t) = exp(-t²/2). -/
 theorem standardGaussianCharFn (t : ℝ) :
-    gaussianCharFn 0 1 t = Complex.exp (↑(-(t ^ 2 / 2))) := by
-  simp [gaussianCharFn]
+    gaussianCharFn 0 1 t = Complex.exp ((↑(-(t ^ 2 / 2) : ℝ) : ℂ)) := by
+  rw [gaussianCharFn]
+  congr 1
+  push_cast
+  ring
 
 /-- The standard Gaussian characteristic function at t=1:
     φ(1) = exp(-1/2). -/
 theorem standardGaussianCharFn_at_one :
     gaussianCharFn 0 1 1 = Complex.exp (↑(-(1 : ℝ) / 2)) := by
-  simp [gaussianCharFn]
+  rw [gaussianCharFn]
+  congr 1
+  push_cast
+  ring
 
 /-- Scaling: if X ~ N(0,σ²), then φ_X(t) = φ_{0,1}(σt). -/
 theorem gaussianCharFn_scaling (σ_sq t : ℝ) (hσ : σ_sq ≥ 0) :
     gaussianCharFn 0 σ_sq t =
       gaussianCharFn 0 1 (Real.sqrt σ_sq * t) := by
-  simp only [gaussianCharFn]
-  congr 1
-  push_cast
-  ring_nf
-  congr 1
-  rw [Real.sq_sqrt hσ]
-  ring
+  have hexp : σ_sq * t ^ 2 / 2 = 1 * (Real.sqrt σ_sq * t) ^ 2 / 2 := by
+    rw [mul_pow, Real.sq_sqrt hσ]; ring
+  simp only [gaussianCharFn, zero_mul]
+  rw [hexp]
 
 -- ============================================================
 -- Part VI: CLT Connection
@@ -164,13 +181,12 @@ theorem gaussianCharFn_scaling (σ_sq t : ℝ) (hσ : σ_sq ≥ 0) :
     This is the simplest special case of the CLT: Gaussians are stable. -/
 theorem clt_gaussian_stable (t : ℝ) (n : ℕ) (hn : 0 < n) :
     gaussianCharFn 0 (↑n) (t / Real.sqrt n) = gaussianCharFn 0 1 t := by
-  simp only [gaussianCharFn]
-  congr 1
-  push_cast
-  ring_nf
-  congr 1
-  have hnsq : Real.sqrt (↑n) ^ 2 = ↑n := Real.sq_sqrt (Nat.cast_nonneg n)
-  field_simp
-  nlinarith [hnsq]
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hnsq : Real.sqrt (↑n) ^ 2 = (↑n : ℝ) := Real.sq_sqrt (Nat.cast_nonneg n)
+  have hexp : (↑n : ℝ) * (t / Real.sqrt n) ^ 2 / 2 = 1 * t ^ 2 / 2 := by
+    rw [div_pow, hnsq]
+    field_simp
+  simp only [gaussianCharFn, zero_mul]
+  rw [hexp]
 
 end CentralLimitTheoremOQ01OQ02OQ01OQ01

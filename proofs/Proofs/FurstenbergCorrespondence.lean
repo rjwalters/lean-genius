@@ -36,6 +36,8 @@ References:
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Furstenberg
 
 open MeasureTheory Set
@@ -64,7 +66,7 @@ measurable set. This bundles all the data needed for Furstenberg's approach.
 
 /-- A probability measure-preserving system with a distinguished set -/
 structure System where
-  X : Type*
+  X : Type
   mX : MeasurableSpace X
   μ : @Measure X mX
   T : X → X
@@ -163,8 +165,7 @@ theorem szemeredi_k2_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
   -- Step 1: Furstenberg correspondence gives us the system
   obtain ⟨sys, hμB, hreturn2, _⟩ := furstenberg_correspondence A δ hδ hd
   -- Step 2: B has positive measure (from μ(B) ≥ ofReal δ > 0)
-  have hB_pos : sys.μ sys.B ≠ 0 :=
-    (lt_of_lt_of_le (ENNReal.ofReal_pos.mpr hδ) hμB).ne'
+  have hB_pos := (lt_of_lt_of_le (ENNReal.ofReal_pos.mpr hδ) hμB).ne'
   -- Step 3: Poincaré recurrence (from Mathlib!) gives a return time
   obtain ⟨n, hn_pos, hn_meas⟩ := poincare_return sys hB_pos
   -- Step 4: Correspondence return property gives the 2-AP
@@ -217,8 +218,7 @@ theorem szemeredi_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
     ∃ a n : ℕ, n > 0 ∧ ∀ j < k, a + j * n ∈ A := by
   -- Apply correspondence to get the system
   obtain ⟨sys, hμB, hreturn2, hreturnk⟩ := furstenberg_correspondence A δ hδ hd
-  have hB_pos : sys.μ sys.B ≠ 0 :=
-    (lt_of_lt_of_le (ENNReal.ofReal_pos.mpr hδ) hμB).ne'
+  have hB_pos := (lt_of_lt_of_le (ENNReal.ofReal_pos.mpr hδ) hμB).ne'
   rcases Nat.lt_or_ge k 3 with hlt | hge
   · -- k ∈ {1, 2}: Poincaré recurrence suffices
     obtain ⟨a, n, hn, ha, han⟩ := szemeredi_k2_ergodic A δ hδ hd
@@ -227,7 +227,8 @@ theorem szemeredi_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
       interval_cases j <;> simpa⟩
   · -- k ≥ 3: multiple recurrence axiom
     obtain ⟨n, hn_pos, hn_meas⟩ := multiple_recurrence_ge3 sys hB_pos k hge
-    exact hreturnk k n hk hn_pos hn_meas
+    obtain ⟨a, ha⟩ := hreturnk k n hk hn_pos hn_meas
+    exact ⟨a, n, hn_pos, ha⟩
 
 /-!
 ## Summary: Feasibility of Formalizing Furstenberg's Proof

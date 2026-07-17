@@ -16,10 +16,7 @@ Reference: https://erdosproblems.com/424
 OEIS: A005244
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Definitions -/
 
@@ -36,13 +33,14 @@ def sequenceSet : ℕ → Set ℕ
 /-- The full generated set: ⋃_n A_n. -/
 def generatedSet : Set ℕ := ⋃ n : ℕ, sequenceSet n
 
+open scoped Classical in
 /-- The counting function: number of elements of generatedSet in {1,...,N}. -/
 noncomputable def generatedCount (N : ℕ) : ℕ :=
   (Finset.Icc 1 N).filter (fun n => n ∈ generatedSet) |>.card
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #424**: does generatedSet have positive (lower) density?
+/-  **Erdős Problem #424**: does generatedSet have positive (lower) density?
     That is, lim inf |generatedSet ∩ [1,N]| / N > 0. -/
 /- ## Known Results -/
 
@@ -80,7 +78,7 @@ theorem mod_3_obstruction :
   obtain ⟨n, hn⟩ := ha
   exact sequenceSet_mod3 n a hn
 
-/-- **Density Upper Bound**: since no element is ≡ 1 (mod 3), the density
+/-  **Density Upper Bound**: since no element is ≡ 1 (mod 3), the density
     of generatedSet is at most 2/3 + ε for any ε > 0.
     Follows from mod_3_obstruction via Finset counting: generatedCount N ≤ 2N/3 + 1.
     (Kept as axiom due to the Finset counting complexity.) -/
@@ -92,6 +90,18 @@ private lemma mem_generated (n : ℕ) (a : ℕ) (h : a ∈ sequenceSet n) : a �
 private lemma mem_nextGen {A : Set ℕ} {x y : ℕ} (hx : x ∈ A) (hy : y ∈ A)
     (hne : x ≠ y) (hge : x * y ≥ 2) : x * y - 1 ∈ nextGeneration A :=
   ⟨x, y, hx, hy, hne, hge, rfl⟩
+
+/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n.
+    PROVED from definitions. (Previously axiom.) -/
+theorem sequence_monotone (n : ℕ) :
+    sequenceSet n ⊆ sequenceSet (n + 1) :=
+  Set.subset_union_left
+
+/-- Transitive monotonicity: m ≤ n → A_m ⊆ A_n. -/
+theorem sequenceSet_mono {m n : ℕ} (h : m ≤ n) : sequenceSet m ⊆ sequenceSet n := by
+  induction h with
+  | refl => exact Set.Subset.rfl
+  | step _ ih => exact ih.trans (sequence_monotone _)
 
 /-- **Initial Elements**: the first few elements are 2, 3, 5, 9, 14, 17, 26, ...
     (OEIS A005244). PROVED from definitions. (Previously axiom.) -/
@@ -119,18 +129,6 @@ theorem initial_elements :
     mem_generated 2 _ h9₂, mem_generated 2 _ h14₂, mem_generated 3 _ h17₃⟩
 
 /- ## Proved Properties -/
-
-/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n.
-    PROVED from definitions. (Previously axiom.) -/
-theorem sequence_monotone (n : ℕ) :
-    sequenceSet n ⊆ sequenceSet (n + 1) :=
-  Set.subset_union_left
-
-/-- Transitive monotonicity: m ≤ n → A_m ⊆ A_n. -/
-theorem sequenceSet_mono {m n : ℕ} (h : m ≤ n) : sequenceSet m ⊆ sequenceSet n := by
-  induction h with
-  | refl => exact Subset.rfl
-  | step _ ih => exact ih.trans (sequence_monotone _)
 
 /-- **Closure**: generatedSet is closed under the operation (x, y) ↦ xy − 1
     for distinct x, y in the set with xy ≥ 2.

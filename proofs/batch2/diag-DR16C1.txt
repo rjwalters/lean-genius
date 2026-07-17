@@ -1,0 +1,198 @@
+===== AbelRuffiniGaloisExtensionsOQ02
+error: Proofs/AbelRuffiniGaloisExtensionsOQ02.lean:187:2: failed to synthesize instance of type class
+  Polynomial.IsSplittingField ℚ q.SplittingField q
+===== AbelRuffiniGaloisExtensionsOQ02OQ01
+error: Proofs/AbelRuffiniGaloisExtensionsOQ02.lean:187:2: failed to synthesize instance of type class
+  Polynomial.IsSplittingField ℚ q.SplittingField q
+===== AbelRuffiniOQ04OQ02OQ01
+error: Proofs/AbelRuffiniOQ04OQ02OQ01.lean:86:18: failed to synthesize instance of type class
+  Bracket (Perm (Fin 3)) (Perm (Fin 3))
+error: Proofs/AbelRuffiniOQ04OQ02OQ01.lean:87:12: failed to synthesize instance of type class
+  Bracket (Perm (Fin 3)) (Perm (Fin 3))
+error: Proofs/AbelRuffiniOQ04OQ02OQ01.lean:93:18: failed to synthesize instance of type class
+  Bracket (Perm (Fin 4)) (Perm (Fin 4))
+error: Proofs/AbelRuffiniOQ04OQ02OQ01.lean:94:12: failed to synthesize instance of type class
+  Bracket (Perm (Fin 4)) (Perm (Fin 4))
+===== AbelRuffiniOQ04OQ02OQ02OQ06
+error: Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean:57:14: failed to synthesize instance of type class
+  Bracket ↥A4 ↥A4
+===== AngleTrisectionCos20GalOQ01OQ02OQ02
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ02OQ01OQ02Incomplete01
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:168:4: failed to synthesize instance of type class
+  Module ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:174:8: Function expected at
+  le_sup_right
+but this term has type
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:178:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+===== AngleTrisectionOQ02OQ03
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ02OQ03OQ01
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ03
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ03OQ01
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ03OQ02
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== AngleTrisectionOQ03OQ02OQ03
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:102:74: unsolved goals
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:311:13: linarith failed to find a contradiction
+n : ℕ
+inst✝ : NeZero n
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:346:33: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:556:8: unsolved goals
+K : Type u_1
+inst✝¹ : Field K
+===== InverseGaloisA5DedekindInstantiation
+error: Proofs/DedekindFrobeniusBridge.lean:55:86: unsolved goals
+R : Type u_1
+S : Type u_2
+error: Proofs/DedekindFrobeniusBridge.lean:58:7: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ideal.map ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q))
+    (comap ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q)) ?I)
+error: Proofs/DedekindFrobeniusBridge.lean:82:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Submodule.toAddSubgroup Q).inertia G
+in the target expression
+===== InverseGaloisD4OQ01External
+error: Proofs/InverseGaloisD4OQ01External.lean:160:36: Application type mismatch: The argument
+  hx
+has type
+===== InverseGaloisD4OQ02
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisD4OQ02OQ03
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisD4OQ02OQ03OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisD4OQ02OQ03OQ01OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisD4OQ02OQ03OQ01OQ01OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisD4OQ02OQ04
+error: Proofs/InverseGaloisD4OQ02.lean:201:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+error: Proofs/InverseGaloisD4OQ02.lean:398:17: failed to synthesize
+  Module.Free ℚ ↥F
+(deterministic) timeout at `typeclass`, maximum number of heartbeats (20000) has been reached
+===== InverseGaloisOQ02
+error: Proofs/InverseGaloisOQ02.lean:245:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Subgroup.index ?H * Nat.card ↥?H
+in the target expression
+===== InverseGaloisOQ03
+error: Proofs/InverseGaloisOQ03.lean:189:50: Unknown constant `commutator_eq_bot_iff_center_eq_top.mp`
+error: Proofs/InverseGaloisOQ03.lean:282:24: failed to synthesize instance of type class
+  Algebra ℚ K
+error: Proofs/InverseGaloisOQ03.lean:282:24: failed to synthesize instance of type class
+  Algebra ℚ K
+error: Proofs/InverseGaloisOQ03.lean:282:37: failed to synthesize instance of type class
+  Module ℚ K
+error: Proofs/InverseGaloisOQ03.lean:283:4: failed to synthesize instance of type class
+  Algebra ℚ K
+===== KroneckersJugendtraumStarkRankOne
+error: Proofs/KroneckersJugendtraumStarkRankOne.lean:70:51: failed to synthesize instance of type class
+  Field (Type u_1)
+error: Proofs/KroneckersJugendtraumStarkRankOne.lean:73:49: failed to synthesize instance of type class
+  Field (Type u_1)
+error: Proofs/KroneckersJugendtraumStarkRankOne.lean:74:40: failed to synthesize instance of type class
+  Inhabited { w // w ≠ dirichletUnitTheorem.w₀ }
+error: Proofs/KroneckersJugendtraumStarkRankOne.lean:76:26: failed to synthesize instance of type class
+  Field (Type u_1)

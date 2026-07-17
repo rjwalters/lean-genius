@@ -26,12 +26,13 @@ Related: Problem #806
 Tags: additive-combinatorics, sumsets, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Set.Card
+
+open scoped Classical
 
 open Asymptotics Filter
 open scoped BigOperators
@@ -72,7 +73,9 @@ The set of all pairwise sums from B.
 def sumset (B : Set ℕ) : Set ℕ :=
   {n : ℕ | ∃ b₁ b₂ : ℕ, b₁ ∈ B ∧ b₂ ∈ B ∧ n = b₁ + b₂}
 
-notation:max B "+" B => sumset B
+-- v4.31 migration: the former `notation:max B "+" B => sumset B` hijacked ordinary
+-- `a + b` under the new parser (turning Nat additions into `sumset a`). It was unused
+-- (the file always writes `sumset B` directly), so it has been removed.
 
 /--
 **Sumset covering:**
@@ -107,14 +110,14 @@ def ErdosConjecture333 : Prop :=
 ## Part III: The Negative Answer
 -/
 
-/--
+/- 
 **Key observation:**
 If B has |B ∩ [1,N]| = o(√N), then B + B has |B+B ∩ [1,N]| = o(N).
 
 More precisely, if |B ∩ [1,N]| ≤ f(N), then |B+B ∩ [1,2N]| ≤ f(N)².
 -/
 
-/--
+/- 
 **Corollary:**
 If B has o(√N) growth, then B + B has o(N) elements up to 2N.
 -/
@@ -148,7 +151,7 @@ theorem erdos_333_false : ¬ErdosConjecture333 := by
 -/
 def squares : Set ℕ := {n : ℕ | ∃ k : ℕ, n = k^2}
 
-/--
+/- 
 **Squares have zero density:**
 |{k² : k² ≤ N}| = √N + O(1), so density = 0.
 -/
@@ -173,13 +176,13 @@ def hasPolynomialGaps (A : Set ℕ) (α : ℝ) : Prop :=
 ## Part V: Understanding the Counterexample
 -/
 
-/--
+/- 
 **Lower bound on sumset covering:**
 If A has counting function f_A(N), and A ⊆ B + B, then B must satisfy
 a lower bound on |B ∩ [1,N]|.
 -/
 
-/--
+/- 
 **Remark:**
 The counterexample A is constructed so that f_A(N) grows like N / log N
 or similar - still zero density, but "barely" zero.
@@ -194,7 +197,7 @@ Take A to be integers with at most (log n)² prime factors.
 This has zero density (Prime Number Theorem), but is "dense within zero density".
 -/
 def almostPrimeFree (k : ℕ) : Set ℕ :=
-  {n : ℕ | n ≥ 1 ∧ (Nat.factors n).length ≤ k}
+  {n : ℕ | n ≥ 1 ∧ (Nat.primeFactorsList n).length ≤ k}
 
 /-
 ## Part VI: Connections
@@ -217,7 +220,7 @@ def isSidonSet (B : Set ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ B → b ∈ B → c ∈ B → d ∈ B →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-/--
+/- 
 **Sidon sets give minimal sumsets:**
 If B is Sidon, then |B+B ∩ [1,N]| ≈ |B ∩ [1,N]|².
 -/
@@ -236,7 +239,7 @@ The paper establishes that:
 2. General zero-density sets do NOT always have sparse sumset bases
 -/
 
-/--
+/- 
 **Summary of Erdős-Newman Theorem 2:**
 There exist zero-density sets A where any B with A ⊆ B + B
 must have |B ∩ [1,N]| ≥ c√N for infinitely many N.

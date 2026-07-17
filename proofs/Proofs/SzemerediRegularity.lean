@@ -45,9 +45,9 @@ private theorem card_mul_edgeDensity (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [Nat.cast_eq_zero, Finset.card_eq_zero]
     rcases mul_eq_zero.mp h with ha | hb
     · have hA := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp ha)
-      ext x; simp [hA, Finset.not_mem_empty]
+      ext x; simp [hA, Finset.notMem_empty]
     · have hB := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp hb)
-      ext x; simp [Finset.product, hB, Finset.not_mem_empty]
+      ext x; simp [Finset.product, hB, Finset.notMem_empty]
   · -- Non-zero case: n*m * (e/(n*m)) = e
     have hne : (↑A.card : ℚ) * ↑B.card ≠ 0 := h
     rw [mul_div_cancel₀ _ hne]

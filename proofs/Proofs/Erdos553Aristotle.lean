@@ -21,6 +21,8 @@
 import Mathlib
 import Proofs.Erdos553Problem
 
+open scoped Classical
+
 namespace Erdos553Aristotle
 
 open Finset Function Set SimpleGraph

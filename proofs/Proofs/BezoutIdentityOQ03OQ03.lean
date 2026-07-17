@@ -1,6 +1,4 @@
-import Mathlib.Data.Int.GCD
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Multi-Variable Bézout and Diophantine Solvability Criterion
@@ -47,7 +45,7 @@ theorem gcdFin_succ {n : ℕ} (a : Fin (n + 1) → ℤ) :
 /-- The family GCD equals Int.gcd applied to the sub-GCD and last element -/
 private theorem gcdFin_eq_int_gcd {n : ℕ} (a : Fin (n + 1) → ℤ) :
     gcdFin a = Int.gcd (gcdFin (a ∘ Fin.castSucc) : ℤ) (a (Fin.last n)) := by
-  simp only [gcdFin_succ, Int.gcd, Int.natAbs_ofNat]
+  simp only [gcdFin_succ, Int.gcd, Int.natAbs_natCast]
 
 -- ============================================================
 -- Part 2: gcdFin divides each component
@@ -70,13 +68,13 @@ theorem gcdFin_dvd : ∀ {n : ℕ} (a : Fin n → ℤ) (i : Fin n), (gcdFin a : 
                   (a (Fin.last k)).natAbs := Nat.gcd_dvd_right _ _
       rcases Int.natAbs_eq (a (Fin.last k)) with h | h
       · rw [h]; exact_mod_cast hdvd
-      · rw [h]; exact dvd_neg.mpr (by exact_mod_cast hdvd)
+      · rw [h]; simp only [Int.natAbs_neg, Int.natAbs_abs]; exact dvd_neg.mpr (by exact_mod_cast hdvd)
     · -- i = Fin.castSucc j
       intro j
       rw [gcdFin_succ]
       -- (Nat.gcd g aₙ.natAbs : ℤ) ∣ a(castSucc j)
       -- By Nat.gcd_dvd_left, g ∣ Nat.gcd g aₙ.natAbs, hence by ih: (g : ℤ) ∣ a(castSucc j)
-      exact dvd_trans (Int.coe_nat_dvd.mpr (Nat.gcd_dvd_left _ _)) (ih (a ∘ Fin.castSucc) j)
+      exact dvd_trans (Int.natCast_dvd_natCast.mpr (Nat.gcd_dvd_left _ _)) (ih (a ∘ Fin.castSucc) j)
 
 -- ============================================================
 -- Part 3: Multi-variable Bézout identity
@@ -119,7 +117,7 @@ theorem bezout_multivar : ∀ {n : ℕ} (a : Fin n → ℤ),
     -- Sum over first k: ∑ i, a(castSucc i) * (y i * u) = (∑ i, a(castSucc i) * y i) * u
     have hsum : ∑ i : Fin k, a (Fin.castSucc i) * (y i * u) =
         (∑ i : Fin k, (a ∘ Fin.castSucc) i * y i) * u := by
-      rw [Finset.sum_mul]; congr 1; ext i; ring
+      rw [Finset.sum_mul]; congr 1; ext i; simp only [Function.comp_apply]; ring
     rw [hsum, hy]
     -- Now: (g : ℤ) * u + a(last k) * v = gcdFin a
     linarith
@@ -171,7 +169,7 @@ theorem solvable_of_gcd_dvd {n : ℕ} (a : Fin n → ℤ) (d : ℤ)
 /-- Example: 4x + 6y + 9z = 1 has no solution (gcd(4,6,9) = 1 ∣ 1 — wait, yes it does!) -/
 example : ∃ x y z : ℤ, 4 * x + 6 * y + 9 * z = 1 := by
   -- gcd(4, gcd(6, 9)) = gcd(4, 3) = 1, so d = 1 is solvable
-  exact ⟨1, -1, 1, by ring⟩
+  exact ⟨-2, 0, 1, by ring⟩
 
 /-- Example: 4x + 6y = 5 has no integer solution (gcd(4,6) = 2 ∤ 5) -/
 example : ¬∃ x y : ℤ, 4 * x + 6 * y = 5 := by

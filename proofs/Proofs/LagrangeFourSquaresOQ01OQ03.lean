@@ -65,7 +65,8 @@ open Finset
 /-- The box of admissible signed integer components for a four-square representation
 of `n`: every component `x` with `x² ≤ n` satisfies `|x| ≤ √n`, i.e. `x ∈ [-√n, √n]`.
 So all representations of `n` live inside `box n ^ 4`. -/
-def box (n : ℕ) : Finset ℤ := Finset.Icc (-(Nat.sqrt n : ℤ)) (Nat.sqrt n : ℤ)
+def box (n : ℕ) : Finset ℤ :=
+  Finset.image (fun i : ℕ => (i : ℤ) - (Nat.sqrt n : ℤ)) (Finset.range (2 * Nat.sqrt n + 1) : Finset ℕ)
 
 /-- `r4 n` counts the **ordered, signed** quadruples `(x₁,x₂,x₃,x₄) ∈ ℤ⁴` with
 `x₁²+x₂²+x₃²+x₄² = n` (zeros and signs allowed). This is the classical `r₄(n)`.
@@ -416,12 +417,11 @@ shows the oracle's equality `r4 n = jacobiCount n` is at least sign-consistent f
 `x² ≤ n` then its signed integer image `±x` lies in `box n = [-√n, √n] ∩ ℤ`: nonnegativity
 gives `-√n ≤ 0 ≤ x`, and `x² ≤ n` gives `x ≤ √n` by `Nat.le_sqrt'`. -/
 theorem natCast_mem_box {x n : ℕ} (hx : x ^ 2 ≤ n) : (x : ℤ) ∈ box n := by
-  simp only [box, Finset.mem_Icc]
   have hxs : x ≤ Nat.sqrt n := Nat.le_sqrt'.mpr hx
-  have h1 : (0 : ℤ) ≤ (x : ℤ) := by positivity
-  have h2 : (0 : ℤ) ≤ (Nat.sqrt n : ℤ) := by positivity
-  refine ⟨by omega, ?_⟩
-  exact_mod_cast hxs
+  simp only [box, Finset.mem_image, Finset.mem_range]
+  refine ⟨Nat.sqrt n + x, by omega, ?_⟩
+  push_cast
+  ring
 
 /-- **The true count is positive for every `n` (0-axiom, general).**  `0 < r4 n` for all
 `n`: Mathlib's `Nat.sum_four_squares` supplies naturals `a,b,c,d` with

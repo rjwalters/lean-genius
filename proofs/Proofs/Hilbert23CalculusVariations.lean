@@ -108,7 +108,7 @@ structure TestFunction (a b : ℝ) where
   vanish_left : func a = 0
   vanish_right : func b = 0
 
-/-- **Fundamental Lemma of Calculus of Variations**:
+/- **Fundamental Lemma of Calculus of Variations**:
     If ∫ f · η = 0 for all test functions η, then f = 0. -/
 
 end FundamentalLemma
@@ -143,7 +143,7 @@ def IsExtremal (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ) : Prop :=
   ∀ x, partialL_y L x (y x) (deriv y x) =
        deriv (fun t => partialL_y' L t (y t) (deriv y t)) x
 
-/-- **Euler-Lagrange Necessary Condition**:
+/- **Euler-Lagrange Necessary Condition**:
     If y is a local minimizer of J[y] = ∫ L(x, y, y') dx, then y
     satisfies the Euler-Lagrange equation. -/
 
@@ -171,7 +171,7 @@ section Applications
 noncomputable def geodesicLagrangian : ℝ → ℝ → ℝ → ℝ :=
   fun _ _ y' => Real.sqrt (1 + y'^2)
 
-/-- Geodesics in Euclidean space are straight lines.
+/-  Geodesics in Euclidean space are straight lines.
     This follows from Euler-Lagrange applied to the arc length functional. -/
 
 /-- **Classical Mechanics**: L = T - V (kinetic minus potential energy).
@@ -206,7 +206,7 @@ def IsWeaklyLowerSemicontinuous (J : (ℝ → ℝ) → ℝ) : Prop :=
   ∀ y : ℝ → ℝ, ∀ _ySeq : ℕ → (ℝ → ℝ),
     True → J y ≤ J y  -- Simplified; real definition involves weak convergence
 
-/-- **Direct Method Existence Theorem** (Tonelli, 1920s):
+/- **Direct Method Existence Theorem** (Tonelli, 1920s):
     If J is coercive and weakly lower semicontinuous on a suitable space,
     then J attains its minimum. -/
 
@@ -247,7 +247,7 @@ structure CostFunctional (S : ControlSystem) where
 def hamiltonian (_S : ControlSystem) (_cost : CostFunctional _S)
     (_x : _S.state) (_u : _S.control) (_p : _S.state) : ℝ := 0  -- Simplified
 
-/-- **Pontryagin Maximum Principle** (1956):
+/- **Pontryagin Maximum Principle** (1956):
     If u* is an optimal control with corresponding state x* and costate p*,
     then H(x*, u*, p*) = max_u H(x*, u, p*) almost everywhere. -/
 

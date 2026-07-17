@@ -400,8 +400,8 @@ lemma unitsProduct_eq_factorial {p : ℕ} (hp : Nat.Prime p) :
   unfold unitsProduct
   have hp2 : p ≥ 2 := hp.two_le
   -- Both sides are products over {1,...,p-1}
-  -- LHS: ∏ a in (range p).filter (coprime · p), id a
-  -- RHS: (p-1)! = ∏ a in Icc 1 (p-1), id a
+  -- LHS: ∏ a ∈ (range p).filter (coprime · p), id a
+  -- RHS: (p-1)! = ∏ a ∈ Icc 1 (p-1), id a
   rw [factorial_eq_Icc_prod]
   congr 1
   ext a
@@ -427,12 +427,15 @@ theorem unitsProduct_prime {p : ℕ} (hp : Nat.Prime p) (_hp2 : p ≥ 2) :
   obtain ⟨k, hk⟩ := h_wilson
   have hk_pos : 0 < k := by
     rcases k with _ | k
-    · simp at hk; omega
+    · simp at hk
     · omega
   -- (p-1)! = p * k - 1 = p * (k - 1) + (p - 1)
+  have hexp : p * (k - 1) + p = p * k := by
+    cases k with
+    | zero => omega
+    | succ m => simp [Nat.succ_sub_one, Nat.mul_succ]
   have key : (p - 1).factorial = p * (k - 1) + (p - 1) := by omega
-  rw [key]
-  exact Nat.add_mul_mod_self_left (p - 1) p (k - 1)
+  rw [key, add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
 
 -- Wilson's theorem in product form (from Mathlib)
 theorem wilson_product_form (p : ℕ) [hp : Fact (Nat.Prime p)] :
@@ -629,7 +632,7 @@ Computationally verified for n ≤ 200 (gaussWilson_verified_le_200).
 ### Bridge Proof via WilsonsTheoremOQ02
 
 WilsonsTheoremOQ02 proves (sorry-free):
-1. `unitsProduct_cast_eq_abstract`: ↑(unitsProduct n) = ∏ units in ZMod n
+1. `unitsProduct_cast_eq_abstract`: ↑(unitsProduct n) = ∏ units ∈ ZMod n
 2. `gaussWilson_abstract`: ∏ units = -1 ↔ IsCyclic (ZMod n)ˣ
 
 We connect the concrete `unitsProduct n % n = n - 1` to the abstract
@@ -640,15 +643,14 @@ We connect the concrete `unitsProduct n % n = n - 1` to the abstract
 private lemma natCast_sub_one_eq_neg_one' {n : ℕ} (hn : n ≥ 1) :
     (↑(n - 1) : ZMod n) = -1 := by
   haveI : NeZero n := ⟨by omega⟩
-  rw [eq_neg_iff_add_eq_zero]
-  rw [← Nat.cast_one, ← Nat.cast_add, Nat.sub_add_cancel hn, ZMod.natCast_self_eq_zero]
+  rw [Nat.cast_sub hn, Nat.cast_one, ZMod.natCast_self, zero_sub]
 
 theorem unitsProduct_eq_neg_one_iff_cyclic {n : ℕ} (hn : n ≥ 3) :
     unitsProduct n % n = n - 1 ↔ IsCyclic (ZMod n)ˣ := by
   haveI : NeZero n := ⟨by omega⟩
   -- Both OQ01 and OQ02 define unitsProduct identically, so OQ02's proven
   -- lemmas apply directly (Lean unfolds both to the same expression).
-  -- OQ02.unitsProduct_cast_eq_abstract: ↑(unitsProduct n) = ∏ units in ZMod n
+  -- OQ02.unitsProduct_cast_eq_abstract: ↑(unitsProduct n) = ∏ units ∈ ZMod n
   -- OQ02.gaussWilson_abstract: ∏ units = -1 ↔ IsCyclic (ZMod n)ˣ
   have hcast : (↑(unitsProduct n) : ZMod n) = ∏ x : (ZMod n)ˣ, (x : ZMod n) :=
     WilsonsTheoremOQ02.unitsProduct_cast_eq_abstract (show n ≥ 1 by omega)
@@ -657,7 +659,7 @@ theorem unitsProduct_eq_neg_one_iff_cyclic {n : ℕ} (hn : n ≥ 3) :
     intro h
     have hzmod : (↑(unitsProduct n) : ZMod n) = -1 := by
       rw [← natCast_sub_one_eq_neg_one' (show n ≥ 1 by omega)]
-      exact ZMod.val_injective (by
+      exact ZMod.val_injective n (by
         rw [ZMod.val_natCast, ZMod.val_natCast, h, Nat.mod_eq_of_lt (by omega)])
     rw [hcast] at hzmod
     exact (WilsonsTheoremOQ02.gaussWilson_abstract hn).mp hzmod
@@ -667,7 +669,7 @@ theorem unitsProduct_eq_neg_one_iff_cyclic {n : ℕ} (hn : n ≥ 3) :
       (WilsonsTheoremOQ02.gaussWilson_abstract hn).mpr hcyc
     rw [← hcast, ← natCast_sub_one_eq_neg_one' (show n ≥ 1 by omega)] at hzmod
     have hval := congrArg ZMod.val hzmod
-    rwa [ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)] at hval
+    rwa [ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt (show n - 1 < n by omega)] at hval
 
 -- The full Gauss-Wilson classification
 -- Reduces to: unitsProduct bridge (above) + isCyclic_units_iff_gaussWilson (Mathlib)
@@ -676,13 +678,11 @@ theorem gaussWilson_classification (n : ℕ) (hn : n ≥ 3) :
     (∃ p k, Nat.Prime p ∧ p ≠ 2 ∧ k ≥ 1 ∧ (n = p ^ k ∨ n = 2 * p ^ k)) ∨ n = 4 := by
   rw [unitsProduct_eq_neg_one_iff_cyclic hn, isCyclic_units_iff_gaussWilson hn]
   constructor
-  · intro h
-    rcases h with rfl | ⟨p, k, hp, hodd, hk, hform⟩
-    · left; rfl
-    · right; exact ⟨p, k, hp, ((prime_odd_iff_ne_two hp).mp hodd), hk, hform⟩
-  · intro h
-    rcases h with ⟨p, k, hp, hne2, hk, hform⟩ | rfl
-    · right; exact ⟨p, k, hp, (prime_odd_iff_ne_two hp).mpr hne2, hk, hform⟩
-    · left; rfl
+  · rintro (rfl | ⟨p, k, hp, hodd, hk, hform⟩)
+    · exact Or.inr rfl
+    · exact Or.inl ⟨p, k, hp, (prime_odd_iff_ne_two hp).mp hodd, hk, hform⟩
+  · rintro (⟨p, k, hp, hne2, hk, hform⟩ | rfl)
+    · exact Or.inr ⟨p, k, hp, (prime_odd_iff_ne_two hp).mpr hne2, hk, hform⟩
+    · exact Or.inl rfl
 
 end WilsonsTheoremGeneralization

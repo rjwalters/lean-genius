@@ -13,9 +13,7 @@ witness family {(3k, 6k) : 1 ≤ k ≤ ⌊N/6⌋}.
 -/
 
 import Proofs.Erdos327OQ01
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos327OQ01OQ04
 
@@ -44,7 +42,9 @@ theorem witnessFamily_subset (N : ℕ) :
     witnessFamily N ⊆ sumDvdProdPairs N := by
   intro ⟨a, b⟩ h
   simp only [witnessFamily, mem_image, mem_Icc] at h
-  obtain ⟨k, ⟨hk1, hkN⟩, rfl⟩ := h
+  obtain ⟨k, ⟨hk1, hkN⟩, heq⟩ := h
+  simp only [Prod.mk.injEq] at heq
+  obtain ⟨rfl, rfl⟩ := heq
   have hkpos : 0 < k := by omega
   -- 6k ≤ N: since k ≤ N/6, we have 6k ≤ 6·(N/6) ≤ N
   have h6kN : 6 * k ≤ N := by
@@ -58,8 +58,7 @@ theorem witnessFamily_subset (N : ℕ) :
 theorem witnessFamily_card (N : ℕ) : (witnessFamily N).card = N / 6 := by
   unfold witnessFamily
   rw [Finset.card_image_of_injective _ witnessInj]
-  simp [Finset.Nat.card_Icc]
-  omega
+  simp [Nat.card_Icc]
 
 /-! ## Main lower bound -/
 

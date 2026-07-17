@@ -33,11 +33,10 @@ References:
 Tags: number-theory, divisors, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
 
 open Finset Nat ArithmeticFunction
 
@@ -107,20 +106,20 @@ axiom erdos_449_false : ¬ ErdosConjecture449
 
 /- ## Part IV: The Key Inequality -/
 
-/--
+/- 
 **Cauchy-Schwarz inequality for divisors:**
 r(n) + τ(n) ≥ τ(n)² / τ⁺(n)
 
 This is the key technical tool.
 -/
-/--
+/- 
 **Connection to Problem 448:**
 From Problem 448: τ⁺(n) can be much smaller than τ(n) for
 a positive density set of n, making τ(n)²/τ⁺(n) large.
 -/
 /- ## Part V: Examples and Small Values -/
 
-/--
+/- 
 **Example: n = 12**
 Divisors: 1, 2, 3, 4, 6, 12
 Close pairs: (2,3), (3,4), (3,6), (4,6), (6,12)
@@ -128,7 +127,7 @@ r(12) = 5, τ(12) = 6
 -/
 /- ## Part VI: Related Results -/
 
-/-- **Ford's derivation from Problem 448:**
+/-  **Ford's derivation from Problem 448:**
 The disproof of Problem 449 follows from the Cauchy-Schwarz inequality
 applied to divisor pairs together with the result from Problem 448
 that τ⁺(n) can be much smaller than τ(n) on a positive density set.

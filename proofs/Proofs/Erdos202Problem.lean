@@ -56,11 +56,7 @@ The following was proved by Aristotle:
   Tags: number-theory, covering-systems, combinatorics
 -/
 
-import Mathlib.Data.Int.ModEq
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 
 namespace Erdos202
@@ -194,7 +190,7 @@ lemma card_congruence_class_intersection (c : CongruenceClass) (L : ℕ) (h : c.
   (Finset.filter (fun (x : ℕ) => CongruenceClass.contains c (x : ℤ)) (Finset.range L)).card = L / c.modulus := by
     convert count_mod_eq_card L c.modulus ( c.natResidue ) h _ using 1;
     · congr! 2;
-      ext; simp [CongruenceClass.contains] ;
+      simp [CongruenceClass.contains] ;
       norm_num [ Int.ModEq, Int.emod_nonneg _ ( Nat.cast_ne_zero.mpr c.modulus_pos.ne' ) ];
       rw [ ← Int.natCast_inj ] ; norm_num [ Int.emod_nonneg _ ( Nat.cast_ne_zero.mpr c.modulus_pos.ne' ), CongruenceClass.natResidue ] ;
     · -- Since $c.modulus$ is a natural number and $c.modulus \mid L$, it follows that $c.modulus > 0$.
@@ -249,12 +245,12 @@ theorem f_le_N (N : ℕ) : f N ≤ N := by
     have h_sum_ge : ∑ c ∈ S.classes, (1 : ℝ) / c.modulus ≥ S.size / N := by
       have h_sum : ∑ c ∈ S.classes, (1 : ℝ) / c.modulus ≥ ∑ c ∈ S.classes, (1 : ℝ) / N := by
         exact Finset.sum_le_sum fun c hc => one_div_le_one_div_of_le ( Nat.cast_pos.mpr <| CongruenceClass.modulus_pos _ ) <| Nat.cast_le.mpr <| hS.1 c hc;
-      simpa [ div_eq_mul_inv ] using h_sum;
+      simpa [ div_eq_mul_inv, Erdos202.DisjointSystem.size ] using h_sum;
     rcases N with ( _ | _ | N ) <;> norm_num at *;
     · exact absurd hS.1 ( by rintro H; obtain ⟨ c, hc ⟩ := Finset.card_pos.mp hS.2; linarith [ H c hc, c.modulus_pos ] );
     · exact lt_of_lt_of_le ( mod_cast hS.2 ) h_sum_ge;
     · exact lt_of_lt_of_le ( by rw [ lt_div_iff₀ ] <;> norm_cast <;> linarith ) h_sum_ge;
-  exact h_sum.not_le <| le_trans ( sum_inv_moduli_le_one S ) <| by norm_num;
+  linarith [sum_inv_moduli_le_one S];
 
 /- The Chinese Remainder Theorem gives a lower bound construction. -/
 noncomputable section AristotleLemmas
@@ -324,7 +320,7 @@ lemma Erdos202.size_le_N (S : Erdos202.DisjointSystem) (N : ℕ) (h : S.boundedB
   refine' lt_of_lt_of_le _ ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le ( Nat.cast_pos.mpr x.modulus_pos ) ( Nat.cast_le.mpr ( h x hx ) ) );
   rcases N with ( _ | _ | N ) <;> norm_num at *;
   · exact this.ne' ( by rw [ show S.size = 0 from Finset.card_eq_zero.mpr <| Finset.eq_empty_of_forall_notMem fun x hx => by have := h x hx; linarith [ x.modulus_pos ] ] );
-  · convert this using 1;
+  · simp only [Erdos202.DisjointSystem.size] at this ⊢; omega;
   · rw [ ← div_eq_mul_inv, one_lt_div ] <;> norm_cast ; linarith! [ S.size ]
 
 end AristotleLemmas
@@ -410,19 +406,27 @@ in the application
     c · log(log N) < √(log N · log(log N)) since c² · log(log N) < log N
     (because log(log N) = o(log N)). -/
 theorem L_superlogarithmic (c : ℝ) :
-    ∀ᶠ N in Filter.atTop, (Real.log N) ^ c < L N := by
+    ∀ᶠ N : ℕ in Filter.atTop, (Real.log N) ^ c < L N := by
   have h_L_eq : ∀ N : ℕ, 2 < N →
       L N = Real.exp (Real.sqrt (Real.log N * Real.log (Real.log N))) :=
     fun N hN => if_neg (by linarith)
   by_cases hc : c ≤ 0
-  · -- Case c ≤ 0: (log N)^c ≤ 1 ≤ exp(√(...)) = L N
+  · -- Case c ≤ 0: (log N)^c ≤ 1 < exp(√(...)) = L N
     filter_upwards [Filter.eventually_ge_atTop 3] with N hN
     rw [h_L_eq N (by omega)]
+    have hlogN_gt1 : (1 : ℝ) < Real.log (N : ℝ) := by
+      have h3 : (3 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+      have he : Real.exp 1 < (N : ℝ) := by linarith [Real.exp_one_lt_d9]
+      calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
+        _ < Real.log (N : ℝ) := Real.log_lt_log (Real.exp_pos 1) he
+    have hloglog_pos : 0 < Real.log (Real.log (N : ℝ)) := Real.log_pos hlogN_gt1
+    have hpos : 0 < Real.sqrt (Real.log (N : ℝ) * Real.log (Real.log (N : ℝ))) :=
+      Real.sqrt_pos.mpr (mul_pos (by linarith) hloglog_pos)
+    have hgt1 : (1 : ℝ) < Real.exp (Real.sqrt (Real.log ↑N * Real.log (Real.log ↑N))) := by
+      simpa using Real.exp_lt_exp.mpr hpos
     calc (Real.log (N : ℝ)) ^ c
-        ≤ 1 := rpow_le_one_of_one_le_of_nonpos
-          (Real.le_log_of_exp_le (by norm_cast; linarith [Real.exp_one_gt_d9])) hc
-      _ ≤ Real.exp (Real.sqrt (Real.log ↑N * Real.log (Real.log ↑N))) :=
-          one_le_exp (Real.sqrt_nonneg _)
+        ≤ 1 := rpow_le_one_of_one_le_of_nonpos hlogN_gt1.le hc
+      _ < Real.exp (Real.sqrt (Real.log ↑N * Real.log (Real.log ↑N))) := hgt1
   · -- Case c > 0: use exp(u) > (1+u/2)² ≥ u²/4 ≥ c²u for u ≥ 4c²
     push_neg at hc
     -- Eventually log(log N) is large enough
@@ -436,30 +440,33 @@ theorem L_superlogarithmic (c : ℝ) :
         Filter.eventually_gt_atTop 2] with N hu_ge hu_pos hv_pos hN2
     simp only [Function.comp] at hu_ge hu_pos hv_pos
     rw [h_L_eq N hN2]
-    set u := Real.log (Real.log (N : ℝ))
+    set u := Real.log (Real.log (N : ℝ)) with hu_def
     -- log N = exp(u)
-    have hv_eq : Real.log (N : ℝ) = Real.exp u := Real.exp_log hv_pos
+    have hv_eq : Real.log (N : ℝ) = Real.exp u := (Real.exp_log hv_pos).symm
     -- (log N)^c = exp(c * u) since log N > 0
-    rw [Real.rpow_def_of_pos hv_pos, hv_eq]
+    have hpow_eq : (Real.log (N : ℝ)) ^ c = Real.exp (c * u) := by
+      rw [Real.rpow_def_of_pos hv_pos, hu_def]; ring_nf
+    rw [hpow_eq, hv_eq]
     apply Real.exp_lt_exp.mpr
     -- Need: c * u < √(exp(u) * u)
     -- Step 1: c²u ≤ u²/4 (since u ≥ 4c²)
     have h1 : c ^ 2 * u ≤ u ^ 2 / 4 := by nlinarith
     -- Step 2: u²/4 < exp(u) (since exp(u) ≥ (1+u/2)² = 1+u+u²/4 > u²/4)
     have h2 : u ^ 2 / 4 < Real.exp u := by
-      have := Real.add_one_le_exp (u / 2)
+      have h3 := Real.add_one_le_exp (u / 2)
       have hep := Real.exp_pos (u / 2)
-      nlinarith [Real.exp_add (u / 2) (u / 2)]
+      have hexp2 : Real.exp u = Real.exp (u / 2) * Real.exp (u / 2) := by
+        rw [← Real.exp_add]; ring_nf
+      have hsq : (u / 2 + 1) * (u / 2 + 1) ≤ Real.exp (u / 2) * Real.exp (u / 2) :=
+        mul_le_mul h3 h3 (by linarith) hep.le
+      nlinarith [hsq, hexp2]
     -- Step 3: c²u < exp(u), so c²u² < exp(u)·u, so (cu)² < exp(u)·u
     -- Therefore cu < √(exp(u)·u) since √ is monotone and cu > 0
     have h_prod_pos : Real.exp u * u > 0 := mul_pos (Real.exp_pos u) hu_pos
-    calc c * u
-        < Real.sqrt (Real.exp u * u) := by
-          rw [show c * u = Real.sqrt ((c * u) ^ 2) from
-            (Real.sqrt_sq (by positivity : c * u ≥ 0)).symm]
-          apply Real.sqrt_lt_sqrt (sq_nonneg _)
-          nlinarith
-      _ = Real.sqrt (Real.exp u * Real.log (Real.log ↑N)) := by rfl
+    have huc_nonneg : c * u ≥ 0 := mul_nonneg hc.le hu_pos.le
+    rw [show c * u = Real.sqrt ((c * u) ^ 2) from (Real.sqrt_sq huc_nonneg).symm]
+    apply Real.sqrt_lt_sqrt (sq_nonneg _)
+    nlinarith
 
 /- Aristotle failed to find a proof. -/
 /- ## Part VI: The Erdős-Stein Conjecture (PROVED) -/
@@ -593,7 +600,8 @@ theorem erdos_szemeredi_upper :
     have := @erdos_stein_conjecture 1 one_pos; aesop;
   contrapose! h_eps_one;
   simp +zetaDelta at *;
-  exact fun N => ⟨ N + 1, by linarith, by exact_mod_cast f_ge_N ( N + 1 ) ( Nat.succ_pos _ ) ⟩
+  exact (Filter.eventually_atTop.mpr ⟨1, fun N hN => f_ge_N N (by omega)⟩).frequently
+
 
 /- Aristotle failed to find a proof. -/
 /- ## Part VII: Modern Bounds -/
@@ -696,7 +704,7 @@ lemma Erdos202.full_system_size (N : ℕ) (hN : N > 0) : (Erdos202.full_system N
 
 noncomputable def Erdos202.density (c : Erdos202.CongruenceClass) : ℝ := 1 / (c.modulus : ℝ)
 
-lemma Erdos202.density_sum_le_one (S : Erdos202.DisjointSystem) :
+lemma Erdos202.density_sum_le_one2 (S : Erdos202.DisjointSystem) :
     ∑ c ∈ S.classes, Erdos202.density c ≤ 1 := by
       -- Let $M$ be the least common multiple of the moduli of the classes in $S$.
       set M := Finset.lcm S.classes (fun c => c.modulus) with hM_def;
@@ -747,7 +755,7 @@ lemma Erdos202.density_sum_le_one (S : Erdos202.DisjointSystem) :
       -- Since $M$ is the least common multiple of the moduli, each term $M / c.modulus$ is an integer.
       have h_int : ∀ c ∈ S.classes, (M / c.modulus : ℕ) = M * (1 / c.modulus : ℝ) := by
         intro c hc; rw [ Nat.cast_div ( show c.modulus ∣ M from Finset.dvd_lcm hc ) ( Nat.cast_ne_zero.mpr <| Nat.ne_of_gt <| CongruenceClass.modulus_pos c ) ] ; ring;
-      convert div_le_one_of_le₀ ( show ( ∑ c ∈ S.classes, ( M / c.modulus : ℕ ) : ℝ ) ≤ M from mod_cast h_cover ) ( Nat.cast_nonneg M ) using 1;
+      convert div_le_one_of_le₀ ( show ( ∑ c ∈ S.classes, ( M / c.modulus : ℕ ) : ℝ ) ≤ M from mod_cast h_cover ) ( Nat.cast_nonneg M ) using 1 <;> try rfl;
       rw [ Finset.sum_div _ _ _ ] ; exact Finset.sum_congr rfl fun x hx => by rw [ h_int x hx, mul_div_cancel_left₀ _ ( Nat.cast_ne_zero.mpr <| Nat.ne_of_gt <| Nat.pos_of_ne_zero <| mt Finset.lcm_eq_zero_iff.mp <| by intros h; obtain ⟨ c, hc ⟩ := h; have := c.modulus_pos; aesop ) ] ; unfold Erdos202.Erdos202.density; aesop;
 
 lemma Erdos202.full_system_boundedBy (N : ℕ) (hN : N > 0) : (Erdos202.full_system N hN).boundedBy N := by
@@ -756,10 +764,11 @@ lemma Erdos202.full_system_boundedBy (N : ℕ) (hN : N > 0) : (Erdos202.full_sys
   rcases hc with ⟨i, hi, rfl⟩
   exact le_refl N
 
-lemma Erdos202.size_le_N (S : Erdos202.DisjointSystem) (N : ℕ) (h : S.boundedBy N) : S.size ≤ N := by
+lemma Erdos202.size_le_N2 (S : Erdos202.DisjointSystem) (N : ℕ) (h : S.boundedBy N) : S.size ≤ N := by
   -- Since the classes are disjoint and each modulus is at most N, the number of classes is at most the sum of the reciprocals of their moduli, which is at most 1.
   have h_sum_reciprocals : ∑ c ∈ S.classes, (1 / (c.modulus : ℝ)) ≤ 1 := by
-    convert Erdos202.density_sum_le_one S using 1;
+    have := Erdos202.density_sum_le_one2 S
+    simpa [Erdos202.density] using this;
   -- Since each modulus is at most N, we have 1 / modulus ≥ 1 / N for each class in S.
   have h_reciprocal_bound : ∀ c ∈ S.classes, (1 / (c.modulus : ℝ)) ≥ (1 / (N : ℝ)) := by
     exact fun c hc => one_div_le_one_div_of_le ( Nat.cast_pos.mpr c.modulus_pos ) ( mod_cast h c hc );
@@ -779,7 +788,7 @@ theorem Erdos202.f_ge_N (N : ℕ) (hN : N ≥ 1) : Erdos202.f N ≥ N := by
     use N
     intro r hr
     rcases hr with ⟨S', hS', rfl⟩
-    exact Erdos202.size_le_N S' N hS'
+    exact Erdos202.size_le_N2 S' N hS'
   have h_mem : N ∈ R := by
     use S
     constructor
@@ -854,7 +863,7 @@ noncomputable def coveringDensity (S : DisjointSystem) : ℝ :=
 -- Proved by Aristotle (Harmonic)
 theorem covering_density_le_one (S : DisjointSystem) :
     coveringDensity S ≤ 1 := by
-  convert sum_inv_moduli_le_one S using 1
+  exact sum_inv_moduli_le_one S
 
 /- Aristotle ran out of time. -/
 end Erdos202

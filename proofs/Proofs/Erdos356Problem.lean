@@ -23,11 +23,7 @@ References:
 - Erdős-Graham [ErGr80]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.List.Basic
-import Mathlib.Data.List.Range
+import Mathlib
 
 open Nat Finset List
 
@@ -48,7 +44,7 @@ def consecutiveSubsum (seq : List ℕ) (u v : ℕ) : ℕ :=
 The set of all possible consecutive subsums of a sequence, collected into a Finset.
 -/
 def consecutiveSums (seq : List ℕ) : Finset ℕ :=
-  (List.range seq.length).bind (fun u =>
+  (List.range seq.length).flatMap (fun u =>
     (List.range (seq.length - u)).map (fun d =>
       consecutiveSubsum seq u (u + d))) |>.toFinset
 
@@ -69,13 +65,13 @@ are of the form (v-u+1)(v+u)/2, and many of these collide.
 def trivialSequence (n : ℕ) : List ℕ :=
   List.range' 1 n
 
-/--
+/- 
 **Consecutive sums of 1, ..., n grow linearly:**
 The sum from position u to v is v(v+1)/2 - (u-1)u/2 = (v-u+1)(v+u)/2.
 These are bounded by n(n+1)/2, but due to collisions among sums of different
 lengths, only O(n) distinct values arise.
 -/
-/--
+/- 
 **Why {1, 2, ..., n} fails — arithmetic structure causes collisions:**
 In an arithmetic progression, consecutive sums are determined by length and
 midpoint: sum(u..v) = (v-u+1)·(u+v)/2. Different (u,v) pairs can share the
@@ -136,7 +132,7 @@ axiom beker_theorem : erdosGrahamConjecture
 A rearrangement of {1, 2, ..., n} — the list contains exactly these elements.
 -/
 def isPermutation (seq : List ℕ) (n : ℕ) : Prop :=
-  seq.toFinset = Finset.range' 1 n
+  seq.toFinset = Finset.Icc 1 n
 
 /--
 **Permutation Conjecture:**
@@ -162,7 +158,7 @@ axiom konieczny_theorem : permutationConjecture
 
 /- ## Part VI: Construction Insights -/
 
-/--
+/- 
 **The construction principle:**
 To maximize distinct consecutive sums, elements must be spaced so that
 different (u,v) pairs yield different sums. This requires breaking the
@@ -174,7 +170,7 @@ that plague arithmetic progressions.
 -/
 /- ## Part VII: Related Problems -/
 
-/--
+/- 
 **Connection to Erdős #34 (Permutations):**
 Problem #34 asks the same question but specifically for permutations.
 Konieczny's theorem resolves it. The permutation variant is strictly
@@ -197,13 +193,13 @@ def erdos357Question : Prop :=
 
 /- ## Part VIII: Upper and Lower Bounds -/
 
-/--
+/- 
 **Upper bound on consecutive sums:**
 A sequence of length k has at most k(k+1)/2 consecutive subsums
 (choosing u ≤ v from {0,...,k-1}). Since k ≤ n for a valid sequence,
 the maximum is O(n²).
 -/
-/--
+/- 
 **Lower bound from Beker:**
 There exist sequences achieving cn² for some explicit c > 0.
 Combined with the upper bound, the growth rate is Θ(n²).

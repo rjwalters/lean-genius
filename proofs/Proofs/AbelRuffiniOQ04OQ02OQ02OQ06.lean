@@ -22,11 +22,11 @@
   Parent: AbelRuffiniOQ04OQ02OQ02.lean (Aₙ solvable iff n ≤ 4)
 -/
 
-import Mathlib.GroupTheory.Solvable
-import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Mathlib.GroupTheory.SpecificGroups.KleinFour
-import Mathlib.Tactic
+import Mathlib
 import Proofs.AbelRuffiniOQ04OQ02OQ02
+
+-- v4.31: element commutator `Bracket` is now a scoped instance
+open scoped commutatorElement
 
 open Equiv
 

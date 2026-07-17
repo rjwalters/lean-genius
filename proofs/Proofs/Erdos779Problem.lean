@@ -204,7 +204,7 @@ For n = 3: smallest p with 5 < p < 30 and 30+p prime is 7.
 For n = 4: smallest p with 7 < p < 210 and 210+p prime is 13. -/
 axiom oeis_A005235 : ℕ → ℕ
 
-/-- The first few values of A005235 (axiomatized from OEIS).
+/-  The first few values of A005235 (axiomatized from OEIS).
 a(n) = smallest prime p > p_n such that primorial(n) + p is prime. -/
 /-
 ## The Problem is Open but Heuristically True
@@ -213,6 +213,6 @@ Deaconescu verified the conjecture for n ≤ 1000. The heuristic argument
 strongly suggests it should be true for all n, but no proof exists.
 -/
 
-/-- **Computational Verification**: The conjecture has been verified for n ≤ 1000. -/
-/-- The heuristic probability that no valid prime exists is extremely small. -/
+/-  **Computational Verification**: The conjecture has been verified for n ≤ 1000. -/
+/- The heuristic probability that no valid prime exists is extremely small. -/
 end Erdos779

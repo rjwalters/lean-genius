@@ -26,12 +26,14 @@ Additional Results (ACRSTUV25):
 Tags: number-theory, factorial, factorization, limits
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Finset BigOperators Real
 
@@ -51,10 +53,11 @@ structure OrderedFactorization (m : ℕ) (n : ℕ) where
 
 /--
 **Minimum Factor:**
-The smallest factor in an ordered factorization is factors 0.
+The smallest factor in an ordered factorization is factors 0 (junk value 0
+when n = 0, since there is no factor to speak of).
 -/
 def minFactor {m n : ℕ} (f : OrderedFactorization m n) : ℕ :=
-  f.factors ⟨0, by omega⟩
+  if h : 0 < n then f.factors ⟨0, h⟩ else 0
 
 /--
 **t(n): Maximum Minimum Factor:**
@@ -62,9 +65,38 @@ t(n) is the maximum of the minimum factor over all n-factorizations of n!.
 -/
 noncomputable def t (n : ℕ) : ℕ :=
   -- The maximum minimum factor over all factorizations
-  Nat.find (⟨1, ⟨fun _ => 1, fun _ _ _ => le_refl 1,
-    by simp [Finset.prod_const, Nat.factorial], fun _ => le_refl 1⟩⟩ :
-    ∃ k : ℕ, ∃ f : OrderedFactorization n.factorial n, minFactor f = k)
+  Nat.find (show ∃ k : ℕ, ∃ f : OrderedFactorization n.factorial n, minFactor f = k by
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · -- n = 0: the (unique, vacuous) factorization into 0 factors of 0! = 1.
+      refine ⟨0, ⟨fun _ => 1, fun i j _ => le_refl 1, ?_, fun _ => le_refl 1⟩, ?_⟩
+      · subst hn; simp
+      · simp [minFactor, hn]
+    · -- n > 0: put all the mass on the last factor, a₁ = ⋯ = aₙ₋₁ = 1, aₙ = n!.
+      refine ⟨1, ⟨fun i => if i.val + 1 = n then n.factorial else 1, ?_, ?_, ?_⟩, ?_⟩
+      · intro i j hij
+        have hjlt : j.val < n := j.isLt
+        by_cases hi : i.val + 1 = n
+        · have hj : j.val + 1 = n := by omega
+          simp [hi, hj]
+        · by_cases hj : j.val + 1 = n
+          · simp [hi, hj]
+            exact Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero n)
+          · simp [hi, hj]
+      · have hn' : n - 1 < n := by omega
+        rw [Finset.prod_eq_single (⟨n - 1, hn'⟩ : Fin n)]
+        · simp [show n - 1 + 1 = n from by omega]
+        · intro b _ hb
+          have hbne : b.val ≠ n - 1 := fun h => hb (Fin.ext h)
+          simp [show b.val + 1 ≠ n from by omega]
+        · intro h; exact absurd (Finset.mem_univ _) h
+      · intro i
+        by_cases hi : i.val + 1 = n
+        · simp [hi]; exact Nat.factorial_pos n
+        · simp [hi]
+      · by_cases h1 : n = 1
+        · simp [minFactor, h1]
+        · have h0 : (⟨0, hn⟩ : Fin n).val + 1 ≠ n := by show (0 : ℕ) + 1 ≠ n; omega
+          simp [minFactor, hn, h0])
 
 /--
 **The ratio t(n)/n:**
@@ -111,7 +143,7 @@ c₀ ≈ 0.3044... is an explicit constant appearing in the asymptotic formula.
 -/
 noncomputable def c₀ : ℝ := 0.3044  -- Approximation; actual value is more precise
 
-/--
+/- 
 **Main Theorem (Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, Ventullo 2025):**
 t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}) for some c > 0.
 
@@ -147,17 +179,17 @@ t(n) ≥ n/3 for all n ≥ 43632, and 43632 is the best possible threshold.
 axiom lower_bound_explicit :
     ∀ n : ℕ, n ≥ 43632 → t n ≥ n / 3
 
-/--
+/- 
 **Optimality of 43632:**
 The threshold 43632 is sharp.
 -/
 /- ## Part VI: Small Cases -/
 
-/--
+/- 
 **Small Values:**
 Explicit computation of t(n) for small n.
 -/
-/--
+/- 
 **Exception at n = 4:**
 t(4) = 3 > 4/e ≈ 1.47, so n = 4 is a genuine exception to t(n) ≤ n/e.
 -/

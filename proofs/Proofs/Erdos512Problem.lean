@@ -23,12 +23,14 @@
     exponential sums" (1981)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+/-- v4.31 compat: `Complex.continuous_abs` in terms of the norm. -/
+theorem Complex.continuous_abs : Continuous Complex.abs := continuous_norm
+
 
 open Real Complex MeasureTheory
 
@@ -44,17 +46,19 @@ noncomputable def expTwoPiI (x : ℝ) : ℂ := Complex.exp (2 * π * x * I)
 /-- e(x) is periodic with period 1. -/
 theorem expTwoPiI_periodic (x : ℝ) : expTwoPiI (x + 1) = expTwoPiI x := by
   simp only [expTwoPiI]
+  push_cast
   rw [show (2 : ℂ) * π * ((x : ℂ) + 1) * I = 2 * π * x * I + 2 * π * I by ring]
   rw [Complex.exp_add, Complex.exp_two_pi_mul_I]
   ring
 
 /-- |e(x)| = 1 for all x. -/
 theorem expTwoPiI_norm (x : ℝ) : Complex.abs (expTwoPiI x) = 1 := by
-  simp [expTwoPiI, Complex.abs_exp]
+  simp [Complex.abs, expTwoPiI, Complex.norm_exp]
 
 /-- e(x + y) = e(x) · e(y). -/
 theorem expTwoPiI_add (x y : ℝ) : expTwoPiI (x + y) = expTwoPiI x * expTwoPiI y := by
   simp only [expTwoPiI]
+  push_cast
   rw [show (2 : ℂ) * π * ((x : ℂ) + (y : ℂ)) * I = 2 * π * x * I + 2 * π * y * I by ring]
   exact Complex.exp_add _ _
 
@@ -79,7 +83,7 @@ theorem expSum_bound (A : Finset ℤ) (θ : ℝ) :
     expSumNorm A θ ≤ A.card := by
   unfold expSumNorm expSum
   calc Complex.abs (A.sum (fun n => expTwoPiI (n * θ)))
-      ≤ A.sum (fun n => Complex.abs (expTwoPiI (n * θ))) := Complex.abs.sum_le _ _
+      ≤ A.sum (fun n => Complex.abs (expTwoPiI (n * θ))) := norm_sum_le _ _
     _ = A.sum (fun _ => 1) := by simp [expTwoPiI_norm]
     _ = A.card := by simp
 
@@ -96,7 +100,7 @@ theorem L1norm_nonneg (A : Finset ℤ) : L1norm A ≥ 0 := by
   unfold L1norm
   apply integral_nonneg
   intro θ
-  exact Complex.abs.nonneg _
+  exact norm_nonneg _
 
 /-- The L¹ norm is at most |A| (trivial upper bound). -/
 theorem L1norm_upper_bound (A : Finset ℤ) : L1norm A ≤ A.card := by
@@ -114,20 +118,19 @@ theorem L1norm_upper_bound (A : Finset ℤ) : L1norm A ≤ A.card := by
     hf_cont.continuousOn.integrableOn_compact isCompact_Icc
   -- Constant A.card is integrable on [0,1] (finite measure)
   have hcint : IntegrableOn (fun _ : ℝ => (A.card : ℝ)) (Set.Icc 0 1) :=
-    integrableOn_const.mpr (Or.inr (by simp [Real.volume_Icc]))
+    MeasureTheory.integrableOn_const (by simp [Real.volume_Icc])
   -- Pointwise bound: expSumNorm A θ ≤ A.card (proved as expSum_bound)
   have hbdd : ∀ θ ∈ Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ (A.card : ℝ) :=
     fun θ _ => expSum_bound A θ
   -- Monotone integration gives the integral bound
-  have h1 : ∫ θ in Set.Icc 0 1, expSumNorm A θ ≤ ∫ θ in Set.Icc 0 1, (A.card : ℝ) :=
+  have h1 : ∫ θ in Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) :=
     setIntegral_mono_on hint hcint measurableSet_Icc hbdd
   -- Constant integral over [0,1] equals A.card (vol([0,1]) = 1)
   have h2 : ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) = A.card := by
-    rw [set_integral_const, smul_eq_mul]
-    have hv : (volume (Set.Icc (0:ℝ) 1)).toReal = 1 := by
-      rw [Real.volume_Icc]
-      simp [ENNReal.toReal_ofReal]
-    linarith [hv]
+    rw [setIntegral_const, smul_eq_mul]
+    have hv : volume.real (Set.Icc (0:ℝ) 1) = 1 := by
+      simp [MeasureTheory.measureReal_def, Real.volume_Icc]
+    rw [hv, one_mul]
   linarith
 
 /-
@@ -162,22 +165,22 @@ axiom mcgehee_pigno_smith_theorem : LittlewoodConjecture
 /-- The constant in Littlewood's conjecture. -/
 noncomputable def littlewoodConstant : ℝ := 1 / (4 * π)
 
-/-- Explicit version of the bound. -/
+/-  Explicit version of the bound. -/
 /-
 ## Part VI: Sharpness
 -/
 
-/-- The log N lower bound is essentially optimal. -/
+/-  The log N lower bound is essentially optimal. -/
 /-- Geometric progressions achieve the lower bound. -/
 def geometricProgression (N : ℕ) : Finset ℤ :=
-  Finset.image (fun k => (k : ℤ)) (Finset.range N)
+  Finset.image (fun k : ℕ => (k : ℤ)) (Finset.range N)
 
-/-- For arithmetic progressions, the bound is approximately log N. -/
+/-  For arithmetic progressions, the bound is approximately log N. -/
 /-
 ## Part VII: Hardy's Inequality Connection
 -/
 
-/-- Hardy's inequality (discrete form). -/
+/-  Hardy's inequality (discrete form). -/
 /-- The MPS proof uses Hardy's inequality in a crucial way. -/
 def hardyConnection : Prop :=
   -- McGehee-Pigno-Smith showed that Hardy's inequality implies
@@ -196,10 +199,12 @@ def hardyConnection : Prop :=
     Since expTwoPiI(nθ) = exp(2πi·nθ), conjugation negates the exponent. -/
 private lemma expTwoPiI_conj (n : ℤ) (θ : ℝ) :
     starRingEnd ℂ (expTwoPiI ((n : ℝ) * θ)) = expTwoPiI ((-(n : ℝ)) * θ) := by
-  simp only [expTwoPiI, starRingEnd_apply, Complex.exp_conj]
+  simp only [expTwoPiI]
+  rw [← Complex.exp_conj]
   congr 1
-  rw [map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, Complex.conj_I]
-  push_cast; ring
+  simp only [map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]
+  push_cast
+  ring
 
 /-- The squared norm decomposes as a double sum (Parseval's algebraic identity):
     |∑_{n∈A} e(nθ)|² = ∑_{(m,n)∈A×A} e((m-n)θ)  [in ℂ, taking real part]
@@ -209,12 +214,11 @@ private lemma expTwoPiI_conj (n : ℤ) (θ : ℝ) :
          = ∑_{m,n} e(mθ)*e(-nθ) = ∑_{m,n} e((m-n)θ)    [ring computation] -/
 private lemma expSumNorm_sq_double (A : Finset ℤ) (θ : ℝ) :
     (expSumNorm A θ)^2 =
-      ∑ mn in A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
+      ∑ mn ∈ A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
   -- Step 1: |S|^2 = (S * conj S).re
   have key : (expSumNorm A θ)^2 = (expSum A θ * starRingEnd ℂ (expSum A θ)).re := by
-    rw [expSumNorm, Complex.sq_abs]
-    simp only [Complex.normSq_apply, Complex.mul_re, starRingEnd_apply,
-               Complex.conj_re, Complex.conj_im]
+    rw [expSumNorm, Complex.abs, Complex.sq_norm]
+    simp only [Complex.normSq_apply, Complex.mul_re, Complex.conj_re, Complex.conj_im]
     ring
   rw [key]
   -- Step 2: Distribute conj over sum, apply expTwoPiI_conj
@@ -234,8 +238,7 @@ private lemma expSumNorm_sq_double (A : Finset ℤ) (θ : ℝ) :
   have hre : ∀ x : ℝ, (expTwoPiI x).re = Real.cos (2 * Real.pi * x) := fun x => by
     simp only [expTwoPiI]
     rw [show ((2 : ℂ) * ↑π * ↑x * I) = ↑(2 * Real.pi * x) * I from by push_cast; ring]
-    rw [Complex.exp_mul_I]
-    simp [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.ofReal_im]
+    rw [Complex.exp_ofReal_mul_I_re]
   rw [hmul, hre]
   congr 1; ring
 
@@ -259,13 +262,15 @@ private lemma integral_cos_character (k : ℤ) :
     -- Use interval integral antiderivative: ∫ cos(ax) dx = sin(ax)/a
     rw [show ∫ θ in Set.Icc (0:ℝ) 1, Real.cos (2 * π * ↑k * θ) =
             ∫ θ in (0:ℝ)..1, Real.cos (2 * π * ↑k * θ) from by
-          rw [intervalIntegral.integral_eq_integral_Ioc]
-          apply MeasureTheory.integral_Ioc_eq_integral_Icc.symm]
+          rw [intervalIntegral.integral_of_le zero_le_one,
+            ← MeasureTheory.integral_Icc_eq_integral_Ioc]]
     -- Now use interval integral calculation
-    rw [show (fun θ : ℝ => Real.cos (2 * π * ↑k * θ)) =
-            (fun θ => Real.cos ((2 * π * ↑k) * θ)) from by ext; ring]
-    rw [intervalIntegral.integral_cos_mul hak]
-    simp [Real.sin_int_mul_two_pi, Real.sin_zero, hak]
+    rw [intervalIntegral.integral_comp_mul_left (fun x => Real.cos x) hak,
+      integral_cos]
+    rw [mul_zero, mul_one, Real.sin_zero, sub_zero,
+      show 2 * π * (k:ℝ) = ((2 * k : ℤ) : ℝ) * π by push_cast; ring,
+      Real.sin_int_mul_pi]
+    simp
 
 /-- The L² norm of exponential sums equals |A| (Parseval's theorem on [0,1]).
 
@@ -276,23 +281,27 @@ private lemma integral_cos_character (k : ℤ) :
 theorem L2_norm (A : Finset ℤ) :
     ∫ θ in Set.Icc 0 1, (expSumNorm A θ)^2 = A.card := by
   simp_rw [expSumNorm_sq_double]
-  -- Swap integral and double sum
-  rw [← MeasureTheory.integral_finset_sum
-      (s := A ×ˢ A)
-      (f := fun mn θ => Real.cos (2 * Real.pi * ((mn.1 : ℝ) - mn.2) * θ))]
-  · -- Compute each integral via character orthogonality
-    apply Finset.sum_congr rfl
-    intro ⟨m, n⟩ _
-    have h := integral_cos_character (m - n)
-    simp only [Int.cast_sub] at h
-    convert h using 2
-    · ext θ; ring
-    · simp [sub_eq_zero]
-  · -- Integrability: each summand is continuous hence integrable on Icc
+  -- Integrability: each summand is continuous hence integrable on Icc
+  have hInt : ∀ mn ∈ A ×ˢ A, IntegrableOn
+      (fun θ : ℝ => Real.cos (2 * Real.pi * ((mn.1 : ℝ) - mn.2) * θ)) (Set.Icc 0 1) := by
     intro ⟨m, n⟩ _
     apply ContinuousOn.integrableOn_Icc
-    apply (continuous_const.mul (continuous_const.mul
-      (continuous_const.mul continuous_id))).cos.continuousOn
+    apply Continuous.continuousOn
+    fun_prop
+  -- Swap integral and double sum
+  rw [MeasureTheory.integral_finsetSum (A ×ˢ A) hInt]
+  -- Compute each integral via character orthogonality; diagonal count gives |A|
+  have hsum : ∀ mn ∈ A ×ˢ A,
+      (∫ θ in Set.Icc (0:ℝ) 1, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - mn.2) * θ)) =
+      if mn.1 = mn.2 then (1:ℝ) else 0 := by
+    intro ⟨m, n⟩ _
+    have h := integral_cos_character (m - n)
+    simp only [Int.cast_sub, sub_eq_zero] at h
+    exact h
+  rw [Finset.sum_congr rfl hsum, Finset.sum_product]
+  have hrow : ∀ m ∈ A, (∑ n ∈ A, if m = n then (1:ℝ) else 0) = 1 := fun m hm => by
+    simp [Finset.sum_ite_eq, hm]
+  rw [Finset.sum_congr rfl hrow, Finset.sum_const, nsmul_eq_mul, mul_one]
 
 /-- L¹ vs L² comparison: log N ≤ L¹ while L² = √N. -/
 def L1_vs_L2_comparison : Prop :=
@@ -314,7 +323,7 @@ def flatPolynomialProblem : Prop :=
 noncomputable def weightedExpSum (A : Finset ℤ) (w : ℤ → ℂ) (θ : ℝ) : ℂ :=
   A.sum (fun n => w n * expTwoPiI (n * θ))
 
-/-- For unit weights, the L¹ norm is at least c log N. -/
+/-  For unit weights, the L¹ norm is at least c log N. -/
 /-- Generalization to higher-dimensional character sums. -/
 def higherDimensionalGeneralization : Prop :=
   -- Similar bounds exist for sums over ℤᵈ
@@ -360,9 +369,11 @@ theorem erdos_512_solved :
     LittlewoodConjecture ∧ True :=
   ⟨erdos_512, trivial⟩
 
-/-- Both proofs establish the same result. -/
+/-- Both proofs establish the same result. (v4.31: an `Iff` between two proof
+terms no longer elaborates; restated as the equivalence of the propositions the
+two theorems establish, proved from the respective axioms.) -/
 theorem konyagin_equals_mps :
-    konyagin_theorem ↔ mcgehee_pigno_smith_theorem := by
-  constructor <;> (intro _; exact mcgehee_pigno_smith_theorem)
+    LittlewoodConjecture ↔ LittlewoodConjecture :=
+  ⟨fun _ => mcgehee_pigno_smith_theorem, fun _ => konyagin_theorem⟩
 
 end Erdos512

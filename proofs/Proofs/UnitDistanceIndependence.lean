@@ -168,7 +168,7 @@ theorem isIndepFinset_insert {V : Type*} [DecidableEq V]
   · exact absurd rfl hab
   · exact hnadj b hb
   · intro hadj
-    exact hnadj a ha (G.symm hadj)
+    exact hnadj a ha (G.adj_symm hadj)
   · exact hS a ha b hb hab
 
 /-- An edge forces at least one endpoint out of any independent set. -/
@@ -200,9 +200,11 @@ theorem indep_card_le_univ {V : Type*} [Fintype V] (G : SimpleGraph V)
 noncomputable def unitDistGraph (S : Finset Plane) : SimpleGraph S where
   Adj p q := dist (p : Plane) (q : Plane) = 1 ∧ p ≠ q
   symm := by
+    constructor
     intro p q ⟨hd, hne⟩
     exact ⟨by rw [_root_.dist_comm]; exact hd, hne.symm⟩
   loopless := by
+    constructor
     intro p ⟨_, hne⟩
     exact hne rfl
 
@@ -454,7 +456,7 @@ theorem maximal_indep_covering_bound {V : Type*} [Fintype V] [Nonempty V] [Decid
         rw [Finset.mem_insert]
         right
         simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-        exact G.symm hadj⟩
+        exact G.adj_symm hadj⟩
   calc Fintype.card V = Finset.univ.card := (Finset.card_univ).symm
     _ ≤ (I.biUnion (fun u => closedNeighborhoodIn G u)).card :=
         Finset.card_le_card hcover
@@ -562,7 +564,7 @@ theorem disjoint_indep_union {V : Type*} [DecidableEq V]
   rcases hu with hu | hu <;> rcases hv with hv | hv
   · exact hA u hu v hv huv
   · exact hno_edge u hu v hv
-  · intro hadj; exact hno_edge v hv u hu (G.symm hadj)
+  · intro hadj; exact hno_edge v hv u hu (G.adj_symm hadj)
   · exact hB u hu v hv huv
 
 /-- Removing a vertex preserves independence. -/
@@ -596,7 +598,7 @@ theorem not_mem_neighborhood {V : Type*} [Fintype V] [DecidableEq V]
     v ∉ neighborhood G v := by
   unfold neighborhood
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  exact G.loopless v
+  exact G.loopless.irrefl v
 
 /-- Fewer edges means more independent sets: if G ≤ H, independent in H implies independent in G. -/
 theorem independent_mono {V : Type*} [Fintype V] [DecidableEq V]

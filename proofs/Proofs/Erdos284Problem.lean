@@ -74,7 +74,7 @@ bounded above and nonempty.
 -/
 axiom f (k : ℕ) : ℕ
 
-/--
+/- 
 **f is well-defined for k ≥ 2:**
 There exist k-term representations of 1 for k ≥ 2.
 -/
@@ -82,7 +82,7 @@ There exist k-term representations of 1 for k ≥ 2.
 ## Part III: The Upper Bound
 -/
 
-/--
+/- 
 **Harmonic Series in an Interval:**
 Σ_{u ≤ n ≤ eu} 1/n ≈ 1 as u → ∞.
 
@@ -100,7 +100,7 @@ axiom f_upper_bound :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
       (f k : ℝ) ≤ (1 + ε) * k / (Real.exp 1 - 1)
 
-/-- **Note**: The previously axiomatized `e_minus_one_constant` stating
+/-  **Note**: The previously axiomatized `e_minus_one_constant` stating
     `Real.exp 1 - 1 = ∫ x in 1..e, 1/x` was mathematically incorrect
     (the integral equals 1 = ln e, not e - 1 ≈ 1.718). It was unused
     by any theorem, so it has been removed. -/
@@ -109,7 +109,7 @@ axiom f_upper_bound :
 ## Part IV: Croot's Lower Bound (2001)
 -/
 
-/--
+/- 
 **Croot's Theorem (2001):**
 For any N > 1, there exist distinct integers n₁ < ... < nₖ
 in the interval (N, eN] such that 1 = Σ 1/nᵢ.
@@ -122,7 +122,7 @@ axiom f_lower_bound :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
       (f k : ℝ) ≥ (1 - ε) * k / (Real.exp 1 - 1)
 
-/--
+/- 
 **The Main Result:**
 f(k) = (1 + o(1)) · k/(e-1)
 -/

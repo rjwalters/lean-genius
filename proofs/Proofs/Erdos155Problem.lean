@@ -25,6 +25,8 @@ Reference: https://erdosproblems.com/155
 
 import Mathlib
 
+open scoped Classical
+
 /- ## Core Definitions -/
 
 /-- A Sidon set (B₂ set): a set of natural numbers where all pairwise sums
@@ -42,7 +44,7 @@ private noncomputable def sidonSets (N : ℕ) : Finset (Finset ℕ) :=
 private theorem empty_mem_sidonSets (N : ℕ) : ∅ ∈ sidonSets N := by
   simp only [sidonSets, Finset.mem_filter, Finset.mem_powerset, Finset.empty_subset,
              true_and, IsSidonSet]
-  intro a _ _ _ ha; exact absurd ha (Finset.not_mem_empty a)
+  intro a _ _ _ ha; exact absurd ha (Finset.notMem_empty a)
 
 private theorem sidonSets_nonempty (N : ℕ) : (sidonSets N).Nonempty :=
   ⟨∅, empty_mem_sidonSets N⟩
@@ -107,7 +109,7 @@ theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 :=
   have h2 : S.card ≤ (S.erase (N + 1)).card + 1 := by
     by_cases hmem : N + 1 ∈ S
     · rw [Finset.card_erase_of_mem hmem]; omega
-    · rw [Finset.erase_eq_of_not_mem hmem]; omega
+    · rw [Finset.erase_eq_of_notMem hmem]; omega
   omega
 
 /- ## Asymptotic Bounds -/
@@ -117,18 +119,18 @@ theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 :=
 axiom erdos_turan_upper (N : ℕ) (hN : N ≥ 1) :
     (maxSidonSize N : ℝ) ≤ Real.sqrt (N : ℝ) + (N : ℝ) ^ ((1 : ℝ) / 4) + 1
 
-/-- Lower bound: F(N) ≥ (1 - o(1))·√N.
+/-  Lower bound: F(N) ≥ (1 - o(1))·√N.
     Singer's construction and refinements give Sidon sets of size ~√N. -/
 /- ## The Main Conjecture -/
 
-/-- Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
+/-  Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
     for all sufficiently large N.
 
     This says F(N) can increase by at most 1 over any fixed-length
     interval [N, N+k], once N is large enough (depending on k). -/
 /- ## Stronger Form -/
 
-/-- The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
+/-  The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
     k ≈ ε·√N, i.e., F increases by at most 1 over intervals
     of length proportional to √N. -/
 /- ## Consequences -/
@@ -142,13 +144,13 @@ theorem increase_count_le (M : ℕ) :
   induction M with
   | zero => simp
   | succ M ih =>
-    rw [Finset.range_succ, Finset.filter_insert]
+    rw [Finset.range_add_one, Finset.filter_insert]
     split_ifs with h
     · -- F(M+1) > F(M): count increases by 1
       have hnotmem : M ∉ Finset.filter (fun N => maxSidonSize (N + 1) > maxSidonSize N)
           (Finset.range M) :=
         fun hmem => absurd (Finset.mem_range.mp (Finset.mem_of_mem_filter _ hmem)) (lt_irrefl _)
-      rw [Finset.card_insert_of_not_mem hnotmem]
+      rw [Finset.card_insert_of_notMem hnotmem]
       -- F(M+1) = F(M) + 1 from h and maxSidon_step
       have : maxSidonSize (M + 1) = maxSidonSize M + 1 :=
         le_antisymm (maxSidon_step M) h
@@ -156,7 +158,7 @@ theorem increase_count_le (M : ℕ) :
     · -- F(M+1) = F(M): count unchanged, bound follows from monotonicity
       exact le_trans ih (maxSidon_monotone M)
 
-/-- F(N+1) = F(N) for "most" values of N: the number of increase points
+/-  F(N+1) = F(N) for "most" values of N: the number of increase points
     below M is at most (1+ε)√M. Follows from increase_count_le (count ≤ F(M))
     and erdos_turan_upper (F(M) ≤ √M + M^{1/4} + 1). The remaining gap is
     the elementary inequality M^{1/4} + 1 ≤ ε√M for large M. -/
@@ -167,7 +169,7 @@ theorem maxSidonSize_1 : maxSidonSize 1 = 1 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · exact maxSidon_optimal 1 {1} (fun a b c d ha hb _ _ hab _ _ => by
       simp only [Finset.mem_singleton] at ha hb; omega)
       (fun x hx => by simp only [Finset.mem_singleton] at hx; subst hx; omega)
@@ -177,7 +179,7 @@ theorem maxSidonSize_2 : maxSidonSize 2 = 2 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · have : ({1, 2} : Finset ℕ).card = 2 := by decide
     rw [← this]; exact maxSidon_optimal 2 {1, 2} (fun a b c d ha hb hc hd hab hcd heq => by
       simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
@@ -189,11 +191,11 @@ theorem maxSidonSize_3 : maxSidonSize 3 = 3 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · have : ({1, 2, 3} : Finset ℕ).card = 3 := by decide
     rw [← this]; exact maxSidon_optimal 3 {1, 2, 3} (fun a b c d ha hb hc hd hab hcd heq => by
       simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
       omega) (fun x hx => by simp only [Finset.mem_insert, Finset.mem_singleton] at hx; omega)
 
-/-- Known small values for larger N (OEIS A003022).
+/- Known small values for larger N (OEIS A003022).
     F(6)=4, F(11)=5, F(18)=6. -/

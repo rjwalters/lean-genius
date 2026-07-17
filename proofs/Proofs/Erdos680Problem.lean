@@ -17,12 +17,9 @@ Related to Problems #681 and #682.
 Reference: https://erdosproblems.com/680
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
+
+open Filter Topology
 
 /- ## Least Prime Factor and the Main Conjecture -/
 
@@ -80,19 +77,33 @@ theorem quadratic_weaker_than_exponential (ε : ℝ) (hε : 0 < ε) :
       (k ^ 2 + 1 : ℝ) < Real.exp ((1 + ε) * Real.sqrt k) := by
   have hc : 0 < 1 + ε := by linarith
   -- x^4 * exp(-(1+ε)*x) → 0 as x → ∞
-  have h_tend := Real.tendsto_pow_mul_exp_neg_atTop_nhds 4 (1 + ε) hc
+  have h_tend : Tendsto (fun x : ℝ => x ^ 4 * Real.exp (-(1 + ε) * x)) atTop (𝓝 0) := by
+    have h0 := (Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 4).const_mul ((1 / (1 + ε)) ^ 4)
+    rw [mul_zero] at h0
+    have h1 := h0.comp (tendsto_id.const_mul_atTop hc)
+    refine h1.congr fun x => ?_
+    show (1 / (1 + ε)) ^ 4 * (((1 + ε) * x) ^ 4 * Real.exp (-((1 + ε) * x)))
+        = x ^ 4 * Real.exp (-(1 + ε) * x)
+    rw [neg_mul, ← mul_assoc, ← mul_pow, one_div, inv_mul_cancel_left₀ (ne_of_gt hc)]
   -- Compose with √· : ℕ → ℝ (which tends to atTop)
   have h_sqrt_atTop : Tendsto (fun k : ℕ => Real.sqrt (↑k)) atTop atTop :=
     (Real.tendsto_sqrt_atTop).comp tendsto_natCast_atTop_atTop
   have h_comp := h_tend.comp h_sqrt_atTop
   -- h_comp : (√k)^4 * exp(-(1+ε)*√k) → 0
   -- Eventually < 1/2
-  have h_ev : ∀ᶠ k in atTop, (Real.sqrt (↑k)) ^ 4 * Real.exp (-(1 + ε) * Real.sqrt (↑k)) < 1/2 :=
+  have h_ev : ∀ᶠ k : ℕ in atTop, (Real.sqrt (↑k)) ^ 4 * Real.exp (-(1 + ε) * Real.sqrt (↑k)) < 1/2 :=
     h_comp.eventually (Iio_mem_nhds (by norm_num : (0:ℝ) < 1/2))
   -- exp((1+ε)*√k) → ∞, so eventually > 2
-  have h_exp_large : ∀ᶠ k in atTop, 2 < Real.exp ((1 + ε) * Real.sqrt (↑k)) := by
+  have h_exp_large : ∀ᶠ k : ℕ in atTop, 2 < Real.exp ((1 + ε) * Real.sqrt (↑k)) := by
     have : Tendsto (fun k : ℕ => (1 + ε) * Real.sqrt (↑k)) atTop atTop :=
-      (tendsto_atTop_atTop_of_monotone (fun a b h => by nlinarith [Real.sqrt_le_sqrt (by exact_mod_cast h : (a:ℝ) ≤ b)]) ⟨0, fun b => ⟨⌈(b / (1 + ε))^2⌉₊, by nlinarith [Real.sq_sqrt (Nat.cast_nonneg ⌈(b / (1 + ε))^2⌉₊)]⟩⟩)
+      (tendsto_atTop_atTop_of_monotone (fun a b h => by nlinarith [Real.sqrt_le_sqrt (by exact_mod_cast h : (a:ℝ) ≤ b)]) (fun b => ⟨⌈(b / (1 + ε))^2⌉₊, by
+        have h2 : |b / (1 + ε)| ≤ Real.sqrt ↑⌈(b / (1 + ε))^2⌉₊ := by
+          rw [← Real.sqrt_sq_eq_abs]
+          exact Real.sqrt_le_sqrt (Nat.le_ceil _)
+        have h3 : b / (1 + ε) ≤ Real.sqrt ↑⌈(b / (1 + ε))^2⌉₊ := (le_abs_self _).trans h2
+        calc b = (1 + ε) * (b / (1 + ε)) := by field_simp
+          _ ≤ (1 + ε) * Real.sqrt ↑⌈(b / (1 + ε))^2⌉₊ :=
+              mul_le_mul_of_nonneg_left h3 (le_of_lt hc)⟩))
     exact (Real.tendsto_exp_atTop.comp this).eventually (Ioi_mem_atTop 2)
   -- Extract K₀ from both eventually conditions
   obtain ⟨K₀, hK₀⟩ := (h_ev.and h_exp_large).exists_forall_of_atTop
@@ -105,10 +116,9 @@ theorem quadratic_weaker_than_exponential (ε : ℝ) (hε : 0 < ε) :
   -- From h1: k² * exp(-c√k) < 1/2, so k² < (1/2) * exp(c√k)
   have hexp_pos : 0 < Real.exp ((1 + ε) * Real.sqrt ↑k) := Real.exp_pos _
   have hk2_bound : (↑k : ℝ) ^ 2 < (1/2) * Real.exp ((1 + ε) * Real.sqrt ↑k) := by
-    rw [← h_sq] at h1
     have : (Real.sqrt ↑k) ^ 4 < (1/2) * Real.exp ((1 + ε) * Real.sqrt ↑k) := by
       rw [show Real.exp (-(1 + ε) * Real.sqrt ↑k) = (Real.exp ((1 + ε) * Real.sqrt ↑k))⁻¹ from
-        by rw [Real.exp_neg]] at h1
+        by rw [neg_mul, Real.exp_neg]] at h1
       rwa [mul_inv_lt_iff₀ hexp_pos] at h1
     rwa [h_sq] at this
   -- From h2: exp(c√k) > 2, so 1 < (1/2) * exp(c√k)

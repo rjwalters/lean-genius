@@ -97,8 +97,8 @@ theorem triangle_ramsey_mono {V : Type*} (G : SimpleGraph V) (m n : ℕ)
 /-- Remove one element from Fin (m+1), producing Fin m. Given i₀ and j with j ≠ i₀,
     returns a value in Fin m by shifting indices above i₀ down by 1. -/
 private def shrinkFin {m : ℕ} (i₀ j : Fin (m + 1)) (hj : j ≠ i₀) : Fin m :=
-  if j.val < i₀.val then
-    ⟨j.val, by omega⟩
+  if hlt : j.val < i₀.val then
+    ⟨j.val, by have := i₀.isLt; omega⟩
   else
     ⟨j.val - 1, by
       have := j.isLt; have : j.val ≠ i₀.val := Fin.val_ne_of_ne hj; omega⟩

@@ -1,7 +1,4 @@
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Arithmetic Mean - Geometric Mean Inequality
@@ -118,7 +115,7 @@ theorem am_gm_two_eq_iff (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
       linarith
     -- (√a - √b)² = 0 implies √a = √b
     have h_sqrt_eq : Real.sqrt a = Real.sqrt b := by
-      have : Real.sqrt a - Real.sqrt b = 0 := pow_eq_zero h_sq_zero
+      have : Real.sqrt a - Real.sqrt b = 0 := (pow_eq_zero_iff two_ne_zero).mp h_sq_zero
       linarith
     -- √a = √b implies a = b for non-negative a, b
     calc a = Real.sqrt a ^ 2 := (Real.sq_sqrt ha).symm
@@ -170,8 +167,7 @@ example (a : ℝ) (ha : 0 ≤ a) : (a + a) / 2 = Real.sqrt (a * a) := by
 /-- AM-GM strict inequality when a ≠ b -/
 example : (1 + 4) / 2 > Real.sqrt (1 * 4) := by
   have : Real.sqrt 4 = 2 := by
-    rw [Real.sqrt_eq_iff_sq_eq (by linarith) (by linarith)]
-    norm_num
+    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
   simp [this]
   norm_num
 

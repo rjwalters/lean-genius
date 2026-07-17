@@ -16,11 +16,11 @@ where the maximum is over all spherical caps C, and αC is the normalized measur
 Reference: https://erdosproblems.com/988
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.MetricSpace.Basic
 
 open Filter Set
@@ -61,7 +61,7 @@ structure SphericalCap (d : ℕ) where
 
 /-- Points in the spherical cap: those with inner product ≥ height with center. -/
 def SphericalCap.points (C : SphericalCap d) : Set (EuclideanSpace ℝ (Fin (d + 1))) :=
-  { x ∈ UnitSphere d | inner C.center x ≥ C.height }
+  { x ∈ UnitSphere d | inner ℝ C.center x ≥ C.height }
 
 /-- The normalized measure of a spherical cap (fraction of sphere's surface area). -/
 noncomputable def SphericalCap.measure (C : SphericalCap d) : ℝ :=
@@ -73,7 +73,7 @@ noncomputable def SphericalCap.measure (C : SphericalCap d) : ℝ :=
 -/
 
 /-- A finite point configuration on the sphere. -/
-def SphereConfiguration (d : ℕ) := Finset (EuclideanSpace ℝ (Fin (d + 1)))
+abbrev SphereConfiguration (d : ℕ) := Finset (EuclideanSpace ℝ (Fin (d + 1)))
 
 /-- Check that all points are on the sphere. -/
 def IsOnSphere {d : ℕ} (P : SphereConfiguration d) : Prop :=
@@ -81,7 +81,7 @@ def IsOnSphere {d : ℕ} (P : SphereConfiguration d) : Prop :=
 
 /-- Number of points in cap C. -/
 noncomputable def pointsInCap {d : ℕ} (P : SphereConfiguration d) (C : SphericalCap d) : ℕ :=
-  (P.filter (fun x => inner C.center x ≥ C.height)).card
+  (P.filter (fun x => inner ℝ C.center x ≥ C.height)).card
 
 /-- The discrepancy of P with respect to cap C. -/
 noncomputable def capDiscrepancy {d : ℕ} (P : SphereConfiguration d) (C : SphericalCap d) : ℝ :=
@@ -91,9 +91,11 @@ noncomputable def capDiscrepancy {d : ℕ} (P : SphereConfiguration d) (C : Sphe
 noncomputable def discrepancy {d : ℕ} (P : SphereConfiguration d) : ℝ :=
   ⨆ C : SphericalCap d, capDiscrepancy P C
 
-/-- The minimum discrepancy over all n-point configurations. -/
+/-- The minimum discrepancy over all n-point configurations.
+    (Infimum of the discrepancy over the set of valid n-point sphere configurations;
+    phrased via `sInf` over a set of reals rather than `⨅ ... else ⊤` since `ℝ` has no `Top`.) -/
 noncomputable def minDiscrepancy (d n : ℕ) : ℝ :=
-  ⨅ P : SphereConfiguration d, if P.card = n ∧ IsOnSphere P then discrepancy P else ⊤
+  sInf { x : ℝ | ∃ P : SphereConfiguration d, P.card = n ∧ IsOnSphere P ∧ discrepancy P = x }
 
 /-
 ## Part III: Roth's Theorem (for the Square)

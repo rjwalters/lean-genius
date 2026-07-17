@@ -224,7 +224,7 @@ theorem ulam_seq_ge_three (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeS
   | zero =>
     have h0 : (0 : ℕ) < seed.length := by omega
     rw [hf.1 ⟨0, h0⟩]
-    exact hseed _ (List.get_mem seed 0 h0)
+    exact hseed _ (List.get_mem seed ⟨0, h0⟩)
   | succ n ih =>
     have := hf.2.2.1 n
     omega

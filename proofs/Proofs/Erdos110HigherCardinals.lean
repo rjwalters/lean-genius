@@ -46,8 +46,8 @@ def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun v w => G.Adj v.val w.val
-  symm := fun _ _ h => G.symm h
-  loopless := fun v h => G.loopless v.val h
+  symm.symm := fun _ _ h => G.adj_symm h
+  loopless.irrefl := fun v h => G.loopless.irrefl v.val h
 
 /-- The chromatic number of the induced subgraph on S. -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ∞ := by

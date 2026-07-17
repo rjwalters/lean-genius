@@ -67,14 +67,14 @@ def SimpleGraph.HasInducedCopy {V : Type*} {n : ℕ}
 /-- A path on n vertices: vertex i is adjacent to vertex i+1. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => omega | inr h => omega
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => omega | inr h => omega
 
 /-- A star on n+1 vertices: one center (vertex 0) adjacent to n leaves. -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
 
 /- ## Triangle-Freeness of Constructions -/
 
@@ -116,16 +116,16 @@ private lemma starGraph_neighbor_zero {n : ℕ} {a b : Fin (n + 1)}
     Acyclic: every non-center vertex has degree 1, so any closed walk
     must reuse an edge (a leaf's unique edge to center). -/
 theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree where
-  isConnected := by
-    refine Connected.mk fun u v => ?_
+  preconnected := by
+    intro u v
     by_cases hu : u.val = 0 <;> by_cases hv : v.val = 0
     · have : u = v := Fin.ext (by omega)
-      exact this ▸ SimpleGraph.Reachable.refl
+      exact this ▸ SimpleGraph.Reachable.refl u
     · exact ⟨Walk.cons (show (starGraph n).Adj u v from Or.inl ⟨hu, hv⟩) Walk.nil⟩
     · exact ⟨Walk.cons (show (starGraph n).Adj u v from Or.inr ⟨hv, hu⟩) Walk.nil⟩
     · exact ⟨Walk.cons (show (starGraph n).Adj u ⟨0, by omega⟩ from Or.inr ⟨rfl, hu⟩)
             (Walk.cons (show (starGraph n).Adj ⟨0, by omega⟩ v from Or.inl ⟨rfl, hv⟩) Walk.nil)⟩
-  IsAcyclic := by
+  isAcyclic := by
     intro v c hcyc
     have htrl := hcyc.isCircuit.isTrail
     have hne := hcyc.isCircuit.ne_nil
@@ -134,7 +134,7 @@ theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree where
     | nil => exact hne rfl
     | @cons _ w _ hadj p =>
       cases p with
-      | nil => exact absurd hadj ((starGraph n).loopless v)
+      | nil => exact absurd hadj ((starGraph n).loopless.irrefl v)
       | @cons _ w' _ hadj' p' =>
         cases p' with
         | nil =>
@@ -157,17 +157,19 @@ theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree where
             have hw'' : w''.val = 0 := starGraph_neighbor_zero hadj'' hw'
             -- w'' ∈ support(p'') by start_mem_support, and w'' = w
             have hmem : w ∈ p''.support := by
-              have := Walk.start_mem_support p''
-              rwa [show w'' = w from Fin.ext (by omega)] at this
+              have heq : w'' = w := Fin.ext (by omega)
+              have h2 := Walk.start_mem_support (p''.copy heq rfl)
+              rwa [Walk.support_copy] at h2
             exact hnd1 (List.mem_cons_of_mem _ hmem)
           · -- w is a leaf: v.val = 0 and w'.val = 0, so v = w'
             have hv : v.val = 0 := by
-              rcases hadj with ⟨h, _⟩ | ⟨_, h⟩; exact h; exact absurd h hw
+              rcases hadj with ⟨h, _⟩ | ⟨h, _⟩; exact h; exact absurd h hw
             have hw' : w'.val = 0 := starGraph_neighbor_zero hadj' hw
             -- v ∈ support(p'') by end_mem_support, and v = w'
             have hmem : w' ∈ p''.support := by
-              have := Walk.end_mem_support p''
-              rwa [show v = w' from Fin.ext (by omega)] at this
+              have heq : v = w' := Fin.ext (by omega)
+              have h2 := Walk.end_mem_support (p''.copy rfl heq)
+              rwa [Walk.support_copy] at h2
             exact hnd2 hmem
 
 /-- Helper: vertex 0 reaches any vertex i in the path graph via consecutive steps. -/
@@ -227,10 +229,10 @@ private lemma pathGraph_walk_visits_asc {n : ℕ} {a b : Fin (n + 1)}
     In any cycle with distinct support, the walk is forced monotone (going
     back would revisit a vertex). But monotone walks can't return to start. -/
 theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree where
-  isConnected := by
-    refine Connected.mk fun u v => ?_
+  preconnected := by
+    intro u v
     exact (pathGraph_reachable_zero u).symm.trans (pathGraph_reachable_zero v)
-  IsAcyclic := by
+  isAcyclic := by
     intro v c hcyc
     have htrl := hcyc.isCircuit.isTrail
     have hne := hcyc.isCircuit.ne_nil
@@ -239,7 +241,7 @@ theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree where
     | nil => exact hne rfl
     | @cons _ w _ hadj p =>
       cases p with
-      | nil => exact absurd hadj ((pathGraph (n + 1)).loopless v)
+      | nil => exact absurd hadj ((pathGraph (n + 1)).loopless.irrefl v)
       | @cons _ w' _ hadj' p' =>
         cases p' with
         | nil =>

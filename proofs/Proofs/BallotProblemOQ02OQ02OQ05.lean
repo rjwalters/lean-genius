@@ -6,7 +6,7 @@
 The sibling `BallotProblemOQ02OQ02.lean` proves the pointwise characterization
 `{ω | firstPassageTime bm a ω ≤ T} = maxEvent bm a T` (under nonemptiness), where
 
-  `maxEvent bm a T = {ω | ∃ s ∈ [0,T], a ≤ W s ω}`
+  `maxEvent bm a T = {ω | ∃ s ∈ (_ : 0,T), a ≤ W s ω}`
 
 is the event "the path reaches level `a` by time `T`". For `firstPassageTime` to be a
 genuine **stopping time** with respect to a filtration `ℱ` carrying the information of the
@@ -156,7 +156,7 @@ theorem maxEvent_eq_iInter_approxEvent (bm : BrownianMotion Ω μ) (a T : ℝ) (
 
 /-- **The first-passage event is observable by time `T`.** If each time-slice `W t` is
 adapted to a filtration `ℱ` (so `W t` is `ℱ t`-measurable), then the hitting event
-`{ω | ∃ s ∈ [0,T], a ≤ W s ω}` is `ℱ T`-measurable. This is the measurability content that
+`{ω | ∃ s ∈ (_ : 0,T), a ≤ W s ω}` is `ℱ T`-measurable. This is the measurability content that
 makes the first passage time a stopping time in continuous time. -/
 theorem measurableSet_maxEvent (ℱ : Filtration ℝ m) (bm : BrownianMotion Ω μ)
     (hadapt : ∀ t : ℝ, Measurable[ℱ t] (bm.W t)) (a T : ℝ) (hT : 0 ≤ T) :

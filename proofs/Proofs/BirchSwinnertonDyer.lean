@@ -129,7 +129,7 @@ theorem EllipticCurveQ.ext {E1 E2 : EllipticCurveQ}
   obtain ⟨a2, b2, h2⟩ := E2
   simp only [EllipticCurveQ.a, EllipticCurveQ.b] at ha hb
   subst ha; subst hb
-  exact congrArg (EllipticCurveQ.mk a1 b1) (proofIrrel h1 h2)
+  exact congrArg (EllipticCurveQ.mk a1 b1) (Subsingleton.elim h1 h2)
 
 /-- The discriminant Δ = -16(4a³ + 27b²) of an elliptic curve -/
 def discriminant (E : EllipticCurveQ) : ℚ :=
@@ -857,7 +857,7 @@ Certain cases of the congruent number problem have been known for centuries.
 theorem curveMinusX_eq_congruent_one :
     curveMinusX = congruentNumberCurve 1 (by norm_num) := by
   apply EllipticCurveQ.ext
-  · simp [curveMinusX, congruentNumberCurve]; norm_num
+  · simp [curveMinusX, congruentNumberCurve]
   · simp [curveMinusX, congruentNumberCurve]
 
 /-- 1 is NOT a congruent number (proved by Fermat using infinite descent).
@@ -1617,6 +1617,7 @@ def heightPairing (h : CanonicalHeight E) (x y : ℝ) : ℝ :=
 theorem heightPairing_symm (h : CanonicalHeight E) (x y : ℝ) :
     heightPairing h x y = heightPairing h y x := by
   unfold heightPairing
+  rw [add_comm x y]
   ring
 
 /-- The canonical height is related to the height pairing by ĥ(P) = ⟨P, P⟩.
@@ -4789,7 +4790,7 @@ end RegulatorBounds
 PART XLIV: BSD CONSTANT ANALYSIS AND HEIGHT-CONDUCTOR BOUNDS
 ═══════════════════════════════════════════════════════════════════════════════
 
-The BSD constant C(E) = (Ω · R · |Ш| · ∏cₚ) / |E(ℚ)_tors|² arises in the strong
+The BSD constant C(E) = (Ω · R · |Ш| · ∏cₚ) / |E(ℚ)_tors|² arises ∈ the strong
 BSD formula. We analyze how each component contributes and prove structural
 bounds on the constant.
 

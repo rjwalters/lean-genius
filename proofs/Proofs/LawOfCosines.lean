@@ -61,7 +61,7 @@ abbrev Vec2 := EuclideanSpace ℝ (Fin 2)
 -- ============================================================
 
 /-- The squared norm of a difference expands as expected -/
-theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = inner v v := by
+theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = ⟪v, v⟫ := by
   rw [sq, ← real_inner_self_eq_norm_mul_norm]
 
 /-- **The Law of Cosines** (inner product space form)
@@ -73,7 +73,7 @@ This is the fundamental algebraic identity underlying the Law of Cosines.
 When v and w are perpendicular, ⟨v, w⟩ = 0, and this reduces to the
 Pythagorean theorem for ‖v - w‖ = ‖v + (-w)‖. -/
 theorem law_of_cosines_inner (v w : Vec2) :
-    ‖v - w‖^2 = ‖v‖^2 + ‖w‖^2 - 2 * inner v w := by
+    ‖v - w‖^2 = ‖v‖^2 + ‖w‖^2 - 2 * ⟪v, w⟫ := by
   -- Expand using ‖x‖² = ⟨x, x⟩
   simp only [sq]
   rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
@@ -92,7 +92,7 @@ For any vectors v and w:
 
 This is used when computing the length of a sum rather than difference. -/
 theorem law_of_cosines_inner_add (v w : Vec2) :
-    ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 + 2 * inner v w := by
+    ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 + 2 * ⟪v, w⟫ := by
   simp only [sq]
   rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
       ← real_inner_self_eq_norm_mul_norm]
@@ -105,7 +105,7 @@ theorem law_of_cosines_inner_add (v w : Vec2) :
 -- ============================================================
 
 /-- Two vectors are perpendicular if their inner product is zero -/
-def perpendicular (v w : Vec2) : Prop := inner v w = (0 : ℝ)
+def perpendicular (v w : Vec2) : Prop := ⟪v, w⟫ = (0 : ℝ)
 
 notation v " ⊥ " w => perpendicular v w
 
@@ -159,7 +159,7 @@ theorem cos_from_sides (t : Triangle) (cosC : ℝ)
     have h1 : (0 : ℝ) < 2 := by norm_num
     have h2a : 0 < 2 * t.a := mul_pos h1 t.a_pos
     exact mul_pos h2a t.b_pos
-  field_simp at h ⊢
+  rw [eq_div_iff (ne_of_gt hab)]
   linarith
 
 /-- **Classic Law of Cosines Statement**
@@ -220,7 +220,7 @@ The inner product can be recovered from norms alone:
 
 This is a consequence of the Law of Cosines. -/
 theorem polarization_identity (v w : Vec2) :
-    inner v w = (‖v + w‖^2 - ‖v‖^2 - ‖w‖^2) / 2 := by
+    ⟪v, w⟫ = (‖v + w‖^2 - ‖v‖^2 - ‖w‖^2) / 2 := by
   have h := law_of_cosines_inner_add v w
   linarith
 
@@ -228,7 +228,7 @@ theorem polarization_identity (v w : Vec2) :
 
   ⟨v, w⟩ = (‖v‖² + ‖w‖² - ‖v - w‖²) / 2 -/
 theorem polarization_identity' (v w : Vec2) :
-    inner v w = (‖v‖^2 + ‖w‖^2 - ‖v - w‖^2) / 2 := by
+    ⟪v, w⟫ = (‖v‖^2 + ‖w‖^2 - ‖v - w‖^2) / 2 := by
   have h := law_of_cosines_inner v w
   linarith
 

@@ -59,7 +59,7 @@ theorem gaussianExponent_hasDerivAt (μ σ_sq t : ℝ) :
     exact hr.ofReal_comp
   have h2 : HasDerivAt (fun s : ℝ => σ_sq * s ^ 2 / 2) (σ_sq * t) t := by
     have h := ((hasDerivAt_pow 2 t).const_mul σ_sq).div_const 2
-    convert h using 1
+    refine h.congr_deriv ?_
     ring
   exact (h1.mul_const Complex.I).sub h2.ofReal_comp
 
@@ -90,7 +90,9 @@ theorem gaussianExponent_deriv2 (μ σ_sq t : ℝ) :
     have hr : HasDerivAt (fun s : ℝ => σ_sq * s) σ_sq t := by
       simpa using (hasDerivAt_id t).const_mul σ_sq
     exact hr.ofReal_comp
-  simpa using (hasDerivAt_const t (↑μ * Complex.I)).sub h
+  have hsub := (hasDerivAt_const t ((μ : ℂ) * Complex.I)).sub h
+  rw [zero_sub] at hsub
+  exact hsub
 
 /-- **Second cumulant: κ₂ = σ².** The second derivative of ψ is `−σ²`, so the
     second cumulant `κ₂ = -ψ''(0)` equals `σ²`. -/

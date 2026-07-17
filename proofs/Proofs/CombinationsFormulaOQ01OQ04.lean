@@ -135,7 +135,7 @@ theorem lgv_2x2_ni_count_ex1 :
   have h := lgv_determinant_formula (lgvConfig2 2 0 2 (by norm_num))
               (lgvConfig2_wellFormed 2 0 2 (by norm_num))
   rw [lgv_2x2_det_ex1] at h
-  exact_mod_cast h.symm
+  exact_mod_cast h
 
 -- ============================================================
 -- Part V: A Larger Example (m=3, a=0, b=3)
@@ -155,7 +155,7 @@ theorem lgv_2x2_ni_count_ex2 :
   have h := lgv_determinant_formula (lgvConfig2 3 0 3 (by norm_num))
               (lgvConfig2_wellFormed 3 0 3 (by norm_num))
   rw [lgv_2x2_det_ex2] at h
-  exact_mod_cast h.symm
+  exact_mod_cast h
 
 -- ============================================================
 -- Part VI: Non-Negativity and Well-Formedness

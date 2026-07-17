@@ -26,12 +26,12 @@ References:
 - Schmidt [Sc69]: "Disproof of some conjectures on Diophantine approximations"
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 
 open Set Real MeasureTheory
 
@@ -91,15 +91,15 @@ This maps [aᵢ, aᵢ₊₁) linearly onto [0, 1).
 noncomputable def generalizedFrac (A : UnityRatioSeq) (x : ℝ) : ℝ :=
   let i := intervalIndex A x
   let aᵢ := (A.seq i : ℝ)
-  let aᵢ₊₁ := (A.seq (i + 1) : ℝ)
-  (x - aᵢ) / (aᵢ₊₁ - aᵢ)
+  let aᵢ' := (A.seq (i + 1) : ℝ)
+  (x - aᵢ) / (aᵢ' - aᵢ)
 
 /--
 **Standard Case:**
 When A = ℕ, f(x) = {x} is the usual fractional part.
 -/
 theorem naturals_frac_eq (x : ℝ) (hx : x ≥ 1) :
-    generalizedFrac naturalsSeq x = Int.frac x := by
+    generalizedFrac naturalsSeq x = Int.fract x := by
   sorry
 
 /--
@@ -122,10 +122,10 @@ A sequence (xₙ) in [0,1) is uniformly distributed if for all 0 ≤ a < b ≤ 1
 def isUniformlyDistributed (x : ℕ → ℝ) : Prop :=
   ∀ a b : ℝ, 0 ≤ a → a < b → b ≤ 1 →
     Filter.Tendsto
-      (fun N => (Finset.filter (fun n => x n ∈ Ico a b) (Finset.range N)).card / N)
+      (fun N => ((Finset.filter (fun n => x n ∈ Ico a b) (Finset.range N)).card : ℝ) / N)
       Filter.atTop (nhds (b - a))
 
-/--
+/- 
 **Weyl's Equidistribution Theorem:**
 For irrational α, the sequence ({αn})_{n≥1} is u.d. mod 1.
 -/
@@ -145,7 +145,7 @@ noncomputable def erdosDavenportSeq (A : UnityRatioSeq) (α : ℝ) : ℕ → ℝ
 For almost all α, the sequence f(αn) is uniformly distributed.
 -/
 def erdosConjecture (A : UnityRatioSeq) : Prop :=
-  ∃ S : Set ℝ, volume.ae (· ∈ S) ∧ ∀ α ∈ S, isUniformlyDistributed (erdosDavenportSeq A α)
+  ∃ S : Set ℝ, (∀ᵐ α ∂volume, α ∈ S) ∧ ∀ α ∈ S, isUniformlyDistributed (erdosDavenportSeq A α)
 
 /--
 **Schmidt's Counterexample (1969):**
@@ -272,7 +272,7 @@ theorem conjecture_iff_ae (A : UnityRatioSeq) :
     erdosConjecture A ↔ almostAllUniform A := by
   sorry
 
-/--
+/- 
 **Schmidt's Measure Result:**
 In the counterexample, the non-u.d. set has positive measure.
 -/

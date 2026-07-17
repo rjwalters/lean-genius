@@ -167,7 +167,7 @@ theorem halfPerimeter_tendsto_pi :
     tendsto_const_div_atTop_nhds_zero_nat Real.pi
   have hcos : Filter.Tendsto (fun m : ℕ => Real.cos (Real.pi / m)) Filter.atTop (nhds 1) := by
     have := (Real.continuous_cos.tendsto 0).comp h0
-    simpa [Real.cos_zero] using this
+    simpa [Function.comp_def, Real.cos_zero] using this
   have hg : Filter.Tendsto (fun m : ℕ => Real.pi * Real.cos (Real.pi / m)) Filter.atTop
       (nhds Real.pi) := by
     have := hcos.const_mul Real.pi
@@ -492,7 +492,7 @@ theorem circumHalfPerimeter_tendsto_pi :
     tendsto_const_div_atTop_nhds_zero_nat Real.pi
   have hcos : Filter.Tendsto (fun m : ℕ => Real.cos (Real.pi / m)) Filter.atTop (nhds 1) := by
     have := (Real.continuous_cos.tendsto 0).comp h0
-    simpa [Real.cos_zero] using this
+    simpa [Function.comp_def, Real.cos_zero] using this
   have hfun : (fun m : ℕ => circumHalfPerimeter m)
       = fun m : ℕ => halfPerimeter m / Real.cos (Real.pi / (m : ℝ)) := by
     funext m
@@ -500,7 +500,7 @@ theorem circumHalfPerimeter_tendsto_pi :
     ring
   rw [hfun]
   have hdiv := Filter.Tendsto.div halfPerimeter_tendsto_pi hcos (by norm_num : (1 : ℝ) ≠ 0)
-  simpa using hdiv
+  simpa [Pi.div_def] using hdiv
 
 /-- **Archimedes' two-sided sandwich.** For every `m ≥ 3` the inscribed and
     circumscribed regular m-gons bracket π:  `p(m) < π < q(m)`. This is the exact

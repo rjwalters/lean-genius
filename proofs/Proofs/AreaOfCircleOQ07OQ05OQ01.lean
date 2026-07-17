@@ -87,11 +87,14 @@ theorem gaussian_even_moment_recursion (n : ℕ) :
       (x * Real.exp (-x ^ 2)) x := by
     intro x
     have hsq : HasDerivAt (fun y : ℝ => -y ^ 2) (-(2 * x)) x := by
-      simpa using (hasDerivAt_pow 2 x).neg
+      have h : HasDerivAt (fun y : ℝ => -y ^ 2) (-((2 : ℕ) * x ^ (2 - 1))) x :=
+        (hasDerivAt_pow 2 x).neg
+      simpa using h
     have hexp := hsq.exp
     have hfin := hexp.const_mul (-(2 : ℝ)⁻¹)
-    convert hfin using 1
-    ring
+    have : x * Real.exp (-x ^ 2) = -(2 : ℝ)⁻¹ * (Real.exp (-x ^ 2) * -(2 * x)) := by ring
+    rw [this]
+    exact hfin
   -- Integrability of `u·v' = x^{2n+2} e^{-x²}`.
   have huv' : Integrable (fun x : ℝ => x ^ (2 * n + 1) * (x * Real.exp (-x ^ 2))) := by
     have h := integrable_pow_mul_gaussian (2 * n + 2)
@@ -125,7 +128,7 @@ theorem gaussian_even_moment_recursion (n : ℕ) :
     ring
   -- Integration by parts on `(-∞, ∞)`.
   have key := integral_mul_deriv_eq_deriv_mul (a' := (0 : ℝ)) (b' := (0 : ℝ))
-    hu hv huv' hu'v hbot htop
+    (fun x _ => hu x) (fun x _ => hv x) huv' hu'v hbot htop
   -- Pull the constants out of the remaining integral.
   have hev : ∫ x : ℝ,
       (2 * (n : ℝ) + 1) * x ^ (2 * n) * (-(2 : ℝ)⁻¹ * Real.exp (-x ^ 2))

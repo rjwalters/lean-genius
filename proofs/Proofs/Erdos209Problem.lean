@@ -26,12 +26,13 @@ Reference: [FuPa84], [Es16], [Er84], [ErPu95b]
 See also: Erdős Problem #960
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
 import Mathlib.Geometry.Euclidean.Basic
+
+open scoped Classical
 
 open Set Finset
 
@@ -82,7 +83,7 @@ A line arrangement is a finite set of lines with specific intersection propertie
 **Line arrangement:**
 A finite set of lines in the plane.
 -/
-def LineArrangement := Finset Line2D
+abbrev LineArrangement := Finset Line2D
 
 /--
 **No 4 lines concurrent:**

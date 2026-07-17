@@ -149,7 +149,7 @@ private theorem q_comp_eq_p :
   apply Polynomial.funext; intro x
   simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_sub,
     Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
-  unfold q_eis_rat p
+  unfold q_eis_rat
   simp only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_mul,
     Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one,
     Polynomial.eval_ofNat]
@@ -290,7 +290,7 @@ private theorem gal_card_dvd_six :
     (Polynomial.card_rootSet_eq_natDegree p_separable
       (SplittingField.splits p)).trans p_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-
 ## Part V: The Splitting Field Has Degree 3

@@ -95,7 +95,16 @@ prime case). The proof uses that, in the UFD, `z` is prime and divides
 theorem irreducible_norm_eq_prime_or_sq (hd : d < 0) (hd2 : -2 ≤ d) {z : ℤ√d}
     (hz : Irreducible z) :
     ∃ p : ℕ, p.Prime ∧ (z.norm.natAbs = p ∨ z.norm.natAbs = p ^ 2) := by
-  letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
+  -- (v4.31 note: routed through explicit instance terms rather than bare
+  -- `inferInstance` — typeclass search under a `letI`-bound `EuclideanDomain`
+  -- no longer chains through `EuclideanDomain.to_principal_ideal_domain` /
+  -- `EuclideanDomain.instIsDomain` automatically on this toolchain, even
+  -- though each instance resolves in isolation; matches the parent's
+  -- `NormEuclideanZsqrtdFamilyPIDUFD.uniqueFactorizationMonoid` fix.)
+  letI E := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
+  letI : IsPrincipalIdealRing (ℤ√d) := @EuclideanDomain.to_principal_ideal_domain (ℤ√d) E
+  letI : IsDomain (ℤ√d) := @EuclideanDomain.instIsDomain (ℤ√d) E
+  haveI : UniqueFactorizationMonoid (ℤ√d) := PrincipalIdealRing.to_uniqueFactorizationMonoid
   -- In the UFD, irreducible ⟹ prime; and `z ≠ 0`, `N(z) ≠ 0`.
   have hzp : Prime z := (UniqueFactorizationMonoid.irreducible_iff_prime).mp hz
   have hznz : z ≠ 0 := hzp.ne_zero

@@ -20,6 +20,7 @@
 
 import Mathlib
 import Proofs.GraphCore
+open scoped Classical
 
 open Finset Function Nat GraphCore
 open SimpleGraph hiding chromaticNumber
@@ -67,7 +68,7 @@ theorem complete_graph_list_chromatic (n : ℕ) :
 /-- For complete bipartite K_{n,n}, χ_L can exceed χ -/
 axiom complete_bipartite_list_chromatic :
   ∀ n : ℕ, n ≥ 2 →
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.IsBipartite ∧
       chromaticNumber G = 2 ∧
       listChromaticNumber G > 2
@@ -96,9 +97,12 @@ axiom thomassen_five_list :
 
 /- ## Bipartite Graphs -/
 
-/-- A graph is bipartite iff it has no odd cycles -/
+/-- A graph is bipartite iff it has no odd cycles.
+    (v4.31 migration: `G.IsCycle n` is not Mathlib API; a cycle of length `n`
+    is spelled via a closed `Walk` that `IsCycle` and has `length = n`.) -/
 theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :
-    G.IsBipartite ↔ ∀ n : ℕ, n % 2 = 1 → ¬G.IsCycle n := by
+    G.IsBipartite ↔
+      ∀ n : ℕ, n % 2 = 1 → ¬∃ (v : V) (w : G.Walk v v), w.IsCycle ∧ w.length = n := by
   sorry
 
 /-- Bipartite graphs have χ ≤ 2 -/
@@ -108,7 +112,7 @@ theorem bipartite_chi_le_2 (G : SimpleGraph V) (hbip : G.IsBipartite) :
 
 /-- But bipartite graphs can have χ_L > 2 -/
 theorem bipartite_list_can_exceed_2 :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.IsBipartite ∧ listChromaticNumber G > 2 := by
   sorry
 
@@ -152,13 +156,13 @@ axiom alon_tarsi_coefficient :
 
 /-- The bound 3 is tight: some planar bipartite graphs need 3 -/
 theorem bound_is_tight :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       IsPlanar G ∧ G.IsBipartite ∧ listChromaticNumber G = 3 := by
   sorry
 
 /-- Example: K_{2,4} is planar bipartite with χ_L = 3 -/
 axiom k24_list_chromatic :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     IsPlanar G ∧ G.IsBipartite ∧
     Fintype.card V = 6 ∧
     listChromaticNumber G = 3
@@ -167,14 +171,14 @@ axiom k24_list_chromatic :
 
 /-- For non-planar bipartite graphs, χ_L can be arbitrarily large -/
 theorem nonplanar_bipartite_unbounded :
-    ∀ k : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ k : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.IsBipartite ∧ listChromaticNumber G ≥ k := by
   sorry
 
 /-- K_{n,n} has χ_L ≥ ⌈log₂ n⌉ + 1 -/
 axiom complete_bipartite_lower_bound :
   ∀ n : ℕ, n ≥ 2 →
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.IsBipartite ∧
       (∃ A B : Finset V, A.card = n ∧ B.card = n ∧
         ∀ a b : V, a ∈ A → b ∈ B → G.Adj a b) ∧
@@ -232,7 +236,7 @@ axiom outerplanar_3_choosable :
 theorem erdos_630_status :
     (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsPlanar G → G.IsBipartite → listChromaticNumber G ≤ 3) ∧
-    (∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    (∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       IsPlanar G ∧ G.IsBipartite ∧ listChromaticNumber G = 3) := by
   constructor
   · exact alon_tarsi_theorem

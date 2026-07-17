@@ -86,12 +86,12 @@ noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 theorem goldenRatio_gt_one : goldenRatio > 1 := by
   unfold goldenRatio
   have h : Real.sqrt 5 > 1 := by
-    rw [Real.one_lt_sqrt (by norm_num : (0 : ℝ) ≤ 5)]
+    rw [gt_iff_lt, Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1)]
     norm_num
   linarith
 
 /-- Fibonacci numbers are positive for n ≥ 1 -/
-theorem fib_pos (n : ℕ) (hn : n ≥ 1) : Nat.fib n > 0 := Nat.fib_pos hn
+theorem fib_pos (n : ℕ) (hn : n ≥ 1) : Nat.fib n > 0 := Nat.fib_pos.mpr hn
 
 /-
 ## Series Convergence
@@ -101,19 +101,19 @@ Since F_n ≈ φ^n / √5 with φ > 1, we have 1/F_n ≈ √5 / φ^n,
 and the geometric series Σ 1/φ^n converges.
 -/
 
-/-- The reciprocal Fibonacci series converges -/
+/-  The reciprocal Fibonacci series converges -/
 /-
 ## Solved Cases
 
 While the main conjecture remains open, specific cases have been proved.
 -/
 
-/-- **Good (1974), Bicknell-Hoggatt (1976)**:
+/-  **Good (1974), Bicknell-Hoggatt (1976)**:
     The sum Σ 1/F_{2^n} is irrational.
 
     This was the first special case proved. The exponential growth of indices
     (2^n) ensures the subsequence is very sparse, yet irrationality holds. -/
-/-- **André-Jeannin (1989)**:
+/-  **André-Jeannin (1989)**:
     The full sum Σ 1/F_n is irrational.
 
     This resolved the question for the complete Fibonacci reciprocal series.

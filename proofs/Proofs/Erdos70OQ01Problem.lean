@@ -101,23 +101,23 @@ theorem omega_squared_countable :
 /-- omega * k < omega^2 for any finite k. -/
 theorem omega_mul_k_lt_omega_squared (k : ℕ) :
     Ordinal.omega0 * (k : Ordinal) < Ordinal.omega0 * Ordinal.omega0 := by
-  exact Ordinal.mul_lt_mul_of_pos_left (Ordinal.nat_lt_omega0 k) Ordinal.omega0_pos
+  exact mul_lt_mul_of_pos_left (Ordinal.natCast_lt_omega0 k) Ordinal.omega0_pos
 
 /-- omega + omega = omega * (1 + 1), by left-distributivity. -/
 theorem omega_add_omega_eq :
     Ordinal.omega0 + Ordinal.omega0 = Ordinal.omega0 * (1 + 1) := by
-  rw [Ordinal.mul_add, Ordinal.mul_one]
+  rw [mul_add, mul_one]
 
 /-- omega + n <= omega^2 for any finite n. -/
 theorem omega_plus_n_le_omega_squared (n : ℕ) :
     Ordinal.omega0 + (n : Ordinal) ≤ Ordinal.omega0 * Ordinal.omega0 := by
-  have hn : (n : Ordinal) ≤ Ordinal.omega0 := (Ordinal.nat_lt_omega0 n).le
+  have hn : (n : Ordinal) ≤ Ordinal.omega0 := (Ordinal.natCast_lt_omega0 n).le
   calc Ordinal.omega0 + (n : Ordinal)
-      ≤ Ordinal.omega0 + Ordinal.omega0 := Ordinal.add_le_add_left hn _
+      ≤ Ordinal.omega0 + Ordinal.omega0 := add_le_add_right hn _
     _ = Ordinal.omega0 * (1 + 1) := omega_add_omega_eq
     _ ≤ Ordinal.omega0 * Ordinal.omega0 := by
-        apply Ordinal.mul_le_mul_left'
-        exact_mod_cast (Ordinal.nat_lt_omega0 2).le
+        apply mul_le_mul_right
+        exact_mod_cast (Ordinal.natCast_lt_omega0 2).le
 
 /-
 ## Part IV: Hierarchy of Implications
@@ -159,7 +159,7 @@ theorem erdos70_implies_omega_squared :
   intro h n hn
   exact h _ n omega_squared_countable hn
 
-/-- Conversely, the omega^2 conjecture does NOT imply the full conjecture,
+/-  Conversely, the omega^2 conjecture does NOT imply the full conjecture,
     since there are countable ordinals larger than omega^2 (e.g., omega^3). -/
 
 /-
@@ -175,7 +175,7 @@ combinatorial arguments that do not extend to omega^2.
 def OmegaMultKPartition (k n : ℕ) : Prop :=
   PartitionArrow continuum_card (Ordinal.omega0 * (k : Ordinal)) n
 
-/-- Erdos-Rado gives the k=1 case (omega * 1 = omega, which is below omega+n). -/
+/-  Erdos-Rado gives the k=1 case (omega * 1 = omega, which is below omega+n). -/
 
 /-- The stepping-up chain: if omega*k partition holds, it implies omega*(k-1). -/
 theorem stepping_down (k n : ℕ) (hk : 1 ≤ k) :
@@ -183,7 +183,7 @@ theorem stepping_down (k n : ℕ) (hk : 1 ≤ k) :
   intro h
   unfold OmegaMultKPartition at *
   apply partition_arrow_mono_ordinal _ _ _ _ _ h
-  apply Ordinal.mul_le_mul_left'
+  apply mul_le_mul_right
   exact_mod_cast Nat.sub_le k 1
 
 /-- Successor form of stepping-down: ω·(k+1) partition implies ω·k partition.
@@ -193,7 +193,7 @@ theorem stepping_down_succ (k n : ℕ) :
   intro h
   unfold OmegaMultKPartition at *
   apply partition_arrow_mono_ordinal _ _ _ _ _ h
-  apply Ordinal.mul_le_mul_left'
+  apply mul_le_mul_right
   exact_mod_cast Nat.le_succ k
 
 /-- Base case: OmegaMultKPartition 1 n is exactly PartitionArrow on ω.
@@ -202,7 +202,7 @@ theorem stepping_down_succ (k n : ℕ) :
 theorem omega_mul_one_partition (n : ℕ) :
     OmegaMultKPartition 1 n ↔ PartitionArrow continuum_card Ordinal.omega0 n := by
   unfold OmegaMultKPartition
-  rw [Nat.cast_one, Ordinal.mul_one]
+  rw [Nat.cast_one, mul_one]
 
 /-- The omega^2 case implies all omega*k cases (since omega*k < omega^2). -/
 theorem omega_squared_implies_omega_mult_k (k n : ℕ) :
@@ -225,8 +225,8 @@ theorem hierarchy_strict_growth (k : ℕ) :
 
 /-- omega^2 is a limit ordinal (it's not a successor). -/
 theorem omega_squared_is_limit :
-    Ordinal.IsLimit (Ordinal.omega0 * Ordinal.omega0) :=
-  Ordinal.isLimit_mul_left Ordinal.omega0_isLimit Ordinal.omega0_pos
+    Order.IsSuccLimit (Ordinal.omega0 * Ordinal.omega0) :=
+  Ordinal.isSuccLimit_mul_left Ordinal.isSuccLimit_omega0 Ordinal.omega0_pos
 
 /-
 ## Summary

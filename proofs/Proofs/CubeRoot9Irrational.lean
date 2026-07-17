@@ -5,7 +5,7 @@ Pattern: nrt-irrational
 Method: Template-based derivation
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

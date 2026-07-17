@@ -48,7 +48,7 @@ theorem primePi_monotone : Monotone primePi := by
   unfold primePi
   exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.Icc_subset_Icc_right hmn))
 
-/--
+/- 
 **Prime Number Theorem:**
 π(n) ~ n/log(n) as n → ∞.
 -/
@@ -99,12 +99,12 @@ many x such that:
 axiom hensley_richards_incompatibility :
     PrimeKTuplesConjecture → ¬SecondHardyLittlewoodConjecture
 
-/--
+/- 
 **Quantitative Version:**
 Under the k-tuples conjecture, for every large y and infinitely many x:
   π(x+y) > π(x) + π(y) + (log 2 - o(1)) · y/(log y)²
 -/
-/--
+/- 
 **Reason for Incompatibility:**
 If there exists an admissible k-tuple with more than π(k) elements,
 then placing it at the right position gives a counterexample.
@@ -113,7 +113,7 @@ Hensley-Richards showed such dense admissible tuples exist.
 -/
 /- ## Part V: Unconditional Results -/
 
-/--
+/- 
 **Montgomery-Vaughan Upper Bound:**
 Unconditionally, we have:
   π(x+y) ≤ π(x) + 2y/log(y)

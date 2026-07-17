@@ -23,16 +23,16 @@
   Tags: set-theory, measure-theory, combinatorics, independence
 -/
 
+import Mathlib
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Measure.OuterMeasure.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
 namespace Erdos501
 
 open Set MeasureTheory
+open scoped ENNReal
 
 /- ## Part I: Basic Definitions -/
 
@@ -140,7 +140,7 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
 
 /- ## Part IV: The Continuum Hypothesis Result -/
 
-/-- Under CH, there exists a bounded outer measure family with no
+/-  Under CH, there exists a bounded outer measure family with no
     infinite independent set. (Hechler, 1972)
 
     This is stated as a conditional: CH implies the negation of the
@@ -150,7 +150,7 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
 /-- The Continuum Hypothesis: ℵ₁ = 𝔠 (the first uncountable cardinal
     equals the cardinality of the continuum). This is independent of ZFC. -/
 def continuum_hypothesis : Prop :=
-  Cardinal.aleph 1 = Cardinal.continuum
+  Cardinal.aleph 1 = (Cardinal.continuum : Cardinal.{0})
 
 theorem hechler_under_CH (hCH : continuum_hypothesis) :
     ∃ A : SetFamily, BoundedOuterMeasureFamily A ∧ ¬HasInfiniteIndependent A := by
@@ -163,6 +163,15 @@ theorem hechler_under_CH (hCH : continuum_hypothesis) :
 theorem nps_closed_infinite (A : SetFamily) (hA : ClosedMeasureFamily A) :
     HasInfiniteIndependent A := by
   sorry
+
+/-- Independence is hereditary: subsets of independent sets are independent.
+
+    (Moved above `gladysz_pairs`, which uses it: v4.31 no longer tolerates a
+    forward reference to a not-yet-declared theorem.) -/
+theorem independent_subset {A : SetFamily} {X Y : Set ℝ}
+    (hY : Y ⊆ X) (hX : IsIndependent A X) : IsIndependent A Y := by
+  intro x hx y hy hxy
+  exact hX x (hY hx) y (hY hy) hxy
 
 /-- Gladysz (1962): For closed measure families, size-2 independent sets exist.
 
@@ -216,12 +225,6 @@ theorem question1_independent_of_ZFC :
 
 /- ## Part VII: Structural Properties -/
 
-/-- Independence is hereditary: subsets of independent sets are independent. -/
-theorem independent_subset {A : SetFamily} {X Y : Set ℝ}
-    (hY : Y ⊆ X) (hX : IsIndependent A X) : IsIndependent A Y := by
-  intro x hx y hy hxy
-  exact hX x (hY hx) y (hY hy) hxy
-
 /-- Adding an element to an independent set: must avoid all A_y. -/
 theorem independent_insert {A : SetFamily} {X : Set ℝ} {z : ℝ}
     (hX : IsIndependent A X) (hz : z ∉ X)
@@ -247,15 +250,16 @@ theorem max_size_infinite (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :
     maxIndependentSize A = ⊤ := by
   by_contra h
   -- maxIndependentSize A ≠ ⊤ in ℕ∞, so extract the finite bound
-  obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp h
+  obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp h
   -- erdos_hajnal_finite gives an independent set of size m + 1
   obtain ⟨X, hCard, hInd⟩ := erdos_hajnal_finite A hA (m + 1)
   -- The supremum is at least X.card
   have h1 : (X.card : ℕ∞) ≤ maxIndependentSize A := by
     unfold maxIndependentSize
-    exact le_iSup₂ X hInd
+    exact le_iSup₂ (f := fun (X : Finset ℝ) (_ : IsIndependent A ↑X) => (X.card : ℕ∞)) X hInd
   -- But maxIndependentSize A = ↑m and X.card = m + 1, giving m + 1 ≤ m
-  simp only [hCard, ← hm, WithTop.coe_le_coe] at h1
+  rw [hCard, ← hm] at h1
+  norm_cast at h1
   omega
 
 end Erdos501

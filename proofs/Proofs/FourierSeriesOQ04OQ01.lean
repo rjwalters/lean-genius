@@ -547,11 +547,23 @@ theorem sphPartialSum_L2_norm_converge
             fun x => multiFourierCoeff f k *
               (fourier (k 0) (x 0) * fourier (k 1) (x 1)) := by
           simp only [hgdef]
-          have h1 := Lp.coeFn_smul (UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k)
-            (UnitAddTorus.mFourierLp 2 k)
-          have h2 := UnitAddTorus.coeFn_mFourierLp (d := Fin 2) 2 k
+          -- Pin these facts' stated filter to `haarT2` explicitly (rather than letting them
+          -- elaborate over `mFourierLp`'s "native" `volume`): although `haarT2` and that native
+          -- measure are definitionally equal, they are not *syntactically* equal after `import
+          -- Mathlib`'s current elaboration of `UnitAddTorus.mFourierLp`'s ambient measure, so a
+          -- bare `rw` below would fail to find the pattern (v4.31 drift). Ascribing the type here
+          -- forces the unification once, up front, instead of relying on `rw`'s stricter matching.
+          have h1 : (⇑(UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k • UnitAddTorus.mFourierLp 2 k)
+              : T2 → ℂ) =ᵐ[haarT2]
+              (UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k) •
+                (⇑(UnitAddTorus.mFourierLp (d := Fin 2) 2 k) : T2 → ℂ) :=
+            Lp.coeFn_smul (UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k)
+              (UnitAddTorus.mFourierLp 2 k)
+          have h2 : (⇑(UnitAddTorus.mFourierLp (d := Fin 2) 2 k) : T2 → ℂ) =ᵐ[haarT2]
+              ⇑(UnitAddTorus.mFourier k) :=
+            UnitAddTorus.coeFn_mFourierLp (d := Fin 2) 2 k
           filter_upwards [h1, h2] with x hx1 hx2
-          rw [hx1]
+          erw [hx1]
           simp only [Pi.smul_apply, hx2, smul_eq_mul]
           rw [mFourier_fin2, mFourierCoeff_eq_multiFourierCoeff f fhat hfhat k]
         filter_upwards [hk, ih] with x hxk hxs

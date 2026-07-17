@@ -1,9 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
-import Mathlib.Data.Real.Irrational
-import Mathlib.Data.Complex.ExponentialBounds
 import Proofs.HermiteLindemann
 
 /-!

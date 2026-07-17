@@ -18,11 +18,12 @@ then A has lower density 0 (proved) and density 0 (conjectured), and Σ 1/aₙ c
 - https://erdosproblems.com/357
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Tactic
+
+open scoped Topology
 
 open Filter Asymptotics Real
 
@@ -37,7 +38,7 @@ the map J ↦ Σ_{i ∈ J} a(i) is injective on the family of ord-connected Fins
 An interval J ⊆ ι is ord-connected if: i ∈ J and k ∈ J and i ≤ j ≤ k implies j ∈ J.
 -/
 def HasDistinctSums {ι α : Type*} [Preorder ι] [AddCommMonoid α] (a : ι → α) : Prop :=
-  {J : Finset ι | J.OrdConnected}.InjOn (fun J ↦ ∑ x ∈ J, a x)
+  {J : Finset ι | (↑J : Set ι).OrdConnected}.InjOn (fun J ↦ ∑ x ∈ J, a x)
 
 /- ## The Function f(n) -/
 
@@ -137,7 +138,7 @@ Any infinite strictly increasing sequence A : ℕ → ℕ with distinct consecut
 has lower density 0. The density conjectured to be 0 (stronger) is open. -/
 axiom infinite_set_lower_density_zero (A : ℕ → ℕ) (hA : StrictMono A)
     (hDist : HasDistinctSums A) :
-    Filter.liminf (fun n : ℕ => #{k | A k ≤ n} / (n : ℝ)) atTop = 0
+    Filter.liminf (fun n : ℕ => Nat.card {k | A k ≤ n} / (n : ℝ)) atTop = 0
 
 /- ## Open Conjectures for Infinite Sets -/
 
@@ -145,7 +146,7 @@ axiom infinite_set_lower_density_zero (A : ℕ → ℕ) (hA : StrictMono A)
 has density 0 (stronger than lower density 0, which is proved). -/
 def InfiniteDensityZeroConjecture : Prop :=
   ∀ A : ℕ → ℕ, StrictMono A → HasDistinctSums A →
-    Filter.Tendsto (fun n : ℕ => #{k | A k ≤ n} / (n : ℝ)) atTop (𝓝 0)
+    Filter.Tendsto (fun n : ℕ => Nat.card {k | A k ≤ n} / (n : ℝ)) atTop (𝓝 0)
 
 /-- **Sum convergence conjecture** (OPEN): for any infinite A with distinct consecutive sums,
 the series Σ 1/A(k) converges. -/

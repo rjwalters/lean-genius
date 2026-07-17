@@ -57,7 +57,7 @@ Does there exist a k-vertex-critical graph where every critical edge set
 has size > r?
 -/
 
-/-- **Erdős Problem #944 (Partially OPEN)**: For k ≥ 4 and r ≥ 1, does there
+/-  **Erdős Problem #944 (Partially OPEN)**: For k ≥ 4 and r ≥ 1, does there
 exist a graph with the Erdős944 property?
 
 The case k = 4, r = 1 remains OPEN. -/
@@ -68,23 +68,23 @@ The case k = 4, r = 1 remains OPEN. -/
 Are there k-vertex-critical graphs without any critical edges?
 -/
 
-/-- **Dirac's Conjecture (1970)**: For k ≥ 4, there exists a k-vertex-critical
+/-  **Dirac's Conjecture (1970)**: For k ≥ 4, there exists a k-vertex-critical
 graph with no critical edges (every critical edge set has size > 1). -/
 
 /-
 ## Solved Cases
 -/
 
-/-- **Brown's Result (1992)**: There exists a 5-vertex-critical graph with
+/-  **Brown's Result (1992)**: There exists a 5-vertex-critical graph with
 no critical edges. Brown explicitly constructed such a graph with 11 vertices. -/
 
-/-- **Lattanzio's Result (2002)**: For k where k-1 is not prime, there exist
+/-  **Lattanzio's Result (2002)**: For k where k-1 is not prime, there exist
 k-vertex-critical graphs with no critical edges. -/
 
-/-- **Jensen's Result (2002)**: For k ≥ 5, there exist k-vertex-critical
+/-  **Jensen's Result (2002)**: For k ≥ 5, there exist k-vertex-critical
 graphs with no critical edges. -/
 
-/-- **Martinsson-Steiner's Result (2025)**: For every r ≥ 1, if k is
+/-  **Martinsson-Steiner's Result (2025)**: For every r ≥ 1, if k is
 sufficiently large, there exist k-vertex-critical graphs where every
 critical edge set has size > r. -/
 
@@ -92,7 +92,7 @@ critical edge set has size > r. -/
 ## The Open Case: k = 4
 -/
 
-/-- **OPEN**: Does there exist a 4-vertex-critical graph with no critical edges?
+/- **OPEN**: Does there exist a 4-vertex-critical graph with no critical edges?
 
 This is the last remaining case of Dirac's conjecture. All k ≥ 5 are solved. -/
 

@@ -5,7 +5,7 @@ import Mathlib
 
 ## Open Question
 Can Euler's original proof via the Weierstrass factorization
-sin(πx)/(πx) = ∏_{n=1}^∞ (1 - x²/n²) be formalized in Lean 4?
+sin(πx)/(πx) = ∏_{n=1}^∞ (1 - x²/n²) be formalized ∈ Lean 4?
 
 ## Approach
 Euler's proof proceeds in three steps:
@@ -88,7 +88,11 @@ theorem finite_product_x2_coeff (N : ℕ) (hN : 0 < N) :
         1 - (∑ n ∈ Finset.Icc 1 N, 1 / (n : ℝ) ^ 2) * x ^ 2 +
         x ^ 4 * (∏ n ∈ Finset.Icc 1 N, (1 - x ^ 2 / (n : ℝ) ^ 2) -
           (1 - (∑ n ∈ Finset.Icc 1 N, 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4 := by
-  intro x; ring
+  intro x
+  rcases eq_or_ne x 0 with rfl | hx
+  · simp
+  · rw [mul_div_cancel_left₀ _ (pow_ne_zero 4 hx)]
+    ring
 
 /-- **Infinite product coefficient extraction**: The product equals its own
     Taylor-like decomposition. This is algebraically tautological
@@ -169,10 +173,12 @@ theorem partial_product_terms_pos (x : ℝ) (hx : |x| < 1) (n : ℕ) (hn : 0 < n
     0 < 1 - x ^ 2 / (n : ℝ) ^ 2 := by
   have hn_pos : (0 : ℝ) < n := by exact_mod_cast hn
   have hn_sq : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
-  have hx_sq : x ^ 2 < 1 := by nlinarith [abs_nonneg x]
+  have hx_sq : x ^ 2 < 1 := by nlinarith [abs_nonneg x, sq_abs x]
+  have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hn2 : (1 : ℝ) ≤ (n : ℝ) ^ 2 := by nlinarith [hn1]
   have : x ^ 2 / (n : ℝ) ^ 2 ≤ x ^ 2 := by
-    rw [div_le_iff hn_sq]
-    nlinarith [sq_nonneg x, sq_nonneg ((n : ℝ) - 1)]
+    rw [div_le_iff₀ hn_sq]
+    nlinarith [sq_nonneg x, hn2]
   linarith
 
 /-- **Each factor is at most 1**. -/

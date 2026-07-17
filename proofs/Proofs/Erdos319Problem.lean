@@ -18,10 +18,12 @@ Status: OPEN
 Reference: https://erdosproblems.com/319
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
+
+open scoped Classical
 
 /- ## Definitions -/
 
@@ -74,7 +76,7 @@ theorem trivial_upper_bound (N : ℕ) :
   intro A hA
   simp only [Finset.mem_filter, Finset.mem_powerset] at hA
   calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA.1
-    _ = N := by rw [Finset.Nat.card_Icc]; omega
+    _ = N := by rw [Nat.card_Icc]; omega
 
 /-- **Croot (2001)**: every positive integer ≤ N is a sum of distinct
     unit fractions with denominators in {1,...,N} for large enough N.
@@ -121,7 +123,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · left; rfl; · right; rfl; · contradiction)
+          · left; rfl
+          · right; rfl
+          · contradiction)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -134,7 +138,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · left; rfl; · contradiction; · right; rfl)
+          · left; rfl
+          · contradiction
+          · right; rfl)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -147,7 +153,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · rfl; · contradiction; · contradiction)
+          · rfl
+          · contradiction
+          · contradiction)
         (Finset.singleton_subset_iff.mpr h2)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num
@@ -156,7 +164,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · left; rfl; · right; rfl)
+          · contradiction
+          · left; rfl
+          · right; rfl)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -169,7 +179,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · rfl; · contradiction)
+          · contradiction
+          · rfl
+          · contradiction)
         (Finset.singleton_subset_iff.mpr h3)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num
@@ -178,7 +190,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · contradiction; · rfl)
+          · contradiction
+          · contradiction
+          · rfl)
         (Finset.singleton_subset_iff.mpr h6)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num

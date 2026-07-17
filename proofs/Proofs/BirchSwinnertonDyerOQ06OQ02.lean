@@ -1,4 +1,4 @@
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 import Proofs.BirchSwinnertonDyerOQ06
@@ -206,7 +206,7 @@ theorem second_approx_exceeds_first : Real.log 121 / 16 > Real.log 3 / 4 := by
   have heq : Real.log 3 / 4 = Real.log 81 / 16 := by rw [h81]; ring
   have hlt : Real.log 81 < Real.log 121 := Real.log_lt_log (by norm_num) (by norm_num)
   rw [gt_iff_lt, heq]
-  exact (div_lt_div_right (by norm_num : (16:ℝ) > 0)).mpr hlt
+  exact (div_lt_div_iff_of_pos_right (by norm_num : (0:ℝ) < 16)).mpr hlt
 
 /-- The naive x-coordinate height of [2]P₂ = (10/9, -35/27):
     max(10, 9) = 10, so h_x([2]P₂) = log(10) > 0. -/

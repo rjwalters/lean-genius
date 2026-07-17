@@ -1,0 +1,1586 @@
+===== AlgebraicNumbersCountableOQ01OQ01OQ01
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:89:2: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:94:51: failed to synthesize instance of type class
+  Algebra.IsSeparable ℚ ↥algebraicNumbersField
+===== AlgebraicNumbersCountableOQ01OQ03
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:78:17: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:95:2: failed to synthesize instance of type class
+  IsAlgClosure ℚ (AlgebraicClosure ℚ)
+===== AngleTrisectionCos20GalOQ01OQ02OQ02
+error: Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:154:4: failed to synthesize instance of type class
+  IsGalois ℚ ↥(AngleTrisectionOQ02OQ03OQ01.maxRealSubfield (2 * n))
+error: Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:171:46: Application type mismatch: The argument
+  Set.mem_singleton ?m.539
+has type
+error: Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:184:34: failed to synthesize instance of type class
+  IsSimpleRing ↥(AngleTrisectionOQ02OQ03OQ01.maxRealSubfield (2 * n)).toSubalgebra
+error: Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:185:18: Function expected at
+  (minpoly ℚ c).Splits
+but this term has type
+===== AngleTrisectionOQ02OQ01OQ02Incomplete01
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:168:4: failed to synthesize instance of type class
+  Module ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:174:8: Function expected at
+  le_sup_right
+but this term has type
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:178:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+===== ArchimedesMethodOfExhaustion
+error: Proofs/ArchimedesMethodOfExhaustion.lean:99:4: Type mismatch
+  mp_mem (eventually_ge_atTop 1) ?m.50
+has type
+error: Proofs/ArchimedesMethodOfExhaustion.lean:101:23: failed to synthesize
+  Zero ?m.77
+error: Proofs/ArchimedesMethodOfExhaustion.lean:101:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/ArchimedesMethodOfExhaustion.lean:125:4: No goals to be solved
+error: Proofs/ArchimedesMethodOfExhaustion.lean:133:21: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  key
+===== ArithmeticSeriesOQ00OQ02OQ01
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:98:27: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℤ
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:111:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:121:20: failed to synthesize instance of type class
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:121:20: failed to synthesize instance of type class
+  LocallyFiniteOrder ℚ
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:121:27: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℚ
+===== BaselProblemOQ01OQ01
+error: Proofs/BaselProblemOQ01OQ01.lean:46:2: failed to synthesize
+  CanonicallyOrderedAdd ℝ
+error: Proofs/BaselProblemOQ01OQ01.lean:74:34: Application type mismatch: The argument
+  one_pos
+has type
+error: Proofs/BaselProblemOQ01OQ01.lean:85:2: Type mismatch
+  tail_term_le_inverse_sq (k + n)
+has type
+===== BezoutIdentityOQ02OQ04
+error: Proofs/BezoutIdentityOQ02OQ04.lean:62:2: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:19: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:37: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:49: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+===== BorsukUlamOQ02OQ02
+error: Proofs/BorsukUlamOQ02OQ02.lean:57:52: typeclass instance problem is stuck
+  SMul ?m.1 α
+error: Proofs/BorsukUlamOQ02OQ02.lean:63:35: typeclass instance problem is stuck
+  SMul ?m.1 β
+error: Proofs/BorsukUlamOQ02OQ02.lean:70:14: typeclass instance problem is stuck
+  SMul ?m.1 β
+error: Proofs/BorsukUlamOQ02OQ02.lean:94:22: typeclass instance problem is stuck
+  SMul ?m.1 β
+===== BorsukUlamOQ04OQ03
+error: Proofs/BorsukUlamOQ04OQ03.lean:181:2: failed to synthesize instance of type class
+  Subsingleton universalZ2Bundle.Total
+===== BrouwerFixedPointOQ02OQ01
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:107:80: unsolved goals
+case «0».«1»
+h : 0 + 1 = 0
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:142:2: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:284:13: Invalid field `lt_or_lt`: The environment does not contain `Function.lt_or_lt`, so it is not possible to project the field `lt_or_lt` from an expression
+  hne
+of type `i₀ = i₁ → False`
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:284:27: Tactic `rcases` failed: `x✝ : ?m.573` is not an inductive datatype
+warning: Proofs/BrouwerFixedPointOQ02OQ01.lean:305:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+===== BurnsideCountingOQ03OQ03
+error: Proofs/BurnsideCountingOQ03OQ03.lean:50:29: unsolved goals
+n k : ℕ
+inst✝ : NeZero n
+error: Proofs/BurnsideCountingOQ03OQ03.lean:106:8: typeclass instance problem is stuck
+  NeZero ?m.50
+===== CantorDiagonalizationOQ01OQ01OQ02OQ03
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:52:2: Tactic `apply` failed: could not unify the conclusion of `@power_le_power_right`
+  ?a ^ ?c ≤ ?b ^ ?c
+with the goal
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:62:9: failed to synthesize instance of type class
+  HPow ℕ Cardinal.{0} ?m.11
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:62:8: Invalid field notation: Type of
+  2 ^ κ
+is not known; cannot resolve field `ord`
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:63:38: unsolved goals
+κ : Cardinal.{0}
+hκ_inf : ℵ₀ ≤ κ
+===== CantorDiagonalizationOQ04OQ01OQ01
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:62:70: invalid binder annotation, type is not a class instance
+  CartesianClosed C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:14: failed to synthesize instance of type class
+  Quiver C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:23: failed to synthesize instance of type class
+  MonoidalCategoryStruct C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:23: failed to synthesize instance of type class
+  Quiver C
+===== CantorDiagonalizationOQ04OQ01OQ01OQ01
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:62:70: invalid binder annotation, type is not a class instance
+  CartesianClosed C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:14: failed to synthesize instance of type class
+  Quiver C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:23: failed to synthesize instance of type class
+  MonoidalCategoryStruct C
+error: Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:23: failed to synthesize instance of type class
+  Quiver C
+===== CantorDiagonalizationOQ04OQ03
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:57:48: unsolved goals
+Y : Type u_1
+encode : (Y → Y) → Y
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:74:18: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  decode (encode fun y => f (decode y y))
+in the target expression
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:86:17: failed to synthesize instance of type class
+  LE α
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:93:29: Function expected at
+  kleeneChain
+but this term has type
+===== CantorDiagonalizationOQ04OQ03Aristotle
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:57:48: unsolved goals
+Y : Type u_1
+encode : (Y → Y) → Y
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:74:18: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  decode (encode fun y => f (decode y y))
+in the target expression
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:86:17: failed to synthesize instance of type class
+  LE α
+error: Proofs/CantorDiagonalizationOQ04OQ03.lean:93:29: Function expected at
+  kleeneChain
+but this term has type
+===== CauchySchwarzIntegralOQ01OQ03
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:51:45: unexpected identifier; expected '[', 'add_aesop_rules', 'binder_predicate', 'builtin_cbv_simproc', 'builtin_dsimproc', 'builtin_simproc', 'cbv_simproc', 'def_eval_config_item', 'dsimproc', 'elab', 'elab_rules', 'grind_pattern', 'infix', 'infixl', 'infixr', 'instance', 'macro', 'macro_rules', 'notation', 'notation3', 'postfix', 'prefix', 'simproc', 'syntax' or 'unif_hint'
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:87:24: failed to synthesize instance of type class
+  MeasurableSpace 𝕜
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:87:24: failed to synthesize instance of type class
+  MeasurableSpace 𝕜
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:87:48: failed to synthesize instance of type class
+  MeasurableSpace 𝕜
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:142:10: expected token
+error: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:150:39: expected token
+warning: Proofs/CauchySchwarzIntegralOQ01OQ03.lean:174:8: declaration uses `sorry`
+===== CauchySchwarzOQ01OQ02
+error: Proofs/CauchySchwarzOQ01OQ02.lean:62:9: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+error: Proofs/CauchySchwarzOQ01OQ02.lean:70:12: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+error: Proofs/CauchySchwarzOQ01OQ02.lean:85:5: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+error: Proofs/CauchySchwarzOQ01OQ02.lean:106:5: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+===== CauchySchwarzOQ01OQ04
+error: Proofs/CauchySchwarzOQ01OQ04.lean:88:2: failed to synthesize instance of type class
+  CanonicallyOrderedAdd ℝ
+error: Proofs/CauchySchwarzOQ01OQ04.lean:142:19: typeclass instance problem is stuck, it is often due to metavariables
+  (i : ?m.227) → NormedAddCommGroup (?m.228 i)
+error: Proofs/CauchySchwarzOQ01OQ04.lean:146:2: linarith failed to find a contradiction
+error: Proofs/CauchySchwarzOQ01OQ04.lean:146:2: linarith failed to find a contradiction
+case h1
+𝕜 : Type u_1
+error: Proofs/CauchySchwarzOQ01OQ04.lean:173:2: linarith failed to find a contradiction
+𝕜 : Type u_1
+inst✝² : RCLike 𝕜
+===== CayleyHamiltonMinpolyOQ02OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:117:56: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:122:56: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:127:55: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:132:55: typeclass instance problem is stuck
+  Semiring ?m.13
+===== CayleyHamiltonMinpolyOQ05OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean:76:2: Type mismatch
+  finrank_mul_finrank K (↥K⟮x⟯) L
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean:178:15: failed to synthesize instance of type class
+  CharZero K
+===== CayleyHamiltonMinpolyOQ05OQ02OQ03
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:93:58: failed to synthesize instance of type class
+  Ring (Type u_2)
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:108:59: failed to synthesize instance of type class
+  Ring (Type u_2)
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:126:8: typeclass instance problem is stuck
+  Module.Finite ?m.29 ?m.30
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:141:63: failed to synthesize instance of type class
+  Ring (Type u_2)
+===== CentralLimitTheoremOQ01OQ02OQ01OQ01
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:32:40: failed to synthesize instance of type class
+  HDiv ℝ ℝ ℂ
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:36:35: unsolved goals
+μ σ_sq : ℝ
+⊢ sorry μ σ_sq 0 = 1
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:41:27: failed to synthesize instance of type class
+  HDiv ℝ ℝ ℂ
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:45:60: unsolved goals
+μ σ_sq t : ℝ
+⊢ (sorry μ σ_sq t).re = σ_sq * t ^ 2 * (-1 / 2)
+===== CentralLimitTheoremOQ02OQ02
+error: Proofs/CentralLimitTheoremOQ02OQ02.lean:124:9: failed to synthesize instance of type class
+  NormedAddCommGroup ℕ
+error: Proofs/CentralLimitTheoremOQ02OQ02.lean:126:13: failed to synthesize instance of type class
+  NormedAddCommGroup ℕ
+error: Proofs/CentralLimitTheoremOQ02OQ02.lean:124:14: failed to synthesize instance of type class
+  HMul ℝ ℝ ℕ
+error: Proofs/CentralLimitTheoremOQ02OQ02.lean:126:18: failed to synthesize instance of type class
+  HMul ℝ ℝ ℕ
+===== ChineseRemainderNonCoprimeOQ02OQ01
+error: Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:80:22: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero R
+error: Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:85:54: failed to synthesize instance of type class
+  Monoid R
+error: Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:88:22: failed to synthesize instance of type class
+  Monoid R
+error: Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:86:39: unsolved goals
+R : Type u_1
+inst✝ : Nontrivial R
+===== CollatzStructuredOQ03
+error: Proofs/CollatzStructuredOQ03.lean:48:27: failed to synthesize instance of type class
+  DecidablePred (reachesOneIn n)
+error: Proofs/CollatzStructuredOQ03.lean:48:2: failed to synthesize instance of type class
+  Decidable (reachesOne n)
+error: Proofs/CollatzStructuredOQ03.lean:54:2: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+error: Proofs/CollatzStructuredOQ03.lean:61:31: unsolved goals
+⊢ collatzIter 0 1 = 1
+error: Proofs/CollatzStructuredOQ03.lean:63:43: Tactic `unfold` failed to unfold `reachesOneIn` in
+===== ContinuumHypothesisOQ02OQ01
+error: Proofs/ContinuumHypothesisOQ02OQ01.lean:112:27: failed to synthesize instance of type class
+  HPow ℕ Cardinal.{0} ?m.9
+error: Proofs/ContinuumHypothesisOQ02OQ01.lean:112:26: Invalid field notation: Type of
+  2 ^ ℵ₀
+is not known; cannot resolve field `ord`
+error: Proofs/ContinuumHypothesisOQ02OQ01.lean:130:68: Type mismatch
+  Finset.le_sup hmem
+has type
+===== DerangementsConvergenceOQ05OQ01
+error: Proofs/DerangementsConvergenceOQ05OQ01.lean:61:39: Application type mismatch: The argument
+  1
+has type
+error: Proofs/DerangementsConvergenceOQ05OQ01.lean:61:12: failed to synthesize instance of type class
+  NormedDivisionRing Type
+error: Proofs/DerangementsConvergenceOQ05OQ01.lean:60:59: unsolved goals
+⊢ Summable fun j => 1 / ↑j.factorial
+error: Proofs/DerangementsConvergenceOQ05OQ01.lean:69:35: Application type mismatch: The argument
+error: Proofs/DerangementsConvergenceOQ05OQ01.lean:69:35: Application type mismatch: The argument
+  -1
+has type
+===== ElementaryQuadraticReciprocityOQ01OQ01OQ03
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:82:2: failed to synthesize instance of type class
+  IsDomain R
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:88:20: failed to synthesize instance of type class
+  HDiv R R ?m.52
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:89:56: Application type mismatch: The argument
+  hψ
+has type
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:93:26: failed to synthesize instance of type class
+  IsDomain R
+===== Erdos1006Problem
+error: Proofs/Erdos1006Problem.lean:58:44: Invalid field `IsCycle`: The environment does not contain `SimpleGraph.IsCycle`, so it is not possible to project the field `IsCycle` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos1006Problem.lean:62:65: Invalid field `IsCycle`: The environment does not contain `SimpleGraph.IsCycle`, so it is not possible to project the field `IsCycle` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos1006Problem.lean:72:10: `Orientation` has already been declared
+error: Proofs/Erdos1006Problem.lean:79:37: failed to synthesize instance of type class
+  CommSemiring G
+error: Proofs/Erdos1006Problem.lean:79:37: failed to synthesize instance of type class
+  CommSemiring G
+===== Erdos1007OQ05
+error: Proofs/Erdos1007Problem.lean:103:56: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos1007Problem.lean:112:56: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos1007Problem.lean:124:56: failed to synthesize instance of type class
+  LT V
+===== Erdos1007Problem
+error: Proofs/Erdos1007Problem.lean:103:56: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos1007Problem.lean:112:56: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos1007Problem.lean:124:56: failed to synthesize instance of type class
+  LT V
+===== Erdos1008ProblemProvable
+error: Proofs/Erdos1008ProblemProvable.lean:141:51: Invalid field `toNat`: The environment does not contain `Subtype.toNat`, so it is not possible to project the field `toNat` from an expression
+  (2 / 3).toNNReal
+of type `{ r // 0 ≤ r }`
+error: Proofs/Erdos1008ProblemProvable.lean:148:20: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.40
+===== Erdos1009OQ02Problem
+error: Proofs/Erdos1009OQ02Problem.lean:306:46: typeclass instance problem is stuck
+  Singleton (Sym2 V) ?m.846
+===== Erdos1022OQ01
+error: Proofs/Erdos1022OQ01.lean:46:12: failed to synthesize instance of type class
+  OfNat (Fin k) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos1022OQ01.lean:67:33: failed to synthesize instance of type class
+  OfNat (Fin k) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos1022OQ01.lean:69:23: unsolved goals
+α : Type u_1
+inst✝¹ : DecidableEq α
+error: Proofs/Erdos1022OQ01.lean:124:10: Unexpected syntax
+  fin_cases (χ a)
+error: Proofs/Erdos1022OQ01.lean:137:31: Application type mismatch: The argument
+===== Erdos1035Problem
+error: Proofs/Erdos1035Problem.lean:341:42: failed to synthesize instance of type class
+  OfNat (Sort ?u.26) 1
+numerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is
+error: Proofs/Erdos1035Problem.lean:340:16: failed to synthesize instance of type class
+  AddCommMonoid Prop
+error: Proofs/Erdos1035Problem.lean:350:51: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  true ^^ ?x
+in the target expression
+error: Proofs/Erdos1035Problem.lean:383:6: Type mismatch
+  hypercubeBitCount_xor_pow_parity n (↑k) k.isLt ↑u
+has type
+===== Erdos103OQ02Bounds
+error: Proofs/Erdos103OQ02Bounds.lean:92:10: typeclass instance problem is stuck
+  Preorder ?m.69
+===== Erdos1056Problem
+error: Proofs/Erdos1056Problem.lean:48:55: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1056Problem.lean:49:35: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1056Problem.lean:94:23: unsolved goals
+a b p : ℕ
+ha : a % p = 1
+error: Proofs/Erdos1056Problem.lean:121:20: failed to synthesize
+  Decidable (List.Chain' (fun x1 x2 => x1 < x2) [3, 5, 8])
+===== Erdos1078Problem
+error: Proofs/Erdos1078Problem.lean:49:27: failed to synthesize instance of type class
+  Nonempty V
+error: Proofs/Erdos1078Problem.lean:144:2: No goals to be solved
+error: Proofs/Erdos1078Problem.lean:153:2: No goals to be solved
+warning: Proofs/Erdos1078Problem.lean:194:16: Variable name `hr` is not explicitly referenced.
+error: Proofs/Erdos1078Problem.lean:153:2: No goals to be solved
+warning: Proofs/Erdos1078Problem.lean:194:16: Variable name `hr` is not explicitly referenced.
+===== Erdos1079Problem
+error: Proofs/Erdos1079Problem.lean:49:38: Function expected at
+  G.symm
+but this term has type
+error: Proofs/Erdos1079Problem.lean:50:35: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/Erdos1079Problem.lean:126:10: failed to synthesize instance of type class
+  Fintype ℕ
+error: Proofs/Erdos1079Problem.lean:127:20: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos107OQ01
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:72:2: `grind` failed
+case grind.1
+pts : Finset E2
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:85:42: Application type mismatch: The argument
+  finite_toSet pts
+has type
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:95:10: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:134:10: `grind` failed
+case grind
+a b w : E2
+===== Erdos107OQ01KleinUpperAristotle
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:72:2: `grind` failed
+case grind.1
+pts : Finset E2
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:85:42: Application type mismatch: The argument
+  finite_toSet pts
+has type
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:95:10: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/Erdos107OQ01KleinUpperAristotle.lean:134:10: `grind` failed
+case grind
+a b w : E2
+===== Erdos1081Problem
+error: Proofs/Erdos1081Problem.lean:69:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+error: Proofs/Erdos1081Problem.lean:120:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:126:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:126:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:168:2: failed to synthesize instance of type class
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:168:2: failed to synthesize instance of type class
+  DecidablePred fun n => IsSumOfTwoSquarefull n
+===== Erdos1087Problem
+error: Proofs/Erdos1087Problem.lean:125:3: failed to synthesize instance of type class
+  DecidablePred fun T =>
+    ∃ (h : #T = 4),
+error: Proofs/Erdos1087Problem.lean:128:19: unsolved goals
+S T : Finset Point
+h : #T = 4
+error: Proofs/Erdos1087Problem.lean:129:19: unsolved goals
+S T : Finset Point
+h : #T = 4
+error: Proofs/Erdos1087Problem.lean:130:19: unsolved goals
+S T : Finset Point
+h : #T = 4
+===== Erdos1091Problem
+error: Proofs/Erdos1091Problem.lean:50:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:50:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:57:2: failed to synthesize instance of type class
+  Membership V (List V✝)
+error: Proofs/Erdos1091Problem.lean:57:19: failed to synthesize instance of type class
+  Membership V (List V✝)
+===== Erdos1097OQ01
+error: Proofs/Erdos1097OQ01.lean:45:3: failed to synthesize instance of type class
+  HSub (Finset ℤ) (Finset ℤ) ?m.4
+error: Proofs/Erdos1097OQ01.lean:104:20: expected token
+error: Proofs/Erdos1097OQ01.lean:104:9: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+error: Proofs/Erdos1097OQ01.lean:104:10: failed to synthesize instance of type class
+error: Proofs/Erdos1097OQ01.lean:104:9: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+error: Proofs/Erdos1097OQ01.lean:104:10: failed to synthesize instance of type class
+  HAdd ℤ (Sort (max (max 1 ?u.23) ?u.21)) ?m.29
+error: Proofs/Erdos1097OQ01.lean:104:10: failed to synthesize instance of type class
+  HAdd ℤ (Sort (max (max 1 ?u.23) ?u.21)) ?m.29
+===== Erdos1097Problem
+error: Proofs/Erdos1097Problem.lean:52:3: failed to synthesize instance of type class
+  HSub (Finset ℤ) (Finset ℤ) ?m.4
+error: Proofs/Erdos1097Problem.lean:62:25: failed to synthesize instance of type class
+  HSub (Finset ℤ) (Finset ℤ) ?m.4
+error: Proofs/Erdos1097Problem.lean:69:9: failed to synthesize instance of type class
+  HSub (Finset ℤ) (Finset ℤ) ?m.38
+error: Proofs/Erdos1097Problem.lean:70:9: failed to synthesize instance of type class
+  HSub (Finset ℤ) (Finset ℤ) ?m.44
+===== Erdos1098OQ01OQ01
+error: Proofs/Erdos1098OQ01OQ01.lean:75:58: Type mismatch
+  hz h
+has type
+error: Proofs/Erdos1098OQ01OQ01.lean:88:38: Type mismatch
+  hzg ▸ hS z hzS h hh (Eq.symm hzg ▸ hne)
+has type
+error: Proofs/Erdos1098OQ01OQ01.lean:172:15: overloaded, errors 
+  failed to synthesize instance of type class
+    Insert G (Finset G)
+error: Proofs/Erdos1098OQ01OQ01.lean:175:6: unsolved goals
+case pos
+G : Type u_1
+===== Erdos1098Problem
+error: Proofs/Erdos1098Problem.lean:77:54: unsolved goals
+G : Type u_1
+inst✝ : Group G
+error: Proofs/Erdos1098Problem.lean:91:48: Type mismatch
+  nonCommuting_symm g h
+has type
+error: Proofs/Erdos1098Problem.lean:92:37: unsolved goals
+G✝ : Type u_1
+inst✝¹ : Group G✝
+error: Proofs/Erdos1098Problem.lean:130:30: failed to synthesize instance of type class
+  Top ℕ
+===== Erdos1103Problem
+error: Proofs/Erdos1103Problem.lean:50:23: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+error: Proofs/Erdos1103Problem.lean:50:44: failed to synthesize instance of type class
+  DecidablePred (Membership.mem A)
+error: Proofs/Erdos1103Problem.lean:96:41: Tactic `decide` failed for proposition
+  Squarefree (1 + 1)
+because its `Decidable` instance
+error: Proofs/Erdos1103Problem.lean:134:4: Type mismatch
+  Tendsto.eventually hlog_tend (eventually_gt_atTop (5 / Real.log C))
+has type
+===== Erdos1118Problem
+error: Proofs/Erdos1118Problem.lean:47:11: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1118Problem.lean:55:17: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1118Problem.lean:55:33: Application type mismatch: The argument
+  f z
+has type
+error: Proofs/Erdos1118Problem.lean:86:57: failed to synthesize instance of type class
+  Top ℝ
+===== Erdos1120Problem
+error: Proofs/Erdos1120Problem.lean:34:23: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1120Problem.lean:42:11: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1120Problem.lean:49:4: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1120Problem.lean:67:4: failed to synthesize instance of type class
+  Lattice ℂ
+===== Erdos1121Problem
+error: Proofs/Erdos1121Problem.lean:109:6: failed to synthesize instance of type class
+  Union (Finset Circle)
+error: Proofs/Erdos1121Problem.lean:110:6: failed to synthesize instance of type class
+  Inter (Finset Circle)
+===== Erdos1127Problem
+error: Proofs/Erdos1127Problem.lean:150:45: Type mismatch
+  ![x]
+has type
+error: Proofs/Erdos1127Problem.lean:154:24: failed to synthesize instance of type class
+  Membership (Point 1) (Set (Fin (Nat.succ 0) → ℝ))
+error: Proofs/Erdos1127Problem.lean:160:25: Type mismatch
+  ![x]
+has type
+error: Proofs/Erdos1127Problem.lean:228:9: Invalid field `subsets`: The environment does not contain `Quot.subsets`, so it is not possible to project the field `subsets` from an expression
+  S.val
+of type
+===== Erdos1173Problem
+error: Proofs/Erdos1173Problem.lean:54:20: Failed to infer universe levels in type of binder `α`
+  Ordinal.{?u.3}
+error: Proofs/Erdos1173Problem.lean:104:5: Failed to infer universe levels in type of binder `f`
+error: Proofs/Erdos1173Problem.lean:104:5: Failed to infer universe levels in type of binder `f`
+  SetMapping.{?u.6} omega_omega_succ.{?u.6}
+error: Proofs/Erdos1173Problem.lean:128:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos1173Problem.lean:128:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 ^ ℵ_ ↑n
+in the target expression
+error: Proofs/Erdos1173Problem.lean:161:8: failed to synthesize instance of type class
+  Nonempty ↑(Set.Iio ω)
+===== Erdos156Aristotle
+error: Proofs/Erdos156Aristotle.lean:29:5: failed to synthesize instance of type class
+  HAdd (Set ℕ) (Set ℕ) ?m.31
+error: Proofs/Erdos156Aristotle.lean:59:16: failed to synthesize instance of type class
+  HAdd (Set ℕ) (Set ℕ) ?m.14
+error: Proofs/Erdos156Aristotle.lean:59:52: failed to synthesize instance of type class
+  HAdd (Set ℕ) (Set ℕ) ?m.34
+error: Proofs/Erdos156Aristotle.lean:95:5: failed to synthesize instance of type class
+  HSub (Set ℕ) (Set ℕ) ?m.4
+===== Erdos174Problem
+error: Proofs/Erdos174Problem.lean:84:17: failed to synthesize instance of type class
+  Membership ?m.7 (FiniteConfig n)
+error: Proofs/Erdos174Problem.lean:108:6: failed to synthesize instance of type class
+  Membership ?m.32 (FiniteConfig n)
+error: Proofs/Erdos174Problem.lean:131:16: type expected, got
+  (A : FiniteConfig n)
+error: Proofs/Erdos174Problem.lean:144:8: overloaded, errors 
+error: Proofs/Erdos174Problem.lean:144:8: overloaded, errors 
+  failed to synthesize instance of type class
+    Singleton (EuclideanSpace ℝ (Fin n)) (FiniteConfig n)
+===== Erdos180Problem
+error: Proofs/Erdos180Problem.lean:37:48: Application type mismatch: The argument
+  G
+has type
+error: Proofs/Erdos180Problem.lean:63:24: failed to synthesize instance of type class
+  SemilatticeInf ExSingle
+error: Proofs/Erdos180Problem.lean:63:43: Tactic `assumption` failed
+familyEx : ExFamily
+error: Proofs/Erdos180Problem.lean:102:21: failed to synthesize instance of type class
+  SemilatticeInf ExSingle
+===== Erdos188Problem
+error: Proofs/Erdos188Problem.lean:53:55: failed to synthesize instance of type class
+  HSMul (Fin S.card) ℂ ?m.8
+error: Proofs/Erdos188Problem.lean:58:24: failed to synthesize instance of type class
+  HSMul (Fin k) ℂ ?m.8
+===== Erdos191Problem
+error: Proofs/Erdos191Problem.lean:217:2: 'calc' expression has type
+  logInverseSum X > C
+but is expected to have type
+error: Proofs/Erdos191Problem.lean:283:21: failed to synthesize instance of type class
+  LocallyFiniteOrder ℝ
+error: Proofs/Erdos191Problem.lean:284:15: failed to synthesize instance of type class
+  LocallyFiniteOrder ℝ
+error: Proofs/Erdos191Problem.lean:286:10: Type mismatch
+  sum_le_sum ?m.300
+has type
+===== Erdos209Problem
+error: Proofs/Erdos209Problem.lean:100:2: failed to synthesize instance of type class
+  Membership ?m.1 LineArrangement
+error: Proofs/Erdos209Problem.lean:100:12: failed to synthesize instance of type class
+  Membership ?m.5 LineArrangement
+error: Proofs/Erdos209Problem.lean:127:2: failed to synthesize instance of type class
+  Membership Line2D LineArrangement
+error: Proofs/Erdos209Problem.lean:127:11: failed to synthesize instance of type class
+  Membership Line2D LineArrangement
+===== Erdos20Problem
+error: Proofs/Erdos20Problem.lean:42:2: failed to synthesize instance of type class
+  OrderTop (Finset α)
+error: Proofs/Erdos20Problem.lean:100:57: not a positivity goal
+error: Lean exited with code 1
+✖ [8587/8601] Building Proofs.Erdos254Problem (5.3s)
+===== Erdos210Problem
+error: Proofs/Erdos210Problem.lean:56:19: failed to synthesize instance of type class
+  Membership Point PointSet
+error: Proofs/Erdos210Problem.lean:56:27: failed to synthesize instance of type class
+  Membership Point PointSet
+error: Proofs/Erdos210Problem.lean:56:35: failed to synthesize instance of type class
+  Membership Point PointSet
+error: Proofs/Erdos210Problem.lean:61:19: failed to synthesize instance of type class
+  Membership Point PointSet
+===== Erdos211Problem
+error: Proofs/Erdos211Problem.lean:170:45: failed to synthesize instance of type class
+  Membership ?m.13 Line
+===== Erdos216Problem
+error: Proofs/Erdos216Problem.lean:138:27: Application type mismatch: The argument
+  hS_card
+has type
+error: Proofs/Erdos216Problem.lean:139:2: Type mismatch
+  hS_horton.right h
+has type
+error: Proofs/Erdos216Problem.lean:159:29: failed to synthesize instance of type class
+  Singleton (Fin (Nat.succ 0).succ → ?m.12) PointSet
+error: Proofs/Erdos216Problem.lean:169:4: failed to synthesize instance of type class
+  HasSubset PointSet
+===== Erdos237Problem
+error: Proofs/Erdos237Problem.lean:51:15: failed to synthesize instance of type class
+  Inter Type
+===== Erdos247Problem
+error: Proofs/LiouvilleTheorem.lean:183:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.285 < ?m.286 / (2 * A * ↑q ^ n)
+in the target expression
+error: Proofs/LiouvilleTheorem.lean:222:32: failed to synthesize instance of type class
+  GroupWithZero ℕ
+error: Proofs/LiouvilleTheorem.lean:222:60: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 2
+error: Proofs/LiouvilleTheorem.lean:223:18: not a positivity goal
+error: Proofs/LiouvilleTheorem.lean:225:72: not a positivity goal
+error: Proofs/LiouvilleTheorem.lean:225:44: Application type mismatch: The argument
+===== Erdos254Problem
+error: Proofs/Erdos254Problem.lean:83:45: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos254Problem.lean:128:47: failed to synthesize instance of type class
+  Top ℝ
+===== Erdos275Problem
+error: Proofs/Erdos275Problem.lean:108:29: unknown tactic
+error: Proofs/Erdos275Problem.lean:108:25: unsolved goals
+r : ℕ
+error: Proofs/Erdos275Problem.lean:108:25: unsolved goals
+r : ℕ
+i : Fin r
+error: Proofs/Erdos275Problem.lean:140:12: failed to synthesize instance of type class
+  Fintype (Fin C.size)
+===== Erdos308Problem
+error: Proofs/Erdos308Problem.lean:107:25: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℚ
+error: Proofs/Erdos308Problem.lean:107:6: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos308Problem.lean:100:55: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos308Problem.lean:159:6: Function expected at
+  f
+but this term has type
+===== Erdos339Aristotle
+error: Proofs/Erdos339Problem.lean:61:2: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+error: Proofs/Erdos339Problem.lean:123:0: Not a definitional equality: the left-hand side
+  rSums A 2
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos339Problem.lean:126:2: Type mismatch
+  rfl
+has type
+error: Proofs/Erdos339Problem.lean:136:38: unsolved goals
+A : Set ℕ
+n : ℕ
+===== Erdos339Problem
+error: Proofs/Erdos339Problem.lean:61:2: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+error: Proofs/Erdos339Problem.lean:123:0: Not a definitional equality: the left-hand side
+  rSums A 2
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos339Problem.lean:126:2: Type mismatch
+  rfl
+has type
+error: Proofs/Erdos339Problem.lean:136:38: unsolved goals
+A : Set ℕ
+n : ℕ
+===== Erdos353Aristotle
+error: Proofs/Erdos353Aristotle.lean:33:23: expected token
+error: Proofs/Erdos353Aristotle.lean:33:20: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos353Aristotle.lean:33:20: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos353Aristotle.lean:33:22: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+===== Erdos35ProblemAristotle
+error: Proofs/Erdos35ProblemAristotle.lean:72:25: failed to synthesize instance of type class
+  Neg ℕ
+===== Erdos365Problem
+error: Proofs/Erdos365Problem.lean:52:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:54:23: numerals are data in Lean, but the expected type is a proposition
+  ?m.34 ≠ 0 : Prop
+error: Proofs/Erdos365Problem.lean:54:23: numerals are data in Lean, but the expected type is a proposition
+  ?m.34 ≠ 0 : Prop
+error: Proofs/Erdos365Problem.lean:58:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:58:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:77:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:81:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:77:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:81:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:142:15: failed to synthesize instance of type class
+===== Erdos380Problem
+error: Proofs/Erdos380Problem.lean:65:13: Function expected at
+  greatestPrimeFactor ?m.10
+but this term has type
+error: Proofs/Erdos380Problem.lean:65:33: Application type mismatch: The argument
+  (Icc u v).prod
+has type
+error: Proofs/Erdos380Problem.lean:77:5: failed to synthesize instance of type class
+  DecidablePred InBadInterval
+error: Proofs/Erdos380Problem.lean:103:10: failed to synthesize instance of type class
+  HPow ℚ ℚ ?m.21
+===== Erdos395OQ01
+error: Proofs/Erdos395Problem.lean:81:14: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ √2}
+error: Proofs/Erdos395Problem.lean:96:15: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ 1}
+===== Erdos395OQ01Incomplete01
+error: Proofs/Erdos395Problem.lean:81:14: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ √2}
+error: Proofs/Erdos395Problem.lean:96:15: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ 1}
+===== Erdos395Problem
+error: Proofs/Erdos395Problem.lean:81:14: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ √2}
+error: Proofs/Erdos395Problem.lean:96:15: failed to synthesize instance of type class
+  Fintype ↑{ε | isSignVector ε ∧ signedSumAbs z ε ≤ 1}
+===== Erdos445Problem
+error: Proofs/Erdos445Problem.lean:45:44: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.12
+error: Proofs/Erdos445Problem.lean:46:44: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.23
+error: Proofs/Erdos445Problem.lean:115:6: 'calc' expression has type
+  x < 1
+but is expected to have type
+===== Erdos447Problem
+error: Proofs/Erdos447Problem.lean:44:2: failed to synthesize instance of type class
+  Fintype (Fin n)
+error: Proofs/Erdos447Problem.lean:64:3: failed to synthesize instance of type class
+  Fintype (GroundSet n)
+error: Proofs/Erdos447Problem.lean:81:3: Application type mismatch: The argument
+  powerSet n
+has type
+error: Proofs/Erdos447Problem.lean:105:12: failed to synthesize instance of type class
+  Fintype (Finset (Fin n))
+===== Erdos472Problem
+error: Proofs/Erdos472Problem.lean:227:37: failed to synthesize instance of type class
+  OfNat (Fin seed.length) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+===== Erdos485OQ02
+error: Proofs/Erdos485OQ02.lean:98:22: failed to synthesize instance of type class
+  HAdd (Finset ℕ) (Finset ℕ) ?m.17
+error: Proofs/Erdos485OQ02.lean:121:25: failed to synthesize instance of type class
+  HAdd (Finset ℕ) (Finset ℕ) ?m.25
+error: Proofs/Erdos485OQ02.lean:135:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos485OQ02.lean:157:22: failed to synthesize instance of type class
+  HAdd (Finset ℕ) (Finset ℕ) ?m.23
+===== Erdos500Problem
+error: Proofs/Erdos500Problem.lean:33:2: failed to synthesize instance of type class
+  Membership ?m.1 (Hypergraph3 n)
+error: Proofs/Erdos500Problem.lean:33:11: Invalid field notation: Type of
+  e
+is not known; cannot resolve field `card`
+error: Proofs/Erdos500Problem.lean:39:47: failed to synthesize instance of type class
+  Membership (Finset (Fin n)) (Hypergraph3 n)
+===== Erdos501Aristotle
+error: Proofs/Erdos501Aristotle.lean:39:48: expected token
+error: Proofs/Erdos501Aristotle.lean:39:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501Aristotle.lean:39:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501Aristotle.lean:39:47: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos501Aristotle.lean:62:4: linarith failed to find a contradiction
+case left
+A : Set ℝ
+===== Erdos505Problem
+error: Proofs/Erdos505Problem.lean:33:56: failed to synthesize instance of type class
+  Membership (Fin n → ℝ) (BoundedSet n)
+error: Proofs/Erdos505Problem.lean:33:68: failed to synthesize instance of type class
+  Membership (Fin n → ℝ) (BoundedSet n)
+error: Proofs/Erdos505Problem.lean:38:3: failed to synthesize instance of type class
+  Membership ?m.1 (BoundedSet n)
+error: Proofs/Erdos505Problem.lean:38:25: failed to synthesize instance of type class
+  Membership ?m.1 (BoundedSet n)
+===== Erdos525Problem
+error: Proofs/Erdos525Problem.lean:57:35: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos525Problem.lean:61:32: Application type mismatch: The argument
+  z
+has type
+error: Proofs/Erdos525Problem.lean:69:20: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos525Problem.lean:136:20: failed to synthesize instance of type class
+  Lattice ℂ
+===== Erdos548Aristotle
+error: Proofs/Erdos548Aristotle.lean:30:5: Ambiguous term
+  pathGraph
+Possible interpretations:
+error: Proofs/Erdos548Aristotle.lean:30:29: Ambiguous term
+  pathGraph
+Possible interpretations:
+error: Proofs/Erdos548Aristotle.lean:35:24: Ambiguous term
+  starGraph
+Possible interpretations:
+error: Proofs/Erdos548Aristotle.lean:40:5: Ambiguous term
+  starGraph
+Possible interpretations:
+===== Erdos549Problem
+error: Proofs/Erdos549Problem.lean:49:11: Ambiguous term
+  IsTree
+Possible interpretations:
+error: Proofs/Erdos549Problem.lean:67:47: overloaded, errors 
+  failed to synthesize instance of type class
+    AddMonoid (V × V)
+error: Proofs/Erdos549Problem.lean:105:10: unsolved goals
+k : ℕ
+u v : Fin (3 * k + 2)
+error: Proofs/Erdos549Problem.lean:106:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos551Problem
+error: Proofs/Erdos551Problem.lean:78:4: Invalid alternative name `inl`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:79:4: Invalid alternative name `inr`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+error: Proofs/Erdos551Problem.lean:79:4: Invalid alternative name `inr`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+  i.1 = Decidable.rec (fun h => (fun x => (↑i).succ) h) (fun h => (fun x => (↑i).succ.modCore k) h) (k.decLe (↑i).succ)
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+  i.1 = Decidable.rec (fun h => (fun x => (↑i).succ) h) (fun h => (fun x => (↑i).succ.modCore k) h) (k.decLe (↑i).succ)
+error: Proofs/Erdos551Problem.lean:88:67: omega could not prove the goal:
+error: Proofs/Erdos551Problem.lean:88:67: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos551Problem.lean:103:2: failed to synthesize instance of type class
+===== Erdos559Problem
+error: Proofs/Erdos559Problem.lean:62:35: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos559Problem.lean:92:6: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Erdos559.FiniteGraph.mk` has 4 explicit field, but only 3 were provided
+warning: Proofs/Erdos559Problem.lean:110:8: declaration uses `sorry`
+warning: Proofs/Erdos559Problem.lean:123:8: declaration uses `sorry`
+===== Erdos571Problem
+error: Proofs/Erdos571Problem.lean:53:35: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos571Problem.lean:94:0: declaration `Erdos571.erdos_571_conjecture` contains universe level metavariables at the expression
+  IsTuranExponent.{?u.14} α
+in the declaration body
+===== Erdos592Problem
+error: Proofs/Erdos592Problem.lean:44:22: failed to synthesize instance of type class
+  HPow (Ordinal.{?u.8} ↪o Ordinal.{?u.8}) Ordinal.{?u.2} ?m.3
+error: Proofs/Erdos592Problem.lean:55:21: failed to synthesize instance of type class
+  HPow (Ordinal.{?u.11} ↪o Ordinal.{?u.11}) Ordinal.{?u.6} ?m.4
+===== Erdos601Problem
+error: Proofs/Erdos601Problem.lean:49:24: failed to synthesize instance of type class
+  LT α.toType
+error: Proofs/Erdos601Problem.lean:79:40: Application type mismatch: The argument
+  S
+has type
+error: Proofs/Erdos601Problem.lean:79:44: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+error: Proofs/Erdos601Problem.lean:80:26: Application type mismatch: The argument
+  u
+has type
+===== Erdos610Aristotle
+error: Proofs/Erdos610Problem.lean:40:2: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:40:42: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos610Problem.lean:54:2: failed to synthesize instance of type class
+  DecidablePred fun T => IsCliqueTransversal G T
+===== Erdos610Problem
+error: Proofs/Erdos610Problem.lean:40:2: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:40:42: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos610Problem.lean:54:2: failed to synthesize instance of type class
+  DecidablePred fun T => IsCliqueTransversal G T
+===== Erdos610ProblemAristotle
+error: Proofs/Erdos610Problem.lean:40:2: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:40:42: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos610Problem.lean:54:2: failed to synthesize instance of type class
+  DecidablePred fun T => IsCliqueTransversal G T
+===== Erdos611Aristotle
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos611Problem
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos611ProblemAristotle
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos613Aristotle
+error: Proofs/Erdos613Aristotle.lean:25:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+error: Proofs/Erdos613Aristotle.lean:31:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/Erdos613Aristotle.lean:37:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+===== Erdos613ProblemAristotle
+error: Proofs/Erdos613ProblemAristotle.lean:71:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+===== Erdos614Problem
+error: Proofs/Erdos614Problem.lean:53:20: failed to synthesize instance of type class
+  Nonempty V
+error: Proofs/Erdos614Problem.lean:86:40: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos614Problem.lean:126:50: unsolved goals
+n : ℕ
+this : {p | p.1 ≠ p.2} = univ.offDiag
+error: Proofs/Erdos614Problem.lean:135:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  filter ?p ?s ∪ filter ?q ?s
+in the target expression
+===== Erdos619Problem
+error: Proofs/Erdos619Problem.lean:51:11: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos619Problem.lean:51:2: failed to synthesize instance of type class
+  SupSet ℕ
+error: Proofs/Erdos619Problem.lean:73:25: failed to synthesize instance of type class
+  Membership (Quotient ?m.10) (Set (Sym2 V))
+error: Proofs/Erdos619Problem.lean:84:21: Function expected at
+  G.loopless
+but this term has type
+===== Erdos622OQ04
+error: Proofs/Erdos622Problem.lean:52:68: Type mismatch
+  some true
+has type
+error: Proofs/Erdos622Problem.lean:111:34: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos622Problem.lean:111:42: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos622Problem.lean:112:34: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+===== Erdos622Problem
+error: Proofs/Erdos622Problem.lean:52:68: Type mismatch
+  some true
+has type
+error: Proofs/Erdos622Problem.lean:111:34: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos622Problem.lean:111:42: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos622Problem.lean:112:34: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+===== Erdos625Aristotle
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos625Problem
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos625ProblemAristotle
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos628Aristotle
+error: Proofs/Erdos628Aristotle.lean:25:20: Ambiguous term
+  chromaticNumber
+Possible interpretations:
+error: Proofs/Erdos628Aristotle.lean:31:18: Ambiguous term
+  chromaticNumber
+Possible interpretations:
+error: Proofs/Erdos628Aristotle.lean:37:4: Ambiguous term
+  chromaticNumber
+Possible interpretations:
+error: Proofs/Erdos628Aristotle.lean:43:4: Ambiguous term
+  chromaticNumber
+Possible interpretations:
+===== Erdos667Problem
+error: Proofs/Erdos667Problem.lean:94:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  edgeCount (SimpleGraph.comap Fin.castSucc G) S
+in the target expression
+error: Proofs/Erdos667Problem.lean:99:8: Tactic `apply` failed: could not unify the conclusion of `@filter_congr`
+  filter ?p ?s = filter ?q ?s
+with the goal
+error: Proofs/Erdos667Problem.lean:116:46: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  sSup ∅
+in the target expression
+error: Proofs/Erdos667Problem.lean:126:4: failed to synthesize instance of type class
+  DecidableRel G.Adj
+===== Erdos669Problem
+error: Proofs/Erdos669Problem.lean:80:4: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos669Problem.lean:81:4: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos669Problem.lean:109:2: Type mismatch
+  k3_limit
+has type
+===== Erdos670Problem
+error: Proofs/Erdos670Problem.lean:48:29: failed to synthesize instance of type class
+  Membership (Fin d → ℝ) (PointSet d)
+error: Proofs/Erdos670Problem.lean:48:38: failed to synthesize instance of type class
+  Membership (Fin d → ℝ) (PointSet d)
+error: Proofs/Erdos670Problem.lean:48:47: failed to synthesize instance of type class
+  Membership (Fin d → ℝ) (PointSet d)
+error: Proofs/Erdos670Problem.lean:48:56: failed to synthesize instance of type class
+  Membership (Fin d → ℝ) (PointSet d)
+===== Erdos732Problem
+error: Proofs/Erdos732Problem.lean:159:5: failed to synthesize instance of type class
+  Fintype (List ℕ)
+error: Proofs/Erdos732Problem.lean:200:8: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.30
+error: Proofs/Erdos732Problem.lean:240:2: No goals to be solved
+error: Proofs/Erdos732Problem.lean:244:2: No goals to be solved
+error: Proofs/Erdos732Problem.lean:255:2: No goals to be solved
+error: Proofs/Erdos732Problem.lean:244:2: No goals to be solved
+error: Proofs/Erdos732Problem.lean:255:2: No goals to be solved
+error: Lean exited with code 1
+===== Erdos734Problem
+error: Proofs/Erdos734Problem.lean:72:10: failed to synthesize instance of type class
+  Nonempty (Fin n)
+===== Erdos740Problem
+error: Proofs/Erdos740Problem.lean:68:20: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos740Problem.lean:68:33: Application type mismatch: The argument
+  Fin.last (n - 1)
+has type
+error: Proofs/Erdos740Problem.lean:69:45: Application type mismatch: The argument
+  i
+has type
+error: Proofs/Erdos740Problem.lean:69:59: failed to synthesize instance of type class
+  HAdd (Fin (n - 1)) ℕ (Fin n)
+===== Erdos740ProblemProvable
+error: Proofs/Erdos740ProblemProvable.lean:68:20: failed to synthesize instance of type class
+  OfNat (Fin n) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos740ProblemProvable.lean:68:33: Application type mismatch: The argument
+  Fin.last (n - 1)
+has type
+error: Proofs/Erdos740ProblemProvable.lean:69:45: Application type mismatch: The argument
+  i
+has type
+error: Proofs/Erdos740ProblemProvable.lean:69:59: failed to synthesize instance of type class
+  HAdd (Fin (n - 1)) ℕ (Fin n)
+===== Erdos752Problem
+error: Proofs/Erdos752Problem.lean:41:20: failed to synthesize instance of type class
+  Nonempty V
+error: Proofs/Erdos752Problem.lean:45:37: Application type mismatch: The argument
+  V
+has type
+error: Proofs/Erdos752Problem.lean:91:84: failed to synthesize instance of type class
+  Nonempty V
+error: Proofs/Erdos752Problem.lean:97:86: unsolved goals
+V : Type u_2
+inst✝² : Fintype V
+===== Erdos775Problem
+error: Proofs/Erdos775Problem.lean:91:47: failed to synthesize instance of type class
+  Insert V (Finset V)
+error: Proofs/Erdos775Problem.lean:208:49: unknown tactic
+error: Proofs/Erdos775Problem.lean:208:45: unsolved goals
+C : ℕ
+error: Proofs/Erdos775Problem.lean:208:45: unsolved goals
+C : ℕ
+hC : ∀ n ≥ 3, ∃ H numSizes, numSizes ≥ n - C
+error: Proofs/Erdos775Problem.lean:205:48: unsolved goals
+C : ℕ
+hC : ∀ n ≥ 3, ∃ H numSizes, numSizes ≥ n - C
+===== Erdos776Problem
+error: Proofs/Erdos776Problem.lean:36:2: failed to synthesize instance of type class
+  Membership ?m.1 (SubsetFamily n)
+error: Proofs/Erdos776Problem.lean:36:11: failed to synthesize instance of type class
+  Membership ?m.5 (SubsetFamily n)
+error: Proofs/Erdos776Problem.lean:53:14: failed to synthesize instance of type class
+  DecidablePred fun F => IsAntichainFamily F ∧ HasMultiplicity F r
+error: Proofs/Erdos776Problem.lean:53:14: failed to synthesize instance of type class
+  Fintype (SubsetFamily n)
+===== Erdos783Problem
+error: Proofs/Erdos783Problem.lean:165:76: failed to synthesize
+  Zero ?m.180
+error: Proofs/Erdos783Problem.lean:147:80: unsolved goals
+case h
+C : ℝ
+error: Proofs/Erdos783Problem.lean:175:72: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos783Problem.lean:236:65: Application type mismatch: The argument
+  lt_succ_self n
+has type
+===== Erdos803Problem
+error: Proofs/Erdos803Problem.lean:39:2: failed to synthesize instance of type class
+  OrderTop ℕ
+error: Proofs/Erdos803Problem.lean:53:4: Tactic `apply` failed: could not unify the conclusion of `Finset.sup_congr rfl`
+  Finset.sup ?m.40 ?m.37 = Finset.sup ?m.40 ?m.38
+with the goal
+error: Proofs/Erdos803Problem.lean:56:14: failed to synthesize instance of type class
+  OrderTop ℕ
+===== Erdos804Problem
+error: Proofs/Erdos804Problem.lean:106:32: Type mismatch
+  log n ^ 2
+has type
+error: Proofs/Erdos804Problem.lean:121:32: Type mismatch
+  log n ^ 3
+has type
+error: Proofs/Erdos804Problem.lean:141:34: Type mismatch
+  log n ^ 2
+has type
+error: Proofs/Erdos804Problem.lean:142:35: failed to synthesize instance of type class
+  HMul ℝ (ℕ → ℕ) ℕ
+===== Erdos814Problem
+error: Proofs/Erdos814Problem.lean:65:20: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/Erdos814Problem.lean:72:44: failed to synthesize instance of type class
+  HSub ℕ ℚ ℚ
+error: Proofs/Erdos814Problem.lean:79:11: failed to synthesize instance of type class
+  LT ℚ
+error: Proofs/Erdos814Problem.lean:79:23: Type mismatch
+  k
+has type
+===== Erdos818Aristotle
+error: Proofs/Erdos818Aristotle.lean:56:5: failed to synthesize instance of type class
+  HAdd (Finset ℤ) (Finset ℤ) ?m.4
+error: Proofs/Erdos818Aristotle.lean:62:5: failed to synthesize instance of type class
+  HAdd (Finset ℤ) (Finset ℤ) ?m.3
+error: Proofs/Erdos818Aristotle.lean:65:9: failed to synthesize instance of type class
+  HAdd (Finset ℤ) (Finset ℤ) ?m.39
+error: Proofs/Erdos818Aristotle.lean:72:5: failed to synthesize instance of type class
+  HMul (Finset ℤ) (Finset ℤ) ?m.4
+===== Erdos81Problem
+error: Proofs/Erdos81Problem.lean:59:38: failed to synthesize instance of type class
+  OfNat (Fin k) 1
+numerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is
+error: Proofs/Erdos81Problem.lean:94:2: failed to synthesize instance of type class
+  DecidablePred fun k => ∃ P, #P.cliques ≤ k
+error: Proofs/Erdos81Problem.lean:94:46: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos81Problem.lean:131:31: Application type mismatch: The argument
+  hV
+has type
+===== Erdos822Problem
+error: Proofs/Erdos822Problem.lean:91:13: failed to synthesize instance of type class
+  LT ℝ
+error: Proofs/Erdos822Problem.lean:91:17: failed to synthesize instance of type class
+  OfNat ℝ 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos822Problem.lean:92:46: failed to synthesize instance of type class
+  HSub ℝ ℕ ℕ
+error: Proofs/Erdos822Problem.lean:111:14: failed to synthesize instance of type class
+  LT ℝ
+===== Erdos836Problem
+error: Proofs/Erdos836Problem.lean:55:18: failed to synthesize instance of type class
+  Finite ↑e
+===== Erdos859Aristotle
+error: Proofs/Erdos859Aristotle.lean:36:37: Type mismatch
+  N + 1
+has type
+error: Proofs/Erdos859Aristotle.lean:36:22: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ S
+error: Proofs/Erdos859Aristotle.lean:44:2: Type mismatch
+  card_product ?m.27 ?m.28
+has type
+error: Proofs/Erdos859Aristotle.lean:51:2: Type mismatch
+  divisors_prime_pow hp
+has type
+===== Erdos861Problem
+error: Proofs/Erdos861Problem.lean:187:42: failed to synthesize instance of type class
+  OfScientific ℕ
+error: Proofs/Erdos861Problem.lean:197:42: failed to synthesize instance of type class
+  OfScientific ℕ
+error: Proofs/Erdos861Problem.lean:205:17: failed to synthesize instance of type class
+  OfScientific ℕ
+error: Proofs/Erdos861Problem.lean:206:42: failed to synthesize instance of type class
+  OfScientific ℕ
+===== Erdos862Problem
+error: Proofs/Erdos862Problem.lean:117:4: typeclass instance problem is stuck
+  AddCommMonoid (?m.21 multiset1 multiset2)
+===== Erdos878Problem
+error: Proofs/Erdos878Problem.lean:144:50: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos878Problem.lean:148:67: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos878Problem.lean:152:53: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos878Problem.lean:153:70: failed to synthesize instance of type class
+  Top ℝ
+===== Erdos914Problem
+error: Proofs/Erdos914Problem.lean:62:10: failed to synthesize instance of type class
+  Nonempty V
+===== Erdos922Problem
+error: Proofs/Erdos922Problem.lean:47:14: failed to synthesize instance of type class
+  DecidablePred (IsIndependentSet G)
+error: Proofs/Erdos922Problem.lean:58:4: Type mismatch
+  fun v => (Fintype.equivFin V) v
+has type
+error: Proofs/Erdos922Problem.lean:96:31: Function expected at
+  chromaticNumber'
+but this term has type
+error: Proofs/Erdos922Problem.lean:103:4: Function expected at
+  chromaticNumber'
+but this term has type
+===== Erdos948Problem
+error: Proofs/Erdos948Problem.lean:185:40: failed to synthesize instance of type class
+  Top ℕ
+===== Erdos94OQ02
+error: Proofs/Erdos94OQ02.lean:45:2: failed to synthesize instance of type class
+  Membership ?m.1 PointConfig
+error: Proofs/Erdos94OQ02.lean:67:16: failed to synthesize instance of type class
+  EmptyCollection PointConfig
+error: Proofs/Erdos94OQ02.lean:69:6: Type mismatch
+  ![cos (2 * π * k / ↑n), sin (2 * π * k / ↑n)]
+has type
+error: Proofs/Erdos94OQ02.lean:137:33: Application type mismatch: The argument
+  n
+has type
+===== Erdos958Problem
+error: Proofs/Erdos958Problem.lean:119:52: failed to synthesize instance of type class
+  OfNat (Multiset ℕ) 1
+numerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is
+===== Erdos973Problem
+error: Proofs/Erdos973Problem.lean:47:19: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos973Problem.lean:51:7: failed to synthesize instance of type class
+error: Proofs/Erdos973Problem.lean:51:7: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos973Problem.lean:55:7: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos973Problem.lean:59:7: failed to synthesize instance of type class
+  Lattice ℂ
+===== Erdos976Problem
+error: Proofs/Erdos976Problem.lean:63:61: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℤ
+===== Erdos988Problem
+error: Proofs/Erdos988Problem.lean:64:29: Application type mismatch: The argument
+  C.center
+has type
+error: Proofs/Erdos988Problem.lean:80:2: failed to synthesize instance of type class
+  Membership ?m.1 (SphereConfiguration d)
+error: Proofs/Erdos988Problem.lean:84:28: Application type mismatch: The argument
+  C.center
+has type
+error: Proofs/Erdos988Problem.lean:96:84: failed to synthesize instance of type class
+  Top ℝ
+===== Erdos990Problem
+error: Proofs/Erdos990Problem.lean:134:8: typeclass instance problem is stuck
+  DecidablePred ?m.13
+===== EulerIdentityOQ01OQ02OQ01
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:40: Type mismatch
+  z * I
+has type
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:12: failed to synthesize instance of type class
+  NormedDivisionRing Type
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:81:31: unsolved goals
+z : ℂ
+⊢ HasSum (fun k => (-1) ^ k * z ^ (2 * k) / ↑(2 * k)! + I * ((-1) ^ k * z ^ (2 * k + 1) / ↑(2 * k + 1)!))
+===== FactorRemainderNullstellensatzOQ01
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:35:20: failed to synthesize instance of type class
+  Field ↑↑I
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:36:2: failed to synthesize instance of type class
+  Finite σ
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:46:5: failed to synthesize instance of type class
+  Field ↑↑I
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:56:24: failed to synthesize instance of type class
+  Field ↑↑I
+===== FurstenbergCorrespondenceOQ01
+error: Proofs/FurstenbergCorrespondenceOQ01.lean:101:10: Application type mismatch: The argument
+  isOpen_discrete {b}
+has type
+error: Proofs/FurstenbergCorrespondenceOQ01.lean:139:11: failed to synthesize instance of type class
+  Decidable (n ∈ A)
+error: Proofs/FurstenbergCorrespondenceOQ01.lean:146:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+A : Set ℕ
+error: Proofs/FurstenbergCorrespondenceOQ01.lean:153:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+A : Set ℕ
+===== Hilbert20LocalSolvability
+error: Proofs/Hilbert20LocalSolvability.lean:73:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+===== Hilbert20OQ01OQ03
+error: Proofs/Hilbert20OQ01OQ03.lean:64:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+error: Proofs/Hilbert20OQ01OQ03.lean:104:28: unsolved goals
+n m : ℕ
+P : LinearPDO n m
+error: Proofs/Hilbert20OQ01OQ03.lean:126:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+error: Proofs/Hilbert20OQ01OQ03.lean:133:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+===== Hilbert4Geodesics
+error: Proofs/Hilbert4Geodesics.lean:157:12: failed to synthesize instance of type class
+  NormedAddCommGroup M.carrier
+error: Proofs/Hilbert4Geodesics.lean:158:16: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.12
+error: Proofs/Hilbert4Geodesics.lean:158:33: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.16
+error: Proofs/Hilbert4Geodesics.lean:158:50: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.20
+===== Hilbert5OQ02
+error: Proofs/Hilbert5OQ02.lean:86:18: Function expected at
+  exp ℝ
+but this term has type
+error: Proofs/Hilbert5OQ02.lean:86:28: Function expected at
+  exp ℝ
+but this term has type
+error: Proofs/Hilbert5OQ02.lean:87:2: failed to synthesize instance of type class
+  NormedAlgebra ℚ 𝔸
+error: Proofs/Hilbert5OQ02.lean:111:8: failed to synthesize instance of type class
+  NormedAlgebra ℚ 𝔸
+===== InverseGaloisA5DedekindInstantiation
+error: Proofs/DedekindFrobeniusBridge.lean:55:86: unsolved goals
+R : Type u_1
+S : Type u_2
+error: Proofs/DedekindFrobeniusBridge.lean:58:7: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ideal.map ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q))
+    (comap ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q)) ?I)
+error: Proofs/DedekindFrobeniusBridge.lean:82:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Submodule.toAddSubgroup Q).inertia G
+in the target expression
+===== LagrangeTheorem
+error: Proofs/LagrangeTheorem.lean:198:8: failed to synthesize instance of type class
+  Fact (Nat.Prime (Nat.card G))
+===== LagrangeTheoremOQ01
+error: Proofs/LagrangeTheoremOQ01.lean:37:2: Type mismatch
+  card_subgroup_dvd_card H
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:42:2: Type mismatch
+  Eq.symm (card_mul_index H)
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:64:2: Type mismatch
+  Sylow.card_eq_multiplicity P
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:69:2: Type mismatch
+  card_subgroup_dvd_card ↑P
+has type
+===== LagrangeTheoremOQ01OQ01OQ01ApproachB
+error: Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:148:19: failed to synthesize instance of type class
+  MulOne (AddAut (ZMod q))
+error: Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:163:66: Invalid argument name `q` for function `unitToAddAut`
+error: Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:165:2: Tactic `apply` failed: could not unify the conclusion of `@Units.ext`
+  Eq.{?u.7 + 1} ?u ?v
+error: Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:165:2: Tactic `apply` failed: could not unify the conclusion of `@Units.ext`
+  Eq.{?u.7 + 1} ?u ?v
+with the goal
+error: Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:176:27: failed to synthesize instance of type class
+  Monoid (AddAut (ZMod q))
+===== LagrangeTheoremOQ01OQ02
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:34:21: Type mismatch
+  alternatingGroup (Fin 4)
+has type
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:43:18: failed to synthesize instance of type class
+  Fintype A4
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:43:45: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'sorryAx' uses 'sorry' and/or contains errors
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:47:41: failed to synthesize instance of type class
+  Monoid A4
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:47:41: failed to synthesize instance of type class
+  Monoid A4
+===== LagrangeTheoremOQ01OQ03OQ01
+error: Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:185:2: Type mismatch: After simplification, term
+  hcard
+ has type
+error: Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:255:14: failed to synthesize instance of type class
+  Bracket G G
+===== LiouvilleTheorem
+error: Proofs/LiouvilleTheorem.lean:183:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.285 < ?m.286 / (2 * A * ↑q ^ n)
+in the target expression
+error: Proofs/LiouvilleTheorem.lean:222:32: failed to synthesize instance of type class
+  GroupWithZero ℕ
+error: Proofs/LiouvilleTheorem.lean:222:60: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 2
+error: Proofs/LiouvilleTheorem.lean:223:18: not a positivity goal
+error: Proofs/LiouvilleTheorem.lean:225:72: not a positivity goal
+error: Proofs/LiouvilleTheorem.lean:225:44: Application type mismatch: The argument
+===== MaschkeAugmentationNoSplitOQ010101
+error: Proofs/MaschkeAugmentationNoSplitOQ010101.lean:69:2: failed to synthesize instance of type class
+  Semiring (G p)
+error: Proofs/MaschkeAugmentationNoSplitOQ010101.lean:72:88: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== MaschkeLocalRingOQ010102
+error: Proofs/MaschkeLocalRingOQ010102.lean:67:2: failed to synthesize instance of type class
+  Semiring (G p)
+error: Proofs/MaschkeLocalRingOQ010102.lean:69:80: unsolved goals
+p : ℕ
+inst✝ : Fact (Nat.Prime p)
+===== NormEuclideanZsqrtdFamilyOQ03OQ02
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:55:2: failed to synthesize instance of type class
+  IsPrincipalIdealRing (ℤ√d)
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:63:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√d)
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:76:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√(-1))
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:87:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√(-2))
+===== NormEuclideanZsqrtdFamilyOQ03OQ02OQ01
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:55:2: failed to synthesize instance of type class
+  IsPrincipalIdealRing (ℤ√d)
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:63:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√d)
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:76:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√(-1))
+error: Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:87:2: failed to synthesize instance of type class
+  UniqueFactorizationMonoid (ℤ√(-2))
+===== OSBridge
+error: Proofs/OSBridge.lean:99:25: failed to synthesize instance of type class
+  IsAddApply EFieldConfiguration ETestFunction ℝ
+error: Proofs/OSBridge.lean:103:25: failed to synthesize instance of type class
+  IsSMulApply EFieldConfiguration ℝ ETestFunction ?m.15
+error: Proofs/OSBridge.lean:586:19: Application type mismatch: The argument
+  dμ
+has type
+===== PicardIterationExplicitOQ0102
+error: Proofs/PicardIterationExplicitOQ0102.lean:106:49: Application type mismatch: The argument
+  t
+has type
+error: Proofs/PicardIterationExplicitOQ0102.lean:106:10: failed to synthesize instance of type class
+  NormedDivisionRing Type
+error: Proofs/PicardIterationExplicitOQ0102.lean:108:2: Type mismatch: After simplification, term
+  h
+ has type
+===== PrimitiveRootsOQ02
+error: Proofs/PrimitiveRootsOQ02.lean:161:56: Application type mismatch: The argument
+  Units.ext
+has type
+error: Proofs/PrimitiveRootsOQ02.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card (ZMod ?n)ˣ
+in the target expression
+error: Proofs/PrimitiveRootsOQ02.lean:177:2: failed to synthesize instance of type class
+  Decidable (IsGenerator g)
+===== PuiseuxTheoremOQ02
+error: Proofs/PuiseuxTheoremOQ02.lean:81:2: Type mismatch
+  K
+has type
+error: Proofs/PuiseuxTheoremOQ02.lean:82:16: failed to synthesize instance of type class
+  Zero (MultiHahnSeries n K)
+error: Proofs/PuiseuxTheoremOQ02.lean:84:0: Not a definitional equality: the left-hand side
+  MultiHahnSeries 0 K
+is not definitionally equal to the right-hand side
+error: Proofs/PuiseuxTheoremOQ02.lean:85:64: Type mismatch
+  rfl
+has type
+===== QuadraticReciprocityOQ03
+error: Proofs/QuadraticReciprocityOQ03.lean:51:2: failed to synthesize instance of type class
+  FunLike (ℤ → ℤ) ℤ ?m.14
+error: Proofs/QuadraticReciprocityOQ03.lean:56:2: Type mismatch
+  legendreSym.at_neg_one hp
+has type
+error: Proofs/QuadraticReciprocityOQ03.lean:74:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+error: Proofs/QuadraticReciprocityOQ03.lean:77:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+===== QuadraticReciprocityOQ03OQ01
+error: Proofs/QuadraticReciprocityOQ03.lean:51:2: failed to synthesize instance of type class
+  FunLike (ℤ → ℤ) ℤ ?m.14
+error: Proofs/QuadraticReciprocityOQ03.lean:56:2: Type mismatch
+  legendreSym.at_neg_one hp
+has type
+error: Proofs/QuadraticReciprocityOQ03.lean:74:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+error: Proofs/QuadraticReciprocityOQ03.lean:77:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+===== QuadraticReciprocityOQ03OQ01Exp
+error: Proofs/QuadraticReciprocityOQ03.lean:51:2: failed to synthesize instance of type class
+  FunLike (ℤ → ℤ) ℤ ?m.14
+error: Proofs/QuadraticReciprocityOQ03.lean:56:2: Type mismatch
+  legendreSym.at_neg_one hp
+has type
+error: Proofs/QuadraticReciprocityOQ03.lean:74:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+error: Proofs/QuadraticReciprocityOQ03.lean:77:10: failed to synthesize instance of type class
+  Fact (Nat.Prime 7)
+===== SchauderFixedPoint
+error: Proofs/SchauderFixedPointOQ01.lean:54:2: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/SchauderFixedPointOQ01.lean:60:2: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/SchauderFixedPointOQ01.lean:307:2: failed to synthesize instance of type class
+  Field 𝕜✝
+===== SchauderFixedPointOQ01
+error: Proofs/SchauderFixedPointOQ01.lean:54:2: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/SchauderFixedPointOQ01.lean:60:2: failed to synthesize instance of type class
+  Field 𝕜✝
+error: Proofs/SchauderFixedPointOQ01.lean:307:2: failed to synthesize instance of type class
+  Field 𝕜✝
+===== SchauderFixedPointOQ03
+error: Proofs/SchauderFixedPointOQ03.lean:86:49: unsolved goals
+X : Type u_1
+f : X → X
+error: Proofs/SchauderFixedPointOQ03.lean:111:17: failed to synthesize instance of type class
+  AddCommMonoid ↑S
+error: Proofs/SchauderFixedPointOQ03.lean:130:19: failed to synthesize instance of type class
+  AddCommMonoid ↑S
+error: Proofs/SchauderFixedPointOQ03.lean:130:49: failed to synthesize instance of type class
+  AddCommMonoid ↑S
+===== SumOfKthPowersOQ03
+error: Proofs/SumOfKthPowersOQ03.lean:110:10: typeclass instance problem is stuck
+  AddCommMonoid ?m.124
+error: Proofs/SumOfKthPowersOQ03.lean:128:10: typeclass instance problem is stuck
+  AddCommMonoid ?m.76
+===== TriangleInequalityOQ06
+error: Proofs/TriangleInequalityOQ06.lean:84:2: failed to synthesize instance of type class
+  SeminormedAddCommGroup E
+error: Proofs/TriangleInequalityOQ06.lean:89:2: failed to synthesize instance of type class
+  SeminormedAddCommGroup E
+===== TriangularReciprocalGeneralized
+error: Proofs/TriangularReciprocalGeneralized.lean:50:2: No goals to be solved
+warning: Proofs/TriangularReciprocalGeneralized.lean:49:28: This simp argument is unused:
+  Finset.sum_range_one
+error: Proofs/TriangularReciprocalGeneralized.lean:62:2: No applicable extensionality theorem found for type
+  ℝ
+error: Proofs/TriangularReciprocalGeneralized.lean:85:21: failed to synthesize instance of type class
+  HAdd (Finset ℕ) ℕ ?m.97
+error: Proofs/TriangularReciprocalGeneralized.lean:85:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  if n + (k + 1) = 0 then ?m.104 else ?m.105
+in the target expression

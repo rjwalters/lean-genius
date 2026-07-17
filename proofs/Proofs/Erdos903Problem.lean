@@ -21,10 +21,7 @@ we have t ≥ n + cp where c ≈ 1.148.
 Tags: combinatorics, block-designs, finite-geometry
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 namespace Erdos903
 
@@ -68,7 +65,7 @@ axiom de_bruijn_erdos (n : ℕ) (hn : n ≥ 2) (D : BlockDesign n) :
 def IsMinimalDesign {n : ℕ} (D : BlockDesign n) : Prop :=
   D.numBlocks = n
 
-/-- In minimal designs, every block has the same size -/
+/-  In minimal designs, every block has the same size -/
 /-
 ## Part 3: Projective Plane Constructions
 
@@ -86,7 +83,7 @@ structure ProjectivePlane (q : ℕ) where
   two_points_one_line : ∀ P Q : ℕ, P ∈ points → Q ∈ points → P ≠ Q →
     ∃! L, L ∈ lines ∧ P ∈ L ∧ Q ∈ L
 
-/-- Projective planes exist for every prime power order -/
+/-  Projective planes exist for every prime power order -/
 /-- A projective plane gives a block design achieving t = n = q² + q + 1 -/
 axiom projective_plane_design (q : ℕ) (hq : IsPrimePower q) :
     ∃ D : BlockDesign (q^2 + q + 1), D.numBlocks = q^2 + q + 1
@@ -102,7 +99,7 @@ axiom efsw_1985 (p : ℕ) (hp : IsPrimePower p)
     (D : BlockDesign (p^2 + p + 1)) (h : D.numBlocks > p^2 + p + 1) :
   D.numBlocks ≥ (p^2 + p + 1) + p
 
-/-- Stronger result: unless design is from broken projective plane,
+/-  Stronger result: unless design is from broken projective plane,
     t ≥ n + cp where c ≈ 1.148 -/
 /-
 ## Part 5: The Gap Structure
@@ -114,7 +111,7 @@ What values of t are achievable?
 def achievableBlocks (p : ℕ) : Set ℕ :=
   { t | ∃ D : BlockDesign (p^2 + p + 1), D.numBlocks = t }
 
-/-- t = n is always achievable (projective plane) -/
+/-  t = n is always achievable (projective plane) -/
 /-- Values in (n, n+p) are NOT achievable -/
 axiom gap_theorem (p : ℕ) (hp : IsPrimePower p) :
   ∀ t, p^2 + p + 1 < t → t < p^2 + p + 1 + p →
@@ -193,16 +190,13 @@ theorem erdos_903_summary (p : ℕ) (hp : IsPrimePower p) :
   · intro D
     have hn : p^2 + p + 1 ≥ 2 := by
       obtain ⟨q, k, hq, hk, heq⟩ := hp
-      subst heq
-      have : q ≥ 2 := Nat.Prime.two_le hq
-      calc p^2 + p + 1 = (q^k)^2 + q^k + 1 := by ring_nf
-        _ ≥ (q^1)^2 + q^1 + 1 := by
-            have hpow : q^k ≥ q^1 := Nat.pow_le_pow_right (Nat.Prime.one_lt hq).le hk
-            omega
-        _ = q^2 + q + 1 := by ring
-        _ ≥ 2^2 + 2 + 1 := by omega
-        _ = 7 := by norm_num
-        _ ≥ 2 := by norm_num
+      have hq2 : q ≥ 2 := Nat.Prime.two_le hq
+      have hple : p ≥ 2 := by
+        rw [heq]
+        calc q ^ k ≥ q ^ 1 := Nat.pow_le_pow_right (Nat.Prime.one_lt hq).le hk
+          _ = q := pow_one q
+          _ ≥ 2 := hq2
+      nlinarith [hple]
     exact de_bruijn_erdos _ hn D
   · exact projective_plane_design p hp
   · intro D hD

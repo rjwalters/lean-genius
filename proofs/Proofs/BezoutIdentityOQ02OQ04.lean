@@ -57,7 +57,7 @@ then f * g is also primitive.
 This requires the multiplicativity of content: content(f * g) = content(f) * content(g).
 The `linear_combination` tactic cannot prove this structural fact.
 -/
-theorem gauss_lemma_primitive_mul {R : Type*} [CommRing R] [IsDomain R] [GCDMonoid R]
+theorem gauss_lemma_primitive_mul {R : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
     {f g : R[X]} (hf : f.IsPrimitive) (hg : g.IsPrimitive) : (f * g).IsPrimitive :=
   hf.mul hg
 
@@ -65,9 +65,9 @@ theorem gauss_lemma_primitive_mul {R : Type*} [CommRing R] [IsDomain R] [GCDMono
 **Content multiplicativity** (the engine behind Gauss's Lemma):
 content(f * g) = content(f) * content(g).
 -/
-theorem content_multiplicative {R : Type*} [CommRing R] [IsDomain R] [GCDMonoid R]
+theorem content_multiplicative {R : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
     (f g : R[X]) : (f * g).content = f.content * g.content :=
-  Polynomial.content_mul f g
+  Polynomial.content_mul
 
 /-!
 ## Part II: Euclid's Lemma Over a Field (linear_combination Works!)

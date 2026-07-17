@@ -76,7 +76,7 @@ The interval (2N/3, N] provides a divisibility-free set.
 def upperThird (N : ℕ) : Finset ℕ :=
   (Finset.range (N + 1)).filter (fun k => 2 * N < 3 * k)
 
-/-- The upper third is divisibility-free.
+/-  The upper third is divisibility-free.
 
     Proof: For a,b,c in (2N/3, N] with a < b and a < c:
     - We have b + c > 4N/3
@@ -97,7 +97,7 @@ theorem upperThird_card (N : ℕ) : (upperThird N).card = N - 2 * N / 3 := by
   · congr 1; ext k
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
     omega
-  · rw [Finset.card_Icc]; omega
+  · rw [Nat.card_Icc]; omega
 
 /-- The upper third achieves the N/3 lower bound. -/
 theorem upperThird_achieves_bound (N : ℕ) (hN : N ≥ 3) :
@@ -120,7 +120,7 @@ axiom bedert_theorem :
       DivisibilityFree A →
       A.card ≤ N / 3 + C
 
-/-- Corollary: The upper third construction is essentially optimal.
+/-  Corollary: The upper third construction is essentially optimal.
 
     Proof: By Bedert's theorem, |A| ≤ N/3 + C. Since |upperThird N| ≥ N/3 - 1,
     we have |A| ≤ |upperThird N| + C + 1. -/
@@ -218,7 +218,7 @@ For a,b,c in (2N/3, N], we have a + b > 4N/3 > N ≥ c.
 def SumFree (A : Finset ℕ) : Prop :=
   ∀ a b c, a ∈ A → b ∈ A → c ∈ A → a + b ≠ c
 
-/-- The upper third is sum-free.
+/- The upper third is sum-free.
 
     Proof: For a,b,c in (2N/3, N], we have a + b > 4N/3 > N ≥ c,
     so a + b > c, hence a + b ≠ c. -/

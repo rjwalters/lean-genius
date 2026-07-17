@@ -55,7 +55,7 @@ def ErdosProblem1051 : Prop :=
 ## Section IV: Rapid Growth Case (Solved)
 -/
 
-/-- Erdős (1988) proved: if aₙ₊₁ ≥ C · aₙ² for some C > 0,
+/-  Erdős (1988) proved: if aₙ₊₁ ≥ C · aₙ² for some C > 0,
 then the series is irrational. This is a stronger growth condition
 than lim inf aₙ^{1/2ⁿ} > 1. -/
 /-
@@ -84,7 +84,7 @@ theorem series_converges (a : ℕ → ℤ) (h_mono : StrictMono a)
       push_cast
       linarith
   -- Product lower bound: a n * a(n+1) ≥ (n+1)(n+2)
-  have hprod_ge : ∀ n, ((n : ℝ) + 1) * ((n : ℝ) + 2) ≤ (a n : ℝ) * (a (n + 1) : ℝ) := by
+  have hprod_ge : ∀ n : ℕ, ((n : ℝ) + 1) * ((n : ℝ) + 2) ≤ (a n : ℝ) * (a (n + 1) : ℝ) := by
     intro n
     have h1 := ha_ge n
     have h2 : (n : ℝ) + 2 ≤ (a (n + 1) : ℝ) := by
@@ -100,27 +100,30 @@ theorem series_converges (a : ℕ → ℤ) (h_mono : StrictMono a)
     · exact hprod_ge n
   -- Summable comparison: 1/((n+1)(n+2)) ≤ 1/(n+1)^2, and Σ 1/(n+1)^2 converges
   have hcomp : Summable (fun n : ℕ => (1 : ℝ) / (((n : ℝ) + 1) * ((n : ℝ) + 2))) := by
-    apply Summable.of_nonneg_of_le (fun n => by positivity)
-    · intro n
-      apply one_div_le_one_div_of_le (by positivity)
-      nlinarith
-    · -- Summable (fun n => 1/(n+1)^2) via eventual comparison with p-series 1/n^2
-      apply Summable.of_norm_bounded_eventually (fun n : ℕ => 1 / (n : ℝ) ^ 2)
-      · -- p-series 1/n^2 is summable
-        have h := Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
-        convert h using 1
-        ext n; simp [one_div, rpow_natCast]
-      · -- Eventually 1/(n+1)^2 ≤ 1/n^2 (for n ≥ 1)
-        filter_upwards [Filter.eventually_ge_atTop 1] with n hn
-        rw [Real.norm_of_nonneg (by positivity)]
-        apply one_div_le_one_div_of_le
-        · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-          positivity
-        · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-          nlinarith
+    -- p-series 1/n^2 is summable
+    have hp : Summable (fun n : ℕ => 1 / (n : ℝ) ^ 2) := by
+      have h := Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
+      convert h using 1
+      ext n; simp [one_div]
+    -- Summable (fun n => 1/(n+1)^2) via eventual comparison with p-series 1/n^2
+    have hp1 : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ 2) := by
+      apply Summable.of_norm_bounded_eventually hp
+      rw [Nat.cofinite_eq_atTop]
+      -- Eventually 1/(n+1)^2 ≤ 1/n^2 (for n ≥ 1)
+      filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+      rw [Real.norm_of_nonneg (by positivity)]
+      apply one_div_le_one_div_of_le
+      · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        positivity
+      · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        nlinarith
+    apply Summable.of_nonneg_of_le (fun n => by positivity) _ hp1
+    intro n
+    apply one_div_le_one_div_of_le (by positivity)
+    nlinarith
   -- Apply comparison test: terms ≤ comparison, comparison summable
   exact Summable.of_nonneg_of_le
-    (fun n => div_nonneg one_nonneg (mul_nonneg
+    (fun n => div_nonneg zero_le_one (mul_nonneg
         (le_of_lt (Int.cast_pos.mpr (h_pos n)))
         (le_of_lt (Int.cast_pos.mpr (h_pos (n + 1))))))
     hterm_le hcomp
@@ -134,15 +137,11 @@ theorem series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
     erdosSeries a > 0 := by
   unfold erdosSeries
   have h_summable := series_converges a h_mono h_pos h_growth
-  apply tsum_pos h_summable
-  · intro n
-    apply le_of_lt
-    apply div_pos one_pos
-    apply mul_pos
-    · exact Int.cast_pos.mpr (h_pos n)
-    · exact Int.cast_pos.mpr (h_pos (n + 1))
-  · exact ⟨0, div_pos one_pos (mul_pos
-      (Int.cast_pos.mpr (h_pos 0)) (Int.cast_pos.mpr (h_pos 1)))⟩
+  refine h_summable.tsum_pos (fun n => ?_) 0 ?_
+  · exact le_of_lt (div_pos one_pos (mul_pos
+      (Int.cast_pos.mpr (h_pos n)) (Int.cast_pos.mpr (h_pos (n + 1)))))
+  · exact div_pos one_pos (mul_pos
+      (Int.cast_pos.mpr (h_pos 0)) (Int.cast_pos.mpr (h_pos 1)))
 
 /-
 ## Section VI: Related Series
@@ -159,7 +158,7 @@ def SimpleSeriesConjecture : Prop :=
     ∀ a : ℕ → ℤ, StrictMono a → GrowthCondition a →
       Irrational (simpleReciprocalSeries a)
 
-/-- The Sylvester–Fibonacci example: aₙ = Fib(2ⁿ) satisfies
+/-  The Sylvester–Fibonacci example: aₙ = Fib(2ⁿ) satisfies
 the growth condition and Σ 1/(aₙ · aₙ₊₁) is known to be irrational
 (it telescopes to a known irrational). -/
 /-
@@ -171,7 +170,6 @@ the growth condition and Σ 1/(aₙ · aₙ₊₁) is known to be irrational
 theorem partial_fraction {x y : ℝ} (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x ≠ y) :
     1 / (x * y) = (1 / (y - x)) * (1 / x - 1 / y) := by
   field_simp
-  ring
 
 /-- **Individual terms are positive** for positive sequences. -/
 theorem term_pos {a : ℕ → ℤ} (h_pos : ∀ n, a n > 0) (n : ℕ) :
@@ -193,7 +191,7 @@ theorem strict_mono_pos (a : ℕ → ℤ) (h_mono : StrictMono a) (h_pos : a 0 >
 theorem term_le_reciprocal_sq {a : ℕ → ℤ} (h_mono : StrictMono a)
     (h_pos : ∀ n, a n > 0) (n : ℕ) :
     1 / ((a n : ℝ) * (a (n + 1) : ℝ)) ≤ 1 / ((a n : ℝ) * (a n : ℝ)) := by
-  apply div_le_div_of_nonneg_left one_pos
+  apply div_le_div_of_nonneg_left zero_le_one
   · exact mul_pos (Int.cast_pos.mpr (h_pos n)) (Int.cast_pos.mpr (h_pos n))
   · apply mul_le_mul_of_nonneg_left
     · exact Int.cast_le.mpr (le_of_lt (h_mono (Nat.lt_succ_of_le le_rfl)))

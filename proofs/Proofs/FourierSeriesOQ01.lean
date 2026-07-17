@@ -165,9 +165,9 @@ theorem carlesonConstant_nonneg : (0 : ℝ) ≤ carlesonConstant := carlesonData
 /-- **Carleson-Hunt Maximal Inequality** (Axiomatized)
 
 For any f ∈ L²(𝕋), the Carleson maximal function S*f satisfies the weak-type
-estimate: for any λ > 0,
+estimate: for any lam > 0,
 
-  μ({x : S*f(x) > λ}) ≤ (C/λ)² · ‖f‖²_{L²}
+  μ({x : S*f(x) > lam}) ≤ (C/lam)² · ‖f‖²_{L²}
 
 This is the weak-(2,2) form. The strong-(2,2) form (‖S*f‖_{L²} ≤ C‖f‖_{L²})
 implies this by Chebyshev's inequality, but the weak form suffices for proving
@@ -175,10 +175,10 @@ a.e. convergence.
 
 Note: We state this for measurable f : AddCircle T → ℂ with finite L² norm. -/
 axiom carleson_hunt_maximal
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
-    (λ : ℝ) (hλ : 0 < λ) :
-    haarAddCircle {x : AddCircle T | ENNReal.ofReal λ < carlesonMaximal f x} ≤
-      ENNReal.ofReal ((carlesonConstant / λ) ^ 2 *
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
+    (lam : ℝ) (hlam : 0 < lam) :
+    haarAddCircle {x : AddCircle T | ENNReal.ofReal lam < carlesonMaximal f x} ≤
+      ENNReal.ofReal ((carlesonConstant / lam) ^ 2 *
         ∫ x, ‖f x‖ ^ 2 ∂haarAddCircle)
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -199,7 +199,7 @@ def IsTrigPoly (g : AddCircle T → ℂ) : Prop :=
 
 /-- For a trigonometric polynomial of degree M, S_N g = g for all N ≥ M. -/
 theorem fourierPartialSum_of_trigPoly
-    {g : AddCircle T → ℂ} (hg : IsTrigPoly g) (hgL2 : Memℒp g 2 haarAddCircle)
+    {g : AddCircle T → ℂ} (hg : IsTrigPoly g) (hgL2 : MemLp g 2 haarAddCircle)
     {N : ℕ} (hN : ∀ n : ℤ, fourierCoeff g n ≠ 0 → |n| ≤ N) :
     ∀ x, fourierPartialSum g N x =
       ∑ n ∈ Icc (-(N : ℤ)) (N : ℤ), fourierCoeff g n * fourier n x := by
@@ -207,11 +207,13 @@ theorem fourierPartialSum_of_trigPoly
   rfl
 
 /-- Helper: on `AddCircle T`, `fourier k` is integrable. -/
-private theorem fourier_integrable (k : ℤ) : Integrable (fourier (T := T) k) haarAddCircle :=
-  (Memℒp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
-    (Filter.eventually_of_forall (fun x => by
-      have : ‖fourier k x‖ = 1 := by simp [fourier_apply]
-      linarith))).integrable (by norm_num)
+private theorem fourier_integrable (k : ℤ) : Integrable (fourier (T := T) k) haarAddCircle := by
+  have hb : MemLp (fourier (T := T) k) 2 haarAddCircle :=
+    MemLp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
+      (Filter.Eventually.of_forall (fun x => by
+        have : ‖fourier k x‖ = 1 := by rw [fourier_apply, Circle.norm_coe]
+        linarith))
+  exact hb.integrable (by norm_num)
 
 /-- Helper: `c * fourier k` is integrable for any constant `c : ℂ`. -/
 private theorem const_mul_fourier_integrable (c : ℂ) (k : ℤ) :
@@ -242,11 +244,11 @@ private theorem fourierCoeff_of_trigPoly_sum (M : ℕ) (c : ℤ → ℂ) (n : �
     split_ifs with hm
     · subst hm
       simp_rw [fourier_zero]
-      rw [integral_const, measure_univ, ENNReal.one_toReal, Complex.real_smul,
+      rw [integral_const, probReal_univ, Complex.real_smul,
           Complex.ofReal_one, mul_one]
     · exact integral_eq_zero_of_add_right_eq_neg (fourier_add_half_inv_index hm hT.out)
   -- Simplify: c k * ∫ fourier(k-n) = c k * (if k = n then 1 else 0) = if k = n then c k else 0
-  simp_rw [integral_mul_left, fourier_integral]
+  simp_rw [integral_const_mul, fourier_integral]
   simp_rw [show ∀ k : ℤ, (k + -n = 0) ↔ (k = n) from fun k => by constructor <;> intro h <;> omega]
   simp_rw [mul_ite, mul_one, mul_zero]
   simp only [Finset.sum_ite_eq']
@@ -267,6 +269,7 @@ theorem trigPoly_exact_convergence
     split_ifs with hn
     · rfl
     · -- n ∉ Icc (-M) M, so |n| > M, apply hc_zero
+      symm
       apply hc_zero
       simp only [Finset.mem_Icc, not_and_or, not_le] at hn
       rcases hn with h | h
@@ -274,13 +277,14 @@ theorem trigPoly_exact_convergence
         rw [show |n| = -n from abs_of_nonpos (by linarith [Int.ofNat_nonneg M])]
         push_cast; linarith
       · -- h : (↑M : ℤ) < n, so |n| = n > M
-        rw [show |n| = n from abs_of_pos (by exact_mod_cast h)]
+        rw [show |n| = n from abs_of_pos (by omega)]
         exact_mod_cast h
   -- Rewrite partial sum using fourierCoeff g n = c n
   simp only [fourierPartialSum]
-  conv_lhs => arg 1; ext n; rw [hfc n]
+  simp_rw [hfc]
   -- Now: ∑ n ∈ Icc (-N) N, c n * fourier n x = ∑ n ∈ Icc (-M) M, c n * fourier n x = g x
-  rw [← hg_eq x]
+  rw [hg_eq x]
+  symm
   apply Finset.sum_subset
   · -- Icc (-M) M ⊆ Icc (-N) N since M ≤ N
     intro n hn
@@ -296,17 +300,17 @@ theorem trigPoly_exact_convergence
       rw [show |n| = -n from abs_of_nonpos (by linarith [Int.ofNat_nonneg M])]
       push_cast; linarith
     · -- h : (↑M : ℤ) < n
-      rw [show |n| = n from abs_of_pos (by exact_mod_cast h)]
+      rw [show |n| = n from abs_of_pos (by omega)]
       exact_mod_cast h
 
 /-- Trigonometric polynomials are in L² (and hence integrable).
 
 A trig poly g(x) = Σ_{|n|≤M} c_n * fourier n x is a finite sum of bounded continuous
 functions on a compact probability space, hence automatically square-integrable.
-Uses `Memℒp.of_bound` since `haarAddCircle` is a finite (probability) measure. -/
-theorem IsTrigPoly.memℒp_two
+Uses `MemLp.of_bound` since `haarAddCircle` is a finite (probability) measure. -/
+theorem IsTrigPoly.memLp_two
     (g : AddCircle T → ℂ) (hg : IsTrigPoly g) :
-    Memℒp g 2 haarAddCircle := by
+    MemLp g 2 haarAddCircle := by
   obtain ⟨M, c, _, hg_eq⟩ := hg
   -- g is a finite sum of bounded continuous functions
   have hg_cont : Continuous g := by
@@ -322,9 +326,9 @@ theorem IsTrigPoly.memℒp_two
       _ = ∑ n ∈ Icc (-(M : ℤ)) M, ‖c n‖ := by
           congr 1; ext n
           rw [norm_mul, show ‖fourier n x‖ = 1 from by simp [fourier_apply], mul_one]
-  -- Apply Memℒp.of_bound (works for finite measures, here a probability measure)
-  exact Memℒp.of_bound hg_cont.aestronglyMeasurable _
-    (Filter.eventually_of_forall hbound)
+  -- Apply MemLp.of_bound (works for finite measures, here a probability measure)
+  exact MemLp.of_bound hg_cont.aestronglyMeasurable _
+    (Filter.Eventually.of_forall hbound)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -338,12 +342,9 @@ private theorem Lp2_norm_sq_eq_integral (h : Lp ℂ 2 (haarAddCircle (T := T))) 
     ‖h‖ ^ 2 = ∫ x : AddCircle T, ‖(⇑h) x‖ ^ 2 ∂haarAddCircle := by
   have H := congr_arg RCLike.re (@L2.inner_def (AddCircle T) ℂ ℂ _ _ _ _ _ h h)
   rw [← integral_re (L2.integrable_inner h h)] at H
-  simp only [← norm_sq_eq_inner (𝕜 := ℂ)] at H
-  -- H : ‖h‖^2 = ∫ x, RCLike.re ⟪h x, h x⟫_ℂ
-  -- Rewrite pointwise: Re ⟪z, z⟫_ℂ = ‖z‖²
-  convert H using 2
-  ext x
-  simp [inner_self_eq_norm_sq_to_K, RCLike.ofReal_re]
+  simp only [← norm_sq_eq_re_inner] at H
+  -- H : ‖h‖^2 = ∫ x, ‖h x‖²
+  exact H
 
 /-- Helper: the coercion of `∑ n ∈ s, c n • fourierLp 2 n` equals
 `fun x => ∑ n ∈ s, c n * fourier n x` almost everywhere. -/
@@ -353,12 +354,13 @@ private theorem Lp_fourier_sum_coeFn (s : Finset ℤ) (c : ℤ → ℂ) :
   induction s using Finset.induction_on with
   | empty =>
     simp only [Finset.sum_empty]
-    exact Lp.coeFn_zero
-  | insert ha ih =>
+    filter_upwards [Lp.coeFn_zero ℂ 2 (haarAddCircle (T := T))] with x hx
+    simpa using hx
+  | insert a s ha ih =>
     simp only [Finset.sum_insert ha]
-    filter_upwards [Lp.coeFn_add (c _ • fourierLp 2 _) (∑ n ∈ _, c n • fourierLp 2 n),
-                    Lp.coeFn_smul (c _) (fourierLp 2 (T := T) _),
-                    coeFn_fourierLp (T := T) 2 _,
+    filter_upwards [Lp.coeFn_add (c a • fourierLp 2 a) (∑ n ∈ s, c n • fourierLp 2 n),
+                    Lp.coeFn_smul (c a) (fourierLp 2 (T := T) a),
+                    coeFn_fourierLp (T := T) 2 a,
                     ih] with x hx1 hx2 hx3 hx4
     simp only [Pi.add_apply] at hx1
     simp only [Pi.smul_apply, smul_eq_mul] at hx2
@@ -376,7 +378,7 @@ Proof outline:
 3. Define g x = ∑_{S₀} ĉ_n * fourier n x (a trig poly).
 4. ‖f_Lp - g_Lp‖² = ∫ ‖f x - g x‖² (L2 norm formula + a.e. equality). -/
 theorem trigPoly_L2_approx
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
     {ε : ℝ} (hε : 0 < ε) :
     ∃ g : AddCircle T → ℂ, IsTrigPoly g ∧
       (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2 := by
@@ -385,11 +387,14 @@ theorem trigPoly_L2_approx
   -- The Fourier series converges in L²
   have hhs := hasSum_fourier_series_L2 f_Lp
   -- From HasSum: ∃ S₀ : Finset ℤ such that ‖∑ n ∈ S₀, ĉ_n • e_n - f_Lp‖ < ε
-  rw [HasSum, Metric.tendsto_atTop] at hhs
-  obtain ⟨S₀, hS₀⟩ := hhs ε hε
+  have hhs' : Tendsto (fun s : Finset ℤ => ∑ i ∈ s, fourierCoeff (⇑f_Lp) i • fourierLp 2 i)
+      atTop (𝓝 f_Lp) := hhs
+  rw [Metric.tendsto_atTop] at hhs'
+  obtain ⟨S₀, hS₀⟩ := hhs' ε hε
   -- The approximating partial sum at S₀
   let ĉ : ℤ → ℂ := fun n => fourierCoeff (⇑f_Lp) n
-  let g_Lp : Lp ℂ 2 haarAddCircle := ∑ n ∈ S₀, ĉ n • (fourierLp 2 n : Lp ℂ 2 haarAddCircle)
+  let g_Lp : Lp ℂ 2 (haarAddCircle (T := T)) :=
+    ∑ n ∈ S₀, ĉ n • (fourierLp 2 n : Lp ℂ 2 (haarAddCircle (T := T)))
   have hdist : dist g_Lp f_Lp < ε := hS₀ S₀ (le_refl _)
   -- Get M : ℕ such that S₀ ⊆ Icc (-M) M
   rcases S₀.eq_empty_or_nonempty with rfl | hne
@@ -398,11 +403,12 @@ theorem trigPoly_L2_approx
     rw [dist_comm, dist_zero_right] at hdist
     -- Use g = 0 (trivial IsTrigPoly)
     refine ⟨0, ⟨0, fun _ => 0, by simp, by simp⟩, ?_⟩
+    simp only [Pi.zero_apply]
     -- ∫ ‖f x - 0‖² = ‖f_Lp‖² < ε²
     have haeq : (fun x => ‖f x - (0 : ℂ)‖ ^ 2) =ᵐ[haarAddCircle]
         fun x => ‖(⇑f_Lp) x‖ ^ 2 := by
       filter_upwards [hf.coeFn_toLp] with x hx
-      simp [sub_zero, ← hx]
+      simp [sub_zero, ← hx, hf_Lp_def]
     rw [integral_congr_ae haeq, ← Lp2_norm_sq_eq_integral]
     exact sq_lt_sq' (by linarith [norm_nonneg f_Lp]) hdist
   · -- Non-empty case: use S₀.sup' to find M
@@ -429,7 +435,7 @@ theorem trigPoly_L2_approx
     -- h_Lp = f_Lp - g_Lp represents f - g a.e.
     set h_Lp : Lp ℂ 2 haarAddCircle := f_Lp - g_Lp with h_Lp_def
     have hh_lt : ‖h_Lp‖ < ε := by
-      rw [h_Lp_def, ← dist_eq_norm]; exact_mod_cast hdist
+      rw [h_Lp_def, ← dist_eq_norm, dist_comm]; exact_mod_cast hdist
     -- ∫ ‖f x - g x‖² = ‖h_Lp‖² < ε²
     -- Step 1: ‖h_Lp‖² = ∫ ‖(⇑h_Lp) x‖²
     -- Step 2: ⇑h_Lp =ᵐ f - g (using coeFn_sub + coeFn_toLp + Lp_fourier_sum_coeFn)
@@ -458,6 +464,7 @@ theorem trigPoly_L2_approx
       apply integral_congr_ae
       filter_upwards [hh_ae] with x hx
       rw [hx]
+    refine ⟨g, hgpoly, ?_⟩
     rw [hintegral]
     exact sq_lt_sq' (by linarith [norm_nonneg h_Lp]) hh_lt
 
@@ -473,24 +480,13 @@ theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCirc
     (hf : Integrable f haarAddCircle) (hg : Integrable g haarAddCircle) :
     fourierPartialSum (f + g) N x =
       fourierPartialSum f N x + fourierPartialSum g N x := by
-  simp only [fourierPartialSum, fourierCoeff, Pi.add_apply]
+  simp only [fourierPartialSum]
   rw [← sum_add_distrib]
-  congr 1
-  ext n
-  simp [mul_comm, mul_add, add_mul]
-  ring_nf
-  congr 1
-  have hfourier_bound : ∀ (t : AddCircle T), ‖fourier (-n) t‖ ≤ 1 := by
-    intro t
-    have : ‖fourier (-n) t‖ = 1 := by simp [fourier_apply]
-    linarith
-  have hint : ∀ h : AddCircle T → ℂ, Integrable h haarAddCircle →
-      Integrable (fun t => fourier (-n) t * h t) haarAddCircle := by
-    intro h hh
-    apply hh.bdd_mul' (map_continuous (fourier (-n))).aestronglyMeasurable
-    exact ⟨1, ae_of_all _ hfourier_bound⟩
-  rw [MeasureTheory.integral_add (hint f hf) (hint g hg)]
-  ring
+  apply Finset.sum_congr rfl
+  intro n _
+  have hcoeff : fourierCoeff (f + g) n = fourierCoeff f n + fourierCoeff g n :=
+    congrFun (fourierCoeff.add hf hg) n
+  rw [hcoeff, add_mul]
 
 /-- Linearity of partial sums: S_N(c • f) = c • S_N f. -/
 theorem fourierPartialSum_smul (c : ℂ) (f : AddCircle T → ℂ) (N : ℕ)
@@ -527,7 +523,7 @@ The argument is:
 4. So |S_N f(x) - f(x)| = |S_N g(x) - g(x) + S_N h(x) - h(x)|
                           ≤ |S_N g(x) - g(x)| + |S_N h(x)| + |h(x)|
 5. For large N the first term vanishes. The maximal inequality controls S_N h.
-6. By Chebyshev: μ({S*h > λ}) ≤ (C/λ)² · ‖h‖² ≤ (Cε/λ)²
+6. By Chebyshev: μ({S*h > lam}) ≤ (C/lam)² · ‖h‖² ≤ (Cε/lam)²
 7. Since ε is arbitrary, the divergence set has measure 0.
 -/
 
@@ -572,7 +568,7 @@ theorem divergenceSet_subset_of_approx
     have hgN := hM₀ N hNM x
     have hlin : fourierPartialSum (f - g) N x = fourierPartialSum f N x - g x := by
       have h_sub : f - g = f + (-1 : ℂ) • g := by simp [sub_eq_add_neg, neg_smul]
-      rw [h_sub, fourierPartialSum_add f ((-1 : ℂ) • g) N x hf (hg.smul_left _)]
+      rw [h_sub, fourierPartialSum_add f ((-1 : ℂ) • g) N x hf (hg.smul (-1 : ℂ))]
       rw [fourierPartialSum_smul (-1 : ℂ) g N x, hgN]
       ring
     rw [hlin]
@@ -584,15 +580,14 @@ theorem divergenceSet_subset_of_approx
       have htri : ‖fourierPartialSum f N x - f x‖ ≤
           ‖fourierPartialSum f N x - g x‖ + ‖g x - f x‖ := by
         calc ‖fourierPartialSum f N x - f x‖
-            = ‖(fourierPartialSum f N x - g x) + (g x - f x)‖ := by ring_nf
+            = ‖(fourierPartialSum f N x - g x) + (g x - f x)‖ := by congr 1; abel
           _ ≤ ‖fourierPartialSum f N x - g x‖ + ‖g x - f x‖ := norm_add_le _ _
       linarith [hNδ, htri, norm_sub_rev (g x) (f x)]
     -- Step 3: Convert real bound to ENNReal
     have hpos : (0 : ℝ) ≤ δ / 2 := le_of_lt (half_pos hδ)
-    rw [show ENNReal.ofReal (δ / 2) = ↑(⟨δ / 2, hpos⟩ : ℝ≥0) from
-          ENNReal.ofReal_eq_coe_nnreal hpos]
-    rw [ENNReal.coe_lt_coe]
-    exact_mod_cast h_bound
+    have : ENNReal.ofReal (δ / 2) < ENNReal.ofReal ‖fourierPartialSum f N x - g x‖ :=
+      (ENNReal.ofReal_lt_ofReal_iff_of_nonneg hpos).mpr h_bound
+    simpa [ofReal_norm, enorm_eq_nnnorm] using this
 
 /-- **Measure bound on divergence set via maximal inequality.**
 
@@ -606,17 +601,17 @@ Combined with Chebyshev's inequality and the Carleson-Hunt bound:
 Since ‖h‖_{L²} can be made arbitrarily small (density of trig polys),
 the divergence set has measure 0. -/
 theorem divergenceSet_measure_bound
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
     {δ : ℝ} (hδ : 0 < δ)
     {ε : ℝ} (hε : 0 < ε)
-    (g : AddCircle T → ℂ) (hg : IsTrigPoly g) (hgL2 : Memℒp g 2 haarAddCircle)
+    (g : AddCircle T → ℂ) (hg : IsTrigPoly g) (hgL2 : MemLp g 2 haarAddCircle)
     (happrox : (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2) :
     haarAddCircle (divergenceSet (T := T) f δ) ≤
       ENNReal.ofReal ((carlesonConstant + 1) ^ 2 * ε ^ 2 / (δ / 2) ^ 2) := by
   -- Step 1: Extract M₀ from trig poly convergence
   obtain ⟨M₀, hM₀⟩ := trigPoly_exact_convergence g hg
   -- Step 2: Set up integrability for the approximation error h = f - g
-  have hfmg_L2 : Memℒp (f - g) 2 haarAddCircle := hf.sub hgL2
+  have hfmg_L2 : MemLp (f - g) 2 haarAddCircle := hf.sub hgL2
   have hf_int : Integrable f haarAddCircle := hf.integrable (by norm_num)
   have hg_int : Integrable g haarAddCircle := hgL2.integrable (by norm_num)
   -- Step 3: Divergence set ⊆ {|h| > δ/2} ∪ {S*h > δ/2}
@@ -654,9 +649,9 @@ theorem divergenceSet_measure_bound
     have hd2sq_pos : (0 : ℝ) < (δ / 2) ^ 2 := by positivity
     have hd2sq_ne_zero : ENNReal.ofReal ((δ / 2) ^ 2) ≠ 0 :=
       (ENNReal.ofReal_pos.mpr hd2sq_pos).ne'
-    -- Integrability of ‖f-g‖² from Memℒp 2
+    -- Integrability of ‖f-g‖² from MemLp 2
     have hfmg_sq : Integrable (fun x => ‖(f - g) x‖ ^ 2) haarAddCircle :=
-      (memℒp_two_iff_integrable_sq_norm hfmg_L2.1).mp hfmg_L2
+      (memLp_two_iff_integrable_sq_norm hfmg_L2.1).mp hfmg_L2
     -- ENNReal.ofReal(‖f-g‖²) is AEMeasurable
     have hφ_ae : AEMeasurable (fun x => ENNReal.ofReal (‖(f - g) x‖ ^ 2)) haarAddCircle :=
       ENNReal.measurable_ofReal.comp_aemeasurable hfmg_sq.aemeasurable
@@ -667,13 +662,17 @@ theorem divergenceSet_measure_bound
         ENNReal.ofReal (∫ x, ‖(f - g) x‖ ^ 2 ∂haarAddCircle) := by
       symm
       exact ofReal_integral_eq_lintegral_ofReal hfmg_sq
-        (Filter.eventually_of_forall fun x => by positivity)
+        (Filter.Eventually.of_forall fun x => by positivity)
     -- {δ/2 < ‖h‖} ⊆ {ENNReal.ofReal((δ/2)²) ≤ ENNReal.ofReal(‖h‖²)}
     have hset_sub : {x : AddCircle T | δ / 2 < ‖(f - g) x‖} ⊆
         {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤ ENNReal.ofReal (‖(f - g) x‖ ^ 2)} :=
       fun x hx => ENNReal.ofReal_le_ofReal
-        (pow_le_pow_left (le_of_lt (half_pos hδ)) (le_of_lt hx) 2)
+        (pow_le_pow_left₀ (le_of_lt (half_pos hδ)) (le_of_lt hx) 2)
     -- Calc: monotone measure + Markov division + integral bound + arithmetic
+    have hstep3 : (∫⁻ x, ENNReal.ofReal (‖(f - g) x‖ ^ 2) ∂haarAddCircle) ≤
+        ENNReal.ofReal (ε ^ 2) := by
+      rw [hlint]
+      exact ENNReal.ofReal_le_ofReal (le_of_lt happrox_fmg)
     calc haarAddCircle {x | δ / 2 < ‖(f - g) x‖}
         ≤ haarAddCircle {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤
             ENNReal.ofReal (‖(f - g) x‖ ^ 2)} := measure_mono hset_sub
@@ -683,8 +682,7 @@ theorem divergenceSet_measure_bound
               (Or.inl ENNReal.ofReal_ne_top)]
           rw [mul_comm]; exact hmarkov
       _ ≤ ENNReal.ofReal (ε ^ 2) / ENNReal.ofReal ((δ / 2) ^ 2) :=
-          ENNReal.div_le_div_right (by rw [hlint];
-            exact ENNReal.ofReal_le_ofReal (le_of_lt happrox_fmg)) _
+          ENNReal.div_le_div_right hstep3 _
       _ = ENNReal.ofReal (ε ^ 2 / (δ / 2) ^ 2) :=
           (ENNReal.ofReal_div_of_pos hd2sq_pos).symm
   -- Step 7: Combine the two pieces
@@ -705,9 +703,9 @@ theorem divergenceSet_measure_bound
         -- Rewrite LHS: ε²/(δ/2)² + (C/(δ/2))²*ε² = (1+C²)*ε²/(δ/2)²
         rw [show ε ^ 2 / (δ / 2) ^ 2 + (carlesonConstant / (δ / 2)) ^ 2 * ε ^ 2 =
             (1 + carlesonConstant ^ 2) * ε ^ 2 / (δ / 2) ^ 2 by
-          field_simp; ring]
+          field_simp <;> ring]
         -- Now: (1+C²)*ε²/(δ/2)² ≤ (C+1)²*ε²/(δ/2)² iff 1+C² ≤ (C+1)²
-        apply (div_le_div_right hd2pos).mpr
+        apply (div_le_div_iff_of_pos_right hd2pos).mpr
         nlinarith [sq_nonneg ε,
           mul_nonneg (by linarith : (0 : ℝ) ≤ 2 * carlesonConstant) (sq_nonneg ε)]
 
@@ -727,7 +725,7 @@ The proof uses:
 - Density of trigonometric polynomials in L² (from Mathlib)
 - A standard density argument reducing a.e. convergence to the maximal bound -/
 theorem carleson_ae_convergence
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle) :
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle) :
     ∀ᵐ x ∂haarAddCircle,
       Tendsto (fun N : ℕ => fourierPartialSum f N x) atTop (𝓝 (f x)) := by
   -- Strategy:
@@ -736,53 +734,10 @@ theorem carleson_ae_convergence
   -- 3. Countable union of null sets is null
   apply MeasureTheory.ae_iff.mpr
   -- Step 1: {x | ¬ convergence} ⊆ fullDivergenceSet f
-  apply measure_mono_null _
-  swap
-  · -- Step 2+3: μ(fullDivergenceSet f) = 0
-    simp only [fullDivergenceSet]
-    apply MeasureTheory.measure_iUnion_null
-    intro k
-    -- Show μ(divergenceSet f (1/(k+1))) = 0
-    -- For each ε > 0, apply divergenceSet_measure_bound to get bound → 0
-    apply le_antisymm _ (zero_le _)
-    apply ENNReal.le_of_forall_pos_le_add
-    intro r hr
-    rw [zero_add]
-    -- The bound (C+1)^2 * ε^2 / (1/(2*(k+1)))^2 → 0 as ε → 0
-    -- Pick ε_r such that (C+1)^2 * ε_r^2 / (δ_k/2)^2 < r
-    set δk : ℝ := 1 / ((k : ℝ) + 1)
-    have hδk : (0 : ℝ) < δk := by positivity
-    -- Get ε_r > 0 with (C+1)^2 * ε_r^2 / (δk/2)^2 ≤ r.toReal
-    -- (if r = ∞, the bound is trivial; otherwise pick ε_r = sqrt(r * (δk/2)^2 / (C+1)^2 / 2))
-    rcases ENNReal.lt_or_eq_top r with hr_fin | hr_top
-    · -- r < ∞: use density to get a trig poly approximation
-      have hr_pos : (0 : ℝ) < r.toReal :=
-        ENNReal.toReal_pos (ENNReal.pos_of_ne_zero (ne_of_gt hr)) (ne_of_lt hr_fin)
-      -- Choose ε_r so that (C+1)^2 * ε_r^2 / (δk/2)^2 ≤ r.toReal
-      have hC_pos : (0 : ℝ) < (carlesonConstant + 1) ^ 2 := by
-        have := carlesonConstant_nonneg; positivity
-      set ε_r := Real.sqrt (r.toReal * (δk / 2) ^ 2 / (carlesonConstant + 1) ^ 2 / 2)
-      have hε_r_pos : 0 < ε_r := by
-        apply Real.sqrt_pos.mpr; positivity
-      obtain ⟨g, hgpoly, happrox⟩ := trigPoly_L2_approx hf hε_r_pos
-      calc haarAddCircle (divergenceSet f δk)
-          ≤ ENNReal.ofReal ((carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2) :=
-            divergenceSet_measure_bound hf hδk hε_r_pos g hgpoly
-              (IsTrigPoly.memℒp_two g hgpoly) happrox
-        _ ≤ r := by
-            -- (C+1)^2 * ε_r^2 / (δk/2)^2 = r.toReal/2 ≤ r.toReal
-            have h_real : (carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2 ≤ r.toReal := by
-              rw [show ε_r ^ 2 = r.toReal * (δk / 2) ^ 2 / (carlesonConstant + 1) ^ 2 / 2 by
-                rw [Real.sq_sqrt (by positivity)]]
-              have hd2 : (δk / 2) ^ 2 ≠ 0 := by positivity
-              have hC2 : (carlesonConstant + 1) ^ 2 ≠ 0 := by positivity
-              field_simp
-              linarith
-            exact le_trans (ENNReal.ofReal_le_ofReal h_real) ENNReal.ofReal_toReal_le
-    · -- r = ∞: trivial
-      simp [hr_top]
+  apply measure_mono_null (t := fullDivergenceSet f)
   · -- Step 1: Non-convergence ⊆ fullDivergenceSet
     intro x hx
+    simp only [Set.mem_setOf_eq] at hx
     simp only [fullDivergenceSet, Set.mem_iUnion]
     rw [Metric.tendsto_atTop] at hx
     push_neg at hx
@@ -795,12 +750,55 @@ theorem carleson_ae_convergence
     refine ⟨N, hNM, ?_⟩
     -- 1/(k+1) < ε: from 1/ε < k we get ε*k > 1, hence ε*(k+1) > 1 > 0
     have h1k : 1 / ((k : ℝ) + 1) < ε := by
-      rw [div_lt_iff (by positivity : (0 : ℝ) < (k : ℝ) + 1)]
-      have h := (div_lt_iff hε).mp hk  -- h : 1 < ↑k * ε
+      rw [div_lt_iff₀ (by positivity : (0 : ℝ) < (k : ℝ) + 1)]
+      have h := (div_lt_iff₀ hε).mp hk  -- h : 1 < ↑k * ε
       nlinarith [mul_comm (↑k : ℝ) ε]
     -- hN gives ε ≤ ‖S_N f(x) - f(x)‖, and h1k gives 1/(k+1) < ε
     rw [Complex.dist_eq] at hN
     linarith
+  · -- Step 2+3: μ(fullDivergenceSet f) = 0
+    simp only [fullDivergenceSet]
+    apply MeasureTheory.measure_iUnion_null
+    intro k
+    -- Show μ(divergenceSet f (1/(k+1))) = 0
+    -- For each ε > 0, apply divergenceSet_measure_bound to get bound → 0
+    apply le_antisymm _ (zero_le)
+    apply ENNReal.le_of_forall_pos_le_add
+    intro r hr _
+    rw [zero_add]
+    -- The bound (C+1)^2 * ε^2 / (1/(2*(k+1)))^2 → 0 as ε → 0
+    -- Pick ε_r such that (C+1)^2 * ε_r^2 / (δ_k/2)^2 < r
+    set δk : ℝ := 1 / ((k : ℝ) + 1)
+    have hδk : (0 : ℝ) < δk := by positivity
+    -- Get ε_r > 0 with (C+1)^2 * ε_r^2 / (δk/2)^2 ≤ (r : ℝ)
+    have hr_pos : (0 : ℝ) < (r : ℝ) := NNReal.coe_pos.mpr hr
+    have hC_pos : (0 : ℝ) < (carlesonConstant + 1) ^ 2 := by
+      have := carlesonConstant_nonneg; positivity
+    set ε_r := Real.sqrt ((r : ℝ) * (δk / 2) ^ 2 / (carlesonConstant + 1) ^ 2 / 2)
+    have hε_r_pos : 0 < ε_r := by
+      apply Real.sqrt_pos.mpr; positivity
+    obtain ⟨g, hgpoly, happrox⟩ := trigPoly_L2_approx f hf hε_r_pos
+    calc haarAddCircle (divergenceSet f δk)
+        ≤ ENNReal.ofReal ((carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2) :=
+          divergenceSet_measure_bound f hf hδk hε_r_pos g hgpoly
+            (IsTrigPoly.memLp_two g hgpoly) happrox
+      _ ≤ (r : ℝ≥0∞) := by
+          -- (C+1)^2 * ε_r^2 / (δk/2)^2 = r/2 ≤ r
+          have hCnn := carlesonConstant_nonneg
+          have hCbase : carlesonConstant + 1 ≠ 0 := by positivity
+          have hδkbase : δk / 2 ≠ 0 := by positivity
+          have hC2 : (carlesonConstant + 1) ^ 2 ≠ 0 := pow_ne_zero 2 hCbase
+          have hd2 : (δk / 2) ^ 2 ≠ 0 := pow_ne_zero 2 hδkbase
+          have hε_r_sq : ε_r ^ 2 = (r : ℝ) * (δk / 2) ^ 2 / (carlesonConstant + 1) ^ 2 / 2 := by
+            rw [Real.sq_sqrt (by positivity)]
+          have hcancel : (carlesonConstant + 1) ^ 2 *
+                  ((r : ℝ) * (δk / 2) ^ 2 / (carlesonConstant + 1) ^ 2 / 2) / (δk / 2) ^ 2
+                = (r : ℝ) / 2 := by
+            field_simp
+          have h_real : (carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2 ≤ (r : ℝ) := by
+            rw [hε_r_sq, hcancel]
+            linarith
+          exact le_trans (ENNReal.ofReal_le_ofReal h_real) (le_of_eq ENNReal.ofReal_coe_nnreal)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -818,9 +816,9 @@ theorem carleson_continuous
       Tendsto (fun N : ℕ => fourierPartialSum (⇑f) N x) atTop (𝓝 (f x)) := by
   apply carleson_ae_convergence
   -- Continuous functions on a compact space are in L²
-  -- Use Memℒp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
-  exact Memℒp.of_bound f.continuous.aestronglyMeasurable ‖f‖
-    (Filter.eventually_of_forall f.norm_coe_le_norm)
+  -- Use MemLp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
+  exact MemLp.of_bound f.continuous.aestronglyMeasurable ‖f‖
+    (Filter.Eventually.of_forall f.norm_coe_le_norm)
 
 /-- **Corollary**: Carleson strengthens Parseval.
 
@@ -838,7 +836,7 @@ theorem carleson_and_parseval
   constructor
   · exact hasSum_fourier_series_L2 f
   · apply carleson_ae_convergence
-    exact Lp.memℒp f
+    exact Lp.memLp f
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

@@ -44,18 +44,18 @@ Uses Mathlib's padicValNat.
 -/
 def padicVal (p m : ℕ) : ℕ := padicValNat p m
 
-/--
+/- 
 **Legendre's Formula:**
 vₚ(n!) = ∑_{j≥1} ⌊n/p^j⌋
 
 This counts how many times p divides n! by counting multiples of p, p², p³, etc.
 -/
 
-/--
+/- 
 Simplified bound: vₚ(n!) ≤ n/(p-1) for p > 1.
 -/
 
-/--
+/- 
 vₚ(n!) is computable and depends only on n mod p^k for large enough k.
 -/
 
@@ -91,7 +91,7 @@ def hasAllEvenValuations (S : Finset ℕ) (n : ℕ) : Prop :=
 Concrete examples demonstrating the phenomenon.
 -/
 
-/--
+/- 
 For p = 2: v₂(n!) follows the formula n - s₂(n), where s₂(n) is the digit sum in base 2.
 -/
 /-- Proved from Mathlib's sub_one_mul_padicValNat_factorial with p=2.
@@ -183,7 +183,7 @@ The bound B depends on the set of primes S.
 axiom berend_bounded_gaps (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m
 
-/--
+/- 
 **Density Corollary:**
 The density of n with all even valuations is positive (follows from bounded gaps).
 -/
@@ -194,11 +194,11 @@ The density of n with all even valuations is positive (follows from bounded gaps
 The case of a single prime is simpler and illustrates the key ideas.
 -/
 
-/--
+/- 
 For a single prime p, the n with even vₚ(n!) have density approximately 1/2.
 -/
 
-/--
+/- 
 The parity of vₚ(n!) alternates in a quasi-periodic pattern determined by base-p digits.
 -/
 
@@ -229,13 +229,13 @@ theorem erdos_646 : ErdosConjecture646 := by
 The p-adic valuation of n! is related to digit sums.
 -/
 
-/--
+/- 
 **Kummer's Theorem:**
 vₚ(C(m+n, n)) equals the number of carries when adding m and n in base p.
 This is related to the even valuation property.
 -/
 
-/--
+/- 
 **Digit Sum Connection:**
 vₚ(n!) = (n - sₚ(n)) / (p - 1), where sₚ(n) is the sum of digits of n in base p.
 -/
@@ -263,12 +263,12 @@ theorem explicit_bound_2_3 : ∃ n ≤ 100, hasAllEvenValuations {2, 3} n := by
   · norm_num
   · exact example_even_vals_at_31
 
-/--
+/- 
 **Gap Bound for Two Primes:**
 For primes p, q, the gap is at most O(pq).
 -/
 
-/--
+/- 
 **Chinese Remainder Perspective:**
 The even valuation condition for independent primes can be analyzed
 via the Chinese Remainder Theorem.

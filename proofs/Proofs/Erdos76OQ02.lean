@@ -52,8 +52,8 @@ the complete bipartite graph (the "red" cross class of the Erdős #76 balanced
 coloring); for three or more parts it is a general complete multipartite graph. -/
 def multipartiteGraph {β : Type*} (part : V → β) : SimpleGraph V where
   Adj u v := part u ≠ part v
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 @[simp] lemma adj_iff {β : Type*} (part : V → β) (u v : V) :
     (multipartiteGraph part).Adj u v ↔ part u ≠ part v := Iff.rfl

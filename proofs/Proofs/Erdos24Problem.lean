@@ -60,11 +60,13 @@ Vertices are 0, 1, 2, 3, 4 with edges forming a cycle:
 def cycleGraph5 : SimpleGraph (Fin 5) where
   Adj x y := (x.val + 1) % 5 = y.val ∨ (y.val + 1) % 5 = x.val
   symm := by
+    constructor
     intro x y h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
+    constructor
     intro x h
     cases h with
     | inl h => omega
@@ -104,11 +106,13 @@ This graph has 5n vertices, is triangle-free, and contains exactly n⁵ copies o
 def balancedBlowupC5 (n : ℕ) : SimpleGraph (Fin 5 × Fin n) where
   Adj x y := cycleGraph5.Adj x.1 y.1
   symm := by
+    constructor
     intro x y h
-    exact cycleGraph5.symm h
+    exact cycleGraph5.adj_symm h
   loopless := by
+    constructor
     intro x h
-    exact cycleGraph5.loopless x.1 h
+    exact cycleGraph5.loopless.irrefl x.1 h
 
 /-- The balanced blow-up of C₅ is triangle-free.
 
@@ -156,7 +160,7 @@ axiom grzesik_hatami_theorem (n : ℕ) (hn : 0 < n) :
     IsTriangleFree G →
     countC5 G ≤ n^5
 
-/-- The balanced blow-up is the unique extremal graph (up to isomorphism).
+/-  The balanced blow-up is the unique extremal graph (up to isomorphism).
 
 When |V| = 5n, the only triangle-free graph with exactly n⁵ copies of C₅
 is the balanced blow-up of C₅.
@@ -167,7 +171,7 @@ is the balanced blow-up of C₅.
 The problem had several partial results before the complete solution.
 -/
 
-/-- **Győri**: An earlier upper bound of approximately 1.03n⁵.
+/-  **Győri**: An earlier upper bound of approximately 1.03n⁵.
 
 Before flag algebras, Győri proved that triangle-free graphs on 5n vertices
 have at most about 1.03n⁵ copies of C₅. This was later improved by Füredi.
@@ -178,7 +182,7 @@ have at most about 1.03n⁵ copies of C₅. This was later improved by Füredi.
 Erdős proposed a more general conjecture for odd cycles.
 -/
 
-/-- **Erdős's General Conjecture** (Open for r > 5):
+/-  **Erdős's General Conjecture** (Open for r > 5):
 
 For odd r ≥ 5, if a graph on rn vertices has girth r (smallest cycle has length r),
 then the number of r-cycles is at most nʳ.

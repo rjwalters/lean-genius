@@ -125,8 +125,12 @@ theorem digitalRootBase_div_pred (b n : ℕ) (hb : 3 ≤ b) (hn : 0 < n) :
       · exact hpos
     rw [digitalRootBase_pos b n hn]
     -- n-1 = (b-2) + (b-1)*(k-1)
-    have hn1 : n - 1 = (b - 2) + (b - 1) * (k - 1) := by omega
+    have hn1 : n - 1 = (b - 2) + (b - 1) * (k - 1) := by
+      obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+      rw [hk, Nat.mul_add, Nat.mul_one, Nat.add_sub_cancel]
+      omega
     rw [hn1, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
+    omega
   · intro heq
     rw [Nat.dvd_iff_mod_eq_zero]
     have hcong := congruence b n hb

@@ -35,6 +35,7 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open SimpleGraph
 
@@ -44,7 +45,7 @@ namespace Erdos717
 ## Part I: Basic Definitions
 -/
 
-/--
+/-
 **Graph Definition:**
 We work with finite simple graphs on n vertices.
 -/
@@ -57,7 +58,7 @@ Axiomatized since computing it is NP-hard.
 -/
 axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
-/--
+/- 
 **Chromatic number properties:**
 -/
 
@@ -71,8 +72,8 @@ The graph where every pair of distinct vertices is adjacent.
 -/
 def completeGraph (k : ℕ) : SimpleGraph (Fin k) where
   Adj x y := x ≠ y
-  symm x y h := h.symm
-  loopless x := (fun h => h rfl)
+  symm.symm x y h := h.symm
+  loopless.irrefl x := (fun h => h rfl)
 
 /--
 **Subdivision of a Graph:**
@@ -92,7 +93,7 @@ This measures how "clique-like" G's topological structure is.
 -/
 axiom subdivisionNumber (G : SimpleGraph V) : ℕ
 
-/--
+/- 
 **Subdivision number properties:**
 -/
 
@@ -111,7 +112,7 @@ This is FALSE for k ≥ 7!
 def hajosConjecture (G : SimpleGraph V) : Prop :=
   chromaticNumber G ≤ subdivisionNumber G
 
-/--
+/- 
 **Dirac's Theorem (1952):**
 Hajós conjecture holds when χ(G) = 4.
 If a graph needs 4 colors, it contains a subdivision of K_4.
@@ -130,13 +131,13 @@ axiom catlin_counterexamples :
 ## Part IV: Erdős-Fajtlowicz Strong Disproof (1981)
 -/
 
-/--
+/- 
 **Random Graph Model:**
 G(n, 1/2) is the random graph on n vertices where each edge
 appears independently with probability 1/2.
 -/
 
-/--
+/- 
 **Erdős-Fajtlowicz Theorem (1981):**
 For almost all graphs on n vertices:
 χ(G) ≫ (n^{1/2} / log n) · σ(G)
@@ -203,7 +204,7 @@ theorem erdos717_answer : erdos717QuestionUniversal := fox_lee_sudakov_theorem
 ## Part VII: Tight Bound
 -/
 
-/--
+/- 
 **Tight Asymptotic:**
 Combining Fox-Lee-Sudakov with Erdős-Fajtlowicz:
 For typical graphs on n vertices:
@@ -216,7 +217,7 @@ The ratio χ(G)/σ(G) is Θ(n^{1/2}/log n).
 ## Part VIII: Related Results
 -/
 
-/--
+/- 
 **Hadwiger Conjecture:**
 χ(G) ≤ h(G) where h(G) is the Hadwiger number (max k with K_k minor).
 
@@ -224,13 +225,13 @@ Every graph with χ(G) = k has K_k as a minor.
 This is OPEN for k ≥ 7 and implies the 4-color theorem!
 -/
 
-/--
+/- 
 **Relationship: Subdivisions vs Minors:**
 σ(G) ≤ h(G) always (subdivisions are stricter than minors).
 Hajós (subdivisions) is false; Hadwiger (minors) might be true.
 -/
 
-/--
+/- 
 **Kostochka-Thomason Theorem:**
 h(G) ≤ c · √(χ(G) log χ(G))
 
@@ -241,7 +242,7 @@ This gives an upper bound on the Hadwiger number.
 ## Part IX: Clique Minor Conjecture
 -/
 
-/--
+/- 
 **Bollobás-Catlin-Erdős Conjecture:**
 Is there a function f such that every graph with h(G) ≥ f(k)
 contains K_k as a subdivision?
@@ -249,7 +250,7 @@ contains K_k as a subdivision?
 That is: does large Hadwiger number imply subdivision?
 -/
 
-/--
+/- 
 **Known: h(G) = Ω(k²/log k) implies K_k subdivision**
 -/
 

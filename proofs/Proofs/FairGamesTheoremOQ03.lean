@@ -35,6 +35,8 @@ Tags: probability, martingale, optional-stopping, gambling, doob
 noncomputable section
 
 open MeasureTheory
+-- v4.31: `ℝ≥0`/`ℝ≥0∞` notation for `NNReal`/`ENNReal` is scoped and must be opened explicitly.
+open scoped NNReal ENNReal
 
 namespace FairGamesOQ03
 
@@ -150,11 +152,14 @@ theorem any_bounded_strategy_preserves_expectation
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
   -- Submartingale direction: E[f₀] ≤ E[stoppedValue f τ]
   have h₁ := hf.submartingale.expected_stoppedValue_mono
-    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
   -- Supermartingale direction via negation: E[stoppedValue f τ] ≤ E[f₀]
   have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono
-    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
-  simp only [stoppedValue_const, stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
+    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
+  -- v4.31: IsStoppingTime/stoppedValue now range over `WithTop ℕ`; avoid unfolding
+  -- `stoppedValue` directly (its `.untopA` coercion on the constant `0` doesn't simp-match
+  -- syntactically) and instead use the dedicated `stoppedValue_const`/`stoppedValue_neg` lemmas.
+  simp only [stoppedValue_const, stoppedValue_neg, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
   linarith
 
 /-- Between any two bounded ℕ∞-stopping times τ ≤ π, the expected value is unchanged.
@@ -233,7 +238,9 @@ theorem submartingale_of_stoppedValue_mono_proved
       τ ≤ π → (∃ N : ℕ, ∀ ω, π ω ≤ N) →
         ∫ ω, stoppedValue f τ ω ∂μ ≤ ∫ ω, stoppedValue f π ω ∂μ) :
     Submartingale f ℱ μ := by
-  rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]
+  -- v4.31: `submartingale_iff_expected_stoppedValue_mono` now expects `StronglyAdapted`
+  -- (the discrete/real-valued case is equivalent to `Adapted`, via `Adapted.stronglyAdapted`).
+  rw [submartingale_iff_expected_stoppedValue_mono hadapt.stronglyAdapted hint]
   exact h
 
 /-
@@ -273,24 +280,26 @@ theorem doobs_maximal_inequality
     Finset.nonempty_range_add_one fun k => f k ω} with hS_def
   -- Apply Mathlib's maximal inequality (ENNReal form)
   have hmain := maximal_ineq hf hpos N (ε := ε)
+  -- v4.31: `NNReal.coe_mk` no longer matches the anonymous-constructor form of `ε`; `ε`
+  -- unfolds definitionally to `thresh` since it was `set` from `⟨thresh, _⟩`.
+  have hε_eq : (ε : ℝ) = thresh := rfl
   -- Show our set equals the Mathlib set
   have hset_eq : {ω | ∃ n ≤ N, thresh ≤ f n ω} = S := by
     ext ω
-    simp only [Set.mem_setOf_eq, hS_def, NNReal.coe_mk,
+    simp only [Set.mem_setOf_eq, hε_eq,
       Finset.le_sup'_iff Finset.nonempty_range_add_one,
       Finset.mem_range, Nat.lt_succ_iff, S]
   rw [hset_eq]
   -- Chain of inequalities: real → ENNReal → restricted integral → full integral
-  calc thresh * (μ S).toReal
-      = (ε : ℝ≥0∞).toReal * (μ S).toReal := by
-        congr 1; simp [ε]
+  calc thresh * (μ S).toReal = (ε : ℝ≥0∞).toReal * (μ S).toReal := by
+        congr 1
     _ = ((ε : ℝ≥0∞) * μ S).toReal := ENNReal.toReal_mul.symm
     _ ≤ (ENNReal.ofReal (∫ ω in S, f N ω ∂μ)).toReal :=
         ENNReal.toReal_mono ENNReal.ofReal_ne_top hmain
     _ = ∫ ω in S, f N ω ∂μ :=
         ENNReal.toReal_ofReal (integral_nonneg fun ω => hpos N ω)
     _ ≤ ∫ ω, f N ω ∂μ :=
-        setIntegral_le_integral (hf.integrable N) (eventually_of_forall (hpos N))
+        setIntegral_le_integral (hf.integrable N) (Filter.Eventually.of_forall (hpos N))
 
 end FairGamesOQ03
 

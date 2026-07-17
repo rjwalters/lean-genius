@@ -1,9 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Data.Complex.Exponential
 import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Data.Nat.Prime.Infinite
 import Mathlib.Tactic
 
@@ -193,7 +192,7 @@ theorem log2_3_irrational : Irrational (Real.log 3 / Real.log 2) := by
   rw [Irrational, Set.mem_range]
   push_neg
   intro q
-  rw [ne_eq, div_eq_iff log_two_ne_zero]
+  rw [ne_eq, eq_div_iff log_two_ne_zero]
   intro h
   -- h : log 3 = ↑q * log 2
   -- Multiply both sides: relates to q log 2 = log 3
@@ -204,19 +203,25 @@ theorem log2_3_irrational : Irrational (Real.log 3 / Real.log 2) := by
   obtain ⟨n, d, hd, hq⟩ : ∃ (n : ℤ) (d : ℕ), 0 < d ∧ (q : ℝ) = n / d := by
     exact ⟨q.num, q.den, q.pos, by exact_mod_cast q.num_div_den.symm⟩
   -- Now h becomes: log 3 = (n/d) * log 2, i.e., d * log 3 = n * log 2
+  have hd0 : (d : ℝ) ≠ 0 := by
+    have : (0 : ℝ) < d := by exact_mod_cast hd
+    exact this.ne'
   have hlog_rel : (d : ℝ) * Real.log 3 = n * Real.log 2 := by
-    field_simp [hq] at h
+    rw [hq, div_mul_eq_mul_div, div_eq_iff hd0] at h
     linarith
   -- Use Real.log_pow to convert to log(3^d) = log(2^|n|)
   -- But we need to handle sign of n
   -- Since log 2, log 3 > 0 and d > 0, we need n > 0
   have hn_pos : 0 < n := by
-    have := log_two_pos
-    have := log_three_pos
     have hd' : (0 : ℝ) < d := by exact_mod_cast hd
-    have : 0 < (d : ℝ) * Real.log 3 := by positivity
-    rw [hlog_rel] at this
-    exact_mod_cast Int.pos_of_mul_pos_right this (by exact_mod_cast le_of_lt log_two_pos)
+    have hpos : 0 < (n : ℝ) * Real.log 2 := by
+      rw [← hlog_rel]
+      exact mul_pos hd' log_three_pos
+    have hn' : 0 < (n : ℝ) := by
+      by_contra hle
+      push_neg at hle
+      nlinarith [log_two_pos]
+    exact_mod_cast hn'
   -- Cast to naturals
   lift n to ℕ using Int.le_of_lt hn_pos
   -- Now hlog_rel : d * log 3 = n * log 2
@@ -248,7 +253,7 @@ theorem log2_log3_rat_indep :
   rw [Fintype.linearIndependent_iff]
   intro c hc i
   simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons] at hc
+    Rat.smul_def] at hc
   -- hc : c 0 • Real.log 2 + c 1 • Real.log 3 = 0
   -- as rational scalars: (c 0 : ℝ) * log 2 + (c 1 : ℝ) * log 3 = 0
   fin_cases i
@@ -258,14 +263,14 @@ theorem log2_log3_rat_indep :
     -- If c 1 ≠ 0: log 3 / log 2 = -(c 0 / c 1) ∈ ℚ, contradicts irrationality
     have hc1 : (c 1 : ℝ) ≠ 0 := by
       intro h1
-      have : (c 0 : ℝ) • Real.log 2 = 0 := by
-        have := hc; simp [h1, smul_eq_mul] at this ⊢; linarith
-      have := (smul_eq_zero.mp this).resolve_right log_two_ne_zero
+      have hc' := hc
+      rw [h1, zero_mul, add_zero, mul_eq_zero] at hc'
+      have := hc'.resolve_right log_two_ne_zero
       exact hc0 (by exact_mod_cast this)
     -- log 3 / log 2 is rational: it equals -(c 0 : ℝ) / (c 1 : ℝ)
     have hratio : Real.log 3 / Real.log 2 = -(c 0 : ℝ) / (c 1 : ℝ) := by
       have hsum : (c 0 : ℝ) * Real.log 2 + (c 1 : ℝ) * Real.log 3 = 0 := by
-        simpa [smul_eq_mul] using hc
+        exact hc
       field_simp [log_two_ne_zero, hc1]
       linarith
     -- But log 3 / log 2 ∈ ℚ contradicts log2_3_irrational
@@ -278,13 +283,13 @@ theorem log2_log3_rat_indep :
     by_contra hc1
     have hc0 : (c 0 : ℝ) ≠ 0 := by
       intro h0
-      have : (c 1 : ℝ) • Real.log 3 = 0 := by
-        have := hc; simp [h0, smul_eq_mul] at this ⊢; linarith
-      have := (smul_eq_zero.mp this).resolve_right log_three_ne_zero
+      have hc' := hc
+      rw [h0, zero_mul, zero_add, mul_eq_zero] at hc'
+      have := hc'.resolve_right log_three_ne_zero
       exact hc1 (by exact_mod_cast this)
     have hratio : Real.log 3 / Real.log 2 = -(c 0 : ℝ) / (c 1 : ℝ) := by
       have hsum : (c 0 : ℝ) * Real.log 2 + (c 1 : ℝ) * Real.log 3 = 0 := by
-        simpa [smul_eq_mul] using hc
+        exact hc
       field_simp [log_two_ne_zero, (show (c 1 : ℝ) ≠ 0 from by exact_mod_cast hc1)]
       linarith
     have hq : Real.log 3 / Real.log 2 = (-(c 0 / c 1) : ℚ) := by
@@ -364,7 +369,7 @@ axiom baker_inhomogeneous
     (hindep : LinearIndependent ℚ (Fin.cons (1 : ℝ) (fun i => Real.log (α i)))) :
     β₀ + ∑ i, β i * Real.log (α i) ≠ 0
 
-/-- **Theorem: Baker's Quantitative Theorem (Effective Lower Bounds)**
+/- **Theorem: Baker's Quantitative Theorem (Effective Lower Bounds)**
 
 The quantitative strengthening gives an explicit lower bound for the linear form.
 
@@ -424,7 +429,7 @@ theorem log2_3_transcendental : Transcendental ℤ (Real.log 3 / Real.log 2) := 
   set β := Real.log 3 / Real.log 2 with hβ_def
   -- β is algebraic over ℤ → algebraic over ℚ
   have hβ_alg_q : IsAlgebraic ℚ β := by
-    exact (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr halg_rat
+    exact (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg_rat
   -- Define the two algebraic numbers α₁ = 2, α₂ = 3
   let α : Fin 2 → ℝ := ![2, 3]
   have hα_pos : ∀ i, 0 < α i := by
@@ -438,8 +443,8 @@ theorem log2_3_transcendental : Transcendental ℤ (Real.log 3 / Real.log 2) := 
   have hβc_alg : ∀ i, IsAlgebraic ℚ (βc i) := by
     intro i; fin_cases i
     · simp [βc, Matrix.cons_val_zero]; exact hβ_alg_q
-    · simp [βc, Matrix.cons_val_one]; exact isAlgebraic_int (-1)
-  have hβc_ne : ∃ i, βc i ≠ 0 := ⟨1, by simp [βc, Matrix.cons_val_one]; norm_num⟩
+    · simp [βc, Matrix.cons_val_one]; exact_mod_cast isAlgebraic_int (R := ℚ) (A := ℝ) (-1)
+  have hβc_ne : ∃ i, βc i ≠ 0 := ⟨1, by simp [βc, Matrix.cons_val_one]⟩
   -- log 2 and log 3 are ℚ-linearly independent
   -- (follows from irrationality of log 3 / log 2)
   have hlog_indep : LinearIndependent ℚ (fun i => Real.log (α i)) := by
@@ -524,7 +529,7 @@ theorem baker_n1_log_independence
     rw [Fintype.linearIndependent_iff]
     intro c hc i
     fin_cases i
-    simp [Fin.sum_univ_one] at hc
+    simp only [Fin.sum_univ_one] at hc
     exact_mod_cast (smul_eq_zero.mp hc).resolve_right hlog_ne
   -- Apply Baker's theorem with n = 1, α₁ = α, β₁ = β
   have hbaker := baker_homogeneous 1 one_pos (fun _ : Fin 1 => α)
@@ -574,7 +579,7 @@ is transcendental, which is trivially true. The conjecture applies to less
 structured situations.
 -/
 
-/-- **Stated as a conjecture (not proved)**
+/- **Stated as a conjecture (not proved)**
 
 The Four Exponentials Conjecture: one of four exponentials must be transcendental.
 
@@ -621,7 +626,7 @@ axiom baker_wustholz_bound
     (hα_deg : ∀ i, (minpoly ℚ (α i)).natDegree ≤ d)
     (b : Fin n → ℤ)
     (A : Fin n → ℝ) (hA_pos : ∀ i, 0 < A i)
-    (hA_bound : ∀ i, Real.log (α i).abs ≤ Real.log (A i))
+    (hA_bound : ∀ i, Real.log |α i| ≤ Real.log (A i))
     (B : ℝ) (hB : 1 < B)
     (hb_bound : ∀ i, |(b i : ℝ)| ≤ B)
     (hΛ_ne : ∑ i, (b i : ℝ) * Real.log (α i) ≠ 0) :
@@ -702,7 +707,7 @@ theorem baker_quantitative
     show 0 < α i + 1; linarith [hα_pos i]
   have hA_gt_one : ∀ i, 1 < A i := fun i => by
     show 1 < α i + 1; linarith [hα_pos i]
-  have hA_bound : ∀ i, Real.log (α i).abs ≤ Real.log (A i) := by
+  have hA_bound : ∀ i, Real.log |α i| ≤ Real.log (A i) := by
     intro i
     show Real.log |α i| ≤ Real.log (α i + 1)
     rw [abs_of_pos (hα_pos i)]

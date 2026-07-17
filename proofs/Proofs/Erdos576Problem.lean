@@ -27,13 +27,12 @@
   Tags: extremal-graph-theory, hypercube, turan-number
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 
 namespace Erdos576
 
@@ -47,7 +46,7 @@ of length k) and edges connecting vertices that differ in exactly one coordinate
 -/
 
 /-- A vertex of the k-dimensional hypercube: a function from Fin k to Bool -/
-def HypercubeVertex (k : ℕ) := Fin k → Bool
+abbrev HypercubeVertex (k : ℕ) := Fin k → Bool
 
 /-- The Hamming distance between two hypercube vertices -/
 def hammingDistance {k : ℕ} (v w : HypercubeVertex k) : ℕ :=
@@ -61,7 +60,11 @@ def hypercubeAdj {k : ℕ} (v w : HypercubeVertex k) : Prop :=
 theorem hypercubeAdj_symm {k : ℕ} (v w : HypercubeVertex k) :
     hypercubeAdj v w ↔ hypercubeAdj w v := by
   unfold hypercubeAdj hammingDistance
-  constructor <;> intro h <;> convert h using 2 <;> ext i <;> exact ne_comm
+  have hfe : (Finset.univ.filter fun i => v i ≠ w i)
+      = (Finset.univ.filter fun i => w i ≠ v i) := by
+    apply Finset.filter_congr
+    intro i _; rw [ne_comm]
+  rw [hfe]
 
 /-- The hypercube adjacency relation is irreflexive -/
 theorem hypercubeAdj_irrefl {k : ℕ} (v : HypercubeVertex k) : ¬hypercubeAdj v v := by
@@ -71,8 +74,14 @@ theorem hypercubeAdj_irrefl {k : ℕ} (v : HypercubeVertex k) : ¬hypercubeAdj v
 /-- The k-dimensional hypercube graph -/
 def hypercubeGraph (k : ℕ) : SimpleGraph (HypercubeVertex k) where
   Adj := hypercubeAdj
-  symm := fun v w => (hypercubeAdj_symm v w).mp
-  loopless := hypercubeAdj_irrefl
+  symm := ⟨fun v w => (hypercubeAdj_symm v w).mp⟩
+  loopless := ⟨hypercubeAdj_irrefl⟩
+
+instance hypercubeAdj_decidable {k : ℕ} : DecidableRel (hypercubeAdj (k := k)) :=
+  fun _ _ => by unfold hypercubeAdj; infer_instance
+
+instance hypercubeGraph_decidableRel {k : ℕ} : DecidableRel (hypercubeGraph k).Adj :=
+  hypercubeAdj_decidable
 
 notation "Q(" k ")" => hypercubeGraph k
 
@@ -106,8 +115,8 @@ def IsSubgraphFree {V : Type*} [Fintype V] [DecidableEq V]
 /-- The Turán number ex(n; H): maximum edges in an n-vertex H-free graph -/
 noncomputable def turanNumber (n : ℕ) {W : Type*} [Fintype W] [DecidableEq W]
     (H : SimpleGraph W) [DecidableRel H.Adj] : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    [DecidableRel G.Adj], Fintype.card V = n ∧ IsSubgraphFree G H ∧
+  sSup {m : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V)
+    (_ : DecidableRel G.Adj), Fintype.card V = n ∧ IsSubgraphFree G H ∧
     G.edgeFinset.card = m}
 
 notation "ex(" n ";" H ")" => turanNumber n H
@@ -120,17 +129,17 @@ The main results on ex(n; Q_k) establish asymptotic bounds.
 
 /-- Erdős-Simonovits (1970) lower bound: ex(n; Q_3) ≥ (1/2 + o(1))n^(3/2) -/
 axiom erdos_simonovits_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in Filter.atTop,
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
       (ex(n; Q(3)) : ℝ) ≥ c * (n : ℝ)^(3/2 : ℝ)
 
 /-- Erdős-Simonovits (1970) upper bound: ex(n; Q_3) ≪ n^(8/5) -/
 axiom erdos_simonovits_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in Filter.atTop,
+    ∃ C : ℝ, C > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
       (ex(n; Q(3)) : ℝ) ≤ C * (n : ℝ)^(8/5 : ℝ)
 
 /-- The combined Erdős-Simonovits bounds for Q_3 -/
 theorem erdos_simonovits_bounds :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ n in Filter.atTop,
+    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
       c * (n : ℝ)^(3/2 : ℝ) ≤ (ex(n; Q(3)) : ℝ) ∧
       (ex(n; Q(3)) : ℝ) ≤ C * (n : ℝ)^(8/5 : ℝ) := by
   obtain ⟨c, hc_pos, hc_bound⟩ := erdos_simonovits_lower_bound
@@ -162,7 +171,7 @@ This remains open.
 
 /-- The conjectured behavior: ex(n; Q_3) ≍ n^(8/5) -/
 def erdos_conjecture_Q3 : Prop :=
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ n in Filter.atTop,
+  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
     c * (n : ℝ)^(8/5 : ℝ) ≤ (ex(n; Q(3)) : ℝ) ∧
     (ex(n; Q(3)) : ℝ) ≤ C * (n : ℝ)^(8/5 : ℝ)
 
@@ -211,10 +220,10 @@ is not fully resolved.
     Status: OPEN -/
 theorem erdos_576_summary :
     -- Lower bound exists
-    (∃ c : ℝ, c > 0 ∧ ∀ᶠ n in Filter.atTop,
+    (∃ c : ℝ, c > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
       (ex(n; Q(3)) : ℝ) ≥ c * (n : ℝ)^(3/2 : ℝ)) ∧
     -- Upper bound exists
-    (∃ C : ℝ, C > 0 ∧ ∀ᶠ n in Filter.atTop,
+    (∃ C : ℝ, C > 0 ∧ ∀ᶠ (n : ℕ) in Filter.atTop,
       (ex(n; Q(3)) : ℝ) ≤ C * (n : ℝ)^(8/5 : ℝ)) ∧
     -- Gap between bounds
     ((8 : ℝ)/5 - 3/2 = 1/10) := by

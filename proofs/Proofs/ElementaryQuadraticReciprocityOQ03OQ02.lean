@@ -1206,7 +1206,7 @@ this gives the sign at `n = -1`, matching the `sign(n)` factor of the normal for
 theorem kronecker_neg_one_right (a : ℤ) :
     kronecker a (-1) = if 0 ≤ a then 1 else -1 := by
   rw [kronecker_neg_one_right_eq_kroneckerNeg1]
-  rcases le_or_lt 0 a with h | h
+  rcases le_or_gt 0 a with h | h
   · rw [if_pos h, kroneckerNeg1_nonneg a h]
   · rw [if_neg (not_le.mpr h), kroneckerNeg1_neg a h]
 

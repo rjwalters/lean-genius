@@ -1,5 +1,4 @@
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.Tactic
+import Mathlib
 import Proofs.ThreeSubgroupsLemmaOQ01
 
 /-
@@ -49,7 +48,7 @@ open Subgroup ThreeSubgroupsLemmaOQ01
 variable {G : Type*} [Group G]
 
 /-- **Bilinear lower-central-series bound.**  In Mathlib's `0`-indexed convention
-(`lowerCentralSeries G 0 = ⊤`), the commutator of the `a`-th and `b`-th terms of
+(`Subgroup.lowerCentralSeries (⊤ : Subgroup G) 0 = ⊤`), the commutator of the `a`-th and `b`-th terms of
 the lower central series lands in the `(a+b+1)`-th term:
 
   `⁅γ_a, γ_b⁆ ≤ γ_{a+b+1}`.
@@ -60,31 +59,31 @@ textbook filtration bound `⁅G_i, G_j⁆ ≤ G_{i+j}`.
 Proved by induction on `b` (generalising `a`) using the parent entry's
 three subgroups lemma (`commutator_le_of_rotate_symm`). -/
 theorem commutator_lowerCentralSeries_le (a b : ℕ) :
-    ⁅lowerCentralSeries G a, lowerCentralSeries G b⁆
-      ≤ lowerCentralSeries G (a + b + 1) := by
+    ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) a, Subgroup.lowerCentralSeries (⊤ : Subgroup G) b⁆
+      ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (a + b + 1) := by
   -- The defining recursion, in commutator form (`rfl`).  Mathlib's
   -- `lowerCentralSeries_succ` unfolds the bracket to a raw `closure` set, which
   -- does not rewrite against `⁅·, ⊤⁆`; this `rfl`-equation keeps it foldable.
   have hsucc : ∀ n : ℕ,
-      lowerCentralSeries G (n + 1) = ⁅lowerCentralSeries G n, (⊤ : Subgroup G)⁆ :=
+      Subgroup.lowerCentralSeries (⊤ : Subgroup G) (n + 1) = ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) n, (⊤ : Subgroup G)⁆ :=
     fun _ => rfl
   induction b generalizing a with
   | zero =>
       -- `⁅γ_a, ⊤⁆ = γ_{a+1}`, and `a + 0 + 1 = a + 1` definitionally.
-      rw [lowerCentralSeries_zero]
+      rw [Subgroup.lowerCentralSeries_zero]
       exact le_of_eq (hsucc a).symm
   | succ b ih =>
       -- Unfold `γ_{b+1} = ⁅γ_b, ⊤⁆` and flip to outer-bracket form
       -- `⁅⁅γ_b, ⊤⁆, γ_a⁆ ≤ N`; the index `a + (b+1) + 1` is defeq `a + b + 1 + 1`.
-      rw [hsucc b, commutator_comm (lowerCentralSeries G a) ⁅lowerCentralSeries G b, ⊤⁆]
-      show ⁅⁅lowerCentralSeries G b, (⊤ : Subgroup G)⁆, lowerCentralSeries G a⁆
-            ≤ lowerCentralSeries G (a + b + 1 + 1)
+      rw [hsucc b, commutator_comm (Subgroup.lowerCentralSeries (⊤ : Subgroup G) a) ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) b, ⊤⁆]
+      show ⁅⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) b, (⊤ : Subgroup G)⁆, Subgroup.lowerCentralSeries (⊤ : Subgroup G) a⁆
+            ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (a + b + 1 + 1)
       -- Three subgroups lemma with `H = ⊤`, `K = γ_a`, `L = γ_b`,
       -- `N = γ_{a+b+1+1}` (normal as a lower-central-series term).
-      refine commutator_le_of_rotate (H := ⊤) (K := lowerCentralSeries G a)
-        (L := lowerCentralSeries G b) ?_ ?_
+      refine commutator_le_of_rotate (H := ⊤) (K := Subgroup.lowerCentralSeries (⊤ : Subgroup G) a)
+        (L := Subgroup.lowerCentralSeries (⊤ : Subgroup G) b) ?_ ?_
       · -- `⁅⁅⊤, γ_a⁆, γ_b⁆ ≤ N`: rewrite `⁅⊤, γ_a⁆ = γ_{a+1}`, then ih at `a+1`.
-        rw [commutator_comm ⊤ (lowerCentralSeries G a), ← hsucc a]
+        rw [commutator_comm ⊤ (Subgroup.lowerCentralSeries (⊤ : Subgroup G) a), ← hsucc a]
         have e : (a + 1) + b + 1 = a + b + 1 + 1 := by omega
         exact e ▸ ih (a + 1)
       · -- `⁅⁅γ_a, γ_b⁆, ⊤⁆ ≤ N`: expand `N = ⁅γ_{a+b+1}, ⊤⁆`, monotonicity + ih at `a`.

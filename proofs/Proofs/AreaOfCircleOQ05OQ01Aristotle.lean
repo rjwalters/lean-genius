@@ -3,8 +3,8 @@
   These are the 2 remaining proof obligations — both product-measure integrability conditions.
 
   Proved so far (no longer sorried in main file):
-    - angular_integral (∫_{-π}^π 1 = 2π): proved via set_integral_const + volume_Ioo
-    - double_integral_eq_polar: proved via integral_comp_polarCoord_symm + set_integral_congr
+    - angular_integral (∫_{-π}^π 1 = 2π): proved via setIntegral_const + volume_Ioo
+    - double_integral_eq_polar: proved via integral_comp_polarCoord_symm + setIntegral_congr_fun
     - gaussian_sq_eq_double_integral: proved structurally via integral_prod + ring
     - polar_integral_factorization: proved structurally via restrict_prod + integral_prod + ring
 
@@ -41,8 +41,7 @@ theorem gaussian_product_integrable :
     Integrable (fun p : ℝ × ℝ => rexp (-(p.1 ^ 2)) * rexp (-(p.2 ^ 2)))
       (volume.prod volume) := by
   have hf : Integrable (fun x : ℝ => rexp (-(x ^ 2))) := by
-    have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
-    simp_rw [one_mul] at h; exact h
+    simpa using integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
   sorry
 
 /-

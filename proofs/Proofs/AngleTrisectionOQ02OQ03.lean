@@ -133,7 +133,7 @@ def IsConstructibleNgon (n : ℕ) : Prop :=
 ## Section IV: Gauss-Wantzel Theorem (Proved)
 
 Proof via degree theory from OQ02OQ03OQ01:
-  1. cos_extension_is_galois: ∃ K with [K:ℚ] = φ(n)/2 containing cos(2π/n)
+  1. cos_extension_is_galois: ∃ K with (K:ℚ) = φ(n)/2 containing cos(2π/n)
   2. minpoly_cos_natDegree_eq: natDeg(minpoly ℚ cos(2π/n)) = φ(n)/2
   3. Forward (→): cos ∈ K with [K:ℚ] = 2^m → φ(n)/2 | 2^m → φ(n) = 2^k
   4. Backward (←): φ(n) = 2^k → φ(n)/2 = 2^(k-1) → K witnesses constructibility
@@ -151,10 +151,10 @@ private theorem dvd_pow_two_is_pow_two {d m : ℕ} (hd : 0 < d) (h : d ∣ 2 ^ m
     · obtain ⟨d', rfl⟩ := h2
       have hd' : 0 < d' := by omega
       have h' : d' ∣ 2 ^ m := by
-        rw [pow_succ] at h
+        rw [pow_succ'] at h
         exact (Nat.mul_dvd_mul_iff_left (by omega : 0 < 2)).mp h
       obtain ⟨k, hk⟩ := ih hd' h'
-      exact ⟨k + 1, by rw [hk, pow_succ]⟩
+      exact ⟨k + 1, by rw [hk, pow_succ, Nat.mul_comm]⟩
     · -- d is odd and divides 2^(m+1), so d = 1
       have hd1 : d = 1 := by
         by_contra hne
@@ -165,6 +165,42 @@ private theorem dvd_pow_two_is_pow_two {d m : ℕ} (hd : 0 < d) (h : d ∣ 2 ^ m
         exact h2 (hpeq2 ▸ hpd)
       exact ⟨0, by rw [hd1, pow_zero]⟩
 
+/-- Arithmetic bridge: φ(n)/2 is a power of 2 iff φ(n) is a power of 2 (for n ≥ 3).
+
+    For n ≥ 3, φ(n) is even (since n has at least one odd prime factor, or n ≥ 3 is
+    a power of 2 with φ(2^k) = 2^(k-1) for k ≥ 2).
+
+    Direction →: φ(n) = 2^k with k ≥ 1 ⟹ φ(n)/2 = 2^(k-1)
+    Direction ←: φ(n)/2 = 2^k ⟹ φ(n) = 2 · 2^k = 2^(k+1) -/
+theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
+    (∃ k : ℕ, Nat.totient n / 2 = 2 ^ k) ↔ TotientIsPow2 n := by
+  unfold TotientIsPow2
+  constructor
+  · -- (→): φ(n)/2 = 2^k ⟹ φ(n) = 2^(k+1)
+    rintro ⟨k, hk⟩
+    -- φ(n) ≥ 2 for n ≥ 3 and φ(n) is even
+    have heven : Even (Nat.totient n) := Nat.totient_even (by omega)
+    have hdvd : 2 ∣ Nat.totient n := heven.two_dvd
+    have hge : 2 ≤ Nat.totient n := by
+      rcases hdvd with ⟨m, hm⟩
+      have := Nat.totient_pos.mpr (show 0 < n by omega)
+      omega
+    exact ⟨k + 1, by
+      rcases hdvd with ⟨m, hm⟩
+      rw [hm, Nat.mul_div_cancel_left _ (by omega)] at hk
+      rw [hm, hk, pow_succ]; ring⟩
+  · -- (←): φ(n) = 2^k ⟹ φ(n)/2 = 2^(k-1)
+    rintro ⟨k, hk⟩
+    have hk1 : 1 ≤ k := by
+      by_contra h
+      push_neg at h
+      interval_cases k
+      simp at hk
+      -- hk : Nat.totient n = 1, but φ(n) is even for n ≥ 3
+      exact absurd (hk ▸ (Nat.totient_even (by omega : 3 ≤ n))) (by decide)
+    exact ⟨k - 1, by rw [hk, Nat.pow_div hk1 (by omega)]⟩
+
+
 /-- **Gauss-Wantzel Theorem** (Gauss 1796, Wantzel 1837):
     A regular n-gon is constructible by compass and straightedge if and only if
     Euler's totient φ(n) is a power of 2.
@@ -174,6 +210,7 @@ private theorem dvd_pow_two_is_pow_two {d m : ℕ} (hd : 0 < d) (h : d ∣ 2 ^ m
     Proved via cyclotomic field degree theory (OQ02OQ03OQ01). -/
 theorem gauss_wantzel_theorem (n : ℕ) (hn : 3 ≤ n) :
     IsConstructibleNgon n ↔ TotientIsPow2 n := by
+  haveI : NeZero n := ⟨by omega⟩
   constructor
   · -- Forward: IsConstructibleNgon → TotientIsPow2
     rintro ⟨K, hK_fd, ⟨m, hK_pow⟩, hcos_mem⟩
@@ -193,8 +230,7 @@ theorem gauss_wantzel_theorem (n : ℕ) (hn : 3 ≤ n) :
     -- so finrank ℚ F ∣ finrank ℚ K = 2^m
     have h_dvd : Nat.totient n / 2 ∣ 2 ^ m := by
       rw [← h_finrank_F, ← hK_pow]
-      exact ⟨Module.finrank ↥F ↥K,
-        (Module.finrank_mul_finrank ℚ ↥F ↥K).symm⟩
+      exact IntermediateField.finrank_dvd_of_le_right hF_le_K
     -- φ(n)/2 divides 2^m → φ(n)/2 = 2^j
     have h_pos : 0 < Nat.totient n / 2 := by
       have := (Nat.totient_pos).mpr (show 0 < n by omega)
@@ -671,41 +707,6 @@ theorem minpoly_cos_dvd_chebyshev (n : ℕ) (hn : 1 ≤ n) :
   have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
     rw [Int.cast_natCast]; field_simp
   rw [this, Real.cos_two_pi, sub_self]
-
-/-- Arithmetic bridge: φ(n)/2 is a power of 2 iff φ(n) is a power of 2 (for n ≥ 3).
-
-    For n ≥ 3, φ(n) is even (since n has at least one odd prime factor, or n ≥ 3 is
-    a power of 2 with φ(2^k) = 2^(k-1) for k ≥ 2).
-
-    Direction →: φ(n) = 2^k with k ≥ 1 ⟹ φ(n)/2 = 2^(k-1)
-    Direction ←: φ(n)/2 = 2^k ⟹ φ(n) = 2 · 2^k = 2^(k+1) -/
-theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
-    (∃ k : ℕ, Nat.totient n / 2 = 2 ^ k) ↔ TotientIsPow2 n := by
-  unfold TotientIsPow2
-  constructor
-  · -- (→): φ(n)/2 = 2^k ⟹ φ(n) = 2^(k+1)
-    rintro ⟨k, hk⟩
-    -- φ(n) ≥ 2 for n ≥ 3 and φ(n) is even
-    have heven : Even (Nat.totient n) := Nat.totient_even (by omega)
-    have hdvd : 2 ∣ Nat.totient n := heven.two_dvd
-    have hge : 2 ≤ Nat.totient n := by
-      rcases hdvd with ⟨m, hm⟩
-      have := Nat.totient_pos.mpr (show 0 < n by omega)
-      omega
-    exact ⟨k + 1, by
-      rcases hdvd with ⟨m, hm⟩
-      rw [hm, Nat.mul_div_cancel_left _ (by omega)] at hk
-      rw [hm, hk, pow_succ]; ring⟩
-  · -- (←): φ(n) = 2^k ⟹ φ(n)/2 = 2^(k-1)
-    rintro ⟨k, hk⟩
-    have hk1 : 1 ≤ k := by
-      by_contra h
-      push_neg at h
-      interval_cases k
-      simp at hk
-      -- hk : Nat.totient n = 1, but φ(n) is even for n ≥ 3
-      exact absurd (hk ▸ (Nat.totient_even (by omega : 3 ≤ n))) (by decide)
-    exact ⟨k - 1, by rw [hk, Nat.pow_div hk1 (by omega)]⟩
 
 /-!
 ## Section XV: Cyclotomic-Cosine Bridge
@@ -1393,13 +1394,13 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
   -- The involution σ(k) = n - k maps S₁ ↔ S₂ := S.filter (fun k => 2k > n)
   -- with no fixed points (coprime_ne_sub_self ensures 2k ≠ n)
   have hS_card : S.card = Nat.totient n := by
+    -- v4.31: the goal elaborates with `S` unfolded, so `rw [hS_def]` has no
+    -- occurrence to rewrite; compare the filters directly (Coprime is symm).
+    rw [Nat.totient_eq_card_coprime]
+    congr 1
+    ext k
     rw [hS_def]
-    -- totient n = (range n).filter (n.Coprime ·)|.card, but our filter uses (k.Coprime n)
-    -- These are equal since Nat.Coprime is symmetric (Nat.gcd is commutative)
-    have : S = (Finset.range n).filter (fun k => n.Coprime k) := by
-      ext k; simp only [Finset.mem_filter, hS_def]
-      exact ⟨fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩, fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩⟩
-    rw [this]; rfl
+    simp [Nat.coprime_comm]
   -- Step 2: image(f, S) = image(f, S₁)
   -- Because for k ∈ S with 2k ≥ n, n-k ∈ S₁ and f(k) = f(n-k)
   have himg : S.image f = S₁.image f := by
@@ -1416,11 +1417,17 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
         have hnk_cop := coprime_sub_self (by omega) hk_cop
         have hnk_pos : 0 < n - k := by omega
         have hnk_lt : n - k < n := by omega
+        -- 2k ≠ n: k ∣ n would force gcd k n = k ≥ 2, contradicting coprimality
+        have h2k_ne : 2 * k ≠ n := by
+          intro h2kn
+          have hdvd : k ∣ n := ⟨2, by omega⟩
+          have := Nat.le_of_dvd (by omega) (Nat.dvd_gcd (dvd_refl k) hdvd)
+          rw [hk_cop] at this; omega
         have hnk_half : 2 * (n - k) < n := by omega
-        have hnk_mem : n - k ∈ S₁ := by
-          rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range]
-          exact ⟨⟨⟨hnk_lt, hnk_cop⟩, hnk_half⟩⟩
-        exact ⟨n - k, hnk_mem, (cos_complement_eq n (by omega) k hk_range).symm⟩
+        have hnk_mem : n - k ∈ S₁ :=
+          Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr
+            ⟨Finset.mem_range.mpr hnk_lt, hnk_cop⟩, hnk_half⟩
+        exact ⟨n - k, hnk_mem, cos_complement_eq n (by omega) k hk_range⟩
     · rintro ⟨k, hk, rfl⟩
       exact ⟨k, Finset.filter_subset _ _ hk, rfl⟩
   -- Step 3: f is injective on S₁
@@ -1440,6 +1447,8 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     rw [hf_def] at hfkj
     rw [cos_2kpi_div_n_eq_iff n (by omega) k j] at hfkj
     simp only [Nat.mod_eq_of_lt hk_range, Nat.mod_eq_of_lt hj_range] at hfkj
+    have hk_pos : 0 < k := coprime_pos_of_ge_three hn hk_filt
+    have hj_pos : 0 < j := coprime_pos_of_ge_three hn hj_filt
     rcases hfkj with h | h
     · exact h
     · -- k = (n - j) % n with j < n means k = n - j
@@ -1466,7 +1475,9 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     constructor
     · intro hk; by_cases h : 2 * k < n
       · left; exact ⟨hk, h⟩
-      · right; exact ⟨hk, by omega⟩
+      · right; refine ⟨hk, ?_⟩
+        have h2 := hno_mid k hk
+        omega
     · rintro (⟨hk, _⟩ | ⟨hk, _⟩) <;> exact hk
   have hdisj : Disjoint S₁ S₂ := by
     rw [Finset.disjoint_filter]
@@ -1474,8 +1485,9 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
   -- The involution σ(k) = n - k maps S₁ → S₂ injectively
   have hσ_inj : Set.InjOn (fun k => n - k) ↑S₁ := by
     intro a ha b hb hab
-    have ha' := Finset.mem_coe.mp ha
-    have hb' := Finset.mem_coe.mp hb
+    have ha1 : 2 * a < n := (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).2
+    have hb1 : 2 * b < n := (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).2
+    have hab' : n - a = n - b := hab
     omega
   have hσ_maps : ∀ k ∈ S₁, n - k ∈ S₂ := by
     intro k hk
@@ -1485,8 +1497,8 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     have hk_cop := (Finset.mem_filter.mp hk_S).2
     have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
     have hk_pos := coprime_pos_of_ge_three hn hk_S
-    rw [hS₂_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
-    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr
+      ⟨Finset.mem_range.mpr (by omega), coprime_sub_self (by omega) hk_cop⟩, by omega⟩
   -- σ maps S₂ → S₁ injectively (inverse)
   have hσ_inv : ∀ k ∈ S₂, n - k ∈ S₁ := by
     intro k hk
@@ -1495,15 +1507,27 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     have hk_half := (Finset.mem_filter.mp hk).2
     have hk_cop := (Finset.mem_filter.mp hk_S).2
     have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
-    rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
-    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr
+      ⟨Finset.mem_range.mpr (by omega), coprime_sub_self (by omega) hk_cop⟩, by omega⟩
   -- |S₁| = |S₂| via the bijection
   have hcard_eq : S₁.card = S₂.card := by
     apply le_antisymm
-    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_maps
-        (fun a ha b hb hab => by omega)
-    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_inv
-        (fun a ha b hb hab => by omega)
+    · refine Finset.card_le_card_of_injOn (fun k => n - k) hσ_maps ?_
+      intro a ha b hb hab
+      have ha1 : 2 * a < n := (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).2
+      have hb1 : 2 * b < n := (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).2
+      have hab' : n - a = n - b := hab
+      omega
+    · refine Finset.card_le_card_of_injOn (fun k => n - k) hσ_inv ?_
+      intro a ha b hb hab
+      have ha1 : n < 2 * a := (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).2
+      have hb1 : n < 2 * b := (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).2
+      have ha2 : a < n := Finset.mem_range.mp
+        (Finset.mem_filter.mp (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).1).1
+      have hb2 : b < n := Finset.mem_range.mp
+        (Finset.mem_filter.mp (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).1).1
+      have hab' : n - a = n - b := hab
+      omega
   -- |S| = |S₁| + |S₂| = 2 * |S₁|
   have hS_split : S.card = S₁.card + S₂.card := by
     rw [hpart]; exact Finset.card_union_of_disjoint hdisj

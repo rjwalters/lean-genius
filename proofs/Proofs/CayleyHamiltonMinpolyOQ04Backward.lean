@@ -232,20 +232,20 @@ theorem isCyclicVector_of_linearIndependent
   -- Goal: ∑ k : Fin n, p.coeff ↑k • (M ^ ↑k).mulVec v = 0
   -- Step 1: aeval M p = ∑_{i < n} p.coeff i • M^i
   have heval : aeval M p = ∑ i ∈ Finset.range n, p.coeff i • M ^ i := by
-    rw [aeval_def, eval₂_eq_sum_range' hp]
+    rw [aeval_def, eval₂_eq_sum_range' (algebraMap K (Matrix (Fin n) (Fin n) K)) hp]
     simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
   -- Step 2: mulVec distributes over finite sums
   have hdist : ∀ (s : Finset ℕ),
-      (∑ i in s, p.coeff i • M ^ i).mulVec v =
-      ∑ i in s, p.coeff i • (M ^ i).mulVec v := by
+      (∑ i ∈ s, p.coeff i • M ^ i).mulVec v =
+      ∑ i ∈ s, p.coeff i • (M ^ i).mulVec v := by
     intro s
-    induction s using Finset.induction with
-    | empty => simp [Matrix.zero_mulVec]
-    | insert ha ih =>
-      rw [Finset.sum_insert ha, Matrix.add_mulVec, ih,
-          Finset.sum_insert ha, Matrix.smul_mulVec_assoc]
+    rw [Matrix.sum_mulVec]
+    simp only [Matrix.smul_mulVec]
   -- Step 3: Convert Fin n sum to range n sum, factor out mulVec, use hann
-  rw [Fin.sum_univ_eq_sum_range, ← hdist, ← heval]
+  have hrange : ∑ i ∈ Finset.range n, p.coeff i • M ^ i *ᵥ v =
+      ∑ i : Fin n, p.coeff (i : ℕ) • M ^ (i : ℕ) *ᵥ v :=
+    (Fin.sum_univ_eq_sum_range (fun i => p.coeff i • M ^ i *ᵥ v) n).symm
+  rw [← hrange, ← hdist, ← heval]
   exact hann
 
 -- ============================================================
@@ -271,8 +271,8 @@ theorem linearIndependent_of_isCyclicVector
     rw [hp_aeval]
     have : (∑ k : Fin n, c k • M ^ (k : ℕ)).mulVec v =
            ∑ k : Fin n, c k • (M ^ (k : ℕ)).mulVec v := by
-      simp only [← Matrix.mulVecLin_apply]
-      rw [map_sum]; congr 1; ext k; rw [map_smul, Matrix.mulVecLin_apply]
+      rw [Matrix.sum_mulVec]
+      simp only [Matrix.smul_mulVec]
     rw [this, hc]
   -- deg(p) < n
   have hp_deg : p.natDegree < n := by
@@ -300,6 +300,7 @@ theorem gcd_aeval_mulVec_eq_zero [DecidableEq K[X]] {M : Matrix (Fin n) (Fin n) 
   have bezout := EuclideanDomain.gcd_eq_gcd_ab p μ
   -- Rewrite with commutativity: d = gcdA * p + gcdB * μ
   have bezout' : d = EuclideanDomain.gcdA p μ * p + EuclideanDomain.gcdB p μ * μ := by
+    show EuclideanDomain.gcd p μ = _
     rw [bezout]; ring
   -- μ(M) = 0
   have hμ_ann : (aeval M μ : Matrix (Fin n) (Fin n) K) = 0 := minpoly.aeval K M

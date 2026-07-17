@@ -1,5 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Heisenberg Uncertainty from Complex Cauchy-Schwarz
@@ -46,9 +45,12 @@ open scoped ComplexInnerProductSpace
 /-- **Cauchy-Schwarz** (Mathlib): |⟨f, g⟩|² ≤ ‖f‖² · ‖g‖².
 This is the foundation for the uncertainty principle. -/
 theorem cauchy_schwarz_sq (f g : E) :
-    Complex.normSq (inner f g : ℂ) ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
-  have h := @inner_mul_le_norm_mul_sq ℂ E _ _ f g
-  exact h
+    Complex.normSq ⟪f, g⟫ ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  have h := norm_inner_le_norm (𝕜 := ℂ) f g
+  have h2 : ‖⟪f, g⟫‖ * ‖⟪f, g⟫‖ ≤ (‖f‖ * ‖g‖) * (‖f‖ * ‖g‖) :=
+    mul_self_le_mul_self (norm_nonneg _) h
+  rw [Complex.normSq_eq_norm_sq]
+  nlinarith [h2]
 
 /-- **Norm-squared is nonneg**: ‖f‖² ≥ 0 for any f. -/
 theorem norm_sq_nonneg' (f : E) : (0 : ℝ) ≤ ‖f‖ ^ 2 := by positivity
@@ -69,9 +71,8 @@ plus the fact that |Im⟨f,g⟩|² ≤ |⟨f,g⟩|². -/
 This is the step from Cauchy-Schwarz to the commutator bound:
 the commutator ⟨[A,B]⟩ = 2i·Im⟨Aψ, Bψ⟩, so we need |Im|². -/
 theorem im_sq_le_normSq (z : ℂ) : z.im ^ 2 ≤ Complex.normSq z := by
-  unfold Complex.normSq
-  simp only [Complex.normSq_mk]
-  linarith [sq_nonneg z.re]
+  rw [Complex.normSq_apply]
+  nlinarith [sq_nonneg z.re]
 
 /-- **Commutator-variance bound** (abstract form):
 For any f, g in an inner product space:
@@ -80,9 +81,9 @@ For any f, g in an inner product space:
 This is the algebraic core of the Heisenberg uncertainty principle.
 Applied to f = (A-⟨A⟩)ψ, g = (B-⟨B⟩)ψ, this gives σ_A²·σ_B² ≥ |Im⟨f,g⟩|². -/
 theorem robertson_core (f g : E) :
-    ((inner f g : ℂ).im) ^ 2 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
-  calc ((inner f g : ℂ).im) ^ 2
-      ≤ Complex.normSq (inner f g : ℂ) := im_sq_le_normSq _
+    (⟪f, g⟫.im) ^ 2 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  calc (⟪f, g⟫.im) ^ 2
+      ≤ Complex.normSq ⟪f, g⟫ := im_sq_le_normSq _
     _ ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := cauchy_schwarz_sq f g
 
 /-! ## Part 3: The Heisenberg Bound -/
@@ -93,7 +94,7 @@ then ‖f‖ · ‖g‖ ≥ |c|/2.
 
 In quantum mechanics: f = ΔX·ψ, g = ΔP·ψ, and Im⟨f,g⟩ = ℏ/2,
 giving σ_x · σ_p ≥ ℏ/2. -/
-theorem heisenberg_bound (f g : E) (c : ℝ) (hc : (inner f g : ℂ).im = c / 2) :
+theorem heisenberg_bound (f g : E) (c : ℝ) (hc : ⟪f, g⟫.im = c / 2) :
     c ^ 2 / 4 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
   have h := robertson_core f g
   rw [hc] at h
@@ -102,22 +103,20 @@ theorem heisenberg_bound (f g : E) (c : ℝ) (hc : (inner f g : ℂ).im = c / 2)
 /-- **The ℏ/2 bound**: When c = ℏ (the reduced Planck constant), we get
 σ_x · σ_p ≥ ℏ/2. We state this for any positive ℏ. -/
 theorem uncertainty_principle (f g : E) (hbar : ℝ) (hhbar : 0 < hbar)
-    (hcomm : (inner f g : ℂ).im = hbar / 2) :
+    (hcomm : ⟪f, g⟫.im = hbar / 2) :
     hbar ^ 2 / 4 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 :=
   heisenberg_bound f g hbar hcomm
 
 /-- **Square root form**: σ_A · σ_B ≥ |c|/2.
 This is the more familiar form of the uncertainty principle. -/
-theorem heisenberg_sqrt (f g : E) (c : ℝ) (hc : (inner f g : ℂ).im = c / 2)
+theorem heisenberg_sqrt (f g : E) (c : ℝ) (hc : ⟪f, g⟫.im = c / 2)
     (hf : 0 < ‖f‖) (hg : 0 < ‖g‖) :
     |c| / 2 ≤ ‖f‖ * ‖g‖ := by
   have h := heisenberg_bound f g c hc
   have hfg : 0 < ‖f‖ * ‖g‖ := mul_pos hf hg
-  rw [div_le_iff (by norm_num : (0:ℝ) < 4)] at h
-  rw [div_le_iff (by norm_num : (0:ℝ) < 2)]
-  nlinarith [sq_abs c, sq_nonneg (‖f‖ * ‖g‖ - |c| / 2),
-             mul_pow_le_pow_mul_pow_of_sq_le_sq 2 ![‖f‖, ‖g‖] ![‖f‖, ‖g‖]
-               (by intro i; fin_cases i <;> simp) (by intro i; fin_cases i <;> simp)]
+  have hc2 : c ^ 2 ≤ (2 * (‖f‖ * ‖g‖)) ^ 2 := by nlinarith
+  have habs := abs_le_of_sq_le_sq hc2 (by positivity)
+  linarith [habs]
 
 /-! ## Summary
 

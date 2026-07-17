@@ -47,7 +47,7 @@ def oeis_A331372 : ℕ → ℤ
 theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
   have h : (2 : ℝ)^n ≥ 4 := by
     calc (2 : ℝ)^n ≥ 2^2 := by
-          apply pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) hn
+          apply pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ 2) hn
       _ = 4 := by norm_num
   linarith
 
@@ -70,7 +70,7 @@ theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
     have h2m : (2 : ℝ)^(m + 1) = 2 * 2^m := by ring
     rw [h2m]
     have h2pos : (2 : ℝ)^m ≥ 4 := by
-      calc (2 : ℝ)^m ≥ 2^2 := pow_le_pow_right (by norm_num) hm
+      calc (2 : ℝ)^m ≥ 2^2 := pow_le_pow_right₀ (by norm_num) hm
         _ = 4 := by norm_num
     linarith
 

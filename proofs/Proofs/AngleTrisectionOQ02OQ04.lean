@@ -1,6 +1,4 @@
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.PGroup
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hierarchy of Constructibility Criteria
@@ -16,7 +14,7 @@ progressively stronger levels:
 **Level 1 — Degree criterion (necessary, not sufficient)**:
   If α is constructible, then [ℚ(α):ℚ] is a power of 2.
   Counterexample: cos(2π/7) has [ℚ(α):ℚ] = 3 (not power of 2), non-constructible ✓
-  But: ∃ α with [ℚ(α):ℚ] = 4 = 2² that is NOT constructible.
+  But: ∃ α with (_ : ℚ(α):ℚ) = 4 = 2² that is NOT constructible.
 
 **Level 2 — Galois 2-group criterion (necessary and sufficient)**:
   α is constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
@@ -95,8 +93,10 @@ def degree_strictly_weaker_than_galois : Prop :=
 to the tower criterion: a solvable Galois group means the extension can be
 decomposed into a chain of abelian (in fact cyclic of prime order) extensions. -/
 theorem isPGroup_two_solvable {G : Type*} [Group G] [Fintype G] (h : IsPGroup 2 G) :
-    Group.IsSolvable G :=
-  IsPGroup.isSolvable h
+    IsSolvable G :=
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  haveI : Group.IsNilpotent G := h.isNilpotent
+  IsNilpotent.to_isSolvable
 
 /-- Subgroups of 2-groups are 2-groups. This ensures the hierarchy is preserved
 when passing to subfields. -/
@@ -105,7 +105,7 @@ theorem isPGroup_two_subgroup {G : Type*} [Group G] [Fintype G] (h : IsPGroup 2 
   h.to_subgroup H
 
 /-- The trivial group is a 2-group. Base case for induction on the tower. -/
-theorem isPGroup_two_trivial : IsPGroup 2 (⊤ : Subgroup (Fin 1 → Fin 1)) := by
+theorem isPGroup_two_trivial : IsPGroup 2 (⊤ : Subgroup PUnit) := by
   rw [IsPGroup.iff_card]
   use 0
   simp
@@ -156,7 +156,7 @@ from Mathlib, which is available but connecting it to the constructibility
 definitions requires substantial glue code (~500+ lines).
 -/
 
-#check IsPGroup.isSolvable
+#check IsPGroup.isNilpotent
 #check IsPGroup.to_subgroup
 #check IsPGroup.iff_card
 

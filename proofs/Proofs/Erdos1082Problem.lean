@@ -189,7 +189,7 @@ If S has n points in general position, then S determines at least n/3 distinct d
 axiom szemeredi_n_over_3 (S : Finset Point2D) (h : inGeneralPosition S) :
     (distinctDistances S).card ≥ S.card / 3
 
-/--
+/- 
 **Szemerédi's Stronger Result:**
 If S has n points with no k on a line, then some point determines ≫ n/k distances.
 -/
@@ -310,7 +310,7 @@ theorem conjecture2_false_does_not_imply_conjecture1_false_note :
 ## Part IX: Connection to Erdős Problem #89
 -/
 
-/--
+/- 
 **Guth-Katz (2015):**
 Every set of n points in ℝ² determines Ω(n/log n) distinct distances.
 For sets in general position, this gives a lower bound independent of

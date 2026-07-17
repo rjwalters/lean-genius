@@ -115,7 +115,7 @@ theorem curveSpeed_periodic (γ : SmoothClosedCurve) (t : ℝ) :
   -- Prove deriv x (t + 2π) = deriv x t using HasDerivAt and periodicity
   have hxper : deriv γ.x (t + 2 * π) = deriv γ.x t := by
     have hd : ∀ s, HasDerivAt γ.x (deriv γ.x s) s :=
-      fun s => (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+      fun s => (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt
     have hd2 : HasDerivAt γ.x (deriv γ.x (t + 2 * π)) (t + 2 * π) := hd (t + 2 * π)
     have hd3 : HasDerivAt (fun s => γ.x (s + 2 * π)) (deriv γ.x (t + 2 * π)) t := by
       have := hd2.comp t ((hasDerivAt_id t).add (hasDerivAt_const t (2 * π)))
@@ -126,7 +126,7 @@ theorem curveSpeed_periodic (γ : SmoothClosedCurve) (t : ℝ) :
     exact hd3.deriv.symm
   have hyper : deriv γ.y (t + 2 * π) = deriv γ.y t := by
     have hd : ∀ s, HasDerivAt γ.y (deriv γ.y s) s :=
-      fun s => (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+      fun s => (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt
     have hd2 : HasDerivAt γ.y (deriv γ.y (t + 2 * π)) (t + 2 * π) := hd (t + 2 * π)
     have hd3 : HasDerivAt (fun s => γ.y (s + 2 * π)) (deriv γ.y (t + 2 * π)) t := by
       have := hd2.comp t ((hasDerivAt_id t).add (hasDerivAt_const t (2 * π)))
@@ -221,7 +221,7 @@ theorem arcLength_neg_nat_multiple (γ : SmoothClosedCurve) (n : ℕ) :
 
     Proof: For any y ∈ ℝ, find n : ℕ with n·L > |y|.
     Then s(2nπ) = nL > |y| ≥ y and s(-2nπ) = -nL < -|y| ≤ y.
-    By IVT (s is continuous), ∃ t ∈ [-2nπ, 2nπ] with s(t) = y. -/
+    By IVT (s is continuous), ∃ t ∈ (_ : -2nπ, 2nπ) with s(t) = y. -/
 theorem arcLength_surjective (γ : SmoothClosedCurve)
     (hL : 0 < γ.circumference) :
     Function.Surjective (arcLength γ) := by
@@ -423,9 +423,9 @@ theorem circumference_reparam_preserved (γ : SmoothClosedCurve)
   -- τ has derivative (1/speed(τ t)) * c at each t (chain rule + IFT)
   have hτ_da : ∀ t, HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := fun t => by
     have hσ_da := arcLengthInv_hasDerivAt γ hReg hL (c * t)
-    have h := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-    simp only [Function.comp] at h
-    convert h using 1; ring
+    have hinner : HasDerivAt (fun y => c * y) c t := by
+      have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+    exact hσ_da.comp t hinner
   -- The integrand equals c pointwise (chain rule + algebraic simplification)
   have hint : ∀ t ∈ Set.uIcc (0 : ℝ) (2 * π),
       Real.sqrt (deriv (γ.x ∘ τ) t ^ 2 + deriv (γ.y ∘ τ) t ^ 2) = c := by
@@ -436,10 +436,10 @@ theorem circumference_reparam_preserved (γ : SmoothClosedCurve)
     have hk_pos : 0 ≤ 1 / curveSpeed γ (τ t) * c := by positivity
     -- Chain rule: deriv(x∘τ) t = deriv x (τ t) * deriv τ t
     have hx_da : HasDerivAt (γ.x ∘ τ) (deriv γ.x (τ t) * (1 / curveSpeed γ (τ t) * c)) t := by
-      have hxt := (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt (x := τ t)
+      have hxt := (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt (x := τ t)
       simpa [Function.comp] using hxt.comp t (hτ_da t)
     have hy_da : HasDerivAt (γ.y ∘ τ) (deriv γ.y (τ t) * (1 / curveSpeed γ (τ t) * c)) t := by
-      have hyt := (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt (x := τ t)
+      have hyt := (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt (x := τ t)
       simpa [Function.comp] using hyt.comp t (hτ_da t)
     rw [hx_da.deriv, hy_da.deriv]
     -- sqrt((x'·k)² + (y'·k)²) = speed(τt) · k = c
@@ -477,9 +477,9 @@ theorem area_reparam_preserved (γ : SmoothClosedCurve)
   -- τ derivative
   have hτ_da : ∀ t, HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := fun t => by
     have hσ_da := arcLengthInv_hasDerivAt γ hReg hL (c * t)
-    have h := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-    simp only [Function.comp] at h
-    convert h using 1; ring
+    have hinner : HasDerivAt (fun y => c * y) c t := by
+      have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+    exact hσ_da.comp t hinner
   have hτ'_pos : ∀ t, 0 < 1 / curveSpeed γ (τ t) * c := fun t => by
     apply mul_pos _ hc_pos
     apply div_pos one_pos
@@ -494,10 +494,10 @@ theorem area_reparam_preserved (γ : SmoothClosedCurve)
         (1 / curveSpeed γ (τ t) * c) := by
     intro t _
     have hx_da : HasDerivAt (γ.x ∘ τ) (deriv γ.x (τ t) * (1 / curveSpeed γ (τ t) * c)) t := by
-      have hxt := (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt (x := τ t)
+      have hxt := (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt (x := τ t)
       simpa [Function.comp] using hxt.comp t (hτ_da t)
     have hy_da : HasDerivAt (γ.y ∘ τ) (deriv γ.y (τ t) * (1 / curveSpeed γ (τ t) * c)) t := by
-      have hyt := (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt (x := τ t)
+      have hyt := (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt (x := τ t)
       simpa [Function.comp] using hyt.comp t (hτ_da t)
     simp only [Function.comp]
     rw [hx_da.deriv, hy_da.deriv]
@@ -561,7 +561,7 @@ theorem area_reparam_preserved (γ : SmoothClosedCurve)
     have hyper : γ.y (u + 2 * π) = γ.y u := γ.periodic_y u
     have hdxper : deriv γ.x (u + 2 * π) = deriv γ.x u := by
       have hd : ∀ s, HasDerivAt γ.x (deriv γ.x s) s :=
-        fun s => (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+        fun s => (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt
       have h3 : HasDerivAt (fun s => γ.x (s + 2 * π)) (deriv γ.x (u + 2 * π)) u := by
         have := (hd (u + 2 * π)).comp u
           ((hasDerivAt_id u).add (hasDerivAt_const u (2 * π)))
@@ -570,7 +570,7 @@ theorem area_reparam_preserved (γ : SmoothClosedCurve)
       rw [key] at h3; exact h3.deriv.symm
     have hdyper : deriv γ.y (u + 2 * π) = deriv γ.y u := by
       have hd : ∀ s, HasDerivAt γ.y (deriv γ.y s) s :=
-        fun s => (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+        fun s => (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt
       have h3 : HasDerivAt (fun s => γ.y (s + 2 * π)) (deriv γ.y (u + 2 * π)) u := by
         have := (hd (u + 2 * π)).comp u
           ((hasDerivAt_id u).add (hasDerivAt_const u (2 * π)))
@@ -664,15 +664,14 @@ theorem exists_arclength_reparam' (γ : SmoothClosedCurve)
       arcLengthInv_hasDerivAt γ hReg hL (c * t)
     -- τ has derivative c/speed(τ(t)) at t
     have hτ_da : HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := by
-      have := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-      simp only [Function.comp, hτ_def] at this ⊢
-      convert this using 1
-      ring
+      have hinner : HasDerivAt (fun y => c * y) c t := by
+        have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+      exact hσ_da.comp t hinner
     -- Chain rule for γ.x ∘ τ and γ.y ∘ τ
     have hx_da : HasDerivAt γ.x (deriv γ.x (τ t)) (τ t) :=
-      (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+      (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt
     have hy_da : HasDerivAt γ.y (deriv γ.y (τ t)) (τ t) :=
-      (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+      (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt
     rw [(hx_da.comp t hτ_da).deriv, (hy_da.comp t hτ_da).deriv]
     -- Arithmetic: (x'·c/s)² + (y'·c/s)² = (x'²+y'²)·c²/s² = s²·c²/s² = c²
     rw [show (deriv γ.x (τ t) * (1 / curveSpeed γ (τ t) * c)) ^ 2 +

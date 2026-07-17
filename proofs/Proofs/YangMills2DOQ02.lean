@@ -67,7 +67,6 @@ theorem twoD_potential_ratio_exact (sigma_R sigma_fund r : ℝ)
     linearPotential sigma_R r / linearPotential sigma_fund r = sigma_R / sigma_fund := by
   unfold linearPotential
   field_simp [ne_of_gt hr, ne_of_gt hf]
-  ring
 
 /-- The Migdal tension ratio equals the Casimir ratio (same-dimension representations). -/
 theorem migdalTension_ratio_eq_casimir_ratio (g_sq casimir_R casimir_fund : ℝ) (dim : ℕ)
@@ -81,7 +80,6 @@ theorem migdalTension_ratio_eq_casimir_ratio (g_sq casimir_R casimir_fund : ℝ)
   have hdim_ne : (dim : ℝ) ≠ 0 := ne_of_gt hdim_pos
   have h2dim_ne : (2 : ℝ) * (dim : ℝ) ≠ 0 := mul_ne_zero (by norm_num) hdim_ne
   field_simp [hg_ne, h2dim_ne, hCf_ne]
-  ring
 
 /-- **2D Exact Casimir Scaling**: For any r > 0, the potential ratio equals the Casimir ratio.
     This is the central exact result in 2D Yang-Mills. -/
@@ -157,7 +155,7 @@ theorem post_break_ratio_lt_tension_ratio (sigma_R sigma_fund m_gluelump r : ℝ
     breakDistance_pos sigma_R m_gluelump hsig_R hm
   have hr_pos : r > 0 := lt_trans hr_break_pos hr
   unfold saturationPotential linearPotential
-  rw [div_lt_div_iff (mul_pos hsig_f hr_pos) hsig_f]
+  rw [div_lt_div_iff₀ (mul_pos hsig_f hr_pos) hsig_f]
   -- Goal: 2 * m_gluelump * sigma_fund < sigma_R * (sigma_fund * r)
   have key : 2 * m_gluelump < sigma_R * r :=
     saturation_lt_linear_post_break sigma_R m_gluelump r hsig_R hm hr

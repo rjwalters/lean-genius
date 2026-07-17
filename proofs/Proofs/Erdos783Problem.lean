@@ -162,17 +162,20 @@ private lemma primeReciprocalSumDiverges :
     intro p hp
     simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp ⊢
     exact ⟨by omega, hp.2⟩
-  have h_le := Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)
+  have h_le : (∑ p ∈ (Finset.range N).filter Nat.Prime, (1 : ℝ) / p) ≤
+      ∑ p ∈ primesBelow N, (1 : ℝ) / p :=
+    Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)
   linarith
 
 /-- The number of primes below p is strictly less than p for any prime p,
     since {0, ..., p-1} contains non-primes (at least 0 and 1). -/
 private lemma count_primes_lt (p : ℕ) (hp : Nat.Prime p) :
     Nat.count Nat.Prime p < p := by
-  rw [Nat.count_eq_card_filter_range, ← Finset.card_range p]
+  rw [Nat.count_eq_card_filter_range]
   by_contra h
-  push_neg at h
-  have heq := Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) h
+  have h' : (Finset.range p).card ≤ ((Finset.range p).filter Nat.Prime).card := by
+    rw [Finset.card_range]; exact Nat.le_of_not_lt h
+  have heq := Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) h'
   have h0 : 0 ∈ (Finset.range p).filter Nat.Prime := by
     rw [heq]; exact Finset.mem_range.mpr hp.pos
   exact Nat.not_prime_zero (Finset.mem_filter.mp h0).2
@@ -229,11 +232,11 @@ theorem maxPrimeCount_spec (C : ℝ) (hC : C > 0) :
   rw [hdef]
   constructor
   · -- Sum of first k₀ terms ≤ C (from minimality of Nat.find)
-    set k₀ := Nat.find (exists_prime_sum_exceeds C hC)
-    cases k₀ with
-    | zero => simp; linarith
-    | succ n =>
-      have h_min := Nat.find_min (exists_prime_sum_exceeds C hC) (Nat.lt_succ_self n)
+    rcases hk : Nat.find (exists_prime_sum_exceeds C hC) with _ | n
+    · simp
+      linarith
+    · have h_min := Nat.find_min (exists_prime_sum_exceeds C hC)
+        (show n < Nat.find (exists_prime_sum_exceeds C hC) by omega)
       push_neg at h_min
       exact h_min
   · -- Sum of first k₀ + 1 terms > C (from Nat.find_spec)
@@ -263,7 +266,7 @@ theorem primeSievingSet_valid (C : ℝ) (hC : C > 0) (n : ℕ)
 
 /- ## The Main Conjecture (OPEN) -/
 
-/-- Erdős Problem #783: The prime sieving set is optimal.
+/-  Erdős Problem #783: The prime sieving set is optimal.
     For large n, the set of first k primes (k = maxPrimeCount C)
     minimizes the unsieved count among all valid sieving sets. -/
 /- ## Supporting Analysis -/
@@ -277,7 +280,7 @@ theorem coprime_sieve_estimate (A : Finset ℕ) (n : ℕ) (C : ℝ)
       A.prod (fun a => 1 - (1 : ℝ) / a)| ≤ δ :=
   ⟨_, le_refl _⟩
 
-/-- For a fixed reciprocal sum budget C, the product Π(1 - 1/a_i)
+/-  For a fixed reciprocal sum budget C, the product Π(1 - 1/a_i)
     is minimized when the a_i are primes. Replacing a composite
     with its prime factor yields a better sieve. -/
 /- ## Empty Sieve Baseline -/
@@ -322,19 +325,22 @@ theorem sieving_reduces_unsieved (A : Finset ℕ) (a n : ℕ)
 
 /-- For a ≥ 2, 0 < 1 - 1/a < 1. -/
 theorem sieve_factor_bounds (a : ℕ) (ha : 2 ≤ a) :
-    (0 : ℝ) < 1 - 1 / a ∧ 1 - 1 / a < 1 := by
-  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num : 0 < 2) ha
-  constructor
-  · linarith [div_lt_one ha_pos |>.mpr (by linarith)]
-  · linarith [div_pos one_pos ha_pos]
+    (0 : ℝ) < 1 - 1 / (a : ℝ) ∧ 1 - 1 / (a : ℝ) < 1 := by
+  have ha2 : (2 : ℝ) ≤ (a : ℝ) := by exact_mod_cast ha
+  have ha_pos : (0 : ℝ) < a := by linarith
+  have h2 : (0 : ℝ) < 1 / a := by positivity
+  have h3 : (1 : ℝ) / a < 1 := by
+    rw [div_lt_one ha_pos]; linarith
+  exact ⟨by linarith, by linarith⟩
 
 /-- The sieve factor 1 - 1/a is monotone increasing in a.
     Smaller elements give more aggressive sieving. -/
 theorem sieve_factor_mono {a b : ℕ} (ha : 2 ≤ a) (hab : a ≤ b) :
     1 - 1 / (b : ℝ) ≥ 1 - 1 / (a : ℝ) := by
-  have ha_pos : (0 : ℝ) < a := by positivity
-  have hb_pos : (0 : ℝ) < b := by linarith [show (0 : ℝ) < a from ha_pos]
-  linarith [div_le_div_of_nonneg_left one_pos ha_pos (by exact_mod_cast hab)]
+  have ha_pos : (0 : ℝ) < a := by exact_mod_cast show 0 < a by omega
+  have hab' : (a : ℝ) ≤ b := by exact_mod_cast hab
+  have h : (1 : ℝ) / b ≤ 1 / a := by gcongr
+  linarith
 
 /-- Key lemma: for composite a with prime factor p < a, the sieve factor
     1-1/p < 1-1/a. Replacing a composite with its prime factor gives
@@ -343,8 +349,9 @@ theorem prime_factor_better_sieve (a p : ℕ) (ha : 2 ≤ a) (hp : p.Prime)
     (hp_dvd : p ∣ a) (hp_lt : p < a) :
     1 - 1 / (p : ℝ) < 1 - 1 / (a : ℝ) := by
   have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
-  have ha_pos : (0 : ℝ) < a := by positivity
-  linarith [div_lt_div_of_pos_left one_pos hp_pos (by exact_mod_cast hp_lt)]
+  have hpa : (p : ℝ) < a := by exact_mod_cast hp_lt
+  have h : (1 : ℝ) / a < 1 / p := by gcongr
+  linarith
 
 /-- Product of sieve factors is positive for any set of elements ≥ 2. -/
 theorem sieve_product_pos (A : Finset ℕ) (hA : ∀ a ∈ A, 2 ≤ a) :
@@ -363,7 +370,7 @@ theorem erase_increases_product (A : Finset ℕ) (a : ℕ)
   have hfac := sieve_factor_bounds a (hA a ha_mem)
   have hprod := sieve_product_pos (A.erase a) (fun b hb =>
     hA b (Finset.mem_of_mem_erase hb))
-  nlinarith
+  exact mul_le_of_le_one_left hprod.le hfac.2.le
 
 /-- Among prime-only coprime sets: if prime p < q and p ∉ B,
     then replacing q with p in B strictly decreases the product.
@@ -386,7 +393,9 @@ theorem smaller_prime_better (B : Finset ℕ) (p q : ℕ)
   have hpq_ineq : 1 - 1 / (p : ℝ) < 1 - 1 / (q : ℝ) := by
     have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
     have hq_pos : (0 : ℝ) < q := Nat.cast_pos.mpr hq.pos
-    linarith [div_lt_div_of_pos_left one_pos hp_pos (by exact_mod_cast hpq)]
+    have hpq' : (p : ℝ) < q := by exact_mod_cast hpq
+    have h : (1 : ℝ) / q < 1 / p := by gcongr
+    linarith
   exact mul_lt_mul_of_pos_right hpq_ineq hrest_pos
 
 /-- Composite replacement: if a ∈ A is composite with prime factor p < a, and p

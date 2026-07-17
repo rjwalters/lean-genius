@@ -36,7 +36,7 @@ The preimage φ⁻¹(n) = {m : φ(m) = n} is the set of all integers with totien
 /-- The preimage of n under Euler's totient function: all m with φ(m) = n. -/
 def totientPreimage (n : ℕ) : Set ℕ := {m | Nat.totient m = n}
 
-/-- The preimage is always finite (axiomatized).
+/-  The preimage is always finite (axiomatized).
 This follows from φ(m) ≥ √(m/2) for m > 1. -/
 
 /- ## Largest and Smallest Preimages
@@ -62,7 +62,7 @@ The question asks to investigate the maximum ratio f_max(n)/f_min(n) over n ≤ 
 noncomputable def preimageRatio (n : ℕ) : ℚ :=
   if f_min n = 0 then 0 else (f_max n : ℚ) / f_min n
 
-/-- (OPEN) Investigation of the maximum preimage ratio.
+/-  (OPEN) Investigation of the maximum preimage ratio.
 What is max_{n ≤ x} f_max(n)/f_min(n)? How does it grow with x?
 -/
 
@@ -93,7 +93,7 @@ then infinitely many such n must exist.
 /-- The set of all Carmichael totients. -/
 def carmichaelTotients : Set ℕ := {n | isCarmichaelTotient n}
 
-/--
+/- 
 **Erdős (SOLVED)**: If there exists any Carmichael totient, then infinitely many exist.
 
 The proof uses the multiplicative structure of φ: if φ(m) = n is unique, then
@@ -152,7 +152,7 @@ theorem two_not_carmichael : ¬ isCarmichaelTotient 2 := by
   have eq3 := huniq 3 h3
   have eq4 := huniq 4 h4
   have : (3 : ℕ) = 4 := eq3.trans eq4.symm
-  norm_num at this
+  omega
 
 /- ## Summary -/
 

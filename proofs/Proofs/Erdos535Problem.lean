@@ -30,11 +30,7 @@ References:
 Tags: number-theory, gcd, extremal-combinatorics, sunflower, open
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Real Finset
 
@@ -61,13 +57,13 @@ def IsSubsetOfInterval (A : Finset ℕ) (N : ℕ) : Prop :=
 
 /-- f_r(N): Maximum size of A ⊆ {1,...,N} with no r elements sharing pairwise gcd -/
 noncomputable def f (r N : ℕ) : ℕ :=
-  sSup {A.card | A : Finset ℕ, IsSubsetOfInterval A N ∧ HasNoRGCDSubset A r}
+  sSup {k | ∃ A : Finset ℕ, (IsSubsetOfInterval A N ∧ HasNoRGCDSubset A r) ∧ A.card = k}
 
 /-
 ## Part 2: Trivial Bounds
 -/
 
-/-- Trivial upper bound: f_r(N) ≤ N -/
+/-  Trivial upper bound: f_r(N) ≤ N -/
 /-
 For r = 2, we would need gcd(a,b) ≠ gcd(a,b) for all a ≠ b, which is impossible.
 So r ≥ 3 is the interesting case.
@@ -77,7 +73,7 @@ So r ≥ 3 is the interesting case.
 ## Part 3: Erdős's Original Upper Bound (1964)
 -/
 
-/-- Erdős (1964): f_r(N) ≤ N^{3/4+o(1)} -/
+/-  Erdős (1964): f_r(N) ≤ N^{3/4+o(1)} -/
 /-
 The exponent 3/4 was the first non-trivial upper bound, showing f_r(N) grows
 slower than linearly. But the bound was later improved by Abbott and Hanson.
@@ -147,7 +143,7 @@ size > (k-1)!·r^k contains an r-sunflower. Removing the k! factor would suffice
 See Problem #20 (Sunflower Conjecture) and Problem #536 (related GCD questions).
 -/
 
-/-- The stronger sunflower conjecture that would resolve this problem.
+/-  The stronger sunflower conjecture that would resolve this problem.
     For any r ≥ 3, there exists c_r such that any family of k-element sets
     of size > c_r^k contains an r-sunflower. The Erdős-Rado bound has
     an additional k! factor that this conjecture removes. -/

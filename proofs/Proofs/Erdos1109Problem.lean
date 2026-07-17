@@ -31,15 +31,7 @@ References:
 - Konyagin [Ko04]: "Problems of the set of square-free numbers"
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.List.Prime
+import Mathlib
 
 open Nat Finset Real
 
@@ -128,13 +120,13 @@ noncomputable def f (N : ℕ) : ℕ :=
 ## Part IV: Erdős-Sárközy Bounds (1987)
 -/
 
-/--
+/- 
 **Erdős-Sárközy Lower Bound (1987):**
 f(N) ≫ log N
 
 Construction: A set of size log N can be found with squarefree sumset.
 -/
-/--
+/- 
 **Erdős-Sárközy Upper Bound (1987):**
 f(N) ≪ N^{3/4} log N
 -/
@@ -200,7 +192,7 @@ This asks whether f(N) is bounded by a polynomial in log N.
 def question2_polylogarithmic : Prop :=
   ∃ k : ℕ, ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 → (f N : ℝ) ≤ C * (Real.log N)^(k : ℝ)
 
-/--
+/- 
 **Erdős-Sárközy Conjecture:**
 The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 -/
@@ -208,7 +200,7 @@ The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 ## Part VIII: Related Problems
 -/
 
-/--
+/- 
 **Connection to Problem #1103:**
 The infinite analogue asks for the minimum growth rate of a sequence
 a₁ < a₂ < ⋯ such that all a_i + a_j are squarefree.
@@ -1098,7 +1090,7 @@ theorem mod_9_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
   -- (image.image g).card ≤ 4 since range is {1,2,3,4}.
   -- For each val v in image of g, the preimage in the original image has card ≤ 1
   -- (since we can't have both v and 9-v).
-  -- So image.card = ∑_{v in image g} |preimage of v| ≤ 4 × 1 = 4.
+  -- So image.card = ∑_{v ∈ image g} |preimage of v| ≤ 4 × 1 = 4.
   -- But image.card ≥ 5. Contradiction.
 
   -- For now, we use a simpler approach: since we need ≥ 5 from {1,...,8},
@@ -1437,6 +1429,8 @@ theorem mod_25_residue_image_le_12 (A : Finset ℕ) (h : hasSquarefreeSumset A) 
   have g_inj : Set.InjOn (fun r => min r (25 - r)) (S : Set ℕ) := by
     intro r hr s hs hg
     simp only [Finset.mem_coe] at hr hs
+    -- beta-reduce the InjOn hypothesis so `rw` can act on it
+    have hg' : min r (25 - r) = min s (25 - s) := hg
     by_contra hne
     -- r ≠ s and min(r, 25-r) = min(s, 25-s)
     -- Since r, s ∈ {1,...,24} and r ≠ s, with same min value v,
@@ -1451,38 +1445,27 @@ theorem mod_25_residue_image_le_12 (A : Finset ℕ) (h : hasSquarefreeSumset A) 
     have hs_le : s ≤ 24 := by omega
     -- min(r, 25-r) = min(s, 25-s) and r ≠ s
     -- Case analysis on whether r ≤ 12 or r > 12
-    -- If r ≤ 12: min(r,25-r) = r since r ≤ 25-r iff r ≤ 12
-    -- If r > 12: min(r,25-r) = 25-r
-    -- Similarly for s
-    -- So if both ≤ 12: r = s. If both > 12: 25-r = 25-s, so r = s.
-    -- If r ≤ 12, s > 12: r = 25-s, so s = 25-r.
-    -- Then both r and 25-r = s are in S → pair contradiction
-    -- Similarly if r > 12, s ≤ 12.
     by_cases hr12 : r ≤ 12 <;> by_cases hs12 : s ≤ 12
     · -- Both ≤ 12: min = r and min = s, so r = s, contradiction
-      have : min r (25 - r) = r := Nat.min_eq_left (by omega)
-      have : min s (25 - s) = s := Nat.min_eq_left (by omega)
-      omega
+      rw [Nat.min_eq_left (by omega : r ≤ 25 - r),
+        Nat.min_eq_left (by omega : s ≤ 25 - s)] at hg'
+      exact hne hg'
     · -- r ≤ 12, s > 12: min(r,25-r) = r, min(s,25-s) = 25-s, so r = 25-s
-      have hmin_r : min r (25 - r) = r := Nat.min_eq_left (by omega)
-      have hmin_s : min s (25 - s) = 25 - s := Nat.min_eq_right (by omega)
-      have : r = 25 - s := by omega
+      rw [Nat.min_eq_left (by omega : r ≤ 25 - r),
+        Nat.min_eq_right (by omega : 25 - s ≤ s)] at hg'
       -- So s = 25 - r, and both r and s = 25-r are in S
-      have : s = 25 - r := by omega
-      have hr1 : r ≥ 1 := by omega
-      exact hpair r hr1 (by omega) ⟨hr, this ▸ hs⟩
+      have hs_eq : s = 25 - r := by omega
+      exact hpair r hr_pos (by omega) ⟨hr, hs_eq ▸ hs⟩
     · -- r > 12, s ≤ 12: min(r,25-r) = 25-r, min(s,25-s) = s, so 25-r = s
-      have hmin_r : min r (25 - r) = 25 - r := Nat.min_eq_right (by omega)
-      have hmin_s : min s (25 - s) = s := Nat.min_eq_left (by omega)
-      have : 25 - r = s := by omega
+      rw [Nat.min_eq_right (by omega : 25 - r ≤ r),
+        Nat.min_eq_left (by omega : s ≤ 25 - s)] at hg'
       -- So r = 25 - s, and both s and r = 25-s are in S
-      have : r = 25 - s := by omega
-      have hs1 : s ≥ 1 := by omega
-      exact hpair s hs1 (by omega) ⟨hs, this ▸ hr⟩
+      have hr_eq : r = 25 - s := by omega
+      exact hpair s hs_pos (by omega) ⟨hs, hr_eq ▸ hr⟩
     · -- Both > 12: min = 25-r and min = 25-s, so 25-r = 25-s, so r = s, contradiction
-      have : min r (25 - r) = 25 - r := Nat.min_eq_right (by omega)
-      have : min s (25 - s) = 25 - s := Nat.min_eq_right (by omega)
-      omega
+      rw [Nat.min_eq_right (by omega : 25 - r ≤ r),
+        Nat.min_eq_right (by omega : 25 - s ≤ s)] at hg'
+      exact hne (by omega)
 
   -- g maps S into Finset.range 13 \ {0} = {1,...,12} (which has card 12)
   have g_range : ∀ r ∈ S, min r (25 - r) ∈ Finset.range 13 \ {0} := by
@@ -1498,8 +1481,6 @@ theorem mod_25_residue_image_le_12 (A : Finset ℕ) (h : hasSquarefreeSumset A) 
   -- |S| ≤ |range 13 \ {0}| = 12
   have hcard_target : (Finset.range 13 \ ({0} : Finset ℕ)).card = 12 := by native_decide
 
-  have := Finset.card_le_card_of_injOn (fun r => min r (25 - r)) g_inj
-    (fun r hr => Finset.mem_image.mpr ⟨r, hr, rfl⟩)
   -- S.image g has card = S.card (by injectivity) and is ⊆ {1,...,12}
   have himg_sub : S.image (fun r => min r (25 - r)) ⊆ Finset.range 13 \ {0} := by
     intro v hv
@@ -1797,6 +1778,8 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
   have g_inj : Set.InjOn (fun r => min r (pp - r)) (S : Set ℕ) := by
     intro r hr s hs hg
     simp only [Finset.mem_coe] at hr hs
+    -- beta-reduce the InjOn hypothesis so `rw` can act on it
+    have hg' : min r (pp - r) = min s (pp - s) := hg
     by_contra hne
     have hr_range := hsub hr
     have hs_range := hsub hs
@@ -1808,35 +1791,38 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     -- Case analysis on whether r ≤ pp/2 or r > pp/2
     by_cases hr2 : 2 * r ≤ pp <;> by_cases hs2 : 2 * s ≤ pp
     · -- Both r, s ≤ pp/2: min = r and min = s, so r = s
-      have : min r (pp - r) = r := Nat.min_eq_left (by omega)
-      have : min s (pp - s) = s := Nat.min_eq_left (by omega)
-      omega
+      rw [Nat.min_eq_left (by omega : r ≤ pp - r),
+        Nat.min_eq_left (by omega : s ≤ pp - s)] at hg'
+      exact hne hg'
     · -- r ≤ pp/2, s > pp/2: min(r,pp-r) = r, min(s,pp-s) = pp-s, so r = pp-s
-      have hmin_r : min r (pp - r) = r := Nat.min_eq_left (by omega)
-      have hmin_s : min s (pp - s) = pp - s := Nat.min_eq_right (by omega)
-      have : r = pp - s := by omega
+      rw [Nat.min_eq_left (by omega : r ≤ pp - r),
+        Nat.min_eq_right (by omega : pp - s ≤ s)] at hg'
       -- So s = pp - r, and both r and pp-r are in S
-      exact hpair r hr_pos hr_le hr (by rwa [show pp - r = s from by omega])
+      exact hpair r hr_pos hr_le hr (by rw [show pp - r = s from by omega]; exact hs)
     · -- r > pp/2, s ≤ pp/2: min(r,pp-r) = pp-r, min(s,pp-s) = s, so pp-r = s
-      have hmin_r : min r (pp - r) = pp - r := Nat.min_eq_right (by omega)
-      have hmin_s : min s (pp - s) = s := Nat.min_eq_left (by omega)
-      have : pp - r = s := by omega
+      rw [Nat.min_eq_right (by omega : pp - r ≤ r),
+        Nat.min_eq_left (by omega : s ≤ pp - s)] at hg'
       -- So r = pp - s, and both s and pp-s are in S
-      exact hpair s hs_pos hs_le hs (by rwa [show pp - s = r from by omega])
+      exact hpair s hs_pos hs_le hs (by rw [show pp - s = r from by omega]; exact hr)
     · -- Both > pp/2: min = pp-r and min = pp-s, so pp-r = pp-s, so r = s
-      have : min r (pp - r) = pp - r := Nat.min_eq_right (by omega)
-      have : min s (pp - s) = pp - s := Nat.min_eq_right (by omega)
-      omega
+      rw [Nat.min_eq_right (by omega : pp - r ≤ r),
+        Nat.min_eq_right (by omega : pp - s ≤ s)] at hg'
+      exact hne (by omega)
   -- g maps S into {1, ..., (pp-1)/2} ⊆ range ((pp-1)/2 + 1)
   have g_range : ∀ r ∈ S, min r (pp - r) ∈ Finset.range ((pp - 1) / 2 + 1) \ {0} := by
     intro r hr
     have hr_range := hsub hr
     simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at hr_range ⊢
-    constructor
-    · -- min(r, pp-r) < (pp-1)/2 + 1
-      omega
-    · -- min(r, pp-r) ≠ 0
-      omega
+    -- The self-complementary residue 2r = pp is excluded by the pair constraint
+    have h2r : 2 * r ≠ pp := by
+      intro h2
+      have hr_eq : pp - r = r := by omega
+      exact hpair r (by omega) (by omega) hr (by rw [hr_eq]; exact hr)
+    rcases le_total r (pp - r) with h' | h'
+    · rw [Nat.min_eq_left h']
+      constructor <;> omega
+    · rw [Nat.min_eq_right h']
+      constructor <;> omega
   -- |S| ≤ |(range ((pp-1)/2 + 1)) \ {0}| = (pp-1)/2
   have himg_sub : S.image (fun r => min r (pp - r)) ⊆ Finset.range ((pp - 1) / 2 + 1) \ {0} := by
     intro v hv
@@ -1845,11 +1831,9 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     exact g_range r hr
   have hcard_target : (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card = (pp - 1) / 2 := by
     have h0_mem : (0 : ℕ) ∈ Finset.range ((pp - 1) / 2 + 1) := by
-      simp [Finset.mem_range]; omega
-    rw [show Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ) =
-      (Finset.range ((pp - 1) / 2 + 1)).erase 0 from by
-      ext x; simp [Finset.mem_erase, Finset.mem_sdiff, Finset.mem_singleton]]
-    rw [Finset.card_erase_of_mem h0_mem, Finset.card_range]
+      simp [Finset.mem_range]
+    rw [Finset.sdiff_singleton_eq_erase, Finset.card_erase_of_mem h0_mem, Finset.card_range,
+      Nat.add_sub_cancel]
   calc S.card = (S.image (fun r => min r (pp - r))).card :=
           (Finset.card_image_of_injOn g_inj).symm
     _ ≤ (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card := Finset.card_le_card himg_sub
@@ -2020,28 +2004,12 @@ theorem crt_residue_injective (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p
     (h1 : a % (p * p) = b % (p * p)) (h2 : a % (q * q) = b % (q * q)) :
     a = b := by
   have hcop := coprime_prime_sq p q hp hq hpq
-  by_cases hab : a ≥ b
-  · have hpp_dvd : (p * p) ∣ (a - b) := by omega
-    have hqq_dvd : (q * q) ∣ (a - b) := by omega
-    have hdvd : (p * p) * (q * q) ∣ (a - b) :=
-      Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hpp_dvd hqq_dvd
-    have hlt : a - b < p * p * (q * q) := by omega
-    have h0 : a - b = 0 := by
-      rcases Nat.eq_zero_or_pos (a - b) with h | h
-      · exact h
-      · exact absurd (Nat.le_of_dvd h hdvd) (by omega)
-    omega
-  · push_neg at hab
-    have hpp_dvd : (p * p) ∣ (b - a) := by omega
-    have hqq_dvd : (q * q) ∣ (b - a) := by omega
-    have hdvd : (p * p) * (q * q) ∣ (b - a) :=
-      Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hpp_dvd hqq_dvd
-    have hlt : b - a < p * p * (q * q) := by omega
-    have h0 : b - a = 0 := by
-      rcases Nat.eq_zero_or_pos (b - a) with h | h
-      · exact h
-      · exact absurd (Nat.le_of_dvd h hdvd) (by omega)
-    omega
+  have h1' : a ≡ b [MOD p * p] := h1
+  have h2' : a ≡ b [MOD q * q] := h2
+  have hmod : a ≡ b [MOD (p * p) * (q * q)] :=
+    (Nat.modEq_and_modEq_iff_modEq_mul hcop).mp ⟨h1', h2'⟩
+  have hmod' : a % (p * p * (q * q)) = b % (p * p * (q * q)) := hmod
+  rwa [Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb] at hmod'
 
 /--
 **Combined density bound for two primes:**
@@ -2078,12 +2046,10 @@ theorem combined_residue_bound (A : Finset ℕ) (h : hasSquarefreeSumset A)
     have himg : (A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq)) ⊆ Spp ×ˢ Sqq := by
       intro xy hxy
       simp only [Finset.mem_image, Finset.mem_product] at hxy ⊢
-      obtain ⟨r, hr, rfl⟩ := hxy
-      simp only [Finset.mem_image] at hr
-      obtain ⟨a, ha, rfl⟩ := hr
+      obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hxy
       have hmod_pp : a % (pp * qq) % pp = a % pp := Nat.mod_mod_of_dvd a (dvd_mul_right pp qq)
       have hmod_qq : a % (pp * qq) % qq = a % qq := Nat.mod_mod_of_dvd a (dvd_mul_left qq pp)
-      exact ⟨⟨a, ha, hmod_pp⟩, ⟨a, ha, hmod_qq⟩⟩
+      exact ⟨Finset.mem_image.mpr ⟨a, ha, hmod_pp.symm⟩, Finset.mem_image.mpr ⟨a, ha, hmod_qq.symm⟩⟩
     calc (A.image (· % (pp * qq))).card
         = ((A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq))).card :=
           (Finset.card_image_of_injOn hinj).symm
@@ -2149,7 +2115,7 @@ theorem mod_36_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
     obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
     have hm4 : a % 36 % 4 = a % 4 := Nat.mod_mod_of_dvd a (by norm_num : 4 ∣ 36)
     have hm9 : a % 36 % 9 = a % 9 := Nat.mod_mod_of_dvd a (by norm_num : 9 ∣ 36)
-    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩⟩
+    exact ⟨⟨a, ha, hm4.symm⟩, ⟨a, ha, hm9.symm⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   calc (A.image (· % 36)).card
@@ -2219,7 +2185,7 @@ theorem mod_900_residue_image_le_48 (A : Finset ℕ) (h : hasSquarefreeSumset A)
     have hm4 : a % 900 % 4 = a % 4 := Nat.mod_mod_of_dvd a (by norm_num : 4 ∣ 900)
     have hm9 : a % 900 % 9 = a % 9 := Nat.mod_mod_of_dvd a (by norm_num : 9 ∣ 900)
     have hm25 : a % 900 % 25 = a % 25 := Nat.mod_mod_of_dvd a (by norm_num : 25 ∣ 900)
-    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩, ⟨a, ha, hm25⟩⟩
+    exact ⟨⟨a, ha, hm4.symm⟩, ⟨a, ha, hm9.symm⟩, ⟨a, ha, hm25.symm⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   have h25 := mod_25_residue_image_le_12 A h
@@ -2814,6 +2780,7 @@ Combined via CRT: ≤ 1 × 4 × 12 × 24 = 1152 out of 44100 ≈ 2.61%.
 This improves on the 3-prime bound of 48/900 ≈ 5.33%.
 -/
 
+set_option maxHeartbeats 800000 in
 /--
 **Combined constraint mod 44100:**
 The residue image of A modulo 44100 = 4 × 9 × 25 × 49 has at most 1152 elements.
@@ -2822,7 +2789,6 @@ Since 4, 9, 25, and 49 are pairwise coprime with lcm = 44100, each element's res
 mod 44100 is determined by its residues mod 4, mod 9, mod 25, and mod 49.
 The per-prime bounds are 1, 4, 12, 24 respectively, giving 1 × 4 × 12 × 24 = 1152.
 -/
-set_option maxHeartbeats 800000 in
 theorem mod_44100_residue_image_le_1152 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
     (A.image (· % 44100)).card ≤ 1152 := by
   have hbnd : A.image (· % 44100) ⊆ Finset.range 44100 := by
@@ -2837,36 +2803,18 @@ theorem mod_44100_residue_image_le_1152 (A : Finset ℕ) (h : hasSquarefreeSumse
     simp only [Set.mem_setOf_eq] at hr hs
     simp only [Prod.mk.injEq] at hrs
     obtain ⟨h4, h9, h25, h49⟩ := hrs
-    by_cases h : r ≥ s
-    · have : 4 ∣ (r - s) := by omega
-      have : 9 ∣ (r - s) := by omega
-      have : 25 ∣ (r - s) := by omega
-      have : 49 ∣ (r - s) := by omega
-      have h36 : 36 ∣ (r - s) := by
-        have : Nat.Coprime 4 9 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
-      have h900 : 900 ∣ (r - s) := by
-        have : Nat.Coprime 36 25 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
-      have h44100 : 44100 ∣ (r - s) := by
-        have : Nat.Coprime 900 49 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
-      omega
-    · push_neg at h
-      have : 4 ∣ (s - r) := by omega
-      have : 9 ∣ (s - r) := by omega
-      have : 25 ∣ (s - r) := by omega
-      have : 49 ∣ (s - r) := by omega
-      have h36 : 36 ∣ (s - r) := by
-        have : Nat.Coprime 4 9 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
-      have h900 : 900 ∣ (s - r) := by
-        have : Nat.Coprime 36 25 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
-      have h44100 : 44100 ∣ (s - r) := by
-        have : Nat.Coprime 900 49 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
-      omega
+    have hm4 : r ≡ s [MOD 4] := h4
+    have hm9 : r ≡ s [MOD 9] := h9
+    have hm25 : r ≡ s [MOD 25] := h25
+    have hm49 : r ≡ s [MOD 49] := h49
+    have h36 : r ≡ s [MOD 36] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨hm4, hm9⟩
+    have h900 : r ≡ s [MOD 900] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨h36, hm25⟩
+    have h44100 : r ≡ s [MOD 44100] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨h900, hm49⟩
+    have hfin : r % 44100 = s % 44100 := h44100
+    rwa [Nat.mod_eq_of_lt hr, Nat.mod_eq_of_lt hs] at hfin
   have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49))
       ((A.image (· % 44100)) : Set ℕ) := by
     intro r hr s hs hrs
@@ -2885,7 +2833,7 @@ theorem mod_44100_residue_image_le_1152 (A : Finset ℕ) (h : hasSquarefreeSumse
     have hm9 : a % 44100 % 9 = a % 9 := Nat.mod_mod_of_dvd a (by norm_num : 9 ∣ 44100)
     have hm25 : a % 44100 % 25 = a % 25 := Nat.mod_mod_of_dvd a (by norm_num : 25 ∣ 44100)
     have hm49 : a % 44100 % 49 = a % 49 := Nat.mod_mod_of_dvd a (by norm_num : 49 ∣ 44100)
-    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩, ⟨a, ha, hm25⟩, ⟨a, ha, hm49⟩⟩
+    exact ⟨⟨a, ha, hm4.symm⟩, ⟨a, ha, hm9.symm⟩, ⟨a, ha, hm25.symm⟩, ⟨a, ha, hm49.symm⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   have h25 := mod_25_residue_image_le_12 A h
@@ -2927,25 +2875,26 @@ theorem fiber_card_bound (N m r : ℕ) (hm : m ≥ 1) :
       ext x
       simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
       intro ⟨hx, hxr⟩
-      have hmod := Nat.mod_lt x (by omega : m > 0)
+      have hle := Nat.mod_le x m
       omega
-    rw [hempty, Finset.card_empty]; omega
+    rw [hempty, Finset.card_empty]
+    exact Nat.zero_le _
   · push_neg at hr
     -- Inject into {0,...,N/m} via a ↦ a/m
     suffices h : ((Finset.range (N + 1)).filter (fun a => a % m = r)).card ≤
         (Finset.range (N / m + 1)).card by
       rwa [Finset.card_range] at h
     apply Finset.card_le_card_of_injOn (· / m) (fun a ha => ?_) (fun a₁ ha₁ a₂ ha₂ heq => ?_)
-    · simp only [Finset.mem_filter, Finset.mem_range] at ha
-      simp only [Finset.mem_range]
-      have ha_lt := ha.1
-      have h_div := Nat.div_le_div_right (Nat.lt_succ_iff.mp ha_lt).le
+    · simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha ⊢
+      have ha_le : a ≤ N := Nat.lt_succ_iff.mp ha.1
+      have h_div : a / m ≤ N / m := Nat.div_le_div_right ha_le
       omega
-    · simp only [Finset.mem_filter, Finset.mem_range] at ha₁ ha₂
-      have d1 := Nat.div_add_mod a₁ m
-      have d2 := Nat.div_add_mod a₂ m
-      have : a₁ % m = a₂ % m := by rw [ha₁.2, ha₂.2]
-      omega
+    · simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha₁ ha₂
+      have heq' : a₁ / m = a₂ / m := heq
+      have hmodeq : a₁ % m = a₂ % m := by rw [ha₁.2, ha₂.2]
+      calc a₁ = m * (a₁ / m) + a₁ % m := (Nat.div_add_mod a₁ m).symm
+        _ = m * (a₂ / m) + a₂ % m := by rw [heq', hmodeq]
+        _ = a₂ := Nat.div_add_mod a₂ m
 
 /--
 **Abstract density from residue image:**
@@ -3014,7 +2963,8 @@ theorem two_prime_density (A : Finset ℕ) (h : hasSquarefreeSumset A) (N : ℕ)
     (hA_sub : A ⊆ Finset.range (N + 1)) :
     A.card ≤ ((p * p - 1) / 2) * ((q * q - 1) / 2) * (N / (p * p * (q * q)) + 1) :=
   density_from_residues A N (p * p * (q * q)) (((p * p - 1) / 2) * ((q * q - 1) / 2))
-    (by positivity) hA_sub (combined_residue_bound A h p q hp hq hpq)
+    (by have h1 := Nat.mul_pos (Nat.mul_pos hp.pos hp.pos) (Nat.mul_pos hq.pos hq.pos); omega)
+    hA_sub (combined_residue_bound A h p q hp hq hpq)
 
 /--
 **f(N) is sub-linear (sandwich bounds):**
@@ -3027,6 +2977,7 @@ theorem f_sandwich (N : ℕ) (hN : N ≥ 165) :
       A.card ≤ 1152 * (N / 44100 + 1) :=
   ⟨f_ge_ten N hN, fun A h hA_sub => f_upper_44100 A h N hA_sub⟩
 
+set_option maxHeartbeats 1600000 in
 /--
 **5-prime CRT density: adding p=11 (11²=121).**
 The modulus becomes 44100 × 121 = 5336100.
@@ -3034,7 +2985,6 @@ Per-prime bound for p=11: (121-1)/2 = 60.
 Total: 1152 × 60 = 69120 out of 5336100.
 Density: 69120/5336100 ≈ 1.30%.
 -/
-set_option maxHeartbeats 1600000 in
 theorem mod_5336100_residue_image_le_69120 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
     (A.image (· % 5336100)).card ≤ 69120 := by
   have hbnd : A.image (· % 5336100) ⊆ Finset.range 5336100 := by
@@ -3048,44 +2998,21 @@ theorem mod_5336100_residue_image_le_69120 (A : Finset ℕ) (h : hasSquarefreeSu
     simp only [Set.mem_setOf_eq] at hr hs
     simp only [Prod.mk.injEq] at hrs
     obtain ⟨h4, h9, h25, h49, h121⟩ := hrs
-    by_cases h : r ≥ s
-    · have : 4 ∣ (r - s) := by omega
-      have : 9 ∣ (r - s) := by omega
-      have : 25 ∣ (r - s) := by omega
-      have : 49 ∣ (r - s) := by omega
-      have : 121 ∣ (r - s) := by omega
-      have h36 : 36 ∣ (r - s) := by
-        have : Nat.Coprime 4 9 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
-      have h900 : 900 ∣ (r - s) := by
-        have : Nat.Coprime 36 25 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
-      have h44100 : 44100 ∣ (r - s) := by
-        have : Nat.Coprime 900 49 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
-      have h5336100 : 5336100 ∣ (r - s) := by
-        have : Nat.Coprime 44100 121 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h44100 ‹121 ∣ _›
-      omega
-    · push_neg at h
-      have : 4 ∣ (s - r) := by omega
-      have : 9 ∣ (s - r) := by omega
-      have : 25 ∣ (s - r) := by omega
-      have : 49 ∣ (s - r) := by omega
-      have : 121 ∣ (s - r) := by omega
-      have h36 : 36 ∣ (s - r) := by
-        have : Nat.Coprime 4 9 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
-      have h900 : 900 ∣ (s - r) := by
-        have : Nat.Coprime 36 25 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
-      have h44100 : 44100 ∣ (s - r) := by
-        have : Nat.Coprime 900 49 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
-      have h5336100 : 5336100 ∣ (s - r) := by
-        have : Nat.Coprime 44100 121 := by native_decide
-        exact this.mul_dvd_of_dvd_of_dvd h44100 ‹121 ∣ _›
-      omega
+    have hm4 : r ≡ s [MOD 4] := h4
+    have hm9 : r ≡ s [MOD 9] := h9
+    have hm25 : r ≡ s [MOD 25] := h25
+    have hm49 : r ≡ s [MOD 49] := h49
+    have hm121 : r ≡ s [MOD 121] := h121
+    have h36 : r ≡ s [MOD 36] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨hm4, hm9⟩
+    have h900 : r ≡ s [MOD 900] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨h36, hm25⟩
+    have h44100 : r ≡ s [MOD 44100] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨h900, hm49⟩
+    have h5336100 : r ≡ s [MOD 5336100] :=
+      (Nat.modEq_and_modEq_iff_modEq_mul (by norm_num)).mp ⟨h44100, hm121⟩
+    have hfin : r % 5336100 = s % 5336100 := h5336100
+    rwa [Nat.mod_eq_of_lt hr, Nat.mod_eq_of_lt hs] at hfin
   have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49, r % 121))
       ((A.image (· % 5336100)) : Set ℕ) := by
     intro r hr s hs hrs
@@ -3107,8 +3034,8 @@ theorem mod_5336100_residue_image_le_69120 (A : Finset ℕ) (h : hasSquarefreeSu
     have hm25 : a % 5336100 % 25 = a % 25 := Nat.mod_mod_of_dvd a (by norm_num : 25 ∣ 5336100)
     have hm49 : a % 5336100 % 49 = a % 49 := Nat.mod_mod_of_dvd a (by norm_num : 49 ∣ 5336100)
     have hm121 : a % 5336100 % 121 = a % 121 := Nat.mod_mod_of_dvd a (by norm_num : 121 ∣ 5336100)
-    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩, ⟨a, ha, hm25⟩,
-           ⟨a, ha, hm49⟩, ⟨a, ha, hm121⟩⟩
+    exact ⟨⟨a, ha, hm4.symm⟩, ⟨a, ha, hm9.symm⟩, ⟨a, ha, hm25.symm⟩,
+           ⟨a, ha, hm49.symm⟩, ⟨a, ha, hm121.symm⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   have h25 := mod_25_residue_image_le_12 A h

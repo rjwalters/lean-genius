@@ -18,9 +18,13 @@
 
 import Mathlib
 
+open scoped Topology
+
 namespace Erdos859Aristotle
 
 open Nat Finset Filter
+
+open scoped Classical
 
 /- Definitions (replicated from Erdos859Problem.lean) -/
 
@@ -31,22 +35,22 @@ def tau (n : ℕ) : ℕ :=
   (Nat.divisors n).card
 
 def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
-  Tendsto (fun N => (((Finset.range (N + 1)).filter (· ∈ S)).card : ℝ) / N)
+  Tendsto (fun N : ℕ =>
+      ((@Finset.filter ℕ (· ∈ S) (Classical.decPred _) (Finset.range (N + 1))).card : ℝ) / N)
     atTop (𝓝 d)
 
 /- Target 1: Divisor count is multiplicative for coprime arguments -/
 
 theorem divisors_mul_coprime {m n : ℕ} (hmn : Nat.Coprime m n) (hm : m > 0) (hn : n > 0) :
-    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card := by
-  rw [Nat.Coprime.divisors_mul hmn]
-  exact Finset.card_product _ _
+    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card :=
+  hmn.card_divisors_mul
 
 /- Target 2: Divisors of a prime power form {1, p, p^2, ..., p^a} -/
 
 theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
     Nat.divisors (p ^ a) = (Finset.range (a + 1)).map ⟨fun i => p ^ i, fun _ _ => by
       intro h; exact Nat.pow_right_injective hp.two_le h⟩ :=
-  Nat.divisors_prime_pow hp
+  Nat.divisors_prime_pow hp a
 
 /- Target 3: Density of the full set is 1 -/
 
@@ -54,9 +58,15 @@ theorem density_univ_one : HasNaturalDensity Set.univ 1 := by
   unfold HasNaturalDensity
   -- Simplify: filter on Set.univ is identity, card of range(N+1) is N+1
   have hsimp : ∀ N : ℕ,
-      (((Finset.range (N + 1)).filter (· ∈ Set.univ)).card : ℝ) = ↑N + 1 := by
+      ((@Finset.filter ℕ (· ∈ (Set.univ : Set ℕ)) (Classical.decPred _)
+          (Finset.range (N + 1))).card : ℝ) = ↑N + 1 := by
     intro N
-    rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _), Finset.card_range]
+    have : (@Finset.filter ℕ (· ∈ (Set.univ : Set ℕ)) (Classical.decPred _)
+        (Finset.range (N + 1))) = Finset.range (N + 1) := by
+      apply Finset.ext
+      intro x
+      simp
+    rw [this, Finset.card_range]
     push_cast; ring
   simp_rw [hsimp]
   -- Goal: Tendsto (fun N => (↑N + 1) / ↑N) atTop (𝓝 1)
@@ -68,7 +78,7 @@ theorem density_univ_one : HasNaturalDensity Set.univ 1 := by
   have hsub : (↑n + 1 : ℝ) / ↑n - 1 = 1 / ↑n := by
     have : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
     field_simp; ring
-  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff hn_pos, one_mul]
+  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff₀ hn_pos]
   -- Goal: 1 < ε * ↑n (since ε⁻¹ < ↑n)
   calc (1 : ℝ) = ε * ε⁻¹ := (mul_inv_cancel₀ (ne_of_gt hε)).symm
     _ < ε * ↑n := by
@@ -86,12 +96,12 @@ theorem subset_sum_count (n : ℕ) (hn : n > 0) :
 /- Target 5: tau(1) = 1 -/
 
 theorem tau_one : tau 1 = 1 := by
-  simp [tau, Nat.divisors]
+  simp [tau, Nat.divisors_one]
 
 /- Target 6: tau(p) = 2 for prime p -/
 
 theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
-  simp [tau, Nat.divisors_prime hp]
+  simp [tau, hp.divisors, Finset.card_pair hp.ne_one.symm]
 
 /- Target 7: tau(p^a) = a + 1 -/
 

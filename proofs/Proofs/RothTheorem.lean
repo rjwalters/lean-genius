@@ -18,6 +18,13 @@ import Mathlib
 
 namespace Szemeredi.Roth
 
+/-- v4.31 compatibility: `sum_eq_add_sum_diff_singleton` was removed upstream.
+Reconstructed from `Finset.add_sum_erase` + `Finset.erase_eq`. -/
+private theorem sum_eq_add_sum_diff_singleton {ι M : Type*} [AddCommMonoid M] [DecidableEq ι]
+    {s : Finset ι} {a : ι} (h : a ∈ s) (f : ι → M) :
+    ∑ x ∈ s, f x = f a + ∑ x ∈ s \ {a}, f x := by
+  rw [← Finset.erase_eq, Finset.add_sum_erase s f h]
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART I: AP-FREE SET DEFINITIONS
 -- ═══════════════════════════════════════════════════════════════════
@@ -599,13 +606,14 @@ private theorem parseval_nonzero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖fourierCoeff A r‖ ^ 2) =
     A.card * N - A.card ^ 2 := by
   have hfull := parseval_on_zmod A
-  have hsplit := Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
+  have hsplit := sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
     (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2)
   rw [hsplit] at hfull
   have h0 : ‖fourierCoeff A 0‖ ^ 2 = A.card ^ 2 := by
     rw [fourierCoeff_zero']; simp [Complex.norm_natCast]
   linarith
 
+set_option maxRecDepth 8000 in
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
@@ -690,7 +698,7 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     have h0term : fourierCoeff A 0 ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * 0)) =
         (↑n : ℂ) ^ 3 := by
       simp only [mul_zero, fourierCoeff_zero', map_natCast]; ring
-    have hsplit := Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
+    have hsplit := sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
       (fun r : ZMod N => fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r)))
     rw [hsplit, h0term] at hsum_eq
     -- S = nN - n³
@@ -790,10 +798,11 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
                   (le_of_lt (hall r hr_ne))
               calc g r = ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖ := rfl
                 _ = ‖fourierCoeff A r‖ ^ 2 * ↑n := by rw [hA2r]
-                _ ≤ B ^ 2 * ↑n := mul_le_mul_of_nonneg_right hAr_sq (by positivity)
+                _ ≤ B ^ 2 * ↑n := mul_le_mul_of_nonneg_right hAr_sq (Nat.cast_nonneg n)
           _ = ↑T₂.card * (B ^ 2 * (↑n : ℝ)) := by rw [Finset.sum_const, nsmul_eq_mul]
           _ ≤ 1 * (B ^ 2 * (↑n : ℝ)) :=
-              mul_le_mul_of_nonneg_right (by exact_mod_cast hT2_le1) (by positivity)
+              mul_le_mul_of_nonneg_right (by exact_mod_cast hT2_le1)
+                (mul_nonneg (sq_nonneg B) (Nat.cast_nonneg n))
           _ = B ^ 2 * ↑n := one_mul _
       -- Step 6: n(n²-N) ≤ B·n(N-n) + B²·n < B·n·N, hence n²-N < B·N = δ²N²/2
       have h_total : ↑n * ((↑n : ℝ) ^ 2 - ↑N) ≤ B * (↑n * (↑N - ↑n)) + B ^ 2 * ↑n := by
@@ -802,7 +811,7 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
           _ = T₁.sum g + T₂.sum g := hT_split
           _ ≤ B * (↑n * (↑N - ↑n)) + B ^ 2 * ↑n := add_le_add hT1_le hT2_le
       -- B²·n < B·n² (since B < n), so total < B·n·N, giving n²-N < B·N
-      nlinarith [mul_pos hB_pos (mul_pos (show (0 : ℝ) < ↑n from by positivity)
+      nlinarith [mul_pos hB_pos (mul_pos (show (0 : ℝ) < ↑n from by exact_mod_cast hn_nat_pos)
         (sub_pos.mpr hn_gt_B))]
     -- But n ≥ δN, so n² ≥ δ²N²
     have hn2_ge : (n : ℝ) ^ 2 ≥ delta ^ 2 * N ^ 2 := by
@@ -1494,7 +1503,7 @@ theorem sqDiffCount_fourier_main {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
   -- Split the r = 0 frequency off the full sum.  The explicit summand argument to
   -- `sum_eq_add_sum_diff_singleton` is essential: leaving it to be inferred forces a
   -- higher-order unification against the whole Fourier sum that blows up elaboration.
-  have hsplit := Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
+  have hsplit := sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
     (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)
   rw [sqDiffCount_fourier A, hsplit]
   -- Evaluate the r = 0 term: ‖Â(0)‖²·G(0) = |A|²·N.

@@ -35,13 +35,7 @@ References:
 - Tidor, Wang, Yang: "1-color avoiding paths" (2016)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Sort
-import Mathlib.Algebra.BigOperators.Finprod
+import Mathlib
 import Archive.Wiedijk100Theorems.AscendingDescendingSequences
 
 open Finset BigOperators
@@ -108,7 +102,7 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
   · -- Increasing case: t has > (r-1) elements, so ≥ r
     left
     have hr : r ≤ t.card := by omega
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t r hr
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq hr
     -- Build Subsequence from the Finset via orderEmbOfFin
     let emb := u.orderEmbOfFin hu_card
     refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
@@ -120,7 +114,7 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
   · -- Decreasing case: t has > (s-1) elements, so ≥ s
     right
     have hs : s ≤ t.card := by omega
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t s hs
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq hs
     let emb := u.orderEmbOfFin hu_card
     refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
     -- IsDecreasing: seq (emb j) < seq (emb i) for i < j
@@ -135,7 +129,8 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
 theorem erdos_szekeres_square (k : ℕ) (n : ℕ) (hn : n = k^2 + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     ∃ (m : ℕ) (sub : Subsequence n m), m ≥ k + 1 ∧ IsMonotonic seq sub := by
-  have hneq : n = (k + 1 - 1) * (k + 1 - 1) + 1 := by omega
+  have hneq : n = (k + 1 - 1) * (k + 1 - 1) + 1 := by
+    rw [Nat.add_sub_cancel, hn, pow_two]
   rcases erdos_szekeres (k + 1) (k + 1) n hneq seq hDistinct with ⟨sub, hInc⟩ | ⟨sub, hDec⟩
   · exact ⟨k + 1, sub, le_refl _, Or.inl hInc⟩
   · exact ⟨k + 1, sub, le_refl _, Or.inr hDec⟩
@@ -155,14 +150,14 @@ structure MonotonicDecomposition (n : ℕ) (seq : RealSeq n) where
     (parts i).2.indices k₁ ≠ (parts j).2.indices k₂
   covering : ∀ k : Fin n, ∃ i m hm, (parts i).2.indices ⟨m, hm⟩ = k
 
-/--
+/- 
 **Hanani's Theorem (1957):**
 Every sequence of n elements can be decomposed into at most
 (√2 + o(1))√n monotonic subsequences.
 
 More precisely: at most ⌈√(2n)⌉ monotonic subsequences suffice.
 -/
-/-- The Dilworth-style bound: at most √n increasing + √n decreasing. -/
+/-  The Dilworth-style bound: at most √n increasing + √n decreasing. -/
 /-
 ## Part IV: The Maximum Monotonic Sum Problem
 
@@ -197,8 +192,8 @@ Lower bound (from Hanani): c ≥ 1/√2
 Upper bound (from Cambie): c ≤ 1
 -/
 
-/-- Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
-/-- Cambie's upper bound: c ≤ 1 (by explicit construction). -/
+/-  Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
+/-  Cambie's upper bound: c ≤ 1 (by explicit construction). -/
 /-
 ## Part VI: The Weighted Erdős-Szekeres Theorem
 
@@ -229,7 +224,7 @@ theorem tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
     maxMonotonicSum seq ≥ 1 / k :=
   weighted_erdos_szekeres
 
-/-- The optimal constant is exactly 1. -/
+/-  The optimal constant is exactly 1. -/
 /-
 ## Part VII: Related Results
 
@@ -274,7 +269,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
   rcases Theorems100.erdos_szekeres hcard hDistinct with
     ⟨t, ht_card, ht_mono⟩ | ⟨t, ht_card, ht_anti⟩
   · -- Increasing Finset of size ≥ LIS seq + 1 contradicts LIS definition
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LIS seq + 1) ht_card
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq ht_card
     let emb := u.orderEmbOfFin hu_card
     have hmono_u : StrictMonoOn seq ↑u := ht_mono.mono (Finset.coe_subset.mpr hu_sub)
     have hmem : LIS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} :=
@@ -284,7 +279,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     have : LIS seq + 1 ≤ LIS seq := le_csSup (lis_bddAbove seq) hmem
     omega
   · -- Anti-monotone Finset of size ≥ LDS seq + 1 contradicts LDS definition
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LDS seq + 1) ht_card
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq ht_card
     let emb := u.orderEmbOfFin hu_card
     have hanti_u : StrictAntiOn seq ↑u := ht_anti.mono (Finset.coe_subset.mpr hu_sub)
     have hmem : LDS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} :=
@@ -294,7 +289,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     have : LDS seq + 1 ≤ LDS seq := le_csSup (lds_bddAbove seq) hmem
     omega
 
-/-- The longest monotonic subsequence has length ≥ √n.
+/-  The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
 /-
 ## Part VIII: Main Results Summary
@@ -315,7 +310,7 @@ theorem erdos_1026 : ∀ (k : ℕ) (hk : k ≥ 1)
     maxMonotonicSum seq ≥ 1 / k :=
   fun k hk seq hDistinct hPos hSum => tidor_wang_yang k hk seq hDistinct hPos hSum
 
-/-- The result is tight: Cambie's construction achieves equality asymptotically.
+/-  The result is tight: Cambie's construction achieves equality asymptotically.
     For any ε > 0 and large enough k, there exists a sequence achieving sum ≤ 1/k + ε. -/
 /-- Connection to tournament theory: there exists a path of length m
     with m² ≥ n. Trivially provable: take m = n, then n² ≥ n for n ≥ 1. -/

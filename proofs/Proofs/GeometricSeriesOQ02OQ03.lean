@@ -54,12 +54,13 @@ theorem isUnit_of_near_unit (A : R) (hA : IsUnit A) (B : R)
   -- 1 - T is a unit
   have h1T : IsUnit (1 - T) := one_sub_isUnit T hT_norm
   -- B = A * (1 - T) = ↑u * (1 - T)
+  have hu : (↑u : R) = A := hA.unit_spec
   have hB_eq : B = ↑u * (1 - T) := by
-    simp only [hT_def, sub_mul, mul_sub, one_mul, mul_one]
-    rw [show (↑u⁻¹ : R) * (A - B) = ↑u⁻¹ * A - ↑u⁻¹ * B from mul_sub _ _ _]
-    rw [show (↑u : R) * (↑u⁻¹ * A) = (↑u * ↑u⁻¹) * A from (mul_assoc _ _ _).symm]
-    rw [Units.mul_inv_cancel_right]
-    ring
+    have hcancel : ∀ x : R, (↑u : R) * (↑u⁻¹ * x) = x := by
+      intro x; rw [← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]
+    have key : (↑u : R) * T = A - B := by
+      rw [hT_def, mul_sub, mul_sub, hcancel, hcancel]
+    rw [mul_sub, mul_one, key, hu]; abel
   rw [hB_eq]
   exact IsUnit.mul hA h1T
 
@@ -79,7 +80,7 @@ theorem isUnit_of_near_one (B : R) (hB : ‖1 - B‖ < 1) : IsUnit B :=
     Every element within distance 1 of the identity is a unit. -/
 theorem isUnit_of_dist_one_lt (B : R) (hB : dist B 1 < 1) : IsUnit B := by
   rw [dist_eq_norm] at hB
-  rw [show B - 1 = -(1 - B) from by ring] at hB
+  rw [show B - 1 = -(1 - B) from (neg_sub 1 B).symm] at hB
   rw [norm_neg] at hB
   exact isUnit_of_near_one B hB
 
@@ -140,7 +141,7 @@ theorem inverse_locally_bounded [NormOneClass R] (ε : ℝ) (hε : 0 < ε) (hε1
   calc ‖Ring.inverse B‖
     _ ≤ (1 - ‖1 - B‖)⁻¹ := perturbed_inverse_norm_bound B hB_lt
     _ ≤ (1 - ε)⁻¹ := by
-        apply inv_anti_of_pos (by linarith)
+        apply inv_anti₀ (by linarith)
         linarith
 
 /-- **Left inverse identity near 1**
@@ -149,8 +150,8 @@ theorem inverse_locally_bounded [NormOneClass R] (ε : ℝ) (hε : 0 < ε) (hε1
 theorem left_inv_near_one (B : R) (hB : ‖1 - B‖ < 1) :
     B * Ring.inverse B = 1 := by
   rw [perturbed_inverse_series B hB]
-  rw [show B = 1 - (1 - B) from (sub_sub_cancel 1 B).symm]
-  exact right_inverse_identity (1 - B) hB
+  have h := left_inverse_identity (1 - B) hB
+  rwa [sub_sub_cancel] at h
 
 /-- **Right inverse identity near 1**
 
@@ -158,7 +159,7 @@ theorem left_inv_near_one (B : R) (hB : ‖1 - B‖ < 1) :
 theorem right_inv_near_one (B : R) (hB : ‖1 - B‖ < 1) :
     Ring.inverse B * B = 1 := by
   rw [perturbed_inverse_series B hB]
-  rw [show B = 1 - (1 - B) from (sub_sub_cancel 1 B).symm]
-  exact left_inverse_identity (1 - B) hB
+  have h := right_inverse_identity (1 - B) hB
+  rwa [sub_sub_cancel] at h
 
 end GeometricSeriesOQ02OQ03

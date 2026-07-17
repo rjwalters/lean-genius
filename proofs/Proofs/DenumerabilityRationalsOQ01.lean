@@ -5,6 +5,7 @@ import Mathlib.Data.Rat.Denumerable
 import Mathlib.Logic.Denumerable
 import Mathlib.Order.SuccPred.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.Real.Cardinality
 
 /-
 # The Cardinality Gap: ℚ, ℝ, and the Continuum Hypothesis
@@ -126,7 +127,7 @@ theorem aleph_one_le_continuum : (Cardinal.aleph 1 : Cardinal.{0}) ≤ 𝔠 :=
 /-- ℵ₀ < ℵ₁: the smallest uncountable cardinal strictly exceeds ℵ₀.
     This is ZFC-provable: ℵ₁ is defined as the successor of ℵ₀. -/
 theorem aleph_zero_lt_aleph_one : (ℵ₀ : Cardinal.{0}) < Cardinal.aleph 1 := by
-  have h : Cardinal.aleph 0 < Cardinal.aleph 1 :=
+  have h : (Cardinal.aleph 0 : Cardinal.{0}) < Cardinal.aleph 1 :=
     Cardinal.aleph_lt_aleph.mpr (by norm_num)
   simpa [Cardinal.aleph_zero] using h
 

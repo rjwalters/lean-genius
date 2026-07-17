@@ -24,11 +24,10 @@
   - [Er81] Erdős 1981, [Er87] Erdős 1987
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity
 
 open Set
 
@@ -52,8 +51,8 @@ def IsIndependent {V : Type*} (G : Graph V) (S : Set V) : Prop :=
 structure Path {V : Type*} (G : Graph V) where
   vertices : List V
   nonempty : vertices ≠ []
-  consecutive : ∀ i, i + 1 < vertices.length →
-    G.adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
+  consecutive : ∀ i, (hi : i + 1 < vertices.length) →
+    G.adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, hi⟩)
 
 /-- The first vertex of a path. -/
 def Path.first {V : Type*} {G : Graph V} (p : Path G) : V :=
@@ -130,7 +129,7 @@ def MengersTheorem {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) : Prop :=
       ∃ paths_list : Finset (Path G), ↑paths_list ⊆ P.paths ∧ paths_list.card = k) ∧
     (∀ S : Finset V, IsSeparator G A B ↑S → k ≤ S.card)
 
-/-- Menger's theorem is classical and well-established. -/
+/-  Menger's theorem is classical and well-established. -/
 /-
 ## Part IV: The Aharoni-Berger Theorem (2009)
 -/
@@ -165,7 +164,7 @@ def IsKLinked {V : Type*} (G : Graph V) (k : ℕ) : Prop :=
       paths.card = k ∧
       (∀ p q, p ∈ paths → q ∈ paths → p ≠ q → AreDisjoint p q)
 
-/-- Erdős-Menger generalizes to k-linkage. -/
+/-  Erdős-Menger generalizes to k-linkage. -/
 /-
 ## Part VII: Historical Context
 
@@ -179,7 +178,7 @@ def IsKLinked {V : Type*} (G : Graph V) (k : ℕ) : Prop :=
 ## Part VIII: Related Concepts
 -/
 
-/-- The max-flow min-cut theorem for vertex version. -/
+/-  The max-flow min-cut theorem for vertex version. -/
 /-
 ## Part IX: König-Egervary Connection
 

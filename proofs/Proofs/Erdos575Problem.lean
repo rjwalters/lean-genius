@@ -26,6 +26,8 @@ This is a problem of Erdős and Simonovits (1982). Related to Problem #180.
 import Mathlib.Tactic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 /- ## Core Definitions -/
@@ -34,8 +36,8 @@ open SimpleGraph Finset
 n-vertex simple graph containing no subgraph isomorphic to H.
 We define this abstractly as a supremum. -/
 noncomputable def turanNumber (n : ℕ) (H : SimpleGraph (Fin n) → Prop) : ℕ :=
-  sSup { (Finset.univ.filter fun e : Fin n × Fin n => e.1 < e.2 ∧
-    ∃ G : SimpleGraph (Fin n), G.Adj e.1 e.2 ∧ H G).card | True }
+  sSup { k | k = (Finset.univ.filter fun e : Fin n × Fin n => e.1 < e.2 ∧
+    ∃ G : SimpleGraph (Fin n), G.Adj e.1 e.2 ∧ H G).card }
 
 /-- Simplified: ex(n; F) for a family F of "forbidden patterns."
 We use a predicate-based approach for the exclusion condition. -/
@@ -52,7 +54,7 @@ def IsBipartiteGraph (n : ℕ) (G : SimpleGraph (Fin n)) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #575 (Open, Erdős–Simonovits 1982).**
+/-  **Erdős Problem #575 (Open, Erdős–Simonovits 1982).**
 For any finite family F of graphs containing at least one bipartite graph,
 there exists a bipartite G ∈ F such that ex(n; G) = O(ex(n; F)).
 
@@ -61,15 +63,15 @@ In other words, the extremal function of the family is dominated
 member. -/
 /- ## Context: Erdős–Stone–Simonovits -/
 
-/-- **Erdős–Stone–Simonovits Theorem.**
+/-  **Erdős–Stone–Simonovits Theorem.**
 For any non-bipartite graph H with chromatic number χ(H) ≥ 3:
   ex(n; H) = (1 − 1/(χ(H)−1) + o(1)) · n²/2.
 This determines ex(n; H) asymptotically for non-bipartite H. -/
-/-- For bipartite H, ex(n; H) = o(n²) by Kővári–Sós–Turán.
+/-  For bipartite H, ex(n; H) = o(n²) by Kővári–Sós–Turán.
 The exact order is typically a fractional power of n. -/
 /- ## Family Extremal Function Properties -/
 
-/-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
+/- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
 only reduce the extremal function. -/
 /-
   ex(n; F) ≤ ex(n; G) for any G ∈ F: adding more forbidden graphs

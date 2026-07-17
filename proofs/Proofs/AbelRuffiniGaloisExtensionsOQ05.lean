@@ -78,7 +78,7 @@ from it using Mathlib's existing group theory.
     This is axiomatized: the proof requires deep algebraic number theory
     (class field theory, embedding problems, Brauer groups) not in Mathlib. -/
 axiom shafarevich_inverse_galois {G : Type*} [Group G] [Fintype G] [IsSolvable G] :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (L ≃ₐ[ℚ] L) ∧  -- L is a nontrivial Galois extension
       Nonempty (G ≃* (L ≃ₐ[ℚ] L))  -- Gal(L/ℚ) ≅ G
 
@@ -94,17 +94,17 @@ demonstrating how the abstract theorem applies to concrete groups.
 /-- Every finite cyclic group ℤ/nℤ (n ≥ 1) is realizable as a Galois group over ℚ.
     Proof: ℤ/nℤ is abelian, hence solvable; apply Shafarevich. -/
 theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
-      Nonempty (ZMod n ≃* (L ≃ₐ[ℚ] L)) := by
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
+      Nonempty (Multiplicative (ZMod n) ≃* (L ≃ₐ[ℚ] L)) := by
   haveI hne : NeZero n := ⟨by omega⟩
-  haveI : IsSolvable (ZMod n) := inferInstance
-  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (ZMod n) _ _ _
+  haveI : IsSolvable (Multiplicative (ZMod n)) := inferInstance
+  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (Multiplicative (ZMod n)) _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 
 /-- Every finite abelian group is realizable as a Galois group over ℚ.
     Proof: abelian implies solvable; apply Shafarevich. -/
 theorem abelian_group_realizable (G : Type*) [CommGroup G] [Fintype G] :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (G ≃* (L ≃ₐ[ℚ] L)) := by
   haveI : IsSolvable G := inferInstance
   obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois G _ _ _
@@ -113,7 +113,7 @@ theorem abelian_group_realizable (G : Type*) [CommGroup G] [Fintype G] :
 /-- S₃ (the symmetric group on 3 elements) is realizable as a Galois group over ℚ.
     Proof: S₃ is solvable (from parent file); apply Shafarevich. -/
 theorem s3_realizable :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (Equiv.Perm (Fin 3) ≃* (L ≃ₐ[ℚ] L)) := by
   haveI : IsSolvable (Equiv.Perm (Fin 3)) := by
     apply symmetric_solvable_of_le_four; norm_num
@@ -123,7 +123,7 @@ theorem s3_realizable :
 /-- S₄ (the symmetric group on 4 elements) is realizable as a Galois group over ℚ.
     Proof: S₄ is solvable (from parent file); apply Shafarevich. -/
 theorem s4_realizable :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (Equiv.Perm (Fin 4) ≃* (L ≃ₐ[ℚ] L)) := by
   haveI : IsSolvable (Equiv.Perm (Fin 4)) := by
     apply symmetric_solvable_of_le_four; norm_num
@@ -137,7 +137,7 @@ theorem s4_realizable :
 /-- A finite solvable group is realizable as a Galois group over ℚ. -/
 theorem solvable_iff_shafarevich_realizable {G : Type*} [Group G] [Fintype G]
     [IsSolvable G] :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (G ≃* (L ≃ₐ[ℚ] L)) := by
   obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois G _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
@@ -146,19 +146,21 @@ theorem solvable_iff_shafarevich_realizable {G : Type*} [Group G] [Fintype G]
     Proof: Subgroup of solvable group is solvable; apply Shafarevich. -/
 theorem subgroup_of_solvable_realizable {G : Type*} [Group G] [Fintype G]
     [IsSolvable G] (H : Subgroup G) :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (H ≃* (L ≃ₐ[ℚ] L)) := by
-  haveI : IsSolvable H := subgroup_solvable_of_solvable H
-  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois H _ _ _
+  haveI : IsSolvable H := AbelRuffiniGaloisExtensions.subgroup_solvable_of_solvable H
+  haveI : Fintype ↥H := Fintype.ofFinite ↥H
+  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois ↥H _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 
 /-- Every quotient of a realizable solvable group is also realizable.
     Proof: Quotient of solvable group is solvable; apply Shafarevich. -/
 theorem quotient_of_solvable_realizable {G : Type*} [Group G] [Fintype G]
     [IsSolvable G] (N : Subgroup G) [N.Normal] :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (G ⧸ N ≃* (L ≃ₐ[ℚ] L)) := by
   haveI : IsSolvable (G ⧸ N) := quotient_solvable_of_solvable N
+  haveI : Fintype (G ⧸ N) := Fintype.ofFinite (G ⧸ N)
   obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (G ⧸ N) _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 
@@ -171,7 +173,7 @@ theorem quotient_of_solvable_realizable {G : Type*} [Group G] [Fintype G]
     (Only the ← direction is proved here; → direction is Shafarevich.) -/
 theorem shafarevich_implies_converse {G : Type*} [Group G] [Fintype G]
     [IsSolvable G] :
-    ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L],
+    ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (G ≃* (L ≃ₐ[ℚ] L)) :=
   solvable_iff_shafarevich_realizable
 

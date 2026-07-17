@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.NumberTheory.SumTwoSquares
-import Mathlib.Tactic
+import Mathlib
 import Proofs.InfinitudePrimes4k3
 import Proofs.InfinitudePrimes4k1
 
@@ -96,8 +92,8 @@ theorem constructions_cover_all_odd_primes :
   intro p hp hp2
   rcases InfinitudePrimes4k3.prime_mod_four hp hp2 with h1 | h3
   · left
-    refine ⟨h1, 0, p, hp, hp.two_le, h1, rfl⟩
+    refine ⟨h1, 0, p, hp, hp.pos, h1, rfl⟩
   · right
-    refine ⟨h3, 0, p, hp, hp.two_le, h3, rfl⟩
+    refine ⟨h3, 0, p, hp, hp.pos, h3, rfl⟩
 
 end InfinitudePrimes4k3OQ03

@@ -107,7 +107,7 @@ axiom erdos_sauer_conjecture :
 
 -- ## Graph Case (r = 2)
 
-/-- For graphs (r = 2), the Turán number ex₂(n; K₃) equals ⌊n²/4⌋.
+/-  For graphs (r = 2), the Turán number ex₂(n; K₃) equals ⌊n²/4⌋.
     This is Turán's theorem (1941), proved below via the bipartite
     construction (lower bound) and Mathlib's SimpleGraph Turán bound (upper bound).
     See turan_graph at the end of this file. -/
@@ -218,15 +218,15 @@ theorem cliqueFree_le_turan (n r : ℕ) (H : RUniformHypergraph (Fin n) r)
 /-- The empty hypergraph trivially satisfies the Erdős–Sauer conjecture. -/
 theorem empty_case (n r : ℕ) (hr : r ≥ 2) :
     let H : RUniformHypergraph (Fin n) r :=
-      ⟨∅, fun _ h => absurd h (Finset.not_mem_empty _)⟩
+      ⟨∅, fun _ h => absurd h (Finset.notMem_empty _)⟩
     ∃ pieces : Finset (Finset (Finset (Fin n))),
       IsValidDecomp r H pieces ∧
       pieces.card ≤ turanHypergraph n r := by
   refine ⟨∅, ?_, ?_⟩
   · exact {
-      pieces_valid := fun p hp => absurd hp (Finset.not_mem_empty _)
-      pairwise_disjoint := fun p₁ hp₁ => absurd hp₁ (Finset.not_mem_empty _)
-      covers := fun e he => absurd he (Finset.not_mem_empty _)
+      pieces_valid := fun p hp => absurd hp (Finset.notMem_empty _)
+      pairwise_disjoint := fun p₁ hp₁ => absurd hp₁ (Finset.notMem_empty _)
+      covers := fun e he => absurd he (Finset.notMem_empty _)
     }
   · simp
 
@@ -484,11 +484,11 @@ theorem turanHypergraph_graph_le (n : ℕ) :
   unfold turanHypergraph
   apply csSup_le
   · -- Nonempty: the empty hypergraph has 0 edges
-    refine ⟨0, ⟨⟨∅, fun _ h => absurd h (Finset.not_mem_empty _)⟩, ?_, rfl⟩⟩
+    refine ⟨0, ⟨⟨∅, fun _ h => absurd h (Finset.notMem_empty _)⟩, ?_, rfl⟩⟩
     intro S hS hc
     have ⟨e, he⟩ : (completeClique 2 S).Nonempty := by
       rw [← Finset.card_pos, completeClique_card, hS]; norm_num
-    exact absurd (hc he) (Finset.not_mem_empty _)
+    exact absurd (hc he) (Finset.notMem_empty _)
   · -- For each clique-free H, show H.edges.card ≤ n²/4
     rintro m ⟨H, hcf, rfl⟩
     -- Bridge: build a SimpleGraph with the same edge structure

@@ -32,10 +32,10 @@ namespace Erdos554
 axiom ramseyNumber (graphSize : ℕ) (k : ℕ) : ℕ
 
 /-- R(K_3; k): the k-color Ramsey number of the triangle. -/
-def triangleRamsey (k : ℕ) : ℕ := ramseyNumber 3 k
+noncomputable def triangleRamsey (k : ℕ) : ℕ := ramseyNumber 3 k
 
 /-- R(C_{2n+1}; k): the k-color Ramsey number of the odd (2n+1)-cycle. -/
-def oddCycleRamsey (n k : ℕ) : ℕ := ramseyNumber (2 * n + 1) k
+noncomputable def oddCycleRamsey (n k : ℕ) : ℕ := ramseyNumber (2 * n + 1) k
 
 /- ## Part II: The Conjecture -/
 
@@ -56,13 +56,13 @@ def erdosConjecture554 : Prop :=
 
 /- ## Part III: Known Bounds -/
 
-/-- **Triangle Ramsey lower bound (exponential):**
+/-  **Triangle Ramsey lower bound (exponential):**
     R(K_3; k) >= 2^k for k >= 2. -/
 
-/-- **Odd cycle Ramsey upper bound:**
+/-  **Odd cycle Ramsey upper bound:**
     R(C_{2n+1}; k) <= (2n+1)^k for n >= 2, k >= 2. -/
 
-/-- **Odd cycle Ramsey lower bound:**
+/-  **Odd cycle Ramsey lower bound:**
     R(C_{2n+1}; k) >= k * (2n) + 1 for k >= 1, n >= 1. -/
 
 /- ## Part IV: Classical 2-Color Results -/

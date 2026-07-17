@@ -1,5 +1,7 @@
 import Proofs.InverseGaloisD4OQ01
 
+open scoped Classical
+
 /-
 # Inverse Galois D₄ — OQ-01 (external packaging): `D₄ ≅ ℤ/4 ⋊ ℤ/2`
 
@@ -155,7 +157,9 @@ theorem d4Hom_injective : Function.Injective d4Hom := by
       simp only [sHom, MonoidHom.coe_mk, OneHom.coe_mk]; rw [if_neg hr]
     rw [hs, show rHom x.left = r x.left.toAdd from rfl, r_mul_sr,
       DihedralGroup.one_def] at hx
-    exact DihedralGroup.noConfusion hx
+    -- v4.31: bare `noConfusion` fails to infer its motive here; rewrite
+    -- `1 = r 0` and let `reduceCtorEq` close the constructor mismatch.
+    simp only [DihedralGroup.one_def, reduceCtorEq] at hx
 
 theorem d4Hom_bijective : Function.Bijective d4Hom :=
   ⟨d4Hom_injective, d4Hom_surjective⟩

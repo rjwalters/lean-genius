@@ -72,7 +72,9 @@ theorem distinct_submultisets_singleton [DecidableEq α] (a : α) :
     `{}, {a}, {a,a}, ..., {a,...,a}` (with 0, 1, ..., n+1 copies). -/
 theorem distinct_submultisets_replicate [DecidableEq α] (a : α) (n : ℕ) :
     (Finset.Iic (Multiset.replicate (n + 1) a)).card = n + 2 := by
-  simp [Multiset.card_Iic, Multiset.toFinset_replicate, Multiset.count_replicate]
+  simp only [Multiset.card_Iic, Multiset.toFinset_replicate, Multiset.count_replicate]
+  rw [if_neg (by omega : ¬ n + 1 = 0)]
+  simp
 
 -- ============================================================================
 -- Part III: Set Case
@@ -145,7 +147,7 @@ theorem distinct_submultisets_disjoint [DecidableEq α] (s t : Multiset α)
     intro a ha
     -- a ∈ t.toFinset and Disjoint s.toFinset t.toFinset → a ∉ s
     have has : a ∉ s := fun hmem =>
-      Finset.disjoint_left.mp (Finset.disjoint_comm.mp hdisj) ha (Multiset.mem_toFinset.mpr hmem)
+      Finset.disjoint_left.mp (disjoint_comm.mp hdisj) ha (Multiset.mem_toFinset.mpr hmem)
     rw [Multiset.count_add, Multiset.count_eq_zero.mpr has, zero_add]
 
 -- ============================================================================

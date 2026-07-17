@@ -38,6 +38,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Lattice
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset Set
 
@@ -58,7 +59,7 @@ def Comparable (A B : Finset α) : Prop := A ⊆ B ∨ B ⊆ A
 /--
 Comparability is a reflexive relation.
 -/
-theorem comparable_refl (A : Finset α) : Comparable A A := Or.inl Subset.rfl
+theorem comparable_refl (A : Finset α) : Comparable A A := Or.inl Finset.Subset.rfl
 
 /--
 Comparability is a symmetric relation.
@@ -128,7 +129,7 @@ axiom question1_affirmative :
     (F.card : ℝ) ≤ (2 - ε) * (2 : ℝ)^(n / 2) →
     edgeCount F < 2^n
 
-/--
+/- 
 **Extremal Construction:**
 The bound (2-ε)·2^{n/2} is essentially tight.
 
@@ -187,7 +188,7 @@ axiom question3_affirmative :
     (edgeCount F : ℝ) > (F.card : ℝ)^(2 - δ) →
     (F.card : ℝ) < ((2 : ℝ) + ε)^(n / 2)
 
-/--
+/- 
 **Alon-Frankl Quantitative Bound:**
 For integer k ≥ 1 and δ > 0, if m = 2^{(1/(k+1) + δ)n}, then
 edges < (1 - 1/k)·C(m,2) + O(m^{2 - Ω_k(δ^{k+1})}).
@@ -196,7 +197,7 @@ edges < (1 - 1/k)·C(m,2) + O(m^{2 - Ω_k(δ^{k+1})}).
 ## Part VI: Daykin-Frankl Result
 -/
 
-/--
+/- 
 **Daykin-Frankl Theorem:**
 If G_F has (1 + o(1))·C(m,2) edges (i.e., almost all pairs are comparable),
 then m^{1/n} → 1 as n → ∞.
@@ -221,11 +222,11 @@ A family F is an antichain if no two distinct elements are comparable.
 def IsAntichain (F : Finset (Finset α)) : Prop :=
   ∀ A ∈ F, ∀ B ∈ F, A ≠ B → ¬Comparable A B
 
-/--
+/- 
 In a chain, every pair of distinct sets forms an edge.
 -/
-/-- In an antichain, there are no edges. -/
-/--
+/-  In an antichain, there are no edges. -/
+/- 
 **Dilworth's Theorem Connection:**
 The maximum antichain in the power set of {1,...,n} has size C(n, ⌊n/2⌋).
 -/
@@ -241,12 +242,12 @@ theorem singleton_comparable (a b : α) (ha : a ≠ b) :
   intro h
   cases h with
   | inl h1 =>
-    have : a ∈ ({b} : Finset α) := h1 (mem_singleton.mpr rfl)
-    simp only [mem_singleton] at this
+    have : a ∈ ({b} : Finset α) := h1 (Finset.mem_singleton.mpr rfl)
+    simp only [Finset.mem_singleton] at this
     exact ha this
   | inr h2 =>
-    have : b ∈ ({a} : Finset α) := h2 (mem_singleton.mpr rfl)
-    simp only [mem_singleton] at this
+    have : b ∈ ({a} : Finset α) := h2 (Finset.mem_singleton.mpr rfl)
+    simp only [Finset.mem_singleton] at this
     exact ha this.symm
 
 /--
@@ -259,13 +260,13 @@ theorem empty_comparable (A : Finset α) : Comparable ∅ A :=
 **Example:** Full set is comparable to everything in its power set.
 -/
 theorem full_comparable (base A : Finset α) (hA : A ⊆ base) : Comparable A base :=
-  Or.inr hA
+  Or.inl hA
 
 /-
 ## Part IX: Alon-Das-Glebov-Sudakov Result (2015)
 -/
 
-/--
+/- 
 **ADGS Theorem (2015):**
 Answered Question 1 affirmatively using their Theorem 1.4 and Corollary 1.5.
 

@@ -25,12 +25,14 @@
   Tags: number-theory, powerful-numbers, density, additive-combinatorics
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Squarefree
 import Mathlib.Data.Multiset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+
+open scoped Classical
 
 namespace Erdos940
 
@@ -56,7 +58,9 @@ theorem one_isPowerful (r : ℕ) (hr : r ≥ 1) : isPowerful r 1 := by
   constructor
   · omega
   · intro p _ hp
-    interval_cases p <;> simp_all
+    rw [Nat.dvd_one] at hp
+    subst hp
+    simp
 
 /-- 0 is not r-powerful (by convention). -/
 theorem zero_not_isPowerful (r : ℕ) : ¬isPowerful r 0 := by
@@ -73,7 +77,7 @@ theorem power_isPowerful (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
     have : p ∣ n := by
       have := hp.dvd_of_dvd_pow hdiv
       exact this
-    exact Nat.pow_dvd_pow_of_dvd this r
+    exact pow_dvd_pow_of_dvd this r
 
 /- ## Part II: The Set of Sums -/
 
@@ -159,28 +163,34 @@ theorem conjecture_implies_infinite (h : erdos_940_conjecture) :
     calc N - M
         = ((Finset.Ioc M N).filter (· ∈ DiagonalSums r)).card := by
           rw [Finset.filter_true_of_mem (fun n hn => hmem n (Finset.mem_Ioc.mp hn).1)]
-          simp [Finset.card_Ioc]
+          simp [Nat.card_Ioc]
       _ ≤ ((Finset.range (N + 1)).filter (· ∈ DiagonalSums r)).card := by
           apply Finset.card_le_card
           apply Finset.filter_subset_filter
-          intro n hn; exact Finset.mem_range.mpr (by omega)
+          intro n hn
+          have hn' := (Finset.mem_Ioc.mp hn).2
+          exact Finset.mem_range.mpr (by omega)
   -- Density 0 means countingFunction/N → 0
   -- But countingFunction/N ≥ (N-M)/N → 1 for large N, contradiction
   have : ¬Tendsto (fun N => (countingFunction (DiagonalSums r) N : ℝ) / N) atTop (nhds 0) := by
-    rw [Filter.not_tendsto_iff_exists_frequently_nmem]
-    refine ⟨Iio (1/2), Iio_mem_nhds (by norm_num : (0:ℝ) < 1/2), ?_⟩
+    rw [Filter.not_tendsto_iff_exists_frequently_notMem]
+    refine ⟨Set.Iio (1/2 : ℝ), ?_, ?_⟩
+    · exact Iio_mem_nhds (by norm_num : (0:ℝ) < 1/2)
     rw [Filter.Frequently, Filter.Eventually, Filter.mem_atTop_sets]
     push_neg
     intro N₀
     use max N₀ (2 * M + 2)
     refine ⟨le_max_left _ _, ?_⟩
-    simp only [Set.mem_Iio, not_lt]
+    simp only [Set.mem_Iio, Set.mem_setOf_eq, not_lt]
     have hN : M < max N₀ (2 * M + 2) := by omega
     have hN' : (0 : ℝ) < max N₀ (2 * M + 2) := by positivity
-    rw [le_div_iff₀ hN']
-    calc 1 / 2 * ↑(max N₀ (2 * M + 2))
-        ≤ ↑(max N₀ (2 * M + 2)) - ↑M := by push_cast; nlinarith [le_max_right N₀ (2 * M + 2)]
-      _ = ↑(max N₀ (2 * M + 2) - M) := by push_cast; omega
+    refine (le_div_iff₀ hN').mpr ?_
+    have hMle : M ≤ max N₀ (2 * M + 2) := le_trans (by omega) (le_max_right _ _)
+    have hmr : (2 * (M : ℝ) + 2) ≤ ↑(max N₀ (2 * M + 2)) := by
+      exact_mod_cast le_max_right N₀ (2 * M + 2)
+    calc (1 : ℝ) / 2 * ↑(max N₀ (2 * M + 2))
+        ≤ ↑(max N₀ (2 * M + 2)) - ↑M := by linarith
+      _ = ↑(max N₀ (2 * M + 2) - M) := by rw [Nat.cast_sub hMle]
       _ ≤ ↑(countingFunction (DiagonalSums r) (max N₀ (2 * M + 2))) := by
           exact_mod_cast hcount _ hN
   exact this hd
@@ -306,31 +316,28 @@ example : isPowerful 2 4 := by
   constructor
   · omega
   · intro p hp hdiv
-    interval_cases p
-    all_goals simp_all [Nat.Prime] <;> omega
+    have hub := Nat.le_of_dvd (by norm_num) hdiv
+    have hlb := hp.two_le
+    interval_cases p <;> revert hp hdiv <;> decide
 
 /-- 8 = 2³ is cubefull. -/
 example : isPowerful 3 8 := by
   constructor
   · omega
   · intro p hp hdiv
-    interval_cases p
-    all_goals simp_all [Nat.Prime] <;> omega
+    have hub := Nat.le_of_dvd (by norm_num) hdiv
+    have hlb := hp.two_le
+    interval_cases p <;> revert hp hdiv <;> decide
 
 /-- 72 = 2³ · 3² is squarefull but not cubefull. -/
 example : isPowerful 2 72 := by
   constructor
   · omega
   · intro p hp hdiv
-    -- 72 = 8 · 9 = 2³ · 3²
-    -- Prime divisors are 2 and 3
-    have h72 : 72 = 2^3 * 3^2 := by norm_num
-    interval_cases p
-    all_goals
-      simp_all [Nat.Prime]
-      · norm_num
-        omega
-      <;> omega
+    -- 72 = 8 · 9 = 2³ · 3², prime divisors are 2 and 3
+    have hub := Nat.le_of_dvd (by norm_num) hdiv
+    have hlb := hp.two_le
+    interval_cases p <;> revert hp hdiv <;> decide
 
 /- ## Part XI: Related Problems -/
 

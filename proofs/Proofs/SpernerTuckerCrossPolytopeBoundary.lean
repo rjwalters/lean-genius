@@ -141,8 +141,8 @@ theorem crossAdj_irrefl : Irreflexive (CrossAdj n) := by
 /-- The facet-adjacency graph of `∂◊^{n+1}`: the `(n+1)`-cube `Q_{n+1}`. -/
 def crossGraph : SimpleGraph (Facet n) where
   Adj := CrossAdj n
-  symm := crossAdj_symm n
-  loopless := crossAdj_irrefl n
+  symm.symm := crossAdj_symm n
+  loopless.irrefl := crossAdj_irrefl n
 
 instance : DecidableRel (crossGraph n).Adj :=
   inferInstanceAs (DecidableRel (CrossAdj n))

@@ -111,7 +111,7 @@ lemma summable_altFactTerm : Summable altFactTerm := by
 /-- **Euler's Identity**: e^{-1} equals the alternating series ∑ (-1)^k/k! -/
 theorem exp_neg_one_eq_tsum_alt :
     rexp (-1) = ∑' k, altFactTerm k := by
-  have : rexp (-1) = NormedSpace.exp ℝ (-1 : ℝ) := by
+  have : rexp (-1) = NormedSpace.exp (-1 : ℝ) := by
     rw [Real.exp_eq_exp_ℝ]
   rw [this, NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
   refine tsum_congr fun k => ?_

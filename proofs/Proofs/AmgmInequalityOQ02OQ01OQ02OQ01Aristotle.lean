@@ -13,7 +13,7 @@
       psum σ R 1 = (-1)^2 * 1 * esymm σ R 1 - (empty sum over antidiag 1 filtered by 0<a<1)
       = 1 * esymm σ R 1 - 0 = esymm σ R 1
     The sum is empty because no a satisfies 0 < a < 1 for natural numbers.
-    Strategy: have h := MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_ne_zero
+    Strategy: have h := MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_pos
               simp [Finset.antidiagonal, Set.Ioo] at h; linarith
 
   TARGET 2 (psum_two_eq):
@@ -56,11 +56,11 @@ psum σ R 1 = Σ_{i : σ} X i = esymm σ R 1
 -/
 theorem psum_one_eq_esymm_one :
     psum σ R 1 = esymm σ R 1 := by
-  rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_ne_zero]
+  rw [MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_pos]
   have hfilt : (Finset.antidiagonal 1).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 1) = ∅ := by
     ext ⟨a, b⟩
     simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
-               Finset.not_mem_empty, iff_false, not_and, not_lt]
+               Finset.notMem_empty, iff_false, not_and, not_lt]
     omega
   simp only [hfilt, Finset.sum_empty]
   ring

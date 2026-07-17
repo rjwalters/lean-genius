@@ -87,8 +87,10 @@ invariant set is null or co-null.
 -- Demonstrate Mathlib's ergodic infrastructure
 example {α : Type*} [MeasurableSpace α] {μ : Measure α} {T : α → α}
     (hE : Ergodic T μ) (s : Set α) (hs : MeasurableSet s)
-    (hTs : T ⁻¹' s = s) : μ s = 0 ∨ μ sᶜ = 0 :=
-  hE.preErgodic.ae_empty_or_univ hs hTs
+    (hTs : T ⁻¹' s = s) : μ s = 0 ∨ μ sᶜ = 0 := by
+  rcases hE.toPreErgodic.ae_empty_or_univ hs hTs with h | h
+  · exact Or.inl (ae_eq_empty.mp h)
+  · exact Or.inr (ae_eq_univ.mp h)
 
 /-!
 ### Building Block 2: Ergodic = Extreme Point of Invariant Measures
@@ -140,9 +142,9 @@ construction. From `Dynamics.Ergodic.RadonNikodym`:
 -- Demonstrate the T-invariance of RN derivatives
 example {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {T : α → α}
     (hμ : MeasurePreserving T μ μ) (hν : MeasurePreserving T ν ν)
-    [SigmaFinite μ] [SigmaFinite ν] :
+    [IsFiniteMeasure μ] [IsFiniteMeasure ν] :
     μ.rnDeriv ν ∘ T =ᵐ[ν] μ.rnDeriv ν :=
-  hμ.rnDeriv_comp_eq hν
+  hμ.rnDeriv_comp_aeEq hν
 
 /-!
 ### Building Block 5: Invariant Functions Are Constant (for Ergodic Systems)
@@ -159,7 +161,7 @@ example {α : Type*} [MeasurableSpace α] {μ : Measure α} {T : α → α}
     (hE : Ergodic T μ) {g : α → ℝ} (hg : Measurable g)
     (hinv : g ∘ T =ᵐ[μ] g) :
     ∃ c, g =ᵐ[μ] Function.const α c :=
-  hE.ae_eq_const hg hinv
+  hE.ae_eq_const_of_ae_eq_comp₀ hg.nullMeasurable hinv
 
 /-!
 ### Building Block 6: Measure Disintegration
@@ -207,22 +209,15 @@ The decomposition is essentially "conditioning on the invariant σ-algebra."
 /-- The invariant σ-algebra of a measurable map T.
     This is the σ-algebra of sets satisfying T⁻¹(s) = s.
     **Not yet in Mathlib** — this is the first gap. -/
-def invariantSigmaAlgebra {α : Type*} [m : MeasurableSpace α] (T : α → α) :
+@[reducible] def invariantSigmaAlgebra {α : Type*} [m : MeasurableSpace α] (T : α → α) :
     MeasurableSpace α where
   MeasurableSet' s := @MeasurableSet α m s ∧ T ⁻¹' s = s
   measurableSet_empty := ⟨MeasurableSet.empty, preimage_empty⟩
-  measurableSet_compl s ⟨hs, hTs⟩ := ⟨hs.compl, by rw [preimage_compl, hTs]⟩
+  measurableSet_compl s h := ⟨h.1.compl, by rw [preimage_compl, h.2]⟩
   measurableSet_iUnion f hf := by
     refine ⟨MeasurableSet.iUnion (fun i => (hf i).1), ?_⟩
-    ext x
-    simp only [mem_preimage, mem_iUnion]
-    constructor
-    · rintro ⟨i, hi⟩
-      rw [← (hf i).2] at hi
-      exact ⟨i, hi⟩
-    · rintro ⟨i, hi⟩
-      rw [← (hf i).2]
-      exact ⟨i, mem_preimage.mpr hi⟩
+    rw [preimage_iUnion]
+    exact iUnion_congr (fun i => (hf i).2)
 
 /-- The invariant σ-algebra is a sub-σ-algebra of the ambient one. -/
 theorem invariantSigmaAlgebra_le {α : Type*} [m : MeasurableSpace α] (T : α → α) :

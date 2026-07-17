@@ -15,6 +15,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset
 
@@ -70,11 +71,15 @@ def isIndependent (H : Hypergraph V) (S : Finset V) : Prop :=
 noncomputable def independenceNumber (H : Hypergraph V) : ℕ :=
   sSup { k : ℕ | ∃ S : Finset V, isIndependent H S ∧ S.card = k }
 
-/-- Every hypergraph has an independent set (the empty set). -/
-theorem exists_independent (H : Hypergraph V) : ∃ S : Finset V, isIndependent H S := by
+/-- Every hypergraph without an empty edge has an independent set (the empty set).
+    (v4.31 migration: the empty set is independent iff `∅ ∉ H` — if `∅ ∈ H` then
+    `∅ ⊆ ∅` witnesses a contained edge, so the empty-edge hypothesis is required.) -/
+theorem exists_independent (H : Hypergraph V) (hne : ∅ ∉ H) :
+    ∃ S : Finset V, isIndependent H S := by
   use ∅
-  intro e _ he
-  simp at he
+  intro e he hsub
+  rw [Finset.subset_empty] at hsub
+  exact hne (hsub ▸ he)
 
 /-
 ## The Extremal Function f(n)
@@ -90,7 +95,7 @@ def linearHypergraphs3 (n : ℕ) : Set (Hypergraph (Fin n)) :=
 noncomputable def f (n : ℕ) : ℕ :=
   sInf { independenceNumber H | H ∈ linearHypergraphs3 n }
 
-/-- f(n) is the guaranteed independent set size. -/
+/-  f(n) is the guaranteed independent set size. -/
 /-
 ## Erdős's Bounds
 
@@ -159,8 +164,7 @@ def erdos_1024_question : Prop :=
 /-- The answer: f(n) ≍ (n log n)^(1/2). -/
 theorem erdos_1024_solved : erdos_1024_question := by
   obtain ⟨c, C, hc, hC, N, hN⟩ := phelps_rodl
-  use c, C, hc, hC, asymptoticBound, N
-  exact hN
+  exact ⟨c, C, hc, hC, asymptoticBound, N, hN⟩
 
 /-
 ## Steiner Triple Systems
@@ -173,8 +177,8 @@ def isSteinerTripleSystem (H : Hypergraph V) : Prop :=
   is3UniformLinear H ∧
   ∀ u v : V, u ≠ v → ∃! e ∈ H, u ∈ e ∧ v ∈ e
 
-/-- Steiner triple systems exist for n ≡ 1, 3 (mod 6). -/
-/-- STS are the densest 3-uniform linear hypergraphs: they have n(n-1)/6 edges. -/
+/-  Steiner triple systems exist for n ≡ 1, 3 (mod 6). -/
+/-  STS are the densest 3-uniform linear hypergraphs: they have n(n-1)/6 edges. -/
 /-
 ## Probabilistic Lower Bound
 
@@ -185,22 +189,22 @@ Random independent sets give the lower bound.
 noncomputable def expectedIndependent (H : Hypergraph V) (p : ℝ) : ℝ :=
   p * Fintype.card V - (H.card : ℝ) * p^3
 
-/-- Optimizing p gives the lower bound. -/
+/-  Optimizing p gives the lower bound. -/
 /-
 ## Upper Bound Construction
 
 Constructions matching the lower bound.
 -/
 
-/-- There exist 3-uniform linear hypergraphs with small independence number. -/
+/-  There exist 3-uniform linear hypergraphs with small independence number. -/
 /-
 ## Comparison of Bounds
 
 The Phelps-Rödl bound is between Erdős's bounds.
 -/
 
-/-- (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
-/-- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
+/-  (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
+/- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
 /-
 ## Summary
 

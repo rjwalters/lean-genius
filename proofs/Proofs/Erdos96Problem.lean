@@ -38,6 +38,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Convex.Hull
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos96
@@ -68,7 +70,7 @@ def IsUnitDistance (p q : Point) : Prop := dist' p q = 1
 **Unit Distance Pairs:**
 The set of unordered pairs of distinct points at unit distance.
 -/
-def unitDistancePairs (A : Finset Point) : Finset (Finset Point) :=
+noncomputable def unitDistancePairs (A : Finset Point) : Finset (Finset Point) :=
   A.powerset.filter (fun s => s.card = 2 ∧
     ∃ p q, p ∈ s ∧ q ∈ s ∧ p ≠ q ∧ IsUnitDistance p q)
 
@@ -76,7 +78,7 @@ def unitDistancePairs (A : Finset Point) : Finset (Finset Point) :=
 **Unit Distance Count:**
 The number of pairs at unit distance.
 -/
-def unitDistanceCount (A : Finset Point) : ℕ := (unitDistancePairs A).card
+noncomputable def unitDistanceCount (A : Finset Point) : ℕ := (unitDistancePairs A).card
 
 /-
 ## Part II: Convex Position
@@ -137,7 +139,7 @@ axiom furedi_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ A : Finset Point, IsConvexPolygon A → A.card ≥ 3 →
     (unitDistanceCount A : ℝ) ≤ C * A.card * Real.log A.card
 
-/--
+/- 
 **Aggarwal's Bound (2015):**
 n log₂n + 4n unit distance pairs (current best).
 -/
@@ -195,7 +197,7 @@ def ErdosSumConjecture : Prop :=
   ∀ A : Finset Point, IsConvexPolygon A →
     (A.sum fun x => equidistantCount A x) < 4 * A.card
 
-/--
+/- 
 **Sum Conjecture Lower Bound:**
 The Edelsbrunner-Hajnal construction shows ∑g(x) can exceed 4n - O(1).
 -/

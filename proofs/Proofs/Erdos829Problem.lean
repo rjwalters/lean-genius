@@ -25,10 +25,10 @@ References:
   Int. Math. Res. Not. IMRN (2008), Art. ID rnn040, 11.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Finset.Basic
 
 open Real BigOperators
@@ -99,11 +99,11 @@ This shows that there exist n with arbitrarily many representations.
 axiom mordell_unbounded :
   ∀ M : ℕ, ∃ n : ℕ, cubeRepresentations n ≥ M
 
-/--
+/- 
 **Infinitely Many Large Values:**
 For any fixed k, there exist arbitrarily large n with r₂(n) > k.
 -/
-/--
+/- 
 **Mahler's Theorem (1935):**
 For infinitely many n, r₂(n) ≫ (log n)^{1/4}.
 -/
@@ -127,6 +127,8 @@ The smallest numbers that can be expressed as sums of two cubes in multiple ways
 Taxicab(2) = 1729 = 1³ + 12³ = 9³ + 10³
 (The Hardy-Ramanujan number)
 -/
+theorem hardy_ramanujan_1729 : cubeRepresentations 1729 = 2 := by native_decide
+
 theorem taxicab_1729 : cubeRepresentations 1729 ≥ 2 := by
   -- 1³ + 12³ = 1 + 1728 = 1729
   -- 9³ + 10³ = 729 + 1000 = 1729
@@ -134,27 +136,26 @@ theorem taxicab_1729 : cubeRepresentations 1729 ≥ 2 := by
   have h := hardy_ramanujan_1729
   omega
 
-/--
+/-
 **1729: The Hardy-Ramanujan Number:**
 Famous anecdote: Hardy mentioned taking taxi number 1729, calling it dull.
 Ramanujan immediately noted it's the smallest number expressible as sum of
 two cubes in two different ways.
 -/
-theorem hardy_ramanujan_1729 : cubeRepresentations 1729 = 2 := by native_decide
 
-/--
+/-
 **Taxicab(3) = 87539319:**
 The smallest number with 3 representations as sum of two cubes.
 87539319 = 167³ + 436³ = 228³ + 423³ = 255³ + 414³
 -/
 /- ## Part V: Theoretical Framework -/
 
-/--
+/- 
 **Density of Sums of Two Cubes:**
 The counting function of numbers representable as sums of two positive cubes
 is asymptotically ~ c · x^{2/3} for some constant c.
 -/
-/--
+/- 
 **Cube-Free Numbers:**
 Most integers cannot be expressed as sums of two cubes.
 -/

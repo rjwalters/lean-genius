@@ -30,11 +30,7 @@ References:
 - Nešetřil-Rödl [NeRo75]: Alternative proof of finite case
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib
 
 open SimpleGraph Finset Cardinal
 

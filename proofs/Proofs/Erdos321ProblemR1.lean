@@ -16,16 +16,17 @@ Status: OPEN
 Reference: https://erdosproblems.com/321
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+open scoped Classical
 
 /- ## Definitions -/
 
 /-- The set of unit fractions 1/n for n ∈ {1, ..., N}. -/
 def unitFractions (N : ℕ) : Finset ℚ :=
-  Finset.image (fun n => (1 : ℚ) / n) (Finset.Icc 1 N)
+  Finset.image (fun n : ℕ => (1 : ℚ) / n) (Finset.Icc 1 N)
 
 /-- A subset A ⊆ {1,...,N} has distinct subset sums of reciprocals:
     for any two distinct subsets S, T ⊆ A, Σ_{n∈S} 1/n ≠ Σ_{n∈T} 1/n. -/
@@ -54,11 +55,11 @@ theorem erdos_321_asymptotics :
 
 /- ## Known Bounds -/
 
-/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
+/-  **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
     for iterated logs up to level k. -/
-/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
+/-  **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
     (N/log N) · Π log_i N for some r depending on N. -/
-/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
+/- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
     The main term is N/log N; the precise iterated log correction is
     the content of the open problem. -/
 /- ## Observations -/

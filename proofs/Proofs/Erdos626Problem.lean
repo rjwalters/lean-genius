@@ -44,7 +44,7 @@ noncomputable def g (k n : ℕ) : ℕ :=
 axiom g_well_defined :
   ∀ k : ℕ, k ≥ 4 →
     ∃ N : ℕ, ∀ n ≥ N,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
         chromaticNumber G = k ∧
         HasGirthGT G (g k n)
@@ -54,7 +54,7 @@ axiom g_well_defined :
 /-- Erdős showed high-chromatic-number, high-girth graphs exist -/
 axiom erdos_high_girth_high_chromatic :
   ∀ k g : ℕ, k ≥ 2 → g ≥ 3 →
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       chromaticNumber G ≥ k ∧ HasGirthGT G g
 
 /-- This implies g_k(n) → ∞ as n → ∞ -/
@@ -77,7 +77,8 @@ noncomputable def upperCoeff (k : ℕ) : ℝ :=
 
 /-- For k = 4: coefficient = 2/log(2) ≈ 2.89 -/
 theorem upper_coeff_k4 : upperCoeff 4 = 2 / Real.log 2 := by
-  rfl
+  unfold upperCoeff
+  norm_num
 
 /- ## Lower Bound (Kostochka) -/
 
@@ -167,15 +168,15 @@ theorem k4_bounds (n : ℕ) (hn : n ≥ 2) :
 
 /-- For triangle-free graphs (girth > 3), chromatic number can be arbitrarily large -/
 theorem triangle_free_unbounded_chromatic :
-    ∀ k : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ k : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       HasGirthGT G 3 ∧ chromaticNumber G ≥ k := by
   sorry
 
 /-- This is Erdős's famous 1959 result -/
 axiom erdos_1959_probabilistic_method :
   ∀ k g : ℕ, k ≥ 2 → g ≥ 3 →
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      chromaticNumber G ≥ k ∧ girth G > g
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      chromaticNumber G ≥ k ∧ GraphCore.girth G > g
 
 /- ## Probabilistic Lower Bound -/
 
@@ -183,7 +184,7 @@ axiom erdos_1959_probabilistic_method :
 theorem probabilistic_lower_bound (k : ℕ) (hk : k ≥ 4) :
     ∃ c : ℝ, c > 0 ∧
       ∀ n : ℕ, n ≥ 2 →
-        ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+        ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
           Fintype.card V = n ∧
           chromaticNumber G ≥ k ∧
           HasGirthGT G ⌊c * Real.log n⌋₊ := by
@@ -223,7 +224,7 @@ theorem erdos_626_status :
           c₁ * Real.log n ≤ (g k n : ℝ) ∧
           (g k n : ℝ) ≤ c₂ * Real.log n + 1) ∧
     (∀ k g : ℕ, k ≥ 2 → g ≥ 3 →
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         chromaticNumber G ≥ k ∧ HasGirthGT G g) := by
   constructor
   · intro k hk
@@ -233,7 +234,9 @@ theorem erdos_626_status :
     constructor
     · sorry -- upperCoeff k > 0
     intro n hn
-    exact k4_bounds n hn  -- This is slightly wrong, but captures the idea
+    obtain ⟨c, hc, hlow⟩ := kostochka_lower_bound k hk
+    obtain ⟨C, hC, hup⟩ := erdos_upper_bound k hk
+    exact ⟨hlow n hn, hup n hn⟩
   · exact fun k g hk hg => erdos_high_girth_high_chromatic k g hk hg
 
 #check erdos_626_status

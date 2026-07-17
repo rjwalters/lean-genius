@@ -37,10 +37,9 @@ References:
 Tags: combinatorics, design-theory, steiner-systems, block-designs
 -/
 
-import Mathlib.Combinatorics.SetFamily.Intersecting
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset
 
@@ -129,7 +128,7 @@ theorem divisibility_includes_main (r k n : ℕ) (hr : r ≥ 1) :
 ## Part III: Classical Examples
 -/
 
-/--
+/- 
 **Kirkman's Schoolgirl Problem:**
 S(2,3,n) exists iff n ≡ 1 or 3 (mod 6) and n ≥ 7.
 
@@ -142,7 +141,7 @@ Has 7 points and 7 lines (blocks), each line contains 3 points.
 -/
 axiom fano_plane_exists : ∃ S : SteinerSystem 2 3 7, True
 
-/--
+/- 
 **Hanani's Results (1961):**
 Characterized when S(3,4,n), S(2,4,n), and S(2,5,n) exist.
 -/
@@ -161,7 +160,7 @@ axiom wilson_theorem_r2 (k : ℕ) (hk : k ≥ 2) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, DivisibilityConditions 2 k n →
       ∃ S : SteinerSystem 2 k n, True
 
-/--
+/- 
 **Wilson's quantitative bound:**
 The N₀ depends polynomially on k.
 -/
@@ -226,10 +225,8 @@ theorem fano_plane_divisibility : DivisibilityConditions 2 3 7 := by
   interval_cases i
   · -- i = 0: 3 | 21 ✓
     simp [Nat.choose]
-    decide
   · -- i = 1: 2 | 6 ✓
     simp [Nat.choose]
-    decide
 
 /--
 **Example: S(2,3,9)**
@@ -238,8 +235,8 @@ theorem fano_plane_divisibility : DivisibilityConditions 2 3 7 := by
 theorem s239_divisibility : DivisibilityConditions 2 3 9 := by
   intro i hi
   interval_cases i
-  · simp [Nat.choose]; decide
-  · simp [Nat.choose]; decide
+  · simp [Nat.choose]
+  · simp [Nat.choose]
 
 /-
 ## Part VIII: Related Concepts
@@ -292,7 +289,7 @@ theorem erdos_722_summary :
   · exact fun k hk => wilson_theorem_r2 k hk
   · exact fano_plane_exists
 
-/--
+/-
 **Historical Note:**
 Steiner systems are named after Jakob Steiner, though Thomas Kirkman
 studied them first. The existence problem was a major open question in

@@ -220,7 +220,7 @@ theorem trivialType_contribution (k : ℕ) (hk : 0 < k) :
   -- Need: product of factorial-of-counts for [0,0,0,k] = same for [0,0,0,1]
   -- Both equal 3! * 1! = 6
   have hne : k ≠ 0 := by omega
-  simp [List.dedup, List.count, hne]
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons, hne, Ne.symm hne]
 
 -- Computational verification
 theorem trivialType_check_1 : (trivialType 1).contribution = 8 := by native_decide
@@ -370,7 +370,7 @@ theorem allEqualType_contribution (k : ℕ) (hk : 0 < k) :
     linarith
   unfold RepType.permutations allEqualType; simp only
   congr 1
-  simp [List.dedup, List.count]
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons]
 
 -- Computational verification
 theorem allEqualType_check_1 : (allEqualType 1).contribution = 16 := by native_decide
@@ -406,7 +406,7 @@ theorem threeEqualType_contribution (k : ℕ) (hk : 0 < k) :
   unfold RepType.permutations threeEqualType; simp only
   congr 1
   have hne : k ≠ 0 := by omega
-  simp [List.dedup, List.count, hne]
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons, hne, Ne.symm hne]
 
 theorem threeEqualType_check_1 : (threeEqualType 1).contribution = 32 := by native_decide
 theorem threeEqualType_check_2 : (threeEqualType 2).contribution = 32 := by native_decide
@@ -431,10 +431,21 @@ theorem twoPairType_signFactor (a b : ℕ) (ha : 0 < a) (hab : a < b) :
     (twoPairType a b ha hab).signFactor = 16 := by
   simp only [RepType.signFactor, twoPairType_nonzeroCount a b ha hab]; norm_num
 
+-- Computational verification (proved first, at top level with no ambient free
+-- variables, so that `twoPairType_contribution` below can reuse it as `h1`
+-- instead of re-running `native_decide` inside a context that carries `a b ha
+-- hab` — v4.31's `native_decide` rejects targets whose elaborated proof terms
+-- reference such ambient locals with "Expected type must not contain free
+-- variables").
+theorem twoPairType_check_1_2 : (twoPairType 1 2 (by omega) (by omega)).contribution = 96 := by
+  native_decide
+theorem twoPairType_check_2_3 : (twoPairType 2 3 (by omega) (by omega)).contribution = 96 := by
+  native_decide
+
 /-- **General Two-Pair Type Theorem**: contribution = 96 for all 0 < a < b. -/
 theorem twoPairType_contribution (a b : ℕ) (ha : 0 < a) (hab : a < b) :
     (twoPairType a b ha hab).contribution = 96 := by
-  have h1 : (twoPairType 1 2 (by omega) (by omega)).contribution = 96 := by native_decide
+  have h1 : (twoPairType 1 2 (by omega) (by omega)).contribution = 96 := twoPairType_check_1_2
   suffices hp : (twoPairType a b ha hab).permutations =
       (twoPairType 1 2 (by omega) (by omega)).permutations by
     simp only [RepType.contribution, hp, twoPairType_signFactor a b ha hab,
@@ -444,12 +455,7 @@ theorem twoPairType_contribution (a b : ℕ) (ha : 0 < a) (hab : a < b) :
   unfold RepType.permutations twoPairType; simp only
   congr 1
   have hab' : a ≠ b := by omega
-  simp [List.dedup, List.count, hab', Ne.symm hab']
-
-theorem twoPairType_check_1_2 : (twoPairType 1 2 (by omega) (by omega)).contribution = 96 := by
-  native_decide
-theorem twoPairType_check_2_3 : (twoPairType 2 3 (by omega) (by omega)).contribution = 96 := by
-  native_decide
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons, hab', Ne.symm hab']
 
 /-
 ## Part 15: General Two-Equal Type (0,0,k,k) Theorem
@@ -480,7 +486,7 @@ theorem twoEqualType_contribution (k : ℕ) (hk : 0 < k) :
   unfold RepType.permutations twoEqualType; simp only
   congr 1
   have hne : k ≠ 0 := by omega
-  simp [List.dedup, List.count, hne]
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons, hne, Ne.symm hne]
 
 /-
 ## Part 16: General Two-Nonzero-Distinct Type (0,0,a,b) Theorem
@@ -502,10 +508,19 @@ theorem twoNonzeroDistinct_signFactor (a b : ℕ) (ha : 0 < a) (hab : a < b) :
     (twoNonzeroDistinct a b ha hab).signFactor = 4 := by
   simp only [RepType.signFactor, twoNonzeroDistinct_nonzeroCount a b ha hab]; norm_num
 
+-- Computational verification, proved first at top level (no ambient free
+-- variables) so the general theorem below can reuse it as `h1` instead of
+-- calling `native_decide` inside a context carrying `a b ha hab` (v4.31's
+-- `native_decide` rejects such targets with "Expected type must not contain
+-- free variables").
+theorem twoNonzeroDistinct_check_1_2 :
+    (twoNonzeroDistinct 1 2 (by omega) (by omega)).contribution = 48 := by native_decide
+
 /-- **General Two-Nonzero-Distinct Theorem**: contribution = 48 for all 0 < a < b. -/
 theorem twoNonzeroDistinct_contribution (a b : ℕ) (ha : 0 < a) (hab : a < b) :
     (twoNonzeroDistinct a b ha hab).contribution = 48 := by
-  have h1 : (twoNonzeroDistinct 1 2 (by omega) (by omega)).contribution = 48 := by native_decide
+  have h1 : (twoNonzeroDistinct 1 2 (by omega) (by omega)).contribution = 48 :=
+    twoNonzeroDistinct_check_1_2
   suffices hp : (twoNonzeroDistinct a b ha hab).permutations =
       (twoNonzeroDistinct 1 2 (by omega) (by omega)).permutations by
     simp only [RepType.contribution, hp, twoNonzeroDistinct_signFactor a b ha hab,
@@ -517,7 +532,8 @@ theorem twoNonzeroDistinct_contribution (a b : ℕ) (ha : 0 < a) (hab : a < b) :
   have ha' : a ≠ 0 := by omega
   have hab' : a ≠ b := by omega
   have hb' : b ≠ 0 := by omega
-  simp [List.dedup, List.count, ha', hab', hb', Ne.symm ha', Ne.symm hab', Ne.symm hb']
+  simp [List.dedup_cons_of_mem, List.dedup_cons_of_notMem, List.count_cons, ha', hab', hb',
+    Ne.symm ha', Ne.symm hab', Ne.symm hb']
 
 /-
 ## Part 17: Nonzero Count Lower Bound

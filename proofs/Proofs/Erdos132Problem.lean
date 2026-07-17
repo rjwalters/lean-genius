@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos132
@@ -58,11 +60,11 @@ theorem dist_nonneg (p q : Point) : dist p q ≥ 0 := norm_nonneg _
 /--
 The set of unordered pairs {p, q} with p ≠ q at distance d.
 -/
-def pairsAtDistance (A : Finset Point) (d : ℝ) : Finset (Finset Point) :=
+noncomputable def pairsAtDistance (A : Finset Point) (d : ℝ) : Finset (Finset Point) :=
   A.powerset.filter (fun s => s.card = 2 ∧ ∃ p q, p ∈ s ∧ q ∈ s ∧ p ≠ q ∧ dist p q = d)
 
 /-- The number of pairs of distinct points in A at distance d -/
-def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=
+noncomputable def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=
   (pairsAtDistance A d).card
 
 /- ## Part III: Rare Distances -/
@@ -152,19 +154,19 @@ convex hull of the others (every point is a vertex of the hull).
 def inConvexPosition (A : Finset Point) : Prop :=
   ∀ p ∈ A, p ∉ convexHull ℝ ((A.erase p : Set Point))
 
-/--
+/- 
 **Clemen-Dumitrescu-Liu (2025):**
 For points in convex position with |A| ≥ 5, two rare distances
 always exist.
 -/
 /- ## Part VIII: Related Bounds -/
 
-/--
+/- 
 **Unit Distance Bound (Spencer-Szemerédi-Trotter):**
 The maximum number of unit distances in n points is O(n^{4/3}).
 This constrains how many times any single distance can occur.
 -/
-/--
+/- 
 **Guth-Katz (2015):**
 n points determine at least Ω(n / log n) distinct distances.
 This resolved Erdős's distinct distances conjecture up to

@@ -1,0 +1,116 @@
+===== AbelRuffiniGaloisExtensionsOQ04
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:91:56: Application type mismatch: The argument
+  hn_xy_z
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:109:20: Application type mismatch: The argument
+  hxy
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:133:27: Application type mismatch: The argument
+  le_normalizer ?m.301
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:182:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?H ⊓ ?K).subgroupOf ?K
+in the target expression
+===== AbelRuffiniGaloisExtensionsOQ04OQ03
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04OQ03.lean:171:6: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↥Z.mid ⧸ _a ≃* ↥Z.upper ⧸ Z.lower.subgroupOf Z.upper
+Error: Application type mismatch: The argument
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniGaloisExtensionsOQ04OQ03
+error: build failed
+===== AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:73:40: Application type mismatch: The argument
+  LT.lt.le (Nat.Prime.pos hp)
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:101:30: Application type mismatch: The argument
+  0
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:107:66: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↥H
+in the target expression
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:133:50: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↥↑P
+in the target expression
+===== AbelRuffiniOQ04OQ01OQ03
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:435:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Subgroup.comap ?m.30 ?m.29).index
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    ConjAct.instGroup
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:860:9: Function expected at
+  isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?m.140
+but this term has type
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:861:6: No goals to be solved
+warning: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:927:9: `commutative_of_cyclic_center_quotient` has been deprecated: Use `MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center` instead
+
+===== AbelRuffiniOQ04OQ01OQ03Sharp
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:435:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Subgroup.comap ?m.30 ?m.29).index
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    ConjAct.instGroup
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:860:9: Function expected at
+  isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?m.140
+but this term has type
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:861:6: No goals to be solved
+warning: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:927:9: `commutative_of_cyclic_center_quotient` has been deprecated: Use `MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center` instead
+
+===== AbelRuffiniOQ04OQ04
+error: Proofs/InverseGaloisF20.lean:84:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ 5 - C 2).rootSet p.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisF20.lean:385:4: failed to synthesize instance of type class
+  IsSplittingField ℚ (X ^ 5 - C 2).SplittingField (X ^ 5 - C 2)
+
+error: Proofs/InverseGaloisF20.lean:523:39: failed to synthesize instance of type class
+  Normal ℚ p.SplittingField
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InverseGaloisF20
+===== AbelRuffiniOQ06OQ01
+error: Proofs/AbelRuffiniOQ06OQ01.lean:69:4: Type mismatch
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ06OQ01
+error: build failed
+===== AbelRuffiniOQ07Order6
+error: Proofs/AbelRuffiniOQ07Order6.lean:81:37: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:121:65: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:126:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ (k * 2 + k)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ07Order6
+===== AlgebraicNumbersCountableOQ01OQ01OQ01
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:89:2: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:94:51: failed to synthesize instance of type class
+  Algebra.IsSeparable ℚ ↥algebraicNumbersField
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ01OQ01OQ01
+error: build failed
+===== AlgebraicNumbersCountableOQ01OQ03
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:78:17: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:95:2: failed to synthesize instance of type class
+  IsAlgClosure ℚ (AlgebraicClosure ℚ)
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ01OQ03
+error: build failed

@@ -72,7 +72,7 @@ noncomputable def extremalFunction (n _k : ℕ) : ℕ := n.choose 2
 The main result resolving Erdős's question.
 -/
 
-/-- **Janzer-Sudakov Theorem (2023)**: For every k ≥ 3, there exists C = C(k) > 0
+/-  **Janzer-Sudakov Theorem (2023)**: For every k ≥ 3, there exists C = C(k) > 0
 such that any graph on n vertices with at least C·n·log(log n) edges contains
 a k-regular subgraph.
 
@@ -84,7 +84,7 @@ This resolves Erdős Problem #182 in the affirmative. -/
 The construction showing the Janzer-Sudakov bound is tight.
 -/
 
-/-- **Pyber-Rödl-Szemerédi (1995)**: There exist graphs on n vertices with
+/-  **Pyber-Rödl-Szemerédi (1995)**: There exist graphs on n vertices with
 Ω(n log log n) edges that contain no 3-regular subgraph.
 
 This shows Janzer-Sudakov is tight (up to constant factors). -/
@@ -93,7 +93,7 @@ This shows Janzer-Sudakov is tight (up to constant factors). -/
 ## Special Cases and Variants
 -/
 
-/-- For k = 2, the situation is different: avoiding cycles.
+/-  For k = 2, the situation is different: avoiding cycles.
 A graph with no 2-regular subgraph is a forest. -/
 
 /- For k = 1, a 1-regular graph is a perfect matching.
@@ -112,7 +112,7 @@ def HasConnectedKRegularSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
     W.Nonempty ∧ IsRegular H k ∧ H.Connected ∧
     ∀ v w : W, H.Adj v w → G.Adj v.val w.val
 
-/-- **Erdős (1975)**: The extremal function for avoiding connected 3-regular
+/-  **Erdős (1975)**: The extremal function for avoiding connected 3-regular
 subgraphs is O(n^{5/3}).
 
 This is a weaker bound than the general case. -/
@@ -121,7 +121,7 @@ This is a weaker bound than the general case. -/
 ## Density and Probabilistic Aspects
 -/
 
-/-- The "typical" graph on n vertices with m edges has a k-regular subgraph
+/-  The "typical" graph on n vertices with m edges has a k-regular subgraph
 when m ≥ C·n·log(log n). -/
 
 /-
@@ -140,7 +140,7 @@ Each step reduces the graph while preserving "enough" structure.
 The iteration depth is O(log log n), giving the final bound.
 -/
 
-/-- The problem is fully resolved: extremal function is Θ(n log log n).
+/- The problem is fully resolved: extremal function is Θ(n log log n).
 
 This is the main summary theorem combining Janzer-Sudakov (upper bound)
 and Pyber-Rödl-Szemerédi (lower bound). -/

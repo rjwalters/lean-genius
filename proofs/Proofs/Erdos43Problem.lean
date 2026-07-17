@@ -11,13 +11,7 @@ Status: OPEN ($100 bounty)
 Reference: https://erdosproblems.com/43
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Sidon Sets -/
 
@@ -74,6 +68,43 @@ def EqualSizeVariant : Prop :=
 /-- Barreto's result: the equal-size variant is false. -/
 axiom barreto_counterexample : ¬EqualSizeVariant
 
+/- ## Arithmetic Helpers -/
+
+/-- `2 * n.choose 2 = n*n - n` exactly (no rounding loss, since `n*(n-1)`
+    is always even). Bridges `Nat.choose_two_right`'s `/2` form to the
+    `n*n - n` form used by `Finset.offDiag_card`. -/
+private lemma two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * n - n := by
+  rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self n).two_dvd]
+  rcases n with _ | k
+  · rfl
+  · have h : (k + 1) * (k + 1) = (k + 1) * k + (k + 1) := by ring
+    rw [Nat.succ_sub_one, h, Nat.add_sub_cancel]
+
+/- ## Counting Arguments -/
+
+/-- For a Sidon set, nonzero differences are injective: if a₁ - b₁ = a₂ - b₂
+    and a₁ ≠ b₁, then a₁ = a₂ and b₁ = b₂. -/
+theorem sidon_diff_injective (A : Finset ℤ) (hS : IsSidonSet A)
+    {a₁ b₁ a₂ b₂ : ℤ} (ha₁ : a₁ ∈ A) (hb₁ : b₁ ∈ A) (ha₂ : a₂ ∈ A) (hb₂ : b₂ ∈ A)
+    (hne : a₁ ≠ b₁) (heq : a₁ - b₁ = a₂ - b₂) :
+    a₁ = a₂ ∧ b₁ = b₂ := by
+  have hsum : a₁ + b₂ = a₂ + b₁ := by omega
+  have hpair := hS a₁ b₂ a₂ b₁ ha₁ hb₂ ha₂ hb₁ hsum
+  -- a₁ ∈ {a₂, b₁}: a₁ = a₂ or a₁ = b₁
+  have ha₁_mem : a₁ ∈ ({a₂, b₁} : Finset ℤ) := by
+    rw [← hpair]; exact Finset.mem_insert_self a₁ {b₂}
+  rw [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
+  rcases ha₁_mem with h1 | h1
+  · -- Case a₁ = a₂: then b₂ ∈ {a₂, b₁}
+    have hb₂_mem : b₂ ∈ ({a₂, b₁} : Finset ℤ) := by
+      rw [← hpair]; exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr rfl))
+    rw [Finset.mem_insert, Finset.mem_singleton] at hb₂_mem
+    rcases hb₂_mem with h2 | h2
+    · exfalso; omega  -- a₂ - b₁ = a₂ - a₂ = 0 → b₁ = a₂, contradicting hne
+    · exact ⟨h1, h2.symm⟩
+  · -- Case a₁ = b₁: contradicts hne
+    exact absurd h1 hne
+
 /- ## Structural Bounds -/
 
 /-- A single Sidon set A in {1,...,N} has C(|A|,2) ≤ N.
@@ -84,11 +115,10 @@ axiom barreto_counterexample : ¬EqualSizeVariant
 theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
     (hS : IsSidonSet A) (hR : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) :
   A.card.choose 2 ≤ N := by
-  -- C(n,2) = n*(n-1)/2, so it suffices to show n*(n-1) ≤ 2*N
-  rw [Nat.choose_two_right]
-  suffices h : A.card * (A.card - 1) ≤ 2 * N by omega
+  have he := two_mul_choose_two A.card
   -- n*(n-1) = |A.offDiag| (off-diagonal pairs)
-  rw [← Finset.card_offDiag]
+  suffices h : A.card * A.card - A.card ≤ 2 * N by omega
+  rw [← Finset.offDiag_card]
   -- The difference map (a,b) ↦ a-b is injective on A.offDiag (by Sidon)
   -- and maps into Finset.Icc (1-N) (N-1) which has ≤ 2N elements
   set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
@@ -113,7 +143,7 @@ theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
       = (A.offDiag.image f).card := (Finset.card_image_of_injOn hinj).symm
     _ ≤ T.card := Finset.card_le_card hfT
     _ ≤ 2 * N := by
-        simp only [T, Finset.card_Icc, Int.toNat_le]
+        simp only [T, Int.card_Icc, Int.toNat_le]
         omega
 
 /-- Disjoint differences force the nonzero differences of A and B
@@ -125,10 +155,11 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) :
   A.card.choose 2 + B.card.choose 2 ≤ N := by
+  have heA := two_mul_choose_two A.card
+  have heB := two_mul_choose_two B.card
   -- Reduce to: |A|*(|A|-1) + |B|*(|B|-1) ≤ 2*N
-  simp only [Nat.choose_two_right]
-  suffices h : A.card * (A.card - 1) + B.card * (B.card - 1) ≤ 2 * N by omega
-  rw [← Finset.card_offDiag, ← Finset.card_offDiag]
+  suffices h : A.card * A.card - A.card + (B.card * B.card - B.card) ≤ 2 * N by omega
+  rw [← Finset.offDiag_card, ← Finset.offDiag_card]
   set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
   set T := Finset.Icc (1 - (N : ℤ)) ((N : ℤ) - 1)
   -- Images of A.offDiag and B.offDiag under f are disjoint
@@ -145,7 +176,7 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
       exact ⟨(a₁, b₁), Finset.mem_product.mpr ⟨hp₁.1, hp₁.2.1⟩, rfl⟩
     -- a₂ - b₂ ∈ diffSet B (and equals a₁ - b₁)
     have hfB : f (a₁, b₁) ∈ diffSet B := by
-      rw [show f (a₁, b₁) = f (a₂, b₂) from heq]
+      rw [show f (a₁, b₁) = f (a₂, b₂) from heq.symm]
       simp only [diffSet, Finset.mem_image]
       exact ⟨(a₂, b₂), Finset.mem_product.mpr ⟨hp₂.1, hp₂.2.1⟩, rfl⟩
     -- By DisjointDifferences, a₁ - b₁ = 0, contradicting a₁ ≠ b₁
@@ -185,7 +216,7 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
     _ = (A.offDiag.image f ∪ B.offDiag.image f).card :=
           (Finset.card_union_of_disjoint hdisj).symm
     _ ≤ T.card := Finset.card_le_card (Finset.union_subset hAT hBT)
-    _ ≤ 2 * N := by simp only [T, Finset.card_Icc, Int.toNat_le]; omega
+    _ ≤ 2 * N := by simp only [T, Int.card_Icc, Int.toNat_le]; omega
 
 /- ## Tao's Partial Result
 
@@ -207,43 +238,18 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
   (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by
   -- From disjoint_diff_combined_bound: C(m,2) + C(m,2) ≤ N
   have hcomb := disjoint_diff_combined_bound A B N hA hB hRA hRB hD
-  rw [hEq] at hcomb
-  -- So 2 * C(m,2) ≤ N, i.e., m*(m-1) ≤ N
-  set m := A.card with hm_def
-  have hm_bound : m * (m - 1) ≤ N := by
-    rw [Nat.choose_two_right] at hcomb; omega
-  -- m ≤ N + 1 (from m*(m-1) ≤ N)
-  have hm_le : m ≤ N + 1 := by nlinarith [Nat.zero_le m]
+  rw [← hEq] at hcomb
+  -- hcomb : A.card.choose 2 + A.card.choose 2 ≤ N
+  have he := two_mul_choose_two A.card
+  -- So m*(m-1) ≤ N (exactly, via the 2·choose2 bridge), in subtraction-free form
+  have hz' : A.card * A.card ≤ N + A.card := by omega
+  -- m ≤ N + 1 (from m² ≤ N + m)
+  have hle : A.card ≤ N + 1 := by nlinarith [hz']
   -- m² ≤ 2N+1 in ℕ, then cast to ℝ
-  have hm_sq_nat : m * m ≤ 2 * N + 1 := by nlinarith
-  calc (m : ℝ) ^ 2 = ↑(m * m) := by push_cast; ring
-    _ ≤ ↑(2 * N + 1) := Nat.cast_le.mpr hm_sq_nat
+  have hsq : A.card * A.card ≤ 2 * N + 1 := by nlinarith [hz', hle]
+  calc (A.card : ℝ) ^ 2 = ↑(A.card * A.card) := by push_cast; ring
+    _ ≤ ↑(2 * N + 1) := Nat.cast_le.mpr hsq
     _ = 2 * ↑N + 1 := by push_cast; ring
-
-/- ## Counting Arguments -/
-
-/-- For a Sidon set, nonzero differences are injective: if a₁ - b₁ = a₂ - b₂
-    and a₁ ≠ b₁, then a₁ = a₂ and b₁ = b₂. -/
-theorem sidon_diff_injective (A : Finset ℤ) (hS : IsSidonSet A)
-    {a₁ b₁ a₂ b₂ : ℤ} (ha₁ : a₁ ∈ A) (hb₁ : b₁ ∈ A) (ha₂ : a₂ ∈ A) (hb₂ : b₂ ∈ A)
-    (hne : a₁ ≠ b₁) (heq : a₁ - b₁ = a₂ - b₂) :
-    a₁ = a₂ ∧ b₁ = b₂ := by
-  have hsum : a₁ + b₂ = a₂ + b₁ := by omega
-  have hpair := hS a₁ b₂ a₂ b₁ ha₁ hb₂ ha₂ hb₁ hsum
-  -- a₁ ∈ {a₂, b₁}: a₁ = a₂ or a₁ = b₁
-  have ha₁_mem : a₁ ∈ ({a₂, b₁} : Finset ℤ) := by
-    rw [← hpair]; exact Finset.mem_insert_self a₁ {b₂}
-  rw [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
-  rcases ha₁_mem with rfl | rfl
-  · -- Case a₁ = a₂: then b₂ ∈ {a₂, b₁}
-    have hb₂_mem : b₂ ∈ ({a₂, b₁} : Finset ℤ) := by
-      rw [← hpair]; exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr rfl))
-    rw [Finset.mem_insert, Finset.mem_singleton] at hb₂_mem
-    rcases hb₂_mem with rfl | rfl
-    · exfalso; exact hne (by omega)  -- a₂ - b₁ = a₂ - a₂ = 0 → b₁ = a₂
-    · exact ⟨rfl, rfl⟩
-  · -- Case a₁ = b₁: contradicts hne
-    exact absurd rfl hne
 
 /-- The number of elements of the difference set of a Sidon set A is |A|²-|A|+1:
     the |A|²-|A| off-diagonal pairs map injectively, plus 0 from the diagonal. -/
@@ -260,13 +266,19 @@ theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) (hA : A.Nonempty) 
   have hdiag_image : A.diag.image f = {0} := by
     ext x; simp only [Finset.mem_image, Finset.mem_diag, Finset.mem_singleton, f]
     constructor
-    · rintro ⟨⟨a, b⟩, ⟨_, rfl⟩, rfl⟩; simp
+    · rintro ⟨⟨a, b⟩, hmem, hfx⟩
+      simp only at hmem hfx
+      omega
     · intro hx; rw [hx]; obtain ⟨a, ha⟩ := hA
       exact ⟨(a, a), ⟨ha, rfl⟩, by simp⟩
   -- 0 is not in the off-diagonal image
   have hzero_not : (0 : ℤ) ∉ A.offDiag.image f := by
     intro h0; obtain ⟨⟨a, b⟩, hp, heq⟩ := Finset.mem_image.mp h0
-    simp only [Finset.mem_offDiag] at hp; exact hp.2.2 (by omega)
+    simp only [Finset.mem_offDiag] at hp
+    simp only [f] at heq
+    exact hp.2.2 (by omega)
+  have hpos : 1 ≤ A.card := Finset.Nonempty.card_pos hA
+  have hle : A.card ≤ A.card * A.card := by nlinarith
   -- Combine: |diffSet A| = 1 + |offDiag|
   suffices h : (diffSet A).card + A.card = A.card * A.card + 1 by omega
   calc (diffSet A).card + A.card
@@ -280,10 +292,7 @@ theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) (hA : A.Nonempty) 
     _ = 1 + A.offDiag.card + A.card := by
           rw [hdiag_image, Finset.card_singleton, Finset.card_image_of_injOn hinj]
     _ = A.card * A.card + 1 := by
-          rw [Finset.card_offDiag]
-          cases A.card with
-          | zero => simp at hA
-          | succ n => simp [Nat.succ_mul, Nat.mul_succ]; omega
+          rw [Finset.offDiag_card]; omega
 
 /-- When differences are disjoint, the combined difference set has cardinality
     |A|²-|A| + |B|²-|B| + 1 (the nonzero parts are disjoint, sharing only {0}). -/

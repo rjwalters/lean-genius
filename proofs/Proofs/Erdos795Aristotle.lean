@@ -25,7 +25,7 @@ def HasDistinctSubsetProducts (A : Finset ℕ) : Prop :=
 
 /-- A multiplicative Sidon set: no equation a*b = c*d with {a,b} ≠ {c,d} -/
 def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
-  ∀ a b c d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
 
 -- Routine: primePi is monotone.
 -- More primes can be ≤ m than ≤ n when n ≤ m.

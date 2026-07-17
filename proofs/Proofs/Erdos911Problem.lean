@@ -18,14 +18,7 @@ such that any 2-coloring of the edges of H contains a monochromatic copy of G.
 **Reference:** [Er82e, p.78]
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Maps
-import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
+import Mathlib
 
 namespace Erdos911
 
@@ -162,13 +155,20 @@ theorem edge_count_nonneg {V : Type*} [Fintype V] [DecidableEq V]
     edgeCount G ≥ 0 := Nat.zero_le _
 
 -- Complete graph edge count: |E(K_n)| = n*(n-1)/2
-theorem complete_edge_count (n : ℕ) (hn : n ≥ 2) :
-    n * (n - 1) / 2 ≥ n := by omega
+theorem complete_edge_count (n : ℕ) (hn : n ≥ 3) :
+    n * (n - 1) / 2 ≥ n := by
+  rw [ge_iff_le, Nat.le_div_iff_mul_le (by norm_num : 0 < 2)]
+  have : n - 1 ≥ 2 := by omega
+  calc n * 2 ≤ n * (n - 1) := by
+        apply Nat.mul_le_mul_left; omega
+    _ = n * (n - 1) := rfl
 
 -- Complete graph is (n-1)/2 - dense (has n*(n-1)/2 edges on n vertices)
 -- This shows complete graphs are dense when n is large
 theorem complete_graph_dense (n : ℕ) (hn : n ≥ 4) :
-    n * (n - 1) / 2 ≥ 1 * n := by omega
+    n * (n - 1) / 2 ≥ 1 * n := by
+  rw [one_mul]
+  exact complete_edge_count n (by omega)
 
 -- For the conjecture: if f(C) = C, that's only linear growth (not superlinear)
 -- We need f(C)/C → ∞, meaning f must grow faster than linear
@@ -193,7 +193,10 @@ theorem superlinear_add_linear (f : ℕ → ℕ) (a : ℕ) (hf : SuperlinearGrow
     SuperlinearGrowth (fun x => f x + a * x) := by
   intro M
   obtain ⟨x₀, hx₀⟩ := hf M
-  exact ⟨x₀, fun x hx => by linarith [hx₀ x hx]⟩
+  refine ⟨x₀, fun x hx => ?_⟩
+  simp only
+  have := hx₀ x hx
+  omega
 
 /-
 # Part 4: Known Results (Axiomatized)

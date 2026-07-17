@@ -19,14 +19,7 @@ exponentially close to 1, given a large enough total reciprocal sum.
 Reference: Erdős-Graham [ErGr80]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.PSeries
+import Mathlib
 
 open Finset Real Filter
 
@@ -659,7 +652,7 @@ theorem restricted_maximal_feasible_exists (n : ℕ) (a : Fin n → ℕ) (T : Fi
   push_neg at h
   have h_ins_F : insert j S ∈ F :=
     Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
-      (Finset.insert_subset.mpr ⟨hj, hST⟩), h⟩
+      (Finset.insert_subset_iff.mpr ⟨hj, hST⟩), h⟩
   have := hS_max (insert j S) h_ins_F
   rw [Finset.card_insert_of_notMem hjS] at this
   omega

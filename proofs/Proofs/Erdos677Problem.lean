@@ -101,9 +101,9 @@ theorem lcmInterval_dvd_product (n k : ℕ) :
   intro s
   induction s using Finset.induction_on with
   | empty => simp
-  | insert ha ih =>
+  | @insert a s ha ih =>
     rw [Finset.fold_insert ha, Finset.prod_insert ha]
-    exact Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_of_dvd_left ih _)
+    exact Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_of_dvd_right ih _)
 
 /-- `lcmInterval` is positive when `k > 0`.
 Proof: the product of positive numbers is positive, and the LCM divides it. -/
@@ -124,7 +124,7 @@ theorem lcmInterval_pos (n k : ℕ) (hk : 0 < k) : 0 < lcmInterval n k := by
 theorem lcmInterval_succ (n k : ℕ) :
     lcmInterval n (k + 1) = Nat.lcm (n + k + 1) (lcmInterval n k) := by
   unfold lcmInterval
-  rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+  rw [Finset.range_add_one, Finset.fold_insert (Finset.notMem_range_self)]
 
 /-- Each element `n + i + 1` (for `i < k`) divides `lcmInterval n k`. -/
 theorem dvd_lcmInterval (n k i : ℕ) (hi : i < k) :
@@ -163,7 +163,7 @@ theorem last_dvd_lcmInterval (n k : ℕ) (hk : 0 < k) :
 theorem consecutiveProduct_succ (n k : ℕ) :
     consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
   unfold consecutiveProduct
-  rw [Finset.range_succ, Finset.prod_insert (Finset.not_mem_range_self)]
+  rw [Finset.range_add_one, Finset.prod_insert (Finset.notMem_range_self)]
   ring
 
 /-- `consecutiveProduct` is positive. -/
@@ -213,7 +213,7 @@ theorem lcmInterval_two (n : ℕ) : lcmInterval n 2 = (n + 1) * (n + 2) := by
   rw [show (2 : ℕ) = 1 + 1 from rfl, lcmInterval_succ, lcmInterval_one, Nat.lcm_comm]
   have h : Nat.Coprime (n + 1) (n + 2) := by
     show Nat.gcd (n + 1) (n + 2) = 1
-    have hrw : (n + 2) = 1 * (n + 1) + 1 := by ring
+    have hrw : (n + 2) = 1 + (n + 1) * 1 := by ring
     rw [hrw, Nat.gcd_add_mul_left_right, Nat.gcd_one_right]
   exact h.lcm_eq_mul
 
@@ -238,11 +238,13 @@ theorem factorization_lcmInterval (n k : ℕ) :
     (lcmInterval n k).factorization =
     (Finset.range k).sup (fun i => (n + i + 1).factorization) := by
   induction k with
-  | zero => simp [lcmInterval_zero, Finset.range_zero, Finset.sup_empty]
+  | zero =>
+    simp only [lcmInterval_zero, Nat.factorization_one, Finset.range_zero,
+      Finset.sup_empty, bot_eq_zero]
   | succ k ih =>
     rw [lcmInterval_succ,
         Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),
-        ih, Finset.range_succ, Finset.sup_insert]
+        ih, Finset.range_add_one, Finset.sup_insert]
 
 /- ## General large-m distinctness bound -/
 

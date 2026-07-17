@@ -121,7 +121,7 @@ theorem exists_list_coloring_on {k : ℕ} (h : IsKDegenerate G k)
           intro hh; apply hcolforb; rw [hh]; exact hwf
         · by_cases hwv : w = v
           · -- symmetric case `w = v`
-            have hvu : G.Adj v u := hwv ▸ G.symm hadj
+            have hvu : G.Adj v u := hwv ▸ G.adj_symm hadj
             have huN : u ∈ N := by rw [hN]; exact mem_filter.mpr ⟨hu, hvu⟩
             have huf : c' u ∈ forbidden := by rw [hforb]; exact mem_image_of_mem c' huN
             simp only [if_neg huv, if_pos hwv]

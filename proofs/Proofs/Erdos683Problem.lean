@@ -46,7 +46,7 @@ P(n) is the largest prime dividing n, or 1 if n ≤ 1.
 -/
 noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    Nat.find (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp h))
+    Nat.find (Nat.exists_prime_and_dvd (by omega : n ≠ 1))
     -- In reality this is sup of prime divisors; we axiomatize the key properties
   else 1
 
@@ -62,7 +62,7 @@ P(n) is prime when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).1
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).1
 
 /--
 **Divisibility Property:**
@@ -70,9 +70,9 @@ P(n) divides n when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).2
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).2
 
-/--
+/- 
 **Maximality Property:**
 P(n) is the largest prime divisor.
 -/
@@ -106,7 +106,7 @@ theorem choose_gt_one {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) : n.choose k
       rw [Nat.choose_succ_succ]
       have h1 : 0 < n'.choose k' := Nat.choose_pos (by omega)
       have h2 : 0 < n'.choose (k' + 1) := Nat.choose_pos (by omega)
-      omega
+      exact Nat.add_le_add h1 h2
 
 /--
 **Alternative Statement:**
@@ -154,7 +154,7 @@ def erdosConjecture683 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ n k : ℕ, 1 ≤ k → k ≤ n →
     (P n k : ℝ) ≥ min (n - k + 1 : ℝ) ((k : ℝ) ^ (1 + c))
 
-/--
+/- 
 **Erdős (1979) Strengthening:**
 Erdős wrote it "seems certain" that for any c > 0,
   P(C(n,k)) ≫ k^{1+c}
@@ -163,7 +163,7 @@ with only finitely many exceptions (depending on c).
 
 /- ## Part V: Heuristic Bounds -/
 
-/--
+/- 
 **Prime Gap Heuristic:**
 Standard heuristics on prime gaps suggest:
   P(C(n,k)) > e^{c√k}
@@ -172,7 +172,7 @@ for some c > 0 when k ≤ n/2.
 This is much stronger than k^{1+c}.
 -/
 
-/--
+/- 
 **Comparison of Bounds:**
 e^{c√k} grows much faster than k^{1+c}:
 - k^{1+c} is polynomial
@@ -182,7 +182,7 @@ The stretched exponential eventually dominates any polynomial growth.
 
 /- ## Part VI: The min(n-k+1, k^{1+c}) Bound -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 P(C(n,k)) ≤ n since C(n,k) divides products of terms ≤ n.
 -/
@@ -195,15 +195,15 @@ C(n,k) = (n-k+1)(n-k+2)···n / k!
 The numerator is a product of k consecutive integers.
 -/
 def consecutiveProduct (m k : ℕ) : ℕ :=
-  ∏ i in Finset.range k, (m + i)
+  ∏ i ∈ Finset.range k, (m + i)
 
-/--
+/- 
 **Bertrand's Postulate Connection:**
 Bertrand's postulate (proven by Chebyshev) says there's a prime between n and 2n.
 This implies P(C(2n,n)) ≥ n+1 for the central binomial coefficient.
 -/
 
-/--
+/- 
 **Generalization:**
 Among k consecutive integers starting at m > k, at least one has
 a prime divisor > k.
@@ -211,13 +211,13 @@ a prime divisor > k.
 
 /- ## Part VIII: Specific Cases -/
 
-/--
+/- 
 **Central Binomial Case k = n/2:**
 When k ≈ n/2, we have C(n,k) = C(2k,k), the central binomial coefficient.
 Erdős proved P(C(2k,k)) > (4/3)k for large k.
 -/
 
-/--
+/- 
 **Small k Cases:**
 For small k, explicit computation is possible.
 k=2: P(C(n,2)) = P(n(n-1)/2) ≥ max prime factor of n or n-1.

@@ -14,11 +14,7 @@
   - catalan_convolution: requires Vandermonde identity
   - catalan_mono: requires catalan_mul_succ first
 -/
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset BigOperators
 
@@ -48,17 +44,35 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
       -- = (C(2m,m)+C(2m,m-1)) + (C(2m,m)+C(2m,m+1))... complex
       -- Use C(2(m+1), m+1) ≥ 2*C(2m, m) via the two-step bound
       simp only [centralBinom, show 2 * (m + 1) = 2 * m + 2 from by ring]
-      rw [show m + 1 + 1 = m + 1 + 1 from rfl]  -- tautology, real proof below
       -- C(2m+2, m+1) = C(2m+1,m+1) + C(2m+1,m) by Pascal
       -- C(2m+1, m+1) = C(2m, m+1) + C(2m, m) by Pascal
       -- C(2m+1, m) = C(2m, m-1) + C(2m, m) by Pascal (for m ≥ 1)
       -- So C(2m+2, m+1) = 2*C(2m, m) + C(2m, m+1) + C(2m, m-1) ≥ 2*C(2m, m)
       have h1 : Nat.choose (2*m+2) (m+1) ≥ 2 * Nat.choose (2*m) m := by
-        have := @Nat.choose_succ_succ (2*m+1) m
-        have := @Nat.choose_succ_succ (2*m) m
-        have := @Nat.choose_succ_succ (2*m) (m-1)
+        have e1 : Nat.choose (2*m+2) (m+1) =
+            Nat.choose (2*m+1) m + Nat.choose (2*m+1) (m+1) :=
+          Nat.choose_succ_succ' (2*m+1) m
+        have e2 : Nat.choose (2*m+1) (m+1) =
+            Nat.choose (2*m) m + Nat.choose (2*m) (m+1) :=
+          Nat.choose_succ_succ' (2*m) m
+        have e3 : Nat.choose (2*m+1) (m-1+1) =
+            Nat.choose (2*m) (m-1) + Nat.choose (2*m) (m-1+1) :=
+          Nat.choose_succ_succ' (2*m) (m-1)
+        have hm1 : m - 1 + 1 = m := by omega
+        rw [hm1] at e3
         omega
-      linarith [pow_pos (by norm_num : 0 < 2) m]
+      have hpow : (2 : ℕ) ^ (m + 1) = 2 * 2 ^ m := by rw [pow_succ]; ring
+      have ihm' : 2 ^ m ≤ Nat.choose (2 * m) m := ihm
+      omega
+
+/-- C(2n, n+1) * (n+1) = C(2n, n) * n (divisibility relationship). -/
+theorem choose_2n_succ (n : ℕ) :
+    Nat.choose (2 * n) (n + 1) * (n + 1) = Nat.choose (2 * n) n * n := by
+  -- From Nat.choose_succ_right_eq: C(N, k+1) * (k+1) = (N-k) * C(N, k)
+  -- Apply with N=2n, k=n: C(2n,n+1)*(n+1) = (2n-n)*C(2n,n) = n*C(2n,n)
+  have h := Nat.choose_succ_right_eq (2 * n) n
+  simp only [show 2 * n - n = n from by omega] at h
+  linarith [mul_comm (Nat.choose (2 * n) n) n]
 
 /-- The divisibility fact: (n+1) divides C(2n, n).
     Proof by induction using choose_2n_succ + coprimality. -/
@@ -80,7 +94,9 @@ theorem succ_dvd_centralBinom (n : ℕ) : (n + 1) ∣ centralBinom n := by
       ⟨Nat.choose (2 * m + 2) (m + 2), by linarith⟩
     -- gcd(m+2, m+1)=1 → (m+2) | C(2m+2,m+1)
     have hcop : Nat.Coprime (m + 2) (m + 1) := by
-      rw [Nat.coprime_comm]; exact Nat.coprime_succ_self (m + 1)
+      rw [Nat.coprime_comm, show m + 2 = (m + 1) + 1 from rfl,
+          Nat.coprime_self_add_right]
+      exact Nat.coprime_one_right _
     exact hcop.dvd_of_dvd_mul_right hdvd
 
 /-- **Fundamental Catalan identity**: C_n * (n+1) = C(2n, n).
@@ -97,18 +113,7 @@ theorem catalan_mul_succ (n : ℕ) :
     have h := Nat.choose_succ_right_eq (2 * n) n
     simp only [show 2 * n - n = n from by omega] at h
     linarith [mul_comm (Nat.choose (2 * n) n) n]
-  rw [hcs]
-  have hbound : Nat.choose (2 * n) n * n ≤ Nat.choose (2 * n) n * (n + 1) :=
-    Nat.mul_le_mul_left _ (Nat.le_succ n)
+  rw [hcs, Nat.mul_succ]
   omega
-
-/-- C(2n, n+1) * (n+1) = C(2n, n) * n (divisibility relationship). -/
-theorem choose_2n_succ (n : ℕ) :
-    Nat.choose (2 * n) (n + 1) * (n + 1) = Nat.choose (2 * n) n * n := by
-  -- From Nat.choose_succ_right_eq: C(N, k+1) * (k+1) = (N-k) * C(N, k)
-  -- Apply with N=2n, k=n: C(2n,n+1)*(n+1) = (2n-n)*C(2n,n) = n*C(2n,n)
-  have h := Nat.choose_succ_right_eq (2 * n) n
-  simp only [show 2 * n - n = n from by omega] at h
-  linarith [mul_comm (Nat.choose (2 * n) n) n]
 
 end CatalanNumbers

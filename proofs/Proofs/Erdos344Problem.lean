@@ -30,12 +30,13 @@ References:
 Tags: number-theory, complete-sequences, arithmetic-progressions, subset-sums
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
+
+open scoped Classical
 
 open Finset BigOperators
 
@@ -49,7 +50,7 @@ namespace Erdos344
 **Counting function:**
 |A ∩ {1,...,N}| counts elements of A up to N.
 -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.range (N + 1)).filter (· ∈ A) |>.card
 
 /--
@@ -177,7 +178,7 @@ theorem complete_implies_subcomplete (A : Set ℕ) :
     apply hN₀
     omega
 
-/--
+/- 
 **Density hierarchy:**
 Folkman density implies square root density.
 Axiomatized: The technical bound N^{1/2+ε} ≥ C · N^{1/2} for large N is routine analysis.

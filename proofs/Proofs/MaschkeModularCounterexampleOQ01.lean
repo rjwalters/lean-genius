@@ -95,8 +95,13 @@ theorem g_sub_one_pow_card : (g p - 1) ^ p = 0 := by
 theorem g_ne_one : g p ≠ 1 := by
   intro hg
   rw [show g p = MonoidAlgebra.single (Multiplicative.ofAdd (1 : ZMod p)) (1 : ZMod p) from rfl,
-    MonoidAlgebra.one_def, Finsupp.single_eq_single_iff] at hg
-  rcases hg with ⟨ha, -⟩ | ⟨hb, -⟩
+    MonoidAlgebra.one_def] at hg
+  -- v4.31: `MonoidAlgebra.single` no longer syntactically unfolds to `Finsupp.single`,
+  -- so retype the equality at the `Finsupp` level before applying the injectivity lemma.
+  have hg2 : (Finsupp.single (Multiplicative.ofAdd (1 : ZMod p)) (1 : ZMod p)
+      : G p →₀ ZMod p) = Finsupp.single 1 1 := hg
+  rw [Finsupp.single_eq_single_iff] at hg2
+  rcases hg2 with ⟨ha, -⟩ | ⟨hb, -⟩
   · exact one_ne_zero (ofAdd_eq_one.mp ha)
   · exact one_ne_zero hb
 

@@ -1,11 +1,4 @@
-import Mathlib.Dynamics.Ergodic.MeasurePreserving
-import Mathlib.Dynamics.Ergodic.Ergodic
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Measure.MeasureSpace
-import Mathlib.Probability.Notation
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Laws of Large Numbers OQ-03: Dependent Random Variables and Ergodic Theory
@@ -61,7 +54,7 @@ variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
     Mathlib's `MeasureTheory.MeasurePreserving` captures this. -/
 example (T : Ω → Ω) (hT : MeasurePreserving T μ μ) :
     ∀ (s : Set Ω), MeasurableSet s → μ (T ⁻¹' s) = μ s :=
-  fun s hs => hT.measure_preimage hs
+  fun s hs => hT.measure_preimage hs.nullMeasurableSet
 
 /-- The iterates T^n form a semigroup action on Ω. For a measure-preserving T,
     each iterate T^n is also measure-preserving. -/
@@ -71,7 +64,7 @@ theorem iterate_measure_preserving (T : Ω → Ω) (hT : MeasurePreserving T μ 
   | zero => exact MeasurePreserving.id μ
   | succ n ih =>
     rw [Function.iterate_succ']
-    exact ih.comp hT
+    exact hT.comp ih
 
 -- ============================================================
 -- PART 2: Ergodicity
@@ -84,7 +77,9 @@ theorem iterate_measure_preserving (T : Ω → Ω) (hT : MeasurePreserving T μ 
     Mathlib's `MeasureTheory.Ergodic` captures this. -/
 example (T : Ω → Ω) (hT : Ergodic T μ) :
     ∀ ⦃s : Set Ω⦄, MeasurableSet s → T ⁻¹' s = s → μ s = 0 ∨ μ s = μ Set.univ :=
-  fun s hs hinv => hT.ae_empty_or_univ hs (MeasureTheory.ae_eq_of_eq hinv)
+  fun s hs hinv => (hT.ae_empty_or_univ hs hinv).imp
+    (fun h => (measure_congr h).trans measure_empty)
+    (fun h => measure_congr h)
 
 -- ============================================================
 -- PART 3: Ergodic Averages (Birkhoff Sums)
@@ -117,7 +112,7 @@ theorem birkhoffSum_add (T : Ω → Ω) (f : Ω → ℝ) (n m : ℕ) (ω : Ω) :
   congr 1
   apply Finset.sum_congr rfl
   intro i _
-  rw [Function.iterate_add_apply]
+  rw [← Function.iterate_add_apply, Nat.add_comm]
 
 -- ============================================================
 -- PART 4: The Birkhoff Ergodic Theorem
@@ -226,7 +221,7 @@ axiom vonNeumann_mean_ergodic
     {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
     [IsProbabilityMeasure μ]
     (T : Ω → Ω) (hT : MeasurePreserving T μ μ) (hTm : Measurable T)
-    (f : Ω → ℝ) (hf : Integrable f μ) (hf2 : MemℒpClass 2 f μ) :
+    (f : Ω → ℝ) (hf : Integrable f μ) (hf2 : MemLp f 2 μ) :
     ∃ f_star : Ω → ℝ,
       Tendsto (fun n => ∫ ω, (birkhoffAverage T f n ω - f_star ω) ^ 2 ∂μ) atTop (nhds 0) ∧
       (∀ᵐ ω ∂μ, f_star (T ω) = f_star ω)
@@ -250,8 +245,8 @@ def IsMixing (T : Ω → Ω) (μ : Measure Ω) : Prop :=
 theorem mixing_implies_ergodic (T : Ω → Ω) (hT : MeasurePreserving T μ μ)
     (hTm : Measurable T) [IsProbabilityMeasure μ]
     (hmix : IsMixing T μ) : Ergodic T μ := by
-  refine ⟨hT, fun s hs hinv => ?_⟩
-  -- hinv : T ⁻¹' s =ᵐ[μ] s. Show μ s = 0 ∨ μ s = μ Set.univ.
+  refine ⟨hT, ⟨fun s hs hinv => ?_⟩⟩
+  -- hinv : T ⁻¹' s = s. Show s =ᵐ[μ] ∅ ∨ s =ᵐ[μ] univ.
   -- All iterates T^[n]⁻¹' s are ae-equal to s
   have haeq : ∀ n, T^[n] ⁻¹' s =ᵐ[μ] s := by
     intro n
@@ -259,27 +254,25 @@ theorem mixing_implies_ergodic (T : Ω → Ω) (hT : MeasurePreserving T μ μ)
     | zero => simp
     | succ n ih =>
       simp only [Function.iterate_succ, Function.comp_apply]
-      exact (hT.quasiMeasurePreserving.preimage_ae_eq ih).trans hinv
+      exact (hT.quasiMeasurePreserving.preimage_ae_eq ih).trans hinv.eventuallyEq
   -- μ (s ∩ T^[n]⁻¹' s) = μ s for all n
-  have hconst : ∀ n, μ (s ∩ T^[n] ⁻¹' s) = μ s := fun n =>
-    measure_congr (((ae_eq_refl s).inter (haeq n)).trans (Set.inter_self s ▸ ae_eq_refl s))
+  have hconst : ∀ n, μ (s ∩ T^[n] ⁻¹' s) = μ s := fun n => by
+    rw [measure_congr ((ae_eq_refl s).inter (haeq n)), Set.inter_self]
   -- Mixing gives limit μs * μs; constant sequence gives limit μs
   have htend_mix := hmix s s hs hs
   have htend_const : Tendsto (fun n => μ (s ∩ T^[n] ⁻¹' s)) atTop (nhds (μ s)) := by
     simp_rw [hconst]; exact tendsto_const_nhds
   have heq : μ s = μ s * μ s := tendsto_nhds_unique htend_const htend_mix
   -- μ s = 0 or μ s = 1 = μ Set.univ
+  refine eventuallyConst_set'.mpr ?_
   rcases eq_or_ne (μ s) 0 with hzero | hpos
-  · exact Or.inl hzero
+  · exact Or.inl ((ae_eq_empty (μ := μ) (s := s)).mpr hzero)
   · right
-    have hle : μ s ≤ 1 := by
-      simpa [IsProbabilityMeasure.measure_univ] using measure_mono (Set.subset_univ s)
-    have htop : μ s ≠ ∞ := (lt_of_le_of_lt hle one_lt_top).ne
-    have h1 : μ s = 1 := by
-      have := heq  -- μ s = μ s * μ s
-      rw [show μ s = μ s * 1 from (mul_one _).symm] at this
-      exact (ENNReal.mul_left_cancel₀ hpos htop this).symm
-    rw [h1, IsProbabilityMeasure.measure_univ]
+    have hle : μ s ≤ 1 := (measure_mono (Set.subset_univ s)).trans_eq measure_univ
+    have htop : μ s ≠ ⊤ := (lt_of_le_of_lt hle ENNReal.one_lt_top).ne
+    have h1 : μ s = 1 := (ENNReal.mul_eq_left hpos htop).mp heq.symm
+    exact (ae_eq_univ_iff_measure_eq hs.nullMeasurableSet).mpr
+      (by rw [h1, measure_univ])
 
 -- ============================================================
 -- PART 9: Examples of Ergodic Systems
@@ -299,7 +292,7 @@ def doublingMap (x : ℝ) : ℝ := 2 * x - ⌊2 * x⌋
 -- PART 10: Hierarchy of Convergence Modes
 -- ============================================================
 
-/-- Summary of how the LLN generalizes through ergodic theory:
+/-  Summary of how the LLN generalizes through ergodic theory:
 
     **Classical SLLN** (i.i.d., finite variance):
     - Random variables: i.i.d. X₁, X₂, ...
@@ -343,7 +336,10 @@ theorem birkhoffAverage_smul (T : Ω → Ω) (f : Ω → ℝ) (c : ℝ) (n : ℕ
     birkhoffAverage T (fun ω => c * f ω) n ω =
     c * birkhoffAverage T f n ω := by
   unfold birkhoffAverage
-  simp [Finset.mul_sum, mul_comm c, mul_assoc, mul_left_comm]
+  simp only [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  ring
 
 /-- For a constant function, the Birkhoff average is that constant -/
 theorem birkhoffAverage_const (T : Ω → Ω) (c : ℝ) (n : ℕ) (hn : 0 < n) (ω : Ω) :
@@ -359,7 +355,6 @@ theorem birkhoffSum_shift (T : Ω → Ω) (f : Ω → ℝ) (n : ℕ) (ω : Ω) :
   unfold birkhoffSum
   rw [Finset.sum_range_succ']
   simp [Function.iterate_succ']
-  ring
 
 -- ============================================================
 -- PART 12: Summary

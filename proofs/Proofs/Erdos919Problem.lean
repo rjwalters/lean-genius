@@ -28,12 +28,7 @@ order-type version. This avoids requiring a linear order on the product type.
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Cardinal.Order
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.InitialSeg
+import Mathlib
 
 open Cardinal Ordinal Set
 
@@ -172,8 +167,8 @@ private theorem aleph0_lt_aleph1 : (ℵ₀ : Cardinal) < ℵ₁ := by
 
 /-- ℵ₁ = Order.succ ℵ₀ -/
 private theorem aleph1_eq_succ_aleph0 : (ℵ₁ : Cardinal) = Order.succ ℵ₀ := by
-  show aleph 1 = Order.succ (aleph 0)
-  rw [show (1 : Ordinal) = Order.succ 0 by rw [Order.succ_eq_add_one, zero_add],
+  rw [show (ℵ₁ : Cardinal) = aleph 1 from rfl, ← aleph_zero,
+      show (1 : Ordinal) = Order.succ 0 by rw [Order.succ_eq_add_one, zero_add],
       aleph_succ]
 
 /-- ω₁.ToType is uncountable: ℵ₀ < #(ω₁.ToType) -/
@@ -202,7 +197,7 @@ private theorem mk_Iio_omega1_le_aleph0 (a : omega1.ToType) :
     Cardinal.mk {x : omega1.ToType | x < a} ≤ ℵ₀ := by
   -- The ordinal of a in omega1.ToType is < omega1
   have hlt : Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a < omega1 :=
-    Ordinal.typein_lt_type _ a
+    Ordinal.typein_lt_self a
   -- card(typein a) = #{x | x < a}  (by definition of typein + card_type)
   have hcard : (Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a).card =
       Cardinal.mk {x : omega1.ToType | x < a} :=
@@ -210,7 +205,7 @@ private theorem mk_Iio_omega1_le_aleph0 (a : omega1.ToType) :
   -- typein a < omega1 = (aleph 1).ord, so card(typein a) < aleph 1 = ℵ₁
   have hcard_lt : (Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a).card < ℵ₁ := by
     rw [show (ℵ₁ : Cardinal) = aleph 1 from rfl]
-    exact Cardinal.lt_ord.mp (by rwa [Cardinal.ord_aleph] at hlt)
+    exact Cardinal.lt_ord.mp hlt
   rw [← hcard]
   exact le_aleph0_of_lt_aleph1 hcard_lt
 
@@ -226,14 +221,15 @@ private theorem uncountable_cofinal (S : Set omega1.ToType)
   have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega1.ToType | x ≤ a} := by
     apply Cardinal.mk_subtype_mono
     intro x hx
-    exact le_of_not_lt (hall x hx)
+    exact hall x hx
   -- #{x | x ≤ a} ≤ #{x | x < a} + 1 ≤ ℵ₀ + 1 = ℵ₀
   have hiio : Cardinal.mk {x : omega1.ToType | x < a} ≤ ℵ₀ := mk_Iio_omega1_le_aleph0 a
   have hiic : Cardinal.mk {x : omega1.ToType | x ≤ a} ≤ ℵ₀ := by
     -- {x | x ≤ a} = {x | x < a} ∪ {a}, and {a} has card 1
     have : {x : omega1.ToType | x ≤ a} ⊆ {x | x < a} ∪ {a} := by
       intro x hx
-      rcases lt_or_eq_of_le hx with h | h
+      have hx' : x ≤ a := hx
+      rcases lt_or_eq_of_le hx' with h | h
       · exact Or.inl h
       · exact Or.inr h
     calc Cardinal.mk {x : omega1.ToType | x ≤ a}
@@ -269,8 +265,8 @@ private theorem exists_two_distinct {α : Type} [LinearOrder α] {S : Set α}
   have h1 : (1 : Cardinal) < Cardinal.mk S := lt_trans one_lt_aleph0 h
   rw [Cardinal.one_lt_iff_nontrivial] at h1
   obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ := h1.exists_pair_ne
-  simp only [Subtype.mk.injEq] at hab
-  rcases lt_or_gt_of_ne hab with h | h
+  have hab' : a ≠ b := fun heq => hab (Subtype.ext heq)
+  rcases lt_or_gt_of_ne hab' with h | h
   · exact ⟨a, b, ha, hb, h⟩
   · exact ⟨b, a, hb, ha, h⟩
 
@@ -302,7 +298,7 @@ private theorem erdosHajnal_not_countably_colorable
   -- Rows is a subset of T, and its subtype has cardinality > ℵ₀
   -- Convert to Set for easier manipulation
   have hRowsSet : ℵ₀ < Cardinal.mk {α : T | domColor α = c₀} := by
-    convert hc₀ using 1
+    convert hc₀ using 1 <;> (first | rfl | ring | norm_num)
   -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
   obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct hRowsSet
   -- Both rows have uncountable c₀-fibers
@@ -311,11 +307,11 @@ private theorem erdosHajnal_not_countably_colorable
   -- The c₀-fiber in row α₁: {β | f(α₁, β) = c₀} is uncountable
   have hfiber₁ : ℵ₀ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
     have := hdom_spec α₁; rw [hα₁_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- The c₀-fiber in row α₂ is nonempty (since uncountable)
   have hfiber₂ : ℵ₀ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
     have := hdom_spec α₂; rw [hα₂_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Pick any β₂ from the c₀-fiber of row α₂
   obtain ⟨β₂, hβ₂⟩ := nonempty_of_uncountable hfiber₂
   -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁
@@ -465,12 +461,12 @@ private theorem exists_large_fiber {A B : Type} (f : A → B)
 private theorem mk_Iio_omega2_le_aleph1 (a : omega2.ToType) :
     Cardinal.mk {x : omega2.ToType | x < a} ≤ ℵ₁ := by
   have hlt : Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a < omega2 :=
-    Ordinal.typein_lt_type _ a
+    Ordinal.typein_lt_self a
   have hcard : (Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a).card =
       Cardinal.mk {x : omega2.ToType | x < a} :=
     Ordinal.card_type (Subrel (· < ·) {x : omega2.ToType | x < a})
   have hcard_lt : (Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a).card < aleph 2 := by
-    exact Cardinal.lt_ord.mp (by rwa [Cardinal.ord_aleph] at hlt)
+    exact Cardinal.lt_ord.mp hlt
   rw [← hcard]
   exact le_aleph1_of_lt_aleph2 hcard_lt
 
@@ -483,12 +479,13 @@ private theorem large_cofinal (S : Set omega2.ToType)
   have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega2.ToType | x ≤ a} := by
     apply Cardinal.mk_subtype_mono
     intro x hx
-    exact le_of_not_lt (hall x hx)
+    exact hall x hx
   have hiio : Cardinal.mk {x : omega2.ToType | x < a} ≤ ℵ₁ := mk_Iio_omega2_le_aleph1 a
   have hiic : Cardinal.mk {x : omega2.ToType | x ≤ a} ≤ ℵ₁ := by
     have : {x : omega2.ToType | x ≤ a} ⊆ {x | x < a} ∪ {a} := by
       intro x hx
-      rcases lt_or_eq_of_le hx with h | h
+      have hx' : x ≤ a := hx
+      rcases lt_or_eq_of_le hx' with h | h
       · exact Or.inl h
       · exact Or.inr h
     calc Cardinal.mk {x : omega2.ToType | x ≤ a}
@@ -509,8 +506,8 @@ private theorem exists_two_distinct_large {α : Type} [LinearOrder α] {S : Set 
   have h1 : (1 : Cardinal) < Cardinal.mk S := lt_trans one_lt_aleph0 (lt_trans aleph0_lt_aleph1 h)
   rw [Cardinal.one_lt_iff_nontrivial] at h1
   obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ := h1.exists_pair_ne
-  simp only [Subtype.mk.injEq] at hab
-  rcases lt_or_gt_of_ne hab with h | h
+  have hab' : a ≠ b := fun heq => hab (Subtype.ext heq)
+  rcases lt_or_gt_of_ne hab' with h | h
   · exact ⟨a, b, ha, hb, h⟩
   · exact ⟨b, a, hb, ha, h⟩
 
@@ -546,7 +543,7 @@ private theorem erdosHajnal2_not_aleph1_colorable
   obtain ⟨c₀, hc₀⟩ := exists_large_fiber domColor hTunc hC
   set Rows := domColor ⁻¹' {c₀} with hRows_def
   have hRowsSet : ℵ₁ < Cardinal.mk {α : T | domColor α = c₀} := by
-    convert hc₀ using 1
+    convert hc₀ using 1 <;> (first | rfl | ring | norm_num)
   -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
   obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct_large hRowsSet
   have hα₁_dom : domColor α₁ = c₀ := hα₁
@@ -554,11 +551,11 @@ private theorem erdosHajnal2_not_aleph1_colorable
   -- The c₀-fiber in row α₁ has size > ℵ₁
   have hfiber₁ : ℵ₁ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
     have := hdom_spec α₁; rw [hα₁_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- The c₀-fiber in row α₂ has size > ℵ₁
   have hfiber₂ : ℵ₁ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
     have := hdom_spec α₂; rw [hα₂_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Pick any β₂ from the c₀-fiber of row α₂
   obtain ⟨β₂, hβ₂⟩ := nonempty_of_large hfiber₂
   -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁

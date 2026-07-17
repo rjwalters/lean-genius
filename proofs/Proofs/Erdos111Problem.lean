@@ -65,7 +65,7 @@ def edgeSet {V : Type*} (G : SimpleGraph V) : Set (Sym2 V) :=
 The central concept: how many edges must be removed to make a graph bipartite?
 -/
 
-/--
+/- 
 **Edges to Remove for Bipartiteness:**
 For a finite graph on vertex set V, the minimum number of edges that must
 be deleted to make the graph bipartite.
@@ -246,14 +246,14 @@ theorem erdos_111_gap_exists :
 Connections to other problems and partial results.
 -/
 
-/--
+/- 
 **Connection to Problem #74:**
 Erdős Problem #74 asks related questions about edge-chromatic number
 and bipartite subgraphs. Both problems study how graphs with large
 chromatic number interact with bipartiteness constraints.
 -/
 
-/--
+/- 
 **Finite Graphs:**
 For finite graphs, the situation is well-understood:
 - Bipartite graphs: h_G(n) = 0

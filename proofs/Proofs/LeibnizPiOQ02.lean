@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Data.Real.Pi.Leibniz
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
 
@@ -179,7 +179,7 @@ axiom eta_zeta_relation (s : ℝ) (hs : s > 1) :
 -- PART 7: The General Pattern
 -- ============================================================
 
-/-- **Leibniz-Type Formula Pattern**
+/-  **Leibniz-Type Formula Pattern**
 
     All these formulas share a common structure:
     C = Σ_{n=0}^∞ (-1)^n · a(n)
@@ -243,7 +243,7 @@ theorem char_mod4_values :
 -- PART 9: Known and Unknown Irrationality
 -- ============================================================
 
-/-- The irrationality status of Leibniz-type constants:
+/-  The irrationality status of Leibniz-type constants:
 
     | Constant | Value        | Irrational? | Transcendental? |
     |----------|-------------|-------------|-----------------|

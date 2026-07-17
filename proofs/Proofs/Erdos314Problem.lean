@@ -49,8 +49,12 @@ private lemma harmonicNumber_eq_sum_Icc (n : ℕ) :
     harmonicNumber n = ∑ k ∈ Finset.Icc 1 n, (1 : ℝ) / k := by
   unfold harmonicNumber
   rw [show Finset.Icc 1 n = (Finset.range n).image (· + 1) from by
-    ext x; simp [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]; omega]
-  rw [Finset.sum_image (by intro a _ b _ h; omega)]
+    ext x
+    simp only [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]
+    constructor
+    · rintro ⟨h1, h2⟩; exact ⟨x - 1, by omega, by omega⟩
+    · rintro ⟨a, ha, rfl⟩; omega]
+  rw [Finset.sum_image (by intro a _ b _ h; dsimp only at h; omega)]
   congr 1; ext k; push_cast; ring
 
 /-- Alternative form: H_m - H_{n-1} -/
@@ -75,7 +79,7 @@ m(n) is the minimal integer m ≥ n such that the partial harmonic sum reaches 1
     Axiomatized since the minimality requires decidability of real comparisons. -/
 axiom m_of_n (n : ℕ) : ℕ
 
-/-- m(n) is well-defined: the sum eventually exceeds 1 -/
+/-  m(n) is well-defined: the sum eventually exceeds 1 -/
 /-- m(n) is minimal: the sum from n to m(n)-1 is less than 1 -/
 axiom m_of_n_minimal : ∀ n : ℕ, n ≥ 1 →
   partialHarmonicSum n (m_of_n n - 1) < 1
@@ -114,13 +118,15 @@ lemma m_of_n_ge (n : ℕ) (hn : n ≥ 1) : m_of_n n ≥ n := by
 private lemma partialHarmonicSum_split_last (n m : ℕ) (hm : m ≥ n) :
     partialHarmonicSum n m = partialHarmonicSum n (m - 1) + (1 : ℝ) / m := by
   unfold partialHarmonicSum
-  rcases Nat.eq_or_gt_of_le hm with rfl | hgt
-  · -- m = n: Icc n (n-1) is empty, Icc n n is {n}
-    simp [Finset.Icc_eq_empty (by omega : ¬(n ≤ n - 1)), Finset.sum_empty]
-  · -- m > n: split off last element
-    have : Finset.Icc n m = insert m (Finset.Icc n (m - 1)) := by
-      ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
-    rw [this, Finset.sum_insert (by simp [Finset.mem_Icc]; omega)]
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · -- m = 0 forces n = 0 too; both sides collapse via 1/0 = 0
+    have hn0 : n = 0 := by omega
+    subst hm0; subst hn0
+    norm_num
+  · -- m ≥ 1: m - 1 < m, so split off the last element m
+    have hins : Finset.Icc n m = insert m (Finset.Icc n (m - 1)) := by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [hins, Finset.sum_insert (by simp only [Finset.mem_Icc]; omega)]
     ring
 
 /-- ε(n) is at most 1/m(n): the overshoot is bounded by the last term -/
@@ -140,7 +146,7 @@ theorem epsilon_upper_bound : ∀ n : ℕ, n ≥ 1 → epsilon n ≤ 1 / n := by
   have hm_pos : (0 : ℝ) < m_of_n n := by exact_mod_cast show 0 < m_of_n n by omega
   calc epsilon n ≤ 1 / (m_of_n n) := heps
     _ ≤ 1 / n := by
-        apply div_le_div_of_nonneg_left one_pos hn_pos
+        apply div_le_div_of_nonneg_left zero_le_one hn_pos
         exact_mod_cast hge
 
 /- ## Approximation of m(n)
@@ -148,8 +154,8 @@ theorem epsilon_upper_bound : ∀ n : ℕ, n ≥ 1 → epsilon n ≤ 1 / n := by
 For large n, m(n) ≈ e·n since the harmonic sum grows logarithmically.
 -/
 
-/-- Asymptotic: m(n)/n → e as n → ∞ -/
-/-- More precisely: m(n) = ⌊e·n + 1/2⌋ for most n -/
+/-  Asymptotic: m(n)/n → e as n → ∞ -/
+/-  More precisely: m(n) = ⌊e·n + 1/2⌋ for most n -/
 /- ## The Main Question: lim inf n²ε(n) = 0?
 
 Erdős asked whether the lim inf of n²ε(n) equals 0.
@@ -158,7 +164,7 @@ Lim and Steinerberger (2024) proved this is TRUE.
 
 /-- The Erdős conjecture: lim inf n²ε(n) = 0 -/
 def erdos_conjecture : Prop :=
-  ∀ δ > 0, ∃ᶠ n in Filter.atTop, (n : ℝ)^2 * epsilon n < δ
+  ∀ δ > 0, ∃ᶠ n : ℕ in Filter.atTop, (n : ℝ)^2 * epsilon n < δ
 
 /- ## Lim-Steinerberger Theorem (2024)
 
@@ -169,7 +175,7 @@ The main result: infinitely many n with ε(n)n² small.
     Corrected formulation: uses ∃ᶠ (frequently/infinitely many) rather than ∀ᶠ ∃ k ≤ n,
     since the theorem produces infinitely many distinct n with the bound. -/
 axiom lim_steinerberger_theorem :
-  ∃ C > 0, ∃ᶠ n in Filter.atTop,
+  ∃ C > 0, ∃ᶠ n : ℕ in Filter.atTop,
     (n : ℝ)^2 * epsilon n ≤ C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ)
 
 /-- The Lim-Steinerberger bound (log log n / log n)^{1/2} tends to 0.
@@ -184,7 +190,7 @@ axiom lim_steinerberger_bound_tendsto :
 theorem erdos_conjecture_true : erdos_conjecture := by
   intro δ hδ
   obtain ⟨C, hC, hfreq⟩ := lim_steinerberger_theorem
-  have hev : ∀ᶠ n in Filter.atTop,
+  have hev : ∀ᶠ n : ℕ in Filter.atTop,
       C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ) < δ := by
     have htend : Filter.Tendsto
         (fun n : ℕ => C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ))
@@ -199,8 +205,8 @@ theorem erdos_conjecture_true : erdos_conjecture := by
 Erdős-Graham and Lim-Steinerberger believe the exponent 2 is optimal.
 -/
 
-/-- Conjecture: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0 -/
-/-- Alternative form: ε(n) ≥ c/n² for some constant c > 0 infinitely often -/
+/-  Conjecture: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0 -/
+/-  Alternative form: ε(n) ≥ c/n² for some constant c > 0 infinitely often -/
 /- ## Connection to Diophantine Approximation
 
 The problem is related to how well log(m/n) approximates 1 - γ
@@ -210,7 +216,7 @@ where γ is the Euler-Mascheroni constant.
 /-- The Euler-Mascheroni constant γ ≈ 0.5772... -/
 noncomputable def eulerMascheroni : ℝ := Real.eulerMascheroniConstant
 
-/-- Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
+/-  Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
 /- ## Summary
 
 Erdős Problem #314 asks about the lim inf of n²ε(n) where
@@ -231,7 +237,7 @@ More precisely: there exist infinitely many n with
 /-- Summary: The main theorem states the Erdős conjecture is true -/
 theorem erdos_314_summary :
     erdos_conjecture ∧
-    (∃ C > 0, ∃ᶠ n in Filter.atTop,
+    (∃ C > 0, ∃ᶠ n : ℕ in Filter.atTop,
       (n : ℝ)^2 * epsilon n ≤
         C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ)) := by
   exact ⟨erdos_conjecture_true, lim_steinerberger_theorem⟩

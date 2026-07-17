@@ -71,8 +71,9 @@ theorem fib_dvd_iff {m n : ℕ} (hm : 3 ≤ m) :
     have hle : Nat.gcd m n ≤ m := Nat.le_of_dvd (by omega) hdm
     -- `fib m ≥ fib 3 = 2` since `fib` is monotone and `3 ≤ m`.
     have hfm : 2 ≤ Nat.fib m := by
+      have h3 : Nat.fib 3 = 2 := by decide
       have := Nat.fib_mono hm
-      simpa using this
+      rwa [h3] at this
     -- Rule out the degenerate gcd values `0` and `1`: both force `fib (gcd) ≤ 1`,
     -- contradicting `fib (gcd m n) = fib m ≥ 2`.
     have hd2 : 2 ≤ Nat.gcd m n := by

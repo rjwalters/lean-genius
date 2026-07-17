@@ -76,11 +76,12 @@ abbrev K5 : SimpleGraph (Fin 5) := K 5
 def K33 : SimpleGraph (Fin 6) where
   Adj u v := (u.val < 3 ∧ 3 ≤ v.val) ∨ (v.val < 3 ∧ 3 ≤ u.val)
   symm := by
+    constructor
     intro u v h
     rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inr ⟨h1, h2⟩
     · exact Or.inl ⟨h1, h2⟩
-  loopless := by intro v h; rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
+  loopless := by constructor; intro v h; rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
 
 instance K33_decidable : DecidableRel K33.Adj :=
   fun u v =>

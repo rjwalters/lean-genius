@@ -137,7 +137,14 @@ theorem whm_le_wgm (ha : 0 < a) (hb : 0 < b) (hw₁ : 0 ≤ w₁) (hw₂ : 0 ≤
     (hw : w₁ + w₂ = 1) : WHM w₁ w₂ a b ≤ WGM w₁ w₂ a b := by
   unfold WHM WGM
   have hWGM_pos : 0 < a ^ w₁ * b ^ w₂ := by positivity
-  have hWHM_inv_pos : 0 < w₁ / a + w₂ / b := by positivity
+  have hWHM_inv_pos : 0 < w₁ / a + w₂ / b := by
+    rcases hw₁.eq_or_lt with h1 | h1
+    · have hw2eq : w₂ = 1 := by linarith
+      rw [← h1, hw2eq]
+      simpa using (div_pos one_pos hb)
+    · have hpos : 0 < w₁ / a := div_pos h1 ha
+      have hnn : 0 ≤ w₂ / b := div_nonneg hw₂ hb.le
+      linarith
   -- Apply weighted AM-GM to (1/a) and (1/b)
   have h_amgm := Real.geom_mean_le_arith_mean2_weighted hw₁ hw₂
     (by positivity : (0 : ℝ) ≤ 1 / a) (by positivity : (0 : ℝ) ≤ 1 / b) hw
@@ -203,8 +210,11 @@ theorem unweighted_chain_from_weighted (ha : 0 < a) (hb : 0 < b) :
     2 * a * b / (a + b) ≤ Real.sqrt (a * b) ∧
     Real.sqrt (a * b) ≤ (a + b) / 2 ∧
     (a + b) / 2 ≤ Real.sqrt ((a ^ 2 + b ^ 2) / 2) := by
-  have ⟨h1, h2, h3⟩ := weighted_mean_chain ha hb (by norm_num) (by norm_num) (by ring)
-  rw [whm_half_eq_hm ha hb, wgm_half_eq_gm ha.le hb.le, wam_half_eq_am, wqm_half_eq_qm] at h1 h2 h3
+  have ⟨h1, h2, h3⟩ := weighted_mean_chain (w₁ := 1/2) (w₂ := 1/2) ha hb
+    (by norm_num) (by norm_num) (by norm_num)
+  rw [whm_half_eq_hm ha hb, wgm_half_eq_gm ha.le hb.le] at h1
+  rw [wgm_half_eq_gm ha.le hb.le, wam_half_eq_am] at h2
+  rw [wam_half_eq_am, wqm_half_eq_qm] at h3
   exact ⟨h1, h2, h3⟩
 
 end WeightedPowerMeanChain

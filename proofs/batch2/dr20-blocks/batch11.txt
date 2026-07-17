@@ -1,0 +1,561 @@
+===== KonigsbergOQ01OQ02
+error: Proofs/KonigsbergOQ01OQ02.lean:88:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:100:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+error: Proofs/KonigsbergOQ01OQ02.lean:100:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/KonigsbergOQ01OQ02.lean:118:57: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+
+===== KonigsbergOQ02OQ01
+error: Proofs/KonigsbergOQ02OQ01.lean:164:20: Application type mismatch: The argument
+  w.arcs_valid ?m.188 (List.mem_toFinset.mp ?m.191)
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:206:44: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/KonigsbergOQ02OQ01.lean:228:18: Application type mismatch: The argument
+  w1.arcs_valid
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:232:10: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => (w2.arcs.head ⋯).1 = u
+Error: Application type mismatch: The argument
+
+===== KonigsbergOQ02OQ01Aristotle
+error: Proofs/KonigsbergOQ02OQ01Aristotle.lean:150:8: `grind` failed
+case grind.1.1.2.2.2.1
+V : Type u_1
+
+===== LagrangeFourSquaresOQ02
+error: Proofs/LagrangeFourSquaresOQ02.lean:193:40: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:363:42: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:400:44: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:437:76: Expected type must not contain free variables
+  (twoPairType 1 2 ⋯ ⋯).contribution = 96
+
+===== LagrangeFourSquaresOQ04
+error: Proofs/LagrangeFourSquaresOQ04.lean:129:69: linarith failed to find a contradiction
+case h1
+b a : ℕ
+error: Proofs/LagrangeFourSquaresOQ04.lean:175:37: unsolved goals
+n : ℕ
+hn : n % 8 ≠ 7
+
+===== LagrangeTheoremOQ01OQ03
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:6: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Unique.mk` has 2 explicit field, but only 1 was provided
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:8: Invalid `⟨...⟩` notation: The expected type `G` is not an inductive type
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:8: Invalid `⟨...⟩` notation: The expected type `G` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:28: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:109:59: Application type mismatch: The argument
+  hp
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:109:59: Application type mismatch: The argument
+  hp
+has type
+
+===== LagrangeTheoremOQ02OQ02
+error: Proofs/LagrangeTheoremOQ02OQ02.lean:61:2: failed to synthesize instance of type class
+  Finite G
+error: Proofs/LagrangeTheoremOQ02OQ02.lean:84:28: Unknown constant `ConjClasses.mem_carrier_iff_isConj`
+error: Proofs/LagrangeTheoremOQ02OQ02.lean:88:30: Application type mismatch: The argument
+  c
+error: Proofs/LagrangeTheoremOQ02OQ02.lean:88:30: Application type mismatch: The argument
+  c
+has type
+error: Proofs/LagrangeTheoremOQ02OQ02.lean:100:9: invalid 'calc' step, left-hand side is
+  ↑g * x * ↑g⁻¹ : G
+but is expected to be
+
+===== LagrangeTheoremOQ05
+error: Proofs/LagrangeTheoremOQ05.lean:35:2: Type mismatch
+  Subgroup.card_subgroup_dvd_card H
+has type
+error: Proofs/LagrangeTheoremOQ05.lean:41:2: Type mismatch
+  Eq.symm (Subgroup.card_eq_card_quotient_mul_card_subgroup H)
+has type
+
+===== LawOfCosinesOQ01OQ01OQ03
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:64:2: ring failed, ring expressions not equal
+A B C : Fin 3 → ℝ
+hC : IsUnit3 C
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:100:16: Application type mismatch: The argument
+  (crossProduct A) B = tripleProduct A B C • A
+has type
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:111:16: Application type mismatch: The argument
+  (crossProduct B) C = tripleProduct A B C • B
+has type
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:230:52: Application type mismatch: The argument
+  hBC_p
+has type
+
+===== LawOfCosinesOQ01OQ04
+error: Proofs/LawOfCosinesOQ01OQ04.lean:83:24: No goals to be solved
+error: Proofs/LawOfCosinesOQ01OQ04.lean:90:8: Type mismatch
+  h
+error: Proofs/LawOfCosinesOQ01OQ04.lean:90:8: Type mismatch
+  h
+has type
+error: Proofs/LawOfCosinesOQ01OQ04.lean:92:10: Type mismatch
+  mem_compl_singleton_iff.mpr (div_ne_zero (mul_ne_zero (mem_compl_singleton_iff.mp ?m.543) hx) two_ne_zero)
+has type
+error: Proofs/LawOfCosinesOQ01OQ04.lean:92:92: Application type mismatch: The argument
+  ht
+has type
+
+===== LawOfCosinesOQ04OQ01
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:48: unexpected identifier; expected ':=', 'where' or '|'
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+has type
+
+===== LawOfSinesOQ06
+error: Proofs/LawOfSinesOQ06.lean:59:40: Unknown constant `EuclideanSpace.inner_apply`
+info: Proofs/LawOfSinesOQ06.lean:61:2: Try this:
+  [apply] ring_nf
+error: Proofs/LawOfSinesOQ06.lean:58:68: unsolved goals
+u v : Vec2
+⊢ ‖u.ofLp 0‖ ^ 2 * ‖v.ofLp 0‖ ^ 2 + ‖u.ofLp 0‖ ^ 2 * ‖v.ofLp 1‖ ^ 2 + ‖u.ofLp 1‖ ^ 2 * ‖v.ofLp 0‖ ^ 2 +
+error: Proofs/LawOfSinesOQ06.lean:110:21: typeclass instance problem is stuck
+  HSub ?m.10 ((B : ?m.1) → ?m.3 B → Vec2) Vec2
+error: Proofs/LawOfSinesOQ06.lean:114:29: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  t
+has type `Triangle` which does not have the necessary form.
+
+===== LawsOfLargeNumbersOQ01
+error: Proofs/LawsOfLargeNumbersOQ01.lean:248:12: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+has type
+error: Proofs/LawsOfLargeNumbersOQ01.lean:395:2: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+===== LawsOfLargeNumbersOQ01OQ02OQ01
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:374:11: typeclass instance problem is stuck
+  ContinuousAdd ?m.102
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:378:47: Application type mismatch: The argument
+  hadp
+has type
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:669:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:749:4: Type mismatch: After simplification, term
+  h
+ has type
+
+===== LawsOfLargeNumbersOQ02
+error: Proofs/LawsOfLargeNumbersOQ02.lean:130:4: Type mismatch: After simplification, term
+  IndepFun.variance_sum hLp_set hpair
+ has type
+error: Proofs/LawsOfLargeNumbersOQ02.lean:137:2: No goals to be solved
+warning: Proofs/LawsOfLargeNumbersOQ02.lean:178:2: 'push_cast' tactic does nothing
+error: Proofs/LawsOfLargeNumbersOQ02.lean:195:10: typeclass instance problem is stuck
+  IsOrderedRing ?m.39
+error: Proofs/LawsOfLargeNumbersOQ02.lean:325:50: Type mismatch
+  fun n => σ_sq / ε ^ 2 / n
+has type
+
+===== LawsOfLargeNumbersOQ03
+error: Proofs/LawsOfLargeNumbersOQ03.lean:57:34: Application type mismatch: The argument
+  hs
+has type
+error: Proofs/LawsOfLargeNumbersOQ03.lean:67:4: Type mismatch
+  MeasurePreserving.comp ih hT
+has type
+error: Proofs/LawsOfLargeNumbersOQ03.lean:80:43: Unknown identifier `MeasureTheory.ae_eq_of_eq`
+warning: Proofs/LawsOfLargeNumbersOQ03.lean:99:0: automatically included section variable(s) unused in theorem `LawsOfLargeNumbersOQ03.birkhoffAverage_eq_sum_div`:
+  [MeasurableSpace Ω]
+error: Proofs/LawsOfLargeNumbersOQ03.lean:107:59: unsolved goals
+case e_a
+Ω : Type u_1
+
+===== LebesgueMeasure
+error: Proofs/LebesgueMeasure.lean:159:2: Unknown identifier `integral_mul_left`
+error: Proofs/LebesgueMeasure.lean:364:4: Type mismatch: After simplification, term
+  rationals_measure_zero
+error: Proofs/LebesgueMeasure.lean:364:4: Type mismatch: After simplification, term
+  rationals_measure_zero
+ has type
+
+===== LebesgueMeasureOQ01OQ01
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:68:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:5: unknown tactic
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+x : ℝ
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:81:27: Invalid field notation: Type of
+  Exists.choose ?m.34
+is not known; cannot resolve field `den`
+
+===== LebesgueMeasureOQ01OQ01OQ02
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:55:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:86:2: linarith failed to find a contradiction
+case h1
+r : ℚ
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:106:18: Invalid field `tendsto`: The environment does not contain `Function.tendsto`, so it is not possible to project the field `tendsto` from an expression
+  h
+of type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:100:78: unsolved goals
+r : ℚ
+h : Tendsto thomae (nhds ↑r) (nhds (1 / ↑r.den))
+
+===== LebesgueMeasureOQ06
+error: Proofs/LebesgueMeasureOQ06.lean:524:9: Unknown constant `List.chain'_append.mp`
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:650:71: expected token
+error: Proofs/LebesgueMeasureOQ06.lean:650:71: expected token
+error: Proofs/LebesgueMeasureOQ06.lean:583:6: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+error: Proofs/LebesgueMeasureOQ06.lean:583:6: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+(deterministic) timeout at `simp`, maximum number of heartbeats (200000) has been reached
+
+===== LeibnizPiOQ03
+error: Proofs/LeibnizPiOQ03.lean:215:19: failed to prove positivity/nonnegativity/nonzeroness
+error: Lean exited with code 1
+✖ [8585/8603] Building Proofs.LawOfCosinesOQ01OQ01OQ03 (6.4s)
+
+===== MathematicalInductionOQ01
+error: Proofs/MathematicalInductionOQ01.lean:73:19: Unknown constant `Ordinal.IsLimit`
+error: Proofs/MathematicalInductionOQ01.lean:77:9: Unknown constant `Ordinal.zero_or_succ_or_limit`
+error: Proofs/MathematicalInductionOQ01.lean:77:46: Tactic `rcases` failed: `x✝ : ?m.23` is not an inductive datatype
+error: Proofs/MathematicalInductionOQ01.lean:77:9: Unknown constant `Ordinal.zero_or_succ_or_limit`
+error: Proofs/MathematicalInductionOQ01.lean:77:46: Tactic `rcases` failed: `x✝ : ?m.23` is not an inductive datatype
+error: Proofs/MathematicalInductionOQ01.lean:94:18: Application type mismatch: The argument
+error: Proofs/MathematicalInductionOQ01.lean:77:46: Tactic `rcases` failed: `x✝ : ?m.23` is not an inductive datatype
+error: Proofs/MathematicalInductionOQ01.lean:94:18: Application type mismatch: The argument
+  h
+error: Proofs/MathematicalInductionOQ01.lean:94:18: Application type mismatch: The argument
+  h
+has type
+
+===== MathematicalInductionOQ03
+error: Proofs/MathematicalInductionOQ03.lean:55:14: Type mismatch
+  h0
+has type
+error: Proofs/MathematicalInductionOQ03.lean:56:19: Type mismatch
+  hsucc (↑m) ih
+has type
+error: Proofs/MathematicalInductionOQ03.lean:59:2: Tactic `assumption` failed
+n : ℕ
+error: Proofs/MathematicalInductionOQ03.lean:71:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 • ?b
+in the target expression
+
+===== MeanValueTheoremOQ02OQ04OQ01
+error: Proofs/MeanValueTheoremOQ02OQ04OQ01.lean:195:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/MeanValueTheoremOQ02OQ04OQ01.lean:648:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Membership.mem ?m.234 (Set ?m.234) instMembership (Metric.eball ?m.236 ?m.238) ?m.237
+in the target expression
+
+===== MeanValueTheoremOQ03
+error: Proofs/MeanValueTheoremOQ03.lean:361:42: Application type mismatch: The argument
+  hC
+has type
+
+===== MeanValueTheoremOQ04
+error: Proofs/MeanValueTheoremOQ04.lean:48:4: Invalid field notation: Function `ContinuousAt.stronglyMeasurableAtFilter` does not have a usable parameter of type `ContinuousAt ...` for which to substitute `Continuous.continuousAt
+  hf`
+error: Proofs/MeanValueTheoremOQ04.lean:174:45: Application type mismatch: The argument
+  h1
+has type
+error: Proofs/MeanValueTheoremOQ04.lean:175:36: Application type mismatch: The argument
+  h2
+has type
+error: Proofs/MeanValueTheoremOQ04.lean:176:45: Application type mismatch: The argument
+  h2
+has type
+
+===== MinkowskiFundamentalTheoremOQ02
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:61:0: type of theorem `MinkowskiClassNumberBound.classGroup_finite` is not a proposition
+  (K : Type u_1) → [inst : Field K] → [NumberField K] → Fintype (ClassGroup (𝓞 K))
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:104:72: unsolved goals
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:104:72: unsolved goals
+⊢ IsPrincipalIdealRing (𝓞 ℚ)
+error: Lean exited with code 1
+
+===== MinkowskiTheoremOQ02
+error: Proofs/MinkowskiTheoremOQ02.lean:132:8: Unknown constant `ENNReal.ofReal_lt_ofReal_of_nonneg`
+error: Proofs/MinkowskiTheoremOQ02.lean:153:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, c i • (Pi.basisFun ℝ (Fin 2)) i
+error: Proofs/MinkowskiTheoremOQ02.lean:153:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, c i • (Pi.basisFun ℝ (Fin 2)) i
+in the target expression
+error: Proofs/MinkowskiTheoremOQ02.lean:216:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑x 0
+in the target expression
+error: Proofs/MinkowskiTheoremOQ02.lean:218:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑x 1
+in the target expression
+
+===== MinkowskiTheoremOQ03
+error: Proofs/MinkowskiTheoremOQ03.lean:147:4: Unknown constant `Nat.card_le_one`
+error: Lean exited with code 1
+✖ [8602/8609] Building Proofs.MeanValueTheoremOQ02OQ04OQ01 (5.9s)
+
+===== MinpolyCharpolyOQ01
+error: Proofs/MinpolyCharpolyOQ01.lean:511:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  charmatrix ?m.72 ?i ?j
+in the target expression
+error: Proofs/MinpolyCharpolyOQ01.lean:511:28: Application type mismatch: The argument
+  hne
+has type
+
+===== MorleysTheorem
+error: Proofs/MorleysTheorem.lean:133:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Complex.exp ?x * Complex.exp ?y
+in the target expression
+error: Proofs/MorleysTheorem.lean:137:37: Unknown identifier `map_exp_ofReal_mul_I_re`
+error: Proofs/MorleysTheorem.lean:138:4: Type mismatch
+  exp_zero
+error: Proofs/MorleysTheorem.lean:138:4: Type mismatch
+  exp_zero
+has type
+error: Proofs/MorleysTheorem.lean:148:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  3 * (Complex.I * (2 * ↑π * ↑1 / 3))
+in the target expression
+
+===== NewtonIndStep2
+error: Proofs/NewtonIndStep2.lean:62:4: linarith failed to find a contradiction
+case hα
+m k : ℕ
+error: Proofs/NewtonIndStep2.lean:77:4: (deterministic) timeout at `«Mathlib.Tactic.Linarith.SimplexAlgorithm.Gauss.getTableauImp»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/NewtonIndStep2.lean:42:57: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+===== NewtonInductiveStepOQ01
+error: Proofs/NewtonInductiveStepOQ01.lean:244:12: Type mismatch
+  cast_sub hlen_ge_one
+has type
+
+===== NewtonInductiveStepOQ03
+error: Proofs/NewtonInductiveStepOQ03.lean:74:2: Function expected at
+  prod_pos ?m.22
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:78:2: Function expected at
+  prod_pos ?m.44
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:99:4: Function expected at
+  prod_pos ?m.142
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:138:40: unsolved goals
+n k : ℕ
+q : ℝ
+
+===== PNPBarriersLegacy
+error: Proofs/PNPBarriersLegacy.lean:5855:48: Application type mismatch: The argument
+  eb
+has type
+error: Proofs/PNPBarriersLegacy.lean:5877:51: Application type mismatch: The argument
+  eb
+has type
+
+===== PNPBarriersSound
+error: Proofs/PNPBarriersSound.lean:674:29: Application type mismatch: The argument
+  hs
+has type
+
+===== PappusTheoremOQ02
+error: Proofs/PappusTheoremOQ02.lean:404:64: unsolved goals
+K : Type u_1
+inst✝ : CommRing K
+error: Proofs/PappusTheoremOQ02.lean:425:64: unsolved goals
+K : Type u_1
+inst✝ : CommRing K
+
+===== PartitionTheorem
+error: Proofs/PartitionTheorem.lean:129:57: unsolved goals
+n : ℕ
+p : n.Partition
+error: Proofs/PartitionTheorem.lean:151:3: Unknown identifier `Theorems100.partition_theorem`
+info: Proofs/PartitionTheorem.lean:276:0: PartitionTheorem.partition_theorem (n : ℕ) : #(Partition.distincts n) = #(Partition.odds n)
+info: Proofs/PartitionTheorem.lean:277:0: PartitionTheorem.distinct_iff_nodup {n : ℕ} (p : n.Partition) : p ∈ Partition.distincts n ↔ p.parts.Nodup
+
+===== PartitionTheoremOQ01
+error: Proofs/PartitionTheoremOQ01.lean:2852:37: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/PartitionTheoremOQ01.lean:2917:24: unsolved goals
+k : ℕ
+hk : 0 < k
+error: Proofs/PartitionTheoremOQ01.lean:3062:4: `subsetsWithSum` has already been declared
+error: Proofs/PartitionTheoremOQ01.lean:3070:47: Unknown constant `Finset.mem_empty`
+error: Proofs/PartitionTheoremOQ01.lean:3075:12: invalid `▸` notation, expected result type of cast is 
+error: Proofs/PartitionTheoremOQ01.lean:3070:47: Unknown constant `Finset.mem_empty`
+error: Proofs/PartitionTheoremOQ01.lean:3075:12: invalid `▸` notation, expected result type of cast is 
+  ∅ ∈ {∅}
+
+===== PartitionTheoremOQ03
+error: Proofs/PartitionTheoremOQ03.lean:26:4: Unknown constant `Nat.Partition.IsOdd.card`
+error: Proofs/PartitionTheoremOQ03.lean:26:33: Unknown constant `Nat.Partition.IsDistinct.card`
+error: Proofs/PartitionTheoremOQ03.lean:27:3: Unknown identifier `Theorems100.partition`
+error: Proofs/PartitionTheoremOQ03.lean:26:33: Unknown constant `Nat.Partition.IsDistinct.card`
+error: Proofs/PartitionTheoremOQ03.lean:27:3: Unknown identifier `Theorems100.partition`
+error: Proofs/PartitionTheoremOQ03.lean:47:64: unexpected token '/-!'; expected 'lemma'
+error: Proofs/PartitionTheoremOQ03.lean:27:3: Unknown identifier `Theorems100.partition`
+error: Proofs/PartitionTheoremOQ03.lean:47:64: unexpected token '/-!'; expected 'lemma'
+error: Proofs/PartitionTheoremOQ03.lean:52:42: Invalid field `length`: The environment does not contain `Quot.length`, so it is not possible to project the field `length` from an expression
+error: Proofs/PartitionTheoremOQ03.lean:47:64: unexpected token '/-!'; expected 'lemma'
+error: Proofs/PartitionTheoremOQ03.lean:52:42: Invalid field `length`: The environment does not contain `Quot.length`, so it is not possible to project the field `length` from an expression
+  p.parts
+
+===== PascalsHexagonOQ02
+error: Proofs/PascalsHexagonOQ02.lean:79:48: Type mismatch
+  adjugate_transpose C
+has type
+
+===== PellEquationOQ01
+error: Proofs/PellEquationOQ01.lean:63:38: Unknown constant `Int.cast_nonneg.mpr`
+error: Proofs/PellEquationOQ01.lean:65:38: Unknown constant `Int.cast_nonneg.mpr`
+warning: Proofs/PellEquationOQ01.lean:87:43: Variable name `hn` is not explicitly referenced.
+error: Proofs/PellEquationOQ01.lean:65:38: Unknown constant `Int.cast_nonneg.mpr`
+warning: Proofs/PellEquationOQ01.lean:87:43: Variable name `hn` is not explicitly referenced.
+
+===== PerfectNumbersOQ03
+error: Proofs/PerfectNumbersOQ03.lean:88:4: unsolved goals
+case zero
+hn : ¬Nat.Prime 0
+error: Proofs/PerfectNumbersOQ03.lean:133:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?a = 0
+in the target expression
+error: Proofs/PerfectNumbersOQ03.lean:163:6: Type mismatch
+  ZMod.pow_card_sub_one_eq_one h2_ne
+has type
+error: Proofs/PerfectNumbersOQ03.lean:239:2: No goals to be solved
+info: Proofs/PerfectNumbersOQ03.lean:256:0: @mersenne_prime_exp_prime : ∀ {n : ℕ}, Nat.Prime (M n) → Nat.Prime n
+info: Proofs/PerfectNumbersOQ03.lean:257:0: MersennePrimeDist.LPWConjecture : Prop
+
+===== PicksTheoremOQ01OQ01
+error: Proofs/PicksTheoremOQ01OQ01.lean:67:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (0, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:71:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (1, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:89:58: unsolved goals
+T : LatticeTriangle
+g : ℤ
+error: Proofs/PicksTheoremOQ01OQ01.lean:134:48: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+
+===== PicksTheoremOQ01OQ02
+error: Proofs/PicksTheoremOQ01OQ02.lean:236:47: mod_cast has type
+  ↑(m - 1) = ↑(m - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:237:47: mod_cast has type
+  ↑(n - 1) = ↑(n - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:247:45: mod_cast has type
+  ↑(m - 1) = ↑(m - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:248:45: mod_cast has type
+  ↑(n - 1) = ↑(n - 1)
+but is expected to have type
+
+===== PicksTheoremOQ02
+error: Proofs/PicksTheoremOQ02.lean:103:4: Type mismatch
+  heq
+has type
+error: Proofs/PicksTheoremOQ02.lean:141:10: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/PicksTheoremOQ02.lean:146:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+error: Proofs/PicksTheoremOQ02.lean:146:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+case inr.inl
+error: Proofs/PicksTheoremOQ02.lean:174:30: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  p * k
+in the target expression
+
+===== PlatonicSolidsOQ02
+error: Proofs/PlatonicSolidsOQ02.lean:109:8: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/PlatonicSolidsOQ02.lean:130:53: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:130:53: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:132:49: omega could not prove the goal:
+error: Proofs/PlatonicSolidsOQ02.lean:132:49: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:134:47: omega could not prove the goal:
+error: Proofs/PlatonicSolidsOQ02.lean:134:47: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:136:53: omega could not prove the goal:
+
+===== PoincareConjecture
+error: Proofs/PoincareConjecture.lean:2938:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @IsOpen ?m.13 (coinduced ?m.16 ?m.14) ?m.15
+in the target expression
+error: Proofs/PoincareConjecture.lean:2979:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/PoincareConjecture.lean:3030:22: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↑⟨_a, ⋯⟩
+Error: Application type mismatch: The argument
+error: Proofs/PoincareConjecture.lean:3048:31: Application type mismatch: The argument
+  rfl
+has type
+
+===== PowerMeanLimitOQ
+error: Proofs/PowerMeanLimitOQ.lean:88:9: typeclass instance problem is stuck
+  NormedSpace ?m.50 ?m.52
+error: Proofs/PowerMeanLimitOQ.lean:169:33: unsolved goals
+ι : Type u_1
+s : Finset ι
+error: Proofs/PowerMeanLimitOQ.lean:245:11: `simp` made no progress
+error: Lean exited with code 1
+ℹ [8580/8606] Replayed Proofs.PtolemysComplexProof
+
+===== PrimeGapBoundsOQ01
+error: Proofs/PrimeGapBoundsOQ01.lean:100:69: Application type mismatch: The argument
+  n
+has type
+error: Proofs/PrimeGapBoundsOQ01.lean:127:12: Unknown constant `Real.log_le_sub_one_of_le`
+error: Proofs/PrimeGapBoundsOQ01.lean:139:4: Invalid alternative name `zero`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:140:4: Invalid alternative name `succ`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:139:4: Invalid alternative name `zero`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:140:4: Invalid alternative name `succ`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:138:4: Alternative `ofCauchy` has not been provided
+error: Proofs/PrimeGapBoundsOQ01.lean:140:4: Invalid alternative name `succ`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:138:4: Alternative `ofCauchy` has not been provided
+error: Proofs/PrimeGapBoundsOQ01.lean:159:23: Type mismatch
+
+===== PrimeReciprocalDivergenceOQ03
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:66:2: failed to synthesize instance of type class
+  DecidablePred fun k => ∀ (p : ℕ), Nat.Prime p → p ∣ k → p ≤ N
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:84:43: unexpected token '/-!'; expected 'lemma'
+warning: Proofs/PrimeReciprocalDivergenceOQ03.lean:134:8: `Nat.factorization_prod_pow_eq_self` has been deprecated: Use `Nat.prod_factorization_pow_eq_self` instead
+warning: Proofs/PrimeReciprocalDivergenceOQ03.lean:135:8: `Nat.factorization_prod_pow_eq_self` has been deprecated: Use `Nat.prod_factorization_pow_eq_self` instead
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:138:5: Unknown constant `Nat.squarefree_iff_factorization_le_one.mp`
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:140:5: Unknown constant `Nat.squarefree_iff_factorization_le_one.mp`
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:155:6: Unknown constant `Nat.factorization_eq_zero_of_non_primeNat`
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:140:5: Unknown constant `Nat.squarefree_iff_factorization_le_one.mp`
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:155:6: Unknown constant `Nat.factorization_eq_zero_of_non_primeNat`
+error: Proofs/PrimeReciprocalDivergenceOQ03.lean:157:6: Unknown constant `Nat.factorization_eq_zero_of_non_primeNat`
+

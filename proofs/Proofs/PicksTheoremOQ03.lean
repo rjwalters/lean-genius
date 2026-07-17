@@ -327,7 +327,7 @@ Combined with L_P(X) = A·X² + (b/2)·X + 1:
   L_P(-1) = A - b/2 + 1 = i     (rearranges to Pick's: A = i + b/2 - 1)
 -/
 
-/-- **Ehrhart-Macdonald Reciprocity**:
+/-  **Ehrhart-Macdonald Reciprocity**:
     Evaluating the Ehrhart polynomial at -n gives (-1)^d times
     the interior lattice point count of the n-th dilate. -/
 

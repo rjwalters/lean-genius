@@ -25,11 +25,11 @@
   - [Ha73] Halász, "On a result of Salem and Zygmund..." (1973)
 -/
 
+import Mathlib
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex Finset BigOperators Real
 
@@ -52,7 +52,7 @@ noncomputable def randomPolynomial (s : SignVector n) (z : ℂ) : ℂ :=
 
 /-- The maximum modulus on the unit circle. -/
 noncomputable def maxModulus (s : SignVector n) : ℝ :=
-  ⨆ (θ : ℝ), abs (randomPolynomial s (exp (I * θ)))
+  ⨆ (θ : ℝ), ‖randomPolynomial s (exp (I * θ))‖
 
 /-- The polynomial evaluated at a point on the unit circle. -/
 noncomputable def evalOnCircle (s : SignVector n) (θ : ℝ) : ℂ :=
@@ -135,7 +135,7 @@ def AlmostSureConvergence (C : ℝ) : Prop :=
   -- P(lim_{n→∞} maxModulus / √(n log n) = C) = 1
   True
 
-/-- Halász proved almost sure convergence to 1. -/
+/-  Halász proved almost sure convergence to 1. -/
 /-
 ## Part VII: Properties of Random Polynomials
 -/
@@ -143,10 +143,10 @@ def AlmostSureConvergence (C : ℝ) : Prop :=
 /-- The L² norm on the circle. -/
 noncomputable def L2Norm (s : SignVector n) : ℝ :=
   Real.sqrt ((1 / (2 * Real.pi)) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    (abs (evalOnCircle s θ))^2)
+    ‖evalOnCircle s θ‖^2)
 
-/-- The L² norm is exactly √(n+1). -/
-/-- The max is much larger than the L² norm (by √(log n) factor). -/
+/-  The L² norm is exactly √(n+1). -/
+/-  The max is much larger than the L² norm (by √(log n) factor). -/
 /-- Connection to Kahane's work on random Fourier series. -/
 def kahaneConnection : Prop :=
   -- Random polynomials are a special case of random Fourier series
@@ -197,7 +197,7 @@ def RudinConjecture : Prop :=
 /-- The Mahler measure of random polynomials. -/
 noncomputable def mahlerMeasure (s : SignVector n) : ℝ :=
   Real.exp ((1 / (2 * Real.pi)) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    Real.log (abs (evalOnCircle s θ)))
+    Real.log ‖evalOnCircle s θ‖)
 
 /-- Connection to Szegő's theorem. -/
 def szegoConnection : Prop :=
@@ -230,7 +230,7 @@ theorem erdos_523_constant : ∃ C : ℝ, C = 1 ∧ ErdosQuestion523 := by
 /-- Main result: max = (1 + o(1))√(n log n) almost surely. -/
 theorem erdos_523_main :
     ∀ ε : ℝ, ε > 0 → True := -- Probability statement
-  halasz_theorem
+  fun _ _ => trivial
 
 /-- The problem is completely solved. -/
 theorem erdos_523_solved : ErdosQuestion523 := erdos_523

@@ -24,8 +24,7 @@ References:
 Tags: extremal-set-theory, intersecting-families, frankl
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos702
 
@@ -36,7 +35,7 @@ open Finset Nat
 -/
 
 /-- The ground set {1, 2, ..., n}. -/
-def groundSet (n : ℕ) : Finset ℕ := range n |>.map ⟨(· + 1), by intro; omega⟩
+def groundSet (n : ℕ) : Finset ℕ := range n |>.map ⟨(· + 1), by intro a b h; simpa using h⟩
 
 /-- A k-uniform family: all sets have size exactly k. -/
 def IsKUniform (F : Finset (Finset ℕ)) (k : ℕ) : Prop :=
@@ -67,7 +66,7 @@ def HasSingletonPair (F : Finset (Finset ℕ)) : Prop :=
 ## Part III: The Extremal Bound
 -/
 
-/-- **The extremal construction:**
+/-  **The extremal construction:**
     Fix two elements x, y. Take all k-sets containing both x and y.
     This family has size C(n-2, k-2) and avoids singleton intersections. -/
 /- **Why C(n-2, k-2)?**
@@ -90,7 +89,7 @@ axiom frankl_theorem :
       F.card > Nat.choose (n - 2) (k - 2) →
       HasSingletonPair F
 
-/-- **Katona's case k = 4 (unpublished):**
+/-  **Katona's case k = 4 (unpublished):**
     The first case, proved before Frankl's general result. -/
 /-
 ## Part V: Special Cases
@@ -102,7 +101,7 @@ axiom frankl_theorem :
     has a singleton intersection pair. -/
 example : Nat.choose 4 2 = 6 := by native_decide
 
-/-- **The condition k ≥ 4 is necessary:**
+/-  **The condition k ≥ 4 is necessary:**
     For k = 3, the statement fails. There exist large 3-uniform
     families avoiding singleton intersections. -/
 /-

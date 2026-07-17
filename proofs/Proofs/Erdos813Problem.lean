@@ -25,6 +25,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset
 
@@ -64,7 +65,7 @@ def HasCliqueOfSize {n : ℕ} (G : GraphOnN n) (k : ℕ) : Prop :=
 Axiomatized since computing the minimum requires exhaustive search. -/
 axiom h (n : ℕ) : ℕ
 
-/-- h(n) is an achievable bound: every graph with the property has a clique. -/
+/-  h(n) is an achievable bound: every graph with the property has a clique. -/
 /- ## Part IV: Known Bounds -/
 
 /-- Erdős-Hajnal lower bound: h(n) ≫ n^{1/3}. -/
@@ -77,7 +78,7 @@ axiom erdos_hajnal_upper_bound :
 
 /-- Combined Erdős-Hajnal bounds: n^{1/3} ≪ h(n) ≪ n^{1/2}. -/
 theorem erdos_hajnal_bounds :
-  ∃ c₁ c₂ > 0, ∀ n ≥ 1,
+  ∃ c₁ > 0, ∃ c₂ > 0, ∀ n : ℕ, n ≥ 1 →
     c₁ * (n : ℝ)^(1/3 : ℝ) ≤ (h n : ℝ) ∧
     (h n : ℝ) ≤ c₂ * (n : ℝ)^(1/2 : ℝ) := by
   obtain ⟨c₁, hc₁, hl⟩ := erdos_hajnal_lower_bound
@@ -86,7 +87,7 @@ theorem erdos_hajnal_bounds :
 
 /- ## Part V: Bucić-Sudakov Improvement (2023) -/
 
-/-- Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
+/-  Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
 /-- The exponent 5/12 improves on 1/3. -/
 theorem five_twelfths_better : (5 : ℝ) / 12 > 1 / 3 := by norm_num
 
@@ -98,7 +99,7 @@ theorem exponent_gap : (1 : ℝ) / 2 - 5 / 12 = 1 / 12 := by norm_num
 /-- Erdős's conjecture: can both bounds be improved?
 Specifically, do c₁, c₂ > 0 exist with n^{1/3+c₁} ≪ h(n) ≪ n^{1/2-c₂}? -/
 def ErdosConjecture813 : Prop :=
-  ∃ c₁ c₂ > 0,
+  ∃ c₁ > 0, ∃ c₂ > 0,
     (∀ n ≥ 1, (h n : ℝ) ≥ c₁ * (n : ℝ)^(1/3 + c₁ : ℝ)) ∧
     (∀ n ≥ 1, (h n : ℝ) ≤ c₂ * (n : ℝ)^(1/2 - c₂ : ℝ))
 

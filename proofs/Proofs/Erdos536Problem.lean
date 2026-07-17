@@ -57,10 +57,10 @@ theorem weisenberg_dense_case :
           HasLCMTriple A :=
   erdos_536_conjecture (221/225) (by norm_num)
 
-/-- **Four Elements Fail**: there is no analogous result for quadruples.
+/-  **Four Elements Fail**: there is no analogous result for quadruples.
     Erdős showed sets exist where no four distinct elements have all
     pairwise LCMs equal. -/
-/-- **Weisenberg Construction**: there exist sets A ⊆ {1,...,N} avoiding
+/-  **Weisenberg Construction**: there exist sets A ⊆ {1,...,N} avoiding
     the triple property with |A| ≫ (log log N)^{f(N)} · N / log N. -/
 /- ## Observations -/
 

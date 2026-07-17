@@ -16,6 +16,10 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
+set_option maxRecDepth 40000
+
 open Nat in
 /-- The condition that for every k with k! < n, n - k! is composite. -/
 def AllFactorialSubtractionsComposite (n : ℕ) : Prop :=
@@ -25,7 +29,9 @@ def AllFactorialSubtractionsComposite (n : ℕ) : Prop :=
 theorem prime_223 : Nat.Prime 223 := by decide
 
 /-- The next prime after 211 is 223 (no primes in 212..222). -/
-theorem next_prime_after_211 : ∀ n, 211 < n → n < 223 → ¬n.Prime := by decide
+theorem next_prime_after_211 : ∀ n, 211 < n → n < 223 → ¬n.Prime := by
+  intro n h1 h2
+  interval_cases n <;> norm_num
 
 /-- 199 is prime (key fact: 223 - 4! = 199). -/
 theorem prime_199 : Nat.Prime 199 := by decide
@@ -33,7 +39,7 @@ theorem prime_199 : Nat.Prime 199 := by decide
 /-- 223 fails the Erdős 1059 property: 223 - 4! = 223 - 24 = 199 is prime. -/
 theorem counterexample_223 : ¬AllFactorialSubtractionsComposite 223 := by
   intro h
-  have h4 := h 4 (by simp [Nat.factorial]; omega)
+  have h4 := h 4 (by simp [Nat.factorial] )
   simp [Nat.factorial] at h4
   exact h4 (by decide)
 

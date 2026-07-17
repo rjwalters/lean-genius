@@ -30,10 +30,7 @@ References:
   geometry." Proc. ICM (1984), 51-70.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Nat Real Finset
 
@@ -62,7 +59,7 @@ def HasNoAdditiveQuadruple (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
     a + b = c + d → a = c ∨ a = d ∨ b = c ∨ b = d
 
-/--
+/- 
 **Sidon sets have no non-trivial additive quadruples:**
 This equivalence is straightforward but requires case analysis on set equality.
 -/
@@ -95,7 +92,7 @@ def maxRepresentation (A : Finset ℕ) : ℕ :=
 def HasBoundedConvolution (A : Finset ℕ) (k : ℕ) : Prop :=
   ∀ n : ℕ, representationCount A n ≤ k
 
-/--
+/- 
 **Sidon sets have bounded convolution with k=2:**
 Each sum appears at most once (unordered), so at most twice (ordered).
 This follows from the definition of Sidon sets.
@@ -132,11 +129,11 @@ axiom erdos_1984_upper_bound :
 ## Part V: Basic Lower Bound
 -/
 
-/--
+/- 
 **Every set contains a Sidon subset of size ≫ √n:**
 This is a classical result (see Problem #530).
 -/
-/--
+/- 
 **Basic lower bound: H_k(n) ≫ √n**
 Follows from the fact that any set contains a Sidon subset of size ≫ √n.
 -/
@@ -165,7 +162,7 @@ axiom ratio_tends_to_infinity :
       ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
         (H_k k n : ℝ) / Real.sqrt n ≥ M
 
-/--
+/- 
 **Corollary: H_k(n) > n^{1/2 + c} for c = 1/6**
 Since H_k(n) ≥ c_k * n^{2/3} and 2/3 = 1/2 + 1/6, this holds for large n.
 -/
@@ -179,14 +176,15 @@ The number of solutions to a + b = c + d in A is ≪ |A|² when
 ‖1_A ∗ 1_A‖_∞ ≤ k.
 -/
 def additiveQuadrupleCount (A : Finset ℕ) : ℕ :=
-  (A ×ˢ A ×ˢ A ×ˢ A).filter (fun ⟨a, b, c, d⟩ =>
-    a + b = c + d ∧ ({a, b} : Finset ℕ) ≠ {c, d}).card
+  ((A ×ˢ A ×ˢ A ×ˢ A).filter (fun x =>
+    x.1 + x.2.1 = x.2.2.1 + x.2.2.2 ∧
+      ({x.1, x.2.1} : Finset ℕ) ≠ {x.2.2.1, x.2.2.2})).card
 
-/--
+/- 
 **Quadruple bound:**
 In a set with bounded convolution, additive quadruples are ≤ k · n².
 -/
-/--
+/- 
 **Probabilistic construction:**
 Sample each element with probability p ∼ n^{-1/3}.
 - Expected subset size: ≈ n^{2/3}

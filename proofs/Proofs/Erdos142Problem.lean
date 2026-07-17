@@ -22,6 +22,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- An arithmetic progression of length k starting at a with common difference d. -/

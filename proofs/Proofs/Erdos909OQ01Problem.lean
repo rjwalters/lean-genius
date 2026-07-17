@@ -24,9 +24,7 @@
   - Engelking "Dimension Theory" (1978)
 -/
 
-import Mathlib.Topology.Basic
-import Mathlib.Topology.Separation.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open TopologicalSpace
 
@@ -155,13 +153,15 @@ axiom anderson_keisler_existence :
     ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S),
       IsDimensionStable S n
 
+universe u
+
 /-- The characterization question: what is the necessary and sufficient condition
     for a space to be dimension-stable? -/
 def CharacterizationQuestion : Prop :=
-  ∃ (P : (S : Type*) → [TopologicalSpace S] → Prop),
-    ∀ (S : Type*) [TopologicalSpace S] (n : ℕ),
+  ∃ (P : (S : Type u) → (_ : TopologicalSpace S) → Prop),
+    ∀ (S : Type u) [inst : TopologicalSpace S] (n : ℕ),
       hasDimensionExactly S n →
-      (IsDimensionStable S n ↔ P S)
+      (IsDimensionStable S n ↔ P S inst)
 
 /-
 ## Part VI: Structural Properties
@@ -169,7 +169,7 @@ def CharacterizationQuestion : Prop :=
 Properties that dimension-stable spaces must/may have.
 -/
 
-/-- If S is dimension-stable at n, then dim(S^k) <= n for all finite k
+/-  If S is dimension-stable at n, then dim(S^k) <= n for all finite k
     follows from induction on the product. More precisely,
     dim(S × S × S) <= dim(S × S) + dim(S) = n + n, but the
     actual dimension might be n if the product is "well-behaved". -/
@@ -217,7 +217,7 @@ theorem not_stable_if_product_lower (S : Type*) [TopologicalSpace S] (n m : ℕ)
 def EuclideanNotStable (n : ℕ) (hn : n ≥ 1) : Prop :=
   ¬ IsDimensionStable (Fin n → ℝ) n
 
-/-- The characterization remains open for general topological spaces.
+/- The characterization remains open for general topological spaces.
     Known partial results:
     1. All 0-dimensional spaces are stable (trivially)
     2. Compact manifolds are NOT stable (dimension is additive)

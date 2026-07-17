@@ -80,7 +80,7 @@ This is equivalent to asking if there exists a constant c > 0 such that
 f_{k,3}(x) ≥ c · x^{3/k} for all sufficiently large x.
 -/
 
-/-- **Erdős Problem #325**: For k ≥ 3, does f_{k,3}(x) ≫ x^{3/k}?
+/-  **Erdős Problem #325**: For k ≥ 3, does f_{k,3}(x) ≫ x^{3/k}?
 
 In Mathlib's asymptotic notation, this asks whether x^{3/k} = O(f_{k,3}(x)).
 
@@ -92,10 +92,10 @@ Erdős also asked about a weaker form with an epsilon loss, and there
 are known partial results for specific values of k.
 -/
 
-/-- A weaker variant: is f_{k,3}(x) ≫_ε x^{3/k - ε} for every ε > 0?
+/-  A weaker variant: is f_{k,3}(x) ≫_ε x^{3/k - ε} for every ε > 0?
 
 This is also OPEN. -/
-/-- **Wooley's Theorem (2015)**: For sums of three cubes (k = 3),
+/-  **Wooley's Theorem (2015)**: For sums of three cubes (k = 3),
 f_{3,3}(x) ≫ x^{0.917}.
 
 This is the best known bound for k = 3, falling short of the
@@ -119,7 +119,7 @@ def IsSumTwoPower (k n : ℕ) : Prop := ∃ a b : ℕ, a ^ k + b ^ k = n
 noncomputable def cardIsSumTwoPowerBelow (k x : ℕ) : ℕ :=
   {n ∈ Set.Iic x | IsSumTwoPower k n}.ncard
 
-/-- **Mahler-Erdős Theorem (1938)**: f_{k,2}(x) ≫ x^{2/k}.
+/- **Mahler-Erdős Theorem (1938)**: f_{k,2}(x) ≫ x^{2/k}.
 
 This is the analogue of the conjecture for two terms, and it IS proved.
 We state it as an axiom since the proof requires analytic methods. -/

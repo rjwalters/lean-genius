@@ -195,7 +195,7 @@ theorem prime_order_simple {G : Type*} [Group G] [Fintype G]
 theorem prime_order_cyclic {G : Type*} [Group G] [Fintype G]
     (hp : Nat.Prime (Fintype.card G)) : IsCyclic G := by
   haveI : Fact (Nat.Prime (Fintype.card G)) := ⟨hp⟩
-  exact isCyclic_of_prime_card rfl
+  exact isCyclic_of_prime_card (p := Fintype.card G) (Nat.card_eq_fintype_card (α := G))
 
 /-! ## Why Lagrange's Theorem Matters
 

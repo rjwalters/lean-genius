@@ -72,8 +72,8 @@ follows directly from Erdős's 1959 probabilistic method result.
 /-- For any k, there exists a triangle-free graph with chromatic number ≥ k.
 Follows from the general erdos_1959_probabilistic_method with g = 3. -/
 lemma triangle_free_unbounded_chromatic_ari (k : ℕ) :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      HasGirthGT G 3 ∧ chromaticNumber G ≥ k := by
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      HasGirthGT G 3 ∧ G.chromaticNumber ≥ (k : ℕ∞) := by
   sorry
 
 end Erdos626Aristotle

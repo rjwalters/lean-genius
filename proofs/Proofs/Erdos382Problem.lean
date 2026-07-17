@@ -107,9 +107,9 @@ private lemma foldl_max_eq_init_or_mem : ∀ (l : List ℕ) (init : ℕ),
     simp only [List.foldl_cons]
     rcases foldl_max_eq_init_or_mem as (max init a) with h | h
     · rw [h]
-      rcases le_or_lt a init with hle | hlt
+      rcases le_or_gt a init with hle | hlt
       · left; exact max_eq_left hle
-      · right; rw [max_eq_right (le_of_lt hlt)]; exact List.mem_cons_self a as
+      · right; rw [max_eq_right (le_of_lt hlt)]; exact List.mem_cons_self
     · right; exact List.mem_cons_of_mem a h
 
 /-- primeFactorsList is nonempty for n > 1. -/
@@ -129,7 +129,7 @@ private lemma foldl_max_mem_primeFactorsList (n : ℕ) (hn : n > 1) :
     obtain ⟨x, hx⟩ : ∃ a, a ∈ n.primeFactorsList := by
       cases hl : n.primeFactorsList with
       | nil => exact absurd hl hne
-      | cons a l => exact ⟨a, List.mem_cons_self a l⟩
+      | cons a l => exact ⟨a, List.mem_cons_self⟩
     have h1 := foldl_max_ge_of_mem hx 0
     rw [h] at h1
     have h2 := (Nat.prime_of_mem_primeFactorsList hx).two_le
@@ -175,11 +175,10 @@ private lemma factorization_finset_prod_id (s : Finset ℕ) (h : ∀ m ∈ s, m 
     (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization := by
   induction s using Finset.induction_on with
   | empty => simp [Nat.factorization_one]
-  | insert ha ih =>
-    rename_i a s _
+  | insert a s ha ih =>
     rw [Finset.prod_insert ha, Finset.sum_insert ha]
     rw [Nat.factorization_mul (h a (Finset.mem_insert_self a s))
-      (Finset.prod_ne_zero (fun m hm => h m (Finset.mem_insert_of_mem hm)))]
+      (Finset.prod_ne_zero_iff.mpr (fun m hm => h m (Finset.mem_insert_of_mem hm)))]
     congr 1
     exact ih (fun m hm => h m (Finset.mem_insert_of_mem hm))
 
@@ -233,7 +232,7 @@ theorem largest_prime_exp_one (u v p : ℕ) (hu : u > 0) (huv : u ≤ v)
   -- Goal: exponent p p + ∑ m ∈ (Icc u v).erase p, exponent p m = 1
   -- Step 5: exponent p p = 1 for prime p
   have hexp_self : exponent p p = 1 := by
-    simp only [exponent, Nat.Prime.factorization hp, Finsupp.single_eq_same]
+    simp only [exponent]; exact hp.factorization_self
   -- Step 6: All other terms are 0 (p does not divide any m ≠ p in [u,v])
   have hexp_rest : ∀ m ∈ (Finset.Icc u v).erase p, exponent p m = 0 := by
     intro m hm
@@ -243,7 +242,7 @@ theorem largest_prime_exp_one (u v p : ℕ) (hu : u > 0) (huv : u ≤ v)
     rw [Nat.factorization_eq_zero_of_not_dvd]
     intro hdvd
     -- p | m, so m = k * p for some k ≥ 1. Since m ≠ p, k ≥ 2, so m ≥ 2p > v.
-    have hk : m / p ≥ 1 := Nat.one_le_div_of_dvd (by omega : m > 0) hdvd
+    have hk : m / p ≥ 1 := Nat.div_pos (Nat.le_of_dvd (by omega : m > 0) hdvd) hp.pos
     have hk2 : m / p ≠ 1 := by intro h; exact hmp (Nat.eq_of_dvd_of_div_eq_one hdvd h).symm
     have : m ≥ 2 * p := by
       have := Nat.div_mul_cancel hdvd
@@ -251,8 +250,9 @@ theorem largest_prime_exp_one (u v p : ℕ) (hu : u > 0) (huv : u ≤ v)
       nlinarith [this, Nat.div_mul_cancel hdvd]
     omega
   rw [Finset.sum_eq_zero hexp_rest, hexp_self]
+  omega
 
-/-- NOTE: The previous axiom exp_ge_two_needs_square was INCORRECT.
+/-  NOTE: The previous axiom exp_ge_two_needs_square was INCORRECT.
     Counterexample: [3,6] with p=3. Exponent is 2 (from v₃(3)=1, v₃(6)=1)
     but there is no k ∈ [3,6] with 9 | k. The exponent ≥ 2 can come from
     multiple distinct multiples of p, not just from p² dividing a single term.
@@ -357,8 +357,9 @@ private lemma log_sq_lt_rpow (C : ℝ) (hC : C > 0) (ε : ℝ) (hε : ε > 0) :
       exact_mod_cast le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hv
     have hCexp_real : C ^ (2 / ε) ≤ (v : ℝ) :=
       le_trans (Nat.le_ceil _) (by exact_mod_cast hCexp_le)
-    calc C = (C ^ (2 / ε)) ^ (ε / 2) := by
-            rw [← rpow_mul hC.le]; congr 1; field_simp
+    have hCexp_eq : (2 / ε) * (ε / 2) = 1 := by field_simp
+    calc C = C ^ ((2 / ε) * (ε / 2)) := by rw [hCexp_eq, Real.rpow_one]
+      _ = (C ^ (2 / ε)) ^ (ε / 2) := by rw [rpow_mul hC.le]
       _ ≤ (v : ℝ) ^ (ε / 2) := rpow_le_rpow (rpow_nonneg hC.le _) hCexp_real hε2.le
   -- Combine: C * log² v ≤ C * (1/4) * v^(ε/2) ≤ (1/4) * v^(ε/2) * v^(ε/2) ≤ v^ε
   calc C * (Real.log (v : ℝ)) ^ 2
@@ -369,6 +370,110 @@ private lemma log_sq_lt_rpow (C : ℝ) (hC : C > 0) (ε : ℝ) (hε : ε > 0) :
         have : C / 4 < (v : ℝ) ^ (ε / 2) := by linarith
         nlinarith [rpow_pos_of_pos hv_pos (ε / 2)]
     _ = (v : ℝ) ^ ε := by rw [one_mul, ← rpow_add hv_pos]; congr 1; ring
+
+/-- If [u, v] satisfies the condition, no prime in [u, v] exceeds √v.
+
+    Proof: Suppose p is a prime in [u, v] with p > √v. Then p divides the
+    product, so q := largestPrimeDivisor(prod) ≥ p > √v. By Bertrand's
+    postulate: 2q > v (since a prime r with q < r ≤ 2q and r ∈ [u,v] would
+    divide the product, giving q ≥ r > q, contradiction). So q is the unique
+    multiple of q in [u,v], and since q² > v, exponent(q) = 1 — contradicting
+    the condition which requires exponent ≥ 2.
+
+    NOTE: Previous version was incorrect (omitted u ≤ p, claiming no prime
+    exists between √v and v, which is absurd for most v). -/
+theorem no_prime_in_upper_half (u v : ℕ) (hu : u > 0) (huv : u ≤ v)
+    (hcond : satisfiesCondition u v) :
+    ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v := by
+  intro p hp hpu hpv
+  by_contra hgt
+  push_neg at hgt
+  -- Extract condition components
+  obtain ⟨_, _, hcond_exp⟩ := hcond
+  -- p ∈ [u, v] and p divides the product
+  have hp_mem : p ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨hpu, hpv⟩
+  have hp_dvd : p ∣ prodInterval u v :=
+    dvd_trans (dvd_refl p) (Finset.dvd_prod_of_mem id hp_mem)
+  -- Product > 1 (since it contains p ≥ 2)
+  have hprod_pos : prodInterval u v > 0 := by
+    unfold prodInterval
+    apply Finset.prod_pos
+    intro m hm
+    have := (Finset.mem_Icc.mp hm).1
+    omega
+  have hprod_gt : prodInterval u v > 1 := by
+    have hple : p ≤ prodInterval u v := Nat.le_of_dvd hprod_pos hp_dvd
+    have := hp.two_le
+    omega
+  -- q := largestPrimeDivisor ≥ p > √v
+  set q := largestPrimeDivisor (prodInterval u v) with hq_def
+  have hq_prime := largestPrimeDivisor_prime _ hprod_gt
+  have hpq : p ≤ q := prime_le_largestPrimeDivisor _ _ hprod_gt hp hp_dvd
+  -- By Bertrand's postulate: 2q > v
+  have h2q : v < 2 * q := by
+    obtain ⟨r, hr_prime, hqr, hr2q⟩ :=
+      Nat.exists_prime_lt_and_le_two_mul q (by omega : q ≠ 0)
+    by_contra h; push_neg at h
+    -- r > q ≥ p ≥ u and r ≤ 2q ≤ v, so r ∈ [u, v] and divides product
+    have hr_mem : r ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨by omega, by omega⟩
+    have hr_dvd : r ∣ prodInterval u v :=
+      dvd_trans (dvd_refl r) (Finset.dvd_prod_of_mem id hr_mem)
+    -- q ≥ r > q: contradiction
+    exact absurd (prime_le_largestPrimeDivisor _ _ hprod_gt hr_prime hr_dvd) (not_le.mpr hqr)
+  -- q divides some element m ∈ [u, v]; since 2q > v, m must equal q
+  have hq_dvd := largestPrimeDivisor_dvd _ hprod_gt
+  obtain ⟨m, hm_mem, hq_dvd_m⟩ :=
+    (hq_prime.prime.dvd_finsetProd_iff id).mp (show q ∣ ∏ m ∈ Finset.Icc u v, id m from hq_dvd)
+  have hm_le : m ≤ v := (Finset.mem_Icc.mp hm_mem).2
+  have hm_ge : u ≤ m := (Finset.mem_Icc.mp hm_mem).1
+  have hm_pos : m > 0 := by omega
+  -- m is a multiple of q, m ≤ v < 2q, so m = q
+  have hm_eq_q : m = q := by
+    have : m / q ≥ 1 := Nat.div_pos (Nat.le_of_dvd hm_pos hq_dvd_m) (by omega : q > 0)
+    have : m / q < 2 := by
+      rw [Nat.div_lt_iff_lt_mul (by omega : q > 0)]
+      omega
+    have hk1 : m / q = 1 := by omega
+    calc m = m / q * q := (Nat.div_mul_cancel hq_dvd_m).symm
+      _ = 1 * q := by rw [hk1]
+      _ = q := one_mul q
+  -- So q ∈ [u, v]
+  have hq_mem : q ∈ Finset.Icc u v := hm_eq_q ▸ hm_mem
+  -- Compute exponent via sum decomposition
+  have hexp_eq := exponentInProduct_sum q u v hq_prime hu
+  rw [← Finset.add_sum_erase _ _ hq_mem] at hexp_eq
+  -- v_q(q) = 1 for prime q
+  have hexp_q : exponent q q = 1 := by
+    simp only [exponent]; exact hq_prime.factorization_self
+  -- All other terms are 0: q ∤ m for m ∈ [u,v], m ≠ q (since 2q > v)
+  have hexp_zero : ∀ m' ∈ (Finset.Icc u v).erase q, exponent q m' = 0 := by
+    intro m' hm'
+    have hm'' : m' ≠ q ∧ u ≤ m' ∧ m' ≤ v := by
+      simp only [Finset.mem_erase, Finset.mem_Icc] at hm'
+      exact ⟨hm'.1, hm'.2.1, hm'.2.2⟩
+    obtain ⟨hm'q, hm'u, hm'v⟩ := hm''
+    simp only [exponent]
+    apply Nat.factorization_eq_zero_of_not_dvd
+    intro hdvd
+    -- q | m' and m' ≤ v < 2q, so m' = q. But m' ≠ q. Contradiction.
+    have h1 : m' / q ≥ 1 := Nat.div_pos (Nat.le_of_dvd (by omega) hdvd) (by omega)
+    have h2 : m' / q < 2 := by rw [Nat.div_lt_iff_lt_mul (by omega : q > 0)]; omega
+    have hk1 : m' / q = 1 := by omega
+    have : m' = q := by
+      calc m' = m' / q * q := (Nat.div_mul_cancel hdvd).symm
+        _ = 1 * q := by rw [hk1]
+        _ = q := one_mul q
+    exact hm'q this
+  rw [Finset.sum_eq_zero hexp_zero] at hexp_eq
+  -- exponentInProduct q u v = 1, but condition says ≥ 2
+  simp only [hexp_q, add_zero] at hexp_eq
+  rw [hq_def] at hexp_eq
+  have hcond_exp' : exponent (largestPrimeDivisor (prodInterval u v)) (prodInterval u v) ≥ 2 :=
+    hcond_exp
+  have hexp_eq' : exponent (largestPrimeDivisor (prodInterval u v)) (prodInterval u v) = 1 :=
+    hexp_eq
+  omega
+
 
 theorem cramer_implies_q1 : cramersConjecture → question1 := by
   intro ⟨C, hC, hcramer⟩ ε hε
@@ -406,9 +511,10 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
     linarith
   use max (max V₁ V₂) 4
   intro u v hv hcond
+  have hno_large := no_prime_in_upper_half u v hcond.2.1 hcond.1 hcond
   obtain ⟨huv, hu, _⟩ := hcond
-  have hno_large := no_prime_in_upper_half u v hu huv hcond
-  have hv4 : v ≥ 4 := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hv
+  have hv4 : v ≥ 4 := le_trans (le_max_right _ _) hv
+  have hsqrt_ge2 : 2 ≤ Nat.sqrt v := Nat.le_sqrt.mpr (by omega : 2 * 2 ≤ v)
   have hV₁_le : V₁ ≤ v := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hv
   have hV₂_le : V₂ ≤ v := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hv
   -- Step 1: u > Nat.sqrt v (by Bertrand + contradiction with hno_large)
@@ -422,9 +528,9 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
     have hp_le_v : p ≤ v := by
       calc p ≤ 2 * Nat.sqrt v := hp_le
         _ ≤ v := by
-          have := Nat.sqrt_le_self v
-          have := (Nat.sqrt_lt_self (by omega : v ≥ 2)).le
-          omega
+          have hge2 : 2 ≤ Nat.sqrt v := Nat.le_sqrt.mpr (by omega : 2 * 2 ≤ v)
+          have hsqle : Nat.sqrt v * Nat.sqrt v ≤ v := Nat.sqrt_le v
+          nlinarith [hge2, hsqle]
     -- u ≤ Nat.sqrt v < p, so u ≤ p
     have hup : u ≤ p := by omega
     -- But hno_large says p ≤ Nat.sqrt v, contradicting p > Nat.sqrt v
@@ -436,18 +542,19 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
     omega
   -- Step 3: Find consecutive primes p₀ < u ≤ v < q₀
   -- q₀: smallest prime > v (exists by Bertrand)
-  have ⟨q_wit, hq_wit_prime, hq_wit_gt, _⟩ :=
-    Nat.exists_prime_lt_and_le_two_mul v (by omega)
-  let q₀ := Nat.find ⟨q_wit, hq_wit_prime, by omega : q_wit > v⟩
-  have hq₀_spec := Nat.find_spec ⟨q_wit, hq_wit_prime, by omega : q_wit > v⟩
+  obtain ⟨q_wit, hq_wit_prime, hq_wit_gt, _⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul v (by omega : v ≠ 0)
+  have hex : ∃ n, n.Prime ∧ v < n := ⟨q_wit, hq_wit_prime, hq_wit_gt⟩
+  let q₀ := Nat.find hex
+  have hq₀_spec := Nat.find_spec hex
   have hq₀_prime : q₀.Prime := hq₀_spec.1
   have hq₀_gt : q₀ > v := hq₀_spec.2
   have hq₀_min : ∀ r, r.Prime → r > v → q₀ ≤ r := fun r hr hrv =>
-    Nat.find_min' ⟨q_wit, hq_wit_prime, by omega⟩ ⟨hr, hrv⟩
+    Nat.find_min' hex ⟨hr, hrv⟩
   -- p₀: largest prime < u (exists since 2 < u)
   let primes_lt_u := (Finset.range u).filter Nat.Prime
   have hne : primes_lt_u.Nonempty := by
-    refine ⟨2, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), Nat.prime_iff.mpr ⟨by omega, by omega⟩⟩⟩
+    refine ⟨2, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), Nat.prime_two⟩⟩
   let p₀ := primes_lt_u.max' hne
   have hp₀_mem := Finset.max'_mem primes_lt_u hne
   have hp₀_prime : p₀.Prime := (Finset.mem_filter.mp hp₀_mem).2
@@ -473,11 +580,12 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
   -- Step 5: Chain v - u ≤ q₀ - p₀ ≤ C * log² p₀ ≤ C * log² v < v^ε
   have hvu_le : (v - u : ℝ) ≤ (q₀ - p₀ : ℝ) := by
     have : (u : ℝ) ≥ (p₀ : ℝ) + 1 := by exact_mod_cast show u ≥ p₀ + 1 by omega
-    have : (v : ℝ) ≤ (q₀ : ℝ) - 1 := by exact_mod_cast show v ≤ q₀ - 1 by omega
+    have : (q₀ : ℝ) ≥ (v : ℝ) + 1 := by exact_mod_cast show q₀ ≥ v + 1 by omega
     linarith
   have hlog_mono : (Real.log p₀) ^ 2 ≤ (Real.log v) ^ 2 := by
     apply sq_le_sq'
-    · linarith [Real.log_nonneg (show (1 : ℝ) ≤ ↑v by exact_mod_cast show 1 ≤ v by omega)]
+    · linarith [Real.log_nonneg (show (1 : ℝ) ≤ ↑v by exact_mod_cast show 1 ≤ v by omega),
+        Real.log_nonneg (show (1 : ℝ) ≤ (p₀ : ℝ) by exact_mod_cast hp₀_prime.one_lt.le)]
     · exact Real.log_le_log (by exact_mod_cast show 0 < p₀ from Nat.Prime.pos hp₀_prime)
         (by exact_mod_cast show p₀ ≤ v by omega)
   calc (v - u : ℝ) ≤ (q₀ - p₀ : ℝ) := hvu_le
@@ -491,101 +599,6 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
 example : prodInterval 2 4 = 24 := by
   simp [prodInterval]
   native_decide
-
-/-- If [u, v] satisfies the condition, no prime in [u, v] exceeds √v.
-
-    Proof: Suppose p is a prime in [u, v] with p > √v. Then p divides the
-    product, so q := largestPrimeDivisor(prod) ≥ p > √v. By Bertrand's
-    postulate: 2q > v (since a prime r with q < r ≤ 2q and r ∈ [u,v] would
-    divide the product, giving q ≥ r > q, contradiction). So q is the unique
-    multiple of q in [u,v], and since q² > v, exponent(q) = 1 — contradicting
-    the condition which requires exponent ≥ 2.
-
-    NOTE: Previous version was incorrect (omitted u ≤ p, claiming no prime
-    exists between √v and v, which is absurd for most v). -/
-theorem no_prime_in_upper_half (u v : ℕ) (hu : u > 0) (huv : u ≤ v)
-    (hcond : satisfiesCondition u v) :
-    ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v := by
-  intro p hp hpu hpv
-  by_contra hgt
-  push_neg at hgt
-  -- Extract condition components
-  obtain ⟨_, _, hcond_exp⟩ := hcond
-  -- p ∈ [u, v] and p divides the product
-  have hp_mem : p ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨hpu, hpv⟩
-  have hp_dvd : p ∣ prodInterval u v :=
-    dvd_trans (dvd_refl p) (Finset.dvd_prod_of_mem id hp_mem)
-  -- Product > 1 (since it contains p ≥ 2)
-  have hprod_gt : prodInterval u v > 1 := by
-    have : prodInterval u v ≥ p := by
-      unfold prodInterval
-      calc ∏ m ∈ Finset.Icc u v, m
-          ≥ ∏ _ ∈ ({p} : Finset ℕ), p := by
-            apply Finset.prod_le_prod_of_subset_of_one_le'
-              (Finset.singleton_subset_iff.mpr hp_mem)
-            intro m hm _; exact Finset.mem_Icc.mp hm |>.1 |> (Nat.one_le_iff_ne_zero.mpr ∘ Nat.not_eq_zero_of_lt ∘ Nat.lt_of_lt_of_le (by omega : 0 < u))
-        _ = p := Finset.prod_singleton
-    omega
-  -- q := largestPrimeDivisor ≥ p > √v
-  set q := largestPrimeDivisor (prodInterval u v) with hq_def
-  have hq_prime := largestPrimeDivisor_prime _ hprod_gt
-  have hpq : p ≤ q := prime_le_largestPrimeDivisor _ _ hprod_gt hp hp_dvd
-  -- By Bertrand's postulate: 2q > v
-  have h2q : v < 2 * q := by
-    obtain ⟨r, hr_prime, hqr, hr2q⟩ :=
-      Nat.exists_prime_lt_and_le_two_mul q (by omega : q ≠ 0)
-    by_contra h; push_neg at h
-    -- r > q ≥ p ≥ u and r ≤ 2q ≤ v, so r ∈ [u, v] and divides product
-    have hr_mem : r ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨by omega, by omega⟩
-    have hr_dvd : r ∣ prodInterval u v :=
-      dvd_trans (dvd_refl r) (Finset.dvd_prod_of_mem id hr_mem)
-    -- q ≥ r > q: contradiction
-    exact absurd (prime_le_largestPrimeDivisor _ _ hprod_gt hr_prime hr_dvd) (not_le.mpr hqr)
-  -- q divides some element m ∈ [u, v]; since 2q > v, m must equal q
-  have hq_dvd := largestPrimeDivisor_dvd _ hprod_gt
-  obtain ⟨m, hm_mem, hq_dvd_m⟩ :=
-    (hq_prime.prime).dvd_finset_prod_iff.mp (show q ∣ ∏ m ∈ Finset.Icc u v, m from hq_dvd)
-  have hm_le : m ≤ v := (Finset.mem_Icc.mp hm_mem).2
-  have hm_pos : m > 0 := by omega
-  -- m is a multiple of q, m ≤ v < 2q, so m = q
-  have hm_eq_q : m = q := by
-    have : m / q ≥ 1 := Nat.div_pos (Nat.le_of_dvd hm_pos hq_dvd_m) (by omega : q > 0)
-    have : m / q < 2 := by
-      rw [Nat.div_lt_iff_lt_mul (by omega : q > 0)]
-      omega
-    have hk1 : m / q = 1 := by omega
-    calc m = m / q * q := (Nat.div_mul_cancel hq_dvd_m).symm
-      _ = 1 * q := by rw [hk1]
-      _ = q := one_mul q
-  -- So q ∈ [u, v]
-  have hq_mem : q ∈ Finset.Icc u v := hm_eq_q ▸ hm_mem
-  -- Compute exponent via sum decomposition
-  have hexp_eq := exponentInProduct_sum q u v hq_prime hu
-  rw [← Finset.add_sum_erase _ _ hq_mem] at hexp_eq
-  -- v_q(q) = 1 for prime q
-  have hexp_q : exponent q q = 1 := by
-    simp only [exponent, Nat.Prime.factorization hq_prime, Finsupp.single_eq_same]
-  -- All other terms are 0: q ∤ m for m ∈ [u,v], m ≠ q (since 2q > v)
-  have hexp_zero : ∀ m' ∈ (Finset.Icc u v).erase q, exponent q m' = 0 := by
-    intro m' hm'
-    obtain ⟨hm'q, hm'u, hm'v⟩ := by
-      simp only [Finset.mem_erase, Finset.mem_Icc] at hm'
-      exact ⟨hm'.1, hm'.2.1, hm'.2.2⟩
-    simp only [exponent]
-    apply Nat.factorization_eq_zero_of_not_dvd
-    intro hdvd
-    -- q | m' and m' ≤ v < 2q, so m' = q. But m' ≠ q. Contradiction.
-    have h1 : m' / q ≥ 1 := Nat.div_pos (Nat.le_of_dvd (by omega) hdvd) (by omega)
-    have h2 : m' / q < 2 := by rw [Nat.div_lt_iff_lt_mul (by omega : q > 0)]; omega
-    have : m' = q := by
-      calc m' = m' / q * q := (Nat.div_mul_cancel hdvd).symm
-        _ = 1 * q := by omega
-        _ = q := one_mul q
-    exact hm'q this
-  rw [Finset.sum_eq_zero hexp_zero] at hexp_eq
-  -- exponentInProduct q u v = 1, but condition says ≥ 2
-  simp only [hexp_q, add_zero] at hexp_eq
-  linarith [hcond_exp, hexp_eq]
 
 /- ## Part IX: The Prime-Free Interval Perspective -/
 
@@ -601,7 +614,7 @@ fit in [1, v].
 def noPrimeLargerThanSqrt (u v : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v
 
-/-- NOTE: The previous axiom condition_iff_no_large_prime was INCORRECT.
+/-  NOTE: The previous axiom condition_iff_no_large_prime was INCORRECT.
     Counterexample: [24, 28]. No primes in [24,28] (all composite), so
     noPrimeLargerThanSqrt is vacuously true. But the product 24·25·26·27·28
     has largest prime factor 13 (from 26 = 2·13), and 13 appears with

@@ -30,11 +30,8 @@ References:
 - Erdős-Graham: "Old and New Problems in Combinatorial Number Theory"
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib
+open scoped Classical
 
 open Nat Finset BigOperators
 
@@ -57,7 +54,10 @@ The elements are a, a+d, a+2d, ..., a+(k-1)d.
 -/
 theorem arithProg_mem (a d k n : ℕ) :
     n ∈ ArithProg a d k ↔ ∃ i < k, n = a + i * d := by
-  simp [ArithProg]
+  simp only [ArithProg, Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro ⟨i, hi, rfl⟩; exact ⟨i, hi, rfl⟩
+  · rintro ⟨i, hi, rfl⟩; exact ⟨i, hi, rfl⟩
 
 /--
 **AP Size:**
@@ -65,10 +65,8 @@ An arithmetic progression with k terms has exactly k elements (when d > 0).
 -/
 theorem arithProg_card (a d k : ℕ) (hd : d > 0) :
     (ArithProg a d k).card = k := by
-  simp only [ArithProg, card_image_of_injective]
-  · exact card_range k
-  · intro i j hij
-    omega
+  rw [ArithProg, Finset.card_image_of_injective _
+    (fun i j hij => Nat.eq_of_mul_eq_mul_right hd (by omega)), card_range]
 
 /-
 ## Part II: ±1 Colorings and Discrepancy
@@ -180,7 +178,7 @@ When k is a power of 2, N(k, 1) = k(k-1) + 1 = k² - k + 1.
 -/
 theorem spencer_power_of_two (t : ℕ) :
     Nkl (2^t) 1 = 2^t * (2^t - 1) + 1 := by
-  have hk : 2^t > 0 := Nat.pos_pow_of_pos t (by norm_num)
+  have hk : 2^t > 0 := pow_pos (by norm_num) t
   have := spencer_1973 (2^t) hk
   simp only at this
   -- The 2-adic valuation of 2^t is t
@@ -194,7 +192,7 @@ theorem spencer_power_of_two (t : ℕ) :
 ## Part VI: Erdős's Lower Bound (1963)
 -/
 
-/--
+/- 
 **α_c Definition:**
 The exponent in Erdős's lower bound depends on c.
 -/
@@ -204,13 +202,13 @@ axiom alpha_c_exists : ∃ f : ℝ → ℝ, ∀ c > 0, f c > 0
 
 noncomputable def alpha_c (c : ℝ) : ℝ := Classical.choose alpha_c_exists c
 
-/--
+/- 
 **Erdős 1963 Lower Bound:**
 For any c > 0, N(k, ck) > (1 + α_c)^k.
 
 This shows exponential growth is necessary.
 -/
-/--
+/- 
 **Behavior of α_c:**
 - α_c → 0 as c → 0 (small discrepancy is easy to avoid)
 - α_c → √2 - 1 as c → 1 (approaching van der Waerden)
@@ -242,7 +240,7 @@ def SqrtDiscrepancyConjecture : Prop :=
   ∃ C : ℝ, C > 1 ∧ ∀ k : ℕ, k > 1 →
     (Nkl k ⌈Real.sqrt k⌉.toNat : ℝ) ≤ C ^ k
 
-/--
+/- 
 **Current State:**
 Even N(k, 2) has "no decent bound" according to Erdős-Graham.
 The best known bounds are super-exponential.
@@ -251,13 +249,13 @@ The best known bounds are super-exponential.
 ## Part VIII: Relationship to Other Problems
 -/
 
-/--
+/- 
 **Connection to Erdős Discrepancy Problem:**
 The Erdős Discrepancy Conjecture (proved by Tao, 2015) states that
 for any f : ℕ → {-1,1}, sup_d sup_N |Σ_{i≤N} f(id)| = ∞.
 Our problem concerns APs rather than homogeneous APs.
 -/
-/--
+/- 
 **Szemerédi's Theorem:**
 Any subset of ℕ with positive upper density contains arbitrarily long APs.
 This is related but different: Erdős #176 asks about colorings, not subsets.

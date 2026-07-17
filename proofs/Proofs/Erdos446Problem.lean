@@ -25,10 +25,10 @@ References:
 - https://erdosproblems.com/446
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos446
 
@@ -71,14 +71,14 @@ noncomputable def alpha : ℝ :=
 
 /- ## Historical Results -/
 
-/-- **Besicovitch (1934):** liminf δ(n) = 0.
+/-  **Besicovitch (1934):** liminf δ(n) = 0.
 The density can get arbitrarily small along subsequences. -/
 
-/-- **Erdős (1935):** δ(n) = o(1).
+/-  **Erdős (1935):** δ(n) = o(1).
 The density tends to 0 as n → ∞, strengthening Besicovitch's result
 from liminf to full convergence. -/
 
-/-- **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
+/-  **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
 First quantitative estimate with the correct exponent α.
 For any ε > 0 and large enough n: -/
 
@@ -90,7 +90,7 @@ The exact growth rate up to multiplicative constants.
 Published in Annals of Mathematics. -/
 axiom ford_2008_main :
   ∃ c C : ℝ, 0 < c ∧ c < C ∧
-    ∀ n ≥ 10, c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n ∧
+    ∀ (n : ℕ), n ≥ 10 → c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n ∧
               delta n ≤ C / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2))
 
 /-- **Ford disproved δ₁(n) = o(δ(n)):**
@@ -100,7 +100,7 @@ there exists c > 0 such that δ₁(n) ≥ c · δ(n) for all large n. -/
 axiom ford_2008_disproof :
   ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 10, deltaR n 1 ≥ c * delta n
 
-/-- **Ford's generalization:**
+/-  **Ford's generalization:**
 For each r ≥ 1, δᵣ(n) ≫ᵣ δ(n). Integers with exactly r divisors
 in (n, 2n) have density comparable to the total density. -/
 
@@ -129,7 +129,7 @@ theorem prime_no_divisor (p n : ℕ) (hp : Nat.Prime p) (hn : p > 2 * n) :
 This theorem combines both of Ford's 2008 results. -/
 theorem erdos_446_summary :
     (∃ c C : ℝ, 0 < c ∧ c < C ∧
-      ∀ n ≥ 10, c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n) ∧
+      ∀ (n : ℕ), n ≥ 10 → c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n) ∧
     (∃ c : ℝ, c > 0 ∧ ∀ n ≥ 10, deltaR n 1 ≥ c * delta n) := by
   constructor
   · obtain ⟨c, C, hc, hcC, hbound⟩ := ford_2008_main

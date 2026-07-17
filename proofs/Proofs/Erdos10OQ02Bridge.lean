@@ -36,6 +36,8 @@ definitions plus the existing OQ-02 `Decidable` instance.
 import Proofs.Erdos10Problem
 import Proofs.Erdos10OQ02Popcount
 
+open scoped Classical
+
 namespace Erdos10OQ02
 
 /-- **Bridge.** The parent set `sumPrimeAndTwoPows k` and the OQ-02 predicate

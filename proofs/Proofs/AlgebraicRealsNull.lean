@@ -10,6 +10,7 @@ import Mathlib.NumberTheory.Transcendental.Liouville.Measure
 import Mathlib.NumberTheory.Transcendental.Liouville.Residual
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
 /-!
 # The Algebraic Reals are Lebesgue-Null (Measure Zero)
@@ -410,7 +411,7 @@ theorem transcendental_reals_dimH_one :
   have huniv : {x : ℝ | IsAlgebraic ℚ x} ∪ {x : ℝ | Transcendental ℚ x} = univ := by
     rw [hcompl, union_compl_self]
   have hun := dimH_union {x : ℝ | IsAlgebraic ℚ x} {x : ℝ | Transcendental ℚ x}
-  rw [huniv, Real.dimH_univ, algebraic_reals_dimH_zero, max_eq_right (zero_le _)] at hun
+  rw [huniv, Real.dimH_univ, algebraic_reals_dimH_zero, max_eq_right (zero_le)] at hun
   exact hun.symm
 
 /-- **The transcendental complex numbers have full Hausdorff dimension**, `dimH = 2`.
@@ -425,7 +426,7 @@ theorem transcendental_complex_dimH_two :
     rw [hcompl, union_compl_self]
   have hun := dimH_union {z : ℂ | IsAlgebraic ℚ z} {z : ℂ | Transcendental ℚ z}
   rw [huniv, Real.dimH_univ_eq_finrank ℂ, Complex.finrank_real_complex,
-    algebraic_complex_dimH_zero, max_eq_right (zero_le _)] at hun
+    algebraic_complex_dimH_zero, max_eq_right (zero_le)] at hun
   rw [← hun]; norm_num
 
 -- ============================================================================

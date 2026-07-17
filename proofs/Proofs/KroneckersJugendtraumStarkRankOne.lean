@@ -67,13 +67,13 @@ theorem regulator_eq_single_log_of_rank_eq_one (hrank : rank K = 1) :
   -- `Fin (rank K)` is a singleton because `rank K = 1` …
   haveI huniqFin : Unique (Fin (rank K)) := by rw [hrank]; infer_instance
   -- … and transporting along `equivFinRank` makes the place-index type a singleton too.
-  haveI huniq : Unique {w : InfinitePlace K // w ≠ dirichletUnitTheorem.w₀ K} :=
+  haveI huniq : Unique {w : InfinitePlace K // w ≠ dirichletUnitTheorem.w₀} :=
     (equivFinRank K).symm.unique
   -- The single place and the fundamental (Stark) unit it indexes.
-  refine ⟨(default : {w : InfinitePlace K // w ≠ dirichletUnitTheorem.w₀ K}).val,
+  refine ⟨(default : {w : InfinitePlace K // w ≠ dirichletUnitTheorem.w₀}).val,
     fundSystem K ((equivFinRank K).symm default), ?_⟩
   -- Express the regulator as a 1×1 determinant and read off its single entry.
-  rw [regulator_eq_det K (dirichletUnitTheorem.w₀ K) (equivFinRank K).symm,
+  rw [regulator_eq_det K (dirichletUnitTheorem.w₀) (equivFinRank K).symm,
     Matrix.det_unique, Matrix.of_apply, abs_mul, Nat.abs_cast]
 
 end KroneckersJugendtraumStarkRankOne

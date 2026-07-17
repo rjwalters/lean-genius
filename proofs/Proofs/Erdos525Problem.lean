@@ -29,11 +29,11 @@ References:
 Tags: polynomials, random-polynomials, littlewood, minimum-modulus, probability
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Analysis.Normed.Field.Basic
 
 open Complex Polynomial
@@ -52,13 +52,13 @@ def IsLittlewoodPolynomial (p : Polynomial ℂ) : Prop :=
 def LittlewoodPolynomials (n : ℕ) : Set (Polynomial ℂ) :=
   {p | p.natDegree = n ∧ IsLittlewoodPolynomial p}
 
-/-- There are exactly 2^(n+1) Littlewood polynomials of degree n -/
+/-  There are exactly 2^(n+1) Littlewood polynomials of degree n -/
 /-- The unit circle in ℂ -/
-def UnitCircle : Set ℂ := {z : ℂ | abs z = 1}
+def UnitCircle : Set ℂ := {z : ℂ | ‖z‖ = 1}
 
 /-- The minimum modulus of p on the unit circle -/
 noncomputable def minModulus (p : Polynomial ℂ) : ℝ :=
-  ⨅ z ∈ UnitCircle, abs (p.eval z)
+  ⨅ z ∈ UnitCircle, ‖p.eval z‖
 
 /-
 ## Part II: The First Question
@@ -66,9 +66,9 @@ noncomputable def minModulus (p : Polynomial ℂ) : ℝ :=
 
 /-- A polynomial has m(f) < 1 iff |f(z)| < 1 for some z on the unit circle -/
 def HasSmallValue (p : Polynomial ℂ) : Prop :=
-  ∃ z ∈ UnitCircle, abs (p.eval z) < 1
+  ∃ z ∈ UnitCircle, ‖p.eval z‖ < 1
 
-/-- Equivalent: minModulus < 1.
+/-  Equivalent: minModulus < 1.
     This is a basic property of the infimum: the set of values is nonempty
     (unit circle is nonempty) so the infimum < 1 iff some value < 1. -/
 /-- Almost all Littlewood polynomials have m(f) < 1.
@@ -100,12 +100,12 @@ axiom konyagin_upper_bound :
   ∀ ε > 0, ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
     ({p ∈ LittlewoodPolynomials n | minModulus p > n^(-(1/2 : ℝ) + ε)}).ncard < δ * 2^n
 
-/-- The exponent -1/2 is essentially optimal -/
+/-  The exponent -1/2 is essentially optimal -/
 /-
 ## Part V: Konyagin-Schlag Lower Bound
 -/
 
-/-- Konyagin-Schlag Theorem (1999): The lower tail is thin.
+/-  Konyagin-Schlag Theorem (1999): The lower tail is thin.
     For any ε > 0: limsup P(m(f) ≤ εn^{-1/2}) ≪ ε -/
 /-
 ## Part VI: Cook-Nguyen Universal Distribution
@@ -133,14 +133,14 @@ axiom cook_nguyen_distribution :
     on the unit circle: |p(z)| ≤ √(2^(n+1)) for all |z| = 1. -/
 def IsRudinShapiro (p : Polynomial ℂ) (n : ℕ) : Prop :=
   p.natDegree = 2^n - 1 ∧ IsLittlewoodPolynomial p ∧
-  ∀ z ∈ UnitCircle, abs (p.eval z) ≤ Real.sqrt (2^(n+1))
+  ∀ z ∈ UnitCircle, ‖p.eval z‖ ≤ Real.sqrt (2^(n+1))
 
-/-- Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
+/-  Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
 /-- The constant polynomial 1 + z + z² + ... + zⁿ has minimum on the unit circle -/
-def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
+noncomputable def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
   ∑ i ∈ Finset.range (n+1), X^i
 
-/-- The minimum modulus of the all-ones polynomial -/
+/-  The minimum modulus of the all-ones polynomial -/
 /-
 ## Part VIII: Connection to Other Problems
 -/
@@ -148,9 +148,9 @@ def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
 /-- Connection to the Mahler measure.
     The Mahler measure M(p) = exp(∫₀¹ log|p(e^{2πit})| dt) -/
 noncomputable def MahlerMeasure (p : Polynomial ℂ) : ℝ :=
-  Real.exp (∫ t in Set.Icc 0 1, Real.log (abs (p.eval (Complex.exp (2 * Real.pi * t * I)))))
+  Real.exp (∫ t in Set.Icc (0 : ℝ) 1, Real.log ‖p.eval (Complex.exp (2 * Real.pi * (t : ℂ) * I))‖)
 
-/-- For Littlewood polynomials, M(p) is related to m(p) -/
+/-  For Littlewood polynomials, M(p) is related to m(p) -/
 /-- Lehmer's Problem: Is there a Littlewood polynomial with M(p) < 1? -/
 def LehmerQuestion : Prop :=
   ∃ p : Polynomial ℂ, IsLittlewoodPolynomial p ∧ MahlerMeasure p < 1

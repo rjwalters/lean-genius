@@ -40,6 +40,8 @@ Noble in 2016, extending House's methods.
 import Mathlib
 import Proofs.Erdos1007Problem
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos1007OQ05
@@ -54,42 +56,26 @@ private lemma scaled_basis_sq_dist {n : ℕ} {i j : Fin n} (hij : i ≠ j) :
     Finset.univ.sum (fun k : Fin n =>
       ((if i = k then (1 : ℝ) / Real.sqrt 2 else 0) -
        (if j = k then 1 / Real.sqrt 2 else 0)) ^ 2) = 1 := by
-  -- The sum has exactly two non-zero terms: at k = i and k = j
-  -- At k = i: (1/√2 - 0)² = 1/2
-  -- At k = j: (0 - 1/√2)² = 1/2
-  -- All other terms are 0
-  have h1 : ∀ k : Fin n, k ≠ i → k ≠ j →
-      ((if i = k then (1 : ℝ) / Real.sqrt 2 else 0) -
-       (if j = k then 1 / Real.sqrt 2 else 0)) ^ 2 = 0 := by
-    intro k hki hkj
-    simp [Ne.symm hki, Ne.symm hkj]
-  -- Rewrite the sum extracting the two non-zero terms
-  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
-  rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨hij, Finset.mem_univ j⟩)]
-  -- Simplify the term at i
-  simp only [if_true, eq_self_iff_true, hij, if_false, Ne.symm hij]
-  -- Simplify the term at j
-  simp only [hij.symm, if_false, eq_self_iff_true, if_true]
-  -- The remaining sum is 0
-  have hrest : (Finset.univ.erase i).erase j |>.sum
-      (fun k => ((if i = k then (1 : ℝ) / Real.sqrt 2 else 0) -
-                 (if j = k then 1 / Real.sqrt 2 else 0)) ^ 2) = 0 := by
-    apply Finset.sum_eq_zero
-    intro k hk
-    rw [Finset.mem_erase] at hk
-    have hkj : k ≠ j := hk.1
-    have hki : k ≠ i := by
-      rw [Finset.mem_erase] at hk
-      exact (Finset.mem_erase.mp hk.2).1
-    exact h1 k hki hkj
-  rw [hrest, add_zero]
-  -- Now compute: (1/√2)² + (0 - 1/√2)² = 1/2 + 1/2 = 1
+  -- The sum has exactly two non-zero terms: at k = i and k = j, each contributing 1/2.
   have hsqrt2_pos : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos_of_pos (by norm_num)
   have hsqrt2_ne : Real.sqrt 2 ≠ 0 := ne_of_gt hsqrt2_pos
   have h_sq : (1 / Real.sqrt 2) ^ 2 = 1 / 2 := by
-    rw [div_pow, one_pow, sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
-  rw [sub_zero, zero_sub, neg_sq]
-  linarith [h_sq]
+    rw [div_pow, one_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+  have hpt : ∀ k : Fin n,
+      ((if i = k then (1 : ℝ) / Real.sqrt 2 else 0) -
+       (if j = k then 1 / Real.sqrt 2 else 0)) ^ 2 =
+      (if i = k then (1 : ℝ) / 2 else 0) + (if j = k then (1 : ℝ) / 2 else 0) := by
+    intro k
+    by_cases hik : i = k
+    · have hjk : j ≠ k := by rw [← hik]; exact hij.symm
+      simp [hik, hjk]
+    · by_cases hjk : j = k
+      · simp [hik, hjk]
+      · simp [hik, hjk]
+  rw [Finset.sum_congr rfl (fun k _ => hpt k), Finset.sum_add_distrib,
+    Finset.sum_ite_eq Finset.univ i (fun _ => (1 : ℝ) / 2),
+    Finset.sum_ite_eq Finset.univ j (fun _ => (1 : ℝ) / 2)]
+  norm_num
 
 /-- Every finite graph with irreflexive adjacency admits a unit distance
     embedding in ℝ^|V|, using scaled standard basis vectors.

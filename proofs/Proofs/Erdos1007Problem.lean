@@ -44,6 +44,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Finset
 
 /-
@@ -95,7 +97,7 @@ theorem completeBipartite_edge_count (m n : ℕ) :
 -/
 
 /-- The minimum edges for a dimension-4 graph is 9 -/
-axiom min_edges_dimension_4 : ∀ (V : Type) [Fintype V] [DecidableEq V]
+axiom min_edges_dimension_4 : ∀ (V : Type) [Fintype V] [DecidableEq V] [LinearOrder V]
     (adj : V → V → Prop) [DecidableRel adj],
     graphDimension V adj = 4 →
     (Finset.univ.filter (fun p : V × V => adj p.1 p.2 ∧ p.1 < p.2)).card ≥ 9
@@ -104,7 +106,7 @@ axiom min_edges_dimension_4 : ∀ (V : Type) [Fintype V] [DecidableEq V]
 theorem k33_has_9_edges : 3 * 3 = 9 := by norm_num
 
 /-- K_{3,3} is the UNIQUE graph achieving the minimum (House 2013) -/
-axiom k33_unique_minimum : ∀ (V : Type) [Fintype V] [DecidableEq V]
+axiom k33_unique_minimum : ∀ (V : Type) [Fintype V] [DecidableEq V] [LinearOrder V]
     (adj : V → V → Prop) [DecidableRel adj],
     graphDimension V adj = 4 →
     (Finset.univ.filter (fun p : V × V => adj p.1 p.2 ∧ p.1 < p.2)).card = 9 →
@@ -116,7 +118,7 @@ axiom k33_unique_minimum : ∀ (V : Type) [Fintype V] [DecidableEq V]
 -/
 
 /-- The minimum edges for a dimension-5 graph is 15 -/
-axiom min_edges_dimension_5 : ∀ (V : Type) [Fintype V] [DecidableEq V]
+axiom min_edges_dimension_5 : ∀ (V : Type) [Fintype V] [DecidableEq V] [LinearOrder V]
     (adj : V → V → Prop) [DecidableRel adj],
     graphDimension V adj = 5 →
     (Finset.univ.filter (fun p : V × V => adj p.1 p.2 ∧ p.1 < p.2)).card ≥ 15

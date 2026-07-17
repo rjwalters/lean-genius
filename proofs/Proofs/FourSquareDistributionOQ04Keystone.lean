@@ -73,7 +73,7 @@ open FourSquareDistributionOQ04Sign
 def absMap {m : ℕ} (f : Fin m → ℤ) : Fin m → ℤ := fun i => |f i|
 
 /-- The shape-fiber: representations of `n` whose absolute-value multiset is `s`. -/
-def shapeFiber (m n : ℕ) (s : Multiset ℤ) : Finset (Fin m → ℤ) :=
+noncomputable def shapeFiber (m n : ℕ) (s : Multiset ℤ) : Finset (Fin m → ℤ) :=
   (reps m n).filter (fun f => shape f = s)
 
 theorem shape_eq_map_absMap {m : ℕ} (f : Fin m → ℤ) :

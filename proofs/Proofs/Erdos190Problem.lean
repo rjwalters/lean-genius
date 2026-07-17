@@ -30,11 +30,11 @@ References:
 - Erdős-Graham [ErGr80, p.17]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Finset
+
+open scoped Classical
 
 namespace Erdos190
 
@@ -89,13 +89,17 @@ def isRainbowAlt {N C : Type*} (χ : N → C) (s : Finset N) : Prop :=
 A coloring has the canonical property for k-APs if it contains either
 a monochromatic k-AP or a rainbow k-AP.
 -/
-def hasCanonicalAP {N C : Type*} [DecidableEq C] (χ : Fin N → C) (k : ℕ) : Prop :=
+def hasCanonicalAP {N : ℕ} {C : Type*} [DecidableEq C] (χ : Fin N → C) (k : ℕ) : Prop :=
   ∃ f : Fin k → Fin N,
     isAPSequence (fun i => (f i).val) ∧
     (isMonochromatic χ (Finset.image f Finset.univ) ∨
      isRainbow χ (Finset.image f Finset.univ))
 
 /- ## Part IV: The H(k) Function -/
+
+/-- H(k) is well-defined (existence follows from Szemerédi). -/
+axiom exists_canonical_threshold (k : ℕ) :
+    ∃ N : ℕ, ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k
 
 /--
 **H(k): The Canonical Ramsey Number**
@@ -105,10 +109,6 @@ has the canonical property for k-term arithmetic progressions.
 -/
 noncomputable def H (k : ℕ) : ℕ :=
   Nat.find (exists_canonical_threshold k)
-
-/-- H(k) is well-defined (existence follows from Szemerédi). -/
-axiom exists_canonical_threshold (k : ℕ) :
-    ∃ N : ℕ, ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k
 
 /-- For N ≥ H(k), every coloring has the canonical property.
     Proof: restrict χ : Fin N → C to Fin (H k) via Fin.castLE,
@@ -181,6 +181,7 @@ theorem W_le_H (k : ℕ) (hk : k ≥ 3) : W k ≤ H k := by
   -- Get canonical AP from H_spec
   obtain ⟨f, hAP, hColor⟩ := H_spec k (H k) le_rfl Bool χ
   obtain ⟨a, d, hd, hf⟩ := hAP
+  replace hf : ∀ i : Fin k, (f i : ℕ) = a + i.val * d := hf
   -- Provide the Finset and properties
   refine ⟨image f univ, ?_, ?_⟩
   · -- isArithmeticProgression (s.image Fin.val) k
@@ -189,7 +190,7 @@ theorem W_le_H (k : ℕ) (hk : k ≥ 3) : W k ≤ H k := by
     ext x
     simp only [mem_image, mem_univ, true_and, mem_range]
     constructor
-    · rintro ⟨i, rfl⟩; exact ⟨i.val, i.isLt, hf i⟩
+    · rintro ⟨i, rfl⟩; exact ⟨i.val, i.isLt, (hf i).symm⟩
     · rintro ⟨i, hi, rfl⟩; exact ⟨⟨i, hi⟩, hf ⟨i, hi⟩⟩
   · -- isMonochromatic χ s (rainbow is impossible for Bool with k ≥ 3)
     rcases hColor with hMono | hRain
@@ -199,9 +200,10 @@ theorem W_le_H (k : ℕ) (hk : k ≥ 3) : W k ≤ H k := by
       unfold isRainbow at hRain
       have hf_inj : Function.Injective f := by
         intro i j hij
-        have := congr_arg Fin.val hij
-        rw [hf i, hf j] at this
-        exact Fin.ext (by omega)
+        have hval : ↑(f i) = (↑(f j) : ℕ) := congr_arg Fin.val hij
+        rw [hf i, hf j] at hval
+        have hmul : (i : ℕ) * d = (j : ℕ) * d := by omega
+        exact Fin.ext (Nat.eq_of_mul_eq_mul_right hd hmul)
       have hs : (image f univ).card = k := by
         rw [card_image_of_injective _ hf_inj, card_univ, Fintype.card_fin]
       have himg : ((image f univ).image χ).card ≤ 2 := by
@@ -219,16 +221,20 @@ theorem H_lower_bound (k : ℕ) (hk : k ≥ 1) : H k ≥ k := by
   -- Nat.find_spec gives a canonical AP for any coloring of Fin (H k)
   obtain ⟨f, ⟨a, d, hd, hf⟩, _⟩ :=
     Nat.find_spec (exists_canonical_threshold k) (Fin (H k)) (fun x => x)
+  replace hf : ∀ i : Fin k, (f i : ℕ) = a + i.val * d := hf
   -- f : Fin k → Fin (H k) with f i = a + i * d, d > 0
   -- The last element: a + (k-1)*d < H k
-  have hval := hf ⟨k - 1, by omega⟩
-  have hlt := (f ⟨k - 1, by omega⟩).isLt
+  have hkidx : k - 1 < k := by omega
+  have hval : (f ⟨k - 1, hkidx⟩ : ℕ) = a + (k - 1) * d := hf ⟨k - 1, hkidx⟩
+  have hlt := (f ⟨k - 1, hkidx⟩).isLt
   -- But a + (k-1)*d ≥ (k-1)*1 = k-1 (since d ≥ 1)
   have hge : k - 1 ≤ a + (k - 1) * d := by
     calc k - 1 = (k - 1) * 1 := by omega
       _ ≤ (k - 1) * d := Nat.mul_le_mul_left _ (by omega : 1 ≤ d)
       _ ≤ a + (k - 1) * d := Nat.le_add_left _ _
   -- k-1 ≤ a+(k-1)*d < H k < k — no natural between k-1 and k
+  have hge2 : k - 1 ≤ (f ⟨k - 1, hkidx⟩ : ℕ) := by rw [hval]; exact hge
+  have hlt2 : (f ⟨k - 1, hkidx⟩ : ℕ) < H k := hlt
   omega
 
 /- ## Part VI: Known Asymptotic Results -/
@@ -255,11 +261,11 @@ def erdos190Conjecture : Prop :=
 
 /- ## Part VII: Small Cases -/
 
-/-- H(3) is small (exact value depends on careful analysis). -/
-/-- H(4) is larger. -/
+/-  H(3) is small (exact value depends on careful analysis). -/
+/-  H(4) is larger. -/
 /- ## Part VIII: Connections -/
 
-/--
+/- 
 **Connection to Szemerédi's Theorem**
 
 Szemerédi's theorem guarantees that any dense subset of ℕ contains
@@ -268,7 +274,7 @@ either we find a monochromatic AP (by density) or we've used many
 colors, increasing the chance of a rainbow AP.
 -/
 
-/--
+/- 
 **Canonical vs Standard Ramsey Theory**
 
 In standard Ramsey theory, we want monochromatic structures.
@@ -278,7 +284,7 @@ rainbow colorings. This typically gives smaller numbers.
 
 /- ## Part IX: Why This Is Hard -/
 
-/--
+/- 
 **The Difficulty**
 
 The challenge is obtaining precise asymptotics for H(k).
@@ -309,7 +315,8 @@ theorem H_pos (k : ℕ) (hk : k ≥ 1) : H k > 0 := by
   by_contra h
   push_neg at h
   have hH0 : H k = 0 := by omega
-  have hspec := Nat.find_spec (exists_canonical_threshold k)
+  have hspec : ∀ (C : Type) [DecidableEq C] (χ : Fin (H k) → C), hasCanonicalAP χ k :=
+    Nat.find_spec (exists_canonical_threshold k)
   rw [hH0] at hspec
   have hfalse := hspec Bool Fin.elim0
   obtain ⟨f, _, _⟩ := hfalse
@@ -387,7 +394,7 @@ theorem erdos190Conjecture_implies_root_to_infinity (h : erdos190Conjecture) :
   -- hbound : (H k : ℝ) ^ (1 / k : ℝ) / k > M
   -- Multiply both sides by k > 0 to get (H k)^{1/k} > M·k.
   have hMk : (M : ℝ) * k < (H k : ℝ) ^ (1 / k : ℝ) := by
-    have := (div_lt_iff₀ hk_pos).mp hbound
+    have := (lt_div_iff₀ hk_pos).mp hbound
     linarith
   -- Then M·k ≥ M·1 = M since M ≥ 0 and k ≥ 1.
   have hMle : (M : ℝ) ≤ M * k := by

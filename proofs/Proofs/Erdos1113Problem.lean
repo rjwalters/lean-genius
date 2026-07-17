@@ -30,10 +30,10 @@ References:
 - [ErGr80] Erdős-Graham (1980)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Parity
 
 namespace Erdos1113
 
@@ -90,8 +90,11 @@ theorem problem_equivalence :
   · intro ⟨m, hs, hnc⟩ hall
     exact hnc (hall m hs)
   · intro h
-    push_neg at h
-    exact h
+    by_contra hno
+    apply h
+    intro m hs
+    by_contra hnc
+    exact hno ⟨m, hs, hnc⟩
 
 /- ## Part IV: Known Sierpinski Numbers -/
 

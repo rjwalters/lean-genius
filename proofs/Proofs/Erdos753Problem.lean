@@ -90,9 +90,11 @@ The complement has an edge iff G doesn't (and vice versa).
 def complementGraph (G : SimpleGraph V) : SimpleGraph V where
   Adj v w := v ≠ w ∧ ¬G.Adj v w
   symm := by
+    constructor
     intro v w ⟨hne, hnadj⟩
-    exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
+    exact ⟨hne.symm, fun h => hnadj (G.adj_symm h)⟩
   loopless := by
+    constructor
     intro v ⟨hne, _⟩
     exact hne rfl
 

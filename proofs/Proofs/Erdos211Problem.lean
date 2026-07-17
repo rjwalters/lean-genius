@@ -24,10 +24,12 @@ all ≈n²/6 lines through pairs contain exactly 3 points.
 Tags: combinatorics, incidence-geometry, beck-theorem, szemerédi-trotter
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
+
+open scoped Classical
 
 namespace Erdos211
 
@@ -50,6 +52,11 @@ structure Line where
   point : Point
   direction : Point  -- Nonzero direction vector
   direction_ne_zero : direction ≠ (0, 0)
+
+/-- A point `p` lies on the line `L` when it is a real translate of the base
+    point along the direction vector: `p = L.point + t • L.direction`. -/
+instance : Membership Point Line where
+  mem L p := ∃ t : ℝ, p = (L.point.1 + t * L.direction.1, L.point.2 + t * L.direction.2)
 
 /--
 **Collinearity:**

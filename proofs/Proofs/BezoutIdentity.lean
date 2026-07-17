@@ -1,6 +1,4 @@
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Int.GCD
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Bézout's Identity (Bézout's Theorem)
@@ -141,7 +139,7 @@ theorem coprime_iff_linear_combination (a b : ℕ) :
     -- gcd(a,b) divides 1, so |gcd(a,b)| ≤ 1, meaning gcd(a,b) ∈ {0, 1}
     -- Since gcd(a,b) > 0 when at least one of a,b is positive, we get gcd = 1
     have h1 : (Nat.gcd a b : ℤ) ∣ (1 : ℤ) := hdiv
-    have habs : Int.natAbs (Nat.gcd a b) = Nat.gcd a b := Int.natAbs_ofNat _
+    have habs : Int.natAbs (Nat.gcd a b) = Nat.gcd a b := Int.natAbs_natCast _
     have hdvd1 : Int.natAbs (↑(Nat.gcd a b)) ∣ Int.natAbs 1 := Int.natAbs_dvd_natAbs.mpr h1
     simp only [Int.natAbs_one] at hdvd1
     rw [habs] at hdvd1
@@ -177,8 +175,8 @@ theorem diophantine_solvable (a b c : ℤ) :
     (∃ x y : ℤ, a * x + b * y = c) ↔ (Int.gcd a b : ℤ) ∣ c := by
   constructor
   · intro ⟨x, y, heq⟩
-    have ha : (Int.gcd a b : ℤ) ∣ a := Int.gcd_dvd_left
-    have hb : (Int.gcd a b : ℤ) ∣ b := Int.gcd_dvd_right
+    have ha : (Int.gcd a b : ℤ) ∣ a := Int.gcd_dvd_left a b
+    have hb : (Int.gcd a b : ℤ) ∣ b := Int.gcd_dvd_right a b
     rw [← heq]
     exact dvd_add (dvd_mul_of_dvd_left ha x) (dvd_mul_of_dvd_left hb y)
   · intro hdiv

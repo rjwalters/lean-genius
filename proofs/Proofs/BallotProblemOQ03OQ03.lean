@@ -37,15 +37,20 @@ theorem lgv_dyck_pair_count (n : ℕ) :
     ↑(Nat.choose (2 * n + 1) n * Nat.choose (2 * n - 1) n) := by
   unfold lgvDet
   simp only [Nat.sub_zero]
+  rw [show n + n = 2 * n from by omega,
+      show n + (n + 1 - 1) = 2 * n from by omega,
+      show n + (n - 1) = 2 * n - 1 from by omega,
+      show n + (n + 1) = 2 * n + 1 from by omega]
+  push_cast
   ring
 
 /-- When both paths have the same number of East steps and non-crossing
     source/target ordering, the LGV determinant is non-negative.
     This is a direct consequence of lgvDet_nonneg. -/
 theorem lgv_nonneg_standard (m a₁ b₁ a₂ b₂ : ℕ)
-    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂) :
+    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂) (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂) (ha₂₁ : a₂ ≤ b₁) :
     0 ≤ lgvDet m a₁ b₁ a₂ b₂ :=
-  lgvDet_nonneg m a₁ b₁ a₂ b₂ ha hb
+  lgvDet_nonneg m a₁ b₁ a₂ b₂ ha hb ha₁ ha₂ ha₂₁
 
 /-
 ## Part II: Ballot-Catalan Connection
@@ -173,7 +178,7 @@ theorem hook_length_formula_two_row (m : ℕ) :
   --        = (Cn m * (m+1)) * (m! * m!) = C(2m,m) * m! * m! = (2m)!
   calc Cn m * ((m + 1).factorial * m.factorial)
       = Cn m * ((m + 1) * m.factorial * m.factorial) := by
-        rw [Nat.factorial_succ]; ring_nf
+        rw [Nat.factorial_succ]
     _ = Cn m * (m + 1) * (m.factorial * m.factorial) := by ring
     _ = Nat.choose (2 * m) m * (m.factorial * m.factorial) := by rw [h1]
     _ = Nat.choose (2 * m) m * m.factorial * m.factorial := by ring
@@ -231,7 +236,7 @@ theorem hook_length_formula_two_row_general (m k : ℕ) (hk : k ≤ m) :
         show m + 0 = m from Nat.add_zero m,
         Nat.factorial_succ, mul_comm (m + 1) m.factorial]
   · -- k ≥ 1: apply ballot_formula then cancel (m+1+k)
-    have hp : 1 ≤ m + 1 := Nat.one_le_succ _
+    have hp : 1 ≤ m + 1 := Nat.succ_le_succ (Nat.zero_le _)
     have hpq : k < m + 1 := Nat.lt_succ_of_le hk
     -- ballotSeqCount(m+1,k) * (m+1+k) = (m+1-k) * C(m+1+k, m+1)
     have hbf := ballot_formula (m + 1) k hpq hp hk1

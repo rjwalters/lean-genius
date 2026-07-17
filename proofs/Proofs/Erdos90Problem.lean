@@ -23,12 +23,7 @@ References:
     https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-remarks.pdf
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Unit Distance Counting -/
 

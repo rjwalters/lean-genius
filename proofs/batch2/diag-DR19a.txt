@@ -1,0 +1,1206 @@
+===== AbelRuffiniGaloisExtensionsOQ04OQ03
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04OQ03.lean:171:6: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↥Z.mid ⧸ _a ≃* ↥Z.upper ⧸ Z.lower.subgroupOf Z.upper
+Error: Application type mismatch: The argument
+===== AbelRuffiniOQ04OQ01OQ03
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:435:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Subgroup.comap ?m.30 ?m.29).index
+in the target expression
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:860:9: Function expected at
+  isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?m.140
+but this term has type
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:861:6: No goals to be solved
+warning: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:927:9: `commutative_of_cyclic_center_quotient` has been deprecated: Use `MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center` instead
+===== AbelRuffiniOQ04OQ01OQ03Sharp
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:435:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Subgroup.comap ?m.30 ?m.29).index
+in the target expression
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:860:9: Function expected at
+  isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?m.140
+but this term has type
+error: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:861:6: No goals to be solved
+warning: Proofs/AbelRuffiniOQ04OQ01OQ03.lean:927:9: `commutative_of_cyclic_center_quotient` has been deprecated: Use `MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center` instead
+===== AbelRuffiniOQ07Order6
+error: Proofs/AbelRuffiniOQ07Order6.lean:81:37: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:121:65: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:126:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ (k * 2 + k)
+in the target expression
+===== AngleTrisectionOQ02OQ01OQ02
+error: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:53:0: (kernel) invalid nested inductive datatype 'Exists', nested inductive datatypes parameters cannot contain local variables.
+error: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:91:51: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2
+error: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:91:51: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2
+in the target expression
+error: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:97:46: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  n ≠ 0 ∨ n = 0
+has type `Prop` which does not have the necessary form.
+error: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:97:38: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/AngleTrisectionOQ02OQ01OQ02.lean:116:8: declaration uses `sorry`
+===== AngleTrisectionOQ02OQ03Ext
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:38:23: unsolved goals
+m : ℕ
+hm : 2 ∣ m
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:45:16: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ?m.38 / 2
+in the target expression
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:56:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 2
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:72:88: unexpected identifier; expected '⟩'
+warning: Proofs/AngleTrisectionOQ02OQ03Ext.lean:67:6: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== AreaOfCircleOQ01OQ02OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:106:2: No goals to be solved
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:117:2: `ring_nf` made no progress on the goal
+warning: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:155:39: Variable name `hn` is not explicitly referenced.
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:117:2: `ring_nf` made no progress on the goal
+warning: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:155:39: Variable name `hn` is not explicitly referenced.
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:234:33: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:238:61: unsolved goals
+n : ℕ
+c r : ℝ
+===== AreaOfCircleOQ01OQ02OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean:83:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(n + 2) / 2 + 1
+in the target expression
+===== AreaOfCircleOQ01OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean:83:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(n + 2) / 2 + 1
+in the target expression
+===== AreaOfCircleOQ07OQ04OQ01
+error: Proofs/AreaOfCircleOQ07OQ04OQ01.lean:62:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(∫ (x : ?m.302), ?m.307 x ∂?m.304)
+in the target expression
+error: Proofs/AreaOfCircleOQ07OQ04OQ01.lean:100:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (z : ℝ × ℝ) in Ioi 0 ×ˢ Ioo (-π) π, z.1 * rexp (-b * z.1 ^ 2) * 1 ∂Measure.prod ?m.403 ?m.404
+in the target expression
+===== AreaOfCircleOQ07OQ04OQ01OQ01
+error: Proofs/AreaOfCircleOQ07OQ04OQ01OQ01.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∏ x ∈ ?s, rexp (?f x)
+in the target expression
+===== ArsinhLogFormulaOQ01OQ01OQ01OQ01
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ01OQ01.lean:85:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?a
+in the target expression
+===== BallotProblemOQ02OQ03
+error: Proofs/BallotProblemOQ02OQ03.lean:113:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √x ^ 2
+in the target expression
+===== BezoutIdentityOQ04OQ01
+error: Proofs/BezoutIdentityOQ04OQ01.lean:246:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+error: Proofs/BezoutIdentityOQ04OQ01.lean:255:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+error: Proofs/BezoutIdentityOQ04OQ01.lean:268:4: Tactic `apply` failed: could not unify the conclusion of `@Int.dvd_gcd`
+  ?c ∣ Int.gcd ?a ?b
+with the goal
+error: Proofs/BezoutIdentityOQ04OQ01.lean:283:24: Application type mismatch: The argument
+  hdvd
+has type
+===== BinaryGcdOQ02OQ01
+error: Proofs/BinaryGcdOQ02OQ01.lean:75:17: Unknown identifier `a`
+error: Proofs/BinaryGcdOQ02OQ01.lean:94:12: unsolved goals
+case case1
+error: Proofs/BinaryGcdOQ02OQ01.lean:94:12: unsolved goals
+case case1
+b : ℕ
+error: Proofs/BinaryGcdOQ02OQ01.lean:98:11: unsolved goals
+case case2.zero
+x✝ : 0 = 0 → False
+error: Proofs/BinaryGcdOQ02OQ01.lean:99:13: unsolved goals
+case case2.succ
+a : ℕ
+===== BinomialTheoremOQ02OQ04
+error: Proofs/BinomialTheoremOQ02OQ04.lean:132:39: invalid `▸` notation, argument
+  h
+has type
+error: Proofs/BinomialTheoremOQ02OQ04.lean:149:23: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ s, (g i + if i = a then j else 0)
+in the target expression
+error: Proofs/BinomialTheoremOQ02OQ04.lean:175:2: Type mismatch
+  multinomial_by_induction univ ![1, 1, 1] n
+has type
+===== BorsukUlamOQ03OQ01
+error: Proofs/BorsukUlamOQ03OQ01.lean:867:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a + b ≤ -1
+error: Proofs/BorsukUlamOQ03OQ01.lean:867:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a - b ≥ 1
+error: Proofs/BorsukUlamOQ03OQ01.lean:933:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {i ∈ {0} | signZ (L i) ⋯ ≠ signZ (L (i + 1)) ⋯}
+in the target expression
+error: Proofs/BorsukUlamOQ03OQ01.lean:940:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {i ∈ {0} | signZ (L i) ⋯ ≠ signZ (L (i + 1)) ⋯}
+in the target expression
+===== BoundedPrimeGapsOQ04OQ01Aristotle
+error: Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean:32:2: unsolved goals
+case succ.zero
+inst✝ : NeZero (0 + 1)
+error: Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean:19:45: unsolved goals
+case succ.succ
+q : ℕ
+error: Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean:50:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f ?a ^ ?n
+in the target expression
+error: Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean:100:107: unsolved goals
+case e'_3
+q : ℕ
+===== BuffonsNeedleOQ01OQ01OQ04
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:92:55: unsolved goals
+⊢ π ^ 2 * 2 = π ^ 2 * 2
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ (1 / 2)
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:130:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ ↑?n
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:224:33: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+===== BuffonsNeedleOQ01OQ01OQ04OQ01
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:92:55: unsolved goals
+⊢ π ^ 2 * 2 = π ^ 2 * 2
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ (1 / 2)
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:130:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ ↑?n
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:224:33: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+===== BuffonsNoodleOQ03OQ01
+error: Proofs/BuffonsNoodleOQ03OQ01.lean:100:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |cos θ|
+in the target expression
+error: Proofs/BuffonsNoodleOQ03OQ01.lean:114:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |cos θ|
+in the target expression
+error: Proofs/BuffonsNoodleOQ03OQ01.lean:117:16: Ambiguous term
+  integral_neg
+Possible interpretations:
+error: Proofs/BuffonsNoodleOQ03OQ01.lean:133:53: unsolved goals
+⊢ 1 + 1 = 2
+error: Proofs/BuffonsNoodleOQ03OQ01.lean:174:4: No goals to be solved
+===== CatalanNumbersOQ01OQ04OQ02
+error: Proofs/CatalanNumbersOQ01OQ04OQ02.lean:63:24: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.107 / ?m.108 * (?m.109 / ?m.110)
+in the target expression
+===== CauchySchwarzIntegralOQ01OQ01OQ01OQ02
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean:81:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |?a| ^ 2
+in the target expression
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean:111:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.53 / 4 ≤ ?m.55 / 2
+in the target expression
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean:160:2: unsolved goals
+case left
+a : ℝ
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean:163:2: unsolved goals
+case right.left
+a : ℝ
+===== CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean:104:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  span ?m.177 (⇑?f '' ?s)
+in the target expression
+===== CentralLimitTheoremOQ03OQ01
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:76:76: unsolved goals
+L : ℝ → ℝ
+hL : IsSlowlyVarying L
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:86:2: No goals to be solved
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:107:27: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hev
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:107:27: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hev
+has type
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:109:15: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `hftx` is a proof of
+  x ∈ ?m.64
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:111:33: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+===== CentralLimitTheoremOQ03OQ01Aristotle
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:76:76: unsolved goals
+L : ℝ → ℝ
+hL : IsSlowlyVarying L
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:86:2: No goals to be solved
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:107:27: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hev
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:107:27: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hev
+has type
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:109:15: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `hftx` is a proof of
+  x ∈ ?m.64
+error: Proofs/CentralLimitTheoremOQ03OQ01.lean:111:33: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+===== CevasTheorem
+error: Proofs/CevasTheorem.lean:197:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  t
+in the target expression
+===== CollatzCyclesOQ04
+error: Proofs/CollatzCyclesOQ04.lean:58:49: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/CollatzCyclesOQ04.lean:59:49: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/CollatzCyclesOQ04.lean:93:43: unsolved goals
+j : ℕ
+hj : 0 < j
+error: Proofs/CollatzCyclesOQ04.lean:168:36: Application type mismatch: The argument
+  hj
+has type
+===== CombinationsFormulaOQ02
+error: Proofs/CombinationsFormulaOQ02.lean:64:41: unsolved goals
+⊢ Nat.choose 10 5 - Nat.choose 10 6 = 42
+warning: Proofs/CombinationsFormulaOQ02.lean:80:15: `Nat.succ_mul_choose_eq` has been deprecated: Use `Nat.add_one_mul_choose_eq` instead
+error: Proofs/CombinationsFormulaOQ02.lean:89:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (2 * n + 1).choose (2 * n + 1 - (n + 1))
+in the target expression
+error: Proofs/CombinationsFormulaOQ02.lean:98:4: linarith failed to find a contradiction
+case succ.h1
+n : ℕ
+error: Proofs/CombinationsFormulaOQ02.lean:113:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== CombinationsFormulaOQ03OQ06
+error: Proofs/CombinationsFormulaOQ03OQ06.lean:91:46: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (⇑D.F)^[n] (D.v 0)
+in the target expression
+error: Proofs/CombinationsFormulaOQ03OQ06.lean:172:30: unsolved goals
+k : Type u_1
+inst✝ : CommRing k
+error: Proofs/CombinationsFormulaOQ03OQ06.lean:188:61: unsolved goals
+case e_a
+k : Type u_1
+===== CramersRule
+error: Proofs/CramersRule.lean:70:22: Invalid field `updateColumn`: The environment does not contain `Function.updateColumn`, so it is not possible to project the field `updateColumn` from an expression
+  A
+of type `n → n → R`
+error: Proofs/CramersRule.lean:151:44: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.69⁻¹ * ?m.69
+in the target expression
+===== CubeRoot3IrrationalOQ03OQ03
+error: Proofs/CubeRoot3IrrationalOQ03OQ03.lean:108:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  minpoly ?F (AdjoinSimple.gen ?F ?α)
+in the target expression
+===== DedekindFrobeniusBridge
+error: Proofs/DedekindFrobeniusBridge.lean:55:86: unsolved goals
+R : Type u_1
+S : Type u_2
+error: Proofs/DedekindFrobeniusBridge.lean:58:7: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ideal.map ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q))
+    (comap ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q)) ?I)
+error: Proofs/DedekindFrobeniusBridge.lean:82:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Submodule.toAddSubgroup Q).inertia G
+in the target expression
+===== DescartesRuleOfSignsOQ02
+error: Proofs/DescartesRuleOfSignsOQ02.lean:432:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DescartesRuleOfSignsOQ02.lean:433:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DescartesRuleOfSignsOQ02.lean:450:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun x => decide (x ≠ 0)) hd₁
+in the target expression
+error: Proofs/DescartesRuleOfSignsOQ02.lean:456:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun x => decide (x ≠ 0)) hd₁
+in the target expression
+===== DescartesRuleOfSignsOQ02OQ01
+error: Proofs/DescartesRuleOfSignsOQ02.lean:432:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DescartesRuleOfSignsOQ02.lean:433:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DescartesRuleOfSignsOQ02.lean:450:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun x => decide (x ≠ 0)) hd₁
+in the target expression
+error: Proofs/DescartesRuleOfSignsOQ02.lean:456:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun x => decide (x ≠ 0)) hd₁
+in the target expression
+===== DissectionOfCubesOQ02OQ02
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== DissectionOfCubesOQ03
+error: Proofs/DissectionOfCubesOQ03.lean:417:46: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  c_min.z
+in the target expression
+===== DissectionOfCubesOQ03OQ02
+error: Proofs/DissectionOfCubesOQ03.lean:417:46: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  c_min.z
+in the target expression
+===== DissectionOfCubesOQ04
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== DissectionOfCubesOQ04Aristotle
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:381:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ a
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:383:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ a
+in the target expression
+===== Erdos1000OQ01
+error: Proofs/Erdos1000Problem.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {x ∈ Icc 1 (k + 2) | ∀ j < k + 1, (k + 2) / x.gcd (k + 2) ≠ j + 1}
+in the target expression
+===== Erdos1000OQ02
+error: Proofs/Erdos1000Problem.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {x ∈ Icc 1 (k + 2) | ∀ j < k + 1, (k + 2) / x.gcd (k + 2) ≠ j + 1}
+in the target expression
+===== Erdos1000Problem
+error: Proofs/Erdos1000Problem.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {x ∈ Icc 1 (k + 2) | ∀ j < k + 1, (k + 2) / x.gcd (k + 2) ≠ j + 1}
+in the target expression
+===== Erdos1018Problem
+error: Proofs/Erdos1018Problem.lean:145:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Walk.nil.support
+in the target expression
+error: Proofs/Erdos1018Problem.lean:149:39: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Walk.nil.support
+in the target expression
+error: Proofs/Erdos1018Problem.lean:153:39: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Walk.nil.support
+in the target expression
+error: Proofs/Erdos1018Problem.lean:192:28: Function expected at
+  G.symm
+but this term has type
+===== Erdos1021Aristotle
+error: Proofs/Erdos1021Aristotle.lean:53:191: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== Erdos1021OQ01
+error: Proofs/Erdos1021Aristotle.lean:53:191: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== Erdos1021Problem
+error: Proofs/Erdos1021Aristotle.lean:53:191: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== Erdos1026OQ05KMonotonic
+error: Proofs/Erdos1026OQ05KMonotonic.lean:314:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  f ⟨↑j, hj'lt⟩
+in the target expression
+===== Erdos1029Problem
+error: Proofs/Erdos1029Problem.lean:70:65: Invalid field `elim`: The environment does not contain `List.Mem.elim`, so it is not possible to project the field `elim` from an expression
+  hx
+of type `List.Mem x []`
+error: Proofs/Erdos1029Problem.lean:149:8: Failed to rewrite using equation theorems for `Tendsto`
+error: Proofs/Erdos1029Problem.lean:153:8: Failed to rewrite using equation theorems for `Tendsto`
+info: Proofs/Erdos1029Problem.lean:194:2: Try this:
+error: Proofs/Erdos1029Problem.lean:153:8: Failed to rewrite using equation theorems for `Tendsto`
+info: Proofs/Erdos1029Problem.lean:194:2: Try this:
+  [apply] ring_nf
+===== Erdos1049Aristotle
+error: Proofs/Erdos1049Aristotle.lean:26:35: unsolved goals
+m n : ℕ
+hmn : m.Coprime n
+error: Proofs/Erdos1049Aristotle.lean:53:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  r
+in the target expression
+===== Erdos1052Problem
+error: Proofs/Erdos1052Problem.lean:160:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+case inl
+error: Proofs/Erdos1052Problem.lean:167:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  d.gcd m * (m / d.gcd m)
+in the target expression
+error: Proofs/Erdos1052Problem.lean:179:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+case inl
+error: Proofs/Erdos1052Problem.lean:187:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  m * n / (d.gcd m * (d / d.gcd m))
+in the target expression
+===== Erdos1054Problem
+error: Proofs/Erdos1054Problem.lean:178:4: Invalid alternative name `inl`: Expected `head` or `tail`
+error: Proofs/Erdos1054Problem.lean:179:4: Invalid alternative name `inr`: Expected `head` or `tail`
+error: Proofs/Erdos1054Problem.lean:177:4: Dependent elimination failed: Failed to solve equation
+error: Proofs/Erdos1054Problem.lean:179:4: Invalid alternative name `inr`: Expected `head` or `tail`
+error: Proofs/Erdos1054Problem.lean:177:4: Dependent elimination failed: Failed to solve equation
+  List.reverseAux (List.scanAuxM✝ (fun x1 x2 => pure (x1 + x2)) a (d :: t)) [] = x :: as✝
+error: Proofs/Erdos1054Problem.lean:177:4: Dependent elimination failed: Failed to solve equation
+  List.reverseAux (List.scanAuxM✝ (fun x1 x2 => pure (x1 + x2)) a (d :: t)) [] = x :: as✝
+warning: Proofs/Erdos1054Problem.lean:176:27: This simp argument is unused:
+error: Proofs/Erdos1054Problem.lean:322:23: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.30 :: ?m.31).tail
+in the target expression
+===== Erdos106OQ02
+error: Proofs/Erdos106OQ02.lean:165:2: Tactic `constructor` failed: target is not an inductive datatype
+sq : RotatedSquare
+error: Proofs/Erdos106OQ02.lean:178:38: linarith failed to find a contradiction
+case h1
+sq : RotatedSquare
+error: Proofs/Erdos106OQ02.lean:180:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  h * cos θ * cos θ + h * sin θ * sin θ
+in the target expression
+error: Proofs/Erdos106OQ02.lean:191:38: linarith failed to find a contradiction
+case h1
+sq : RotatedSquare
+===== Erdos1110OQ01
+error: Proofs/Erdos1110OQ01.lean:183:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun₀ | p => ?m.80) q
+in the target expression
+error: Proofs/Erdos1110OQ01.lean:192:28: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun₀ | q => ?m.74) p
+in the target expression
+===== Erdos1122Problem
+error: Proofs/Erdos1122Problem.lean:107:74: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 1
+error: Proofs/Erdos1122Problem.lean:108:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?m * ?n)
+in the target expression
+error: Proofs/Erdos1122Problem.lean:155:91: unsolved goals
+case h
+f : ℕ → ℝ
+===== Erdos1129OQ02
+error: Proofs/Erdos1129OQ02.lean:222:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (2 * (0 + 1) - 1) * π / (2 * 1)
+in the target expression
+error: Proofs/Erdos1129OQ02.lean:230:47: unsolved goals
+a b : ℝ
+hab : a < b
+===== Erdos1131OQ01
+error: Proofs/Erdos1131Problem.lean:386:30: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1131Problem.lean:410:4: linarith failed to find a contradiction
+case h1
+error: Proofs/Erdos1131Problem.lean:410:4: linarith failed to find a contradiction
+case h1
+j : ℕ
+error: Proofs/Erdos1131Problem.lean:416:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos1131Problem.lean:417:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (x : ℝ) in ?m.319..?m.320, (Real.sin ∘ ((fun x => ?m.273) * id)) x - (Real.sin ∘ ((fun x => ?m.303) * id)) x ∂?m.316
+in the target expression
+===== Erdos1131Problem
+error: Proofs/Erdos1131Problem.lean:386:30: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1131Problem.lean:410:4: linarith failed to find a contradiction
+case h1
+error: Proofs/Erdos1131Problem.lean:410:4: linarith failed to find a contradiction
+case h1
+j : ℕ
+error: Proofs/Erdos1131Problem.lean:416:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos1131Problem.lean:417:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (x : ℝ) in ?m.319..?m.320, (Real.sin ∘ ((fun x => ?m.273) * id)) x - (Real.sin ∘ ((fun x => ?m.303) * id)) x ∂?m.316
+in the target expression
+===== Erdos1155OQ01OQ07
+error: Proofs/Erdos1155OQ01OQ07.lean:145:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.126 ≤ ?m.125 * δ
+in the target expression
+error: Proofs/Erdos1155OQ01OQ07.lean:137:60: unsolved goals
+case calc.step
+δ : ℝ
+===== Erdos1176Problem
+error: Proofs/Erdos1176Problem.lean:109:0: declaration `Erdos1176.ErdosProblem1176` contains universe level metavariables at the expression
+  Eq.{?u.11 + 2} (chromaticNumber.{u_2, ?u.11} G)
+    (DFunLike.coe.{?u.11 + 2, ?u.11 + 2, ?u.11 + 2} aleph.{?u.11} (OfNat.ofNat.{?u.11 + 1} 1))
+error: Proofs/Erdos1176Problem.lean:136:4: Type mismatch
+  hcol
+has type
+error: Proofs/Erdos1176Problem.lean:185:25: Application type mismatch: The argument
+  e
+has type
+error: Proofs/Erdos1176Problem.lean:180:34: unsolved goals
+V : Type u_1
+C : Type u_2
+===== Erdos1208Problem
+error: Proofs/Erdos1208Problem.lean:81:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.card ?s * Finset.card ?s - Finset.card ?s
+in the target expression
+===== Erdos203Problem
+error: Proofs/Erdos203Problem.lean:91:47: unsolved goals
+p m k r : ℕ
+hmod : 2 ^ k % p = 2 ^ r % p
+error: Proofs/Erdos203Problem.lean:93:38: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a % ?n * (?b % ?n) % ?n
+in the target expression
+error: Proofs/Erdos203Problem.lean:119:32: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  1 ≤ c ≤ 72
+error: Proofs/Erdos203Problem.lean:367:2: linarith failed to find a contradiction
+m k₁ k₂ l : ℕ
+h : k₁ ≤ k₂
+===== Erdos207Problem
+error: Proofs/Erdos207Problem.lean:127:29: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  n - 1
+in the target expression
+error: Proofs/Erdos207Problem.lean:263:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case right
+===== Erdos207ProblemAristotle
+error: Proofs/Erdos207Problem.lean:127:29: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  n - 1
+in the target expression
+error: Proofs/Erdos207Problem.lean:263:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case right
+===== Erdos225Aristotle
+error: Proofs/Erdos225Aristotle.lean:42:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ‖cexp (↑?x * I)‖
+in the target expression
+error: Proofs/Erdos225Aristotle.lean:89:45: expected token
+warning: Proofs/Erdos225Aristotle.lean:94:8: declaration uses `sorry`
+warning: Proofs/Erdos225Aristotle.lean:100:8: declaration uses `sorry`
+===== Erdos264Problem
+error: Proofs/Erdos264Problem.lean:127:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a ^ ?m) ^ ?n
+in the target expression
+error: Proofs/Erdos264Problem.lean:132:64: unsolved goals
+n : ℕ
+⊢ (n + 1) * n.factorial / n.factorial = n + 1
+===== Erdos26Problem
+error: Proofs/Erdos26Problem.lean:95:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun n => 1 / ↑r ^ n
+in the target expression
+===== Erdos27Problem
+error: Proofs/Erdos27Problem.lean:113:2: linarith failed to find a contradiction
+S : CongruenceSystem
+h : IsPerfectCovering S
+error: Proofs/Erdos27Problem.lean:131:62: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos27Problem.lean:173:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.85 / max 2 ↑N < ?m.84
+in the target expression
+===== Erdos288Problem
+error: Proofs/Erdos288Problem.lean:75:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Icc 3 6
+in the target expression
+error: Proofs/Erdos288Problem.lean:89:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Icc 2 3
+in the target expression
+error: Proofs/Erdos288Problem.lean:136:10: Invalid `⟨...⟩` notation: The expected type
+  ∀ i ∈ Icc ↑a ↑b, 0 < if h : i > 0 then (↑i)⁻¹ else 0
+is not an inductive type
+error: Proofs/Erdos288Problem.lean:137:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case hs
+===== Erdos33Problem
+error: Proofs/Erdos33Problem.lean:86:17: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.22 / π < ?m.21
+in the target expression
+===== Erdos341Problem
+error: Proofs/Erdos341Problem.lean:52:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos341Problem.lean:170:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Membership.mem (?m.76 × ?m.77) (Finset (?m.76 × ?m.77)) SetLike.instMembership (?m.78 ×ˢ ?m.79) ?m.80
+in the target expression
+error: Proofs/Erdos341Problem.lean:190:14: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos341Problem.lean:207:8: `push_neg` has been deprecated. Prefer using `push Not` instead.
+===== Erdos388Problem
+error: Proofs/Erdos388Problem.lean:104:41: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (∏ i ∈ Icc 1 n, (m + i)) * m.factorial
+in the target expression
+===== Erdos404Problem
+error: Proofs/Erdos404Problem.lean:34:40: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos404Problem.lean:76:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos404Problem.lean:131:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos404Problem.lean:150:6: No goals to be solved
+error: Proofs/Erdos404Problem.lean:158:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  n / p ^ (k + 1)
+error: Proofs/Erdos404Problem.lean:158:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  n / p ^ (k + 1)
+in the target expression
+===== Erdos413Problem
+error: Proofs/Erdos413Problem.lean:130:12: Invalid field `eq_or_gt`: The environment does not contain `Nat.le.eq_or_gt`, so it is not possible to project the field `eq_or_gt` from an expression
+  hn
+of type `Nat.le 1 n`
+error: Proofs/Erdos413Problem.lean:130:26: Tactic `rcases` failed: `x✝ : ?m.14` is not an inductive datatype
+warning: Proofs/Erdos413Problem.lean:185:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos413Problem.lean:187:12: Function expected at
+  Nat.totient_pos
+but this term has type
+error: Proofs/Erdos413Problem.lean:189:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.totient ?m.58 = 1
+in the target expression
+===== Erdos414Problem
+error: Proofs/Erdos414Problem.lean:187:41: Application type mismatch: The argument
+  hd.left
+has type
+error: Proofs/Erdos414Problem.lean:182:40: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+error: Proofs/Erdos414Problem.lean:198:46: Application type mismatch: The argument
+  hd_mem
+has type
+error: Proofs/Erdos414Problem.lean:214:49: Application type mismatch: The argument
+  hd₁.left
+has type
+===== Erdos417Problem
+error: Proofs/Erdos417Problem.lean:117:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  n
+in the target expression
+error: Proofs/Erdos417Problem.lean:135:10: Function expected at
+  totient_pos
+but this term has type
+error: Proofs/Erdos417Problem.lean:133:54: unsolved goals
+m : ℕ
+hm : m > 0
+===== Erdos43Problem
+error: Proofs/Erdos43Problem.lean:85:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.card ?s * Finset.card ?s - Finset.card ?s
+in the target expression
+error: Proofs/Erdos43Problem.lean:125:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.card ?s * Finset.card ?s - Finset.card ?s
+in the target expression
+error: Proofs/Erdos43Problem.lean:208:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos43Problem.lean:210:31: linarith failed to find a contradiction
+A B : Finset ℤ
+N : ℕ
+===== Erdos616Problem
+error: Proofs/Erdos616Problem.lean:218:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  w
+in the target expression
+error: Proofs/Erdos616Problem.lean:274:43: linarith failed to find a contradiction
+r : ℕ
+hr : r ≥ 3
+===== Erdos688Problem
+error: Proofs/Erdos688Problem.lean:81:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (m₁ + 1) % p
+in the target expression
+error: Proofs/Erdos688Problem.lean:112:2: unsolved goals
+case pos
+ε₁ ε₂ : ℝ
+error: Proofs/Erdos688Problem.lean:121:0: type of theorem `sieve_duality` is not a proposition
+  (primes : Finset ℕ) → (∀ p ∈ primes, Nat.Prime p) → CoveringAssignment primes → CoveringAssignment primes
+error: Lean exited with code 1
+===== Erdos730Problem
+error: Proofs/Erdos730Problem.lean:75:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * n - 1 + 1
+in the target expression
+error: Proofs/Erdos730Problem.lean:96:40: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (2 * n).choose n * n.factorial * (2 * n - n).factorial
+in the target expression
+error: Proofs/Erdos730Problem.lean:111:42: Invalid field `dvd_factorial`: The environment does not contain `Irreducible.dvd_factorial`, so it is not possible to project the field `dvd_factorial` from an expression
+  hp
+of type `Irreducible p`
+error: Proofs/Erdos730Problem.lean:114:30: Invalid field `dvd_factorial`: The environment does not contain `Irreducible.dvd_factorial`, so it is not possible to project the field `dvd_factorial` from an expression
+  hp
+of type `Irreducible p`
+===== Erdos741Problem
+error: Proofs/Erdos741Problem.lean:217:84: unsolved goals
+case hu
+A B : Set ℕ
+error: Proofs/Erdos741Problem.lean:252:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∀ᶠ (x : ?m.94) in atTop, ?m.97 x
+in the target expression
+error: Proofs/Erdos741Problem.lean:285:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.231 / (↑n + 1) ≤ ?m.233 / (↑n + 1)
+in the target expression
+error: Proofs/Erdos741Problem.lean:293:4: Tactic `apply` failed: could not unify the conclusion of `Tendsto.sub tendsto_const_nhds`
+  Tendsto (fun x => ?m.293 - ?m.286 x) ?m.294 (nhds (?m.293 - ?m.289))
+with the goal
+===== Erdos74Problem
+error: Proofs/Erdos74Problem.lean:238:2: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/Erdos74Problem.lean:246:11: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.choose ?n 2
+in the target expression
+===== Erdos750Problem
+error: Proofs/Erdos750Problem.lean:91:4: Function expected at
+  Finset.filter_card_add_filter_neg_card_eq_card ?m.84
+but this term has type
+error: Proofs/Erdos750Problem.lean:91:51: Application type mismatch: The argument
+  S
+has type
+===== Erdos858Problem
+error: Proofs/Erdos858Problem.lean:114:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.43 / a < ?m.44
+in the target expression
+error: Proofs/Erdos858Problem.lean:150:21: linarith failed to find a contradiction
+case h2
+A : Finset ℕ
+error: Proofs/Erdos858Problem.lean:180:41: Ambiguous term
+  log
+Possible interpretations:
+error: Proofs/Erdos858Problem.lean:278:13: unsolved goals
+case zero
+n : ℕ
+===== Erdos964Problem
+error: Proofs/Erdos964Problem.lean:54:31: unsolved goals
+⊢ {x ∈ {1} | x = 1}.card = 1
+error: Proofs/Erdos964Problem.lean:57:60: unsolved goals
+error: Proofs/Erdos964Problem.lean:57:60: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos964Problem.lean:69:35: unsolved goals
+m n : ℕ
+h : m.Coprime n
+error: Proofs/Erdos964Problem.lean:164:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  0 ≤ ?m.308 - ?m.309
+in the target expression
+===== Erdos977ProblemAristotle
+error: Proofs/Erdos977ProblemAristotle.lean:155:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.24 > ?m.25
+in the target expression
+error: Proofs/Erdos977ProblemAristotle.lean:162:8: ambiguous term, use fully qualified name, possible interpretations [@_root_.div_pos, @Nat.div_pos]
+warning: Proofs/Erdos977ProblemAristotle.lean:176:8: declaration uses `sorry`
+warning: Proofs/Erdos977ProblemAristotle.lean:182:8: declaration uses `sorry`
+===== EulerTotientOQ01OQ01OQ01
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:62:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (p ^ k)
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael n
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:114:38: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (?m.23 * ?m.24)
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:123:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (?m.29 * ?m.30)
+in the target expression
+===== EulerTotientOQ01OQ02OQ01
+error: Proofs/EulerTotientOQ01OQ02OQ01.lean:72:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (p ^ k)
+in the target expression
+===== EulerTotientOQ01OQ02OQ02
+error: Proofs/EulerTotientOQ01OQ02OQ02.lean:94:33: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Carmichael (2 ^ k)
+in the target expression
+===== EulerTotientOQ02OQ01
+error: Proofs/EulerTotientOQ02OQ01.lean:186:47: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑n / ↑n
+in the target expression
+===== EulerTotientOQ02OQ02OQ01
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:75:50: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ carmichael ?m.28
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:100:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:144:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+===== FourierSeriesOQ01
+error: Proofs/FourierSeriesOQ01.lean:214:30: unsolved goals
+T : ℝ
+hT : Fact (0 < T)
+error: Proofs/FourierSeriesOQ01.lean:245:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.251 Set.univ
+in the target expression
+error: Proofs/FourierSeriesOQ01.lean:270:6: Tactic `apply` failed: could not unify the conclusion of `hc_zero`
+  c ?n = 0
+with the goal
+error: Proofs/FourierSeriesOQ01.lean:281:25: invalid 'ext' conv tactic, function or arrow expected
+  Icc (-↑N) ↑N : Finset ℤ
+warning: Proofs/FourierSeriesOQ01.lean:314:10: `continuous_finset_sum` has been deprecated: Use `continuous_finsetSum` instead
+===== FourierSeriesOQ04OQ01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+===== FourierSeriesOQ04OQ01Incomplete01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+===== GeometricSeriesOQ02OQ05
+error: Proofs/GeometricSeriesOQ02OQ05.lean:80:59: unsolved goals
+case e_a
+𝕜 : Type u_1
+error: Proofs/GeometricSeriesOQ02OQ05.lean:127:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ring.inverse ↑?m.122
+in the target expression
+error: Proofs/GeometricSeriesOQ02OQ05.lean:157:8: Tactic `apply` failed: could not unify the conclusion of `mul_le_mul_of_nonneg_left (norm_neumann_le T hT)`
+  ?m.252 * ‖∑' (n : ℕ), T ^ n‖ ≤ ?m.252 * (1 - ‖T‖)⁻¹
+with the goal
+error: Proofs/GeometricSeriesOQ02OQ05.lean:164:10: linarith failed to find a contradiction
+case hb
+𝕜 : Type u_1
+===== GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01
+error: Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01.lean:70:31: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ico ?m.138 ?m.139 ∪ Ico ?m.139 ?m.140
+in the target expression
+===== HeronsFormulaOQ01
+error: Proofs/HeronsFormulaOQ01.lean:130:43: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a ^ ?m) ^ ?n
+in the target expression
+===== Hilbert11OQ01Aristotle
+error: Proofs/Hilbert11OQ01Aristotle.lean:41:79: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun v => 1 ⊗ₜ[ℚ] v) v
+in the target expression
+error: Proofs/Hilbert11OQ01Aristotle.lean:61:87: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun v => 1 ⊗ₜ[ℚ] v) v
+in the target expression
+===== Hilbert15OQ02OQ03OQ01
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:547:8: Function expected at
+  List.take_left
+but this term has type
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:552:8: Function expected at
+  List.drop_left
+but this term has type
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:722:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.concat ?m.50 ?m.51
+in the target expression
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:1196:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.map (Function.const ?m.351 ?m.354) ?m.353
+in the target expression
+===== LagrangeFourSquaresOQ05
+error: Proofs/LagrangeFourSquaresOQ05.lean:180:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Quaternion.normSq (?p * ?q)
+in the target expression
+===== LagrangeTheoremOQ01OQ01
+error: Proofs/SylowTheoremOQ01.lean:58:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  if h.q = h.p then ?m.74 else ?m.75
+in the target expression
+error: Proofs/SylowTheoremOQ01.lean:112:16: Function expected at
+  Sylow.nonempty
+but this term has type
+error: Proofs/SylowTheoremOQ01.lean:112:9: Tactic `rcases` failed: `x✝ : ?m.30` is not an inductive datatype
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+but this term has type
+===== LagrangeTheoremOQ01OQ01OQ01
+error: Proofs/SylowTheoremOQ01.lean:58:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  if h.q = h.p then ?m.74 else ?m.75
+in the target expression
+error: Proofs/SylowTheoremOQ01.lean:112:16: Function expected at
+  Sylow.nonempty
+but this term has type
+error: Proofs/SylowTheoremOQ01.lean:112:9: Tactic `rcases` failed: `x✝ : ?m.30` is not an inductive datatype
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+but this term has type
+===== LagrangeTheoremOQ03
+error: Proofs/LagrangeTheoremOQ03.lean:187:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.card (?m.45 ⧸ ?H)
+in the target expression
+===== LawOfCosinesOQ01OQ01OQ01
+error: Proofs/LawOfCosinesOQ01OQ01OQ01.lean:48:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.60 / sin t.angleA = ?m.62 / sin t.angleB
+in the target expression
+error: Proofs/LawOfCosinesOQ01OQ01OQ01.lean:52:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.74 / sin t.angleA = ?m.76 / sin t.angleC
+in the target expression
+===== MaschkeModularCounterexampleOQ01
+error: Proofs/MaschkeModularCounterexampleOQ01.lean:98:27: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.34 →₀ ?m.35) (fun₀ | ?a₁ => ?b₁) fun₀ | ?a₂ => ?b₂
+in the target expression
+===== MeanValueTheoremOQ02OQ01OQ02
+error: Proofs/MeanValueTheoremOQ02OQ01OQ02.lean:142:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun x => f (-x)) (-b)
+in the target expression
+===== MotivicFlagMapsPartialFlags
+error: Proofs/MotivicFlagMapsPartialFlags.lean:132:2: No goals to be solved
+warning: Proofs/MotivicFlagMapsPartialFlags.lean:257:27: This simp argument is unused:
+  Finset.sum_range_one
+error: Proofs/MotivicFlagMapsPartialFlags.lean:418:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (evalAtL ?K) X
+in the target expression
+error: Proofs/MotivicFlagMapsPartialFlags.lean:424:46: unsolved goals
+n : ℕ
+hn : n > 0
+error: Proofs/MotivicFlagMapsPartialFlags.lean:427:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+===== NapoleonsTheorem
+error: Proofs/NapoleonsTheorem.lean:7:6: `Complex.norm_def` has already been declared
+warning: Proofs/NapoleonsTheorem.lean:90:22: Variable name `z₁` is not explicitly referenced.
+error: Proofs/NapoleonsTheorem.lean:129:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ‖?z‖
+in the target expression
+error: Proofs/NapoleonsTheorem.lean:154:4: linarith failed to find a contradiction
+case a.h1
+z₁ z₂ z₃ : ℂ
+error: Proofs/NapoleonsTheorem.lean:160:4: linarith failed to find a contradiction
+case a.h1
+z₁ z₂ z₃ : ℂ
+===== NapoleonsTheoremOQ02
+error: Proofs/NapoleonsTheorem.lean:7:6: `Complex.norm_def` has already been declared
+warning: Proofs/NapoleonsTheorem.lean:90:22: Variable name `z₁` is not explicitly referenced.
+error: Proofs/NapoleonsTheorem.lean:129:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ‖?z‖
+in the target expression
+error: Proofs/NapoleonsTheorem.lean:154:4: linarith failed to find a contradiction
+case a.h1
+z₁ z₂ z₃ : ℂ
+error: Proofs/NapoleonsTheorem.lean:160:4: linarith failed to find a contradiction
+case a.h1
+z₁ z₂ z₃ : ℂ
+===== PentagonalNumberTheoremOQ01
+error: Proofs/PentagonalNumberTheoremOQ01.lean:481:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑' (j : ℕ), pentChar (i + 1) (j + 1) • X ^ ((i + 1) * (j + 1))
+in the target expression
+===== PentagonalNumberTheoremOQ01OQ01
+error: Proofs/PentagonalNumberTheoremOQ01.lean:481:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑' (j : ℕ), pentChar (i + 1) (j + 1) • X ^ ((i + 1) * (j + 1))
+in the target expression
+===== PentagonalNumberTheoremOQ01OQ02
+error: Proofs/PentagonalNumberTheoremOQ01.lean:481:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑' (j : ℕ), pentChar (i + 1) (j + 1) • X ^ ((i + 1) * (j + 1))
+in the target expression
+===== PicksTheoremOQ01
+error: Proofs/PicksTheoremOQ01.lean:132:2: linarith failed to find a contradiction
+case h1
+i₁ b₁ i₂ b₂ k : ℕ
+error: Proofs/PicksTheoremOQ01.lean:151:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |x₁ * (y₂ - y₃) + x₂ * (y₃ - y₁) + x₃ * (y₁ - y₂)|
+in the target expression
+===== ProbMethodExpectationOQ01
+error: Proofs/ProbMethodExpectationOQ01.lean:37:23: expected token
+warning: Proofs/ProbMethodExpectationOQ01.lean:50:13: declaration uses `sorry`
+warning: Proofs/ProbMethodExpectationOQ01.lean:45:8: declaration uses `sorry`
+error: Proofs/ProbMethodExpectationOQ01.lean:79:4: No applicable extensionality theorem found for type
+  ENNReal
+error: Proofs/ProbMethodExpectationOQ01.lean:89:25: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.189 Set.univ
+in the target expression
+error: Proofs/ProbMethodExpectationOQ01.lean:116:46: unsolved goals
+Ω : Type u_1
+inst✝¹ : MeasurableSpace Ω
+===== PythagoreanTheoremOQ01
+error: Proofs/PythagoreanTheoremOQ01.lean:269:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⟪C - altitudeFoot A B C, A - B⟫
+in the target expression
+error: Proofs/PythagoreanTheoremOQ01.lean:296:36: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:313:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:335:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:313:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:335:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:354:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:335:2: No goals to be solved
+error: Proofs/PythagoreanTheoremOQ01.lean:354:2: No goals to be solved
+info: Proofs/PythagoreanTheoremOQ01.lean:440:0: @einstein_pythagorean : ∀ {cA cB h k areaWhole areaA areaB : ℝ},
+===== QuadraticReciprocityAlgorithmOQ03
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:158:47: unsolved goals
+G : Type u_1
+inst✝² : Group G
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:160:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ Fintype.card G
+in the target expression
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:179:52: unsolved goals
+G : Type u_1
+inst✝² : Group G
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:270:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ↑?n
+in the target expression
+===== QuadraticReciprocityAlgorithmOQ03FieldBridge
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:158:47: unsolved goals
+G : Type u_1
+inst✝² : Group G
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:160:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ Fintype.card G
+in the target expression
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:179:52: unsolved goals
+G : Type u_1
+inst✝² : Group G
+error: Proofs/QuadraticReciprocityAlgorithmOQ03.lean:270:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ↑?n
+in the target expression
+===== QuadraticReciprocityAlgorithmOQ03M2
+error: Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean:150:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ (?m + ?n)
+in the target expression
+error: Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean:176:57: unsolved goals
+p q : ℕ
+D : Finset ((_ : Fin (p * q)) × Fin (p * q)) := univ.sigma fun i => Ioi i
+===== QuadraticReciprocityAlgorithmOQ03M2Capstone
+error: Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean:150:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ (?m + ?n)
+in the target expression
+error: Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean:176:57: unsolved goals
+p q : ℕ
+D : Finset ((_ : Fin (p * q)) × Fin (p * q)) := univ.sigma fun i => Ioi i
+===== QuadraticReciprocityAlgorithmOQ03Zolotarev
+error: Proofs/QuadraticReciprocityAlgorithmOQ03Zolotarev.lean:113:73: unsolved goals
+p : ℕ
+inst✝ : Fact (Nat.Prime p)
+error: Proofs/QuadraticReciprocityAlgorithmOQ03Zolotarev.lean:132:34: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ShannonChannelCodingBECOQ04
+error: Proofs/ShannonChannelCodingBECOQ04.lean:294:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a =>
+    -((if _a = 0 then 0 else _a * log _a) +
+===== ShannonEntropyOQ02
+error: Proofs/ShannonEntropyOQ02.lean:163:2: linarith failed to find a contradiction
+n : ℕ
+p : Fin n → ℝ
+error: Proofs/ShannonEntropyOQ02.lean:258:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x ∈ ?m.474, -?f x
+in the target expression
+error: Proofs/ShannonEntropyOQ02.lean:308:6: linarith failed to find a contradiction
+n : ℕ
+p : Fin n → ℝ
+error: Proofs/ShannonEntropyOQ02.lean:358:15: `simp` made no progress
+error: Proofs/ShannonEntropyOQ02.lean:380:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  shannonEntropy p
+===== SolutionOfCubicOQ03OQ01
+error: Proofs/SolutionOfCubicOQ03OQ01.lean:54:24: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  -(x₁ * x₂ * x₃)
+in the target expression
+===== SpectralTraceDetEigenvaluesOQ01OQ01
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean:305:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+===== SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean:136:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean:149:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+===== SpectralTraceDetEigenvaluesOQ02
+error: Proofs/SpectralTraceDetEigenvaluesOQ02.lean:132:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((↑?M)⁻¹ * ?N * ↑?M).charpoly
+in the target expression
+===== Sqrt2MinpolyOQ01OQ02
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:99:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C a * X + C ha
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:103:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:132:2: unsolved goals
+case mp
+r : ℚ
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:157:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (algebraMap ℚ ℝ) r
+in the target expression
+===== SylowTheoremOQ01
+error: Proofs/SylowTheoremOQ01.lean:58:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  if h.q = h.p then ?m.74 else ?m.75
+in the target expression
+error: Proofs/SylowTheoremOQ01.lean:112:16: Function expected at
+  Sylow.nonempty
+but this term has type
+error: Proofs/SylowTheoremOQ01.lean:112:9: Tactic `rcases` failed: `x✝ : ?m.30` is not an inductive datatype
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+but this term has type
+===== WilsonsTheoremOQ01
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:
+===== WilsonsTheoremOQ02
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:
+===== WilsonsTheoremOQ02Ext
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:
+===== WilsonsTheoremOQ02ExtOQ01
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:
+===== WilsonsTheoremOQ02ExtOQ02
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:
+===== WilsonsTheoremOQ04
+error: Proofs/WilsonsTheoremOQ02Ext.lean:69:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.60
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:110:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.Nonempty ?m.78
+in the target expression
+error: Proofs/WilsonsTheoremOQ02Ext.lean:164:12: Unknown constant `Int.natAbs_le.mp`
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:172:6: Invalid pattern variable: Variable name must be atomic, but `Nat.totient._@.Proofs.WilsonsTheoremOQ02Ext.213515224._hygCtx._hyg.85` has multiple components
+error: Proofs/WilsonsTheoremOQ02Ext.lean:173:2: No goals to be solved
+error: Proofs/WilsonsTheoremOQ02Ext.lean:190:37: omega could not prove the goal:

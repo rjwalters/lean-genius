@@ -63,7 +63,7 @@ theorem sphereAngularAvg2D_eq (r : ℝ) : sphereAngularAvg2D r = 2 * r := by
 /-- The 2D angular average is non-negative for r ≥ 0. -/
 theorem sphereAngularAvg2D_nonneg (r : ℝ) (hr : 0 ≤ r) :
     0 ≤ sphereAngularAvg2D r :=
-  mul_nonneg hr (integral_nonneg (fun θ _ => abs_nonneg _))
+  mul_nonneg hr (intervalIntegral.integral_nonneg pi_pos.le (fun θ _ => abs_nonneg _))
 
 -- ============================================================
 -- Part II: The 2D Angular Average Instance (Axiom-Free)
@@ -85,7 +85,9 @@ noncomputable def angularAverageData2D : AngularAverageData 2 where
     rw [sphereAngularAvg2D_eq]
     -- Goal: 2 * r = sphereArea (2 - 2) / ((2 : ℝ) - 1) * r
     -- Natural number 2 - 2 = 0, real 2 - 1 = 1, sphereArea 0 = 2
-    simp [sphereArea_zero]
+    simp only [show (2 : ℕ) - 2 = 0 from rfl]
+    rw [sphereArea_zero]
+    norm_num
   angularAvg_nonneg := fun r hr => sphereAngularAvg2D_nonneg r hr
 
 /-- Consistency check: `angularAverageData2D` recovers the correct constant c_2 = 2/π.
@@ -93,7 +95,7 @@ noncomputable def angularAverageData2D : AngularAverageData 2 where
 theorem angularAverageData2D_expectedCrossings (L d : ℝ) (hd : 0 < d) (hL : 0 ≤ L) :
     expectedCrossings (n := 2) L d =
     2 / (sphereArea 1 * d) * angularAverageData2D.angularAvg L := by
-  exact expectedCrossings_eq_angularAvg angularAverageData2D (by norm_num) L d hd hL
+  exact expectedCrossings_eq_angularAvg angularAverageData2D L d hd hL
 
 -- ============================================================
 -- Part III: General n-Dimensional Angular Averaging
@@ -103,7 +105,7 @@ theorem angularAverageData2D_expectedCrossings (L d : ℝ) (hd : 0 < d) (hL : 0 
     Constructs `AngularAverageData n` via the linear function r ↦ sphereArea(n-2)/(n-1)·r,
     which trivially satisfies the structure's algebraic identity. Non-negativity follows
     from `sphereArea_pos` and n ≥ 3 ⟹ (n:ℝ) - 1 ≥ 2 > 0. -/
-theorem angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n where
+noncomputable def angularAvg_ndim (n : ℕ) (hn : 3 ≤ n) : AngularAverageData n where
   angularAvg := fun r => sphereArea (n - 2) / ((n : ℝ) - 1) * r
   angularAvg_eq := fun r _ => rfl
   angularAvg_nonneg := fun r hr => by
@@ -126,7 +128,8 @@ theorem cauchyCrofton_product (n : ℕ) (hn : 2 ≤ n) :
     cauchyCroftonConst n * cauchyCroftonConst (n + 1) = 2 / ((n : ℝ) * π) := by
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
   have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by
-    exact_mod_cast (show 0 < n - 1 from by omega)
+    have h2n : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have hσn2_pos := sphereArea_pos (n - 2)
   have hσn1_pos := sphereArea_pos (n - 1)
   -- Use the sphere area recurrence σ_n = 2π/(n-1) · σ_{n-2}
@@ -140,14 +143,13 @@ theorem cauchyCrofton_product (n : ℕ) (hn : 2 ≤ n) :
   push_cast
   rw [hcast, hrec]
   field_simp [hn1_pos.ne', hn_pos.ne', hσn1_pos.ne', hσn2_pos.ne', pi_pos.ne']
-  ring
 
 /-- Corollary: c_2 · c_3 = 1/π. Verified from c_2 = 2/π and c_3 = 1/2. -/
 theorem cauchyCrofton_product_two :
     cauchyCroftonConst 2 * cauchyCroftonConst 3 = 1 / π := by
   rw [cauchyCrofton_two, cauchyCrofton_three]
   have hpi := pi_pos
-  field_simp [hpi.ne']; ring
+  field_simp [hpi.ne']
 
 /-- The product c_n · c_{n+1} is strictly decreasing: for n ≥ 2,
     2/(n·π) > 2/((n+1)·π). -/
@@ -158,20 +160,23 @@ theorem cauchyCrofton_product_decreasing (n : ℕ) (hn : 2 ≤ n) :
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
   have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
   push_cast
-  rw [gt_iff_lt, div_lt_div_iff (mul_pos hn1_pos pi_pos) (mul_pos hn_pos pi_pos)]
-  nlinarith
+  rw [gt_iff_lt, div_lt_div_iff₀ (mul_pos hn1_pos pi_pos) (mul_pos hn_pos pi_pos)]
+  nlinarith [pi_pos]
 
 -- ============================================================
 -- Part V: Positivity and Monotonicity
 -- ============================================================
 
-/-- All Cauchy-Crofton constants are positive (for n ≥ 1). -/
-theorem cauchyCroftonConst_pos (n : ℕ) (hn : 1 ≤ n) : 0 < cauchyCroftonConst n := by
+/-- All Cauchy-Crofton constants are positive (for n ≥ 2).
+    Note: at n = 1 the denominator (n-1)·σ_{n-1} vanishes, so
+    `cauchyCroftonConst 1 = 0` under Lean's division-by-zero convention;
+    the hypothesis must be `2 ≤ n`, not `1 ≤ n`. -/
+theorem cauchyCroftonConst_pos (n : ℕ) (hn : 2 ≤ n) : 0 < cauchyCroftonConst n := by
   unfold cauchyCroftonConst
   apply div_pos
   · exact mul_pos two_pos (sphereArea_pos _)
   · apply mul_pos
-    · have h : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    · have h : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
       linarith
     · exact sphereArea_pos _
 

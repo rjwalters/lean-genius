@@ -18,11 +18,7 @@ when all residues are equal, giving density
 Reference: https://erdosproblems.com/278
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- ## Core Definitions
 
@@ -209,7 +205,7 @@ private lemma coprime_shift_injective {n L : ℕ} (hn : 0 < n) (hcop : Nat.Copri
     (heq : (j + k₁ * L) % n = (j + k₂ * L) % n) : k₁ = k₂ := by
   by_contra hne
   wlog hle : k₁ ≤ k₂ with H
-  · exact H hn hcop hk₂ hk₁ heq.symm (Ne.symm hne) (le_of_not_le hle)
+  · exact H hn hcop hk₂ hk₁ heq.symm (Ne.symm hne) (le_of_not_ge hle)
   have hlt : k₁ < k₂ := lt_of_le_of_ne hle hne
   have h1 : j + k₁ * L ≤ j + k₂ * L :=
     Nat.add_le_add_left (Nat.mul_le_mul_right L hle) j
@@ -371,7 +367,7 @@ private lemma complement_eq_prod (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli,
     -- Sum of constant (a-1) over compS = (a-1) * compS.card
     rw [Finset.sum_congr rfl hfib_card, Finset.sum_const, smul_eq_mul, mul_comm]
 
-/-- Product fraction identity: ∏((n-1)/n) = ∏(n-1) / ∏n in ℝ, for positive naturals. -/
+/-- Product fraction identity: ∏((n-1)/n) = ∏(n-1) / ∏n ∈ ℝ, for positive naturals. -/
 private lemma prod_sub_one_div (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     (↑(moduli.prod (fun n => n - 1)) : ℝ) / ↑(moduli.prod id) =
     moduli.prod (fun n => 1 - 1 / (↑n : ℝ)) := by

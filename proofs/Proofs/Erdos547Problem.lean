@@ -74,15 +74,15 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
     This is axiomatized as a predicate since the Mathlib definitions may vary. -/
 axiom IsTree (G : SimpleGraph V) : Prop
 
-/-- Maximum degree of a graph. -/
+/-  Maximum degree of a graph. -/
 /-
 ## Part IV: Special Tree Families
 
 We define paths and stars, the two extremes of tree structure.
 -/
 
-/-- A path P_n is a tree with max degree at most 2. -/
-/-- A star S_n is a tree with one central vertex adjacent to all others. -/
+/-  A path P_n is a tree with max degree at most 2. -/
+/-  A star S_n is a tree with one central vertex adjacent to all others. -/
 /-
 ## Part V: Ramsey Numbers of Specific Trees
 

@@ -33,6 +33,8 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
 
+open scoped Classical
+
 open MeasureTheory Filter Real
 
 namespace Erdos994
@@ -50,7 +52,7 @@ theorem frac_nonneg (x : ℝ) : frac x ≥ 0 := by
 
 theorem frac_lt_one (x : ℝ) : frac x < 1 := by
   simp [frac]
-  exact Int.sub_one_lt_floor x
+  exact Int.fract_lt_one x
 
 /-- The sequence of fractional parts {kα} for k = 1, 2, ... -/
 noncomputable def fracSequence (α : ℝ) (k : ℕ) : ℝ := frac (k * α)
@@ -65,7 +67,7 @@ noncomputable def indicator (E : Set ℝ) (x : ℝ) : ℝ :=
 
 /-- Count of how many fractional parts {kα} fall in E for k = 1, ..., n. -/
 noncomputable def countInE (α : ℝ) (E : Set ℝ) (n : ℕ) : ℕ :=
-  (Finset.range n).filter (fun k => frac ((k + 1) * α) ∈ E) |>.card
+  (Finset.range n).filter (fun (k : ℕ) => frac ((k + 1) * α) ∈ E) |>.card
 
 /-- The empirical frequency of hits in E. -/
 noncomputable def empiricalFrequency (α : ℝ) (E : Set ℝ) (n : ℕ) : ℝ :=
@@ -116,7 +118,7 @@ def KhintchineConjecture' : Prop :=
 ## Part V: The Key Difference
 -/
 
-/-- Weyl says: ∀ E, (∃ null set N_E such that ∀ α ∉ N_E, equidist holds)
+/-  Weyl says: ∀ E, (∃ null set N_E such that ∀ α ∉ N_E, equidist holds)
     Khintchine asks: ∃ null set N such that ∀ α ∉ N, (∀ E, equidist holds)
     The difference: can the exceptional set be made independent of E? -/
 
@@ -128,7 +130,7 @@ def WeylOrder : Prop :=
 def KhintchineOrder : Prop :=
   ∀ᵐ α ∂volume, ∀ E : Set ℝ, MeasurableSet E → IsEquidistributed α E (volume E).toReal
 
-/-- The quantifier exchange is NOT valid! -/
+/-  The quantifier exchange is NOT valid! -/
 /-
 ## Part VI: Marstrand's Disproof
 -/
@@ -138,9 +140,9 @@ def KhintchineOrder : Prop :=
     There exist α such that equidistribution fails for some E. -/
 axiom marstrand_disproof : ¬KhintchineConjecture
 
-/-- Equivalently: there exists α in every full-measure set
+/-  Equivalently: there exists α in every full-measure set
     such that some E fails equidistribution for α. -/
-/-- The bad E can be constructed for any given α (outside a measure zero set). -/
+/-  The bad E can be constructed for any given α (outside a measure zero set). -/
 /-
 ## Part VII: What Goes Wrong
 -/
@@ -162,7 +164,7 @@ def avoidanceConstruction : Prop :=
 ## Part VIII: Related Results
 -/
 
-/-- For irrational α, {kα} is equidistributed mod 1 (Weyl's original). -/
+/-  For irrational α, {kα} is equidistributed mod 1 (Weyl's original). -/
 /-- Equidistribution for intervals is much easier than for general sets. -/
 def intervalVsGeneral : Prop :=
   -- Intervals: always works for irrational α

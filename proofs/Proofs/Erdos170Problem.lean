@@ -81,7 +81,7 @@ theorem F_upper_trivial (N : ℕ) : F N ≤ N + 1 := by
   · exact trivial_is_perfect N
   · simp [trivialRuler]
 
-/-- Lower bound: F(N) ≥ 2 for N ≥ 1.
+/-  Lower bound: F(N) ≥ 2 for N ≥ 1.
     Proof: Empty set can't measure 1; singleton a-a=0, can't measure 1. -/
 /- ## The Limit Theorem -/
 
@@ -104,9 +104,9 @@ theorem limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ Real.sqrt 3 :
 
 /- ## Known Constructions -/
 
-/-- **Wichmann Rulers**: Achieve asymptotic density √3.
+/-  **Wichmann Rulers**: Achieve asymptotic density √3.
     For certain N, the ruler {0, 1, 3, 6, ..., (k²+k)/2, ..., N} is optimal. -/
-/-- **Redei-Renyi Lower Bound**: Any perfect ruler needs at least ~√(2N) marks
+/-  **Redei-Renyi Lower Bound**: Any perfect ruler needs at least ~√(2N) marks
     to cover all differences. -/
 /- ## Unrestricted Version -/
 
@@ -118,12 +118,12 @@ def IsUnrestrictedPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
 noncomputable def F' (N : ℕ) : ℕ :=
   sInf { m : ℕ | ∃ A : Finset ℕ, IsUnrestrictedPerfectRuler N A ∧ A.card = m }
 
-/-- Unrestricted rulers can be smaller: F'(N) ≤ F(N). -/
+/-  Unrestricted rulers can be smaller: F'(N) ≤ F(N). -/
 /- ## Examples -/
 
-/-- Example: {0, 1, 3} is a 3-perfect ruler.
+/-  Example: {0, 1, 3} is a 3-perfect ruler.
     Differences: 1-0=1, 3-0=3, 3-1=2. -/
-/-- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
+/- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
     with only 13 marks (instead of 31). This is an optimal ruler for N=30. -/
 /- ## Summary
 

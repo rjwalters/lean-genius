@@ -103,7 +103,7 @@ private lemma divisorList_prime (p : ℕ) (hp : Nat.Prime p) :
   set L := ({1, p} : Finset ℕ).sort (· ≤ ·) with hL_def
   have hlen : L.length = 2 := by
     rw [hL_def, Finset.length_sort]
-    rw [Finset.card_insert_of_not_mem (show (1 : ℕ) ∉ ({p} : Finset ℕ) by simp [hp.one_lt.ne'])]
+    rw [Finset.card_insert_of_notMem (show (1 : ℕ) ∉ ({p} : Finset ℕ) by simp [hp.one_lt.ne'])]
     simp
   obtain ⟨a, b, hab_eq⟩ := List.length_eq_two.mp hlen
   have hmem : ∀ x, x ∈ L ↔ x ∈ ({1, p} : Finset ℕ) := fun x => Finset.mem_sort _

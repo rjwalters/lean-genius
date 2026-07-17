@@ -42,6 +42,8 @@ import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos216
@@ -54,7 +56,7 @@ namespace Erdos216
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
 /-- A finite point set in the plane -/
-def PointSet := Finset Point
+abbrev PointSet := Finset Point
 
 /-- Points are in general position if no three are collinear.
 Axiomatized since the full definition requires cross products. -/
@@ -133,8 +135,8 @@ theorem g_7_not_exists : g 7 = none := by
   simp only [dite_eq_right_iff]
   intro ⟨n, hn⟩
   obtain ⟨S, hS_card, hS_horton⟩ := horton_sets_exist n
-  have h := hn S (le_of_eq hS_card) hS_horton.1
-  exact hS_horton.2 h
+  have h := hn S (le_of_eq hS_card.symm) hS_horton.1
+  exact (hS_horton.2 h).elim
 
 /-- For all k ≥ 7, g(k) does not exist -/
 axiom g_ge_7_not_exists : ∀ k : ℕ, k ≥ 7 → g k = none
@@ -154,7 +156,7 @@ theorem g_exists_le_6 : ∀ k : ℕ, 3 ≤ k → k ≤ 6 → gExists k := by
 -/
 
 /-- Base case: Horton set of 1 point -/
-def hortonBase : PointSet := {![0, 0]}
+def hortonBase : PointSet := {!₂[0, 0]}
 
 /-
 ## Part VIII: Connection to Happy Ending Problem

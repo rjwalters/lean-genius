@@ -26,6 +26,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Choose.Basic
 
+open scoped Classical
+
 open Set Finset Nat
 
 namespace Erdos669
@@ -75,10 +77,10 @@ noncomputable def F_k (k n : ℕ) : ℕ :=
 /-- The Orchard Problem asks whether f_3(n) and F_3(n) are both n²/6 - O(n). -/
 def orchardProblem : Prop :=
   ∃ C₁ C₂ : ℝ, ∀ n : ℕ, n ≥ 3 →
-    |f_k 3 n - (n^2 : ℕ) / 6| ≤ C₁ * n ∧
-    |F_k 3 n - (n^2 : ℕ) / 6| ≤ C₂ * n
+    |(f_k 3 n : ℝ) - (n^2 : ℝ) / 6| ≤ C₁ * n ∧
+    |(F_k 3 n : ℝ) - (n^2 : ℝ) / 6| ≤ C₂ * n
 
-/-- **Burr-Grünbaum-Sloane Theorem (1974):**
+/-  **Burr-Grünbaum-Sloane Theorem (1974):**
 f_3(n) = n²/6 - O(n) and F_3(n) = n²/6 - O(n).
 This resolves the Orchard Problem completely. -/
 /-- The asymptotic limit for k=3: both f_3(n)/n² and F_3(n)/n² tend to 1/6. -/
@@ -88,10 +90,10 @@ axiom k3_limit :
 
 /- ## Part IV: Trivial Upper Bound -/
 
-/-- **Trivial upper bound:** F_k(n) ≤ C(n,2)/C(k,2).
+/-  **Trivial upper bound:** F_k(n) ≤ C(n,2)/C(k,2).
 Each line with ≥ k points contributes at least C(k,2) pairs,
 and there are at most C(n,2) pairs total. -/
-/-- The limiting ratio: lim F_k(n)/n² ≤ 1/(k(k-1)). -/
+/-  The limiting ratio: lim F_k(n)/n² ≤ 1/(k(k-1)). -/
 /- ## Part V: The General Conjecture -/
 
 /-- **Conjecture:** The limits equal 1/(k(k-1)) for all k ≥ 2. -/
@@ -103,12 +105,14 @@ def limit_conjecture (k : ℕ) (hk : k ≥ 2) : Prop :=
 theorem k3_matches : 1 / (3 * (3 - 1)) = 1 / 6 := by norm_num
 
 /-- The k=3 case of the conjecture holds (follows from BGS). -/
-theorem k3_conjecture_true : limit_conjecture 3 (by norm_num) :=
-  k3_limit
+theorem k3_conjecture_true : limit_conjecture 3 (by norm_num) := by
+  unfold limit_conjecture
+  norm_num
+  exact k3_limit
 
 /- ## Part VI: Optimal Configurations -/
 
-/-- **Optimal Configurations:**
+/-  **Optimal Configurations:**
 Configurations achieving f_3(n) = n²/6 - O(n) exist.
 Often derived from projective plane constructions (e.g., points of PG(2,q)). -/
 /- ## Part VII: Summary -/

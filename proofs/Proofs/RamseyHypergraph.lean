@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Map
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fin.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
@@ -337,17 +337,13 @@ lemma IsRamsey.swap {n k s t : ℕ} : IsRamsey n k s t ↔ IsRamsey n k t s := b
   · -- An `a`-clique monochromatic-`false` under `!χ` is monochromatic-`true` under `χ`.
     refine Or.inr ⟨S, hSc, ?_⟩
     intro T hT
-    have hflip : !(χ T) = false := hSm T hT
-    cases hχ : χ T with
-    | false => simp [hχ] at hflip
-    | true => exact hχ
+    have hflip : Bool.not (χ T) = false := hSm T hT
+    simpa using hflip
   · -- A `b`-clique monochromatic-`true` under `!χ` is monochromatic-`false` under `χ`.
     refine Or.inl ⟨S, hSc, ?_⟩
     intro T hT
-    have hflip : !(χ T) = true := hSm T hT
-    cases hχ : χ T with
-    | false => exact hχ
-    | true => simp [hχ] at hflip
+    have hflip : Bool.not (χ T) = true := hSm T hT
+    simpa using hflip
 
 /-- **`ramseyNumber` collapses when the `false`-target is zero.** With `s = 0` the
 empty set is a trivially monochromatic `false`-clique of size `0`, so
@@ -457,7 +453,7 @@ lemma is_ramsey_self_right (k t : ℕ) (hk : 1 ≤ k) (hkt : k ≤ t) :
       have hχ_ne : χ T ≠ false := fun hχ => h T hTcard hχ
       cases hT_color : χ T with
       | false => exact absurd hT_color hχ_ne
-      | true => exact hT_color
+      | true => rfl
 
 /-- **Boundary case `t = k`.** Symmetric to `is_ramsey_self_right` via
 `IsRamsey.swap`. -/

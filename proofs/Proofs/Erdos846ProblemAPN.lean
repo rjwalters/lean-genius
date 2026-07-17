@@ -247,8 +247,11 @@ lemma t_seq_pos (n : ℕ) : t_seq n ≥ 100 := by
   refine n.rec ↑le_rfl fun and true => true.trans (le_self_pow₀ (by ·linear_combination true) (by decide) )
 
 lemma t_seq_int (n : ℕ) : ∃ (k : ℤ), t_seq n = (k : ℝ) := by
-  delta t_seq
-  induction n with |zero=>repeat constructor|succ a s=>cases↑s with use (by assumption^4),by simp_all
+  induction n with
+  | zero => exact ⟨100, by norm_num [t_seq]⟩
+  | succ a ih =>
+    obtain ⟨k, hk⟩ := ih
+    exact ⟨k ^ 4, by simp only [t_seq, hk]; norm_cast⟩
 
 lemma abs_ge_one_of_int (x y : ℝ) (hx : ∃ k : ℤ, x = k) (hy : ∃ k : ℤ, y = k) (hneq : x ≠ y) : |x - y| ≥ 1 := by
   refine hy.elim (hx.elim fun and true A B => true▸B▸mod_cast abs_sub_pos.mpr (by ·bound : ¬ and = A) )
@@ -596,8 +599,8 @@ lemma t_seq_not_collinear_symm23 (i j k l m n : ℕ)
   let x3 := t_seq k + t_seq l; let y3 := t_seq k^2 + t_seq k * t_seq l + t_seq l^2
   (x2 - x1) * (y3 - y1) ≠ (x3 - x1) * (y2 - y1) := by
   constructor
-  · use@.symm
-  · use .symm
+  · exact fun h => Ne.symm h
+  · exact fun h => Ne.symm h
 
 lemma t_seq_not_collinear_n_max (i j k l m n : ℕ)
   (h1 : i < j) (h2 : k < l) (h3 : m < n)
@@ -862,8 +865,11 @@ lemma weakly_nontrilinear_coloring {A : Set ℝ²} (h : WeaklyNonTrilinear A) :
   · intro p₁ p₂ p₃ hp1 hp2 hp3 hneq12 hneq13 hneq23 heq1 heq2
     have h_eq : c p₁ = c p₃ := by valid
     have h_lt : c p₁ < N := by exact B_list.findIdx_lt_length.2.comp ( hB1▸hp1).imp (by norm_num[c, B_list, N])
-    have h_get : ∃ s, B_list.get ⟨c p₁, h_lt⟩ = s ∧ p₁ ∈ s ∧ p₂ ∈ s ∧ p₃ ∈ s := by norm_num[c,List.findIdx_eq] at heq1⊢
-                                                                                   grind[List.findIdx_eq]
+    have h_get : ∃ s, B_list.get ⟨c p₁, h_lt⟩ = s ∧ p₁ ∈ s ∧ p₂ ∈ s ∧ p₃ ∈ s := by
+      refine ⟨B_list.get ⟨c p₁, h_lt⟩, rfl, ?_, ?_, ?_⟩
+      · simpa using ((List.findIdx_eq h_lt).mp rfl).1
+      · simpa using ((List.findIdx_eq h_lt).mp heq1.symm).1
+      · simpa using ((List.findIdx_eq h_lt).mp (heq1.trans heq2).symm).1
     rcases h_get with ⟨s, hs_eq, hp1s, hp2s, hp3s⟩
     have hsB : s ∈ B := by norm_num [←hs_eq, B_list, true,<-B.mem_toList]
     have h_nontri : NonTrilinear s := hB2 s hsB
@@ -879,9 +885,9 @@ lemma ramsey_sequence (c : ℕ × ℕ → ℕ) (N : ℕ) (hc : ∀ e, c e < N) :
     (∀ i j, i < j → c (v i, v j) = C i) := by
   have R M := (Set.finite_lt_nat _).exists_lt_map_eq_of_forall_mem fun and=>hc (M, and)
   choose _ _ _ _ using(id) R
-  apply (isCompact_pi_infinite fun and=>isCompact_Icc).tendsto_subseq (fun A B=>⟨zero_le _,le_of_lt (hc (B, A))⟩) |>.elim
+  apply (isCompact_pi_infinite fun and=>isCompact_Icc).tendsto_subseq (fun A B=>⟨zero_le,le_of_lt (hc (B, A))⟩) |>.elim
   simp_all(config := {singlePass :=1}) -contextual [tendsto_pi_nhds]
-  refine fun and A B R M=> (Classical.axiomOfChoice M).elim @fun a s=>((isCompact_Icc.isSeqCompact fun and' =>⟨zero_le _,A (B (and'.recOn 0 fun and k=>a (B k)+ (k + 1)))⟩).elim) ?_
+  refine fun and A B R M=> (Classical.axiomOfChoice M).elim @fun a s=>((isCompact_Icc.isSeqCompact fun and' =>⟨zero_le,A (B (and'.recOn 0 fun and k=>a (B k)+ (k + 1)))⟩).elim) ?_
   norm_num
   use fun and K V M W E=>⟨ fun and=>B ((V (W+and)).rec 0 fun and n=>a (B n)+ (n + 1)), R.comp (strictMono_nat_of_lt_succ (by (fin_omega))|>.comp (M.comp fun and=>by valid)), fun and' =>and,?_⟩
   refine fun and R L=>E @_ ↑le_self_add▸s _ _ ((monotone_nat_of_le_succ (by (fin_omega) ) (M (by valid) )).trans' le_self_add)

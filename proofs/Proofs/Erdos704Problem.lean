@@ -12,11 +12,11 @@ if and only if the distance between them is 1. Estimate χ(Gₙ).
 Reference: https://erdosproblems.com/704
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos704
@@ -36,19 +36,21 @@ For general n: exponential growth is known, but the exact base is open.
 def UnitDistanceGraph (n : ℕ) : SimpleGraph (EuclideanSpace ℝ (Fin n)) where
   Adj x y := ‖x - y‖ = 1 ∧ x ≠ y
   symm := by
+    constructor
     intro x y ⟨h1, h2⟩
     constructor
     · simp only [norm_sub_rev]
       exact h1
     · exact h2.symm
   loopless := by
+    constructor
     intro x ⟨_, h⟩
     exact h rfl
 
 /-- The chromatic number χ(Gₙ) of the unit distance graph.
     This is the minimum number of colors needed so that
     no two adjacent vertices have the same color. -/
-noncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber
+noncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber.toNat
 
 /-
 ## Lower Bounds
@@ -60,7 +62,7 @@ The key is analyzing set systems with restricted intersection sizes.
 
 /-- Frankl-Wilson lower bound: χ(Gₙ) grows exponentially with base at least 1.2. -/
 axiom frankl_wilson_1981 :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, chi n ≥ ((1 - ε) * (1.2 : ℝ)^n).toNat
+  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, chi n ≥ ⌊(1 - ε) * (1.2 : ℝ)^n⌋₊
 
 /-- The exponential base in the lower bound. -/
 def lowerBase : ℝ := 1.2
@@ -79,16 +81,16 @@ Using a more sophisticated tiling, they proved χ(Gₙ) ≤ (3+o(1))ⁿ.
 Larman and Rogers conjecture: χ(Gₙ) ≤ (2^{3/2}+o(1))ⁿ ≈ 2.828ⁿ.
 -/
 
-/-- Trivial upper bound from cube tiling. -/
+/-  Trivial upper bound from cube tiling. -/
 /-- Larman-Rogers upper bound (1972): χ(Gₙ) ≤ (3+o(1))ⁿ. -/
 axiom larman_rogers_1972 :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, chi n ≤ (((3 + ε) : ℝ)^n).toNat + 1
+  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, chi n ≤ ⌊((3 + ε) : ℝ)^n⌋₊ + 1
 
 /-- The exponential base in the Larman-Rogers upper bound. -/
 def upperBase : ℝ := 3
 
 /-- Conjectured upper bound base. -/
-def conjecturedBase : ℝ := 2^(3/2 : ℝ)  -- ≈ 2.828
+noncomputable def conjecturedBase : ℝ := 2^(3/2 : ℝ)  -- ≈ 2.828
 
 /-
 ## The Hadwiger-Nelson Problem (n = 2)
@@ -122,11 +124,11 @@ theorem hadwiger_nelson_bounds : 5 ≤ chi 2 ∧ chi 2 ≤ 7 :=
 -/
 
 /-- The limit of χ(Gₙ)^{1/n} as n → ∞, if it exists. -/
-noncomputable def chromaticLimit : ℝ := Filter.limsSup Filter.atTop (fun n => (chi n : ℝ)^(1/n : ℝ))
+noncomputable def chromaticLimit : ℝ := Filter.limsup (fun n => (chi n : ℝ)^(1/n : ℝ)) Filter.atTop
 
-/-- Exponential growth: χ(Gₙ) grows exponentially in n.
+/-  Exponential growth: χ(Gₙ) grows exponentially in n.
     Follows from frankl_wilson_1981 applied with any fixed ε < 0.2. -/
-/-- The base is between 1.2 and 3.
+/-  The base is between 1.2 and 3.
     Follows from frankl_wilson_1981 and larman_rogers_1972. -/
 /-
 ## Proof Techniques
@@ -147,8 +149,8 @@ noncomputable def chromaticLimit : ℝ := Filter.limsSup Filter.atTop (fun n => 
 
 /-- The main result: exponential growth of χ(Gₙ) is established. -/
 theorem erdos_704_solved :
-    (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≥ ((1 - ε) * 1.2^n).toNat) ∧
-    (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≤ (((3 + ε) : ℝ)^n).toNat + 1) :=
+    (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≥ ⌊(1 - ε) * (1.2 : ℝ)^n⌋₊) ∧
+    (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≤ ⌊((3 + ε) : ℝ)^n⌋₊ + 1) :=
   ⟨frankl_wilson_1981, larman_rogers_1972⟩
 
 end Erdos704

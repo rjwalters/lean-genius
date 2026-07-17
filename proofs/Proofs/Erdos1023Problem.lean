@@ -303,26 +303,34 @@ def erdos_1023_question : Prop :=
 /-- The answer is YES. Proved from unionFreeMax_asymptotic. -/
 theorem erdos_1023_solved : erdos_1023_question := by
   refine ⟨asymptoticConstant, asymptoticConstant_pos, fun ε hε => ?_⟩
-  obtain ⟨N, hN⟩ := unionFreeMax_asymptotic ε hε
+  obtain ⟨N, hN⟩ := unionFreeMax_asymptotic (ε / 2) (by positivity)
   refine ⟨max N 1, fun n hn => ?_⟩
   have hnN : n ≥ N := le_of_max_le_left hn
   have hn1 : n ≥ 1 := le_of_max_le_right hn
-  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (Nat.one_le_iff_ne_zero.mp hn1)
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn1
   have hsqrt_pos : Real.sqrt n > 0 := Real.sqrt_pos_of_pos hn_pos
   have hpow_pos : (2 : ℝ) ^ n > 0 := pow_pos (by norm_num : (0:ℝ) < 2) n
   have hdenom_pos : (2 : ℝ) ^ n / Real.sqrt n > 0 := div_pos hpow_pos hsqrt_pos
   have hasym := hN n hnN
-  -- |x / d - c| < ε  ←  |x - c * d| ≤ ε * d  when d > 0
+  have habs := abs_le.mp hasym
+  have hhalf : ε / 2 * 2 ^ n / Real.sqrt (n : ℝ) < ε * (2 ^ n / Real.sqrt (n : ℝ)) := by
+    rw [mul_div_assoc]
+    exact mul_lt_mul_of_pos_right (by linarith) hdenom_pos
+  -- |x / d - c| < ε  ←  |x - c * d| ≤ (ε/2) * d < ε * d  when d > 0
   rw [abs_sub_lt_iff]
   have key : (unionFreeMax n : ℝ) / (2 ^ n / Real.sqrt ↑n) - asymptoticConstant =
       ((unionFreeMax n : ℝ) - asymptoticConstant * 2 ^ n / Real.sqrt ↑n) / (2 ^ n / Real.sqrt ↑n) := by
     field_simp
   rw [key]
   constructor
-  · rw [neg_lt, neg_div, div_lt_iff hdenom_pos]
-    linarith [abs_le.mp hasym]
-  · rw [div_lt_iff hdenom_pos]
-    linarith [abs_le.mp hasym]
+  · rw [div_lt_iff₀ hdenom_pos]
+    linarith [habs.2]
+  · have key2 : asymptoticConstant - (unionFreeMax n : ℝ) / (2 ^ n / Real.sqrt ↑n) =
+        (asymptoticConstant * 2 ^ n / Real.sqrt ↑n - (unionFreeMax n : ℝ)) /
+          (2 ^ n / Real.sqrt ↑n) := by
+      field_simp
+    rw [key2, div_lt_iff₀ hdenom_pos]
+    linarith [habs.1]
 
 /-
 ## Summary

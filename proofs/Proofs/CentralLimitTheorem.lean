@@ -1,13 +1,4 @@
-import Mathlib.Probability.Distributions.Gaussian.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.Fourier.FourierTransform
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
-import Mathlib.Probability.Independence.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Calculus.Taylor
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Central Limit Theorem
@@ -144,7 +135,7 @@ axiom charFun_deriv_interchange (μ_meas : MeasureTheory.Measure ℝ)
 theorem integral_ofReal_eq_ofReal_integral (μ_meas : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ_meas]
     (h_int : MeasureTheory.Integrable id μ_meas) :
-    ∫ x : ℝ, (x : ℂ) ∂μ_meas = (∫ x : ℝ, x ∂μ_meas : ℂ) := by
+    ∫ x : ℝ, (x : ℂ) ∂μ_meas = Complex.ofReal (∫ x : ℝ, x ∂μ_meas) := by
   have := Complex.ofRealCLM.integral_comp_comm h_int
   simp only [Complex.ofRealCLM_apply, id] at this
   exact this
@@ -224,7 +215,7 @@ section LimitComputation
 theorem limit_one_plus_x_over_n (x : ℝ) :
     Filter.Tendsto (fun n : ℕ => (1 + x / n)^n) Filter.atTop (nhds (Real.exp x)) :=
   -- This is a standard result in Mathlib
-  tendsto_one_plus_div_pow_exp x
+  Real.tendsto_one_add_div_pow_exp x
 
 /-- The characteristic function of Sₙ = (X₁ + ... + Xₙ)/√n -/
 theorem normalized_sum_charFun (μ : MeasureTheory.Measure ℝ)

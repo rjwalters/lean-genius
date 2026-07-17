@@ -37,6 +37,8 @@ import Mathlib
 import Proofs.Erdos107Problem
 import Proofs.Erdos107OQ01KleinUpperAristotle
 
+open scoped Classical
+
 open Finset
 open scoped BigOperators
 

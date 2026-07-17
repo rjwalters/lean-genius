@@ -17,9 +17,8 @@
   Tags: group-theory, graph-theory, non-commuting-graph, ring-theory
 -/
 
-import Mathlib.RingTheory.Subring.Center
+import Mathlib
 import Mathlib.GroupTheory.Subgroup.Center
-import Mathlib.RingTheory.Subring.Basic
 import Mathlib.Tactic
 
 namespace Erdos1098OQ03
@@ -113,7 +112,7 @@ def ringCommutator (x y : R) : R := x * y - y * x
 /-- The commutator is antisymmetric: [y, x] = -[x, y]. -/
 theorem ringCommutator_antisymm (x y : R) :
     ringCommutator y x = -ringCommutator x y := by
-  simp [ringCommutator]; ring
+  simp [ringCommutator]
 
 /-- The commutator with self is zero: [x, x] = 0. -/
 theorem ringCommutator_self (x : R) : ringCommutator x x = 0 := by
@@ -127,12 +126,12 @@ theorem commute_iff_commutator_zero (x y : R) :
 /-- The commutator is bilinear in the first argument: [x+y, z] = [x,z] + [y,z]. -/
 theorem ringCommutator_add_left (x y z : R) :
     ringCommutator (x + y) z = ringCommutator x z + ringCommutator y z := by
-  simp [ringCommutator, mul_add, add_mul]; ring
+  unfold ringCommutator; noncomm_ring
 
 /-- The commutator is bilinear in the second argument: [x, y+z] = [x,y] + [x,z]. -/
 theorem ringCommutator_add_right (x y z : R) :
     ringCommutator x (y + z) = ringCommutator x y + ringCommutator x z := by
-  simp [ringCommutator, mul_add, add_mul]; ring
+  unfold ringCommutator; noncomm_ring
 
 /-- The Jacobi identity for ring commutators:
     [x,[y,z]] + [y,[z,x]] + [z,[x,y]] = 0. -/
@@ -140,7 +139,7 @@ theorem jacobi_identity (x y z : R) :
     ringCommutator x (ringCommutator y z) +
     ringCommutator y (ringCommutator z x) +
     ringCommutator z (ringCommutator x y) = 0 := by
-  simp [ringCommutator]; ring
+  unfold ringCommutator; noncomm_ring
 
 end Erdos1098OQ03
 

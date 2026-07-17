@@ -24,10 +24,12 @@ References:
 - Nešetřil-Rödl [NeRo85]: Complete negative answer
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 namespace Erdos328
 
@@ -38,7 +40,7 @@ namespace Erdos328
 r_A(n) = 1_A * 1_A(n) = |{(a, b) ∈ A × A : a + b = n}|.
 Counts the number of ways to write n as a sum of two elements from A.
 -/
-def representationFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def representationFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun p : ℕ × ℕ => p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n)
     (Finset.product (Finset.range (n + 1)) (Finset.range (n + 1))))
 
@@ -65,7 +67,7 @@ A is a Sidon set if all pairwise sums are distinct.
 Equivalently, r_A(n) ≤ 2 for all n (counting ordered pairs).
 -/
 def isSidonSet (A : Set ℕ) : Prop :=
-  ∀ a b c d ∈ A, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
 
 /--
 **B_h set:**
@@ -75,7 +77,7 @@ For h = 2, this is a Sidon set.
 def isBhSet (A : Set ℕ) (h : ℕ) : Prop :=
   hasBoundedConvolution A (Nat.factorial h)
 
-/--
+/- 
 **Sidon sets have bounded convolution:**
 If A is a Sidon set, then r_A(n) ≤ 2 for all n.
 -/
@@ -112,12 +114,12 @@ def erdos_newman_question : Prop :=
 
 /- ## Part IV: Erdős's Partial Results -/
 
-/--
+/- 
 **Erdős (1980) - Case C = 3:**
 There exist sets A with r_A ≤ 3 that cannot be partitioned
 into any number of pieces each with r_{Aᵢ} < 3.
 -/
-/--
+/- 
 **Erdős (1980) - Case C = 4:**
 Similarly for C = 4.
 -/
@@ -143,13 +145,13 @@ The Erdős-Newman question has a NEGATIVE answer for all C.
 axiom erdos_newman_disproved :
     ¬ erdos_newman_question
 
-/--
+/- 
 **Stronger statement:**
 Even allowing t to depend on A (not just C), the answer is still NO.
 -/
 /- ## Part VI: Special Cases -/
 
-/--
+/- 
 **Case C = 2 (Sidon sets):**
 Even Sidon sets (r_A ≤ 2) cannot always be partitioned
 into sets with r < 2 (i.e., sets with unique sums).
@@ -162,13 +164,13 @@ These are very sparse (much sparser than Sidon sets).
 def hasUniqueSums (A : Set ℕ) : Prop :=
   ∀ n, representationFunction A n ≤ 1
 
-/--
+/- 
 **Unique sum sets are closed under subsets:**
 If A has unique sums, so does every subset.
 -/
 /- ## Part VII: Density Considerations -/
 
-/--
+/- 
 **Density bound:**
 Sets with bounded convolution have density at most O(n^{1/2}).
 The counterexamples achieve this density.

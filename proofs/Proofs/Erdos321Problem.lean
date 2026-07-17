@@ -143,7 +143,7 @@ theorem maxDistinctReciprocal_ge_one (N : ℕ) (hN : N ≥ 1) :
     simp only [Finset.mem_filter, Finset.mem_powerset, Finset.singleton_subset_iff,
                Finset.mem_range, Finset.mem_singleton]
     exact ⟨by omega, singleton_hasDistinctReciprocalSums 1 le_rfl,
-           fun n hn => hn ▸ ⟨le_rfl, hN⟩⟩
+           fun n hn => by subst hn; exact ⟨le_rfl, hN⟩⟩
   have : ({1} : Finset ℕ).card ≤ Finset.sup (Finset.filter
       (fun A => HasDistinctReciprocalSums A ∧ ∀ n ∈ A, 1 ≤ n ∧ n ≤ N)
       (Finset.range (N + 1)).powerset) Finset.card := Finset.le_sup hmem

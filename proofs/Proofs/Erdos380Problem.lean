@@ -13,13 +13,7 @@ Erdős and Graham (1980) proved `B(x) > x^{1-o(1)}`.
 *Reference:* [erdosproblems.com/380](https://www.erdosproblems.com/380)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Bertrand
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 
@@ -33,7 +27,7 @@ with all properties proved from the definition. -/
     Defined as the maximum of the prime factor set.
     Previously an axiom; now concrete via Mathlib. -/
 noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
-  if h : n > 1 then n.primeFactors.max' (Nat.primeFactors_nonempty h) else 0
+  if h : n > 1 then n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h) else 0
 
 /-- `greatestPrimeFactor n` is prime for `n ≥ 2`.
     Previously axiomatized; now proved from the definition. -/
@@ -41,7 +35,7 @@ theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) :
     (greatestPrimeFactor n).Prime := by
   unfold greatestPrimeFactor
   rw [dif_pos (by omega : n > 1)]
-  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  have hmem := Finset.max'_mem n.primeFactors (Nat.nonempty_primeFactors.mpr (by omega : n > 1))
   exact (Nat.mem_primeFactors.mp hmem).1
 
 /-- `greatestPrimeFactor n` divides `n`.
@@ -50,7 +44,7 @@ theorem gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
     greatestPrimeFactor n ∣ n := by
   unfold greatestPrimeFactor
   rw [dif_pos (by omega : n > 1)]
-  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  have hmem := Finset.max'_mem n.primeFactors (Nat.nonempty_primeFactors.mpr (by omega : n > 1))
   exact (Nat.mem_primeFactors.mp hmem).2.1
 
 /-- `greatestPrimeFactor n` is the largest prime dividing `n`.
@@ -68,8 +62,7 @@ theorem gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
 product `u * (u+1) * ⋯ * v` occurs with exponent ≥ 2. -/
 def IsBadInterval (u v : ℕ) : Prop :=
     u ≤ v ∧
-    let P := greatestPrimeFactor (Finset.Icc u v).prod id
-    P ^ 2 ∣ (Finset.Icc u v).prod id
+    greatestPrimeFactor ((Finset.Icc u v).prod id) ^ 2 ∣ (Finset.Icc u v).prod id
 
 /-- An integer `n` is in a bad interval if there exist `u ≤ n ≤ v`
 with `[u, v]` bad. -/
@@ -78,6 +71,7 @@ def InBadInterval (n : ℕ) : Prop :=
 
 /- ## Counting functions -/
 
+open Classical in
 /-- `B(x)`: count of integers `n ≤ x` in some bad interval. -/
 noncomputable def badCount (x : ℕ) : ℕ :=
     ((Finset.Icc 1 x).filter InBadInterval).card
@@ -96,30 +90,6 @@ def ErdosProblem380 : Prop :=
       ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
         0 < gpfSquareCount x ∧
           |(badCount x : ℚ) / (gpfSquareCount x : ℚ) - 1| < ε
-
-/- ## Known bounds -/
-
-/-- The count `#{n ≤ x : P(n)² | n}` grows like
-`x / exp(c √(log x · log log x))` for some `c > 0`.
-In particular, it exceeds `x^{1-ε}` for any `ε > 0` and large enough `x`. -/
-axiom gpfSquare_asymptotic :
-    ∃ c : ℚ, 0 < c ∧
-      ∀ (ε : ℚ), 0 < ε →
-        ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-          (x : ℚ) ^ (1 - ε) ≤ (gpfSquareCount x : ℚ)
-
-/-- Erdős–Graham: `B(x) > x^{1-o(1)}`.
-Previously axiomatized; now derived from `gpfSquare_asymptotic` and
-`badCount_ge_gpfSquareCount` via the chain `x^{1-ε} ≤ G(x) ≤ B(x)`. -/
-theorem erdos_graham_lower :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-        (x : ℚ) ^ (1 - ε) ≤ (badCount x : ℚ) := by
-  intro ε hε
-  obtain ⟨_, _, hasy⟩ := gpfSquare_asymptotic
-  obtain ⟨x₀, hx₀⟩ := hasy ε hε
-  exact ⟨x₀, fun x hx =>
-    le_trans (hx₀ x hx) (Nat.cast_le.mpr (badCount_ge_gpfSquareCount x))⟩
 
 /- ## Bad intervals and primes -/
 
@@ -140,7 +110,11 @@ theorem bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
   have hprod_ge2 : 2 ≤ prod := by
     have hp_mem : p ∈ S := Finset.mem_Icc.mpr ⟨hup, hpv⟩
     calc prod = S.prod id := rfl
-      _ ≥ id p := Finset.single_le_prod' (fun m hm => by simp [Finset.mem_Icc] at hm; omega) hp_mem
+      _ ≥ id p := Finset.single_le_prod'
+            (fun m hm => by
+              rw [hS, Finset.mem_Icc] at hm
+              simp only [id_eq]
+              omega) hp_mem
       _ = p := rfl
       _ ≥ 2 := hp.two_le
   -- P is prime, divides product, and is the largest such
@@ -164,13 +138,23 @@ theorem bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
   have hP_unique : ∀ m ∈ S, P ∣ m → m = P := by
     intro m hm hPm
     have hm_bounds := Finset.mem_Icc.mp hm
+    have hm_pos : 0 < m := by
+      rcases Nat.eq_zero_or_pos m with rfl | h
+      · have h0 : prod = 0 := Finset.prod_eq_zero hm rfl
+        omega
+      · exact h
     obtain ⟨k, rfl⟩ := hPm
-    have hk_pos : 0 < k := by
-      by_contra h; push_neg at h; simp at h; omega
-    have : k * P ≤ v := hm_bounds.2
-    have : k * P < 2 * P := le_trans this (le_of_lt hv_lt_2P)
-    have : k < 2 := by omega
-    omega
+    have hk2 : k < 2 := by
+      by_contra hk
+      push_neg at hk
+      have h2Pk : 2 * P ≤ P * k := by
+        rw [Nat.mul_comm 2 P]
+        exact Nat.mul_le_mul_left P hk
+      exact absurd (lt_of_le_of_lt (le_trans h2Pk hm_bounds.2) hv_lt_2P) (lt_irrefl _)
+    have hk01 : k = 0 ∨ k = 1 := by omega
+    rcases hk01 with rfl | rfl
+    · simp at hm_pos
+    · rw [Nat.mul_one]
   -- Split: prod = P * rest
   set rest := (S.erase P).prod id with hrest_def
   have hprod_split : P * rest = prod := Finset.mul_prod_erase S id hP_mem
@@ -189,11 +173,14 @@ theorem bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
   -- Contradiction: P ∣ rest and P ∤ rest
   exact hP_ndvd_rest hP_dvd_rest
 
-/-- Bad intervals contain no primes (unconditional version using Bertrand's postulate).
-Strengthens bad_interval_no_prime by removing the v < 2u hypothesis.
+/-- Bad intervals contain no primes (version using Bertrand's postulate).
+Strengthens bad_interval_no_prime by replacing the v < 2u hypothesis with 1 ≤ u.
+(The hypothesis `1 ≤ u` is necessary: for `u = 0` the interval product is `0`,
+`greatestPrimeFactor 0 = 0`, and `0² ∣ 0`, so `[0, v]` is vacuously "bad" yet
+contains primes.)
 Key insight: by Bertrand, there's a prime q > v/2 in [u,v] (if any prime exists),
 so GPF ≥ q > v/2, making GPF the unique multiple of itself in the interval. -/
-theorem bad_interval_no_prime_general (u v : ℕ) (hbad : IsBadInterval u v) :
+theorem bad_interval_no_prime_general (u v : ℕ) (hbad : IsBadInterval u v) (hu : 1 ≤ u) :
     ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False := by
   intro p hp hup hpv
   have hv2 : 2 ≤ v := le_trans hp.two_le hpv
@@ -211,7 +198,11 @@ theorem bad_interval_no_prime_general (u v : ℕ) (hbad : IsBadInterval u v) :
     have hq_mem : q ∈ S := Finset.mem_Icc.mpr ⟨hqu, hqv⟩
     have hprod_ge2 : 2 ≤ prod := by
       calc prod = S.prod id := rfl
-        _ ≥ id q := Finset.single_le_prod' (fun m hm => by simp [Finset.mem_Icc] at hm; omega) hq_mem
+        _ ≥ id q := Finset.single_le_prod'
+              (fun m hm => by
+                rw [hS, Finset.mem_Icc] at hm
+                simp only [id_eq]
+                omega) hq_mem
         _ = q := rfl
         _ ≥ 2 := hq_prime.two_le
     have hPprime := gpf_prime prod hprod_ge2
@@ -232,13 +223,23 @@ theorem bad_interval_no_prime_general (u v : ℕ) (hbad : IsBadInterval u v) :
     have hP_unique : ∀ m ∈ S, P ∣ m → m = P := by
       intro m hm hPm
       have hm_bounds := Finset.mem_Icc.mp hm
+      have hm_pos : 0 < m := by
+        rcases Nat.eq_zero_or_pos m with rfl | h
+        · have h0 : prod = 0 := Finset.prod_eq_zero hm rfl
+          omega
+        · exact h
       obtain ⟨k, rfl⟩ := hPm
-      have hk_pos : 0 < k := by
-        by_contra h; push_neg at h; simp at h; omega
-      have : k * P ≤ v := hm_bounds.2
-      have : k * P < 2 * P := le_trans this (le_of_lt h2P)
-      have : k < 2 := by omega
-      omega
+      have hk2 : k < 2 := by
+        by_contra hk
+        push_neg at hk
+        have h2Pk : 2 * P ≤ P * k := by
+          rw [Nat.mul_comm 2 P]
+          exact Nat.mul_le_mul_left P hk
+        exact absurd (lt_of_le_of_lt (le_trans h2Pk hm_bounds.2) h2P) (lt_irrefl _)
+      have hk01 : k = 0 ∨ k = 1 := by omega
+      rcases hk01 with rfl | rfl
+      · simp at hm_pos
+      · rw [Nat.mul_one]
     -- Split: prod = P * rest, derive contradiction
     set rest := (S.erase P).prod id with hrest_def
     have hprod_split : P * rest = prod := Finset.mul_prod_erase S id hP_mem
@@ -264,7 +265,7 @@ theorem bad_interval_v_bound (u v : ℕ) (hbad : IsBadInterval u v) (hu : 1 ≤ 
   by_contra h
   push_neg at h
   obtain ⟨q, hq_prime, huq, hq2u⟩ := Nat.exists_prime_lt_and_le_two_mul u (by omega)
-  exact bad_interval_no_prime_general u v hbad q hq_prime (by omega) (le_trans hq2u h)
+  exact bad_interval_no_prime_general u v hbad hu q hq_prime (by omega) (le_trans hq2u h)
 
 /- ## Singleton intervals -/
 
@@ -272,12 +273,9 @@ theorem bad_interval_v_bound (u v : ℕ) (hbad : IsBadInterval u v) (hu : 1 ≤ 
     This directly links bad intervals to the gpfSquare counting function. -/
 theorem singleton_bad_iff (n : ℕ) (hn : 2 ≤ n) :
     IsBadInterval n n ↔ greatestPrimeFactor n ^ 2 ∣ n := by
-  constructor
-  · intro ⟨_, h⟩
-    simp only [Finset.Icc_self, Finset.prod_singleton, id] at h
-    exact h
-  · intro h
-    exact ⟨le_refl n, by simp only [Finset.Icc_self, Finset.prod_singleton, id]; exact h⟩
+  unfold IsBadInterval
+  rw [Finset.Icc_self, Finset.prod_singleton, id_eq]
+  simp
 
 /-- Every n with P(n)² | n is in the bad interval [n,n]. -/
 theorem gpfSquare_in_bad (n : ℕ) (hn : 2 ≤ n)
@@ -294,6 +292,32 @@ theorem badCount_ge_gpfSquareCount (x : ℕ) :
   simp only [Finset.mem_filter, Finset.mem_Icc]
   rintro ⟨⟨hn2, hnx⟩, hgpf⟩
   exact ⟨⟨by omega, hnx⟩, gpfSquare_in_bad n hn2 hgpf⟩
+
+/- ## Known bounds -/
+
+/-- The count `#{n ≤ x : P(n)² | n}` grows like
+`x / exp(c √(log x · log log x))` for some `c > 0`.
+In particular, it exceeds `x^{1-ε}` for any `ε > 0` and large enough `x`.
+(Stated over `ℝ` with real exponentiation; the earlier `ℚ`-power spelling
+was ill-typed — there is no `HPow ℚ ℚ ℚ`.) -/
+axiom gpfSquare_asymptotic :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ (ε : ℝ), 0 < ε →
+        ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
+          (x : ℝ) ^ (1 - ε) ≤ (gpfSquareCount x : ℝ)
+
+/-- Erdős–Graham: `B(x) > x^{1-o(1)}`.
+Previously axiomatized; now derived from `gpfSquare_asymptotic` and
+`badCount_ge_gpfSquareCount` via the chain `x^{1-ε} ≤ G(x) ≤ B(x)`. -/
+theorem erdos_graham_lower :
+    ∀ (ε : ℝ), 0 < ε →
+      ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
+        (x : ℝ) ^ (1 - ε) ≤ (badCount x : ℝ) := by
+  intro ε hε
+  obtain ⟨_, _, hasy⟩ := gpfSquare_asymptotic
+  obtain ⟨x₀, hx₀⟩ := hasy ε hε
+  exact ⟨x₀, fun x hx =>
+    le_trans (hx₀ x hx) (Nat.cast_le.mpr (badCount_ge_gpfSquareCount x))⟩
 
 /- ## Very bad intervals and powerful numbers
 
@@ -318,10 +342,12 @@ def IsVeryBadInterval (u v : ℕ) : Prop :=
 def InVeryBadInterval (n : ℕ) : Prop :=
   ∃ (u v : ℕ), u ≤ n ∧ n ≤ v ∧ IsVeryBadInterval u v
 
+open Classical in
 /-- Count of integers `n ≤ x` in some very bad interval. -/
 noncomputable def veryBadCount (x : ℕ) : ℕ :=
   ((Finset.Icc 1 x).filter InVeryBadInterval).card
 
+open Classical in
 /-- Count of powerful numbers in `[2, x]`. -/
 noncomputable def powerfulCount (x : ℕ) : ℕ :=
   ((Finset.Icc 2 x).filter IsPowerful).card
@@ -333,24 +359,29 @@ theorem veryBad_is_bad (u v : ℕ) (h : IsVeryBadInterval u v) :
   obtain ⟨huv, hpow⟩ := h
   have hlt := hpow.1
   have h2 : 2 ≤ (Finset.Icc u v).prod id := by omega
-  constructor
-  · exact huv
-  · exact hpow.2 _ (gpf_prime _ h2) (gpf_dvd _ h2)
+  exact ⟨huv, hpow.2 _ (gpf_prime _ h2) (gpf_dvd _ h2)⟩
 
-/-- Very bad intervals contain no primes (corollary). -/
+/-- Very bad intervals contain no primes (corollary). Here `1 ≤ u` is automatic:
+a powerful product is `> 1`, hence nonzero, so `0 ∉ [u, v]`. -/
 theorem veryBad_interval_no_prime (u v : ℕ) (hvb : IsVeryBadInterval u v) :
-    ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False :=
-  bad_interval_no_prime_general u v (veryBad_is_bad u v hvb)
+    ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False := by
+  have hu : 1 ≤ u := by
+    by_contra h
+    push_neg at h
+    have hu0 : u = 0 := by omega
+    subst hu0
+    have h0 : (0 : ℕ) ∈ Finset.Icc 0 v := Finset.mem_Icc.mpr ⟨le_refl 0, Nat.zero_le v⟩
+    have hz : (Finset.Icc 0 v).prod id = 0 := Finset.prod_eq_zero h0 rfl
+    have h1 := hvb.2.1
+    omega
+  exact bad_interval_no_prime_general u v (veryBad_is_bad u v hvb) hu
 
 /-- A singleton `[n, n]` is very bad iff `n` is powerful (for `n ≥ 2`). -/
 theorem singleton_veryBad_iff (n : ℕ) (hn : 2 ≤ n) :
     IsVeryBadInterval n n ↔ IsPowerful n := by
-  constructor
-  · intro ⟨_, hpow⟩
-    simp only [Finset.Icc_self, Finset.prod_singleton, id] at hpow
-    exact hpow
-  · intro h
-    exact ⟨le_refl n, by simp only [Finset.Icc_self, Finset.prod_singleton, id]; exact h⟩
+  unfold IsVeryBadInterval
+  rw [Finset.Icc_self, Finset.prod_singleton, id_eq]
+  simp
 
 /-- Every powerful `n ≥ 2` is in the very bad interval `[n, n]`. -/
 theorem powerful_in_veryBad (n : ℕ) (hn : 2 ≤ n) (h : IsPowerful n) :

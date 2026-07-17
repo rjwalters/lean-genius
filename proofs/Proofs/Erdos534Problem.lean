@@ -22,11 +22,9 @@ define the optimal family construction, and axiomatize the
 Ahlswede-Khachatrian theorem with special cases.
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset
 
@@ -35,7 +33,7 @@ namespace Erdos534
 /- ## Part 1: Basic Definitions -/
 
 /-- The interval {1, ..., N} -/
-def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by omega⟩
+def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by simpa using h⟩
 
 /-- A set is GCD-intersecting if gcd(a,b) > 1 for all distinct a, b -/
 def IsGCDIntersecting (A : Finset ℕ) : Prop :=
@@ -56,13 +54,13 @@ def multiplesOfSmallestPrime (N : ℕ) : Finset ℕ :=
   let p := N.minFac
   (interval N).filter (fun n => p ∣ n)
 
-/-- Multiples of p gives size N/p -/
-/-- This set is GCD-intersecting (all share factor p) -/
+/-  Multiples of p gives size N/p -/
+/-  This set is GCD-intersecting (all share factor p) -/
 /-- Even numbers that share a factor with N -/
 def evenMultiplesSharing (N : ℕ) : Finset ℕ :=
   (interval N).filter (fun n => 2 ∣ n ∧ Nat.gcd n N > 1)
 
-/-- This gives another candidate for the maximum -/
+/-  This gives another candidate for the maximum -/
 /- ## Part 3: The Original Conjecture (WRONG) -/
 
 /-- Erdős-Graham original conjecture -/
@@ -100,7 +98,7 @@ axiom ahlswede_khachatrian_theorem :
 
 /- ## Part 5: Special Cases -/
 
-/-- When N is a prime power p^k, the maximum is p^(k-1) -/
+/-  When N is a prime power p^k, the maximum is p^(k-1) -/
 /-- When N = 2p for odd prime p, the maximum is 2 -/
 /- ## Part 6: Summary
 

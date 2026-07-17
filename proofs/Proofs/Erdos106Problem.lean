@@ -105,6 +105,13 @@ axiom f_bounded : ∀ n : ℕ, f n ≤ Real.sqrt n
 axiom f_mono : ∀ n m : ℕ, n ≤ m → f n ≤ f m
 
 /-
+## Perfect Squares: f(k²) = k
+-/
+
+/-- For perfect squares, f(k²) = k -/
+axiom f_perfect_square : ∀ k : ℕ, k ≥ 1 → f (k^2) = k
+
+/-
 ## Known Exact Values
 -/
 
@@ -122,19 +129,12 @@ theorem f_4 : f 4 = 2 := by
   norm_num at this
   exact this
 
-/-- f(5) = 2 (Newman) -/
+/-  f(5) = 2 (Newman) -/
 /-- f(9) = 3: nine squares of side 1/3 -/
 theorem f_9 : f 9 = 3 := by
   have := f_perfect_square 3 (by omega)
   norm_num at this
   exact this
-
-/-
-## Perfect Squares: f(k²) = k
--/
-
-/-- For perfect squares, f(k²) = k -/
-axiom f_perfect_square : ∀ k : ℕ, k ≥ 1 → f (k^2) = k
 
 /-- Cauchy-Schwarz upper bound: f(n) ≤ √n -/
 theorem f_upper_bound (n : ℕ) : f n ≤ Real.sqrt n := f_bounded n
@@ -178,7 +178,7 @@ f(k²+2c+1) ≥ k + c/k for c ≥ 1
 axiom halasz_odd : ∀ k c : ℕ, k ≥ 1 → c ≥ 1 →
   f (k^2 + 2*c + 1) ≥ k + (c : ℝ) / k
 
-/-- Halász bound for even increments -/
+/-  Halász bound for even increments -/
 /-
 ## The Erdős-Soifer Conjecture
 
@@ -190,7 +190,7 @@ def erdosSoiferConjecture : Prop :=
   ∀ k : ℕ, k ≥ 1 → ∀ c : ℤ, |c| < k →
     f (k^2 + (2*c + 1).toNat) = k + (c : ℝ) / k
 
-/-- Praton's equivalence: main conjecture ↔ Erdős-Soifer conjecture -/
+/-  Praton's equivalence: main conjecture ↔ Erdős-Soifer conjecture -/
 /-
 ## Axis-Parallel Case
 

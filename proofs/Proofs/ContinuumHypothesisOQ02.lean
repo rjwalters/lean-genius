@@ -1,9 +1,4 @@
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.Order.SuccPred.Basic
-import Mathlib.Logic.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
 
@@ -65,6 +60,7 @@ set_option linter.unusedTactic false
 namespace ContinuumHypothesisOQ02
 
 open Cardinal ContinuumHypothesis
+open scoped Classical
 
 -- ============================================================
 -- PART 1: Regular and Singular Cardinals
@@ -92,9 +88,8 @@ theorem aleph_succ_is_regular (α : Ordinal.{0}) :
   Cardinal.isRegular_aleph_succ α
 
 /-- ℵ₀ is strictly less than ℵ₁ (basic cardinal ordering). -/
-theorem aleph_zero_lt_aleph_one : ℵ₀ < Cardinal.aleph 1 := by
-  rw [Cardinal.aleph_zero]
-  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
+theorem aleph_zero_lt_aleph_one : ℵ₀ < Cardinal.aleph 1 :=
+  Cardinal.aleph0_lt_aleph_one
 
 /-- ℵ₁ is strictly less than ℵ₂ (basic cardinal ordering). -/
 theorem aleph_one_lt_aleph_two : Cardinal.aleph 1 < Cardinal.aleph 2 :=
@@ -112,24 +107,20 @@ theorem aleph_two_lt_aleph_three : Cardinal.aleph 2 < Cardinal.aleph 3 :=
     Proof: `Cardinal.cof_aleph ω` gives `(aleph ω).ord.cof = ω` as ordinals,
     then `Ordinal.card_omega0` gives `ω.card = ℵ₀` for the cardinal coercion. -/
 theorem aleph_omega_cof_eq_omega :
-    ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀ := by
-  rw [Cardinal.cof_aleph]
-  exact Ordinal.card_omega0
+    ((Cardinal.aleph (Ordinal.omega0)).ord.cof : Cardinal) = ℵ₀ := by
+  have hf : Order.IsNormal (Cardinal.ord ∘ Cardinal.aleph : Ordinal.{0} → Ordinal.{0}) :=
+    Cardinal.isNormal_ord.comp Cardinal.isNormal_aleph
+  have h := Ordinal.cof_map_of_isNormal hf Ordinal.isSuccLimit_omega0
+  simpa using h.trans Ordinal.cof_omega0
 
 /-- ℵ_ω is not regular: since cf(ℵ_ω) = ℵ₀ < ℵ_ω, the defining
-    condition cf(κ) = κ for regularity fails. -/
+    condition cf(κ) = κ for regularity fails.
+
+    Proved via `Cardinal.isSingular_aleph_omega0` (ℵ_ω is a Mathlib-recognized
+    singular cardinal). -/
 theorem aleph_omega_is_singular :
-    ¬(Cardinal.aleph (ω : Ordinal.{0})).IsRegular := by
-  intro hreg
-  -- If regular, then cf(ℵ_ω) = ℵ_ω
-  have hcof := hreg.cof_eq
-  -- But cf(ℵ_ω) = ℵ₀
-  rw [aleph_omega_cof_eq_omega] at hcof
-  -- So ℵ₀ = ℵ_ω, contradicting ℵ₀ < ℵ_ω
-  have : ℵ₀ < Cardinal.aleph (ω : Ordinal.{0}) := by
-    rw [Cardinal.aleph_zero]
-    exact Cardinal.aleph_lt_aleph.mpr (Ordinal.pos_iff_ne_zero.mpr (by exact omega_ne_zero))
-  exact absurd hcof.symm (ne_of_lt this)
+    ¬(Cardinal.aleph (Ordinal.omega0)).IsRegular :=
+  Cardinal.isSingular_aleph_omega0.not_isRegular
 
 -- ============================================================
 -- PART 2: König's Cofinality Constraint
@@ -163,7 +154,7 @@ theorem konig_cofinality :
     cf(2^ℵ₀) > ℵ₀ by König. Since 2^ℵ₀ = ℵ_ω would give
     cf(2^ℵ₀) = cf(ℵ_ω) = ℵ₀, contradiction. -/
 theorem continuum_ne_aleph_omega :
-    ContinuumHypothesis.continuum ≠ Cardinal.aleph (ω : Ordinal.{0}) := by
+    ContinuumHypothesis.continuum ≠ Cardinal.aleph (Ordinal.omega0) := by
   intro h
   have hcof := konig_cofinality
   rw [h] at hcof
@@ -179,8 +170,10 @@ theorem ch_consistent_with_konig (h : CH) :
     (Uses the PFA axiom from OQ01.) -/
 theorem pfa_consistent_with_konig
     (hpfa : ContinuumHypothesisOQ01.PFA) :
-    (Cardinal.aleph 2).IsRegular :=
-  aleph_succ_is_regular 1
+    (Cardinal.aleph (2 : Ordinal.{0})).IsRegular := by
+  have h2 : (2 : Ordinal.{0}) = Order.succ (1 : Ordinal.{0}) := by norm_num
+  rw [h2]
+  exact aleph_succ_is_regular 1
 
 -- ============================================================
 -- PART 3: Easton's Theorem — The Spectrum of Possible Values
@@ -201,7 +194,7 @@ characterization: 2^ℵ₀ can be exactly the regular uncountable cardinals.
 def IsPossibleContinuumValue (κ : Cardinal.{0}) : Prop :=
   ContinuumHypothesis.aleph_one ≤ κ ∧ κ.IsRegular
 
-/-- **Easton's Theorem (1970)** restricted to the continuum:
+/-  **Easton's Theorem (1970)** restricted to the continuum:
     Any regular uncountable cardinal ≥ ℵ₁ is a consistent value for 2^ℵ₀.
 
     Easton's proof uses Easton forcing (a product of Cohen-like forcings).
@@ -221,7 +214,9 @@ theorem successor_alephs_possible (α : Ordinal.{0}) (hα : 0 < α) :
   · -- ℵ₁ ≤ ℵ_{succ α} when α ≥ 1... actually ℵ₁ = ℵ_{succ 0}
     -- and we need ℵ_{succ 0} ≤ ℵ_{succ α}
     unfold ContinuumHypothesis.aleph_one
-    exact Cardinal.aleph_le_aleph.mpr (Ordinal.succ_le_succ hα.le)
+    have h1 : (1 : Ordinal.{0}) = Order.succ 0 := by norm_num
+    rw [h1]
+    exact Cardinal.aleph_le_aleph.mpr (Order.succ_le_succ hα.le)
   · exact aleph_succ_is_regular α
 
 /-- ℵ₁ is a possible value for the continuum (this is CH). -/
@@ -235,7 +230,9 @@ theorem aleph_two_is_possible : IsPossibleContinuumValue (Cardinal.aleph 2) := b
   constructor
   · unfold ContinuumHypothesis.aleph_one
     exact Cardinal.aleph_le_aleph.mpr (by norm_num)
-  · exact aleph_succ_is_regular 1
+  · have h2 : (2 : Ordinal.{0}) = Order.succ (1 : Ordinal.{0}) := by norm_num
+    rw [h2]
+    exact aleph_succ_is_regular 1
 
 /-- ℵ₃ is a possible value for the continuum (consistent via Easton). -/
 theorem aleph_three_is_possible : IsPossibleContinuumValue (Cardinal.aleph 3) := by
@@ -246,7 +243,7 @@ theorem aleph_three_is_possible : IsPossibleContinuumValue (Cardinal.aleph 3) :=
 
 /-- ℵ_ω is NOT a possible value: it is singular (König constraint). -/
 theorem aleph_omega_not_possible :
-    ¬IsPossibleContinuumValue (Cardinal.aleph (ω : Ordinal.{0})) := by
+    ¬IsPossibleContinuumValue (Cardinal.aleph (Ordinal.omega0)) := by
   intro ⟨_, hreg⟩
   exact aleph_omega_is_singular hreg
 
@@ -323,7 +320,7 @@ theorem dominating_le_continuum :
   unfold dominatingNumber
   have hbdd : BddBelow (Set.range fun F : Set (ℕ → ℕ) =>
       if IsDominating F then Cardinal.mk F else ContinuumHypothesis.continuum) :=
-    ⟨0, fun _ ⟨_, hF⟩ => hF ▸ by split <;> exact zero_le _⟩
+    ⟨0, fun _ ⟨_, hF⟩ => hF ▸ by dsimp only; split <;> exact zero_le⟩
   calc ⨅ F, _ ≤ (if IsDominating (∅ : Set (ℕ → ℕ)) then Cardinal.mk (∅ : Set (ℕ → ℕ))
         else ContinuumHypothesis.continuum) := ciInf_le hbdd ∅
     _ = ContinuumHypothesis.continuum := by
@@ -341,6 +338,7 @@ theorem dominating_implies_unbounded {F : Set (ℕ → ℕ)}
   refine ⟨h, hh_mem, fun ⟨N₂, hN₂⟩ => ?_⟩
   have h1 := hN₁ (max N₁ N₂) (le_max_left _ _)
   have h2 := hN₂ (max N₁ N₂) (le_max_right _ _)
+  simp only at h1
   omega
 
 /-- The bounding number is at most the dominating number: b ≤ d.
@@ -358,7 +356,7 @@ theorem bounding_le_dominating : boundingNumber ≤ dominatingNumber := by
   -- Helper: boundingNumber infimum is bounded below by 0
   have hbdd : BddBelow (Set.range fun G : Set (ℕ → ℕ) =>
       if IsUnbounded G then Cardinal.mk G else ContinuumHypothesis.continuum) :=
-    ⟨0, by rintro _ ⟨G, rfl⟩; split_ifs <;> exact Cardinal.zero_le _⟩
+    ⟨0, by rintro _ ⟨G, rfl⟩; dsimp only; split_ifs <;> exact Cardinal.zero_le _⟩
   by_cases hdom : IsDominating F
   · -- F dominating → F unbounded → boundingNumber ≤ mk F
     have hunb := dominating_implies_unbounded hdom
@@ -372,7 +370,7 @@ theorem bounding_le_dominating : boundingNumber ≤ dominatingNumber := by
   · -- F not dominating → rhs = continuum → boundingNumber ≤ continuum
     simp only [hdom, ite_false]
     have hempty : ¬IsUnbounded (∅ : Set (ℕ → ℕ)) := by
-      intro h; obtain ⟨f, hf, _⟩ := h (fun _ => 0); exact Set.not_mem_empty f hf
+      intro h; obtain ⟨f, hf, _⟩ := h (fun _ => 0); exact Set.notMem_empty f hf
     calc boundingNumber
         = ⨅ G : Set (ℕ → ℕ), if IsUnbounded G then Cardinal.mk G
             else ContinuumHypothesis.continuum := rfl
@@ -493,8 +491,12 @@ theorem scenarios_distinct :
 /-- In each scenario, the continuum is regular (König-consistent):
     ℵ₁ is regular (successor), and ℵ₂ is regular (successor). -/
 theorem all_scenarios_regular :
-    (Cardinal.aleph 1).IsRegular ∧ (Cardinal.aleph 2).IsRegular :=
-  ⟨aleph_one_is_regular, aleph_succ_is_regular 1⟩
+    (Cardinal.aleph (1 : Ordinal.{0})).IsRegular ∧
+    (Cardinal.aleph (2 : Ordinal.{0})).IsRegular := by
+  refine ⟨aleph_one_is_regular, ?_⟩
+  have h2 : (2 : Ordinal.{0}) = Order.succ (1 : Ordinal.{0}) := by norm_num
+  rw [h2]
+  exact aleph_succ_is_regular 1
 
 -- ============================================================
 -- PART 7: The Complete Picture
@@ -514,7 +516,7 @@ theorem easton_konig_characterization :
     (∃ κ : Cardinal.{0}, ¬IsPossibleContinuumValue κ) := by
   constructor
   · exact ⟨Cardinal.aleph 1, aleph_one_is_possible⟩
-  · exact ⟨Cardinal.aleph (ω : Ordinal.{0}), aleph_omega_not_possible⟩
+  · exact ⟨Cardinal.aleph (Ordinal.omega0), aleph_omega_not_possible⟩
 
 /-- The Cantor-König sandwich: ℵ₁ ≤ 2^ℵ₀ and 2^ℵ₀ has uncountable cofinality.
     These are the ONLY two constraints ZFC places on 2^ℵ₀ (for the ℵ₀ case). -/
@@ -542,9 +544,10 @@ theorem the_open_question :
   · exact ⟨Cardinal.aleph 1, Cardinal.aleph 2,
       aleph_one_is_possible, aleph_two_is_possible,
       ne_of_lt (Cardinal.aleph_lt_aleph.mpr (by norm_num))⟩
-  · refine ⟨Cardinal.aleph (ω : Ordinal.{0}), ?_, aleph_omega_not_possible⟩
+  · refine ⟨Cardinal.aleph (Ordinal.omega0), ?_, aleph_omega_not_possible⟩
     unfold ContinuumHypothesis.aleph_one
-    exact Cardinal.aleph_le_aleph.mpr (by exact Ordinal.one_le_iff_ne_zero.mpr omega_ne_zero)
+    exact Cardinal.aleph_le_aleph.mpr
+      (by exact Ordinal.one_le_iff_ne_zero.mpr Ordinal.omega0_ne_zero)
 
 /-
 ## Conclusion

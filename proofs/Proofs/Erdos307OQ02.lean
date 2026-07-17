@@ -29,7 +29,7 @@ namespace Erdos307OQ02
 
 /-- Sum of reciprocals of elements in a finite set. -/
 noncomputable def reciprocalSum (S : Finset ℕ) : ℚ :=
-  ∑ n in S, (n : ℚ)⁻¹
+  ∑ n ∈ S, (n : ℚ)⁻¹
 
 /-- Product of two reciprocal sums. -/
 noncomputable def reciprocalProduct (P Q : Finset ℕ) : ℚ :=
@@ -52,25 +52,25 @@ private lemma reciprocal_sum_two_primes_le {P : Finset ℕ}
   simp only [reciprocalSum, Finset.sum_pair hab]
   have ha : Nat.Prime a := hP a (Finset.mem_insert_self a {b})
   have hb : Nat.Prime b := hP b (by simp)
-  have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
-  have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
-  have hab3 : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
+  have ha2 : 2 ≤ a := ha.two_le
+  have hb2 : 2 ≤ b := hb.two_le
+  have hab3 : 3 ≤ a ∨ 3 ≤ b := by
     by_contra h; push_neg at h
-    have : a = 2 := by exact_mod_cast (le_antisymm (by linarith) ha.two_le)
-    have : b = 2 := by exact_mod_cast (le_antisymm (by linarith) hb.two_le)
-    exact hab (by omega)
-  have ha_pos : (0 : ℚ) < a := by linarith
-  have hb_pos : (0 : ℚ) < b := by linarith
+    have hae : a = 2 := le_antisymm (by omega) ha2
+    have hbe : b = 2 := le_antisymm (by omega) hb2
+    exact hab (hae.trans hbe.symm)
+  have ha_pos : (0 : ℚ) < a := by exact_mod_cast ha.pos
+  have hb_pos : (0 : ℚ) < b := by exact_mod_cast hb.pos
   rcases hab3 with h3 | h3
-  · have : (a : ℚ)⁻¹ ≤ 1 / 3 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-    have : (b : ℚ)⁻¹ ≤ 1 / 2 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+  · have h1 : (a : ℚ)⁻¹ ≤ 1 / 3 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
+    have h2 : (b : ℚ)⁻¹ ≤ 1 / 2 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast hb2)
     linarith
-  · have : (a : ℚ)⁻¹ ≤ 1 / 2 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
-    have : (b : ℚ)⁻¹ ≤ 1 / 3 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+  · have h1 : (a : ℚ)⁻¹ ≤ 1 / 2 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast ha2)
+    have h2 : (b : ℚ)⁻¹ ≤ 1 / 3 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
     linarith
 
 /-- For 3 distinct primes, reciprocal sum ≤ 31/30.
@@ -83,69 +83,77 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
     (hcard : Q.card = 3) (hQ : IsSetOfPrimes Q) :
     reciprocalSum Q ≤ 31 / 30 := by
   obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
-  simp only [reciprocalSum, Finset.sum_insert (by simp [hab, hac]),
-    Finset.sum_insert (by simp [hbc]), Finset.sum_singleton]
   have ha : Nat.Prime a := hQ a (by simp)
   have hb : Nat.Prime b := hQ b (by simp)
   have hc : Nat.Prime c := hQ c (by simp)
-  have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
-  have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
-  have hc2 : (2 : ℚ) ≤ c := by exact_mod_cast hc.two_le
+  have ha2 : 2 ≤ a := ha.two_le
+  have hb2 : 2 ≤ b := hb.two_le
+  have hc2 : 2 ≤ c := hc.two_le
+  have hsum : reciprocalSum ({a, b, c} : Finset ℕ)
+      = (a : ℚ)⁻¹ + (b : ℚ)⁻¹ + (c : ℚ)⁻¹ := by
+    unfold reciprocalSum
+    rw [Finset.sum_insert (by simp [hab, hac]), Finset.sum_insert (by simp [hbc]),
+      Finset.sum_singleton]
+    ring
+  rw [hsum]
   -- Among three distinct primes (all ≥ 2), at most one is 2
   -- and at most one is 3, so at least one is ≥ 5.
   -- The reciprocal sum is maximized at {2, 3, 5}: 1/2+1/3+1/5 = 31/30.
   -- Each reciprocal ≤ 1/2, and sum ≤ 1/2 + 1/3 + 1/5 = 31/30.
-  have ha_pos : (0 : ℚ) < a := by linarith
-  have hb_pos : (0 : ℚ) < b := by linarith
-  have hc_pos : (0 : ℚ) < c := by linarith
-  -- Each 1/p ≤ 1/2
-  have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
-  have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
-  have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+  have ha_pos : (0 : ℚ) < a := by exact_mod_cast ha.pos
+  have hb_pos : (0 : ℚ) < b := by exact_mod_cast hb.pos
+  have hc_pos : (0 : ℚ) < c := by exact_mod_cast hc.pos
+  -- Each 1/p ≤ 1/2 (fallback bound for whichever variable isn't tightened below)
+  have hha2 : (a : ℚ)⁻¹ ≤ 1/2 := by
+    rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast ha2)
+  have hhb2 : (b : ℚ)⁻¹ ≤ 1/2 := by
+    rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast hb2)
+  have hhc2 : (c : ℚ)⁻¹ ≤ 1/2 := by
+    rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast hc2)
   -- Pigeonhole: at least one of a, b, c is ≥ 5
   -- (Only primes < 5 are 2 and 3, so at most 2 of 3 distinct primes can be < 5)
-  have h5 : (5 : ℚ) ≤ a ∨ (5 : ℚ) ≤ b ∨ (5 : ℚ) ≤ c := by
+  have h5 : 5 ≤ a ∨ 5 ≤ b ∨ 5 ≤ c := by
     by_contra h; push_neg at h
-    have ha5 : a < 5 := by exact_mod_cast h.1
-    have hb5 : b < 5 := by exact_mod_cast h.2.1
-    have hc5 : c < 5 := by exact_mod_cast h.2.2
-    interval_cases a <;> interval_cases b <;> interval_cases c <;> simp_all
+    obtain ⟨ha5, hb5, hc5⟩ := h
+    interval_cases a <;> interval_cases b <;> interval_cases c <;>
+      first
+        | omega
+        | exact absurd ha (by decide)
+        | exact absurd hb (by decide)
+        | exact absurd hc (by decide)
   -- For the one ≥ 5: reciprocal ≤ 1/5. Among the other two distinct primes,
   -- one is ≥ 3 (can't both be 2), so its reciprocal ≤ 1/3.
   -- Total ≤ 1/2 + 1/3 + 1/5 = 31/30.
   rcases h5 with h5a | h5b | h5c
-  · have ha5 : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5a
-    have : (3 : ℚ) ≤ b ∨ (3 : ℚ) ≤ c := by
-      by_contra h; push_neg at h
-      have : b = 2 := by have : b < 3 := by exact_mod_cast h.1; omega
-      have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
-      exact hbc (by omega)
-    rcases this with h3 | h3
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+  · have ha5 : (a : ℚ)⁻¹ ≤ 1/5 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5a)
+    have h3 : 3 ≤ b ∨ 3 ≤ c := by omega
+    rcases h3 with h3 | h3
+    · have hb3 : (b : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have hc3 : (c : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
-  · have hb5 : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5b
-    have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ c := by
-      by_contra h; push_neg at h
-      have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
-      have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
-      exact hac (by omega)
-    rcases this with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+  · have hb5 : (b : ℚ)⁻¹ ≤ 1/5 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5b)
+    have h3 : 3 ≤ a ∨ 3 ≤ c := by omega
+    rcases h3 with h3 | h3
+    · have ha3 : (a : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have hc3 : (c : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
-  · have hc5 : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5c
-    have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
-      by_contra h; push_neg at h
-      have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
-      have : b = 2 := by have : b < 3 := by exact_mod_cast h.2; omega
-      exact hab (by omega)
-    rcases this with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+  · have hc5 : (c : ℚ)⁻¹ ≤ 1/5 := by
+      rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5c)
+    have h3 : 3 ≤ a ∨ 3 ≤ b := by omega
+    rcases h3 with h3 | h3
+    · have ha3 : (a : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have hb3 : (b : ℚ)⁻¹ ≤ 1/3 := by
+        rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h3)
       linarith
 
 -- ============================================================
@@ -177,33 +185,41 @@ theorem no_two_three_solution :
 
 /-- If 1 ∈ P and the product is 1, then reciprocalSum P > 1.
     Proof: reciprocalSum P = 1 + Σ_{p ∈ P\{1}} 1/p > 1
-    since P must have other elements (otherwise product can't be 1). -/
+    since P must have other elements (otherwise product can't be 1).
+
+    NOTE (soundness fix, migration v4.31): the original statement omitted the
+    hypothesis that every element of `P` is positive. Without it the claim is
+    false in general — e.g. `P = {0, 1}` has `card = 2 > 1`, `1 ∈ P`, but
+    `reciprocalSum P = 1⁻¹ + 0⁻¹ = 1`, not `> 1` (Lean's `(0:ℚ)⁻¹ = 0` junk
+    value). The parent file `Erdos307Problem.lean`'s `one_helps_balance`
+    already carries this hypothesis (`hpos : ∀ p ∈ P, 0 < p`); it is restored
+    here (this file's own docs call this hypothesis "slightly stronger" than
+    the parent's, so its absence here was a drift bug, not a deliberate
+    weakening). See #38611. -/
 theorem one_helps_balance {P Q : Finset ℕ}
     (h1P : 1 ∈ P)
     (hP_nonempty : 1 < P.card)
+    (hpos : ∀ p ∈ P, 0 < p)
     (hprod : reciprocalProduct P Q = 1) :
     reciprocalSum P > 1 := by
   unfold reciprocalSum
   -- Split P = {1} ∪ (P \ {1})
-  have h_split : ∑ n in P, (n : ℚ)⁻¹ =
-      (1 : ℚ)⁻¹ + ∑ n in P.erase 1, (n : ℚ)⁻¹ := by
+  have h_split : ∑ n ∈ P, (n : ℚ)⁻¹ =
+      (1 : ℚ)⁻¹ + ∑ n ∈ P.erase 1, (n : ℚ)⁻¹ := by
     rw [← Finset.add_sum_erase P _ h1P]
+    norm_num
   rw [h_split]
   simp only [inv_one]
   -- Need to show: 1 + Σ_{P\{1}} 1/n > 1, i.e., Σ_{P\{1}} 1/n > 0
   -- P \ {1} is nonempty since P.card > 1
   have h_erase_nonempty : (P.erase 1).Nonempty := by
-    rw [Finset.erase_nonempty]
-    exact ⟨h1P, Finset.one_lt_card.mp hP_nonempty⟩
-  -- Each term 1/n ≥ 0, and there's at least one positive term
-  have h_pos : 0 < ∑ n in P.erase 1, (n : ℚ)⁻¹ := by
+    rw [Finset.erase_nonempty h1P]
+    exact Finset.one_lt_card_iff_nontrivial.mp hP_nonempty
+  -- Each term 1/n > 0, since every n ∈ P (hence n ∈ P.erase 1) is positive
+  have h_pos : 0 < ∑ n ∈ P.erase 1, (n : ℚ)⁻¹ := by
     apply Finset.sum_pos
     · intro n hn
-      have : n ≠ 0 := by
-        intro heq
-        rw [heq] at hn
-        exact absurd hn (by simp)
-      exact inv_pos.mpr (Nat.cast_pos.mpr (Nat.pos_of_ne_zero this))
+      exact inv_pos.mpr (Nat.cast_pos.mpr (hpos n (Finset.mem_of_mem_erase hn)))
     · exact h_erase_nonempty
   linarith
 

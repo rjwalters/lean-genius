@@ -93,7 +93,7 @@ theorem kanold_bound_from_gk :
   -- Chain: (c_gk/4)·n^{3/4} ≤ c_gk·n/log n ≤ diam S
   calc c_gk / 4 * (n : ℝ) ^ ((3 : ℝ) / 4)
       ≤ c_gk * ↑n / Real.log ↑n := by
-        rw [le_div_iff hlog_pos]
+        rw [le_div_iff₀ hlog_pos]
         calc c_gk / 4 * (↑n) ^ ((3 : ℝ) / 4) * Real.log ↑n
             = c_gk / 4 * ((↑n) ^ ((3 : ℝ) / 4) * Real.log ↑n) := by ring
           _ ≤ c_gk / 4 * (4 * ↑n) :=

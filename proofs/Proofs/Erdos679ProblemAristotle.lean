@@ -27,17 +27,17 @@ These structural lemmas expose the inductive structure for Aristotle.
 -/
 
 /-- The primorial of 0 is 1 (empty product). -/
-theorem primorial_zero_ari : primorial 0 = 1 := by
-  simp [primorial]
+theorem primorial_zero_ari : Erdos679.primorial 0 = 1 := by
+  simp [Erdos679.primorial]
 
 /-- The primorial of r+1 equals (r-th prime) times primorial r. -/
 theorem primorial_succ_ari (r : ℕ) :
-    primorial (r + 1) = (Nat.nth Nat.Prime r) * primorial r := by
-  unfold primorial
-  rw [Finset.range_succ, Finset.prod_insert Finset.not_mem_range_self]
+    Erdos679.primorial (r + 1) = (Nat.nth Nat.Prime r) * Erdos679.primorial r := by
+  unfold Erdos679.primorial
+  rw [Finset.range_add_one, Finset.prod_insert Finset.notMem_range_self]
 
 /-- omega(primorial 0) = 0, since primorial 0 = 1. -/
-theorem omega_primorial_zero_ari : omega (primorial 0) = 0 := by
+theorem omega_primorial_zero_ari : omega (Erdos679.primorial 0) = 0 := by
   rw [primorial_zero_ari]
   simp [omega]
 
@@ -79,11 +79,11 @@ It holds because the r-th prime is strictly larger than all primes in primorial 
     another are equal, forcing `r = i` by injectivity of `Nat.nth Nat.Prime`,
     contradicting `i < r`. Mirrors the coprimality step inside `omega_primorial`. -/
 theorem nth_prime_coprime_primorial_ari (r : ℕ) :
-    Nat.Coprime (Nat.nth Nat.Prime r) (primorial r) := by
+    Nat.Coprime (Nat.nth Nat.Prime r) (Erdos679.primorial r) := by
   have hp : (Nat.nth Nat.Prime r).Prime := nth_prime_is_prime_ari r
   rw [hp.coprime_iff_not_dvd]
   intro hdvd
-  simp only [primorial] at hdvd
+  simp only [Erdos679.primorial] at hdvd
   obtain ⟨i, hi, hdvd_i⟩ := hp.prime.exists_mem_finset_dvd hdvd
   have hpi : (Nat.nth Nat.Prime i).Prime := nth_prime_is_prime_ari i
   have heq : Nat.nth Nat.Prime r = Nat.nth Nat.Prime i :=
@@ -100,7 +100,7 @@ Each step follows from coprimality and the sub-lemmas above.
 -/
 
 /-- omega(primorial r) = r, proved by structural induction. -/
-theorem omega_primorial_ari (r : ℕ) : omega (primorial r) = r := by
+theorem omega_primorial_ari (r : ℕ) : omega (Erdos679.primorial r) = r := by
   induction r with
   | zero => exact omega_primorial_zero_ari
   | succ r ih =>

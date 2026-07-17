@@ -36,18 +36,15 @@ Removed: jacobsthalSet_bddAbove axiom → proved as theorem
 Sorries: 0
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib
 
-open Finset Filter
+open Finset Filter Real
 
 /- ## Core Definitions -/
 
-/-- The primorial: product of all primes ≤ x. -/
-noncomputable def primorial (x : ℕ) : ℕ :=
-  ∏ p ∈ (Finset.range (x + 1)).filter Nat.Prime, p
+/- `primorial x` (product of all primes ≤ x) is provided by Mathlib
+   (`Mathlib.NumberTheory.Primorial`); we reuse it rather than shadowing
+   the root-namespace declaration. -/
 
 /-- An integer n is covered by a covering system if n ≡ aₚ (mod p)
 for some prime p ≤ x. -/
@@ -94,9 +91,9 @@ private lemma prime_not_dvd_int_prod
     (S : Finset ℕ) (hS : ∀ p ∈ S, Nat.Prime p)
     (q : ℕ) (hq : q.Prime) (hq_not : q ∉ S) :
     ¬ (q : ℤ) ∣ ∏ p ∈ S, (p : ℤ) := by
-  rw [← Nat.cast_prod, Int.natCast_dvd_natCast]
+  rw [show (∏ p ∈ S, (p : ℤ)) = ((∏ p ∈ S, p : ℕ) : ℤ) by push_cast; ring, Int.natCast_dvd_natCast]
   intro hdvd
-  obtain ⟨r, hrS, hqr⟩ := hq.prime.dvd_finset_prod_iff.mp hdvd
+  obtain ⟨r, hrS, hqr⟩ := (Prime.dvd_finsetProd_iff hq.prime (fun i : ℕ => i)).mp hdvd
   have : q = r := ((hS r hrS).eq_one_or_self_of_dvd q hqr).resolve_left hq.ne_one
   subst this
   exact hq_not hrS
@@ -114,12 +111,11 @@ private lemma exists_uncovered_in_prod
       ∀ p ∈ S, n % (p : ℤ) ≠ (a p : ℤ) % (p : ℤ) := by
   induction S using Finset.induction with
   | empty =>
-    exact ⟨1, le_rfl, by simp, fun _ hp => absurd hp (Finset.not_mem_empty _)⟩
-  | insert hq_not ih =>
-    rename_i q S'
+    exact ⟨1, le_rfl, by simp, fun _ hp => absurd hp (Finset.notMem_empty _)⟩
+  | @insert q S' hq_not ih =>
     have hS' : ∀ p ∈ S', Nat.Prime p := fun p hp => hS p (Finset.mem_insert_of_mem hp)
     have hq : q.Prime := hS q (Finset.mem_insert_self q S')
-    obtain ⟨m, hm1, hm2, hm_avoid⟩ := ih hS' a
+    obtain ⟨m, hm1, hm2, hm_avoid⟩ := ih hS'
     set P' : ℤ := ∏ p ∈ S', (p : ℤ) with hP'_def
     have hP'_pos : (0 : ℤ) < P' := prod_primes_pos' S' hS'
     have hq2 : (2 : ℤ) ≤ (q : ℤ) := by exact_mod_cast hq.two_le
@@ -129,17 +125,18 @@ private lemma exists_uncovered_in_prod
       refine ⟨m + P', by linarith, by nlinarith, ?_⟩
       intro p hp
       rcases Finset.mem_insert.mp hp with rfl | hp'
-      · -- p = q: (m + P') % q ≠ (a q) % q because q ∤ P'
+      · -- p = q (note: `rfl` here substitutes q := p, so `p` is what survives):
+        -- (m + P') % p ≠ (a p) % p because p ∤ P'
         intro heq
-        have hmod : (m + P') % (q : ℤ) = m % (q : ℤ) := heq.trans hcase.symm
-        have hq_dvd : (q : ℤ) ∣ P' := by
+        have hmod : (m + P') % (p : ℤ) = m % (p : ℤ) := heq.trans hcase.symm
+        have hp_dvd : (p : ℤ) ∣ P' := by
           have h_neg := Int.modEq_iff_dvd.mp hmod
-          -- h_neg : q ∣ (m - (m + P')) = -P'
+          -- h_neg : p ∣ (m - (m + P')) = -P'
           rwa [show m - (m + P') = -P' from by ring, dvd_neg] at h_neg
-        exact prime_not_dvd_int_prod S' hS' q hq hq_not hq_dvd
+        exact prime_not_dvd_int_prod S' hS' p hq hq_not hp_dvd
       · -- p ∈ S': (m + P') % p = m % p since p | P'
-        obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem (fun i => (i : ℤ)) hp'
-        rw [show m + P' = m + (p : ℤ) * k from by rw [hk], Int.add_mul_emod_self_left]
+        obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem (fun i : ℕ => (i : ℤ)) hp'
+        rw [show m + P' = m + (p : ℤ) * k from by rw [hP'_def, hk], Int.add_mul_emod_self_left]
         exact hm_avoid p hp'
     · -- m already avoids a(q) mod q: use m directly
       exact ⟨m, hm1, le_trans hm2 (le_mul_of_one_le_left hP'_pos.le (by linarith)),
@@ -164,8 +161,9 @@ theorem jacobsthalSet_bddAbove (x : ℕ) :
     if h : p.Prime ∧ p ≤ x then a p h.1 h.2 else 0
   set S := (Finset.range (x + 1)).filter Nat.Prime with hS_def
   have hS_prime : ∀ p ∈ S, Nat.Prime p := fun p hp => (Finset.mem_filter.mp hp).2
-  have hprod_eq : ∏ p ∈ S, (p : ℤ) = (primorial x : ℤ) :=
-    Nat.cast_prod.symm
+  have hnat_eq : primorial x = ∏ p ∈ S, p := by rw [hS_def]; rfl
+  have hprod_eq : ∏ p ∈ S, (p : ℤ) = (primorial x : ℤ) := by
+    rw [hnat_eq]; push_cast; ring
   obtain ⟨n, hn1, hn2, hn_avoid⟩ := exists_uncovered_in_prod S hS_prime a'
   rw [hprod_eq] at hn2
   have hny : n ≤ (y : ℤ) := le_trans hn2 (by exact_mod_cast h.le)
@@ -364,7 +362,7 @@ private lemma log_pow_eventually_le_rpow (C : ℝ) (hC : 0 < C) (k : ℝ) (hk : 
             ← rpow_mul hC.le, ← rpow_mul hn_nn]
     _ = C * (C ^ (-(1 : ℝ)) * (n : ℝ) ^ ε) := by
         have hk_ne : k ≠ 0 := ne_of_gt hk
-        congr 2 <;> (field_simp [hk_ne]; ring)
+        congr 2 <;> (field_simp [hk_ne]; try ring)
     _ = C * C ^ (-(1 : ℝ)) * (n : ℝ) ^ ε := by ring
     _ = (n : ℝ) ^ ε := by
         have : C ^ (-(1 : ℝ)) = C⁻¹ := by
@@ -392,13 +390,15 @@ theorem erdos_687_conjecture :
   -- hMP_x: Y(x) ≤ C · x · (log x)^3
   -- h_asymp_x: C · (log x)^3 ≤ x^ε
   -- Goal: Y(x) ≤ x^{1+ε}
+  have h23 : (2 : ℝ) + 1 = 3 := by norm_num
   calc (jacobsthalY x : ℝ)
-      ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ (2 + 1) := hMP_x
-    _ = (x : ℝ) * (C * Real.log (x : ℝ) ^ 3) := by ring
+      ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ ((2 : ℝ) + 1) := hMP_x
+    _ = C * (x : ℝ) * Real.log (x : ℝ) ^ (3 : ℝ) := by rw [h23]
+    _ = (x : ℝ) * (C * Real.log (x : ℝ) ^ (3 : ℝ)) := by ring
     _ ≤ (x : ℝ) * (x : ℝ) ^ ε := by
         apply mul_le_mul_of_nonneg_left h_asymp_x (Nat.cast_nonneg x)
-    _ = (x : ℝ) ^ 1 * (x : ℝ) ^ ε := by rw [rpow_one]
-    _ = (x : ℝ) ^ (1 + ε) := by rw [← rpow_add (Nat.cast_nonneg x)]
+    _ = (x : ℝ) ^ (1 : ℝ) * (x : ℝ) ^ ε := by rw [rpow_one]
+    _ = (x : ℝ) ^ (1 + ε) := by rw [← rpow_add' (Nat.cast_nonneg x) (by positivity)]
 
 /- ## Concrete Computations -/
 

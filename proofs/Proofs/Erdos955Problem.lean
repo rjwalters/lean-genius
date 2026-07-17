@@ -25,11 +25,9 @@ References:
 Tags: number-theory, divisor-functions, density, arithmetic-functions
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset Real Filter
 
@@ -107,11 +105,11 @@ def EGPSConjecture : Prop :=
 ## Part VI: Contrasting Behaviors
 -/
 
-/-- **Forward direction fails:**
+/-  **Forward direction fails:**
 s(A) can have positive density even if A has zero density.
 Example: Let A = {n : n = pq for distinct primes p, q}. -/
 
-/-- **Erdős (1973):**
+/-  **Erdős (1973):**
 There exist sets A with positive density such that s⁻¹(A) = ∅. -/
 
 /-- **Untouchable Numbers:**
@@ -123,10 +121,10 @@ def IsUntouchable (k : ℕ) : Prop :=
 ## Part VII: Partial Results
 -/
 
-/-- **Pollack (2014):**
+/-  **Pollack (2014):**
 If A is the set of primes, then s⁻¹(A) has density 0. -/
 
-/-- **Troupe (2015):**
+/-  **Troupe (2015):**
 If A is the set of integers with unusually many prime factors
 (ω(n) > k log log n for some k), then s⁻¹(A) has density 0. -/
 
@@ -157,7 +155,7 @@ theorem sparse_sets_work (A : Set ℕ)
 ## Part IX: Growth Bound on s(n)
 -/
 
-/-- **Growth bound on s(n):** s(n) ≪ n log log n for most n.
+/-  **Growth bound on s(n):** s(n) ≪ n log log n for most n.
 The exponent 1/2 in PPT appears because s maps [1, x] to [1, O(x log log x)].
 If A grows like x^α with α < 1/2, the argument applies. -/
 

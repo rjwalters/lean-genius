@@ -122,7 +122,7 @@ def linearOrientation [DecidableEq V] [LinearOrder V] (G : SimpleGraph V) :
     rcases lt_trichotomy u v with h | h | h
     · left; exact ⟨hadj, h⟩
     · exact absurd h (G.ne_of_adj hadj)
-    · right; exact ⟨G.symm hadj, h⟩
+    · right; exact ⟨G.adj_symm hadj, h⟩
   exclusive := by
     intro u v ⟨⟨_, h1⟩, ⟨_, h2⟩⟩
     exact absurd h1 (not_lt.mpr (le_of_lt h2))
@@ -218,7 +218,7 @@ def bipartiteOrientation (G : SimpleGraph V) (side : V → Bool)
     cases hu : side u <;> cases hv : side v
     · simp [hu, hv] at hneq
     · left; exact ⟨hadj, rfl, rfl⟩
-    · right; exact ⟨G.symm hadj, rfl, rfl⟩
+    · right; exact ⟨G.adj_symm hadj, rfl, rfl⟩
     · simp [hu, hv] at hneq
   exclusive := by
     intro u v ⟨⟨_, hu1, _⟩, ⟨_, hv1, _⟩⟩
@@ -556,7 +556,7 @@ theorem admitsRobust_mono {G H : SimpleGraph V} (hHG : H ≤ G)
     intro u v hadj
     rcases O.covers u v (hHG hadj) with h | h
     · exact Or.inl ⟨h, hadj⟩
-    · exact Or.inr ⟨h, H.symm hadj⟩
+    · exact Or.inr ⟨h, H.adj_symm hadj⟩
   · -- exclusive: inherited from `O`.
     rintro u v ⟨⟨h1, _⟩, ⟨h2, _⟩⟩
     exact O.exclusive u v ⟨h1, h2⟩
@@ -674,8 +674,8 @@ theorem closedWalk_girth_formulation_unsound (g : ℕ) (hg : g ≥ 3) :
   · exact hnr (edgeless_admits_robust he)
   · push_neg at he
     obtain ⟨u, v, huv⟩ := he
-    have hlen : (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)).length = 2 := rfl
-    rcases hwalk u (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)) with h0 | hge
+    have hlen : (Walk.cons huv (Walk.cons (G.adj_symm huv) Walk.nil)).length = 2 := rfl
+    rcases hwalk u (Walk.cons huv (Walk.cons (G.adj_symm huv) Walk.nil)) with h0 | hge
     · rw [hlen] at h0; exact absurd h0 (by norm_num)
     · rw [hlen] at hge; omega
 

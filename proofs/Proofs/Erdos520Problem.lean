@@ -78,7 +78,7 @@ noncomputable def normalizedSum (f : ℕ → Ω → ℝ) (N : ℕ) (ω : Ω) : �
 Does the limsup of the normalized sum converge to a universal constant?
 -/
 
-/-- **Erdős Problem #520 (OPEN)**: For Rademacher multiplicative functions,
+/-  **Erdős Problem #520 (OPEN)**: For Rademacher multiplicative functions,
 does there exist a constant c > 0 such that almost surely,
   limsup_{N → ∞} (∑_{m ≤ N} f(m)) / √(N log log N) = c?
 
@@ -91,15 +91,15 @@ multiplicative functions with a universal constant. -/
 Several partial results are known about moments and fluctuations.
 -/
 
-/-- **Wintner's Result (1944)**: The partial sums satisfy E[S_N²] = ∑_{m ≤ N, squarefree} 1.
+/-  **Wintner's Result (1944)**: The partial sums satisfy E[S_N²] = ∑_{m ≤ N, squarefree} 1.
 
 This is because E[f(m)f(n)] = 1 if m = n and squarefree, 0 otherwise. -/
 
-/-- The number of square-free integers up to N is asymptotically (6/π²)N.
+/-  The number of square-free integers up to N is asymptotically (6/π²)N.
 
 This implies E[S_N²] ~ (6/π²)N. -/
 
-/-- **Harper's Bound (2020)**: The moments of S_N have specific growth rates.
+/-  **Harper's Bound (2020)**: The moments of S_N have specific growth rates.
 
 For k ≥ 1: E[|S_N|^{2k}] ≍ N^k (log log N)^{k²}. -/
 
@@ -131,7 +131,7 @@ Rademacher multiplicative functions.
 /-- The indicator of square-free integers. -/
 def squarefreeIndicator (n : ℕ) : ℕ := if Squarefree n then 1 else 0
 
-/-- For square-free n with prime factorization n = p₁...pᵣ,
+/- For square-free n with prime factorization n = p₁...pᵣ,
 f(n) = f(p₁)...f(pᵣ) which is uniformly distributed on {-1, 1}. -/
 
 end Erdos520

@@ -2,6 +2,8 @@ import Mathlib.Data.Int.GCD
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Primitive Triangulation of Lattice Triangles
 
@@ -62,11 +64,11 @@ theorem IsPrimitive.nonDegenerate {T : LatticeTriangle} (h : T.IsPrimitive) :
 
 /-- Unit triangle {(0,0),(1,0),(0,1)} is primitive. -/
 theorem unit_triangle_primitive :
-    (LatticeTriangle.mk (0, 0) (1, 0) (0, 1)).IsPrimitive := by decide
+    (LatticeTriangle.mk (0, 0) (1, 0) (0, 1)).IsPrimitive := by rfl
 
 /-- {(0,0),(1,0),(1,1)} is primitive. -/
 theorem second_unit_triangle_primitive :
-    (LatticeTriangle.mk (0, 0) (1, 0) (1, 1)).IsPrimitive := by decide
+    (LatticeTriangle.mk (0, 0) (1, 0) (1, 1)).IsPrimitive := by rfl
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION III: Edge-Splitting Arithmetic
@@ -92,7 +94,9 @@ theorem edge_split_det_add (T : LatticeTriangle) (g : ℤ) (hg : g ≠ 0)
   have hM2 : (T.v2.2 - T.v1.2) / g = k2 :=
     hk2 ▸ Int.mul_ediv_cancel_left k2 hg
   simp only [LatticeTriangle.det, splitLeft, splitRight, hM1, hM2]
-  ring
+  have hv21 : T.v2.1 = T.v1.1 + g * k1 := by linarith [hk1]
+  have hv22 : T.v2.2 = T.v1.2 + g * k2 := by linarith [hk2]
+  rw [hv21, hv22]; ring
 
 /-- **Det sizes under edge splitting**: When g | (v2-v1) and g > 0,
     the split determinants are det(T)/g and det(T)*(g-1)/g,
@@ -129,7 +133,7 @@ theorem exists_reduction (T : LatticeTriangle) (hn : 1 < T.det.natAbs) :
       simp only [LatticeTriangle.det]; ring
     have hna : ((T.det.natAbs:ℤ)-1).natAbs = T.det.natAbs - 1 := by
       have h1 : 1 ≤ T.det.natAbs := by omega
-      zify [h1]; exact Int.natAbs_of_nonneg (by omega)
+      omega
     rw [hT1, hT2det, hna]; omega
   · -- T1 unit triangle: det = 1 > 0
     norm_num [LatticeTriangle.det]
@@ -139,7 +143,7 @@ theorem exists_reduction (T : LatticeTriangle) (hn : 1 < T.det.natAbs) :
       simp only [LatticeTriangle.det]; ring
     have hna : ((T.det.natAbs:ℤ)-1).natAbs = T.det.natAbs - 1 := by
       have h1 : 1 ≤ T.det.natAbs := by omega
-      zify [h1]; exact Int.natAbs_of_nonneg (by omega)
+      omega
     rw [hT2det, hna]; omega
 
 /-- **Main Theorem**: For any n ≥ 1 and any lattice triangle T with |det(T)| = n,
@@ -196,14 +200,14 @@ theorem det2_split_correct :
     let M : ℤ × ℤ := (1, 0)
     (splitLeft T M).det + (splitRight T M).det = T.det ∧
     (splitLeft T M).IsPrimitive ∧ (splitRight T M).IsPrimitive := by
-  decide
+  refine ⟨rfl, rfl, rfl⟩
 
 /-- Edge split formula: for T = {(0,0),(4,0),(0,3)} at g=2, each piece has |det|=6. -/
 theorem det12_two_splits :
     let T := LatticeTriangle.mk (0, 0) (4, 0) (0, 3)
     T.det.natAbs = 12 ∧
     (splitLeft T (2, 0)).det.natAbs + (splitRight T (2, 0)).det.natAbs = 12 := by
-  decide
+  refine ⟨rfl, rfl⟩
 
 /-- The det-additivity lemma works for T={O,(2,0),(0,3)}, g=2. -/
 theorem det_add_example :

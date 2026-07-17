@@ -11,9 +11,7 @@ the three-dimensional case remains **OPEN**.
 *Reference:* [erdosproblems.com/193](https://www.erdosproblems.com/193)
 -/
 
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Basic definitions -/
 
@@ -108,8 +106,11 @@ theorem collinear_perm12 {d : ℕ} (p q r : LatPoint d) :
     (all points lie on a single line). -/
 theorem collinear_dim1 (p q r : LatPoint 1) : AreCollinear p q r := by
   by_cases hqp : q ⟨0, by omega⟩ = p ⟨0, by omega⟩
-  · have : q = p := by ext x; fin_cases x; exact hqp
-    subst this; exact collinear_refl p r
+  · refine ⟨1, 0, Or.inl one_ne_zero, fun j => ?_⟩
+    have hj0 : j = 0 := Subsingleton.elim j 0
+    have hqp' : q (0 : Fin 1) = p (0 : Fin 1) := hqp
+    rw [hj0, hqp']
+    ring
   · exact ⟨r ⟨0, by omega⟩ - p ⟨0, by omega⟩, q ⟨0, by omega⟩ - p ⟨0, by omega⟩,
       Or.inr (sub_ne_zero.mpr hqp), fun j => by fin_cases j; ring⟩
 
@@ -190,8 +191,10 @@ private theorem line_points_collinear {d : ℕ} (o v : LatPoint d)
     (hk : ∀ c, pk c = o c + ck * v c) :
     AreCollinear pi pj pk := by
   refine ⟨ck - ci, cj - ci, Or.inr (sub_ne_zero.mpr hne), fun c => ?_⟩
-  have := hi c; have := hj c; have := hk c
-  linarith [mul_comm (ck - ci) (v c), mul_comm (cj - ci) (v c)]
+  have e1 := hi c; have e2 := hj c; have e3 := hk c
+  have d1 : pj c - pi c = (cj - ci) * v c := by linarith
+  have d2 : pk c - pi c = (ck - ci) * v c := by linarith
+  rw [d1, d2]; ring
 
 /-- Any three points of a parallel-step walk are collinear, provided the
     walk visits at least two distinct points among them. -/
@@ -202,7 +205,10 @@ theorem parallel_step_collinear {d : ℕ} (S : StepSet d) (v : LatPoint d)
   obtain ⟨cj, hcj⟩ := parallel_walk_on_line S v w hS hw j
   obtain ⟨ck, hck⟩ := parallel_walk_on_line S v w hS hw k
   have hcij : cj ≠ ci := by
-    intro heq; apply hne; ext c; have := hci c; have := hcj c; linarith
+    intro heq; apply hne; ext c
+    have e1 := hci c; have e2 := hcj c
+    rw [heq] at e2
+    linarith
   exact line_points_collinear (w 0) v ci cj ck hcij (w i) (w j) (w k) hci hcj hck
 
 /-- Every parallel-step walk has three collinear points. -/
@@ -211,7 +217,8 @@ theorem erdos193_parallel {d : ℕ} (S : StepSet d) (v : LatPoint d) (w : Walk d
     HasThreeCollinear w := by
   by_cases h01 : w 0 = w 1
   · -- If w(0) = w(1), they are equal, so (w 0, w 1, w 2) is trivially collinear
-    exact ⟨0, 1, 2, by omega, by omega, by subst h01; exact collinear_refl (w 0) (w 2)⟩
+    refine ⟨0, 1, 2, by omega, by omega, ⟨1, 0, Or.inl one_ne_zero, fun j => ?_⟩⟩
+    have := congr_fun h01 j; linarith
   · exact ⟨0, 1, 2, by omega, by omega,
       parallel_step_collinear S v w hS hw 0 1 2 h01⟩
 
@@ -299,7 +306,8 @@ private theorem accumCoords_repr
         (accumCoords hspan hw n).1 + (hspan _ (hw n)).choose := rfl
     have h2 : (accumCoords hspan hw (n + 1)).2 =
         (accumCoords hspan hw n).2 + (hspan _ (hw n)).choose_spec.choose := rfl
-    linarith
+    rw [h1, h2]
+    linear_combination ih + hs
 
 /-- When the step set spans at most a 2D subspace, the conjecture holds
     by reduction to the 2D case (Gerver-Ramsey).
@@ -331,43 +339,53 @@ theorem erdos193_rank_le_2 :
     suffices h : (fun j : Fin 2 => w' (n + 1) j - w' n j) =
         projS (fun k => w (n + 1) k - w n k) by
       rw [h]; exact Finset.mem_image_of_mem projS (hw n)
-    ext ⟨j, hj⟩; interval_cases j
+    have hne1 : (1 : Fin 2) ≠ 0 := by decide
+    have e1 : (coords (n + 1)).1 = (coords n).1 + (hspan _ (hw n)).choose := rfl
+    have e2 : (coords (n + 1)).2 = (coords n).2 + (hspan _ (hw n)).choose_spec.choose := rfl
+    ext j; fin_cases j
     · -- j = 0: difference of first coordinates = step's first coordinate
       show (coords (n + 1)).1 - (coords n).1 =
         (if hs : _ ∈ S then fun j : Fin 2 => if j = 0 then _ else _ else 0)
-          ⟨0, by omega⟩
-      simp only [dif_pos (hw n)]
-      rfl
+          (0 : Fin 2)
+      simp only [dif_pos (hw n), if_true]
+      omega
     · -- j = 1: difference of second coordinates = step's second coordinate
       show (coords (n + 1)).2 - (coords n).2 =
         (if hs : _ ∈ S then fun j : Fin 2 => if j = 0 then _ else _ else 0)
-          ⟨1, by omega⟩
-      simp only [dif_pos (hw n), show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, if_false]
-      rfl
+          (1 : Fin 2)
+      simp only [dif_pos (hw n), if_neg hne1]
+      omega
   -- (2) w' is injective (from injectivity of w and the representation)
   have hinj' : IsInjective w' := by
     intro i j (hij : w' i = w' j)
     apply hinj; ext c
+    have hne1 : (1 : Fin 2) ≠ 0 := by decide
     have hA : (coords i).1 = (coords j).1 := by
-      have := congr_fun hij (⟨0, by omega⟩ : Fin 2); simp only [w', ite_true] at this; exact this
+      have := congr_fun hij (0 : Fin 2); simp only [w', if_pos rfl] at this; exact this
     have hB : (coords i).2 = (coords j).2 := by
-      have := congr_fun hij (⟨1, by omega⟩ : Fin 2)
-      simp only [w', show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, ite_false] at this
+      have := congr_fun hij (1 : Fin 2)
+      simp only [w', if_neg hne1] at this
       exact this
-    linarith [accumCoords_repr hspan hw i c, accumCoords_repr hspan hw j c]
+    have ei := accumCoords_repr hspan hw i c
+    have ej := accumCoords_repr hspan hw j c
+    rw [hA, hB] at ei
+    linarith [ei, ej]
   -- (3) Apply Gerver-Ramsey to the projected walk in ℤ²
   obtain ⟨i, j, k, hij, hjk, α, β, hαβ, hcol⟩ := gerver_ramsey_2d S' w' hw' hinj'
   -- (4) Lift 2D collinearity back to ℤ³ via the coordinate representation
+  have hne1 : (1 : Fin 2) ≠ 0 := by decide
+  have hcol0 := hcol (0 : Fin 2)
+  have hcol1 := hcol (1 : Fin 2)
+  simp only [w', if_pos rfl] at hcol0
+  simp only [w', if_neg hne1] at hcol1
   exact ⟨i, j, k, hij, hjk,
     collinear_from_2d_coords (w 0) v₁ v₂
       (coords i).1 (coords i).2
       (coords j).1 (coords j).2
       (coords k).1 (coords k).2
       α β hαβ
-      (by have := hcol ⟨0, by omega⟩; simp only [w', ite_true] at this; linarith)
-      (by have := hcol ⟨1, by omega⟩
-          simp only [w', show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, ite_false] at this
-          linarith)
+      (by linarith [hcol0])
+      (by linarith [hcol1])
       (w i) (w j) (w k)
       (accumCoords_repr hspan hw i)
       (accumCoords_repr hspan hw j)

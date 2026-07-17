@@ -30,10 +30,7 @@ References:
   Ark. Mat. (1984), 109-119.
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 
 open Complex Set MeasureTheory
 
@@ -82,7 +79,7 @@ def PathToInfinity (γ : ℝ → ℂ) : Prop :=
 A path that has finite length on each bounded segment.
 -/
 def LocallyRectifiable (γ : ℝ → ℂ) : Prop :=
-  ∀ a b : ℝ, 0 ≤ a → a < b → ∃ L : ℝ, L < ⊤ ∧ True  -- Placeholder for arc length
+  ∀ a b : ℝ, 0 ≤ a → a < b → ∃ L : ENNReal, L < ⊤ ∧ True  -- Placeholder for arc length
 
 /--
 **Good Path:**
@@ -100,15 +97,15 @@ def IsGoodPath (γ : ℝ → ℂ) : Prop :=
 The integral ∫_C |f(z)|^{-λ} dz along a path.
 (We define this as an integral along a parametrized path.)
 -/
-noncomputable def pathIntegralInversePower (f : ℂ → ℂ) (γ : ℝ → ℂ) (λ : ℝ) : ℝ :=
-  ∫ t in Set.Ici 0, ‖f (γ t)‖ ^ (-λ) * ‖deriv γ t‖
+noncomputable def pathIntegralInversePower (f : ℂ → ℂ) (γ : ℝ → ℂ) (lam : ℝ) : ENNReal :=
+  ∫⁻ t in Set.Ici 0, ENNReal.ofReal (‖f (γ t)‖ ^ (-lam) * ‖deriv γ t‖)
 
 /--
 **Integral is Finite:**
 The path integral converges to a finite value.
 -/
-def IntegralIsFinite (f : ℂ → ℂ) (γ : ℝ → ℂ) (λ : ℝ) : Prop :=
-  pathIntegralInversePower f γ λ < ⊤
+def IntegralIsFinite (f : ℂ → ℂ) (γ : ℝ → ℂ) (lam : ℝ) : Prop :=
+  pathIntegralInversePower f γ lam < ⊤
 
 /-
 ## Part IV: The Questions
@@ -121,8 +118,8 @@ such that ∫_{C_λ} |f|^{-λ} dz is finite?
 -/
 def HuberQuestion (f : ℂ → ℂ) : Prop :=
   IsTranscendental f →
-  ∀ λ : ℝ, λ > 0 →
-    ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ IntegralIsFinite f γ λ
+  ∀ lam : ℝ, lam > 0 →
+    ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ IntegralIsFinite f γ lam
 
 /--
 **Erdős's Question (Strong Form):**
@@ -132,7 +129,7 @@ Does there exist a SINGLE path C such that, for ALL λ > 0,
 def ErdosQuestion (f : ℂ → ℂ) : Prop :=
   IsTranscendental f →
   ∃ γ : ℝ → ℂ, IsGoodPath γ ∧
-    ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ
+    ∀ lam : ℝ, lam > 0 → IntegralIsFinite f γ lam
 
 /--
 **The Universal Question:**
@@ -141,7 +138,7 @@ Does this hold for ALL transcendental entire functions?
 def UniversalQuestion : Prop :=
   ∀ f : ℂ → ℂ, IsTranscendental f →
     ∃ γ : ℝ → ℂ, IsGoodPath γ ∧
-      ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ
+      ∀ lam : ℝ, lam > 0 → IntegralIsFinite f γ lam
 
 /-
 ## Part V: Partial Results
@@ -154,8 +151,8 @@ For each λ > 0, there exists a path C_λ such that ∫_{C_λ} |f|^{-λ} dz < �
 -/
 axiom huber_1957 :
   ∀ f : ℂ → ℂ, IsTranscendental f →
-    ∀ λ : ℝ, λ > 0 →
-      ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ IntegralIsFinite f γ λ
+    ∀ lam : ℝ, lam > 0 →
+      ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ IntegralIsFinite f γ lam
 
 /--
 **Zhang's Theorem (1977):**
@@ -164,7 +161,7 @@ If f has finite order, then a single path works for all λ.
 axiom zhang_1977 :
   ∀ f : ℂ → ℂ, IsTranscendental f → HasFiniteOrder f →
     ∃ γ : ℝ → ℂ, IsGoodPath γ ∧
-      ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ
+      ∀ lam : ℝ, lam > 0 → IntegralIsFinite f γ lam
 
 /-
 ## Part VI: The Main Result
@@ -257,7 +254,7 @@ theorem erdos_515_summary :
     (∀ f : ℂ → ℂ, IsTranscendental f → HuberQuestion f) ∧
     -- Zhang's intermediate result (1977): single path for finite-order functions
     (∀ f : ℂ → ℂ, IsTranscendental f → HasFiniteOrder f →
-      ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ) := by
+      ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ ∀ lam : ℝ, lam > 0 → IntegralIsFinite f γ lam) := by
   constructor
   · exact lewis_rossi_weitsman_1984
   constructor
@@ -280,7 +277,7 @@ For every transcendental entire function, a single path works for all λ.
 theorem erdos_515_answer :
     ∀ f : ℂ → ℂ, IsTranscendental f →
       ∃ γ : ℝ → ℂ, IsGoodPath γ ∧
-        ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ :=
+        ∀ lam : ℝ, lam > 0 → IntegralIsFinite f γ lam :=
   lewis_rossi_weitsman_1984
 
 end Erdos515

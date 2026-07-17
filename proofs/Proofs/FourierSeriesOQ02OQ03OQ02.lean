@@ -41,12 +41,7 @@ Hölder exponent α played in the polynomial case.
 Source: Extension of Fourier Series OQ-02-OQ-03
 -/
 
-import Mathlib.Analysis.Fourier.AddCircle
-import Mathlib.Analysis.Fourier.FourierTransform
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Topology.Algebra.InfiniteSum.NatInt
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 
@@ -117,9 +112,10 @@ theorem exp_decay_pos (δ : ℝ) (hδ : 0 < δ) (n : ℤ) (hn : n ≠ 0) :
 /-- The exponential decay factor is at most 1 (since the exponent is ≤ 0). -/
 theorem exp_decay_le_one (δ : ℝ) (hδ : 0 < δ) (n : ℤ) (hn : n ≠ 0) :
     Real.exp (-(2 * Real.pi * δ * |↑n|) / T) ≤ 1 := by
-  apply Real.exp_le_one_of_nonpos
+  apply Real.exp_le_one_iff.mpr
   apply div_nonpos_of_nonpos_of_nonneg
-  · nlinarith [Real.pi_pos, abs_pos.mpr (Int.cast_ne_zero.mpr hn)]
+  · have h2 : 0 ≤ 2 * Real.pi * δ * |(n : ℝ)| := by positivity
+    linarith
   · exact le_of_lt hT.out
 
 /-- Wider strips give faster decay. -/
@@ -129,7 +125,8 @@ theorem wider_strip_faster_decay (δ₁ δ₂ : ℝ) (hδ₁ : 0 < δ₁) (hδ�
     Real.exp (-(2 * Real.pi * δ₁ * |↑n|) / T) := by
   apply Real.exp_le_exp_of_le
   apply div_le_div_of_nonneg_right _ (le_of_lt hT.out)
-  linarith [Real.pi_pos, abs_pos.mpr (Int.cast_ne_zero.mpr hn)]
+  have hnn : 0 ≤ 2 * Real.pi * |(n : ℝ)| := by positivity
+  nlinarith [mul_le_mul_of_nonneg_right h hnn]
 
 /-- Exponential decay is summable (the series ∑ e^{-c|n|} converges for c > 0). -/
 theorem exp_decay_summable (δ : ℝ) (hδ : 0 < δ) :
@@ -138,7 +135,8 @@ theorem exp_decay_summable (δ : ℝ) (hδ : 0 < δ) :
   rw [summable_int_iff_summable_nat_and_neg]
   -- Set c = 2πδ/T > 0, so exp(-c) ∈ (0,1) and the geometric series ∑ exp(-c)^n converges
   set c := 2 * Real.pi * δ / T with hc_def
-  have hc_pos : 0 < c := by positivity
+  have hT' : 0 < T := hT.out
+  have hc_pos : 0 < c := by rw [hc_def]; positivity
   -- exp(-c * n) = (exp(-c))^n, a geometric series with ratio exp(-c) < 1
   have hsumm : Summable (fun n : ℕ => Real.exp (-c * ↑n)) := by
     have heq : ∀ n : ℕ, Real.exp (-c * ↑n) = Real.exp (-c) ^ n := fun n => by
@@ -173,7 +171,9 @@ theorem exp_decay_abs_convergence (f : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 
   -- Compare with (M + ‖ĉ₀‖) * exp(-c|n|), which handles n = 0 automatically
   set K := M + ‖fourierCoeff f 0‖
   have hK : 0 < K := by positivity
-  apply Summable.of_nonneg_of_le (fun n => norm_nonneg _) _ ((exp_decay_summable δ hδ).mul_left K)
+  have hsum : Summable (fun n : ℤ => K * Real.exp (-(2 * Real.pi * δ * |↑n|) / T)) :=
+    (exp_decay_summable δ hδ).mul_left K
+  apply Summable.of_nonneg_of_le (fun n => norm_nonneg _) _ hsum
   intro n
   by_cases hn : n = 0
   · -- n = 0: ‖ĉ₀‖ ≤ K * exp(0) = K = M + ‖ĉ₀‖
@@ -207,7 +207,7 @@ theorem exp_decay_abs_convergence (f : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 
 axiom rate_is_sharp (δ : ℝ) (hδ : 0 < δ) :
     ∀ ε > 0, ∃ (f : AddCircle T → ℂ), Integrable f ∧
       ∃ (C : ℝ) (_ : 0 < C),
-        ∀ᶠ n in Filter.cofinite,
+        ∀ᶠ n : ℤ in Filter.cofinite,
           C * Real.exp (-(2 * Real.pi * (δ + ε) * |↑n|) / T) ≤ ‖fourierCoeff f n‖
 
 -- ============================================================================
@@ -253,7 +253,7 @@ theorem sharpConstant_is_bound (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → �
     ‖fourierCoeff f n‖ ≤ sharpConstant δ f *
       Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := by
   obtain ⟨_, _, M, hM, hbound⟩ := hf
-  set a := 2 * Real.pi * δ * |↑n| / T
+  set a := 2 * Real.pi * δ * |↑n| / T with ha
   -- Step 1: ‖ĉ_n‖ * exp(a) ≤ sharpConstant δ f (n-th term ≤ supremum)
   suffices h_le : ‖fourierCoeff f n‖ * Real.exp a ≤ sharpConstant δ f by
     -- Step 2: multiply both sides by exp(-a) to get the goal
@@ -263,7 +263,7 @@ theorem sharpConstant_is_bound (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → �
       _ ≤ sharpConstant δ f * Real.exp (-a) :=
           mul_le_mul_of_nonneg_right h_le (Real.exp_pos _).le
       _ = sharpConstant δ f * Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := by
-          congr 1
+          rw [ha]; ring_nf
   -- Show n-th term ≤ supremum via le_ciSup
   unfold sharpConstant
   -- BddAbove: all terms bounded by M (from IsStripAnalytic decay bound)
@@ -273,8 +273,12 @@ theorem sharpConstant_is_bound (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → �
     refine ⟨M, ?_⟩
     rintro x ⟨m, rfl⟩
     by_cases hm : m = 0
-    · subst hm; simp only [ne_eq, not_true_eq_false, ciSup_of_empty]; exact hM.le
+    · subst hm
+      dsimp only
+      rw [ciSup_neg (show ¬((0 : ℤ) ≠ 0) by simp), Real.sSup_empty]
+      exact hM.le
     · haveI : Nonempty (m ≠ 0) := ⟨hm⟩
+      dsimp only
       rw [ciSup_const]
       have hbn := hbound m hm
       have hexp_cancel : Real.exp (-(2 * Real.pi * δ * |↑m|) / T) *
@@ -305,8 +309,11 @@ theorem sharpConstant_optimal (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → ℂ
   apply ciSup_le fun n => ?_
   by_cases hn : n = 0
   · -- n = 0: inner sup over empty type is 0 ≤ K
-    subst hn; simp [ciSup_empty]; exact hK.le
+    subst hn
+    rw [ciSup_neg (show ¬((0 : ℤ) ≠ 0) by simp), Real.sSup_empty]
+    exact hK.le
   · -- n ≠ 0: inner sup is g(n) ≤ K
+    haveI : Nonempty (n ≠ 0) := ⟨hn⟩
     apply ciSup_le fun _ => ?_
     -- Goal: ‖ĉ_n‖ * exp(2πδ|n|/T) ≤ K
     have hbn := hbound n hn
@@ -361,7 +368,7 @@ def poissonKernelStripWidth (r : ℝ) (hr : 0 < r) (hr1 : r < 1) : ℝ :=
   -(T * Real.log r) / (2 * Real.pi)
 
 theorem poissonKernel_strip_positive (r : ℝ) (hr : 0 < r) (hr1 : r < 1) :
-    0 < poissonKernelStripWidth r hr hr1 := by
+    0 < poissonKernelStripWidth (T := T) r hr hr1 := by
   unfold poissonKernelStripWidth
   apply div_pos
   · apply neg_pos_of_neg
@@ -405,7 +412,7 @@ theorem trig_poly_vacuous (f : AddCircle T → ℂ) (N : ℕ)
 - **Difficulty:** MODERATE (≈200 lines, mostly explicit computation)
 
 ### Axiom 3 (paley_wiener_converse):
-- **Need:** Prove that ∑ ĉ_n · e^{2πinz/T} converges in the strip
+- **Need:** Prove that ∑ ĉ_n · e^{2πinz/T} converges ∈ the strip
   when the coefficients decay exponentially
 - **Key ingredients:** Uniform convergence of holomorphic series,
   Weierstrass theorem that uniform limits of holomorphic functions are

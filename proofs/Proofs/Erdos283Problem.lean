@@ -118,15 +118,15 @@ theorem alekseyev_example : (∑ n ∈ ({2, 4, 6, 12} : Finset ℕ), (n : ℤ)^2
 
 /- ## Part VI: van Doorn's Extensions (2025) -/
 
-/-- van Doorn proved results for p(x) = x + c for various c. -/
-/-- van Doorn proved results for p(x) = x² + c for various c. -/
+/-  van Doorn proved results for p(x) = x + c for various c. -/
+/-  van Doorn proved results for p(x) = x² + c for various c. -/
 /- ## Part VII: Cassels' Theorem -/
 
-/-- **Cassels (1960)**: Under the polynomial conditions, every sufficiently large
+/-  **Cassels (1960)**: Under the polynomial conditions, every sufficiently large
     integer is a sum of p(nᵢ) with distinct nᵢ (without Egyptian fraction constraint). -/
 /- ## Part VIII: Egyptian Fraction Structure -/
 
-/-- There are infinitely many Egyptian fraction decompositions summing to 1. -/
+/-  There are infinitely many Egyptian fraction decompositions summing to 1. -/
 /-- The simplest Egyptian fraction decomposition: {1} since 1/1 = 1. -/
 theorem trivial_egyptian : IsEgyptianDecomposition {1} := by
   constructor

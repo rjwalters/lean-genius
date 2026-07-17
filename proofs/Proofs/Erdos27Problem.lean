@@ -31,12 +31,14 @@
               minimum modulus bound of 616,000 for perfect covering systems.
 -/
 
+import Mathlib
 import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
+
+open scoped Classical
 
 namespace Erdos27
 
@@ -108,7 +110,7 @@ theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) 
   have htend : Tendsto (fun M => uncoveredDensity S M) atTop (nhds 0) :=
     tendsto_const_nhds.congr'
       ((Filter.eventually_ge_atTop 1).mono fun M hM => (hdens M hM).symm)
-  linarith [htend.liminf_eq]
+  exact le_of_eq htend.liminf_eq
 
 /- ## Part IV: Bounded Moduli Systems -/
 
@@ -122,11 +124,11 @@ def HasModuliInCRange (S : CongruenceSystem) (N : ℕ) (C : ℝ) : Prop :=
 
 /- ## Part V: The Natural Density Product -/
 
-/-- The product ∏(1 - 1/n) over all integers n in [m₁, m₂].
+/-- The product ∏(1 - 1/n) over all integers n ∈ [m₁, m₂].
     This is the "averaging argument" lower bound: choosing residues uniformly at
     random, the expected fraction of uncovered integers equals this product. -/
 noncomputable def naturalDensity (m₁ m₂ : ℕ) : ℝ :=
-  ∏ m ∈ (Finset.range (m₂ - m₁ + 1)).map ⟨(· + m₁), by intro; omega⟩,
+  ∏ m ∈ (Finset.range (m₂ - m₁ + 1)).map ⟨(· + m₁), add_left_injective m₁⟩,
     (1 - 1 / (m : ℝ))
 
 /-- Telescoping product: ∏_{n=2}^{k} (1 - 1/n) = 1/k.
@@ -147,11 +149,15 @@ private lemma naturalDensity_eq_inv : ∀ n : ℕ, n ≥ 2 → naturalDensity 2 
       have ihm : naturalDensity 2 m = 1 / (m : ℝ) := ih hm
       simp only [naturalDensity]
       have hrng : m + 1 - 2 + 1 = (m - 2 + 1) + 1 := by omega
-      rw [hrng, Finset.range_succ, Finset.map_insert, Finset.prod_insert]
-      · rw [show m - 2 + 1 + 2 = m + 1 from by omega]
-        simp only [← naturalDensity, ihm]
-        have hm_pos : (0 : ℝ) < m := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
-        have hm1_pos : (0 : ℝ) < m + 1 := by exact_mod_cast Nat.succ_pos m
+      rw [hrng, Finset.range_add_one, Finset.map_insert, Finset.prod_insert]
+      · simp only [Function.Embedding.coeFn_mk]
+        rw [show m - 2 + 1 + 2 = m + 1 from by omega]
+        have hfold : (∏ x ∈ Finset.map ⟨(· + 2), add_left_injective 2⟩ (Finset.range (m - 2 + 1)),
+            (1 - 1 / (x : ℝ))) = naturalDensity 2 m := rfl
+        rw [hfold, ihm]
+        have hm_ne : (m : ℝ) ≠ 0 := by exact_mod_cast (show m ≠ 0 by omega)
+        have hm1_ne : ((m : ℝ) + 1) ≠ 0 := by positivity
+        push_cast
         field_simp
         ring
       · simp only [Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]
@@ -166,15 +172,15 @@ theorem naturalDensity_vanishes :
   obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
   use max 2 N
   rw [naturalDensity_eq_inv (max 2 N) (le_max_left 2 N)]
-  have hmax_pos : (0 : ℝ) < (max 2 N : ℝ) :=
-    by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num) (le_max_left 2 N)
-  rw [div_lt_iff hmax_pos, one_mul]
-  calc (1 : ℝ) < 1 / ε * ε := by rw [div_mul_cancel₀ 1 (ne_of_gt hε)]
-    _ = ε * (1 / ε) := by ring
-    _ ≤ ε * N := by
-        exact mul_le_mul_of_nonneg_left (by exact_mod_cast le_of_lt hN) (le_of_lt hε)
-    _ ≤ ε * (max 2 N : ℝ) := by
-        exact mul_le_mul_of_nonneg_left (by exact_mod_cast le_max_right 2 N) (le_of_lt hε)
+  set K : ℕ := max 2 N with hK
+  have hmax_pos : (0 : ℝ) < (K : ℝ) := by
+    have hpos : 0 < K := by rw [hK]; exact Nat.lt_of_lt_of_le (by norm_num) (le_max_left 2 N)
+    exact_mod_cast hpos
+  rw [div_lt_iff₀ hmax_pos]
+  have hNK : (N : ℝ) ≤ (K : ℝ) := by rw [hK]; exact_mod_cast le_max_right 2 N
+  calc (1 : ℝ) = ε * (1 / ε) := by rw [mul_one_div, div_self (ne_of_gt hε)]
+    _ < ε * (N : ℝ) := mul_lt_mul_of_pos_left hN hε
+    _ ≤ ε * (K : ℝ) := mul_le_mul_of_nonneg_left hNK (le_of_lt hε)
 
 /- ## Part VI: The Main Question -/
 

@@ -30,11 +30,12 @@ References:
   multiples of the first n positive integers", Integers #A7
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Interval
 import Mathlib.Order.Interval.Finset.Nat
-import Mathlib.Algebra.Order.Floor
+
+open scoped Classical
 
 open Nat Finset
 
@@ -93,7 +94,7 @@ notation "f(" n ", " m ")" => minimalIntervalLength n m
 **Connection to Problem #710:**
 f(n,n) is exactly the function f(n) from Problem #710.
 -/
-def fnn (n : ℕ) : ℕ := f(n, n)
+noncomputable def fnn (n : ℕ) : ℕ := f(n, n)
 
 /-
 ## Part III: Known Upper Bounds
@@ -119,7 +120,7 @@ def firstConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ m : ℕ,
     (f(n, m) : ℝ) ≤ (n : ℝ) ^ (1 + ε)
 
-/--
+/- 
 **First Conjecture Status: OPEN**
 No proof or counterexample is known.
 -/
@@ -142,7 +143,7 @@ noncomputable def maxFnm (n : ℕ) : ℕ :=
 **Difference from f(n,n):**
 For fixed n, the difference f(n,m) - f(n,n) can vary with m.
 -/
-def differenceFnm (n m : ℕ) : ℤ :=
+noncomputable def differenceFnm (n m : ℕ) : ℤ :=
   (f(n, m) : ℤ) - (f(n, n) : ℤ)
 
 /--
@@ -184,7 +185,7 @@ axiom second_conjecture_solved : secondConjecture
 ## Part VI: Why Does m Matter?
 -/
 
-/--
+/- 
 **Intuition:**
 The starting point m affects which multiples of k are available.
 
@@ -203,7 +204,7 @@ The number of multiples depends on m mod k.
 def multiplesInInterval (d start len : ℕ) : ℕ :=
   (start + len) / d - start / d
 
-/--
+/- 
 **Residue Class Effect:**
 The position of m relative to multiples of k affects how many are available.
 
@@ -213,11 +214,11 @@ Standard bound: any interval of length L contains at most L/k + 1 multiples of k
 ## Part VII: Connection to Problem #710
 -/
 
-/--
+/- 
 **Problem #710 Bounds (for reference):**
 n · √(log n / log log n) ≪ f(n,n) ≪ n · √(log n)
 -/
-/--
+/- 
 **van Doorn's Result in Context:**
 The difference f(n,m) - f(n,n) can be as large as the main term!
 

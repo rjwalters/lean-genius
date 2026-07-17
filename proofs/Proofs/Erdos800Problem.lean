@@ -39,6 +39,7 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
+open scoped Classical
 
 open SimpleGraph
 
@@ -53,7 +54,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 **Degree of a Vertex:**
 The degree of vertex v in graph G is the number of edges incident to v.
 -/
-def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=
+noncomputable def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=
   (G.neighborFinset v).card
 
 /--
@@ -99,6 +100,7 @@ theorem subdivision_implies_no_adjacent_high_degree (G : SimpleGraph V)
     (h : ∀ v : V, vertexDegree G v ≥ 3 → ∀ u : V, G.Adj v u → vertexDegree G u ≤ 2) :
     noAdjacentHighDegree G := by
   intro u v huv ⟨hu3, hv3⟩
+  simp only [isHighDegree] at hv3
   have : vertexDegree G v ≤ 2 := h u (hu3) v huv
   omega
 
@@ -111,8 +113,8 @@ K_N is the graph where every pair of distinct vertices is adjacent.
 -/
 def completeGraph (N : ℕ) : SimpleGraph (Fin N) where
   Adj u v := u ≠ v
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Edge 2-Coloring:**

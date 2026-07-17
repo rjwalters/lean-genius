@@ -63,17 +63,18 @@ def IsBalanced {n t : ℕ} (coloring : HyperedgeColoring n t) (α : ℝ) (m : �
     Axiomatized because the existence proof for Nat.find requires nontrivial Ramsey theory. -/
 axiom F (t n : ℕ) (α : ℝ) : ℕ
 
-/-- F satisfies the defining property: some coloring is balanced for F, none for F+1 -/
+/-  F satisfies the defining property: some coloring is balanced for F, none for F+1 -/
 /- ## Classical Ramsey Case (α = 0) -/
 
 /-- For α = 0, F^(t)(n, 0) is related to the Ramsey number -/
-def FZero (t n : ℕ) : ℕ := F t n 0
+noncomputable def FZero (t n : ℕ) : ℕ := F t n 0
 
-/-- Erdős-Hajnal-Rado Conjecture (#562): F^(t)(n, 0) ≍ log_{t-1}(n) -/
+/-  Erdős-Hajnal-Rado Conjecture (#562): F^(t)(n, 0) ≍ log_{t-1}(n) -/
 /-- The iterated logarithm log_{t-1} -/
 noncomputable def iterLog (base : ℕ) : ℕ → ℝ
   | 0 => 0
   | n + 1 => if n < base then 1 else 1 + iterLog base (Nat.log base n)
+  decreasing_by exact Nat.lt_succ_of_le (Nat.log_le_self _ _)
 
 /- ## Positive α: Lower Bounds -/
 
@@ -83,7 +84,7 @@ axiom erdos_spencer_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 
     ∀ n : ℕ, n ≥ 2 →
       (F t n α : ℝ) ≥ c * (Real.log n)^(1/(t - 1 : ℝ))
 
-/-- Upper bound for α close to 1/2 -/
+/-  Upper bound for α close to 1/2 -/
 /- ## The Jump Question -/
 
 /-- Does F^(t)(n, α) have discontinuities (jumps) as α varies? -/
@@ -100,7 +101,7 @@ def erdos_one_jump_belief (t : ℕ) : Prop :=
 
 /- ## Main Result: t = 3 (Conlon-Fox-Sudakov) -/
 
-/-- Conlon-Fox-Sudakov (2011): Upper bound for F^(3)(n, α) -/
+/-  Conlon-Fox-Sudakov (2011): Upper bound for F^(3)(n, α) -/
 /-- Combined result: F^(3)(n, α) = Θ_α(√(log n)) for α > 0 -/
 axiom F3_characterization (α : ℝ) (hα : α > 0) (hα2 : α < 1/2) :
     ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
@@ -113,10 +114,10 @@ axiom one_jump_for_t3 : erdos_one_jump_belief 3
 
 /- ## General t: Partial Results -/
 
-/-- For all α > 0, a polynomial lower bound in (log n) holds -/
+/-  For all α > 0, a polynomial lower bound in (log n) holds -/
 /- ## The Gap Between α = 0 and α > 0 -/
 
-/-- At α = 0 (Ramsey case), growth is iterated logarithm -/
+/-  At α = 0 (Ramsey case), growth is iterated logarithm -/
 /-- At α > 0, growth is power of log (much larger for large t) -/
 theorem alpha_positive_growth (t : ℕ) (ht : t ≥ 3) (α : ℝ) (hα : 0 < α) :
     ∃ (c : ℝ), c > 0 ∧

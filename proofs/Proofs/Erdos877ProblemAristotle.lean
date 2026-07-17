@@ -100,9 +100,9 @@ theorem odds_construction' (n : ℕ) :
       induction m with
       | zero => simp
       | succ k ih =>
-        rw [Finset.range_succ, Finset.filter_insert]
+        rw [Finset.range_add_one, Finset.filter_insert]
         split_ifs with hmod
-        · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+        · rw [Finset.card_insert_of_notMem (by simp [Finset.mem_filter, Finset.mem_range])]
           omega
         · omega
     have := key (n + 1)

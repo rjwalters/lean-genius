@@ -33,6 +33,10 @@ No axioms beyond Lean/Mathlib's foundations; `0` sorries.  We work with
 -/
 import Mathlib
 
+/-- v4.31 compat: `Nat.Ico_succ_right` was removed. -/
+theorem Nat.Ico_succ_right {a b : ℕ} : Finset.Ico a (b + 1) = Finset.Icc a b := by
+  ext x; simp [Nat.lt_succ_iff]
+
 open Finset
 
 namespace HermiteLegendreFactorialOQ02
@@ -62,7 +66,7 @@ theorem image_mul_eq_filter_dvd {p : ℕ} (hp : 0 < p) (n : ℕ) :
   constructor
   · rintro ⟨j, ⟨hj1, hj2⟩, rfl⟩
     refine ⟨⟨?_, ?_⟩, Dvd.intro j rfl⟩
-    · calc 1 ≤ p * 1 := by simpa using hp
+    · calc 1 ≤ p * 1 := by rw [mul_one]; omega
         _ ≤ p * j := by exact Nat.mul_le_mul_left p hj1
     · rw [mul_comm]; exact (Nat.le_div_iff_mul_le hp).mp hj2
   · rintro ⟨⟨hk1, hk2⟩, ⟨j, rfl⟩⟩

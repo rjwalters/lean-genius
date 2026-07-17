@@ -18,7 +18,7 @@ The naive `ZMod 2`-valued sign with `sign_adj : sign s k + sign s' k' = 1`
 is mathematically vacuous as an orientation tracker: `ZMod 2` collapses
 signs to a `Bool`-valued "differs on adjacency" labeling (witness:
 `ZMod.neg_eq_self_mod_two`). The classical signed-chain boundary
-`∂σ = ∑ (-1)^i ∂_i σ` lives over ℤ (or ℚ); in `ZMod 2` it collapses to
+`∂σ = ∑ (-1)^i ∂_i σ` lives over ℤ (or ℚ); ∈ `ZMod 2` it collapses to
 the parent's unsigned door count.
 
 This file uses ℤ-valued signs with `sign_adj : sign s k + sign s' k' = 0`,
@@ -194,7 +194,7 @@ theorem signed_interior_doors_sum_zero (K : SignedCellComplex V d)
       · show K.adj (signedAdjMap K p).1 (signedAdjMap K p).2 ≠ none
         simp only [signedAdjMap, hadj_eq]
         rw [hadj_back]
-        exact Option.noConfusion
+        exact (Option.some_ne_none _)
   -- Involution: signedAdjMap K (signedAdjMap K p) = p
   case invol =>
     intro p hp

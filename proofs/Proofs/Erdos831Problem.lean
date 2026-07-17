@@ -29,11 +29,11 @@ References:
 - [Er92e] Erdős 1992
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Card
 
 open Set Finset
@@ -212,7 +212,7 @@ theorem h_three : h 3 = 1 := by
         simp [Finset.mem_singleton, p_e1_ne_e2]
       have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
         simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
-      rw [Finset.card_insert_of_not_mem h2, Finset.card_insert_of_not_mem h1,
+      rw [Finset.card_insert_of_notMem h2, Finset.card_insert_of_notMem h1,
           Finset.card_singleton]
     · -- isInGeneralPosition
       constructor
@@ -310,16 +310,16 @@ theorem h_three : h 3 = 1 := by
                d12, d23, d13⟩
       simp only [countDistinctRadii, Finset.card_eq_zero] at hcount
       rw [hcount] at hmem
-      exact absurd hmem (Finset.not_mem_empty _)
+      exact absurd hmem (Finset.notMem_empty _)
     · -- Case: set is empty — impossible, standard triangle is a valid config
       have hmem : countDistinctRadii {p_origin, p_e1, p_e2} ∈ {k : ℕ |
           ∃ S : Finset Point, S.card = 3 ∧
             isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k} :=
         ⟨{p_origin, p_e1, p_e2}, standard_triangle_card, standard_triangle_gp, rfl⟩
       rw [hempty] at hmem
-      exact absurd hmem (Set.not_mem_empty _)
+      exact absurd hmem (Set.notMem_empty _)
 
-/--
+/- 
 **h(4) = 1 (CORRECTED):**
 Previously axiomatized as h(4) ≥ 2, but this is FALSE.
 
@@ -550,7 +550,7 @@ private theorem standard_triangle_card :
     simp [Finset.mem_singleton, p_e1_ne_e2]
   have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
     simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
-  rw [Finset.card_insert_of_not_mem h2, Finset.card_insert_of_not_mem h1,
+  rw [Finset.card_insert_of_notMem h2, Finset.card_insert_of_notMem h1,
       Finset.card_singleton]
 
 /-- The standard triangle {(0,0), (1,0), (0,1)} is in general position. -/
@@ -634,9 +634,9 @@ private theorem allCircumradiiFinset_subset_powersetCard (S : Finset Point) :
     constructor
     · exact Finset.insert_subset_iff.mpr ⟨hp,
         Finset.insert_subset_iff.mpr ⟨hq, Finset.singleton_subset_iff.mpr hs⟩⟩
-    · rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+    · rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
           Finset.card_singleton]
-      · exact Finset.not_mem_singleton.mpr dqs
+      · exact Finset.notMem_singleton.mpr dqs
       · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
   case val =>
     rw [← heq]
@@ -645,9 +645,9 @@ private theorem allCircumradiiFinset_subset_powersetCard (S : Finset Point) :
     set T : Finset Point := {p, q, s}
     set l := T.val.toList
     have hcard : T.card = 3 := by
-      rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+      rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
           Finset.card_singleton]
-      · exact Finset.not_mem_singleton.mpr dqs
+      · exact Finset.notMem_singleton.mpr dqs
       · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
     have hlen : l.length = 3 := by
       rw [show l.length = T.val.card from (Multiset.length_toList T.val).symm]

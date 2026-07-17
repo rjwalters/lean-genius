@@ -19,11 +19,16 @@
 import Proofs.Erdos610Problem
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos610Aristotle
 
-open Finset Function SimpleGraph
+open Finset Function SimpleGraph Erdos610
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+-- NOTE (v4.31 soundness fix, #38611 candidate): matches the `[Nonempty V]` binder added to the
+-- parent Erdos610Problem.lean — without it, `τ` (cliqueTransversalNumber) is not well-defined
+-- when `V` is empty (see parent file for the full rationale).
+variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
 
 /-
 ## Section 1: Basic Bound τ(G) ≤ n

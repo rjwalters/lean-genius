@@ -43,8 +43,8 @@ theorem zetaFive_partial_nonneg (k : ℕ) : 0 ≤ zetaFivePartialSum k := by
 theorem zetaFive_partial_mono {j k : ℕ} (h : j ≤ k) :
     zetaFivePartialSum j ≤ zetaFivePartialSum k := by
   unfold zetaFivePartialSum
-  apply Finset.sum_le_sum_of_subset
-  exact Finset.range_mono h
+  apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono h)
+  intro i _ _; positivity
 
 /-- ζ(5) ≥ 1/1^5 = 1 (from the first term). -/
 theorem zetaFive_ge_one_from_partial :
@@ -71,9 +71,9 @@ theorem zetaFive_ge_1_03 : 1 + 1 / 32 = (33 : ℝ) / 32 := by norm_num
     This gives a crude but useful upper bound on the tail. -/
 theorem tail_term_le_inverse_sq (n : ℕ) :
     1 / ((n + 1 : ℝ) ^ 5) ≤ 1 / ((n + 1 : ℝ) ^ 2) := by
-  apply div_le_div_of_nonneg_left one_pos
-  · positivity
-  · exact pow_le_pow_left (by positivity) (by linarith) (by omega)
+  gcongr
+  · norm_num
+  · nlinarith [Nat.cast_nonneg (α := ℝ) n]
 
 /-- The tail from index k is bounded by the tail of 1/n^2 from index k.
     Since ∑_{n≥k} 1/n^2 ≤ 2/k (integral comparison), this gives
@@ -82,7 +82,9 @@ theorem tail_bounded_by_harmonic_sq (k : ℕ) :
     -- Each tail term of ζ(5) is bounded by the corresponding term of ζ(2)
     ∀ n : ℕ, 1 / ((k + n + 1 : ℝ) ^ 5) ≤ 1 / ((k + n + 1 : ℝ) ^ 2) := by
   intro n
-  exact tail_term_le_inverse_sq (k + n)
+  have := tail_term_le_inverse_sq (k + n)
+  push_cast at this ⊢
+  convert this using 3 <;> ring
 
 -- ============================================================
 -- Part III: Irrationality Measure

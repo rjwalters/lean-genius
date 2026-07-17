@@ -90,7 +90,7 @@ theorem aeval_eq_aeval_modByMonic (A : Matrix n n R) (f : R[X]) :
     aeval A f = aeval A (f %ₘ A.charpoly) := by
   have hm : A.charpoly.Monic := Matrix.charpoly_monic A
   have hann : aeval A A.charpoly = 0 := Matrix.aeval_self_charpoly A
-  have hdiv := Polynomial.modByMonic_add_div f hm
+  have hdiv := Polynomial.modByMonic_add_div f A.charpoly
   have := congr_arg (aeval A) hdiv
   simp only [map_add, map_mul] at this
   rw [hann, zero_mul, add_zero] at this

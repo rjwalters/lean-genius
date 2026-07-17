@@ -25,9 +25,8 @@ References:
 - Ben Green: Problem 25 (refinement)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
+open scoped Classical
 
 namespace Erdos484
 
@@ -83,21 +82,21 @@ axiom roth_conjecture_true : roth_conjecture
 
 /- ## Part III: The Erdős-Sárközy-Sós Theorem -/
 
-/--
+/- 
 **Main Theorem (ESS89):**
 In any k-coloring of {1,...,N}, at least
 N/2 - O(N^{1-1/2^{k+1}})
 even integers are representable as monochromatic sums.
 -/
 
-/--
+/- 
 **Why even numbers:**
 A sum a + b where a, b have the same parity yields an even sum.
 In any color class of size m, the sumset contains at least m/2 elements
 of the same parity, so most sums are even.
 -/
 
-/--
+/- 
 **The exponent 1 - 1/2^{k+1}:**
 For k = 2: exponent = 1 - 1/8 = 7/8, so error ~ N^{7/8}
 For k = 3: exponent = 1 - 1/16 = 15/16, so error ~ N^{15/16}
@@ -128,7 +127,7 @@ axiom two_coloring_optimal :
     ∀ N : ℕ, ∃ χ : Coloring N 2,
     ∀ m : ℕ, 2^m ≤ 2 * N → ¬isMonochromaticSum χ (2^m)
 
-/--
+/- 
 **Optimal construction:**
 Color n with color (ν₂(n) mod 2), where ν₂(n) is the 2-adic valuation.
 Then 2^m is never a monochromatic sum because if a + b = 2^m with
@@ -138,21 +137,21 @@ power of 2.
 
 /- ## Part V: Key Proof Ideas -/
 
-/--
+/- 
 **Sumset structure:**
 For a color class C of size m, the sumset C + C = {a + b : a, b ∈ C, a ≠ b}
 has size at least m - 1. By pigeonhole, some color class has size ≥ N/k,
 giving a sumset of size ≥ N/k - 1.
 -/
 
-/--
+/- 
 **Density argument:**
 If a color class has density δ in {1,...,N}, its sumset C + C
 covers at least 2δN - O(√N) integers in {2,...,2N} by the
 Freiman-Ruzsa theorem on sumsets.
 -/
 
-/--
+/- 
 **Fourier analytic methods:**
 The proof uses exponential sums to count the representation number
 r(s) = #{(a,b) : a+b=s, χ(a)=χ(b), a≠b}. The number of s with
@@ -173,7 +172,7 @@ theorem positive_density :
         (Finset.range (2 * N))).card ≥ c * N := by
   exact roth_conjecture_true
 
-/--
+/- 
 **Strengthening to c = 1/2 - ε:**
 For any ε > 0 and fixed k, the constant c = 1/2 - ε works for
 N large enough. This follows from the ESS theorem since the error
@@ -182,21 +181,21 @@ term N^{1-1/2^{k+1}} is o(N).
 
 /- ## Part VII: Extensions and Related Results -/
 
-/--
+/- 
 **Ben Green's Problem 25:**
 Asks for more precise counting of monochromatic sums and understanding
 the structure of colorings that minimize them. The ESS result gives
 N/2 - o(N) even sums; Green asks for the exact second-order term.
 -/
 
-/--
+/- 
 **Schur's theorem:**
 In any k-coloring of {1,...,N} for N large enough, there exist
 monochromatic a, b, c with a + b = c. This is the "equation version"
 where the sum itself must be in the same color class.
 -/
 
-/--
+/- 
 **Hindman's theorem:**
 In any finite coloring of ℕ, there exists an infinite set S such that
 all finite sums of distinct elements of S have the same color.

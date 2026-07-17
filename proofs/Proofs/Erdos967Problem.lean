@@ -17,11 +17,7 @@ Is it true that for every t ∈ ℝ, we have 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0?
 Reference: https://erdosproblems.com/967
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.Analysis.SpecialFunctions.Pow.Complex
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Complex
+import Mathlib
 
 open Complex
 
@@ -106,7 +102,7 @@ Erdős and Ingham could not decide whether
 noncomputable def sum235 (t : ℝ) : ℂ :=
   1 + reciprocalPow 2 t + reciprocalPow 3 t + reciprocalPow 5 t
 
-/--
+/- 
 **Connection to Four Exponentials Conjecture:**
 The Four Exponentials conjecture implies that for {2, 3, 5},
 the sum never vanishes. (See MathOverflow discussion.)
@@ -187,7 +183,7 @@ theorem yip_construction_t_dependent :
 ## Part VIII: Properties of the Sum
 -/
 
-/--
+/- 
 **At t = 0:**
 When t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.
 So the conjecture trivially holds at t = 0.
@@ -207,8 +203,7 @@ def geometricSequence : IntegerSequence := {
   seq := fun n => 2^(n + 1)
   strictly_increasing := by
     intro n
-    simp only [pow_lt_pow_right (by norm_num : 1 < 2)]
-    omega
+    exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   all_greater_than_one := by
     intro n
     have : 2^(n+1) ≥ 2 := Nat.pow_le_pow_right (by norm_num) (by omega)

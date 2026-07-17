@@ -86,9 +86,9 @@ def IsAdmissible (A : Finset ℕ) (N : ℕ) : Prop :=
 The maximum size of (A+A) ∩ [1,N] over all admissible A.
 -/
 noncomputable def f (N : ℕ) : ℕ :=
-  sSup {(restrictedSumset A N).card | A : Finset ℕ, IsAdmissible A N}
+  sSup {(restrictedSumset A N).card | (A : Finset ℕ) (_ : IsAdmissible A N)}
 
-/--
+/- 
 The supremum defining f(N) is attained because we optimize over a finite
 collection of finite sets. Axiomatized since the proof requires finiteness
 arguments about the space of admissible sets.
@@ -97,11 +97,11 @@ arguments about the space of admissible sets.
 ## Part III: Trivial Bounds
 -/
 
-/--
+/- 
 **Upper bound: f(N) ≤ N**
 The restricted sumset is a subset of [1,N], so has at most N elements.
 -/
-/--
+/- 
 **Trivial lower bound:**
 Any admissible set gives |(A+A) ∩ [1,N]| ≥ |A| = √N, since
 at minimum the elements of A themselves appear as sums (a + 0 is not valid,
@@ -164,14 +164,14 @@ theorem coefficients_gap : upperCoefficient - lowerCoefficient = 1 / 8 := by
 ## Part V: Lower Bound Construction
 -/
 
-/--
+/- 
 **Lower bound construction (Erdős-Freud 1991):**
 To achieve 3N/8, one constructs sets where sums are well-distributed
 using arithmetic progressions with carefully chosen common difference.
 The construction avoids too much additive structure while still generating
 many distinct sums landing in [1,N].
 -/
-/--
+/- 
 **Upper bound argument (Erdős-Freud 1991):**
 If |A| = √N, then |A+A| ≤ |A|² = N in general.
 But (A+A) ∩ [1,N] has additional constraints: sums a+b with
@@ -192,7 +192,7 @@ to the sumset coverage achievable by √N-sized sets.
 def IsQuasiSidon (A : Finset ℕ) (k : ℕ) : Prop :=
   ∀ n : ℕ, ((A ×ˢ A).filter (fun p => p.1 + p.2 = n ∧ p.1 ≤ p.2)).card ≤ k
 
-/--
+/- 
 **Problem #840 connection:**
 The size of the largest quasi-Sidon set in [1,N] is related to f(N).
 If A is quasi-Sidon with parameter k, then |A+A| ≥ |A|²/(2k),
@@ -202,7 +202,7 @@ so better quasi-Sidon sets yield larger sumsets.
 ## Part VII: Extremal Examples
 -/
 
-/--
+/- 
 **Arithmetic progression sumset:**
 A = {0, 1, ..., k-1} has |A+A| = 2k-1.
 For k = √N: only ~2√N sums, far from the optimal ~0.375N.

@@ -26,11 +26,11 @@ Erdős Problem #443: Common Products k(m-k) and l(n-l)
   Tags: number-theory, arithmetic-progressions, diophantine-equations
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 
 namespace Erdos443
 

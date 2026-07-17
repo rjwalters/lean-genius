@@ -20,7 +20,7 @@ Known:
 Reference: https://erdosproblems.com/562
 -/
 
-import Mathlib.Combinatorics.Ramsey
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
@@ -46,7 +46,8 @@ theorem twr_two (n : ℕ) : twr 2 n = 2 ^ (2 ^ n) := rfl
 noncomputable def hypergraphRamsey (r n : ℕ) : ℕ :=
   sInf { m : ℕ | ∀ (χ : Finset.powersetCard r (Finset.range m) → Fin 2),
     ∃ S : Finset ℕ, S ⊆ Finset.range m ∧ S.card = n ∧
-      ∃ c : Fin 2, ∀ e ∈ S.powersetCard r, χ e = c }
+      ∃ c : Fin 2, ∀ e : Finset.powersetCard r (Finset.range m),
+        (e : Finset ℕ) ∈ S.powersetCard r → χ e = c }
 
 /- ## Classical Graph Ramsey (r = 2) -/
 
@@ -65,21 +66,21 @@ theorem graph_ramsey_exponential (n : ℕ) (hn : 2 ≤ n) :
 
 /- ## Erdős–Rado Stepping-Up Upper Bound -/
 
-/-- Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
+/-  Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
     This gives R_r(n) ≤ twr_{r-1}(c_r · n²). -/
 /- ## Lower Bounds -/
 
-/-- Erdős–Hajnal lower bound for r = 3:
+/-  Erdős–Hajnal lower bound for r = 3:
     R_3(n) ≥ twr_2(c · n²) = 2^{2^{cn²}}. -/
-/-- General lower bound for r ≥ 3: R_r(n) ≥ twr_{r-1}(c · n).
+/-  General lower bound for r ≥ 3: R_r(n) ≥ twr_{r-1}(c · n).
     This is known for all r but the constant is not optimal. -/
 /- ## The Main Conjecture -/
 
-/-- **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
+/-  **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
     Equivalently, R_r(n) = twr_{r-1}(Θ(n)).
     The upper bound gives twr_{r-1}(O(n²)) and the lower bound
     gives twr_{r-1}(Ω(n)). The conjecture is that both can be
     tightened to twr_{r-1}(Θ(n)). -/
 /- ## Small Cases -/
 
-/-- R_3(4) is known: R_3(4) = 13. -/
+/- R_3(4) is known: R_3(4) = 13. -/

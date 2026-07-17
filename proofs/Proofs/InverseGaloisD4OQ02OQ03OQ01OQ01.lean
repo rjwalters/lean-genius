@@ -49,6 +49,8 @@ reports only `propext, Classical.choice, Quot.sound`.
 import Mathlib
 import Proofs.InverseGaloisD4OQ02OQ03
 
+open scoped Classical
+
 namespace InverseGaloisExtensions
 
 open Polynomial

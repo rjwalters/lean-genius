@@ -84,6 +84,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
 def knightGraph : SimpleGraph Square where
   Adj := knightAdj
   symm := by
+    constructor
     intro s1 s2 h
     simp only [knightAdj] at h ⊢
     have hdx : (s1.1 : Int) - (s2.1 : Int) = -((s2.1 : Int) - (s1.1 : Int)) := by ring
@@ -91,6 +92,7 @@ def knightGraph : SimpleGraph Square where
     rw [hdx, hdy]
     exact neg_knight_offset h
   loopless := by
+    constructor
     intro s h
     simp only [knightAdj, isKnightOffset, knightOffsets] at h
     -- (0, 0) is not in knightOffsets
@@ -417,7 +419,7 @@ theorem no_turn_angle_4_in_tour (t : ClosedTour) (i : Fin 62) :
   -- tourMoves[i+1] = getMoveVector s1 s2
   have hmv2 : (tourMoves t)[i.val + 1]'(by rw [tourMoves_length]; omega) = getMoveVector s1 s2 := by
     have h := tourMoves_getElem_lt t (i.val + 1) hi1_lt_63
-    convert h using 3
+    convert h using 3 <;> (first | rfl | ring | norm_num)
   -- Adjacencies
   have hadj01 : knightGraph.Adj s0 s1 := tour_consecutive_adj t i.val (by omega)
   have hadj12 : knightGraph.Adj s1 s2 := tour_consecutive_adj t (i.val + 1) (by omega)
@@ -983,7 +985,7 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
   induction l with
   | nil =>
     simp only [List.length_nil] at indices
-    have : indices = ∅ := Finset.eq_empty_of_forall_not_mem fun i => i.elim0
+    have : indices = ∅ := Finset.eq_empty_of_forall_notMem fun i => i.elim0
     simp [this]
   | cons hd tl ih =>
     by_cases hp : p hd
@@ -1486,11 +1488,9 @@ theorem rotate_reflect_conjugate (s : Square) :
 /-- applyD4 with inverse gives identity -/
 theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
     applyD4 (d4Inv g) (applyD4 g s) = s := by
+  revert s
   obtain ⟨b, k⟩ := g
-  fin_cases k <;> cases b <;>
-    simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
-               Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
-    (ext <;> simp only [Fin.ext_iff] <;> omega)
+  fin_cases k <;> cases b <;> decide
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by
@@ -1558,7 +1558,7 @@ theorem rotate90_preserves_adj (s1 s2 : Square) :
   constructor
   · intro h
     have hoff := rotate_knight_offset h
-    simp only [Fin.val_natCast] at hoff ⊢
+    skip
     rw [h2]
     exact hoff
   · intro h
@@ -1567,7 +1567,7 @@ theorem rotate90_preserves_adj (s1 s2 : Square) :
     have hrot := rotate_knight_offset h
     have hrot2 := rotate_knight_offset hrot
     have hrot3 := rotate_knight_offset hrot2
-    simp only [Fin.val_natCast] at hrot3 ⊢
+    skip
     convert hrot3 using 2 <;> omega
 
 /-- X-reflection of a knight offset is still a knight offset: (dx, dy) → (-dx, dy) -/
@@ -1589,13 +1589,13 @@ theorem reflect_preserves_adj (s1 s2 : Square) :
   constructor
   · intro h
     have hoff := reflect_knight_offset h
-    simp only [Fin.val_natCast] at hoff ⊢
+    skip
     convert hoff using 2
     omega
   · intro h
     -- Double reflection is identity: apply again
     have hrefl := reflect_knight_offset h
-    simp only [Fin.val_natCast] at hrefl ⊢
+    skip
     convert hrefl using 2
     omega
 
@@ -1746,7 +1746,7 @@ theorem getMoveVector_rotate90 (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.2.val) : Int) - ↑(7 - s1.2.val))
                               ((s2.1 : Int) - s1.1) = true := by
     have := rotate_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
+    skip
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, rotateSquare90, rotateMoveVector]
@@ -1771,7 +1771,7 @@ theorem getMoveVector_reflect (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.1.val) : Int) - ↑(7 - s1.1.val))
                               ((s2.2 : Int) - s1.2) = true := by
     have := reflect_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
+    skip
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, reflectSquare, reflectMoveVector]

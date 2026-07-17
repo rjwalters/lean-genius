@@ -118,7 +118,7 @@ structure Triangle (G : SimpleGraph V) where
   adj13 : G.Adj v1 v3
 
 /-- The set of triangle vertices. -/
-def Triangle.vertices (T : Triangle G) : Finset V :=
+def Triangle.vertices {G : SimpleGraph V} (T : Triangle G) : Finset V :=
   {T.v1, T.v2, T.v3}
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
@@ -131,10 +131,10 @@ but this term has type
 Note: Expected a function because this term is being applied to the argument
   G-/
 /-- Triangle has exactly 3 vertices. -/
-theorem Triangle.card_vertices (T : Triangle G) : T.vertices.card = 3 := by
+theorem Triangle.card_vertices {G : SimpleGraph V} (T : Triangle G) : T.vertices.card = 3 := by
   simp only [Triangle.vertices]
-  rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem, Finset.card_singleton]
-  · exact Finset.not_mem_singleton.mpr T.distinct23
+  rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem, Finset.card_singleton]
+  · exact Finset.notMem_singleton.mpr T.distinct23
   · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
     exact ⟨T.distinct12, T.distinct13⟩
 
@@ -258,7 +258,7 @@ def isValidBound (n : ℕ) (k : ℕ) : Prop :=
 Unknown identifier `isValidBound`-/
 /-- h(n): the extremal function. -/
 noncomputable def h (n : ℕ) : ℕ :=
-  sSup {k : ℕ | isValidBound n k}
+  sSup {k : ℕ | isValidBound.{0} n k}
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -279,6 +279,30 @@ def erdos_faudree_conjecture : Prop :=
   ∀ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
   isAboveTuran G →
   ∃ T : Triangle G, (goodNeighborCount G T : ℝ) > (1/2 - ε) * n
+
+/-
+## Ma-Tang Counterexample
+
+Ma and Tang constructed a graph disproving the conjecture.
+-/
+
+/-- The Ma-Tang constant: 2 - √(5/2) ≈ 0.4189. -/
+noncomputable def maTangConstant : ℝ := 2 - Real.sqrt (5/2)
+
+/-- Numerical value verification. -/
+theorem maTang_approx : maTangConstant > 0.418 ∧ maTangConstant < 0.42 := by
+  unfold maTangConstant;
+  constructor <;> nlinarith [ Real.sqrt_nonneg ( 5 / 2 ), Real.sq_sqrt ( show 0 ≤ 5 / 2 by norm_num ) ]
+
+/-- Ma-Tang: There exists a counterexample graph.
+    The bound `+ 1` replaces `+ o(1)` from the original statement. -/
+axiom maTang_counterexample : ∃ N : ℕ, ∀ n ≥ N,
+  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
+    Fintype.card V = n ∧
+    ∃ G : SimpleGraph V,
+      ∀ [DecidableRel G.Adj],
+        isAboveTuran G ∧
+        (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ maTangConstant * n + 1)
 
 /- Aristotle found this block to be false. Here is a proof of the negation:
 
@@ -311,41 +335,19 @@ theorem erdos_faudree_false : ¬erdos_faudree_conjecture := by
   -- Get counterexample graph
   obtain ⟨V, hDE, hFT, hcard, G, hprops⟩ := hN_mt n hn_mt
   haveI := hDE; haveI := hFT
-  haveI : DecidableRel G.Adj := Classical.decRel _
+  haveI hDR : DecidableRel G.Adj := Classical.decRel _
   obtain ⟨hAT, hbound⟩ := hprops
   -- Apply the conjecture
-  obtain ⟨T, hT⟩ := hN_conj n hn_conj V hcard G hAT
+  obtain ⟨T, hT⟩ := @hN_conj n hn_conj V hDE hFT hcard G hDR hAT
   -- hT : goodNeighborCount G T > (1/2 - 1/25) * n = 23/50 * n
   -- hbound T : goodNeighborCount G T ≤ maTangConstant * n + 1
   have hT_le := hbound T
   -- maTangConstant < 0.42 (from maTang_approx)
   have h_mc := maTang_approx.2
   -- Contradiction: 23/50 * n > maTangConstant * n + 1 for n ≥ 26
+  have hprod : maTangConstant * (n : ℝ) < 0.42 * n :=
+    mul_lt_mul_of_pos_right h_mc (by linarith)
   linarith
-
-/-
-## Ma-Tang Counterexample
-
-Ma and Tang constructed a graph disproving the conjecture.
--/
-
-/-- The Ma-Tang constant: 2 - √(5/2) ≈ 0.4189. -/
-noncomputable def maTangConstant : ℝ := 2 - Real.sqrt (5/2)
-
-/-- Numerical value verification. -/
-theorem maTang_approx : maTangConstant > 0.418 ∧ maTangConstant < 0.42 := by
-  unfold maTangConstant;
-  constructor <;> nlinarith [ Real.sqrt_nonneg ( 5 / 2 ), Real.sq_sqrt ( show 0 ≤ 5 / 2 by norm_num ) ]
-
-/-- Ma-Tang: There exists a counterexample graph.
-    The bound `+ 1` replaces `+ o(1)` from the original statement. -/
-axiom maTang_counterexample : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
-    Fintype.card V = n ∧
-    ∃ G : SimpleGraph V,
-      ∀ [DecidableRel G.Adj],
-        isAboveTuran G ∧
-        (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ maTangConstant * n + 1)
 
 /-- The upper bound on h(n). -/
 theorem h_upper_bound : ∃ N : ℕ, ∀ n ≥ N,
@@ -397,7 +399,7 @@ but this term has type
 
 Note: Expected a function because this term is being applied to the argument
   G-/
-/-- Every graph with > n²/4 edges has a book of size n/6. -/
+/-  Every graph with > n²/4 edges has a book of size n/6. -/
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Function expected at
@@ -421,6 +423,24 @@ but this term has type
 
 Note: Expected a function because this term is being applied to the argument
   G-/
+/-- If y is adjacent to all 3, it's definitely a good neighbor. -/
+theorem fully_adjacent_is_good (G : SimpleGraph V) [DecidableRel G.Adj]
+    (T : Triangle G) (y : V) (h1 : G.Adj y T.v1) (h2 : G.Adj y T.v2) (h3 : G.Adj y T.v3) :
+    adjacentToTriangleCount G T y = 3 := by
+  simp only [adjacentToTriangleCount]
+  have hsub : T.vertices ⊆ T.vertices.filter (fun v => G.Adj y v) := by
+    intro v hv
+    simp only [Triangle.vertices, Finset.mem_insert, Finset.mem_singleton] at hv
+    simp only [Finset.mem_filter, Triangle.vertices, Finset.mem_insert, Finset.mem_singleton]
+    rcases hv with rfl | rfl | rfl
+    · exact ⟨Or.inl rfl, h1⟩
+    · exact ⟨Or.inr (Or.inl rfl), h2⟩
+    · exact ⟨Or.inr (Or.inr rfl), h3⟩
+  have hle := Finset.card_le_card hsub
+  have hge := Finset.card_le_card (Finset.filter_subset (fun v => G.Adj y v) T.vertices)
+  rw [Triangle.card_vertices] at hle hge
+  omega
+
 /-- Book pages are good neighbors (adjacent to all 3 ≥ 2). -/
 theorem book_pages_are_good (G : SimpleGraph V) [DecidableRel G.Adj]
     (T : Triangle G) (pages : Finset V) (hBook : isBook G T pages) :
@@ -501,11 +521,10 @@ noncomputable def k4FreeConstant : ℝ := 2 * Real.sqrt 3 - 3
 /-- K₄-free constant verification. -/
 theorem k4Free_approx : k4FreeConstant > 0.46 ∧ k4FreeConstant < 0.47 := by
   -- Calculate the numerical value of the K₄-free constant.
-  have h_k4FreeConstant : k4FreeConstant = 2 * Real.sqrt 3 - 3 := by
-    exact?;
+  have h_k4FreeConstant : k4FreeConstant = 2 * Real.sqrt 3 - 3 := rfl
   exact ⟨ by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ], by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ] ⟩
 
-/-- Ma-Tang K₄-free result. The bound `+ 1` replaces `+ o(1)`. -/
+/-  Ma-Tang K₄-free result. The bound `+ 1` replaces `+ o(1)`. -/
 /-- K₄-free bound is worse (higher) than general bound. -/
 theorem k4free_worse : k4FreeConstant > maTangConstant := by
   unfold k4FreeConstant maTangConstant
@@ -689,24 +708,6 @@ but this term has type
 
 Note: Expected a function because this term is being applied to the argument
   G-/
-/-- If y is adjacent to all 3, it's definitely a good neighbor. -/
-theorem fully_adjacent_is_good (G : SimpleGraph V) [DecidableRel G.Adj]
-    (T : Triangle G) (y : V) (h1 : G.Adj y T.v1) (h2 : G.Adj y T.v2) (h3 : G.Adj y T.v3) :
-    adjacentToTriangleCount G T y = 3 := by
-  simp only [adjacentToTriangleCount]
-  have hsub : T.vertices ⊆ T.vertices.filter (fun v => G.Adj y v) := by
-    intro v hv
-    simp only [Triangle.vertices, Finset.mem_insert, Finset.mem_singleton] at hv
-    simp only [Finset.mem_filter, Triangle.vertices, Finset.mem_insert, Finset.mem_singleton]
-    rcases hv with rfl | rfl | rfl
-    · exact ⟨Or.inl rfl, h1⟩
-    · exact ⟨Or.inr (Or.inl rfl), h2⟩
-    · exact ⟨Or.inr (Or.inr rfl), h3⟩
-  have hle := Finset.card_le_card hsub
-  have hge := Finset.card_le_card (Finset.filter_subset _ T.vertices)
-  rw [Triangle.card_vertices] at hle hge
-  omega
-
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Function expected at

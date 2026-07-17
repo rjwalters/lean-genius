@@ -15,7 +15,7 @@ Status: OPEN
 Reference: https://erdosproblems.com/117
 -/
 
-import Mathlib.GroupTheory.Subgroup.Basic
+import Mathlib
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
@@ -43,16 +43,16 @@ noncomputable def abelianCoverNumber (n : ℕ) : ℕ :=
 
 /- ## Main Problem -/
 
-/-- **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
+/-  **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
 /- ## Known Results -/
 
-/-- **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
+/-  **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
     c₁^n < h(n) < c₂^n. The gap between c₁ and c₂ is open. -/
-/-- **Isaacs Lower Bound**: the exponential lower bound c₁^n was known
+/-  **Isaacs Lower Bound**: the exponential lower bound c₁^n was known
     to Isaacs before Pyber's work. -/
 /- ## Observations -/
 
-/-- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
+/- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
     Then h(1) = 1. -/
 /- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
     condition on the group. The covering number h(n) measures how far the group

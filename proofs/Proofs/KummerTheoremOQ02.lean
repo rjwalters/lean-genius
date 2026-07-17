@@ -25,8 +25,8 @@ References:
 - Konvalinka, Pak (2007): "Non-commutative extensions of the MacMahon..."
 -/
 
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
-import Mathlib.Algebra.GeomSum
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic
 import Proofs.KummerTheorem
@@ -42,7 +42,7 @@ open Polynomial Finset Nat
 /-- The q-number [n]_q = 1 + q + q² + ... + q^(n-1) as a polynomial in ℤ[X].
     This is the "quantum integer" — it specializes to n at q = 1. -/
 noncomputable def qNumber (n : ℕ) : ℤ[X] :=
-  ∑ i in Finset.range n, X ^ i
+  ∑ i ∈ Finset.range n, X ^ i
 
 /-- The q-factorial [n]_q! = [1]_q · [2]_q · ... · [n]_q. -/
 noncomputable def qFactorial : ℕ → ℤ[X]
@@ -104,7 +104,7 @@ theorem qBinomial_succ_succ (n k : ℕ) :
 
     From Mathlib: `Polynomial.prod_cyclotomic_eq_geom_sum`. -/
 theorem qNumber_eq_prod_cyclotomic {n : ℕ} (hn : 0 < n) :
-    qNumber n = ∏ i in n.divisors.erase 1, cyclotomic i ℤ :=
+    qNumber n = ∏ i ∈ n.divisors.erase 1, cyclotomic i ℤ :=
   (prod_cyclotomic_eq_geom_sum hn ℤ).symm
 
 -- ══════════════════════════════════════════════════════════════════
@@ -235,7 +235,7 @@ theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
 
 /-- qFactorial as a product over Icc 1 n. -/
 private theorem qFactorial_eq_prod (n : ℕ) :
-    qFactorial n = ∏ j in Icc 1 n, qNumber j := by
+    qFactorial n = ∏ j ∈ Icc 1 n, qNumber j := by
   induction n with
   | zero => simp [qFactorial]
   | succ n ih =>
@@ -257,7 +257,7 @@ private theorem succ_div_step (n d : ℕ) (hd : 0 < d) :
 /-- The cyclotomic factorization of q-factorials:
     [n]_q! = ∏_{d=2}^{n} Φ_d^{⌊n/d⌋}. -/
 theorem qFactorial_cyclotomic : ∀ n,
-    qFactorial n = ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (n / d) := by
+    qFactorial n = ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (n / d) := by
   intro n
   induction n with
   | zero => simp [qFactorial]
@@ -295,7 +295,7 @@ theorem qFactorial_cyclotomic : ∀ n,
 
 /-- Extend a cyclotomic product to a larger range. -/
 private theorem qFactorial_cyclotomic_ext (m n : ℕ) (hmn : m ≤ n) :
-    qFactorial m = ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (m / d) := by
+    qFactorial m = ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (m / d) := by
   rw [qFactorial_cyclotomic]
   apply Finset.prod_subset (Finset.Icc_subset_Icc_right hmn)
   intro d hd hdm
@@ -324,7 +324,7 @@ private theorem qFactorial_cyclotomic_ext (m n : ℕ) (hmn : m ≤ n) :
     The exponent identity fd + k/d + (n-k)/d = n/d lets us
     cancel to obtain the result. -/
 theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
-    qBinomial n k = ∏ d in Icc 2 n,
+    qBinomial n k = ∏ d ∈ Icc 2 n,
       (cyclotomic d ℤ) ^ (floorDeficiency n k d) := by
   -- From qBinomial_factorial: qBinomial * qFactorial k * qFactorial (n-k) = qFactorial n
   have hfact := qBinomial_factorial n k hkn
@@ -333,16 +333,16 @@ theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
       qFactorial_cyclotomic_ext (n - k) n (Nat.sub_le n k),
       qFactorial_cyclotomic n] at hfact
   -- Merge the LHS products: ∏ Φ_d^(k/d) * ∏ Φ_d^((n-k)/d) = ∏ Φ_d^(k/d + (n-k)/d)
-  have merge : (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d)) *
-      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ ((n - k) / d)) =
-      ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d) := by
+  have merge : (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (k / d)) *
+      (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ ((n - k) / d)) =
+      ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d) := by
     rw [← Finset.prod_mul_distrib]
     congr 1; ext d; exact (pow_add _ _ _).symm
   rw [mul_assoc, merge] at hfact
   -- Factor RHS: ∏ Φ_d^(n/d) = ∏ Φ_d^(k/d + (n-k)/d) * ∏ Φ_d^(floorDeficiency)
-  have split_exp : ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (n / d) =
-      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d)) *
-      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ floorDeficiency n k d) := by
+  have split_exp : ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (n / d) =
+      (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d)) *
+      (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ floorDeficiency n k d) := by
     rw [← Finset.prod_mul_distrib]
     congr 1; ext d; rw [← pow_add, floorDeficiency]
     congr 1
@@ -364,8 +364,8 @@ theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
     valuation, since Φ_p(1) = p for prime p. -/
 theorem qKummer_classical_connection (n k : ℕ) (hkn : k ≤ n)
     (p : ℕ) (hp : p.Prime) :
-    (∑ j in Icc 1 n, floorDeficiency n k (p ^ j)) =
-      ∑ j in Icc 1 n, (n / p ^ j - k / p ^ j - (n - k) / p ^ j) := by
+    (∑ j ∈ Icc 1 n, floorDeficiency n k (p ^ j)) =
+      ∑ j ∈ Icc 1 n, (n / p ^ j - k / p ^ j - (n - k) / p ^ j) := by
   simp [floorDeficiency]
 
 -- ══════════════════════════════════════════════════════════════════

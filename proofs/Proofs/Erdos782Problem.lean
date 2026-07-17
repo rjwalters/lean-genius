@@ -123,8 +123,9 @@ theorem question1Weak_true : Question1Weak := by
     nlinarith
   · -- Gaps bounded: 3 ≤ (i+2)²-(i+1)² ≤ 3+2k
     intro i hi
+    dsimp only
     have hgap : (i + 1 + 1) ^ 2 = (i + 1) ^ 2 + (2 * i + 3) := by ring
-    constructor <;> omega
+    omega
   · -- All elements are squares
     intro i _
     exact ⟨i + 1, rfl⟩
@@ -189,8 +190,10 @@ theorem solymosi_equiv : SolymosiConjecture ↔ SolymosiConjectureAlt := by
   constructor
   · intro h
     by_contra hall
-    push_neg at hall
-    exact h hall
+    apply h
+    intro k
+    by_contra hk
+    exact hall ⟨k, hk⟩
   · intro ⟨k, hk⟩ hq2
     exact hk (hq2 k)
 
@@ -237,7 +240,8 @@ def Has3Cube : Prop := ContainsCube Squares 3
     {0, 9, 16, 25} = {0², 3², 4², 5²} with a = 0, b₀ = 9, b₁ = 16.
     Proof by exhaustive case analysis over all 4 subsets of Fin 2. -/
 theorem squares_contain_2cube : Has2Cube := by
-  refine ⟨0, ![9, 16], fun i => by fin_cases i <;> simp, fun n ⟨S, rfl⟩ => ?_⟩
+  refine ⟨0, ![9, 16], fun i => by fin_cases i <;> simp, ?_⟩
+  rintro n ⟨S, rfl⟩
   simp only [zero_add, Squares, Set.mem_setOf_eq]
   by_cases h0 : (0 : Fin 2) ∈ S <;> by_cases h1 : (1 : Fin 2) ∈ S
   · -- S = {0, 1}: sum = 9 + 16 = 25 = 5²
@@ -260,6 +264,7 @@ Squares are sparse: |{n² ≤ x}| = √x.
 -/
 
 -- Number of squares up to n
+open scoped Classical in
 noncomputable def numSquaresUpTo (n : ℕ) : ℕ :=
   (Finset.range (n + 1)).filter IsSquare |>.card
 

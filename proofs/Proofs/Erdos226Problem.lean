@@ -32,11 +32,7 @@ References:
   (1974), 155-180. (Problem 2.31, attributed to Erdős)
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Set.Countable
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Complex Set
 
@@ -82,7 +78,7 @@ def IsCountableDense (S : Set ℝ) : Prop :=
 theorem rationals_countable_dense : IsCountableDense (Set.range (↑· : ℚ → ℝ)) := by
   constructor
   · exact Set.countable_range _
-  · exact Rat.denseRange_ratCast
+  · exact Rat.denseRange_cast
 
 /- ## Part III: The Rationality Preservation Property -/
 
@@ -145,7 +141,7 @@ axiom barth_schneider_1970 :
       IsTranscendental f ∧
       (∀ x : ℝ, x ∈ A ↔ (f x).re ∈ B)
 
-/--
+/- 
 **Monotonicity on ℝ:**
 The Barth-Schneider construction yields a function that is
 monotonic when restricted to the real line.
@@ -169,21 +165,15 @@ theorem erdos_question_affirmative : ErdosQuestion := by
   constructor
   · -- f is non-linear (transcendental implies non-linear)
     intro ⟨a, b, hlin⟩
-    have : ¬∃ n p, ∀ z, f z = p.eval z := hf_trans.2
+    have : ¬∃ (n : ℕ) (p : Polynomial ℂ), ∀ z, f z = p.eval z := hf_trans.2
     apply this
     use 1, Polynomial.C b + Polynomial.C a * Polynomial.X
     intro z
     simp only [Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_X]
-    ring_nf
-    exact hlin z
+    rw [hlin z]; ring
   · -- f preserves rationality
     intro x
-    rw [hf_preserves x]
-    constructor
-    · intro ⟨q, hq⟩
-      exact ⟨q, hq⟩
-    · intro ⟨q, hq⟩
-      exact ⟨q, hq⟩
+    simpa [Set.mem_range] using hf_preserves x
 
 /--
 **The General Question is Also Answered:**
@@ -198,7 +188,7 @@ theorem general_question_affirmative : GeneralQuestion := by
 
 /- ## Part VIII: Extensions -/
 
-/--
+/- 
 **Complex Extension (1971):**
 Barth and Schneider extended their result to ℂ in 1971.
 For countable dense A, B ⊆ ℂ, there exists a transcendental
@@ -206,7 +196,7 @@ entire f with f(A) = B.
 -/
 /- ## Part IX: Why This Works -/
 
-/--
+/- 
 **Key Insight 3: Transcendence:**
 The function is necessarily transcendental; no polynomial
 can satisfy the required property for infinite dense sets.

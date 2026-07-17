@@ -48,9 +48,9 @@ noncomputable def aleph0 : Cardinal := Cardinal.aleph0
 The three sets A, B, C are types with cardinality ℵ₁.
 We axiomatize types of the correct cardinality.
 -/
-axiom A : Type*
-axiom B : Type*
-axiom C : Type*
+axiom A : Type
+axiom B : Type
+axiom C : Type
 /- ## Part II: Colorings and Monochromatic Cubes -/
 
 /--
@@ -119,7 +119,7 @@ theorem exists_bad_coloring :
 
 /- ## Part V: The Two-Dimensional Analogue -/
 
-/--
+/- 
 **Two-dimensional analogue:**
 Even the 2D version ℵ₁² → (ℵ₀)²₂ is false.
 There exists a 2-coloring of ℵ₁ × ℵ₁ with no countably infinite

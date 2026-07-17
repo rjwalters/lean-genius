@@ -25,6 +25,8 @@
 
 import Proofs.Erdos395Problem
 
+open scoped Classical
+
 open Erdos395 Complex
 
 namespace Erdos395OQ01
@@ -53,6 +55,29 @@ axiom extremal_example_tight (n : ℕ) (hn : n ≥ 4) :
     probSmallSum (extremal_example n) ≤ C / n
 
 -- ══════════════════════════════════════════════════════════════════
+-- § 0b. v4.31 migration compat: local Fintype instances
+--
+-- The parent `Erdos395Problem` was reshaped to use `Set.ncard` and no
+-- longer provides `Fintype` instances for `{ε | isSignVector ε}` (and
+-- refinements thereof). We recover them here from `Set.Finite`.
+-- ══════════════════════════════════════════════════════════════════
+
+theorem isSignVector_setFinite (n : ℕ) : {ε : Fin n → ℤ | isSignVector ε}.Finite := by
+  have heq : {ε : Fin n → ℤ | isSignVector ε} =
+      {f : Fin n → ℤ | ∀ i, f i ∈ ({1, -1} : Set ℤ)} := by
+    ext ε
+    simp only [Set.mem_setOf_eq, isSignVector, Set.mem_insert_iff, Set.mem_singleton_iff]
+  rw [heq]
+  exact Set.Finite.pi' (fun _ => Set.toFinite _)
+
+noncomputable instance signVectorFintype (n : ℕ) : Fintype {ε : Fin n → ℤ | isSignVector ε} :=
+  (isSignVector_setFinite n).fintype
+
+noncomputable instance signVectorAndFintype (n : ℕ) (p : (Fin n → ℤ) → Prop) :
+    Fintype {ε : Fin n → ℤ | isSignVector ε ∧ p ε} :=
+  ((isSignVector_setFinite n).subset (fun _ h => h.1)).fintype
+
+-- ══════════════════════════════════════════════════════════════════
 -- § 1. The Optimal Constant
 -- ══════════════════════════════════════════════════════════════════
 
@@ -78,7 +103,7 @@ theorem valid_constants_bddAbove :
   -- Any valid c is at most n * probSmallSum z. For n = 1, c ≤ probSmallSum z ≤ 1.
   refine ⟨1, fun c ⟨hc_pos, hc_bound⟩ => ?_⟩
   -- Specialize to n = 1, z = constant 1
-  have h := hc_bound 1 (by omega) (fun _ => 1) (fun _ => Complex.abs_one)
+  have h := hc_bound 1 (by omega) (fun _ => 1) (fun _ => by simp [Complex.abs])
   simp only [Nat.cast_one, div_one] at h
   -- h : probSmallSum (fun _ => (1 : ℂ)) ≥ c
   -- Need: probSmallSum (fun _ => (1 : ℂ)) ≤ 1
@@ -89,6 +114,7 @@ theorem valid_constants_bddAbove :
   rw [div_le_one (by positivity : (0 : ℝ) < (2 : ℝ) ^ 1)]
   -- Goal: ↑(countSmallSums ...) ≤ 2^1 = 2
   unfold countSmallSums
+  rw [Set.ncard_eq_toFinset_card']
   -- The filtered set is a subset of the sign vector set
   -- For n = 1, sign vectors are {fun _ => 1, fun _ => -1} (2 elements)
   -- So card of any subset ≤ 2
@@ -159,10 +185,9 @@ theorem erdos_original_is_false_proved :
     set z := carnielli_carolino_counterexample 2 ⟨1, rfl⟩ (by omega)
     have hz : isUnitVector z := by
       intro i
-      simp only [carnielli_carolino_counterexample]
-      fin_cases i <;> simp [Complex.abs_apply, Complex.normSq]
-      · simp [Complex.normSq]; ring_nf; simp
-      · simp [Complex.normSq, Complex.I]; ring_nf; simp
+      show Complex.abs (if i.val = 0 then (1 : ℂ) else Complex.I) = 1
+      simp only [Complex.abs]
+      fin_cases i <;> simp
     -- All sign vectors give |sum| > 1 (from counterexample_exceeds_one)
     have hexceed : ∀ ε : Fin 2 → ℤ, isSignVector ε → ¬(signedSumAbs z ε ≤ 1) := by
       intro ε hε hle
@@ -170,13 +195,15 @@ theorem erdos_original_is_false_proved :
       linarith
     -- The filtered set is empty (no sign vector has |sum| ≤ 1)
     have hempty : {ε : Fin 2 → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ 1}.toFinset = ∅ := by
-      rw [Finset.eq_empty_iff_forall_not_mem]
+      rw [Finset.eq_empty_iff_forall_notMem]
       intro ε
       simp only [Set.mem_toFinset, Set.mem_setOf_eq, not_and]
       exact hexceed ε
     -- Apply the bound: card / 4 ≥ c / 2, but card = 0
+    have hncard : {ε : Fin 2 → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ 1}.ncard = 0 := by
+      rw [Set.ncard_eq_toFinset_card', hempty, Finset.card_empty]
     have h0 := hbound z hz
-    rw [hempty, Finset.card_empty, Nat.cast_zero, zero_div] at h0
+    rw [hncard, Nat.cast_zero, zero_div] at h0
     -- h0 : 0 ≥ c / 2, but c > 0 → contradiction
     linarith
 
@@ -223,10 +250,10 @@ theorem rate_is_tight (n : ℕ) (hn : n ≥ 4) :
 /-- The extremal example has unit vectors (1 and i both have |z| = 1). -/
 theorem extremal_is_unit (n : ℕ) : isUnitVector (extremal_example n) := by
   intro i
-  simp only [extremal_example]
+  simp only [extremal_example, Complex.abs]
   split
-  · exact Complex.abs_one
-  · exact Complex.abs_I
+  · exact norm_one
+  · exact Complex.norm_I
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6. Summary

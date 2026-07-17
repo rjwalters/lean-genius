@@ -24,11 +24,7 @@
   - [Go79b] Gol'dberg, Sibirsk. Mat. Zh. (1979), 512-518
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Complex Real MeasureTheory Set
 
@@ -48,7 +44,7 @@ def IsNonConstantEntire (f : ℂ → ℂ) : Prop :=
 
 /-- The superlevel set E(c) = {z : |f(z)| > c}. -/
 def superlevelSet (f : ℂ → ℂ) (c : ℝ) : Set ℂ :=
-  {z : ℂ | abs (f z) > c}
+  {z : ℂ | ‖f z‖ > c}
 
 /-- The superlevel set has finite planar (Lebesgue) measure. -/
 def HasFiniteMeasure (f : ℂ → ℂ) (c : ℝ) : Prop :=
@@ -56,7 +52,7 @@ def HasFiniteMeasure (f : ℂ → ℂ) (c : ℝ) : Prop :=
 
 /-- The maximum modulus function M(r) = max_{|z|=r} |f(z)|. -/
 noncomputable def maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=
-  ⨆ (z : ℂ) (_ : abs z = r), abs (f z)
+  ⨆ (z : ℂ) (_ : ‖z‖ = r), ‖f z‖
 
 /-
 ## Part II: The Erdős Questions
@@ -80,9 +76,10 @@ def ThresholdMonotonicityQuestion : Prop :=
 ## Part III: Hayman's Conjecture and Growth Rate
 -/
 
-/-- The growth rate integral ∫₀^∞ r/(log log M(r)) dr. -/
-noncomputable def growthIntegral (f : ℂ → ℂ) : ℝ :=
-  ∫ r in Ioi (0 : ℝ), r / Real.log (Real.log (maxModulus f r))
+/-- The growth rate integral ∫₀^∞ r/(log log M(r)) dr, valued in `ℝ≥0∞`
+    so that finiteness (`< ⊤`) is the convergence condition. -/
+noncomputable def growthIntegral (f : ℂ → ℂ) : ENNReal :=
+  ∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal (r / Real.log (Real.log (maxModulus f r)))
 
 /-- Hayman's conjecture: finite growth integral characterizes the property. -/
 def HaymanConjecture : Prop :=

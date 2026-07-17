@@ -19,6 +19,8 @@
 import Mathlib
 import Proofs.Erdos337Problem
 
+open scoped Classical
+
 namespace Erdos337
 
 /-- The set of perfect squares (including 0 = 0^2). -/

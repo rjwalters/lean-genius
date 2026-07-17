@@ -176,7 +176,7 @@ theorem lambdaRecip_eq (N : ℕ) (hN : 1 ≤ N) :
   have hNpos : (0 : ℝ) < N := by exact_mod_cast hN
   have hN0 : (N : ℝ) ≠ 0 := ne_of_gt hNpos
   have h := mul_lambdaRecip_eq N
-  rw [div_add_div_same, eq_div_iff hN0]
+  rw [← add_div, eq_div_iff hN0]
   linear_combination h
 
 /-- The two analytic inputs to Mertens' first theorem, packaged as hypotheses.
@@ -240,7 +240,7 @@ theorem lambdaRecip_sub_log_le (h : MertensInputs) :
   have hSN : |S / (N : ℝ) - (Real.log N - 1)| ≤ h.cStirling := by
     have hrw : S / (N : ℝ) - (Real.log N - 1)
         = (S - ((N : ℝ) * Real.log N - (N : ℝ))) / (N : ℝ) := by
-      field_simp; ring
+      field_simp
     rw [hrw, abs_div, abs_of_pos hNpos, div_le_iff₀ hNpos]
     calc |S - ((N : ℝ) * Real.log N - (N : ℝ))|
         ≤ h.cStirling * Real.log N := hst

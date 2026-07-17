@@ -22,9 +22,9 @@ n_a / a → ∞ as a → ∞?
 - <https://erdosproblems.com/51>
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Totient
 import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic
 
@@ -44,15 +44,12 @@ def IsTotientValue (a : ℕ) : Prop :=
 /-- The smallest preimage of a under φ, if one exists.
     Returns 0 if a is not a totient value. -/
 noncomputable def smallestTotientPreimage (a : ℕ) : ℕ :=
-  Nat.find (Classical.choice (by
-    by_cases h : IsTotientValue a
-    · exact ⟨h⟩
-    · exact ⟨⟨0, by simp [IsTotientValue] at h; omega⟩⟩
-  ) : Nonempty {n : ℕ | n.totient = a})
+  letI := Classical.dec (IsTotientValue a)
+  if h : IsTotientValue a then Nat.find h else 0
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
+/-  **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
     such that the smallest preimage grows faster than the value itself? -/
 
 /- ## Basic Properties of Totient -/

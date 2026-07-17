@@ -102,10 +102,10 @@ private lemma hasLargestPrimeFactor_iff_maxPrimeFac {n p : ℕ}
 
 -- The product of p² + i for i from 0 to k
 def consecutiveSquareProduct (p k : ℕ) : ℕ :=
-  ∏ i in Icc 0 k, (p ^ 2 + i)
+  ∏ i ∈ Icc 0 k, (p ^ 2 + i)
 
 theorem consecutiveSquareProduct_eq (p k : ℕ) :
-    consecutiveSquareProduct p k = ∏ i in range (k + 1), (p ^ 2 + i) := by
+    consecutiveSquareProduct p k = ∏ i ∈ range (k + 1), (p ^ 2 + i) := by
   simp only [consecutiveSquareProduct]
   congr 1
   ext i
@@ -117,8 +117,8 @@ theorem consecutiveSquareProduct_zero (p : ℕ) :
 
 theorem consecutiveSquareProduct_one (p : ℕ) :
     consecutiveSquareProduct p 1 = p ^ 2 * (p ^ 2 + 1) := by
-  simp [consecutiveSquareProduct]
-  ring
+  rw [consecutiveSquareProduct_eq]
+  simp [Finset.prod_range_succ]
 
 /-
 # Part 3: The Main Property
@@ -140,18 +140,19 @@ lemma consecutiveSquareProduct_pos {p k : ℕ} (hp : p.Prime) :
   rw [consecutiveSquareProduct_eq]
   apply Finset.prod_pos
   intro i _
+  have hp2 : 0 < p ^ 2 := pow_pos hp.pos 2
   omega
 
 lemma consecutiveSquareProduct_ne_zero {p k : ℕ} (hp : p.Prime) :
     consecutiveSquareProduct p k ≠ 0 := by
-  exact Nat.not_eq_zero_of_lt (consecutiveSquareProduct_pos hp)
+  exact ((consecutiveSquareProduct_pos hp)).ne'
 
 -- For k = 0: p is 0-good since p² has p as its only prime factor
 theorem zero_good (p : ℕ) (hp : p.Prime) : isKGood p 0 := by
   refine ⟨hp, ?_⟩
   rw [consecutiveSquareProduct_zero]
   simp only [hasLargestPrimeFactor, primeDivisors]
-  refine ⟨Nat.mem_primeFactors.mpr ⟨hp, dvd_pow_self p 2, by positivity⟩,
+  refine ⟨Nat.mem_primeFactors.mpr ⟨hp, dvd_pow_self p (by norm_num), (pow_pos hp.pos 2).ne'⟩,
     fun q hq => ?_⟩
   rw [Nat.mem_primeFactors] at hq
   exact le_of_dvd (Nat.Prime.pos hp) (hq.1.dvd_of_dvd_pow hq.2.1)
@@ -170,25 +171,27 @@ theorem conjecture_equiv : ErdosConjecture383 ↔ ErdosConjecture383' := by
   simp only [ErdosConjecture383, ErdosConjecture383', kGoodPrimes]
   apply forall_congr'
   intro k
-  congr 1
-  ext p
-  simp only [Set.mem_setOf_eq, isKGood]
-  constructor
-  · intro ⟨hp, hlpf⟩
-    refine ⟨hp, ?_⟩
-    have hne : (consecutiveSquareProduct p k).primeFactors.Nonempty := ⟨p, hlpf.1⟩
-    exact (hasLargestPrimeFactor_iff_maxPrimeFac hne).mp hlpf
-  · intro ⟨hp, heq⟩
-    refine ⟨hp, ?_⟩
-    have hp_mem : p ∈ (consecutiveSquareProduct p k).primeFactors := by
-      rw [Nat.mem_primeFactors]
-      refine ⟨hp, ?_, consecutiveSquareProduct_ne_zero hp⟩
-      rw [consecutiveSquareProduct_eq]
-      apply dvd_trans (dvd_pow_self p 2)
-      have : p ^ 2 + 0 = p ^ 2 := by ring
-      rw [← this]
-      exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.zero_lt_succ k))
-    exact (hasLargestPrimeFactor_iff_maxPrimeFac ⟨p, hp_mem⟩).mpr heq
+  have hset : {p | isKGood p k} =
+      {p : ℕ | p.Prime ∧ maxPrimeFac (consecutiveSquareProduct p k) = p} := by
+    ext p
+    simp only [Set.mem_setOf_eq, isKGood]
+    constructor
+    · intro ⟨hp, hlpf⟩
+      refine ⟨hp, ?_⟩
+      have hne : (consecutiveSquareProduct p k).primeFactors.Nonempty := ⟨p, hlpf.1⟩
+      exact (hasLargestPrimeFactor_iff_maxPrimeFac hne).mp hlpf
+    · intro ⟨hp, heq⟩
+      refine ⟨hp, ?_⟩
+      have hp_mem : p ∈ (consecutiveSquareProduct p k).primeFactors := by
+        rw [Nat.mem_primeFactors]
+        refine ⟨hp, ?_, consecutiveSquareProduct_ne_zero hp⟩
+        rw [consecutiveSquareProduct_eq]
+        apply dvd_trans (dvd_pow_self p (n := 2) (by norm_num))
+        have : p ^ 2 + 0 = p ^ 2 := by ring
+        rw [← this]
+        exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.zero_lt_succ k))
+      exact (hasLargestPrimeFactor_iff_maxPrimeFac ⟨p, hp_mem⟩).mpr heq
+  rw [hset]
 
 /-
 # Part 5: Partial Results
@@ -222,10 +225,12 @@ theorem kGood_one_smooth_p2_plus_1 (p : ℕ) (hp : isKGood p 1) :
   exact dvd_mul_of_dvd_right hqd _
 
 theorem problem383_implies_382 (h : (kGoodPrimes 1).Infinite) : Problem382Part2 := by
-  apply Set.Infinite.mono h
-  intro p hp
-  simp only [kGoodPrimes, Set.mem_setOf_eq] at hp
-  exact ⟨hp.1, kGood_one_smooth_p2_plus_1 p hp⟩
+  unfold Problem382Part2
+  apply Set.Infinite.mono (s := kGoodPrimes 1)
+  · intro p hp
+    simp only [kGoodPrimes, Set.mem_setOf_eq] at hp
+    exact ⟨hp.1, kGood_one_smooth_p2_plus_1 p hp⟩
+  · exact h
 
 /-
 # Part 7: Smooth Numbers
@@ -256,19 +261,20 @@ theorem kGood_iff_smooth (p k : ℕ) (hp : p.Prime) :
     · rw [Nat.mem_primeFactors]
       refine ⟨hp, ?_, consecutiveSquareProduct_ne_zero hp⟩
       rw [consecutiveSquareProduct_eq]
-      apply dvd_trans (dvd_pow_self p 2)
+      apply dvd_trans (dvd_pow_self p (n := 2) (by norm_num))
       have : p ^ 2 + 0 = p ^ 2 := by ring
       rw [← this]
       exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.zero_lt_succ k))
     · rw [Nat.mem_primeFactors] at hq
       obtain ⟨hq_prime, hq_dvd, _⟩ := hq
       rw [consecutiveSquareProduct_eq] at hq_dvd
-      rw [Prime.dvd_prod_iff hq_prime.prime] at hq_dvd
+      rw [Prime.dvd_finsetProd_iff hq_prime.prime (fun i => p ^ 2 + i)] at hq_dvd
       obtain ⟨i, hi, hq_dvd_i⟩ := hq_dvd
       have hi' : i ≤ k := by simp [Finset.mem_range] at hi; omega
       exact hsmooth i hi' q (Nat.mem_primeFactors.mpr
-        ⟨hq_prime, hq_dvd_i, by positivity⟩)
+        ⟨hq_prime, hq_dvd_i, by have h2 : 0 < p ^ 2 := pow_pos hp.pos 2; omega⟩)
 
+open scoped Classical in
 noncomputable def countSmooth (x y : ℕ) : ℕ :=
   (Finset.filter (fun n => isSmooth n y) (Finset.Icc 1 x)).card
 

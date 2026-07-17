@@ -1,7 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Tactic
+import Mathlib
 import Proofs.LawOfCosinesOQ03
 
 /-
@@ -61,11 +58,21 @@ open Real
     equals 1 / (2R) where R is the circumradius of the triangle
     in the ambient space. -/
 structure HyperbolicSineTriangle where
-  a : ℝ; b : ℝ; c : ℝ       -- side lengths (hyperbolic distances)
-  A : ℝ; B : ℝ; C : ℝ       -- angles at vertices opposite a, b, c
-  ha : 0 < a; hb : 0 < b; hc : 0 < c
-  hA : 0 < A; hB : 0 < B; hC : 0 < C
-  hA_lt : A < Real.pi; hB_lt : B < Real.pi; hC_lt : C < Real.pi
+  a : ℝ
+  b : ℝ
+  c : ℝ       -- side lengths (hyperbolic distances)
+  A : ℝ
+  B : ℝ
+  C : ℝ       -- angles at vertices opposite a, b, c
+  ha : 0 < a
+  hb : 0 < b
+  hc : 0 < c
+  hA : 0 < A
+  hB : 0 < B
+  hC : 0 < C
+  hA_lt : A < Real.pi
+  hB_lt : B < Real.pi
+  hC_lt : C < Real.pi
   /-- The angular defect π - (A + B + C) is positive (= hyperbolic area). -/
   defect_pos : A + B + C < Real.pi
   /-- The hyperbolic law of sines: sin A / sinh a = sin B / sinh b. -/
@@ -111,21 +118,30 @@ theorem law_sines_all (t : HyperbolicSineTriangle) :
 /-- sin A · sinh b = sin B · sinh a. -/
 theorem law_sines_cross_ab (t : HyperbolicSineTriangle) :
     Real.sin t.A * Real.sinh t.b = Real.sin t.B * Real.sinh t.a := by
-  rwa [div_eq_div_iff (sinh_pos_ne_zero t.a t.ha) (sinh_pos_ne_zero t.b t.hb)] at t.law_sines
+  have h := t.law_sines
+  rwa [div_eq_div_iff (sinh_pos_ne_zero t.a t.ha) (sinh_pos_ne_zero t.b t.hb)] at h
 
 /-- sin B · sinh c = sin C · sinh b. -/
 theorem law_sines_cross_bc (t : HyperbolicSineTriangle) :
     Real.sin t.B * Real.sinh t.c = Real.sin t.C * Real.sinh t.b := by
-  rwa [div_eq_div_iff (sinh_pos_ne_zero t.b t.hb) (sinh_pos_ne_zero t.c t.hc)] at t.law_sines_bc
+  have h := t.law_sines_bc
+  rwa [div_eq_div_iff (sinh_pos_ne_zero t.b t.hb) (sinh_pos_ne_zero t.c t.hc)] at h
 
 /-- sin A · sinh c = sin C · sinh a. -/
 theorem law_sines_cross_ac (t : HyperbolicSineTriangle) :
     Real.sin t.A * Real.sinh t.c = Real.sin t.C * Real.sinh t.a := by
-  have sinA_pos : 0 < Real.sin t.A := Real.sin_pos_of_pos_of_lt_pi t.hA t.hA_lt
-  have sinB_pos : 0 < Real.sin t.B := Real.sin_pos_of_pos_of_lt_pi t.hB t.hB_lt
+  have h1 := law_sines_cross_ab t
+  have h2 := law_sines_cross_bc t
   have shb_pos := sinh_pos_of_pos t.b t.hb
-  nlinarith [law_sines_cross_ab t, law_sines_cross_bc t,
-             mul_pos sinA_pos shb_pos, mul_pos sinB_pos shb_pos]
+  have key : Real.sin t.A * Real.sinh t.c * Real.sinh t.b
+      = Real.sin t.C * Real.sinh t.a * Real.sinh t.b := by
+    calc Real.sin t.A * Real.sinh t.c * Real.sinh t.b
+        = Real.sinh t.c * (Real.sin t.A * Real.sinh t.b) := by ring
+      _ = Real.sinh t.c * (Real.sin t.B * Real.sinh t.a) := by rw [h1]
+      _ = Real.sinh t.a * (Real.sin t.B * Real.sinh t.c) := by ring
+      _ = Real.sinh t.a * (Real.sin t.C * Real.sinh t.b) := by rw [h2]
+      _ = Real.sin t.C * Real.sinh t.a * Real.sinh t.b := by ring
+  exact mul_right_cancel₀ shb_pos.ne' key
 
 
 -- ============================================================
@@ -190,15 +206,14 @@ lemma sin_eq_of_lt_pi (A B : ℝ)
         nlinarith [Real.sin_sq_add_cos_sq A, Real.sin_sq_add_cos_sq B,
                    mul_self_nonneg (Real.sin A), mul_self_nonneg (Real.sin B)]
       have hAB_eq : A + B = Real.pi := by
-        have := Real.arccos_cos (by linarith : 0 ≤ A + B) (by linarith : A + B ≤ Real.pi)
-        simp [Real.arccos_neg_one] at this ⊢
-        nlinarith [Real.cos_lt_one_of_ne_zero (A + B) (by
-          intro h0; simp [h0] at this; linarith [Real.pi_pos])]
+        have harc := Real.arccos_cos (by linarith : (0:ℝ) ≤ A + B) (by linarith : A + B ≤ Real.pi)
+        rw [this, Real.arccos_neg_one] at harc
+        exact harc.symm
       linarith
   -- cos A = cos B with A, B ∈ [0, π] → A = B (arccos injective)
   have hA_mem : A ∈ Set.Icc 0 Real.pi := ⟨le_of_lt hA_pos, le_of_lt hA_lt⟩
   have hB_mem : B ∈ Set.Icc 0 Real.pi := ⟨le_of_lt hB_pos, le_of_lt hB_lt⟩
-  exact hne (Real.cos_injOn_Icc hA_mem hB_mem hcos)
+  exact hne (Real.injOn_cos hA_mem hB_mem hcos)
 
 
 -- ============================================================
@@ -220,13 +235,18 @@ theorem isoceles_iff (t : HyperbolicSineTriangle) : t.a = t.b ↔ t.A = t.B := b
   · intro hab
     have hsinh : Real.sinh t.a = Real.sinh t.b := by rw [hab]
     have hsin : Real.sin t.A = Real.sin t.B := by
-      have := t.law_sines; rw [hsinh] at this
-      exact div_left_inj'.mp this
+      have h := t.law_sines
+      rw [hsinh] at h
+      have hb_ne : Real.sinh t.b ≠ 0 := sinh_pos_ne_zero t.b t.hb
+      rw [div_eq_div_iff hb_ne hb_ne] at h
+      exact mul_right_cancel₀ hb_ne h
     exact sin_eq_of_lt_pi t.A t.B t.hA t.hA_lt t.hB t.hB_lt hAB_lt hsin
   · intro hAB
     have hsin : Real.sin t.A = Real.sin t.B := by rw [hAB]
     have hcross := law_sines_cross_ab t
-    have hsinh : Real.sinh t.a = Real.sinh t.b := by nlinarith [sinA_pos]
+    rw [hsin] at hcross
+    have hsinh : Real.sinh t.a = Real.sinh t.b :=
+      (mul_left_cancel₀ (ne_of_gt sinB_pos) hcross).symm
     exact Real.sinh_injective hsinh
 
 -- ============================================================
@@ -238,7 +258,7 @@ theorem right_angle_sines (t : HyperbolicSineTriangle) (hC : t.C = Real.pi / 2) 
     Real.sin t.A / Real.sinh t.a = 1 / Real.sinh t.c := by
   have h := law_sines_ac t
   rw [hC, Real.sin_pi_div_two] at h
-  rwa [one_div]
+  exact h
 
 /-- In an equilateral triangle (a = b = c), A = B = C. -/
 theorem equilateral_angles (t : HyperbolicSineTriangle)
@@ -249,7 +269,11 @@ theorem equilateral_angles (t : HyperbolicSineTriangle)
   · exact (isoceles_iff t).mp hab
   · have hsinh : Real.sinh t.b = Real.sinh t.c := by rw [hbc]
     have hsin : Real.sin t.B = Real.sin t.C := by
-      have := t.law_sines_bc; rw [hsinh] at this; exact div_left_inj'.mp this
+      have h := t.law_sines_bc
+      rw [hsinh] at h
+      have hc_ne : Real.sinh t.c ≠ 0 := sinh_pos_ne_zero t.c t.hc
+      rw [div_eq_div_iff hc_ne hc_ne] at h
+      exact mul_right_cancel₀ hc_ne h
     exact sin_eq_of_lt_pi t.B t.C t.hB t.hB_lt t.hC t.hC_lt hBC_lt hsin
 
 /-- **Common circumradius**: The shared value sin A / sinh a = sin B / sinh b = sin C / sinh c

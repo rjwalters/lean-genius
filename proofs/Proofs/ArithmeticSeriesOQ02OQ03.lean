@@ -1,7 +1,5 @@
 import Proofs.ArithmeticSeriesOQ02
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Simplicial Numbers and Face Counts of Simplicial Complexes
@@ -52,11 +50,13 @@ theorem faceCount_top (k : ℕ) : faceCount k k = 1 := by
 
 /-- The 1-faces (edges) of Δ^k: there are C(k+1, 2) = k(k+1)/2 edges. -/
 theorem faceCount_one (k : ℕ) : faceCount k 1 = (k + 1) * k / 2 := by
-  simp [faceCount, Nat.choose_two_middle]
+  show (k + 1).choose 2 = (k + 1) * k / 2
+  rw [Nat.choose_two_right, Nat.add_sub_cancel]
 
 /-- For j > k, there are no j-faces of Δ^k. -/
 theorem faceCount_gt (k j : ℕ) (hj : k < j) : faceCount k j = 0 := by
-  simp [faceCount, Nat.choose_eq_zero_of_lt (by omega)]
+  show (k + 1).choose (j + 1) = 0
+  exact Nat.choose_eq_zero_of_lt (by omega)
 
 /-! ## Connection to Simplicial Numbers
 
@@ -99,12 +99,11 @@ theorem total_faces (k : ℕ) :
     ∑ j ∈ range (k + 1), faceCount k j = 2 ^ (k + 1) - 1 := by
   simp only [faceCount]
   -- Reindex: ∑_{j∈range(k+1)} C(k+1,j+1) = ∑_{i∈range(k+2)} C(k+1,i) - C(k+1,0)
-  have h_split : ∑ i ∈ range (k + 2), Nat.choose (k + 1) i =
-      Nat.choose (k + 1) 0 + ∑ j ∈ range (k + 1), Nat.choose (k + 1) (j + 1) := by
+  have h_split : ∑ i ∈ range (k + 1 + 1), Nat.choose (k + 1) i =
+      1 + ∑ j ∈ range (k + 1), Nat.choose (k + 1) (j + 1) := by
     rw [Finset.sum_range_succ']
-    simp [Nat.zero_add]
+    simp [Nat.choose_zero_right, Nat.add_comm]
   have h_total := Nat.sum_range_choose (k + 1)
-  simp [Nat.choose_zero_right] at h_split
   omega
 
 /-- The Euler characteristic of Δ^k is 1 (since simplices are contractible).
@@ -119,8 +118,8 @@ theorem euler_characteristic (k : ℕ) :
   rw [Finset.sum_range_succ'] at h
   simp only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one] at h
   -- Show the shifted sum equals the negation of our target sum
-  suffices hsuff : ∑ x in range (k + 1), (-1 : ℤ) ^ (x + 1) * ↑(Nat.choose (k + 1) (x + 1)) =
-      -(∑ j in range (k + 1), (-1 : ℤ) ^ j * ↑(Nat.choose (k + 1) (j + 1))) by
+  suffices hsuff : ∑ x ∈ range (k + 1), (-1 : ℤ) ^ (x + 1) * ↑(Nat.choose (k + 1) (x + 1)) =
+      -(∑ j ∈ range (k + 1), (-1 : ℤ) ^ j * ↑(Nat.choose (k + 1) (j + 1))) by
     linarith
   rw [← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
@@ -152,12 +151,12 @@ example : faceCount 3 3 = 1 := by simp [faceCount, Nat.choose_self]
     More precisely: simplicial 2 n = faceCount (n+1) 1. -/
 theorem triangular_counts_edges (n : ℕ) :
     simplicial 2 n = faceCount (n + 1) 1 := by
-  simp [simplicial, faceCount]; ring_nf
+  simp [simplicial, faceCount]
 
 /-- Connection: tetrahedral numbers count triangular faces of simplices.
     simplicial 3 n = faceCount (n+2) 2 = C(n+3, 3). -/
 theorem tetrahedral_counts_faces (n : ℕ) :
     simplicial 3 n = faceCount (n + 2) 2 := by
-  simp [simplicial, faceCount]; ring_nf
+  simp [simplicial, faceCount]
 
 end ArithmeticSeriesOQ02OQ03

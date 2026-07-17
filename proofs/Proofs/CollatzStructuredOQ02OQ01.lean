@@ -50,11 +50,17 @@ theorem j1_cycle_equation_unique {n M : ℕ} (hn : n ≥ 1)
     have h3 : 2^M ≤ 3 := by omega
     nlinarith [Nat.mul_le_mul_right n h3]
   -- Rearrange to n * (2^M - 3) = 1 (valid in ℕ since 2^M ≥ 4 > 3)
-  have hprod : n * (2^M - 3) = 1 := by omega
+  have hprod : n * (2^M - 3) = 1 := by
+    have key : n * (2 ^ M - 3) + n * 3 = 1 + n * 3 := by
+      rw [← Nat.mul_add, Nat.sub_add_cancel (by omega : 3 ≤ 2 ^ M),
+        mul_comm n (2 ^ M), ← heq]
+      ring
+    omega
   -- n divides 1, so n = 1
   have hdvd : n ∣ 1 := ⟨2^M - 3, hprod.symm⟩
   have hn1 : n = 1 := Nat.le_antisymm (Nat.le_of_dvd one_pos hdvd) hn
   refine ⟨hn1, ?_⟩
+  rw [hn1, one_mul] at hprod
   -- Now 2^M = 4, so M = 2
   have hM4eq : 2^M = 4 := by omega
   have hMbound : M ≤ 2 := by

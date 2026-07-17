@@ -208,6 +208,13 @@ theorem displacementColoring_isSperner {d N : ℕ} (hN : 0 < N)
 -- SECTION VI: Infrastructure for Main Theorems
 -- ============================================================
 
+/-- `countPerm σ k j` is 1 if coordinate `j` is visited within the first `k`
+    steps of the walk determined by permutation `σ` (i.e. some `i < k` has
+    `σ i = j`), else 0. Since `σ` is injective, at most one such `i` exists,
+    so this Finset.card is always 0 or 1 (see `countPerm_le_one`). -/
+def countPerm {d : ℕ} (σ : Equiv.Perm (Fin d)) (k : ℕ) (j : Fin d) : ℕ :=
+  (Finset.univ.filter (fun i : Fin d => (i : ℕ) < k ∧ σ i = j)).card
+
 /-- countPerm values are 0 or 1 (permutation is injective). -/
 private lemma countPerm_le_one {d : ℕ} (σ : Equiv.Perm (Fin d)) (k : ℕ) (j : Fin d) :
     countPerm σ k j ≤ 1 := by
@@ -215,6 +222,26 @@ private lemma countPerm_le_one {d : ℕ} (σ : Equiv.Perm (Fin d)) (k : ℕ) (j 
   intro a ha b hb
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
   exact σ.injective (ha.2.trans hb.2.symm)
+
+/-- A Freudenthal/Kuhn simplex of the grid subdivision: a base grid point
+    together with a permutation describing the walk order that generates
+    its `d + 1` vertices (see `FSimplex.vertex`). -/
+structure FSimplex (d N : ℕ) where
+  base : Fin d → ℕ
+  perm : Equiv.Perm (Fin d)
+  valid : ∀ k : Fin (d + 1), ∑ i, (base i + countPerm perm k.val i) ≤ N
+
+/-- Vertex `k` of the Freudenthal simplex: the base point plus the indicator
+    of "coordinate `i` was visited within the first `k` steps of the walk". -/
+def FSimplex.vertex {d N : ℕ} (S : FSimplex d N) (k : Fin (d + 1)) : Vertex d N where
+  coords := fun i => S.base i + countPerm S.perm k.val i
+  valid := S.valid k
+
+/-- A Freudenthal simplex is fully colored: the coloring is surjective on its
+    vertices (mirrors `SpernerNDim.IsFC` but for the concrete `FSimplex`
+    triangulation used by the `sperner` hypothesis below). -/
+def IsFC {d N : ℕ} (c : Coloring d N) (S : FSimplex d N) : Prop :=
+  Function.Surjective (c ∘ S.vertex)
 
 /-- Grid vertices map into the unit cube [0,1]^d. -/
 private lemma gridToReal_mem_cube {d N : ℕ} (hN : 0 < N) (v : Vertex d N) :
@@ -244,9 +271,11 @@ private lemma fsimplex_gridToReal_dist {d N : ℕ} (hN : 0 < N)
   rw [abs_le]
   constructor
   · have : (↑(countPerm S.perm k₂.val i) : ℝ) ≤ 1 := by exact_mod_cast h2
-    linarith [Nat.cast_nonneg (countPerm S.perm k₁.val i)]
+    linarith [(Nat.cast_nonneg (countPerm S.perm k₁.val i) :
+      (0:ℝ) ≤ (countPerm S.perm k₁.val i : ℝ))]
   · have : (↑(countPerm S.perm k₁.val i) : ℝ) ≤ 1 := by exact_mod_cast h1
-    linarith [Nat.cast_nonneg (countPerm S.perm k₂.val i)]
+    linarith [(Nat.cast_nonneg (countPerm S.perm k₂.val i) :
+      (0:ℝ) ≤ (countPerm S.perm k₂.val i : ℝ))]
 
 -- ============================================================
 -- SECTION VII: Approximate Fixed Points
@@ -287,13 +316,13 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
   -- Key bounds: 1/N < ε/(2*(d+1)) and 1/N < δ
   have h_inv_N : 1 / (N : ℝ) < ε / (2 * (↑d + 1)) := by
     have h1 : (2 * (↑d + 1)) / ε < ↑N := lt_of_le_of_lt (le_max_left _ _) hN_gt
-    rw [div_lt_iff hε] at h1
-    rw [div_lt_div_iff hN' (by positivity : (0 : ℝ) < 2 * (↑d + 1)), one_mul]
+    rw [div_lt_iff₀ hε] at h1
+    rw [div_lt_div_iff₀ hN' (by positivity : (0 : ℝ) < 2 * (↑d + 1)), one_mul]
     nlinarith [mul_comm ε (↑N : ℝ)]
   have h_inv_δ : 1 / (N : ℝ) < δ := by
     have h1 : 1 / δ < ↑N := lt_of_le_of_lt (le_max_right _ _) hN_gt
-    rw [div_lt_iff hδ_pos] at h1
-    rw [div_lt_iff hN']
+    rw [div_lt_iff₀ hδ_pos] at h1
+    rw [div_lt_iff₀ hN']
     linarith [mul_comm δ (↑N : ℝ)]
   -- Step 3: Grid fixed point case
   by_cases hgfp : ∃ v : Vertex d N, f (gridToReal v) = gridToReal v
@@ -348,9 +377,10 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
       have hf_j : |f (gridToReal v₀) j - f (gridToReal v_j) j| <
           ε / (2 * (↑d + 1)) :=
         lt_of_le_of_lt ((Real.dist_eq _ _) ▸ dist_le_pi_dist _ _ j) hf_close
-      have hp_j : |gridToReal v_j j - gridToReal v₀ j| ≤ 1 / (↑N : ℝ) :=
-        (Real.dist_eq _ _) ▸ dist_le_pi_dist _ _ j |>.trans
-          (fsimplex_gridToReal_dist hN_pos S i_j i_last)
+      have hp_j : |gridToReal v_j j - gridToReal v₀ j| ≤ 1 / (↑N : ℝ) := by
+        have hpi := dist_le_pi_dist (gridToReal v_j) (gridToReal v₀) j
+        rw [Real.dist_eq] at hpi
+        exact hpi.trans (fsimplex_gridToReal_dist hN_pos S i_j i_last)
       -- Transfer: f(p₀)_j - p₀_j < UC_bound + mesh_bound ≤ ε/(d+1)
       calc f (gridToReal v₀) j - gridToReal v₀ j
           = (f (gridToReal v₀) j - f (gridToReal v_j) j) +
@@ -358,44 +388,44 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
             (gridToReal v_j j - gridToReal v₀ j) := by ring
         _ ≤ |f (gridToReal v₀) j - f (gridToReal v_j) j| + 0 +
             |gridToReal v_j j - gridToReal v₀ j| := by
-          gcongr
-          · exact le_abs_self _
-          · exact hdisp_neg
-          · exact le_abs_self _
+          gcongr <;> exact le_abs_self _
         _ < ε / (2 * (↑d + 1)) + 0 + ε / (2 * (↑d + 1)) := by
           linarith [lt_of_le_of_lt hp_j h_inv_N]
-        _ = ε / (↑d + 1) := by ring
+        _ = ε / (↑d + 1) := by
+          field_simp
+          ring
     -- Step 7: Lower bound from sum condition
     -- ∑(f_j - p_j) > 0 and each < ε/(d+1) → each > -ε
     have hlower : ∀ j : Fin d, -(ε : ℝ) < f (gridToReal v₀) j - gridToReal v₀ j := by
       intro j
       have hsub : f (gridToReal v₀) j - gridToReal v₀ j =
         (∑ k, (f (gridToReal v₀) k - gridToReal v₀ k)) -
-        ∑ k in Finset.univ.erase j, (f (gridToReal v₀) k - gridToReal v₀ k) := by
+        ∑ k ∈ Finset.univ.erase j, (f (gridToReal v₀) k - gridToReal v₀ k) := by
         rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j)]; ring
       rw [hsub]
       -- ∑_others ≤ d * ε/(d+1) < ε, and ∑_all > 0, so f_j - p_j > 0 - ε = -ε
-      have hother : ∑ k in Finset.univ.erase j,
+      have hother : ∑ k ∈ Finset.univ.erase j,
           (f (gridToReal v₀) k - gridToReal v₀ k) ≤
           ↑d * (ε / (↑d + 1)) := by
-        calc ∑ k in Finset.univ.erase j,
+        calc ∑ k ∈ Finset.univ.erase j,
               (f (gridToReal v₀) k - gridToReal v₀ k)
-            ≤ ∑ k in Finset.univ.erase j, (ε / (↑d + 1)) :=
+            ≤ ∑ k ∈ Finset.univ.erase j, (ε / (↑d + 1)) :=
               Finset.sum_le_sum (fun k _ => le_of_lt (hupper k))
-          _ ≤ ∑ _ in (Finset.univ : Finset (Fin d)), (ε / (↑d + 1)) :=
+          _ ≤ ∑ _ ∈ (Finset.univ : Finset (Fin d)), (ε / (↑d + 1)) :=
               Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _)
                 (fun _ _ _ => div_nonneg hε.le
-                  (by linarith [Nat.cast_nonneg d]))
+                  (by linarith [(Nat.cast_nonneg d : (0:ℝ) ≤ (d:ℝ))]))
           _ = ↑d * (ε / (↑d + 1)) := by
               simp [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul]
       have hd_bound : ↑d * (ε / (↑d + 1)) < ε := by
-        rw [mul_div_assoc, div_lt_iff (by linarith [Nat.cast_nonneg d] : (0:ℝ) < ↑d + 1)]
-        linarith
+        rw [← mul_div_assoc,
+          div_lt_iff₀ (by linarith [(Nat.cast_nonneg d : (0:ℝ) ≤ (d:ℝ))] : (0:ℝ) < ↑d + 1)]
+        nlinarith [hε]
       linarith
     -- Step 8: Combine upper and lower bounds
     exact ⟨gridToReal v₀, gridToReal_inSimplex hN_pos v₀, fun j => by
       rw [abs_lt]; exact ⟨hlower j, lt_of_lt_of_le (hupper j)
-        (div_le_self hε.le (by linarith [Nat.cast_nonneg d]))⟩⟩
+        (div_le_self hε.le (by linarith [(Nat.cast_nonneg d : (0:ℝ) ≤ (d:ℝ))]))⟩⟩
 
 -- ============================================================
 -- SECTION VIII: Brouwer Fixed Point Theorem
@@ -434,8 +464,10 @@ theorem brouwer_simplex {d : ℕ} (hd : 0 < d)
   have hKne : Set.Nonempty {x : Fin d → ℝ | InSimplex d x} :=
     ⟨0, fun _ => le_refl 0, by simp⟩
   -- dist(f(·), ·) achieves its minimum on the compact simplex
-  obtain ⟨x₀, hx₀_mem, hx₀_min⟩ :=
-    hK.exists_forall_le hKne (hcont.dist continuous_id).continuousOn
+  obtain ⟨x₀, hx₀_mem, hx₀_minOn⟩ :=
+    hK.exists_isMinOn hKne (hcont.dist continuous_id).continuousOn
+  have hx₀_min : ∀ y ∈ {x : Fin d → ℝ | InSimplex d x},
+      dist (f x₀) x₀ ≤ dist (f y) y := isMinOn_iff.mp hx₀_minOn
   -- The minimum is 0 (otherwise approximate_fixed_point contradicts)
   suffices h : dist (f x₀) x₀ = 0 from
     ⟨x₀, hx₀_mem, dist_eq_zero.mp h⟩
@@ -447,6 +479,6 @@ theorem brouwer_simplex {d : ℕ} (hd : 0 < d)
   have hlt : dist (f y) y < dist (f x₀) x₀ := by
     rw [dist_pi_lt_iff hpos]
     exact fun i => by rw [Real.dist_eq]; exact hy_bound i
-  linarith [hx₀_min hy_mem]
+  linarith [hx₀_min y hy_mem]
 
 end DisplacementBrouwer

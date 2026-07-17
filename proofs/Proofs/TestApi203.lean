@@ -1,19 +1,21 @@
 -- Test API availability for erdos-203 covering system proof
 import Mathlib
 
+set_option maxRecDepth 40000
+
 -- Test: Nat.Prime.dvd_of_dvd_pow
 #check Nat.Prime.dvd_of_dvd_pow
 
 -- Test: ZMod basics
 #check ZMod.val_natCast
-#check @ZMod.natCast_zmod_eq_zero_iff_dvd
+#check @ZMod.natCast_eq_zero_iff
 
 -- Test: Nat.pow_mod
 #check Nat.pow_mod
 
 -- Test: divisibility from mod
 example : 3 ∣ (78558 : ℕ) := by decide
-example : ¬ Nat.Prime 78558 := by decide
+example : ¬ Nat.Prime 78558 := by norm_num
 
 -- Test: periodic divisibility
 -- If n ≡ 0 (mod 2), then 3 | 78557 * 2^n + 1

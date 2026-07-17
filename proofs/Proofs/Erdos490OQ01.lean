@@ -26,7 +26,7 @@
   `maxProd_exists` is likewise
   a proved theorem: the maximum ranges over subsets of the finite set {1,...,N}, so the
   achievable-value set is a nonempty finite set of naturals and we take its `Finset.max'`.
-  (Also repaired Mathlib v4.26 API drift: div_le_iff→div_le_iff₀, le_div_iff→le_div_iff₀,
+  (Also repaired Mathlib v4.26 API drift: div_le_iff₀→div_le_iff₀, le_div_iff₀→le_div_iff₀,
   Finset.card_Icc→Nat.card_Icc, Nat.cast_nonneg now needs its explicit argument.)
 -/
 
@@ -309,7 +309,7 @@ theorem productRatio_accumulation :
   -- Bolzano–Weierstrass: a bounded real sequence has a convergent subsequence.
   obtain ⟨L, hLmem, φ, hφ, htend⟩ := isCompact_Icc.tendsto_subseq hmem
   refine ⟨c, C, L, hc, hcC, hLmem.1, hLmem.2, φ, hφ, ?_⟩
-  simpa [Function.comp] using htend
+  simpa [Function.comp_def] using htend
 
 -- ============================================================================
 -- § 6. Structural Analysis

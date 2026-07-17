@@ -62,11 +62,11 @@ theorem summable_const_div_int_rpow {K : ℝ} (hK : 0 ≤ K) {β : ℝ} (hβ : 1
   have h_pnat := summable_const_div_nat_rpow hK hβ
   constructor
   · -- Positive half: |↑(↑n : ℤ)| = n for n : ℕ
-    convert h_pnat using 1; ext n; congr 1; congr 1
-    rw [Int.cast_natCast]; exact abs_of_nonneg (Nat.cast_nonneg' n)
+    exact h_pnat.congr fun n => by
+      rw [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg' n)]
   · -- Negative half: |↑(-(↑n : ℤ))| = n for n : ℕ
-    convert h_pnat using 1; ext n; congr 1; congr 1
-    rw [Int.cast_neg, Int.cast_natCast, abs_neg]; exact abs_of_nonneg (Nat.cast_nonneg' n)
+    exact h_pnat.congr fun n => by
+      rw [Int.cast_neg, Int.cast_natCast, abs_neg, abs_of_nonneg (Nat.cast_nonneg' n)]
 
 /-!
 ## Part II: The Squared Decay Bound
@@ -192,35 +192,34 @@ theorem holder_half_is_critical_for_pseries :
        Summable (fun n : ℤ => ((C : ℝ) / 2) ^ 2 * (Real.pi) ^ (2 * (α : ℝ)) / |↑n| ^ (2 * (α : ℝ)))) := by
   -- Strategy: assume universal statement, use f=0 witness, extract harmonic series contradiction.
   intro hall
+  -- A single named witness for α = 1/2, introduced once via `set` so every later use refers
+  -- to the exact same local constant and `rw`/`simp` can find it again.
+  set α₀ : ℝ≥0 := ⟨1/2, by norm_num⟩ with hα₀_def
+  have hα_eq : (α₀ : ℝ) = 1/2 := by rw [hα₀_def]; rfl
   -- Zero function is Hölder with constant 1 and exponent 1/2
-  have h0 : IsHolderOnCircle 1 ⟨1/2, by norm_num⟩ (0 : AddCircle (2 * Real.pi) → ℂ) := by
+  have h0 : IsHolderOnCircle 1 α₀ (0 : AddCircle (2 * Real.pi) → ℂ) := by
     intro x y
     simp only [IsHolderOnCircle, HolderWith, Pi.zero_apply, edist_self, NNReal.coe_one,
                ENNReal.coe_one, zero_le]
-  have hα_eq : ((⟨1/2, by norm_num⟩ : ℝ≥0) : ℝ) = 1/2 := by norm_num
   -- Apply the universal statement with C=1, α=1/2, f=0
-  have hsum := hall 1 ⟨1/2, by norm_num⟩ hα_eq 0 h0
+  have hsum := hall 1 α₀ hα_eq 0 h0
   -- Extract the ℕ positive part: Summable (fun n : ℕ => (1/4) * π / |n|)
   rw [summable_int_iff_summable_nat_and_neg] at hsum
   obtain ⟨h_pos, _⟩ := hsum
   -- Rescale: multiply by 4/π to get harmonic series summability
   have h_pi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
   have h_harm : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ)) := by
+    have h2 : (2 : ℝ) * (1 / 2) = 1 := by norm_num
     refine (h_pos.mul_left (4 / Real.pi)).congr fun n => ?_
+    rw [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n : (0 : ℝ) ≤ (n : ℝ))]
+    simp only [hα_eq, h2, Real.rpow_one]
     rcases Nat.eq_zero_or_pos n with rfl | hn
-    · simp
+    · simp only [Nat.cast_zero, div_zero, mul_zero]
     · have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
-      rw [Int.cast_natCast, abs_of_nonneg hn_pos.le]
-      have h2 : (2 : ℝ) * (1 / 2) = 1 := by norm_num
-      simp only [NNReal.coe_one, NNReal.coe_mk, h2, Real.rpow_one]
+      rw [NNReal.coe_one]
       field_simp [h_pi_pos.ne', hn_pos.ne']
       ring
-  -- Contradiction: harmonic series diverges (Real.summable_nat_rpow_inv for p=1)
-  have h_not_harm : ¬ Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ)) := by
-    intro hs
-    have : Summable (fun n : ℕ => (n : ℝ)⁻¹ ^ (1 : ℝ)) :=
-      hs.congr (fun n => by simp only [Real.rpow_one, one_div])
-    exact absurd this (Real.summable_nat_rpow_inv.not.mpr (by norm_num))
-  exact h_not_harm h_harm
+  -- Contradiction: harmonic series diverges
+  exact Real.not_summable_one_div_natCast h_harm
 
 end FourierSqSummablePSeries

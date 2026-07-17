@@ -25,12 +25,11 @@
   Tags: number-theory, smooth-numbers, prime-factors, analytic-number-theory
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.SmoothNumbers
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 namespace Erdos961
@@ -54,19 +53,19 @@ theorem isSmooth_iff_smoothNumbers (k n : ℕ) (hn : n ≠ 0) :
     isSmooth k n ↔ n ∈ Nat.smoothNumbers (k + 1) := by
   constructor
   · intro ⟨_, h⟩
-    simp only [Nat.smoothNumbers, Nat.primFactors, Set.mem_setOf_eq]
+    simp only [Nat.smoothNumbers, Set.mem_setOf_eq]
     constructor
-    · exact Nat.pos_of_ne_zero hn
+    · exact hn
     · intro p hp
-      have hp' := Nat.prime_of_mem_primeFactors hp
-      have hdiv := Nat.dvd_of_mem_primeFactors hp
+      have hp' := Nat.prime_of_mem_primeFactorsList hp
+      have hdiv := Nat.dvd_of_mem_primeFactorsList hp
       exact Nat.lt_add_one_iff.mpr (h p hp' hdiv)
   · intro h
     constructor
     · exact hn
     · intro p hp hdiv
       simp only [Nat.smoothNumbers, Set.mem_setOf_eq] at h
-      have : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hdiv⟩
+      have : p ∈ n.primeFactorsList := (Nat.mem_primeFactorsList hn).mpr ⟨hp, hdiv⟩
       exact Nat.lt_add_one_iff.mp (h.2 p this)
 
 /- ## Part II: The Key Property -/
@@ -104,6 +103,8 @@ theorem haslargeprimefactor_iff (k n : ℕ) :
     a number with a prime factor > k. -/
 axiom sylvester_schur (k : ℕ) : HasLargePrimeFactor k k
 
+attribute [local instance] Classical.propDecidable
+
 /-- f(k) is well-defined: there exists some n with the property. -/
 theorem f_well_defined (k : ℕ) : ∃ n, HasLargePrimeFactor k n := ⟨k, sylvester_schur k⟩
 
@@ -140,7 +141,7 @@ theorem sylvester_schur_bound (k : ℕ) : f k ≤ k := f_min k k (sylvester_schu
     showing sublinear growth in k.
 -/
 axiom erdos_1955_bound :
-    ∀ᶠ k in atTop, (f k : ℝ) < 3 * k / log k
+    ∀ᶠ k in atTop, (f k : ℝ) < 3 * k / Real.log k
 
 /-- The Erdős bound gives f(k) = o(k). -/
 theorem f_sublinear : (fun k => (f k : ℝ)) =o[atTop] (fun k => (k : ℝ)) := by
@@ -156,7 +157,7 @@ theorem f_sublinear : (fun k => (f k : ℝ)) =o[atTop] (fun k => (k : ℝ)) := b
 -/
 axiom jutila_ramachandra_shorey_bound :
     (fun k => (f k : ℝ)) =O[atTop]
-      (fun k => log (log (log k)) / log (log k) * (k / log k))
+      (fun k => Real.log (Real.log (Real.log k)) / Real.log (Real.log k) * (k / Real.log k))
 
 /- ## Part VII: The Open Conjecture -/
 
@@ -167,9 +168,9 @@ axiom jutila_ramachandra_shorey_bound :
     is enormous.
 -/
 def polylog_conjecture : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ᶠ k in atTop, (f k : ℝ) < (log k) ^ C
+  ∃ C : ℝ, C > 0 ∧ ∀ᶠ k in atTop, (f k : ℝ) < (Real.log k) ^ C
 
-/-- The conjecture is stated but unresolved (open problem).
+/-  The conjecture is stated but unresolved (open problem).
     Cannot be formalized as a clean axiom since its truth value is unknown. -/
 
 /- ## Part VIII: Small Examples -/
@@ -196,7 +197,7 @@ theorem example_k3 : f 3 ≤ 3 := sylvester_schur_bound 3
 
     The two problems are "essentially equivalent" per erdosproblems.com.
 -/
-def smooth_gap (k : ℕ) : ℕ :=
+noncomputable def smooth_gap (k : ℕ) : ℕ :=
   sSup {d : ℕ | ∃ n ∈ Nat.smoothNumbers (k + 1),
     ∀ m ∈ Set.Ioo n (n + d), m ∉ Nat.smoothNumbers (k + 1)}
 
@@ -220,7 +221,7 @@ theorem f_le_smooth_gap_succ (k : ℕ) (hk : k ≥ 1) :
 -/
 theorem bounds_summary (k : ℕ) (hk : k ≥ 2) :
     f k ≤ k ∧
-    (∀ᶠ k in atTop, (f k : ℝ) < 3 * k / log k) := by
+    (∀ᶠ k in atTop, (f k : ℝ) < 3 * k / Real.log k) := by
   constructor
   · exact sylvester_schur_bound k
   · exact erdos_1955_bound

@@ -93,7 +93,6 @@ theorem buffonConstant_three : buffonConstant 3 = 1 / 2 := by
   rw [hΓ32]
   have hπ : Real.sqrt π ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr pi_pos)
   field_simp
-  ring
 
 /-- c₄ = 4/(3π): the 4-dimensional Buffon constant.
     Proof: c₄ = 2Γ(2)/(3·√π·Γ(3/2)) = 2/(3·√π·√π/2) = 4/(3π). -/
@@ -115,8 +114,42 @@ theorem buffonConstant_four : buffonConstant 4 = 4 / (3 * π) := by
   have hπ : Real.sqrt π ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr pi_pos)
   have hπ2 : (π : ℝ) ≠ 0 := ne_of_gt pi_pos
   field_simp
-  rw [Real.mul_self_sqrt (le_of_lt pi_pos)]
+  rw [Real.sq_sqrt (le_of_lt pi_pos)]
   ring
+
+/-- The Buffon constant satisfies the recurrence
+    c_{n+2} = (n/(n+1)) · c_n for n ≥ 2.
+
+    Proved from Γ(z+1) = z·Γ(z) applied to both Gamma arguments:
+    - Γ((n+2)/2) = (n/2)·Γ(n/2)     [since (n+2)/2 = n/2 + 1]
+    - Γ((n+1)/2) = ((n-1)/2)·Γ((n-1)/2)  [since (n+1)/2 = (n-1)/2 + 1]
+
+    The recurrence shows c_n → 0 as n → ∞ (concentration of measure),
+    since n/(n+1) < 1 and the product telescopes. -/
+theorem buffonConstant_recurrence (n : ℕ) (hn : 2 ≤ n) :
+    buffonConstant (n + 2) = (n : ℝ) / ((n : ℝ) + 1) * buffonConstant n := by
+  unfold buffonConstant
+  simp only [show ¬(n + 2 ≤ 1) from by omega, show ¬(n ≤ 1) from by omega, ↓reduceIte]
+  have hn_ge : (2 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
+  -- Cast simplifications
+  have h_np2_half : (↑(n + 2) : ℝ) / 2 = ↑n / 2 + 1 := by push_cast; ring
+  have h_np2_sub : (↑(n + 2) : ℝ) - 1 = ↑n + 1 := by push_cast; ring
+  have h_np1_half : ((↑(n + 2) : ℝ) - 1) / 2 = (↑n - 1) / 2 + 1 := by push_cast; ring
+  -- Gamma functional equation: Γ(z+1) = z·Γ(z)
+  have h_n_half_pos : (0 : ℝ) < ↑n / 2 := by linarith
+  have h_nm1_half_pos : (0 : ℝ) < (↑n - 1) / 2 := by linarith
+  have hΓ1 : Gamma (↑n / 2 + 1) = (↑n / 2) * Gamma (↑n / 2) :=
+    Gamma_add_one (ne_of_gt h_n_half_pos)
+  have hΓ2 : Gamma ((↑n - 1) / 2 + 1) = ((↑n - 1) / 2) * Gamma ((↑n - 1) / 2) :=
+    Gamma_add_one (ne_of_gt h_nm1_half_pos)
+  rw [h_np2_half, h_np1_half, h_np2_sub, hΓ1, hΓ2]
+  -- Clear denominators and simplify
+  have h1 : (↑n : ℝ) + 1 ≠ 0 := by linarith
+  have h2 : (↑n : ℝ) - 1 ≠ 0 := by linarith
+  have h3 : sqrt π ≠ 0 := ne_of_gt (sqrt_pos.mpr pi_pos)
+  have h4 : Gamma ((↑n : ℝ) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_n_half_pos)
+  have h5 : Gamma (((↑n : ℝ) - 1) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_nm1_half_pos)
+  field_simp
 
 /-- The Buffon constant is positive for n ≥ 2. -/
 theorem buffonConstant_pos (n : ℕ) (hn : 2 ≤ n) : 0 < buffonConstant n := by
@@ -142,7 +175,7 @@ theorem buffonConstant_le_one : ∀ (n : ℕ), 2 ≤ n → buffonConstant n ≤ 
     rcases Nat.lt_or_ge n 4 with hlt | hge
     · -- Base cases: n ∈ {2, 3}
       interval_cases n
-      · rw [buffonConstant_two]; rw [div_le_one pi_pos]; linarith [pi_gt_3141592]
+      · rw [buffonConstant_two]; rw [div_le_one pi_pos]; linarith [pi_gt_d6]
       · rw [buffonConstant_three]; linarith
     · -- Inductive step: n ≥ 4
       have hn2 : 2 ≤ n - 2 := by omega
@@ -155,7 +188,7 @@ theorem buffonConstant_le_one : ∀ (n : ℕ), 2 ≤ n → buffonConstant n ≤ 
       calc (↑(n - 2) : ℝ) / ((↑(n - 2) : ℝ) + 1) * buffonConstant (n - 2)
           ≤ 1 * 1 := by
             apply mul_le_mul
-            · exact div_le_one_of_le (by linarith) (by linarith)
+            · exact div_le_one_of_le₀ (by linarith) (by linarith)
             · exact ih_prev
             · exact le_of_lt (buffonConstant_pos (n - 2) hn2)
             · norm_num
@@ -230,9 +263,9 @@ theorem four_dim_formula (L d : ℝ) :
     (orthogonal to the hyperplane normal), reducing the expected projection. -/
 theorem two_beats_three : buffonConstant 3 < buffonConstant 2 := by
   rw [buffonConstant_two, buffonConstant_three]
-  rw [div_lt_div_iff two_pos pi_pos]
+  rw [div_lt_div_iff₀ two_pos pi_pos]
   simp only [one_mul]
-  linarith [pi_lt_3141593]
+  linarith [pi_lt_d6]
 
 /-- For same needle and spacing, 2D gives more crossings than 3D -/
 theorem crossings_2d_ge_3d (L d : ℝ) (hL : 0 ≤ L) (hd : 0 < d) :
@@ -244,7 +277,7 @@ theorem crossings_2d_ge_3d (L d : ℝ) (hL : 0 ≤ L) (hd : 0 < d) :
 /-- 2D crossings exceed 4D crossings: c₂ = 2/π > 4/(3π) = c₄ -/
 theorem two_beats_four : buffonConstant 4 < buffonConstant 2 := by
   rw [buffonConstant_two, buffonConstant_four]
-  rw [div_lt_div_iff (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) pi_pos]
+  rw [div_lt_div_iff₀ (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) pi_pos]
   linarith [pi_pos]
 
 -- ============================================================
@@ -273,40 +306,8 @@ theorem meanWidth_three (L : ℝ) : meanWidth 3 L = L / 2 := by
 -- Section 7: The c_n Recurrence
 -- ============================================================
 
-/-- The Buffon constant satisfies the recurrence
-    c_{n+2} = (n/(n+1)) · c_n for n ≥ 2.
-
-    Proved from Γ(z+1) = z·Γ(z) applied to both Gamma arguments:
-    - Γ((n+2)/2) = (n/2)·Γ(n/2)     [since (n+2)/2 = n/2 + 1]
-    - Γ((n+1)/2) = ((n-1)/2)·Γ((n-1)/2)  [since (n+1)/2 = (n-1)/2 + 1]
-
-    The recurrence shows c_n → 0 as n → ∞ (concentration of measure),
-    since n/(n+1) < 1 and the product telescopes. -/
-theorem buffonConstant_recurrence (n : ℕ) (hn : 2 ≤ n) :
-    buffonConstant (n + 2) = (n : ℝ) / ((n : ℝ) + 1) * buffonConstant n := by
-  unfold buffonConstant
-  simp only [show ¬(n + 2 ≤ 1) from by omega, show ¬(n ≤ 1) from by omega, ↓reduceIte]
-  have hn_ge : (2 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
-  -- Cast simplifications
-  have h_np2_half : (↑(n + 2) : ℝ) / 2 = ↑n / 2 + 1 := by push_cast; ring
-  have h_np2_sub : (↑(n + 2) : ℝ) - 1 = ↑n + 1 := by push_cast; ring
-  have h_np1_half : ((↑(n + 2) : ℝ) - 1) / 2 = (↑n - 1) / 2 + 1 := by push_cast; ring
-  -- Gamma functional equation: Γ(z+1) = z·Γ(z)
-  have h_n_half_pos : (0 : ℝ) < ↑n / 2 := by linarith
-  have h_nm1_half_pos : (0 : ℝ) < (↑n - 1) / 2 := by linarith
-  have hΓ1 : Gamma (↑n / 2 + 1) = (↑n / 2) * Gamma (↑n / 2) :=
-    Gamma_add_one (ne_of_gt h_n_half_pos)
-  have hΓ2 : Gamma ((↑n - 1) / 2 + 1) = ((↑n - 1) / 2) * Gamma ((↑n - 1) / 2) :=
-    Gamma_add_one (ne_of_gt h_nm1_half_pos)
-  rw [h_np2_half, h_np2_sub, h_np1_half, hΓ1, hΓ2]
-  -- Clear denominators and simplify
-  have h1 : (↑n : ℝ) + 1 ≠ 0 := by linarith
-  have h2 : (↑n : ℝ) - 1 ≠ 0 := by linarith
-  have h3 : sqrt π ≠ 0 := ne_of_gt (sqrt_pos.mpr pi_pos)
-  have h4 : Gamma ((↑n : ℝ) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_n_half_pos)
-  have h5 : Gamma (((↑n : ℝ) - 1) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_nm1_half_pos)
-  field_simp
-  ring
+-- (buffonConstant_recurrence moved above buffonConstant_pos for v4.31,
+-- which rejects forward references.)
 
 /-- From the recurrence: c₅ = (3/4) · c₃ = 3/8 -/
 theorem buffonConstant_five : buffonConstant 5 = 3 / 8 := by

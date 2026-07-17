@@ -144,7 +144,7 @@ theorem bec_conditional_entropy {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
             (∑ x' : Bool, jointDist (bec p hp0.le hp1.le) inp (x', o))))
       = (if inp.p x = 0 then 0 else inp.p x * p * Real.log (inp.p x)) := by
     intro x
-    -- Apply `hnone` BEFORE expanding any Bool sum, so the `∑ x'` denominator in the
+    -- Apply `hnone` BEFORE expanding any Bool sum, so the `∑ x'` denominator ∈ the
     -- `none` term still matches `hnone`'s LHS; then collapse the `some` sum to 0.
     rw [Fintype.sum_option, hnone x,
         Finset.sum_eq_zero (fun i _ => hsome_zero x i), add_zero]

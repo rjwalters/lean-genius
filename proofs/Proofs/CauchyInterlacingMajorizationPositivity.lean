@@ -113,11 +113,11 @@ theorem compress_eigenvalue_mem_Icc (k : Fin n) :
   refine ⟨?_, ?_⟩
   · -- lam_min = lam ⟨n+m-1⟩ ≤ lam ⟨k+m⟩ ≤ mu k
     have hle : (⟨(k : ℕ) + m, by omega⟩ : Fin (n + m)) ≤ ⟨n + m - 1, by omega⟩ := by
-      rw [Fin.le_def]; omega
+      rw [Fin.mk_le_mk]; omega
     exact le_trans (hlam hle) hsep.1
   · -- mu k ≤ lam ⟨k⟩ ≤ lam ⟨0⟩ = lam_max
     have hle : (⟨0, by omega⟩ : Fin (n + m)) ≤ ⟨(k : ℕ), by omega⟩ := by
-      rw [Fin.le_def]; omega
+      rw [Fin.mk_le_mk]; omega
     exact le_trans hsep.2 (hlam hle)
 
 /-- **Nonnegative trace of a PSD compression.**  If `T ⪰ 0` then the trace of its

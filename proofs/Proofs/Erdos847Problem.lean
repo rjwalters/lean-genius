@@ -134,20 +134,21 @@ Derived from the negation of the conjecture by classical logic.
 -/
 theorem counterexample_exists :
     ∃ A : Set ℕ, A.Infinite ∧ hasENRProperty A ∧ ¬isFiniteAPFreeUnion A := by
-  unfold ENRConjecture at enr_conjecture_false
-  push_neg at enr_conjecture_false
-  exact enr_conjecture_false
+  have h := enr_conjecture_false
+  unfold ENRConjecture at h
+  push_neg at h
+  exact h
 
 /- ## Part V: Connection to Szemerédi's Theorem -/
 
-/--
+/- 
 **Szemerédi's Theorem (1975):**
 For any k ≥ 3 and δ > 0, there exists N such that any subset of [1,N]
 with density ≥ δ contains a k-term arithmetic progression.
 
 This implies that AP-free sets have density 0.
 -/
-/--
+/- 
 **Density consequence:**
 An AP-free subset of [1,N] has size o(N).
 More precisely: |A ∩ [1,N]| / N → 0 as N → ∞.
@@ -166,7 +167,7 @@ The counterexample likely uses a construction where:
 3. No single finite collection works for all subsets
 -/
 
-/--
+/- 
 **Finite unions are very restrictive:**
 If A = A₁ ∪ ... ∪ Aₖ with each Aᵢ AP-free, then any finite B ⊆ A
 can be covered by k AP-free sets. But the ENR condition is weaker.
@@ -186,16 +187,19 @@ private theorem finset_pigeonhole {α : Type*} [DecidableEq α] (B : Finset α)
   have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card := by
     rw [← Finset.card_biUnion]
     · congr 1; ext x; simp [Finset.mem_biUnion, Finset.mem_filter]
-      exact ⟨fun hx => ⟨f x, hx, rfl⟩, fun ⟨_, hx, _⟩ => hx⟩
-    · intro i _ j _ hij x
-      simp [Finset.mem_filter]
-      intro _ hi hj; exact absurd (hi ▸ hj) fun h => hij (Fin.ext h)
-  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < k * B.card := by
+    · intro i _ j _ hij
+      simp only [Function.onFun]
+      rw [Finset.disjoint_left]
+      intro x hxi hxj
+      simp only [Finset.mem_filter] at hxi hxj
+      exact hij (hxi.2 ▸ hxj.2)
+  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < ∑ _i : Fin k, B.card := by
     apply Finset.sum_lt_sum
     · intro i _; exact le_of_lt (hall i)
     · exact ⟨⟨0, hk⟩, Finset.mem_univ _, hall ⟨0, hk⟩⟩
-  rw [← Finset.mul_sum] at hlt
-  omega
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hlt
+  rw [← Finset.mul_sum, hsum] at hlt
+  exact lt_irrefl _ hlt
 
 theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
     (parts : Fin k → Set ℕ)
@@ -230,7 +234,7 @@ theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
       rw [← hxa]; exact hassign x hxB
     refine ⟨C, hCsub, isAPFree_subset (hparts i) hCinParts, ?_⟩
     -- Show (1/k) * |B| ≤ |C|
-    rw [div_mul_eq_mul_div, one_mul, le_div_iff hkR]
+    rw [ge_iff_le, div_mul_eq_mul_div, one_mul, div_le_iff₀ hkR, mul_comm]
     exact_mod_cast hi
 
 /- ## Part VII: Related Problems -/
@@ -247,13 +251,13 @@ Adjacent problem in the Erdős collection on AP-free sets.
 
 /- ## Part VIII: Roth's Theorem and Bounds -/
 
-/--
+/- 
 **Roth's Theorem (1953):**
 The k=3 case of Szemerédi: any dense subset of [1,N] contains a 3-AP.
 
 This was the first major result on AP-free sets.
 -/
-/--
+/- 
 **Best known bounds (Kelley-Meka 2023):**
 An AP-free subset of [1,N] has size at most N exp(-c (log N)^{1/12}).
 -/

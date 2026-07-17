@@ -123,13 +123,13 @@ theorem powerset_nonempty (s : Finset α) : s.powerset.Nonempty :=
 /-- The powerset cardinality is always at least 1. -/
 theorem card_powerset_pos (s : Finset α) : 0 < s.powerset.card := by
   rw [card_powerset_eq_two_pow]
-  exact Nat.pos_pow_of_pos s.card (by norm_num : 0 < 2)
+  exact Nat.pow_pos (by norm_num)
 
 /-- Adding an element doubles the number of subsets. -/
 theorem card_powerset_insert [DecidableEq α] (a : α) (s : Finset α) (ha : a ∉ s) :
     (insert a s).powerset.card = 2 * s.powerset.card := by
   rw [card_powerset_eq_two_pow, card_powerset_eq_two_pow]
-  rw [Finset.card_insert_of_not_mem ha]
+  rw [Finset.card_insert_of_notMem ha]
   ring
 
 /-! ## Relationship to Subsets of Various Sizes

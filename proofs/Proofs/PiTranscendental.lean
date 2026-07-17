@@ -1,8 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.Real.Pi.Irrational
 import Proofs.HermiteLindemann
 

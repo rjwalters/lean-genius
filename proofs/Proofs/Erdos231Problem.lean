@@ -34,10 +34,10 @@ References:
 - See also Problem #192
 -/
 
+import Mathlib
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.BigOperators.Group.List
 
 open List Finset
 
@@ -67,8 +67,8 @@ def isAbelianSquare (w : List α) : Prop :=
 
 /-- A list contains an abelian square as a consecutive subword. -/
 def containsAbelianSquare (w : List α) : Prop :=
-  ∃ (prefix suffix : List α) (xy : List α),
-    w = prefix ++ xy ++ suffix ∧ isAbelianSquare xy
+  ∃ (pre suf : List α) (xy : List α),
+    w = pre ++ xy ++ suf ∧ isAbelianSquare xy
 
 /-- A list is abelian-square-free if it contains no abelian squares. -/
 def isAbelianSquareFree (w : List α) : Prop :=
@@ -86,7 +86,7 @@ def isSquare (w : List α) : Prop :=
 
 /-- A list is squarefree if it contains no squares. -/
 def isSquarefree (w : List α) : Prop :=
-  ¬∃ (prefix suffix x : List α), x.length > 0 ∧ w = prefix ++ x ++ x ++ suffix
+  ¬∃ (pre suf x : List α), x.length > 0 ∧ w = pre ++ x ++ x ++ suf
 
 /-- Every square is an abelian square (but not conversely). -/
 theorem square_is_abelian_square (w : List α) :
@@ -98,9 +98,9 @@ theorem square_is_abelian_square (w : List α) :
 theorem abelian_square_free_implies_squarefree (w : List α) :
     isAbelianSquareFree w → isSquarefree w := by
   intro hASF
-  intro ⟨prefix, suffix, x, hlen, heq⟩
+  intro ⟨pre, suf, x, hlen, heq⟩
   apply hASF
-  exact ⟨prefix, suffix, x ++ x, heq, x, x, hlen, rfl, rfl⟩
+  exact ⟨pre, suf, x ++ x, by simpa [List.append_assoc] using heq, x, x, hlen, rfl, rfl⟩
 
 /-
 ## Part III: The Alphabet Size Question
@@ -127,7 +127,7 @@ def erdos_231_question (k : ℕ) : Prop :=
 The key result: infinite abelian-square-free strings exist over 4 letters.
 -/
 
-/-- Keränen (1992): There exists an infinite sequence over 4 letters
+/-  Keränen (1992): There exists an infinite sequence over 4 letters
     with no abelian squares. -/
 
 /-- The Keränen morphism (85 letters per symbol) that generates
@@ -135,7 +135,7 @@ The key result: infinite abelian-square-free strings exist over 4 letters.
 def keranenMorphismExists : Prop :=
   ∃ (μ : Fin 4 → List (Fin 4)),
     (∀ a, (μ a).length = 85) ∧
-    (∀ w : List (Fin 4), isAbelianSquareFree w → isAbelianSquareFree (w.bind μ))
+    (∀ w : List (Fin 4), isAbelianSquareFree w → isAbelianSquareFree (w.flatMap μ))
 
 /-
 ## Part VI: Resolution of Erdős #231
@@ -169,8 +169,8 @@ example : isAbelianSquare ['a', 'b', 'b', 'a'] := by
   constructor
   · rfl
   · ext c
-    simp [parikhVector, count]
-    cases c <;> simp
+    simp only [parikhVector, count]
+    exact (List.Perm.swap 'b' 'a' []).countP_eq _
 
 /-- Example: A length-16 abelian-square-free string over 4 letters
     (mentioned by Erdős as counterexample for 2^4). -/

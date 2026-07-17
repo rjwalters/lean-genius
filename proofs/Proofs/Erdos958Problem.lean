@@ -116,7 +116,7 @@ def hasSpecialPattern (A : Finset Point) : Prop :=
   let n := A.card
   (distanceSet A).card = n - 1 ∧
   -- The multiplicities form the set {1, 2, ..., n-1}
-  multiplicityMultiset A = Multiset.range (n - 1) + 1
+  multiplicityMultiset A = (Multiset.range (n - 1)).map (· + 1)
 
 /--
 **The original conjecture (FALSE):**

@@ -63,7 +63,7 @@ lemma gibbs_inequality {α : Type*} [Fintype α] [DecidableEq α]
     {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
     (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
     shannonEntropy p ≤ -∑ x, p x * Real.log (q x) := by
-  -- shannonEntropy p = -∑ p·log p (since 0·log 0 = 0 in Lean)
+  -- shannonEntropy p = -∑ p·log p (since 0·log 0 = 0 ∈ Lean)
   have hse : shannonEntropy p = -∑ x : α, p x * Real.log (p x) := by
     unfold shannonEntropy
     congr 1
@@ -464,7 +464,7 @@ lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
       (fun y (_ : y ∈ Finset.univ) => hPy_nn y)
       (by convert hPy_sum using 1)
       (fun y _ => Set.mem_Icc.mpr ⟨hpe_nn y, hpe_le1 y⟩)
-    convert hjm using 1
+    simpa only [smul_eq_mul] using hjm
   linarith
 
 -- ============================================================

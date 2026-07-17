@@ -46,12 +46,10 @@ theorem eval_conj_eq_conj_eval (p : ℝ[X]) (z : ℂ) :
     Polynomial.aeval (starRingEnd ℂ z) (p.map (algebraMap ℝ ℂ)) =
     starRingEnd ℂ (Polynomial.aeval z (p.map (algebraMap ℝ ℂ))) := by
   induction p using Polynomial.induction_on' with
-  | h_add p q ihp ihq =>
+  | add p q ihp ihq =>
     simp [map_add, Polynomial.aeval_add, ihp, ihq]
-  | h_monomial n a =>
-    simp [Polynomial.aeval_monomial, map_mul, map_pow]
-    congr 1
-    simp [Complex.conj_ofReal]
+  | monomial n a =>
+    simp [Polynomial.aeval_monomial, map_mul, map_pow, Complex.conj_ofReal]
 
 /-- **Conjugate root theorem**: If z is a root of a real polynomial p,
 then z̄ is also a root. This follows from p(z̄) = p̄(z) = 0̄ = 0. -/
@@ -70,7 +68,7 @@ theorem isReal_iff_eq_conj (z : ℂ) : z = starRingEnd ℂ z ↔ z.im = 0 := by
     simp [Complex.conj_im] at this
     linarith
   · intro h
-    ext
+    apply Complex.ext
     · rfl
     · simp [Complex.conj_im, h]
 

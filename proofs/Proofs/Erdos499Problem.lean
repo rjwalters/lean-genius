@@ -31,7 +31,7 @@ References:
 - Falikman, D. I. (1981): "Proof of the van der Waerden conjecture"
 -/
 
-import Mathlib.LinearAlgebra.Matrix.DoublyStochastic
+import Mathlib
 import Mathlib.LinearAlgebra.Matrix.Permanent
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
@@ -70,7 +70,7 @@ This achieves the minimum permanent among all doubly stochastic matrices.
 noncomputable def uniformMatrix (n : ℕ) (hn : n ≠ 0) : Matrix (Fin n) (Fin n) ℝ :=
   fun _ _ => (1 : ℝ) / n
 
-/-- The uniform matrix is doubly stochastic. -/
+/-  The uniform matrix is doubly stochastic. -/
 /--
 Example: The 2×2 uniform matrix [[1/2, 1/2], [1/2, 1/2]].
 -/
@@ -97,7 +97,7 @@ The main diagonal (identity permutation) product.
 def mainDiagonalProduct {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : ℝ :=
   ∏ i, M i i
 
-/--
+/- 
 For the uniform matrix, every diagonal product equals n^{-n}.
 -/
 /-
@@ -120,7 +120,7 @@ theorem perm_eq_sum_diagonalProducts {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) 
     perm' M = ∑ σ : Equiv.Perm (Fin n), diagonalProduct M σ := by
   rfl
 
-/--
+/- 
 For the uniform matrix, the permanent equals n^{-n} · n!.
 This is the minimum among all doubly stochastic matrices.
 -/
@@ -220,15 +220,13 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
     (∃ σ : Equiv.Perm (Fin 2), diagonalProduct M σ = (1-a) * (1-a)) := by
   refine ⟨?_, ?_⟩
   · -- Identity permutation: M 0 0 * M 1 1 = a * a
-    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+    simp [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply]
   · -- Swap permutation: M 0 1 * M 1 0 = (1-a) * (1-a)
     refine ⟨Equiv.swap (0 : Fin 2) 1, ?_⟩
-    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
-      Equiv.swap_apply_right, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, Matrix.head_fin_const]
+    simp [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
+      Equiv.swap_apply_right]
 
-/--
+/- 
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
 This verifies Erdős #499 for n = 2.
 -/
@@ -276,7 +274,8 @@ Key results:
 theorem erdos_499_summary :
     (∀ n (hn : n ≠ 0) M (hM : IsDoublyStochastic M),
       ∃ σ : Equiv.Perm (Fin n), (n : ℝ)⁻¹ ^ n ≤ diagonalProduct M σ) ∧
-    (∀ n (hn : n ≠ 0) M (hM : IsDoublyStochastic M),
+    (∀ (n : ℕ) (hn : n ≠ 0) (M : Matrix (Fin n) (Fin n) ℝ)
+      (hM : IsDoublyStochastic M),
       (n : ℝ)⁻¹ ^ n * n ! ≤ perm' M) :=
   ⟨fun n hn M hM => marcus_minc_theorem hn M hM,
    fun n hn M hM => van_der_waerden hn M hM⟩

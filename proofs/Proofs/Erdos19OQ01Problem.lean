@@ -30,6 +30,7 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
 open Finset SimpleGraph Classical
 
@@ -57,8 +58,8 @@ structure EFLFamily (n : ℕ) where
     belong to the same clique and are distinct. This is a Mathlib SimpleGraph. -/
 def eflGraph (n : ℕ) (F : EFLFamily n) : SimpleGraph (Fin (n * n)) where
   Adj x y := x ≠ y ∧ ∃ i : Fin n, x ∈ F.cliques i ∧ y ∈ F.cliques i
-  symm _ _ := fun ⟨hne, i, hx, hy⟩ => ⟨hne.symm, i, hy, hx⟩
-  loopless _ := fun ⟨hne, _⟩ => hne rfl
+  symm.symm _ _ := fun ⟨hne, i, hx, hy⟩ => ⟨hne.symm, i, hy, hx⟩
+  loopless.irrefl _ := fun ⟨hne, _⟩ => hne rfl
 
 /-
 ## Part II: Colorability using GraphCore
@@ -105,8 +106,9 @@ theorem efl_holds_above_threshold :
     EFL does not hold (unless the threshold is 0). -/
 theorem efl_threshold_minimal (h : eflThreshold ≠ 0) :
     ∃ n < eflThreshold, ¬ (∀ m ≥ n, EFLHoldsAt m) := by
-  have hmin := Nat.find_min kang_kelly_kuhn_methuku_osthus_asymptotic
-  exact ⟨eflThreshold - 1, by omega, hmin (by omega)⟩
+  refine ⟨eflThreshold - 1, by omega, ?_⟩
+  have hlt : eflThreshold - 1 < eflThreshold := by omega
+  exact Nat.find_min kang_kelly_kuhn_methuku_osthus_asymptotic hlt
 
 /-
 ## Part IV: Hindman's Small Cases

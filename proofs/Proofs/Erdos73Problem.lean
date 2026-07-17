@@ -30,6 +30,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos73
 
 open SimpleGraph Finset
@@ -48,21 +50,21 @@ noncomputable def independenceNumber (G : SimpleGraph V) [DecidableRel G.Adj] : 
 
 /-- Every graph has an independent set (the empty set). -/
 theorem exists_independent_set (G : SimpleGraph V) : ∃ S : Finset V, IsIndependentSet G S :=
-  ⟨∅, fun u hu => (Finset.not_mem_empty u hu).elim⟩
+  ⟨∅, fun u hu => (Finset.notMem_empty u hu).elim⟩
 
 /-- Singleton sets are always independent. -/
 theorem singleton_independent (G : SimpleGraph V) (v : V) : IsIndependentSet G {v} := by
   intro u hu w hw
   simp only [mem_singleton] at hu hw
   rw [hu, hw]
-  exact G.loopless w
+  exact G.loopless.irrefl v
 
 /- ## Part II: The Independence Condition -/
 
 /-- A graph G satisfies the k-independence condition if every induced subgraph H
     on n vertices has an independent set of size ≥ (n-k)/2. -/
 def satisfiesIndependenceCondition (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) : Prop :=
-  ∀ S : Finset V, ∃ I : Finset V, I ⊆ S ∧ IsIndependentSet (G.induce S) I ∧
+  ∀ S : Finset V, ∃ I : Finset V, I ⊆ S ∧ IsIndependentSet G I ∧
     2 * I.card ≥ S.card - k
 
 /-- For k=0, the condition becomes: every subgraph has an independent set of size ≥ n/2. -/
@@ -81,10 +83,10 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 def hasNoOddCycle (G : SimpleGraph V) : Prop :=
   ∀ (u : V) (p : G.Walk u u), p.IsCycle → Even p.length
 
-/-- Characterization: bipartite iff no odd cycles. -/
+/-  Characterization: bipartite iff no odd cycles. -/
 /- ## Part IV: The Trivial k=0 Case -/
 
-/-- An odd cycle on 2m+1 vertices has independence number exactly m. -/
+/-  An odd cycle on 2m+1 vertices has independence number exactly m. -/
 /-- Key lemma: odd cycles violate the k=0 condition.
     A cycle on 2m+1 vertices has independence number m < (2m+1)/2. -/
 theorem odd_cycle_violates_strict (m : ℕ) (hm : m ≥ 1) :
@@ -110,18 +112,18 @@ theorem bipartite_deficiency_zero (G : SimpleGraph V) (h : IsBipartite G) :
   simp only [Set.mem_setOf_eq]
   refine ⟨∅, rfl, ?_⟩
   -- Complement of ∅ is Set.univ; transfer bipartition from G to G.induce Set.univ
-  have hcompl : (↑(∅ : Finset V)ᶜ : Set V) = Set.univ := by simp [Finset.coe_compl]
+  have hcompl : ((↑(∅ : Finset V) : Set V))ᶜ = Set.univ := by simp
   rw [hcompl]
   obtain ⟨A, B, hAB, hABd, hA, hB⟩ := h
   refine ⟨{v : ↥Set.univ | v.val ∈ A}, {v : ↥Set.univ | v.val ∈ B}, ?_, ?_, ?_, ?_⟩
   · ext ⟨v, _⟩
     simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
-    have hmv : ⟨v, Set.mem_univ v⟩ ∈ (Set.univ : Set ↥Set.univ) := Set.mem_univ _
-    rw [← hAB] at hmv; exact hmv
+    have hmv : v ∈ A ∪ B := by rw [hAB]; exact Set.mem_univ v
+    exact hmv
   · ext ⟨v, _⟩
     simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
     intro ⟨hA', hB'⟩
-    have hmv : ⟨v, Set.mem_univ v⟩ ∈ A ∩ B := ⟨hA', hB'⟩
+    have hmv : v ∈ A ∩ B := ⟨hA', hB'⟩
     rw [hABd] at hmv; exact hmv
   · intro ⟨u, _⟩ hu ⟨v, _⟩ hv
     simp only [Set.mem_setOf_eq] at hu hv
@@ -163,9 +165,9 @@ theorem strict_implies_bipartite (G : SimpleGraph V) [DecidableRel G.Adj]
   have := reed_theorem G 0 h
   rw [reed_bound_zero] at this
   obtain ⟨S, hS, hbip⟩ := this
-  simp only [Nat.le_zero, Finset.card_eq_zero] at hS
-  rw [hS] at hbip
-  simp only [Finset.coe_empty, Set.compl_empty] at hbip
+  have hS0 : S = ∅ := Finset.card_eq_zero.mp (Nat.le_zero.mp hS)
+  have hcompl : ((↑(∅ : Finset V) : Set V))ᶜ = Set.univ := by simp
+  rw [hS0, hcompl] at hbip
   -- hbip : IsBipartite (G.induce Set.univ)
   -- Transfer the bipartition back to G using the bijection V ↔ ↥Set.univ
   obtain ⟨A, B, hAB, hABd, hA, hB⟩ := hbip
@@ -210,8 +212,8 @@ theorem trivial_case (G : SimpleGraph V) [DecidableRel G.Adj]
 /-- The complete graph K_3 (triangle) is not bipartite. -/
 def triangleGraph : SimpleGraph (Fin 3) where
   Adj u v := u ≠ v
-  symm u v h := h.symm
-  loopless v := fun h => h rfl
+  symm.symm u v h := h.symm
+  loopless.irrefl v := fun h => h rfl
 
 /-- K_3 violates the k=0 condition. -/
 theorem K3_violates_strict : ¬satisfiesStrictCondition triangleGraph := by
@@ -230,8 +232,8 @@ theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
   -- Witness: remove vertex 0, leaving {1, 2} which is bipartite
   refine ⟨{0}, by simp, ?_⟩
   -- Convert finset complement to set complement
-  have key : (↑({(0 : Fin 3)} : Finset (Fin 3))ᶜ : Set (Fin 3)) = ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by
-    simp [Finset.coe_compl]
+  have key : ((↑({(0 : Fin 3)} : Finset (Fin 3)) : Set (Fin 3)))ᶜ
+      = ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by simp
   rw [key]
   -- Membership witnesses for the bipartition
   have h1 : (1 : Fin 3) ∈ ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by decide
@@ -250,21 +252,22 @@ theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
     ext ⟨x, hx⟩
     simp only [Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
     rintro ⟨h1', h2'⟩
-    exact absurd ((congrArg Subtype.val h1').symm.trans (congrArg Subtype.val h2')) (by decide)
+    have hne : (1 : Fin 3) ≠ (2 : Fin 3) := by decide
+    exact absurd ((congrArg Subtype.val h1').symm.trans (congrArg Subtype.val h2')) hne
   · -- A is independent (singleton {⟨1, h1⟩})
     intro u hu v hv
     simp only [Set.mem_singleton_iff] at hu hv
     rw [hu, hv]
-    exact (triangleGraph.induce _).loopless _
+    exact (triangleGraph.induce _).loopless.irrefl _
   · -- B is independent (singleton {⟨2, h2⟩})
     intro u hu v hv
     simp only [Set.mem_singleton_iff] at hu hv
     rw [hu, hv]
-    exact (triangleGraph.induce _).loopless _
+    exact (triangleGraph.induce _).loopless.irrefl _
 
 /- ## Part IX: Bounds on f(k) -/
 
-/-- Reed's proof gives some explicit bound, though not optimal. -/
+/-  Reed's proof gives some explicit bound, though not optimal. -/
 /-- Finding optimal bounds remains of interest. -/
 def openQuestion_optimal_bound : Prop :=
   ∃ f : ℕ → ℕ, (∀ k, f k ≤ reed_bound k) ∧
@@ -274,8 +277,8 @@ def openQuestion_optimal_bound : Prop :=
 
 /- ## Part X: Connection to Chromatic Number -/
 
-/-- Bipartite graphs are exactly 2-colorable. -/
-/-- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
+/-  Bipartite graphs are exactly 2-colorable. -/
+/- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
 end Erdos73
 
 /-

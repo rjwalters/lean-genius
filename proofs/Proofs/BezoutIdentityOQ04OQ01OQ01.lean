@@ -1,11 +1,10 @@
+import Mathlib
 import Mathlib.RingTheory.PrincipalIdealDomain
-import Mathlib.RingTheory.GCDMonoid.Basic
 import Mathlib.Algebra.GCDMonoid.Basic
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Matrix.Diagonal
 import Mathlib.LinearAlgebra.Matrix.Diagonal
 import Mathlib.LinearAlgebra.Matrix.IsDiag
-import Mathlib.LinearAlgebra.Matrix.Determinant
 import Mathlib.Tactic
 
 /-
@@ -47,7 +46,7 @@ theorem isUnimodularPID_one {R : Type*} [CommRing R] {n : Type*} [Fintype n] [De
 theorem IsUnimodularPID.mul {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
     {M N : Matrix n n R} (hM : IsUnimodularPID M) (hN : IsUnimodularPID N) :
     IsUnimodularPID (M * N) := by
-  simp only [IsUnimodularPID, det_mul]; exact hM.mul hN
+  simp only [IsUnimodularPID, det_mul] at *; exact hM.mul hN
 
 /-- Over ℤ, IsUnimodularPID ↔ det = ±1. -/
 theorem isUnimodularPID_int_iff {n : Type*} [Fintype n] [DecidableEq n]
@@ -90,35 +89,35 @@ theorem snf_1x2_invariant_factor_pid {R : Type*} [CommRing R] [IsDomain R]
     (hsnf : snf.isDecompOf (Matrix.of ![![a, b]])) :
     snf.invariantFactor 0 ∣ GCDMonoid.gcd a b ∧
     GCDMonoid.gcd a b ∣ snf.invariantFactor 0 := by
-  have hd_eq : snf.invariantFactor 0 = snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ := by
+  have hd_eq : snf.invariantFactor 0 = snf.D (0 : Fin 1) (0 : Fin 2) := by
     simp [SmithNormalFormPID.invariantFactor]
-  have hD01 : snf.D ⟨0, by omega⟩ ⟨1, by omega⟩ = 0 :=
-    snf.hD_diag ⟨0, by omega⟩ ⟨1, by omega⟩ (by simp)
+  have hD01 : snf.D (0 : Fin 1) (1 : Fin 2) = 0 :=
+    snf.hD_diag (0 : Fin 1) (1 : Fin 2) (by simp)
   -- U is 1×1: det(U) = U[0,0] is a unit
-  have hU_unit : IsUnit (snf.U ⟨0, by omega⟩ ⟨0, by omega⟩) := by
+  have hU_unit : IsUnit (snf.U (0 : Fin 1) (0 : Fin 1)) := by
     have h := snf.hU; simp [IsUnimodularPID, det_fin_one] at h; exact h
   -- det(V) = V[0,0]*V[1,1] - V[0,1]*V[1,0] is a unit
-  have hV_unit : IsUnit (snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ *
-                          snf.V ⟨1, by omega⟩ ⟨1, by omega⟩ -
-                          snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ *
-                          snf.V ⟨1, by omega⟩ ⟨0, by omega⟩) := by
+  have hV_unit : IsUnit (snf.V (0 : Fin 2) (0 : Fin 2) *
+                          snf.V (1 : Fin 2) (1 : Fin 2) -
+                          snf.V (0 : Fin 2) (1 : Fin 2) *
+                          snf.V (1 : Fin 2) (0 : Fin 2)) := by
     have h := snf.hV; simp [IsUnimodularPID, det_fin_two] at h; exact h
-  set u   := snf.U ⟨0, by omega⟩ ⟨0, by omega⟩
-  set d   := snf.D ⟨0, by omega⟩ ⟨0, by omega⟩
-  set v00 := snf.V ⟨0, by omega⟩ ⟨0, by omega⟩
-  set v01 := snf.V ⟨0, by omega⟩ ⟨1, by omega⟩
-  set v10 := snf.V ⟨1, by omega⟩ ⟨0, by omega⟩
-  set v11 := snf.V ⟨1, by omega⟩ ⟨1, by omega⟩
+  set u   := snf.U (0 : Fin 1) (0 : Fin 1)
+  set d   := snf.D (0 : Fin 1) (0 : Fin 2)
+  set v00 := snf.V (0 : Fin 2) (0 : Fin 2)
+  set v01 := snf.V (0 : Fin 2) (1 : Fin 2)
+  set v10 := snf.V (1 : Fin 2) (0 : Fin 2)
+  set v11 := snf.V (1 : Fin 2) (1 : Fin 2)
   -- Extract a = u*d*v00 and b = u*d*v01 from A = U*D*V
   have ha : a = u * d * v00 := by
-    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨0, by omega⟩
+    have h := congr_fun (congr_fun hsnf (0 : Fin 1)) (0 : Fin 2)
     simp only [SmithNormalFormPID.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
                Fin.sum_univ_one, Fin.sum_univ_two,
                Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
     rw [hD01] at h; simp only [mul_zero, zero_mul, add_zero] at h
     linear_combination h
   have hb : b = u * d * v01 := by
-    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨1, by omega⟩
+    have h := congr_fun (congr_fun hsnf (0 : Fin 1)) (1 : Fin 2)
     simp only [SmithNormalFormPID.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
                Fin.sum_univ_one, Fin.sum_univ_two,
                Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h

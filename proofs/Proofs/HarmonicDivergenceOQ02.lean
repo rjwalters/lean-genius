@@ -63,28 +63,26 @@ private theorem mul_log_pos {n : ℕ} (hn : 2 ≤ n) :
 
 /-- logHarmonic is antitone for positive n:
     0 < m ≤ n → logHarmonic n ≤ logHarmonic m. -/
+-- NOTE (v4.31 fix, #38611 candidate): the original statement quantified over `0 < m`,
+-- which is FALSE — `logHarmonic 1 = 0` (junk value from `1 < 2`) while `logHarmonic 2 > 0`,
+-- so `logHarmonic n ≤ logHarmonic 1` fails at n = 2. The `m = 1` case exploited unsound
+-- elaboration of `mul_log_pos (by omega)` against an unassigned implicit metavariable on
+-- v4.26; v4.31's stricter elaboration order surfaces the (unprovable) real goal. Fixed to
+-- the genuinely-true statement `2 ≤ m`, and downstream usage switched to the "eventually"
+-- Cauchy condensation variant, which only needs antitone-ness from some point on.
 theorem logHarmonic_antitone :
-    ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → logHarmonic n ≤ logHarmonic m := by
+    ∀ ⦃m n : ℕ⦄, 2 ≤ m → m ≤ n → logHarmonic n ≤ logHarmonic m := by
   intro m n hm hmn
-  by_cases hm2 : m < 2
-  · -- m = 1: logHarmonic m = 0, logHarmonic n ≥ 0
-    have : m = 1 := by omega
-    subst this
-    simp [logHarmonic]
-    split_ifs with h
-    · exact le_refl _
-    · exact div_nonneg (le_of_lt one_pos) (le_of_lt (mul_log_pos (by omega)))
-  · -- m ≥ 2, n ≥ 2: compare 1/(n·log n) ≤ 1/(m·log m)
-    push_neg at hm2
-    rw [logHarmonic_of_ge_two hm2, logHarmonic_of_ge_two (le_trans hm2 hmn)]
-    rw [div_le_div_iff (mul_log_pos (le_trans hm2 hmn)) (mul_log_pos hm2)]
-    simp only [one_mul]
-    -- Need: m · log m ≤ n · log n
-    apply mul_le_mul
-    · exact_mod_cast hmn
-    · exact Real.log_le_log (by exact_mod_cast (show 0 < m by omega)) (by exact_mod_cast hmn)
-    · exact Real.log_nonneg (by exact_mod_cast (show 1 ≤ m by omega))
-    · exact Nat.cast_nonneg _
+  -- m ≥ 2, n ≥ 2: compare 1/(n·log n) ≤ 1/(m·log m)
+  rw [logHarmonic_of_ge_two hm, logHarmonic_of_ge_two (le_trans hm hmn)]
+  rw [div_le_div_iff₀ (mul_log_pos (le_trans hm hmn)) (mul_log_pos hm)]
+  simp only [one_mul]
+  -- Need: m · log m ≤ n · log n
+  apply mul_le_mul
+  · exact_mod_cast hmn
+  · exact Real.log_le_log (by exact_mod_cast (show 0 < m by omega)) (by exact_mod_cast hmn)
+  · exact Real.log_nonneg (by exact_mod_cast (show 1 ≤ m by omega))
+  · exact Nat.cast_nonneg _
 
 /-! ## Divergence via Cauchy Condensation
 
@@ -98,15 +96,16 @@ theorem condensed_logHarmonic_eq (k : ℕ) (hk : 1 ≤ k) :
     calc 2 = 2 ^ 1 := by ring
       _ ≤ 2 ^ k := Nat.pow_le_pow_right (by omega) hk
   rw [logHarmonic_of_ge_two h2k]
-  have h_log_pow : Real.log (↑(2 ^ k) : ℝ) = k * Real.log 2 := by
-    rw [Nat.cast_pow]
-    exact Real.log_pow k 2
+  have h_log_pow : Real.log (((2 ^ k : ℕ) : ℝ)) = k * Real.log 2 := by
+    push_cast
+    exact Real.log_pow 2 k
   rw [h_log_pow]
   have hk_pos : (k : ℝ) ≠ 0 := by exact_mod_cast (show k ≠ 0 by omega)
   have hlog2_pos : Real.log 2 ≠ 0 :=
     ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2))
   have h2k_pos : (↑(2 ^ k) : ℝ) ≠ 0 := by exact_mod_cast (show 2 ^ k ≠ 0 by positivity)
   field_simp
+  push_cast
   ring
 
 /-- The condensed logHarmonic series is not summable.
@@ -116,29 +115,28 @@ theorem condensed_logHarmonic_not_summable :
   -- The condensed series for k ≥ 1 is 1/(k·log 2) = (1/log 2)·(1/k)
   -- Since Σ 1/k diverges, so does (1/log 2)·Σ 1/k
   rw [show (fun k : ℕ => (2 : ℝ) ^ k * logHarmonic (2 ^ k)) =
-      (fun k => if k = 0 then (2 : ℝ) ^ 0 * logHarmonic (2 ^ 0)
+      (fun k : ℕ => if k = 0 then (2 : ℝ) ^ 0 * logHarmonic (2 ^ 0)
                 else 1 / ((k : ℝ) * Real.log 2)) from by
     ext k; by_cases hk : k = 0
     · simp [hk]
     · rw [if_neg hk, condensed_logHarmonic_eq k (by omega)]
   ]
-  intro ⟨a, ha⟩
-  -- If the full series is summable, then the tail (k ≥ 1) is summable
-  have h_tail : Summable (fun k : ℕ => 1 / ((k + 1 : ℝ) * Real.log 2)) := by
-    have := ha.comp_injective (fun k => k + 1) (fun a b h => by omega)
-    simp only [Function.comp] at this
-    convert this using 1
-    ext k; simp [show k + 1 ≠ 0 by omega]
-  -- This means Σ 1/((k+1)·log 2) converges, so (1/log 2)·Σ 1/(k+1) converges
+  -- Shift by one (via `summable_nat_add_iff`) to sidestep the k = 0 special case,
+  -- then relate the tail to the (divergent) harmonic series 1/(n+1).
+  rw [← summable_nat_add_iff 1]
+  intro hsum
   have hlog2_pos : 0 < Real.log 2 := Real.log_pos (by norm_num : (1 : ℝ) < 2)
-  have h_harmonic : Summable (fun k : ℕ => 1 / (↑(k + 1) : ℝ)) := by
-    have := h_tail.mul_left (Real.log 2)
-    simp only [mul_comm (Real.log 2), mul_div_assoc'] at this
-    convert this using 1
-    ext k; rw [div_mul_eq_mul_div, mul_comm, mul_div_mul_left _ _ (ne_of_gt hlog2_pos)]
-  -- But Σ 1/(k+1) = Σ_{n≥1} 1/n, which diverges
-  exact Real.not_summable_one_div_natCast (Summable.comp_injective h_harmonic
-    (fun k => k + 1) (fun a b h => by omega) |>.congr (by intro n; push_cast; ring_nf))
+  have hlog2_ne : Real.log 2 ≠ 0 := ne_of_gt hlog2_pos
+  have h1 : Summable (fun n : ℕ => Real.log 2 *
+      (if n + 1 = 0 then (2 : ℝ) ^ 0 * logHarmonic (2 ^ 0)
+        else 1 / (((n + 1 : ℕ) : ℝ) * Real.log 2))) := hsum.mul_left _
+  have h2 : Summable (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ)) : ℝ)) := by
+    refine h1.congr (fun n => ?_)
+    rw [if_neg (show n + 1 ≠ 0 by omega)]
+    have hn1_ne : (((n + 1 : ℕ)) : ℝ) ≠ 0 := by positivity
+    field_simp
+  exact Real.not_summable_one_div_natCast
+    ((summable_nat_add_iff (f := fun m : ℕ => (1 : ℝ) / (m : ℝ)) 1).mp h2)
 
 /-- **The log-harmonic series Σ 1/(n·log n) diverges.**
 
@@ -146,7 +144,10 @@ theorem condensed_logHarmonic_not_summable :
     the condensed series Σ 2^k/(2^k · k·log 2) = Σ 1/(k·log 2)
     is a rescaled harmonic series, which diverges. -/
 theorem logHarmonic_not_summable : ¬Summable logHarmonic := by
-  rw [summable_condensed_iff_of_nonneg logHarmonic_nonneg logHarmonic_antitone]
+  rw [← summable_condensed_iff_of_eventually_nonneg
+      (Filter.Eventually.of_forall logHarmonic_nonneg)
+      (by filter_upwards [Filter.eventually_ge_atTop 2] with k hk
+          exact logHarmonic_antitone hk (Nat.le_succ k))]
   exact condensed_logHarmonic_not_summable
 
 /-! ## Connection to the Divergence Rate
@@ -200,35 +201,27 @@ private theorem mul_log_sq_pos {n : ℕ} (hn : 2 ≤ n) :
     Real.log_pos (by exact_mod_cast (show 1 < n by omega))
   exact mul_pos hn_pos (pow_pos hlog_pos 2)
 
-/-- logHarmonicSq is antitone for positive n:
-    0 < m ≤ n → logHarmonicSq n ≤ logHarmonicSq m. -/
+-- NOTE (v4.31 fix, #38611 candidate): same edge-case issue as `logHarmonic_antitone` above
+-- — `logHarmonicSq 1 = 0` but `logHarmonicSq 2 > 0`, so `0 < m` was never actually true.
+-- Fixed to the genuinely-true `2 ≤ m` statement; see `logHarmonic_antitone` for details.
 theorem logHarmonicSq_antitone :
-    ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → logHarmonicSq n ≤ logHarmonicSq m := by
+    ∀ ⦃m n : ℕ⦄, 2 ≤ m → m ≤ n → logHarmonicSq n ≤ logHarmonicSq m := by
   intro m n hm hmn
-  by_cases hm2 : m < 2
-  · -- m = 1: logHarmonicSq 1 = 0, logHarmonicSq n ≥ 0
-    have : m = 1 := by omega
-    subst this
-    simp [logHarmonicSq]
-    split_ifs with h
-    · exact le_refl _
-    · exact div_nonneg (le_of_lt one_pos) (le_of_lt (mul_log_sq_pos (by omega)))
-  · -- m, n ≥ 2: compare 1/(n·(log n)²) ≤ 1/(m·(log m)²)
-    push_neg at hm2
-    rw [logHarmonicSq_of_ge_two hm2, logHarmonicSq_of_ge_two (le_trans hm2 hmn)]
-    rw [div_le_div_iff (mul_log_sq_pos (le_trans hm2 hmn)) (mul_log_sq_pos hm2)]
-    simp only [one_mul]
-    -- Need: m · (log m)² ≤ n · (log n)²
-    have hlog_le : Real.log m ≤ Real.log n :=
-      Real.log_le_log (by exact_mod_cast (show 0 < m by omega))
-        (by exact_mod_cast hmn)
-    have hlog_m_nonneg : 0 ≤ Real.log m :=
-      Real.log_nonneg (by exact_mod_cast (show 1 ≤ m by omega))
-    apply mul_le_mul
-    · exact_mod_cast hmn
-    · exact pow_le_pow_left hlog_m_nonneg hlog_le 2
-    · exact sq_nonneg _
-    · exact Nat.cast_nonneg _
+  -- m, n ≥ 2: compare 1/(n·(log n)²) ≤ 1/(m·(log m)²)
+  rw [logHarmonicSq_of_ge_two hm, logHarmonicSq_of_ge_two (le_trans hm hmn)]
+  rw [div_le_div_iff₀ (mul_log_sq_pos (le_trans hm hmn)) (mul_log_sq_pos hm)]
+  simp only [one_mul]
+  -- Need: m · (log m)² ≤ n · (log n)²
+  have hlog_le : Real.log m ≤ Real.log n :=
+    Real.log_le_log (by exact_mod_cast (show 0 < m by omega))
+      (by exact_mod_cast hmn)
+  have hlog_m_nonneg : 0 ≤ Real.log m :=
+    Real.log_nonneg (by exact_mod_cast (show 1 ≤ m by omega))
+  apply mul_le_mul
+  · exact_mod_cast hmn
+  · exact pow_le_pow_left₀ hlog_m_nonneg hlog_le 2
+  · exact sq_nonneg _
+  · exact Nat.cast_nonneg _
 
 /-- The condensed logHarmonicSq at k ≥ 1 equals 1 / (k² · (log 2)²). -/
 theorem condensed_logHarmonicSq_eq (k : ℕ) (hk : 1 ≤ k) :
@@ -237,15 +230,16 @@ theorem condensed_logHarmonicSq_eq (k : ℕ) (hk : 1 ≤ k) :
     calc 2 = 2 ^ 1 := by ring
       _ ≤ 2 ^ k := Nat.pow_le_pow_right (by omega) hk
   rw [logHarmonicSq_of_ge_two h2k]
-  have h_log_pow : Real.log (↑(2 ^ k) : ℝ) = k * Real.log 2 := by
-    rw [Nat.cast_pow]
-    exact Real.log_pow k 2
+  have h_log_pow : Real.log (((2 ^ k : ℕ) : ℝ)) = k * Real.log 2 := by
+    push_cast
+    exact Real.log_pow 2 k
   rw [h_log_pow]
   have hk_pos : (k : ℝ) ≠ 0 := by exact_mod_cast (show k ≠ 0 by omega)
   have hlog2_pos : Real.log 2 ≠ 0 :=
     ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2))
   have h2k_pos : (↑(2 ^ k) : ℝ) ≠ 0 := by exact_mod_cast (show 2 ^ k ≠ 0 by positivity)
   field_simp
+  push_cast
   ring
 
 /-- The condensed logHarmonicSq series is summable.
@@ -275,7 +269,6 @@ theorem condensed_logHarmonicSq_summable :
     ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2))
   have hlog2_sq_ne : (Real.log 2) ^ 2 ≠ 0 := pow_ne_zero _ hlog2_pos
   field_simp
-  ring
 
 /-- **The squared-log series Σ 1/(n·(log n)²) is summable.**
 
@@ -283,7 +276,10 @@ theorem condensed_logHarmonicSq_summable :
     the condensed series Σ 2^k/(2^k · k²·(log 2)²) = Σ 1/(k²·(log 2)²)
     is a constant multiple of the convergent Basel p-series (p = 2). -/
 theorem logHarmonicSq_summable : Summable logHarmonicSq := by
-  rw [summable_condensed_iff_of_nonneg logHarmonicSq_nonneg logHarmonicSq_antitone]
+  rw [← summable_condensed_iff_of_eventually_nonneg
+      (Filter.Eventually.of_forall logHarmonicSq_nonneg)
+      (by filter_upwards [Filter.eventually_ge_atTop 2] with k hk
+          exact logHarmonicSq_antitone hk (Nat.le_succ k))]
   exact condensed_logHarmonicSq_summable
 
 end HarmonicDivergenceOQ02

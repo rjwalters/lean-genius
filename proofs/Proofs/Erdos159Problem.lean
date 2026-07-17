@@ -15,10 +15,7 @@ the known upper and lower bounds (deep results not in Mathlib).
 *Reference:* [erdosproblems.com/159](https://www.erdosproblems.com/159)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fin.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.RamseysTheorem
 
 open SimpleGraph
@@ -111,8 +108,8 @@ theorem ramsey_C4_Kn_exists (n : ℕ) (hn : 1 ≤ n) :
   let c : RamseysTheorem.EdgeColoring (Fin N) :=
     { color := fun x y => if G.Adj x y then true else false
       symm := fun x y => by
-        simp only [show G.Adj x y ↔ G.Adj y x from G.adj_comm]
-      irrefl := fun x => if_neg (G.loopless x) }
+        simp only [show G.Adj x y ↔ G.Adj y x from G.adj_comm x y]
+      irrefl := fun x => if_neg (G.loopless.irrefl x) }
   rcases hRamsey c with ⟨red, hred_card, hred_clique⟩ | ⟨blue, hblue_card, hblue_clique⟩
   · -- Red 4-clique in the coloring → 4-clique in G → C₄ in G
     left
@@ -166,9 +163,9 @@ end RamseyC4Kn
 
 /- ## Known bounds -/
 
-/-- Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
+/-  Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
 constant `C > 0` and sufficiently large `n`. -/
-/-- Spencer's lower bound: `R(C₄, Kₙ) ≥ c · n^{3/2} / (log n)^{3/2}`
+/-  Spencer's lower bound: `R(C₄, Kₙ) ≥ c · n^{3/2} / (log n)^{3/2}`
 for some constant `c > 0` and sufficiently large `n`. -/
 /- ## Main conjecture -/
 
@@ -221,10 +218,10 @@ theorem ramseyC4Kn_one : ramseyC4Kn 1 = 1 := by
   classical
   unfold ramseyC4Kn
   rw [dif_pos (le_refl 1)]
-  apply Nat.find_eq_iff.mpr
+  apply (Nat.find_eq_iff _).mpr
   refine ⟨fun G => Or.inr ⟨{0}, Finset.card_singleton _,
-    fun u hu v hv huv => absurd (Finset.mem_singleton.mp hu ▸
-      Finset.mem_singleton.mp hv) huv⟩, ?_⟩
+    fun u hu v hv huv => absurd
+      ((Finset.mem_singleton.mp hu).trans (Finset.mem_singleton.mp hv).symm) huv⟩, ?_⟩
   intro k hk hprop
   have hk0 : k = 0 := by omega
   subst hk0
@@ -239,7 +236,7 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
   classical
   unfold ramseyC4Kn
   rw [dif_pos (by omega : 1 ≤ 2)]
-  apply Nat.find_eq_iff.mpr
+  apply (Nat.find_eq_iff _).mpr
   constructor
   · -- At N = 4: every graph has C₄ or K₂ in complement
     intro G
@@ -253,7 +250,7 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
       right
       obtain ⟨u, v, huv, hnadj⟩ := h
       refine ⟨{u, v}, ?_, ?_⟩
-      · rw [Finset.card_insert_of_not_mem (Finset.not_mem_singleton.mpr huv),
+      · rw [Finset.card_insert_of_notMem (Finset.notMem_singleton.mpr huv),
             Finset.card_singleton]
       · intro x hx y hy hxy
         simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
@@ -262,7 +259,7 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
         rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
         · exact absurd rfl hxy
         · exact hnadj
-        · exact fun hadj => hnadj (G.adj_comm.mp hadj)
+        · exact fun hadj => hnadj ((G.adj_comm _ _).mp hadj)
         · exact absurd rfl hxy
   · -- Below N = 4: ⊤ (complete graph) on Fin k is a counterexample
     intro k hk
@@ -272,8 +269,9 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
       rintro ⟨a, b, c, d, hab, hbc, hcd, hac, had, hbd, -⟩
       have := a.isLt; have := b.isLt; have := c.isLt; have := d.isLt
       interval_cases k <;>
-        simp only [Fin.ext_iff] at hab hbc hcd hac had hbd <;>
-        omega
+        first
+          | (simp only [Fin.ext_iff] at hab hbc hcd hac had hbd; omega)
+          | omega
     · -- ¬HasClique ⊤ᶜ 2: ⊤ᶜ = ⊥ has no edges
       rintro ⟨S, hcard, hadj⟩
       obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)

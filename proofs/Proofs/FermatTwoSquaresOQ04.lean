@@ -147,9 +147,14 @@ theorem jacobiSum_prime_pow_pos_iff {p : ℕ} (hp : p.Prime) (k : ℕ) :
 theorem jacobiSum_nonneg (n : ℕ) : 0 ≤ jacobiSum n := by
   rcases eq_or_ne n 0 with rfl | hn
   · simp
-  · simpa only [isMultiplicative_jacobiSum.multiplicative_factorization _ hn] using
-      Finset.prod_nonneg fun p hp =>
-        jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) _
+  · have hprod : jacobiSum n
+        = ∏ p ∈ n.primeFactors, jacobiSum (p ^ n.factorization p) := by
+      rw [isMultiplicative_jacobiSum.multiplicative_factorization _ hn,
+        ← Nat.support_factorization]
+      rfl
+    rw [hprod]
+    exact Finset.prod_nonneg fun p hp =>
+      jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) _
 
 /-- **Qualitative Jacobi two-square theorem.**  The divisor-character sum is
 *strictly positive* exactly on the sums of two squares:

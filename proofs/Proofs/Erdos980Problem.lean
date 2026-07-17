@@ -29,9 +29,9 @@ References:
 - OEIS A098990: Related sequence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.LegendreSymbol.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 
@@ -68,6 +68,8 @@ theorem quadratic_case (p a : ℕ) :
 ## Part II: Least Power Nonresidue
 -/
 
+attribute [local instance] Classical.propDecidable
+
 /--
 **Least k-th Power Nonresidue:**
 n_k(p) = min{a ≥ 1 : a is a k-th power nonresidue mod p}
@@ -78,16 +80,16 @@ noncomputable def leastPowerNonresidue (k p : ℕ) : ℕ :=
   else
     0
 
-/--
+/- 
 For prime p > 2, the least quadratic nonresidue exists.
 -/
 
-/--
+/- 
 **Vinogradov's Bound:**
 For the least quadratic nonresidue n(p), we have n(p) = O(p^{1/(4√e) + ε}).
 -/
 
-/--
+/- 
 **GRH Bound:**
 Assuming GRH, the least quadratic nonresidue n(p) = O((log p)²).
 -/
@@ -103,7 +105,7 @@ S_k(x) = Σ_{p < x, p prime} n_k(p)
 noncomputable def sumLeastNonresidues (k : ℕ) (x : ℝ) : ℝ :=
   ∑ p ∈ (Finset.range ⌊x⌋₊).filter Nat.Prime, (leastPowerNonresidue k p : ℝ)
 
-/--
+/- 
 The sum is always nonnegative since each n_k(p) ≥ 0.
 -/
 
@@ -118,14 +120,14 @@ c₂ = Σ_{j=1}^∞ p_j / 2^j
 where p_j is the j-th prime (p_1 = 2, p_2 = 3, ...).
 -/
 noncomputable def c_2 : ℝ :=
-  ∑' j : ℕ, (Nat.Prime.nthPrime j : ℝ) / 2 ^ (j + 1)
+  ∑' j : ℕ, (Nat.nth Nat.Prime j : ℝ) / 2 ^ (j + 1)
 
 /--
 c₂ converges and is positive.
 -/
 axiom c_2_positive : c_2 > 0
 
-/--
+/- 
 Approximate value: c₂ ≈ 3.67
 -/
 
@@ -159,7 +161,7 @@ axiom erdos_1961_quadratic :
     ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,
     |sumLeastNonresidues 2 x - c_2 * x / log x| < ε * x / log x
 
-/--
+/- 
 Asymptotic form: S_2(x) / (x / log x) → c₂ as x → ∞.
 Follows from erdos_1961_quadratic.
 -/
@@ -200,7 +202,7 @@ theorem erdos_980_solution (k : ℕ) (hk : k ≥ 2) :
 ## Part VII: Interpretation
 -/
 
-/--
+/- 
 **Average Behavior:**
 The average value of n_k(p) over primes p < x is roughly:
   (Σ_{p < x} n_k(p)) / π(x) ~ c_k · log x
@@ -208,7 +210,7 @@ The average value of n_k(p) over primes p < x is roughly:
 since π(x) ~ x / log x.
 -/
 
-/--
+/- 
 **Typical Size:**
 The asymptotic Σ n_k(p) ~ c_k · x/log x combined with π(x) ~ x/log x
 implies the average value of n_k(p) over primes p < x is c_k · log x.
@@ -219,13 +221,13 @@ Individual values n_k(p) are typically O(log p) with rare exceptions.
 ## Part VIII: Special Cases and Examples
 -/
 
-/--
+/- 
 **n_2(p) = 2 for many primes:**
 The least quadratic nonresidue is 2 whenever 2 is a QNR mod p,
 which happens for p ≡ 3, 5 (mod 8).
 -/
 
-/--
+/- 
 **n_2(p) = 3 sometimes:**
 The least QNR is 3 when 2 is a QR but 3 is a QNR.
 This happens for p ≡ 1, 7 (mod 24).
@@ -235,7 +237,7 @@ This happens for p ≡ 1, 7 (mod 24).
 ## Part IX: Connection to Character Sums
 -/
 
-/--
+/- 
 **Character Sum Connection:**
 The proofs of Erdős and Elliott rely on the Pólya–Vinogradov inequality
 for character sums: |Σ_{n ≤ N} χ(n)| ≤ C√p log p, where χ is a

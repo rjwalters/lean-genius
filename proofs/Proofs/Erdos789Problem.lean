@@ -28,11 +28,7 @@ References:
 Tags: additive-combinatorics, sum-free-sets, extremal-combinatorics
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 namespace Erdos789
 
@@ -77,7 +73,7 @@ axiom h (n : ℕ) : ℕ
 ## Part III: Upper Bounds
 -/
 
-/-- Erdős (1962): h(n) ≪ n^{5/6} -/
+/-  Erdős (1962): h(n) ≪ n^{5/6} -/
 /-- Straus (1966): h(n) ≪ n^{1/2} (best known upper bound) -/
 axiom straus_1966_upper :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
@@ -92,7 +88,7 @@ theorem best_upper_bound :
 ## Part IV: Lower Bounds
 -/
 
-/-- Erdős (1962): h(n) ≫ n^{1/3} via probabilistic construction -/
+/-  Erdős (1962): h(n) ≫ n^{1/3} via probabilistic construction -/
 /-- Erdős-Choi (1974): h(n) ≫ (n log n)^{1/3} (best known lower bound) -/
 axiom erdos_choi_1974_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
@@ -137,8 +133,8 @@ def IsSidonSet (B : Finset ℤ) : Prop :=
   ∀ a b c d : ℤ, a ∈ B → b ∈ B → c ∈ B → d ∈ B →
     a + b = c + d → ({a, b} : Finset ℤ) = {c, d}
 
-/-- Sidon sets are sum-length-free (length 2 sums are unique) -/
-/-- Maximum Sidon subset has size ≈ √n (Erdős-Turán) -/
+/-  Sidon sets are sum-length-free (length 2 sums are unique) -/
+/-  Maximum Sidon subset has size ≈ √n (Erdős-Turán) -/
 /-
 ## Part VIII: Related Problems
 -/
@@ -151,7 +147,7 @@ def IsSidonSet (B : Finset ℤ) : Prop :=
 ## Part IX: Special Cases
 -/
 
-/-- For n = 1: h(1) = 1 trivially -/
+/-  For n = 1: h(1) = 1 trivially -/
 /- For small sets, explicit bounds can be computed -/
 
 /-

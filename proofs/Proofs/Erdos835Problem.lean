@@ -65,10 +65,11 @@ def johnsonAdj (n k : ℕ) (S T : kSubsets n k) : Prop :=
 def JohnsonGraph (n k : ℕ) : SimpleGraph (kSubsets n k) where
   Adj := johnsonAdj n k
   symm := by
+    constructor
     intro S T h
     refine ⟨h.1.symm, ?_⟩
     rw [inter_comm]; exact h.2
-  loopless := by intro S h; exact h.1 rfl
+  loopless := by constructor; intro S h; exact h.1 rfl
 
 /-
 ## Part II: The Coloring Problem

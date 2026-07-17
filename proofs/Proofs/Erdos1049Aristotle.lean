@@ -24,7 +24,7 @@ def tau (n : ℕ) : ℕ := n.divisors.card
 -- as Nat.card_divisors_mul_of_coprime or similar.
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     tau (m * n) = tau m * tau n := by
-  simp only [tau, hmn.divisors_mul, Finset.card_product]
+  simp only [tau, hmn.card_divisors_mul]
 
 -- Routine: Geometric series ∑_{m≥1} x^m = x/(1-x) for |x| < 1
 -- Applied to x = 1/t^d where t > 1, d ≥ 1.
@@ -32,7 +32,7 @@ theorem geometric_inverse_pow (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     HasSum (fun m : ℕ => if m = 0 then (0 : ℝ) else (1 / t ^ d) ^ m)
       (1 / (t ^ d - 1)) := by
   set r := 1 / t ^ d with hr_def
-  have htd : (1 : ℝ) < t ^ d := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  have htd : (1 : ℝ) < t ^ d := one_lt_pow₀ ht (by omega)
   have hr_pos : 0 < r := by positivity
   have hr_lt : r < 1 := by rw [hr_def, div_lt_one (by positivity)]; exact htd
   -- Standard geometric series: HasSum (r^·) ((1-r)⁻¹)
@@ -48,9 +48,13 @@ theorem geometric_inverse_pow (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
       (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
     ext m; split_ifs with hm <;> simp
   rw [h_eq] at h_diff
-  -- Show (1-r)⁻¹ - 1 = 1/(t^d - 1)
-  convert h_diff using 1
-  rw [hr_def]; field_simp; ring
+  -- Show 1/(t^d - 1) = (1-r)⁻¹ - 1, then transport `h_diff`.
+  have htd0 : t ^ d ≠ 0 := by positivity
+  have htd1 : t ^ d - 1 ≠ 0 := by
+    have : (1 : ℝ) < t ^ d := htd; linarith
+  have hval : (1 : ℝ) / (t ^ d - 1) = (1 - r)⁻¹ - 1 := by
+    rw [hr_def]; field_simp; ring
+  rw [hval]; exact h_diff
 
 -- Routine: The series ∑ 1/t^n converges for t > 1
 theorem inv_pow_summable (t : ℝ) (ht : t > 1) :
@@ -75,7 +79,7 @@ theorem n_div_pow_summable (t : ℝ) (ht : t > 1) :
 -- Routine: t^n - 1 > 0 for t > 1, n ≥ 1
 theorem pow_sub_one_pos (t : ℝ) (n : ℕ) (ht : t > 1) (hn : n ≥ 1) :
     t ^ n - 1 > 0 := by
-  have h : 1 < t ^ n := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  have h : 1 < t ^ n := one_lt_pow₀ ht (by omega)
   linarith
 
 -- Routine: 1/(t^n - 1) ≤ 2/t^n for t ≥ 2, n ≥ 1
@@ -84,9 +88,9 @@ theorem inv_pow_sub_one_bound (t : ℝ) (n : ℕ) (ht : t ≥ 2) (hn : n ≥ 1) 
     1 / (t ^ n - 1) ≤ 2 / t ^ n := by
   have hp : t ^ n > 0 := by positivity
   have hp1 : t ^ n - 1 > 0 := pow_sub_one_pos t n (by linarith) hn
-  rw [div_le_div_iff hp1 hp]
+  rw [div_le_div_iff₀ hp1 hp]
   have : (2 : ℝ) ≤ t ^ n := le_trans (by norm_num : (2:ℝ) ≤ 2 ^ 1)
-    (le_trans (pow_le_pow_right (by linarith) hn) (pow_le_pow_left (by linarith) ht n))
+    (le_trans (pow_le_pow_right₀ (by linarith) hn) (pow_le_pow_left₀ (by linarith) ht n))
   nlinarith
 
 -- Routine: τ(n) ≤ n (number of divisors bounded by n)

@@ -57,26 +57,29 @@ theorem lgv_r1 (m a b : ℕ) (h : a ≤ b) :
       m := m
       sources := ![ a ]
       targets := ![ b ]
-      wellFormed := by
-        intro i j hij
-        exact absurd hij (by omega)
+      sources_strictMono := by intro i j hij; exact absurd hij (by omega)
+      targets_strictMono := by intro i j hij; exact absurd hij (by omega)
+      source_le_target := by intro i; fin_cases i; simpa using h
     }
     (niTupleCount cfg : ℤ) = (pathMatrix cfg).det :=
-  lgv_lemma_rxr _ (by intro i j hij; exact absurd hij (by omega))
+  lgv_lemma_rxr _ (by intro i j; fin_cases i; fin_cases j; simpa using h)
 
-/-- The 2×2 case as a special case of lgv_general. -/
-theorem lgv_r2 (m a₁ a₂ b₁ b₂ : ℕ) (ha : a₁ < a₂) (hb : b₁ < b₂) (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂) :
+/-- The 2×2 case as a special case of lgv_general.
+Note: `hsep : a₂ ≤ b₁` is the genuine well-formedness condition (every source must be
+reachable to every target, not just the diagonal pairing) -- it is required for the
+r×r LGV lemma's determinant identity to hold and is not implied by `ha`/`hb` alone. -/
+theorem lgv_r2 (m a₁ a₂ b₁ b₂ : ℕ) (ha : a₁ < a₂) (hb : b₁ < b₂) (hsep : a₂ ≤ b₁) :
     let cfg : LGVConfig 2 := {
       m := m
       sources := ![ a₁, a₂ ]
       targets := ![ b₁, b₂ ]
-      wellFormed := by
-        intro i j hij
-        fin_cases i <;> fin_cases j <;> simp_all <;> omega
+      sources_strictMono := by intro i j hij; fin_cases i <;> fin_cases j <;> simp_all
+      targets_strictMono := by intro i j hij; fin_cases i <;> fin_cases j <;> simp_all
+      source_le_target := by intro i; fin_cases i <;> simp_all <;> omega
     }
     (niTupleCount cfg : ℤ) = (pathMatrix cfg).det :=
   lgv_lemma_rxr _ (by
-    intro i j hij
+    intro i j
     fin_cases i <;> fin_cases j <;> simp_all <;> omega)
 
 /-! ## r = 1: Trivial Case -/
@@ -88,28 +91,34 @@ theorem lgv_r1_niCount_eq_pathCount (m a₁ b₁ : ℕ) (h : a₁ ≤ b₁) :
       m := m
       sources := ![ a₁ ]
       targets := ![ b₁ ]
-      wellFormed := by intro i j hij; exact absurd hij (by omega) } =
+      sources_strictMono := by intro i j hij; exact absurd hij (by omega)
+      targets_strictMono := by intro i j hij; exact absurd hij (by omega)
+      source_le_target := by intro i; fin_cases i; simpa using h } =
     Nat.choose (m + (b₁ - a₁)) m := by
   -- Use lgv_r1: niTupleCount cfg = det(pathMatrix cfg) as integers
   have hdet := lgv_r1 m a₁ b₁ h
-  -- 1×1 determinant = single entry
-  rw [Matrix.det_fin_one] at hdet
-  -- Unfold pathMatrix entry: targets 0 = b₁, sources 0 = a₁
-  simp only [pathMatrix, Matrix.of_apply, Matrix.cons_val_zero] at hdet
+  -- Unfold the `let`, take the 1×1 determinant, and unfold pathMatrix entry
+  -- (targets 0 = b₁, sources 0 = a₁) all in one simp pass (simp zeta-reduces the `let`/`have`,
+  -- unlike `rw` which does not).
+  simp only [Matrix.det_fin_one, pathMatrix, Matrix.of_apply, Matrix.cons_val_zero] at hdet
   -- Cast ℤ equality to ℕ
   exact_mod_cast hdet
 
 /-! ## General Corollaries -/
 
-/-- Any n×n path matrix over well-separated source/target points gives the NI-path count. -/
+/-- Any n×n path matrix over well-separated source/target points gives the NI-path count.
+`hwf` is the genuine well-formedness condition (every source reachable to every target,
+not just the diagonal pairing); it is required for the r×r LGV determinant identity and
+is strictly stronger than `StrictMono` + diagonal `≤` alone. -/
 theorem nxn_lgv_corollary (r : ℕ) (m : ℕ) (sources targets : Fin r → ℕ)
-    (hst : ∀ i, sources i ≤ targets i)
-    (hs : StrictMono sources) (ht : StrictMono targets) :
+    (hs : StrictMono sources) (ht : StrictMono targets)
+    (hwf : ∀ i j, sources i ≤ targets j) :
     let cfg : LGVConfig r := {
       m := m, sources := sources, targets := targets,
-      wellFormed := by intro i j hij; exact hs.lt hij }
+      sources_strictMono := hs, targets_strictMono := ht,
+      source_le_target := fun i => hwf i i }
     (niTupleCount cfg : ℤ) = (pathMatrix cfg).det :=
-  lgv_lemma_rxr _ (fun i j hij => hs.lt hij)
+  lgv_lemma_rxr _ hwf
 
 /-! ## Connection to Schur Polynomials (Jacobi-Trudi Identity) -/
 

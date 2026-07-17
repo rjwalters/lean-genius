@@ -184,7 +184,7 @@ theorem arctan_div_sqrt_eq_arcsin {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
       rw [show (4 : ℝ) = 2 ^ 2 by norm_num]; exact Real.sqrt_sq (by norm_num)] at hlt
   -- `√(1 - s²) = √(4-x)/2`
   have hs2 : (1 : ℝ) - s ^ 2 = (4 - x) / 4 := by
-    rw [hs, div_pow, hxx]; ring
+    rw [hs, div_pow, Real.sq_sqrt hx0.le]; ring
   have hsqrt_half : Real.sqrt (1 - s ^ 2) = Real.sqrt (4 - x) / 2 := by
     rw [hs2, show (4 - x) / 4 = (4 - x) * (1 / 4) by ring, Real.sqrt_mul h4x.le,
       show (1 : ℝ) / 4 = (1 / 2) ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
@@ -193,7 +193,8 @@ theorem arctan_div_sqrt_eq_arcsin {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
   have hkey : x / Real.sqrt (x * (4 - x)) = Real.tan (Real.arcsin s) := by
     rw [Real.tan_arcsin, hsqrt_half, hprod, hs, div_div_div_cancel_right₀,
       div_eq_div_iff (by positivity) (by positivity)]
-    nlinarith [hxx, hsxpos, hsx4pos]
+    · nlinarith [hxx, hsxpos, hsx4pos]
+    · norm_num
   rw [hkey, Real.arctan_tan]
   · exact Real.neg_pi_div_two_lt_arcsin.mpr (by linarith)
   · exact Real.arcsin_lt_pi_div_two.mpr hs_lt1
@@ -230,8 +231,9 @@ theorem centralBeta_ogf_kernel_integral {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
         simpa using ((hasDerivAt_id t).const_mul (2 * x)).sub_const x
       simpa using h0.div_const k
     have harc : HasDerivAt (fun t => Real.arctan ((2 * x * t - x) / k))
-        ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k)) t :=
-      (Real.hasDerivAt_arctan ((2 * x * t - x) / k)).comp t hg
+        ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k)) t := by
+      have h := (Real.hasDerivAt_arctan ((2 * x * t - x) / k)).comp t hg
+      simpa [Function.comp_def] using h
     have hF' : HasDerivAt (fun t => (2 / k) * Real.arctan ((2 * x * t - x) / k))
         ((2 / k) * ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k))) t :=
       harc.const_mul (2 / k)
@@ -260,7 +262,7 @@ theorem centralBeta_ogf_kernel_integral {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
       MeasureTheory.volume 0 1 := hcont.intervalIntegrable
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint]
   -- boundary evaluation
-  simp only []
+  skip
   rw [show (2 * x * 1 - x) = x by ring, show (2 * x * 0 - x) = -x by ring,
       neg_div, Real.arctan_neg, hk, arctan_div_sqrt_eq_arcsin hx0 hx4]
   ring

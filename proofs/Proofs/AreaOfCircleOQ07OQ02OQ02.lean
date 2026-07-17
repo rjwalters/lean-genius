@@ -77,9 +77,7 @@ theorem first_half_moment (b : ℝ) (hb : 0 < b) :
       HasDerivAt (fun x => -(2 * b)⁻¹ * Real.exp (-b * x ^ 2))
         (x * Real.exp (-b * x ^ 2)) x := by
     intro x _
-    convert (((hasDerivAt_pow 2 x).const_mul (-b)).exp).const_mul (-(2 * b)⁻¹) using 1
-    field_simp
-    ring
+    convert (((hasDerivAt_pow 2 x).const_mul (-b)).exp).const_mul (-(2 * b)⁻¹) using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- boundary behaviour: primitive → 0
   have htendsto :
       Tendsto (fun x : ℝ => -(2 * b)⁻¹ * Real.exp (-b * x ^ 2)) atTop (𝓝 (-(2 * b)⁻¹ * 0)) :=
@@ -105,10 +103,13 @@ theorem second_half_moment (b : ℝ) (hb : 0 < b) :
     intro x _
     have h := (((hasDerivAt_id x).const_mul (-(2 * b)⁻¹))).mul
       (((hasDerivAt_pow 2 x).const_mul (-b)).exp)
+    have hcancel : b * b⁻¹ = 1 := mul_inv_cancel₀ (ne_of_gt hb)
     convert h using 1
-    simp only [id_eq]
-    field_simp
-    ring
+    case e'_8 => funext z; simp only [Pi.mul_apply, id_eq]
+    case e'_9 =>
+      norm_num
+      linear_combination (- x ^ 2 * Real.exp (- (b * x ^ 2))) * hcancel
+    all_goals rfl
   -- g → 0 at +∞
   have htendsto :
       Tendsto (fun x : ℝ => -(2 * b)⁻¹ * x * Real.exp (-b * x ^ 2)) atTop (𝓝 0) := by

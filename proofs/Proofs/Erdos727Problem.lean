@@ -15,10 +15,7 @@ For k ≥ 2, does ((n+k)!)² | (2n)! for infinitely many n?
 Reference: https://erdosproblems.com/727
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Set
 
@@ -129,7 +126,7 @@ Classical fact: (n+1) | C(2n, n) for all n.
 theorem catalan_divisibility (n : ℕ) : (n + 1) ∣ centralBinom n := by
   unfold centralBinom
   change (n + 1) ∣ Nat.centralBinom n
-  exact ⟨Nat.catalan n, (Nat.succ_mul_catalan_eq n).symm⟩
+  exact ⟨catalan n, (succ_mul_catalan_eq_centralBinom n).symm⟩
 
 /--
 Catalan identity: C(2n,n) = (n+1) * C_n

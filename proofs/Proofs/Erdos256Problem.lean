@@ -25,11 +25,10 @@ Related: Problem #510 (Chowla cosine problem)
 Tags: analysis, harmonic-analysis, unit-circle, products
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Finset.Basic
+import Mathlib
+
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
 open Real Complex
 open scoped BigOperators
@@ -52,7 +51,7 @@ noncomputable def productPoly (a : Fin n → ℕ) (z : ℂ) : ℂ :=
 M(a₁,...,aₙ) = max_{|z|=1} |P(z; a₁,...,aₙ)|
 -/
 noncomputable def maxOnUnitCircle (a : Fin n → ℕ) : ℝ :=
-  sSup {|productPoly a z| | z : ℂ, Complex.abs z = 1}
+  sSup {y | ∃ z : ℂ, Complex.abs z = 1 ∧ Complex.abs (productPoly a z) = y}
 
 /--
 **The function f(n):**
@@ -74,22 +73,22 @@ f(n) > √(2n)
 axiom erdos_szekeres_lower (n : ℕ) (hn : n ≥ 1) :
     f n > Real.sqrt (2 * n)
 
-/--
+/- 
 **Erdős-Szekeres (1959) growth:**
 lim f(n)^{1/n} = 1
 -/
 
-/--
+/- 
 **Erdős probabilistic bound:**
 log f(n) ≪ n^{1-c} for some c > 0
 -/
 
-/--
+/- 
 **Atkinson (1961):**
 log f(n) ≪ n^{1/2} log n
 -/
 
-/--
+/- 
 **Odlyzko (1982):**
 log f(n) ≪ n^{1/3} (log n)^{4/3}
 -/
@@ -180,7 +179,7 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
     exact rpow_lt_rpow (rpow_nonneg hKC_pos.le _) hN_gt_KC (by linarith)
   -- Step 6: Combine for contradiction
   have hK_lt : K < C * (↑N : ℝ) ^ (c / 2) := by
-    have := (div_lt_iff hC).mp hKC_lt; linarith
+    have := (div_lt_iff₀ hC).mp hKC_lt; linarith
   have key : K * (Real.log (↑N : ℝ)) ^ 4 < C * (↑N : ℝ) ^ c := by
     calc K * (Real.log (↑N : ℝ)) ^ 4
         ≤ K * (↑N : ℝ) ^ (c / 2) :=
@@ -200,9 +199,9 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
 When we require a₁ < a₂ < ... < aₙ instead of ≤.
 -/
 noncomputable def fDistinct (n : ℕ) : ℝ :=
-  sInf {maxOnUnitCircle a | a : Fin n → ℕ, Function.Injective a}
+  sInf {y | ∃ a : Fin n → ℕ, Function.Injective a ∧ maxOnUnitCircle a = y}
 
-/--
+/- 
 **Bourgain-Chang (2018):**
 log f*(n) ≪ (n log n)^{1/2} log log n
 -/
@@ -215,10 +214,10 @@ log f*(n) ≪ (n log n)^{1/2} log log n
 **Chowla cosine problem (Problem #510):**
 For a set A of n integers, find θ minimizing ∑_{a ∈ A} cos(aθ).
 -/
-def chowlaMinimum (A : Finset ℤ) : ℝ :=
+noncomputable def chowlaMinimum (A : Finset ℤ) : ℝ :=
   sInf {∑ a ∈ A, Real.cos (a * θ) | θ : ℝ}
 
-/--
+/- 
 **Atkinson's observation:**
 If for any set A of n integers there exists θ with ∑_{a ∈ A} cos(aθ) < -Mₙ,
 then log f*(n) ≪ Mₙ log n.
@@ -240,10 +239,10 @@ theorem product_at_root_of_unity (a : Fin n → ℕ) (k : ℕ) (hk : k ≥ 1)
   intro i _
   congr 1
   -- z^(a i) = z^(a i % k) since z^k = 1
-  rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm,
-      pow_add, pow_mul, hz, one_pow, one_mul]
+  conv_lhs => rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm]
+  rw [pow_add, pow_mul, hz, one_pow, one_mul]
 
-/--
+/- 
 **Lower bound at primitive root:**
 There exists a root of unity where the product is not too small.
 -/
@@ -252,7 +251,7 @@ There exists a root of unity where the product is not too small.
 ## Part VIII: Summary of Bounds
 -/
 
-/--
+/- 
 **Timeline of bounds on log f(n):**
 
 1959 Erdős-Szekeres: f(n) > √(2n), so log f(n) > (1/2) log(2n)
@@ -262,7 +261,7 @@ There exists a root of unity where the product is not too small.
 1996 Belov-Konyagin: log f(n) ≪ (log n)^4  [BEST UPPER]
 -/
 
-/--
+/- 
 **Gap between bounds:**
 Lower: log f(n) ≥ (1/2) log n  (from f(n) > √(2n))
 Upper: log f(n) ≤ C (log n)^4

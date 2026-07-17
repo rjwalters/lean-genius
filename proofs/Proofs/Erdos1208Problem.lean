@@ -70,15 +70,15 @@ C(|Q|, 2) ≤ O(N^2), giving |Q| ≤ O(N) = O(n^(1/d)).
 /-- **Key size bound**: a distance-Sidon subset Q of size k must use at least
     k(k-1)/2 distinct distance values. Thus |Q| is bounded above by O(√D)
     where D is the number of distinct distances in the ambient point set. -/
-theorem distance_sidon_size_bound {α : Type*} [MetricSpace α]
+theorem distance_sidon_size_bound {α : Type*} [MetricSpace α] [DecidableEq α]
     (Q : Finset α) (hQ : IsDistanceSidon Q) :
     Q.card * (Q.card - 1) / 2 ≤
       ((Q ×ˢ Q).image (fun pq => dist pq.1 pq.2)).card := by
   -- Suffices: Q.card*(Q.card-1) ≤ 2 * |image of Q×Q|, then omega handles the /2
   suffices h : Q.card * (Q.card - 1) ≤
       2 * ((Q ×ˢ Q).image fun pq => dist pq.1 pq.2).card by omega
-  -- Rewrite LHS as Q.offDiag.card (since card_offDiag gives s.card*(s.card-1))
-  rw [← Finset.card_offDiag]
+  -- Rewrite LHS as Q.offDiag.card (since card_offDiag gives s.card*s.card - s.card)
+  rw [Nat.mul_sub_one, ← Finset.offDiag_card]
   -- Each distance value in the offDiag image appears for at most 2 pairs (a,b) and (b,a)
   have hfiber : ∀ d ∈ Q.offDiag.image (fun pq => dist pq.1 pq.2),
       (Q.offDiag.filter (fun pq => dist pq.1 pq.2 = d)).card ≤ 2 := by

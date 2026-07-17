@@ -36,11 +36,11 @@ is a real number embedded in ℂ, the product is also a real complex number.
 -/
 
 /-- A finite product of complex numbers with zero imaginary parts has zero imaginary part. -/
-theorem prod_im_eq_zero_ari {ι : Type*} (s : Finset ι) (f : ι → ℂ)
+theorem prod_im_eq_zero_ari {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι → ℂ)
     (h : ∀ i ∈ s, (f i).im = 0) : (s.prod f).im = 0 := by
   induction s using Finset.induction with
   | empty => simp
-  | insert ha ih =>
+  | @insert a t ha ih =>
     rw [Finset.prod_insert ha, Complex.mul_im,
         ih (fun i hi => h i (Finset.mem_insert_of_mem hi)),
         h _ (Finset.mem_insert_self _ _)]
@@ -61,6 +61,6 @@ theorem monomial_real_ari {n : ℕ} (α : Fin n → ℕ) (ξ : Fin n → ℝ) :
     (Finset.univ.prod fun i => (ξ i : ℂ) ^ α i).im = 0 := by
   apply prod_im_eq_zero_ari
   intro i _
-  simp [Complex.ofReal_pow]
+  rw [← Complex.ofReal_pow, Complex.ofReal_im]
 
 end Hilbert20OQ01OQ03Aristotle

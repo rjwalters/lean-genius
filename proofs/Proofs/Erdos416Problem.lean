@@ -74,25 +74,25 @@ theorem four_is_totient : ∃ m : ℕ, m.totient = 4 := ⟨5, by native_decide�
 
 /- ## Partial Results (Solved) -/
 
-/--
+/- 
 **Pillai (1929)**: V(x) = o(x)
 
 The density of totient values is 0. Most integers are NOT totient values.
 This was the first quantitative result about the sparsity of totient values.
 -/
-/--
+/- 
 **Erdős (1935)**: V(x) = x · (log x)^(-1+o(1))
 
 This refines Pillai's result: V(x) behaves like x/log x up to sub-polynomial
 factors in the exponent. The density decays like 1/log x.
 -/
-/--
+/- 
 **Maier-Pomerance (1988)**: V(x) = (x/log x) · e^((C+o(1))(log log log x)²)
 
 A more precise asymptotic: the correction factor is exponential in (log log log x)².
 The constant C is explicitly computable.
 -/
-/--
+/- 
 **Ford (1998)**: The most precise bound known
 
 V(x) ≍ (x/log x) · exp(C₁(log log log x - log log log log x)² + C₂ log log log x - C₃ log log log log x)
@@ -137,7 +137,7 @@ def Erdos416Conjecture : Prop := Erdos416_Part_i ∧ Erdos416_Part_ii
 theorem three_not_totient : ¬∃ m : ℕ, m.totient = 3 := by
   intro ⟨m, hm⟩
   by_cases hm2 : m ≤ 2
-  · interval_cases m <;> simp_all [Nat.totient]
+  · interval_cases m <;> exact absurd hm (by decide)
   · push_neg at hm2
     have heven := Nat.totient_even (show 2 < m by omega)
     rw [hm] at heven

@@ -72,9 +72,11 @@ Routine: |innerSum α n| ≤ n/2.
     Strategy: Finset.abs_sum_le_sum_abs + deviation_bounded.
 -/
 theorem innerSum_abs_le (α : ℝ) (n : ℕ) : |innerSum α n| ≤ ↑n / 2 := by
-  convert Finset.abs_sum_le_sum_abs _ _ |> le_trans <| ?_ using 1;
-  · infer_instance;
-  · exact le_trans ( Finset.sum_le_sum fun _ _ => show |deviation _| ≤ 1 / 2 by exact deviation_bounded _ ) ( by norm_num; linarith )
+  unfold innerSum
+  calc |∑ k ∈ range n, deviation (α * (↑k + 1))|
+      ≤ ∑ k ∈ range n, |deviation (α * (↑k + 1))| := Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ k ∈ range n, (1 / 2 : ℝ) := Finset.sum_le_sum (fun k _ => deviation_bounded _)
+    _ = ↑n / 2 := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]; ring
 
 /-
 Routine: the integral of deviation over [0,1] is zero.

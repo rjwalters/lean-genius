@@ -21,10 +21,7 @@ Ramsey theory, we require c(i,j) = c(j,i). This file uses `ramseyNumberSymm` wit
 the symmetric coloring constraint to correctly model undirected Ramsey numbers.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fin.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos181OQ01
 
@@ -101,6 +98,7 @@ theorem ramseyNumberSymm_ge (n : ℕ) (hne : (symmRamseySet n).Nonempty) :
 ## Part IV: R_sym(Q_1) = 2
 -/
 
+set_option maxRecDepth 2000 in
 /-- 2 is in the symmetric Ramsey set for Q_1. -/
 theorem two_in_symm_ramsey_set : (2 : ℕ) ∈ symmRamseySet 1 := by
   unfold symmRamseySet
@@ -109,7 +107,11 @@ theorem two_in_symm_ramsey_set : (2 : ℕ) ∈ symmRamseySet 1 := by
   refine ⟨id, Function.injective_id, c ⟨0, by norm_num⟩ ⟨1, by norm_num⟩, ?_⟩
   intro x y hxy
   rw [hypercubeAdj_one_iff] at hxy
-  fin_cases x <;> fin_cases y <;> simp_all [Function.id]
+  fin_cases x <;> fin_cases y <;>
+    first
+    | exact absurd rfl hxy
+    | rfl
+    | exact hsymm _ _
 
 /-- R_sym(Q_1) ≤ 2 since 2 is in the symmetric Ramsey set. -/
 theorem ramseyNumberSymm_one_le : ramseyNumberSymm 1 ≤ 2 := by
@@ -146,7 +148,7 @@ theorem conjecture_implies_bounded_ratio :
       (ramseyNumberSymm n : ℝ) / (2 : ℝ) ^ n ≤ B := by
   intro ⟨C, hC, hbound⟩
   refine ⟨C, hC, fun n _ => ?_⟩
-  rw [div_le_iff (by positivity)]
+  rw [div_le_iff₀ (by positivity)]
   linarith [hbound n]
 
 /-!

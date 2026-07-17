@@ -54,7 +54,7 @@ namespace Erdos206
 /-- **Egyptian Fraction:**
     A sum of distinct unit fractions: 1/m_1 + 1/m_2 + ... + 1/m_n
     where all m_i are distinct positive integers. -/
-def EgyptianFraction (S : Finset ℕ) : ℝ :=
+noncomputable def EgyptianFraction (S : Finset ℕ) : ℝ :=
   S.sum (fun m => if m = 0 then 0 else (1 : ℝ) / m)
 
 /-- **Valid Denominators:**
@@ -135,7 +135,7 @@ def explicit_nongreedy_example_exists : Prop :=
 
 /- ## Part VI: Special Cases and Counterexample -/
 
-/-- **Non-greedy at finite step: the 11/24 example.**
+/-  **Non-greedy at finite step: the 11/24 example.**
 
     R_1(11/24) = 1/3 (the largest unit fraction below 11/24)
     R_2(11/24) = 1/4 + 1/5 = 9/20 = 0.45
@@ -151,7 +151,7 @@ def explicit_nongreedy_example_exists : Prop :=
     and subtract the corresponding unit fraction. Iterating this
     produces an Egyptian fraction representation (always terminates
     for rationals). -/
-def sylvesterStep (x : ℝ) (hx : x > 0) (hx1 : x < 1) : ℕ × ℝ :=
+noncomputable def sylvesterStep (x : ℝ) (hx : x > 0) (hx1 : x < 1) : ℕ × ℝ :=
   let m := Nat.ceil (1 / x)
   (m, x - 1 / m)
 
@@ -164,7 +164,7 @@ theorem erdos_206_summary :
     volume EventuallyGreedySet = 0 ∧
     -- But specific cases (x=1, x=1/m) are greedy
     EventuallyGreedy 1 ∧
-    (∀ m > 0, EventuallyGreedy (1 / m : ℝ)) := by
+    (∀ m : ℕ, m > 0 → EventuallyGreedy (1 / m : ℝ)) := by
   refine ⟨kovac_theorem, curtiss_theorem, ?_⟩
   intro m hm
   exact erdos_unit_fractions m hm

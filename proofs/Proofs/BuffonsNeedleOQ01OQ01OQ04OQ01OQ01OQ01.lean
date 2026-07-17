@@ -65,16 +65,20 @@ theorem integral_sin_mul_cos_pow (m : ℕ) :
     rw [Nat.add_sub_cancel] at hp
     have hd := (hp.neg).div_const ((m : ℝ) + 1)
     have hne : ((m : ℝ) + 1) ≠ 0 := by positivity
-    convert hd using 1
-    push_cast
-    field_simp
-    ring
+    have hval : Real.sin θ * Real.cos θ ^ m
+        = -(((↑(m + 1)) * Real.cos θ ^ m * (-Real.sin θ))) / ((m : ℝ) + 1) := by
+      push_cast
+      rw [eq_div_iff hne]; ring
+    rw [hval]
+    exact hd
   have hcont : Continuous (fun θ : ℝ => Real.sin θ * Real.cos θ ^ m) :=
     Real.continuous_sin.mul (Real.continuous_cos.pow m)
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv
         (hcont.intervalIntegrable 0 (π/2)),
     Real.cos_pi_div_two, Real.cos_zero]
-  simp [zero_pow (Nat.succ_ne_zero m)]
+  simp only [zero_pow (Nat.succ_ne_zero m), one_pow, neg_zero, zero_div, zero_sub,
+    neg_neg, one_div]
+  ring
 
 /-- **Companion Beta integral, dimensional form** (n ≥ 2):
     `∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1)`.

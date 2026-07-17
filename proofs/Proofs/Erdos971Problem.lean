@@ -76,7 +76,7 @@ These results use sieve methods (Brun's sieve) and are beyond Mathlib's
 current formalization.
 -/
 
-/--
+/- 
 Erdős's first partial result: The statement in `mainQuestion` holds for
 infinitely many values of d (though not necessarily all large d).
 
@@ -86,7 +86,7 @@ moduli d with special multiplicative structure.
 Reference: Erdős, P., "On some applications of Brun's method",
 Acta Univ. Szeged. Sect. Sci. Math. (1949), 57-63.
 -/
-/--
+/- 
 Erdős's second partial result: For any ε > 0, a positive proportion of
 reduced residue classes have SMALL least primes (less than ε·φ(d)·log d).
 

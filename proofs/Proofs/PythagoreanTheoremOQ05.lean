@@ -58,7 +58,7 @@ theorem hasDerivAt_cosh' (x : ℝ) : HasDerivAt Real.cosh (Real.sinh x) x := by
   have hsinhEq : Real.sinh x = (Real.exp x - Real.exp (-x)) / 2 := Real.sinh_eq x
   rw [hsinhEq]
   have := (h1.add h2).div_const 2
-  convert this using 1; ring
+  convert this using 1 <;> (first | rfl | ring | norm_num)
 
 /-- HasDerivAt for sinh: sinh'(x) = cosh(x). -/
 theorem hasDerivAt_sinh' (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
@@ -70,7 +70,7 @@ theorem hasDerivAt_sinh' (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
   have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
   rw [hcoshEq]
   have := (h1.sub h2).div_const 2
-  convert this using 1; ring
+  convert this using 1 <;> (first | rfl | ring | norm_num)
 
 -- ============================================================
 -- Part II: Basic inequalities
@@ -119,7 +119,7 @@ theorem cosh_ge_one_add_sq_div_two' (x : ℝ) (hx : 0 ≤ x) : 1 + x ^ 2 / 2 ≤
     intro t _
     have : HasDerivAt f (Real.sinh t - t) t := by
       have hd3 : HasDerivAt (fun y : ℝ => y ^ 2 / 2) t t := by
-        convert (hasDerivAt_pow 2 t).div_const 2 using 1; ring
+        convert (hasDerivAt_pow 2 t).div_const 2 using 1 <;> (first | rfl | ring | norm_num)
       have hcomb : HasDerivAt f (Real.sinh t - 0 - t) t :=
         ((hasDerivAt_cosh' t).sub (hasDerivAt_const t 1)).sub hd3
       simpa using hcomb
@@ -127,7 +127,7 @@ theorem cosh_ge_one_add_sq_div_two' (x : ℝ) (hx : 0 ≤ x) : 1 + x ^ 2 / 2 ≤
   have hf_deriv : ∀ t ∈ interior (Icc 0 x), 0 ≤ deriv f t := by
     intro t ht
     have hd3 : HasDerivAt (fun y : ℝ => y ^ 2 / 2) t t := by
-      convert (hasDerivAt_pow 2 t).div_const 2 using 1; ring
+      convert (hasDerivAt_pow 2 t).div_const 2 using 1 <;> (first | rfl | ring | norm_num)
     have hd : HasDerivAt f (Real.sinh t - t) t := by
       have hcomb : HasDerivAt f (Real.sinh t - 0 - t) t :=
         ((hasDerivAt_cosh' t).sub (hasDerivAt_const t 1)).sub hd3
@@ -164,16 +164,16 @@ private theorem hasDerivAt_gFun (u : ℝ) :
   have hc := hasDerivAt_cosh' u
   have hs := hasDerivAt_sinh' u
   have ht2 : HasDerivAt (fun u : ℝ => u ^ 2) (2 * u) u := by
-    convert (hasDerivAt_pow 2 u) using 1; norm_cast; ring
+    convert (hasDerivAt_pow 2 u) using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/dt[u²·cosh u] = 2u·cosh u + u²·sinh u
   have h1 : HasDerivAt (fun u => u ^ 2 * Real.cosh u) (2 * u * Real.cosh u + u ^ 2 * Real.sinh u) u :=
     ht2.mul hc |>.congr_deriv (by ring)
   -- d/dt[-2(cosh u - 1)] = -2·sinh u
   have h2 : HasDerivAt (fun u => 2 * (Real.cosh u - 1)) (2 * Real.sinh u) u := by
     have := (hc.sub (hasDerivAt_const u 1)).const_mul 2
-    convert this using 1; ring
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   have := h1.sub h2
-  convert this using 1; ring
+  convert this using 1 <;> (first | rfl | ring | norm_num)
 
 /-- HasDerivAt for gDeriv (second derivative of g):
     g''(u) = u²·cosh u + 4u·sinh u. -/
@@ -183,20 +183,20 @@ private theorem hasDerivAt_gDeriv (u : ℝ) :
   have hc := hasDerivAt_cosh' u
   have hs := hasDerivAt_sinh' u
   have ht2 : HasDerivAt (fun u : ℝ => u ^ 2) (2 * u) u := by
-    convert (hasDerivAt_pow 2 u) using 1; norm_cast; ring
+    convert (hasDerivAt_pow 2 u) using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/du[2u·cosh u] = 2·cosh u + 2u·sinh u
   have h1 : HasDerivAt (fun u => 2 * u * Real.cosh u) (2 * Real.cosh u + 2 * u * Real.sinh u) u := by
     have := (hasDerivAt_id u |>.const_mul 2).mul hc
-    convert this using 1; simp only [id_eq]; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/du[(u²-2)·sinh u] = 2u·sinh u + (u²-2)·cosh u
   have h2 : HasDerivAt (fun u => (u ^ 2 - 2) * Real.sinh u)
       (2 * u * Real.sinh u + (u ^ 2 - 2) * Real.cosh u) u := by
     have hd : HasDerivAt (fun u : ℝ => u ^ 2 - 2) (2 * u) u := by
-      convert ht2.sub (hasDerivAt_const u 2) using 1; ring
+      convert ht2.sub (hasDerivAt_const u 2) using 1 <;> (first | rfl | ring | norm_num)
     have := hd.mul hs
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   have := h1.add h2
-  convert this using 1; ring
+  convert this using 1 <;> (first | rfl | ring | norm_num)
 
 /-- g''(u) = u²·cosh u + 4u·sinh u ≥ 0 for u ≥ 0. -/
 private theorem gSecondDeriv_nonneg (u : ℝ) (hu : 0 ≤ u) :

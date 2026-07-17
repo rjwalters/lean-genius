@@ -21,12 +21,12 @@
   - Freiman-Lev upper bound improvement
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators Nat
 
@@ -77,8 +77,7 @@ theorem quotient_set_nonempty (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a 
   obtain ⟨a, ha⟩ := hne
   use gcdQuotient a a
   unfold gcdQuotientSet
-  simp only [mem_image, mem_product]
-  exact ⟨(a, a), ⟨ha, ha⟩, rfl⟩
+  exact Finset.mem_image.mpr ⟨(a, a), Finset.mk_mem_product ha ha, rfl⟩
 
 /-- gcdQuotient a a = 1 for a > 0. -/
 theorem gcdQuotient_self (a : ℕ) (ha : a > 0) : gcdQuotient a a = 1 := by
@@ -90,8 +89,8 @@ theorem one_in_quotient_set (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a �
     1 ∈ gcdQuotientSet A := by
   obtain ⟨a, ha⟩ := hne
   unfold gcdQuotientSet
-  simp only [mem_image, mem_product]
-  exact ⟨(a, a), ⟨ha, ha⟩, gcdQuotient_self a (hpos a ha)⟩
+  exact Finset.mem_image.mpr
+    ⟨(a, a), Finset.mk_mem_product ha ha, gcdQuotient_self a (hpos a ha)⟩
 
 /-
 ## Part III: Erdős-Szemerédi Bounds
@@ -173,7 +172,7 @@ def openExponentQuestion : Prop :=
 ## Part X: Summary
 -/
 
-/-- **Erdős Problem #539: OPEN (bounds established)**
+/- **Erdős Problem #539: OPEN (bounds established)**
 
 Question: For A ⊆ ℕ of size n, what is the minimum size of
 { a / gcd(a,b) : a, b ∈ A }?

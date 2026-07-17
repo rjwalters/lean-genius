@@ -69,7 +69,7 @@ def IsPerfectDifferenceSet (B : Finset ℕ) (n : ℕ) : Prop :=
 Erdős asked if every finite Sidon set can be embedded in a perfect difference set
 mod p² + p + 1 for some prime p. The answer is NO. -/
 
-/-- **Erdős Problem #707 (DISPROVED)**:
+/-  **Erdős Problem #707 (DISPROVED)**:
 
 It is FALSE that every finite Sidon set can be embedded in a perfect
 difference set mod n for some n > 0.
@@ -95,21 +95,21 @@ theorem sidon_124 : IsSidon {1, 2, 4} := by
   rcases hd with rfl | rfl | rfl <;>
   simp_all
 
-/-- The set {1, 2, 4, 8} is a Sidon set.
+/-  The set {1, 2, 4, 8} is a Sidon set.
 This is the start of the Mian-Chowla sequence. -/
 
-/-- **Alexeev-Mixon (2025)**: {1,2,4,8} cannot be extended to a perfect
+/-  **Alexeev-Mixon (2025)**: {1,2,4,8} cannot be extended to a perfect
 difference set mod p² + p + 1 for any prime p. -/
 
-/-- **Alexeev-Mixon (2025)**: {1,2,4,8,13} cannot be extended to ANY
+/-  **Alexeev-Mixon (2025)**: {1,2,4,8,13} cannot be extended to ANY
 perfect difference set. -/
 
-/-- **Hall (1947)**: {1,3,9,10,13} cannot be extended to ANY
+/-  **Hall (1947)**: {1,3,9,10,13} cannot be extended to ANY
 perfect difference set. This was proved before Erdős even asked the question! -/
 
 /- ## Positive Results -/
 
-/-- **Size bound**: A perfect difference set mod n has size at most √n + 1.
+/-  **Size bound**: A perfect difference set mod n has size at most √n + 1.
 This is because each of the n-1 nonzero differences must be represented
 exactly once, giving |B|(|B|-1) = n-1, so |B| ≈ √n. -/
 
@@ -119,10 +119,10 @@ This comes from the theory of cyclic projective planes. -/
 axiom singer_construction (p : ℕ) (hp : Nat.Prime p) :
   ∃ B : Finset ℕ, IsPerfectDifferenceSet B (p^2 + p + 1) ∧ B.card = p + 1
 
-/-- **Small Sidon sets**: Any Sidon set of size ≤ 3 can be extended to a
+/-  **Small Sidon sets**: Any Sidon set of size ≤ 3 can be extended to a
 perfect difference set. (Sawin, MathOverflow discussion) -/
 
-/-- **Example**: {1, 2, 4} can be embedded in a perfect difference set mod 7.
+/-  **Example**: {1, 2, 4} can be embedded in a perfect difference set mod 7.
 Here 7 = 2² + 2 + 1, and B = {0, 1, 3} (or equivalently {1, 2, 4}) works. -/
 
 /- ## Connection to Sidon Set Density
@@ -130,7 +130,7 @@ Here 7 = 2² + 2 + 1, and B = {0, 1, 3} (or equivalently {1, 2, 4}) works. -/
 This problem is related to Erdős Problem #329 about the density of Sidon sets.
 If the conjecture were TRUE, it would imply optimal density for Sidon sets. -/
 
-/-- If the conjecture were true (which it's not), it would imply the maximum
+/-  If the conjecture were true (which it's not), it would imply the maximum
 density of Sidon sets in [1,n] is (1 + o(1))√n.
 Since the conjecture is false, this approach fails. -/
 

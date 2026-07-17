@@ -75,7 +75,15 @@ construction supplies the second (every algebraic number is, by definition,
 algebraic over `ℚ`). -/
 instance instIsAlgClosure : IsAlgClosure ℚ algebraicNumbersField where
   isAlgClosed := inferInstance
-  isAlgebraic := inferInstance
+  isAlgebraic := AlgebraicNumbersCountableOQ01OQ01.algebraicIntermediateField_isAlgebraic (K := ℚ) (L := ℂ)
+
+/-- v4.31 compat (#38065): `IsAlgClosure ℚ (AlgebraicClosure ℚ)` no longer
+synthesizes automatically — the `Algebra.IsAlgebraic` half is not an instance for
+`AlgebraicClosure`. Re-assemble it from `IsAlgClosed` (still an instance) and
+`AlgebraicClosure.isAlgebraic`. -/
+instance instIsAlgClosureAbstract : IsAlgClosure ℚ (AlgebraicClosure ℚ) where
+  isAlgClosed := inferInstance
+  isAlgebraic := AlgebraicClosure.isAlgebraic ℚ
 
 /- ============================================================
    § 2 : Identification with the abstract `AlgebraicClosure ℚ`

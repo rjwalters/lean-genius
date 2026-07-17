@@ -627,13 +627,21 @@ private theorem sq_diff_sqrt3_sixth_half :
   rw [h, neg_pow_two, sq_diff_sqrt3_half_sixth]
 
 /-- The regular tetrahedron embedding of K₄ in ℝ³. -/
+-- NOTE (v4.31 migration seam): patterns are fully exhaustive (no wildcard `_` fallback
+-- branches) — wildcard-mixed matches on `Fin` numeral literals no longer iota-reduce under
+-- `simp` (only under kernel `rfl`), which blocks `fin_cases ... <;> simp_all [K4embed, ...]`
+-- from unfolding these entries. See sibling `K3embed` (already exhaustive) for the working
+-- pattern.
 noncomputable def K4embed : Fin 4 → Fin 3 → ℝ
-  | ⟨0, _⟩, _ => 0
+  | ⟨0, _⟩, ⟨0, _⟩ => 0
+  | ⟨0, _⟩, ⟨1, _⟩ => 0
+  | ⟨0, _⟩, ⟨2, _⟩ => 0
   | ⟨1, _⟩, ⟨0, _⟩ => 1
-  | ⟨1, _⟩, _ => 0
+  | ⟨1, _⟩, ⟨1, _⟩ => 0
+  | ⟨1, _⟩, ⟨2, _⟩ => 0
   | ⟨2, _⟩, ⟨0, _⟩ => 1 / 2
   | ⟨2, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 2
-  | ⟨2, _⟩, _ => 0
+  | ⟨2, _⟩, ⟨2, _⟩ => 0
   | ⟨3, _⟩, ⟨0, _⟩ => 1 / 2
   | ⟨3, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
   | ⟨3, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 3
@@ -694,17 +702,25 @@ private theorem sq_diff_sqrt6_twelfth_third :
   rw [h, neg_pow_two, sq_diff_sqrt6_third_twelfth]
 
 /-- The regular 4-simplex embedding of K₅ in ℝ⁴. -/
+-- NOTE (v4.31 migration seam): patterns are fully exhaustive (no wildcard `_` fallback
+-- branches) — see the comment on `K4embed` above for why.
 noncomputable def K5embed : Fin 5 → Fin 4 → ℝ
-  | ⟨0, _⟩, _ => 0
+  | ⟨0, _⟩, ⟨0, _⟩ => 0
+  | ⟨0, _⟩, ⟨1, _⟩ => 0
+  | ⟨0, _⟩, ⟨2, _⟩ => 0
+  | ⟨0, _⟩, ⟨3, _⟩ => 0
   | ⟨1, _⟩, ⟨0, _⟩ => 1
-  | ⟨1, _⟩, _ => 0
+  | ⟨1, _⟩, ⟨1, _⟩ => 0
+  | ⟨1, _⟩, ⟨2, _⟩ => 0
+  | ⟨1, _⟩, ⟨3, _⟩ => 0
   | ⟨2, _⟩, ⟨0, _⟩ => 1 / 2
   | ⟨2, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 2
-  | ⟨2, _⟩, _ => 0
+  | ⟨2, _⟩, ⟨2, _⟩ => 0
+  | ⟨2, _⟩, ⟨3, _⟩ => 0
   | ⟨3, _⟩, ⟨0, _⟩ => 1 / 2
   | ⟨3, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
   | ⟨3, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 3
-  | ⟨3, _⟩, _ => 0
+  | ⟨3, _⟩, ⟨3, _⟩ => 0
   | ⟨4, _⟩, ⟨0, _⟩ => 1 / 2
   | ⟨4, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
   | ⟨4, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 12
@@ -1022,17 +1038,22 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
       (fun j => (1 : ℝ) / (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) =
     (Finset.range ((i : ℕ) - 1)).sum
       (fun j => 1 / (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) := by
-    apply Finset.sum_nbij (fun j => (j : ℕ))
-    · intro ⟨j, _⟩ hm
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm
+    -- v4.31 seam: `Finset.sum_nbij` with a bare `fun j => (j : ℕ)` argument elaborates the
+    -- coercion as the identity on ℕ (no expected type to drive it), so switch to
+    -- `Finset.sum_bij` (dependent bijection, `∃ a ha, …` surjectivity) which avoids both the
+    -- elaboration-order pitfall and the `Set.SurjOn`/`Set.image` unfolding friction.
+    apply Finset.sum_bij (fun (j : Fin (m + 1)) (_ : j ∈ _) => (j : ℕ))
+    · intro a ha
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
       rw [Finset.mem_range]; omega
-    · intro ⟨a, _⟩ _ ⟨b, _⟩ _ h; exact Fin.ext (by simpa using h)
+    · intro a _ b _ h
+      exact Fin.ext (by simpa using h)
     · intro j hj
       rw [Finset.mem_range] at hj
       refine ⟨⟨j, by omega⟩, ?_, rfl⟩
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
       exact ⟨by omega, by omega⟩
-    · intro ⟨j, _⟩ _; rfl
+    · intro a _; rfl
   rw [h_cent_bij, sum_centroid_sq]
   -- Final arithmetic
   have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
@@ -1096,7 +1117,7 @@ theorem regSimplexEmbed_dist_sq (m : ℕ) (i k : Fin (m + 2)) (hik : i ≠ k) :
       rw [h_zero_norm, h_zero_inner, regSimplexEmbed_dist_from_origin m i hi]
       ring
     · -- Both nonzero: use inner product
-      rcases le_or_lt (i : ℕ) (k : ℕ) with h_le | h_gt
+      rcases le_or_gt (i : ℕ) (k : ℕ) with h_le | h_gt
       · have h_ne : (i : ℕ) ≠ (k : ℕ) := Fin.val_ne_of_ne hik
         rw [regSimplexEmbed_dist_from_origin m i hi,
             regSimplexEmbed_dist_from_origin m k hk,
@@ -1243,10 +1264,13 @@ theorem complete_graph_dim_exact (n : ℕ) (hn : 2 ≤ n) :
     graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) = n - 1 :=
   le_antisymm (complete_graph_dim_le_tight n hn) (complete_graph_dim_ge_tight n hn)
 
+-- v4.31 seam: `open ... in` must precede the doc-comment, not follow it — a doc-comment
+-- immediately followed by `open X in theorem ...` no longer parses ("unexpected token 'open';
+-- expected 'lemma'"); swap the order (matches `complete_graph_dim_exact` above).
+open Classical in
 /-- **K_{d+1} witnesses dimension d**: The complete graph on d+1 vertices has
     dimension exactly d. Since K_{d+1} has C(d+1,2) edges, any consistent
     definition of minEdgesForDim must satisfy minEdgesForDim(d) ≤ C(d+1,2). -/
-open Classical in
 theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
     graphDimension' (Fin (d + 1)) (fun i j => i ≠ j) (fun x h => h rfl) = d := by
   have h2 : 2 ≤ d + 1 := by omega

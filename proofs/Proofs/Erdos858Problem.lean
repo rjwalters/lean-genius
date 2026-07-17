@@ -30,12 +30,14 @@ References:
 - Behrend (1935): "On sequences of numbers not divisible by another"
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Nat Real Finset BigOperators
 
@@ -66,7 +68,7 @@ The smallest prime factor is prime for n > 1.
 theorem smallestPrimeFactor_prime (n : ℕ) (hn : n > 1) :
     (smallestPrimeFactor n).Prime := by
   simp only [smallestPrimeFactor, hn, dif_pos]
-  exact Nat.minFac_prime (Nat.one_lt_iff_ne_one.mp hn)
+  exact Nat.minFac_prime (hn.ne')
 
 /--
 The smallest prime factor is at least 2.
@@ -108,10 +110,17 @@ theorem condition_equiv (A : Finset ℕ) (hA : ∀ a ∈ A, 0 < a) :
   · -- Forward: SC → SC'
     intro hSC a b ha hb hab hlt
     have ha_pos := hA a ha
-    have ht_gt : b / a > 1 := by
-      rw [Nat.div_lt_iff_lt_mul (Nat.lt_of_lt_of_le Nat.zero_lt_one (Nat.one_le_of_lt ha_pos))] at hlt
-      omega
     have hab_eq : a * (b / a) = b := Nat.mul_div_cancel' hab
+    obtain ⟨k, hk⟩ := hab
+    have hdiv : b / a = k := by rw [hk]; exact Nat.mul_div_cancel_left k ha_pos
+    have ht_gt : b / a > 1 := by
+      rw [hdiv]
+      by_contra hle
+      push_neg at hle
+      -- k ≤ 1, so b = a * k ≤ a, contradicting a < b
+      have hle' : a * k ≤ a * 1 := Nat.mul_le_mul (le_refl a) hle
+      rw [mul_one] at hle'
+      omega
     exact hSC a b (b / a) ha hb ht_gt hab_eq
   · -- Backward: SC' → SC
     intro hSC' a b t ha hb ht hat
@@ -137,7 +146,8 @@ def IsPrimitive (A : Finset ℕ) : Prop :=
 /--
 Primitive sets satisfy the multiplicative condition.
 -/
-theorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :
+theorem primitive_satisfies_condition (A : Finset ℕ) (hpos : ∀ a ∈ A, 0 < a)
+    (hA : IsPrimitive A) :
     SatisfiesCondition A := by
   intro a b t ha hb ht heq
   by_contra hc
@@ -145,7 +155,10 @@ theorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :
   have hdvd : a ∣ b := ⟨t, heq.symm⟩
   have hab := hA a b ha hb hdvd
   rw [hab] at heq
-  have : t = 1 := by nlinarith
+  -- heq : b * t = b, with b > 0 and t > 1 gives a contradiction
+  have hb_pos : 0 < b := hpos b hb
+  have ht2 : 2 ≤ t := by omega
+  have hmul : b * 2 ≤ b * t := Nat.mul_le_mul (le_refl b) ht2
   omega
 
 /-
@@ -175,7 +188,7 @@ theorem reciprocalSum_nonneg (A : Finset ℕ) :
 The normalized sum (1/log N) · Σ_{n ∈ A} 1/n.
 -/
 noncomputable def weightedSum (A : Finset ℕ) (N : ℕ) : ℝ :=
-  if N ≤ 1 then 0 else reciprocalSum A / log N
+  if N ≤ 1 then 0 else reciprocalSum A / Real.log N
 
 /--
 The weighted sum is nonnegative for N ≥ 2.
@@ -200,7 +213,7 @@ A ⊆ {1, ..., N}.
 def InRange (A : Finset ℕ) (N : ℕ) : Prop :=
   ∀ n ∈ A, 1 ≤ n ∧ n ≤ N
 
-/--
+/- 
 For A ⊆ {1, ..., N}, the reciprocal sum is at most H_N.
 -/
 /-
@@ -230,7 +243,7 @@ theorem max_weighted_sum_little_o :
 ## Part VII: Erdős-Sárközi-Szemerédi (1968)
 -/
 
-/--
+/- 
 **Erdős-Sárközi-Szemerédi (1968):**
 Independent proof of the same result using different methods.
 Published in J. London Math. Soc.
@@ -239,7 +252,7 @@ Published in J. London Math. Soc.
 ## Part VIII: Behrend's Bound for Primitive Sets (1935)
 -/
 
-/--
+/- 
 **Behrend (1935):**
 For primitive sets A ⊆ {1, ..., N}:
   (1/log N) · Σ_{n ∈ A} 1/n = O(1/√(log log N))
@@ -256,11 +269,11 @@ The set of all integers in [√N, N] divisible by some prime > √N.
 
 This set achieves a relatively large weighted sum while satisfying the condition.
 -/
-def exampleSet (N : ℕ) : Finset ℕ :=
+noncomputable def exampleSet (N : ℕ) : Finset ℕ :=
   (range (N + 1)).filter (fun n =>
-    n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)
+    1 ≤ n ∧ n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)
 
-/--
+/- 
 The example set satisfies the condition.
 -/
 /--
@@ -269,16 +282,8 @@ The example set is in range.
 theorem exampleSet_in_range (N : ℕ) : InRange (exampleSet N) N := by
   intro n hn
   simp only [exampleSet, mem_filter, mem_range] at hn
-  constructor
-  · have := hn.2.1
-    have hsqrt : Nat.sqrt N ≥ 1 := by
-      cases N with
-      | zero => simp at hn
-      | succ m =>
-        have : Nat.sqrt (m + 1) ≥ 1 := Nat.one_le_sqrt.mpr (Nat.succ_pos m)
-        exact this
-    omega
-  · omega
+  obtain ⟨hlt, hge1, _⟩ := hn
+  exact ⟨hge1, by omega⟩
 
 /-
 ## Part X: Erdős Problem #858 Solution
@@ -300,7 +305,7 @@ theorem erdos_858_solution :
     weightedSum A N < ε :=
   alexander_1966
 
-/--
+/- 
 Alternative statement using limits.
 -/
 /-
@@ -314,8 +319,8 @@ The condition here allows some divisibility relations (where the multiplier
 has small prime factors), making it a weaker restriction than primitivity.
 -/
 theorem weaker_than_primitive :
-    ∀ A : Finset ℕ, IsPrimitive A → SatisfiesCondition A :=
-  primitive_satisfies_condition
+    ∀ A : Finset ℕ, (∀ a ∈ A, 0 < a) → IsPrimitive A → SatisfiesCondition A :=
+  fun A hpos hA => primitive_satisfies_condition A hpos hA
 
 /-
 ## Part XII: Summary
@@ -338,11 +343,11 @@ Key results:
 The problem is SOLVED.
 -/
 theorem erdos_858_summary :
-    -- The condition is weaker than primitivity
-    (∀ A, IsPrimitive A → SatisfiesCondition A) ∧
+    -- The condition is weaker than primitivity (for sets of positive integers)
+    (∀ A, (∀ a ∈ A, 0 < a) → IsPrimitive A → SatisfiesCondition A) ∧
     -- The maximum is o(1)
     (∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ∀ A, InRange A N → SatisfiesCondition A →
      weightedSum A N < ε) :=
-  ⟨primitive_satisfies_condition, alexander_1966⟩
+  ⟨fun A hpos hA => primitive_satisfies_condition A hpos hA, alexander_1966⟩
 
 end Erdos858

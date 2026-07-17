@@ -118,7 +118,7 @@ theorem proper_implies_cochromatic (G : SimpleGraph V) (k : ℕ) (c : V → Fin 
   rw [hv, hw] at this
   exact this rfl
 
-/-- χ(G) ≥ ζ(G) always holds. -/
+/-  χ(G) ≥ ζ(G) always holds. -/
 /-
 ## Part IV: The Erdős-Gimbel-Straight Conjecture
 -/
@@ -198,11 +198,11 @@ theorem chi_zeta_gap_bounded :
 ## Part VII: Known Bounds
 -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 ζ(G) ≤ χ(G) since proper colorings are cochromatic.
 -/
-/--
+/- 
 **Steiner's Result:**
 The gap can be at least 3 for K₅-free graphs with ζ(G) = 4.
 -/

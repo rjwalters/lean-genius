@@ -22,7 +22,7 @@
   Tags: hypergraph, coloring, property-b, combinatorics
 -/
 
-import Mathlib.Combinatorics.SetFamily.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -145,7 +145,7 @@ def ErdosLovaszConjecture : Prop :=
 
 /-- The gap between known bounds. -/
 theorem current_gap :
-    ∀ᶠ n in Filter.atTop,
+    ∀ᶠ (n : ℕ) in Filter.atTop,
       Real.sqrt (n / Real.log n) * 2 ^ n / 2 < (m n : ℝ) ∧
       (m n : ℝ) < (n : ℝ) ^ 2 * 2 ^ n := by
   sorry
@@ -160,7 +160,7 @@ theorem complete_hypergraph_no_propertyB (n : ℕ) (hn : n ≥ 2) :
 /-- Explicit construction for m(2) = 3: Three edges on 4 vertices. -/
 def hypergraph_m2 : UniformHypergraph (Fin 4) 2 where
   edges := {{0, 1}, {0, 2}, {1, 2}}
-  uniform := by intro e he; simp_all [Finset.card_pair]
+  uniform := by decide
 
 theorem hypergraph_m2_no_propertyB : LacksPropertyB hypergraph_m2 := by
   sorry

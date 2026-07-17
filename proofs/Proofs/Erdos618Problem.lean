@@ -27,12 +27,13 @@ References:
 - Related: Problem #134, Problem #619
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Metric
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Instances.Real
+
+open scoped Classical
 
 open SimpleGraph Asymptotics Filter
 
@@ -59,7 +60,7 @@ def IsTriangleFree (G : SimpleGraph V) : Prop :=
 Δ(G) = max_{v ∈ V} deg(v)
 -/
 noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
-  Finset.univ.sup G.degree
+  Finset.univ.sup fun v => G.degree v
 
 /--
 **Diameter of a Graph:**
@@ -116,7 +117,7 @@ triangle-free graph of diameter at most 2.
 noncomputable def h₂ (G : SimpleGraph V) : ℕ :=
   sInf {k | ∃ H : SimpleGraph V, ValidExtension G H ∧ edgeDiff G H = k}
 
-/--
+/- 
 **h₂ is well-defined:**
 For any triangle-free G, there exists a valid extension.
 (The complete bipartite graph gives diameter 2.)
@@ -127,11 +128,11 @@ For any triangle-free G, there exists a valid extension.
 Results from the original 1998 paper.
 -/
 
-/--
+/- 
 **Simonovits's Example:**
 There exist triangle-free graphs with Δ ≫ n^{1/2} and h₂(G) ≫ n².
 -/
-/--
+/- 
 **Bounded Degree Result (EGR98):**
 If G has no isolated vertices and Δ = O(1), then h₂(G) = O(n log n).
 -/
@@ -147,7 +148,7 @@ theorem h₂_nonneg (G : SimpleGraph V) : h₂ G ≥ 0 := Nat.zero_le _
 The affirmative answer to the main question.
 -/
 
-/--
+/- 
 **Alon's Theorem (Main Result):**
 If G is triangle-free with maximum degree o(n^{1/2}), then h₂(G) = o(n²).
 
@@ -210,11 +211,11 @@ axiom threshold_is_sharp :
     IsTriangleFree G → (maxDegree G : ℝ) ≤ n^(1/2 - ε : ℝ) →
     (h₂ G : ℝ) ≤ c * n^(2 - ε : ℝ)) ∧
   -- Above threshold: can be Θ(n²) by Simonovits
-  (∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     IsTriangleFree G ∧ (maxDegree G : ℝ) ≥ (Fintype.card V : ℝ)^(1/2 : ℝ) ∧
     (h₂ G : ℝ) ≥ (Fintype.card V : ℝ)^2 / 10)
 
-/--
+/- 
 **Mantel's Theorem:**
 Triangle-free graphs have at most n²/4 edges.
 -/

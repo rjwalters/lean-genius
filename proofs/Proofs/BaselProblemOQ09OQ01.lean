@@ -88,7 +88,7 @@ theorem hasSum_odd_pow {s : ℕ} {Z : ℝ}
     intro a b h; dsimp only at h; omega
   have hodd_sum : Summable (fun k : ℕ => f (2 * k + 1)) := by
     have h := hZ.summable.comp_injective hinj
-    simpa [Function.comp] using h
+    simpa [Function.comp_def] using h
   have hodd : HasSum (fun k : ℕ => f (2 * k + 1)) (∑' k, f (2 * k + 1)) :=
     hodd_sum.hasSum
   -- Recombine and identify the odd value via uniqueness.

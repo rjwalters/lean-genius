@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Buffon's Smooth Curve Theorem via Arc Length Theory (OQ-01-OQ-01)
 
@@ -60,11 +63,9 @@ This is the "averaging factor" that makes the Buffon formula work.
 
     Proof: By FTC, -cos(π) - (-cos(0)) = -(-1) - (-1) = 1 + 1 = 2. -/
 theorem integral_sin_zero_pi : ∫ θ in (0 : ℝ)..π, sin θ = 2 := by
-  have hd : ∀ x ∈ Set.uIcc 0 π, HasDerivAt (fun x => -cos x) (sin x) x := by
-    intro x _
-    simpa using (hasDerivAt_cos x).neg
-  rw [integral_eq_sub_of_hasDerivAt hd (continuous_sin.intervalIntegrable _ _)]
-  simp [cos_pi, cos_zero]; norm_num
+  rw [integral_sin]
+  simp [cos_pi, cos_zero]
+  norm_num
 
 /-- On [0, π], sin θ ≥ 0, so |sin θ| = sin θ. -/
 private lemma abs_sin_eq_sin_on_zero_pi (θ : ℝ) (hθ : θ ∈ Set.Icc (0 : ℝ) π) :

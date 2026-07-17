@@ -30,6 +30,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+set_option autoImplicit true
+
 namespace Erdos832
 
 /- ## Part I: Basic Definitions -/
@@ -54,7 +56,7 @@ def hasChromaticNumberAtLeast (H : Hypergraph V) (k : ℕ) : Prop :=
 
 /- ## Part II: The Classical Graph Case (r = 2) -/
 
-/-- **Classical result for graphs (r = 2):**
+/-  **Classical result for graphs (r = 2):**
 A graph with chromatic number k has at least C(k, 2) = k(k-1)/2 edges.
 The complete graph K_k is the extremal example. -/
 /- ## Part III: Erdős's Conjecture -/
@@ -69,7 +71,7 @@ def erdosConjecture (r k : ℕ) : Prop :=
 
 /- ## Part IV: Counterexamples -/
 
-/-- **Steiner triple system counterexample (r = 3, k = 3):**
+/-  **Steiner triple system counterexample (r = 3, k = 3):**
 The Fano plane is a 3-uniform hypergraph on 7 vertices with 7 edges
 that requires 3 colours. Erdős's conjecture predicts ≥ C(5,3) = 10 edges. -/
 /-- **Alon's theorem (1985):**
@@ -91,7 +93,7 @@ with chromatic number > k. Axiomatized since computing the minimum
 requires the finite obstruction principle. -/
 axiom m (r k : ℕ) : ℕ
 
-/-- **Akolzin-Shabanov bounds (2016):**
+/-  **Akolzin-Shabanov bounds (2016):**
 (r / log r) · k^r ≪ m(r, k) ≪ (r³ log r) · k^r -/
 /-- **Cherkashin-Petrov theorem (2020):**
 For fixed r, the ratio m(r, k) / k^r converges to some limit c_r. -/

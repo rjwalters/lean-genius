@@ -135,14 +135,14 @@ private lemma listMax_perm {l₁ l₂ : List ℕ} (h : l₁.Perm l₂) :
     listMax l₁ = listMax l₂ := by
   induction h with
   | nil => rfl
-  | cons x _ ih => simp [listMax, List.foldr, ih]
+  | cons x _ ih => simp only [listMax, List.foldr] at ih ⊢; rw [ih]
   | swap x y l => simp [listMax, List.foldr]; omega
   | trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂
 
 theorem maxPrimeFactor_mul (a b : ℕ) (ha : a > 1) (hb : b > 1) (_hcop : Nat.Coprime a b) :
     maxPrimeFactor (a * b) = max (maxPrimeFactor a) (maxPrimeFactor b) := by
   unfold maxPrimeFactor
-  rw [dif_pos (by omega : a * b > 1), dif_pos ha, dif_pos hb]
+  rw [dif_pos (by nlinarith : a * b > 1), dif_pos ha, dif_pos hb]
   have hperm := Nat.perm_primeFactorsList_mul (by omega : a ≠ 0) (by omega : b ≠ 0)
   rw [listMax_perm hperm, listMax_append]
 
@@ -228,7 +228,7 @@ axiom erdos_932 : { r : ℕ | erdos932Condition r }.Infinite
 theorem erdos_932_alt :
     { r : ℕ | 2 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card }.Infinite := by
-  convert erdos_932 using 1
+  convert erdos_932 using 1 <;> (first | rfl | ring | norm_num)
 
 /- ## Part VI: The Density-Zero Result (SOLVED) -/
 
@@ -261,7 +261,7 @@ axiom erdos_932_density_zero :
 theorem erdos_932_variants_one_le :
     HasDensity { r : ℕ | 1 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card } 0 := by
-  convert erdos_932_density_zero using 1
+  convert erdos_932_density_zero using 1 <;> (first | rfl | ring | norm_num)
 
 /- ## Part VII: Examples and Analysis -/
 

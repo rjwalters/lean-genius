@@ -27,10 +27,11 @@ References:
 Tags: number-theory, unit-fractions, egyptian-fractions, harmonic
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Nat Finset BigOperators
 
@@ -46,7 +47,7 @@ Unit fractions and their sums.
 **Unit Fraction:**
 1/n for positive n.
 -/
-def unitFrac (n : ℕ) (hn : n ≥ 1) : ℚ := 1 / n
+def unitFrac (n : ℕ) (_hn : n ≥ 1) : ℚ := 1 / n
 
 /--
 **Sum of Unit Fractions:**
@@ -103,19 +104,21 @@ where
     -- Each term 1/d ≤ 1 (d ≥ 1), so sum ≤ |S| ≤ N
     have h1 : sumUnitFracs (S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩) ≤ ↑S.card := by
       unfold sumUnitFracs
-      calc ∑ n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) / n
-          ≤ ∑ _n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) := by
+      calc (∑ n ∈ S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ), (1 : ℚ) / n)
+          ≤ ∑ _n ∈ S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ), (1 : ℚ) := by
             apply Finset.sum_le_sum; intro n hn
             obtain ⟨a, _, rfl⟩ := Finset.mem_map.mp hn
-            exact div_le_one_of_le (by push_cast; omega) (by positivity)
-        _ = ↑(S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩).card := by
-            simp [Finset.sum_const, smul_eq_mul, mul_one]
+            refine div_le_one_of_le₀ ?_ (by positivity)
+            simp only [Function.Embedding.coeFn_mk]
+            exact_mod_cast Nat.le_add_left 1 a
+        _ = ↑(S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ)).card := by
+            simp [Finset.sum_const, mul_one]
         _ = ↑S.card := by rw [Finset.card_map]
     have h2 : (S.card : ℚ) ≤ ↑N := by
       exact_mod_cast (Finset.card_le_card hS_sub).trans (Finset.card_range N).le
     -- Sum = N+1 but sum ≤ S.card ≤ N, contradiction
     have : (↑(N + 1) : ℚ) ≤ ↑N := hS_sum ▸ h1 |>.trans h2
-    exact absurd this (by push_cast; omega)
+    exact absurd this (by exact_mod_cast Nat.not_succ_le_self N)
 
 /-
 ## Part III: Basic Properties
@@ -168,7 +171,7 @@ axiom croot_upper_bound :
       -- f(N) ≤ floor of (H_N - 1/2 · (log log N)² / log N) asymptotically
       f N ≤ (H N).num.natAbs
 
-/--
+/- 
 **Croot's Main Theorem (1999):**
 The bounds imply that for large N, f(N) is either ⌊H_N⌋ or ⌊H_N⌋ - 1.
 
@@ -200,7 +203,7 @@ with bounded denominators.
 def IsEgyptianFraction (S : Finset ℕ) : Prop :=
   ∀ n ∈ S, n ≥ 1
 
-/--
+/- 
 **Greedy Algorithm Insight:**
 To represent k, we can use the greedy algorithm:
 - Pick the largest unit fraction ≤ remaining amount
@@ -213,21 +216,21 @@ This doesn't always work optimally with bounded denominators.
 ## Part VIII: Asymptotic Behavior
 -/
 
-/--
+/- 
 **Harmonic Number Asymptotics:**
 H_N = ln(N) + γ + 1/(2N) - 1/(12N²) + O(1/N⁴)
 
 where γ ≈ 0.5772... is the Euler-Mascheroni constant.
 -/
 
-/--
+/- 
 **f(N) Asymptotics:**
 f(N) = ⌊H_N⌋ - Θ((log log N)²/log N)
 
 The second-order term is between (1/2) and (9/2) times (log log N)²/log N.
 -/
 
-/--
+/- 
 **Growth Rate:**
 f(N) grows like ln(N), since H_N ~ ln(N).
 

@@ -3,6 +3,7 @@ Copyright (c) 2026 RJ Walters. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: RJ Walters
 -/
+import Proofs.SpernerNDim
 import Proofs.SpernerNDimMathlib
 import Proofs.SpernerNDimOQ01
 
@@ -55,6 +56,7 @@ set_option maxHeartbeats 800000
 namespace SpernerConcrete
 
 open SpernerAbstract FreudenthalAdjacency Finset
+open scoped List
 
 -- ============================================================
 -- PART I: SpernerTriangulation → CellComplex Bridge
@@ -138,16 +140,37 @@ lemma swapAdj_length (l : List (Fin n)) {k : ℕ} (hk0 : 0 < k) (hkn : k < l.len
     position k gets l[k-1] and is swapped back; all other positions are unchanged. -/
 lemma swapAdj_invol (l : List (Fin n)) {k : ℕ} (hk0 : 0 < k) (hkn : k < l.length) :
     swapAdj (swapAdj l hk0 hkn) hk0 (swapAdj_length l hk0 hkn ▸ hkn) = l := by
-  simp only [swapAdj]
-  apply List.ext_getElem (by simp [List.length_set])
+  have hkn2 : k < (swapAdj l hk0 hkn).length := by
+    simp only [swapAdj, List.length_set]; omega
+  have e_pred : ∀ (m : List (Fin n)) (hm0 : 0 < k) (hmn : k < m.length),
+      (swapAdj m hm0 hmn)[k - 1]'(by simp only [swapAdj, List.length_set]; omega) = m[k] := by
+    intro m hm0 hmn
+    unfold swapAdj
+    rw [List.getElem_set_ne (by omega : k ≠ k - 1), List.getElem_set_self]
+    rfl
+  have e_self : ∀ (m : List (Fin n)) (hm0 : 0 < k) (hmn : k < m.length),
+      (swapAdj m hm0 hmn)[k]'(by simp only [swapAdj, List.length_set]; omega) = m[k - 1] := by
+    intro m hm0 hmn
+    unfold swapAdj
+    rw [List.getElem_set_self]
+    rfl
+  apply List.ext_getElem (by simp only [swapAdj, List.length_set])
   intro i hi1 hi2
-  simp only [List.length_set] at hi1
-  simp only [List.getElem_set]
-  by_cases hkm1 : i = k - 1 <;> by_cases hk' : i = k
-  · omega
-  · subst hkm1; simp [show k - 1 ≠ k from by omega]
-  · subst hk'; simp [show k - 1 ≠ k from by omega]
-  · simp [hk', hkm1]
+  by_cases hik : i = k
+  · subst hik
+    calc (swapAdj (swapAdj l hk0 hkn) hk0 hkn2)[i]'hi1
+        = (swapAdj l hk0 hkn)[i - 1]'(by simp only [swapAdj, List.length_set]; omega) :=
+          e_self _ hk0 hkn2
+      _ = l[i] := e_pred _ hk0 hkn
+  · by_cases hik1 : i = k - 1
+    · subst hik1
+      calc (swapAdj (swapAdj l hk0 hkn) hk0 hkn2)[k - 1]'hi1
+          = (swapAdj l hk0 hkn)[k]'(by simp only [swapAdj, List.length_set]; omega) :=
+            e_pred _ hk0 hkn2
+        _ = l[k - 1] := e_self _ hk0 hkn
+    · unfold swapAdj
+      rw [List.getElem_set_ne (Ne.symm hik), List.getElem_set_ne (Ne.symm hik1),
+          List.getElem_set_ne (Ne.symm hik), List.getElem_set_ne (Ne.symm hik1)]
 
 -- ============================================================
 -- Helpers
@@ -203,9 +226,9 @@ private theorem swapAdj_nodup (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
     For i ≤ k-1 the take is literally equal; for i ≥ k+1 it is a permutation. -/
 private theorem swapAdj_prefixSet_eq (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
     (hl_len : l.length = n) {i : ℕ} (hi : i ≤ n) (hik : i ≠ k) (hk0 : 0 < k) (hkn : k < n) :
-    prefixSet (swapAdj l hk0 (hl_len ▸ hkn)) i = prefixSet l i := by
-  have hkn' : k < l.length := hl_len ▸ hkn
-  have hi' : i ≤ l.length := hl_len ▸ hi
+    prefixSet (swapAdj l hk0 (by rw [hl_len]; exact hkn)) i = prefixSet l i := by
+  have hkn' : k < l.length := by rw [hl_len]; exact hkn
+  have hi' : i ≤ l.length := by rw [hl_len]; exact hi
   unfold prefixSet
   apply List.toFinset_eq_of_perm
   rcases lt_or_gt_of_ne hik with hlt | hgt
@@ -245,18 +268,19 @@ private theorem swapAdj_prefixSet_eq (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
 /-- swapAdj produces a different list (since k-1 ≠ k as positions in a Nodup list). -/
 private theorem swapAdj_ne_self (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
     (hl_len : l.length = n) (hk0 : 0 < k) (hkn : k < n) :
-    swapAdj l hk0 (hl_len ▸ hkn) ≠ l := by
+    swapAdj l hk0 (by rw [hl_len]; exact hkn) ≠ l := by
   intro heq
-  have hkn' : k < l.length := hl_len ▸ hkn
+  have hkn' : k < l.length := by rw [hl_len]; exact hkn
   have hk1 : k - 1 < l.length := by omega
   -- (swapAdj l)[k - 1] = l[k]
-  have h1 : (swapAdj l hk0 hkn')[k - 1]'(by rw [swapAdj_length]; omega) = l[k] := by
-    show ((l.set (k - 1) (l.get ⟨k, hkn'⟩)).set k _)[k - 1] = _
+  have h1 : (swapAdj l hk0 hkn')[k - 1]'(by simp only [swapAdj, List.length_set]; omega) = l[k] := by
+    unfold swapAdj
     rw [List.getElem_set_ne (by omega : k ≠ k - 1)]
     rw [List.getElem_set_self]
+    rfl
   -- transport via heq using getElem?
   have h_some : (swapAdj l hk0 hkn')[k - 1]? = some l[k] := by
-    rw [List.getElem?_eq_getElem (by rw [swapAdj_length]; omega)]
+    rw [List.getElem?_eq_getElem (by simp only [swapAdj, List.length_set]; omega)]
     rw [h1]
   rw [heq] at h_some
   rw [List.getElem?_eq_getElem hk1] at h_some
@@ -267,15 +291,17 @@ private theorem swapAdj_ne_self (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
 /-- The bijection from a nodup list of length n on Fin n to a permutation of Fin n. -/
 private noncomputable def listToPermFun {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
     (hl_len : l.length = n) : Fin n → Fin n :=
-  fun i => l.get ⟨i.val, hl_len ▸ i.isLt⟩
+  fun i => l.get ⟨i.val, by rw [hl_len]; exact i.isLt⟩
 
 private theorem listToPermFun_injective {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
     (hl_len : l.length = n) : Function.Injective (listToPermFun l hl_nodup hl_len) := by
   intro a b hab
   apply Fin.ext
-  have h2 : (⟨a.val, hl_len ▸ a.isLt⟩ : Fin l.length) = ⟨b.val, hl_len ▸ b.isLt⟩ :=
+  have h2 : (⟨a.val, by rw [hl_len]; exact a.isLt⟩ : Fin l.length) =
+      ⟨b.val, by rw [hl_len]; exact b.isLt⟩ :=
     (List.Nodup.get_inj_iff hl_nodup).mp hab
-  exact Fin.val_eq_of_eq h2
+  have h3 := congrArg Fin.val h2
+  exact h3
 
 private noncomputable def listToPerm {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
     (hl_len : l.length = n) : Equiv.Perm (Fin n) :=
@@ -283,17 +309,25 @@ private noncomputable def listToPerm {n : ℕ} (l : List (Fin n)) (hl_nodup : l.
     ⟨listToPermFun_injective l hl_nodup hl_len,
      Finite.injective_iff_surjective.mp (listToPermFun_injective l hl_nodup hl_len)⟩
 
+/-- The list [σ(0), ..., σ(n-1)] for a permutation `σ`. -/
+private def permList (σ : Equiv.Perm (Fin n)) : List (Fin n) := List.ofFn σ
+
+private theorem permList_nodup (σ : Equiv.Perm (Fin n)) : (permList σ).Nodup :=
+  List.nodup_ofFn.mpr σ.injective
+
+private theorem permList_length (σ : Equiv.Perm (Fin n)) : (permList σ).length = n := by
+  simp [permList]
+
 /-- FreudSimplex n is Fintype: surjects from Equiv.Perm (Fin n) via permList. -/
 private noncomputable instance freud_simplex_fintype (n : ℕ) : Fintype (FreudSimplex n) :=
   Fintype.ofSurjective
     (fun σ : Equiv.Perm (Fin n) =>
-      (⟨FreudenthalAdjacency.permList σ, FreudenthalAdjacency.permList_nodup σ,
-       FreudenthalAdjacency.permList_length σ⟩ : FreudSimplex n))
+      (⟨permList σ, permList_nodup σ, permList_length σ⟩ : FreudSimplex n))
     (fun ⟨l, hnodup, hlen⟩ => by
       refine ⟨listToPerm l hnodup hlen, ?_⟩
       apply Subtype.ext
-      show FreudenthalAdjacency.permList (listToPerm l hnodup hlen) = l
-      unfold FreudenthalAdjacency.permList
+      show permList (listToPerm l hnodup hlen) = l
+      unfold permList
       apply List.ext_getElem
       · simp [List.length_ofFn, hlen]
       intro i hi1 hi2
@@ -311,9 +345,9 @@ variable (n)
 private noncomputable def freudAdj (l : FreudSimplex n) (k : Fin (n + 1)) :
     Option (FreudSimplex n × Fin (n + 1)) :=
   if hk : 0 < k.val ∧ k.val < n then
-    some ⟨⟨swapAdj l.1 hk.1 (l.2.2 ▸ hk.2),
-           swapAdj_nodup l.1 l.2.1 hk.1 (l.2.2 ▸ hk.2),
-           (swapAdj_length l.1 hk.1 (l.2.2 ▸ hk.2)).trans l.2.2⟩, k⟩
+    some ⟨⟨swapAdj l.1 hk.1 (by rw [l.2.2]; exact hk.2),
+           swapAdj_nodup l.1 l.2.1 hk.1 (by rw [l.2.2]; exact hk.2),
+           (swapAdj_length l.1 hk.1 (by rw [l.2.2]; exact hk.2)).trans l.2.2⟩, k⟩
   else none
 
 variable {n}
@@ -322,9 +356,13 @@ variable {n}
 private lemma prefixSet_inj (l : FreudSimplex n) :
     Function.Injective (fun k : Fin (n + 1) => prefixSet l.1 k.val) := fun a b hab => by
   apply Fin.ext
-  have ha := prefixSet_card_eq l.2.1 (l.2.2 ▸ Nat.lt_succ_iff.mp a.isLt)
-  have hb := prefixSet_card_eq l.2.1 (l.2.2 ▸ Nat.lt_succ_iff.mp b.isLt)
-  linarith [congr_arg Finset.card hab]
+  have ha' : (a : ℕ) ≤ l.1.length := by rw [l.2.2]; exact Nat.lt_succ_iff.mp a.isLt
+  have hb' : (b : ℕ) ≤ l.1.length := by rw [l.2.2]; exact Nat.lt_succ_iff.mp b.isLt
+  have ha := prefixSet_card_eq l.2.1 ha'
+  have hb := prefixSet_card_eq l.2.1 hb'
+  have hcard : (prefixSet l.1 (a : ℕ)).card = (prefixSet l.1 (b : ℕ)).card := congr_arg Finset.card hab
+  rw [ha, hb] at hcard
+  exact hcard
 
 /-- **Freudenthal CellComplex**: concrete `CellComplex (Finset (Fin n)) n`. -/
 noncomputable def freudenthalCellComplex (n : ℕ) : CellComplex (Finset (Fin n)) n where
@@ -340,9 +378,9 @@ noncomputable def freudenthalCellComplex (n : ℕ) : CellComplex (Finset (Fin n)
     split_ifs at h with hk
     · obtain ⟨rfl, rfl⟩ := Option.some_inj.mp h
       simp only [dif_pos hk]
-      congr 1; ext : 1
-      exact swapAdj_invol l.1 hk.1 (l.2.2 ▸ hk.2)
-    · exact absurd h (by simp)
+      have hlen2 : (k : ℕ) < (l.1).length := by rw [l.2.2]; exact hk.2
+      simp only [Option.some.injEq, Prod.mk.injEq, and_true]
+      exact Subtype.ext (swapAdj_invol l.1 hk.1 hlen2)
   adj_vertices := by
     intro l k l' k' h
     simp only [freudAdj] at h
@@ -350,10 +388,9 @@ noncomputable def freudenthalCellComplex (n : ℕ) : CellComplex (Finset (Fin n)
     · obtain ⟨rfl, rfl⟩ := Option.some_inj.mp h
       apply Finset.image_congr
       intro j hj
-      simp only [Finset.mem_erase, Finset.mem_univ, true_and] at hj
+      have hjk : j ≠ k := (Finset.mem_erase.mp hj).1
       exact (swapAdj_prefixSet_eq l.1 l.2.1 l.2.2
-        (Nat.lt_succ_iff.mp j.isLt) (fun h => hj (Fin.ext h)) hk.1 hk.2).symm
-    · exact absurd h (by simp)
+        (Nat.lt_succ_iff.mp j.isLt) (fun h => hjk (Fin.ext h)) hk.1 hk.2).symm
   adj_ne := by
     intro l k l' k' h
     simp only [freudAdj] at h
@@ -362,7 +399,6 @@ noncomputable def freudenthalCellComplex (n : ℕ) : CellComplex (Finset (Fin n)
       intro heq
       exact swapAdj_ne_self l.1 l.2.1 l.2.2 hk.1 hk.2
         (congr_arg Subtype.val heq).symm
-    · exact absurd h (by simp)
 
 /-- **Freudenthal Sperner's Lemma**: odd boundary doors imply a fully-colored simplex. -/
 theorem freudenthal_sperner (n : ℕ) (c : Finset (Fin n) → Fin (n + 1))

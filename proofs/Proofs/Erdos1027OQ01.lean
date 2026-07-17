@@ -49,7 +49,7 @@ lemma card_subsets_missing (X A : Finset α) (hAX : A ⊆ X) :
     (X.powerset.filter (fun B => Disjoint B A)).card = 2 ^ (X.card - A.card) := by
   have : X.powerset.filter (fun B => Disjoint B A) = (X \ A).powerset := by
     ext B; simp only [mem_filter, mem_powerset, subset_sdiff]
-  rw [this, card_powerset, card_sdiff hAX]
+  rw [this, card_powerset, card_sdiff_of_subset hAX]
 
 /-- Subsets of X containing A biject with subsets of X \ A.
     Proof: the map B ↦ X \ B is an involution on X.powerset sending
@@ -68,13 +68,13 @@ lemma card_subsets_containing (X A : Finset α) (hAX : A ⊆ X) :
   · -- Injectivity: X\B₁ = X\B₂ → B₁ = B₂ (via sdiff_sdiff_cancel_left)
     intro B₁ hB₁ B₂ hB₂ heq
     simp only [mem_filter, mem_powerset] at hB₁ hB₂
-    rw [← sdiff_sdiff_cancel_left hB₁.1, heq, sdiff_sdiff_cancel_left hB₂.1]
+    rw [← Finset.sdiff_sdiff_eq_self hB₁.1, heq, Finset.sdiff_sdiff_eq_self hB₂.1]
   · -- Surjectivity: given C ⊆ X with Disjoint C A, take B = X\C
     intro C hC
     simp only [mem_filter, mem_powerset] at hC ⊢
     exact ⟨X \ C, ⟨Finset.sdiff_subset,
-      fun x hxA => Finset.mem_sdiff.mpr ⟨hAX hxA, Finset.disjoint_left.mp hC.2 hxA⟩⟩,
-      sdiff_sdiff_cancel_left hC.1⟩
+      fun x hxA => Finset.mem_sdiff.mpr ⟨hAX hxA, Finset.disjoint_right.mp hC.2 hxA⟩⟩,
+      Finset.sdiff_sdiff_eq_self hC.1⟩
 
 /-- For A ⊆ X with A nonempty and |A| = n, bad-due-to-A has at most 2 · 2^{|X|-n} sets. -/
 lemma card_bad_bound (X A : Finset α) (hAX : A ⊆ X) :
@@ -124,7 +124,7 @@ theorem good_set_lower_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
         obtain ⟨A, hAF, hA⟩ := hI
         refine ⟨A, hAF, mem_filter.mpr ⟨mem_powerset.mpr hBX, Or.inl ?_⟩⟩
         rw [Finset.disjoint_iff_inter_eq_empty]
-        exact Finset.not_nonempty_iff_eq_empty.mp hA
+        exact hA
     calc badTotal.card
         ≤ (F.biUnion badFor).card := Finset.card_le_card hcov
       _ ≤ F.sum (fun A => (badFor A).card) := Finset.card_biUnion_le
@@ -144,7 +144,7 @@ theorem good_set_lower_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
   -- Step 2: goodSets + bad = 2^|X| (they partition X.powerset)
   have hgood_bad : (goodSets F).card + badTotal.card = 2 ^ X.card := by
     have hgoodeq : goodSets F = X.powerset.filter (fun B => IsGoodSet B F) := by
-      ext B; simp only [goodSets, mem_filter, mem_powerset, decide_eq_true_eq]
+      ext B; simp only [goodSets, mem_filter, mem_powerset, decide_eq_true_eq]; rfl
     have hbadeq : badTotal = X.powerset.filter (fun B => ¬IsGoodSet B F) := rfl
     rw [hgoodeq, hbadeq]
     have hdisj : Disjoint (X.powerset.filter (fun B => IsGoodSet B F))
@@ -158,7 +158,7 @@ theorem good_set_lower_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
     rw [← Finset.card_union_of_disjoint hdisj, hunion, card_powerset]
   -- Step 3: conclude
   linarith [Nat.mul_le_mul_left F.card (show 2 * 2 ^ (X.card - n) ≤ 2 ^ (X.card - n + 1)
-    from by rw [pow_succ]; ring_nf)]
+    from le_of_eq (by rw [pow_succ]; ring))]
 
 /-- **Corollary**: If |F| · 2 < 2^n and F is n-uniform, then F has Property B.
 
@@ -171,11 +171,17 @@ theorem property_b_from_union_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
     HasPropertyB F := by
   have hbound := good_set_lower_bound F n hn huniform hsubset
   -- Show |goodSets F| > 0
+  have hbound' : 2 ^ (familyUnion F).card ≤
+      (goodSets F).card + F.card * 2 ^ ((familyUnion F).card - n + 1) := hbound
   have hpos : 0 < (goodSets F).card := by
-    nlinarith [Nat.pos_pow_of_pos (n - 1) (by norm_num : 0 < 2),
-              Nat.pos_pow_of_pos (familyUnion F).card (by norm_num : 0 < 2),
-              Nat.sub_add_cancel hXbig,
-              pow_add (2 : ℕ) ((familyUnion F).card - n) n]
+    have hrec : (2 : ℕ) ^ (familyUnion F).card
+        = 2 ^ n * 2 ^ ((familyUnion F).card - n) := by
+      have hsum : n + ((familyUnion F).card - n) = (familyUnion F).card := by omega
+      rw [← pow_add, hsum]
+    nlinarith [hbound', hrec,
+      mul_lt_mul_of_pos_right hFsmall (pow_pos (by norm_num : (0:ℕ) < 2)
+        ((familyUnion F).card - n)),
+      pow_succ (2 : ℕ) ((familyUnion F).card - n)]
   obtain ⟨B, hB⟩ := Finset.card_pos.mp hpos
   simp only [goodSets, mem_filter, mem_powerset, decide_eq_true_eq] at hB
   exact ⟨B, hB.1, hB.2.1, hB.2.2⟩

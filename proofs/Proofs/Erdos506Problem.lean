@@ -17,10 +17,10 @@ Known results:
 Reference: https://erdosproblems.com/506
 -/
 
+import Mathlib
 import Mathlib.Tactic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.LinearAlgebra.AffineSpace.Basic
 
 /- ## Definitions -/
 
@@ -78,20 +78,20 @@ noncomputable def minCircles (n : ℕ) : ℕ :=
 
 /- ## Elliott's Theorem -/
 
-/-- Elliott (1967): For n > 393 points in general position (not all
+/-  Elliott (1967): For n > 393 points in general position (not all
     concyclic, not all collinear), at least C(n-1,2) distinct circles. -/
 /- ## Segre's Counterexample -/
 
-/-- Segre showed that projecting the 8 vertices of a cube onto a plane
+/-  Segre showed that projecting the 8 vertices of a cube onto a plane
     gives 8 points determining fewer than C(7,2) = 21 circles,
     so Elliott's bound does not extend to all small n. -/
 /- ## Main Open Question -/
 
-/-- Erdős Problem #506: Determine the minimum number of circles for
+/-  Erdős Problem #506: Determine the minimum number of circles for
     small values of n where Elliott's theorem does not apply. -/
 /- ## Connection to Sylvester–Gallai -/
 
-/-- The circle problem is analogous to the Sylvester–Gallai theorem
+/- The circle problem is analogous to the Sylvester–Gallai theorem
     for lines: n non-collinear points determine at least n lines.
     The circle analogue asks for the minimum number of circles from
     non-concyclic points. -/

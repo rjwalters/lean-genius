@@ -36,7 +36,8 @@ Total: n! · (n-1) multiplications + (n!-1) additions ≈ n · n! operations
 
 /-- Number of permutations of {0, ..., n-1} is n! -/
 theorem perm_count (n : ℕ) :
-    Fintype.card (Equiv.Perm (Fin n)) = n ! := Fintype.card_perm
+    Fintype.card (Equiv.Perm (Fin n)) = n ! := by
+  rw [Fintype.card_perm, Fintype.card_fin]
 
 /-- Number of summands in the Leibniz formula for an n×n determinant -/
 def leibnizSummands (n : ℕ) : ℕ := n !
@@ -55,9 +56,8 @@ def detOperations (n : ℕ) : ℕ := detMultiplications n + detAdditions n
 
 /-- detOperations(n) = n!·(n-1) + (n!-1) -/
 theorem det_operations_formula (n : ℕ) (hn : n ≥ 1) :
-    detOperations n = n ! * (n - 1) + (n ! - 1) := by
+    detOperations n = n ! * (n - 1) + ((n !) - 1) := by
   unfold detOperations detMultiplications detAdditions leibnizSummands multsPerSummand
-  ring_nf
   omega
 
 /-
@@ -75,10 +75,10 @@ def cramerOperations (n : ℕ) : ℕ := (n + 1) * detOperations n + n
 
 /-- Cramer's Rule requires at least (n+1)·(n!-1) operations -/
 theorem cramer_lower_bound (n : ℕ) (hn : n ≥ 2) :
-    cramerOperations n ≥ (n + 1) * (n ! - 1) := by
+    cramerOperations n ≥ (n + 1) * ((n !) - 1) := by
   unfold cramerOperations
-  have : detOperations n ≥ n ! - 1 := by
-    unfold detOperations detAdditions
+  have : detOperations n ≥ (n !) - 1 := by
+    unfold detOperations detAdditions leibnizSummands
     omega
   nlinarith
 
@@ -93,11 +93,11 @@ Total: ≈ n³/3 + n²/2 operations
 
 /-- Forward elimination operations (exact count) -/
 def forwardElimOps (n : ℕ) : ℕ :=
-  ∑ k in range (n - 1), (n - 1 - k) * (n - k)
+  ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k)
 
 /-- Back-substitution operations -/
 def backSubOps (n : ℕ) : ℕ :=
-  ∑ k in range n, k
+  ∑ k ∈ range n, k
 
 /-- Total Gaussian elimination operations -/
 def gaussianOperations (n : ℕ) : ℕ := forwardElimOps n + backSubOps n
@@ -106,11 +106,8 @@ def gaussianOperations (n : ℕ) : ℕ := forwardElimOps n + backSubOps n
 theorem back_sub_formula (n : ℕ) :
     backSubOps n = n * (n - 1) / 2 := by
   unfold backSubOps
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Finset.sum_range_succ]
-    omega
+  have h := Finset.sum_range_id_mul_two n
+  omega
 
 /-- Gaussian elimination is O(n³): bounded by n³ for n ≥ 1 -/
 theorem gaussian_cubic_bound (n : ℕ) (hn : n ≥ 1) :
@@ -122,17 +119,20 @@ theorem gaussian_cubic_bound (n : ℕ) (hn : n ≥ 1) :
         ≤ ∑ _k ∈ range (n - 1), (n * n) :=
           Finset.sum_le_sum fun k _ => Nat.mul_le_mul (by omega) (by omega)
       _ = (n - 1) * (n * n) := by
-          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_id]
   -- Each back-substitution term k < n, so k ≤ n
   have h2 : ∑ k ∈ range n, k ≤ n * n :=
     calc ∑ k ∈ range n, k
         ≤ ∑ _k ∈ range n, n :=
           Finset.sum_le_sum fun k hk => le_of_lt (Finset.mem_range.mp hk)
-      _ = n * n := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+      _ = n * n := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_id]
   -- Combine: (n-1)*n² + n² = n²*(n-1+1) = n³
   calc ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k) + ∑ k ∈ range n, k
-      ≤ (n - 1) * (n * n) + n * n := add_le_add h1 h2
-    _ = n ^ 3 := by cases n with | zero => omega | succ m => ring
+      ≤ (n - 1) * (n * n) + n * n := Nat.add_le_add h1 h2
+    _ = n ^ 3 := by
+        cases n with
+        | zero => omega
+        | succ m => simp only [Nat.add_sub_cancel]; ring
 
 /-
 ## Part IV: Factorial Dominates Polynomial
@@ -158,7 +158,8 @@ theorem factorial_ge_cube (n : ℕ) (hn : n ≥ 6) : n ! ≥ n ^ 3 := by
       -- since m³ ≥ (m+1)² for m ≥ 3 (m²(m-1) ≥ 2m+1)
       calc (m + 1) * m.factorial
           ≥ (m + 1) * m ^ 3 := Nat.mul_le_mul_left _ ihm
-        _ ≥ (m + 1) ^ 3 := by nlinarith
+        _ ≥ (m + 1) ^ 3 := by
+            nlinarith [Nat.pow_le_pow_left hm 2, Nat.pow_le_pow_left hm 3, hm]
 
 /-
 ## Part V: Exact Crossover Point

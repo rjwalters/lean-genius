@@ -79,12 +79,12 @@ theorem dist_continuous_right (x : α) : Continuous (dist x) :=
 /-! ## The seminorm reverse triangle inequality -/
 
 /-- Norm reverse triangle inequality. -/
-theorem reverse_triangle_norm {E : Type*} [SeminormedAddGroup E] (a b : E) :
+theorem reverse_triangle_norm {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     |‖a‖ - ‖b‖| ≤ ‖a - b‖ :=
   abs_norm_sub_norm_le a b
 
 /-- One-sided seminorm form. -/
-theorem norm_sub_norm_le' {E : Type*} [SeminormedAddGroup E] (a b : E) :
+theorem norm_sub_norm_le' {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     ‖a‖ - ‖b‖ ≤ ‖a - b‖ :=
   norm_sub_norm_le a b
 

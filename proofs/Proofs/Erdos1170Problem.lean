@@ -166,7 +166,7 @@ theorem omega1Sq_lt_omega2 : omega1Sq < omega2 := by
   unfold omega1Sq omega1 omega2
   rw [Cardinal.lt_ord, Ordinal.card_mul]
   simp only [Cardinal.card_ord]
-  rw [Cardinal.mul_eq_self (le_of_lt (Cardinal.aleph0_lt_aleph 1))]
+  rw [Cardinal.mul_eq_self (le_of_lt ((Cardinal.aleph0_lt_aleph (o := 1)).mpr (by norm_num)))]
   exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
 /-- Laver's result gives a polarized partition for ω₁² + 1 as first target. -/

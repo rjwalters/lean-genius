@@ -39,10 +39,8 @@ Related: Problem 135
 Tags: ramsey-theory, graph-coloring, complete-graphs
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
+open scoped Classical
 
 open Finset
 
@@ -80,8 +78,8 @@ def colorsInK4 {n k : ℕ} (c : EdgeColoring n k) (v : Fin 4 → Fin n)
 The required property for our coloring.
 -/
 def hasAtLeast5ColorsInEveryK4 {n k : ℕ} (c : EdgeColoring n k) : Prop :=
-  ∀ v : Fin 4 → Fin n, Function.Injective v →
-    (colorsInK4 c v ‹_›).card ≥ 5
+  ∀ v : Fin 4 → Fin n, ∀ hv : Function.Injective v,
+    (colorsInK4 c v hv).card ≥ 5
 
 /-
 ## Part II: The Erdős-Gyárfás Function
@@ -112,7 +110,7 @@ f(n) < n
 axiom erdos_gyarfas_upper_bound :
     ∀ n : ℕ, n ≥ 4 → (f n : ℕ) < n
 
-/-- **Specific value**: f(9) = 8 (Erdős-Gyárfás computation). -/
+/-  **Specific value**: f(9) = 8 (Erdős-Gyárfás computation). -/
 
 /-
 ## Part IV: The Asymptotic Solution
@@ -136,7 +134,7 @@ def AsymptoticResult : Prop :=
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       |(f n : ℝ) / n - 5/6| < ε
 
-/-- The asymptotic result follows from BCDP. -/
+/-  The asymptotic result follows from BCDP. -/
 
 /-
 ## Part V: Why 5/6?
@@ -155,14 +153,14 @@ theorem why_five_sixths :
 **Edge count in K₄:**
 K₄ has C(4,2) = 6 edges.
 -/
-theorem k4_edges : Nat.choose 4 2 = 6 := by norm_num
+theorem k4_edges : Nat.choose 4 2 = 6 := by decide
 
 
 /-
 ## Part VI: Related Values
 -/
 
-/-- **Small values**: f(4)=f(5)=f(6)=5, f(9)=8 (Erdős-Gyárfás).
+/-  **Small values**: f(4)=f(5)=f(6)=5, f(9)=8 (Erdős-Gyárfás).
 **Monotonicity**: f is non-decreasing (more vertices → more colors needed). -/
 
 /-

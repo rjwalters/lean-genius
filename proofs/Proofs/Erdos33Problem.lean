@@ -58,14 +58,14 @@ noncomputable def normalizedDensity (A : Set ℕ) (N : ℕ) : ℝ :=
 /-- The set of squares {0, 1, 4, 9, 16, ...} -/
 def squares : Set ℕ := { n | ∃ m : ℕ, n = m^2 }
 
-/-- **Erdős**: There exist additive complements of squares with finite
+/-  **Erdős**: There exist additive complements of squares with finite
     limsup > 1. This shows the problem is non-trivial.
 
     Construction idea: Include enough elements to cover all residue classes
     that aren't covered by squares, but not too many. -/
 /- ## Lower Bounds on liminf -/
 
-/-- **Moser (1965)**: For any additive complement of squares A,
+/-  **Moser (1965)**: For any additive complement of squares A,
     liminf |A ∩ {1,...,N}| / √N > 1.06.
 
     This was the first quantitative lower bound, showing you can't be
@@ -83,10 +83,10 @@ axiom cilleruelo_habsieger_lower_bound (A : Set ℕ)
 
 /-- The lower bound 4/π is approximately 1.273. -/
 theorem four_over_pi_approx : (4 / π : ℝ) > 1.27 := by
-  rw [gt_iff_lt, div_lt_iff Real.pi_pos]
+  rw [gt_iff_lt, lt_div_iff₀ Real.pi_pos]
   -- Need: 1.27 * π < 4, equivalently π < 4/1.27 ≈ 3.1496...
   -- We know π < 3.15 from Mathlib
-  have hpi : Real.pi < 3.15 := Real.pi_lt_315
+  have hpi : Real.pi < 3.1416 := Real.pi_lt_d4
   linarith
 
 /- ## Upper Bounds on limsup -/
@@ -104,14 +104,14 @@ theorem goldenRatio_squared : goldenRatio^2 = goldenRatio + 1 := by
 /-- The Van Doorn constant: 2φ^(5/2) ≈ 6.66 -/
 noncomputable def vanDoornConstant : ℝ := 2 * goldenRatio^((5 : ℝ)/2)
 
-/-- **Van Doorn's construction**: There exists an additive complement A
+/-  **Van Doorn's construction**: There exists an additive complement A
     such that |A ∩ {1,...,N}| / √N ≤ 2φ^(5/2) for all N.
 
     This gives limsup ≤ 2φ^(5/2) ≈ 6.66.
 
     The construction uses a greedy algorithm that adds elements to A
     in a way that optimizes coverage while minimizing density. -/
-/-- 2φ^(5/2) ≈ 6.66 -/
+/-  2φ^(5/2) ≈ 6.66 -/
 /- ## The Main Open Questions -/
 
 /-- **Open Question 1**: What is the exact minimum value of the limsup?

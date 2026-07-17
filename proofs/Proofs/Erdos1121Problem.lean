@@ -25,11 +25,11 @@ References:
 Tags: geometry, circles, covering, convexity
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 
@@ -97,6 +97,7 @@ def Line.separates (l : Line) (S₁ S₂ : Set (ℝ × ℝ)) : Prop :=
   (∀ p ∈ S₁, signedDistance l p > 0) ∧
   (∀ p ∈ S₂, signedDistance l p < 0)
 
+open scoped Classical in
 /--
 **Separating line for circles:**
 A line disjoint from all circles that divides them into two non-empty groups.
@@ -166,7 +167,7 @@ axiom goodman_goodman_theorem : ErdosConjecture1121
 ## Part V: Special Cases
 -/
 
-/--
+/- 
 **Two circles case:**
 If two circles cannot be separated by a line, they overlap or touch.
 In this case, a circle of radius r₁ + r₂ centered appropriately covers both.
@@ -179,7 +180,7 @@ def CirclesOverlap (C₁ C₂ : Circle) : Prop :=
   let d := Real.sqrt ((C₁.center.1 - C₂.center.1)^2 + (C₁.center.2 - C₂.center.2)^2)
   d ≤ C₁.radius + C₂.radius
 
-/--
+/- 
 **Overlapping implies no separating line:**
 -/
 /-
@@ -195,7 +196,7 @@ structure Ball (n : ℕ) where
   radius : ℝ
   radius_pos : radius > 0
 
-/--
+/- 
 **Goodman-Goodman generalization:**
 The theorem extends to balls in ℝⁿ — replace lines with hyperplanes
 and circles with balls. The same covering result holds.

@@ -106,7 +106,7 @@ noncomputable def normalizedLcmSum (A : Set ℕ) (N : ℕ) : ℝ :=
 def isDenseSubset (A : Set ℕ) : Prop :=
   Tendsto (fun N : ℕ => reciprocalSum A N / log2Plus N) atTop atTop
 
-/-- Example: The primes satisfy the density condition
+/-  Example: The primes satisfy the density condition
     (by Mertens' theorem, Σ_{p≤x} 1/p ~ log log x). -/
 /- ## Part V: The Main Conjecture and Its Refutation -/
 
@@ -162,10 +162,10 @@ def FasterThanThreshold (A : Set ℕ) : Prop :=
     ∀ᶠ N : ℕ in atTop, reciprocalSum A N >
       Real.exp (C * Real.sqrt (log2Plus N) * log3Plus N)
 
-/-- If A grows faster than Tao's threshold, LCM divergence holds. -/
+/-  If A grows faster than Tao's threshold, LCM divergence holds. -/
 /- ## Part VIII: Key Insight: Why the Counterexample Works -/
 
-/-- **Key insight: Structure vs Density.**
+/-  **Key insight: Structure vs Density.**
 Tao's set A is constructed so that elements share many prime factors
 in a controlled way. This makes:
 - The reciprocal sum large (many elements contribute 1/n)

@@ -1,10 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
-import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Analysis.Calculus.Deriv.Shift
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Reparametrization invariance of arc length and signed area
@@ -108,8 +102,8 @@ theorem areaFn_periodic {x y : ℝ → ℝ}
 /-- Chain rule: `(x ∘ φ)'(t) = x'(φ t)·φ'(t)` for `C¹` data. -/
 theorem deriv_coord_comp {x φ : ℝ → ℝ} (hx : ContDiff ℝ 1 x) (hφ : ContDiff ℝ 1 φ)
     (t : ℝ) : deriv (x ∘ φ) t = deriv x (φ t) * deriv φ t :=
-  deriv_comp t (hx.differentiable le_rfl).differentiableAt
-    (hφ.differentiable le_rfl).differentiableAt
+  deriv_comp t (hx.differentiable one_ne_zero).differentiableAt
+    (hφ.differentiable one_ne_zero).differentiableAt
 
 /-! ## Arc length is reparametrization invariant -/
 
@@ -144,7 +138,7 @@ theorem arclength_reparam_invariant {x y φ : ℝ → ℝ}
       = ∫ u in (φ 0)..(φ (2 * π)), speedFn x y u := by
     apply integral_comp_mul_deriv
     · intro t _
-      exact (hφ.differentiable le_rfl).differentiableAt.hasDerivAt
+      exact (hφ.differentiable one_ne_zero).differentiableAt.hasDerivAt
     · exact (hφ.continuous_deriv le_rfl).continuousOn
     · exact hspeedcont
   rw [hcv, hshift]
@@ -184,7 +178,7 @@ theorem signed_area_reparam_invariant {x y φ : ℝ → ℝ}
       = ∫ u in (φ 0)..(φ (2 * π)), areaFn x y u := by
     apply integral_comp_mul_deriv
     · intro t _
-      exact (hφ.differentiable le_rfl).differentiableAt.hasDerivAt
+      exact (hφ.differentiable one_ne_zero).differentiableAt.hasDerivAt
     · exact (hφ.continuous_deriv le_rfl).continuousOn
     · exact hareacont
   rw [hcv, hshift]

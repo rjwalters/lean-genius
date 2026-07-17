@@ -38,11 +38,11 @@ theorem pow2_of_half_pow2 {m : ℕ} (hm : 2 ∣ m) {k : ℕ} (h : m / 2 = 2 ^ k)
     m = 2 ^ (k + 1) := by
   have hm2 : m = 2 * (m / 2) := (Nat.mul_div_cancel' hm).symm
   rw [h] at hm2
-  rw [hm2, pow_succ]
+  rw [hm2, pow_succ]; ring
 
 /-- Conversely, if m = 2^{k+1} then m / 2 = 2^k. -/
 theorem half_pow2_of_pow2 {k : ℕ} : 2 ^ (k + 1) / 2 = 2 ^ k := by
-  rw [pow_succ, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
+  rw [pow_succ, Nat.mul_div_cancel _ (by norm_num : 0 < 2)]
 
 /-- A power of 2 ≥ 2 is even. -/
 theorem even_of_pow2_ge_two {k : ℕ} (hk : 1 ≤ k) : 2 ∣ 2 ^ k := by
@@ -53,7 +53,7 @@ theorem even_of_pow2_ge_two {k : ℕ} (hk : 1 ≤ k) : 2 ∣ 2 ^ k := by
 theorem totient_even_of_ge_three {n : ℕ} (hn : 3 ≤ n) : 2 ∣ Nat.totient n := by
   have h1 : 0 < n := by omega
   have h2 : 2 ≤ n := by omega
-  exact Nat.totient_even (by omega)
+  exact (Nat.totient_even (by omega : 2 < n)).two_dvd
 
 /-- The key arithmetic bridge: φ(n) is a power of 2 iff φ(n)/2 is a power of 2
     (for n ≥ 3, where φ(n) is even). -/
@@ -67,10 +67,12 @@ theorem totient_pow2_iff_half_pow2 {n : ℕ} (hn : 3 ≤ n) :
       push_neg at h
       interval_cases k
       simp at hk
-      have := Nat.totient_pos (by omega : 0 < n)
+      have := totient_even_of_ge_three hn
       omega
-    exact ⟨k - 1, by rw [hk, pow_succ, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)];
-           congr 1; omega⟩
+    refine ⟨k - 1, ?_⟩
+    rw [hk]
+    conv_lhs => rw [show k = (k - 1) + 1 by omega, pow_succ,
+      Nat.mul_div_cancel _ (by norm_num : 0 < 2)]
   · rintro ⟨j, hj⟩
     exact ⟨j + 1, pow2_of_half_pow2 (totient_even_of_ge_three hn) hj⟩
 

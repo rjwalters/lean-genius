@@ -1,11 +1,4 @@
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.DivisionRing
-import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Set.Card
-import Mathlib.Algebra.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Hilbert's 15th Problem: Rigorous Foundation of Schubert's Enumerative Calculus
@@ -93,7 +86,7 @@ Key examples:
 
 /-- The Grassmannian Gr(k,n) over a field K: the set of k-dimensional subspaces of Kⁿ -/
 def Grassmannian (k n : ℕ) (K : Type*) [DivisionRing K] :=
-  { V : Submodule K (Fin n → K) // finrank K V = k }
+  { V : Submodule K (Fin n → K) // Module.finrank K V = k }
 
 /-- A point in the Grassmannian is a subspace of the correct dimension -/
 instance (k n : ℕ) (K : Type*) [DivisionRing K] :
@@ -102,7 +95,7 @@ instance (k n : ℕ) (K : Type*) [DivisionRing K] :
 
 /-- The dimension of a Grassmannian point equals k by definition -/
 theorem grassmannian_rank {k n : ℕ} {K : Type*} [DivisionRing K]
-    (V : Grassmannian k n K) : finrank K (V : Submodule K (Fin n → K)) = k :=
+    (V : Grassmannian k n K) : Module.finrank K (V : Submodule K (Fin n → K)) = k :=
   V.property
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -136,7 +129,7 @@ def LinesMeet {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
 
 /-- Equivalent condition: lines meet iff their span has dimension < 4 -/
 def LinesMeet' {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
-  finrank K (L₁.val ⊔ L₂.val : Submodule K (Fin 4 → K)) < 4
+  Module.finrank K (L₁.val ⊔ L₂.val : Submodule K (Fin 4 → K)) < 4
 
 /-- The two definitions of lines meeting are equivalent.
 
@@ -148,16 +141,16 @@ theorem linesMeet_iff_linesMeet' {K : Type*} [Field K] (L₁ L₂ : LineInP3 K) 
   simp only [LinesMeet, LinesMeet', SubspacesMeet]
   have hdim := Submodule.finrank_sup_add_finrank_inf_eq L₁.val L₂.val
   rw [L₁.property, L₂.property] at hdim
-  -- hdim : finrank K ↥(L₁.val ⊔ L₂.val) + finrank K ↥(L₁.val ⊓ L₂.val) = 2 + 2
+  -- hdim : Module.finrank K ↥(L₁.val ⊔ L₂.val) + Module.finrank K ↥(L₁.val ⊓ L₂.val) = 2 + 2
   constructor
   · -- (V ∩ W ≠ ⊥) → (dim(V + W) < 4)
     intro hne
-    suffices h : 0 < finrank K ↥(L₁.val ⊓ L₂.val) by omega
+    suffices h : 0 < Module.finrank K ↥(L₁.val ⊓ L₂.val) by omega
     rw [Nat.pos_iff_ne_zero, ne_eq, Submodule.finrank_eq_zero]
     exact hne
   · -- (dim(V + W) < 4) → (V ∩ W ≠ ⊥)
     intro hlt hbot
-    have : finrank K ↥(L₁.val ⊓ L₂.val) = 0 := Submodule.finrank_eq_zero.mpr hbot
+    have : Module.finrank K ↥(L₁.val ⊓ L₂.val) = 0 := Submodule.finrank_eq_zero.mpr hbot
     omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -398,12 +391,12 @@ This confirms schubertNumber_FourLines = 2.
 /-- The partition (1) representing σ₁ in Gr(2,4) -/
 def partition_1 : Partition where
   parts := [1]
-  decreasing := List.chain'_singleton _
+  decreasing := List.isChain_singleton _
 
 /-- The partition (2,2) representing the point class in Gr(2,4) -/
 def partition_22 : Partition where
   parts := [2, 2]
-  decreasing := by simp [List.Chain', List.chain'_cons']
+  decreasing := List.Chain.cons (le_refl 2) List.Chain.nil
 
 /-- σ₁⁴ = 2 · σ₂₂ in Gr(2,4) (the four lines formula)
 
@@ -442,7 +435,7 @@ The problem is now considered **SOLVED**, though some would say "continuously
 being refined" as new perspectives emerge (quantum cohomology, K-theory, etc.).
 -/
 
-/-- Hilbert's 15th Problem: Summary statement
+/- Hilbert's 15th Problem: Summary statement
 
 The problem asked for rigorous foundations of Schubert's enumerative calculus.
 This was achieved through intersection theory on Grassmannians, with:

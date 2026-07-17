@@ -17,11 +17,9 @@ Reference: https://erdosproblems.com/974
 Tijdeman, R., "On a conjecture of Turán and Erdős", Indag. Math. (1966), 374-383.
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.Complex.RootsOfUnity
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex Finset BigOperators
 
@@ -84,14 +82,12 @@ def hasInfinitelyManyZeroTuples {n : ℕ} (z : Configuration n) : Prop :=
 
 /-- A configuration has z₁ = 1. -/
 def hasFirstElementOne {n : ℕ} (z : Configuration n) : Prop :=
-  n > 0 → z ⟨0, by omega⟩ = 1
+  ∀ (h : n > 0), z ⟨0, h⟩ = 1
 
 /-- For the standard roots of unity, z₀ = e(0/n) = 1. -/
 theorem standard_roots_first_is_one (n : ℕ) (hn : n > 0) :
     (standardRootsOfUnity n) ⟨0, hn⟩ = 1 := by
   simp [standardRootsOfUnity, nthRootOfUnity]
-  ring_nf
-  simp [Complex.exp_zero]
 
 /- ## Part IV: The Main Theorems (Tijdeman 1966)
 -/
@@ -146,7 +142,7 @@ theorem erdos_974_solved (n : ℕ) (hn : n ≥ 2) (z : Configuration n)
 /- ## Part VI: Converse Direction
 -/
 
-/-- The nth roots of unity DO have the zero-tuple property when n > 1. -/
+/-  The nth roots of unity DO have the zero-tuple property when n > 1. -/
 /- ## Part VII: Connection to Newton's Identities
 
 Newton's identities connect power sums to elementary symmetric polynomials:

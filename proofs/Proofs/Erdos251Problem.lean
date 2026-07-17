@@ -46,7 +46,7 @@ Note: Mathlib uses 0-indexing, so p₀ = 2.
 /-- The nth prime (0-indexed): p₀ = 2, p₁ = 3, p₂ = 5, ... -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
-/-- The first few primes:
+/-  The first few primes:
 - p₀ = 2, p₁ = 3, p₂ = 5, p₃ = 7, p₄ = 11, p₅ = 13, ...
 
 These are verified computationally in the definition of Nat.nth. -/
@@ -77,13 +77,13 @@ The sum converges because pₙ ~ n ln n (prime number theorem) and
 Σ n ln n / 2ⁿ converges by ratio test.
 -/
 
-/-- The Erdős sum converges absolutely.
+/-  The Erdős sum converges absolutely.
 
 This follows from the prime number theorem (pₙ ~ n ln n) and the
 fact that Σ n ln n / 2ⁿ converges by the ratio test.
 -/
 
-/-- The sum is positive (all terms are positive). -/
+/-  The sum is positive (all terms are positive). -/
 
 /-
 ## Partial Sums
@@ -123,7 +123,7 @@ Erdős proved related irrationality results for different denominators.
 /-- The factorial-denominator sum: Σ pₙ/n! -/
 noncomputable def factorialSum : ℝ := ∑' n, (nthPrime n : ℝ) / (n.factorial : ℝ)
 
-/-- **Erdős (1958)**: The sum Σ pₙᵏ/n! is irrational for all k ≥ 1.
+/-  **Erdős (1958)**: The sum Σ pₙᵏ/n! is irrational for all k ≥ 1.
 
 In particular, Σ pₙ/n! is irrational.
 
@@ -173,9 +173,9 @@ The decimal expansion of Σ pₙ/2ⁿ begins: 3.59686...
 This is OEIS sequence A098990.
 -/
 
-/-- The Erdős sum lies between 3 and 4. -/
+/-  The Erdős sum lies between 3 and 4. -/
 
-/-- More precise: the sum is approximately 3.5968... -/
+/-  More precise: the sum is approximately 3.5968... -/
 
 /-
 ## Explicit Partial Sums

@@ -38,6 +38,9 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Real.Basic
+
+open scoped Classical
 
 open Finset
 
@@ -111,7 +114,7 @@ Every 3-uniform hypergraph on 3n vertices with at least n³+1 edges
 must contain K₄⁻ (4 vertices, 3 edges) or the 5-7 configuration.
 -/
 def Erdos794Conjecture : Prop :=
-  ∀ (V : Type*) [DecidableEq V] (H : Hypergraph3 V) (n : ℕ),
+  ∀ (V : Type) [DecidableEq V] (H : Hypergraph3 V) (n : ℕ),
     H.vertexCount = 3 * n →
     H.edgeCount ≥ n^3 + 1 →
     ContainsK4Minus H ∨ Contains5_7 H
@@ -122,7 +125,7 @@ Every 3-uniform hypergraph on 3n vertices with at least n³+1 edges
 contains K₄⁻.
 -/
 def Erdos794Simplified : Prop :=
-  ∀ (V : Type*) [DecidableEq V] (H : Hypergraph3 V) (n : ℕ),
+  ∀ (V : Type) [DecidableEq V] (H : Hypergraph3 V) (n : ℕ),
     H.vertexCount = 3 * n →
     H.edgeCount ≥ n^3 + 1 →
     ContainsK4Minus H
@@ -162,7 +165,7 @@ structure HarrisCounterexample where
 **Threshold for n=3:**
 n³ + 1 = 27 + 1 = 28
 -/
-theorem n3_threshold : (3 : ℕ)^3 + 1 = 28 := by norm_num
+theorem n3_threshold : (3 : ℕ)^3 + 1 = 28 := by decide
 
 /--
 **Harris's counterexample exists:**
@@ -185,14 +188,14 @@ theorem erdos_794_disproved : ¬Erdos794Simplified := by
   intro h
   obtain ⟨H, hv, he, havoid⟩ := harris_counterexample_exists
   -- H has 9 vertices (n=3), 28 ≥ 3³+1 edges, but no K₄⁻
-  have hcontains := h (Fin 9) H 3 hv (by simp [he, n3_threshold]; omega)
+  have hcontains := h (Fin 9) H 3 hv (by simp [he])
   exact havoid hcontains
 
 /-- The original conjecture is also false. -/
 theorem erdos_794_original_false : ¬Erdos794Conjecture := by
   intro h
-  have hs := simplified_implies_original (fun V _ H n hv he =>
-    Or.elim (h V H n hv he) id (balogh_observation H))
+  have hs : Erdos794Simplified := fun V _ H n hv he =>
+    Or.elim (h V H n hv he) id (balogh_observation H)
   exact erdos_794_disproved hs
 
 /- ## Edge Density Questions -/
@@ -201,7 +204,7 @@ theorem erdos_794_original_false : ¬Erdos794Conjecture := by
 **Turán Density for K₄⁻:**
 The maximum edge density in a 3-uniform hypergraph avoiding K₄⁻.
 -/
-noncomputable def turanDensityK4Minus : ℝ := 2/7  -- Conjectured value
+noncomputable def turanDensityK4Minus : ℝ := (2 : ℝ) / 7  -- Conjectured value
 
 /--
 **Frankl-Füredi Lower Bound:**

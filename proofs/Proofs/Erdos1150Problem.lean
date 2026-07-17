@@ -163,6 +163,22 @@ theorem conjecture_implies_no_ultraflat :
   obtain ⟨n, hgt, hlt'⟩ := (hev'.and hlt).exists
   linarith
 
+/-- Parseval implies the sup-norm-to-sqrt-degree ratio is at least 1
+    for any Littlewood polynomial with degree ≥ 1. This is the key
+    lower bound ingredient for the ultraflat ↔ conjecture squeeze argument. -/
+theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial p)
+    (hn : p.natDegree ≥ 1) :
+    supNorm p / Real.sqrt ↑p.natDegree ≥ 1 := by
+  have hpb := parseval_lower_bound p hp
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑p.natDegree :=
+    Real.sqrt_pos_of_pos (Nat.cast_pos.mpr (by omega))
+  have hsqrt_le : Real.sqrt ↑p.natDegree ≤ Real.sqrt (↑p.natDegree + 1) :=
+    Real.sqrt_le_sqrt (by linarith)
+  calc (1 : ℝ) = Real.sqrt ↑p.natDegree / Real.sqrt ↑p.natDegree :=
+        (div_self (ne_of_gt hsqrt_pos)).symm
+    _ ≤ supNorm p / Real.sqrt ↑p.natDegree :=
+        (div_le_div_iff_of_pos_right hsqrt_pos).mpr (by linarith)
+
 /-- **Backward direction (proved):**
     If no ultraflat Littlewood sequence exists, then the conjecture holds.
 
@@ -215,7 +231,8 @@ theorem no_ultraflat_implies_conjecture :
         rw [div_le_iff₀ hsqrt_pos, hdeg k]
         exact hbound k⟩
     have hub_tends : Tendsto (fun k : ℕ => (1 : ℝ) + 1 / ((k : ℝ) + 1)) atTop (nhds 1) := by
-      have := tendsto_const_nhds.add (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))
+      have := (tendsto_const_nhds (x := (1 : ℝ)) (f := atTop (α := ℕ))).add
+        (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))
       rwa [add_zero] at this
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hub_tends hlb hub
 
@@ -242,7 +259,7 @@ axiom bbmst_flat :
       ∀ z : ℂ, ‖z‖ = 1 →
         c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n
 
-/-- **Kahane (1980)**: Ultraflat polynomials exist for unimodular
+/-  **Kahane (1980)**: Ultraflat polynomials exist for unimodular
     coefficients (|aᵢ| = 1, not necessarily ±1).
     This shows the restriction to ±1 is essential for #1150. -/
 /-- BBMST implies the sup norm of some Littlewood polynomial is at most c₂√n.
@@ -261,21 +278,6 @@ theorem bbmst_upper_bound_exists :
 ## The Gap Between Flat and Ultraflat
 -/
 
-/-- Parseval implies the sup-norm-to-sqrt-degree ratio is at least 1
-    for any Littlewood polynomial with degree ≥ 1. This is the key
-    lower bound ingredient for the ultraflat ↔ conjecture squeeze argument. -/
-theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial p)
-    (hn : p.natDegree ≥ 1) :
-    supNorm p / Real.sqrt ↑p.natDegree ≥ 1 := by
-  have hpb := parseval_lower_bound p hp
-  have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑p.natDegree :=
-    Real.sqrt_pos_of_pos (Nat.cast_pos.mpr (by omega))
-  have hsqrt_le : Real.sqrt ↑p.natDegree ≤ Real.sqrt (↑p.natDegree + 1) :=
-    Real.sqrt_le_sqrt (by linarith)
-  calc (1 : ℝ) = Real.sqrt ↑p.natDegree / Real.sqrt ↑p.natDegree :=
-        (div_self (ne_of_gt hsqrt_pos)).symm
-    _ ≤ supNorm p / Real.sqrt ↑p.natDegree :=
-        (div_le_div_right hsqrt_pos).mpr (by linarith)
 
 /-- The key open question is about the gap between BBMST and ultraflat.
     BBMST shows c₁√n ≤ max|P| ≤ c₂√n for SOME P. But:

@@ -89,7 +89,7 @@ theorem a_cauchySeq (f : ℕ → ℝ) : CauchySeq (a f) := by
   apply cauchySeq_of_le_geometric (1 / 3) 1
   · norm_num  -- 1/3 < 1
   · intro n
-    rw [Real.dist_eq, abs_of_nonneg (by linarith [a_strict_mono f n])]
+    rw [Real.dist_eq, abs_sub_comm, abs_of_nonneg (by linarith [a_strict_mono f n])]
     calc a f (n + 1) - a f n
         ≤ width f n := a_succ_sub_le_width f n
       _ = (1 / 3 : ℝ) ^ n := width_formula f n

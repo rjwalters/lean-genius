@@ -24,10 +24,7 @@ References:
 - Mattheus-Verstraete [MaVe23]: Solution
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Sym.Sym2
+import Mathlib
 
 open Finset
 
@@ -71,9 +68,9 @@ Any single vertex forms a monochromatic K_1 trivially.
 -/
 theorem ramsey_one_left (t : ℕ) (ht : t ≥ 1) : R(1, t) = 1 := by
   have h1 : ∀ c : (Sym2 (Fin 1) → Bool), (∃ S : Finset (Fin 1), S.card = 1 ∧
-      ∀ x ∈ S, ∀ y ∈ S, x ≠ y → c (Sym2.mk (x, y)) = true) ∨
+      ∀ x ∈ S, ∀ y ∈ S, x ≠ y → c s(x, y) = true) ∨
       (∃ T : Finset (Fin 1), T.card = t ∧ ∀ x ∈ T, ∀ y ∈ T, x ≠ y →
-        c (Sym2.mk (x, y)) = false) := by
+        c s(x, y) = false) := by
     exact fun c => Or.inl ⟨{0}, by simp +decide⟩
   refine' le_antisymm (Nat.sInf_le h1) _
   refine' le_csInf _ _
@@ -118,33 +115,34 @@ theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by
       exact ⟨fun x hx => by
         obtain ⟨y, hy, z, hz, hyz⟩ := Finset.one_lt_card.1 (by linarith)
         exact ⟨y, hy, z, hz, hyz⟩,
-        fun x hx => by linarith [show x.card ≤ b by
-          exact le_trans (Finset.card_le_univ _) (by simpa)]⟩
+        fun x hx => by
+          have hxb : x.card ≤ b := le_trans (Finset.card_le_univ _) (by simpa)
+          linarith [hxb]⟩
 
 /- ## Part III: Known Exact Values -/
 
-/--
+/- 
 **R(3,3) = 6:**
 The most famous small Ramsey number. Any 2-coloring of K_6 contains
 a monochromatic triangle. K_5 can be 2-colored without a monochromatic triangle.
 -/
-/--
+/- 
 **R(4,4) = 18:**
 Any 2-coloring of K_18 contains a monochromatic K_4.
 Finding the exact value required extensive computation.
 -/
-/--
+/- 
 **R(4,5) = 25:**
 The largest exactly known off-diagonal Ramsey number with s = 4.
 -/
-/--
+/- 
 **R(3,k) Bounds:**
 The best known bounds for R(3,k) are
 c₁ · k²/log k ≤ R(3,k) ≤ c₂ · k²/log k.
 -/
 /- ## Part IV: Historical Lower Bounds for R(4,k) -/
 
-/--
+/- 
 **Spencer (1977):**
 R(4,k) ≥ c · (k log k)^{5/2} for some constant c > 0.
 
@@ -199,7 +197,10 @@ Mattheus-Verstraete proves the statement with A = 4.
 -/
 theorem erdos_166_solved : Erdos166Statement := by
   obtain ⟨c, hc, hbound⟩ := mattheus_verstraete
-  exact ⟨c, 4, hc, by norm_num, hbound⟩
+  refine ⟨c, 4, hc, by norm_num, fun k hk => ?_⟩
+  have h := hbound k hk
+  rwa [show (Real.log (k : ℝ)) ^ (4 : ℝ) = (Real.log (k : ℝ)) ^ (4 : ℕ) from by
+    rw [← Real.rpow_natCast]; norm_num]
 
 /--
 **Current Best Bounds for R(4,k):**
@@ -264,6 +265,12 @@ theorem logarithmic_gap :
   intro k hk
   obtain ⟨c, hc, hc_bound⟩ := mattheus_verstraete
   obtain ⟨C, hC, hC_bound⟩ := aks_upper_bound
-  exact ⟨c, C, hc, hC, hc_bound k hk, hC_bound k hk⟩
+  have hβ : (Real.log (k : ℝ)) ^ (4 : ℝ) = (Real.log (k : ℝ)) ^ (4 : ℕ) := by
+    rw [← Real.rpow_natCast]; norm_num
+  have hα : (Real.log (k : ℝ)) ^ (2 : ℝ) = (Real.log (k : ℝ)) ^ (2 : ℕ) := by
+    rw [← Real.rpow_natCast]; norm_num
+  refine ⟨c, C, hc, hC, ?_, ?_⟩
+  · rw [hβ]; exact hc_bound k hk
+  · rw [hα]; exact hC_bound k hk
 
 end Erdos166

@@ -100,7 +100,7 @@ theorem nat_countable (n : ℕ) : IsCountableOrdinal n := by
 
 /- ## Erdős-Rado Theorem -/
 
-/--
+/- 
 **Erdős-Rado Theorem** (partial):
 For any 2 ≤ n < ω, we have 𝔠 → (ω + n, 4)₂³.
 
@@ -137,7 +137,7 @@ def conjecture_omega_tower (n : ℕ) : Prop :=
 
 /- ## Finite Ramsey Theory -/
 
-/--
+/- 
 **Finite Ramsey Theorem** (axiomatized):
 For any r, k, n there exists N such that N → (r)ₖⁿ.
 (Any k-coloring of n-subsets of an N-set has a homogeneous r-set.)

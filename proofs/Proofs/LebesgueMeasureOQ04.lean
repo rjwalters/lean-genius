@@ -91,7 +91,7 @@ lemma volume_preCantorSet_le (n : ℕ) :
 
 /-- **The ternary Cantor set has Lebesgue measure zero.** -/
 theorem volume_cantorSet : volume cantorSet = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   -- For every `n`, `volume cantorSet ≤ (2/3)^n` since `cantorSet ⊆ preCantorSet n`.
   have hbound : ∀ n : ℕ, volume cantorSet ≤ ENNReal.ofReal ((2 / 3 : ℝ) ^ n) := by
     intro n
@@ -103,7 +103,7 @@ theorem volume_cantorSet : volume cantorSet = 0 := by
     have hr : Filter.Tendsto (fun n : ℕ => (2 / 3 : ℝ) ^ n) Filter.atTop (nhds 0) :=
       tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
     have := (ENNReal.continuous_ofReal.tendsto 0).comp hr
-    simpa using this
+    simpa [Function.comp_def] using this
   exact le_of_tendsto_of_tendsto' tendsto_const_nhds htend hbound
 
 /-! ## The Cantor set is uncountable

@@ -1,6 +1,8 @@
 import Proofs.TwinPrimes
-import Mathlib.Data.Finset.Lattice
+import Mathlib
 import Mathlib.Tactic
+
+set_option maxRecDepth 40000
 
 /-
 # Are There Infinitely Many Twin Primes?

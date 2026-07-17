@@ -44,8 +44,8 @@ This is a cycle: 0 - 1 - 2 - 3 - 0.
 -/
 def C4 : SimpleGraph (Fin 4) where
   Adj := fun i j => (i.val + 1) % 4 = j.val ∨ (j.val + 1) % 4 = i.val
-  symm := fun i j h => by cases h <;> simp_all [or_comm]
-  loopless := fun i h => by fin_cases i <;> simp_all
+  symm.symm := fun i j h => by cases h <;> simp_all [or_comm]
+  loopless.irrefl := fun i h => by fin_cases i <;> simp_all
 
 /--
 A graph G **contains a 4-cycle** if C₄ is a subgraph of G.
@@ -94,21 +94,21 @@ def Erdos85Negation : Prop :=
 The asymptotic behavior of f(n) is well-understood.
 -/
 
-/--
+/- 
 **Asymptotic Upper Bound**
 
 f(n) < √n + 1 for all n ≥ 4.
 
 This means if minimum degree exceeds √n, a 4-cycle must exist.
 -/
-/--
+/- 
 **Asymptotic Behavior**
 
 f(n) = (1 + o(1))√n as n → ∞.
 
 The minimum degree threshold grows like the square root of n.
 -/
-/--
+/- 
 **Base Case**: f(4) = 2.
 
 In a graph on 4 vertices, minimum degree ≥ 2 guarantees a 4-cycle.
@@ -125,8 +125,8 @@ The **star graph** K_{1,n} has one central vertex connected to n leaves.
 -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj := fun i j => (i = 0 ∧ j ≠ 0) ∨ (j = 0 ∧ i ≠ 0)
-  symm := fun i j h => by cases h <;> simp_all [or_comm]
-  loopless := fun i h => by cases h <;> simp_all
+  symm.symm := fun i j h => by cases h <;> simp_all [or_comm]
+  loopless.irrefl := fun i h => by cases h <;> simp_all
 
 /--
 **Ramsey Connection**
@@ -177,7 +177,7 @@ The monotonicity question is subtle because adding vertices might create
 "room" for C₄-avoiding configurations with high minimum degree.
 -/
 
-/--
+/-
 The Kővári-Sós-Turán theorem gives bounds on C₄-free graphs:
 A C₄-free graph on n vertices has at most (1/2)n^{3/2} + n/2 edges.
 -/

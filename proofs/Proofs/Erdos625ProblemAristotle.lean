@@ -14,9 +14,11 @@
 import Proofs.Erdos625Problem
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos625Aristotle
 
-open Erdos625 SimpleGraph
+open Erdos625
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -82,14 +84,14 @@ theorem clique_independence_bound_ari :
 /-- Chromatic number concentration a.s. (AlmostSurely placeholder is trivially True). -/
 theorem chromatic_concentration_ari :
     AlmostSurely (fun n G =>
-      ∃ χ₀ : ℕ, |chromaticNumber G.graph - χ₀| ≤ n / (Real.log n)^2) := by
+      ∃ χ₀ : ℕ, |(chromaticNumber G.graph : ℝ) - χ₀| ≤ n / (Real.log n)^2) := by
   intro ε hε
   exact ⟨0, fun n _ => trivial⟩
 
 /-- Cochromatic number concentration a.s. (AlmostSurely placeholder is trivially True). -/
 theorem cochromatic_concentration_ari :
     AlmostSurely (fun n G =>
-      ∃ ζ₀ : ℕ, |cochromaticNumber G.graph - ζ₀| ≤ n / Real.log n) := by
+      ∃ ζ₀ : ℕ, |(cochromaticNumber G.graph : ℝ) - ζ₀| ≤ n / Real.log n) := by
   intro ε hε
   exact ⟨0, fun n _ => trivial⟩
 
@@ -114,8 +116,8 @@ theorem singleton_is_cochromatic_ari (G : SimpleGraph V) (v : V) :
     IsCochromaticClass G {w | w = v} := by
   right
   intro u w hu hv huv
-  simp at hu hv
-  exact absurd (hu ▸ hv) huv
+  simp only [Set.mem_setOf_eq] at hu hv
+  exact absurd (hu.trans hv.symm) huv
 
 /-- A cochromatic coloring with |V| colors always exists for any graph. -/
 theorem cochromatic_coloring_exists_ari (G : SimpleGraph V) :

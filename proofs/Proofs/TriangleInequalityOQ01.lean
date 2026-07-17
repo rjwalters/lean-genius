@@ -29,9 +29,7 @@ genuine normed space precisely on the range `1 ≤ p`.
 **Extends**: TriangleInequality.lean (the elementary normed/metric forms)
 -/
 
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Mathlib.MeasureTheory.Function.LpSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open scoped ENNReal NNReal
 
@@ -92,14 +90,14 @@ precise that `1 ≤ p` is exactly the threshold at which Minkowski (constant
 /-- The general quasi-triangle inequality valid for **every** exponent `p`:
     `‖f + g‖_p ≤ C_p · (‖f‖_p + ‖g‖_p)` where `C_p = LpAddConst p`. -/
 theorem eLpNorm_add_le_const (hf : AEStronglyMeasurable f μ) (hg : AEStronglyMeasurable g μ) :
-    eLpNorm (f + g) p μ ≤ LpAddConst p * (eLpNorm f p μ + eLpNorm g p μ) :=
+    eLpNorm (f + g) p μ ≤ ENNReal.LpAddConst p * (eLpNorm f p μ + eLpNorm g p μ) :=
   MeasureTheory.eLpNorm_add_le' hf hg p
 
 /-- On the Minkowski range `1 ≤ p` the constant collapses to `1`, recovering
     the honest triangle inequality. This pins down `1 ≤ p` as the exact
     convexity threshold. -/
-theorem LpAddConst_eq_one (hp1 : 1 ≤ p) : LpAddConst p = 1 :=
-  MeasureTheory.LpAddConst_of_one_le hp1
+theorem LpAddConst_eq_one (hp1 : 1 ≤ p) : ENNReal.LpAddConst p = 1 :=
+  ENNReal.LpAddConst_of_one_le hp1
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part III: L^p is closed under addition (Minkowski as closure)
@@ -143,8 +141,8 @@ variable [hp : Fact (1 ≤ p)]
 theorem lp_norm_add_le (f g : Lp E p μ) : ‖f + g‖ ≤ ‖f‖ + ‖g‖ :=
   norm_add_le f g
 
-/-- The L^p norm relates to the seminorm by `‖f‖ = (eLpNorm f p μ).toReal`. -/
 omit hp in
+/-- The L^p norm relates to the seminorm by `‖f‖ = (eLpNorm f p μ).toReal`. -/
 theorem lp_norm_def (f : Lp E p μ) : ‖f‖ = (eLpNorm f p μ).toReal :=
   Lp.norm_def f
 

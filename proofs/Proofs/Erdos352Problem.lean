@@ -30,11 +30,7 @@ References:
 - [Ma13] Mauldin, "Some problems and ideas of Erdős in analysis and geometry" (2013)
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.Determinant
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos352
 
@@ -67,7 +63,7 @@ theorem cross2D_antisymm (u v : ℝ × ℝ) : cross2D u v = -cross2D v u := by
   simp only [cross2D]
   ring
 
-/-- Triangle area is symmetric under vertex permutation.
+/-  Triangle area is symmetric under vertex permutation.
 Axiomatized due to detailed algebra with absolute values. -/
 
 /- ## The Main Property
@@ -84,7 +80,7 @@ def ContainsUnitTriangle (A : Set (ℝ × ℝ)) : Prop := ContainsTriangleOfArea
 
 /- ## The Main Question -/
 
-/-- **Erdős Problem #352 (OPEN)**:
+/-  **Erdős Problem #352 (OPEN)**:
 
 Is there c > 0 such that every measurable A ⊆ ℝ² with measure ≥ c
 contains a unit triangle?
@@ -118,10 +114,10 @@ theorem erdosConstant_approx : erdosConstant > 2.4 ∧ erdosConstant < 2.5 := by
       (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 5.196)).symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   constructor
-  · rw [gt_iff_lt, lt_div_iff hsqrt_pos]
-    linarith [Real.pi_gt_314]
-  · rw [div_lt_iff hsqrt_pos]
-    linarith [Real.pi_lt_315]
+  · rw [gt_iff_lt, lt_div_iff₀ hsqrt_pos]
+    linarith [Real.pi_gt_d2]
+  · rw [div_lt_iff₀ hsqrt_pos]
+    linarith [Real.pi_lt_d2]
 
 /-- The conjectured statement: c = 4π/√27 suffices. -/
 def erdos_352_conjecture : Prop :=
@@ -136,13 +132,13 @@ def erdos_352_optimal : Prop :=
 
 /- ## Known Results -/
 
-/-- **Erdős (unpublished)**: Sets of infinite measure contain unit triangles.
+/-  **Erdős (unpublished)**: Sets of infinite measure contain unit triangles.
 Follows from the Lebesgue density theorem. -/
 
-/-- **Erdős (unpublished)**: Unbounded sets of positive measure contain unit triangles.
+/-  **Erdős (unpublished)**: Unbounded sets of positive measure contain unit triangles.
 Also follows from the Lebesgue density theorem. -/
 
-/-- **Freiling-Mauldin (2002)**: If outer measure > 4π/√27, then A contains
+/-  **Freiling-Mauldin (2002)**: If outer measure > 4π/√27, then A contains
 a triangle with area > 1 (not just = 1). -/
 
 /- ## The Witness: Critical Circle
@@ -203,10 +199,10 @@ theorem critical_circle_max_area :
 Mauldin noted the problem reduces to showing the result for
 unions of finitely many compact convex interiors. -/
 
-/-- **Mauldin (2013)**: It suffices to prove the conjecture for sets that are
+/-  **Mauldin (2013)**: It suffices to prove the conjecture for sets that are
 unions of interiors of finitely many compact convex sets. -/
 
-/-- **Freiling-Mauldin**: The conjecture holds for unions of at most 3
+/-  **Freiling-Mauldin**: The conjecture holds for unions of at most 3
 compact convex interiors. -/
 
 /- ## Summary -/

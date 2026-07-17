@@ -37,7 +37,7 @@ open Real
 -- ========================================================================
 
 /-- The additive subgroup πℤ = {nπ : n ∈ ℤ} ⊂ ℝ. -/
-noncomputable def piMultiples : AddSubgroup ℝ :=
+noncomputable abbrev piMultiples : AddSubgroup ℝ :=
   AddSubgroup.zmultiples Real.pi
 
 /-- The quotient group ℝ/πℤ. In this group:
@@ -126,13 +126,10 @@ theorem tmul_torsion_eq_zero (r : ℝ) (x : AngleQuot)
   -- Then (r/n) ⊗ (n • x) = (r/n) ⊗ 0 = 0
   rw [hdiv]
   -- Now need: (n • (r/n)) ⊗ x = 0 given n • x = 0
-  -- Use: (n • m) ⊗ₜ y = n • (m ⊗ₜ y) = m ⊗ₜ (n • y)
-  have h1 : TensorProduct.tmul ℤ (n • (r / (n : ℝ))) x =
-    n • TensorProduct.tmul ℤ (r / (n : ℝ)) x := by
-    rw [← TensorProduct.smul_tmul']
-  rw [h1, show n • TensorProduct.tmul ℤ (r / (n : ℝ)) x =
-    TensorProduct.tmul ℤ (r / (n : ℝ)) (n • x) from
-    TensorProduct.smul_tmul n (r / (n : ℝ)) x, hx, TensorProduct.tmul_zero]
+  -- Use: (n • m) ⊗ₜ y = m ⊗ₜ (n • y) directly (avoids routing through the
+  -- outer AddGroup zsmul on DehnGroup, which is a separate SMul instance
+  -- from the Module ℤ instance and is no longer defeq-transparent here)
+  rw [TensorProduct.smul_tmul n (r / (n : ℝ)) x, hx, TensorProduct.tmul_zero]
 
 /-- **Rational Angle Vanishing**: For any rational q ∈ ℚ,
 r ⊗ [qπ] = 0 in ℝ ⊗_ℤ (ℝ/πℤ).
@@ -217,8 +214,8 @@ theorem tmul_infinite_order_ne_zero (r : ℝ) (x : AngleQuot) (hr : r ≠ 0)
   -- ℝ is flat over ℤ: NoZeroSMulDivisors ℤ ℝ ↔ torsion ℤ ℝ = ⊥ ↔ Flat ℤ ℝ (Bézout)
   haveI : Module.Flat ℤ ℝ := by
     rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout,
-        ← Submodule.noZeroSMulDivisors_iff_torsion_eq_bot]
-    exact NoZeroSMulDivisors.iff_algebraMap_injective.mpr Int.cast_injective
+        ← Submodule.isTorsionFree_iff_torsion_eq_bot]
+    exact Module.isTorsionFree_iff_algebraMap_injective.mpr Int.cast_injective
   -- The injective ℤ-linear map f : ℤ →ₗ[ℤ] AngleQuot, n ↦ n • x
   let f : ℤ →ₗ[ℤ] AngleQuot :=
     { toFun    := fun n => n • x

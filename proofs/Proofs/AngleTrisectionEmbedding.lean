@@ -16,6 +16,23 @@
 
 import Mathlib
 
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
+
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatAngleTrisectionEmbedding (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 open Polynomial
 
 namespace AngleTrisectionEmbedding

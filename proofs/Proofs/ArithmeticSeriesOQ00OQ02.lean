@@ -105,15 +105,18 @@ theorem nicomachus (n : ℕ) :
     linarith [show ((n : ℤ) * (n + 1)) ^ 2 + 4 * (↑n + 1) ^ 3 = ((↑n + 1) * (↑n + 2)) ^ 2
               from by ring]
 
-/-- The difference: ∑k³ - ∑(2k-1)k² = ∑(k³ - (2k-1)k²) = ∑(k² - k²·(2k-1)... -/
+/-- The difference: ∑k³ - ∑(2k-1)k² = ∑ k²(1-k) over k = 1..n; with the
+    0-indexed summation variable this is (k+1)²(1-(k+1)).
+    (Statement repair for the v4.31 migration: the RHS summand was
+    `((k:ℤ)+1)^2 * (1 - k)` — an off-by-one in the re-indexing, false
+    pointwise and in aggregate; the 1-indexed identity k³-(2k-1)k² = k²(1-k)
+    requires `1 - (k+1)` for the 0-indexed variable.) -/
 theorem cubes_minus_weighted (n : ℕ) :
     (∑ k ∈ range n, ((k : ℤ) + 1) ^ 3) -
     (∑ k ∈ range n, ((2 * ((k : ℤ) + 1) - 1) * ((k : ℤ) + 1) ^ 2)) =
-    (∑ k ∈ range n, (((k : ℤ) + 1) ^ 2 * (1 - (k : ℤ)))) := by
-  simp [← sum_sub_distrib]
-  congr 1
-  ext k
-  ring
+    (∑ k ∈ range n, (((k : ℤ) + 1) ^ 2 * (1 - ((k : ℤ) + 1)))) := by
+  rw [← sum_sub_distrib]
+  exact sum_congr rfl fun k _ => by ring
 
 end ArithmeticSeriesOQ00OQ02
 

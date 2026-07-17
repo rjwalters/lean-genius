@@ -101,7 +101,7 @@ noncomputable def coloringOrientation {k : ℕ} (col : G.Coloring (Fin k)) :
     have hne : col u ≠ col v := col.valid hadj
     rcases lt_or_gt_of_ne hne with h | h
     · exact Or.inl ⟨hadj, h⟩
-    · exact Or.inr ⟨G.symm hadj, h⟩
+    · exact Or.inr ⟨G.adj_symm hadj, h⟩
   exclusive := by
     intro u v ⟨⟨_, h1⟩, ⟨_, h2⟩⟩
     exact absurd h1 (not_lt.mpr h2.le)
@@ -378,7 +378,7 @@ theorem k3_no_classical_robust :
         have h10r := hr 1 0 h10 (by decide)
         omega
 
-/-- Girth-3 witness using the classical definition: K₃ has girth 3, χ=3,
+/-  Girth-3 witness using the classical definition: K₃ has girth 3, χ=3,
     and no classically robust orientation.
 
     The triangle K₃ = (⊤ : SimpleGraph (Fin 3)) witnesses the girth-3 case:
@@ -389,19 +389,25 @@ theorem k3_no_classical_robust :
     Note: egirth and chromaticNumber calculations for K₃ were previously axiomatized
     but are now proved directly from Mathlib. -/
 
+/-- The concrete 3-cycle 0→1→2→0 in K₃, lifted to a top-level constant so that
+    `decide` can reduce `IsCycle`/length goals through it (v4.31 `decide` refuses
+    goals mentioning a local `have`-bound free variable). -/
+def k3cycle : (⊤ : SimpleGraph (Fin 3)).Walk (0 : Fin 3) (0 : Fin 3) :=
+  Walk.cons (show (⊤ : SimpleGraph (Fin 3)).Adj 0 1 by decide)
+    (Walk.cons (show (⊤ : SimpleGraph (Fin 3)).Adj 1 2 by decide)
+      (Walk.cons (show (⊤ : SimpleGraph (Fin 3)).Adj 2 0 by decide) Walk.nil))
+
 /-- The extended girth of K₃ is 3.
     Lower bound: `three_le_egirth` (all simple graph cycles have length ≥ 3).
     Upper bound: the triangle 0→1→2→0 is a 3-cycle. -/
 theorem k3_egirth_eq_3 : (⊤ : SimpleGraph (Fin 3)).egirth = 3 := by
   apply le_antisymm
   · -- Upper bound: construct the 3-cycle 0→1→2→0
-    have cycle : (⊤ : SimpleGraph (Fin 3)).Walk (0 : Fin 3) (0 : Fin 3) :=
-      Walk.cons (by decide) (Walk.cons (by decide) (Walk.cons (by decide) Walk.nil))
-    have hcycle : cycle.IsCycle := by
+    have hcycle : k3cycle.IsCycle := by
       refine ⟨⟨⟨?_⟩, ?_⟩, ?_⟩ <;> decide
     show (⊤ : SimpleGraph (Fin 3)).egirth ≤ (3 : ℕ∞)
     unfold SimpleGraph.egirth
-    exact iInf_le_of_le 0 (iInf_le_of_le cycle (iInf_le_of_le hcycle (by decide)))
+    exact iInf_le_of_le 0 (iInf_le_of_le k3cycle (iInf_le_of_le hcycle (by decide)))
   · -- Lower bound: all cycles in simple graphs have length ≥ 3
     exact three_le_egirth
 

@@ -1,6 +1,7 @@
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Analysis.SpecificLimits.Basic
@@ -243,17 +244,32 @@ A₅ conjugacy classes:
     These split into TWO conjugacy classes of 12 elements each. -/
 theorem a5_order5_count :
     (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
-      orderOf σ = 5)).card = 24 := by native_decide
+      orderOf σ = 5)).card = 24 := by
+  have heq : (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) => orderOf σ = 5))
+      = (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
+          (σ : Equiv.Perm (Fin 5)).cycleType.lcm = 5)) :=
+    Finset.filter_congr (fun σ _ => by rw [← Subgroup.orderOf_coe, ← Equiv.Perm.lcm_cycleType])
+  rw [heq]; native_decide
 
 /-- There are 20 order-3 elements in A₅ (3-cycles). -/
 theorem a5_order3_count :
     (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
-      orderOf σ = 3)).card = 20 := by native_decide
+      orderOf σ = 3)).card = 20 := by
+  have heq : (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) => orderOf σ = 3))
+      = (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
+          (σ : Equiv.Perm (Fin 5)).cycleType.lcm = 3)) :=
+    Finset.filter_congr (fun σ _ => by rw [← Subgroup.orderOf_coe, ← Equiv.Perm.lcm_cycleType])
+  rw [heq]; native_decide
 
 /-- There are 15 order-2 elements in A₅ (double transpositions). -/
 theorem a5_order2_count :
     (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
-      orderOf σ = 2)).card = 15 := by native_decide
+      orderOf σ = 2)).card = 15 := by
+  have heq : (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) => orderOf σ = 2))
+      = (Finset.univ.filter (fun σ : alternatingGroup (Fin 5) =>
+          (σ : Equiv.Perm (Fin 5)).cycleType.lcm = 2)) :=
+    Finset.filter_congr (fun σ _ => by rw [← Subgroup.orderOf_coe, ← Equiv.Perm.lcm_cycleType])
+  rw [heq]; native_decide
 
 /-- A₅ is simple (Mathlib). -/
 theorem a5_is_simple : IsSimpleGroup (alternatingGroup (Fin 5)) :=

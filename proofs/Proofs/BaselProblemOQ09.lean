@@ -95,7 +95,7 @@ theorem hasSum_odd_squares :
     intro a b h; dsimp only at h; omega
   have hodd_sum : Summable (fun k : ℕ => f (2 * k + 1)) := by
     have h := summable_f.comp_injective hinj
-    simpa [Function.comp] using h
+    simpa [Function.comp_def] using h
   have hodd : HasSum (fun k : ℕ => f (2 * k + 1)) (∑' k, f (2 * k + 1)) :=
     hodd_sum.hasSum
   -- Recombine even + odd into the full Basel sum, then identify the odd value.

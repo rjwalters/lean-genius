@@ -33,7 +33,7 @@ analogue of the classical `n ∈ {1, 2, 4, pᵏ, 2pᵏ}` criterion.
 A genuinely new phenomenon (absent for `ZMod n`, where the product is always
 `±1`): when `-1 = 1` in `R` (e.g. `R = ℤ[i]/(2)`, residue characteristic 2),
 the product can be a unit of order two that is neither `1` nor `-1`
-(`∏ u = i` in `ℤ[i]/(2)`). The abstract characterization still holds verbatim.
+(`∏ u = i` ∈ `ℤ[i]/(2)`). The abstract characterization still holds verbatim.
 
 Verified by exact integer enumeration over `94` quotients of five rings of
 integers (`ℤ[i]`, `ℤ[ω]`, `ℤ[√-2]`, `ℤ[√2]`, `ℤ[(1+√5)/2]`): every product
@@ -68,7 +68,7 @@ theorem prod_units_eq_one_or_unique_involution
     (∏ u : Rˣ, u = 1) ∨
       (∃ t : Rˣ, t ≠ 1 ∧ t ^ 2 = 1 ∧
         (∀ s : Rˣ, s ^ 2 = 1 → s = 1 ∨ s = t) ∧ ∏ u : Rˣ, u = t) :=
-  WilsonsTheoremOQ02ExtOQ01.prod_eq_one_or_unique_involution
+  WilsonsTheoremOQ02ExtOQ01.miller_prod
 
 /-- **Classical packaging.** If `-1` is the unique element of order two in `Rˣ`,
     then the product of all units of `R`, taken in `R`, equals `-1`. This is the

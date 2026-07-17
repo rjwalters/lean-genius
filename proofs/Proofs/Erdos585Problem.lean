@@ -18,6 +18,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Cycles and Edge-Disjointness -/
 
 /-- A cycle in a simple graph on Fin m, given as an injective sequence of
@@ -50,22 +52,21 @@ def HasTwoEdgeDisjointCyclesOnSameVertexSet (G : SimpleGraph (Fin m)) : Prop :=
 /-- f(n): the maximum number of edges in an n-vertex graph with no two
     edge-disjoint cycles on the same vertex set -/
 noncomputable def maxEdgesNoEdgeDisjointCycles (n : ℕ) : ℕ :=
-  sSup {G.edgeFinset.card |
-    (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj)
-    (_ : ¬HasTwoEdgeDisjointCyclesOnSameVertexSet G)}
+  sSup {k | ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+    ¬HasTwoEdgeDisjointCyclesOnSameVertexSet G ∧ G.edgeFinset.card = k}
 
 /- ## Pyber–Rödl–Szemerédi Lower Bound -/
 
-/-- Lower bound: f(n) ≥ c · n log log n for some c > 0.
+/-  Lower bound: f(n) ≥ c · n log log n for some c > 0.
     Proved by Pyber, Rödl, and Szemerédi (1995). -/
 /- ## Chakraborti–Janzer–Methuku–Montgomery Upper Bound -/
 
-/-- Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
+/-  Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
     Proved by Chakraborti, Janzer, Methuku, and Montgomery (2024).
     This was a major breakthrough, nearly closing the gap. -/
 /- ## The Erdős Problem -/
 
-/-- Erdős Problem 585: Determine f(n), the maximum number of edges in an
+/-  Erdős Problem 585: Determine f(n), the maximum number of edges in an
     n-vertex graph with no two edge-disjoint cycles on the same vertex set.
     Currently: Ω(n log log n) ≤ f(n) ≤ O(n (log n)^C). -/
 /-- Generalization: for k ≥ 2 pairwise edge-disjoint cycles on the
@@ -77,4 +78,4 @@ theorem cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
       ∀ (G : SimpleGraph (Fin n)),
         G.edgeFinset.card > C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α →
           True  -- G contains k pairwise edge-disjoint cycles on the same vertex set
-  := ⟨1, 1, by norm_num, by norm_num, Filter.eventually_of_forall (fun _ _ _ => trivial)⟩
+  := ⟨1, 1, by norm_num, by norm_num, Filter.Eventually.of_forall (fun _ _ _ => trivial)⟩

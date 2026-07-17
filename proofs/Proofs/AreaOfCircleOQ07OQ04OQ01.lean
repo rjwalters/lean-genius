@@ -59,7 +59,8 @@ theorem integral_Ioi_mul_exp_neg_mul_sq (hb : 0 < b) :
     push_cast [Complex.ofReal_exp]
     ring
   have hofR : ((∫ r in Ioi (0 : ℝ), r * Real.exp (-b * r ^ 2) : ℝ) : ℂ) = (2 * (b : ℂ))⁻¹ := by
-    rw [← integral_ofReal, hcong, key]
+    rw [← key, ← hcong]
+    exact (_root_.integral_ofReal (f := fun r : ℝ => r * Real.exp (-b * r ^ 2))).symm
   have hcast : ((∫ r in Ioi (0 : ℝ), r * Real.exp (-b * r ^ 2) : ℝ) : ℂ)
       = (((2 * b)⁻¹ : ℝ) : ℂ) := by
     rw [hofR]; push_cast; ring
@@ -97,7 +98,7 @@ theorem integral_plane_radial_eq (hb : 0 < b) :
     rw [hrad]
   rw [setIntegral_congr_fun polarCoord.open_target.measurableSet hsimp]
   rw [show (polarCoord.target : Set (ℝ × ℝ)) = Ioi (0 : ℝ) ×ˢ Ioo (-π) π from rfl]
-  rw [setIntegral_prod_mul (fun r : ℝ => r * Real.exp (-b * r ^ 2)) (fun _ : ℝ => (1 : ℝ))
+  rw [Measure.volume_eq_prod ℝ ℝ, setIntegral_prod_mul (fun r : ℝ => r * Real.exp (-b * r ^ 2)) (fun _ : ℝ => (1 : ℝ))
         (Ioi (0 : ℝ)) (Ioo (-π) π)]
   rw [integral_Ioi_mul_exp_neg_mul_sq hb, setIntegral_const,
       volume_real_Ioo_of_le (by linarith [pi_pos])]

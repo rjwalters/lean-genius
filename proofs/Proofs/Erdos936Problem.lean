@@ -32,11 +32,7 @@ References:
 - OEIS A146968: Powerful numbers n! ± 1 (empty for large n)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib
 
 open Nat Filter BigOperators Finset
 
@@ -66,16 +62,15 @@ def Powerful (n : ℕ) : Prop :=
 
 /-- 1 is powerful (vacuously true). -/
 theorem one_powerful : Powerful 1 := by
-  intro p _ hp_div
-  have : p ∣ 1 := hp_div
-  interval_cases p <;> simp_all
+  intro p hp hp_div
+  exact absurd (Nat.dvd_one.mp hp_div) hp.ne_one
 
 /-- Perfect squares are powerful. -/
 theorem sq_powerful (n : ℕ) : Powerful (n^2) := by
   intro p hp hp_div
   have : p ∣ n^2 := hp_div
   have hp_div_n : p ∣ n := hp.dvd_of_dvd_pow this
-  exact Nat.pow_dvd_pow_of_dvd hp_div_n 2
+  exact pow_dvd_pow_of_dvd hp_div_n 2
 
 /-- 4 is powerful. -/
 theorem four_powerful : Powerful 4 := sq_powerful 2
@@ -94,10 +89,9 @@ theorem prime_not_powerful (p : ℕ) (hp : p.Prime) : ¬Powerful p := by
   intro h
   have h_self := h p hp (dvd_refl p)
   have : p^2 ∣ p := h_self
-  have : p^2 ≤ p := Nat.le_of_dvd hp.pos this
-  have : p * p ≤ p := this
+  have h2 : p^2 ≤ p := Nat.le_of_dvd hp.pos this
   have hp_ge : p ≥ 2 := hp.two_le
-  omega
+  nlinarith
 
 /-- 2 is not powerful. -/
 theorem two_not_powerful : ¬Powerful 2 := prime_not_powerful 2 Nat.prime_two

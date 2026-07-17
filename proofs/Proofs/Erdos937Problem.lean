@@ -22,11 +22,7 @@ References:
 - Erdős (1976): "Problems and results on number theoretic properties of consecutive integers"
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Nat BigOperators Finset
 
@@ -78,18 +74,23 @@ theorem one_is_powerful : IsPowerful 1 := by
   constructor
   · omega
   · intro p hp hdiv
-    simp at hdiv
+    exfalso
+    have h1 : p = 1 := Nat.dvd_one.mp hdiv
+    have h2 := hp.two_le
     omega
 
 /-- Every perfect square is powerful. -/
 theorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2) := by
   constructor
-  · positivity
+  · show 1 ≤ n ^ 2
+    have hn0 : n ≠ 0 := by omega
+    have : 0 < n ^ 2 := by positivity
+    omega
   · intro p hp hdiv
     have : p ∣ n := by
       have h := hp.dvd_of_dvd_pow hdiv
       exact h
-    exact dvd_pow this (by norm_num)
+    exact pow_dvd_pow_of_dvd this 2
 
 /-- 4 = 2² is powerful. -/
 theorem four_is_powerful : IsPowerful 4 := by
@@ -102,12 +103,12 @@ theorem eight_is_powerful : IsPowerful 8 := by
   constructor
   · omega
   · intro p hp hdiv
-    interval_cases p
-    · omega
-    · simp only [pow_two]
-      decide
-    · simp at hdiv
-      omega
+    have h8 : (8 : ℕ) = 2 ^ 3 := by norm_num
+    rw [h8] at hdiv
+    have hp2 : p = 2 :=
+      (Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp (hp.dvd_of_dvd_pow hdiv)
+    subst hp2
+    norm_num
 
 /-- 9 = 3² is powerful. -/
 theorem nine_is_powerful : IsPowerful 9 := by
@@ -120,15 +121,17 @@ theorem seventytwo_is_powerful : IsPowerful 72 := by
   constructor
   · omega
   · intro p hp hdiv
-    have h72 : (72 : ℕ) = 2^3 * 3^2 := by norm_num
+    have h72 : (72 : ℕ) = 2 ^ 3 * 3 ^ 2 := by norm_num
     rw [h72] at hdiv
-    interval_cases p
-    · omega
-    · simp only [pow_two]; decide
-    · simp only [pow_two]; decide
-    · -- p ≥ 4, so p cannot divide 72 = 2³ · 3²
-      have h1 : ¬ (4 : ℕ).Prime := by decide
-      omega
+    rcases (Nat.Prime.dvd_mul hp).mp hdiv with h2 | h3
+    · have hp2 : p = 2 :=
+        (Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp (hp.dvd_of_dvd_pow h2)
+      subst hp2
+      norm_num
+    · have hp3 : p = 3 :=
+        (Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp (hp.dvd_of_dvd_pow h3)
+      subst hp3
+      norm_num
 
 /-
 ## Part III: Arithmetic Progressions
@@ -231,7 +234,7 @@ axiom fermat_no_four_squares_in_AP :
 ## Part VII: Easy Construction (Without Coprimality)
 -/
 
-/--
+/- 
 **Extending APs of Powerful Numbers:**
 If a, a+d, ..., a+(k-1)d is an AP of powerful numbers,
 then multiplying each by (a+kd)² gives another AP of powerful numbers.
@@ -239,7 +242,7 @@ then multiplying each by (a+kd)² gives another AP of powerful numbers.
 This shows that without coprimality, arbitrarily long APs of powerful
 numbers exist.
 -/
-/--
+/- 
 **Existence of Long APs (without coprimality):**
 For any k, there exist k powerful numbers in arithmetic progression.
 -/
@@ -287,7 +290,7 @@ def erdosConjectureRPowerful : Prop :=
     (IsRPowerful 3 t.1 ∧ IsRPowerful 3 t.2.1 ∧ IsRPowerful 3 t.2.2.1 ∧ IsRPowerful 3 t.2.2.2 ∧
      CoprimeFourTermAP t.1 t.2.1 t.2.2.1 t.2.2.2) → t ∈ S)
 
-/--
+/- 
 **Conditional Result (assuming ABC):**
 If the ABC conjecture is true, then for r ≥ 4, there are only finitely many
 three-term APs of coprime r-powerful numbers.

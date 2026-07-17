@@ -105,7 +105,7 @@ private lemma zmod2_add_self (a : ZMod 2) : a + a = 0 := by
 
 -- In ZMod 2: a + b = 0 ↔ a = b (since -1 = 1)
 private lemma zmod2_eq_of_add_eq_zero {a b : ZMod 2} (h : a + b = 0) : a = b := by
-  fin_cases a <;> fin_cases b <;> simp_all
+  revert h; revert a b; decide
 
 private lemma zmod2_ne_indicator (a b : ZMod 2) :
     (if a ≠ b then (1 : ZMod 2) else 0) = a + b := by
@@ -138,8 +138,8 @@ private lemma sum_telescope :
 private lemma odd_of_zmod2_eq_one (m : ℕ) (h : (m : ZMod 2) = 1) : Odd m := by
   rw [Nat.odd_iff]
   have hval := ZMod.val_natCast (n := 2) m
-  rw [h] at hval
-  simpa using hval.symm
+  rw [h, ZMod.val_one] at hval
+  exact hval.symm
 
 private theorem transitions_parity_aux (n : ℕ) (f : Fin (n + 1) → ZMod 2) :
     (Finset.card (Finset.filter (fun i : Fin n => f ⟨i.val, by omega⟩ ≠ f ⟨i.val + 1, by omega⟩)
@@ -167,12 +167,12 @@ private theorem transitions_parity_bool (n : ℕ) (f : ℕ → Bool) :
   induction n with
   | zero => simp
   | succ m ih =>
-    rw [Finset.range_succ, Finset.filter_insert]
+    rw [Finset.range_add_one, Finset.filter_insert]
     by_cases hm : f m ≠ f (m + 1)
     · rw [if_pos hm]
       have hmem : m ∉ (Finset.range m).filter (fun i => f i ≠ f (i + 1)) := by
         simp [Finset.mem_filter, Finset.mem_range]
-      rw [Finset.card_insert_of_not_mem hmem]
+      rw [Finset.card_insert_of_notMem hmem]
       set k := ((Finset.range m).filter (fun i => f i ≠ f (i + 1))).card with hk_def
       have hk := ih
       cases hf0 : f 0 <;> cases hfm : f m <;> cases hfm1 : f (m + 1) <;> simp_all <;> omega
@@ -281,7 +281,7 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
     rcases hdoor with ⟨ha, hb⟩ | ⟨ha, hb⟩
     · left; exact ⟨hinj (ha.trans hi₀.symm), hinj (hb.trans hi₁.symm)⟩
     · right; exact ⟨hinj (ha.trans hi₁.symm), hinj (hb.trans hi₀.symm)⟩
-  rcases hne.lt_or_lt with h_lt | h_lt
+  rcases lt_or_gt_of_ne hne with h_lt | h_lt
   · refine ⟨(i₀, i₁), ⟨h_lt, Or.inl ⟨hi₀, hi₁⟩⟩, ?_⟩
     rintro ⟨a, b⟩ ⟨hab, hdoor⟩
     rcases unique a b hdoor with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
@@ -572,7 +572,7 @@ private lemma strip_parity {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSpern
     -- Convert back: ZMod 2 sum = 0 implies Nat parity equal
     rw [← hTrans_cast, ← hTrans_cast] at hsuff
     rw [← Nat.cast_add] at hsuff
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at hsuff
+    rw [ZMod.natCast_eq_zero_iff] at hsuff
     omega
   set m := n - j with hm_def
   have hm_pos : 0 < m := by omega

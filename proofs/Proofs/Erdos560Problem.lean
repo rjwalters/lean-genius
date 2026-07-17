@@ -34,6 +34,9 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Order.Lattice.Nat
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 open SimpleGraph
 
@@ -61,15 +64,17 @@ def completeBipartiteGraph (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
   symm := by
+    constructor
     intro v w h
     cases v <;> cases w <;> simp_all
   loopless := by
+    constructor
     intro v h
     cases v <;> simp_all
 
 notation "K[" n "," n "]" => completeBipartiteGraph n
 
-/--
+/- 
 Number of edges in K_{n,n} is n^2.
 -/
 
@@ -81,10 +86,10 @@ Number of edges in K_{n,n} is n^2.
 **Edge membership proof axiom:**
 If f embeds G into H and preserves edges, then the image edge is in H.edgeSet.
 -/
-axiom embedding_preserves_edges {V W : Type*} [DecidableEq V]
+axiom embedding_preserves_edges {V W : Type*}
     (H : SimpleGraph V) (G : SimpleGraph W) (f : W ↪ V)
-    (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2))
-    (e : G.edgeSet) : (⟨f e.1.1, f e.1.2⟩ : Sym2 V) ∈ H.edgeSet
+    (hf : ∀ e : G.edgeSet, H.Adj (f e.1.out.1) (f e.1.out.2))
+    (e : G.edgeSet) : (s(f e.1.out.1, f e.1.out.2) : Sym2 V) ∈ H.edgeSet
 
 /--
 **Monochromatic Copy:**
@@ -94,8 +99,8 @@ A subgraph H' of H is a monochromatic copy of G under coloring c if:
 -/
 def HasMonochromaticCopy (H : SimpleGraph V) (G : SimpleGraph W)
     (c : EdgeColoring H) : Prop :=
-  ∃ (f : W ↪ V), ∃ (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2)),
-    ∃ color : Bool, ∀ e : G.edgeSet, c ⟨⟨f e.1.1, f e.1.2⟩, embedding_preserves_edges H G f hf e⟩ = color
+  ∃ (f : W ↪ V), ∃ (hf : ∀ e : G.edgeSet, H.Adj (f e.1.out.1) (f e.1.out.2)),
+    ∃ color : Bool, ∀ e : G.edgeSet, c ⟨s(f e.1.out.1, f e.1.out.2), embedding_preserves_edges H G f hf e⟩ = color
 
 /--
 **Size Ramsey Number Definition:**
@@ -148,17 +153,17 @@ theorem size_ramsey_bounds (n : ℕ) (hn : n ≥ 6) :
 ## Part IV: Conlon-Fox-Wigderson Results (2023)
 -/
 
-/--
+/- 
 **General Bipartite Bound (CFW 2023):**
 For s ≤ t, R_hat(K_{s,t}) ≫ s^{2-s/t} * t * 2^s.
 -/
 
-/--
+/- 
 **Asymptotic Result (CFW 2023):**
 When t ≫ s * log(s), we have R_hat(K_{s,t}) ≍ s^2 * t * 2^s.
 -/
 
-/--
+/- 
 **CFW Conjecture:**
 R_hat(K_{n,n}) ≍ n^3 * 2^n for all n.
 
@@ -169,19 +174,19 @@ This is the natural extension of the asymptotic result to the balanced case.
 ## Part V: Basic Properties
 -/
 
-/--
+/- 
 Size Ramsey number is monotonic: if G is a subgraph of G', then R_hat(G) ≤ R_hat(G').
 -/
 
-/--
+/- 
 R_hat(G) ≥ |E(G)| (every witness must have at least as many edges as G).
 -/
 
-/--
+/- 
 R_hat(K_{1,1}) = 1 (a single edge suffices).
 -/
 
-/--
+/- 
 For paths P_n, the size Ramsey number is linear in n.
 -/
 
@@ -199,12 +204,12 @@ noncomputable def classicalRamseyNumber (G : SimpleGraph W) : ℕ :=
 
 notation "R(" G ")" => classicalRamseyNumber G
 
-/--
+/- 
 **Relationship to Classical Ramsey:**
 R_hat(G) ≤ C(R(G), 2), the number of edges in K_{R(G)}.
 -/
 
-/--
+/- 
 **Ramsey for K_{n,n}:**
 Classical Ramsey number for complete bipartite graphs grows doubly exponentially.
 -/
@@ -222,6 +227,8 @@ Ratio: O(n)
 -/
 theorem bounds_gap (n : ℕ) (hn : n ≥ 6) :
     ((3 : ℝ) / 2 * (n : ℝ)^3 * (2 : ℝ)^n) / ((1 : ℝ) / 60 * (n : ℝ)^2 * (2 : ℝ)^n) = 90 * n := by
+  have h2 : (2 : ℝ)^n ≠ 0 := pow_ne_zero n two_ne_zero
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
   field_simp
   ring
 
@@ -232,13 +239,13 @@ This is by definition: Θ(f) means bounded above and below by constant multiples
 
 -- Placeholder definition for Θ notation
 axiom thetaNotation {α : Type*} [Preorder α] (f : α → ℝ) : α → ℝ
-notation:50 f " = Θ(" g ")" => f = thetaNotation g
+notation:50 f " = " "Θ(" g ")" => f = thetaNotation g
 
 /-
 ## Part VIII: Main Results Summary
 -/
 
-/--
+/- 
 **Erdős Problem #560: Size Ramsey Number of K_{n,n}**
 
 Status: OPEN (exact value unknown, bounds established)

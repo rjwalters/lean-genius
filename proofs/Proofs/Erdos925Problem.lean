@@ -32,10 +32,7 @@ References:
 - See also Problem #553
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open SimpleGraph
 
@@ -52,11 +49,11 @@ def isNotRamseyForTriangle (G : SimpleGraph V) : Prop :=
     -- No monochromatic triangle exists
     ¬∃ (a b c : V) (hab : G.Adj a b) (hbc : G.Adj b c) (hca : G.Adj c a),
       color ⟨s(a, b), hab⟩ = color ⟨s(b, c), hbc⟩ ∧
-      color ⟨s(b, c), hbc⟩ = color ⟨s(a, c), hca⟩
+      color ⟨s(b, c), hbc⟩ = color ⟨s(a, c), hca.symm⟩
 
 /-- An independent set in G is a set of vertices with no edges between them. -/
 def hasIndependentSetOfSize (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ (S : Finset V), S.card ≥ k ∧ G.IsCliqueFree 2 ↑S
+  ∃ (S : Finset V), S.card ≥ k ∧ G.CliqueFreeOn (↑S) 2
 
 /-- The independence number α(G): the maximum size of an independent set.
     Axiomatized since computing the supremum requires decidability of
@@ -72,7 +69,7 @@ axiom independenceNumber (G : SimpleGraph V) : ℕ
     decidability of the Ramsey property over all graphs. -/
 axiom R_3_3 (m : ℕ) : ℕ
 
-/-- The trivial lower bound: n^(1/3) independent set always exists. -/
+/-  The trivial lower bound: n^(1/3) independent set always exists. -/
 /- ## Part III: The Conjecture -/
 
 /-- Erdős's conjecture (later disproved):
@@ -95,19 +92,19 @@ def erdos_925_ramsey_form : Prop :=
 
 /- ## Part IV: Alon-Rödl Disproof (2005) -/
 
-/-- Alon-Rödl (2005) lower bound:
+/-  Alon-Rödl (2005) lower bound:
     R(3,3,m) ≥ m³ / (log m)^(4+o(1)) -/
-/-- Alon-Rödl (2005) upper bound:
+/-  Alon-Rödl (2005) upper bound:
     R(3,3,m) ≤ m³ · (log log m) / (log m)² -/
-/-- Sudakov's improvement: the log log factor can be removed. -/
+/-  Sudakov's improvement: the log log factor can be removed. -/
 /-- The conjecture is false - Alon and Rödl disproved it. -/
 axiom erdos_925_disproved : ¬erdos_925_conjecture
 
-/-- Equivalently, R(3,3,m) grows like m³/polylog(m), not m^(3-c).
+/-  Equivalently, R(3,3,m) grows like m³/polylog(m), not m^(3-c).
     The Ramsey formulation of the conjecture is also false. -/
 /- ## Part V: Why n^(1/3) is Optimal -/
 
-/-- The trivial bound n^(1/3) is essentially tight.
+/-  The trivial bound n^(1/3) is essentially tight.
     Non-Ramsey graphs need not have independent sets larger than ~n^(1/3).
     For any ε > 0, there exist non-Ramsey graphs with α(G) ≤ n^(1/3+ε). -/
 /- ## Part VI: The Easy Lower Bound -/

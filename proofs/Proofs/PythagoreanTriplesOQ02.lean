@@ -53,12 +53,12 @@ theorem norm_multiplicative (a₁ b₁ a₂ b₂ : ℤ) :
 /-- The square of a Gaussian integer: (a + bi)² = (a² - b²) + (2ab)i. -/
 theorem gaussSq_formula (a b : ℤ) :
     gaussSq a b = (a ^ 2 - b ^ 2, 2 * a * b) := by
-  simp only [gaussSq, gaussMul]; constructor <;> ring
+  simp only [gaussSq, gaussMul]; refine Prod.ext ?_ ?_ <;> ring
 
 /-- z · conj(z) = N(z): a Gaussian integer times its conjugate equals the norm. -/
 theorem mul_conj_eq_norm (a b : ℤ) :
     gaussMul a b a (-b) = (gaussNorm a b, 0) := by
-  simp only [gaussMul, gaussNorm]; constructor <;> ring
+  simp only [gaussMul, gaussNorm]; refine Prod.ext ?_ ?_ <;> ring
 
 -- ============================================================
 -- Part III: Pythagorean Triples from Gaussian Squaring
@@ -149,7 +149,7 @@ theorem triple_8_15_17 : PythagoreanTriple 8 15 17 := by
 
 /-- Brahmagupta-Fibonacci example: (1² + 2²)(3² + 4²) = (11)² + (2)² = 125. -/
 theorem bf_example : (1 ^ 2 + 2 ^ 2) * (3 ^ 2 + 4 ^ 2) = 11 ^ 2 + 2 ^ 2 := by
-  have := brahmagupta_fibonacci 1 2 3 4; norm_num at this ⊢; linarith
+  have := brahmagupta_fibonacci 1 2 3 4; norm_num at this ⊢
 
 /-
   Summary

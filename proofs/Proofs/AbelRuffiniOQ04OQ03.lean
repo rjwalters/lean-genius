@@ -14,7 +14,7 @@ its Galois group is solvable.
 ## What We Prove
 
 ### ✅ Forward direction (from Mathlib):
-  IsSolvableByRad F α ∧ Irreducible q ∧ q(α) = 0 → IsSolvable q.Gal
+  α ∈ solvableByRad F E ∧ Irreducible q ∧ q(α) = 0 → IsSolvable q.Gal
 
 This is Mathlib's `solvableByRad.isSolvable'`.
 
@@ -63,16 +63,16 @@ inherited by quotients. -/
 theorem solvableByRad_implies_solvableGal
     (q : Polynomial F) (hq : Irreducible q)
     (α : E) (hroot : Polynomial.aeval α q = 0)
-    (hrad : IsSolvableByRad F α) :
+    (hrad : α ∈ solvableByRad F E) :
     IsSolvable q.Gal :=
-  solvableByRad.isSolvable' hq hroot hrad
+  isSolvable_gal_of_irreducible hrad hq hroot
 
 /-- Contrapositive: unsolvable Galois group → not solvable by radicals. -/
 theorem not_solvableByRad_of_not_solvableGal
     (q : Polynomial F) (hq : Irreducible q)
     (α : E) (hroot : Polynomial.aeval α q = 0)
     (hns : ¬IsSolvable q.Gal) :
-    ¬IsSolvableByRad F α :=
+    α ∉ solvableByRad F E :=
   fun hrad => hns (solvableByRad_implies_solvableGal q hq α hroot hrad)
 
 -- ============================================================
@@ -120,7 +120,7 @@ axiom solvableGal_implies_solvableByRad
     (q : Polynomial F) (hq : Irreducible q) [CharZero F]
     (α : E) (hroot : Polynomial.aeval α q = 0)
     (hs : IsSolvable q.Gal) :
-    IsSolvableByRad F α
+    α ∈ solvableByRad F E
 
 -- ============================================================
 -- PART 3: The Full Criterion (Iff)
@@ -136,7 +136,7 @@ Reverse: Axiomatized (requires Kummer theory) -/
 theorem galois_criterion
     (q : Polynomial F) (hq : Irreducible q) [CharZero F]
     (α : E) (hroot : Polynomial.aeval α q = 0) :
-    IsSolvableByRad F α ↔ IsSolvable q.Gal :=
+    α ∈ solvableByRad F E ↔ IsSolvable q.Gal :=
   ⟨fun h => solvableByRad_implies_solvableGal q hq α hroot h,
    fun h => solvableGal_implies_solvableByRad q hq α hroot h⟩
 
@@ -150,7 +150,7 @@ theorem galois_criterion_rationals
     {E : Type*} [Field E] [Algebra ℚ E]
     (q : Polynomial ℚ) (hq : Irreducible q)
     (α : E) (hroot : Polynomial.aeval α q = 0) :
-    IsSolvableByRad ℚ α ↔ IsSolvable q.Gal :=
+    α ∈ solvableByRad ℚ E ↔ IsSolvable q.Gal :=
   galois_criterion q hq α hroot
 
 /-- **Converse of Abel-Ruffini**: if a polynomial's Galois group IS
@@ -160,7 +160,7 @@ theorem solvable_gal_means_radical_formula
     (q : Polynomial F) (hq : Irreducible q) [CharZero F]
     (α : E) (hroot : Polynomial.aeval α q = 0)
     (hs : IsSolvable q.Gal) :
-    IsSolvableByRad F α :=
+    α ∈ solvableByRad F E :=
   (galois_criterion q hq α hroot).mpr hs
 
 -- ============================================================
@@ -178,7 +178,7 @@ theorem abel_ruffini_as_galois_special_case
     (q : Polynomial F) (hq : Irreducible q)
     (α : E) (hroot : Polynomial.aeval α q = 0)
     (hns : ¬IsSolvable q.Gal) :
-    ¬IsSolvableByRad F α :=
+    α ∉ solvableByRad F E :=
   not_solvableByRad_of_not_solvableGal q hq α hroot hns
 
 -- ============================================================
@@ -235,7 +235,7 @@ theorem not_solvableByRad_of_perm_gal
     (q : Polynomial F) (hq : Irreducible q)
     (α : E) (hroot : Polynomial.aeval α q = 0)
     (φ : q.Gal ≃* Equiv.Perm (Fin n)) :
-    ¬ IsSolvableByRad F α :=
+    α ∉ solvableByRad F E :=
   not_solvableByRad_of_not_solvableGal q hq α hroot
     (not_isSolvable_gal_of_perm_iso hn q φ)
 

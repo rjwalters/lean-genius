@@ -24,11 +24,7 @@
   Tags: combinatorics, probability, statistical-mechanics, self-avoiding-walks
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib
 
 namespace Erdos528
 
@@ -56,7 +52,7 @@ def startsAtOrigin (k n : ℕ) (w : Walk k n) : Prop :=
 
 /-- A walk is connected (consecutive points are neighbors) -/
 def isConnected (k n : ℕ) (w : Walk k n) : Prop :=
-  ∀ i : Fin n, areNeighbors k (w i) (w (Fin.succ i))
+  ∀ i : Fin n, areNeighbors k (w i.castSucc) (w (Fin.succ i))
 
 /-- A walk is self-avoiding (no repeated vertices) -/
 def isSelfAvoiding (k n : ℕ) (w : Walk k n) : Prop :=
@@ -190,7 +186,7 @@ theorem erdos_528_summary :
     (∀ k ≥ 1, ∃ C : ℝ, C > 0 ∧
       Tendsto (fun n => (sawCount n k : ℝ) ^ (1 / n)) atTop (nhds C)) ∧
     -- 2. Trivial bounds: k ≤ C_k ≤ 2k-1
-    (∀ k ≥ 1, (k : ℝ) ≤ μ k ∧ μ k ≤ 2 * k - 1) ∧
+    (∀ (k : ℕ), k ≥ 1 → (k : ℝ) ≤ μ k ∧ μ k ≤ 2 * k - 1) ∧
     -- 3. 2D bounds are known
     (2.62 ≤ μ 2 ∧ μ 2 ≤ 2.696) :=
   ⟨fun k hk => limit_exists k hk,

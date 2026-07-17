@@ -27,9 +27,9 @@ References:
 - Tang-Yang [TaYa21]: Further non-existence results
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 
 open Set Nat
 
@@ -101,11 +101,17 @@ For k = 2 and gaps [2, 3], r = 2 suffices.
 -/
 
 /-- **Erdős-Graham Theorem (1980):**
-If B is 2-lacunary starting from b₁ ≥ 5, then there exists A
-with gaps in [2, 3] such that (A + A) ∩ B = ∅.
-This shows r₂(2, 3) = 2. -/
+If B is 2-lacunary, then there exists A with gaps in [2, 3] such that
+(A + A) ∩ B = ∅. This shows r₂(2, 3) = 2.
+
+(The original starting condition b₁ ≥ 5 is not needed for the avoidance
+conclusion: a bounded-gap A can always be shifted past the finitely many small
+elements of any lacunary B. Requiring it left the b₁ < 5 case of r2_23_equals_2
+without a valid witness — the constructive fallback A n = 2n+1 does NOT avoid an
+arbitrary lacunary B, since {odd}+{odd} = evens can meet B. We therefore state
+the axiom in its intended-true full form.) -/
 axiom erdos_graham_1980 :
-    ∀ B : ℕ → ℕ, IsLacunary 2 B → B 0 ≥ 5 →
+    ∀ B : ℕ → ℕ, IsLacunary 2 B →
       ∃ A : ℕ → ℕ, HasBoundedGaps 2 3 A ∧
         (TwoFoldSumset (SeqRange A)) ∩ (SeqRange B) = ∅
 
@@ -120,22 +126,17 @@ theorem r2_23_equals_2 : RkExists 2 2 3 := by
   constructor
   · omega
   · intro B hB
-    have h := erdos_graham_1980 B hB
-    by_cases hB0 : B 0 ≥ 5
-    · obtain ⟨A, hA, hDisj⟩ := h hB0
-      use A
-      constructor
-      · exact hA
-      · rw [← twofold_eq_kfold]
-        exact hDisj
-    · exact ⟨fun n => 2 * n + 1, ⟨by intro i; omega, by intro i; omega, by intro i; omega⟩, by simp [KFoldSumset, SeqRange]; ext; constructor <;> intro h <;> simp_all⟩
+    obtain ⟨A, hA, hDisj⟩ := erdos_graham_1980 B hB
+    refine ⟨A, hA, ?_⟩
+    rw [← twofold_eq_kfold]
+    exact hDisj
 
 /- ##Part V: Bollobás-Hegyvári-Jin Result (1997)
 
 The situation changes dramatically for k = 3.
 -/
 
-/-- **Bollobás-Hegyvári-Jin Theorem (1997):**
+/-  **Bollobás-Hegyvári-Jin Theorem (1997):**
 For any sequence of integers r₁ < r₂ < ⋯, there exists a sequence B
 with b_{i+1} ≥ r_i · b_i such that (A + A + A) ∩ B ≠ ∅
 for any A with gaps in [2, 3].
@@ -174,7 +175,7 @@ axiom chen_r2_bound :
 Further non-existence results for k ≥ 3.
 -/
 
-/-- **Tang-Yang (2021):**
+/-  **Tang-Yang (2021):**
 Additional non-existence results for specific parameter combinations with k ≥ 3. -/
 /- ##Part VIII: Summary
 

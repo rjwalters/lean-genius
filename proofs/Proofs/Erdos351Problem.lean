@@ -51,13 +51,13 @@ This remains open. The answer is unknown. -/
 
 /- ## Solved Cases -/
 
-/--
+/- 
 **Graham's Theorem (1963)**: The set {n + 1/n : n ∈ ℕ} is strongly complete.
 
 This is the case p(x) = x. Graham proved that even after removing any finite
 set of elements, the remaining terms can sum to all sufficiently large integers.
 -/
-/--
+/- 
 **Graham-Alekseyev Theorem**: The set {n² + 1/n : n ∈ ℕ} is strongly complete.
 
 This is the case p(x) = x². Van Doorn noted this follows from combining

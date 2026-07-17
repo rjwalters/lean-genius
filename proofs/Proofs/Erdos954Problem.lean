@@ -138,9 +138,9 @@ def fullRepCount (a : ℕ → ℕ) (x : ℕ) : ℕ :=
     if j = 0 then 0 else
     (Finset.Icc 0 j).filter (fun i => a i + a j ≤ x) |>.card
 
-/-- Weak conjecture: R(x) = (1 + o(1))x. Erdős and Rosen
+/-  Weak conjecture: R(x) = (1 + o(1))x. Erdős and Rosen
     could not even prove this. -/
-/-- Strong conjecture: R(x) = x + O(x^{1/4 + o(1)}).
+/-  Strong conjecture: R(x) = x + O(x^{1/4 + o(1)}).
     The error term x^{1/4} is the natural guess from Sidon set theory. -/
 /- ## Connection to Sidon Sets and B₂ Sequences -/
 
@@ -149,7 +149,7 @@ def IsB2Sequence (a : ℕ → ℕ) (k : ℕ) : Prop :=
   ∀ i₁ j₁ i₂ j₂, i₁ ≤ j₁ → j₁ ≤ k → i₂ ≤ j₂ → j₂ ≤ k →
     a i₁ + a j₁ = a i₂ + a j₂ → (i₁ = i₂ ∧ j₁ = j₂)
 
-/-- The Rosen sequence is a relaxation of B₂: it allows repeated sums
+/-  The Rosen sequence is a relaxation of B₂: it allows repeated sums
     to achieve higher density. This is an open structural claim about
     any sequence satisfying the greedy property. -/
 /-- The cumulative representation count fullRepCount is unbounded

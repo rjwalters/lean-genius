@@ -25,12 +25,7 @@ References:
   quadratic forms." Duke Math. J. (2006), 261-302.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Nat Real Finset
 
@@ -59,7 +54,7 @@ m is squarefull iff m = a² · b³ for some a, b ≥ 1.
 def IsSquarefullAlt (m : ℕ) : Prop :=
   ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ m = a^2 * b^3
 
-/--
+/- 
 **Equivalence of squarefull characterizations:**
 -/
 /--
@@ -70,7 +65,8 @@ theorem one_squarefull : IsSquarefull 1 := by
   constructor
   · omega
   · intros p hp hd
-    have : p ≥ 2 := hp.two_le
+    have h2 : p ≥ 2 := hp.two_le
+    have h1 : p ≤ 1 := Nat.le_of_dvd Nat.one_pos hd
     omega
 
 /--
@@ -122,19 +118,25 @@ theorem four_squarefull : IsSquarefull 4 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 4 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 theorem eight_squarefull : IsSquarefull 8 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 8 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 theorem nine_squarefull : IsSquarefull 9 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 9 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 /-
 ## Part II: Sums of Two Squarefull Numbers
@@ -169,17 +171,19 @@ theorem thirteen_is_sum : IsSumOfTwoSquarefull 13 := by
 **The counting function A(x):**
 A(x) = #{n ≤ x : n is a sum of two squarefull numbers}
 -/
-noncomputable def A (x : ℕ) : ℕ :=
-  (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card
+noncomputable def A (x : ℕ) : ℕ := by
+  classical
+  exact (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card
 
 /--
 **Squarefull numbers up to x:**
 S(x) = #{n ≤ x : n is squarefull} ~ ζ(3/2)/ζ(3) · √x
 -/
-noncomputable def S (x : ℕ) : ℕ :=
-  (Finset.range (x + 1)).filter (fun n => IsSquarefull n) |>.card
+noncomputable def S (x : ℕ) : ℕ := by
+  classical
+  exact (Finset.range (x + 1)).filter (fun n => IsSquarefull n) |>.card
 
-/--
+/- 
 **Asymptotic for squarefull count:**
 S(x) ~ c · √x where c = ζ(3/2)/ζ(3) ≈ 2.173
 -/
@@ -208,7 +212,7 @@ axiom odoni_disproof : ¬erdos_conjecture
 ## Part V: Odoni's Lower Bound
 -/
 
-/--
+/- 
 **Odoni's Lower Bound (1981):**
 A(x) ≫ exp(c · log log log x / log log x) · x / √(log x)
 
@@ -227,7 +231,7 @@ This is the correct exponent for the counting function.
 -/
 noncomputable def alpha : ℝ := 1 - (2 : ℝ)^(-(1/3 : ℝ))
 
-/--
+/- 
 **Blomer-Granville Theorem (2006):**
 A(x) = (log log x)^O(1) · x / (log x)^α
 
@@ -260,7 +264,7 @@ theorem alpha_less_than_half : alpha < 1/2 := by
 ## Part VII: Why the Conjecture Failed
 -/
 
-/--
+/- 
 **Heuristic explanation:**
 Erdős's conjecture was based on a simple probabilistic model:
 - Squarefull numbers up to x: ~ c₁√x
@@ -283,7 +287,7 @@ disproportionately to sums.
 ## Part VIII: Connection to Quadratic Forms
 -/
 
-/--
+/- 
 **Connection to quadratic forms:**
 Blomer-Granville's approach uses the theory of binary quadratic forms
 with large discriminant.

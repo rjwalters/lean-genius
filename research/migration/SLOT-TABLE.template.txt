@@ -1,0 +1,16 @@
+CANONICAL SLOT MAPPING — never dispatch 2 agents to the same worktree/cache concurrently.
+One worktree + one per-slot cache volume + one cpuset triple per slot. slot N = the collector
+(never a fixer). Adjust cpuset widths to (host cores − 2) / slots. Substitute <VER> per migration.
+
+slot0  <REPO>/.loom/worktrees/issue-<N>          cache <VER>     cpus 0-2
+slot1  <WORKTREE_ROOT>/doctor-b                   cache <VER>-b   cpus 3-5
+slot2  <WORKTREE_ROOT>/doctor-c                   cache <VER>-c   cpus 6-8
+slot3  <WORKTREE_ROOT>/doctor-d                   cache <VER>-d   cpus 9-11
+slot4  <WORKTREE_ROOT>/doctor-e                   cache <VER>-e   cpus 12-14
+slot5  <WORKTREE_ROOT>/doctor-f                   cache <VER>-f   cpus 15-17
+slot6  <WORKTREE_ROOT>/doctor-g                   cache <VER>-g   cpus 18-20
+slot7  <WORKTREE_ROOT>/doctor-h  (COLLECTOR)      cache <VER>-h   cpus 21-23
+
+# Seed each per-slot cache from the primary once (cold cache = full Mathlib rebuild, MUST seed):
+#   docker run --rm -v <VER>:/from -v <VER>-b:/to alpine cp -a /from/. /to/
+# The packages volume (lean-mathlib-packages-<VER>) is shared read-mostly — no lock contention.

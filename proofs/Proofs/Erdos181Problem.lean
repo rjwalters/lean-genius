@@ -25,11 +25,7 @@ References:
 - Lee (2017): Proved bounded-degree Ramsey conjecture (doesn't apply to Q_n)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos181
 
@@ -109,8 +105,10 @@ the number of vertices.
 This would mean there exists a constant C such that R(Q_n) ≤ C · 2^n
 for all n. This is OPEN.
 -/
-axiom erdos_181_conjecture :
+def Erdos181Conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n
+
+axiom erdos_181_conjecture : Erdos181Conjecture
 
 /--
 **Tikhomirov (2022):**
@@ -165,13 +163,13 @@ theorem trivial_upper_bound :
     _ ≤ C₀ * (2 : ℝ) ^ (2 * (↑n : ℝ)) := by
         -- rpow monotonicity: (2-c)·n ≤ 2·n since c > 0, and base 2 ≥ 1
         apply mul_le_mul_of_nonneg_left _ (le_of_lt hC₀)
-        exact rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
+        exact Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
           (mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg n))
     _ = C₀ * (4 : ℝ) ^ n := by
         -- Convert 2^{2n} (rpow) to 4^n (pow)
         congr 1
         have hcast : (2 : ℝ) * (↑n : ℝ) = (↑(2 * n) : ℝ) := by push_cast; ring
-        rw [hcast, rpow_natCast, pow_mul]
+        rw [hcast, Real.rpow_natCast, pow_mul]
         norm_num
     _ ≤ D * D ^ n := by
         -- C₀ ≤ D and 4^n ≤ D^n (since 4 ≤ D)
@@ -210,7 +208,7 @@ theorem lee_bounded_degree_ramsey :
       G_max_degree ≤ Δ → True :=
   fun _ => ⟨1, one_pos, fun _ _ _ => trivial⟩
 
-/--
+/- 
 **Erdős-Sós Question:**
 Does R(Q_n) / 2^n → ∞ as n → ∞?
 
@@ -230,11 +228,11 @@ This question is OPEN. Note:
 
 /-- The conjecture answers Erdős-Sós negatively: R(Q_n)/2^n is bounded. -/
 theorem conjecture_implies_bounded_ratio :
-    erdos_181_conjecture → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ,
+    Erdos181Conjecture → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ,
       (ramseyNumber n : ℝ) / 2 ^ n ≤ C := by
   intro ⟨C, hC, hbound⟩
   exact ⟨C, hC, fun n => by
-    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    rw [div_le_iff₀ (by positivity : (0 : ℝ) < 2 ^ n)]
     exact hbound n⟩
 
 /-
@@ -330,7 +328,7 @@ theorem ramseyNumber_zero_eq : ramseyNumber 0 = 1 := by
     obtain ⟨f, hf_inj, _⟩ := hN Fin.elim0
     exact no_embedding_small 0 0 (by omega) ⟨f, hf_inj⟩
 
-/--
+/- 
 **Erdős Problem #181: OPEN**
 
 Prove that R(Q_n) ≪ 2^n.
@@ -348,7 +346,7 @@ theorem conjecture_implies_ratio_bounded :
     ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ, n ≥ 1 → (ramseyNumber n : ℝ) / 2 ^ n ≤ B := by
   intro ⟨C, hC, hbound⟩
   exact ⟨C, hC, fun n _ => by
-    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    rw [div_le_iff₀ (by positivity : (0 : ℝ) < 2 ^ n)]
     exact hbound n⟩
 
 /-- Tikhomirov implies R(Q_n) is subexponential relative to the vertex count:
@@ -361,9 +359,11 @@ theorem tikhomirov_subquadratic :
   intro ⟨c, hc, C, hC, hbound⟩
   exact ⟨c, hc, C, hC, fun n => by
     have : (2 : ℝ) ^ ((2 - c) * n) = ((2 : ℝ) ^ n) ^ (2 - c) := by
-      rw [← Real.rpow_natCast 2 n, ← Real.rpow_natCast 2 ((2 - c) * ↑n)]
-      simp [Real.rpow_mul (by positivity : (0 : ℝ) ≤ 2)]
-    linarith [hbound n]⟩
+      rw [← Real.rpow_natCast (2 : ℝ) n, ← Real.rpow_mul (by positivity : (0 : ℝ) ≤ 2),
+        mul_comm]
+    have hb := hbound n
+    rw [this] at hb
+    exact hb⟩
 
 /-- The conjecture contradicts the possibility that R(Q_n)/2^n → ∞. -/
 theorem conjecture_contradicts_divergence :
@@ -375,8 +375,8 @@ theorem conjecture_contradicts_divergence :
   have h := hN N₀ le_rfl
   have hle := hbound N₀
   have hpos : (0 : ℝ) < 2 ^ N₀ := by positivity
-  rw [div_gt_iff hpos] at h
-  linarith
+  rw [gt_iff_lt, lt_div_iff₀ hpos] at h
+  nlinarith [hle]
 
 theorem erdos_181 :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n :=

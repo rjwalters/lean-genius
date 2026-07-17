@@ -24,10 +24,10 @@ Related: Erdős Problem #236
 Tags: number-theory, primes, additive-combinatorics, representations
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos237
 
@@ -48,7 +48,7 @@ A set A has logarithmic lower density if |A ∩ [1,N]| ≥ c·log(N) for large N
 -/
 def HasLogDensity (A : Set ℕ) : Prop :=
   ∃ (c : ℝ) (N₀ : ℕ), c > 0 ∧ ∀ N ≥ N₀,
-    (Nat.card (A ∩ Set.Icc 1 N) : ℝ) ≥ c * Real.log N
+    (Nat.card ↑(A ∩ Set.Icc 1 N) : ℝ) ≥ c * Real.log N
 
 /--
 **Unbounded Limsup:**
@@ -149,7 +149,7 @@ theorem erdos_conjecture_true : ErdosConjecture := by
         lt_of_le_of_lt (le_max_right _ _) hN
       have h := Real.log_lt_log (Real.exp_pos _) hN_exp
       rw [Real.log_exp] at h
-      rw [div_lt_iff hc] at h
+      rw [div_lt_iff₀ hc] at h
       linarith [mul_comm (Real.log ↑N) c]
     -- hDense says (C : ℝ) ≥ c * log N, but c * log N > C. Contradiction.
     have hdens := hDense N hN_N0

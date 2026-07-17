@@ -50,12 +50,11 @@ noncomputable def expectedCollisions (n : ℕ) : ℝ :=
 /-- (T1) Recovery of the parent uniform model: with `p ≡ 1/d` the
     coincidence index is `∑ (1/d)² = d · 1/d² = 1/d`. -/
 theorem collisionProb_uniform (hd : 0 < d) :
-    collisionProb (fun _ => (1 : ℝ) / d) = 1 / d := by
+    collisionProb (fun _ : Fin d => (1 : ℝ) / d) = 1 / d := by
   have hd' : (d : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hd.ne'
   simp only [collisionProb, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
     nsmul_eq_mul]
   field_simp
-  ring
 
 /-- The exact sum-of-squares identity: the squared deviation of `p` from
     uniform equals the excess of the coincidence index over `1/d`.  This
@@ -116,7 +115,7 @@ theorem expectedCollisions_ge (n : ℕ) (hsum : ∑ k, p k = 1) (hd : 0 < d) :
 
 /-- The uniform expected collision count is the parent's `C(n,2)/d`. -/
 theorem expectedCollisions_uniform (n : ℕ) (hd : 0 < d) :
-    expectedCollisions (fun _ => (1 : ℝ) / d) n = (n.choose 2 : ℝ) / (d : ℝ) := by
+    expectedCollisions (fun _ : Fin d => (1 : ℝ) / d) n = (n.choose 2 : ℝ) / (d : ℝ) := by
   unfold expectedCollisions
   rw [collisionProb_uniform hd, mul_one_div]
 

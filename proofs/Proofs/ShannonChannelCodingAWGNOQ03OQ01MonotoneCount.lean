@@ -91,10 +91,12 @@ theorem hasDerivAt_wideRate {a t : ℝ} (ha : 0 ≤ a) (ht : 0 < t) :
   have hlog : HasDerivAt (fun s => Real.log (1 + a / s))
       ((a * (-(t ^ 2)⁻¹)) / (1 + a / t)) t := hinner.log hne
   have hmul := hs2.mul hlog
-  convert hmul using 1
-  set L := Real.log (1 + a / t) with hL
-  field_simp
-  ring
+  have heq : (1 / 2) * (Real.log (1 + a / t) - a / (t + a)) =
+      (1 / 2) * Real.log (1 + a / t) + t / 2 * ((a * (-(t ^ 2)⁻¹)) / (1 + a / t)) := by
+    field_simp
+    ring
+  rw [heq]
+  exact hmul
 
 /-! ## Strict monotonicity of the real-variable rate on `t > 0` -/
 

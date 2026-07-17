@@ -25,10 +25,7 @@ Reference: [Va99, 7.84]
 Reference: [Ba89b] Baumgartner
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 
@@ -41,13 +38,13 @@ namespace Erdos1171
 -- ============================================================
 
 /-- ω₁: the first uncountable ordinal. -/
-noncomputable def omega1 : Ordinal := (Cardinal.aleph 1).ord
+noncomputable def omega1 : Ordinal.{0} := (Cardinal.aleph 1).ord
 
 /-- ω₁² = ω₁ · ω₁: the source ordinal for our partition relation. -/
-noncomputable def omega1Sq : Ordinal := omega1 * omega1
+noncomputable def omega1Sq : Ordinal.{0} := omega1 * omega1
 
 /-- ω₁ · ω: the target order type for the primary color. -/
-noncomputable def omega1TimesOmega : Ordinal := omega1 * Ordinal.omega
+noncomputable def omega1TimesOmega : Ordinal.{0} := omega1 * Ordinal.omega0
 
 -- ============================================================
 -- PART 2: Partition Relation Definitions (concrete)
@@ -89,7 +86,7 @@ def ordinalPartitionRel2 (α β : Ordinal) (k : ℕ) : Prop :=
 -- ============================================================
 
 /-- ω < ω₁. -/
-theorem omega_lt_omega1 : Ordinal.omega < omega1 := by
+theorem omega_lt_omega1 : Ordinal.omega0 < omega1 := by
   unfold omega1
   have h0 : Cardinal.aleph (0 : Ordinal.{0}) = ℵ₀ := Cardinal.aleph_zero
   have h1 : ℵ₀ < Cardinal.aleph (1 : Ordinal.{0}) := by
@@ -104,19 +101,19 @@ theorem omega1_pos : 0 < omega1 :=
 /-- ω₁ · ω < ω₁². Since ω < ω₁, we have ω₁ · ω < ω₁ · ω₁ = ω₁². -/
 theorem omega1TimesOmega_lt_omega1Sq : omega1TimesOmega < omega1Sq := by
   unfold omega1TimesOmega omega1Sq
-  exact (Ordinal.mul_lt_mul_iff_left omega1_pos).mpr omega_lt_omega1
+  exact mul_lt_mul_of_pos_left omega_lt_omega1 omega1_pos
 
 /-- ω₁ is a limit ordinal (the ord of an infinite cardinal is always limit). -/
-theorem omega1_isLimit : Ordinal.IsLimit omega1 := by
+theorem omega1_isLimit : Order.IsSuccLimit omega1 := by
   unfold omega1
-  exact Cardinal.ord_isLimit (by
+  exact Cardinal.isSuccLimit_ord (by
     rw [Cardinal.aleph_zero.symm]
     exact le_of_lt (Cardinal.aleph_lt_aleph.mpr (by norm_num)))
 
 /-- ω₁ · ω is a limit ordinal (product of positive ordinal with limit ordinal). -/
-theorem omega1TimesOmega_isLimit : Ordinal.IsLimit omega1TimesOmega := by
+theorem omega1TimesOmega_isLimit : Order.IsSuccLimit omega1TimesOmega := by
   unfold omega1TimesOmega
-  exact Ordinal.mul_isLimit omega1_pos Ordinal.omega0_isLimit
+  exact isSuccLimit_mul_right omega1_pos Ordinal.isSuccLimit_omega0
 
 -- ============================================================
 -- PART 4: The Problem Statement
@@ -147,9 +144,9 @@ theorem partition_multi_mono_colors (α β : Ordinal) (clique m n : ℕ)
   rcases h c hcn with ⟨f, hf, hfα, hfc⟩ | ⟨col, hcpos, _, S, hS, hSα, hSc⟩
   · left; exact ⟨f, hf, hfα, hfc⟩
   · right
-    have i0 : Fin clique := ⟨0, by omega⟩
-    have i1 : Fin clique := ⟨1, by omega⟩
-    have h01 : i0 < i1 := by change (0 : ℕ) < 1; omega
+    let i0 : Fin clique := ⟨0, by omega⟩
+    let i1 : Fin clique := ⟨1, by omega⟩
+    have h01 : i0 < i1 := Fin.mk_lt_mk.mpr (by omega)
     have hcol : c (S i0) (S i1) = col := hSc i0 i1 h01
     have hSlt : S i0 < S i1 := hS h01
     have hcm : col < m := by rw [← hcol]; exact hc (S i0) (S i1) hSlt (hSα i1)
@@ -200,7 +197,7 @@ theorem multi_two_eq (α β : Ordinal) (k : ℕ) :
 -- ============================================================
 
 /-- The Continuum Hypothesis: 2^ℵ₀ = ℵ₁. -/
-def CH : Prop := (2 : Cardinal) ^ Cardinal.aleph0 = Cardinal.aleph 1
+def CH : Prop := (2 : Cardinal.{0}) ^ Cardinal.aleph0 = Cardinal.aleph 1
 
 /-- Hajnal's theorem (from Problem #1169): Under CH, ω₁² → (ω₁², k)². -/
 axiom hajnal_ch (h : CH) (k : ℕ) (hk : 2 ≤ k) :
@@ -289,9 +286,9 @@ theorem erdos_1171_k1_under_ma (h : MartinsAxiom) :
 /-- ω₁ · ω is strictly between ω₁ and ω₁². -/
 theorem omega1_lt_omega1TimesOmega : omega1 < omega1TimesOmega := by
   unfold omega1TimesOmega
-  have h1 : (1 : Ordinal) < Ordinal.omega := nat_lt_omega0 1
+  have h1 : (1 : Ordinal) < Ordinal.omega0 := Ordinal.one_lt_omega0
   calc omega1 = omega1 * 1 := (mul_one omega1).symm
-    _ < omega1 * Ordinal.omega := (Ordinal.mul_lt_mul_iff_left omega1_pos).mpr h1
+    _ < omega1 * Ordinal.omega0 := mul_lt_mul_of_pos_left h1 omega1_pos
 
 /-- ω₁ · ω is sandwiched between ω₁ and ω₁². -/
 theorem omega1TimesOmega_structure :
@@ -315,6 +312,7 @@ theorem partition_multi_trivial (α β : Ordinal) (clique : ℕ) (hα : β ≤ �
   left
   exact ⟨id, strictMono_id, fun x hx => lt_of_lt_of_le hx hα,
     fun i j hij hjβ => by
+      show c i j = 0
       have := hc i j hij (lt_of_lt_of_le hjβ hα); omega⟩
 
 /-- If Problem #1171 holds, then for k=1 (2 colors): ω₁² → (ω₁·ω, 3)². -/
@@ -364,9 +362,9 @@ theorem reduction_to_1169
       have hc'' : ∀ i j, i < j → j < omega1Sq → c'' i j < n + 1 := by
         intro i j hij hj; simp only [c'']
         have := hf_col i j hij hj  -- c' (f i) (f j) = 0
-        simp only [c'] at this; split_ifs at this with hle
-        · omega
-        · omega
+        simp only [c'] at this
+        split_ifs at this with hle
+        omega
       -- IH on c'': either mono-0 of type ω₁·ω or triangle in color 1..n
       rcases ih c'' hc'' with
         ⟨g, hg_mono, hg_bnd, hg_col⟩ | ⟨col, hcol_pos, hcol_lt, T, hT_mono, hT_bnd, hT_col⟩
@@ -382,12 +380,11 @@ theorem reduction_to_1169
     · -- Case 2: triangle in c'-color 1. All pairs have c = n+1.
       right
       refine ⟨n + 1, by omega, by omega, S, hS_mono, hS_bnd, fun i j hij => ?_⟩
-      have := hS_col i j hij  -- c' (S i) (S j) = 1
-      simp only [c'] at this; split_ifs at this with hle
-      · omega  -- 0 = 1, contradiction
-      · push_neg at hle
-        have := hc (S i) (S j) (hS_mono hij) (hS_bnd j)
-        omega  -- n < c(S i, S j) < n + 2, so c(S i, S j) = n + 1
+      have h1 := hS_col i j hij  -- c' (S i) (S j) = 1
+      have h2 := hc (S i) (S j) (hS_mono hij) (hS_bnd j)
+      simp only [c'] at h1
+      split_ifs at h1 with hle
+      omega  -- n < c(S i, S j) < n + 2, so c(S i, S j) = n + 1
 
 /-- Under CH, Hajnal gives ω₁² → (ω₁², 3)², and the reduction does the rest. -/
 theorem ch_implies_multicolor (h : CH) (k : ℕ) :

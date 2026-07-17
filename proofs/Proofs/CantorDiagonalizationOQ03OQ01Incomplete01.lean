@@ -157,23 +157,22 @@ def typeUniverse : CategoricalEval where
     In the type-universe categorical system, no evaluation morphism
     e : A → (A → Prop) is point-surjective.
     This is Cantor's theorem in the categorical framework. -/
-theorem categorical_cantor (A : Type*) (e : A → A → Prop) :
+theorem categorical_cantor (A : Type) (e : A → A → Prop) :
     ¬ ∀ g : A → Prop, ∃ a : A, ∀ x : A, (typeUniverse).apply (e a) x = g x := by
   intro hSurj
   -- Build the fixed-point-free endomorphism Not on Prop
-  -- The categorical system with A : Type*, B = Prop, apply = id
-  have hNotFixed : ∀ v : Prop, ¬v = v := by
+  -- The categorical system with A : Type, B = Prop, apply = id
+  -- (B = Prop lives in universe 0, so the object universe is 0; A : Type.)
+  have hNotFixed : ∀ v : Prop, v ≠ (¬ v) := by
     intro v heq
-    have : ¬v → v := fun h => cast heq h
-    have : v → ¬v := fun h => cast heq.symm h
-    have nv : ¬v := fun h => ‹v → ¬v› h h
-    exact nv (‹¬v → v› nv)
+    have hnv : ¬v := fun h => (cast heq h) h
+    exact hnv (cast heq.symm hnv)
   -- Reduce: hSurj says e represents every Prop-valued function
   -- This is exactly a surjection A → (A → Prop), contradicted by Cantor
   obtain ⟨a₀, ha₀⟩ := hSurj (fun a => ¬ e a a)
   -- a₀ is a fixed point of Not ∘ diagonal
-  have : e a₀ a₀ = ¬ e a₀ a₀ := ha₀ a₀
-  exact hNotFixed (e a₀ a₀) this
+  have h : e a₀ a₀ = ¬ e a₀ a₀ := ha₀ a₀
+  exact hNotFixed (e a₀ a₀) h
 
 -- ============================================================
 -- SECTION V: Well-Formedness of the Original Sorry
@@ -200,6 +199,8 @@ theorem sorry_diagnosis_resolved (C : CategoricalEval) {A B : C.Obj}
 -- SECTION VI: Connection to Type-Theoretic Version
 -- ============================================================
 
+universe u
+
 /-- The type-theoretic version (from parent) is the special case of
     `lawvere_categorical` where:
     - C = typeUniverse (or equivalent)
@@ -208,12 +209,14 @@ theorem sorry_diagnosis_resolved (C : CategoricalEval) {A B : C.Obj}
     - apply = function application
     - hSurj = Function.Surjective e -/
 theorem categorical_specializes_to_type_theoretic
-    {A B : Type*} (e : A → A → B)
+    {A B : Type u} (e : A → A → B)
     (hSurj : Function.Surjective e) (f : B → B) :
     ∃ b : B, f b = b := by
   -- Build a CategoricalEval from functions on types
+  -- (A and B share one universe so that both are objects of the same
+  --  categorical evaluation system.)
   let C : CategoricalEval := {
-    Obj := Type*
+    Obj := Type u
     Hom := fun X Y => X → Y
     exp := fun X Y => X → Y
     Pt := id
@@ -222,11 +225,10 @@ theorem categorical_specializes_to_type_theoretic
   }
   -- e : A → (A → B) is the evaluation morphism
   apply lawvere_categorical C e
-  · -- hSurj translates: Function.Surjective e means ∀ g, ∃ a, e a = g
-    intro g
-    obtain ⟨a₀, ha₀⟩ := hSurj g
-    exact ⟨a₀, fun x => congr_fun ha₀ x⟩
-  · exact f
+  -- hSurj translates: Function.Surjective e means ∀ g, ∃ a, e a = g
+  intro g
+  obtain ⟨a₀, ha₀⟩ := hSurj g
+  exact ⟨a₀, fun x => congr_fun ha₀ x⟩
 
 -- ============================================================
 -- Summary checks

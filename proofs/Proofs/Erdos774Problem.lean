@@ -27,12 +27,13 @@
   - [NRS24] Nešetřil-Rödl-Sales, "On Pisier type theorems" (2024)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
+import Mathlib
+
+open scoped Classical
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Finset Set
 
@@ -120,9 +121,9 @@ theorem dissociated_is_proportionately (A : Set ℕ) :
     ||f||_1 ≪ |∑_{n∈A} f(n)e(nθ)| for some θ. -/
 def IsSidonHarmonic (A : Set ℕ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ f : ℕ → ℂ, (∀ n, n ∉ A → f n = 0) →
-    ∃ θ : ℝ, (∑ n in Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
+    ∃ θ : ℝ, (∑ n ∈ Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
       Complex.abs (f n)) ≤
-      C * Complex.abs (∑ n in Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
+      C * Complex.abs (∑ n ∈ Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
         f n * Complex.exp (2 * Real.pi * Complex.I * n * θ))
 
 /-
@@ -196,7 +197,12 @@ axiom nesetril_rodl_sales_theorem : ¬SidonAnalogue
 
 /-- Maximum size of a dissociated subset of {1,...,n}. -/
 noncomputable def maxDissociatedSize (n : ℕ) : ℕ :=
-  Nat.find (⟨0, by trivial⟩ : ∃ k, ∀ D : Finset ℕ,
+  Nat.find (⟨n + 1, fun D hD _ => by
+      -- D ⊆ range (n+1) since every element is ≤ n, so #D ≤ n+1
+      have hsub : D ⊆ Finset.range (n + 1) := fun d hd =>
+        Finset.mem_range.mpr (Nat.lt_succ_of_le (hD d hd))
+      calc D.card ≤ (Finset.range (n + 1)).card := Finset.card_le_card hsub
+        _ = n + 1 := Finset.card_range _⟩ : ∃ k, ∀ D : Finset ℕ,
     (∀ d ∈ D, d ≤ n) → IsDissociated D → D.card ≤ k)
 
 /-

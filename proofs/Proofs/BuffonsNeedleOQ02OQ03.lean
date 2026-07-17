@@ -44,6 +44,7 @@ version derives from the single-segment formula by linearity of expectation.
 namespace BuffonsNeedleOQ02OQ03
 
 open Real MeasureTheory BigOperators
+open scoped InnerProductSpace
 
 -- ============================================================
 -- Part I: Geometric Definitions
@@ -138,9 +139,11 @@ noncomputable def totalLength (n : ℕ) (segs : List (LineSegment n)) : ℝ :=
 lemma integrable_totalCrossings (n : ℕ) (segs : List (LineSegment n)) :
     Integrable (totalCrossings n segs) (kinematicMeasure n) := by
   induction segs with
-  | nil => simp only [totalCrossings_nil]; exact integrable_zero _ _ _
+  | nil => exact integrable_zero _ _ _
   | cons s rest ih =>
-    simp_rw [totalCrossings_cons]
+    have heq : totalCrossings n (s :: rest) = fun H => s.crossing H + totalCrossings n rest H :=
+      funext (totalCrossings_cons n s rest)
+    rw [heq]
     exact (crossing_integrable n s).add ih
 
 /-- **Main Theorem — Cauchy-Crofton Formula for Polygonal Paths**
@@ -205,19 +208,20 @@ theorem crofton_append (n : ℕ) (P Q : List (LineSegment n)) :
 
 /-- α₄ = 4/(3π). -/
 theorem crossingFactor_four : crossingFactor 4 = 4 / (3 * π) := by
-  simp only [show (4 : ℕ) = 0 + 4 from rfl, crossingFactor_rec, crossingFactor_two]
+  rw [show (4 : ℕ) = 0 + 4 from rfl, crossingFactor_rec, crossingFactor_two]
+  push_cast
   field_simp [pi_ne_zero]; ring
 
 /-- α₅ = 3/8. -/
 theorem crossingFactor_five : crossingFactor 5 = 3 / 8 := by
-  simp only [show (5 : ℕ) = 1 + 4 from rfl, crossingFactor_rec, crossingFactor_three]; norm_num
+  simp only [show (5 : ℕ) = 1 + 4 from rfl, crossingFactor_rec]; norm_num
 
 /-- The crossing factor is strictly positive for n ≥ 2. -/
 theorem crossingFactor_pos : ∀ n : ℕ, 2 ≤ n → 0 < crossingFactor n
   | 0, h => absurd h (by omega)
   | 1, h => absurd h (by omega)
-  | 2, _ => by simp; exact div_pos two_pos pi_pos
-  | 3, _ => by simp; norm_num
+  | 2, _ => by simp only [crossingFactor_two]; positivity
+  | 3, _ => by simp only [crossingFactor_three]; norm_num
   | (n + 4), _ => by
       simp only [crossingFactor_rec]
       exact mul_pos (div_pos (by positivity) (by positivity))
@@ -245,32 +249,32 @@ theorem crossingFactor_succ_succ_lt (n : ℕ) (hn : 1 ≤ n) :
     rcases Nat.lt_or_ge n 2 with h | h
     · -- n = 1 (since hn : 1 ≤ n and h : n < 2)
       have : n = 1 := by omega
-      subst this; simp; norm_num
+      subst this; simp
     · exact crossingFactor_pos n h
   have hlt : (n : ℝ) / (n + 1) < 1 :=
-    div_lt_one_of_lt (by exact_mod_cast Nat.lt_succ_self n) (by positivity)
+    (div_lt_one (by positivity)).mpr (by exact_mod_cast Nat.lt_succ_self n)
   linarith [mul_lt_mul_of_pos_right hlt hpos]
 
 /-- **Dimension comparison 2D vs 3D**: α₂ = 2/π > 1/2 = α₃. -/
 theorem crossingFactor_three_lt_two : crossingFactor 3 < crossingFactor 2 := by
   simp only [crossingFactor_two, crossingFactor_three]
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) pi_pos]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) pi_pos]
   linarith [pi_lt_four]
 
 /-- **Dimension comparison 3D vs 4D**: α₃ = 1/2 > 4/(3π) = α₄.
     Proof: 1/2 > 4/(3π) ↔ 3π > 8, which holds since π > 3. -/
 theorem crossingFactor_four_lt_three : crossingFactor 4 < crossingFactor 3 := by
   rw [crossingFactor_four, crossingFactor_three]
-  rw [div_lt_div_iff (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) (by norm_num : (0:ℝ) < 2)]
+  rw [div_lt_div_iff₀ (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) (by norm_num : (0:ℝ) < 2)]
   linarith [pi_gt_three]
 
 /-- **Dimension comparison 4D vs 5D**: α₄ = 4/(3π) > 3/8 = α₅.
     Proof: 4/(3π) > 3/8 ↔ 32 > 9π, which holds since π < 3.15. -/
 theorem crossingFactor_five_lt_four : crossingFactor 5 < crossingFactor 4 := by
   rw [crossingFactor_five, crossingFactor_four]
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 8) (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos)]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos)]
   -- Need: 3 * (3 * π) < 4 * 8, i.e., 9π < 32. Since π < 3.15: 9 * 3.15 = 28.35 < 32.
-  nlinarith [Real.pi_lt_315]
+  nlinarith [Real.pi_lt_d2]
 
 /-- **Information bound**: For paths of the same positive length, the 2D kinematic
     measure gives strictly more expected crossings than the 3D measure. -/

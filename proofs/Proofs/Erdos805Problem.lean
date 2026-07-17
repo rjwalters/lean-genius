@@ -27,9 +27,7 @@ References:
 - https://erdosproblems.com/805
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 open SimpleGraph
 

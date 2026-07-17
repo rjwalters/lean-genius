@@ -1,8 +1,10 @@
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ02
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Lattice
 import Mathlib.Tactic
+
+set_option maxRecDepth 100000
 
 /-
 # Are There Infinitely Many Sophie Germain Primes?

@@ -23,8 +23,8 @@ namespace Erdos549.Aristotle
 
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj u v := (u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp
 
 -- Star graph vertex count
 theorem star_vertex_count (n : ℕ) :
@@ -39,14 +39,13 @@ theorem star_no_leaf_edges (n : ℕ) (u v : Fin (n + 1))
     (hu : u ≠ 0) (hv : v ≠ 0) :
     ¬(starGraph n).Adj u v := by
   simp [starGraph]
-  exact ⟨fun h => hu h, fun h => hv h⟩
+  exact ⟨fun h => (hu h).elim, fun h => (hv h).elim⟩
 
 -- Star graph is connected for n ≥ 1
 theorem star_connected (n : ℕ) (hn : n ≥ 1) :
     (starGraph n).Connected := by
   rw [connected_iff]
   constructor
-  · exact ⟨⟨0, by omega⟩⟩
   · intro u v
     by_cases hu : u = 0
     · subst hu
@@ -57,6 +56,7 @@ theorem star_connected (n : ℕ) (hn : n ≥ 1) :
       · subst hv; exact (Adj.reachable (star_center_adj n u hu)).symm
       · exact (Adj.reachable (star_center_adj n u hu)).symm.trans
           (Adj.reachable (star_center_adj n v hv))
+  · exact ⟨⟨0, by omega⟩⟩
 
 -- Star graph is acyclic
 theorem star_acyclic (n : ℕ) :
@@ -97,8 +97,8 @@ theorem formula_lt_constant_times_k (k : ℕ) (hk : k ≥ 100) :
 
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj u v := (u.val + 1 = v.val) ∨ (v.val + 1 = u.val)
-  symm := by intro u v; simp [or_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm]
+  loopless := by constructor; intro u; simp
 
 -- Path endpoints (first and last vertex)
 theorem path_first_last_adj (n : ℕ) (hn : n ≥ 2) :
@@ -115,14 +115,19 @@ theorem path_no_triangle (n : ℕ) (u v w : Fin n)
   ## Section 4: Broom Graph Properties
 -/
 
+-- Note: the star-attachment clauses use `u.val + 1 = pathLen` (not the truncated-subtraction
+-- form `u.val = pathLen - 1`) so that the relation is genuinely irreflexive when `pathLen = 0`
+-- (with truncated subtraction, `pathLen - 1 = 0` collapses to `u.val = 0 ∧ v.val ≥ 0`, which is
+-- satisfied by `u = v = 0` and breaks looplessness). #38611 candidate: original def was unsound
+-- for `pathLen = 0`.
 def broomGraph (pathLen starSize : ℕ) : SimpleGraph (Fin (pathLen + starSize)) where
   Adj u v := by
     exact (u.val + 1 = v.val ∧ v.val < pathLen) ∨
           (v.val + 1 = u.val ∧ u.val < pathLen) ∨
-          (u.val = pathLen - 1 ∧ v.val ≥ pathLen) ∨
-          (v.val = pathLen - 1 ∧ u.val ≥ pathLen)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+          (u.val + 1 = pathLen ∧ v.val ≥ pathLen) ∨
+          (v.val + 1 = pathLen ∧ u.val ≥ pathLen)
+  symm := by constructor; intro u v; omega
+  loopless := by constructor; intro u; omega
 
 -- Broom vertex count
 theorem broom_vertex_count (a b : ℕ) :
@@ -159,7 +164,7 @@ theorem gap_grows (k : ℕ) (hk : k ≥ 1) :
     norinSunZhaoConstant * k - (4 * k - 1) = 0.2 * k + 1 := by
   unfold norinSunZhaoConstant
   have : (k : ℝ) ≥ 1 := by exact_mod_cast hk
-  ring_nf; linarith
+  ring_nf
 
 -- For k = 5: 4.2 * 5 = 21, 4*5 - 1 = 19, gap = 2
 theorem gap_at_5 : norinSunZhaoConstant * 5 = 21 := by
@@ -177,19 +182,22 @@ theorem gap_at_10 : norinSunZhaoConstant * 10 = 42 := by
 
 def burrErdosFormula (n χ : ℕ) : ℕ := (χ - 1) * (n - 1) + 1
 
--- For trees (χ = 2), the formula gives |T| + (|T| - 2) + 1 = 2|T| - 1
+-- For trees (χ = 2), the formula gives (2-1)(|T| - 1) + 1 = |T|.
+-- (#38611 candidate: the original comment/statements here claimed `2|T| - 1`, `5`, `7`, `9`,
+-- which do not match `burrErdosFormula`'s actual definition and were mathematically false;
+-- corrected to the true values `n`, `3`, `4`, `5`.)
 theorem burr_erdos_tree (n : ℕ) (hn : n ≥ 1) :
-    burrErdosFormula n 2 = 2 * n - 1 := by
+    burrErdosFormula n 2 = n := by
   unfold burrErdosFormula; omega
 
 -- Formula values for small trees
-theorem burr_erdos_val_3_2 : burrErdosFormula 3 2 = 5 := by
+theorem burr_erdos_val_3_2 : burrErdosFormula 3 2 = 3 := by
   unfold burrErdosFormula; norm_num
 
-theorem burr_erdos_val_4_2 : burrErdosFormula 4 2 = 7 := by
+theorem burr_erdos_val_4_2 : burrErdosFormula 4 2 = 4 := by
   unfold burrErdosFormula; norm_num
 
-theorem burr_erdos_val_5_2 : burrErdosFormula 5 2 = 9 := by
+theorem burr_erdos_val_5_2 : burrErdosFormula 5 2 = 5 := by
   unfold burrErdosFormula; norm_num
 
 -- For χ = 1, formula gives 1
@@ -199,11 +207,17 @@ theorem burr_erdos_chi_1 (n : ℕ) : burrErdosFormula n 1 = 1 := by
 -- Formula is monotone in n
 theorem burr_erdos_mono_n (n₁ n₂ χ : ℕ) (hn : n₁ ≤ n₂) (hχ : χ ≥ 1) :
     burrErdosFormula n₁ χ ≤ burrErdosFormula n₂ χ := by
-  unfold burrErdosFormula; omega
+  unfold burrErdosFormula
+  have h1 : n₁ - 1 ≤ n₂ - 1 := by omega
+  have h2 : (χ - 1) * (n₁ - 1) ≤ (χ - 1) * (n₂ - 1) := Nat.mul_le_mul_left _ h1
+  omega
 
 -- Formula is monotone in χ
 theorem burr_erdos_mono_chi (n χ₁ χ₂ : ℕ) (hχ : χ₁ ≤ χ₂) (hn : n ≥ 1) :
     burrErdosFormula n χ₁ ≤ burrErdosFormula n χ₂ := by
-  unfold burrErdosFormula; nlinarith
+  unfold burrErdosFormula
+  have h1 : χ₁ - 1 ≤ χ₂ - 1 := by omega
+  have h2 : (χ₁ - 1) * (n - 1) ≤ (χ₂ - 1) * (n - 1) := Nat.mul_le_mul_right _ h1
+  omega
 
 end Erdos549.Aristotle

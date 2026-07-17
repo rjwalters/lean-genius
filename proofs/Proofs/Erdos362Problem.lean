@@ -20,14 +20,12 @@ Key Results:
 Tags: additive-combinatorics, subset-sum, concentration, counting
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Analysis.SpecialFunctions.Integrals
 
 namespace Erdos362
 
@@ -73,9 +71,10 @@ axiom sarkozy_szemeredi_1965 :
 /-- For N ≥ 3, log N ≥ 1 (since e < 3).
     Follows the pattern from Erdos442Problem.logPlus_eq_log. -/
 lemma log_ge_one_of_ge_three {n : ℕ} (hn : n ≥ 3) : Real.log (n : ℝ) ≥ 1 := by
+  have hn3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have he : Real.exp 1 ≤ (n : ℝ) := by linarith [Real.exp_one_lt_d9]
   rw [ge_iff_le, ← Real.log_exp 1]
-  exact Real.log_le_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9,
-    show (3 : ℝ) ≤ (n : ℝ) from by exact_mod_cast hn])
+  exact Real.log_le_log (Real.exp_pos 1) he
 
 /-- For x ≥ 1 and p ≥ 0, x^p ≥ 1. -/
 lemma rpow_ge_one_of_ge_one {x : ℝ} {p : ℝ} (hx : x ≥ 1) (hp : p ≥ 0) :
@@ -106,7 +105,7 @@ theorem erdos_moser_1965_bound :
   · -- (log N)^(3/2) ≥ 1 for N ≥ 3
     exact rpow_ge_one_of_ge_one (log_ge_one_of_ge_three hA) (by norm_num)
 
-/-- The bound 2^N / N^(3/2) is tight up to constants. -/
+/-  The bound 2^N / N^(3/2) is tight up to constants. -/
 /-
 ## Part 3: Question 2 - Fixed Cardinality Bound
 
@@ -138,12 +137,12 @@ to establish the Sperner property for certain posets.
 -/
 
 /-- The symmetric set centered at 0 -/
-def symmetricSet (N : ℕ) : Finset ℤ :=
+noncomputable def symmetricSet (N : ℕ) : Finset ℤ :=
   Finset.Icc (-(N - 1 : ℕ) / 2 : ℤ) ((N : ℕ) / 2 : ℤ)
 
-/-- Stanley (1980): Symmetric set maximizes concentration.
+/-  Stanley (1980): Symmetric set maximizes concentration.
     Uses the hard Lefschetz theorem from algebraic geometry. -/
-/-- For the symmetric set, t = 0 achieves maximum concentration. -/
+/-  For the symmetric set, t = 0 achieves maximum concentration. -/
 /-
 ## Part 5: Multi-dimensional Generalization
 
@@ -160,7 +159,7 @@ def countVectorSubsetsWithSum {d : ℕ} (A : Finset (Fin d → ℤ))
     (t : Fin d → ℤ) : ℕ :=
   (A.powerset.filter (fun S => vectorSetSum S = t)).card
 
-/-- Halász multi-dimensional bound: generalizes to d dimensions.
+/-  Halász multi-dimensional bound: generalizes to d dimensions.
     The exponent (d+1)/2 specializes to 3/2 for d=2 and 2 for d=3. -/
 /-
 ## Part 6: Generating Function Approach
@@ -239,7 +238,7 @@ private lemma cexp_pow_eq (z : ℂ) (n : ℕ) :
 private lemma cexp_zpow (z : ℂ) (n : ℤ) :
     Complex.exp z ^ n = Complex.exp (↑n * z) := by
   rcases n with (k | k)
-  · simp only [zpow_natCast, Int.cast_natCast]; exact cexp_pow_eq z k
+  · skip; exact cexp_pow_eq z k
   · rw [zpow_negSucc, cexp_pow_eq z (k + 1), ← Complex.exp_neg]
     congr 1; push_cast; ring
 
@@ -254,17 +253,17 @@ private lemma exp_orthogonality (n : ℤ) :
     subst h
     simp only [Int.cast_zero, zero_mul, Complex.exp_zero]
     rw [intervalIntegral.integral_const, sub_zero, Algebra.smul_def, mul_one]
+    norm_cast
   · next hn =>
     have hc : (↑n * Complex.I : ℂ) ≠ 0 :=
       mul_ne_zero (Int.cast_ne_zero.mpr hn) Complex.I_ne_zero
-    simp_rw [show ∀ θ : ℝ, (↑n * Complex.I * (↑θ : ℂ) : ℂ) = (↑n * Complex.I) * ↑θ from
-      fun _ => mul_assoc _ _ _]
     rw [integral_exp_mul_complex hc]
-    have h1 : Complex.exp ((↑n * Complex.I) * ↑(2 * Real.pi)) = 1 := by
-      have heq : (↑n * Complex.I) * (↑(2 * Real.pi) : ℂ) =
+    have h1 : Complex.exp ((↑n * Complex.I) * ((2 * Real.pi : ℝ) : ℂ)) = 1 := by
+      have heq : (↑n * Complex.I) * ((2 * Real.pi : ℝ) : ℂ) =
           ↑n * (2 * ↑Real.pi * Complex.I) := by push_cast; ring
       rw [heq]; exact Complex.exp_int_mul_two_pi_mul_I n
-    simp [h1]
+    have h0 : Complex.exp ((↑n * Complex.I) * ((0 : ℝ) : ℂ)) = 1 := by simp
+    rw [h1, h0, sub_self, zero_div]
 
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
     the integral of the generating function against an exponential.
@@ -292,9 +291,14 @@ theorem fourier_extraction (A : Finset ℤ) (t : ℤ) :
     congr 1; push_cast; ring
   simp_rw [h_expand]
   -- Exchange finite sum and integral (each term is continuous hence integrable)
-  rw [intervalIntegral.integral_finset_sum _ fun S _ =>
-    (Complex.continuous_exp.comp
-      (continuous_const.mul Complex.continuous_ofReal)).intervalIntegrable _ _]
+  have hint : ∀ S ∈ A.powerset,
+      IntervalIntegrable (fun θ : ℝ => Complex.exp (↑(setSum S - t) * Complex.I * (θ : ℂ)))
+        MeasureTheory.volume 0 (2 * Real.pi) := by
+    intro S _
+    have hcont : Continuous fun θ : ℝ => Complex.exp (↑(setSum S - t) * Complex.I * (θ : ℂ)) :=
+      Complex.continuous_exp.comp (continuous_const.mul Complex.continuous_ofReal)
+    exact hcont.intervalIntegrable _ _
+  rw [intervalIntegral.integral_finsetSum hint]
   -- Apply orthogonality to each integral: ∫ exp(inθ) = 2πδ_{n,0}
   simp_rw [exp_orthogonality]
   -- Collapse conditional sum to count
@@ -305,6 +309,8 @@ theorem fourier_extraction (A : Finset ℤ) (t : ℤ) :
   have hpi : (↑(2 * Real.pi) : ℂ) ≠ 0 :=
     Complex.ofReal_ne_zero.mpr (by positivity)
   field_simp
+  push_cast
+  ring
 
 /-
 ## Part 7: Summary

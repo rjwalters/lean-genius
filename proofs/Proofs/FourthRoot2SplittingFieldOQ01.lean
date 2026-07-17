@@ -32,6 +32,8 @@
 import Mathlib
 import Proofs.InverseGaloisD4
 
+open scoped Classical
+
 open Polynomial IntermediateField
 
 namespace FourthRoot2SplittingFieldOQ01

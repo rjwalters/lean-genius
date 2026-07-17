@@ -45,9 +45,9 @@ edges of `H`. -/
 def toSimpleGraph {V : Type*} [DecidableEq V] (H : RUniformHypergraph V 2) :
     SimpleGraph V where
   Adj u v := u ≠ v ∧ ({u, v} : Finset V) ∈ H.edges
-  symm := fun u v ⟨hne, hmem⟩ =>
+  symm.symm := fun u v ⟨hne, hmem⟩ =>
     ⟨hne.symm, by rwa [Finset.pair_comm] at hmem⟩
-  loopless := fun v ⟨hne, _⟩ => hne rfl
+  loopless.irrefl := fun v ⟨hne, _⟩ => hne rfl
 
 /-- An Euler tour of a 2-uniform hypergraph: a closed walk in the underlying
 `SimpleGraph V` (`toSimpleGraph H`) that visits every edge exactly once.

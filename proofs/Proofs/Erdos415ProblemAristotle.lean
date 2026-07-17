@@ -24,6 +24,8 @@
 import Mathlib
 import Proofs.Erdos415Problem
 
+open scoped Classical
+
 open Nat Function Finset
 
 namespace Erdos415Aristotle

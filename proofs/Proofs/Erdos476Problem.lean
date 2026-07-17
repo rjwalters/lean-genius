@@ -33,6 +33,8 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
+set_option autoImplicit true
+
 open Finset BigOperators
 
 namespace Erdos476
@@ -125,7 +127,7 @@ theorem erdos_476 (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
 The proof uses exterior algebra and Grassmann derivatives.
 -/
 
-/--
+/- 
 **Da Silva-Hamidoune Theorem (1994):**
 Let A ⊆ 𝔽ₚ with |A| = n ≥ 2. Then:
   |A +̂ A| ≥ min(2n - 3, p)
@@ -160,7 +162,7 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
   -- Helper: (k:ZMod p) ≠ 0 when 1 ≤ k < p
   have hk_ne_zero : ∀ k : ℕ, 1 ≤ k → k < p → (k : ZMod p) ≠ 0 := by
     intro k hk1 hkp h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    rw [ZMod.natCast_eq_zero_iff] at h
     exact absurd (Nat.le_of_dvd (by omega) h) (by omega)
   -- Key: restricted sumset = image of {1,...,2n-3} under (k ↦ 2a + k·d)
   have hset : restrictedSumset p (arithmeticProgression p a d n) =
@@ -175,7 +177,7 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
       exact ⟨i + j, ⟨by omega, by omega⟩, by simp only [nsmul_eq_mul]; push_cast; ring⟩
     · rintro ⟨k, ⟨hk1, hk2⟩, rfl⟩
       have hk_lt_p : k < p := by omega
-      rcases le_or_lt k (n - 1) with hkn | hkn
+      rcases le_or_gt k (n - 1) with hkn | hkn
       · -- k ≤ n-1: use pair (a + 0•d, a + k•d)
         refine ⟨(a + (0 : ℕ) • d, a + (k : ℕ) • d),
           ⟨⟨⟨0, by omega, rfl⟩, ⟨k, by omega, rfl⟩⟩, ?_⟩, ?_⟩
@@ -240,7 +242,7 @@ The restricted sumset has a weaker bound (2|A| - 3 vs 2|A| - 1)
 because excluding diagonal sums removes potential elements.
 -/
 
-/--
+/- 
 **Cauchy-Davenport Theorem:**
 For nonempty A, B ⊆ 𝔽ₚ:
   |A + B| ≥ min(|A| + |B| - 1, p)
@@ -259,7 +261,7 @@ Alon, Nathanson, and Ruzsa (1995) gave an alternative proof using
 the polynomial method (Combinatorial Nullstellensatz).
 -/
 
-/--
+/- 
 **Combinatorial Nullstellensatz (Alon, 1999):**
 If f(x₁,...,xₙ) is a polynomial over a field and the coefficient of
 x₁^{d₁}...xₙ^{dₙ} is nonzero where ∑dᵢ = deg(f), then for sets Aᵢ
@@ -270,7 +272,7 @@ with |Aᵢ| > dᵢ, there exist aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0.
    and |Aᵢ| > dᵢ, then ∃ aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0. Formalizing requires
    polynomial rings over fields in full generality, not just ZMod p. -/
 
-/--
+/- 
 **ANR Proof (1995):**
 Consider f(x, y) = (x + y) - c for c ∈ A +̂ A.
 The polynomial method shows this has enough zeros to force
@@ -289,7 +291,7 @@ The set of sums a₁ + a₂ + ... + aᵣ where all aᵢ are distinct.
 def restrictedSumsetR (A : Finset (ZMod p)) (r : ℕ) : Finset (ZMod p) :=
   (A.powersetCard r).image (fun s => s.sum id)
 
-/--
+/- 
 **Erdős's Generalized Conjecture:**
 |r-fold restricted sumset| ≥ min(r|A| - r² + 1, p)
 

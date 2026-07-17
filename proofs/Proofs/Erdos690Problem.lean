@@ -27,7 +27,7 @@ import Mathlib.Tactic
 
 /-- The k-th smallest prime factor of n (0 if n has fewer than k prime factors). -/
 noncomputable def kthSmallestPrimeFactor (n k : ℕ) : ℕ :=
-  let factors := (Nat.factors n).toFinset.sort (· ≤ ·)
+  let factors := (Nat.primeFactorsList n).toFinset.sort (· ≤ ·)
   if h : k < factors.length then factors.get ⟨k, h⟩ else 0
 
 /-- The set of positive integers whose k-th smallest prime factor is p. -/
@@ -97,6 +97,7 @@ theorem d1_unimodal :
     -- hp.two_le gives 2 ≤ p, combined with p ≤ q ≤ 2 forces p = q
     have : p = q := by have := hp.two_le; omega
     subst this
+    exact le_refl _
   · -- Non-increasing for primes ≥ 2
     intro p q hp hq _ hpq
     rcases eq_or_lt_of_le hpq with rfl | hlt

@@ -184,7 +184,7 @@ theorem three_sq_of_corrected_witnesses
             exact hpp.ne_one (Nat.dvd_one.mp hp1)
           have hd_ne : (d : ZMod p) ≠ 0 := by
             intro h
-            rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+            rw [ZMod.natCast_eq_zero_iff] at h
             exact hpd h
           have hneg_d_ne : ((-d : ℤ) : ZMod p) ≠ 0 := by
             push_cast; exact neg_ne_zero.mpr hd_ne

@@ -69,8 +69,8 @@ A collection of disjoint sets, each summing to 1.
 
 /-- A collection of sets is pairwise disjoint -/
 def arePairwiseDisjoint (sets : List (Finset ℕ)) : Prop :=
-  ∀ i j, i < sets.length → j < sets.length → i ≠ j →
-    Disjoint (sets.get ⟨i, by omega⟩) (sets.get ⟨j, by omega⟩)
+  ∀ i j (hi : i < sets.length) (hj : j < sets.length), i ≠ j →
+    Disjoint (sets.get ⟨i, hi⟩) (sets.get ⟨j, hj⟩)
 
 /-- A valid packing: disjoint unit sets within {1, ..., N} -/
 structure UnitSetPacking (N : ℕ) where
@@ -96,15 +96,15 @@ noncomputable def k (N : ℕ) : ℕ :=
 ## Basic Bounds
 -/
 
-/-- k(N) ≥ 1 for N ≥ 6 (since {2,3,6} works) -/
-/-- k(N) ≤ N (trivial upper bound: can't have more sets than elements) -/
+/-  k(N) ≥ 1 for N ≥ 6 (since {2,3,6} works) -/
+/-  k(N) ≤ N (trivial upper bound: can't have more sets than elements) -/
 /-
 ## Sunflower Lower Bound
 
 Using the sunflower lemma, one can construct many disjoint sets with equal sums.
 -/
 
-/-- Sunflower bound: at least N·exp(-O(√(log N))) disjoint sets exist
+/-  Sunflower bound: at least N·exp(-O(√(log N))) disjoint sets exist
     with equal reciprocal sums (not necessarily 1) -/
 /-
 ## Main Result: k(N) = (1 - o(1))·log N
@@ -116,7 +116,7 @@ Hunter and Sawhney, using Bloom's Theorem 3, showed k(N) is essentially log N.
 axiom hunter_sawhney_lower (ε : ℝ) (hε : ε > 0) :
   ∃ N₀ : ℕ, ∀ N ≥ N₀, (k N : ℝ) ≥ (1 - ε) * Real.log N
 
-/-- Upper bound: k(N) ≤ log N + O(1) -/
+/-  Upper bound: k(N) ≤ log N + O(1) -/
 /-- Main theorem: k(N) = (1 - o(1))·log N
     Equivalently: k(N) / log N → 1 as N → ∞ -/
 axiom erdos_296_main :
@@ -135,7 +135,7 @@ theorem k_not_sublogarithmic :
   -- k(N)/log N → 1 by erdos_296_main, so it can't also → 0
   have h1 := erdos_296_main
   -- Two different limits in a Hausdorff space is a contradiction
-  have : (0 : ℝ) = 1 := Filter.Tendsto.unique h h1
+  have : (0 : ℝ) = 1 := tendsto_nhds_unique h h1
   norm_num at this
 
 /-- Corollary: For any ε > 0, k(N) > ε·log N for infinitely many N -/
@@ -143,17 +143,17 @@ theorem k_infinitely_often_large (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
   ∀ N₀ : ℕ, ∃ N > N₀, (k N : ℝ) > ε * Real.log N := by
   intro N₀
   have ⟨N₁, hN₁⟩ := hunter_sawhney_lower ((1 - ε) / 2) (by linarith)
-  use max N₀ N₁ + 1
-  constructor
-  · omega
-  · have h := hN₁ (max N₀ N₁ + 1) (by omega)
-    calc (k (max N₀ N₁ + 1) : ℝ)
-        ≥ (1 - (1 - ε) / 2) * Real.log (max N₀ N₁ + 1) := h
-      _ = ((1 + ε) / 2) * Real.log (max N₀ N₁ + 1) := by ring
-      _ > ε * Real.log (max N₀ N₁ + 1) := by
-          apply mul_lt_mul_of_pos_right
-          · linarith
-          · apply Real.log_pos; simp; omega
+  refine ⟨max (max N₀ N₁ + 1) 2, by omega, ?_⟩
+  have h := hN₁ (max (max N₀ N₁ + 1) 2) (by omega)
+  have h2 : (2 : ℝ) ≤ ((max (max N₀ N₁ + 1) 2 : ℕ) : ℝ) := by
+    exact_mod_cast (by omega : 2 ≤ max (max N₀ N₁ + 1) 2)
+  have hlog : 0 < Real.log ((max (max N₀ N₁ + 1) 2 : ℕ) : ℝ) :=
+    Real.log_pos (by linarith)
+  calc ((k (max (max N₀ N₁ + 1) 2) : ℕ) : ℝ)
+      ≥ (1 - (1 - ε) / 2) * Real.log ((max (max N₀ N₁ + 1) 2 : ℕ) : ℝ) := h
+    _ = ((1 + ε) / 2) * Real.log ((max (max N₀ N₁ + 1) 2 : ℕ) : ℝ) := by ring
+    _ > ε * Real.log ((max (max N₀ N₁ + 1) 2 : ℕ) : ℝ) :=
+        mul_lt_mul_of_pos_right (by linarith) hlog
 
 #check erdos_296_main
 #check k_not_sublogarithmic

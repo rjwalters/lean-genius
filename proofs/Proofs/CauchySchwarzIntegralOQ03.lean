@@ -1,12 +1,16 @@
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 set_option linter.unusedVariables false
 
 namespace CauchySchwarzIntegralOQ03
 
 noncomputable section
 
-open MeasureTheory scoped InnerProductSpace
+open MeasureTheory
+open scoped InnerProductSpace
 
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
@@ -23,7 +27,7 @@ theorem complex_L2_inner_eq_integral (f g : Lp ℂ 2 μ) :
 -- The pointwise complex inner product is conjugate-linear in first argument
 theorem complex_inner_eq_conj_mul (z w : ℂ) :
     ⟪z, w⟫_ℂ = starRingEnd ℂ z * w :=
-  Complex.inner_apply z w
+  RCLike.inner_apply' z w
 
 -- Bridge with explicit star (conjugation)
 theorem complex_L2_inner_eq_integral_star (f g : Lp ℂ 2 μ) :
@@ -31,7 +35,7 @@ theorem complex_L2_inner_eq_integral_star (f g : Lp ℂ 2 μ) :
   rw [complex_L2_inner_eq_integral]
   congr 1
   ext a
-  exact Complex.inner_apply _ _
+  exact RCLike.inner_apply' _ _
 
 end ComplexL2Bridge
 
@@ -57,9 +61,9 @@ theorem complex_bunyakovsky_schwarz_star (f g : Lp ℂ 2 μ) :
 -- Squared form
 theorem complex_bunyakovsky_schwarz_sq (f g : Lp ℂ 2 μ) :
     ‖⟪f, g⟫_ℂ‖ ^ 2 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
-  have h := norm_inner_le_norm f g
+  have h := norm_inner_le_norm (𝕜 := ℂ) f g
   have h1 : 0 ≤ ‖f‖ * ‖g‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
-  nlinarith [sq_nonneg (‖f‖ * ‖g‖ - ‖⟪f, g⟫_ℂ‖)]
+  nlinarith [sq_nonneg (‖f‖ * ‖g‖ - ‖⟪f, g⟫_ℂ‖), norm_nonneg (⟪f, g⟫_ℂ)]
 
 end ComplexCS
 
@@ -78,9 +82,8 @@ theorem complex_L2_inner_self_im (f : Lp ℂ 2 μ) :
 -- Self-inner product is non-negative
 theorem complex_L2_inner_self_re_nonneg (f : Lp ℂ 2 μ) :
     0 ≤ (⟪f, f⟫_ℂ).re := by
-  rw [complex_L2_inner_self]
-  simp [sq, Complex.ofReal_re]
-  exact sq_nonneg _
+  rw [complex_L2_inner_self, ← Complex.ofReal_pow, Complex.ofReal_re]
+  positivity
 
 -- Self-inner product via integral of norm squared
 theorem complex_L2_inner_self_integral (f : Lp ℂ 2 μ) :
@@ -99,14 +102,14 @@ theorem re_inner_le_norm_L2 (f g : Lp ℂ 2 μ) :
     (⟪f, g⟫_ℂ).re ≤ ‖f‖ * ‖g‖ := by
   calc (⟪f, g⟫_ℂ).re
       ≤ ‖(⟪f, g⟫_ℂ).re‖ := le_abs_self _
-    _ ≤ ‖⟪f, g⟫_ℂ‖ := Complex.abs_re_le_abs _
+    _ ≤ ‖⟪f, g⟫_ℂ‖ := Complex.abs_re_le_norm _
     _ ≤ ‖f‖ * ‖g‖ := norm_inner_le_norm f g
 
 -- Imaginary part bound: |Im⟪f, g⟫_ℂ| ≤ ‖f‖ · ‖g‖
 theorem abs_im_inner_le_norm_L2 (f g : Lp ℂ 2 μ) :
     |(⟪f, g⟫_ℂ).im| ≤ ‖f‖ * ‖g‖ := by
   calc |(⟪f, g⟫_ℂ).im|
-      ≤ ‖⟪f, g⟫_ℂ‖ := Complex.abs_im_le_abs _
+      ≤ ‖⟪f, g⟫_ℂ‖ := Complex.abs_im_le_norm _
     _ ≤ ‖f‖ * ‖g‖ := norm_inner_le_norm f g
 
 end RealPart
@@ -121,10 +124,11 @@ theorem complex_L2_eq_iff (f g : Lp ℂ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
     obtain ⟨r, hr_ne, hr⟩ := (norm_inner_eq_norm_iff hf hg).mp h
     exact ⟨r⁻¹, by rw [hr, smul_smul, inv_mul_cancel₀ hr_ne, one_smul]⟩
   · intro ⟨c, hc⟩
+    have hg2 : ‖⟪g, g⟫_ℂ‖ = ‖g‖ ^ 2 := by
+      rw [inner_self_eq_norm_sq_to_K (𝕜 := ℂ)]
+      rw [norm_pow, RCLike.norm_ofReal, abs_norm]
     rw [hc, inner_smul_left]
-    simp only [starRingEnd_apply]
-    rw [norm_mul, inner_self_eq_norm_sq_to_K (𝕜 := ℂ), Complex.norm_ofReal,
-        abs_of_nonneg (sq_nonneg _), norm_smul]
+    simp only [starRingEnd_apply, norm_mul, norm_star, norm_smul, hg2]
     ring
 
 end EqualityCharacterization

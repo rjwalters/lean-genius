@@ -25,9 +25,9 @@
   Tags: functional-equations, continuity, additive-functions, de-bruijn
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Data.Real.Basic
@@ -121,7 +121,7 @@ theorem continuous_has_continuous_differences (f : ℝ → ℝ) (hf : Continuous
     hasContinuousDifferences f := by
   intro h _
   unfold difference
-  exact hf.sub (hf.comp (continuous_add_right h))
+  exact (hf.comp (continuous_add_right h)).sub hf
 
 /-- If f is additive, Δ_h f is constant (= f(h)) -/
 theorem additive_difference_const (φ : ℝ → ℝ) (hadd : IsAdditive φ) (h : ℝ) :

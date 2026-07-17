@@ -40,10 +40,14 @@ def HasPropertyBK [Fintype α] (F : Finset (Finset α)) (k : ℕ) : Prop :=
 
 /- ## Basic Properties -/
 
-/-- The empty family has Property B_k for all k. -/
-theorem hasPropertyBK_empty [Fintype α] (k : ℕ) :
+/-- The empty family has Property B_k for all k ≥ 1.
+    (A coloring `χ : α → Fin k` must exist; for `k = 0` and nonempty `α` no such
+    function exists, so the positivity hypothesis is genuinely needed — the
+    original v4.26 proof's bare `0 : Fin k` silently relied on an instance that
+    no longer type-checks for unconstrained `k`.) -/
+theorem hasPropertyBK_empty [Fintype α] {k : ℕ} (hk : 1 ≤ k) :
     HasPropertyBK (∅ : Finset (Finset α)) k :=
-  ⟨fun _ => 0, fun f hf => absurd hf (Finset.not_mem_empty f)⟩
+  ⟨fun _ => ⟨0, by omega⟩, fun f hf => absurd hf (Finset.notMem_empty f)⟩
 
 /-- Property B_k is monotone: subsets of Property B_k families have Property B_k. -/
 theorem hasPropertyBK_subset [Fintype α] {F G : Finset (Finset α)} {k : ℕ}
@@ -64,7 +68,7 @@ theorem hasPropertyBK_singleton [Fintype α] {f : Finset α} {k : ℕ}
   have hb : b ∈ f := Finset.mem_of_mem_erase hb_era
   have hba : b ≠ a := Finset.ne_of_mem_erase hb_era
   -- Color a with 0, everything else with 1
-  refine ⟨fun x => if x = a then 0 else ⟨1, by omega⟩, fun g hg hgne => ?_⟩
+  refine ⟨fun x => if x = a then ⟨0, by omega⟩ else ⟨1, by omega⟩, fun g hg hgne => ?_⟩
   rw [Finset.mem_singleton] at hg; subst hg
   exact ⟨a, b, ha, hb, by simp [hba]⟩
 
@@ -121,7 +125,11 @@ theorem propertyB_iff_propertyBK_two [Fintype α] {F : Finset (Finset α)}
     · constructor
       · have h1 : χ b ≠ χ a := Ne.symm hab
         have hb0 : χ b = 0 := by
-          fin_cases (χ a) <;> fin_cases (χ b) <;> simp_all
+          have h0v : (χ a).val ≠ 0 := fun h => h0 (Fin.ext h)
+          have h1v : (χ b).val ≠ (χ a).val := fun h => h1 (Fin.ext h)
+          have hav : (χ a).val < 2 := (χ a).isLt
+          have hbv : (χ b).val < 2 := (χ b).isLt
+          exact Fin.ext (by omega)
         exact ⟨b, Finset.mem_inter.mpr ⟨hb, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb0⟩⟩⟩
       · refine ⟨a, Finset.mem_sdiff.mpr ⟨ha, fun hmem => ?_⟩⟩
         rw [Finset.mem_filter] at hmem
@@ -133,8 +141,8 @@ theorem propertyB_iff_propertyBK_two [Fintype α] {F : Finset (Finset α)}
 theorem hasPropertyBK_card_le_one [Fintype α] {F : Finset (Finset α)} {k : ℕ}
     (hsize : ∀ f ∈ F, 2 ≤ f.card) (hk : 2 ≤ k)
     (hF : F.card ≤ 1) : HasPropertyBK F k := by
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le F.card) with h | h
-  · rw [Finset.card_eq_zero.mp h]; exact hasPropertyBK_empty k
+  rcases Nat.eq_or_lt_of_le (Nat.zero_le F.card) with h | h
+  · rw [Finset.card_eq_zero.mp h.symm]; exact hasPropertyBK_empty (by omega)
   · obtain ⟨f, hf⟩ := Finset.card_eq_one.mp (by omega : F.card = 1)
     rw [hf]; exact hasPropertyBK_singleton (hsize f (hf ▸ Finset.mem_singleton_self f)) hk
 

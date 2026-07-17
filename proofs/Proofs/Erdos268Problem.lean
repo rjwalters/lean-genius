@@ -30,6 +30,7 @@ import Mathlib
 namespace Erdos268
 
 open Set Filter Topology
+open scoped Classical
 
 /- ## Part I: Harmonic Subseries -/
 
@@ -80,7 +81,7 @@ theorem shifted_summable (A : Set ℕ) (k : ℕ)
           ext ⟨n, hn⟩; simp [show n ≠ 0 from fun heq => h0 (heq ▸ hn)]
         rw [this]; exact summable_zero
     · -- Dominated part: 0 at n=0, ≤ 1/n for n≥1
-      apply Summable.of_nonneg_of_le
+      refine Summable.of_nonneg_of_le ?_ ?_ h
       · intro n; split_ifs <;> positivity
       · intro ⟨n, hn⟩
         by_cases hn0 : n = 0
@@ -88,8 +89,7 @@ theorem shifted_summable (A : Set ℕ) (k : ℕ)
         · simp only [show n ≠ 0 from hn0, ne_eq, not_false_eq_true, ↓reduceIte]
           exact one_div_le_one_div_of_le
             (by exact_mod_cast Nat.pos_of_ne_zero hn0)
-            (by push_cast; linarith [Nat.cast_nonneg' (n := k)])
-      · exact h
+            (by push_cast; linarith [(Nat.cast_nonneg k : (0:ℝ) ≤ (k:ℝ))])
 
 /- ## Part II: The Point Set X -/
 
@@ -114,7 +114,19 @@ theorem harmonicPointSet_eq (d : ℕ) :
     harmonicPointSet d = harmonicPointSet' d := by
   ext x
   simp only [harmonicPointSet, harmonicPointSet', HasConvergentHarmonicSubseries,
-    harmonicPoint, shiftedHarmonicSum, Set.mem_setOf_eq]
+    Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨A, hA, hS, rfl⟩
+    exact ⟨A, hA, hS, by funext i; simp [harmonicPoint, shiftedHarmonicSum]⟩
+  · rintro ⟨A, hA, hS, rfl⟩
+    exact ⟨A, hA, hS, by funext i; simp [harmonicPoint, shiftedHarmonicSum]⟩
+
+/-- The first coordinate of a 1-dimensional harmonic point equals the harmonic
+    subseries sum (the shift by `(0 : Fin 1).val = 0` is trivial). -/
+private lemma harmonicPoint_one_eq_sum (A : Set ℕ) :
+    harmonicPoint 1 A 0 = harmonicSubseriesSum A := by
+  simp only [harmonicPoint, shiftedHarmonicSum, harmonicSubseriesSum]
+  norm_num
 
 /- ## Part III: The Main Theorem -/
 
@@ -161,14 +173,14 @@ theorem contains_open_ball (d : ℕ) :
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
     harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
-  ext ⟨i, hi⟩
-  fin_cases hi
+  ext i
+  fin_cases i
   · -- i = 0: harmonicPoint 2 A 0 = harmonicSubseriesSum A
     simp only [harmonicPoint, harmonicSubseriesSum, shiftedHarmonicSum,
-      Fin.val_mk, Matrix.cons_val_zero]
+      Matrix.cons_val_zero]
     congr 1; ext ⟨n, hn⟩; simp [Nat.cast_add, Nat.cast_zero]
   · -- i = 1: harmonicPoint 2 A 1 = shiftedHarmonicSum A 1
-    simp [harmonicPoint, shiftedHarmonicSum, Fin.val_mk, Matrix.cons_val_one,
+    simp [harmonicPoint, shiftedHarmonicSum, Matrix.cons_val_one,
       Matrix.head_cons]
 
 /- ## Part V: The 3-Dimensional Case (Kovač 2024) -/
@@ -235,15 +247,18 @@ private lemma greedyBudget_nonneg (s : ℝ) (hs : 0 ≤ s) (n : ℕ) : 0 ≤ gre
   | zero => simp [greedyBudget, hs]
   | succ n ih =>
     simp only [greedyBudget]
-    split_ifs with h; · linarith; · exact ih
+    split_ifs with h
+    · linarith
+    · exact ih
 
 private lemma greedyBudget_antitone (s : ℝ) : Antitone (greedyBudget s) := by
   apply antitone_nat_of_succ_le
   intro n
   simp only [greedyBudget]
   split_ifs with h
-  · linarith [div_nonneg (le_refl (1:ℝ)) (Nat.cast_nonneg (n := n + 1))]
-  · le_refl _
+  · have : (0:ℝ) ≤ (1:ℝ) / (n + 1 : ℕ) := by positivity
+    linarith
+  · exact le_refl _
 
 /-- The greedy set: include n ≥ 1 when 1/n fits in the budget. -/
 private def greedySet (s : ℝ) : Set ℕ :=
@@ -255,29 +270,25 @@ private lemma greedyBudget_eq_s_sub_sum (s : ℝ) (n : ℕ) :
       ∑ k ∈ (Finset.range (n + 1)).filter (· ∈ greedySet s), (1 : ℝ) / (k : ℕ) = s := by
   induction n with
   | zero =>
-    simp only [greedyBudget, Finset.range_one]
-    simp [greedySet]
+    have h0 : (0 : ℕ) ∉ greedySet s := by simp [greedySet]
+    simp [greedyBudget, Finset.range_one, Finset.filter_singleton, h0]
   | succ n ih =>
-    rw [show Finset.range (n + 1 + 1) = Finset.range (n + 1) ∪ {n + 1} from by
-          ext x; simp [Nat.lt_succ_iff_lt_or_eq, or_comm]]
-    rw [Finset.filter_union, Finset.sum_union]
-    · by_cases hn : n + 1 ∈ greedySet s
-      · -- n+1 is included: budget drops by 1/(n+1)
-        have hmem : (1 : ℝ) / (n + 1 : ℕ) ≤ greedyBudget s n := by
-          simp [greedySet] at hn; exact hn.2
-        rw [greedyBudget_succ_inc s n hmem]
-        simp [Finset.filter_singleton, hn]
-        linarith
-      · -- n+1 is skipped: budget unchanged
-        rw [greedyBudget_succ_skip s n (by
-              simp [greedySet] at hn
-              intro h; exact hn ⟨Nat.succ_pos n, h⟩)]
-        simp [Finset.filter_singleton, hn]
-        linarith
-    · simp [Finset.disjoint_filter]
-      intro x hx _ hxn
-      simp [Finset.mem_singleton] at hxn
-      omega
+    rw [Finset.range_add_one, Finset.filter_insert]
+    by_cases hn : n + 1 ∈ greedySet s
+    · -- n+1 is included: budget drops by 1/(n+1)
+      rw [if_pos hn, Finset.sum_insert (by simp)]
+      have hmem : (1 : ℝ) / (n + 1 : ℕ) ≤ greedyBudget s n := by
+        simp only [greedySet, Set.mem_setOf_eq, Nat.add_sub_cancel] at hn
+        exact hn.2
+      rw [greedyBudget_succ_inc s n hmem]
+      linarith [ih]
+    · -- n+1 is skipped: budget unchanged
+      rw [if_neg hn]
+      have hskip : ¬ (1 : ℝ) / (n + 1 : ℕ) ≤ greedyBudget s n := by
+        simp only [greedySet, Set.mem_setOf_eq, not_and, Nat.add_sub_cancel] at hn
+        exact hn (by omega)
+      rw [greedyBudget_succ_skip s n hskip]
+      exact ih
 
 /-- For any N, the sum of included terms up to N is at most s. -/
 private lemma greedySet_partial_sum_le (s : ℝ) (hs : 0 ≤ s) (n : ℕ) :
@@ -290,17 +301,19 @@ private lemma greedySet_summable (s : ℝ) (hs : 0 < s) :
   unfold HasConvergentHarmonicSubseries
   -- f(n) = 1/n ≥ 0 and partial sums over any Finset ≤ s, so summable
   -- Use NNReal.summable_iff or similar
-  apply (summable_of_sum_le
-    (fun (n : greedySet s) => div_nonneg one_nonneg (Nat.cast_nonneg (n := (n : ℕ)))) s)
+  apply summable_of_sum_le (c := s)
+    (fun (n : greedySet s) => div_nonneg zero_le_one (Nat.cast_nonneg (n := (n : ℕ))))
   intro F
   -- bound sum over F (Finset of subtype) by s
   have hFM : ∑ n ∈ F, (1 : ℝ) / ((n : greedySet s) : ℕ) ≤ s := by
     -- convert to sum over ℕ via image
-    rw [← Finset.sum_image (f := fun n : greedySet s => (n : ℕ))
-      (fun a _ b _ hab => Subtype.ext (Subtype.val_eq_val.mp hab))]
+    have hinj : Function.Injective (fun n : greedySet s => (n : ℕ)) :=
+      fun a b hab => Subtype.ext hab
+    rw [← Finset.sum_image (f := fun y : ℕ => (1:ℝ) / y)
+      (g := fun n : greedySet s => (n : ℕ)) hinj.injOn]
     -- Now sum over image ≤ sum over all included up to max
-    rcases (F.image (fun n : greedySet s => (n : ℕ))).eq_empty_or_nonempty with rfl | hne
-    · simp
+    rcases (F.image (fun n : greedySet s => (n : ℕ))).eq_empty_or_nonempty with heq | hne
+    · rw [heq, Finset.sum_empty]; exact hs.le
     · set M := (F.image (fun n : greedySet s => (n : ℕ))).sup' hne id
       have hle : ∀ x ∈ F, (x : ℕ) ≤ M := fun x hx =>
         Finset.le_sup' id (Finset.mem_image_of_mem _ hx)
@@ -312,7 +325,7 @@ private lemma greedySet_summable (s : ℝ) (hs : 0 < s) :
         exact ⟨by have := hle n hn; omega, n.property⟩
       calc ∑ n ∈ F.image (fun n : greedySet s => (n : ℕ)), (1:ℝ)/n
           ≤ ∑ k ∈ (Finset.range (M + 1)).filter (· ∈ greedySet s), (1:ℝ)/k :=
-            Finset.sum_le_sum_of_subset hFM
+            Finset.sum_le_sum_of_subset_of_nonneg hFM (fun i _ _ => by positivity)
         _ ≤ s := greedySet_partial_sum_le s hs.le M
   exact hFM
 
@@ -333,20 +346,21 @@ private lemma greedyBudget_tendsto_zero (s : ℝ) (hs : 0 < s) :
   by_contra hpos
   push_neg at hpos
   set L := ⨅ n, greedyBudget s n
-  have hL : 0 < L := not_le.mp hpos
+  have hL : 0 < L := hpos
   have hbig : ∀ n, L ≤ greedyBudget s n := fun n => ciInf_le hbdd n
   -- Find N₀ large enough that 1/(N₀+1) ≤ L/2 < L ≤ budget n for all n
   obtain ⟨N₀, hN₀⟩ : ∃ N₀ : ℕ, ∀ k ≥ N₀, (1 : ℝ) / (k + 1) ≤ L / 2 := by
     have htend : Filter.Tendsto (fun k : ℕ => (1 : ℝ) / (k + 1)) Filter.atTop (nhds 0) := by
       have hd : Filter.Tendsto (fun k : ℕ => (k : ℝ) + 1) Filter.atTop Filter.atTop :=
         tendsto_atTop_atTop.mpr (fun b => ⟨⌈b⌉₊, fun n hn => by
-          push_cast; linarith [Nat.le_of_ceil_le (Nat.cast_le.mpr hn)]⟩)
+          push_cast
+          linarith [Nat.le_ceil b, (Nat.cast_le.mpr hn : ((⌈b⌉₊ : ℕ) : ℝ) ≤ (n : ℝ))]⟩)
       exact (tendsto_const_nhds (x := (1:ℝ))).div_atTop hd
     rw [Metric.tendsto_atTop] at htend
     obtain ⟨N₀, hN₀⟩ := htend (L / 2) (by linarith)
     exact ⟨N₀, fun k hk => by
       have := (hN₀ k hk).le
-      rw [Real.norm_of_nonneg (div_nonneg one_nonneg (by positivity))] at this
+      rw [dist_zero_right, Real.norm_of_nonneg (by positivity)] at this
       linarith⟩
   -- For all k ≥ N₀: 1/(k+1) ≤ L/2 and budget(k) ≥ L ≥ L/2 + L/2 ≥ 1/(k+1) + L/2
   -- So every k+1 ≥ N₀+1 is included, and budget drops by ∑_{k≥N₀} 1/(k+1)
@@ -360,11 +374,14 @@ private lemma greedyBudget_tendsto_zero (s : ℝ) (hs : 0 < s) :
     induction K with
     | zero => simp
     | succ K ihK =>
-      have hinc := hall_inc (N₀ + K) (Nat.le_add_right N₀ K)
+      have hinc : (1 : ℝ) / (N₀ + K + 1 : ℕ) ≤ greedyBudget s (N₀ + K) := by
+        have hinc0 := hall_inc (N₀ + K) (Nat.le_add_right N₀ K)
+        push_cast at hinc0 ⊢
+        linarith [hinc0]
       rw [show N₀ + (K + 1) = N₀ + K + 1 from by ring,
           greedyBudget_succ_inc s (N₀ + K) hinc,
           Finset.sum_range_succ]
-      push_cast
+      push_cast at ihK ⊢
       linarith
   -- The tail sum ∑_{k<K} 1/(N₀+k+1) → ∞ as K → ∞
   -- Key: ∑_{k<K} 1/(N₀+k+1) = H(N₀+K) - H(N₀) where H(n) = ∑_{k<n} 1/(k+1) → ∞
@@ -390,8 +407,9 @@ private lemma greedyBudget_tendsto_zero (s : ℝ) (hs : 0 < s) :
     refine ⟨n₀, fun K hK => ?_⟩
     have h1 := hn₀ (N₀ + K) (by omega)
     have h2 : H N₀ ≤ H (N₀ + K) := by
-      apply Finset.sum_le_sum_of_subset
-      intro x hx; simp [Finset.mem_range] at hx ⊢; omega
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro x hx; simp [Finset.mem_range] at hx ⊢; omega
+      · intro i _ _; positivity
     linarith
   -- This means budget eventually goes below 0, contradicting hnn
   rw [Filter.tendsto_atTop_atTop] at htail
@@ -410,25 +428,22 @@ private lemma greedySet_sum (s : ℝ) (hs : 0 < s) :
   -- Relate tsum on subtype to tsum of g
   have htsum_eq : ∑' n : greedySet s, (1:ℝ) / ↑↑n = ∑' n : ℕ, g n := by
     rw [tsum_subtype (s := (greedySet s)) (f := fun n => (1:ℝ)/n)]
-    congr 1; ext n; simp [g]
+    simp [g, Set.indicator_apply]
   rw [htsum_eq]
   -- g is nonneg
   have hg_nn : ∀ n : ℕ, 0 ≤ g n := fun n => by
-    simp only [g]; split_ifs <;> [exact div_nonneg one_nonneg Nat.cast_nonneg; exact le_refl _]
-  -- Partial sums: ∑ k in range(N+1), g k = s - budget(N)
+    simp only [g]; split_ifs <;> [exact div_nonneg zero_le_one (Nat.cast_nonneg n); exact le_refl _]
+  -- Partial sums: ∑ k ∈ range(N+1), g k = s - budget(N)
   have hpart : ∀ N, ∑ k ∈ Finset.range (N+1), g k = s - greedyBudget s N := by
     intro N
     have hkey := greedyBudget_eq_s_sub_sum s N
     -- Relate: ∑ range(N+1), g = ∑ (range(N+1)).filter (· ∈ greedySet s), 1/k
     -- via Finset.sum_filter: ∑ s.filter p, f = ∑ s, ite (p .) (f .) 0
-    haveI : DecidablePred (· ∈ greedySet s) := Classical.decPred _
     have hfilt : ∑ k ∈ (Finset.range (N+1)).filter (· ∈ greedySet s), (1:ℝ) / (k:ℕ) =
         ∑ k ∈ Finset.range (N+1), g k := by
       rw [Finset.sum_filter]
-      apply Finset.sum_congr rfl
-      intro k _; simp [hg_def]
     linarith
-  -- ∑ k in range N, g k → s as N → ∞ (budget → 0)
+  -- ∑ k ∈ range N, g k → s as N → ∞ (budget → 0)
   apply HasSum.tsum_eq
   rw [hasSum_iff_tendsto_nat_of_nonneg hg_nn]
   have htend_budget := greedyBudget_tendsto_zero s hs
@@ -439,11 +454,11 @@ private lemma greedySet_sum (s : ℝ) (hs : 0 < s) :
   refine ⟨M + 1, fun N hN => ?_⟩
   rcases N with _ | N'
   · omega
-  · rw [hpart N']
-    simp only [Real.norm_eq_abs, abs_of_nonneg (greedyBudget_nonneg s hs.le N'),
-               sub_sub_cancel_left]
-    rw [abs_neg, abs_of_nonneg (greedyBudget_nonneg s hs.le N')]
-    exact hM N' (by omega)
+  · rw [hpart N', Real.dist_eq, show s - greedyBudget s N' - s = -greedyBudget s N' from by ring,
+        abs_neg, abs_of_nonneg (greedyBudget_nonneg s hs.le N')]
+    have hthis := hM N' (by omega)
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (greedyBudget_nonneg s hs.le N')] at hthis
+    exact hthis
 
 
 /- ## Part XI: Unit Fraction Infrastructure (for d=1 path-connectedness) -/
@@ -490,8 +505,10 @@ theorem consecutiveProductsSet_infinite (n : ℕ) :
       · linarith
       · linarith
     exact_mod_cast (show (a : ℤ) = b by linarith)
-  exact (Set.infinite_range_of_injective hinj).mono
-    (fun m hm => let ⟨k, hk⟩ := hm; ⟨n + k, Nat.le_add_right n k, hk.symm⟩)
+  have hsub : Set.range (fun k : ℕ => (n + k) * (n + k + 1)) ⊆ consecutiveProductsSet n := by
+    rintro m ⟨k, hk⟩
+    exact ⟨n + k, Nat.le_add_right n k, hk.symm⟩
+  exact (Set.infinite_range_of_injective hinj).mono hsub
 
 /-- Every element of greedySet is ≥ 1 (by definition). -/
 private lemma greedySet_mem_ge_one (s : ℝ) (n : ℕ) (hn : n ∈ greedySet s) : 1 ≤ n :=
@@ -506,15 +523,16 @@ private lemma greedySet_nonempty (s : ℝ) (hs : 0 < s) : (greedySet s).Nonempty
     intro n; induction n with
     | zero => exact greedyBudget_zero s
     | succ n ih =>
-      have hnotin : n + 1 ∉ greedySet s := hempty ▸ Set.not_mem_empty _
-      simp only [greedySet, Set.mem_setOf_eq, not_and, Nat.succ_pos, forall_true_left,
-                 not_le, Nat.add_sub_cancel] at hnotin
-      rw [ih] at hnotin
-      rw [greedyBudget_succ_skip s n (not_le.mpr hnotin), ih]
+      have hnotin : n + 1 ∉ greedySet s := hempty ▸ Set.notMem_empty _
+      simp only [greedySet, Set.mem_setOf_eq, not_and, not_le, Nat.add_sub_cancel] at hnotin
+      have hskip : ¬ (1 : ℝ) / (n + 1 : ℕ) ≤ greedyBudget s n :=
+        not_le.mpr (hnotin (by omega))
+      rw [greedyBudget_succ_skip s n hskip]
+      exact ih
   -- So 1/n > s for all n ≥ 1.
   have hbig : ∀ n : ℕ, 0 < n → s < (1 : ℝ) / n := by
     intro n hn
-    have hnotin : n ∉ greedySet s := hempty ▸ Set.not_mem_empty _
+    have hnotin : n ∉ greedySet s := hempty ▸ Set.notMem_empty _
     simp only [greedySet, Set.mem_setOf_eq, not_and, not_le] at hnotin
     have h := hnotin hn
     rw [hconst (n - 1)] at h
@@ -523,7 +541,8 @@ private lemma greedySet_nonempty (s : ℝ) (hs : 0 < s) : (greedySet s).Nonempty
   have htend : Filter.Tendsto (fun k : ℕ => (1 : ℝ) / (k + 1)) Filter.atTop (nhds 0) := by
     apply (tendsto_const_nhds (x := (1 : ℝ))).div_atTop
     exact tendsto_atTop_atTop.mpr (fun b => ⟨⌈b⌉₊, fun N hN => by
-      push_cast; linarith [Nat.le_ceil b, Nat.cast_le.mpr hN]⟩)
+      push_cast
+      linarith [Nat.le_ceil b, (Nat.cast_le.mpr hN : ((⌈b⌉₊ : ℕ) : ℝ) ≤ (N : ℝ))]⟩)
   rw [Metric.tendsto_atTop] at htend
   obtain ⟨N, hN⟩ := htend (s / 2) (by linarith)
   have hsmall : (1 : ℝ) / (N + 1) < s := by
@@ -568,7 +587,7 @@ theorem consecutiveProductsSet_convergent (n : ℕ) (hn : 0 < n) :
   -- HasSum (→ Summable) via partial sums = partial_sum_consec
   apply HasSum.summable
   rw [hasSum_iff_tendsto_nat_of_nonneg (fun j => by
-    apply div_nonneg one_nonneg
+    apply div_nonneg zero_le_one
     exact Nat.cast_nonneg _)]
   -- The partial sums equal partial_sum_consec and → 1/n
   have hpsum : ∀ N, ∑ j ∈ Finset.range N,
@@ -581,9 +600,9 @@ theorem consecutiveProductsSet_convergent (n : ℕ) (hn : 0 < n) :
   simp_rw [hpsum]
   have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / ((n : ℝ) + N)) Filter.atTop (nhds 0) :=
     (tendsto_const_nhds (x := (1 : ℝ))).div_atTop (tendsto_atTop_atTop.mpr (fun b =>
-      ⟨⌈b⌉₊, fun N hN => by push_cast
-                              linarith [Nat.le_of_ceil_le (Nat.cast_le.mpr hN),
-                                        Nat.cast_nonneg (n := n)]⟩))
+      ⟨⌈b⌉₊, fun N hN => by
+        push_cast
+        linarith [Nat.le_ceil b, (Nat.cast_le.mpr hN : ((⌈b⌉₊ : ℕ) : ℝ) ≤ (N : ℝ))]⟩))
   simpa [sub_zero] using (tendsto_const_nhds (x := 1 / (n : ℝ))).sub h0
 
 /-- The harmonic subseries sum of consecutiveProductsSet n equals 1/n.
@@ -617,7 +636,7 @@ theorem consecutiveProductsSet_sum (n : ℕ) (hn : 0 < n) :
     -- φ j = e j definitionally, so ↑↑(φ j) = (n+j)*(n+j+1) as ℕ cast to ℝ
     change HasSum (fun j : ℕ => (1:ℝ) / ↑((n + j) * (n + j + 1))) (1 / n)
     rw [hasSum_iff_tendsto_nat_of_nonneg (fun j => by
-      apply div_nonneg one_nonneg
+      apply div_nonneg zero_le_one
       exact Nat.cast_nonneg _)]
     have hpsum : ∀ N, ∑ j ∈ Finset.range N,
         (1 : ℝ) / ↑((n + j) * (n + j + 1)) = 1 / ↑n - 1 / (↑n + ↑N) := by
@@ -629,14 +648,17 @@ theorem consecutiveProductsSet_sum (n : ℕ) (hn : 0 < n) :
     simp_rw [hpsum]
     have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / ((n : ℝ) + N)) Filter.atTop (nhds 0) :=
       (tendsto_const_nhds (x := (1 : ℝ))).div_atTop (tendsto_atTop_atTop.mpr (fun b =>
-        ⟨⌈b⌉₊, fun N hN => by push_cast; linarith [Nat.le_ceil b, Nat.cast_le.mpr hN]⟩))
+        ⟨⌈b⌉₊, fun N hN => by
+          push_cast
+          linarith [Nat.le_ceil b, (Nat.cast_le.mpr hN : ((⌈b⌉₊ : ℕ) : ℝ) ≤ (N : ℝ))]⟩))
     simpa [sub_zero] using (tendsto_const_nhds (x := 1 / (n : ℝ))).sub h0
   exact hhas.tsum_eq
 
-/-- For any s > 0, there exists an INFINITE A ⊆ ℕ with convergent harmonic subseries
-    summing to exactly s. This handles both the "greedy terminates" and "greedy infinite" cases.
-    When greedySet s is finite (exact Egyptian fraction), we replace its max element M with
-    the infinite consecutiveProductsSet M, which sums to 1/M (same sum). -/
+-- For any s > 0, there exists an INFINITE A ⊆ ℕ with convergent harmonic subseries
+-- summing to exactly s. This handles both the "greedy terminates" and "greedy infinite" cases.
+-- When greedySet s is finite (exact Egyptian fraction), we replace its max element M with
+-- the infinite consecutiveProductsSet M, which sums to 1/M (same sum).
+set_option maxHeartbeats 1000000 in
 private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
     ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
       harmonicSubseriesSum A = s := by
@@ -648,13 +670,12 @@ private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
     have hfin : (greedySet s).Finite := Set.not_infinite.mp hinf
     have hne_g : (greedySet s).Nonempty := greedySet_nonempty s hs
     have hne_fin : hfin.toFinset.Nonempty := hfin.toFinset_nonempty.mpr hne_g
-    -- Pick maximum element M
-    let M := hfin.toFinset.max' hne_fin
-    have hMg : M ∈ greedySet s := hfin.mem_toFinset.mp (hfin.toFinset.max'_mem hne_fin)
+    -- Pick maximum element M (obtained opaquely to avoid expensive defeq unfolding later)
+    obtain ⟨M, hMg, hMmax⟩ : ∃ M, M ∈ greedySet s ∧ ∀ m ∈ greedySet s, m ≤ M :=
+      ⟨hfin.toFinset.max' hne_fin, hfin.mem_toFinset.mp (hfin.toFinset.max'_mem hne_fin),
+        fun m hm => Finset.le_max' hfin.toFinset m (hfin.mem_toFinset.mpr hm)⟩
     have hM1 : 1 ≤ M := greedySet_mem_ge_one s M hMg
     have hM_pos : 0 < M := by omega
-    have hMmax : ∀ m ∈ greedySet s, m ≤ M := fun m hm =>
-      Finset.le_max' hfin.toFinset m (hfin.mem_toFinset.mpr hm)
     -- Replacement: A' = (greedySet s \ {M}) ∪ consecutiveProductsSet M
     let A' : Set ℕ := greedySet s \ {M} ∪ consecutiveProductsSet M
     -- Each piece has convergent harmonic subseries
@@ -677,13 +698,13 @@ private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
     -- A' = (greedySet s \ {M}) ∪ consecutiveProductsSet M (disjoint)
     -- The finite piece is summable, the consecutive piece is summable.
     -- By disjoint union summability, A' is summable.
-    have hAconv : HasConvergentHarmonicSubseries A' :=
-      -- HasSum.add_disjoint: combining two HasSum witnesses over disjoint sets
-      -- gives HasSum over the union; .summable converts to Summable
-      (hconv_diff.hasSum.add_disjoint hdisj hconv_consec.hasSum).summable
+    have hAconv : HasConvergentHarmonicSubseries A' := by
+      -- Union of two disjoint summable pieces is summable.
+      exact (HasSum.add_disjoint (f := fun n : ℕ => (1:ℝ) / n)
+        hdisj hconv_diff.hasSum hconv_consec.hasSum).summable
     -- Sum computations
     -- Step 1: greedySet s = (greedySet s \ {M}) ∪ {M}, disjoint
-    have hdisjM : Disjoint (greedySet s \ {M}) {M} := Set.disjoint_sdiff_self_left
+    have hdisjM : Disjoint (greedySet s \ {M}) {M} := disjoint_sdiff_self_left
     have hconv_M : HasConvergentHarmonicSubseries {M} :=
       finite_has_convergent _ (Set.finite_singleton M)
     have hunion_g : greedySet s = greedySet s \ {M} ∪ {M} :=
@@ -691,8 +712,11 @@ private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
     -- Step 2: harmonicSubseriesSum splits over greedySet s
     have hg_split : harmonicSubseriesSum (greedySet s) =
         harmonicSubseriesSum (greedySet s \ {M}) + harmonicSubseriesSum {M} := by
-      have h := Summable.tsum_union_disjoint hdisjM hconv_diff hconv_M
-      simp only [harmonicSubseriesSum, hunion_g, h]
+      have h := Summable.tsum_union_disjoint (f := fun n : ℕ => (1:ℝ) / n) hdisjM hconv_diff hconv_M
+      have h' : harmonicSubseriesSum (greedySet s \ {M} ∪ {M}) =
+          harmonicSubseriesSum (greedySet s \ {M}) + harmonicSubseriesSum {M} := h
+      conv_lhs => rw [hunion_g]
+      exact h'
     -- Step 3: sum of singleton {M}
     have hM_sum : harmonicSubseriesSum {M} = 1 / M := by
       simp [harmonicSubseriesSum, tsum_singleton]
@@ -704,9 +728,10 @@ private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
       linarith [greedySet_sum s hs, hg_split, hM_sum]
     -- Step 6: sum of A'
     have hAsum : harmonicSubseriesSum A' = s := by
-      have h := Summable.tsum_union_disjoint hdisj hconv_diff hconv_consec
-      simp only [harmonicSubseriesSum, A', h]
-      linarith [hdiff_sum, hconsec_sum]
+      have h := Summable.tsum_union_disjoint (f := fun n : ℕ => (1:ℝ) / n) hdisj hconv_diff hconv_consec
+      have h' : harmonicSubseriesSum A' =
+          harmonicSubseriesSum (greedySet s \ {M}) + harmonicSubseriesSum (consecutiveProductsSet M) := h
+      linarith [h', hdiff_sum, hconsec_sum]
     exact ⟨A', hAinf, hAconv, hAsum⟩
 
 
@@ -736,23 +761,28 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
   rw [heq]
   exact summable_geometric_of_lt_one (by positivity) (by norm_num)
 
-/-- All coordinates are positive (for non-empty A). -/
+/-- All coordinates are positive (for infinite A).
+    Note: `A.Nonempty` alone is not enough — if `A = {0}` and `i = 0` the single term
+    `1/(0+0) = 0` is not positive. `A.Infinite` guarantees a nonzero witness exists. -/
 theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
-    (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
+    (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
     (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
   simp only [harmonicPoint, shiftedHarmonicSum]
-  obtain ⟨n, hn⟩ := hA
-  apply tsum_pos (shifted_summable A i.val hconv)
-    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
-  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
+  obtain ⟨n, hn⟩ := (hA.sdiff (Set.finite_singleton 0)).nonempty
+  rw [Set.mem_diff, Set.mem_singleton_iff] at hn
+  obtain ⟨hnA, hn0⟩ := hn
+  apply Summable.tsum_pos (shifted_summable A i.val hconv)
+    (fun m => div_nonneg zero_le_one (by positivity)) ⟨n, hnA⟩
+  have hnpos : (0:ℝ) < (n:ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hn0
+  exact div_pos one_pos (by positivity)
 
 /-- X is non-empty (take any convergent subseries). -/
 theorem harmonicPointSet_nonempty (d : ℕ) :
     (harmonicPointSet d).Nonempty := by
   have hpow2_inf : powersOf2Set.Infinite := by
     have hrange : powersOf2Set = Set.range (fun k : ℕ => 2 ^ k) := by
-      ext n; simp [powersOf2Set, Set.mem_range]
+      ext n; simp [powersOf2Set, Set.mem_range, eq_comm]
     rw [hrange]
     exact Set.infinite_range_of_injective
       (fun a b h => Nat.pow_right_injective (by norm_num) h)
@@ -791,14 +821,14 @@ theorem harmonicPointSet_path_connected (d : ℕ) :
         linarith [show a * min (x 0) (y 0) + b * min (x 0) (y 0) = min (x 0) (y 0) from
           by rw [← add_mul, hab, one_mul]]
       · -- Nonempty: the constant function 1 is in the set
-        exact ⟨fun _ => 1, one_pos⟩
+        exact ⟨fun _ => 1, by simp⟩
     -- Prove harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0}
     ext x
     simp only [harmonicPointSet, Set.mem_setOf_eq]
     constructor
     · -- ⊆: any harmonic subseries sum for infinite A is positive
       rintro ⟨A, hAinf, hAconv, rfl⟩
-      exact all_coordinates_positive 1 A hAinf.nonempty hAconv 0
+      exact all_coordinates_positive 1 A hAinf hAconv 0
     · -- ⊇: for any s > 0, find an infinite A with Σ_{n∈A} 1/n = s
       -- Strategy: use exists_infinite_harmonic_set (handles both infinite and finite greedy cases).
       intro hx
@@ -807,14 +837,11 @@ theorem harmonicPointSet_path_connected (d : ℕ) :
       obtain ⟨A, hAinf, hAconv, hAsum⟩ := exists_infinite_harmonic_set s hx
       refine ⟨A, hAinf, hAconv, ?_⟩
       -- harmonicPoint 1 A = x means the 0-th coordinate equals x 0 = s
-      funext ⟨i, hi⟩
-      fin_cases hi
-      -- i = 0: show shiftedHarmonicSum A 0 = x 0
-      simp only [harmonicPoint, shiftedHarmonicSum, Fin.val_mk]
-      -- shiftedHarmonicSum A 0 = ∑' n : A, 1/(n + 0) = ∑' n : A, 1/n = harmonicSubseriesSum A = s
-      rw [show (fun n : A => (1:ℝ) / (↑↑n + 0)) = (fun n : A => (1:ℝ) / ↑↑n)
-            from by ext n; simp]
-      exact hAsum
+      apply funext
+      intro i
+      have hi0 : i = 0 := Subsingleton.elim i 0
+      subst hi0
+      rw [harmonicPoint_one_eq_sum, hAsum, hs_def]
   · -- d ≥ 2: use the Kovač-Tao 2024 axiom
     exact harmonicPointSet_path_connected_large d
 
@@ -840,11 +867,14 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
   -- Use Summable.tsum_lt_tsum: functions over A, strict witness at n₀
   apply (shifted_summable A j hconv).tsum_lt_tsum (i := ⟨n₀, hn₀⟩)
   · -- h : pointwise ≤ (1/(n+j) ≤ 1/(n+i) since j > i)
-    intro ⟨n, hn⟩
-    have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
+    intro x
+    have hn_pos : 0 < (x : ℕ) := Nat.pos_of_ne_zero (fun h => h0 (h ▸ x.2))
     apply one_div_le_one_div_of_le
-    · exact_mod_cast Nat.add_pos_left hn_pos i
-    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+    · push_cast
+      have h1 : (0:ℝ) < (x:ℕ) := by exact_mod_cast hn_pos
+      have h2 : (0:ℝ) ≤ (i:ℝ) := Nat.cast_nonneg i
+      linarith
+    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) (x : ℕ)
   · -- hi : strict at n₀
     apply one_div_lt_one_div_of_lt
     · exact_mod_cast Nat.add_pos_left hn₀_pos i
@@ -921,15 +951,15 @@ theorem harmonicPointSet_one_eq :
   simp only [harmonicPointSet, Set.mem_setOf_eq]
   constructor
   · rintro ⟨A, hAinf, hAconv, rfl⟩
-    exact all_coordinates_positive 1 A hAinf.nonempty hAconv 0
+    exact all_coordinates_positive 1 A hAinf hAconv 0
   · intro hx
     obtain ⟨A, hAinf, hAconv, hAsum⟩ := exists_infinite_harmonic_set (x 0) hx
     refine ⟨A, hAinf, hAconv, ?_⟩
-    funext ⟨i, hi⟩
-    fin_cases hi
-    simp only [harmonicPoint, shiftedHarmonicSum, Fin.val_mk]
-    rw [show (fun n : A => (1:ℝ) / (↑↑n + 0)) = (fun n : A => (1:ℝ) / ↑↑n) from by ext n; simp]
-    exact hAsum
+    apply funext
+    intro i
+    have hi0 : i = 0 := Subsingleton.elim i 0
+    subst hi0
+    rw [harmonicPoint_one_eq_sum, hAsum]
 
 /-- The harmonic subseries sum map is surjective onto (0, ∞): for any target s > 0
     there exists an infinite A ⊆ ℕ with convergent harmonic sum equal to s.

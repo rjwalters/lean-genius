@@ -31,10 +31,9 @@ Reference:
 - Erdős: "Some of my favourite problems..." Resenhas (1995)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.NumberTheory.SumFourSquares
 
 open Nat Finset
@@ -126,7 +125,7 @@ def GeneralizedQuestion : Prop :=
 ## Part IV: Historical Results
 -/
 
-/--
+/- 
 **Burr's unpublished result (reported by Erdős 1995):**
 Burr proved that k-th powers are Ramsey r-complete for all r, k ≥ 2.
 This result was never published.
@@ -185,7 +184,7 @@ theorem erdos_843_resolved : OriginalQuestion := squares_ramsey_2_complete
 ## Part VI: Stronger Results
 -/
 
-/--
+/- 
 **Density bounds for sparse Ramsey complete sequences:**
 
 Conlon-Fox-Pham proved:
@@ -194,7 +193,7 @@ Conlon-Fox-Pham proved:
 
 So (log N)² is the threshold for Ramsey completeness.
 -/
-/--
+/- 
 **Burr-Erdős upper bound (1985):**
 There exists a Ramsey 2-complete sequence A with |A ∩ [1,N]| ≪ (log N)³.
 -/

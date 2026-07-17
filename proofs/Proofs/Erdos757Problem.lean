@@ -68,7 +68,7 @@ def IsAdmissible (c : ℝ) : Prop :=
 Find the exact value of sup{c : IsAdmissible c}.
 -/
 
-/-- **Erdős Problem #757 (OPEN)**: What is the supremum of the set of
+/-  **Erdős Problem #757 (OPEN)**: What is the supremum of the set of
 admissible constants?
 
 Gyárfás-Lehel (1995) proved 1/2 < sSup {c | IsAdmissible c} < 3/5.
@@ -78,12 +78,12 @@ The exact value remains unknown. -/
 ## Known Results (Gyárfás-Lehel 1995)
 -/
 
-/-- **Lower Bound** (Gyárfás-Lehel 1995): The supremum is strictly larger
+/-  **Lower Bound** (Gyárfás-Lehel 1995): The supremum is strictly larger
 than 1/2.
 
 The proof constructs explicit Sidon subsets using a greedy algorithm. -/
 
-/-- **Upper Bound** (Gyárfás-Lehel 1995): The supremum is strictly less
+/-  **Upper Bound** (Gyárfás-Lehel 1995): The supremum is strictly less
 than 3/5.
 
 The proof exhibits a family of almost-Sidon sets where the largest
@@ -93,7 +93,7 @@ Sidon subset has size just under 3n/5. -/
 ## Properties of Sidon Sets
 -/
 
-/-- A Sidon set of size n has exactly n(n-1)/2 + 1 elements in its
+/-  A Sidon set of size n has exactly n(n-1)/2 + 1 elements in its
 difference set (the +1 is for 0). -/
 
 /-- The empty set is Sidon. -/
@@ -132,7 +132,7 @@ This condition is a relaxation of the Sidon property. It says that
 among any 4 elements, we can have at most one "collision" of differences.
 -/
 
-/-- The minimum size of |B - B| for a 4-element set B is 7
+/-  The minimum size of |B - B| for a 4-element set B is 7
 (arithmetic progression case). -/
 
 /-- An almost-Sidon set has the property that no 4-element subset is
@@ -148,7 +148,8 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
   have hBBfin : (B - B).Finite := Set.Finite.sub hBfin hBfin
   -- Convert B to Finset F
   set F := hBfin.toFinset with hF_def
-  have hF_card : F.card = 4 := by rw [Set.Finite.toFinset_card]; exact hcard
+  have hF_card : F.card = 4 := by
+    rw [hF_def, ← Set.ncard_eq_toFinset_card B hBfin]; exact hcard
   have hF_mem : ∀ x, x ∈ F ↔ x ∈ B := fun x => Set.Finite.mem_toFinset hBfin
   -- The difference map on off-diagonal pairs is injective (Sidon property)
   have hDiffInj : Set.InjOn (fun p : ℝ × ℝ => p.1 - p.2) ↑F.offDiag := by
@@ -166,7 +167,7 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
     · exact absurd rfl h₁.2.2
   -- The off-diagonal has 12 pairs, so its image has 12 elements
   have hOD_card : F.offDiag.card = 12 := by
-    rw [Finset.card_offDiag, hF_card]; norm_num
+    rw [Finset.offDiag_card, hF_card]
   have hImg_card : (F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)).card = 12 := by
     rw [Finset.card_image_of_injOn hDiffInj, hOD_card]
   -- The image consists of nonzero elements in B - B
@@ -187,11 +188,11 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
   have hImgFin : (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).Finite :=
     Finset.finite_toSet _
   calc (B - B).ncard
-      ≥ (insert (0 : ℝ) ↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2))).ncard :=
+      ≥ (insert (0 : ℝ) (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ)).ncard :=
         Set.ncard_le_ncard (Set.insert_subset h0_mem hImg_sub) hBBfin
     _ = (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).ncard + 1 :=
-        Set.ncard_insert_of_not_mem h0_notin_img hImgFin
-    _ = 12 + 1 := by rw [Set.ncard_coe_Finset, hImg_card]
+        Set.ncard_insert_of_notMem h0_notin_img hImgFin
+    _ = 12 + 1 := by rw [Set.ncard_coe_finset, hImg_card]
     _ = 13 := by norm_num
     _ ≥ 11 := by norm_num
 
@@ -237,7 +238,7 @@ sets with "few" arithmetic configurations.
 of additive combinatorics). -/
 def IsB2Sequence (S : Set ℝ) : Prop := IsSidon S
 
-/-- The Sidon set constant problem: what is the largest Sidon subset
+/- The Sidon set constant problem: what is the largest Sidon subset
 guaranteed in a set of size n? This is asymptotically √n. -/
 
 end Erdos757

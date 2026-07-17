@@ -2,6 +2,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 /-
 # Erdős Problem #1153 - Lebesgue Constants of Lagrange Interpolation
 
@@ -53,7 +55,7 @@ open Finset
 -- The fundamental building block of polynomial interpolation
 noncomputable def lagrangeBasis (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n)
     (x : ℝ) : ℝ :=
-  ∏ i in Finset.univ.erase k, (x - nodes i) / (nodes k - nodes i)
+  ∏ i ∈ Finset.univ.erase k, (x - nodes i) / (nodes k - nodes i)
 
 -- The Lebesgue function: λ(x) = Σₖ |lₖ(x)|
 -- Measures how much interpolation can amplify errors

@@ -1,10 +1,9 @@
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Algebra.Module.Basic
-import Mathlib.LinearAlgebra.Dual
 import Mathlib.Tactic
 
 /-!
@@ -115,7 +114,7 @@ section WeakFormulation
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteSpace V]
 
 /-- A bilinear form on a Hilbert space -/
-def BilinearForm (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] :=
+abbrev BilinearForm (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] :=
   V →ₗ[ℝ] V →ₗ[ℝ] ℝ
 
 /-- A bilinear form is bounded (continuous) if |a(u,v)| ≤ M‖u‖‖v‖ -/
@@ -154,7 +153,7 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteS
     minimizing the energy functional J(v) = (1/2)a(v,v) - F(v).
 
     The solution u minimizes J over V. -/
-def EnergyFunctional (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ) (v : V) : ℝ :=
+noncomputable def EnergyFunctional (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ) (v : V) : ℝ :=
   (1/2) * a v v - F v
 
 end LaxMilgram

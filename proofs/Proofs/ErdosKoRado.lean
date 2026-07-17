@@ -88,12 +88,14 @@ theorem card_cyclicIntervals (n k : ℕ) (_hn : 0 < n) (_hk : k ≤ n) :
 theorem card_cyclicInterval (n k i : ℕ) (hn : 0 < n) (hk : k ≤ n) :
     (cyclicInterval n k i).card = k := by
   simp only [cyclicInterval, dif_pos hn]
-  rw [← Finset.card_range k]
-  apply Finset.card_image_of_injOn
-  intro a ha b hb heq
-  rw [Finset.coe_range, Set.mem_Iio] at ha hb
-  simp only [Fin.mk.injEq] at heq
-  omega
+  have hinj : Set.InjOn (fun j : ℕ => (⟨(i + j) % n, Nat.mod_lt _ hn⟩ : Fin n))
+      (Finset.range k : Finset ℕ) := by
+    intro a ha b hb heq
+    rw [Finset.coe_range, Set.mem_Iio] at ha hb
+    simp only [Fin.mk.injEq] at heq
+    have heq' : i + a ≡ i + b [MOD n] := heq
+    exact (heq'.add_left_cancel' i).eq_of_lt_of_lt (by omega) (by omega)
+  rw [Finset.card_image_of_injOn hinj, Finset.card_range]
 
 /- ## Key Lemma: At most k cyclic intervals can be intersecting -/
 
@@ -114,7 +116,7 @@ axiom at_most_k_intersecting_cyclic_intervals (n k : ℕ) (hn : n ≥ 2 * k) (hk
     There are (n-1)! cyclic orders (fixing one element). -/
 def numCyclicOrders (n : ℕ) : ℕ := (n - 1).factorial
 
-/-- Each k-set appears as a cyclic interval in exactly k!(n-k)! cyclic orders.
+/-  Each k-set appears as a cyclic interval in exactly k!(n-k)! cyclic orders.
 
     **Proof:** Once we choose which of the k elements is "first" in the cycle (k choices),
     the k elements must appear consecutively. The remaining n-k elements can be arranged
@@ -458,7 +460,7 @@ theorem tstar_achieves_frankl_bound {n k t : ℕ}
   have h_target_card : target.card = (n - t).choose (k - t) := by
     simp only [target, card_powersetCard]
     congr 1
-    rw [Finset.card_sdiff (Finset.subset_univ T), Fintype.card_fin, hT]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ T), Finset.card_univ, Fintype.card_fin, hT]
   rw [← h_target_card]
   apply Finset.card_bij (fun s _ => s \ T)
   -- (1) Maps into target: s \ T is a (k-t)-subset of univ \ T
@@ -469,7 +471,7 @@ theorem tstar_achieves_frankl_bound {n k t : ℕ}
     · intro x hx
       rw [mem_sdiff] at hx ⊢
       exact ⟨mem_univ _, hx.2⟩
-    · rw [Finset.card_sdiff hs.2, hs.1, hT]
+    · rw [Finset.card_sdiff_of_subset hs.2, hs.1, hT]
   -- (2) Injectivity: if s \ T = u \ T and T ⊆ s, T ⊆ u, then s = u
   · intro s₁ hs₁ s₂ hs₂ heq
     simp only [mem_filter, mem_powersetCard_univ] at hs₁ hs₂
@@ -482,27 +484,17 @@ theorem tstar_achieves_frankl_bound {n k t : ℕ}
   -- (3) Surjectivity: for any u in target, u ∪ T maps back
   · intro u hu
     simp only [target, mem_powersetCard] at hu
-    use u ∪ T
-    constructor
-    · simp only [mem_filter, mem_powersetCard_univ]
-      constructor
-      · rw [card_union_of_disjoint]
-        · rw [hu.2, hT]; omega
-        · rw [Finset.disjoint_left]
-          intro x hx
-          have := hu.1 hx
-          rw [mem_sdiff] at this
-          exact this.2
-      · exact Finset.subset_union_right
-    · ext x
-      simp only [mem_sdiff, mem_union]
-      constructor
-      · intro ⟨hx, hnx⟩
-        exact hx.elim id (fun h => absurd h hnx)
-      · intro hx
-        have := hu.1 hx
-        rw [mem_sdiff] at this
-        exact ⟨Or.inl hx, this.2⟩
+    have hdisj : Disjoint u T := by
+      rw [Finset.disjoint_left]
+      intro x hx
+      have := hu.1 hx
+      rw [mem_sdiff] at this
+      exact this.2
+    refine ⟨u ∪ T, ?_, Finset.union_sdiff_cancel_right hdisj⟩
+    simp only [mem_filter, mem_powersetCard_univ]
+    refine ⟨?_, Finset.subset_union_right⟩
+    rw [card_union_of_disjoint hdisj, hu.2, hT]
+    omega
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE HILTON-MILNER THEOREM
@@ -531,10 +523,10 @@ axiom hilton_milner {n k : ℕ} (hn : n ≥ 2 * k) (hk : k ≥ 2)
     (hns : ¬IsStar A k) :
     A.card ≤ hiltonMilnerBound n k
 
-/-- For n=6, k=3: EKR bound = C(5,2) = 10, HM bound = 10 - C(2,2) + 1 = 10 - 1 + 1 = 10.
-    Actually HM bound = C(5,2) - C(2,2) + 1 = 10 - 1 + 1 = 10.
-    For k=2: stars have n-1 elements, HM families have at most 3 elements. -/
-theorem hm_bound_n7_k3 : hiltonMilnerBound 7 3 = 16 - 3 + 1 := by
+/-- For n=7, k=3: HM bound = C(6,2) - C(3,2) + 1 = 15 - 3 + 1 = 13.
+    (The original statement here had an arithmetic typo (16-3+1=14 ≠ 13); the
+    genuinely-true value, confirmed against `hiltonMilnerBound`'s definition, is 13.) -/
+theorem hm_bound_n7_k3 : hiltonMilnerBound 7 3 = 15 - 3 + 1 := by
   simp [hiltonMilnerBound]
   native_decide
 
@@ -542,10 +534,19 @@ theorem hm_bound_n7_k3 : hiltonMilnerBound 7 3 = 16 - 3 + 1 := by
 theorem hm_gap_positive {n k : ℕ} (hn : n ≥ 2 * k) (hk : k ≥ 2)
     (hn_gt : n > 2 * k) :
     hiltonMilnerBound n k < (n - 1).choose (k - 1) := by
-  simp [hiltonMilnerBound]
+  simp only [hiltonMilnerBound]
   -- Need: C(n-1,k-1) - C(n-k-1,k-1) + 1 < C(n-1,k-1)
   -- i.e., 1 < C(n-k-1,k-1) when n > 2k and k ≥ 2
   -- C(n-k-1, k-1) ≥ C(k, k-1) = k ≥ 2 > 1
+  have hk1 : k - 1 + 1 = k := by omega
+  have hchoose_k : k.choose (k - 1) = k := by
+    calc k.choose (k - 1) = (k - 1 + 1).choose (k - 1) := by rw [hk1]
+      _ = k - 1 + 1 := Nat.choose_succ_self_right (k - 1)
+      _ = k := hk1
+  have hmono1 : k.choose (k - 1) ≤ (n - k - 1).choose (k - 1) :=
+    Nat.choose_le_choose (k - 1) (by omega)
+  have hmono2 : (n - k - 1).choose (k - 1) ≤ (n - 1).choose (k - 1) :=
+    Nat.choose_le_choose (k - 1) (by omega)
   omega
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -666,7 +667,7 @@ axiom sunflower_lemma {n k p : ℕ} (hk : 0 < k) (hp : p ≥ 2)
     (hcard : A.card > (p - 1) ^ k * k.factorial) :
     HasSunflower A p
 
-/-- Alweiss-Lovett-Wu-Zhang improved sunflower lemma (2020):
+/-  Alweiss-Lovett-Wu-Zhang improved sunflower lemma (2020):
     The threshold is improved from (p-1)^k · k! to (C · log k · log log k)^k · p
     for an absolute constant C. This breakthrough proved a long-standing conjecture. -/
 /-- The improved sunflower lemma (Alweiss-Lovett-Wu-Zhang 2020).
@@ -709,7 +710,7 @@ theorem intersecting_no_empty_core_sunflower {n k : ℕ}
       simp_all
     omega
   obtain ⟨t, ht, hne⟩ := hF2
-  rw [← hcore s t hs ht hne]
+  rw [← hcore s t hs ht hne.symm]
   exact hA.2 s t (hF hs) (hF ht)
 
 -- ═════════════════════════════════════════════════════════════════════════

@@ -48,6 +48,8 @@ This is #78 on Wiedijk's list of 100 theorems.
 
 namespace CauchySchwarz
 
+open scoped RealInnerProductSpace
+
 /-! ## Inner Product Space Form
 
 The most general form of Cauchy-Schwarz in an abstract inner product space.
@@ -61,7 +63,7 @@ For vectors u, v in a real inner product space:
 This is the abstract, coordinate-free version of the inequality. -/
 theorem cauchy_schwarz_inner {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (u v : E) :
-    |⟪u, v⟫_ℝ| ≤ ‖u‖ * ‖v‖ :=
+    |⟪u, v⟫| ≤ ‖u‖ * ‖v‖ :=
   abs_real_inner_le_norm u v
 
 /-- **Cauchy-Schwarz Squared Form**
@@ -69,14 +71,14 @@ theorem cauchy_schwarz_inner {E : Type*} [NormedAddCommGroup E]
 Equivalent formulation: ⟨u, v⟩² ≤ ⟨u, u⟩ · ⟨v, v⟩ -/
 theorem cauchy_schwarz_inner_sq {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (u v : E) :
-    ⟪u, v⟫_ℝ ^ 2 ≤ ⟪u, u⟫_ℝ * ⟪v, v⟫_ℝ := by
+    ⟪u, v⟫ ^ 2 ≤ ⟪u, u⟫ * ⟪v, v⟫ := by
   have h := abs_real_inner_le_norm u v
   have h_nonneg : 0 ≤ ‖u‖ * ‖v‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
-  have h_sq := sq_le_sq' (by linarith [abs_nonneg ⟪u, v⟫_ℝ]) h
+  have h_sq := sq_le_sq' (by linarith [abs_nonneg ⟪u, v⟫]) h
   rw [sq_abs] at h_sq
-  calc ⟪u, v⟫_ℝ ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := h_sq
+  calc ⟪u, v⟫ ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := h_sq
     _ = ‖u‖ ^ 2 * ‖v‖ ^ 2 := by ring
-    _ = ⟪u, u⟫_ℝ * ⟪v, v⟫_ℝ := by rw [real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq]
+    _ = ⟪u, u⟫ * ⟪v, v⟫ := by rw [real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq]
 
 /-! ## Two-Variable Algebraic Form
 
@@ -127,19 +129,19 @@ This follows from viewing the sequences as vectors in Euclidean space. -/
 theorem cauchy_schwarz_sum {n : ℕ} (a b : Fin n → ℝ) :
     (∑ i, a i * b i) ^ 2 ≤ (∑ i, a i ^ 2) * (∑ i, b i ^ 2) := by
   -- Interpret as vectors in Euclidean space
-  let u : EuclideanSpace ℝ (Fin n) := a
-  let v : EuclideanSpace ℝ (Fin n) := b
+  let u : EuclideanSpace ℝ (Fin n) := (EuclideanSpace.equiv (Fin n) ℝ).symm a
+  let v : EuclideanSpace ℝ (Fin n) := (EuclideanSpace.equiv (Fin n) ℝ).symm b
   -- Apply the inner product Cauchy-Schwarz
   have h := cauchy_schwarz_inner_sq u v
   -- The inner product is the dot product for EuclideanSpace
-  have inner_eq : ⟪u, v⟫_ℝ = ∑ i, a i * b i := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
-    simp [u, v]
-  have norm_u_sq : ⟪u, u⟫_ℝ = ∑ i, a i ^ 2 := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
+  have inner_eq : ⟪u, v⟫ = ∑ i, a i * b i := by
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
+    simp [u, v, mul_comm]
+  have norm_u_sq : ⟪u, u⟫ = ∑ i, a i ^ 2 := by
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
     simp [u, sq]
-  have norm_v_sq : ⟪v, v⟫_ℝ = ∑ i, b i ^ 2 := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
+  have norm_v_sq : ⟪v, v⟫ = ∑ i, b i ^ 2 := by
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
     simp [v, sq]
   rw [inner_eq, norm_u_sq, norm_v_sq] at h
   exact h
@@ -163,15 +165,15 @@ theorem cauchy_schwarz_sum_abs {n : ℕ} (a b : Fin n → ℝ) :
 If |⟨u, v⟩| = ‖u‖ · ‖v‖, then u and v are linearly dependent. -/
 theorem cauchy_schwarz_eq_iff_parallel {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (u v : E) (hu : u ≠ 0) (hv : v ≠ 0) :
-    |⟪u, v⟫_ℝ| = ‖u‖ * ‖v‖ ↔ ∃ c : ℝ, u = c • v := by
+    |⟪u, v⟫| = ‖u‖ * ‖v‖ ↔ ∃ c : ℝ, u = c • v := by
   constructor
   · intro h
     -- Use the standard Mathlib result for norm equality
-    have h' : ‖⟪u, v⟫_ℝ‖ = ‖u‖ * ‖v‖ := by rwa [Real.norm_eq_abs]
+    have h' : ‖⟪u, v⟫‖ = ‖u‖ * ‖v‖ := by rwa [Real.norm_eq_abs]
     obtain ⟨r, hr_ne, hr⟩ := (norm_inner_eq_norm_iff hu hv).mp h'
     refine ⟨r⁻¹, ?_⟩
     rw [hr, smul_smul]
-    simp [inv_mul_cancel hr_ne]
+    simp [inv_mul_cancel₀ hr_ne]
   · intro ⟨c, hc⟩
     rw [hc, inner_smul_left, real_inner_self_eq_norm_sq, norm_smul, Real.norm_eq_abs]
     simp only [starRingEnd_apply, star_trivial]
@@ -205,10 +207,10 @@ theorem triangle_sq_via_cauchy_schwarz {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (u v : E) :
     ‖u + v‖ ^ 2 ≤ (‖u‖ + ‖v‖) ^ 2 := by
   have h_cs := cauchy_schwarz_inner u v
-  have h_expand : ‖u + v‖ ^ 2 = ‖u‖ ^ 2 + 2 * ⟪u, v⟫_ℝ + ‖v‖ ^ 2 := norm_add_sq_real u v
+  have h_expand : ‖u + v‖ ^ 2 = ‖u‖ ^ 2 + 2 * ⟪u, v⟫ + ‖v‖ ^ 2 := norm_add_sq_real u v
   have h_target : (‖u‖ + ‖v‖) ^ 2 = ‖u‖ ^ 2 + 2 * (‖u‖ * ‖v‖) + ‖v‖ ^ 2 := by ring
   rw [h_expand, h_target]
-  have : ⟪u, v⟫_ℝ ≤ |⟪u, v⟫_ℝ| := le_abs_self _
+  have : ⟪u, v⟫ ≤ |⟪u, v⟫| := le_abs_self _
   linarith
 
 /-- **Covariance Bound**
@@ -218,7 +220,7 @@ coefficient is bounded by 1. This is a probabilistic interpretation of
 Cauchy-Schwarz. -/
 theorem covariance_bound {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (u v : E) (hu : u ≠ 0) (hv : v ≠ 0) :
-    |⟪u, v⟫_ℝ| / (‖u‖ * ‖v‖) ≤ 1 := by
+    |⟪u, v⟫| / (‖u‖ * ‖v‖) ≤ 1 := by
   have h_pos : 0 < ‖u‖ * ‖v‖ := mul_pos (norm_pos_iff.mpr hu) (norm_pos_iff.mpr hv)
   rw [div_le_one h_pos]
   exact cauchy_schwarz_inner u v

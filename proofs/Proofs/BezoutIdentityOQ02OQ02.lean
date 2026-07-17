@@ -152,13 +152,13 @@ every irreducible element is prime. This gives the abstract prime version of Euc
 /-- **Irreducible ↔ Prime in DecompositionMonoids**:
     In a `CancelCommMonoidWithZero` that is also a `DecompositionMonoid`
     (which ℤ, k[X], ℤ[i] all are), irreducible and prime coincide. -/
-theorem irred_iff_prime_decomp {M : Type*} [CancelCommMonoidWithZero M]
+theorem irred_iff_prime_decomp {M : Type*} [CommMonoidWithZero M] [IsCancelMulZero M]
     [DecompositionMonoid M] {p : M} : Irreducible p ↔ Prime p :=
   irreducible_iff_prime
 
 /-- **Abstract Euclid's Lemma for Irreducibles** (in CancelCommMonoidWithZero + DecompositionMonoid):
     If p is irreducible and p | a * b, then p | a or p | b. -/
-theorem euclids_lemma_irreducible {M : Type*} [CancelCommMonoidWithZero M]
+theorem euclids_lemma_irreducible {M : Type*} [CommMonoidWithZero M] [IsCancelMulZero M]
     [DecompositionMonoid M] {p a b : M}
     (hirr : Irreducible p) (hdvd : p ∣ a * b) : p ∣ a ∨ p ∣ b :=
   (irreducible_iff_prime.mp hirr).dvd_or_dvd hdvd

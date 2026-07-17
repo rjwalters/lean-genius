@@ -48,6 +48,8 @@ Status: 0 sorries, 0 axioms, no `native_decide`.  `#print axioms` reports only
 import Mathlib
 import Proofs.InverseGaloisD4OQ02
 
+open scoped Classical
+
 namespace InverseGaloisExtensions.PrimeDegree
 
 open Polynomial

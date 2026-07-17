@@ -34,6 +34,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
+import Mathlib.Tactic.NormNum
 
 open SimpleGraph Finset
 
@@ -88,18 +89,18 @@ Given a coloring, the subgraph of edges with a specific color.
 -/
 def monochromaticSubgraph (G : SimpleGraph V) (c : EdgeColoring G) (color : Bool) :
     SimpleGraph V where
-  Adj v w := G.Adj v w ∧ ∃ h : G.Adj v w, c ⟨s(v, w), G.edge_mem_edgeSet.mpr h⟩ = color
-  symm v w := by
+  Adj v w := G.Adj v w ∧ ∃ h : G.Adj v w, c ⟨s(v, w), G.mem_edgeSet.mpr h⟩ = color
+  symm := ⟨fun v w => by
     intro ⟨hadj, hcolor⟩
     constructor
-    · exact G.symm hadj
+    · exact G.adj_symm hadj
     · obtain ⟨h, hc⟩ := hcolor
-      use G.symm h
+      use G.adj_symm h
       simp only [Sym2.eq_swap] at hc ⊢
-      convert hc using 1
-  loopless v := by
+      convert hc using 1⟩
+  loopless := ⟨fun v => by
     intro ⟨hadj, _⟩
-    exact G.loopless v hadj
+    exact G.loopless.irrefl v hadj⟩
 
 /--
 **Ramsey Property:**
@@ -180,7 +181,7 @@ This is the current best known upper bound.
 -/
 axiom folkman_upper_bound : folkmanNumber_2_3_4 ≤ 941
 
-/--
+/- 
 **Spencer's Bound (1988):**
 f(2,3,4) ≤ 3 × 10⁹
 
@@ -197,11 +198,11 @@ theorem folkman_bounds : 19 ≤ folkmanNumber_2_3_4 ∧ folkmanNumber_2_3_4 ≤ 
 ## Part VI: Historical Bounds Timeline
 -/
 
-/--
+/- 
 **Frankl-Rödl Bound (1986):**
 f(2,3,4) ≤ 7 × 10¹¹
 -/
-/--
+/- 
 **Lu's Bound (2007):**
 f(2,3,4) ≤ 9697
 -/
@@ -227,7 +228,7 @@ theorem bounds_improvement :
 ## Part VII: Ramsey Theory Context
 -/
 
-/--
+/- 
 **Classical Ramsey Number R(3,3):**
 R(3,3) = 6, the minimum n such that any 2-coloring of K_n
 contains a monochromatic triangle.
@@ -252,7 +253,7 @@ Minimum vertices in K_n-free graph where every r-coloring has monochromatic K_k.
 -- Opaque constant: defensive; prevents any future bound axiom from reducing to 0 ≥ k.
 opaque folkmanNumber (r k n : ℕ) : ℕ
 
-/--
+/- 
 **f(2,3,3) = ∞:**
 There is no K₃-free graph where every 2-coloring has a monochromatic triangle.
 
@@ -268,12 +269,12 @@ requires additional machinery about graph substructures.
 ## Part IX: Computational Approaches
 -/
 
-/--
+/- 
 **Explicit Construction:**
 Lu (2007) gave an explicit construction of a Folkman graph on 9697 vertices
 using algebraic methods (Cayley graphs over finite fields).
 -/
-/--
+/- 
 **Computer Search:**
 The Dudek-Rödl bound uses probabilistic and computer-assisted methods
 to verify existence of a 941-vertex Folkman graph.

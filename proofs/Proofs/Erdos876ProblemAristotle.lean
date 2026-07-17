@@ -31,7 +31,7 @@ theorem two_pow_strictMono : StrictMono (2 ^ · : ℕ → ℕ) :=
 
 -- Aristotle target: if 2^j < 2^k then j < k
 theorem exp_lt_of_pow2_lt {j k : ℕ} (h : 2 ^ j < 2 ^ k) : j < k :=
-  (Nat.pow_lt_pow_left_iff (by norm_num)).mp h
+  (Nat.pow_lt_pow_iff_right (by norm_num)).mp h
 
 -- Aristotle target: powers of 2 are injective in the exponent
 theorem two_pow_injective : Function.Injective (2 ^ · : ℕ → ℕ) :=

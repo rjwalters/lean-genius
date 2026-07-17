@@ -19,11 +19,11 @@ The answer is f(m) = m/2 + Θ(m^{4/5}).
 Reference: https://erdosproblems.com/581
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open SimpleGraph Real
@@ -74,7 +74,7 @@ def IsSubgraph {V : Type*} (H G : SimpleGraph V) : Prop :=
 Definition of the extremal function.
 -/
 
-/--
+/- 
 **Bipartite Subgraph Size:**
 Maximum edges in a bipartite subgraph of G.
 Axiomatized as the supremum over all bipartite subgraphs.
@@ -96,7 +96,7 @@ axiom f (m : ℕ) : ℕ
 Every graph has a bipartite subgraph with at least half the edges.
 -/
 
-/--
+/- 
 **Trivial Lower Bound:**
 Every graph contains a bipartite subgraph with at least m/2 edges.
 
@@ -194,20 +194,20 @@ theorem alon_main_theorem :
 Connections to other extremal graph theory problems.
 -/
 
-/--
+/- 
 **Comparison to General Graphs:**
 For arbitrary (not necessarily triangle-free) graphs,
 we only get m/2 guaranteed bipartite edges.
 
 Triangle-freeness gives us the extra Θ(m^{4/5}) term.
 -/
-/--
+/- 
 **Mantel's Theorem (1907):**
 A triangle-free graph on n vertices has at most n²/4 edges.
 
 This is a classical bound on triangle-free graphs.
 -/
-/--
+/- 
 **Kővári-Sós-Turán Theorem:**
 Bounds on bipartite Turán numbers, which constrains
 the structure of triangle-free graphs.
@@ -255,7 +255,7 @@ Combines the key results:
 theorem erdos_581_summary :
     (∃ c₁ > 0, ∀ m, (f m : ℝ) ≥ m / 2 + c₁ * (m : ℝ) ^ (4/5 : ℝ)) ∧
     (∃ c₂ > 0, ∀ m, (f m : ℝ) ≤ m / 2 + c₂ * (m : ℝ) ^ (4/5 : ℝ)) ∧
-    c₁_positive.le ∧ c₂_positive.le :=
+    (0 : ℝ) ≤ c₁ ∧ (0 : ℝ) ≤ c₂ :=
   ⟨alon_lower_bound, alon_upper_bound, c₁_positive.le, c₂_positive.le⟩
 
 end Erdos581

@@ -69,7 +69,7 @@ theorem sv_improves_erdos (d : ℕ) (hd : d ≥ 4) :
     (1 : ℝ) / d < 2 * (↑d + 1) / (↑d * (↑d + 2)) := by
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [div_lt_div_iff hd_pos (mul_pos hd_pos hd2_pos)]
+  rw [div_lt_div_iff₀ hd_pos (mul_pos hd_pos hd2_pos)]
   nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
 /-- The SV exponent is still below the conjectured 2/d. -/
@@ -77,7 +77,7 @@ theorem sv_below_conjecture (d : ℕ) (hd : d ≥ 4) :
     2 * (↑d + 1) / (↑d * (↑d + 2)) < (2 : ℝ) / d := by
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [div_lt_div_iff (mul_pos hd_pos hd2_pos) hd_pos]
+  rw [div_lt_div_iff₀ (mul_pos hd_pos hd2_pos) hd_pos]
   nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
 /-- The gap is 2/(d(d+2)).
@@ -113,7 +113,6 @@ theorem sv_fraction_of_conjecture (d : ℕ) (hd : d ≥ 4) :
   have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
   have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
   field_simp
-  ring
 
 /-- The fraction (d+1)/(d+2) is strictly less than 1, confirming that
     the SV bound falls short of the conjectured exponent 2/d. -/
@@ -130,8 +129,9 @@ theorem gap_exceeds_reciprocal_sq (d : ℕ) (hd : d ≥ 3) :
     1 / (↑d : ℝ) ^ 2 < 2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) := by
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [div_lt_div_iff (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
-  nlinarith [Nat.cast_nonneg (α := ℝ) d, sq_nonneg (↑d : ℝ)]
+  rw [div_lt_div_iff₀ (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
+  have h3 : (3 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  nlinarith [Nat.cast_nonneg (α := ℝ) d, sq_nonneg (↑d : ℝ), h3]
 
 /-- The gap 2/(d(d+2)) is always less than 2/d².
     Combined with gap_exceeds_reciprocal_sq: 1/d² < gap < 2/d² for d ≥ 3. -/
@@ -139,7 +139,7 @@ theorem gap_below_twice_reciprocal_sq (d : ℕ) (hd : d ≥ 1) :
     2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) < 2 / (↑d : ℝ) ^ 2 := by
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [div_lt_div_iff (mul_pos hd_pos hd2_pos) (pow_pos hd_pos 2)]
+  rw [div_lt_div_iff₀ (mul_pos hd_pos hd2_pos) (pow_pos hd_pos 2)]
   nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
 /-- The gap 2/(d(d+2)) is strictly decreasing in d.
@@ -151,7 +151,7 @@ theorem gap_strictly_decreasing (d : ℕ) (hd : d ≥ 4) :
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
   have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
   have h1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
-  rw [div_lt_div_iff (mul_pos h1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
+  rw [div_lt_div_iff₀ (mul_pos h1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
   nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
 /-- The SV fraction (d+1)/(d+2) is itself strictly increasing in d,
@@ -161,7 +161,7 @@ theorem sv_fraction_increasing (d : ℕ) (hd : d ≥ 4) :
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
     have := Nat.cast_nonneg (α := ℝ) d; linarith
   have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
-  rw [div_lt_div_iff hd2_pos hd3_pos]
+  rw [div_lt_div_iff₀ hd2_pos hd3_pos]
   nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
 /-- Concrete SV fraction for d = 4: achieves 5/6 ≈ 83.3% of conjectured exponent. -/
@@ -188,7 +188,7 @@ theorem sv_covers_three_quarters (d : ℕ) (hd : d ≥ 6) :
     (d : ℝ) / (↑d + 2) ≥ 3 / 4 := by
   have hd_cast : (6 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 4) hd2_pos]
+  rw [ge_iff_le, div_le_div_iff₀ (by norm_num : (0 : ℝ) < 4) hd2_pos]
   linarith
 
 /-- For d ≥ 22, SV covers at least 11/12 of the exponent gap.
@@ -197,7 +197,7 @@ theorem sv_covers_eleven_twelfths (d : ℕ) (hd : d ≥ 22) :
     (d : ℝ) / (↑d + 2) ≥ 11 / 12 := by
   have hd_cast : (22 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 12) hd2_pos]
+  rw [ge_iff_le, div_le_div_iff₀ (by norm_num : (0 : ℝ) < 12) hd2_pos]
   linarith
 
 
@@ -284,7 +284,7 @@ theorem sv_covers_fraction_threshold (k : ℕ) (hk : k ≥ 2) (d : ℕ) (hd : d 
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
     have := Nat.cast_nonneg (α := ℝ) d; linarith
   have hd_cast : (2 * (↑k : ℝ)) ≤ (↑d : ℝ) + 2 := by exact_mod_cast hd
-  rw [ge_iff_le, div_le_div_iff hk_pos hd2_pos]
+  rw [ge_iff_le, div_le_div_iff₀ hk_pos hd2_pos]
   nlinarith [Nat.cast_nonneg (α := ℝ) k]
 
 /-- For d ≥ 18, SV covers at least 9/10 of the Erdős→conjecture exponent gap.
@@ -303,7 +303,7 @@ theorem gap_monotone_bound (N d : ℕ) (hN : N ≥ 4) (hd : d ≥ N) :
   have hd_pos : (0 : ℝ) < (↑d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hN_prod : (0 : ℝ) < (↑N : ℝ) * ((↑N : ℝ) + 2) := mul_pos hN_pos (by linarith)
   have hd_prod : (0 : ℝ) < (↑d : ℝ) * ((↑d : ℝ) + 2) := mul_pos hd_pos (by linarith)
-  rw [div_le_div_iff hd_prod hN_prod]
+  rw [div_le_div_iff₀ hd_prod hN_prod]
   nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ (↑d : ℝ) - (↑N : ℝ))
                         (by linarith : (0 : ℝ) ≤ (↑d : ℝ) + (↑N : ℝ) + 2)]
 
@@ -338,7 +338,7 @@ theorem sv_exponent_strictly_decreasing (d : ℕ) (hd : d ≥ 1) :
   have hd1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
   have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
-  rw [div_lt_div_iff (mul_pos hd1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
+  rw [div_lt_div_iff₀ (mul_pos hd1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
   nlinarith [sq_nonneg (↑d : ℝ), Nat.cast_nonneg (α := ℝ) d]
 
 /-- For all d ≥ 4 (the valid range of the SV theorem), SV covers at least 2/3 of
@@ -347,7 +347,7 @@ theorem sv_covers_two_thirds_all_d (d : ℕ) (hd : d ≥ 4) :
     (d : ℝ) / ((↑d : ℝ) + 2) ≥ 2 / 3 := by
   have hd_cast : (4 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 3) hd2_pos]
+  rw [ge_iff_le, div_le_div_iff₀ (by norm_num : (0 : ℝ) < 3) hd2_pos]
   linarith
 
 /-- Dimensional evaluations at d=5, extending the sequence d=2,3,4 already computed. -/
@@ -480,7 +480,6 @@ theorem gap_consecutive_ratio (d : ℕ) (hd : d ≥ 1) :
   have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
   have hd4_ne : (↑d : ℝ) + 4 ≠ 0 := ne_of_gt hd4_pos
   field_simp [hd_ne, hd2_ne, hd4_ne]
-  ring
 
 /-- General coverage threshold: d/(d+2) ≥ p/(p+1) whenever d ≥ 2p.
     Proof: d ≥ 2p ↔ p(d+2) ≤ d(p+1) (cross-multiply). The threshold d=2p is sharp
@@ -494,7 +493,7 @@ theorem sv_coverage_fraction_threshold (d p : ℕ) (hp : p ≥ 2) (hd : d ≥ 2 
     have := Nat.cast_nonneg (α := ℝ) d; linarith
   have hp1_pos : (0 : ℝ) < (↑p : ℝ) + 1 := by linarith
   have hd_cast : 2 * (↑p : ℝ) ≤ (↑d : ℝ) := by exact_mod_cast hd
-  rw [ge_iff_le, div_le_div_iff hp1_pos hd2_pos]
+  rw [ge_iff_le, div_le_div_iff₀ hp1_pos hd2_pos]
   nlinarith
 
 /-- Sharpness of the threshold: if d < 2p, SV covers strictly below p/(p+1).
@@ -507,7 +506,7 @@ theorem sv_coverage_fraction_threshold_sharp (d p : ℕ) (hp : p ≥ 1)
   have hp1_pos : (0 : ℝ) < (↑p : ℝ) + 1 := by
     have := Nat.cast_nonneg (α := ℝ) p; linarith
   have hd_cast : (↑d : ℝ) < 2 * (↑p : ℝ) := by exact_mod_cast hd
-  rw [div_lt_div_iff hd2_pos hp1_pos]
+  rw [div_lt_div_iff₀ hd2_pos hp1_pos]
   nlinarith
 
 /-

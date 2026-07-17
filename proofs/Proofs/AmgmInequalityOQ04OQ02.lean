@@ -1500,7 +1500,7 @@ with the chain rule for `complModulus` (§4) to discharge the
     Discharge the seven hypotheses with the §10 chain rule and integrability
     facts (`integrandK_hasDerivAt_in_k`, `dIntegrandK_continuous`), the §11
     uniform bound (`dIntegrandK_abs_le_bound` plus `boundDIntegrandK_integrable`),
-    and `Filter.eventually_of_forall` / `MeasureTheory.ae_of_all` to lift
+    and `Filter.Eventually.of_forall` / `MeasureTheory.ae_of_all` to lift
     pointwise statements to ae-statements. The lemma yields
     `HasDerivAt ellipticK (∫₀^{π/2} dIntegrandK k θ dθ) k`, and the §16
     integral identity `integral_dIntegrandK_eq` rewrites the integral to
@@ -1587,7 +1587,7 @@ theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
     exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκs) θ
   -- Apply the parametric integral derivative lemma and extract the deriv.
   have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
-    hε_pos hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+    (Metric.ball_mem_nhds k hε_pos) hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
   have h_deriv :
       HasDerivAt
         (fun κ => ∫ θ in (0 : ℝ)..π / 2,

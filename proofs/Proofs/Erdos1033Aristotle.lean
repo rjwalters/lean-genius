@@ -51,8 +51,8 @@ noncomputable def triangleDegreeSum (G : SimpleGraph V) [DecidableRel G.Adj]
 private theorem degree_ge_two_of_adj_pair (G : SimpleGraph V) [DecidableRel G.Adj]
     (v a b : V) (hab : a ≠ b) (ha : G.Adj v a) (hb : G.Adj v b) :
     G.degree v ≥ 2 := by
-  have ha' : a ∈ G.neighborFinset v := SimpleGraph.mem_neighborFinset.mpr ha
-  have hb' : b ∈ G.neighborFinset v := SimpleGraph.mem_neighborFinset.mpr hb
+  have ha' : a ∈ G.neighborFinset v := by rw [SimpleGraph.mem_neighborFinset]; exact ha
+  have hb' : b ∈ G.neighborFinset v := by rw [SimpleGraph.mem_neighborFinset]; exact hb
   have hsub : ({a, b} : Finset V) ⊆ G.neighborFinset v := by
     intro x hx; simp at hx; rcases hx with rfl | rfl <;> assumption
   calc G.degree v = (G.neighborFinset v).card := rfl
@@ -64,8 +64,8 @@ theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triang
     vertexDegree G T.v1 ≥ 2 ∧ vertexDegree G T.v2 ≥ 2 ∧ vertexDegree G T.v3 ≥ 2 := by
   unfold vertexDegree
   exact ⟨degree_ge_two_of_adj_pair G T.v1 T.v2 T.v3 T.distinct23 T.adj12 T.adj13,
-         degree_ge_two_of_adj_pair G T.v2 T.v1 T.v3 T.distinct13 (G.symm T.adj12) T.adj23,
-         degree_ge_two_of_adj_pair G T.v3 T.v1 T.v2 T.distinct12 (G.symm T.adj13) (G.symm T.adj23)⟩
+         degree_ge_two_of_adj_pair G T.v2 T.v1 T.v3 T.distinct13 (G.adj_symm T.adj12) T.adj23,
+         degree_ge_two_of_adj_pair G T.v3 T.v1 T.v2 T.distinct12 (G.adj_symm T.adj13) (G.adj_symm T.adj23)⟩
 
 -- Routine: Triangle degree sum is at least 6 (each vertex has degree ≥ 2)
 theorem triangle_sum_min (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :

@@ -96,7 +96,7 @@ theorem orderOf_eq_six_pow_three_isSwap
       have hxle : x ≤ ((σ.cycleType.erase 3).erase 2).sum :=
         Multiset.single_le_sum (fun _ _ => Nat.zero_le _) x hx
       omega
-    rw [e3, e2, hrest0]
+    rw [e3, e2, hrest0]; rfl
   -- Step 2: `sign σ = -1` from the cycle type `{3, 2}` (sum `5`, two cycles).
   have hsign : Equiv.Perm.sign σ = -1 := by
     rw [sign_of_cycleType, key]; decide
@@ -119,15 +119,12 @@ theorem orderOf_eq_six_pow_three_isSwap
   -- Step 4: parity forces `k = 1` (rule out the double-transposition `k = 2`).
   have hsignpow : Equiv.Perm.sign (σ ^ 3) = -1 := by rw [map_pow, hsign]; decide
   have hsignct : Equiv.Perm.sign (σ ^ 3) = (-1) ^ (k * 2 + k) := by
-    rw [sign_of_cycleType, esum]
-  have hodd : Odd (k * 2 + k) := by
-    by_contra hev
-    rw [Nat.not_odd_iff_even] at hev
-    rw [hev.neg_one_pow] at hsignct
-    rw [hsignpow] at hsignct
-    exact absurd hsignct (by decide)
-  obtain ⟨j, hj⟩ := hodd
-  have hk1 : k = 1 := by omega
+    rw [sign_of_cycleType, esum]; congr 1
+  have hk1 : k = 1 := by
+    have hkle : k ≤ 2 := by omega
+    interval_cases k
+    · rfl
+    · rw [hsignpow] at hsignct; exact absurd hsignct (by decide)
   -- Conclude: `(σ ^ 3).cycleType = {2}`, i.e. `σ ^ 3` is a transposition.
   rw [isSwap_iff_cycleType, hct3, hk1]; rfl
 

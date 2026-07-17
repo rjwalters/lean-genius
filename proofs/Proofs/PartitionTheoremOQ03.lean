@@ -23,8 +23,8 @@ namespace OverpartitionTheory
 
 /-- Euler's partition identity: partitions into odd parts = partitions into distinct parts. -/
 theorem euler_partition_identity (n : ℕ) :
-    Nat.Partition.IsOdd.card n = Nat.Partition.IsDistinct.card n :=
-  (Theorems100.partition n).symm
+    (Nat.Partition.odds n).card = (Nat.Partition.distincts n).card :=
+  Nat.Partition.card_odds_eq_card_distincts n
 
 /-! ## Part II: Overpartition Definitions -/
 
@@ -42,14 +42,14 @@ structure Overpartition (n : ℕ) where
     enumerating partitions and their overline subsets). -/
 axiom numOverpartitions : ℕ → ℕ
 
-/-- Small values: p̄(0) = 1 (empty partition, no parts to overline). -/
-/-- p̄(1) = 2 (partitions: {1}; overlined choices: ∅ or {1}). -/
-/-- p̄(2) = 4 (partitions: {2}, {1,1}; overlined: 2 + 2 = 4). -/
+/-  Small values: p̄(0) = 1 (empty partition, no parts to overline). -/
+/-  p̄(1) = 2 (partitions: {1}; overlined choices: ∅ or {1}). -/
+/-  p̄(2) = 4 (partitions: {2}, {1,1}; overlined: 2 + 2 = 4). -/
 /-! ## Part III: Key Properties -/
 
 /-- Every distinct partition is an overpartition (with empty overline set). -/
 def distinctToOverpartition (n : ℕ) (p : Nat.Partition n)
-    (_h : p.parts.toFinset.card = p.parts.length) :
+    (_h : p.parts.toFinset.card = p.parts.card) :
     Overpartition n :=
   ⟨p, ∅, Finset.empty_subset _⟩
 

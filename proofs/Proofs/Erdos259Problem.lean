@@ -202,7 +202,7 @@ This is a much stronger statement, showing that squarefree numbers are
 def IsInfiniteSquarefreeSubset (S : Set ℕ) : Prop :=
   S.Infinite ∧ ∀ n ∈ S, Squarefree n
 
-/-- **Chen-Ruzsa Strong Theorem**: Any infinite subseries over squarefree
+/-  **Chen-Ruzsa Strong Theorem**: Any infinite subseries over squarefree
     numbers is irrational.
 
     This generalizes erdos_259 (which is the case S = all squarefree numbers). -/
@@ -218,7 +218,7 @@ number is divisible by p² is 1/p², and these events are approximately
 independent for different primes.
 -/
 
-/-- The density of squarefree numbers is 6/π² ≈ 0.6079...
+/- The density of squarefree numbers is 6/π² ≈ 0.6079...
 
 Note: Squarefree n ↔ n.minSqFac = none for n > 0, so we use this
 computable characterization for the filter. -/

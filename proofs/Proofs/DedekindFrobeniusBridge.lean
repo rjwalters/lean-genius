@@ -50,12 +50,8 @@ lemma arithFrobAt_mem_stabilizer
     {R S G : Type*} [CommRing R] [CommRing S] [Algebra R S] [Group G]
     [MulSemiringAction G S] [IsGaloisGroup G R S] [Finite G]
     (Q : Ideal S) [Q.IsPrime] [Finite (S ⧸ Q)] :
-    arithFrobAt R G Q ∈ MulAction.stabilizer G Q := by
-  norm_num [ MulAction.mem_stabilizer_iff ];
-  have h_comap : Q.comap (MulSemiringAction.toRingAut G S (arithFrobAt R G Q)) = Q := by
-    convert ( IsArithFrobAt.arithFrobAt R G Q ).comap_eq using 1;
-  convert congr_arg ( Ideal.map ( MulSemiringAction.toRingAut G S ( arithFrobAt R G Q ) ) ) h_comap.symm using 1;
-  rw [ Ideal.map_comap_of_surjective _ ( MulSemiringAction.toRingAut G S ( arithFrobAt R G Q ) ).surjective ]
+    arithFrobAt R G Q ∈ MulAction.stabilizer G Q :=
+  IsArithFrobAt.arithFrobAt_mem_stabilizer R G Q
 
 /-- The residue Galois representation `stabilizerHom` is injective at an unramified prime,
 since its kernel is the (trivial) inertia subgroup. -/
@@ -74,12 +70,13 @@ lemma stabilizerHom_injective
   -- at an unramified prime the inertia group has cardinality `ramificationIdxIn = 1`, so it is
   -- trivial, hence `stabilizerHom` is injective.
   rw [← MonoidHom.ker_eq_bot_iff, Ideal.Quotient.ker_stabilizerHom]
-  have h_card : Nat.card (Q.toAddSubgroup.inertia G) = 1 := by
-    rw [Ideal.card_inertia_eq_ramificationIdxIn (G := G) (Q.under R) hp Q]
+  show (Q.toAddSubgroup.inertia G).subgroupOf (MulAction.stabilizer G Q) = ⊥
+  have h_card :
+      Nat.card ((Q.toAddSubgroup.inertia G).subgroupOf (MulAction.stabilizer G Q)) = 1 := by
+    rw [Nat.card_congr (Subgroup.subgroupOfEquivOfLe (Ideal.inertia_le_stabilizer Q)).toEquiv,
+      Ideal.card_inertia_eq_ramificationIdxIn (G := G) (Q.under R) hp Q]
     exact hunram
-  have h_inertia_trivial : Q.toAddSubgroup.inertia G = ⊥ :=
-    Subgroup.eq_bot_of_card_eq _ h_card
-  rw [h_inertia_trivial, Subgroup.bot_subgroupOf]
+  exact Subgroup.eq_bot_of_card_eq _ h_card
 
 /-- The order of the image of the arithmetic Frobenius under `stabilizerHom`, i.e. the residue
 arithmetic Frobenius `x ↦ x ^ #(R/p)`, equals the inertia degree. -/

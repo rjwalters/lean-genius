@@ -30,8 +30,7 @@ References:
 Tags: polynomials, analysis, critical-points
 -/
 
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Derivative
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Calculus.MeanValue
 
@@ -67,7 +66,7 @@ By Rolle's theorem, f' has exactly n distinct real roots in (a₀, a₀+nd).
 -/
 def CriticalPoints (f : Polynomial ℝ) (n : ℕ) := Fin n → ℝ
 
-/--
+/- 
 **Rolle's theorem gives critical points:**
 Between each pair of consecutive roots of f, there's a root of f'.
 -/
@@ -86,15 +85,15 @@ def Gap (c : Fin n → ℝ) (i : Fin (n - 1)) : ℝ :=
 **Midpoint of roots:**
 The center of the root interval (a₀, aₙ).
 -/
-def Midpoint (a₀ d : ℝ) (n : ℕ) : ℝ :=
+noncomputable def Midpoint (a₀ d : ℝ) (n : ℕ) : ℝ :=
   a₀ + n * d / 2
 
 /--
 **Distance from midpoint:**
 How far each critical point is from the midpoint.
 -/
-def DistFromMidpoint (c : Fin n → ℝ) (a₀ d : ℝ) (n : ℕ) (i : Fin n) : ℝ :=
-  |c i - Midpoint a₀ d n|
+noncomputable def DistFromMidpoint {n : ℕ} (c : Fin n → ℝ) (a₀ d : ℝ) (n' : ℕ) (i : Fin n) : ℝ :=
+  |c i - Midpoint a₀ d n'|
 
 /-
 ## Part IV: The Main Theorem
@@ -119,7 +118,7 @@ axiom balint_theorem {n : ℕ} (hn : n ≥ 2) {a₀ d : ℝ} (hd : d > 0)
       DistFromMidpoint c a₀ d n ⟨j.val, by omega⟩ →
       Gap c i < Gap c j
 
-/--
+/- 
 **Symmetric formulation:**
 For n critical points c₁ < c₂ < ... < cₙ, the gaps satisfy:
 g₁ > gₙ₋₁ ≥ g₂ > gₙ₋₂ ≥ ... (interleaved from ends toward middle)
@@ -141,7 +140,7 @@ axiom quartic_gap_property (c : Fin 4 → ℝ)
 ## Part VI: Lorch's Generalizations (1976)
 -/
 
-/-- Lorch (1976) extended Bálint's result to higher derivatives:
+/-  Lorch (1976) extended Bálint's result to higher derivatives:
     for f⁽ᵏ⁾ with k < n, the gaps between consecutive zeros also
     exhibit monotonicity from the midpoint outward. -/
 /-

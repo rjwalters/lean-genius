@@ -31,7 +31,7 @@ axiom multiDistChromatic : ℕ → ℕ
 
 /- ## Main Conjecture -/
 
-/-- **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
+/-  **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
     That is, there exist constants C, k such that L(r) ≤ C · r^k
     for all r ≥ 1. -/
 /- ## Known Bounds -/
@@ -54,7 +54,7 @@ theorem erdos_706_lower :
 
 /- ## Exponential Upper Bound -/
 
-/-- **Known Exponential Bound**: L(r) grows at most exponentially.
+/- **Known Exponential Bound**: L(r) grows at most exponentially.
     From the Frankl–Wilson method in higher dimensions, one can
     derive exponential-type bounds. The polynomial question asks
     whether this can be dramatically improved. -/

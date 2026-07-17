@@ -141,7 +141,9 @@ theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
   by_cases hg : EuclideanDomain.gcd a b = 0
   · have ha : a = 0 := zero_dvd_iff.mp (hg ▸ EuclideanDomain.gcd_dvd_left a b)
     have hb : b = 0 := zero_dvd_iff.mp (hg ▸ EuclideanDomain.gcd_dvd_right a b)
-    simp [ha, hb, EuclideanDomain.lcm, EuclideanDomain.dvd_lcm_left]
+    subst ha; subst hb
+    rw [EuclideanDomain.lcm_zero_left, EuclideanDomain.gcd_zero_left]
+    exact EuclideanDomain.dvd_lcm_left c c
   -- Main case: factor a = g*α, b = g*β
   · set g := EuclideanDomain.gcd a b with hg_def
     obtain ⟨α, hα⟩ := EuclideanDomain.gcd_dvd_left a b
@@ -179,11 +181,11 @@ theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     -- M = r₁·a + s₁·c  (Bézout expansion of gcd(a,c))
     have hM1 : M = (EuclideanDomain.gcdA a c * k₁) * a + (EuclideanDomain.gcdB a c * k₁) * c := by
       show EuclideanDomain.lcm _ _ = _
-      conv_lhs => rw [hk₁, EuclideanDomain.gcd_eq_gcd_ab a c]; ring
+      rw [hk₁, EuclideanDomain.gcd_eq_gcd_ab a c]; ring
     -- M = r₂·b + s₂·c  (Bézout expansion of gcd(b,c))
     have hM2 : M = (EuclideanDomain.gcdA b c * k₂) * b + (EuclideanDomain.gcdB b c * k₂) * c := by
       show EuclideanDomain.lcm _ _ = _
-      conv_lhs => rw [hk₂, EuclideanDomain.gcd_eq_gcd_ab b c]; ring
+      rw [hk₂, EuclideanDomain.gcd_eq_gcd_ab b c]; ring
     set r₁ := EuclideanDomain.gcdA a c * k₁
     set s₁ := EuclideanDomain.gcdB a c * k₁
     set r₂ := EuclideanDomain.gcdA b c * k₂
@@ -213,7 +215,7 @@ theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     -- c' ∣ (r₁α - r₂β)  (since IsCoprime g' c' and g' | g'*(r₁α-r₂β) = (s₂-s₁)*c')
     have hc'_dvd : c' ∣ (r₁ * α - r₂ * β) := by
       obtain ⟨u, v, huv⟩ := hcop_gc
-      have hk : c' ∣ g' * (r₁ * α - r₂ * β) := ⟨s₂ - s₁, hgrab'.symm⟩
+      have hk : c' ∣ g' * (r₁ * α - r₂ * β) := ⟨s₂ - s₁, hgrab'.trans (mul_comm _ _)⟩
       obtain ⟨k, hk_eq⟩ := hk
       exact ⟨u * k + v * (r₁ * α - r₂ * β), by
         calc r₁ * α - r₂ * β
@@ -229,15 +231,8 @@ theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
         calc r₁ * α = (r₁ * α - r₂ * β) + r₂ * β := by ring
           _ = c' * w + r₂ * β := by rw [hw]
           _ = r₂ * β + c' * w := by ring
-      have hqβ : q_b * β = 1 - p_b * α := by
-        calc q_b * β = (p_b * α + q_b * β) - p_b * α := by ring
-          _ = 1 - p_b * α := by rw [hpq]
       have key : (r₁ - p_b * (c' * w)) * α = (r₂ + q_b * (c' * w)) * β := by
-        calc (r₁ - p_b * (c' * w)) * α
-            = r₁ * α - p_b * (c' * w) * α := by ring
-          _ = r₂ * β + c' * w - p_b * (c' * w) * α := by rw [hr₁α]
-          _ = r₂ * β + c' * w * (q_b * β) := by rw [← hqβ]; ring
-          _ = (r₂ + q_b * (c' * w)) * β := by ring
+        linear_combination hr₁α - (c' * w) * hpq
       exact ⟨p_b * (r₂ + q_b * (c' * w)) + q_b * (r₁ - p_b * (c' * w)), by
         calc r₁ - p_b * (c' * w)
             = (r₁ - p_b * (c' * w)) * (p_b * α + q_b * β) := by rw [hpq, mul_one]
@@ -268,7 +263,7 @@ theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     -- g*α*β is a common multiple of a=g*α and b=g*β, so lcm(a,b) ∣ g*α*β
     have hd_gab : EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣ g * α * β :=
       dvd_trans (EuclideanDomain.gcd_dvd_left _ _)
-        (EuclideanDomain.lcm_dvd ⟨β, by rw [hα]; ring⟩ ⟨α, by rw [hβ]; ring⟩)
+        (EuclideanDomain.lcm_dvd ⟨β, by rw [hα]⟩ ⟨α, by rw [hβ]; ring⟩)
     -- Conclude: gcd(lcm(a,b),c) ∣ M = m*(g*α*β) + T*c
     show EuclideanDomain.gcd _ _ ∣ M
     rw [hM_decomp]
@@ -307,21 +302,30 @@ theorem lcm_gcd_associated (a b c : R) :
     Proof: Direct application of Nat.dvd_antisymm to the two directions. -/
 theorem nat_gcd_lcm_distrib (a b c : ℕ) :
     Nat.gcd (Nat.lcm a b) c = Nat.lcm (Nat.gcd a c) (Nat.gcd b c) := by
-  apply Nat.dvd_antisymm
-  · -- gcd(lcm(a,b), c) ∣ lcm(gcd(a,c), gcd(b,c))
-    apply Nat.lcm_dvd
-    · exact Nat.dvd_gcd (dvd_trans (Nat.gcd_dvd_left _ _) (Nat.dvd_lcm_left a b))
-                        (Nat.gcd_dvd_right _ _)
-    · exact Nat.dvd_gcd (dvd_trans (Nat.gcd_dvd_left _ _) (Nat.dvd_lcm_right a b))
-                        (Nat.gcd_dvd_right _ _)
-  · -- lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c)
-    apply Nat.dvd_gcd
-    · apply Nat.lcm_dvd
-      · exact dvd_trans (Nat.gcd_dvd_left a c) (Nat.dvd_lcm_left a b)
-      · exact dvd_trans (Nat.gcd_dvd_left b c) (Nat.dvd_lcm_right a b)
-    · apply Nat.lcm_dvd
-      · exact Nat.gcd_dvd_right a c
-      · exact Nat.gcd_dvd_right b c
+  rcases eq_or_ne a 0 with ha | ha
+  · subst ha
+    simp only [Nat.lcm_zero_left, Nat.gcd_zero_left]
+    exact (Nat.lcm_eq_left (Nat.gcd_dvd_right b c)).symm
+  rcases eq_or_ne b 0 with hb | hb
+  · subst hb
+    simp only [Nat.lcm_zero_right, Nat.gcd_zero_left]
+    exact (Nat.lcm_eq_right (Nat.gcd_dvd_right a c)).symm
+  rcases eq_or_ne c 0 with hc | hc
+  · subst hc
+    simp
+  · -- All of a, b, c are nonzero: compare prime factorizations pointwise.
+    have hLHS_ne : Nat.gcd (Nat.lcm a b) c ≠ 0 := Nat.gcd_ne_zero_right hc
+    have hRHS_ne : Nat.lcm (Nat.gcd a c) (Nat.gcd b c) ≠ 0 :=
+      Nat.lcm_ne_zero (Nat.gcd_ne_zero_left ha) (Nat.gcd_ne_zero_left hb)
+    have hab : Nat.lcm a b ≠ 0 := Nat.lcm_ne_zero ha hb
+    have hac : Nat.gcd a c ≠ 0 := Nat.gcd_ne_zero_left ha
+    have hbc : Nat.gcd b c ≠ 0 := Nat.gcd_ne_zero_left hb
+    apply Nat.eq_of_factorization_eq hLHS_ne hRHS_ne
+    intro p
+    simp only [Nat.factorization_gcd hab hc, Nat.factorization_lcm hac hbc,
+        Nat.factorization_lcm ha hb, Nat.factorization_gcd ha hc, Nat.factorization_gcd hb hc,
+        Finsupp.inf_apply, Finsupp.sup_apply]
+    exact inf_sup_right _ _ _
 
 -- ============================================================================
 -- Section 6: Concrete Numerical Verification

@@ -282,7 +282,7 @@ theorem P_nontrivial : P ≠ Set.univ := by
   cases hn with
   | inl h_none =>
     rw [h_none] at hs
-    exact Option.noConfusion hs
+    exact (Option.some_ne_none _ hs.symm).elim
   | inr h_wrong =>
     obtain ⟨r, s', hrs, hne⟩ := h_wrong
     rw [hrs] at hs

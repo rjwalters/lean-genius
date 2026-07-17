@@ -89,8 +89,7 @@ noncomputable def trisectionPolynomial : Polynomial ℚ :=
 /-- The polynomial has degree 3 -/
 theorem trisectionPolynomial_degree : trisectionPolynomial.natDegree = 3 := by
   unfold trisectionPolynomial
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
-    natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 /-- The angle 20° in radians -/
 noncomputable def angle20 : ℝ := π / 9
@@ -289,7 +288,7 @@ noncomputable def cubeDoublingPolynomial : Polynomial ℚ := X^3 - 2
 /-- The cube doubling polynomial has degree 3 -/
 theorem cubeDoublingPolynomial_degree : cubeDoublingPolynomial.natDegree = 3 := by
   unfold cubeDoublingPolynomial
-  simp [natDegree_sub_eq_left_of_natDegree_lt, natDegree_pow, natDegree_X]
+  compute_degree!
 
 /-- **Theorem**: Doubling the cube is impossible with compass and straightedge.
 

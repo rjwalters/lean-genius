@@ -36,6 +36,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Real Set Finset
 
 namespace Erdos862
@@ -112,7 +114,7 @@ def IsBhSet (h : ℕ) (S : Finset ℕ) : Prop :=
   h ≥ 2 ∧ ∀ (multiset1 multiset2 : Finset ℕ),
     multiset1 ⊆ S → multiset2 ⊆ S →
     multiset1.card = h → multiset2.card = h →
-    multiset1.sum = multiset2.sum → multiset1 = multiset2
+    multiset1.sum id = multiset2.sum id → multiset1 = multiset2
 
 /- ## Part IX: Summary -/
 

@@ -36,45 +36,18 @@
 import Mathlib
 import Proofs.SzemerediRegularityOQ01
 
+/-
+v4.31 migration note: the three trivial-regularity-threshold theorems
+(`isEpsilonRegular_of_one_le`, `irregularOrderedPairs_eq_empty_of_one_le`,
+`card_irregularOrderedPairs_eq_zero_of_one_le`) are now all provided by the
+imported parent `Proofs.SzemerediRegularityOQ01` in the same namespace
+`Szemeredi.Regularity.OQ01`. Re-declaring them here triggered v4.31's
+"already declared" error, so this companion is reduced to an import shim; all
+three lemmas remain available transitively through the parent import.
+-/
+
 namespace Szemeredi.Regularity.OQ01
 
 open Classical Szemeredi.Core Szemeredi.Regularity
-
-variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/-- **Trivial-regularity threshold.**  If `eps ≥ 1` then *every* pair `(A, B)` is
-ε-regular: for any witnesses `A' ⊆ A`, `B' ⊆ B` the two edge densities lie in
-`[0, 1]`, so their difference has absolute value at most `1 ≤ eps`, and the size
-conditions are irrelevant.  This is the endpoint of `isEpsilonRegular_mono`: at
-`eps = 1` regularity becomes unconditional. -/
-theorem isEpsilonRegular_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
-    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
-    IsEpsilonRegular G eps A B := by
-  intro A' B' _ _ _ _
-  have h1 := edgeDensity_mem_Icc G A' B'
-  have h2 := edgeDensity_mem_Icc G A B
-  rw [Set.mem_Icc] at h1 h2
-  rw [abs_le]
-  constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
-
-/-- **No irregular pairs above the threshold.**  For `eps ≥ 1` the ordered
-irregular pairs of any partition form the empty set: every pair is ε-regular by
-`isEpsilonRegular_of_one_le`, so the `¬IsEpsilonRegular` filter keeps nothing. -/
-theorem irregularOrderedPairs_eq_empty_of_one_le (G : SimpleGraph V)
-    [DecidableRel G.Adj] {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V)) :
-    irregularOrderedPairs G eps parts = ∅ := by
-  rw [Finset.eq_empty_iff_forall_not_mem]
-  rintro ⟨P, Q⟩ hx
-  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx
-  exact hx.2.2 (isEpsilonRegular_of_one_le G heps P Q)
-
-/-- **The irregular-pair count vanishes above the threshold.**  Cardinality form:
-`eps ≥ 1 ⟹ card (irregularOrderedPairs G eps parts) = 0`.  This is the value the
-non-increasing count `card_irregularOrderedPairs_antitone` bottoms out at — every
-partition is `1`-regular, so the `IsRegularPartition` threshold is met trivially. -/
-theorem card_irregularOrderedPairs_eq_zero_of_one_le (G : SimpleGraph V)
-    [DecidableRel G.Adj] {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V)) :
-    (irregularOrderedPairs G eps parts).card = 0 := by
-  rw [irregularOrderedPairs_eq_empty_of_one_le G heps parts, Finset.card_empty]
 
 end Szemeredi.Regularity.OQ01

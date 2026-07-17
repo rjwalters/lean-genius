@@ -29,6 +29,8 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Totient
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
+open scoped Classical
+
 open Filter Finset
 
 /- ## Core Definitions -/
@@ -51,29 +53,29 @@ noncomputable def schoenbergF (c : ℝ) : ℝ :=
 
 /- ## Schoenberg's Theorem -/
 
-/-- **Schoenberg's Theorem.** For every c ∈ [0,1], the natural density
+/-  **Schoenberg's Theorem.** For every c ∈ [0,1], the natural density
 of { n : φ(n)/n < c } exists (i.e., the liminf equals the limsup). -/
 
 /- ## Erdős's Result: Pure Singularity -/
 
-/-- **Erdős's Theorem.** The distribution function f is purely singular:
+/-  **Erdős's Theorem.** The distribution function f is purely singular:
 it is continuous but f'(x) = 0 for Lebesgue-almost every x ∈ [0,1].
 This means f increases only on a set of measure zero. -/
 
 /- ## Main Conjecture ($250) -/
 
-/-- **Erdős Problem #50 ($250 prize).**
+/-  **Erdős Problem #50 ($250 prize).**
 Is it true that f'(x) does not exist and equal a positive value
 for any x? That is, wherever f is differentiable, the derivative
 is zero (or does not exist). -/
 
 /- ## Properties of φ(n)/n -/
 
-/-- φ(n)/n = ∏_{p | n} (1 − 1/p): the ratio depends only on the
+/-  φ(n)/n = ∏_{p | n} (1 − 1/p): the ratio depends only on the
 set of prime factors of n. -/
 
-/-- The infimum of φ(n)/n over all n > 0 is 0. In particular,
+/-  The infimum of φ(n)/n over all n > 0 is 0. In particular,
 liminf_{n→∞} φ(n)/n = 0 (achieved along primorials). -/
 
-/-- The supremum of φ(n)/n for n > 1 is strictly less than 1
+/- The supremum of φ(n)/n for n > 1 is strictly less than 1
 (only φ(1)/1 = 1; for n > 1, φ(n)/n < 1). -/

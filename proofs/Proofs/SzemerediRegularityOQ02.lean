@@ -39,6 +39,9 @@ import Mathlib
 import Proofs.SzemerediCore
 import Proofs.SzemerediRegularity
 
+set_option maxRecDepth 400000
+set_option maxHeartbeats 1000000
+
 namespace SzemerediFKComparison
 
 open Szemeredi.Core Szemeredi.Regularity Classical
@@ -88,8 +91,8 @@ theorem pair_cut_error_bound (G : SimpleGraph V) [DecidableRel G.Adj]
     |(((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ) -
       edgeDensity G P Q * A.card * B.card| ≤
     2 * eps * P.card * Q.card := by
-  set e := (((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ)
-  set d := edgeDensity G P Q
+  set e := (((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ) with he_def
+  set d := edgeDensity G P Q with hd_def
   have hnA : (0 : ℚ) ≤ A.card := Nat.cast_nonneg _
   have hnB : (0 : ℚ) ≤ B.card := Nat.cast_nonneg _
   have hnP : (0 : ℚ) ≤ P.card := Nat.cast_nonneg _
@@ -100,31 +103,38 @@ theorem pair_cut_error_bound (G : SimpleGraph V) [DecidableRel G.Adj]
   have he_nonneg : (0 : ℚ) ≤ e := by positivity
   have hd_nn : 0 ≤ d := edgeDensity_nonneg G P Q
   have hd_le1 : d ≤ 1 := edgeDensity_le_one G P Q
+  -- Prevent later `simp`/`positivity` calls from zeta-unfolding the (expensive)
+  -- definitional bodies of `e`/`d`; all facts we need about them are already
+  -- recorded above as hypotheses.
+  clear_value e d
   by_cases hA_large : (A.card : ℚ) ≥ eps * P.card
   · by_cases hB_large : (B.card : ℚ) ≥ eps * Q.card
     · -- Both large: use ε-regularity
       -- Handle A = ∅ edge case first
       rcases eq_or_lt_of_le hnA with hnA0 | hnA_pos
       · have hA_eq0 : (A.card : ℚ) = 0 := hnA0.symm
-        have he0 : e = 0 := le_antisymm
-          (he_bound.trans (by simp [hA_eq0])) (by positivity)
-        simp [hA_eq0, he0]
+        have hAB0 : (A.card : ℚ) * B.card = 0 := by rw [hA_eq0]; ring
+        have he0 : e = 0 := le_antisymm (he_bound.trans hAB0.le) he_nonneg
+        have hz : e - d * (A.card : ℚ) * B.card = 0 := by rw [he0, hA_eq0]; ring
+        rw [hz, abs_zero]
         positivity
       -- Handle B = ∅ edge case
       rcases eq_or_lt_of_le hnB with hnB0 | hnB_pos
       · have hB_eq0 : (B.card : ℚ) = 0 := hnB0.symm
-        have he0 : e = 0 := le_antisymm
-          (he_bound.trans (by simp [hB_eq0])) (by positivity)
-        simp [hB_eq0, he0]
+        have hAB0 : (A.card : ℚ) * B.card = 0 := by rw [hB_eq0]; ring
+        have he0 : e = 0 := le_antisymm (he_bound.trans hAB0.le) he_nonneg
+        have hz : e - d * (A.card : ℚ) * B.card = 0 := by rw [he0, hB_eq0]; ring
+        rw [hz, abs_zero]
         positivity
       -- A, B, P, Q all nonempty
       have hnAB_pos : (0 : ℚ) < A.card * B.card := mul_pos hnA_pos hnB_pos
       have hnAB_ne : (A.card : ℚ) * B.card ≠ 0 := ne_of_gt hnAB_pos
       -- edgeDensity G A B = e / (|A| · |B|)
       have h_dAB : edgeDensity G A B = e / (A.card * B.card) := by
-        unfold edgeDensity e; rw [dif_neg hnAB_ne]
+        rw [he_def]; unfold edgeDensity; rw [dif_neg hnAB_ne]
       -- Apply ε-regularity: |d(A,B) - d(P,Q)| ≤ ε
-      have hdev : |edgeDensity G A B - d| ≤ eps := hreg A B hA hB hA_large hB_large
+      have hdev : |edgeDensity G A B - d| ≤ eps := by
+        rw [hd_def]; exact hreg A B hA hB hA_large hB_large
       -- From |e/(A*B) - d| ≤ eps, multiply to get |e - d*(A*B)| ≤ eps*(A*B)
       have h_err : |e - d * (A.card * B.card)| ≤ eps * (A.card * B.card) := by
         have h1 : |e / (A.card * B.card) - d| ≤ eps := h_dAB ▸ hdev

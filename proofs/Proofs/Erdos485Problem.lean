@@ -95,7 +95,6 @@ theorem f_one : f 1 = 1 := by
   refine' le_antisymm _ _;
   · refine' csInf_le _ _ <;> norm_num [ Erdos485.hasTerms ];
     use Polynomial.X; simp +decide [ Erdos485.termCount ] ;
-    norm_num [ Polynomial.support_X, Polynomial.support_X_pow ];
   · exact f_pos 1 le_rfl
 
 /-- f(2) = 3: (a + bx^n)² = a² + 2abx^n + b²x^{2n} has 3 terms. -/
@@ -135,12 +134,12 @@ theorem f_two : f 2 = 3 := by
 
 /- ## Upper Bounds (Erdős 1949) -/
 
-/-- **Erdős (1949)**: There exists c > 0 such that f(k) < k^(1-c) for large k.
+/-  **Erdős (1949)**: There exists c > 0 such that f(k) < k^(1-c) for large k.
 This shows that squaring can significantly reduce the term count.
 Deep constructive argument — axiomatized. -/
 /- ## The Main Result: f(k) → ∞ -/
 
-/-- **Schinzel (1987)**: f(k) > (log log k) / log 2 for sufficiently large k.
+/-  **Schinzel (1987)**: f(k) > (log log k) / log 2 for sufficiently large k.
 Deep algebraic argument — axiomatized. -/
 /-- **Schinzel-Zannier (2009)**: f(k) ≫ log k. That is, there exists c > 0
 such that f(k) ≥ c * log k for sufficiently large k.
@@ -149,13 +148,13 @@ axiom schinzel_zannier_improved :
     ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K,
     (f k : ℝ) ≥ c * Real.log k
 
-/-- **Erdős Problem #485 (SOLVED)**: f(k) → ∞ as k → ∞.
+/-  **Erdős Problem #485 (SOLVED)**: f(k) → ∞ as k → ∞.
 Follows from `schinzel_zannier_improved`: f(k) ≥ c·log(k) → ∞.
 The derivation requires `Filter.Tendsto` machinery for ℕ via ℝ — axiomatized. -/
 /- ## Examples -/
 
-/-- Example: (1 + x)² = 1 + 2x + x² has 3 terms. -/
-/-- Example: (1 + x + x²)² = 1 + 2x + 3x² + 2x³ + x⁴ has 5 terms. -/
+/-  Example: (1 + x)² = 1 + 2x + x² has 3 terms. -/
+/-  Example: (1 + x + x²)² = 1 + 2x + 3x² + 2x³ + x⁴ has 5 terms. -/
 /- ## Related Concepts -/
 
 /-- The general version: g(k, n) = minimum terms in P(x)^n for P with k terms.
@@ -163,7 +162,7 @@ Schinzel's result extends to this general case. -/
 noncomputable def g (k n : ℕ) : ℕ :=
   sInf {m : ℕ | ∃ p : Polynomial ℚ, hasTerms p k ∧ termCount (p ^ n) = m}
 
-/-- For any n ≥ 1, g(k, n) → ∞ as k → ∞.
+/-  For any n ≥ 1, g(k, n) → ∞ as k → ∞.
 Extension of Schinzel's result — axiomatized. -/
 /- ## Sparse Polynomials -/
 
@@ -174,7 +173,7 @@ The study of f(k) is part of sparse polynomial theory.
 def isSparse (p : Polynomial ℚ) (c : ℝ) : Prop :=
   (termCount p : ℝ) ≤ c * Real.log (p.natDegree + 1)
 
-/--
+/- 
 Multiplying sparse polynomials can produce denser results.
 This is related to the f(k) problem.
 -/
@@ -188,7 +187,7 @@ def isLacunary (p : Polynomial ℚ) : Prop :=
   ∃ gaps : List ℕ, gaps.length = termCount p - 1 ∧
   ∀ g ∈ gaps, g ≥ 2
 
-/--
+/-
 Squaring a lacunary polynomial tends to produce more terms due to
 fewer cancellations between cross-terms.
 -/

@@ -122,7 +122,7 @@ theorem euclidSteps_le_logb (a b n : ℕ) (hb : 0 < b) (hba : b < a) (hn : 1 ≤
   have hphi1 : (1 : ℝ) < goldenPhi := one_lt_phi
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   have hpow : goldenPhi ^ m ≤ (b : ℝ) := by
-    have h := phi_pow_le_smaller a b (m + 1) hb hba hsteps (by omega)
+    have h := phi_pow_le_smaller a b (m + 1) hb hba (by omega) hsteps
     rwa [Nat.add_sub_cancel] at h
   have hphipos : (0 : ℝ) < goldenPhi ^ m := pow_pos (by linarith) m
   have hmono : Real.logb goldenPhi (goldenPhi ^ m) ≤ Real.logb goldenPhi b :=
@@ -153,7 +153,7 @@ theorem two_log_two_lt_three_log_phi :
     step count grows like `log₂(b)/log₂(φ)` with `1/log₂(φ) ≈ 1.4404 < 3/2`. -/
 theorem logb_two_phi_gt : (2 : ℝ) / 3 < Real.logb 2 goldenPhi := by
   unfold Real.logb
-  rw [lt_div_iff (Real.log_pos (by norm_num))]
+  rw [lt_div_iff₀ (Real.log_pos (by norm_num))]
   have := two_log_two_lt_three_log_phi
   linarith
 
@@ -175,8 +175,8 @@ theorem euclidSteps_le_log2 (a b n : ℕ) (hb : 0 < b) (hba : b < a) (hn : 1 ≤
   have hkey : Real.logb goldenPhi b ≤ (3 / 2) * Real.logb 2 b := by
     unfold Real.logb
     have hrhs : (3 / 2 : ℝ) * (Real.log b / Real.log 2)
-        = (3 * Real.log b) / (2 * Real.log 2) := by field_simp; ring
-    rw [hrhs, div_le_div_iff hlogphi (by positivity)]
+        = (3 * Real.log b) / (2 * Real.log 2) := by field_simp
+    rw [hrhs, div_le_div_iff₀ hlogphi (by positivity)]
     nlinarith [mul_nonneg hlogb_nonneg hsub]
   linarith
 

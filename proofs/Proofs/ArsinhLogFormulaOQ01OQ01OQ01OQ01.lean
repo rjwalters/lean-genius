@@ -80,11 +80,14 @@ theorem hasDerivAt_coshSqAntideriv (x : ℝ) :
       (Real.cosh x * Real.cosh x + Real.sinh x * Real.sinh x) x :=
     (Real.hasDerivAt_sinh x).mul (Real.hasDerivAt_cosh x)
   have hsum := ((hasDerivAt_id x).add hprod).div_const 2
-  convert hsum using 1
   -- value equality: cosh²x = (1 + (cosh·cosh + sinh·sinh))/2
-  rw [← pow_two, ← pow_two]
-  have := Real.cosh_sq x
-  linarith
+  have hval : Real.cosh x ^ 2 = (1 + (Real.cosh x * Real.cosh x + Real.sinh x * Real.sinh x)) / 2 := by
+    nlinarith [Real.cosh_sq x]
+  rw [hval]
+  have hfun : (fun u : ℝ => (u + Real.sinh u * Real.cosh u) / 2)
+      = (fun u : ℝ => (id u + Real.sinh u * Real.cosh u) / 2) := rfl
+  rw [hfun]
+  exact hsum
 
 /-- The `cosh²` integrand is continuous, hence interval-integrable. -/
 theorem continuous_cosh_sq : Continuous (fun x : ℝ => Real.cosh x ^ 2) :=

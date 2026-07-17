@@ -1,6 +1,7 @@
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.Perm.Sign
 
@@ -212,9 +213,9 @@ theorem not_solvable_by_rad_of_not_solvable_galois
     (hirr : Irreducible q)
     (hα : aeval α q = 0)
     (hns : ¬ IsSolvable (q.Gal)) :
-    ¬ IsSolvableByRad F α := by
+    α ∉ solvableByRad F E := by
   intro hsol
-  exact hns (solvableByRad.isSolvable' hirr hα hsol)
+  exact hns (isSolvable_gal_of_irreducible hsol hirr hα)
 
 end RadicalSolvability
 

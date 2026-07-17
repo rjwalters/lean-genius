@@ -11,6 +11,8 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos559Aristotle
 
 open Finset Fintype
@@ -23,7 +25,7 @@ structure FiniteGraph (V : Type*) [Fintype V] where
   dec : DecidableRel adj := by infer_instance
 
 /-- The number of edges -/
-def edgeCount {V : Type*} [Fintype V] [DecidableEq V] [Preorder V]
+noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V] [Preorder V]
     (G : FiniteGraph V) [DecidableRel G.adj] : ℕ :=
   (Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2)).card
 

@@ -38,7 +38,7 @@ Redefine the key structures for distance multiplicities.
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
 /-- A finite point configuration -/
-def PointConfig := Finset Point
+abbrev PointConfig := Finset Point
 
 /-- Points are in convex position (no point inside convex hull of the rest) -/
 def InConvexPosition (P : PointConfig) : Prop :=
@@ -55,7 +55,7 @@ theorem S_nonneg (P : PointConfig) : (S P : ℝ) ≥ 0 := Nat.cast_nonneg _
 ## Part II: Fishburn's Cubic Bound
 -/
 
-/-- Fishburn's theorem: ∑ f(u)² = O(n³) for convex polygons -/
+/-  Fishburn's theorem: ∑ f(u)² = O(n³) for convex polygons -/
 /-
 ## Part III: The Regular n-gon
 
@@ -65,16 +65,16 @@ The regular n-gon is the conjectured extremal configuration.
 /-- The regular n-gon inscribed in the unit circle -/
 noncomputable def regularNGon (n : ℕ) : PointConfig :=
   if n < 3 then ∅ else
-    (Finset.range n).image fun k =>
-      (![Real.cos (2 * Real.pi * k / n), Real.sin (2 * Real.pi * k / n)] :
+    (Finset.range n).image fun k : ℕ =>
+      (!₂[Real.cos (2 * Real.pi * (k : ℝ) / (n : ℝ)), Real.sin (2 * Real.pi * (k : ℝ) / (n : ℝ))] :
         EuclideanSpace ℝ (Fin 2))
 
 /-- S(regular n-gon): the squared-multiplicity sum for the regular n-gon -/
 noncomputable def S_regular (n : ℕ) : ℕ := S (regularNGon n)
 
-/-- The regular n-gon achieves Θ(n³):
+/-  The regular n-gon achieves Θ(n³):
     there exist c₁, c₂ > 0 such that c₁·n³ ≤ S(regular_n) ≤ c₂·n³ -/
-/-- The regular n-gon is in convex position (for n ≥ 3) -/
+/-  The regular n-gon is in convex position (for n ≥ 3) -/
 /-
 ## Part IV: The Asymptotic Constant
 
@@ -131,10 +131,10 @@ theorem dominant_contribution (n : ℕ) (hn : n ≥ 3) :
   have hn_pos : (n : ℝ) > 0 := by linarith
   have : (n / 2 : ℕ) ≥ 1 := by omega
   have h_cast : (↑(n / 2) : ℝ) ≥ ((n : ℝ) - 1) / 2 := by
-    rw [ge_iff_le, div_le_iff (by norm_num : (2:ℝ) > 0)]
-    have := Nat.div_mul_le_self n 2
-    push_cast
-    linarith [Nat.lt_div_mul_add n (by norm_num : 0 < 2)]
+    rw [ge_iff_le, div_le_iff₀ (by norm_num : (2:ℝ) > 0)]
+    have h : n ≤ n / 2 * 2 + 1 := by omega
+    have h' : (n : ℝ) ≤ (↑(n / 2) : ℝ) * 2 + 1 := by exact_mod_cast h
+    linarith
   nlinarith
 
 /-
@@ -144,7 +144,7 @@ Based on the analysis above, c should be 1/2.
 -/
 
 /-- The conjectured value: c = 1/2 -/
-def conjecturedConstant : ℝ := 1 / 2
+noncomputable def conjecturedConstant : ℝ := 1 / 2
 
 /-- The main open question: is the asymptotic constant exactly 1/2? -/
 def constantIs1Over2 : Prop :=

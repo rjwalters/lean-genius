@@ -112,7 +112,7 @@ theorem geomMean_rpow_eq_weightedSum_rpow_iff
       ↔ ∀ j ∈ s, ∀ k ∈ s, z j = z k := by
   have key := weighted_amgm_eq_iff (s := s) (w := w) (z := fun i => z i ^ r)
     hw hw' (fun i hi => Real.rpow_nonneg (hz i hi).le r)
-  simp only [] at key
+  skip
   rw [geomMean_rpow_eq s w z (fun i hi => (hz i hi).le) r, key]
   constructor
   · intro h j hj k hk

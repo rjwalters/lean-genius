@@ -106,10 +106,12 @@ theorem oq01_strictly_beyond_kst (k : ℕ) (hk : k ≥ 4)
   -- o(n^{3/2}) implies O(n^{3/2}) (taking ε = 1 in the o() definition)
   obtain ⟨N, hN⟩ := hoq01 1 one_pos
   -- For n < N, bound is finite, take max
-  use max 1 (Finset.sup (Finset.range N)
-    (fun n => if (n : ℝ) ^ (3/2 : ℝ) > 0 then ⌈exGk k n / (n : ℝ) ^ (3/2 : ℝ)⌉₊ else 1) + 1)
-  intro n
-  sorry -- The o() definition gives a uniform O() bound
+  refine ⟨max 1 (Finset.sup (Finset.range N)
+    (fun n => if (n : ℝ) ^ (3/2 : ℝ) > 0 then ⌈exGk k n / (n : ℝ) ^ (3/2 : ℝ)⌉₊ else 1) + 1),
+    ?_, ?_⟩
+  · positivity
+  · intro n
+    sorry -- The o() definition gives a uniform O() bound
 
 /-! ## Part III: The k = 3 Case is Settled -/
 
@@ -152,7 +154,8 @@ axiom probabilistic_lower_bound (k : ℕ) (hk : k ≥ 4) :
     This means the gap between upper (3/2) and lower bound (3/2 - 1/(k-1)) shrinks. -/
 theorem lower_bound_exponent_approach (k : ℕ) (hk : k ≥ 2) :
     (3 : ℝ)/2 - 1/(k - 1 : ℝ) < 3/2 := by
-  have hk1 : (k : ℝ) - 1 > 0 := by exact_mod_cast Nat.sub_pos_of_lt (by omega)
+  have hk2 : (2 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  have hk1 : (k : ℝ) - 1 > 0 := by linarith
   linarith [div_pos one_pos hk1]
 
 /-- As k → ∞, the lower bound exponent 3/2 - 1/(k-1) → 3/2. -/
@@ -161,14 +164,12 @@ theorem lower_bound_exponent_tendsto :
   have : Filter.Tendsto (fun k : ℕ => (3 : ℝ)/2 - 1/((k : ℝ) - 1)) Filter.atTop
       (nhds ((3 : ℝ)/2 - 0)) := by
     apply Filter.Tendsto.sub tendsto_const_nhds
-    rw [div_tendsto_iff_tendsto_div tendsto_const_nhds]
-    · sorry -- 1/(k-1) → 0 requires Filter.Tendsto + arithmetic
-    · norm_num
+    sorry -- 1/(k-1) → 0 requires Filter.Tendsto + arithmetic
   simpa using this
 
 /-! ## Part VI: The OQ-01 in Context -/
 
-/-- **Summary of OQ-01 status**:
+/- **Summary of OQ-01 status**:
 
     Known:
     - k = 3: SOLVED (ex(n, G_3) = ex(n, C_6) ≪ n^{7/6} < n^{3/2})

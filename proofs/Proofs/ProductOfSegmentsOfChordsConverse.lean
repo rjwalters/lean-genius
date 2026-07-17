@@ -264,7 +264,7 @@ theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
   have hiu : (inner ℝ u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2 := by
     rw [hO]
     simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq]
-    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_add_div_same, div_eq_iff hΔ2]
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, div_eq_iff hΔ2]
     ring
   have hiv : (inner ℝ v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2 := by
     have hΔ2' : (2 : ℝ) * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ v u : ℝ) ^ 2) ≠ 0 := by
@@ -272,7 +272,7 @@ theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
     rw [hO]
     simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
       real_inner_comm v u]
-    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_add_div_same, div_eq_iff hΔ2']
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, div_eq_iff hΔ2']
     ring
   exact equidistant_of_inner u v O t s hsigned hiu hiv
 

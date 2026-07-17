@@ -103,10 +103,10 @@ theorem medial_isCongruentTiling {A B C : V}
     simp only [Set.mem_union, Set.mem_iUnion]
     constructor
     · rintro (((h | h) | h) | h)
-      · exact ⟨0, by simpa using h⟩
-      · exact ⟨1, by simpa using h⟩
-      · exact ⟨2, by simpa using h⟩
-      · exact ⟨3, by simpa using h⟩
+      · exact ⟨0, by simpa [T1] using h⟩
+      · exact ⟨1, by simpa [T2] using h⟩
+      · exact ⟨2, by simpa [T3] using h⟩
+      · exact ⟨3, by simpa [T4] using h⟩
     · rintro ⟨i, hi⟩
       fin_cases i <;> tauto
   · -- interior-disjoint

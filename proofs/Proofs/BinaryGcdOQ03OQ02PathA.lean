@@ -691,7 +691,7 @@ theorem schonhageGcdOf_pos_of_pos_right (a : ℕ) {b : ℕ} (h : 0 < b) :
     then proved by the standard Bézout argument: any divisor `d`
     of both `n + 1` and `n` must divide their difference `1`, so
     `d = 1`. Self-contained proof using only core
-    `Nat.gcd_dvd_left/right`, `Nat.dvd_sub'`, and
+    `Nat.gcd_dvd_left/right`, `Nat.dvd_sub`, and
     `Nat.eq_one_of_dvd_one`. -/
 theorem schonhageGcdOf_succ_self (n : ℕ) :
     schonhageGcdOf (n + 1) n = 1 := by

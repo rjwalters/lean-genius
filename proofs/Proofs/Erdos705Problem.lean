@@ -61,9 +61,11 @@ and edges between all pairs at distance 1.
 def unitDistGraph (V : Set (EuclideanSpace ℝ (Fin 2))) : SimpleGraph V where
   Adj := fun p q => unitDistAdj p.val q.val
   symm := by
+    constructor
     intro p q ⟨hne, hd⟩
     exact ⟨hne.symm, by rw [dist_comm]; exact hd⟩
   loopless := by
+    constructor
     intro p ⟨hne, _⟩
     exact hne rfl
 
@@ -73,7 +75,7 @@ def unitDistGraph (V : Set (EuclideanSpace ℝ (Fin 2))) : SimpleGraph V where
 The two key graph parameters in this problem.
 -/
 
-/--
+/- 
 **Chromatic Number χ(G)**
 
 Uses Mathlib's `SimpleGraph.chromaticNumber`: the minimum number of colors
@@ -84,7 +86,7 @@ needed to properly color G (no two adjacent vertices share a color).
 def isKColorable {V : Type*} [Fintype V] (G : SimpleGraph V) (k : ℕ) : Prop :=
   G.chromaticNumber ≤ k
 
-/--
+/- 
 **Girth g(G)**
 
 Uses Mathlib's `SimpleGraph.girth`: the length of the shortest cycle in G.
@@ -99,7 +101,7 @@ def hasGirthAtLeast {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
 /-- k-colorability is monotone: if χ(G) ≤ k and k ≤ l then χ(G) ≤ l. -/
 theorem isKColorable_mono {V : Type*} [Fintype V] (G : SimpleGraph V)
     {k l : ℕ} (hkl : k ≤ l) (hk : isKColorable G k) : isKColorable G l :=
-  le_trans hk hkl
+  le_trans hk (Nat.cast_le.mpr hkl)
 
 /-- Girth constraint is monotone: if girth ≥ k and l ≤ k then girth ≥ l. -/
 theorem hasGirthAtLeast_mono {V : Type*} (G : SimpleGraph V)
@@ -144,7 +146,7 @@ axiom wormald_graph_exists :
     V.card = 6448 ∧ (5 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
     (unitDistGraph ↑V).chromaticNumber = 4
 
-/--
+/- 
 **Chilakamarri (1995)**
 
 47 vertices, girth 4, χ = 4.
@@ -209,7 +211,7 @@ theorem girth_5_chi_4 :
 The broader context of coloring the plane.
 -/
 
-/--
+/- 
 **Hadwiger-Nelson Problem**
 
 χ(ℝ²) = chromatic number of the plane = ?
@@ -226,7 +228,7 @@ Problem #705 concerns finite subgraphs with girth restrictions.
 Why geometry constrains chromatic number.
 -/
 
-/--
+/- 
 **Erdős (1959): High girth + high χ exist abstractly.**
 
 For any g, k there exists an abstract graph with girth ≥ g and χ ≥ k.
@@ -260,7 +262,8 @@ theorem threshold_ge_6 (k : ℕ)
     unfold hasGirthAtLeast
     exact le_trans (by exact_mod_cast (by omega : k ≤ 5)) hg
   have h3 := hk V hgk
-  omega
+  have h43 : (4 : ℕ∞) ≤ 3 := hchi ▸ h3
+  exact absurd h43 (by exact_mod_cast (by norm_num : ¬ (4 : ℕ) ≤ 3))
 
 /-- The conjecture and its negation are contradictory. -/
 theorem conjecture_implies_not_negation :
@@ -268,14 +271,14 @@ theorem conjecture_implies_not_negation :
   intro ⟨k, hk⟩ hn
   obtain ⟨V, hg, hchi⟩ := hn k
   have := hk V hg
-  omega
+  exact absurd (le_trans hchi this) (by exact_mod_cast (by norm_num : ¬ (4 : ℕ) ≤ 3))
 
 theorem negation_implies_not_conjecture :
     erdos_705_negation → ¬ erdos_705_conjecture := by
   intro hn ⟨k, hk⟩
   obtain ⟨V, hg, hchi⟩ := hn k
   have := hk V hg
-  omega
+  exact absurd (le_trans hchi this) (by exact_mod_cast (by norm_num : ¬ (4 : ℕ) ≤ 3))
 
 /-- If the conjecture holds, any witnessing k is at least 6. -/
 theorem erdos_705_conjecture_lower (h : erdos_705_conjecture) :
@@ -310,7 +313,7 @@ def vertexCountGrowth : List (ℕ × ℕ) :=
 Connections to other Erdős problems.
 -/
 
-/--
+/- 
 **Related Erdős Problems:**
 - #508: Chromatic number of unit distance graphs
 - #704: Specific questions about UDG structure

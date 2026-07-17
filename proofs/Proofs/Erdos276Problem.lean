@@ -28,6 +28,10 @@ import Mathlib.Tactic
 def IsLucasSequence (a : ℕ → ℕ) : Prop :=
   ∀ n, a (n + 2) = a (n + 1) + a n
 
+/-- v4.31 compat: `Nat.Composite` is not in Mathlib; a natural number is
+composite iff it is at least 2 and not prime. -/
+def Nat.Composite (n : ℕ) : Prop := 2 ≤ n ∧ ¬ n.Prime
+
 /-- A sequence is primefree if every term is composite. -/
 def IsPrimefree (a : ℕ → ℕ) : Prop :=
   ∀ k, (a k).Composite
@@ -39,12 +43,12 @@ def HasNoUniversalDivisor (a : ℕ → ℕ) : Prop :=
 
 /- ## Main Question -/
 
-/-- **Erdős Problem #276**: Does there exist a primefree Lucas sequence
+/-  **Erdős Problem #276**: Does there exist a primefree Lucas sequence
     with no universal divisor? The answer is YES (Graham 1964), but the
     deeper question is whether covering congruences are necessary. -/
 /- ## Graham's Construction -/
 
-/-- **Graham (1964)**: There exist coprime composites a₀, a₁ such that
+/-  **Graham (1964)**: There exist coprime composites a₀, a₁ such that
     the Lucas sequence they generate is primefree. The construction
     uses covering congruences: for each index position, some prime in
     a fixed finite set divides the corresponding term. -/
@@ -63,7 +67,7 @@ theorem gcd_propagation (a : ℕ → ℕ) (hluc : IsLucasSequence a)
 
 /- ## Covering Congruence Mechanism -/
 
-/-- **Covering system**: a finite collection of congruence classes
+/- **Covering system**: a finite collection of congruence classes
     a_i (mod m_i) that covers all integers. Graham's proof shows
     the Fibonacci-like sequence is periodic mod each m_i, and the
     residue classes where each prime divides form a covering system. -/

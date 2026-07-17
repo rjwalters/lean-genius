@@ -38,6 +38,7 @@ import Mathlib.Order.BoundedOrder.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Nat.Log
+import Mathlib.Tactic
 
 open Finset Set
 
@@ -87,7 +88,7 @@ def IsClique {k : ℕ} {V : Type*} (H : UniformHypergraph k V) (S : Finset V) : 
 **Maximal Clique:**
 A clique that cannot be extended by adding any vertex.
 -/
-def IsMaximalClique {k : ℕ} {V : Type*} (H : UniformHypergraph k V) (S : Finset V) : Prop :=
+def IsMaximalClique {k : ℕ} {V : Type*} [DecidableEq V] (H : UniformHypergraph k V) (S : Finset V) : Prop :=
   IsClique H S ∧ ∀ v : V, v ∉ S → ¬IsClique H (insert v S)
 
 /-
@@ -124,7 +125,7 @@ axiom spencer_graph_construction :
     ∀ n : ℕ, n ≥ 2 → ∃ (G : SimpleGraph (Fin n)),
       ∃ numSizes : ℕ, numSizes ≥ n - Nat.log 2 n - 10
 
-/--
+/- 
 **Moon-Moser Theorem (1965):**
 Every graph on n vertices has at most n - log₂n + O(1) different clique sizes.
 
@@ -134,7 +135,7 @@ This proves Spencer's construction is optimal for graphs.
 ## Part V: Erdős's Construction
 -/
 
-/--
+/- 
 **Erdős's Hypergraph Construction:**
 Erdős showed there exists a 3-uniform hypergraph on n vertices with
 at least n - log*n different clique sizes.
@@ -155,8 +156,8 @@ clique sizes for some constant C independent of n?
 -/
 def erdos775Question : Prop :=
   ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →
-    ∃ (H : Hypergraph3 (Fin n)) (numSizes : ℕ),
-      numSizes ≥ n - C
+    ∃ (H : Hypergraph3 (Fin n)),
+      numCliqueSizes H ≥ n - C
 
 /-
 ## Part VII: Gao's Theorem (2025)
@@ -205,14 +206,15 @@ f₃(n) > C, meaning we cannot achieve n - C different clique sizes.
 theorem erdos_775_answer : ¬erdos775Question := by
   intro ⟨C, hC⟩
   -- By gaoFunction_tendsto_infinity, there exists N such that f_3(n) > C for n ≥ N
-  have hN := gaoFunction_tendsto_infinity 3 (by norm_num)
+  have hN := gaoFunction_tendsto_infinity 3 (le_refl 3)
   obtain ⟨N, hN'⟩ := hN (C + 1)
-  -- For n = max(N, 3), we have both n ≥ N and n ≥ 3
-  let n := max N 3
-  have hn3 : n ≥ 3 := le_max_right N 3
-  have hnN : n ≥ N := le_max_left N 3
+  -- For n = max(N, 3, C+1), we have n ≥ N, n ≥ 3, and n > C
+  let n := max (max N 3) (C + 1)
+  have hn3 : n ≥ 3 := le_trans (le_max_right N 3) (le_max_left _ _)
+  have hnN : n ≥ N := le_trans (le_max_left N 3) (le_max_left _ _)
+  have hnC : n > C := lt_of_lt_of_le (Nat.lt_succ_self C) (le_max_right _ _)
   -- By hC, there exists a hypergraph H with at least n - C clique sizes
-  obtain ⟨H, numSizes, hnum⟩ := hC n hn3
+  obtain ⟨H, hnum⟩ := hC n hn3
   -- By Gao's bound, H has at most n - f_3(n) clique sizes
   have hgao := gao_upper_bound 3 (by norm_num) n hn3 H
   -- We have f_3(n) ≥ C + 1 > C
@@ -239,15 +241,12 @@ The extra uniformity constraint limits diversity.
 -/
 theorem graphs_vs_hypergraphs :
     (∀ n ≥ 2, ∃ G : SimpleGraph (Fin n), ∃ m : ℕ, m ≥ n - Nat.log 2 n - 10) ∧
-    (¬∃ C : ℕ, ∀ n ≥ 3, ∃ H : Hypergraph3 (Fin n), ∃ m : ℕ, m ≥ n - C) := by
+    (¬∃ C : ℕ, ∀ n ≥ 3, ∃ H : Hypergraph3 (Fin n), numCliqueSizes H ≥ n - C) := by
   constructor
   · intro n hn
     exact spencer_graph_construction n hn
   · intro ⟨C, hC⟩
-    have := erdos_775
-    unfold erdos775Question at this
-    push_neg at this
-    exact this C (fun n hn => hC n hn)
+    exact erdos_775 ⟨C, fun n hn => hC n hn⟩
 
 /-
 ## Part X: Related Problems
@@ -272,10 +271,12 @@ theorem erdos_775_summary :
   · exact erdos_775
   · intro k hk M
     obtain ⟨N, hN⟩ := gaoFunction_tendsto_infinity k hk M
-    use N
+    use max N k
     intro n hn H
-    have hbound := gao_upper_bound k hk n (Nat.le_of_lt (Nat.lt_of_lt_of_le (by omega : 2 < k) hn)) H
-    have hfn := hN n hn
+    have hnN : n ≥ N := le_trans (le_max_left N k) hn
+    have hnk : n ≥ k := le_trans (le_max_right N k) hn
+    have hbound := gao_upper_bound k hk n hnk H
+    have hfn := hN n hnN
     omega
 
 end Erdos775

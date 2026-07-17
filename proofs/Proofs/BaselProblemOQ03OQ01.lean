@@ -61,7 +61,8 @@ noncomputable def zeta22 : ℝ := ∑' p : Lower, F (p : ℕ × ℕ)
 /-! ### Basic summability facts -/
 
 theorem summable_a : Summable a := by
-  simpa only [a] using (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
+  show Summable fun k : ℕ => 1 / (k : ℝ) ^ 2
+  exact (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
 
 theorem a_nonneg : ∀ k, 0 ≤ a k := fun k => by
   unfold a; positivity

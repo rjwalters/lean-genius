@@ -71,8 +71,8 @@ noncomputable def maxDegree (G : SimpleGraph V)
     of elements in S, and edges are inherited from G. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj v w := G.Adj v.val w.val
-  symm _ _ h := G.symm h
-  loopless _ h := G.loopless _ h
+  symm.symm _ _ h := G.adj_symm h
+  loopless.irrefl _ h := G.loopless.irrefl _ h
 
 /-
 ## Part IV: Edge Counting

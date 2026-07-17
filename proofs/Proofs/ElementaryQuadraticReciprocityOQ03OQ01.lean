@@ -57,8 +57,8 @@ theorem jacobiSym_mul_bottom' (a : ℤ) (m n : ℕ) [NeZero m] [NeZero n] :
     This is the key reduction that makes computation efficient:
     we can always reduce the top argument modulo the bottom. -/
 theorem jacobiSym_mod (a : ℤ) (n : ℕ) :
-    jacobiSym a n = jacobiSym (a % n) n :=
-  (jacobiSym.mod_left a n).symm
+    jacobiSym a n = jacobiSym (a % n) n := by
+  rw [jacobiSym.mod_left a n]
 
 /-- J(1, n) = 1 for all n. The multiplicative identity maps to 1. -/
 theorem jacobiSym_one (n : ℕ) : jacobiSym 1 n = 1 :=
@@ -171,8 +171,8 @@ We formalize these reduction steps as individual lemmas.
 
 /-- Step 1 of Euclidean reduction: reduce top modulo bottom. -/
 theorem euclidean_step_reduce (a : ℤ) (n : ℕ) :
-    jacobiSym a n = jacobiSym (a % n) n :=
-  (jacobiSym.mod_left a n).symm
+    jacobiSym a n = jacobiSym (a % n) n := by
+  rw [jacobiSym.mod_left a n]
 
 /-- Step 2: extract a factor of 2 from the top argument.
     J(2a, n) = J(2, n) · J(a, n) for any a, n. -/

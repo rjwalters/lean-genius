@@ -1,6 +1,4 @@
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Four Color Theorem: Survey for Lean 4 Formalization
@@ -54,15 +52,13 @@ theorem colorable_of_le {V : Type*} {G : SimpleGraph V} {n m : ℕ} (h : n ≤ m
   hG.mono h
 
 /-- The empty graph on any type is 0-colorable (vacuously). -/
-theorem empty_colorable {V : Type*} [IsEmpty V] : (⊥ : SimpleGraph V).Colorable 0 := by
-  exact SimpleGraph.Colorable.mk ⟨isEmptyElim, fun a => isEmptyElim a⟩
+theorem empty_colorable {V : Type*} [IsEmpty V] : (⊥ : SimpleGraph V).Colorable 0 :=
+  SimpleGraph.Colorable.of_isEmpty 0
 
 /-- A graph with no edges is 1-colorable (all vertices get the same color). -/
 theorem edgeless_one_colorable {V : Type*} [Nonempty V]
-    (G : SimpleGraph V) (hG : G = ⊥) : G.Colorable 1 := by
-  subst hG
-  exact SimpleGraph.Colorable.mk ⟨fun _ => ⟨0, by omega⟩,
-    fun {v w} h => absurd h (SimpleGraph.Bot.not_adj v w)⟩
+    (G : SimpleGraph V) (hG : G = ⊥) : G.Colorable 1 :=
+  SimpleGraph.colorable_one_iff.mpr hG
 
 /-- Any graph on at most n vertices is n-colorable (assign distinct colors). -/
 theorem colorable_of_fintype {V : Type*} [Fintype V] (G : SimpleGraph V) :

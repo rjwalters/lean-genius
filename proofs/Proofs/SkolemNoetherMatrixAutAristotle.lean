@@ -78,24 +78,10 @@ theorem linearIndependent_of_intertwine
 theorem isUnit_of_linearIndependent_cols
     (P : Matrix n n K)
     (hli : LinearIndependent K (fun j : n => fun i : n => P i j)) :
-    IsUnit P := by
-  -- mulVec w = ∑ j, w j • (column j), so injectivity follows from lin. independence
-  have hinj : Function.Injective (Matrix.mulVecLin P) := by
-    intro u v huv
-    have h0 : P.mulVec (u - v) = 0 := by
-      show (Matrix.mulVecLin P) (u - v) = 0
-      rw [map_sub, sub_eq_zero]; exact huv
-    -- P.mulVec (u - v) = ∑ j, (u - v) j • (column j of P)
-    have hmulvec : P.mulVec (u - v) = ∑ j : n, (u - v) j • (fun i => P i j) := by
-      ext i; simp [Matrix.mulVec, Matrix.dotProduct, Finset.sum_apply, smul_eq_mul]
-    rw [hmulvec] at h0
-    have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
-    ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
-  -- Injective endomorphism of finite-dim space → bijective → IsUnit
-  have hbij : Function.Bijective (Matrix.mulVecLin P) :=
-    ⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩
-  rw [Matrix.isUnit_iff_isUnit_det]
-  rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
+    IsUnit P :=
+  -- `fun j i => P i j` is definitionally `P.col` (`Matrix.col_apply'` is `rfl`), so this is
+  -- exactly the statement that a square matrix with linearly independent columns is a unit.
+  Matrix.linearIndependent_cols_iff_isUnit.mp hli
 
 /-
   Lemma 3: Matrix decomposition into standard basis
@@ -103,13 +89,11 @@ theorem isUnit_of_linearIndependent_cols
   Every matrix A can be written as A = ∑ᵢ ∑ⱼ A(i,j) • E_ij.
   This is the standard basis decomposition for matrices.
 -/
-theorem matrix_eq_sum_stdBasisMatrix (A : Matrix n n K) :
-    A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by
+theorem matrix_eq_sum_single (A : Matrix n n K) :
+    A = ∑ i : n, ∑ j : n, A i j • Matrix.single i j 1 := by
   ext a b
-  simp [Matrix.stdBasisMatrix, Finset.sum_apply, smul_apply, smul_eq_mul]
-  rw [Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]
-  rw [Finset.sum_eq_single b (fun j _ hj => by simp [hj]) (by simp)]
-  simp
+  simp [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, ite_and,
+        Finset.sum_ite_eq']
 
 /-
   Lemma 4: mulVec distributes over Finset.sum with smul

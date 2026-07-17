@@ -114,7 +114,7 @@ A function maps to the **unit circle** if all values have norm 1.
 def mapsToUnitCircle (f : ℕ → ℂ) : Prop :=
   ∀ n : ℕ, ‖f n‖ = 1
 
-/--
+/- 
 **The Erdős Discrepancy Theorem (Complex Version)** (Tao 2015)
 
 For any sequence f: ℕ → S¹ (unit circle) and any C > 0, there exist
@@ -159,7 +159,7 @@ A function is **completely multiplicative** if f(mn) = f(m)f(n) for all m, n.
 def isCompletelyMultiplicative (f : ℕ → ℤ) : Prop :=
   ∀ m n : ℕ, f (m * n) = f m * f n
 
-/--
+/- 
 For completely multiplicative ±1 functions, the discrepancy is known to be
 unbounded. This was proved before Tao's general result.
 -/

@@ -1,7 +1,7 @@
 /-
 Erdős Problem #1042: Connected Components of Polynomial Lemniscates
 
-For polynomials f(z) = ∏ᵢ(z - zᵢ) with roots in a closed set F ⊆ ℂ,
+For polynomials f(z) = ∏ᵢ(z - zᵢ) with roots ∈ a closed set F ⊆ ℂ,
 how many connected components can the lemniscate {z : |f(z)| < 1} have?
 
 **Status**: SOLVED by Ghosh-Ramachandran (2024)
@@ -19,14 +19,11 @@ References:
 - https://erdosproblems.com/1042
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Topology.Connected.Clopen
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Complex BigOperators
 
@@ -39,12 +36,12 @@ Defined as ρ(F) = lim_{n→∞} sup_{z₁,...,zₙ∈F} (∏_{i<j} |zᵢ-zⱼ|)
 Axiomatized since the full definition requires Chebyshev constant machinery. -/
 axiom transfiniteDiameter (F : Set ℂ) : ℝ
 
-/-- Transfinite diameter is nonneg (equals logarithmic capacity). -/
-/-- The transfinite diameter of a disc of radius r is r. -/
-/-- The transfinite diameter of [-1,1] ⊆ ℂ is 1/2. -/
+/-  Transfinite diameter is nonneg (equals logarithmic capacity). -/
+/-  The transfinite diameter of a disc of radius r is r. -/
+/-  The transfinite diameter of [-1,1] ⊆ ℂ is 1/2. -/
 /- ## Polynomial Lemniscates -/
 
-/-- A monic polynomial f(z) = ∏ᵢ(z - zᵢ) with all roots in F. -/
+/-- A monic polynomial f(z) = ∏ᵢ(z - zᵢ) with all roots ∈ F. -/
 structure PolynomialWithRoots (F : Set ℂ) where
   degree : ℕ
   roots : Fin degree → ℂ
@@ -90,9 +87,9 @@ def mainQuestion2 : Prop :=
 
 /- ## Erdős-Herzog-Piranian Result (1958) -/
 
-/-- For the unit disc, the lemniscate can have n connected components.
+/-  For the unit disc, the lemniscate can have n connected components.
 Example: f(z) = zⁿ + 1 has n components. -/
-/-- f(z) = zⁿ + 1 has its roots on the unit circle and its lemniscate
+/-  f(z) = zⁿ + 1 has its roots on the unit circle and its lemniscate
 has n connected components. -/
 /- ## Ghosh-Ramachandran Solution (2024) -/
 
@@ -104,7 +101,7 @@ axiom ghosh_ramachandran_small_diameter :
         ∃ c : ℝ, c > 0 ∧
           ∀ n : ℕ, (maxComponents F n : ℝ) ≤ (1 - c) * n
 
-/-- GR Theorem 2: If d ≤ 1/4 and F is connected, then the lemniscate
+/-  GR Theorem 2: If d ≤ 1/4 and F is connected, then the lemniscate
 has only one connected component. -/
 /-- GR Theorem 3: There exist sets with transfinite diameter 1 such that
 the lemniscate has n components for infinitely many n. -/
@@ -114,7 +111,7 @@ axiom ghosh_ramachandran_diameter_one_examples :
 
 /- ## The Counterexample -/
 
-/-- The answer depends on geometry, not just diameter.
+/-  The answer depends on geometry, not just diameter.
 Both the disc of radius 1/2 and [-1,1] have transfinite diameter 1/2,
 but the disc always gives 1 component while [-1,1] can give many. -/
 /- ## Summary -/

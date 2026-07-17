@@ -28,11 +28,8 @@ References:
 - [ErGr80] Erdős-Graham (1980): Old and new problems and results in combinatorial number theory
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Data.Real.Basic
+import Mathlib
+open scoped Classical
 
 namespace Erdos425
 
@@ -90,13 +87,13 @@ noncomputable def F (n : ℕ) : ℕ :=
       simp [IsMultiplicativeSidon])
     Finset.card
 
-/--
+/- 
 **Primes form a multiplicative Sidon set:**
 By unique prime factorization, if p₁·p₂ = q₁·q₂ with p₁ < p₂ and q₁ < q₂ primes,
 then {p₁, p₂} = {q₁, q₂}. Axiomatized since the formal proof requires
 unique factorization machinery.
 -/
-/--
+/- 
 **Lower bound: F(n) ≥ π(n):**
 The primes ≤ n form a multiplicative Sidon set of size π(n).
 -/
@@ -166,7 +163,7 @@ def RealMultSidon (A : Set ℝ) : Prop :=
     a ≠ b → c ≠ d → (a, b) ≠ (c, d) → (a, b) ≠ (d, c) →
     |a * b - c * d| ≥ 1
 
-/--
+/- 
 **Erdős's conjecture (FALSE!):**
 Erdős conjectured that max |A| = o(x) for A ⊂ [1, x] with RealMultSidon A.
 
@@ -197,14 +194,14 @@ def IsSidonSet (S : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ S → b ∈ S → c ∈ S → d ∈ S →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-/--
+/- 
 **Multiplicative Sidon via logarithms:**
 Taking logarithms converts multiplicative Sidon to additive Sidon.
 If A is multiplicative Sidon (all products ab distinct), then
 {log a : a ∈ A} is additive Sidon (all sums log a + log b distinct),
 since log(ab) = log a + log b.
 -/
-/--
+/- 
 **Classical Sidon set bounds:**
 Max |S| for additive Sidon S ⊆ {1, ..., n} is (1 + o(1))·√n.
 -/

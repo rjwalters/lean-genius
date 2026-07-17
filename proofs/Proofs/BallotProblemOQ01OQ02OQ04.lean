@@ -47,8 +47,7 @@ References:
 -/
 
 import Archive.Wiedijk100Theorems.BallotProblem
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.List.BigOperators.Basic
+import Mathlib
 import Mathlib.Tactic
 
 namespace WeightedBallot
@@ -104,7 +103,38 @@ theorem singleton_good_iff (w : ℚ) : isGoodWeighted [w] ↔ 0 < w := by
 /-- A two-element sequence [w₁, w₂] is good iff w₁ > 0 and w₁ + w₂ > 0. -/
 theorem two_good_iff (w₁ w₂ : ℚ) :
     isGoodWeighted [w₁, w₂] ↔ 0 < w₁ ∧ 0 < w₁ + w₂ := by
-  simp [isGoodWeighted, or_imp]
+  unfold isGoodWeighted
+  rw [partialSums_two]
+  constructor
+  · intro h
+    exact ⟨h w₁ (by simp), h (w₁ + w₂) (by simp)⟩
+  · rintro ⟨h1, h2⟩ q hq
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hq
+    rcases hq with rfl | rfl
+    · exact h1
+    · exact h2
+
+/-- Partial sums of a three-element sequence. -/
+@[simp]
+theorem partialSums_three (w₁ w₂ w₃ : ℚ) :
+    partialSums [w₁, w₂, w₃] = [w₁, w₁ + w₂, w₁ + w₂ + w₃] := by
+  simp [partialSums, List.scanl]
+
+/-- A three-element sequence [w₁, w₂, w₃] is good iff all three partial sums are
+    positive. -/
+theorem three_good_iff (w₁ w₂ w₃ : ℚ) :
+    isGoodWeighted [w₁, w₂, w₃] ↔ 0 < w₁ ∧ 0 < w₁ + w₂ ∧ 0 < w₁ + w₂ + w₃ := by
+  unfold isGoodWeighted
+  rw [partialSums_three]
+  constructor
+  · intro h
+    exact ⟨h w₁ (by simp), h (w₁ + w₂) (by simp), h (w₁ + w₂ + w₃) (by simp)⟩
+  · rintro ⟨h1, h2, h3⟩ q hq
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hq
+    rcases hq with rfl | rfl | rfl
+    · exact h1
+    · exact h2
+    · exact h3
 
 /-!
 ## Part III: Counterexample — Non-Uniform Weights Break the Classical Formula
@@ -130,22 +160,28 @@ The representative sequences are:
 -/
 
 /-- Ordering [2, 1, -2]: partial sums [2, 3, 1]. All positive → GOOD. -/
-theorem ordering1_good : isGoodWeighted [2, 1, -2] := by decide
+theorem ordering1_good : isGoodWeighted [2, 1, -2] := by
+  rw [three_good_iff]; norm_num
 
 /-- Ordering [1, 2, -2]: partial sums [1, 3, 1]. All positive → GOOD. -/
-theorem ordering2_good : isGoodWeighted [1, 2, -2] := by decide
+theorem ordering2_good : isGoodWeighted [1, 2, -2] := by
+  rw [three_good_iff]; norm_num
 
 /-- Ordering [2, -2, 1]: partial sums [2, 0, 1]. Zero at position 2 → BAD. -/
-theorem ordering3_not_good : ¬isGoodWeighted [2, -2, 1] := by decide
+theorem ordering3_not_good : ¬isGoodWeighted [2, -2, 1] := by
+  rw [three_good_iff]; norm_num
 
 /-- Ordering [1, -2, 2]: partial sums [1, -1, 1]. Negative at position 2 → BAD. -/
-theorem ordering4_not_good : ¬isGoodWeighted [1, -2, 2] := by decide
+theorem ordering4_not_good : ¬isGoodWeighted [1, -2, 2] := by
+  rw [three_good_iff]; norm_num
 
 /-- Ordering [-2, 2, 1]: partial sums [-2, 0, 1]. Negative at position 1 → BAD. -/
-theorem ordering5_not_good : ¬isGoodWeighted [-2, 2, 1] := by decide
+theorem ordering5_not_good : ¬isGoodWeighted [-2, 2, 1] := by
+  rw [three_good_iff]; norm_num
 
 /-- Ordering [-2, 1, 2]: partial sums [-2, -1, 1]. Negative at position 1 → BAD. -/
-theorem ordering6_not_good : ¬isGoodWeighted [-2, 1, 2] := by decide
+theorem ordering6_not_good : ¬isGoodWeighted [-2, 1, 2] := by
+  rw [three_good_iff]; norm_num
 
 /-- Out of 6 orderings, exactly 2 are good.
     The actual probability is 2/6 = 1/3. -/
@@ -190,7 +226,9 @@ For weighted sequences, the fiber argument breaks:
     - [1, -2]: partial sums [1, -1]. Second is negative → BAD. -/
 theorem projection_ambiguity :
     isGoodWeighted [2, -1] ∧ ¬isGoodWeighted [1, -2] := by
-  constructor <;> decide
+  constructor
+  · rw [two_good_iff]; norm_num
+  · rw [two_good_iff]; norm_num
 
 /-- **Key Structural Result**: The fiber argument fails for non-uniform weights.
     There exist two sequences with the same ±1 sign pattern where one is good
@@ -202,7 +240,9 @@ theorem fiber_argument_fails :
       s₂.map (fun w => if (0 : ℚ) < w then (1 : ℤ) else -1) ∧
       -- but different goodness properties
       isGoodWeighted s₁ ∧ ¬isGoodWeighted s₂ := by
-  exact ⟨[2, -1], [1, -2], by decide, by decide, by decide⟩
+  refine ⟨[2, -1], [1, -2], by decide, ?_, ?_⟩
+  · rw [two_good_iff]; norm_num
+  · rw [two_good_iff]; norm_num
 
 /-!
 ## Part V: The 1-vs-1 Case — Exact Analysis

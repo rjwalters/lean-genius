@@ -15,6 +15,7 @@ import Mathlib
 namespace Erdos156.Aristotle
 
 open Set
+open scoped Pointwise
 
 /-
   ## Section 1: Sidon Set Properties
@@ -92,7 +93,7 @@ lemma Icc_ncard (N : ℕ) : (Set.Icc 1 N).ncard = N := by
 
 /-- A finite set A and its diffShadow are both finite -/
 lemma diffShadow_finite (A : Set ℕ) (hfin : A.Finite) :
-    (A - A : Set ℤ).Finite := by
+    ((((↑) : ℕ → ℤ) '' A) - (((↑) : ℕ → ℤ) '' A)).Finite := by
   sorry
 
 end Erdos156.Aristotle

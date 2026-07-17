@@ -73,7 +73,7 @@ which follows from orthogonality of roots of unity.
 Since |τ(χ̄)| = |τ(χ)| (by conjugation), |τ(χ)|² = q. -/
 theorem gaussSumNorm (q : ℕ) (hq : 2 ≤ q) (χ : DirichletCharacter ℂ q)
     (hχ : χ ≠ 1) (hprim : χ.IsPrimitive) :
-    ‖∑ t in Finset.range q, χ t * exp (2 * ↑π * I * ↑(t : ℤ) / ↑q)‖ =
+    ‖∑ t ∈ Finset.range q, χ t * exp (2 * ↑π * I * ↑(t : ℤ) / ↑q)‖ =
     Real.sqrt (q : ℝ) := by
   sorry
 
@@ -143,7 +143,7 @@ Proof structure:
 5. Combine: |sum| ≤ 2/(2|sin(πθ)|) = 1/|sin(πθ)| -/
 theorem geom_partial_sum_bound (θ : ℝ) (hθ : ∀ k : ℤ, θ ≠ ↑k)
     (M N : ℕ) :
-    ‖∑ n in Finset.Icc (M + 1) (M + N),
+    ‖∑ n ∈ Finset.Icc (M + 1) (M + N),
       exp (2 * ↑π * I * ↑θ * ↑(n : ℤ))‖ ≤
     1 / |Real.sin (π * θ)| := by
   sorry
@@ -158,7 +158,7 @@ This controls the total contribution of all residues in the
 Pólya-Vinogradov proof. The bound uses |sin(πa/q)| ≥ 2a/q for
 a ≤ q/2 (concavity of sin), giving a harmonic sum. -/
 theorem cotangent_sum_bound (q : ℕ) (hq : 2 ≤ q) :
-    (∑ a in Finset.Icc 1 (q - 1),
+    (∑ a ∈ Finset.Icc 1 (q - 1),
       (1 : ℝ) / |Real.sin (π * (a : ℝ) / q)|) ≤
     2 * q / π * (Real.log q + 1) := by
   sorry
@@ -186,7 +186,7 @@ Proof sketch:
              = (2/π) · √q · (log q + 1) -/
 theorem polya_vinogradov (q : ℕ) (hq : 2 ≤ q) (χ : DirichletCharacter ℂ q)
     (hχ : χ ≠ 1) (hprim : χ.IsPrimitive) (M N : ℕ) :
-    ‖∑ n in Finset.Icc (M + 1) (M + N), (χ n : ℂ)‖ ≤
+    ‖∑ n ∈ Finset.Icc (M + 1) (M + N), (χ n : ℂ)‖ ≤
     Real.sqrt q * (Real.log q + 1) := by
   sorry
 
@@ -198,9 +198,9 @@ PART V: EASY CONSEQUENCE — COMPLETE CHARACTER SUMS ARE ZERO
 This is an easier fact that follows from character orthogonality. -/
 theorem complete_character_sum_zero (q : ℕ) (hq : 1 ≤ q) (χ : DirichletCharacter ℂ q)
     (hχ : χ ≠ 1) :
-    ∑ n in Finset.range q, (χ n : ℂ) = 0 := by
+    ∑ n ∈ Finset.range q, (χ n : ℂ) = 0 := by
   -- MulChar.sum_eq_zero_of_ne_one gives ∑ a : ZMod q, χ a = 0
-  -- Convert: ∑ n in range q, χ ↑n = ∑ a : ZMod q, χ a via Fin/ZMod identification
+  -- Convert: ∑ n ∈ range q, χ ↑n = ∑ a : ZMod q, χ a via Fin/ZMod identification
   obtain ⟨m, rfl⟩ : ∃ m, q = m + 1 := ⟨q - 1, by omega⟩
   -- Now ZMod (m+1) = Fin (m+1) definitionally
   simp only [← Fin.sum_univ_eq_sum_range]
@@ -208,8 +208,7 @@ theorem complete_character_sum_zero (q : ℕ) (hq : 1 ≤ q) (χ : DirichletChar
   -- Since ZMod (m+1) = Fin (m+1), the natCast ℕ → Fin (m+1) sends i.val ↦ i
   have : (fun i : Fin (m + 1) => (χ ((↑i : ℕ) : ZMod (m + 1)) : ℂ)) = fun i => χ i := by
     ext i; congr 1
-    show ((i : ℕ) : Fin (m + 1)) = i
-    ext; simp [Fin.val_natCast, Nat.mod_eq_of_lt i.isLt]
+    exact ZMod.natCast_rightInverse (n := m + 1) i
   rw [this]
   exact MulChar.sum_eq_zero_of_ne_one hχ
 

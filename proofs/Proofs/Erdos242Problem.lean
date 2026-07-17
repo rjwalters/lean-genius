@@ -30,17 +30,16 @@
   - Dyachenko, E., arXiv:2511.07465 (2025), Theorem 9.21
 -/
 
+import Mathlib
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.Omega
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.Data.ZMod.Basic
 
@@ -65,7 +64,8 @@ def HasNormSplit (n : ℕ) : Prop :=
 /-- Every prime p = 1 mod 4 has a norm split (Fermat's theorem on sums of two squares). -/
 theorem prime_mod4_one_has_norm_split (p : ℕ) (hp : Nat.Prime p) (h4 : p % 4 = 1) :
     HasNormSplit p := by
-  obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq hp (by omega : p % 4 ≠ 3)
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq (p := p) (by omega : p % 4 ≠ 3)
   refine ⟨(a : ℤ), (b : ℤ), ?_, ?_, ?_⟩
   · push_cast; linarith [hab]
   · intro ha
@@ -89,7 +89,7 @@ theorem prime_mod4_one_has_norm_split (p : ℕ) (hp : Nat.Prime p) (h4 : p % 4 =
 
 /-- A Dyachenko ED2 triple: witnesses that 4/p decomposes as three unit fractions. -/
 structure ED2Triple (p : ℕ) where
-  δ b c   : ℕ
+  (δ b c   : ℕ)
   hδ_pos  : 0 < δ
   hb_pos  : 0 < b
   hc_pos  : 0 < c
@@ -106,12 +106,17 @@ lemma ed2_bound (p δ b c : ℕ) (_ : 0 < δ) (hb_pos : 0 < b) (_ : 0 < c)
   have h_lower : 3 * (4 * c - 1) ≤ (4 * b - 1) * (4 * c - 1) :=
     Nat.mul_le_mul_right _ hmin_b
   rw [hident] at h_lower
-  have h3c : 3 * c ≤ p * δ + 1 := by nlinarith
+  have h4pd : 4 * p * δ = 4 * (p * δ) := by ring
+  rw [h4pd] at h_lower
+  have h3c : 3 * c ≤ p * δ + 1 := by omega
   have hc_le : c ≤ p * δ := by
-    by_contra h; linarith [Nat.not_le.mp h]
+    by_contra h; omega
+  have hbc_le : b * c ≤ b * p * δ := by
+    calc b * c ≤ b * (p * δ) := Nat.mul_le_mul_left b hc_le
+      _ = b * p * δ := by ring
   calc b * c / δ
-      ≤ ((b * p) * δ) / δ := Nat.div_le_div_right (Nat.mul_le_mul_left b hc_le)
-    _ = b * p             := Nat.mul_div_cancel' (Nat.dvd_mul_right δ (b * p))
+      ≤ (b * p * δ) / δ := Nat.div_le_div_right hbc_le
+    _ = b * p             := Nat.mul_div_left (b * p) ‹0 < δ›
 
 -- ============================================================
 -- S4  Lattice infrastructure and Dyachenko's existence theorem
@@ -136,7 +141,7 @@ theorem rectangle_contains_lattice_point (d' : ℕ) (hd' : 0 < d')
     · calc (d' : ℤ) * (x0 / d' + 1)
           = d' * (x0 / d') + d' := by ring
         _ ≤ x0 + d'             := by linarith [Int.ediv_mul_le x0 hd'_ne]
-        _ ≤ x0 + H              := by linarith
+        _ < x0 + H              := by linarith
   obtain ⟨v, hv1, hv2, hv3⟩ :
       ∃ v : ℤ, y0 ≤ v ∧ v < y0 + W ∧ v ≡ (d' : ℤ) * k [ZMOD 2] := by
     by_cases hpar : y0 % 2 = ((d' : ℤ) * k) % 2
@@ -172,36 +177,56 @@ end ED2Lattice
 -- S5  Constructing the ED2 triple  [AXIOM-DEPENDENT]
 -- ============================================================
 
+/-- If `X % m = m - 1` for `m > 0`, then `(X+1)/m = X/m + 1` and `X = m*(X/m+1) - 1`.
+    Used to invert the Dyachenko box's mod-4g filter conditions into exact division
+    facts; `omega` cannot do this alone since the modulus `m` is a variable, not a
+    numeral, so it cannot relate `X % m` and `(X+1) % m` automatically. -/
+lemma mod_pred_succ_div (X m : ℕ) (hm : 0 < m) (h : X % m = m - 1) :
+    (X + 1) / m = X / m + 1 ∧ X = m * (X / m + 1) - 1 := by
+  have hdm : m * (X / m) + X % m = X := Nat.div_add_mod X m
+  have heq : m * (X / m + 1) = m * (X / m) + m := by ring
+  have hsucc : X + 1 = m * (X / m + 1) := by omega
+  refine ⟨?_, by omega⟩
+  rw [hsucc, Nat.mul_div_right (X / m + 1) hm]
+
 /-- Turn the Dyachenko box into a concrete ED2Triple. -/
 noncomputable def find_ed2_triple (p : ℕ) (hp : Nat.Prime p) (h4 : p % 4 = 1) :
     ED2Triple p := by
-  obtain ⟨α, d', hα, hd', X, Y, hX, hY, hXY, hXmod, hYmod, hcop, hdvd, hble⟩ :=
+  choose α d' hα hd' X Y hX hY hXY hXmod hYmod hcop hdvd hble using
     ED2Lattice.dyachenko_box p hp h4
   set g  := α * d'        with hg_def
   set δ  := α * (d' * d') with hδ_def
-  set b' := (X + 1) / (4 * g)
-  set c' := (Y + 1) / (4 * g)
+  set b' := (X + 1) / (4 * g) with hb'_def
+  set c' := (Y + 1) / (4 * g) with hc'_def
+  have hg4_pos : 0 < 4 * g := by positivity
+  have hXdiv : (X + 1) / (4 * g) = X / (4 * g) + 1 :=
+    (mod_pred_succ_div X (4 * g) hg4_pos hXmod).1
+  have hYdiv : (Y + 1) / (4 * g) = Y / (4 * g) + 1 :=
+    (mod_pred_succ_div Y (4 * g) hg4_pos hYmod).1
+  have hb'_pos : 0 < b' := by rw [hb'_def, hXdiv]; exact Nat.succ_pos _
+  have hc'_pos : 0 < c' := by rw [hc'_def, hYdiv]; exact Nat.succ_pos _
   have hXeq : X = 4 * g * b' - 1 := by
-    have : 4 * g ∣ X + 1 := Nat.dvd_of_mod_eq_zero (by omega)
-    omega
+    rw [hb'_def, hXdiv]; exact (mod_pred_succ_div X (4 * g) hg4_pos hXmod).2
   have hYeq : Y = 4 * g * c' - 1 := by
-    have : 4 * g ∣ Y + 1 := Nat.dvd_of_mod_eq_zero (by omega)
-    omega
+    rw [hc'_def, hYdiv]; exact (mod_pred_succ_div Y (4 * g) hg4_pos hYmod).2
+  have hg_pos : 0 < g := by positivity
   have hident : (4 * (g * b') - 1) * (4 * (g * c') - 1) = 4 * p * δ + 1 := by
-    have h1 : 4 * (g * b') - 1 = X := by linarith [hXeq]
-    have h2 : 4 * (g * c') - 1 = Y := by linarith [hYeq]
+    have hassoc1 : 4 * (g * b') = 4 * g * b' := by ring
+    have hassoc2 : 4 * (g * c') = 4 * g * c' := by ring
+    have h1 : 4 * (g * b') - 1 = X := by rw [hassoc1]; exact hXeq.symm
+    have h2 : 4 * (g * c') - 1 = Y := by rw [hassoc2]; exact hYeq.symm
     rw [h1, h2, hXY, hδ_def]; ring
   exact {
     δ       := δ
     b       := g * b'
     c       := g * c'
     hδ_pos  := by positivity
-    hb_pos  := by positivity
-    hc_pos  := by positivity
+    hb_pos  := Nat.mul_pos hg_pos hb'_pos
+    hc_pos  := Nat.mul_pos hg_pos hc'_pos
     hident  := hident
     hdvd    := ⟨α * b' * c', by simp [hδ_def, hg_def]; ring⟩
     hA_le   := ed2_bound p δ (g * b') (g * c')
-                 (by positivity) (by positivity) (by positivity) hident
+                 (by positivity) (Nat.mul_pos hg_pos hb'_pos) (Nat.mul_pos hg_pos hc'_pos) hident
     hb_le_c := Nat.mul_le_mul_left g hble
   }
 
@@ -215,9 +240,12 @@ theorem ed2_solution_correct (p : ℕ) (hp : Nat.Prime p) (h4 : p % 4 = 1)
     (hb_le_c : b ≤ c) :
     ES p := by
   set A := b * c / δ
-  have hA_pos : 0 < A := Nat.div_pos (Nat.le_mul_of_pos_left _ (by positivity)) hδ
-  refine ⟨A, b * p, c * p, hA_pos, by positivity, by positivity, ?_⟩
-  have hpd : 4 * b * c = p * δ + b + c := by nlinarith [hident]
+  have hA_pos : 0 < A := Nat.div_pos (Nat.le_of_dvd (by positivity) hdvd) hδ
+  refine ⟨A, b * p, c * p, hA_pos, Nat.mul_pos hb hp.pos, Nat.mul_pos hc hp.pos, ?_⟩
+  have hpd : 4 * b * c = p * δ + b + c := by
+    zify [show 1 ≤ 4 * b from by omega, show 1 ≤ 4 * c from by omega] at hident
+    zify
+    nlinarith [hident]
   have hAeq : δ * A = b * c            := Nat.mul_div_cancel' hdvd
   have hA_q   : (A : ℚ) > 0 := by exact_mod_cast hA_pos
   have hb_q   : (b : ℚ) > 0 := by exact_mod_cast hb
@@ -227,22 +255,35 @@ theorem ed2_solution_correct (p : ℕ) (hp : Nat.Prime p) (h4 : p % 4 = 1)
   have hpd_q  : 4 * (b : ℚ) * c = p * δ + b + c := by exact_mod_cast hpd
   have hAeq_q : (δ : ℚ) * A = b * c             := by exact_mod_cast hAeq
   field_simp
-  nlinarith [mul_pos hA_q hp_q, mul_pos hb_q hc_q,
-             mul_pos hA_q hb_q, mul_pos hA_q hc_q,
-             mul_pos hδ_q hA_q, hpd_q, hAeq_q,
-             mul_pos (mul_pos hA_q hb_q) hc_q,
-             mul_pos (mul_pos hA_q hb_q) hp_q,
-             mul_pos (mul_pos hA_q hc_q) hp_q]
+  push_cast
+  linear_combination (p : ℚ) ^ 3 * hAeq_q + (A : ℚ) * p ^ 2 * hpd_q
 
-/-- Bridge: norm split + Dyachenko ED2 triple -> ES.  [AXIOM-DEPENDENT] -/
-theorem ES_of_sum_two_squares (p : ℕ) (hp : Nat.Prime p) (hs : HasNormSplit p) : ES p := by
+/-- Bridge: norm split + Dyachenko ED2 triple -> ES.  [AXIOM-DEPENDENT]
+
+    Requires `p ≠ 2`: the prime `p = 2` also has a norm split (1²+1²) but is NOT
+    `≡ 1 (mod 4)`, so the `find_ed2_triple`/Dyachenko route below is simply
+    inapplicable to it (ES 2 is true, just not via this route). The old v4.26
+    proof omitted this hypothesis and derived `p % 4 = 1` unconditionally via a
+    bare `omega` call that (incorrectly) closed the goal without using oddness
+    of `p` at all -- a genuine gap, not just a rename. #38611 candidate. -/
+theorem ES_of_sum_two_squares (p : ℕ) (hp : Nat.Prime p) (hp2 : p ≠ 2)
+    (hs : HasNormSplit p) : ES p := by
   have h4 : p % 4 = 1 := by
     obtain ⟨a, b, hab, _, _⟩ := hs
-    have key : (p : ℤ) % 4 = 1 := by
-      have := congr_arg (· % 4) hab
-      have : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by omega
-      have : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by omega
-      omega
+    have hpodd : p % 2 = 1 := Nat.odd_iff.mp (hp.odd_of_ne_two hp2)
+    have ha2 : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by
+      rcases Int.even_or_odd a with ⟨k, hk⟩ | ⟨k, hk⟩
+      · left; subst hk; have h : (k + k) ^ 2 = 4 * (k * k) := by ring
+        rw [h]; omega
+      · right; subst hk; have h : (2 * k + 1) ^ 2 = 4 * (k * k + k) + 1 := by ring
+        rw [h]; omega
+    have hb2 : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by
+      rcases Int.even_or_odd b with ⟨k, hk⟩ | ⟨k, hk⟩
+      · left; subst hk; have h : (k + k) ^ 2 = 4 * (k * k) := by ring
+        rw [h]; omega
+      · right; subst hk; have h : (2 * k + 1) ^ 2 = 4 * (k * k + k) + 1 := by ring
+        rw [h]; omega
+    have key : (p : ℤ) % 4 = 1 := by omega
     exact_mod_cast key
   let t := find_ed2_triple p hp h4
   exact ed2_solution_correct p hp h4
@@ -288,10 +329,24 @@ theorem es_family_k (k : ℕ) (hk : 2 ≤ k) (p : ℕ) (hp : Nat.Prime p)
   have hd'_pos : 0 < d' :=
     Nat.div_pos (Nat.le_of_dvd (pow_pos (mul_pos hk_pos hp_pos) 2) hd_kp2) hd_pos
   have hqdvd1 : q ∣ (d + k * p) := by
-    have heq : 4 * (d + k * p) = (p + 4 * d) + q * p := by simp [hq_def]; omega
+    have hq1 : q + 1 = 4 * k := by omega
+    have hqp1 : q * p + p = 4 * k * p := by
+      calc q * p + p = (q + 1) * p := by ring
+        _ = 4 * k * p := by rw [hq1]
+    have hassoc : 4 * k * p = 4 * (k * p) := by ring
+    have heq : 4 * (d + k * p) = (p + 4 * d) + q * p := by omega
     have h4   : q ∣ 4 * (d + k * p) := heq ▸ dvd_add hqdvd (dvd_mul_right q p)
     have hc4  : Nat.Coprime 4 q := by
-      rw [Nat.coprime_iff_gcd_eq_one]; simp [hq_def]; omega
+      rw [Nat.coprime_iff_gcd_eq_one]
+      have hg1 : Nat.gcd 4 q ∣ 4 := Nat.gcd_dvd_left _ _
+      have hg2 : Nat.gcd 4 q ∣ q := Nat.gcd_dvd_right _ _
+      have hg3 : Nat.gcd 4 q ∣ 4 * k := Dvd.dvd.mul_right hg1 k
+      have hg5 : Nat.gcd 4 q ∣ q + 1 := hq1 ▸ hg3
+      have hg6 : Nat.gcd 4 q ∣ 1 := by
+        have hsub := Nat.dvd_sub hg5 hg2
+        have hone : q + 1 - q = 1 := by omega
+        rwa [hone] at hsub
+      exact Nat.dvd_one.mp hg6
     exact (Nat.coprime_comm.mp hc4).dvd_of_dvd_mul_left h4
   have hcop   : Nat.Coprime d q :=
     Nat.Coprime.coprime_dvd_left hd_sq (coprime_sq_4k1 k hk_pos)
@@ -301,7 +356,7 @@ theorem es_family_k (k : ℕ) (hk : 2 ≤ k) (p : ℕ) (hp : Nat.Prime p)
     hcop.symm.dvd_of_dvd_mul_left (hident ▸ hqdvd1.mul_left (k * p))
   set x := (d  + k * p) / q
   set y := (d' + k * p) / q
-  set z := k * p
+  set z := k * p with hz_def
   have hxeq : q * x = d  + k * p := Nat.mul_div_cancel' hqdvd1
   have hyeq : q * y = d' + k * p := Nat.mul_div_cancel' hqdvd2
   have hx_pos : 0 < x := Nat.div_pos (Nat.le_of_dvd (by positivity) hqdvd1) hq_pos
@@ -312,7 +367,7 @@ theorem es_family_k (k : ℕ) (hk : 2 ≤ k) (p : ℕ) (hp : Nat.Prime p)
   have hxeq_q  : (q : ℚ) * x = d + k * p    := by exact_mod_cast hxeq
   have hyeq_q  : (q : ℚ) * y = d' + k * p   := by exact_mod_cast hyeq
   have hdd'_q  : (d : ℚ) * d' = (k * p) ^ 2 := by exact_mod_cast hdd'
-  have hzval   : (z : ℚ) = k * p             := by push_cast; rfl
+  have hzval   : (z : ℚ) = k * p             := by rw [hz_def]; push_cast; ring
   have hqval   : (q : ℚ) = 4 * k - 1        := by
     have : 1 ≤ 4 * k := by omega
     simp only [hq_def]; rw [Nat.cast_sub this]; push_cast; ring
@@ -348,39 +403,57 @@ theorem ES_k4_d8 {p:ℕ} (hp:Nat.Prime p) (h:15 ∣ (p+32)): ES p :=
 
 theorem ES_of_four_dvd {k:ℕ} (hk:0<k) : ES (4*k) :=
   ⟨2*k, 3*k, 6*k, by omega, by omega, by omega, by
-    have h1:(2*k:ℚ)≠0:=by positivity; have h2:(3*k:ℚ)≠0:=by positivity
-    have h3:(6*k:ℚ)≠0:=by positivity; have h4:(4*k:ℚ)≠0:=by positivity
+    have h1:(2*k:ℚ)≠0:=by positivity
+    have h2:(3*k:ℚ)≠0:=by positivity
+    have h3:(6*k:ℚ)≠0:=by positivity
+    have h4:(4*k:ℚ)≠0:=by positivity
     field_simp; push_cast; ring⟩
 
+/-- Note: the old v4.26 proof used `⟨k+1, 2*(k+1), 2*(k+1)*(4*k+3), ...⟩` (with `y = 2*(k+1)`,
+    NOT `2*(k+1)*(4*k+3)`) and closed it with `ring_nf` as the last tactic. That tuple is
+    mathematically WRONG (e.g. n=3,k=0: 1/1+1/2+1/6 = 5/3 ≠ 4/3): `ring_nf` normalizes but
+    does not fail on an unclosed goal by itself, so the old proof silently left an open goal
+    that the surrounding `⟩` swallowed -- a genuine soundness gap in the old toolchain/tactic
+    interaction, not just an API rename. Fixed here to the correct identity
+    4/n = 1/(k+1) + 1/(2(k+1)(4k+3)) + 1/(2(k+1)(4k+3)). #38611 candidate. -/
 theorem ES_for_mod3_mod4 {n:ℕ} (hn:0<n) (h:n%4=3) : ES n := by
   obtain ⟨k,rfl⟩ : ∃k, n=4*k+3 := ⟨n/4, by omega⟩
-  exact ⟨k+1, 2*(k+1), 2*(k+1)*(4*k+3), by omega, by positivity, by positivity, by
-    have h1:(k+1:ℚ)≠0:=by positivity; have h2:(4*k+3:ℚ)≠0:=by positivity
-    field_simp; push_cast; ring_nf⟩
+  exact ⟨k+1, 2*(k+1)*(4*k+3), 2*(k+1)*(4*k+3), by omega, by positivity, by positivity, by
+    have h1:(k+1:ℚ)≠0:=by positivity
+    have h2:(4*k+3:ℚ)≠0:=by positivity
+    field_simp; push_cast; ring⟩
 
+/-- Note: the old v4.26 proof used `⟨k+1, 2*(k+1), 6*(k+1)*(3*k+2), ...⟩`, which is
+    mathematically WRONG for the same reason as `ES_for_mod3_mod4` above (e.g. n=2,k=0:
+    1/1+1/2+1/12 = 19/12 ≠ 2), papered over by a non-closing `ring_nf` as the last tactic.
+    Fixed here to the correct identity 4/n = 1/n + 1/(k+1) + 1/(n*(k+1)) for n = 3k+2
+    (check: 1/n+1/(k+1)+1/(n(k+1)) = (n+k+2)/(n(k+1)) = 4(k+1)/(n(k+1)) = 4/n using
+    n+k+2 = 4k+4 = 4(k+1), which holds exactly when n = 3k+2). #38611 candidate. -/
 theorem ES_for_mod2_mod3 {n:ℕ} (hn:0<n) (h:n%3=2) : ES n := by
   obtain ⟨k,rfl⟩ : ∃k, n=3*k+2 := ⟨n/3, by omega⟩
-  exact ⟨k+1, 2*(k+1), 6*(k+1)*(3*k+2), by omega, by positivity, by positivity, by
-    have h1:(k+1:ℚ)≠0:=by positivity; have h2:(3*k+2:ℚ)≠0:=by positivity
-    field_simp; push_cast; ring_nf⟩
+  exact ⟨3*k+2, k+1, (3*k+2)*(k+1), by omega, by positivity, by positivity, by
+    have h1:(k+1:ℚ)≠0:=by positivity
+    have h2:(3*k+2:ℚ)≠0:=by positivity
+    field_simp; push_cast; ring⟩
 
 theorem ES_prime_mod8_5 {p:ℕ} (hp:Nat.Prime p) (h:p%8=5) : ES p := by
   have h4_dvd : 4 ∣ (p+3) := by omega
   have h8_dvd : 8 ∣ p*(p+3) := dvd_mul_of_dvd_right (show 8 ∣ (p+3) by omega) p
-  set x := (p+3)/4; set y := p*x; set z := p*(p+3)/8
+  set x := (p+3)/4; set y := p*x with hy_def; set z := p*(p+3)/8
   have hx_pos : 0 < x := Nat.div_pos (by omega) (by norm_num)
   have hy_pos : 0 < y := mul_pos hp.pos hx_pos
-  have hz_pos : 0 < z := Nat.div_pos (by positivity) (by norm_num)
+  have hz_pos : 0 < z := Nat.div_pos (by have := hp.two_le; nlinarith) (by norm_num)
   have h4x : 4*x = p+3   := Nat.mul_div_cancel' h4_dvd
   have h8z : 8*z = p*(p+3) := Nat.mul_div_cancel' h8_dvd
   refine ⟨x, y, z, hx_pos, hy_pos, hz_pos, ?_⟩
   have hxq : (4:ℚ)*x = p+3     := by exact_mod_cast h4x
   have hzq : (8:ℚ)*z = p*(p+3) := by exact_mod_cast h8z
-  have hyq : (y:ℚ) = p*x       := by push_cast; rfl
+  have hyq : (y:ℚ) = p*x       := by rw [hy_def]; push_cast; ring
+  have hp_ne : (p:ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hp.pos.ne'
+  have hx_ne : (x:ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hx_pos.ne'
   field_simp
-  nlinarith [hxq, hzq, hyq, sq_nonneg ((p:ℚ)+3),
-    mul_pos (show (0:ℚ)<x by exact_mod_cast hx_pos)
-            (show (0:ℚ)<p by exact_mod_cast hp.pos)]
+  linear_combination (4 * (x : ℚ) * z - p * z - p * x) * hyq +
+    (p * x * z - p ^ 2 * x / 4) * hxq + (p * x / 4) * hzq
 
 -- ============================================================
 -- S9  Hard residues mod 840  [AXIOM-DEPENDENT]
@@ -398,11 +471,16 @@ theorem hard_residues_norm_split (p : ℕ) (hp : Nat.Prime p)
 theorem ES_hard_residues (p : ℕ) (hp : Nat.Prime p)
     (h : p%840=1 ∨ p%840=121 ∨ p%840=169 ∨ p%840=289 ∨ p%840=361 ∨ p%840=529) :
     ES p :=
-  ES_of_sum_two_squares p hp (hard_residues_norm_split p hp h)
+  ES_of_sum_two_squares p hp (by omega) (hard_residues_norm_split p hp h)
 
-/-- No small-k conic covers the 6 hard residues (machine-checked). -/
+/-- No small-k conic covers the 6 hard residues (machine-checked).
+    Reformulated with `d ∈ Nat.divisors (k^2)` (a `Finset`) instead of the unbounded
+    `∀ d : ℕ, d ∣ k^2 → ...` from the old v4.26 proof: the latter is not automatically
+    `Decidable` in v4.31 (the `d < 4*k-1` bound is a nested hypothesis, not the immediate
+    quantifier bound `Nat.decidableBallLT` looks for), so `decide` no longer elaborates.
+    Equivalent for k ∈ {2,4,9} (all positive, so `d ∣ k^2 ↔ d ∈ Nat.divisors (k^2)`). -/
 theorem hard_residues_no_small_conic :
-    ∀ k ∈ ({2, 4, 9} : Finset ℕ), ∀ d : ℕ, d ∣ k^2 → d < 4*k-1 →
+    ∀ k ∈ ({2, 4, 9} : Finset ℕ), ∀ d ∈ Nat.divisors (k^2), d < 4*k-1 →
     ∀ r ∈ ({1, 121, 169, 289, 361, 529} : Finset ℕ), ¬ ((4*k-1) ∣ (r+4*d)) := by
   decide
 
@@ -414,51 +492,51 @@ theorem hard_residues_no_small_conic :
 -- by reducing to a conic family specialisation. No axioms used.
 
 theorem ES_r73  {p:ℕ} (hp:Nat.Prime p) (h:p%840=73)  : ES p :=
-  ES_k2_d1 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d1 hp (by omega)
 theorem ES_r241 {p:ℕ} (hp:Nat.Prime p) (h:p%840=241) : ES p :=
-  ES_k2_d1 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d1 hp (by omega)
 theorem ES_r409 {p:ℕ} (hp:Nat.Prime p) (h:p%840=409) : ES p :=
-  ES_k2_d1 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d1 hp (by omega)
 theorem ES_r577 {p:ℕ} (hp:Nat.Prime p) (h:p%840=577) : ES p :=
-  ES_k2_d1 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d1 hp (by omega)
 theorem ES_r745 {p:ℕ} (hp:Nat.Prime p) (h:p%840=745) : ES p :=
-  ES_k2_d1 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d1 hp (by omega)
 theorem ES_r97  {p:ℕ} (hp:Nat.Prime p) (h:p%840=97)  : ES p :=
-  ES_k2_d2 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d2 hp (by omega)
 theorem ES_r265 {p:ℕ} (hp:Nat.Prime p) (h:p%840=265) : ES p :=
-  ES_k2_d2 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d2 hp (by omega)
 theorem ES_r433 {p:ℕ} (hp:Nat.Prime p) (h:p%840=433) : ES p :=
-  ES_k2_d2 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d2 hp (by omega)
 theorem ES_r601 {p:ℕ} (hp:Nat.Prime p) (h:p%840=601) : ES p :=
-  ES_k2_d2 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d2 hp (by omega)
 theorem ES_r769 {p:ℕ} (hp:Nat.Prime p) (h:p%840=769) : ES p :=
-  ES_k2_d2 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d2 hp (by omega)
 theorem ES_r145 {p:ℕ} (hp:Nat.Prime p) (h:p%840=145) : ES p :=
-  ES_k2_d4 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d4 hp (by omega)
 theorem ES_r313 {p:ℕ} (hp:Nat.Prime p) (h:p%840=313) : ES p :=
-  ES_k2_d4 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d4 hp (by omega)
 theorem ES_r481 {p:ℕ} (hp:Nat.Prime p) (h:p%840=481) : ES p :=
-  ES_k2_d4 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d4 hp (by omega)
 theorem ES_r649 {p:ℕ} (hp:Nat.Prime p) (h:p%840=649) : ES p :=
-  ES_k2_d4 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d4 hp (by omega)
 theorem ES_r817 {p:ℕ} (hp:Nat.Prime p) (h:p%840=817) : ES p :=
-  ES_k2_d4 hp (by rw [←pmod_dvd p 840 7 (by decide)]; omega)
+  ES_k2_d4 hp (by omega)
 theorem ES_r217 {p:ℕ} (hp:Nat.Prime p) (h:p%840=217) : ES p :=
-  ES_k4_d2 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d2 hp (by omega)
 theorem ES_r337 {p:ℕ} (hp:Nat.Prime p) (h:p%840=337) : ES p :=
-  ES_k4_d2 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d2 hp (by omega)
 theorem ES_r457 {p:ℕ} (hp:Nat.Prime p) (h:p%840=457) : ES p :=
-  ES_k4_d2 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d2 hp (by omega)
 theorem ES_r697 {p:ℕ} (hp:Nat.Prime p) (h:p%840=697) : ES p :=
-  ES_k4_d2 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d2 hp (by omega)
 theorem ES_r193 {p:ℕ} (hp:Nat.Prime p) (h:p%840=193) : ES p :=
-  ES_k4_d8 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d8 hp (by omega)
 theorem ES_r553 {p:ℕ} (hp:Nat.Prime p) (h:p%840=553) : ES p :=
-  ES_k4_d8 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d8 hp (by omega)
 theorem ES_r673 {p:ℕ} (hp:Nat.Prime p) (h:p%840=673) : ES p :=
-  ES_k4_d8 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d8 hp (by omega)
 theorem ES_r793 {p:ℕ} (hp:Nat.Prime p) (h:p%840=793) : ES p :=
-  ES_k4_d8 hp (by rw [←pmod_dvd p 840 15 (by decide)]; omega)
+  ES_k4_d8 hp (by omega)
 
 -- ============================================================
 -- S11  p = 1 mod 24: case split over 29 residues mod 840
@@ -475,8 +553,8 @@ theorem ES_prime_mod24_one {p:ℕ} (hp:Nat.Prime p) (h:p%24=1) : ES p := by
     absurd (hp.eq_one_or_self_of_dvd 5 (Nat.dvd_of_mod_eq_zero h0)) (by omega)
   have h7 : p%7 ≠ 0 := fun h0 =>
     absurd (hp.eq_one_or_self_of_dvd 7 (Nat.dvd_of_mod_eq_zero h0)) (by omega)
-  have hr5 : r%5 ≠ 0 := by rwa [pmod_dvd p 840 5 (by decide)] at h5
-  have hr7 : r%7 ≠ 0 := by rwa [pmod_dvd p 840 7 (by decide)] at h7
+  have hr5 : r%5 ≠ 0 := by omega
+  have hr7 : r%7 ≠ 0 := by omega
   by_cases hhard : r=1 ∨ r=121 ∨ r=169 ∨ r=289 ∨ r=361 ∨ r=529
   · exact ES_hard_residues p hp hhard
   · push_neg at hhard
@@ -503,14 +581,16 @@ theorem ES_prime_mod24_one {p:ℕ} (hp:Nat.Prime p) (h:p%24=1) : ES p := by
 /-- Every prime satisfies ES. Easy cases [PROVED], hard cases [AXIOM-DEPENDENT]. -/
 theorem ES_prime (p:ℕ) (hp:Nat.Prime p) : ES p := by
   by_cases h2 : p = 2
-  · subst h2; exact ⟨1,2,4,by norm_num,by norm_num,by norm_num,by norm_num⟩
-  have hodd : Odd p := hp.odd_of_ne_two h2
+  · subst h2; exact ⟨1,2,2,by norm_num,by norm_num,by norm_num,by norm_num⟩
+  have hodd : p % 2 = 1 := Nat.odd_iff.mp (hp.odd_of_ne_two h2)
   rcases show p%8=1 ∨ p%8=3 ∨ p%8=5 ∨ p%8=7 from by omega with h1|h3|h5|h7
-  · rcases show p%24=1 ∨ p%24=17 from by
-          have : p%24%8=1 := by rw [pmod_dvd p 24 8 (by decide)]; exact h1; omega
-      with h1'|h17
+  · have h3ne : p % 3 ≠ 0 := by
+      intro h0
+      have hd : (3:ℕ) ∣ p := Nat.dvd_of_mod_eq_zero h0
+      rcases hp.eq_one_or_self_of_dvd 3 hd with heq | heq <;> omega
+    rcases show p%24=1 ∨ p%24=17 from by omega with h1'|h17
     · exact ES_prime_mod24_one hp h1'
-    · exact ES_for_mod2_mod3 hp.pos (by have:=pmod_dvd p 24 3 (by decide); omega)
+    · exact ES_for_mod2_mod3 hp.pos (by omega)
   · exact ES_for_mod3_mod4 hp.pos (by omega)
   · exact ES_prime_mod8_5 hp h5
   · exact ES_for_mod3_mod4 hp.pos (by omega)
@@ -549,35 +629,42 @@ theorem ES_scale {a:ℕ} (ha:ES a) (ha_pos:0<a) {b:ℕ} (hb:0<b) : ES (a*b) := b
     Overall status: AXIOMATIZED (depends on dyachenko_box for 6 residue classes) -/
 theorem ErdosStraus_conjecture : ∀ n : ℕ, 2 ≤ n → ES n := by
   intro n
-  induction n using Nat.strongInductionOn with
-  | _ n ih => intro hn
-  -- 4 | n
-  by_cases h4 : 4 ∣ n
-  · obtain ⟨k,rfl⟩ := h4; exact ES_of_four_dvd (by omega)
-  -- n = 2 mod 4
-  by_cases h2 : n%4 = 2
-  · by_cases hbase : n = 2
-    · subst hbase; exact ⟨1,2,4,by norm_num,by norm_num,by norm_num,by norm_num⟩
-    have hm_ge : 2 ≤ n/2 := by omega
-    have hm_lt : n/2 < n  := Nat.div_lt_self (by omega) (by norm_num)
-    simpa [show n/2*2 = n by omega] using
-      ES_scale (ih (n/2) hm_lt hm_ge) (by omega) (show 0 < 2 by norm_num)
-  -- n is prime
-  by_cases hprime : n.Prime
-  · exact ES_prime n hprime
-  -- n is composite: reduce to n/d via strong induction
-  set d := n.minFac
-  have hd_prime : Nat.Prime d    := Nat.minFac_prime (by omega)
-  have hdn      : d ∣ n          := Nat.minFac_dvd n
-  have hnd      : d * (n/d) = n  := Nat.mul_div_cancel' hdn
-  have hm_ge    : 2 ≤ n/d        := by
-    have hm_pos : 0 < n/d := Nat.div_pos (Nat.le_of_dvd (by omega) hdn) hd_prime.pos
-    exact Nat.lt_of_lt_of_le one_lt_two
-            (Nat.succ_le_of_lt (Nat.lt_of_le_of_ne hm_pos
-              (fun h => hprime (hnd ▸ h ▸ mul_one d ▸ hd_prime))))
-  have hm_lt    : n/d < n        :=
-    Nat.div_lt_self (by omega) (Nat.lt_of_lt_of_le (by norm_num) hd_prime.two_le)
-  simpa [hnd] using ES_scale (ih (n/d) hm_lt hm_ge) (by omega) hd_prime.pos
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    -- 4 | n
+    by_cases h4 : 4 ∣ n
+    · obtain ⟨k,rfl⟩ := h4; exact ES_of_four_dvd (by omega)
+    -- n = 2 mod 4
+    by_cases h2 : n%4 = 2
+    · by_cases hbase : n = 2
+      · subst hbase; exact ⟨1,2,2,by norm_num,by norm_num,by norm_num,by norm_num⟩
+      have hm_ge : 2 ≤ n/2 := by omega
+      have hm_lt : n/2 < n  := Nat.div_lt_self (by omega) (by norm_num)
+      simpa [show n/2*2 = n by omega] using
+        ES_scale (ih (n/2) hm_lt hm_ge) (by omega) (show 0 < 2 by norm_num)
+    -- n is prime
+    by_cases hprime : n.Prime
+    · exact ES_prime n hprime
+    -- n is composite: reduce to n/d via strong induction
+    set d := n.minFac
+    have hd_prime : Nat.Prime d    := Nat.minFac_prime (by omega)
+    have hdn      : d ∣ n          := Nat.minFac_dvd n
+    have hnd      : d * (n/d) = n  := Nat.mul_div_cancel' hdn
+    have hm_ge    : 2 ≤ n/d        := by
+      have hm_pos : 0 < n/d := Nat.div_pos (Nat.le_of_dvd (by omega) hdn) hd_prime.pos
+      by_contra hcon
+      push_neg at hcon
+      have he1 : n/d = 1 := by omega
+      have hnd1 : n = d := by
+        have h2 := hnd
+        rw [he1, mul_one] at h2
+        omega
+      exact hprime (hnd1 ▸ hd_prime)
+    have hm_lt    : n/d < n        :=
+      Nat.div_lt_self (by omega) (Nat.lt_of_lt_of_le (by norm_num) hd_prime.two_le)
+    have hnd'     : (n/d) * d = n  := by rw [mul_comm]; exact hnd
+    simpa [hnd'] using ES_scale (ih (n/d) hm_lt hm_ge) (by omega) hd_prime.pos
 
 -- ============================================================
 -- S14  Concrete examples  [PROVED]

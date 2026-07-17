@@ -36,7 +36,7 @@ open Real SphericalLawOfSines
 
 namespace PolarSphericalLaw
 
-local notation a " ×₃ " b => crossProduct a b
+local infixl:74 " ×₃ " => crossProduct
 
 -- ============================================================================
 -- Part I: Supporting Lemmas (fully proved)
@@ -62,9 +62,9 @@ theorem cross_dot_eq_neg_projperp (A B C : Fin 3 → ℝ) (hC : IsUnit3 C) :
   have h : C 0 * C 0 + C 1 * C 1 + C 2 * C 2 = 1 := unit_sum C hC
   simp [dot, projPerp, crossProduct, Fin.sum_univ_three]
   linear_combination
-    (B 0 * A 0 + B 1 * A 1 + B 2 * A 2) * h -
     (A 0 * C 0 + A 1 * C 1 + A 2 * C 2) *
-    (B 0 * C 0 + B 1 * C 1 + B 2 * C 2) * h
+    (B 0 * C 0 + B 1 * C 1 + B 2 * C 2) * h -
+    (B 0 * A 0 + B 1 * A 1 + B 2 * A 2) * h
 
 /-- For unit B, C: normSq(B×C) = normSq(projPerp B C) = 1 - (dot B C)². -/
 theorem normSq_cross_eq_projperp (B C : Fin 3 → ℝ) (hB : IsUnit3 B) (hC : IsUnit3 C) :
@@ -141,6 +141,17 @@ theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
     Real.sqrt_ne_zero'.mpr hpos
   field_simp
   rw [Real.sq_sqrt (le_of_lt hpos')]
+
+/-- Cross product is bilinear under scalar multiplication of both arguments. -/
+theorem cross_smul_smul (c d : ℝ) (u v : Fin 3 → ℝ) :
+    (c • u) ×₃ (d • v) = (c * d) • (u ×₃ v) := by
+  funext i
+  fin_cases i <;> simp [crossProduct, Pi.smul_apply, smul_eq_mul] <;> ring
+
+/-- `normalize3` as an explicit inverse-scalar multiple. -/
+theorem normalize3_eq_inv_smul (v : Fin 3 → ℝ) :
+    normalize3 v = (Real.sqrt (normSq v))⁻¹ • v := by
+  funext i; simp [normalize3, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]
 
 -- ============================================================================
 -- Part III: Polar Triangle — Principal Result
@@ -227,15 +238,15 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
   -- Step 1: Apply polar_side_eq_pi_minus_angle to the polar triangle (A', B', C')
   have h_cross_BC' : 0 < normSq (B' ×₃ C') := by
     rw [normSq_cross_eq_projperp B' C' hB'_unit hC'_unit]
-    exact lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hBC_p)
+    exact lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hCA_p)
   have h_cross_CA' : 0 < normSq (C' ×₃ A') := by
     rw [normSq_cross_CA A' C' hA'_unit hC'_unit]
-    exact lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hCA_p)
+    exact lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hBC_p)
   have h_polar_polar :
       arcLen (normalize3 (B' ×₃ C')) (normalize3 (C' ×₃ A')) =
         π - dihedralAngle C' A' B' :=
     polar_side_eq_pi_minus_angle A' B' C' hA'_unit hB'_unit hC'_unit
-      h_cross_BC' h_cross_CA' hBC_p hCA_p
+      h_cross_BC' h_cross_CA' hCA_p hBC_p
   -- Step 2: Express B' × C' and C' × A' via the cross-cross identities
   set nBC := Real.sqrt (normSq (B ×₃ C)) with hnBC_def
   set nCA := Real.sqrt (normSq (C ×₃ A)) with hnCA_def
@@ -250,42 +261,28 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
   -- B' = (1/nCA) • (C ×₃ A), C' = (1/nAB) • (A ×₃ B), so B' ×₃ C' = (1/(nCA·nAB)) • ((C×A)×(A×B)) = (t/(nCA·nAB)) • A
   have hBxC : B' ×₃ C' = (t / (nCA * nAB)) • A := by
     have h_id : (C ×₃ A) ×₃ (A ×₃ B) = t • A := cross_CA_cross_AB A B C
-    funext i
-    have h_id_i : ((C ×₃ A) ×₃ (A ×₃ B)) i = t * A i := by
-      rw [h_id]; simp [Pi.smul_apply, smul_eq_mul]
-    have hB'_i : ∀ j, B' j = (C ×₃ A) j / nCA := by
-      intro j; simp only [hB'_def, normalize3]
-    have hC'_i : ∀ j, C' j = (A ×₃ B) j / nAB := by
-      intro j; simp only [hC'_def, normalize3]
-    show (B' ×₃ C') i = (t / (nCA * nAB)) * A i
-    fin_cases i <;> (
-      simp only [crossProduct, LinearMap.mk₂_apply, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_fin_one] at h_id_i ⊢
-      rw [hB'_i, hB'_i, hC'_i, hC'_i]
-      field_simp
-      linarith [h_id_i])
+    have hB'eq : B' = nCA⁻¹ • (C ×₃ A) := by
+      rw [hB'_def, normalize3_eq_inv_smul, ← hnCA_def]
+    have hC'eq : C' = nAB⁻¹ • (A ×₃ B) := by
+      rw [hC'_def, normalize3_eq_inv_smul, ← hnAB_def]
+    rw [hB'eq, hC'eq, cross_smul_smul, h_id, smul_smul]
+    congr 1
+    field_simp
   -- Similarly C' ×₃ A' = (t/(nAB·nBC)) • B
   have hCxA : C' ×₃ A' = (t / (nAB * nBC)) • B := by
     have h_id : (A ×₃ B) ×₃ (B ×₃ C) = t • B := cross_AB_cross_BC A B C
-    funext i
-    have h_id_i : ((A ×₃ B) ×₃ (B ×₃ C)) i = t * B i := by
-      rw [h_id]; simp [Pi.smul_apply, smul_eq_mul]
-    have hA'_i : ∀ j, A' j = (B ×₃ C) j / nBC := by
-      intro j; simp only [hA'_def, normalize3]
-    have hC'_i : ∀ j, C' j = (A ×₃ B) j / nAB := by
-      intro j; simp only [hC'_def, normalize3]
-    show (C' ×₃ A') i = (t / (nAB * nBC)) * B i
-    fin_cases i <;> (
-      simp only [crossProduct, LinearMap.mk₂_apply, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_fin_one] at h_id_i ⊢
-      rw [hA'_i, hA'_i, hC'_i, hC'_i]
-      field_simp
-      linarith [h_id_i])
+    have hA'eq : A' = nBC⁻¹ • (B ×₃ C) := by
+      rw [hA'_def, normalize3_eq_inv_smul, ← hnBC_def]
+    have hC'eq : C' = nAB⁻¹ • (A ×₃ B) := by
+      rw [hC'_def, normalize3_eq_inv_smul, ← hnAB_def]
+    rw [hC'eq, hA'eq, cross_smul_smul, h_id, smul_smul]
+    congr 1
+    field_simp
   -- Step 3: t ≠ 0 from non-degeneracy
   have ht_sq_pos : 0 < t ^ 2 := by
     have h1 : 0 < normSq (projPerp B' C') :=
-      lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hBC_p)
-    rw [normSq_cross_eq_projperp B' C' hB'_unit hC'_unit] at h1
+      lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hCA_p)
+    rw [← normSq_cross_eq_projperp B' C' hB'_unit hC'_unit] at h1
     -- normSq (B' ×₃ C') = (t/(nCA·nAB))² · normSq A = (t/(nCA·nAB))² (unit A)
     rw [hBxC] at h1
     have hnsA : normSq ((t / (nCA * nAB)) • A) = (t / (nCA * nAB)) ^ 2 := by
@@ -297,7 +294,9 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
     have h_pos_denom_ne : nCA * nAB ≠ 0 := ne_of_gt h_pos_denom
     have h_div_sq : (t / (nCA * nAB)) ^ 2 = t ^ 2 / (nCA * nAB) ^ 2 := by ring
     rw [h_div_sq] at h1
-    nlinarith [sq_nonneg (nCA * nAB)]
+    have hdsq : (0:ℝ) < (nCA * nAB) ^ 2 := by positivity
+    have hmul := mul_pos h1 hdsq
+    rwa [div_mul_cancel₀ _ (ne_of_gt hdsq)] at hmul
   have ht_ne : t ≠ 0 := by
     intro hcontra; rw [hcontra] at ht_sq_pos; norm_num at ht_sq_pos
   -- Step 4: Compute dot(normalize3(B'×C'), normalize3(C'×A')) = dot A B
@@ -312,7 +311,7 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
       simp [normSq, dot, Pi.smul_apply, smul_eq_mul, Fin.sum_univ_three]
       have hA_sum : A 0 * A 0 + A 1 * A 1 + A 2 * A 2 = 1 := unit_sum A hA
       nlinarith [hA_sum]
-    rw [normalize3, hns, Real.sqrt_sq_eq_abs]
+    rw [hns, Real.sqrt_sq_eq_abs]
     simp [Pi.smul_apply, smul_eq_mul]
     field_simp
   have h_normalize_smul_B :
@@ -325,7 +324,7 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
       simp [normSq, dot, Pi.smul_apply, smul_eq_mul, Fin.sum_univ_three]
       have hB_sum : B 0 * B 0 + B 1 * B 1 + B 2 * B 2 = 1 := unit_sum B hB
       nlinarith [hB_sum]
-    rw [normalize3, hns, Real.sqrt_sq_eq_abs]
+    rw [hns, Real.sqrt_sq_eq_abs]
     simp [Pi.smul_apply, smul_eq_mul]
     field_simp
   -- Both signs equal sign(t), so the product is +1
@@ -359,7 +358,6 @@ theorem polar_angle_eq (A B C : Fin 3 → ℝ)
     by_cases ht_pos : 0 < t
     · simp [ht_pos, dot, Pi.smul_apply, smul_eq_mul]
     · simp [ht_pos, dot, Pi.smul_apply, smul_eq_mul]
-      ring
   -- Step 5: Combine — arcLen(normalize3(B' × C'), normalize3(C' × A')) = arcLen A B
   have h_arclen_eq : arcLen (normalize3 (B' ×₃ C')) (normalize3 (C' ×₃ A')) = arcLen A B := by
     rw [arcLen, arcLen, h_dot_eq]

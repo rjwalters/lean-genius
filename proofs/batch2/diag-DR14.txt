@@ -1,0 +1,89 @@
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== CantorsTheoremOQ01OQ03
+error: Proofs/CantorsTheoremOQ01OQ03.lean:86:9: failed to synthesize instance of type class
+  HPow ℕ Cardinal.{0} ?m.11
+error: Proofs/CantorsTheoremOQ01OQ03.lean:86:8: Invalid field notation: Type of
+  2 ^ κ
+is not known; cannot resolve field `ord`
+error: Proofs/CantorsTheoremOQ01OQ03.lean:87:28: unsolved goals
+κ : Cardinal.{0}
+hκ : ℵ₀ ≤ κ
+error: Proofs/CantorsTheoremOQ01OQ03.lean:99:26: failed to synthesize instance of type class
+  HPow ℕ Cardinal.{0} ?m.9
+===== ContinuumHypothesisOQ02
+error: Proofs/ContinuumHypothesisOQ02.lean:112:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Ordinal.omega Ordinal.omega0).cof
+in the target expression
+error: Proofs/ContinuumHypothesisOQ02.lean:127:39: Unknown constant `Ordinal.pos_iff_ne_zero.mpr`
+warning: Proofs/ContinuumHypothesisOQ02.lean:155:8: `Cardinal.lt_cof_power` has been deprecated: Use `Cardinal.lt_cof_ord_power` instead
+error: Proofs/ContinuumHypothesisOQ02.lean:179:2: Type mismatch
+error: Proofs/ContinuumHypothesisOQ02.lean:179:2: Type mismatch
+  aleph_succ_is_regular 1
+has type
+error: Proofs/ContinuumHypothesisOQ02.lean:220:39: Unknown constant `Ordinal.succ_le_succ`
+error: Proofs/ContinuumHypothesisOQ02.lean:234:4: Type mismatch
+  aleph_succ_is_regular 1

@@ -39,28 +39,28 @@ namespace Erdos751
 Basic definitions for graphs, cycles, and chromatic number.
 -/
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
 
 /--
 **Minimum Degree:**
 The minimum degree δ(G) is the smallest vertex degree in G.
 -/
-noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.min' (Finset.univ.image G.degree) (by simp)
+noncomputable def minDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.min' (Finset.univ.image (fun v => G.degree v)) (by simp)
 
 /--
 **Maximum Degree:**
 The maximum degree Δ(G) is the largest vertex degree in G.
 -/
-noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
-  Finset.max' (Finset.univ.image G.degree) (by simp)
+noncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.max' (Finset.univ.image (fun v => G.degree v)) (by simp)
 
 /--
 **Chromatic Number:**
 The chromatic number χ(G) is the minimum number of colors needed to properly
 color the vertices of G (no two adjacent vertices have the same color).
 -/
-axiom chromaticNumber (G : SimpleGraph V) : ℕ
+axiom chromaticNumber (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
 
 /--
 **Girth:**
@@ -68,14 +68,14 @@ The girth of G is the length of the shortest cycle in G.
 If G is acyclic (a forest), the girth is defined as ∞ (we use 0).
 Axiomatized since cycle enumeration infrastructure is required.
 -/
-axiom girth (G : SimpleGraph V) : ℕ
+axiom girth (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
 
 /--
 **Cycle Lengths:**
 The set of all cycle lengths present in G.
 Axiomatized since walk/cycle infrastructure is required.
 -/
-axiom cycleLengths (G : SimpleGraph V) : Set ℕ
+axiom cycleLengths (G : SimpleGraph V) [DecidableRel G.Adj] : Set ℕ
 
 /--
 **Cycle Length Gap:**
@@ -88,7 +88,7 @@ noncomputable def minCycleLengthGap (lengths : Set ℕ) : ℕ :=
 ## Part II: Key Relationships
 -/
 
-/--
+/- 
 **Chromatic Number and Minimum Degree:**
 For any graph G with at least one vertex:
   χ(G) ≤ Δ(G) + 1 (greedy coloring bound)
@@ -101,7 +101,7 @@ More importantly for us:
 Every graph with chromatic number 4 contains a subgraph of minimum degree 3.
 In fact, for χ(G) = 4, we need minimum degree at least 3.
 -/
-axiom four_chromatic_minDeg (G : SimpleGraph V) :
+axiom four_chromatic_minDeg (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 → minDegree G ≥ 3
 
 /-
@@ -118,12 +118,12 @@ differ by at most 2.
 More precisely: if G has δ(G) ≥ 3, then there exist cycle lengths
 m, m' in G with |m - m'| ≤ 2.
 -/
-axiom bondy_vince_theorem (G : SimpleGraph V) :
+axiom bondy_vince_theorem (G : SimpleGraph V) [DecidableRel G.Adj] :
     minDegree G ≥ 3 →
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2
 
-/--
+/- 
 **Immediate Corollary:**
 The minimum gap between consecutive cycle lengths is at most 2.
 -/
@@ -140,7 +140,7 @@ cycle lengths cannot be arbitrarily large.
 
 In fact, the gap is always at most 2.
 -/
-theorem erdos_751_chromatic_4 (G : SimpleGraph V) :
+theorem erdos_751_chromatic_4 (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 →
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 := by
@@ -153,7 +153,7 @@ theorem erdos_751_chromatic_4 (G : SimpleGraph V) :
 The answer is NO even if we require large girth.
 Having large girth doesn't help because minimum degree ≥ 3 is the key.
 -/
-theorem erdos_751_with_girth (G : SimpleGraph V) (k : ℕ) :
+theorem erdos_751_with_girth (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) :
     chromaticNumber G = 4 → girth G ≥ k →
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 := by
@@ -166,7 +166,7 @@ theorem erdos_751_with_girth (G : SimpleGraph V) (k : ℕ) :
 Can min(mᵢ₊₁ - mᵢ) be arbitrarily large for χ(G) = 4?
 Answer: NO, the gap is always ≤ 2.
 -/
-theorem erdos_751 (G : SimpleGraph V) :
+theorem erdos_751 (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 →
     ¬(∀ n : ℕ, minCycleLengthGap (cycleLengths G) > n) := by
   intro hchi hcontra
@@ -188,7 +188,7 @@ theorem erdos_751 (G : SimpleGraph V) :
 **Generalization:**
 The result holds for any graph with minimum degree ≥ 3, not just χ(G) = 4.
 -/
-theorem min_degree_3_cycle_gap (G : SimpleGraph V) :
+theorem min_degree_3_cycle_gap (G : SimpleGraph V) [DecidableRel G.Adj] :
     minDegree G ≥ 3 →
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 :=
@@ -200,7 +200,7 @@ A graph with χ(G) = 4 must have a vertex of degree ≥ 3.
 Actually, it must have minimum degree ≥ 3 (otherwise we could
 color greedily with fewer colors).
 -/
-theorem chromatic_4_implies_min_deg_3 (G : SimpleGraph V) :
+theorem chromatic_4_implies_min_deg_3 (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 → minDegree G ≥ 3 :=
   four_chromatic_minDeg G
 
@@ -219,7 +219,7 @@ Summary of results:
 The answer is NO - the gap cannot be arbitrarily large, and large
 girth doesn't help either.
 -/
-theorem erdos_751_summary (G : SimpleGraph V) :
+theorem erdos_751_summary (G : SimpleGraph V) [DecidableRel G.Adj] :
     -- Main result: 4-chromatic implies close cycles
     (chromaticNumber G = 4 →
       ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧

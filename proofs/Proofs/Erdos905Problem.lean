@@ -28,11 +28,8 @@ References:
 Tags: graph-theory, extremal-graph-theory, triangles, turan
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
+open scoped Classical
 
 open Nat Finset
 
@@ -109,7 +106,7 @@ A graph has more than n²/4 edges.
 def AboveTuran {n : ℕ} (G : Graph n) : Prop :=
   edgeCount G > turanNumber n
 
-/--
+/- 
 **Turán's Theorem:**
 Any graph with more than ⌊n²/4⌋ edges contains a triangle.
 -/
@@ -132,7 +129,7 @@ def BollobasErdosConjecture : Prop :=
 -/
 axiom bollobas_erdos_theorem : BollobasErdosConjecture
 
-/--
+/- 
 **Equivalent formulation using maxTriangleMultiplicity:**
 Any graph above the Turán threshold has at least one triangle,
 hence maxTriangleMultiplicity ≥ 1.
@@ -141,7 +138,7 @@ hence maxTriangleMultiplicity ≥ 1.
 ## Part V: Tightness and Turán Theory
 -/
 
-/--
+/- 
 **Why n/6?**
 The constant n/6 is tight. There exist graphs with exactly n²/4 + 1
 edges where some edge is in exactly ⌊n/6⌋ triangles.
@@ -154,13 +151,13 @@ def IsTuranGraph {n : ℕ} (G : Graph n) : Prop :=
   ∃ S : Finset (Fin n), S.card = n / 2 ∧
     ∀ u v : Fin n, Adj G u v ↔ (u ∈ S ∧ v ∉ S) ∨ (u ∉ S ∧ v ∈ S)
 
-/--
+/- 
 **Turán graph is triangle-free:**
 The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} contains no triangles
 because any triangle would require three mutually adjacent vertices,
 but in a bipartite graph no two vertices in the same part are adjacent.
 -/
-/--
+/- 
 **Just above Turán:**
 Adding one edge to T(n,2) creates triangles. If G is the Turán graph
 and we add a non-edge {u,v}, then u and v are in the same part of the
@@ -170,7 +167,7 @@ bipartition. They share neighbors in the other part, creating triangles.
 ## Part VI: Key Lemma
 -/
 
-/--
+/- 
 **Key Lemma:**
 If e(G) > n²/4, then the number of triangles T(G) satisfies
 T(G) ≥ (e(G) - n²/4) · n/6.

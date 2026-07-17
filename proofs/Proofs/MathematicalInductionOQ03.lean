@@ -52,11 +52,11 @@ theorem cyclic_induction {n : ℕ} [NeZero n] {P : ZMod n → Prop}
     ∀ k : ZMod n, P k := by
   have key : ∀ m : ℕ, P (m : ZMod n) := fun m => by
     induction m with
-    | zero => exact h0
-    | succ m ih => exact hsucc (m : ZMod n) ih
+    | zero => simpa using h0
+    | succ m ih => simpa using hsucc (m : ZMod n) ih
   intro k
   have := key (ZMod.val k)
-  rwa [ZMod.natCast_val] at this
+  rwa [ZMod.natCast_rightInverse k] at this
 
 /-! ## Part II: Modular Arithmetic Applications -/
 
@@ -68,7 +68,7 @@ theorem zmod_generated_by_one {n : ℕ} [NeZero n] :
   · exact ⟨0, by simp⟩
   · intro k hk
     obtain ⟨j, hj⟩ := hk
-    exact ⟨j + 1, by rw [succ_nsmul, one_smul, ← hj]⟩
+    exact ⟨j + 1, by rw [succ_nsmul, ← hj]⟩
 
 /-- The wraparound law: k + n = k in ZMod n.
     Adding n (which equals 0) is the identity. -/
@@ -124,22 +124,23 @@ theorem zmod_sum_neg_involution {n : ℕ} [NeZero n] :
     (Since 2 is invertible for odd n and 2S = 0 implies S = 0.) -/
 theorem zmod_sum_odd_eq_zero {n : ℕ} [NeZero n] (hn : Odd n) :
     ∑ k : ZMod n, k = 0 := by
+  have hS_eq := zmod_sum_neg_involution (n := n)
   set S := ∑ k : ZMod n, k with hS_def
-  -- From zmod_sum_neg_involution: S = -S, so S + S = 0
+  -- hS_eq : S = -S, so S + S = 0
   have hSS : S + S = 0 := by
-    calc S + S = S + (-S) := by rw [zmod_sum_neg_involution]
+    calc S + S = S + (-S) := by nth_rewrite 2 [hS_eq]; rfl
       _ = 0 := add_neg_cancel S
   -- 2 * S = 0
   have h2S : (2 : ZMod n) * S = 0 := by rwa [two_mul]
   -- n is odd → gcd(2,n) = 1 → 2 is a unit in ZMod n
-  have hcop : Nat.Coprime 2 n := Nat.coprime_two_left.mpr (Nat.Odd.not_even hn)
+  have hcop : Nat.Coprime 2 n := Nat.coprime_two_left.mpr hn
   -- Cancel 2 using its unit inverse
   obtain ⟨u, hu⟩ : IsUnit (2 : ZMod n) := (ZMod.unitOfCoprime 2 hcop).isUnit
   -- From 2 * S = 0 and 2 = ↑u (a unit), derive S = 0
   -- Multiply both sides by u⁻¹: u⁻¹ * (u * S) = u⁻¹ * 0 = 0
   -- u⁻¹ * u * S = 1 * S = S
   calc S = 1 * S := (one_mul S).symm
-    _ = (↑u⁻¹ * ↑u) * S := by rw [Units.val_inv_mul]
+    _ = (↑u⁻¹ * ↑u) * S := by rw [Units.inv_mul]
     _ = ↑u⁻¹ * (↑u * S) := mul_assoc _ _ _
     _ = ↑u⁻¹ * ((2 : ZMod n) * S) := by rw [hu]
     _ = ↑u⁻¹ * 0 := by rw [h2S]

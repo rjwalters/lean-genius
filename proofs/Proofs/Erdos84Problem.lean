@@ -72,7 +72,7 @@ whose cycle set is exactly A.
 def isAchievableCycleSet (n : ℕ) (A : Set ℕ) : Prop :=
   ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W),
     Fintype.card W = n ∧
-    ∃ (G : SimpleGraph W), @cycleSet W _ _ G = A
+    ∃ (G : SimpleGraph W), cycleSet G = A
 
 /--
 **The Cycle Set Count f(n):**
@@ -129,7 +129,7 @@ f(n) = o(2^n)
 def part1_statement : Prop :=
   isLittleO f (fun n => 2^n)
 
-/--
+/- 
 **Verstraëte's Theorem (2004):**
 f(n) ≪ 2^{n - n^{1/10}}
 
@@ -172,7 +172,7 @@ f(n) / 2^{n/2} → ∞ as n → ∞
 def part2_statement : Prop :=
   ∀ M > 0, ∃ N, ∀ n ≥ N, (f n : ℝ) / Real.rpow 2 (n / 2) > M
 
-/--
+/- 
 **Part 2: OPEN**
 
 Erdős and Faudree asked: Does f(n)/2^{n/2} → ∞?
@@ -196,7 +196,7 @@ If it exists, call it L. We know:
 def limit_exists : Prop :=
   ∃ L : ℝ, Filter.Tendsto (fun n => Real.rpow (f n) (1/n : ℝ)) Filter.atTop (nhds L)
 
-/--
+/- 
 **Known Bounds on the Limit (if it exists):**
 √2 ≤ L ≤ 2
 Axiomatized: Follows from Erdős-Faudree bounds but requires limit analysis.
@@ -217,7 +217,7 @@ axiom structural_constraint :
 /- ## Part VIII: Small Values
 -/
 
-/--
+/- 
 **Small Values of f(n):**
 
 f(3) = 2: Either {3} (triangle) or ∅ (no cycles)

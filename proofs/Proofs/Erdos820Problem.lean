@@ -32,6 +32,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.FieldTheory.Finite.Basic
 
+open scoped Classical
+
 open Nat Real
 
 namespace Erdos820
@@ -63,7 +65,7 @@ H(n) = min{l ≥ 2 : ∃ k < l, gcd(k^n - 1, l^n - 1) = 1}
 This is the smallest l that has an n-coprime predecessor.
 -/
 noncomputable def H (n : ℕ) : ℕ :=
-  Nat.find (⟨3, 2, Nat.lt_of_sub_eq_succ rfl, sorry⟩ : ∃ l, l ≥ 2 ∧ hasNCoprimePredecessor l n)
+  Nat.find (⟨3, by norm_num, 2, by norm_num, sorry⟩ : ∃ l, l ≥ 2 ∧ hasNCoprimePredecessor l n)
 
 /-
 ## Part II: Computed Values
@@ -223,9 +225,8 @@ So if (p-1) | n, then p might divide both k^n - 1 and l^n - 1.
 theorem fermat_little_theorem (k p : ℕ) (hp : Nat.Prime p) (hk : ¬p ∣ k) :
     k^(p - 1) ≡ 1 [MOD p] := by
   have := Fact.mk hp
-  have hk' : (k : ZMod p) ≠ 0 := by rwa [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
-  have h : (k : ZMod p) ^ (p - 1) = 1 := by
-    rw [← ZMod.card p]; exact ZMod.pow_card_sub_one_eq_one hk'
+  have hk' : (k : ZMod p) ≠ 0 := by rwa [Ne, ZMod.natCast_eq_zero_iff]
+  have h : (k : ZMod p) ^ (p - 1) = 1 := ZMod.pow_card_sub_one_eq_one hk'
   have h' : ((k ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by push_cast; exact h
   rwa [ZMod.natCast_eq_natCast_iff] at h'
 

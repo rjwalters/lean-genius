@@ -1,0 +1,122 @@
+===== Erdos345Problem
+error: Proofs/Erdos345Problem.lean:53:8: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:62:13: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:62:31: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:63:15: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+===== MaschkeTheoremOQ01
+error: Proofs/MaschkeTheoremOQ01.lean:81:2: failed to synthesize instance of type class
+  NeZero ↑(Nat.card G)
+error: Proofs/MaschkeTheoremOQ01.lean:86:2: failed to synthesize instance of type class
+  NeZero ↑(Nat.card G)
+error: Proofs/MaschkeTheoremOQ01.lean:98:58: failed to synthesize instance of type class
+  IsSemisimpleModule k[G] V
+error: Proofs/MaschkeTheoremOQ01.lean:103:52: failed to synthesize instance of type class
+  IsSemisimpleRing k[G]
+===== MinkowskiTheoremOQ04OQ03
+error: Proofs/MinkowskiTheoremOQ04OQ03.lean:122:11: unexpected token 'omit'; expected 'lemma'
+warning: Proofs/MinkowskiTheoremOQ04OQ03.lean:131:0: automatically included section variable(s) unused in theorem `BlichfeldtSharpness.congruent_fract_coord`:
+  [NeZero n]
+===== FeuerbachsTheoremOQ01Aristotle
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:48:36: unexpected token 'set_option'; expected 'lemma'
+warning: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:134:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:144:30: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * 0
+in the target expression
+===== Erdos577Problem
+error: Proofs/Erdos577Problem.lean:50:6: Application type mismatch: The argument
+  Finset.Nonempty.image Finset.univ_nonempty ?m.32
+has type
+===== StirlingFormula
+error: Proofs/StirlingFormula.lean:306:4: linarith failed to find a contradiction
+m : ℕ
+hm : 1 ≤ m
+error: Proofs/StirlingFormula.lean:320:6: Type mismatch
+  log_stirlingSeq_sub_log_stirlingSeq_succ (m + L)
+has type
+error: Proofs/StirlingFormula.lean:328:45: unsolved goals
+m : ℕ
+hm : 1 ≤ m
+error: Proofs/StirlingFormula.lean:415:64: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 2
+===== DirichletsTheorem
+error: Proofs/DirichletsTheorem.lean:124:38: Application type mismatch: The argument
+  a
+has type
+error: Proofs/DirichletsTheorem.lean:140:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:148:40: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:203:2: No goals to be solved
+error: Proofs/DirichletsTheorem.lean:228:2: No goals to be solved
+warning: Proofs/DirichletsTheorem.lean:253:22: Variable name `a` is not explicitly referenced.
+===== AreaOfCircleOQ02OQ04
+error: Proofs/AreaOfCircleOQ02OQ04.lean:238:2: No goals to be solved
+warning: Proofs/AreaOfCircleOQ02OQ04.lean:267:37: Variable name `hr` is not explicitly referenced.
+===== Erdos642Problem
+error: Proofs/Erdos642Problem.lean:44:76: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos642Problem.lean:71:3: failed to synthesize instance of type class
+  DecidablePred fun e => IsDiagonal C e
+error: Proofs/Erdos642Problem.lean:189:8: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos642Problem.lean:218:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos474Problem
+error: Proofs/Erdos474Problem.lean:122:0: declaration `Erdos474.ContinuumHypothesis` contains universe level metavariables at the expression
+  Eq.{?u.4 + 2} continuum.{?u.4} aleph1.{?u.4}
+in the declaration body
+error: Proofs/Erdos474Problem.lean:186:7: Failed to infer universe levels in type of binder `lam`
+  Cardinal.{?u.6}
+error: Proofs/Erdos474Problem.lean:184:4: Failed to infer universe levels in type of binder `κ`
+error: Proofs/Erdos474Problem.lean:184:4: Failed to infer universe levels in type of binder `κ`
+  Cardinal.{?u.6}
+error: Lean exited with code 1
+===== Erdos515Problem
+error: Proofs/Erdos515Problem.lean:82:42: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos515Problem.lean:108:37: failed to synthesize instance of type class
+  Top ℝ
+===== Erdos1167Problem
+error: Proofs/Erdos1167Problem.lean:59:8: failed to solve universe constraint
+  u_2 + 1 =?= max 1 (u_1 + 1)
+while trying to unify
+error: Proofs/Erdos1167Problem.lean:77:5: Failed to infer universe levels in type of binder `f`
+  Coloring.{u_1, u_2, ?u.18} α r β
+error: Proofs/Erdos1167Problem.lean:88:5: Failed to infer universe levels in type of binder `f`
+error: Proofs/Erdos1167Problem.lean:88:5: Failed to infer universe levels in type of binder `f`
+  Coloring.{u_1, u_2, ?u.22} α r β
+error: Proofs/Erdos1167Problem.lean:106:4: Tactic `assumption` failed
+error: Proofs/Erdos1167Problem.lean:106:4: Tactic `assumption` failed
+κ : Cardinal.{u_1}
+===== Erdos801Problem
+error: Proofs/Erdos801Problem.lean:52:8: invalid binder name `S.card`, it must be atomic
+error: Lean exited with code 1
+✖ [8586/8596] Building Proofs.MinkowskiTheoremOQ04OQ03 (2.6s)
+===== Erdos535Problem
+error: Proofs/Erdos535Problem.lean:60:8: invalid binder name `A.card`, it must be atomic
+error: Lean exited with code 1
+✖ [8592/8596] Building Proofs.MaschkeTheoremOQ01 (4.5s)
+===== Erdos256Problem
+error: Proofs/Erdos256Problem.lean:54:8: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos256Problem.lean:202:41: unexpected token ','; expected '}'
+error: Proofs/Erdos256Problem.lean:236:50: unsolved goals
+case e_a
+error: Proofs/Erdos256Problem.lean:236:50: unsolved goals
+case e_a
+n : ℕ
+===== Erdos1115Problem
+error: Proofs/Erdos1115Problem.lean:42:20: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1115Problem.lean:42:64: failed to synthesize instance of type class
+  HPow ℝ ℝ ?m.34

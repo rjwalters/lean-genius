@@ -51,8 +51,8 @@ A complete graph on 3 vertices (K₃).
 -/
 def TriangleGraph : SimpleGraph (Fin 3) where
   Adj := fun i j => i ≠ j
-  symm := fun _ _ h => Ne.symm h
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => Ne.symm h
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Triangle graph is K₃:**
@@ -61,7 +61,7 @@ Every pair of distinct vertices is adjacent.
 theorem triangle_is_complete : ∀ i j : Fin 3, i ≠ j → TriangleGraph.Adj i j :=
   fun _ _ h => h
 
-/--
+/- 
 **Chromatic number of K₃:**
 K₃ has chromatic number exactly 3.
 -/
@@ -114,13 +114,14 @@ def TriangleHamiltonianGraph (n : ℕ) (hn : n > 0) : SimpleGraph (Fin (3 * n)) 
     ((sameTriangle n v w ∧ trianglePosition n v ≠ trianglePosition n w) ∨
      isHamiltonianEdge n hn v w)
   symm := by
+    constructor
     intro v w ⟨hne, hdisj⟩
     constructor
     · exact hne.symm
     · cases hdisj with
       | inl htri => left; exact ⟨htri.1.symm, htri.2.symm⟩
       | inr hham => right; exact Or.symm hham
-  loopless := fun v h => h.1 rfl
+  loopless := ⟨fun v h => h.1 rfl⟩
 
 /- ## The Main Result -/
 
@@ -177,7 +178,7 @@ The graph has exactly 3n vertices.
 theorem vertex_count (n : ℕ) : Fintype.card (Fin (3 * n)) = 3 * n := by
   exact Fintype.card_fin (3 * n)
 
-/--
+/- 
 **Maximum degree:**
 Each vertex is in one triangle (degree 2 from triangle)
 and part of Hamiltonian cycle (degree 2 from cycle).

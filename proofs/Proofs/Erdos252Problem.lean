@@ -22,11 +22,7 @@ Conditional results:
 Reference: Guy's "Unsolved Problems in Number Theory" Problem B14
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction.Defs
-import Mathlib.NumberTheory.ArithmeticFunction.Misc
-import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Topology.Algebra.InfiniteSum.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open scoped Nat ArithmeticFunction
 open ArithmeticFunction
@@ -121,7 +117,7 @@ def SchinzelHypothesisH : Prop :=
       ∃ n : ℤ, ¬ (prime : ℤ) ∣ ∏ p ∈ polys, p.eval n) →
     Set.Infinite {n : ℕ | ∀ p ∈ polys, (p.eval (n : ℤ)).natAbs.Prime}
 
-/-- **Schlage-Puchta (2006)**: Schinzel's Hypothesis H implies irrationality for all k. -/
+/-  **Schlage-Puchta (2006)**: Schinzel's Hypothesis H implies irrationality for all k. -/
 /-- **Prime k-tuples Conjecture** (simplified):
     Admissible k-tuples of linear forms take prime values infinitely often. -/
 def PrimeKTuplesConjecture : Prop :=
@@ -129,7 +125,7 @@ def PrimeKTuplesConjecture : Prop :=
     (∀ p : ℕ, p.Prime → ∃ n : ℕ, ¬ p ∣ ∏ i, (a i * n + b i)) →
     Set.Infinite {n : ℕ | ∀ i : Fin k, ((a i : ℕ) * n + b i).Prime}
 
-/-- **Friedlander-Luca-Stoiciu (2007)**: Prime k-tuples implies irrationality for k ≥ 4. -/
+/-  **Friedlander-Luca-Stoiciu (2007)**: Prime k-tuples implies irrationality for k ≥ 4. -/
 /- ## Basic Properties of Divisor Sums
 
 We verify some basic properties and examples.
@@ -153,7 +149,7 @@ The divisors of p are {1, p}, so σ_k(p) = 1^k + p^k = 1 + p^k.
 -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) (k : ℕ) :
     sigma k p = 1 + p ^ k := by
-  simp only [sigma_apply, Nat.divisors_prime_eq hp, Finset.sum_pair hp.one_lt.ne', one_pow]
+  rw [sigma_apply, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne, one_pow]
 
 /- ## Convergence
 
@@ -172,8 +168,8 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
     simp [sigma]
   · -- n ≥ 1: bound each term and count
     unfold sigma
-    rw [pow_succ]
-    -- σ_k(n) = ∑ d in n.divisors, d^k
+    rw [pow_succ']
+    -- σ_k(n) = ∑ d ∈ n.divisors, d^k
     -- Each d ≤ n, so d^k ≤ n^k. Sum ≤ |n.divisors| · n^k ≤ n · n^k
     calc Finset.sum (Nat.divisors n) (· ^ k)
         ≤ n.divisors.card * n ^ k := by
@@ -188,10 +184,10 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
                 apply Finset.card_le_card
                 intro d hd
                 simp only [Finset.mem_Icc]
-                exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le (Nat.mem_divisors.mp hd).1⟩
-            _ = n := by simp [Finset.card_Icc]; omega
+                exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le hd⟩
+            _ = n := by simp [Nat.card_Icc]
 
-/-- The series converges (proof sketch via comparison test).
+/- The series converges (proof sketch via comparison test).
 
 By sigma_le_pow, σ_k(n)/n! ≤ n^(k+1)/n!, and Σ n^(k+1)/n! converges
 since n^(k+1)/n! → 0 faster than any geometric sequence.

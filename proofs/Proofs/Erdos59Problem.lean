@@ -50,8 +50,9 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 /-- The cycle graph C_n on Fin n. Vertex i is adjacent to vertex (i+1) mod n. -/
 def cycleGraph (n : ℕ) (hn : 3 ≤ n) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := by intro i j h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
+  symm := by constructor; intro i j h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
   loopless := by
+    constructor
     intro ⟨i, hi⟩ h
     simp only at h
     have h' : (i + 1) % n = i := h.elim id id
@@ -70,7 +71,7 @@ theorem odd_cycle_not_bipartite (n : ℕ) (hn : 3 ≤ n) (hodd : Odd n) :
   -- Helper: every vertex is in A or B
   have mem : ∀ v : Fin n, v ∈ A ∨ v ∈ B := by
     intro v; have h : v ∈ (A ∪ B) := by rw [hunion]; exact Set.mem_univ v
-    exact Set.mem_union.mp h
+    exact (Set.mem_union _ _ _).mp h
   -- Consecutive vertices k, k+1 are adjacent (for k+1 < n)
   have consec_adj : ∀ (k : ℕ) (hk : k + 1 < n),
       (cycleGraph n hn).Adj ⟨k, by omega⟩ ⟨k + 1, hk⟩ := by
@@ -79,7 +80,7 @@ theorem odd_cycle_not_bipartite (n : ℕ) (hn : 3 ≤ n) (hodd : Odd n) :
   have closing : (cycleGraph n hn).Adj ⟨n - 1, by omega⟩ ⟨0, by omega⟩ := by
     left; show (n - 1 + 1) % n = 0; rw [Nat.sub_add_cancel (by omega : 1 ≤ n), Nat.mod_self]
   -- n-1 is even since n is odd
-  have hn1_even : Even (n - 1) := by obtain ⟨k, hk⟩ := hodd; omega
+  have hn1_even : Even (n - 1) := by obtain ⟨k, hk⟩ := hodd; exact ⟨k, by omega⟩
   -- Case split on whether vertex 0 is in A or B
   rcases mem ⟨0, by omega⟩ with h0 | h0
   · -- Case: 0 ∈ A. Prove by induction: vertex k ∈ A ↔ Even k
@@ -87,15 +88,15 @@ theorem odd_cycle_not_bipartite (n : ℕ) (hn : 3 ≤ n) (hodd : Odd n) :
       have h_nm1_A := (this (n - 1) (by omega)).mpr hn1_even
       exact hA ⟨n - 1, by omega⟩ h_nm1_A ⟨0, by omega⟩ h0 closing
     intro k; induction k with
-    | zero => intro _; exact ⟨fun _ => even_zero, fun _ => h0⟩
+    | zero => intro _; exact ⟨fun _ => Even.zero, fun _ => h0⟩
     | succ m ih =>
       intro hk
       have hadj := consec_adj m hk
       constructor
-      · intro hsucc_A; rw [Nat.even_succ]; intro hm_even
+      · intro hsucc_A; rw [Nat.even_add_one]; intro hm_even
         exact hA ⟨m, by omega⟩ ((ih (by omega)).mpr hm_even) ⟨m + 1, hk⟩ hsucc_A hadj
       · intro hsucc_even
-        have hm_odd : ¬Even m := by rwa [← Nat.even_succ]
+        have hm_odd : ¬Even m := by rwa [← Nat.even_add_one]
         have hm_not_A : ⟨m, by omega⟩ ∉ A := fun h => hm_odd ((ih (by omega)).mp h)
         have hm_B := (mem ⟨m, by omega⟩).resolve_left hm_not_A
         have hsucc_not_B : ⟨m + 1, hk⟩ ∉ B := fun h => hB ⟨m, by omega⟩ hm_B ⟨m + 1, hk⟩ h hadj
@@ -105,15 +106,15 @@ theorem odd_cycle_not_bipartite (n : ℕ) (hn : 3 ≤ n) (hodd : Odd n) :
       have h_nm1_B := (this (n - 1) (by omega)).mpr hn1_even
       exact hB ⟨n - 1, by omega⟩ h_nm1_B ⟨0, by omega⟩ h0 closing
     intro k; induction k with
-    | zero => intro _; exact ⟨fun _ => even_zero, fun _ => h0⟩
+    | zero => intro _; exact ⟨fun _ => Even.zero, fun _ => h0⟩
     | succ m ih =>
       intro hk
       have hadj := consec_adj m hk
       constructor
-      · intro hsucc_B; rw [Nat.even_succ]; intro hm_even
+      · intro hsucc_B; rw [Nat.even_add_one]; intro hm_even
         exact hB ⟨m, by omega⟩ ((ih (by omega)).mpr hm_even) ⟨m + 1, hk⟩ hsucc_B hadj
       · intro hsucc_even
-        have hm_odd : ¬Even m := by rwa [← Nat.even_succ]
+        have hm_odd : ¬Even m := by rwa [← Nat.even_add_one]
         have hm_not_B : ⟨m, by omega⟩ ∉ B := fun h => hm_odd ((ih (by omega)).mp h)
         have hm_A := (mem ⟨m, by omega⟩).resolve_right hm_not_B
         have hsucc_not_A : ⟨m + 1, hk⟩ ∉ A := fun h => hA ⟨m, by omega⟩ hm_A ⟨m + 1, hk⟩ h hadj
@@ -131,7 +132,7 @@ theorem even_cycle_bipartite (n : ℕ) (hn : 3 ≤ n) (heven : Even n) :
     ext x; simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
     exact em (Even x.val)
   · -- A ∩ B = ∅
-    ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false]
+    ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
     exact fun ⟨h1, h2⟩ => h2 h1
   · -- No edges within even-parity vertices
     intro u hu v hv hadj
@@ -294,12 +295,12 @@ theorem k3_not_bipartite : ¬IsBipartite K3 := by
 
 /- ## Turán Number Bounds -/
 
-/--
+/- 
 **Turán's Theorem (1941)**:
 ex(n; K_{r+1}) = (1 - 1/r) * n²/2, asymptotically.
 The extremal graph is the Turán graph T(n,r).
 -/
-/--
+/- 
 **Kővári-Sós-Turán Theorem (1954)**:
 For even cycles C_{2k}, we have ex(n; C_{2k}) = O(n^{1+1/k}).
 -/

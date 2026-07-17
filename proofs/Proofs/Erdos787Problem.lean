@@ -30,6 +30,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+open scoped Classical
 
 namespace Erdos787
 
@@ -55,7 +56,7 @@ def HasSumAvoidingSubset (A : Finset ℤ) (k : ℕ) : Prop :=
     Axiomatized since the definition requires infimum over all n-element integer sets. -/
 axiom g (n : ℕ) : ℕ
 
-/-- Specification: g(n) is the largest k with the universal property -/
+/-  Specification: g(n) is the largest k with the universal property -/
 /- ## Part 2: Trivial Cases -/
 
 /-- The empty set is trivially sum-avoiding -/
@@ -63,7 +64,7 @@ theorem empty_is_sum_avoiding (A : Finset ℤ) : IsSumAvoidingIn A ∅ := by
   constructor
   · exact empty_subset A
   · intros b₁ b₂ hb₁ _ _
-    exact absurd hb₁ (not_mem_empty b₁)
+    exact absurd hb₁ (notMem_empty b₁)
 
 /-- Any singleton is sum-avoiding (need two distinct elements to form a sum) -/
 theorem singleton_is_sum_avoiding (A : Finset ℤ) (a : ℤ) (ha : a ∈ A) :
@@ -77,10 +78,10 @@ theorem singleton_is_sum_avoiding (A : Finset ℤ) (a : ℤ) (ha : a ∈ A) :
 
 /- ## Part 3: Klarner's Lower Bound -/
 
-/-- Klarner's lower bound: g(n) ≫ log n via greedy construction -/
+/-  Klarner's lower bound: g(n) ≫ log n via greedy construction -/
 /- ## Part 4: Choi's Upper Bound (1971) -/
 
-/-- Choi's upper bound: g(n) ≪ n^(2/5+o(1)) -/
+/-  Choi's upper bound: g(n) ≪ n^(2/5+o(1)) -/
 /- ## Part 5: Ruzsa's Upper Bound (2005) -/
 
 /-- Ruzsa's 2005 improvement: g(n) ≪ exp(√(log n)) — the current best upper bound -/

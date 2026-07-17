@@ -815,19 +815,19 @@ theorem prime_dvd_gcd_pm1_pow (p k : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (hk
 
     Verified computationally for p = 3, 5, 7, 11, 13. -/
 theorem sum_inv_ZMod_eq_zero_3 :
-    ∑ i ∈ Finset.range 2, ((i + 1 : ℕ) : ZMod 3)⁻¹ = 0 := by decide
+    ∑ i ∈ Finset.range 2, ((i + 1 : ℕ) : ZMod 3)⁻¹ = 0 := by native_decide
 
 theorem sum_inv_ZMod_eq_zero_5 :
-    ∑ i ∈ Finset.range 4, ((i + 1 : ℕ) : ZMod 5)⁻¹ = 0 := by decide
+    ∑ i ∈ Finset.range 4, ((i + 1 : ℕ) : ZMod 5)⁻¹ = 0 := by native_decide
 
 theorem sum_inv_ZMod_eq_zero_7 :
-    ∑ i ∈ Finset.range 6, ((i + 1 : ℕ) : ZMod 7)⁻¹ = 0 := by decide
+    ∑ i ∈ Finset.range 6, ((i + 1 : ℕ) : ZMod 7)⁻¹ = 0 := by native_decide
 
 theorem sum_inv_ZMod_eq_zero_11 :
-    ∑ i ∈ Finset.range 10, ((i + 1 : ℕ) : ZMod 11)⁻¹ = 0 := by decide
+    ∑ i ∈ Finset.range 10, ((i + 1 : ℕ) : ZMod 11)⁻¹ = 0 := by native_decide
 
 theorem sum_inv_ZMod_eq_zero_13 :
-    ∑ i ∈ Finset.range 12, ((i + 1 : ℕ) : ZMod 13)⁻¹ = 0 := by decide
+    ∑ i ∈ Finset.range 12, ((i + 1 : ℕ) : ZMod 13)⁻¹ = 0 := by native_decide
 
 /-- The sum of all elements of ZMod p equals zero for p ≥ 3.
     Since ∑_{k=0}^{p-1} k = p(p-1)/2 and p is odd (p ≥ 3), this is 0 mod p. -/

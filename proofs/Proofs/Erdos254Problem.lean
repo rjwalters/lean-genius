@@ -24,11 +24,13 @@ References:
 Tags: number-theory, sumsets, subset-sums, open
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+
+open scoped Classical
 
 open Nat Real Set
 
@@ -78,7 +80,7 @@ noncomputable def fracDistSum (A : Set ℕ) (θ : ℝ) : ℝ :=
 
 /-- The irrationality condition: Σ {θn} = ∞ for all θ ∈ (0,1) -/
 def HasIrrationalityCondition (A : Set ℕ) : Prop :=
-  ∀ θ : ℝ, 0 < θ → θ < 1 → fracDistSum A θ = ⊤
+  ∀ θ : ℝ, 0 < θ → θ < 1 → ¬ Summable (fun n : ℕ => if n ∈ A then fracDist (θ * n) else 0)
 
 /-
 ## Part IV: Subset Sum Representation
@@ -123,7 +125,7 @@ noncomputable def fracDistSqSum (A : Set ℕ) (θ : ℝ) : ℝ :=
   ∑' (n : ℕ), if n ∈ A then (fracDist (θ * n))^2 else 0
 
 def HasStrongIrrationalityCondition (A : Set ℕ) : Prop :=
-  ∀ θ : ℝ, 0 < θ → θ < 1 → fracDistSqSum A θ = ⊤
+  ∀ θ : ℝ, 0 < θ → θ < 1 → ¬ Summable (fun n : ℕ => if n ∈ A then (fracDist (θ * n))^2 else 0)
 
 /--
 **Cassels's Theorem (1960):**

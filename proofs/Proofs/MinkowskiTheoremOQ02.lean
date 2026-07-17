@@ -1,9 +1,5 @@
 import Proofs.MinkowskiFundamentalTheorem
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Group.GeometryOfNumbers
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Dirichlet's Approximation Theorem via Minkowski's Lattice Point Theorem
@@ -129,11 +125,11 @@ theorem dirichletSet_volume_gt_four (α : ℝ) (Q : ℕ) (hQ : 0 < Q) :
   rw [dirichletSet_volume α Q hQ]
   have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
   have hlt : (4 : ℝ) < 4 * ((Q : ℝ) + 1) / (Q : ℝ) := by
-    rw [lt_div_iff hQpos]; linarith
+    rw [lt_div_iff₀ hQpos]; linarith
   calc (2 : ENNReal) ^ 2
       = ENNReal.ofReal 4 := by norm_num
     _ < ENNReal.ofReal (4 * ((Q : ℝ) + 1) / (Q : ℝ)) :=
-        ENNReal.ofReal_lt_ofReal_of_nonneg (by norm_num) hlt
+        (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num)).mpr hlt
 
 -- ============================================================
 -- PART 5: Integer Coordinates from stdLattice 2
@@ -154,7 +150,7 @@ lemma stdLattice2_coords (x : stdLattice 2) :
   obtain ⟨c, hc⟩ := hmem
   -- Convert ℤ-smul to ℝ-smul: x = ∑ i, (c i : ℝ) • e_i
   have hc_real : (x : Fin 2 → ℝ) = ∑ i : Fin 2, (c i : ℝ) • Pi.basisFun ℝ (Fin 2) i := by
-    rw [hc]; simp_rw [zsmul_eq_smul_cast ℝ]
+    rw [← hc]; simp_rw [← Int.cast_smul_eq_zsmul ℝ]
   -- Extract coordinates: (∑ i, (c i : ℝ) • e_i) j = c j
   refine ⟨c 0, c 1, ?_, ?_⟩
   · -- Coordinate 0
@@ -215,28 +211,22 @@ theorem dirichlet_approximation_from_minkowski (α : ℝ) (Q : ℕ) (hQ : 0 < Q)
     apply hx_ne
     apply Subtype.ext
     funext i
-    fin_cases i
-    · -- Coordinate 0: x 0 = (0:ℤ):ℝ = 0
-      simp only [Pi.zero_apply]; rw [ha]; simp
-    · -- Coordinate 1: x 1 = (b:ℝ) = 0
-      simp only [Pi.zero_apply]; rw [hb]; simp [hb0]
+    fin_cases i <;> simp_all
   -- Step 5: Set q = |a|, p = b if a > 0, -b if a < 0
   refine ⟨|a|, if 0 < a then b else -b, ?_, ?_, ?_⟩
   · -- 1 ≤ |a|: since a ≠ 0 is an integer
     exact Int.one_le_abs ha_ne
   · -- |a| ≤ Q: from |a| < Q+1 and a ∈ ℤ
     have hcast : |(a : ℝ)| < (Q : ℝ) + 1 := ha_bound
-    rw [Int.cast_abs] at hcast
-    have h : (|a| : ℝ) < (Q : ℝ) + 1 := hcast
-    have h' : |a| < (Q : ℤ) + 1 := by exact_mod_cast h
+    have h' : |a| < (Q : ℤ) + 1 := by exact_mod_cast hcast
     exact_mod_cast Int.lt_add_one_iff.mp h'
   · -- |α * |a| − p| < 1/Q
     split_ifs with hpos
     · -- a > 0: |a| = a
-      rw [Int.abs_of_pos hpos]; exact hab_approx
+      rw [abs_of_pos hpos]; exact hab_approx
     · -- a < 0: |a| = −a, and α·(−a) − (−b) = −(α·a − b)
-      have hneg : a < 0 := lt_of_le_of_ne (le_of_not_lt hpos) ha_ne
-      rw [Int.abs_of_neg hneg]
+      have hneg : a < 0 := lt_of_le_of_ne (le_of_not_gt hpos) ha_ne
+      rw [abs_of_neg hneg]
       push_cast
       rw [show α * -(a : ℝ) - -(b : ℝ) = -(α * (a : ℝ) - (b : ℝ)) by ring, abs_neg]
       exact hab_approx
@@ -254,11 +244,11 @@ theorem dirichlet_approximation_corollary (α : ℝ) (Q : ℕ) (hQ : 0 < Q) :
   refine ⟨q, p, hq1, hqQ, ?_⟩
   have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast Int.lt_of_lt_of_le Int.one_pos hq1
   have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
-  rw [show α - (p : ℝ) / (q : ℝ) = (α * (q : ℝ) - (p : ℝ)) / (q : ℝ) by field_simp; ring,
-      abs_div, abs_of_pos hqpos, div_lt_div_iff hqpos (mul_pos hQpos hqpos)]
+  rw [show α - (p : ℝ) / (q : ℝ) = (α * (q : ℝ) - (p : ℝ)) / (q : ℝ) by field_simp,
+      abs_div, abs_of_pos hqpos, div_lt_div_iff₀ hqpos (mul_pos hQpos hqpos)]
   -- Goal: |α*q - p| * (Q*q) < 1 * q = q
   -- From happrox: |α*q - p| < 1/Q, so |α*q - p| * Q < 1
-  have key : |α * (q : ℝ) - (p : ℝ)| * (Q : ℝ) < 1 := by rwa [lt_div_iff hQpos] at happrox
+  have key : |α * (q : ℝ) - (p : ℝ)| * (Q : ℝ) < 1 := by rwa [lt_div_iff₀ hQpos] at happrox
   nlinarith
 
 end DirichletFromMinkowski

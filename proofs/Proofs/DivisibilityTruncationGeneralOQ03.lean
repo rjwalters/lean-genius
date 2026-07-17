@@ -68,7 +68,7 @@ theorem osculator_shift (d : ℕ) (c : ℤ) (h : IsOsculator d c) :
     IsOsculator d (c + d) := by
   unfold IsOsculator at *
   have : 10 * (c + ↑d) - 1 = (10 * c - 1) + 10 * ↑d := by ring
-  rw [this]; exact dvd_add h (dvd_mul_of_dvd_right (dvd_refl ↑d) 10)
+  rw [this]; exact dvd_add h (dvd_mul_of_dvd_right (dvd_refl (d : ℤ)) 10)
 
 /-- If c' ≡ c (mod d) and c is an osculator, so is c'. -/
 theorem osculator_congr (d : ℕ) (c c' : ℤ)
@@ -106,7 +106,9 @@ theorem osculator_mod_d_bounded (d : ℕ) (hd : 0 < d) :
   have hd' : (d : ℤ) ≠ 0 := Int.natCast_ne_zero.mpr hd.ne'
   have hr_nn : 0 ≤ Nat.gcdA 10 d % ↑d := Int.emod_nonneg _ hd'
   have hr_lt : Nat.gcdA 10 d % ↑d < ↑d := Int.emod_lt_of_pos _ (by exact_mod_cast hd)
-  rw [Int.natAbs_of_nonneg hr_nn]; exact_mod_cast hr_lt
+  have habs : ((Nat.gcdA 10 d % ↑d).natAbs : ℤ) = Nat.gcdA 10 d % ↑d :=
+    Int.natAbs_of_nonneg hr_nn
+  omega
 
 /-- Every osculator agrees with gcdA(10,d) mod d. -/
 theorem canonical_osculator_unique (d : ℕ) (hd : 0 < d) (hcop : Nat.Coprime 10 d)

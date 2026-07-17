@@ -110,8 +110,9 @@ theorem sum_offDiag_eq_two_mul_sum_upper {ι : Type*} [DecidableEq ι] [LinearOr
     (s : Finset ι) (f : ι × ι → R)
     (hf : ∀ i j, f (i, j) = f (j, i)) :
     ∑ p ∈ s.offDiag, f p = 2 * ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), f p := by
-  rw [offDiag_eq_upper_union_lower, sum_union (upper_lower_disjoint s),
-      sum_lower_eq_sum_upper s f hf, two_mul]
+  conv_lhs => rw [offDiag_eq_upper_union_lower, sum_union (upper_lower_disjoint s),
+    sum_lower_eq_sum_upper s f hf]
+  exact (two_mul _).symm
 
 -- ============================================================
 -- Part V: Application to Products xᵢ · xⱼ

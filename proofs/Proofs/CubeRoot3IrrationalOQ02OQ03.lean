@@ -725,10 +725,10 @@ private lemma quad_indep {K F : Type u} [Field K] [Field F] [Algebra K F]
     (h : algebraMap K F c0 + algebraMap K F c1 * pb.gen = 0) : c0 = 0 ∧ c1 = 0 := by
   -- By the linear independence of the basis vectors, if $c0 + c1 \cdot pb.gen = 0$, then $c0 = 0$ and $c1 = 0$.
   have h_lin_ind : LinearIndependent K (fun i : Fin 2 => pb.gen ^ (i : ℕ)) := by
-    convert pb.basis.linearIndependent;
-    · exact hdim.symm;
-    · rw [ pb.basis_eq_pow ];
-      grind +qlia;
+    have hli := pb.basis.linearIndependent
+    rw [pb.coe_basis] at hli
+    rw [hdim] at hli
+    exact hli
   rw [ Fintype.linearIndependent_iff ] at h_lin_ind;
   exact ⟨ h_lin_ind ( fun i => if i = 0 then c0 else c1 ) ( by simpa [ Fin.sum_univ_two ] using by simpa [ Algebra.smul_def ] using h ) 0, h_lin_ind ( fun i => if i = 0 then c0 else c1 ) ( by simpa [ Fin.sum_univ_two ] using by simpa [ Algebra.smul_def ] using h ) 1 ⟩
 
@@ -817,8 +817,9 @@ private lemma two_power_irred : ∀ (k : ℕ), 1 ≤ k → ∀ {K : Type u} [Fie
         have hdim : pb.dim = 2 := by
           rw [hpb, adjoin.powerBasis_dim, hx, natDegree_X_pow_sub_C]
         have hgen : pb.gen ^ 2 = algebraMap K K⟮x⟯ a := by
-          have h0 := minpoly.aeval K pb.gen
-          rw [hpb, adjoin.powerBasis_gen, minpoly_gen, hx] at h0
+          rw [hpb, adjoin.powerBasis_gen]
+          have h0 := minpoly.aeval K (AdjoinSimple.gen K x)
+          rw [minpoly_gen, hx] at h0
           simpa [sub_eq_zero] using h0
         have hchar' : (2 : K⟮x⟯) ≠ 0 := by
           rw [← map_ofNat (algebraMap K K⟮x⟯) 2]
@@ -1155,7 +1156,7 @@ theorem three_not_cube_rat : ∀ b : ℚ, b ^ 3 ≠ 3 := by
   have h1 : padicValRat 3 (3 : ℚ) = 1 := by
     have := padicValRat.self (p := 3) (by norm_num); simpa using this
   have key : padicValRat 3 (b ^ 3) = 1 := by rw [hb, h1]
-  rw [padicValRat.pow hb0] at key
+  rw [padicValRat.pow b] at key
   omega
 
 /-- **`X³ − 3` is irreducible over `ℚ` — the namesake instance (`sorry`-free, axiom-free).**
@@ -1194,7 +1195,7 @@ theorem three_not_pth_power_rat {p : ℕ} (hp : 2 ≤ p) : ∀ b : ℚ, b ^ p �
   have h1 : padicValRat 3 (3 : ℚ) = 1 := by
     have := padicValRat.self (p := 3) (by norm_num); simpa using this
   have key : padicValRat 3 (b ^ p) = 1 := by rw [hb, h1]
-  rw [padicValRat.pow hb0] at key
+  rw [padicValRat.pow b] at key
   -- `key : ↑p * padicValRat 3 b = 1`, so `↑p ∣ 1`, forcing `↑p ≤ 1` against `p ≥ 2`.
   have hd : (p : ℤ) ∣ 1 := ⟨padicValRat 3 b, key.symm⟩
   have hle : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hd

@@ -19,10 +19,12 @@ disposal."
 Reference: https://erdosproblems.com/323
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
+
+open scoped Classical
 
 /- ## Sums of k-th powers -/
 
@@ -78,7 +80,7 @@ theorem IsSumOfPowers_one_iff (n k : ℕ) :
 
 /-- Every perfect k-th power is a sum of 1 k-th power. -/
 lemma isSumOfPowers_pow_self (a k : ℕ) : IsSumOfPowers (a ^ k) k 1 :=
-  IsSumOfPowers_one_iff.mpr ⟨a, rfl⟩
+  (IsSumOfPowers_one_iff _ _).mpr ⟨a, rfl⟩
 
 /-- Lower bound for 1-sum count: f_{k,1}(n^k) ≥ n+1, since the n+1 values
     {0^k, 1^k, ..., n^k} are distinct elements of [0, n^k].
@@ -117,7 +119,7 @@ axiom landau_two_squares :
 def ErdosProblem323_part1 : Prop :=
     ∀ (k : ℕ) (hk : 2 ≤ k) (ε : ℚ) (hε : 0 < ε),
       ∃ c : ℚ, 0 < c ∧ ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-        c * (x : ℚ) ≤ (powerSumCount k k x : ℚ) * (x : ℚ) ^ ε
+        (c : ℝ) * (x : ℝ) ≤ (powerSumCount k k x : ℝ) * (x : ℝ) ^ (ε : ℝ)
 
 /-- Conjecture 2: for m < k, f_{k,m}(x) ≫ x^{m/k}.
     Formally: for every k ≥ 2 and 1 ≤ m < k, there exist c > 0 and x₀
@@ -125,7 +127,7 @@ def ErdosProblem323_part1 : Prop :=
 def ErdosProblem323_part2 : Prop :=
     ∀ (k m : ℕ) (hk : 2 ≤ k) (hm : 1 ≤ m) (hmk : m < k),
       ∃ c : ℚ, 0 < c ∧ ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-        c * (x : ℚ) ^ ((m : ℚ) / (k : ℚ)) ≤ (powerSumCount k m x : ℚ)
+        (c : ℝ) * (x : ℝ) ^ ((m : ℝ) / (k : ℝ)) ≤ (powerSumCount k m x : ℝ)
 
 /-- Erdős Problem 323: both parts combined. -/
 def ErdosProblem323 : Prop := ErdosProblem323_part1 ∧ ErdosProblem323_part2

@@ -18,8 +18,8 @@ Reference: https://erdosproblems.com/223
 Originally a conjecture of Vázsonyi.
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.NormedSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
@@ -54,7 +54,7 @@ noncomputable def pointDist {d : ℕ} (x y : EuclideanSpace ℝ (Fin d)) : ℝ :
 
 /-- The diameter of a configuration: the maximum pairwise distance. -/
 noncomputable def diameter {d n : ℕ} (A : PointConfig d n) : ℝ :=
-  ⨆ (i j : Fin n), pointDist (A i) (A j)
+  ⨆ (i : Fin n) (j : Fin n), pointDist (A i) (A j)
 
 /-- A configuration has diameter at most r. -/
 def hasDiameterAtMost {d n : ℕ} (A : PointConfig d n) (r : ℝ) : Prop :=
@@ -89,8 +89,9 @@ axiom hopf_pannwitz_1934 (n : ℕ) (hn : n ≥ 3) :
   f 2 n = n
 
 /-- The regular n-gon achieves n diameter pairs. -/
-def regularPolygonConfig (n : ℕ) : PointConfig 2 n :=
-  fun i => ![Real.cos (2 * Real.pi * i.val / n), Real.sin (2 * Real.pi * i.val / n)]
+noncomputable def regularPolygonConfig (n : ℕ) : PointConfig 2 n :=
+  fun i => (EuclideanSpace.equiv (Fin 2) ℝ).symm
+    ![Real.cos (2 * Real.pi * i.val / n), Real.sin (2 * Real.pi * i.val / n)]
 
 /- ## Part IV: Three-Dimensional Case (1956-57)
 -/
@@ -150,11 +151,13 @@ theorem six_dimensional_coefficient :
 def diameterGraph {d n : ℕ} (A : PointConfig d n) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j ∧ pointDist (A i) (A j) = diameter A
   symm := by
+    constructor
     intro i j ⟨hne, hdist⟩
     constructor
     · exact hne.symm
-    · simp [pointDist, dist_comm, hdist]
+    · simpa [pointDist, dist_comm] using hdist
   loopless := by
+    constructor
     intro i ⟨hne, _⟩
     exact hne rfl
 
@@ -167,14 +170,14 @@ def diameterGraph {d n : ℕ} (A : PointConfig d n) : SimpleGraph (Fin n) where
     can an n-point set in ℝ² have? -/
 def relatedToUnitDistanceGraphs (n : ℕ) : Prop :=
   ∃ A : PointConfig 2 n,
-    countPairsAtDistance A 1 ≥ n^(1 + 1/10 : ℝ).toNat
+    countPairsAtDistance A 1 ≥ n^⌊(1 + 1/10 : ℝ)⌋₊
 
 /-- **Related: Erdős Problem #1084 (Minimum Distance Pairs).**
     Analogous to #223 but for minimum distance: what is the maximum
     number of pairs achieving the minimum distance in an n-point set? -/
 def relatedToMinDistanceProblem (d n : ℕ) : Prop :=
   ∃ A : PointConfig d n,
-    let minDist := ⨅ (i j : Fin n) (_ : i ≠ j), pointDist (A i) (A j)
+    let minDist := ⨅ (i : Fin n) (j : Fin n) (_ : i ≠ j), pointDist (A i) (A j)
     countPairsAtDistance A minDist ≥ n
 
 /- ## Summary

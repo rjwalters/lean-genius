@@ -74,7 +74,7 @@ pairwise sums {a + b : a, b ∈ A, a ≠ b}.
 axiom selfridge_straus_k2_not_power2 :
     ∀ card : ℕ, (∀ l : ℕ, card ≠ 2^l) → KSumDeterminesSet 2 card
 
-/-- **Selfridge-Straus (1958)**: For k = 2, uniqueness FAILS when |A| = 2ˡ.
+/-  **Selfridge-Straus (1958)**: For k = 2, uniqueness FAILS when |A| = 2ˡ.
 
 There exist distinct sets A ≠ B with |A| = |B| = 2ˡ having the same 2-sum multiset.
 -/
@@ -83,7 +83,7 @@ There exist distinct sets A ≠ B with |A| = |B| = 2ˡ having the same 2-sum mul
 ## The k = 3 and k = 4 Cases (Selfridge-Straus 1958)
 -/
 
-/-- **Selfridge-Straus (1958)**: For k = 3, uniqueness holds when |A| > 6.
+/-  **Selfridge-Straus (1958)**: For k = 3, uniqueness holds when |A| > 6.
 
 Sets with more than 6 elements are uniquely determined by their 3-sum multisets.
 -/
@@ -92,7 +92,7 @@ Sets with more than 6 elements are uniquely determined by their 3-sum multisets.
 ## The Prime Divisibility Criterion (Selfridge-Straus 1958)
 -/
 
-/-- **Selfridge-Straus (1958)**: Uniqueness holds if |A| has a prime factor > k.
+/-  **Selfridge-Straus (1958)**: Uniqueness holds if |A| has a prime factor > k.
 
 This is a powerful general criterion that explains many special cases.
 For example, |A| = 7 and k = 3: 7 is prime > 3, so uniqueness holds.
@@ -102,7 +102,7 @@ For example, |A| = 7 and k = 3: 7 is prime > 3, so uniqueness holds.
 ## Counterexamples for Small Sets
 -/
 
-/-- **Kruyt**: Uniqueness FAILS when |A| = k (for k > 2).
+/-  **Kruyt**: Uniqueness FAILS when |A| = k (for k > 2).
 
 Counterexample: Take any set A with |A| = k elements. The k-sum multiset
 contains only the single sum (with multiplicity 1). Rotating A around the
@@ -112,7 +112,7 @@ The rotation is: if c = (sum of A)/k, then A' = {2c - a : a ∈ A} ≠ A but
 has the same k-sum (which equals k·c).
 -/
 
-/-- **Tao**: Uniqueness FAILS when |A| = 2k (for k > 2).
+/-  **Tao**: Uniqueness FAILS when |A| = 2k (for k > 2).
 
 Counterexample: If A is a set with sum(A) = 0 and |A| = 2k,
 then -A = {-a : a ∈ A} has the same k-sum multiset as A.
@@ -146,7 +146,7 @@ Erdős also asked about products instead of sums. This version is FALSE.
 noncomputable def prodMultiset (A : Finset ℂ) (k : ℕ) : Multiset ℂ :=
   (A.powersetCard k).val.map fun s => s.prod id
 
-/-- **Steinerberger**: The product version of the problem is FALSE.
+/-  **Steinerberger**: The product version of the problem is FALSE.
 
 Counterexample for k = 3: Let ζ₆ = e^(2πi/6) be a primitive 6th root of unity.
 Take A = {1, ζ₆, ζ₆², ζ₆⁴} and B = {1, ζ₆², ζ₆³, ζ₆⁴}.
@@ -184,7 +184,7 @@ Note: Complex numbers don't have decidable equality in the computational sense,
 so we use axioms to verify properties of concrete examples. -/
 noncomputable def example_set : Finset ℂ := {0, 1, 2}
 
-/-- The 2-sum multiset of {0, 1, 2} is {0+1, 0+2, 1+2} = {1, 2, 3}.
+/-  The 2-sum multiset of {0, 1, 2} is {0+1, 0+2, 1+2} = {1, 2, 3}.
 This has 3 elements (all C(3,2) = 3 subsets of size 2). -/
 
 /-

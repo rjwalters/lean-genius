@@ -21,7 +21,7 @@ This entry, building on the parent `wilsons-theorem` (Mathlib's
 * certifies the two small Wilson primes `5` and `13` by ordinary kernel `decide`
   (NOT `native_decide`), keeping the whole development axiom-free.
 
-The bridge from `ZMod p` to `ℕ` is `ZMod.natCast_zmod_eq_zero_iff_dvd`; the
+The bridge from `ZMod p` to `ℕ` is `ZMod.natCast_eq_zero_iff`; the
 `p ∣ W_p ↔ p² ∣ (p-1)! + 1` step is the cancellation
 `p·p ∣ p·W_p ↔ p ∣ W_p` once `(p-1)! + 1` is written as `p · W_p`.
 

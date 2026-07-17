@@ -30,11 +30,9 @@ References:
 - See also Problem #765 and the graphs collection
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph
 
@@ -56,7 +54,7 @@ constructing the cycle explicitly.
 -/
 def hasCycleOfLength (G : SimpleGraph V) (k : ℕ) [Fintype V] : Prop :=
   ∃ (vertices : Fin k → V), Function.Injective vertices ∧
-    (∀ i : Fin k, G.Adj (vertices i) (vertices ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega : 0 < k)⟩))
+    (∀ i : Fin k, G.Adj (vertices i) (vertices ⟨(i.val + 1) % k, Nat.mod_lt _ i.pos⟩))
 
 /--
 **C_{2k}-free graph:**
@@ -83,8 +81,8 @@ ex(n; C_{2k}) = max{|E(G)| : G has n vertices and no C_{2k}}
 ex(n; C_{2k}) is the maximum number of edges in an n-vertex C_{2k}-free graph.
 -/
 noncomputable def exCycle (n k : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type) [Fintype V] [DecidableEq V],
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
+  sSup {m : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
+    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       Fintype.card V = n ∧ isCycleFree G (2 * k) ∧ edgeCount G = m}
 
 /-
@@ -93,7 +91,7 @@ noncomputable def exCycle (n k : ℕ) : ℕ :=
 Upper and lower bounds on the extremal function.
 -/
 
-/--
+/- 
 **Bondy-Simonovits Upper Bound (1974):**
 ex(n; C_{2k}) ≤ c·k·n^{1+1/k} for some constant c.
 
@@ -126,7 +124,7 @@ where ν = 0 if k is odd, ν = 1 if k is even.
 
 This is weaker than the conjectured n^{1+1/k} but works for all k.
 -/
-def luwExponent (k : ℕ) : ℝ :=
+noncomputable def luwExponent (k : ℕ) : ℝ :=
   1 + 2 / (3 * k - 3 + if k % 2 = 0 then 1 else 0 : ℝ)
 
 axiom lazebnik_ustimenko_woldar :
@@ -168,8 +166,7 @@ theorem erdos_572_k3 : erdosConjectureLowerBound 3 := by
   · intro n hn
     have h := hc n hn
     -- 4/3 = 1 + 1/3, so this follows from Benson's result
-    convert h using 2
-    norm_num
+    convert h using 2 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
 
 theorem erdos_572_k5 : erdosConjectureLowerBound 5 := by
   unfold erdosConjectureLowerBound
@@ -180,8 +177,7 @@ theorem erdos_572_k5 : erdosConjectureLowerBound 5 := by
   · intro n hn
     have h := hc n hn
     -- 6/5 = 1 + 1/5, so this follows from Benson's result
-    convert h using 2
-    norm_num
+    convert h using 2 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
 
 /-
 ## Part V: Comparison of Exponents
@@ -192,7 +188,7 @@ The LUW exponent vs the conjectured exponent.
 /--
 The conjectured exponent is 1 + 1/k.
 -/
-def conjecturedExponent (k : ℕ) : ℝ := 1 + 1 / (k : ℝ)
+noncomputable def conjecturedExponent (k : ℕ) : ℝ := 1 + 1 / (k : ℝ)
 
 /--
 The LUW exponent is always less than or equal to the conjectured exponent.
@@ -204,20 +200,20 @@ theorem luw_weaker_than_conjectured (k : ℕ) (hk : k ≥ 3) :
   -- Equivalently: 2k ≤ 3k-3+ν, which holds for k ≥ 3
   have hk_pos : (k : ℝ) > 0 := by positivity
   have hk_ne : (k : ℝ) ≠ 0 := ne_of_gt hk_pos
-  apply add_le_add_left
+  gcongr 1 + ?_
   split_ifs with heven
   · -- k even: ν = 1, denominator = 3k - 3 + 1 = 3k - 2
     have hdenom : (3 * (k : ℝ) - 3 + 1) > 0 := by
       have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
       linarith
-    rw [div_le_div_iff (by positivity) hk_pos]
+    rw [div_le_div_iff₀ (by positivity) hk_pos]
     have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
     nlinarith
   · -- k odd: ν = 0, denominator = 3k - 3
     have hdenom : (3 * (k : ℝ) - 3 + 0) > 0 := by
       have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
       linarith
-    rw [div_le_div_iff (by positivity) hk_pos]
+    rw [div_le_div_iff₀ (by positivity) hk_pos]
     have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
     nlinarith
 
@@ -248,13 +244,13 @@ theorem luw_vs_benson_k5 : luwExponent 5 < conjecturedExponent 5 := by
 The case k = 2 (4-cycles) is well-understood.
 -/
 
-/--
+/- 
 **Erdős-Klein Theorem (1938):**
 ex(n; C_4) ~ (1/2)·n^{3/2}
 
 The extremal graphs are related to finite projective planes.
 -/
-/--
+/- 
 C_4-free graphs and the Kővári-Sós-Turán theorem.
 For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
 -/
@@ -265,7 +261,7 @@ For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
 For odd cycles, the situation is completely different.
 -/
 
-/--
+/- 
 **Odd Cycle Extremal Function:**
 ex(n; C_{2k+1}) = ⌊n²/4⌋ for k ≥ 1 and n > 2k+1.
 

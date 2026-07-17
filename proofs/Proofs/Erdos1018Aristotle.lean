@@ -14,6 +14,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.Data.Real.Archimedean
 
 namespace Erdos1018.Aristotle
 
@@ -105,11 +106,11 @@ theorem edgecount_dense_exceeds_planar (e n : ℕ) (hn : n ≥ 4)
 
 -- ε² > 0 when ε > 0
 theorem sq_pos (ε : ℝ) (hε : ε > 0) : ε ^ 2 > 0 := by
-  positivity
+  exact pow_pos hε 2
 
 -- 1/ε² > 0 when ε > 0
 theorem inv_sq_pos (ε : ℝ) (hε : ε > 0) : 1 / ε ^ 2 > 0 := by
-  positivity
+  exact div_pos one_pos (pow_pos hε 2)
 
 -- 1/ε² ≥ 1 when 0 < ε ≤ 1
 theorem inv_sq_ge_one (ε : ℝ) (hε : ε > 0) (hε1 : ε ≤ 1) : 1 / ε ^ 2 ≥ 1 := by

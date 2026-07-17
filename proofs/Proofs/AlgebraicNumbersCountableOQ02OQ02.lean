@@ -33,6 +33,7 @@ References:
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
+import Mathlib.Data.Countable.Defs
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
@@ -150,7 +151,7 @@ theorem exclusion (f : ℕ → ℝ) (n : ℕ) :
   by_cases h1 : f n < a_n + d / 3
   · simp [h1]; left; linarith
   · by_cases h2 : f n > a_n + 2 * d / 3
-    · simp [h1, h2]; right; linarith
+    · simp [h1, h2]
     · simp [h1, h2]; left; push_neg at h2; linarith
 
 /-- Left endpoints form a strictly monotone sequence. -/
@@ -207,8 +208,8 @@ theorem limit_gt_a (f : ℕ → ℝ) (n : ℕ) : limitPoint f > a f n := by
 
 /-- The limit point is at most every right endpoint. -/
 theorem limit_le_b (f : ℕ → ℝ) (n : ℕ) : limitPoint f ≤ b f n := by
-  apply csSup_le ⟨a f 0, 0, rfl⟩
-  intro x ⟨m, hm⟩
+  refine csSup_le ⟨a f 0, 0, rfl⟩ ?_
+  rintro x ⟨m, hm⟩
   rw [← hm]
   exact a_le_b_all f m n
 
@@ -252,7 +253,7 @@ theorem reals_uncountable_nested : ¬ Countable ℝ := by
   intro h
   haveI := h
   haveI : Nonempty ℝ := ⟨0⟩
-  obtain ⟨f, hf⟩ := Countable.exists_surjective_nat ℝ ⟨(0 : ℝ)⟩
+  obtain ⟨f, hf⟩ := exists_surjective_nat ℝ
   exact no_surjection_nat_to_real ⟨f, hf⟩
 
 /-

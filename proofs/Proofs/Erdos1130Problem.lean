@@ -46,8 +46,8 @@ noncomputable def lebesgueFunction (P : InterpolationNodes n) (x : ℝ) : ℝ :=
 
 /-- The subinterval endpoints: x₀ = -1, x₁,...,xₙ, x_{n+1} = 1 -/
 noncomputable def subintervalEndpoint (P : InterpolationNodes n) (i : Fin (n + 2)) : ℝ :=
-  if i.val = 0 then -1
-  else if i.val = n + 1 then 1
+  if h0 : i.val = 0 then -1
+  else if h1 : i.val = n + 1 then 1
   else P.nodes ⟨i.val - 1, by omega⟩
 
 /-- The maximum of the Lebesgue function on the i-th subinterval -/
@@ -62,7 +62,7 @@ noncomputable def upsilon (P : InterpolationNodes n) : ℝ :=
 
 /- ## Erdős's Initial Bound -/
 
-/-- Erdős's bound: Υ < √n for all node configurations -/
+/-  Erdős's bound: Υ < √n for all node configurations -/
 /- ## The Logarithmic Bound (PROVED) -/
 
 /-- The optimal bound: Υ ≤ (2/π) log n + O(1).
@@ -73,7 +73,7 @@ axiom logarithmic_bound :
 
 /- ## De Boor–Pinkus Characterization -/
 
-/-- De Boor–Pinkus: the points maximizing Υ equalize the max Lebesgue
+/-  De Boor–Pinkus: the points maximizing Υ equalize the max Lebesgue
     function across all subintervals -/
 /- ## Structural Properties -/
 
@@ -95,7 +95,7 @@ theorem lagrangeBasis_self (P : InterpolationNodes n) (k : Fin n) :
   split_ifs with h
   · rfl
   · have hne : P.nodes k ≠ P.nodes j := fun heq =>
-      h (nodes_injective P heq)
+      h (nodes_injective P heq.symm)
     exact div_self (sub_ne_zero.mpr hne)
 
 /-- l_k(x_j) = 0 for j ≠ k: each basis polynomial vanishes at other nodes. -/
@@ -115,10 +115,10 @@ theorem lebesgue_at_node (P : InterpolationNodes n) (k : Fin n) :
     if j = k then 1 else 0 := by
     intro j; split_ifs with h
     · subst h; simp [lagrangeBasis_self]
-    · simp [lagrangeBasis_other P j k h]
-  simp_rw [heq, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    · simp [lagrangeBasis_other P j k (Ne.symm h)]
+  simp_rw [heq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
-/-- The Lebesgue function is ≥ 1 everywhere on [-1,1]. -/
+/-  The Lebesgue function is ≥ 1 everywhere on [-1,1]. -/
 /- ## Erdős Problem 1130 (PROVED from logarithmic_bound) -/
 
 /-- Erdős Problem 1130 (PROVED): Υ(x₁,...,xₙ) = O(log n).

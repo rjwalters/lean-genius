@@ -24,12 +24,14 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Finset Function Set SimpleGraph
 
 /- ## Trees and Bipartite Graphs -/
 
 /-- A tree is a connected acyclic graph -/
-def IsTree {V : Type*} (G : SimpleGraph V) : Prop :=
+def IsTree549 {V : Type*} (G : SimpleGraph V) : Prop :=
   G.Connected ∧ G.IsAcyclic
 
 /-- A graph is bipartite with parts A and B -/
@@ -44,7 +46,7 @@ structure BipartiteTree (k : ℕ) where
   [finV : Fintype V]
   [decV : DecidableEq V]
   graph : SimpleGraph V
-  isTree : IsTree graph
+  isTree : IsTree549 graph
   partA : Finset V
   partB : Finset V
   disjoint : Disjoint partA partB
@@ -62,10 +64,10 @@ def EdgeTwoColoring (V : Type*) := Sym2 V → Bool
 def HasMonochromaticCopy {V W : Type*} (G : SimpleGraph V) (H : SimpleGraph W)
     (c : EdgeTwoColoring V) (color : Bool) : Prop :=
   ∃ f : W → V, Function.Injective f ∧
-    ∀ u v : W, H.Adj u v → G.Adj (f u) (f v) ∧ c ⟦(f u, f v)⟧ = color
+    ∀ u v : W, H.Adj u v → G.Adj (f u) (f v) ∧ c s(f u, f v) = color
 
 /-- The Ramsey number R(H) for a graph H -/
-def RamseyNumber {W : Type*} (H : SimpleGraph W) : ℕ :=
+noncomputable def RamseyNumber {W : Type*} (H : SimpleGraph W) : ℕ :=
   Nat.find (ramsey_exists H)
 where
   ramsey_exists (H : SimpleGraph W) : ∃ n : ℕ, ∀ c : EdgeTwoColoring (Fin n),
@@ -85,10 +87,10 @@ def IsRamseyNumber {W : Type*} (H : SimpleGraph W) (n : ℕ) : Prop :=
 /- ## Star Graphs -/
 
 /-- The star graph S_n with n leaves (n+1 vertices total) -/
-def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
+def starGraph549 (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj u v := (u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp
+  symm := by constructor; intro u v; tauto
+  loopless := by constructor; intro u; simp
 
 /-- The double star: connect centers of S_k and S_{2k} -/
 def doubleStar (k : ℕ) : SimpleGraph (Fin (3 * k + 2)) where
@@ -100,8 +102,12 @@ def doubleStar (k : ℕ) : SimpleGraph (Fin (3 * k + 2)) where
           (v = 0 ∧ (1 ≤ u.val ∧ u.val ≤ k ∨ u.val = k + 1)) ∨
           (u.val = k + 1 ∧ k + 2 ≤ v.val) ∨
           (v.val = k + 1 ∧ k + 2 ≤ u.val)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; tauto
+  loopless := by
+    constructor
+    intro u h
+    simp only [Fin.ext_iff, Fin.val_zero] at h
+    omega
 
 /-- The double star has 3k + 2 vertices -/
 theorem doubleStar_vertices (k : ℕ) : Fintype.card (Fin (3 * k + 2)) = 3 * k + 2 := by
@@ -111,7 +117,7 @@ theorem doubleStar_vertices (k : ℕ) : Fintype.card (Fin (3 * k + 2)) = 3 * k +
 
 /-- Erdős's original conjecture (now known to be FALSE) -/
 def erdosConjecture549 : Prop :=
-  ∀ k ≥ 1, ∀ T : BipartiteTree k,
+  ∀ k ≥ 1, ∀ T : BipartiteTree.{0} k,
     @RamseyNumber T.V T.graph = 4 * k - 1
 
 /- ## The Counterexample -/
@@ -146,32 +152,35 @@ theorem flag_algebra_upper_bound : ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
 
 /-- The gap between lower and upper bounds is small: 4.2 ≤ best ≤ 4.21526 -/
 theorem bounds_gap : flagAlgebraConstant - norinSunZhaoConstant < 0.02 := by
-  native_decide
+  norm_num [flagAlgebraConstant, norinSunZhaoConstant]
 
 /- ## Special Cases Where Conjecture Holds -/
 
 /-- The path graph P_n -/
-def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
+def pathGraph549 (n : ℕ) : SimpleGraph (Fin n) where
   Adj u v := (u.val + 1 = v.val) ∨ (v.val + 1 = u.val)
-  symm := by intro u v; simp [or_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; tauto
+  loopless := by constructor; intro u; omega
 
-/-- A broom: a path with a star at one end -/
+/-- A broom: a path with a star at one end. The `0 < pathLen` guard on the
+    star-attachment disjuncts avoids a self-loop at vertex 0 when `pathLen = 0`
+    (in that degenerate case `pathLen - 1` truncates to `0`, which would otherwise
+    make the "last path vertex" condition trivially match a star leaf against itself). -/
 def broomGraph (pathLen starSize : ℕ) : SimpleGraph (Fin (pathLen + starSize)) where
   Adj u v := by
     -- Path: 0 -- 1 -- ... -- (pathLen-1)
     -- Star leaves attached to vertex (pathLen-1): pathLen, ..., pathLen+starSize-1
     exact (u.val + 1 = v.val ∧ v.val < pathLen) ∨
           (v.val + 1 = u.val ∧ u.val < pathLen) ∨
-          (u.val = pathLen - 1 ∧ v.val ≥ pathLen) ∨
-          (v.val = pathLen - 1 ∧ u.val ≥ pathLen)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+          (0 < pathLen ∧ u.val = pathLen - 1 ∧ v.val ≥ pathLen) ∨
+          (0 < pathLen ∧ v.val = pathLen - 1 ∧ u.val ≥ pathLen)
+  symm := by constructor; intro u v; tauto
+  loopless := by constructor; intro u; omega
 
 /-- Trees with bounded maximum degree satisfy the conjecture -/
 theorem bounded_degree_conjecture (Δ : ℕ) : ∃ K : ℕ, ∀ k ≥ K,
-    ∀ T : BipartiteTree k,
-      (∀ v, T.graph.degree v ≤ Δ) →
+    ∀ T : BipartiteTree.{0} k,
+      (∀ v, Nat.card (T.graph.neighborSet v) ≤ Δ) →
         @RamseyNumber T.V T.graph = 4 * k - 1 := by
   sorry
 
@@ -197,18 +206,18 @@ theorem lower_bound_construction (k : ℕ) (hk : k ≥ 1) (T : BipartiteTree k) 
 /- ## Related Results -/
 
 /-- For any tree T on n vertices, R(T) ≤ 2n - 2 (Chvátal-Harary) -/
-theorem chvatal_harary {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree T) :
+theorem chvatal_harary {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree549 T) :
     RamseyNumber T ≤ 2 * Fintype.card V - 2 := by
   sorry
 
 /-- Stars have R(S_n) = 2n - 1 -/
 theorem star_ramsey (n : ℕ) (hn : n ≥ 1) :
-    RamseyNumber (starGraph n) = 2 * n - 1 := by
+    RamseyNumber (starGraph549 n) = 2 * n - 1 := by
   sorry
 
 /-- Paths have R(P_n) = n (for n ≥ 2) -/
 theorem path_ramsey (n : ℕ) (hn : n ≥ 2) :
-    RamseyNumber (pathGraph n) = n := by
+    RamseyNumber (pathGraph549 n) = n := by
   sorry
 
 /- ## The Burr-Erdős Conjecture -/
@@ -217,11 +226,20 @@ theorem path_ramsey (n : ℕ) (hn : n ≥ 2) :
 def burrErdosFormula {V : Type*} [Fintype V] (H : SimpleGraph V) (χ : ℕ) : ℕ :=
   (χ - 1) * (Fintype.card V - 1) + 1
 
-/-- For trees, χ = 2, so the formula gives 2|T| - 1 when specialized -/
-theorem tree_burr_erdos {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree T) :
-    burrErdosFormula T 2 = 2 * Fintype.card V - 1 := by
-  simp [burrErdosFormula]
-  ring
+/-- For trees, χ = 2, so the formula gives |T| when specialized: (2-1)(|T|-1)+1 = |T|
+    (using that a tree is nonempty, since `SimpleGraph.Connected` requires `Nonempty V`).
+    NOTE (migration #38611 candidate): the original statement here claimed
+    `burrErdosFormula T 2 = 2 * Fintype.card V - 1`, which is false for `Fintype.card V ≥ 2`
+    (e.g. `V` with 3 elements gives `burrErdosFormula T 2 = 3 ≠ 5`); `ring` cannot actually
+    prove goals involving truncated `Nat` subtraction as ring identities, so the old-toolchain
+    "GREEN" here must have relied on a bug/laxness since fixed in `ring`/`ring_nf`. Corrected
+    to the true value of the formula. -/
+theorem tree_burr_erdos {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree549 T) :
+    burrErdosFormula T 2 = Fintype.card V := by
+  have hne : Nonempty V := hT.1.nonempty
+  have hpos : 0 < Fintype.card V := Fintype.card_pos_iff.mpr hne
+  simp only [burrErdosFormula]
+  omega
 
 /- ## Main Result -/
 

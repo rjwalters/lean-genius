@@ -89,9 +89,8 @@ theorem tendsto_atTop_mul_div_log {c : ℝ} (hc : 0 < c) :
     (Asymptotics.isLittleO_iff.mp Real.isLittleO_log_id_atTop) hε_pos
   -- Transfer to ℕ: eventually log N ≤ ε·N
   have hev_nat : ∀ᶠ N : ℕ in Filter.atTop, Real.log N ≤ ε * N := by
-    apply (hoo.comp tendsto_natCast_atTop_atTop).mono
+    apply (tendsto_natCast_atTop_atTop.eventually hoo).mono
     intro N hN
-    rw [Function.comp_def] at hN
     -- |log N| ≤ ε·|N| = ε·N, and log N ≤ |log N|
     calc Real.log (↑N : ℝ) ≤ |Real.log (↑N : ℝ)| := le_abs_self _
       _ = ‖Real.log (↑N : ℝ)‖ := (Real.norm_eq_abs _).symm
@@ -103,11 +102,11 @@ theorem tendsto_atTop_mul_div_log {c : ℝ} (hc : 0 < c) :
   have hlog_pos : 0 < Real.log N :=
     Real.log_pos (by exact_mod_cast (show 1 < N from by omega))
   -- c·N/log N ≥ c·N/(ε·N) = c/ε = 2·(|b|+1) ≥ b
-  calc b ≤ 2 * (|b| + 1) - 1 := by linarith [le_abs_self b]
-    _ < c / ε := by rw [hε_def]; field_simp; linarith [abs_nonneg b]
+  calc b ≤ 2 * (|b| + 1) - 1 := by linarith [le_abs_self b, abs_nonneg b]
+    _ ≤ c / ε := le_of_lt (by rw [hε_def]; field_simp; linarith [abs_nonneg b])
     _ = c * ↑N / (ε * ↑N) := by field_simp
     _ ≤ c * ↑N / Real.log ↑N :=
-        div_le_div_of_nonneg_left (mul_pos hc hN_pos) hlog_pos hlog_le
+        div_le_div_of_nonneg_left (mul_pos hc hN_pos).le hlog_pos hlog_le
 
 /-- If A has prime-like density, A is infinite.
     If A were finite, countingFn A N ≤ A.ncard (constant), but c·N/log N → ∞. -/

@@ -27,14 +27,19 @@ References:
 Tags: graph-theory, chromatic-number, clique-number, anticomplete, open
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Choose.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos1111
+
+universe u
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -54,7 +59,7 @@ def IsAnticomplete (G : SimpleGraph V) (A B : Finset V) : Prop :=
 χ(G[S]) for a vertex subset S.
 -/
 noncomputable def inducedChromaticNumber (G : SimpleGraph V) (S : Finset V) : ℕ :=
-  (G.induce (S : Set V)).chromaticNumber
+  (G.induce (S : Set V)).chromaticNumber.toNat
 
 /--
 **Clique number:**
@@ -83,14 +88,14 @@ def HasElZaharErdosProperty (t c d : ℕ) : Prop :=
 Minimal d such that the (t, c, d) property holds.
 -/
 noncomputable def d_func (t c : ℕ) : ℕ :=
-  sInf {d | HasElZaharErdosProperty t c d}
+  sInf {d | HasElZaharErdosProperty.{u} t c d}
 
 /--
 **The conjecture:**
 d(t, c) exists (is finite) for all t, c ≥ 1.
 -/
 def ElZaharErdosConjecture : Prop :=
-  ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty t c d
+  ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty.{u} t c d
 
 /-
 ## Part III: Known Small Cases
@@ -125,7 +130,7 @@ d(t, 2) ≤ C(t, 2) + 1 = t(t-1)/2 + 1.
 axiom wagon_1980 :
   ∀ t : ℕ, t ≥ 2 → d_func t 2 ≤ Nat.choose t 2 + 1
 
-/--
+/- 
 **Recursive bound:**
 d(t+1, 2) ≤ d(t, 2) + t.
 -/
@@ -133,7 +138,7 @@ d(t+1, 2) ≤ d(t, 2) + t.
 ## Part V: El Zahar-Erdős Results (1985)
 -/
 
-/--
+/- 
 **Reduction to t ≤ c:**
 El Zahar and Erdős showed it suffices to prove the conjecture when t ≤ c.
 -/
@@ -143,7 +148,7 @@ K₃-free graphs with χ ≥ 8 have anticomplete parts with χ ≥ 3.
 -/
 axiom d_3_3_bound : d_func 3 3 ≤ 8
 
-/--
+/- 
 **General bound for c = 3:**
 d(t, 3) ≤ 2·C(t-1, 3) + 7·C(t-1, 2) + t for t > 3.
 -/
@@ -174,13 +179,13 @@ axiom nguyen_scott_seymour_2024 :
 ## Part VII: Connection to Ramsey Theory
 -/
 
-/--
+/- 
 **Ramsey connection:**
 The problem relates to Ramsey-type questions. High chromatic number with
 bounded clique number forces rich graph structure, analogous to how
 large Ramsey numbers force monochromatic cliques.
 -/
-/--
+/- 
 **χ-boundedness connection:**
 Graphs with ω(G) < t and χ(G) large have special structure.
 The problem asks specifically what anticomplete substructure must appear.

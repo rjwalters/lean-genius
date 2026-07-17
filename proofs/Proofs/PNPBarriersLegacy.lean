@@ -1513,7 +1513,7 @@ The classes MA and AM differ in who speaks first:
 
     A language L is in MA if there exists a probabilistic poly-time verifier V
     such that:
-    - Completeness: x ∈ L ⟹ ∃ proof π. Pr[V(x, π, r) accepts] ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ proof π. Pr(_ : V(x, π, r) accepts) ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ proofs π. Pr[V(x, π, r) accepts] ≤ 1/3
 
     Intuition: Merlin sends a proof, Arthur flips coins and verifies.
@@ -5852,7 +5852,7 @@ def boolFinEncoding : Computability.FinEncoding Bool where
 def MathLibInP (problem : Nat → Bool) : Prop :=
   ∃ (ea : Computability.FinEncoding Nat)
     (eb : Computability.FinEncoding Bool),
-    Nonempty (Turing.TM2ComputableInPolyTime ea eb problem)
+    Nonempty (Turing.TM2ComputableInPolyTime ea.encode eb.encode problem)
 
 /-- MathLib P: the class of all problems computable in polynomial time
     by a concrete TM2 machine -/
@@ -5874,7 +5874,7 @@ def MathLibInNP (problem : Nat → Bool) : Prop :=
     -- Verifier is polynomial-time computable
     (∃ (ea : Computability.FinEncoding (Nat × Nat))
        (eb : Computability.FinEncoding Bool),
-       Nonempty (Turing.TM2ComputableInPolyTime ea eb (Function.uncurry verifier))) ∧
+       Nonempty (Turing.TM2ComputableInPolyTime ea.encode eb.encode (Function.uncurry verifier))) ∧
     -- Completeness: if x is in the language, some witness works
     (∀ x : Nat, problem x = true →
       ∃ y : Nat, (natToBits y).length ≤ poly.eval (natToBits x).length ∧ verifier x y = true) ∧
@@ -11751,7 +11751,7 @@ axiom buhrman_fortnow_thierauf :
 def MA_EXP : Set (Nat → Bool) :=
   { L | ∃ (V : Nat → Nat → Nat → Bool) (p : Polynomial),
     -- V is an exp-time verifier that takes input, proof, and random bits
-    -- x ∈ L ↔ ∃ proof. Pr[V(x, proof, random) = 1] ≥ 2/3
+    -- x ∈ L ↔ ∃ proof. Pr(_ : V(x, proof, random) = 1) ≥ 2/3
     ∀ n, L n = true ↔ ∃ w ≤ 2^(p.eval n), V n w 0 = true }
 
 /-- The circuit lower bound hierarchy:
@@ -14624,7 +14624,7 @@ theorem factoring_not_NP_hard_argument :
 /-- QMA: Quantum Merlin-Arthur (quantum analog of NP).
 
     L ∈ QMA iff there exists a polynomial-time quantum verifier V such that:
-    - x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≥ 2/3
+    - x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr(_ : V(x, |ψ⟩) accepts) ≥ 2/3
     - x ∉ L ⟹ ∀ quantum proofs |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≤ 1/3
 
     Key containments:
@@ -16323,7 +16323,7 @@ theorem self_testing_technique :
 
     A language L is in QMA if there exists a polynomial-time quantum
     verifier V such that:
-    - Completeness: x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr[V(x,|ψ⟩) accepts] ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr(_ : V(x,|ψ⟩) accepts) ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ quantum proofs |ψ⟩, Pr[V(x,|ψ⟩) accepts] ≤ 1/3
 
     Key results:

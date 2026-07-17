@@ -1,7 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Isoperimetric Theorem (Wiedijk #43)
@@ -259,7 +256,7 @@ theorem circle_isOptimal (c : Circle) : IsOptimal c.toCurve := by
   rw [isOptimal_iff_ratio]
   exact circle_achieves_optimal_ratio c
 
-/-- **Characterization of Equality** (Axiomatized)
+/-  **Characterization of Equality** (Axiomatized)
 
 A curve achieves equality in the isoperimetric inequality if and only if
 it is a circle.
@@ -359,9 +356,7 @@ theorem square_suboptimal (sq : Square) :
   rw [square_ratio]
   unfold optimalRatio
   have hpi_pos : 0 < π := Real.pi_pos
-  have hpi_lt : π < 4 := by
-    calc π < 2 * π := by linarith [Real.pi_pos]
-      _ ≤ 4 := by nlinarith [Real.two_le_pi]
+  have hpi_lt : π < 4 := Real.pi_lt_four
   rw [div_lt_div_iff₀ (by linarith : (0 : ℝ) < 16) (by linarith : 0 < 4 * π)]
   nlinarith
 
@@ -443,5 +438,4 @@ end IsoperimetricTheorem
 #check IsoperimetricTheorem.isoperimetric_ratio_bound
 #check IsoperimetricTheorem.circle_achieves_optimal_ratio
 #check IsoperimetricTheorem.circle_isOptimal
-#check IsoperimetricTheorem.equality_iff_circle
 #check IsoperimetricTheorem.square_suboptimal

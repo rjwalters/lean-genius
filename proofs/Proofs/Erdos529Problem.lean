@@ -33,6 +33,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
+set_option autoImplicit true
+
 open Real
 
 namespace Erdos529
@@ -102,7 +104,7 @@ notation "ν_" k => criticalExponent k
 For k ≥ 5, the critical exponent is 1/2 (like simple random walk).
 -/
 theorem meanField_exponent (k : ℕ) (hk : k ≥ 5) : ν_k = 1/2 := by
-  simp only [criticalExponent]
+  skip
   omega
 
 /-
@@ -113,7 +115,7 @@ theorem meanField_exponent (k : ℕ) (hk : k ≥ 5) : ν_k = 1/2 := by
 axiom tendsTo {α : Type*} (f : ℕ → α) (L : α) : Prop
 notation:50 f " → " L " as n → ∞" => tendsTo f L
 
-/--
+/- 
 **Slade's Theorem (1987):**
 For k sufficiently large, d_k(n) ~ D·√n for some constant D > 0.
 
@@ -160,7 +162,7 @@ This doesn't fully answer Question 1, but shows 2D SAW grows slower than linearl
 axiom duminilCopin_subBallistic :
     (fun n => d_2(n) / (n : ℝ)) → (0 : ℝ) as n → ∞
 
-/--
+/- 
 **Conjectured 2D Behavior:**
 d_2(n) ~ D·n^{3/4} for some constant D > 0.
 
@@ -188,14 +190,14 @@ Now believed FALSE for k = 3, 4 (with logarithmic correction for k = 4).
 def question2 (k : ℕ) : Prop :=
   k ≥ 3 → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, d_k(n) ≤ C * n^(1/2 : ℝ)
 
-/--
+/- 
 **Conjectured 3D Behavior:**
 d_3(n) ~ n^ν where ν ≈ 0.588.
 
 This exceeds √n since 0.588 > 0.5, meaning Question 2 is FALSE for k = 3.
 -/
 
-/--
+/- 
 **Conjectured 4D Behavior:**
 d_4(n) ~ D·(log n)^{1/8}·√n.
 
@@ -210,7 +212,7 @@ For k = 3, 4: Conjectured FALSE (anomalous exponents exceed √n).
 axiom question2_high_dim :
     ∀ k : ℕ, k ≥ 5 → question2 k
 
-/--
+/- 
 Conditional refutation: if 3D conjecture holds, Question 2 fails for k = 3.
 -/
 
@@ -227,17 +229,17 @@ d_c = 4 is the dimension above which SAW behaves like simple random walk
 -/
 def upperCriticalDimension : ℕ := 4
 
-/--
+/- 
 **Below Critical Dimension (k < 4):**
 SAW has anomalous scaling with ν > 1/2.
 -/
 
-/--
+/- 
 **Above Critical Dimension (k > 4):**
 SAW has mean-field scaling with ν = 1/2.
 -/
 
-/--
+/- 
 **At Critical Dimension (k = 4):**
 SAW has ν = 1/2 with logarithmic corrections.
 -/

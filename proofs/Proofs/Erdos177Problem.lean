@@ -137,11 +137,11 @@ axiom roth_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ d : ℕ, d ≥ 1 →
       (h d : ℝ) ≥ c * Real.sqrt d
 
-/--
+/- 
 **Beck's upper bound**: h(d) ≤ d^{8+ε}.
 For every ε > 0, there exists a coloring achieving this bound.
 -/
-/--
+/- 
 **Cantor-Erdős-Schreiber-Straus**: h(d) ≤ d! is achievable.
 The earliest quantitative bound.
 -/

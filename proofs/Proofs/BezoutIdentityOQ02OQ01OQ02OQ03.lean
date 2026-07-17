@@ -74,7 +74,7 @@ theorem pid_is_dedekind {R : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealR
     This is the "Krull dimension ≤ 1" condition encoded in `IsDedekindDomain`. -/
 theorem prime_ideal_is_maximal {R : Type*} [CommRing R] [IsDomain R] [IsDedekindDomain R]
     (p : Ideal R) (hp0 : p ≠ ⊥) (hprime : p.IsPrime) : p.IsMaximal :=
-  IsDedekindDomain.dimensionLtOne p hp0 hprime
+  Ideal.IsPrime.isMaximal hprime hp0
 
 -- ============================================================
 -- Part III: ℤ[√-5] — The Classic Non-UFD Dedekind Domain
@@ -93,8 +93,8 @@ theorem norm_nonneg (z : ZSqrtNeg5) : 0 ≤ Zsqrtd.norm z := by
 
 /-- The norm is multiplicative: N(z * w) = N(z) * N(w). -/
 theorem norm_mul_eq (a b : ZSqrtNeg5) :
-    Zsqrtd.norm (a * b) = Zsqrtd.norm a * Zsqrtd.norm b := by
-  simp only [Zsqrtd.norm, Zsqrtd.mul_def]; ring
+    Zsqrtd.norm (a * b) = Zsqrtd.norm a * Zsqrtd.norm b :=
+  Zsqrtd.norm_mul a b
 
 /-- Two distinct element factorizations of 6 in ℤ[√-5]. -/
 theorem two_factorizations_of_6 :
@@ -111,8 +111,8 @@ theorem norm_one_minus : Zsqrtd.norm (⟨1, -1⟩ : ZSqrtNeg5) = 6 := by decide
 private lemma norm_ne_two (z : ZSqrtNeg5) : Zsqrtd.norm z ≠ 2 := by
   rw [norm_formula]; intro h
   have him : z.im = 0 := by
-    by_contra him0; nlinarith [sq_pos_of_ne_zero z.im him0, sq_nonneg z.re]
-  subst him; simp at h
+    by_contra him0; nlinarith [sq_pos_of_ne_zero him0, sq_nonneg z.re]
+  rw [him] at h; simp at h
   -- h : z.re ^ 2 = 2; derive bounds and use interval_cases
   have h1 : z.re ≤ 1 := by nlinarith [sq_nonneg z.re]
   have h2 : -1 ≤ z.re := by nlinarith [sq_nonneg z.re]
@@ -122,29 +122,33 @@ private lemma norm_ne_two (z : ZSqrtNeg5) : Zsqrtd.norm z ≠ 2 := by
 private lemma norm_ne_three (z : ZSqrtNeg5) : Zsqrtd.norm z ≠ 3 := by
   rw [norm_formula]; intro h
   have him : z.im = 0 := by
-    by_contra him0; nlinarith [sq_pos_of_ne_zero z.im him0, sq_nonneg z.re]
-  subst him; simp at h
+    by_contra him0; nlinarith [sq_pos_of_ne_zero him0, sq_nonneg z.re]
+  rw [him] at h; simp at h
   have h1 : z.re ≤ 1 := by nlinarith [sq_nonneg z.re]
   have h2 : -1 ≤ z.re := by nlinarith [sq_nonneg z.re]
   interval_cases z.re <;> simp_all
 
 /-- The re-component of z * conj(z) equals N(z). -/
 private lemma star_mul_re (z : ZSqrtNeg5) :
-    (z * Zsqrtd.star z).re = Zsqrtd.norm z := by
-  simp [Zsqrtd.norm, Zsqrtd.mul_def, Zsqrtd.star]; ring
+    (z * star z).re = Zsqrtd.norm z := by
+  simp only [Zsqrtd.norm_def, Zsqrtd.re_mul, Zsqrtd.re_star, Zsqrtd.im_star]
+  ring
 
 /-- The im-component of z * conj(z) is zero. -/
-private lemma star_mul_im (z : ZSqrtNeg5) : (z * Zsqrtd.star z).im = 0 := by
-  simp [Zsqrtd.mul_def, Zsqrtd.star]
+private lemma star_mul_im (z : ZSqrtNeg5) : (z * star z).im = 0 := by
+  simp only [Zsqrtd.im_mul, Zsqrtd.re_star, Zsqrtd.im_star]
+  ring
 
 /-- Reverse: the re-component of conj(z) * z also equals N(z). -/
 private lemma mul_star_re (z : ZSqrtNeg5) :
-    (Zsqrtd.star z * z).re = Zsqrtd.norm z := by
-  simp [Zsqrtd.norm, Zsqrtd.mul_def, Zsqrtd.star]; ring
+    (star z * z).re = Zsqrtd.norm z := by
+  simp only [Zsqrtd.norm_def, Zsqrtd.re_mul, Zsqrtd.re_star, Zsqrtd.im_star]
+  ring
 
 /-- The im-component of conj(z) * z is zero. -/
-private lemma mul_star_im (z : ZSqrtNeg5) : (Zsqrtd.star z * z).im = 0 := by
-  simp [Zsqrtd.mul_def, Zsqrtd.star]
+private lemma mul_star_im (z : ZSqrtNeg5) : (star z * z).im = 0 := by
+  simp only [Zsqrtd.im_mul, Zsqrtd.re_star, Zsqrtd.im_star]
+  ring
 
 /-- Units of ℤ[√-5] have norm 1, and conversely N = 1 implies unit status.
     Forward: N(z)*N(z⁻¹) = N(z·z⁻¹) = N(1) = 1 → N(z) = 1 (since N ≥ 0).
@@ -152,28 +156,25 @@ private lemma mul_star_im (z : ZSqrtNeg5) : (Zsqrtd.star z * z).im = 0 := by
 theorem isUnit_iff_norm_one (z : ZSqrtNeg5) : IsUnit z ↔ Zsqrtd.norm z = 1 := by
   constructor
   · rintro ⟨⟨a, b, hab, _⟩, rfl⟩
+    show Zsqrtd.norm a = 1
     have hn : Zsqrtd.norm a * Zsqrtd.norm b = 1 := by
       have := congr_arg Zsqrtd.norm hab
       rwa [norm_mul_eq, show Zsqrtd.norm (1 : ZSqrtNeg5) = 1 from by decide] at this
-    have ha := norm_nonneg a; have hb := norm_nonneg b
-    have hbp : 0 < Zsqrtd.norm b := by
-      rcases hb.lt_or_eq with h | h; · exact h; · simp [← h] at hn
-    have hap : 0 < Zsqrtd.norm a := by
-      rcases ha.lt_or_eq with h | h; · exact h; · simp [← h] at hn
-    -- N(a) ≤ 1: from N(a) ≥ 0, N(b) ≥ 1, and N(a)*N(b) = 1 → N(a) ≤ N(a)*N(b) = 1
-    have ha_le : Zsqrtd.norm a ≤ 1 := by
-      nlinarith [mul_le_mul_of_nonneg_left (show (1 : ℤ) ≤ Zsqrtd.norm b from by omega) ha]
-    omega
+    have ha := norm_nonneg a
+    -- N(a) is a unit of ℤ with N(a) * N(b) = 1, so N(a) = ±1; nonnegativity forces N(a) = 1
+    rcases Int.isUnit_iff.mp (IsUnit.of_mul_eq_one _ hn) with h1 | h1
+    · exact h1
+    · omega
   · intro h
-    have hstar : z * Zsqrtd.star z = 1 := by
+    have hstar : z * star z = 1 := by
       apply Zsqrtd.ext
       · rw [star_mul_re, h]; rfl
       · rw [star_mul_im]; rfl
-    have hstar' : Zsqrtd.star z * z = 1 := by
+    have hstar' : star z * z = 1 := by
       apply Zsqrtd.ext
       · rw [mul_star_re, h]; rfl
       · rw [mul_star_im]; rfl
-    exact ⟨⟨z, Zsqrtd.star z, hstar, hstar'⟩, rfl⟩
+    exact ⟨⟨z, star z, hstar, hstar'⟩, rfl⟩
 
 /-- 2 is not a unit in ℤ[√-5] (norm = 4 ≠ 1). -/
 theorem two_not_unit : ¬ IsUnit (2 : ZSqrtNeg5) := by
@@ -187,7 +188,7 @@ theorem two_not_unit : ¬ IsUnit (2 : ZSqrtNeg5) := by
 theorem two_irreducible : Irreducible (2 : ZSqrtNeg5) := by
   refine ⟨two_not_unit, fun a b hab => ?_⟩
   have hnorm : Zsqrtd.norm a * Zsqrtd.norm b = 4 := by
-    rw [← norm_mul_eq, hab, norm_two]
+    rw [← norm_mul_eq, ← hab, norm_two]
   have ha_nn := norm_nonneg a; have hb_nn := norm_nonneg b
   have ha1 : 1 ≤ Zsqrtd.norm a := by
     rcases ha_nn.lt_or_eq with h | h; · omega
@@ -241,7 +242,7 @@ theorem zsqrtneg5_not_ufd : ¬ UniqueFactorizationMonoid ZSqrtNeg5 := by
 -- ============================================================
 
 /-- In a UFD, irreducible elements are prime. -/
-theorem irred_imp_prime_in_ufd {R : Type*} [CancelCommMonoidWithZero R]
+theorem irred_imp_prime_in_ufd {R : Type*} [CommMonoidWithZero R]
     [UniqueFactorizationMonoid R] {p : R} (hp : Irreducible p) : Prime p :=
   UniqueFactorizationMonoid.irreducible_iff_prime.mp hp
 

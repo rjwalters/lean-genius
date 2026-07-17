@@ -31,6 +31,7 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic
+open scoped Classical
 
 namespace Erdos545
 
@@ -94,14 +95,17 @@ def decomposeEdges (m : ℕ) : ℕ × ℕ :=
     where m = C(n,2) + t.
     Axiomatized since the construction depends on decomposing m
     as a binomial plus remainder. -/
-axiom maximallyCompleteGraph (m : ℕ) : Type
+-- (v4.31 migration: the extremal graph cannot be given a fixed carrier type,
+-- so its Ramsey number is axiomatized directly as a ℕ rather than as a 
+-- fed to , which expects a .)
+axiom ramseyNumberMaxGraph (m : ℕ) : ℕ
 
 /-- The conjecture: H maximizes the Ramsey number among graphs with m edges. -/
 def ErdosGrahamConjecture : Prop :=
   ∀ m : ℕ, ∀ G : Type, ∀ [Fintype G] [DecidableEq G],
     ∀ (graph : SimpleGraph G) [DecidableRel graph.Adj],
       edgeCount graph = m → NoIsolatedVertices graph →
-        ramseyNumberGraph graph ≤ ramseyNumberGraph (maximallyCompleteGraph m)
+        ramseyNumberGraph graph ≤ ramseyNumberMaxGraph m
 
 /- ## Part IV: Known Counterexamples -/
 
@@ -111,17 +115,17 @@ def SmallCounterexamples : Set ℕ := {2, 3, 4, 5, 7, 8, 9}
 /-- There exist counterexamples for m in SmallCounterexamples. -/
 axiom counterexamples_exist :
   ∀ m ∈ SmallCounterexamples,
-    ∃ G : Type, ∃ [Fintype G] [DecidableEq G],
-      ∃ (graph : SimpleGraph G) [DecidableRel graph.Adj],
+    ∃ G : Type, ∃ (_ : Fintype G) (_ : DecidableEq G),
+      ∃ (graph : SimpleGraph G) (_ : DecidableRel graph.Adj),
         edgeCount graph = m ∧ NoIsolatedVertices graph ∧
-          ramseyNumberGraph graph > ramseyNumberGraph (maximallyCompleteGraph m)
+          ramseyNumberGraph graph > ramseyNumberMaxGraph m
 
 /-- The corrected conjecture: for sufficiently large m. -/
 def ErdosGrahamConjectureAsymptotic : Prop :=
   ∃ M : ℕ, ∀ m ≥ M, ∀ G : Type, ∀ [Fintype G] [DecidableEq G],
     ∀ (graph : SimpleGraph G) [DecidableRel graph.Adj],
       edgeCount graph = m → NoIsolatedVertices graph →
-        ramseyNumberGraph graph ≤ ramseyNumberGraph (maximallyCompleteGraph m)
+        ramseyNumberGraph graph ≤ ramseyNumberMaxGraph m
 
 /- ## Part V: Sudakov's Upper Bound (Problem #546) -/
 

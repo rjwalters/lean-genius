@@ -34,10 +34,14 @@ References:
 Tags: number-theory, multiplicative-functions, analytic-number-theory, mean-values
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Nat Real BigOperators Finset
 
@@ -65,7 +69,7 @@ def MultPlusMinusOne : Set (ℕ → ℤ) :=
 
 /-- The partial sum ∑_{n≤N} f(n). -/
 noncomputable def partialSum (f : ℕ → ℤ) (N : ℕ) : ℤ :=
-  ∑ n in Finset.range N, f (n + 1)
+  ∑ n ∈ Finset.range N, f (n + 1)
 
 /-- The mean value (1/N) ∑_{n≤N} f(n). -/
 noncomputable def meanValue (f : ℕ → ℤ) (N : ℕ) : ℝ :=
@@ -81,14 +85,14 @@ def HasConvergentMean (f : ℕ → ℤ) : Prop :=
 
 /-- The Liouville function λ(n) = (-1)^Ω(n) where Ω counts prime factors with multiplicity. -/
 def liouville (n : ℕ) : ℤ :=
-  if n = 0 then 0 else (-1) ^ (Nat.factors n).length
+  if n = 0 then 0 else (-1) ^ (Nat.primeFactorsList n).length
 
 /-- The Möbius function μ restricted to squarefree numbers gives ±1. -/
 def mobiusSign (n : ℕ) : ℤ :=
   if n = 0 then 0
   else if n = 1 then 1
   else if ¬Squarefree n then 0
-  else (-1) ^ (Nat.factors n).length
+  else (-1) ^ (Nat.primeFactorsList n).length
 
 /-- Liouville function is multiplicative. -/
 axiom liouville_multiplicative : IsMultiplicative liouville
@@ -113,7 +117,7 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
     (h : IsCompletelyMultiplicative f) : IsMultiplicative f :=
   ⟨h.1, fun m n _ => h.2 m n⟩
 
-/-- A completely multiplicative ±1 function is determined by its values on primes.
+/-  A completely multiplicative ±1 function is determined by its values on primes.
     Proof sketch: Every n ≥ 1 factors as n = p₁^{a₁} ... pₖ^{aₖ}.
     By complete multiplicativity, f(n) = f(p₁)^{a₁} ... f(pₖ)^{aₖ}.
     Since f agrees with g on primes, f(n) = g(n) by induction on Ω(n). -/
@@ -125,14 +129,14 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
 noncomputable def powerI (n : ℕ) : ℂ :=
   if n = 0 then 0 else Complex.exp (Complex.I * Real.log n)
 
-/-- n^i is multiplicative (as a complex function). -/
-/-- |n^i| = 1 for all n ≥ 1 (values on unit circle). -/
+/-  n^i is multiplicative (as a complex function). -/
+/-  |n^i| = 1 for all n ≥ 1 (values on unit circle). -/
 /-- **Wintner-Rényi Counterexample:**
     The function n^i does NOT have a convergent mean.
     This shows the restriction to {-1, 1} is essential. -/
 axiom wintner_renyi_counterexample :
     ¬∃ L : ℂ, ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      Complex.abs ((∑ n in Finset.range N, powerI (n + 1)) / N - L) < ε
+      Complex.abs ((∑ n ∈ Finset.range N, powerI (n + 1)) / N - L) < ε
 
 /-
 ## Part VI: Wirsing's Theorem (1967)
@@ -176,7 +180,7 @@ axiom halasz_characterization (f : ℕ → ℤ)
     ∃ L : ℝ, (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, |meanValue f N - L| < ε) ∧
       (L = 0 ↔ ∀ B > 0, ∃ S : Finset ℕ,
         (∀ p ∈ S, p.Prime) ∧
-        (∑ p in S, (1 - f p : ℝ) / p) > B)
+        (∑ p ∈ S, (1 - f p : ℝ) / p) > B)
 
 /-
 ## Part VIII: The Constant Function
@@ -203,8 +207,7 @@ theorem constOne_in_mult_pm : constOne ∈ MultPlusMinusOne :=
 /-- The mean of the constant 1 function is 1. -/
 theorem constOne_mean (N : ℕ) (hN : N ≥ 1) : meanValue constOne N = 1 := by
   simp [meanValue, partialSum, constOne]
-  field_simp
-  ring
+  omega
 
 /-
 ## Part IX: The Liouville Function Mean
@@ -231,12 +234,12 @@ theorem liouville_limit_zero :
 ## Part X: Connection to Prime Distribution
 -/
 
-/-- **Mean-to-PNT Connection:**
+/-  **Mean-to-PNT Connection:**
     For the Liouville function:
     meanValue λ N → 0  is equivalent to the Prime Number Theorem.
 
     The rate of convergence determines the error term in PNT. -/
-/-- The Riemann Hypothesis is equivalent to a specific rate of convergence. -/
+/-  The Riemann Hypothesis is equivalent to a specific rate of convergence. -/
 /-
 ## Part XI: Summary
 -/

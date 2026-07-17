@@ -1,0 +1,61 @@
+===== BernoulliInequalityOQ01OQ02
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:141:24: Application type mismatch: The argument
+  n
+has type
+===== BertrandsPostulateOQ03OQ04OQ01
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:205:37: Application type mismatch: The argument
+  x
+has type
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:215:55: Application type mismatch: The argument
+  hx1
+has type
+===== BorsukUlamOQ03OQ02
+error: Proofs/BorsukUlamOQ03OQ02.lean:99:2: Type mismatch
+  this
+has type
+===== BoundedPrimeGapsOQ04OQ01
+error: Proofs/BoundedPrimeGapsOQ04OQ01.lean:211:36: Application type mismatch: The argument
+  i
+has type
+===== Erdos950Problem
+error: Proofs/Erdos950Problem.lean:135:2: 'calc' expression has type
+  (0 : ℕ) < ∑ p ∈ primesLessThan n, 1 / (n - p)
+but is expected to have type
+===== LagrangeTheoremOQ05
+error: Proofs/LagrangeTheoremOQ05.lean:35:14: Unknown constant `Nat.card_eq_fintypeCard`
+error: Proofs/LagrangeTheoremOQ05.lean:35:2: Type mismatch: After simplification, term
+  Subgroup.card_subgroup_dvd_card H
+error: Proofs/LagrangeTheoremOQ05.lean:35:2: Type mismatch: After simplification, term
+  Subgroup.card_subgroup_dvd_card H
+ has type
+error: Proofs/LagrangeTheoremOQ05.lean:41:14: Unknown constant `Nat.card_eq_fintypeCard`
+error: Proofs/LagrangeTheoremOQ05.lean:41:2: Type mismatch: After simplification, term
+  Subgroup.card_eq_card_quotient_mul_card_subgroup H
+error: Proofs/LagrangeTheoremOQ05.lean:41:2: Type mismatch: After simplification, term
+  Subgroup.card_eq_card_quotient_mul_card_subgroup H
+ has type
+===== LawOfCosines
+error: Proofs/LawOfCosines.lean:163:2: linarith failed to find a contradiction
+case h1
+t : Triangle
+===== LawOfCosinesOQ01OQ01OQ03
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:256:49: unsolved goals
+A B C : Fin 3 → ℝ
+hA : IsUnit3 A
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:258:49: unsolved goals
+A B C : Fin 3 → ℝ
+hA : IsUnit3 A
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:266:6: linarith failed to find a contradiction
+case «0».h1
+A B C : Fin 3 → ℝ
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:266:6: linarith failed to find a contradiction
+case «1».h1
+A B C : Fin 3 → ℝ
+===== LawOfCosinesOQ04OQ01
+error: Proofs/LawOfCosinesOQ04OQ01.lean:163:2: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : NormedAddCommGroup V
+===== LawOfCosinesOQ04OQ01Bisector
+error: Proofs/LawOfCosinesOQ04OQ01.lean:163:2: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : NormedAddCommGroup V

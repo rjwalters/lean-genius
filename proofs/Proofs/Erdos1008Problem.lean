@@ -301,7 +301,7 @@ theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj]
     (2 : ℝ) * (Fintype.card V : ℝ) * (G.edgeFinset.card : ℝ) := by
   set n := (Fintype.card V : ℝ)
   set m := (G.edgeFinset.card : ℝ)
-  -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) in ℝ
+  -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) ∈ ℝ
   have hcherry_real : ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤ n * (n - 1) := by
     have hnat := cherry_count_nat G hfree
     show ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤
@@ -343,8 +343,8 @@ private def KB (p q : ℕ) : SimpleGraph (Fin p ⊕ Fin q) where
   Adj := fun
     | .inl _, .inr _ | .inr _, .inl _ => True
     | _, _ => False
-  symm u v := by cases u <;> cases v <;> simp
-  loopless v := by cases v <;> simp
+  symm.symm u v := by cases u <;> cases v <;> simp
+  loopless.irrefl v := by cases v <;> simp
 
 private instance kbDecRel (p q : ℕ) : DecidableRel (KB p q).Adj :=
   fun u v => by unfold KB; cases u <;> cases v <;> simp <;> exact inferInstance

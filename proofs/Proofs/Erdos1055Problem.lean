@@ -154,21 +154,21 @@ theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
     exact ⟨hq_in_pfl, by simp [hq2, hq3]⟩
   -- Unfold primeClass p to expose the 1 + foldl structure
   show primeClass q < primeClass p
-  unfold primeClass
-  simp only [hp, dite_true]
   -- Show nonSmooth is nonempty
   have h_not_empty : ((p + 1).primeFactorsList.dedup.filter
       (fun r => r != 2 && r != 3)).isEmpty = false := by
     cases hlist : (p + 1).primeFactorsList.dedup.filter (fun r => r != 2 && r != 3) with
     | nil => simp [hlist] at hq_in_ns
     | cons _ _ => rfl
-  simp only [h_not_empty, ite_false]
-  -- The foldl includes a `have` proof term; use `change` (definitional equality)
-  -- to replace with the simpler form that matches our helper lemma
   set ns := (p + 1).primeFactorsList.dedup.filter (fun r => r != 2 && r != 3) with hns
-  change primeClass q < 1 + ns.attach.foldl (fun acc y => max acc (primeClass y.val)) 0
-  have h_bound := foldl_max_ge_of_mem (List.mem_attach ns ⟨q, hns ▸ hq_in_ns⟩)
-    (fun y => primeClass y.val) 0
+  -- Unfold ONLY primeClass p (the RHS) to expose the 1 + foldl structure
+  have hpeq : primeClass p = 1 + ns.attach.foldl (fun acc y => max acc (primeClass y.val)) 0 := by
+    conv_lhs => rw [primeClass]
+    simp only [hp, dite_true, ← hns, h_not_empty, Bool.false_eq_true, if_false]
+    rfl
+  rw [hpeq]
+  have h_bound : ns.attach.foldl (fun acc y => max acc (primeClass y.val)) 0 ≥ primeClass q :=
+    foldl_max_ge_of_mem (List.mem_attach ns ⟨q, hns ▸ hq_in_ns⟩) (fun y => primeClass y.val) 0
   omega
 
 theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :

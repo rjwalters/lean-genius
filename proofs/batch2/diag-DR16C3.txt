@@ -1,0 +1,52 @@
+===== AngleTrisectionOQ03
+error: Proofs/AngleTrisectionOQ03.lean:47:63: Application type mismatch: The argument
+  h
+has type
+error: Proofs/AngleTrisectionOQ03.lean:49:20: unsolved goals
+m : ℕ
+ih : ∀ {d : ℕ}, 0 < d → d ∣ 2 ^ m → ∃ k, d = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:95:18: unsolved goals
+d : ℕ
+ih : ∀ m < d, 0 < m → (∀ (p : ℕ), Nat.Prime p → p ∣ m → p = 2) → ∃ k, m = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:120:19: unsolved goals
+d : ℕ
+hd : d = 0
+===== AngleTrisectionOQ03OQ01
+error: Proofs/AngleTrisectionOQ03.lean:47:63: Application type mismatch: The argument
+  h
+has type
+error: Proofs/AngleTrisectionOQ03.lean:49:20: unsolved goals
+m : ℕ
+ih : ∀ {d : ℕ}, 0 < d → d ∣ 2 ^ m → ∃ k, d = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:95:18: unsolved goals
+d : ℕ
+ih : ∀ m < d, 0 < m → (∀ (p : ℕ), Nat.Prime p → p ∣ m → p = 2) → ∃ k, m = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:120:19: unsolved goals
+d : ℕ
+hd : d = 0
+===== AngleTrisectionOQ03OQ02
+error: Proofs/AngleTrisectionOQ03.lean:47:63: Application type mismatch: The argument
+  h
+has type
+error: Proofs/AngleTrisectionOQ03.lean:49:20: unsolved goals
+m : ℕ
+ih : ∀ {d : ℕ}, 0 < d → d ∣ 2 ^ m → ∃ k, d = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:95:18: unsolved goals
+d : ℕ
+ih : ∀ m < d, 0 < m → (∀ (p : ℕ), Nat.Prime p → p ∣ m → p = 2) → ∃ k, m = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:120:19: unsolved goals
+d : ℕ
+hd : d = 0
+===== AngleTrisectionOQ03OQ02OQ03
+error: Proofs/AngleTrisectionOQ03.lean:47:63: Application type mismatch: The argument
+  h
+has type
+error: Proofs/AngleTrisectionOQ03.lean:49:20: unsolved goals
+m : ℕ
+ih : ∀ {d : ℕ}, 0 < d → d ∣ 2 ^ m → ∃ k, d = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:95:18: unsolved goals
+d : ℕ
+ih : ∀ m < d, 0 < m → (∀ (p : ℕ), Nat.Prime p → p ∣ m → p = 2) → ∃ k, m = 2 ^ k
+error: Proofs/AngleTrisectionOQ03.lean:120:19: unsolved goals
+d : ℕ
+hd : d = 0

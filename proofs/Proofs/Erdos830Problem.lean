@@ -79,13 +79,13 @@ The main questions of Problem #830 remain open:
 2. Does A(x) grow faster than x^{1-ε} for all ε > 0?
 -/
 
-/-- **Erdős Problem #830, Part 1** (OPEN)
+/-  **Erdős Problem #830, Part 1** (OPEN)
 
 Are there infinitely many amicable pairs?
 
 This ancient question remains unsolved. While many amicable pairs
 have been found computationally, no proof of infinitude exists. -/
-/-- **Erdős Problem #830, Part 2** (OPEN)
+/-  **Erdős Problem #830, Part 2** (OPEN)
 
 Is A(x) > x^{1-o(1)}? That is, does the count of amicable pairs up to x
 grow nearly as fast as x itself?
@@ -99,15 +99,15 @@ While the lower bound questions are open, significant progress has
 been made on upper bounds for A(x).
 -/
 
-/-- **Erdős Upper Bound** (1955)
+/-  **Erdős Upper Bound** (1955)
 
 A(x) = o(x): the count of amicable pairs grows slower than linearly.
 This was the first non-trivial upper bound. -/
-/-- **Pomerance Upper Bound** (1981)
+/-  **Pomerance Upper Bound** (1981)
 
 A(x) ≤ x · exp(-(log x)^{1/3}) for large x.
 A significant improvement over the Erdős bound. -/
-/-- **Pomerance Improved Upper Bound** (2015)
+/-  **Pomerance Improved Upper Bound** (2015)
 
 A(x) ≤ x · exp(-(1/2 + o(1))√(log x · log log x)) for large x.
 The current best known upper bound. -/

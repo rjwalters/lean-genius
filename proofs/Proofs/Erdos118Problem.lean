@@ -17,10 +17,7 @@ The problem was posed by Erdős and Hajnal. Partition ordinals satisfying
 Reference: https://erdosproblems.com/118
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Ordinal.Exponential
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -99,9 +96,9 @@ theorem partition_transition_exists (α : Ordinal.{0}) (k m : ℕ)
     (hk : IsPartitionOrd α k) (hm : ¬ IsPartitionOrd α m) (hkm : k < m) :
     ∃ t, k ≤ t ∧ t < m ∧ IsPartitionOrd α t ∧ ¬ IsPartitionOrd α (t + 1) := by
   revert k
-  induction m using Nat.strong_rec_on with
+  induction m using Nat.strongRecOn with
   | _ m ih =>
-    intro k hk hm hkm
+    intro k hk hkm
     by_cases hm1 : IsPartitionOrd α (m - 1)
     · -- Transition at t = m-1: holds at m-1, fails at (m-1)+1 = m
       refine ⟨m - 1, by omega, by omega, hm1, ?_⟩
@@ -111,7 +108,7 @@ theorem partition_transition_exists (α : Ordinal.{0}) (k m : ℕ)
         by_contra h; push_neg at h
         exact hm1 (partition_monotone_down α k (m - 1) h hk)
       obtain ⟨t, ht1, ht2, ht3, ht4⟩ :=
-        ih (m - 1) (Nat.sub_lt (by omega) one_pos) k hk hm1 hkm1
+        ih (m - 1) (Nat.sub_lt (by omega) one_pos) hm1 k hk hkm1
       exact ⟨t, ht1, by omega, ht3, ht4⟩
 
 /- ## Known Thresholds -/

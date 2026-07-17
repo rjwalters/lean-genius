@@ -27,6 +27,7 @@
 
 import Mathlib
 import Proofs.GraphCore
+open scoped Classical
 
 namespace Erdos641
 
@@ -49,10 +50,11 @@ The structures the conjecture concerns.
 
 /-- A cycle in G is a closed path with no repeated vertices except endpoints. -/
 def IsCycle (G : SimpleGraph V) (vs : List V) : Prop :=
-  vs.length ≥ 3 ∧
+  ∃ hlen : vs.length ≥ 3,
   vs.Nodup ∧
-  (∀ i : ℕ, i + 1 < vs.length → G.Adj (vs.get ⟨i, by omega⟩) (vs.get ⟨i + 1, by omega⟩)) ∧
-  G.Adj (vs.getLast (by omega)) (vs.head (by omega))
+  (∀ i : ℕ, (hi : i + 1 < vs.length) →
+    G.Adj (vs.get ⟨i, by omega⟩) (vs.get ⟨i + 1, hi⟩)) ∧
+  G.Adj (vs.getLast (by rintro rfl; simp at hlen)) (vs.head (by rintro rfl; simp at hlen))
 
 /-- Two cycles are edge-disjoint if they share no edges. -/
 def EdgeDisjointCycles (G : SimpleGraph V) (c1 c2 : List V) : Prop :=
@@ -124,7 +126,7 @@ def Case_k_2 : Prop :=
       chromaticNumber G ≥ f 2 →
       ∃ S : Finset V, HasRegularSubgraph G 4 S
 
-/-- The k = 2 case is FALSE. -/
+/-  The k = 2 case is FALSE. -/
 /-
 ## Part VI: The Janzer-Steiner-Sudakov Counterexample
 
@@ -141,10 +143,10 @@ axiom jss_counterexample :
         ¬∃ S : Finset (Fin n), HasRegularSubgraph G 4 S
 
 /-- The chromatic number lower bound achieved. -/
-def jss_chromatic_bound (n : ℕ) : ℕ :=
+noncomputable def jss_chromatic_bound (n : ℕ) : ℕ :=
   Nat.floor (Real.log (Real.log n) / Real.log (Real.log (Real.log n)))
 
-/-- The JSS graphs have no 4-regular subgraph. -/
+/-  The JSS graphs have no 4-regular subgraph. -/
 /-
 ## Part VII: The Main Disproof
 
@@ -170,9 +172,9 @@ theorem erdos_641 : ¬ErdosHajnalConjecture :=
 What IS true about chromatic number and substructures.
 -/
 
-/-- High χ implies long odd cycles (Erdős). -/
-/-- High χ implies high clique number or high odd girth (Gyárfás). -/
-/-- Triangle-free graphs have χ = O(√(n / log n)) (Kim). -/
+/-  High χ implies long odd cycles (Erdős). -/
+/-  High χ implies high clique number or high odd girth (Gyárfás). -/
+/-  Triangle-free graphs have χ = O(√(n / log n)) (Kim). -/
 /-
 ## Part IX: Related Conjectures
 
@@ -200,8 +202,8 @@ def ReedConjecture : Prop :=
 How JSS built their counterexample.
 -/
 
-/-- The JSS construction uses random graphs with constraints. -/
-/-- Key lemma: Removing few edges preserves high χ. -/
+/-  The JSS construction uses random graphs with constraints. -/
+/-  Key lemma: Removing few edges preserves high χ. -/
 /-
 ## Part XI: Main Result
 

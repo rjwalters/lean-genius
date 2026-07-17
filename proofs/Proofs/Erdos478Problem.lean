@@ -57,7 +57,7 @@ theorem factorial_residues_nonzero (p : ℕ) [hp : Fact (Nat.Prime p)] (hp2 : p 
   have := (Nat.Prime.dvd_factorial hp.out).mp heq
   omega
 
-/-- Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
+/-  Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
 /- ## Ratio Set Identity -/
 
 /-- The ratio set A_p / A_p covers all nonzero residues modulo p.
@@ -78,17 +78,20 @@ theorem ratio_set_full (p : ℕ) [hp : Fact (Nat.Prime p)] :
   refine ⟨(k.factorial : ZMod p), ((k - 1).factorial : ZMod p), ?_, ?_, ?_⟩
   · -- k! ∈ factorialResidueSet p: k! = ((k-1)+1)! with k-1 ∈ range(p-1)
     simp only [factorialResidueSet, Finset.mem_image, Finset.mem_range]
-    exact ⟨k - 1, by omega, by congr 1; omega⟩
+    exact ⟨k - 1, by omega, by congr 2; omega⟩
   · -- (k-1)! ∈ factorialResidueSet p
     simp only [factorialResidueSet, Finset.mem_image, Finset.mem_range]
-    rcases Nat.eq_or_gt_of_le hk_pos with rfl | hk2
-    · exact ⟨0, by omega, by simp⟩  -- k=1: 0! = 1 = 1!
-    · exact ⟨k - 2, by omega, by congr 1; omega⟩  -- k≥2: (k-1)! = ((k-2)+1)!
+    rcases Nat.eq_or_lt_of_le hk_pos with heq1 | hk2
+    · -- k = 1 case (heq1 : 1 = k); k is `set`-bound so `rfl`/`subst` can't fire
+      refine ⟨0, by omega, ?_⟩
+      have hk1 : k - 1 = 0 := by omega
+      rw [hk1]; rfl
+    · exact ⟨k - 2, by omega, by congr 2; omega⟩  -- k≥2: (k-1)! = ((k-2)+1)!
   · -- k! = r * (k-1)! in ZMod p
     have hfact : k.factorial = k * (k - 1).factorial := by
       rw [show k = (k - 1) + 1 from by omega]; exact Nat.factorial_succ (k - 1)
     have hcast : (k : ZMod p) = r := by
-      rw [hk_def]; exact (ZMod.natCast_val r).symm
+      rw [hk_def]; exact ZMod.natCast_zmod_val r
     push_cast [hfact]; rw [hcast]
 
 /-- Lower bound from ratio set: |A_p|² ≥ p - 1.
@@ -101,9 +104,13 @@ theorem factorial_residue_sqrt_lower (p : ℕ) [hp : Fact (Nat.Prime p)] :
   have hp_prime := hp.out
   -- Reduce to natural number inequality m² ≥ p - 1
   suffices h : p - 1 ≤ m * m by
-    have : (m : ℝ) ^ 2 = (m : ℝ) * (m : ℝ) := sq m
-    rw [this, ← Nat.cast_mul]
-    linarith [Nat.cast_le.mpr h]
+    have hcount : factorialResidueCount p = m := by rw [hm_def, hA_def]; rfl
+    have hp1 : (1 : ℕ) ≤ p := hp_prime.one_lt.le
+    have hsub : ((p - 1 : ℕ) : ℝ) = (p : ℝ) - 1 := by
+      rw [Nat.cast_sub hp1]; norm_num
+    have hcast : ((p - 1 : ℕ) : ℝ) ≤ ((m * m : ℕ) : ℝ) := by exact_mod_cast h
+    rw [hcount, pow_two, ← Nat.cast_mul]
+    linarith [hcast, hsub]
   -- 0 ∉ A: for k < p-1, p ∤ (k+1)! since all factors < p
   have h0 : (0 : ZMod p) ∉ A := by
     intro hmem
@@ -131,14 +138,14 @@ theorem factorial_residue_sqrt_lower (p : ℕ) [hp : Fact (Nat.Prime p)] :
 
 /- ## Improved Lower Bound (GSSV 2024) -/
 
-/-- The product set A_p · A_p has near-full size (2024 result). -/
+/-  The product set A_p · A_p has near-full size (2024 result). -/
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
+/-  **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
     More precisely, |A_p| / p → (1 - 1/e) as p → ∞ through primes. -/
 /- ## Heuristic Motivation -/
 
-/-- The 1 - 1/e heuristic: if factorial residues behaved like random elements
+/-  The 1 - 1/e heuristic: if factorial residues behaved like random elements
     of Z/pZ, each new k! mod p independently hits a new residue with probability
     (p - |current set|)/p. After p-1 steps this gives expected coverage
     p · (1 - (1 - 1/p)^(p-1)) ≈ p · (1 - 1/e). -/

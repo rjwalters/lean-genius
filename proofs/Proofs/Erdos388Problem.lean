@@ -29,9 +29,9 @@ to the Brocard–Ramanujan problem and Erdős–Selfridge theorem.
 *Reference:* [erdosproblems.com/388](https://www.erdosproblems.com/388)
 -/
 
+import Mathlib
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Finset.LocallyFinite
 
 open Finset BigOperators
 
@@ -61,7 +61,7 @@ def equalProductSolutions : Set EqualProductSolution :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #388 (Open).**
+/-  **Erdős Problem #388 (Open).**
 There are only finitely many solutions to
   ∏_{i=1}^{k₁} (m₁+i) = ∏_{j=1}^{k₂} (m₂+j)
 with k₁, k₂ > 3 and m₁ + k₁ ≤ m₂. -/
@@ -79,13 +79,13 @@ structure ProportionalProductSolution (a b : ℕ) where
   disjoint : m₁ + k₁ ≤ m₂
   proportional : a * consecutiveProduct m₁ k₁ = b * consecutiveProduct m₂ k₂
 
-/-- **Generalized Conjecture.**
+/-  **Generalized Conjecture.**
 For fixed nonzero a, b and k₁ > 2, the equation
   a · ∏(m₁+i) = b · ∏(m₂+j)
 has only finitely many solutions. -/
 /- ## Related Classical Results -/
 
-/-- **Erdős–Selfridge (1975).** A product of two or more consecutive
+/-  **Erdős–Selfridge (1975).** A product of two or more consecutive
 positive integers is never a perfect power.
 That is, (m+1)(m+2)···(m+k) ≠ nʳ for k ≥ 2 and r ≥ 2. -/
 /-- The product of consecutive integers connects to factorials:
@@ -101,8 +101,9 @@ theorem consecutiveProduct_eq_factorial_ratio (m k : ℕ) :
       ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega]
     rw [Finset.prod_insert (by simp only [Finset.mem_Icc]; omega)]
     rw [show m + (n + 1) = m + n + 1 from by omega]
-    rw [mul_comm (m + n + 1), mul_assoc, ih]
-    rw [show m + (n + 1) = (m + n) + 1 from by omega, Nat.factorial_succ]
+    rw [show ((m + n + 1) * ∏ x ∈ Finset.Icc 1 n, (m + x)) * m.factorial
+        = ((∏ x ∈ Finset.Icc 1 n, (m + x)) * m.factorial) * (m + n + 1) from by ring,
+      ih, Nat.factorial_succ]
     ring
 
 /-- **Trivial family.** If k₁ = k₂ and m₁ = m₂ then the products are

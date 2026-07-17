@@ -179,12 +179,12 @@ theorem lebesgueConstantOnInterval_affine_invariant (n : ℕ) (nodes : Fin n →
     · -- -1 ≤ invAffineMap a b t
       unfold invAffineMap
       have hba : 0 < b - a := by linarith
-      rw [le_div_iff hba]
+      rw [le_div_iff₀ hba]
       linarith
     · -- invAffineMap a b t ≤ 1
       unfold invAffineMap
       have hba : 0 < b - a := by linarith
-      rw [div_le_iff hba]
+      rw [div_le_iff₀ hba]
       linarith
     · -- y = LebesgueFunction nodes (invAffineMap a b t)
       rw [hy, ← lebesgueFunction_affine_invariant a b hab nodes (invAffineMap a b t),
@@ -218,10 +218,8 @@ For small n, we can write out the Chebyshev nodes explicitly.
 theorem chebyshev_one_midpoint (a b : ℝ) (hab : a < b) :
     chebyshevNodesAB 1 (by omega) a b ⟨0, by omega⟩ = (a + b) / 2 := by
   unfold chebyshevNodesAB transformNodes chebyshevNodes affineMap
-  simp
-  rw [show (2 * (0 + 1) - 1 : ℝ) * π / (2 * 1) = π / 2 from by ring]
-  rw [cos_pi_div_two]
-  ring
+  -- The node argument reduces to `π/2`, whose cosine is `0`, leaving the midpoint.
+  norm_num [Real.cos_pi_div_two]
 
 /-- For n=2: the two Chebyshev nodes on [a,b] are at the quarter points
     (a+b)/2 ± (b-a)/(2√2). -/
@@ -229,8 +227,8 @@ theorem chebyshev_two_formula (a b : ℝ) (hab : a < b) :
     chebyshevNodesAB 2 (by omega) a b ⟨0, by omega⟩ =
     (b - a) / 2 * cos (π / 4) + (a + b) / 2 := by
   unfold chebyshevNodesAB transformNodes chebyshevNodes affineMap
-  simp
-  ring
+  -- The node argument reduces to `π/4`; the affine map then gives the stated formula.
+  norm_num
 
 /-
 ## Part VI: Summary

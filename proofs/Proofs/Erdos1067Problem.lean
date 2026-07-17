@@ -25,9 +25,7 @@ Related: Problem #1068
 Original: Erdős-Hajnal (1966)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib
 
 open Cardinal SimpleGraph
 
@@ -40,8 +38,8 @@ namespace Erdos1067
 The minimum number of colors needed to properly color a graph.
 For infinite graphs, this is a cardinal.
 -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : Cardinal :=
-  sInf { κ : Cardinal | ∃ (c : V → κ), G.Colorable κ.toPartENat.toNat }
+noncomputable def chromaticNumber (G : SimpleGraph V) : Cardinal.{0} :=
+  sInf { κ : Cardinal.{0} | ∃ (c : V → κ.out), G.Colorable κ.toNat }
 
 /--
 **Has Chromatic Number ℵ₁:**
@@ -58,7 +56,7 @@ A finite sequence of vertices where consecutive vertices are adjacent.
 -/
 structure PathInGraph (G : SimpleGraph V) where
   vertices : List V
-  isPath : ∀ i, i + 1 < vertices.length →
+  isPath : ∀ i (hi : i + 1 < vertices.length),
     G.Adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
 
 /--
@@ -123,7 +121,7 @@ def ErdosHajnalQuestion (G : SimpleGraph V) : Prop :=
 
 /- ## Part V: The Main Results - Counterexamples -/
 
-/--
+/- 
 **Komjáth's Consistency Result (2013):**
 It is consistent with ZFC that there exists a counterexample.
 -/
@@ -147,7 +145,7 @@ axiom bowler_pitz_counterexample_2024 :
       ∀ H : SimpleGraph V, IsSubgraph H G →
         InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
 
-/--
+/- 
 **Thomassen's Edge-Connectivity Counterexample (2017):**
 For the edge-connectivity variant, a counterexample also exists.
 -/
@@ -160,13 +158,13 @@ The graph has exactly ℵ₁ many vertices.
 def hasAleph1Vertices (V : Type*) : Prop :=
   Cardinal.mk V = Cardinal.aleph 1
 
-/-- **Komjáth's Independence Result:**
+/-  **Komjáth's Independence Result:**
 For graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is
 independent of ZFC: counterexamples exist in some models but not others.
 We axiomatize one direction (consistency of counterexample). -/
 /- ## Part VII: Key Observations -/
 
-/-- **Soukup's construction principle:**
+/-  **Soukup's construction principle:**
 One can build a graph from "ladder" structures of trees where
 the overall graph needs ℵ₁ colors but any infinitely connected
 piece can be colored with fewer colors. -/

@@ -46,8 +46,7 @@ lemma hasDerivAt_kernel (a b x : ℝ) :
   have h : HasDerivAt (fun x => (x - a) * (x - b)) (1 * (x - b) + (x - a) * 1) x :=
     ((hasDerivAt_id x).sub_const a).mul ((hasDerivAt_id x).sub_const b)
   have h2 := h.div_const 2
-  convert h2 using 1
-  ring
+  convert h2 using 1 <;> (first | rfl | ring)
 
 /-- Derivative of the linear factor `(2x - a - b)/2`, which is the constant `1`. -/
 lemma hasDerivAt_kernelDeriv (a b x : ℝ) :
@@ -56,8 +55,7 @@ lemma hasDerivAt_kernelDeriv (a b x : ℝ) :
     have := ((hasDerivAt_id x).const_mul 2).sub_const a |>.sub_const b
     simpa using this
   have h2 := h.div_const 2
-  convert h2 using 1
-  norm_num
+  convert h2 using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
 
 /-- Continuity of `f` from twice differentiability everywhere. -/
 private lemma continuous_of_hasDerivAt (hf : ∀ x, HasDerivAt f (f' x) x) :

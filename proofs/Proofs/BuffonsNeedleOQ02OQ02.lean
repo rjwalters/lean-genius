@@ -1,6 +1,8 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
@@ -85,9 +87,10 @@ theorem arcLength3D_add (γ : ℝ → ℝ × ℝ × ℝ) (a b c : ℝ)
       (deriv (Prod.snd ∘ Prod.snd ∘ γ) t) ^ 2))) :
     arcLength3D γ a c = arcLength3D γ a b + arcLength3D γ b c := by
   unfold arcLength3D
-  exact integral_add_adjacent_intervals
+  exact (integral_add_adjacent_intervals
+    (μ := MeasureTheory.volume)
     (hcont.intervalIntegrable a b)
-    (hcont.intervalIntegrable b c)
+    (hcont.intervalIntegrable b c)).symm
 
 /-! ## Part II: 3D Polygonal Infrastructure
 
@@ -258,8 +261,8 @@ theorem smooth3D_lt_smooth2D (L d : ℝ) (hL : 0 < L) (hd : 0 < d) :
       = (1 / 2) * (L / d) := by ring
     _ < (2 / π) * (L / d) := by
         apply mul_lt_mul_of_pos_right _ hLd
-        rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) hπ]
-        linarith [pi_lt_four]
+        rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) hπ]
+        linarith [Real.pi_lt_four]
     _ = 2 * L / (π * d) := by
         field_simp [ne_of_gt hπ, ne_of_gt hd]
 
@@ -289,7 +292,7 @@ theorem smooth3D_mono
     smooth3DExpectedCrossings γ₂ a₂ b₂ d := by
   rw [smooth3D_buffon_eq _ _ _ _ hd h₁ hC1₁,
       smooth3D_buffon_eq _ _ _ _ hd h₂ hC1₂,
-      div_le_div_right (by linarith : (0 : ℝ) < 2 * d)]
+      div_le_div_iff_of_pos_right (by linarith : (0 : ℝ) < 2 * d)]
   exact hlen
 
 /-- **Strict Monotonicity**: A strictly longer C¹ curve has strictly more
@@ -303,7 +306,7 @@ theorem smooth3D_strictMono
     smooth3DExpectedCrossings γ₂ a₂ b₂ d := by
   rw [smooth3D_buffon_eq _ _ _ _ hd h₁ hC1₁,
       smooth3D_buffon_eq _ _ _ _ hd h₂ hC1₂,
-      div_lt_div_right (by linarith : (0 : ℝ) < 2 * d)]
+      div_lt_div_iff_of_pos_right (by linarith : (0 : ℝ) < 2 * d)]
   exact hlen
 
 /-! ## Part VIII: Concrete Examples
@@ -322,7 +325,6 @@ theorem helix_expected_crossings (r h d : ℝ) (hd : 0 < d) :
     π * Real.sqrt (r ^ 2 + h ^ 2) / d := by
   have hd' : d ≠ 0 := ne_of_gt hd
   field_simp [hd']
-  ring
 
 /-- For a great circle of circumference 2πR on a sphere of radius R,
     the expected crossings with parallel planes is πR/d.
@@ -332,7 +334,6 @@ theorem great_circle_expected_crossings (R d : ℝ) (hd : 0 < d) :
     2 * π * R / (2 * d) = π * R / d := by
   have hd' : d ≠ 0 := ne_of_gt hd
   field_simp [hd']
-  ring
 
 /-! ## Part IX: Connection to the Cauchy–Crofton Formula
 

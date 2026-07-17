@@ -27,8 +27,8 @@ References:
   American Mathematical Monthly, 921-925
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Basic
 
@@ -188,7 +188,7 @@ theorem erdos_194 :
     exact Set.infinite_range_of_injective Rat.cast_injective
   · exact chaotic_ordering_rationals
 
-/--
+/- 
 **Not every enumeration is chaotic:**
 Some enumerations do have monotone APs (e.g., the natural ordering).
 -/
@@ -198,7 +198,7 @@ Some enumerations do have monotone APs (e.g., the natural ordering).
 The key to the construction is using digit patterns in base representations.
 -/
 
-/--
+/- 
 **Construction Idea:**
 The chaotic ordering is built by considering base-3 expansions.
 Elements are ordered by comparing their digit patterns in a specific way
@@ -224,7 +224,7 @@ axiom chaotic_ordering_k_term (k : ℕ) (hk : k ≥ 3) :
     ∃ ordering : ℚ → ℕ, Function.Bijective ordering ∧
     ∀ (seq : Fin k → ℚ),
       (∀ i j : Fin k, i < j → seq i < seq j) →  -- Increasing in value
-      (∃ d : ℚ, ∀ i : Fin k, i.val < k - 1 → seq ⟨i.val + 1, by omega⟩ - seq i = d) → -- AP condition
+      (∃ d : ℚ, ∀ i : Fin k, (hi : i.val < k - 1) → seq ⟨i.val + 1, by omega⟩ - seq i = d) → -- AP condition
       ¬(∀ i j : Fin k, i < j → ordering (seq i) < ordering (seq j))  -- Not monotone in ordering
 
 /--
@@ -242,12 +242,12 @@ theorem chaotic_ordering_reals :
 See also Erdős #195 and #196 for variants.
 -/
 
-/--
+/- 
 **Connection to #195:**
 Problem #195 asks about monochromatic APs in 2-colorings.
 The chaotic ordering result has implications for Ramsey-type questions.
 -/
-/--
+/- 
 **Connection to #196:**
 Problem #196 asks about infinite APs.
 -/
@@ -276,7 +276,7 @@ theorem erdos_194_summary :
     (∀ k ≥ 3, ∃ ordering : ℚ → ℕ, Function.Bijective ordering ∧
       ∀ (seq : Fin k → ℚ),
         (∀ i j : Fin k, i < j → seq i < seq j) →
-        (∃ d : ℚ, ∀ i : Fin k, i.val < k - 1 → seq ⟨i.val + 1, by omega⟩ - seq i = d) →
+        (∃ d : ℚ, ∀ i : Fin k, (hi : i.val < k - 1) → seq ⟨i.val + 1, by omega⟩ - seq i = d) →
         ¬(∀ i j : Fin k, i < j → ordering (seq i) < ordering (seq j))) := by
   constructor
   · exact erdos_194

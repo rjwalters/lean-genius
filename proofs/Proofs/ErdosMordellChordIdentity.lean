@@ -271,7 +271,7 @@ theorem chord_length_eq
   have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
       = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
     have hb' : ‖Z - X‖ ^ 2 ≠ 0 := by rw [← real_inner_self_eq_norm_sq]; exact hb
-    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb']
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, ← add_div, div_eq_one_iff_eq hb']
     have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
     have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
     rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]
@@ -394,7 +394,7 @@ theorem footDiff_pedal_ZX (P X Z : EuclideanSpace ℝ (Fin 2)) (hXZ : X ≠ Z) :
     pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (Ne.symm hXZ)))
   have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
       = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
-    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb]
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, ← add_div, div_eq_one_iff_eq hb]
     have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
     have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
     rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]
@@ -549,7 +549,16 @@ theorem chord_cos_eq
       exact ⟨ by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfu, sq_abs ], by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfv, sq_abs ] ⟩;
     have h_abs_eq : |cross (Y - X) (P - X)| * |cross (Z - X) (P - X)| = -(cross (Y - X) (P - X) * cross (Z - X) (P - X)) := by
       rw [ ← abs_mul, abs_of_neg hKneg ];
-    grind +splitImp;
+    have hnY : (‖Y - X‖ : ℝ) ≠ 0 := fun h => hnu (by rw [h]; ring)
+    have hnZ : (‖Z - X‖ : ℝ) ≠ 0 := fun h => hnv (by rw [h]; ring)
+    have hprod_ne : (‖Y - X‖ * ‖Z - X‖ : ℝ) ≠ 0 := mul_ne_zero hnY hnZ
+    have step1 : ‖footDiff (P - X) (Z - X)‖ * ‖footDiff (P - X) (Y - X)‖ * (‖Y - X‖ * ‖Z - X‖)
+        = -(cross (Y - X) (P - X) * cross (Z - X) (P - X)) := by
+      have e : ‖footDiff (P - X) (Z - X)‖ * ‖footDiff (P - X) (Y - X)‖ * (‖Y - X‖ * ‖Z - X‖)
+          = (‖footDiff (P - X) (Y - X)‖ * ‖Y - X‖) * (‖footDiff (P - X) (Z - X)‖ * ‖Z - X‖) := by ring
+      rw [e, h_abs.1, h_abs.2, h_abs_eq]
+    apply mul_right_cancel₀ hprod_ne
+    linear_combination hN + inner ℝ (Y - X) (Z - X) * step1
   · simp +zetaDelta at *;
     constructor <;> intro h <;> simp_all +decide [ sq ];
   · exact mul_ne_zero ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) ) ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) )

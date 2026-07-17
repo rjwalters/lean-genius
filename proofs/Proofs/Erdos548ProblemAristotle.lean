@@ -12,6 +12,7 @@
   - NOT star_easier (requires complex combinatorial argument)
 -/
 import Mathlib
+open scoped Classical
 
 namespace Erdos548Aristotle
 
@@ -26,12 +27,12 @@ noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
     Vertex 0 is the center; vertices 1..k are the leaves. -/
 def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by
+  symm.symm := by
     intro i j h
     cases h with
-    | inl h => right; exact ⟨h.2, h.1⟩
-    | inr h => left; exact ⟨h.2, h.1⟩
-  loopless := by
+    | inl h => right; exact ⟨h.1, h.2⟩
+    | inr h => left; exact ⟨h.1, h.2⟩
+  loopless.irrefl := by
     intro i h
     cases h with
     | inl h => exact h.2 h.1

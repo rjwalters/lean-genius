@@ -15,9 +15,7 @@ References:
 - Erdős and Sarányi: Lower bound f(m) ≫ √m
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 namespace Erdos650
 

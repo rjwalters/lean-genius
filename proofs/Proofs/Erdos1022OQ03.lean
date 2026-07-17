@@ -189,7 +189,7 @@ theorem monoProb_anti {s t : ℕ} (hst : s ≤ t) : monoProb t ≤ monoProb s :=
   simp only [monoProb]
   have hs_pos : (0 : ℚ) < 2 ^ s := by positivity
   have ht_pos : (0 : ℚ) < 2 ^ t := by positivity
-  rw [div_le_div_iff ht_pos hs_pos]
+  rw [div_le_div_iff₀ ht_pos hs_pos]
   have : (2 : ℚ) ^ s ≤ 2 ^ t := by
     exact_mod_cast Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) hst
   linarith
@@ -309,7 +309,7 @@ theorem lllThreshold_pos (d : ℕ) (hd : 1 ≤ d) : 0 < lllThreshold d := by
     is in the range where the LLL can potentially help. -/
 theorem monoProb_le_half (t : ℕ) (ht : 2 ≤ t) : monoProb t ≤ 1 / 2 := by
   simp only [monoProb]
-  rw [div_le_div_iff (by positivity : (0 : ℚ) < 2 ^ t) (by norm_num : (0 : ℚ) < 2)]
+  rw [div_le_div_iff₀ (by positivity : (0 : ℚ) < 2 ^ t) (by norm_num : (0 : ℚ) < 2)]
   have h2t : (4 : ℚ) ≤ 2 ^ t := by
     calc (4 : ℚ) = 2 ^ 2 := by norm_num
       _ ≤ 2 ^ t := by
@@ -319,7 +319,7 @@ theorem monoProb_le_half (t : ℕ) (ht : 2 ≤ t) : monoProb t ≤ 1 / 2 := by
 /-- The empty family trivially has Property B (no sets to violate). -/
 theorem hasPropertyB_empty [Fintype α] :
     HasPropertyB (∅ : Finset (Finset α)) :=
-  ⟨∅, fun _ hf => absurd hf (not_mem_empty _)⟩
+  ⟨∅, fun _ hf => absurd hf (notMem_empty _)⟩
 
 /-- Any family with all sets having size ≥ 2 and intersection degree 0
     (all sets pairwise disjoint) has Property B. Each set can be
@@ -367,9 +367,10 @@ theorem propertyB_of_disjoint [Fintype α] (F : Finset (Finset α))
         simp only [intNeighbors, mem_filter, mem_erase]
         refine ⟨⟨fun h => hna (h ▸ hg), mem_insert_of_mem hg⟩, ?_⟩
         exact Nat.pos_of_ne_zero (fun h => hint (card_eq_zero.mp h))
+      have hthis := this
       have : 1 ≤ intDegree (insert f₀ F') f₀ :=
         Nat.one_le_iff_ne_zero.mpr (fun h =>
-          not_mem_empty g (h ▸ this : g ∈ intNeighbors (insert f₀ F') f₀))
+          notMem_empty g (card_eq_zero.mp h ▸ hthis))
       linarith [hdisj f₀ (mem_insert_self f₀ F')]
     -- Since f₀ is disjoint from F', elements of f₀ don't appear in F' sets
     -- So modifying S' on f₀ doesn't affect F' coloring
@@ -386,7 +387,7 @@ theorem propertyB_of_disjoint [Fintype α] (F : Finset (Finset α))
         refine ⟨S'.erase a, fun f hf => ?_⟩
         rcases mem_insert.mp hf with rfl | hf
         · exact ⟨⟨b, mem_inter.mpr ⟨hb, mem_erase.mpr ⟨hba, hf₀_sub b hb⟩⟩⟩,
-                 ⟨a, mem_sdiff.mpr ⟨ha, not_mem_erase a S'⟩⟩⟩
+                 ⟨a, mem_sdiff.mpr ⟨ha, notMem_erase a S'⟩⟩⟩
         · have ha_not : a ∉ f := Finset.disjoint_left.mp (hf₀_disj f hf) ha
           constructor
           · obtain ⟨c, hc⟩ := (hS' f hf).1

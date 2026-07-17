@@ -213,7 +213,13 @@ theorem window_pair_bound (B : Finset ℕ) (ℓ M : ℕ) (hℓ : 1 ≤ ℓ)
         _ ≤ ℓ - (p.2 - p.1) := by omega
     · intro p hp
       simp only [Finset.mem_filter, Finset.mem_offDiag] at hp; omega
-    · simpa only [orderedPairsLt, pairDiff] using sidon_pairDiff_injective hBsid
+    · intro a ha b hb hab
+      simp only [Finset.coe_filter, Finset.mem_offDiag, Set.mem_setOf_eq] at ha hb
+      simp only at hab
+      obtain ⟨⟨ha1, ha2, hane⟩, halt⟩ := ha
+      obtain ⟨⟨hb1, hb2, hbne⟩, hblt⟩ := hb
+      have key := hBsid.diff_injective ha2 ha1 hb2 hb1 halt hblt hab
+      exact Prod.ext key.2 key.1
   -- Orientation `p.2 < p.1`: gap `p.1 − p.2`, injective by `IsSidon.diff_injective`.
   have hH : ∑ p ∈ B.offDiag.filter (fun p => ¬ p.1 < p.2), cnt p ≤ ∑ i ∈ range ℓ, i := by
     apply gauss _ (fun p => p.1 - p.2)

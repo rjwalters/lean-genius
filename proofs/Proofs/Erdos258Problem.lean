@@ -58,7 +58,7 @@ theorem tau_prime_seven : tau 7 = 2 := by native_decide
 
 /- ## Main Results -/
 
-/--
+/- 
 **Erdős Problem #258 - Monotone Variant** (SOLVED):
 
 If $(a_n)$ is a monotone sequence of positive integers with $a_n \to \infty$,
@@ -70,7 +70,7 @@ the divisor function and careful analysis of the convergence of the series.
 We state this as an axiom since the proof requires deep number-theoretic
 techniques beyond current Mathlib formalization.
 -/
-/--
+/- 
 **Erdős Problem #258 - Constant/Power Variant** (SOLVED):
 
 For any integer $t \geq 2$, the sum $\sum_n \frac{\tau(n)}{t^n}$ is irrational.

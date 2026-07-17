@@ -30,6 +30,8 @@
 import Mathlib
 import Proofs.RamseysTheorem
 
+open scoped Classical
+
 namespace Erdos1015OQ05
 
 open RamseysTheorem Finset
@@ -117,8 +119,8 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
     let c0 : EdgeColoring (Fin 0) :=
       ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩
     rcases h1 c0 with ⟨red, hred_card, _⟩ | ⟨blue, hblue_card, _⟩
-    · have := red.card_le_univ; simp [Fintype.card_fin] at this; omega
-    · have := blue.card_le_univ; simp [Fintype.card_fin] at this; omega
+    · have := red.card_le_univ; simp only [Fintype.card_fin] at this; omega
+    · have := blue.card_le_univ; simp only [Fintype.card_fin] at this; omega
   intro c
   -- Pick vertex 0
   let v : Fin (n₁ + n₂) := ⟨0, by omega⟩
@@ -158,7 +160,7 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
         exact ⟨this.1, hxy⟩
       use insert v red
       constructor
-      · rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      · rw [card_insert_of_notMem hv_notin, card_map]; omega
       · exact extend_red_clique c v red hred_sub hred_is_clique hv_notin
     · -- Found s-blue clique, transfer back
       right
@@ -211,7 +213,7 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
         exact ⟨this.1, hxy⟩
       use insert v blue
       constructor
-      · rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      · rw [card_insert_of_notMem hv_notin, card_map]; omega
       · exact extend_blue_clique c v blue hblue_sub hblue_is_clique hv_notin
 
 /-- Pascal's rule for ramseyBound: C(r+s, r) = C(r+s-1, r-1) + C(r+s-1, r).

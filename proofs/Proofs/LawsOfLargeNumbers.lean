@@ -151,7 +151,7 @@ theorem variance_nonneg (X : Ω → ℝ) : 0 ≤ variance X :=
       P(|X - E[X]| ≥ ε) ≤ Var(X)/ε²
 -/
 theorem chebyshev_inequality (X : Ω → ℝ)
-    (hX : MeasureTheory.Memℒp X 2 MeasureTheory.volume)
+    (hX : MeasureTheory.MemLp X 2 MeasureTheory.volume)
     (ε : ℝ) (hε : ε > 0) :
     MeasureTheory.volume {ω | ε ≤ |X ω - ∫ ω', X ω'|} ≤
       ENNReal.ofReal (variance X / ε^2) :=
@@ -179,7 +179,7 @@ variable [MeasureTheory.IsProbabilityMeasure (MeasureTheory.volume : MeasureTheo
 /-- Variance of a sum of independent random variables equals sum of variances.
     This is `ProbabilityTheory.IndepFun.variance_sum` from Mathlib. -/
 theorem variance_sum_indep {ι : Type*} {X : ι → Ω → ℝ} {s : Finset ι}
-    (hℒp : ∀ i ∈ s, MeasureTheory.Memℒp (X i) 2 MeasureTheory.volume)
+    (hℒp : ∀ i ∈ s, MeasureTheory.MemLp (X i) 2 MeasureTheory.volume)
     (hindep : (s : Set ι).Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) MeasureTheory.volume) :
     ProbabilityTheory.variance (∑ i ∈ s, X i) MeasureTheory.volume =
       ∑ i ∈ s, ProbabilityTheory.variance (X i) MeasureTheory.volume :=
@@ -203,7 +203,7 @@ axiom weak_law_of_large_numbers_axiom
     (X : ℕ → Ω → ℝ)
     (mean : ℝ)
     (h_mean : ∀ i, ∫ ω, X i ω = mean)
-    (hℒp : ∀ i, MeasureTheory.Memℒp (X i) 2 MeasureTheory.volume)
+    (hℒp : ∀ i, MeasureTheory.MemLp (X i) 2 MeasureTheory.volume)
     (h_ident_var : ∃ σ_sq : ℝ, ∀ i, ProbabilityTheory.variance (X i) MeasureTheory.volume = σ_sq)
     (h_indep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) MeasureTheory.volume) :
     ∀ ε > 0, Filter.Tendsto
@@ -222,7 +222,7 @@ theorem weak_law_of_large_numbers
     (X : ℕ → Ω → ℝ)
     (mean : ℝ)
     (h_mean : ∀ i, ∫ ω, X i ω = mean)
-    (hℒp : ∀ i, MeasureTheory.Memℒp (X i) 2 MeasureTheory.volume)
+    (hℒp : ∀ i, MeasureTheory.MemLp (X i) 2 MeasureTheory.volume)
     (h_ident_var : ∃ σ_sq : ℝ, ∀ i, ProbabilityTheory.variance (X i) MeasureTheory.volume = σ_sq)
     (h_indep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) MeasureTheory.volume) :
     ∀ ε > 0, Filter.Tendsto

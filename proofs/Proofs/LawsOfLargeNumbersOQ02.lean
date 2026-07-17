@@ -101,7 +101,7 @@ theorem integral_sampleMean
     (hℒp : ∀ i, MemLp (X i) 2 volume) :
     ∫ ω, sampleMean X n ω = mean := by
   simp only [sampleMean]
-  rw [integral_mul_left]
+  rw [integral_const_mul]
   rw [integral_finset_sum _ (fun i _ => (hℒp i).integrable one_le_two)]
   simp only [h_mean, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   field_simp
@@ -127,14 +127,17 @@ theorem variance_sampleMean
   have hvar_sum :
       variance (fun ω => ∑ i ∈ Finset.range n, X i ω) volume
         = ∑ i ∈ Finset.range n, variance (X i) volume := by
-    simpa [Finset.sum_apply] using IndepFun.variance_sum hLp_set hpair
+    have hfun : (fun ω => ∑ i ∈ Finset.range n, X i ω)
+        = (∑ i ∈ Finset.range n, X i) := by
+      funext ω; rw [Finset.sum_apply]
+    rw [hfun]
+    exact IndepFun.variance_sum hLp_set hpair
   have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
   unfold sampleMean
   rw [variance_const_mul, hvar_sum]
   simp_rw [h_var]
   rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   field_simp
-  ring
 
 -- ============================================================
 -- SECTION 3: The Chebyshev Convergence Rate
@@ -192,7 +195,7 @@ theorem chebyshevBound_nonneg (σ_sq : ℝ) (hσ : σ_sq ≥ 0) (n : ℕ) (hn : 
   unfold chebyshevBound
   apply div_nonneg hσ
   apply mul_nonneg
-  · exact Nat.cast_nonneg
+  · exact Nat.cast_nonneg _
   · exact sq_nonneg ε
 
 /-- The Chebyshev bound decreases as n increases (for fixed σ², ε) -/
@@ -233,8 +236,8 @@ not just an upper bound on tail probabilities.
 /-- The standard normal CDF: Φ(x) = ∫_{-∞}^{x} (1/√(2π)) exp(-t²/2) dt -/
 axiom standardNormalCDF : ℝ → ℝ
 
-/-- Properties of the standard normal CDF -/
-/-- **Central Limit Theorem** (Lindeberg-Lévy):
+/-  Properties of the standard normal CDF -/
+/-  **Central Limit Theorem** (Lindeberg-Lévy):
 
     For i.i.d. X with mean μ and variance σ² > 0:
     P(√n · (X̄ₙ - μ) / σ ≤ x) → Φ(x) for all x.
@@ -255,7 +258,7 @@ The rate O(1/√n) is optimal: it cannot be improved in general.
 
 /-- The Berry-Esseen constant C (best known: C < 0.4748) -/
 axiom berryEsseenConstant : ℝ
-/-- **Berry-Esseen Theorem**:
+/-  **Berry-Esseen Theorem**:
     The CLT approximation error is bounded by C·ρ/(σ³√n).
 
     This is the sharpest known uniform bound on the normal approximation. -/
@@ -322,7 +325,7 @@ theorem chebyshev_rate_implies_convergence
     exact (ENNReal.continuous_ofReal.tendsto 0).comp h
   -- Step 2: Rewrite chebyshevBound as constant/n
   simp only [chebyshevBound]
-  have heq : (fun n : ℕ => σ_sq / (↑n * ε ^ 2)) = fun n => (σ_sq / ε ^ 2) / ↑n := by
+  have heq : (fun n : ℕ => σ_sq / (↑n * ε ^ 2)) = fun n : ℕ => (σ_sq / ε ^ 2) / ↑n := by
     ext n; ring
   rw [heq]
   -- Step 3: c/n → 0 by standard Mathlib lemma
@@ -332,7 +335,7 @@ theorem chebyshev_rate_implies_convergence
 -- SECTION 9: Summary Statistics
 -- ============================================================
 
-/-- Axiom count summary (post-S2 ACT 2026-05-13):
+/- Axiom count summary (post-S2 ACT 2026-05-13):
     - 1 axiom for standardNormalCDF (CLT statement scaffolding; genuinely beyond Mathlib v4.26)
     - 1 axiom for berryEsseenConstant (Berry-Esseen scaffolding; genuinely beyond Mathlib v4.26)
     Total: 2 axioms, 0 sorries
@@ -345,7 +348,7 @@ theorem chebyshev_rate_implies_convergence
     characteristic functions but not the CLT itself).
 
     Proved in this file:
-    - integral_sampleMean: linearity of expectation (integral_mul_left + integral_finset_sum)
+    - integral_sampleMean: linearity of expectation (integral_const_mul + integral_finset_sum)
     - sampleMean_memLp: L² closure via memLp_finset_sum + MemLp.const_mul
     - variance_sampleMean: Var(X̄ₙ) = σ²/n (S2 ACT 2026-05-13; was axiom)
     - chebyshev_convergence_rate: from Chebyshev inequality + variance_sampleMean

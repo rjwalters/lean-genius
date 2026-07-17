@@ -29,9 +29,7 @@ References:
 Tags: number-theory, totient, iteration, distribution
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Log
+import Mathlib
 
 open Nat
 
@@ -90,7 +88,7 @@ private theorem iteratedTotient_reaches_one (n : ℕ) (hn : n > 1) :
   induction n using Nat.strongRecOn with
   | _ n ih =>
     have htot_lt := Nat.totient_lt n hn
-    have htot_pos : 0 < n.totient := Nat.totient_pos (by omega)
+    have htot_pos : 0 < n.totient := Nat.totient_pos.mpr (by omega)
     by_cases heq : n.totient = 1
     · exact ⟨1, heq⟩
     · obtain ⟨k, hk⟩ := ih n.totient htot_lt (by omega)
@@ -252,7 +250,7 @@ The limiting constant is 1/log(2) ≈ 1.4427.
 axiom egps_conditional :
     ElliottHalberstam → question1 ∧ question2
 
-/--
+/- 
 **The Limiting Constant:**
 Conditionally, f(n)/log(n) → 1/log(2) for almost all n.
 
@@ -271,7 +269,7 @@ P(n) = max{p : p prime and p | n}, with P(1) = 1.
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else n.factors.maximum?.getD 1
+  else n.primeFactorsList.max?.getD 1
 
 /-- Notation for largest prime factor. -/
 notation "P(" n ")" => largestPrimeFactor n
@@ -289,7 +287,7 @@ def question3 : Prop :=
     -- P(φₖ(n)) ≤ n^ε
     True  -- Placeholder
 
-/--
+/- 
 **Prime Factor Conjecture:**
 For any slowly growing k(n) → ∞:
   P(φ_{k(n)}(n)) ≤ n^o(1) for almost all n.
@@ -326,21 +324,21 @@ theorem example_f7_step1 : (7 : ℕ).totient = 6 := by native_decide
 ## Part X: Related Results
 -/
 
-/--
+/- 
 **Monotonicity:**
 f is non-decreasing in a weak sense: f(n) ≤ f(n+1) + 1.
 
 (It's not strictly monotone since f(4) = f(6) = 2 but 4 < 6.)
 -/
 
-/--
+/- 
 **Powers of 2:**
 f(2^k) = k for all k ≥ 1.
 
 Since φ(2^k) = 2^{k-1}, we have f(2^k) = k.
 -/
 
-/--
+/- 
 **Primes:**
 For prime p: f(p) = f(p-1) + 1.
 

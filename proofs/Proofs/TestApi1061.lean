@@ -1,6 +1,4 @@
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 namespace TestE1061
 
@@ -9,8 +7,8 @@ def sigma (n : ℕ) : ℕ := (n.divisors).sum id
 -- Test 1: sigma_prime
 theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma p = 1 + p := by
   simp only [sigma]
-  rw [Nat.divisors_prime_eq hp]
-  simp [Finset.sum_pair (Nat.Prime.one_lt hp).ne']
+  rw [Nat.Prime.divisors hp]
+  rw [show id = fun x : ℕ => x from rfl, Finset.sum_pair (Nat.Prime.one_lt hp).ne]
 
 -- Test 2: sigma_not_subadditive witness (2, 3)
 theorem sigma_not_subadditive :
@@ -75,7 +73,7 @@ theorem S_upper_trivial (x : ℕ) : S x ≤ x * x := by
       ≤ (Finset.Icc 1 x ×ˢ Finset.Icc 1 x).card := Finset.card_le_card (Finset.filter_subset _ _)
     _ = (Finset.Icc 1 x).card * (Finset.Icc 1 x).card := Finset.card_product _ _
     _ ≤ x * x := by
-        simp only [Nat.card_Icc]
-        omega
+        simp only [Nat.card_Icc, Nat.add_sub_cancel]
+        exact le_refl _
 
 end TestE1061

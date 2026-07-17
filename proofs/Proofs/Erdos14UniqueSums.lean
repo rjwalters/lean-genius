@@ -28,11 +28,7 @@
   Tags: number-theory, additive-combinatorics, sidon-sets, erdos-problem
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos14
 
@@ -169,7 +165,15 @@ private lemma card_strict_pairs (F : Finset ℕ) :
       (fun ⟨a, b⟩ h => ⟨(b, a), by simp only [Finset.mem_filter, Finset.mem_product] at h ⊢; exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩, rfl⟩)
   -- Combine: 2 * |{b<a}| = |offDiag| = k*(k-1)
   have h_card := Finset.card_union_of_disjoint h_disj
-  rw [← h_eq, Finset.card_offDiag] at h_card; omega
+  rw [← h_eq, Finset.offDiag_card] at h_card
+  -- `Finset.offDiag_card` now states `card = card*card - card` (was `card*(card-1)`);
+  -- bridge the two forms since `omega` can't expand the nonlinear products itself.
+  have hoffdiag : F.card * (F.card - 1) = F.card * F.card - F.card := by
+    rcases F.card with _ | c
+    · simp
+    · have hexp : (c + 1) * (c + 1) = (c + 1) * c + (c + 1) := by ring
+      rw [Nat.succ_sub_one, hexp, Nat.add_sub_cancel]
+  omega
 
 /-- Sidon sets have size at most 2√N in {1,...,N}.
 
@@ -187,25 +191,25 @@ theorem sidon_size_bound :
   -- S = A ∩ Icc 1 N is finite
   have hfin : (A ∩ Set.Icc 1 N).Finite :=
     (Set.finite_Icc 1 N).subset Set.inter_subset_right
-  rw [hfin.ncard_eq_toFinset_card']
+  rw [Set.ncard_eq_toFinset_card _ hfin]
   set F := hfin.toFinset
   -- Properties of F
   have hF_mem : ∀ a, a ∈ F ↔ a ∈ A ∧ 1 ≤ a ∧ a ≤ N := by
-    intro a; simp [hfin.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc]
+    intro a; simp [F, hfin.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc]
   -- Handle empty case
-  rcases F.eq_empty_or_nonempty with rfl | hne
-  · simp
+  rcases F.eq_empty_or_nonempty with hF0 | hne
+  · simp [hF0]
   -- By contradiction: assume k > 2√N
   set k := F.card; set s := Nat.sqrt N
   by_contra hbig; push_neg at hbig
-  have hs1 : 1 ≤ s := Nat.one_le_sqrt.mpr hN
+  have hs1 : 1 ≤ s := Nat.le_sqrt.mpr (by omega)
   have hk_lb : k ≥ 2 * s + 1 := by omega
   -- Define the difference map on ordered pairs {(a,b) ∈ F×F | b < a}
   set P := (F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1)
   -- Step 1: the map (a,b) ↦ a-b is injective on P (Sidon property)
   have h_inj : Set.InjOn (fun p : ℕ × ℕ => p.1 - p.2) ↑P := by
     intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at h₁ h₂
+    simp only [P, Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at h₁ h₂
     exact Prod.ext
       (sidon_diff_injective hSidon ((hF_mem a₁).mp h₁.1.1).1 ((hF_mem b₁).mp h₁.1.2).1
         ((hF_mem a₂).mp h₂.1.1).1 ((hF_mem b₂).mp h₂.1.2).1 h₁.2 h₂.2 heq).1
@@ -214,7 +218,7 @@ theorem sidon_size_bound :
   -- Step 2: image of diff map ⊆ Finset.Ico 1 N = {1,...,N-1}
   have h_img_sub : P.image (fun p : ℕ × ℕ => p.1 - p.2) ⊆ Finset.Ico 1 N := by
     intro d hd
-    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product, Finset.mem_Ico] at hd ⊢
+    simp only [P, Finset.mem_image, Finset.mem_filter, Finset.mem_product, Finset.mem_Ico] at hd ⊢
     obtain ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, hlt⟩, rfl⟩ := hd
     have ha' := (hF_mem a).mp ha; have hb' := (hF_mem b).mp hb
     exact ⟨by omega, by omega⟩
@@ -226,17 +230,21 @@ theorem sidon_size_bound :
         = (P.image (fun p : ℕ × ℕ => p.1 - p.2)).card :=
           (Finset.card_image_of_injOn h_inj).symm
       _ ≤ (Finset.Ico 1 N).card := Finset.card_le_card h_img_sub
-      _ = N - 1 := by rw [Finset.card_Ico]; omega
+      _ = N - 1 := by rw [Nat.card_Ico]
   -- Step 5: derive contradiction
   -- k ≥ 2s+1, N < (s+1)², so k(k-1)/2 ≥ s(2s+1) ≥ N > N-1
   have hN_lt : N ≤ s * s + 2 * s := by
-    have := Nat.lt_succ_sqrt' N -- N < (s+1)^2
-    have : (s + 1) ^ 2 = s * s + 2 * s + 1 := by ring
+    have hlt : N < (s + 1) ^ 2 := Nat.lt_succ_sqrt' N
+    have heq : (s + 1) ^ 2 = s * s + 2 * s + 1 := by ring
     omega
   -- (2s+1)*s = 2s²+s ≥ s²+2s ≥ N (using s ≥ 1 ⟹ s² ≥ s)
   have h_big : (2 * s + 1) * s ≥ N := by nlinarith
   -- k*(k-1) ≥ (2s+1)·2s ≥ 2N, so P.card = k*(k-1)/2 ≥ N > N-1
-  have h_prod : k * (k - 1) ≥ 2 * N := by nlinarith
+  have h_prod : k * (k - 1) ≥ 2 * N := by
+    have hkm1 : 2 * s ≤ k - 1 := by omega
+    have hstep : (2 * s + 1) * (2 * s) ≤ k * (k - 1) := Nat.mul_le_mul hk_lb hkm1
+    have heq2 : (2 * s + 1) * (2 * s) = 2 * ((2 * s + 1) * s) := by ring
+    omega
   omega
 
 /- ## Part IV: The Main Questions -/

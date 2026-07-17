@@ -1,8 +1,5 @@
 -- Test file to understand Mathlib API for compact convex hulls in finite dimensions
-import Mathlib.Topology.Compactness.Compact
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Analysis.Convex.Combination
-import Mathlib.Analysis.Convex.Hull
+import Mathlib
 
 open Set Submodule Filter
 
@@ -15,11 +12,10 @@ open Set Submodule Filter
 #check Module.Finite.span_of_finite
 
 -- 3. Compactness in finite-dimensional subspace
-#check IsCompact.of_isClosed_isBounded
-#check isCompact_of_isClosed_of_isBounded
+#check @Metric.isCompact_of_isClosed_isBounded
 
 -- 4. Subspace closure properties
-#check Submodule.isClosed
+#check @Submodule.closed_of_finiteDimensional
 #check IsClosed.closure_eq
 
 -- 5. Convex hull properties

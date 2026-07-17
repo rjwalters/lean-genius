@@ -26,7 +26,7 @@ import Mathlib.Tactic
 /- ## Core Definitions -/
 
 /-- A 3-uniform hypergraph on vertex set Fin n: a collection of 3-element subsets. -/
-def Hypergraph3 (n : ℕ) := Finset (Finset (Fin n))
+abbrev Hypergraph3 (n : ℕ) := Finset (Finset (Fin n))
 
 /-- A hypergraph is 3-uniform if every edge has exactly 3 vertices. -/
 def IsThreeUniform (n : ℕ) (H : Hypergraph3 n) : Prop :=
@@ -42,11 +42,11 @@ def ContainsK4_3 (n : ℕ) (H : Hypergraph3 n) : Prop :=
 def IsK4Free (n : ℕ) (H : Hypergraph3 n) : Prop :=
   IsThreeUniform n H ∧ ¬ContainsK4_3 n H
 
-/-- ex₃(n, K₄³): the Turán number for K₄³ in 3-uniform hypergraphs.
+/-  ex₃(n, K₄³): the Turán number for K₄³ in 3-uniform hypergraphs.
     The maximum number of edges in a K₄³-free 3-uniform hypergraph on n vertices. -/
 /- ## Turán Density -/
 
-/-- The Turán density: π(K₄³) = lim_{n→∞} ex₃(n, K₄³) / C(n,3). -/
+/- The Turán density: π(K₄³) = lim_{n→∞} ex₃(n, K₄³) / C(n,3). -/
 /- ## Turán's Lower Bound (1941) -/
 
 /- ## Razborov's Upper Bound (2010) -/

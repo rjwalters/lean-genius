@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos184
@@ -161,10 +163,15 @@ theorem lower_bound_from_bipartite :
 **The Iterated Logarithm:**
 log* n = 0 if n ≤ 1, else 1 + log*(log n)
 -/
-noncomputable def logStar : ℕ → ℕ
+def logStar : ℕ → ℕ
   | 0 => 0
   | 1 => 0
   | n + 2 => 1 + logStar (Nat.log2 (n + 2))
+termination_by n => n
+decreasing_by
+  have hlt : n + 2 < 2 ^ (n + 2) := Nat.lt_two_pow_self
+  have := (Nat.log2_lt (n := n + 2) (k := n + 2) (by omega)).mpr hlt
+  omega
 
 /--
 **Bucić-Montgomery (2022):**
@@ -182,8 +189,9 @@ theorem bucic_montgomery_bound :
 
 /--
 **Minimum Degree:**
+Requires `V` nonempty: an empty vertex set has no degree sequence to minimize over.
 -/
-def minDegree (G : Graph V) : ℕ :=
+noncomputable def minDegree [Nonempty V] (G : Graph V) : ℕ :=
   (Finset.univ.image (fun v => G.degree v)).min' (by simp [Finset.image_nonempty])
 
 /--
@@ -192,7 +200,7 @@ For graphs with minimum degree ≥ εn, only O(n) pieces are needed.
 -/
 theorem conlon_fox_sudakov :
     ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : Graph V),
       (minDegree G : ℝ) ≥ ε * Fintype.card V →
       (decompNumber G : ℝ) ≤ C * Fintype.card V := by
   sorry
@@ -298,7 +306,7 @@ theorem erdos_184_summary :
         Fintype.card V = n ∧ (decompNumber G : ℝ) ≥ (1 + c) * n) ∧
     -- Dense case is solved
     (∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧
-      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : Graph V),
         (minDegree G : ℝ) ≥ ε * Fintype.card V →
         (decompNumber G : ℝ) ≤ C * Fintype.card V) := by
   exact ⟨bucic_montgomery_bound, lower_bound_from_bipartite, conlon_fox_sudakov⟩

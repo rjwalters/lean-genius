@@ -14,12 +14,14 @@ have positive density?
 - Hasler–Melfi (2024): improved to x^{0.9777}, upper density ≤ 0.696
 -/
 
-import Mathlib.Data.Nat.Digits
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
+
+open scoped Classical
 
 /-
 ## Section I: Digit-Restricted Sets
@@ -63,13 +65,13 @@ def ErdosProblem125 : Prop :=
 ## Section IV: Known Lower Bounds
 -/
 
-/-- Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. -/
-/-- Hasler–Melfi (2024): improved to |C ∩ [1,x]| ≫ x^{0.9777}. -/
+/-  Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. -/
+/-  Hasler–Melfi (2024): improved to |C ∩ [1,x]| ≫ x^{0.9777}. -/
 /-
 ## Section V: Upper Density Bound
 -/
 
-/-- Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696.
+/-  Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696.
 So even if C has positive density, it cannot fill more than 70% of ℕ. -/
 /-
 ## Section VI: Generalization to Other Bases
@@ -87,6 +89,6 @@ def GeneralizedDensityQuestion (bases : List ℕ) : Prop :=
           ∀ x : ℕ, x ≥ N₀ →
             (countingC x : ℝ) / x ≥ δ - ε
 
-/-- For bases 3 and 4: log₄(2) + log₄(2)/log₄(3) =
+/- For bases 3 and 4: log₄(2) + log₄(2)/log₄(3) =
 log(2)/log(3) + log(2)/log(4) ≈ 0.631 + 0.5 = 1.131 > 1,
 satisfying the condition. -/

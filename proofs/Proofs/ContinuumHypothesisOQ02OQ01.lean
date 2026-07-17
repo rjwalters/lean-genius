@@ -4,6 +4,8 @@ import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Data.Set.Countable
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # De-axiomatizing the Bounding Number Lower Bound: ℵ₁ ≤ 𝔟
 
@@ -107,7 +109,7 @@ theorem general_konig_cofinality {κ : Cardinal.{0}} (hκ : ℵ₀ ≤ κ) :
 
 /-- The parent's special case recovered: cf(2^ℵ₀) > ℵ₀. -/
 theorem konig_cofinality_aleph0 :
-    (ℵ₀ : Cardinal.{0}) < (2 ^ (ℵ₀ : Cardinal.{0})).ord.cof :=
+    (ℵ₀ : Cardinal.{0}) < ((2 : Cardinal.{0}) ^ (ℵ₀ : Cardinal.{0})).ord.cof :=
   general_konig_cofinality le_rfl
 
 -- ============================================================
@@ -125,7 +127,9 @@ theorem diagonal_dominates (e : ℕ → ℕ → ℕ) (j : ℕ) :
       (fun k => (Finset.range (k + 1)).sup (fun i => e i k) + 1) := by
   refine ⟨j, fun k hk => ?_⟩
   have hmem : j ∈ Finset.range (k + 1) := Finset.mem_range.mpr (by omega)
-  have hle : e j k ≤ (Finset.range (k + 1)).sup (fun i => e i k) := Finset.le_sup hmem
+  have hle : e j k ≤ (Finset.range (k + 1)).sup (fun i => e i k) :=
+    Finset.le_sup (f := fun i => e i k) hmem
+  show e j k ≤ (Finset.range (k + 1)).sup (fun i => e i k) + 1
   omega
 
 /-- **An unbounded family is uncountable: ℵ₁ ≤ #F.**
@@ -146,7 +150,7 @@ theorem unbounded_uncountable {F : Set (ℕ → ℕ)} (h : IsUnbounded F) :
   · -- empty F is not unbounded: there is no member to witness against g = 0
     obtain ⟨f, hf, _⟩ := h (fun _ => 0)
     rw [hE] at hf
-    exact (Set.not_mem_empty f) hf
+    exact (Set.notMem_empty f) hf
   · -- write F = range e and diagonalize
     obtain ⟨e, he⟩ := hcount.exists_eq_range hne
     obtain ⟨f, hfF, hfnd⟩ :=

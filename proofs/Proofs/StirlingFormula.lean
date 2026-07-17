@@ -1,8 +1,7 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Stirling
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.ExponentialBounds
-import Mathlib.Data.Real.Pi.Bounds
 import Mathlib.Tactic
 
 /-!
@@ -194,7 +193,7 @@ theorem factorial_lower_bound (n : ℕ) (hn : 1 ≤ n) :
   -- stirlingSeq n ≥ √π means n!/[√(2n)·(n/e)^n] ≥ √π
   -- So n! ≥ √π · √(2n) · (n/e)^n
   rw [hseq_def] at hsqrt
-  have h := (le_div_iff hpos).mp hsqrt
+  have h := (le_div_iff₀ hpos).mp hsqrt
   -- h : √π * (√(2n) · (n/e)^n) ≤ n!
   -- √(2πn) = √π · √(2n)
   have hsqrt_eq : Real.sqrt (2 * π * n) = Real.sqrt π * Real.sqrt (2 * n) := by
@@ -271,7 +270,7 @@ theorem factorial_10 : Nat.factorial 10 = 3628800 := by native_decide
 /-- Example: 20! = 2,432,902,008,176,640,000 -/
 theorem factorial_20 : Nat.factorial 20 = 2432902008176640000 := by native_decide
 
-/-- The relative error in Stirling's approximation is O(1/n)
+/- The relative error in Stirling's approximation is O(1/n)
 
 More precisely, n!/stirlingApprox(n) = 1 + 1/(12n) + O(1/n²)
 
@@ -303,7 +302,10 @@ private lemma log_stirlingSeq_ratio_bound (m : ℕ) (hm : 1 ≤ m) (L : ℕ) :
   -- Prove the stronger bound: ≤ (1/4)(1/m - 1/(m+L))
   suffices hsuff : Real.log (stirlingSeq (m + 1)) - Real.log (stirlingSeq (m + L + 1)) ≤
       1 / 4 * (1 / (m : ℝ) - 1 / ↑(m + L)) by
-    have : (0 : ℝ) ≤ 1 / ↑(m + L) := by positivity
+    have hnn : (0 : ℝ) ≤ 1 / ↑(m + L) := by positivity
+    have heq : (1 : ℝ) / 4 * (1 / (m : ℝ) - 1 / ↑(m + L)) =
+        1 / (4 * (m : ℝ)) - 1 / 4 * (1 / ↑(m + L)) := by ring
+    rw [heq] at hsuff
     linarith
   induction L with
   | zero => simp
@@ -318,7 +320,7 @@ private lemma log_stirlingSeq_ratio_bound (m : ℕ) (hm : 1 ≤ m) (L : ℕ) :
     -- Per-step bound from Mathlib
     have hstep : Real.log (stirlingSeq (m + L + 1)) - Real.log (stirlingSeq (m + L + 2)) ≤
         1 / (4 * (↑(m + L + 1) : ℝ) ^ 2) :=
-      Stirling.log_stirlingSeq_sub_log_stirlingSeq_succ (m + L)
+      Stirling.log_stirlingSeq_sub_log_stirlingSeq_succ (m + L + 1)
     -- Comparison: 1/(k+1)² ≤ 1/k - 1/(k+1) where k = m+L
     have hmL_pos : (0 : ℝ) < ↑(m + L) := by positivity
     have hmL1_pos : (0 : ℝ) < ↑(m + L + 1) := by positivity
@@ -326,11 +328,11 @@ private lemma log_stirlingSeq_ratio_bound (m : ℕ) (hm : 1 ≤ m) (L : ℕ) :
         1 / 4 * (1 / ↑(m + L) - 1 / ↑(m + L + 1)) := by
       -- 1/4 * (1/k - 1/(k+1)) = 1/(4k(k+1)) and 1/(4(k+1)²) ≤ 1/(4k(k+1))
       rw [show (1 : ℝ) / ↑(m + L) - 1 / ↑(m + L + 1) =
-          1 / (↑(m + L) * ↑(m + L + 1)) from by field_simp]
+          1 / (↑(m + L) * ↑(m + L + 1)) from by field_simp; push_cast; ring]
       rw [show (1 : ℝ) / 4 * (1 / (↑(m + L) * ↑(m + L + 1))) =
           1 / (4 * (↑(m + L) * ↑(m + L + 1))) from by ring]
       -- Now: 1/(4(k+1)²) ≤ 1/(4k(k+1)), i.e., k(k+1) ≤ (k+1)², i.e., k ≤ k+1
-      rw [div_le_div_iff (by positivity) (by positivity)]
+      rw [div_le_div_iff₀ (by positivity) (by positivity)]
       nlinarith [show (↑(m + L) : ℝ) ≤ ↑(m + L + 1) from by exact_mod_cast Nat.le_succ _]
     -- Combine with telescope: 1/4 * (1/m - 1/(m+(L+1))) = 1/4 * (1/m - 1/(m+L)) + 1/4 * (1/(m+L) - 1/(m+L+1))
     have hdecomp : (1 : ℝ) / 4 * (1 / ↑m - 1 / ↑(m + (L + 1))) =
@@ -413,22 +415,27 @@ theorem stirling_error_bound_ge_2 (n : ℕ) (hn : n ≥ 2) :
   set x := 1 / (4 * (m : ℝ)) with hx_def
   have hx_pos : 0 < x := by positivity
   have hx_lt : x < 1 := by
+    have hm' : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
     rw [hx_def, div_lt_one (by positivity : (0 : ℝ) < 4 * ↑m)]; linarith
   have h1mx : 0 < 1 - x := by linarith
   have hexp_inv : Real.exp x ≤ 1 / (1 - x) := by
-    rw [le_div_iff h1mx]
+    rw [le_div_iff₀ h1mx, mul_comm]
     exact one_sub_mul_exp_le_one (le_of_lt hx_pos)
   -- Step 4: r - 1 ≤ x/(1-x)
   have hr_bound : r - 1 ≤ x / (1 - x) := by
     have h1 : r ≤ 1 / (1 - x) := le_trans hr_exp hexp_inv
-    linarith [div_sub_one (ne_of_gt h1mx)]
+    have hstep : (1 : ℝ) / (1 - x) - 1 = x / (1 - x) := by
+      field_simp
+      ring
+    linarith [hstep]
   -- Step 5: x/(1-x) = 1/(4m-1) ≤ 1/n
-  suffices hfin : x / (1 - x) ≤ 1 / ↑n from linarith
+  suffices hfin : x / (1 - x) ≤ 1 / ↑n by linarith
   -- Simplify x/(1-x) = 1/(4m-1)
+  have hm' : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
   have h4m1 : (0 : ℝ) < 4 * ↑m - 1 := by linarith
   have hxsimp : x / (1 - x) = 1 / (4 * ↑m - 1) := by
     rw [hx_def]; field_simp
-  rw [hxsimp, div_le_div_iff h4m1 hn_pos, one_mul, one_mul]
+  rw [hxsimp, div_le_div_iff₀ h4m1 hn_pos, one_mul, one_mul]
   -- Goal: ↑n ≤ 4 * ↑m - 1
   -- m + 1 = n, so 4m - 1 = 4(n-1) - 1 = 4n - 5 ≥ n for n ≥ 2
   have hmn : (↑m : ℝ) + 1 = ↑n := by exact_mod_cast (show m + 1 = n from by omega)
@@ -500,7 +507,7 @@ theorem stirling_error_bound :
       rw [Nat.cast_one, div_one]
       rw [Stirling.stirlingSeq_one]
       have he : Real.exp 1 < 2.72 := lt_trans exp_one_lt_d9 (by norm_num)
-      have hpi : Real.pi > 3.14 := pi_gt_314
+      have hpi : Real.pi > 3.14 := pi_gt_d2
       have h2pi_gt : 2 * Real.pi > 6.28 := by
         have h1 : (2 : ℝ) * 3.14 = 6.28 := by norm_num
         calc 2 * Real.pi > 2 * 3.14 := by linarith

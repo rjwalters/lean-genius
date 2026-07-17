@@ -55,8 +55,8 @@ open scoped Topology
 theorem log_le_six_mul_rpow {x : ℝ} (hx : 0 < x) :
     Real.log x ≤ 6 * x ^ ((1 : ℝ) / 6) := by
   have h := Real.log_le_rpow_div hx.le (by norm_num : (0 : ℝ) < 1 / 6)
-  rw [div_div_eq_mul_div, one_mul] at h  -- x ^ (1/6) / (1/6)
-  simpa using h
+  calc Real.log x ≤ x ^ ((1:ℝ)/6) / (1/6) := h
+    _ = 6 * x ^ ((1:ℝ)/6) := by ring
 
 /-- `log x · x^{1/3} ≤ 6·√x` for `x > 0`: the key `log`-eating step. -/
 theorem logx_mul_rpow_third_le {x : ℝ} (hx : 0 < x) :
@@ -88,8 +88,7 @@ theorem psi_sub_theta_le_const_mul_sqrt {x : ℝ} (hx : 2 ≤ x) :
     positivity
   · -- 2 ≤ K : peel off the dominant n = 2 term
     have h2mem : (2 : ℕ) ∈ Finset.Icc 2 K := by rw [Finset.mem_Icc]; omega
-    rw [← Finset.add_sum_erase _ (fun n => θ (x ^ ((1 : ℝ) / (n : ℝ)))) h2mem,
-      Finset.Icc_erase_left]
+    rw [← Finset.add_sum_erase _ _ h2mem, Finset.Icc_erase_left]
     -- goal: θ (x ^ (1/2)) + Σ_{n ∈ Ioc 2 K} θ (x ^ (1/n)) ≤ (log 4 + 12) √x
     -- bound the n = 2 term: θ(√x) ≤ log 4 · √x
     have hn2 : θ (x ^ ((1 : ℝ) / ((2 : ℕ) : ℝ))) ≤ Real.log 4 * Real.sqrt x := by
@@ -122,7 +121,8 @@ theorem psi_sub_theta_le_const_mul_sqrt {x : ℝ} (hx : 2 ≤ x) :
               (mul_nonneg hlog4 (Real.rpow_nonneg hx0.le _))
             -- (K - 2 : ℕ) ≤ K ≤ log x / log 2
             have hKle : (K : ℝ) ≤ Real.log x / Real.log 2 :=
-              Nat.floor_le (by positivity)
+              Nat.floor_le (div_nonneg (Real.log_nonneg hx1)
+                (Real.log_nonneg (by norm_num)))
             have : ((K - 2 : ℕ) : ℝ) ≤ (K : ℝ) := by
               exact_mod_cast Nat.sub_le K 2
             linarith

@@ -13,6 +13,7 @@
 import Mathlib
 
 open Real Finset
+open scoped Pointwise
 
 namespace Erdos818.Aristotle
 
@@ -45,7 +46,7 @@ lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hy : y > 0) :
 /-- c * x^2 / log n ≥ x^2 / log n when c ≥ 1 -/
 lemma const_sq_div_log_ge (c x : ℝ) (n : ℕ) (hc : c ≥ 1) (hlog : Real.log n > 0) :
     c * x ^ 2 / Real.log n ≥ x ^ 2 / Real.log n :=
-  (div_le_div_right hlog).mpr (by nlinarith [sq_nonneg x])
+  (div_le_div_iff_of_pos_right hlog).mpr (by nlinarith [sq_nonneg x])
 
 /-
   ## Section 2: Sumset and productSet Properties
@@ -102,12 +103,10 @@ lemma div_sq (a b : ℝ) : (a / b) ^ 2 = a ^ 2 / b ^ 2 :=
 lemma pow4_div_pow2 (a : ℝ) (ha : a > 0) : a ^ 4 / a ^ 2 = a ^ 2 := by
   have h : a ^ 2 > 0 := pow_pos ha 2
   field_simp [h.ne']
-  ring
 
 /-- a^2 / (K * log n) = a^2 / K / log n -/
 lemma div_assoc_log (a K logn : ℝ) (hK : K > 0) (hl : logn > 0) :
     a ^ 2 / (K * logn) = a ^ 2 / K / logn := by
   field_simp [hK.ne', hl.ne']
-  ring
 
 end Erdos818.Aristotle

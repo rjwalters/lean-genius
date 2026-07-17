@@ -25,12 +25,11 @@
   Tags: number-theory, unit-fractions, egyptian-fractions, counting
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Nat Real BigOperators Finset
 
@@ -41,11 +40,11 @@ namespace Erdos320
 
 /-- The harmonic sum H_n = 1 + 1/2 + ... + 1/n. -/
 noncomputable def harmonicSum (n : ℕ) : ℚ :=
-  ∑ i in Finset.range n, (1 : ℚ) / (i + 1)
+  ∑ i ∈ Finset.range n, (1 : ℚ) / (i + 1)
 
 /-- A subset sum of unit fractions: ∑_{n∈A} 1/n for A ⊆ {1,...,N}. -/
 noncomputable def subsetSum (A : Finset ℕ) : ℚ :=
-  ∑ n in A.filter (· > 0), (1 : ℚ) / n
+  ∑ n ∈ A.filter (· > 0), (1 : ℚ) / n
 
 /-- The set of all possible subset sums from {1,...,N}. -/
 noncomputable def allSubsetSums (N : ℕ) : Finset ℚ :=
@@ -79,12 +78,24 @@ noncomputable def log₃ (x : ℝ) : ℝ := Real.log (Real.log (Real.log x))
 
 /-- Product of iterated logs: ∏_{i=3}^k log_i N. -/
 noncomputable def iterLogProduct (N : ℝ) (k : ℕ) : ℝ :=
-  ∏ i in Finset.Icc 3 k, iterLog i N
+  ∏ i ∈ Finset.Icc 3 k, iterLog i N
+
+/-- The problem remains open - the constant c is unknown. -/
+axiom erdos_320_open_bounds (N : ℕ) (hN : N ≥ 16) :
+    (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
+    Real.log (S N : ℝ) ≤ (N : ℝ) / Real.log N * Real.log (Real.log N)
+
+/-- First values of S(N) (OEIS A072207):
+    S(1)=2, S(2)=4, S(3)=8, S(4)=16, S(5)=32, S(6)=64, S(7)=128,
+    S(8)=255 (first collision!), ... -/
+axiom oeis_A072207 :
+    S 1 = 2 ∧ S 2 = 4 ∧ S 3 = 8 ∧ S 4 = 16 ∧
+    S 5 = 32 ∧ S 6 = 64 ∧ S 7 = 128 ∧ S 8 = 255
 
 /- ## Part III: Bleicher-Erdős Lower Bound (1975)
 -/
 
-/-- **Bleicher-Erdős Lower Bound (1975):**
+/-  **Bleicher-Erdős Lower Bound (1975):**
     log S(N) ≥ (N/log N)(log 2 · ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ k. -/
 /-- The lower bound shows S(N) grows very fast. -/
@@ -100,7 +111,7 @@ theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
 /- ## Part IV: Bleicher-Erdős Upper Bound (1976)
 -/
 
-/-- **Bleicher-Erdős Upper Bound (1976):**
+/-  **Bleicher-Erdős Upper Bound (1976):**
     log S(N) ≤ (N/log N)(log_r N · ∏_{i=3}^r log_i N)
     valid for r ≥ 1 and log_{2r} N ≥ 1. -/
 /-- The gap between upper and lower bounds. -/
@@ -110,7 +121,7 @@ noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
 /- ## Part V: BGMS Improved Lower Bound (2025)
 -/
 
-/-- **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
+/-  **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
     log S(N) ≥ (N/log N)(2 log 2 (1 - 3/(2 log_k N)) ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ 3/2. -/
 /-- The BGMS bound improves upon Bleicher-Erdős. -/
@@ -119,9 +130,12 @@ theorem bgms_improves_bleicher_erdos (N : ℕ) (k : ℕ) (hk : k ≥ 4)
     2 * Real.log 2 * (1 - 3 / (2 * iterLog k N)) > Real.log 2 := by
   have h1 : iterLog k N ≥ 4 := h_valid
   have h2 : 1 - 3 / (2 * iterLog k N) > 1/2 := by
-    have : 3 / (2 * iterLog k N) < 1/2 := by nlinarith
+    have : 3 / (2 * iterLog k N) < 1/2 := by
+      rw [div_lt_iff₀ (by linarith)]
+      nlinarith
     linarith
-  nlinarith
+  have hlog : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  nlinarith [mul_pos hlog (show (0:ℝ) < 1 - 3 / (2 * iterLog k N) - 1/2 by linarith)]
 
 /- ## Part VI: The Main Problem
 -/
@@ -135,11 +149,6 @@ def ErdosProblem320 : Prop :=
     |Real.log (S N : ℝ) - c * (N : ℝ) / Real.log N * iterLogProduct N 3| ≤
       (N : ℝ) / (Real.log N)^2
 
-/-- The problem remains open - the constant c is unknown. -/
-axiom erdos_320_open_bounds (N : ℕ) (hN : N ≥ 16) :
-    (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
-    Real.log (S N : ℝ) ≤ (N : ℝ) / Real.log N * Real.log (Real.log N)
-
 /- ## Part VII: Connection to Egyptian Fractions
 -/
 
@@ -147,12 +156,13 @@ axiom erdos_320_open_bounds (N : ℕ) (hN : N ≥ 16) :
 def IsEgyptianFraction (q : ℚ) (A : Finset ℕ) : Prop :=
   subsetSum A = q ∧ ∀ n ∈ A, n > 0
 
+open Classical in
 /-- The number of Egyptian fraction representations of q using {1,...,N}. -/
 noncomputable def egyptianCount (q : ℚ) (N : ℕ) : ℕ :=
   ((Finset.range N).powerset.filter
-    (fun A => IsEgyptianFraction q (A.image (· + 1)))).card
+    (fun (A : Finset ℕ) => IsEgyptianFraction q (A.image (· + 1)))).card
 
-/-- **Problem #321 Connection:**
+/-  **Problem #321 Connection:**
     Related to counting Egyptian fraction representations. -/
 /- ## Part VIII: Specific Values and Bounds
 -/
@@ -166,24 +176,16 @@ theorem S_two : S 2 = 4 := oeis_A072207.2.1
 /-- S(3) = 8: all subsets give distinct sums. -/
 theorem S_three : S 3 = 8 := oeis_A072207.2.2.1
 
-/-- For small N, S(N) = 2^N (all sums distinct). -/
-/-- For large N, collisions occur: S(N) < 2^N. -/
+/-  For small N, S(N) = 2^N (all sums distinct). -/
+/-  For large N, collisions occur: S(N) < 2^N. -/
 /- ## Part IX: OEIS Sequence A072207
 -/
-
-/-- First values of S(N) (OEIS A072207):
-    S(1)=2, S(2)=4, S(3)=8, S(4)=16, S(5)=32, S(6)=64, S(7)=128,
-    S(8)=255 (first collision!), ... -/
-axiom oeis_A072207 :
-    S 1 = 2 ∧ S 2 = 4 ∧ S 3 = 8 ∧ S 4 = 16 ∧
-    S 5 = 32 ∧ S 6 = 64 ∧ S 7 = 128 ∧ S 8 = 255
 
 /-- The first collision occurs at N = 8:
     1/6 + 1/7 + 1/8 = 73/168 = 1/3 + 1/56 (different representations). -/
 theorem first_collision : S 8 < 2^8 := by
   have h := oeis_A072207
   simp [h.2.2.2.2.2.2.2]
-  norm_num
 
 /- ## Part X: Growth Rate Analysis
 -/
@@ -198,7 +200,9 @@ theorem log_S_leading_term (N : ℕ) (hN : N ≥ 100) :
       c₁ * (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
       Real.log (S N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N) := by
   have ⟨hlb, hub⟩ := erdos_320_open_bounds N (by omega)
-  exact ⟨1, 1, one_pos, one_pos, by linarith, by linarith⟩
+  refine ⟨1, 1, one_pos, one_pos, ?_, ?_⟩
+  · simpa using hlb
+  · simpa using hub
 
 /- ## Part XI: Summary
 -/

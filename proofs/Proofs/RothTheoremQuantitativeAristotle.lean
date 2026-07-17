@@ -31,7 +31,6 @@ theorem density_bound_pos (delta : ℝ) (hdelta : 0 < delta) : 0 < 100 / delta ^
 theorem density_increment_mono (delta : ℝ) (hdelta : 0 < delta) (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
     delta + k₁ * delta ^ 2 / 100 ≤ delta + k₂ * delta ^ 2 / 100 := by
   gcongr
-  exact_mod_cast h
 
 /-- After at most ⌊100/δ²⌋ density increments, the density exceeds 1. -/
 theorem density_exceeds_one_after_floor (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
@@ -40,15 +39,18 @@ theorem density_exceeds_one_after_floor (delta : ℝ) (hdelta : 0 < delta) (hdel
   have hd2 : 0 < delta ^ 2 := by positivity
   have hk : (100 / delta ^ 2 : ℝ) < (⌊100 / delta ^ 2⌋₊ : ℝ) + 1 :=
     Nat.lt_floor_add_one _
+  have hk' : (100 : ℝ) < ((⌊100 / delta ^ 2⌋₊ : ℝ) + 1) * delta ^ 2 := by
+    rw [div_lt_iff₀ hd2] at hk
+    linarith
   push_cast
-  nlinarith [sq_nonneg delta]
+  linarith
 
 /-- The Roth iteration count ⌊100/δ²⌋ is monotone: smaller δ gives more iterations. -/
 theorem iteration_count_antimono (delta₁ delta₂ : ℝ) (h₁ : 0 < delta₁) (h₂ : 0 < delta₂)
     (h : delta₁ ≤ delta₂) : ⌊100 / delta₂ ^ 2⌋₊ ≤ ⌊100 / delta₁ ^ 2⌋₊ := by
   apply Nat.floor_le_floor
   have hsq : delta₁ ^ 2 ≤ delta₂ ^ 2 := by nlinarith [sq_nonneg (delta₂ - delta₁)]
-  exact div_le_div_of_le_left (by positivity) (by positivity) hsq
+  exact div_le_div_of_nonneg_left (by positivity) (by positivity) hsq
 
 /-- For δ = 1/√(log N), 100/δ² = 100 * log N. -/
 theorem roth_iteration_count_formula (N : ℕ) (hN : 2 < N) :
@@ -78,18 +80,18 @@ theorem two_element_ap_free (N : ℕ) (hN : 3 ≤ N) :
     ∀ a d : ZMod N, d ≠ 0 → a ∈ ({0, 1} : Finset (ZMod N)) →
     a + d ∈ ({0, 1} : Finset (ZMod N)) → a + 2 * d ∉ ({0, 1} : Finset (ZMod N)) := by
   haveI : NeZero N := ⟨by omega⟩
-  haveI : Nontrivial (ZMod N) := ZMod.instNontrivial (by omega)
+  haveI : Fact (1 < N) := ⟨by omega⟩
   -- Val computation helpers
   have hv2 : (2 : ZMod N).val = 2 := by
     show ((2 : ℕ) : ZMod N).val = 2
     rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
-  have hv_neg1 : (-1 : ZMod N).val = N - 1 := ZMod.val_neg_one' (by omega)
-  have hv0 : (0 : ZMod N).val = 0 := ZMod.val_zero N
-  have hv1 : (1 : ZMod N).val = 1 := by
-    show ((1 : ℕ) : ZMod N).val = 1
-    rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+  have hv_neg1 : (-1 : ZMod N).val = N - 1 := by
+    obtain ⟨m, rfl⟩ : ∃ m, N = m + 1 := ⟨N - 1, by omega⟩
+    simpa using ZMod.val_neg_one m
+  have hv0 : (0 : ZMod N).val = 0 := ZMod.val_zero
+  have hv1 : (1 : ZMod N).val = 1 := ZMod.val_one N
   -- Use val injectivity to prove distinctness
-  have val_inj : ∀ x y : ZMod N, x = y → x.val = y.val := congr_arg ZMod.val
+  have val_inj : ∀ x y : ZMod N, x = y → x.val = y.val := fun _ _ h => congr_arg ZMod.val h
   have h2ne0 : (2 : ZMod N) ≠ 0 :=
     fun h => by have := val_inj _ _ h; rw [hv2, hv0] at this; omega
   have h2ne1 : (2 : ZMod N) ≠ 1 :=
@@ -159,32 +161,29 @@ theorem n_div_log_log_tendsto_atTop :
     have h_real : ∀ᶠ x : ℝ in atTop, Real.log x ≤ Real.sqrt x := by
       filter_upwards [h_bound, Filter.eventually_ge_atTop (1:ℝ)] with x hx hx1
       have h_log_nn : 0 ≤ Real.log x := Real.log_nonneg hx1
-      simp only [one_mul, Real.norm_eq_abs, abs_of_nonneg h_log_nn, Real.sqrt_eq_rpow] at hx
+      have hx_nonneg : (0:ℝ) ≤ x := by linarith
+      simp only [one_mul, Real.norm_eq_abs, abs_of_nonneg h_log_nn,
+        ← Real.sqrt_eq_rpow, abs_of_nonneg (Real.sqrt_nonneg x)] at hx
       exact hx
     exact tendsto_natCast_atTop_atTop.eventually h_real
   -- Squeeze: N/log(log N) ≥ √N → ∞
-  rw [tendsto_atTop_atTop]
-  intro K
-  -- Need: eventually K ≤ N / log(log N)
-  -- Use: eventually K ≤ √N and √N ≤ N / log(log N)
-  have h_sqrt_lb := (Real.tendsto_sqrt_atTop.comp
-      tendsto_natCast_atTop_atTop).eventually_ge_atTop K
-  filter_upwards [h_logN_le_sqrtN, h_sqrt_lb,
-      Filter.eventually_ge_atTop (3 : ℕ)] with N h_logN_sqrt h_sqrt_K hN3
-  have hN3' : 3 ≤ N := hN3
-  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (by omega : N ≠ 0)
-  have h_logN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast (show 1 < N by omega))
-  have h_loglogN_pos : 0 < Real.log (Real.log N) := log_log_pos N hN3'
-  have h_loglogN_le_sqrtN : Real.log (Real.log N) ≤ Real.sqrt N :=
-    (Real.log_le_log h_logN_pos h_logN_sqrt).trans h_logN_sqrt
-  -- √N ≤ N / log(log N) since log(log N) ≤ √N and log(log N) > 0
-  have h_sqrtN_le_div : Real.sqrt N ≤ N / Real.log (Real.log N) := by
-    rw [le_div_iff h_loglogN_pos]
+  have h_sqrt_le_div :
+      (fun N : ℕ => Real.sqrt N) ≤ᶠ[atTop] (fun N : ℕ => (N : ℝ) / Real.log (Real.log N)) := by
+    filter_upwards [h_logN_le_sqrtN, Filter.eventually_ge_atTop (3 : ℕ)] with N h_logN_sqrt hN3
+    have hN3' : 3 ≤ N := hN3
+    have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (by omega : N ≠ 0)
+    have h_logN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast (show 1 < N by omega))
+    have h_loglogN_pos : 0 < Real.log (Real.log N) := log_log_pos N hN3'
+    have h_loglogN_le_sqrtN : Real.log (Real.log N) ≤ Real.sqrt N :=
+      (Real.log_le_self h_logN_pos.le).trans h_logN_sqrt
+    -- √N ≤ N / log(log N) since log(log N) ≤ √N and log(log N) > 0
+    rw [le_div_iff₀ h_loglogN_pos]
     calc Real.sqrt N * Real.log (Real.log N)
         ≤ Real.sqrt N * Real.sqrt N := mul_le_mul_of_nonneg_left h_loglogN_le_sqrtN
               (Real.sqrt_nonneg _)
       _ = N := Real.mul_self_sqrt hNpos.le
-  linarith
+  exact tendsto_atTop_mono' atTop h_sqrt_le_div
+    (Real.tendsto_sqrt_atTop.comp tendsto_natCast_atTop_atTop)
 
 /-- For c > 0, N · exp(-c · √(log N)) is eventually greater than any constant.
 
@@ -195,11 +194,12 @@ theorem behrend_lower_eventually_large (c : ℝ) (hc : 0 < c) (K : ℝ) :
   -- Eventually: log N ≥ 4c² (so √(log N) ≥ 2c) and √N ≥ K
   have h_log_lb := log_nat_tendsto_atTop.eventually_ge_atTop (4 * c ^ 2)
   have h_sqrt_lb := (Real.tendsto_sqrt_atTop.comp
-      tendsto_natCast_atTop_atTop).eventually_ge_atTop (max K 1)
+      tendsto_natCast_atTop_atTop).eventually_gt_atTop (max K 1)
   have h_Npos : ∀ᶠ N : ℕ in atTop, (0 : ℝ) < N :=
     tendsto_natCast_atTop_atTop.eventually_gt_atTop 0
   filter_upwards [h_log_lb, h_sqrt_lb, h_Npos] with N h_log h_sqrt hNpos
-  have h_logN_pos : 0 < Real.log N := by linarith [sq_nonneg c]
+  have hc2 : 0 < c ^ 2 := pow_pos hc 2
+  have h_logN_pos : 0 < Real.log N := by linarith
   -- √(log N) ≥ 2c
   have h_sqrt_log : 2 * c ≤ Real.sqrt (Real.log N) := by
     rw [← Real.sqrt_sq (by linarith : 0 ≤ 2 * c)]
@@ -217,17 +217,18 @@ theorem behrend_lower_eventually_large (c : ℝ) (hc : 0 < c) (K : ℝ) :
   have h_exp_eq : Real.exp (-Real.log N / 2) = 1 / Real.sqrt N := by
     rw [show -Real.log N / 2 = -Real.log (Real.sqrt N) from by
         rw [Real.log_sqrt hNpos_r.le]; ring]
-    rw [Real.exp_neg, Real.exp_log h_sqrt_N_pos]
+    rw [Real.exp_neg, Real.exp_log h_sqrt_N_pos, one_div]
   -- N * (1/√N) = √N
   have h_N_sqrt : N * (1 / Real.sqrt N) = Real.sqrt N := by
     field_simp [ne_of_gt h_sqrt_N_pos]
-    exact Real.mul_self_sqrt hNpos_r.le
+    exact (Real.sq_sqrt hNpos_r.le).symm
   -- Put it together
-  calc K ≤ Real.sqrt N := le_of_max_le_left h_sqrt
+  calc K ≤ max K 1 := le_max_left _ _
+    _ < Real.sqrt N := h_sqrt
     _ = N * (1 / Real.sqrt N) := h_N_sqrt.symm
     _ = N * Real.exp (-Real.log N / 2) := by rw [← h_exp_eq]
     _ ≤ N * Real.exp (-c * Real.sqrt (Real.log N)) := by
-        gcongr; exact h_exp_lb
+        gcongr
 
 /-- The Behrend exponent satisfies: exp(-c√(log N)) ≥ N^(-ε) eventually.
 
@@ -241,8 +242,8 @@ theorem behrend_exponent_vs_poly (c ε : ℝ) (hc : 0 < c) (hε : 0 < ε) :
     tendsto_natCast_atTop_atTop.eventually_gt_atTop 0
   filter_upwards [h_log_lb, h_Npos] with N h_log hNpos
   have h_logN_pos : 0 < Real.log N := by
-    calc 0 ≤ (c / ε) ^ 2 := sq_nonneg _
-      _ ≤ Real.log N := h_log
+    have hcε2 : 0 < (c / ε) ^ 2 := by positivity
+    linarith
   -- √(log N) ≥ c/ε
   have h_sqrt_lb : c / ε ≤ Real.sqrt (Real.log N) := by
     have hce : 0 ≤ c / ε := le_of_lt (div_pos hc hε)
@@ -250,7 +251,8 @@ theorem behrend_exponent_vs_poly (c ε : ℝ) (hc : 0 < c) (hε : 0 < ε) :
     exact Real.sqrt_le_sqrt h_log
   -- ε * √(log N) ≥ c
   have h_eps_c : c ≤ ε * Real.sqrt (Real.log N) := by
-    rwa [div_le_iff hε] at h_sqrt_lb
+    rw [div_le_iff₀ hε, mul_comm] at h_sqrt_lb
+    exact h_sqrt_lb
   -- c * √(log N) ≤ ε * log N
   have h_key : c * Real.sqrt (Real.log N) ≤ ε * Real.log N := by
     calc c * Real.sqrt (Real.log N)

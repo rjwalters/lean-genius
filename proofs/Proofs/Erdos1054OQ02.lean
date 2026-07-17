@@ -99,8 +99,8 @@ theorem card_divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
   rw [divisors_prime_product q p hq hp hlt]
   have hq2 := hq.two_le
   have hp2 := hp.two_le
-  rw [Finset.card_insert_of_not_mem (by simp; omega)]
-  rw [Finset.card_insert_of_not_mem (by simp; omega)]
+  rw [Finset.card_insert_of_notMem (by simp; omega)]
+  rw [Finset.card_insert_of_notMem (by simp; omega)]
   rw [Finset.card_pair (by omega)]
 
 -- ============================================================

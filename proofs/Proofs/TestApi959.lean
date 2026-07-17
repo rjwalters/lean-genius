@@ -1,5 +1,5 @@
+import Mathlib
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Sup
 import Mathlib.Tactic
 
 -- Test: sup of erased subset ≤ sup of original (ℕ with ⊥ = 0)

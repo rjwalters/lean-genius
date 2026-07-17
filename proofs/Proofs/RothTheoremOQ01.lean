@@ -272,8 +272,7 @@ theorem bourgain_factor_tendsto_zero :
   have hsqrt : Filter.Tendsto
       (fun N : ℕ => Real.sqrt (Real.log (Real.log N) / Real.log N))
       Filter.atTop (nhds 0) := by
-    have := (Real.continuous_sqrt.tendsto 0).comp hratio
-    simpa [Real.sqrt_zero] using this
+    exact (Real.continuous_sqrt.tendsto' 0 0 Real.sqrt_zero).comp hratio
   exact hsqrt.congr (fun N => Real.sqrt_eq_rpow _)
 
 /-- **Bourgain's explicit bound recovers the qualitative Roth theorem — derived, not
@@ -342,7 +341,7 @@ theorem loglog_cubed_div_log_tendsto_zero :
   have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   -- compose: `(log (log N))³ / log N → 0`.
-  simpa [Function.comp] using hpoly.comp hlogN
+  exact hpoly.comp hlogN
 
 /-- **General polylog decay engine (axiom-free).** `(log log N)^j / log N → 0` for *every* fixed
 `j`.  This is the arbitrary-power generalisation of `loglog_cubed_div_log_tendsto_zero` (the case
@@ -358,7 +357,7 @@ theorem loglog_pow_div_log_tendsto_zero (j : ℕ) :
     simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 j one_ne_zero
   have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
-  simpa [Function.comp] using hpoly.comp hlogN
+  simpa [Function.comp_def] using hpoly.comp hlogN
 
 /-- **Bourgain's saving is asymptotically strictly stronger than Roth's 1953 saving.**
 
@@ -386,8 +385,8 @@ theorem bourgain_factor_isLittleO_roth_factor :
     have hratio : Filter.Tendsto
         (fun N : ℕ => Real.sqrt (Real.log (Real.log N) ^ 3 / Real.log N))
         Filter.atTop (nhds 0) := by
-      have := (Real.continuous_sqrt.tendsto 0).comp loglog_cubed_div_log_tendsto_zero
-      simpa [Real.sqrt_zero] using this
+      exact (Real.continuous_sqrt.tendsto' 0 0 Real.sqrt_zero).comp
+        loglog_cubed_div_log_tendsto_zero
     refine hratio.congr' ?_
     filter_upwards [Filter.eventually_ge_atTop 3] with N hN
     have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN
@@ -424,7 +423,7 @@ theorem bourgain_factor_isLittleO_loglog_inv_pow (k : ℕ) :
         (fun N : ℕ => Real.sqrt (Real.log (Real.log N) ^ (2 * k + 1) / Real.log N))
         Filter.atTop (nhds 0) := by
       have := (Real.continuous_sqrt.tendsto 0).comp (loglog_pow_div_log_tendsto_zero (2 * k + 1))
-      simpa [Real.sqrt_zero] using this
+      simpa [Real.sqrt_zero, Function.comp_def] using this
     refine hratio.congr' ?_
     filter_upwards [Filter.eventually_ge_atTop 3] with N hN
     have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN
@@ -563,7 +562,7 @@ theorem roth_factor_tendsto_zero :
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   have hloglogN : Filter.Tendsto (fun N : ℕ => Real.log (Real.log N))
       Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlogN
-  simpa [one_div] using hloglogN.inv_tendsto_atTop
+  simpa only [one_div, Pi.inv_def] using hloglogN.inv_tendsto_atTop
 
 /-- **Bloom–Sisask's saving factor vanishes.**  `1 / (log N)^{1+c} → 0` (with
 `c = blasiConst > 0`).  The strongest saving in the formalized chain; completes the trio
@@ -580,9 +579,9 @@ theorem blasi_factor_tendsto_zero :
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   have hD : Filter.Tendsto (fun N : ℕ => Real.log N ^ (1 + RothTheoremOQ02.blasiConst))
       Filter.atTop Filter.atTop := by
-    simpa [Function.comp] using
+    simpa [Function.comp_def] using
       (tendsto_rpow_atTop (show (0:ℝ) < 1 + RothTheoremOQ02.blasiConst by positivity)).comp hlogN
-  simpa [one_div] using hD.inv_tendsto_atTop
+  simpa only [one_div, Pi.inv_def] using hD.inv_tendsto_atTop
 
 /-- **Endpoint domination of the whole formalized chain: Bloom–Sisask =o Roth.**
 Composing the two adjacent comparisons `blasi_factor_isLittleO_bourgain_factor`

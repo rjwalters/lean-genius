@@ -25,7 +25,7 @@ This file lifts to the `eLpNorm` API — the standard interface for Lp spaces �
 ## Why This Matters
 
 The eLpNorm API is the standard Lp space interface in Mathlib.
-`Memℒp f p μ` = `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`.
+`MemLp f p μ` = `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`.
 The product membership theorem (`memLp_mul_of_memLp_ofReal`) is the most
 practically useful consequence of Hölder's inequality.
 
@@ -53,7 +53,7 @@ private lemma eLpNorm_ofReal_eq {p : ℝ} (hp : 0 < p)
     eLpNorm f (ENNReal.ofReal p) μ =
     (∫⁻ a, ‖f a‖ₑ ^ p ∂μ) ^ (1 / p) := by
   have h0 : (ENNReal.ofReal p) ≠ 0 := (ENNReal.ofReal_pos.mpr hp).ne'
-  rw [eLpNorm_eq_lintegral_rpow_enorm h0 ENNReal.ofReal_ne_top,
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal h0 ENNReal.ofReal_ne_top,
       ENNReal.toReal_ofReal hp.le]
 
 -- ============================================================================
@@ -70,20 +70,19 @@ private lemma eLpNorm_ofReal_eq {p : ℝ} (hp : 0 < p)
     Proof: Bridge via `eLpNorm_ofReal_eq` to the lintegral form, then apply
     `ENNReal.lintegral_mul_le_Lp_mul_Lq` after factoring `nnnorm_mul`. -/
 theorem holder_normedField_eLpNorm
-    {𝕜 : Type*} [NormedField 𝕜]
+    {𝕜 : Type*} [NormedField 𝕜] [MeasurableSpace 𝕜] [OpensMeasurableSpace 𝕜]
     {p q : ℝ} (hpq : Real.HolderConjugate p q)
     {f g : α → 𝕜} (hf : AEMeasurable f μ) (hg : AEMeasurable g μ) :
     eLpNorm (fun a => f a * g a) 1 μ ≤
     eLpNorm f (ENNReal.ofReal p) μ * eLpNorm g (ENNReal.ofReal q) μ := by
   -- Bridge eLpNorm to lintegral form
-  rw [eLpNorm_one_eq_lintegral_nnnorm,
+  rw [eLpNorm_one_eq_lintegral_enorm,
       eLpNorm_ofReal_eq hpq.pos,
       eLpNorm_ofReal_eq hpq.symm.pos]
-  -- Factor nnnorm via NormedField multiplicativity: ‖fg‖₊ = ‖f‖₊ · ‖g‖₊
-  simp_rw [nnnorm_mul, ENNReal.coe_mul]
-  -- Apply ENNReal Hölder (‖·‖ₑ = (‖·‖₊ : ℝ≥0∞) definitionally, exact closes)
-  exact ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq
-    hf.nnnorm.coe_nnreal_ennreal hg.nnnorm.coe_nnreal_ennreal
+  -- Factor enorm via NormedField multiplicativity: ‖fg‖ₑ = ‖f‖ₑ · ‖g‖ₑ
+  simp_rw [enorm_mul]
+  -- Apply ENNReal Hölder
+  exact ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq hf.enorm hg.enorm
 
 -- ============================================================================
 -- Part 3: Product Membership in L1 — the Practical Consequence
@@ -95,16 +94,16 @@ theorem holder_normedField_eLpNorm
     This is the most directly useful consequence of Hölder's inequality:
     the product of an Lp and Lq function is integrable. -/
 theorem memLp_mul_of_memLp_ofReal
-    {𝕜 : Type*} [NormedField 𝕜]
+    {𝕜 : Type*} [NormedField 𝕜] [MeasurableSpace 𝕜] [BorelSpace 𝕜]
     {p q : ℝ} (hpq : Real.HolderConjugate p q)
     {f g : α → 𝕜}
-    (hf : Memℒp f (ENNReal.ofReal p) μ) (hg : Memℒp g (ENNReal.ofReal q) μ) :
-    Memℒp (fun a => f a * g a) 1 μ := by
+    (hf : MemLp f (ENNReal.ofReal p) μ) (hg : MemLp g (ENNReal.ofReal q) μ) :
+    MemLp (fun a => f a * g a) 1 μ := by
   refine ⟨hf.1.mul hg.1, ?_⟩
   calc eLpNorm (fun a => f a * g a) 1 μ
       ≤ eLpNorm f (ENNReal.ofReal p) μ * eLpNorm g (ENNReal.ofReal q) μ :=
           holder_normedField_eLpNorm hpq hf.1.aemeasurable hg.1.aemeasurable
-      _ < ∞ := ENNReal.mul_lt_top hf.2.ne hg.2.ne
+      _ < ∞ := ENNReal.mul_lt_top hf.2 hg.2
 
 -- ============================================================================
 -- Part 4: Real and Complex Specializations
@@ -168,7 +167,7 @@ useful form of Hölder's inequality: it shows fg ∈ L1 whenever f ∈ Lp and g 
 2. `ENNReal.lintegral_mul_le_Lp_mul_Lq` (Mathlib): lintegral Hölder
 3. `eLpNorm_ofReal_eq` (bridge via `eLpNorm_eq_lintegral_rpow_enorm`): eLpNorm ↔ lintegral
 4. `‖·‖ₑ = (‖·‖₊ : ℝ≥0∞)` definitionally — `exact` closes the Hölder goal
-5. Combine to get eLpNorm Hölder → product Memℒp
+5. Combine to get eLpNorm Hölder → product MemLp
 -/
 
 end HolderELpNorm

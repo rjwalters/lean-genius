@@ -76,11 +76,11 @@ def IsWellDefined (n : ℕ) : Prop :=
 
 /- ## Open Questions -/
 
-/-- **Well-Definedness** (OPEN): Is the recursion well-defined for all n?
+/-  **Well-Definedness** (OPEN): Is the recursion well-defined for all n?
     It is not known whether the recursive indices always stay in bounds. -/
-/-- **Missing Integers** (OPEN): Does f miss infinitely many positive integers? -/
-/-- **Non-Surjectivity** (OPEN): Is f non-surjective on positive integers? -/
-/-- **Growth Rate** (OPEN): f(n) grows at most linearly. -/
+/-  **Missing Integers** (OPEN): Does f miss infinitely many positive integers? -/
+/-  **Non-Surjectivity** (OPEN): Is f non-surjective on positive integers? -/
+/- **Growth Rate** (OPEN): f(n) grows at most linearly. -/
 /- ## Observations -/
 
 /- **Hofstadter Origin**: the sequence was proposed by Hofstadter and

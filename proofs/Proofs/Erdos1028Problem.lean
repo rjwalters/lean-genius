@@ -157,8 +157,8 @@ axiom erdos_spencer_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
 theorem erdos_spencer_improves (n : ℕ) (hn : n ≥ 2) :
     (n : ℝ) ≤ (n : ℝ) ^ (3/2 : ℝ) := by
   have h1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (show 1 ≤ n by omega)
-  conv_lhs => rw [← rpow_one (↑n : ℝ)]
-  exact rpow_le_rpow_of_exponent_le h1 (by norm_num : (1 : ℝ) ≤ 3 / 2)
+  conv_lhs => rw [← Real.rpow_one (↑n : ℝ)]
+  exact Real.rpow_le_rpow_of_exponent_le h1 (by norm_num : (1 : ℝ) ≤ 3 / 2)
 /-
 ## The Main Result: H(n) = Θ(n^{3/2})
 
@@ -190,8 +190,7 @@ def erdos_1028_question : Prop :=
 /-- The answer: H(n) = Θ(n^(3/2)). -/
 theorem erdos_1028_solved : erdos_1028_question := by
   obtain ⟨c, C, hc, hC, N, hN⟩ := H_asymptotic
-  use c, C, hc, hC, fun n => (n : ℝ) ^ (3/2 : ℝ), N
-  exact hN
+  exact ⟨c, C, hc, hC, fun n => (n : ℝ) ^ (3/2 : ℝ), N, hN⟩
 
 /-
 ## Symmetric Functions
@@ -253,22 +252,22 @@ theorem expected_discrepancy_bound (n k : ℕ) (hk : k ≤ n) :
 Erdős's upper bound uses probabilistic method.
 -/
 
-/-- Random sign functions have max discrepancy O(n^(3/2)). -/
+/-  Random sign functions have max discrepancy O(n^(3/2)). -/
 /-
 ## The Lower Bound Technique
 
 Erdős-Spencer used entropy or counting arguments.
 -/
 
-/-- Any sign function has some subset with large discrepancy. -/
+/-  Any sign function has some subset with large discrepancy. -/
 /-
 ## Special Cases
 
 Small cases and explicit computations.
 -/
 
-/-- H(2) = 2 (trivial case). -/
-/-- H(3) = 4. -/
+/-  H(2) = 2 (trivial case). -/
+/-  H(3) = 4. -/
 /-
 ## Connection to Ramsey Theory
 

@@ -25,8 +25,9 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 
 /- ## Definitions -/
 
-/-- A bounded set in ℝⁿ represented as a set of vectors. -/
-def BoundedSet (n : ℕ) := Set (Fin n → ℝ)
+/-- A bounded set in ℝⁿ represented as a set of vectors.
+    (`abbrev` so instance search unfolds it to `Set (Fin n → ℝ)` on v4.31.) -/
+abbrev BoundedSet (n : ℕ) := Set (Fin n → ℝ)
 
 /-- The diameter of a set: the supremum of distances between pairs. -/
 noncomputable def diameter {n : ℕ} (S : BoundedSet n) : ℝ :=

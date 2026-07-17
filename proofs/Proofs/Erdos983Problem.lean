@@ -28,10 +28,9 @@ References:
 Tags: number-theory, primes, smooth-numbers, prime-counting
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.PrimeCounting
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset BigOperators
 
@@ -68,7 +67,7 @@ def IsSmooth (P : Finset ℕ) (m : ℕ) : Prop :=
 **P-smooth elements of a set:**
 The elements of A that are smooth with respect to P.
 -/
-def smoothElements (P : Finset ℕ) (A : Finset ℕ) : Finset ℕ :=
+noncomputable def smoothElements (P : Finset ℕ) (A : Finset ℕ) : Finset ℕ :=
   A.filter (fun a => ∀ p : ℕ, Nat.Prime p → p ∣ a → p ∈ P)
 
 /--
@@ -93,11 +92,11 @@ noncomputable def f (k n : ℕ) : ℕ :=
   sInf {r : ℕ | ∀ A : Finset ℕ, A ⊆ Finset.range (n + 1) → A.card = k →
     ∃ P : Finset ℕ, PrimesCover P A r}
 
-/--
+/- 
 **Trivial Upper Bound:**
 f(k,n) ≤ π(n) since all elements are smooth with respect to all primes ≤ n.
 -/
-/--
+/- 
 **Monotonicity in k:**
 f is increasing in k.
 -/
@@ -127,7 +126,7 @@ axiom erdos_question_answer : ¬ErdosQuestion983
 The precise asymptotics for f(k,n).
 -/
 
-/--
+/- 
 **Erdős-Straus Theorem 1:**
 f(π(n)+1, n) = 2π(√n) + o_A(√n/(log n)^A) for any A > 0.
 
@@ -143,7 +142,7 @@ axiom difference_is_sublinear :
       |(2 * (primePi (Nat.sqrt n) : ℝ) - (f (primePi n + 1) n : ℝ))| /
       (n : ℝ)^(1/2 : ℝ) < ε
 
-/--
+/- 
 **Erdős-Straus Theorem 2:**
 For constant 0 < c < 1:
 f(cn, n) = log log n + (c₁ + o(1))√(2 log log n)
@@ -155,7 +154,7 @@ where c₁ is related to the constant c via the normal distribution.
 The intuition behind the formula.
 -/
 
-/--
+/- 
 **Primes ≤ √n vs Primes > √n:**
 Any n has at most one prime factor > √n.
 Products of primes ≤ √n give many smooth numbers.
@@ -178,7 +177,7 @@ def IsYSmooth (y m : ℕ) : Prop :=
 noncomputable def smoothCount (x y : ℕ) : ℕ :=
   (Finset.range (x + 1)).filter (IsYSmooth y) |>.card
 
-/--
+/- 
 **Dickman-de Bruijn Asymptotics:**
 Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function.
 The count of y-smooth numbers up to x is asymptotically x·ρ(log x / log y).

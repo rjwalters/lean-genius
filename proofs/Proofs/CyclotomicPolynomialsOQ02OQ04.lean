@@ -45,7 +45,7 @@ theorem sharpRadius_antitone {C : ℝ} (hC : 1 ≤ C) {k k' : ℕ} (hk : 1 ≤ k
     1 + C ^ ((k' : ℝ)⁻¹) ≤ 1 + C ^ ((k : ℝ)⁻¹) := by
   have hkpos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
   have hcast : (k : ℝ) ≤ (k' : ℝ) := by exact_mod_cast hkk'
-  have hinv : (k' : ℝ)⁻¹ ≤ (k : ℝ)⁻¹ := inv_le_inv_of_le hkpos hcast
+  have hinv : (k' : ℝ)⁻¹ ≤ (k : ℝ)⁻¹ := inv_anti₀ hkpos hcast
   have hle : C ^ ((k' : ℝ)⁻¹) ≤ C ^ ((k : ℝ)⁻¹) :=
     Real.rpow_le_rpow_of_exponent_le hC hinv
   linarith
@@ -67,7 +67,7 @@ theorem tendsto_sharpRadius {C : ℝ} (hC : 0 < C) :
   have hCk : Tendsto (fun k : ℕ => C ^ ((k : ℝ)⁻¹)) atTop (𝓝 1) := by
     rw [hexp]
     have h := (Real.continuous_exp.tendsto 0).comp harg
-    simpa [Real.exp_zero] using h
+    simpa [Real.exp_zero, Function.comp_def] using h
   have h2 : Tendsto (fun k : ℕ => 1 + C ^ ((k : ℝ)⁻¹)) atTop (𝓝 (1 + 1)) :=
     hCk.const_add 1
   have he : (1 : ℝ) + 1 = 2 := by norm_num

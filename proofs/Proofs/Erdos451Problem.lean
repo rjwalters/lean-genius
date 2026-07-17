@@ -1,7 +1,7 @@
 /- Erdős Problem #451 — Primes in Interval (k, 2k) Avoiding Products
 
 Estimate n_k, the smallest integer n > 2k such that the product
-∏_{1 ≤ i ≤ k} (n - i) has no prime factor in the interval (k, 2k).
+∏_{1 ≤ i ≤ k} (n - i) has no prime factor ∈ the interval (k, 2k).
 
 Known bounds:
 - Lower: Erdős–Graham proved n_k > k^{1+c} for some c > 0.
@@ -19,6 +19,8 @@ Reference: https://erdosproblems.com/451
 -/
 
 import Mathlib
+
+set_option autoImplicit true
 
 open Finset Real
 
@@ -54,7 +56,7 @@ axiom nk : ℕ → ℕ
 /-- n_k > 2k. -/
 axiom nk_gt_2k (k : ℕ) (hk : 1 ≤ k) : 2 * k < nk k
 
-/-- n_k avoids Bertrand-range primes. -/
+/-  n_k avoids Bertrand-range primes. -/
 /-- n_k is minimal: no smaller n > 2k avoids them. -/
 axiom nk_minimal (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 2 * k < n)
     (ha : AvoidsBertrandPrimes n k) : nk k ≤ n
@@ -119,7 +121,7 @@ theorem prime_not_dvd_factor_when_dvd_n (n k p i : ℕ)
     (hi : 1 ≤ i) (hik : i ≤ k) (hpn : p ∣ n) :
     ¬(p ∣ (n - i)) := by
   intro h
-  have hsub := Nat.dvd_sub' hpn h
+  have hsub := Nat.dvd_sub hpn h
   have heq : n - (n - i) = i := by omega
   rw [heq] at hsub
   exact absurd (Nat.le_of_dvd (by omega) hsub) (by omega)
@@ -153,8 +155,8 @@ theorem avoidsBertrand_iff_finset (n k : ℕ) (hk : 1 ≤ k) :
 
 /- ## Known bounds -/
 
-/-- Erdős–Graham lower bound: n_k > k^{1+c} for some constant c > 0. -/
-/-- Adenwalla upper bound: n_k ≤ ∏_{k < p < 2k} p = e^{O(k)}.
+/-  Erdős–Graham lower bound: n_k > k^{1+c} for some constant c > 0. -/
+/-  Adenwalla upper bound: n_k ≤ ∏_{k < p < 2k} p = e^{O(k)}.
     By CRT, taking n ≡ 0 (mod p) for all primes p in (k,2k). -/
 /-- The trivial lower bound: n_k > 2k (by definition). -/
 theorem nk_trivial_lower (k : ℕ) (hk : 1 ≤ k) : (2 * k : ℝ) < (nk k : ℝ) := by

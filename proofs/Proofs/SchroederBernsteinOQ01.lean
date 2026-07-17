@@ -331,7 +331,9 @@ but is **narrow**: `(forget C).Full` essentially forces `C` to be a
 full subcategory of `Type`. See the module-level docstring above for
 the instance-space catalogue and the comparison with `hasSBP_Type` /
 `hasSBP_of_isDiscrete` / `hasSBP_of_isGroupoid`. -/
-theorem hasSBP_of_fullFaithful_forget (C : Type*) [Category C] [HasForget C]
+theorem hasSBP_of_fullFaithful_forget (C : Type*) [Category C]
+    {FC : C → C → Type*} {CC : C → Type*} [∀ X Y, FunLike (FC X Y) (CC X) (CC Y)]
+    [ConcreteCategory C FC]
     [(forget C).Full] [(forget C).Faithful]
     [(forget C).PreservesMonomorphisms] : HasSBP C := by
   intro X Y ⟨m, hm⟩ ⟨n, hn⟩

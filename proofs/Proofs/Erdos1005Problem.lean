@@ -1,4 +1,4 @@
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Sort
 import Mathlib.Tactic
@@ -70,9 +70,9 @@ axiom longestSimilarRun (n : ℕ) : ℕ
 -- § 3: Known Bounds
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Lower bound: f(n) ≥ n/12 for large n. -/
-/-- Upper bound: f(n) ≤ n/4 + O(1). -/
-/-- **Erdős Problem #1005** (OPEN): Is there a constant c > 0 such that
+/-  Lower bound: f(n) ≥ n/12 for large n. -/
+/-  Upper bound: f(n) ≤ n/4 + O(1). -/
+/-  **Erdős Problem #1005** (OPEN): Is there a constant c > 0 such that
     f(n) = (c + o(1))·n? That is, does the longest similar run grow linearly
     with a definite leading constant? -/
 /-- If a/b < c/d are consecutive Farey fractions (bc - ad = 1),
@@ -80,17 +80,20 @@ axiom longestSimilarRun (n : ℕ) : ℕ
 theorem consecutive_farey_gap {n : ℕ} (f g : FareyFraction n)
     (h : IsConsecutiveFarey f g) (hf : f.toRat < g.toRat) :
     g.toRat - f.toRat = 1 / (f.q * g.q : ℚ) := by
-  unfold FareyFraction.toRat
-  have hfq : (f.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have hgq : (g.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  field_simp
+  have hfq : (f.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by have := f.hq_pos; omega)
+  have hgq : (g.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by have := g.hq_pos; omega)
   unfold IsConsecutiveFarey at h
-  push_cast [Nat.sub_eq_iff_eq_add] at h ⊢
-  · linarith
-  · -- Need g.p * f.q ≥ f.p * g.q (from f < g)
-    by_contra hlt
-    push_neg at hlt
-    omega
+  -- Nat subtraction in `h` is genuine: g.p*f.q = f.p*g.q + 1
+  have hcast : (g.p : ℚ) * f.q - f.p * g.q = 1 := by
+    have hnat : g.p * f.q = f.p * g.q + 1 := by omega
+    have := congrArg (Nat.cast : ℕ → ℚ) hnat
+    push_cast at this
+    linarith
+  unfold FareyFraction.toRat
+  rw [div_sub_div _ _ hgq hfq,
+      div_eq_div_iff (mul_ne_zero hgq hfq) (mul_ne_zero hfq hgq)]
+  push_cast
+  linear_combination ((f.q : ℚ) * (g.q : ℚ)) * hcast
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6: Mediant Properties
@@ -106,7 +109,7 @@ theorem mediant_coprime {a b c d : ℕ} (h : b * c = a * d + 1) :
   rw [Nat.Coprime]
   have h1 := dvd_mul_of_dvd_right (Nat.gcd_dvd_left (a + c) (b + d)) b
   have h2 := dvd_mul_of_dvd_right (Nat.gcd_dvd_right (a + c) (b + d)) a
-  have h3 := Nat.dvd_sub' h1 h2
+  have h3 := Nat.dvd_sub h1 h2
   suffices hsuff : b * (a + c) - a * (b + d) = 1 by rw [hsuff] at h3; exact Nat.dvd_one.mp h3
   suffices b * (a + c) = a * (b + d) + 1 by omega
   nlinarith
@@ -119,22 +122,22 @@ theorem mediant_between {n : ℕ} (f g : FareyFraction n)
     f.toRat < (f.p + g.p : ℚ) / (f.q + g.q : ℚ) ∧
     (f.p + g.p : ℚ) / (f.q + g.q : ℚ) < g.toRat := by
   unfold FareyFraction.toRat
-  have hfq : (f.q : ℚ) > 0 := Nat.cast_pos.mpr (by omega)
-  have hgq : (g.q : ℚ) > 0 := Nat.cast_pos.mpr (by omega)
+  have hfq : (f.q : ℚ) > 0 := Nat.cast_pos.mpr (by have := f.hq_pos; omega)
+  have hgq : (g.q : ℚ) > 0 := Nat.cast_pos.mpr (by have := g.hq_pos; omega)
   have hsum : (f.q + g.q : ℚ) > 0 := by positivity
   constructor
   · -- f.p/f.q < (f.p+g.p)/(f.q+g.q)
     -- Equivalent to: f.p * (f.q+g.q) < (f.p+g.p) * f.q
     -- i.e., f.p * g.q < g.p * f.q, i.e., f.p/f.q < g.p/g.q
-    rw [div_lt_div_iff hfq hsum]
+    rw [div_lt_div_iff₀ hfq hsum]
     push_cast
-    nlinarith [hlt, (div_lt_div_iff hfq hgq).mp hlt]
+    nlinarith [hlt, (div_lt_div_iff₀ hfq hgq).mp hlt]
   · -- (f.p+g.p)/(f.q+g.q) < g.p/g.q
-    rw [div_lt_div_iff hsum hgq]
+    rw [div_lt_div_iff₀ hsum hgq]
     push_cast
-    nlinarith [hlt, (div_lt_div_iff hfq hgq).mp hlt]
+    nlinarith [hlt, (div_lt_div_iff₀ hfq hgq).mp hlt]
 
-/-- The number of Farey fractions of order n is approximately 3n²/π² + O(n log n). -/
+/- The number of Farey fractions of order n is approximately 3n²/π² + O(n log n). -/
 -- This is a deep result (Möbius inversion); we don't formalize it here.
 
 end Erdos1005

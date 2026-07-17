@@ -31,6 +31,8 @@ import Mathlib.Data.Set.Countable
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Set Nat Real
 
 namespace Erdos255
@@ -109,7 +111,7 @@ axiom schmidt_theorem_1972 (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
 def hasLogarithmicDiscrepancy (z : ℕ → ℝ) (x : ℝ) : Prop :=
   ∃ c > 0, ∀ M : ℕ, ∃ N ≥ M, absDiscrepancy z 0 x N > c * Real.log N
 
-/-- **Tijdeman-Wagner Theorem (1980):**
+/-  **Tijdeman-Wagner Theorem (1980):**
     For almost all x ∈ [0,1], limsup |D_N([0,x))| / log N ≫ 1.
     This is the best possible growth rate. -/
 /- ## Part VI: Optimality -/
@@ -130,14 +132,14 @@ def isUniformlyDistributed (z : ℕ → ℝ) : Prop :=
   ∀ x : ℝ, x ∈ Set.Ioo 0 1 →
     Filter.Tendsto (fun N => discrepancy z 0 x N / N) Filter.atTop (nhds 0)
 
-/-- **Weyl's Theorem:** (nα) mod 1 is uniformly distributed iff α is irrational. -/
+/-  **Weyl's Theorem:** (nα) mod 1 is uniformly distributed iff α is irrational. -/
 /- ## Part VIII: Star Discrepancy -/
 
 /-- **Star Discrepancy D*_N:** The supremum of |D_N([0,x))| over all x ∈ [0,1]. -/
 noncomputable def starDiscrepancy (z : ℕ → ℝ) (N : ℕ) : ℝ :=
   ⨆ x ∈ Set.Icc (0:ℝ) 1, absDiscrepancy z 0 x N
 
-/-- **Star discrepancy is unbounded** for any sequence, following from Schmidt's theorem. -/
+/-  **Star discrepancy is unbounded** for any sequence, following from Schmidt's theorem. -/
 /- ## Part IX: Summary -/
 
 /-- **Summary of Erdős Problem #255:**

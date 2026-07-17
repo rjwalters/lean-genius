@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Algebra.Polynomial.Degree.Definitions
+import Mathlib.Algebra.Polynomial.Degree.Defs
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 
 /-!
@@ -113,8 +113,8 @@ theorem no_roots_implies_constant {p : ℂ[X]} (h : ∀ z : ℂ, ¬IsRoot p z) :
 example : IsAlgClosed ℂ := Complex.isAlgClosed
 
 -- This means every polynomial splits completely into linear factors
-theorem splits_over_complex (p : ℂ[X]) : Splits (RingHom.id ℂ) p :=
-  IsAlgClosed.splits_codomain p
+theorem splits_over_complex (p : ℂ[X]) : Splits p :=
+  IsAlgClosed.splits p
 
 /-
   Complete Factorization
@@ -132,12 +132,9 @@ theorem splits_over_complex (p : ℂ[X]) : Splits (RingHom.id ℂ) p :=
 theorem card_roots_eq_degree {p : ℂ[X]} (_hp : p ≠ 0) :
     Multiset.card (roots p) = natDegree p := by
   -- In an algebraically closed field, a polynomial splits completely
-  have hsplit : Splits (RingHom.id ℂ) p := IsAlgClosed.splits_codomain p
+  have hsplit : Splits p := IsAlgClosed.splits p
   -- For a polynomial that splits, the number of roots equals the natDegree
-  have h := Polynomial.natDegree_eq_card_roots hsplit
-  -- map (RingHom.id ℂ) p = p, so roots are the same
-  simp only [Polynomial.map_id] at h
-  exact h.symm
+  exact hsplit.natDegree_eq_card_roots.symm
 
 -- Every monic polynomial equals the product of (X - root) over its roots
 -- This is the complete factorization theorem for algebraically closed fields
@@ -145,12 +142,9 @@ theorem monic_prod_roots {p : ℂ[X]} (hp : Monic p) :
     p = ((roots p).map (fun r => X - C r)).prod := by
   -- For a monic polynomial over an algebraically closed field,
   -- p = prod (X - r) over all roots r
-  have hsplit : Splits (RingHom.id ℂ) p := IsAlgClosed.splits_codomain p
+  have hsplit : Splits p := IsAlgClosed.splits p
   -- Get the root count equality
-  have hcard : Multiset.card (roots p) = natDegree p := by
-    have h := Polynomial.natDegree_eq_card_roots hsplit
-    simp only [Polynomial.map_id] at h
-    exact h.symm
+  have hcard : Multiset.card (roots p) = natDegree p := hsplit.natDegree_eq_card_roots.symm
   -- Use Mathlib's theorem: monic polynomial equals product of linear factors
   exact (Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hp hcard).symm
 

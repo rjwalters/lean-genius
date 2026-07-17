@@ -250,7 +250,7 @@ theorem prod_transcendental_if_sum_algebraic
 -- PART 6: The Open Conjectures
 -- ============================================================
 
-/-- **Open Conjecture**: e + π is transcendental.
+/-  **Open Conjecture**: e + π is transcendental.
 
     Believed true; unknown as of 2026.
     Would follow from Schanuel's Conjecture (algebraic independence of e and π).
@@ -258,7 +258,7 @@ theorem prod_transcendental_if_sum_algebraic
     Numerical value: e + π ≈ 5.8598744820488...
 
     OPEN PROBLEM — stated as axiom since no proof exists. -/
-/-- **Open Conjecture**: e · π is transcendental.
+/-  **Open Conjecture**: e · π is transcendental.
 
     Also believed true; unknown as of 2026.
     By `e_plus_pi_or_e_times_pi_transcendental`, at least one of {e+π, eπ} is transcendental,
@@ -267,7 +267,7 @@ theorem prod_transcendental_if_sum_algebraic
     Numerical value: e · π ≈ 8.5397342226735...
 
     OPEN PROBLEM — stated as axiom since no proof exists. -/
-/-- **Open Question**: Is e + π irrational?
+/-  **Open Question**: Is e + π irrational?
 
     Surprisingly, even irrationality is open! If e + π = q ∈ ℚ, then π = q - e.
     This would require e and π to differ by a rational, which contradicts their

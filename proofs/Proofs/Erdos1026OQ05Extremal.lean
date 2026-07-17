@@ -78,7 +78,7 @@ lemma sval_lt_of_same_block {i j : Fin (k * k)} (hlt : i.val < j.val)
   rw [hblk] at hi
   -- same quotient block term, `i < j` forces the remainders to increase
   have hmod : i.val % k < j.val % k := by omega
-  have hcast : (i.val % k : ℤ) < (j.val % k : ℤ) := by exact_mod_cast hmod
+  have hcast : ((i.val % k : ℕ) : ℤ) < ((j.val % k : ℕ) : ℤ) := by exact_mod_cast hmod
   unfold sval
   rw [hblk]
   linarith
@@ -89,7 +89,7 @@ from the remainder. -/
 lemma sval_lt_of_diff_block {i j : Fin (k * k)} (hk : 0 < k)
     (hblk : i.val / k < j.val / k) : sval k i < sval k j := by
   have hri : (0 : ℤ) ≤ (i.val % k : ℕ) := by positivity
-  have hrj : (j.val % k : ℤ) ≤ (k : ℤ) - 1 := by
+  have hrj : ((j.val % k : ℕ) : ℤ) ≤ (k : ℤ) - 1 := by
     have hjm : j.val % k < k := Nat.mod_lt _ hk
     have hjm' : (j.val % k : ℤ) < (k : ℤ) := by exact_mod_cast hjm
     omega
@@ -146,7 +146,7 @@ theorem staircase_injective (hk : 0 < k) : Function.Injective (staircase k) := b
 /-- Upper bound: any increasing subsequence hits each block at most once, so its length is
 at most the number of blocks, `k`. -/
 theorem staircase_LIS_le (hk : 0 < k) : LIS (staircase k) ≤ k := by
-  apply csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a; exact a.elim0⟩
+  refine csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a; exact a.elim0⟩ ?_
   rintro m ⟨sub, hInc⟩
   -- block of each chosen index
   have hblt : ∀ j : Fin m, (sub.indices j).val / k < k := by
@@ -218,7 +218,7 @@ theorem staircase_LIS (hk : 0 < k) : LIS (staircase k) = k :=
 /-- Upper bound: any decreasing subsequence hits each column (remainder class) at most once,
 so its length is at most `k`. -/
 theorem staircase_LDS_le (hk : 0 < k) : LDS (staircase k) ≤ k := by
-  apply csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a b hab; exact a.elim0⟩
+  refine csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a b hab; exact a.elim0⟩ ?_
   rintro m ⟨sub, hDec⟩
   let col : Fin m → Fin k := fun j => ⟨(sub.indices j).val % k, Nat.mod_lt _ hk⟩
   have hkey : ∀ a b : Fin m, a < b → col a ≠ col b := by

@@ -36,22 +36,21 @@ namespace Hilbert14OQ01
 /-- The fixed points of a group action on a ring form a subring.
     This is the foundational property of invariant theory. -/
 theorem invariant_add_closed {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R]
+    [MulSemiringAction G R]
     {r s : R} (hr : ∀ g : G, g • r = r) (hs : ∀ g : G, g • s = s) :
     ∀ g : G, g • (r + s) = r + s := by
   intro g; rw [smul_add, hr g, hs g]
 
 /-- The invariant subring is closed under multiplication. -/
 theorem invariant_mul_closed {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R] [IsScalarTower G R R]
-    [SMulCommClass G R R]
+    [MulSemiringAction G R]
     {r s : R} (hr : ∀ g : G, g • r = r) (hs : ∀ g : G, g • s = s) :
     ∀ g : G, g • (r * s) = r * s := by
-  intro g; rw [smul_mul_assoc, hr g, smul_mul_smul_comm, hr g, hs g]
+  intro g; rw [smul_mul', hr g, hs g]
 
 /-- Constants (from the base ring) are always invariant. -/
 theorem invariant_one {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R] :
+    [MulSemiringAction G R] :
     ∀ g : G, g • (1 : R) = 1 :=
   fun g => smul_one g
 
@@ -59,7 +58,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART II: Finite Groups Always Give Finite Generation
 -- ═══════════════════════════════════════════════════════════════
 
-/-- For finite groups, the invariant ring is always finitely generated
+/-  For finite groups, the invariant ring is always finitely generated
     (Emmy Noether's theorem, 1926). This is because:
     1. The Reynolds operator ρ = (1/|G|) Σ_{g∈G} g· is a projection
     2. The invariant ring is a direct summand of the polynomial ring
@@ -78,7 +77,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART III: The Additive Group Case (Weitzenböck)
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Weitzenböck's Theorem** (1932, reproved by Seshadri 1962):
+/-  **Weitzenböck's Theorem** (1932, reproved by Seshadri 1962):
 
     Let G_a = (k, +) act linearly on k[x₁, ..., xₙ].
     If char(k) = 0, then k[x₁,...,xₙ]^{G_a} is finitely generated.
@@ -96,7 +95,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART IV: Zariski's Finiteness Criterion
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Zariski's Finiteness Theorem** (1954):
+/-  **Zariski's Finiteness Theorem** (1954):
 
     If k is a field and L is a subfield of k(x₁,...,xₙ) such that
     the transcendence degree of L/k is at most 2, then L ∩ k[x₁,...,xₙ]
@@ -114,7 +113,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART V: The Boundary of Finite Generation
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Nagata's Counterexample** (1959):
+/- **Nagata's Counterexample** (1959):
 
     There exists a non-reductive algebraic group G acting linearly
     on k[x₁,...,x₃₂] (32 variables) such that the invariant ring

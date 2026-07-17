@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## K₂,₂,₂-Free Graphs -/
 
 /-- The complete tripartite graph K₂,₂,₂: three independent pairs
@@ -48,25 +50,25 @@ def isDense (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (δ : ℝ) : Prop :=
   δ * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ)
 
 /-- An independent set: a set of vertices with no edges between them -/
-def SimpleGraph.IsIndepSet (G : SimpleGraph V) (S : Finset V) : Prop :=
+def SimpleGraph.IsIndepFinset (G : SimpleGraph V) (S : Finset V) : Prop :=
   ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v
 
 /-- The independence number: the size of the largest independent set -/
 noncomputable def SimpleGraph.independenceNumber (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] : ℕ :=
-  Finset.sup (Finset.univ.powerset.filter G.IsIndepSet) Finset.card
+  Finset.sup (Finset.univ.powerset.filter G.IsIndepFinset) Finset.card
 
 /- ## EHSS Result for δ > 1/8 -/
 
-/-- Erdős–Hajnal–Sós–Szemerédi (1983): for δ > 1/8, K₂,₂,₂-free graphs
+/-  Erdős–Hajnal–Sós–Szemerédi (1983): for δ > 1/8, K₂,₂,₂-free graphs
     with ≥ δn² edges have an independent set of linear size -/
 /- ## The Erdős–Hajnal–Sós–Szemerédi Conjecture -/
 
-/-- Erdős Problem 579: For every δ > 0 and n sufficiently large,
+/-  Erdős Problem 579: For every δ > 0 and n sufficiently large,
     every K₂,₂,₂-free graph on n vertices with at least δn² edges
     has an independent set of size ≫_δ n. Open for δ ≤ 1/8. -/
 /- ## Connection to Turán Theory -/
 
-/-- The octahedron is K₂,₂,₂. By the Kruskal–Katona theorem,
+/- The octahedron is K₂,₂,₂. By the Kruskal–Katona theorem,
     the Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n².
     This explains the threshold δ = 1/8 in the EHSS result. -/

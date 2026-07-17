@@ -1,0 +1,26 @@
+# v4.31.0 FULL failure inventory — all 5,745 proof files
+# generated 2026-07-12T07:34:09Z by /loom:sweep orchestrator (issue #38063, epic #37508)
+# 3 sharded docker runs, image lean4-arm64:v4.31.0, per-file `lake build`, 600s timeout
+
+## pass/fail
+PASS	3083
+FAIL	2659
+TIMEOUT	2
+SKIP	1
+
+## failure-class histogram (first-matching pattern, priority order)
+rename-unknown-name	940
+tactic-drift-or-other	446
+signature-type-mismatch	422
+transitive-dep-failed	333
+instance-synth-drift	246
+tactic-unsolved-goals	141
+rename-invalid-field	105
+noncomputable-required	22
+namespace-ambiguous	4
+
+## mechanic bucket (mechanical fixes)
+renames+fields+noncomputable+ambiguous	1071
+## auto-resolving
+transitive-dep-failed	333
+# NOTE: tactic-drift-or-other is a catch-all: tactic regressions plus any failure not matching the rename/type/instance/import patterns

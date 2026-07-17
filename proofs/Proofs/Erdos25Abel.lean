@@ -59,10 +59,10 @@ theorem countExcl_succ (A : Set ℕ) (N : ℕ) :
   simp only [countExcl]
   rw [show N + 1 + 1 = N + 2 from by omega]
   rw [show N + 1 = N + 1 from rfl]
-  rw [Finset.range_succ]
+  rw [Finset.range_add_one]
   simp only [Finset.filter_insert, Nat.succ_ne_zero, ne_eq, not_false_eq_true, and_true]
   split_ifs with h
-  · rw [Finset.card_insert_of_not_mem]
+  · rw [Finset.card_insert_of_notMem]
     · push_cast; ring
     · simp only [Finset.mem_filter, Finset.mem_range]; omega
   · ring
@@ -105,12 +105,13 @@ theorem weightedCount_abel (A : Set ℕ) : ∀ N : ℕ, 1 ≤ N →
       split_ifs with h
       · -- N+1 ∈ A: need c(n)/n + Σ + 1/(n+1) = (c(n)+1)/(n+1) + Σ + c(n)/(n·(n+1))
         field_simp
+        push_cast
         ring
       · -- N+1 ∉ A: need c(n)/n + Σ = c(n)/(n+1) + Σ + c(n)/(n·(n+1))
         -- i.e., c(n)/n = c(n)/(n+1) + c(n)/(n·(n+1))  [partial fractions]
         simp only [add_zero]
-        ring_nf
         field_simp
+        push_cast
         ring
 
 end Erdos25Abel

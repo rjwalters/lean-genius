@@ -118,7 +118,7 @@ theorem isBipartiteIffDistZero_finite (V : Type*) [Fintype V] (G : SimpleGraph V
     rw [hEempty, SimpleGraph.deleteEdges_empty] at hbip
     exact hbip
 
-/-- Counterexample: The complete graph on ℕ is NOT bipartite but has
+/-  Counterexample: The complete graph on ℕ is NOT bipartite but has
     edgeDistToBipartite = 0 (discovered by Aristotle 2026-01-14).
 
 **Proof sketch**:
@@ -183,7 +183,7 @@ def Erdos74Question : Prop :=
 Several cases of this problem have been resolved.
 -/
 
-/--
+/- 
 **Rödl's Linear Case (1982)**
 
 For any constant ε > 0, there exists a graph with infinite chromatic number
@@ -204,7 +204,7 @@ def SqrtNQuestion : Prop :=
     hasInfiniteChromaticNumber V G ∧
     hasAlmostBipartiteSubgraphs V G (fun n => ⌈Real.sqrt n⌉₊)
 
-/--
+/- 
 **Uncountable Chromatic Number Fails**
 
 If we require the chromatic number to be uncountable (≥ ℵ₁), then the
@@ -231,20 +231,23 @@ Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
 theorem edgeDistUpperBound (V : Type*) [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     edgeDistToBipartite V G ≤ Fintype.card V * (Fintype.card V - 1) / 2 := by
-  have h_trivial_upper_bound : ∀ E : Set (Sym2 V), E.ncard ≤ Nat.choose (Fintype.card V) 2 → E ⊆ G.edgeSet → (G.deleteEdges E).IsBipartite → Erdos74.edgeDistToBipartite V G ≤ E.ncard := by
-    exact fun E hE₁ hE₂ hE₃ => csInf_le ⟨ 0, fun k hk => Nat.zero_le _ ⟩ ⟨ E, rfl, hE₂, hE₃ ⟩;
-  refine' le_trans ( h_trivial_upper_bound _ _ _ _ ) _;
-  exact Set.image ( fun e : Sym2 V => e ) ( G.edgeSet );
-  · rw [ Set.ncard_image_of_injective _ fun x y hxy => by simpa using hxy ];
-    rw [ Set.ncard_eq_toFinset_card' ];
-    convert G.card_edgeFinset_le_card_choose_two;
-  · aesop;
-  · refine' ⟨ fun _ => 0, _ ⟩;
-    aesop;
-  · rw [ Set.ncard_image_of_injOn, Set.ncard_eq_toFinset_card' ];
-    · convert G.card_edgeFinset_le_card_choose_two using 1;
-      rw [ Nat.choose_two_right ];
-    · exact fun x hx y hy hxy => hxy
+  have h_trivial_upper_bound : ∀ E : Set (Sym2 V), E ⊆ G.edgeSet →
+      (G.deleteEdges E).IsBipartite → Erdos74.edgeDistToBipartite V G ≤ E.ncard :=
+    fun E hE₂ hE₃ => csInf_le ⟨ 0, fun k hk => Nat.zero_le _ ⟩ ⟨ E, rfl, hE₂, hE₃ ⟩
+  -- Delete all edges: the empty graph is bipartite, and |edgeSet| ≤ C(|V|, 2).
+  have hbip : (G.deleteEdges G.edgeSet).IsBipartite := by
+    unfold SimpleGraph.IsBipartite SimpleGraph.Colorable
+    use fun _ => 0
+    intro v w hadj
+    simp only [SimpleGraph.deleteEdges_adj] at hadj
+    exact absurd hadj.1 hadj.2
+  have hncard : G.edgeSet.ncard = G.edgeFinset.card := by
+    rw [← SimpleGraph.coe_edgeFinset, Set.ncard_coe_finset]
+  refine le_trans (h_trivial_upper_bound G.edgeSet Set.Subset.rfl hbip) ?_
+  rw [hncard]
+  calc G.edgeFinset.card
+      ≤ (Fintype.card V).choose 2 := G.card_edgeFinset_le_card_choose_two
+    _ = Fintype.card V * (Fintype.card V - 1) / 2 := Nat.choose_two_right _
 
 /--
 Bipartite graphs have chromatic number at most 2, giving a lower bound on

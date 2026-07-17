@@ -27,16 +27,15 @@
   Tags: analysis, polynomials, equidistribution, discrepancy
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
+
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
 namespace Erdos990
 
 open Complex Real Polynomial
+open scoped Classical
 
 /-
 ## Part 1: Basic Definitions
@@ -52,7 +51,7 @@ noncomputable def polyDegree (d : ℕ) (p : ComplexPoly d) : ℕ :=
   d -- Simplified; actual definition would find highest nonzero term
 
 /-- Number of nonzero coefficients (sparsity) -/
-def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
+noncomputable def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
   (Finset.univ.filter (fun i => p i ≠ 0)).card
 
 /-- The argument (angle) of a complex number in [0, 2π) -/
@@ -133,7 +132,8 @@ def sparseConjecture : Prop :=
 theorem sparse_improves_dense (d : ℕ) (p : ComplexPoly d) :
     nonzeroCoeffCount d p ≤ d + 1 := by
   simp only [nonzeroCoeffCount]
-  exact Finset.card_filter_le _ _
+  refine le_trans (Finset.card_filter_le Finset.univ _) ?_
+  simp [Finset.card_univ]
 
 /-
 ## Part 6: Sharp Constant

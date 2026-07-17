@@ -85,7 +85,7 @@ The set {2, 3, ..., n} from which players choose elements.
 -/
 def gameBoard (n : ℕ) : Set ℕ := {k : ℕ | 2 ≤ k ∧ k ≤ n}
 
-/--
+/- 
 The game board has n - 1 elements for n ≥ 2.
 Axiomatized: the proof requires Finset/Set.ncard machinery
 that would distract from the game-theoretic content.
@@ -136,7 +136,7 @@ def IsMaximalAntichain (A : Set ℕ) (board : Set ℕ) : Prop :=
   A ⊆ board ∧ IsDivisibilityAntichain A ∧
   ∀ k ∈ board, k ∉ A → ¬IsDivisibilityAntichain (A ∪ {k})
 
-/--
+/- 
 **Game Terminates:**
 Any sequence of legal moves eventually reaches a maximal antichain.
 -/
@@ -144,7 +144,7 @@ Any sequence of legal moves eventually reaches a maximal antichain.
 /- ## Part IV: Bounds on Game Length
 -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 Any antichain in {2, ..., n} has at most ⌈n/2⌉ = (n+1)/2 elements.
 The set {⌈n/2⌉ + 1, ..., n} achieves this: it has ⌊n/2⌋ elements and
@@ -155,7 +155,7 @@ at least twice another while remaining ≤ n.
 E.g., for n=5, {3,4,5} is an antichain with 3 > 5/2 = 2 elements.
 The correct bound is (n+1)/2 (Nat division). -/
 
-/--
+/- 
 **Greedy Lower Bound:**
 The primes in [n/2, n] form an antichain, giving size ~ n / (2 ln n).
 -/
@@ -183,7 +183,7 @@ def gameLastsNearOptimal (gameLength : ℕ → ℕ) : Prop :=
   ∀ ε : ℚ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     (gameLength n : ℚ) ≥ (1 - ε) * (n / 2)
 
-/--
+/- 
 **Erdős Problem #872: Both questions remain OPEN.**
 
 We axiomatize this as: the guaranteed game length under optimal play
@@ -193,13 +193,13 @@ established. -/
 /- ## Part VI: Related Results
 -/
 
-/--
+/- 
 **Hajnal's Triangle-Free Game:**
 In the analogous graph game, Füredi-Seress showed Ω(n log n) moves guaranteed.
 The triangle-free game on Kₙ lasts at least c · n · log n moves for some c > 0.
 -/
 
-/--
+/- 
 **Upper Bound for Triangle Game:**
 Biró, Horn, Wildstrom showed at most (26/121 + o(1))n² moves.
 -/
@@ -270,7 +270,7 @@ Axiomatized since computing the minimax tree is exponential.
 axiom gameValue (n : ℕ) : ℕ
 axiom gameValue_upper (n : ℕ) (hn : n ≥ 2) : gameValue n ≤ (n + 1) / 2
 
-/--
+/- 
 **Open Problem Statement:**
 Determine the asymptotic behavior of gameValue(n).
 Either the game lasts Θ(n) moves, or it is o(n) — we don't know which.

@@ -34,11 +34,13 @@ References:
 - Erdős [Er61, p.236], [Er65b, p.228]
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
+
+open scoped Classical
 
 open Nat Finset
 
@@ -102,7 +104,7 @@ factorization. Under this bijection:
 def factorizationSet (n : ℕ) : Set (ℕ × ℕ) :=
   {(p, k) | p.Prime ∧ p ^ k ∣ n ∧ ¬(p ^ (k + 1) ∣ n)}
 
-/--
+/- 
 **LCM-Union Correspondence:**
 lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet(c)
 (under the max operation on exponents).
@@ -111,12 +113,12 @@ lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet
 ## Part III: Davenport-Erdős Theorem (1936)
 -/
 
-/--
+/- 
 **Davenport-Erdős (1936):**
 If A ⊆ ℕ has positive upper logarithmic density, then A contains
 an infinite divisibility chain a₁ | a₂ | a₃ | ...
 -/
-/-- Davenport-Erdős implies infinite divisibility chains in dense sets. -/
+/-  Davenport-Erdős implies infinite divisibility chains in dense sets. -/
 
 /--
 **LCM Triple from Coprime Multipliers:**
@@ -135,15 +137,17 @@ theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (
   constructor
   · -- a*m ≠ a*k*m since m ≠ k*m (k > 1)
     intro heq
-    have h1 : m = k * m := Nat.eq_of_mul_eq_mul_left ha heq
-    have h2 : 1 * m = k * m := by ring_nf; exact h1
+    have heq' : a * m = a * (k * m) := heq.trans (mul_assoc a k m)
+    have h1 : m = k * m := Nat.eq_of_mul_eq_mul_left ha heq'
+    have h2 : 1 * m = k * m := by rw [one_mul]; exact h1
     have h3 : 1 = k := Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (by omega)) h2
     omega
   constructor
   · -- a*k ≠ a*k*m since k ≠ k*m (m > 1)
     intro heq
-    have h1 : k = k * m := Nat.eq_of_mul_eq_mul_left ha heq
-    have h2 : k * 1 = k * m := by ring_nf; exact h1
+    have heq' : a * k = a * (k * m) := heq.trans (mul_assoc a k m)
+    have h1 : k = k * m := Nat.eq_of_mul_eq_mul_left ha heq'
+    have h2 : k * 1 = k * m := by rw [mul_one]; exact h1
     have h3 : 1 = m := Nat.eq_of_mul_eq_mul_left (by omega) h2
     omega
   · -- lcm(a*k, a*m) = a*k*m when gcd(k,m) = 1
@@ -157,7 +161,7 @@ theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (
 ## Part IV: Kleitman's Theorem (1971)
 -/
 
-/-- **Union-Free Bound**: max |F| for union-free F ⊆ P([n]) is
+/-  **Union-Free Bound**: max |F| for union-free F ⊆ P([n]) is
 (1 + o(1)) · C(n, ⌊n/2⌋), exponentially smaller than 2^n. -/
 
 /--
@@ -168,7 +172,7 @@ Union-free collections have size o(2^n), specifically at most
 axiom kleitman_1971 :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     ∀ F : Finset (Finset (Fin n)),
-      IsUnionFree (F.toSet.image (·.toSet)) →
+      IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
       (F.card : ℝ) ≤ (1 + ε) * Nat.choose n (n / 2)
 
 /--
@@ -185,7 +189,7 @@ Union-free collections are o(2^n) in size.
 theorem union_free_is_little_o :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       ∀ F : Finset (Finset (Fin n)),
-        IsUnionFree (F.toSet.image (·.toSet)) →
+        IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
         (F.card : ℝ) / 2^n < ε := by
   intro ε hε
   -- Get N₁ from Kleitman's theorem with ε' = 1
@@ -222,7 +226,7 @@ axiom lcm_triple_in_dense_set :
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c
 
-/-- In fact, there are infinitely many such triples in any dense set. -/
+/-  In fact, there are infinitely many such triples in any dense set. -/
 
 /-
 ## Part VI: Examples
@@ -258,14 +262,19 @@ theorem powers_of_2_no_lcm_triple :
       a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ Nat.lcm a b = c := by
   intro ⟨a, b, c, ⟨i, ha⟩, ⟨j, hb⟩, ⟨k, hc⟩, hab, hca, hcb, hlcm⟩
   -- lcm(2^i, 2^j) = 2^(max i j)
-  have hlcm_pow : Nat.lcm (2^i) (2^j) = 2^(max i j) := Nat.Prime.pow_max_lcm Nat.prime_two
+  have hlcm_pow : Nat.lcm (2^i) (2^j) = 2^(max i j) := by
+    apply Nat.dvd_antisymm
+    · exact Nat.lcm_dvd (Nat.pow_dvd_pow 2 (le_max_left i j)) (Nat.pow_dvd_pow 2 (le_max_right i j))
+    · rcases max_choice i j with h | h
+      · rw [h]; exact Nat.dvd_lcm_left _ _
+      · rw [h]; exact Nat.dvd_lcm_right _ _
   rw [ha, hb] at hlcm
   rw [hlcm_pow] at hlcm
   -- So c = 2^(max i j), and max i j is either i or j
   rw [hc] at hlcm
-  have hk_eq : k = max i j := Nat.pow_right_injective (by norm_num : 1 < 2) hlcm
+  have hk_eq : k = max i j := Nat.pow_right_injective (by norm_num : 1 < 2) hlcm.symm
   -- Case split on whether max i j = i or max i j = j
-  rcases Nat.max_cases i j with (⟨hmax_eq, _⟩ | ⟨hmax_eq, _⟩)
+  rcases max_cases i j with (⟨hmax_eq, _⟩ | ⟨hmax_eq, _⟩)
   · -- max i j = i, so k = i, so c = a
     rw [hmax_eq] at hk_eq
     have : c = a := by rw [hc, ha, hk_eq]
@@ -295,7 +304,7 @@ theorem even_numbers_example : IsLCMTriple 4 6 12 := by
 ## Part VII: Proof Structure
 -/
 
-/--
+/- 
 **Proof Outline for Problem 487:**
 
 1. Given A ⊆ ℕ with positive upper density δ > 0.
@@ -343,7 +352,7 @@ theorem erdos_487_summary :
       ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c) ∧
     -- Via Kleitman's theorem
     (∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ F : Finset (Finset (Fin n)),
-      IsUnionFree (F.toSet.image (·.toSet)) →
+      IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
       (F.card : ℝ) ≤ (1 + ε) * Nat.choose n (n / 2)) := by
   exact ⟨lcm_triple_in_dense_set, kleitman_1971⟩
 

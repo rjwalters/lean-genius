@@ -27,7 +27,7 @@ rather than the direct `irrational_nrt_of_notint_nrt` approach.
 -/
 
 import Proofs.CubeRoot2IrrationalOQ03
-import Mathlib.Data.Real.Irrational
+import Mathlib
 
 open Polynomial CubeRoot2IrrationalOQ03
 
@@ -80,7 +80,7 @@ theorem X3_sub_3_no_rat_root (q : ℚ) : (X ^ 3 - C 3 : ℚ[X]).eval q ≠ 0 := 
     have hR_deg : R.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h
     have hq_ne : (X - C q : ℚ[X]) ≠ 0 := X_sub_C_ne_zero q
     have hR_ne : R ≠ 0 := by
-      rintro rfl; simp at hR; exact absurd hR.symm (by simp [hpoly3])
+      rintro rfl; simp at hR; exact absurd hR.symm (by intro h0; rw [← h0] at hpoly3; simp at hpoly3)
     have hmul_deg : ((X - C q) * R).natDegree = 1 := by
       rw [natDegree_mul hq_ne hR_ne, natDegree_X_sub_C, hR_deg]
     rw [← hR, hpoly3] at hmul_deg

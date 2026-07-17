@@ -31,10 +31,12 @@ References:
 - See also Problem #790
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Finset BigOperators
 
@@ -139,15 +141,15 @@ axiom graham_result :
 ## Part IV: Density Results
 -/
 
-/--
+/- 
 **Density Zero (Erdős 1962):**
 Sum-free sets have asymptotic density zero.
 -/
-/--
+/- 
 **Łuczak-Schoen Upper Bound (2000):**
 |A ∩ [1,N]| ≪ (N log N)^{1/2}
 -/
-/--
+/- 
 **Łuczak-Schoen Lower Bound (2000):**
 There exists a sum-free set B with |B ∩ [1,N]| ≫ N^{1/2} / (log N)^{1/2+o(1)}
 -/
@@ -155,7 +157,7 @@ There exists a sum-free set B with |B ∩ [1,N]| ≫ N^{1/2} / (log N)^{1/2+o(1)
 ## Part V: Growth Rate
 -/
 
-/--
+/- 
 **Deshouillers-Erdős-Melfi (1999):**
 There exists a sum-free set with aₙ ~ n^{3+o(1)}.
 -/
@@ -177,15 +179,15 @@ What is the maximum of Σ_{n∈A} 1/n over all sum-free sets A?
 noncomputable def reciprocalSum (A : Set ℕ) : ℝ :=
   ∑' n, if n ∈ A ∧ n ≥ 1 then (1 : ℝ) / n else 0
 
-/--
+/- 
 **Erdős Upper Bound:**
 Erdős proved Σ 1/n < 100 for any sum-free set.
 -/
-/--
+/- 
 **Sullivan's Improvement:**
 Sullivan improved this to Σ 1/n < 4.
 -/
-/--
+/- 
 **Sullivan's Conjecture:**
 The maximum reciprocal sum is slightly larger than 2.
 -/

@@ -154,7 +154,7 @@ def paritySetoidN : Setoid ℕ where
     since n+1 and n always differ in parity. -/
 theorem succ_no_parity_fixpoint : ∀ n : ℕ, ¬ paritySetoidN.r (n + 1) n := by
   intro n h
-  simp only [paritySetoidN] at h
+  have h2 : (n + 1) % 2 = n % 2 := h
   omega
 
 /-- ℕ cannot code its endomorphisms up to the parity setoid,

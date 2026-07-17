@@ -21,6 +21,7 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
+open scoped Classical
 
 namespace Erdos637
 
@@ -69,8 +70,8 @@ def IsRamseyGraph (G : SimpleGraph V) : Prop :=
 /-- An induced subgraph on a vertex set S. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm := fun _ _ h => G.symm h
-  loopless := fun v => G.loopless v.val
+  symm.symm := fun _ _ h => G.adj_symm h
+  loopless.irrefl := fun v => G.loopless.irrefl v.val
 
 /-- The number of distinct degrees in the induced subgraph on S. -/
 noncomputable def inducedDistinctDegrees (G : SimpleGraph V) (S : Finset V) : ℕ :=
@@ -138,13 +139,13 @@ theorem jkly_no_vertex_restriction (G : SimpleGraph V) (hRamsey : IsRamseyGraph 
 
 /-- The exponent 2/3 is believed to be optimal. -/
 def OptimalityConjecture : Prop :=
-  ∀ ε > 0, ∃ (V : Type*) [Fintype V] [DecidableEq V],
+  ∀ ε > 0, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
     ∃ G : SimpleGraph V, IsRamseyGraph G ∧
       (numDistinctDegrees G : ℝ) ≤ (Fintype.card V : ℝ)^(2/3 + ε)
 
 /-- Upper bound construction. -/
 theorem upper_bound_construction :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V], ∃ G : SimpleGraph V,
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V), ∃ G : SimpleGraph V,
       IsRamseyGraph G ∧ (numDistinctDegrees G : ℝ) ≤ 2 * (Fintype.card V : ℝ)^(2/3 : ℝ) := by
   sorry
 

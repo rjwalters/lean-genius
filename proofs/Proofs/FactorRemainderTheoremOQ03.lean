@@ -1,9 +1,4 @@
-import Mathlib.Algebra.Polynomial.Div
-import Mathlib.Algebra.Polynomial.FieldDivision
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.MvPolynomial.Basic
-import Mathlib.RingTheory.Ideal.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Factor Theorem to Nullstellensatz Bridge
@@ -41,7 +36,7 @@ a system `f₁ = ⋯ = fₘ = 0` has no solution iff 1 is in the ideal `(f₁,..
 - `IsAlgClosed.exists_root` : nonconstant polynomials have roots
 - `Polynomial.dvd_iff_isRoot` : Factor Theorem
 - `Polynomial.splits` : polynomials split over algebraically closed fields
-- `Polynomial.card_roots_le_degree` : root count bounded by degree
+- `Polynomial.card_roots'` : root count bounded by degree
 -/
 
 set_option linter.unusedVariables false
@@ -63,8 +58,8 @@ theorem factor_theorem_ideal (f : k[X]) (a : k) :
 
 /-- The contrapositive: if `f` is not in the ideal `(X - a)`, then `a` is not a root. -/
 theorem nonroot_iff_not_in_ideal (f : k[X]) (a : k) :
-    f.eval a ≠ 0 ↔ ¬((X - C a) ∣ f) := by
-  rw [factor_theorem_ideal]
+    f.eval a ≠ 0 ↔ ¬((X - C a) ∣ f) :=
+  not_congr (factor_theorem_ideal f a)
 
 -- ============================================================
 -- PART 2: Weak Nullstellensatz (Univariate)
@@ -81,7 +76,7 @@ theorem weak_nullstellensatz_univariate [IsAlgClosed k]
     (f : k[X]) (hf : f ≠ 0) (hdeg : 0 < f.natDegree) :
     ∃ a : k, f.IsRoot a :=
   IsAlgClosed.exists_root f (by
-    rw [Polynomial.degree_eq_natDegree hf]; exact_mod_cast hdeg)
+    rw [Polynomial.degree_eq_natDegree hf]; exact_mod_cast hdeg.ne')
 
 /-- Combining the weak Nullstellensatz with the Factor Theorem: over an algebraically
 closed field, every nonconstant polynomial is divisible by some linear factor. -/
@@ -100,7 +95,7 @@ This is the algebraic counterpart of the geometric fact that
 a curve of degree n meets a line in at most n points. -/
 theorem root_count_le_degree (f : k[X]) (hf : f ≠ 0) :
     f.roots.card ≤ f.natDegree :=
-  Polynomial.card_roots_le_degree f
+  Polynomial.card_roots' f
 
 /-- A nonconstant polynomial over an algebraically closed field is not a unit.
 This is the contrapositive of the weak Nullstellensatz: units have no roots,
@@ -217,7 +212,7 @@ theorem vanishingIdeal_empty :
   ext f
   constructor
   · intro _; exact Submodule.mem_top
-  · intro _ v hv; exact absurd hv (Set.not_mem_empty v)
+  · intro _ v hv; exact absurd hv (Set.notMem_empty v)
 
 /-- The zero locus of a single polynomial is its vanishing set. -/
 theorem zeroLocus_singleton (f : MvPolynomial σ k) :
@@ -252,7 +247,7 @@ theorem vanishingIdeal_zeroLocus_vanishingIdeal (W : Set (σ → k)) :
       vanishingIdeal W := by
   apply le_antisymm
   · exact vanishingIdeal_antimono (subset_zeroLocus_vanishingIdeal W)
-  · exact subset_vanishingIdeal_zeroLocus (vanishingIdeal W : Ideal (MvPolynomial σ k))
+  · exact fun f hf v hv => hv f hf
 
 end Nullstellensatz
 
@@ -267,9 +262,9 @@ example : (X ^ 2 - 1 : ℚ[X]).eval (-1) = 0 := by norm_num
 
 /-- Example: x² + 1 has no roots in ℚ (or ℝ), demonstrating why
 the weak Nullstellensatz requires algebraic closure. -/
-example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot 0 := by decide
-example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot 1 := by decide
-example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot (-1) := by decide
+example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot 0 := by norm_num [Polynomial.IsRoot]
+example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot 1 := by norm_num [Polynomial.IsRoot]
+example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot (-1) := by norm_num [Polynomial.IsRoot]
 
 -- ============================================================
 -- Export main results

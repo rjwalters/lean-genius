@@ -24,6 +24,8 @@
 -/
 import Mathlib
 
+set_option maxRecDepth 40000
+
 namespace TaxicabNumberOQ01
 
 /-- Unordered pairs `(a, b)` with `1 ≤ a ≤ b ≤ 12` and `a³ + b³ = n`.
@@ -42,9 +44,11 @@ theorem rep_two : (9 : ℕ) ^ 3 + 10 ^ 3 = 1729 := by norm_num
 /-- 1729 has exactly two representations as a sum of two positive cubes. -/
 theorem card_reps_1729 : (reps 1729).card = 2 := by decide
 
+set_option maxHeartbeats 4000000 in
 /-- No positive integer below 1729 has two distinct representations as a sum of
 two positive cubes. Combined with `card_reps_1729`, this is `Ta(2) = 1729`. -/
-theorem minimal_below_1729 : ∀ m < 1729, (reps m).card < 2 := by decide
+theorem minimal_below_1729 : ∀ m < 1729, (reps m).card < 2 := by
+  decide
 
 /-- `Ta(2) = 1729`: it is the least `n` with two distinct cube representations. -/
 theorem taxicab_two_eq_1729 :

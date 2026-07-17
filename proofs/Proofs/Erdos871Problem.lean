@@ -119,7 +119,7 @@ theorem sumset_empty : sumset (∅ : Set ℕ) = ∅ := by
   ext n
   simp [sumset]
 
-/-- If A ⊆ B and B is a basis, this does not imply A is a basis
+/-  If A ⊆ B and B is a basis, this does not imply A is a basis
     (in general). But we can state the contrapositive: if a subset
     is not a basis, the subset's complement in the superset matters. -/
 
@@ -127,11 +127,6 @@ theorem sumset_empty : sumset (∅ : Set ℕ) = ∅ := by
 theorem sumset_singleton (a : ℕ) : sumset ({a} : Set ℕ) = {a + a} := by
   ext n
   simp [sumset]
-  constructor
-  · rintro ⟨x, y, rfl, rfl, rfl⟩
-    rfl
-  · intro h
-    exact ⟨a, a, rfl, rfl, h⟩
 
 /-- A finite set cannot be an additive basis of order 2. -/
 theorem not_basis2_of_finite {A : Set ℕ} (hfin : A.Finite) : ¬IsAdditiveBasis2 A := by
@@ -145,7 +140,7 @@ theorem not_basis2_of_finite {A : Set ℕ} (hfin : A.Finite) : ¬IsAdditiveBasis
     have hbM : b ≤ M := hM hb
     omega
   · push_neg at hne
-    have : A = ∅ := Set.not_nonempty_iff_eq_empty.mp hne
+    have : A = ∅ := hne
     subst this
     have : N₀ ∈ sumset ∅ := hN₀ N₀ le_rfl
     simp [sumset] at this
@@ -154,7 +149,7 @@ theorem not_basis2_of_finite {A : Set ℕ} (hfin : A.Finite) : ¬IsAdditiveBasis
 theorem basis2_infinite {A : Set ℕ} (h : IsAdditiveBasis2 A) : A.Infinite := by
   by_contra hfin
   push_neg at hfin
-  exact not_basis2_of_finite (Set.not_infinite.mp hfin) h
+  exact not_basis2_of_finite hfin h
 
 /-- Positive representation count at n implies n ∈ sumset A. -/
 theorem mem_sumset_of_repFunc_pos {A : Set ℕ} {n : ℕ} (h : repFunc A n ≥ 1) :

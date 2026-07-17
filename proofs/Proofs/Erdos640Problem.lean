@@ -252,15 +252,17 @@ theorem oddCycle_chromatic_at_least_3 {G : SimpleGraph V}
       (b ⟨i, hi⟩).val = ((b ⟨0, by omega⟩).val + i) % 2 := by
     intro i hi
     induction i with
-    | zero => simp
+    | zero => have := (b ⟨0, by omega⟩).isLt; simp; omega
     | succ n ih =>
       have hn : n < S.card := by omega
       have hmod : (n + 1) % S.card = n + 1 := Nat.mod_eq_of_lt hi
       have hf := hflip ⟨n, hn⟩
       -- hf : b(⟨(n+1) % S.card, _⟩).val = 1 - b(⟨n, hn⟩).val
       -- Since (n+1) % S.card = n+1, rewrite
+      have hidx : (⟨(n + 1) % S.card, Nat.mod_lt _ (by omega)⟩ : Fin S.card) =
+             ⟨n + 1, hi⟩ := Fin.ext hmod
       have : (b ⟨(n + 1) % S.card, Nat.mod_lt _ (by omega)⟩).val =
-             (b ⟨n + 1, hi⟩).val := by congr 1; exact Fin.ext (by omega)
+             (b ⟨n + 1, hi⟩).val := by rw [hidx]
       rw [this] at hf
       rw [hf, ih hn]
       omega
@@ -269,13 +271,19 @@ theorem oddCycle_chromatic_at_least_3 {G : SimpleGraph V}
   -- Cycle closure: b(S.card - 1) ≠ b(0)
   have hclose := hdiff ⟨S.card - 1, by omega⟩
   -- (S.card - 1 + 1) % S.card = 0
-  have hmod0 : (S.card - 1 + 1) % S.card = 0 := by omega
+  have hmod0 : (S.card - 1 + 1) % S.card = 0 := by
+    rw [Nat.sub_add_cancel (by omega : 1 ≤ S.card), Nat.mod_self]
+  have hidx0 : (⟨(↑(⟨S.card - 1, by omega⟩ : Fin S.card) + 1) % S.card, Nat.mod_lt _ (by omega)⟩ : Fin S.card)
+      = ⟨0, by omega⟩ := Fin.ext (by simpa using hmod0)
   have hval_neq : (b ⟨S.card - 1, by omega⟩).val ≠ (b ⟨0, by omega⟩).val := by
-    intro heq; apply hclose; exact Fin.ext heq
+    intro heq; apply hclose; rw [hidx0]; exact Fin.ext heq
   -- From hlast: b(S.card-1).val = (b(0).val + S.card - 1) % 2
   -- From hval_neq: b(S.card-1).val ≠ b(0).val
   -- Since b(0).val < 2: these two facts force S.card to be even
   -- But hodd says S.card is odd: contradiction
+  have hb0 := (b ⟨0, by omega⟩).isLt
+  have hbl := (b ⟨S.card - 1, by omega⟩).isLt
+  obtain ⟨m, hm⟩ := hodd
   omega
 
 /- ## Part XII: Structural Summary -/

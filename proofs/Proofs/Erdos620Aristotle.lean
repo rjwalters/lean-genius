@@ -30,8 +30,8 @@ def K4Free {V : Type*} (G : SimpleGraph V) : Prop := ¬HasK4 G
 /-- The Turán graph T(n,3): connect vertices with different residues mod 3. -/
 def turanGraph3 (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i.val % 3 ≠ j.val % 3
-  symm := by intro i j h; exact Ne.symm h
-  loopless := by intro i h; exact h rfl
+  symm := by constructor; intro i j h; exact Ne.symm h
+  loopless := by constructor; intro i h; exact h rfl
 
 -- Routine: n % 3 < 3 for any natural number n.
 theorem mod3_lt_three (n : ℕ) : n % 3 < 3 := by

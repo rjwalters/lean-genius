@@ -36,6 +36,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Finset Set
 
 namespace Erdos982
@@ -57,14 +59,14 @@ abbrev Plane : Type := EuclideanSpace ℝ (Fin 2)
 Given a point p and a finite set S, this counts how many distinct
 distances occur from p to points in S.
 -/
-def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
+noncomputable def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
   (S.image (fun q => dist p q)).card
 
 /--
 **Maximum Distinct Distances:**
 The maximum number of distinct distances achieved by any point in the set.
 -/
-def maxDistinctDistances (S : Finset Plane) : ℕ :=
+noncomputable def maxDistinctDistances (S : Finset Plane) : ℕ :=
   S.sup (fun p => distinctDistancesFrom p (S.erase p))
 
 /-
@@ -92,7 +94,7 @@ with at least k distinct distances to other vertices.
 -/
 noncomputable def guaranteedDistinctDistances (n : ℕ) : ℕ :=
   if h : n < 3 then 0
-  else Nat.find (⟨0, fun _ _ _ _ _ => Nat.zero_le _⟩ :
+  else Nat.find (⟨0, fun _ _ _ => Nat.zero_le _⟩ :
     ∃ k, ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
       maxDistinctDistances S ≥ k)
 
@@ -138,11 +140,11 @@ axiom moser_bound :
     ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
       maxDistinctDistances S ≥ (n + 2) / 3
 
-/--
+/- 
 **Erdős-Fishburn Bound (1994):**
 f(n) ≥ ⌊n/3 + 1⌋ = ⌊(n+3)/3⌋
 -/
-/--
+/- 
 **Dumitrescu's Bound (2006):**
 f(n) ≥ ⌈(13n-6)/36⌉
 -/
@@ -173,7 +175,7 @@ axiom regular_polygon_distances :
     ∃ (S : Finset Plane), S.card = n ∧ InConvexPosition S ∧
       maxDistinctDistances S = (n + 1) / 2
 
-/--
+/- 
 **Upper Bound on f(n):**
 The conjecture, if true, would be tight: f(n) ≤ ⌊n/2⌋ + 1 in general.
 -/
@@ -252,7 +254,7 @@ axiom stronger_conjecture_is_false : strongerConjectureDisproved
 Erdős also conjectured a continuous version.
 -/
 
-/--
+/- 
 **Convex Curve Conjecture (FALSE as stated):**
 Every convex curve has a point p such that every circle centered at p
 intersects the curve in at most 2 points.
@@ -260,7 +262,7 @@ intersects the curve in at most 2 points.
 Bárány and Roldán-Pensado (2013) showed the boundary of any acute
 triangle is a counterexample.
 -/
-/--
+/- 
 **Weakened Curve Conjecture:**
 Bárány and Roldán-Pensado proved that for any planar convex body,
 there exists a boundary point p such that every circle centered at p
@@ -315,7 +317,8 @@ theorem erdos_982_status :
     intro n hn S hcard hconv
     exact (nppz_bound).choose_spec n hn S hcard hconv
   · intro n hn
-    exact regular_polygon_distances n hn
+    obtain ⟨S, hcard, hconv, heq⟩ := regular_polygon_distances n hn
+    exact ⟨S, hcard, hconv, le_of_eq heq⟩
 
 /--
 **Summary:**

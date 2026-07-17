@@ -51,6 +51,8 @@ import Proofs.SzemerediCore
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediRegularityOQ02
 
+set_option maxRecDepth 40000
+
 namespace SzemerediFKComparisonSharp
 
 open Szemeredi.Core Szemeredi.Regularity SzemerediFKComparison Classical
@@ -96,14 +98,16 @@ theorem pair_cut_error_bound_sharp (G : SimpleGraph V) [DecidableRel G.Adj]
       · have hA_eq0 : (A.card : ℚ) = 0 := hnA0.symm
         have he0 : e = 0 := le_antisymm
           (he_bound.trans (by simp [hA_eq0])) he_nonneg
-        simp [hA_eq0, he0]
-        positivity
+        have hz : e - d * (A.card : ℚ) * B.card = 0 := by rw [he0, hA_eq0]; ring
+        rw [hz, abs_zero]
+        exact mul_nonneg (mul_nonneg heps.le hnP) hnQ
       rcases eq_or_lt_of_le hnB with hnB0 | hnB_pos
       · have hB_eq0 : (B.card : ℚ) = 0 := hnB0.symm
         have he0 : e = 0 := le_antisymm
           (he_bound.trans (by simp [hB_eq0])) he_nonneg
-        simp [hB_eq0, he0]
-        positivity
+        have hz : e - d * (A.card : ℚ) * B.card = 0 := by rw [he0, hB_eq0]; ring
+        rw [hz, abs_zero]
+        exact mul_nonneg (mul_nonneg heps.le hnP) hnQ
       have hnAB_pos : (0 : ℚ) < A.card * B.card := mul_pos hnA_pos hnB_pos
       have hnAB_ne : (A.card : ℚ) * B.card ≠ 0 := ne_of_gt hnAB_pos
       have h_dAB : edgeDensity G A B = e / (A.card * B.card) := by

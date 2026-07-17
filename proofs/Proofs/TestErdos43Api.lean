@@ -1,13 +1,11 @@
 -- Test API availability for Erdos43 fixes
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Int.Basic
 import Mathlib.Tactic
-import Mathlib.Order.LocallyFiniteOrder
 
 -- Test: What's the ℤ Icc card API?
-#check @Int.Icc_toFinset_card
-#check @Finset.card_Icc_of_le
 #check @Int.card_Icc
 
 -- Test: direct computation for Icc card
@@ -17,8 +15,7 @@ example (N : ℕ) (hN : N ≥ 1) : (Finset.Icc (1 : ℤ) (↑N - 1)).card ≤ N 
 
 -- Test: Alternative with Finset.Icc_card
 example (N : ℕ) (hN : N ≥ 1) : (Finset.Icc (1 : ℤ) (↑N - 1)).card ≤ N := by
-  have : (Finset.Icc (1 : ℤ) (↑N - 1)).card = (↑N - 1 - 1 + 1).toNat := by
-    rfl
+  rw [Int.card_Icc]
   omega
 
 -- Test pair_eq_pair_iff alternative

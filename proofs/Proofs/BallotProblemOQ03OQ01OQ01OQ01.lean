@@ -33,6 +33,7 @@ import Mathlib.Algebra.BigOperators.Fin
 import Proofs.BallotProblemOQ03OQ01OQ01
 
 open MvPolynomial Matrix Finset
+open scoped List
 
 namespace JacobiTrudi
 
@@ -77,25 +78,26 @@ theorem schurPolynomial_one_row (n : ℕ) :
 /-- Each entry of the Jacobi-Trudi matrix is a symmetric polynomial.
     Proof: split on whether the entry is hsymm (symmetric) or 0 (trivially symmetric). -/
 theorem jacobiTrudiMatrix_entry_isSymmetric (k : ℕ) (sh : Fin k → ℕ)
-    (i j : Fin k) : IsSymmetric (jacobiTrudiMatrix k sh i j) := by
+    (i j : Fin k) : IsSymmetric (jacobiTrudiMatrix k sh i j : MvPolynomial σ R) := by
   simp only [jacobiTrudiMatrix]
   split_ifs
-  · exact hsymm_isSymmetric _
+  · exact hsymm_isSymmetric _ _ _
   · exact IsSymmetric.zero
 
 /-- The Schur polynomial is symmetric: rename e (schurPolynomial k sh) = schurPolynomial k sh.
     Proof: AlgHom.map_det lets rename commute with det; entries are symmetric by
     jacobiTrudiMatrix_entry_isSymmetric. -/
 theorem schurPolynomial_isSymmetric (k : ℕ) (sh : Fin k → ℕ) :
-    IsSymmetric (schurPolynomial k sh) := by
+    IsSymmetric (schurPolynomial k sh : MvPolynomial σ R) := by
   intro e
   simp only [schurPolynomial]
   rw [AlgHom.map_det (rename ↑e) (jacobiTrudiMatrix k sh)]
   congr 1
-  ext i j
+  apply Matrix.ext
+  intro i j
   -- (rename ↑e).mapMatrix M i j = rename ↑e (M i j) definitionally
   -- (AlgHom.mapMatrix f M = M.map f, and (M.map f) i j = f (M i j) by rfl)
-  show rename ↑e (jacobiTrudiMatrix k sh i j) = jacobiTrudiMatrix k sh i j
+  show rename ↑e (jacobiTrudiMatrix k sh i j) = (jacobiTrudiMatrix k sh i j : MvPolynomial σ R)
   exact jacobiTrudiMatrix_entry_isSymmetric k sh i j e
 
 /-
@@ -119,7 +121,7 @@ theorem schurPolynomial_two_row (a b : ℕ) :
   have h00 : (0 : ℕ) ≤ a + 0 := Nat.zero_le _
   have h01 : (0 : ℕ) ≤ a + 1 := Nat.zero_le _
   have h11 : 1 ≤ b + 1 := Nat.le_add_left 1 b
-  simp only [h00, h01, h11, if_true, Nat.add_zero, Nat.sub_zero, Nat.add_sub_cancel]
+  simp only [h00, h01, h11, Nat.zero_le, if_true, Nat.add_zero, Nat.sub_zero, Nat.add_sub_cancel]
 
 /-
 ## Part V: Hook-Length Connection
@@ -151,7 +153,7 @@ theorem schurPolynomial_one_row_at_one (n k : ℕ) :
   simp_rw [heach]
   -- Goal: ∑ _ : Sym (Fin k) n, (1 : R) = ↑C(k+n-1,n)
   -- Step: show sum-of-ones-in-R = Fintype.card cast to R
-  -- via Fintype.card_eq_sum_ones (card = ∑ 1 in ℕ) + Nat.cast_sum + Nat.cast_one
+  -- via Fintype.card_eq_sum_ones (card = ∑ 1 ∈ ℕ) + Nat.cast_sum + Nat.cast_one
   rw [show ∑ _ : Sym (Fin k) n, (1 : R) = (Fintype.card (Sym (Fin k) n) : R) from by
     rw [Fintype.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]]
   -- Apply Sym.card_sym_eq_choose: |Sym α n| = C(|α|+n-1, n) and |Fin k| = k
@@ -214,10 +216,9 @@ theorem ssytSchurFin_empty (n : ℕ) :
                   ⟨fun i _ _ _ => Fin.elim0 i, fun i1 _ _ _ _ _ => Fin.elim0 i1⟩⟩
       uniq := fun ⟨f, _⟩ => Subtype.ext (funext fun p => Fin.elim0 p.1) }
   simp only [ssytSchurFin, SSYTFin.weight]
-  -- Inner product: over the empty sigma-type → 1 (empty product)
-  simp_rw [Finset.prod_empty]
-  -- Outer sum: over a Unique type → f default = 1
-  exact Finset.sum_unique _
+  -- Inner product: over the empty sigma-type → 1 (empty product);
+  -- outer sum: over a Unique type → f default = 1
+  simp
 
 /-
 ### k = 1: One-Row Case (Open)
@@ -249,46 +250,51 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
   -- Bijection ψ
   let ψ : SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m :=
     { toFun := fun T => ⟨(List.ofFn (fun j : Fin m => T.1 ⟨0, j⟩) : List _), by
-          simp [Multiset.card_ofList]⟩
+          simp [Multiset.coe_card]⟩
       invFun := fun s =>
         have hlen : (s.1.sort (· ≤ ·)).length = m :=
-          (Multiset.length_sort (· ≤ ·) s.1).trans s.2
-        ⟨fun p => (s.1.sort (· ≤ ·))[p.2.val]'(hlen ▸ p.2.isLt),
+          (Multiset.length_sort (s := s.1) (· ≤ ·)).trans s.2
+        have hidx : ∀ j : Fin m, j.val < (s.1.sort (· ≤ ·)).length := fun j => by
+          have := j.isLt; omega
+        ⟨fun p => (s.1.sort (· ≤ ·))[p.2.val]'(hidx p.2),
          ⟨fun _ j1 j2 hlt =>
-            ((Multiset.pairwise_sort (· ≤ ·) s.1).sortedLE).getElem_le_getElem_of_le
-              (hlen ▸ j1.isLt) (hlen ▸ j2.isLt)
+            ((Multiset.pairwise_sort s.1 (· ≤ ·)).sortedLE).getElem_le_getElem_of_le
               (le_of_lt (Fin.lt_iff_val_lt_val.mp hlt)),
           fun i1 i2 _ _ _ hlt =>
             absurd (Fin.lt_iff_val_lt_val.mp hlt)
               (by have := i1.isLt; have := i2.isLt; omega)⟩⟩
       left_inv := fun T => by
         apply Subtype.ext; funext p
-        obtain ⟨⟨i, hi⟩, j⟩ := p
-        have hi0 : i = 0 := Nat.lt_one_iff.mp hi; subst hi0
-        have hmono : Monotone (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩) :=
-          fun j1 j2 h => h.lt_or_eq.elim (T.2.1 ⟨0, hi⟩ j1 j2) (fun h => h ▸ le_refl _)
+        obtain ⟨i, j⟩ := p
+        have hi0 : i = (0 : Fin 1) := Subsingleton.elim i 0
+        subst hi0
+        have hmono : Monotone (fun j' : Fin m => T.1 ⟨(0 : Fin 1), j'⟩) :=
+          fun j1 j2 h => h.lt_or_eq.elim (T.2.1 (0 : Fin 1) j1 j2) (fun h => h ▸ le_refl _)
         have hpw := (List.sortedLE_ofFn_iff.mpr hmono).pairwise
-        simp only [show (↑(List.ofFn (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩)) : Multiset _)
-              .sort (· ≤ ·) = List.ofFn (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩) from by
-            rw [Multiset.coe_sort]; exact List.mergeSort_eq_self hpw]
-        simp [List.getElem_ofFn]
+        have hsort_eq :
+            ((↑(List.ofFn (fun j' : Fin m => T.1 ⟨(0 : Fin 1), j'⟩)) : Multiset (Fin n)).sort
+              (· ≤ ·)) = List.ofFn (fun j' : Fin m => T.1 ⟨(0 : Fin 1), j'⟩) := by
+          rw [Multiset.coe_sort]; exact List.mergeSort_eq_self (· ≤ ·) hpw
+        simp only [hsort_eq, List.getElem_ofFn]
       right_inv := fun s => by
         apply Subtype.ext
         have hlen : (s.1.sort (· ≤ ·)).length = m :=
-          (Multiset.length_sort (· ≤ ·) s.1).trans s.2
-        have hL : List.ofFn (fun j : Fin m => (s.1.sort (· ≤ ·))[j.val]'(hlen ▸ j.isLt)) =
+          (Multiset.length_sort (s := s.1) (· ≤ ·)).trans s.2
+        have hidx : ∀ j : Fin m, j.val < (s.1.sort (· ≤ ·)).length := fun j => by
+          have := j.isLt; omega
+        have hL : List.ofFn (fun j : Fin m => (s.1.sort (· ≤ ·))[j.val]'(hidx j)) =
             s.1.sort (· ≤ ·) :=
           List.ext_getElem (by simp [hlen]) (fun i _ _ => by simp [List.getElem_ofFn])
         show (↑(List.ofFn (fun j : Fin m =>
-              (s.1.sort (· ≤ ·))[j.val]'(hlen ▸ j.isLt))) : Multiset _) = s.1
+              (s.1.sort (· ≤ ·))[j.val]'(hidx j))) : Multiset _) = s.1
         rw [hL]
-        exact_mod_cast Multiset.sort_eq (· ≤ ·) s.1 }
+        exact_mod_cast Multiset.sort_eq s.1 (· ≤ ·) }
   refine Fintype.sum_equiv ψ _ _ fun T => ?_
   simp only [SSYTFin.weight, Fintype.prod_sigma, Fin.prod_univ_one]
   -- Goal: ∏ j, X (T.1 ⟨0, j⟩) = ((ψ T).1.map X).prod
   show ∏ j : Fin m, X (T.1 ⟨(0 : Fin 1), j⟩) =
-    (↑(List.ofFn (fun j : Fin m => T.1 ⟨(0 : Fin 1), j⟩)) : Multiset _).map X |>.prod
-  simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, prod_ofFn]
+    ((↑(List.ofFn (fun j : Fin m => T.1 ⟨(0 : Fin 1), j⟩)) : Multiset _).map X).prod
+  simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, List.prod_ofFn]
 
 /-
 ## Part VII: Two-Row Jacobi-Trudi Infrastructure
@@ -302,17 +308,17 @@ def ColStrictSym {n : ℕ} (a b : ℕ) (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
     (P.1.sort (· ≤ ·))[j.val]'(by
         have hj : j.val < min a b := j.isLt
         have hlen : (P.1.sort (· ≤ ·)).length = a :=
-          (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
         omega) <
     (Q.1.sort (· ≤ ·))[j.val]'(by
         have hj : j.val < min a b := j.isLt
         have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-          (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
         omega)
 
 instance {n a b : ℕ} {P : Sym (Fin n) a} {Q : Sym (Fin n) b} :
     Decidable (ColStrictSym a b P Q) :=
-  Fintype.decidable_forall_fintype
+  Fintype.decidableForallFintype
 
 /-- Sum of pair-weights over ALL (P,Q) : Sym n a × Sym n b equals h_a * h_b.
     Proof: expand the product sum via Fintype.sum_prod_type + distributivity, then
@@ -421,7 +427,7 @@ private lemma weight_eq_total_multiset {n a b : ℕ}
     unique element of `Q`. We extract `q` and the equation `Q.1.sort = [q]` simultaneously. -/
 private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
     ∃ q : Fin n, Q.1.sort (· ≤ ·) = [q] ∧ Q.1 = ({q} : Multiset (Fin n)) := by
-  have hlen : (Q.1.sort (· ≤ ·)).length = 1 := (Multiset.length_sort _ Q.1).trans Q.2
+  have hlen : (Q.1.sort (· ≤ ·)).length = 1 := (Multiset.length_sort (s := Q.1) _).trans Q.2
   obtain ⟨q, hq⟩ := List.length_eq_one_iff.mp hlen
   refine ⟨q, hq, ?_⟩
   have hcoe := congrArg (Multiset.ofList) hq
@@ -442,21 +448,24 @@ private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
 private lemma colStrictSym_a_one_iff_phead_lt_qhead {n a : ℕ} (ha : 1 ≤ a)
     (P : Sym (Fin n) a) (Q : Sym (Fin n) 1) :
     ColStrictSym a 1 P Q ↔
-      (P.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ P.1).trans P.2 ▸ ha) <
-      (Q.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ Q.1).trans Q.2 ▸ Nat.one_pos) := by
+      (P.1.sort (· ≤ ·))[0]'(by
+        have h := (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2; omega) <
+      (Q.1.sort (· ≤ ·))[0]'(by
+        have h := (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2; omega) := by
   unfold ColStrictSym
   have hmin : min a 1 = 1 := Nat.min_eq_right ha
   constructor
   · intro h
     -- Apply at the unique element of `Fin (min a 1) = Fin 1`
-    exact h ⟨0, hmin ▸ Nat.one_pos⟩
+    exact h ⟨0, by omega⟩
   · intro h j
+    have hp1 : 0 < min a 1 := by omega
     -- Every `j : Fin (min a 1)` has `j.val = 0`
     have hj0 : j.val = 0 := by
       have : j.val < min a 1 := j.isLt
       omega
     -- Cast `j` to `⟨0, _⟩` and reduce the indexing
-    have hjeq : j = ⟨0, hmin ▸ Nat.one_pos⟩ := Fin.ext hj0
+    have hjeq : j = ⟨0, hp1⟩ := Fin.ext hj0
     subst hjeq
     exact h
 
@@ -469,8 +478,10 @@ private lemma colStrictSym_a_one_iff_phead_lt_qhead {n a : ℕ} (ha : 1 ≤ a)
 private lemma not_colStrictSym_a_one_iff_qhead_le_phead {n a : ℕ} (ha : 1 ≤ a)
     (P : Sym (Fin n) a) (Q : Sym (Fin n) 1) :
     ¬ ColStrictSym a 1 P Q ↔
-      (Q.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ Q.1).trans Q.2 ▸ Nat.one_pos) ≤
-      (P.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ P.1).trans P.2 ▸ ha) := by
+      (Q.1.sort (· ≤ ·))[0]'(by
+        have h := (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2; omega) ≤
+      (P.1.sort (· ≤ ·))[0]'(by
+        have h := (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2; omega) := by
   rw [colStrictSym_a_one_iff_phead_lt_qhead ha P Q, not_lt]
 
 /-- **JDT weight sum, `b = 1` base case.**
@@ -512,21 +523,25 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
   simp only [hsymm]
   -- Length helpers
   have plen : ∀ P : Sym (Fin n) a, (P.1.sort (· ≤ ·)).length = a :=
-    fun P => (Multiset.length_sort _ P.1).trans P.2
+    fun P => (Multiset.length_sort (s := P.1) _).trans P.2
   have slen : ∀ S : Sym (Fin n) (a + 1), (S.1.sort (· ≤ ·)).length = a + 1 :=
-    fun S => (Multiset.length_sort _ S.1).trans S.2
+    fun S => (Multiset.length_sort (s := S.1) _).trans S.2
+  have plen_idx : ∀ P : Sym (Fin n) a, 0 < (P.1.sort (· ≤ ·)).length := fun P => by
+    have := plen P; omega
+  have slen_idx : ∀ S : Sym (Fin n) (a + 1), 0 < (S.1.sort (· ≤ ·)).length := fun S => by
+    have := slen S; omega
   -- Sorted multiset minimum ≤ every element
   have sort_min_le_sym : ∀ (m : Sym (Fin n) (a + 1)) (x : Fin n), x ∈ m.1 →
-      (m.1.sort (· ≤ ·))[0]'(slen m ▸ Nat.succ_pos a) ≤ x := fun m x hx => by
+      (m.1.sort (· ≤ ·))[0]'(slen_idx m) ≤ x := fun m x hx => by
     have hx_s := (Multiset.mem_sort (· ≤ ·)).mpr hx
     have hne := List.ne_nil_of_mem hx_s
-    have hpw := (Multiset.pairwise_sort (· ≤ ·) m.1).rel_head hx_s
+    have hpw := (Multiset.pairwise_sort m.1 (· ≤ ·)).rel_head hx_s
     rwa [List.head_eq_getElem_zero hne] at hpw
   have sort_min_le_p : ∀ (P : Sym (Fin n) a) (x : Fin n), x ∈ P.1 →
-      (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) ≤ x := fun P x hx => by
+      (P.1.sort (· ≤ ·))[0]'(plen_idx P) ≤ x := fun P x hx => by
     have hx_s := (Multiset.mem_sort (· ≤ ·)).mpr hx
     have hne := List.ne_nil_of_mem hx_s
-    have hpw := (Multiset.pairwise_sort (· ≤ ·) P.1).rel_head hx_s
+    have hpw := (Multiset.pairwise_sort P.1 (· ≤ ·)).rel_head hx_s
     rwa [List.head_eq_getElem_zero hne] at hpw
   -- Extract unique element of Sym n 1
   let getq : Sym (Fin n) 1 → Fin n := fun Q => (sym_one_sort_head_singleton n Q).choose
@@ -537,56 +552,66 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
     have := getq_spec Q; rw [hq] at this
     exact Multiset.singleton_inj.mp this.symm
   -- Bijection ψ : {(P, Q) // ¬ColStrictSym a 1 P Q} ≃ Sym (Fin n) (a + 1)
+  -- Forward/backward maps are defined standalone (not as a self-referential
+  -- structure literal) since `v4.31` no longer resolves a `let`-bound Equiv
+  -- name from within its own field proofs.
   -- Forward: (P, Q) ↦ (getq Q) ::ₛ P   (prepend the unique element of Q)
+  let Fψ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 } →
+      Sym (Fin n) (a + 1) := fun p => Sym.cons (getq p.1.2) p.1.1
   -- Inverse: S ↦ (S.erase S.sort[0], ⟨{S.sort[0]}, _⟩)   (peel off the minimum)
+  let Gψ : Sym (Fin n) (a + 1) →
+      { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 } := fun S =>
+    let qS := (S.1.sort (· ≤ ·))[0]'(slen_idx S)
+    have hmem : qS ∈ S.1 :=
+      (Multiset.mem_sort _).mp (List.getElem_mem (slen_idx S))
+    let P' := Sym.erase S qS hmem
+    have hP'len : (P'.1.sort (· ≤ ·)).length = a :=
+      (Multiset.length_sort (s := P'.1) _).trans P'.2
+    have hP'len_idx : 0 < (P'.1.sort (· ≤ ·)).length := by have := hP'len; omega
+    ⟨(P', ⟨{qS}, Multiset.card_singleton qS⟩),
+      (not_colStrictSym_a_one_iff_qhead_le_phead ha P'
+        ⟨{qS}, Multiset.card_singleton qS⟩).mpr (by
+        simp only [Multiset.sort_singleton, List.getElem_cons_zero]
+        exact sort_min_le_sym S _
+          (Multiset.mem_of_mem_erase
+            ((Multiset.mem_sort _).mp (List.getElem_mem hP'len_idx))))⟩
+  have hleft : ∀ p, Gψ (Fψ p) = p := fun ⟨(P, Q), h⟩ => by
+    obtain ⟨q, hqsort, hqms⟩ := sym_one_sort_head_singleton n Q
+    have hgq : getq Q = q := getq_eq Q q hqms
+    -- The ¬ColStrict condition gives q ≤ P.sort[0]
+    have hq_le : q ≤ (P.1.sort (· ≤ ·))[0]'(plen_idx P) := by
+      have h' := (not_colStrictSym_a_one_iff_qhead_le_phead ha P Q).mp h
+      simp only [hqsort, List.getElem_cons_zero] at h'
+      exact h'
+    -- Since q ≤ P.sort[0] ≤ every element of P.1, sort of q ::ₘ P.1 starts with q
+    have hcons_sort : (q ::ₘ P.1).sort (· ≤ ·) = q :: P.1.sort (· ≤ ·) :=
+      Multiset.sort_cons q P.1 (· ≤ ·)
+        (fun b hb => hq_le.trans (sort_min_le_p P b hb))
+    -- So the head of (Sym.cons q P).1.sort is q
+    have hqS_q : ((Sym.cons q P).1.sort (· ≤ ·))[0]'(slen_idx _) = q := by
+      have hsort2 : (Sym.cons q P).1.sort (· ≤ ·) = q :: P.1.sort (· ≤ ·) := by
+        show (q ::ₘ P.1).sort (· ≤ ·) = q :: P.1.sort (· ≤ ·)
+        exact hcons_sort
+      rw [List.getElem_of_eq hsort2 (slen_idx _)]
+      simp
+    show Gψ (Sym.cons (getq Q) P) = ⟨(P, Q), h⟩
+    simp only [Gψ, Fψ, hgq, hqS_q]
+    -- Goal is now: ⟨(Sym.erase (Sym.cons q P) q _, ⟨{q},_⟩),_⟩ = ⟨(P,Q),h⟩
+    apply Subtype.ext; apply Prod.ext
+    · exact Sym.erase_cons_head P q
+    · exact Subtype.ext hqms.symm
+  have hright : ∀ S, Fψ (Gψ S) = S := fun S => by
+    have hmem : (S.1.sort (· ≤ ·))[0]'(slen_idx S) ∈ S.1 :=
+      (Multiset.mem_sort _).mp (List.getElem_mem (slen_idx S))
+    show Fψ (Gψ S) = S
+    simp only [Fψ, Gψ]
+    rw [show getq ⟨{(S.1.sort (· ≤ ·))[0]'(slen_idx S)},
+                    Multiset.card_singleton _⟩ =
+            (S.1.sort (· ≤ ·))[0]'(slen_idx S) from
+          getq_eq _ _ rfl]
+    exact Sym.cons_erase hmem
   let ψ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 } ≃
-          Sym (Fin n) (a + 1) :=
-    { toFun := fun ⟨(P, Q), _⟩ => Sym.cons (getq Q) P
-      invFun := fun S =>
-        let qS := (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)
-        have hmem : qS ∈ S.1 :=
-          (Multiset.mem_sort _).mp (getElem_mem (slen S ▸ Nat.succ_pos a))
-        let P' := Sym.erase S qS hmem
-        have hP'len : (P'.1.sort (· ≤ ·)).length = a :=
-          (Multiset.length_sort _ P'.1).trans P'.2
-        ⟨(P', ⟨{qS}, Multiset.card_singleton qS⟩),
-          (not_colStrictSym_a_one_iff_qhead_le_phead ha P'
-            ⟨{qS}, Multiset.card_singleton qS⟩).mpr (by
-            simp only [Multiset.sort_singleton, getElem_cons_zero]
-            exact sort_min_le_sym S _
-              (Multiset.mem_of_mem_erase
-                ((Multiset.mem_sort _).mp (getElem_mem (hP'len ▸ ha)))))⟩
-      left_inv := fun ⟨(P, Q), h⟩ => by
-        obtain ⟨q, hqsort, hqms⟩ := sym_one_sort_head_singleton n Q
-        have hgq : getq Q = q := getq_eq Q q hqms
-        -- The ¬ColStrict condition gives q ≤ P.sort[0]
-        have hq_le : q ≤ (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) := by
-          have h' := (not_colStrictSym_a_one_iff_qhead_le_phead ha P Q).mp h
-          simp only [hqsort, getElem_cons_zero] at h'
-          exact h'
-        -- Since q ≤ P.sort[0] ≤ every element of P.1, sort of q ::ₘ P.1 starts with q
-        have hcons_sort : (q ::ₘ P.1).sort (· ≤ ·) = q :: P.1.sort (· ≤ ·) :=
-          Multiset.sort_cons (· ≤ ·) q P.1
-            (fun b hb => hq_le.trans (sort_min_le_p P b hb))
-        -- So the head of (Sym.cons q P).1.sort is q
-        have hqS_q : (Sym.cons q P).1.sort (· ≤ ·)[0]'(slen _ ▸ Nat.succ_pos a) = q := by
-          change (q ::ₘ P.1).sort (· ≤ ·)[0]'_ = q
-          simp [hcons_sort]
-        -- Unfold ψ and apply all rewrites in one simp call
-        simp only [ψ, hgq, hqS_q]
-        -- Goal is now: ⟨(Sym.erase (Sym.cons q P) q _, ⟨{q},_⟩),_⟩ = ⟨(P,Q),h⟩
-        apply Subtype.ext; apply Prod.ext
-        · exact Sym.erase_cons_head P q
-        · exact Subtype.ext hqms.symm
-      right_inv := fun S => by
-        have hmem : (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) ∈ S.1 :=
-          (Multiset.mem_sort _).mp (getElem_mem (slen S ▸ Nat.succ_pos a))
-        simp only [ψ]
-        rw [show getq ⟨{(S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)},
-                        Multiset.card_singleton _⟩ =
-                (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) from
-              getq_eq _ _ rfl]
-        exact Sym.cons_erase hmem }
+          Sym (Fin n) (a + 1) := ⟨Fψ, Gψ, hleft, hright⟩
   -- Weight preservation: wt(P) * wt(Q) = wt(ψ(P,Q)) under the bijection
   refine Fintype.sum_equiv ψ _ _ fun ⟨(P, Q), _⟩ => ?_
   show (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
@@ -638,35 +663,35 @@ private lemma exists_first_violation_idx {n a b : ℕ}
       (Q.1.sort (· ≤ ·))[c.val]'(by
           have hj : c.val < min a b := c.isLt
           have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
           omega) ≤
       (P.1.sort (· ≤ ·))[c.val]'(by
           have hj : c.val < min a b := c.isLt
           have hlen : (P.1.sort (· ≤ ·)).length = a :=
-            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
           omega) ∧
       ∀ j : Fin (min a b), j.val < c.val →
         (P.1.sort (· ≤ ·))[j.val]'(by
             have hj : j.val < min a b := j.isLt
             have hlen : (P.1.sort (· ≤ ·)).length = a :=
-              (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+              (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
             omega) <
         (Q.1.sort (· ≤ ·))[j.val]'(by
             have hj : j.val < min a b := j.isLt
             have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-              (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+              (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
             omega) := by
   -- Collect violation indices.
   set V : Finset (Fin (min a b)) := Finset.univ.filter (fun j =>
     ¬ ((P.1.sort (· ≤ ·))[j.val]'(by
           have hj : j.val < min a b := j.isLt
           have hlen : (P.1.sort (· ≤ ·)).length = a :=
-            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
           omega) <
        (Q.1.sort (· ≤ ·))[j.val]'(by
           have hj : j.val < min a b := j.isLt
           have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
           omega))) with hVdef
   -- V is nonempty: the negated ColStrictSym condition supplies a witness.
   have hVnonempty : V.Nonempty := by
@@ -675,13 +700,13 @@ private lemma exists_first_violation_idx {n a b : ℕ}
     obtain ⟨j, hj⟩ := h
     refine ⟨j, ?_⟩
     rw [hVdef, Finset.mem_filter]
-    exact ⟨Finset.mem_univ _, hj⟩
+    exact ⟨Finset.mem_univ _, not_lt.mpr hj⟩
   -- c := min' V is the first violation index.
   refine ⟨V.min' hVnonempty, ?_, ?_⟩
   · -- (Q.sort)[c] ≤ (P.sort)[c]: c is a violation index.
     have hc_mem := V.min'_mem hVnonempty
-    rw [hVdef, Finset.mem_filter] at hc_mem
-    exact not_lt.mp hc_mem.2
+    have hc_mem' := Finset.mem_filter.mp hc_mem
+    exact not_lt.mp hc_mem'.2
   · -- For every earlier j, the strict col-comparison still holds.
     intro j hjlt
     by_contra hcontra
@@ -751,24 +776,24 @@ private lemma firstViolationIdx_spec {n a b : ℕ}
         have hj : (firstViolationIdx P Q h).val < min a b :=
           (firstViolationIdx P Q h).isLt
         have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-          (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
         omega) ≤
     (P.1.sort (· ≤ ·))[(firstViolationIdx P Q h).val]'(by
         have hj : (firstViolationIdx P Q h).val < min a b :=
           (firstViolationIdx P Q h).isLt
         have hlen : (P.1.sort (· ≤ ·)).length = a :=
-          (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
         omega) ∧
     ∀ j : Fin (min a b), j.val < (firstViolationIdx P Q h).val →
       (P.1.sort (· ≤ ·))[j.val]'(by
           have hj : j.val < min a b := j.isLt
           have hlen : (P.1.sort (· ≤ ·)).length = a :=
-            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            (Multiset.length_sort (s := P.1) (· ≤ ·)).trans P.2
           omega) <
       (Q.1.sort (· ≤ ·))[j.val]'(by
           have hj : j.val < min a b := j.isLt
           have hlen : (Q.1.sort (· ≤ ·)).length = b :=
-            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            (Multiset.length_sort (s := Q.1) (· ≤ ·)).trans Q.2
           omega) := by
   unfold firstViolationIdx
   exact (exists_first_violation_idx P Q h).choose_spec
@@ -832,8 +857,11 @@ private lemma rotateSortedList_period {n c : ℕ} (M : Sym (Fin n) c) :
   unfold rotateSortedList
   have hlen : (M.1.sort (· ≤ ·)).length = c := by
     rw [Multiset.length_sort, M.2]
-  conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
-  exact List.rotate_length _
+  have hgoal : (M.1.sort (· ≤ ·)).rotate c =
+      (M.1.sort (· ≤ ·)).rotate (M.1.sort (· ≤ ·)).length := by
+    congr 1
+    exact hlen.symm
+  rw [hgoal, List.rotate_length]
 
 /-- The underlying multiset of the rotated sorted list equals `M.1`.
 
@@ -846,7 +874,7 @@ private lemma rotateSortedList_toMultiset {n c : ℕ} (M : Sym (Fin n) c)
     (k : ℕ) : (↑(rotateSortedList M k) : Multiset (Fin n)) = M.1 := by
   unfold rotateSortedList
   rw [Multiset.coe_eq_coe.mpr (List.rotate_perm _ k)]
-  exact Multiset.sort_eq (· ≤ ·) M.1
+  exact Multiset.sort_eq M.1 (· ≤ ·)
 
 /-! #### S32 — Length-multiple / Perm / membership helpers
 
@@ -871,8 +899,11 @@ downstream by 2B.4' / 2B.5'. -/
   unfold rotateSortedList
   have hlen : (M.1.sort (· ≤ ·)).length = c := by
     rw [Multiset.length_sort, M.2]
-  rw [← hlen]
-  exact List.rotate_length_mul _ k
+  have hgoal : (M.1.sort (· ≤ ·)).rotate (c * k) =
+      (M.1.sort (· ≤ ·)).rotate ((M.1.sort (· ≤ ·)).length * k) := by
+    congr 2
+    exact hlen.symm
+  rw [hgoal, List.rotate_length_mul]
 
 /-- **List-level permutation invariance.** Every rotation of the sorted-list
     representative of `M` is a `List.Perm` (`~`) of the canonical sorted
@@ -946,8 +977,11 @@ private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
   unfold rotateSortedList
   have hlen : (M.1.sort (· ≤ ·)).length = c := by
     rw [Multiset.length_sort, M.2]
-  conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
-  exact List.rotate_mod _ _
+  have hgoal : (M.1.sort (· ≤ ·)).rotate (k % c) =
+      (M.1.sort (· ≤ ·)).rotate (k % (M.1.sort (· ≤ ·)).length) := by
+    congr 2
+    exact hlen.symm
+  rw [hgoal, List.rotate_mod]
 
 /-! ### S37 — Prefix-of-rotation `Sym` packaging (rebase of PR #17680)
 
@@ -1099,7 +1133,7 @@ private lemma rotateSortedList_take_add_drop {n c : ℕ}
     (M : Sym (Fin n) c) (k j : ℕ) :
     ((rotateSortedList M k).take j : Multiset (Fin n))
       + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1 := by
-  rw [← Multiset.coe_add, List.take_append_drop]
+  rw [Multiset.coe_add, List.take_append_drop]
   exact rotateSortedList_toMultiset M k
 
 /-! #### S35 — Suffix-as-`Sym` packaging
@@ -1444,8 +1478,11 @@ Bearer cohort identical to S36 (built and merged at the same Mathlib pin
     (rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1 := by
   show ((rotateSortedList M k).take c : Multiset (Fin n)) = M.1
   have hlen : (rotateSortedList M k).length = c := rotateSortedList_length M k
-  conv_lhs => rw [← hlen]
-  rw [List.take_length]
+  have htake : (rotateSortedList M k).take c =
+      (rotateSortedList M k).take (rotateSortedList M k).length := by
+    congr 1
+    exact hlen.symm
+  rw [htake, List.take_length]
   exact rotateSortedList_toMultiset M k
 
 /-! #### S41 — Complement form for `rotateSortedListPrefixSym`
@@ -2307,7 +2344,7 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- in `ballot_counting_identity` itself (~150 lines, S24+).
       rw [← sum_all_sym_pairs n (a + 1) (b - 1),
           jdt_weight_lhs_fibered (R := R),
-          jdt_weight_rhs_fibered (R := R) hb]
+          jdt_weight_rhs_fibered (R := R) _ _ _ hb]
       refine Finset.sum_congr rfl fun M _ => ?_
       rw [ballot_counting_identity n a b hb2 hba M]
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
@@ -2345,30 +2382,30 @@ private lemma ssytFin_two_row_eq_sum_colstrict (n : ℕ) (sh : Fin 2 → ℕ) :
   simp only [ssytSchurFin]
   set a := sh 0 with ha; set b := sh 1 with hb
   have hPlen : ∀ P : Sym (Fin n) a, (P.1.sort (· ≤ ·)).length = a := fun P =>
-    (Multiset.length_sort _ P.1).trans P.2
+    (Multiset.length_sort (s := P.1) _).trans P.2
   have hQlen : ∀ Q : Sym (Fin n) b, (Q.1.sort (· ≤ ·)).length = b := fun Q =>
-    (Multiset.length_sort _ Q.1).trans Q.2
+    (Multiset.length_sort (s := Q.1) _).trans Q.2
   -- For each row i of T, the multiset cast of ofFn(T.row_i) sorts to ofFn(T.row_i)
   -- because SSYT rows are weakly increasing (so already sorted).
   have sortedRow0 : ∀ (T : SSYTFin n 2 sh),
       (↑(List.ofFn (fun j : Fin a => T.1 ⟨0, j⟩) : List _) : Multiset _).sort (· ≤ ·) =
         List.ofFn (fun j : Fin a => T.1 ⟨0, j⟩) := fun T => by
     rw [Multiset.coe_sort]
-    exact List.mergeSort_eq_self ((List.sortedLE_ofFn_iff.mpr
+    exact List.mergeSort_eq_self (· ≤ ·) ((List.sortedLE_ofFn_iff.mpr
       (fun j1 j2 h => h.lt_or_eq.elim (T.2.1 0 j1 j2)
         (fun h' => h' ▸ le_refl _))).pairwise)
   have sortedRow1 : ∀ (T : SSYTFin n 2 sh),
       (↑(List.ofFn (fun j : Fin b => T.1 ⟨1, j⟩) : List _) : Multiset _).sort (· ≤ ·) =
         List.ofFn (fun j : Fin b => T.1 ⟨1, j⟩) := fun T => by
     rw [Multiset.coe_sort]
-    exact List.mergeSort_eq_self ((List.sortedLE_ofFn_iff.mpr
+    exact List.mergeSort_eq_self (· ≤ ·) ((List.sortedLE_ofFn_iff.mpr
       (fun j1 j2 h => h.lt_or_eq.elim (T.2.1 1 j1 j2)
         (fun h' => h' ▸ le_refl _))).pairwise)
   let ψ : SSYTFin n 2 sh ≃
       { PQ : Sym (Fin n) a × Sym (Fin n) b // ColStrictSym a b PQ.1 PQ.2 } :=
     { toFun := fun T =>
-        ⟨(⟨↑(List.ofFn (fun j : Fin a => T.1 ⟨0, j⟩)), by simp [Multiset.card_ofList]⟩,
-          ⟨↑(List.ofFn (fun j : Fin b => T.1 ⟨1, j⟩)), by simp [Multiset.card_ofList]⟩),
+        ⟨(⟨↑(List.ofFn (fun j : Fin a => T.1 ⟨0, j⟩)), by simp [Multiset.coe_card]⟩,
+          ⟨↑(List.ofFn (fun j : Fin b => T.1 ⟨1, j⟩)), by simp [Multiset.coe_card]⟩),
          fun ⟨j, hj⟩ => by
           have hja : j < a := Nat.lt_of_lt_of_le hj (Nat.min_le_left a b)
           have hjb : j < b := Nat.lt_of_lt_of_le hj (Nat.min_le_right a b)
@@ -2382,23 +2419,27 @@ private lemma ssytFin_two_row_eq_sum_colstrict (n : ℕ) (sh : Fin 2 → ℕ) :
         let hP := hPlen P; let hQ := hQlen Q
         ⟨fun ⟨⟨i, hi⟩, j⟩ =>
           if h : i = 0 then
-            (P.1.sort (· ≤ ·))[j.val]'(hP ▸
-              ((show sh ⟨i, hi⟩ = sh 0 by congr 1; exact Fin.ext h) ▸ j.isLt))
+            (P.1.sort (· ≤ ·))[j.val]'(by
+              have hj := j.isLt
+              have hshEq : sh ⟨i, hi⟩ = sh 0 := by congr 1; exact Fin.ext h
+              omega)
           else
             have hi1 : i = 1 := by omega
-            (Q.1.sort (· ≤ ·))[j.val]'(hQ ▸
-              ((show sh ⟨i, hi⟩ = sh 1 by congr 1; exact Fin.ext hi1) ▸ j.isLt)),
+            (Q.1.sort (· ≤ ·))[j.val]'(by
+              have hj := j.isLt
+              have hshEq : sh ⟨i, hi⟩ = sh 1 := by congr 1; exact Fin.ext hi1
+              omega),
          ⟨-- Row-weak: sorted lists are weakly increasing
-          fun ⟨⟨i, _⟩, _⟩ j1 j2 hlt => by
+          fun i j1 j2 hlt => by
+            dsimp only
             split_ifs with h
-            · have hi0 : i = 0 := h; subst hi0
-              exact ((Multiset.pairwise_sort (· ≤ ·) P.1).sortedLE)
-                .getElem_le_getElem_of_le (hP ▸ j1.isLt) (hP ▸ j2.isLt)
+            · have hi0 : i = 0 := Fin.ext h; subst hi0
+              exact ((Multiset.pairwise_sort P.1 (· ≤ ·)).sortedLE).getElem_le_getElem_of_le
                 (le_of_lt (Fin.lt_iff_val_lt_val.mp hlt))
-            · have hi1 : i = 1 := by omega
+            · have hi1 : i = 1 := by
+                have := i.isLt; exact Fin.ext (by omega)
               subst hi1
-              exact ((Multiset.pairwise_sort (· ≤ ·) Q.1).sortedLE)
-                .getElem_le_getElem_of_le (hQ ▸ j1.isLt) (hQ ▸ j2.isLt)
+              exact ((Multiset.pairwise_sort Q.1 (· ≤ ·)).sortedLE).getElem_le_getElem_of_le
                 (le_of_lt (Fin.lt_iff_val_lt_val.mp hlt)),
           -- Col-strict: P.sort[j] < Q.sort[j] for same column j, from hPQ
           fun i1 i2 j1 j2 hval hlt => by
@@ -2411,51 +2452,62 @@ private lemma ssytFin_two_row_eq_sum_colstrict (n : ℕ) (sh : Fin 2 → ℕ) :
             -- After subst: j1 : Fin (sh 0) = Fin a; i2.val ≠ 0 means Q branch
             -- Evaluate T.1 ⟨i2, j2⟩ in the dite: i2.val = 1 ≠ 0, so Q branch
             have hj2b : j2.val < b := by
-              have := (show sh i2 = b from hb ▸ congrArg sh hi2) ▸ j2.isLt; exact this
+              have hj := j2.isLt
+              have hshEq : sh i2 = b := (congrArg sh hi2).trans hb.symm
+              omega
             have hj_min : j1.val < min a b :=
               Nat.lt_min.mpr ⟨j1.isLt, hval ▸ hj2b⟩
             -- The dite evaluates: i1.val = 0 → P branch, i2.val ≠ 0 → Q branch
-            simp only [Nat.zero_eq, ↓reduceDite, show i2.val ≠ 0 from by omega, ↓reduceDite]
-            rw [← hval]
-            exact hPQ ⟨j1.val, hj_min⟩⟩⟩
+            simp only [Nat.zero_eq, ↓reduceDIte, show i2.val ≠ 0 from by omega, ↓reduceDIte]
+            exact lt_of_lt_of_eq (hPQ ⟨j1.val, hj_min⟩) (getElem_congr rfl hval _)⟩⟩
       left_inv := fun T => by
         apply Subtype.ext; funext ⟨⟨i, hi⟩, j⟩
         simp only []
         split_ifs with h
         · -- i = 0: subst to unify types, then sort = ofFn(T.row0) and getElem = T(0,j)
           subst h
-          rw [sortedRow0 T, List.getElem_ofFn]
+          rw [List.getElem_of_eq (sortedRow0 T) _, List.getElem_ofFn]
+          congr 1
         · -- i = 1
           have hi1 : i = 1 := by omega
           subst hi1
-          rw [sortedRow1 T, List.getElem_ofFn]
+          rw [List.getElem_of_eq (sortedRow1 T) _, List.getElem_ofFn]
+          congr 1
       right_inv := fun ⟨(P, Q), _⟩ => by
         apply Subtype.ext; apply Prod.ext
         · -- ψ(invFun (P,Q)).1.1 = P
           apply Subtype.ext
           have hP := hPlen P
+          have hPidx : ∀ j : Fin a, j.val < (P.1.sort (· ≤ ·)).length := fun j => by
+            have := j.isLt; omega
           have hL : List.ofFn (fun j : Fin a =>
-              (P.1.sort (· ≤ ·))[j.val]'(hP ▸ j.isLt)) = P.1.sort (· ≤ ·) :=
+              (P.1.sort (· ≤ ·))[j.val]'(hPidx j)) = P.1.sort (· ≤ ·) :=
             List.ext_getElem (by simp [hP]) (fun i _ _ => by simp [List.getElem_ofFn])
           show (↑(List.ofFn (fun j : Fin a =>
-              (P.1.sort (· ≤ ·))[j.val]'(hP ▸ j.isLt))) : Multiset _) = P.1
-          rw [hL]; exact_mod_cast Multiset.sort_eq (· ≤ ·) P.1
+              (P.1.sort (· ≤ ·))[j.val]'(hPidx j))) : Multiset _) = P.1
+          rw [hL]; exact_mod_cast Multiset.sort_eq P.1 (· ≤ ·)
         · -- ψ(invFun (P,Q)).1.2 = Q
           apply Subtype.ext
           have hQ := hQlen Q
+          have hQidx : ∀ j : Fin b, j.val < (Q.1.sort (· ≤ ·)).length := fun j => by
+            have := j.isLt; omega
           have hL : List.ofFn (fun j : Fin b =>
-              (Q.1.sort (· ≤ ·))[j.val]'(hQ ▸ j.isLt)) = Q.1.sort (· ≤ ·) :=
+              (Q.1.sort (· ≤ ·))[j.val]'(hQidx j)) = Q.1.sort (· ≤ ·) :=
             List.ext_getElem (by simp [hQ]) (fun i _ _ => by simp [List.getElem_ofFn])
           show (↑(List.ofFn (fun j : Fin b =>
-              (Q.1.sort (· ≤ ·))[j.val]'(hQ ▸ j.isLt))) : Multiset _) = Q.1
-          rw [hL]; exact_mod_cast Multiset.sort_eq (· ≤ ·) Q.1 }
+              (Q.1.sort (· ≤ ·))[j.val]'(hQidx j))) : Multiset _) = Q.1
+          rw [hL]; exact_mod_cast Multiset.sort_eq Q.1 (· ≤ ·) }
   refine Fintype.sum_equiv ψ _ _ fun T => ?_
   simp only [SSYTFin.weight, Fintype.prod_sigma, Fin.prod_univ_two]
   -- Goal: (∏ j, X(T.1 ⟨0,j⟩)) * (∏ j, X(T.1 ⟨1,j⟩)) =
   --       ((ψ T).1.1.1.map X).prod * ((ψ T).1.2.1.map X).prod
   -- (ψ T).1.1.1 = ↑(ofFn(T.row0)) and (ψ T).1.2.1 = ↑(ofFn(T.row1))
-  simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, prod_ofFn]
+  show (∏ j : Fin a, X (T.1 ⟨(0 : Fin 2), j⟩)) * (∏ j : Fin b, X (T.1 ⟨(1 : Fin 2), j⟩)) =
+    ((↑(List.ofFn (fun j : Fin a => T.1 ⟨(0 : Fin 2), j⟩)) : Multiset _).map X).prod *
+    ((↑(List.ofFn (fun j : Fin b => T.1 ⟨(1 : Fin 2), j⟩)) : Multiset _).map X).prod
+  simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, List.prod_ofFn]
 
+set_option maxHeartbeats 0 in
 /-- Partition of all Sym pairs into col-strict and non-col-strict, with sum = h_a * h_b.
     Uses Fintype.sum_subtype_add_sum_subtype to split the all-pairs sum into subtypes. -/
 private lemma sym_pair_sum_partition (n a b : ℕ) :
@@ -2468,9 +2520,10 @@ private lemma sym_pair_sum_partition (n a b : ℕ) :
     hsymm (Fin n) R a * hsymm (Fin n) R b := by
   rw [← sum_all_sym_pairs (R := R)]
   exact Fintype.sum_subtype_add_sum_subtype
-    (fun PQ => ColStrictSym a b PQ.1 PQ.2)
-    (fun PQ => (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
-               (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod)
+    (fun PQ : Sym (Fin n) a × Sym (Fin n) b => ColStrictSym a b PQ.1 PQ.2)
+    (fun PQ : Sym (Fin n) a × Sym (Fin n) b =>
+      (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod)
 
 /-- **Two-Row Jacobi-Trudi** (assembly from row-decomp + JDT):
     The 2-row SSYT generating function equals the 2×2 Jacobi-Trudi determinant.

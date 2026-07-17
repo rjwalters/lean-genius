@@ -127,7 +127,7 @@ axiom frattini_profinite
     (hpf : IsProfiniteGroup G)
     (N : Subgroup G) (hN : N.Normal) (hclosed : IsClosed (N : Set G))
     (p : ℕ) (hp : Fact p.Prime) :
-    ∀ g : G, ∃ (n : N) (m : G), m ∈ N.normalizer ∧ g = n * m
+    ∀ g : G, ∃ (n : N) (m : G), m ∈ Subgroup.normalizer N ∧ g = n * m
 
 -- The former axiom `sylowProP_inter_trivial` (Sylow pro-p subgroups for
 -- distinct primes have trivial intersection) is now proved as
@@ -252,7 +252,7 @@ noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
         hcontains (Subgroup.mem_map.mpr ⟨x, hx, rfl⟩),
         by simp [MulAut.conj_apply]; group⟩
     have step := congr_arg (fun K => K.map (MulAut.conj g).toMonoidHom) key
-    dsimp only at step
+    skip
     rw [Subgroup.map_map] at step
     have hcomp : (MulAut.conj g).toMonoidHom.comp (MulAut.conj g⁻¹).toMonoidHom =
         MonoidHom.id G := by

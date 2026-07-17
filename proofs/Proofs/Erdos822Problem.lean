@@ -14,8 +14,11 @@ Reference: https://erdosproblems.com/822
 -/
 
 import Mathlib.Data.Nat.Totient
+import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Function
 import Mathlib.Order.Filter.Basic
+
+open scoped Classical
 
 namespace Erdos822
 
@@ -70,7 +73,7 @@ theorem nPlusTotient_ge (n : ℕ) : nPlusTotient n ≥ n := by
   unfold nPlusTotient
   omega
 
-/-- For even n ≥ 2, n + φ(n) is always even (since φ(n) is even for n ≥ 3).
+/-  For even n ≥ 2, n + φ(n) is always even (since φ(n) is even for n ≥ 3).
     For odd primes p, p + φ(p) = p + (p-1) = 2p - 1 is odd.
     So odd values in the range come from primes (and from n = 1, 2). -/
 /- ## Main Theorem
@@ -97,7 +100,7 @@ The same result holds for other arithmetic functions. -/
 def nPlusSigmaValues (sigma : ℕ → ℕ) : Set ℕ :=
   Set.range fun n => n + sigma n
 
-/-- **Axiom:** The density result extends to n + σ(n) and similar functions
+/-  **Axiom:** The density result extends to n + σ(n) and similar functions
     (Gabdullin–Iudelevich–Luca 2024). -/
 /- ## Summary -/
 

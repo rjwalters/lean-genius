@@ -3,6 +3,8 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 import Proofs.ArithmeticSeriesOQ00
 
+open scoped Classical
+
 /-
 # Alternative Weights for Nicomachus-Type Sums (OQ-00-OQ-02-OQ-01)
 
@@ -93,7 +95,7 @@ theorem nicWeight_three : nicWeight 3 = 27 / 5 := by unfold nicWeight; norm_num
     Combining: 3·w(2) = 8, which has no solution in ℤ (proved by omega). -/
 theorem no_integer_weight (w : ℕ → ℤ)
     (h : ∀ n, ∑ k ∈ Ico 1 (n + 1), w k * (2 * (k : ℤ) - 1) =
-             (∑ k ∈ Ico 1 (n + 1), (k : ℤ))^2) : False := by
+             (∑ k ∈ Ico (1 : ℕ) (n + 1), (k : ℤ))^2) : False := by
   have hh1 := h 1
   have hh2 := h 2
   -- Normalize n+1 to concrete values and expand finite sums
@@ -116,7 +118,7 @@ theorem no_integer_weight (w : ℕ → ℤ)
     nicWeight at k=1 and k=2. Forced by the n=1 and n=2 cases via telescoping. -/
 theorem nicWeight_unique_at_12 (w : ℕ → ℚ)
     (h : ∀ n, ∑ k ∈ Ico 1 (n + 1), w k * (2 * (k : ℚ) - 1) =
-             (∑ k ∈ Ico 1 (n + 1), (k : ℚ))^2) :
+             (∑ k ∈ Ico (1 : ℕ) (n + 1), (k : ℚ))^2) :
     w 1 = nicWeight 1 ∧ w 2 = nicWeight 2 := by
   have hh1 := h 1
   have hh2 := h 2

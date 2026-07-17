@@ -48,13 +48,13 @@ noncomputable def coveringExponent (n : ℕ) : ℝ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
+/-  **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
     Even primes close to n suffice to cover [1, n] with one class each. -/
 /- ## Known Bounds -/
 
-/-- **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
+/-  **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
     The exponent cannot decrease faster than this iterated-log ratio. -/
-/-- Trivial upper bound: εₙ < 1, since we need at least the prime n
+/-  Trivial upper bound: εₙ < 1, since we need at least the prime n
     (if n is prime) or primes up to n. -/
 /- ## Structural Properties -/
 
@@ -78,7 +78,10 @@ theorem single_class_coverage :
                Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq] at hm₁ hm₂
     have r1 := Nat.div_add_mod (m₁ + 1) p
     have r2 := Nat.div_add_mod (m₂ + 1) p
-    rw [hm₁.2, hm₂.2] at r1 r2
+    simp only [] at heq
+    -- same quotient (heq) and same remainder (hm₁.2, hm₂.2) ⇒ same value
+    rw [heq, hm₁.2] at r1
+    rw [hm₂.2] at r2
     omega
   -- Step 3: card S ≤ n/p + 1 via injection
   have h_card : S.card ≤ n / p + 1 := by
@@ -95,7 +98,7 @@ theorem single_class_coverage :
         rw [le_div_iff₀ (Nat.cast_pos.mpr hp.pos)]
         exact_mod_cast Nat.div_mul_le_self n p
 
-/-- The total coverage capacity of primes in (n^ε, n] is
+/-  The total coverage capacity of primes in (n^ε, n] is
     ∑_{n^ε < p ≤ n} ⌊n/p⌋ ~ n · (log(1/ε) + O(1)) by Mertens' theorem. -/
 /-- Monotonicity: if ε₁ ≤ ε₂, the primes in (n^ε₁, n] include those
     in (n^ε₂, n], so more primes are available. -/
@@ -109,18 +112,20 @@ theorem exponent_monotone_coverage :
   -- Need: (p : ℝ) > (n : ℝ) ^ ε₁
   -- We know: (p : ℝ) > (n : ℝ) ^ ε₂ and ε₁ ≤ ε₂
   by_cases hn : n = 0
-  · subst hn; simp [Real.zero_rpow (ne_of_gt hε₁)] at hp
+  · subst hn
+    rw [Nat.cast_zero, Real.zero_rpow (ne_of_gt hε₁)]
+    exact_mod_cast hp.2.1.pos
   · calc (n : ℝ) ^ ε₁ ≤ (n : ℝ) ^ ε₂ := by
           apply Real.rpow_le_rpow_of_exponent_le
           · exact Nat.one_le_cast.mpr (Nat.pos_of_ne_zero hn)
           · exact hε₁₂
       _ < p := hp.2.2.1
 
-/-- Covering with all primes ≤ n (ε = 0): by CRT and the prime number
+/-  Covering with all primes ≤ n (ε = 0): by CRT and the prime number
     theorem, one class per prime suffices to cover [1, n] for large n. -/
 /-- The sieve connection: covering [1,n] by one residue class per prime
     is dual to sieving — excluding one class per prime. -/
-theorem sieve_duality :
+def sieve_duality :
   ∀ (primes : Finset ℕ), (∀ p ∈ primes, Nat.Prime p) →
     (CoveringAssignment primes → CoveringAssignment primes) := by
   intro _ _ h; exact h

@@ -25,6 +25,8 @@ import Mathlib
 
 open Finset Function SimpleGraph
 
+open scoped Classical
+
 namespace Erdos611
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -154,7 +156,7 @@ theorem threshold_grows_slowly :
 /- ## The Bollobás-Erdős Threshold -/
 
 /-- The critical threshold for τ = 1 -/
-def bollobas_erdos_threshold (n : ℕ) : ℝ :=
+noncomputable def bollobas_erdos_threshold (n : ℕ) : ℝ :=
   n + 3 - 2 * Real.sqrt n
 
 /-- Bollobás-Erdős: If all cliques have size ≥ n + 3 - 2√n, then τ(G) = 1 -/
@@ -167,7 +169,7 @@ axiom bollobas_erdos_tau_one :
 /-- The threshold n + 3 - 2√n is optimal -/
 axiom bollobas_erdos_optimal :
   ∀ ε > 0, ∃ᶠ n in Filter.atTop,
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       Fintype.card V = n ∧
       (∀ C : Finset V, IsMaximalClique G C →
         (C.card : ℝ) ≥ n + 3 - 2 * Real.sqrt n - ε) ∧
@@ -182,12 +184,12 @@ theorem complete_graph_tau [Nontrivial V] :
 
 /-- Complete bipartite K_{n/2,n/2}: cliques have size 2, τ = n/2 -/
 theorem complete_bipartite_tau (n : ℕ) (hn : Even n) :
-    sorry -- τ(K_{n/2,n/2}) = n/2
+    (sorry : Prop) -- τ(K_{n/2,n/2}) = n/2
     := by sorry
 
 /-- Turán graph T(n,r): cliques have size ⌈n/r⌉, τ depends on r -/
 theorem turan_graph_tau (n r : ℕ) (hr : r ≥ 2) :
-    sorry -- τ(T(n,r)) analysis
+    (sorry : Prop) -- τ(T(n,r)) analysis
     := by sorry
 
 /- ## Probabilistic Lower Bounds -/
@@ -196,9 +198,10 @@ theorem turan_graph_tau (n r : ℕ) (hr : r ≥ 2) :
 axiom random_graph_clique_transversal :
   ∀ c : ℝ, 0 < c → c < 1 →
     ∃ᶠ n in Filter.atTop,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
-        (∀ C : Finset V, IsMaximalClique G C → C.card ≥ n ^ (c / Real.log (Real.log n))) ∧
+        (∀ C : Finset V, IsMaximalClique G C →
+          (C.card : ℝ) ≥ (n : ℝ) ^ (c / Real.log (Real.log n))) ∧
         (τ G : ℝ) ≥ (1 - c - 0.01) * n
 
 /- ## Relationship to #610 -/

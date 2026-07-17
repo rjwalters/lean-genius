@@ -23,13 +23,10 @@
   Tags: squarefree, error-term, analytic-number-theory, riemann-hypothesis
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Pi.Bounds
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 namespace Erdos969
@@ -49,17 +46,26 @@ def isSquarefree (n : ℕ) : Prop := Squarefree n
 
 /-- Examples of squarefree numbers -/
 example : Squarefree 1 := squarefree_one
-example : Squarefree 2 := Nat.Prime.squarefree (Nat.prime_two)
-example : Squarefree 3 := Nat.Prime.squarefree (Nat.prime_three)
-example : Squarefree 6 := by decide
-example : Squarefree 10 := by decide
-example : Squarefree 30 := by decide
+example : Squarefree 2 := Nat.prime_two.prime.squarefree
+example : Squarefree 3 := Nat.prime_three.prime.squarefree
+example : Squarefree 6 := by
+  rw [show (6:ℕ) = 2 * 3 from rfl, Nat.squarefree_mul_iff]
+  exact ⟨by norm_num, Nat.prime_two.prime.squarefree, Nat.prime_three.prime.squarefree⟩
+example : Squarefree 10 := by
+  rw [show (10:ℕ) = 2 * 5 from rfl, Nat.squarefree_mul_iff]
+  exact ⟨by norm_num, Nat.prime_two.prime.squarefree, (by norm_num : Nat.Prime 5).prime.squarefree⟩
+example : Squarefree 30 := by
+  rw [show (30:ℕ) = 2 * (3 * 5) from rfl, Nat.squarefree_mul_iff, Nat.squarefree_mul_iff]
+  refine ⟨by norm_num, Nat.prime_two.prime.squarefree, by norm_num,
+    Nat.prime_three.prime.squarefree, (by norm_num : Nat.Prime 5).prime.squarefree⟩
 
 /-- 4 is not squarefree (divisible by 2²) -/
-example : ¬Squarefree 4 := by decide
+example : ¬Squarefree 4 := fun h => by
+  simpa [Nat.isUnit_iff] using h 2 (by norm_num)
 
 /-- 12 is not squarefree (divisible by 2²) -/
-example : ¬Squarefree 12 := by decide
+example : ¬Squarefree 12 := fun h => by
+  simpa [Nat.isUnit_iff] using h 2 (by norm_num)
 
 /-
 ## Part 2: The Squarefree Counting Function Q(x)
@@ -100,13 +106,14 @@ theorem density_eq_zeta_inverse : squarefreeDensity = 1 / (Real.pi^2 / 6) := by
 /-- Approximate value of the density -/
 theorem density_approx : 0.607 < squarefreeDensity ∧ squarefreeDensity < 0.609 := by
   unfold squarefreeDensity
+  have hpi : 3.1415 < Real.pi := Real.pi_gt_d4
+  have hpi2 : Real.pi < 3.1416 := Real.pi_lt_d4
+  have hpos : (0:ℝ) < Real.pi ^ 2 := by positivity
   constructor
-  · have hpi : 3.14 < Real.pi := Real.pi_gt_314
-    have hpi2 : Real.pi < 3.15 := Real.pi_lt_315
-    nlinarith [sq_nonneg Real.pi, sq_nonneg 3.14, sq_nonneg 3.15]
-  · have hpi : 3.14 < Real.pi := Real.pi_gt_314
-    have hpi2 : Real.pi < 3.15 := Real.pi_lt_315
-    nlinarith [sq_nonneg Real.pi, sq_nonneg 3.14, sq_nonneg 3.15]
+  · rw [lt_div_iff₀ hpos]
+    nlinarith [Real.pi_pos]
+  · rw [div_lt_iff₀ hpos]
+    nlinarith [Real.pi_pos]
 
 /-
 ## Part 4: The Error Term E(x)
@@ -133,8 +140,8 @@ Several upper bounds are known for E(x), with progressively better exponents.
 axiom elementary_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/2 : ℝ)
 
-/-- Prime Number Theorem improvement: E(x) = o(x^(1/2)) -/
-/-- Walfisz (1963): Best unconditional bound E(x) ≪ x^(1/2 - δ(x))
+/-  Prime Number Theorem improvement: E(x) = o(x^(1/2)) -/
+/-  Walfisz (1963): Best unconditional bound E(x) ≪ x^(1/2 - δ(x))
     where δ(x) → 0 slowly -/
 /-
 ## Part 6: The Lower Bound
@@ -164,7 +171,7 @@ If E(x) ≪ x^(1/4), then the Riemann Hypothesis follows!
    implication requires connecting the error bound to the zero-free region of ζ(s).
    This is a deep analytic number theory result that cannot be formalized as a trivial implication. -/
 
-/-- Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
+/-  Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
 /-- The exponent 11/35 ≈ 0.314 vs conjectured 1/4 = 0.25 -/
 theorem liu_exponent : (11 : ℝ) / 35 > 1 / 4 := by norm_num
 
@@ -182,13 +189,13 @@ The squarefree counting is related to the Möbius function μ(n):
 def μ : ℕ → ℤ := ArithmeticFunction.moebius
 
 /-- μ(1) = 1 -/
-theorem mu_one : μ 1 = 1 := by rfl
+theorem mu_one : μ 1 = 1 := by simp [μ]
 
 /-- μ(p) = -1 for prime p -/
 theorem mu_prime (p : ℕ) (hp : Nat.Prime p) : μ p = -1 := by
   simp only [μ, ArithmeticFunction.moebius_apply_prime hp]
 
-/-- The squarefree counting formula via Möbius inversion -/
+/-  The squarefree counting formula via Möbius inversion -/
 /-
 ## Part 9: Related Error Terms and Zeta Zeros
 
@@ -198,11 +205,11 @@ Better zero-free regions give better error bounds.
 
 /-- The classical zero-free region: σ > 1 - c/log(t) for some c > 0 -/
 theorem classical_zero_free_region :
-  ∃ c : ℝ, c > 0 ∧ ∀ s : ℂ, s.re > 1 - c / Real.log s.im.abs →
-    s.im.abs > 2 → True :=  -- ζ(s) ≠ 0
+  ∃ c : ℝ, c > 0 ∧ ∀ s : ℂ, s.re > 1 - c / Real.log |s.im| →
+    |s.im| > 2 → True :=  -- ζ(s) ≠ 0
   ⟨1, by norm_num, fun _ _ _ => trivial⟩
 
-/-- Wider zero-free regions would improve E(x) bounds -/
+/-  Wider zero-free regions would improve E(x) bounds -/
 /-
 ## Part 10: Summary and Main Theorem
 

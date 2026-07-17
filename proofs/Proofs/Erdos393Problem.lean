@@ -29,10 +29,7 @@ References:
 Tags: number-theory, factorials, diophantine-equations, ABC-conjecture
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos393
 
@@ -54,7 +51,7 @@ def IsStrictlyIncreasing (factors : List ℕ) : Prop :=
 def span (factors : List ℕ) : ℕ :=
   match factors with
   | [] => 0
-  | a :: rest => (factors.getLast (by simp)) - a
+  | a :: rest => ((a :: rest).getLast (by simp)) - a
 
 /-- A valid factorization for our problem:
     n! = a₁ · ... · aₜ with a₁ < ... < aₜ and span m -/
@@ -72,6 +69,7 @@ def IsValidFactorization (n m : ℕ) (factors : List ℕ) : Prop :=
 axiom f_exists (n : ℕ) :
     ∃ m, ∃ factors : List ℕ, IsValidFactorization n m factors
 
+open Classical in
 /-- f(n) = minimal m such that n! has a valid factorization with span m -/
 noncomputable def f (n : ℕ) : ℕ :=
   Nat.find (f_exists n)
@@ -84,9 +82,9 @@ noncomputable def f (n : ℕ) : ℕ :=
 def IsProductOfConsecutive (n : ℕ) : Prop :=
   ∃ k : ℕ, k ≥ 1 ∧ n.factorial = k * (k + 1)
 
-/-- f(n) = 1 iff n! is a product of two consecutive integers -/
+/-  f(n) = 1 iff n! is a product of two consecutive integers -/
 /-- Example: 3! = 6 = 2 · 3, so f(3) ≤ 1 -/
-theorem example_3_factorial : 3.factorial = 2 * 3 := by
+theorem example_3_factorial : (3 : ℕ).factorial = 2 * 3 := by
   native_decide
 
 /-- The open question: Is f(n) = 1 for infinitely many n? -/
@@ -120,7 +118,7 @@ theorem power_saving : (33 : ℝ) / 34 < 1 := by norm_num
 def ABCConjecture : Prop :=
   ∀ ε > 0, ∃ K : ℝ, K > 0 ∧
     ∀ a b c : ℕ, a + b = c → Nat.Coprime a b →
-      (c : ℝ) ≤ K * (Nat.radical (a * b * c) : ℝ)^(1 + ε)
+      (c : ℝ) ≤ K * (UniqueFactorizationMonoid.radical (a * b * c) : ℝ)^(1 + ε)
 
 /-- Luca (2002): Assuming ABC, f(n) → ∞ as n → ∞ -/
 axiom luca_2002 : ABCConjecture →
@@ -145,7 +143,7 @@ def UnconditionalTendsto : Prop :=
 def PolynomialFactorialEquation (P : ℕ → ℕ) (n : ℕ) : Prop :=
   ∃ x : ℕ, P x = n.factorial
 
-/-- For f(n) = 1: x(x+1) = n! is a Pell-like equation -/
+/-  For f(n) = 1: x(x+1) = n! is a Pell-like equation -/
 /-- Brocard's problem: n! + 1 = m² has only known solutions n = 4, 5, 7 -/
 def BrocardProblem : Prop :=
   ∀ n m : ℕ, n.factorial + 1 = m^2 → n ∈ ({4, 5, 7} : Set ℕ)
@@ -159,7 +157,7 @@ theorem density_zero (m : ℕ) (hm : m ≥ 1) :
     Filter.Tendsto (fun N => (F m N : ℝ) / N) Filter.atTop (nhds 0) :=
   berend_osgood_1992 m hm
 
-/-- Corollary: f(n) achieves each value only finitely often, in density sense -/
+/-  Corollary: f(n) achieves each value only finitely often, in density sense -/
 /-
 ## Part 9: Summary
 -/

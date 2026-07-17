@@ -57,7 +57,8 @@ theorem centralBinom_isEquivalent_four_pow_div_sqrt :
   -- Numerator asymptotic: `(2n)! ~ S (2n)`.
   have h2n : (fun n : ℕ => ((2 * n)! : ℝ)) ~[atTop] (fun n : ℕ => S (2 * n)) := by
     have := H.comp_tendsto hk
-    simpa [Function.comp] using this
+    simp only [Function.comp_def] at this
+    exact this
   -- Denominator asymptotic: `n! · n! ~ S n · S n`.
   have hmul : (fun n : ℕ => (n ! : ℝ) * (n ! : ℝ)) ~[atTop] (fun n : ℕ => S n * S n) :=
     H.mul H

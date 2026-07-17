@@ -58,11 +58,11 @@ def decayBound (C : ℝ≥0) (α : ℝ≥0) (n : ℤ) : ℝ :=
 
 /-- The decay constant is positive -/
 theorem decayConstant_pos : (0 : ℝ) < decayConstant := by
-  simp [decayConstant]; norm_num
+  simp [decayConstant]
 
 /-- The decay bound is nonneg for valid parameters -/
 theorem decayBound_nonneg (C : ℝ≥0) (α : ℝ≥0) (n : ℤ) (hn : n ≠ 0) :
-    0 ≤ decayBound C α n := by
+    0 ≤ decayBound (T := T) C α n := by
   simp only [decayBound, decayConstant]
   apply mul_nonneg
   · apply mul_nonneg (by norm_num) (NNReal.coe_nonneg C)
@@ -73,40 +73,44 @@ theorem decayBound_nonneg (C : ℝ≥0) (α : ℝ≥0) (n : ℤ) (hn : n ≠ 0) 
 /-- The bound decreases as |n| increases (for fixed C, α) -/
 theorem decayBound_antitone (C : ℝ≥0) (α : ℝ≥0) (hα : 0 < (α : ℝ))
     (n m : ℤ) (hn : n ≠ 0) (hm : m ≠ 0) (h : |↑n| ≤ |↑m|) :
-    decayBound C α m ≤ decayBound C α n := by
+    decayBound (T := T) C α m ≤ decayBound (T := T) C α n := by
   simp only [decayBound, decayConstant]
   apply mul_le_mul_of_nonneg_left _ (by positivity)
-  apply Real.rpow_le_rpow (by positivity) _ (le_of_lt hα)
-  apply div_le_div_of_nonneg_left hT.out.le (by positivity) (by positivity)
-  linarith
+  apply Real.rpow_le_rpow (div_nonneg hT.out.le (by positivity)) _ (le_of_lt hα)
+  apply div_le_div_of_nonneg_left hT.out.le
+    (mul_pos two_pos (abs_pos.mpr (Int.cast_ne_zero.mpr hn)))
+    (mul_le_mul_of_nonneg_left (by exact_mod_cast h) (by norm_num))
 
 /-- As n → ∞, the bound → 0 (Riemann-Lebesgue consequence) -/
 theorem decayBound_tendsto_zero (C : ℝ≥0) (α : ℝ≥0) (hα : 0 < (α : ℝ)) :
-    Filter.Tendsto (fun n : ℕ => decayBound C α (↑n + 1))
+    Filter.Tendsto (fun n : ℕ => decayBound (T := T) C α (↑n + 1))
     Filter.atTop (nhds 0) := by
-  simp only [decayBound, decayConstant]
+  have habs : ∀ n : ℕ, |(((n : ℤ) + 1 : ℤ) : ℝ)| = (n : ℝ) + 1 := by
+    intro n
+    rw [abs_of_nonneg (by positivity)]
+    push_cast
+    ring
+  simp only [decayBound, decayConstant, habs]
   rw [show (0 : ℝ) = 1 / 2 * ↑C * 0 from by ring]
   apply Filter.Tendsto.mul tendsto_const_nhds
   rw [show (0 : ℝ) = 0 ^ (α : ℝ) from by simp [ne_of_gt hα]]
-  exact Filter.Tendsto.rpow (Filter.Tendsto.div_atTop tendsto_const_nhds
-    (Filter.Tendsto.atTop_nonneg_mul_left (by norm_num : (0 : ℝ) < 2)
-      (Filter.tendsto_natCast_atTop_atTop.comp
-        (Filter.tendsto_atTop_add_nonneg_left (by positivity)
-          Filter.tendsto_id))))
-    (Or.inl (ne_of_gt hα))
+  refine Filter.Tendsto.rpow (Filter.Tendsto.div_atTop tendsto_const_nhds ?_)
+    tendsto_const_nhds (Or.inr hα)
+  exact (Filter.tendsto_atTop_add_const_right Filter.atTop (1 : ℝ)
+    tendsto_natCast_atTop_atTop).const_mul_atTop (by norm_num : (0 : ℝ) < 2)
 
 -- ============================================================
 -- Section 3: Sharpness of the Constant 1/2
 -- ============================================================
 
-/-- **Sharpness**: The constant 1/2 cannot be improved.
+/-  **Sharpness**: The constant 1/2 cannot be improved.
     For each α ∈ (0, 1], there exists a family of α-Hölder functions
     {f_N} such that ‖ĉ_N(f_N)‖ / (C · (T/(2N))^α) → 1/2 as N → ∞.
 
     The extremal family uses "concentrated bump" functions that saturate
     the Hölder bound |f(x) - f(x+h)| = C|h|^α for all x simultaneously
     in the support of e_{-N}(x). -/
-/-- **Lipschitz sharp constant**: For α = 1, the sawtooth function achieves
+/-  **Lipschitz sharp constant**: For α = 1, the sawtooth function achieves
     equality (up to normalization).
 
     The sawtooth f(x) = x - T/2 on [0, T) has Lipschitz constant 1
@@ -119,14 +123,14 @@ theorem decayBound_tendsto_zero (C : ℝ≥0) (α : ℝ≥0) (hα : 0 < (α : �
 /-- For α very close to 0, the bound becomes vacuous (O(1) decay).
     The constant 1/2 is still sharp but the bound is weak. -/
 theorem small_alpha_bound (C : ℝ≥0) (n : ℤ) (hn : n ≠ 0) :
-    decayBound C 0 n = decayConstant * ↑C := by
+    decayBound (T := T) C 0 n = decayConstant * ↑C := by
   simp [decayBound, decayConstant]
 
 /-- The Lipschitz bound (α = 1) gives the fastest O(1/n) polynomial decay
     achievable from Hölder continuity. Higher regularity (C^k) gives O(1/n^k)
     but requires derivatives, not just Hölder continuity. -/
 theorem lipschitz_gives_linear_decay (C : ℝ≥0) (n : ℤ) (hn : n ≠ 0) :
-    decayBound C 1 n = decayConstant * ↑C * (T / (2 * |↑n|)) := by
+    decayBound (T := T) C 1 n = decayConstant * ↑C * (T / (2 * |↑n|)) := by
   simp [decayBound, decayConstant]
 
 end FourierSharpConstant

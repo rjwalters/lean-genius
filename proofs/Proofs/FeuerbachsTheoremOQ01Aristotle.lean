@@ -23,9 +23,9 @@ open Real FeuerbachsTheorem
 -- CIRCUMCENTER EQUIDISTANCE
 -- ============================================================
 
+set_option maxHeartbeats 6400000 in
 /-- The circumcenter is equidistant from all three vertices (B).
     dist2(O, B) = dist2(O, A) = R -/
-set_option maxHeartbeats 6400000 in
 theorem circumcenter_equidist_B (T : Triangle) :
     dist2 T.circumcenter T.B = dist2 T.circumcenter T.A := by
   simp only [dist2]
@@ -44,9 +44,9 @@ theorem circumcenter_equidist_B (T : Triangle) :
   nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.A.1 - T.circumcenter.1),
              sq_nonneg (T.B.2 - T.circumcenter.2), sq_nonneg (T.A.2 - T.circumcenter.2)]
 
+set_option maxHeartbeats 6400000 in
 /-- The circumcenter is equidistant from all three vertices (C).
     dist2(O, C) = dist2(O, A) = R -/
-set_option maxHeartbeats 6400000 in
 theorem circumcenter_equidist_C (T : Triangle) :
     dist2 T.circumcenter T.C = dist2 T.circumcenter T.A := by
   simp only [dist2]
@@ -139,10 +139,12 @@ theorem circumradius_pos (T : Triangle) : T.circumradius > 0 := by
   have hB := circumcenter_equidist_B T
   simp only [dist2] at hB
   have hBsq : (T.B.1 - T.circumcenter.1)^2 + (T.B.2 - T.circumcenter.2)^2 = 0 := by
-    have : Real.sqrt ((T.B.1 - T.circumcenter.1)^2 + (T.B.2 - T.circumcenter.2)^2) =
+    have hrhs : (T.A.1 - T.circumcenter.1)^2 + (T.A.2 - T.circumcenter.2)^2 = 0 := by
+      rw [hx, hy]; ring
+    have heq : Real.sqrt ((T.B.1 - T.circumcenter.1)^2 + (T.B.2 - T.circumcenter.2)^2) =
            Real.sqrt ((T.A.1 - T.circumcenter.1)^2 + (T.A.2 - T.circumcenter.2)^2) := hB
-    rw [hx, hy, sub_self, sq, mul_zero, zero_add, sq, mul_zero, Real.sqrt_zero] at this
-    exact (Real.sqrt_eq_zero (add_nonneg (sq_nonneg _) (sq_nonneg _))).mp this
+    rw [hrhs, Real.sqrt_zero] at heq
+    exact (Real.sqrt_eq_zero (add_nonneg (sq_nonneg _) (sq_nonneg _))).mp heq
   have hBx : T.B.1 = T.circumcenter.1 := by nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2)]
   have hBy : T.B.2 = T.circumcenter.2 := by nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2)]
   -- Now A = B = O, so the nondegeneracy condition fails

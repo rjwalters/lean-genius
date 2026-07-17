@@ -121,7 +121,7 @@ The main statement from Mathlib: if q is a positive integer and a : ZMod q is a 
 This is the form used in Mathlib's `Nat.infinite_setOf_prime_and_eq_mod`. -/
 theorem dirichlet_zmod {q : ℕ} [NeZero q] (a : ZMod q) (ha : IsUnit a) :
     Set.Infinite {p : ℕ | Nat.Prime p ∧ (p : ZMod q) = a} :=
-  Nat.infinite_setOf_prime_and_eq_mod a ha
+  Nat.infinite_setOf_prime_and_eq_mod ha
 
 /-- **DIRICHLET'S THEOREM (Natural number congruence formulation)**
 
@@ -136,16 +136,19 @@ theorem dirichlet_modEq {a q : ℕ} (hq : q ≠ 0) (ha : Nat.Coprime a q) :
 Given any natural number n, we can find a prime p > n in the arithmetic progression.
 This is the constructive version of the infinitude statement. -/
 theorem dirichlet_constructive {a q : ℕ} (hq : q ≠ 0) (ha : Nat.Coprime a q) (n : ℕ) :
-    ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≡ a [MOD q] :=
-  Nat.forall_exists_prime_gt_and_modEq hq ha n
+    ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≡ a [MOD q] := by
+  obtain ⟨p, hpn, hp, hcong⟩ := Nat.forall_exists_prime_gt_and_modEq n hq ha
+  exact ⟨p, hp, hpn, hcong⟩
 
 /-- **DIRICHLET'S THEOREM (Integer formulation)**
 
 For integers a and q with q ≠ 0 and gcd(a, q) = 1, there are infinitely many
 primes congruent to a modulo q. -/
 theorem dirichlet_int {a : ℤ} {q : ℕ} (hq : q ≠ 0) (ha : Int.gcd a q = 1) (n : ℕ) :
-    ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ (p : ℤ) ≡ a [ZMOD q] :=
-  Nat.forall_exists_prime_gt_and_zmodEq hq ha n
+    ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ (p : ℤ) ≡ a [ZMOD q] := by
+  obtain ⟨p, hpn, hp, hcong⟩ :=
+    Nat.forall_exists_prime_gt_and_zmodEq n hq (Int.isCoprime_iff_gcd_eq_one.mpr ha)
+  exact ⟨p, hp, hpn, hcong⟩
 
 /-- **DIRICHLET'S THEOREM (Filter formulation)**
 
@@ -168,7 +171,7 @@ PART III: DIRICHLET CHARACTERS AND L-FUNCTIONS
     Mathlib defines these in `Mathlib.NumberTheory.DirichletCharacter.Basic`. -/
 example (N : ℕ) [NeZero N] : Type := DirichletCharacter ℂ N
 
-/-- **Dirichlet L-function** associated to a character χ:
+/- **Dirichlet L-function** associated to a character χ:
 
     $$L(s, \chi) = \sum_{n=1}^{\infty} \frac{\chi(n)}{n^s}$$
 
@@ -178,7 +181,7 @@ example (N : ℕ) [NeZero N] : Type := DirichletCharacter ℂ N
     Mathlib provides this in `Mathlib.NumberTheory.LSeries.DirichletContinuation`. -/
 #check DirichletCharacter.LFunction
 
-/-- **Key theorem: L-function non-vanishing at s = 1**
+/- **Key theorem: L-function non-vanishing at s = 1**
 
     For a non-trivial Dirichlet character χ, L(1, χ) ≠ 0.
     This is the heart of Dirichlet's proof.
@@ -200,9 +203,6 @@ theorem infinitely_many_primes_1_mod_4 :
   convert this using 1
   ext p
   simp only [Set.mem_setOf_eq, Nat.ModEq]
-  constructor <;> intro ⟨hp, hmod⟩
-  · exact ⟨hp, hmod⟩
-  · exact ⟨hp, hmod⟩
 
 /-- **Special case: Primes ≡ 3 (mod 4)**
 
@@ -225,7 +225,6 @@ theorem infinitely_many_primes_1_mod_6 :
   convert this using 1
   ext p
   simp only [Set.mem_setOf_eq, Nat.ModEq]
-  constructor <;> intro ⟨hp, hmod⟩ <;> exact ⟨hp, hmod⟩
 
 /-- **Special case: Primes ≡ 5 (mod 6)**
 

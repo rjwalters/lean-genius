@@ -1,9 +1,4 @@
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.Order.SuccPred.Basic
-import Mathlib.Logic.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.ContinuumHypothesis
 
 /-
@@ -73,7 +68,7 @@ theorem aleph_one_le_continuum : Cardinal.aleph 1 ≤ (2 : Cardinal.{0}) ^ ℵ�
 /-- The aleph hierarchy is strictly increasing. -/
 theorem aleph_strictly_increasing (α β : Ordinal.{0}) (h : α < β) :
     Cardinal.aleph α < Cardinal.aleph β :=
-  Cardinal.aleph_lt.mpr h
+  Cardinal.aleph_lt_aleph.mpr h
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -85,26 +80,27 @@ PART II: UNDER CH — NO INTERMEDIATE CARDINAL
     If CH holds (2^ℵ₀ = ℵ₁), then the only cardinals ≤ ℵ₀ are finite cardinals
     and ℵ₀ itself, and the next cardinal is already ℵ₁ = 2^ℵ₀. -/
 theorem ch_no_intermediate (h : CH) :
-    ¬∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum := by
+    ¬∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum := by
   intro ⟨κ, hκ₀, hκc⟩
   exact ch_implies_no_intermediate h κ hκ₀ hκc
 
-/-- Under CH, the continuum is the smallest uncountable cardinal. -/
+/-- Under CH, the ContinuumHypothesis.continuum is the smallest uncountable cardinal. -/
 theorem ch_continuum_is_successor (h : CH) :
-    continuum = Order.succ (ℵ₀ : Cardinal.{0}) := by
+    ContinuumHypothesis.continuum = Order.succ (ℵ₀ : Cardinal.{0}) := by
   unfold CH at h
-  unfold continuum aleph_one at h
+  unfold ContinuumHypothesis.continuum aleph_one at h
+  unfold ContinuumHypothesis.continuum
   rw [h]
   rw [show (1 : Ordinal) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
       Cardinal.aleph_succ, Cardinal.aleph_zero]
 
-/-- Under CH, every uncountable set of reals has the cardinality of the continuum.
+/-- Under CH, every uncountable set of reals has the cardinality of the ContinuumHypothesis.continuum.
     (Since ℵ₁ = 2^ℵ₀, any set of cardinality > ℵ₀ has cardinality ≥ ℵ₁ = 2^ℵ₀.) -/
 theorem ch_uncountable_sets (h : CH) (κ : Cardinal.{0})
-    (hκ : ℵ₀ < κ) (hle : κ ≤ continuum) :
-    κ = continuum := by
+    (hκ : ℵ₀ < κ) (hle : κ ≤ ContinuumHypothesis.continuum) :
+    κ = ContinuumHypothesis.continuum := by
   by_contra hne
-  have hlt : κ < continuum := lt_of_le_of_ne hle hne
+  have hlt : κ < ContinuumHypothesis.continuum := lt_of_le_of_ne hle hne
   exact ch_implies_no_intermediate h κ hκ hlt
 
 /-
@@ -117,25 +113,25 @@ PART III: UNDER ¬CH — EXPLICIT INTERMEDIATE CARDINALS
     If ¬CH, then 2^ℵ₀ ≠ ℵ₁, hence 2^ℵ₀ > ℵ₁ (since ℵ₁ ≤ 2^ℵ₀ always).
     Therefore ℵ₀ < ℵ₁ < 2^ℵ₀, giving an explicit intermediate cardinal. -/
 theorem not_ch_has_intermediate (h : ¬CH) :
-    ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum := by
+    ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum := by
   use Cardinal.aleph 1
   constructor
   · exact aleph_one_gt_aleph_zero
-  · -- ¬CH means continuum ≠ aleph_one
-    unfold CH continuum aleph_one at h
+  · -- ¬CH means ContinuumHypothesis.continuum ≠ aleph_one
+    unfold CH ContinuumHypothesis.continuum aleph_one at h
     have hle : Cardinal.aleph 1 ≤ (2 : Cardinal) ^ ℵ₀ := aleph_one_le_continuum
     exact lt_of_le_of_ne hle (Ne.symm h)
 
 /-- Under ¬CH, if 2^ℵ₀ > ℵ₂, then both ℵ₁ and ℵ₂ are intermediate cardinals.
-    (If 2^ℵ₀ = ℵ₂, then ℵ₂ = continuum so it is not strictly intermediate.) -/
+    (If 2^ℵ₀ = ℵ₂, then ℵ₂ = ContinuumHypothesis.continuum so it is not strictly intermediate.) -/
 theorem not_ch_multiple_intermediates (h : ¬CH)
     (h2 : Cardinal.aleph 2 < (2 : Cardinal.{0}) ^ ℵ₀) :
     ∃ κ₁ κ₂ : Cardinal.{0},
-      ℵ₀ < κ₁ ∧ κ₁ < κ₂ ∧ κ₂ < continuum := by
+      ℵ₀ < κ₁ ∧ κ₁ < κ₂ ∧ κ₂ < ContinuumHypothesis.continuum := by
   use Cardinal.aleph 1, Cardinal.aleph 2
   refine ⟨aleph_one_gt_aleph_zero, ?_, ?_⟩
   · exact aleph_strictly_increasing 1 2 (by norm_num)
-  · unfold continuum; exact h2
+  · unfold ContinuumHypothesis.continuum; exact h2
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -151,14 +147,14 @@ PART IV: THE INDEPENDENCE RESULT
     This is the definitive answer to the open question. -/
 theorem intermediate_cardinal_independent :
     -- If CH, then no intermediate
-    (CH → ¬∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum) ∧
+    (CH → ¬∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum) ∧
     -- If ¬CH, then ℵ₁ is intermediate
-    (¬CH → ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum) := by
+    (¬CH → ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum) := by
   exact ⟨ch_no_intermediate, not_ch_has_intermediate⟩
 
 /-- The question "is there κ between ℵ₀ and 2^ℵ₀?" is equivalent to ¬CH. -/
 theorem intermediate_iff_not_ch :
-    (∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum) ↔ ¬CH := by
+    (∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum) ↔ ¬CH := by
   constructor
   · intro ⟨κ, hκ₀, hκc⟩ hch
     exact ch_implies_no_intermediate hch κ hκ₀ hκc
@@ -173,10 +169,10 @@ PART V: KÖNIG'S CONSTRAINT — WHAT VALUES CAN 2^ℵ₀ TAKE?
     In other words, 2^ℵ₀ ≠ ℵ_ω (and more generally, 2^ℵ₀ ≠ any cardinal
     of countable cofinality).
 
-    This is the strongest ZFC-provable constraint on the value of the continuum.
+    This is the strongest ZFC-provable constraint on the value of the ContinuumHypothesis.continuum.
 
     Stated as: if 2^ℵ₀ = ℵ_α, then cf(ℵ_α) > ℵ₀.
-    Equivalently: the continuum is not the supremum of countably many smaller cardinals. -/
+    Equivalently: the ContinuumHypothesis.continuum is not the supremum of countably many smaller cardinals. -/
 def KonigConstraint : Prop :=
   ∀ α : Ordinal.{0}, (2 : Cardinal.{0}) ^ ℵ₀ = Cardinal.aleph α →
     (Cardinal.aleph α).ord.cof > ℵ₀
@@ -245,17 +241,19 @@ PART VII: CHARACTERIZATION THEOREMS
     This is the definitive answer to the research question. -/
 theorem complete_answer :
     -- (1) Equivalent to ¬CH
-    ((∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum) ↔ ¬CH) ∧
+    ((∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum) ↔ ¬CH) ∧
     -- (2) Both CH and ¬CH are consistent with ZFC
     (RelativelyConsistent CH ∧ RelativelyConsistent (¬CH)) ∧
     -- (3) Under ¬CH, ℵ₁ is an explicit intermediate
-    (¬CH → Cardinal.aleph 1 < continuum ∧ (ℵ₀ : Cardinal.{0}) < Cardinal.aleph 1) := by
+    (¬CH → Cardinal.aleph 1 < ContinuumHypothesis.continuum ∧ (ℵ₀ : Cardinal.{0}) < Cardinal.aleph 1) := by
   refine ⟨intermediate_iff_not_ch, ⟨ch_consistent_with_zfc, not_ch_consistent_with_zfc⟩, ?_⟩
   intro h
   constructor
-  · have ⟨κ, hκ₀, hκc⟩ := not_ch_has_intermediate h
-    -- κ = ℵ₁ in the proof of not_ch_has_intermediate
-    exact (not_ch_has_intermediate h).choose_spec.2
+  · -- Same argument as in `not_ch_has_intermediate`, inlined to avoid relying on
+    -- `Exists.choose` being defeq to the witness `Cardinal.aleph 1`.
+    have hle : Cardinal.aleph 1 ≤ (2 : Cardinal) ^ ℵ₀ := aleph_one_le_continuum
+    unfold CH ContinuumHypothesis.continuum aleph_one at h
+    exact lt_of_le_of_ne hle (Ne.symm h)
   · exact aleph_one_gt_aleph_zero
 
 /-
@@ -280,7 +278,7 @@ theorem gch_no_intermediates_anywhere (h : GCH) (α : Ordinal.{0}) :
 /-- Under ¬GCH, some intermediate cardinals must exist.
     Since GCH → CH, ¬CH → ¬GCH. And ¬CH gives intermediate cardinals. -/
 theorem not_gch_from_intermediate
-    (h : ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < continuum) : ¬GCH := by
+    (h : ∃ κ : Cardinal.{0}, ℵ₀ < κ ∧ κ < ContinuumHypothesis.continuum) : ¬GCH := by
   intro hgch
   have hch := gch_implies_ch hgch
   exact (intermediate_iff_not_ch.mp h) hch

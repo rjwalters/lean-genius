@@ -1,7 +1,4 @@
-import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # A CF-independent reduction for the upper bound `μ(e) ≤ 2`
@@ -73,7 +70,7 @@ theorem not_liouvilleWith_of_diophantine_bound (x : ℝ) (p : ℝ) (hp : 2 < p)
   -- `c * n^d → ∞`, hence eventually `C ≤ c * n^d`, and we may also assume `1 ≤ n`.
   have htend : Tendsto (fun n : ℕ => c * (n : ℝ) ^ d) atTop atTop := by
     refine Tendsto.const_mul_atTop hc ?_
-    exact (Real.tendsto_rpow_atTop hd_pos).comp tendsto_natCast_atTop_atTop
+    exact (tendsto_rpow_atTop hd_pos).comp tendsto_natCast_atTop_atTop
   have hev : ∀ᶠ n : ℕ in atTop, 1 ≤ n ∧ C ≤ c * (n : ℝ) ^ d := by
     filter_upwards [eventually_ge_atTop 1, htend.eventually_ge_atTop C] with n hn hCle
     exact ⟨hn, hCle⟩

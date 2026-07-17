@@ -1,8 +1,8 @@
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Interval
-import Mathlib.Data.Nat.Parity
 import Mathlib.Tactic
 
 -- Test: even number cannot divide odd number

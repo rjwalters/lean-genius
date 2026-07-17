@@ -107,7 +107,7 @@ theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 /-- Trivial bound: every graph has a C₄-free subgraph with Ω(√m) edges -/
 axiom c4free_subgraph_sqrt (G : SimpleGraph V) [DecidableRel G.Adj] :
-  ∃ (H : SimpleGraph V) [DecidableRel H.Adj],
+  ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj),
     IsSubgraphOf H G ∧ isC4Free H ∧
     edgeCount H ≥ Nat.sqrt (edgeCount G)
 
@@ -122,7 +122,7 @@ theorem complete_bipartite_edges (n : ℕ) : n * n^2 = n^3 := by ring
 
 /-- Folkman's counterexample: K_{n,n²} has no large C₄-free subgraph -/
 axiom folkman_counterexample (n : ℕ) (hn : n ≥ 2) :
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     edgeCount G = n^3 ∧
     (∀ (H : SimpleGraph V) [DecidableRel H.Adj],
       IsSubgraphOf H G → isC4Free H → edgeCount H ≤ n^2 + n * (n-1) / 2)
@@ -136,16 +136,16 @@ The optimal exponent is 2/3.
 /-- Conlon-Fox-Sudakov theorem (Erdős #1008):
     Every graph with m edges has a C₄-free subgraph with Ω(m^{2/3}) edges -/
 axiom erdos_1008_c4free_subgraph (G : SimpleGraph V) [DecidableRel G.Adj] :
-  ∃ (H : SimpleGraph V) [DecidableRel H.Adj],
+  ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj),
     IsSubgraphOf H G ∧ isC4Free H ∧
-    edgeCount H ≥ (edgeCount G)^(2/3 : ℝ).toNNReal.toNat
+    (edgeCount H : ℝ) ≥ (edgeCount G : ℝ)^(2/3 : ℝ)
 
 /-- The exponent 2/3 is optimal (follows from Folkman) -/
 axiom exponent_two_thirds_optimal :
-  ∀ ε > 0, ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∀ ε > 0, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
       IsSubgraphOf H G → isC4Free H →
-      edgeCount H < (edgeCount G)^((2/3 : ℝ) + ε)
+      (edgeCount H : ℝ) < (edgeCount G : ℝ)^((2/3 : ℝ) + ε)
 
 /-
 ## Generalization to K_{s,t}-free Subgraphs

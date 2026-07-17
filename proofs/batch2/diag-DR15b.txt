@@ -1,0 +1,34 @@
+===== AlgebraicPointsNull
+error: Proofs/AlgebraicPointsNull.lean:229:47: Expected type must not contain free variables
+  ⟨0, h0⟩ ≠ ⟨1, h1⟩
+error: Proofs/AlgebraicPointsNull.lean:260:47: Expected type must not contain free variables
+  ⟨0, h0⟩ ≠ ⟨1, h1⟩
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean:258:2: Type mismatch: After simplification, term
+  h
+ has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:305:67: unsolved goals
+m n : ℕ
+T : Perm (Fin (m * n)) := gridTranspose m n
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:309:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∏ i ∈ ?s, ?a ^ ?f i
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:379:41: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @HPow.hPow ?m.63 ℕ ?m.63 instHPow ?a (?m + ?n)
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:520:4: Type mismatch: After simplification, term
+  hcast
+ has type

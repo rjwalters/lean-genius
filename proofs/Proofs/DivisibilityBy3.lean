@@ -1,5 +1,4 @@
-import Mathlib.Data.Nat.Digits.Defs
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Divisibility by 3 Rule (Wiedijk #85)

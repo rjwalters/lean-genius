@@ -1,0 +1,584 @@
+===== Erdos309Problem
+error: Proofs/Erdos309Problem.lean:60:70: unsolved goals
+n : ℕ
+hn : n ≥ 1
+error: Proofs/Erdos309Problem.lean:108:6: Function expected at
+  card_sdiff
+but this term has type
+error: Proofs/Erdos309Problem.lean:106:37: unsolved goals
+N : ℕ
+hN : N ≥ 1
+error: Proofs/Erdos309Problem.lean:138:2: unsolved goals
+case h.left
+N : ℕ
+
+===== Erdos310Problem
+error: Proofs/Erdos310Problem.lean:264:8: 'calc' expression has type
+  ↑(#A) > 1 / 2 * ↑N
+but is expected to have type
+error: Proofs/Erdos310Problem.lean:265:30: linarith failed to find a contradiction
+α : ℚ
+hα : α > 0
+error: Proofs/Erdos310Problem.lean:301:6: unsolved goals
+case neg
+α : ℚ
+
+===== Erdos314Problem
+error: Proofs/Erdos314Problem.lean:52:70: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos314Problem.lean:53:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos314Problem.lean:119:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+case inl
+n : ℕ
+
+===== Erdos315Problem
+error: Proofs/Erdos315Problem.lean:82:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos315Problem.lean:83:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos315Problem.lean:90:42: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos315Problem.lean:91:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== Erdos319Problem
+error: Proofs/Erdos319Problem.lean:126:23: No goals to be solved
+error: Proofs/Erdos319Problem.lean:123:21: unsolved goals
+case inr.inl
+error: Proofs/Erdos319Problem.lean:123:21: unsolved goals
+case inr.inl
+A' : Finset ℕ
+error: Proofs/Erdos319Problem.lean:139:23: No goals to be solved
+error: Proofs/Erdos319Problem.lean:136:21: unsolved goals
+case inr.inl
+error: Proofs/Erdos319Problem.lean:136:21: unsolved goals
+case inr.inl
+A' : Finset ℕ
+
+===== Erdos320Problem
+error: Proofs/Erdos320Problem.lean:92:19: Unknown identifier `erdos_320_open_bounds`
+error: Proofs/Erdos320Problem.lean:92:7: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos320Problem.lean:93:2: No goals to be solved
+error: Proofs/Erdos320Problem.lean:92:7: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos320Problem.lean:93:2: No goals to be solved
+error: Proofs/Erdos320Problem.lean:121:45: linarith failed to find a contradiction
+error: Proofs/Erdos320Problem.lean:93:2: No goals to be solved
+error: Proofs/Erdos320Problem.lean:121:45: linarith failed to find a contradiction
+N k : ℕ
+error: Proofs/Erdos320Problem.lean:121:45: linarith failed to find a contradiction
+N k : ℕ
+hk : k ≥ 4
+
+===== Erdos323Problem
+error: Proofs/Erdos323Problem.lean:35:4: failed to synthesize instance of type class
+  DecidablePred fun n => IsSumOfPowers n k m
+error: Proofs/Erdos323Problem.lean:47:8: failed to synthesize instance of type class
+  DecidablePred fun n => IsSumOfPowers n 1 m
+error: Proofs/Erdos323Problem.lean:46:40: unsolved goals
+m x : ℕ
+hm : 1 ≤ m
+error: Proofs/Erdos323Problem.lean:81:2: Unknown constant `IsSumOfPowers_one_iff.mpr`
+error: Proofs/Erdos323Problem.lean:94:6: failed to synthesize instance of type class
+  DecidablePred fun m => IsSumOfPowers m k 1
+
+===== Erdos327OQ01
+error: Proofs/Erdos327OQ01.lean:55:10: Unknown constant `Nat.eq_of_mul_eq_left`
+error: Proofs/Erdos327OQ01.lean:88:2: interval_cases failed: could not find upper bound on a
+warning: Proofs/Erdos327OQ01.lean:108:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos327OQ01.lean:88:2: interval_cases failed: could not find upper bound on a
+warning: Proofs/Erdos327OQ01.lean:108:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+
+===== Erdos334Problem
+error: Proofs/Erdos334Problem.lean:57:11: Unknown constant `Nat.Prime.dvd_prime_pow`
+error: Proofs/Erdos334Problem.lean:55:76: unsolved goals
+p k : ℕ
+error: Proofs/Erdos334Problem.lean:55:76: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos334Problem.lean:124:58: Application type mismatch: The argument
+  rexp
+has type
+error: Proofs/Erdos334Problem.lean:178:13: Unknown constant `Nat.Prime.eq_one_or_self_of_prime_of_dvd`
+error: Proofs/Erdos334Problem.lean:185:13: Unknown constant `Nat.Prime.dvd_prime_pow`
+error: Proofs/Erdos334Problem.lean:203:13: Unknown constant `Nat.Prime.dvd_prime_pow`
+
+===== Erdos336Problem
+error: Proofs/Erdos336Problem.lean:94:39: unsolved goals
+⊢ 4 / 2 ^ 2 = 1
+error: Lean exited with code 1
+
+===== Erdos338Problem
+error: Proofs/Erdos338Problem.lean:291:44: unsolved goals
+A : Set ℕ
+t N : ℕ
+error: Proofs/Erdos338Problem.lean:294:2: unsolved goals
+case h.right.right
+A : Set ℕ
+
+===== Erdos340GreedyCountUpper
+error: Proofs/Erdos340GreedyCountUpper.lean:56:42: unsolved goals
+N : ℕ
+F : Finset ℕ := {k ∈ range (N + 1) | greedySidonSeq k ≤ N}
+
+===== Erdos342Problem
+error: Proofs/Erdos342Problem.lean:137:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+
+===== Erdos347Problem
+error: Proofs/Erdos347Problem.lean:98:3: unsolved goals
+A : Set ℕ
+S : Finset ℕ
+error: Proofs/Erdos347Problem.lean:137:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+  Finset.filter ?p ?s ⊆ Finset.filter ?p ?t
+with the goal
+error: Proofs/Erdos347Problem.lean:144:8: Unknown constant `Finset.card_Icc`
+error: Proofs/Erdos347Problem.lean:160:4: Unknown identifier `div_le_one_of_le`
+error: Proofs/Erdos347Problem.lean:162:4: Unknown identifier `div_le_one_of_le`
+error: Proofs/Erdos347Problem.lean:160:4: Unknown identifier `div_le_one_of_le`
+error: Proofs/Erdos347Problem.lean:162:4: Unknown identifier `div_le_one_of_le`
+error: Lean exited with code 1
+
+===== Erdos348Problem
+error: Proofs/Erdos348Problem.lean:111:59: Type mismatch
+  n + 1
+has type
+error: Proofs/Erdos348Problem.lean:163:40: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 ^ i
+in the target expression
+error: Proofs/Erdos348Problem.lean:166:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * N + 1
+in the target expression
+error: Proofs/Erdos348Problem.lean:177:55: Application type mismatch: The argument
+  hmn
+has type
+
+===== Erdos350Problem
+error: Proofs/Erdos350Problem.lean:66:2: Application type mismatch: The argument
+  X.erase 1 = ∅ ∨ X.erase 1 = {2}
+has type
+error: Proofs/Erdos350Problem.lean:66:19: Application type mismatch: The argument
+  Y.erase 1 = ∅ ∨ Y.erase 1 = {2}
+has type
+error: Proofs/Erdos350Problem.lean:60:59: unsolved goals
+X Y : Finset ℕ
+hne : ¬X = Y
+error: Proofs/Erdos350Problem.lean:143:9: unsolved goals
+case zero
+⊢ 1 = 2 - 1
+
+===== Erdos353Problem
+error: Proofs/Erdos353Problem.lean:292:25: expected token
+error: Proofs/Erdos353Problem.lean:292:22: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos353Problem.lean:292:22: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos353Problem.lean:292:24: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos353Problem.lean:316:2: `simp` made no progress
+error: Proofs/Erdos353Problem.lean:352:24: Unknown identifier `smul_left_cancel₀`
+error: Proofs/Erdos353Problem.lean:353:24: Unknown identifier `smul_left_cancel₀`
+
+===== Erdos355Problem
+error: Proofs/Erdos355Problem.lean:154:70: unsolved goals
+n : ℕ
+⊢ 2⁻¹ ^ n * (1 / 2) = (1 / 2) ^ n * (1 / 2)
+error: Proofs/Erdos355Problem.lean:156:59: failed to prove positivity/nonnegativity/nonzeroness
+error: Proofs/Erdos355Problem.lean:156:72: unsolved goals
+h1 : ∀ (n : ℕ), 1 / 2 ^ (n + 1) = 1 / 2 * (1 / 2) ^ n
+error: Proofs/Erdos355Problem.lean:156:72: unsolved goals
+h1 : ∀ (n : ℕ), 1 / 2 ^ (n + 1) = 1 / 2 * (1 / 2) ^ n
+⊢ ?m.110 < 1
+error: Proofs/Erdos355Problem.lean:156:30: `simp` made no progress
+info: Proofs/Erdos355Problem.lean:174:103: Try this:
+  [apply] ring_nf
+
+===== Erdos356Problem
+error: Proofs/Erdos356Problem.lean:47:26: Invalid field `bind`: The environment does not contain `List.bind`, so it is not possible to project the field `bind` from an expression
+  List.range seq.length
+of type `List ℕ`
+error: Proofs/Erdos356Problem.lean:135:17: Unknown constant `Finset.range'`
+error: Lean exited with code 1
+✖ [8582/8606] Building Proofs.Erdos35Problem (4.6s)
+
+===== Erdos358Problem
+error: Proofs/Erdos358Problem.lean:65:4: No goals to be solved
+error: Proofs/Erdos358Problem.lean:69:70: No goals to be solved
+error: Proofs/Erdos358Problem.lean:97:16: Application type mismatch: The argument
+error: Proofs/Erdos358Problem.lean:69:70: No goals to be solved
+error: Proofs/Erdos358Problem.lean:97:16: Application type mismatch: The argument
+  dvd_mul_of_dvd_right hd 2
+error: Proofs/Erdos358Problem.lean:97:16: Application type mismatch: The argument
+  dvd_mul_of_dvd_right hd 2
+has type
+error: Proofs/Erdos358Problem.lean:127:30: Type mismatch
+  Nat.div_mul_cancel hd_dvd
+has type
+
+===== Erdos35Problem
+error: Proofs/Erdos35Problem.lean:98:23: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+error: Proofs/Erdos35Problem.lean:98:24: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+error: Proofs/Erdos35Problem.lean:98:24: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/Erdos35Problem.lean:102:43: mod_cast has type
+  countingFunction A 1 ≤ 1
+but is expected to have type
+error: Proofs/Erdos35Problem.lean:96:62: unsolved goals
+case c
+A : Set ℕ
+
+===== Erdos360Aristotle
+error: Proofs/Erdos360Aristotle.lean:44:12: Unknown identifier `h`
+error: Proofs/Erdos360Aristotle.lean:44:14: unexpected token ':'; expected command
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+error: Proofs/Erdos360Aristotle.lean:44:14: unexpected token ':'; expected command
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+  hval.right.right
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+  hval.right.right
+has function type `∀ P ∈ w✝, IsNSumFree 2 P`
+error: Proofs/Erdos360Aristotle.lean:77:2: unsolved goals
+case inr
+h✝ : f 2 = 0
+
+===== Erdos362Problem
+error: Proofs/Erdos362Problem.lean:76:34: unexpected identifier; expected ']'
+error: Proofs/Erdos362Problem.lean:76:32: unsolved goals
+n : ℕ
+error: Proofs/Erdos362Problem.lean:76:32: unsolved goals
+n : ℕ
+hn : n ≥ 3
+error: Proofs/Erdos362Problem.lean:251:11: unsolved goals
+⊢ (algebraMap ℝ ℂ) (2 * π) = ↑(2 * π)
+error: Proofs/Erdos362Problem.lean:259:15: Type mismatch
+error: Proofs/Erdos362Problem.lean:259:15: Type mismatch
+  mul_assoc ?m.147 ?m.148 ?m.149
+has type
+
+===== Erdos367Problem
+error: Proofs/Erdos367Problem.lean:140:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:154:71: No goals to be solved
+error: Proofs/Erdos367Problem.lean:157:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:154:71: No goals to be solved
+error: Proofs/Erdos367Problem.lean:157:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:158:73: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:157:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:158:73: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:179:71: Application type mismatch: The argument
+error: Proofs/Erdos367Problem.lean:158:73: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:179:71: Application type mismatch: The argument
+  LT.lt.le hε
+
+===== Erdos369Problem
+error: Proofs/Erdos369Problem.lean:59:39: Unknown constant `Nat.dvd_of_dvd_of_dvd`
+error: Proofs/Erdos369Problem.lean:60:21: Application type mismatch: The argument
+  Nat.Prime.ne_one hq
+error: Proofs/Erdos369Problem.lean:60:21: Application type mismatch: The argument
+  Nat.Prime.ne_one hq
+has type
+
+===== Erdos36Problem
+error: Proofs/Erdos36Problem.lean:94:43: Unknown identifier `white_lower`
+error: Proofs/Erdos36Problem.lean:104:13: Unknown identifier `white_lower`
+error: Proofs/Erdos36Problem.lean:102:45: unsolved goals
+error: Proofs/Erdos36Problem.lean:104:13: Unknown identifier `white_lower`
+error: Proofs/Erdos36Problem.lean:102:45: unsolved goals
+N : ℕ
+error: Proofs/Erdos36Problem.lean:102:45: unsolved goals
+N : ℕ
+hN : N ≥ 1
+error: Proofs/Erdos36Problem.lean:158:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'MC', which is 'noncomputable'
+warning: Proofs/Erdos36Problem.lean:173:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+
+===== Erdos372Problem
+error: Proofs/Erdos372Problem.lean:43:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 1
+error: Proofs/Erdos372Problem.lean:81:24: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:87:25: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:87:25: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:165:18: Application type mismatch: The argument
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:165:18: Application type mismatch: The argument
+  density
+
+===== Erdos374Problem
+error: Proofs/Erdos374Problem.lean:155:60: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 1
+error: Proofs/Erdos374Problem.lean:162:9: Unknown identifier `not_le_of_lt`
+warning: Proofs/Erdos374Problem.lean:178:9: `List.getLast?_eq_getLast` has been deprecated: Use `List.getLast?_eq_some_getLast` instead
+error: Proofs/Erdos374Problem.lean:189:77: unsolved goals
+error: Proofs/Erdos374Problem.lean:189:77: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos374Problem.lean:194:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.succ ?n
+in the target expression
+
+===== Erdos375Aristotle
+error: Proofs/Erdos375Aristotle.lean:110:20: Unknown constant `Nat.coprime_succ_self`
+error: Proofs/Erdos375Aristotle.lean:117:31: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  Prime.one_lt hp
+error: Proofs/Erdos375Aristotle.lean:117:31: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  Prime.one_lt hp
+of type `(succ 1).le p`
+
+===== Erdos382Problem
+error: Proofs/Erdos382Problem.lean:112:55: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos382Problem.lean:132:30: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos382Problem.lean:179:4: too many variable names provided
+error: Proofs/Erdos382Problem.lean:180:27: Application type mismatch: The argument
+  ha
+error: Proofs/Erdos382Problem.lean:180:27: Application type mismatch: The argument
+  ha
+has type
+
+===== Erdos383Problem
+error: Proofs/Erdos383Problem.lean:119:58: unsolved goals
+p : ℕ
+⊢ ∏ x ∈ Icc 0 1, (p ^ 2 + x) = p ^ 2 + p ^ 4
+error: Proofs/Erdos383Problem.lean:143:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos383Problem.lean:154:55: numerals are data in Lean, but the expected type is a proposition
+  2 ≠ 0 : Prop
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos383Problem.lean:174:2: This extensionality tactic only applies to equalities, not
+  {p | isKGood p k}.Infinite ↔ {p | Nat.Prime p ∧ maxPrimeFac (consecutiveSquareProduct p k) = p}.Infinite
+
+===== Erdos384Problem
+error: Proofs/Erdos384Problem.lean:43:22: Unknown constant `Nat.one_lt_iff_ne_one.mp`
+warning: Proofs/Erdos384Problem.lean:138:28: Variable name `hn` is not explicitly referenced.
+error: Proofs/Erdos384Problem.lean:146:24: Unknown constant `Nat.one_lt_iff_ne_one.mp`
+error: Proofs/Erdos384Problem.lean:152:6: Unknown constant `Nat.choose_symm_diff`
+error: Proofs/Erdos384Problem.lean:151:74: unsolved goals
+error: Proofs/Erdos384Problem.lean:152:6: Unknown constant `Nat.choose_symm_diff`
+error: Proofs/Erdos384Problem.lean:151:74: unsolved goals
+n : ℕ
+error: Proofs/Erdos384Problem.lean:151:74: unsolved goals
+n : ℕ
+hn : n > 0
+
+===== Erdos386Problem
+error: Proofs/Erdos386Problem.lean:37:3: Unknown constant `Nat.Primes.instCountable.toEncodable.decode`
+warning: Proofs/Erdos386Problem.lean:123:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos386Problem.lean:130:6: Application type mismatch: The argument
+  Eq.symm (choose_mul_factorial_mul_factorial ?m.54)
+has type
+
+===== Erdos390Problem
+error: Proofs/Erdos390Problem.lean:24:19: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  factors
+of type `List ℕ`
+error: Proofs/Erdos390Problem.lean:36:2: failed to synthesize instance of type class
+  Decidable (∃ vf, True)
+error: Proofs/Erdos390Problem.lean:48:21: Unknown constant `List.Sorted`
+error: Proofs/Erdos390Problem.lean:48:12: unsolved goals
+⊢ sorry ()
+error: Proofs/Erdos390Problem.lean:48:12: unsolved goals
+⊢ sorry ()
+error: Proofs/Erdos390Problem.lean:55:11: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'vf3' uses 'sorry' and/or contains errors
+
+===== Erdos391Problem
+error: Proofs/Erdos391Problem.lean:59:19: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+has type
+
+===== Erdos393Problem
+error: Proofs/Erdos393Problem.lean:54:35: unsolved goals
+factors : List ℕ
+a : ℕ
+error: Proofs/Erdos393Problem.lean:74:2: failed to synthesize instance of type class
+  DecidablePred fun n_1 => ∃ factors, IsValidFactorization n n_1 factors
+error: Proofs/Erdos393Problem.lean:86:30: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/Erdos393Problem.lean:120:21: Unknown constant `Nat.radical`
+error: Lean exited with code 1
+error: Proofs/Erdos393Problem.lean:120:21: Unknown constant `Nat.radical`
+error: Lean exited with code 1
+✖ [8590/8600] Building Proofs.Erdos403Problem (15s)
+
+===== Erdos397Problem
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: 'x' occurs at
+  x + 1
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  2 * a + 2 = a + 1
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  somaniC a = a + 1
+error: Proofs/Erdos397Problem.lean:82:66: unsolved goals
+a : ℕ
+ha : a ≥ 2
+
+===== Erdos39Problem
+error: Proofs/Erdos39Problem.lean:81:50: Application type mismatch: The argument
+  hlt
+has type
+
+===== Erdos403Problem
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+⊢ False
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+⊢ False
+error: Lean exited with code 1
+
+===== Erdos405Problem
+error: Proofs/Erdos405Problem.lean:120:24: Unknown constant `ZMod.val_neg_one'`
+error: Proofs/Erdos405Problem.lean:115:37: unsolved goals
+p : ℕ
+error: Proofs/Erdos405Problem.lean:115:37: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos405Problem.lean:134:16: Type mismatch
+  ZMod.pow_card_sub_one_eq_one ha_zmod
+has type
+error: Proofs/Erdos405Problem.lean:147:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 1
+
+===== Erdos407Problem
+error: Proofs/Erdos407Problem.lean:87:14: failed to synthesize instance of type class
+  Fintype ↑{x | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧ IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}
+error: Proofs/Erdos407Problem.lean:117:10: Unknown constant `Nat.one_le_mul`
+warning: Proofs/Erdos407Problem.lean:178:29: Variable name `ha` is not explicitly referenced.
+
+===== Erdos411Problem
+error: Proofs/Erdos411Problem.lean:84:12: Unknown identifier `totientStep_ge`
+error: Proofs/Erdos411Problem.lean:96:10: Unknown identifier `totientStep_even_of_even`
+error: Proofs/Erdos411Problem.lean:166:61: unsolved goals
+error: Proofs/Erdos411Problem.lean:96:10: Unknown identifier `totientStep_even_of_even`
+error: Proofs/Erdos411Problem.lean:166:61: unsolved goals
+k : ℕ
+error: Proofs/Erdos411Problem.lean:166:61: unsolved goals
+k : ℕ
+ih : ∀ m < k, 3 ∣ iteratedTotientStep m 738 ∧ iteratedTotientStep (m + 4) 738 = 3 * iteratedTotientStep m 738
+error: Proofs/Erdos411Problem.lean:218:64: unsolved goals
+k : ℕ
+ih :
+
+===== Erdos424Problem
+error: Proofs/Erdos424Problem.lean:38:2: failed to synthesize instance of type class
+  DecidablePred fun n => n ∈ generatedSet
+error: Proofs/Erdos424Problem.lean:105:40: Unknown identifier `sequence_monotone`
+error: Proofs/Erdos424Problem.lean:106:40: Unknown identifier `sequence_monotone`
+error: Proofs/Erdos424Problem.lean:112:40: Unknown identifier `sequenceSet_mono`
+error: Proofs/Erdos424Problem.lean:106:40: Unknown identifier `sequence_monotone`
+error: Proofs/Erdos424Problem.lean:112:40: Unknown identifier `sequenceSet_mono`
+error: Proofs/Erdos424Problem.lean:129:18: Unknown constant `HasSubset.Subset.rfl`
+error: Proofs/Erdos424Problem.lean:112:40: Unknown identifier `sequenceSet_mono`
+error: Proofs/Erdos424Problem.lean:129:18: Unknown constant `HasSubset.Subset.rfl`
+error: Lean exited with code 1
+
+===== Erdos428Problem
+error: Proofs/Erdos428Problem.lean:67:48: Unknown identifier `primeDensityRatio_nonneg`
+error: Proofs/Erdos428Problem.lean:74:16: Unknown identifier `primeDensityRatio_nonneg`
+error: Proofs/Erdos428Problem.lean:75:4: linarith failed to find a contradiction
+error: Proofs/Erdos428Problem.lean:74:16: Unknown identifier `primeDensityRatio_nonneg`
+error: Proofs/Erdos428Problem.lean:75:4: linarith failed to find a contradiction
+case h
+error: Proofs/Erdos428Problem.lean:75:4: linarith failed to find a contradiction
+case h
+A : Set ℕ
+error: Proofs/Erdos428Problem.lean:80:81: linarith failed to find a contradiction
+A : Set ℕ
+hfreq : ∃ᶠ (n : ℕ) in Filter.atTop, AllOffsetsPrime A n
+
+===== Erdos429Problem
+error: Proofs/Erdos429Problem.lean:73:36: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/Erdos429Problem.lean:100:36: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  A
+of type `List ℕ`
+error: Proofs/Erdos429Problem.lean:102:21: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos429Problem.lean:102:47: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+
+===== Erdos432Problem
+error: Proofs/Erdos432Problem.lean:64:3: failed to synthesize instance of type class
+  DecidablePred fun m => m ∈ S ∧ m ≥ 1
+error: Proofs/Erdos432Problem.lean:117:49: unexpected token '∘'; expected ')', ',' or ':'
+error: Proofs/Erdos432Problem.lean:117:43: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  Nat.Prime.one_lt hp
+error: Proofs/Erdos432Problem.lean:117:43: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  Nat.Prime.one_lt hp
+of type `(Nat.succ 1).le p`
+error: Proofs/Erdos432Problem.lean:133:8: Unknown constant `Finset.card_filter_le_card_filter`
+error: Proofs/Erdos432Problem.lean:131:8: failed to synthesize instance of type class
+  DecidablePred fun m => m ∈ S ∧ m ≥ 1
+
+===== Erdos434Aristotle
+error: Proofs/Erdos434Aristotle.lean:50:97: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== Erdos434Problem
+error: Proofs/Erdos434Problem.lean:151:6: Type mismatch
+  add_representable
+    (mem_representable
+error: Proofs/Erdos434Problem.lean:170:10: Unknown identifier `sylvester_frobenius`
+error: Proofs/Erdos434Problem.lean:169:62: unsolved goals
+⊢ frobeniusNumber {3, 5} = 7
+error: Proofs/Erdos434Problem.lean:169:62: unsolved goals
+⊢ frobeniusNumber {3, 5} = 7
+error: Proofs/Erdos434Problem.lean:229:12: Unknown identifier `sylvester_count`
+error: Proofs/Erdos434Problem.lean:229:12: Unknown identifier `sylvester_count`
+error: Proofs/Erdos434Problem.lean:233:6: Unknown identifier `consecutive_count`
+error: Proofs/Erdos434Problem.lean:225:46: unsolved goals
+
+===== Erdos435Problem
+error: Proofs/Erdos435Problem.lean:127:2: interval_cases failed: could not find upper bound on k
+error: Lean exited with code 1
+✖ [8586/8603] Building Proofs.Erdos479Problem (15s)
+
+===== Erdos437Aristotle
+error: Proofs/Erdos437Aristotle.lean:27:10: unsolved goals
+k : ℕ
+⊢ 4 ^ k = 2 ^ (k * 2)
+error: Proofs/Erdos437Aristotle.lean:52:22: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.foldl (fun x1 x2 => x1 * x2) h t
+in the target expression
+error: Proofs/Erdos437Aristotle.lean:81:4: linarith failed to find a contradiction
+case succ.e_a.h1
+n : ℕ
+error: Proofs/Erdos437Aristotle.lean:102:2: Unknown identifier `div_le_one_of_le`
+warning: Proofs/Erdos437Aristotle.lean:109:24: Variable name `hx` is not explicitly referenced.
+
+===== Erdos441Aristotle
+error: Proofs/Erdos441Aristotle.lean:101:49: unsolved goals
+a : ℕ
+⊢ a * a / a = a
+error: Proofs/Erdos441Aristotle.lean:121:4: Tactic `apply` failed: could not unify the conclusion of `sqrt_le_self`
+  Nat.sqrt ?n ≤ ?n
+with the goal
+

@@ -31,11 +31,8 @@ References:
 Tags: additive-combinatorics, finite-fields, sequencing, partial-sums
 -/
 
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
+open scoped Classical
 
 namespace Erdos475
 
@@ -89,14 +86,14 @@ axiom hicks_ollis_schmitt_2019 (p : ℕ) [Fact (Nat.Prime p)] :
       (∀ a ∈ A, a ≠ 0) →
       ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/--
+/- 
 **Graham's Original Result:**
 The case t = p - 1 (the full non-zero set) was solved constructively
 by Graham, providing an explicit ordering.
 -/
 /- ## Part IV: Logarithmic Range (Kravitz 2024) -/
 
-/--
+/- 
 **Kravitz (2024):**
 For t ≤ log p / log log p, the conjecture holds.
 Will Sawin independently observed this bound on MathOverflow.
@@ -136,7 +133,14 @@ def AlspachConjecture (G : Type*) [AddCommGroup G] [Fintype G] : Prop :=
 /-- Graham's conjecture is Alspach's conjecture for 𝔽ₚ. -/
 theorem graham_is_alspach_for_prime_field (p : ℕ) [Fact (Nat.Prime p)] :
     GrahamConjecture p ↔ AlspachConjecture (ZMod p) := by
-  constructor <;> intro h A hA <;> exact h A hA
+  -- (v4.31 migration: `GrahamConjecture` uses `ZMod.decidableEq` while
+  -- `AlspachConjecture (ZMod p)` picks up the classical `DecidableEq` from
+  -- `open scoped Classical`; the two `toFinset` instances are propositionally
+  -- but not definitionally equal, so bridge with `Subsingleton.elim`.)
+  unfold GrahamConjecture AlspachConjecture IsValidOrdering
+  constructor <;> intro h A hA <;>
+    (obtain ⟨o, h1, h2, h3⟩ := h A hA; refine ⟨o, ?_, h2, h3⟩;
+     convert h1 using 2 <;> exact Subsingleton.elim _ _)
 
 /- ## Part VII: Constructive vs Existential
 
@@ -150,7 +154,7 @@ def HasExplicitValidOrdering {p : ℕ} [Fact (Nat.Prime p)]
   ∃ (f : Finset (ZMod p) → List (ZMod p)),
     IsValidOrdering A (f A)
 
-/--
+/- 
 **Graham's Constructive Proof:**
 Graham's proof for the full non-zero set t = p - 1 was constructive,
 giving an explicit algorithm to produce a valid ordering.

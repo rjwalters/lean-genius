@@ -176,7 +176,7 @@ theorem even_complementary_of_free
     (fun d _ => hinv d)
   have hfix : ((univ.filter comp).filter fun d => neg d = d) = ∅ := by
     ext d
-    simp only [mem_filter, mem_univ, true_and, not_mem_empty, iff_false, not_and]
+    simp only [mem_filter, mem_univ, true_and, notMem_empty, iff_false, not_and]
     exact fun _ hd => hfree d hd
   rw [hfix, card_empty] at h
   rw [Nat.even_iff]

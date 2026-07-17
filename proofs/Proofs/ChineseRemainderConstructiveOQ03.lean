@@ -79,14 +79,14 @@ private theorem list_prod_le_foldl_max_pow : ∀ (l : List ℕ),
     l.prod ≤ (l.foldl max 0) ^ l.length
   | [] => by simp
   | m :: ms => by
-    simp only [List.prod_cons, List.length_cons, pow_succ]
+    simp only [List.prod_cons, List.length_cons, pow_succ']
     apply Nat.mul_le_mul
-    · exact foldl_max_ge_of_mem (List.mem_cons_self m ms) 0
+    · exact foldl_max_ge_of_mem List.mem_cons_self 0
     · calc ms.prod ≤ (ms.foldl max 0) ^ ms.length := list_prod_le_foldl_max_pow ms
         _ ≤ ((m :: ms).foldl max 0) ^ ms.length := by
           apply Nat.pow_le_pow_left
           simp only [List.foldl_cons]
-          exact foldl_max_mono ms (le_max_right 0 m ▸ Nat.zero_le _)
+          exact foldl_max_mono ms (Nat.zero_le _)
 
 /-- An RNS base with k channels and max width w has dynamic range ≤ w^k. -/
 theorem dynamicRange_le_pow (b : RNSBase) :
@@ -99,18 +99,14 @@ theorem dynamicRange_le_pow (b : RNSBase) :
 -- ============================================================
 
 /-- The prime RNS base: first k primes. -/
-def primeBase (k : ℕ) : List ℕ := (List.range k).map (fun i => Nat.Prime.minFac (i + 2) |>.val)
+def primeBase (k : ℕ) : List ℕ := (List.range k).map (fun i => Nat.minFac (i + 2))
 
 /-- Three-prime base {2, 3, 5}: dynamic range = 30. -/
 theorem three_prime_range : [2, 3, 5].prod = 30 := by norm_num
 
 /-- {2, 3, 5} are pairwise coprime. -/
 theorem three_prime_coprime : [2, 3, 5].Pairwise Nat.Coprime := by
-  simp only [List.pairwise_cons, List.mem_cons, List.mem_singleton, List.pairwise_nil]
-  refine ⟨?_, ?_, ?_⟩
-  · intro m hm; rcases hm with rfl | rfl <;> decide
-  · intro m hm; rcases hm with rfl <;> decide
-  · exact List.Pairwise.nil
+  decide
 
 /-- {2, 3, 5, 7}: dynamic range = 210. -/
 theorem four_prime_range : [2, 3, 5, 7].prod = 210 := by norm_num
@@ -142,17 +138,20 @@ theorem mersenne_13 : mersenne 13 = 8191 := by unfold mersenne; norm_num
 
 /-- Key identity: 2^a ≡ 2^(a % b) [MOD 2^b - 1] for b ≥ 1.
     Proof: 2^b ≡ 1 [MOD 2^b-1], so 2^a = 2^(b*q+r) = (2^b)^q · 2^r ≡ 2^r. -/
-private theorem pow_two_mod_mersenne {a b : ℕ} (hb : b ≥ 1) :
+private theorem pow_two_mod_mersenne {a b : ℕ} (hb : b ≥ 2) :
     2 ^ a % (2 ^ b - 1) = 2 ^ (a % b) % (2 ^ b - 1) := by
-  have hm : 2 ^ b - 1 ≥ 1 := by omega_nat -- 2^b ≥ 2 for b ≥ 1
+  have h4b : (4 : ℕ) ≤ 2 ^ b := by
+    calc (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ b := Nat.pow_le_pow_right (by norm_num) hb
+  set k := 2 ^ b - 1 with hk_def
+  have hk3 : k ≥ 3 := by omega
+  have hbk : 2 ^ b = k + 1 := by omega
   conv_lhs => rw [show a = b * (a / b) + a % b from (Nat.div_add_mod a b).symm]
-  rw [pow_add, pow_mul]
-  have h1 : 2 ^ b % (2 ^ b - 1) = 1 := by
-    have : 2 ^ b = (2 ^ b - 1) * 1 + 1 := by omega
-    rw [show 2 ^ b = (2 ^ b - 1) + 1 from by omega]
-    simp [Nat.add_mod]
-  rw [Nat.mul_mod, Nat.pow_mod, h1, one_pow, Nat.one_mod, Nat.one_mul, Nat.mod_mod_of_dvd]
-  exact dvd_refl _
+  rw [pow_add, pow_mul, hbk]
+  have h1 : (k + 1) % k = 1 := by
+    rw [Nat.add_mod_left]; exact Nat.mod_eq_of_lt (by omega)
+  rw [Nat.mul_mod, Nat.pow_mod, h1, one_pow, Nat.mod_eq_of_lt (show (1:ℕ) < k by omega),
+    Nat.one_mul, Nat.mod_mod_of_dvd _ dvd_rfl]
 
 /-- Helper: (m * q + r) % m = r when r < m. -/
 private theorem mul_add_mod_eq {m q r : ℕ} (hr : r < m) :
@@ -160,7 +159,7 @@ private theorem mul_add_mod_eq {m q r : ℕ} (hr : r < m) :
   induction q with
   | zero => simp [Nat.mod_eq_of_lt hr]
   | succ q ih =>
-    have : m * (q + 1) + r = (m * q + r) + m := by omega
+    have : m * (q + 1) + r = (m * q + r) + m := by ring
     rw [this, Nat.add_mod_right]; exact ih
 
 /-- The Euclidean step for Mersenne numbers:
@@ -182,7 +181,7 @@ private theorem mersenne_mod_eq {a : ℕ} (ha : a ≥ 2) (b : ℕ) :
   have h_lt : 2 ^ (b % a) < m := by omega
   -- From pow_two_mod_mersenne: 2^b % m = 2^(b%a)
   have hptm : 2 ^ b % m = 2 ^ (b % a) := by
-    have := pow_two_mod_mersenne (a := b) (b := a) (show a ≥ 1 by omega)
+    have := pow_two_mod_mersenne (a := b) (b := a) (show a ≥ 2 by omega)
     rwa [Nat.mod_eq_of_lt h_lt] at this
   -- 2^b - 1 = m * (2^b / m) + (2^(b%a) - 1)
   have h_eq : 2 ^ b - 1 = m * (2 ^ b / m) + (2 ^ (b % a) - 1) := by
@@ -220,17 +219,20 @@ theorem mersenne_coprime_of_coprime {a b : ℕ} (ha : a ≥ 2) (hb : b ≥ 2)
       -- gcd(2^a-1, 2^b-1) = gcd((2^b-1) % (2^a-1), 2^a-1) = gcd(2^(b%a)-1, 2^a-1)
       rw [Nat.gcd_rec, mersenne_mod_eq (by omega : a ≥ 2)]
       -- b%a < a, and Coprime(b%a, a) from Coprime(a, b) via gcd_rec
-      exact ih (b % a) (Nat.mod_lt b (by omega)) a (by rwa [← Nat.gcd_rec])
+      exact ih (b % a) (Nat.mod_lt b (by omega)) a (by
+        show Nat.gcd (b % a) a = 1
+        rw [← Nat.gcd_rec]
+        exact hcop)
 
 /-- RNS base from Mersenne numbers with coprime exponents: {3, 7, 31, 127}.
     Exponents {2, 3, 5, 7} are pairwise coprime. -/
-theorem mersenne_base_range : [3, 7, 31, 127].prod = 83349 := by norm_num
+theorem mersenne_base_range : [3, 7, 31, 127].prod = 82677 := by norm_num
 
 -- ============================================================
 -- SECTION IV: Dynamic Range Optimality
 -- ============================================================
 
-/-- For k pairwise coprime numbers in [2, w], the product is maximized
+/-  For k pairwise coprime numbers in [2, w], the product is maximized
     by choosing the k smallest primes ≤ w. This follows from:
     (1) coprime integers decompose into prime power channels
     (2) primes maximize the product-per-channel
@@ -299,9 +301,9 @@ theorem rnsAdd_correct (base : List ℕ) (x y : ℕ)
   induction base with
   | nil => simp [rnsEncode, rnsAdd]
   | cons m ms ih =>
-    simp only [rnsEncode, rnsAdd, List.map_cons, List.zip_cons_cons]
-    congr 1
-    exact Nat.add_mod x y m
+    have ihm := ih (fun m' hm' => hbase m' (List.mem_cons_of_mem _ hm'))
+    simp only [rnsEncode, rnsAdd, List.map_cons, List.zip_cons_cons] at ihm ⊢
+    rw [Nat.add_mod x y m, ihm]
 
 /-- RNS multiplication is correct: encode(x*y) = rnsMul(encode(x), encode(y)). -/
 theorem rnsMul_correct (base : List ℕ) (x y : ℕ)
@@ -310,9 +312,9 @@ theorem rnsMul_correct (base : List ℕ) (x y : ℕ)
   induction base with
   | nil => simp [rnsEncode, rnsMul]
   | cons m ms ih =>
-    simp only [rnsEncode, rnsMul, List.map_cons, List.zip_cons_cons]
-    congr 1
-    exact Nat.mul_mod x y m
+    have ihm := ih (fun m' hm' => hbase m' (List.mem_cons_of_mem _ hm'))
+    simp only [rnsEncode, rnsMul, List.map_cons, List.zip_cons_cons] at ihm ⊢
+    rw [Nat.mul_mod x y m, ihm]
 
 #check @three_prime_coprime
 #check @mersenne_coprime_of_coprime

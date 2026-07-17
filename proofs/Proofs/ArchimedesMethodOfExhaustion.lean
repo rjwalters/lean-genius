@@ -95,10 +95,10 @@ theorem tendsto_two_pi_div_atTop :
     Filter.Tendsto (fun n : ℕ => (2 * Real.pi) / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
   rw [tendsto_nhdsWithin_iff]
-  exact ⟨tendsto_const_div_atTop_nhds_0_nat _, Filter.eventually_of_forall (by
-    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
-    exact Set.mem_compl_singleton_iff.mpr
-      (div_ne_zero (by positivity) (Nat.cast_ne_zero.mpr (by omega))))⟩
+  refine ⟨tendsto_const_div_atTop_nhds_zero_nat _, ?_⟩
+  filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+  exact Set.mem_compl_singleton_iff.mpr
+    (div_ne_zero (by positivity) (Nat.cast_ne_zero.mpr (by omega)))
 
 /-- sin(2π/n) / (2π/n) → 1 as n → ∞. (Composition of sin(h)/h → 1 with h = 2π/n → 0) -/
 theorem tendsto_sin_two_pi_div_n :
@@ -116,13 +116,11 @@ theorem tendsto_n_sin_two_pi_div_n :
     Filter.Tendsto (fun n : ℕ => (n : ℝ) * Real.sin (2 * Real.pi / n))
       Filter.atTop (nhds (2 * Real.pi)) := by
   -- n * sin(2π/n) = 2π * (sin(2π/n)/(2π/n)) for n ≥ 1
-  have key : ∀ᶠ n : ℕ in Filter.atTop,
-      (n : ℝ) * Real.sin (2 * Real.pi / n) =
-      2 * Real.pi * (Real.sin (2 * Real.pi / n) / (2 * Real.pi / n)) := by
+  have key : (fun n : ℕ => (n : ℝ) * Real.sin (2 * Real.pi / n)) =ᶠ[Filter.atTop]
+      (fun n : ℕ => 2 * Real.pi * (Real.sin (2 * Real.pi / n) / (2 * Real.pi / n))) := by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
     field_simp
-    ring
   -- 2π * (sin(2π/n)/(2π/n)) → 2π * 1 = 2π
   have h_mul : Filter.Tendsto
       (fun n : ℕ => 2 * Real.pi * (Real.sin (2 * Real.pi / n) / (2 * Real.pi / n)))
@@ -142,14 +140,17 @@ theorem tendsto_n_sin_two_pi_div_n :
 lemma n_mul_sin_le_two_pi (n : ℕ) :
     (n : ℝ) * Real.sin (2 * Real.pi / n) ≤ 2 * Real.pi := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
-  · simp
+  · simp only [Nat.cast_zero, zero_mul]
+    linarith [Real.pi_pos]
   · have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
     have h_pos : 0 < 2 * Real.pi / n := by positivity
     have h_lt : Real.sin (2 * Real.pi / n) < 2 * Real.pi / n :=
       Real.sin_lt h_pos
-    calc (n : ℝ) * Real.sin (2 * Real.pi / n)
-        < n * (2 * Real.pi / n) := by nlinarith
-      _ = 2 * Real.pi := by field_simp
+    have h_strict : (n : ℝ) * Real.sin (2 * Real.pi / n) < 2 * Real.pi :=
+      calc (n : ℝ) * Real.sin (2 * Real.pi / n)
+          < n * (2 * Real.pi / n) := by nlinarith
+        _ = 2 * Real.pi := by field_simp
+    exact h_strict.le
 
 /-- Inscribed n-gon area is nonneg for r ≥ 0. -/
 theorem inscribed_area_nonneg (n : ℕ) (r : ℝ) (hr : 0 ≤ r) :
@@ -161,13 +162,16 @@ theorem inscribed_area_nonneg (n : ℕ) (r : ℝ) (hr : 0 ≤ r) :
       · exact Nat.cast_nonneg n
       · positivity
     · norm_num
-  · apply Real.sin_nonneg_of_nonneg_of_le_pi
-    · positivity
-    · rcases Nat.eq_zero_or_pos n with rfl | hn
+  · rcases Nat.lt_or_ge n 2 with hn2 | hn2
+    · interval_cases n
       · simp
-      · have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-        apply div_le_self (by positivity)
-        linarith
+      · simp [Real.sin_two_pi]
+    · have hn' : (2 : ℝ) ≤ n := by exact_mod_cast hn2
+      apply Real.sin_nonneg_of_nonneg_of_le_pi
+      · positivity
+      · have hn_pos : (0 : ℝ) < n := by linarith
+        rw [div_le_iff₀ hn_pos]
+        nlinarith [Real.pi_pos]
 
 /-- **Key Inequality**: The inscribed n-gon is smaller than the circle.
 
@@ -191,6 +195,7 @@ theorem inscribed_area_pos (n : ℕ) (hn : 3 ≤ n) (r : ℝ) (hr : 0 < r) :
   have h_pos : 0 < 2 * Real.pi / n := by positivity
   have h_lt_pi : 2 * Real.pi / n < Real.pi := by
     rw [div_lt_iff₀ hn']
+    have hn3 : (3 : ℝ) ≤ n := by exact_mod_cast hn
     nlinarith [Real.pi_pos]
   have hsin_pos : 0 < Real.sin (2 * Real.pi / n) :=
     Real.sin_pos_of_pos_of_lt_pi h_pos h_lt_pi
@@ -238,10 +243,10 @@ theorem tendsto_pi_div_atTop :
     Filter.Tendsto (fun n : ℕ => Real.pi / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
   rw [tendsto_nhdsWithin_iff]
-  exact ⟨tendsto_const_div_atTop_nhds_0_nat _, Filter.eventually_of_forall (by
-    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
-    exact Set.mem_compl_singleton_iff.mpr
-      (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega))))⟩
+  refine ⟨tendsto_const_div_atTop_nhds_zero_nat _, ?_⟩
+  filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+  exact Set.mem_compl_singleton_iff.mpr
+    (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
 
 /-- tan(π/n) / (π/n) → 1 as n → ∞. -/
 theorem tendsto_tan_pi_div_n :
@@ -258,13 +263,11 @@ theorem tendsto_n_tan_pi_div_n :
     Filter.Tendsto (fun n : ℕ => (n : ℝ) * Real.tan (Real.pi / n))
       Filter.atTop (nhds Real.pi) := by
   -- n * tan(π/n) = π * (tan(π/n)/(π/n)) for n ≥ 1
-  have key : ∀ᶠ n : ℕ in Filter.atTop,
-      (n : ℝ) * Real.tan (Real.pi / n) =
-      Real.pi * (Real.tan (Real.pi / n) / (Real.pi / n)) := by
+  have key : (fun n : ℕ => (n : ℝ) * Real.tan (Real.pi / n)) =ᶠ[Filter.atTop]
+      (fun n : ℕ => Real.pi * (Real.tan (Real.pi / n) / (Real.pi / n))) := by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
     field_simp
-    ring
   -- π * (tan(π/n)/(π/n)) → π * 1 = π
   have h_mul : Filter.Tendsto
       (fun n : ℕ => Real.pi * (Real.tan (Real.pi / n) / (Real.pi / n)))
@@ -323,7 +326,7 @@ theorem inscribed_le_circumscribed (n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : 0 �
       have hn_ge3' : (3 : ℝ) ≤ n := by exact_mod_cast hn_ge3
       have hpn_pos : 0 < Real.pi / n := by positivity
       have hpn_lt : Real.pi / n < Real.pi / 2 := by
-        rw [div_lt_div_iff hn_pos' (by norm_num : (0:ℝ) < 2)]
+        rw [div_lt_div_iff₀ hn_pos' (by norm_num : (0:ℝ) < 2)]
         nlinarith [Real.pi_pos]
       have hcos_pos : 0 < Real.cos (Real.pi / n) :=
         Real.cos_pos_of_mem_Ioo ⟨by linarith, hpn_lt⟩

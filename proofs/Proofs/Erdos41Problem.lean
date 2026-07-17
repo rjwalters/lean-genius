@@ -75,7 +75,7 @@ def ErdosBhConjecture (h : ℕ) : Prop :=
 -/
 axiom erdos_b2_theorem : ErdosBhConjecture 2
 
-/-- **Nash's Theorem (1989)**: B_4 sets have density o(N^(1/4)).
+/-  **Nash's Theorem (1989)**: B_4 sets have density o(N^(1/4)).
 
     Nash proved the conjecture for h=4 using Fourier-analytic methods.
 -/
@@ -138,7 +138,7 @@ theorem singleton_is_bh (a : ℕ) (h : ℕ) (hh : h > 1) : IsBhSet {a} h := by
 /-- Powers of 2 form a B_2 (Sidon) set: {1, 2, 4, 8, ...} -/
 def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k}
 
-/-- Key lemma: sums of two distinct powers of 2 determine them uniquely.
+/-  Key lemma: sums of two distinct powers of 2 determine them uniquely.
     If 2^a + 2^b = 2^c + 2^d (with a ≤ b, c ≤ d), then {a,b} = {c,d}.
 
     This follows from the uniqueness of binary representation.

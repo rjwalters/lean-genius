@@ -201,11 +201,11 @@ theorem log_increment_tendsto_zero_iff_ratio_tendsto_one (R : ℕ → ℝ)
       filter_upwards [hratio_pos] with l hl using (Real.exp_log hl).symm
     rw [tendsto_congr' hexp]
     have := (Real.continuous_exp.tendsto 0).comp h
-    simpa using this
+    simpa [Function.comp_def] using this
   · -- `ratio → 1` ⟹ `log(ratio) → log 1 = 0` by continuity of `log` at `1`
     intro h
     have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp h
-    simpa using this
+    simpa [Function.comp_def] using this
 
 /-- **Corollary (log-increment vanishes).** If the consecutive ratio tends to `1`
 then the additive log-increment `log R(l+1) − log R(l)` tends to `0`. The forward
@@ -253,11 +253,11 @@ theorem log_increment_tendsto_log_iff_ratio_tendsto (R : ℕ → ℝ) (L : ℝ) 
     rw [tendsto_congr' hexp]
     have := (Real.continuous_exp.tendsto (Real.log L)).comp h
     rw [Real.exp_log hL] at this
-    simpa using this
+    simpa [Function.comp_def] using this
   · -- `ratio → L` ⟹ `log(ratio) → log L` by continuity of `log` at `L ≠ 0`
     intro h
     have := (Real.continuousAt_log (ne_of_gt hL)).tendsto.comp h
-    simpa using this
+    simpa [Function.comp_def] using this
 
 /-- **Additive–multiplicative increment equivalence.** For an eventually-positive
 sequence `R`, the *normalized (multiplicative) increment* `(R(l+1) − R(l))/R(l)`
@@ -291,7 +291,7 @@ window exactly, not merely asymptotically. -/
 theorem increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
     R (l + m) - R l = ∑ i ∈ Finset.range m, (R (l + i + 1) - R (l + i)) := by
   have h := Finset.sum_range_sub (fun i => R (l + i)) m
-  simpa using h.symm
+  simpa [add_assoc] using h.symm
 
 /-- **The log-gap increment telescopes into unit log-increments.** Applying `increment_gap_eq_sum`
 to `log ∘ R`: the `m`-step log-increment is the exact sum of the `m` consecutive unit
@@ -306,7 +306,7 @@ theorem log_increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
     Real.log (R (l + m)) - Real.log (R l)
       = ∑ i ∈ Finset.range m, (Real.log (R (l + i + 1)) - Real.log (R (l + i))) := by
   have h := Finset.sum_range_sub (fun i => Real.log (R (l + i))) m
-  simpa using h.symm
+  simpa [add_assoc] using h.symm
 
 /-- **The gap-ratio telescopes into a product of unit ratios.** The multiplicative
 companion of `increment_gap_eq_sum` (additive) and `log_increment_gap_eq_sum`
@@ -353,7 +353,7 @@ theorem prod_consecutive_ratios_tendsto_one (R : ℕ → ℝ) (m : ℕ)
       (𝓝 (∏ _i ∈ Finset.range m, (1 : ℝ))) := by
     refine tendsto_finset_prod _ (fun i _ => ?_)
     have hi := hratio.comp (tendsto_add_atTop_nat i)
-    simpa using hi
+    simpa [Function.comp_def] using hi
   simpa using h
 
 /-- **Bounded-gap ratio convergence.** If the consecutive ratio `R(l+1)/R(l)` tends to
@@ -452,7 +452,7 @@ theorem log_increment_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
     rw [Real.log_div (ne_of_gt hlm) (ne_of_gt hl)]
   rw [tendsto_congr' heq]
   have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp hgap
-  simpa using this
+  simpa [Function.comp_def] using this
 
 /-- **General-limit bounded-gap ratio.** If the consecutive ratio `R(l+1)/R(l)` tends
 to a limit `L` (with `R` eventually positive), then for *every fixed gap* `m` the
@@ -483,7 +483,7 @@ theorem ratio_gap_tendsto_pow (R : ℕ → ℝ) (L : ℝ) (m : ℕ)
       have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) :=
         (tendsto_add_atTop_nat m).eventually hpos
       have hshift : Tendsto (fun l => R (l + m + 1) / R (l + m)) atTop (𝓝 L) := by
-        simpa using hratio.comp (tendsto_add_atTop_nat m)
+        simpa [Function.comp_def] using hratio.comp (tendsto_add_atTop_nat m)
       have hmul : Tendsto
           (fun l => R (l + m + 1) / R (l + m) * (R (l + m) / R l)) atTop (𝓝 (L * L ^ m)) :=
         hshift.mul ih
@@ -674,7 +674,7 @@ theorem rpow_inv_nat_tendsto_one_of_ratio_tendsto_one (R : ℕ → ℝ)
     rw [div_eq_inv_mul]
   have hexp : Tendsto (fun l : ℕ => Real.exp ((l : ℝ)⁻¹ * Real.log (R l))) atTop (𝓝 1) := by
     have := (Real.continuous_exp.tendsto 0).comp hlog
-    simpa using this
+    simpa [Function.comp_def] using this
   refine hexp.congr' ?_
   filter_upwards [hpos] with l hl
   rw [Real.rpow_def_of_pos hl, mul_comm (Real.log (R l)) ((l : ℝ)⁻¹)]

@@ -53,24 +53,24 @@ H(n; p, q) is the largest m such that every n-vertex graph with the
 (p,q)-density condition contains a complete subgraph on m vertices.
 -/
 
+open scoped Classical in
 /-- H(n; p, q): the largest clique size guaranteed in any n-vertex graph
     satisfying the (p,q)-density condition.
     Defined as: sup {m ≤ n | every n-vertex graph with (p,q)-density has an m-clique}.
 
     Previously axiomatized; now defined concretely using sSup.
     Uses Classical.dec for decidability of graph predicates. -/
-open scoped Classical in
 noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
   sSup {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
     HasDensity G p q → ¬G.CliqueFree m}
 
 -- Notation: H(n; p, q) = cliqueGuarantee n p q
 
+open scoped Classical in
 /-- H is monotone in n: more vertices can only help.
     Proof sketch: S_n ⊆ S_{n+1} because for any G on Fin (n+1) with density,
     pulling back to G' = G.comap castSucc on Fin n preserves the density condition
     (edgeCount unchanged by injective embedding). Any m-clique in G' lifts to G. -/
-open scoped Classical in
 theorem cliqueGuarantee_mono_n (p q n : ℕ) :
     cliqueGuarantee n p q ≤ cliqueGuarantee (n + 1) p q := by
   simp only [cliqueGuarantee]
@@ -91,15 +91,17 @@ theorem cliqueGuarantee_mono_n (p q n : ℕ) :
         let emb : Fin n ↪ Fin (n + 1) := ⟨Fin.castSucc, Fin.castSucc_injective n⟩
         suffices h : edgeCount (G.comap Fin.castSucc) S =
             edgeCount G (S.map emb) by
-          rw [h]; exact hd _ (by rw [Finset.card_map]; exact hS)
+          exact (hd _ (by rw [Finset.card_map]; exact hS)).trans_eq h.symm
         -- Edge count preserved: comap pullback bijects with mapped product
         simp only [edgeCount, ← Finset.prodMap_map_product emb emb,
           Finset.filter_map, Finset.card_map]
         congr 1
+        congr 1
         apply Finset.filter_congr
         intro ⟨a, b⟩ _
-        simp only [Function.comp, Function.Embedding.prodMap_apply, Prod.map,
-          SimpleGraph.comap_adj, (Fin.castSucc_injective n).ne_iff])
+        simp (config := { zetaDelta := true }) only [Function.comp,
+          Function.Embedding.coe_prodMap, Prod.map_apply,
+          Function.Embedding.coeFn_mk, SimpleGraph.comap_adj, (Fin.castSucc_injective n).ne_iff])
       -- Lift: ¬CliqueFree (G.comap castSucc) m → ¬CliqueFree G m
       intro hcfG
       apply hcf
@@ -113,8 +115,9 @@ theorem cliqueGuarantee_mono_n (p q n : ℕ) :
       obtain ⟨b', hb', rfl⟩ := hb
       exact hs.isClique (Finset.mem_coe.mpr ha') (Finset.mem_coe.mpr hb')
         (fun h => hab (congrArg Fin.castSucc h))
-  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, csSup_empty]; exact bot_le
 
+open scoped Classical in
 /-- H is monotone in q: more edges per p-set yields larger cliques.
     Proof: HasDensity G p (q+1) implies HasDensity G p q, so the density
     condition for q+1 is strictly more restrictive. Universal quantification
@@ -122,11 +125,8 @@ theorem cliqueGuarantee_mono_n (p q n : ℕ) :
 theorem cliqueGuarantee_mono_q (n p q : ℕ) :
     cliqueGuarantee n p q ≤ cliqueGuarantee n p (q + 1) := by
   simp only [cliqueGuarantee]
-  set Sq := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
-    HasDensity G p q → ¬G.CliqueFree m}
-  set Sq1 := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
-    HasDensity G p (q + 1) → ¬G.CliqueFree m}
-  by_cases hne : Sq.Nonempty
+  by_cases hne : {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+      HasDensity G p q → ¬G.CliqueFree m}.Nonempty
   · apply csSup_le_csSup
     · -- Sq1 is bounded above by n
       exact ⟨n, fun m ⟨hm, _⟩ => hm⟩
@@ -134,18 +134,18 @@ theorem cliqueGuarantee_mono_q (n p q : ℕ) :
     · -- Sq ⊆ Sq1: HasDensity G p (q+1) → HasDensity G p q (more edges ≥ fewer)
       intro m ⟨hm, hG⟩
       exact ⟨hm, fun G hd => hG G fun S hS => le_trans (Nat.le_succ q) (hd S hS)⟩
-  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, csSup_empty]; exact bot_le
 
+open scoped Classical in
 /-- H(n; p, q) ≤ n: cannot guarantee a clique larger than the graph.
     Follows directly from the m ≤ n constraint in the sSup definition. -/
 theorem cliqueGuarantee_le_n (n p q : ℕ) :
     cliqueGuarantee n p q ≤ n := by
   simp only [cliqueGuarantee]
-  set S := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
-    HasDensity G p q → ¬G.CliqueFree m}
-  by_cases hne : S.Nonempty
+  by_cases hne : {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+      HasDensity G p q → ¬G.CliqueFree m}.Nonempty
   · exact csSup_le hne fun m ⟨hm, _⟩ => hm
-  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, csSup_empty]; exact bot_le
 
 /-
 ## Part III: Boundary Values
@@ -153,7 +153,7 @@ theorem cliqueGuarantee_le_n (n p q : ℕ) :
 The function c(p,q) has known values at the endpoints.
 -/
 
-/-- REMOVED (FALSE): Previously claimed H(n; p, C(p-1,2)+1) = n (i.e., graph must
+/-  REMOVED (FALSE): Previously claimed H(n; p, C(p-1,2)+1) = n (i.e., graph must
     be complete). Counterexample: C₄ (4-cycle on Fin 4) satisfies HasDensity 3 2
     (every triple spans exactly 2 edges) but has clique number 2, not 4.
 
@@ -163,12 +163,12 @@ The function c(p,q) has known values at the endpoints.
     For p=3, q=C(2,2)+1=2: the complement of any satisfying graph is a matching,
     giving clique number ⌈n/2⌉, so c(3,2) = lim inf log(⌈n/2⌉)/log(n) = 1. -/
 
+open scoped Classical in
 /-- When q = 0, there is no constraint, so H(n; p, 0) = 1 trivially.
     Every graph has at least one vertex (when n ≥ 1), forming a trivial 1-clique.
     The empty graph on n vertices shows we can't guarantee 2-cliques.
     Proof: S = {m ≤ n | ∀ G, ¬CliqueFree G m} = {0, 1} since the empty graph
     is CliqueFree m for m ≥ 2, and every nonempty graph has a 0-clique and 1-clique. -/
-open scoped Classical in
 theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
     cliqueGuarantee n p 0 = 1 := by
   simp only [cliqueGuarantee]
@@ -177,7 +177,7 @@ theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
     apply csSup_le
     · -- S is nonempty: 0 ∈ S (empty set is a 0-clique in any graph)
       exact ⟨0, Nat.zero_le n, fun G _ hcf =>
-        hcf ∅ ⟨Set.pairwise_empty _, rfl⟩⟩
+        hcf ∅ ⟨by simp, rfl⟩⟩
     · -- All elements of S are ≤ 1
       intro m ⟨_, hm⟩
       by_contra hgt
@@ -189,10 +189,11 @@ theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
       obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by rw [hs.card_eq]; omega)
       exact hs.isClique (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab
   · -- Lower bound: 1 ≤ sSup S
-    apply le_csSup ⟨n, fun m ⟨hm, _⟩ => hm⟩
-    -- 1 ∈ S: singleton {⟨0, _⟩} is a 1-clique in any graph on Fin n (n ≥ 1)
-    exact ⟨hn, fun G _ hcf =>
-      hcf {⟨0, by omega⟩} ⟨Set.pairwise_singleton _ _, Finset.card_singleton _⟩⟩
+    apply le_csSup
+    · exact ⟨n, fun m ⟨hm, _⟩ => hm⟩
+    · -- 1 ∈ S: singleton {⟨0, _⟩} is a 1-clique in any graph on Fin n (n ≥ 1)
+      exact ⟨hn, fun G _ hcf =>
+        hcf {⟨0, by omega⟩} ⟨by simp, Finset.card_singleton _⟩⟩
 
 /-- Extended monotonicity: H(n; p, q1) ≤ H(n; p, q2) for q1 ≤ q2. -/
 theorem cliqueGuarantee_mono_q_general (n p q1 q2 : ℕ) (h : q1 ≤ q2) :
@@ -245,7 +246,7 @@ private lemma cpqSeq_eventually_le_one (p q : ℕ) :
   have hH_pos : (0 : ℝ) < ↑(cliqueGuarantee n p q) := by
     have := cliqueGuarantee_pos n p q hn
     exact_mod_cast (show 0 < cliqueGuarantee n p q by omega)
-  exact div_le_one_of_le
+  exact div_le_one_of_le₀
     (Real.log_le_log hH_pos (by exact_mod_cast cliqueGuarantee_le_n n p q))
     (Real.log_nonneg (by exact_mod_cast hn))
 
@@ -259,6 +260,7 @@ private lemma cpq_isBoundedUnder_ge (p q : ℕ) :
 private lemma cpq_isCoboundedUnder_ge (p q : ℕ) :
     IsCoboundedUnder (· ≥ ·) atTop (cpqSeq p q) :=
   ⟨1, fun a ha => by
+    rw [Filter.eventually_map] at ha
     obtain ⟨N, hN⟩ := eventually_atTop.mp (ha.and (cpqSeq_eventually_le_one p q))
     have ⟨h1, h2⟩ := hN N le_rfl; linarith⟩
 
@@ -290,7 +292,7 @@ theorem cpq_mono_q (p q : ℕ) : cpq p q ≤ cpq p (q + 1) := by
           rcases this with rfl | rfl <;> simp)
       have hlog_pos : 0 < Real.log (↑n : ℝ) :=
         Real.log_pos (by exact_mod_cast (show 1 < n by omega))
-      rw [div_le_div_right hlog_pos]
+      rw [div_le_div_iff_of_pos_right hlog_pos]
       have hH_pos : (0 : ℝ) < ↑(cliqueGuarantee n p q) := by
         have := cliqueGuarantee_pos n p q (by omega : 1 ≤ n)
         exact_mod_cast (show 0 < cliqueGuarantee n p q by omega)

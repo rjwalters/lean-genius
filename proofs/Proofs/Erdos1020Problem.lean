@@ -44,8 +44,10 @@ open Finset Nat
 r-uniform hypergraphs and matchings.
 -/
 
-/-- An r-uniform hypergraph on vertex set V -/
-structure Hypergraph (V : Type*) (r : ℕ) where
+/-- An r-uniform hypergraph on vertex set V.
+    (Named `RUniformHypergraph` to avoid clashing with Mathlib's
+    `Hypergraph` structure introduced in Mathlib.Combinatorics.Hypergraph.Basic.) -/
+structure RUniformHypergraph (V : Type*) (r : ℕ) where
   edges : Finset (Finset V)
   uniform : ∀ e ∈ edges, e.card = r
 
@@ -55,15 +57,15 @@ variable {V : Type*} [DecidableEq V] [Fintype V]
 def EdgesDisjoint (e₁ e₂ : Finset V) : Prop := Disjoint e₁ e₂
 
 /-- A matching is a set of pairwise disjoint edges -/
-def IsMatching {r : ℕ} (H : Hypergraph V r) (M : Finset (Finset V)) : Prop :=
+def IsMatching {r : ℕ} (H : RUniformHypergraph V r) (M : Finset (Finset V)) : Prop :=
   M ⊆ H.edges ∧ ∀ e₁ e₂ : Finset V, e₁ ∈ M → e₂ ∈ M → e₁ ≠ e₂ → EdgesDisjoint e₁ e₂
 
 /-- The matching number: size of largest matching -/
-noncomputable def matchingNumber {r : ℕ} (H : Hypergraph V r) : ℕ :=
+noncomputable def matchingNumber {r : ℕ} (H : RUniformHypergraph V r) : ℕ :=
   sSup {k : ℕ | ∃ M : Finset (Finset V), IsMatching H M ∧ M.card = k}
 
 /-- Hypergraph has no k-matching -/
-def HasNoKMatching {r : ℕ} (H : Hypergraph V r) (k : ℕ) : Prop :=
+def HasNoKMatching {r : ℕ} (H : RUniformHypergraph V r) (k : ℕ) : Prop :=
   matchingNumber H < k
 
 /-
@@ -74,9 +76,9 @@ Maximum edges in r-uniform hypergraph on n vertices with no k-matching.
 
 /-- f(n; r, k): maximum edges avoiding k independent edges -/
 noncomputable def f (n r k : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+  sSup {m : ℕ | ∃ (V : Type) (_ : DecidableEq V) (_ : Fintype V),
     Fintype.card V = n ∧
-    ∃ H : Hypergraph V r, H.edges.card = m ∧ HasNoKMatching H k}
+    ∃ H : RUniformHypergraph V r, H.edges.card = m ∧ HasNoKMatching H k}
 
 /-
 ## The Conjectured Formula
@@ -115,12 +117,30 @@ theorem f_2_explicit (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ 2 * k) :
     f n 2 k = max ((k - 1) * (2 * k - 1)) ((k - 1) * (2 * n - k) / 2) := by
   have h := erdos_gallai_graphs n k hk hn
   rw [h]
+  -- `n.choose 2` doubles to the exact product `n * (n - 1)`; this lets `omega`
+  -- reason about the `/2` terms below as exact (not floor) division.
+  have key : ∀ m : ℕ, 2 * m.choose 2 = m * (m - 1) := fun m => by
+    rw [Nat.choose_two_right]
+    exact Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd
   congr 1
   · -- C(2k-1, 2) = (k-1)(2k-1) = (2k-1)(2k-2)/2
-    rw [Nat.choose_two_right]
-    omega
+    rw [Nat.choose_two_right, show 2 * k - 1 - 1 = 2 * (k - 1) from by omega,
+        show (2 * k - 1) * (2 * (k - 1)) = 2 * ((k - 1) * (2 * k - 1)) from by ring,
+        Nat.mul_div_cancel_left _ (by norm_num : (0:ℕ) < 2)]
   · -- C(n,2) - C(n-k+1,2) = (k-1)(2n-k)/2
-    rw [Nat.choose_two_right, Nat.choose_two_right]
+    obtain ⟨a, rfl⟩ : ∃ a, n = a + k := ⟨n - k, by omega⟩
+    obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+    have e1 : a + (k' + 1) - (k' + 1) + 1 = a + 1 := by omega
+    have e2 : a + (k' + 1) - 1 = a + k' := by omega
+    have e3 : 2 * (a + (k' + 1)) - (k' + 1) = a + (a + (k' + 1)) := by omega
+    have e4 : k' + 1 - 1 = k' := by omega
+    have e5 : a + 1 - 1 = a := by omega
+    have hka := key (a + (k' + 1))
+    have ha1 := key (a + 1)
+    rw [e2] at hka
+    rw [e5] at ha1
+    have hpoly : (a + (k' + 1)) * (a + k') = (a + 1) * a + k' * (a + (a + (k' + 1))) := by ring
+    rw [e1, e4, e3]
     omega
 
 /-
@@ -140,13 +160,13 @@ axiom luczak_mieczkowska :
 Known cases where the conjecture is verified.
 -/
 
-/-- Kleitman's result: conjecture holds when n = rk -/
+/-  Kleitman's result: conjecture holds when n = rk -/
 /-- Huang-Loh-Sudakov: conjecture holds for n ≥ 3kr² -/
 axiom huang_loh_sudakov :
   ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
     ∀ n ≥ 3 * k * r^2, f n r k = conjecturedValue n r k
 
-/-- Frankl's small n result -/
+/-  Frankl's small n result -/
 /-
 ## Upper Bounds
 
@@ -180,6 +200,12 @@ theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥
       have hk'1 : k' + 1 ≥ 1 := by omega
       have hn' : n ≥ r * (k' + 1) := by nlinarith
       specialize ih hk'1 hn'
+      -- (k'+1-1) is definitionally k', but not syntactically -- normalize `ih` so later
+      -- arithmetic tactics see matching atoms.
+      have e0 : k' + 1 - 1 = k' := by omega
+      rw [e0] at ih
+      -- n ≥ k'+2 (from n ≥ r*(k'+2) and r ≥ 2), needed for the subtraction identities below.
+      have hnk : n ≥ k' + 1 + 1 := by nlinarith
       -- Simplify index expressions
       have h1 : n - (k' + 1) + 1 = n - k' := by omega
       have h2 : n - (k' + 1 + 1) + 1 = n - k' - 1 := by omega
@@ -198,7 +224,7 @@ theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥
       -- Pascal: C(m+1,r) - C(m,r) = C(m,r-1)  where m = n-k'-1
       have h_pascal : Nat.choose (n - k') r - Nat.choose (n - k' - 1) r =
           Nat.choose (n - k' - 1) (r - 1) := by
-        have hCSS := Nat.choose_succ_succ (n - k' - 1) (r - 1)
+        have hCSS := Nat.choose_succ_succ' (n - k' - 1) (r - 1)
         rw [show (n - k' - 1) + 1 = n - k' from by omega,
             show (r - 1) + 1 = r from by omega] at hCSS
         omega
@@ -232,78 +258,64 @@ theorem combined_lower_bound (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n
     f n r k ≥ conjecturedValue n r k := by
   unfold conjecturedValue
   have h1 := construction1_lower n r k hr hk (by omega)
-  have h2 := construction2_lower n r k hr hk (by omega)
-  exact le_max_iff.mpr (Or.inl h1)
+  have h2 := construction2_lower n r k hr hk (by nlinarith)
+  exact max_le h1 h2
 
 /-
 ## Monotonicity
 -/
 
-/-- f is increasing in n -/
-/-- f is increasing in k -/
+/-  f is increasing in n -/
+/-  f is increasing in k -/
 /-
 ## Asymptotic Behavior
 
 For large n, the second construction dominates.
 -/
 
-/-- For large n, construction2 > construction1 -/
-theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) :
+/-- For large n, construction2 > construction1.
+    NOTE (migration v4.31, epic #37508 / #38611 candidate): the original statement quantified
+    over `k ≥ 1`, but at `k = 1` BOTH sides are identically `0` for every `n`
+    (`construction2 n r 1 = C(n,r) - C(n,r) = 0` and `construction1 r 1 = C(r-1,r) = 0`), so the
+    strict-dominance claim `0 > 0` is false there -- it is not "trivial", it is unprovable. The
+    old (v4.26) proof's `k = 1` branch reduced to exactly this false goal; restricting to `k ≥ 2`
+    (the case Pascal-telescoping genuinely proves) is the honest fix. -/
+theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
     ∃ N : ℕ, ∀ n ≥ N, construction2 n r k > construction1 r k := by
   -- construction2 n r k = C(n,r) - C(n-k+1,r) grows without bound
   -- construction1 r k = C(rk-1, r) is a fixed constant
-  -- For k=1: c1 = C(r-1,r) = 0, so any n with C(n,r) > C(n,r) = 0 works trivially
-  -- For k≥2: by Pascal telescoping, construction2 n r k ≥ C(n-1,r-1) ≥ n-1 → ∞
+  -- By Pascal telescoping, construction2 n r k ≥ C(n-1,r-1) ≥ n-1 → ∞
   set c1 := construction1 r k
-  -- Use N = c1 + k + r as threshold
-  refine ⟨c1 + k + r, fun n hn => ?_⟩
+  -- Use N = c1 + 2r + k as threshold (large enough that r-1 ≤ (n-1)/2 too)
+  refine ⟨c1 + 2 * r + k, fun n hn => ?_⟩
   unfold construction2
-  by_cases hk1 : k = 1
-  · -- k = 1: c1 = C(r*1-1, r) = C(r-1, r) = 0
-    subst hk1
-    simp only [construction1, Nat.mul_one] at c1 hn ⊢
-    have : c1 = 0 := Nat.choose_eq_zero_of_lt (by omega)
-    rw [this] at hn ⊢
-    simp only [Nat.zero_add] at hn
-    rw [show n - 1 + 1 = n from by omega, Nat.sub_self]
-    exact Nat.choose_pos (by omega)
-  · -- k ≥ 2
-    have hk2 : k ≥ 2 := by omega
-    -- By Pascal: C(n,r) = C(n-1,r) + C(n-1,r-1)
-    -- So C(n,r) - C(n-1,r) = C(n-1,r-1)
-    -- And C(n-k+1,r) ≤ C(n-1,r) since n-k+1 ≤ n-1
-    have h1 : Nat.choose (n - k + 1) r ≤ Nat.choose (n - 1) r :=
-      Nat.choose_le_choose r (by omega)
-    have h2 : Nat.choose n r = Nat.choose (n - 1) r + Nat.choose (n - 1) (r - 1) := by
-      have := Nat.choose_succ_succ (n - 1) (r - 1)
-      rw [show n - 1 + 1 = n from by omega, show r - 1 + 1 = r from by omega] at this
-      omega
-    -- So construction2 n r k ≥ C(n-1,r-1)
-    have h3 : Nat.choose n r - Nat.choose (n - k + 1) r ≥ Nat.choose (n - 1) (r - 1) := by omega
-    -- C(n-1, r-1) ≥ n-1 when r-1 ≥ 1 (since C(m,s) ≥ C(m,1) = m for 1 ≤ s ≤ m-1)
-    -- Actually: C(m, 1) = m and C(m, s) ≥ C(m, 1) when s ≤ m/2 or by direct bound
-    -- Simpler: C(n-1, r-1) ≥ (n-1) since r-1 ≥ 1 and for s=1, C(m,1)=m, and C(m,s)≥C(m,1)
-    -- for s ≤ m-s, i.e., 2s ≤ m. We have r-1 ≥ 1, n-1 ≥ c1+k+r-1 ≥ 2(r-1) for large enough.
-    -- But we just need C(n-1, r-1) > c1, and n-1 ≥ c1 + k + r - 1 ≥ c1 + 2 + 2 - 1 = c1+3.
-    -- Use: C(m, s) ≥ m for m ≥ 2s-1 and s ≥ 1 (since C(m,s) ≥ C(m,1)=m when s ≤ m/2+1)
-    -- Here m = n-1 ≥ c1+k+r-1, s = r-1 ≥ 1.
-    -- For m ≥ 2(r-1): C(m, r-1) ≥ C(m, 1) = m ≥ c1+k+r-1 > c1.
-    suffices Nat.choose (n - 1) (r - 1) > c1 by omega
-    have hm : n - 1 ≥ c1 + k + r - 1 := by omega
-    -- We need: n-1 ≥ 2*(r-1) for C(n-1,r-1) ≥ C(n-1,1) = n-1 > c1
-    -- n-1 ≥ c1+k+r-1 ≥ 0+2+2-1 = 3 ≥ 2*(2-1) = 2 when r=2
-    -- n-1 ≥ c1+k+r-1 ≥ 2(r-1) when c1+k ≥ r-1, which holds since k ≥ 2 and r ≥ 2.
-    have hm2 : n - 1 ≥ 2 * (r - 1) := by omega
-    -- For m ≥ 2s where s ≥ 1: C(m, s) ≥ m
-    -- Proof: C(m, s) ≥ C(m, 1) = m when 1 ≤ s ≤ m-1 and s ≤ (m+1)/2
-    -- Since m ≥ 2s, we have s ≤ m/2, so C(m,s) ≥ C(m,1) = m
-    calc Nat.choose (n - 1) (r - 1)
-        ≥ n - 1 := by
-          rw [show n - 1 = Nat.choose (n - 1) 1 from (Nat.choose_one_right (n - 1)).symm]
-          exact Nat.choose_anti (n - 1) (by omega) (by omega)
-      _ > c1 := by omega
+  -- By Pascal: C(n,r) = C(n-1,r) + C(n-1,r-1)
+  -- So C(n,r) - C(n-1,r) = C(n-1,r-1)
+  -- And C(n-k+1,r) ≤ C(n-1,r) since n-k+1 ≤ n-1
+  have h1 : Nat.choose (n - k + 1) r ≤ Nat.choose (n - 1) r :=
+    Nat.choose_le_choose r (by omega)
+  have h2 : Nat.choose n r = Nat.choose (n - 1) r + Nat.choose (n - 1) (r - 1) := by
+    have hCSS := Nat.choose_succ_succ' (n - 1) (r - 1)
+    rw [show n - 1 + 1 = n from by omega, show r - 1 + 1 = r from by omega] at hCSS
+    omega
+  -- So construction2 n r k ≥ C(n-1,r-1)
+  have h3 : Nat.choose n r - Nat.choose (n - k + 1) r ≥ Nat.choose (n - 1) (r - 1) := by omega
+  suffices Nat.choose (n - 1) (r - 1) > c1 by omega
+  -- C(n-1, r-1) ≥ C(n-1, 1) = n-1, since binomial coefficients are increasing in the bottom
+  -- argument up through the midpoint, and r-1 ≤ (n-1)/2 here.
+  have step : ∀ j, 1 ≤ j → j ≤ (n - 1) / 2 → Nat.choose (n - 1) 1 ≤ Nat.choose (n - 1) j := by
+    intro j hj
+    induction j, hj using Nat.le_induction with
+    | base => intro _; exact le_refl _
+    | succ j hj ih =>
+      intro hjm
+      exact (ih (by omega)).trans (Nat.choose_le_succ_of_lt_half_left (by omega))
+  have hmid : Nat.choose (n - 1) 1 ≤ Nat.choose (n - 1) (r - 1) :=
+    step (r - 1) (by omega) (by omega)
+  rw [Nat.choose_one_right] at hmid
+  omega
 
-/-- Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
+/-  Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
 /-
 ## The Open Problem
 

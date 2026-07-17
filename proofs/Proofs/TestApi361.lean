@@ -11,8 +11,8 @@ def IsSubsetSum' (A : Finset ℕ) (n : ℕ) : Prop :=
 
 theorem test_empty (n : ℕ) (hn : 0 < n) : ¬IsSubsetSum' ∅ n := by
   intro ⟨B, hB, hsum⟩
-  have : B = ∅ := eq_empty_of_forall_not_mem (fun x hx =>
-    absurd (hB hx) (not_mem_empty x))
+  have : B = ∅ := eq_empty_of_forall_notMem (fun x hx =>
+    absurd (hB hx) (notMem_empty x))
   subst this
   simp at hsum
   omega

@@ -82,7 +82,7 @@ theorem cyclotomic_prime_pow_irreducible_rat :
     shiftedCyclotomicPrimePowInt_monic p n
   have hdeg : 0 < (shiftedCyclotomicPrimePowInt p n).natDegree := by
     rw [shiftedCyclotomicPrimePowInt_natDegree]
-    have h1 : 0 < p ^ n := Nat.pos_pow_of_pos n hp.out.pos
+    have h1 : 0 < p ^ n := pow_pos hp.out.pos n
     have h2 : 0 < p - 1 := Nat.sub_pos_of_lt hp.out.one_lt
     positivity
   have hlow : ∀ k < (shiftedCyclotomicPrimePowInt p n).natDegree,

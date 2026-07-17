@@ -33,14 +33,23 @@ def digitSum (n : ℕ) : ℕ := (Nat.digits 10 n).sum
 
 /-- Sum of digits is at most n for all n. -/
 private theorem digitSum_le_self (n : ℕ) : digitSum n ≤ n := by
-  unfold digitSum
-  rcases le_or_lt 10 n with h | h
-  · exact le_of_lt (Nat.sum_digits_lt n 10 (by omega) h)
-  · interval_cases n <;> native_decide
+  unfold digitSum; exact Nat.digit_sum_le 10 n
 
 /-- digitSum n < n for n ≥ 10. -/
 private theorem digitSum_lt_of_ge_ten (n : ℕ) (h : 10 ≤ n) : digitSum n < n := by
-  unfold digitSum; exact Nat.sum_digits_lt n 10 (by omega) h
+  unfold digitSum
+  -- v4.31: `Nat.sum_digits_lt` was removed; derive strictness from the
+  -- `(p-1)·∑ = n - digitSum` identity (the log-sum is ≥ 1 when n ≥ base).
+  have hle := Nat.digit_sum_le 10 n
+  have key := Nat.sub_one_mul_sum_log_div_pow_eq_sub_sum_digits (p := 10) n
+  have h0 : (0 : ℕ) ∈ Finset.range (Nat.log 10 n).succ :=
+    Finset.mem_range.mpr (Nat.succ_pos _)
+  have hpos : 1 ≤ ∑ i ∈ Finset.range (Nat.log 10 n).succ, n / 10 ^ i.succ := by
+    refine le_trans ?_ (Finset.single_le_sum (f := fun i => n / 10 ^ i.succ)
+      (fun i _ => Nat.zero_le _) h0)
+    simp only [Nat.succ_eq_add_one, zero_add, pow_one]
+    omega
+  omega
 
 /-- The digital root: iterate digit summation until single digit -/
 noncomputable def digitalRoot : ℕ → ℕ
@@ -52,7 +61,7 @@ noncomputable def digitalRoot : ℕ → ℕ
   decreasing_by
     simp_wf
     have h_le := digitSum_le_self (n + 1)
-    exact digitSum_lt_of_ge_ten (n + 1) (by omega)
+    exact Nat.lt_succ_iff.mp (digitSum_lt_of_ge_ten (n + 1) (by omega))
 
 /-
 ## Part II: Closed-Form Formula
@@ -70,7 +79,7 @@ theorem digitalRoot_mod9 (n : ℕ) (hn : n > 0) :
     digitalRootFormula n = if n % 9 = 0 then 9 else n % 9 := by
   unfold digitalRootFormula
   simp only [show n ≠ 0 by omega, ↓reduceIte]
-  omega
+  split_ifs with h <;> omega
 
 /-- Digital root is always 0-9 -/
 theorem digitalRoot_range (n : ℕ) : digitalRootFormula n ≤ 9 := by
@@ -119,14 +128,8 @@ private theorem mod9_pred_eq {n m : ℕ} (hn : 0 < n) (hm : 0 < m)
   set b := (m - 1) % 9 with hb_def
   have ha : a < 9 := Nat.mod_lt _ (by omega)
   have hb : b < 9 := Nat.mod_lt _ (by omega)
-  have h1 : n % 9 = (a + 1) % 9 := by
-    have h := Nat.add_mod (n - 1) 1 9
-    rw [Nat.sub_add_cancel (show 1 ≤ n by omega)] at h
-    simpa using h
-  have h2 : m % 9 = (b + 1) % 9 := by
-    have h := Nat.add_mod (m - 1) 1 9
-    rw [Nat.sub_add_cancel (show 1 ≤ m by omega)] at h
-    simpa using h
+  have h1 : n % 9 = (a + 1) % 9 := by omega
+  have h2 : m % 9 = (b + 1) % 9 := by omega
   have h3 : (a + 1) % 9 = (b + 1) % 9 := by rw [← h1, ← h2]; exact hmod
   interval_cases a <;> interval_cases b <;> omega
 
@@ -152,7 +155,7 @@ theorem digitalRoot_idempotent (n : ℕ) :
   rcases n with _ | n
   · simp [digitalRootFormula]
   · have h : digitalRootFormula (n + 1) ≥ 1 := by
-      unfold digitalRootFormula; simp; omega
+      unfold digitalRootFormula; split <;> omega
     have h9 : digitalRootFormula (n + 1) ≤ 9 := digitalRoot_range (n + 1)
     exact digitalRoot_single _ h h9
 
@@ -211,11 +214,11 @@ theorem digitalRoot_mul (a b : ℕ) :
       _ = (digitalRootFormula a * digitalRootFormula b) % 9 := (Nat.mul_mod _ _ 9).symm
   · constructor
     · intro h
-      rcases mul_eq_zero.mp h with ha | hb
+      rcases Nat.mul_eq_zero.mp h with ha | hb
       · simp [show digitalRootFormula a = 0 from (digitalRootFormula_eq_zero_iff a).mpr ha]
       · simp [show digitalRootFormula b = 0 from (digitalRootFormula_eq_zero_iff b).mpr hb]
     · intro h
-      rcases mul_eq_zero.mp h with ha | hb
+      rcases Nat.mul_eq_zero.mp h with ha | hb
       · simp [(digitalRootFormula_eq_zero_iff a).mp ha]
       · simp [(digitalRootFormula_eq_zero_iff b).mp hb]
 

@@ -41,9 +41,7 @@ References:
 - Parent file: Proofs.Erdos1059OQ02 (has the buggy axiom for l ≥ 3)
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1059OQ02OQ01
 
@@ -115,7 +113,7 @@ theorem p101_qualifying : AllFactorialSubtractionsComposite 101 := by
     by_contra hlt
     push_neg at hlt
     have h5 : Nat.factorial 5 ≤ Nat.factorial k := by
-      apply Nat.factorial_le_factorial
+      apply Nat.factorial_le
       omega
     simp only [show Nat.factorial 5 = 120 from by norm_num] at h5
     linarith

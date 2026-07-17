@@ -62,20 +62,20 @@ theorem erdos_399_alt : (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4 := by native_d
 
 /- ## Historical Results (Axiomatized) -/
 
-/--
+/- 
 **Erdős-Obláth Theorem (1937)**: There are no solutions to n! = x^k ± y^k
 when gcd(x,y) = 1 and k ≠ 4.
 
 The proof uses deep results from algebraic number theory including the
 analysis of the Fermat equation in cyclotomic fields.
 -/
-/--
+/- 
 **Pollack-Shapiro Theorem (1973)**: There are no solutions to n! = x^4 - 1.
 
 This was called "the next to last case" because it left open the
 case of n! = x^4 - y^4 with y > 1, which Barfield later resolved.
 -/
-/--
+/- 
 **Cambie's Observation**: There are no solutions to n! = x^4 + y^4
 with gcd(x,y) = 1 and xy > 1.
 
@@ -92,7 +92,7 @@ theorem sum_squares_720 : (12 : ℕ)^2 + (24 : ℕ)^2 = 720 := by native_decide
 /-- The equation 6! = 12^2 + 24^2 holds -/
 theorem six_factorial_sum_squares : 6! = (12 : ℕ)^2 + (24 : ℕ)^2 := by native_decide
 
-/--
+/- 
 **Erdős-Obláth**: The only solution to n! = x^2 + y^2 with xy > 1
 is 6! = 12^2 + 24^2 (up to swapping x and y).
 

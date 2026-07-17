@@ -81,7 +81,7 @@ theorem sidon_exists (N : ℕ) : ∃ A : Finset ℕ, ↑A ⊆ Finset.range (N + 
   use ∅
   constructor
   · exact Finset.empty_subset _
-  · intro a b c d ha; exact absurd ha (Finset.not_mem_empty a)
+  · intro a b c d ha; exact absurd ha (Finset.notMem_empty a)
 
 /- ## The Erdős-Turán Conjecture -/
 
@@ -122,7 +122,7 @@ def RequiredUpperBound (ε : ℝ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
     (sidonNumber N : ℝ) ≤ Real.sqrt N + C * N^ε
 
-/-- Achieving the conjecture for one ε < 1/4 would be a breakthrough.
+/-  Achieving the conjecture for one ε < 1/4 would be a breakthrough.
     Proof sketch: If we have a bound with exponent ε₀ < 1/4, we can derive
     the conjecture for all ε > 0 by using N^ε₀ ≤ N^ε for ε ≤ ε₀ (when N ≥ 1)
     or C * N^ε₀ ≤ N^ε for large enough N when ε > ε₀. -/
@@ -160,7 +160,7 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
     s₁.card = h → s₂.card = h →
     s₁.sum = s₂.sum → s₁ = s₂
 
-/-- Sidon sets are B₂ sets.
+/-  Sidon sets are B₂ sets.
     A Sidon set requires all pairwise sums to be distinct, which is exactly
     the B₂ condition (all 2-element multiset sums are distinct). -/
 

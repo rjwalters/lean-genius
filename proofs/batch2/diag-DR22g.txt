@@ -1,0 +1,53 @@
+===== Erdos508Problem
+error: Proofs/Erdos508Problem.lean:32:2: Type mismatch
+  fun x y h => ?m.16
+has type
+error: Proofs/Erdos508Problem.lean:32:19: Tactic `constructor` failed: target is not an inductive datatype
+x : ?m.12
+===== ErdosKoRado
+error: Proofs/ErdosKoRado.lean:92:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.card_image_of_injOn`
+  #(image ?f ?s) = #?s
+with the goal
+error: Proofs/ErdosKoRado.lean:461:60: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card (Fin ?n)
+in the target expression
+error: Proofs/ErdosKoRado.lean:488:6: Tactic `constructor` failed: no applicable constructor found
+case h.h
+error: Proofs/ErdosKoRado.lean:497:6: This extensionality tactic only applies to equalities, not
+  List.Mem (u ∪ T)
+    (List.filter (fun b => decide ((fun s => T ⊆ s) b)) (List.pmap mk (Multiset.powersetCardAux k (List.finRange n)) ⋯))
+===== Erdos287Problem
+error: Proofs/Erdos287Problem.lean:36:5: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  ns
+of type `List ℕ`
+error: Proofs/Erdos287Problem.lean:48:67: unexpected token '/-!'; expected 'lemma'
+error: Proofs/Erdos287Problem.lean:70:2: unexpected token '/-!'; expected 'lemma'
+error: Lean exited with code 1
+error: Proofs/Erdos287Problem.lean:70:2: unexpected token '/-!'; expected 'lemma'
+error: Lean exited with code 1
+⚠ [8589/8595] Built Proofs.Erdos1084OQ01 (6.3s)
+===== FundamentalTheoremCalculusLebesgueOQ04
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:104:28: No goals to be solved
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:159:18: Unknown identifier `dist_norm`
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:158:42: unsolved goals
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:159:18: Unknown identifier `dist_norm`
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:158:42: unsolved goals
+E : Type u_1
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:158:42: unsolved goals
+E : Type u_1
+inst✝ : NormedAddCommGroup E
+error: Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:208:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ Finset.range n, (u (i + 1) - u i)
+in the target expression
+===== PtolemysTheoremOQ01Incomplete01
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:80:20: Unknown constant `Complex.abs_mul_exp_arg_mul_I`
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:78:54: unsolved goals
+z : ℂ
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:78:54: unsolved goals
+z : ℂ
+hz : ‖z‖ = 1
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:99:8: Invalid `⟨...⟩` notation: The expected type `ℤ` has more than one constructor
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:100:2: No goals to be solved
+warning: Proofs/PtolemysTheoremOQ01Incomplete01.lean:127:6: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:

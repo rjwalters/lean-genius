@@ -1,4 +1,4 @@
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Algebra.Ring.Parity
 import Mathlib.Tactic
 

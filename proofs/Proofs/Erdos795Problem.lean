@@ -182,13 +182,13 @@ but this term has type
   ?m.2
 
 Note: Expected a function because this term is being applied to the argument
-  (n ^ (1 / 3 : ℝ).toNat)-/
+  (n ^ ⌊(1 / 3 : ℝ)⌋₊)-/
 -- [Ra25]
 
 /-- Raghavan (2025): Lower bound including cube root primes -/
 theorem raghavan_lower_bound (n : ℕ) (hn : n ≥ 2) :
     ∃ C : ℝ,
-    (g n : ℝ) ≥ primePi n + primePi (Nat.sqrt n) + (primePi (n^(1/3 : ℝ).toNat) : ℝ) / 3 - C := by
+    (g n : ℝ) ≥ primePi n + primePi (Nat.sqrt n) + (primePi (n^⌊(1/3 : ℝ)⌋₊) : ℝ) / 3 - C := by
   sorry
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
@@ -316,7 +316,7 @@ but this term has type
   ?m.3
 
 Note: Expected a function because this term is being applied to the argument
-  (n ^ (1 / 3 : ℝ).toNat)-/
+  (n ^ ⌊(1 / 3 : ℝ)⌋₊)-/
 /-- Key insight: Most elements must be primes or prime powers -/
 theorem structure_of_optimal_sets (n : ℕ) (A : Finset ℕ)
     (hA : A ⊆ Finset.range (n + 1))
@@ -327,7 +327,7 @@ theorem structure_of_optimal_sets (n : ℕ) (A : Finset ℕ)
       A = P ∪ P2 ∪ R ∧
       (∀ p ∈ P, Nat.Prime p) ∧
       (∀ q ∈ P2, ∃ p, Nat.Prime p ∧ q = p^2) ∧
-      R.card ≤ primePi (n^(1/3 : ℝ).toNat) / 2 := by
+      R.card ≤ primePi (n^⌊(1/3 : ℝ)⌋₊) / 2 := by
   sorry
 
 -- Structural analysis in [Ra25]
@@ -367,7 +367,7 @@ theorem raghavan_error_is_smaller (n : ℕ) (hn : n ≥ 4) :
 unexpected end of input; expected ','-/
 /-- A multiplicative Sidon set: no non-trivial product relations -/
 def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
-  ∀ a b c d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
 
 /- NOTE: The theorem `sidon_implies_distinct_products` (Sidon → DSP) was REMOVED
    because it is MATHEMATICALLY FALSE.

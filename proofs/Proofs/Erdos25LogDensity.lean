@@ -546,7 +546,10 @@ theorem logDensity_odds : HasLogDensity {n : ℕ | Odd n} (1/2) := by
 private theorem tendsto_nat_div_m (m : ℕ) (hm : 1 ≤ m) :
     Tendsto (fun n : ℕ => n / m) atTop atTop := by
   rw [Filter.tendsto_atTop_atTop]
-  intro b; exact ⟨m * b, fun n hn => by omega⟩
+  intro b
+  refine ⟨m * b, fun n hn => (Nat.le_div_iff_mul_le (show 0 < m by omega)).mpr ?_⟩
+  calc b * m = m * b := Nat.mul_comm b m
+    _ ≤ n := hn
 
 /-- log(⌊N/m⌋) / log(N) → 1 as N → ∞ for any fixed m ≥ 2.
     Proof: squeeze between 1 - log(2m)/log(N) and 1. -/
@@ -563,9 +566,12 @@ private theorem tendsto_log_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
     field_simp; ring
   apply Filter.Tendsto.congr' h_eq
   apply Tendsto.sub tendsto_const_nhds
-  apply squeeze_zero_norm'
-  · filter_upwards [eventually_ge_atTop (2 * m)] with N (hN : 2 * m ≤ N)
-    have hNm_pos : (0 : ℝ) < ↑(N / m) := by exact_mod_cast (show 0 < N / m by omega)
+  have hbound : ∀ᶠ N : ℕ in atTop,
+      ‖(Real.log (↑N : ℝ) - Real.log (↑(N / m) : ℝ)) / Real.log (↑N : ℝ)‖ ≤
+        Real.log (2 * (m : ℝ)) / Real.log (↑N : ℝ) := by
+    filter_upwards [eventually_ge_atTop (2 * m)] with N (hN : 2 * m ≤ N)
+    have hNm_pos : (0 : ℝ) < ↑(N / m) := by
+      exact_mod_cast Nat.div_pos (show m ≤ N by omega) (show 0 < m by omega)
     have hNr_pos : (0 : ℝ) < ↑N := by exact_mod_cast (show 0 < N by omega)
     have hlog_pos : 0 < Real.log (↑N : ℝ) :=
       Real.log_pos (by exact_mod_cast (show 1 < N by omega))
@@ -573,15 +579,14 @@ private theorem tendsto_log_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
       apply sub_nonneg.mpr; apply Real.log_le_log hNm_pos
       exact_mod_cast (Nat.div_le_self N m)
     rw [Real.norm_eq_abs, abs_of_nonneg (div_nonneg h_sub_nn hlog_pos.le)]
-    simp only [div_eq_mul_inv]
-    apply mul_le_mul_of_nonneg_right _ (inv_nonneg.mpr hlog_pos.le)
+    apply div_le_div_of_nonneg_right _ hlog_pos.le
     calc Real.log (↑N : ℝ) - Real.log (↑(N / m) : ℝ)
         = Real.log ((↑N : ℝ) / ↑(N / m)) :=
           (Real.log_div (ne_of_gt hNr_pos) (ne_of_gt hNm_pos)).symm
       _ ≤ Real.log (2 * m) := by
           apply Real.log_le_log (div_pos hNr_pos hNm_pos)
           -- N/(N/m) ≤ 2m: since N ≤ 2m * (N/m), dividing by N/m gives ≤ 2m
-          rw [div_le_iff hNm_pos]
+          rw [div_le_iff₀ hNm_pos]
           push_cast [Nat.cast_le]
           -- Need: ↑N ≤ 2 * ↑m * ↑(N / m) in ℝ, from ℕ inequality
           have hnat : N ≤ 2 * m * (N / m) := by
@@ -589,7 +594,9 @@ private theorem tendsto_log_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
             have := Nat.mod_lt N (show 0 < m by omega)
             nlinarith [Nat.le_div_iff_mul_le (show 0 < m by omega) |>.mpr (by omega : 2 * m ≤ N)]
           exact_mod_cast hnat
-  · exact Tendsto.div_atTop tendsto_const_nhds hlog_atTop
+  have hzero : Tendsto (fun N : ℕ => Real.log (2 * (m : ℝ)) / Real.log (↑N : ℝ)) atTop (nhds 0) :=
+    Tendsto.div_atTop tendsto_const_nhds hlog_atTop
+  exact squeeze_zero_norm' hbound hzero
 
 /-- H_{⌊N/m⌋} / log(N) → 1 as N → ∞.
     Factors as (H_{N/m} / log(N/m)) · (log(N/m) / log(N)), both → 1. -/
@@ -600,7 +607,9 @@ private theorem tendsto_harmonicSum_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
       (fun N : ℕ => harmonicSum (N / m) / Real.log (↑N)) := by
     filter_upwards [eventually_ge_atTop (2 * m + 2)] with N hN
     have hlog : Real.log (↑(N / m) : ℝ) ≠ 0 := by
-      have h2 : 1 < (↑(N / m) : ℝ) := by exact_mod_cast (show 1 < N / m by omega)
+      have h2 : 1 < (↑(N / m) : ℝ) := by
+        have hle : 2 ≤ N / m := (Nat.le_div_iff_mul_le (show 0 < m by omega)).mpr (by omega)
+        exact_mod_cast (lt_of_lt_of_le one_lt_two hle)
       exact ne_of_gt (Real.log_pos h2)
     field_simp
   rw [show (1 : ℝ) = 1 * 1 from by ring]
@@ -621,20 +630,26 @@ theorem logWeightedCount_multiples (m : ℕ) (hm : 1 ≤ m) (N : ℕ) :
         ⟨⟨hdvd, Nat.succ_ne_zero n⟩, Nat.succ_ne_zero n⟩
       rw [if_pos hmem, ih]
       have hdiv : (n + 1) / m = n / m + 1 := by
-        rw [Nat.succ_div n m, if_pos hdvd]
+        rw [Nat.succ_div, if_pos hdvd]
       rw [hdiv, harmonicSum_succ', mul_add]
       congr 1
       obtain ⟨k, hk⟩ := hdvd
-      have hk_pos : 0 < k := by omega
+      have hk_pos : 0 < k := by
+        rcases Nat.eq_zero_or_pos k with hk0 | hk0
+        · subst hk0; simp only [Nat.mul_zero] at hk; omega
+        · exact hk0
+      have hk_div : (n + 1) / m = k := by
+        rw [hk]; exact Nat.mul_div_cancel_left k (by omega : 0 < m)
       have h_eq : (↑(n + 1) : ℝ) = (m : ℝ) * ((↑(n / m) : ℝ) + 1) := by
-        have : n / m + 1 = k := by rw [Nat.succ_div n m, if_pos hdvd]; ring
-        rw [this]; push_cast; linarith [hk]
+        have hthis : n / m + 1 = k := by rw [← hdiv]; exact hk_div
+        have hcast : (↑(n / m) : ℝ) + 1 = (↑k : ℝ) := by exact_mod_cast hthis
+        rw [hcast]; exact_mod_cast hk
       rw [h_eq]; field_simp
     · have hmem : ¬((n + 1) ∈ {k : ℕ | m ∣ k ∧ k ≠ 0} ∧ (n + 1) ≠ 0) := by
         intro ⟨⟨hd, _⟩, _⟩; exact hdvd hd
       rw [if_neg hmem, add_zero, ih]
       have hdiv : (n + 1) / m = n / m := by
-        rw [Nat.succ_div n m, if_neg hdvd, add_zero]
+        rw [Nat.succ_div, if_neg hdvd, add_zero]
       rw [hdiv]
 
 /-- Multiples and non-multiples of m partition ℕ⁺. -/
@@ -663,7 +678,8 @@ theorem logDensity_avoid_one_residue (m : ℕ) (hm : 2 ≤ m) :
       filter_upwards [eventually_gt_atTop 1] with N hN
       simp only [show ¬(N ≤ 1) by omega, ↓reduceIte]
       -- Swap the set to match logWeightedCount_multiples
-      have hset : {n : ℕ | n ≠ 0 ∧ m ∣ n} = {n : ℕ | m ∣ n ∧ n ≠ 0} := by ext; tauto
+      have hset : {n : ℕ | n ≠ 0 ∧ m ∣ n} = {n : ℕ | m ∣ n ∧ n ≠ 0} :=
+        Set.ext fun x => and_comm
       rw [hset, logWeightedCount_multiples m (by omega) N]; ring
     exact Filter.Tendsto.congr' h_eq
       (show Tendsto (fun N => (1 / (m : ℝ)) * (harmonicSum (N / m) / Real.log (↑N)))

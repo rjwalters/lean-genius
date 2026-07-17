@@ -1,6 +1,4 @@
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.InnerProductSpace.Convex
-import Mathlib.Tactic
+import Mathlib
 import Proofs.PtolemysTheoremOQ01
 import Proofs.PtolemysComplexProofOQ01
 
@@ -244,8 +242,8 @@ example :
     ‖(1 : ℂ) - (-1)‖ * ‖(-Complex.I) - Complex.I‖ =
     ‖(1 : ℂ) - (-Complex.I)‖ * ‖(-1 : ℂ) - Complex.I‖ +
     ‖(-Complex.I) - (-1 : ℂ)‖ * ‖(1 : ℂ) - Complex.I‖ := by
-  norm_num [Complex.norm_eq_abs, Complex.abs_apply, Complex.normSq_apply,
-            Complex.ext_iff, Real.sqrt_eq_iff_sq_eq]
+  norm_num [Complex.norm_def, Complex.normSq_apply,
+            Complex.ext_iff]
 
 -- ============================================================
 -- PART 7: Summary

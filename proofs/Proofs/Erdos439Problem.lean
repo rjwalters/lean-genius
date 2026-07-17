@@ -23,11 +23,11 @@ axiomatize the ESS partial results and the Khalfalah-Szemerédi theorem,
 then derive the summary combining all results.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset
 
@@ -71,9 +71,11 @@ An infinite graph where m ~ n iff m + n is a perfect square.
 def squareGraph : SimpleGraph ℕ where
   Adj m n := m ≠ n ∧ IsPerfectSquare (m + n)
   symm := by
+    constructor
     intro m n ⟨hne, hsq⟩
     exact ⟨hne.symm, by rw [add_comm]; exact hsq⟩
   loopless := by
+    constructor
     intro m ⟨hne, _⟩
     exact hne rfl
 
@@ -125,7 +127,7 @@ integers x ≠ y of the same color with x + y = f(z) for some z.
 def HasMonochromaticPolyPair (c : FiniteColoring k) (f : ℤ → ℤ) : Prop :=
   ∃ x y : ℤ, x ≠ y ∧ c x = c y ∧ ∃ z : ℤ, x + y = f z
 
-/--
+/- 
 **Khalfalah-Szemerédi General Theorem:**
 For any non-constant polynomial f with f(z) even for some z,
 any finite coloring has a monochromatic pair with x + y = f(z).
@@ -153,7 +155,7 @@ integers x ≠ y of the same color with x + y a k-th power.
 def HasMonochromaticKthPowerPair (c : FiniteColoring m) (k : ℕ) : Prop :=
   ∃ x y : ℤ, x ≠ y ∧ c x = c y ∧ SumIsKthPower x y k
 
-/--
+/- 
 **k-th Powers Result:**
 For k ≥ 2, any finite coloring yields monochromatic pairs whose
 sum is a k-th power. This follows from the polynomial generalization
@@ -168,9 +170,11 @@ An infinite graph where m ~ n iff m + n is a k-th power.
 def kthPowerGraph (k : ℕ) : SimpleGraph ℕ where
   Adj m n := m ≠ n ∧ IsKthPower (m + n) k
   symm := by
+    constructor
     intro m n ⟨hne, hpow⟩
     exact ⟨hne.symm, by rw [add_comm]; exact hpow⟩
   loopless := by
+    constructor
     intro m ⟨hne, _⟩
     exact hne rfl
 
@@ -179,7 +183,7 @@ def kthPowerGraph (k : ℕ) : SimpleGraph ℕ where
 -/
 theorem square_is_second_power : squareGraph = kthPowerGraph 2 := by
   ext m n
-  simp only [squareGraph, kthPowerGraph, SimpleGraph.adj_mk]
+  simp only [squareGraph, kthPowerGraph]
   constructor <;> intro ⟨hne, h⟩
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two]; exact hs⟩⟩
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two] at hs; exact hs⟩⟩

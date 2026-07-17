@@ -219,7 +219,7 @@ theorem ramsey_recurrence (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
       use insert v red
       refine ⟨?_, extend_red_clique c v red hred_sub
         (transfer_red_clique c embed red' hred_clique) hv_notin⟩
-      rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      rw [card_insert_of_notMem hv_notin, card_map]; omega
     · -- Blue (l+1)-clique
       right; exact ⟨blue'.map embed, by rw [card_map]; exact hblue_card,
         transfer_blue_clique c embed blue' hblue_clique⟩
@@ -251,7 +251,7 @@ theorem ramsey_recurrence (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
       use insert v blue
       refine ⟨?_, extend_blue_clique c v blue hblue_sub
         (transfer_blue_clique c embed blue' hblue_clique) hv_notin⟩
-      rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      rw [card_insert_of_notMem hv_notin, card_map]; omega
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Remaining Axiom: Kim-Shearer Lower Bound (deep result)

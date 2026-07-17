@@ -24,8 +24,8 @@ References:
 Tags: graph-theory, extremal-graphs, cycles, chords
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
+open scoped Classical
 
 namespace Erdos767
 
@@ -46,16 +46,16 @@ noncomputable def edgeCount {n : ℕ} (G : Graph n) : ℕ :=
 def IsCycle {n : ℕ} (G : Graph n) (vertices : List (Fin n)) : Prop :=
   vertices.length ≥ 3 ∧
   vertices.Nodup ∧
-  ∀ i, i < vertices.length →
-    G.Adj (vertices.get ⟨i, by omega⟩)
-          (vertices.get ⟨(i + 1) % vertices.length, by omega⟩)
+  ∀ i, (hi : i < vertices.length) →
+    G.Adj (vertices.get ⟨i, hi⟩)
+          (vertices.get ⟨(i + 1) % vertices.length, Nat.mod_lt _ (by omega)⟩)
 
 /-- A chord of a cycle: an edge between non-adjacent cycle vertices -/
 def IsChord {n : ℕ} (G : Graph n) (cycle : List (Fin n)) (u v : Fin n) : Prop :=
   u ∈ cycle ∧ v ∈ cycle ∧
   G.Adj u v ∧
   -- u and v are not adjacent on the cycle
-  ∃ i j, cycle.get? i = some u ∧ cycle.get? j = some v ∧
+  ∃ i j, cycle[i]? = some u ∧ cycle[j]? = some v ∧
          (j - i) % cycle.length > 1 ∧ (i - j) % cycle.length > 1
 
 /-- Count of chords incident to a vertex on a cycle -/
@@ -99,9 +99,9 @@ axiom erdos_lower (k n : ℕ) (hn : n ≥ k + 1) :
 ## Part IV: Special Cases
 -/
 
-/-- Pósa: g_1(n) = 2n - 4 for n ≥ 4 -/
-/-- Erdős: g_2(n) = 3n - 9 for n ≥ 6 -/
-/-- Erdős: g_3(n) = 4n - 16 for n ≥ 8 -/
+/-  Pósa: g_1(n) = 2n - 4 for n ≥ 4 -/
+/-  Erdős: g_2(n) = 3n - 9 for n ≥ 6 -/
+/-  Erdős: g_3(n) = 4n - 16 for n ≥ 8 -/
 /-
 ## Part V: Jiang's Theorem (2004)
 -/
@@ -123,9 +123,8 @@ theorem erdos_767_solved (k : ℕ) :
 /-- Formula check: (k+1)n - (k+1)² = (k+1)(n - k - 1) -/
 theorem formula_factored (k n : ℕ) (hn : n ≥ k + 1) :
     (k + 1) * n - (k + 1)^2 = (k + 1) * (n - k - 1) := by
-  have h : n - k - 1 + (k + 1) = n := by omega
-  ring_nf
-  omega
+  have hnk : n - k - 1 = n - (k + 1) := by omega
+  rw [hnk, pow_two, Nat.mul_sub]
 
 /-- For k = 1: g_1(n) = 2n - 4 -/
 example : ∀ n ≥ 4, (1 + 1) * n - (1 + 1)^2 = 2 * n - 4 := by

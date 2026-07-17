@@ -53,6 +53,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+open scoped Classical
 
 open Nat Real SimpleGraph
 
@@ -125,7 +126,7 @@ def HasMonochromaticInducedCopy {V W : Type*} [Fintype V] [Fintype W]
     ∃ f : V ↪ W,
       (∀ u v : V, G.Adj u v ↔ H.Adj (f u) (f v)) ∧
       (∀ u v : V, G.Adj u v → ∃ he : H.Adj (f u) (f v),
-        c ⟨⟦(f u, f v)⟧, he⟩ = color)
+        c ⟨s(f u, f v), he⟩ = color)
 
 /- ## Part IV: Induced Ramsey Numbers
 -/
@@ -171,15 +172,15 @@ theorem induced_ramsey_number_finite (n : ℕ) (G : Graph (Fin n)) :
 /- ## Part VI: Historical Bounds
 -/
 
-/--
+/- 
 **Rödl's Bipartite Bound (1973):**
 For bipartite graphs G on n vertices, R*(G) ≤ 2^{O(n)}.
 -/
-/--
+/- 
 **Kohayakawa-Prömel-Rödl Bound (1998):**
 R*(G) < 2^{O(n(log n)²)} for all graphs G on n vertices.
 -/
-/--
+/- 
 **Conlon-Fox-Sudakov Bound (2012):**
 R*(G) < 2^{O(n log n)} for all graphs G on n vertices.
 -/
@@ -222,7 +223,7 @@ noncomputable def ordinaryRamseyNumber (n : ℕ) (G : Graph (Fin n)) : ℕ :=
     ∃ color : EdgeColor,
       ∃ f : Fin n ↪ Fin m,
         ∀ u v : Fin n, G.Adj u v → ∃ he : (completeGraph (Fin m)).Adj (f u) (f v),
-          c ⟨⟦(f u, f v)⟧, he⟩ = color }
+          c ⟨s(f u, f v), he⟩ = color }
 
 /--
 **R*(G) ≥ R(G):**
@@ -260,7 +261,7 @@ theorem induced_ramsey_ge_ordinary (n : ℕ) (G : Graph (Fin n)) :
   -- the colour values agree by proof irrelevance of the edge-membership witness.
   exact ⟨heH.ne, hcol⟩
 
-/--
+/- 
 **Gap can be large:**
 There exist graphs where R*(G) is much larger than R(G).
 For example, complete bipartite graphs can exhibit superpolynomial gaps.

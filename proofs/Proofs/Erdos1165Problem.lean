@@ -88,7 +88,7 @@ infinitely often", formalized via measure theory.
 axiom prob_favourite_count_io (r : ℕ) : ℝ
   -- P(|F(n)| = r infinitely often)
 
-/-- Basic property: probabilities are between 0 and 1. -/
+/-  Basic property: probabilities are between 0 and 1. -/
 /- ## Part IV: Main Results (SOLVED)
 
 Erdős Problem #1165 asks for the value of
@@ -148,7 +148,7 @@ These provide context for the problem, though they are not
 directly part of the problem statement.
 -/
 
-/-- **Bass-Griffin (1985)**: In the 1D case, for large n, the maximum
+/- **Bass-Griffin (1985)**: In the 1D case, for large n, the maximum
     visit count is achieved at a unique site almost surely.
     This motivates the 2D question: in higher dimensions, the
     structure of favourite sites becomes more complex. -/

@@ -179,9 +179,9 @@ theorem kronecker_lemma
       intro i; have h : a i ≠ 0 := (ha_pos i).ne'; field_simp
     have key := Finset.sum_range_by_parts a (fun i => x i / a i) (m + 1)
     simp only [smul_eq_mul, Nat.add_sub_cancel] at key
-    -- `key : ∑ i in range (m+1), a i * (x i / a i)
-    --          = a m * (∑ i in range (m+1), x i / a i)
-    --            - ∑ i in range m, (a (i+1) - a i) * (∑ j in range (i+1), x j / a j)`
+    -- `key : ∑ i ∈ range (m+1), a i * (x i / a i)
+    --          = a m * (∑ i ∈ range (m+1), x i / a i)
+    --            - ∑ i ∈ range m, (a (i+1) - a i) * (∑ j ∈ range (i+1), x j / a j)`
     rw [Finset.sum_congr rfl (fun i _ => hx i)] at key
     exact key
   -- telescoping identity for the weight partial sums
@@ -368,13 +368,12 @@ theorem martingale_sum_of_indep_mean_zero [IsProbabilityMeasure μ]
     Martingale (fun n => ∑ i ∈ range (n + 1), X i)
       (Filtration.natural X hmeas) μ := by
   -- adaptedness: each `Xᵢ` (i ≤ n) is `ℱ n`-measurable, so is the finite sum
-  have hadp : Adapted (Filtration.natural X hmeas)
+  have hadp : StronglyAdapted (Filtration.natural X hmeas)
       (fun n => ∑ i ∈ range (n + 1), X i) := by
     intro n
     refine Finset.stronglyMeasurable_sum _ (fun i hi => ?_)
     have hi' : i ≤ n := by simp only [Finset.mem_range] at hi; omega
-    exact (Filtration.adapted_natural hmeas i).mono
-      ((Filtration.natural X hmeas).mono hi')
+    exact (Filtration.stronglyAdapted_natural hmeas).stronglyMeasurable_le hi'
   refine martingale_of_condExp_sub_eq_zero_nat hadp ?_ ?_
   · -- integrability of each partial sum
     intro n
@@ -395,7 +394,7 @@ theorem martingale_sum_of_indep_mean_zero [IsProbabilityMeasure μ]
 
 /-- **Kolmogorov's a.s.-convergence criterion, reduced to the `L¹` bound.** For
 independent mean-zero integrable random variables `X i` whose shifted partial
-sums `∑_{i≤n} Xᵢ` are uniformly bounded in `L¹`, the series `∑ i, X i` converges
+sums `∑_{i≤n} Xᵢ` are uniformly bounded ∈ `L¹`, the series `∑ i, X i` converges
 almost surely.
 
 This is Kolmogorov's convergence criterion modulo the deterministic `L¹` bound
@@ -666,7 +665,9 @@ theorem ae_tendsto_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure �
   have hXindep : iIndepFun X μ := by
     have h := hindep.comp (fun i (y : ℝ) => (a i)⁻¹ * y)
       (fun i => measurable_const.mul measurable_id)
-    simpa [hXdef, Function.comp] using h
+    have heq : (fun i => (fun y : ℝ => (a i)⁻¹ * y) ∘ Y i) = X := by
+      funext i ω; simp [hXdef, Function.comp_apply]
+    rwa [heq] at h
   have hXmemLp : ∀ i, MemLp (X i) 2 μ := fun i => (hmemLp i).const_mul _
   have hXmean : ∀ i, μ[X i] = 0 := by
     intro i
@@ -746,9 +747,14 @@ theorem ae_tendsto_centered_average_zero_of_variance_weighted_bdd [IsProbability
   have hZindep : iIndepFun Z μ := by
     have h := hindep.comp (fun i (y : ℝ) => y - μ[Y i])
       (fun i => measurable_id.sub measurable_const)
-    simpa [hZdef, Function.comp] using h
+    have heq : (fun i => (fun y : ℝ => y - μ[Y i]) ∘ Y i) = Z := by
+      funext i ω; simp [hZdef, Function.comp_apply]
+    rwa [heq] at h
   have hZmemLp : ∀ i, MemLp (Z i) 2 μ := fun i => by
-    simpa [hZdef] using (hmemLp i).sub (memLp_const (μ[Y i]))
+    have h := (hmemLp i).sub (memLp_const (μ[Y i]))
+    have heq : (Y i - fun _ : Ω => (μ[Y i])) = Z i := by
+      funext ω; simp [hZdef]
+    rwa [heq] at h
   have hZmean : ∀ i, μ[Z i] = 0 := by
     intro i
     simp only [hZdef]
@@ -1128,10 +1134,10 @@ theorem abs_integral_trunc_le_tail_moment_of_centered
   have hsplit : (fun ω => {ω | |X ω| ≤ t}.indicator X ω
       + {ω | t < |X ω|}.indicator X ω) = X := by
     funext ω
-    rcases le_or_lt (|X ω|) t with h | h
-    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_not_mem (by exact not_lt.mpr h)]
+    rcases le_or_gt (|X ω|) t with h | h
+    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_notMem (by exact not_lt.mpr h)]
       exact add_zero (X ω)
-    · rw [Set.indicator_of_not_mem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
+    · rw [Set.indicator_of_notMem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
       exact zero_add (X ω)
   -- hence `∫ 𝟙{|X| ≤ t}·X = -∫ 𝟙{t < |X|}·X`, since `∫ X = 0`
   have hsum : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
@@ -1311,7 +1317,6 @@ theorem sum_range_shift_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤
   -- chain: `range`-sum = `Ico`-sum ≤ `∫` = value ≤ bound.
   rw [hreindex]
   refine hcomp.trans ?_
-  dsimp only
   rw [hintval]
   have he : (-s : ℝ) + 1 = 1 - s := by ring
   rw [he]
@@ -1509,7 +1514,7 @@ theorem weight_bound_le_moment_add_one {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x 
     (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p + 1 := by
   have hpne : p ≠ 0 := ne_of_gt hp0
   have hax : (0 : ℝ) ≤ |x| := abs_nonneg x
-  rcases le_or_lt 1 |x| with hx1 | hx1
+  rcases le_or_gt 1 |x| with hx1 | hx1
   · -- `|x| ≥ 1`: `max = |x|ᵖ`, and the left side collapses to `|x|ᵖ` exactly
     have hpos : (0 : ℝ) < |x| := lt_of_lt_of_le one_pos hx1
     have hxp1 : (1 : ℝ) ≤ |x| ^ p := by
@@ -1959,7 +1964,7 @@ measurable `X` and any threshold `t`, the truncation `Yₜ = 𝟙{|X| ≤ t}·X`
 Immediate from Mathlib's `variance_le_expectation_sq` applied to the (measurable, hence
 `AEStronglyMeasurable`) truncation.  The (a) brick feeding the Kolmogorov criterion (S5): the
 weighted variance sum `∑ᵢ Var(Yᵢ)/aᵢ²` is thereby dominated by the weighted second-moment sum
-`∑ᵢ aᵢ⁻²·𝔼[Yᵢ²]` proved summable in § RealVarianceSummable. -/
+`∑ᵢ aᵢ⁻²·𝔼[Yᵢ²]` proved summable ∈ § RealVarianceSummable. -/
 theorem variance_trunc_le_integral_sq [IsProbabilityMeasure μ]
     (X : Ω → ℝ) (hX : Measurable X) (t : ℝ) :
     variance (fun ω => {ω | |X ω| ≤ t}.indicator X ω) μ
@@ -2054,7 +2059,7 @@ theorem mz_normaliser_mono {p : ℝ} (hp : 0 < p) :
   exact Real.rpow_le_rpow (by positivity) hij' (div_nonneg zero_le_one hp.le)
 
 /-- The MZ normaliser `aᵢ = (i+1)^{1/p} → ∞` (S5 `ha_top`).  `(i+1) → ∞` composed with
-`Real.tendsto_rpow_atTop` at the positive exponent `1/p`. -/
+`tendsto_rpow_atTop` at the positive exponent `1/p`. -/
 theorem mz_normaliser_tendsto {p : ℝ} (hp : 0 < p) :
     Tendsto (fun i : ℕ => ((i : ℝ) + 1) ^ (1 / p)) atTop atTop := by
   have hg : Tendsto (fun i : ℕ => (i : ℝ) + 1) atTop atTop :=

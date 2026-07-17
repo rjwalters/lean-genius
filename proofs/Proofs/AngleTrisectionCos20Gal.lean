@@ -77,8 +77,7 @@ private theorem p_ne_zero : (p : ℚ[X]) ≠ 0 := by
 
 private theorem p_natDegree : (p : ℚ[X]).natDegree = 3 := by
   show (8 * X ^ 3 - 6 * X - C (1 : ℚ)).natDegree = 3
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
-    natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 private theorem p_degree_ne_zero : (p : ℚ[X]).degree ≠ 0 := by
   rw [Polynomial.degree_eq_natDegree p_ne_zero, p_natDegree]
@@ -308,7 +307,7 @@ private theorem gal_card_dvd_six :
     (Polynomial.card_rootSet_eq_natDegree p_separable
       (SplittingField.splits p)).trans p_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-
 ## Part V: The Splitting Field Has Degree 3

@@ -69,12 +69,12 @@ def Erdos1013RatioConvergence : Prop :=
 
 /- ## Known Bounds -/
 
-/-- **Lower bound**: h₃(k) ≥ (1/2 − o(1))·k²·log k.
+/-  **Lower bound**: h₃(k) ≥ (1/2 − o(1))·k²·log k.
     No triangle-free graph on fewer vertices can have chromatic number k. -/
-/-- **Upper bound**: h₃(k) ≤ (1 + o(1))·k²·log k.
+/-  **Upper bound**: h₃(k) ≤ (1 + o(1))·k²·log k.
     There exist triangle-free graphs achieving chromatic number k
     on this many vertices. -/
-/-- **Graver–Yackel** (1968): h₃(k) ≫ (log k / log log k)·k².
+/-  **Graver–Yackel** (1968): h₃(k) ≫ (log k / log log k)·k².
     Early lower bound using probabilistic deletion.
 
     Note: The previous statement used `c > 0 →` (implication) inside
@@ -164,9 +164,9 @@ theorem threshold_two :
     · exact hG ⟨Fin.elim0, fun v => v.elim0⟩
     · exact hG (fin1_one_colorable G)
 
-/-- h₃(3) = 5: the Mycielski graph M₃ (cycle C₅) has 5 vertices, is triangle-free,
+/-  h₃(3) = 5: the Mycielski graph M₃ (cycle C₅) has 5 vertices, is triangle-free,
     and has chromatic number 3. -/
-/-- h₃(4) = 11: the Mycielski graph M₄ (Grötzsch graph) has 11 vertices,
+/-  h₃(4) = 11: the Mycielski graph M₄ (Grötzsch graph) has 11 vertices,
     is triangle-free, with chromatic number 4. -/
 /- ## Proved Results -/
 

@@ -31,12 +31,12 @@ References:
 Tags: number-theory, factorials, prime-factorization, exponents
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
 
 open Finset BigOperators
 
@@ -160,13 +160,17 @@ theorem exponent_monotone (p : ℕ) (hp : p.Prime) :
     ∀ m n : ℕ, m ≤ n → exponentInFactorial p m ≤ exponentInFactorial p n := by
   intro m n hmn
   simp only [exponentInFactorial]
-  apply padicValNat.factorial_le_factorial hp hmn
+  -- v4.31: padicValNat.factorial_le_factorial no longer exists; derive
+  -- monotonicity from m! ∣ n! via prime factorization.
+  rw [← Nat.factorization_def _ hp, ← Nat.factorization_def _ hp]
+  exact (Nat.factorization_le_iff_dvd (Nat.factorial_ne_zero m) (Nat.factorial_ne_zero n)).mpr
+    (Nat.factorial_dvd_factorial hmn) p
 
-/--
+/- 
 **Maximum exponent:**
 The largest exponent in n! is the exponent of 2, which is ~n.
 -/
-/--
+/- 
 **Exponent of 2 in n!:**
 The exponent of 2 is n - (binary digit sum of n).
 -/
@@ -174,14 +178,14 @@ The exponent of 2 is n - (binary digit sum of n).
 ## Part V: Small Values
 -/
 
-/--
+/- 
 **h(n) for small n:**
 - h(1) = 0 (no primes divide 1!)
 - h(2) = 1 (only exponent is 1 for p=2)
 - h(3) = 1 (exponents are 1 for 2 and 3)
 - h(4) = 2 (exponents: 2^3 · 3^1, so {3,1})
 -/
-/--
+/- 
 **Sequence values (OEIS A071626):**
 h(n) for n = 1,2,3,...,20 is: 0,1,1,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,...
 -/
@@ -189,12 +193,12 @@ h(n) for n = 1,2,3,...,20 is: 0,1,1,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,...
 ## Part VI: Why the Conjecture is Hard
 -/
 
-/--
+/- 
 **Key difficulty:**
 Proving the exact asymptotic requires understanding the fine distribution
 of exponents, which depends on prime gaps and the distribution of primes.
 -/
-/--
+/- 
 **Connection to prime distribution:**
 The behavior of h(n) is intimately related to how primes cluster and
 their multiplicative structure.
@@ -213,7 +217,7 @@ theorem erdos_912_summary :
         (h n : ℝ) ≤ c₂ * Real.sqrt (n / Real.log n) :=
   erdos_selfridge_asymptotic
 
-/--
+/-
 **The constant gap:**
 We know c₁ ≤ c ≤ c₂ but not the exact value of c.
 Tao conjectures c = √(2π).

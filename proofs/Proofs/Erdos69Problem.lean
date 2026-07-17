@@ -109,38 +109,68 @@ theorem tao_identity : omegaSum = primeSum := by
     simp +decide [ div_eq_mul_inv, Finset.sum_mul _ _ _, omega_eq_card_prime_divisors ];
   -- By Fubini's theorem, we can interchange the order of summation.
   have h_fubini : ∑' n : ℕ, (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2)) = ∑' p : {n : ℕ | n.Prime}, (∑' n : ℕ, if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) := by
-    have h_fubini : Summable (fun (n : ℕ × {n : ℕ | n.Prime}) => if n.2.val ∣ (n.1 + 2) then (1 : ℝ) / (2 : ℝ) ^ (n.1 + 2) else 0) := by
-      have h_fubini : Summable (fun (n : ℕ) => (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2))) := by
-        -- We'll use the fact that if the series $\sum_{n=2}^{\infty} \frac{\omega(n)}{2^n}$ converges, then the series $\sum_{n=2}^{\infty} \frac{1}{2^n}$ also converges.
-        have h_summable : Summable (fun n : ℕ => (Nat.primeFactors (n + 2)).card / (2 : ℝ) ^ (n + 2)) := by
-          have : ∀ n : ℕ, (Nat.primeFactors (n + 2)).card ≤ n + 2 := by
-            exact fun n => le_trans ( Finset.card_le_card ( show Nat.primeFactors ( n + 2 ) ⊆ Finset.Icc 1 ( n + 2 ) from fun p hp => Finset.mem_Icc.mpr ⟨ Nat.pos_of_mem_primeFactors hp, Nat.le_of_mem_primeFactors hp ⟩ ) ) ( by simp +arith +decide )
-          have h_summable : Summable (fun n : ℕ => (n + 2 : ℝ) / (2 : ℝ) ^ (n + 2)) := by
-            refine' summable_of_ratio_norm_eventually_le _ _;
-            exact 3 / 4;
-            · norm_num;
-            · filter_upwards [ Filter.eventually_gt_atTop 0 ] with n hn using by rw [ Real.norm_of_nonneg ( by positivity ), Real.norm_of_nonneg ( by positivity ) ] ; rw [ div_mul_eq_mul_div, div_le_iff₀ ] <;> ring_nf <;> norm_num ; induction hn <;> norm_num [ pow_succ' ] at * ; nlinarith;
-          exact Summable.of_nonneg_of_le ( fun n => div_nonneg ( Nat.cast_nonneg _ ) ( pow_nonneg ( by norm_num ) _ ) ) ( fun n => div_le_div_of_nonneg_right ( mod_cast this n ) ( pow_nonneg ( by norm_num ) _ ) ) h_summable;
-        aesop;
-      rw [ summable_prod_of_nonneg ];
-      · refine' ⟨ _, _ ⟩;
-        · intro n;
-          refine' summable_of_ne_finset_zero _;
-          exact Finset.filter ( fun p => p.val ∣ n + 2 ) ( Finset.subtype ( fun p => Nat.Prime p ) ( Nat.divisors ( n + 2 ) ) );
-          aesop;
-        · refine' h_fubini.congr fun n => _;
-          rw [ tsum_eq_sum ];
-          any_goals exact Finset.filter ( fun p : { n : ℕ | Nat.Prime n } => p.val ∣ n + 2 ) ( Finset.subtype ( fun p : ℕ => Nat.Prime p ) ( Nat.primeFactors ( n + 2 ) ) );
-          · refine' Finset.sum_bij ( fun p hp => ⟨ p, Nat.prime_of_mem_primeFactors hp ⟩ ) _ _ _ _ <;> aesop;
-          · aesop;
-      · exact fun _ => by positivity;
-    rw [ ← Summable.tsum_comm ];
-    · refine' tsum_congr fun n => _;
-      rw [ tsum_eq_sum ];
-      any_goals exact Finset.filter ( fun p => p.val ∣ n + 2 ) ( Finset.subtype ( fun p => Nat.Prime p ) ( Nat.primeFactors ( n + 2 ) ) );
-      · refine' Finset.sum_bij ( fun p hp => ⟨ p, Nat.prime_of_mem_primeFactors hp ⟩ ) _ _ _ _ <;> aesop;
-      · aesop;
-    · convert h_fubini.comp_injective ( Prod.swap_injective ) using 1;
+    -- Reindex the Finset sum over primeFactors as a tsum over the prime subtype (indicator form).
+    have hreindex : ∀ n : ℕ,
+        ∑' p : {q : ℕ | q.Prime}, (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0)
+          = ∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2) := by
+      intro n
+      have hn2 : n + 2 ≠ 0 := by omega
+      have hzero : ∀ p : {q : ℕ | q.Prime},
+          p ∉ Finset.subtype (· ∈ {q : ℕ | q.Prime}) (Nat.primeFactors (n + 2)) →
+          (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) = 0 := by
+        intro p hp
+        rw [if_neg]
+        intro hdvd
+        exact hp (Finset.mem_subtype.mpr (Nat.mem_primeFactors.mpr ⟨p.prop, hdvd, hn2⟩))
+      rw [tsum_eq_sum hzero]
+      have hone : ∀ p ∈ Finset.subtype (· ∈ {q : ℕ | q.Prime}) (Nat.primeFactors (n + 2)),
+          (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) = (1 : ℝ) / (2 : ℝ) ^ (n + 2) :=
+        fun p hp => if_pos (Nat.dvd_of_mem_primeFactors (Finset.mem_subtype.mp hp))
+      have hcard : (Finset.subtype (· ∈ {q : ℕ | q.Prime}) (Nat.primeFactors (n + 2))).card
+          = (Nat.primeFactors (n + 2)).card := by
+        rw [Finset.card_subtype]
+        congr 1
+        exact Finset.filter_true_of_mem (fun x hx => Nat.prime_of_mem_primeFactors hx)
+      rw [Finset.sum_congr rfl hone, Finset.sum_const, Finset.sum_const, hcard]
+    -- Row summability: for each n, only finitely many primes divide n+2.
+    have hrow_summable : ∀ n : ℕ, Summable (fun p : {q : ℕ | q.Prime} =>
+        if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) := by
+      intro n
+      have hn2 : n + 2 ≠ 0 := by omega
+      apply summable_of_ne_finset_zero
+        (s := Finset.subtype (· ∈ {q : ℕ | q.Prime}) (Nat.primeFactors (n + 2)))
+      intro p hp
+      rw [if_neg]
+      intro hdvd
+      exact hp (Finset.mem_subtype.mpr (Nat.mem_primeFactors.mpr ⟨p.prop, hdvd, hn2⟩))
+    -- Column summability: the row sums equal ω(n+2)/2^(n+2), which is summable.
+    have hcol_summable : Summable (fun n : ℕ =>
+        ∑' p : {q : ℕ | q.Prime}, if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) := by
+      have hfe : (fun n : ℕ => ∑' p : {q : ℕ | q.Prime},
+          if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0)
+          = (fun n : ℕ => (Nat.primeFactors (n + 2)).card / (2 : ℝ) ^ (n + 2)) := by
+        funext n
+        rw [hreindex n, Finset.sum_const, nsmul_eq_mul, mul_one_div]
+      rw [hfe]
+      have hcardle : ∀ n : ℕ, (Nat.primeFactors (n + 2)).card ≤ n + 2 :=
+        fun n => le_trans ( Finset.card_le_card ( show Nat.primeFactors ( n + 2 ) ⊆ Finset.Icc 1 ( n + 2 ) from fun p hp => Finset.mem_Icc.mpr ⟨ Nat.pos_of_mem_primeFactors hp, Nat.le_of_mem_primeFactors hp ⟩ ) ) ( by simp +arith +decide )
+      have h_summable : Summable (fun n : ℕ => (n + 2 : ℝ) / (2 : ℝ) ^ (n + 2)) := by
+        refine' summable_of_ratio_norm_eventually_le _ _;
+        exact 3 / 4;
+        · norm_num;
+        · filter_upwards [ Filter.eventually_gt_atTop 0 ] with n hn using by rw [ Real.norm_of_nonneg ( by positivity ), Real.norm_of_nonneg ( by positivity ) ] ; rw [ div_mul_eq_mul_div, div_le_iff₀ ] <;> ring_nf <;> norm_num ; induction hn <;> norm_num [ pow_succ' ] at * ; nlinarith;
+      exact Summable.of_nonneg_of_le ( fun n => div_nonneg ( Nat.cast_nonneg _ ) ( pow_nonneg ( by norm_num ) _ ) ) ( fun n => div_le_div_of_nonneg_right ( mod_cast hcardle n ) ( pow_nonneg ( by norm_num ) _ ) ) h_summable;
+    have huncurried : Summable (Function.uncurry (fun (n : ℕ) (p : {q : ℕ | q.Prime}) =>
+        if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0)) := by
+      rw [summable_prod_of_nonneg (fun x => by dsimp only [Function.uncurry]; split_ifs <;> positivity)]
+      exact ⟨hrow_summable, hcol_summable⟩
+    calc ∑' n : ℕ, (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2))
+        = ∑' n : ℕ, ∑' p : {q : ℕ | q.Prime},
+            (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) :=
+          tsum_congr fun n => (hreindex n).symm
+      _ = ∑' p : {q : ℕ | q.Prime}, ∑' n : ℕ,
+            (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) :=
+          (Summable.tsum_comm huncurried).symm
   -- Let's simplify the inner sum $\sum_{n=0}^{\infty} \frac{1}{2^{n+2}}$ if $p \mid (n+2)$.
   have h_inner : ∀ p : {n : ℕ | n.Prime}, ∑' n : ℕ, (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) = 1 / (2 ^ p.val - 1) := by
     -- Let's simplify the inner sum $\sum_{n=0}^{\infty} \frac{1}{2^{n+2}}$ if $p \mid (n+2)$ using the formula for the sum of a geometric series.

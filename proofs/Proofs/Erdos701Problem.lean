@@ -31,9 +31,9 @@ References:
 - Erdős [Er81, p.26]
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
 
 open Set Finset
 
@@ -140,7 +140,7 @@ def ChvatalConjecture {α : Type*} [Fintype α] (F : Set (Set α)) : Prop :=
   IsHereditary F → ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F →
     IsIntersecting F' → F'.ncard ≤ (Star F x).ncard
 
-/--
+/- 
 **The conjecture is OPEN:**
 This axiom records that Chvátal's conjecture is unresolved.
 -/
@@ -154,10 +154,10 @@ This axiom records that Chvátal's conjecture is unresolved.
 The covering number τ(F) is the minimum number of elements needed to
 intersect every set in F.
 -/
-def CoveringNumber {α : Type*} (F : Set (Set α)) : ℕ :=
+noncomputable def CoveringNumber {α : Type*} (F : Set (Set α)) : ℕ :=
   sInf {k : ℕ | ∃ C : Finset α, C.card = k ∧ ∀ A ∈ F, A.Nonempty → (↑C ∩ A).Nonempty}
 
-/--
+/- 
 **Chvátal (1974):**
 Proved the conjecture under a stronger ordering condition: if F is hereditary
 and there exists an injection f : F → F such that f(A) ⊂ A for all non-minimal A,
@@ -184,7 +184,7 @@ def SterboulConditions {α : Type*} [DecidableEq α] [Fintype α]
     (∀ C ∈ F, ¬(A ⊂ C)) → (∀ C ∈ F, ¬(B ⊂ C)) →
     A ≠ B → (A ∩ B).Nonempty)
 
-/--
+/- 
 **Frankl-Kupavskii (2023):**
 Proved the conjecture for families with covering number 2.
 -/
@@ -204,7 +204,7 @@ def WeightedChvatalConjecture {α : Type*} [Fintype α]
 ## Part VI: Connection to Erdős-Ko-Rado
 -/
 
-/--
+/- 
 **Erdős-Ko-Rado Context:**
 The EKR theorem bounds intersecting families in uniform hypergraphs.
 Chvátal's conjecture generalizes this to hereditary families.
@@ -244,13 +244,13 @@ theorem uniform_not_hereditary {α : Type*} [Fintype α] [DecidableEq α]
 ## Part VII: Examples and Special Cases
 -/
 
-/--
+/- 
 **Example: Boolean lattice**
 F = 2^[n] is hereditary. The star at x has size 2^(n-1).
 Any intersecting family has size ≤ 2^(n-1) (classical result).
 -/
 
-/--
+/- 
 **Example: Fano plane**
 The Fano plane matroid's independent sets form a hereditary family
 where Chvátal's conjecture holds.
@@ -260,7 +260,7 @@ where Chvátal's conjecture holds.
 ## Part VIII: Summary
 -/
 
-/--
+/-
 **Erdős Problem #701: Status**
 
 **Conjecture (Chvátal, 1974):**

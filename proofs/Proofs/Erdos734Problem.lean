@@ -25,11 +25,13 @@ References:
 - de Bruijn-Erdős (1948): "On a combinatorial problem"
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+
+open scoped Classical
 
 open Finset BigOperators
 
@@ -64,6 +66,7 @@ def trivialPBD (n : ℕ) (hn : n ≥ 2) : PBD n where
     use Finset.univ
     simp [Finset.mem_singleton]
   blocks_nonempty := by
+    haveI : NeZero n := ⟨by omega⟩
     intro B hB
     simp at hB
     rw [hB]
@@ -108,7 +111,7 @@ Moreover, m = n only for near-pencils (one block of size n-1 and n-1 blocks of s
 axiom deBruijn_erdos (n : ℕ) (hn : n ≥ 2) (D : PBD n) (hnt : isNontrivial D) :
   D.blocks.card ≥ n
 
-/--
+/- 
 **Consequence: Some block size must be frequent:**
 If m ≥ n and there are at most n-1 possible block sizes (2 to n),
 then some size t must have ≥ n/(n-1) > 1 blocks, and by pigeonhole
@@ -151,7 +154,7 @@ axiom projective_plane_exists (q : ℕ) (hq : Nat.Prime q) :
   ∃ D : PBD (q^2 + q + 1), isNontrivial D ∧
     ∀ B ∈ D.blocks, B.card = q + 1
 
-/--
+/- 
 **Affine Planes:**
 Derived from projective planes by removing one line and its points.
 Also don't satisfy Erdős's condition for the same reason.
@@ -160,7 +163,7 @@ Also don't satisfy Erdős's condition for the same reason.
 ## Part VI: Pair Counting
 -/
 
-/--
+/- 
 **Counting pairs:**
 A PBD on n points must cover C(n,2) = n(n-1)/2 pairs.
 Each block of size k covers C(k,2) = k(k-1)/2 pairs.
@@ -169,7 +172,7 @@ Each block of size k covers C(k,2) = k(k-1)/2 pairs.
 ## Part VII: Partial Results
 -/
 
-/--
+/- 
 **Near-Uniform Designs:**
 For some n, there exist PBDs with blocks of only 2 or 3 different sizes.
 These still don't satisfy Erdős's condition if one size dominates.

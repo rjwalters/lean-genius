@@ -91,8 +91,8 @@ The two minimal non-planar graphs (Kuratowski obstructions).
 /-- The complete graph K_n. -/
 def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 /-- The complete bipartite graph K_{m,n}. -/
 def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
@@ -100,8 +100,8 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => True
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
-  symm := fun x y h => by cases x <;> cases y <;> simp_all
-  loopless := fun x h => by cases x <;> simp at h
+  symm.symm := fun x y h => by cases x <;> cases y <;> simp_all
+  loopless.irrefl := fun x h => by cases x <;> simp at h
 
 /-
 ## Graph Subdivisions
@@ -174,15 +174,14 @@ theorem self_containsSubdivision (G : SimpleGraph V) :
     intro a b h
     rw [SimpleGraph.Walk.cons_isPath_iff]
     refine ⟨SimpleGraph.Walk.IsPath.nil, ?_⟩
-    rw [SimpleGraph.Walk.support_nil]
     simpa using h.ne
   · -- support is exactly the two endpoints
     intro a b h c hc
-    rw [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil] at hc
+    simp only [SimpleGraph.Walk.support_cons] at hc
     simpa using hc
   · -- interiors are empty, so any shared vertex is an endpoint
     intro a b h a' b' _ x hx _
-    rw [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil] at hx
+    simp only [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil] at hx
     have : x = a ∨ x = b := by simpa using hx
     tauto
 
@@ -264,8 +263,8 @@ A subgraph on a vertex subset.
 /-- The induced subgraph on a set of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj u v := G.Adj u.val v.val
-  symm := fun _ _ h => G.symm h
-  loopless := fun _ h => G.loopless _ h
+  symm.symm := fun _ _ h => G.adj_symm h
+  loopless.irrefl := fun _ h => G.irrefl h
 
 /-- A graph contains a non-planar subgraph on at most k vertices. -/
 def hasSmallNonPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=

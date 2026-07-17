@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Topology
+
 /-
 # Steiner's Formula: d/dr Vol(B_r^n) = Area(∂B_r^n)
 # (area-of-circle-oq-01-oq-02-oq-03-oq-03)
@@ -117,7 +119,7 @@ lemma unitBallVolume_three : unitBallVolume 3 = 4 * π / 3 := by
       show (3 : ℝ) / 2 = 1 + 1 / 2 from by ring,
       rpow_add pi_pos, rpow_one, ← Real.sqrt_eq_rpow]
   have hpi : (0 : ℝ) < √π := Real.sqrt_pos.mpr Real.pi_pos
-  field_simp [hpi.ne']; ring
+  field_simp [hpi.ne']
 
 /-- S_n is continuous. -/
 lemma continuous_nSphereArea (n : ℕ) : Continuous (nSphereArea n) := by
@@ -144,8 +146,10 @@ theorem steiners_formula (n : ℕ) (hn : 1 ≤ n) (r : ℝ) :
     HasDerivAt (nBallVol n) (nSphereArea n r) r := by
   unfold nBallVol nSphereArea
   have h := (hasDerivAt_pow n r).const_mul (unitBallVolume n)
-  convert h using 1
-  ring
+  have heq : (n : ℝ) * unitBallVolume n * r ^ (n - 1) =
+      unitBallVolume n * ((n : ℝ) * r ^ (n - 1)) := by ring
+  rw [heq]
+  exact h
 
 /-- **Steiner's Formula** — pointwise deriv form.
 
@@ -179,14 +183,19 @@ theorem shell_limit (n : ℕ) (hn : 1 ≤ n) (r : ℝ) :
   -- hd : Tendsto (slope (nBallVol n) r) (𝓝[{r}ᶜ] r) (𝓝 (nSphereArea n r))
   -- The map h ↦ r + h sends 𝓝[{0}ᶜ] 0 to 𝓝[{r}ᶜ] r
   have hmap : Filter.Tendsto (fun h : ℝ => r + h)
-      (nhdsWithin 0 {(0 : ℝ)}ᶜ) (nhdsWithin r {r}ᶜ) :=
-    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within
-      (by have : Filter.Tendsto (fun h : ℝ => r + h) (𝓝 0) (𝓝 r) := by
-            have := (continuous_const.add continuous_id).continuousAt (x := (0 : ℝ))
-            simpa using this
-          exact this.mono_left nhdsWithin_le_nhds)
-      (Filter.eventually_nhdsWithin_of_forall fun h hh =>
-        show r + h ≠ r from fun h' => hh (show h = 0 from by linarith))
+      (nhdsWithin 0 {(0 : ℝ)}ᶜ) (nhdsWithin r {r}ᶜ) := by
+    rw [tendsto_nhdsWithin_iff]
+    refine ⟨?_, ?_⟩
+    · have hc : Filter.Tendsto (fun h : ℝ => r + h) (𝓝 0) (𝓝 r) := by
+        have h1 : Continuous (fun h : ℝ => r + h) := continuous_const.add continuous_id
+        have h2 := h1.continuousAt (x := (0 : ℝ))
+        simp only [ContinuousAt, add_zero] at h2
+        exact h2
+      exact hc.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with h hh
+      simp only [Set.mem_compl_iff, Set.mem_singleton_iff] at hh ⊢
+      intro heq
+      exact hh (by linarith)
   -- Rewrite the ratio as a slope evaluation
   have heq : ∀ h : ℝ, (nBallVol n (r + h) - nBallVol n r) / h =
       slope (nBallVol n) r (r + h) := fun h => by
@@ -254,10 +263,17 @@ theorem steiner_3d (r : ℝ) :
 theorem steiner_3d_explicit (r : ℝ) :
     HasDerivAt (fun x => 4 * π / 3 * x ^ 3) (4 * π * r ^ 2) r := by
   have h := steiner_3d r
-  convert h using 1
-  · ext x; simp [nBallVol, unitBallVolume_three]
-  · simp [nSphereArea, unitBallVolume_three]
-    push_cast; ring
+  have hf : (fun x => 4 * π / 3 * x ^ 3) = nBallVol 3 := by
+    funext x
+    unfold nBallVol
+    rw [unitBallVolume_three]
+  have hf' : (4 * π * r ^ 2) = nSphereArea 3 r := by
+    unfold nSphereArea
+    rw [unitBallVolume_three]
+    push_cast
+    ring
+  rw [hf, hf']
+  exact h
 
 /-- The surface-to-volume ratio S_n(r) / V_n(r) = n/r for r ≠ 0, n ≥ 1. -/
 theorem surface_to_volume_ratio (n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : r ≠ 0) :
@@ -268,10 +284,9 @@ theorem surface_to_volume_ratio (n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : r ≠ 0
     exact div_ne_zero (rpow_pos_of_pos pi_pos _).ne' (Gamma_pos_of_pos (by positivity)).ne'
   have hrn : r ^ n ≠ 0 := pow_ne_zero n hr
   field_simp [hω, hrn, hr]
-  rw [show r ^ (n - 1) * (unitBallVolume n * r ^ n)⁻¹ =
-      (unitBallVolume n)⁻¹ * (r ^ (n - 1) * (r ^ n)⁻¹) from by ring,
-      ← pow_sub₀ hr (by omega : n - 1 ≤ n)]
-  simp [show n - (n - 1) = 1 from by omega]; ring
+  rw [← pow_succ]
+  congr 1
+  omega
 
 /- ## Summary
 

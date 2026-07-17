@@ -29,11 +29,12 @@ References:
 - OEIS A390246: Related sequence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Interval
 import Mathlib.Order.Interval.Finset.Nat
-import Mathlib.Algebra.Order.Floor
+
+open scoped Classical
 
 open Nat Finset
 
@@ -98,7 +99,7 @@ Count of multiples of d in the interval (a, b).
 def multiplesInInterval (d a b : ℕ) : ℕ :=
   (b / d) - (a / d)
 
-/--
+/- 
 **For large k, multiples are sparse:**
 In interval (n, n + L), there are about L/k multiples of k.
 As k grows, this count shrinks.
@@ -130,7 +131,7 @@ axiom erdos_pomerance_upper_bound :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       (f(n) : ℝ) ≤ (1.7398 + ε) * n * Real.sqrt (Real.log n)
 
-/--
+/- 
 **Gap Between Bounds:**
 The lower bound has √(log n / log log n), the upper has √(log n).
 These differ by a factor of √(log log n), which grows slowly.
@@ -147,7 +148,7 @@ Possibilities:
 3. Something in between
 -/
 
-/--
+/- 
 **Erdős Problem #710: OPEN**
 Determine the asymptotic formula for f(n).
 -/
@@ -227,7 +228,7 @@ This suggests L needs to grow with n to ensure enough multiples of n.
 def constraintDensity (n L k : ℕ) : ℚ :=
   if k = 0 then 0 else L / k
 
-/--
+/- 
 **Critical Constraint:**
 The hardest constraint is for large k. We need at least 1 multiple of n
 in the interval (n, n+L), requiring L ≥ n approximately.
@@ -249,8 +250,8 @@ theorem smallest_multiple_bound (n k : ℕ) (hk : k > 0) :
   use (n / k + 1) * k
   constructor
   · -- n < (n/k + 1) * k
-    have : n < (n / k + 1) * k := Nat.lt_mul_div_succ n hk
-    exact this
+    have h := Nat.lt_mul_div_succ n hk
+    rwa [Nat.mul_comm] at h
   · constructor
     · -- (n/k + 1) * k ≤ n + k
       have h1 : n / k * k ≤ n := Nat.div_mul_le_self n k
@@ -304,9 +305,7 @@ theorem erdos_710_summary :
   constructor
   · intro ε hε
     obtain ⟨N, hN⟩ := erdos_pomerance_lower_bound ε hε
-    use N
-    intro n hn
-    exact le_of_lt (hN n hn)
+    exact ⟨N, hN⟩
   · constructor
     · exact erdos_pomerance_upper_bound
     · exact ⟨example_n1, example_n2, example_n3⟩

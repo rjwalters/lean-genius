@@ -29,7 +29,7 @@ noncomputable def binaryDigit (t : ℝ) (k : ℕ) : ℤ :=
 /-- Random sign polynomial: P_n(t, x) = Σ_{k=1}^{n} sign_k(t) · x^k
     where sign_k(t) = (-1)^{ε_k(t)} is determined by binary digits of t. -/
 noncomputable def randSignPoly (t : ℝ) (n : ℕ) (x : ℝ) : ℝ :=
-  ∑ k in Finset.range n, (binaryDigit t (k + 1) : ℝ) * x ^ (k + 1)
+  ∑ k ∈ Finset.range n, (binaryDigit t (k + 1) : ℝ) * x ^ (k + 1)
 
 /-- M_n(t): the maximum modulus of the random sign polynomial on [-1,1]. -/
 noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
@@ -37,12 +37,12 @@ noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
 
 /- ## Known Lower Bound (Erdős) -/
 
-/-- Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
+/-  Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
     M_n(t)/n^{1/2-ε} → ∞ as n → ∞. This means M_n(t) grows at least
     almost as fast as √n. -/
 /- ## Known Upper Bound (Chung) -/
 
-/-- Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
+/-  Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
     M_n(t) ≤ C · √(n / log log n) for some absolute constant C. -/
 /- ## Main Open Problem -/
 
@@ -97,12 +97,12 @@ theorem randSignPoly_abs_le (t : ℝ) (n : ℕ) {x : ℝ} (hx : |x| ≤ 1) :
     rw [randSignPoly_succ]
     have h_sign : |(↑(binaryDigit t (n + 1)) : ℝ)| = 1 := binaryDigit_cast_abs t (n + 1)
     have h_pow : |x| ^ (n + 1) ≤ 1 := by
-      calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx _
+      calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx _
         _ = 1 := one_pow _
     have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
       rw [abs_mul, abs_pow, h_sign, one_mul]; exact h_pow
     rw [show (↑(n + 1) : ℝ) = ↑n + 1 from by push_cast; ring]
-    linarith [abs_add (randSignPoly t n x)
+    linarith [abs_add_le (randSignPoly t n x)
       ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
 
 /- ## Additional properties of binary digits -/
@@ -236,13 +236,13 @@ theorem polyMax_succ_le (t : ℝ) (n : ℕ) :
   rw [randSignPoly_succ]
   have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
     rw [abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
-    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx_abs _
       _ = 1 := one_pow _
   have h_poly : |randSignPoly t n x| ≤ polyMax t n := by
     unfold polyMax
     apply le_csSup (polyMax_bddAbove t n)
     exact ⟨x, hx, rfl⟩
-  linarith [abs_add (randSignPoly t n x)
+  linarith [abs_add_le (randSignPoly t n x)
     ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
 
 /-- Reverse bound: M_n(t) ≤ M_{n+1}(t) + 1. Removing a term changes the max
@@ -266,13 +266,13 @@ theorem polyMax_ge_succ (t : ℝ) (n : ℕ) :
   rw [h_rearrange]
   have h_neg_term : |(-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))| ≤ 1 := by
     rw [abs_neg, abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
-    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx_abs _
       _ = 1 := one_pow _
   have h_poly : |randSignPoly t (n + 1) x| ≤ polyMax t (n + 1) := by
     unfold polyMax
     apply le_csSup (polyMax_bddAbove t (n + 1))
     exact ⟨x, hx, rfl⟩
-  linarith [abs_add (randSignPoly t (n + 1) x)
+  linarith [abs_add_le (randSignPoly t (n + 1) x)
     (-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))]
 
 /-- The polynomial maximum is 1-Lipschitz in n: |M_{n+1}(t) - M_n(t)| ≤ 1.

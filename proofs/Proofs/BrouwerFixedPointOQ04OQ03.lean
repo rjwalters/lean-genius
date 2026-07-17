@@ -83,7 +83,7 @@ axiom kakutani_finite_dim {n : ℕ} (K : Set (EuclideanSpace ℝ (Fin n)))
 /-- Fan-Glicksberg theorem (1952): Kakutani's theorem extends to
     locally convex topological vector spaces. -/
 axiom fan_glicksberg {E : Type*} [AddCommGroup E] [Module ℝ E]
-    [TopologicalSpace E] [TopologicalAddGroup E] [ContinuousSMul ℝ E]
+    [TopologicalSpace E] [IsTopologicalAddGroup E] [ContinuousSMul ℝ E]
     [LocallyConvexSpace ℝ E]
     (K : Set E) (hne : K.Nonempty) (hcomp : IsCompact K) (hconv : Convex ℝ K)
     (F : SetValuedMap E E)
@@ -151,6 +151,6 @@ theorem brouwer_from_kakutani_finite {n : ℕ}
     (fun x => isClosed_singleton)
     (fun x => convex_singleton _)
   obtain ⟨x, hx, hfp⟩ := hkak
-  exact ⟨x, hx, hfp⟩
+  exact ⟨x, hx, (Set.mem_singleton_iff.mp hfp).symm⟩
 
 end BrouwerOQ04OQ03

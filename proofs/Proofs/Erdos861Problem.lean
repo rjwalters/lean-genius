@@ -32,11 +32,13 @@ References:
 Tags: combinatorics, Sidon-sets, additive-combinatorics, counting
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Finset BigOperators
 
@@ -113,7 +115,7 @@ noncomputable def countSidonSets (N : ℕ) : ℕ :=
 ## Part III: Known Asymptotic for f(N)
 -/
 
-/--
+/- 
 **Erdős-Turán theorem:**
 f(N) ~ √N as N → ∞.
 More precisely, f(N) = (1 + o(1))√N.
@@ -182,7 +184,7 @@ From "Hypergraph containers", Invent. Math. (2015).
 -/
 axiom saxton_thomason_lower_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (countSidonSets N : ℝ) ≥ (2 : ℝ) ^ (1.16 * maxSidonSize N)
+      (countSidonSets N : ℝ) ≥ (2 : ℝ) ^ (1.16 * (maxSidonSize N : ℝ))
 
 /--
 **Upper bound (Kohayakawa-Lee-Rödl-Samotij, 2015):**
@@ -192,7 +194,7 @@ From "The number of Sidon sets...", Random Structures Algorithms (2015).
 -/
 axiom klrs_upper_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * maxSidonSize N)
+      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * (maxSidonSize N : ℝ))
 
 /--
 **Combined bounds:**
@@ -200,8 +202,8 @@ For large N: 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}.
 -/
 theorem current_bounds :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (2 : ℝ) ^ (1.16 * maxSidonSize N) ≤ (countSidonSets N : ℝ) ∧
-      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * maxSidonSize N) := by
+      (2 : ℝ) ^ (1.16 * (maxSidonSize N : ℝ)) ≤ (countSidonSets N : ℝ) ∧
+      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * (maxSidonSize N : ℝ)) := by
   obtain ⟨N₁, h₁⟩ := saxton_thomason_lower_bound
   obtain ⟨N₂, h₂⟩ := klrs_upper_bound
   use max N₁ N₂
@@ -219,7 +221,7 @@ Empty set is Sidon.
 -/
 theorem empty_is_sidon : IsSidon ∅ := by
   intro a b c d ha
-  exact (Finset.not_mem_empty a ha).elim
+  exact (Finset.notMem_empty a ha).elim
 
 /--
 Singleton is Sidon.
@@ -229,7 +231,7 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
   simp only [Finset.mem_singleton] at ha hb hc hd
   constructor <;> omega
 
-/--
+/- 
 Adding element preserves Sidon if no sum collision.
 -/
 /-

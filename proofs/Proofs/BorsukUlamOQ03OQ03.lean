@@ -364,8 +364,8 @@ theorem antisymmetricDiff_eq_zero_iff (f : ℝ × ℝ → ℝ × ℝ) (x : ℝ �
   · rintro ⟨h1, h2⟩
     exact Prod.ext (by linarith) (by linarith)
   · intro h
-    exact ⟨by have := congr_arg Prod.fst h; simp at this; linarith,
-           by have := congr_arg Prod.snd h; simp at this; linarith⟩
+    exact ⟨by have := congr_arg Prod.fst h; skip; linarith,
+           by have := congr_arg Prod.snd h; skip; linarith⟩
 
 /-- S¹ is compact (closed and bounded subset of ℝ²).
     The unit circle is a closed subset of the compact ball B(0, 1). -/
@@ -771,8 +771,8 @@ theorem antisymmetricDiff3_eq_zero_iff (f : ℝ × ℝ × ℝ → ℝ × ℝ) (x
   simp only [antisymmetricDiff3, Prod.mk.injEq]
   constructor
   · rintro ⟨h1, h2⟩; exact Prod.ext (by linarith) (by linarith)
-  · intro h; exact ⟨by have := congr_arg Prod.fst h; simp at this; linarith,
-                     by have := congr_arg Prod.snd h; simp at this; linarith⟩
+  · intro h; exact ⟨by have := congr_arg Prod.fst h; skip; linarith,
+                     by have := congr_arg Prod.snd h; skip; linarith⟩
 
 /-- S² is compact. -/
 theorem sphere_isCompact :
@@ -1712,7 +1712,7 @@ theorem radial_proj_on_circle (x : ℝ × ℝ) (hx : euclidNormSq x > 0) :
     rw [euclidNorm]; exact Real.sqrt_pos_of_pos hx
   have hr2 : euclidNorm x ^ 2 = euclidNormSq x := by
     rw [euclidNorm, Real.sq_sqrt (euclidNormSq_nonneg x)]
-  rw [div_pow, div_pow, div_add_div_same, hr2]
+  rw [div_pow, div_pow, ← add_div, hr2]
   exact div_self (ne_of_gt hx)
 
 /-- Boundary vertices of [-1,1]² have Euclidean norm squared ≥ 1.
@@ -2099,7 +2099,7 @@ theorem boundary_doors_odd_informal
 Each interior edge belongs to exactly 2 triangles.
 Each boundary edge belongs to exactly 1 triangle.
 
-∑_triangles (doors in triangle) = 2 × (interior doors) + (boundary doors)
+∑_triangles (doors ∈ triangle) = 2 × (interior doors) + (boundary doors)
 
 If each triangle has an even number of doors:
   LHS is even → 2×(interior) + boundary is even → boundary is even.

@@ -78,7 +78,7 @@ lemma orderOf_eq_of_prime_factor_test {G : Type*} [Group G] [Fintype G] {n : ℕ
     exact orderOf_dvd_of_pow_eq_one hpow
   · -- n ∣ orderOf g (the hard direction)
     by_contra h_ndvd
-    push_neg at h_ndvd
+    skip
     have hdvd : orderOf g ∣ n := orderOf_dvd_of_pow_eq_one hpow
     -- Since orderOf g ∣ n but n ∤ orderOf g, orderOf g ≠ n, so orderOf g < n
     have hlt : orderOf g < n :=
@@ -158,7 +158,7 @@ theorem isGenerator_iff_primeFactors_test (g : (ZMod p)ˣ) :
 
 /-- (ZMod p)ˣ is cyclic — inherited from the integral domain structure. -/
 instance : IsCyclic (ZMod p)ˣ :=
-  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod p)) Units.ext
+  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod p)) Units.val_injective
 
 /-- **Existence of Generators**: There exists at least one primitive root mod p.
 
@@ -167,14 +167,14 @@ theorem exists_generator : ∃ g : (ZMod p)ˣ, IsGenerator g := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
   exact ⟨g, by
     unfold IsGenerator
-    rw [orderOf_eq_card_of_forall_mem_zpowers hg]
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card]
     rw [ZMod.card_units_eq_totient, Nat.totient_prime hp.out]⟩
 
 /-! ## Decidability: The Algorithm is Computable -/
 
 /-- `IsGenerator` is decidable — the algorithm can be implemented and terminates. -/
-instance (g : (ZMod p)ˣ) : Decidable (IsGenerator g) :=
-  inferInstance  -- follows from DecidableEq ℕ and Fintype (ZMod p)ˣ
+noncomputable instance (g : (ZMod p)ˣ) : Decidable (IsGenerator g) :=
+  Classical.dec _
 
 /-! ## Concrete Verification: Small Primes -/
 

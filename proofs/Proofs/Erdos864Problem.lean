@@ -19,10 +19,10 @@ representations as a + b with a ≤ b ∈ A. What is the maximum |A|?
 - <https://erdosproblems.com/864>
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
+open scoped Classical
 
 /- ## Core Definitions -/
 
@@ -59,7 +59,7 @@ axiom erdos_freud_lower_bound :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxAlmostSidon N : ℝ) ≥ (2 / Real.sqrt 3 - ε) * Real.sqrt (N : ℝ)
 
-/-- **Note**: The Lindström (1969) bound |A| ≤ √N + O(N^{1/4}) for Sidon sets
+/-  **Note**: The Lindström (1969) bound |A| ≤ √N + O(N^{1/4}) for Sidon sets
     requires Fourier-analytic methods not yet available in Mathlib v4.26.0.
     The elementary difference-counting bound k² ≤ 2N + k (proved below as
     `sidon_card_sq_le_2N`) gives |A| ≤ √(2N), improving `sidon_card_sq_le`
@@ -84,8 +84,10 @@ theorem almost_sidon_exceeds_sidon :
     rw [show (40 : ℝ) / 23 = Real.sqrt ((40 / 23) ^ 2) from
       (Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 40 / 23)).symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
-  have h_coeff : 2 / Real.sqrt 3 - 1 / 10 > 1 := by
-    rw [gt_iff_lt, sub_lt_iff_lt_add]; linarith [div_lt_div_left (by norm_num : (0:ℝ) < 2) h_sqrt3_pos (by norm_num : (0:ℝ) < 23/20)]
+  have h_23_20 : 2 / Real.sqrt 3 > 23 / 20 := by
+    rw [gt_iff_lt, div_lt_div_iff₀ (by norm_num : (0:ℝ) < 20) h_sqrt3_pos]
+    linarith
+  have h_coeff : 2 / Real.sqrt 3 - 1 / 10 > 1 := by linarith
   -- √N ≥ 20 (since N ≥ 400 = 20²)
   have h_sqrtN : Real.sqrt (N : ℝ) ≥ 20 := by
     calc Real.sqrt N ≥ Real.sqrt 400 :=
@@ -95,10 +97,6 @@ theorem almost_sidon_exceeds_sidon :
   -- Main bound: (2/√3 - 1/10) * √N > √N + 1
   suffices h : (2 / Real.sqrt 3 - 1 / 10) * Real.sqrt N > Real.sqrt N + 1 by linarith
   have h_pos : Real.sqrt (N : ℝ) > 0 := Real.sqrt_pos_of_pos (by linarith)
-  -- 2/√3 > 23/20 (from √3 < 40/23)
-  have h_23_20 : 2 / Real.sqrt 3 > 23 / 20 := by
-    rw [gt_iff_lt, div_lt_div_iff (by norm_num : (0:ℝ) < 20) h_sqrt3_pos]
-    linarith
   -- (2/√3 - 11/10) > 1/20
   have h_gap : 2 / Real.sqrt 3 - 11 / 10 > 1 / 20 := by linarith
   -- (2/√3 - 1/10) * √N = √N + (2/√3 - 11/10) * √N
@@ -122,6 +120,13 @@ theorem isAlmostSidon_empty : IsAlmostSidon ∅ := by
   unfold IsAlmostSidon multiRepSet sumRepCount
   simp
 
+/-- sumRepCount is monotone in the underlying set -/
+private lemma sumRepCount_le_of_subset {A B : Finset ℕ} (hsub : A ⊆ B) (n : ℕ) :
+    sumRepCount A n ≤ sumRepCount B n := by
+  unfold sumRepCount
+  exact Finset.card_le_card
+    (Finset.filter_subset_filter _ (Finset.product_subset_product hsub hsub))
+
 /-- Almost-Sidon is monotone: subsets of almost-Sidon sets are almost-Sidon -/
 theorem isAlmostSidon_subset {A B : Finset ℕ} (h : IsAlmostSidon B) (hsub : A ⊆ B) :
     IsAlmostSidon A := by
@@ -131,8 +136,8 @@ theorem isAlmostSidon_subset {A B : Finset ℕ} (h : IsAlmostSidon B) (hsub : A 
     intro n hn
     simp only [multiRepSet, Finset.mem_filter, Finset.mem_image,
       Finset.mem_product, Prod.exists] at hn ⊢
-    obtain ⟨⟨a, b, ha, hb, rfl⟩, hrep⟩ := hn
-    exact ⟨⟨a, b, hsub ha, hsub hb, rfl⟩,
+    obtain ⟨⟨a, b, ⟨ha, hb⟩, rfl⟩, hrep⟩ := hn
+    exact ⟨⟨a, b, ⟨hsub ha, hsub hb⟩, rfl⟩,
            le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
   omega
 
@@ -158,42 +163,67 @@ theorem pairwise_sum_count (A : Finset ℕ) :
   set lower := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1) with hlower
   -- Diagonal has n elements
   have h_diag : diag.card = n := by
-    rw [hdiag]
     have : diag = A.image (fun a => (a, a)) := by
-      ext ⟨x, y⟩; simp [diag, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
+      ext ⟨x, y⟩
+      simp only [diag, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
       constructor
-      · rintro ⟨⟨hx, hy⟩, rfl⟩; exact ⟨x, hx, rfl⟩
-      · rintro ⟨a, ha, rfl, rfl⟩; exact ⟨⟨ha, ha⟩, rfl⟩
+      · rintro ⟨⟨hx, _⟩, rfl⟩; exact ⟨x, hx, rfl⟩
+      · rintro ⟨a, ha, h⟩; rw [Prod.mk.injEq] at h
+        obtain ⟨rfl, rfl⟩ := h; exact ⟨⟨ha, ha⟩, rfl⟩
     rw [this, Finset.card_image_of_injective _ (fun a b h => by simpa using h), hn]
   -- Upper and lower have equal cardinality (by the involution (a,b) ↦ (b,a))
   have h_sym : upper.card = lower.card := by
     have : lower = upper.image (fun p : ℕ × ℕ => (p.2, p.1)) := by
-      ext ⟨x, y⟩; simp [upper, lower, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
+      ext ⟨x, y⟩
+      simp only [upper, lower, Finset.mem_filter, Finset.mem_product, Finset.mem_image,
+        Prod.exists, Prod.mk.injEq]
       constructor
-      · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨hy, hx⟩, hlt, rfl, rfl⟩
-      · rintro ⟨a, b, ⟨ha, hb⟩, hab, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
-    rw [this, Finset.card_image_of_injective _ (fun ⟨a, b⟩ ⟨c, d⟩ h => by simpa using h)]
+      · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨⟨hy, hx⟩, hlt⟩, ⟨rfl, rfl⟩⟩
+      · rintro ⟨a, b, ⟨⟨ha, hb⟩, hab⟩, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
+    rw [this, Finset.card_image_of_injective _ (fun ⟨a, b⟩ ⟨c, d⟩ h => by simp only [Prod.mk.injEq] at h ⊢; exact ⟨h.2, h.1⟩)]
   -- Partition: |A×A| = |upper| + |diag| + |lower|
   have h_part : (A ×ˢ A).card = upper.card + diag.card + lower.card := by
     have h1 : A ×ˢ A = upper ∪ diag ∪ lower := by
-      ext ⟨x, y⟩; simp [upper, lower, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
-      intro _ _; omega
+      ext ⟨x, y⟩
+      simp only [upper, lower, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+      constructor
+      · intro h
+        rcases lt_trichotomy x y with hc | hc | hc
+        · exact Or.inl (Or.inl ⟨h, hc⟩)
+        · exact Or.inl (Or.inr ⟨h, hc⟩)
+        · exact Or.inr ⟨h, hc⟩
+      · rintro ((⟨h, _⟩ | ⟨h, _⟩) | ⟨h, _⟩) <;> exact h
     have h2 : Disjoint upper diag := by
-      simp [Finset.disjoint_filter]; intro ⟨x, y⟩ _ hlt heq; omega
+      simp only [upper, diag, Finset.disjoint_filter]
+      intro x _ hlt heq; omega
     have h3 : Disjoint (upper ∪ diag) lower := by
-      simp [Finset.disjoint_filter, Finset.mem_union]; intro ⟨x, y⟩ _ h _
-      rcases h with h | h <;> omega
+      rw [Finset.disjoint_union_left]
+      constructor
+      · simp only [upper, lower, Finset.disjoint_filter]
+        intro x _ hlt hgt; omega
+      · simp only [diag, lower, Finset.disjoint_filter]
+        intro x _ heq hgt; omega
     rw [h1, Finset.card_union_of_disjoint h3, Finset.card_union_of_disjoint h2]
-  -- From partition: n² = 2·|upper| + n, so |upper| = (n²-n)/2
-  have h_upper : upper.card = n * (n - 1) / 2 := by
-    have := h_total; rw [h_part, h_sym, h_diag] at this; omega
+  -- From partition: n² = 2·|upper| + n
+  have h2n : 2 * upper.card + n = n * n := by
+    have := h_total
+    rw [h_part, h_sym, h_diag] at this
+    omega
   -- Target set = upper ∪ diag
   have h_target : (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) = upper ∪ diag := by
-    ext ⟨x, y⟩; simp [upper, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
-    intro _ _; omega
+    ext ⟨x, y⟩
+    simp only [upper, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+    constructor
+    · rintro ⟨h, hle⟩
+      rcases hle.lt_or_eq with hc | hc
+      · exact Or.inl ⟨h, hc⟩
+      · exact Or.inr ⟨h, hc⟩
+    · rintro (⟨h, hc⟩ | ⟨h, hc⟩) <;> exact ⟨h, hc.le⟩
   have h_disj : Disjoint upper diag := by
-    simp [Finset.disjoint_filter]; intro ⟨x, y⟩ _ hlt heq; omega
-  rw [h_target, Finset.card_union_of_disjoint h_disj, h_upper, h_diag]
+    simp only [upper, diag, Finset.disjoint_filter]
+    intro x _ hlt heq; omega
+  have hring : n * (n + 1) = n * n + n := by ring
+  rw [h_target, Finset.card_union_of_disjoint h_disj, h_diag]
   omega
 
 /-- Sums a + b with a,b ∈ A ⊆ {1,...,N} and a ≤ b lie in {2,...,2N} -/
@@ -209,13 +239,6 @@ theorem isSidon_empty : IsSidon ∅ := by
   unfold IsSidon multiRepSet sumRepCount
   simp
 
-/-- sumRepCount is monotone in the underlying set -/
-private lemma sumRepCount_le_of_subset {A B : Finset ℕ} (hsub : A ⊆ B) (n : ℕ) :
-    sumRepCount A n ≤ sumRepCount B n := by
-  unfold sumRepCount
-  exact Finset.card_le_card
-    (Finset.filter_subset_filter _ (Finset.product_subset_product hsub hsub))
-
 /-- Sidon is monotone: subsets of Sidon sets are Sidon -/
 theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
     IsSidon A := by
@@ -226,10 +249,29 @@ theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
     intro n hn
     simp only [multiRepSet, Finset.mem_filter, Finset.mem_image,
       Finset.mem_product, Prod.exists] at hn ⊢
-    obtain ⟨⟨a, b, ha, hb, rfl⟩, hrep⟩ := hn
-    exact ⟨⟨a, b, hsub ha, hsub hb, rfl⟩,
+    obtain ⟨⟨a, b, ⟨ha, hb⟩, rfl⟩, hrep⟩ := hn
+    exact ⟨⟨a, b, ⟨hsub ha, hsub hb⟩, rfl⟩,
            le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
   omega
+
+/-- IsSidon means every sum has at most one representation. -/
+private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : ℕ) :
+    sumRepCount B n ≤ 1 := by
+  unfold IsSidon at hS
+  by_contra h
+  push_neg at h
+  have hmem : n ∈ multiRepSet B := by
+    unfold multiRepSet
+    simp only [Finset.mem_filter, Finset.mem_image, Finset.mem_product, Prod.exists]
+    constructor
+    · unfold sumRepCount at h
+      have hpos : 0 < ((B ×ˢ B).filter fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n).card := by omega
+      obtain ⟨⟨a, b⟩, hab⟩ := Finset.card_pos.mp hpos
+      simp only [Finset.mem_filter, Finset.mem_product] at hab
+      exact ⟨a, b, ⟨hab.1.1, hab.1.2⟩, hab.2.2⟩
+    · omega
+  rw [Finset.card_eq_zero] at hS
+  exact (hS ▸ Finset.notMem_empty n) hmem
 
 /-- The set of distinct pairwise sums from A ⊆ {1,...,N} has at most 2N-1 elements,
     since all sums a+b lie in {2,...,2N}. -/
@@ -241,10 +283,10 @@ theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         apply Finset.card_le_card
         intro s hs
         simp only [Finset.mem_image, Finset.mem_product, Prod.exists] at hs
-        obtain ⟨a, b, ha, hb, rfl⟩ := hs
+        obtain ⟨a, b, ⟨ha, hb⟩, rfl⟩ := hs
         simp only [Finset.mem_Icc] at hA ⊢
         have := hA a ha; have := hA b hb; omega
-    _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
+    _ = 2 * N - 1 := by rw [Nat.card_Icc]; omega
 
 /-- **Sidon counting bound (sums)**: For a Sidon set A ⊆ {1,...,N}, the sum
     map (a,b) ↦ a+b is injective on the upper triangle {(a,b) | a ≤ b}, so
@@ -268,7 +310,7 @@ theorem sidon_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
       simp [Finset.mem_filter, Finset.mem_product, ha1, hb1, hab1]
     have hp2 : (a₂, b₂) ∈ (A ×ˢ A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₁) := by
       simp [Finset.mem_filter, Finset.mem_product, ha2, hb2, hab2, heq]
-    exact Finset.card_le_one.mp hle hp1 hp2
+    exact Finset.card_le_one.mp hle (a₁, b₁) hp1 (a₂, b₂) hp2
   -- Chain: |U| = |U.image sum| ≤ |(A×A).image sum| ≤ 2N-1
   calc U.card
       = (U.image (fun p : ℕ × ℕ => p.1 + p.2)).card :=
@@ -319,12 +361,12 @@ private theorem isSidon_diff_injective {A : Finset ℕ} (hS : IsSidon A)
       have hp1 : (a₁, b₂) ∈ (A ×ˢ A).filter
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
-        exact ⟨⟨ha1, hb2⟩, h1, rfl⟩
+        exact ⟨⟨ha1, hb2⟩, h1, trivial⟩
       have hp2 : (a₂, b₁) ∈ (A ×ˢ A).filter
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
         exact ⟨⟨ha2, hb1⟩, h2, by omega⟩
-      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      have heqp := Finset.card_le_one.mp hle (a₁, b₂) hp1 (a₂, b₁) hp2
       simp only [Prod.mk.injEq] at heqp
       exact ⟨heqp.1, heqp.2.symm⟩
     · -- Pairs (a₁, b₂) and (b₁, a₂) — gives a₁=b₁ contradiction
@@ -332,12 +374,12 @@ private theorem isSidon_diff_injective {A : Finset ℕ} (hS : IsSidon A)
       have hp1 : (a₁, b₂) ∈ (A ×ˢ A).filter
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
-        exact ⟨⟨ha1, hb2⟩, h1, rfl⟩
+        exact ⟨⟨ha1, hb2⟩, h1, trivial⟩
       have hp2 : (b₁, a₂) ∈ (A ×ˢ A).filter
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
         exact ⟨⟨hb1, ha2⟩, le_of_lt h2, by omega⟩
-      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      have heqp := Finset.card_le_one.mp hle (a₁, b₂) hp1 (b₁, a₂) hp2
       simp only [Prod.mk.injEq] at heqp
       omega -- a₁ = b₁ contradicts hgt1
   · push_neg at h1
@@ -351,9 +393,9 @@ private theorem isSidon_diff_injective {A : Finset ℕ} (hS : IsSidon A)
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
         exact ⟨⟨hb1, ha2⟩, h2, by omega⟩
-      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      have heqp := Finset.card_le_one.mp hle (b₂, a₁) hp1 (b₁, a₂) hp2
       simp only [Prod.mk.injEq] at heqp
-      exact ⟨heqp.2.symm, heqp.1.symm⟩
+      exact ⟨heqp.2, heqp.1.symm⟩
     · -- Pairs (b₂, a₁) and (a₂, b₁) — gives a₁=b₁ contradiction
       push_neg at h2
       have hp1 : (b₂, a₁) ∈ (A ×ˢ A).filter
@@ -364,7 +406,7 @@ private theorem isSidon_diff_injective {A : Finset ℕ} (hS : IsSidon A)
           (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
         simp only [Finset.mem_filter, Finset.mem_product]
         exact ⟨⟨ha2, hb1⟩, le_of_lt h2, by omega⟩
-      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      have heqp := Finset.card_le_one.mp hle (b₂, a₁) hp1 (a₂, b₁) hp2
       simp only [Prod.mk.injEq] at heqp
       omega -- b₂=a₂ and a₁=b₁ contradicts hgt1
 
@@ -381,7 +423,7 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   have h_inj : Set.InjOn (fun p : ℕ × ℕ => p.1 - p.2) ↑L := by
     intro ⟨a₁, b₁⟩ h1 ⟨a₂, b₂⟩ h2 heq
     rw [Finset.mem_coe] at h1 h2
-    simp only [Finset.mem_filter, Finset.mem_product] at h1 h2
+    simp only [L, Finset.mem_filter, Finset.mem_product] at h1 h2
     have ⟨rfl, rfl⟩ := isSidon_diff_injective hS h1.1.1 h1.1.2 h2.1.1 h2.1.2 h1.2 h2.2 heq
     rfl
   -- Step 2: Image lies in {1,...,N-1}
@@ -389,7 +431,7 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     intro d hd
     rw [Finset.mem_image] at hd
     obtain ⟨⟨a, b⟩, hp, rfl⟩ := hd
-    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    simp only [L, Finset.mem_filter, Finset.mem_product] at hp
     simp only [Finset.mem_Icc]
     have := (Finset.mem_Icc.mp (hA a hp.1.1))
     have := (Finset.mem_Icc.mp (hA b hp.1.2))
@@ -399,7 +441,7 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   have h_le : L.card ≤ N - 1 := by
     rw [← h_card_img]
     calc (L.image _).card ≤ (Finset.Icc 1 (N - 1)).card := Finset.card_le_card h_range
-      _ = N - 1 := by rw [Finset.Nat.card_Icc]; omega
+      _ = N - 1 := by rw [Nat.card_Icc]; omega
   -- Step 4: 2*|L| + k = k*k (partition into lower triangle, diagonal, upper triangle)
   have h_2L : 2 * L.card + k = k * k := by
     set U := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)
@@ -409,12 +451,12 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
       have : L = U.image (fun p : ℕ × ℕ => (p.2, p.1)) := by
         ext ⟨x, y⟩
         simp only [L, U, Finset.mem_filter, Finset.mem_product,
-          Finset.mem_image, Prod.exists]
+          Finset.mem_image, Prod.exists, Prod.mk.injEq]
         constructor
-        · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨hy, hx⟩, hlt, rfl, rfl⟩
-        · rintro ⟨a, b, ⟨ha, hb⟩, hab, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
+        · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨⟨hy, hx⟩, hlt⟩, ⟨rfl, rfl⟩⟩
+        · rintro ⟨a, b, ⟨⟨ha, hb⟩, hab⟩, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
       rw [this]; exact Finset.card_image_of_injective _
-        (fun ⟨a, b⟩ ⟨c, d⟩ h => by simpa using h)
+        (fun ⟨a, b⟩ ⟨c, d⟩ h => by simp only [Prod.mk.injEq] at h ⊢; exact ⟨h.2, h.1⟩)
     -- |D| = k (diagonal)
     have h_D : D.card = k := by
       have : D = A.image (fun a => (a, a)) := by
@@ -437,12 +479,12 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         · right; exact ⟨⟨hx, hy⟩, h⟩
       · rintro ((⟨m, _⟩ | ⟨m, _⟩) | ⟨m, _⟩) <;> exact m
     have h_disj1 : Disjoint L D := by
-      simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega
+      simp only [L, D, Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega
     have h_disj2 : Disjoint (L ∪ D) U := by
       rw [Finset.disjoint_union_left]
-      exact ⟨by simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega,
-             by simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega⟩
-    have h_total : (A ×ˢ A).card = k * k := by simp [Finset.card_product]
+      exact ⟨by simp only [L, U, Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega,
+             by simp only [D, U, Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega⟩
+    have h_total : (A ×ˢ A).card = k * k := by simp [Finset.card_product, hk]
     rw [h_part, Finset.card_union_of_disjoint h_disj2,
         Finset.card_union_of_disjoint h_disj1, h_D, h_LU] at h_total
     omega
@@ -452,6 +494,7 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   · -- From 2*L.card + (n+1) = (n+1)*(n+1), derive 2*L.card = n*(n+1)
     -- Combined with L.card ≤ N-1: n*(n+1) ≤ 2*(N-1)
     -- Goal: (n+1)*n ≤ 2*(N-1)
+    show (n + 1) * n ≤ 2 * (N - 1)
     have h_eq : (n + 1) * (n + 1) = (n + 1) * n + (n + 1) := by ring
     omega
 
@@ -466,7 +509,8 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   -- k^2 = k*(k-1) + k ≤ 2*(N-1) + k ≤ 2*N + k
   rcases k with _ | n
   · simp
-  · have h_eq : (n + 1) ^ 2 = (n + 1) * n + (n + 1) := by ring
+  · have h' : (n + 1) * n ≤ 2 * (N - 1) := h
+    have h_eq : (n + 1) ^ 2 = (n + 1) * n + (n + 1) := by ring
     omega
 
 /- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
@@ -482,24 +526,6 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1.
     The correct PROVED bound is `distinct_sums_bounded` above. -/
 
-/-- IsSidon means every sum has at most one representation. -/
-private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : ℕ) :
-    sumRepCount B n ≤ 1 := by
-  unfold IsSidon at hS
-  by_contra h
-  push_neg at h
-  have hmem : n ∈ multiRepSet B := by
-    unfold multiRepSet
-    simp only [Finset.mem_filter, Finset.mem_image, Finset.mem_product, Prod.exists]
-    constructor
-    · unfold sumRepCount at h
-      have hpos : 0 < ((B ×ˢ B).filter fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n).card := by omega
-      obtain ⟨⟨a, b⟩, hab⟩ := Finset.card_pos.mp hpos
-      simp only [Finset.mem_filter, Finset.mem_product] at hab
-      exact ⟨a, b, hab.1.1, hab.1.2, hab.2.2⟩
-    · unfold sumRepCount at h; omega
-  rw [Finset.card_eq_zero] at hS
-  exact (hS ▸ Finset.not_mem_empty n) hmem
 
 /-- The reflected construction: B ∪ (N − B) is almost-Sidon when B is Sidon.
     The only possible collision is at n = N (sums from B-side and reflected-side). -/
@@ -515,7 +541,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
   have hB_le_N : ∀ x ∈ B, x ≤ N := fun x hx => le_trans (hB_le x hx) (Nat.div_le_self N 3)
   -- B' elements: ∃ c ∈ B, x = N - c
   have hB'_mem : ∀ x ∈ B', ∃ c ∈ B, x = N - c :=
-    fun x hx => Finset.mem_image.mp hx
+    fun x hx => let ⟨c, hc, heq⟩ := Finset.mem_image.mp hx; ⟨c, hc, heq.symm⟩
   -- B' elements are large: x ≥ N - N/3
   have hB'_ge : ∀ x ∈ B', x ≥ N - N / 3 := by
     intro x hx; obtain ⟨c, hc, rfl⟩ := hB'_mem x hx
@@ -593,7 +619,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
             simp [Finset.mem_filter, Finset.mem_product, ha1B, hb1B, hab1, hs1]
           have h2' : (a₂, b₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = s) := by
             simp [Finset.mem_filter, Finset.mem_product, ha2B, hb2B, hab2, hs2]
-          exact absurd (Finset.card_le_one.mp hle1 h1' h2') hne
+          exact absurd (Finset.card_le_one.mp hle1 (a₁, b₁) h1' (a₂, b₂) h2') hne
         · -- Pair 2 is Cross: s ≥ N - N/3 + 1 > 2*(N/3) ≥ s. Contradiction.
           have := cross_lo a₂ b₂ ha2B hb2B'
           omega
@@ -633,7 +659,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
                 simp [Finset.mem_filter, Finset.mem_product, ha1B, hd2, h_ad]
               have hp2 : (a₂, d₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
                 simp [Finset.mem_filter, Finset.mem_product, ha2B, hd1, h_ad2, heq]
-              have := Finset.card_le_one.mp hle1 hp1 hp2
+              have := Finset.card_le_one.mp hle1 (a₁, d₂) hp1 (a₂, d₁) hp2
               -- (a₁, d₂) = (a₂, d₁), so a₁ = a₂ and d₂ = d₁
               -- Then the original pairs are equal, contradicting hne
               simp only [Prod.mk.injEq] at this
@@ -647,7 +673,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
                 simp [Finset.mem_filter, Finset.mem_product, ha1B, hd2, h_ad]
               have hp2 : (d₁, a₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
                 simp [Finset.mem_filter, Finset.mem_product, hd1, ha2B]; omega
-              have := Finset.card_le_one.mp hle1 hp1 hp2
+              have := Finset.card_le_one.mp hle1 (a₁, d₂) hp1 (d₁, a₂) hp2
               simp only [Prod.mk.injEq] at this
               obtain ⟨rfl, rfl⟩ := this
               -- a₁ = d₁ and d₂ = a₂, so s = a₁ + (N - d₁) = a₁ + (N - a₁) = N
@@ -661,7 +687,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
                 simp [Finset.mem_filter, Finset.mem_product, hd2, ha1B]; omega
               have hp2 : (a₂, d₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
                 simp [Finset.mem_filter, Finset.mem_product, ha2B, hd1, h_ad2, heq]
-              have := Finset.card_le_one.mp hle1 hp1 hp2
+              have := Finset.card_le_one.mp hle1 (d₂, a₁) hp1 (a₂, d₁) hp2
               simp only [Prod.mk.injEq] at this
               obtain ⟨rfl, rfl⟩ := this
               -- d₂ = a₂ and a₁ = d₁ → s = a₁ + (N - a₁) = N
@@ -673,7 +699,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
                 simp [Finset.mem_filter, Finset.mem_product, hd2, ha1B]; omega
               have hp2 : (d₁, a₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
                 simp [Finset.mem_filter, Finset.mem_product, hd1, ha2B]; omega
-              have := Finset.card_le_one.mp hle1 hp1 hp2
+              have := Finset.card_le_one.mp hle1 (d₂, a₁) hp1 (d₁, a₂) hp2
               simp only [Prod.mk.injEq] at this
               obtain ⟨rfl, rfl⟩ := this
               exact absurd rfl hne
@@ -732,7 +758,7 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
             simp [Finset.mem_filter, Finset.mem_product, hc1, hd1, hdc1]; omega
           have hp2 : (d₂, c₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = c₁ + d₁) := by
             simp [Finset.mem_filter, Finset.mem_product, hc2, hd2, hdc2, heq]; omega
-          have := Finset.card_le_one.mp hle1 hp1 hp2
+          have := Finset.card_le_one.mp hle1 (d₁, c₁) hp1 (d₂, c₂) hp2
           simp only [Prod.mk.injEq] at this
           obtain ⟨rfl, rfl⟩ := this
           exact absurd rfl hne
@@ -750,6 +776,7 @@ private lemma reflected_injOn (N : ℕ) (B : Finset ℕ)
     Set.InjOn (fun b => N - b) ↑B := by
   intro a ha b hb heq
   rw [Finset.mem_coe] at ha hb
+  simp only at heq
   have := hB_le a ha; have := hB_le b hb
   omega
 

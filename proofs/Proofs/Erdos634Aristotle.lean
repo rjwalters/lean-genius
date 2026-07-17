@@ -69,7 +69,6 @@ theorem sq_pos_of_pos (k : ℕ) (hk : k ≥ 1) : k ^ 2 ≥ 1 :=
 -- ∑ i : Fin (k^2), (1 : ℝ) = k^2.
 theorem sum_fin_sq_one (k : ℕ) : ∑ _i : Fin (k ^ 2), (1 : ℝ) = k ^ 2 := by
   simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  push_cast; ring
 
 -- Routine: For k ≥ 1, k^2 > 0 as a real number.
 -- k ≥ 1 implies k^2 ≥ 1 > 0.
@@ -79,7 +78,6 @@ theorem sq_pos_real (k : ℕ) (hk : k ≥ 1) : (k : ℝ) ^ 2 > 0 :=
 -- Routine: The sum of 2*k^2 copies of 1 equals 2*k^2.
 theorem sum_fin_two_sq_one (k : ℕ) : ∑ _i : Fin (2 * k ^ 2), (1 : ℝ) = 2 * k ^ 2 := by
   simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  push_cast; ring
 
 -- Routine: For k ≥ 1, 2 * k^2 > 0 as a real number.
 theorem two_sq_pos_real (k : ℕ) (hk : k ≥ 1) : 2 * (k : ℝ) ^ 2 > 0 :=
@@ -88,7 +86,6 @@ theorem two_sq_pos_real (k : ℕ) (hk : k ≥ 1) : 2 * (k : ℝ) ^ 2 > 0 :=
 -- Routine: The sum of 3*k^2 copies of 1 equals 3*k^2.
 theorem sum_fin_three_sq_one (k : ℕ) : ∑ _i : Fin (3 * k ^ 2), (1 : ℝ) = 3 * k ^ 2 := by
   simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  push_cast; ring
 
 -- Routine: For k ≥ 1, 3 * k^2 > 0 as a real number.
 theorem three_sq_pos_real (k : ℕ) (hk : k ≥ 1) : 3 * (k : ℝ) ^ 2 > 0 :=
@@ -97,7 +94,6 @@ theorem three_sq_pos_real (k : ℕ) (hk : k ≥ 1) : 3 * (k : ℝ) ^ 2 > 0 :=
 -- Routine: The sum of 6*k^2 copies of 1 equals 6*k^2.
 theorem sum_fin_six_sq_one (k : ℕ) : ∑ _i : Fin (6 * k ^ 2), (1 : ℝ) = 6 * k ^ 2 := by
   simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  push_cast; ring
 
 -- Routine: For k ≥ 1, 6 * k^2 > 0 as a real number.
 theorem six_sq_pos_real (k : ℕ) (hk : k ≥ 1) : 6 * (k : ℝ) ^ 2 > 0 :=
@@ -145,7 +141,6 @@ theorem sum_squares_dissectable (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
   refine ⟨unitEquilateral, ⟨fun _ => unitEquilateral, ?_⟩, fun _ _ => rfl⟩
   have hsum : ∑ _ : Fin (n ^ 2 + m ^ 2), (1 : ℝ) = n ^ 2 + m ^ 2 := by
     simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-    push_cast; ring
   show 0 < ∑ _ : Fin (n ^ 2 + m ^ 2), (1 : ℝ) * 1
   simp only [mul_one, hsum]; exact sum_sq_pos_real n m hn hm
 

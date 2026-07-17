@@ -21,6 +21,9 @@ Adapted from formal-conjectures (Apache 2.0 License)
 
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Set Metric
 
 namespace Erdos188
@@ -47,12 +50,12 @@ def RedUnitDistanceFree (c : PlaneColoring) : Prop :=
 
 -- An arithmetic progression in ℂ with common difference d
 def IsAPInPlane (S : Finset ℂ) (d : ℂ) : Prop :=
-  ∃ a : ℂ, S = Finset.image (fun i : Fin S.card => a + i • d) Finset.univ
+  ∃ a : ℂ, S = Finset.image (fun i : Fin S.card => a + (i : ℕ) • d) Finset.univ
 
 -- A k-term arithmetic progression of blue points with unit distance steps
 def HasBlueAPWithUnitStep (c : PlaneColoring) (k : ℕ) : Prop :=
   ∃ a : ℂ, ∃ d : ℂ, Complex.abs d = 1 ∧
-    ∀ i : Fin k, c (a + i • d) = true
+    ∀ i : Fin k, c (a + (i : ℕ) • d) = true
 
 -- Alternative: blue points contain a k-AP with step of length 1
 def BlueContainsUnitAP (c : PlaneColoring) (k : ℕ) : Prop :=
@@ -111,9 +114,11 @@ The problem relates to the unit distance graph of ℝ².
 def UnitDistanceGraph : SimpleGraph ℂ where
   Adj z₁ z₂ := z₁ ≠ z₂ ∧ dist z₁ z₂ = 1
   symm := by
+    constructor
     intro z₁ z₂ ⟨hne, hd⟩
     exact ⟨hne.symm, by rw [dist_comm]; exact hd⟩
   loopless := by
+    constructor
     intro z ⟨hne, _⟩
     exact hne rfl
 

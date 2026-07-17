@@ -40,15 +40,15 @@ p(0) = 2, p(1) = 3, p(2) = 5, p(3) = 7, ...
 -/
 axiom nthPrime : ℕ → ℕ
 
-/--
+/- 
 Basic property: nthPrime produces primes.
 -/
 
-/--
+/- 
 nthPrime is strictly increasing.
 -/
 
-/--
+/- 
 The first few prime values.
 -/
 
@@ -139,11 +139,11 @@ More precisely:
 - Sum = S + (d - r) ≡ r + (d - r) ≡ d ≡ 0 (mod d)
 -/
 
-/--
+/- 
 Key lemma: Sum of t primes each congruent to 1 (mod d) is congruent to t (mod d).
 -/
 
-/--
+/- 
 From Shiu's theorem, we can find arbitrarily large m with d consecutive
 primes all congruent to 1 (mod d).
 -/
@@ -165,23 +165,23 @@ theorem erdos_427 : erdos_427_statement := erdos_427_of_shiu shiu_theorem
 Let's verify the statement for small cases.
 -/
 
-/--
+/- 
 Example: For n = 0 and d = 5, we have p_0 + p_1 = 2 + 3 = 5, divisible by 5.
 So k = 2 works.
 -/
 
-/--
+/- 
 Example: For n = 0 and d = 10, we need to find k such that the sum of the
 first k primes is divisible by 10.
 2+3+5+7+11+13+17+19+23 = 100, so k = 9 works.
 -/
 
-/--
+/- 
 Example: For n = 1 and d = 3, we have p_1 + p_2 + p_3 = 3 + 5 + 7 = 15,
 which is divisible by 3. So k = 3 works.
 -/
 
-/--
+/- 
 Example: For n = 0 and d = 7, we check partial sums:
 2 ≡ 2, 2+3=5 ≡ 5, 5+5=10 ≡ 3, 10+7=17 ≡ 3, 17+11=28 ≡ 0 (mod 7).
 So k = 5 works: 2+3+5+7+11 = 28 = 4×7.
@@ -251,7 +251,7 @@ For example, Dirichlet says there are infinitely many primes ≡ 1 (mod 7).
 Shiu says there exist 1000 consecutive primes all ≡ 1 (mod 7).
 -/
 
-/--
+/- 
 Dirichlet's theorem (special case): There are infinitely many primes
 congruent to 1 modulo any q ≥ 2.
 -/

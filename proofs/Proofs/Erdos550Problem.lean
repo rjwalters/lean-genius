@@ -15,11 +15,9 @@
   Tags: graph-theory, ramsey-theory, trees
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos550
 
@@ -63,8 +61,11 @@ def completeBipartite (m1 m2 : ℕ) (h : m1 ≤ m2) : CompleteMultipartite :=
     partSizes := ![m1, m2]
     sorted := by
       intro i j hij
-      fin_cases i <;> fin_cases j <;> simp [Matrix.cons_val_zero, Matrix.cons_val_one]
-      · exact h }
+      fin_cases i <;> fin_cases j
+      · exact le_rfl
+      · exact h
+      · exact absurd hij (by decide)
+      · exact le_rfl }
 
 /- ## Part III: Ramsey Numbers -/
 
@@ -104,12 +105,13 @@ example : (5 - 1) * (4 - 1) + 1 = 13 := by native_decide  -- R(T₄, K₅)
 /- ## Part V: The Conjecture -/
 
 /-- The conjectured bound for R(T, G) with multipartite G. -/
-def ConjecturedBound (T : Type*) [Fintype T] (G : CompleteMultipartite)
+noncomputable def ConjecturedBound (T : Type*) [Fintype T] (G : CompleteMultipartite)
     (hk : G.k ≥ 2) : ℕ :=
   let χ := G.chromaticNumber
   let m1 := G.partSizes ⟨0, by omega⟩
   let m2 := G.partSizes ⟨1, by omega⟩
-  let bipartite := completeBipartite m1 m2 (G.sorted ⟨0, by omega⟩ ⟨1, by omega⟩)
+  let bipartite := completeBipartite m1 m2
+    (G.sorted ⟨0, by omega⟩ ⟨1, by omega⟩ (Fin.mk_le_mk.mpr (by omega)))
   (χ - 1) * (ramseyNumber T bipartite - 1) + m1
 
 /-- Erdős's conjecture: R(T, G) ≤ (χ(G)-1)(R(T, K_{m₁,m₂})-1) + m₁. -/
@@ -139,7 +141,7 @@ axiom bipartite_case (T : Type*) [Fintype T] [DecidableEq T]
 
 /-- Star graph: K_{1,n-1}. -/
 def starGraph (n : ℕ) : CompleteMultipartite :=
-  completeBipartite 1 (n - 1) (by omega)
+  completeBipartite (min 1 (n - 1)) (n - 1) (min_le_right _ _)
 
 /- ## Part VII: Path Graphs -/
 

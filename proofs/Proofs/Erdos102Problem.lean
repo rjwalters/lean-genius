@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A planar point configuration. -/
@@ -45,7 +47,7 @@ noncomputable def maxCollinear (P : PointConfig) : ℕ :=
 
 /- ## Main Problem -/
 
-/-- **Erdős Problem #102**: h_c(n) → ∞. If cn² lines contain ≥ 4 points,
+/-  **Erdős Problem #102**: h_c(n) → ∞. If cn² lines contain ≥ 4 points,
     some line must contain many points (growing with n). -/
 /- ## Collinearity Properties -/
 
@@ -75,9 +77,9 @@ theorem collinear₃_self_mid (p q : ℝ × ℝ) : collinear₃ p q q := by
 
 /- ## Known Results -/
 
-/-- **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
+/-  **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
     rich lines is at most O(√n). -/
-/-- **Hunter's Counterexample**: Erdős conjectured h_c(n) ≫_c √n, but
+/-  **Hunter's Counterexample**: Erdős conjectured h_c(n) ≫_c √n, but
     Hunter disproved this using lattice point configurations.
     h_c(n) ≪ n^{1/log(1/c)} for suitable c. -/
 /-- **Connection to Problem #101**: if h_c(n) → ∞ is proved, the o(n²)
@@ -141,7 +143,7 @@ theorem connection_101_from_full_divergence
 
 /- ## Observations -/
 
-/-- **Szemerédi–Trotter**: the incidence bound I(P,L) ≤ C(n^{2/3}m^{2/3}+n+m)
+/-  **Szemerédi–Trotter**: the incidence bound I(P,L) ≤ C(n^{2/3}m^{2/3}+n+m)
     constrains how many rich lines can pass through n points. -/
 /-- **Erdős–Purdy connection (PROVED)**: if cn² rich lines exist,
     some line has ≥ 4 collinear points.

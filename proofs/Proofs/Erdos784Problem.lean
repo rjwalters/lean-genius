@@ -29,6 +29,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.SmoothNumbers
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace Erdos784
 
@@ -52,14 +53,16 @@ def sievedSet (A : Finset ℕ) (x : ℕ) : Finset ℕ :=
 def sievedCount (A : Finset ℕ) (x : ℕ) : ℕ :=
   (sievedSet A x).card
 
-/-- H_C(x) = minimum sieved count over sets A ⊆ {2,...,x} with reciprocal sum ≤ C -/
+/-- H_C(x) = minimum sieved count over sets A ⊆ {2,...,x} with reciprocal sum ≤ C.
+    (v4.31 migration: `Finset.inf'` requires a nonempty witness for *every* `C`,
+    but the `∅` witness only lies in the filtered family when `0 ≤ C`
+    (`reciprocalSum ∅ = 0 ≤ C`). Use `Finset.min … |>.getD 0` over the image so
+    the definition is total, with the convention that an empty family gives 0.) -/
 noncomputable def H_C (C : ℝ) (x : ℕ) : ℕ :=
   -- Note: We exclude 1 from A to avoid trivial cases
-  Finset.inf'
-    ((Finset.range (x + 1)).powerset.filter
-      (fun A => (∀ a ∈ A, 2 ≤ a) ∧ reciprocalSum A ≤ C))
-    ⟨∅, by simp [reciprocalSum]⟩
-    (fun A => sievedCount A x)
+  (((Finset.range (x + 1)).powerset.filter
+      (fun A => (∀ a ∈ A, 2 ≤ a) ∧ reciprocalSum A ≤ C)).image
+        (fun A => sievedCount A x)).min.getD 0
 
 /-
 ## Part 2: The Question
@@ -97,14 +100,14 @@ theorem H_one_asymptotic :
   obtain ⟨K₂, hK₂, hup⟩ := saias_1998_upper_bound
   exact ⟨K₁, K₂, hK₁, hK₂, fun x hx => ⟨hlow x hx, hup x hx⟩⟩
 
-/-- Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
+/-  Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
 /-
 ## Part 4: The Case 0 < C < 1
 
 Trivial lower bound by union bound.
 -/
 
-/-- For C < 1, the union bound gives (1-C)x survivors.
+/-  For C < 1, the union bound gives (1-C)x survivors.
     The sum of x/a over a ∈ A is at most x · Σ 1/a ≤ Cx,
     so at least (1-C)x elements survive (minus rounding). -/
 /-- For 0 < C < 1, the answer is YES (trivially): any c works since the
@@ -127,7 +130,7 @@ theorem alpha_lt_one (C : ℝ) (hC : C > 1) : alpha C < 1 := by
   rw [Real.exp_lt_one_iff]
   linarith
 
-/-- Ruzsa: For C > 1, H_C(x) = x^{α+o(1)} where α = e^{1-C} -/
+/-  Ruzsa: For C > 1, H_C(x) = x^{α+o(1)} where α = e^{1-C} -/
 /-- Weingartner (2025): Precise asymptotics for C > 1 -/
 axiom weingartner_2025 (C : ℝ) (hC : C > 1) :
     ∃ K₁ K₂ : ℝ, K₁ > 0 ∧ K₂ > 0 ∧ ∀ x : ℕ, x ≥ 2 →
@@ -145,7 +148,7 @@ axiom negative_answer_large_C (C : ℝ) (hC : C > 1) :
 Shows the polynomial bound is best possible.
 -/
 
-/-- The Schinzel-Szekeres construction (1959):
+/-  The Schinzel-Szekeres construction (1959):
     For any c > 0, there exist sets A with reciprocal sum ≤ 1
     achieving sievedCount ≤ 2x/(log x)^c. This shows x/(log x)^c
     is the correct scale for the C = 1 lower bound. -/
@@ -159,7 +162,7 @@ When 1 ∈ A, everything is divisible.
 theorem one_in_A_trivial (A : Finset ℕ) (x : ℕ) (h1 : 1 ∈ A) :
     sievedCount A x = 0 := by
   unfold sievedCount sievedSet
-  simp only [Finset.filter_eq_empty_iff, Finset.mem_range]
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
   intro m _
   push_neg
   intro _
@@ -174,10 +177,10 @@ def validSet (A : Finset ℕ) : Prop := ∀ a ∈ A, 2 ≤ a
 Related to other sieving problems.
 -/
 
-/-- Connection to Problem #542: the problem of dense divisors.
+/-  Connection to Problem #542: the problem of dense divisors.
     Both problems study how the structure of a set of divisors
     (measured by reciprocal sums) controls sieving outcomes. -/
-/-- The general principle: the reciprocal sum Σ 1/n of A controls
+/-  The general principle: the reciprocal sum Σ 1/n of A controls
     how effectively A sieves [1,x]. The phase transition at C = 1
     separates linear-like behavior from sublinear behavior. -/
 /-
@@ -198,7 +201,7 @@ theorem erdos_784_complete_answer (C : ℝ) (hC : C > 0) :
       constructor
       · norm_num
       · obtain ⟨K, hK, hbound⟩ := ruzsa_1982_lower_bound
-        exact ⟨K, hK, hbound⟩
+        refine ⟨K, hK, fun x hx => ?_⟩; simpa [pow_one] using hbound x hx
     · -- 0 < C < 1 case
       have hC_lt : C < 1 := lt_of_le_of_ne hC_le hC_eq
       exact positive_answer_small_C C hC hC_lt
@@ -230,7 +233,7 @@ theorem erdos_784_statement :
   · intro C hC hC_le
     exact (erdos_784_complete_answer C hC).1 hC_le
   · intro C hC
-    exact (erdos_784_complete_answer C hC).2 hC
+    exact (erdos_784_complete_answer C (lt_trans one_pos hC)).2 hC
 
 /-- Summary of Erdős Problem #784 -/
 theorem erdos_784_summary :
@@ -245,7 +248,7 @@ theorem erdos_784_summary :
     constructor
     · norm_num
     · obtain ⟨K, hK, hbound⟩ := ruzsa_1982_lower_bound
-      exact ⟨K, hK, hbound⟩
+      refine ⟨K, hK, fun x hx => ?_⟩; simpa [pow_one] using hbound x hx
   · exact negative_answer_large_C
 
 end Erdos784

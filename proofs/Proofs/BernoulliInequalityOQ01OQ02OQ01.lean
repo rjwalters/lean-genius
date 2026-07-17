@@ -1,5 +1,7 @@
 import Mathlib
 
+set_option maxRecDepth 40000
+
 /-
 # Degree-`k` binomial truncation lower bound for `(1 + a)ⁿ`
 
@@ -74,7 +76,9 @@ theorem binom_trunc_le (ha : 0 ≤ a) (n k : ℕ) :
     rw [full_expansion n]
     refine Finset.sum_subset hsub_n ?_
     intro i _ hi
-    have : n < i := by simpa [Nat.lt_iff_add_one_le] using (Finset.mem_range.not.mp hi)
+    have : n < i := by
+      have hi' := Finset.mem_range.not.mp hi
+      omega
     simp [term, Nat.choose_eq_zero_of_lt this]
   calc
     ∑ i ∈ range (k + 1), (n.choose i : ℝ) * a ^ i
@@ -129,7 +133,9 @@ theorem binom_trunc_eq_iff (ha : 0 ≤ a) (n k : ℕ) :
       rw [full_expansion n]
       refine (Finset.sum_subset (Finset.range_subset_range.mpr (by omega)) ?_).symm
       intro i _ hi
-      have : n < i := by simpa [Nat.lt_iff_add_one_le] using (Finset.mem_range.not.mp hi)
+      have : n < i := by
+        have hi' := Finset.mem_range.not.mp hi
+        omega
       simp [Nat.choose_eq_zero_of_lt this]
 
 /-- **First-order Bernoulli** as the `k = 1` instance: `1 + n·a ≤ (1+a)ⁿ` for `a ≥ 0`. -/

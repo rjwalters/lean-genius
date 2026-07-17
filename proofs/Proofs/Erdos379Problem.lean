@@ -130,9 +130,9 @@ There's an important distinction with s(n), where we only require ONE k.
 noncomputable def s (n : ℕ) : ℕ :=
   sSup {maxPrimePowerExp n k | k ∈ Finset.Ico 1 n}
 
-/-- s(n) is always at least S(n). -/
-/-- s(n) → ∞ as n → ∞ (this is much easier than the S(n) result). -/
-/-- In fact, s(n) grows like log(n). -/
+/-  s(n) is always at least S(n). -/
+/-  s(n) → ∞ as n → ∞ (this is much easier than the S(n) result). -/
+/-  In fact, s(n) grows like log(n). -/
 /-
 ## Part VII: Connection to Lucas' Theorem
 
@@ -140,7 +140,7 @@ The key to proving witness_divisibility is Lucas' theorem for binomial
 coefficients modulo primes.
 -/
 
-/-- Lucas' theorem: C(m, n) mod p depends only on the base-p digits of m and n.
+/-  Lucas' theorem: C(m, n) mod p depends only on the base-p digits of m and n.
     Specifically, C(m, n) ≡ ∏ C(m_i, n_i) (mod p) where m = Σ m_i p^i, n = Σ n_i p^i.
     This is a Mathlib result we reference. -/
 /-- Key insight for 3^{2^m}: The base-3 representation of 3^{2^m} is

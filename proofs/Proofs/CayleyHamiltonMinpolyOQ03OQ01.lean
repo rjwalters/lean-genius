@@ -25,11 +25,7 @@
 
   See also: CayleyHamiltonMinpolyOQ03.lean (Krylov complexity for μ_M)
 -/
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.RingTheory.Polynomial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace MinpolyVec
 
@@ -102,7 +98,7 @@ theorem vecAnnSet_mul_mem (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
     {p : K[X]} (hp : p ∈ vecAnnSet M v) (q : K[X]) :
     q * p ∈ vecAnnSet M v := by
   simp only [vecAnnSet, Set.mem_setOf_eq] at *
-  rw [map_mul, Matrix.mul_mulVec, hp, Matrix.mulVec_zero]
+  rw [map_mul, ← Matrix.mulVec_mulVec, hp, Matrix.mulVec_zero]
 
 -- ============================================================
 -- PART III: The Minimal Polynomial of M Annihilates Every Vector
@@ -138,11 +134,10 @@ theorem vec_ann_poly_of_deg_le_dim [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     ?_, minpoly_mem_vecAnnSet M v⟩
   -- natDegree (minpoly K M) ≤ n: from Cayley-Hamilton, minpoly | charpoly,
   -- and charpoly has degree n
-  have hch : (minpoly K M).natDegree ≤ (Matrix.charpoly M).natDegree := by
-    apply Polynomial.natDegree_le_natDegree
-    · exact minpoly.ne_zero (Algebra.IsIntegral.isIntegral M)
-    · exact minpoly.dvd K M (Matrix.aeval_self_charpoly M)
-  rw [Matrix.natDegree_charpoly] at hch
+  have hch : (minpoly K M).natDegree ≤ (Matrix.charpoly M).natDegree :=
+    Polynomial.natDegree_le_of_dvd (minpoly.dvd K M (Matrix.aeval_self_charpoly M))
+      (Matrix.charpoly_monic M).ne_zero
+  rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin] at hch
   exact hch
 
 /-- The Krylov expansion at μ_M gives a zero linear combination of Krylov vectors.
@@ -185,7 +180,7 @@ theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
   obtain ⟨hq₀ne, hq₀ann⟩ := degree_lt_wf.min_mem Ann hAnn
   -- Minimality: no nonzero annihilator has strictly smaller degree
   have hq₀min : ∀ p, p ∈ Ann → ¬ p.degree < q₀.degree :=
-    fun p hp => degree_lt_wf.not_lt_min Ann hAnn hp
+    fun p hp => degree_lt_wf.not_lt_min Ann hp
   -- Step 2: Make q₀ monic via unit scaling
   have hlc_ne : q₀.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hq₀ne
   have hlc_unit : IsUnit q₀.leadingCoeff := IsUnit.mk0 _ hlc_ne
@@ -195,9 +190,9 @@ theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
   have hμdeg : μ.natDegree = q₀.natDegree :=
     Polynomial.natDegree_smul_of_smul_regular q₀ (isSMulRegular_of_group _)
   have hμdeg_eq : μ.degree = q₀.degree := by
-    simp [Polynomial.degree_eq_natDegree hμne, Polynomial.degree_eq_natDegree hq₀ne, hμdeg]
+    rw [Polynomial.degree_eq_natDegree hμne, Polynomial.degree_eq_natDegree hq₀ne, hμdeg]
   have hμann : (aeval M μ).mulVec v = 0 := by
-    simp only [hμ_def, Units.smul_def, map_smul, Matrix.smul_mulVec, hq₀ann, smul_zero]
+    rw [hμ_def, Units.smul_def, map_smul, Matrix.smul_mulVec, hq₀ann, smul_zero]
   have hμmin : ∀ p, p ∈ Ann → ¬ p.degree < μ.degree := by
     rwa [hμdeg_eq]
   -- Step 3: For any annihilating q, μ divides q  (Euclidean division + minimality)
@@ -208,7 +203,7 @@ theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     -- q %ₘ μ also annihilates v
     have hmod_ann : (aeval M (q %ₘ μ)).mulVec v = 0 := by
       -- Division identity: q %ₘ μ + μ * (q /ₘ μ) = q
-      have hdiv_id := Polynomial.modByMonic_add_div q hμmonic
+      have hdiv_id := Polynomial.modByMonic_add_div q μ
       -- μ * (q /ₘ μ) ∈ vecAnnSet (since μ ∈ vecAnnSet and ideal closure)
       have hdiv_part : (aeval M (μ * (q /ₘ μ))).mulVec v = 0 := by
         have h : (aeval M ((q /ₘ μ) * μ)).mulVec v = 0 :=
@@ -229,11 +224,11 @@ theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
   -- natDegree μ ≤ n: μ.natDegree = q₀.natDegree ≤ minpoly.natDegree ≤ charpoly.natDegree = n
   rw [hμdeg]
   have hq₀_le_min : q₀.degree ≤ (minpoly K M).degree :=
-    le_of_not_lt (hq₀min (minpoly K M) ⟨hminne, minpoly_mem_vecAnnSet M v⟩)
+    le_of_not_gt (hq₀min (minpoly K M) ⟨hminne, minpoly_mem_vecAnnSet M v⟩)
   have hmin_le_ch : (minpoly K M).natDegree ≤ (Matrix.charpoly M).natDegree :=
     Polynomial.natDegree_le_of_dvd
       (minpoly.dvd K M (Matrix.aeval_self_charpoly M))
-      Matrix.charpoly_monic.ne_zero
+      (Matrix.charpoly_monic M).ne_zero
   have hq₀_natdeg_le_min : q₀.natDegree ≤ (minpoly K M).natDegree := by
     apply Polynomial.natDegree_le_natDegree
     exact hq₀_le_min

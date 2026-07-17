@@ -64,9 +64,9 @@ among any n+1 consecutive integers, at least one is coprime to n. -/
     Axiomatized because computing it requires deep results. -/
 axiom h : ℕ → ℕ
 
-/-- h(k) has the defining property: for any n with ≤k prime factors,
+/-  h(k) has the defining property: for any n with ≤k prime factors,
     any h(k) consecutive integers contain one coprime to n -/
-/-- h(k) is minimal with this property -/
+/-  h(k) is minimal with this property -/
 /- ## Part 3: Jacobsthal's Conjecture (the main question) -/
 
 /-- Jacobsthal's Conjecture: h(k) ≪ k² -/
@@ -94,7 +94,7 @@ theorem iwaniec_bound_form :
 
 /- ## Part 5: Known Lower Bounds -/
 
-/-- Rankin-type lower bound: h(k) ≥ ck log k for large k -/
+/-  Rankin-type lower bound: h(k) ≥ ck log k for large k -/
 /-- Ford-Green-Konyagin-Maynard-Tao (2018) lower bound:
     h(k) ≥ ck · (log k)(log log log k)/(log log k)²
     This is the current best lower bound, derived from their breakthrough on prime gaps. -/
@@ -120,7 +120,7 @@ axiom h_four : h 4 = 10
 /-- h(5) = 14: for n = 2310, need an interval of length 14 -/
 axiom h_five : h 5 = 14
 
-/-- The primorial p_k# = 2·3·5·...·p_k maximizes Jacobsthal's function:
+/-  The primorial p_k# = 2·3·5·...·p_k maximizes Jacobsthal's function:
     h(k) = jacobsthalForN(p_k#) -/
 /- ## Part 7: The conjecture h(k) ≪ k² is OPEN -/
 

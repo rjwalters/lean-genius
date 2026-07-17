@@ -1,10 +1,4 @@
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.DivisionRing
-import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Set.Card
-import Mathlib.Algebra.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hilbert 15 OQ-01: Schubert Calculus Formalizability Assessment
@@ -74,14 +68,14 @@ namespace Hilbert15OQ01
 
 /-- The Grassmannian Gr(k,n) over a field K -/
 def Grassmannian (k n : ℕ) (K : Type*) [DivisionRing K] :=
-  { V : Submodule K (Fin n → K) // finrank K V = k }
+  { V : Submodule K (Fin n → K) // Module.finrank K V = k }
 
 instance (k n : ℕ) (K : Type*) [DivisionRing K] :
     CoeSort (Grassmannian k n K) (Submodule K (Fin n → K)) where
   coe := Subtype.val
 
 theorem grassmannian_rank {k n : ℕ} {K : Type*} [DivisionRing K]
-    (V : Grassmannian k n K) : finrank K (V : Submodule K (Fin n → K)) = k :=
+    (V : Grassmannian k n K) : Module.finrank K (V : Submodule K (Fin n → K)) = k :=
   V.property
 
 /-- A line in P³ = Gr(2,4) -/
@@ -98,7 +92,7 @@ def LinesMeet {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
 
 /-- Lines meet via span dimension < 4 -/
 def LinesMeet' {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
-  finrank K (L₁.val ⊔ L₂.val : Submodule K (Fin 4 → K)) < 4
+  Module.finrank K (L₁.val ⊔ L₂.val : Submodule K (Fin 4 → K)) < 4
 
 -- ============================================================
 -- Part II: AXIOM ELIMINATION 1 — linesMeet_iff_linesMeet'
@@ -119,35 +113,35 @@ This is the submodule dimension formula (Grassmann's formula).
 /-- **Proved (was axiom)**: Lines meet iff their span has dimension < 4.
 
     Uses the submodule dimension formula:
-    finrank(V ⊔ W) + finrank(V ⊓ W) = finrank(V) + finrank(W) = 2 + 2 = 4
+    Module.finrank(V ⊔ W) + Module.finrank(V ⊓ W) = Module.finrank(V) + Module.finrank(W) = 2 + 2 = 4
 
-    V ⊓ W ≠ ⊥ ↔ finrank(V ⊓ W) ≥ 1 ↔ finrank(V ⊔ W) ≤ 3 < 4. -/
+    V ⊓ W ≠ ⊥ ↔ Module.finrank(V ⊓ W) ≥ 1 ↔ Module.finrank(V ⊔ W) ≤ 3 < 4. -/
 theorem linesMeet_iff_linesMeet' {K : Type*} [Field K] (L₁ L₂ : LineInP3 K) :
     LinesMeet L₁ L₂ ↔ LinesMeet' L₁ L₂ := by
   unfold LinesMeet LinesMeet' SubspacesMeet
   set V := (L₁ : Submodule K (Fin 4 → K))
   set W := (L₂ : Submodule K (Fin 4 → K))
-  have hV : finrank K V = 2 := L₁.property
-  have hW : finrank K W = 2 := L₂.property
-  -- The dimension formula: finrank(V ⊔ W) + finrank(V ⊓ W) = finrank(V) + finrank(W)
-  have hdim : finrank K ↥(V ⊔ W) + finrank K ↥(V ⊓ W) = 4 := by
+  have hV : Module.finrank K V = 2 := L₁.property
+  have hW : Module.finrank K W = 2 := L₂.property
+  -- The dimension formula: Module.finrank(V ⊔ W) + Module.finrank(V ⊓ W) = Module.finrank(V) + Module.finrank(W)
+  have hdim : Module.finrank K ↥(V ⊔ W) + Module.finrank K ↥(V ⊓ W) = 4 := by
     have := Submodule.finrank_sup_add_finrank_inf_eq V W
     rw [hV, hW] at this
     exact this
   constructor
-  · -- V ⊓ W ≠ ⊥ → finrank(V ⊔ W) < 4
+  · -- V ⊓ W ≠ ⊥ → Module.finrank(V ⊔ W) < 4
     intro hne
     -- V ⊓ W ≠ ⊥ means it has positive dimension
-    have hpos : 0 < finrank K ↥(V ⊓ W) := by
-      rw [finrank_pos_iff]
-      exact Submodule.nontrivial_of_ne_bot _ hne
+    have hpos : 0 < Module.finrank K ↥(V ⊓ W) := by
+      rw [Module.finrank_pos_iff]
+      exact Submodule.nontrivial_iff_ne_bot.mpr hne
     omega
-  · -- finrank(V ⊔ W) < 4 → V ⊓ W ≠ ⊥
+  · -- Module.finrank(V ⊔ W) < 4 → V ⊓ W ≠ ⊥
     intro hlt
-    -- finrank(V ⊓ W) ≥ 1, so V ⊓ W is nontrivial
-    have hpos : 0 < finrank K ↥(V ⊓ W) := by omega
-    rw [finrank_pos_iff] at hpos
-    exact Submodule.ne_bot_of_nontrivial (V ⊓ W)
+    -- Module.finrank(V ⊓ W) ≥ 1, so V ⊓ W is nontrivial
+    have hpos : 0 < Module.finrank K ↥(V ⊓ W) := by omega
+    rw [Module.finrank_pos_iff] at hpos
+    exact Submodule.nontrivial_iff_ne_bot.mp hpos
 
 -- ============================================================
 -- Part III: Four Lines Infrastructure (from parent, axiomatized)
@@ -247,11 +241,11 @@ def schubertNumber_FiveConics : ℕ := 3264
 
 def partition_1 : Partition where
   parts := [1]
-  decreasing := List.chain'_singleton _
+  decreasing := List.isChain_singleton _
 
 def partition_22 : Partition where
   parts := [2, 2]
-  decreasing := by simp [List.Chain', List.chain'_cons']
+  decreasing := List.Chain.cons (le_refl 2) List.Chain.nil
 
 axiom sigma1_fourth_power :
     littlewoodRichardsonCoeff partition_1 partition_1 partition_22 = 2
@@ -267,7 +261,7 @@ theorem four_lines_via_schubert : schubertNumber_FourLines = 2 := rfl
 
 ### What CAN be formalized today (0 new Mathlib infrastructure needed)
 
-1. **Grassmannian Gr(k,n)** via finrank subtypes ✓
+1. **Grassmannian Gr(k,n)** via Module.finrank subtypes ✓
 2. **Line intersection conditions** via submodule dimension formula ✓ (proved here)
 3. **Transversal counting** from geometric axioms ✓ (proved here)
 4. **Partition arithmetic** (size, containment, fitsIn) ✓

@@ -62,7 +62,7 @@ def ErdosProblem53 : Prop :=
 Chang proved the conjecture affirmatively, resolving Problem 53.
 -/
 
-/-- Chang's theorem (2003): Erdős Problem 53 holds. -/
+/-  Chang's theorem (2003): Erdős Problem 53 holds. -/
 /-
 ## Section 4: The Erdős–Szemerédi upper bound
 
@@ -71,7 +71,7 @@ of representable integers is bounded by `exp(c · (log |A|)² · log log |A|)`.
 This shows the growth cannot be *too* fast.
 -/
 
-/-- There exists a constant c > 0 and arbitrarily large sets A where the
+/-  There exists a constant c > 0 and arbitrarily large sets A where the
     number of representable integers is at most exp(c · (log |A|)² · log log |A|). -/
 /-
 ## Section 5: Sum-product phenomena connection
@@ -111,6 +111,6 @@ def subsetSumCount (A : Finset ℤ) : ℕ := (subsetSums A).card
 /-- Count of integers representable as subset products. -/
 def subsetProductCount (A : Finset ℤ) : ℕ := (subsetProducts A).card
 
-/-- The union count is at least the subset sum count. -/
-/-- The union count is at least the subset product count. -/
+/-  The union count is at least the subset sum count. -/
+/- The union count is at least the subset product count. -/
 end Erdos53

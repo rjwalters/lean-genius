@@ -121,6 +121,7 @@ variable {K : Type*} [Field K]
 the characteristic polynomial (matching the convention of [oq-01]). -/
 noncomputable abbrev eigenvalues (A : Matrix n n K) : Multiset K := A.charpoly.roots
 
+set_option maxHeartbeats 1000000 in
 /-- **Similar matrices have the same eigenvalues.**  For an invertible `P : (Matrix n n K)ˣ`
 the conjugate `P⁻¹·A·P` has exactly the same multiset of eigenvalues as `A`, over any field.
 This refines similarity-invariance of the trace and determinant (which are only the sum and
@@ -129,7 +130,10 @@ product of these eigenvalues) to the full spectrum with multiplicities, via Math
 theorem eigenvalues_units_conj (P : (Matrix n n K)ˣ) (A : Matrix n n K) :
     eigenvalues (P⁻¹.val * A * P.val) = eigenvalues A := by
   unfold eigenvalues
-  rw [Matrix.charpoly_units_conj']
+  -- v4.31: `charpoly_units_conj P A` is now `(↑P·A·(↑P)⁻¹)`; supply `P⁻¹` for the `↑P⁻¹·A·↑P` form
+  have h : (P⁻¹.val * A * P.val).charpoly = A.charpoly := by
+    have := Matrix.charpoly_units_conj P⁻¹ A; simpa using this
+  rw [h]
 
 /-- **Eigenvalue-sum invariance.**  The sum of the eigenvalues is a similarity invariant —
 the trace-side shadow of `eigenvalues_units_conj`.  Combined with `trace = Σ λ` from

@@ -69,8 +69,8 @@ def ErdosProblem196 : Prop :=
 
 /- ## Known Results -/
 
-/-- **DEGS (1977)**: Every permutation of ℕ contains a monotone 3-AP. -/
-/-- **DEGS (1977)**: There exists a permutation avoiding monotone 5-APs. -/
+/-  **DEGS (1977)**: Every permutation of ℕ contains a monotone 3-AP. -/
+/-  **DEGS (1977)**: There exists a permutation avoiding monotone 5-APs. -/
 /-- The 4-AP conjecture implies the 3-AP theorem. -/
 theorem conjecture_implies_3ap (hconj : ∀ x : Perm, HasMonotone4AP x) :
     ∀ x : Perm, HasMonotone3AP x := by
@@ -93,7 +93,7 @@ def IsAP4OddCD (a b c d : ℕ) : Prop :=
 def IsAP4EvenCD (a b c d : ℕ) : Prop :=
   IsAP4 a b c d ∧ (b - a) % 2 = 0
 
-/-- **LeSaulnier–Vijay (2011)**: There exists a permutation avoiding
+/-  **LeSaulnier–Vijay (2011)**: There exists a permutation avoiding
     all monotone 4-APs with odd common difference. -/
 /-- Every 4-AP has either odd or even common difference. -/
 theorem ap4_parity (a b c d : ℕ) (h : IsAP4 a b c d) :
@@ -150,6 +150,6 @@ theorem non_extendable_constraint :
 
 /- ## Erdős–Szekeres Connection -/
 
-/-- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
+/- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
     numbers contains an increasing subsequence of length r or a decreasing
     one of length s. This guarantees long monotone subsequences but not APs. -/

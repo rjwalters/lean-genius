@@ -62,7 +62,7 @@ open NBallVolume
 lemma sqrt_pi_pow_eq (n : ℕ) : (Real.sqrt π) ^ n = π ^ ((n : ℝ) / 2) := by
   rw [Real.sqrt_eq_rpow,
       ← Real.rpow_natCast (π ^ ((1 : ℝ) / 2)) n,
-      ← Real.rpow_mul pi_nonneg.le]
+      ← Real.rpow_mul pi_nonneg]
   congr 1
   ring
 

@@ -101,7 +101,8 @@ theorem perfect_complement_comm {A B : Set ℤ} (h : IsPerfectComplement A B) :
   refine ⟨b, hb, a, ha, by linarith, ?_⟩
   intro b' hb' a' ha' hba'
   have : a' + b' = z := by linarith
-  exact (huniq a' ha' b' hb' this).symm.elim fun h1 h2 => ⟨h2, h1⟩
+  have hu := huniq a' ha' b' hb' this
+  exact ⟨hu.2, hu.1⟩
 
 -- ## Shift Invariance
 
@@ -169,7 +170,7 @@ theorem difference_set_disjoint {A B : Set ℤ} (h : IsPerfectComplement A B)
     (hdiff : a₁ - a₂ = b₂ - b₁) : a₁ = a₂ ∧ b₁ = b₂ := by
   -- a₁ + b₁ = a₂ + b₂, so by uniqueness applied to z = a₁ + b₁:
   have heq : a₁ + b₁ = a₂ + b₂ := by linarith
-  exact complement_unique_repr h (a₁ + b₁) ha₁ hb₁ rfl ha₂ hb₂ heq
+  exact complement_unique_repr h (a₁ + b₁) ha₁ hb₁ rfl ha₂ hb₂ heq.symm
 
 -- ## Complement of Finite-Range Functions
 
@@ -179,9 +180,8 @@ theorem difference_set_disjoint {A B : Set ℤ} (h : IsPerfectComplement A B)
 theorem no_complement_finite_B {A B : Set ℤ} (hfin : B.Finite) (hne : B.Nonempty)
     (h : IsPerfectComplement A B) : A.Infinite := by
   by_contra hfA
-  push_neg at hfA
+  rw [Set.not_infinite] at hfA
   -- If both A and B are finite, A + B is finite, but ℤ is infinite
-  have hfA := Set.Finite.of_not_infinite hfA
   -- Get a z outside all a + b for a ∈ A, b ∈ B
   -- This uses the fact that a finite set can't cover all of ℤ
   have hAB : (A ×ˢ B).Finite := hfA.prod hfin
@@ -233,7 +233,8 @@ theorem sq_complement_four_in_image :
 /-- Between consecutive squares n² and (n+1)², there are 2n gaps.
     These gaps must all be covered by elements of A. -/
 theorem sq_gap_size (n : ℕ) : (n + 1) ^ 2 - n ^ 2 = 2 * n + 1 := by
-  ring
+  have h : (n + 1) ^ 2 = n ^ 2 + (2 * n + 1) := by ring
+  omega
 
 /-- The number of squares up to N² is exactly N + 1 (for 0², 1², ..., N²) -/
 theorem sq_count (N : ℕ) : (Finset.range (N + 1)).card = N + 1 := by
@@ -241,10 +242,10 @@ theorem sq_count (N : ℕ) : (Finset.range (N + 1)).card = N + 1 := by
 
 -- ## The Main Conjectures
 
-/-- Erdős Problem #477 (OPEN): No polynomial of degree ≥ 2 has a perfect complement.
+/-  Erdős Problem #477 (OPEN): No polynomial of degree ≥ 2 has a perfect complement.
     Erdős and Graham (1980) conjectured the answer is NO. -/
-/-- Conjecture: No perfect complement exists for f(x) = x^k, any k ≥ 2 -/
-/-- Erdős Problem #477 Main Statement (OPEN):
+/-  Conjecture: No perfect complement exists for f(x) = x^k, any k ≥ 2 -/
+/- Erdős Problem #477 Main Statement (OPEN):
 Is there a polynomial f : ℤ → ℤ of degree ≥ 2 and set A ⊆ ℤ
 such that for any n ∈ ℤ there is exactly one a ∈ A and b ∈ f(ℤ)
 with n = a + b?

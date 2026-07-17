@@ -131,7 +131,7 @@ theorem powerSetReal_iff_ch_and_gch :
 theorem not_powerSetReal_iff :
     ¬powerSetRealIsAlephTwo ↔
     (¬CantorsTheoremOQ01.CH ∨ ¬CantorsTheoremOQ01.GCH_at_continuum) := by
-  rw [powerSetReal_iff_ch_and_gch]; push_neg; rfl
+  rw [powerSetReal_iff_ch_and_gch]; push_neg; tauto
 
 /-- ℵ₁ < |𝒫(ℝ)| regardless of CH/GCH (unconditional lower bound). -/
 theorem aleph_one_lt_powerSetReal :

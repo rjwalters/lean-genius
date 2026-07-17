@@ -62,7 +62,7 @@ def Erdos233Conjecture : Prop :=
 
 /- ## Known Results -/
 
-/--
+/- 
 **Lower Bound** (Prime Number Theorem):
 
 The sum of squares of prime gaps has a LOWER bound of N(log N)².
@@ -71,7 +71,7 @@ average gap is approximately log p.
 
 Σₙ≤N dₙ² ≥ c · N · (log N)² for some constant c > 0.
 -/
-/--
+/- 
 **Upper Bound Conditional on RH** (Cramér 1936):
 
 Assuming the Riemann Hypothesis, the sum of squares of prime gaps
@@ -118,7 +118,7 @@ Cramér's conjecture is itself a major open problem.
 def CramerConjecture : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (primeGap n : ℝ) ≤ (1 + ε) * (Real.log (nthPrime n)) ^ 2
 
-/-- Cramér's conjecture implies the sum of squares bound. -/
+/-  Cramér's conjecture implies the sum of squares bound. -/
 /- ## Examples and Computations -/
 
 /-- The first few prime gaps: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...

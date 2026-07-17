@@ -25,11 +25,7 @@ References:
 - [GKLO20] Glock-Kühn-Lo-Osthus, "On a conjecture of Erdős..." (2020)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Basic
+import Mathlib
 
 open Real Filter
 
@@ -105,7 +101,7 @@ axiom ex3 (n k : ℕ) : ℕ
 /- ## Part VI: Erdős's Supporting Theorem (1974) -/
 
 /-- The threshold (1/3)C(n,2) is relevant for the conjecture. -/
-def thresholdEdges (n : ℕ) : ℝ := (1/3) * (n * (n-1) / 2)
+noncomputable def thresholdEdges (n : ℕ) : ℝ := (1/3) * (n * (n-1) / 2)
 
 /-- Note: n²/6 ≈ (1/3)C(n,2) asymptotically. -/
 theorem threshold_asymptotic (n : ℕ) (hn : n > 0) :

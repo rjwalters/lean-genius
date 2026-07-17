@@ -31,8 +31,8 @@ lemma c_approx : c > 0.213 ∧ c < 0.214 := by
       (Real.sqrt_sq (by norm_num : (1.424 : ℝ) ≥ 0)).symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   constructor
-  · rw [gt_iff_lt, lt_div_iff (by norm_num : (16 : ℝ) > 0)]; linarith
-  · rw [div_lt_iff (by norm_num : (16 : ℝ) > 0)]; linarith
+  · rw [gt_iff_lt, lt_div_iff₀ (by norm_num : (16 : ℝ) > 0)]; linarith
+  · rw [div_lt_iff₀ (by norm_num : (16 : ℝ) > 0)]; linarith
 
 /-- c < 2/9, proving Erdős's original conjecture is false. -/
 lemma c_lt_two_ninths : c < 2/9 := by
@@ -42,7 +42,7 @@ lemma c_lt_two_ninths : c < 2/9 := by
     rw [show (14 / 9 : ℝ) = Real.sqrt ((14 / 9 : ℝ) ^ 2) from
       (Real.sqrt_sq (by norm_num : (14 / 9 : ℝ) ≥ 0)).symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
-  rw [div_lt_div_iff (by norm_num : (16 : ℝ) > 0) (by norm_num : (9 : ℝ) > 0)]
+  rw [div_lt_div_iff₀ (by norm_num : (16 : ℝ) > 0) (by norm_num : (9 : ℝ) > 0)]
   linarith
 
 /-- c > 0. -/

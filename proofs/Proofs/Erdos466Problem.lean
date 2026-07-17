@@ -54,15 +54,15 @@ noncomputable def maxSeparatedPoints (X δ : ℝ) : ℕ :=
 
 /- ## Main Result (Proved) -/
 
-/-- **Erdős Problem #466 (Proved).**
+/-  **Erdős Problem #466 (Proved).**
 There exists δ > 0 such that N(X, δ) → ∞ as X → ∞. -/
 /- ## Graham's Bound -/
 
-/-- **Graham.** N(X, 1/10) ≥ (log X)/10 for sufficiently large X.
+/-  **Graham.** N(X, 1/10) ≥ (log X)/10 for sufficiently large X.
 This answers Erdős's question in the affirmative. -/
 /- ## Sárközy's Improvement -/
 
-/-- **Sárközy (1976).** For all sufficiently small δ > 0,
+/-  **Sárközy (1976).** For all sufficiently small δ > 0,
 N(X, δ) > X^{1/2 − δ^{1/7}} for all large X.
 This is a polynomial (almost √X) lower bound, far stronger than
 Graham's logarithmic bound. -/
@@ -73,7 +73,7 @@ fractional distance is always at most 1/2. -/
 theorem fracDist_bound : ∀ x : ℝ, fracDist x ≤ 1/2 := by
   intro x; exact abs_sub_round x
 
-/-- N(X, δ) is monotone non-decreasing in X: a larger disk can
+/-  N(X, δ) is monotone non-decreasing in X: a larger disk can
 accommodate at least as many separated points. -/
-/-- N(X, δ) is monotone non-increasing in δ: a stricter separation
+/- N(X, δ) is monotone non-increasing in δ: a stricter separation
 requirement can only reduce the maximum count. -/

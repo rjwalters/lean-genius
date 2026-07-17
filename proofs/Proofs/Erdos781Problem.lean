@@ -23,10 +23,7 @@ References:
 - Alon, Spencer (1989): Ascending waves
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib
 
 open Finset
 
@@ -46,7 +43,7 @@ def StrictlyIncreasing {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     This means the gaps are non-increasing. -/
 def IsDescendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     2 * seq j ≥ seq ⟨j.val - 1, by omega⟩ + seq ⟨j.val + 1, by omega⟩
 
 /-- Alternative characterization: gaps are non-increasing.
@@ -54,7 +51,7 @@ def IsDescendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     (x₂ - x₁) ≥ (x₃ - x₂) ≥ ... ≥ (xₖ - xₖ₋₁). -/
 def HasNonIncreasingGaps {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     seq ⟨j.val + 1, by omega⟩ - seq j ≤ seq j - seq ⟨j.val - 1, by omega⟩
 
 /-- For strictly increasing sequences, descending wave ↔ non-increasing gaps. -/
@@ -70,7 +67,7 @@ theorem descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)
       have hlt1 : (⟨j.val - 1, by omega⟩ : Fin k) < j := by
         simp [Fin.lt_iff_val_lt_val]; omega
       have hlt2 : j < (⟨j.val + 1, by omega⟩ : Fin k) := by
-        simp [Fin.lt_iff_val_lt_val]; omega
+        simp [Fin.lt_iff_val_lt_val]
       have h1 := hinc _ _ hlt1  -- seq(j-1) < seq(j)
       have h2 := hinc _ _ hlt2  -- seq(j) < seq(j+1)
       have hw := hwave j hj0 hjk  -- 2*seq(j) ≥ seq(j-1) + seq(j+1)
@@ -82,7 +79,7 @@ theorem descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)
       have hlt1 : (⟨j.val - 1, by omega⟩ : Fin k) < j := by
         simp [Fin.lt_iff_val_lt_val]; omega
       have hlt2 : j < (⟨j.val + 1, by omega⟩ : Fin k) := by
-        simp [Fin.lt_iff_val_lt_val]; omega
+        simp [Fin.lt_iff_val_lt_val]
       have h1 := hinc _ _ hlt1
       have h2 := hinc _ _ hlt2
       have hg := hgaps j hj0 hjk
@@ -104,7 +101,7 @@ def HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=
     ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by
       have := w.in_S i
       simp [Finset.mem_image] at this
-      obtain ⟨j, _, hj⟩ := this
+      obtain ⟨j, hj⟩ := this
       omega⟩ = color
 
 /- ## The Function f(k) -/
@@ -118,8 +115,8 @@ This is the central object of study in Erdős Problem #781.
 noncomputable def f (k : ℕ) : ℕ :=
   Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified; actual min is complex
 
-/-- f is well-defined for k ≥ 1. -/
-/-- f(k) is minimal. -/
+/-  f is well-defined for k ≥ 1. -/
+/-  f(k) is minimal. -/
 /- ## The Original Conjecture (FALSE) -/
 
 /--
@@ -141,7 +138,7 @@ The lower bound from the original conjecture IS correct.
 axiom BEF_lower_bound (k : ℕ) (hk : k ≥ 1) :
     f k ≥ k^2 - k + 1
 
-/--
+/- 
 **Brown-Erdős-Freedman (1990) Upper Bound:**
 f(k) ≤ (k³ - 4k + 9)/3
 
@@ -185,11 +182,14 @@ theorem small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7 :=
     k = 2: 2² - 2 + 1 = 3 (actually f(2) = 2, so even simpler!)
     k = 3: 3² - 3 + 1 = 7 ✓ -/
 theorem conjecture_formula (k : ℕ) : k^2 - k + 1 = k * (k - 1) + 1 := by
-  ring
+  rcases k with _ | m
+  · simp
+  · have hsq : (m + 1)^2 = m * (m + 1) + (m + 1) := by ring
+    simp only [hsq, Nat.add_sub_cancel, Nat.succ_sub_one, mul_comm]
 
 /- ## Why The Conjecture Fails -/
 
-/--
+/- 
 **Key Insight: Alon-Spencer Construction**
 
 The conjecture f(k) = k² - k + 1 would imply quadratic growth.
@@ -206,14 +206,14 @@ k² - k + 1.
     x₁ < x₂ < ... < xₖ with x_{j+1} - x_j ≤ x_{j+2} - x_{j+1}. -/
 def IsAscendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     seq j - seq ⟨j.val - 1, by omega⟩ ≤ seq ⟨j.val + 1, by omega⟩ - seq j
 
 /-- The function g(k) for ascending waves. -/
 noncomputable def g (k : ℕ) : ℕ :=
   Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified
 
-/-- Ascending and descending waves have similar growth.
+/-  Ascending and descending waves have similar growth.
     In fact, the paper is titled "Ascending waves" because the
     analysis works similarly for both cases. -/
 /- ## Quasi-Progressions -/
@@ -221,11 +221,11 @@ noncomputable def g (k : ℕ) : ℕ :=
 /-- A quasi-arithmetic progression: an arithmetic progression with bounded errors.
     Descending waves are related to "quasi-progressions" with specific error bounds. -/
 def IsQuasiProgression {k : ℕ} (seq : Fin k → ℕ) (d error : ℕ) : Prop :=
-  ∀ i : Fin k, i.val + 1 < k →
+  ∀ i : Fin k, ∀ hik : i.val + 1 < k,
     let gap := seq ⟨i.val + 1, by omega⟩ - seq i
     d - error ≤ gap ∧ gap ≤ d + error
 
-/-- Descending waves are quasi-progressions where gaps decrease. -/
+/-  Descending waves are quasi-progressions where gaps decrease. -/
 /- ## Summary -/
 
 /--

@@ -39,13 +39,7 @@ open SimpleGraph Finset
 
 /-- The cycle graph C_n on n vertices. -/
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
-  Adj := fun i j => (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := by intro i j h; cases h <;> (right; assumption) <|> (left; assumption)
-  loopless := by
-    intro i h
-    cases h with
-    | inl h => simp at h; omega
-    | inr h => simp at h; omega
+  Adj := fun i j => i ≠ j ∧ ((i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val)
 
 /-- The 4-cycle C₄. -/
 def C4 : SimpleGraph (Fin 4) := cycleGraph 4
@@ -53,8 +47,6 @@ def C4 : SimpleGraph (Fin 4) := cycleGraph 4
 /-- The star graph S_n = K_{1,n} on n+1 vertices (center + n leaves). -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj := fun i j => (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by intro i j h; cases h <;> (right; exact ⟨‹_›.1, ‹_›.2⟩) <|> (left; exact ⟨‹_›.1, ‹_›.2⟩)
-  loopless := by intro i h; cases h <;> omega
 
 /- ## Part II: Ramsey Numbers -/
 
@@ -66,8 +58,8 @@ def ContainsSubgraph {V W : Type*} [Fintype V] [Fintype W]
 /-- The complement of a graph. -/
 def complement {V : Type*} (G : SimpleGraph V) : SimpleGraph V where
   Adj := fun u v => u ≠ v ∧ ¬G.Adj u v
-  symm := by intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.symm h)⟩
-  loopless := by intro v ⟨hne, _⟩; exact hne rfl
+  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.adj_symm h)⟩
+  loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- R(H₁, H₂) = minimum N such that every 2-coloring of K_N contains
     monochromatic H₁ (color 1) or monochromatic H₂ (color 2). -/
@@ -185,7 +177,8 @@ def polarityGraph (q : ℕ) : SimpleGraph (Fin (q ^ 2 + q + 1)) := by
 /- ## Part IX: Related Results -/
 
 /-- The minimum degree condition for C₄. -/
-theorem c4_minimum_degree (n : ℕ) (G : SimpleGraph (Fin n)) (hn : n ≥ 4) :
+theorem c4_minimum_degree (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hn : n ≥ 4) :
     (∀ v : Fin n, G.degree v ≥ n / 2) → ContainsSubgraph G C4 := by
   sorry
 

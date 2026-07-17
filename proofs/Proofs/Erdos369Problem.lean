@@ -27,10 +27,7 @@ We define B-smooth numbers, the consecutive smooth property,
 and state both the main conjecture and Balog–Wooley partial result.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos369
 
@@ -58,10 +55,7 @@ theorem isSmooth_mono_B {m B B' : ℕ} (h : B ≤ B') (hs : IsSmooth m B) : IsSm
 
 /-- Any prime p is p-smooth. -/
 theorem isSmooth_prime_self {p : ℕ} (hp : p.Prime) : IsSmooth p p :=
-  ⟨hp.pos, fun q hq hdvd => by
-    rcases hq.eq_one_or_self_of_dvd p (Nat.dvd_of_dvd_of_dvd hdvd (dvd_refl p)) with h | h
-    · exact absurd h hq.ne_one
-    · rw [← (hp.eq_one_or_self_of_dvd q hdvd).resolve_left hq.ne_one]⟩
+  ⟨hp.pos, fun q _hq hdvd => Nat.le_of_dvd hp.pos hdvd⟩
 
 /-- Products of B-smooth numbers are B-smooth. -/
 theorem isSmooth_mul {m n B : ℕ} (hm : IsSmooth m B) (hn : IsSmooth n B) :
@@ -141,7 +135,7 @@ def ErdosConjecture369_k2 : Prop :=
 
 /- ## Part V: Balog–Wooley Partial Result -/
 
-/--
+/- 
 **Balog–Wooley (1998):**
 There exist infinitely many n such that n and n+1 are both
 n^ε-smooth (variant 1: each m is m^ε-smooth).

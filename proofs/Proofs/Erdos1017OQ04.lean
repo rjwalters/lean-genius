@@ -165,7 +165,7 @@ theorem isClique_pair {v w : V} (h : G.Adj v w) :
 /-- The cardinality of a pair of distinct elements is two. -/
 theorem card_pair_eq_two {v w : V} (h : v ≠ w) :
     ({v, w} : Finset V).card = 2 := by
-  rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h)]
+  rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact h)]
   simp
 
 /-- Membership in `edgeCliques`: the two-element sets that are cliques are
@@ -439,9 +439,10 @@ Hence `cc(B2) <= 2 < 3 <= cp(B2)`, a *verified* strict gap.
 def bookGraph : SimpleGraph (Fin 4) where
   Adj a b := a ≠ b ∧ ¬ (a = 2 ∧ b = 3) ∧ ¬ (a = 3 ∧ b = 2)
   symm := by
+    constructor
     intro a b h
     exact ⟨h.1.symm, fun hc => h.2.2 ⟨hc.2, hc.1⟩, fun hc => h.2.1 ⟨hc.2, hc.1⟩⟩
-  loopless := by intro a h; exact h.1 rfl
+  loopless := by constructor; intro a h; exact h.1 rfl
 
 instance : DecidableRel bookGraph.Adj := fun a b =>
   inferInstanceAs (Decidable (a ≠ b ∧ ¬ (a = 2 ∧ b = 3) ∧ ¬ (a = 3 ∧ b = 2)))

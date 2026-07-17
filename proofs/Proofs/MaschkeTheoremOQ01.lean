@@ -59,17 +59,18 @@ namespace MaschkeTheorem
 universe u
 
 variable {k : Type u} [Field k] {G : Type u} [Group G] [Fintype G]
-  [NeZero (Fintype.card G : k)]
+  [NeZero (Nat.card G : k)]
 variable {V : Type u} [AddCommGroup V] [Module k[G] V]
 variable {W : Type u} [AddCommGroup W] [Module k[G] W]
 
+omit [Group G] in
 /-- **Classical hypothesis form.** Over a field, `NeZero (Fintype.card G : k)` says exactly
 that the group order is invertible: `(Fintype.card G : k)` is a unit.  This is the precise
 sense in which "the characteristic of `k` does not divide `|G|`" enters Maschke's theorem —
 it is what lets us divide by `|G|` when averaging over the group. -/
-omit [Group G] in
-theorem card_isUnit : IsUnit (Fintype.card G : k) :=
-  (isUnit_iff_ne_zero).2 (NeZero.ne _)
+theorem card_isUnit : IsUnit (Fintype.card G : k) := by
+  rw [← Nat.card_eq_fintype_card]
+  exact (isUnit_iff_ne_zero).2 (NeZero.ne _)
 
 /-- **The heart of Maschke's theorem — the averaging projection.**
 An injective `k[G]`-linear map `f : V → W` admits a `k[G]`-linear left inverse `g`

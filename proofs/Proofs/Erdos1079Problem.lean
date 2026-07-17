@@ -20,6 +20,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos1079
@@ -42,10 +44,8 @@ def neighborhood {V : Type*} (G : SimpleGraph V) (v : V) : Set V :=
   {u : V | G.Adj v u}
 
 /-- Induced subgraph on a vertex set -/
-def inducedSubgraph {V : Type*} (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
-  Adj := fun ⟨u, _⟩ ⟨v, _⟩ => G.Adj u v
-  symm := fun ⟨u, _⟩ ⟨v, _⟩ h => G.symm h
-  loopless := fun ⟨v, _⟩ => G.loopless v
+def inducedSubgraph {V : Type*} (G : SimpleGraph V) (S : Set V) : SimpleGraph S :=
+  G.comap Subtype.val
 
 /-- Number of edges in a finite simple graph -/
 noncomputable def numEdges {V : Type*} [Fintype V] [DecidableEq V]
@@ -68,7 +68,7 @@ the Turán graph, some vertex has a neighborhood whose edge count
 exceeds ex(d, K_{r−1}).
 -/
 
-/-- Bollobás–Thomason (1981): For r ≥ 4, if G has n vertices and
+/-  Bollobás–Thomason (1981): For r ≥ 4, if G has n vertices and
     at least ex(n, K_r) edges but is not the Turán graph T(n, r−1),
     then there exists a vertex v of degree d ≥ c·n (for some
     constant c > 0 depending on r) whose neighborhood contains
@@ -83,7 +83,7 @@ Bondy showed that when G has strictly more than ex(n, K_r) edges,
 the max-degree vertex always satisfies the conclusion.
 -/
 
-/-- Bondy (1983): If G has strictly more than ex(n, K_r) edges,
+/-  Bondy (1983): If G has strictly more than ex(n, K_r) edges,
     then the maximum-degree vertex v has neighborhood containing
     at least ex(deg(v), K_{r−1}) edges.
 
@@ -97,7 +97,7 @@ uniquely by the Turán graph. Problem #1079 refines this by
 examining local structure at individual vertices.
 -/
 
-/-- Turán's theorem: any K_r-free graph on n vertices has at most
+/-  Turán's theorem: any K_r-free graph on n vertices has at most
     ex(n, K_r) = turanNumber(n, r) edges. The Turán graph T(n, r−1)
     achieves this bound and is the unique extremal graph. -/
 /-
@@ -118,12 +118,10 @@ graphs necessarily have locally dense neighborhoods.
 axiom erdos_1079_summary :
   (∀ r : ℕ, r ≥ 4 →
     ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-        ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-          (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-          numEdges G ≥ turanNumber n r →
-          ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
-            neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
+      ∀ n : ℕ, ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
+        numEdges G ≥ turanNumber n r →
+        ∃ v : Fin n, (G.degree v : ℝ) ≥ c * n ∧
+          neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
   (∀ n r : ℕ, r ≥ 2 → n ≥ r →
     ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
       G.CliqueFree r →
@@ -135,12 +133,10 @@ axiom erdos_1079_summary :
 theorem erdos_1079 :
     (∀ r : ℕ, r ≥ 4 →
       ∃ c : ℝ, c > 0 ∧
-        ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-          ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-            (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-            numEdges G ≥ turanNumber n r →
-            ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
-              neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
+        ∀ n : ℕ, ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
+          numEdges G ≥ turanNumber n r →
+          ∃ v : Fin n, (G.degree v : ℝ) ≥ c * n ∧
+            neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
     (∀ n r : ℕ, r ≥ 2 → n ≥ r →
       ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
         G.CliqueFree r →

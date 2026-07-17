@@ -29,12 +29,12 @@ References:
          arXiv:2409.02974 (2024).
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Set.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 
 open Set Real SimpleGraph
 
@@ -111,7 +111,7 @@ remove at least one vertex from each path, giving 3^m minimal cuts.
 -/
 axiom seymour_construction (m : ℕ) : c(3*m + 2) ≥ 3^m
 
-/--
+/- 
 **Corollary:** α ≥ 3^{1/3} ≈ 1.442
 
 Taking the mth root of c(3m+2) ≥ 3^m and letting m → ∞.
@@ -136,7 +136,7 @@ H(1/3) ≈ 0.9183
 -/
 axiom binaryEntropy_one_third : binaryEntropy (1/3) = Real.log 3 / Real.log 2 - 2/3
 
-/--
+/- 
 2^{H(1/3)} ≈ 1.8899
 -/
 /-
@@ -187,7 +187,7 @@ theorem alpha_less_than_two : α < 2 := by
     -- Goal: log 3 / log 2 - 2/3 < 1, i.e., log 3 / log 2 < 5/3
     have hlog2_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
     suffices h : Real.log 3 / Real.log 2 < 5 / 3 by linarith
-    rw [div_lt_div_iff hlog2_pos (by norm_num : (0 : ℝ) < 3)]
+    rw [div_lt_div_iff₀ hlog2_pos (by norm_num : (0 : ℝ) < 3)]
     -- Goal: log 3 * 3 < 5 * log 2, i.e., log(27) < log(32)
     have h27 : Real.log (27 : ℝ) = Real.log ((3 : ℝ) ^ (3 : ℕ)) := by norm_num
     have h32 : Real.log (32 : ℝ) = Real.log ((2 : ℝ) ^ (5 : ℕ)) := by norm_num

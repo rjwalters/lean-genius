@@ -34,7 +34,7 @@ open CramersRuleOQ03 Matrix Quaternion
 -- ============================================================
 
 /-- Quaternions form a division ring — all results from CramersRuleOQ03 apply. -/
-theorem quaternion_is_division_ring : DivisionRing (Quaternion ℝ) := inferInstance
+noncomputable example : DivisionRing (Quaternion ℝ) := inferInstance
 
 -- ============================================================
 -- Part II: Quaternion Basis Elements
@@ -49,24 +49,24 @@ noncomputable abbrev qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
 /-- i ≠ 0: its imI component is 1 ≠ 0. -/
 theorem qi_ne_zero : qi ≠ 0 := by
   intro h
-  have := congr_arg Quaternion.imI h
-  simp [qi] at this
+  have := congr_arg QuaternionAlgebra.imI h
+  simp at this
 
 /-- j ≠ 0: its imJ component is 1 ≠ 0. -/
 theorem qj_ne_zero : qj ≠ 0 := by
   intro h
-  have := congr_arg Quaternion.imJ h
-  simp [qj] at this
+  have := congr_arg QuaternionAlgebra.imJ h
+  simp at this
 
 /-- i · j = k (non-commutativity demo). -/
 theorem qi_mul_qj : qi * qj = (⟨0, 0, 0, 1⟩ : Quaternion ℝ) := by
-  simp [qi, qj, Quaternion.ext_iff, Quaternion.mul_re, Quaternion.mul_imI,
-        Quaternion.mul_imJ, Quaternion.mul_imK]
+  simp [qi, qj, Quaternion.ext_iff, Quaternion.re_mul, Quaternion.imI_mul,
+        Quaternion.imJ_mul, Quaternion.imK_mul]
 
 /-- j · i = -k (non-commutativity: order matters). -/
 theorem qj_mul_qi : qj * qi = (⟨0, 0, 0, -1⟩ : Quaternion ℝ) := by
-  simp [qi, qj, Quaternion.ext_iff, Quaternion.mul_re, Quaternion.mul_imI,
-        Quaternion.mul_imJ, Quaternion.mul_imK]
+  simp [qi, qj, Quaternion.ext_iff, Quaternion.re_mul, Quaternion.imI_mul,
+        Quaternion.imJ_mul, Quaternion.imK_mul]
 
 -- ============================================================
 -- Part III: Diagonal Quaternionic System
@@ -83,7 +83,7 @@ noncomputable def bDiag : Fin 2 → Quaternion ℝ := ![(1 : Quaternion ℝ), 1]
 
 /-- The (1,1) entry 1 is invertible. -/
 theorem ADiag_11_ne : ADiag 1 1 ≠ 0 := by
-  simp [ADiag]; exact one_ne_zero
+  simp [ADiag]
 
 /-- For the diagonal matrix, quasidet₀₀ = i (the off-diagonal entries are 0). -/
 theorem ADiag_quasidet_eq : quasidet₀₀ ADiag = qi := by
@@ -149,7 +149,7 @@ theorem noncomm_quasidet_differ :
   simp [quasidet₀₀, ANonComm, ANonCommSwap]
   -- quasidet₀₀(A) = qi, quasidet₀₀(A') = qj, qi ≠ qj
   intro h
-  have := congr_arg Quaternion.imI h
-  simp [qi, qj] at this
+  have := congr_arg QuaternionAlgebra.imI h
+  simp at this
 
 end CramersRuleOQ03OQ03

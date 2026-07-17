@@ -93,7 +93,7 @@ def erdos_gyarfas_conjecture : Prop :=
     (G : SimpleGraph W) (_ : DecidableRel G.Adj),
     HasMinDegree G r ∧ ∀ k : ℕ, k ≥ 2 → ¬ContainsCycleLength G (2^k)
 
-/--
+/- 
 **Liu-Montgomery Theorem** (2020):
 The Erdős-Gyárfás conjecture is FALSE for sufficiently large r.
 There exists an absolute constant D such that every graph with minimum degree
@@ -101,7 +101,7 @@ at least D contains a cycle of length 2^k for some k ≥ 2.
 -/
 /- ## Partial Results -/
 
-/--
+/- 
 **Liu-Montgomery Stronger Result**:
 Graphs with sufficiently large average degree contain cycles of every even length m
 in the interval [(\log ℓ)^8, ℓ] for some large integer ℓ.
@@ -139,7 +139,7 @@ def InfGraph.ContainsCycleLength (G : InfGraph V) (k : ℕ) : Prop :=
 def InfGraph.IsTree (G : InfGraph V) : Prop :=
   ∀ k : ℕ, k ≥ 3 → ¬G.ContainsCycleLength k
 
-/--
+/- 
 **Counterexample for Infinite Graphs**:
 There exists an infinite 3-regular tree (the infinite binary tree with each vertex
 connected to its parent and two children). This has minimum degree 3 but no cycles.
@@ -160,19 +160,19 @@ def degree_3_conjecture : Prop :=
 
 /- ## Known Cycle Results -/
 
-/--
+/- 
 **Dirac's Theorem** (1952):
 A graph on n ≥ 3 vertices with minimum degree at least n/2 is Hamiltonian
 (contains a cycle through all vertices).
 -/
-/--
+/- 
 **Bondy's Theorem** (1971):
 If G has n vertices and at least n²/4 edges, then either G is bipartite or
 G contains cycles of all lengths from 3 to n.
 -/
 /- ## Probabilistic Lower Bounds -/
 
-/--
+/-
 **Random Graphs**:
 Random graphs G(n, p) with p ≥ c/n for suitable c almost surely have minimum
 degree at least 3 and contain cycles of all lengths up to some threshold.

@@ -48,7 +48,7 @@ References:
   `tendsto_tsum_of_dominated_convergence`.
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.NumberTheory.LSeries.HurwitzZetaValues
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries

@@ -76,7 +76,7 @@ def ErdosQuestion : Prop :=
 Erdős (1949) constructed counterexamples showing the sum can be large.
 -/
 
-/-- Erdős (1949): There exists a lacunary sequence and f ∈ L² such that
+/-  Erdős (1949): There exists a lacunary sequence and f ∈ L² such that
     for a.e. α, limsup ∑f({α n_k}) / (N(log log N)^{1/2-ε}) = ∞ -/
 /-- The lower bound shows: at least N (log log N)^{1/2 - ε} infinitely often -/
 def LowerBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
@@ -89,7 +89,7 @@ def LowerBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
 Erdős proved a general upper bound for all lacunary sequences.
 -/
 
-/-- Erdős upper bound: For every lacunary sequence and L² function,
+/-  Erdős upper bound: For every lacunary sequence and L² function,
     ∑f({α n_k}) = o(N (log N)^{1/2+ε}) for a.e. α -/
 /-- The upper bound is o(N (log N)^{1/2+ε}) -/
 def UpperBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
@@ -163,7 +163,7 @@ def fib : ℕ → ℕ
 Erdős (1949) paper was titled "On the strong law of large numbers".
 -/
 
-/-- Connection to SLLN: for mean-zero f and lacunary n, the sum has variance ~ N,
+/-  Connection to SLLN: for mean-zero f and lacunary n, the sum has variance ~ N,
     so it behaves like a random walk with √N typical fluctuations. -/
 /-
 ## Part 8: Erdős's Opinion

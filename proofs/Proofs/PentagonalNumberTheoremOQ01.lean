@@ -268,7 +268,7 @@ finite sum in `p(n) = ∑_{k} (-1)^{k-1} p(n - g_k)` can be evaluated over it. -
 
 /-- The contributing indices of Euler's recurrence at level `n`: the explicit
 `Finset` of `k` with `g(k) ≤ n`, obtained by filtering `[-n, n]`. -/
-def pentIndices (n : ℤ) : Finset ℤ :=
+noncomputable def pentIndices (n : ℤ) : Finset ℤ :=
   (Finset.Icc (-n) n).filter (fun k => genPent k ≤ n)
 
 /-- Membership in `pentIndices n` is exactly the value bound `g(k) ≤ n`; the
@@ -478,7 +478,8 @@ theorem genFun_pent_eq_tprod :
     · intro b hb
       simp only [pentChar]
       rw [if_neg (show ¬ (b + 1 = 1) by omega), zero_smul]
-  rw [hsingle]; ring
+  rw [sub_eq_add_neg, ← hsingle]
+  rfl
 
 /-- **Coefficient side of Euler's identity.**  The `n`-th coefficient of the same
 generating function is the signed count of partitions of `n` into distinct parts,
@@ -563,7 +564,7 @@ whose part-count parity is the pentagonal sign `(-1)^k`.  This is precisely the
 residual term that Franklin's cancellation leaves behind — the right-hand side of
 the FRANKLIN identity below — now pinned down arithmetically. -/
 
-/-- Gauss's sum `∑_{j<k} j` in `ℤ`, in the division-free doubled form. -/
+/-- Gauss's sum `∑_{j<k} j` ∈ `ℤ`, in the division-free doubled form. -/
 private theorem gauss_int (k : ℕ) :
     (∑ j ∈ Finset.range k, (j : ℤ)) * 2 = (k : ℤ) * ((k : ℤ) - 1) := by
   induction k with

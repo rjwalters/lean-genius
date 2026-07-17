@@ -32,6 +32,7 @@ import Mathlib.Combinatorics.Additive.AP.Three.Defs
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Tactic
 
 open Set Finset
 
@@ -160,12 +161,12 @@ Van der Waerden's theorem states that for any r-coloring of ℕ,
 there exist arbitrarily long monochromatic APs.
 -/
 
-/--
+/- 
 **Van der Waerden Numbers:**
 W(k, r) is the minimum N such that any r-coloring of {1, ..., N}
 contains a monochromatic AP of length k.
 -/
-/--
+/- 
 Van der Waerden's theorem: W(k, r) exists for all k, r ≥ 1.
 -/
 /--
@@ -190,7 +191,7 @@ yet in any r-coloring of vertices, there is a monochromatic clique of size k?
 The answer there is also YES (Folkman numbers).
 -/
 
-/--
+/- 
 Erdős 966 is an arithmetic analogue of Erdős 924 (Folkman's theorem).
 Where 924 asks about cliques in graphs, 966 asks about APs in sets.
 -/
@@ -228,7 +229,7 @@ The upper density of A ⊆ ℕ is lim sup |A ∩ [1,n]| / n.
 -/
 axiom upperDensity (A : Set ℕ) : ℝ
 
-/--
+/- 
 Roth's theorem: positive density implies 3-APs.
 -/
 /--
@@ -247,8 +248,8 @@ Any singleton is trivially AP-free.
 theorem singleton_AP_free (n : ℕ) (k : ℕ) (hk : k ≥ 2) :
     APFreeOfLength {n} k := by
   intro ⟨a, d, hd, h⟩
-  have h0 : a ∈ ({n} : Set ℕ) := h 0 (by omega)
-  have h1 : a + d ∈ ({n} : Set ℕ) := h 1 (by omega)
+  have h0 : a + 0 * d ∈ ({n} : Set ℕ) := h 0 (by omega)
+  have h1 : a + 1 * d ∈ ({n} : Set ℕ) := h 1 (by omega)
   simp at h0 h1
   omega
 

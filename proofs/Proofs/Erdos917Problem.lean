@@ -26,10 +26,9 @@ References:
 - Erdős (1949), Dirac (1952), Toft (1970), Stiebitz (1987), Luo-Ma-Yang (2023)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph Finset
 
@@ -41,7 +40,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- The chromatic number of a simple graph. -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  Nat.find (G.Colorable_of_fintype)
+  Nat.find (⟨_, G.colorable_of_fintype⟩ : ∃ n, G.Colorable n)
 
 /-- A graph is k-chromatic if its chromatic number is exactly k. -/
 def IsKChromatic (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -68,7 +67,7 @@ requires dependent type manipulation beyond simple definitions.
 -/
 axiom f (k n : ℕ) : ℕ
 
-/-- f_k is defined for k ≥ 4 (the interesting range). -/
+/-  f_k is defined for k ≥ 4 (the interesting range). -/
 /- ## Question 1: Quadratic Growth -/
 
 /--
@@ -101,7 +100,7 @@ def Question2 : Prop :=
   ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     |((f 6 n : ℝ) / n^2) - 1/4| < ε
 
-/--
+/- 
 **Dirac's Construction (1952):**
 Take two disjoint odd cycles of length 2n+1 and add all cross edges.
 This gives a 6-critical graph with approximately n²/4 edges.
@@ -119,7 +118,7 @@ def Question3 (k : ℕ) : Prop :=
   ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     |((f k n : ℝ) / n^2) - (1/2) * (1 - 1/d)| < ε
 
-/--
+/- 
 **Erdős's Construction (1969):**
 For k ≡ 0 (mod 3), infinitely many n satisfy
 f_k(n) ≥ (1/2)(1 - 1/(k/3))n² + n
@@ -134,18 +133,18 @@ axiom stiebitz_1987_disproof (k : ℕ) (hk : k ≥ 4) (hmod : k % 3 ≠ 0) :
 
 /- ## Upper Bounds -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 A k-critical graph has chromatic number k, so it doesn't contain K_k.
 By Turán's theorem, it has at most ex(n; K_k) edges.
 -/
-/--
+/- 
 **Stiebitz Upper Bound (1987):**
 f_k(n) < ex(n; K_{k-1}) ~ (1/2)(1 - 1/(k-2))n²
 
 Better than Turán by replacing k-1 with k-2.
 -/
-/--
+/- 
 **Luo-Ma-Yang (2023):** Improved the upper bound further.
 
 f_k(n) ≤ (1/2)(1 - 1/(k-2) - 1/(36(k-1)²) + o(1))n²

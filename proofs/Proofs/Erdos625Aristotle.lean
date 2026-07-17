@@ -29,6 +29,8 @@
 import Mathlib
 import Proofs.Erdos625Problem
 
+open scoped Classical
+
 namespace Erdos625Aristotle
 
 open Erdos625 SimpleGraph
@@ -45,22 +47,22 @@ theorem cochromatic_lower_bound :
     AlmostSurely is vacuously true (predicate is ignored). -/
 theorem bollobas_upper_bound :
     ∀ ε > 0, AlmostSurely (fun n G =>
-      (chromaticNumber G.graph : ℝ) ≤ (1 + ε) * n / (2 * Real.log n / Real.log 2)) := by
+      (Erdos625.chromaticNumber G.graph : ℝ) ≤ (1 + ε) * n / (2 * Real.log n / Real.log 2)) := by
   sorry
 
 /-- Sandwich: ζ ≤ χ ≤ (1+o(1))n/(2 log₂ n) a.s.
     AlmostSurely is vacuously true (predicate is ignored). -/
 theorem chromatic_cochromatic_sandwich :
     AlmostSurely (fun n G =>
-      (cochromaticNumber G.graph : ℝ) ≤ chromaticNumber G.graph ∧
-      (chromaticNumber G.graph : ℝ) ≤ (1.01) * n / (2 * Real.log n / Real.log 2)) := by
+      (cochromaticNumber G.graph : ℝ) ≤ Erdos625.chromaticNumber G.graph ∧
+      (Erdos625.chromaticNumber G.graph : ℝ) ≤ (1.01) * n / (2 * Real.log n / Real.log 2)) := by
   sorry
 
 /-- Heckel-Steiner: Difference is unbounded w.h.p.
     AlmostSurely is vacuously true for each M. -/
 theorem heckel_steiner_unbounded :
     ∀ M : ℕ, AlmostSurely (fun n G =>
-      chromaticNumber G.graph - cochromaticNumber G.graph ≥ M) := by
+      Erdos625.chromaticNumber G.graph - cochromaticNumber G.graph ≥ M) := by
   sorry
 
 /-- Clique-independence bound: ω(G), α(G) ≤ 2.1 log₂ n a.s.
@@ -75,14 +77,14 @@ theorem clique_independence_bound :
     AlmostSurely is vacuously true (predicate is ignored). -/
 theorem chromatic_concentration :
     AlmostSurely (fun n G =>
-      ∃ χ₀ : ℕ, |chromaticNumber G.graph - χ₀| ≤ n / (Real.log n)^2) := by
+      ∃ χ₀ : ℕ, |(Erdos625.chromaticNumber G.graph : ℝ) - χ₀| ≤ n / (Real.log n)^2) := by
   sorry
 
 /-- Cochromatic concentration: ζ is also concentrated a.s.
     AlmostSurely is vacuously true (predicate is ignored). -/
 theorem cochromatic_concentration :
     AlmostSurely (fun n G =>
-      ∃ ζ₀ : ℕ, |cochromaticNumber G.graph - ζ₀| ≤ n / Real.log n) := by
+      ∃ ζ₀ : ℕ, |(cochromaticNumber G.graph : ℝ) - ζ₀| ≤ n / Real.log n) := by
   sorry
 
 /-- Heckel's conjecture implies the main question.

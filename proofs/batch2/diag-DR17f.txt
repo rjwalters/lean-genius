@@ -1,0 +1,77 @@
+===== AreaOfCircleOQ02
+error: Proofs/AreaOfCircleOQ02.lean:165:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ02OQ01
+error: Proofs/AreaOfCircleOQ02.lean:165:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ03OQ02OQ02
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:119:4: Type mismatch: After simplification, term
+  Continuous.mul continuous_const hinv
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:158:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun x => x ^ 4 * (1 - x) ^ 4 / (1 + x ^ 2)
+in the target expression
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:181:6: Type mismatch
+  Continuous.continuousOn continuous_dalzell_integrand
+has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:205:8: too many tactics
+error: Lean exited with code 1
+⚠ [8588/8600] Built Proofs.CauchyInterlacingMajorizationPositivity (6.7s)
+===== AreaOfCircleOQ03OQ02OQ02OQ01
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:119:4: Type mismatch: After simplification, term
+  Continuous.mul continuous_const hinv
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:158:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun x => x ^ 4 * (1 - x) ^ 4 / (1 + x ^ 2)
+in the target expression
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:181:6: Type mismatch
+  Continuous.continuousOn continuous_dalzell_integrand
+has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:205:8: too many tactics
+error: Lean exited with code 1
+⚠ [8588/8600] Built Proofs.CauchyInterlacingMajorizationPositivity (6.7s)
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:198:8: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:295:0: gaussian_fourier_first_hermite : ∀ (t : ℝ),
+  ∫ (x : ℝ), ↑x * cexp (I * ↑t * ↑x) * cexp (-↑x ^ 2 / 2) = I * ↑t * cexp (-↑t ^ 2 / 2) * ↑√(2 * π)
+===== BallotProblemOQ01OQ02OQ04
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:198:18: Tactic `decide` failed for proposition
+  isGoodWeighted [2, -1]
+because its `Decidable` instance
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:198:18: Tactic `decide` failed for proposition
+  ¬isGoodWeighted [1, -2]
+because its `Decidable` instance
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:210:41: Tactic `decide` failed for proposition
+  isGoodWeighted [2, -1]
+because its `Decidable` instance
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:210:52: Tactic `decide` failed for proposition
+  ¬isGoodWeighted [1, -2]
+because its `Decidable` instance
+===== BuffonsNeedleOQ02OQ03
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:143:13: `simp` made no progress
+warning: Proofs/BuffonsNeedleOQ02OQ03.lean:208:13: Possibly looping simp theorem: `show (4 : ℕ) = 0 + 4 from rfl`
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:208:2: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:219:21: Type mismatch
+  div_pos two_pos pi_pos
+has type
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:220:21: No goals to be solved
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:248:24: No goals to be solved
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:251:4: Unknown identifier `div_lt_one_of_lt`
+===== BurnsideCountingOQ03OQ03
+error: Proofs/BurnsideCountingOQ03OQ03.lean:107:8: typeclass instance problem is stuck
+  NeZero ?m.50
+===== CollatzCyclesOQ04
+error: Proofs/CollatzCyclesOQ04.lean:74:35: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/CollatzCyclesOQ04.lean:76:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  j - 1 + 1
+in the target expression
+===== DescartesRuleOfSignsOQ02Parity
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:88:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 0

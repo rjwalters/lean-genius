@@ -21,6 +21,7 @@
   Sorries: 0
 -/
 import Mathlib
+import Proofs.ShannonEntropy
 
 namespace InformationTheory.RateDistortion
 
@@ -134,7 +135,7 @@ theorem achievableRates_mono {α β : Type*} [Fintype α] [Fintype β]
 def hammingDistortion (α : Type*) [DecidableEq α] : DistortionMeasure α α where
   d x y := if x = y then 0 else 1
   nonneg x y := by
-    simp only
+    skip
     split_ifs <;> norm_num
 
 /-- Hamming distortion is bounded by 1. -/
@@ -175,7 +176,7 @@ theorem binaryEntropy_nonneg {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
   · rw [neg_nonneg]
     apply add_nonpos
     · exact mul_log_nonpos_of_pos_le_one (lt_of_le_of_ne hp0 (Ne.symm h0)) hp1
-    · exact mul_log_nonpos_of_pos_le_one (by linarith) (by linarith)
+    · exact mul_log_nonpos_of_pos_le_one (sub_pos.mpr (lt_of_le_of_ne hp1 h1)) (by linarith)
 
 /-- Binary entropy is symmetric: h(p) = h(1-p). -/
 theorem binaryEntropy_symm {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
@@ -204,39 +205,39 @@ theorem binaryEntropy_half : binaryEntropy (1/2) = log 2 := by
 /-- **Gaussian rate-distortion non-negativity**:
     ½ log(σ²/D) ≥ 0 when 0 < D ≤ σ².
     The Gaussian R(D) is always non-negative within its domain. -/
-theorem gaussian_rd_nonneg (σ² D : ℝ) (hσ : 0 < σ²) (hD : 0 < D) (hDσ : D ≤ σ²) :
-    0 ≤ (1 / 2 : ℝ) * log (σ² / D) := by
+theorem gaussian_rd_nonneg (σsq D : ℝ) (hσ : 0 < σsq) (hD : 0 < D) (hDσ : D ≤ σsq) :
+    0 ≤ (1 / 2 : ℝ) * log (σsq / D) := by
   apply mul_nonneg
   · norm_num
   · exact log_nonneg (le_div_iff₀ hD |>.mpr (by linarith))
 
 /-- **Gaussian R(D) is decreasing**: more distortion → lower rate.
     R(D₁) ≥ R(D₂) when D₁ ≤ D₂. -/
-theorem gaussian_rd_decreasing (σ² D₁ D₂ : ℝ)
-    (hσ : 0 < σ²) (hD₁ : 0 < D₁) (hD₂ : 0 < D₂)
-    (h : D₁ ≤ D₂) (hDσ : D₂ ≤ σ²) :
-    (1 / 2 : ℝ) * log (σ² / D₂) ≤ (1 / 2 : ℝ) * log (σ² / D₁) := by
+theorem gaussian_rd_decreasing (σsq D₁ D₂ : ℝ)
+    (hσ : 0 < σsq) (hD₁ : 0 < D₁) (hD₂ : 0 < D₂)
+    (h : D₁ ≤ D₂) (hDσ : D₂ ≤ σsq) :
+    (1 / 2 : ℝ) * log (σsq / D₂) ≤ (1 / 2 : ℝ) * log (σsq / D₁) := by
   apply mul_le_mul_of_nonneg_left _ (by norm_num : (0 : ℝ) ≤ 1 / 2)
   apply log_le_log (div_pos hσ hD₂)
-  exact div_le_div_of_nonneg_left hσ hD₂ (by linarith) h
+  exact div_le_div_of_nonneg_left (le_of_lt hσ) hD₁ h
 
-/-- **At D = σ², R(D) = 0**: when distortion equals variance, no bits needed.
+/-- **At D = σsq, R(D) = 0**: when distortion equals variance, no bits needed.
     The source can be reproduced at its own variance by simply outputting
     the mean (zero). -/
-theorem gaussian_rd_at_variance (σ² : ℝ) (hσ : 0 < σ²) :
-    (1 / 2 : ℝ) * log (σ² / σ²) = 0 := by
+theorem gaussian_rd_at_variance (σsq : ℝ) (hσ : 0 < σsq) :
+    (1 / 2 : ℝ) * log (σsq / σsq) = 0 := by
   rw [div_self (ne_of_gt hσ), log_one, mul_zero]
 
 /-- **Gaussian R(D) doubles with halved distortion**:
     R(D/2) = R(D) + ½ log 2.
     Each halving of distortion costs an additional ½ log 2 nats. -/
-theorem gaussian_rd_halve_distortion (σ² D : ℝ)
-    (hσ : 0 < σ²) (hD : 0 < D) (hDσ : D ≤ σ²) :
-    (1 / 2 : ℝ) * log (σ² / (D / 2)) =
-    (1 / 2 : ℝ) * log (σ² / D) + (1 / 2 : ℝ) * log 2 := by
-  have hD2 : D / 2 ≠ 0 := by positivity
-  have hD' : (0 : ℝ) < D := hD
-  rw [div_div, mul_comm D 2, ← div_div, log_div (by positivity) (by positivity)]
+theorem gaussian_rd_halve_distortion (σsq D : ℝ)
+    (hσ : 0 < σsq) (hD : 0 < D) (hDσ : D ≤ σsq) :
+    (1 / 2 : ℝ) * log (σsq / (D / 2)) =
+    (1 / 2 : ℝ) * log (σsq / D) + (1 / 2 : ℝ) * log 2 := by
+  have heq : σsq / (D / 2) = 2 * (σsq / D) := by
+    rw [div_div_eq_mul_div]; ring
+  rw [heq, log_mul (by norm_num) (by positivity)]
   ring
 
 -- ============================================================
@@ -249,9 +250,9 @@ theorem gaussian_rd_halve_distortion (σ² D : ℝ)
     ∑ᵢ min(σᵢ², θ) = D.
 
     Each term in the sum is non-negative by definition. -/
-theorem water_filling_nonneg {n : ℕ} {σ² : Fin n → ℝ} {θ : ℝ}
-    (hσ : ∀ i, 0 < σ² i) (hθ : 0 < θ) :
-    0 ≤ ∑ i : Fin n, max 0 ((1 / 2 : ℝ) * log (σ² i / θ)) :=
+theorem water_filling_nonneg {n : ℕ} {σsq : Fin n → ℝ} {θ : ℝ}
+    (hσ : ∀ i, 0 < σsq i) (hθ : 0 < θ) :
+    0 ≤ ∑ i : Fin n, max 0 ((1 / 2 : ℝ) * log (σsq i / θ)) :=
   Finset.sum_nonneg fun i _ => le_max_left 0 _
 
 -- ============================================================
@@ -273,10 +274,10 @@ theorem water_filling_nonneg {n : ℕ} {σ² : Fin n → ℝ} {θ : ℝ}
 axiom rateDistortion_convex {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     (dist : DistortionMeasure α β) (p : α → ℝ) :
-    ∀ D₁ D₂ λ₁ : ℝ,
-      0 ≤ λ₁ → λ₁ ≤ 1 →
-      rateDistortionFn dist p (λ₁ * D₁ + (1 - λ₁) * D₂) ≤
-        λ₁ * rateDistortionFn dist p D₁ + (1 - λ₁) * rateDistortionFn dist p D₂
+    ∀ D₁ D₂ lam1 : ℝ,
+      0 ≤ lam1 → lam1 ≤ 1 →
+      rateDistortionFn dist p (lam1 * D₁ + (1 - lam1) * D₂) ≤
+        lam1 * rateDistortionFn dist p D₁ + (1 - lam1) * rateDistortionFn dist p D₂
 
 -- ============================================================
 -- Connection to Lossless Coding

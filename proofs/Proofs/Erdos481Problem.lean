@@ -21,10 +21,10 @@ References:
 - Kolpakov-Talambutsa [KoTa22]: Generalization
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos481
 
@@ -60,7 +60,7 @@ def satisfiesDensityCondition (params : AffineParams) : Prop :=
 T(A) = (aᵢxⱼ + bᵢ) for all i, j combinations.
 -/
 def applyT (params : AffineParams) (seq : List ℕ) : List ℕ :=
-  seq.bind (fun x => List.ofFn (fun i => affineTransform (params.a i) (params.b i) x))
+  seq.flatMap (fun x => List.ofFn (fun i => affineTransform (params.a i) (params.b i) x))
 
 /-
 ## Part II: The Iteration Process

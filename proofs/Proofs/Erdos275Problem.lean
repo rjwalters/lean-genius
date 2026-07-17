@@ -24,6 +24,10 @@ import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Fintype.Fin
+import Mathlib.Tactic.Positivity.Basic
+
+open scoped Classical
 
 namespace Erdos275
 
@@ -103,9 +107,9 @@ def OptimalExample (r : ℕ) : CoveringSystem where
   size := r
   residues := fun i => 2^(i : ℕ)
   moduli := fun i => 2^((i : ℕ) + 1)
-  moduli_pos := fun i => by simp [Nat.pos_pow_of_pos]
+  moduli_pos := fun i => Nat.two_pow_pos _
 
-/--
+/- 
 **What the Optimal Example Covers:**
 x is covered iff x is NOT divisible by 2^r.
 -/

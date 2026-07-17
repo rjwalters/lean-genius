@@ -8,13 +8,15 @@ how many composites share this property. Known composites: 25, 121, 169, 437, ..
 
 *Reference:* [erdosproblems.com/1073](https://www.erdosproblems.com/1073) -/
 
+import Mathlib
 import Mathlib.NumberTheory.Wilson
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.ModCast
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
+
+set_option maxRecDepth 40000
 
 open Nat Filter
 
@@ -55,7 +57,7 @@ theorem wilson_theorem (p : ℕ) (hp : p.Prime) :
     push_cast
     rw [h]
     ring
-  exact (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mp h2
+  exact (ZMod.natCast_eq_zero_iff _ _).mp h2
 
 /-- Every prime satisfies `DividesFactorialPlusOne` via Wilson's theorem. -/
 theorem prime_divides_factorial_plus_one (p : ℕ) (hp : p.Prime) :
@@ -104,6 +106,7 @@ theorem factorialCompositeCount_mono :
     Monotone factorialCompositeCount := by
   intro x y hxy
   exact Set.ncard_le_ncard (compositeFactorialSet_mono hxy)
+    ((Set.finite_Iio y).subset fun u hu => hu.1)
 
 /- ## Structural observations -/
 
@@ -119,9 +122,9 @@ theorem coprime_of_dvd_factorial_plus_one {u n : ℕ} (hu : 2 ≤ u)
   -- gcd | u | n!+1 and gcd | n!, so gcd | 1
   have h1 : Nat.gcd u (n !) ∣ n ! + 1 := dvd_trans hg1 hdvd
   have h2 : Nat.gcd u (n !) ∣ 1 := by
-    have := Nat.dvd_sub' h1 hg2
+    have := Nat.dvd_sub h1 hg2
     simp [Nat.add_sub_cancel] at this
-    exact this
+    exact this.dvd
   exact h (Nat.eq_one_of_dvd_one h2)
 
 /-- All prime factors of u must exceed n when u | n! + 1.
@@ -135,7 +138,9 @@ theorem prime_factors_exceed {u n p : ℕ} (hu : 2 ≤ u)
   -- p | u and Coprime u (n!)
   have : p ∣ Nat.gcd u (n !) := Nat.dvd_gcd hpu hp_dvd_fact
   rw [hcop] at this
-  exact Nat.Prime.one_lt hp |>.not_le (Nat.le_of_dvd one_pos this)
+  have hple : p ≤ 1 := Nat.le_of_dvd one_pos this
+  have hlt : 1 < p := Nat.Prime.one_lt hp
+  omega
 
 /-- 25 is not prime (concrete check for the first known composite). -/
 theorem not_prime_25 : ¬ Nat.Prime 25 := by decide

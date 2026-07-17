@@ -38,6 +38,7 @@ open GraphCore
 Graphs, cycles, diagonals, and chromatic number. -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {G : SimpleGraph V}
 
 /-- A cycle in a graph is a sequence of distinct vertices where consecutive ones are adjacent -/
 structure Cycle (G : SimpleGraph V) where
@@ -47,7 +48,8 @@ structure Cycle (G : SimpleGraph V) where
   consecutive_adj : ∀ i : Fin (vertices.length - 1),
     G.Adj (vertices.get ⟨i.val, Nat.lt_of_lt_pred i.isLt⟩)
           (vertices.get ⟨i.val + 1, Nat.add_lt_of_lt_sub i.isLt⟩)
-  closing_adj : G.Adj (vertices.getLast (by omega)) (vertices.head (by omega))
+  closing_adj : G.Adj (vertices.getLast (List.ne_nil_of_length_pos (by omega)))
+                      (vertices.head (List.ne_nil_of_length_pos (by omega)))
 
 /-- A cycle is odd if its length is odd -/
 def Cycle.isOdd (c : Cycle G) : Prop := Odd c.vertices.length
@@ -62,11 +64,13 @@ def Cycle.isDiagonal (c : Cycle G) (u v : V) : Prop :=
     (j.val + 1) % c.vertices.length ≠ i.val) ∧
   G.Adj u v
 
-/-- Count of diagonals in a cycle -/
+open Classical in
+/-- Count of diagonals in a cycle (each unordered diagonal counted once,
+    via a fixed enumeration of the vertices to avoid double counting) -/
 noncomputable def Cycle.diagonalCount (c : Cycle G) : ℕ :=
   Finset.card (Finset.filter (fun p : V × V =>
-    c.isDiagonal p.1 p.2 ∧ p.1 < p.2)  -- Avoid double counting
-    (Finset.univ.product Finset.univ))
+    c.isDiagonal p.1 p.2 ∧ Fintype.equivFin V p.1 < Fintype.equivFin V p.2)
+    Finset.univ)
 
 /-- A graph is K₄-free if it contains no clique of size 4 -/
 def IsK4Free (G : SimpleGraph V) : Prop :=
@@ -76,8 +80,9 @@ def IsK4Free (G : SimpleGraph V) : Prop :=
 
 One diagonal is guaranteed. -/
 
-/-- Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
+/-  Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
     with at least one diagonal -/
+open Classical in
 /-- Bollobás-Erdős Conjecture (proved by Larson 1979):
     If G is K₄-free and contains no odd cycle with a diagonal, then
     G is bipartite, or has a cut vertex, or has a vertex of degree ≤ 2 -/
@@ -87,7 +92,7 @@ structure BollobasErdosAlternative (G : SimpleGraph V) where
     (G.Reachable u w ↔ ∃ p : G.Walk u w, v ∉ p.support ∨ u = w)
   hasDegree2Vertex : Prop := ∃ v : V, G.degree v ≤ 2
 
-/-- Larson proved Bollobás-Erdős conjecture -/
+/-  Larson proved Bollobás-Erdős conjecture -/
 /- ## Part 3: Voss's Theorem (1982)
 
 Two diagonals are guaranteed - answers the first question. -/
@@ -117,17 +122,13 @@ def PentagonalWheel : SimpleGraph (Fin 6) where
     -- Spokes: center (5) to all outer vertices
     (i.val = 5 ∧ j.val < 5) ∨ (j.val = 5 ∧ i.val < 5)
   symm := by
+    constructor
     intro i j h
-    rcases h with ⟨hi, hj, hAdj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
-    · left; exact ⟨hj, hi, hAdj.symm⟩
-    · right; right; exact ⟨hj, hi⟩
-    · right; left; exact ⟨hj, hi⟩
+    omega
   loopless := by
+    constructor
     intro i h
-    rcases h with ⟨_, _, hAdj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
-    · omega
-    · omega
-    · omega
+    omega
 
 /-- The pentagonal wheel is K₄-free -/
 axiom pentagonal_wheel_K4_free : IsK4Free PentagonalWheel
@@ -141,12 +142,12 @@ axiom pentagonal_wheel_max_2_diagonals :
 
 /-- Therefore, 3 diagonals cannot be guaranteed in general -/
 theorem three_diagonals_not_guaranteed :
-    ¬ (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ¬ (∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsK4Free G → chromaticNumber G ≥ 4 →
       ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 3) := by
   intro h
   have := h (Fin 6) PentagonalWheel pentagonal_wheel_K4_free
-    (by rw [pentagonal_wheel_chi_4]; norm_num)
+    (by rw [pentagonal_wheel_chi_4])
   obtain ⟨c, hOdd, hDiag⟩ := this
   have hMax := pentagonal_wheel_max_2_diagonals c hOdd
   omega
@@ -180,12 +181,12 @@ axiom erdos_1091_general_disproof : ¬ GeneralQuestion
 
 /-- Key insight: K₄-free graphs can still have high chromatic number -/
 theorem K4_free_high_chi_possible :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       IsK4Free G ∧ chromaticNumber G ≥ 4 := by
   use Fin 6, inferInstance, inferInstance, PentagonalWheel
-  exact ⟨pentagonal_wheel_K4_free, by rw [pentagonal_wheel_chi_4]; norm_num⟩
+  exact ⟨pentagonal_wheel_K4_free, by rw [pentagonal_wheel_chi_4]⟩
 
-/-- Triangle-free graphs can also have arbitrarily high chromatic number
+/-  Triangle-free graphs can also have arbitrarily high chromatic number
     (Mycielski construction) -/
 /- ## Part 7: Summary -/
 
@@ -199,7 +200,7 @@ theorem erdos_1091_summary :
       IsK4Free G → chromaticNumber G ≥ 4 →
       ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 2) ∧
     -- Three diagonals NOT guaranteed
-    ¬ (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ¬ (∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsK4Free G → chromaticNumber G ≥ 4 →
       ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 3) ∧
     -- General f(r) → ∞ question: DISPROVED

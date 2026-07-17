@@ -1,0 +1,119 @@
+===== ArithmeticSeriesOQ02OQ03
+error: Proofs/ArithmeticSeriesOQ02OQ03.lean:55:19: Unknown constant `Nat.choose_two_middle`
+error: Proofs/ArithmeticSeriesOQ02OQ03.lean:54:67: unsolved goals
+error: Proofs/ArithmeticSeriesOQ02OQ03.lean:58:67: unsolved goals
+error: Proofs/ArithmeticSeriesOQ02OQ03.lean:103:80: unsolved goals
+error: Proofs/ArithmeticSeriesOQ02OQ03.lean:108:2: omega could not prove the goal:
+===== BoundedPrimeGapsOQ04
+error: Proofs/BoundedPrimeGapsOQ04.lean:68:20: unexpected token 'Λ'; expected identifier
+error: Proofs/BoundedPrimeGapsOQ04.lean:97:2: No goals to be solved
+error: Proofs/BoundedPrimeGapsOQ04.lean:107:80: unsolved goals
+error: Proofs/BoundedPrimeGapsOQ04.lean:126:2: Function expected at
+error: Lean exited with code 1
+===== BoundedPrimeGapsOQ04OQ01
+error: Proofs/BoundedPrimeGapsOQ04OQ01.lean:211:9: Type mismatch
+error: Lean exited with code 1
+error: build failed
+===== CayleyHamiltonMinpolyOQ04Backward
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:235:39: Application type mismatch: The argument
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:245:28: Application type mismatch: The argument
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:248:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:275:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:303:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== ChebyshevPNTBridgeOQ01
+error: Proofs/ChebyshevPNTBridgeOQ01.lean:40:44: Unknown identifier `PartENat`
+error: Proofs/ChebyshevPNTBridgeOQ01.lean:43:64: Unknown identifier `PartENat`
+error: Proofs/ChebyshevPNTBridgeOQ01.lean:44:11: Invalid field `multiplicity_factorial`: The environment does not contain `Irreducible.multiplicity_factorial`, so it is not possible to project the field `multiplicity_factorial` from an expression
+error: Proofs/ChebyshevPNTBridgeOQ01.lean:51:12: Unknown constant `Nat.log_lt`
+error: Proofs/ChebyshevPNTBridgeOQ01.lean:53:6: omega could not prove the goal:
+===== CollatzStructuredOQ03
+error: Proofs/CollatzStructuredOQ03.lean:48:27: failed to synthesize instance of type class
+error: Proofs/CollatzStructuredOQ03.lean:48:2: failed to synthesize instance of type class
+error: Proofs/CollatzStructuredOQ03.lean:54:2: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+error: Proofs/CollatzStructuredOQ03.lean:61:31: unsolved goals
+error: Proofs/CollatzStructuredOQ03.lean:63:8: Unknown constant `Nat.find_eq_iff.mpr`
+===== CramersRuleOQ01OQ03
+error: Proofs/CramersRuleOQ01OQ03.lean:39:47: Type mismatch
+error: Proofs/CramersRuleOQ01OQ03.lean:58:39: Function expected at
+error: Proofs/CramersRuleOQ01OQ03.lean:78:36: Function expected at
+error: Proofs/CramersRuleOQ01OQ03.lean:80:27: Function expected at
+error: Proofs/CramersRuleOQ01OQ03.lean:113:4: omega could not prove the goal:
+===== Erdos1002OQ01
+error: Proofs/Erdos1002OQ01.lean:44:2: No goals to be solved
+error: Proofs/Erdos1002OQ01.lean:66:2: `simp` made no progress
+error: Proofs/Erdos1002OQ01.lean:77:2: `simp` made no progress
+error: Proofs/Erdos1002OQ01.lean:127:4: linarith failed to find a contradiction
+error: Lean exited with code 1
+===== Erdos1151Problem
+error: Proofs/Erdos1151Problem.lean:68:31: linarith failed to find a contradiction
+error: Proofs/Erdos1151Problem.lean:72:31: linarith failed to find a contradiction
+error: Proofs/Erdos1151Problem.lean:80:4: linarith failed to find a contradiction
+error: Lean exited with code 1
+error: build failed
+===== Erdos1153Problem
+error: Proofs/Erdos1153Problem.lean:95:55: Application type mismatch: The argument
+error: Proofs/Erdos1153Problem.lean:116:8: Type mismatch
+error: Proofs/Erdos1153Problem.lean:130:44: Unknown identifier `k`
+error: Proofs/Erdos1153Problem.lean:131:4: unsolved goals
+error: Lean exited with code 1
+===== Erdos1OQ03Aristotle
+error: Proofs/Erdos1OQ03Aristotle.lean:26:41: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos1OQ03Aristotle.lean:84:23: Type mismatch
+error: Proofs/Erdos1OQ03Aristotle.lean:86:6: omega could not prove the goal:
+error: Proofs/Erdos1OQ03Aristotle.lean:95:23: Type mismatch
+error: Proofs/Erdos1OQ03Aristotle.lean:97:6: omega could not prove the goal:
+===== Erdos260Aristotle
+error: Proofs/Erdos260Aristotle.lean:69:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos260Aristotle.lean:79:17: unsolved goals
+error: Proofs/Erdos260Aristotle.lean:93:2: Unknown constant `Real.tendsto_log_nat_atTop`
+error: Proofs/Erdos260Aristotle.lean:100:2: failed to synthesize instance of type class
+error: Lean exited with code 1
+===== Erdos307OQ02
+error: Proofs/Erdos307OQ02.lean:59:55: linarith failed to find a contradiction
+error: Proofs/Erdos307OQ02.lean:60:55: linarith failed to find a contradiction
+error: Proofs/Erdos307OQ02.lean:66:26: Unknown identifier `inv_le_inv_of_le`
+error: Proofs/Erdos307OQ02.lean:68:26: Unknown identifier `inv_le_inv_of_le`
+error: Proofs/Erdos307OQ02.lean:71:26: Unknown identifier `inv_le_inv_of_le`
+===== Erdos383Problem
+error: Proofs/Erdos383Problem.lean:119:58: unsolved goals
+error: Proofs/Erdos383Problem.lean:143:2: omega could not prove the goal:
+error: Proofs/Erdos383Problem.lean:147:8: Unknown constant `Nat.not_eq_zero_of_lt`
+error: Proofs/Erdos383Problem.lean:154:55: numerals are data in Lean, but the expected type is a proposition
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+===== Erdos40Problem
+error: Proofs/Erdos40Problem.lean:82:20: omega could not prove the goal:
+error: Proofs/Erdos40Problem.lean:112:37: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos40Problem.lean:154:4: Tactic `tauto` failed
+error: Proofs/Erdos40Problem.lean:159:18: Unknown constant `Finset.card_Icc`
+error: Proofs/Erdos40Problem.lean:159:36: omega could not prove the goal:
+===== Erdos521Problem
+error: Proofs/Erdos521Problem.lean:68:41: Unknown constant `Real.pi`
+error: Proofs/Erdos521Problem.lean:74:45: Unknown constant `Real.pi`
+error: Lean exited with code 1
+error: build failed
+===== Erdos683Problem
+error: Proofs/Erdos683Problem.lean:49:40: Unknown constant `Nat.one_lt_iff_ne_one.mp`
+error: Proofs/Erdos683Problem.lean:109:6: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos948Problem
+error: Proofs/Erdos948Problem.lean:183:40: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== KummerTheorem
+error: Proofs/KummerTheorem.lean:83:2: Unknown constant `Nat.Prime.multiplicity_choose`
+error: Proofs/KummerTheorem.lean:90:2: Unknown constant `Nat.Prime.multiplicity_choose'`
+error: Proofs/KummerTheorem.lean:168:35: Invalid field `get`: The environment does not contain `Nat.get`, so it is not possible to project the field `get` from an expression
+error: Lean exited with code 1
+error: build failed
+===== ShannonSourceCodingOQ02
+error: Proofs/ShannonSourceCodingOQ02.lean:254:54: Application type mismatch: The argument
+error: Proofs/ShannonSourceCodingOQ02.lean:290:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Lean exited with code 1
+error: build failed
+===== TriangularReciprocalGeneralized
+error: Proofs/TriangularReciprocalGeneralized.lean:50:2: No goals to be solved
+error: Proofs/TriangularReciprocalGeneralized.lean:62:2: No applicable extensionality theorem found for type
+error: Proofs/TriangularReciprocalGeneralized.lean:85:21: failed to synthesize instance of type class
+error: Proofs/TriangularReciprocalGeneralized.lean:85:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/TriangularReciprocalGeneralized.lean:109:23: failed to synthesize instance of type class

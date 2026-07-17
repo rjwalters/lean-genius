@@ -24,10 +24,7 @@ References:
   complete subgraphs", J. Combinatorial Theory Ser. B (1976), 243-249.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fin.Basic
+import Mathlib
 
 open SimpleGraph
 
@@ -86,14 +83,14 @@ For a coloring χ and color c, the subgraph of edges colored c.
 def MonochromaticSubgraph [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]
     (χ : EdgeColoring G k) (c : Fin k) : SimpleGraph V where
   Adj u v := G.Adj u v ∧ ∃ h : G.Adj u v, χ ⟨s(u, v), G.mem_edgeSet.mpr h⟩ = c
-  symm u v := by
+  symm.symm u v := by
     intro ⟨hadj, h, hcolor⟩
     constructor
     · exact hadj.symm
     · use hadj.symm
       simp only [Sym2.eq_swap] at hcolor ⊢
       exact hcolor
-  loopless v := by simp [G.loopless]
+  loopless.irrefl v := by simp [G.loopless]
 
 /--
 **Monochromatic Clique:**
@@ -178,11 +175,11 @@ The correct statement: K_4-free graph with monochromatic K_3.
 def FolkmanNumber_3_2 : Prop :=
   ErdosHajnalQuestion 2 3
 
-/--
+/- 
 **Folkman Number f(3; 2) ≤ 941:**
 Graham showed f(3; 2) ≤ 941.
 -/
-/--
+/- 
 **Folkman Number f(3; 2) = 786 (Best known as of recent):**
 The exact value of f(3; 2) was determined to be 786.
 -/
@@ -197,7 +194,7 @@ monochromatic K_l.
 -/
 axiom RamseyNumber (l : ℕ) : ℕ
 
-/--
+/- 
 **Comparison with Ramsey Numbers:**
 Folkman graphs achieve the Ramsey property while avoiding K_{l+1},
 which is remarkable since the complete graph K_n (for large n) trivially

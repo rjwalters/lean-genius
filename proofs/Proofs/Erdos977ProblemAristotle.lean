@@ -109,7 +109,7 @@ These correspond to the custom greatestPrimeFactor goals in the main file.
 
 /-- n.primeFactors is nonempty for n > 1. -/
 theorem primeFactors_nonempty_of_gt_one (n : ℕ) (hn : n > 1) : n.primeFactors.Nonempty :=
-  Nat.primeFactors_nonempty hn
+  Nat.nonempty_primeFactors.mpr hn
 
 /-- Every element of n.primeFactors divides n. -/
 theorem primeFactors_dvd (n p : ℕ) (hp : p ∈ n.primeFactors) : p ∣ n :=
@@ -121,22 +121,22 @@ theorem primeFactors_prime (n p : ℕ) (hp : p ∈ n.primeFactors) : p.Prime :=
 
 /-- max' of primeFactors is a member of primeFactors. -/
 theorem primeFactors_max_mem (n : ℕ) (hn : n > 1) :
-    n.primeFactors.max' (Nat.primeFactors_nonempty hn) ∈ n.primeFactors :=
+    n.primeFactors.max' (Nat.nonempty_primeFactors.mpr hn) ∈ n.primeFactors :=
   Finset.max'_mem _ _
 
 /-- max' of primeFactors divides n. -/
 theorem primeFactors_max_dvd (n : ℕ) (hn : n > 1) :
-    n.primeFactors.max' (Nat.primeFactors_nonempty hn) ∣ n :=
+    n.primeFactors.max' (Nat.nonempty_primeFactors.mpr hn) ∣ n :=
   Nat.dvd_of_mem_primeFactors (primeFactors_max_mem n hn)
 
 /-- max' of primeFactors is prime. -/
 theorem primeFactors_max_prime (n : ℕ) (hn : n > 1) :
-    (n.primeFactors.max' (Nat.primeFactors_nonempty hn)).Prime :=
+    (n.primeFactors.max' (Nat.nonempty_primeFactors.mpr hn)).Prime :=
   Nat.prime_of_mem_primeFactors (primeFactors_max_mem n hn)
 
 /-- max' of primeFactors is an upper bound for all prime divisors. -/
 theorem primeFactors_max_ge (n p : ℕ) (hn : n > 1) (hp : p.Prime) (hdvd : p ∣ n) :
-    p ≤ n.primeFactors.max' (Nat.primeFactors_nonempty hn) := by
+    p ≤ n.primeFactors.max' (Nat.nonempty_primeFactors.mpr hn) := by
   apply Finset.le_max'
   exact Nat.mem_primeFactors.mpr ⟨hp, hdvd, by omega⟩
 
@@ -152,14 +152,13 @@ theorem cast_mersenne_val (n : ℕ) (hn : n ≥ 1) :
 /-- P > 2n (ℕ) implies P/n > 2 (ℝ) for n > 0. -/
 theorem div_gt_two_of_gt_two_mul (p n : ℕ) (hn : 0 < n) (h : 2 * n < p) :
     2 < (p : ℝ) / n := by
-  rw [gt_iff_lt, lt_div_iff (Nat.cast_pos.mpr hn)]
-  push_cast
-  linarith
+  rw [lt_div_iff₀ (Nat.cast_pos.mpr hn)]
+  exact_mod_cast h
 
 /-- Mersenne ratio is positive for n ≥ 1. -/
 theorem mersenne_ratio_pos (n : ℕ) (hn : n ≥ 1) :
     0 < ((2 ^ n - 1 : ℕ) : ℝ) / n := by
-  apply div_pos
+  apply _root_.div_pos
   · exact_mod_cast mersenne_val_pos n hn
   · exact Nat.cast_pos.mpr (by omega)
 

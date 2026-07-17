@@ -85,17 +85,25 @@ by comparison with 1/n² (the convergent p-series for p = 2 > 1). -/
 /-- Triangular numbers grow at least as fast as n. -/
 theorem triangular_ge_n (n : ℕ) : triangular n ≥ n := by
   unfold triangular
-  omega
+  rw [ge_iff_le, Nat.le_div_iff_mul_le (by norm_num)]
+  rcases Nat.eq_zero_or_pos n with h | h
+  · simp [h]
+  · exact Nat.mul_le_mul_left n (by omega)
 
 /-- Hexagonal numbers are also triangular numbers (every hexagonal number is triangular).
     Specifically, hexagonal n = triangular (2n - 1). -/
 theorem hexagonal_eq_triangular (n : ℕ) (hn : n ≥ 1) :
     hexagonal n = triangular (2 * n - 1) := by
   unfold hexagonal triangular
-  omega
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  have h1 : 2 * (m + 1) - 1 = 2 * m + 1 := by omega
+  rw [h1]
+  have h2 : (2 * m + 1) * (2 * m + 1 + 1) = ((m + 1) * (2 * m + 1)) * 2 := by ring
+  rw [h2, Nat.mul_div_cancel _ (by norm_num)]
 
 /-- For n ≥ 1, n(n+1) > 0 (denominator of 1/T_n is positive). -/
-theorem n_succ_mul_pos (n : ℕ) (hn : n ≥ 1) : n * (n + 1) > 0 := by omega
+theorem n_succ_mul_pos (n : ℕ) (hn : n ≥ 1) : n * (n + 1) > 0 :=
+  Nat.mul_pos (by omega) (by omega)
 
 /-- Square reciprocals converge (p-series with p=2 > 1). This implies
     k-gonal reciprocal sums converge for k ≥ 3 by comparison. -/
@@ -103,9 +111,9 @@ theorem square_reciprocals_summable :
     Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 2) := by
   have : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) := by
     rw [show (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) = (fun n : ℕ => (n : ℝ) ^ (-2 : ℝ)) by
-      ext n; rw [rpow_neg (Nat.cast_nonneg n)]]
+      ext n; rw [Real.rpow_neg (Nat.cast_nonneg n)]]
     exact Real.summable_nat_rpow.mpr (by norm_num)
   convert this using 1
-  ext n; simp [one_div, sq, rpow_natCast]
+  ext n; simp [one_div, sq, Real.rpow_natCast]
 
 end FigurateReciprocals

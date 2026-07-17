@@ -70,9 +70,9 @@ theorem edgeFinset_is_cover (G : SimpleGraph V) [DecidableRel G.Adj] :
 theorem empty_is_sparse (G : SimpleGraph V) :
     IsTriangleSparse G ∅ := by
   intro _ _ _ _
-  exact ⟨fun ⟨h, _⟩ => Finset.not_mem_empty _ h,
-         fun ⟨h, _⟩ => Finset.not_mem_empty _ h,
-         fun ⟨h, _⟩ => Finset.not_mem_empty _ h⟩
+  exact ⟨fun ⟨h, _⟩ => Finset.notMem_empty _ h,
+         fun ⟨h, _⟩ => Finset.notMem_empty _ h,
+         fun ⟨h, _⟩ => Finset.notMem_empty _ h⟩
 
 /-- A triangle has three edges in G. -/
 theorem triangle_edges_in_graph (G : SimpleGraph V) [DecidableRel G.Adj]

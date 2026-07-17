@@ -109,7 +109,7 @@ def topK (n k : ℕ) : Set ℕ :=
 theorem topK_card (n k : ℕ) (hk : k ≤ n) (hk_pos : k > 0) :
     (topK n k).ncard = k := by
   simp only [topK]
-  rw [← Finset.coe_Icc, Set.ncard_coe_Finset, Nat.card_Icc]
+  rw [← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]
   omega
 
 /-- The extremal Frobenius question: does topK maximize non-representables? -/

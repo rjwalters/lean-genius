@@ -27,6 +27,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Finset Function Set
 
 /- ## Graph Coloring Basics -/
@@ -56,7 +58,7 @@ def HasMonochromaticClique {n k : ℕ} (c : EdgeColoring n k) (col : Fin k) (m :
 
 /-- R(3,n): smallest m such that any 2-coloring of K_m has either
     a monochromatic triangle in color 0 or a monochromatic K_n in color 1 -/
-def R_3_n (n : ℕ) : ℕ :=
+noncomputable def R_3_n (n : ℕ) : ℕ :=
   Nat.find (ramsey_3_n_exists n)
 where
   ramsey_3_n_exists (n : ℕ) : ∃ m : ℕ, ∀ c : EdgeColoring m 2,
@@ -74,7 +76,7 @@ def IsR3n (m n : ℕ) : Prop :=
 
 /-- R(3,3,n): smallest m such that any 3-coloring of K_m has either
     a monochromatic triangle in color 0 or 1, or a monochromatic K_n in color 2 -/
-def R_3_3_n (n : ℕ) : ℕ :=
+noncomputable def R_3_3_n (n : ℕ) : ℕ :=
   Nat.find (ramsey_3_3_n_exists n)
 where
   ramsey_3_3_n_exists (n : ℕ) : ∃ m : ℕ, ∀ c : EdgeColoring m 3,
@@ -147,7 +149,7 @@ theorem two_triangle_free_union (G H : SimpleGraph (Fin n))
 /- ## Connection to Off-Diagonal Ramsey Numbers -/
 
 /-- Standard off-diagonal Ramsey number R(s,t) -/
-def R (s t : ℕ) : ℕ :=
+noncomputable def R (s t : ℕ) : ℕ :=
   Nat.find (ramsey_exists s t)
 where
   ramsey_exists (s t : ℕ) : ∃ m : ℕ, ∀ c : EdgeColoring m 2,
@@ -169,7 +171,9 @@ def AsymptoticEquiv (f g : ℕ → ℝ) : Prop :=
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N : ℕ,
     ∀ n ≥ N, c₁ * g n ≤ f n ∧ f n ≤ c₂ * g n
 
-notation:50 f " ≍ " g => AsymptoticEquiv f g
+-- v4.31 compat (#38065): `≍` is now core `HEq` notation; give the local
+-- asymptotic-equivalence notation high priority to resolve the ambiguity.
+notation:50 (priority := high) f " ≍ " g => AsymptoticEquiv f g
 
 /-- The Alon-Rödl result in asymptotic notation -/
 theorem alon_rodl : ∃ k : ℕ,

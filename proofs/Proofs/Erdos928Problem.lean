@@ -35,6 +35,8 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Finset BigOperators
 
 namespace Erdos928
@@ -47,18 +49,18 @@ The largest prime divisor of n, or 1 if n ≤ 1.
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    (n.primeFactors.toList.maximum?).getD 1
+    (n.primeFactors.toList.max?).getD 1
   else 1
 
-/--
+/- 
 **Basic property: P(n) divides n**
 -/
 
-/--
+/- 
 **P(n) is prime for n > 1**
 -/
 
-/--
+/- 
 **P(p) = p for prime p**
 -/
 
@@ -92,7 +94,7 @@ This is the delay differential equation defining ρ.
 -/
 axiom dickman_function : ℝ → ℝ
 
-/--
+/- 
 **Dickman function properties:**
 - ρ(u) = 1 for u ∈ [0, 1]
 - ρ(2) = 1 - ln(2) ≈ 0.307
@@ -109,7 +111,7 @@ The number of y-friable integers ≤ x.
 noncomputable def psi (x y : ℝ) : ℕ :=
   ((Finset.range ⌊x⌋₊.succ).filter (fun n => n > 0 ∧ largestPrimeFactor n ≤ ⌊y⌋₊)).card
 
-/--
+/- 
 **Dickman's Theorem (1930):**
 The density of α-smooth numbers is ρ(1/α).
 
@@ -124,7 +126,7 @@ This is the fundamental result on smooth number distribution.
 **Consecutive Smooth Numbers:**
 The set of n where both n and n+1 are appropriately smooth.
 -/
-def consecutiveSmooth (α β : ℝ) (N : ℕ) : Finset ℕ :=
+noncomputable def consecutiveSmooth (α β : ℝ) (N : ℕ) : Finset ℕ :=
   (Finset.range N).filter (fun n =>
     n > 0 ∧ isSmooth α n ∧ isSmooth β (n + 1))
 
@@ -193,7 +195,7 @@ axiom wang_conditional (α β : ℝ) (hα : 0 < α ∧ α < 1)
 
 /- ## Part VIII: The Elliott-Halberstam Conjecture -/
 
-/--
+/- 
 **Elliott-Halberstam Conjecture:**
 A strengthening of the Bombieri-Vinogradov theorem about
 distribution of primes in arithmetic progressions.
@@ -210,9 +212,9 @@ control of error terms in sieve methods.
 Alternative notation for the largest prime factor, used in much
 of the literature on this problem.
 -/
-abbrev Pplus := largestPrimeFactor
+noncomputable abbrev Pplus := largestPrimeFactor
 
-/--
+/- 
 **Related: P(n(n+1))**
 Schinzel studied the largest prime factor of n(n+1).
 For infinitely many n: P(n(n+1)) ≤ n^{O(1/log log n)}.

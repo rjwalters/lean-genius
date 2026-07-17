@@ -23,11 +23,13 @@
   Tags: number-theory, prime-factorization, additive-functions, asymptotic
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
+
+open scoped Classical
 
 namespace Erdos878
 
@@ -56,7 +58,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 theorem f_one : f 1 = 0 := by
   simp [f, Nat.primeFactors]
 
-/-- f(p) = p for any prime p -/
+/-  f(p) = p for any prime p -/
 /-
 ## Part 2: The Function F(n)
 
@@ -137,18 +139,19 @@ axiom H_lower_bound :
 axiom H_upper_bound :
   ∃ C > 0, ∀ x : ℕ, x > 10 → H x ≤ C * x * Real.log (Real.log (Real.log x))
 
-/-- The limsup of H(x)/x is infinite -/
+/-- The limsup of H(x)/x is infinite. (ℝ has no `⊤`, so this is stated in `EReal`,
+    where the coercion `((H x / x : ℝ) : EReal)` genuinely admits `⊤` as a value.) -/
 axiom H_limsup_infinite :
-  Filter.limsup (fun x => H x / x) Filter.atTop = ⊤
+  Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤
 
 /-- The liminf of H(x)/x is finite -/
 axiom H_liminf_finite :
-  ∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤
+  ∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧ (L : EReal) < ⊤
 
 /-- f(n)/n doesn't have a mean value (unusual for "additive-like" functions) -/
 theorem f_no_mean_value :
-    (Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-    (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤) := by
+    (Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+    (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧ (L : EReal) < ⊤) := by
   exact ⟨H_limsup_infinite, H_liminf_finite⟩
 
 /-
@@ -157,7 +160,7 @@ theorem f_no_mean_value :
 max_{n≤x} f(n) ~ x log x / log log x along a sequence of x.
 -/
 
-/-- Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
+/-  Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
 /-
 ## Part 6: Conjecture on F(n) for Almost All n
 -/
@@ -182,8 +185,9 @@ theorem erdos_878_summary :
         c * x * Real.log (Real.log (Real.log (Real.log x))) ≤ H x ∧
         H x ≤ C * x * Real.log (Real.log (Real.log x))) ∧
     -- f(n)/n has no mean value
-    ((Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤)) := by
+    ((Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+     (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧
+       (L : EReal) < ⊤)) := by
   constructor
   · exact f_le_F
   constructor
@@ -212,8 +216,9 @@ theorem erdos_878 :
       ∀ x : ℕ, x > 10 →
         c * x * Real.log (Real.log (Real.log (Real.log x))) ≤ H x ∧
         H x ≤ C * x * Real.log (Real.log (Real.log x))) ∧
-    ((Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤)) :=
+    ((Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+     (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧
+       (L : EReal) < ⊤)) :=
   erdos_878_summary
 
 end Erdos878

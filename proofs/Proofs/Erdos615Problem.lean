@@ -29,11 +29,9 @@ Reference:
   problem", Combinatorica
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph
 
@@ -59,7 +57,7 @@ The independence number α(G) is the size of the largest independent set.
 An independent set has no edges between its vertices.
 -/
 def hasIndependentSet (G : SimpleGraph V) (ℓ : ℕ) : Prop :=
-  ∃ S : Finset V, S.card ≥ ℓ ∧ G.IsAnticlique S
+  ∃ S : Finset V, S.card ≥ ℓ ∧ G.IsIndepSet (S : Set V)
 
 /--
 **Ramsey-Turán Condition:**
@@ -76,7 +74,8 @@ rt(n; k, ℓ) = max{|E(G)| : G has n vertices, no Kₖ, no independent set of si
 This is the maximum edge count in an n-vertex graph with the RT condition.
 -/
 noncomputable def rt (n k ℓ : ℕ) : ℕ :=
-  Nat.find (⟨0, by trivial⟩ : ∃ m : ℕ, ∀ G : SimpleGraph (Fin n),
+  Nat.find (⟨Fintype.card (Sym2 (Fin n)), fun G _ => Finset.card_le_univ G.edgeFinset⟩ :
+    ∃ m : ℕ, ∀ G : SimpleGraph (Fin n),
     isRTGraph G k ℓ → G.edgeFinset.card ≤ m)
 
 /--
@@ -99,7 +98,7 @@ For the Ramsey-Turán number rt(n; 4, ℓ), the value 1/8 is critical.
 Turán's theorem: ex(n, K₄) = (1/3 + o(1))(n choose 2) ≈ (1/6)n²
 But with independence number constraints, we get rt(n; 4, εn) ≈ (1/8)n²
 -/
-def threshold_one_eighth : ℝ := 1 / 8
+noncomputable def threshold_one_eighth : ℝ := 1 / 8
 
 /--
 **The Conjecture (Erdős et al., 1993):**
@@ -111,7 +110,7 @@ an independent set of size n/log n?
 def erdos_615_conjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧
   ∀ᶠ n : ℕ in Filter.atTop,
-    (rt n 4 (n / Nat.log n) : ℝ) < (threshold_one_eighth - c) * n^2
+    (rt n 4 (n / Nat.log 2 n) : ℝ) < (threshold_one_eighth - c) * n^2
 
 /-
 ## Part III: Known Upper Bounds
@@ -119,13 +118,13 @@ def erdos_615_conjecture : Prop :=
 Results that suggested the conjecture might be true.
 -/
 
-/--
+/- 
 **Erdős-Hajnal-Sós-Szemerédi (1983):**
 For any fixed ε > 0: rt(n; 4, εn) < (1/8 + o(1))n²
 
 This shows the threshold 1/8 is correct for linear independence number.
 -/
-/--
+/- 
 **Sudakov (2003):**
 rt(n; 4, ne^(-f(n))) = o(n²) whenever f(n)/√log n → ∞
 
@@ -138,7 +137,7 @@ the Ramsey-Turán number becomes subquadratic.
 The answer to the conjecture is NO.
 -/
 
-/--
+/- 
 **Fox-Loh-Zhao Theorem (2015):**
 rt(n; 4, ne^(-f(n))) >= (1/8 - o(1))n² whenever f(n) = o(√(log n / log log n))
 
@@ -193,7 +192,7 @@ def isInCriticalWindow (f : ℕ → ℝ) : Prop :=
 Concrete instances of the Ramsey-Turán function.
 -/
 
-/--
+/- 
 **Turán's Theorem:**
 ex(n, K₄) = (1 - 1/3)(n choose 2) = (1/3)n(n-1)/2 ≈ (1/6)n²
 
@@ -233,7 +232,7 @@ so we're looking at edge-colored complete graphs.
 def isRamseyRelated (k ℓ : ℕ) : Prop :=
   ∀ n : ℕ, rt n k ℓ ≤ (n * (n - 1) / 2 : ℕ)
 
-/--
+/- 
 **Turán-Type Problem:**
 ex(n, H) = max edges in n-vertex H-free graph.
 
@@ -245,7 +244,7 @@ rt(n; k, ℓ) ≤ ex(n, Kₖ) since RT graphs are Kₖ-free.
 Fox-Loh-Zhao's proof constructs a specific graph achieving (1/8 - o(1))n² edges.
 -/
 
-/--
+/- 
 **Simonovits-Sós Construction:**
 The balanced complete 3-partite graph with parts of size n/3 minus a random graph.
 

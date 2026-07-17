@@ -164,8 +164,8 @@ def completeTripartite (a b c : ℕ) : SimpleGraph (Fin a ⊕ Fin b ⊕ Fin c) w
     | Sum.inr (Sum.inr _), Sum.inl _ => True
     | Sum.inr (Sum.inr _), Sum.inr (Sum.inl _) => True
     | _, _ => False
-  symm := by intro x y; simp only; cases x <;> cases y <;> simp
-  loopless := by intro x; simp only; cases x <;> simp
+  symm := by constructor; intro x y; rcases x with a | b | c <;> rcases y with a | b | c <;> simp_all
+  loopless := by constructor; intro x; simp only; cases x <;> simp
 
 /-- Sauer's counterexample: K_{1,m,m} shows f(2) ≥ 1.
     Stated as Prop (not axiom) — published result not used by any theorem here. -/
@@ -204,7 +204,8 @@ theorem turan_extremal :
   unfold numEdges turanThreshold numVertices
   have hbound := hcf.card_edgeFinset_le
   set n := Fintype.card V
-  rcases Nat.mod_two_eq_zero_or_one n with h | h <;> simp only [h] at hbound <;> omega
+  rcases Nat.mod_two_eq_zero_or_one n with h | h <;>
+    (simp only [h] at hbound; norm_num [Nat.choose] at hbound; omega)
 
 /-- Edge-disjointness is symmetric. -/
 theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :
@@ -221,7 +222,7 @@ theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :
 
 /-- For n ≥ 2, the Turán threshold is positive. -/
 theorem turanThreshold_pos {n : ℕ} (hn : 2 ≤ n) : 0 < turanThreshold n := by
-  unfold turanThreshold; omega
+  unfold turanThreshold; have h4 : 2 ^ 2 ≤ n ^ 2 := Nat.pow_le_pow_left hn 2; omega
 
 /-- The Turán threshold is monotone non-decreasing. -/
 theorem turanThreshold_mono {m n : ℕ} (h : m ≤ n) :
@@ -234,6 +235,5 @@ theorem exceeds_turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
     Nonempty (Triangle G) := by
   by_contra hno
   push_neg at hno
-  have := turan_extremal V _ _ G _
-  · omega
-  · intro T; exact hno ⟨T⟩
+  have hle := turan_extremal V ‹Fintype V› ‹DecidableEq V› G ‹DecidableRel G.Adj› (fun T => hno.false T)
+  omega

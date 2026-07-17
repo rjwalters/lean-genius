@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Classical
+
 /-
 # Erdős 1066 — OQ-04: Higher-Dimensional g_d(n)
 
@@ -114,7 +116,16 @@ theorem greedy_weakens :
   | 1, _ => decide
   | 2, _ => decide
   | 3, _ => decide
-  | d + 4, _ => simp [kissingNumber]; omega
+  | d + 4, _ =>
+    -- v4.31: `simp [kissingNumber]` no longer reduces the match on the symbolic
+    -- `d + 4`; establish the lower bound `2 ≤ kissingNumber (d + 4)` by case-split.
+    have hlb : 2 ≤ kissingNumber (d + 4) := by
+      unfold kissingNumber
+      split
+      all_goals try omega
+      all_goals (calc (2:ℕ) ≤ 3^1 := by norm_num
+        _ ≤ 3 ^ _ := Nat.pow_le_pow_right (by norm_num) (by omega))
+    omega
 
 -- ============================================================
 -- Part V: The Scaling Question

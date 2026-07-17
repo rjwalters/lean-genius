@@ -31,6 +31,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos874
@@ -91,12 +93,12 @@ def strausSet (N : ℕ) : Finset ℕ :=
   let size := if N < boundary then 2 * m - 1 else 2 * m
   Finset.filter (fun x => x > N - size ∧ x ≤ N) (Finset.range (N + 1))
 
-/--
+/- 
 **Straus's Lower Bound:**
 The construction shows liminf k(N)/√N ≥ 2.
 -/
 
-/--
+/- 
 **Straus's Upper Bound:**
 limsup k(N)/√N ≤ 4/√3 ≈ 2.309.
 -/
@@ -116,12 +118,12 @@ theorem straus_constant_value : strausConstant = 4 / Real.sqrt 3 := rfl
 -/
 noncomputable def ensConstant : ℝ := Real.sqrt (143 / 27)
 
-/--
+/- 
 **ENS Upper Bound (1991):**
 limsup k(N)/√N ≤ √(143/27).
 -/
 
-/--
+/- 
 **ENS improves Straus:**
 √(143/27) < 4/√3, so the ENS bound is strictly better.
 Axiomatized since this requires numerical computation beyond native_decide.
@@ -145,7 +147,7 @@ axiom deshouillers_freiman_main :
 axiom k_limit_is_two :
     Filter.Tendsto (fun N => (k N : ℝ) / Real.sqrt N) Filter.atTop (nhds 2)
 
-/--
+/- 
 **Optimal sets are often intervals:**
 Deshouillers-Freiman showed that for some N, the optimal A has
 the form (N-k, N] ∩ ℕ.
@@ -169,13 +171,13 @@ def example_N9 : Finset ℕ := {4, 5, 6, 7, 8, 9}
 
 /- ## Part VII: Sum Set Properties -/
 
-/--
+/- 
 **Sum set cardinality bound:**
 |S_r| is at most C(|A|, r), and equals C(|A|, r) when all sums are distinct.
 This follows since each r-element subset gives at most one sum.
 -/
 
-/--
+/- 
 **Total sum constraint:**
 If A ⊆ {1,...,N} and sums are disjoint, the total number of distinct sums
 is bounded by the sum range. For r-element sums from A ⊆ {1,...,N},
@@ -184,7 +186,7 @@ sums lie in [r, r·N], giving at most r·(N-1)+1 values per level.
 
 /- ## Part VIII: Summary -/
 
-/--
+/- 
 **Summary of Erdős Problem #874:**
 
 **Question:** Is k(N) ~ 2√N?
@@ -208,6 +210,24 @@ theorem erdos_874 :
   k_limit_is_two
 
 /--
+**k(N) is bounded by N:**
+An admissible set A ⊆ {1,...,N} has at most N elements.
+-/
+theorem k_le_self (N : ℕ) : k N ≤ N := by
+  unfold k
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  unfold BoundedAdmissible at hA
+  obtain ⟨-, -, hbdd⟩ := hA
+  have hsub : A ⊆ Finset.Icc 1 N := by
+    intro a ha
+    simp only [Finset.mem_Icc]
+    exact ⟨(hbdd a ha).2, (hbdd a ha).1⟩
+  calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+    _ = N := by rw [Nat.card_Icc]; omega
+
+/--
 **Answer: The conjecture is TRUE**
 -/
 theorem erdos_874_answer :
@@ -219,9 +239,24 @@ theorem erdos_874_answer :
   use N₁
   intro N hN
   specialize h₁ N hN
-  constructor <;> {
-    have := abs_sub_lt_iff.mp h₁
-    linarith [Real.sqrt_nonneg N]
-  }
+  rw [abs_lt] at h₁
+  obtain ⟨h₁a, h₁b⟩ := h₁
+  rcases (Real.sqrt_nonneg (N:ℝ)).eq_or_lt with h0 | hpos
+  · -- √N = 0 ⇒ N = 0 ⇒ k N ≤ N = 0
+    have hNR : (N:ℝ) ≤ 0 := Real.sqrt_eq_zero'.mp h0.symm
+    have hN0 : N = 0 := by exact_mod_cast le_antisymm hNR (Nat.cast_nonneg N)
+    have hk0 : (k N : ℝ) ≤ 0 := by
+      have := k_le_self N
+      rw [hN0] at this ⊢
+      exact_mod_cast this
+    have hcast : (0:ℝ) ≤ (k N : ℝ) := Nat.cast_nonneg _
+    constructor <;> nlinarith [h0]
+  · have h2 : (2 - ε/2) * Real.sqrt N < k N := (lt_div_iff₀ hpos).mp (by linarith)
+    have h3 : (k N:ℝ) < (2 + ε/2) * Real.sqrt N := (div_lt_iff₀ hpos).mp (by linarith)
+    have h4 : (2 - ε) * Real.sqrt N ≤ (2 - ε/2) * Real.sqrt N :=
+      mul_le_mul_of_nonneg_right (by linarith) hpos.le
+    have h5 : (2 + ε/2) * Real.sqrt N ≤ (2 + ε) * Real.sqrt N :=
+      mul_le_mul_of_nonneg_right (by linarith) hpos.le
+    exact ⟨by linarith, by linarith⟩
 
 end Erdos874

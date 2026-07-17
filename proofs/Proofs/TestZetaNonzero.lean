@@ -78,7 +78,8 @@ theorem zero_in_strip_of_zero' (s : ℂ)
       have h_ne_one : s ≠ 1 := by
         intro heq
         have : (1 : ℂ).re ≤ 0 := heq ▸ h_not
-        simp at this
+        simp only [Complex.one_re] at this
+        norm_num at this
       have h_fe := riemannZeta_one_sub h_all h_ne_one
       -- ζ(1-s) = 2*(2π)^(-s) * Γ(s) * cos(πs/2) * ζ(s) = 0 (since ζ(s) = 0)
       have h_zero_1ms : riemannZeta (1 - s) = 0 := by

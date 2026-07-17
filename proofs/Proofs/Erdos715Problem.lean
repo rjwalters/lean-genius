@@ -64,9 +64,9 @@ def inducedSubgraph {V : Type*} (G : SimpleGraph' V) (S : Set V) : SimpleGraph' 
 
 /-- Does every r-regular graph contain a k-regular subgraph? -/
 def HasRegularSubgraph (r k : ℕ) : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph' V) [DecidableRel G.adj],
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph' V) [DecidableRel G.adj],
     IsRegular G r →
-    ∃ (H : SimpleGraph' V) [DecidableRel H.adj], IsSubgraph H G ∧ IsRegular H k
+    ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G ∧ IsRegular H k
 
 /- ## The Main Results -/
 
@@ -82,12 +82,12 @@ theorem regular_has_3_regular (r : ℕ) (hr : r ≥ 4) : HasRegularSubgraph r 3 
 theorem alon_friedland_kalai {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph' V) [DecidableRel G.adj]
     (hG : IsRegular G 4) (e : V × V) (he : ¬G.adj e.1 e.2) :
-    let G' := { adj := fun u v => G.adj u v ∨ ({u, v} = {e.1, e.2})
-                symm := by intro u v; simp [Set.pair_comm]; tauto
-                loopless := by intro v h; cases h with
-                  | inl h => exact G.loopless v h
-                  | inr h => simp at h }
-    ∃ (H : SimpleGraph' V) [DecidableRel H.adj], IsSubgraph H G' ∧ IsRegular H 3 := by
+    let G' : SimpleGraph' V :=
+      { adj := fun u v => G.adj u v ∨ (u ≠ v ∧ ({u, v} : Set V) = {e.1, e.2})
+        symm := fun u v h => h.imp (G.symm u v)
+          (fun hp => ⟨fun huv => hp.1 huv.symm, by rw [Set.pair_comm v u]; exact hp.2⟩)
+        loopless := fun v h => h.elim (G.loopless v) (fun hp => hp.1 rfl) }
+    ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G' ∧ IsRegular H 3 := by
   sorry -- Alon-Friedland-Kalai (1984)
 
 /-- Consequence: Every r-regular graph with r ≥ 5 contains a 3-regular subgraph
@@ -103,6 +103,8 @@ def K4 : SimpleGraph' (Fin 4) where
   symm _ _ h := h.symm
   loopless _ h := h rfl
 
+instance : DecidableRel K4.adj := fun u v => inferInstanceAs (Decidable (u ≠ v))
+
 theorem K4_is_3_regular : IsRegular K4 3 := by
   sorry
 
@@ -114,7 +116,7 @@ theorem K4_minimal_3_regular :
 
 /-- There exist 3-regular graphs without 3-regular proper subgraphs -/
 theorem three_regular_no_proper_3_subgraph :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph' V) [DecidableRel G.adj],
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph' V) (_ : DecidableRel G.adj),
     IsRegular G 3 ∧
     ∀ (H : SimpleGraph' V) [DecidableRel H.adj],
       IsSubgraph H G → IsRegular H 3 → (∀ u v, H.adj u v ↔ G.adj u v) := by
@@ -132,9 +134,11 @@ theorem berge_sauer_answer : berge_sauer_question := by
 
 /- ## General Regular Subgraph Problem -/
 
+open Classical in
 /-- General question: When does r-regular imply k-regular subgraph? -/
-def RegularSubgraphThreshold (k : ℕ) : ℕ :=
-  Nat.find ⟨k + 1, by sorry⟩ -- The minimum r such that r-regular ⟹ k-regular subgraph
+noncomputable def RegularSubgraphThreshold (k : ℕ) : ℕ :=
+  -- The minimum r such that r-regular ⟹ k-regular subgraph
+  Nat.find (p := fun r => HasRegularSubgraph r k) ⟨k + 1, by sorry⟩
 
 /-- For k = 3, the threshold is 4 -/
 theorem threshold_for_3 : RegularSubgraphThreshold 3 = 4 := by
@@ -160,8 +164,12 @@ def petersenGraph : SimpleGraph' (Fin 10) where
       spoke ⟨v.val, h.2⟩ ⟨u.val - 5, by omega⟩
     else
       False
-  symm := by intro u v; simp; sorry
-  loopless := by intro v; simp; sorry
+  symm := by intro u v h; sorry
+  loopless := by intro v h; sorry
+
+open Classical in
+noncomputable instance : DecidableRel petersenGraph.adj :=
+  fun u v => Classical.propDecidable (petersenGraph.adj u v)
 
 theorem petersen_is_3_regular : IsRegular petersenGraph 3 := by
   sorry
@@ -176,7 +184,7 @@ theorem petersen_no_proper_3_subgraph :
 /- ## Edge Counting Arguments -/
 
 /-- In an r-regular graph on n vertices, there are rn/2 edges -/
-theorem regular_edge_count {V : Type*} [Fintype V] [DecidableEq V]
+theorem regular_edge_count {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : SimpleGraph' V) [DecidableRel G.adj] (r : ℕ) (hG : IsRegular G r) :
     2 * (Finset.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2) Finset.univ).card =
     r * Fintype.card V := by

@@ -24,6 +24,8 @@
 
 import Mathlib
 
+open scoped Topology
+
 open Real MeasureTheory
 
 noncomputable section
@@ -101,7 +103,6 @@ theorem unitBallVolume_three : unitBallVolume 3 = 4 * π / 3 := by
   rw [rpow_add pi_pos, rpow_one, ← Real.sqrt_eq_rpow]
   have hpi : (0 : ℝ) < √π := Real.sqrt_pos.mpr Real.pi_pos
   field_simp [hpi.ne']
-  ring
 
 /- ## Part III: The Derivative Relation d/dr[V_n(r)] = S_n(r) -/
 
@@ -111,8 +112,10 @@ theorem hasDerivAt_nBallVol (n : ℕ) (hn : 1 ≤ n) (r : ℝ) :
     HasDerivAt (nBallVol n) (nSphereArea n r) r := by
   unfold nBallVol nSphereArea
   have h := (hasDerivAt_pow n r).const_mul (unitBallVolume n)
-  convert h using 1
-  ring
+  have hval : (n : ℝ) * unitBallVolume n * r ^ (n - 1)
+      = unitBallVolume n * ((n : ℝ) * r ^ (n - 1)) := by ring
+  rw [hval]
+  exact h
 
 /-- The n-ball volume function is continuous. -/
 theorem continuous_nBallVol (n : ℕ) : Continuous (nBallVol n) := by
@@ -229,13 +232,13 @@ theorem shell_volume_3d (r₁ r₂ : ℝ) :
 theorem nBallVol_scaling (n : ℕ) (c r : ℝ) :
     nBallVol n (c * r) = c ^ n * nBallVol n r := by
   unfold nBallVol
-  rw [mul_pow, mul_comm (c ^ n), mul_assoc]
+  rw [mul_pow]; ring
 
 /-- S_n(cr) = c^(n-1) · S_n(r): the surface area scales as the (n-1)-th power. -/
 theorem nSphereArea_scaling (n : ℕ) (c r : ℝ) :
     nSphereArea n (c * r) = c ^ (n - 1) * nSphereArea n r := by
   unfold nSphereArea
-  rw [mul_pow, mul_comm (c ^ (n-1)), ← mul_assoc, ← mul_assoc]
+  rw [mul_pow]; ring
 
 /-- The ratio S_n(r) / V_n(r) = n/r for r ≠ 0 and n ≥ 1.
     This is the n-dimensional generalization of C/A = 2/r. -/
@@ -248,12 +251,10 @@ theorem surface_to_volume_ratio (n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : r ≠ 0
     · exact (rpow_pos_of_pos pi_pos _).ne'
     · exact (Gamma_pos_of_pos (by positivity)).ne'
   have hrn : r ^ n ≠ 0 := pow_ne_zero n hr
-  field_simp [hω, hrn, hr]
-  rw [show r ^ (n - 1) * (unitBallVolume n * r ^ n)⁻¹ =
-    (unitBallVolume n)⁻¹ * (r ^ (n - 1) * (r ^ n)⁻¹) from by ring]
-  rw [← pow_sub₀ hr (by omega : n - 1 ≤ n)]
-  simp [show n - (n - 1) = 1 from by omega]
-  ring
+  have hpow : r ^ n = r ^ (n - 1) * r := by
+    rw [← pow_succ]; congr 1; omega
+  rw [hpow]
+  field_simp [hω, hr, pow_ne_zero (n - 1) hr]
 
 /- ## Part VIII: Summary
 

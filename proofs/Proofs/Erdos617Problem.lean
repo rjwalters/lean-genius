@@ -28,11 +28,7 @@ References:
   complete graphs. Discrete Math., 79-86.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Fin.Basic
+import Mathlib
 
 namespace Erdos617
 
@@ -44,8 +40,8 @@ We work with `Fin n` as the vertex set.
 -/
 def CompleteGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj := fun v w => v ≠ w
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Edge of a complete graph:**

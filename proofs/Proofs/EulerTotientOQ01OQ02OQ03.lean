@@ -49,9 +49,7 @@
              `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean`
 -/
 
-import Mathlib.RingTheory.ZMod.UnitsCyclic
-import Mathlib.NumberTheory.ArithmeticFunction.Carmichael
-import Mathlib.Tactic
+import Mathlib
 
 namespace EulerTotientOQ01OQ02OQ03
 
@@ -78,7 +76,7 @@ def five : (ZMod (2 ^ (n + 3)))ˣ :=
 
 /-- `4 ∣ 2ⁿ⁺³`, the divisibility underlying the reduction `ℤ/2ⁿ⁺³ℤ → ℤ/4ℤ`. -/
 theorem dvd4 : (4 : ℕ) ∣ 2 ^ (n + 3) := by
-  simpa using pow_dvd_pow 2 (show 2 ≤ n + 3 by omega)
+  exact ⟨2 ^ (n + 1), by ring⟩
 
 /-- Reduction `(ℤ/2ⁿ⁺³ℤ)ˣ → (ℤ/4ℤ)ˣ` induced by the ring map `ℤ/2ⁿ⁺³ℤ → ℤ/4ℤ`. -/
 private def red : (ZMod (2 ^ (n + 3)))ˣ →* (ZMod 4)ˣ :=
@@ -161,6 +159,7 @@ theorem isComplement'_neg_one_five :
     larger of the two). -/
 theorem carmichael_two_pow : Carmichael (2 ^ (n + 3)) = 2 ^ (n + 1) := by
   have h : n + 3 - 2 = n + 1 := by omega
+  show carmichael (2 ^ (n + 3)) = 2 ^ (n + 1)
   rw [carmichael_two_pow_of_ne_two (show n + 3 ≠ 2 by omega), h]
 
 end EulerTotientOQ01OQ02OQ03

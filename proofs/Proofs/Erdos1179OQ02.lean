@@ -98,7 +98,7 @@ theorem clog_le_card_of_epsUniform {G : Type*} [AddCommGroup G] [Fintype G]
     [DecidableEq G] (A : Finset G) (ε : ℝ) (hε1 : ε < 1)
     (hunif : IsEpsUniform A ε) :
     Nat.clog 2 (Fintype.card G) ≤ A.card :=
-  (Nat.le_pow_iff_clog_le (by norm_num)).mp
+  (Nat.clog_le_iff_le_pow (by norm_num)).mpr
     (card_le_two_pow_of_epsUniform A ε hε1 hunif)
 
 /-! ### Structural properties of ε-uniformity

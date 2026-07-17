@@ -10,10 +10,10 @@
   - No axioms (use theorem ... := by sorry instead)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Totient
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Data.Rat.Order
 import Mathlib.Data.Finset.Card
 
 open Nat Set
@@ -27,10 +27,10 @@ noncomputable section
 -- Definitions (duplicated from main file for self-containment)
 -- ═══════════════════════════════════════════════════════════════════════
 
-def smallestTotientDiv (n : ℕ) : ℕ :=
+noncomputable def smallestTotientDiv (n : ℕ) : ℕ :=
   sInf {m : ℕ | 0 < m ∧ n ∣ m.totient}
 
-def smallestPrimeMod1 (n : ℕ) : ℕ :=
+noncomputable def smallestPrimeMod1 (n : ℕ) : ℕ :=
   sInf {p : ℕ | p.Prime ∧ n ∣ (p - 1)}
 
 -- ═══════════════════════════════════════════════════════════════════════
@@ -74,7 +74,7 @@ theorem density_implies_witness (P : ℕ → Prop) (N M : ℕ)
     rw [Finset.mem_Ico] at hn
     exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), h n hn.1 hn.2⟩
   have hle := Finset.card_le_card hsub
-  rw [Finset.card_Ico] at hle
+  rw [Nat.card_Ico] at hle
   omega
 
 end

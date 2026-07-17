@@ -56,7 +56,8 @@ theorem powerset_empty_card {α : Type*} :
 theorem powerset_cons_card {α : Type*} (a : α) (s : Multiset α) :
     Multiset.card (Multiset.powerset (a ::ₘ s)) =
       2 * Multiset.card (Multiset.powerset s) := by
-  simp [Multiset.card_powerset, pow_succ, mul_comm]
+  simp only [Multiset.card_powerset, Multiset.card_cons]
+  rw [pow_succ]; ring
 
 /-! ## Part II: Fixed-Size Submultisets -/
 
@@ -74,7 +75,7 @@ theorem multiset_choose_card {α : Type*} (s : Multiset α) (k : ℕ) :
 theorem powersetCard_empty_of_lt {α : Type*} (s : Multiset α) (k : ℕ)
     (hk : Multiset.card s < k) :
     Multiset.powersetCard k s = 0 := by
-  rw [eq_zero_iff_forall_not_mem]
+  rw [eq_zero_iff_forall_notMem]
   intro t ht
   rw [Multiset.mem_powersetCard] at ht
   have := Multiset.card_le_card ht.1

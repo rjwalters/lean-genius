@@ -27,10 +27,7 @@ References:
 - Rotkiewicz [Ro64b]: Primitive roots
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.Finite.Basic
+import Mathlib
 
 open Nat BigOperators Finset
 
@@ -42,7 +39,7 @@ namespace Erdos649
 P(m) is the largest prime dividing m.
 -/
 
-/--
+/- 
 **Greatest Prime Factor** P(m):
 The largest prime number that divides m.
 
@@ -64,7 +61,7 @@ notation "P(" m ")" => greatestPrimeFactor m
 /-- The primeFactorsList of n > 1 is nonempty. -/
 private lemma primeFactorsList_ne_nil' {n : ℕ} (hn : n > 1) :
     n.primeFactorsList ≠ [] := by
-  intro h; have := Nat.primeFactorsList_eq_nil.mp h; omega
+  intro h; have := (Nat.primeFactorsList_eq_nil _).mp h; omega
 
 /-- P(n) is a member of primeFactorsList when n > 1. -/
 private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
@@ -73,7 +70,7 @@ private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
   have hne := primeFactorsList_ne_nil' hn
   have : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
     List.getLast?_eq_getLast hne
-  simp [this]; exact List.getLast_mem hne
+  simp [this]
 
 /-- P(1) = 0 by convention. Proved by computation. -/
 theorem gpf_one : P(1) = 0 := by native_decide
@@ -88,14 +85,16 @@ theorem gpf_is_prime (m : ℕ) (hm : m > 1) : (P(m)).Prime :=
 
 /-- P(p^k) = p for prime p and k ≥ 1. -/
 theorem gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p := by
-  simp [greatestPrimeFactor, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
+  simp only [greatestPrimeFactor, Nat.Prime.primeFactorsList_pow hp]
+  rw [List.getLast?_replicate]
+  simp [show k ≠ 0 from by omega]
 
 /-- P(p) = p for prime p. -/
 theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
   have h := gpf_prime_power p 1 hp (by omega)
   simpa [pow_one] using h
 
-/-- P(m * n) = max(P(m), P(n)) for m, n > 1. -/
+/-  P(m * n) = max(P(m), P(n)) for m, n > 1. -/
 /-
 ## Part II: The Erdős Conjecture
 
@@ -147,14 +146,14 @@ theorem two_power_mod_seven (k : ℕ) : (2 ^ k : ZMod 7) ≠ 6 := by
     rw [pow_add, pow_mul, h3, one_pow, one_mul]
   rw [hmod]
   have : k % 3 = 0 ∨ k % 3 = 1 ∨ k % 3 = 2 := by omega
-  rcases this with rfl | rfl | rfl <;> decide
+  rcases this with h | h | h <;> rw [h] <;> decide
 
 /-- 7 does not divide 2^k + 1 for any k. -/
 theorem seven_not_divide_two_pow_plus_one (k : ℕ) : ¬(7 ∣ (2 ^ k + 1)) := by
   intro hdvd
   have h6 := two_power_mod_seven k
   have h0 : ((2 ^ k + 1 : ℕ) : ZMod 7) = 0 := by
-    rwa [ZMod.natCast_zmod_eq_zero_iff_dvd]
+    rwa [ZMod.natCast_eq_zero_iff]
   have h1 : (2 : ZMod 7) ^ k = -1 := by
     have : (2 : ZMod 7) ^ k + 1 = 0 := by push_cast at h0; exact h0
     have := eq_neg_of_add_eq_zero_left this; simpa using this
@@ -191,7 +190,7 @@ theorem no_solution_2_7 : ¬∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 7 := 
 The failure is not just for (2, 7) - there are infinitely many failing pairs.
 -/
 
-/--
+/- 
 **Primitive Root Obstruction:**
 If 2 is a primitive root modulo prime q > 2, then there are constraints on
 which primes p can satisfy P(n) = p, P(n+1) = q.
@@ -211,7 +210,7 @@ axiom tong_theorem (p : ℕ) (hp : p.Prime) :
     ∃ Q : Set ℕ, Q.Infinite ∧ (∀ q ∈ Q, q.Prime) ∧
       ∀ q ∈ Q, ¬∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q
 
-/--
+/- 
 **Specific Counterexample: p = 19, q = 2**
 When 2 is a primitive root modulo 19, there is no n with P(n) = 19 and P(n+1) = 2.
 -/
@@ -291,7 +290,7 @@ theorem infinitely_many_large_gpf (p : ℕ) :
 The deeper reason for the counterexamples.
 -/
 
-/--
+/- 
 **Quadratic Residue Obstruction:**
 If P(n) = p (so n is a p-smooth number times a power of p),
 and P(n+1) = q, this imposes constraints via the Legendre symbol.

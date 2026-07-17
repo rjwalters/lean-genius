@@ -65,7 +65,7 @@ theorem card_orderOf_eq_totient {d : ℕ} (hd : d ∣ p - 1) :
     (univ.filter (fun g : (ZMod p)ˣ => orderOf g = d)).card = Nat.totient d := by
   have hdvd : d ∣ Fintype.card (ZMod p)ˣ := by rw [card_units]; exact hd
   have hcount := IsCyclic.card_orderOf_eq_totient (α := (ZMod p)ˣ) hdvd
-  simp only at hcount ⊢
+  skip
   convert hcount using 2
 
 /-- For every divisor `d` of `p − 1` there exists a unit of order exactly `d`.

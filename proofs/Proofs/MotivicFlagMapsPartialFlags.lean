@@ -128,9 +128,7 @@ theorem qFactorial_three : qFactorial K 3 = (1 + K.L) * (1 + K.L + K.L ^ 2) := b
 theorem qFactorial_eq_completeFlagClass (n : ℕ) :
     qFactorial K n = completeFlagClass K n := by
   unfold qFactorial completeFlagClass
-  congr 1
-  ext i _
-  exact (qNumber_succ_eq_projective K i).symm
+  exact Finset.prod_congr rfl fun i _ => (qNumber_succ_eq_projective K i).symm
 
 /-
 ## Part III: Grassmannian Motivic Classes
@@ -375,7 +373,12 @@ section GrassmannianDuality
 
 open Polynomial
 
-/-- K₀(Var) instance over Polynomial ℤ, with X playing the role of L. -/
+/-- K₀(Var) instance over Polynomial ℤ, with X playing the role of L.
+
+Marked `@[reducible]` so that `polyK₀.carrier` unfolds to `Polynomial ℤ` during
+instance search and tactic type-checking (v4.31 tightened `instances`-transparency
+unfolding of plain `def`s relative to v4.26). -/
+@[reducible]
 private noncomputable def polyK₀ : K0Var ℚ where
   carrier := Polynomial ℤ
   L := X
@@ -386,6 +389,13 @@ private noncomputable def evalAtL : (polyK₀).carrier →+* K.carrier :=
 
 private theorem evalAtL_X : evalAtL K (X : Polynomial ℤ) = K.L := by
   exact eval₂_X (Int.castRingHom K.carrier) K.L
+
+/-- `polyK₀.carrier` is defeq to `Polynomial ℤ`, an integral domain, but instance
+search will not unfold the `noncomputable def polyK₀` to discover this on its own
+(v4.31: `instances`-transparency TC search no longer unfolds plain defs the way
+v4.26 did) — so we register the domain structure explicitly. -/
+private instance : IsDomain polyK₀.carrier :=
+  (inferInstance : IsDomain (Polynomial ℤ))
 
 /-- grassmannianClass commutes with evaluation: evaluating the polynomial
     version at K.L recovers grassmannianClass K. -/
@@ -412,7 +422,7 @@ private theorem eval_grassmannianClass (d n : ℕ) :
           rw [grassmannianClass_qPascal polyK₀ d n hle,
               grassmannianClass_qPascal K d n hle,
               map_add, map_mul, map_pow, ih (d + 1), ih d]
-          show (evalAtL K polyK₀.L) ^ (d + 1) *
+          show (evalAtL K (X : Polynomial ℤ)) ^ (d + 1) *
             grassmannianClass K (d + 1) n + grassmannianClass K d n =
             K.L ^ (d + 1) * grassmannianClass K (d + 1) n + grassmannianClass K d n
           rw [evalAtL_X]
@@ -422,7 +432,7 @@ private theorem qNumber_polyK₀_ne_zero (n : ℕ) (hn : n > 0) :
     qNumber polyK₀ n ≠ 0 := by
   intro h
   have hc : coeff (qNumber polyK₀ n) 0 = 0 := by rw [h]; simp
-  simp only [qNumber, polyK₀, coeff_sum, coeff_X_pow, Finset.sum_ite_eq',
+  simp only [qNumber, polyK₀, finsetSum_coeff, coeff_X_pow, Finset.sum_ite_eq,
              Finset.mem_range] at hc
   omega
 
@@ -430,7 +440,7 @@ private theorem qNumber_polyK₀_ne_zero (n : ℕ) (hn : n > 0) :
 private theorem qFactorial_polyK₀_ne_zero (d : ℕ) :
     qFactorial polyK₀ d ≠ 0 := by
   unfold qFactorial
-  exact Finset.prod_ne_zero fun i _ => qNumber_polyK₀_ne_zero (i + 1) (by omega)
+  exact Finset.prod_ne_zero_iff.mpr fun i _ => qNumber_polyK₀_ne_zero (i + 1) (by omega)
 
 /-- **Duality**: [Gr(d, n)] = [Gr(n-d, n)] for d ≤ n.
 

@@ -1,3 +1,9 @@
+import Proofs.PtolemysTheoremOQ01
+import Proofs.PtolemysComplexProofOQ01
+import Proofs.PtolemysComplexProof
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Tactic
+
 /-!
 # Completing the Ptolemy Concyclicity Characterization (OQ-01 Incomplete-01)
 
@@ -54,11 +60,11 @@ Given Ptolemy equality for distinct unit-circle points:
   (2) 8-case sign analysis was already in place from prior work
 -/
 
-import Proofs.PtolemysTheoremOQ01
-import Proofs.PtolemysComplexProofOQ01
-import Proofs.PtolemysComplexProof
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Tactic
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+/-- v4.31 compat: `Complex.norm_eq_abs` removed with `Complex.abs`. -/
+theorem Complex.norm_eq_abs (z : ℂ) : ‖z‖ = Complex.abs z := rfl
 
 open Complex Real
 
@@ -69,8 +75,7 @@ namespace PtolemysTheoremOQ01Incomplete01
 /-- Every unit-circle point equals exp(i·arg(z)). -/
 private lemma unit_circle_eq_exp_arg (z : ℂ) (hz : ‖z‖ = 1) :
     z = Complex.exp (↑(Complex.arg z) * Complex.I) := by
-  have habs : Complex.abs z = 1 := by rwa [Complex.norm_eq_abs] at hz
-  conv_lhs => rw [← Complex.abs_mul_exp_arg_mul_I z, habs]
+  conv_lhs => rw [← Complex.norm_mul_exp_arg_mul_I z, hz]
   simp
 
 /-- For distinct unit-circle points, their args are distinct. -/
@@ -89,19 +94,22 @@ private lemma sin_half_ne_zero_of_ne {θ φ : ℝ}
     (hbnd : (θ - φ) ∈ Set.Ioo (-(2 * Real.pi)) (2 * Real.pi)) :
     Real.sin ((θ - φ) / 2) ≠ 0 := by
   rw [Real.sin_ne_zero_iff]
-  intro ⟨n, hn⟩
+  intro n hn
   have hpi : 0 < Real.pi := Real.pi_pos
   have : (θ - φ) / 2 ∈ Set.Ioo (-Real.pi) Real.pi := by
     constructor <;> [linarith [hbnd.1]; linarith [hbnd.2]]
   have hn0 : n = 0 := by
     have hlo : -Real.pi < ↑n * Real.pi := by rw [hn]; linarith [this.1]
     have hhi : ↑n * Real.pi < Real.pi := by rw [hn]; linarith [this.2]
-    have : (-1 : ℤ) < n := by
-      apply Int.cast_lt (R := ℝ) |>.mp; push_cast; linarith
-    have : n < (1 : ℤ) := by
-      apply Int.cast_lt (R := ℝ) |>.mp; push_cast; linarith
+    have hlb : (-1 : ℤ) < n := by
+      have : (-1 : ℝ) < (n : ℝ) := by nlinarith [hlo, hhi, hpi]
+      exact_mod_cast this
+    have hub : n < (1 : ℤ) := by
+      have : (n : ℝ) < 1 := by nlinarith [hlo, hhi, hpi]
+      exact_mod_cast this
     omega
-  simp [hn0] at hn; linarith
+  simp only [hn0, Int.cast_zero, zero_mul] at hn
+  exact hne (by linarith)
 
 /-- For args θ, φ ∈ (-π, π] with θ ≠ φ:
     sin((θ-φ)/2) > 0 iff θ > φ,  sin((θ-φ)/2) < 0 iff θ < φ. -/
@@ -119,9 +127,9 @@ private lemma sin_half_sign_iff {θ φ : ℝ}
       by_contra h'
       push_neg at h'
       have : Real.sin ((θ - φ) / 2) ≤ 0 := by
-        apply Real.sin_nonpos_of_nonneg_of_nonpos
-        · linarith [hrange.1]
+        apply Real.sin_nonpos_of_nonpos_of_neg_pi_le
         · linarith
+        · linarith [hrange.1]
       linarith
     · intro h
       apply Real.sin_pos_of_pos_of_lt_pi
@@ -176,9 +184,11 @@ private lemma t_eq_sine_ratio {θ₁ θ₂ θ₃ θ₄ : ℝ} {t : ℝ}
     have h2isin : Complex.exp (↑((a - b) / 2) * Complex.I) -
                   Complex.exp (-(↑((a - b) / 2) * Complex.I)) =
                   2 * Complex.I * ↑(Real.sin ((a - b) / 2)) := by
-      rw [show -(↑((a - b) / 2) : ℂ) * Complex.I = ↑(-((a - b) / 2)) * Complex.I from by push_cast; ring]
-      simp only [Complex.exp_mul_I, Real.cos_neg, Real.sin_neg]
-      push_cast; ring
+      rw [show -(↑((a - b) / 2) * Complex.I) = (-↑((a - b) / 2) : ℂ) * Complex.I from by ring,
+          Complex.exp_mul_I, Complex.exp_mul_I, Complex.cos_neg, Complex.sin_neg]
+      simp only [← Complex.ofReal_sin, ← Complex.ofReal_cos]
+      push_cast
+      ring
     rw [h2isin]; ring
   -- Phase cancellation: E₂₃·E₁₄ = E₁₂·E₃₄
   have hE : Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
@@ -260,9 +270,11 @@ theorem ptolemy_equality_implies_ccw_or_cw (z₁ z₂ z₃ z₄ : ℂ)
                 ‖z₁ - z₂‖ * ‖z₃ - z₄‖ + ‖z₂ - z₃‖ * ‖z₁ - z₄‖) :
     IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂ := by
   -- Step 1: Ptolemy equality → ∃ t > 0, (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄)
-  obtain ⟨t, ht_pos, ht_eq⟩ :=
+  obtain ⟨t, ht_pos, ht_eq0⟩ :=
     ptolemy_equality_implies_proportional z₁ z₂ z₃ z₄
-      hdenom hnumer hptolemy
+      hptolemy hdenom hnumer
+  rw [Complex.real_smul] at ht_eq0
+  have ht_eq := ht_eq0.symm
   -- Step 2: Extract angles θₖ = arg(zₖ) ∈ (-π, π]
   set θ₁ := Complex.arg z₁; set θ₂ := Complex.arg z₂
   set θ₃ := Complex.arg z₃; set θ₄ := Complex.arg z₄
@@ -351,7 +363,7 @@ theorem ptolemy_equality_implies_ccw_or_cw (z₁ z₂ z₃ z₄ : ℂ)
       have hθ₄₃ : θ₄ < θ₃ := hsgn₃₄.1.mp hs₃₄p
       -- θ₄ < θ₃ < θ₂ < θ₁; CW: witnesses (θ₁-2π, θ₄, θ₃, θ₂) for IsCCWOrder z₁ z₄ z₃ z₂
       exact Or.inr ⟨θ₁ - 2 * Real.pi, θ₄, θ₃, θ₂,
-        by linarith, by linarith, by linarith, by linarith,
+        by linarith [hθ₄_bd.1, hθ₁_bd.2, hπ], by linarith, by linarith, by linarith,
         by rw [hexp_sub2pi]; exact hz₁,
         hz₄, hz₃, hz₂⟩
     · -- B: s₂₃>0, s₁₄>0, s₁₂<0, s₃₄<0 → θ₃<θ₄<θ₁<θ₂ → CCW (IsCCWOrder z₁ z₂ z₃ z₄)
@@ -470,13 +482,19 @@ theorem ptolemy_equality_iff_ccw_or_cw (z₁ z₂ z₃ z₄ : ℂ)
   · -- (←) CCW or CW → Ptolemy equality
     rintro (hccw | hcw)
     · -- CCW → Ptolemy (from PtolemysTheoremOQ01)
-      obtain ⟨t, ht_pos, ht_eq⟩ := ptolemy_ratio_pos_of_ccw z₁ z₂ z₃ z₄ hccw
+      obtain ⟨t, ht_pos, ht_eq⟩ :=
+        ptolemy_ratio_pos_of_ccw z₁ z₂ z₃ z₄ h₁ h₂ h₃ h₄ hdenom hnumer hccw
       exact ptolemy_equality_of_proportional z₁ z₂ z₃ z₄ t ht_pos.le ht_eq
     · -- CW → Ptolemy: apply the CCW Ptolemy result to the reversed labeling (z₁ z₄ z₃ z₂)
       -- ptolemy_ratio_pos_of_ccw z₁ z₄ z₃ z₂ gives (z₄-z₃)(z₁-z₂) = t·(z₁-z₄)(z₃-z₂)
       -- ptolemy_equality_of_proportional z₁ z₄ z₃ z₂ gives ‖z₁-z₃‖·‖z₄-z₂‖ = ‖z₁-z₄‖·‖z₃-z₂‖ + ‖z₄-z₃‖·‖z₁-z₂‖
       -- which equals the target by norm_sub_rev and commutativity
-      obtain ⟨t, ht_pos, ht_eq⟩ := ptolemy_ratio_pos_of_ccw z₁ z₄ z₃ z₂ hcw
+      have hdenom' : (z₁ - z₄) * (z₃ - z₂) ≠ 0 :=
+        mul_ne_zero (sub_ne_zero.mpr hdist₁₄) (sub_ne_zero.mpr hdist₂₃.symm)
+      have hnumer' : (z₄ - z₃) * (z₁ - z₂) ≠ 0 :=
+        mul_ne_zero (sub_ne_zero.mpr hdist₃₄.symm) (sub_ne_zero.mpr hdist₁₂)
+      obtain ⟨t, ht_pos, ht_eq⟩ :=
+        ptolemy_ratio_pos_of_ccw z₁ z₄ z₃ z₂ h₁ h₄ h₃ h₂ hdenom' hnumer' hcw
       have h := ptolemy_equality_of_proportional z₁ z₄ z₃ z₂ t ht_pos.le ht_eq
       -- h : ‖z₁-z₃‖*‖z₄-z₂‖ = ‖z₁-z₄‖*‖z₃-z₂‖ + ‖z₄-z₃‖*‖z₁-z₂‖
       rw [norm_sub_rev z₄ z₂, norm_sub_rev z₃ z₂, norm_sub_rev z₄ z₃] at h

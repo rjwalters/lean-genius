@@ -97,7 +97,7 @@ theorem rate_of_convergence_k3 :
         apply div_le_div_of_nonneg_right _ (by positivity)
         exact mul_le_mul_of_nonneg_right (by linarith) (le_of_lt hlog)
     _ = 2 / c * Real.log (l : ℝ) / (l : ℝ) := by
-        field_simp; ring
+        field_simp
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Step 2: log l / l is faster than 1/log l
@@ -111,8 +111,9 @@ theorem log_over_l_faster_than_inv_log :
     ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
       Real.log (l : ℝ) / (l : ℝ) < 1 / Real.log (l : ℝ) := by
   -- Use log² x = o(x): (log x)² / x → 0
-  have ho := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1/2 by norm_num)
-  have hev := ho.bound (show (0 : ℝ) < 1 by norm_num)
+  have ho := isLittleO_log_rpow_atTop (show (0 : ℝ) < 1/2 by norm_num)
+  -- Use constant 1/2 so the resulting bound gives a *strict* inequality below.
+  have hev := ho.bound (show (0 : ℝ) < 1/2 by norm_num)
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
   -- Choose L₀ large enough that l > N and l > 2
   use max (⌈N⌉₊ + 1) 2
@@ -121,23 +122,23 @@ theorem log_over_l_faster_than_inv_log :
   have hl_gt1 : (1 : ℝ) < (l : ℝ) := by exact_mod_cast (show 1 < l by omega)
   have hlog_pos : 0 < Real.log (l : ℝ) := Real.log_pos hl_gt1
   -- Suffices to show (log l)² < l
-  rw [div_lt_div_iff hl_pos hlog_pos]
+  rw [div_lt_div_iff₀ hl_pos hlog_pos]
   -- (log l)² < l, i.e., log l · log l < 1 · l
   rw [one_mul]
-  -- From little-o: ‖log l‖ ≤ 1 · ‖l^(1/2)‖, i.e., log l ≤ l^(1/2)
+  -- From little-o: ‖log l‖ ≤ (1/2) · ‖l^(1/2)‖, i.e., log l ≤ (1/2) · l^(1/2)
   have hl_ge_N : N ≤ (l : ℝ) :=
     le_trans (Nat.le_ceil N) (by exact_mod_cast (show ⌈N⌉₊ ≤ l by omega))
   have hb := hN (l : ℝ) hl_ge_N
-  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
       abs_of_pos hlog_pos, abs_of_pos (rpow_pos_of_pos hl_pos _)] at hb
-  -- log l ≤ l^(1/2), so (log l)² ≤ l
-  have h_sq : Real.log (l : ℝ) * Real.log (l : ℝ) ≤ (l : ℝ) := by
+  -- log l ≤ (1/2) · l^(1/2), so (log l)² ≤ (1/4) · l < l
+  have h_sq : Real.log (l : ℝ) * Real.log (l : ℝ) ≤ (1/4 : ℝ) * (l : ℝ) := by
     calc Real.log (l : ℝ) * Real.log (l : ℝ)
-        ≤ (l : ℝ) ^ ((1:ℝ)/2) * (l : ℝ) ^ ((1:ℝ)/2) := mul_le_mul hb (le_of_lt hb)
-            (le_of_lt hlog_pos) (le_of_lt (rpow_pos_of_pos hl_pos _))
-      _ = (l : ℝ) ^ ((1:ℝ)/2 + (1:ℝ)/2) := (rpow_add hl_pos _ _).symm
-      _ = (l : ℝ) ^ (1:ℝ) := by norm_num
-      _ = (l : ℝ) := rpow_one _
+        ≤ (1/2 * (l : ℝ) ^ ((1:ℝ)/2)) * (1/2 * (l : ℝ) ^ ((1:ℝ)/2)) :=
+          mul_le_mul hb hb (le_of_lt hlog_pos) (by positivity)
+      _ = (1/4 : ℝ) * ((l : ℝ) ^ ((1:ℝ)/2) * (l : ℝ) ^ ((1:ℝ)/2)) := by ring
+      _ = (1/4 : ℝ) * (l : ℝ) := by
+          rw [← rpow_add hl_pos, show (1:ℝ)/2 + 1/2 = 1 by norm_num, rpow_one]
   linarith
 
 -- ══════════════════════════════════════════════════════════════════

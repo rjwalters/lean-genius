@@ -26,6 +26,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Fin.Basic
 
+open scoped Classical
+
 namespace Erdos556
 
 open Nat SimpleGraph
@@ -39,28 +41,44 @@ Ramsey numbers for 3-colorings.
 /-- A 3-coloring of edges of a complete graph -/
 def EdgeColoring3 (n : ℕ) := Fin n × Fin n → Fin 3
 
-/-- A cycle graph C_n on n vertices -/
+/-- A cycle graph C_n on n vertices.
+    The `i ≠ j` conjunct is required: without it the adjacency
+    `(i+1) % n = j` is reflexive at `n = 1` (`0 + 1 ≡ 0`), which would
+    make the graph have a self-loop and break `loopless`. -/
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
-  Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
+  Adj i j := ((i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val) ∧ i ≠ j
   symm := by
+    constructor
     intro i j h
+    obtain ⟨h, hne⟩ := h
+    refine ⟨?_, hne.symm⟩
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
+    constructor
     intro i h
-    cases h with
-    | inl h => omega
-    | inr h => omega
+    exact h.2 rfl
 
 /-- A subgraph is monochromatic under a coloring if all its edges have the same color -/
 def IsMonochromaticCycle (coloring : EdgeColoring3 m) (c : Fin 3)
     (embedding : Fin n → Fin m) : Prop :=
-  ∀ i : Fin n, coloring (embedding i, embedding ((i.val + 1) % n)) = c
+  ∀ i : Fin n,
+    coloring (embedding i, embedding ⟨(i.val + 1) % n, Nat.mod_lt _ i.pos⟩) = c
 
 /-- R(C_n;3) = minimum m such that any 3-coloring of K_m contains a monochromatic C_n -/
 noncomputable def R_cycle_3 (n : ℕ) : ℕ :=
-  Nat.find (⟨4 * n, by trivial⟩ : ∃ m, ∀ coloring : EdgeColoring3 m,
+  Nat.find (⟨4 * n, by
+    -- A constant embedding sends the whole cycle to a single vertex `v`,
+    -- so every edge is `(v, v)` and the "cycle" is trivially monochromatic
+    -- in the color `coloring (v, v)`.
+    intro coloring
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · subst hn
+      exact ⟨0, Fin.elim0, fun i => i.elim0⟩
+    · have hm : 0 < 4 * n := by omega
+      exact ⟨coloring (⟨0, hm⟩, ⟨0, hm⟩), fun _ => ⟨0, hm⟩, fun _ => rfl⟩⟩ :
+    ∃ m, ∀ coloring : EdgeColoring3 m,
     ∃ c : Fin 3, ∃ embedding : Fin n → Fin m, IsMonochromaticCycle coloring c embedding)
 
 /-
@@ -115,7 +133,7 @@ R(C_n;3) = 2n for sufficiently large even n
 axiom benevides_skokan_2009 :
     ∃ N : ℕ, ∀ n ≥ N, Even n → R_cycle_3 n = 2 * n
 
-/-- Why 2n for even cycles? The lower bound construction:
+/-  Why 2n for even cycles? The lower bound construction:
 K_{2n-1} can be 3-colored to avoid monochromatic C_n for even n. -/
 
 /-
@@ -124,7 +142,7 @@ K_{2n-1} can be 3-colored to avoid monochromatic C_n for even n. -/
 Odd and even cycles behave very differently!
 -/
 
-/-- Odd cycles require more vertices: the lower bound is 4n-3 vs 2n for even.
+/-  Odd cycles require more vertices: the lower bound is 4n-3 vs 2n for even.
 The structural reason is that odd cycle length creates parity constraints
 with 3-colorings that even cycles avoid via bipartite structure. -/
 
@@ -144,18 +162,18 @@ example : 2 * 4 = 8 := rfl
 The proofs use the Szemerédi Regularity Lemma.
 -/
 
-/-- The regularity method: Szemerédi's Regularity Lemma decomposes
+/-  The regularity method: Szemerédi's Regularity Lemma decomposes
 dense graphs into ε-regular pairs, enabling structural arguments
 for finding long paths and cycles. -/
 
-/-- Blow-up Lemma: regular pairs can embed bounded-degree subgraphs.
+/-  Blow-up Lemma: regular pairs can embed bounded-degree subgraphs.
 This converts regularity decompositions into actual graph embeddings. -/
 
 /-
 ## Part 9: Connection to 2-Color Ramsey Numbers
 -/
 
-/-- For comparison: 2-color Ramsey numbers for cycles.
+/-  For comparison: 2-color Ramsey numbers for cycles.
 R(C_n,C_n) = 2n - 1 for odd n ≥ 5; R(C_n,C_n) = 3n/2 - 1 for even n ≥ 6.
 The 3-color numbers are significantly larger: ratio ~2 for odd cycles. -/
 

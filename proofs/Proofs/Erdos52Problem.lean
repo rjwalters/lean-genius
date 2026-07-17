@@ -55,14 +55,14 @@ def ErdosProblem52 : Prop :=
 ## Section III: The Erdős–Szemerédi Theorem
 -/
 
-/-- Erdős and Szemerédi (1983) proved the first super-linear lower bound:
+/-  Erdős and Szemerédi (1983) proved the first super-linear lower bound:
 there exists c > 0 such that max(|A+A|, |A·A|) ≥ |A|^{1+c} for all
 finite sets A with |A| ≥ 2. This was the foundational result. -/
 /-
 ## Section IV: Current Best Bound
 -/
 
-/-- Bloom (2025) proved the current best bound:
+/-  Bloom (2025) proved the current best bound:
 max(|A+A|, |A·A|) ≥ |A|^{1270/951 - o(1)} ≈ |A|^{1.335}.
 We state this as: for every ε > 0, there exists N₀ such that for
 |A| ≥ N₀, the bound max(|A+A|, |A·A|) ≥ |A|^{1270/951 - ε} holds. -/
@@ -112,14 +112,14 @@ theorem productset_card_ge (A : Finset ℤ)
 theorem sumset_card_le (A : Finset ℤ) :
     (sumset A).card ≤ A.card * A.card := by
   unfold sumset
-  calc (A ×ˢ A).image (fun p => p.1 + p.2) |>.card
+  calc ((A ×ˢ A).image (fun p => p.1 + p.2)).card
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
 
 theorem productset_card_le (A : Finset ℤ) :
     (productset A).card ≤ A.card * A.card := by
   unfold productset
-  calc (A ×ˢ A).image (fun p => p.1 * p.2) |>.card
+  calc ((A ×ˢ A).image (fun p => p.1 * p.2)).card
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
 
@@ -151,7 +151,7 @@ def GeneralizedSumProduct (m : ℕ) : Prop :=
 ## Section VII: Connection to Problem 53
 -/
 
-/-- Problem 52 implies a weak form of Problem 53.
+/- Problem 52 implies a weak form of Problem 53.
 If max(|A+A|, |A·A|) is large, then A generates many sums or products.
 Problem 53 (resolved by Chang 2003) asks about sums and products
 of distinct subsets rather than pairwise operations. -/

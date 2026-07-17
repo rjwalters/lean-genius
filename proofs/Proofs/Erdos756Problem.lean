@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 
+open scoped Classical
+
 open Real
 
 namespace Erdos756
@@ -118,12 +120,12 @@ theorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :
 ## Part V: Bhowmick's Answer (2024)
 -/
 
-/-- Bhowmick's construction: n points with many rich distances. -/
+/-  Bhowmick's construction: n points with many rich distances. -/
 /-- Bhowmick's main result: At least ⌊n/4⌋ rich distances exist. -/
 axiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :
-  ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4
+  ∃ A : PointSet, A.card = n ∧ (numRichDistances A : ℝ) ≥ (n : ℝ) / 4
 
-/-- Bhowmick's general result for higher multiplicities. -/
+/-  Bhowmick's general result for higher multiplicities. -/
 /-
 ## Part VI: Answer to Erdős Problem #756
 -/
@@ -136,11 +138,11 @@ theorem erdos_756_answer : ErdosPachQuestion := by
   · norm_num
   intro n hn
   obtain ⟨A, hcard, hrich⟩ := bhowmick_main n hn
-  exact ⟨A, hcard, by simp only [hcard]; linarith [hrich]⟩
+  exact ⟨A, hcard, by skip; linarith [hrich]⟩
 
 /-- The rich distances question has a positive answer. -/
 theorem rich_distances_exist :
-    ∀ n : ℕ, n ≥ 4 → ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4 :=
+    ∀ n : ℕ, n ≥ 4 → ∃ A : PointSet, A.card = n ∧ (numRichDistances A : ℝ) ≥ (n : ℝ) / 4 :=
   bhowmick_main
 
 /-
@@ -152,8 +154,8 @@ theorem rich_distances_exist :
     instances not available in Mathlib for this type. -/
 noncomputable axiom squareGrid (n : ℕ) : PointSet
 
-/-- Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
-/-- The square grid has distances with super-linear multiplicity. -/
+/-  Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
+/-  The square grid has distances with super-linear multiplicity. -/
 /-
 ## Part VIII: Related Problems
 -/
@@ -171,7 +173,7 @@ def SecondDistanceQuestion : Prop :=
     ∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ d₁ ∈ allDistances A ∧ d₂ ∈ allDistances A ∧
       distanceMultiplicity A d₁ ≤ A.card ∧ distanceMultiplicity A d₂ ≤ A.card
 
-/-- The second distance question is open (see Problem #132). -/
+/-  The second distance question is open (see Problem #132). -/
 /-
 ## Part IX: Asymptotic Analysis
 -/
@@ -189,8 +191,12 @@ theorem bhowmick_ratio (n : ℕ) (hn : n ≥ 4) :
   · exact hcard
   · unfold richDistanceRatio
     simp only [hcard]
-    have h : (numRichDistances A : ℝ) ≥ n / 4 := by exact_mod_cast hrich
-    linarith [Nat.cast_pos.mpr (by linarith : n > 0)]
+    have h : (numRichDistances A : ℝ) ≥ (n : ℝ) / 4 := hrich
+    have hnpos : (0 : ℝ) < (n : ℝ) := by
+      have : (0 : ℕ) < n := by linarith
+      exact_mod_cast this
+    rw [ge_iff_le, le_div_iff₀ hnpos]
+    nlinarith [h, hnpos]
 
 /-- What is the supremum of richDistanceRatio as n → ∞? OPEN -/
 def SupremumRatioQuestion : Prop :=

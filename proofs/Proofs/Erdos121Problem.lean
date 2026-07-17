@@ -18,17 +18,19 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Square-free product sets -/
 
 /-- A number is a perfect square. -/
-def IsSquare (n : ℕ) : Prop :=
+def IsPerfectSq (n : ℕ) : Prop :=
     ∃ m : ℕ, n = m * m
 
 /-- A finset `A` is `k`-square-free: no product of `k` distinct
 elements is a perfect square. -/
 def IsKSquareFree (A : Finset ℕ) (k : ℕ) : Prop :=
     ∀ S : Finset ℕ, S ⊆ A → S.card = k →
-      ¬IsSquare (S.prod id)
+      ¬IsPerfectSq (S.prod id)
 
 /-- `F_k(N)`: the maximum size of a `k`-square-free subset of
 `{1,…,N}`. -/
@@ -39,13 +41,13 @@ noncomputable def squareFreeMax (k N : ℕ) : ℕ :=
 
 /- ## Known results for small k -/
 
-/-- `F_2(N) = (6/π² + o(1))N`: the squarefree integers have density
+/-  `F_2(N) = (6/π² + o(1))N`: the squarefree integers have density
 `6/π²` (Erdős–Sós–Sárközy). -/
 
-/-- `F_3(N) = (1 - o(1))N`: for 3-element products, almost all
+/-  `F_3(N) = (1 - o(1))N`: for 3-element products, almost all
 integers can be included. -/
 
-/-- `F_4(N) = o(N)`: for 4-element products, the density goes to
+/-  `F_4(N) = o(N)`: for 4-element products, the density goes to
 zero (Erdős). -/
 
 /- ## The conjecture (disproved) -/
@@ -61,15 +63,15 @@ def ErdosProblem121_Conjecture : Prop :=
 
 /- ## Tao's disproof (2024) -/
 
-/-- Tao (2024): For all `k ≥ 4`, there exists `c_k > 0` such that
+/-  Tao (2024): For all `k ≥ 4`, there exists `c_k > 0` such that
 `F_k(N) ≤ (1 - c_k + o(1))N`. This disproves the conjecture for
 `k = 5` (and all larger odd `k`). -/
 
-/-- The conjecture is false. -/
+/-  The conjecture is false. -/
 
 /- ## Monotonicity -/
 
-/-- `F_k` is monotone in `N`. -/
+/-  `F_k` is monotone in `N`. -/
 
-/-- `F_k` is anti-monotone in `k`: more elements required to form a
+/- `F_k` is anti-monotone in `k`: more elements required to form a
 product makes it easier to avoid squares. -/

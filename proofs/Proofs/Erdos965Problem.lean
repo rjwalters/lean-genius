@@ -64,7 +64,7 @@ def IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=
 The first uncountable cardinal. This represents the cardinality of
 the set of countable ordinals.
 -/
-def aleph_one : Cardinal := Cardinal.aleph 1
+noncomputable def aleph_one : Cardinal := Cardinal.aleph 1
 
 /--
 **Has cardinality ℵ₁:**
@@ -133,7 +133,7 @@ axiom hindman_leader_strauss_ch (k : ℕ) (hk : k ≥ 1) :
   -- Under CH
   continuum = aleph_one →
   ∃ c : TwoColoring, ∀ A : Set ℝ,
-    A.nontrivial → #A > ℵ₀ → ¬ IsMonochromatic c (KSums A k)
+    A.Nontrivial → #A > ℵ₀ → ¬ IsMonochromatic c (KSums A k)
 
 /--
 **Komjáth (2016) without CH:**

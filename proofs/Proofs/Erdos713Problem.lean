@@ -29,11 +29,10 @@ References:
 - Related: Erdős Problem #571
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Data.Rat.Basic
 
 open SimpleGraph Asymptotics
 
@@ -68,7 +67,7 @@ Axiomatized as a function of n and a bipartite graph family index.
 -/
 axiom extremalNumber (n : ℕ) (G : SimpleGraph (Fin n)) : ℕ
 
-/--
+/- 
 **Basic bound:** ex(n; G) ≤ n(n-1)/2.
 -/
 /- ## Asymptotic Growth -/
@@ -120,12 +119,12 @@ def erdos713RationalQuestion : Prop :=
 
 /- ## Known Results -/
 
-/--
+/- 
 **Kővári-Sós-Turán Theorem (1954):**
 ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t.
 Axiomatized because the proof requires constructing the K_{s,t} graph.
 -/
-/--
+/- 
 **Lower Bound for Complete Bipartite Graphs:**
 ex(n; K_{s,t}) = Ω(n^{2-1/s}) for s ≤ t.
 -/
@@ -164,7 +163,7 @@ exponent exists. Füredi-Gerbner (2021) extended this to all k ≥ 5.
 Cases k = 3 and k = 4 remain open.
 -/
 
-/--
+/- 
 **Frankl-Füredi-Gerbner: Hypergraph counterexample for k ≥ 5.**
 For k-uniform hypergraphs with k ≥ 5, there exist hypergraphs H such that
 ex(n; H) has no power-law growth (no α with ex(n; H) ≍ n^α).

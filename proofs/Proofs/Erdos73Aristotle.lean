@@ -28,8 +28,8 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 
 def triangleGraph : SimpleGraph (Fin 3) where
   Adj u v := u ≠ v
-  symm u v h := h.symm
-  loopless v := fun h => h rfl
+  symm.symm u v h := h.symm
+  loopless.irrefl v := fun h => h rfl
 
 /-
   ## Section 1: Triangle Graph Properties
@@ -95,10 +95,10 @@ theorem K3_almost_bipartite_goal :
     ∃ S : Finset (Fin 3), S.card ≤ 1 ∧
       IsBipartite (triangleGraph.induce (↑Sᶜ : Set (Fin 3))) := by
   refine ⟨{0}, by simp, ?_⟩
-  convert triangleGraph_on_two_vertices_bipartite using 1
-  congr 1
-  ext x
-  simp [Finset.compl_eq_univ_sdiff]
+  have hset : ((↑({0}ᶜ : Finset (Fin 3)) : Set (Fin 3))) = ({(0 : Fin 3)}ᶜ : Set (Fin 3)) := by
+    ext x; simp
+  rw [hset]
+  exact triangleGraph_on_two_vertices_bipartite
 
 /-
   ## Section 3: Independence Arithmetic

@@ -28,10 +28,13 @@ References:
 - Formal Conjectures Project (Google DeepMind)
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Normed.Field.Basic
-import Mathlib.Algebra.Polynomial.Basic
+import Mathlib
+
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+/-- v4.31 compat: `Complex.norm_eq_abs` removed with `Complex.abs`. -/
+theorem Complex.norm_eq_abs (z : ℂ) : ‖z‖ = Complex.abs z := rfl
 
 open Polynomial Set Metric
 
@@ -71,7 +74,8 @@ def sublevelSet (f : Polynomial ℂ) : Set ℂ :=
 /-- The sublevel set contains all roots of f. -/
 theorem roots_in_sublevel (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
     z ∈ sublevelSet f := by
-  simp [sublevelSet, hz, Complex.abs.map_zero]
+  simp only [sublevelSet, Set.mem_setOf_eq, hz, Complex.abs, norm_zero]
+  norm_num
 
 /-- The sublevel set is nonempty for non-constant f (by FTA, f has a root). -/
 theorem sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
@@ -82,7 +86,7 @@ theorem sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_root f hd
   exact ⟨z, roots_in_sublevel f z hz⟩
 
-/-- The sublevel set is compact. -/
+/-  The sublevel set is compact. -/
 /- ## Part III: The Main Conjecture -/
 
 /--
@@ -113,21 +117,21 @@ The sublevel set can always be covered with total radius ≤ 2.59.
 axiom pommerenke_bound : ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0 →
     canBeCovered (sublevelSet f) 2.59
 
-/--
+/- 
 **Connected Case (Pommerenke, 1959)**
 
 When the sublevel set is connected, total radius 2 suffices.
 -/
 /- ## Part V: Structure of Sublevel Sets -/
 
-/--
+/- 
 **Components of the Sublevel Set**
 
 For a degree-n polynomial, the sublevel set has at most n connected
 components, each containing at least one root.
 -/
-/-- The sublevel set is bounded: contained in a closed ball of radius R. -/
-/--
+/-  The sublevel set is bounded: contained in a closed ball of radius R. -/
+/- 
 **Simple Case: Linear Polynomial**
 
 For f(z) = z - a, the sublevel set is exactly the closed unit disc
@@ -142,7 +146,7 @@ theorem linear_sublevel_is_disc :
 
 /- ## Part VI: Lower Bounds -/
 
-/--
+/- 
 **Lower Bound for Cover**
 
 For some polynomials, total radius 2 is necessary. For f(z) = z^2 - 1,
@@ -156,7 +160,7 @@ theorem quadratic_sublevel_nonempty :
 
 /- ## Part VII: Historical Context -/
 
-/--
+/- 
 **Historical Development**
 
 1928: Cartan proves 2e bound

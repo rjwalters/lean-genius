@@ -16,7 +16,7 @@
              arXiv:2406.17593 (2024)
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Set.Function
@@ -73,7 +73,7 @@ which grows but not fast enough.
 
 /- ## Known Positive Example -/
 
-/--
+/- 
 **Known Result**: The sequence aₙ = 2^(2ⁿ) IS an irrationality sequence.
 
 This doubly-exponential sequence grows fast enough that no bounded perturbation
@@ -82,7 +82,7 @@ a_{n+1}/aₙ = 2^(2ⁿ) → ∞, which is the key condition.
 -/
 /- ## Kovač-Tao Criteria -/
 
-/--
+/- 
 **Kovač-Tao Negative Criterion**:
 
 A strictly increasing sequence aₙ with ∑ 1/aₙ convergent and
@@ -91,7 +91,7 @@ is NOT an irrationality sequence.
 
 This applies to 2ⁿ and more generally to sequences with bounded ratio a_{n+1}/aₙ.
 -/
-/--
+/- 
 **Kovač-Tao Positive Criterion**:
 
 For any function F : ℕ → ℕ with F(n+1)/F(n) → ∞, there EXISTS an
@@ -101,7 +101,7 @@ This shows irrationality sequences exist at any superexponential growth rate.
 -/
 /- ## Growth Rate Discussion -/
 
-/--
+/- 
 Erdős originally speculated that irrationality sequences might exist with
 polynomial growth, but later retracted this, noting they cannot grow slower
 than exponentially. The Kovač-Tao criteria make this precise:
@@ -122,16 +122,13 @@ example : ∀ n, (2 : ℕ)^(n+1) / 2^n = 2 := by
 /-- Double exponential has ratio 2^(2ⁿ) which grows without bound -/
 example : ∀ n, 2^(2^(n+1)) / 2^(2^n) = 2^(2^n) := by
   intro n
-  rw [pow_succ 2 n]
-  ring_nf
-  rw [← pow_mul]
-  congr 1
-  ring
+  have hpos : 0 < (2 : ℕ) ^ (2 ^ n) := by positivity
+  rw [show (2 : ℕ) ^ (n + 1) = 2 ^ n + 2 ^ n from by rw [pow_succ]; ring,
+      pow_add, Nat.mul_div_cancel_left _ hpos]
 
 /-- Factorial ratio is n+1, which grows but stays finite -/
 example : ∀ n, Nat.factorial (n+1) / Nat.factorial n = n + 1 := by
   intro n
-  rw [Nat.factorial_succ]
-  simp [Nat.mul_div_cancel_left]
+  rw [Nat.factorial_succ, Nat.mul_div_cancel _ (Nat.factorial_pos n)]
 
 end Erdos264

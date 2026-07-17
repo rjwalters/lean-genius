@@ -315,7 +315,7 @@ theorem practical_top_segment {m : ℕ} (hp : IsPractical m) {k : ℕ}
 theorem practical_represents_all_of_sigma_le_two_mul {m : ℕ} (hp : IsPractical m)
     (hσ : (divisors m).sum id ≤ 2 * m) {k : ℕ} (hk : k ≤ (divisors m).sum id) :
     IsRepresentable k m := by
-  rcases le_or_lt k m with hle | hgt
+  rcases le_or_gt k m with hle | hgt
   · exact practical_represents_le hp hle
   · exact practical_top_segment hp (by omega) hk
 

@@ -28,6 +28,8 @@ Tags: number-theory, density, additive-combinatorics, sum-free-sets
 
 import Mathlib
 
+open scoped Classical
+
 open Finset Filter
 
 namespace Erdos1136
@@ -47,7 +49,7 @@ noncomputable def lowerDensity (A : Set ℕ) : ℝ :=
 
 /-- The empty set trivially avoids power-of-two sums. -/
 theorem avoids_empty : AvoidsPowerOfTwoSums ∅ :=
-  fun _ _ ha => absurd ha (Set.not_mem_empty _)
+  fun _ _ ha => absurd ha (Set.notMem_empty _)
 
 /-- Avoidance is monotone: subsets of avoiding sets also avoid. -/
 theorem avoids_mono {A B : Set ℕ} (h : A ⊆ B) (hB : AvoidsPowerOfTwoSums B) :
@@ -89,8 +91,6 @@ def MullerSet : Set ℕ :=
 theorem zero_not_mem_muller : (0 : ℕ) ∉ MullerSet := by
   intro ⟨i, hi⟩
   simp at hi
-  have : 0 < 3 * 2 ^ i := by positivity
-  omega
 
 /-- 3 is in the Müller set: 3 mod 4 = 3 = 3·2^0. -/
 theorem three_mem_muller : (3 : ℕ) ∈ MullerSet :=
@@ -133,7 +133,9 @@ private lemma b_mod_eq_pow_i {a b k i : ℕ} (hab : a + b = 2 ^ k)
   have hsum_lt : 3 * 2 ^ i + r < 2 * m := by rw [hm_eq]; omega
   -- q must be 1: only multiple of m in (0, 2m) is m
   have hq_pos : 0 < q := by
-    rcases q with _ | q'; · simp [mul_zero] at hq; omega; · exact Nat.succ_pos _
+    rcases Nat.eq_zero_or_pos q with hq0 | hq0
+    · exfalso; rw [hq0, mul_zero] at hq; omega
+    · exact hq0
   have hq_le : q ≤ 1 := by nlinarith [hm_pos]
   have hq1 : q = 1 := by omega
   -- 3 * 2^i + r = m * 1 = 4 * 2^i, so r = 2^i
@@ -179,6 +181,7 @@ private lemma muller_avoids_ordered {a b i j k : ℕ} (hij : i ≤ j)
     (hai : a % (2 ^ (i + 2)) = 3 * 2 ^ i)
     (hbj : b % (2 ^ (j + 2)) = 3 * 2 ^ j)
     (hab : a + b = 2 ^ k) : False := by
+  have hipos : 0 < 2 ^ i := by positivity
   -- k must be ≥ i+2, otherwise a ≥ 3·2^i > 2^(i+1) ≥ 2^k
   have hk : i + 2 ≤ k := by
     by_contra hlt
@@ -218,7 +221,7 @@ theorem muller_avoids : AvoidsPowerOfTwoSums MullerSet := by
   intro a b ⟨i, hai⟩ ⟨j, hbj⟩ k hab
   rcases le_total i j with h | h
   · exact muller_avoids_ordered h hai hbj hab
-  · exact muller_avoids_ordered h hbj hai (by omega)
+  · exact muller_avoids_ordered h hbj hai (show b + a = 2 ^ k by omega)
 
 -- ## Part IV-B: Density Axioms
 
@@ -268,14 +271,9 @@ theorem density_gap :
 theorem odd_prime_multiples_avoid (p : ℕ) (hp : Nat.Prime p) (hp2 : p ≠ 2)
     (a b k : ℕ) (ha : p ∣ a) (hb : p ∣ b) : a + b ≠ 2 ^ k := by
   intro h
-  have hcop : Nat.Coprime (2 ^ k) p := by
-    apply Nat.Coprime.pow_left
-    exact (Nat.Prime.coprime_iff_not_dvd hp).mpr (fun h2p => hp2 (Nat.dvd_antisymm h2p
-      (hp.dvd_of_dvd_pow (dvd_pow_self 2 (Nat.Prime.pos hp).ne' ▸ h2p.symm ▸
-        dvd_refl (2 ^ 1)))))
-  have hdvd : p ∣ Nat.gcd (2 ^ k) p := Nat.dvd_gcd (h ▸ dvd_add ha hb) dvd_rfl
-  rw [hcop] at hdvd
-  exact absurd hdvd (Nat.Prime.not_dvd_one hp)
+  have hpdvd : p ∣ 2 ^ k := h ▸ dvd_add ha hb
+  have hp2dvd : p ∣ 2 := hp.dvd_of_dvd_pow hpdvd
+  exact hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp hp2dvd)
 
 /-
 ## Summary

@@ -1,0 +1,529 @@
+===== PrimitiveRoots
+error: Proofs/PrimitiveRoots.lean:82:56: Application type mismatch: The argument
+  Units.ext
+has type
+error: Proofs/PrimitiveRoots.lean:97:2: Tactic `assumption` failed
+case h
+error: Proofs/PrimitiveRoots.lean:177:4: Type mismatch
+  orderOf_eq_card_of_forall_mem_zpowers hgen
+has type
+
+===== ProductOfSegmentsOfChordsOQ01
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:50:26: unexpected identifier; expected ':=', 'where' or '|'
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:50:4: failed to synthesize instance of type class
+  HAdd ℝ ℝ (Sort ?u.25)
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:50:4: failed to synthesize instance of type class
+  HAdd ℝ ℝ (Sort ?u.25)
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:81:52: unexpected identifier; expected ')', ',' or ':'
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:78:13: Unknown identifier `chord_quadratic_sphere`
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:77:29: unsolved goals
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:78:13: Unknown identifier `chord_quadratic_sphere`
+error: Proofs/ProductOfSegmentsOfChordsOQ01.lean:77:29: unsolved goals
+E : Type u_1
+
+===== PropertyBFirstMomentRecoloring
+error: Proofs/PropertyBFirstMomentRecoloring.lean:80:29: Unknown constant `Finset.exists_ne_of_one_lt_card`
+error: Proofs/PropertyBFirstMomentRecoloring.lean:80:11: Tactic `rcases` failed: `x✝ : ?m.219` is not an inductive datatype
+error: Lean exited with code 1
+error: Proofs/PropertyBFirstMomentRecoloring.lean:80:11: Tactic `rcases` failed: `x✝ : ?m.219` is not an inductive datatype
+error: Lean exited with code 1
+✖ [8595/8606] Building Proofs.PythagoreanTriplesOQ04OQ01OQ01 (12s)
+
+===== PtolemysComplexProofOQ02
+error: Proofs/PtolemysComplexProofOQ02.lean:60:2: `ring_nf` made no progress on the goal
+warning: Proofs/PtolemysComplexProofOQ02.lean:59:8: This simp argument is unused:
+  Complex.cos_ofReal_re
+error: Proofs/PtolemysComplexProofOQ02.lean:74:60: unsolved goals
+α : ℝ
+hα : 0 < α
+error: Proofs/PtolemysComplexProofOQ02.lean:85:42: linarith failed to find a contradiction
+case h1
+α : ℝ
+error: Proofs/PtolemysComplexProofOQ02.lean:87:14: Unknown constant `Real.cos_eq_one_iff.mp`
+warning: Proofs/PtolemysComplexProofOQ02.lean:83:29: This simp argument is unused:
+  Complex.ofReal_re
+
+===== PtolemysTheoremOQ01OQ02
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:76:14: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:99:46: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:168:31: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:99:46: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:168:31: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:264:8: Unknown identifier `spherical_ptolemy`
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:168:31: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:264:8: Unknown identifier `spherical_ptolemy`
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:265:8: Unknown identifier `unit_sphere_chord_via_sin`
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:264:8: Unknown identifier `spherical_ptolemy`
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:265:8: Unknown identifier `unit_sphere_chord_via_sin`
+error: Lean exited with code 1
+
+===== PuiseuxTheorem
+error: Proofs/PuiseuxTheorem.lean:673:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/PuiseuxTheorem.lean:1016:39: Application type mismatch: The argument
+  hq
+has type
+
+===== PythagoreanTheorem
+error: Proofs/PythagoreanTheorem.lean:64:52: Application type mismatch: The argument
+  v
+has type
+error: Proofs/PythagoreanTheorem.lean:64:59: unsolved goals
+v : Vec2
+⊢ ⟪v, v⟫ = sorry
+error: Proofs/PythagoreanTheorem.lean:72:47: Application type mismatch: The argument
+  v
+has type
+error: Proofs/PythagoreanTheorem.lean:104:18: Application type mismatch: The argument
+  w
+has type
+
+===== PythagoreanTriplesOQ02
+error: Proofs/PythagoreanTriplesOQ02.lean:56:33: Tactic `constructor` failed: no applicable constructor found
+a b : ℤ
+error: Proofs/PythagoreanTriplesOQ02.lean:61:35: Tactic `constructor` failed: no applicable constructor found
+a b : ℤ
+
+===== PythagoreanTriplesOQ04OQ01OQ01
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:66:36: Unknown identifier `even_zero`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:71:14: Unknown identifier `even_zero`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:85:9: Unknown constant `Nat.even_iff_not_odd.mp`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:71:14: Unknown identifier `even_zero`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:85:9: Unknown constant `Nat.even_iff_not_odd.mp`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:115:10: Unknown identifier `even_zero`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:85:9: Unknown constant `Nat.even_iff_not_odd.mp`
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:115:10: Unknown identifier `even_zero`
+error: Lean exited with code 1
+error: Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean:115:10: Unknown identifier `even_zero`
+error: Lean exited with code 1
+✖ [8596/8606] Building Proofs.ProductOfSegmentsOfChordsOQ01 (12s)
+
+===== RamseyHypergraph
+error: Proofs/RamseyHypergraph.lean:340:35: Type mismatch
+  hSm T hT
+has type
+error: Proofs/RamseyHypergraph.lean:343:14: Type mismatch
+  hχ
+has type
+error: Proofs/RamseyHypergraph.lean:347:34: Type mismatch
+  hSm T hT
+has type
+error: Proofs/RamseyHypergraph.lean:349:15: Type mismatch
+  hχ
+has type
+
+===== RandomizedMaxcutOQ04
+error: Proofs/RandomizedMaxcutOQ04.lean:49:2: failed to synthesize instance of type class
+  RightCommutative (greedyStep G)
+error: Proofs/RandomizedMaxcutOQ04.lean:90:26: Unknown constant `Finset.disjoint_compl_right`
+error: Proofs/RandomizedMaxcutOQ04.lean:89:74: unsolved goals
+n : ℕ
+error: Proofs/RandomizedMaxcutOQ04.lean:89:74: unsolved goals
+n : ℕ
+G : WeightedGraph n
+error: Proofs/RandomizedMaxcutOQ04.lean:119:2: unsolved goals
+case pos
+n : ℕ
+
+===== RationalCanonicalFormExists
+error: Proofs/RationalCanonicalFormExists.lean:75:90: unsolved goals
+case e'_1
+F : Type u_1
+error: Proofs/RationalCanonicalFormExists.lean:130:50: Application type mismatch: The argument
+  Finset.mem_univ i
+has type
+error: Proofs/RationalCanonicalFormExists.lean:148:2: unsolved goals
+case pos
+R : Type u_2
+error: Proofs/RationalCanonicalFormExists.lean:142:68: unsolved goals
+case e'_3
+R : Type u_2
+
+===== RothTheorem
+error: Proofs/RothTheorem.lean:602:17: Unknown constant `Finset.sum_eq_add_sum_diff_singleton`
+error: Proofs/RothTheorem.lean:600:31: unsolved goals
+N : ℕ
+error: Proofs/RothTheorem.lean:600:31: unsolved goals
+N : ℕ
+inst✝ : NeZero N
+error: Proofs/RothTheorem.lean:693:19: Unknown constant `Finset.sum_eq_add_sum_diff_singleton`
+warning: Proofs/RothTheorem.lean:834:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/RothTheorem.lean:1497:17: Unknown constant `Finset.sum_eq_add_sum_diff_singleton`
+error: Proofs/RothTheorem.lean:1492:59: unsolved goals
+N : ℕ
+
+===== RothTheoremQuantitativeAristotle
+error: Proofs/RothTheoremQuantitativeAristotle.lean:34:2: No goals to be solved
+error: Proofs/RothTheoremQuantitativeAristotle.lean:44:2: linarith failed to find a contradiction
+delta : ℝ
+error: Proofs/RothTheoremQuantitativeAristotle.lean:44:2: linarith failed to find a contradiction
+delta : ℝ
+hdelta : 0 < delta
+error: Proofs/RothTheoremQuantitativeAristotle.lean:51:8: Unknown identifier `div_le_div_of_le_left`
+error: Proofs/RothTheoremQuantitativeAristotle.lean:81:33: Unknown constant `ZMod.instNontrivial`
+error: Proofs/RothTheoremQuantitativeAristotle.lean:86:46: Unknown constant `ZMod.val_neg_one'`
+error: Proofs/RothTheoremQuantitativeAristotle.lean:81:33: Unknown constant `ZMod.instNontrivial`
+error: Proofs/RothTheoremQuantitativeAristotle.lean:86:46: Unknown constant `ZMod.val_neg_one'`
+error: Proofs/RothTheoremQuantitativeAristotle.lean:87:37: Function expected at
+
+===== SchroederBernsteinOQ02
+error: Proofs/SchroederBernsteinOQ02.lean:61:40: Unknown constant `Set.image_subset`
+error: Proofs/SchroederBernsteinOQ02.lean:117:48: Tactic `assumption` failed
+error: Proofs/SchroederBernsteinOQ02.lean:117:48: Tactic `assumption` failed
+α : Type u_1
+
+===== SchroederBernsteinOQ03
+error: Proofs/SchroederBernsteinOQ03.lean:1606:2: Type mismatch: After simplification, term
+  this
+ has type
+
+===== SearchMathlib
+error: Proofs/SearchMathlib.lean:15:7: Unknown constant `IsCompact.of_isClosed_isBounded`
+error: Proofs/SearchMathlib.lean:16:7: Unknown identifier `isCompact_of_isClosed_of_isBounded`
+error: Proofs/SearchMathlib.lean:19:7: Unknown constant `Submodule.isClosed`
+error: Proofs/SearchMathlib.lean:16:7: Unknown identifier `isCompact_of_isClosed_of_isBounded`
+error: Proofs/SearchMathlib.lean:19:7: Unknown constant `Submodule.isClosed`
+info: Proofs/SearchMathlib.lean:20:0: IsClosed.closure_eq.{u} {X : Type u} [TopologicalSpace X] {s : Set X} (h : IsClosed s) : closure s = s
+error: Proofs/SearchMathlib.lean:19:7: Unknown constant `Submodule.isClosed`
+info: Proofs/SearchMathlib.lean:20:0: IsClosed.closure_eq.{u} {X : Type u} [TopologicalSpace X] {s : Set X} (h : IsClosed s) : closure s = s
+info: Proofs/SearchMathlib.lean:23:0: convex_convexHull.{u_1, u_2} (𝕜 : Type u_1) {E : Type u_2} [Semiring 𝕜] [PartialOrder 𝕜] [AddCommMonoid E] [Module 𝕜 E]
+
+===== ShannonChannelCodingAWGNOQ03OQ01Monotone
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:175:8: `ShannonWaterFilling.waterLevel_pos` has already been declared
+warning: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:217:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:278:4: No goals to be solved
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:48: Application type mismatch: The argument
+  hP2pos
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:48: Application type mismatch: The argument
+  hP2pos
+has type
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:45: Application type mismatch: The argument
+  h2
+has type
+
+===== ShannonEntropyAristotle
+error: Proofs/ShannonEntropyAristotle.lean:120:68: Type mismatch: After simplification, term
+  hsum
+ has type
+
+===== ShannonSourceCodingOQ01
+error: Proofs/ShannonSourceCodingOQ01.lean:69:8: Unknown identifier `InformationTheory.mutualInformation`
+warning: Proofs/ShannonSourceCodingOQ01.lean:125:10: declaration uses `sorry`
+warning: Proofs/ShannonSourceCodingOQ01.lean:121:8: declaration uses `sorry`
+error: Proofs/ShannonSourceCodingOQ01.lean:178:45: linarith failed to find a contradiction
+p : ℝ
+hp0 : 0 ≤ p
+error: Proofs/ShannonSourceCodingOQ01.lean:207:29: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:215:33: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:226:34: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:215:33: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:226:34: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:233:39: unexpected token '²'; expected ')'
+
+===== ShannonSourceCodingOQ02
+error: Proofs/ShannonSourceCodingOQ02.lean:254:54: Application type mismatch: The argument
+  fun x x_1 => mem_univ (?m.199 x x_1)
+has type
+error: Proofs/ShannonSourceCodingOQ02.lean:290:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x ∈ erase ?m.522 j, ?m.516 x
+in the target expression
+
+===== ShannonSourceCodingOQ03
+error: Proofs/ShannonSourceCodingOQ03.lean:78:31: Function expected at
+  single_le_sum (fun j x => D.nonneg j) ?m.68
+but this term has type
+error: Proofs/ShannonSourceCodingOQ03.lean:99:8: Unknown constant `Fintype.sum_piFinset_succ`
+error: Proofs/ShannonSourceCodingOQ03.lean:115:9: Function expected at
+  log_prod ?m.45
+error: Proofs/ShannonSourceCodingOQ03.lean:115:9: Function expected at
+  log_prod ?m.45
+but this term has type
+error: Proofs/ShannonSourceCodingOQ03.lean:142:72: unsolved goals
+k : ℕ
+hk : NeZero k
+
+===== ShapleyFolkmanAristotle
+error: Proofs/ShapleyFolkmanAristotle.lean:57:20: Invalid field `fintype_card_le_finrank_succ`: The environment does not contain `Function.fintype_card_le_finrank_succ`, so it is not possible to project the field `fintype_card_le_finrank_succ` from an expression
+  haf
+of type
+error: Proofs/ShapleyFolkmanAristotle.lean:55:30: unsolved goals
+E : Type u_1
+inst✝² : AddCommGroup E
+
+===== ShapleyFolkmanOQ01
+error: Proofs/ShapleyFolkmanOQ01.lean:68:19: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ∑ i ∈ t, f (D.point i) = f _a
+Error: Application type mismatch: The argument
+
+===== SkolemNoetherMatrixAut
+error: Proofs/SkolemNoetherMatrixAut.lean:212:70: unsolved goals
+K : Type u_1
+inst✝³ : Field K
+error: Proofs/SkolemNoetherMatrixAut.lean:224:13: Type mismatch
+  sub_eq_zero.mpr (Eq.symm (hcoeff j))
+has type
+error: Proofs/SkolemNoetherMatrixAut.lean:229:9: Unknown constant `Matrix.isUnit_det_iff_isUnit_mulVecLin`
+error: Proofs/SkolemNoetherMatrixAut.lean:209:36: unsolved goals
+K : Type u_1
+error: Proofs/SkolemNoetherMatrixAut.lean:209:36: unsolved goals
+K : Type u_1
+inst✝³ : Field K
+
+===== SkolemNoetherMatrixAutAristotle
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:89:79: unsolved goals
+K : Type u_1
+inst✝² : Field K
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:93:11: Type mismatch
+  sub_eq_zero.mpr (Eq.symm (hcoeff j))
+has type
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:98:7: Unknown constant `Matrix.isUnit_det_iff_isUnit_mulVecLin`
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:81:16: unsolved goals
+K : Type u_1
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:81:16: unsolved goals
+K : Type u_1
+inst✝² : Field K
+
+===== SolutionOfCubicOQ03OQ02
+error: Proofs/SolutionOfCubicOQ03OQ02.lean:74:2: linarith failed to find a contradiction
+p q : ℝ
+h : -4 * p ^ 3 - 27 * q ^ 2 > 0
+
+===== SolutionOfCubicOQ03OQ03
+error: Proofs/SolutionOfCubicOQ03OQ03.lean:57:2: ring failed, ring expressions not equal
+p q r m : ℂ
+h : 8 * m ^ 3 + 20 * p * m ^ 2 + (16 * p ^ 2 - 8 * r) * m + (4 * p ^ 3 - 4 * p * r - q ^ 2) = 0
+
+===== SolutionOfCubicOQ03OQ05
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:34:35: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:52:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:65:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:78:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+
+===== SpernerGrid
+error: Proofs/SpernerGrid.lean:679:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/SpernerGrid.lean:1204:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/SpernerGrid.lean:1222:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/SpernerGrid.lean:1224:53: Application type mismatch: The argument
+  Eq.symm h
+has type
+
+===== SpernerNDimMathlibOQ02
+error: Proofs/SpernerNDimMathlibOQ02.lean:253:13: Type mismatch
+  hpanch (N + 1) (Nat.succ_pos N)
+has type
+error: Proofs/SpernerNDimMathlibOQ02.lean:298:8: No goals to be solved
+error: Proofs/SpernerNDimMathlibOQ02.lean:304:8: Tactic `assumption` failed
+error: Proofs/SpernerNDimMathlibOQ02.lean:304:8: Tactic `assumption` failed
+case a
+
+===== SpernerNDimOQ01
+error: Proofs/SpernerNDimOQ01.lean:49:53: Function expected at
+  Pairwise.take hl
+but this term has type
+error: Proofs/SpernerNDimOQ01.lean:48:45: unsolved goals
+n : ℕ
+l : List (Fin n)
+error: Proofs/SpernerNDimOQ01.lean:59:17: Type mismatch
+  take_subset ?m.17 ?m.18 ?m.20
+has type
+error: Proofs/SpernerNDimOQ01.lean:65:54: Ambiguous term
+  mem_singleton
+Possible interpretations:
+
+===== SpernerNDimOQ03
+error: Proofs/SpernerNDimOQ03.lean:213:4: Function expected at
+  countPerm
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:230:9: Function expected at
+  FSimplex
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:268:26: Function expected at
+  FSimplex
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:268:40: Type mismatch
+  IsFC c ?m.21
+has type
+
+===== SpernerNDimOQ03OQ01
+error: Proofs/SpernerNDimOQ03OQ01.lean:46:23: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:68:12: Function expected at
+  mul_lt_of_lt_one_right ?m.128 ?m.134
+but this term has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:41: Application type mismatch: The argument
+  x₀
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:64: Application type mismatch: The argument
+  p
+has type
+
+===== SpernerNDimOQ06
+error: Proofs/SpernerNDimOQ06.lean:235:27: Application type mismatch: The argument
+  hp
+has type
+
+===== SpernerSimplicialInstance
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+
+===== SpernerTuckerEndpointTransport
+error: Proofs/SpernerTuckerEndpointTransport.lean:147:49: unsolved goals
+n : ℕ
+B : Facet n → Prop
+
+===== Sqrt2MinpolyOQ01
+error: Proofs/Sqrt2MinpolyOQ01.lean:162:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑k
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01.lean:192:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Sqrt2MinpolyOQ01.lean:203:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C a * X + C ha
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01.lean:207:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+
+===== Sqrt2OQ01
+error: Proofs/Sqrt2OQ01.lean:26:43: invalid binder annotation, type is not a class instance
+  ?m.2
+error: Proofs/Sqrt2OQ01.lean:30:39: invalid binder annotation, type is not a class instance
+  ?m.2
+error: Proofs/Sqrt2OQ01.lean:38:49: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:41:49: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:44:50: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:41:49: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:44:50: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:47:49: Unknown identifier `square_nonneg_general`
+
+===== StirlingFormulaOQ02OQ01
+error: Proofs/StirlingFormulaOQ02OQ01.lean:222:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:256:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:387:6: Type mismatch: After simplification, term
+  h
+ has type
+
+===== SubsetCountOQ02
+error: Proofs/SubsetCountOQ02.lean:58:49: unsolved goals
+α : Type u_1
+a : α
+
+===== SubsetCountOQ02OQ01
+error: Proofs/SubsetCountOQ02OQ01.lean:74:64: unsolved goals
+α : Type u_1
+inst✝ : DecidableEq α
+error: Proofs/SubsetCountOQ02OQ01.lean:148:31: Unknown constant `Finset.disjoint_comm.mp`
+warning: Proofs/SubsetCountOQ02OQ01.lean:135:40: This simp argument is unused:
+  Multiset.mem_add
+
+===== SumOfDivisorsOQ01SpecialPrime
+error: Proofs/SumOfDivisorsOQ01SpecialPrime.lean:75:6: Unknown identifier `not_even_iff_odd`
+error: Proofs/SumOfDivisorsOQ01SpecialPrime.lean:70:53: unsolved goals
+N : ℕ
+error: Proofs/SumOfDivisorsOQ01SpecialPrime.lean:70:53: unsolved goals
+N : ℕ
+hodd : Odd N
+
+===== SumOfKthPowers
+error: Proofs/SumOfKthPowers.lean:522:2: Unknown constant `Finset.sum_range_pow`
+error: Proofs/SumOfKthPowers.lean:530:2: Unknown constant `Finset.sum_range_pow_eq_bernoulli_sub`
+error: Proofs/SumOfKthPowers.lean:544:2: linarith failed to find a contradiction
+error: Proofs/SumOfKthPowers.lean:530:2: Unknown constant `Finset.sum_range_pow_eq_bernoulli_sub`
+error: Proofs/SumOfKthPowers.lean:544:2: linarith failed to find a contradiction
+case h1
+error: Proofs/SumOfKthPowers.lean:544:2: linarith failed to find a contradiction
+case h1
+n : ℕ
+error: Proofs/SumOfKthPowers.lean:566:2: Unknown constant `Nat.bernoulli_odd_eq_zero`
+error: Proofs/SumOfKthPowers.lean:581:35: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/SumOfKthPowers.lean:590:35: unexpected identifier after decimal point; consider parenthesizing the number
+
+===== SumOfKthPowersOQ04
+error: Proofs/SumOfKthPowersOQ04.lean:98:29: Application type mismatch: The argument
+  fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i) (Nat.sub_pos_of_lt (mem_range.mp hi))
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:107:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  eval ?m.183 ?m.182
+in the target expression
+error: Proofs/SumOfKthPowersOQ04.lean:107:37: Application type mismatch: The argument
+  hdeg
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:146:50: Application type mismatch: The argument
+  hcoeff
+has type
+
+===== SylowTheorem
+error: Proofs/SylowTheorem.lean:143:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheorem.lean:154:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⊤
+error: Proofs/SylowTheorem.lean:154:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⊤
+in the target expression
+error: Proofs/SylowTheorem.lean:198:8: failed to synthesize instance of type class
+  Fact (Nat.Prime (Nat.card G))
+
+===== SylowTheoremOQ02OQ01Nilpotent
+error: Proofs/SylowTheoremOQ02OQ01Nilpotent.lean:67:24: Application type mismatch: The argument
+  ↑P
+has type
+
+===== SylowTheoremOQ02Orbit
+error: Proofs/SylowTheoremOQ02Orbit.lean:63:2: Unknown constant `Sylow.exists_smul_eq`
+warning: Proofs/SylowTheoremOQ02Orbit.lean:78:0: automatically included section variable(s) unused in theorem `SylowOrbitEnum.stabilizer_eq_normalizer`:
+  [Fintype G]
+error: Proofs/SylowTheoremOQ02Orbit.lean:98:48: Application type mismatch: The argument
+  P
+has type
+error: Proofs/SylowTheoremOQ02Orbit.lean:127:70: Application type mismatch: The argument
+  P
+has type
+error: Proofs/SylowTheoremOQ02Orbit.lean:147:6: Unknown identifier `sylow_count_eq_normalizer_index`
+error: Proofs/SylowTheoremOQ02Orbit.lean:146:58: unsolved goals
+G : Type u_1
+
+===== SylowTheoremOQ04
+error: Proofs/SylowTheoremOQ04.lean:83:2: failed to synthesize instance of type class
+  Fact (Nat.Prime 5)
+error: Proofs/SylowTheoremOQ04.lean:88:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:93:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:98:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:93:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:98:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:112:52: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'SetLike.instFintype', which is 'noncomputable'
+error: Proofs/SylowTheoremOQ04.lean:98:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheoremOQ04.lean:112:52: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'SetLike.instFintype', which is 'noncomputable'
+error: Proofs/SylowTheoremOQ04.lean:115:53: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'SetLike.instFintype', which is 'noncomputable'
+
+===== SylvesterSequenceOQ01OQ03
+error: Proofs/SylvesterSequenceOQ01OQ03.lean:128:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== SzemerediCoreOQ01
+error: Proofs/SzemerediCoreOQ01.lean:553:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+V : Type u_1
+

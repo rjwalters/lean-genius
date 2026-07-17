@@ -26,11 +26,11 @@ References:
 - Guy's Unsolved Problems in Number Theory, B32
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Nat Finset
@@ -137,7 +137,7 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
   -- p ≠ q: if p = q then p | (n+2) - (n+1) = 1, contradicting primality
   have hpq : p ≠ q := by
     intro heq; subst heq
-    have hdvd1 : p ∣ (n + 2) - (n + 1) := Nat.dvd_sub' hqdvd hpdvd
+    have hdvd1 : p ∣ (n + 2) - (n + 1) := Nat.dvd_sub hqdvd hpdvd
     have heq1 : (n + 2) - (n + 1) = 1 := by omega
     rw [heq1] at hdvd1
     exact absurd (Nat.le_of_dvd one_pos hdvd1) (by linarith [hp.one_lt])
@@ -152,18 +152,17 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
   · -- Assigned primes are distinct
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp_all
-    · exact hpq
-    · exact hpq.symm
+    · exact fun h => hpq h.symm
 
 /-
 ## Part IV: Known Partial Results
 -/
 
-/--
+/- 
 **Grimm's Original Result (1969):**
 The conjecture holds when k << log n / log log n.
 -/
-/--
+/- 
 **Erdős-Selfridge Improvement:**
 The conjecture holds when k <= (1 + o(1)) log n.
 -/
@@ -190,7 +189,7 @@ noncomputable def primeGap (n : ℕ) : ℕ :=
   -- The gap after the n-th prime
   0  -- placeholder
 
-/--
+/- 
 **Grimm Implies Prime Gap Bounds:**
 If Grimm's conjecture is true, then prime gaps satisfy
 p_{n+1} - p_n < p_n^{1/2-c} for some c > 0.
@@ -260,11 +259,11 @@ theorem example_90_to_95 :
 ## Part VII: Counting Argument
 -/
 
-/--
+/- 
 **Prime Counting in Composites:**
 A composite n has at least one prime factor, and at most log₂(n) distinct prime factors.
 -/
-/--
+/- 
 **Small Prime Divisors:**
 Many composites have small prime factors.
 This is why the conjecture becomes hard for large k.
@@ -300,7 +299,7 @@ def hallsCondition (n k : ℕ) : Prop :=
        -- |N(S)| >= |S|
        True)  -- simplified
 
-/--
+/- 
 **Hall's Theorem Application:**
 Grimm's conjecture is equivalent to Hall's condition holding
 for all composite blocks.
@@ -331,7 +330,7 @@ theorem erdos_375_summary :
   · exact ramachandra_shorey_tijdeman
   · trivial
 
-/--
+/- 
 **Why Grimm's Conjecture is Hard:**
 The problem becomes difficult because:
 1. Large prime gaps create long composite runs

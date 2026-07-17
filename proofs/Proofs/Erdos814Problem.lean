@@ -38,6 +38,8 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.Order.Field.Rat
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
 open Finset BigOperators SimpleGraph
 
@@ -61,8 +63,9 @@ def edgeThreshold (k n : ℕ) : ℕ :=
 **Minimum Degree of a Graph:**
 The minimum degree over all vertices.
 -/
-def minDegree {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.univ.inf' (by simp) (fun v => G.degree v)
+def minDegree {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] : ℕ :=
+  Finset.univ.inf' Finset.univ_nonempty (fun v => G.degree v)
 
 /--
 **Subgraph Size Fraction:**
@@ -71,27 +74,20 @@ For Sauermann's result, cₖ ≫ 1/k³.
 -/
 def subgraphFraction (k : ℕ) (c : ℚ) : ℚ := 1 - c
 
-/--
-**Sauermann's Constant:**
-The constant cₖ from Sauermann's proof, satisfying cₖ ≫ 1/k³.
--/
-axiom sauermann_constant (k : ℕ) (hk : k ≥ 2) :
-  ∃ c : ℚ, c > 0 ∧ c * (k : ℚ)^3 ≥ 1
-
 /-
 ## Part II: The EFRS Conjecture and Prior Bounds
 
 Historical progression of results.
 -/
 
-/--
+/- 
 **Original EFRS Bound (1990):**
 Erdős, Faudree, Rousseau, and Schelp proved that a subgraph exists
 with at most n - cₖ√n vertices.
 
 This was the first quantitative result.
 -/
-/--
+/- 
 **Mousset-Noever-Skorić Improvement (2017):**
 Improved the bound to n - cₖ·n/log(n) vertices.
 
@@ -105,20 +101,23 @@ The full solution to the conjecture.
 
 /--
 **Sauermann's Theorem (2019):**
-Let k ≥ 2 and G be a graph on n ≥ k-1 vertices with at least
+Let k ≥ 2. There is a single constant cₖ > 0 with cₖ ≫ 1/k³ such that for every
+n ≥ k-1 and every graph G on n vertices with at least
   (k-1)(n-k+2) + C(k-2,2) + 1
-edges. Then G contains an induced subgraph on at most (1-cₖ)n vertices
-with minimum degree at least k, where cₖ ≫ 1/k³.
+edges, G contains an induced subgraph on at most (1-cₖ)n vertices
+with minimum degree at least k.
 
-This fully resolves the EFRS conjecture.
+This fully resolves the EFRS conjecture. Note the constant cₖ depends only on
+k, not on n or G — this is essential for `erdos_814` below, which asserts a
+single c working uniformly across all valid n.
 -/
-axiom sauermann_theorem (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k - 1)
-    (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hcard : Fintype.card V = n)
-    (hedges : G.edgeFinset.card ≥ edgeThreshold k n) :
-    ∃ (c : ℚ) (S : Finset V),
-      c > 0 ∧
-      c * (k : ℚ)^3 ≥ 1 ∧
+axiom sauermann_theorem (k : ℕ) (hk : k ≥ 2) :
+    ∃ c : ℚ, c > 0 ∧ c * (k : ℚ)^3 ≥ 1 ∧
+    ∀ (n : ℕ), n ≥ k - 1 →
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+    Fintype.card V = n →
+    G.edgeFinset.card ≥ edgeThreshold k n →
+    ∃ (S : Finset V),
       (S.card : ℚ) ≤ (1 - c) * n ∧
       S.card ≥ k ∧
       ∀ v ∈ S, (G.neighborFinset v ∩ S).card ≥ k
@@ -138,13 +137,8 @@ theorem erdos_814 (k : ℕ) (hk : k ≥ 2) :
       (S.card : ℚ) ≤ (1 - c) * n ∧
       S.card ≥ k ∧
       ∀ v ∈ S, (G.neighborFinset v ∩ S).card ≥ k := by
-  obtain ⟨c, hc_pos, hc_bound⟩ := sauermann_constant k hk
-  use c
-  constructor
-  · exact hc_pos
-  · intro n hn V _ _ G _ hcard hedges
-    obtain ⟨c', S, _, _, hsize, hcard_ge, hdeg⟩ := sauermann_theorem k n hk hn V G hcard hedges
-    exact ⟨S, hsize, hcard_ge, hdeg⟩
+  obtain ⟨c, hc_pos, _, h⟩ := sauermann_theorem k hk
+  exact ⟨c, hc_pos, h⟩
 
 /-
 ## Part IV: Edge Threshold Analysis
@@ -155,21 +149,29 @@ Understanding the critical edge count.
 /--
 The edge threshold for k=3.
 -/
-theorem edgeThreshold_three (n : ℕ) (hn : n ≥ 2) :
+-- Note: `n ≥ 3` (not merely `n ≥ 2`) is required. At the boundary `n = 2`
+-- (`n < k`), the truncated `Nat` subtraction `n - k + 2` in `edgeThreshold`
+-- overestimates the true value, so the closed form below is genuinely false
+-- at `n = 2` (`edgeThreshold 3 2 = 5 ≠ 2 * (2 - 1) + 1 = 3`).
+theorem edgeThreshold_three (n : ℕ) (hn : n ≥ 3) :
     edgeThreshold 3 n = 2 * (n - 1) + 1 := by
-  simp only [edgeThreshold, Nat.choose]
-  ring_nf
+  have : Nat.choose (3 - 2) 2 = 0 := by decide
+  simp only [edgeThreshold, this]
   omega
 
 /--
 The edge threshold for k=2.
 -/
-theorem edgeThreshold_two (n : ℕ) (hn : n ≥ 1) :
+-- Same boundary issue as `edgeThreshold_three`: `n ≥ 2` (not `n ≥ 1`) is
+-- required, since at `n = 1` (`n < k`) the closed form is false
+-- (`edgeThreshold 2 1 = 3 ≠ 1 + 1 = 2`).
+theorem edgeThreshold_two (n : ℕ) (hn : n ≥ 2) :
     edgeThreshold 2 n = n + 1 := by
-  simp only [edgeThreshold, Nat.choose]
+  have : Nat.choose (2 - 2) 2 = 0 := by decide
+  simp only [edgeThreshold, this]
   omega
 
-/--
+/- 
 **Extremal Graph:**
 The EFRS paper constructs graphs with exactly the threshold minus one edges
 that avoid minimum-degree-k subgraphs on (1-ε)n vertices.
@@ -205,11 +207,23 @@ theorem erdos_hajnal_case :
   constructor
   · exact hc_pos
   · intro n hn V _ _ G _ hcard hedges
-    have hn' : n ≥ 3 - 1 := by omega
-    have hedges' : G.edgeFinset.card ≥ edgeThreshold 3 n := by
-      rw [edgeThreshold_three n (by omega)]
+    rcases Nat.lt_or_ge n 3 with hlt | hn3
+    · -- 2 ≤ n < 3, so n = 2: the edge-count hypothesis is unsatisfiable
+      -- (a 2-vertex simple graph has at most 1 edge, but `hedges` demands ≥ 3).
+      have hn2 : n = 2 := by omega
+      exfalso
+      have hmax : G.edgeFinset.card ≤ (Fintype.card V).choose 2 :=
+        SimpleGraph.card_edgeFinset_le_card_choose_two
+      rw [hcard, hn2] at hmax
+      have hchoose : Nat.choose 2 2 = 1 := by decide
+      rw [hchoose] at hmax
       omega
-    exact hc_main n hn' V G hcard hedges'
+    · -- n ≥ 3: translate via the closed form for edgeThreshold 3 n
+      have hn' : n ≥ 3 - 1 := by omega
+      have hedges' : G.edgeFinset.card ≥ edgeThreshold 3 n := by
+        rw [edgeThreshold_three n hn3]
+        omega
+      exact hc_main n hn' V G hcard hedges'
 
 /-
 ## Part VI: Degree Bounds and Density
@@ -228,19 +242,27 @@ axiom handshaking {V : Type*} [Fintype V] [DecidableEq V]
 /--
 **High Degree Vertices Exist:**
 In a dense graph, some vertices have high degree.
+
+Note: the hypothesis is stated as `2 * G.edgeFinset.card ≥ k * n` (i.e. the sum of
+degrees is at least `k * n`) rather than `G.edgeFinset.card ≥ k * n / 2` (nat floor
+division). The floor-division form is genuinely false at the boundary — e.g.
+`n = k = 1` gives `k * n / 2 = 0 ≤ G.edgeFinset.card` vacuously while the single
+vertex has degree `0 < k`. The `2 * card ≥ k * n` form is the correct,
+division-free statement of the averaging/pigeonhole argument.
 -/
 theorem high_degree_exists {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (n : ℕ) (hcard : Fintype.card V = n) (hn : n > 0)
-    (k : ℕ) (hedges : G.edgeFinset.card ≥ k * n / 2) :
+    (k : ℕ) (hedges : 2 * G.edgeFinset.card ≥ k * n) :
     ∃ v : V, G.degree v ≥ k := by
+  haveI : Nonempty V := Fintype.card_pos_iff.mp (by rw [hcard]; exact hn)
   by_contra h
   push_neg at h
   have hsum : ∑ v : V, G.degree v < k * n := by
     calc ∑ v : V, G.degree v
-        = ∑ v : V, G.degree v := rfl
-      _ < ∑ _ : V, k := Finset.sum_lt_sum (fun v _ => Nat.le_of_lt (h v)) ⟨Classical.arbitrary V, Finset.mem_univ _, h _⟩
-      _ = k * Fintype.card V := by simp [Finset.sum_const, Finset.card_univ]
+        < ∑ _ : V, k := Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun v _ => h v)
+      _ = k * Fintype.card V := by
+            rw [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]
       _ = k * n := by rw [hcard]
   have hhand := handshaking G
   omega
@@ -273,20 +295,17 @@ theorem erdos_814_summary :
       S.card ≥ k ∧
       ∀ v ∈ S, (G.neighborFinset v ∩ S).card ≥ k := by
   intro k hk
-  obtain ⟨c, hc_pos, hc_bound⟩ := sauermann_constant k hk
-  use c
-  refine ⟨hc_pos, hc_bound, ?_⟩
-  intro n hn V _ _ G _ hcard hedges
-  obtain ⟨c', S, _, _, hsize, hcard_ge, hdeg⟩ := sauermann_theorem k n hk hn V G hcard hedges
-  exact ⟨S, hsize, hcard_ge, hdeg⟩
+  obtain ⟨c, hc_pos, hc_bound, h⟩ := sauermann_theorem k hk
+  exact ⟨c, hc_pos, hc_bound, h⟩
 
 /--
 **Answer to Erdős #814:**
 YES, such a constant cₖ exists for all k ≥ 2.
 -/
 theorem erdos_814_answer : ∀ k : ℕ, k ≥ 2 →
-    ∃ c : ℚ, c > 0 := fun k hk =>
-  let ⟨c, hc_pos, _⟩ := erdos_814 k hk
-  ⟨c, hc_pos⟩
+    ∃ c : ℚ, c > 0 := by
+  intro k hk
+  have h := erdos_814.{0} k hk
+  exact ⟨h.choose, h.choose_spec.1⟩
 
 end Erdos814

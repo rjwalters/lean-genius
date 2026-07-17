@@ -1,10 +1,10 @@
+import Mathlib
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
 import Mathlib.NumberTheory.Transcendental.Liouville.Residual
 import Mathlib.Topology.Algebra.Module.PerfectSpace
 import Mathlib.RingTheory.Algebraic.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
@@ -180,10 +180,10 @@ theorem liouville_approximation_theorem_axiom
     -- Goal : |α - ↑p / ↑q| > 1 / (2 * A) / (↑q : ℝ) ^ n
     have hqn_pos : (0 : ℝ) < (↑q : ℝ) ^ n := pow_pos hq_pos n
     rw [div_div]
-    rw [gt_iff_lt, lt_div_iff (by positivity : 0 < 2 * A * (↑q : ℝ) ^ n)]
+    rw [gt_iff_lt, div_lt_iff₀ (by positivity : 0 < 2 * A * (↑q : ℝ) ^ n)]
     -- Goal : 1 < |α - ↑p / ↑q| * (2 * A * ↑q ^ n)
     have h1 : |α - ↑p / ↑q| * A ≥ 1 / (↑q : ℝ) ^ n := by
-      rwa [ge_iff_le, div_le_iff hqn_pos, mul_comm]
+      rwa [ge_iff_le, div_le_iff₀ hqn_pos, mul_comm]
     calc 1 = 1 * 1 := by ring
       _ < 2 * (|α - ↑p / ↑q| * A * (↑q : ℝ) ^ n) := by
           have := mul_le_mul_of_nonneg_right h1 (le_of_lt hqn_pos)
@@ -219,16 +219,19 @@ theorem liouville_approximation_theorem_axiom
       rw [gt_iff_lt]
       calc 1 / (2 * (↑r.den : ℝ)) / (↑q : ℝ) ^ n
           < 1 / ((↑r.den : ℝ) * (↑q : ℝ) ^ n) := by
-            rw [div_div]; apply div_lt_div_of_pos_right (by linarith : 1 / (2 * ↑r.den) < 1 / ↑r.den)
-              (by positivity)
+            rw [div_div]
+            apply one_div_lt_one_div_of_lt (by positivity)
+            linarith [mul_pos hden_pos (pow_pos hq_pos n)]
         _ ≤ 1 / ((↑r.den : ℝ) * ↑q) := by
-            apply div_le_div_of_nonneg_left one_pos (by positivity) (by positivity)
+            apply one_div_le_one_div_of_le (mul_pos hden_pos hq_pos)
             exact mul_le_mul_of_nonneg_left
-              (le_self_pow₀ (by linarith : 1 ≤ (↑q : ℝ)) (by omega : n ≠ 0))
+              (le_self_pow₀ (by exact_mod_cast (by omega : (1 : ℤ) ≤ q) : 1 ≤ (↑q : ℝ))
+                (by omega : n ≠ 0))
               (by positivity)
         _ ≤ |(↑k : ℝ)| / ((↑r.den : ℝ) * ↑q) := by
             exact div_le_div_of_nonneg_right hk_abs (by positivity)
-        _ = |↑r - ↑p / ↑q| := by rw [hid, abs_div, abs_of_pos (by positivity : 0 < ↑r.den * ↑q)]
+        _ = |↑r - ↑p / ↑q| := by
+            rw [hid, abs_div, abs_of_pos (mul_pos hden_pos hq_pos)]
 
 theorem liouville_approximation_theorem
     (α : ℝ) (hα : IsAlgebraic ℤ α) (n : ℕ) (hn : n ≥ 2)
@@ -360,7 +363,7 @@ theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} :=
 
     Follows from LiouvilleWith.add_rat and the equivalence with Liouville. -/
 theorem liouville_add_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r) :=
-  LiouvilleWith.forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).add_rat r)
+  forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).add_rat r)
 
 /-- If x is Liouville and r is a non-zero rational, then x + r is Liouville.
 
@@ -372,7 +375,7 @@ theorem liouville_add_rat (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x 
 
     Follows from LiouvilleWith.rat_mul and the equivalence with Liouville. -/
 theorem liouville_mul_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x) :=
-  LiouvilleWith.forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).rat_mul hr)
+  forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).rat_mul hr)
 
 /-- If x is Liouville and r is a non-zero rational, then r * x is Liouville.
 

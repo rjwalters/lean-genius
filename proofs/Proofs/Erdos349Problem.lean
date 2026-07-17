@@ -28,7 +28,7 @@ def IsAdditivelyComplete (S : Set ℤ) : Prop :=
     ∃ T : Finset ℤ, (↑T : Set ℤ) ⊆ S ∧ T.sum id = m
 
 /-- The exponential floor sequence: ⌊tα^n⌋ for n = 0, 1, 2, ... -/
-def expFloorSeq (t α : ℝ) (n : ℕ) : ℤ := ⌊t * α ^ n⌋
+noncomputable def expFloorSeq (t α : ℝ) (n : ℕ) : ℤ := ⌊t * α ^ n⌋
 
 /-- A pair (t,α) is "good" if the sequence ⌊tα^n⌋ is complete. -/
 def IsGoodPair (t α : ℝ) : Prop :=
@@ -50,19 +50,19 @@ theorem erdos_349_characterization :
 
 /- ## Golden Ratio Conjecture -/
 
-/-- **Golden Ratio Conjecture**: The sequence ⌊tα^n⌋ is complete
+/- **Golden Ratio Conjecture**: The sequence ⌊tα^n⌋ is complete
     for all t > 0 and 1 < α < (1+√5)/2 ≈ 1.618. -/
 /- ## Known Results -/
 
-/-- **Graham's Disjoint Segments**: For any k, there exists
+/- **Graham's Disjoint Segments**: For any k, there exists
     t_k ∈ (0,1) such that the set of α making ⌊t_k α^n⌋ complete
     consists of at least k disjoint intervals. -/
 /- ## Parity of ⌊(3/2)^n⌋ -/
 
-/-- **Odd Infinitely Often?**: Is ⌊(3/2)^n⌋ odd for infinitely
+/- **Odd Infinitely Often?**: Is ⌊(3/2)^n⌋ odd for infinitely
     many n? This basic question remains open and is a fundamental
     obstacle to the main conjecture. -/
-/-- **Even Infinitely Often?**: Is ⌊(3/2)^n⌋ even for infinitely
+/- **Even Infinitely Often?**: Is ⌊(3/2)^n⌋ even for infinitely
     many n? Also open. -/
 /- ## Proved Properties -/
 

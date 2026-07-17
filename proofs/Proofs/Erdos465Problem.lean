@@ -30,12 +30,10 @@ References:
 Tags: number-theory, combinatorics, diophantine-approximation, solved
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
 open Real
 
@@ -116,7 +114,7 @@ theorem first_conjecture_holds : FirstConjecture := by
   calc (↑(maxPoints X δ) : ℝ)
       ≤ C * δ⁻¹ ^ 3 * X / Real.log (Real.log X) := hbound X hX3
     _ < ε * X := by
-        rw [div_lt_iff hloglogX_pos]
+        rw [div_lt_iff₀ hloglogX_pos]
         have hkey : C * δ⁻¹ ^ 3 < ε * Real.log (Real.log X) := by
           have h := mul_lt_mul_of_pos_left hloglogX hε
           rwa [mul_comm ε, div_mul_cancel₀ _ hε.ne'] at h
@@ -157,7 +155,7 @@ theorem second_conjecture_holds : SecondConjecture := by
   have hCltXε : C < X ^ ε := by
     have : C + 1 ≤ X ^ ε := calc
       C + 1 = ((C + 1) ^ ((1 : ℝ) / ε)) ^ ε := by
-            rw [← rpow_mul hC1nn]; congr 1; field_simp
+            rw [← rpow_mul hC1nn]; rw [one_div, inv_mul_cancel₀ hε.ne', rpow_one]
         _ ≤ X ^ ε := rpow_le_rpow (rpow_nonneg hC1nn _) hXge hε.le
     linarith
   -- C·X^(1/2) < X^ε · X^(1/2) = X^(1/2+ε)

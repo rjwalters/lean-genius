@@ -19,12 +19,11 @@ for all large $n$?
 *Reference:* [erdosproblems.com/119](https://www.erdosproblems.com/119)
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Analysis.NormedSpace.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Topology.Order.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Filter Finset
 
@@ -48,7 +47,7 @@ which implies `limsup M_n = ∞`.
 Reference: Wagner, G., On a problem of Erdős in Diophantine approximation.
 Bull. London Math. Soc. (1980), 81--88. -/
 
-/-- Part 1: For any sequence of points on the unit circle, `limsup M_n = ∞`. -/
+/-  Part 1: For any sequence of points on the unit circle, `limsup M_n = ∞`. -/
 
 /- ## Part 2: M_n > n^c infinitely often (Solved by Beck 1991)
 
@@ -58,7 +57,7 @@ This implies that `M_n > n^c` for infinitely many `n`.
 Reference: Beck, J., The modulus of polynomials with zeros on the unit circle:
 A problem of Erdős. Annals of Math. (1991), 609--651. -/
 
-/-- Part 2: For any unit circle sequence, there exists `c > 0` with `M_n > n^c`
+/-  Part 2: For any unit circle sequence, there exists `c > 0` with `M_n > n^c`
 for infinitely many `n`. -/
 
 /- ## Part 3: Partial sums grow like n^{1+c} (Open, $100 prize)
@@ -85,13 +84,13 @@ theorem unitCirclePoly_zero (z : ℕ → ℂ) (w : ℂ) :
     unitCirclePoly z 0 w = 1 := by
   simp [unitCirclePoly]
 
-/-- `M_n ≥ 1` for all `n ≥ 1`: evaluating at any `z_i` gives 0 for that factor,
+/-  `M_n ≥ 1` for all `n ≥ 1`: evaluating at any `z_i` gives 0 for that factor,
 but we can show `|p_n(z)| ≥ 1` at `z = 1` when all `z_i` are on the unit circle
 by the product formula. More generally, the sup of a set containing 1 is ≥ 1. -/
 
-/-- Part 2 implies Part 1: polynomial growth implies the limsup is infinite. -/
+/-  Part 2 implies Part 1: polynomial growth implies the limsup is infinite. -/
 
-/-- Part 3 implies Part 2: if partial sums grow like `n^{1+c}`, then individual
+/-  Part 3 implies Part 2: if partial sums grow like `n^{1+c}`, then individual
 terms must be large infinitely often. -/
 
-/-- The maximum modulus is nonneg since it is the sup of a set of norms. -/
+/- The maximum modulus is nonneg since it is the sup of a set of norms. -/

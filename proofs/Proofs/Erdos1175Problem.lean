@@ -36,18 +36,18 @@ triangle-free subgraphs, and the main conjecture.
 
 /-- A proper coloring of a graph G with colors from a type of cardinality k. -/
 def IsProperColoring {V : Type*} (G : SimpleGraph V) (k : Cardinal)
-    (c : V → k.toType) : Prop :=
+    (c : V → k.out) : Prop :=
   ∀ v w, G.Adj v w → c v ≠ c w
 
 /-- A graph is k-colorable if it admits a proper k-coloring. -/
 def IsColorable {V : Type*} (G : SimpleGraph V) (k : Cardinal) : Prop :=
-  ∃ c : V → k.toType, IsProperColoring G k c
+  ∃ c : V → k.out, IsProperColoring G k c
 
 /-- Cardinal chromatic number: the minimum cardinal k such that G is k-colorable.
     Axiomatized to avoid universe and decidability complications. -/
-axiom cardinalChromaticNumber {V : Type*} (G : SimpleGraph V) : Cardinal
+axiom cardinalChromaticNumber {V : Type*} (G : SimpleGraph V) : Cardinal.{0}
 
-/-- The chromatic number is at most k iff G is k-colorable. -/
+/-  The chromatic number is at most k iff G is k-colorable. -/
 /-
 ## Part II: Triangle-Free Subgraphs
 
@@ -62,12 +62,12 @@ def IsTriangleFree {V : Type*} (G : SimpleGraph V) : Prop :=
 def inducedSubgraphOn {V : Type*} (G : SimpleGraph V) (S : Set V) :
     SimpleGraph S where
   Adj := fun x y => G.Adj x.val y.val
-  symm := fun x y h => G.symm h
-  loopless := fun x => G.loopless x.val
+  symm := ⟨fun x y h => G.adj_symm h⟩
+  loopless := ⟨fun x => G.loopless.irrefl x.val⟩
 
 /-- A graph G has a triangle-free subgraph with chromatic number at least κ. -/
 def HasTriangleFreeSubgraphWithChromatic {V : Type*}
-    (G : SimpleGraph V) (κ : Cardinal) : Prop :=
+    (G : SimpleGraph V) (κ : Cardinal.{0}) : Prop :=
   ∃ S : Set V, IsTriangleFree (inducedSubgraphOn G S) ∧
     cardinalChromaticNumber (inducedSubgraphOn G S) ≥ κ
 
@@ -82,10 +82,10 @@ with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ?
     a cardinal λ such that every graph with chromatic number ≥ λ contains a
     triangle-free subgraph with chromatic number ≥ κ? -/
 def erdos1175 : Prop :=
-  ∀ κ : Cardinal, κ > ℵ₀ →
-    ∃ λ' : Cardinal,
-      ∀ (V : Type*) (G : SimpleGraph V),
-        cardinalChromaticNumber G ≥ λ' →
+  ∀ κ : Cardinal.{0}, κ > ℵ₀ →
+    ∃ μ' : Cardinal.{0},
+      ∀ (V : Type) (G : SimpleGraph V),
+        cardinalChromaticNumber G ≥ μ' →
         HasTriangleFreeSubgraphWithChromatic G κ
 
 /-
@@ -97,7 +97,7 @@ Shelah proved that for κ = λ = ℵ₁, a negative answer is consistent with ZF
 /-- A graph has the property that all its triangle-free subgraphs have
     chromatic number ≤ μ. -/
 def AllTriangleFreeSubgraphsBoundedBy {V : Type*}
-    (G : SimpleGraph V) (μ : Cardinal) : Prop :=
+    (G : SimpleGraph V) (μ : Cardinal.{0}) : Prop :=
   ∀ S : Set V, IsTriangleFree (inducedSubgraphOn G S) →
     cardinalChromaticNumber (inducedSubgraphOn G S) ≤ μ
 
@@ -105,7 +105,7 @@ def AllTriangleFreeSubgraphsBoundedBy {V : Type*}
     a graph G with χ(G) = ℵ₁ such that every triangle-free induced subgraph
     of G has countable chromatic number (χ ≤ ℵ₀). -/
 axiom shelah_consistency :
-  ∃ (V : Type*) (G : SimpleGraph V),
+  ∃ (V : Type) (G : SimpleGraph V),
     cardinalChromaticNumber G = Cardinal.aleph 1 ∧
     AllTriangleFreeSubgraphsBoundedBy G ℵ₀
 
@@ -113,10 +113,10 @@ axiom shelah_consistency :
     there exists (consistently) a graph with χ = ℵ₁ whose triangle-free
     subgraphs all have countable chromatic number. -/
 theorem shelah_implies_failure_at_aleph1 :
-    (∃ (V : Type*) (G : SimpleGraph V),
+    (∃ (V : Type) (G : SimpleGraph V),
       cardinalChromaticNumber G = Cardinal.aleph 1 ∧
       AllTriangleFreeSubgraphsBoundedBy G ℵ₀) →
-    ¬(∀ (V : Type*) (G : SimpleGraph V),
+    ¬(∀ (V : Type) (G : SimpleGraph V),
       cardinalChromaticNumber G ≥ Cardinal.aleph 1 →
       HasTriangleFreeSubgraphWithChromatic G (Cardinal.aleph 1)) := by
   intro ⟨V, G, hχ, hbound⟩ h
@@ -124,7 +124,7 @@ theorem shelah_implies_failure_at_aleph1 :
   obtain ⟨S, hfree, hκ⟩ := h V G hge
   have hle := hbound S hfree
   have : Cardinal.aleph 1 ≤ ℵ₀ := le_trans hκ hle
-  exact absurd this (not_le.mpr (Cardinal.aleph0_lt_aleph 1))
+  exact absurd this (not_le.mpr (Cardinal.aleph0_lt_aleph.mpr one_pos))
 
 /-
 ## Part V: Positive Results for Finite Chromatic Numbers
@@ -132,9 +132,9 @@ theorem shelah_implies_failure_at_aleph1 :
 For finite graphs, the situation is well-understood.
 -/
 
-/-- Mycielski's theorem: For every k ≥ 1, there exists a triangle-free graph
+/-  Mycielski's theorem: For every k ≥ 1, there exists a triangle-free graph
     with chromatic number k. This is a classical constructive result. -/
-/-- For finite κ, the conjecture holds via Ramsey-type results:
+/-  For finite κ, the conjecture holds via Ramsey-type results:
     graphs with sufficiently large chromatic number contain triangle-free
     subgraphs with any prescribed finite chromatic number. -/
 /-
@@ -148,14 +148,14 @@ A natural strengthening replaces "triangle-free" with higher girth.
 def HasGirthAtLeast {V : Type*} (G : SimpleGraph V) (g : ℕ) : Prop :=
   ∀ (k : ℕ), k ≥ 3 → k < g →
     ∀ (f : Fin k → V), (∀ i : Fin k, G.Adj (f i) (f ⟨(i.val + 1) % k,
-      Nat.mod_lt _ (by omega)⟩)) → ¬Function.Injective f
+      Nat.mod_lt _ i.pos⟩)) → ¬Function.Injective f
 
 /-- Stronger variant: replace "triangle-free" with "girth ≥ g" for any g. -/
 def erdos1175_girth_variant (g : ℕ) : Prop :=
-  ∀ κ : Cardinal, κ > ℵ₀ →
-    ∃ λ' : Cardinal,
-      ∀ (V : Type*) (G : SimpleGraph V),
-        cardinalChromaticNumber G ≥ λ' →
+  ∀ κ : Cardinal.{0}, κ > ℵ₀ →
+    ∃ μ' : Cardinal.{0},
+      ∀ (V : Type) (G : SimpleGraph V),
+        cardinalChromaticNumber G ≥ μ' →
         ∃ S : Set V, HasGirthAtLeast (inducedSubgraphOn G S) g ∧
           cardinalChromaticNumber (inducedSubgraphOn G S) ≥ κ
 
@@ -166,7 +166,7 @@ This problem connects chromatic number theory at uncountable scales
 with structural graph theory (forbidden subgraphs).
 -/
 
-/-- Erdős (1959) showed: for every k, g ≥ 3 there exist finite graphs
+/-  Erdős (1959) showed: for every k, g ≥ 3 there exist finite graphs
     with girth ≥ g and chromatic number ≥ k (via probabilistic method). -/
 /-
 ## Part VIII: Formal Problem Statement and Status
@@ -178,7 +178,7 @@ def ErdosProblem1175 : Prop := erdos1175
 /-- Summary of what is known -/
 theorem erdos1175_summary :
     -- Shelah's consistency result provides a consistent counterexample
-    (∃ (V : Type*) (G : SimpleGraph V),
+    (∃ (V : Type) (G : SimpleGraph V),
       cardinalChromaticNumber G = Cardinal.aleph 1 ∧
       AllTriangleFreeSubgraphsBoundedBy G ℵ₀) := by
   exact shelah_consistency

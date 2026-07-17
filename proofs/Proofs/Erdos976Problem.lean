@@ -25,10 +25,7 @@ References:
 - Tenenbaum [Te90]: Current best rigorous bound
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.Polynomial.Basic
+import Mathlib
 
 namespace Erdos976
 
@@ -55,7 +52,7 @@ P(n) = max{p prime : p | n}, with P(1) = 1 by convention.
 -/
 def greatestPrimeDivisor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else Nat.factors n |>.maximum? |>.getD 1
+  else Nat.primeFactorsList n |>.max? |>.getD 1
 
 /--
 **The function F_f(n):**
@@ -63,18 +60,18 @@ F_f(n) = greatest prime dividing any f(m) for 1 ≤ m ≤ n.
 Equivalently, greatest prime divisor of ∏_{m=1}^n f(m).
 -/
 def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
-  (List.range n).map (fun m => greatestPrimeDivisor (f.eval (m + 1)).natAbs)
-    |>.maximum? |>.getD 1
+  (List.range n).map (fun m => greatestPrimeDivisor (f.eval ((m : ℤ) + 1)).natAbs)
+    |>.max? |>.getD 1
 
 /-
 ## Part II: Known Lower Bounds
 -/
 
-/--
+/- 
 **Nagell-Ricci bound (1922):**
 F_f(n) ≫ n log n for any irreducible f of degree ≥ 2.
 -/
-/--
+/- 
 **Erdős bound (1952):**
 F_f(n) ≫ n(log n)^{log log log n}.
 Improved the Nagell-Ricci bound using sieve methods.
@@ -115,7 +112,7 @@ def conjecture_degree_growth (f : Polynomial ℤ) : Prop :=
 ## Part IV: Upper Bounds
 -/
 
-/--
+/- 
 **Trivial upper bound:**
 F_f(n) ≤ max_{1≤m≤n} |f(m)| ≈ n^d for polynomial of degree d.
 -/

@@ -25,11 +25,11 @@ References:
 - van Doorn: Sharp constant
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos440
 
@@ -57,7 +57,7 @@ def countingFunction (A : IncreasingSeq) (x : ℕ) : ℕ :=
 **The normalized ratio:**
 A(x) / √x measures how many consecutive pairs have small LCM.
 -/
-def normalizedRatio (A : IncreasingSeq) (x : ℕ) : ℝ :=
+noncomputable def normalizedRatio (A : IncreasingSeq) (x : ℕ) : ℝ :=
   (countingFunction A x : ℝ) / Real.sqrt x
 
 /-
@@ -77,15 +77,15 @@ lcm(n, n+1) = n(n+1) since gcd(n, n+1) = 1.
 -/
 theorem lcm_consecutive (n : ℕ) (hn : n > 0) :
     Nat.lcm n (n + 1) = n * (n + 1) := by
-  have : Nat.gcd n (n + 1) = 1 := Nat.coprime_self_add_one n
+  have : Nat.gcd n (n + 1) = 1 := (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n))
   simp [Nat.lcm, this]
 
-/--
+/- 
 **Counting for naturals:**
 For A = ℕ, the pairs (n, n+1) with lcm ≤ x are those with n(n+1) ≤ x.
 This gives approximately √x many pairs, so A(x) ≈ √x.
 -/
-/--
+/- 
 **The liminf for naturals:**
 For A = ℕ, liminf A(x)/√x = 1. This is the maximum possible value,
 making the natural numbers the extremal sequence for this problem.
@@ -135,7 +135,7 @@ axiom van_doorn_sharp_bound :
 ## Part IV: The Liminf Question
 -/
 
-/--
+/- 
 **Second question: liminf A(x)/√x ≤ 1?**
 For any infinite increasing sequence A, the liminf of the normalized
 ratio A(x)/√x is at most 1. This means no sequence can "consistently"

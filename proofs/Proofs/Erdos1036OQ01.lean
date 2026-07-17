@@ -1,8 +1,4 @@
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Optimal Constant in Shelah's Coloring Theorem
@@ -57,12 +53,12 @@ axiom numISCTrue_pos : ∀ {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGra
 /-- A graph G on n vertices is non-Ramsey(c) if both its clique number and independence
     number are ≤ c·log n (copied from parent). -/
 def IsNonRamsey {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) (c : ℝ) : Prop :=
-  G.cliqueFree ⌈c * Real.log (Fintype.card V)⌉₊ ∧
-  Gᶜ.cliqueFree ⌈c * Real.log (Fintype.card V)⌉₊
+  G.CliqueFree ⌈c * Real.log (Fintype.card V)⌉₊ ∧
+  Gᶜ.CliqueFree ⌈c * Real.log (Fintype.card V)⌉₊
 
 /-- For every c > 0, there exist arbitrarily large non-Ramsey(c) graphs. -/
 axiom nonRamseyExistsTrue (c : ℝ) (hc : c > 0) (k : ℕ) :
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     k ≤ Fintype.card V ∧ IsNonRamsey G c
 
 /-- Shelah's exponential lower bound: non-Ramsey(c) graphs have exponentially
@@ -110,7 +106,7 @@ private lemma optimalSet_le_one (c : ℝ) (hc : c > 0) :
     exact_mod_cast (show 0 < Fintype.card V by omega)
   have hexp : (Fintype.card V : ℝ) < c' * (Fintype.card V : ℝ) := by nlinarith
   have := Real.rpow_lt_rpow_of_exponent_lt (show (1 : ℝ) < 2 by norm_num) hexp
-  push_cast [Real.rpow_natCast] at h2
+  push_cast [Real.rpow_natCast] at h2 this
   linarith
 
 /-- The optimal constant is at most 1 for c > 0. -/

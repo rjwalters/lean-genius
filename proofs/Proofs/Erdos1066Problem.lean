@@ -22,9 +22,9 @@ Key Results:
 Reference: https://erdosproblems.com/1066
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 open Real

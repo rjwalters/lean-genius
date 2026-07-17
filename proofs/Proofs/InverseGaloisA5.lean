@@ -1,4 +1,13 @@
 import Mathlib
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
+
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
 
 /-
 # A₅ is Realizable as a Galois Group over ℚ (InverseGaloisA5)
@@ -221,7 +230,7 @@ theorem gal_card_dvd_120 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm, q_rootSet_card] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-
 ## Discriminant Analysis
@@ -428,7 +437,10 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
       have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
       -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
-      convert hprod using 1
+      -- v4.31: `convert using 1` no longer closes the associativity gap
+      have hassoc : σ * τ * σ⁻¹ * τ⁻¹ = σ * (τ * σ⁻¹ * τ⁻¹) := by group
+      rw [hassoc]
+      exact hprod
     have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
       have := hN₃.conj_mem τ hτ_mem σ
@@ -1375,7 +1387,7 @@ theorem prod_eval_derivative_eq_ordered_diff :
 -- Strategy: Instead of resultant/discriminant (not in Mathlib), we:
 -- 1. Factor q'(x) = 5((x-1)^4 + 4) = 5(x^2+1)(x^2-4x+5) [Sophie Germain]
 -- 2. Embed SF → ℂ via SplittingField.lift
--- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) in ℂ
+-- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) ∈ ℂ
 -- 4. Compute q(±I) and q(2±I) to get the product values
 -- 5. Transfer back via injectivity
 
@@ -1594,7 +1606,7 @@ private theorem q_eval_2I_product :
 -- Step F7: Connect products to evaluations
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 in ℂ.
+/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 ∈ ℂ.
     f₁(x) = x²+1 = (x-I)(x+I), so ∏f₁(αᵢ) = [∏(αᵢ-I)][∏(αᵢ+I)] = q(I)·q(-I). -/
 private theorem prod_sq_add_one_eq :
     toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) = 256 := by
@@ -1618,7 +1630,7 @@ private theorem prod_sq_add_one_eq :
   rw [neg_mul_neg]
   exact q_eval_I_product
 
-/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 in ℂ.
+/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 ∈ ℂ.
     f₂(x) = x²-4x+5 = (x-(2+I))(x-(2-I)). -/
 private theorem prod_quad_eq :
     toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) = 1280 := by

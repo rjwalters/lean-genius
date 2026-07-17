@@ -26,7 +26,11 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Fintype.Fin
+import Mathlib.Data.Fintype.Powerset
 import Mathlib.Combinatorics.SetFamily.Compression.Down
+
+open scoped Classical
 
 open Finset Nat
 
@@ -61,13 +65,13 @@ def IsUnionFree' {n : ℕ} (F : Finset (GroundSet n)) : Prop :=
 def middleLayer (n : ℕ) : Finset (GroundSet n) :=
   (Finset.univ : Finset (GroundSet n)).filter (fun S => S.card = n / 2)
 
-/-- The middle layer is union-free: sets of the same size cannot have
+/-  The middle layer is union-free: sets of the same size cannot have
 one be the union of two others (since |A ∪ B| ≥ max(|A|, |B|) with
 equality only when A ⊆ B or B ⊆ A, forcing A = B). -/
 /-- C(n, ⌊n/2⌋), the largest binomial coefficient -/
 def middleBinomial (n : ℕ) : ℕ := Nat.choose n (n / 2)
 
-/-- Sperner's theorem: any antichain in 2^[n] has size at most C(n, ⌊n/2⌋) -/
+/-  Sperner's theorem: any antichain in 2^[n] has size at most C(n, ⌊n/2⌋) -/
 /- ## Part III: Asymptotic Notation -/
 
 /-- f(n) = o(g(n)) means f(n)/g(n) → 0 as n → ∞ -/
@@ -76,7 +80,7 @@ def IsLittleO (f g : ℕ → ℕ) : Prop :=
 
 /-- The maximum size of a union-free collection over subsets of [n] -/
 noncomputable def maxUnionFreeSize (n : ℕ) : ℕ :=
-  ((powerSet n).filter IsUnionFree).sup Finset.card
+  ((powerSet n).powerset.filter IsUnionFree).sup Finset.card
 
 /-- f(n) ≤ (1+o(1))·g(n): upper bound with asymptotically vanishing error -/
 def AsymptoticUpperBound (f g : ℕ → ℕ) : Prop :=
@@ -84,7 +88,7 @@ def AsymptoticUpperBound (f g : ℕ → ℕ) : Prop :=
 
 /- ## Part IV: Sárközy-Szemerédi Result (1965) -/
 
-/-- Sárközy-Szemerédi (unpublished, reported 1965): maxUnionFreeSize(n) = o(2ⁿ).
+/-  Sárközy-Szemerédi (unpublished, reported 1965): maxUnionFreeSize(n) = o(2ⁿ).
 This was superseded by Kleitman's stronger result. -/
 /- ## Part V: Kleitman's Theorem (1971) -/
 
@@ -121,7 +125,7 @@ def hasPositiveDensity (A : Set ℕ) : Prop :=
   ∃ δ : ℝ, δ > 0 ∧ ∀ N : ℕ, N > 0 →
     ↑(Finset.card ((Finset.range N).filter (· ∈ A))) / N ≥ δ
 
-/-- Corollary (Problem 487): if A ⊂ ℕ has positive density, then there
+/-  Corollary (Problem 487): if A ⊂ ℕ has positive density, then there
 are infinitely many distinct a, b, c ∈ A with lcm(a,b) = c.
 This follows from the union-free bound via prime factorization encoding. -/
 /- ## Part VIII: Generalizations -/

@@ -42,11 +42,11 @@ noncomputable def maxDistinctDistances (P : PointConfig n) [NeZero n] : ℕ :=
 
 /- ## Known Lower Bound -/
 
-/-- Every point has at least (n-1)/3 distinct distances when
+/-  Every point has at least (n-1)/3 distinct distances when
     no four are concyclic. -/
 /- ## The Main Conjecture -/
 
-/-- **Erdős Problem #654**: Under the no-four-concyclic condition,
+/-  **Erdős Problem #654**: Under the no-four-concyclic condition,
     some point must determine (1 - o(1))n distinct distances.
     Formally: for every ε > 0, for large enough n, some xᵢ has
     ≥ (1 - ε)n distinct distances. -/
@@ -60,12 +60,12 @@ def NoThreeCollinear (P : PointConfig n) : Prop :=
       a * (P i₂).1 + b * (P i₂).2 = c ∧
       a * (P i₃).1 + b * (P i₃).2 = c
 
-/-- Erdős–Pach weaker conjecture: under general position,
+/-  Erdős–Pach weaker conjecture: under general position,
     does some point have ≥ (1/3 + c)n distinct distances for
     some absolute constant c > 0? -/
 /- ## Context: Erdős Distinct Distances Problem -/
 
-/-- Without any restriction, the Guth–Katz theorem (2015) gives
+/-  Without any restriction, the Guth–Katz theorem (2015) gives
     Ω(n/log n) distinct distances in total. Problem #654 asks for
     near-n distinct distances from a SINGLE point, under geometric
     restrictions on the configuration. -/

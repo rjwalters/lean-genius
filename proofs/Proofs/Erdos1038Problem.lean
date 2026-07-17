@@ -52,7 +52,7 @@ The supremum equals 2√2, achieved in the limit by polynomials approaching
 proved by Terence Tao in December 2025.
 -/
 
-/-- The supremum of sublevel set measures for monic polynomials with roots in [-1,1]
+/-  The supremum of sublevel set measures for monic polynomials with roots in [-1,1]
     equals 2√2 ≈ 2.828. Proved by Tao (2025).
 
     Proof requires logarithmic potential theory beyond current Mathlib.
@@ -65,9 +65,9 @@ The exact infimum remains an open problem. Current best bounds:
   - Upper bound: 1.835 (witnessed by specific polynomial constructions)
 -/
 
-/-- Lower bound on the infimum: at least 2^(4/3) - 1 ≈ 1.519.
+/-  Lower bound on the infimum: at least 2^(4/3) - 1 ≈ 1.519.
     Proved using logarithmic potential theory. -/
-/-- Upper bound on the infimum: less than 1.835.
+/-  Upper bound on the infimum: less than 1.835.
     Witnessed by explicit polynomial constructions. -/
 /-
 ## Concrete Examples
@@ -80,8 +80,8 @@ The quadratic polynomial x² - 1 = (x-1)(x+1) has sublevel set
 with measure 2√2, achieving the supremum.
 -/
 
-/-- The polynomial (x+1)(x-1)^m for m ≥ 3 witnesses that the infimum is < 2. -/
-/-- The quadratic x² - 1 achieves sublevel measure 2√2. -/
+/-  The polynomial (x+1)(x-1)^m for m ≥ 3 witnesses that the infimum is < 2. -/
+/- The quadratic x² - 1 achieves sublevel measure 2√2. -/
 /-
 ## Numerical Bounds
 

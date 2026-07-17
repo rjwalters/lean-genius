@@ -31,6 +31,8 @@ Tags: additive-combinatorics, arithmetic-progressions, supersaturation, solved
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos179
 
 open Finset

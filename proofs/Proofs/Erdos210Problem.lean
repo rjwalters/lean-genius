@@ -29,11 +29,11 @@ References:
 - [GrTa13] Green-Tao (2013), "On sets defining few ordinary lines"
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Real.Basic
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
 
 open Finset
 
@@ -45,7 +45,7 @@ namespace Erdos210
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
 /-- A finite point configuration in the plane. -/
-def PointSet := Finset Point
+abbrev PointSet := Finset Point
 
 /-- Three points are collinear. -/
 def Collinear (p q r : Point) : Prop :=

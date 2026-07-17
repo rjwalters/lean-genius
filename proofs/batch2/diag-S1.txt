@@ -1,0 +1,173 @@
+===== BirthdayProblemOQ02OQ01
+error: Proofs/BirthdayProblemOQ02OQ01.lean:164:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BirthdayProblemOQ02OQ01.lean:170:18: Unknown constant `Finset.sum_range_id_eq_sum_range_succ_div_two`
+error: Proofs/BirthdayProblemOQ02OQ01.lean:180:8: linarith failed to find a contradiction
+error: Proofs/BirthdayProblemOQ02OQ01.lean:189:10: Tactic `apply` failed: could not unify the conclusion of `@exp_neg_sub_sq_le_one_sub`
+error: Proofs/BirthdayProblemOQ02OQ01.lean:222:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== CayleyHamiltonMinpolyOQ05OQ01OQ01
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:148:58: unsolved goals
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:149:78: Tactic `rewrite` failed: motive is not type correct:
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:259:59: Application type mismatch: The argument
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:258:33: unsolved goals
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:271:41: Unknown identifier `isUnit_of_natDegree_eq_zero`
+===== Erdos1022OQ01
+error: Proofs/Erdos1022OQ01.lean:46:12: failed to synthesize instance of type class
+error: Proofs/Erdos1022OQ01.lean:67:33: failed to synthesize instance of type class
+error: Proofs/Erdos1022OQ01.lean:69:23: unsolved goals
+error: Proofs/Erdos1022OQ01.lean:124:10: Unexpected syntax
+error: Proofs/Erdos1022OQ01.lean:137:31: Application type mismatch: The argument
+===== Erdos1022OQ03
+error: Proofs/Erdos1022OQ03.lean:372:26: invalid `▸` notation, expected result type of cast is 
+error: Lean exited with code 1
+error: build failed
+===== Erdos1045Problem
+error: Proofs/Erdos1045Problem.lean:82:23: Application type mismatch: The argument
+error: Proofs/Erdos1045Problem.lean:82:57: Unknown identifier `z`
+error: Proofs/Erdos1045Problem.lean:94:42: omega could not prove the goal:
+error: Proofs/Erdos1045Problem.lean:109:46: omega could not prove the goal:
+error: Lean exited with code 1
+===== Erdos1052Problem
+error: Proofs/Erdos1052Problem.lean:160:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+error: Proofs/Erdos1052Problem.lean:167:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos1052Problem.lean:179:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+error: Proofs/Erdos1052Problem.lean:187:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos1052Problem.lean:198:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+===== Erdos109OQ01
+error: Proofs/Erdos109OQ01.lean:84:16: Application type mismatch: The argument
+error: Proofs/Erdos109OQ01.lean:132:49: omega could not prove the goal:
+error: Proofs/Erdos109OQ01.lean:132:59: omega could not prove the goal:
+error: Proofs/Erdos109OQ01.lean:207:14: Unknown identifier `div_le_one_of_le`
+error: Proofs/Erdos109OQ01.lean:208:8: No goals to be solved
+===== Erdos234Problem
+info: Proofs/RiemannHypothesis.lean:3712:0: RiemannHypothesis.pnt_error_levels : 3 = 3
+error: Proofs/Erdos234Problem.lean:124:24: Application type mismatch: The argument
+error: Proofs/Erdos234Problem.lean:131:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+error: Proofs/Erdos234Problem.lean:162:79: unsolved goals
+error: Proofs/Erdos234Problem.lean:178:10: Function expected at
+===== Erdos235Problem
+error: Proofs/Erdos235Problem.lean:87:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'primorial', which is 'noncomputable'
+error: Proofs/Erdos235Problem.lean:229:10: don't know how to synthesize implicit argument `a`
+error: Proofs/Erdos235Problem.lean:229:10: don't know how to synthesize implicit argument `f`
+error: Proofs/Erdos235Problem.lean:229:29: don't know how to synthesize placeholder
+error: Proofs/Erdos235Problem.lean:229:7: failed to infer `have` declaration type
+===== Erdos237Problem
+error: Proofs/Erdos237Problem.lean:51:15: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos239Problem
+error: Proofs/Erdos239Problem.lean:135:6: Unknown constant `Complex.abs`
+error: Proofs/Erdos239Problem.lean:206:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+error: build failed
+===== Erdos252Problem
+error: Proofs/Erdos252Problem.lean:155:29: unsolved goals
+error: Proofs/Erdos252Problem.lean:191:66: Application type mismatch: The argument
+error: Proofs/Erdos252Problem.lean:192:30: Unknown constant `Finset.card_Icc`
+error: Proofs/Erdos252Problem.lean:192:48: No goals to be solved
+error: Proofs/Erdos252Problem.lean:173:2: unsolved goals
+===== Erdos263Problem
+error: Proofs/Erdos263Problem.lean:539:6: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+error: Proofs/Erdos263Problem.lean:533:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+error: Proofs/Erdos263Problem.lean:602:25: unsolved goals
+error: Proofs/Erdos263Problem.lean:618:4: No goals to be solved
+error: Proofs/Erdos263Problem.lean:623:23: Unknown identifier `tsum_le_tsum`
+===== Erdos275Problem
+error: Proofs/Erdos275Problem.lean:106:29: unknown tactic
+error: Proofs/Erdos275Problem.lean:106:25: unsolved goals
+error: Proofs/Erdos275Problem.lean:138:12: failed to synthesize instance of type class
+error: Proofs/Erdos275Problem.lean:138:12: failed to synthesize instance of type class
+error: Lean exited with code 1
+===== Erdos314Problem
+error: Proofs/Erdos314Problem.lean:52:70: omega could not prove the goal:
+error: Proofs/Erdos314Problem.lean:53:44: omega could not prove the goal:
+error: Proofs/Erdos314Problem.lean:119:34: omega could not prove the goal:
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+error: Proofs/Erdos314Problem.lean:143:40: Application type mismatch: The argument
+===== Erdos333Problem
+error: Proofs/Erdos333Problem.lean:49:3: failed to synthesize instance of type class
+error: Proofs/Erdos333Problem.lean:217:20: Application type mismatch: The argument
+error: Lean exited with code 1
+error: build failed
+===== Erdos365Problem
+error: Proofs/Erdos365Problem.lean:55:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:57:23: numerals are data in Lean, but the expected type is a proposition
+error: Proofs/Erdos365Problem.lean:64:25: unknown tactic
+error: Proofs/Erdos365Problem.lean:64:21: unsolved goals
+error: Proofs/Erdos365Problem.lean:80:7: unknown tactic
+===== Erdos368Problem
+error: Proofs/Erdos368Problem.lean:95:15: Function expected at
+error: Proofs/Erdos368Problem.lean:95:23: Function expected at
+error: Proofs/Erdos368Problem.lean:154:20: failed to synthesize instance of type class
+error: Proofs/Erdos368Problem.lean:172:16: failed to synthesize instance of type class
+error: Proofs/Erdos368Problem.lean:196:20: failed to synthesize instance of type class
+===== Erdos372Problem
+error: Proofs/Erdos372Problem.lean:41:64: omega could not prove the goal:
+error: Proofs/Erdos372Problem.lean:79:24: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:85:25: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:91:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:138:7: failed to synthesize instance of type class
+===== Erdos383Problem
+error: Proofs/Erdos383Problem.lean:119:58: unsolved goals
+error: Proofs/Erdos383Problem.lean:143:2: omega could not prove the goal:
+error: Proofs/Erdos383Problem.lean:154:55: numerals are data in Lean, but the expected type is a proposition
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos383Problem.lean:174:2: This extensionality tactic only applies to equalities, not
+===== Erdos395Problem
+error: Proofs/Erdos395Problem.lean:79:14: failed to synthesize instance of type class
+error: Proofs/Erdos395Problem.lean:94:15: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos40Problem
+error: Proofs/Erdos40Problem.lean:82:20: omega could not prove the goal:
+error: Proofs/Erdos40Problem.lean:112:37: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos40Problem.lean:154:4: Tactic `tauto` failed
+error: Proofs/Erdos40Problem.lean:204:52: Unknown constant `Set.ncard_coe_Finset`
+error: Proofs/Erdos40Problem.lean:225:17: Unknown constant `Set.ncard_coe_Finset`
+===== Erdos420Problem
+error: Proofs/Erdos420Problem.lean:62:56: unsolved goals
+error: Lean exited with code 1
+error: build failed
+===== Erdos434Problem
+error: Proofs/Erdos434Problem.lean:116:6: Unknown constant `Set.ncard_Icc_nat`
+error: Proofs/Erdos434Problem.lean:114:28: unsolved goals
+error: Proofs/Erdos434Problem.lean:147:22: Unknown constant `Nat.strong_rec_on`
+error: Proofs/Erdos434Problem.lean:174:10: Unknown identifier `sylvester_frobenius`
+error: Proofs/Erdos434Problem.lean:173:62: unsolved goals
+===== Erdos440Problem
+error: Proofs/Erdos440Problem.lean:60:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Lean exited with code 1
+error: build failed
+===== Erdos445Problem
+error: Proofs/Erdos445Problem.lean:45:44: failed to synthesize instance of type class
+error: Proofs/Erdos445Problem.lean:46:44: failed to synthesize instance of type class
+error: Proofs/Erdos445Problem.lean:115:6: 'calc' expression has type
+error: Lean exited with code 1
+error: build failed
+===== Erdos453Problem
+error: Proofs/Erdos453Problem.lean:71:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:82:2: `simp` made no progress
+===== Erdos478Problem
+error: Proofs/Erdos478Problem.lean:81:40: omega could not prove the goal:
+error: Proofs/Erdos478Problem.lean:84:42: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+error: Proofs/Erdos478Problem.lean:91:19: Type mismatch
+error: Proofs/Erdos478Problem.lean:104:46: Type mismatch
+error: Proofs/Erdos478Problem.lean:105:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== Erdos488Problem
+error: Proofs/Erdos488Problem.lean:219:4: omega could not prove the goal:
+error: Proofs/Erdos488Problem.lean:234:37: Type mismatch
+error: Proofs/Erdos488Problem.lean:246:37: No goals to be solved
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+error: Proofs/Erdos488Problem.lean:265:19: unsolved goals
+===== Erdos48Problem
+error: Proofs/Erdos48Problem.lean:80:67: unsolved goals
+error: Proofs/Erdos48Problem.lean:87:32: Application type mismatch: The argument
+error: Proofs/Erdos48Problem.lean:112:59: Type mismatch
+error: Proofs/Erdos48Problem.lean:115:60: Function expected at
+error: Lean exited with code 1
+===== Erdos498Problem
+error: Proofs/Erdos498Problem.lean:42:15: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed

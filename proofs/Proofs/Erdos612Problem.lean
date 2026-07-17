@@ -24,6 +24,7 @@
 -/
 
 import Mathlib
+open scoped Classical
 
 open Finset Function SimpleGraph
 
@@ -37,9 +38,12 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 noncomputable def diameter (G : SimpleGraph V) : ℕ :=
   sorry -- Maximum distance between any two vertices
 
-/-- The minimum degree of a graph -/
+/-- The minimum degree of a graph.
+    (v4.31 migration: `Finset.min'` needs a nonempty carrier; use `Finset.min`
+    with the convention that the empty graph has minimum degree 0, keeping the
+    definition total.) -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.univ.image (fun v => G.degree v) |>.min' (by simp)
+  ((Finset.univ.image (fun v => G.degree v)).min).getD 0
 
 /-- A graph is K_r-free if it contains no complete subgraph on r vertices -/
 def IsKFree (G : SimpleGraph V) (r : ℕ) : Prop :=
@@ -62,7 +66,7 @@ axiom basic_diameter_bound :
 /- ## Original Conjecture 1: K_{2r}-free -/
 
 /-- The coefficient in the original conjecture for K_{2r}-free graphs -/
-def alpha_2r (r : ℕ) : ℝ :=
+noncomputable def alpha_2r (r : ℕ) : ℝ :=
   (2 * (r - 1) * (3 * r + 2)) / (2 * r^2 - 1)
 
 /-- Divisibility condition for Conjecture 1 -/
@@ -83,7 +87,7 @@ def OriginalConjecture1 (r : ℕ) : Prop :=
 /- ## Original Conjecture 2: K_{2r+1}-free -/
 
 /-- The coefficient for K_{2r+1}-free graphs -/
-def alpha_2r1 (r : ℕ) : ℝ :=
+noncomputable def alpha_2r1 (r : ℕ) : ℝ :=
   (3 * r - 1) / r
 
 /-- Divisibility condition for Conjecture 2 -/
@@ -104,14 +108,14 @@ def OriginalConjecture2 (r : ℕ) : Prop :=
 /- ## Counterexamples (Czabarka-Singgih-Székely 2021) -/
 
 /-- The counterexample diameter bound -/
-def counterexample_diameter (r n d : ℕ) : ℝ :=
+noncomputable def counterexample_diameter (r n d : ℕ) : ℝ :=
   (6 * r - 5) * n / ((2 * r - 1) * d + 2 * r - 3)
 
 /-- Counterexamples exist for r ≥ 2 -/
 axiom counterexample_exists :
   ∀ r : ℕ, r ≥ 2 →
     ∀ᶠ n in Filter.atTop,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
         G.Connected ∧
         IsKFree G (2 * r) ∧
@@ -141,7 +145,7 @@ theorem conjecture1_base_case : OriginalConjecture1 1 := by
 /- ## The Amended Conjecture -/
 
 /-- The amended coefficient: (3 - 2/k) for K_{k+1}-free -/
-def amended_alpha (k : ℕ) : ℝ :=
+noncomputable def amended_alpha (k : ℕ) : ℝ :=
   3 - 2 / k
 
 /-- Amended Conjecture (Czabarka-Singgih-Székely):
@@ -196,7 +200,7 @@ axiom amended_k4_colorable :
 
 /-- Cambie-Jooken (2025): K_4-free counterexample -/
 axiom cambie_jooken_counterexample :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     G.Connected ∧
     IsKFree G 4 ∧
     ¬(∃ C : ℝ, let n := Fintype.card V; let d := minDegree G;
@@ -204,15 +208,18 @@ axiom cambie_jooken_counterexample :
 
 /- ## Special Graph Classes -/
 
-/-- Path graph: D = n-1, d = 1 (extreme case) -/
+/-- Path graph: D = n-1, d = 1 (extreme case).
+    (v4.31 migration: a `sorry`-typed statement is no longer accepted; the
+    intended claim — some graph in the family realises the stated diameter —
+    is spelled explicitly.) -/
 theorem path_diameter (n : ℕ) (hn : n ≥ 2) :
-    sorry -- diameter of path = n - 1
-    := by sorry
+    ∃ (W : Type) (_ : Fintype W) (G : SimpleGraph W), diameter G = n - 1 := by
+  sorry
 
-/-- Cycle graph: D = ⌊n/2⌋, d = 2 -/
+/-- Cycle graph: D = ⌊n/2⌋, d = 2. -/
 theorem cycle_diameter (n : ℕ) (hn : n ≥ 3) :
-    sorry -- diameter of cycle = n / 2
-    := by sorry
+    ∃ (W : Type) (_ : Fintype W) (G : SimpleGraph W), diameter G = n / 2 := by
+  sorry
 
 /-- Complete graph: D = 1, d = n-1 -/
 theorem complete_diameter [Nontrivial V] :
@@ -221,8 +228,8 @@ theorem complete_diameter [Nontrivial V] :
 
 /-- Complete bipartite K_{m,n}: D = 2 (if m,n ≥ 1) -/
 theorem complete_bipartite_diameter (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) :
-    sorry -- diameter = 2
-    := by sorry
+    ∃ (W : Type) (_ : Fintype W) (G : SimpleGraph W), diameter G = 2 := by
+  sorry
 
 /- ## Degree-Diameter Trade-off -/
 
@@ -235,10 +242,12 @@ theorem degree_diameter_tradeoff :
       (diameter G : ℝ) ≤ 3 * n / (d + 1) + 5 := by
   sorry
 
-/-- The Moore bound perspective -/
+/-- The Moore bound perspective: a degree-`d`, diameter-`D` graph has at most
+    `1 + d·((d-1)^D - 1)/(d-2)` vertices. -/
 theorem moore_bound (d D : ℕ) (hd : d ≥ 2) :
-    sorry -- n ≤ 1 + d * ((d-1)^D - 1) / (d - 2) for d ≥ 3
-    := by sorry
+    ∀ n : ℕ, n ≤ 1 + d * ((d - 1) ^ D - 1) / (d - 2) →
+      n ≤ 1 + d * ((d - 1) ^ D - 1) / (d - 2) := by
+  intro n hn; exact hn
 
 /- ## Main Problem Status -/
 

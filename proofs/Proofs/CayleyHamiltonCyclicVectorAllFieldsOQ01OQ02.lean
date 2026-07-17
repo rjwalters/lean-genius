@@ -55,26 +55,36 @@ def cyclicMatrix (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
 private lemma cyclicMatrix_ker (M : Matrix (Fin n) (Fin n) K)
     (v : Fin n → K) (hcyc : IsCyclicVector M v)
     (c : Fin n → K) (hzero : cyclicMatrix M v *ᵥ c = 0) : c = 0 := by
+  rcases Nat.eq_zero_or_pos n with hn0 | hn
+  · subst hn0; funext i; exact i.elim0
   set q := ∑ j : Fin n, Polynomial.C (c j) * X ^ j.val with hq_def
   -- q(M)v = 0: since P*c = (q(M))v entrywise
   have hqv : (aeval M q).mulVec v = 0 := by
     funext i
     have key : (aeval M q).mulVec v i = (cyclicMatrix M v *ᵥ c) i := by
-      simp only [cyclicMatrix, Matrix.mulVec, dotProduct, hq_def,
-                 map_sum, map_mul, aeval_C, aeval_X_pow,
-                 Matrix.sum_mulVec, Matrix.smul_mulVec,
-                 Finset.sum_apply, Pi.smul_apply, ← Algebra.smul_def, smul_eq_mul]
-      congr 1; ext j; ring
+      have hexp : aeval M q = ∑ x : Fin n, c x • M ^ x.val := by
+        simp only [hq_def, map_sum, map_mul, aeval_C, aeval_X_pow, ← Algebra.smul_def,
+                   smul_eq_mul]
+      have hLHS : (aeval M q).mulVec v i = ∑ x : Fin n, c x * (M ^ x.val).mulVec v i := by
+        rw [hexp, Matrix.sum_mulVec, Finset.sum_apply]
+        refine Finset.sum_congr rfl (fun x _ => ?_)
+        rw [Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul]
+      have hRHS : (cyclicMatrix M v *ᵥ c) i =
+          ∑ x : Fin n, (M ^ x.val).mulVec v i * c x := rfl
+      rw [hLHS, hRHS]
+      refine Finset.sum_congr rfl (fun x _ => ?_)
+      ring
     rw [key, congr_fun hzero i, Pi.zero_apply]
   -- deg(q) < n
   have hdeg : q.natDegree < n := by
     apply (natDegree_sum_le _ _).trans_lt
-    rw [Finset.sup_lt_iff (b := n)]
+    rw [Finset.fold_max_lt]
+    refine ⟨hn, ?_⟩
     intro ⟨j, hj⟩ _
     simp only [Function.comp]
     calc (Polynomial.C (c ⟨j, hj⟩) * X ^ j).natDegree
         ≤ (Polynomial.C (c ⟨j, hj⟩)).natDegree + (X ^ j : K[X]).natDegree := natDegree_mul_le
-      _ ≤ 0 + j := add_le_add natDegree_C_le (by simp [natDegree_pow])
+      _ ≤ 0 + j := add_le_add (natDegree_C _).le (by simp [natDegree_pow])
       _ = j := zero_add j
       _ < n := hj
   -- IsCyclicVector: q = 0
@@ -83,9 +93,10 @@ private lemma cyclicMatrix_ker (M : Matrix (Fin n) (Fin n) K)
   funext j
   show c j = 0
   have hcoeff := congr_arg (fun p => p.coeff j.val) hq0
-  simp only [hq_def, Polynomial.finset_sum_coeff, coeff_C_mul, coeff_X_pow, mul_ite,
-             mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true,
-             coeff_zero] at hcoeff
+  simp only [hq_def, Polynomial.finsetSum_coeff, coeff_C_mul, coeff_X_pow, mul_ite,
+             mul_one, mul_zero, Fin.val_eq_val, Finset.sum_ite_eq, Finset.sum_ite_eq',
+             Finset.mem_univ,
+             if_true, coeff_zero] at hcoeff
   exact hcoeff
 
 theorem cyclicMatrix_injective (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
@@ -247,12 +258,13 @@ private lemma companionMx_pow_e0 (p : K[X]) (hn : 0 < n) :
   induction k with
   | zero =>
     intro _
-    simp [pow_zero, Matrix.one_mulVec]
+    funext i
+    simp [pow_zero, Matrix.one_apply, Pi.single_apply, eq_comm]
   | succ k ih =>
     intro hk
     have hk' : k < n := Nat.lt_of_succ_lt hk
     -- A^(k+1) = A * A^k via pow_succ', so (A^(k+1)).mulVec v = A.mulVec (A^k.mulVec v).
-    rw [pow_succ', Matrix.mul_mulVec, ih hk']
+    rw [pow_succ', ← Matrix.mulVec_mulVec, ih hk']
     funext i
     simp only [Matrix.mulVec, dotProduct]
     rw [Finset.sum_eq_single (⟨k, hk'⟩ : Fin n)]
@@ -269,7 +281,7 @@ private lemma companionMx_pow_e0 (p : K[X]) (hn : 0 < n) :
         rw [if_neg hi, if_neg hineq]
     · -- Off-diagonal term vanishes via Pi.single
       intro j _ hjne
-      have hpi : (Pi.single (⟨k, hk'⟩ : Fin n) (1 : K)) j = 0 := by
+      have hpi : (Pi.single (⟨k, hk'⟩ : Fin n) (1 : K) : Fin n → K) j = 0 := by
         simp only [Pi.single_apply, if_neg hjne]
       rw [hpi, mul_zero]
     · intro h; exact absurd (Finset.mem_univ _) h
@@ -289,7 +301,7 @@ private theorem companionMx_isCyclic_e0 (p : K[X]) (hn : 0 < n) :
     rw [aeval_eq_sum_range_natDegree q (companionMx p), sum_mulVec_local,
         Finset.sum_apply] at h_at_k
     -- h_at_k : ∑ j ∈ range (deg q + 1), (q.coeff j • C^j).mulVec e0 ⟨k, hk⟩ = 0
-    rcases le_or_lt k q.natDegree with hkd | hkd
+    rcases le_or_gt k q.natDegree with hkd | hkd
     · -- Case k ≤ deg q: isolate j = k in the sum.
       have hk_in : k ∈ Finset.range (q.natDegree + 1) :=
         Finset.mem_range.mpr (Nat.lt_succ_of_le hkd)
@@ -435,7 +447,8 @@ private lemma companionMx_mulVec_eNm1 (p : K[X]) (hn : 0 < n) :
     rw [if_pos hnstep]
   · -- Off-diagonal: Pi.single is zero away from ⟨n-1, _⟩.
     intro j _ hjne
-    have hpsi : (Pi.single (⟨n - 1, Nat.sub_lt hn one_pos⟩ : Fin n) (1 : K)) j = 0 := by
+    have hpsi : (Pi.single (⟨n - 1, Nat.sub_lt hn one_pos⟩ : Fin n) (1 : K) : Fin n → K) j
+        = 0 := by
       simp only [Pi.single_apply, if_neg hjne]
     rw [hpsi, mul_zero]
   · intro h; exact absurd (Finset.mem_univ _) h
@@ -451,7 +464,7 @@ private lemma companionMx_pow_n_eq_lastCol_e0 (p : K[X]) (hn : 0 < n) :
   have hpow_eq : (companionMx (n := n) p) ^ n =
       (companionMx (n := n) p) ^ (n - 1 + 1) := by
     congr 1; omega
-  rw [hpow_eq, pow_succ', Matrix.mul_mulVec,
+  rw [hpow_eq, pow_succ', ← Matrix.mulVec_mulVec,
       companionMx_pow_e0 p hn (n - 1) hnn1]
   exact companionMx_mulVec_eNm1 p hn
 
@@ -496,7 +509,7 @@ private lemma aeval_companionMx_p_mulVec_e0_zero
       simp only [Pi.smul_apply, smul_eq_mul]
       have hne : i ≠ (⟨k, hk_lt_n⟩ : Fin n) := by
         intro heq; exact hkne (congrArg Fin.val heq).symm
-      have hpsi : (Pi.single (⟨k, hk_lt_n⟩ : Fin n) (1 : K)) i = 0 := by
+      have hpsi : (Pi.single (⟨k, hk_lt_n⟩ : Fin n) (1 : K) : Fin n → K) i = 0 := by
         rw [Pi.single_apply, if_neg hne]
       rw [hpsi, mul_zero]
     · -- Vacuous: i.val ∈ range n always.
@@ -533,7 +546,8 @@ private lemma matrix_eq_zero_of_mulVec_basis
   have h_at_i := congr_fun (h j) i
   -- A.mulVec (Pi.single j 1) i = ∑ k, A i k * Pi.single j 1 k = A i j.
   simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
-             Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.zero_apply] at h_at_i
+             Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true,
+             Pi.zero_apply] at h_at_i
   rw [Matrix.zero_apply]
   exact h_at_i
 
@@ -550,21 +564,19 @@ private lemma aeval_companionMx_p_mulVec_ek_zero
   have hek_eq : (Pi.single k (1 : K) : Fin n → K) =
       ((companionMx (n := n) p) ^ k.val).mulVec (Pi.single (⟨0, hn⟩ : Fin n) 1) := by
     rw [companionMx_pow_e0 p hn k.val k.isLt]
-    have hkeq : (⟨k.val, k.isLt⟩ : Fin n) = k := Fin.ext rfl
-    rw [hkeq]
   rw [hek_eq]
   -- Collapse two consecutive mulVecs into a single matrix product.
-  rw [← Matrix.mulVec_mulVec]
+  rw [Matrix.mulVec_mulVec]
   -- Commute aeval C p past C^{k.val} via the AlgHom + K[X] commutativity.
   have hcomm :
       aeval (companionMx (n := n) p) p * (companionMx (n := n) p) ^ k.val =
         (companionMx (n := n) p) ^ k.val * aeval (companionMx (n := n) p) p := by
     have hk_eq_aeval :
         (companionMx (n := n) p) ^ k.val =
-          aeval (companionMx (n := n) p) (X ^ k.val) := by
+          aeval (companionMx (n := n) p) ((X : K[X]) ^ k.val) := by
       rw [map_pow, aeval_X]
     rw [hk_eq_aeval, ← map_mul, ← map_mul, mul_comm p (X ^ k.val)]
-  rw [hcomm, Matrix.mulVec_mulVec,
+  rw [hcomm, ← Matrix.mulVec_mulVec,
       aeval_companionMx_p_mulVec_e0_zero p hp_monic hp_deg hn,
       Matrix.mulVec_zero]
 
@@ -658,7 +670,7 @@ theorem minpoly_companionMx_eq
   -- natDegree p = natDegree minpoly + natDegree c.
   have hdeg_split :
       p.natDegree = (minpoly K (companionMx (n := n) p)).natDegree + c.natDegree := by
-    rw [hc]
+    conv_lhs => rw [hc]
     exact Polynomial.natDegree_mul hmin_ne hc_ne
   rw [hp_deg, hmin_deg] at hdeg_split
   have hc_deg : c.natDegree = 0 := by omega
@@ -667,7 +679,8 @@ theorem minpoly_companionMx_eq
     have hlc_split :
         p.leadingCoeff =
           (minpoly K (companionMx (n := n) p)).leadingCoeff * c.leadingCoeff := by
-      rw [hc]; exact Polynomial.leadingCoeff_mul _ _
+      conv_lhs => rw [hc]
+      exact Polynomial.leadingCoeff_mul _ _
     rw [hp_monic.leadingCoeff, hmin_monic.leadingCoeff, one_mul] at hlc_split
     exact hlc_split.symm
   -- c = 1: a polynomial of natDegree 0 is its constant coeff (= leadingCoeff = 1).

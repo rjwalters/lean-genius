@@ -46,7 +46,7 @@ theorem nat_div_two_pow_nonneg (n : ℕ) :
 -- Aristotle target: if a >= n then 2^n <= 2^a
 theorem two_pow_mono {a n : ℕ} (h : n ≤ a) :
     (2 : ℝ) ^ n ≤ (2 : ℝ) ^ a := by
-  exact pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) h
+  exact pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ 2) h
 
 -- Aristotle target: n/2^n -> 0 as n -> infinity
 theorem nat_div_two_pow_tendsto_zero :
@@ -61,27 +61,26 @@ theorem nat_div_two_pow_tendsto_zero :
 
 -- Aristotle target: telescoping sum - a(n) = a(0) + sum of gaps
 theorem strictMono_telescope (f : ℕ → ℕ) (hf : StrictMono f) (n : ℕ) :
-    f n = f 0 + ∑ i in Finset.range n, (f (i + 1) - f i) := by
+    f n = f 0 + ∑ i ∈ Finset.range n, (f (i + 1) - f i) := by
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ, ← Nat.add_sub_cancel (f (n + 1)),
-        show f (n + 1) - f (n + 1) + f (n + 1) = f (n + 1) from by omega]
+    rw [Finset.sum_range_succ]
     have : f n < f (n + 1) := hf (by omega)
     omega
 
 -- Aristotle target: if all terms in a sum are >= M then sum >= M * n
 theorem finset_sum_ge_of_ge {M : ℝ} {f : ℕ → ℝ} {n : ℕ}
     (hf : ∀ i ∈ Finset.range n, f i ≥ M) :
-    ∑ i in Finset.range n, f i ≥ M * n := by
-  calc ∑ i in Finset.range n, f i ≥ ∑ _ in Finset.range n, M :=
+    ∑ i ∈ Finset.range n, f i ≥ M * n := by
+  calc ∑ i ∈ Finset.range n, f i ≥ ∑ _ ∈ Finset.range n, M :=
         Finset.sum_le_sum hf
-    _ = M * n := by simp [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    _ = M * n := by simp [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_comm]
 
 -- Aristotle target: constant / n -> 0
 theorem const_div_n_tendsto_zero (c : ℝ) :
     Tendsto (fun n : ℕ => c / (n : ℝ)) atTop (nhds 0) := by
-  apply tendsto_const_div_atTop_nhds_0_nat
+  apply tendsto_const_div_atTop_nhds_zero_nat
 
 /-
   ## Section 3: Helpers for fastGrowth_of_superlogarithmic
@@ -90,14 +89,14 @@ theorem const_div_n_tendsto_zero (c : ℝ) :
 -- Aristotle target: log n -> infinity
 theorem real_log_tendsto_atTop :
     Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
-  Real.tendsto_log_nat_atTop
+  Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
 
 -- Aristotle target: if f -> infty and g -> infty then f * g -> infty (for eventually positive)
 theorem tendsto_mul_atTop_of_pos {f g : ℕ → ℝ}
     (hf : Tendsto f atTop atTop) (hg : ∀ᶠ n in atTop, g n > 0)
     (hg' : Tendsto g atTop atTop) :
     Tendsto (fun n => f n * g n) atTop atTop :=
-  Filter.Tendsto.atTop_mul_atTop hf hg'
+  Filter.Tendsto.atTop_mul_atTop₀ hf hg'
 
 -- Aristotle target: sqrt is monotone on nonneg reals
 theorem sqrt_mono {a b : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) :

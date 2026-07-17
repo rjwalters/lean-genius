@@ -31,9 +31,11 @@ References:
 Tags: prime-numbers, intervals, covering, number-theory
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
+
+open scoped Classical
 
 namespace Erdos860
 

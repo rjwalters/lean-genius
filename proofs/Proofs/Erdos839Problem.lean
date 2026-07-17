@@ -121,7 +121,7 @@ theorem valid_seq_linear_growth (a : ValidSeq) :
 
 -- ## Known Results (axioms for deep constructions)
 
-/-- The reciprocal sum can grow at least as fast as c * log log x. -/
+/-  The reciprocal sum can grow at least as fast as c * log log x. -/
 /-- The upper density of a valid sequence. -/
 noncomputable def upperDensity (a : ValidSeq) : ℝ :=
   Filter.limsup (fun N : ℕ =>
@@ -172,7 +172,7 @@ private lemma frequently_lt_of_lt_limsup (a : ValidSeq) (c : ℝ)
   by_contra h
   rw [Filter.not_frequently] at h
   have h_ev : ∀ᶠ N in Filter.atTop, countRatio a N ≤ c :=
-    h.mono fun _ hn => le_of_not_lt hn
+    h.mono fun _ hn => le_of_not_gt hn
   linarith [Filter.limsup_le_of_le (countRatio_isCoboundedUnder a) h_ev]
 
 /-- For a strictly increasing sequence, if the counting function at N
@@ -222,7 +222,7 @@ theorem liminf_finite :
   set cnt := ((Finset.range N).filter (fun n => a.val n ≤ N)).card with hcnt_def
   have h_Nlt4cnt : (N : ℝ) < 4 * (cnt : ℝ) := by
     unfold countRatio at hcount_ratio
-    rw [div_lt_div_iff (by norm_num : (0 : ℝ) < 4)
+    rw [div_lt_div_iff₀ (by norm_num : (0 : ℝ) < 4)
         (by exact_mod_cast hN_pos : (0 : ℝ) < (N : ℝ))] at hcount_ratio
     linarith
   -- cnt ≥ M + 2 (so cnt - 1 ≥ M + 1 > M)
@@ -243,7 +243,7 @@ theorem liminf_finite :
   -- a(cnt-1)/(cnt-1+1) = a(cnt-1)/cnt ≤ N/cnt < 4
   rw [h_cast_eq]
   have h_cnt_pos : (0 : ℝ) < (cnt : ℝ) := by exact_mod_cast (show 0 < cnt by omega)
-  rw [div_le_iff h_cnt_pos]
+  rw [div_le_iff₀ h_cnt_pos]
   calc (a.val (cnt - 1) : ℝ) ≤ (N : ℝ) := by exact_mod_cast h_bound
     _ ≤ 4 * (cnt : ℝ) := by linarith
 
@@ -251,5 +251,5 @@ end LiminfFinite
 
 -- ## Main Open Questions
 
-/-- Erdos Problem #839, Question 1: Is lim sup(a_n/n) = infinity? -/
-/-- Erdos Problem #839, Question 2: Does the logarithmic density vanish? -/
+/-  Erdos Problem #839, Question 1: Is lim sup(a_n/n) = infinity? -/
+/- Erdos Problem #839, Question 2: Does the logarithmic density vanish? -/

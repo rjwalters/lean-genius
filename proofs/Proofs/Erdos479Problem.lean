@@ -16,13 +16,7 @@ Reference: https://erdosproblems.com/479
 OEIS: A036236 (minimal n for each k)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Int.ModEq
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.Finite.Basic
-import Mathlib.Data.Set.Card
+import Mathlib
 
 open Nat Set
 
@@ -56,7 +50,7 @@ For n > 2: If n is odd, then 2^n is even and n is odd, so 2^n ≢ 1 (mod n).
            In particular, 2^n ≢ 1 (mod n) since 1 ≢ 0 (mod 2).
 -/
 
-/--
+/- 
 For n > 1, we have 2^n ≢ 1 (mod n).
 This is why Graham's conjecture requires k ≠ 1.
 -/
@@ -109,14 +103,19 @@ For small k, the smallest n such that 2^n ≡ k (mod n) can be enormous.
 For k = 2, all odd primes p satisfy 2^p ≡ 2 (mod p) by Fermat's Little Theorem.
 -/
 theorem odd_primes_give_two (p : ℕ) (hp : Nat.Prime p) (_hodd : p > 2) :
-    p ∈ SolutionSet 2 :=
-  ⟨hp.pos, fermat_little p hp⟩
+    p ∈ SolutionSet 2 := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  refine ⟨hp.pos, ?_⟩
+  -- 2^p ≡ 2 (mod p) by Fermat's little theorem: (2 : ZMod p)^p = 2.
+  rw [← ZMod.intCast_eq_intCast_iff]
+  push_cast
+  exact ZMod.pow_card (2 : ZMod p)
 
-/--
+/- 
 For k = 3, the smallest solution is n = 4700063497.
 This huge value illustrates the computational difficulty.
 -/
-/--
+/- 
 For any n < 4700063497, we have 2^n ≢ 3 (mod n).
 -/
 /-
@@ -142,8 +141,7 @@ theorem fermat_little (p : ℕ) (hp : Nat.Prime p) :
     (2 : ℤ) ^ p ≡ 2 [ZMOD p] := by
   haveI : Fact (Nat.Prime p) := ⟨hp⟩
   -- In ZMod p, x^p = x for all x (Fermat's Little Theorem for finite fields)
-  have key : (2 : ZMod p) ^ p = 2 := by
-    rw [← ZMod.card p]; exact FiniteField.pow_card _
+  have key : (2 : ZMod p) ^ p = 2 := ZMod.pow_card (2 : ZMod p)
   -- This gives p ∣ (2^p - 2) as integers
   have hdvd : (p : ℤ) ∣ ((2 : ℤ) ^ p - 2) := by
     rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]

@@ -67,14 +67,14 @@ def ErdosProblem241 : Prop :=
 ## Section IV: The Bose–Chowla Lower Bound
 -/
 
-/-- Bose and Chowla (1962) proved that f(N) ≥ (1+o(1)) · N^{1/3}.
+/-  Bose and Chowla (1962) proved that f(N) ≥ (1+o(1)) · N^{1/3}.
 They constructed explicit B₃ sets of this size using finite fields. -/
 
 /-
 ## Section V: Green's Upper Bound
 -/
 
-/-- Green (2001) proved f(N) ≤ ((7/2)^{1/3} + o(1)) · N^{1/3},
+/-  Green (2001) proved f(N) ≤ ((7/2)^{1/3} + o(1)) · N^{1/3},
 where (7/2)^{1/3} ≈ 1.519. This is the best known upper bound. -/
 
 /-
@@ -105,19 +105,19 @@ def BoseChowlaConjecture (h : ℕ) : Prop :=
       (1 - ε) * (N : ℝ) ^ (1 / (h : ℝ)) ≤ (maxBhSize h N : ℝ) ∧
       (maxBhSize h N : ℝ) ≤ (1 + ε) * (N : ℝ) ^ (1 / (h : ℝ))
 
-/-- The case h = 2 (Sidon sets) is resolved: Problem #30. -/
+/-  The case h = 2 (Sidon sets) is resolved: Problem #30. -/
 
-/-- Bose–Chowla lower bound holds for all h ≥ 2. -/
+/-  Bose–Chowla lower bound holds for all h ≥ 2. -/
 
 /-
 ## Section VII: Known Small B₃ Sets
 -/
 
-/-- Example: {1, 5, 14, 30} is a B₃ set.
+/-  Example: {1, 5, 14, 30} is a B₃ set.
 All 20 ordered triple sums (a ≤ b ≤ c) are distinct:
 3, 7, 11, 15, 16, 20, 24, 29, 32, 33, 36, 40, 42, 45, 49, 58, 61, 65, 74, 90.
 
 Note: The previously claimed {1,2,4,8} is NOT B₃ since 1+1+4 = 2+2+2 = 6. -/
 
-/-- The trivial upper bound: a B₃ set in {1,...,N} has at most
+/- The trivial upper bound: a B₃ set in {1,...,N} has at most
 O(N^{1/3}) elements since distinct sums lie in {3,...,3N}. -/

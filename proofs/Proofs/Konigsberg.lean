@@ -3,10 +3,7 @@ Copyright (c) 2022 Kyle Miller. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Kyle Miller, enhanced for lean-genius
 -/
-import Mathlib.Combinatorics.SimpleGraph.Trails
-import Mathlib.Algebra.Ring.Parity
-import Mathlib.Tactic.DeriveFintype
-import Mathlib.Tactic.NormNum
+import Mathlib
 
 /-!
 # Königsberg Bridges Problem
@@ -111,8 +108,8 @@ symmetric and irreflexive (no self-loops).
 @[simps]
 def graph : SimpleGraph Verts where
   Adj v w := adj v w
-  symm := by dsimp [Symmetric, adj]; decide
-  loopless := by dsimp [Irreflexive, adj]; decide
+  symm := by constructor; dsimp [Symmetric, adj]; decide
+  loopless := by constructor; dsimp [Irreflexive, adj]; decide
 
 instance : DecidableRel graph.Adj := fun a b => inferInstanceAs <| Decidable (adj a b)
 
@@ -156,7 +153,9 @@ lemma not_even_degree_iff (w : Verts) :
 lemma setOf_odd_degree_eq :
     {v | Odd (graph.degree v)} = {Verts.V1, Verts.V2, Verts.V3, Verts.V4} := by
   ext w
-  simp [not_even_degree_iff, Nat.odd_iff_not_even]
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff,
+    degree_eq_degree, ← Nat.not_even_iff_odd]
+  exact not_even_degree_iff w
 
 /-!
 ## Part 6: The Main Theorem

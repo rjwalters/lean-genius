@@ -156,7 +156,7 @@ theorem lebesgueFunction_ge_one (nodes : Fin n → ℝ) (x : ℝ)
 The Lebesgue constant grows logarithmically in the number of nodes.
 -/
 
-/-- **Erdős's Lower Bound (1961):**
+/-  **Erdős's Lower Bound (1961):**
 For any choice of nodes in [-1,1],
   max_{x∈[-1,1]} Lₙ(x) > (2/π) log(n) - O(1)
 
@@ -175,7 +175,7 @@ theorem chebyshevNodes_in_interval (n : ℕ) (hn : n ≥ 1) (k : Fin n) :
   unfold chebyshevNodes
   exact Set.mem_Icc.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
 
-/-- **Optimal Growth Rate:**
+/-  **Optimal Growth Rate:**
 For Chebyshev nodes, the Lebesgue constant grows as (2/π) log(n) + O(1).
 This is asymptotically optimal. -/
 /- ## Part IV: The Main Questions
@@ -256,7 +256,7 @@ This is much worse than the optimal log(n) growth. -/
 noncomputable def equidistantNodes (n : ℕ) : Fin n → ℝ :=
   fun k => -1 + 2 * k.val / (n - 1)
 
-/-- **Equidistant nodes have exponentially growing Lebesgue constants:**
+/-  **Equidistant nodes have exponentially growing Lebesgue constants:**
 Λₙ ≥ 2^(n/4) for equidistant nodes when n is large enough. -/
 /- ## Part VII: Summary
 

@@ -206,7 +206,7 @@ theorem primeSquares3mod4_divisibility_free : IsDivisibilityFree primeSquares3mo
 def HasDensityZero (A : Set ℕ) : Prop :=
   Tendsto (fun N => (countingFunction A N : ℝ) / N) atTop (nhds 0)
 
-/-- Erdős-Sárközy (1970): Divisibility-free sets have density 0 -/
+/-  Erdős-Sárközy (1970): Divisibility-free sets have density 0 -/
 /- ## Question 1: Can we achieve √N density? -/
 
 /-- The liminf of |A ∩ {1,...,N}| / √N -/
@@ -218,7 +218,7 @@ def sqrtLiminfDensity (A : Set ℕ) : Prop :=
 def Erdos12Question1 : Prop :=
   ∃ A : Set ℕ, A.Infinite ∧ IsDivisibilityFree A ∧ sqrtLiminfDensity A
 
-/-- Best known: Elsholtz-Planitzer (2017) construction -/
+/-  Best known: Elsholtz-Planitzer (2017) construction -/
 /- ## Question 2: Sparse infinitely often? -/
 
 /-- Question 2: Is there c > 0 with |A| < N^(1-c) infinitely often? -/
@@ -244,7 +244,7 @@ def Erdos12Question3 : Prop :=
 def IsPairwiseCoprime (A : Set ℕ) : Prop :=
   ∀ a b : ℕ, a ∈ A → b ∈ A → a ≠ b → Nat.Coprime a b
 
-/-- Schoen (2001), Baier (2004): Coprime divisibility-free sets are O(N^(2/3)/log N) -/
+/-  Schoen (2001), Baier (2004): Coprime divisibility-free sets are O(N^(2/3)/log N) -/
 /- ## Properties of primeSquares3mod4 -/
 
 /-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem).
@@ -282,8 +282,8 @@ theorem primeSquares3mod4_is_good :
 noncomputable def primeCount3mod4 (N : ℕ) : ℕ :=
   Set.ncard {p : ℕ | Nat.Prime p ∧ p % 4 = 3 ∧ p ≤ N}
 
-/-- The density bound: |primeSquares3mod4 ∩ [1,N]| ~ √N / (2 log √N) = √N / log N -/
-/-- The variant from formal-conjectures: liminf (count * log N / √N) > 0 -/
+/-  The density bound: |primeSquares3mod4 ∩ [1,N]| ~ √N / (2 log √N) = √N / log N -/
+/-  The variant from formal-conjectures: liminf (count * log N / √N) > 0 -/
 /- ## Main Problem Statement -/
 
 /-- Erdős Problem #12: All three questions (OPEN) -/

@@ -378,7 +378,7 @@ theorem even_card_interior_doors_hyper
     have h1 := hMap p ⟨s', k'⟩ hadj_eq
     rw [h1]
     refine ⟨(isDoorHyper_iff_of_adj vertex adj hadj_vertex hadj_eq).mp hdoor, ?_⟩
-    rw [hadj_back]; exact Option.noConfusion
+    rw [hadj_back]; exact (Option.some_ne_none _)
   · -- fixed-point-free: adjMapHyper adj p ≠ p
     intro p hp
     simp only [S, mem_filter, mem_univ, true_and] at hp

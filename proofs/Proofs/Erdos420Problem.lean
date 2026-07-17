@@ -60,9 +60,9 @@ theorem tau_one : tau 1 = 1 := by
 τ(p) = 2 for prime p (divisors are 1 and p).
 -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
-  simp [tau, Nat.divisors_prime hp]
+  simp [tau, Nat.Prime.divisors hp, Finset.card_pair hp.one_lt.ne]
 
-/--
+/- 
 τ is multiplicative for coprime arguments.
 -/
 
@@ -78,7 +78,7 @@ The number of divisors of n!.
 -/
 def tauFactorial (n : ℕ) : ℕ := tau n.factorial
 
-/--
+/- 
 τ(n!) has a well-known asymptotic formula due to Ramanujan and others.
 For large n:
   log τ(n!) ~ n · log 2 / log log n
@@ -99,7 +99,7 @@ Ratio of divisor counts for extended factorials.
 noncomputable def F (f : ℕ → ℝ) (n : ℕ) : ℝ :=
   (tauFactorial (n + ⌊f n⌋.toNat) : ℝ) / (tauFactorial n : ℝ)
 
-/--
+/- 
 F(f, n) ≥ 1 always, since (n + k)! is divisible by n!.
 -/
 
@@ -119,7 +119,7 @@ can be improved to 1/2 - c for some small c > 0.
 axiom sqrt_gives_infinity :
     ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => Real.sqrt n) n > M
 
-/--
+/- 
 **Improvement:**
 The exponent can be reduced below 1/2.
 -/
@@ -130,7 +130,7 @@ The exponent can be reduced below 1/2.
 Key results from Erdős-Graham-Ivić-Pomerance (1996).
 -/
 
-/--
+/- 
 **EGIP96 Theorem 1:**
 liminf_{n→∞} F(c log n, n) = 1 for any c > 0.
 
@@ -147,7 +147,7 @@ The exponent 4/9 can be improved slightly.
 axiom four_ninths_gives_infinity :
     ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M
 
-/--
+/- 
 **EGIP96 Theorem 3:**
 If f(n) = o((log n)²), then F(f, n) ~ 1 for almost all n.
 
@@ -192,7 +192,7 @@ theorem bounded_gaps_consequence :
     exact ⟨k, hk⟩
   · exact hg
 
-/--
+/- 
 **Cramér's Conjecture Implication:**
 If Cramér's conjecture holds (prime gaps are O((log p)²)),
 then lim F(g(n) · (log n)², n) = ∞ for any g(n) → ∞.
@@ -202,7 +202,7 @@ then lim F(g(n) · (log n)², n) = ∞ for any g(n) → ∞.
 ## Part VII: Open Questions
 -/
 
-/--
+/- 
 **Open Questions:**
 1. Is lim_{n→∞} F((log n)^C, n) = ∞ for large C? (Unknown for specific C values)
 2. Is F(log n, n) everywhere dense in (1, ∞)? (liminf = 1 but density unknown)
@@ -234,14 +234,14 @@ theorem erdos_420 :
 ## Part IX: Legendre's Formula and τ(n!)
 -/
 
-/--
+/- 
 **Connection to τ(n!) Formula:**
 By Legendre's formula, n! = ∏_p p^{⌊n/p⌋ + ⌊n/p²⌋ + ...}
 So τ(n!) = ∏_p (1 + ⌊n/p⌋ + ⌊n/p²⌋ + ...)
 This product over primes ≤ n grows extremely fast.
 -/
 
-/--
+/- 
 **Legendre's Formula:**
 The exponent of prime p in n! is ∑_{i≥1} ⌊n/p^i⌋.
 -/

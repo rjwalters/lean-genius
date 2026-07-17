@@ -242,7 +242,8 @@ theorem fib_succ_le : ∀ b, 0 < b → ∀ a, Nat.fib (steps a b + 1) ≤ b := b
     rcases Nat.eq_zero_or_pos r with hr0 | hr0
     · -- one step: `r = 0`, so `steps a b = 1` and `fib 2 = 1 ≤ b`
       rw [hr0, steps_zero]
-      simpa using hb
+      have hb' : 1 ≤ b := hb
+      simpa using hb'
     · -- `r > 0`: descend a second step to `(r, s)` with `s = b % r`
       have hk : steps b r = steps r (b % r) + 1 := steps_pos b r hr0
       set s := b % r with hs_def

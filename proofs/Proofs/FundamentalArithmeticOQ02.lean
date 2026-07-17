@@ -20,8 +20,7 @@
   - Mathlib: Zsqrtd (ℤ[√d] ring)
 -/
 
-import Mathlib.NumberTheory.Zsqrtd.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace FundamentalArithmeticOQ02
 
@@ -39,19 +38,19 @@ def normZ5 (z : ℤ√(-5)) : ℤ := z.re * z.re + 5 * z.im * z.im
 
 /-- The norm is multiplicative: N(z · w) = N(z) · N(w). -/
 theorem normZ5_mul (z w : ℤ√(-5)) : normZ5 (z * w) = normZ5 z * normZ5 w := by
-  simp only [normZ5, Zsqrtd.mul_def, Zsqrtd.re, Zsqrtd.im]
+  simp only [normZ5, Zsqrtd.re_mul, Zsqrtd.im_mul]
   ring
 
 /-- The norm of a unit is 1: if z · z⁻¹ = 1, then N(z) · N(z⁻¹) = 1. -/
 theorem normZ5_eq_one_of_isUnit (z : ℤ√(-5)) (hu : IsUnit z) : normZ5 z = 1 := by
   obtain ⟨u, rfl⟩ := hu
   have h := normZ5_mul u.val u.inv
-  rw [show u.val * u.inv = 1 from Units.val_inv_eq_inv_val u ▸ by
-    rw [← Units.val_mul, mul_inv_cancel, Units.val_one]] at h
-  simp only [normZ5, Zsqrtd.one_re, Zsqrtd.one_im, mul_zero, add_zero, mul_one] at h
+  rw [u.val_inv] at h
+  simp only [normZ5, Zsqrtd.re_one, Zsqrtd.im_one, mul_zero, add_zero, mul_one] at h
   have hpos_z : 0 ≤ normZ5 u.val := by unfold normZ5; nlinarith [sq_nonneg u.val.re, sq_nonneg u.val.im]
   have hpos_w : 0 ≤ normZ5 u.inv := by unfold normZ5; nlinarith [sq_nonneg u.inv.re, sq_nonneg u.inv.im]
-  omega
+  have hdvd : normZ5 u.val ∣ 1 := ⟨normZ5 u.inv, h⟩
+  rcases Int.isUnit_iff.mp (isUnit_of_dvd_one hdvd) with h1 | h1 <;> omega
 
 -- ============================================================
 -- Part II: The Two Factorizations of 6
@@ -62,12 +61,12 @@ def six : ℤ√(-5) := ⟨6, 0⟩
 
 /-- First factorization: 6 = 2 · 3. -/
 theorem factorization_1 : six = ⟨2, 0⟩ * ⟨3, 0⟩ := by
-  simp [six, Zsqrtd.ext_iff, Zsqrtd.mul_def]; ring_nf; constructor <;> ring
+  simp only [six, Zsqrtd.ext_iff, Zsqrtd.re_mul, Zsqrtd.im_mul]; constructor <;> ring
 
 /-- Second factorization: 6 = (1 + √(-5)) · (1 - √(-5)).
     (1 + √(-5)) · (1 - √(-5)) = 1 - (-5) = 6. -/
 theorem factorization_2 : six = ⟨1, 1⟩ * ⟨1, -1⟩ := by
-  simp [six, Zsqrtd.ext_iff, Zsqrtd.mul_def]; ring_nf; constructor <;> ring
+  simp only [six, Zsqrtd.ext_iff, Zsqrtd.re_mul, Zsqrtd.im_mul]; constructor <;> ring
 
 -- ============================================================
 -- Part III: Norms of the Factors
@@ -125,7 +124,12 @@ theorem one_minus_not_unit : ¬IsUnit (⟨1, -1⟩ : ℤ√(-5)) := by
 theorem no_norm_two_or_three (z : ℤ√(-5)) :
     normZ5 z ≠ 2 ∧ normZ5 z ≠ 3 := by
   unfold normZ5
-  constructor <;> intro h <;> nlinarith [sq_nonneg z.re, sq_nonneg z.im]
+  refine ⟨fun h => ?_, fun h => ?_⟩ <;>
+  · have hb1 : -1 ≤ z.im := by nlinarith [sq_nonneg z.re, sq_nonneg (z.im + 1)]
+    have hb2 : z.im ≤ 1 := by nlinarith [sq_nonneg z.re, sq_nonneg (z.im - 1)]
+    have ha1 : -2 ≤ z.re := by nlinarith [sq_nonneg z.im, sq_nonneg (z.re + 2)]
+    have ha2 : z.re ≤ 2 := by nlinarith [sq_nonneg z.im, sq_nonneg (z.re - 2)]
+    interval_cases z.re <;> interval_cases z.im <;> omega
 
 /-- If normZ5 z = 1, then z is a unit (±1 are the only units in ℤ[√(-5)]).
     a² + 5b² = 1 forces b = 0 and a² = 1, so z · z = 1. -/
@@ -133,7 +137,7 @@ private theorem isUnit_of_normZ5_eq_one {z : ℤ√(-5)} (h : normZ5 z = 1) : Is
   unfold normZ5 at h
   have him : z.im = 0 := by nlinarith [sq_nonneg z.re, sq_nonneg z.im]
   have hre : z.re * z.re = 1 := by nlinarith
-  exact isUnit_of_mul_eq_one z z (by ext <;> simp [him] <;> linarith)
+  exact IsUnit.of_mul_eq_one z (by ext <;> simp [him] <;> linarith)
 
 /-- 2 is irreducible in ℤ[√(-5)]: if 2 = a·b, then a or b is a unit.
     Proof: N(2) = 4 = N(a)·N(b). Since no element has norm 2 or 3,
@@ -171,11 +175,11 @@ theorem two_not_dvd_one_plus : ¬(⟨2, 0⟩ : ℤ√(-5)) ∣ ⟨1, 1⟩ := by
   intro ⟨z, hz⟩
   have hre : 2 * z.re + (-5) * 0 * z.im = 1 := by
     have := congr_arg Zsqrtd.re hz
-    simp [Zsqrtd.mul_def] at this
+    simp [Zsqrtd.re_mul] at this
     linarith
   have him : 2 * z.im = 1 := by
     have := congr_arg Zsqrtd.im hz
-    simp [Zsqrtd.mul_def] at this
+    simp [Zsqrtd.im_mul] at this
     linarith
   omega
 

@@ -38,6 +38,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open SimpleGraph Finset Real
 
 namespace Erdos80
@@ -76,7 +78,7 @@ def isTriangleSaturated (G : SimpleGraph V) : Prop :=
 A book of size m is an edge (u, v) that is shared by at least m triangles.
 The edge is the "spine" and the triangles are the "pages".
 -/
-def bookSize (G : SimpleGraph V) (u v : V) : ℕ :=
+noncomputable def bookSize (G : SimpleGraph V) (u v : V) : ℕ :=
   (Finset.univ.filter fun w => isTriangle G u v w).card
 
 /--
@@ -90,9 +92,9 @@ def hasBook (G : SimpleGraph V) (m : ℕ) : Prop :=
 **Maximum Book Size:**
 The largest book in the graph.
 -/
-noncomputable def maxBookSize (G : SimpleGraph V) : ℕ :=
+noncomputable def maxBookSize [Nonempty V] (G : SimpleGraph V) : ℕ :=
   Finset.sup' (Finset.univ ×ˢ Finset.univ).attach
-    (by simp [Finset.attach_nonempty_iff])
+    (by simp [Finset.attach_nonempty_iff, Finset.univ_nonempty_iff])
     (fun ⟨⟨u, v⟩, _⟩ => if G.Adj u v then bookSize G u v else 0)
 
 /- ## Part II: The f_c(n) Function
@@ -127,27 +129,27 @@ noncomputable def f (c : ℝ) (n : ℕ) : ℕ :=
 The phase transition at c = 1/4.
 -/
 
-/--
+/- 
 **Alon-Trotter Upper Bound:**
 For c < 1/4: f_c(n) ≪ n^{1/2}
 
 There exist triangle-saturated graphs with cn² edges
 where the maximum book size is O(√n).
 -/
-/--
+/- 
 **Fox-Loh Upper Bound (2012):**
 For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}
 
 This disproves Erdős's conjecture that f_c(n) > n^ε for some ε > 0.
 -/
-/--
+/- 
 **Erdős's Polynomial Conjecture: DISPROVED**
 f_c(n) > n^ε for some ε > 0 is FALSE for c < 1/4.
 Fox-Loh (2012) showed f_c(n) ≤ n^{O(1/log log n)}, which is o(n^ε).
 -/
 /- ## Part IV: Known Lower Bounds -/
 
-/--
+/- 
 **Edwards-Khadziivanov-Nikiforov Bound:**
 For c > 1/4: f_c(n) ≥ n/6
 
@@ -163,7 +165,7 @@ but with very weak (tower-type) bounds.
 axiom regularity_lower_bound (c : ℝ) (hc : c > 0) :
   Filter.Tendsto (fun n => (f c n : ℝ)) Filter.atTop Filter.atTop
 
-/--
+/- 
 **Consequence of regularity:** For any M, eventually f_c(n) > M.
 -/
 /- ## Part V: The Phase Transition -/
@@ -174,7 +176,7 @@ The threshold c = 1/4 separates two regimes:
 - c > 1/4: Linear books (f_c(n) ≥ n/6)
 - c < 1/4: Subpolynomial books (f_c(n) ≤ n^{o(1)})
 -/
-def critical_threshold : ℝ := 1/4
+noncomputable def critical_threshold : ℝ := 1/4
 
 /--
 **Above threshold: Linear growth**
@@ -199,7 +201,7 @@ Is f_c(n) ≫ log n for c < 1/4?
 def erdos_log_conjecture (c : ℝ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f c n : ℝ) ≥ C * Real.log n
 
-/-- The conjecture f_c(n) ≫ log n remains **OPEN** for c < 1/4. -/
+/-  The conjecture f_c(n) ≫ log n remains **OPEN** for c < 1/4. -/
 
 /- ## Part VII: Main Results Summary -/
 

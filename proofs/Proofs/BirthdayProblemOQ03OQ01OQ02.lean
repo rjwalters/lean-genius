@@ -810,7 +810,7 @@ theorem bad_count_general (d n : ℕ) (i j k : Fin n)
       simp only [Finset.mem_filter, Finset.mem_univ, true_and,
                  Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or]
     have hpair_card : ({j, k} : Finset (Fin n)).card = 2 := by
-      rw [Finset.card_insert_of_not_mem (by simp [hjk]), Finset.card_singleton]
+      rw [Finset.card_insert_of_notMem (by simp [hjk]), Finset.card_singleton]
     rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
         Finset.card_univ, Fintype.card_fin, hpair_card]
   -- Step 2: target function space has cardinality d^(n-2).
@@ -944,9 +944,9 @@ theorem bad_count_general_4 (d n : ℕ) (i j k l : Fin n)
                  and_assoc]
     have htriple_card : ({j, k, l} : Finset (Fin n)).card = 3 := by
       rw [show ({j, k, l} : Finset (Fin n)) = insert j (insert k {l}) from rfl,
-          Finset.card_insert_of_not_mem
+          Finset.card_insert_of_notMem
             (by simp [hjk, hjl]),
-          Finset.card_insert_of_not_mem (by simp [hkl]),
+          Finset.card_insert_of_notMem (by simp [hkl]),
           Finset.card_singleton]
     rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
         Finset.card_univ, Fintype.card_fin, htriple_card]
@@ -1131,8 +1131,8 @@ lemma card_strict_triples (n : ℕ) :
     have hjk' : j ≠ k := hjk.ne
     simp only [Finset.mem_powersetCard, Finset.subset_univ, true_and]
     rw [show ({i, j, k} : Finset (Fin n)) = insert i (insert j {k}) from rfl,
-        Finset.card_insert_of_not_mem (by simp [hij', hik']),
-        Finset.card_insert_of_not_mem (by simp [hjk']),
+        Finset.card_insert_of_notMem (by simp [hij', hik']),
+        Finset.card_insert_of_notMem (by simp [hjk']),
         Finset.card_singleton]
   -- (ii) inverse maps 3-element subsets to strict triples
   · intro s hs
@@ -1151,8 +1151,8 @@ lemma card_strict_triples (n : ℕ) :
     have hjk' : j ≠ k := hjk.ne
     have hcard : ({i, j, k} : Finset (Fin n)).card = 3 := by
       rw [show ({i, j, k} : Finset (Fin n)) = insert i (insert j {k}) from rfl,
-          Finset.card_insert_of_not_mem (by simp [hij', hik']),
-          Finset.card_insert_of_not_mem (by simp [hjk']),
+          Finset.card_insert_of_notMem (by simp [hij', hik']),
+          Finset.card_insert_of_notMem (by simp [hjk']),
           Finset.card_singleton]
     -- Build the canonical strict-mono enumeration f : Fin 3 → Fin n via case-split on `m.val`.
     let f : Fin 3 → Fin n := fun m =>
@@ -1473,8 +1473,8 @@ lemma card_tripleSet_of_strict {n : ℕ} {T : Fin n × Fin n × Fin n}
   unfold tripleSet
   rw [show ({T.1, T.2.1, T.2.2} : Finset (Fin n))
         = insert T.1 (insert T.2.1 ({T.2.2} : Finset (Fin n))) from rfl,
-      Finset.card_insert_of_not_mem h_not_mem_1,
-      Finset.card_insert_of_not_mem h_not_mem_2,
+      Finset.card_insert_of_notMem h_not_mem_1,
+      Finset.card_insert_of_notMem h_not_mem_2,
       Finset.card_singleton]
 
 /-- For STRICT triples (canonical sort order), the underlying 3-element set
@@ -1707,11 +1707,11 @@ theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
                  Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or,
                  and_assoc]
     have hquad_card : ({b₁, c₁, b₂, c₂} : Finset (Fin n)).card = 4 := by
-      rw [Finset.card_insert_of_not_mem
+      rw [Finset.card_insert_of_notMem
             (by simp [h₂₃, h₂₅, h₂₆]),
-          Finset.card_insert_of_not_mem
+          Finset.card_insert_of_notMem
             (by simp [h₃₅, h₃₆]),
-          Finset.card_insert_of_not_mem
+          Finset.card_insert_of_notMem
             (by simp [h₅₆]),
           Finset.card_singleton]
     rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
@@ -2125,7 +2125,7 @@ lemma card_overlapPattern_le_one (n : ℕ) :
     (overlapPattern n 1).card ≤ Nat.choose n 5 * 100 := by
   have h := card_overlapPattern_le_generic n 1 (by norm_num)
   -- 6 - 1 = 5, Nat.choose 5 3 = 10, 10² = 100.
-  simpa using h
+  simpa [show Nat.choose 5 3 = 10 by decide] using h
 
 /-- **Layer 3f main bound (k = 2).** `|overlapPattern n 2| ≤ Nat.choose n 4 · 16`.
     Derived from `card_overlapPattern_le_generic` via `Nat.choose 4 3 = 4`. -/

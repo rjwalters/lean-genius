@@ -17,7 +17,7 @@
   - Conlon-Fox-Pham (2021): SOLVED - optimal growth is Θ(r(log N)²)
 
   The solution shows:
-  - Upper bound: ∃ r-Ramsey complete A with |A ∩ [1,N]| ≪ r(log N)²
+  - Upper bound: ∃ r-Ramsey complete A with |A ∩ (_ : 1,N)| ≪ r(log N)²
   - Lower bound: If |A ∩ [1,N]| ≤ cr(log N)² for all large N, then A is
     not r-Ramsey complete (for some universal c > 0)
 
@@ -67,18 +67,18 @@ def HasGrowthAtLeast (A : Set ℕ) (f : ℕ → ℝ) : Prop :=
 
 /- ## Main Results -/
 
-/--
+/- 
 **Burr-Erdős Lower Bound (1985)**:
 For r = 2, if A is Ramsey 2-complete, then A cannot grow slower than (log N)².
 
 More precisely: there exists c > 0 such that no Ramsey 2-complete set A
 can satisfy |A ∩ [1,N]| ≤ c(log N)² for all large N.
 -/
-/--
+/- 
 **Burr-Erdős Upper Bound (1985)**:
 There exists a Ramsey 2-complete set A with |A ∩ [1,N]| ≪ (log N)³.
 -/
-/--
+/- 
 **Burr's Theorem**: The set of k-th powers is Ramsey r-complete for all r, k ≥ 1.
 -/
 /- ## The Solution: Conlon-Fox-Pham (2021) -/
@@ -112,7 +112,7 @@ axiom cfp_lower_bound :
 The optimal growth rate for r-Ramsey complete sets is Θ(r(log N)²).
 
 Combining the upper and lower bounds from Conlon-Fox-Pham:
-- Upper: ∃ r-Ramsey complete A with |A ∩ [1,N]| ≤ C·r(log N)²
+- Upper: ∃ r-Ramsey complete A with |A ∩ (_ : 1,N)| ≤ C·r(log N)²
 - Lower: If |A ∩ [1,N]| ≤ c·r(log N)², then A is not r-Ramsey complete
 
 This resolves the problem for all r ≥ 2.

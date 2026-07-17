@@ -24,10 +24,9 @@ The sequence A389479 in OEIS contains these threshold values.
 Tags: number-theory, binomial-coefficients, frobenius-number, representations
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos435
 
@@ -104,7 +103,7 @@ equals the Hwang-Song formula.
 axiom hwang_song_theorem (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
     frobeniusBinomial n = hwangSongFormula n
 
-/--
+/- 
 **Existence of Non-Representable Numbers:**
 For n not a prime power, there exist numbers that cannot be represented.
 -/
@@ -125,9 +124,18 @@ For n = 6 = 2 · 3, the binomial coefficients are C(6,1)=6, C(6,2)=15, C(6,3)=20
 -/
 example : ¬IsPrimePower 6 := by
   intro ⟨p, k, hp, hk, heq⟩
-  interval_cases k <;> simp_all [Nat.Prime]
+  -- v4.31: interval_cases k needs an explicit upper bound; derive p ≤ 6 and k ≤ 2.
+  have hp2 := hp.two_le
+  have hpdvd : p ∣ 6 := heq ▸ dvd_pow_self p (by omega)
+  have hple : p ≤ 6 := Nat.le_of_dvd (by norm_num) hpdvd
+  have hk2 : k ≤ 2 := by
+    by_contra h; push_neg at h
+    have h8 : (2 : ℕ) ^ 3 ≤ p ^ k :=
+      (Nat.pow_le_pow_left hp2 3).trans (Nat.pow_le_pow_right (by omega) (by omega))
+    omega
+  interval_cases p <;> interval_cases k <;> revert heq <;> revert hp <;> decide
 
-/--
+/- 
 **Formula for n = 6:**
 6 = 2¹ · 3¹, so the formula gives:
   [C(6,2)]·(2-1) + [C(6,3)]·(3-1) - 6 = 15·1 + 20·2 - 6 = 49
@@ -141,7 +149,7 @@ example : ¬IsPrimePower 6 := by
 ## Part V: Why Prime Powers are Special
 -/
 
-/--
+/- 
 **Prime Power Case:**
 If n = p^k, then C(n, p^j) ≡ 0 (mod p) for appropriate j,
 making the representation problem degenerate.
@@ -161,12 +169,12 @@ is key to understanding which numbers are representable.
 ## Part VI: Structure of Representable Set
 -/
 
-/--
+/- 
 **Numerical Semigroup:**
 The representable set forms a numerical semigroup (closed under addition,
 contains 0, has finite complement in ℕ).
 -/
-/--
+/- 
 **GCD of Generators:**
 For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 (otherwise no Frobenius number would exist).
@@ -175,7 +183,7 @@ For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 ## Part VII: Related Results
 -/
 
-/--
+/- 
 **Classical Frobenius Problem:**
 For coprime a, b, the largest non-representable integer is ab - a - b.
 This is the 2-generator case.

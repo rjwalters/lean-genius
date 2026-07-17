@@ -5,8 +5,8 @@
 
   13 of 15 sorries proved manually:
   - IsSquare helpers (4): ⟨2^k, ring⟩, obtain + ring, ring, Nat.one_le_pow
-  - Division arithmetic (4): le_div_iff/div_le_iff + linarith, Nat.cast_pos, div_le_one_of_le
-  - u/exp/sqrt helpers (5): sqrt_nonneg, exp_le_exp.mpr, exp_lt_one_iff.mpr, sqrt_pos_of_pos, div_lt_iff + ring
+  - Division arithmetic (4): le_div_iff₀/div_le_iff₀ + linarith, Nat.cast_pos, div_le_one_of_le
+  - u/exp/sqrt helpers (5): sqrt_nonneg, exp_le_exp.mpr, exp_lt_one_iff.mpr, sqrt_pos_of_pos, div_lt_iff₀ + ring
 
   2 sorries remain for Aristotle:
   - partial_product_cons: complex List.foldl identity (non-trivial associativity)
@@ -24,7 +24,7 @@ namespace Erdos437.Aristotle
 
 /-- 4^k is a perfect square (= (2^k)^2) -/
 lemma isSquare_pow_four (k : ℕ) : IsSquare (4 ^ k) :=
-  ⟨2 ^ k, by ring⟩
+  ⟨2 ^ k, by rw [show (4:ℕ) = 2 * 2 from rfl, mul_pow]⟩
 
 /-- Product of two squares is a square -/
 lemma isSquare_mul (a b : ℕ) (ha : IsSquare a) (hb : IsSquare b) : IsSquare (a * b) := by
@@ -48,7 +48,7 @@ private lemma foldl_mul_acc (xs : List ℕ) (acc : ℕ) :
   induction xs generalizing acc with
   | nil => simp
   | cons h t ih =>
-    simp only [List.foldl_cons]
+    simp only [List.foldl_cons, one_mul]
     rw [ih (acc * h), ih h]
     ring
 
@@ -78,6 +78,7 @@ lemma pow_four_range_product (k : ℕ) :
       rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
       · exact ⟨(n + 1) * (m + 1), by subst hm; ring⟩
       · exact ⟨(m + 1) * (n + 2), by subst hm; ring⟩
+    show n * (n + 1) / 2 + (n + 1) = (n + 1) * (n + 2) / 2
     linarith [Nat.div_mul_cancel heven, Nat.div_mul_cancel heven2,
               show n * (n + 1) + 2 * (n + 1) = (n + 1) * (n + 2) from by ring]
 
@@ -87,11 +88,11 @@ lemma pow_four_range_product (k : ℕ) :
 
 /-- If a ≥ x * c and x > 0, then a / x ≥ c for reals -/
 lemma div_ge_of_ge_mul (a x c : ℝ) (hx : x > 0) (h : a ≥ x * c) : a / x ≥ c :=
-  (le_div_iff hx).mpr (by linarith)
+  (le_div_iff₀ hx).mpr (by linarith)
 
 /-- If a ≤ x * c and x > 0, then a / x ≤ c for reals -/
 lemma div_le_of_le_mul (a x c : ℝ) (hx : x > 0) (h : a ≤ x * c) : a / x ≤ c :=
-  (div_le_iff hx).mpr (by linarith)
+  (div_le_iff₀ hx).mpr (by linarith)
 
 /-- x > 0 as real when x ≥ 1 as natural -/
 lemma cast_pos_of_ge_one (x : ℕ) (hx : x ≥ 1) : (x : ℝ) > 0 :=
@@ -99,7 +100,7 @@ lemma cast_pos_of_ge_one (x : ℕ) (hx : x ≥ 1) : (x : ℝ) > 0 :=
 
 /-- (L x : ℝ) / x is in [0, 1] when L x ≤ x -/
 lemma div_L_le_one (L x : ℕ) (h : L ≤ x) (hx : x ≥ 1) : (L : ℝ) / x ≤ 1 :=
-  div_le_one_of_le (by exact_mod_cast h) (by exact_mod_cast (show 0 ≤ x from by omega))
+  div_le_one_of_le₀ (by exact_mod_cast h) (by exact_mod_cast (show 0 ≤ x from by omega))
 
 /-
   ## Section 4: u(x) = sqrt(log x * log log x) Properties
@@ -126,6 +127,6 @@ lemma sqrt_two_pos : Real.sqrt 2 > 0 :=
 lemma inv_sqrt_two_lt_sqrt_two : 1 / Real.sqrt 2 < Real.sqrt 2 := by
   have hpos : Real.sqrt 2 > 0 := Real.sqrt_pos_of_pos (by norm_num)
   have h2 : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
-  rw [div_lt_iff hpos, h2]; norm_num
+  rw [div_lt_iff₀ hpos, h2]; norm_num
 
 end Erdos437.Aristotle

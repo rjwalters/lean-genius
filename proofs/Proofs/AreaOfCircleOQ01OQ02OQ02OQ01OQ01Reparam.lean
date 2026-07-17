@@ -45,7 +45,7 @@
   two ends) was previously written, `0`-axiom, in the sibling file
   `AreaOfCircleOQ01OQ03OQ01.lean` (`ArcLengthReparam.exists_arclength_reparam'`). However, as
   of Mathlib v4.26.0 **both that sibling and the parent `AreaOfCircleOQ01OQ02OQ02OQ01.lean`
-  fail to build** (≈40 errors: `Real.contDiff_cos`, `Filter.eventually_of_forall`,
+  fail to build** (≈40 errors: `Real.contDiff_cos`, `Filter.Eventually.of_forall`,
   `HasFDerivAtFilter.congr` were removed/renamed). They are gallery entries marked
   "verified" that have silently bit-rotted (audits use a cheap grep check, not `lake build`).
   This file therefore deliberately depends on **Mathlib only**, importing neither, so that it
@@ -191,7 +191,7 @@ theorem integral_deriv_x_eq_zero : (∫ t in (0:ℝ)..(2 * π), deriv γ.x t) = 
   have hsub : (∫ t in (0:ℝ)..(2 * π), deriv γ.x t) = γ.x (2 * π) - γ.x 0 := by
     apply intervalIntegral.integral_deriv_eq_sub
     · intro t _
-      exact (γ.smooth_x.differentiable le_rfl).differentiableAt
+      exact (γ.smooth_x.differentiable one_ne_zero).differentiableAt
     · exact (continuous_deriv_x γ).intervalIntegrable _ _
   rw [hsub]
   have h := γ.periodic_x 0
@@ -203,7 +203,7 @@ theorem integral_deriv_y_eq_zero : (∫ t in (0:ℝ)..(2 * π), deriv γ.y t) = 
   have hsub : (∫ t in (0:ℝ)..(2 * π), deriv γ.y t) = γ.y (2 * π) - γ.y 0 := by
     apply intervalIntegral.integral_deriv_eq_sub
     · intro t _
-      exact (γ.smooth_y.differentiable le_rfl).differentiableAt
+      exact (γ.smooth_y.differentiable one_ne_zero).differentiableAt
     · exact (continuous_deriv_y γ).intervalIntegrable _ _
   rw [hsub]
   have h := γ.periodic_y 0

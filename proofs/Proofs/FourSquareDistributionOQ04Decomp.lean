@@ -87,7 +87,7 @@ a single coordinate's square never exceeds the total `n`, so `|fᵢ| ≤ n`. -/
 
 theorem abs_le_sq (x : ℤ) : |x| ≤ x ^ 2 := by
   rw [show x ^ 2 = |x| ^ 2 from (sq_abs x).symm]
-  rcases le_or_lt |x| 0 with h | h
+  rcases le_or_gt |x| 0 with h | h
   · have hx : |x| = 0 := le_antisymm h (abs_nonneg x)
     simp [hx]
   · have h1 : (1 : ℤ) ≤ |x| := by omega
@@ -100,7 +100,7 @@ a filter on the finite box `[-n, n]^m`. `mem_reps_iff` shows the box never clips
 real representation, so `(reps m n).card = r_m(n)`. -/
 
 /-- Integer `m`-tuples `f` with `Σ (f i)² = n`, as a `Finset`. -/
-def reps (m n : ℕ) : Finset (Fin m → ℤ) :=
+noncomputable def reps (m n : ℕ) : Finset (Fin m → ℤ) :=
   (Fintype.piFinset (fun _ : Fin m => Finset.Icc (-(n : ℤ)) (n : ℤ))).filter
     (fun f => ∑ i, (f i) ^ 2 = (n : ℤ))
 

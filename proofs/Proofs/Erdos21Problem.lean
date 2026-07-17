@@ -24,7 +24,7 @@ Conjectured: f(n) = 3n + O(1)
 Tags: combinatorics, intersecting-families, projective-planes, probabilistic-method
 -/
 
-import Mathlib.Combinatorics.SetFamily.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
@@ -123,18 +123,18 @@ The proof counts how many (n-1)-sets each family member can cover.
 axiom erdos_lovasz_lower_bound (n : ℕ) (hn : n ≥ 1) :
     (f n : ℚ) ≥ 8/3 * n - 3
 
-/-- Simplified lower bound: f(n) ≥ 2n for n ≥ 2.
+/-  Simplified lower bound: f(n) ≥ 2n for n ≥ 2.
 Follows from (8/3)n - 3 ≥ 2n for n ≥ 9, and small cases are checked directly. -/
 
 /- ## Part V: Upper Bounds and Resolution
 -/
 
-/--
+/- 
 **Original Erdős-Lovász Upper Bound (1975):**
 f(n) ≪ n^(3/2) log n using projective plane constructions.
 -/
 
-/--
+/- 
 **Kahn's First Improvement (1992):**
 f(n) ≪ n log n using improved probabilistic methods.
 -/
@@ -188,7 +188,7 @@ structure ProjectivePlane (q : ℕ) where
   two_lines_meet : ∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card = 1
   num_lines : lines.card = q^2 + q + 1
 
-/--
+/- 
 **Erdős-Lovász Construction:**
 When n-1 is a prime power, the lines of a projective plane of order n-1
 form an intersecting family.
@@ -197,7 +197,7 @@ form an intersecting family.
 /- ## Part VIII: Properties of Covering Families
 -/
 
-/--
+/- 
 **Intersection Structure:**
 Any two members of a covering family share at most one element.
 -/
@@ -215,7 +215,7 @@ def IsSunflower (F : Finset (Finset α)) : Prop :=
 /- ## Part X: Kahn's Probabilistic Argument
 -/
 
-/--
+/- 
 **Kahn's Method:**
 When n-1 is a prime power, randomly select O(n) lines from a projective
 plane. With positive probability, this covers all (n-1)-sets.

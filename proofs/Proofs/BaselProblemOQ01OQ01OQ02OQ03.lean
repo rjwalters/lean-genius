@@ -1,12 +1,4 @@
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Algebra.GCDMonoid.Finset
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Choose.Factorization
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hanson's Bound: lcm(1,...,n) ≤ 3^n
@@ -267,7 +259,7 @@ theorem lcmRange_dvd_prod_prime_powers (n : ℕ) :
     intro p _ hp_not
     have h_zero : m.factorization p = 0 := by
       rw [← Nat.support_factorization] at hp_not
-      exact Finsupp.not_mem_support_iff.mp hp_not
+      exact Finsupp.notMem_support_iff.mp hp_not
     rw [h_zero, pow_zero]
   rw [hm_eq]
   -- Pointwise divisibility of factors over `P`.

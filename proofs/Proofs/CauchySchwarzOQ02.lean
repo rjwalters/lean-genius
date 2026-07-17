@@ -1,9 +1,4 @@
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Integral.MeanInequalities
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Bunyakovsky-Schwarz Integral Inequality: Extensions and Applications
@@ -63,7 +58,7 @@ theorem cauchy_schwarz_from_holder {ι : Type*} (s : Finset ι) (f g : ι → �
       (∑ i ∈ s, f i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) *
       (∑ i ∈ s, g i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) := by
   apply holder_finite_nnreal s f g
-  exact Real.HolderConjugate.conjExponent (by norm_num : (1 : ℝ) < 2)
+  exact Real.HolderConjugate.two_two
 
 /-
 ## Part 2: L² Norm and Integral Bridges
@@ -75,7 +70,7 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
 -- L² membership is equivalent to integrability of squared norm
 theorem memLp_two_iff_sq_integrable {f : α → ℝ} (hf : AEStronglyMeasurable f μ) :
-    Memℒp f 2 μ ↔ Integrable (fun x => ‖f x‖ ^ 2) μ :=
+    MemLp f 2 μ ↔ Integrable (fun x => ‖f x‖ ^ 2) μ :=
   memLp_two_iff_integrable_sq_norm hf
 
 -- The inner product of L² functions is integrable
@@ -184,18 +179,25 @@ theorem weighted_cauchy_schwarz {n : ℕ} (w a b : Fin n → ℝ)
     (hw : ∀ i, 0 ≤ w i) :
     (∑ i, w i * a i * b i) ^ 2 ≤
       (∑ i, w i * a i ^ 2) * (∑ i, w i * b i ^ 2) := by
-  -- Use inner_mul_le_norm_mul_sq on weighted vectors
+  -- Use the finite Cauchy-Schwarz inequality on weighted vectors
   -- Substitute a'ᵢ = √wᵢ · aᵢ, b'ᵢ = √wᵢ · bᵢ
-  suffices h : ∀ (u v : Fin n → ℝ),
-    (∑ i, u i * v i) ^ 2 ≤ (∑ i, u i ^ 2) * (∑ i, v i ^ 2) by
-    have key := h (fun i => Real.sqrt (w i) * a i) (fun i => Real.sqrt (w i) * b i)
-    simp only [mul_pow, Real.sq_sqrt (hw _)] at key
-    convert key using 2 <;> ext i <;> ring
-  -- Standard Cauchy-Schwarz for finite sums via Binet-Cauchy
-  intro u v
-  have h : 0 ≤ ∑ i, ∑ j, (u i * v j - u j * v i) ^ 2 :=
-    Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _
-  nlinarith [Finset.inner_mul_le_norm_mul_sq (𝕜 := ℝ) Finset.univ u v]
+  have key := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (Fin n))
+    (fun i => Real.sqrt (w i) * a i) (fun i => Real.sqrt (w i) * b i)
+  have e1 : (∑ i : Fin n, Real.sqrt (w i) * a i * (Real.sqrt (w i) * b i))
+      = ∑ i : Fin n, w i * a i * b i := by
+    apply Finset.sum_congr rfl
+    intro i _
+    linear_combination (a i * b i) * Real.sq_sqrt (hw i)
+  have e2 : (∑ i : Fin n, (Real.sqrt (w i) * a i) ^ 2) = ∑ i : Fin n, w i * a i ^ 2 := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [mul_pow, Real.sq_sqrt (hw i)]
+  have e3 : (∑ i : Fin n, (Real.sqrt (w i) * b i) ^ 2) = ∑ i : Fin n, w i * b i ^ 2 := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [mul_pow, Real.sq_sqrt (hw i)]
+  rw [e1, e2, e3] at key
+  exact key
 
 /-
 ## Part 7: Cauchy-Schwarz Implies AM-GM
@@ -227,13 +229,12 @@ Key relationships between norms arising from Cauchy-Schwarz.
 theorem L1_le_sqrt_n_L2 {n : ℕ} (a : Fin n → ℝ) :
     (∑ i, |a i|) ^ 2 ≤ n * ∑ i, a i ^ 2 := by
   -- Apply CS: (∑ |aᵢ| · 1)² ≤ (∑ aᵢ²)(∑ 1) = n · ∑ aᵢ²
-  have h := Finset.inner_mul_le_norm_mul_sq (𝕜 := ℝ) Finset.univ
+  have h := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (Fin n))
     (fun i => |a i|) (fun _ => (1 : ℝ))
-  simp only [one_pow, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+  simp only [mul_one, one_pow, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
              Nat.smul_one_eq_cast, sq_abs] at h
-  have h1 : (∑ i : Fin n, |a i| * 1) = ∑ i, |a i| := by simp
-  rw [h1] at h
-  linarith
+  rw [mul_comm]
+  exact h
 
 -- Cauchy-Schwarz gives triangle inequality for inner product spaces
 -- ‖u + v‖ ≤ ‖u‖ + ‖v‖ (from norm_add_le, but we prove via CS)
@@ -276,7 +277,7 @@ theorem bessel_finite {E : Type*} [NormedAddCommGroup E]
     have : ∀ j ∈ Finset.univ.erase i, @inner ℝ _ _ x (e j) *
         @inner ℝ _ _ (e i) (e j) = 0 := by
       intro j hj
-      rw [h_ortho i j (Finset.ne_of_mem_erase hj), mul_zero]
+      rw [h_ortho i j (Finset.ne_of_mem_erase hj).symm, mul_zero]
     rw [Finset.sum_eq_zero this]
     ring
   -- ⟪x, p⟫ = ∑ ⟪x, eᵢ⟫²
@@ -285,18 +286,20 @@ theorem bessel_finite {E : Type*} [NormedAddCommGroup E]
     congr 1; ext i; ring
   -- ‖p‖² = ⟪x, p⟫
   have hp_sq : ‖p‖ ^ 2 = @inner ℝ _ _ x p := by
-    rw [← real_inner_self_eq_norm_sq]
-    simp only [hp_def, sum_inner, inner_smul_left, starRingEnd_apply, star_trivial]
-    rw [hx_p]
-    simp only [hp_def, inner_sum, inner_smul_right, starRingEnd_apply, star_trivial]
-    congr 1; ext i
-    rw [sq]; ring
+    rw [← real_inner_self_eq_norm_sq, hp_def, sum_inner]
+    have step : ∀ i : Fin n, @inner ℝ _ _ ((@inner ℝ _ _ x (e i)) • e i) p
+        = @inner ℝ _ _ x (e i) * @inner ℝ _ _ x (e i) := by
+      intro i
+      rw [inner_smul_left]
+      simp only [starRingEnd_apply, star_trivial]
+      rw [h_ei_p i]
+    rw [Finset.sum_congr rfl (fun i _ => step i), hx_p]
+    apply Finset.sum_congr rfl
+    intro i _
+    ring
   -- ‖x - p‖² = ‖x‖² - ‖p‖² ≥ 0
   have h_decomp : ‖x - p‖ ^ 2 = ‖x‖ ^ 2 - ∑ i, @inner ℝ _ _ x (e i) ^ 2 := by
     rw [norm_sub_sq_real, hp_sq, hx_p]
-    have : @inner ℝ _ _ p x = @inner ℝ _ _ x p := by
-      rw [real_inner_comm]
-    rw [this, hx_p]
     ring
   linarith [sq_nonneg ‖x - p‖]
 

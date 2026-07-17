@@ -125,7 +125,7 @@ theorem korselt_forward (n : ℕ) (hn : n > 1) (hsq : Squarefree n)
     have hmeq : a ≡ a ^ n [MOD p] :=
       (pow_mod_prime_of_dvd p hprime n (by omega) (hkor p hprime hpdvd) a).symm
     rwa [Nat.modEq_iff_dvd' hge] at hmeq
-  -- Since n is squarefree, n = ∏ p in n.primeFactors, p
+  -- Since n is squarefree, n = ∏ p ∈ n.primeFactors, p
   have hprod_dvd : (∏ p ∈ n.primeFactors, p) ∣ (a ^ n - a) :=
     prod_primes_dvd_of_each_dvd n.primeFactors (a ^ n - a)
       (fun p hp => (Nat.mem_primeFactors.mp hp).1)
@@ -163,7 +163,7 @@ theorem korselt_backward (n : ℕ) (hn : n > 1) (_hnp : ¬n.Prime)
       rw [← pow_two]; exact pow_dvd_pow p hn2
     have hcollapse : p ^ n - (p ^ n - p) = p := by omega
     have hpp_p : p * p ∣ p := by
-      have := Nat.dvd_sub' hpp_pn hpp_diff
+      have := Nat.dvd_sub hpp_pn hpp_diff
       rwa [hcollapse] at this
     have hle : p * p ≤ p := Nat.le_of_dvd hp.pos hpp_p
     have h2 : 2 ≤ p := hp.two_le
@@ -200,8 +200,9 @@ theorem korselt_backward (n : ℕ) (hn : n > 1) (_hnp : ¬n.Prime)
       simpa using hcancel
     -- A generator `g` of `(ZMod p)ˣ` has order `p - 1`
     obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
-    have hord : orderOf g = Fintype.card (ZMod p)ˣ :=
-      orderOf_eq_card_of_forall_mem_zpowers hg
+    have hord : orderOf g = Fintype.card (ZMod p)ˣ := by
+      rw [← Nat.card_eq_fintype_card]
+      exact orderOf_eq_card_of_forall_mem_zpowers hg
     have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
       rw [ZMod.card_units_eq_totient, Nat.totient_prime hp]
     have hgdvd : orderOf g ∣ (n - 1) := orderOf_dvd_of_pow_eq_one (key g)
@@ -411,14 +412,14 @@ theorem C_mono : ∀ x y : ℕ, x ≤ y → C x ≤ C y := by
 Upper and lower bounds on C(x).
 -/
 
-/-- Erdős's upper bound (1956) -/
-/-- Lichtman's lower bound (2022): C(x) > x^{0.3389} -/
-/-- Harman's earlier lower bound (2008): C(x) > x^{0.33336704} -/
+/-  Erdős's upper bound (1956) -/
+/-  Lichtman's lower bound (2022): C(x) > x^{0.3389} -/
+/-  Harman's earlier lower bound (2008): C(x) > x^{0.33336704} -/
 /-- AGP (1994): There are infinitely many Carmichael numbers -/
 axiom infinitely_many_carmichaels :
   ∀ N : ℕ, ∃ n > N, IsCarmichael n
 
-/-- AGP lower bound: C(x) > x^{2/7} for large x -/
+/-  AGP lower bound: C(x) > x^{2/7} for large x -/
 /-
 ## The Main Conjecture
 
@@ -1102,7 +1103,7 @@ theorem carmichael_smallest_prime_cube_le (n : ℕ) (h : IsCarmichael n) (p : �
   have h3 := carmichael_at_least_3_primes n h
   have hsq := carmichael_squarefree n h
   -- n = product of prime factors, and there are ≥ 3 of them
-  -- Since n is squarefree, n = ∏ p in n.primeFactors, p
+  -- Since n is squarefree, n = ∏ p ∈ n.primeFactors, p
   have hprod := (Nat.prod_primeFactors_of_squarefree hsq).symm
   -- There exist at least 3 distinct primes dividing n
   -- We use: p ≤ every prime factor, and there are ≥ 3 factors, each ≥ p

@@ -13,6 +13,8 @@ divides two distinct others. How large is f(n)? Is lim f(n)/n irrational?
 
 import Mathlib
 
+open scoped Classical
+
 /-
 ## Section I: The Divisibility Condition
 -/
@@ -55,7 +57,7 @@ private lemma ndto_upper_interval (n : ℕ) (hn : n ≥ 3) :
     by_contra h; push_neg at h; interval_cases kc <;> simp_all <;> omega
   have hkne : kb ≠ kc := fun heq => hne_bc (by rw [heq])
   -- One multiplier ≥ 3, giving a*k ≥ (n/3+1)*3 > n, contradicting a*k ≤ n
-  rcases le_or_lt 3 kb with hkb3 | hkb3
+  rcases le_or_gt 3 kb with hkb3 | hkb3
   · have h1 : a * 3 ≤ a * kb := Nat.mul_le_mul_left a hkb3
     have h2 : (n / 3 + 1) * 3 ≤ a * 3 := Nat.mul_le_mul_right 3 ha.1
     have : (n / 3 + 1) * 3 ≤ n := le_trans (le_trans h2 h1) hb.2
@@ -84,13 +86,13 @@ theorem lower_bound_construction (n : ℕ) (hn : n ≥ 3) :
 ## Section IV: Lebensold's Bounds
 -/
 
-/-- Lebensold (1976): for large n, f(n) ≥ 0.6725n. -/
-/-- Lebensold (1976): for large n, f(n) ≤ 0.6736n. -/
+/-  Lebensold (1976): for large n, f(n) ≥ 0.6725n. -/
+/-  Lebensold (1976): for large n, f(n) ≤ 0.6736n. -/
 /-
 ## Section V: The Conjectures
 -/
 
-/-- The limiting density lim f(n)/n exists and lies in [0.6725, 0.6736]. -/
+/-  The limiting density lim f(n)/n exists and lies in [0.6725, 0.6736]. -/
 /-- **Erdős Problem #1062**: Is the limiting density irrational? -/
 def ErdosProblem1062 : Prop :=
   ∃ L : ℝ, Filter.Tendsto (fun n : ℕ => (maxNDTOSize n : ℝ) / n)

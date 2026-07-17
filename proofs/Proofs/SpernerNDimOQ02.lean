@@ -2278,7 +2278,7 @@ theorem boundary_faces_eq (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
     intro k
     rw [mem_boundary_faces_iff s hd, Finset.mem_singleton]
     exact ⟨fun h => h.1, fun h => ⟨h, hcond⟩⟩
-  · rw [if_neg hcond, Finset.eq_empty_iff_forall_not_mem]
+  · rw [if_neg hcond, Finset.eq_empty_iff_forall_notMem]
     intro k hk
     rw [mem_boundary_faces_iff s hd] at hk
     exact hcond hk.2

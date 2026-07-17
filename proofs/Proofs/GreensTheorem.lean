@@ -171,7 +171,7 @@ structure GreenRegion where
   -- We represent the region abstractly
   dummy : Unit
 
-/-- **Green's Theorem (General Form)**
+/- **Green's Theorem (General Form)**
 
 For a continuously differentiable vector field F = (P, Q) and a region D
 bounded by a positively oriented, piecewise smooth, simple closed curve C:
@@ -230,7 +230,7 @@ def areaFieldCurl' : Curl2D where
   value := fun _ => 1
 
 /-- Symmetric area vector field: (-y/2, x/2) -/
-def areaVectorFieldSymmetric : VectorField2D where
+noncomputable def areaVectorFieldSymmetric : VectorField2D where
   P := fun pt => -pt.2 / 2
   Q := fun pt => pt.1 / 2
 

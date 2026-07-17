@@ -12,9 +12,7 @@ Posed by Erdős, Eggleton, and Selfridge.
 *Reference:* [erdosproblems.com/681](https://www.erdosproblems.com/681)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Least prime factor -/
 
@@ -305,6 +303,7 @@ theorem general_constraint (n k d : ℕ) (_hk : 0 < k) (hm : ¬(n + k).Prime)
     k ^ (2 * d) < n + k := by
   obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
   have hkd := hlpf p hp
+  have hkd_pos : 0 < k ^ d := pow_pos _hk d
   have h2d : k ^ (2 * d) = k ^ d * k ^ d := by
     rw [show 2 * d = d + d from by omega, pow_add]
   have hp_pos : 0 < p := lt_of_le_of_lt (Nat.zero_le (k ^ d)) hkd

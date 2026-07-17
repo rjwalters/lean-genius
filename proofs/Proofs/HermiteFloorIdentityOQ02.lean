@@ -114,7 +114,7 @@ private theorem int_hermite_sum (n : ℕ) (hn : 0 < n) (a : ℤ) :
     rw [key]
     have h1 := Finset.sum_range_succ' (fun j : ℕ => (b + (j : ℤ)) / (n : ℤ)) n
     have h2 := Finset.sum_range_succ (fun j : ℕ => (b + (j : ℤ)) / (n : ℤ)) n
-    simp only at h1 h2
+    skip
     have hg0 : (b + (((0 : ℕ) : ℤ))) / (n : ℤ) = b / (n : ℤ) := by norm_num
     have hgn : (b + ((n : ℤ))) / (n : ℤ) = b / (n : ℤ) + 1 := by
       rw [show b + (n : ℤ) = b + 1 * (n : ℤ) by ring, Int.add_mul_ediv_right b 1 hn']

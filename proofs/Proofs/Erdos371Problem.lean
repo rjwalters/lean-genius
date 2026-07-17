@@ -42,7 +42,7 @@ noncomputable def P (n : ℕ) : ℕ :=
     intro he
     have h1 : 1 < n := by omega
     have ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : n ≠ 1)
-    exact absurd (Nat.mem_primeFactors.mpr ⟨hp, hpd, by omega⟩) (he ▸ Finset.not_mem_empty p))
+    exact absurd (Nat.mem_primeFactors.mpr ⟨hp, hpd, by omega⟩) (he ▸ Finset.notMem_empty p))
 
 /-- P(n) divides n for n > 1. -/
 theorem P_dvd (n : ℕ) (hn : n > 1) : P n ∣ n := by
@@ -117,7 +117,7 @@ theorem partition (n : ℕ) (hn : n ≥ 2) :
 
 /- ## Part IV: Erdős-Pomerance (1978) -/
 
-/-- **Erdős-Pomerance (1978)**
+/-  **Erdős-Pomerance (1978)**
 
     Both SetPIncreasing and SetPDecreasing have positive upper density.
     This was the first major result on the problem.
@@ -125,7 +125,7 @@ theorem partition (n : ℕ) (hn : n ≥ 2) :
 
 /- ## Part V: Lü-Wang Lower Bound (2025) -/
 
-/-- **Lü-Wang (2025)**
+/-  **Lü-Wang (2025)**
 
     #{n < x : P(n) < P(n+1)} > (0.2017 - o(1))x
 
@@ -205,7 +205,7 @@ def SetPAlpha (α : ℝ) : Set ℕ :=
 def Erdos1979Question (α : ℝ) : Prop :=
   ∃ d : ℝ, HasNaturalDensity (SetPAlpha α) d
 
-/-- **Teräväinen (2018) - Generalized**
+/-  **Teräväinen (2018) - Generalized**
 
     The logarithmic density of SetPAlpha(α) exists and equals the integral
     ∫∫_{y≥x+α} u(x)u(y) dx dy where u is related to the Dickman function.

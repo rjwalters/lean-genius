@@ -70,7 +70,7 @@ theorem exp_neg_sub_sq_le_one_sub {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1 / 2) 
           mul_le_mul_of_nonneg_left hT (le_of_lt h1mx_pos)
   -- Step 4: exp(-y) ≤ 1-x
   rw [show -x - x ^ 2 = -y from by rw [hy_def]; ring, Real.exp_neg, inv_eq_one_div]
-  rw [div_le_iff (Real.exp_pos y)]
+  rw [div_le_iff₀ (Real.exp_pos y)]
   linarith
 
 /-- The product formula for the probability that k items are all distinct
@@ -119,7 +119,7 @@ theorem sum_sq_le_quartic (k : ℕ) (hk : 1 ≤ k) :
   have hsum : ∑ i ∈ Finset.range k, (i : ℝ) ^ 2 = (k : ℝ) * (k - 1) * (2 * k - 1) / 6 := by
     linarith
   rw [hsum]
-  rcases Nat.eq_or_gt_of_le hk with rfl | hk2
+  rcases Nat.eq_or_lt_of_le hk with rfl | hk2
   · simp
   · push_cast
     have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
@@ -161,14 +161,15 @@ theorem birthdayProduct_lower_bound {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k)
             -(∑ i ∈ Finset.range k, (↑i : ℝ)) / ↑d -
             (∑ i ∈ Finset.range k, (↑i : ℝ) ^ 2) / (↑d) ^ 2 := by
           simp only [div_pow, neg_div]
-          rw [← Finset.sum_neg_distrib, ← Finset.sum_div, ← Finset.sum_div]
-          congr 1
-          ext i; ring
+          rw [Finset.sum_div, Finset.sum_div, ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib]
         rw [hsum_split]
         -- ∑i = k(k-1)/2
         have hgauss : ∑ i ∈ Finset.range k, (↑i : ℝ) = (↑k : ℝ) * (↑k - 1) / 2 := by
-          have := Finset.sum_range_id_eq_sum_range_succ_div_two k
-          push_cast at this ⊢; linarith
+          have h2 := Finset.sum_range_id_mul_two k
+          have h3 : ((∑ i ∈ Finset.range k, i) * 2 : ℝ) = ((k * (k - 1) : ℕ) : ℝ) := by
+            exact_mod_cast h2
+          push_cast [Nat.cast_sub hk] at h3
+          linarith
         rw [hgauss]
         -- Now need: -k(k-1)/(2d) - k²(k-1)²/(4d²) ≤ -k(k-1)/2/d - ∑i²/d²
         -- i.e., k²(k-1)²/(4d²) ≥ ∑i²/d²
@@ -177,6 +178,11 @@ theorem birthdayProduct_lower_bound {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k)
         have : (∑ i ∈ Finset.range k, (↑i : ℝ) ^ 2) / (↑d) ^ 2 ≤
             (↑k : ℝ) ^ 2 * (↑k - 1) ^ 2 / 4 / (↑d) ^ 2 :=
           div_le_div_of_nonneg_right hsq (le_of_lt hd_sq_pos)
+        have hdiv_eq : -((↑k : ℝ) * (↑k - 1) / 2) / ↑d = -(↑k : ℝ) * (↑k - 1) / (2 * ↑d) := by
+          ring
+        have hdiv_eq2 : (↑k : ℝ) ^ 2 * (↑k - 1) ^ 2 / 4 / (↑d) ^ 2 =
+            (↑k : ℝ) ^ 2 * (↑k - 1) ^ 2 / (4 * (↑d) ^ 2) := by
+          ring
         linarith
     _ = ∏ i ∈ Finset.range k, Real.exp (-(↑i : ℝ) / ↑d - ((↑i : ℝ) / ↑d) ^ 2) := by
         rw [Real.exp_sum]
@@ -186,14 +192,14 @@ theorem birthdayProduct_lower_bound {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k)
           exact le_of_lt (Real.exp_pos _)
         · intro i hi
           rw [Finset.mem_range] at hi
+          rw [neg_div]
           apply exp_neg_sub_sq_le_one_sub
           · exact div_nonneg (Nat.cast_nonneg i) (Nat.cast_nonneg d)
           · -- i/d ≤ (k-1)/d ≤ 1/2
-            rw [div_le_div_iff (by exact_mod_cast (show 0 < d by omega) : (0:ℝ) < d)
+            rw [div_le_div_iff₀ (by exact_mod_cast (show 0 < d by omega) : (0:ℝ) < d)
                                (by norm_num : (0:ℝ) < 2)]
-            push_cast
-            have : (i : ℤ) ≤ k - 1 := by omega
-            have : 2 * ((k : ℤ) - 1) ≤ d := by exact_mod_cast hkd
+            have hik : i * 2 ≤ d := by omega
+            have hikR : (i : ℝ) * 2 ≤ (d : ℝ) := by exact_mod_cast hik
             linarith
 
 /-- The two-sided bound: combining with the upper bound from OQ-02,
@@ -219,11 +225,15 @@ theorem birthdayProduct_two_sided {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k) (hkd
           rw [Real.exp_sum]
       _ = Real.exp (-(↑k : ℝ) * (↑k - 1) / (2 * ↑d)) := by
           congr 1
-          rw [show ∀ i : ℕ, -(↑i : ℝ) / ↑d = -(1 / ↑d) * ↑i from fun i => by ring]
-          rw [← Finset.mul_sum]
-          rw [show ∑ i ∈ Finset.range k, (i : ℝ) = (k : ℝ) * (↑k - 1) / 2 from by
-            have := Finset.sum_range_id_eq_sum_range_succ_div_two k
-            push_cast at this ⊢
-            linarith]
+          have hgauss : ∑ i ∈ Finset.range k, (↑i : ℝ) = (↑k : ℝ) * (↑k - 1) / 2 := by
+            have h2 := Finset.sum_range_id_mul_two k
+            have h3 : ((∑ i ∈ Finset.range k, i) * 2 : ℝ) = ((k * (k - 1) : ℕ) : ℝ) := by
+              exact_mod_cast h2
+            push_cast [Nat.cast_sub hk] at h3
+            linarith
+          have hnegsum : ∑ i ∈ Finset.range k, (-(↑i : ℝ) / ↑d) =
+              -(∑ i ∈ Finset.range k, (↑i : ℝ)) / ↑d := by
+            rw [← Finset.sum_div, Finset.sum_neg_distrib]
+          rw [hnegsum, hgauss]
           ring
   ⟩

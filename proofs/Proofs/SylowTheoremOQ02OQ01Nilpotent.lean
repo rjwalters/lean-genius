@@ -64,7 +64,7 @@ whole group.  Combined with the parent result `n_p = [G : N_G(P)]`, this is the
 reason the Sylow count collapses to one. -/
 theorem normalizer_eq_top_of_nilpotent (h : Group.IsNilpotent G)
     (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
-    (P : Subgroup G).normalizer = ⊤ :=
+    Subgroup.normalizer ((P : Subgroup G) : Set G) = ⊤ :=
   Subgroup.normalizer_eq_top_iff.mpr (sylow_normal_of_nilpotent h p P)
 
 /-- **Counting characterization.**  A finite group is nilpotent iff every Sylow

@@ -109,10 +109,10 @@ sieve detects 2 primes in an admissible k_0-tuple, given BV at level θ.
 -/
 
 /-- BV level: the Bombieri-Vinogradov theorem is proved for θ < 1/2. -/
-def bvLevel : ℝ := 1 / 2
+noncomputable def bvLevel : ℝ := 1 / 2
 
 /-- EH level: Elliott-Halberstam conjectures equidistribution up to θ = 1/2. -/
-def ehLevel : ℝ := 1 / 2
+noncomputable def ehLevel : ℝ := 1 / 2
 
 /-- Definitional marker: `bvLevel` and `ehLevel` are both defined as `1/2`, hence equal by
     reflexivity. This records the fact that BV and EH share the same numerical level (1/2);

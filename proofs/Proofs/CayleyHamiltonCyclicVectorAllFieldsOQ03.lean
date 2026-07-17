@@ -147,11 +147,11 @@ theorem matrix_nonderog_of_minpoly_natDegree {n : ℕ}
     multiplying the matrix of `f` by the coordinate vector:
       `(toMatrix b b f).mulVec (b.repr x) = b.repr (f x)`.
     Proved from the definitional `LinearMap.toMatrix_apply`. -/
-theorem toMatrix_mulVec_repr {n : ℕ} (b : Basis (Fin n) K V)
+theorem toMatrix_mulVec_repr {n : ℕ} (b : Module.Basis (Fin n) K V)
     (f : Module.End K V) (x : V) :
     (LinearMap.toMatrix b b f).mulVec (fun i => b.repr x i) = fun i => b.repr (f x) i := by
   funext i
-  rw [Matrix.mulVec, Matrix.dotProduct]
+  rw [Matrix.mulVec, dotProduct]
   -- RHS: expand x in the basis and push the operator / coordinate map through the sum.
   conv_rhs => rw [← b.sum_repr x, map_sum]
   rw [map_sum, Finset.sum_apply']
@@ -176,13 +176,13 @@ theorem operator_nonderogatory_has_cyclic_vector [FiniteDimensional K V]
   · -- finrank 0: the degree bound `< 0` is unsatisfiable, so any vector is cyclic.
     exact ⟨0, fun p hp _ => absurd hp (by rw [hn0]; exact Nat.not_lt_zero _)⟩
   -- Canonical basis and the matrix of T.
-  set b : Basis (Fin (Module.finrank K V)) K V := Module.finBasis K V with hb
+  set b : Module.Basis (Fin (Module.finrank K V)) K V := Module.finBasis K V with hb
   set M : Matrix (Fin (Module.finrank K V)) (Fin (Module.finrank K V)) K :=
     LinearMap.toMatrix b b T with hM
   -- (1) Minpoly transport: minpoly K M = minpoly K T.
   have hmin : minpoly K M = minpoly K T := by
     have := minpoly.algEquiv_eq (LinearMap.toMatrixAlgEquiv b) T
-    rwa [LinearMap.toMatrixAlgEquiv_apply] at this
+    exact this
   have hMdeg : (minpoly K M).natDegree = Module.finrank K V := by
     rw [hmin]; exact h
   -- (2) M is nonderogatory.
@@ -197,7 +197,7 @@ theorem operator_nonderogatory_has_cyclic_vector [FiniteDimensional K V]
   -- Coordinates of `b.equivFun.symm w` are exactly `w`.
   have hcoord : (fun i => b.repr (b.equivFun.symm w) i) = w := by
     funext i
-    rw [← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
+    rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
   -- toMatrix b b (aeval T p) = aeval M p.
   have hpoly : LinearMap.toMatrix b b (aeval T p) = aeval M p := by
     have key := Polynomial.aeval_algHom_apply
@@ -229,19 +229,18 @@ theorem krylov_linearIndependent_op [FiniteDimensional K V]
     LinearIndependent K (fun k : Fin (Module.finrank K V) => (T ^ (k : ℕ)) v) := by
   rw [Fintype.linearIndependent_iff]
   intro c hc i
-  set n := Module.finrank K V with hn
-  have hnpos : 0 < n := lt_of_le_of_lt (Nat.zero_le (i : ℕ)) i.isLt
-  set p := ∑ k : Fin n, C (c k) * X ^ (k : ℕ) with hp_def
-  have hp_aeval : aeval T p = ∑ k : Fin n, c k • T ^ (k : ℕ) := by
+  have hnpos : 0 < Module.finrank K V := lt_of_le_of_lt (Nat.zero_le (i : ℕ)) i.isLt
+  set p := ∑ k : Fin (Module.finrank K V), C (c k) * X ^ (k : ℕ) with hp_def
+  have hp_aeval : aeval T p = ∑ k : Fin (Module.finrank K V), c k • T ^ (k : ℕ) := by
     simp only [p, map_sum, map_mul, map_pow, aeval_C, aeval_X,
                Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
   have hp_ann : (aeval T p) v = 0 := by
     rw [hp_aeval]
-    have hsum : (∑ k : Fin n, c k • T ^ (k : ℕ)) v
-        = ∑ k : Fin n, c k • (T ^ (k : ℕ)) v := by
+    have hsum : (∑ k : Fin (Module.finrank K V), c k • T ^ (k : ℕ)) v
+        = ∑ k : Fin (Module.finrank K V), c k • (T ^ (k : ℕ)) v := by
       simp only [LinearMap.sum_apply, LinearMap.smul_apply]
     rw [hsum, hc]
-  have hp_deg : p.natDegree < n := by
+  have hp_deg : p.natDegree < Module.finrank K V := by
     apply lt_of_le_of_lt (natDegree_sum_le _ _)
     apply (Finset.sup_lt_iff hnpos).mpr
     intro k _; exact lt_of_le_of_lt (natDegree_C_mul_X_pow_le (c k) ↑k) k.isLt
@@ -266,8 +265,7 @@ theorem cyclicSubspace_eq_top_of_isCyclicVectorOp [FiniteDimensional K V]
   have hspan :
       Submodule.span K
           (Set.range fun k : Fin (Module.finrank K V) => (T ^ (k : ℕ)) v) = ⊤ := by
-    have hb := (basisOfLinearIndependentOfCardEqFinrank hli hcard).span_eq
-    simpa only [coe_basisOfLinearIndependentOfCardEqFinrank] using hb
+    exact hli.span_eq_top_of_card_eq_finrank' hcard
   rw [eq_top_iff, ← hspan]
   exact NonderogatoryModule.finiteSpan_le_cyclicSubspace T v (Module.finrank K V)
 

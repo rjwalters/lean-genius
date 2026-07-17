@@ -26,7 +26,7 @@ so this is the honest measure-theoretic anchor for the OQ-01 program.
 All statements live over an arbitrary `Fintype` index; `IsProbabilityMeasure` is
 derived from mutual independence, not assumed.
 -/
-import Mathlib.Probability.Independence.Basic
+import Mathlib
 
 open MeasureTheory ProbabilityTheory Finset
 open scoped ENNReal
@@ -41,7 +41,7 @@ This is the bridge that lets `iIndep.meas_iInter` (which is stated for arbitrary
 measurable sets of the independent σ-algebras) apply to the complements `(A i)ᶜ`. -/
 theorem compl_measurable_generateFrom (i : ι) :
     MeasurableSet[MeasurableSpace.generateFrom {A i}] (A i)ᶜ :=
-  (measurableSet_generateFrom (Set.mem_singleton _)).compl
+  (MeasurableSpace.measurableSet_generateFrom (Set.mem_singleton _)).compl
 
 /-- **Exact avoidance factorization (base case of the LLL).**
 For a mutually independent family of measurable events, the probability that *none*

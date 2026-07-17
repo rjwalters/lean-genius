@@ -65,7 +65,7 @@ noncomputable def Decomposition.map {ι : Type*} {S : ι → Set E} {t : Finset 
     rw [← LinearMap.image_convexHull]
     exact Set.mem_image_of_mem f (D.mem_convexHull i hi)
   point_eq_zero i hi := by rw [D.point_eq_zero i hi, map_zero]
-  sum_eq := by rw [← D.sum_eq, map_sum]
+  sum_eq := by rw [← map_sum]; exact congrArg f D.sum_eq
 
 @[simp]
 lemma Decomposition.map_point {ι : Type*} {S : ι → Set E} {t : Finset ι} {x : E}
@@ -135,7 +135,7 @@ lemma convexHull_pair_zero_basis_extract
 
 /-- The counter-example point lies in the convex hull of the Minkowski sum.
 
-    `x = (1/2) • 0 + (1/2) • (∑ e_i)` is the midpoint of two points in `∑ S_i`:
+    `x = (1/2) • 0 + (1/2) • (∑ e_i)` is the midpoint of two points ∈ `∑ S_i`:
     the all-zeros vector (via `0 ∈ S_i` for every `i`) and the all-ones-in-axes
     vector `∑ e_i` (via `e_i ∈ S_i` for every `i`).
 
@@ -262,7 +262,7 @@ theorem tight_excess_count (N : ℕ) :
       Finset.card_univ, Fintype.card_fin]
 
 /-- **Sharpness corollary** (S2-A ACT-3). For the tightness configuration
-    `S i = {0, e_i}` and `x = (1/2) • ∑ e_i` in `EuclideanSpace ℝ (Fin N)`,
+    `S i = {0, e_i}` and `x = (1/2) • ∑ e_i` ∈ `EuclideanSpace ℝ (Fin N)`,
     every `ShapleyFolkman.Decomposition` of `x` achieves
     `excessIndices.card = Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) = N`.
 
@@ -322,7 +322,7 @@ lemma midpoint_mem_convexHull_pair_zero_basis {N : ℕ} (i : Fin N) :
     (by norm_num : (1 / 2 : ℝ) + 1 / 2 = 1)
 
 /-- **S2-A ACT-4 construction**. The natural midpoint decomposition of
-    `(1/2) • ∑ e_i` in `EuclideanSpace ℝ (Fin N)`: each summand
+    `(1/2) • ∑ e_i` ∈ `EuclideanSpace ℝ (Fin N)`: each summand
     `point i = (1/2) • e_i` is in `convexHull ℝ {0, e_i}` (via
     `midpoint_mem_convexHull_pair_zero_basis`) and the summands add up
     to the target.

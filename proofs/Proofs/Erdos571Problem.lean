@@ -30,6 +30,8 @@ Bukh-Conlon finite family result.
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos571
 
 /- ## Part I: Graph Definitions -/
@@ -46,7 +48,7 @@ def IsBipartite {V : Type*} [DecidableEq V] (G : Graph V) : Prop :=
     ∀ u v, G.adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)
 
 /-- The edge count of a finite graph -/
-def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : Graph V) [DecidableRel G.adj] : ℕ :=
   (Finset.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2)
     Finset.univ).card
@@ -81,7 +83,7 @@ computationally.
 -/
 def IsTuranExponent (α : ℚ) : Prop :=
   1 ≤ α ∧ α < 2 ∧
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : Graph V),
     IsBipartite G ∧
     ∃ (ex : ℕ → ℝ),
       -- ex represents the extremal number for G
@@ -108,7 +110,7 @@ bipartite graphs.
 axiom conlon_janzer_lee_exponents :
   ∀ s : ℕ, s ≥ 2 → IsTuranExponent (3/2 - 1/(2*s))
 
-/--
+/- 
 **Jiang-Qiu (2020):** The rationals 4/3 - 1/(3s) for s ≥ 2 are
 Turán exponents. Also 5/4 - 1/(4s) for s ≥ 2.
 -/
@@ -126,14 +128,14 @@ are Turán exponents. Also 7/5 is specifically achievable.
 -/
 axiom exponent_7_5 : IsTuranExponent (7/5)
 
-/--
+/- 
 **Conlon-Janzer (2022):** The rationals 2 - a/b with b ≥ (a-1)² are
 Turán exponents. This covers a dense set near 2, showing exponents
 ≥ 7/4 are well-understood.
 -/
 /- ## Part VI: Bukh-Conlon Finite Family Result -/
 
-/--
+/- 
 **Bukh-Conlon (2018):** Every rational α ∈ [1,2) is achievable for a
 FINITE FAMILY of bipartite graphs — there exists a family F of bipartite
 graphs such that the family extremal number ex(n; F) ≍ n^α.
@@ -142,12 +144,12 @@ This solves a weakened version: families instead of single graphs.
 -/
 /- ## Part VII: Classical Upper Bounds -/
 
-/--
+/- 
 **Kővári-Sós-Turán (1954):** For the complete bipartite graph K_{s,t}
 with s ≤ t, ex(n; K_{s,t}) = O(n^{2-1/s}). This classical result
 shows forbidden bipartite subgraphs yield subquadratic extremal numbers.
 -/
-/--
+/- 
 **Bondy-Simonovits:** For any bipartite G, ex(n;G) = O(n^{2-1/k})
 for some k depending on G. This guarantees all bipartite Turán
 exponents lie in [1, 2).

@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos342
@@ -72,7 +74,7 @@ def buildUlam : ℕ → List ℕ
 /-- The Ulam sequence U(1,2) as a computable function.
     ulam n returns the (n+1)-th Ulam number (0-indexed). -/
 def ulam (n : ℕ) : ℕ :=
-  match (buildUlam (n + 1)).get? n with
+  match (buildUlam (n + 1))[n]? with
   | some v => v
   | none => 0
 
@@ -120,8 +122,8 @@ noncomputable def representationCount (m n : ℕ) : ℕ :=
     (Finset.Icc (i + 1) (n - 1)).filter (fun j =>
       ulamSeq i + ulamSeq j = m) |>.card
 
-/-- ulamSeq(n+1) has exactly one representation using earlier terms. -/
-/-- ulamSeq(n+1) is minimal: no smaller value has a unique representation. -/
+/-  ulamSeq(n+1) has exactly one representation using earlier terms. -/
+/-  ulamSeq(n+1) is minimal: no smaller value has a unique representation. -/
 /-- The Ulam sequence is injective (follows from strict monotonicity). -/
 theorem ulamSeq_injective : Function.Injective ulamSeq :=
   ulamSeq_strictMono.injective
@@ -132,6 +134,7 @@ theorem ulamSeq_ge (n : ℕ) : n + 1 ≤ ulamSeq n := by
   | zero => have := ulamSeq_initial 0 (by omega); simp [ulam_0] at this; omega
   | succ k ih =>
     have h := ulamSeq_strictMono (Nat.lt_succ_of_le (Nat.le_refl k))
+    simp only [Nat.succ_eq_add_one] at *
     omega
 
 /-- The first term is 1. -/

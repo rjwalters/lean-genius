@@ -35,8 +35,11 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Finset BigOperators Filter
+
+open scoped Classical
 
 namespace Erdos824Provable
 
@@ -61,9 +64,9 @@ def sigma (n : ℕ) : ℕ := (n.divisors).sum id
 -/
 theorem sigma_ge_n_plus_one (n : ℕ) (hn : n > 1) : sigma n ≥ n + 1 := by
   unfold sigma
-  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (Nat.one_le_iff_ne_zero.mpr (ne_of_gt hn))
-  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (ne_of_gt hn)
-  have hne : (1 : ℕ) ≠ n := ne_of_lt hn
+  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (by omega)
+  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (by omega)
+  have hne : (1 : ℕ) ≠ n := by omega
   calc (n.divisors).sum id
       ≥ ({1, n} : Finset ℕ).sum id := by
         apply Finset.sum_le_sum_of_subset
@@ -149,7 +152,7 @@ theorem h_superlinear :
   have hle := hX x (by omega)
   -- hle : (C : ℚ) + 1 ≤ (h x : ℚ) / (x : ℚ)
   have hx_pos : (0 : ℚ) < (x : ℚ) := by exact_mod_cast show 0 < x by omega
-  rw [le_div_iff hx_pos] at hle
+  rw [le_div_iff₀ hx_pos] at hle
   -- hle : ((C : ℚ) + 1) * x ≤ h x
   exact_mod_cast show C * (x : ℚ) < ↑(h x) by push_cast; nlinarith
 
@@ -225,7 +228,7 @@ than coprimality.
 def IsSquarefree (n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → ¬(p^2 ∣ n)
 
-def hSquarefree (x : ℕ) : ℕ :=
+noncomputable def hSquarefree (x : ℕ) : ℕ :=
   (Finset.filter (fun p : ℕ × ℕ =>
     1 ≤ p.1 ∧ p.1 < p.2 ∧ p.2 < x ∧
     IsSquarefree p.1 ∧ IsSquarefree p.2 ∧ sigma p.1 = sigma p.2)

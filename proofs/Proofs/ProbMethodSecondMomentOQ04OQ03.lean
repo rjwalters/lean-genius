@@ -146,7 +146,7 @@ theorem weighted_chebyshev (s : Finset α) (w X : α → ℚ) (a : ℚ)
   have ha2 : (0 : ℚ) < a ^ 2 := pow_pos ha 2
   have hkey := weighted_chebyshev_key s w X (wmean s w X) a hw ha
   rw [wtailProb, wvar, div_div]
-  rw [div_le_div_iff hS (by positivity)]
+  rw [div_le_div_iff₀ hS (by positivity)]
   -- goal: (∑_tail w) * (Sw * a²) ≤ (∑ w (X-μ)²) * Sw
   have hSnn : 0 ≤ ∑ i ∈ s, w i := hS.le
   calc (∑ i ∈ s.filter (fun i => a ≤ |X i - wmean s w X|), w i) * ((∑ i ∈ s, w i) * a ^ 2)

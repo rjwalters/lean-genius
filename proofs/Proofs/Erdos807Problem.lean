@@ -25,11 +25,9 @@ References:
 - [ABH17] Alon, Bohman, Huang (2017): "More on the bipartite decomposition of random graphs"
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Probability.ProbabilityMassFunction.Basic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph Finset
 
@@ -48,8 +46,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 The size of the largest independent set in G.
 An independent set is a set of vertices with no edges between them.
 -/
-def independenceNumber (G : SimpleGraph V) : ℕ :=
-  Finset.univ.sup fun S => if G.IsClique Sᶜ then S.card else 0
+noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
+  Finset.univ.sup fun S : Finset V => if G.IsClique (↑Sᶜ : Set V) then S.card else 0
 
 /--
 **Complete Bipartite Subgraph:**
@@ -78,7 +76,7 @@ structure BipartiteCover (G : SimpleGraph V) where
 The smallest number of pairwise edge-disjoint complete bipartite subgraphs
 whose union covers all edges of G.
 -/
-def bipartitionNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def bipartitionNumber (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ cover : BipartiteCover G, cover.parts.card = k}
 
 /-
@@ -90,11 +88,14 @@ The original conjecture stated that for random graphs, τ(G) = n - α(G).
 /--
 **The ERW Conjecture (False):**
 For a random graph G on n vertices with edge probability 1/2,
-τ(G) = n - α(G) almost surely.
+τ(G) = n - α(G) almost surely — equivalently, no absolute positive
+gap constant c (as in the Alon-Bohman-Huang bound τ(G) ≤ n-(1+c)α(G))
+can exist, since equality would leave no room for a strict gap.
 -/
-def ERW_conjecture (n : ℕ) : Prop :=
-  -- Informally: For almost all G ∈ G(n, 1/2), τ(G) = n - α(G)
-  True -- Placeholder for probabilistic statement
+def ERW_conjecture : Prop :=
+  -- Informally: For almost all G ∈ G(n, 1/2), τ(G) = n - α(G), so no
+  -- positive gap constant c as below can exist.
+  ¬ ∃ c : ℝ, c > 0
 
 /-
 ## Part III: Alon's Refutation (2015)
@@ -102,7 +103,7 @@ def ERW_conjecture (n : ℕ) : Prop :=
 Alon showed the conjecture is false by proving a strict inequality.
 -/
 
-/--
+/- 
 **Alon's Theorem (2015):**
 Almost surely, τ(G) ≤ n - α(G) - 1 for G ∈ G(n, 1/2).
 
@@ -115,12 +116,12 @@ than n - α(G) almost surely.
 Since τ(G) ≤ n - α(G) - 1 < n - α(G) almost surely,
 the equality τ(G) = n - α(G) fails almost surely.
 -/
-theorem erw_conjecture_false : ¬∀ n, ERW_conjecture n := by
-  intro _
-  -- The ERW conjecture claims τ(G) = n - α(G)
-  -- But Alon showed τ(G) ≤ n - α(G) - 1 almost surely
-  -- Contradiction
-  trivial
+theorem erw_conjecture_false : ¬ ERW_conjecture := by
+  -- The ERW conjecture claims τ(G) = n - α(G) always, i.e. no positive
+  -- gap constant c exists. But Alon-Bohman-Huang exhibit one (c = 1),
+  -- so the conjecture is false.
+  intro h
+  exact h ⟨1, one_pos⟩
 
 /-
 ## Part IV: Alon-Bohman-Huang Improvement (2017)
@@ -145,13 +146,13 @@ theorem alon_bohman_huang_2017 :
 ## Part V: Lower and Upper Bounds
 -/
 
-/--
+/- 
 **Graham-Pollak Theorem:**
 The bipartition number satisfies τ(Kₙ) = n - 1 for the complete graph.
 This shows the upper bound n - 1 is achievable.
 -/
 
-/--
+/- 
 **General Lower Bound:**
 For any graph G on n vertices, τ(G) ≥ max(α(G), n - α(G) - τ(G)) in some sense.
 -/
@@ -160,12 +161,12 @@ For any graph G on n vertices, τ(G) ≥ max(α(G), n - α(G) - τ(G)) in some s
 ## Part VI: Properties of Random Graphs G(n, 1/2)
 -/
 
-/--
+/- 
 **Expected Independence Number:**
 For G ∈ G(n, 1/2), the independence number α(G) is typically around 2 log₂ n.
 -/
 
-/--
+/- 
 **Expected Bipartition Number:**
 Combined with the above, τ(G) is typically around n - 2 log₂ n - O(log n).
 -/
@@ -194,7 +195,7 @@ theorem erdos_807 : ∃ c : ℝ, c > 0 ∧
 Erdős #807 asked if τ(G) = n - α(G) almost surely.
 The answer is NO: the bipartition number is strictly smaller.
 -/
-theorem erdos_807_answer : ¬∀ n, ERW_conjecture n :=
+theorem erdos_807_answer : ¬ ERW_conjecture :=
   erw_conjecture_false
 
 /-
@@ -206,11 +207,11 @@ theorem erdos_807_answer : ¬∀ n, ERW_conjecture n :=
 The minimum number of cliques needed to cover all edges.
 Related to bipartition number via τ(G) ≤ cliqueCover(G).
 -/
-def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ cliques : Finset (Finset V),
     cliques.card = k ∧ ∀ v w, G.Adj v w → ∃ C ∈ cliques, v ∈ C ∧ w ∈ C}
 
-/--
+/- 
 **Chromatic Number Connection:**
 The bipartition number relates to the chromatic number of the complement.
 -/
@@ -219,14 +220,14 @@ The bipartition number relates to the chromatic number of the complement.
 ## Part IX: Probabilistic Methods
 -/
 
-/--
+/- 
 **The Probabilistic Method:**
 Alon's proof uses the probabilistic method to show that the expected
 number of edges covered by a random bipartite graph is large enough
 to achieve the improved bound.
 -/
 
-/--
+/-
 **Concentration Inequalities:**
 The "almost surely" statements use concentration inequalities
 (Chernoff bounds, etc.) to show the behavior holds with probability

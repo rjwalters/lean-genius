@@ -16,10 +16,9 @@ intervals replaced by any k intervals.
 Reference: [ErGr80]
 -/
 
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Data.PNat.Basic
 import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Tactic
 
@@ -70,9 +69,10 @@ axiom erdos_288 : ErdosConjecture288
 theorem example_sum_one :
     harmonicInterval ⟨3, by omega⟩ ⟨6, by omega⟩ +
     harmonicInterval ⟨20, by omega⟩ ⟨20, by omega⟩ = 1 := by
-  unfold harmonicInterval
+  show (∑ n ∈ Finset.Icc (3 : ℕ) (6 : ℕ), if h : n > 0 then (n : ℚ)⁻¹ else 0) +
+       (∑ n ∈ Finset.Icc (20 : ℕ) (20 : ℕ), if h : n > 0 then (n : ℚ)⁻¹ else 0) = 1
   -- Reduce the finite sums
-  have h36 : Finset.Icc 3 6 = {3, 4, 5, 6} := by decide
+  have h36 : Finset.Icc (3 : ℕ) 6 = {3, 4, 5, 6} := by decide
   rw [h36, Finset.Icc_self]
   simp only [Finset.sum_singleton, Finset.sum_cons, Finset.sum_empty,
     show (3 : ℕ) > 0 from by omega, show (4 : ℕ) > 0 from by omega,
@@ -85,8 +85,9 @@ theorem example_sum_one :
 theorem example_sum_one_v2 :
     harmonicInterval ⟨2, by omega⟩ ⟨3, by omega⟩ +
     harmonicInterval ⟨6, by omega⟩ ⟨6, by omega⟩ = 1 := by
-  unfold harmonicInterval
-  have h23 : Finset.Icc 2 3 = {2, 3} := by decide
+  show (∑ n ∈ Finset.Icc (2 : ℕ) (3 : ℕ), if h : n > 0 then (n : ℚ)⁻¹ else 0) +
+       (∑ n ∈ Finset.Icc (6 : ℕ) (6 : ℕ), if h : n > 0 then (n : ℚ)⁻¹ else 0) = 1
+  have h23 : Finset.Icc (2 : ℕ) 3 = {2, 3} := by decide
   rw [h23, Finset.Icc_self]
   simp only [Finset.sum_singleton, Finset.sum_cons, Finset.sum_empty,
     show (2 : ℕ) > 0 from by omega, show (3 : ℕ) > 0 from by omega,
@@ -107,7 +108,7 @@ def singletonPairs : Set (ℕ+ × ℕ+ × ℕ+) :=
 
 /-- The generalization to k intervals: each interval represented
     as a pair (start, end) of positive naturals. -/
-def kIntervalSum (k : ℕ) (I : Fin k → ℕ+ × ℕ+) : ℚ :=
+noncomputable def kIntervalSum (k : ℕ) (I : Fin k → ℕ+ × ℕ+) : ℚ :=
   ∑ j : Fin k, harmonicInterval (I j).1 (I j).2
 
 /-- The k-interval version of the conjecture. -/
@@ -133,13 +134,13 @@ theorem harmonicInterval_pos (a b : ℕ+) (h : a ≤ b) :
     harmonicInterval a b > 0 := by
   unfold harmonicInterval
   apply Finset.sum_pos
-  · -- Icc is nonempty since a ≤ b
-    exact ⟨(a : ℕ), Finset.mem_Icc.mpr ⟨le_refl _, h⟩⟩
   · intro k hk
     have hk_pos : k > 0 := by
       have := (Finset.mem_Icc.mp hk).1; exact lt_of_lt_of_le (PNat.pos a) this
     simp only [dif_pos hk_pos]
     exact inv_pos.mpr (Nat.cast_pos.mpr hk_pos)
+  · -- Icc is nonempty since a ≤ b
+    exact ⟨(a : ℕ), Finset.mem_Icc.mpr ⟨le_refl _, h⟩⟩
 
 /-- The harmonic sum over [1, n] is the n-th harmonic number. -/
 theorem harmonicInterval_from_one (n : ℕ+) :
@@ -148,7 +149,9 @@ theorem harmonicInterval_from_one (n : ℕ+) :
   apply Finset.sum_congr rfl
   intro k hk
   have hk_pos : k > 0 := by
-    have := (Finset.mem_Icc.mp hk).1; omega
+    have h1 := (Finset.mem_Icc.mp hk).1
+    norm_num at h1
+    omega
   simp only [dif_pos hk_pos]
 
 /-- The harmonic sum H(a,b) is at least 1/a when a ≤ b.

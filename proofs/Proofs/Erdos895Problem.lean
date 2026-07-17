@@ -308,7 +308,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         · intro hadj
           have ha_S' := hI_sub ha
           have ha_rem : a ∈ removed := Finset.mem_union_left _ (Finset.mem_inter.mpr
-            ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hadj, (Finset.mem_sdiff.mp ha_S').1⟩)
+            ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.adj_symm hadj, (Finset.mem_sdiff.mp ha_S').1⟩)
           exact (Finset.mem_sdiff.mp ha_S').2 ha_rem
         · exact hI_indep a b ha hb hab
 

@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Data.Complex.Exponential
 
 /-!
 # De Moivre's Theorem (Wiedijk #17)

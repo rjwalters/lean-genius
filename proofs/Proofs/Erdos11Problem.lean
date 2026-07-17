@@ -16,12 +16,14 @@
 
 import Mathlib
 
+set_option maxRecDepth 40000
+
 open Nat Finset
 
 /- ## Core Definitions -/
 
 /-- A number is squarefree if no prime square divides it -/
-def IsSquarefree (n : ℕ) : Prop := Squarefree n
+abbrev IsSquarefree (n : ℕ) : Prop := Squarefree n
 
 /-- The set of powers of 2: {1, 2, 4, 8, 16, ...} -/
 def IsPowerOfTwo (n : ℕ) : Prop := ∃ k : ℕ, n = 2^k
@@ -57,7 +59,7 @@ theorem five_works : IsSquarefreePlusPow2 5 :=
 
 /-- 7 = 5 + 2 (5 is squarefree) -/
 theorem seven_works : IsSquarefreePlusPow2 7 :=
-  ⟨5, 2, by decide, two_is_pow2, rfl⟩
+  ⟨5, 2, (by norm_num : Nat.Prime 5).squarefree, two_is_pow2, rfl⟩
 
 /-- 9 = 1 + 8 = 1 + 2³ -/
 theorem nine_works : IsSquarefreePlusPow2 9 :=
@@ -103,11 +105,11 @@ def IsSquarefreePlusTwoPow2 (n : ℕ) : Prop :=
 
 /- ## Connection to Wieferich Primes (Granville-Soundararajan 1998) -/
 
-/-- Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
+/-  Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
 /- ## Computational Verification -/
 
-/-- Hercher (2024): Verified for all odd n up to 2^50 -/
-/-- Odlyzko: Earlier verification up to 10^7 -/
+/-  Hercher (2024): Verified for all odd n up to 2^50 -/
+/-  Odlyzko: Earlier verification up to 10^7 -/
 /- ## Density Result -/
 
-/-- Erdős proved the conjecture holds for almost all n -/
+/- Erdős proved the conjecture holds for almost all n -/

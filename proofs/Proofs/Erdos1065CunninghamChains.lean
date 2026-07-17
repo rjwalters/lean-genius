@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 Cunningham Chains and Form A Primes: Long Chain Existence
@@ -183,7 +179,7 @@ private lemma chain_tail_all_safe : ∀ (chain : List ℕ),
     intro hchain p hp
     simp only [List.tail_cons] at hp
     cases tl with
-    | nil => exact absurd hp (List.not_mem_nil _)
+    | nil => exact absurd hp List.not_mem_nil
     | cons q rest =>
       simp only [IsCunninghamChain] at hchain
       obtain ⟨hhd, hq, hrest⟩ := hchain
@@ -194,7 +190,7 @@ private lemma chain_tail_all_safe : ∀ (chain : List ℕ),
 
 /-- A Cunningham chain is strictly sorted: each element is less than the next. -/
 private lemma chain_sorted_lt : ∀ (chain : List ℕ),
-    IsCunninghamChain chain → chain.Sorted (· < ·) := by
+    IsCunninghamChain chain → chain.Pairwise (· < ·) := by
   intro chain
   induction chain with
   | nil => simp
@@ -205,13 +201,13 @@ private lemma chain_sorted_lt : ∀ (chain : List ℕ),
     | cons q rest =>
       simp only [IsCunninghamChain] at hchain
       obtain ⟨hhd, hq, hrest⟩ := hchain
-      rw [List.sorted_cons]
+      rw [List.pairwise_cons]
       refine ⟨fun x hx => ?_, ih hrest⟩
       rw [List.mem_cons] at hx
       rcases hx with rfl | hx
       · subst hq; omega
       · exact lt_trans (by subst hq; omega)
-            ((List.sorted_cons.mp (ih hrest)).1 x hx)
+            ((List.pairwise_cons.mp (ih hrest)).1 x hx)
 
 /-- If the Cunningham chain conjecture holds, then safe primes are infinite,
     confirming Conjecture A of Erdős #1065 (infinitely many Form A primes with k=1).

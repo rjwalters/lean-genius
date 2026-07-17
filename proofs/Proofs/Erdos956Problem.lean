@@ -24,6 +24,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos956
 
 open Set Metric Finset
@@ -60,7 +62,9 @@ theorem setDistance_nonneg {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
   set S := { dist c d | (c : X) (d : X) (_ : c ∈ C) (_ : d ∈ D) }
   rcases S.eq_empty_or_nonempty with he | hne
   · rw [he]; simp
-  · exact le_csInf hne (fun _ ⟨c, d, _, _, rfl⟩ => dist_nonneg)
+  · refine le_csInf hne ?_
+    rintro _ ⟨c, d, _, _, rfl⟩
+    exact dist_nonneg
 
 /-- δ(C, D) = 0 iff C and D touch or overlap. -/
 theorem setDistance_eq_zero_iff {X : Type*} [PseudoMetricSpace X] (C D : Set X)
@@ -126,8 +130,8 @@ def HasUnitDistance (config : DisjointTranslates n) (i j : Fin n) : Prop :=
 /-- Count of unit distance pairs in a configuration. -/
 noncomputable def unitDistanceCount (config : DisjointTranslates n) : ℕ :=
   ((Finset.univ : Finset (Fin n)).filter (fun i =>
-    (Finset.univ : Finset (Fin n)).filter (fun j => i < j ∧ HasUnitDistance config i j)
-    |>.card > 0)).card
+    ((Finset.univ : Finset (Fin n)).filter
+      (fun j => i < j ∧ HasUnitDistance config i j)).card > 0)).card
 
 /-
 ## Part IV: The Function h(n)
@@ -165,8 +169,8 @@ notation "f" => unitDistancePoints
 theorem h_ge_f (n : ℕ) : h n ≥ f n := by
   sorry
 
-/-- Spencer-Szemerédi-Trotter: f(n) = O(n^(4/3)). -/
-/-- f(n) = Ω(n^(1 + c)) for some c > 0. -/
+/-  Spencer-Szemerédi-Trotter: f(n) = O(n^(4/3)). -/
+/-  f(n) = Ω(n^(1 + c)) for some c > 0. -/
 /-
 ## Part VI: Erdős-Pach Upper Bound (1990)
 
@@ -178,7 +182,7 @@ axiom erdos_pach_upper_bound (n : ℕ) (hn : n ≥ 2) :
     (h n : ℝ) ≤ 2 * n^(4/3 : ℝ)
 
 /-- The upper bound exponent is 4/3. -/
-def upper_exponent : ℝ := 4/3
+noncomputable def upper_exponent : ℝ := 4/3
 
 /-
 ## Part VII: General Convex Sets (Non-Translates)
@@ -201,7 +205,7 @@ noncomputable def unitDistanceCountGeneral (config : DisjointConvexSets n) : ℕ
 noncomputable def h_general (n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ config : DisjointConvexSets n, unitDistanceCountGeneral config = m }
 
-/-- **Erdős-Pach**: For general convex sets, h_general(n) ≪ n^(7/5). -/
+/-  **Erdős-Pach**: For general convex sets, h_general(n) ≪ n^(7/5). -/
 /-- h(n) ≤ h_general(n) (translates are special case). -/
 theorem h_le_h_general (n : ℕ) : h n ≤ h_general n := by
   sorry
@@ -235,7 +239,7 @@ theorem conjecture_from_f : (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 → (f
 Lower bound examples.
 -/
 
-/-- Lattice construction gives many unit distances. -/
+/-  Lattice construction gives many unit distances. -/
 /-- Grid constructions give Ω(n log n / log log n) unit distances. -/
 axiom grid_construction (n : ℕ) (hn : n ≥ 10) :
     (h n : ℝ) ≥ n * Real.log n / Real.log (Real.log n)
@@ -264,7 +268,7 @@ theorem disk_case (n : ℕ) : ∃ C : CompactConvex,
       unitDistanceCount config ≤ f n + n) := by
   sorry
 
-/-- For line segments, different bounds may apply. -/
+/-  For line segments, different bounds may apply. -/
 /-
 ## Part XII: Main Results
 

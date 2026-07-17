@@ -24,10 +24,10 @@
   ## Axioms: 0  |  Sorries: 0
 -/
 
+import Mathlib
 import Mathlib.FieldTheory.Minpoly.Basic
 import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.Algebra.Polynomial.Monic
-import Mathlib.Algebra.Associated.Basic
 import Mathlib.Tactic
 
 open Polynomial minpoly
@@ -48,7 +48,8 @@ variable {B : Type*} [Ring B] [Algebra K B]
     so minpoly(f(a)) divides minpoly(a) by definition of minimal polynomial. -/
 theorem minpoly_dvd_algHom (f : A →ₐ[K] B) (a : A) :
     minpoly K (f a) ∣ minpoly K a :=
-  minpoly.dvd K (f a) (minpoly.aeval_algHom f a)
+  minpoly.dvd K (f a)
+    (by rw [Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero])
 
 -- ============================================================================
 -- Part II: The Exact Characterization
@@ -87,8 +88,9 @@ theorem minpoly_eq_iff_aeval_zero (f : A →ₐ[K] B) (a : A)
     a is a root of minpoly K (f a). -/
 theorem minpoly_eq_iff_isRoot (f : A →ₐ[K] B) (a : A)
     (ha : IsIntegral K a) (hfa : IsIntegral K (f a)) :
-    minpoly K (f a) = minpoly K a ↔ (minpoly K (f a)).IsRoot a := by
-  simp only [Polynomial.IsRoot, ← Polynomial.aeval_def]
+    minpoly K (f a) = minpoly K a ↔
+      ((minpoly K (f a)).map (algebraMap K A)).IsRoot a := by
+  rw [Polynomial.IsRoot, Polynomial.eval_map_algebraMap]
   exact minpoly_eq_iff_aeval_zero f a ha hfa
 
 /-- **Failure mode**: minpoly K (f a) ≠ minpoly K a iff a is NOT a root of minpoly K (f a).

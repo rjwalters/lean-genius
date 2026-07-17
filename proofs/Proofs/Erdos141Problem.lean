@@ -125,7 +125,7 @@ theorem erdos_141_open : Erdos141Conjecture ∨ ¬Erdos141Conjecture := by
 
 /- ## Computational Verification for Small k -/
 
-/-- Verified computationally: for k ≤ 10, such progressions exist.
+/-  Verified computationally: for k ≤ 10, such progressions exist.
     - k=3: (3, 5, 7)
     - k=4: (251, 257, 263, 269)
     - k=5: Exists (verified computationally)
@@ -151,7 +151,7 @@ theorem eleven_open : Exists11ConsecutivePrimesInAP ∨ ¬Exists11ConsecutivePri
 
 /- ## Green-Tao (Contrast) -/
 
-/-- **Green-Tao Theorem** (2008): The primes contain arbitrarily long AP's.
+/-  **Green-Tao Theorem** (2008): The primes contain arbitrarily long AP's.
 
 Note: This does NOT solve Erdős #141 because Green-Tao doesn't guarantee
 the primes are consecutive.

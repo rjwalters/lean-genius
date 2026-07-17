@@ -85,9 +85,9 @@ axiom erdos_1010_supersaturation (G : SimpleGraph V) [DecidableRel G.Adj] (t : �
 ## Corollaries and Special Cases
 -/
 
-/-- Corollary: Any graph with more than ⌊n²/4⌋ edges has a triangle.
+/-  Corollary: Any graph with more than ⌊n²/4⌋ edges has a triangle.
     This is the classical Turán theorem for K₃; the full proof from
     erdos_1010_supersaturation requires additional bookkeeping about
     the exact edge count and the constraint n ≥ 2. -/
-/-- The bound t · ⌊n/2⌋ is tight: Turán graph with t additional edges
+/- The bound t · ⌊n/2⌋ is tight: Turán graph with t additional edges
     achieves exactly this many triangles when edges added optimally -/

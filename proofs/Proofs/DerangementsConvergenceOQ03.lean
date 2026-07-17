@@ -14,7 +14,7 @@
   From `DerangementsConvergence.derangements_convergence_rate`:
     |D(n)/n! - rexp(-1)| ≤ 1/(n+1)!
 
-  Multiplying by n! (using abs_div + div_le_iff):
+  Multiplying by n! (using abs_div + div_le_iff₀):
     |D(n) - n!·rexp(-1)| ≤ n!/(n+1)! = 1/(n+1)
 
   For n ≥ 2: n+1 ≥ 3 > 2, so 1/(n+1) < 1/2.
@@ -39,7 +39,6 @@ private lemma factorial_mul_one_div_factorial_succ (n : ℕ) :
   rw [Nat.factorial_succ]
   push_cast
   field_simp
-  ring
 
 /-- For n ≥ 2, the number of derangements equals the nearest integer to n!/e.
 
@@ -61,19 +60,20 @@ theorem derangements_eq_round (n : ℕ) (hn : 2 ≤ n) :
         simp only [hx_def]; field_simp]
       rw [abs_div, abs_of_pos hfact_pos]
     -- So |D - x|/n! ≤ 1/(n+1)!, multiply both sides by n!
-    rw [hmul, div_le_iff hfact_pos] at hrate
+    rw [hmul, div_le_iff₀ hfact_pos] at hrate
     -- Now hrate : |D - x| ≤ n! * (1/(n+1)!) = 1/(n+1)
     -- For n ≥ 2: 1/(n+1) < 1/2 since n+1 ≥ 3 > 2
     have hn3 : (2 : ℝ) < n + 1 := by exact_mod_cast (show 2 < n + 1 by omega)
     have hlt3 : 1 / (n + 1 : ℝ) < 1 / 2 := one_div_lt_one_div_of_lt (by norm_num) hn3
     calc |(numDerangements n : ℝ) - x|
-        ≤ (n.factorial : ℝ) * (1 / ((n + 1).factorial : ℝ)) := hrate
+        ≤ (n.factorial : ℝ) * (1 / ((n + 1).factorial : ℝ)) := by
+            rw [mul_comm]; exact hrate
       _ = 1 / (n + 1 : ℝ) := factorial_mul_one_div_factorial_succ n
       _ < 1 / 2 := hlt3
   -- Step 2: D(n) = ⌊x + 1/2⌋ = round x
   rw [round_eq]
   symm
-  apply floor_eq_iff.mpr
+  apply Int.floor_eq_iff.mpr
   have habs := abs_lt.mp hlt
   -- habs.1 : -(1/2) < D - x, i.e., x - 1/2 < D, i.e., x + 1/2 < D + 1
   -- habs.2 : D - x < 1/2, i.e., D < x + 1/2, i.e., D ≤ x + 1/2

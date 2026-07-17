@@ -30,10 +30,7 @@ References:
 Tags: number-theory, powerful-numbers, pell-equations, consecutive-integers
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos365
 
@@ -52,15 +49,15 @@ def IsPowerfulAlt (n : ℕ) : Prop :=
 
 /-- Every perfect square is powerful. -/
 theorem square_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^2) := by
-  refine ⟨by positivity, fun p hp hdvd => ?_⟩
+  refine ⟨Nat.one_le_pow 2 k hk, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
-  exact dvd_pow_self p 2 |>.trans (Nat.pow_dvd_pow_of_dvd hpk 2)
+  exact pow_dvd_pow_of_dvd hpk 2
 
 /-- Every perfect cube is powerful. -/
 theorem cube_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^3) := by
-  refine ⟨by positivity, fun p hp hdvd => ?_⟩
+  refine ⟨Nat.one_le_pow 3 k hk, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
-  calc p ^ 2 ∣ k ^ 2 := Nat.pow_dvd_pow_of_dvd hpk 2
+  calc p ^ 2 ∣ k ^ 2 := pow_dvd_pow_of_dvd hpk 2
     _ ∣ k ^ 3 := ⟨k, by ring⟩
 
 /- ## Part II: Consecutive Powerful Numbers -/
@@ -77,11 +74,13 @@ theorem example_8_9 : IsConsecutivePowerfulPair 8 := by
   · constructor
     · norm_num
     · intro p hp hdiv
-      interval_cases p <;> simp_all [Nat.Prime] <;> decide
+      have hbound : p ≤ 8 := Nat.le_of_dvd (by norm_num) hdiv
+      interval_cases p <;> revert hp hdiv <;> decide
   · constructor
     · norm_num
     · intro p hp hdiv
-      interval_cases p <;> simp_all [Nat.Prime] <;> decide
+      have hbound : p ≤ 9 := Nat.le_of_dvd (by norm_num) hdiv
+      interval_cases p <;> revert hp hdiv <;> decide
 
 /- ## Part III: The Pell Equation Connection -/
 
@@ -90,11 +89,11 @@ x² - Dy² = 1 for non-square D > 0. -/
 def IsPellSolution (x y D : ℕ) : Prop :=
   x^2 = D * y^2 + 1
 
-/-- **Mahler's observation:**
+/-  **Mahler's observation:**
 The Pell equation x² = 8y² + 1 gives consecutive powerful numbers.
 If (x, y) is a solution, then 8y² = x² - 1 = (x-1)(x+1).
 Both 8y² and 8y² + 1 can be powerful. -/
-/-- **Infinitely many from Pell:**
+/-  **Infinitely many from Pell:**
 The Pell equation x² - 8y² = 1 has infinitely many solutions.
 Fundamental solution: (3, 1) giving 8·1 = 8 and 9. -/
 /- ## Part IV: Question 1 - Must One Be a Square? -/
@@ -136,12 +135,13 @@ axiom walker_infinitely_many :
       (∀ k, WalkerEquation (f k).1 (f k).2) ∧
       (∀ k₁ k₂, k₁ < k₂ → (f k₁).2 < (f k₂).2)
 
-/-- **Walker solutions give non-square pairs:** -/
+/-  **Walker solutions give non-square pairs:** -/
 /- ## Part VI: Question 2 - Counting -/
 
 /-- **Counting function:**
 P(x) = |{n ≤ x : both n and n+1 are powerful}| -/
 noncomputable def countingFunction (x : ℕ) : ℕ :=
+  haveI := Classical.decPred IsConsecutivePowerfulPair
   Finset.card (Finset.filter IsConsecutivePowerfulPair (Finset.range (x + 1)))
 
 /-- **Question 2 (OPEN):**

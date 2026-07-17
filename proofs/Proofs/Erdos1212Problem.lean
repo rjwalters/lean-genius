@@ -13,8 +13,7 @@ and at least one of x, y is composite?
 Answer: YES — proved.
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos1212
 
@@ -31,8 +30,8 @@ def coprimeAdj (v w : CoprimeVertex) : Prop :=
 /-- The coprime graph G -/
 noncomputable def coprimeGraph : SimpleGraph CoprimeVertex :=
   { Adj := fun v w => v ≠ w ∧ coprimeAdj v w
-    symm := by intro x y ⟨hne, hadj⟩; exact ⟨hne.symm, by simp [coprimeAdj] at *; tauto⟩
-    loopless := by intro x ⟨h, _⟩; exact h rfl }
+    symm := by constructor; intro x y ⟨hne, hadj⟩; exact ⟨hne.symm, by simp [coprimeAdj] at *; tauto⟩
+    loopless := by constructor; intro x ⟨h, _⟩; exact h rfl }
 
 /-- Desired path property: min > 1 and at least one composite -/
 def IsGoodVertex (v : CoprimeVertex) : Prop :=

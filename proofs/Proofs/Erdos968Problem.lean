@@ -76,7 +76,7 @@ def flatSteps : Set ℕ := {n | u n = u (n + 1)}
 ## Known Results (Erdős-Prachar 1961)
 -/
 
-/--
+/- 
 **Erdős-Prachar Theorem 1**: The total variation of the normalized prime
 sequence satisfies Σ_{pₙ < x} |uₙ₊₁ - uₙ| ≍ (log x)².
 
@@ -98,7 +98,7 @@ axiom erdos_prachar_decreasing_density : Set.HasPosDensity decreasingSteps
 The main question of Erdős Problem #968.
 -/
 
-/--
+/- 
 **Erdős Problem #968 (OPEN)**: Does the set of increasing steps {n : uₙ < uₙ₊₁}
 have positive natural density?
 
@@ -121,11 +121,11 @@ def increasingTriples : Set ℕ := {n | u n < u (n + 1) ∧ u (n + 1) < u (n + 2
 /-- The set of n where uₙ > uₙ₊₁ > uₙ₊₂ (three consecutive decreases). -/
 def decreasingTriples : Set ℕ := {n | u n > u (n + 1) ∧ u (n + 1) > u (n + 2)}
 
-/--
+/- 
 **Erdős Question (OPEN)**: Are there infinitely many increasing triples
 n with uₙ < uₙ₊₁ < uₙ₊₂?
 -/
-/--
+/- 
 **Erdős Question (OPEN)**: Are there infinitely many decreasing triples
 n with uₙ > uₙ₊₁ > uₙ₊₂?
 -/
@@ -135,7 +135,7 @@ n with uₙ > uₙ₊₁ > uₙ₊₂?
 The behavior of uₙ = pₙ/n is governed by the Prime Number Theorem.
 -/
 
-/--
+/- 
 By PNT, pₙ ~ n log n, so uₙ = pₙ/n ~ log n.
 The sequence grows slowly (logarithmically) on average.
 
@@ -148,13 +148,22 @@ We verify some basic properties about the normalized prime sequence.
 -/
 
 /-- The first prime is 2. -/
-theorem first_prime : Nat.nth Nat.Prime 0 = 2 := by native_decide
+theorem first_prime : Nat.nth Nat.Prime 0 = 2 := by
+  have hcount : Nat.count Nat.Prime 2 = 0 := by decide
+  have hp : Nat.Prime 2 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- The second prime is 3. -/
-theorem second_prime : Nat.nth Nat.Prime 1 = 3 := by native_decide
+theorem second_prime : Nat.nth Nat.Prime 1 = 3 := by
+  have hcount : Nat.count Nat.Prime 3 = 1 := by decide
+  have hp : Nat.Prime 3 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- The third prime is 5. -/
-theorem third_prime : Nat.nth Nat.Prime 2 = 5 := by native_decide
+theorem third_prime : Nat.nth Nat.Prime 2 = 5 := by
+  have hcount : Nat.count Nat.Prime 5 = 2 := by decide
+  have hp : Nat.Prime 5 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- u(0) = 2/1 = 2. -/
 theorem u_zero : u 0 = 2 := by

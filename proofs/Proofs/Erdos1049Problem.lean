@@ -42,7 +42,7 @@ theorem tau_one : τ 1 = 1 := by
 /-- τ(p) = 2 for prime p. -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : τ p = 2 := by
   unfold tau
-  rw [hp.divisors, Finset.card_insert_of_not_mem (by simp [hp.one_lt.ne]),
+  rw [hp.divisors, Finset.card_insert_of_notMem (by simp [hp.one_lt.ne]),
       Finset.card_singleton]
 
 /-- τ(p^k) = k + 1 for prime p. -/
@@ -54,7 +54,7 @@ theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     τ (m * n) = τ m * τ n := by
   simp only [tau]
   rw [hmn.divisors_mul]
-  exact Finset.card_product _ _
+  simp [Finset.card_product]
 
 /-- τ(n) ≥ 1 for n ≥ 1. -/
 theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
@@ -120,22 +120,22 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
   have htd_gt : (1 : ℝ) < t ^ d := by
     calc (1 : ℝ) = 1 ^ d := (one_pow d).symm
     _ < t ^ d := by
-      apply pow_lt_pow_left (by linarith : (1 : ℝ) < t) (by linarith : (0 : ℝ) ≤ 1)
+      apply pow_lt_pow_left₀ (by linarith : (1 : ℝ) < t) (by linarith : (0 : ℝ) ≤ 1)
       omega
   have htd_ne : t ^ d ≠ 0 := ne_of_gt htd_pos
   set r := (t ^ d)⁻¹ with hr_def
   have hr_pos : (0 : ℝ) < r := inv_pos_of_pos htd_pos
-  have hr_lt : r < 1 := by rwa [inv_lt_one_iff_of_pos htd_pos]
+  have hr_lt : r < 1 := by rwa [inv_lt_one₀ htd_pos]
   -- Rewrite terms: 1/t^{dm} = r^m
   have hterm : ∀ m : ℕ, (if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) =
       if m = 0 then (0 : ℝ) else r ^ m := by
     intro m; split_ifs with h
     · rfl
-    · rw [one_div, hr_def, ← inv_pow, ← pow_mul]
+    · rw [one_div, hr_def, inv_pow, ← pow_mul]
   simp_rw [hterm]
   -- Summability of the geometric series
   have hgeom : Summable (fun n : ℕ => r ^ n) :=
-    summable_geometric_of_lt_one hr_pos.le hr_lt.le
+    summable_geometric_of_lt_one hr_pos.le hr_lt
   -- Summability of the if-then-else version
   have hsum : Summable (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
     apply Summable.of_nonneg_of_le
@@ -145,16 +145,15 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
       · exact le_refl _
     · exact hgeom
   -- Split off the m=0 term: ∑ f(m) = f(0) + ∑ f(m+1)
-  rw [tsum_eq_zero_add hsum, if_pos rfl]
+  rw [Summable.tsum_eq_zero_add hsum, if_pos rfl]
   simp only [Nat.succ_ne_zero, ite_false, zero_add]
   -- Now have: ∑' m, r^(m+1) = 1/(t^d - 1)
   -- r^(m+1) = r * r^m
   simp_rw [pow_succ]
-  rw [tsum_mul_right, tsum_geometric_of_lt_one hr_pos.le hr_lt.le]
+  rw [tsum_mul_right, tsum_geometric_of_lt_one hr_pos.le hr_lt]
   -- (1 - r)⁻¹ * r = 1/(t^d - 1)
   rw [hr_def]
   field_simp
-  ring
 
 /-
 ## Part IV: Erdős's Result for Integers
@@ -263,7 +262,7 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
     S t = isLambertSeries (fun _ => 1) (1/t) := by
   sorry
 
-/-- Lambert series preserve arithmetic structure. -/
+/-  Lambert series preserve arithmetic structure. -/
 /-
   Lambert series of arithmetic functions have special properties
   (e.g. Dirichlet series convolution structure at the level of coefficients).
@@ -275,7 +274,7 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
 What is known towards Chowla's conjecture.
 -/
 
-/-- S(p/q) is irrational for certain p/q (partial results). -/
+/-  S(p/q) is irrational for certain p/q (partial results). -/
 /-
   S(p/q) is irrational for certain p/q (partial results toward Chowla's conjecture).
   Some specific rational values have been verified.

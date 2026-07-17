@@ -89,8 +89,11 @@ Fréchet derivative of `f` applied to the direction `v`. -/
 theorem restriction_hasDerivAt (f : E → ℝ) (a v : E) (t : ℝ)
     (hf : DifferentiableAt ℝ f (a + t • v)) :
     HasDerivAt (restriction f a v) (fderiv ℝ f (a + t • v) v) t := by
-  have := hf.hasFDerivAt.comp_hasDerivAt t (line_hasDerivAt a v t)
-  simpa [restriction, Function.comp] using this
+  have h := hf.hasFDerivAt.comp_hasDerivAt t (line_hasDerivAt a v t)
+  have heq : (f ∘ fun s : ℝ => a + s • v) = restriction f a v := by
+    funext s; simp [restriction, Function.comp]
+  rw [heq] at h
+  exact h
 
 /-- The derivative of the line restriction, in `deriv` form. -/
 theorem restriction_deriv (f : E → ℝ) (a v : E) (t : ℝ)
@@ -114,6 +117,7 @@ theorem multivariate_taylor_lagrange {n : ℕ} (f : E → ℝ) (a v : E)
   obtain ⟨θ, hθ, hEq⟩ :=
     taylor_mean_remainder_lagrange_iteratedDeriv (f := restriction f a v)
       (x := 1) (x₀ := 0) (n := n) (by norm_num) hg.contDiffOn
+  rw [Set.uIoo_of_le (by norm_num : (0:ℝ) ≤ 1)] at hθ
   exact ⟨θ, hθ, by simpa using hEq⟩
 
 /-- **Multivariate mean value / first-order Taylor theorem with Lagrange remainder.**
@@ -126,7 +130,7 @@ theorem multivariate_taylor_first_order (f : E → ℝ) (a v : E) (hf : ContDiff
     ∃ θ ∈ Ioo (0 : ℝ) 1, f (a + v) = f a + fderiv ℝ f (a + θ • v) v := by
   obtain ⟨θ, hθ, hEq⟩ := multivariate_taylor_lagrange (n := 0) f a v (by simpa using hf)
   refine ⟨θ, hθ, ?_⟩
-  have hdiff : DifferentiableAt ℝ f (a + θ • v) := (hf.differentiable le_rfl).differentiableAt
+  have hdiff : DifferentiableAt ℝ f (a + θ • v) := (hf.differentiable one_ne_zero).differentiableAt
   rw [taylor_within_zero_eval, iteratedDeriv_one,
     restriction_deriv f a v θ hdiff, restriction_zero] at hEq
   simp only [zero_add, Nat.factorial_one, Nat.cast_one, div_one] at hEq

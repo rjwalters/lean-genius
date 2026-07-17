@@ -40,9 +40,9 @@ def ErdosProblem542 : Prop :=
   ∀ n : ℕ, ∀ A : Finset ℕ, PairwiseLCMExceeds A n →
     reciprocalSum A ≤ 31 / 30
 
-/-- The bound 31/30 is achieved by {2, 3, 5}: 1/2 + 1/3 + 1/5 = 31/30. -/
+/-  The bound 31/30 is achieved by {2, 3, 5}: 1/2 + 1/3 + 1/5 = 31/30. -/
 
-/-- {2, 3, 5} satisfies the LCM condition for n = 5. -/
+/-  {2, 3, 5} satisfies the LCM condition for n = 5. -/
 
 /- ## Chen's Stronger Bound -/
 
@@ -53,9 +53,11 @@ def ChenBound : Prop :=
     ∀ A : Finset ℕ, PairwiseLCMExceeds A n →
       reciprocalSum A < 1/3 + 1/4 + 1/5 + 1/7 + 1/11
 
-/-- The Chen bound value equals 2927/4620. -/
+/-- The Chen bound value equals 4699/4620. (Statement repair for v4.31: the
+    previous RHS 2927/4620 was numerically wrong — 1/3+1/4+1/5+1/7+1/11
+    = 1540+1155+924+660+420 over 4620 = 4699/4620.) -/
 theorem chen_bound_value :
-    (1 : ℚ)/3 + 1/4 + 1/5 + 1/7 + 1/11 = 2927/4620 := by
+    (1 : ℚ)/3 + 1/4 + 1/5 + 1/7 + 1/11 = 4699/4620 := by
   norm_num
 
 /- ## Maximal Sets Conjecture -/
@@ -67,13 +69,13 @@ def MaximalSetsConjecture : Prop :=
     1 < reciprocalSum A →
     (A = {2, 3, 5} ∨ A = {3, 4, 5, 7, 11})
 
-/-- {3, 4, 5, 7, 11} achieves sum > 1 under the LCM condition. -/
+/-  {3, 4, 5, 7, 11} achieves sum > 1 under the LCM condition. -/
 
-/-- {3, 4, 5, 7, 11} satisfies the LCM condition for n = 11. -/
+/-  {3, 4, 5, 7, 11} satisfies the LCM condition for n = 11. -/
 
 /- ## Structural Properties -/
 
-/-- The LCM condition implies no element divides another (within {1,...,n}). -/
+/-  The LCM condition implies no element divides another (within {1,...,n}). -/
 
 /-- Singleton sets always satisfy the LCM condition vacuously. -/
 theorem singleton_satisfies_lcm (a n : ℕ) (ha : a ∈ Finset.range (n + 1))
@@ -94,4 +96,4 @@ theorem reciprocal_sum_singleton (a : ℕ) (ha : 0 < a) :
     reciprocalSum {a} = 1 / (a : ℚ) := by
   simp [reciprocalSum]
 
-/-- The Schinzel-Szekeres theorem solves Erdős Problem 542. -/
+/- The Schinzel-Szekeres theorem solves Erdős Problem 542. -/

@@ -30,9 +30,13 @@ variable {σ : Type*} {k : Type*} [Field k] [IsAlgClosed k]
 -- ============================================================
 
 /-- The strong Nullstellensatz, directly from Mathlib.
-    I(V(J)) = √J for any ideal J in k[x₁,...,xₙ]. -/
-theorem strong_nullstellensatz (I : Ideal (MvPolynomial σ k)) :
-    vanishingIdeal (zeroLocus (↑I : Set (MvPolynomial σ k))) = I.radical :=
+    I(V(J)) = √J for any ideal J in k[x₁,...,xₙ].
+    (v4.31: Mathlib's `zeroLocus`/`vanishingIdeal` now take the field
+    explicitly and `zeroLocus` takes the ideal directly; the upstream
+    theorem now requires `Finite σ`, which is genuinely necessary —
+    the statement fails for infinitely many variables.) -/
+theorem strong_nullstellensatz [Finite σ] (I : Ideal (MvPolynomial σ k)) :
+    vanishingIdeal k (zeroLocus k I) = I.radical :=
   vanishingIdeal_zeroLocus_eq_radical I
 
 -- ============================================================
@@ -43,39 +47,40 @@ theorem strong_nullstellensatz (I : Ideal (MvPolynomial σ k)) :
     Equivalently: J = (1) iff V(J) = ∅. -/
 theorem weak_nullstellensatz [Finite σ] (I : Ideal (MvPolynomial σ k))
     (hI : I ≠ ⊤) :
-    (zeroLocus (↑I : Set (MvPolynomial σ k))).Nonempty := by
+    (zeroLocus k I).Nonempty := by
   rw [Set.nonempty_iff_ne_empty]
   intro h
-  have := vanishingIdeal_zeroLocus_eq_radical I
+  have := vanishingIdeal_zeroLocus_eq_radical (K := k) I
   rw [h, vanishingIdeal_empty] at this
-  exact hI (Ideal.eq_top_of_radical_eq_top this)
+  exact hI (Ideal.radical_eq_top.mp this.symm)
 
 /-- A polynomial vanishes on V(J) iff some power is in J. -/
-theorem membership_criterion (I : Ideal (MvPolynomial σ k))
+theorem membership_criterion [Finite σ] (I : Ideal (MvPolynomial σ k))
     (f : MvPolynomial σ k) :
-    f ∈ vanishingIdeal (zeroLocus (↑I : Set (MvPolynomial σ k))) ↔
+    f ∈ vanishingIdeal k (zeroLocus k I) ↔
     f ∈ I.radical :=
   by rw [vanishingIdeal_zeroLocus_eq_radical]
 
 /-- If J is radical (J = √J), then I(V(J)) = J. -/
-theorem radical_ideal_correspondence (I : Ideal (MvPolynomial σ k))
+theorem radical_ideal_correspondence [Finite σ] (I : Ideal (MvPolynomial σ k))
     (hrad : I.IsRadical) :
-    vanishingIdeal (zeroLocus (↑I : Set (MvPolynomial σ k))) = I := by
+    vanishingIdeal k (zeroLocus k I) = I := by
   rw [vanishingIdeal_zeroLocus_eq_radical, hrad.radical]
 
 -- ============================================================
 -- PART III: Galois Connection
 -- ============================================================
 
-/-- V and I form a Galois connection (antitone). -/
+omit [IsAlgClosed k] in
+/-- V and I form a Galois connection (antitone): V ⊆ V(J) ↔ J ≤ I(V). -/
 theorem galois_connection_vi :
     @GaloisConnection
-      (Ideal (MvPolynomial σ k))ᵒᵈ
-      (Set (σ → k))
+      (Ideal (MvPolynomial σ k))
+      (Set (σ → k))ᵒᵈ
       _
       _
-      (fun I => zeroLocus (↑(OrderDual.ofDual I) : Set (MvPolynomial σ k)))
-      (fun V => OrderDual.toDual (vanishingIdeal V)) :=
-  (zeroLocus_vanishingIdeal_galoisConnection (σ := σ) (k := k)).dual
+      (zeroLocus k)
+      (vanishingIdeal k) :=
+  zeroLocus_vanishingIdeal_galoisConnection
 
 end FactorRemainderNullstellensatzOQ01

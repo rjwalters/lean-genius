@@ -22,9 +22,9 @@ RUN curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init
 # Add elan to PATH
 ENV PATH="/root/.elan/bin:${PATH}"
 
-# Install Lean 4.26.0
-RUN elan toolchain install leanprover/lean4:v4.26.0
-RUN elan default leanprover/lean4:v4.26.0
+# Install Lean 4.31.0
+RUN elan toolchain install leanprover/lean4:v4.31.0
+RUN elan default leanprover/lean4:v4.31.0
 
 # Verify installation
 RUN lean --version

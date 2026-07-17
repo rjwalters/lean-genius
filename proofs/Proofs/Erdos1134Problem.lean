@@ -21,11 +21,7 @@
   Tags: density, affine-maps, recursively-defined-sets, number-theory
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Basic
+import Mathlib
 
 namespace Erdos1134
 
@@ -70,6 +66,7 @@ theorem A_closed_f₃ {x : ℕ} (hx : x ∈ A) : f₃ x ∈ A := InA.step3 hx
 Lower and upper asymptotic density.
 -/
 
+open Classical in
 /-- Counting function: |A ∩ [1, X]| -/
 noncomputable def countingFunction (S : Set ℕ) (X : ℕ) : ℕ :=
   (Finset.range (X + 1)).filter (fun n => n ∈ S ∧ n ≥ 1) |>.card
@@ -92,8 +89,8 @@ def HasPositiveLowerDensity (S : Set ℕ) : Prop :=
 For sets closed under x ↦ mᵢx + bᵢ with Σ 1/mᵢ^σ = 1.
 -/
 
-/-- The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
-/-- Klarner-Rado (1974): General upper bound -/
+/-  The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
+/-  Klarner-Rado (1974): General upper bound -/
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
@@ -103,13 +100,14 @@ theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 The key is that the operations have special structure.
 -/
 
-/-- The Crampin-Hilton exponent τ ≈ 0.900626 -/
-noncomputable def τ : ℝ := Classical.choose crampin_hilton_tau_exists
-
 /-- τ exists and satisfies 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1 -/
 axiom crampin_hilton_tau_exists : ∃ τ : ℝ,
     0 < τ ∧ τ < 1 ∧
     (6 : ℝ) ^ (-τ) + ∑' k : ℕ, ((3 : ℝ) * 2 ^ k) ^ (-τ) = 1
+
+/-- The Crampin-Hilton exponent τ ≈ 0.900626 -/
+noncomputable def τ : ℝ := Classical.choose crampin_hilton_tau_exists
+
 
 /-- Numerical value of τ -/
 axiom tau_approx : τ > 0.900 ∧ τ < 0.901
@@ -137,7 +135,7 @@ theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
   rw [A_has_zero_density]
   norm_num
 
-/-- Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
+/-  Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
 /-
 ## Part 6: Structure of A
 
@@ -151,7 +149,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       n = ops.foldl (fun x f => f x) 1 := by
   change InA n at hn
   induction hn with
-  | base => exact ⟨[], fun _ h => absurd h (List.not_mem_nil _), rfl⟩
+  | base => exact ⟨[], fun _ h => (List.not_mem_nil h).elim, rfl⟩
   | step1 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₁], fun f hf => ?_, ?_⟩
@@ -159,7 +157,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inl h
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
   | step2 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₂], fun f hf => ?_, ?_⟩
@@ -167,7 +165,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inr (Or.inl h)
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
   | step3 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₃], fun f hf => ?_, ?_⟩
@@ -175,7 +173,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inr (Or.inr h)
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
 
 /-- First few elements of A: 1, 3, 4, 7, 9, 10, 13, 15, ... -/
 example : 1 ∈ A := one_in_A
@@ -199,10 +197,10 @@ The key insight is the structure of the generating functions.
 -/
 
 /-- The characteristic equation for τ -/
-def characteristic_equation (s : ℝ) : ℝ :=
+noncomputable def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
-/-- τ is the unique positive root -/
+/-  τ is the unique positive root -/
 /-
 ## Part 9: Open Variants
 
@@ -245,8 +243,7 @@ theorem erdos_1134_statement :
   · intro ε hε
     obtain ⟨_, C₂, _, hC₂pos, hbound⟩ := crampin_hilton_theorem ε hε
     exact ⟨C₂, hC₂pos, fun X hX => (hbound X hX).2⟩
-  · obtain ⟨_, htau_lt, _⟩ := crampin_hilton_tau_exists
-    exact htau_lt
+  · exact (Classical.choose_spec crampin_hilton_tau_exists).2.1
 
 /-- Summary of Erdős Problem #1134 -/
 theorem erdos_1134_summary :

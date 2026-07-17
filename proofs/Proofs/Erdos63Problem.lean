@@ -64,11 +64,11 @@ def ContainsMinDegreeSubgraph (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ)
 
 /- ## Key Lemmas -/
 
-/--
+/- 
 **Observation**: High minimum degree implies even cycle lengths.
 If G has minimum degree d ≥ 2, then G contains an even cycle of length at most 2d.
 -/
-/--
+/- 
 **Bondy-Simonovits Theorem** (simplified):
 If G has minimum degree d ≥ 2, then G contains cycles of all even lengths from
 4 up to some threshold depending on d.
@@ -95,7 +95,7 @@ def InfGraph.inducedSubgraph (G : InfGraph V) (S : Set V) : InfGraph S where
   symm := fun u v h => G.symm u.val v.val h
   loopless := fun v => G.loopless v.val
 
-/--
+/- 
 **de Bruijn-Erdős Theorem**:
 If an infinite graph G has infinite chromatic number, then for every k,
 G contains a finite induced subgraph with chromatic number > k.
@@ -104,18 +104,18 @@ Equivalently: G contains finite subgraphs with arbitrarily high chromatic number
 -/
 /- ## Liu-Montgomery Theorem -/
 
-/--
+/- 
 **Liu-Montgomery Theorem** (2020):
 Every graph with chromatic number > k contains a subgraph with minimum degree > k/2.
 -/
 /- ## Erdős-Hajnal for Uncountable Chromatic Number -/
 
-/--
+/- 
 **Erdős-Hajnal Theorem**:
 Every graph with uncountable chromatic number contains arbitrarily large
 complete bipartite subgraphs K_{m,m}.
 -/
-/-- Complete bipartite graphs K_{m,m} contain cycles of all even lengths up to 2m. -/
+/-  Complete bipartite graphs K_{m,m} contain cycles of all even lengths up to 2m. -/
 /- ## Main Result -/
 
 /--
@@ -171,7 +171,7 @@ theorem infinitely_many_power_cycles (G : InfGraph V)
       ContainsCycleLength H (2^n) :=
   erdos_63_theorem G hχ
 
-/--
+/- 
 **Penman's Observation**: For uncountable chromatic number, the result follows
 from Erdős-Hajnal (complete bipartite graphs contain all even cycles).
 -/

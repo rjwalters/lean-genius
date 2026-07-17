@@ -65,7 +65,7 @@ open Finset
     `r > m`, both `(m)_r` and `(m)_{r+1}` are `0`. -/
 private theorem m_mul_descFactorial (m r : ℕ) :
     m * m.descFactorial r = m.descFactorial (r + 1) + r * m.descFactorial r := by
-  rcases le_or_lt r m with h | h
+  rcases le_or_gt r m with h | h
   · rw [Nat.descFactorial_succ, ← Nat.add_mul, Nat.sub_add_cancel h]
   · rw [Nat.descFactorial_eq_zero_iff_lt.mpr h,
         Nat.descFactorial_eq_zero_iff_lt.mpr (show m < r + 1 by omega)]
@@ -127,7 +127,7 @@ theorem pow_eq_sum_stirlingSecond_descFactorial (m p : ℕ) :
 theorem sum_descFactorial_weighted_sq_all (r n : ℕ) :
     ∑ k ∈ range (n + 1), k.descFactorial r * (n.choose k) ^ 2
       = n.descFactorial r * (2 * n - r).choose (n - r) := by
-  rcases le_or_lt r n with h | h
+  rcases le_or_gt r n with h | h
   · exact CombinationsFormulaOQ07OQ04OQ01.sum_descFactorial_weighted_sq r n h
   · rw [Nat.descFactorial_eq_zero_iff_lt.mpr h, Nat.zero_mul]
     refine Finset.sum_eq_zero (fun k hk => ?_)

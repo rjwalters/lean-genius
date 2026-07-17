@@ -94,8 +94,8 @@ lemma edgeSum_erase {S : Finset V} {v : V} (hvS : v ∈ S) :
                = S.filter (fun w => G.Adj v w) := by
     ext w; simp only [mem_filter, mem_erase]
     constructor
-    · rintro ⟨⟨_, hwS⟩, hadj⟩; exact ⟨hwS, G.symm hadj⟩
-    · rintro ⟨hwS, hadj⟩; exact ⟨⟨hadj.ne', hwS⟩, G.symm hadj⟩
+    · rintro ⟨⟨_, hwS⟩, hadj⟩; exact ⟨hwS, G.adj_symm hadj⟩
+    · rintro ⟨hwS, hadj⟩; exact ⟨⟨hadj.ne', hwS⟩, G.adj_symm hadj⟩
   have hcount : ∑ x ∈ S.erase v, (if G.Adj x v then 1 else 0) = degOn G S v := by
     unfold degOn
     rw [← card_filter, hfilter]

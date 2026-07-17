@@ -11,11 +11,7 @@ Let g(n) be the minimum guaranteed independent set size. Estimate g(n).
 Reference: https://erdosproblems.com/1025
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Sym.Sym2
+import Mathlib
 
 open Finset
 
@@ -85,7 +81,7 @@ noncomputable def maxIndependent (f : PairFunction n) : ℕ :=
 noncomputable def g (n : ℕ) : ℕ :=
   sInf { maxIndependent f | f ∈ validPairFunctions n }
 
-/-- g(n) is the guaranteed independent set size. -/
+/-  g(n) is the guaranteed independent set size. -/
 /-
 ## Erdős-Hajnal Bounds (1958)
 
@@ -122,7 +118,7 @@ Spencer proved g(n) ≫ n^(1/2), improving the lower bound.
 axiom spencer_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
   (g n : ℝ) ≥ c * (n : ℝ) ^ (1/2 : ℝ)
 
-/-- Spencer's bound improves Erdős-Hajnal: n^{1/3} ≤ n^{1/2} for n ≥ 2. -/
+/-  Spencer's bound improves Erdős-Hajnal: n^{1/3} ≤ n^{1/2} for n ≥ 2. -/
 /-
 ## Conlon-Fox-Sudakov Result (2016)
 
@@ -133,7 +129,7 @@ They proved g(n) ≪ n^(1/2), matching Spencer's lower bound.
 axiom cfs_upper : ∃ C > 0, ∃ N : ℕ, ∀ n ≥ N,
   (g n : ℝ) ≤ C * (n : ℝ) ^ (1/2 : ℝ)
 
-/-- CFS improves Erdős-Hajnal upper bound: n^{1/2} ≤ (n log n)^{1/2}. -/
+/-  CFS improves Erdős-Hajnal upper bound: n^{1/2} ≤ (n log n)^{1/2}. -/
 /-
 ## The Main Result: g(n) = Θ(n^(1/2))
 
@@ -166,7 +162,6 @@ def erdos_1025_question : Prop :=
 theorem erdos_1025_solved : erdos_1025_question := by
   obtain ⟨c, C, hc, hC, N, hN⟩ := g_asymptotic
   use c, C, hc, hC, fun n => (n : ℝ) ^ (1/2 : ℝ), N
-  exact hN
 
 /-
 ## Related: Set Mappings
@@ -195,7 +190,7 @@ The probabilistic method gives the lower bound.
 noncomputable def expectedIndependent (f : PairFunction n) (p : ℝ) : ℝ :=
   p * n - (n.choose 2 : ℝ) * p^3
 
-/-- Probabilistic lower bound: every valid pair function has an independent
+/-  Probabilistic lower bound: every valid pair function has an independent
     set of size at least n^{1/2}/2. -/
 /-
 ## Upper Bound Construction
@@ -203,7 +198,7 @@ noncomputable def expectedIndependent (f : PairFunction n) (p : ℝ) : ℝ :=
 Constructions achieving the upper bound.
 -/
 
-/-- There exist pair functions with small independent sets. -/
+/-  There exist pair functions with small independent sets. -/
 /-
 ## Historical Development
 

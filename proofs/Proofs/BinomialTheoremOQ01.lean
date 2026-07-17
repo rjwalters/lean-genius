@@ -25,6 +25,7 @@
 import Mathlib
 
 open Real Finset
+open scoped ENNReal
 
 /-- The generalized binomial coefficient: C(alpha, k) = alpha*(alpha-1)*...*(alpha-k+1)/k!
     For natural n, this agrees with Nat.choose n k. -/
@@ -151,15 +152,15 @@ theorem genBinom_ode_coeff (α : ℝ) (k : ℕ) :
     This connects Pochhammer theory (used in Ring.choose) to the product formula
     used in genBinom. Key: use aeval_eq_smeval to access richer aeval API. -/
 private lemma smeval_descPochhammer_int_eq_prod (n : ℕ) (α : ℝ) :
-    (Polynomial.descPochhammer ℤ n).smeval α =
+    (descPochhammer ℤ n).smeval α =
     ∏ j ∈ Finset.range n, (α - (j : ℝ)) := by
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [← Polynomial.aeval_eq_smeval, Polynomial.descPochhammer_succ_right,
+    rw [← Polynomial.aeval_eq_smeval] at ih
+    rw [← Polynomial.aeval_eq_smeval, descPochhammer_succ_right,
         map_mul, map_sub, Polynomial.aeval_X, map_natCast,
-        ← Polynomial.aeval_eq_smeval, ih, Finset.prod_range_succ]
-    push_cast; ring
+        ih, Finset.prod_range_succ]
 
 /-- Auxiliary: Ring.choose α k = genBinom α k.
     Both equal the falling factorial α*(α-1)*...*(α-k+1) divided by k!
@@ -184,11 +185,10 @@ private lemma ring_choose_eq_genBinom (α : ℝ) (k : ℕ) :
 theorem newton_generalized_binomial (α x : ℝ) (hx : ‖x‖ < 1) :
     HasSum (fun k => genBinom α k * x ^ k) ((1 + x) ^ α) := by
   -- Step 1: Place x in the extended metric unit ball
-  have hball : x ∈ EMetric.ball (0 : ℝ) 1 := by
-    rw [EMetric.mem_ball, edist_zero_right]
-    rw [show (1 : ℝ≥0∞) = ((1 : NNReal) : ℝ≥0∞) from ENNReal.coe_one.symm,
-        ENNReal.coe_lt_coe]
-    exact_mod_cast hx
+  have hball : x ∈ Metric.eball (0 : ℝ) 1 := by
+    rw [Metric.mem_eball, edist_zero_right]
+    simpa [enorm_eq_nnnorm, ← ENNReal.coe_one, ENNReal.coe_lt_coe,
+           ← NNReal.coe_lt_coe] using hx
   -- Step 2: Extract HasSum from HasFPowerSeriesOnBall
   have key : HasFPowerSeriesOnBall (fun y : ℝ => (1 + y) ^ α) (binomialSeries ℝ α) 0 1 :=
     Real.one_add_rpow_hasFPowerSeriesOnBall_zero
@@ -197,11 +197,12 @@ theorem newton_generalized_binomial (α x : ℝ) (hx : ‖x‖ < 1) :
     simp only [zero_add] at this
     exact this
   -- Step 3: Rewrite binomialSeries coefficients as genBinom α k * x^k
-  apply h1.congr
-  intro k
-  simp only [binomialSeries_apply, List.ofFn_const, List.prod_replicate, smul_eq_mul]
-  congr 1
-  exact ring_choose_eq_genBinom α k
+  have hfun : (fun n => binomialSeries ℝ α n (fun _ => x)) =
+      (fun k => genBinom α k * x ^ k) := by
+    funext k
+    simp only [binomialSeries_apply, List.ofFn_const, List.prod_replicate, smul_eq_mul]
+    rw [ring_choose_eq_genBinom]
+  rwa [hfun] at h1
 
 /-- Newton's theorem for the square root: Sum C(1/2, k) x^k = sqrt(1+x). -/
 theorem sqrt_series (x : ℝ) (hx : ‖x‖ < 1) :
@@ -244,7 +245,7 @@ theorem geometric_from_newton (x : ℝ) (hx : ‖x‖ < 1) :
   14. genBinom_nat_finite_sum: corollary of standard_binomial
   15. genBinom_recurrence_deriv: (k+1)*C(alpha,k+1) = C(alpha,k)*(alpha-k)
   16. genBinom_ode_coeff: ODE coefficient identity for (1+x)*f'=alpha*f
-  17. smeval_descPochhammer_int_eq_prod: (descPochhammer ℤ n).smeval α = ∏ j in range n, (α-j)
+  17. smeval_descPochhammer_int_eq_prod: (descPochhammer ℤ n).smeval α = ∏ j ∈ range n, (α-j)
   18. ring_choose_eq_genBinom: Ring.choose α k = genBinom α k
   19. newton_generalized_binomial: HasSum Sum C(α,k)x^k = (1+x)^α (PROVED!)
 

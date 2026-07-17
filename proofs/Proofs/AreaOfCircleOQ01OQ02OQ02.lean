@@ -29,7 +29,7 @@ namespace IsoperimetricFourier
     HasDerivAt (ofReal ∘ f) (1 • deriv f x) x = HasDerivAt (ofReal ∘ f) (ofReal(deriv f x)) x. -/
 theorem hasDerivAt_ofReal_comp_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f) (x : ℝ) :
     HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x := by
-  have hd : HasDerivAt f (deriv f x) x := (hf.differentiable le_rfl x).hasDerivAt
+  have hd : HasDerivAt f (deriv f x) x := (hf.differentiable (by norm_num) x).hasDerivAt
   -- ofRealCLM : ℝ →L[ℝ] ℂ has HasDerivAt ofReal (ofRealCLM 1) at any point
   -- ofRealCLM 1 = ofReal 1 = 1
   have hg : HasDerivAt (⇑ofRealCLM) (ofRealCLM 1) (f x) :=
@@ -40,9 +40,9 @@ theorem hasDerivAt_ofReal_comp_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f) (x
   have h := hg.scomp x hd
   -- h : HasDerivAt (ofReal ∘ f) ((deriv f x) • ofRealCLM 1) x
   -- Convert to the desired form
-  convert h using 1
-  -- Goal: (ofReal ∘ deriv f) x = (deriv f x) • ofRealCLM 1
-  simp [Function.comp, ofReal_one, mul_one]
+  have hval : ((deriv f x) • (ofRealCLM 1) : ℂ) = ((ofReal ∘ deriv f) x) := by
+    simp [Complex.real_smul, Function.comp]
+  rwa [hval] at h
 
 /-- IBP for Fourier coefficients: ĉₙ(f') = in · ĉₙ(f) for periodic C¹ functions.
 

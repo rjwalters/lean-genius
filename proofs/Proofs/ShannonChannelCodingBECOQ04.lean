@@ -245,7 +245,8 @@ theorem beec_uniform_mi {ε q : ℝ} (hε0 : 0 < ε) (hε1 : ε < 1)
     unfold shannonEntropy
     rw [Fintype.sum_option, Fintype.sum_bool]
     dsimp only
-    rw [e_none, e_false, e_true, if_neg hε0.ne', if_neg hhalf, hls2]
+    simp only [e_none, e_false, e_true]
+    rw [if_neg hε0.ne', if_neg hhalf, hls2]
     simp only [InformationTheory.BinaryEntropy.h]
     ring
   rw [hHY]
@@ -290,7 +291,7 @@ theorem beec_mi_le {ε q : ℝ} (hε0 : 0 < ε) (hε1 : ε < 1) (hq0 : 0 < q) (h
     unfold shannonEntropy
     rw [Fintype.sum_option, Fintype.sum_bool]
     dsimp only
-    rw [e_none, e_false, e_true, if_neg hε0.ne', if_neg hbpos.ne', if_neg hapos.ne']
+    simp only [e_none, e_false, e_true, if_neg hε0.ne', if_neg hbpos.ne', if_neg hapos.ne']
     ring
   -- Converse bound `H(Y) ≤ h(ε) + (1-ε) log 2` via the grouping inequality.
   have hHY_le : shannonEntropy (fun o => ∑ x : Bool, jointDist ch inp (x, o))

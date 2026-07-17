@@ -17,6 +17,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Increasing totient sets -/
 
 /-- A set `A ⊆ {1,…,N}` has strictly increasing Euler totient values
@@ -38,12 +40,12 @@ noncomputable def primeCounting (N : ℕ) : ℕ :=
 
 /- ## Primes form an increasing totient set -/
 
-/-- The set of primes in `{1,…,N}` has strictly increasing totient
+/-  The set of primes in `{1,…,N}` has strictly increasing totient
 values since `φ(p) = p - 1` for primes. -/
-/-- Consequently, `maxIncTotientSize(N) ≥ π(N)`. -/
+/-  Consequently, `maxIncTotientSize(N) ≥ π(N)`. -/
 /- ## Tao's theorem (2023) -/
 
-/-- Tao (2023): For all `ε > 0` and sufficiently large `N`,
+/-  Tao (2023): For all `ε > 0` and sufficiently large `N`,
 `maxIncTotientSize(N) ≤ (1 + ε) · π(N)`.
 
 This proves the primes are asymptotically the largest increasing
@@ -59,14 +61,14 @@ def ErdosProblem49 : Prop :=
 
 /- ## Weaker form -/
 
-/-- The weaker conjecture `|A| = o(N)`: any increasing totient set has
+/-  The weaker conjecture `|A| = o(N)`: any increasing totient set has
 density zero. This follows from Tao's result since `π(N) = o(N)`. -/
 /- ## Totient properties -/
 
 /-- `φ(p) = p - 1` for primes. -/
 theorem totient_prime (p : ℕ) (hp : Nat.Prime p) :
     Nat.totient p = p - 1 :=
-  hp.totient
+  Nat.totient_prime hp
 
 /-- `φ(n) ≤ n` for all `n`. -/
 theorem totient_le (n : ℕ) : Nat.totient n ≤ n :=

@@ -26,6 +26,7 @@ The parent axiom is technically false without a nonemptiness hypothesis.
 -/
 
 import Mathlib.MeasureTheory.Measure.MeasureSpace
+import Mathlib.MeasureTheory.Measure.Typeclasses.Probability
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
@@ -155,7 +156,7 @@ theorem ivt_first_crossing (bm : BrownianMotion Ω μ) (a T : ℝ)
   -- hs_eq : bm.W s ω = a
   refine ⟨s, hs_Icc, hs_eq, ?_⟩
   -- s > 0 because W(0, ω) < a = W(s, ω)
-  rcases hs_Icc.1.eq_or_gt with rfl | hs_pos
+  rcases eq_or_lt_of_le hs_Icc.1 with rfl | hs_pos
   · exact absurd hs_eq (ne_of_lt hstart)
   · exact hs_pos
 

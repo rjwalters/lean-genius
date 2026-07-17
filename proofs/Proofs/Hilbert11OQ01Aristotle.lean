@@ -7,9 +7,9 @@
   for each i : Fin n, define ev_i : A ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] A by a ⊗ₜ w ↦ a * (w i : A).
   Then ev_i(1 ⊗ₜ v) = (v i : A), giving v i = w i from 1 ⊗ₜ v = 1 ⊗ₜ w.
 -/
+import Mathlib
 import Mathlib.LinearAlgebra.QuadraticForm.TensorProduct
 import Mathlib.RingTheory.TensorProduct.Basic
-import Mathlib.Algebra.Module.Flat.Basic
 import Mathlib.Algebra.Algebra.Rat
 import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.Tactic
@@ -38,7 +38,8 @@ theorem one_tmul_injective_real (n : ℕ) :
     simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
   have hw : ev ((1 : ℝ) ⊗ₜ[ℚ] w) = algebraMap ℚ ℝ (w i) := by
     simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
-  have heq : algebraMap ℚ ℝ (v i) = algebraMap ℚ ℝ (w i) := by rw [← hv, ← hw, h]
+  have h' : (1 : ℝ) ⊗ₜ[ℚ] v = (1 : ℝ) ⊗ₜ[ℚ] w := h
+  have heq : algebraMap ℚ ℝ (v i) = algebraMap ℚ ℝ (w i) := by rw [← hv, ← hw, h']
   exact_mod_cast heq
 
 /-- The canonical map v ↦ 1 ⊗ₜ v is injective for ℚ_[p] ⊗[ℚ] (Fin n → ℚ).
@@ -58,7 +59,8 @@ theorem one_tmul_injective_padic (n : ℕ) (p : ℕ) [Fact (Nat.Prime p)] :
     simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
   have hw : ev ((1 : ℚ_[p]) ⊗ₜ[ℚ] w) = algebraMap ℚ ℚ_[p] (w i) := by
     simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
-  have heq : algebraMap ℚ ℚ_[p] (v i) = algebraMap ℚ ℚ_[p] (w i) := by rw [← hv, ← hw, h]
+  have h' : (1 : ℚ_[p]) ⊗ₜ[ℚ] v = (1 : ℚ_[p]) ⊗ₜ[ℚ] w := h
+  have heq : algebraMap ℚ ℚ_[p] (v i) = algebraMap ℚ ℚ_[p] (w i) := by rw [← hv, ← hw, h']
   exact_mod_cast heq
 
 end Hilbert11OQ01Aristotle

@@ -135,7 +135,7 @@ theorem chainDist_le (c : X → X → ℝ≥0∞) (p q : X) (mid : List X) :
 chain pseudometric: the empty chain `p ⇝ p` already has cost `0`. -/
 theorem chainDist_self (c : X → X → ℝ≥0∞) (hself : ∀ a, c a a = 0) (p : X) :
     chainDist c p p = 0 :=
-  le_antisymm (by simpa [hself p] using chainDist_le c p p []) (zero_le _)
+  le_antisymm (by simpa [hself p] using chainDist_le c p p []) (zero_le)
 
 /-- **Symmetry.** A symmetric atomic cost yields a symmetric chain pseudometric:
 reverse every chain. -/

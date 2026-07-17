@@ -45,37 +45,35 @@ theorem consecutiveProduct_pos (n k : ℕ) (hk : k ≥ 1) :
   simp only [Finset.mem_Icc] at hi
   omega
 
+/- Existence of a prime not dividing the consecutive product, used to define q. -/
+theorem q_exists (n k : ℕ) : ∃ p, p.Prime ∧ ¬(p ∣ consecutiveProduct n k) := by
+  obtain ⟨p, hle, hp⟩ := Nat.exists_infinite_primes (consecutiveProduct n k + 1)
+  refine ⟨p, hp, fun hdvd => ?_⟩
+  have hpos : 0 < consecutiveProduct n k :=
+    Finset.prod_pos (fun i hi => by simp only [Finset.mem_Icc] at hi; omega)
+  have hle_prod := Nat.le_of_dvd hpos hdvd
+  omega
+
 /- q(n, k): the smallest prime not dividing ∏_{1 ≤ i ≤ k} (n + i). -/
 noncomputable def q (n k : ℕ) : ℕ :=
-  have : ∃ p, p.Prime ∧ ¬(p ∣ consecutiveProduct n k) := by
-    obtain ⟨p, hle, hp⟩ := Nat.exists_infinite_primes (consecutiveProduct n k + 1)
-    refine ⟨p, hp, fun hdvd => ?_⟩
-    have hpos : 0 < consecutiveProduct n k :=
-      Finset.prod_pos (fun i hi => by simp only [Finset.mem_Icc] at hi; omega)
-    have hle_prod := Nat.le_of_dvd hpos hdvd
-    omega
-  Nat.find this
+  Nat.find (q_exists n k)
 
 -- ============================================================================
 -- Part II: Properties of q(n, k)
 -- ============================================================================
 
 /- q(n,k) is prime. -/
-theorem q_prime (n k : ℕ) : (q n k).Prime := by
-  unfold q
-  exact (Nat.find_spec _).1
+theorem q_prime (n k : ℕ) : (q n k).Prime :=
+  (Nat.find_spec (q_exists n k)).1
 
 /- q(n,k) does not divide the consecutive product. -/
-theorem q_not_dvd (n k : ℕ) : ¬((q n k) ∣ consecutiveProduct n k) := by
-  unfold q
-  exact (Nat.find_spec _).2
+theorem q_not_dvd (n k : ℕ) : ¬((q n k) ∣ consecutiveProduct n k) :=
+  (Nat.find_spec (q_exists n k)).2
 
 /- q(n,k) is minimal: every prime below q(n,k) divides the product. -/
 theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
-    (hdvd : ¬(p ∣ consecutiveProduct n k)) : False := by
-  unfold q at hp_lt
-  have := Nat.find_min _ hp_lt
-  exact this ⟨hp, hdvd⟩
+    (hdvd : ¬(p ∣ consecutiveProduct n k)) : False :=
+  Nat.find_min (q_exists n k) hp_lt ⟨hp, hdvd⟩
 
 -- ============================================================================
 -- Part III: Trivial Upper Bound — q(n,k) ≤ (1+o(1))(log n)²
@@ -89,7 +87,7 @@ theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
    Taking logs: q(n,k) ~ (1+o(1)) · k · log(n+k).
    For k = ⌊log n⌋: q(n, log n) ≤ (1+o(1))(log n)². -/
 
-/-- The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
+/-  The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
     This follows from the primorial bound and PNT. -/
 /- Erdős #1181 asks: can we improve the 1+o(1) to 1-c for fixed c > 0?
    That is, does q(n, log n) < (1-c)(log n)² hold eventually?
@@ -133,34 +131,35 @@ theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
   -- Strategy: for large n, log(log(log n)) ≥ 1 so the division makes things smaller.
   -- Then C * log(log n) < (1/2) * log n since log(log n)/log n → 0.
   -- (a) Eventually log(log n) < (1/(2C)) * log n
-  have ha : ∀ᶠ n in (atTop : Filter ℕ),
+  have ha : ∀ᶠ (n : ℕ) in atTop,
       Real.log (Real.log (n : ℝ)) < (1 / (2 * C)) * Real.log (n : ℝ) := by
     -- log(log n) / log n → 0 (from log x / x → 0 composed with log n → ∞)
     have hlogn_tend : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
       Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
     have hlogx_div : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
-      have h := Real.tendsto_log_div_rpow_atTop 1 one_pos
+      have h := (isLittleO_log_rpow_atTop (r := 1) one_pos).tendsto_div_nhds_zero
       simp only [Real.rpow_one] at h; exact h
     -- Compose: log(log n) / log n → 0
     have h_ratio := hlogx_div.comp hlogn_tend
     -- Extract: eventually log(log n) / log n < 1/(2C)
     have h_small := h_ratio.eventually (Iio_mem_nhds (show (0:ℝ) < 1 / (2 * C) by positivity))
     -- Eventually log n > 0 (for multiplication)
-    have h_logn_pos : ∀ᶠ n in (atTop : Filter ℕ), 0 < Real.log (↑n : ℝ) := by
+    have h_logn_pos : ∀ᶠ (n : ℕ) in atTop, 0 < Real.log (↑n : ℝ) := by
       filter_upwards [Filter.eventually_ge_atTop 2] with n hn
       exact Real.log_pos (by exact_mod_cast (show 1 < n by omega))
     filter_upwards [h_small, h_logn_pos] with n h_small h_pos
-    rw [Set.mem_Iio, div_lt_iff h_pos] at h_small
+    simp only [Function.comp_apply] at h_small
+    rw [div_lt_iff₀ h_pos] at h_small
     linarith
   -- (b) Eventually log(log(log n)) ≥ 1 (iterated log → ∞)
-  have hb : ∀ᶠ n in (atTop : Filter ℕ),
+  have hb : ∀ᶠ (n : ℕ) in atTop,
       1 ≤ Real.log (Real.log (Real.log (n : ℝ))) := by
     have : Tendsto (Real.log ∘ Real.log ∘ Real.log ∘ (Nat.cast : ℕ → ℝ)) atTop atTop :=
       Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp
         (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop))
     exact this (Filter.mem_atTop 1)
   -- (c) Eventually log(log n) > 0
-  have hc : ∀ᶠ n in (atTop : Filter ℕ),
+  have hc : ∀ᶠ (n : ℕ) in atTop,
       0 < Real.log (Real.log (n : ℝ)) := by
     filter_upwards [Filter.eventually_ge_atTop 16] with n hn
     apply Real.log_pos
@@ -169,7 +168,7 @@ theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
       _ > 1 := by
           rw [show (16 : ℝ) = 2 ^ (4 : ℝ) from by norm_num]
           rw [Real.log_rpow (by norm_num : (0:ℝ) < 2)]
-          nlinarith [Real.log_pos (by norm_num : (1:ℝ) < 2)]
+          nlinarith [Real.log_two_gt_d9]
   -- Combine: C * (ll/lll) ≤ C * ll < (1/2) * l
   filter_upwards [ha, hb, hc] with n ha hb hc
   have hlll_pos : 0 < Real.log (Real.log (Real.log (n : ℝ))) := by linarith
@@ -192,7 +191,9 @@ theorem tao_implies_erdos1181 (h : tao_heuristic_bound) : erdos1181_conjecture :
   filter_upwards [hev, iterated_log_sublinear C hC,
     Filter.eventually_ge_atTop 3] with n hn hgrowth hn3
   have hln_pos : (0 : ℝ) < Real.log (n : ℝ) := by
-    apply Real.log_pos; push_cast; omega
+    apply Real.log_pos
+    have : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn3
+    linarith
   calc (q n ⌊Real.log (↑n : ℝ)⌋₊ : ℝ)
       ≤ C * (Real.log (Real.log n) / Real.log (Real.log (Real.log n))) * Real.log n := hn
     _ < (1 : ℝ) / 2 * Real.log (n : ℝ) * Real.log (n : ℝ) := by nlinarith
@@ -217,8 +218,8 @@ noncomputable def chebyshev_theta (x : ℝ) : ℝ :=
   ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter (fun p => (p : ℕ).Prime),
     Real.log (p : ℝ)
 
-/-- PNT for the Chebyshev function: θ(x) ~ x. -/
-/-- The primorial bound: if all primes below q divide m, then
+/-  PNT for the Chebyshev function: θ(x) ~ x. -/
+/-  The primorial bound: if all primes below q divide m, then
     ∏_{p < q, p prime} p ≤ m. -/
 /- Erdős #457 concerns the LOWER bound for q(n, log n):
    is q(n, log n) ≥ (2+ε) log n infinitely often?

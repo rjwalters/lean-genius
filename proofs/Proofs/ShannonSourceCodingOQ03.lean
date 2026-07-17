@@ -75,7 +75,7 @@ lemma shannonH_nonneg (D : DiscreteDist k) : 0 ≤ shannonH D := by
   · simp only [hi, ite_false]
     apply mul_nonpos_of_nonneg_of_nonpos (D.nonneg i)
     apply Real.log_nonpos (D.nonneg i)
-    calc D.p i ≤ ∑ j, D.p j := Finset.single_le_sum (fun j _ => D.nonneg j) _ (Finset.mem_univ i)
+    calc D.p i ≤ ∑ j, D.p j := Finset.single_le_sum (fun j _ => D.nonneg j) (Finset.mem_univ i)
       _ = 1 := D.sum_one
 
 -- ════════════════════════════════════════════════════════════════
@@ -96,11 +96,14 @@ lemma jointProb_sum_one (D : DiscreteDist k) (n : ℕ) :
   induction n with
   | zero => simp [jointProb]
   | succ n ih =>
-    rw [Fintype.sum_piFinset_succ]
-    · simp_rw [jointProb, Fin.prod_univ_succ]
-      rw [Finset.sum_comm]
-      simp_rw [← Finset.mul_sum]
-      simp [ih, D.sum_one]
+    rw [← Equiv.sum_comp (Fin.consEquiv (fun _ : Fin (n + 1) => Fin k))
+      (fun x => jointProb D (n + 1) x), Fintype.sum_prod_type]
+    show ∑ a : Fin k, ∑ x : Fin n → Fin k, jointProb D (n + 1) (Fin.cons a x) = 1
+    simp_rw [jointProb, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
+    rw [Finset.sum_comm]
+    simp_rw [← Finset.sum_mul]
+    simp only [D.sum_one, one_mul]
+    exact ih
 
 /-- Empirical entropy of sequence x (= -(1/n) log P(x)). -/
 noncomputable def empEnt (D : DiscreteDist k) (n : ℕ) (x : Fin n → Fin k) : ℝ :=
@@ -112,7 +115,7 @@ lemma empEnt_eq_neg_log_joint {D : DiscreteDist k} {n : ℕ} {x : Fin n → Fin 
     empEnt D n x = -(1 / (n : ℝ)) * Real.log (jointProb D n x) := by
   simp only [empEnt, jointProb]
   congr 1
-  exact (Real.log_prod _ _ (fun i _ => ne_of_gt (hsupp i))).symm
+  exact (Real.log_prod (fun i _ => ne_of_gt (hsupp i))).symm
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION III: Expected Value
@@ -125,7 +128,7 @@ noncomputable def expVal (D : DiscreteDist k) (n : ℕ) (f : (Fin n → Fin k) �
 /-- Expected value of a marginal function: E[g(Xⱼ)] = ∑_a p(a) g(a) for each j.
     Proof: ∑_x (∏_i p(x_i)) * g(x_j)
          = ∑_x ∏_i h_i(x_i)   where h_i(a) = if i=j then p(a)*g(a) else p(a)
-         = ∏_i ∑_a h_i(a)     (by Fintype.prod_sum applied in reverse)
+         = ∏_i ∑_a h_i(a)     (by Fintype.prod_sum applied ∈ reverse)
          = (∑_a p(a)*g(a)) * ∏_{i≠j} (∑_a p(a))
          = (∑_a p(a)*g(a)) * 1 = ∑_a p(a)*g(a). -/
 lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (j : Fin n) :
@@ -138,7 +141,7 @@ lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (j : Fi
       (∏ i, D.p (x i)) * g (x j) = ∏ i, h i (x i) := fun x => by
     simp only [h]
     rw [← Finset.mul_prod_erase Finset.univ (fun i => D.p (x i)) (Finset.mem_univ j)]
-    have lhs_eq : D.p (x j) * ∏ i ∈ Finset.univ.erase j, D.p (x i) * g (x j) =
+    have lhs_eq : D.p (x j) * (∏ i ∈ Finset.univ.erase j, D.p (x i)) * g (x j) =
         (D.p (x j) * g (x j)) * ∏ i ∈ Finset.univ.erase j, D.p (x i) := by ring
     rw [lhs_eq]
     rw [← Finset.mul_prod_erase Finset.univ
@@ -147,7 +150,7 @@ lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (j : Fi
     congr 1
     apply Finset.prod_congr rfl
     intro i hi
-    exact if_neg (Finset.ne_of_mem_erase hi)
+    exact (if_neg (Finset.ne_of_mem_erase hi)).symm
   simp_rw [step1]
   -- Step 2: ∑_x ∏_i h_i(x_i) = ∏_i ∑_a h_i(a)  (reverse Fintype.prod_sum)
   rw [← Fintype.prod_sum h]
@@ -162,6 +165,7 @@ lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (j : Fi
     intro i hi
     simp [if_neg (Finset.ne_of_mem_erase hi), D.sum_one]
   rw [herase, mul_one]
+  simp
 
 /-- **Key theorem**: E[empEnt(X₁,...,Xₙ)] = H(p).
     Proved by applying `expVal_marginal` to each coordinate log p(Xᵢ). -/
@@ -171,9 +175,10 @@ theorem expVal_empEnt (D : DiscreteDist k) (n : ℕ) (hn : 0 < n) :
   -- Factor -(1/n) out of inner sum
   have factor : ∀ x : Fin n → Fin k,
       (∏ j, D.p (x j)) * (-(1 / (n : ℝ)) * ∑ i, Real.log (D.p (x i))) =
-      -(1 / (n : ℝ)) * (∑ i : Fin n, (∏ j, D.p (x j)) * Real.log (D.p (x i))) := by
+      -(1 / (n : ℝ)) * ∑ i : Fin n, (∏ j, D.p (x j)) * Real.log (D.p (x i)) := by
     intro x; rw [← Finset.mul_sum]; ring
-  simp_rw [factor, ← Finset.mul_sum, Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]
+  simp_rw [factor]
+  rw [← Finset.mul_sum, Finset.sum_comm]
   -- Apply expVal_marginal to each coordinate i
   have marginal : ∀ i : Fin n,
       ∑ x : Fin n → Fin k, (∏ j, D.p (x j)) * Real.log (D.p (x i)) =
@@ -185,9 +190,9 @@ theorem expVal_empEnt (D : DiscreteDist k) (n : ℕ) (hn : 0 < n) :
   simp_rw [marginal]
   -- ∑_{i : Fin n} -(1/n) * C = n * (-(1/n) * C) = -C = shannonH D
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.not_eq_zero_of_lt hn)
-  have key : (n : ℝ) * (-(1 / (n : ℝ)) * ∑ a : Fin k, D.p a * Real.log (D.p a)) =
-      -(∑ a : Fin k, D.p a * Real.log (D.p a)) := by field_simp; ring
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  have key : -(1 / (n : ℝ)) * ((n : ℝ) * ∑ a : Fin k, D.p a * Real.log (D.p a)) =
+      -(∑ a : Fin k, D.p a * Real.log (D.p a)) := by field_simp
   rw [key]
   simp only [shannonH, neg_neg]
   congr 1
@@ -205,21 +210,20 @@ theorem chebyshev_finite (D : DiscreteDist k) (n : ℕ) (f : (Fin n → Fin k) �
     (μ : ℝ) (ε : ℝ) (hε : 0 < ε) :
     ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), jointProb D n x ≤
     expVal D n (fun x => (f x - μ)^2) / ε^2 := by
-  rw [expVal, le_div_iff (sq_pos_of_pos hε)]
-  calc ε^2 * ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), jointProb D n x
-      = ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), (ε^2 * jointProb D n x) := by
-        rw [Finset.mul_sum]
+  rw [expVal, le_div_iff₀ (sq_pos_of_pos hε)]
+  calc (∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), jointProb D n x) * ε^2
+      = ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), (jointProb D n x * ε^2) := by
+        rw [Finset.sum_mul]
     _ ≤ ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), (jointProb D n x * (f x - μ)^2) := by
         apply Finset.sum_le_sum
         intro x hx
         simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
-        rw [mul_comm]
         apply mul_le_mul_of_nonneg_left _ (jointProb_nonneg D n x)
         have : ε ≤ |f x - μ| := le_of_lt hx
         nlinarith [sq_abs (f x - μ)]
     _ ≤ ∑ x : Fin n → Fin k, jointProb D n x * (f x - μ)^2 :=
         Finset.sum_le_univ_sum_of_nonneg
-          (fun x _ => mul_nonneg (jointProb_nonneg D n x) (sq_nonneg _)) _
+          (fun x => mul_nonneg (jointProb_nonneg D n x) (sq_nonneg _))
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION V: AEP Concentration Bound
@@ -238,57 +242,93 @@ private lemma expVal_marginal_product (D : DiscreteDist k) (n : ℕ)
   simp only [expVal, jointProb]
   let h : Fin n → Fin k → ℝ := fun i a =>
     if i = j₁ then D.p a * g₁ a else if i = j₂ then D.p a * g₂ a else D.p a
-  -- Rewrite (∏_i p(x_i)) * g₁(x_{j₁}) * g₂(x_{j₂}) = ∏_i h_i(x_i)
+  -- Rewrite (∏_i p(x_i)) * (g₁(x_{j₁}) * g₂(x_{j₂})) = ∏_i h_i(x_i)
   have step1 : ∀ x : Fin n → Fin k,
-      (∏ i, D.p (x i)) * g₁ (x j₁) * g₂ (x j₂) = ∏ i, h i (x i) := fun x => by
+      (∏ i, D.p (x i)) * (g₁ (x j₁) * g₂ (x j₂)) = ∏ i, h i (x i) := fun x => by
     simp only [h]
     -- Factor the h product by extracting j₁ and j₂
-    rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j₁)]
-    simp only [if_pos rfl]
-    rw [Finset.prod_congr rfl (fun i hi => by simp only [if_neg (Finset.ne_of_mem_erase hi)])]
-    rw [← Finset.mul_prod_erase (Finset.univ.erase j₁) _
-        (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ _⟩)]
-    simp only [if_pos rfl]
-    rw [Finset.prod_congr rfl (fun i hi => by simp only [if_neg (Finset.ne_of_mem_erase hi)])]
+    rw [← Finset.mul_prod_erase Finset.univ
+        (fun i => if i = j₁ then D.p (x i) * g₁ (x i) else if i = j₂ then D.p (x i) * g₂ (x i) else D.p (x i))
+        (Finset.mem_univ j₁)]
+    rw [if_pos rfl]
+    have hcongr1 : ∏ i ∈ Finset.univ.erase j₁,
+        (if i = j₁ then D.p (x i) * g₁ (x i) else if i = j₂ then D.p (x i) * g₂ (x i) else D.p (x i)) =
+        ∏ i ∈ Finset.univ.erase j₁,
+          (if i = j₂ then D.p (x i) * g₂ (x i) else D.p (x i)) :=
+      Finset.prod_congr rfl (fun i hi => if_neg (Finset.ne_of_mem_erase hi))
+    rw [hcongr1]
+    rw [← Finset.mul_prod_erase (Finset.univ.erase j₁)
+        (fun i => if i = j₂ then D.p (x i) * g₂ (x i) else D.p (x i))
+        (Finset.mem_erase.mpr ⟨hj.symm, Finset.mem_univ _⟩)]
+    rw [if_pos rfl]
+    have hcongr2 : ∏ i ∈ (Finset.univ.erase j₁).erase j₂,
+        (if i = j₂ then D.p (x i) * g₂ (x i) else D.p (x i)) =
+        ∏ i ∈ (Finset.univ.erase j₁).erase j₂, D.p (x i) :=
+      Finset.prod_congr rfl (fun i hi => if_neg (Finset.ne_of_mem_erase hi))
+    rw [hcongr2]
     -- Factor ∏_i D.p(x_i) the same way and ring
     rw [← Finset.mul_prod_erase Finset.univ (fun i => D.p (x i)) (Finset.mem_univ j₁),
         ← Finset.mul_prod_erase (Finset.univ.erase j₁) (fun i => D.p (x i))
-          (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ _⟩)]
+          (Finset.mem_erase.mpr ⟨hj.symm, Finset.mem_univ _⟩)]
     ring
   simp_rw [step1, ← Fintype.prod_sum h]
   -- Evaluate ∏_i (∑_a h_i(a)) by extracting j₁ and j₂
   simp only [h]
-  rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j₁)]
-  simp only [if_pos rfl]
-  rw [Finset.prod_congr rfl (fun i hi => by simp only [if_neg (Finset.ne_of_mem_erase hi)])]
-  rw [← Finset.mul_prod_erase (Finset.univ.erase j₁) _
-      (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ _⟩)]
-  simp only [if_pos rfl]
+  rw [← Finset.mul_prod_erase Finset.univ
+      (fun i => ∑ a : Fin k, if i = j₁ then D.p a * g₁ a else if i = j₂ then D.p a * g₂ a else D.p a)
+      (Finset.mem_univ j₁)]
+  have hj1 : (∑ a : Fin k, if j₁ = j₁ then D.p a * g₁ a else if j₁ = j₂ then D.p a * g₂ a else D.p a) =
+      ∑ a : Fin k, D.p a * g₁ a :=
+    Finset.sum_congr rfl (fun a _ => if_pos rfl)
+  rw [hj1]
+  have hcongr3 : ∏ i ∈ Finset.univ.erase j₁,
+      (∑ a : Fin k, if i = j₁ then D.p a * g₁ a else if i = j₂ then D.p a * g₂ a else D.p a) =
+      ∏ i ∈ Finset.univ.erase j₁, (∑ a : Fin k, if i = j₂ then D.p a * g₂ a else D.p a) :=
+    Finset.prod_congr rfl (fun i hi =>
+      Finset.sum_congr rfl (fun a _ => if_neg (Finset.ne_of_mem_erase hi)))
+  rw [hcongr3]
+  rw [← Finset.mul_prod_erase (Finset.univ.erase j₁)
+      (fun i => ∑ a : Fin k, if i = j₂ then D.p a * g₂ a else D.p a)
+      (Finset.mem_erase.mpr ⟨hj.symm, Finset.mem_univ _⟩)]
+  have hj2 : (∑ a : Fin k, if j₂ = j₂ then D.p a * g₂ a else D.p a) =
+      ∑ a : Fin k, D.p a * g₂ a :=
+    Finset.sum_congr rfl (fun a _ => if_pos rfl)
+  rw [hj2]
   -- Remaining factors are all ∑_a D.p a = 1
-  rw [Finset.prod_eq_one (fun i hi => by
-    simp only [if_neg (Finset.ne_of_mem_erase hi), mul_one, D.sum_one]), mul_one]
+  have hcongr4 : ∏ i ∈ (Finset.univ.erase j₁).erase j₂,
+      (∑ a : Fin k, if i = j₂ then D.p a * g₂ a else D.p a) =
+      ∏ _i ∈ (Finset.univ.erase j₁).erase j₂, (1 : ℝ) := by
+    apply Finset.prod_congr rfl
+    intro i hi
+    exact (Finset.sum_congr rfl (fun a _ => if_neg (Finset.ne_of_mem_erase hi))).trans D.sum_one
+  rw [hcongr4, Finset.prod_const_one, mul_one]
 
 /-- Variance of empEnt over joint distribution = logVar(D) / n (i.i.d. sum).
     Proved by expanding the square: diagonal terms contribute logVar D each (via
     expVal_marginal), cross terms are zero (via expVal_marginal_product + mean-zero). -/
 theorem empEnt_variance (D : DiscreteDist k) (n : ℕ) (hn : 0 < n) :
     expVal D n (fun x => (empEnt D n x - shannonH D)^2) = logVar D / n := by
-  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.not_eq_zero_of_lt hn)
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
   -- Z a = -log p(a) - H  is the centered log-probability
   let Z : Fin k → ℝ := fun a => -Real.log (D.p a) - shannonH D
   -- empEnt D n x - H = (1/n) * ∑_j Z(x j)
   have hw : ∀ x : Fin n → Fin k, empEnt D n x - shannonH D = (1 / ↑n) * ∑ j, Z (x j) :=
     fun x => by
-      simp only [empEnt, Z, Finset.sum_sub_distrib, ← Finset.sum_neg_distrib,
-        Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-      field_simp; ring
+      simp only [empEnt, Z]
+      rw [Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ,
+          Fintype.card_fin, nsmul_eq_mul]
+      field_simp
   -- E[Z] = 0  (centered)
   have hZ_mean : ∑ a : Fin k, D.p a * Z a = 0 := by
-    simp only [Z, Finset.sum_sub_distrib, ← Finset.mul_sum, D.sum_one]
-    simp only [shannonH, neg_neg, mul_one]
-    rw [show (∑ a : Fin k, D.p a * Real.log (D.p a)) =
-        ∑ a, if D.p a = 0 then 0 else D.p a * Real.log (D.p a) from
-      Finset.sum_congr rfl (fun a _ => by by_cases h : D.p a = 0 <;> simp [h])]
+    have step : ∀ a : Fin k, D.p a * Z a = -(D.p a * Real.log (D.p a)) - D.p a * shannonH D := by
+      intro a; simp only [Z]; ring
+    simp_rw [step]
+    rw [Finset.sum_sub_distrib, Finset.sum_neg_distrib, ← Finset.sum_mul, D.sum_one, one_mul]
+    have heq : ∑ a : Fin k, D.p a * Real.log (D.p a) =
+        ∑ a, if D.p a = 0 then 0 else D.p a * Real.log (D.p a) :=
+      Finset.sum_congr rfl (fun a _ => by by_cases h : D.p a = 0 <;> simp [h])
+    rw [heq]
+    simp only [shannonH]
     ring
   -- E[Z²] = logVar D  (variance computation)
   have hZ_var : ∑ a : Fin k, D.p a * Z a ^ 2 = logVar D := by
@@ -308,9 +348,9 @@ theorem empEnt_variance (D : DiscreteDist k) (n : ℕ) (hn : 0 < n) :
               + 2 * shannonH D * ∑ a, D.p a * Real.log (D.p a)
               + (shannonH D)^2 * ∑ a, D.p a := by
             rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
-                ← Finset.mul_sum, ← Finset.sum_mul]
-        _ = _ := by rw [hlog, D.sum_one]; ring
-      exact expand
+                ← Finset.mul_sum, ← Finset.mul_sum]
+        _ = _ := by rw [hlog, D.sum_one]
+      rw [expand]; ring
     rw [this]
     congr 1
     exact Finset.sum_congr rfl (fun a _ => by by_cases h : D.p a = 0 <;> simp [h])
@@ -321,45 +361,62 @@ theorem empEnt_variance (D : DiscreteDist k) (n : ℕ) (hn : 0 < n) :
       ((1 / ↑n) * ∑ j, Z (x j))^2 =
       (1 / ↑n)^2 * ∑ i : Fin n, ∑ j : Fin n, Z (x i) * Z (x j) := fun x => by
     rw [mul_pow, sq (∑ j, Z (x j)), Finset.sum_mul]
-    congr 1; ext i; rw [Finset.mul_sum]
-  simp_rw [factor, expVal, jointProb, ← Finset.mul_sum, ← Finset.sum_mul]
-  -- Swap and apply marginals
-  rw [Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]
-  simp_rw [← Finset.mul_sum]
-  rw [← Finset.sum_mul]
-  -- ∑_i ∑_j ∑_x (∏_l p(x l)) * (Z(x i) * Z(x j)) = n * logVar D
+    congr 1
+    exact Finset.sum_congr rfl (fun i _ => Finset.mul_sum _ _ _)
+  simp_rw [factor]
+  simp only [expVal, jointProb]
+  -- Goal: ∑ x, (∏ l, D.p (x l)) * ((1/n)^2 * ∑ i, ∑ j, Z (x i) * Z (x j)) = logVar D / n
+  have step2 : ∀ x : Fin n → Fin k,
+      (∏ l, D.p (x l)) * ((1 / (n:ℝ))^2 * ∑ i : Fin n, ∑ j : Fin n, Z (x i) * Z (x j)) =
+      (1 / (n:ℝ))^2 * ∑ i : Fin n, ∑ j : Fin n, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) := fun x => by
+    rw [← mul_assoc, mul_comm (∏ l, D.p (x l)) ((1 / (n:ℝ))^2), mul_assoc]
+    congr 1
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl (fun i _ => Finset.mul_sum _ _ _)
+  simp_rw [step2]
+  rw [← Finset.mul_sum]
+  -- Goal: (1/n)^2 * ∑ x, ∑ i, ∑ j, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) = logVar D / n
+  have swap1 : ∑ x : Fin n → Fin k, ∑ i : Fin n, ∑ j : Fin n,
+      (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) =
+      ∑ i : Fin n, ∑ x : Fin n → Fin k, ∑ j : Fin n,
+        (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) :=
+    Finset.sum_comm
+  rw [swap1]
+  have swap2 : ∀ i : Fin n, ∑ x : Fin n → Fin k, ∑ j : Fin n,
+      (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) =
+      ∑ j : Fin n, ∑ x : Fin n → Fin k,
+        (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) :=
+    fun i => Finset.sum_comm
+  simp_rw [swap2]
+  -- Goal: (1/n)^2 * ∑ i, ∑ j, ∑ x, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) = logVar D / n
   suffices h : ∑ i : Fin n, ∑ j : Fin n,
       ∑ x : Fin n → Fin k, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) = n * logVar D by
-    rw [h]; field_simp; ring
-  -- Split into diagonal and off-diagonal
-  rw [show ∑ i : Fin n, ∑ j : Fin n, ∑ x : Fin n → Fin k, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) =
-      ∑ i : Fin n, ∑ j : Fin n, expVal D n (fun x => Z (x i) * Z (x j)) from by
-    simp only [expVal, jointProb]]
+    rw [h]; field_simp
   -- Each term: diagonal = logVar D, off-diagonal = 0
   have diag : ∀ i : Fin n, expVal D n (fun x => Z (x i) * Z (x i)) = logVar D := fun i => by
-    have := expVal_marginal D n (fun a => Z a ^ 2) i
-    simp only [expVal, jointProb] at this
-    simp_rw [sq] at this
-    rw [this, hZ_var]
+    have heq : (fun x : Fin n → Fin k => Z (x i) * Z (x i)) = fun x => Z (x i) ^ 2 := by
+      funext x; ring
+    rw [heq, expVal_marginal D n (fun a => Z a ^ 2) i, hZ_var]
   have offdiag : ∀ i j : Fin n, i ≠ j →
       expVal D n (fun x => Z (x i) * Z (x j)) = 0 := fun i j hij => by
     rw [expVal_marginal_product D n Z Z i j hij, hZ_mean, mul_zero]
+  have hval : ∀ i j : Fin n, ∑ x : Fin n → Fin k, (∏ l, D.p (x l)) * (Z (x i) * Z (x j)) =
+      expVal D n (fun x => Z (x i) * Z (x j)) := fun i j => by
+    simp only [expVal, jointProb]
+  simp_rw [hval]
   -- Sum: diagonal contributes n * logVar D, off-diagonal contributes 0
-  conv_lhs =>
-    arg 2; ext i; arg 2; ext j
-    rw [show Z (· i) * Z (· j) = fun x => Z (x i) * Z (x j) from rfl]
   rw [show ∑ i : Fin n, ∑ j : Fin n, expVal D n (fun x => Z (x i) * Z (x j)) =
       ∑ i : Fin n, (expVal D n (fun x => Z (x i) * Z (x i)) +
         ∑ j ∈ Finset.univ.erase i, expVal D n (fun x => Z (x i) * Z (x j))) from by
-    congr 1; ext i
-    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
-    simp [sq]]
-  simp_rw [diag, offdiag _ _ (Finset.ne_of_mem_erase ·)]
-  -- Wait, need to apply offdiag correctly
-  simp_rw [show ∀ i : Fin n, ∑ j ∈ Finset.univ.erase i,
-      expVal D n (fun x => Z (x i) * Z (x j)) = 0 from fun i => by
-    apply Finset.sum_eq_zero; intro j hj
-    exact offdiag i j (Finset.ne_of_mem_erase hj)]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]]
+  have hoff2 : ∀ i : Fin n, ∑ j ∈ Finset.univ.erase i,
+      expVal D n (fun x => Z (x i) * Z (x j)) = 0 := fun i => by
+    apply Finset.sum_eq_zero
+    intro j hj
+    exact offdiag i j (Finset.ne_of_mem_erase hj).symm
+  simp_rw [diag, hoff2, add_zero]
   simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
 
 /-- **Main AEP Theorem**: Concentration bound.
@@ -380,7 +437,7 @@ theorem aep_concentration (D : DiscreteDist k) {n : ℕ} (hn : 0 < n)
 -- ════════════════════════════════════════════════════════════════
 
 /-- The ε-typical set: sequences with empirical entropy ε-close to H(p). -/
-def typicalSet (D : DiscreteDist k) (n : ℕ) (ε : ℝ) : Finset (Fin n → Fin k) :=
+noncomputable def typicalSet (D : DiscreteDist k) (n : ℕ) (ε : ℝ) : Finset (Fin n → Fin k) :=
   Finset.univ.filter (fun x => |empEnt D n x - shannonH D| ≤ ε)
 
 /-- For x ∈ typical set with positive support: P(x) ≥ exp(-n(H+ε)). -/
@@ -394,9 +451,14 @@ lemma typical_prob_lower_bound {D : DiscreteDist k} {n : ℕ} (hn : 0 < n)
     have := (abs_le.mp hx).2; linarith
   rw [jointProb, ← Real.exp_log (Finset.prod_pos (fun i _ => hsupp i))]
   apply Real.exp_le_exp.mpr
-  rw [Real.log_prod _ _ (fun i _ => ne_of_gt (hsupp i))]
-  simp only [empEnt, Nat.not_eq_zero_of_lt hn, ite_false] at hle
-  linarith [mul_comm (1 / (n : ℝ)) (∑ i, Real.log (D.p (x i)))]
+  rw [Real.log_prod (fun i _ => ne_of_gt (hsupp i))]
+  simp only [empEnt] at hle
+  have hn'' : (0:ℝ) < (n:ℝ) := by exact_mod_cast hn
+  have key : (n:ℝ) * (-(1 / (n:ℝ)) * ∑ i, Real.log (D.p (x i))) ≤ (n:ℝ) * (shannonH D + ε) :=
+    mul_le_mul_of_nonneg_left hle hn''.le
+  have hn3 : (n:ℝ) * (-(1 / (n:ℝ)) * ∑ i, Real.log (D.p (x i))) = -(∑ i, Real.log (D.p (x i))) := by
+    field_simp
+  linarith [key, hn3]
 
 /-- **Typical set size upper bound**: |T_ε^(n)| ≤ exp(n·(H(p)+ε)). -/
 theorem typical_set_size_upper {D : DiscreteDist k} {n : ℕ} (hn : 0 < n)
@@ -411,13 +473,13 @@ theorem typical_set_size_upper {D : DiscreteDist k} {n : ℕ} (hn : 0 < n)
           simp [Finset.sum_const, Finset.card_mul_iff]
       _ ≤ ∑ x ∈ typicalSet D n ε, jointProb D n x := Finset.sum_le_sum hlow
       _ ≤ ∑ x : Fin n → Fin k, jointProb D n x :=
-          Finset.sum_le_univ_sum_of_nonneg (fun x _ => jointProb_nonneg D n x) _
+          Finset.sum_le_univ_sum_of_nonneg (fun x => jointProb_nonneg D n x)
       _ = 1 := jointProb_sum_one D n
   have hcard_le : (typicalSet D n ε).card ≤ 1 / Real.exp (-(n : ℝ) * (shannonH D + ε)) :=
-    le_div_of_mul_le hexp_pos hsum
+    (le_div_iff₀ hexp_pos).mpr hsum
   have hrw : (1 : ℝ) / Real.exp (-(n : ℝ) * (shannonH D + ε)) = Real.exp ((n : ℝ) * (shannonH D + ε)) := by
-    rw [Real.exp_neg, div_inv_eq_mul_inv, one_mul]
-  exact_mod_cast hcard_le.trans (hrw ▸ le_refl _)
+    rw [neg_mul, Real.exp_neg, one_div, inv_inv]
+  exact_mod_cast hrw ▸ hcard_le
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION VII: Concrete Verifications
@@ -433,15 +495,22 @@ noncomputable def uniformBin : DiscreteDist 2 where
 theorem uniformBin_entropy : shannonH uniformBin = Real.log 2 := by
   simp only [shannonH, uniformBin, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons]
-  norm_num [Real.log_one, Real.log_inv]
-  ring_nf
-  rw [show (2 : ℝ)⁻¹ = 1/2 from by norm_num]
-  rw [Real.log_one_div (by norm_num : (0:ℝ) < 2)]
+  have h : (1:ℝ)/2 ≠ 0 := by norm_num
+  rw [if_neg h]
+  have hlog : Real.log (1/2 : ℝ) = -Real.log 2 := by
+    rw [show (1/2 : ℝ) = 2⁻¹ from by norm_num, Real.log_inv]
+  rw [hlog]
   ring
 
-/-- For fair coin: 100-symbol sequences all have empirical entropy → log 2. -/
-example : empEnt uniformBin 100 (fun _ => 0) = 0 := by
-  simp [empEnt, uniformBin, Matrix.cons_val_zero, Real.log_inv]
+/-- For fair coin: the constant-0 100-symbol sequence has empirical entropy log 2
+    (matching the fair-coin entropy exactly, since every symbol has probability 1/2). -/
+example : empEnt uniformBin 100 (fun _ => 0) = Real.log 2 := by
+  simp only [empEnt, uniformBin, Matrix.cons_val_zero]
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  have hlog : Real.log (1/2 : ℝ) = -Real.log 2 := by
+    rw [show (1/2 : ℝ) = 2⁻¹ from by norm_num, Real.log_inv]
+  rw [hlog]
+  ring
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION VIII: AEP Summary

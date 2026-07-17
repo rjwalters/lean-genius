@@ -148,7 +148,7 @@ theorem hemisphere_interiorEndpoints_count (n : ℕ)
   refine interiorEndpoints_card_congr (hemisphereIso n).symm B
     (fun a => B (hemisphereIso n a)) ?_
   intro v
-  simp
+  rw [RelIso.apply_symm_apply]
 
 #check @interiorEndpoints_card_congr
 #check @boundaryEndpoints_card_congr

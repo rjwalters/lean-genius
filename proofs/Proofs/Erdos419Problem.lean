@@ -19,10 +19,9 @@
   Tags: number-theory, divisor-function, factorial, limit-points, solved
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
 import Mathlib.Analysis.SpecificLimits.Basic
 
 namespace Erdos419
@@ -135,7 +134,7 @@ The limit points are exactly {1, 2, 3/2, 4/3, 5/4, ...}.
 /-- The limit point set is closed and has accumulation point at 1 -/
 theorem limit_set_properties :
     (1 : ℚ) ∈ limitPointSet ∧
-    ∀ k ≥ 1, (1 : ℚ) + 1/k ∈ limitPointSet ∧
+    (∀ k : ℕ, k ≥ 1 → (1 : ℚ) + 1/k ∈ limitPointSet) ∧
     ∀ x ∈ limitPointSet, x ≥ 1 := by
   constructor
   · left; rfl
@@ -145,12 +144,10 @@ theorem limit_set_properties :
     use k, hk
   · intro x hx
     cases hx with
-    | inl h1 => simp [h1]
+    | inl h1 => simp only [Set.mem_singleton_iff] at h1; simp [h1]
     | inr hk =>
       obtain ⟨k, hk_pos, hx⟩ := hk
       simp [hx]
-      have : (k : ℚ) ≥ 1 := by exact Nat.one_le_cast.mpr hk_pos
-      linarith [this, one_div_pos.mpr (by linarith : (k : ℚ) > 0)]
 
 /-- Erdős Problem #419: SOLVED
     The limit points of τ((n+1)!)/τ(n!) are exactly {1} ∪ {1+1/k : k ≥ 1}.

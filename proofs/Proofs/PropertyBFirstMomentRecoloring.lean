@@ -77,7 +77,7 @@ theorem property_b_of_recoloring
     have hweS : w e ∈ S := by rw [memS]; exact ⟨e, heM, rfl⟩
     -- a second, unflipped vertex of `e`
     have h1lt : 1 < e.card := by have := hcard e he ⟨b, hb⟩; omega
-    obtain ⟨u, hue, hune⟩ := Finset.exists_ne_of_one_lt_card h1lt (w e)
+    obtain ⟨u, hue, hune⟩ := (Finset.one_lt_card_iff_nontrivial.mp h1lt).exists_ne (w e)
     have huS : u ∉ S := by
       rw [memS]
       rintro ⟨e'', he''M, hwe''⟩

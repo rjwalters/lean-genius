@@ -170,8 +170,7 @@ theorem tietze_extension_via_tsum {X : Type*} [TopologicalSpace X] [NormalSpace 
         exact BoundedContinuousFunction.dist_coe_le_dist (x : X)
       exact hL.continuous
     have hx : HasSum (fun n => (gbcf hs f hM hf n) (x : X)) (G (x : X)) := by
-      have := hHasSum.map ev hev
-      simpa [ev, Function.comp] using this
+      exact (hHasSum.map ev hev).congr_fun fun n => rfl
     have hpart : Tendsto
         (fun n => ∑ i ∈ Finset.range n, (gbcf hs f hM hf i) (x : X)) atTop (𝓝 (G (x : X))) :=
       hx.tendsto_sum_nat

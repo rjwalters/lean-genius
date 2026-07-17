@@ -28,6 +28,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Fintype.Card
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos580
@@ -50,7 +52,7 @@ noncomputable def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=
 **High-Degree Vertices:**
 The set of vertices in G with degree at least k.
 -/
-def highDegreeVertices (G : SimpleGraph V) (k : ℕ) : Finset V :=
+noncomputable def highDegreeVertices (G : SimpleGraph V) (k : ℕ) : Finset V :=
   Finset.univ.filter (fun v => vertexDegree G v ≥ k)
 
 /--
@@ -80,7 +82,7 @@ The collection of all non-isomorphic trees with exactly k vertices.
 -/
 def allTrees (k : ℕ) : Set (Tree k) := Set.univ
 
-/--
+/- 
 **Number of Trees:**
 By Cayley's formula, there are k^(k-2) labeled trees on k vertices.
 -/
@@ -140,8 +142,8 @@ then G contains every tree on at most n/2 vertices.
 -/
 def LKSConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    @satisfiesLKS V _ _ G →
-    @ContainsAllTreesUpTo V _ _ G (numVertices V / 2)
+    satisfiesLKS G →
+    ContainsAllTreesUpTo G (numVertices V / 2)
 
 /--
 **Komlós-Sós Conjecture (Generalization):**
@@ -150,15 +152,15 @@ then G contains every tree on at most k vertices.
 -/
 def KomlosSosConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) (k : ℕ),
-    @satisfiesGeneralizedLKS V _ _ G k →
-    @ContainsAllTreesUpTo V _ _ G k
+    satisfiesGeneralizedLKS G k →
+    ContainsAllTreesUpTo G k
 
 /- ## Part VI: Partial Results
 
 Asymptotic and near-exact results.
 -/
 
-/--
+/- 
 **Ajtai-Komlós-Szemerédi Theorem (1995):**
 For any ε > 0 and sufficiently large n:
 If at least (1+ε)n/2 vertices have degree at least (1+ε)n/2,
@@ -171,8 +173,8 @@ The LKS conjecture holds for all sufficiently large n.
 axiom zhao_theorem :
     ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       numVertices V ≥ N →
-      @satisfiesLKS V _ _ G →
-      @ContainsAllTreesUpTo V _ _ G (numVertices V / 2)
+      satisfiesLKS G →
+      ContainsAllTreesUpTo G (numVertices V / 2)
 
 /--
 **Erdős Problem #580: Main Result**
@@ -180,26 +182,26 @@ For sufficiently large n, the LKS conjecture holds.
 -/
 theorem erdos_580 : ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     numVertices V ≥ N →
-    @satisfiesLKS V _ _ G →
-    @ContainsAllTreesUpTo V _ _ G (numVertices V / 2) :=
+    satisfiesLKS G →
+    ContainsAllTreesUpTo G (numVertices V / 2) :=
   zhao_theorem
 
 /- ## Part VII: Special Cases and Bounds
 -/
 
-/--
+/- 
 **Path Case:**
 The conjecture is easy for paths: any graph satisfying the LKS condition
 contains all paths of length at most n/2 - 1.
 -/
-/--
+/- 
 **Star Case:**
 Stars (one central vertex connected to all others) are also easy to embed.
 -/
 /- ## Part VIII: Tightness Examples
 -/
 
-/--
+/- 
 **Tightness of LKS:**
 The condition n/2-n/2 is tight: there exist graphs with n/2 - 1 vertices
 of degree n/2 - 1 that miss some tree on n/2 vertices.
@@ -230,7 +232,7 @@ then G contains every tree on ≤ n/2 vertices.
 -/
 theorem erdos_580_summary :
     (∃ N : ℕ, ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      numVertices V ≥ N → @satisfiesLKS V _ _ G → @ContainsAllTreesUpTo V _ _ G (numVertices V / 2))
+      numVertices V ≥ N → satisfiesLKS G → ContainsAllTreesUpTo G (numVertices V / 2))
     := zhao_theorem
 
 end Erdos580

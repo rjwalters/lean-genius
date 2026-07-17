@@ -62,17 +62,18 @@ def K4Free (G : SimpleGraph V) : Prop := ¬HasK4 G
 /-- Triangle-free graphs are K₄-free. -/
 theorem triangleFree_implies_K4Free (G : SimpleGraph V) (h : TriangleFree G) :
     K4Free G := by
-  intro ⟨a, b, c, d, hne, hab, hac, had, hbc, hbd, hcd⟩
+  intro ⟨a, b, c, _d, hab, hac, _had, hbc, _hbd, _hcd,
+    hAab, hAac, _hAad, hAbc, _hAbd, _hAcd⟩
   apply h
-  exact ⟨a, b, c, hne.1, hne.2.2.1, hne.2.1, hab, hbc, hac⟩
+  exact ⟨a, b, c, hab, hbc, hac, hAab, hAbc, hAac⟩
 
 /- ## Part II: Induced Subgraphs -/
 
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun x y => G.Adj x.val y.val
-  symm := fun x y h => G.symm h
-  loopless := fun x => G.loopless x.val
+  symm.symm := fun x y h => G.adj_symm h
+  loopless.irrefl := fun _x => G.irrefl
 
 /-- The size of a vertex set. -/
 def vertexCount (S : Finset V) : ℕ := S.card
@@ -116,7 +117,7 @@ def Erdos620Statement : Prop :=
 
 /- ## Part V: Known Bounds -/
 
-/-- **Trivial Lower Bound**
+/-  **Trivial Lower Bound**
 
     Every K₄-free graph on n vertices has an independent set of size Ω(√n).
     Independent sets are triangle-free, so f(n) ≥ c√n for some c > 0.
@@ -130,17 +131,17 @@ axiom shearer_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 16,
       (erdosRogers n : ℝ) ≥ c * Real.sqrt n * Real.sqrt (Real.log n) / Real.log (Real.log n)
 
-/-- **Bollobás-Hind Upper Bound (1991)**
+/-  **Bollobás-Hind Upper Bound (1991)**
 
     f(n) ≪ n^{7/10 + o(1)}
 -/
 
-/-- **Krivelevich Upper Bound (1994)**
+/-  **Krivelevich Upper Bound (1994)**
 
     f(n) ≪ n^{2/3} · (log n)^{1/3}
 -/
 
-/-- **Wolfovitz Upper Bound (2013)**
+/-  **Wolfovitz Upper Bound (2013)**
 
     f(n) ≪ n^{1/2} · (log n)^{120}
 -/
@@ -186,8 +187,8 @@ theorem sparse_case (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
 /-- The Turán graph T(n,3) is K₄-free and has minimum triangle-free induced subgraph. -/
 def turanGraph3 (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i.val % 3 ≠ j.val % 3
-  symm := by intro i j h; exact Ne.symm h
-  loopless := by intro i h; exact h rfl
+  symm := by constructor; intro i j h; exact Ne.symm h
+  loopless := by constructor; intro i h; exact h rfl
 
 theorem turan_is_K4Free (n : ℕ) : K4Free (turanGraph3 n) := by
   rintro ⟨a, b, c, d, -, -, -, -, -, -, hab, hac, had, hbc, hbd, hcd⟩
@@ -210,7 +211,7 @@ theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
 
 /- ## Part IX: Probabilistic Bounds -/
 
-/-- Random K₄-free graphs give upper bounds on f(n).
+/-  Random K₄-free graphs give upper bounds on f(n).
 
     The probabilistic construction shows extremal K₄-free graphs exist
     with small maximum triangle-free induced subgraphs.
@@ -239,7 +240,7 @@ theorem original_is_f43 (n : ℕ) :
 -/
 def erdos_620_open : Prop :=
   ¬∃ (α : ℝ), α > 0 ∧
-    (∀ ε > 0, ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n ≥ 2,
+    (∀ ε > 0, ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       c * (n : ℝ) ^ α ≤ erdosRogers n ∧
       (erdosRogers n : ℝ) ≤ C * (n : ℝ) ^ α)
 

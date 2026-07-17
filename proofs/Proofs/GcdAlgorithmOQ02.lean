@@ -1,5 +1,4 @@
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Binary GCD (Stein's Algorithm)
@@ -37,19 +36,19 @@ theorem gcd_sub_right {a b : ℕ} (h : b ≤ a) :
     · -- gcd(a-b, b) | a: since a = (a-b) + b
       have h1 := Nat.gcd_dvd_left (a - b) b
       have h2 := Nat.gcd_dvd_right (a - b) b
-      have : a = (a - b) + b := by omega
-      rw [this]; exact Nat.dvd_add h1 h2
+      have h3 : Nat.gcd (a - b) b ∣ (a - b) + b := dvd_add h1 h2
+      rwa [Nat.sub_add_cancel h] at h3
     · exact Nat.gcd_dvd_right _ _
   · -- gcd(a, b) | gcd(a-b, b): suffices to show gcd(a,b) | (a-b) and gcd(a,b) | b
     apply Nat.dvd_gcd
-    · exact Nat.dvd_sub' (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
+    · exact Nat.dvd_sub (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
     · exact Nat.gcd_dvd_right _ _
 
 /-- gcd(2a, b) = gcd(a, b) when b is odd (2 and b are coprime). -/
 theorem gcd_mul_two_left {a b : ℕ} (hb : b % 2 = 1) :
     Nat.gcd (2 * a) b = Nat.gcd a b := by
-  have hcop : Nat.Coprime 2 b := Nat.coprime_two_left.mpr hb
-  exact (hcop.gcd_mul_left_cancel a).symm
+  have hcop : Nat.Coprime 2 b := Nat.coprime_two_left.mpr (Nat.odd_iff.mpr hb)
+  exact hcop.gcd_mul_left_cancel a
 
 /-- gcd(a, 2b) = gcd(a, b) when a is odd. -/
 theorem gcd_mul_two_right {a b : ℕ} (ha : a % 2 = 1) :
@@ -92,7 +91,7 @@ def binaryGcd : ℕ → ℕ → ℕ
     else
       -- Both odd, a+1 ≤ b+1: subtract and halve
       binaryGcd (a + 1) ((b + 1 - (a + 1)) / 2)
-  termination_by a + b
+  termination_by a b => a + b
   decreasing_by all_goals omega
 
 /-- When both a and b are odd and a > b, gcd((a-b)/2, b) = gcd(a, b).
@@ -110,7 +109,9 @@ theorem gcd_odd_sub_half {a b : ℕ} (ha : a % 2 = 1) (hb : b % 2 = 1) (hgt : a 
 /-- Symmetric version: gcd(a, (b-a)/2) = gcd(a, b) when both odd, b ≥ a. -/
 theorem gcd_odd_sub_half_right {a b : ℕ} (ha : a % 2 = 1) (hb : b % 2 = 1) (hge : b ≥ a) :
     Nat.gcd a ((b - a) / 2) = Nat.gcd a b := by
-  rw [Nat.gcd_comm, gcd_odd_sub_half hb ha (by omega), Nat.gcd_comm]
+  rcases Nat.eq_or_lt_of_le hge with rfl | hlt
+  · simp
+  · rw [Nat.gcd_comm, gcd_odd_sub_half hb ha hlt, Nat.gcd_comm]
 
 /-- **Correctness**: binaryGcd equals Nat.gcd.
     The proof uses the three key lemmas: factor extraction (gcd_two_mul),
@@ -130,21 +131,29 @@ theorem binaryGcd_eq_gcd : ∀ a b : ℕ, binaryGcd a b = Nat.gcd a b := by
     -- Both even: binaryGcd (a+1) (b+1) = 2 * binaryGcd ((a+1)/2) ((b+1)/2)
     simp only [binaryGcd, ha, hb, ↓reduceDIte]
     rw [ih]
-    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
-    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
-    rw [ha2, hb2]; exact (gcd_two_mul).symm
+    have ha2 : 2 * ((a + 1) / 2) = a + 1 := by omega
+    have hb2 : 2 * ((b + 1) / 2) = b + 1 := by omega
+    calc 2 * Nat.gcd ((a + 1) / 2) ((b + 1) / 2)
+        = Nat.gcd (2 * ((a + 1) / 2)) (2 * ((b + 1) / 2)) := (gcd_two_mul).symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [ha2, hb2]
   | case4 a b ha hb ih =>
     -- a+1 even, b+1 odd
     simp only [binaryGcd, ha, hb, ↓reduceDIte]
     rw [ih]
-    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
-    rw [ha2]; exact (gcd_mul_two_left hb).symm
+    have hb1 : (b + 1) % 2 = 1 := by omega
+    have ha2 : 2 * ((a + 1) / 2) = a + 1 := by omega
+    calc Nat.gcd ((a + 1) / 2) (b + 1)
+        = Nat.gcd (2 * ((a + 1) / 2)) (b + 1) := (gcd_mul_two_left hb1).symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [ha2]
   | case5 a b ha hb ih =>
     -- a+1 odd, b+1 even
     simp only [binaryGcd, ha, hb, ↓reduceDIte]
     rw [ih]
-    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
-    rw [hb2]; exact (gcd_mul_two_right ha).symm
+    have ha1 : (a + 1) % 2 = 1 := by omega
+    have hb2 : 2 * ((b + 1) / 2) = b + 1 := by omega
+    calc Nat.gcd (a + 1) ((b + 1) / 2)
+        = Nat.gcd (a + 1) (2 * ((b + 1) / 2)) := (gcd_mul_two_right ha1).symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [hb2]
   | case6 a b ha hb hgt ih =>
     -- Both odd, a+1 > b+1
     simp only [binaryGcd, ha, hb, hgt, ↓reduceDIte]

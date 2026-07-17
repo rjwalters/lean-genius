@@ -56,7 +56,7 @@ theorem minkowski_p1_real {ι : Type*} (s : Finset ι) (f g : ι → ℝ) :
     ∑ i ∈ s, |f i + g i| ≤ ∑ i ∈ s, |f i| + ∑ i ∈ s, |g i| := by
   calc ∑ i ∈ s, |f i + g i|
       ≤ ∑ i ∈ s, (|f i| + |g i|) :=
-        Finset.sum_le_sum fun i _ => abs_add (f i) (g i)
+        Finset.sum_le_sum fun i _ => abs_add_le (f i) (g i)
     _ = ∑ i ∈ s, |f i| + ∑ i ∈ s, |g i| := Finset.sum_add_distrib
 
 /-
@@ -81,7 +81,7 @@ theorem minkowski_nnreal {ι : Type*} (s : Finset ι) (f g : ι → ℝ≥0)
     {p : ℝ} (hp : 1 ≤ p) :
     (∑ i ∈ s, (f i + g i) ^ p) ^ (1 / p) ≤
       (∑ i ∈ s, f i ^ p) ^ (1 / p) + (∑ i ∈ s, g i ^ p) ^ (1 / p) :=
-  NNReal.Lp_add_le hp f g s
+  NNReal.Lp_add_le s f g hp
 
 /-
 ## Part 3: Minkowski's Inequality for Real-Valued Functions
@@ -116,7 +116,7 @@ theorem minkowski_real {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
         intro i _
         exact nnnorm_add_le (f i) (g i)
     _ ≤ (∑ i ∈ s, (‖f i‖₊) ^ p) ^ (1 / p) + (∑ i ∈ s, (‖g i‖₊) ^ p) ^ (1 / p) :=
-        NNReal.Lp_add_le hp _ _ s
+        NNReal.Lp_add_le s _ _ hp
 
 /-
 ## Part 4: Minkowski at p = 2 — The Euclidean Triangle Inequality
@@ -197,7 +197,7 @@ theorem minkowski_l2 (f g : Lp ℝ 2 μ) :
 ## Part 7: The Hölder–Minkowski Duality
 
 Hölder and Minkowski are dual inequalities:
-- Hölder bounds the pairing ⟨f, g⟩ = ∑f_i·g_i in terms of Lp and Lq norms
+- Hölder bounds the pairing ⟨f, g⟩ = ∑f_i·g_i ∈ terms of Lp and Lq norms
 - Minkowski bounds the Lp norm of a sum ‖f + g‖_p in terms of individual Lp norms
 
 Together they establish:
@@ -221,7 +221,7 @@ theorem holder_minkowski_chain {ι : Type*} (s : Finset ι)
     (∑ i ∈ s, (f i + g i) ^ p) ^ (1 / p) ≤
       (∑ i ∈ s, f i ^ p) ^ (1 / p) + (∑ i ∈ s, g i ^ p) ^ (1 / p) :=
   ⟨NNReal.inner_le_Lp_mul_Lq s f g hpq,
-   NNReal.Lp_add_le hp f g s⟩
+   NNReal.Lp_add_le s f g hp⟩
 
 /-
 ## Summary

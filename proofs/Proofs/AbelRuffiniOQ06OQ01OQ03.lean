@@ -73,7 +73,7 @@ theorem isSolvable_of_isSolvable_commutator {G : Type*} [Group G]
   haveI := h
   haveI : IsSolvable (G ⧸ commutator G) :=
     isSolvable_of_comm fun a b =>
-      (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr le_rfl).comm a b
+      (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr le_rfl).is_comm.comm a b
   exact isSolvable_of_normal_of_quotient (commutator G)
 
 /-- **`A₄ = alternatingGroup (Fin 4)` is solvable, via the packaged lemma.** The prototypical
@@ -97,7 +97,7 @@ theorem alternatingFinFour_isSolvable : IsSolvable (alternatingGroup (Fin 4)) :=
     le_of_eq (alternatingGroup.kleinFour_eq_commutator hα4).symm
   haveI hQsolv : IsSolvable (alternatingGroup (Fin 4) ⧸ N) :=
     isSolvable_of_comm fun a b =>
-      (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le).comm a b
+      (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le).is_comm.comm a b
   -- Extension-closure on 1 → V₄ → A₄ → A₄/V₄ → 1, packaged in one step.
   exact isSolvable_of_normal_of_quotient N
 

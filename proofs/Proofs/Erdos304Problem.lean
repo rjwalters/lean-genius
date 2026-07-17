@@ -88,7 +88,7 @@ related to the denominator's prime factorization. -/
 axiom erdos_1950_lower_bound :
   ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10, c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b
 
-/-- **Erdős Upper Bound (1950)**: N(b) ≪ log b / log log b.
+/-  **Erdős Upper Bound (1950)**: N(b) ≪ log b / log log b.
 
 Every rational a/b with 1 ≤ a < b can be expressed with at most
 O(log b / log log b) unit fractions. -/
@@ -128,7 +128,7 @@ Defined as (∑_{a=1}^{b-1} N(a,b)) / (b-1) for b > 1, and 0 otherwise.
 We axiomatize this to avoid LocallyFiniteOrder dependencies. -/
 axiom averageCollection : ℕ → ℚ
 
-/-- **Average lower bound**: The average of N(a,b) is at least Ω(log log b).
+/-  **Average lower bound**: The average of N(a,b) is at least Ω(log log b).
 
 This shows even the typical case requires log log b unit fractions. -/
 
@@ -141,7 +141,7 @@ The case a = b-1 is particularly interesting and connects to other problems.
 /-- N(b-1, b) is the number of unit fractions needed to represent (b-1)/b = 1 - 1/b. -/
 noncomputable def almostOneCollection (b : ℕ) : ℕ := smallestCollection (b - 1) b
 
-/-- Connection to Erdős Problem #293: The case (b-1)/b connects to the smallest
+/-  Connection to Erdős Problem #293: The case (b-1)/b connects to the smallest
 missing denominator in unit fraction representations of 1. -/
 
 /-
@@ -150,7 +150,7 @@ missing denominator in unit fraction representations of 1. -/
 The greedy algorithm gives an upper bound, but not the optimal one.
 -/
 
-/-- **Greedy algorithm bound**: The greedy algorithm uses at most O(log b) terms.
+/-  **Greedy algorithm bound**: The greedy algorithm uses at most O(log b) terms.
 This is worse than Vose's √(log b) bound but easier to compute. -/
 
 /-

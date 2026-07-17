@@ -34,6 +34,7 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Real
 
@@ -46,8 +47,8 @@ namespace Erdos368
 **Largest Prime Factor:**
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
-noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
-  if h : n > 1 then (n.primeFactors.max' (Nat.primeFactors_nonempty h))
+def largestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n > 1 then (n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h))
   else 0
 
 /-- Notation for largest prime factor. -/
@@ -57,7 +58,7 @@ notation "gpf(" n ")" => largestPrimeFactor n
 **F(n): Largest Prime Factor of n(n+1):**
 This is the central function in Erdős Problem #368.
 -/
-noncomputable def F (n : ℕ) : ℕ := largestPrimeFactor (n * (n + 1))
+def F (n : ℕ) : ℕ := largestPrimeFactor (n * (n + 1))
 
 /--
 For n ≥ 1, n(n+1) ≥ 2, so F(n) is well-defined.
@@ -76,7 +77,7 @@ lemma product_ge_two (n : ℕ) (hn : n ≥ 1) : n * (n + 1) ≥ 2 := by
 n and n+1 share no common prime factor.
 -/
 theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.coprime_self_add_one n
+  (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n))
 
 /--
 **Coprimality Consequence:**
@@ -92,7 +93,7 @@ theorem primeFactors_product_coprime (n : ℕ) (hn : n ≥ 1) :
 Thus F(n) = max(gpf(n), gpf(n+1)).
 -/
 axiom F_eq_max (n : ℕ) (hn : n ≥ 1) :
-    F n = max (gpf n) (gpf (n + 1))
+    F n = max (gpf(n)) (gpf(n + 1))
 
 /- ## Part III: Pólya's Theorem (1918)
 -/
@@ -129,7 +130,7 @@ axiom mahler_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)
 
-/--
+/- 
 **Mahler improves Pólya:**
 The quantitative bound c · log log n → ∞ implies F(n) → ∞.
 -/
@@ -160,7 +161,7 @@ Schinzel's construction uses these.
 -/
 def isSmooth (B n : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ B
 
-/--
+/- 
 Numbers of the form n(n+1) that are B-smooth exist infinitely often
 when B is chosen appropriately.
 -/
@@ -208,7 +209,7 @@ axiom pasten_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))
 
-/--
+/- 
 **Pasten improves Mahler:**
 (log log n)² / (log log log n) ≫ log log n for large n.
 -/
@@ -284,7 +285,7 @@ The methods are related to n(n+1) = n² + n.
 -/
 noncomputable def P_squared_plus_one (n : ℕ) : ℕ := largestPrimeFactor (n^2 + 1)
 
-/--
+/- 
 **Pasten's Main Result:**
 P(n² + 1) ≫ (log log n)² / (log log log n).
 This was the key advance leading to improved ABC-related bounds.
@@ -308,7 +309,7 @@ rad(abc) = rad(n(n+1)).
 -/
 def radical (n : ℕ) : ℕ := (n.primeFactors).prod id
 
-/--
+/- 
 **ABC Would Imply:**
 Under ABC, F(n) ≥ (log n)^(1-ε) for any ε > 0.
 -/

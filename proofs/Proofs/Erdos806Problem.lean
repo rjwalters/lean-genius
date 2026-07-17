@@ -26,10 +26,10 @@ References:
 - See also Erdős Problem #333
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 
@@ -65,7 +65,7 @@ def IsBasisFor (B : Finset ℤ) (A : Finset ℤ) : Prop :=
 theorem sumset_card_bound (B : Finset ℤ) :
     (finsetSumset B).card ≤ B.card * B.card := by
   unfold finsetSumset
-  calc (B ×ˢ B).image (fun p => p.1 + p.2) |>.card
+  calc ((B ×ˢ B).image (fun p => p.1 + p.2)).card
       ≤ (B ×ˢ B).card := Finset.card_image_le
     _ = B.card * B.card := Finset.card_product B B
 
@@ -118,7 +118,7 @@ axiom alon_bukh_sudakov_upper_bound :
           ∃ B : Finset ℤ, IsBasisFor B A ∧
             (B.card : ℝ) ≤ C * (Real.log (Real.log n) / Real.log n) * Real.sqrt n
 
-/--
+/- 
 **Answer to Erdős Problem #806:**
 For any A ⊆ {1, ..., n} with |A| ≤ √n, there exists B with
 A ⊆ B + B and |B| = o(√n). This follows from the Alon-Bukh-Sudakov
@@ -184,17 +184,15 @@ theorem trivial_basis (A : Finset ℤ) :
   use (a, 0)
   constructor
   · constructor
-    · left
-      exact ha
-    · right
-      simp
+    · exact Finset.mem_union.mpr (Or.inl ha)
+    · exact Finset.mem_union.mpr (Or.inr (by simp))
   · ring
 
 /-
 ## Part VIII: Asymptotic Notation
 -/
 
-/--
+/- 
 **The logarithmic factor tends to zero:**
 (log log n / log n) → 0 as n → ∞. This is a standard calculus result
 ensuring the Alon-Bukh-Sudakov bound gives |B| = o(√n).
@@ -203,7 +201,7 @@ ensuring the Alon-Bukh-Sudakov bound gives |B| = o(√n).
 ## Part IX: Summary
 -/
 
-/--
+/-
 **Erdős Problem #806: SOLVED**
 
 Q: For A ⊆ {1, ..., n} with |A| ≤ √n, does there exist B with

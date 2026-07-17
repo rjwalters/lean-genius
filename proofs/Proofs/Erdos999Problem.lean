@@ -32,11 +32,10 @@ References:
 Tags: diophantine-approximation, metric-number-theory, measure-theory
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open scoped Nat
 
@@ -89,8 +88,8 @@ def AlmostNoneApproximable (f : ℕ → ℕ) : Prop :=
 def DuffinSchaefferConjecture : Prop :=
   ∀ f : ℕ → ℕ, SeriesDiverges f ↔ AlmostAllApproximable f
 
-/-- The easy direction: Approximable ⟹ Divergence (via Borel-Cantelli) -/
-/-- The hard direction: Divergence ⟹ Approximable (the actual conjecture).
+/-  The easy direction: Approximable ⟹ Divergence (via Borel-Cantelli) -/
+/-  The hard direction: Divergence ⟹ Approximable (the actual conjecture).
     This took 79 years to prove (1941-2020). -/
 /- ## Part V: Erdős's Partial Result -/
 
@@ -98,7 +97,7 @@ def DuffinSchaefferConjecture : Prop :=
 def ErdosCondition (f : ℕ → ℕ) : Prop :=
   ∃ C : ℕ, ∀ q : ℕ, f q * q ≤ C
 
-/-- Erdős's theorem: The conjecture holds when f(q)·q is bounded -/
+/-  Erdős's theorem: The conjecture holds when f(q)·q is bounded -/
 /- ## Part VI: Koukoulopoulos-Maynard Theorem (2020) -/
 
 /-- Koukoulopoulos-Maynard (2020): The full Duffin-Schaeffer conjecture.
@@ -111,17 +110,17 @@ theorem duffin_schaeffer_theorem : DuffinSchaefferConjecture :=
 
 /- ## Part VII: Consequences -/
 
-/-- If the series converges, almost no α is infinitely approximable -/
+/-  If the series converges, almost no α is infinitely approximable -/
 /-- Zero-One Law: either almost all or almost none are approximable.
     Follows from the Duffin-Schaeffer theorem: divergence gives 'all',
     convergence gives 'none'. -/
 axiom zero_one_law (f : ℕ → ℕ) :
     AlmostAllApproximable f ∨ AlmostNoneApproximable f
 
-/-- Classical case: f(q) = 1 gives almost all approximable (continued fractions) -/
+/-  Classical case: f(q) = 1 gives almost all approximable (continued fractions) -/
 /- ## Part VIII: Khintchine's Theorem (Related) -/
 
-/-- Khintchine's original theorem (1924): for monotone decreasing f,
+/-  Khintchine's original theorem (1924): for monotone decreasing f,
     ∑ f(q)/q = ∞ ↔ almost all α are approximable.
     Duffin-Schaeffer generalizes this to non-monotone f with the φ(q) correction. -/
 /-- The limsup set of infinitely approximable reals -/

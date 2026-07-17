@@ -194,7 +194,7 @@ theorem primesInInterval_succ_le (a : ℕ) : primesInInterval a (a + 1) ≤ 1 :=
 
 /- ## Part IV: The Erdős Conjecture -/
 
-/-- **Erdős Problem 1138**: Primes in short intervals near maximal gaps.
+/-  **Erdős Problem 1138**: Primes in short intervals near maximal gaps.
 
     Let x/2 < y < x and C > 1. If d = max_{p_n < x}(p_{n+1} - p_n)
     is the maximal prime gap below x, then:
@@ -221,7 +221,7 @@ theorem bertrand_postulate (n : ℕ) (hn : 1 ≤ n) :
   obtain ⟨p, h1, h2, h3⟩ := Nat.bertrand n (by omega)
   exact ⟨p, h1, h2, h3⟩
 
-/-- Cramér's conjecture on maximal prime gaps:
+/- Cramér's conjecture on maximal prime gaps:
     lim sup d(x) / (log x)² = 1, where d(x) is the maximal gap below x.
     This is OPEN and much stronger than what is currently known. -/
 end Erdos1138

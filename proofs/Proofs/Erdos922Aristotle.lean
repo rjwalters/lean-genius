@@ -30,10 +30,10 @@ theorem ratio_ge_of_two_card_bound (S W k : ℕ) (hW : 0 < W)
     (h : 2 * S ≥ W - k) :
     (S : ℚ) / W ≥ ((W : ℚ) - k) / (2 * W) := by
   have hWQ : (0 : ℚ) < W := by exact_mod_cast hW
-  rw [ge_iff_le, div_le_div_iff (by positivity) hWQ]
+  rw [ge_iff_le, div_le_div_iff₀ (by positivity) hWQ]
   -- (W - k) * W ≤ S * (2 * W) follows from (W - k : ℚ) ≤ 2 * S
   have hkey : (W : ℚ) - k ≤ 2 * S := by
-    rcases Nat.le_or_lt k W with hle | hlt
+    rcases le_or_gt k W with hle | hlt
     · have h1 : ((W - k : ℕ) : ℚ) ≤ 2 * S := by exact_mod_cast h
       rwa [Nat.cast_sub hle] at h1
     · have hWkQ : (W : ℚ) - k ≤ 0 := by

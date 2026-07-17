@@ -114,8 +114,17 @@ theorem taylor_remainder_exists {f : ℝ → ℝ} {x₀ x_star : ℝ} (hlt : x�
   -- Use Mathlib's taylor_mean_remainder_lagrange with n = 1 forced as a literal, so the
   -- Taylor polynomial and remainder appear as `taylorWithinEval f 1` / `iteratedDerivWithin 2`
   -- (avoiding an elaboration mismatch between `1` and `One.one`).
+  -- v4.31: the lemma is now stated over the *unordered* intervals `uIcc`/`uIoo` and takes
+  -- `x₀ ≠ x` (not `x₀ < x`). Since `x₀ < x_star`, these coincide with `Icc`/`Ioo`.
+  have huIcc : uIcc x₀ x_star = Icc x₀ x_star := uIcc_of_le hlt.le
+  have huIoo : uIoo x₀ x_star = Ioo x₀ x_star := uIoo_of_le hlt.le
+  have hf_diff' : ContDiffOn ℝ 1 f (uIcc x₀ x_star) := by rw [huIcc]; exact hf_diff
+  have hf'_diff' : DifferentiableOn ℝ (iteratedDerivWithin 1 f (uIcc x₀ x_star)) (uIoo x₀ x_star) := by
+    rw [huIcc, huIoo]; exact hf'_diff
   obtain ⟨ξ, hξ, hrem⟩ :=
-    @taylor_mean_remainder_lagrange f x_star x₀ 1 hlt hf_diff hf'_diff
+    taylor_mean_remainder_lagrange (n := 1) hlt.ne hf_diff' hf'_diff'
+  rw [huIoo] at hξ
+  rw [huIcc] at hrem
   refine ⟨ξ, hξ, ?_⟩
   -- `taylorWithinEval f 1` is the order-1 Taylor polynomial `f(x₀) + f'(x₀)(x - x₀)`.
   have htw : taylorWithinEval f 1 (Icc x₀ x_star) x₀ x_star =

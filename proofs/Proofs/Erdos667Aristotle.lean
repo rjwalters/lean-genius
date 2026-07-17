@@ -28,15 +28,15 @@ def HasDensity {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (p q : ℕ) : Prop :=
   ∀ S : Finset V, S.card = p → edgeCount G S ≥ q
 
-/-- H(n; p, q): the largest clique size guaranteed. -/
 open scoped Classical in
+/-- H(n; p, q): the largest clique size guaranteed. -/
 noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
   sSup {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
     HasDensity G p q → ¬G.CliqueFree m}
 
 -- ========= Aristotle Targets =========
 
-/-- PROVED in Erdos667Problem.lean (researcher-9, 2026-03-27).
+/-  PROVED in Erdos667Problem.lean (researcher-9, 2026-03-27).
     Key steps: (1) 1 ∈ sSup set (singleton is 1-clique via Set.pairwise_singleton),
     (2) m ≥ 2 ∉ set (empty graph ⊥ is m-clique-free, has no edges). -/
 -- theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
@@ -61,14 +61,15 @@ theorem cliqueFree_one_iff_empty {n : ℕ} (G : SimpleGraph (Fin n)) (hn : 1 ≤
     ¬G.CliqueFree 1 := by
   intro h
   apply h {⟨0, by omega⟩}
-  refine ⟨Finset.card_singleton _, ?_⟩
-  exact Set.pairwise_singleton _ _
+  refine ⟨?_, Finset.card_singleton _⟩
+  rw [Finset.coe_singleton]
+  exact SimpleGraph.isClique_singleton _
 
 /-- The empty graph on Fin n is 2-clique-free (no two vertices are adjacent).
     Helper for cliqueGuarantee_zero. -/
 theorem emptyGraph_cliqueFree_two (n : ℕ) :
     (⊥ : SimpleGraph (Fin n)).CliqueFree 2 := by
-  intro t ⟨hcard, hclique⟩
+  intro t ⟨hclique, hcard⟩
   obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < t.card)
   exact (hclique (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab).elim
 

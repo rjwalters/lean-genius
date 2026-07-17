@@ -1,8 +1,5 @@
 import Proofs.PtolemysTheorem
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Ptolemy's Theorem: Spherical Geometry Extension
@@ -67,6 +64,7 @@ set_option linter.unusedVariables false
 namespace SphericalPtolemy
 
 open Real EuclideanGeometry
+open scoped InnerProductSpace
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
@@ -111,7 +109,7 @@ lemma unit_sphere_chord_via_sin {a b : V} (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) 
   have hnorm_nn := norm_nonneg (a - b)
   -- Left: ‖a - b‖² = 2 - 2⟨a,b⟩
   have h_norm_sq : ‖a - b‖ ^ 2 = 2 - 2 * ⟪a, b⟫_ℝ := by
-    rw [norm_sub_sq_real, real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, ha, hb]
+    rw [norm_sub_sq_real, ha, hb]
     ring
   -- Right: (2sin(arccos(c)/2))² = 2 - 2c
   -- cos(arccos c) = 2cos²(arccos(c)/2) - 1 = c  →  cos²(arccos(c)/2) = (1+c)/2

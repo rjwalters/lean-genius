@@ -37,13 +37,7 @@ References:
   - Matousek, "Using the Borsuk-Ulam Theorem" (2003) - excellent textbook
 -/
 
-import Mathlib.Topology.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic
+import Mathlib
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
@@ -105,16 +99,18 @@ instance z2ActionEuclidean (n : ℕ) : SMul (ZMod 2) (EuclideanSpace ℝ (Fin n)
 theorem odd_iff_z2_equivariant {n m : ℕ} (f : EuclideanSpace ℝ (Fin (n + 1)) →
     EuclideanSpace ℝ (Fin (m + 1))) :
     (∀ x, f (-x) = -f x) ↔ IsEquivariant (G := ZMod 2) f := by
-  simp only [IsEquivariant, z2ActionEuclidean]
+  simp only [IsEquivariant]
   constructor
   · intro hodd g x
     fin_cases g
-    · simp [HSMul.hSMul, SMul.smul]
-    · simp [HSMul.hSMul, SMul.smul]
+    · rfl
+    · show f ((1 : ZMod 2) • x) = (1 : ZMod 2) • f x
+      rw [show (1 : ZMod 2) • x = -x from if_neg (by decide),
+          show (1 : ZMod 2) • f x = -f x from if_neg (by decide)]
       exact hodd x
   · intro hequiv x
-    have h1 : (1 : ZMod 2) • x = -x := by simp [HSMul.hSMul, SMul.smul, z2ActionEuclidean]
-    have h2 : (1 : ZMod 2) • f x = -f x := by simp [HSMul.hSMul, SMul.smul, z2ActionEuclidean]
+    have h1 : (1 : ZMod 2) • x = -x := if_neg (by decide)
+    have h2 : (1 : ZMod 2) • f x = -f x := if_neg (by decide)
     have := hequiv 1 x
     rw [h1, h2] at this
     exact this
@@ -187,9 +183,11 @@ theorem zp_rotation_isometry (p : ℕ) (hp : 0 < p) :
     linear_combination (x ^ 2 + y ^ 2) * Real.cos_sq_add_sin_sq θ
   -- Get coordinate values of the rotated vector
   have h0 : (zp_rotation p hp v) ⟨0, by omega⟩ = x * Real.cos θ - y * Real.sin θ := by
-    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply]
+    simp [zp_rotation, PiLp.coe_symm_continuousLinearEquiv, PiLp.toLp_apply, hx_def, hy_def,
+      hθ_def]
   have h1 : (zp_rotation p hp v) ⟨1, by omega⟩ = x * Real.sin θ + y * Real.cos θ := by
-    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, Fin.ext_iff]
+    simp [zp_rotation, PiLp.coe_symm_continuousLinearEquiv, PiLp.toLp_apply, hx_def, hy_def,
+      hθ_def]
   -- Compute norms using the component formula
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, Fin.sum_univ_two, Fin.sum_univ_two]
   simp only [Real.norm_eq_abs, sq_abs, h0, h1, hx_def.symm, hy_def.symm]
@@ -206,66 +204,49 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
   rw [Metric.mem_sphere, dist_zero_right] at hx
   -- The rotation by θ = 2π/p fixes x iff (cosθ-1)*(x₀²+x₁²) = 0 and sin θ can be resolved
   -- For prime p ≥ 2, cos(2π/p) ≠ 1, so the rotation has no fixed points on S¹
-  set x₀ := x ⟨0, by omega⟩ with hx₀
-  set x₁ := x ⟨1, by omega⟩ with hx₁
+  set x₀ := x 0 with hx₀
+  set x₁ := x 1 with hx₁
   set θ := (2 : ℝ) * Real.pi / p with hθ
   -- Coordinate values of the rotation (mirrors approach from zp_rotation_isometry)
-  have hrot0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ * Real.cos θ - x₁ * Real.sin θ := by
-    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply]
-  have hrot1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₀ * Real.sin θ + x₁ * Real.cos θ := by
-    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, Fin.ext_iff]
+  have hrot0 : (zp_rotation p hp.pos x) 0 = x₀ * Real.cos θ - x₁ * Real.sin θ := by
+    simp [zp_rotation, PiLp.coe_symm_continuousLinearEquiv, PiLp.toLp_apply, hx₀, hx₁, hθ]
+  have hrot1 : (zp_rotation p hp.pos x) 1 = x₀ * Real.sin θ + x₁ * Real.cos θ := by
+    simp [zp_rotation, PiLp.coe_symm_continuousLinearEquiv, PiLp.toLp_apply, hx₀, hx₁, hθ]
   -- From heq: rotation equals x at each coordinate
-  have heq0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ :=
-    congrArg (· ⟨0, by omega⟩) heq
-  have heq1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₁ :=
-    congrArg (· ⟨1, by omega⟩) heq
+  have heq0 : (zp_rotation p hp.pos x) 0 = x₀ :=
+    congrArg (· 0) heq
+  have heq1 : (zp_rotation p hp.pos x) 1 = x₁ :=
+    congrArg (· 1) heq
   -- cos(2π/p) ≠ 1 for prime p ≥ 2: since 2π/p ∈ (0, 2π), Real.cos_eq_one_iff gives
   -- cos(θ) = 1 iff θ = 2π*n for integer n, but 2π/p < 2π for p ≥ 2
   have hcos_ne_one : Real.cos θ ≠ 1 := by
+    rw [hθ]
     intro h
     rw [Real.cos_eq_one_iff] at h
     obtain ⟨n, hn⟩ := h
-    -- hn : (n : ℝ) * (2 * Real.pi) = θ = 2 * Real.pi / p
-    have hpi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
-    have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
-    have : (n : ℝ) * p = 1 := by
-      field_simp [ne_of_gt hpi_pos, ne_of_gt hp_pos] at hn ⊢
-      linarith [hn.symm]
-    -- n * p = 1 but p ≥ 2, contradiction
-    have hp2 : (p : ℝ) ≥ 2 := by exact_mod_cast hp.two_le
-    have habs : (n : ℝ) * p ≥ 2 ∨ (n : ℝ) * p ≤ -2 ∨ n = 0 := by
-      rcases le_or_lt 1 n with h | h
-      · left; nlinarith
-      · rcases le_or_lt n (-1) with h2 | h2
-        · right; left; nlinarith
-        · right; right; exact_mod_cast Int.le_antisymm (by exact_mod_cast le_of_lt h2) (by exact_mod_cast le_of_lt h)
-    rcases habs with h | h | h
-    · linarith
-    · linarith
-    · simp [h] at this
-  -- Now from heq0: x₀ * (cos θ - 1) = x₁ * sin θ
-  -- From heq1: x₀ * sin θ = x₁ * (1 - cos θ)
-  -- Multiplying: x₀² * sin θ * (cos θ - 1) = x₁² * sin θ * (1 - cos θ)
-  -- So (x₀² + x₁²) * sin θ * (1 - cos θ) = 0
-  -- Since ‖x‖ = 1, x₀² + x₁² = 1, so sin θ * (1 - cos θ) = 0
-  -- But 1 - cos θ ≠ 0 (since cos θ ≠ 1), so sin θ = 0
-  -- But sin²θ + cos²θ = 1 and sin θ = 0 → cos θ = ±1
-  -- cos θ ≠ 1 means cos θ = -1; but then from heq0: -2x₀ = 0 → x₀ = 0
-  -- and from heq1: x₁ * (-1-1) = 0 → x₁ = 0; but x₀²+x₁²=1, contradiction.
+    -- hn : (n : ℝ) * (2 * Real.pi) = 2 * Real.pi / p
+    have hpi_ne : (Real.pi : ℝ) ≠ 0 := Real.pi_ne_zero
+    have hp_ne : (p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hp.pos.ne'
+    have hnp : (n : ℝ) * p = 1 := by field_simp at hn; nlinarith [hn]
+    have hnp_int : n * (p : ℤ) = 1 := by exact_mod_cast hnp
+    have hdvd : (p : ℤ) ∣ 1 := ⟨n, by rw [mul_comm]; exact hnp_int.symm⟩
+    have hple : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hdvd
+    have hp2 : (2 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp.two_le
+    linarith
   -- The norm condition gives x₀² + x₁² = 1
   have hnorm : x₀ ^ 2 + x₁ ^ 2 = 1 := by
     have hsqrt := hx
     rw [EuclideanSpace.norm_eq, Fin.sum_univ_two] at hsqrt
-    simp only [Real.norm_eq_abs, sq_abs] at hsqrt
+    simp only [Real.norm_eq_abs, sq_abs, hx₀.symm, hx₁.symm] at hsqrt
     -- hsqrt : Real.sqrt (x₀^2 + x₁^2) = 1
     have hnn : (0 : ℝ) ≤ x₀ ^ 2 + x₁ ^ 2 := by positivity
-    nlinarith [Real.sq_sqrt hnn, Real.sqrt_nonneg (x₀ ^ 2 + x₁ ^ 2)]
+    nlinarith [Real.sq_sqrt hnn, Real.sqrt_nonneg (x₀ ^ 2 + x₁ ^ 2), hsqrt]
   -- From the fixed-point equations (combine rotation coords with heq):
   have heq0' : x₀ * Real.cos θ - x₁ * Real.sin θ = x₀ := hrot0.symm.trans heq0
   have heq1' : x₀ * Real.sin θ + x₁ * Real.cos θ = x₁ := hrot1.symm.trans heq1
   -- (x₀² + x₁²) * (1 - cos θ) = 0
-  have hdet : (x₀ ^ 2 + x₁ ^ 2) * (1 - Real.cos θ) = 0 := by nlinarith [heq0', heq1',
-    sq_nonneg x₀, sq_nonneg x₁]
+  have hdet : (x₀ ^ 2 + x₁ ^ 2) * (1 - Real.cos θ) = 0 := by
+    linear_combination -x₀ * heq0' - x₁ * heq1'
   rw [hnorm, one_mul] at hdet
   exact hcos_ne_one (by linarith)
 
@@ -358,20 +339,21 @@ theorem zp_rotation_maps_sphere (p : ℕ) (hp : 0 < p)
 
 /-- Z/2 action: element 0 acts as identity -/
 theorem z2_smul_zero {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
-    (0 : ZMod 2) • x = x := by
-  simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul]
+    (0 : ZMod 2) • x = x := rfl
 
 /-- Z/2 action: element 1 acts as negation (antipodal map) -/
 theorem z2_smul_one {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
-    (1 : ZMod 2) • x = -x := by
-  have h : (1 : ZMod 2) ≠ 0 := by decide
-  simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul, h]
+    (1 : ZMod 2) • x = -x := if_neg (by decide)
 
 /-- The Z/2 action is an involution: applying any element twice gives the identity -/
 theorem z2_action_involutive {n : ℕ} (k : ZMod 2) (x : EuclideanSpace ℝ (Fin n)) :
     k • (k • x) = x := by
-  fin_cases k <;>
-    simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul]
+  fin_cases k
+  · rfl
+  · show (1 : ZMod 2) • ((1 : ZMod 2) • x) = x
+    rw [show (1 : ZMod 2) • x = -x from if_neg (by decide),
+        show (1 : ZMod 2) • (-x) = -(-x) from if_neg (by decide)]
+    simp
 
 /-- Sum of two Z/2-equivariant maps is Z/2-equivariant
     (negation distributes over addition: -(a+b) = -a + -b) -/
@@ -380,10 +362,15 @@ theorem equivariant_add_z2 {n m : ℕ}
     (hf₁ : IsEquivariant (G := ZMod 2) f₁) (hf₂ : IsEquivariant (G := ZMod 2) f₂) :
     IsEquivariant (G := ZMod 2) (fun x => f₁ x + f₂ x) := by
   intro g x
+  show f₁ (g • x) + f₂ (g • x) = g • (f₁ x + f₂ x)
   rw [show f₁ (g • x) = g • f₁ x from hf₁ g x,
       show f₂ (g • x) = g • f₂ x from hf₂ g x]
   fin_cases g
-  · simp only [z2_smul_zero]
-  · simp only [z2_smul_one]; abel
+  · rfl
+  · show (1 : ZMod 2) • f₁ x + (1 : ZMod 2) • f₂ x = (1 : ZMod 2) • (f₁ x + f₂ x)
+    rw [show (1 : ZMod 2) • f₁ x = -f₁ x from if_neg (by decide),
+        show (1 : ZMod 2) • f₂ x = -f₂ x from if_neg (by decide),
+        show (1 : ZMod 2) • (f₁ x + f₂ x) = -(f₁ x + f₂ x) from if_neg (by decide)]
+    abel
 
 end BorsukUlamOQ02

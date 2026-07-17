@@ -106,8 +106,8 @@ theorem block_eq_cube (i : ℕ) :
       (∑ j ∈ range (T i), (2 * j + 1))
           + (∑ j ∈ Ico (T i) (T (i + 1)), (2 * j + 1))
         = ∑ j ∈ range (T (i + 1)), (2 * j + 1) := by
-    rw [Finset.range_eq_Ico]
-    exact Finset.sum_Ico_consecutive _ (Nat.zero_le _) (T_le_succ i)
+    simp only [Finset.range_eq_Ico]
+    exact Finset.sum_Ico_consecutive (fun j => 2 * j + 1) (Nat.zero_le _) (T_le_succ i)
   rw [sum_odds, sum_odds] at hsplit
   -- hsplit : T i ^ 2 + block = T (i+1) ^ 2
   have hb := block_sq i  -- T i ^ 2 + i ^ 3 = T (i+1) ^ 2
@@ -124,8 +124,9 @@ theorem tiling (n : ℕ) :
   induction n with
   | zero => simp
   | succ k ih =>
-    rw [Finset.sum_range_succ, ih, Finset.range_eq_Ico]
-    exact Finset.sum_Ico_consecutive _ (Nat.zero_le _) (T_le_succ k)
+    rw [Finset.sum_range_succ, ih]
+    simp only [Finset.range_eq_Ico]
+    exact Finset.sum_Ico_consecutive (fun j => 2 * j + 1) (Nat.zero_le _) (T_le_succ k)
 
 /-- **Nicomachus's theorem via the odd-number partition.**
 

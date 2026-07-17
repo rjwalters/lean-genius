@@ -30,11 +30,9 @@ References:
 Tags: combinatorics, hypergraphs, chromatic-number, intersecting-families
 -/
 
-import Mathlib.Combinatorics.SetFamily.Intersecting
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos836
 
@@ -54,7 +52,7 @@ structure Hypergraph (V : Type*) where
 All edges have exactly r vertices.
 -/
 def IsUniform (H : Hypergraph V) (r : ℕ) : Prop :=
-  ∀ e ∈ H.edges, (Set.toFinite e).toFinset.card = r
+  ∀ e ∈ H.edges, e.ncard = r
 
 /--
 **Intersecting hypergraph:**
@@ -137,10 +135,10 @@ Edges: All r-subsets of X, plus (r-1)-subsets of X with their partition element
 
 This gives ~4^r/√r vertices.
 -/
-def AlonVertexCount (r : ℕ) : ℝ :=
+noncomputable def AlonVertexCount (r : ℕ) : ℝ :=
   4^r / Real.sqrt r
 
-/--
+/- 
 **Alon's hypergraph properties:**
 - r-uniform
 - Intersecting
@@ -150,7 +148,7 @@ def AlonVertexCount (r : ℕ) : ℝ :=
 Axiomatized because verifying these properties requires detailed
 combinatorial analysis of the partition-based construction.
 -/
-/--
+/- 
 **Exponential growth:**
 The counterexample shows vertices can grow as 4^r/√r, not O(r²).
 Axiomatized: the inequality 4^r/√r > r² for large r follows from
@@ -178,7 +176,7 @@ Two edges must meet in ≫ r/log r vertices.
 Axiomatized because the probabilistic argument from Erdős-Lovász (1975)
 is beyond current Mathlib capabilities.
 -/
-def ErdosLovaszBound (r : ℕ) : ℝ :=
+noncomputable def ErdosLovaszBound (r : ℕ) : ℝ :=
   r / Real.log r
 
 axiom erdos_lovasz_bound (r : ℕ) (hr : r ≥ 2) :

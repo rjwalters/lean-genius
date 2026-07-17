@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Data.Nat.Totient
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.ZMod.Quotient
 import Mathlib.RingTheory.Int.Basic
 import Mathlib.Tactic
 
@@ -72,7 +72,8 @@ theorem totient_one : Nat.totient 1 = 1 :=
 theorem totient_mul_three {a b c : ℕ}
     (hab : Nat.Coprime a b) (hac : Nat.Coprime a c) (hbc : Nat.Coprime b c) :
     Nat.totient (a * b * c) = Nat.totient a * Nat.totient b * Nat.totient c := by
-  rw [totient_mul_coprime (hab.mul_right hbc), totient_mul_coprime hab, mul_assoc]
+  rw [mul_assoc, totient_mul_coprime (hab.mul_right hac), totient_mul_coprime hbc,
+    ← mul_assoc]
 
 -- ============================================================================
 -- Part III: Prime Power Formula
@@ -102,7 +103,8 @@ theorem totient_prime_sq {p : ℕ} (hp : Nat.Prime p) :
     This is a useful special case of multiplicativity. -/
 theorem totient_two_mul_odd {m : ℕ} (hm : Nat.Coprime 2 m) :
     Nat.totient (2 * m) = Nat.totient m := by
-  rw [totient_mul_coprime hm, Nat.totient_prime Nat.prime_two, one_mul]
+  rw [totient_mul_coprime hm, Nat.totient_prime Nat.prime_two]
+  norm_num
 
 -- ============================================================================
 -- Part V: Computing φ via Factored Forms

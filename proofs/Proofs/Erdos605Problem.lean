@@ -25,13 +25,13 @@ References:
 - Swanepoel, Valtr (2004): "The unit distance problem on spheres"
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Order.Filter.AtTopBot
 
 open Real Finset
 
@@ -71,7 +71,7 @@ The key quantity is the maximum number of pairs at any single distance.
 -/
 
 /-- The set of pairs at distance d in a configuration. -/
-def distancePairs {n : ℕ} {r : ℝ} (config : SphereConfig n r) (d : ℝ) : Finset (Fin n × Fin n) :=
+noncomputable def distancePairs {n : ℕ} {r : ℝ} (config : SphereConfig n r) (d : ℝ) : Finset (Fin n × Fin n) :=
   Finset.univ.filter fun p => p.1 < p.2 ∧ euclidDist (config.points p.1) (config.points p.2) = d
 
 /-- The number of pairs at distance d. -/
@@ -127,6 +127,14 @@ noncomputable def iterLog : ℕ → ℕ
   | 1 => 0
   | n + 2 => if Real.log (n + 2 : ℝ) ≤ 1 then 1
              else 1 + iterLog (Nat.floor (Real.log (n + 2 : ℝ)))
+  decreasing_by
+    have hpos : (0 : ℝ) ≤ Real.log (n + 2 : ℝ) :=
+      Real.log_nonneg (by have := Nat.cast_nonneg (α := ℝ) n; push_cast; linarith)
+    have hlt : Real.log (n + 2 : ℝ) < ((n + 2 : ℕ) : ℝ) := by
+      push_cast
+      have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < (n : ℝ) + 2 by positivity)
+      linarith
+    exact (Nat.floor_lt hpos).mpr hlt
 
 /-
 ## Part VI: Known Bounds
@@ -134,7 +142,7 @@ noncomputable def iterLog : ℕ → ℕ
 The key results on u_D(n) for spheres of radius D > 1.
 -/
 
-/--
+/- 
 **Erdős-Hickerson-Pach Bound (1989):**
 For any sphere of radius D > 1, u_D(n) ≫ n · log*(n).
 
@@ -143,7 +151,7 @@ The proof uses a recursive construction based on the Borsuk-Ulam theorem
 and properties of spherical configurations.
 -/
 
-/--
+/- 
 **Swanepoel-Valtr Bound (2004):**
 For any sphere of radius D > 1, u_D(n) ≫ n · √(log n).
 
@@ -151,7 +159,7 @@ This significantly improves the EHP bound. The proof uses algebraic
 constructions on the sphere combined with refined counting arguments.
 -/
 
-/--
+/- 
 **Upper Bound:**
 For any sphere of radius D > 0, u_D(n) ≪ n^{4/3}.
 
@@ -159,7 +167,7 @@ This follows from the Szemerédi-Trotter type incidence bounds
 for points and circles in ℝ³.
 -/
 
-/--
+/- 
 **√2 Sphere Tight Bound:**
 For D = √2, u(n) ≍ n^{4/3}.
 
@@ -192,7 +200,7 @@ axiom erdos_605_superlinear (D : ℝ) (hD : D > 1) : superlinearGrowth D
 theorem erdos_605 (D : ℝ) (hD : D > 1) : superlinearGrowth D :=
   erdos_605_superlinear D hD
 
-/--
+/- 
 The affirmative answer: there exists f(n) → ∞ with u_D(n) ≥ f(n) · n.
 
 We can take f(n) = √(log n).

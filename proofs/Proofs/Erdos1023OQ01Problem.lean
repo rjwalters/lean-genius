@@ -15,11 +15,7 @@ Key results:
 Reference: https://erdosproblems.com/1023
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Nat.Choose.Central
+import Mathlib
 
 open Finset
 

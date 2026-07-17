@@ -59,7 +59,7 @@ theorem ncard_sum_eq {α ι : Type*}
   have hmem : ∀ i ∈ hI.toFinset, (S i).ncard = k :=
     fun i hi => hk i (hI.mem_toFinset.mp hi)
   rw [Finset.sum_congr rfl hmem, Finset.sum_const, smul_eq_mul,
-      mul_comm, hI.toFinset_card]
+      mul_comm, Set.ncard_eq_toFinset_card I hI]
 
 /-
 TARGET 2 (Mathlib API: Set.ncard_biUnion + uniform sum)
@@ -78,8 +78,12 @@ theorem ncard_biUnion_eq_of_uniform {α ι : Type*}
     (hdisj : ∀ i ∈ I, ∀ j ∈ I, i ≠ j → Disjoint (S i) (S j))
     (k : ℕ) (hk : ∀ i ∈ I, (S i).ncard = k) :
     (⋃ i ∈ I, S i).ncard = k * I.ncard := by
-  rw [Set.ncard_biUnion hI hdisj (fun i hi => hfin i hi)]
-  exact ncard_sum_eq S I hI k hk
+  rw [Set.Finite.ncard_biUnion hI (fun i hi => hfin i hi) hdisj, ← hI.coe_toFinset,
+      finsum_mem_coe_finset]
+  have hmem : ∀ i ∈ hI.toFinset, (S i).ncard = k :=
+    fun i hi => hk i (hI.mem_toFinset.mp hi)
+  rw [Finset.sum_congr rfl hmem, Finset.sum_const, smul_eq_mul, mul_comm,
+      Set.ncard_coe_finset]
 
 /-
 TARGET 3 (ENNReal assembly: uniformOn = condCount = ncard ratio)

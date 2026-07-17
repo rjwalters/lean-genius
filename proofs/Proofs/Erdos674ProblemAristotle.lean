@@ -3,10 +3,10 @@
   Routine supporting lemmas for automated proof search.
   See Erdos674Problem.lean for the main formalization.
 -/
+import Mathlib
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Tactic
 
 namespace Erdos674.Aristotle
@@ -84,7 +84,9 @@ theorem mul_pow_self (a b : ℕ) : (a * b) ^ (a * b) = a ^ (a * b) * b ^ (a * b)
 theorem pos_of_sq_eq (a b c : ℕ) (hc : c > 0) (h : 4 * a * b = c ^ 2) : a * b > 0 := by
   by_contra hab
   push_neg at hab
-  interval_cases (a * b)
-  simp at h; omega
+  have hc2 : c ^ 2 > 0 := pow_pos hc 2
+  have hab0 : a * b = 0 := Nat.le_zero.mp hab
+  rw [mul_assoc, hab0, mul_zero] at h
+  omega
 
 end Erdos674.Aristotle

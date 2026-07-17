@@ -58,7 +58,7 @@ For any elements x, y in a commutative semiring and natural number n:
 
 This is one of the most fundamental results in algebra and combinatorics. -/
 theorem binomial_theorem {R : Type*} [CommSemiring R] (x y : R) (n : ℕ) :
-    (x + y) ^ n = ∑ k in range (n + 1), Nat.choose n k * x ^ k * y ^ (n - k) := by
+    (x + y) ^ n = ∑ k ∈ range (n + 1), Nat.choose n k * x ^ k * y ^ (n - k) := by
   rw [add_pow]
   congr 1
   ext k
@@ -76,7 +76,7 @@ The sum of binomial coefficients C(n,0) + C(n,1) + ... + C(n,n) = 2^n.
 
 Proof: Set x = y = 1 in the binomial theorem, giving (1+1)^n = 2^n. -/
 theorem sum_binomial_coefficients (n : ℕ) :
-    ∑ k in range (n + 1), Nat.choose n k = 2 ^ n :=
+    ∑ k ∈ range (n + 1), Nat.choose n k = 2 ^ n :=
   Nat.sum_range_choose n
 
 /-! ### Alternating Sum of Binomial Coefficients
@@ -89,8 +89,8 @@ For n ≥ 1: C(n,0) - C(n,1) + C(n,2) - ... = 0.
 
 Proof: Set x = 1, y = -1 in the binomial theorem, giving (1-1)^n = 0. -/
 theorem alternating_sum_binomial (n : ℕ) (hn : 0 < n) :
-    ∑ k in range (n + 1), (-1 : ℤ) ^ k * Nat.choose n k = 0 := by
-  have h : ∑ m in range (n + 1), (-1 : ℤ) ^ m * ↑(Nat.choose n m) = if n = 0 then 1 else 0 :=
+    ∑ k ∈ range (n + 1), (-1 : ℤ) ^ k * Nat.choose n k = 0 := by
+  have h : ∑ m ∈ range (n + 1), (-1 : ℤ) ^ m * ↑(Nat.choose n m) = if n = 0 then 1 else 0 :=
     Int.alternating_sum_range_choose
   simp only [Nat.pos_iff_ne_zero.mp hn, ↓reduceIte] at h
   exact h

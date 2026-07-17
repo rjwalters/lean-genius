@@ -36,19 +36,7 @@ namespace RothTheoremOQ03OQ01
 
 variable {N : ℕ} [NeZero N]
 
-/-- **The factorization engine.** Replacing slot `j` of the tuple by `v` pulls the
-`j`-th factor `v(x + j·d)` clean out of the `k`-AP product, leaving the product of the
-untouched factors over the remaining indices. -/
-theorem prod_update_factor (k : ℕ) (f : Fin k → ZMod N → ℂ) (j : Fin k)
-    (v : ZMod N → ℂ) (x d : ZMod N) :
-    (∏ i : Fin k, Function.update f j v i (x + i.val • d))
-      = v (x + j.val • d) * ∏ i ∈ univ.erase j, f i (x + i.val • d) := by
-  rw [← Finset.mul_prod_erase univ
-        (fun i => Function.update f j v i (x + i.val • d)) (mem_univ j)]
-  congr 1
-  · rw [Function.update_self]
-  · refine Finset.prod_congr rfl (fun i hi => ?_)
-    rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]
+-- `prod_update_factor` is provided by the imported parent `RothTheoremOQ03OQ01`.
 
 /-- **Additivity in a slot.** `Λ_k` is additive in its `j`-th argument:
 `Λ_k(…, a + b, …) = Λ_k(…, a, …) + Λ_k(…, b, …)`. -/

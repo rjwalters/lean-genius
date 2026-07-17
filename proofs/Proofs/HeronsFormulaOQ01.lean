@@ -127,7 +127,7 @@ theorem brahmaguptaProduct_square (a : ℝ) :
 
 theorem square_area (a : ℝ) (ha : 0 ≤ a) :
     sqrt (brahmaguptaProduct a a a a) = a ^ 2 := by
-  rw [brahmaguptaProduct_square, ← sq_abs, ← pow_mul]
+  rw [brahmaguptaProduct_square, show a ^ 4 = (a ^ 2) ^ 2 from by ring]
   rw [sqrt_sq (pow_nonneg ha 2)]
 
 -- ════════════════════════════════════════════════════════════════
@@ -176,7 +176,7 @@ theorem isoperimetric_quadrilateral {a b c d : ℝ}
     _ ≤ ((sa + sb) / 2) ^ 2 * ((sc + sd) / 2) ^ 2 := hprod
     _ = (((sa + sb) / 2) * ((sc + sd) / 2)) ^ 2 := by ring
     _ ≤ (((sa + sb + sc + sd) / 4) ^ 2) ^ 2 :=
-        pow_le_pow_left (by positivity) hpair 2
+        pow_le_pow_left₀ (by positivity) hpair 2
     _ = ((sa + sb + sc + sd) / 4) ^ 4 := by ring
     _ = ((a + b + c + d) / 4) ^ 4 := by rw [hfinal]
 

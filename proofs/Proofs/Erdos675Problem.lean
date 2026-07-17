@@ -22,6 +22,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## The Translation Property -/
 
 /-- A set A ⊆ ℕ has the translation property if for every n,
@@ -32,8 +34,7 @@ def HasTranslationProperty (A : Set ℕ) : Prop :=
 
 /-- The minimal translation for a given n -/
 noncomputable def minTranslation (A : Set ℕ) (n : ℕ) : ℕ :=
-  Nat.find (⟨1, by omega, fun a _ _ => Iff.rfl⟩ : ∃ t : ℕ, 1 ≤ t ∧
-    ∀ a : ℕ, 1 ≤ a → a ≤ n → (a ∈ A ↔ a + t ∈ A))
+  sInf {t : ℕ | 1 ≤ t ∧ ∀ a : ℕ, 1 ≤ a → a ≤ n → (a ∈ A ↔ a + t ∈ A)}
 
 /- ## Number-Theoretic Sets -/
 
@@ -78,7 +79,7 @@ theorem primeSquares_pairwise_coprime : IsPairwiseCoprime primeSquares := by
   have hpq : p ≠ q := fun h => hne (by rw [h])
   have hcop : Nat.Coprime p q := hp.coprime_iff_not_dvd.mpr
     fun h => hpq ((hq.eq_one_or_self_of_dvd p h).resolve_left hp.one_lt.ne')
-  exact hcop.pow_pow
+  exact Nat.Coprime.pow _ _ hcop
 
 /-- HasSmallReciprocalSum is trivially satisfied (placeholder definition) -/
 theorem primeSquares_small_reciprocal : HasSmallReciprocalSum primeSquares := by

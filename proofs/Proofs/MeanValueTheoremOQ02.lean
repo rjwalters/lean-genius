@@ -115,9 +115,10 @@ theorem taylor_lagrange_remainder
     rw [iteratedDerivWithin_eq_iteratedDeriv hu hcda hmem, smul_eq_mul]
     ring
   obtain ⟨c, hc, heq⟩ :=
-    taylor_mean_remainder_lagrange_iteratedDeriv hab hf.contDiffOn
+    taylor_mean_remainder_lagrange_iteratedDeriv hab.ne hf.contDiffOn
+  rw [Set.uIoo_of_lt hab] at hc
+  rw [Set.uIcc_of_le hab.le, hpoly] at heq
   refine ⟨c, hc, ?_⟩
-  rw [hpoly] at heq
   rw [heq]; ring
 
 /-!
@@ -167,7 +168,7 @@ theorem taylor_second_order
     ∃ c ∈ Set.Ioo a b,
       f b = f a + deriv f a * (b - a) +
         iteratedDeriv 2 f c / 2 * (b - a) ^ 2 := by
-  have hf2 : ContDiff ℝ (↑(1 + 1)) f := by simpa using hf
+  have hf2 : ContDiff ℝ ((1 : ℕ) + 1) f := by exact_mod_cast hf
   obtain ⟨c, hc, heq⟩ := taylor_lagrange_remainder f a b hab 1 hf2
   use c, hc
   rw [taylorPolynomial_one] at heq

@@ -57,7 +57,7 @@ theorem gaussian_pow_eq_integral_pi (n : ℕ) :
       Fintype.card_fin]
   rw [← key]
   refine integral_congr_ae (Filter.Eventually.of_forall (fun x => ?_))
-  rw [← Real.exp_sum, Finset.mul_sum]
+  simp only [Finset.mul_sum, Real.exp_sum]
 
 /-- **Closed form via Mathlib's `integral_gaussian`.** `∫_{ℝⁿ} e^{-b ∑ᵢ xᵢ²} = (√(π/b))ⁿ`,
 for every real `b`. -/

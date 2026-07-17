@@ -23,6 +23,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.Polynomial.Basic
+open scoped Classical
 
 namespace Erdos993
 
@@ -37,13 +38,13 @@ def IsIndependentSet (S : Finset V) : Prop :=
   ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v
 
 /-- The number of independent sets of size k in G. -/
-def indepCount (k : ℕ) : ℕ :=
+noncomputable def indepCount (k : ℕ) : ℕ :=
   (Finset.univ.powerset.filter (fun S => S.card = k ∧ IsIndependentSet G S)).card
 
 /-- The independence polynomial: I(G, x) = Σ_k i_k(G) · x^k. -/
 noncomputable def independencePolynomial : Polynomial ℤ :=
   ∑ k ∈ Finset.range (Fintype.card V + 1),
-    (indepCount G k : ℤ) * Polynomial.X ^ k
+    Polynomial.C (indepCount G k : ℤ) * Polynomial.X ^ k
 
 /- ## Unimodality -/
 
@@ -53,7 +54,7 @@ def IsUnimodal (f : ℕ → ℕ) (n : ℕ) : Prop :=
            (∀ i, m ≤ i → i ≤ n → ∀ j, i ≤ j → j ≤ n → f j ≤ f i)
 
 /-- The independent set sequence of G. -/
-def indepSequence : ℕ → ℕ := indepCount G
+noncomputable def indepSequence : ℕ → ℕ := indepCount G
 
 /-- A graph has unimodal independent set sequence. -/
 def HasUnimodalIndepSequence : Prop :=
@@ -76,7 +77,7 @@ def IsForest : Prop :=
 /-- Every tree is a forest. -/
 theorem tree_is_forest (hT : IsTree G) : IsForest G := hT.2
 
-/-- A tree on n vertices has n-1 edges. -/
+/-  A tree on n vertices has n-1 edges. -/
 /- ## The Main Theorem -/
 
 /-- Erdős Problem #993: Trees have unimodal independent set sequences.
@@ -117,14 +118,14 @@ def IsMatching (M : Finset (Sym2 V)) : Prop :=
     ∀ v : V, ¬(v ∈ e₁ ∧ v ∈ e₂)
 
 /-- The number of matchings of size k. -/
-def matchingCount (k : ℕ) : ℕ :=
-  (G.edgeFinset.powerset.filter (fun M => M.card = k ∧ IsMatching G M)).card
+noncomputable def matchingCount (k : ℕ) : ℕ :=
+  (G.edgeFinset.powerset.filter (fun M => M.card = k ∧ IsMatching M)).card
 
-/-- Schwenk (1981): The matching sequence is unimodal for ANY graph.
+/-  Schwenk (1981): The matching sequence is unimodal for ANY graph.
 This contrasts with independent sets, which are only unimodal for trees. -/
 /- ## Proof Technique: Real-Rootedness -/
 
-/-- The independence polynomial of a tree has all real roots.
+/-  The independence polynomial of a tree has all real roots.
 This is the key algebraic fact used in the proof: real-rooted polynomials
 with non-negative coefficients have unimodal coefficient sequences. -/
 /- ## Log-Concavity -/
@@ -134,16 +135,16 @@ strictly stronger than unimodality for positive sequences. -/
 def IsLogConcave (f : ℕ → ℕ) (n : ℕ) : Prop :=
   ∀ k, 1 ≤ k → k < n → (f k)^2 ≥ f (k - 1) * f (k + 1)
 
-/-- Log-concavity implies unimodality for positive sequences. -/
-/-- Conjecture: The independent set sequence of a tree is log-concave. -/
+/-  Log-concavity implies unimodality for positive sequences. -/
+/-  Conjecture: The independent set sequence of a tree is log-concave. -/
 /- ## Independence Number -/
 
 /-- The independence number α(G): maximum size of an independent set. -/
 noncomputable def independenceNumber : ℕ :=
   Finset.sup (Finset.univ.powerset.filter (IsIndependentSet G)) Finset.card
 
-/-- For k > α(G), there are no independent sets of size k. -/
-/-- The peak of the unimodal sequence is at most α(G). -/
+/-  For k > α(G), there are no independent sets of size k. -/
+/-  The peak of the unimodal sequence is at most α(G). -/
 /- ## Summary -/
 
 /-- **Erdős Problem #993 Summary.**

@@ -25,11 +25,7 @@ Context:
 Tags: set-theory, ramsey-theory
 -/
 
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.Tactic
+import Mathlib
 
 open Cardinal Ordinal
 
@@ -47,7 +43,6 @@ noncomputable def aleph_omega_succ : Cardinal := Cardinal.aleph (Ordinal.omega0 
     This follows from aleph being order-preserving and ω+1 = succ ω. -/
 theorem aleph_omega_succ_eq : aleph_omega_succ = Cardinal.aleph (Order.succ Ordinal.omega0) := by
   unfold aleph_omega_succ
-  congr 1
   rw [Order.succ_eq_add_one]
 
 /-- ℵ_{ω+1} is a successor aleph, hence regular. -/
@@ -58,18 +53,18 @@ theorem aleph_omega_succ_regular : aleph_omega_succ.IsRegular := by
 /-- ℵ_ω is singular: cf(ℵ_ω) = ℵ₀. -/
 theorem aleph_omega_cof : (aleph_omega.ord.cof : Cardinal) = ℵ₀ := by
   unfold aleph_omega
-  rw [Cardinal.cof_aleph]
-  exact Ordinal.card_omega0
+  rw [Cardinal.ord_aleph, Ordinal.cof_omega Ordinal.isSuccLimit_omega0]
+  exact Ordinal.cof_omega0
 
 /-- ℵ_ω < ℵ_{ω+1}: the strict ordering. -/
 theorem aleph_omega_lt_succ : aleph_omega < aleph_omega_succ :=
-  Cardinal.aleph_lt_aleph.mpr (Ordinal.lt_add_of_pos_right _ Ordinal.one_pos)
+  Cardinal.aleph_lt_aleph.mpr (lt_add_of_pos_right _ zero_lt_one)
 
 /-- ℵ₀ < ℵ_ω: omega is strictly less than aleph_omega. -/
 theorem aleph0_lt_aleph_omega : ℵ₀ < aleph_omega := by
   unfold aleph_omega
-  rw [Cardinal.aleph_zero]
-  exact Cardinal.aleph_lt_aleph.mpr (Ordinal.pos_iff_ne_zero.mpr omega_ne_zero)
+  rw [← Cardinal.aleph_zero]
+  exact Cardinal.aleph_lt_aleph.mpr Ordinal.omega0_pos
 
 /-- ℵ_n < ℵ_ω for all n : ℕ. -/
 theorem aleph_n_lt_aleph_omega (n : ℕ) : Cardinal.aleph n < aleph_omega :=
@@ -113,7 +108,7 @@ noncomputable def targets : ℕ → Cardinal
     and each other color has no monochromatic triangle.
 
     The challenge is to prove this in ZFC without assuming GCH. -/
-def erdos_1168_conjecture : Prop := ¬ partitionRelation aleph_omega_succ targets
+def erdos_1168_conjecture : Prop := ¬ partitionRelation.{0} aleph_omega_succ targets
 
 /- ## Part IV: GCH Stepping-Up Framework
 
@@ -180,8 +175,8 @@ theorem stepping_up (hbase : ∀ n : ℕ,
     Replaces the previous opaque axiom with a structured decomposition. -/
 theorem erdos_1168_under_gch
     (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) :
-    ¬ partitionRelation aleph_omega_succ targets :=
-  stepping_up (fun n => base_case_under_gch n hgch)
+    ¬ partitionRelation.{0} aleph_omega_succ targets :=
+  stepping_up.{0, 0} (fun n => base_case_under_gch.{0} n hgch)
 
 /-- Under GCH, the open conjecture holds. -/
 theorem gch_implies_conjecture (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) :
@@ -193,7 +188,7 @@ theorem gch_implies_conjecture (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.suc
 /-- The empty set is vacuously homogeneous for any color. -/
 theorem empty_homogeneous {V : Type*} (f : V → V → ℕ) (i : ℕ) :
     IsHomogeneous f ∅ i :=
-  fun a ha => absurd ha (Set.not_mem_empty a)
+  fun a ha => absurd ha (Set.notMem_empty a)
 
 /-- A singleton is homogeneous for any color. -/
 theorem singleton_homogeneous {V : Type*} (f : V → V → ℕ) (v : V) (i : ℕ) :

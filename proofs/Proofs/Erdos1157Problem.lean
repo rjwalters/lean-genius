@@ -22,11 +22,7 @@ References:
 - [Va99] Verstraëte, "Turán-type problems" (1999)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib
 
 namespace Erdos1157
 
@@ -49,11 +45,23 @@ def achievableEdgeCounts (r n k s : ℕ) : Set ℕ :=
   {m : ℕ | ∃ E : Finset (Finset (Fin n)), IsValidHypergraph r n k s E ∧ E.card = m}
 
 /-- The achievable set is always nonempty (the empty hypergraph is valid). -/
-private theorem achievable_nonempty (r n k s : ℕ) :
-    (achievableEdgeCounts r n k s).Nonempty :=
-  ⟨0, ∅, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
-    fun F hF hFs => absurd (Finset.card_eq_zero.mpr (Finset.subset_empty.mp hF) ▸ hFs)
-      (by omega)⟩, rfl⟩
+private theorem achievableEdgeCounts_eq_empty_of_s_zero (r n k : ℕ) :
+    achievableEdgeCounts r n k 0 = ∅ := by
+  ext m
+  simp only [achievableEdgeCounts, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  rintro ⟨E, ⟨-, hspan⟩, -⟩
+  have h := hspan ∅ (Finset.empty_subset E) (by omega)
+  simp only [Finset.biUnion_empty, Finset.card_empty] at h
+  omega
+
+/-- Statement repair (#38611): the original claim (for all s) is FALSE at s = 0 —
+    with s = 0 the empty edge-family F = ∅ has F.card ≥ 0, forcing 0 > k, so NO
+    hypergraph is valid and the achievable set is empty. Added `1 ≤ s`. -/
+private theorem achievable_nonempty (r n k s : ℕ) (hs : 1 ≤ s) :
+    (achievableEdgeCounts r n k s).Nonempty := by
+  refine ⟨0, ∅, ⟨fun _ h => absurd h (Finset.notMem_empty _), fun F hF hFs => ?_⟩, rfl⟩
+  have hF0 : F.card = 0 := Finset.card_eq_zero.mpr (Finset.subset_empty.mp hF)
+  omega
 
 /-- The achievable set is bounded above (by the number of all possible edges). -/
 private theorem achievable_bddAbove (r n k s : ℕ) :
@@ -74,10 +82,13 @@ noncomputable def extremalNumber (r n k s : ℕ) : ℕ :=
     set for k₂ ⊆ valid set for k₁. -/
 theorem extremalNumber_mono_k (r n s k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
     extremalNumber r n k₂ s ≤ extremalNumber r n k₁ s := by
-  unfold extremalNumber
-  apply csSup_le_csSup (achievable_bddAbove r n k₁ s) (achievable_nonempty r n k₂ s)
-  intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
-  exact ⟨E, ⟨hunif, fun F hF hFs => lt_of_le_of_lt h (hspan F hF hFs)⟩, hcard⟩
+  rcases Nat.eq_zero_or_pos s with rfl | hs
+  · unfold extremalNumber
+    rw [achievableEdgeCounts_eq_empty_of_s_zero, achievableEdgeCounts_eq_empty_of_s_zero]
+  · unfold extremalNumber
+    apply csSup_le_csSup (achievable_bddAbove r n k₁ s) (achievable_nonempty r n k₂ s hs)
+    intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
+    exact ⟨E, ⟨hunif, fun F hF hFs => lt_of_le_of_lt h (hspan F hF hFs)⟩, hcard⟩
 
 /-- Monotonicity in s: requiring more forbidden edges (s₂ ≥ s₁) makes it harder
     to find violations, so the extremal number increases.
@@ -85,10 +96,14 @@ theorem extremalNumber_mono_k (r n s k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
     also satisfy this (since F.card ≥ s₂ ≥ s₁ triggers the s₁ condition). -/
 theorem extremalNumber_mono_s (r n k s₁ s₂ : ℕ) (h : s₁ ≤ s₂) :
     extremalNumber r n k s₁ ≤ extremalNumber r n k s₂ := by
-  unfold extremalNumber
-  apply csSup_le_csSup (achievable_bddAbove r n k s₂) (achievable_nonempty r n k s₁)
-  intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
-  exact ⟨E, ⟨hunif, fun F hF hFs => hspan F hF (le_trans h hFs)⟩, hcard⟩
+  rcases Nat.eq_zero_or_pos s₁ with rfl | hs1
+  · unfold extremalNumber
+    rw [achievableEdgeCounts_eq_empty_of_s_zero, csSup_empty]
+    exact bot_le
+  · unfold extremalNumber
+    apply csSup_le_csSup (achievable_bddAbove r n k s₂) (achievable_nonempty r n k s₁ hs1)
+    intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
+    exact ⟨E, ⟨hunif, fun F hF hFs => hspan F hF (le_trans h hFs)⟩, hcard⟩
 
 /-
 ## Part II: The Brown-Erdős-Sós Lower Bound (1973)
@@ -162,6 +177,11 @@ theorem erdos1076_beyond_bes (s : ℕ) (hs : s ≥ 3) :
 ## Part V: Known Partial Results
 -/
 
+/-- **Delcourt-Postle (2024):** The full 3-uniform BES conjecture.
+    For all s ≥ 3 and k ≥ s + 3: f^(3)(n; k, s) = o(n²). -/
+axiom delcourt_postle_theorem (s k : ℕ) (hs : s ≥ 3) (hk : k ≥ s + 3) :
+  IsLittleO (fun n => (extremalNumber 3 n k s : ℝ)) (fun n => (n : ℝ) ^ 2)
+
 /-- The BES conjecture for the (6,3)-case (Problem #716).
     Originally proved by Ruzsa-Szemerédi (1978) via the Triangle Removal Lemma.
     Now follows from the full 3-uniform result of Delcourt-Postle (2024). -/
@@ -175,10 +195,7 @@ theorem glock_bes_k4 :
     IsLittleO (fun n => (extremalNumber 3 n 7 4 : ℝ)) (fun n => (n : ℝ) ^ 2) :=
   delcourt_postle_theorem 4 7 (by omega) (by omega)
 
-/-- **Delcourt-Postle (2024):** The full 3-uniform BES conjecture.
-    For all s ≥ 3 and k ≥ s + 3: f^(3)(n; k, s) = o(n²). -/
-axiom delcourt_postle_theorem (s k : ℕ) (hs : s ≥ 3) (hk : k ≥ s + 3) :
-  IsLittleO (fun n => (extremalNumber 3 n k s : ℝ)) (fun n => (n : ℝ) ^ 2)
+-- (delcourt_postle_theorem moved above its first use — forward refs now error.)
 
 /-
 ## Part VI: Structural Properties of the BES Exponent
@@ -216,17 +233,23 @@ theorem besExponent_7_4 : besExponent 3 7 4 = 5 / 3 := by
 theorem besExponent_lt_two_at_bes_threshold (r s : ℕ) (hr : r ≥ 3) (hs : s ≥ 3) :
     besExponent r ((r - 2) * s + 3) s < 2 := by
   unfold besExponent
-  rw [div_lt_iff]
+  rw [div_lt_iff₀]
   · push_cast
     have hr' : (3 : ℝ) ≤ (r : ℝ) := Nat.ofNat_le_cast.mpr hr
     have hs' : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
-    nlinarith [Nat.cast_sub (show 2 ≤ r by omega)]
+    have hsub : ((r - 2 : ℕ) : ℝ) = (r : ℝ) - 2 := by
+      have h2 := Nat.cast_sub (R := ℝ) (show 2 ≤ r by omega)
+      push_cast at h2
+      exact h2
+    rw [hsub]
+    nlinarith
   · have : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
     linarith
 
 /-- The zero function is little-o of any eventually positive function. -/
 theorem isLittleO_zero (g : ℕ → ℝ) : IsLittleO (fun _ => (0 : ℝ)) g := by
-  intro ε _; exact ⟨0, fun n _ => by simp⟩
+  intro ε hε
+  exact ⟨0, fun n _ => by simpa using mul_nonneg (le_of_lt hε) (abs_nonneg (g n))⟩
 
 /-- If f ≤ g pointwise eventually and g = o(h), then f = o(h). -/
 theorem isLittleO_of_eventually_le {f g h : ℕ → ℝ}
@@ -239,12 +262,13 @@ theorem isLittleO_of_eventually_le {f g h : ℕ → ℝ}
     have := hN₁ n (le_of_max_le_left hn)
     exact le_trans this (hN₂ n (le_of_max_le_right hn))⟩
 
-/-- BES conjecture is monotone in s: if it holds for s₁ edges,
-    it holds for s₂ ≥ s₁ edges (fewer forbidden configurations). -/
+/-- BES conjecture transfers DOWNWARD in s (statement repair #38611: the
+    original upward claim was false — extremalNumber is increasing in s, so
+    o(n²) for s₂ implies it for s₁ ≤ s₂, not conversely). -/
 theorem bes_monotone_in_s {k s₁ s₂ : ℕ} (hs : s₁ ≤ s₂)
-    (h : IsLittleO (fun n => (extremalNumber 3 n k s₁ : ℝ)) (fun n => (n : ℝ) ^ 2)) :
-    IsLittleO (fun n => (extremalNumber 3 n k s₂ : ℝ)) (fun n => (n : ℝ) ^ 2) := by
-  apply isLittleO_of_eventually_le
+    (h : IsLittleO (fun n => (extremalNumber 3 n k s₂ : ℝ)) (fun n => (n : ℝ) ^ 2)) :
+    IsLittleO (fun n => (extremalNumber 3 n k s₁ : ℝ)) (fun n => (n : ℝ) ^ 2) := by
+  apply isLittleO_of_eventually_le (g := fun n => (extremalNumber 3 n k s₂ : ℝ))
   · exact ⟨0, fun n _ => by
       rw [abs_of_nonneg (Nat.cast_nonneg _), abs_of_nonneg (Nat.cast_nonneg _)]
       exact Nat.cast_le.mpr (extremalNumber_mono_s 3 n k s₁ s₂ hs)⟩
@@ -299,14 +323,13 @@ theorem bes_monotone_in_k_general (t : ℕ) {s k₁ k₂ : ℕ} (hk : k₁ ≤ k
   rw [abs_of_nonneg h2]
   exact le_trans (le_trans h1 (le_abs_self _)) (hN n hn)
 
-/-- General monotonicity in s: if f^(t)(n; k, s₁) = o(n^t) and s₁ ≤ s₂,
-    then f^(t)(n; k, s₂) = o(n^t). Requiring more forbidden edges makes
-    violations harder to find, so the extremal number can only increase,
-    but the o(n^t) bound transfers via comparison. -/
+/-- General downward transfer in s (statement repair #38611: extremalNumber is
+    increasing in s — the valid-hypergraph family grows with s — so the o(n^t)
+    bound transfers from s₂ down to s₁ ≤ s₂). -/
 theorem bes_monotone_in_s_general (t : ℕ) {k s₁ s₂ : ℕ} (hs : s₁ ≤ s₂)
-    (h : IsLittleO (fun n => (extremalNumber t n k s₁ : ℝ)) (fun n => (n : ℝ) ^ t)) :
-    IsLittleO (fun n => (extremalNumber t n k s₂ : ℝ)) (fun n => (n : ℝ) ^ t) := by
-  apply isLittleO_of_eventually_le
+    (h : IsLittleO (fun n => (extremalNumber t n k s₂ : ℝ)) (fun n => (n : ℝ) ^ t)) :
+    IsLittleO (fun n => (extremalNumber t n k s₁ : ℝ)) (fun n => (n : ℝ) ^ t) := by
+  apply isLittleO_of_eventually_le (g := fun n => (extremalNumber t n k s₂ : ℝ))
   · exact ⟨0, fun n _ => by
       rw [abs_of_nonneg (Nat.cast_nonneg _), abs_of_nonneg (Nat.cast_nonneg _)]
       exact Nat.cast_le.mpr (extremalNumber_mono_s t n k s₁ s₂ hs)⟩

@@ -36,10 +36,10 @@ Related: Erdős Problem #907 (on additive functions)
 Tags: analysis, measure-theory, additive-functions, functional-equations
 -/
 
+import Mathlib
 import Mathlib.MeasureTheory.Function.AEMeasurableOrder
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.Algebra.ContinuousAffineMap
-import Mathlib.Analysis.SpecialFunctions.Integrals
 import Mathlib.Algebra.Group.Basic
 
 open MeasureTheory Set
@@ -68,9 +68,9 @@ def IsRigid (r : ℝ → ℝ) : Prop :=
 
 /-- Additive functions map 0 to 0 -/
 theorem additive_zero (h : ℝ → ℝ) (hAdd : IsAdditive h) : h 0 = 0 := by
-  have : h 0 = h (0 + 0) := by ring_nf
-  rw [this, hAdd]
-  ring
+  have h1 := hAdd 0 0
+  rw [add_zero] at h1
+  linarith
 
 /-- Additive functions satisfy h(-x) = -h(x) -/
 theorem additive_neg (h : ℝ → ℝ) (hAdd : IsAdditive h) (x : ℝ) : h (-x) = -h x := by
@@ -106,7 +106,7 @@ axiom laczkovich_decomposition :
 theorem continuous_has_measurable_differences (f : ℝ → ℝ) (hCont : Continuous f) :
     HasMeasurableDifferences f := by
   intro h _
-  exact (hCont.sub hCont).measurable
+  exact ((hCont.comp (continuous_add_right h)).sub hCont).measurable
 
 /-- Additive functions have measurable differences (they're additive!) -/
 theorem additive_has_measurable_differences (f : ℝ → ℝ) (hAdd : IsAdditive f) :

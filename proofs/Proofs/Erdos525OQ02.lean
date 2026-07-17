@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Erdős 525 — OQ-02: Higher-Dimensional Littlewood Polynomials
 
@@ -92,9 +95,10 @@ theorem dimension_effect (d₁ d₂ n : ℕ) (hd : d₁ < d₂) (hn : 1 < n) :
     by concentration of measure.
 
     This gives m(f) ≈ 1/√N where N = n^d. -/
-theorem sqrt_cancellation_terms (d n : ℕ) (hn : 0 < n) :
+theorem sqrt_cancellation_terms (d n : ℕ) (hn : 0 < n) (hd : 0 < d) :
     -- The number of terms N = n^d satisfies √N = n^(d/2)
     -- So the expected minimum modulus scale is n^(-d/2)
+    -- (requires d ≥ 1: at d = 0, n^0 = 1 < n for n ≥ 2)
     n ^ d ≥ n := by
   calc n ^ d ≥ n ^ 1 := Nat.pow_le_pow_right hn (Nat.one_le_iff_ne_zero.mpr
     (by omega))

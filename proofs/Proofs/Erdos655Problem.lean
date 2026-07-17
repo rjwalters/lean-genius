@@ -15,10 +15,7 @@ A problem of Erdős and Pach.
 Reference: https://erdosproblems.com/655
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Point Configurations and Distances -/
 
@@ -112,11 +109,11 @@ theorem basic_distance_bound (n : ℕ) (_hn : 2 ≤ n)
 
 /- ## Hunter's Counterexample -/
 
-/-- Zach Hunter showed the conjecture as stated is false:
+/-  Zach Hunter showed the conjecture as stated is false:
     n points equally spaced on a circle satisfy NoConcyclicTriple
     but determine only n/2 distinct distances (not (1+c)n/2) -/
 /- ## The Erdős–Pach Conjecture (Corrected Form) -/
 
-/-- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
+/- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
     that no 4 points are concyclic (and no 3 collinear), do the points
     determine at least (1+c)n/2 distinct distances? -/

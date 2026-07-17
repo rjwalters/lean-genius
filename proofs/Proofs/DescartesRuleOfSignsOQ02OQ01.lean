@@ -123,25 +123,29 @@ theorem linear_at_most_one_root (p : ℝ[X]) (hp : p.natDegree = 1) (a b : ℝ) 
   -- A degree-1 polynomial has at most 1 root anywhere, so at most 1 in any interval.
   -- Strategy: show the set is subsingleton (any two elements are equal).
   have hp_ne : p ≠ 0 := by intro h; rw [h] at hp; simp at hp
-  apply Set.Subsingleton.ncard_le_one
-  intro x ⟨_, _, hx⟩ y ⟨_, _, hy⟩
-  -- x and y are both roots of p. Since p has degree 1, it has at most 1 root.
-  -- Two distinct roots would give card(roots) ≥ 2 > 1 = natDegree, contradiction.
-  by_contra hne
-  have hx_mem : x ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hx
-  have hy_mem : y ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hy
-  have hcard := Polynomial.card_roots_le_degree p
-  -- {x, y} as a multiset has card ≥ 2 since x ≠ y
-  have h2 : 2 ≤ (p.roots.toFinset).card := by
-    have hx_fs : x ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hx_mem
-    have hy_fs : y ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hy_mem
-    calc 2 = ({x, y} : Finset ℝ).card := by rw [Finset.card_pair hne]
-      _ ≤ p.roots.toFinset.card := Finset.card_le_card (by
-          intro z hz
-          rw [Finset.mem_insert, Finset.mem_singleton] at hz
-          rcases hz with rfl | rfl <;> assumption)
-  have h3 : p.roots.toFinset.card ≤ p.roots.card := Multiset.toFinset_card_le_card _
-  rw [hp] at hcard; omega
+  have hsub : Set.Subsingleton {x : ℝ | a < x ∧ x ≤ b ∧ p.eval x = 0} := by
+    intro x hxmem y hymem
+    obtain ⟨_, _, hx⟩ := hxmem
+    obtain ⟨_, _, hy⟩ := hymem
+    -- x and y are both roots of p. Since p has degree 1, it has at most 1 root.
+    -- Two distinct roots would give card(roots) ≥ 2 > 1 = natDegree, contradiction.
+    by_contra hne
+    have hx_mem : x ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hx
+    have hy_mem : y ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hy
+    have hcard := Polynomial.card_roots' p
+    -- {x, y} as a multiset has card ≥ 2 since x ≠ y
+    have h2 : 2 ≤ (p.roots.toFinset).card := by
+      have hx_fs : x ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hx_mem
+      have hy_fs : y ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hy_mem
+      calc 2 = ({x, y} : Finset ℝ).card := by rw [Finset.card_pair hne]
+        _ ≤ p.roots.toFinset.card := Finset.card_le_card (by
+            intro z hz
+            rw [Finset.mem_insert, Finset.mem_singleton] at hz
+            rcases hz with rfl | rfl <;> assumption)
+    have h3 : p.roots.toFinset.card ≤ p.roots.card := by
+      classical exact Multiset.toFinset_card_le p.roots
+    rw [hp] at hcard; omega
+  rcases hsub.eq_empty_or_singleton with h | ⟨x, h⟩ <;> simp [h]
 
 /-- Rolle's theorem for polynomials: if p has roots at r₁ < r₂,
     then p' has a root in (r₁, r₂).
@@ -182,7 +186,7 @@ theorem root_of_sign_change (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     · exact h
   exact ⟨c, hca', hcb', hc⟩
 
-/-- Removing a root factor reduces sign changes.
+/- Removing a root factor reduces sign changes.
     If p(r) = 0 and p = (x - r) · q, then the sign changes of q at r
     relate to those of p. -/
 /- sign_changes_factor: if p = (x - r) · q with p(r) = 0, then

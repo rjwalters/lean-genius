@@ -22,9 +22,9 @@ Known Results:
 Reference: https://erdosproblems.com/865
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 
 open Finset Nat
 
@@ -33,7 +33,7 @@ namespace Erdos865
 /- ## Part I: Basic Definitions -/
 
 /-- **Interval Set:** {1, 2, ..., N} as a finite set. -/
-def intervalSet (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ h => by omega⟩
+def intervalSet (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ h => by simpa using h⟩
 
 /-- **Has Pairwise Sum Triple:**
 There exist distinct a, b, c ∈ A with a+b, a+c, b+c all in A. -/
@@ -68,12 +68,12 @@ noncomputable def conjecturedThreshold (k N : ℕ) : ℚ :=
 
 /- ## Part III: The k=2 Case -/
 
-/-- **Classical k=2 Result:**
+/-  **Classical k=2 Result:**
 If A ⊆ {1,...,2N} has |A| ≥ N+2, then ∃ distinct a,b ∈ A with a+b ∈ A. -/
 
 /- ## Part IV: The k=3 Case -/
 
-/-- **The 5/8 Conjecture (k=3):**
+/-  **The 5/8 Conjecture (k=3):**
 If A ⊆ {1,...,N} has |A| ≥ (5/8)N + C for some constant C,
 then there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A. -/
 
@@ -83,15 +83,15 @@ def lowerBoundConstruction (N : ℕ) : Finset ℕ :=
   (Finset.range N).filter (fun n =>
     (N / 8 ≤ n ∧ n ≤ N / 4) ∨ (N / 2 ≤ n ∧ n ≤ N))
 
-/-- **Lower Bound Has No Triple:**
+/-  **Lower Bound Has No Triple:**
 The construction has size ≈ (5/8)N but no pairwise sum triple. -/
 
-/-- **5/8 is Optimal:**
+/-  **5/8 is Optimal:**
 The threshold f_3(N) satisfies f_3(N)/N → 5/8. -/
 
 /- ## Part V: The General Conjecture -/
 
-/-- **Erdős-Sós Conjecture:**
+/-  **Erdős-Sós Conjecture:**
 f_k(N) ~ (1/2)(1 + Σ_{r=1}^{k-2} 1/4^r) N
 
 First few values:
@@ -100,7 +100,7 @@ First few values:
 - k=4: f_4(N) ~ (21/32)N
 - k=5: f_5(N) ~ (85/128)N -/
 
-/-- **Threshold Values:**
+/-  **Threshold Values:**
 - k=2: 1/2
 - k=3: 5/8 = 0.625
 - k=4: 21/32 ≈ 0.656
@@ -109,7 +109,7 @@ The limit as k → ∞ is 2/3. -/
 
 /- ## Part VI: Choi-Erdős-Szemerédi Result -/
 
-/-- **CES Upper Bound (1975):**
+/-  **CES Upper Bound (1975):**
 For all k ≥ 3, there exists ε_k > 0 such that
 f_k(N) ≤ (2/3 - ε_k)N for large N. -/
 
@@ -121,7 +121,7 @@ theorem ces_weaker_than_conjecture :
 
 /- ## Part VII: Why 5/8? -/
 
-/-- **Lower Bound Intuition:**
+/-  **Lower Bound Intuition:**
 Taking A = [N/8, N/4] ∪ [N/2, N]:
 - Elements from [N/8, N/4] sum to at most N/2
 - Elements from [N/2, N] sum to at least N
@@ -136,10 +136,10 @@ This is complementary to our problem. -/
 def IsSumFree (A : Finset ℕ) : Prop :=
   ∀ a b c : ℕ, a ∈ A → b ∈ A → c ∈ A → a + b ≠ c
 
-/-- **Maximum Sum-Free Subset:**
+/-  **Maximum Sum-Free Subset:**
 The largest sum-free subset of {1,...,N} has size ~ N/2. -/
 
-/-- **Schur Numbers:** S(k) = largest N such that {1,...,N} can be
+/-  **Schur Numbers:** S(k) = largest N such that {1,...,N} can be
 k-colored without monochromatic x + y = z. Known: S(1)=1, S(2)=4, S(3)=13, S(4)=44. -/
 
 /- ## Part IX: Main Results -/

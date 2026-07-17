@@ -11,10 +11,7 @@ is it true that g_{k+r}(n) = 2·g_k(n) for all sufficiently large k?
 - Steinerberger (2025)
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Section I: The Iteration Function
@@ -76,6 +73,19 @@ theorem totientStep_triple {m : ℕ} (hm : 3 ∣ m) (hm_pos : 0 < m) :
   unfold totientStep
   rw [Nat.totient_mul_of_prime_of_dvd (by decide : Nat.Prime 3) hm]
   ring
+
+/-- For even n, g(n) = n + φ(n) is always even, so the iterates
+stay even. This is relevant since all known solutions are even. -/
+theorem totientStep_even_of_even {n : ℕ} (hn : 2 ∣ n) (hn2 : n > 2) :
+    2 ∣ totientStep n := by
+  unfold totientStep
+  have hφ : 2 ∣ n.totient := (Nat.totient_even hn2).two_dvd
+  exact dvd_add hn hφ
+
+/-- The iteration g(n) = n + φ(n) always produces a value ≥ n. -/
+theorem totientStep_ge (n : ℕ) : totientStep n ≥ n := by
+  unfold totientStep
+  omega
 
 /-- The iterates are always ≥ the starting value. -/
 theorem iteratedTotientStep_ge_start (n k : ℕ) :
@@ -168,6 +178,7 @@ private theorem ratio3_738_aux :
         have h_ak : iteratedTotientStep k 738 =
             totientStep (iteratedTotientStep (k - 1) 738) := by
           conv_lhs => rw [show k = (k - 1) + 1 from by omega]
+          rfl
         -- Chain: a_{k+4} = g(a_{k+3}) = g(3·a_{k-1}) = 3·g(a_{k-1}) = 3·a_k
         calc iteratedTotientStep (k + 4) 738
             = totientStep (iteratedTotientStep (k + 3) 738) := rfl
@@ -220,6 +231,7 @@ private theorem ratio4_148646_aux :
         have h_ak : iteratedTotientStep k 148646 =
             totientStep (iteratedTotientStep (k - 1) 148646) := by
           conv_lhs => rw [show k = (k - 1) + 1 from by omega]
+          rfl
         calc iteratedTotientStep (k + 4) 148646
             = totientStep (iteratedTotientStep (k + 3) 148646) := rfl
           _ = totientStep (4 * iteratedTotientStep (k - 1) 148646) := by rw [h_ratio]
@@ -233,6 +245,7 @@ private theorem ratio4_148646_aux :
 theorem cambie_ratio4_148646 : GeneralRatioRelation 148646 4 4 :=
   ⟨1, fun k hk => (ratio4_148646_aux k hk).2⟩
 
+set_option maxHeartbeats 1000000 in
 private theorem ratio4_4325798_aux :
     ∀ k, 1 ≤ k →
       4 ∣ iteratedTotientStep k 4325798 ∧
@@ -259,6 +272,7 @@ private theorem ratio4_4325798_aux :
         have h_ak : iteratedTotientStep k 4325798 =
             totientStep (iteratedTotientStep (k - 1) 4325798) := by
           conv_lhs => rw [show k = (k - 1) + 1 from by omega]
+          rfl
         calc iteratedTotientStep (k + 4) 4325798
             = totientStep (iteratedTotientStep (k + 3) 4325798) := rfl
           _ = totientStep (4 * iteratedTotientStep (k - 1) 4325798) := by rw [h_ratio]
@@ -375,26 +389,12 @@ theorem doubling_r2_n70 : DoublingRelation 70 2 :=
 ## Section VII: Structural Properties
 -/
 
-/-- For even n, g(n) = n + φ(n) is always even, so the iterates
-stay even. This is relevant since all known solutions are even. -/
-theorem totientStep_even_of_even {n : ℕ} (hn : 2 ∣ n) (hn2 : n > 2) :
-    2 ∣ totientStep n := by
-  unfold totientStep
-  have hφ : 2 ∣ n.totient := Nat.totient_even hn2
-  exact dvd_add hn hφ
-
 /-- Cambie conjectures all r = 2 solutions have form n = 2^l · p
 where l ≥ 1 and p ∈ {2, 3, 5, 7, 35, 47}. -/
 def CambieConjecture : Prop :=
   ∀ n : ℕ, DoublingRelation n 2 →
     ∃ l : ℕ, l ≥ 1 ∧
       ∃ p ∈ ({2, 3, 5, 7, 35, 47} : Finset ℕ), n = 2 ^ l * p
-
-/-- The iteration g(n) = n + φ(n) always produces an even number
-when n ≥ 3, since φ(n) is even for n ≥ 3. -/
-theorem totientStep_ge (n : ℕ) : totientStep n ≥ n := by
-  unfold totientStep
-  omega
 
 /-
 ## Section VIII: Cambie Family Doubling Tower
@@ -422,7 +422,7 @@ theorem steinerberger_eq_lift {n : ℕ} (hn_even : 2 ∣ n) (hn_gt : n > 2)
     (h_eq : n.totient + (n + n.totient).totient = n) :
     (2 * n).totient + (2 * n + (2 * n).totient).totient = 2 * n := by
   have hn_pos : 0 < n := by omega
-  have hφn_even : 2 ∣ n.totient := Nat.totient_even hn_gt
+  have hφn_even : 2 ∣ n.totient := (Nat.totient_even hn_gt).two_dvd
   have h_phi2n : (2 * n).totient = 2 * n.totient :=
     totient_double_even hn_even hn_pos
   have hsum_even : 2 ∣ (n + n.totient) := dvd_add hn_even hφn_even

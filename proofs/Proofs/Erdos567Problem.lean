@@ -20,6 +20,7 @@ EFRS (1993): Erdős, Faudree, Rousseau, Schelp. Ramsey size linear graphs.
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+open scoped Classical
 
 /- ## Graph Definitions -/
 
@@ -79,12 +80,12 @@ def IsRamseySizeLinear {V : Type} (G : Graph' V) : Prop :=
 
 /- ## Main Questions -/
 
-/-- Question 1: Is Q₃ Ramsey size linear? -/
-/-- Question 2: Is K₃,₃ Ramsey size linear? -/
-/-- Question 3: Is H₅ Ramsey size linear? -/
+/-  Question 1: Is Q₃ Ramsey size linear? -/
+/-  Question 2: Is K₃,₃ Ramsey size linear? -/
+/-  Question 3: Is H₅ Ramsey size linear? -/
 /- ## Partial Results -/
 
-/-- Bradač–Gishboliner–Sudakov: every subdivision of K₄ with ≥ 6 vertices
+/-  Bradač–Gishboliner–Sudakov: every subdivision of K₄ with ≥ 6 vertices
     is Ramsey size linear. H₅ is such a subdivision. -/
-/-- EFRS (1993): graphs with ≤ n+1 edges and no isolated vertices
+/- EFRS (1993): graphs with ≤ n+1 edges and no isolated vertices
     are Ramsey size linear. -/

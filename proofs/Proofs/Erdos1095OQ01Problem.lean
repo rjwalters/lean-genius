@@ -26,6 +26,8 @@ open Nat Filter
 
 namespace Erdos1095OQ01
 
+open scoped Classical
+
 /-
 # Part 1: Core Definitions
 -/
@@ -69,8 +71,12 @@ private lemma prime_pow_dvd_smoothProd {p k : ℕ} (hp : p.Prime) (hpk : p ≤ k
 private lemma mod_pred_of_dvd_succ {n m : ℕ} (hm : 0 < m) (h : m ∣ (n + 1)) :
     n % m = m - 1 := by
   obtain ⟨q, hq⟩ := h
-  have hq1 : q ≥ 1 := by omega
-  have hn : n = (m - 1) + m * (q - 1) := by omega
+  have hn : n = (m - 1) + m * (q - 1) := by
+    rcases q with _ | q'
+    · simp only [mul_zero] at hq; omega
+    · simp only [Nat.add_sub_cancel]
+      have hmul : m * (q' + 1) = m * q' + m := by ring
+      omega
   rw [hn, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
 
 /-- Core modular inequality: if p^a ∣ (n+1) with p^a > k and k ≤ n,
@@ -89,18 +95,26 @@ private lemma mod_ge_of_dvd_succ_pow {p a n k : ℕ} (hp : p ≥ 2)
       by_contra h; push_neg at h
       exact hi (dvd_trans (pow_dvd_pow p h) hdvd)
     have hpi_gt : p ^ i > k := by
-      calc p ^ i ≥ p ^ (a + 1) := pow_le_pow_right (by omega) hi_gt
+      calc p ^ i ≥ p ^ (a + 1) := Nat.pow_le_pow_right (by omega) hi_gt
         _ = p * p ^ a := by ring
         _ ≥ 2 * (k + 1) := by nlinarith
         _ > k := by omega
     rw [Nat.mod_eq_of_lt (by omega : k < p ^ i)]
     -- Decompose: n + 1 = p^a * R, R = q * p^(i-a) + r
     obtain ⟨R, hR⟩ := hdvd
-    have hR_pos : R ≥ 1 := by omega
+    have hR_pos : R ≥ 1 := by
+      rcases R with _ | R
+      · simp only [mul_zero] at hR; omega
+      · omega
     set r := R % p ^ (i - a) with hr_def
     set q := R / p ^ (i - a) with hq_def
-    have hR_eq : R = q * p ^ (i - a) + r := (Nat.div_add_mod R (p ^ (i - a))).symm
+    have hR_eq : R = q * p ^ (i - a) + r := by
+      rw [hq_def, hr_def, mul_comm]
+      exact (Nat.div_add_mod R (p ^ (i - a))).symm
     have hr_lt : r < p ^ (i - a) := Nat.mod_lt R (by positivity)
+    -- Lock r, q as opaque atoms: omega/simp otherwise zeta-unfold the `set`
+    -- definitions and lose track of which nonlinear products are equal.
+    clear_value r q
     -- (n+1) = q * p^i + p^a * r
     have hpow_eq : p ^ a * p ^ (i - a) = p ^ i := by
       rw [← pow_add]; congr 1; omega
@@ -112,12 +126,17 @@ private lemma mod_ge_of_dvd_succ_pow {p a n k : ℕ} (hp : p ≥ 2)
         _ = q * p ^ i + p ^ a * r := by rw [hpow_eq]
     -- r ≥ 1 (since p^i ∤ (n+1) means (n+1) % p^i ≠ 0, i.e., p^a * r ≠ 0)
     have hr_pos : r ≥ 1 := by
-      by_contra h; push_neg at h; simp at h
-      exact hi ⟨q, by omega⟩
+      by_contra h
+      push_neg at h
+      have hr0 : r = 0 := by omega
+      have hpar0 : p ^ a * r = 0 := by rw [hr0, mul_zero]
+      exact hi ⟨q, by rw [mul_comm]; omega⟩
     -- n % p^i = p^a * r - 1 ≥ p^a - 1 ≥ k
     have hpar_lt : p ^ a * r < p ^ i := by
       calc p ^ a * r < p ^ a * p ^ (i - a) := by nlinarith
         _ = p ^ i := hpow_eq
+    have hpar_pos : 1 ≤ p ^ a * r :=
+      Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by positivity) (by omega))
     have hn_eq : n = (p ^ a * r - 1) + p ^ i * q := by
       have : q * p ^ i = p ^ i * q := Nat.mul_comm q (p ^ i)
       omega
@@ -138,13 +157,16 @@ private lemma carry_free_of_mod_ge {p n k : ℕ} (hp : p ≥ 2) (hkn : k ≤ n)
     conv_lhs => rw [show n = k + (n - k) by omega]
     exact Nat.add_mod k (n - k) (p ^ i)
   -- If the sum ≥ p^i, then mod reduces it, making n%p^i < k%p^i. Contradiction.
-  by_contra hle; push_neg at hle; simp only [not_lt] at hle
+  by_contra hle; push_neg at hle
   have hkm := Nat.mod_lt k (show 0 < p ^ i by positivity)
   have hnkm := Nat.mod_lt (n - k) (show 0 < p ^ i by positivity)
   have hsum_lt : k % p ^ i + (n - k) % p ^ i < 2 * p ^ i := by omega
-  have : (k % p ^ i + (n - k) % p ^ i) % p ^ i =
-      k % p ^ i + (n - k) % p ^ i - p ^ i := by omega
-  rw [this] at h_add
+  have heq : (k % p ^ i + (n - k) % p ^ i) % p ^ i =
+      k % p ^ i + (n - k) % p ^ i - p ^ i := by
+    rw [Nat.mod_eq_sub_mod hle]
+    exact Nat.mod_eq_of_lt (by omega)
+  have hn_eq2 : n % p ^ i = k % p ^ i + (n - k) % p ^ i - p ^ i := h_add.trans heq
+  rw [hn_eq2] at hge
   omega
 
 /-
@@ -437,7 +459,7 @@ theorem gFunc_ge_k_plus_two (k : ℕ) : gFunc k ≥ k + 2 := by
   have := gFunc_gt k
   omega
 
-/-- The conjecture implies g grows faster than any polynomial:
+/-  The conjecture implies g grows faster than any polynomial:
     if log g(k) ~ k/log k, then g(k) grows super-polynomially. -/
 
 /-

@@ -28,9 +28,7 @@ References:
 - Bajpai-Bennett [BaBe24]: Acta Arith. (2024)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Nat Finset
 
@@ -86,8 +84,8 @@ w(n) = number of tuples (a, b, c, d) with n = 2^a + 3^b + 2^c·3^d.
 Note: This counts all tuples, not just distinct sums.
 -/
 noncomputable def w (n : ℕ) : ℕ :=
-  Finset.card {x : ℕ × ℕ × ℕ × ℕ | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧
-    IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}.toFinset
+  {x : ℕ × ℕ × ℕ × ℕ | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧
+    IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}.ncard
 
 /--
 **Alternative: Distinct Representations**
@@ -116,7 +114,7 @@ theorem w_one_zero : ∀ a b c d : ℕ, ¬IsValidRep 1 a b c d := by
   have h3 : 2 ^ c * 3 ^ d ≥ 1 := by
     have hc : 2 ^ c ≥ 1 := Nat.one_le_pow c 2 (by norm_num)
     have hd : 3 ^ d ≥ 1 := Nat.one_le_pow d 3 (by norm_num)
-    exact Nat.one_le_mul hc hd
+    exact Nat.mul_pos hc hd
   omega
 
 /--
@@ -180,11 +178,11 @@ This gives infinitely many n with exactly 4 representations.
 def FourRepFamily (a b : ℕ) (ha : a ≥ 2) (hb : b ≥ 2) : ℕ :=
   2 ^ (a - 1) + 3 ^ b + 2 ^ (a - 1)
 
-/--
+/- 
 **The four representations agree:**
 All four formulas give the same n.
 -/
-/--
+/- 
 **Infinitely many with 4 reps:**
 -/
 /-

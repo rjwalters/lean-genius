@@ -36,10 +36,7 @@ References:
 - OEIS A001438: Maximum number of MOLS of order n
 -/
 
-import Mathlib.Data.Matrix.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fin.Basic
-import Mathlib.Order.BoundedOrder.Basic
+import Mathlib
 
 open Matrix Finset
 
@@ -104,7 +101,8 @@ Key values:
 - f(p^k) = p^k - 1 for prime powers (projective plane construction)
 -/
 noncomputable def maxMOLS (n : ℕ) : ℕ∞ :=
-  ⨆ (S : Finset (Fin n → Fin n → Fin n)) (hS : MutuallyOrthogonal (S : Set _)), (S.card : ℕ∞)
+  ⨆ (S : Finset (Fin n → Fin n → Fin n))
+    (_ : MutuallyOrthogonal (↑S : Set (Fin n → Fin n → Fin n))), (S.card : ℕ∞)
 
 /-- Notation for the MOLS function -/
 notation "f(" n ")" => maxMOLS n
@@ -143,7 +141,7 @@ exists when n ≡ 2 (mod 4).
 -/
 axiom bose_parker_shrikhande (n : ℕ) (hn : n ≥ 7) : f(n) ≥ 2
 
-/--
+/- 
 **Special Cases:**
 - f(2) = 1 (no pair of orthogonal 2×2 Latin squares)
 - f(6) ≥ 1 (historically difficult; Euler was right that f(6) = 1)
@@ -156,14 +154,14 @@ The question asks whether f(n) grows at least as fast as n^(1/2).
 Progress has been made on improving lower bounds.
 -/
 
-/--
+/- 
 **Chowla-Erdős-Straus Theorem (1960):**
 f(n) ≫ n^(1/91).
 
 For sufficiently large n, f(n) ≥ C · n^(1/91) for some constant C > 0.
 -/
 
-/--
+/- 
 **Wilson's Improvement (1974):**
 f(n) ≫ n^(1/17).
 -/
@@ -175,7 +173,7 @@ f(n) ≫ n^(1/14.8).
 This is the current best known lower bound exponent.
 -/
 axiom beth_1983 : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ)
+    ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ)
 
 /-
 ## Part VI: The Erdős Conjecture
@@ -196,7 +194,7 @@ The gap between the best known exponent (1/14.8 ≈ 0.068) and the
 conjectured exponent (1/2 = 0.5) is substantial.
 -/
 def erdos_724_conjecture : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 2 : ℝ)
+  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 2 : ℝ)
 
 /-
 ## Part VII: Examples and Constructions
@@ -212,17 +210,19 @@ def latinSquare3_L : Fin 3 → Fin 3 → Fin 3 :=
   fun i j => ⟨(i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
 
 def latinSquare3_M : Fin 3 → Fin 3 → Fin 3 :=
+  fun i j => ⟨(2 * i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
 
-/--
+/-
 f(3) = 2, achieved by the construction above.
+The mate M(i,j) = (2i + j) mod 3 is orthogonal to L(i,j) = (i + j) mod 3.
 -/
 
-/--
+/- 
 **Example: f(4) = 3**
 For n = 4 = 2², the maximum is n - 1 = 3.
 -/
 
-/--
+/- 
 **Example: f(5) = 4**
 For n = 5 (prime), the maximum is n - 1 = 4.
 -/
@@ -234,7 +234,7 @@ The existence of n - 1 MOLS of order n is equivalent to the existence
 of a projective plane of order n.
 -/
 
-/--
+/- 
 **Projective Plane Connection:**
 f(n) = n - 1 if and only if a projective plane of order n exists.
 
@@ -243,7 +243,7 @@ for non-prime-powers (like n = 6, 10, 12, ...) is generally unknown,
 with n = 10 ruled out by the famous Lam-Thiel-Swiercz computation (1989).
 -/
 
-/--
+/- 
 **No Projective Plane of Order 10:**
 f(10) < 9, proved by exhaustive computer search.
 -/
@@ -255,7 +255,7 @@ MacNeish conjectured f(n) = min{p_i^{a_i} - 1} where n = ∏p_i^{a_i}.
 This was disproved; the true behavior is more complex.
 -/
 
-/--
+/- 
 **MacNeish's Bound:**
 f(n) ≥ min{p_i^{a_i} - 1} where n = ∏p_i^{a_i}.
 
@@ -295,7 +295,7 @@ theorem erdos_724_status :
 The best known result is f(n) ≫ n^(1/14.8) by Beth (1983).
 -/
 theorem current_best_lower_bound : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ) :=
+    ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ) :=
   beth_1983
 
 /--

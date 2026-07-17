@@ -11,12 +11,17 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos780Aristotle
 
 open Finset
 
 /-- The complete r-uniform hypergraph on n vertices -/
 def completeHypergraph (n r : ℕ) := {S : Finset (Fin n) // S.card = r}
+
+instance instFintypeCompleteHypergraph (n r : ℕ) : Fintype (completeHypergraph n r) :=
+  Subtype.fintype _
 
 /-- Pairwise disjoint edges -/
 def PairwiseDisjoint {α : Type*} (edges : Finset (Finset α)) : Prop :=
@@ -79,7 +84,11 @@ theorem pairwiseDisjoint_pair {α : Type*} [DecidableEq α]
         (Finset.mem_insert_of_mem (Finset.mem_singleton_self t)) heq)
   · intro hor e₁ he₁ e₂ he₂ hne
     rw [Finset.mem_insert, Finset.mem_singleton] at he₁ he₂
-    rcases he₁ with rfl | rfl <;> rcases he₂ with rfl | rfl <;> first | exact absurd rfl hne | exact hor.resolve_left hne | exact (hor.resolve_left hne).symm
+    rcases he₁ with rfl | rfl <;> rcases he₂ with rfl | rfl <;>
+      first
+        | exact absurd rfl hne
+        | exact hor.resolve_left hne
+        | exact (hor.resolve_left hne.symm).symm
 
 -- ============================================================
 -- Supporting facts for Kneser chromatic number
@@ -91,14 +100,14 @@ theorem complement_unique_2r (r : ℕ) (hr : 0 < r) (S : Finset (Fin (2 * r)))
     ∃! T : Finset (Fin (2 * r)), T.card = r ∧ Disjoint S T := by
   refine ⟨Sᶜ, ?_, ?_⟩
   · constructor
-    · rw [Finset.card_compl, Finset.card_univ, Fintype.card_fin, hS]
+    · rw [Finset.card_compl, Fintype.card_fin, hS]
       omega
-    · exact Finset.disjoint_compl_right
+    · exact disjoint_compl_right
   · intro T ⟨hTcard, hTdisj⟩
     have hTsub : T ⊆ Sᶜ := fun x hx =>
       Finset.mem_compl.mpr (Finset.disjoint_right.mp hTdisj hx)
     have hSc_card : Sᶜ.card = r := by
-      rw [Finset.card_compl, Finset.card_univ, Fintype.card_fin, hS]; omega
+      rw [Finset.card_compl, Fintype.card_fin, hS]; omega
     exact Finset.eq_of_subset_of_card_le hTsub (by rw [hTcard, hSc_card])
 
 /-- The number of r-subsets of [n] is C(n, r) -/
@@ -136,7 +145,7 @@ theorem threshold_mono_k (k₁ k₂ r t : ℕ) (h : k₁ ≤ k₂) :
   · exact Nat.mul_le_mul_left (t - 1) (Nat.sub_le_sub_right h 1)
 
 /-- The threshold for k=2 simplifies to n ≥ 2r + t - 1 -/
-theorem threshold_k2 (r t : ℕ) :
+theorem threshold_k2 (r t : ℕ) (ht : 1 ≤ t) :
     2 * r + (t - 1) * 1 = 2 * r + t - 1 := by
   omega
 

@@ -240,7 +240,7 @@ theorem colliding_eq_tri : collidingCubes triDissection = {cubeA, cubeB, cubeD} 
 /-- The three-cube dissection has exactly `3` colliding cubes. -/
 theorem tri_has_three_collisions : (collidingCubes triDissection).card = 3 := by
   rw [colliding_eq_tri]
-  rw [Finset.card_insert_of_not_mem, Finset.card_pair cubeB_ne_cubeD]
+  rw [Finset.card_insert_of_notMem, Finset.card_pair cubeB_ne_cubeD]
   simp only [Finset.mem_insert, Finset.mem_singleton]
   push_neg
   exact ⟨cubeA_ne_cubeB, cubeA_ne_cubeD⟩

@@ -26,6 +26,7 @@ Reference: [AlSu07] Alon-Sudakov (2007), [Er91] Erdős (1991)
 See also: Erdős Problem #805
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
@@ -33,7 +34,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
-import Mathlib.Order.Filter.AtTopBot
+
+open scoped Classical
 
 open Nat Finset Set Filter SimpleGraph
 
@@ -66,7 +68,7 @@ noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
 -/
 theorem empty_is_independent (G : SimpleGraph V) : IsIndependent G ∅ := by
   intro u hu
-  exact absurd hu (Finset.not_mem_empty u)
+  exact absurd hu (Finset.notMem_empty u)
 
 /-
 ## Part II: The Function f(m, n)
@@ -101,7 +103,7 @@ This was TOO optimistic!
 axiom erdos_hajnal_conjecture_1_false :
     ¬(∀ ε > 0, ∀ᶠ n : ℕ in atTop,
       ∀ G : SimpleGraph (Fin n),
-        HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
+        HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) →
           independenceNumber G ≥ n / n ^ ε)
 
 /--
@@ -116,8 +118,8 @@ Also TOO optimistic!
 axiom erdos_hajnal_conjecture_2_false :
     ¬(∀ᶠ n : ℕ in atTop,
       ∀ G : SimpleGraph (Fin n),
-        HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) →
-          independenceNumber G ≥ (Nat.log n) ^ 3 * Nat.log n)
+        HasLocalIndependence G ((Nat.log 2 n) ^ 3) (Nat.log 2 n) →
+          independenceNumber G ≥ (Nat.log 2 n) ^ 3 * Nat.log 2 n)
 
 /-
 ## Part IV: Alon-Sudakov's Resolution (2007)
@@ -136,8 +138,8 @@ axiom alon_sudakov_upper_bound_1 :
     ∃ C : ℝ, C > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∃ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) ∧
-            independenceNumber G ≤ C * (Nat.log n) ^ 2
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) ∧
+            independenceNumber G ≤ C * (Nat.log 2 n) ^ 2
 
 /--
 **Alon-Sudakov Lower Bound for (log n)²:**
@@ -150,8 +152,8 @@ axiom alon_sudakov_lower_bound_1 :
     ∃ c : ℝ, c > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
-            (independenceNumber G : ℝ) ≥ c * (Nat.log n) ^ 2 / Nat.log (Nat.log n)
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) →
+            (independenceNumber G : ℝ) ≥ c * (Nat.log 2 n) ^ 2 / Nat.log 2 (Nat.log 2 n)
 
 /--
 **Alon-Sudakov Tight Bound for (log n)³:**
@@ -164,14 +166,14 @@ axiom alon_sudakov_tight_bound_2 :
     (∃ c : ℝ, c > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) →
-            (independenceNumber G : ℝ) ≥ c * (Nat.log n) ^ 2 / Nat.log (Nat.log n)) ∧
+          HasLocalIndependence G ((Nat.log 2 n) ^ 3) (Nat.log 2 n) →
+            (independenceNumber G : ℝ) ≥ c * (Nat.log 2 n) ^ 2 / Nat.log 2 (Nat.log 2 n)) ∧
     -- Upper bound
     (∃ C : ℝ, C > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∃ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) ∧
-            (independenceNumber G : ℝ) ≤ C * (Nat.log n) ^ 2 / Nat.log (Nat.log n))
+          HasLocalIndependence G ((Nat.log 2 n) ^ 3) (Nat.log 2 n) ∧
+            (independenceNumber G : ℝ) ≤ C * (Nat.log 2 n) ^ 2 / Nat.log 2 (Nat.log 2 n))
 
 /-
 ## Part V: Main Results
@@ -193,12 +195,12 @@ theorem erdos_804 :
     -- Both original conjectures are false
     ¬(∀ ε > 0, ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) →
             independenceNumber G ≥ n / n ^ ε) ∧
     ¬(∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) →
-            independenceNumber G ≥ (Nat.log n) ^ 3 * Nat.log n) := by
+          HasLocalIndependence G ((Nat.log 2 n) ^ 3) (Nat.log 2 n) →
+            independenceNumber G ≥ (Nat.log 2 n) ^ 3 * Nat.log 2 n) := by
   exact ⟨erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false⟩
 
 /-
@@ -221,23 +223,23 @@ theorem erdos_804_resolution :
     -- Conjectures are false
     (¬(∀ ε > 0, ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) →
             independenceNumber G ≥ n / n ^ ε)) ∧
     (¬(∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) →
-            independenceNumber G ≥ (Nat.log n) ^ 3 * Nat.log n)) ∧
+          HasLocalIndependence G ((Nat.log 2 n) ^ 3) (Nat.log 2 n) →
+            independenceNumber G ≥ (Nat.log 2 n) ^ 3 * Nat.log 2 n)) ∧
     -- But precise bounds exist (Alon-Sudakov 2007)
     (∃ C : ℝ, C > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∃ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) ∧
-            independenceNumber G ≤ C * (Nat.log n) ^ 2) ∧
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) ∧
+            independenceNumber G ≤ C * (Nat.log 2 n) ^ 2) ∧
     (∃ c : ℝ, c > 0 ∧
       ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
-          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
-            (independenceNumber G : ℝ) ≥ c * (Nat.log n) ^ 2 / Nat.log (Nat.log n)) :=
+          HasLocalIndependence G ((Nat.log 2 n) ^ 2) (Nat.log 2 n) →
+            (independenceNumber G : ℝ) ≥ c * (Nat.log 2 n) ^ 2 / Nat.log 2 (Nat.log 2 n)) :=
   ⟨erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false,
    alon_sudakov_upper_bound_1, alon_sudakov_lower_bound_1⟩
 

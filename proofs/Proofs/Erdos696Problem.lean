@@ -30,11 +30,7 @@ References:
 - See also Erdős Problem #695
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset BigOperators Filter
 
@@ -103,11 +99,11 @@ h(n) ≤ H(n) since every prime chain is a divisor chain.
 -/
 axiom h_le_H (n : ℕ) : h n ≤ H n
 
-/--
+/- 
 For n = 1, there are no prime divisors, so h(1) = 0.
 -/
 
-/--
+/- 
 For any prime p, h(p) = 1 since the only chain is [p] itself.
 -/
 
@@ -123,12 +119,12 @@ We axiomatize this function to avoid termination proof difficulties.
 -/
 noncomputable def logStar : ℕ → ℕ := fun _ => 0 -- Axiomatized via properties below
 
-/--
+/- 
 **log* properties:**
 log*(n) ≤ 5 for all n ≤ 2^65536.
 -/
 
-/--
+/- 
 **log* grows unboundedly:**
 For any k, there exists n with log*(n) > k.
 -/
@@ -164,7 +160,7 @@ def ErdosRatioConjecture : Prop :=
 ## Part V: Why These Chains?
 -/
 
-/--
+/- 
 **Multiplicative group connection:**
 If p | q-1, then the multiplicative group (ℤ/qℤ)* has a subgroup of order p.
 This is the structural reason for the congruence condition.
@@ -191,17 +187,17 @@ def IsCunninghamChain (chain : List ℕ) : Prop :=
 ## Part VI: Examples
 -/
 
-/--
+/- 
 **Example: n = 6 = 2 · 3**
 h(6) = 2 since [2, 3] is a prime chain: 3 ≡ 1 (mod 2).
 -/
 
-/--
+/- 
 **Example: n = 30 = 2 · 3 · 5**
 h(30) = 2: chains [2, 3] or [2, 5] work, but no longer chain.
 -/
 
-/--
+/- 
 **Example: n = 2310 = 2 · 3 · 5 · 7 · 11**
 [2, 3, 7] is a prime chain: 3 ≡ 1 (mod 2), 7 ≡ 1 (mod 3).
 So h(2310) ≥ 3.
@@ -211,19 +207,19 @@ So h(2310) ≥ 3.
 ## Part VII: Comparison h(n) vs H(n)
 -/
 
-/--
+/- 
 **H(n) can be much larger:**
 Using composite divisors allows longer chains.
 For n with many divisors, H(n) >> h(n).
 -/
 
-/--
+/- 
 **Why composites help:**
 If d | n and d' | n with d' ≡ 1 (mod d), we can include both.
 For example, if 6 | n and 7 | n, we can use [6, 7] as 7 ≡ 1 (mod 6).
 -/
 
-/--
+/- 
 **Highly composite numbers:**
 For n with many divisors (like n = k!), H(n) should be large.
 -/
@@ -232,17 +228,17 @@ For n with many divisors (like n = k!), H(n) should be large.
 ## Part VIII: Upper Bounds
 -/
 
-/--
+/- 
 **Trivial upper bound:**
 h(n) ≤ ω(n), the number of distinct prime factors.
 -/
 
-/--
+/- 
 **Better upper bound:**
 h(n) ≤ log*(n) + O(1) is expected but not proven.
 -/
 
-/--
+/- 
 **Upper bound for H(n):**
 H(n) ≤ log₂(n) since each chain element at least doubles.
 -/
@@ -251,7 +247,7 @@ H(n) ≤ log₂(n) since each chain element at least doubles.
 ## Part IX: The van Doorn Result
 -/
 
-/--
+/- 
 **van Doorn's proof:**
 h(n) → ∞ for almost all n.
 
@@ -260,7 +256,7 @@ and a prime p₂ | n with p₂ ≡ 1 (mod p₁). By Dirichlet, such p₂ exist
 with positive density, so most n have such p₂ among their factors.
 -/
 
-/--
+/- 
 **Density argument:**
 The density of n with h(n) ≥ k approaches 1 as n → ∞.
 -/

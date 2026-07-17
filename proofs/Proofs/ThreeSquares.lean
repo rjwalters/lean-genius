@@ -1214,7 +1214,7 @@ private lemma exists_int_sqrt_neg_d_mod_p
   -- Step 1: (d : ZMod p) ≠ 0 from 0 < d < p (uses primality only via NeZero p).
   have hd_zmod_ne : (d : ZMod p) ≠ 0 := by
     intro h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    rw [ZMod.natCast_eq_zero_iff] at h
     exact absurd (Nat.le_of_dvd hd_pos h) (Nat.not_le.mpr hd_lt_p)
   -- Step 2: ((-d : ℤ) : ZMod p) ≠ 0 follows by push_cast + neg_ne_zero.
   have hneg_d_ne : ((-d : ℤ) : ZMod p) ≠ 0 := by
@@ -1362,7 +1362,7 @@ private lemma multiple_p_eq_p_of_lt_two_mul
   have h_pos' : 0 < p * k := hk ▸ h_pos
   have h_lt' : p * k < 2 * p := hk ▸ h_lt
   have hk_pos : 0 < k := by
-    rcases le_or_lt k 0 with hk_le | hk_gt
+    rcases le_or_gt k 0 with hk_le | hk_gt
     · exfalso
       have : p * k ≤ 0 := mul_nonpos_iff.mpr (Or.inl ⟨hp.le, hk_le⟩)
       linarith
@@ -1760,6 +1760,7 @@ private lemma dirichletSublatticeRealBasisLinearIndependent
   -- by definition; `Matrix.row` is the identity coercion, so the two functions agree
   -- pointwise and we can convert.
   convert hLI using 1
+  rfl
 
 /-- **S16b ACT** — Promote `dirichletSublatticeRealBasisVec p r` from a linearly
 independent family (S16a) to a `Module.Basis` of the ambient pi-space `Fin 3 → ℝ`.
@@ -1937,7 +1938,7 @@ of discriminant -4n.
     Any solution `(a, b, c)` of `a² + b² + c² = n` satisfies `a² ≤ n`, hence
     `|a| ≤ n` (and likewise for `b`, `c`), so this box is large enough to
     contain every representation. -/
-private def r3_box (n : ℕ) : Finset (ℤ × ℤ × ℤ) :=
+private noncomputable def r3_box (n : ℕ) : Finset (ℤ × ℤ × ℤ) :=
   (Finset.Icc (-(n : ℤ)) n) ×ˢ (Finset.Icc (-(n : ℤ)) n) ×ˢ (Finset.Icc (-(n : ℤ)) n)
 
 /-- r₃(n): the number of ordered representations of n as a sum of 3 integer squares.
@@ -1947,7 +1948,7 @@ private def r3_box (n : ℕ) : Finset (ℤ × ℤ × ℤ) :=
     triples whose squared sum is `n`. The bounding box is justified by the
     inequality `a² ≤ a² + b² + c² = n` (and likewise for `b`, `c`), which
     forces `|a|, |b|, |c| ≤ n`. -/
-def r3_count (n : ℕ) : ℕ :=
+noncomputable def r3_count (n : ℕ) : ℕ :=
   ((r3_box n).filter (fun p => p.1 ^ 2 + p.2.1 ^ 2 + p.2.2 ^ 2 = (n : ℤ))).card
 
 /-- The Hurwitz class number H(n): counts equivalence classes of primitive

@@ -249,9 +249,9 @@ theorem optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
           intro k hki hkj
           simp [l', Function.update_apply, hki, hkj]
         calc ∑ k, ((2 : ℝ)⁻¹) ^ (l' k)
-            = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l' k) := rfl
-          _ = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l k) := by
-              apply Finset.sum_equiv (Equiv.swap i j) (fun _ _ => Finset.mem_univ _)
+            = ∑ k ∈ Finset.univ, ((2 : ℝ)⁻¹) ^ (l' k) := rfl
+          _ = ∑ k ∈ Finset.univ, ((2 : ℝ)⁻¹) ^ (l k) := by
+              apply Finset.sum_equiv (Equiv.swap i j) (fun _ => by simp)
               intro k _
               simp only [Equiv.swap_apply_def]
               split_ifs with h1 h2
@@ -283,19 +283,19 @@ theorem optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
           intro k hki hkj; rw [hl'_other k hki hkj]; simp
         -- Sum reduces to just the i and j terms
         rw [show ∑ k, p k * ((l' k : ℝ) - (l k : ℝ)) =
-            p i * ((l' i : ℝ) - l i) + p j * ((l' j : ℝ) - l j) +
-            ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) from by
+            p i * ((l' i : ℝ) - l i) + (p j * ((l' j : ℝ) - l j) +
+            ∑ k ∈ Finset.univ.erase i |>.erase j, p k * ((l' k : ℝ) - l k)) from by
           rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
           congr 1
-          rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)]
+          rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨Ne.symm hne, Finset.mem_univ j⟩)]
         ]
         simp only [hl'_i, hl'_j]
-        have hrest : ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) = 0 := by
+        have hrest : ∑ k ∈ Finset.univ.erase i |>.erase j, p k * ((l' k : ℝ) - l k) = 0 := by
           apply Finset.sum_eq_zero
           intro k hk
           rw [Finset.mem_erase] at hk
-          have hki : k ≠ i := hk.1
-          have hkj : k ≠ j := by
+          have hkj : k ≠ j := hk.1
+          have hki : k ≠ i := by
             intro heq; exact (Finset.mem_erase.mp hk.2).1 heq
           rw [this k hki hkj, mul_zero]
         rw [hrest, add_zero]

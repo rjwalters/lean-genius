@@ -220,7 +220,7 @@ lemma double_counting_bound (A : Finset ℕ) (N r : ℕ)
     have hp0 : primeReciprocalSum 0 = 0 := by
       unfold primeReciprocalSum
       have h : (Finset.range 1).filter Nat.Prime = ∅ := by
-        ext x; simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty,
+        ext x; simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty,
           iff_false, not_and]; intro hx hp; exact absurd hp.one_lt (by omega)
       rw [h, Finset.sum_empty]
     rw [hp0, mul_zero]

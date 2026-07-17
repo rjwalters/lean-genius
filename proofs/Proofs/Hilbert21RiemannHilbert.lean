@@ -107,7 +107,7 @@ Formally, it is a homomorphism from the fundamental group of the punctured
 plane to GL(n, ℂ).
 -/
 
-/-- The dimension of the linear system -/
+/- The dimension of the linear system -/
 variable (n : ℕ) [NeZero n]
 
 /-- A monodromy representation is a group homomorphism from a free group
@@ -127,7 +127,7 @@ structure MonodromyRep (S : SingularPoints) where
 def MonodromyRep.isIrreducible (S : SingularPoints) (ρ : MonodromyRep n S) : Prop :=
   -- A representation is irreducible if every invariant subspace is {0} or ℂⁿ
   ∀ (W : Submodule ℂ (Fin n → ℂ)),
-    (∀ p ∈ S.points, ∀ v ∈ W, (ρ.matrices ⟨p, ‹_›⟩).1.mulVec v ∈ W) →
+    (∀ p, ∀ hp : p ∈ S.points, ∀ v ∈ W, (ρ.matrices ⟨p, hp⟩).1.mulVec v ∈ W) →
     W = ⊥ ∨ W = ⊤
 
 -- ============================================================
@@ -237,7 +237,7 @@ problem does NOT always have a solution for reducible representations.
     The first counterexample has 4 singular points and dimension 3.
     The obstruction is related to the Fuchs relation. -/
 axiom bolibrukh_counterexample :
-    ∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    ∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
     ∃ ρ : MonodromyRep n S,
       ¬ρ.isIrreducible n S ∧
       ¬∃ F : FuchsianSystem n S, realizes n S F ρ
@@ -247,7 +247,7 @@ axiom bolibrukh_counterexample :
     Hilbert's 21st problem, as originally stated ("always exists"),
     is false in general. -/
 theorem hilbert21_negative_in_general :
-    ∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    ∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
     ∃ ρ : MonodromyRep n S,
       ¬∃ F : FuchsianSystem n S, realizes n S F ρ := by
   obtain ⟨S, n, _, ρ, _, hno⟩ := bolibrukh_counterexample
@@ -281,7 +281,7 @@ structure RegularSingularSystem (S : SingularPoints) where
     constraint, not about regular singularities in general. -/
 theorem birkhoff_theorem
     (S : SingularPoints) (ρ : MonodromyRep n S) :
-    ∃ R : RegularSingularSystem n S, True :=  -- R realizes ρ
+    ∃ R : RegularSingularSystem S, True :=  -- R realizes ρ
   ⟨⟨(), trivial⟩, trivial⟩
 
 -- ============================================================
@@ -369,7 +369,7 @@ theorem hilbert21_summary :
     (∀ (S : SingularPoints) (ρ : MonodromyRep n S),
       ρ.isIrreducible n S → ∃ F : FuchsianSystem n S, realizes n S F ρ) ∧
     -- General case: negative answer (counterexamples exist)
-    (∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    (∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
       ∃ ρ : MonodromyRep n S, ¬∃ F : FuchsianSystem n S, realizes n S F ρ) := by
   constructor
   · intro S ρ hirr

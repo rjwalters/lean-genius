@@ -92,7 +92,7 @@ A graph with more than n²/4 edges.
 def IsDense (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   edgeCount G > turanThreshold (Fintype.card V)
 
-/--
+/- 
 **Turán's Theorem (Context):**
 Any graph with >n²/4 edges must contain a triangle.
 This is a special case of the general Turán theorem.
@@ -139,21 +139,21 @@ theorem erdos_904 : BollobasErdosConjecture := edwards_1978
 ## Part V: Sharpness and Examples
 -/
 
-/-- **Complete Bipartite Sharpness:**
+/-  **Complete Bipartite Sharpness:**
     The complete bipartite graph K_{n/2,n/2} has exactly ⌊n²/4⌋ edges
     and is triangle-free, showing the Turán threshold is tight. -/
-/-- **Turán Graph Extremality:**
+/-  **Turán Graph Extremality:**
     The Turán graph T(n,2) maximizes edges among triangle-free graphs.
     No triangle-free graph on n vertices has more than ⌊n²/4⌋ edges. -/
 /-
 ## Part VI: Stronger Results
 -/
 
-/-- **Degree Sum Tightness:**
+/-  **Degree Sum Tightness:**
     The constant 3/2 is best possible: for every ε > 0 and sufficiently
     large n, there exists a dense graph where every triangle has degree
     sum < (3/2 + ε)n. -/
-/-- **Supersaturation:**
+/-  **Supersaturation:**
     Graphs with more than ⌊n²/4⌋ edges contain not just one triangle but
     at least Ω(n) triangles. Density above the Turán threshold forces many
     triangles. -/

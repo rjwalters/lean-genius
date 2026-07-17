@@ -35,6 +35,9 @@ import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Complex.Basic
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Complex Polynomial
 
 namespace Erdos1046
@@ -91,7 +94,7 @@ The average of the roots: (z₁ + ... + zₙ) / n
 noncomputable def rootCentroid (f : Polynomial ℂ) (hf : f.natDegree > 0) : ℂ :=
   (f.roots.sum) / f.natDegree
 
-/--
+/- 
 **Vieta's Formulas (Root Sum):**
 For a monic polynomial xⁿ + aₙ₋₁xⁿ⁻¹ + ..., the sum of roots equals -aₙ₋₁.
 -/
@@ -104,7 +107,7 @@ The zeros of f', i.e., the critical points of f.
 def criticalPoints (f : Polynomial ℂ) : Set ℂ :=
   {z : ℂ | (derivative f).eval z = 0}
 
-/--
+/- 
 **Connectivity Criterion:**
 E = {z : |f(z)| < 1} is connected ⟺ E contains all critical points of f.
 -/
@@ -163,7 +166,7 @@ axiom pommerenke_width_counterexample :
     IsConnected (closedSublevelSet f) ∧
     width (closedSublevelSet f) > Real.sqrt 3 * (2 : ℝ) ^ (1/3 : ℝ)
 
-/--
+/- 
 **Width Conjecture is False:**
 Follows from Pommerenke's counterexample since √3 · 2^{1/3} > 2.
 -/
@@ -174,9 +177,9 @@ Follows from Pommerenke's counterexample since √3 · 2^{1/3} > 2.
 The supremum of distances between points.
 -/
 noncomputable def diameter (S : Set ℂ) : ℝ :=
-  sSup {Complex.abs (z - w) | (z, w) ∈ S ×ˢ S}
+  sSup {d | ∃ z ∈ S, ∃ w ∈ S, Complex.abs (z - w) = d}
 
-/--
+/- 
 **Sharper Diameter Bound (Pommerenke):**
 The diameter of a connected sublevel set is at most 2.
 -/

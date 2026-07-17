@@ -1,6 +1,8 @@
-import Mathlib.RingTheory.HahnSeries.Basic
+import Mathlib.RingTheory.HahnSeries.Multiplication
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Tactic
+
+open scoped Classical
 
 /-
 # Puiseux's Theorem OQ-02: Multivariate Generalization
@@ -42,7 +44,7 @@ Laurent series field of the previous stage.
 - `IsMultiPuiseuxSeries`: the levelwise common-denominator predicate
 - Base cases and dimensional facts
 
-Theorems: 9, Axioms: 0, Sorries: 0
+Theorems: 6, Axioms: 0, Sorries: 0
 -/
 
 noncomputable section
@@ -50,6 +52,8 @@ noncomputable section
 open Polynomial
 
 namespace PuiseuxTheoremOQ02
+
+universe u
 
 /-! ═══════════════════════════════════════════════════════════════════
 Part I: Iterated Puiseux Series
@@ -65,7 +69,21 @@ The idea is simple: start with K, apply the Puiseux construction
 
 This is well-defined because HahnSeries ℚ R is a commutative ring
 (and a field when R is a field), so we can iterate.
+
+Because `HahnSeries ℚ R` requires a `Zero R` instance just to *state*
+the type, the recursion must carry the zero along with the type: we
+bundle the pair `(T, Zero T)` in a sigma type and recurse on that.
 ═══════════════════════════════════════════════════════════════════ -/
+
+/-- Auxiliary bundled recursion: each level of the iterated Hahn series
+    *together with* its `Zero` instance. The bundling is forced: the
+    type `HahnSeries ℚ R` only makes sense given `Zero R`, so building
+    level `n + 1` requires the zero of level `n`. -/
+def MultiHahnAux (K : Type u) [Zero K] : ℕ → Σ T : Type u, Zero T
+  | 0 => ⟨K, ‹Zero K›⟩
+  | n + 1 =>
+    letI : Zero (MultiHahnAux K n).1 := (MultiHahnAux K n).2
+    ⟨HahnSeries ℚ (MultiHahnAux K n).1, inferInstance⟩
 
 /-- Iterated Hahn series over ℚ: the ambient structure for n-variate
     Puiseux series. Level 0 is the coefficient field K, and each level
@@ -75,18 +93,27 @@ This is well-defined because HahnSeries ℚ R is a commutative ring
     `MultiHahnSeries 1 K = HahnSeries ℚ K`
     `MultiHahnSeries 2 K = HahnSeries ℚ (HahnSeries ℚ K)`
     etc. -/
-def MultiHahnSeries : ℕ → Type* → Type*
-  | 0, K => K
-  | n + 1, K => HahnSeries ℚ (MultiHahnSeries n K)
+def MultiHahnSeries (n : ℕ) (K : Type u) [Zero K] : Type u :=
+  (MultiHahnAux K n).1
+
+/-- `MultiHahnSeries n K` inherits `Zero` from K: at level 0 it is K
+    (which has zero), and at level n+1 it is
+    `HahnSeries ℚ (MultiHahnSeries n K)` (which has zero when
+    the coefficient type does). This is the bundled instance from the
+    auxiliary recursion. -/
+instance instZeroMultiHahn (n : ℕ) (K : Type u) [Zero K] :
+    Zero (MultiHahnSeries n K) :=
+  (MultiHahnAux K n).2
 
 /-- Level 0: the iterated construction at depth 0 is just K itself. -/
-theorem multiHahn_zero (K : Type*) : MultiHahnSeries 0 K = K := rfl
+theorem multiHahn_zero (K : Type u) [Zero K] : MultiHahnSeries 0 K = K := rfl
 
 /-- Level 1: the single-variable case recovers standard Hahn series. -/
-theorem multiHahn_one (K : Type*) : MultiHahnSeries 1 K = HahnSeries ℚ K := rfl
+theorem multiHahn_one (K : Type u) [Zero K] :
+    MultiHahnSeries 1 K = HahnSeries ℚ K := rfl
 
 /-- The successor step: adding one more variable wraps in another Hahn series layer. -/
-theorem multiHahn_succ (n : ℕ) (K : Type*) :
+theorem multiHahn_succ (n : ℕ) (K : Type u) [Zero K] :
     MultiHahnSeries (n + 1) K = HahnSeries ℚ (MultiHahnSeries n K) := rfl
 
 /-! ═══════════════════════════════════════════════════════════════════
@@ -98,19 +125,33 @@ base field. We prove this by induction on the iteration depth.
 These instances are the key algebraic content of this file: they
 establish that the tower K ⊂ K⦃⦃x₁⦄⦄ ⊂ K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄ ⊂ ...
 consists of commutative rings at every level.
+
+The inductive step needs a coherence fact: the zero of the ring
+structure at level n agrees (definitionally, level by level) with the
+bundled zero used to *form* the type at level n+1. We carry this
+coherence through the induction.
 ═══════════════════════════════════════════════════════════════════ -/
 
-/-- `MultiHahnSeries n K` inherits `Zero` from K by induction:
-    at level 0 it is K (which has zero), and at level n+1 it is
-    `HahnSeries ℚ (MultiHahnSeries n K)` (which has zero when
-    the coefficient type does). -/
-def instZeroMultiHahn (n : ℕ) (K : Type*) [Zero K] :
-    Zero (MultiHahnSeries n K) := by
+/-- The canonical `Zero` derived from a `CommRing` structure, fixing one
+    derivation path so that coherence statements are stable. -/
+@[reducible] def ringZero (T : Type u) [CommRing T] : Zero T := inferInstance
+
+/-- Auxiliary recursion for the ring structure: the `CommRing` instance
+    at each level, together with the coherence fact that its derived zero
+    is the bundled zero of the iterated construction. -/
+def commRingAux (K : Type u) [CommRing K] :
+    (n : ℕ) → Σ' c : CommRing (MultiHahnSeries n K),
+      @ringZero (MultiHahnSeries n K) c = instZeroMultiHahn n K := by
+  intro n
   induction n with
-  | zero => exact ‹Zero K›
+  | zero => exact ⟨‹CommRing K›, rfl⟩
   | succ n ih =>
-    haveI : Zero (MultiHahnSeries n K) := ih
-    exact inferInstance
+    obtain ⟨c, hc⟩ := ih
+    show Σ' c' : CommRing (@HahnSeries ℚ (MultiHahnSeries n K) _ (instZeroMultiHahn n K)),
+        @ringZero _ c' = @HahnSeries.instZero ℚ (MultiHahnSeries n K) _ (instZeroMultiHahn n K)
+    rw [← hc]
+    letI : CommRing (MultiHahnSeries n K) := c
+    exact ⟨inferInstance, rfl⟩
 
 /-- `MultiHahnSeries n K` inherits `CommRing` from K by induction.
     This is the key algebraic fact: the iterated Hahn series over
@@ -120,13 +161,9 @@ def instZeroMultiHahn (n : ℕ) (K : Type*) [Zero K] :
     `HahnSeries ℚ R` is a `CommRing` when R is, using Mathlib's
     instance for Hahn series over a linearly ordered cancellative
     additive commutative monoid (which ℚ satisfies). -/
-def instCommRingMultiHahn (n : ℕ) (K : Type*) [CommRing K] :
-    CommRing (MultiHahnSeries n K) := by
-  induction n with
-  | zero => exact ‹CommRing K›
-  | succ n ih =>
-    haveI : CommRing (MultiHahnSeries n K) := ih
-    exact inferInstance
+@[reducible] def instCommRingMultiHahn (n : ℕ) (K : Type u) [CommRing K] :
+    CommRing (MultiHahnSeries n K) :=
+  (commRingAux K n).1
 
 /-! ═══════════════════════════════════════════════════════════════════
 Part III: The Multivariate Puiseux Property
@@ -145,37 +182,35 @@ subfield of HahnSeries ℚ (HahnSeries ℚ (... K)).
 /-- A multivariate Hahn series is a Puiseux series if, at each level
     of the iteration, the exponents have a common denominator and
     the coefficients are recursively multi-Puiseux. -/
-def IsMultiPuiseuxSeries {K : Type*} [Zero K] :
+def IsMultiPuiseuxSeries {K : Type u} [Zero K] :
     (n : ℕ) → MultiHahnSeries n K → Prop
   | 0, _ => True
   | n + 1, f =>
-    letI := instZeroMultiHahn n K
+    letI : Zero (MultiHahnAux K n).1 := (MultiHahnAux K n).2
     -- Outer level: exponents have a common denominator
-    (∃ d : ℕ+, ∀ q ∈ f.support, ∃ k : ℤ, q = k / d) ∧
+    (∃ d : ℕ+, ∀ q ∈ (f : HahnSeries ℚ (MultiHahnSeries n K)).support, ∃ k : ℤ, q = k / d) ∧
     -- Inner levels: each coefficient is recursively multi-Puiseux
-    (∀ q : ℚ, IsMultiPuiseuxSeries n (f.coeff q))
+    (∀ q : ℚ, IsMultiPuiseuxSeries n ((f : HahnSeries ℚ (MultiHahnSeries n K)).coeff q))
 
 /-- Every element of the base field K is trivially a multi-Puiseux series
     (the base case of the recursion). -/
-theorem isMultiPuiseux_base {K : Type*} [Zero K] (a : K) :
-    IsMultiPuiseuxSeries 0 a := trivial
+theorem isMultiPuiseux_base {K : Type u} [Zero K] (a : K) :
+    IsMultiPuiseuxSeries (K := K) 0 a := trivial
 
 /-- Zero is a multivariate Puiseux series at every level. The support is empty
     so the outer common-denominator condition holds vacuously, and every
     coefficient is `0` so the inner condition holds by induction. -/
-theorem isMultiPuiseux_zero {K : Type*} [Zero K] (n : ℕ) :
-    letI := instZeroMultiHahn n K
+theorem isMultiPuiseux_zero {K : Type u} [Zero K] (n : ℕ) :
     IsMultiPuiseuxSeries n (0 : MultiHahnSeries n K) := by
   induction n with
   | zero => trivial
   | succ n ih =>
-    letI : Zero (MultiHahnSeries n K) := instZeroMultiHahn n K
     refine ⟨⟨1, ?_⟩, ?_⟩
     · intro q hq
-      simp at hq
+      -- the support of the zero series is empty
+      exact (hq rfl).elim
     · intro q
-      show IsMultiPuiseuxSeries n ((0 : HahnSeries ℚ (MultiHahnSeries n K)).coeff q)
-      rw [HahnSeries.coeff_zero]
+      -- every coefficient of the zero series is zero
       exact ih
 
 /-! ═══════════════════════════════════════════════════════════════════
@@ -194,7 +229,7 @@ The induction requires characteristic 0 at each level, which propagates
 because HahnSeries ℚ R inherits CharZero from R.
 ═══════════════════════════════════════════════════════════════════ -/
 
-/-- **Multivariate Puiseux Theorem** (structural fact).
+/- **Multivariate Puiseux Theorem** (structural fact).
 
     The algebraic closure of the iterated Laurent series field is
     the iterated Puiseux series field. The proof is by induction
@@ -219,10 +254,10 @@ Part V: Properties of the Iterated Construction
 /-- **The single-variable case agrees with the base theorem**:
     MultiHahnSeries 1 K = HahnSeries ℚ K, which is exactly the
     Puiseux series field from PuiseuxTheorem.lean. -/
-theorem single_variable_is_univariate (K : Type*) :
+theorem single_variable_is_univariate (K : Type u) [Zero K] :
     MultiHahnSeries 1 K = HahnSeries ℚ K := rfl
 
-/-- In characteristic 0, the Puiseux construction is "stable":
+/- In characteristic 0, the Puiseux construction is "stable":
     applying it twice gives the same result as applying it once,
     because the first application already gives an algebraically
     closed field, so the second is a trivial extension.

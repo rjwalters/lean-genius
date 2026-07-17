@@ -23,11 +23,9 @@ References:
 Tags: combinatorics, extremal-graph-theory, triangle-counting
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
+
+open scoped Classical
 
 open Nat Finset Filter
 
@@ -84,7 +82,7 @@ noncomputable def e (n r : ℕ) : ℕ :=
   sInf { m : ℕ | ∀ G : Graph n,
     edgeCount G ≥ m → AllEdgesTriangleCovered G → HasEdgeInRTriangles G r }
 
-/-- **e is well-defined:**
+/-  **e is well-defined:**
 The set is non-empty (bounded by n²/2). -/
 /- ## Part IV: Ruzsa-Szemerédi Result -/
 
@@ -132,13 +130,13 @@ theorem questions_together (h1 : Question1) (h2 : Question2) :
 
 /- ## Part VII: Known Bounds -/
 
-/-- **Turán number bound:**
+/-  **Turán number bound:**
 e(n, r) ≤ ⌊n²/4⌋ since ex(n, K₃) = ⌊n²/4⌋ and e(n,r) only considers
 graphs where all edges are in triangles. -/
-/-- **Upper bound:**
+/-  **Upper bound:**
 e(n, r) ≤ C_r · n² / (log n) for some constant C_r depending on r.
 This follows from improvements to the Ruzsa-Szemerédi result. -/
-/-- **Lower bound:**
+/-  **Lower bound:**
 e(n, r) ≥ c_r · n^{2-o(1)} for some function depending on r.
 The threshold is nearly quadratic from below. -/
 /- ## Part VIII: Summary -/

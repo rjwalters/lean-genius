@@ -1,0 +1,1006 @@
+===== Erdos509Problem
+error: Proofs/Erdos509Problem.lean:52:14: missing end of character literal
+error: Proofs/Erdos509Problem.lean:57:24: Unknown identifier `BoundedDiscCover`
+error: Proofs/Erdos509Problem.lean:69:7: Unknown constant `Complex.abs`
+error: Proofs/Erdos509Problem.lean:72:61: Invalid field `eval`: The environment does not contain `Polynomial.eval`, so it is not possible to project the field `eval` from an expression
+error: Proofs/Erdos509Problem.lean:74:25: Unknown constant `Complex.abs.map_zero`
+===== Erdos50Problem
+error: Proofs/Erdos50Problem.lean:43:18: failed to synthesize instance of type class
+error: Proofs/Erdos50Problem.lean:80:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos520Problem
+error: Proofs/Erdos520Problem.lean:135:66: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos521Problem
+error: Proofs/Erdos521Problem.lean:68:41: Unknown constant `Real.pi`
+error: Proofs/Erdos521Problem.lean:74:45: Unknown constant `Real.pi`
+error: Lean exited with code 1
+error: build failed
+===== Erdos522Problem
+error: Proofs/Erdos522Problem.lean:59:4: Invalid field `natDegree`: The environment does not contain `Polynomial.natDegree`, so it is not possible to project the field `natDegree` from an expression
+error: Lean exited with code 1
+error: build failed
+===== Erdos527Problem
+error: Proofs/Erdos527Problem.lean:40:35: Unknown constant `Complex.abs`
+error: Lean exited with code 1
+error: build failed
+===== Erdos529Problem
+error: Proofs/Erdos529Problem.lean:105:2: `simp` made no progress
+error: Proofs/Erdos529Problem.lean:114:22: invalid atom
+error: Proofs/Erdos529Problem.lean:132:17: unexpected token '('; expected ')', ',' or ':'
+error: Proofs/Erdos529Problem.lean:138:34: unexpected token '('; expected ')', ',' or ':'
+error: Proofs/Erdos529Problem.lean:152:31: Unknown identifier `d_2`
+===== Erdos534Problem
+error: Proofs/Erdos534Problem.lean:38:82: omega could not prove the goal:
+error: Proofs/Erdos534Problem.lean:49:2: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos53Problem
+error: Proofs/Erdos53Problem.lean:115:60: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos541Problem
+error: Proofs/Erdos541Problem.lean:166:81: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos542Problem
+error: Proofs/Erdos542Problem.lean:58:54: unsolved goals
+error: Proofs/Erdos542Problem.lean:98:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos554Problem
+error: Proofs/Erdos554Problem.lean:35:4: `Erdos554.ramseyNumber` not supported by code generator; consider marking definition as `noncomputable`
+error: Proofs/Erdos554Problem.lean:38:4: `Erdos554.ramseyNumber` not supported by code generator; consider marking definition as `noncomputable`
+error: Lean exited with code 1
+error: build failed
+===== Erdos555Problem
+error: Proofs/Erdos555Problem.lean:32:68: omega could not prove the goal:
+error: Proofs/Erdos555Problem.lean:44:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos555Problem.lean:46:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos555Problem.lean:54:13: Type mismatch
+error: Proofs/Erdos555Problem.lean:53:2: failed to synthesize instance of type class
+===== Erdos556Problem
+error: Proofs/Erdos556Problem.lean:46:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos556Problem.lean:51:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos556Problem.lean:59:49: Type mismatch
+error: Proofs/Erdos556Problem.lean:63:2: failed to synthesize instance of type class
+error: Proofs/Erdos556Problem.lean:63:23: Tactic `assumption` failed
+===== Erdos560Problem
+error: Proofs/Erdos560Problem.lean:64:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos560Problem.lean:67:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos560Problem.lean:86:36: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+error: Proofs/Erdos560Problem.lean:86:46: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+error: Proofs/Erdos560Problem.lean:87:23: Invalid `⟨...⟩` notation: The expected type `Quot (Sym2.Rel V)` is not an inductive type
+===== Erdos565Problem
+error: Proofs/Erdos565Problem.lean:86:36: failed to synthesize instance of type class
+error: Proofs/Erdos565Problem.lean:128:11: Application type mismatch: The argument
+error: Proofs/Erdos565Problem.lean:225:13: Application type mismatch: The argument
+error: Lean exited with code 1
+error: build failed
+===== Erdos566Problem
+error: Proofs/Erdos566Problem.lean:33:15: failed to synthesize instance of type class
+error: Proofs/Erdos566Problem.lean:39:17: failed to synthesize instance of type class
+error: Proofs/Erdos566Problem.lean:51:24: Application type mismatch: The argument
+error: Proofs/Erdos566Problem.lean:73:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+===== Erdos567Problem
+error: Proofs/Erdos567Problem.lean:36:24: failed to synthesize instance of type class
+error: Proofs/Erdos567Problem.lean:91:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos570Problem
+error: Proofs/Erdos570Problem.lean:42:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos570Problem.lean:47:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos570Problem.lean:68:2: failed to synthesize instance of type class
+error: Proofs/Erdos570Problem.lean:81:23: type expected, got
+error: Proofs/Erdos570Problem.lean:81:2: failed to synthesize instance of type class
+===== Erdos571Problem
+error: Proofs/Erdos571Problem.lean:51:35: failed to synthesize instance of type class
+error: Proofs/Erdos571Problem.lean:92:0: declaration `Erdos571.erdos_571_conjecture` contains universe level metavariables at the expression
+error: Lean exited with code 1
+error: build failed
+===== Erdos572Problem
+error: Proofs/Erdos572Problem.lean:59:82: omega could not prove the goal:
+error: Proofs/Erdos572Problem.lean:86:2: failed to synthesize instance of type class
+error: Proofs/Erdos572Problem.lean:114:30: failed to synthesize instance of type class
+error: Proofs/Erdos572Problem.lean:119:30: failed to synthesize instance of type class
+error: Proofs/Erdos572Problem.lean:129:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+===== Erdos573Problem
+error: Proofs/Erdos573Problem.lean:53:17: Invalid field `degree`: The environment does not contain `SimpleGraph.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos573Problem.lean:75:4: Invalid field `edgeFinset`: The environment does not contain `SimpleGraph.edgeFinset`, so it is not possible to project the field `edgeFinset` from an expression
+error: Proofs/Erdos573Problem.lean:120:22: failed to synthesize instance of type class
+error: Proofs/Erdos573Problem.lean:120:51: failed to synthesize instance of type class
+error: Proofs/Erdos573Problem.lean:130:51: failed to synthesize instance of type class
+===== Erdos575Problem
+error: Proofs/Erdos575Problem.lean:37:10: failed to synthesize instance of type class
+error: Proofs/Erdos575Problem.lean:45:21: failed to synthesize instance of type class
+error: Proofs/Erdos575Problem.lean:90:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos580Problem
+error: Proofs/Erdos580Problem.lean:47:3: failed to synthesize instance of type class
+error: Proofs/Erdos580Problem.lean:53:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'vertexDegree', which is 'noncomputable'
+error: Proofs/Erdos580Problem.lean:143:4: Function expected at
+error: Proofs/Erdos580Problem.lean:144:4: Function expected at
+error: Proofs/Erdos580Problem.lean:153:35: Application type mismatch: The argument
+===== Erdos582Problem
+error: Proofs/Erdos582Problem.lean:91:56: Invalid field `edge_mem_edgeSet`: The environment does not contain `SimpleGraph.edge_mem_edgeSet`, so it is not possible to project the field `edge_mem_edgeSet` from an expression
+error: Proofs/Erdos582Problem.lean:93:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos582Problem.lean:101:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos582Problem.lean:221:7: unknown tactic
+error: Proofs/Erdos582Problem.lean:221:4: unsolved goals
+===== Erdos583Problem
+error: Proofs/Erdos583Problem.lean:46:31: omega could not prove the goal:
+error: Proofs/Erdos583Problem.lean:46:64: omega could not prove the goal:
+error: Proofs/Erdos583Problem.lean:55:22: Tactic `assumption` failed
+error: Proofs/Erdos583Problem.lean:56:22: Tactic `assumption` failed
+error: Proofs/Erdos583Problem.lean:100:31: Tactic `assumption` failed
+===== Erdos585Problem
+error: Proofs/Erdos585Problem.lean:53:8: invalid binder name `G.edgeFinset.card`, it must be atomic
+error: Proofs/Erdos585Problem.lean:78:8: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos597Problem
+error: Proofs/Erdos597Problem.lean:40:23: Unknown constant `Ordinal.omega`
+error: Proofs/Erdos597Problem.lean:85:18: Unknown constant `Cardinal.aleph`
+error: Proofs/Erdos597Problem.lean:100:0: declaration `Erdos597.erdos597Conjecture` contains universe level metavariables at the expression
+error: Proofs/Erdos597Problem.lean:112:0: declaration `Erdos597.finiteCaseConjecture` contains universe level metavariables at the expression
+error: Proofs/Erdos597Problem.lean:134:22: Unknown constant `Cardinal.aleph`
+===== Erdos59Problem
+error: Proofs/Erdos59Problem.lean:53:19: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos59Problem.lean:55:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos59Problem.lean:73:10: Unknown constant `Set.mem_union.mp`
+error: Proofs/Erdos59Problem.lean:82:61: omega could not prove the goal:
+error: Proofs/Erdos59Problem.lean:90:39: Unknown identifier `even_zero`
+===== Erdos5Problem
+error: Proofs/Erdos5Problem.lean:85:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos600Problem
+error: Proofs/Erdos600Problem.lean:61:3: failed to synthesize instance of type class
+error: Proofs/Erdos600Problem.lean:84:2: failed to synthesize instance of type class
+error: Proofs/Erdos600Problem.lean:104:36: Unknown identifier `atTop`
+error: Proofs/Erdos600Problem.lean:111:21: Unknown identifier `atTop`
+error: Proofs/Erdos600Problem.lean:131:3: Application type mismatch: The argument
+===== Erdos606OQ03
+error: Proofs/Erdos606OQ03.lean:70:39: omega could not prove the goal:
+error: Proofs/Erdos606OQ03.lean:80:8: Unknown constant `Nat.lt_choose_self`
+error: Lean exited with code 1
+error: build failed
+===== Erdos615Problem
+error: Proofs/Erdos615Problem.lean:62:33: Invalid field `IsAnticlique`: The environment does not contain `SimpleGraph.IsAnticlique`, so it is not possible to project the field `IsAnticlique` from an expression
+error: Proofs/Erdos615Problem.lean:80:22: failed to synthesize instance of type class
+error: Proofs/Erdos615Problem.lean:79:19: Tactic `assumption` failed
+error: Proofs/Erdos615Problem.lean:102:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos615Problem.lean:113:3: expected token
+===== Erdos616Problem
+error: Proofs/Erdos616Problem.lean:51:27: Invalid field `card`: The environment does not contain `Finset.card`, so it is not possible to project the field `card` from an expression
+error: Proofs/Erdos616Problem.lean:64:46: invalid binder annotation, type is not a class instance
+error: Proofs/Erdos616Problem.lean:88:39: invalid binder annotation, type is not a class instance
+error: Proofs/Erdos616Problem.lean:110:17: Unknown identifier `Fintype`
+error: Proofs/Erdos616Problem.lean:129:23: Function expected at
+===== Erdos619Problem
+error: Proofs/Erdos619Problem.lean:49:11: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+error: Proofs/Erdos619Problem.lean:49:2: failed to synthesize instance of type class
+error: Proofs/Erdos619Problem.lean:71:25: failed to synthesize instance of type class
+error: Proofs/Erdos619Problem.lean:73:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos619Problem.lean:78:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+===== Erdos61Problem
+error: Proofs/Erdos61Problem.lean:130:19: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos61Problem.lean:131:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos61Problem.lean:136:2: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos620Problem
+error: Proofs/Erdos620Problem.lean:67:18: Invalid projection: Projections cannot be used on functions, and
+error: Proofs/Erdos620Problem.lean:67:25: Invalid projection: Projections cannot be used on functions, and
+error: Proofs/Erdos620Problem.lean:67:36: Invalid projection: Projections cannot be used on functions, and
+error: Proofs/Erdos620Problem.lean:67:45: Application type mismatch: The argument
+error: Proofs/Erdos620Problem.lean:67:50: Application type mismatch: The argument
+===== Erdos636Problem
+error: Proofs/Erdos636Problem.lean:90:2: failed to synthesize instance of type class
+error: Proofs/Erdos636Problem.lean:114:2: failed to synthesize instance of type class
+error: Proofs/Erdos636Problem.lean:115:2: failed to synthesize instance of type class
+error: Proofs/Erdos636Problem.lean:125:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos636Problem.lean:137:8: failed to synthesize instance of type class
+===== Erdos642Problem
+error: Proofs/Erdos642Problem.lean:44:76: omega could not prove the goal:
+error: Proofs/Erdos642Problem.lean:71:3: failed to synthesize instance of type class
+error: Proofs/Erdos642Problem.lean:121:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos642Problem.lean:187:50: unexpected token 'λ'; expected '_' or identifier
+error: Proofs/Erdos642Problem.lean:197:7: unexpected token 'λ'; expected '(', '_' or identifier
+===== Erdos649Problem
+error: Proofs/Erdos649Problem.lean:67:19: Unknown constant `Nat.primeFactorsList_eq_nil.mp`
+error: Proofs/Erdos649Problem.lean:66:31: unsolved goals
+error: Proofs/Erdos649Problem.lean:76:15: No goals to be solved
+error: Proofs/Erdos649Problem.lean:91:29: Unknown constant `Nat.primeFactorsList_prime_pow`
+error: Proofs/Erdos649Problem.lean:90:80: unsolved goals
+===== Erdos64Problem
+error: Proofs/Erdos64Problem.lean:180:2: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos651Problem
+error: Proofs/Erdos651Problem.lean:63:2: Unknown identifier `convexHull`
+error: Proofs/Erdos651Problem.lean:71:15: Unknown identifier `convexHull`
+error: Proofs/Erdos651Problem.lean:150:55: failed to synthesize instance of type class
+error: Proofs/Erdos651Problem.lean:170:3: unknown tactic
+error: Proofs/Erdos651Problem.lean:165:62: unsolved goals
+===== Erdos652Problem
+error: Proofs/Erdos652Problem.lean:51:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.sqrt', which is 'noncomputable'
+error: Proofs/Erdos652Problem.lean:106:58: failed to synthesize instance of type class
+error: Proofs/Erdos652Problem.lean:108:8: Unknown constant `Real.lt_top`
+error: Proofs/Erdos652Problem.lean:133:26: failed to synthesize instance of type class
+error: Proofs/Erdos652Problem.lean:136:22: Unknown identifier `alpha_k_finite`
+===== Erdos658Problem
+error: Proofs/Erdos658Problem.lean:106:16: failed to synthesize instance of type class
+error: Proofs/Erdos658Problem.lean:106:23: Type mismatch
+error: Proofs/Erdos658Problem.lean:106:39: Type mismatch
+error: Proofs/Erdos658Problem.lean:113:2: failed to synthesize instance of type class
+error: Proofs/Erdos658Problem.lean:127:8: Unknown identifier `ℚ`
+===== Erdos665Problem
+error: Proofs/Erdos665Problem.lean:41:83: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos667Aristotle
+error: Proofs/Erdos667Aristotle.lean:31:54: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos667Aristotle.lean:64:10: Application type mismatch: The argument
+error: Proofs/Erdos667Aristotle.lean:65:2: Type mismatch
+error: Proofs/Erdos667Aristotle.lean:73:9: Function expected at
+error: Lean exited with code 1
+===== Erdos667Problem
+error: Proofs/Erdos667Problem.lean:61:63: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos667Problem.lean:72:83: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos667Problem.lean:94:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos667Problem.lean:99:8: Tactic `apply` failed: could not unify the conclusion of `@filter_congr`
+error: Proofs/Erdos667Problem.lean:116:46: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== Erdos669Problem
+error: Proofs/Erdos669Problem.lean:51:3: failed to synthesize instance of type class
+error: Proofs/Erdos669Problem.lean:78:4: failed to synthesize instance of type class
+error: Proofs/Erdos669Problem.lean:79:4: failed to synthesize instance of type class
+error: Proofs/Erdos669Problem.lean:107:2: Type mismatch
+error: Lean exited with code 1
+===== Erdos670Problem
+error: Proofs/Erdos670Problem.lean:48:29: failed to synthesize instance of type class
+error: Proofs/Erdos670Problem.lean:48:38: failed to synthesize instance of type class
+error: Proofs/Erdos670Problem.lean:48:47: failed to synthesize instance of type class
+error: Proofs/Erdos670Problem.lean:48:56: failed to synthesize instance of type class
+error: Proofs/Erdos670Problem.lean:92:21: failed to synthesize instance of type class
+===== Erdos682Problem
+error: Proofs/Erdos682Problem.lean:73:26: Unknown constant `Nat.one_lt_iff_ne_one.mp`
+error: Proofs/Erdos682Problem.lean:81:2: Type mismatch
+error: Proofs/Erdos682Problem.lean:102:2: unsolved goals
+error: Proofs/Erdos682Problem.lean:110:2: unsolved goals
+error: Proofs/Erdos682Problem.lean:192:5: failed to synthesize instance of type class
+===== Erdos683Problem
+error: Proofs/Erdos683Problem.lean:49:40: Unknown constant `Nat.one_lt_iff_ne_one.mp`
+error: Proofs/Erdos683Problem.lean:109:6: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos688Problem
+error: Proofs/Erdos688Problem.lean:81:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos688Problem.lean:112:2: unsolved goals
+error: Proofs/Erdos688Problem.lean:121:0: type of theorem `sieve_duality` is not a proposition
+error: Lean exited with code 1
+error: build failed
+===== Erdos693Problem
+error: Proofs/Erdos693Problem.lean:244:25: Function expected at
+error: Proofs/Erdos693Problem.lean:245:49: Function expected at
+error: Proofs/Erdos693Problem.lean:282:22: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+error: Proofs/Erdos693Problem.lean:283:2: Unknown constant `Finset.sort_sorted`
+error: Proofs/Erdos693Problem.lean:382:44: Unknown identifier `rpow_nonneg`
+===== Erdos696Problem
+error: Proofs/Erdos696Problem.lean:57:18: expected token
+error: Proofs/Erdos696Problem.lean:65:2: failed to synthesize instance of type class
+error: Proofs/Erdos696Problem.lean:77:18: expected token
+error: Proofs/Erdos696Problem.lean:85:2: failed to synthesize instance of type class
+error: Proofs/Erdos696Problem.lean:154:39: Unknown identifier `ℝ`
+===== Erdos697Problem
+error: Proofs/Erdos697Problem.lean:56:2: failed to synthesize instance of type class
+error: Proofs/Erdos697Problem.lean:86:54: Unknown constant `Real.exp_one_gt_d9`
+error: Lean exited with code 1
+error: build failed
+===== Erdos6Problem
+error: Proofs/Erdos6Problem.lean:162:68: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos705Problem
+error: Proofs/Erdos705Problem.lean:64:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos705Problem.lean:67:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos705Problem.lean:102:14: Application type mismatch: The argument
+error: Proofs/Erdos705Problem.lean:263:2: omega could not prove the goal:
+error: Proofs/Erdos705Problem.lean:271:2: omega could not prove the goal:
+===== Erdos708Problem
+error: Proofs/Erdos708Problem.lean:77:30: Invalid field `sup`: The environment does not contain `Finset.sup`, so it is not possible to project the field `sup` from an expression
+error: Proofs/Erdos708Problem.lean:86:4: Unknown constant `Nat.find`
+error: Proofs/Erdos708Problem.lean:110:2: Type mismatch
+error: Proofs/Erdos708Problem.lean:110:22: Unknown identifier `Real.sqrt`
+error: Proofs/Erdos708Problem.lean:120:36: Unknown identifier `ℝ`
+===== Erdos70OQ01Problem
+error: Proofs/Erdos70OQ01Problem.lean:104:8: Unknown constant `Ordinal.mul_lt_mul_of_pos_left`
+error: Proofs/Erdos70OQ01Problem.lean:109:6: Unknown constant `Ordinal.mul_add`
+error: Proofs/Erdos70OQ01Problem.lean:108:66: unsolved goals
+error: Proofs/Erdos70OQ01Problem.lean:116:43: Unknown constant `Ordinal.add_le_add_left`
+error: Proofs/Erdos70OQ01Problem.lean:119:14: Unknown constant `Ordinal.mul_le_mul_left'`
+===== Erdos714Problem
+error: Proofs/Erdos714Problem.lean:73:2: failed to synthesize instance of type class
+error: Proofs/Erdos714Problem.lean:92:26: failed to synthesize instance of type class
+error: Proofs/Erdos714Problem.lean:101:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos714Problem.lean:115:26: failed to synthesize instance of type class
+error: Proofs/Erdos714Problem.lean:127:11: failed to synthesize instance of type class
+===== Erdos716Problem
+error: Proofs/Erdos716Problem.lean:89:4: `Erdos716.extremalHypergraph` not supported by code generator; consider marking definition as `noncomputable`
+error: Lean exited with code 1
+error: build failed
+===== Erdos717Problem
+error: Proofs/Erdos717Problem.lean:50:2: unexpected token 'variable'; expected 'lemma'
+error: Proofs/Erdos717Problem.lean:74:2: Type mismatch
+error: Proofs/Erdos717Problem.lean:75:2: Type mismatch
+error: Proofs/Erdos717Problem.lean:74:16: Invalid field notation: Type of
+error: Proofs/Erdos717Problem.lean:75:26: Function expected at
+===== Erdos718Problem
+error: Proofs/Erdos718Problem.lean:42:44: failed to synthesize instance of type class
+error: Proofs/Erdos718Problem.lean:67:8: failed to synthesize instance of type class
+error: Proofs/Erdos718Problem.lean:67:46: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+error: Proofs/Erdos718Problem.lean:79:6: failed to synthesize instance of type class
+error: Proofs/Erdos718Problem.lean:104:31: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+===== Erdos719Problem
+error: Proofs/Erdos719Problem.lean:496:45: Unknown identifier `H.edges`
+error: Proofs/Erdos719Problem.lean:498:33: Unknown identifier `H.uniform`
+error: Proofs/Erdos719Problem.lean:498:22: unsolved goals
+error: Proofs/Erdos719Problem.lean:492:2: unsolved goals
+error: Proofs/Erdos719Problem.lean:497:31: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== Erdos71Problem
+error: Proofs/Erdos71Problem.lean:78:57: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos720Problem
+error: Proofs/Erdos720Problem.lean:51:3: failed to synthesize instance of type class
+error: Proofs/Erdos720Problem.lean:56:19: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos720Problem.lean:57:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos720Problem.lean:64:19: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos720Problem.lean:65:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+===== Erdos722Problem
+error: Proofs/Erdos722Problem.lean:226:3: unknown tactic
+error: Proofs/Erdos722Problem.lean:224:66: unsolved goals
+error: Proofs/Erdos722Problem.lean:240:3: unknown tactic
+error: Proofs/Erdos722Problem.lean:238:60: unsolved goals
+error: Proofs/Erdos722Problem.lean:265:5: failed to synthesize instance of type class
+===== Erdos724Problem
+error: Proofs/Erdos724Problem.lean:106:37: expected token
+error: Proofs/Erdos724Problem.lean:134:39: Unknown constant `Nat.Prime`
+error: Proofs/Erdos724Problem.lean:178:30: expected token
+error: Proofs/Erdos724Problem.lean:199:45: expected token
+error: Proofs/Erdos724Problem.lean:214:45: unexpected token '/--'; expected term
+===== Erdos730Problem
+error: Proofs/Erdos730Problem.lean:75:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos730Problem.lean:96:40: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos730Problem.lean:111:42: Invalid field `dvd_factorial`: The environment does not contain `Irreducible.dvd_factorial`, so it is not possible to project the field `dvd_factorial` from an expression
+error: Proofs/Erdos730Problem.lean:114:30: Invalid field `dvd_factorial`: The environment does not contain `Irreducible.dvd_factorial`, so it is not possible to project the field `dvd_factorial` from an expression
+error: Proofs/Erdos730Problem.lean:114:54: omega could not prove the goal:
+===== Erdos732Problem
+error: Proofs/Erdos732Problem.lean:64:4: Invalid field `powerset`: The environment does not contain `Finset.powerset`, so it is not possible to project the field `powerset` from an expression
+error: Proofs/Erdos732Problem.lean:161:5: failed to synthesize instance of type class
+error: Proofs/Erdos732Problem.lean:160:3: failed to synthesize instance of type class
+error: Proofs/Erdos732Problem.lean:174:35: Unknown constant `Real.sqrt`
+error: Proofs/Erdos732Problem.lean:174:49: Unknown constant `Real.log`
+===== Erdos733Problem
+error: Proofs/Erdos733Problem.lean:66:3: failed to synthesize instance of type class
+error: Proofs/Erdos733Problem.lean:72:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Set.decidableEq', which is 'noncomputable'
+error: Proofs/Erdos733Problem.lean:90:6: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+error: Proofs/Erdos733Problem.lean:222:20: Unknown constant `Nat.one_lt_of_ne_one`
+error: Proofs/Erdos733Problem.lean:235:3: unexpected token 'λ'; expected '(', '_' or identifier
+===== Erdos73Problem
+error: Proofs/Erdos73Problem.lean:47:38: failed to synthesize instance of type class
+error: Proofs/Erdos73Problem.lean:58:8: Function expected at
+error: Proofs/Erdos73Problem.lean:65:72: Application type mismatch: The argument
+error: Proofs/Erdos73Problem.lean:114:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos73Problem.lean:168:2: `simp` made no progress
+===== Erdos741Problem
+error: Proofs/Erdos741Problem.lean:215:8: Unknown constant `Set.ncard_coe_Finset`
+error: Proofs/Erdos741Problem.lean:220:84: unsolved goals
+error: Proofs/Erdos741Problem.lean:255:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos741Problem.lean:281:48: Unknown constant `Set.ncard_coe_Finset`
+error: Proofs/Erdos741Problem.lean:280:57: Unknown constant `Finset.card_Icc`
+===== Erdos742Problem
+error: Proofs/Erdos742Problem.lean:45:32: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+error: Proofs/Erdos742Problem.lean:45:2: failed to synthesize instance of type class
+error: Proofs/Erdos742Problem.lean:49:6: unexpected identifier; expected ')'
+error: Proofs/Erdos742Problem.lean:53:48: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+error: Proofs/Erdos742Problem.lean:54:16: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+===== Erdos743Problem
+error: Proofs/Erdos743Problem.lean:69:57: Invalid field `sum`: The environment does not contain `Finset.sum`, so it is not possible to project the field `sum` from an expression
+error: Proofs/Erdos743Problem.lean:83:48: unknown tactic
+error: Proofs/Erdos743Problem.lean:80:40: Invalid field `sum`: The environment does not contain `Finset.sum`, so it is not possible to project the field `sum` from an expression
+error: Proofs/Erdos743Problem.lean:82:11: unsolved goals
+error: Proofs/Erdos743Problem.lean:83:23: Unknown constant `Finset.sum_range_succ`
+===== Erdos745Problem
+error: Proofs/Erdos745Problem.lean:61:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos745Problem.lean:74:17: Unknown identifier `one_le_cast`
+error: Proofs/Erdos745Problem.lean:74:6: `simp` made no progress
+error: Proofs/Erdos745Problem.lean:67:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos745Problem.lean:96:21: Invalid field `maximum?`: The environment does not contain `List.maximum?`, so it is not possible to project the field `maximum?` from an expression
+===== Erdos74Problem
+error: Proofs/Erdos74Problem.lean:238:2: unsolved goals
+error: Proofs/Erdos74Problem.lean:246:11: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Lean exited with code 1
+error: build failed
+===== Erdos751Problem
+error: Proofs/Erdos751Problem.lean:49:44: unsolved goals
+error: Proofs/Erdos751Problem.lean:49:33: Application type mismatch: The argument
+error: Proofs/Erdos751Problem.lean:56:44: unsolved goals
+error: Proofs/Erdos751Problem.lean:56:33: Application type mismatch: The argument
+error: Lean exited with code 1
+===== Erdos756Problem
+error: Proofs/Erdos756Problem.lean:80:3: failed to synthesize instance of type class
+error: Proofs/Erdos756Problem.lean:139:22: `simp` made no progress
+error: Proofs/Erdos756Problem.lean:192:52: mod_cast has type
+error: Proofs/Erdos756Problem.lean:238:8: typeclass instance problem is stuck
+error: Proofs/Erdos756Problem.lean:266:22: mod_cast has type
+===== Erdos757Problem
+error: Proofs/Erdos757Problem.lean:151:38: Unknown constant `Set.Finite.toFinset_card`
+error: Proofs/Erdos757Problem.lean:169:8: Unknown constant `Finset.card_offDiag`
+error: Proofs/Erdos757Problem.lean:193:8: Unknown constant `Set.ncard_insert_of_not_mem`
+error: Proofs/Erdos757Problem.lean:190:73: Invalid field `ncard`: The environment does not contain `Finset.ncard`, so it is not possible to project the field `ncard` from an expression
+error: Proofs/Erdos757Problem.lean:194:25: Unknown constant `Set.ncard_coe_Finset`
+===== Erdos75Problem
+error: Proofs/Erdos75Problem.lean:213:88: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos760Problem
+error: Proofs/Erdos760Problem.lean:85:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos760Problem.lean:153:13: failed to synthesize instance of type class
+error: Proofs/Erdos760Problem.lean:158:4: Type mismatch
+error: Proofs/Erdos760Problem.lean:158:40: Unknown identifier `Real.log`
+error: Proofs/Erdos760Problem.lean:158:32: failed to synthesize instance of type class
+===== Erdos764Problem
+error: Proofs/Erdos764Problem.lean:35:39: failed to synthesize instance of type class
+error: Proofs/Erdos764Problem.lean:39:15: failed to synthesize instance of type class
+error: Proofs/Erdos764Problem.lean:44:15: failed to synthesize instance of type class
+error: Proofs/Erdos764Problem.lean:75:59: failed to synthesize instance of type class
+error: Proofs/Erdos764Problem.lean:80:32: failed to synthesize instance of type class
+===== Erdos765Problem
+error: Proofs/Erdos765Problem.lean:168:2: No goals to be solved
+error: Proofs/Erdos765Problem.lean:177:2: No goals to be solved
+error: Proofs/Erdos765Problem.lean:187:2: No goals to be solved
+error: Proofs/Erdos765Problem.lean:196:2: No goals to be solved
+error: Proofs/Erdos765Problem.lean:213:36: No goals to be solved
+===== Erdos766Problem
+error: Proofs/Erdos766Problem.lean:49:14: failed to synthesize instance of type class
+error: Proofs/Erdos766Problem.lean:65:39: unexpected token '//'; expected '}'
+error: Proofs/Erdos766Problem.lean:75:23: Insufficient number of fields for `⟨...⟩` constructor: Constructor `SimpleGraph.mk` has 3 explicit field, but only 2 were provided
+error: Proofs/Erdos766Problem.lean:75:24: Application type mismatch: The argument
+error: Proofs/Erdos766Problem.lean:75:2: failed to synthesize instance of type class
+===== Erdos767Problem
+error: Proofs/Erdos767Problem.lean:43:4: Invalid field `edgeFinset`: The environment does not contain `SimpleGraph.edgeFinset`, so it is not possible to project the field `edgeFinset` from an expression
+error: Proofs/Erdos767Problem.lean:50:31: omega could not prove the goal:
+error: Proofs/Erdos767Problem.lean:51:55: omega could not prove the goal:
+error: Proofs/Erdos767Problem.lean:58:15: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+error: Proofs/Erdos767Problem.lean:58:39: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+===== Erdos768Problem
+error: Proofs/Erdos768Problem.lean:90:22: Function expected at
+error: Proofs/Erdos768Problem.lean:279:2: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos770Problem
+error: Proofs/Erdos770Problem.lean:293:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos770Problem.lean:299:38: omega could not prove the goal:
+error: Proofs/Erdos770Problem.lean:349:37: omega could not prove the goal:
+error: Proofs/Erdos770Problem.lean:372:46: omega could not prove the goal:
+error: Proofs/Erdos770Problem.lean:393:19: Unknown identifier `X`
+===== Erdos772Problem
+error: Proofs/Erdos772Problem.lean:183:50: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+error: Proofs/Erdos772Problem.lean:182:33: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Lean exited with code 1
+error: build failed
+===== Erdos773Problem
+error: Proofs/Erdos773Problem.lean:75:22: overloaded, errors 
+error: Proofs/Erdos773Problem.lean:76:27: overloaded, errors 
+error: Proofs/Erdos773Problem.lean:88:14: failed to synthesize instance of type class
+error: Proofs/Erdos773Problem.lean:108:22: failed to synthesize instance of type class
+error: Proofs/Erdos773Problem.lean:116:32: failed to synthesize instance of type class
+===== Erdos777Problem
+error: Proofs/Erdos777Problem.lean:61:66: Ambiguous term
+error: Proofs/Erdos777Problem.lean:187:24: failed to synthesize instance of type class
+error: Proofs/Erdos777Problem.lean:245:15: Ambiguous term
+error: Proofs/Erdos777Problem.lean:245:4: `simp` made no progress
+error: Proofs/Erdos777Problem.lean:249:15: Ambiguous term
+===== Erdos779Problem
+error: Proofs/Erdos779Problem.lean:217:79: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos77Problem
+error: Proofs/Erdos77Problem.lean:185:47: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos781Problem
+error: Proofs/Erdos781Problem.lean:50:63: omega could not prove the goal:
+error: Proofs/Erdos781Problem.lean:58:23: omega could not prove the goal:
+error: Proofs/Erdos781Problem.lean:73:38: No goals to be solved
+error: Proofs/Erdos781Problem.lean:85:38: No goals to be solved
+error: Proofs/Erdos781Problem.lean:103:27: Unknown constant `Finset.univ.image`
+===== Erdos784Problem
+error: Proofs/Erdos784Problem.lean:61:8: unsolved goals
+error: Proofs/Erdos784Problem.lean:73:45: failed to synthesize instance of type class
+error: Proofs/Erdos784Problem.lean:134:11: failed to synthesize instance of type class
+error: Proofs/Erdos784Problem.lean:135:27: failed to synthesize instance of type class
+error: Proofs/Erdos784Problem.lean:162:2: `simp` made no progress
+===== Erdos788Problem
+error: Proofs/Erdos788Problem.lean:122:18: Tactic `rcases` failed: `h : c₁ + c₂ < 4 * n → 2 * n < c₁ + c₂ → 4 * n ≤ c₁ + c₂` is not an inductive datatype
+error: Lean exited with code 1
+error: build failed
+===== Erdos789Problem
+error: Proofs/Erdos789Problem.lean:84:22: Unknown constant `Real.sqrt`
+error: Proofs/Erdos789Problem.lean:89:22: Unknown constant `Real.sqrt`
+error: Proofs/Erdos789Problem.lean:99:27: Unknown constant `Real.log`
+error: Proofs/Erdos789Problem.lean:99:22: failed to synthesize instance of type class
+error: Proofs/Erdos789Problem.lean:104:27: Unknown constant `Real.log`
+===== Erdos790Problem
+error: Proofs/Erdos790Problem.lean:71:35: Unknown constant `Real.log`
+error: Proofs/Erdos790Problem.lean:71:48: Unknown constant `Real.log`
+error: Proofs/Erdos790Problem.lean:80:24: Unknown constant `Real.log`
+error: Proofs/Erdos790Problem.lean:94:61: failed to synthesize instance of type class
+error: Proofs/Erdos790Problem.lean:117:37: Unknown constant `Real.log`
+===== Erdos791Problem
+error: Proofs/Erdos791Problem.lean:43:3: failed to synthesize instance of type class
+error: Proofs/Erdos791Problem.lean:58:2: Unknown identifier `sInf`
+error: Proofs/Erdos791Problem.lean:79:34: Unknown identifier `mem_product`
+error: Proofs/Erdos791Problem.lean:81:4: No goals to be solved
+error: Lean exited with code 1
+===== Erdos796Problem
+error: Proofs/Erdos796Problem.lean:80:14: failed to synthesize instance of type class
+error: Proofs/Erdos796Problem.lean:96:44: Invalid field `factors`: The environment does not contain `Nat.factors`, so it is not possible to project the field `factors` from an expression
+error: Proofs/Erdos796Problem.lean:132:2: `simp` made no progress
+error: Proofs/Erdos796Problem.lean:154:37: Application type mismatch: The argument
+error: Proofs/Erdos796Problem.lean:155:11: Application type mismatch: The argument
+===== Erdos797Problem
+error: Proofs/Erdos797Problem.lean:55:30: omega could not prove the goal:
+error: Proofs/Erdos797Problem.lean:55:60: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos799Problem
+error: Proofs/Erdos799Problem.lean:138:17: failed to synthesize instance of type class
+error: Proofs/Erdos799Problem.lean:138:26: failed to synthesize instance of type class
+error: Proofs/Erdos799Problem.lean:139:11: Type mismatch
+error: Proofs/Erdos799Problem.lean:139:21: Unknown identifier `Real.log`
+error: Proofs/Erdos799Problem.lean:139:34: Type mismatch
+===== Erdos802Problem
+error: Proofs/Erdos802Problem.lean:50:7: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos803Problem
+error: Proofs/Erdos803Problem.lean:41:2: failed to synthesize instance of type class
+error: Proofs/Erdos803Problem.lean:55:4: Tactic `apply` failed: could not unify the conclusion of `Finset.sup_congr rfl`
+error: Proofs/Erdos803Problem.lean:58:14: failed to synthesize instance of type class
+error: Proofs/Erdos803Problem.lean:124:28: failed to synthesize instance of type class
+error: Proofs/Erdos803Problem.lean:131:30: failed to synthesize instance of type class
+===== Erdos807Problem
+error: Proofs/Erdos807Problem.lean:52:51: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+error: Proofs/Erdos807Problem.lean:52:27: failed to synthesize instance of type class
+error: Proofs/Erdos807Problem.lean:81:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Nat.instInfSet', which is 'noncomputable'
+error: Proofs/Erdos807Problem.lean:123:2: Tactic `assumption` failed
+error: Proofs/Erdos807Problem.lean:209:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Nat.instInfSet', which is 'noncomputable'
+===== Erdos808Problem
+error: Proofs/Erdos808Problem.lean:98:25: failed to synthesize instance of type class
+error: Proofs/Erdos808Problem.lean:99:66: failed to synthesize instance of type class
+error: Proofs/Erdos808Problem.lean:122:29: unsolved goals
+error: Proofs/Erdos808Problem.lean:139:46: failed to synthesize instance of type class
+error: Proofs/Erdos808Problem.lean:152:48: failed to synthesize instance of type class
+===== Erdos80Problem
+error: Proofs/Erdos80Problem.lean:80:3: failed to synthesize instance of type class
+error: Proofs/Erdos80Problem.lean:96:24: failed to synthesize instance of type class
+error: Proofs/Erdos80Problem.lean:95:5: unsolved goals
+error: Proofs/Erdos80Problem.lean:108:3: failed to synthesize instance of type class
+error: Proofs/Erdos80Problem.lean:177:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDivInvMonoid', which is 'noncomputable'
+===== Erdos811Problem
+error: Proofs/Erdos811Problem.lean:47:35: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos812Problem
+error: Proofs/Erdos812Problem.lean:112:29: unsolved goals
+error: Proofs/Erdos812Problem.lean:113:30: unsolved goals
+error: Lean exited with code 1
+error: build failed
+===== Erdos813Problem
+error: Proofs/Erdos813Problem.lean:72:36: failed to synthesize instance of type class
+error: Proofs/Erdos813Problem.lean:76:36: failed to synthesize instance of type class
+error: Proofs/Erdos813Problem.lean:80:9: unexpected token '>'; expected ','
+error: Proofs/Erdos813Problem.lean:91:55: unsolved goals
+error: Proofs/Erdos813Problem.lean:94:56: unsolved goals
+===== Erdos814Problem
+error: Proofs/Erdos814Problem.lean:65:23: `simp` made no progress
+error: Proofs/Erdos814Problem.lean:72:44: failed to synthesize instance of type class
+error: Proofs/Erdos814Problem.lean:79:11: failed to synthesize instance of type class
+error: Proofs/Erdos814Problem.lean:79:23: Type mismatch
+error: Proofs/Erdos814Problem.lean:79:19: failed to synthesize instance of type class
+===== Erdos816Problem
+error: Proofs/Erdos816Problem.lean:57:3: failed to synthesize instance of type class
+error: Proofs/Erdos816Problem.lean:81:11: Function expected at
+error: Proofs/Erdos816Problem.lean:81:22: Function expected at
+error: Proofs/Erdos816Problem.lean:81:34: Function expected at
+error: Proofs/Erdos816Problem.lean:84:11: Function expected at
+===== Erdos819Problem
+error: Proofs/Erdos819Problem.lean:89:50: unexpected token ','; expected '}'
+error: Lean exited with code 1
+error: build failed
+===== Erdos824Problem
+error: Proofs/Erdos824Problem.lean:73:21: unknown tactic
+error: Proofs/Erdos824Problem.lean:63:84: Ambiguous term
+error: Proofs/Erdos824Problem.lean:145:8: Unknown identifier `ℝ`
+error: Proofs/Erdos824Problem.lean:146:37: Unknown identifier `ℝ`
+error: Proofs/Erdos824Problem.lean:146:47: Unknown identifier `ℝ`
+===== Erdos82Problem
+error: Proofs/Erdos82Problem.lean:82:23: Function expected at
+error: Proofs/Erdos82Problem.lean:83:25: Function expected at
+error: Proofs/Erdos82Problem.lean:101:26: failed to synthesize instance of type class
+error: Proofs/Erdos82Problem.lean:214:15: failed to synthesize instance of type class
+error: Lean exited with code 1
+===== Erdos832Problem
+error: Proofs/Erdos832Problem.lean:67:21: Unknown identifier `V`
+error: Proofs/Erdos832Problem.lean:101:8: Unknown identifier `Filter.Tendsto`
+error: Proofs/Erdos832Problem.lean:112:32: unsolved goals
+error: Proofs/Erdos832Problem.lean:115:31: unsolved goals
+error: Proofs/Erdos832Problem.lean:137:8: Unknown identifier `Filter.Tendsto`
+===== Erdos836Problem
+error: Proofs/Erdos836Problem.lean:57:18: failed to synthesize instance of type class
+error: Proofs/Erdos836Problem.lean:141:8: Unknown constant `Real.sqrt`
+error: Proofs/Erdos836Problem.lean:140:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Proofs/Erdos836Problem.lean:182:6: Unknown constant `Real.log`
+error: Proofs/Erdos836Problem.lean:181:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+===== Erdos839Problem
+error: Proofs/Erdos839Problem.lean:175:23: Unknown identifier `le_of_not_lt`
+error: Proofs/Erdos839Problem.lean:256:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos841Problem
+error: Proofs/Erdos841Problem.lean:50:60: omega could not prove the goal:
+error: Proofs/Erdos841Problem.lean:80:43: Unknown constant `Nat.primeFactors_nonempty.mpr`
+error: Lean exited with code 1
+error: build failed
+===== Erdos847Problem
+error: Proofs/Erdos847Problem.lean:137:26: Unexpected term `enr_conjecture_false`; expected single reference to variable
+error: Proofs/Erdos847Problem.lean:189:6: No goals to be solved
+error: Proofs/Erdos847Problem.lean:192:17: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos847Problem.lean:194:4: Tactic `apply` failed: could not unify the conclusion of `@sum_lt_sum`
+error: Proofs/Erdos847Problem.lean:198:2: omega could not prove the goal:
+===== Erdos84Problem
+error: Proofs/Erdos84Problem.lean:75:27: Function expected at
+error: Lean exited with code 1
+error: build failed
+===== Erdos856Problem
+error: Proofs/Erdos856Problem.lean:106:29: Application type mismatch: The argument
+error: Proofs/Erdos856Problem.lean:106:47: Unknown identifier `A`
+error: Proofs/Erdos856Problem.lean:106:77: Unknown identifier `A`
+error: Proofs/Erdos856Problem.lean:151:53: failed to synthesize instance of type class
+error: Proofs/Erdos856Problem.lean:180:22: Application type mismatch: The argument
+===== Erdos857Problem
+error: Proofs/Erdos857Problem.lean:81:35: Unknown identifier `mem_empty_iff_false`
+error: Proofs/Erdos857Problem.lean:81:76: Unknown identifier `not_not_mem`
+error: Proofs/Erdos857Problem.lean:82:8: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos857Problem.lean:107:2: failed to synthesize instance of type class
+error: Proofs/Erdos857Problem.lean:154:28: Unknown constant `Nat.ceil`
+===== Erdos85Problem
+error: Proofs/Erdos85Problem.lean:47:26: Tactic `cases` failed: major premise type is not an inductive type
+error: Proofs/Erdos85Problem.lean:48:28: AppBuilder for `mkAppM`, result contains metavariables
+error: Proofs/Erdos85Problem.lean:48:44: simp_all made no progress
+error: Proofs/Erdos85Problem.lean:48:14: Type mismatch
+error: Proofs/Erdos85Problem.lean:128:26: Tactic `cases` failed: major premise type is not an inductive type
+===== Erdos863Problem
+error: Proofs/Erdos863Problem.lean:55:5: failed to synthesize instance of type class
+error: Proofs/Erdos863Problem.lean:61:5: failed to synthesize instance of type class
+error: Proofs/Erdos863Problem.lean:167:13: Invalid `⟨...⟩` notation: The expected type
+error: Proofs/Erdos863Problem.lean:167:28: Application type mismatch: The argument
+error: Proofs/Erdos863Problem.lean:170:13: Invalid `⟨...⟩` notation: The expected type
+===== Erdos864Problem
+error: Proofs/Erdos864Problem.lean:48:14: failed to synthesize instance of type class
+error: Proofs/Erdos864Problem.lean:88:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos864Problem.lean:135:11: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/Erdos864Problem.lean:136:26: Unknown identifier `sumRepCount_le_of_subset`
+error: Proofs/Erdos864Problem.lean:135:18: Application type mismatch: The argument
+===== Erdos868Problem
+error: Proofs/Erdos868Problem.lean:205:26: Type mismatch
+error: Lean exited with code 1
+error: build failed
+===== Erdos869Problem
+error: Proofs/Erdos869Problem.lean:188:13: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Lean exited with code 1
+error: build failed
+===== Erdos86Problem
+error: Proofs/Erdos86Problem.lean:67:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos86Problem.lean:73:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos86Problem.lean:81:4: failed to synthesize instance of type class
+error: Proofs/Erdos86Problem.lean:113:56: unexpected token '//'; expected '}'
+error: Proofs/Erdos86Problem.lean:141:44: linarith failed to find a contradiction
+===== Erdos871Problem
+error: Proofs/Erdos871Problem.lean:130:2: No goals to be solved
+error: Proofs/Erdos871Problem.lean:148:53: Application type mismatch: The argument
+error: Proofs/Erdos871Problem.lean:157:50: Application type mismatch: The argument
+error: Lean exited with code 1
+error: build failed
+===== Erdos874Problem
+error: Proofs/Erdos874Problem.lean:76:14: failed to synthesize instance of type class
+error: Proofs/Erdos874Problem.lean:224:4: linarith failed to find a contradiction
+error: Proofs/Erdos874Problem.lean:224:4: linarith failed to find a contradiction
+error: Lean exited with code 1
+error: build failed
+===== Erdos875Problem
+error: Proofs/Erdos875Problem.lean:121:15: Unknown constant `Ne.lt_or_lt`
+error: Proofs/Erdos875Problem.lean:121:36: Tactic `rcases` failed: `x✝ : ?m.483` is not an inductive datatype
+error: Proofs/Erdos875Problem.lean:133:8: omega could not prove the goal:
+error: Proofs/Erdos875Problem.lean:144:8: Type mismatch
+error: Proofs/Erdos875Problem.lean:155:8: Type mismatch
+===== Erdos87Problem
+error: Proofs/Erdos87Problem.lean:69:0: unexpected end of input; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos883Problem
+error: Proofs/Erdos883Problem.lean:47:10: Type mismatch
+error: Proofs/Erdos883Problem.lean:48:14: Type mismatch
+error: Proofs/Erdos883Problem.lean:47:18: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos883Problem.lean:48:20: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos883Problem.lean:83:96: omega could not prove the goal:
+===== Erdos88Problem
+error: Proofs/Erdos88Problem.lean:81:19: Type mismatch
+error: Proofs/Erdos88Problem.lean:81:59: Type mismatch
+error: Proofs/Erdos88Problem.lean:93:23: Function expected at
+error: Proofs/Erdos88Problem.lean:94:25: Function expected at
+error: Proofs/Erdos88Problem.lean:99:32: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+===== Erdos903Problem
+error: Proofs/Erdos903Problem.lean:136:33: unknown tactic
+error: Proofs/Erdos903Problem.lean:136:29: unsolved goals
+error: Proofs/Erdos903Problem.lean:139:34: unknown tactic
+error: Proofs/Erdos903Problem.lean:139:30: unsolved goals
+error: Proofs/Erdos903Problem.lean:142:34: unknown tactic
+===== Erdos905Problem
+error: Proofs/Erdos905Problem.lean:85:3: failed to synthesize instance of type class
+error: Proofs/Erdos905Problem.lean:92:2: Unknown constant `Finset.sup`
+error: Lean exited with code 1
+error: build failed
+===== Erdos909OQ01Problem
+error: Proofs/Erdos909OQ01Problem.lean:164:33: Application type mismatch: The argument
+error: Proofs/Erdos909OQ01Problem.lean:218:31: Unknown identifier `ℝ`
+error: Proofs/Erdos909OQ01Problem.lean:225:71: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos909Problem
+error: Proofs/Erdos909Problem.lean:86:64: Function expected at
+error: Proofs/Erdos909Problem.lean:95:31: don't know how to synthesize implicit argument `MetrizableSpace`
+error: Proofs/Erdos909Problem.lean:95:31: don't know how to synthesize implicit argument
+error: Lean exited with code 1
+error: build failed
+===== Erdos917Problem
+error: Proofs/Erdos917Problem.lean:44:14: Invalid field `Colorable_of_fintype`: The environment does not contain `SimpleGraph.Colorable_of_fintype`, so it is not possible to project the field `Colorable_of_fintype` from an expression
+error: Proofs/Erdos917Problem.lean:60:2: failed to synthesize instance of type class
+error: Proofs/Erdos917Problem.lean:80:16: Unknown identifier `ℝ`
+error: Proofs/Erdos917Problem.lean:80:53: Unknown identifier `ℝ`
+error: Proofs/Erdos917Problem.lean:88:13: failed to synthesize instance of type class
+===== Erdos920Problem
+error: Proofs/Erdos920Problem.lean:64:2: Type mismatch
+error: Proofs/Erdos920Problem.lean:110:40: failed to synthesize instance of type class
+error: Proofs/Erdos920Problem.lean:122:14: failed to synthesize instance of type class
+error: Proofs/Erdos920Problem.lean:136:42: failed to synthesize instance of type class
+error: Proofs/Erdos920Problem.lean:196:14: failed to synthesize instance of type class
+===== Erdos921Problem
+error: Proofs/Erdos921Problem.lean:84:16: failed to synthesize instance of type class
+error: Proofs/Erdos921Problem.lean:85:30: failed to synthesize instance of type class
+error: Proofs/Erdos921Problem.lean:105:48: Unknown constant `Real.sqrt`
+error: Proofs/Erdos921Problem.lean:114:48: Unknown constant `Real.sqrt`
+error: Proofs/Erdos921Problem.lean:122:18: Unknown constant `Real.sqrt`
+===== Erdos924Problem
+error: Proofs/Erdos924Problem.lean:89:2: Type mismatch
+error: Proofs/Erdos924Problem.lean:96:2: Type mismatch
+error: Proofs/Erdos924Problem.lean:90:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos924Problem.lean:96:19: `simp` made no progress
+error: Proofs/Erdos924Problem.lean:284:38: unknown tactic
+===== Erdos925Problem
+error: Proofs/Erdos925Problem.lean:55:45: Application type mismatch: The argument
+error: Proofs/Erdos925Problem.lean:59:35: Invalid field `IsCliqueFree`: The environment does not contain `SimpleGraph.IsCliqueFree`, so it is not possible to project the field `IsCliqueFree` from an expression
+error: Proofs/Erdos925Problem.lean:88:2: type expected, got
+error: Proofs/Erdos925Problem.lean:88:28: expected token
+error: Proofs/Erdos925Problem.lean:94:29: expected token
+===== Erdos926Problem
+error: Proofs/Erdos926Problem.lean:208:2: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos927Problem
+error: Proofs/Erdos927Problem.lean:118:18: fail to show termination for
+with errors
+error: Proofs/Erdos927Problem.lean:147:25: Unknown constant `Real.log`
+error: Proofs/Erdos927Problem.lean:147:38: Unknown constant `Real.log`
+error: Proofs/Erdos927Problem.lean:162:24: Unknown constant `Real.log`
+===== Erdos928Problem
+error: Proofs/Erdos928Problem.lean:50:27: Invalid field `maximum?`: The environment does not contain `List.maximum?`, so it is not possible to project the field `maximum?` from an expression
+error: Proofs/Erdos928Problem.lean:128:2: failed to synthesize instance of type class
+error: Proofs/Erdos928Problem.lean:213:7: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Lean exited with code 1
+error: build failed
+===== Erdos934Problem
+error: Proofs/Erdos934Problem.lean:86:2: failed to synthesize instance of type class
+error: Proofs/Erdos934Problem.lean:139:13: Unknown constant `Nat.Prime`
+error: Proofs/Erdos934Problem.lean:155:15: expected token
+error: Lean exited with code 1
+error: build failed
+===== Erdos937Problem
+error: Proofs/Erdos937Problem.lean:82:4: omega could not prove the goal:
+error: Proofs/Erdos937Problem.lean:87:5: unknown tactic
+error: Proofs/Erdos937Problem.lean:87:2: unsolved goals
+error: Proofs/Erdos937Problem.lean:85:70: unsolved goals
+error: Proofs/Erdos937Problem.lean:96:32: unknown tactic
+===== Erdos944Problem
+error: Proofs/Erdos944Problem.lean:97:79: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos945Problem
+error: Proofs/Erdos945Problem.lean:147:41: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos94OQ02
+error: Proofs/Erdos94OQ02.lean:45:2: failed to synthesize instance of type class
+error: Proofs/Erdos94OQ02.lean:67:16: failed to synthesize instance of type class
+error: Proofs/Erdos94OQ02.lean:69:6: Type mismatch
+error: Proofs/Erdos94OQ02.lean:137:33: Application type mismatch: The argument
+error: Proofs/Erdos94OQ02.lean:147:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDivInvMonoid', which is 'noncomputable'
+===== Erdos953Problem
+error: Proofs/Erdos953Problem.lean:290:2: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Erdos955Problem
+error: Proofs/Erdos955Problem.lean:75:2: failed to synthesize instance of type class
+error: Proofs/Erdos955Problem.lean:79:19: Unknown identifier `atTop`
+error: Lean exited with code 1
+error: build failed
+===== Erdos956Problem
+error: Proofs/Erdos956Problem.lean:63:43: Application type mismatch: The argument
+error: Proofs/Erdos956Problem.lean:129:4: failed to synthesize instance of type class
+error: Proofs/Erdos956Problem.lean:128:41: Application type mismatch: The argument
+error: Proofs/Erdos956Problem.lean:181:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Lean exited with code 1
+===== Erdos962Problem
+error: Proofs/Erdos962Problem.lean:45:22: Invalid field `factors`: The environment does not contain `Nat.factors`, so it is not possible to project the field `factors` from an expression
+error: Lean exited with code 1
+error: build failed
+===== Erdos963Problem
+error: Proofs/Erdos963Problem.lean:117:10: Unknown identifier `greedy_dissociated`
+error: Proofs/Erdos963Problem.lean:261:45: linarith failed to find a contradiction
+error: Proofs/Erdos963Problem.lean:266:45: linarith failed to find a contradiction
+error: Proofs/Erdos963Problem.lean:311:14: Unknown constant `Finset.sum_sdiff_add_sum_inter`
+error: Proofs/Erdos963Problem.lean:310:61: unsolved goals
+===== Erdos966Problem
+error: Proofs/Erdos966Problem.lean:207:21: unknown tactic
+error: Proofs/Erdos966Problem.lean:207:17: unsolved goals
+error: Proofs/Erdos966Problem.lean:215:21: unknown tactic
+error: Proofs/Erdos966Problem.lean:215:17: unsolved goals
+error: Proofs/Erdos966Problem.lean:250:33: Type mismatch
+===== Erdos968Problem
+error: Proofs/Erdos968Problem.lean:151:52: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+error: Proofs/Erdos968Problem.lean:154:53: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+error: Proofs/Erdos968Problem.lean:157:52: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+error: Lean exited with code 1
+error: build failed
+===== Erdos976Problem
+error: Proofs/Erdos976Problem.lean:44:4: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:44:53: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:44:68: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:50:43: Invalid field `natDegree`: The environment does not contain `Polynomial.natDegree`, so it is not possible to project the field `natDegree` from an expression
+error: Proofs/Erdos976Problem.lean:58:7: Unknown constant `Nat.factors`
+===== Erdos982Problem
+error: Proofs/Erdos982Problem.lean:60:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.decidableEq', which is 'noncomputable'
+error: Proofs/Erdos982Problem.lean:67:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'distinctDistancesFrom', which is 'noncomputable'
+error: Proofs/Erdos982Problem.lean:95:21: Application type mismatch: The argument
+error: Proofs/Erdos982Problem.lean:95:7: failed to synthesize instance of type class
+error: Proofs/Erdos982Problem.lean:318:4: Type mismatch
+===== Erdos983Problem
+error: Proofs/Erdos983Problem.lean:72:2: failed to synthesize instance of type class
+error: Proofs/Erdos983Problem.lean:144:6: failed to synthesize instance of type class
+error: Proofs/Erdos983Problem.lean:179:2: failed to synthesize instance of type class
+error: Proofs/Erdos983Problem.lean:203:6: failed to synthesize instance of type class
+error: Lean exited with code 1
+===== Erdos989Problem
+error: Proofs/Erdos989Problem.lean:74:2: failed to synthesize instance of type class
+error: Proofs/Erdos989Problem.lean:101:44: linarith failed to find a contradiction
+error: Proofs/Erdos989Problem.lean:114:4: `simp` made no progress
+error: Proofs/Erdos989Problem.lean:118:41: No goals to be solved
+error: Proofs/Erdos989Problem.lean:126:44: linarith failed to find a contradiction
+===== Erdos98Problem
+error: Proofs/Erdos98Problem.lean:25:35: Unknown identifier `EuclideanSpace`
+error: Proofs/Erdos98Problem.lean:40:17: Unknown identifier `EuclideanSpace`
+error: Proofs/Erdos98Problem.lean:58:7: Failed to infer universe levels in binder type
+error: Proofs/Erdos98Problem.lean:59:5: Failed to infer universe levels in type of binder `P`
+error: Proofs/Erdos98Problem.lean:76:0: unexpected end of input; expected 'lemma'
+===== Erdos992Problem
+error: Proofs/Erdos992Problem.lean:92:26: unexpected token 'λ'; expected '_' or identifier
+error: Proofs/Erdos992Problem.lean:96:38: unexpected token 'λ'; expected '_' or identifier
+error: Proofs/Erdos992Problem.lean:135:30: No goals to be solved
+error: Proofs/Erdos992Problem.lean:155:19: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+error: Lean exited with code 1
+===== Erdos993Problem
+error: Proofs/Erdos993Problem.lean:41:41: Invalid field notation: Type of
+error: Proofs/Erdos993Problem.lean:46:16: Application type mismatch: The argument
+error: Proofs/Erdos993Problem.lean:46:4: failed to synthesize instance of type class
+error: Proofs/Erdos993Problem.lean:56:40: Application type mismatch: The argument
+error: Proofs/Erdos993Problem.lean:60:28: Application type mismatch: The argument
+===== Erdos994Problem
+error: Proofs/Erdos994Problem.lean:53:2: Type mismatch
+error: Proofs/Erdos994Problem.lean:60:2: failed to synthesize instance of type class
+error: Proofs/Erdos994Problem.lean:68:2: Application type mismatch: The argument
+error: Proofs/Erdos994Problem.lean:68:2: failed to synthesize instance of type class
+error: Lean exited with code 1
+===== ErdosKoRado
+error: Proofs/ErdosKoRado.lean:92:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.card_image_of_injOn`
+error: Proofs/ErdosKoRado.lean:461:8: Function expected at
+error: Proofs/ErdosKoRado.lean:472:10: Function expected at
+error: Proofs/ErdosKoRado.lean:487:6: `simp` made no progress
+error: Proofs/ErdosKoRado.lean:497:6: This extensionality tactic only applies to equalities, not
+===== FourColorTheoremOQ01
+error: Proofs/FourColorTheoremOQ01.lean:112:6: Unknown constant `Finset.ne_univ_iff_exists_notMem`
+error: Proofs/FourColorTheoremOQ01.lean:98:38: unsolved goals
+error: Proofs/FourColorTheoremOQ01.lean:226:9: Application type mismatch: The argument
+error: Proofs/FourColorTheoremOQ01.lean:388:2: omega could not prove the goal:
+error: Lean exited with code 1
+===== FourierSeriesOQ02OQ03
+error: Proofs/FourierSeriesOQ02OQ03.lean:61:24: No goals to be solved
+error: Proofs/FourierSeriesOQ02OQ03.lean:65:8: don't know how to synthesize implicit argument `T`
+error: Proofs/FourierSeriesOQ02OQ03.lean:67:2: Tactic `apply` failed: could not unify the conclusion of `@mul_nonneg`
+error: Proofs/FourierSeriesOQ02OQ03.lean:76:23: don't know how to synthesize implicit argument `T`
+error: Proofs/FourierSeriesOQ02OQ03.lean:76:4: don't know how to synthesize implicit argument `T`
+===== FourierSeriesOQ04
+error: Proofs/FourierSeriesOQ04.lean:85:74: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== Hilbert14Invariants
+error: Proofs/Hilbert14Invariants.lean:180:19: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert14Invariants.lean:227:45: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert14Invariants.lean:277:42: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert14Invariants.lean:319:54: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+===== Hilbert22Uniformization
+error: Proofs/Hilbert22Uniformization.lean:103:82: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert22Uniformization.lean:122:11: Unknown identifier `DifferentiableAt`
+error: Proofs/Hilbert22Uniformization.lean:144:32: Unknown identifier `differentiableAt_id`
+error: Proofs/Hilbert22Uniformization.lean:145:35: Unknown identifier `differentiableAt_id`
+error: Proofs/Hilbert22Uniformization.lean:167:70: unexpected token 'end'; expected 'lemma'
+===== Hilbert23CalculusVariations
+error: Proofs/Hilbert23CalculusVariations.lean:112:59: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert23CalculusVariations.lean:148:45: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert23CalculusVariations.lean:211:34: unexpected token 'end'; expected 'lemma'
+error: Proofs/Hilbert23CalculusVariations.lean:252:65: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+===== IsoperimetricTheorem
+error: Proofs/IsoperimetricTheorem.lean:364:18: linarith failed to find a contradiction
+error: Proofs/IsoperimetricTheorem.lean:446:7: Unknown identifier `IsoperimetricTheorem.equality_iff_circle`
+error: Lean exited with code 1
+error: build failed
+===== LawsOfLargeNumbersOQ02
+error: Proofs/LawsOfLargeNumbersOQ02.lean:104:6: Unknown identifier `integral_mul_left`
+error: Proofs/LawsOfLargeNumbersOQ02.lean:102:36: unsolved goals
+error: Proofs/LawsOfLargeNumbersOQ02.lean:130:4: Type mismatch: After simplification, term
+error: Proofs/LawsOfLargeNumbersOQ02.lean:137:2: No goals to be solved
+error: Proofs/LawsOfLargeNumbersOQ02.lean:195:10: typeclass instance problem is stuck
+===== LawsOfLargeNumbersOQ03
+error: Proofs/LawsOfLargeNumbersOQ03.lean:64:34: Application type mismatch: The argument
+error: Proofs/LawsOfLargeNumbersOQ03.lean:74:4: Type mismatch
+error: Proofs/LawsOfLargeNumbersOQ03.lean:87:43: Unknown identifier `MeasureTheory.ae_eq_of_eq`
+error: Proofs/LawsOfLargeNumbersOQ03.lean:114:59: unsolved goals
+error: Proofs/LawsOfLargeNumbersOQ03.lean:229:45: Function expected at
+===== LebesgueMeasureOQ03
+error: Proofs/LebesgueMeasureOQ03.lean:47:52: expected token
+error: Proofs/LebesgueMeasureOQ03.lean:111:58: unexpected token 'end'; expected 'lemma'
+error: Lean exited with code 1
+error: build failed
+===== PartitionTheoremOQ03
+error: Proofs/PartitionTheoremOQ03.lean:26:4: Unknown constant `Nat.Partition.IsOdd.card`
+error: Proofs/PartitionTheoremOQ03.lean:26:33: Unknown constant `Nat.Partition.IsDistinct.card`
+error: Proofs/PartitionTheoremOQ03.lean:27:3: Unknown identifier `Theorems100.partition`
+error: Proofs/PartitionTheoremOQ03.lean:47:64: unexpected token '/-!'; expected 'lemma'
+error: Proofs/PartitionTheoremOQ03.lean:52:42: Invalid field `length`: The environment does not contain `Quot.length`, so it is not possible to project the field `length` from an expression
+===== SolutionOfCubicOQ03OQ02
+error: Proofs/SolutionOfCubicOQ03OQ02.lean:74:2: linarith failed to find a contradiction
+error: Lean exited with code 1
+error: build failed
+===== TaylorTheoremOQ03
+error: Proofs/TaylorTheoremOQ03.lean:131:58: Application type mismatch: The argument
+error: Proofs/TaylorTheoremOQ03.lean:113:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+error: Proofs/TaylorTheoremOQ03.lean:182:36: Application type mismatch: The argument
+error: Proofs/TaylorTheoremOQ03.lean:186:44: unsolved goals
+error: Proofs/TaylorTheoremOQ03.lean:198:27: Unknown identifier `sum_le_tsum`

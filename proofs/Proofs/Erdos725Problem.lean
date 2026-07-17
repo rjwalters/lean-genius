@@ -23,9 +23,9 @@ Find the asymptotic formula for general k and n relationship.
 Tags: combinatorics, latin-rectangles, asymptotic-enumeration
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 namespace Erdos725
@@ -64,7 +64,7 @@ The main asymptotic result for small k.
 
 /-- The Erdős-Kaplansky asymptotic formula:
     L(k,n) ~ e^{-C(k,2)} · (n!)^k -/
-def ErdosKaplanskyFormula (k n : ℕ) : ℝ :=
+noncomputable def ErdosKaplanskyFormula (k n : ℕ) : ℝ :=
   Real.exp (-(choose2 k : ℝ)) * ((factorial n : ℕ) : ℝ)^k
 
 /-- Condition: k = o((log n)^{3/2-ε}) -/
@@ -72,7 +72,7 @@ def InEKRegime (k : ℕ → ℕ) (ε : ℝ) : Prop :=
   ε > 0 ∧ ∀ c > 0, ∃ N : ℕ, ∀ n ≥ N,
     (k n : ℝ) < c * (Real.log n)^(3/2 - ε)
 
-/-- Erdős-Kaplansky (1946): Asymptotic formula for small k -/
+/-  Erdős-Kaplansky (1946): Asymptotic formula for small k -/
 /- ## Part 3: Yamamoto's Extension
 
 Extending the regime where the formula holds.
@@ -84,7 +84,7 @@ def InYamamotoRegime (k : ℕ → ℕ) : Prop :=
     (Filter.Tendsto f Filter.atTop (nhds 0)) ∧
     ∀ n : ℕ, n ≥ 2 → (k n : ℝ) ≤ (n : ℝ)^(1/3 - f n)
 
-/-- Yamamoto (1951): Extended formula to k ≤ n^{1/3-o(1)} -/
+/-  Yamamoto (1951): Extended formula to k ≤ n^{1/3-o(1)} -/
 /- ## Part 4: Permanent Methods
 
 Godsil-McKay approach using permanents.
@@ -95,7 +95,7 @@ noncomputable def permanent {n : ℕ} (A : Fin n → Fin n → ℝ) : ℝ :=
   Finset.univ.sum fun σ : Equiv.Perm (Fin n) =>
     Finset.univ.prod fun i => A i (σ i)
 
-/-- L(k,n) in terms of permanents -/
+/-  L(k,n) in terms of permanents -/
 /-- Godsil-McKay (1990) bounds -/
 axiom godsil_mckay_bounds (k n : ℕ) (hkn : k ≤ n) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
@@ -113,9 +113,9 @@ axiom L_1_n (n : ℕ) : L 1 n = factorial n
 /-- Number of derangements (permutations with no fixed points) -/
 axiom derangements (n : ℕ) : ℕ
 
-/-- L(2,n) = n! · D(n) where D(n) is derangements -/
-/-- L(n,n) ≤ product of factorials (Latin squares upper bound) -/
-/-- OEIS A001009: Number of k×n Latin rectangles -/
+/-  L(2,n) = n! · D(n) where D(n) is derangements -/
+/-  L(n,n) ≤ product of factorials (Latin squares upper bound) -/
+/-  OEIS A001009: Number of k×n Latin rectangles -/
 /- ## Part 6: The Open Question
 
 What happens for general k as a function of n?

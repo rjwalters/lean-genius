@@ -75,10 +75,17 @@ theorem coprime_symm (k l n : ℕ)
     Nat.gcd (l^n - 1) (k^n - 1) = 1 := by
   rwa [Nat.gcd_comm]
 
--- If gcd(k^n - 1, l^n - 1) > 1, then gcd ≥ 2
-theorem gcd_ge_two_of_ne_one (k l n : ℕ)
+-- If gcd(k^n - 1, l^n - 1) > 1, then gcd ≥ 2.
+-- (Statement repair for the v4.31 migration: added `2 ≤ k` and `1 ≤ n` —
+-- without them the gcd can be 0, e.g. k = l = 1 or n = 0, and the claim
+-- is false as originally written.)
+theorem gcd_ge_two_of_ne_one (k l n : ℕ) (hk : 2 ≤ k) (hn : 1 ≤ n)
     (h : Nat.gcd (k^n - 1) (l^n - 1) ≠ 1) :
     Nat.gcd (k^n - 1) (l^n - 1) ≥ 2 := by
+  have h2n : 2 ≤ 2 ^ n := Nat.le_self_pow (by omega) 2
+  have hkn : 2 ^ n ≤ k ^ n := Nat.pow_le_pow_left hk n
+  have hpos : 0 < Nat.gcd (k^n - 1) (l^n - 1) :=
+    Nat.gcd_pos_of_pos_left _ (by omega)
   omega
 
 /-
@@ -112,7 +119,7 @@ theorem prime_dvd_gcd_pow_cong_left {p k l n : ℕ} (hp : p.Prime) (hk : k ≥ 1
     k^n ≡ 1 [MOD p] := by
   have hkn : k^n ≥ 1 := Nat.one_le_pow _ _ hk
   have hdvd : p ∣ k^n - 1 := dvd_trans h (Nat.gcd_dvd_left _ _)
-  exact (Nat.modEq_iff_dvd' hkn).mpr hdvd
+  exact ((Nat.modEq_iff_dvd' hkn).mpr hdvd).symm
 
 -- If p is prime and p | gcd(k^n - 1, l^n - 1), then l^n ≡ 1 (mod p)
 theorem prime_dvd_gcd_pow_cong_right {p k l n : ℕ} (hp : p.Prime) (hl : l ≥ 1)
@@ -120,7 +127,7 @@ theorem prime_dvd_gcd_pow_cong_right {p k l n : ℕ} (hp : p.Prime) (hl : l ≥ 
     l^n ≡ 1 [MOD p] := by
   have hln : l^n ≥ 1 := Nat.one_le_pow _ _ hl
   have hdvd : p ∣ l^n - 1 := dvd_trans h (Nat.gcd_dvd_right _ _)
-  exact (Nat.modEq_iff_dvd' hln).mpr hdvd
+  exact ((Nat.modEq_iff_dvd' hln).mpr hdvd).symm
 
 -- If p | gcd(k^n-1, l^n-1), there exists d | n with k^d ≡ 1 [MOD p] and l^d ≡ 1 [MOD p].
 -- Proof: take d = n; k^n ≡ 1 [MOD p] from p | k^n-1 (via gcd_dvd_left), similarly for l.

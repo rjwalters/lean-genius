@@ -14,12 +14,7 @@ a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).
 Reference: https://erdosproblems.com/1033
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib
 
 open Finset
 
@@ -53,7 +48,7 @@ noncomputable def turanThreshold (n : ℕ) : ℕ := n^2 / 4
 def isAboveTuran (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   edgeCount G > turanThreshold (Fintype.card V)
 
-/-- Turán's theorem: graphs above threshold have triangles. -/
+/-  Turán's theorem: graphs above threshold have triangles. -/
 /-
 ## Triangles and Degree Sums
 
@@ -98,7 +93,7 @@ def hasDenseTriangle (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) : Prop :
 
 /-- k is a valid lower bound: all dense graphs have such triangles. -/
 def isValidLowerBound (n : ℕ) (k : ℕ) : Prop :=
-  ∀ (V : Type*) [DecidableEq V] [Fintype V] [DecidableRel (⊤ : SimpleGraph V).Adj],
+  ∀ (V : Type) [DecidableEq V] [Fintype V] [DecidableRel (⊤ : SimpleGraph V).Adj],
   Fintype.card V = n →
   ∀ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
   isAboveTuran G → hasDenseTriangle G k
@@ -106,6 +101,19 @@ def isValidLowerBound (n : ℕ) (k : ℕ) : Prop :=
 /-- h(n): the maximum guaranteed degree sum. -/
 noncomputable def h (n : ℕ) : ℕ :=
   sSup {k : ℕ | isValidLowerBound n k}
+
+/- #38611 REPAIR: `fan_lower`/`fanConstant` were declared far below `h_spec` but used inside
+   its proof at first reference. v4.26 tolerated the forward reference (or the identifier was
+   silently auto-bound); v4.31's stricter elaborator rejects it as unknown-const. Hoisted the
+   declarations above their first use; no change to statements or proofs. -/
+/-- Fan's constant 21/16 = 1.3125. -/
+def fanConstant : ℚ := 21 / 16
+
+/-- Fan (1988): h(n) ≥ (21/16)n.
+    Note: Like erdos_laskar_upper, this is likely asymptotic. For small n,
+    h(n)/n exceeds these bounds (e.g., h(3)=6 gives h(3)/3=2 > 21/16). -/
+axiom fan_lower (n : ℕ) (hn : n ≥ 3) :
+  (h n : ℝ) ≥ (fanConstant : ℝ) * n
 
 /-- h(n) is well-defined: every valid k works.
     Proof: From fan_lower, h(n) ≥ (21/16)n > 0 for n ≥ 3. If the underlying set
@@ -121,7 +129,7 @@ theorem h_spec (n : ℕ) (hn : n ≥ 3) :
     have : (fanConstant : ℝ) * (n : ℝ) ≤ 0 := by
       have : (h n : ℝ) = 0 := by exact_mod_cast h0
       linarith
-    linarith [show (fanConstant : ℝ) > 0 from by norm_num [fanConstant],
+    nlinarith [show (fanConstant : ℝ) > 0 from by norm_num [fanConstant],
               show (n : ℝ) > 0 from by exact_mod_cast (show 0 < n by omega)]
   -- Step 2: The set S = {k | isValidLowerBound n k} is nonempty and bounded above
   -- (otherwise sSup = 0 for ℕ, contradicting h_pos)
@@ -174,7 +182,7 @@ h(n) ≤ 2(√3 - 1)n
 axiom erdos_laskar_upper (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≤ erdosLaskarConstant * n
 
-/-- There exists a graph achieving the upper bound. -/
+/-  There exists a graph achieving the upper bound. -/
 /-
 ## Erdős-Laskar Lower Bound (1985)
 
@@ -186,32 +194,27 @@ axiom erdos_laskar_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
   (h n : ℝ) ≥ (1 + c) * n
 
 /-- The lower bound beats n (trivial bound). -/
-theorem lower_beats_n : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N, h n ≥ n := by
+theorem lower_beats_n : ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, h n ≥ n := by
   obtain ⟨c, hc, N, hN⟩ := erdos_laskar_lower
   use c, hc, N
   intro n hn
   have hle := hN n hn
   -- (h n : ℝ) ≥ (1 + c) * n ≥ 1 * n = n, so h n ≥ n as naturals
-  exact_mod_cast le_trans (by exact_mod_cast le_refl n) (le_trans (by nlinarith) hle)
+  have hcn : (n : ℝ) ≤ (1 + c) * n := by nlinarith
+  exact_mod_cast le_trans hcn hle
 
 /-
 ## Fan's Improved Lower Bound (1988)
 
 h(n) ≥ (21/16)n = 1.3125n
--/
 
-/-- Fan's constant 21/16 = 1.3125. -/
-def fanConstant : ℚ := 21 / 16
+(fanConstant and fan_lower are declared earlier, right after `h`, so that
+h_spec's proof — which needs fan_lower — can reference them.)
+-/
 
 /-- Fan's bound is better than Erdős-Laskar. -/
 theorem fan_improves : (fanConstant : ℝ) > 1 := by
   norm_num [fanConstant]
-
-/-- Fan (1988): h(n) ≥ (21/16)n.
-    Note: Like erdos_laskar_upper, this is likely asymptotic. For small n,
-    h(n)/n exceeds these bounds (e.g., h(3)=6 gives h(3)/3=2 > 21/16). -/
-axiom fan_lower (n : ℕ) (hn : n ≥ 3) :
-  (h n : ℝ) ≥ (fanConstant : ℝ) * n
 
 /-- Fan's bound combined with upper bound. -/
 theorem current_bounds (n : ℕ) (hn : n ≥ 3) :
@@ -241,7 +244,18 @@ theorem gap_approx : boundGap > 0.15 ∧ boundGap < 0.16 := by
   unfold boundGap
   have h := erdosLaskar_approx
   have hfan : (fanConstant : ℝ) = 21 / 16 := by norm_num [fanConstant]
-  constructor <;> linarith [h.1, h.2, hfan]
+  -- The 1.46 lower bound from `erdosLaskar_approx` is too coarse to clear the 0.15
+  -- threshold (1.46 - 1.3125 = 0.1475 < 0.15); prove a tighter bound here.
+  have hgap_lb : erdosLaskarConstant > 1.4625 := by
+    unfold erdosLaskarConstant
+    have hsqrt3_lb2 : (1.7313 : ℝ) < Real.sqrt 3 := by
+      have h2 : (1.7313 : ℝ) ^ 2 < 3 := by norm_num
+      rw [← Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1.7313)]
+      exact Real.sqrt_lt_sqrt (sq_nonneg _) h2
+    nlinarith [hsqrt3_lb2]
+  constructor
+  · nlinarith [hgap_lb, hfan]
+  · nlinarith [h.2, hfan]
 
 /-
 ## The Main Conjecture
@@ -272,9 +286,9 @@ theorem conjecture_gives_asymptotic :
   have h_lower := hN n hnN
   have h_upper := erdos_laskar_upper n hn3
   have h_div_le : (h n : ℝ) / n ≤ erdosLaskarConstant := by
-    rwa [div_le_iff hn_pos, mul_comm]
+    rw [div_le_iff₀ hn_pos]; linarith [h_upper]
   have h_div_ge : erdosLaskarConstant - ε / 2 ≤ (h n : ℝ) / n := by
-    rwa [le_div_iff hn_pos, mul_comm]
+    rw [le_div_iff₀ hn_pos]; linarith [h_lower]
   rw [abs_lt]
   constructor <;> linarith
 
@@ -290,8 +304,8 @@ theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triang
   -- Each vertex is adjacent to the other 2 (distinct) vertices of the triangle.
   suffices h : ∀ (v a b : V), G.Adj v a → G.Adj v b → a ≠ b → vertexDegree G v ≥ 2 by
     exact ⟨h _ _ _ T.adj12 T.adj13 T.distinct23,
-           h _ _ _ (G.symm T.adj12) T.adj23 T.distinct13,
-           h _ _ _ (G.symm T.adj13) (G.symm T.adj23) T.distinct12⟩
+           h _ _ _ T.adj12.symm T.adj23 T.distinct13,
+           h _ _ _ T.adj13.symm T.adj23.symm T.distinct12⟩
   intro v a b ha hb hab
   simp only [vertexDegree]
   calc G.degree v = (G.neighborFinset v).card := rfl
@@ -299,8 +313,8 @@ theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triang
         intro x hx
         simp only [Finset.mem_insert, Finset.mem_singleton] at hx
         rcases hx with rfl | rfl
-        · exact G.mem_neighborFinset.mpr ha
-        · exact G.mem_neighborFinset.mpr hb)
+        · exact (G.mem_neighborFinset v x).mpr ha
+        · exact (G.mem_neighborFinset v x).mpr hb)
     _ = 2 := by rw [Finset.card_pair hab]
 
 /-- Triangle degree sum is at least 6. -/
@@ -326,8 +340,8 @@ theorem dense_average_degree (G : SimpleGraph V) [DecidableRel G.Adj]
   have h2 : Fintype.card V ^ 2 ≥ Fintype.card V * (Fintype.card V - 1) := by
     rcases Fintype.card V with _ | n
     · simp
-    · simp [sq, Nat.succ_sub_one]
-      exact Nat.le_add_right _ _
+    · simp only [sq, Nat.succ_sub_one]
+      nlinarith
   linarith
 
 /-
@@ -343,11 +357,11 @@ noncomputable def maxTriangleDegreeSum (G : SimpleGraph V) [DecidableRel G.Adj]
 
 /-- h(n) equals minimum of maxTriangleDegreeSum over all dense graphs. -/
 theorem h_as_min (n : ℕ) (hn : n ≥ 3) :
-    h n = sInf {k : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+    h n = sInf {k : ℕ | ∃ (V : Type) (_ : DecidableEq V) (_ : Fintype V),
       Fintype.card V = n ∧
       ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isAboveTuran G ∧
         ∀ T : Triangle G, triangleDegreeSum G T ≤ k} := by
-  set Tset := {k : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+  set Tset := {k : ℕ | ∃ (V : Type) (_ : DecidableEq V) (_ : Fintype V),
       Fintype.card V = n ∧
       ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isAboveTuran G ∧
         ∀ T : Triangle G, triangleDegreeSum G T ≤ k}
@@ -358,18 +372,19 @@ theorem h_as_min (n : ℕ) (hn : n ≥ 3) :
     have h0 : h n = 0 := Nat.le_zero.mp hle
     have hfan := fan_lower n hn
     have : (h n : ℝ) = 0 := by exact_mod_cast h0
-    linarith [show (fanConstant : ℝ) > 0 from by norm_num [fanConstant],
+    nlinarith [show (fanConstant : ℝ) > 0 from by norm_num [fanConstant],
               show (n : ℝ) > 0 from by exact_mod_cast (show 0 < n by omega)]
   have hS_ne : S.Nonempty := by
     by_contra hemp; rw [Set.not_nonempty_iff_eq_empty] at hemp
-    have : h n = 0 := by unfold h; rw [hemp]; simp [csSup_empty]
+    have : h n = 0 := by unfold h; change sSup S = 0; rw [hemp]; simp [csSup_empty]
     omega
   have hS_bdd : BddAbove S := by
     by_contra huba
-    have : h n = 0 := by unfold h; simp [csSup_of_not_bddAbove huba]
+    have : h n = 0 := by
+      unfold h; change sSup S = 0; simp [csSup_of_not_bddAbove huba, csSup_empty]
     omega
   -- h n is the maximum of S
-  have hmax : ∀ k ∈ S, k ≤ h n := fun k hk => Nat.le_csSup hS_bdd hk
+  have hmax : ∀ k ∈ S, k ≤ h n := fun k hk => le_csSup hS_bdd hk
   -- h n + 1 ∉ S (since h n = sSup S is the max)
   have h_succ_not_S : h n + 1 ∉ S :=
     fun h => absurd (hmax _ h) (Nat.not_succ_le_self _)
@@ -379,53 +394,41 @@ theorem h_as_min (n : ℕ) (hn : n ≥ 3) :
   push_neg at h_not_valid
   -- Extract: ∃ (W, G) dense on n vertices with all triangles sum < h n + 1
   obtain ⟨W, instDE, instFT, instDR_top, hWn, G, instDR_G, hGabove, hGbnd⟩ := h_not_valid
+  -- push_neg leaves `hGbnd : ¬hasDenseTriangle G (h n + 1)`; finish unfolding to the
+  -- usable ∀-form.
+  simp only [hasDenseTriangle, not_exists, not_le] at hGbnd
   -- hGbnd: ∀ T : Triangle G, triangleDegreeSum G T < h n + 1
   -- i.e., ≤ h n
-  -- Key: edgeFinset and degree are instance-independent
-  -- Both are determined by G.Adj alone, not the DecidableRel instance
-  have hedge_indep : ∀ (inst : DecidableRel G.Adj),
-      @edgeCount W instDE instFT G inst = @edgeCount W instDE instFT G instDR_G := by
-    intro inst
-    unfold edgeCount
-    congr 1
-    apply Finset.ext; intro e
-    -- e ∈ G.edgeFinset ↔ e ∈ G.edgeSet (instance-independent)
-    simp only [SimpleGraph.mem_edgeFinset]
-  have hdeg_indep : ∀ (inst : DecidableRel G.Adj) (v : W),
-      @SimpleGraph.degree W G inst v = @SimpleGraph.degree W G instDR_G v := by
-    intro inst v
-    simp only [SimpleGraph.degree]
-    congr 1
-    apply Finset.ext; intro w
-    simp only [SimpleGraph.mem_neighborFinset]
+  -- Key: `DecidableRel G.Adj` is a subsingleton (each `Decidable` component is), so any
+  -- two instances are propositionally equal; substituting collapses `inst` into `instDR_G`
+  -- and makes edgeCount/degree (and hence isAboveTuran/triangleDegreeSum) agree automatically.
   -- h n ∈ Tset: G witnesses this
   have h_in_Tset : h n ∈ Tset := by
-    refine ⟨W, instDE, instFT, hWn, G, fun inst => ?_⟩
-    -- Convert via instance independence
-    refine ⟨?_, fun t => ?_⟩
-    · -- isAboveTuran G (with inst)
-      unfold isAboveTuran; rw [hedge_indep inst]; exact hGabove
-    · -- triangleDegreeSum G t ≤ h n
-      simp only [triangleDegreeSum, vertexDegree, hdeg_indep inst]
-      exact Nat.lt_succ_iff.mp (hGbnd t)
+    refine ⟨W, instDE, instFT, hWn, G, ?_⟩
+    intro inst
+    have hi : inst = instDR_G := Subsingleton.elim inst instDR_G
+    subst hi
+    exact ⟨hGabove, fun t => Nat.lt_succ_iff.mp (hGbnd t)⟩
   -- Tset is nonempty and bounded below
   have hTset_ne : Tset.Nonempty := ⟨h n, h_in_Tset⟩
   have hTset_bdd : BddBelow Tset := ⟨0, fun _ _ => Nat.zero_le _⟩
   apply Nat.le_antisymm
   · -- h n ≤ sInf Tset: h n is a lower bound for Tset
-    apply Nat.le_csInf hTset_ne
+    apply le_csInf hTset_ne
     intro k hk
+    -- `classical` makes a `Decidable` instance available for any `G'.Adj` found below,
+    -- so the `∀ [DecidableRel G'.Adj]` quantifier in Tset's definition auto-discharges
+    -- deterministically (via `Classical.propDecidable`) instead of failing to synthesize.
+    classical
     -- k ∈ Tset: ∃ dense graph with all triangles sum ≤ k
     obtain ⟨V', instDE', instFT', hV'n, G', hG'⟩ := hk
-    -- Apply with the canonical instance from G'.Adj's decidability
-    haveI hDR' : DecidableRel G'.Adj := Classical.decRel G'.Adj
-    obtain ⟨hG'above, hG'bnd⟩ := hG' hDR'
+    obtain ⟨hG'above, hG'bnd⟩ := hG'
     -- From h_spec (h n is a valid lower bound), G' has a triangle with sum ≥ h n
     obtain ⟨t, ht⟩ := h_spec n hn V' hV'n G' hG'above
     -- That triangle's sum ≤ k
     exact Nat.le_trans ht (hG'bnd t)
   · -- sInf Tset ≤ h n: h n ∈ Tset
-    exact Nat.csInf_le hTset_bdd h_in_Tset
+    exact csInf_le hTset_bdd h_in_Tset
 
 /-
 ## Extremal Graphs
@@ -439,7 +442,7 @@ def isExtremal (n : ℕ) (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   isAboveTuran G ∧
   ∀ T : Triangle G, triangleDegreeSum G T ≤ h n
 
-/-- Extremal graphs exist. -/
+/-  Extremal graphs exist. -/
 /-
 ## Relation to Turán Graph
 
@@ -451,7 +454,7 @@ The complete bipartite graph K_{n/2, n/2} is the Turán graph.
     between parts, not within parts). The original statement was incorrect
     as it only required cross-edges without excluding intra-partition edges. -/
 theorem bipartite_no_triangle (n : ℕ) :
-    ∀ (V : Type*) [DecidableEq V] [Fintype V],
+    ∀ (V : Type) [DecidableEq V] [Fintype V],
     Fintype.card V = n →
     ∀ G : SimpleGraph V, (∃ (A B : Finset V), A ∪ B = univ ∧ A ∩ B = ∅ ∧
       ∀ x y : V, G.Adj x y ↔ (x ∈ A ∧ y ∈ B) ∨ (x ∈ B ∧ y ∈ A)) →
@@ -471,7 +474,7 @@ theorem bipartite_no_triangle (n : ℕ) :
   have hAB_mem : ∀ v : V, v ∈ A ∨ v ∈ B := by
     intro v; have := Finset.mem_union.mp (hAB ▸ Finset.mem_univ v); exact this
   have hAB_excl : ∀ v : V, v ∈ A → v ∈ B → False := by
-    intro v ha hb; exact Finset.not_mem_empty v (hABdisj ▸ Finset.mem_inter.mpr ⟨ha, hb⟩)
+    intro v ha hb; exact Finset.notMem_empty v (hABdisj ▸ Finset.mem_inter.mpr ⟨ha, hb⟩)
   -- Case split on v1's part
   rcases hAB_mem T.v1 with h1A | h1B
   · -- v1 ∈ A
@@ -501,6 +504,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
     (i.val < n / 2 ∧ j.val ≥ n / 2) ∨ (i.val ≥ n / 2 ∧ j.val < n / 2) ∨
     (i.val = 0 ∧ j.val = 1) ∨ (i.val = 1 ∧ j.val = 0)
   symm := by
+    constructor
     intro i j h
     rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
     · exact Or.inr (Or.inl ⟨hj, hi⟩)
@@ -508,6 +512,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
     · exact Or.inr (Or.inr (Or.inr ⟨hj, hi⟩))
     · exact Or.inr (Or.inr (Or.inl ⟨hj, hi⟩))
   loopless := by
+    constructor
     intro i h
     simp only [lt_irrefl, ge_iff_le, le_refl, not_lt] at h
     rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -516,7 +521,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
     · omega
     · omega
 
-private instance (n : ℕ) : DecidableRel (turanPlus1 n).Adj := by
+private instance turanPlus1DecidableRel (n : ℕ) : DecidableRel (turanPlus1 n).Adj := by
   intro i j
   unfold turanPlus1
   simp only [SimpleGraph.mk]
@@ -529,17 +534,10 @@ private lemma turanPlus1_triangle (n : ℕ) (hn : n ≥ 4) :
     let v1 : Fin n := ⟨1, by omega⟩
     let vm : Fin n := ⟨n / 2, Nat.div_lt_self (by omega) (by omega)⟩
     G.Adj v0 v1 ∧ G.Adj v1 vm ∧ G.Adj v0 vm := by
-  simp only [turanPlus1, SimpleGraph.mk]
   refine ⟨?_, ?_, ?_⟩
   · exact Or.inr (Or.inr (Or.inl ⟨rfl, rfl⟩))
-  · apply Or.inr; apply Or.inl
-    constructor
-    · show 1 < n / 2; omega
-    · show n / 2 ≥ n / 2; omega
-  · apply Or.inl
-    constructor
-    · show 0 < n / 2; omega
-    · show n / 2 ≥ n / 2; omega
+  · exact Or.inl ⟨show (1 : ℕ) < n / 2 by omega, le_refl _⟩
+  · exact Or.inl ⟨show (0 : ℕ) < n / 2 by omega, le_refl _⟩
 
 /-- Degree sum of the triangle (0,1,n/2) is ≥ n.
     Strategy: inject the upper half {j | j.val ≥ n/2} into neighborFinset v0 and v1,
@@ -560,27 +558,33 @@ private lemma turanPlus1_triangle_sum (n : ℕ) (hn : n ≥ 4) :
     have h_disj : Disjoint S_upper S_lower :=
       Finset.disjoint_filter.mpr (fun _ _ h1 h2 => by omega)
     have h_union : S_upper ∪ S_lower = Finset.univ := by
-      ext j; simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]; omega
+      ext j
+      constructor
+      · intro _; exact Finset.mem_univ j
+      · intro _
+        simp only [S_upper, S_lower, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+                   true_and]
+        omega
     calc S_upper.card + S_lower.card
         = (S_upper ∪ S_lower).card := (Finset.card_union_of_disjoint h_disj).symm
       _ = n := by rw [h_union, Finset.card_univ, Fintype.card_fin]
   -- Each upper-half vertex is adjacent to v0 (v0.val = 0 < n/2 for n ≥ 4)
   have h_sub_v0 : S_upper ⊆ G.neighborFinset v0 := by
     intro j hj
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
-    rw [SimpleGraph.mem_neighborFinset]
-    exact Or.inl ⟨by omega, hj⟩
+    simp only [S_upper, Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [G.mem_neighborFinset]
+    exact Or.inl ⟨show (0 : ℕ) < n / 2 by omega, hj⟩
   -- Each upper-half vertex is adjacent to v1 (v1.val = 1 < n/2 for n ≥ 4, first disjunct)
   have h_sub_v1 : S_upper ⊆ G.neighborFinset v1 := by
     intro j hj
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
-    rw [SimpleGraph.mem_neighborFinset]
-    exact Or.inl ⟨by omega, hj⟩
+    simp only [S_upper, Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [G.mem_neighborFinset]
+    exact Or.inl ⟨show (1 : ℕ) < n / 2 by omega, hj⟩
   -- Each lower-half vertex is adjacent to vm (vm.val = n/2, second disjunct: n/2 ≥ n/2 ∧ j < n/2)
   have h_sub_vm : S_lower ⊆ G.neighborFinset vm := by
     intro j hj
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
-    rw [SimpleGraph.mem_neighborFinset]
+    simp only [S_lower, Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [G.mem_neighborFinset]
     exact Or.inr (Or.inl ⟨le_refl _, hj⟩)
   -- Lower bounds on degrees via subset cardinality
   have hdeg_v0 : S_upper.card ≤ G.degree v0 := Finset.card_le_card h_sub_v0
@@ -596,10 +600,11 @@ private lemma card_filter_lt_half (n : ℕ) (hn : n ≥ 4) :
   have hf : (Finset.filter (fun j : Fin n => j.val < n / 2) Finset.univ) =
       (Finset.univ : Finset (Fin (n / 2))).image (Fin.castLE hle) := by
     ext j
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Fin.ext_iff]
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Fin.ext_iff,
+               Fin.val_castLE]
     constructor
-    · intro hj; exact ⟨⟨j.val, hj⟩, Finset.mem_univ _, rfl⟩
-    · rintro ⟨k, _, rfl⟩; exact k.isLt
+    · intro hj; exact ⟨⟨j.val, hj⟩, rfl⟩
+    · rintro ⟨k, hk⟩; have := k.isLt; omega
   rw [hf, Finset.card_image_of_injective _ (Fin.castLE_injective hle),
       Finset.card_univ, Fintype.card_fin]
 
@@ -612,11 +617,18 @@ private lemma card_filter_ge_half (n : ℕ) (hn : n ≥ 4) :
     ext j
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Fin.ext_iff]
     constructor
-    · intro hj; exact ⟨⟨j.val - n / 2, by omega⟩, Finset.mem_univ _, by omega⟩
-    · rintro ⟨k, _, rfl⟩; omega
+    · intro hj
+      refine ⟨⟨j.val - n / 2, by omega⟩, ?_⟩
+      show n / 2 + (j.val - n / 2) = j.val
+      omega
+    · rintro ⟨k, hk⟩
+      have hk' : n / 2 + k.val = j.val := hk
+      omega
   rw [hf, Finset.card_image_of_injective]
   · simp [Fintype.card_fin]
-  · intro k1 k2 h; ext; omega
+  · intro k1 k2 h
+    have hv : n / 2 + k1.val = n / 2 + k2.val := congrArg Fin.val h
+    ext; omega
 
 -- Helper: upper vertices (val ≥ n/2) have degree n/2 in turanPlus1
 private lemma turanPlus1_degree_upper (n : ℕ) (hn : n ≥ 4)
@@ -625,7 +637,7 @@ private lemma turanPlus1_degree_upper (n : ℕ) (hn : n ≥ 4)
   have hN : (turanPlus1 n).neighborFinset v =
       Finset.filter (fun j : Fin n => j.val < n / 2) Finset.univ := by
     ext j
-    simp only [SimpleGraph.mem_neighborFinset, turanPlus1, SimpleGraph.mk_adj,
+    simp only [SimpleGraph.mem_neighborFinset, turanPlus1,
                Finset.mem_filter, Finset.mem_univ, true_and]
     constructor
     · rintro (⟨hi, _⟩ | ⟨_, hj⟩ | ⟨hi, _⟩ | ⟨hi, _⟩) <;> omega
@@ -639,7 +651,7 @@ private lemma turanPlus1_degree_lower_other (n : ℕ) (hn : n ≥ 4)
   have hN : (turanPlus1 n).neighborFinset v =
       Finset.filter (fun j : Fin n => n / 2 ≤ j.val) Finset.univ := by
     ext j
-    simp only [SimpleGraph.mem_neighborFinset, turanPlus1, SimpleGraph.mk_adj,
+    simp only [SimpleGraph.mem_neighborFinset, turanPlus1,
                Finset.mem_filter, Finset.mem_univ, true_and]
     constructor
     · rintro (⟨_, hj⟩ | ⟨hi, _⟩ | ⟨hi, _⟩ | ⟨hi, _⟩) <;> omega
@@ -652,15 +664,10 @@ private lemma turanPlus1_degree_zero (n : ℕ) (hn : n ≥ 4) :
   have hN : (turanPlus1 n).neighborFinset ⟨0, by omega⟩ =
       Finset.filter (fun j : Fin n => n / 2 ≤ j.val) Finset.univ ∪ {⟨1, by omega⟩} := by
     ext j
-    simp only [SimpleGraph.mem_neighborFinset, turanPlus1, SimpleGraph.mk_adj,
+    simp only [SimpleGraph.mem_neighborFinset, turanPlus1,
                Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and,
                Finset.mem_singleton, Fin.ext_iff]
-    constructor
-    · rintro (⟨_, hj⟩ | ⟨hi, _⟩ | ⟨_, hj⟩ | ⟨hi, _⟩) <;> [exact Or.inl hj; omega;
-        exact Or.inr hj; omega]
-    · rintro (hj | rfl)
-      · exact Or.inl ⟨by omega, hj⟩
-      · exact Or.inr (Or.inr (Or.inl ⟨rfl, rfl⟩))
+    omega
   rw [SimpleGraph.degree, hN, Finset.card_union_of_disjoint]
   · rw [card_filter_ge_half n hn, Finset.card_singleton]
   · simp only [Finset.disjoint_singleton_right, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -672,15 +679,10 @@ private lemma turanPlus1_degree_one (n : ℕ) (hn : n ≥ 4) :
   have hN : (turanPlus1 n).neighborFinset ⟨1, by omega⟩ =
       Finset.filter (fun j : Fin n => n / 2 ≤ j.val) Finset.univ ∪ {⟨0, by omega⟩} := by
     ext j
-    simp only [SimpleGraph.mem_neighborFinset, turanPlus1, SimpleGraph.mk_adj,
+    simp only [SimpleGraph.mem_neighborFinset, turanPlus1,
                Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and,
                Finset.mem_singleton, Fin.ext_iff]
-    constructor
-    · rintro (⟨_, hj⟩ | ⟨hi, _⟩ | ⟨hi, _⟩ | ⟨_, hj⟩) <;> [exact Or.inl hj; omega;
-        omega; exact Or.inr hj]
-    · rintro (hj | rfl)
-      · exact Or.inl ⟨by omega, hj⟩
-      · exact Or.inr (Or.inr (Or.inr ⟨rfl, rfl⟩))
+    omega
   rw [SimpleGraph.degree, hN, Finset.card_union_of_disjoint]
   · rw [card_filter_ge_half n hn, Finset.card_singleton]
   · simp only [Finset.disjoint_singleton_right, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -689,12 +691,20 @@ private lemma turanPlus1_degree_one (n : ℕ) (hn : n ≥ 4) :
 /-- Adding one edge to Turán creates triangle with specific degrees.
     Proof: use turanPlus1 = K_{n/2, n-n/2} + edge(0,1) on Fin n. -/
 theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
-    ∃ (V : Type*) [DecidableEq V] [Fintype V],
+    ∃ (V : Type) (_ : DecidableEq V) (_ : Fintype V),
     Fintype.card V = n ∧
     ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
     edgeCount G = turanThreshold n + 1 ∧
     (∃ T : Triangle G, triangleDegreeSum G T ≥ n) := by
-  refine ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n, turanPlus1 n, fun _ => ?_⟩
+  refine ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n, turanPlus1 n, ?_⟩
+  intro inst
+  -- Collapse the freshly-introduced instance into the concrete named one that the
+  -- `turanPlus1_degree_*`/`card_filter_*` helper lemmas were proved against (both are
+  -- `DecidableRel (turanPlus1 n).Adj`, a subsingleton type). Substituting so that `inst`
+  -- (not the opaque/transparent-ambiguous side) is the one eliminated keeps every later
+  -- reference to `turanPlus1DecidableRel n` transparent for defeq.
+  have hi : turanPlus1DecidableRel n = inst := Subsingleton.elim _ _
+  subst hi
   constructor
   · -- edgeCount = turanThreshold n + 1
     -- Strategy: sum of degrees = 2 * edges. We compute the degree sum exactly.
@@ -707,8 +717,12 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     have h_disj : Disjoint lower upper :=
       Finset.disjoint_filter.mpr (fun _ _ h1 h2 => by omega)
     have h_union : lower ∪ upper = Finset.univ := by
-      ext v; simp only [lower, upper, Finset.mem_union, Finset.mem_filter,
-                        Finset.mem_univ, true_and]; omega
+      ext v
+      constructor
+      · intro _; exact Finset.mem_univ v
+      · intro _
+        simp only [lower, upper, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]
+        omega
     have card_lower : lower.card = n / 2 := card_filter_lt_half n hn
     have card_upper : upper.card = n - n / 2 := card_filter_ge_half n hn
     -- Vertices 0, 1 are in lower
@@ -721,21 +735,22 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     have hpair_sub : ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)) ⊆ lower :=
       Finset.insert_subset_iff.mpr ⟨hv0_lower, Finset.singleton_subset_iff.mpr hv1_lower⟩
     -- Sum over upper: each vertex has degree n/2
-    have hsum_upper : ∑ v in upper, (turanPlus1 n).degree v = (n - n / 2) * (n / 2) := by
+    have hsum_upper : ∑ v ∈ upper, (turanPlus1 n).degree v = (n - n / 2) * (n / 2) := by
       rw [Finset.sum_const_nat (fun v hv =>
           turanPlus1_degree_upper n hn v ((Finset.mem_filter.mp hv).2)),
           card_upper]
     -- Sum over {0, 1}: each has degree n - n/2 + 1
-    have hsum_pair : ∑ v in ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)),
+    have hsum_pair : ∑ v ∈ ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)),
         (turanPlus1 n).degree v = 2 * (n - n / 2 + 1) := by
       rw [Finset.sum_pair hv01_ne,
           turanPlus1_degree_zero n hn, turanPlus1_degree_one n hn]
       ring
     -- Card of lower \ {0, 1} = n/2 - 2
     have hrest_card : (lower \ {⟨0, by omega⟩, ⟨1, by omega⟩}).card = n / 2 - 2 := by
-      rw [Finset.card_sdiff hpair_sub, card_lower, Finset.card_pair hv01_ne]
+      rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hpair_sub, card_lower,
+          Finset.card_pair hv01_ne]
     -- Sum over lower \ {0, 1}: each has degree n - n/2
-    have hsum_rest : ∑ v in lower \ {⟨0, by omega⟩, ⟨1, by omega⟩},
+    have hsum_rest : ∑ v ∈ lower \ {⟨0, by omega⟩, ⟨1, by omega⟩},
         (turanPlus1 n).degree v = (n / 2 - 2) * (n - n / 2) := by
       rw [Finset.sum_const_nat (fun v hv => ?_), hrest_card]
       have hvm := Finset.mem_sdiff.mp hv
@@ -748,9 +763,9 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
       exact turanPlus1_degree_lower_other n hn v hv2 hvl
     -- Combine: total degree sum
     have hsum_total : ∑ v : Fin n, (turanPlus1 n).degree v = 2 * (n / 2 * (n - n / 2) + 1) := by
-      -- Rewrite ∑ v : Fin n as ∑ v in Finset.univ (definitionally equal), then use h_union
+      -- Rewrite ∑ v : Fin n as ∑ v ∈ Finset.univ (definitionally equal), then use h_union
       have huniv : ∑ v : Fin n, (turanPlus1 n).degree v =
-                   ∑ v in lower ∪ upper, (turanPlus1 n).degree v :=
+                   ∑ v ∈ lower ∪ upper, (turanPlus1 n).degree v :=
         Finset.sum_congr h_union.symm (fun _ _ => rfl)
       rw [huniv, Finset.sum_union h_disj]
       -- Split lower into {0,1} and rest
@@ -768,15 +783,20 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     have harith : n / 2 * (n - n / 2) = n ^ 2 / 4 := by
       rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
       · -- even: n = k + k, so n/2 = k, n - n/2 = k, n^2 = 4*(k*k)
+        -- (rewrite n/2 first, THEN n-n/2 -- rewriting both `n/2`s at once via `h1` already
+        -- turns `n - n/2` into `n - k`, so a separate `n - n/2 = k` rewrite no longer
+        -- has a literal occurrence to find; derive `n - k = k` fresh instead.)
         have h1 : n / 2 = k := by omega
-        have h2 : n - n / 2 = k := by omega
         have h3 : n ^ 2 = 4 * (k * k) := by rw [hk]; ring
-        rw [h1, h2, h3]; omega
+        rw [h1]
+        have hnk : n - k = k := by omega
+        rw [hnk, h3]; omega
       · -- odd: n = 2*k+1, so n/2 = k, n - n/2 = k+1, n^2 = 4*(k*(k+1))+1
         have h1 : n / 2 = k := by omega
-        have h2 : n - n / 2 = k + 1 := by omega
         have h3 : n ^ 2 = 4 * (k * (k + 1)) + 1 := by rw [hk]; ring
-        rw [h1, h2, h3]; omega
+        rw [h1]
+        have hnk : n - k = k + 1 := by omega
+        rw [hnk, h3]; omega
     omega
   · -- Triangle (0,1,n/2) with degree sum ≥ n
     have htr := turanPlus1_triangle n hn
@@ -823,15 +843,23 @@ private lemma complete_of_above_turan_three {V : Type*} [DecidableEq V] [Fintype
   -- Every vertex has degree exactly 2
   have hdx : G.degree x = 2 := by
     have ha := hdeg_le a; have hb := hdeg_le b; have hc := hdeg_le c
-    obtain ⟨i, hi⟩ := e.symm.surjective x; fin_cases i <;> (subst hi; omega)
+    have hex : x = a ∨ x = b ∨ x = c := by
+      obtain ⟨i, hi⟩ := e.symm.surjective x
+      fin_cases i
+      · exact Or.inl hi.symm
+      · exact Or.inr (Or.inl hi.symm)
+      · exact Or.inr (Or.inr hi.symm)
+    rcases hex with h | h | h <;> rw [h] <;> omega
   -- neighborFinset x = Finset.univ.erase x (both have card 2, subset implies equality)
   have hsub : G.neighborFinset x ⊆ Finset.univ.erase x := fun w hw =>
-    Finset.mem_erase.mpr ⟨fun h => G.loopless x (h ▸ G.mem_neighborFinset.mp hw), Finset.mem_univ w⟩
+    Finset.mem_erase.mpr
+      ⟨fun h => G.loopless.irrefl x (h ▸ (G.mem_neighborFinset x w).mp hw), Finset.mem_univ w⟩
   have h_eq : G.neighborFinset x = Finset.univ.erase x :=
     Finset.eq_of_subset_of_card_le hsub (by
       rw [Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
       exact le_of_eq hdx.symm)
-  exact G.mem_neighborFinset.mp (h_eq ▸ Finset.mem_erase.mpr ⟨hxy, Finset.mem_univ y⟩)
+  exact (G.mem_neighborFinset x y).mp
+    (h_eq ▸ Finset.mem_erase.mpr ⟨hxy.symm, Finset.mem_univ y⟩)
 
 /-- Any valid lower bound for h(3) is at most 6.
     Counterexample: K₃ has max triangle degree sum 6. -/
@@ -873,12 +901,21 @@ theorem h_three : h 3 = 6 := by
 private def G4 : SimpleGraph (Fin 4) where
   Adj i j := i ≠ j ∧ ¬(i = 2 ∧ j = 3) ∧ ¬(i = 3 ∧ j = 2)
   symm := by
+    constructor
     intro i j ⟨hij, h1, h2⟩
     exact ⟨hij.symm, fun ⟨ha, hb⟩ => h2 ⟨hb, ha⟩, fun ⟨ha, hb⟩ => h1 ⟨hb, ha⟩⟩
-  loopless := by intro i ⟨h, _⟩; exact h rfl
+  loopless := by constructor; intro i ⟨h, _⟩; exact h rfl
 
-private instance : DecidableRel G4.Adj := by
-  intro i j; fin_cases i <;> fin_cases j <;> decide
+private instance : DecidableRel G4.Adj := fun i j =>
+  show Decidable (i ≠ j ∧ ¬(i = 2 ∧ j = 3) ∧ ¬(i = 3 ∧ j = 2)) from inferInstance
+
+/-- Any 3 distinct vertices of G4 have degree sum ≤ 8. Stated as a fully closed,
+    context-free fact (no ambient `k`/`T`/etc.) so `decide` can discharge it directly --
+    trying to `decide` the degree sum inside `valid_bound_four_le_eight`'s own proof after
+    `fin_cases` trips over unrelated hypotheses still present in that local context. -/
+private lemma G4_degree_sum_le_eight (v1 v2 v3 : Fin 4) (hne12 : v1 ≠ v2) (hne23 : v2 ≠ v3)
+    (hne13 : v1 ≠ v3) : G4.degree v1 + G4.degree v2 + G4.degree v3 ≤ 8 := by
+  fin_cases v1 <;> fin_cases v2 <;> fin_cases v3 <;> first | omega | decide
 
 /-- Upper bound: every valid lower bound for h(4) is ≤ 8.
     Proof: K₄ minus one edge has 5 edges (above Turán threshold 4),
@@ -897,9 +934,9 @@ private lemma valid_bound_four_le_eight (k : ℕ) (hk : isValidLowerBound 4 k) :
   have hd3 : G4.degree 3 = 2 := by native_decide
   -- Any triangle in G4 has degree sum ≤ 8 (case analysis on all vertex combinations)
   have hle : triangleDegreeSum G4 T ≤ 8 := by
+    obtain ⟨v1, v2, v3, hne12, hne23, hne13, ha12, ha23, ha13⟩ := T
     simp only [triangleDegreeSum, vertexDegree]
-    fin_cases T.v1 <;> fin_cases T.v2 <;> fin_cases T.v3 <;>
-      simp_all (config := { decide := true }) [G4, hd0, hd1, hd2, hd3] <;> omega
+    exact G4_degree_sum_le_eight v1 v2 v3 hne12 hne23 hne13
   omega
 
 /-- Lower bound: 8 is a valid lower bound for h(4).
@@ -946,19 +983,22 @@ private lemma isValidLowerBound_four_eight : isValidLowerBound 4 8 := by
   have all_adj_of_deg3 : ∀ x w : V, x ≠ w → G.degree x = 3 → G.Adj x w := by
     intro x w hxw hx3
     have hN_sub : G.neighborFinset x ⊆ Finset.univ.erase x := fun y hy =>
-      Finset.mem_erase.mpr ⟨fun h => G.loopless x (h ▸ G.mem_neighborFinset.mp hy),
+      Finset.mem_erase.mpr ⟨fun h => G.loopless.irrefl x (h ▸ (G.mem_neighborFinset x y).mp hy),
                              Finset.mem_univ y⟩
     have h_eq : G.neighborFinset x = Finset.univ.erase x :=
       Finset.eq_of_subset_of_card_le hN_sub (by
         rw [Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
         exact le_of_eq hx3.symm)
-    exact G.mem_neighborFinset.mp (h_eq ▸ Finset.mem_erase.mpr ⟨hxw, Finset.mem_univ w⟩)
+    exact (G.mem_neighborFinset x w).mp
+      (h_eq ▸ Finset.mem_erase.mpr ⟨hxw.symm, Finset.mem_univ w⟩)
   -- Find a third vertex w ≠ u, v (V has 4 elements, so V \ {u,v} has 2 elements)
   obtain ⟨w, hwu, hwv⟩ : ∃ w : V, w ≠ u ∧ w ≠ v := by
     have hpair : ({u, v} : Finset V).card = 2 := Finset.card_pair huv_ne
     have hcard_rest : (Finset.univ \ ({u, v} : Finset V)).card = 2 := by
-      rw [Finset.card_sdiff (Finset.subset_univ _), Finset.card_univ, hcard, hpair]
-    obtain ⟨w, hw⟩ := Finset.card_pos.mp (show 0 < _ from by omega)
+      rw [Finset.card_sdiff, Finset.inter_eq_left.mpr (Finset.subset_univ _), Finset.card_univ,
+          hcard, hpair]
+    obtain ⟨w, hw⟩ :=
+      Finset.card_pos.mp (show 0 < (Finset.univ \ ({u, v} : Finset V)).card from by omega)
     have hmem := Finset.mem_sdiff.mp hw
     refine ⟨w, fun h => hmem.2 ?_, fun h => hmem.2 ?_⟩
     · exact Finset.mem_insert.mpr (Or.inl h)

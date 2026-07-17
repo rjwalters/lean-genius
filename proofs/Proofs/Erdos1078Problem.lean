@@ -18,10 +18,7 @@ Background:
 Tags: extremal-graph-theory, multipartite-graphs, minimum-degree, cliques
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open Nat Real
 
@@ -44,12 +41,15 @@ structure RPartiteGraph (r n : ℕ) where
   edges_between_parts : ∀ u v : Fin (r * n),
     edges.Adj u v → ∃ i j : Fin r, i ≠ j ∧ u ∈ parts i ∧ v ∈ parts j
 
+open Classical in
 /--
 **Minimum Degree:**
 The minimum degree of a graph.
 -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.inf' Finset.univ ⟨Classical.arbitrary V, Finset.mem_univ _⟩ G.degree
+  if h : (Finset.univ : Finset V).Nonempty then
+    Finset.inf' Finset.univ h (fun v => G.degree v)
+  else 0
 
 /--
 **Contains K_r:**
@@ -144,7 +144,6 @@ Any edge gives K_2, so threshold is trivial.
 theorem r2_trivial :
     sharpThreshold 2 n = n - n := by
   simp [sharpThreshold]
-  ring
 
 /--
 **Case r = 3 (Tripartite):**
@@ -153,7 +152,6 @@ For r=3, s = 1, threshold = 2n - ⌈n/1⌉ = 2n - n = n.
 theorem r3_threshold (n : ℕ) (hn : n ≥ 1) :
     sharpThreshold 3 n = 2 * n - n := by
   simp [sharpThreshold]
-  ring
 
 /--
 **Case r = 4 (4-partite):**
@@ -164,7 +162,7 @@ example : sharpThreshold 4 3 = 3 * 3 - (2 * 3 + 2) / 3 := by
 
 /- ## Part VI: Comparison with BES Threshold -/
 
-/--
+/- 
 **Asymptotic Agreement:**
 The sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ ≈ (r - 3/2)n asymptotically.
 
@@ -182,7 +180,7 @@ def IsIndependentTransversal (G : RPartiteGraph r n)
   (∀ i : Fin r, T i ∈ G.parts i) ∧
   (∀ i j : Fin r, i ≠ j → ¬G.edges.Adj (T i) (T j))
 
-/--
+/- 
 **Extremal Example:**
 The construction showing r - 3/2 is tight uses parity.
 -/

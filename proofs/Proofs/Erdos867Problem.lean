@@ -28,10 +28,10 @@ References:
 - D. Coppersmith, S. Phillips, "On a question of Erdős on subsequence sums", SIAM J. Discrete Math. (1996)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Interval
-import Mathlib.Data.Nat.Interval
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Data.Real.Basic
@@ -98,13 +98,13 @@ def upperHalf (N : ℕ) : Finset ℕ := Finset.Ioc (N / 2) N
 The upper half has size approximately N/2.
 -/
 theorem upperHalf_card (N : ℕ) : (upperHalf N).card = N - N / 2 := by
-  simp [upperHalf, Finset.card_Ioc]
+  simp [upperHalf, Nat.card_Ioc]
 
-/--
+/- 
 The upper half achieves density approaching 1/2.
 -/
 
-/--
+/- 
 The upper half is consecutive sum-free: any sum of two or more
 consecutive elements exceeds N.
 -/
@@ -115,7 +115,7 @@ consecutive elements exceeds N.
 The first improvement: |A| ≤ (2/3 + o(1))N.
 -/
 
-/--
+/- 
 **Adenwalla's Lemma:**
 If |A ∩ [x, 2x]| = t, then there are t - 1 distinct consecutive pair sums
 in (2x, 4x], all of which must be outside A.
@@ -123,7 +123,7 @@ in (2x, 4x], all of which must be outside A.
 This gives |A ∩ [x, 4x]| ≤ t + (2x - (t - 1)) = 2x + 1.
 -/
 
-/--
+/- 
 **Adenwalla's Theorem:**
 For any consecutive sum-free set A ⊆ {1, ..., N},
   |A| ≤ (2/3)N + O(log N).
@@ -135,7 +135,7 @@ For any consecutive sum-free set A ⊆ {1, ..., N},
 Freud constructed sets achieving density > 1/2.
 -/
 
-/--
+/- 
 **Freud's Construction (1993):**
 There exist consecutive sum-free sets with density ≥ 19/36.
 
@@ -167,7 +167,7 @@ axiom coppersmith_phillips_lower :
       (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧
       A.card * 24 ≥ 13 * N - 24
 
-/--
+/- 
 **Coppersmith-Phillips Upper Bound:**
 The maximum density is at most 2/3 - 1/512.
 
@@ -195,11 +195,11 @@ consecutive sum lies in A.
 -/
 def isInfiniteConsecutiveSumFree (A : Set ℕ) : Prop :=
   ∀ (seq : List ℕ), seq.length ≥ 2 →
-    (∀ i : ℕ, i < seq.length - 1 → seq.get? i < seq.get? (i + 1)) →
+    (∀ i : ℕ, i < seq.length - 1 → seq[i]? < seq[i + 1]?) →
     (∀ x ∈ seq, x ∈ A) →
     seq.sum ∉ A
 
-/--
+/- 
 **Connection to Problem 839:**
 The infinite version asks about the asymptotic density of
 consecutive sum-free sets.
@@ -216,8 +216,7 @@ consecutive sum-free sets.
 - 3 + 4 + 5 = 12 ∉ {3, 4, 5}
 -/
 example : ({3, 4, 5} : Finset ℕ) ⊆ Finset.Icc 1 5 := by
-  simp [Finset.subset_iff]
-  omega
+  decide
 
 /--
 **Example: Upper half {3, 4, 5} in {1, ..., 5} has 3 elements.**
@@ -240,7 +239,7 @@ example : ({6, 7, 8, 9, 10} : Finset ℕ) = upperHalf 10 := by
 ## Part VIII: Main Results
 -/
 
-/--
+/- 
 **Erdős's Original Conjecture (DISPROVED):**
 The conjecture that max density ≤ 1/2 is FALSE.
 

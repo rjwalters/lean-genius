@@ -1965,7 +1965,7 @@ lemma catalan_eq_ballot (m : ℕ) :
   simp only [LatticePathLGV.Cn, LatticePathLGV.ballotSeqCount]
   congr 1 <;> omega
 
-/-- card(SYT(twoRectYD m)) = C_m (the m-th Catalan number).
+/-  card(SYT(twoRectYD m)) = C_m (the m-th Catalan number).
 
     Proof strategy:
     Step 1: Bijection SYT(m,m) ↔ ballot LPaths of m East + m North steps.
@@ -2310,7 +2310,7 @@ private lemma compFin_lRefl {m : ℕ} (S : Finset (Fin (2 * m))) (k : Fin (2 * m
     compFin m (lRefl m S k) = S.filter (· ≤ k) ∪ (compFin m S).filter (k < ·) := by
   ext x
   simp only [lRefl, compFin, mem_union, mem_filter, mem_univ, true_and]
-  rcases le_or_lt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
+  rcases le_or_gt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hgt, not_le.mpr hgt]
@@ -2322,7 +2322,7 @@ private lemma lRefl_invol {m : ℕ} (S : Finset (Fin (2 * m))) (k : Fin (2 * m))
   simp only [lRefl, compFin_lRefl]
   ext x
   simp only [mem_union, mem_filter, mem_univ, true_and]
-  rcases le_or_lt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
+  rcases le_or_gt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hgt, not_le.mpr hgt]
@@ -2487,7 +2487,7 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
   · -- k = 0: T.filter(≤0) = ∅ since 0 ∉ T; comp.filter(≤0) ∋ 0
     have hempty : (T.filter (· ≤ k)).card = 0 := by
       apply Finset.card_eq_zero.mpr
-      ext x; simp only [mem_filter, Finset.not_mem_empty, iff_false]
+      ext x; simp only [mem_filter, Finset.notMem_empty, iff_false]
       intro ⟨hx, hle⟩
       have hxk : x = k := Fin.le_antisymm (Fin.le_def.mpr (by
         have := Fin.le_def.mp hle; omega)) (Fin.zero_le _)
@@ -2527,7 +2527,7 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
         · intro ⟨hx, hle⟩
-          rcases le_or_lt x k' with h | h
+          rcases le_or_gt x k' with h | h
           · exact Or.inl ⟨hx, h⟩
           · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
               simp only [Fin.lt_def] at h; omega)))
@@ -2562,7 +2562,7 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
         · intro h; exact ⟨h ▸ hkT, le_refl k⟩⟩
     have h2 : ((compFin m T).filter (· ≤ k)).card = 0 := by
       apply Finset.card_eq_zero.mpr; ext x
-      simp only [mem_filter, Finset.not_mem_empty, iff_false]
+      simp only [mem_filter, Finset.notMem_empty, iff_false]
       intro ⟨hxC, hle⟩
       simp only [compFin, mem_filter, mem_univ, true_and] at hxC
       have hxk : x = k := Fin.le_antisymm (Fin.le_def.mpr (by
@@ -2586,7 +2586,7 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
         · intro ⟨hx, hle⟩
-          rcases le_or_lt x k' with h | h
+          rcases le_or_gt x k' with h | h
           · exact Or.inl ⟨hx, h⟩
           · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
               simp only [Fin.lt_def] at h; omega)))
@@ -3610,7 +3610,7 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
   have hrow0 : ∏ j ∈ Finset.range a, hookLength (twoRowYD a b hab) 0 j =
       (a + 1).descFactorial b * (a - b).factorial := by
     rw [hsplit, Finset.prod_union hdisj]
-    -- Left part: ∏ j in range b, (a-j+1) = (a+1).descFactorial b
+    -- Left part: ∏ j ∈ range b, (a-j+1) = (a+1).descFactorial b
     have hleft : ∏ j ∈ Finset.range b, hookLength (twoRowYD a b hab) 0 j =
         (a + 1).descFactorial b := by
       rw [Finset.prod_congr rfl (fun j hj =>
@@ -3619,13 +3619,13 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
             show a - j + 1 = (a + 1) - j from by
               have := Finset.mem_range.mp hj; omega),
           ← Nat.descFactorial_eq_prod_range]
-    -- Right part: ∏ j in Ico b a, (a-j) = (a-b)!
+    -- Right part: ∏ j ∈ Ico b a, (a-j) = (a-b)!
     have hright : ∏ j ∈ Finset.Ico b a, hookLength (twoRowYD a b hab) 0 j =
         (a - b).factorial := by
       rw [Finset.prod_congr rfl (fun j hj =>
             hookLength_twoRowYD_row0_ge hab
               (Finset.mem_Ico.mp hj).1 (Finset.mem_Ico.mp hj).2)]
-      -- ∏ j in Ico b a, (a-j) = ∏ k in range(a-b), (a-b-k) via reindex k = j-b
+      -- ∏ j ∈ Ico b a, (a-j) = ∏ k ∈ range(a-b), (a-b-k) via reindex k = j-b
       rw [show Finset.Ico b a = (Finset.range (a - b)).image (b + ·) from by
             ext x; simp [Finset.mem_Ico, Finset.mem_range, Finset.mem_image]; omega,
           Finset.prod_image (fun x _ y _ h => by omega),
@@ -3634,7 +3634,7 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
               have := Finset.mem_range.mp hk; omega),
           ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
     rw [hleft, hright]
-  -- Row 1: ∏ j in range b, (b-j) = b!
+  -- Row 1: ∏ j ∈ range b, (b-j) = b!
   have hrow1 : ∏ j ∈ Finset.range b, hookLength (twoRowYD a b hab) 1 j = b.factorial := by
     rw [Finset.prod_congr rfl (fun j hj =>
           hookLength_twoRowYD_row1 hab (Finset.mem_range.mp hj)),
@@ -4736,7 +4736,7 @@ lemma hook_walk_identity_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2 = 0
   rw [← Finset.sum_mul, ← hstepQ, mul_div_assoc, hμ, hfact_succ]
   field_simp [hfact]
 
-/-- The hook walk identity: sum over corners c of hookProd(μ)/hookProd(μ\c) equals μ.card.
+/-  The hook walk identity: sum over corners c of hookProd(μ)/hookProd(μ\c) equals μ.card.
     Proved for at-most-2-row shapes via hook_walk_identity_atMostTwoRows (non-circular).
     General (≥3-row) case: requires GNW probabilistic proof (~300 lines) or RSK (~500 lines). -/
 

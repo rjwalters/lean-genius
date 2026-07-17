@@ -212,11 +212,11 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
       intro r n
       have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-      rcases le_or_lt r (-(n : ℝ)) with h1 | h1
+      rcases le_or_gt r (-(n : ℝ)) with h1 | h1
       · have h1' : r ≤ n := h1.trans (by linarith)
         rw [min_eq_left h1', max_eq_right h1, abs_neg, abs_of_nonneg hn,
             abs_of_nonpos (h1.trans (by linarith)), min_eq_right (by linarith)]
-      rcases le_or_lt (n : ℝ) r with h2 | h2
+      rcases le_or_gt (n : ℝ) r with h2 | h2
       · rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hn,
             abs_of_nonneg (hn.trans h2), min_eq_right h2]
       · rw [min_eq_left (le_of_lt h2), max_eq_left (le_of_lt h1),
@@ -427,7 +427,7 @@ The main theorem proof below assembles these pieces without sorry.
 -/
 
 /-- **HasSum of Lp indicator functions** for a pairwise disjoint partition.
-    The Lp partial sums ∑_{i<N} 1_{f i} converge in Lp norm to 1_{⋃ f i}.
+    The Lp partial sums ∑_{i<N} 1_{f i} converge ∈ Lp norm to 1_{⋃ f i}.
 
     Proof sketch: eLpNorm (1_{⋃_{i≥N} f_i}) p μ = μ(⋃_{i≥N} f i)^{1/p} → 0
     because ∑_{i≥N} μ(f i) → 0 (finite total measure, tail of convergent series).
@@ -570,14 +570,13 @@ private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
         μ.toENNRealVectorMeasure := by
   -- AbsolutelyContinuous: ∀ s, μ.toENNRealVectorMeasure s = 0 → ν s = 0
   intro s hμs
-  simp only [signedMeasureOfFunctional]
   by_cases hE : MeasurableSet s
-  · simp only [dif_pos hE]
-    -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
+  · -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
     have hzero : μ s = 0 := by
       rwa [Measure.toENNRealVectorMeasure_apply_measurable hE] at hμs
-    exact functionalSetFn_null p hp hptop φ hE hzero
-  · simp [dif_neg hE]
+    simpa [signedMeasureOfFunctional, dif_pos hE] using
+      functionalSetFn_null p hp hptop φ hE hzero
+  · simp [signedMeasureOfFunctional, dif_neg hE]
 
 /-- **RN derivative integrability**: for a finite signed measure ν ≪ μ (σ-finite),
     the RN derivative ν.rnDeriv μ is μ-integrable.
@@ -731,7 +730,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             E.indicator (fun _ => c) a := fun a => by
           by_cases h : a ∈ E <;>
             simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
-                  Set.indicator_apply, Set.piecewise_eq_of_mem, Set.piecewise_eq_of_not_mem, h]
+                  Set.indicator_apply, Set.piecewise_eq_of_mem, Set.piecewise_eq_of_notMem, h]
         have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
         have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
           indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
@@ -749,7 +748,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         rw [hphi_ind, rnDeriv_integral_eq ν hac hE]
         simp only [hcoe]
         calc c * ∫ a in E, g a ∂μ
-            = ∫ a in E, c * g a ∂μ := (integral_mul_left c (fun a => g a)).symm
+            = ∫ a in E, c * g a ∂μ := (integral_const_mul c (fun a => g a)).symm
           _ = ∫ a, E.indicator (fun _ => c * g a) a ∂μ := (integral_indicator hE).symm
           _ = ∫ a, E.indicator (fun _ => c) a * g a ∂μ := by
                 congr 1; ext a
@@ -761,7 +760,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₁ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₂ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₂ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj (Function.mem_support.mpr ha))
               simp [this]
         have hsf₂_le : ∀ a, ‖(sf₂ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
@@ -769,7 +768,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₂ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₁ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₁ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj.symm (Function.mem_support.mpr ha))
               rw [this, zero_add]
         have hsf₁ : MemLp ⇑sf₁ p μ := h12.mono
@@ -981,7 +980,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       _ = ‖φ‖ * (eLpNorm h_n p μ).toReal := by rw [hn_norm]
   -- Step C6: real arithmetic — x ≤ ‖φ‖
   have hx_le : x ≤ ‖φ‖ := by
-    rcases le_or_lt x 0 with hx | hx
+    rcases le_or_gt x 0 with hx | hx
     · linarith [norm_nonneg φ]
     · -- x > 0: write x^q = x^(q/p) * x, then divide by x^(q/p) > 0
       have hrpow : x ^ q.toReal = x ^ (q.toReal / p.toReal) * x := by

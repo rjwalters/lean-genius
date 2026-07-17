@@ -126,7 +126,7 @@ theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
     let p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
     calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
       _ = 0 := degree_zero_sublevel_measure p0 rfl
-  · exact zero_le _
+  · exact zero_le
 
 /-- **Corrected μ(F)**: infimum over polynomials of degree ≥ 1.
     This matches the standard mathematical definition (EHP 1958). -/
@@ -235,14 +235,14 @@ def unitDiscCase : Prop :=
 
 theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) = 1 := by
   have := disc_diameter 0 1 (by norm_num : (1 : ℝ) > 0)
-  simp at this
+  skip
   exact this
 
 /-
 ## Properties of Transfinite Diameter
 -/
 
-/-- **NOTE**: General `transfiniteDiameter_mono` is unprovable with `ℝ`-valued `nthDiameter`.
+/-  **NOTE**: General `transfiniteDiameter_mono` is unprovable with `ℝ`-valued `nthDiameter`.
     The `sSup` convention (`sSup S = 0` when `¬BddAbove S`) breaks monotonicity:
     for F = {0,1} ⊆ G = ℂ and n = 2, `nthDiameter F 2 > 0` but `nthDiameter G 2 = 0`
     (since G's value set is unbounded). A correct general version requires `EReal` or `ℝ≥0∞`.
@@ -274,11 +274,11 @@ theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
     (hG : Bornology.IsBounded G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   unfold transfiniteDiameter
-  apply csInf_le_csInf
-    ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
-    (Set.range_nonempty _)
+  apply le_csInf (Set.range_nonempty _)
   rintro _ ⟨n, rfl⟩
-  refine ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩, ?_⟩
+  refine csInf_le_of_le
+    ⟨0, by rintro _ ⟨m, rfl⟩; exact nthDiameter_nonneg F m⟩
+    (Set.mem_range_self n) ?_
   -- nthDiameter F n ≤ nthDiameter G n: F-candidates ⊆ G-candidates, G BddAbove.
   unfold nthDiameter
   -- Handle empty F-values case
@@ -391,7 +391,7 @@ private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : �
     obtain ⟨i, j, hne_ij, heq⟩ := hcoll
     -- The product contains a zero factor (repeated points ⇒ distance = 0)
     have hprod : ∏ i' : Fin n, ∏ j' ∈ Finset.Iio i', ‖pts i' - pts j'‖ = 0 := by
-      rcases hne_ij.lt_or_lt with h_i_lt_j | h_j_lt_i
+      rcases lt_or_gt_of_ne hne_ij with h_i_lt_j | h_j_lt_i
       · exact Finset.prod_eq_zero (Finset.mem_univ j)
           (Finset.prod_eq_zero (Finset.mem_Iio.mpr h_i_lt_j)
             (by simp [heq]))
@@ -424,7 +424,7 @@ theorem finite_diameter_zero (F : Set ℂ) (hF : F.Finite) :
       _ = 0 := nthDiameter_eq_zero_of_finite F hF n₀ (by omega) (by omega)
   · exact (transfiniteDiameter_nonneg F).le
 
-/-- **Scaling property — FALSE as stated.**
+/-  **Scaling property — FALSE as stated.**
 
 The current `transfiniteDiameter` definition uses `⨅ n : ℕ, nthDiameter F n`
 (inf over ALL n ≥ 0). Since `nthDiameter F 0 = nthDiameter F 1 = 1` for
@@ -483,7 +483,9 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   -- sublevelSet p₁ ⊆ closedBall x 1 (bounded), so sublevelMeasure p₁ < ⊤
   have hss : sublevelSet p₁ ⊆ Metric.closedBall x 1 := by
     intro z hz
-    simp only [sublevelSet, Set.mem_setOf_eq, PolynomialInF.eval, Fin.prod_univ_one] at hz
+    have heval : p₁.eval z = z - x := by
+      simp [PolynomialInF.eval, p₁]
+    simp only [sublevelSet, Set.mem_setOf_eq, heval] at hz
     rw [Metric.mem_closedBall, Complex.dist_eq]
     exact le_of_lt hz
   have hp₁_lt_top : sublevelMeasure p₁ < ⊤ :=

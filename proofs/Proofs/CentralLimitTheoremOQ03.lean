@@ -173,11 +173,11 @@ axiom clt_convergence (μ : ProbMeasure)
 -- § 7. Gaussian as a Fixed Point
 -- ============================================================================
 
-/-- The Gaussian is a fixed point of normalized self-convolution:
+/-  The Gaussian is a fixed point of normalized self-convolution:
     normalizing G * G gives G back. This is the "stability" property
     that characterizes the Gaussian in the convolution monoid. -/
 
-/-- **Cramér's theorem**: If X + Y is Gaussian and X, Y are independent,
+/-  **Cramér's theorem**: If X + Y is Gaussian and X, Y are independent,
     then X and Y are both Gaussian. The Gaussian is "indecomposable"
     (prime) in the convolution monoid modulo scaling. -/
 
@@ -209,7 +209,7 @@ theorem gaussian_in_own_domain :
     InDomainOfAttraction standardGaussian :=
   clt_convergence standardGaussian (by rw [gaussian_variance]; exact one_pos)
 
-/-- Convolution preserves the domain of attraction (under suitable conditions):
+/-  Convolution preserves the domain of attraction (under suitable conditions):
     if μ and ν are both in the DOA of the Gaussian, so is μ * ν. -/
 
 -- ============================================================================

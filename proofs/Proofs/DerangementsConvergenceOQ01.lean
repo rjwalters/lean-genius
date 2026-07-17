@@ -32,7 +32,7 @@
   D(n)/n! = ∑_{k=0}^n (-1)^k/k! (partial sum of exp(-1) Taylor series).
   By the alternating series estimation theorem: |D(n)/n! - e⁻¹| = |tail| ≤ 1/(n+1)!.
   This was proved in DerangementsConvergence.lean but that file has pre-existing
-  Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing compilation.
+  Mathlib API issues (∑ k ∈ vs ∑ k ∈ syntax) preventing compilation.
 -/
 
 import Proofs.DerangementsConvergence

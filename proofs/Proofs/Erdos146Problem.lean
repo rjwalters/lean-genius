@@ -30,8 +30,10 @@ Tags: extremal-graph-theory, Turán-numbers, bipartite-graphs, degeneracy
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Real
 
@@ -57,7 +59,7 @@ def IsRDegenerate (G : SimpleGraph V) (r : ℕ) : Prop :=
 **Bipartite Graph:**
 A graph is bipartite if its vertices can be 2-colored.
 -/
-def IsBipartite (G : SimpleGraph V) : Prop := G.IsBipartite
+def IsBipartite (G : SimpleGraph V) : Prop := G.Colorable 2
 
 /--
 **Turán Number ex(n; H):**
@@ -93,7 +95,7 @@ def ErdosSimonovitsConjecture : Prop :=
 ## Part III: Partial Results
 -/
 
-/--
+/- 
 **Alon-Krivelevich-Sudakov Theorem (2003):**
 For bipartite r-degenerate H: ex(n; H) ≪ n^{2-1/4r}.
 
@@ -104,7 +106,7 @@ This is weaker than the conjecture (1/4r instead of 1/r).
 When the maximum degree in one side of the bipartition equals r,
 the full n^{2-1/r} bound holds.
 -/
-def MaxDegreeOneSide (H : SimpleGraph V) (r : ℕ) : Prop :=
+def MaxDegreeOneSide (H : SimpleGraph V) [DecidableRel H.Adj] (r : ℕ) : Prop :=
   ∃ (A B : Set V), A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧
     (∀ u v : V, H.Adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)) ∧
     (∀ v ∈ A, H.degree v ≤ r)
@@ -130,7 +132,7 @@ The AKS exponent 2-1/4r is always larger than the conjectured 2-1/r.
 -/
 theorem aks_weaker_than_conjecture (r : ℕ) (hr : r ≥ 1) :
     (2 : ℝ) - 1/r < 2 - 1/(4*r) := by
-  have hr' : (r : ℝ) > 0 := by exact_mod_cast Nat.one_le_iff_ne_zero.mp hr
+  have hr' : (r : ℝ) > 0 := by exact_mod_cast Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hr)
   have hr4 : (4 * r : ℝ) > 0 := by positivity
   field_simp
   linarith
@@ -146,19 +148,19 @@ This is r-degenerate (minimum of r and s).
 def completeBipartiteGraph (r s : ℕ) : SimpleGraph (Fin (r + s)) where
   Adj := fun i j =>
     (i.val < r ∧ j.val ≥ r) ∨ (j.val < r ∧ i.val ≥ r)
-  symm := fun i j h => h.symm.imp And.symm And.symm
-  loopless := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
+  symm.symm := fun i j h => h.symm
+  loopless.irrefl := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
 
-/--
+/- 
 **K_{r,s} is r-degenerate (when r ≤ s):**
 -/
-/--
+/- 
 **Known Turán Number for K_{r,s}:**
 ex(n; K_{r,s}) = Θ(n^{2-1/r}) when r ≤ s.
 
 This is the Kővári-Sós-Turán theorem!
 -/
-/--
+/- 
 **Cycles C_{2k}:**
 Even cycles are 2-degenerate.
 -/
@@ -177,7 +179,7 @@ theorem r2_case_exponents :
     (2 : ℝ) - 1/2 = 3/2 ∧ (2 : ℝ) - 1/8 = 15/8 := by
   constructor <;> norm_num
 
-/--
+/- 
 **Example for r = 2:**
 The 4-cycle C_4 is 2-degenerate and bipartite.
 ex(n; C_4) = Θ(n^{3/2}) is known (Bondy-Simonovits).

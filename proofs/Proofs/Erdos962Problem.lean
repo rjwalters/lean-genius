@@ -42,7 +42,7 @@ namespace Erdos962
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
 noncomputable def lpf (n : ℕ) : ℕ :=
-  if h : n > 1 then n.factors.maximum?.getD 0 else 0
+  if h : n > 1 then n.primeFactorsList.max?.getD 0 else 0
 
 /--
 **Property: Divisible by Prime > k:**
@@ -70,25 +70,25 @@ having a prime factor exceeding k.
 noncomputable def k_func (n : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ m : ℕ, m ≤ n ∧ IsValidInterval m k }
 
-/--
+/- 
 **k is well-defined and finite:**
 For any n, we have k(n) ≤ n.
 -/
-/--
+/- 
 **Monotonicity:**
 k(n) ≤ k(n+1) for all n.
 -/
-/--
+/- 
 **k(n) ≥ 1 for n ≥ 2:**
 We can always find a single integer with a large prime factor.
 -/
-/--
+/- 
 **Small values:**
 For small n, k(n) is small.
 -/
 /- ## Part III: Erdős's Lower Bound -/
 
-/--
+/- 
 **Erdős (1965) Lower Bound:**
 For any ε > 0, k(n) ≫_ε exp((log n)^{1/2-ε}).
 
@@ -146,7 +146,7 @@ n is y-smooth if all prime factors of n are ≤ y.
 def IsSmooth (n y : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y
 
-/--
+/- 
 **Complementary property:**
 n is NOT k-smooth iff n has a prime factor > k.
 -/

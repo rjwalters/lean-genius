@@ -255,7 +255,9 @@ theorem reparamMap_hasDerivAt (hL : 0 < γ.circumference) (t : ℝ) :
       (1 / speed γ (reparamMap γ hL t) * (γ.circumference / (2 * π))) t := by
   have hσ := arcLengthInv_hasDerivAt γ hL (γ.circumference / (2 * π) * t)
   have h := hσ.comp t ((hasDerivAt_id t).const_mul (γ.circumference / (2 * π)))
-  simpa only [Function.comp_def, mul_one] using h
+  simp only [Function.comp_def, mul_one] at h
+  unfold reparamMap
+  exact h
 
 /-- `τ` is `C¹`. -/
 theorem reparamMap_contDiff (hL : 0 < γ.circumference) : ContDiff ℝ 1 (reparamMap γ hL) := by
@@ -281,7 +283,7 @@ theorem reparam_x_hasDerivAt (hL : 0 < γ.circumference) (t : ℝ) :
     HasDerivAt (γ.x ∘ reparamMap γ hL)
       (deriv γ.x (reparamMap γ hL t) * (1 / speed γ (reparamMap γ hL t) * (γ.circumference / (2 * π)))) t := by
   have hx : HasDerivAt γ.x (deriv γ.x (reparamMap γ hL t)) (reparamMap γ hL t) :=
-    (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+    (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt
   exact hx.comp t (reparamMap_hasDerivAt γ hL t)
 
 /-- Chain rule for `γ.y ∘ τ`. -/
@@ -289,7 +291,7 @@ theorem reparam_y_hasDerivAt (hL : 0 < γ.circumference) (t : ℝ) :
     HasDerivAt (γ.y ∘ reparamMap γ hL)
       (deriv γ.y (reparamMap γ hL t) * (1 / speed γ (reparamMap γ hL t) * (γ.circumference / (2 * π)))) t := by
   have hy : HasDerivAt γ.y (deriv γ.y (reparamMap γ hL t)) (reparamMap γ hL t) :=
-    (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+    (γ.smooth_y.differentiable one_ne_zero).differentiableAt.hasDerivAt
   exact hy.comp t (reparamMap_hasDerivAt γ hL t)
 
 /-- **Constant speed**: `|d/dt (γ ∘ τ)|² = c²`. -/

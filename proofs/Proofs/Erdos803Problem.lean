@@ -18,11 +18,9 @@ References:
 - https://erdosproblems.com/803
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
+
+open scoped Classical
 
 open Nat Real SimpleGraph
 
@@ -31,38 +29,40 @@ namespace Erdos803
 /- ##D-Balanced Graphs -/
 
 /-- Maximum degree Δ(G) of a graph G. -/
-noncomputable def maxDegree {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def maxDegree {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.sup Finset.univ (fun v => G.degree v)
+  Finset.max' (Finset.univ.image (fun v => G.degree v)) (by simp)
 
 /-- Minimum degree δ(G) of a graph G. -/
-noncomputable def minDegree {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def minDegree {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.inf Finset.univ (fun v => G.degree v)
+  Finset.min' (Finset.univ.image (fun v => G.degree v)) (by simp)
 
 /-- A graph H is D-balanced (D-almost-regular) if Δ(H) ≤ D · δ(H). -/
-def IsDBalanced {V : Type*} [Fintype V] [DecidableEq V]
+def IsDBalanced {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (D : ℕ) : Prop :=
   maxDegree G ≤ D * minDegree G
 
 /-- Regular graphs are 1-balanced. -/
-theorem regular_is_1_balanced {V : Type*} [Fintype V] [DecidableEq V]
+theorem regular_is_1_balanced {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
     (hreg : ∀ v : V, G.degree v = k) : IsDBalanced G 1 := by
   unfold IsDBalanced maxDegree minDegree
   simp only [one_mul]
-  have hmax : Finset.sup Finset.univ (fun v => G.degree v) = k := by
-    apply Finset.sup_congr rfl
-    intro v _
-    exact hreg v
-  have hmin : Finset.inf Finset.univ (fun v => G.degree v) = k := by
-    apply Finset.inf_congr rfl
-    intro v _
-    exact hreg v
-  simp [hmax, hmin]
+  have himg : (Finset.univ.image (fun v => G.degree v)) = {k} := by
+    apply Finset.eq_singleton_iff_unique_mem.mpr
+    refine ⟨?_, ?_⟩
+    · simp only [Finset.mem_image]
+      obtain ⟨v⟩ := ‹Nonempty V›
+      exact ⟨v, Finset.mem_univ v, hreg v⟩
+    · intro x hx
+      simp only [Finset.mem_image] at hx
+      obtain ⟨v, _, rfl⟩ := hx
+      exact hreg v
+  simp only [himg, Finset.max'_singleton, Finset.min'_singleton, le_refl]
 
 /-- If G is D-balanced and D ≤ D', then G is D'-balanced. -/
-theorem balanced_monotone {V : Type*} [Fintype V] [DecidableEq V]
+theorem balanced_monotone {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (D D' : ℕ)
     (hbal : IsDBalanced G D) (hle : D ≤ D') : IsDBalanced G D' := by
   unfold IsDBalanced at *
@@ -95,8 +95,8 @@ def Erdos803Conjecture : Prop :=
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       vertexCount V ≥ N →
       HasLogDensity G →
-      ∃ (W : Type*) [Fintype W] [DecidableEq W],
-      ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+      ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (_ : Nonempty W),
+      ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
       ∃ (f : W ↪ V),
         (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
         vertexCount W = m ∧
@@ -105,7 +105,7 @@ def Erdos803Conjecture : Prop :=
 
 /- ##Alon's Counterexample (2008) -/
 
-/-- Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
+/-  Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
 large n, there exists a graph G with n vertices and ≥ n log n edges such
 that any D-balanced subgraph H has ≤ m√(log m) + log D edges. -/
 /-- The conjecture is false: Alon's counterexample applies for D = 2. -/
@@ -122,15 +122,15 @@ axiom erdos_simonovits_polynomial :
       ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
         vertexCount V ≥ N →
         (edgeCount G : ℝ) ≥ (vertexCount V : ℝ)^(1 + c) →
-        ∃ (W : Type*) [Fintype W] [DecidableEq W],
-        ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+        ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (_ : Nonempty W),
+        ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
         ∃ (f : W ↪ V),
           (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
           vertexCount W = m ∧
           IsDBalanced H D ∧
           (edgeCount H : ℝ) ≥ (m : ℝ)^(1 + c)
 
-/-- Janzer-Sudakov (2023): Best positive result for logarithmic density.
+/-  Janzer-Sudakov (2023): Best positive result for logarithmic density.
 Any graph with n log n edges contains a O(1)-balanced subgraph on m
 vertices with m√(log m)/(log log m)^(3/2) edges. -/
 /- ##Summary -/
@@ -147,8 +147,8 @@ theorem erdos_803_summary :
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           vertexCount V ≥ N →
           (edgeCount G : ℝ) ≥ (vertexCount V : ℝ)^(1 + c) →
-          ∃ (W : Type*) [Fintype W] [DecidableEq W],
-          ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+          ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (_ : Nonempty W),
+          ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
           ∃ (f : W ↪ V),
             (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
             vertexCount W = m ∧

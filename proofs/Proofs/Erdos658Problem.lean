@@ -34,11 +34,7 @@ References:
 Tags: additive-combinatorics, grid, density, Hales-Jewett, squares
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Prod.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Finset
 
@@ -154,7 +150,7 @@ The proof strategy:
 -/
 theorem erdos_658 : GrahamConjectureAxisAligned := graham_axis_aligned_true
 
-/--
+/- 
 **Qualitative statement:**
 There exists a threshold function N₀(δ) such that for N ≥ N₀(δ),
 every δ-dense subset contains a square.
@@ -184,7 +180,7 @@ axiom density_hales_jewett :
       ∃ n₀ : ℕ, ∀ n ≥ n₀,
         True  -- Simplified: dense sets in [k]ⁿ have combinatorial lines
 
-/--
+/- 
 **Reduction to Hales-Jewett:**
 Squares in the grid correspond to special combinatorial structures
 that are guaranteed by density Hales-Jewett.
@@ -195,12 +191,12 @@ that are guaranteed by density Hales-Jewett.
 Explicit but weak bounds on N₀(δ).
 -/
 
-/--
+/- 
 **Solymosi's Bound (2004):**
 N₀(δ) can be taken as an explicit function of 1/δ.
 The bound is effective but very large (tower-type).
 -/
-/--
+/- 
 **Bound quality:**
 Solymosi's bounds are tower-type in 1/δ, meaning
 N₀(δ) ~ tower(c/δ) for some constant c.
@@ -231,7 +227,7 @@ theorem density_threshold_3x3 :
     -- With 5 out of 9 points, we have density > 1/2
     (5 : ℚ) / 9 > 1/2 := by norm_num
 
-/--
+/- 
 **Non-square-free configurations:**
 It's possible to have dense sets without squares for small N,
 showing the "sufficiently large" condition is necessary.
@@ -252,7 +248,7 @@ theorem higher_dimensional_cubes (d : ℕ) (hd : d ≥ 2) :
       ∃ N₀ : ℕ, True  -- Simplified statement
     := fun _ _ => ⟨0, trivial⟩
 
-/--
+/- 
 **General affine squares:**
 The problem can be asked for tilted (non-axis-aligned) squares.
 This is also true but follows from different methods.

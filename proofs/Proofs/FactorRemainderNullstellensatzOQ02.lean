@@ -5,7 +5,7 @@ The Combinatorial Nullstellensatz (Alon 1999) is a powerful algebraic tool
 for proving combinatorial results via polynomial non-vanishing.
 
 **Theorem** (Alon 1999): Let F be a field, f ∈ F[x₁,...,xₙ] a polynomial
-of total degree Σ tᵢ. If the coefficient of ∏ xᵢ^tᵢ in f is nonzero,
+of total degree Σ tᵢ. If the coefficient of ∏ xᵢ^tᵢ ∈ f is nonzero,
 and S₁,...,Sₙ ⊆ F with |Sᵢ| > tᵢ for all i, then there exist
 a₁ ∈ S₁,...,aₙ ∈ Sₙ with f(a₁,...,aₙ) ≠ 0.
 
@@ -29,11 +29,9 @@ a₁ ∈ S₁,...,aₙ ∈ Sₙ with f(a₁,...,aₙ) ≠ 0.
 Parent: FactorRemainderNullstellensatzOQ01.lean (Strong Nullstellensatz)
 -/
 
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.RingTheory.MvPolynomial.Basic
-import Mathlib.Data.MvPolynomial.CommRing
-import Mathlib.Data.MvPolynomial.Eval
-import Mathlib.Data.Polynomial.RingDivision
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Data.Finsupp.Defs
 import Mathlib.Tactic
@@ -73,8 +71,8 @@ theorem exists_eval_ne_zero [DecidableEq F]
     exact h s hs
   have h1 : S.card ≤ f.roots.toFinset.card := card_le_card hroot
   have h2 : f.roots.toFinset.card ≤ Multiset.card f.roots :=
-    Multiset.toFinset_card_le_card f.roots
-  have h3 : Multiset.card f.roots ≤ f.natDegree := card_roots_le_degree f
+    Multiset.toFinset_card_le f.roots
+  have h3 : Multiset.card f.roots ≤ f.natDegree := Polynomial.card_roots' f
   omega
 
 /-
@@ -123,7 +121,7 @@ open MvPolynomial in
     **Proof idea** (not fully formalized):
     1. For each i, let gᵢ(xᵢ) = ∏_{s ∈ Sᵢ} (xᵢ - s).
     2. Reduce f modulo g₁,...,gₙ to get remainder r with degᵢ(r) < |Sᵢ|.
-    3. The coefficient of ∏ xᵢ^tᵢ survives in r (degree argument).
+    3. The coefficient of ∏ xᵢ^tᵢ survives ∈ r (degree argument).
     4. So r ≠ 0, and r agrees with f on S₁ × ... × Sₙ.
     5. By grid_nonvanishing, r (hence f) doesn't vanish on the grid.
 
@@ -157,6 +155,7 @@ theorem combinatorial_nullstellensatz'
     ∃ a : σ → F, (∀ i, a i ∈ S i) ∧ MvPolynomial.eval a f ≠ 0 := by
   apply combinatorial_nullstellensatz f t S hdeg hcoeff
   intro i
+  have := hS i
   omega
 
 open MvPolynomial in

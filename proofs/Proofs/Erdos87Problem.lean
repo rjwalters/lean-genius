@@ -26,18 +26,18 @@ open SimpleGraph Finset
 2-colouring of `K_N` edges contains a monochromatic `K_k`. -/
 axiom diagonalRamsey : ℕ → ℕ
 
-/-- `diagonalRamsey k` is always positive for `k ≥ 1`. -/
+/-  `diagonalRamsey k` is always positive for `k ≥ 1`. -/
 /-- The graph Ramsey number: smallest `N` such that every 2-colouring of
 `K_N` contains a monochromatic copy of `G`. -/
 axiom graphRamsey (n : ℕ) : SimpleGraph (Fin n) → ℕ
 
-/-- Graph Ramsey number is positive. -/
+/-  Graph Ramsey number is positive. -/
 /-- The chromatic number of a finite simple graph: the minimum number of
 colours needed to properly colour its vertices. -/
 axiom chromaticNumber {n : ℕ} : SimpleGraph (Fin n) → ℕ
 
-/-- The chromatic number is at most the number of vertices. -/
-/-- The chromatic number is at least 1 for non-empty vertex sets. -/
+/-  The chromatic number is at most the number of vertices. -/
+/-  The chromatic number is at least 1 for non-empty vertex sets. -/
 /- ## Main conjecture -/
 
 /-- Erdős Problem 87 (weak form): For every `ε > 0`, if `k` is large enough,
@@ -60,9 +60,9 @@ def ErdosProblem87_strong : Prop :=
 
 /- ## Known bounds -/
 
-/-- Random colouring bound: `R(G) ≫ 2^{k/2}` for `χ(G) = k`. -/
-/-- Upper bound: `R(k) ≤ 4^k`. -/
+/-  Random colouring bound: `R(G) ≫ 2^{k/2}` for `χ(G) = k`. -/
+/-  Upper bound: `R(k) ≤ 4^k`. -/
 /- ## Counterexample to original conjecture -/
 
-/-- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
+/- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
 while `R(4) = 18`, disproving `R(G) ≥ R(k)`. -/

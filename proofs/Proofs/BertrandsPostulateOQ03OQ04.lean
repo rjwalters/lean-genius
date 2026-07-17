@@ -247,7 +247,6 @@ theorem long_interval_density_from_pnt (c : ℝ) (hc : c > 0) :
       ne_of_gt (Real.log_pos (by nlinarith))
     -- [π·log(y)/y] · [log(x)/log(y)] = π·log(x)/y
     field_simp
-    ring
   -- PNT for x: π(x) * log x / x → 1
   have pnt_x := PrimeNumberTheorem.primeNumberTheorem
   -- Combine: (π((1+c)x) - π(x)) * log x / (cx)
@@ -275,7 +274,6 @@ theorem long_interval_density_from_pnt (c : ℝ) (hc : c > 0) :
   have h1cx_ne : (1 + c) * x ≠ 0 := mul_ne_zero (ne_of_gt h1c_pos) hx_ne
   -- Algebraic identity
   field_simp
-  ring
 
 -- ============================================================
 -- PART 5: The Open Landscape (Axioms)
@@ -306,7 +304,7 @@ theorem rh_implies_density_for_all_theta_gt_half
   intro θ hθ
   have hε : θ - 1/2 > 0 := by linarith
   have := shortIntervalPNT_rh_conditional h (θ - 1/2) hε
-  convert this using 2; ring
+  convert this using 2 <;> (first | rfl | ring | norm_num)
 
 -- ============================================================
 -- PART 6: Existence vs. Density — The Gap

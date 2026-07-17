@@ -24,14 +24,16 @@
   Tags: number-theory, additive-combinatorics, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Order.Filter.Basic
 import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
+
+open scoped Classical
 
 namespace Erdos35
 
@@ -40,7 +42,7 @@ open Set
 /- ## Part I: Schnirelmann Density -/
 
 /-- The counting function: number of elements of A in {1, ..., N}. -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.filter (· ∈ A) (Finset.range (N + 1) \ {0})).card
 
 /-- The ratio |A ∩ {1,...,N}| / N for N ≥ 1. -/
@@ -93,9 +95,18 @@ theorem schnirelmannDensity_nonneg (A : Set ℕ) : 0 ≤ d_s A := by
 
 theorem schnirelmannDensity_le_one (A : Set ℕ) : d_s A ≤ 1 := by
   unfold schnirelmannDensity
-  apply ciInf_le_of_le ⟨⟨1, le_refl 1⟩⟩
+  have hBdd : BddBelow (Set.range fun N : {n : ℕ // n ≥ 1} => densityRatio A N) := by
+    refine ⟨0, ?_⟩
+    rintro _ ⟨⟨N, hN⟩, rfl⟩
+    simp only [densityRatio]
+    split_ifs
+    · exact zero_le_one
+    · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  refine ciInf_le_of_le hBdd (⟨1, le_refl 1⟩ : {n : ℕ // n ≥ 1}) ?_
+  show densityRatio A 1 ≤ 1
   unfold densityRatio
-  simp only [↓reduceIte, Nat.cast_one, div_one]
+  have hne : (1 : ℕ) ≠ 0 := one_ne_zero
+  simp only [hne, ↓reduceIte, Nat.cast_one, div_one]
   -- countingFunction A 1 ≤ 1 since we only count in {1}
   suffices h : countingFunction A 1 ≤ 1 by exact_mod_cast h
   unfold countingFunction
@@ -105,7 +116,7 @@ theorem schnirelmannDensity_le_one (A : Set ℕ) : d_s A ≤ 1 := by
 theorem density_pos_of_one_mem (A : Set ℕ) (h : 1 ∈ A) :
     densityRatio A 1 = 1 := by
   unfold densityRatio countingFunction
-  simp only [↓reduceIte, Nat.cast_one, div_one]
+  simp only [Nat.cast_one, div_one]
   -- Finset.range 2 \ {0} = {1}, and 1 ∈ A, so filter gives {1} with card 1
   suffices hc : (Finset.filter (· ∈ A) (Finset.range 2 \ {0})).card = 1 by exact_mod_cast hc
   have hset : Finset.range 2 \ {0} = ({1} : Finset ℕ) := by native_decide
@@ -118,42 +129,23 @@ theorem density_mono_sumset (A B : Set ℕ) (h0 : 0 ∈ B) :
   have hsub : A ⊆ (A + B : Set ℕ) := fun n hn => ⟨n, hn, 0, h0, (add_zero n).symm⟩
   -- Counting function is monotone w.r.t. subsets
   have hcount : ∀ N, countingFunction A N ≤ countingFunction (A + B : Set ℕ) N :=
-    fun N => Finset.card_le_card (Finset.filter_subset_filter _ hsub)
+    fun N => Finset.card_le_card (Finset.monotone_filter_right _ (fun a _ ha => hsub ha))
   -- Schnirelmann density (infimum of ratios) is monotone
   unfold schnirelmannDensity
   apply ciInf_mono
   · -- BddBelow: density ratios are ≥ 0
-    exact ⟨0, by rintro _ ⟨⟨N, hN⟩, rfl⟩; unfold densityRatio;
-              split_ifs <;> [exact zero_le_one;
-                exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)]⟩
+    refine ⟨0, ?_⟩
+    rintro _ ⟨⟨N, hN⟩, rfl⟩
+    simp only [densityRatio]
+    split_ifs
+    · exact zero_le_one
+    · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
   · -- Pointwise: densityRatio A N ≤ densityRatio (A + B) N for all N ≥ 1
     intro ⟨N, hN⟩
     unfold densityRatio
     have hNne : N ≠ 0 := by omega
     simp only [hNne, ↓reduceIte]
     exact div_le_div_of_nonneg_right (by exact_mod_cast hcount N) (Nat.cast_nonneg _)
-
-/- ## Part IV: Erdős's Original Result -/
-
-/-- Erdős (1936): d_s(A + B) ≥ α + α(1-α)/(2k).
-
-This is a weaker version with 2k in the denominator.
--/
-theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
-    (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
-    d_s (A + B) ≥ d_s A + d_s A * (1 - d_s A) / (2 * k) := by
-  -- The stronger result erdos_35 (with k instead of 2k) is already proved.
-  -- Since α(1-α)/(2k) ≤ α(1-α)/k, the weaker 1936 bound follows immediately.
-  have h35 := erdos_35 A B k hk hB h0
-  have hα0 := schnirelmannDensity_nonneg A
-  have hα1 := schnirelmannDensity_le_one A
-  have hk_pos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (show k > 0 by omega)
-  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by linarith
-  have hnum_nn : 0 ≤ d_s A * (1 - d_s A) := by nlinarith
-  have hle : d_s A * (1 - d_s A) / (2 * (k : ℝ)) ≤ d_s A * (1 - d_s A) / (k : ℝ) := by
-    rw [div_le_div_iff h2k_pos hk_pos]
-    nlinarith
-  linarith
 
 /- ## Part V: Plünnecke's Inequality -/
 
@@ -224,7 +216,7 @@ theorem power_bound_implies_erdos (α : ℝ) (k : ℕ) (hk : k ≥ 1)
             mul_le_mul_of_nonneg_right h_neg_log (by positivity)
         _ = (-(1 / k)) * Real.log (1 - t) := by ring
   -- Conclude: (1-t)^(-(1/k)) = exp(log(1-t) * (-(1/k))) ≥ 1 + (-(1/k))*log(1-t) ≥ 1+t/k
-  have hdef : (1 - t) ^ (-(1 / k)) = Real.exp (Real.log (1 - t) * -(1 / k)) :=
+  have hdef : (1 - t) ^ (-(1 / (k : ℝ))) = Real.exp (Real.log (1 - t) * -(1 / (k : ℝ))) :=
     Real.rpow_def_of_pos h1t_pos _
   rw [hdef]
   have h_mul_comm : Real.log (1 - t) * -(1 / k) = -(1 / k) * Real.log (1 - t) := mul_comm _ _
@@ -258,6 +250,26 @@ theorem erdos_35 (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
       (schnirelmannDensity_nonneg A) (schnirelmannDensity_le_one A)
     linarith
 
+/-- Erdős (1936): d_s(A + B) ≥ α + α(1-α)/(2k).
+
+This is a weaker version with 2k in the denominator.
+-/
+theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
+    (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
+    d_s (A + B) ≥ d_s A + d_s A * (1 - d_s A) / (2 * k) := by
+  -- The stronger result erdos_35 (with k instead of 2k) is already proved.
+  -- Since α(1-α)/(2k) ≤ α(1-α)/k, the weaker 1936 bound follows immediately.
+  have h35 := erdos_35 A B k hk hB h0
+  have hα0 := schnirelmannDensity_nonneg A
+  have hα1 := schnirelmannDensity_le_one A
+  have hk_pos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (show k > 0 by omega)
+  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by linarith
+  have hnum_nn : 0 ≤ d_s A * (1 - d_s A) := by nlinarith
+  have hle : d_s A * (1 - d_s A) / (2 * (k : ℝ)) ≤ d_s A * (1 - d_s A) / (k : ℝ) := by
+    rw [div_le_div_iff₀ h2k_pos hk_pos]
+    nlinarith
+  linarith
+
 /- ## Part VII: Special Cases -/
 
 /-- When k = 1, B = ℕ and A + B = ℕ (after sufficient point). -/
@@ -270,7 +282,7 @@ theorem basis_order_one (B : Set ℕ) (hB : IsAdditiveBasis B 1) (h0 : 0 ∈ B) 
   · intro _
     obtain ⟨m, hm, hn⟩ := hB n
     interval_cases m
-    · simp only [kFoldSum] at hn; simp only [mem_singleton_iff] at hn; omega
+    · simp only [kFoldSum] at hn; simp only [mem_singleton_iff] at hn; subst hn; exact h0
     · simp only [kFoldSum] at hn; exact hn
 
 /-- The squares form an additive basis of order 4 (Lagrange). -/

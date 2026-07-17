@@ -1,5 +1,5 @@
 import Proofs.SynthesisCurvaturePtolemy
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Synthesis: curvatureSin satisfies the curvature ODE  y'' + K·y = 0  (OQ-01)
@@ -45,30 +45,6 @@ namespace SynthesisCurvaturePtolemyOQ01
 
 open Real
 
-/-- Auxiliary: derivative of `Real.sinh` is `Real.cosh` (re-derived from `exp`,
-since the parent file's version is `private`). -/
-private theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
-  have h1 := Real.hasDerivAt_exp x
-  have h2 := (Real.hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x)
-  have hsinhDef : Real.sinh = fun y => (Real.exp y - Real.exp (-y)) / 2 := by
-    ext y; exact Real.sinh_eq y
-  rw [hsinhDef]
-  have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
-  rw [hcoshEq]
-  convert (h1.sub h2).div_const 2 using 1
-  ring
-
-/-- Auxiliary: derivative of `Real.cosh` is `Real.sinh` (re-derived from `exp`). -/
-private theorem hasDerivAt_cosh (x : ℝ) : HasDerivAt Real.cosh (Real.sinh x) x := by
-  have h1 := Real.hasDerivAt_exp x
-  have h2 := (Real.hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x)
-  have hcoshDef : Real.cosh = fun y => (Real.exp y + Real.exp (-y)) / 2 := by
-    ext y; exact Real.cosh_eq y
-  rw [hcoshDef]
-  have hsinhEq : Real.sinh x = (Real.exp x - Real.exp (-x)) / 2 := Real.sinh_eq x
-  rw [hsinhEq]
-  convert (h1.add h2).div_const 2 using 1
-  ring
 
 /-- The **curvatureCos K** function: the first derivative of `curvatureSin K`.
 
@@ -110,8 +86,8 @@ theorem curvatureSin_hasDerivAt (K t : ℝ) :
       have hfun : curvatureSin K = fun s => Real.sin (Real.sqrt K * s) / Real.sqrt K := by
         ext s; simp [curvatureSin, if_neg hK0, if_pos hKpos]
       rw [hfun, curvatureCos_pos hKpos]
-      have h1 : HasDerivAt (fun s => Real.sqrt K * s) (Real.sqrt K) t :=
-        (hasDerivAt_id t).const_mul (Real.sqrt K)
+      have h1 : HasDerivAt (fun s => Real.sqrt K * s) (Real.sqrt K) t := by
+          simpa using (hasDerivAt_id t).const_mul (Real.sqrt K)
       have h2 : HasDerivAt Real.sin (Real.cos (Real.sqrt K * t)) (Real.sqrt K * t) :=
         Real.hasDerivAt_sin (Real.sqrt K * t)
       have h3 : HasDerivAt (fun s => Real.sin (Real.sqrt K * s))
@@ -125,10 +101,10 @@ theorem curvatureSin_hasDerivAt (K t : ℝ) :
       have hfun : curvatureSin K = fun s => Real.sinh (Real.sqrt (-K) * s) / Real.sqrt (-K) := by
         ext s; simp [curvatureSin, if_neg hK0, if_neg (not_lt.mpr (le_of_lt hKneg))]
       rw [hfun, curvatureCos_neg hKneg]
-      have h1 : HasDerivAt (fun s => Real.sqrt (-K) * s) (Real.sqrt (-K)) t :=
-        (hasDerivAt_id t).const_mul (Real.sqrt (-K))
+      have h1 : HasDerivAt (fun s => Real.sqrt (-K) * s) (Real.sqrt (-K)) t := by
+          simpa using (hasDerivAt_id t).const_mul (Real.sqrt (-K))
       have h2 : HasDerivAt Real.sinh (Real.cosh (Real.sqrt (-K) * t)) (Real.sqrt (-K) * t) :=
-        hasDerivAt_sinh (Real.sqrt (-K) * t)
+        Real.hasDerivAt_sinh (Real.sqrt (-K) * t)
       have h3 : HasDerivAt (fun s => Real.sinh (Real.sqrt (-K) * s))
           (Real.cosh (Real.sqrt (-K) * t) * Real.sqrt (-K)) t := h2.comp t h1
       have h4 := h3.div_const (Real.sqrt (-K))
@@ -155,8 +131,8 @@ theorem curvatureCos_hasDerivAt (K t : ℝ) :
       have hfun : curvatureCos K = fun s => Real.cos (Real.sqrt K * s) := by
         ext s; rw [curvatureCos_pos hKpos]
       rw [hfun]
-      have h1 : HasDerivAt (fun s => Real.sqrt K * s) (Real.sqrt K) t :=
-        (hasDerivAt_id t).const_mul (Real.sqrt K)
+      have h1 : HasDerivAt (fun s => Real.sqrt K * s) (Real.sqrt K) t := by
+          simpa using (hasDerivAt_id t).const_mul (Real.sqrt K)
       have h2 : HasDerivAt Real.cos (-Real.sin (Real.sqrt K * t)) (Real.sqrt K * t) :=
         Real.hasDerivAt_cos (Real.sqrt K * t)
       have h3 : HasDerivAt (fun s => Real.cos (Real.sqrt K * s))
@@ -172,10 +148,10 @@ theorem curvatureCos_hasDerivAt (K t : ℝ) :
       have hfun : curvatureCos K = fun s => Real.cosh (Real.sqrt (-K) * s) := by
         ext s; rw [curvatureCos_neg hKneg]
       rw [hfun]
-      have h1 : HasDerivAt (fun s => Real.sqrt (-K) * s) (Real.sqrt (-K)) t :=
-        (hasDerivAt_id t).const_mul (Real.sqrt (-K))
+      have h1 : HasDerivAt (fun s => Real.sqrt (-K) * s) (Real.sqrt (-K)) t := by
+          simpa using (hasDerivAt_id t).const_mul (Real.sqrt (-K))
       have h2 : HasDerivAt Real.cosh (Real.sinh (Real.sqrt (-K) * t)) (Real.sqrt (-K) * t) :=
-        hasDerivAt_cosh (Real.sqrt (-K) * t)
+        Real.hasDerivAt_cosh (Real.sqrt (-K) * t)
       have h3 : HasDerivAt (fun s => Real.cosh (Real.sqrt (-K) * s))
           (Real.sinh (Real.sqrt (-K) * t) * Real.sqrt (-K)) t := h2.comp t h1
       convert h3 using 1

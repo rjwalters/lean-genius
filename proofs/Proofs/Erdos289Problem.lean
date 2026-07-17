@@ -19,10 +19,7 @@ non-adjacent intervals I₁, ..., Iₖ ⊂ ℕ (each with |Iᵢ| ≥ 2) such tha
 - <https://erdosproblems.com/289>
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Interval
-import Mathlib.Data.Rat.Defs
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 
@@ -60,7 +57,7 @@ def ValidDecomposition (k : ℕ) (blocks : Fin k → IntervalBlock) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
+/-  **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
     a valid decomposition of 1 into k disjoint non-adjacent interval blocks. -/
 /- ## Basic Properties -/
 
@@ -69,6 +66,8 @@ theorem interval_block_has_two (I : IntervalBlock) :
     I.toFinset.card ≥ 2 := by
   unfold IntervalBlock.toFinset
   simp [Nat.card_Icc]
+  have h1 := I.hle
+  have h2 := I.hsize
   omega
 
 /-- Non-adjacency implies disjointness. -/
@@ -83,12 +82,12 @@ theorem nonadj_implies_disjoint (I J : IntervalBlock) :
 
 /- ## Hickerson–Montgomery Example -/
 
-/-- The Hickerson–Montgomery example: 5 intervals summing to 2.
+/-  The Hickerson–Montgomery example: 5 intervals summing to 2.
     [2,7], [9,10], [17,18], [34,35], [84,85].
     This shows the feasibility of interval decomposition for targets other than 1. -/
 /- ## Structural Observations -/
 
-/-- The harmonic series diverges, so the total available reciprocal sum
+/-  The harmonic series diverges, so the total available reciprocal sum
     from any tail of ℕ is unbounded. This is necessary for the problem
     to have solutions for arbitrarily many blocks. -/
 /-- Each interval block contributes at most (hi-lo+1)/lo.
@@ -101,13 +100,13 @@ theorem interval_recipsum_upper (I : IntervalBlock) :
       ≤ ∑ _n ∈ Icc I.lo I.hi, (1 : ℚ) / (I.lo : ℚ) := by
         apply Finset.sum_le_sum; intro n hn
         simp only [mem_Icc] at hn
-        have hn_pos : (0 : ℚ) < (n : ℚ) :=
-          Nat.cast_pos.mpr (Nat.pos_of_ne_zero (by omega))
-        exact div_le_div_of_le_left (by positivity) hlo_pos hn_pos
-              (Nat.cast_le.mpr hn.1)
+        exact one_div_le_one_div_of_le hlo_pos (Nat.cast_le.mpr hn.1)
     _ = (Icc I.lo I.hi).card • ((1 : ℚ) / (I.lo : ℚ)) := sum_const _
     _ = ((I.hi - I.lo + 1 : ℕ) : ℚ) / (I.lo : ℚ) := by
-        rw [Nat.card_Icc]; simp [nsmul_eq_mul]
+        rw [Nat.card_Icc]; simp only [nsmul_eq_mul]
+        rw [show I.hi + 1 - I.lo = I.hi - I.lo + 1 from by have := I.hle; omega]
+        push_cast
+        ring
 
 /-- Each interval block contributes at least (hi-lo+1)/hi.
     Proof: each term 1/n ≥ 1/hi since n ≤ hi for n ∈ [lo, hi]. -/
@@ -115,21 +114,23 @@ theorem interval_recipsum_lower (I : IntervalBlock) :
     I.recipSum ≥ ((I.hi - I.lo + 1 : ℕ) : ℚ) / (I.hi : ℚ) := by
   unfold IntervalBlock.recipSum IntervalBlock.toFinset
   have hhi_pos : (0 : ℚ) < (I.hi : ℚ) :=
-    Nat.cast_pos.mpr (Nat.pos_of_ne_zero (by omega))
+    Nat.cast_pos.mpr (Nat.pos_of_ne_zero (by have h1 := I.hlo; have h2 := I.hle; omega))
   calc ((I.hi - I.lo + 1 : ℕ) : ℚ) / (I.hi : ℚ)
       = (Icc I.lo I.hi).card • ((1 : ℚ) / (I.hi : ℚ)) := by
-        rw [Nat.card_Icc]; simp [nsmul_eq_mul]
+        rw [Nat.card_Icc]; simp only [nsmul_eq_mul]
+        rw [show I.hi + 1 - I.lo = I.hi - I.lo + 1 from by have := I.hle; omega]
+        push_cast
+        ring
     _ = ∑ _n ∈ Icc I.lo I.hi, (1 : ℚ) / (I.hi : ℚ) := (sum_const _).symm
     _ ≤ ∑ n ∈ Icc I.lo I.hi, (1 : ℚ) / (n : ℚ) := by
         apply Finset.sum_le_sum; intro n hn
         simp only [mem_Icc] at hn
         have hn_pos : (0 : ℚ) < (n : ℚ) :=
-          Nat.cast_pos.mpr (Nat.pos_of_ne_zero (by omega))
-        exact div_le_div_of_le_left (by positivity) hn_pos hhi_pos
-              (Nat.cast_le.mpr hn.2)
+          Nat.cast_pos.mpr (Nat.pos_of_ne_zero (by have := I.hlo; omega))
+        exact one_div_le_one_div_of_le hn_pos (Nat.cast_le.mpr hn.2)
 
-/-- To achieve exactly 1 with many small-contribution blocks, we need
+/-  To achieve exactly 1 with many small-contribution blocks, we need
     blocks at large values of n. The gap constraint forces intervals
     to spread out, making the target harder to hit exactly. -/
-/-- The problem without the non-adjacency constraint is easier: one can
+/- The problem without the non-adjacency constraint is easier: one can
     always decompose 1 into disjoint intervals (Erdős–Graham remark). -/

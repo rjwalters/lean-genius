@@ -29,11 +29,9 @@
   - Related: Problem #559 (size Ramsey for bounded-degree graphs)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
+
+open scoped Classical
 
 open Real Filter
 
@@ -53,20 +51,20 @@ noncomputable def numEdges (G : GraphOnN n) : ℕ :=
 /-- The path graph on n vertices (n-1 edges). -/
 def PathGraph (n : ℕ) : GraphOnN n where
   Adj := fun i j => (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h <;> simp [*]
-  loopless := by intro i h; cases h <;> omega
+  symm := by constructor; intro i j h; cases h <;> simp [*]
+  loopless := by constructor; intro i h; cases h <;> omega
 
 /-- The cycle graph on n vertices (n edges). -/
 def CycleGraph (n : ℕ) (hn : n ≥ 3) : GraphOnN n where
   Adj := fun i j =>
     (i.val + 1 = j.val) ∨ (j.val + 1 = i.val) ∨
     (i.val = 0 ∧ j.val = n - 1) ∨ (j.val = 0 ∧ i.val = n - 1)
-  symm := by intro i j h; rcases h with h1|h2|h3|h4 <;> simp [*]
-  loopless := by intro i h; rcases h with h1|h2|h3|h4 <;> omega
+  symm := by constructor; intro i j h; rcases h with h1|h2|h3|h4 <;> simp [*]
+  loopless := by constructor; intro i h; rcases h with h1|h2|h3|h4 <;> omega
 
-/-- The number of edges in a path Pₙ.
+/-  The number of edges in a path Pₙ.
     A path on n vertices has exactly n-1 edges: connecting consecutive vertices. -/
-/-- The number of edges in a cycle Cₙ.
+/-  The number of edges in a cycle Cₙ.
     A cycle on n vertices has exactly n edges: n-1 path edges plus the closing edge. -/
 /-
 ## Part II: Size Ramsey Numbers
@@ -120,7 +118,8 @@ def ErdosQuestion720b : Prop :=
 
 /-- Erdős's Question 2: Does R̂(Cₙ) = o(n²)? -/
 def ErdosQuestion720c : Prop :=
-  Tendsto (fun n => (sizeRamseyCycle n (by omega : n ≥ 3) : ℝ) / n^2) atTop (nhds 0)
+  Tendsto (fun n => if hn : n ≥ 3 then (sizeRamseyCycle n hn : ℝ) / n^2 else 0)
+    atTop (nhds 0)
 
 /-
 ## Part IV: Beck's Theorem
@@ -137,13 +136,13 @@ axiom beck_path_theorem :
     R̂(Cₙ) ≤ c'n for some constant c'.
     Also linear! -/
 axiom beck_cycle_theorem :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    (sizeRamseyCycle n (by omega) : ℝ) ≤ c * n
+  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (hn : n ≥ 3) →
+    (sizeRamseyCycle n hn : ℝ) ≤ c * n
 
 /-- Beck's constant for paths is finite. -/
 def beckPathConstant : ℝ := 900 -- Dudek-Prałat (2017) improved bound
 
-/-- The improved bound from Dudek-Prałat (2017). -/
+/-  The improved bound from Dudek-Prałat (2017). -/
 /-
 ## Part V: Lower Bounds
 -/
@@ -155,8 +154,8 @@ axiom path_lower_bound :
 
 /-- Lower bound: R̂(Cₙ) ≥ c'n for some c' > 0. -/
 axiom cycle_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    (sizeRamseyCycle n (by omega) : ℝ) ≥ c * n
+  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (hn : n ≥ 3) →
+    (sizeRamseyCycle n hn : ℝ) ≥ c * n
 
 /-- The size Ramsey number of paths is Θ(n). -/
 def pathIsLinear : Prop :=
@@ -165,9 +164,9 @@ def pathIsLinear : Prop :=
 
 /-- The size Ramsey number of cycles is Θ(n). -/
 def cycleIsLinear : Prop :=
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    c₁ * n ≤ (sizeRamseyCycle n (by omega) : ℝ) ∧
-    (sizeRamseyCycle n (by omega) : ℝ) ≤ c₂ * n
+  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, (hn : n ≥ 3) →
+    c₁ * n ≤ (sizeRamseyCycle n hn : ℝ) ∧
+    (sizeRamseyCycle n hn : ℝ) ≤ c₂ * n
 
 /-
 ## Part VI: Answers to Erdős's Questions
@@ -207,7 +206,7 @@ def ramseyComparison : Prop :=
 ## Part VIII: Related Results
 -/
 
-/-- Generalization to trees: size Ramsey of bounded-degree trees is linear. -/
+/-  Generalization to trees: size Ramsey of bounded-degree trees is linear. -/
 /-- Connection to Problem #559: size Ramsey of bounded-degree graphs. -/
 def problemConnection559 : Prop :=
   -- Problem #559 asks about R̂(G) for graphs with max degree Δ

@@ -75,21 +75,21 @@ def Erdos208_Q2 : Prop :=
 
 /- ## Known Upper Bounds -/
 
-/--
+/- 
 **Filaseta-Trifonov (1992)**: The gap between consecutive squarefree numbers
 satisfies s_{n+1} - sₙ ≪ sₙ^{1/5 + o(1)}.
 
 This was the best unconditional bound for decades.
 -/
 
-/--
+/- 
 **Pandey (2024)**: Improved the exponent to 1/5 - c for some constant c > 0.
 This is the current best unconditional bound.
 -/
 
 /- ## The Optimal Lower Bound -/
 
-/--
+/- 
 **Erdős (1951)**: There exist infinitely many n such that
   s_{n+1} - sₙ > (1 + o(1)) · (π²/6) · log(sₙ) / log(log(sₙ)).
 
@@ -98,7 +98,7 @@ This shows that Question 2's bound, if true, would be optimal.
 
 /- ## Conditional Result -/
 
-/--
+/- 
 **Granville (1998)**: The ABC conjecture implies Question 1.
 
 The ABC conjecture is a major open problem in number theory stating that for
@@ -108,7 +108,7 @@ rad(n) is the product of distinct prime factors of n.
 
 /- ## Basic Properties -/
 
-/-- The first squarefree number is 1.
+/-  The first squarefree number is 1.
 
 This uses the fact that 1 is the smallest squarefree number (as it has no
 prime factors, hence trivially squarefree). -/
@@ -128,14 +128,14 @@ example : Squarefree 5 := by native_decide
 /-- 6 is squarefree. -/
 example : Squarefree 6 := by native_decide
 
-/-- The density of squarefree numbers is 6/π².
+/-  The density of squarefree numbers is 6/π².
 
 This classical result says that the proportion of integers up to N that are
 squarefree converges to 6/π² ≈ 0.6079... as N → ∞. -/
 
 /- ## Typical Gap Size -/
 
-/--
+/- 
 Since the density of squarefree numbers is 6/π², the "average" gap between
 consecutive squarefree numbers should be about π²/6 ≈ 1.645.
 
@@ -167,13 +167,13 @@ example : (10 : ℕ) - 7 = 3 := rfl
 
 /- ## The Doubling Trick -/
 
-/--
+/- 
 A key observation: if n is squarefree and odd, then 2n is also squarefree.
 This limits how large gaps can be - you can't have arbitrarily many consecutive
 non-squarefree numbers.
 -/
 
-/--
+/-
 The maximum gap up to N is O(√N) since there are O(√N) numbers in [1, N]
 divisible by some fixed square. Improving this to subpolynomial bounds
 is the content of the problem.

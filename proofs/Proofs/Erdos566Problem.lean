@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A graph on n vertices represented by its adjacency predicate. -/
@@ -48,23 +50,23 @@ def NoIsolated {n : ℕ} (H : Graph n) : Prop :=
     in a graph F such that every 2-coloring of E(F) contains a
     monochromatic copy of G in color 1 or H in color 2. -/
 noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
-  Nat.find (⟨p * q + 1, trivial⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
+  Nat.find (⟨p * q + 1, Nat.le_add_left 1 (p * q)⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
 
 /- ## Main Question -/
 
-/-- **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
+/-  **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
     size linear? That is, ∃ c > 0 such that r̂(G, H) ≤ c · |E(H)|
     for every H with no isolated vertices. -/
 /- ## Known Results -/
 
-/-- **EFRS (1993)**: Any graph G with n vertices and at most n+1
+/-  **EFRS (1993)**: Any graph G with n vertices and at most n+1
     edges is Ramsey size linear. -/
-/-- **Counterexample at 2n−2**: The sparsity condition 2k−3 is
+/-  **Counterexample at 2n−2**: The sparsity condition 2k−3 is
     tight — there exist graphs with 2n−2 edges that are NOT
     Ramsey size linear. -/
 /- ## Related Results -/
 
-/-- **Sparsity threshold**: The (2k−3) bound is the boundary
+/- **Sparsity threshold**: The (2k−3) bound is the boundary
     between graphs that might be Ramsey size linear and those
     that provably are not. Trees (n−1 edges) are known to be
     Ramsey size linear. -/

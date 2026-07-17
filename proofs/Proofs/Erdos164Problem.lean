@@ -25,11 +25,11 @@ References:
 Tags: number-theory, primitive-sets, primes, extremal, solved
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Nat Real Set

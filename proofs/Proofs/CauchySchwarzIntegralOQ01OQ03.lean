@@ -48,7 +48,8 @@ import Mathlib
 
 noncomputable section
 
-open MeasureTheory ENNReal NNReal Real scoped InnerProductSpace
+open MeasureTheory ENNReal NNReal Real
+open scoped InnerProductSpace
 
 namespace HolderNormedField
 
@@ -82,7 +83,7 @@ For conjugate exponents p, q (1/p + 1/q = 1) and measurable functions f, g : α 
 
 The proof reduces to the ENNReal Hölder inequality via nnnorm multiplicativity. -/
 theorem holder_normedField_lintegral
-    {𝕜 : Type*} [NormedField 𝕜]
+    {𝕜 : Type*} [NormedField 𝕜] [MeasurableSpace 𝕜] [OpensMeasurableSpace 𝕜]
     {p q : ℝ} (hpq : p.HolderConjugate q)
     {f g : α → 𝕜} (hf : AEMeasurable f μ) (hg : AEMeasurable g μ) :
     ∫⁻ a, (‖f a * g a‖₊ : ℝ≥0∞) ∂μ ≤

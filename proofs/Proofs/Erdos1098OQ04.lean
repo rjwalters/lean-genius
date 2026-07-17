@@ -34,8 +34,8 @@ variable {G : Type*} [Group G] [Fintype G] [DecidableEq G]
 /-- The non-commuting graph Γ(G): edges between non-commuting distinct elements -/
 noncomputable def nonCommGraph : SimpleGraph G where
   Adj g h := ¬Commute g h ∧ g ≠ h
-  symm := fun g h ⟨hnc, hne⟩ => ⟨fun hc => hnc hc.symm, hne.symm⟩
-  loopless := fun g ⟨_, hg⟩ => hg rfl
+  symm.symm := fun g h ⟨hnc, hne⟩ => ⟨fun hc => hnc hc.symm, hne.symm⟩
+  loopless.irrefl := fun g ⟨_, hg⟩ => hg rfl
 
 /-
 ## The 5/8 Theorem (Statement)
@@ -74,13 +74,13 @@ theorem commProb_at_most_one : commProb G ≤ 1 :=
 theorem commProb_one_iff_abelian :
     commProb G = 1 ↔ ∀ a b : G, Commute a b := by
   rw [commProb_eq_one_iff]
-  exact ⟨fun h a b => h.comm a b, fun h => ⟨fun a b => h a b⟩⟩
+  exact ⟨fun h a b => h.is_comm.comm a b, fun h => ⟨⟨fun a b => h a b⟩⟩⟩
 
 /-- If H is abelian, commProb H = 1 -/
 theorem commProb_abelian {H : Type*} [CommGroup H] [Fintype H] [DecidableEq H] :
     commProb H = 1 := by
   rw [commProb_eq_one_iff]
-  exact ⟨mul_comm⟩
+  exact ⟨⟨mul_comm⟩⟩
 
 /-- If G has non-commuting elements, commProb G < 1 -/
 theorem commProb_lt_one_of_noncomm

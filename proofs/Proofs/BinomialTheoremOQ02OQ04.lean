@@ -55,6 +55,8 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.Antidiag.Pi
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace BinomialTheoremOQ02OQ04
 
 open Finset BigOperators Nat
@@ -127,24 +129,26 @@ theorem multinomial_by_induction {α : Type*} {R : Type*} [CommSemiring R]
     have hjle : j ≤ n := Nat.lt_succ_iff.mp hj
     -- For i ∈ s: i ≠ a (since a ∉ s), so (if i = a then j else 0) = 0
     have hshift : ∀ i ∈ s, (if i = a then (j : ℕ) else 0) = 0 :=
-      fun i hi => if_neg (fun h => ha (h ▸ hi))
+      fun i hi => if_neg (fun h => ha (by rw [← h]; exact hi))
     -- Simplify: ∑_s (g i + if i = a then j else 0) = ∑_s g i = n - j
     have hsum : ∑ i ∈ s, (g i + if i = a then j else 0) = n - j := by
       rw [Finset.sum_add_distrib,
           Finset.sum_eq_zero (fun i hi => hshift i hi),
           add_zero, hg.1]
     -- Simplify: multinomial s (g + shift_a j) = multinomial s g
-    have hmn : Nat.multinomial s (fun i => g i + if i = a then j else 0) =
+    have hmn : Nat.multinomial s (g + fun t => if t = a then j else 0) =
                Nat.multinomial s g := by
       apply Nat.multinomial_congr
-      intro i hi; simp [hshift i hi]
+      intro i hi; simp [Pi.add_apply, hshift i hi]
     -- Simplify: ∏_s f^(g + shift_a j) = ∏_s f^g
     have hprod : ∏ i ∈ s, f i ^ (g i + if i = a then j else 0) = ∏ i ∈ s, f i ^ g i := by
       apply Finset.prod_congr rfl
       intro i hi; simp [hshift i hi]
     -- Combine: g a + j = j, j + (n - j) = n, multinomial simplifies, product simplifies
     -- Both sides are now: C(n, j) * multinomial s g * (f a^j * ∏_s f^g)
-    rw [hga, zero_add, hsum, hmn, hprod, Nat.add_sub_cancel' hjle]
+    rw [hmn]
+    simp only [Pi.add_apply, if_true]
+    rw [hga, zero_add, hsum, hprod, Nat.add_sub_cancel' hjle]
     push_cast; ring
 
 /-! ## Part 3: Equivalence with Mathlib's Theorem -/
@@ -169,8 +173,12 @@ of the binomial theorem, one per variable added to the index set. -/
 theorem multinomial_needs_k_minus_one_binomials {n : ℕ} :
     (∑ i ∈ (Finset.univ : Finset (Fin 3)), (![1, 1, 1] : Fin 3 → ℕ) i) ^ n =
     ∑ k ∈ (Finset.univ : Finset (Fin 3)).piAntidiag n,
-      (Nat.multinomial Finset.univ k : ℕ) * ∏ i ∈ Finset.univ, (1 : ℕ) ^ k i :=
-  multinomial_by_induction Finset.univ (![1, 1, 1]) n
+      (Nat.multinomial Finset.univ k : ℕ) * ∏ i ∈ Finset.univ, (1 : ℕ) ^ k i := by
+  have h := multinomial_by_induction Finset.univ (![1, 1, 1]) n
+  refine h.trans (Finset.sum_congr (by congr 1; exact Subsingleton.elim _ _) (fun k _ => ?_))
+  rw [Nat.cast_id]
+  refine congrArg _ (Finset.prod_congr rfl (fun i _ => ?_))
+  fin_cases i <;> simp
 
 /-! ## Part 5: Examples -/
 

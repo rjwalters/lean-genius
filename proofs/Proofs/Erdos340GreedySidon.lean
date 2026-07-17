@@ -518,7 +518,7 @@ theorem greedySeqSet_eq_image (n : ℕ) :
       have himg : Finset.image greedySidonSeq (Finset.range (n + 1 + 1))
           = insert (greedySidonSeq (n + 1))
               (Finset.image greedySidonSeq (Finset.range (n + 1))) := by
-        rw [Finset.range_succ, Finset.image_insert]
+        rw [Finset.range_add_one, Finset.image_insert]
       rw [hrec, ih, himg]
 
 /-- The set of the first `n + 1` greedy terms is always Sidon.

@@ -55,11 +55,11 @@ variable (n : ℕ) [NeZero n]
 -- PART 1: k = 1 — the fundamental domain is the sharp witness
 -- ============================================================
 
+omit [NeZero n] in
 /-- **Pointwise uniqueness of fundamental-domain representatives.**
 Two points of the half-open unit cube `[0,1)ⁿ = stdFundDomain n` that are congruent
 modulo the integer lattice `ℤⁿ` are equal.  This is the heart of sharpness for `k = 1`:
 the unit cube — a set of volume exactly `1` — carries no `ℤⁿ`-congruent pair. -/
-omit [NeZero n] in
 theorem stdFundDomain_congruent_eq {x y : Fin n → ℝ}
     (hx : x ∈ stdFundDomain n) (hy : y ∈ stdFundDomain n)
     (hcong : x - y ∈ (stdLattice n : Set (Fin n → ℝ))) : x = y := by
@@ -117,10 +117,10 @@ theorem volume_box (k : ℕ) : volume (box n k) = (k : ENNReal) := by
     rw [if_neg hi, Real.volume_Ico, sub_zero, ENNReal.ofReal_one]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+omit [NeZero n] in
 /-- Coordinatewise formula for the `ZSpan` fractional part in the standard basis:
 `(fract x) i = Int.fract (x i)`.  (The standard basis `Pi.basisFun` has the identity
 `repr`.) -/
-omit [NeZero n] in
 theorem stdFract_coord (x : Fin n → ℝ) (i : Fin n) :
     ZSpan.fract (stdBasis n) x i = Int.fract (x i) := by
   have h := ZSpan.repr_fract_apply (stdBasis n) x i

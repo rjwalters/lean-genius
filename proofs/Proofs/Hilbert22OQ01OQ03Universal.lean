@@ -70,17 +70,13 @@ theorem chainDist_le_cost (c : X → X → ℝ≥0∞) (p q : X) : chainDist c p
   simpa using chainDist_le c p q []
 
 /-- **Telescoping.** Any `d` satisfying the triangle law is bounded by the
-`d`-cost of every chain: summing the triangle inequalities along the chain. -/
-theorem le_chainCost_of_triangle (d : X → X → ℝ≥0∞)
+`d`-cost of every chain: summing the triangle inequalities along the chain.
+(A specialisation of the parent file's `le_chainCost_of_triangle` at `c := d`.) -/
+theorem le_chainCost_of_triangle_self (d : X → X → ℝ≥0∞)
     (htri : ∀ a b e, d a b ≤ d a e + d e b) (q : X) (mid : List X) :
-    ∀ p, d p q ≤ chainCost d p mid q := by
-  induction mid with
-  | nil => intro p; simp
-  | cons x xs ih =>
-      intro p
-      calc d p q ≤ d p x + d x q := htri p q x
-        _ ≤ d p x + chainCost d x xs q := add_le_add (le_refl (d p x)) (ih x)
-        _ = chainCost d p (x :: xs) q := by rw [chainCost_cons]
+    ∀ p, d p q ≤ chainCost d p mid q :=
+  le_chainCost_of_triangle d d (fun _ _ => le_refl _)
+    (fun a b r => htri a r b) q mid
 
 /-- **Universal property (maximality).** `chainDist c` is the *greatest* triangle-law
 cost dominated by `c`: any `d` that satisfies the triangle inequality and is
@@ -91,7 +87,7 @@ theorem le_chainDist (c d : X → X → ℝ≥0∞)
     (hdom : ∀ a b, d a b ≤ c a b) (p q : X) :
     d p q ≤ chainDist c p q := by
   refine le_iInf fun mid => ?_
-  calc d p q ≤ chainCost d p mid q := le_chainCost_of_triangle d htri q mid p
+  calc d p q ≤ chainCost d p mid q := le_chainCost_of_triangle_self d htri q mid p
     _ ≤ chainCost c p mid q := chainCost_mono_cost d c hdom q mid p
 
 -- ============================================================
@@ -104,7 +100,7 @@ order-theoretic core of non-hyperbolicity (e.g. `d_ℂ ≡ 0` via affine maps). 
 theorem chainDist_eq_zero_of_forall (c : X → X → ℝ≥0∞) (p q : X)
     (h : ∀ ε : ℝ≥0∞, 0 < ε → ∃ mid : List X, chainCost c p mid q ≤ ε) :
     chainDist c p q = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   refine ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_
   obtain ⟨mid, hmid⟩ := h (ε : ℝ≥0∞) (by exact_mod_cast hε)
   calc chainDist c p q ≤ chainCost c p mid q := chainDist_le c p q mid
@@ -115,13 +111,13 @@ theorem chainDist_eq_zero_of_forall (c : X → X → ℝ≥0∞) (p q : X)
 pseudometric. -/
 theorem chainDist_eq_zero_of_cost_zero (c : X → X → ℝ≥0∞) (p q : X) (h : c p q = 0) :
     chainDist c p q = 0 :=
-  le_antisymm (by simpa [h] using chainDist_le_cost c p q) (zero_le _)
+  le_antisymm (by simpa [h] using chainDist_le_cost c p q) (zero_le)
 
 /-- A one-vertex bridge of zero cost forces the chain pseudometric to vanish:
 if `c p r = 0` and `c r q = 0`, then `chainDist c p q = 0`. -/
 theorem chainDist_eq_zero_of_bridge (c : X → X → ℝ≥0∞) (p r q : X)
     (h1 : c p r = 0) (h2 : c r q = 0) : chainDist c p q = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   calc chainDist c p q ≤ chainCost c p [r] q := chainDist_le c p q [r]
     _ = c p r + c r q := by simp [chainCost]
     _ = 0 := by simp [h1, h2]

@@ -70,6 +70,7 @@ theorem summable_sinTerm (z : ℂ) :
     rw [norm_div, norm_mul, norm_pow, norm_pow, norm_neg, norm_one, one_pow, one_mul,
       Complex.norm_natCast]
 
+set_option backward.defeqAttrib.useBackward true in
 /-- **Euler's formula at the level of series.** The exponential series `e^{iz} = Σ (iz)ⁿ/n!`,
     regrouped into its even-indexed (`n = 2k`) and odd-indexed (`n = 2k+1`) parts, has sum equal
     to the interleaved cosine/sine terms. This is the heart of the reversed dependency: it is
@@ -80,13 +81,13 @@ theorem hasSum_euler (z : ℂ) :
         + Complex.I * ((-1) ^ k * z ^ (2 * k + 1) / ((2 * k + 1)! : ℂ)))
       (Complex.exp (z * I)) := by
   rw [Complex.exp_eq_exp_ℂ]
-  have h := expSeries_div_hasSum_exp ℂ (z * I)
+  have h := expSeries_div_hasSum_exp (z * I)
   replace h := (Nat.divModEquiv 2).symm.hasSum_iff.mpr h
   dsimp [Function.comp_def] at h
   simp_rw [← mul_comm 2 _] at h
   refine h.prod_fiberwise fun k => ?_
   dsimp only
-  convert hasSum_fintype (_ : Fin 2 → ℂ) using 1
+  convert! hasSum_fintype (_ : Fin 2 → ℂ) using 1
   rw [Fin.sum_univ_two]
   simp only [Fin.val_zero, Fin.val_one, add_zero]
   rw [mul_pow z I (2 * k), mul_pow z I (2 * k + 1), pow_succ I (2 * k), pow_mul I 2 k,

@@ -63,7 +63,7 @@ theorem gpf_le_one (n : ℕ) (hn : n ≤ 1) : gpf n = 0 := by
 private lemma primeFactorsList_ne_nil {n : ℕ} (hn : n > 1) :
     n.primeFactorsList ≠ [] := by
   intro h
-  have := Nat.primeFactorsList_eq_nil.mp h
+  have := (Nat.primeFactorsList_eq_nil _).mp h
   omega
 
 /-- gpf n is a member of primeFactorsList n when n > 1. -/
@@ -74,7 +74,6 @@ private lemma gpf_mem_primeFactorsList {n : ℕ} (hn : n > 1) :
   have hls : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
     List.getLast?_eq_getLast hne
   simp [hls]
-  exact List.getLast_mem hne
 
 /-- gpf of n > 1 divides n. Proved from Mathlib's primeFactorsList API. -/
 theorem gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n := by
@@ -92,7 +91,10 @@ theorem gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p := by
 
 /-- gpf of a prime power is the prime. -/
 theorem gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^ k) = p := by
-  simp [gpf, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
+  simp only [gpf, Nat.Prime.primeFactorsList_pow hp]
+  rcases k with _ | k
+  · omega
+  · simp [List.getLast?_replicate]
 
 /-- gpf of a product is at most the max of the gpfs. -/
 axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
@@ -127,7 +129,7 @@ def SteinerbergerConstruction (m : ℕ) : ℕ := m ^ 2 - 1
 theorem steinerberger_factorization (m : ℕ) (hm : m ≥ 2) :
     SteinerbergerConstruction m = (m - 1) * (m + 1) := by
   unfold SteinerbergerConstruction
-  zify [show 1 ≤ m ^ 2 from by positivity, show 1 ≤ m from by omega]
+  zify [show 1 ≤ m ^ 2 by nlinarith, show 1 ≤ m by omega]
   ring
 
 /-- For the construction, n + 1 = m². -/

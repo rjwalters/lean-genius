@@ -21,11 +21,11 @@ Source: [Er74b]
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.Data.Nat.Defs
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Infinite
 import Mathlib.Tactic
+
+open scoped ArithmeticFunction.sigma
 
 open scoped ArithmeticFunction
 open Nat
@@ -193,7 +193,13 @@ def erdos_248_weaker : Prop :=
 /-- Problem #826 implies Problem #248 (the weaker form). -/
 theorem erdos_826_implies_248 (h : erdos_826_conjecture) : erdos_248_weaker := by
   obtain ⟨C, hC, hInf⟩ := h
-  exact ⟨C, hC, hInf⟩
+  refine ⟨C, hC, ?_⟩
+  have hset : { n : ℕ | ∀ k ≥ 1, (σ 0 (n + k) : ℝ) ≤ C * (k : ℝ) ^ (1 : ℝ) } =
+      goodStartingPoints C := by
+    ext n
+    simp [goodStartingPoints, linearBoundCondition, Real.rpow_one]
+  rw [hset]
+  exact hInf
 
 /-
 # Part 6: Small Examples and Observations
@@ -201,7 +207,7 @@ theorem erdos_826_implies_248 (h : erdos_826_conjecture) : erdos_248_weaker := b
 Understanding when the linear bound can hold.
 -/
 
-/--
+/- 
 **Why the Problem is Hard**
 
 For n + k to have τ(n+k) ≤ Ck, we need n + k to have few divisors
@@ -224,7 +230,7 @@ theorem prime_satisfies_bound (n : ℕ) (hn : Nat.Prime (n + 1)) :
     (σ 0 (n + 1) : ℝ) = 2 := by
   suffices h : σ 0 (n + 1) = 2 by exact_mod_cast h
   rw [ArithmeticFunction.sigma_apply, hn.divisors]
-  simp [Finset.not_mem_singleton.mpr hn.one_lt.ne]
+  simp [Finset.notMem_singleton.mpr hn.one_lt.ne]
 
 /-
 # Part 7: Probabilistic Heuristic
@@ -247,7 +253,7 @@ n+1, n+2, ..., n+⌊log(n)/C⌋ to all have unusually few divisors.
 By multiplicative number theory heuristics, such "smooth intervals"
 should occur infinitely often, but proving this is hard.
 -/
-def heuristicCriticalRange (n : ℕ) (C : ℝ) : ℕ :=
+noncomputable def heuristicCriticalRange (n : ℕ) (C : ℝ) : ℕ :=
   ⌈Real.log n / C⌉₊
 
 /-
@@ -276,7 +282,7 @@ def hasControlledDivisors (m : ℕ) (bound : ℝ) : Prop :=
 The structural challenges.
 -/
 
-/--
+/- 
 **Difficulty Assessment**
 
 Terence Tao has noted this problem appears difficult. The key

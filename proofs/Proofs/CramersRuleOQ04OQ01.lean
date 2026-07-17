@@ -1,7 +1,4 @@
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.LinearAlgebra.Matrix.Adjugate
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Cramer's rule OQ-04 → OQ-01: the adjugate behind Cayley–Hamilton
@@ -66,6 +63,6 @@ theorem mul_adjugate_eq (A : Matrix n n R) :
     `A·adj A = (det A)·I` underlies both this and the Cayley–Hamilton identity above. -/
 theorem adjugate_mulVec_solve (A : Matrix n n R) (b : n → R) :
     A *ᵥ (adjugate A *ᵥ b) = A.det • b := by
-  rw [mulVec_mulVec, mul_adjugate, smul_mulVec_assoc, one_mulVec]
+  rw [mulVec_mulVec, mul_adjugate, smul_mulVec, one_mulVec]
 
 end CramersRuleOQ04OQ01

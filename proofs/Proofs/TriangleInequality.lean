@@ -21,7 +21,7 @@ For metric spaces with distance d:
 $$d(x, z) \leq d(x, y) + d(y, z)$$
 
 ## Approach
-- **Absolute Value Form:** Uses Mathlib's `abs_add` for real numbers.
+- **Absolute Value Form:** Uses Mathlib's `abs_add_le` for real numbers.
 - **Normed Space Form:** Uses Mathlib's `norm_add_le` for general normed spaces.
 - **Metric Space Form:** Uses Mathlib's `dist_triangle` for metric spaces.
 - **Reverse Triangle Inequality:** Proven as a corollary: ||a| - |b|| ≤ |a - b|.
@@ -36,7 +36,7 @@ $$d(x, z) \leq d(x, y) + d(y, z)$$
 - [ ] Incomplete (has sorries)
 
 ## Mathlib Dependencies
-- `abs_add` : |x + y| ≤ |x| + |y| for real/complex numbers
+- `abs_add_le` : |x + y| ≤ |x| + |y| for real/complex numbers
 - `norm_add_le` : ‖x + y‖ ≤ ‖x‖ + ‖y‖ for normed spaces
 - `dist_triangle` : dist x z ≤ dist x y + dist y z for metric spaces
 - `abs_sub_abs_le_abs_sub` : | |x| - |y| | ≤ |x - y| (reverse triangle inequality)
@@ -70,7 +70,7 @@ For any real numbers x and y:
 
 This is the fundamental form of the inequality for ℝ. -/
 theorem abs_triangle (x y : ℝ) : |x + y| ≤ |x| + |y| :=
-  abs_add x y
+  abs_add_le x y
 
 /-! ## Reverse Triangle Inequality
 
@@ -99,7 +99,7 @@ theorem abs_sub_le_abs_diff' (x y : ℝ) : |y| - |x| ≤ |x - y| := by
 /-- Alternative statement using subtraction: |x - y| ≤ |x| + |y| -/
 theorem abs_sub_triangle (x y : ℝ) : |x - y| ≤ |x| + |y| := by
   calc |x - y| = |x + (-y)| := by ring_nf
-    _ ≤ |x| + |-y| := abs_add x (-y)
+    _ ≤ |x| + |-y| := abs_add_le x (-y)
     _ = |x| + |y| := by rw [abs_neg]
 
 /-! ## Normed Space Form

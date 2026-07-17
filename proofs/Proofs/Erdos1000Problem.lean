@@ -168,6 +168,7 @@ theorem naturalSeq_phiA_eq_totient (k : ℕ) :
       · -- Backward: if gcd = 1, then n/gcd = n = k+2 > j+1 for all j < k+1
         intro hg j hj
         rw [hg, Nat.div_one]; omega
+    simp only [show k + 1 + 1 = k + 2 from rfl]
     rw [filter_congr hfilt]
     -- Step 2: Bridge (Icc 1 n).filter (gcd · n = 1) to (range n).filter (gcd n · = 1)
     -- For n ≥ 2: gcd(n,n) = n ≠ 1 and gcd(n,0) = n ≠ 1, so 0 and n are excluded
@@ -461,7 +462,7 @@ theorem densityRatio_complement (A : IncreasingSeq) (k : ℕ) :
     densityRatio A k = 1 - (usedSum A k : ℝ) / (A.seq k : ℝ) := by
   unfold densityRatio
   have hn : (A.seq k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (A.pos k).ne'
-  rw [eq_sub_iff_add_eq, div_add_div_same, ← Nat.cast_add, phiA_add_usedSum]
+  rw [eq_sub_iff_add_eq, ← add_div, ← Nat.cast_add, phiA_add_usedSum]
   exact div_self hn
 
 /-- At most k divisors of n_k can be "used" — each maps to a unique j < k
@@ -722,7 +723,7 @@ theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
   unfold usedSum
   suffices h : ((A.seq 0).divisors.filter (fun e => ∃ j, j < 0 ∧ e = A.seq j)) = ∅ by
     simp [h]
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   intro e
   simp only [Finset.mem_filter, Nat.mem_divisors, not_and]
   intro _

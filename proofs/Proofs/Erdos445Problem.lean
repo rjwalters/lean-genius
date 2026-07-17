@@ -20,11 +20,11 @@ References:
 Tags: number-theory, modular-arithmetic, kloosterman-sums
 -/
 
-import Mathlib.NumberTheory.Padics.PadicVal
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 namespace Erdos445
 
@@ -42,8 +42,8 @@ def OpenInterval (n L : ℕ) : Finset ℕ :=
 
 /-- There exist inverse pairs in the interval (n, n + p^c) -/
 def HasInversePairInInterval (p : ℕ) [Fact (Nat.Prime p)] (n : ℕ) (c : ℝ) : Prop :=
-  ∃ a b : ℕ, a ∈ OpenInterval n (Nat.floor (p ^ c)) ∧
-             b ∈ OpenInterval n (Nat.floor (p ^ c)) ∧
+  ∃ a b : ℕ, a ∈ OpenInterval n (Nat.floor ((p : ℝ) ^ c)) ∧
+             b ∈ OpenInterval n (Nat.floor ((p : ℝ) ^ c)) ∧
              HasInverse p a b
 
 /- ## Part 2: The Main Conjecture -/
@@ -113,7 +113,7 @@ theorem current_knowledge :
     constructor
     · exact hx.1
     · calc x ≤ 3/4 := hx.2
-           _ < 1 := by norm_num
+           _ ≤ 1 := by norm_num
 
 /- ## Part 6: Summary -/
 

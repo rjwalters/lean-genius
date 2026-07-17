@@ -1,6 +1,9 @@
 import Mathlib
 import Proofs.AbelRuffiniOQ04OQ02OQ02OQ01
 
+-- v4.31: element commutator `Bracket` is now a scoped instance
+open scoped commutatorElement
+
 /-
 # Explicit derived (composition) series of `S₃` and `S₄` with identified abelian factors
 

@@ -1,9 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Divergence of Prime Reciprocals — Erdős's Elementary Proof (OQ-03)
@@ -53,6 +48,7 @@ handling of integer arithmetic and factorization bounds.
 namespace ErdosElementary
 
 open Finset Nat
+open scoped Classical
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART I: DEFINITIONS
@@ -78,7 +74,7 @@ noncomputable def primesUpTo (N : ℕ) : Finset ℕ :=
 PART II: COUNTING SMOOTH NUMBERS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Key Bound**: The number of N-smooth integers in [1, n] is at most
+/- **Key Bound**: The number of N-smooth integers in [1, n] is at most
     √n · 2^{π(N)}, where π(N) = |{p ≤ N : p prime}|.
 
     Proof sketch: Any N-smooth k can be written as k = m² · s where
@@ -139,10 +135,8 @@ private lemma squarefree_eq_of_prime_dvd_iff {a₁ a₂ : ℕ}
   rw [← Nat.factorization_prod_pow_eq_self ha₁.ne',
       ← Nat.factorization_prod_pow_eq_self ha₂.ne']
   congr 1; ext p
-  have h1 : a₁.factorization p ≤ 1 :=
-    (Nat.squarefree_iff_factorization_le_one.mp hsf₁) p
-  have h2 : a₂.factorization p ≤ 1 :=
-    (Nat.squarefree_iff_factorization_le_one.mp hsf₂) p
+  have h1 : a₁.factorization p ≤ 1 := hsf₁.natFactorization_le_one p
+  have h2 : a₂.factorization p ≤ 1 := hsf₂.natFactorization_le_one p
   by_cases hp : p.Prime
   · -- Prime p: use divisibility ↔ factorization ≥ 1
     by_cases hd : p ∣ a₁
@@ -157,14 +151,14 @@ private lemma squarefree_eq_of_prime_dvd_iff {a₁ a₂ : ℕ}
       omega
   · -- Non-prime p: factorization is 0 (support only contains primes)
     have hf1 : a₁.factorization p = 0 :=
-      Nat.factorization_eq_zero_of_non_primeNat hp
+      Nat.factorization_eq_zero_of_not_prime a₁ hp
     have hf2 : a₂.factorization p = 0 :=
-      Nat.factorization_eq_zero_of_non_primeNat hp
+      Nat.factorization_eq_zero_of_not_prime a₂ hp
     omega
 
 /-- If k is smooth and k = b² · a with a squarefree, then a divides k. -/
-private lemma sqfPart_dvd {k : ℕ} (hk : 0 < k) : sqfPart k ∣ k := by
-  rw [← sq_mul_sqfPart hk]; exact dvd_mul_left _ _
+private lemma sqfPart_dvd {k : ℕ} (hk : 0 < k) : sqfPart k ∣ k :=
+  ⟨sqRtPart k ^ 2, by rw [mul_comm]; exact (sq_mul_sqfPart hk).symm⟩
 
 /-- If k is N-smooth and p divides sqfPart k, then p ≤ N. -/
 private lemma sqfPart_prime_le_of_smooth {N k p : ℕ} (hk : 0 < k)
@@ -179,7 +173,7 @@ private noncomputable def smoothInj (N : ℕ) (k : ℕ) : ℕ × Finset ℕ :=
 theorem smooth_count_bound (N n : ℕ) :
     (smoothSet N n).card ≤ Nat.sqrt n * 2 ^ (primesUpTo N).card := by
   -- Handle n = 0: smoothSet is empty
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le n) with rfl | hn
+  rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp [smoothSet]
   -- Suffices to inject into range(√n) × powerset(primesUpTo N)
   suffices h : (smoothSet N n).card ≤
@@ -188,9 +182,10 @@ theorem smooth_count_bound (N n : ℕ) :
   apply Finset.card_le_card_of_injOn (smoothInj N)
   -- (1) Maps into target: smoothInj maps smoothSet into range(√n) × powerset
   · intro k hk
-    simp only [smoothSet, Finset.mem_filter, Finset.mem_Icc] at hk
+    simp only [smoothSet, Finset.mem_coe, Finset.mem_filter, Finset.mem_Icc] at hk
     have hk_pos : 0 < k := by omega
-    simp only [smoothInj, Finset.mem_product, Finset.mem_range, Finset.mem_powerset]
+    simp only [smoothInj, Finset.mem_coe, Finset.mem_product, Finset.mem_range,
+      Finset.mem_powerset]
     constructor
     · -- sqRtPart k - 1 < Nat.sqrt n
       have hle : sqRtPart k ≤ Nat.sqrt k := sqRtPart_le_sqrt hk_pos
@@ -201,7 +196,7 @@ theorem smooth_count_bound (N n : ℕ) :
       exact Finset.filter_subset _ _
   -- (2) Injective on smoothSet
   · intro k₁ hk₁ k₂ hk₂ heq
-    simp only [smoothSet, Finset.mem_filter, Finset.mem_Icc] at hk₁ hk₂
+    simp only [smoothSet, Finset.mem_coe, Finset.mem_filter, Finset.mem_Icc] at hk₁ hk₂
     have h1_pos : 0 < k₁ := by omega
     have h2_pos : 0 < k₂ := by omega
     simp only [smoothInj, Prod.mk.injEq] at heq
@@ -223,7 +218,7 @@ theorem smooth_count_bound (N n : ℕ) :
         -- p is prime and divides sqfPart k₁, which is N-smooth (divides k₁)
         have hp_le : p ≤ N := sqfPart_prime_le_of_smooth h1_pos hk₁.2 hp hd
         have hp_mem : p ∈ primesUpTo N := by
-          simp [primesUpTo, Finset.mem_filter, Finset.mem_Icc]; exact ⟨hp.two_le, hp_le, hp⟩
+          simp [primesUpTo, Finset.mem_filter, Finset.mem_Icc]; exact ⟨⟨hp.two_le, hp_le⟩, hp⟩
         have : p ∈ (primesUpTo N).filter (fun q => q ∣ sqfPart k₁) :=
           Finset.mem_filter.mpr ⟨hp_mem, hd⟩
         rw [h_sf] at this
@@ -231,7 +226,7 @@ theorem smooth_count_bound (N n : ℕ) :
       · intro hd
         have hp_le : p ≤ N := sqfPart_prime_le_of_smooth h2_pos hk₂.2 hp hd
         have hp_mem : p ∈ primesUpTo N := by
-          simp [primesUpTo, Finset.mem_filter, Finset.mem_Icc]; exact ⟨hp.two_le, hp_le, hp⟩
+          simp [primesUpTo, Finset.mem_filter, Finset.mem_Icc]; exact ⟨⟨hp.two_le, hp_le⟩, hp⟩
         have : p ∈ (primesUpTo N).filter (fun q => q ∣ sqfPart k₂) :=
           Finset.mem_filter.mpr ⟨hp_mem, hd⟩
         rw [← h_sf] at this
@@ -259,12 +254,14 @@ theorem multiples_count (p n : ℕ) (hp : 0 < p) :
         rcases j with _ | j
         · simp at hk1
         · exact Nat.succ_pos j
-      exact ⟨j, ⟨⟨hj_pos, (Nat.le_div_iff_mul_le hp).mpr hk2⟩, rfl⟩⟩
+      exact ⟨j, ⟨⟨hj_pos, (Nat.le_div_iff_mul_le hp).mpr (by rw [mul_comm]; exact hk2)⟩,
+        mul_comm j p⟩⟩
     · rintro ⟨j, ⟨⟨hj1, hj2⟩, rfl⟩⟩
       refine ⟨⟨by nlinarith, le_trans (Nat.mul_le_mul_right p hj2) (Nat.div_mul_le_self n p)⟩,
-        ⟨j, rfl⟩⟩
-  rw [h_eq, Finset.card_image_of_injective _ (mul_right_injective₀ (by omega : (p : ℕ) ≠ 0))]
-  simp [Finset.card_Icc]; omega
+        ⟨j, by rw [mul_comm]⟩⟩
+  rw [h_eq, Finset.card_image_of_injective _ (mul_left_injective₀ (by omega : (p : ℕ) ≠ 0)),
+    Nat.card_Icc]
+  simp
 
 /-- If Σ_{p > N, prime} 1/p < 1/2 (in some rational sense), then the number of
     integers in [1, n] with a prime factor > N is less than n/2.
@@ -280,8 +277,11 @@ theorem rough_count_bound (N n : ℕ) (h_sum : ∀ p, N < p → p.Prime → n / 
   intro p hp hpk
   by_contra h_gt
   push_neg at h_gt
-  have := h_sum p h_gt hp
-  have : p ≤ n := le_of_dvd (by omega) hpk
+  have hn0 := h_sum p h_gt hp
+  have hp_pos : 0 < p := by omega
+  have hn_lt_p : n < p := Nat.lt_of_div_eq_zero hp_pos hn0
+  have hk' := Finset.mem_Icc.mp hk
+  have hp_le_k : p ≤ k := Nat.le_of_dvd (by omega) hpk
   omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -310,24 +310,31 @@ theorem infinitely_many_primes_erdos :
   set n := (2 ^ (K + 1)) ^ 2 + 1 with hn_def
   -- All integers in [1,n] are smooth (since all primes ≤ N by h)
   have h_all_smooth : smoothSet N n = Finset.Icc 1 n := by
-    ext k
-    simp only [smoothSet, Finset.mem_filter, Finset.mem_Icc]
-    constructor
-    · intro ⟨hk, _⟩; exact hk
-    · intro hk; exact ⟨hk, fun p hp _ => h p hp⟩
+    apply Finset.Subset.antisymm
+    · intro k hk
+      simp only [smoothSet, Finset.mem_filter] at hk
+      exact hk.1
+    · intro k hk
+      simp only [smoothSet, Finset.mem_filter]
+      exact ⟨hk, fun p hp _ => h p hp⟩
   -- So |smoothSet N n| = n
   have h_card : (smoothSet N n).card = n := by
-    rw [h_all_smooth, Finset.card_Icc]; omega
+    rw [h_all_smooth, Nat.card_Icc]; omega
   -- But smooth_count_bound says |smoothSet N n| ≤ √n · 2^K
   have h_bound := smooth_count_bound N n
+  rw [← hK] at h_bound
   -- We need: √n · 2^K < n
   -- n = (2^{K+1})² + 1, so √n ≤ 2^{K+1} (since Nat.sqrt rounds down)
   -- √n · 2^K ≤ 2^{K+1} · 2^K = 2^{2K+1}
   -- n = 2^{2K+2} + 1 > 2^{2K+1} for K ≥ 0
   have h_sqrt : Nat.sqrt n ≤ 2 ^ (K + 1) := by
-    apply Nat.sqrt_le_sqrt
+    have heq : Nat.sqrt n = 2 ^ (K + 1) := by
+      rw [hn_def]
+      exact Nat.sqrt_add_eq' (2 ^ (K + 1)) (by have := Nat.two_pow_pos (K + 1); omega)
     omega
   have h_prod : 2 ^ (K + 1) * 2 ^ K = 2 ^ (2 * K + 1) := by ring
+  have h_mul : Nat.sqrt n * 2 ^ K ≤ 2 ^ (K + 1) * 2 ^ K :=
+    Nat.mul_le_mul h_sqrt (le_refl _)
   have h_lt : 2 ^ (2 * K + 1) < n := by
     rw [hn_def]
     have : 2 ^ (2 * K + 1) < 2 ^ (2 * (K + 1)) := by

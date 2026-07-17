@@ -17,14 +17,20 @@ Reference: https://erdosproblems.com/469
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos469
 
 -- ## Definitions
 
-/-- n is pseudoperfect (semiperfect): n can be written as a sum of
-    distinct proper divisors of n. -/
+/-- n is pseudoperfect (semiperfect): n can be written as a sum of a
+    nonempty set of distinct proper divisors of n.
+    (Statement repair for the v4.31 migration: the witness set is required
+    to be nonempty, excluding the degenerate representation of 0 as the
+    empty sum — otherwise `IsPseudoperfect 0` would hold and
+    `not_pseudoperfect_0` / `pseudoperfect_ge_six` would be false.) -/
 def IsPseudoperfect (n : ℕ) : Prop :=
-  ∃ S : Finset ℕ, S ⊆ n.properDivisors ∧ S.sum id = n
+  ∃ S : Finset ℕ, S.Nonempty ∧ S ⊆ n.properDivisors ∧ S.sum id = n
 
 /-- n is primitive pseudoperfect: n is pseudoperfect, but no proper
     divisor of n (less than n) is pseudoperfect. -/
@@ -42,7 +48,10 @@ def primitivePseudoperfectSet : Set ℕ :=
     then using all proper divisors gives a representation n = d₁ + ... + dₖ. -/
 theorem perfect_is_pseudoperfect (n : ℕ) (hn : 0 < n)
     (hperf : n.properDivisors.sum id = n) : IsPseudoperfect n :=
-  ⟨n.properDivisors, le_refl _, hperf⟩
+  ⟨n.properDivisors, by
+    rcases Finset.eq_empty_or_nonempty n.properDivisors with he | hne
+    · exfalso; rw [he] at hperf; simp at hperf; omega
+    · exact hne, Finset.Subset.refl _, hperf⟩
 
 -- ## Verified Pseudoperfect Numbers via Explicit Witnesses
 
@@ -68,37 +77,36 @@ private theorem subset_sum_le_total (n : ℕ) (S : Finset ℕ) (hS : S ⊆ n.pro
   Finset.sum_le_sum_of_subset_of_nonneg hS (fun _ _ _ => Nat.zero_le _)
 
 theorem not_pseudoperfect_0 : ¬IsPseudoperfect 0 := by
-  intro ⟨S, hS_sub, hS_sum⟩
-  have := subset_sum_le_total 0 S hS_sub
-  have : (0 : ℕ).properDivisors.sum id = 0 := by decide
-  omega
+  intro ⟨S, hne, hS_sub, _⟩
+  rw [Nat.properDivisors_zero, Finset.subset_empty] at hS_sub
+  exact hne.ne_empty hS_sub
 
 theorem not_pseudoperfect_1 : ¬IsPseudoperfect 1 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 1 S hS_sub
   have : (1 : ℕ).properDivisors.sum id = 0 := by decide
   omega
 
 theorem not_pseudoperfect_2 : ¬IsPseudoperfect 2 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 2 S hS_sub
   have : (2 : ℕ).properDivisors.sum id = 1 := by decide
   omega
 
 theorem not_pseudoperfect_3 : ¬IsPseudoperfect 3 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 3 S hS_sub
   have : (3 : ℕ).properDivisors.sum id = 1 := by decide
   omega
 
 theorem not_pseudoperfect_4 : ¬IsPseudoperfect 4 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 4 S hS_sub
   have : (4 : ℕ).properDivisors.sum id = 3 := by decide
   omega
 
 theorem not_pseudoperfect_5 : ¬IsPseudoperfect 5 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 5 S hS_sub
   have : (5 : ℕ).properDivisors.sum id = 1 := by decide
   omega
@@ -110,19 +118,19 @@ theorem pseudoperfect_28 : IsPseudoperfect 28 :=
 -- ## Non-pseudoperfect: additional cases needed for primitivity proofs
 
 theorem not_pseudoperfect_7 : ¬IsPseudoperfect 7 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 7 S hS_sub
   have : (7 : ℕ).properDivisors.sum id = 1 := by decide
   omega
 
 theorem not_pseudoperfect_10 : ¬IsPseudoperfect 10 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 10 S hS_sub
   have : (10 : ℕ).properDivisors.sum id = 8 := by decide
   omega
 
 theorem not_pseudoperfect_14 : ¬IsPseudoperfect 14 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 14 S hS_sub
   have : (14 : ℕ).properDivisors.sum id = 10 := by decide
   omega
@@ -130,25 +138,25 @@ theorem not_pseudoperfect_14 : ¬IsPseudoperfect 14 := by
 -- Non-pseudoperfect: proper divisors of 88
 
 theorem not_pseudoperfect_8 : ¬IsPseudoperfect 8 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 8 S hS_sub
   have : (8 : ℕ).properDivisors.sum id = 7 := by decide
   omega
 
 theorem not_pseudoperfect_11 : ¬IsPseudoperfect 11 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 11 S hS_sub
   have : (11 : ℕ).properDivisors.sum id = 1 := by decide
   omega
 
 theorem not_pseudoperfect_22 : ¬IsPseudoperfect 22 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 22 S hS_sub
   have : (22 : ℕ).properDivisors.sum id = 14 := by decide
   omega
 
 theorem not_pseudoperfect_44 : ¬IsPseudoperfect 44 := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total 44 S hS_sub
   have : (44 : ℕ).properDivisors.sum id = 40 := by decide
   omega
@@ -230,7 +238,8 @@ theorem primitive_pseudoperfect_88 : IsPrimitivePseudoperfect 88 := by
 
 /-- n is pseudoperfect iff it's the sum of some subset of its proper divisors -/
 theorem isPseudoperfect_iff (n : ℕ) :
-    IsPseudoperfect n ↔ ∃ S : Finset ℕ, S ⊆ n.properDivisors ∧ S.sum id = n :=
+    IsPseudoperfect n ↔
+      ∃ S : Finset ℕ, S.Nonempty ∧ S ⊆ n.properDivisors ∧ S.sum id = n :=
   Iff.rfl
 
 /-- If n is primitive pseudoperfect, then n > 0 -/
@@ -273,7 +282,7 @@ def IsPerfect' (n : ℕ) : Prop := sigma0 n = n
     if σ₀(n) < n, then no subset of proper divisors can sum to n. -/
 theorem deficient_not_pseudoperfect (n : ℕ) (hdef : IsDeficient n) :
     ¬IsPseudoperfect n := by
-  intro ⟨S, hS_sub, hS_sum⟩
+  intro ⟨S, _hne, hS_sub, hS_sum⟩
   have := subset_sum_le_total n S hS_sub
   unfold IsDeficient sigma0 at hdef
   omega
@@ -308,10 +317,10 @@ def infinitely_many_primitive : Prop :=
     n·m = d₁·m + ⋯ + dₖ·m, and each dᵢ·m is a proper divisor of n·m. -/
 theorem multiple_of_pseudoperfect (n m : ℕ) (hn : IsPseudoperfect n)
     (hm : 0 < m) : IsPseudoperfect (n * m) := by
-  obtain ⟨S, hS_sub, hS_sum⟩ := hn
+  obtain ⟨S, hne, hS_sub, hS_sum⟩ := hn
   have hinj : ∀ a ∈ S, ∀ b ∈ S, a * m = b * m → a = b := by
-    intro a _ b _ h; omega
-  refine ⟨S.image (· * m), ?_, ?_⟩
+    intro a _ b _ h; exact Nat.eq_of_mul_eq_mul_right hm h
+  refine ⟨S.image (· * m), hne.image _, ?_, ?_⟩
   · -- Each d*m is a proper divisor of n*m
     intro x hx
     rw [Finset.mem_image] at hx

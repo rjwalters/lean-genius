@@ -97,7 +97,7 @@ axiom alon_frankl_lovasz_1986 (n r k t : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (ht 
       edges.card = k ∧ PairwiseDisjoint (edges.image Subtype.val) ∧
       ∀ e ∈ edges, c e = i
 
-/-- Equivalent formulation: chromatic number of Kneser hypergraph -/
+/-  Equivalent formulation: chromatic number of Kneser hypergraph -/
 /-
 ## Part 4: Tightness Construction
 
@@ -107,7 +107,7 @@ The bound is tight: n = kr - 1 + (t-1)(k-1) admits a t-coloring without k disjoi
 /-- The tight bound: n₀ - 1 -/
 def tightBound (k r t : ℕ) : ℕ := k * r - 1 + (t - 1) * (k - 1)
 
-/-- Construction: partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1, |Xᵢ| = k-1.
+/-  Construction: partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1, |Xᵢ| = k-1.
     Color by first non-empty intersection. This avoids k disjoint monochromatic edges. -/
 /-
 ## Part 5: Special Case: Lovász's Theorem (k = 2)
@@ -137,12 +137,12 @@ Explicit values for small parameters.
 /-- KG(5,2) = Petersen graph has χ = 3.
     Upper bound: color r-subset S by min(S) mod 3. Lower bound: Kneser's conjecture. -/
 theorem petersen_chromatic : chromaticNumber 5 2 2 = 3 := by
-  rw [kneser_conjecture 5 2 (by omega) (by omega)]; omega
+  rw [kneser_conjecture 5 2 (by omega) (by omega)]
 
 /-- KG(7,3) has χ = 3 by Kneser's conjecture: n - 2r + 2 = 7 - 6 + 2 = 3.
     (Previously incorrectly stated as χ = 2.) -/
 theorem kg_7_3_chromatic : chromaticNumber 7 3 2 = 3 := by
-  rw [kneser_conjecture 7 3 (by omega) (by omega)]; omega
+  rw [kneser_conjecture 7 3 (by omega) (by omega)]
 
 /-- KG(2r,r) is a perfect matching, so χ = 2.
     When n = 2r, each r-subset has exactly one complement (also an r-subset),
@@ -180,7 +180,7 @@ theorem erdos_ko_rado (n r : ℕ) (hr : r ≥ 1) (hn : n ≥ 2 * r) :
   · -- All sets in the star have cardinality r
     exact h_intersecting.1
   · -- The star is an intersecting family
-    intro A B hA hB
+    intro A hA B hB
     exact h_intersecting.2 A B hA hB
   · -- The star has the right cardinality
     exact ErdosKoRado.star_achieves_bound hn hr_pos x

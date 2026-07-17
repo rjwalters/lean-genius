@@ -53,7 +53,7 @@ setoid on "induced subgraph pairs". -/
 def iscSetoid (G : SimpleGraph V) : Setoid (Finset V) where
   r S T := Nonempty (G.induce (↑S) ≃g G.induce (↑T))
   iseqv :=
-    { refl := fun _ => ⟨SimpleGraph.Iso.refl _⟩
+    { refl := fun _ => ⟨SimpleGraph.Iso.refl⟩
       symm := fun ⟨e⟩ => ⟨e.symm⟩
       trans := fun ⟨e⟩ ⟨f⟩ => ⟨e.trans f⟩ }
 

@@ -28,10 +28,7 @@ References:
 - Łuczak (1990): "Component behavior near the critical point"
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Probability.Notation
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open SimpleGraph Real
 
@@ -58,21 +55,20 @@ structure RandomGraphModel where
 **Critical probability:**
 At p = 1/n, the random graph undergoes a phase transition.
 -/
-def criticalProbability (n : ℕ) : ℝ := 1 / n
+noncomputable def criticalProbability (n : ℕ) : ℝ := 1 / n
 
 /--
 **Critical random graph G(n, 1/n):**
 The random graph at the critical threshold.
 -/
-def criticalRandomGraph (n : ℕ) (hn : n ≥ 1) : RandomGraphModel where
+noncomputable def criticalRandomGraph (n : ℕ) (hn : n ≥ 1) : RandomGraphModel where
   n := n
   p := 1 / n
   hp_nonneg := by positivity
   hp_le_one := by
     have : (1 : ℝ) / n ≤ 1 := by
       rw [div_le_one (by positivity : (n : ℝ) > 0)]
-      simp only [one_le_cast]
-      exact hn
+      exact_mod_cast hn
     exact this
 
 /-
@@ -93,7 +89,7 @@ def ComponentSizes (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : List �
 The size of the largest connected component.
 -/
 def largestComponentSize (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : ℕ :=
-  (ComponentSizes G).maximum?.getD 0
+  (ComponentSizes G).max?.getD 0
 
 /--
 **Second largest component size:**
@@ -110,17 +106,17 @@ def secondLargestComponentSize (G : SimpleGraph V) [Fintype V] [DecidableRel G.A
 The critical behavior of random graphs near p = 1/n.
 -/
 
-/--
+/- 
 **Subcritical regime (p < 1/n):**
 All components have size O(log n) almost surely.
 -/
 
-/--
+/- 
 **Supercritical regime (p > 1/n):**
 A unique giant component of size Θ(n) emerges.
 -/
 
-/--
+/- 
 **Critical regime (p = 1/n):**
 The transition point where the giant component emerges.
 -/
@@ -145,7 +141,7 @@ theorem critical_giant_size :
 **Critical exponent 2/3:**
 The scaling exponent for the giant component at the critical point.
 -/
-def criticalExponent : ℝ := 2 / 3
+noncomputable def criticalExponent : ℝ := 2 / 3
 
 /-
 ## Part V: Komlós-Sulyok-Szemerédi Theorem
@@ -167,7 +163,7 @@ theorem komlos_sulyok_szemeredi :
   ∃ c : ℝ, c > 0 :=
   ⟨1, by norm_num⟩
 
-/--
+/- 
 **Upper bound for second largest:**
 The second largest component is O(log n).
 -/
@@ -195,7 +191,7 @@ theorem erdos_745 :
 Detailed structure of components at criticality.
 -/
 
-/--
+/- 
 **Component size distribution:**
 At p = 1/n, components other than the giant follow a specific distribution.
 
@@ -204,7 +200,7 @@ The k-th largest component (for k ≥ 2) has size approximately
 where f_k is an explicit function.
 -/
 
-/--
+/- 
 **Number of components of given size:**
 At p = 1/n, the number of components of size k follows a power law.
 -/
@@ -213,7 +209,7 @@ At p = 1/n, the number of components of size k follows a power law.
 **The 5/2 exponent:**
 The power law exponent for component size distribution.
 -/
-def componentExponent : ℝ := 5 / 2
+noncomputable def componentExponent : ℝ := 5 / 2
 
 /-
 ## Part VII: Connection to Percolation
@@ -221,7 +217,7 @@ def componentExponent : ℝ := 5 / 2
 The random graph phase transition is related to percolation.
 -/
 
-/--
+/- 
 **Percolation analogy:**
 The random graph transition is analogous to bond percolation on the complete graph.
 
@@ -231,7 +227,7 @@ At the critical point, the system exhibits critical phenomena:
 - Large fluctuations
 -/
 
-/--
+/- 
 **Critical window:**
 The phase transition occurs over a window of width n^{-1/3} around p = 1/n.
 
@@ -267,10 +263,12 @@ theorem erdos_745_summary :
     -- Giant is much larger
     (∀ n : ℕ, n ≥ 1 → ∃ c : ℝ, c > 0 ∧ True) := by
   constructor
-  · intro n hn
-    exact komlos_sulyok_szemeredi n hn
-  · intro n hn
-    exact critical_giant_size n hn
+  · intro n _
+    obtain ⟨c, hc⟩ := komlos_sulyok_szemeredi
+    exact ⟨c, hc, trivial⟩
+  · intro n _
+    obtain ⟨c₁, _, h1, _⟩ := critical_giant_size
+    exact ⟨c₁, h1, trivial⟩
 
 /--
 **The Answer:**

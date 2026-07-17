@@ -23,10 +23,12 @@ The threshold at linear density is sharp.
 Reference: Erdős-Graham [ErGr80, p.54], Folkman [Fo66], Szemerédi-Vu [SzVu06]
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+
+open scoped Classical
 
 open Nat Finset BigOperators
 
@@ -40,7 +42,7 @@ This means the counting function grows at least linearly.
 -/
 
 /-- The counting function: how many elements of A are ≤ N -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.range (N + 1)).filter (· ∈ A) |>.card
 
 /-- A has positive lower density if |A ∩ {1,...,N}| ≥ cN for some c > 0 and all large N -/

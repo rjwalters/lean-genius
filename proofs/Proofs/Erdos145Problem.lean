@@ -65,18 +65,18 @@ def FullConjecture : Prop :=
 
 /- ## Known Results -/
 
-/--
+/- 
 **Erdős (1951)**: The limit exists for 0 ≤ α ≤ 2.
 
 Axiomatized because the proof requires careful analysis of squarefree
 distribution using elementary sieve methods.
 -/
-/--
+/- 
 **Hooley (1973)**: The limit exists for 0 ≤ α ≤ 3.
 
 Extended Erdős's method using exponential sum techniques.
 -/
-/--
+/- 
 **Greaves-Harman-Huxley (1997)**: The limit exists for 0 ≤ α ≤ 11/3.
 
 Uses sophisticated exponential sum bounds from sieve theory.
@@ -128,6 +128,6 @@ theorem squarefreeGap_pos (n : ℕ) : 0 < squarefreeGap n := by
 
 /- ## Connection to Gap Distribution -/
 
-/-- The average gap between squarefree numbers up to x is approximately
+/- The average gap between squarefree numbers up to x is approximately
     π²/6, since the density of squarefrees is 6/π². -/
 end Erdos145

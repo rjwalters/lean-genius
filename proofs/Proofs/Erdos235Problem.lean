@@ -33,6 +33,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
+import Mathlib.Data.Nat.Nth
 
 open Real Filter
 open scoped Topology
@@ -59,7 +60,7 @@ noncomputable def primorial (k : ℕ) : ℕ :=
 
 notation "N_" k => primorial k
 
-/--
+/- 
 **Primorial is positive:**
 -/
 
@@ -70,7 +71,7 @@ notation "N_" k => primorial k
 noncomputable def primorialTotient (k : ℕ) : ℕ :=
   Nat.totient (primorial k)
 
-/--
+/- 
 **Totient formula for primorial:**
 φ(p₁·p₂·...·pₖ) = (p₁-1)(p₂-1)·...·(pₖ-1)
 -/
@@ -83,7 +84,7 @@ noncomputable def primorialTotient (k : ℕ) : ℕ :=
 **Coprime set:**
 The set of integers < Nₖ that are coprime to Nₖ.
 -/
-def coprimeSet (k : ℕ) : Finset ℕ :=
+noncomputable def coprimeSet (k : ℕ) : Finset ℕ :=
   Finset.filter (fun a => Nat.Coprime a (primorial k)) (Finset.range (primorial k))
 
 /--
@@ -103,7 +104,7 @@ The elements of coprimeSet sorted as a₁ < a₂ < ... < a_{φ(Nₖ)}
 noncomputable def coprimeSequence (k : ℕ) : List ℕ :=
   (coprimeSet k).sort (· ≤ ·)
 
-/--
+/- 
 **First coprime is 1:**
 a₁ = 1 for all k ≥ 1
 -/
@@ -187,7 +188,7 @@ theorem exponential_cdf_continuous : Continuous exponentialCDF := by
   have key : exponentialCDF = fun c => 1 - Real.exp (-max c 0) := by
     ext c; simp only [exponentialCDF]; split_ifs with hc
     · rw [max_eq_right (le_of_lt hc), neg_zero, Real.exp_zero, sub_self]
-    · rw [max_eq_left (le_of_not_lt hc)]
+    · rw [max_eq_left (le_of_not_gt hc)]
   rw [key]
   exact continuous_const.sub
     (Real.continuous_exp.comp ((continuous_id.max continuous_const).neg))
@@ -225,8 +226,9 @@ theorem distribution_at_infinity :
   rw [Filter.tendsto_congr' h_eq]
   have h_exp : Tendsto (fun c : ℝ => Real.exp (-c)) atTop (nhds 0) :=
     Real.tendsto_exp_atBot.comp tendsto_neg_atTop_atBot
-  have := tendsto_const_nhds.sub h_exp
-  rwa [sub_zero] at this
+  have h1 : Tendsto (fun c : ℝ => 1 - Real.exp (-c)) atTop (nhds (1 - 0)) :=
+    tendsto_const_nhds.sub h_exp
+  rwa [sub_zero] at h1
 
 /--
 **Median gap:**
@@ -238,7 +240,7 @@ theorem median_gap : exponentialCDF (Real.log 2) = 1/2 := by
   rw [Real.exp_neg, Real.exp_log (by norm_num : (0:ℝ) < 2)]
   norm_num
 
-/--
+/- 
 **Mean of exponential:**
 The mean of the normalized gaps is 1 (by definition of normalization).
 -/
@@ -247,12 +249,12 @@ The mean of the normalized gaps is 1 (by definition of normalization).
 ## Part VII: Stronger Results
 -/
 
-/--
+/- 
 **Uniform convergence:**
 The convergence is uniform in c on compact sets.
 -/
 
-/--
+/- 
 **Error term:**
 More precisely, f_k(c) = (1 - e^{-c}) + O(1/log k).
 -/
@@ -261,7 +263,7 @@ More precisely, f_k(c) = (1 - e^{-c}) + O(1/log k).
 ## Part VIII: Related Results
 -/
 
-/--
+/- 
 **Maximum gap:**
 The maximum gap in the coprime sequence grows like log Nₖ · log log Nₖ.
 -/
@@ -274,7 +276,7 @@ noncomputable def jacobsthal (n : ℕ) : ℕ :=
   let seq := (Finset.filter (fun a => Nat.Coprime a n) (Finset.range n)).sort (· ≤ ·)
   (seq.zipWith (fun a b => b - a) seq.tail).foldl max 0
 
-/--
+/- 
 **Connection to prime gaps:**
 Gaps between coprimes relate to gaps between primes via sieve methods.
 -/
@@ -290,7 +292,7 @@ where γ is the Euler-Mascheroni constant.
 -/
 noncomputable def eulerGamma : ℝ := 0.5772156649
 
-/--
+/- 
 **Average gap asymptotics:**
 Nₖ/φ(Nₖ) ~ e^γ · log pₖ
 -/
@@ -323,7 +325,9 @@ theorem erdos_235 : ErdosConjecture235 := erdos_235_proved
 **The answer:**
 -/
 theorem erdos_235_answer (c : ℝ) (hc : c ≥ 0) :
-    Tendsto (fun k => gapDistribution k c) atTop (nhds (1 - Real.exp (-c))) :=
-  hooley_theorem c hc
+    Tendsto (fun k => gapDistribution k c) atTop (nhds (1 - Real.exp (-c))) := by
+  have h := hooley_theorem c hc
+  rwa [show exponentialCDF c = 1 - Real.exp (-c) from by
+    simp only [exponentialCDF, if_neg (not_lt.mpr hc)]] at h
 
 end Erdos235

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #287: Unit Fraction Decomposition Gaps
 
 Source: https://erdosproblems.com/287
@@ -16,8 +16,8 @@ References:
 - Erdős: Lower bound of ≥ 2 (no consecutive integer reciprocals sum to 1)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.List.Basic
 
 namespace Erdos287
@@ -32,7 +32,7 @@ whose reciprocals sum to 1.
 -/
 def IsUnitFractionDecomp (ns : List ℕ) : Prop :=
   ns.length ≥ 2 ∧
-  ns.Sorted (· < ·) ∧
+  ns.SortedLT ∧
   (∀ n ∈ ns, n > 1) ∧
   (ns.map (fun n => (1 : ℚ) / n)).sum = 1
 
@@ -44,7 +44,7 @@ def maxGap (ns : List ℕ) : ℕ :=
 ## Part II: The Example
 -/
 
-/-- 1 = 1/2 + 1/3 + 1/6 is a valid decomposition with max gap 3. -/
+/- 1 = 1/2 + 1/3 + 1/6 is a valid decomposition with max gap 3. -/
 /-!
 ## Part III: Known Lower Bound
 -/
@@ -62,7 +62,7 @@ axiom no_consecutive_reciprocals :
 ## Part IV: The Conjecture
 -/
 
-/--
+/-
 **Erdős's Conjecture (OPEN)**: The maximum gap is at least 3.
 
 If true, the example [2, 3, 6] would be optimal (max gap = 3).

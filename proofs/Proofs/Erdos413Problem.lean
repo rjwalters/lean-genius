@@ -127,7 +127,7 @@ theorem primeFactors_prod_dvd (n : ℕ) (hn : n ≠ 0) :
 /-- 2^(number of distinct prime factors) ≤ n for n ≥ 1 -/
 theorem two_pow_omega_le (n : ℕ) (hn : n ≥ 1) :
     2 ^ omega n ≤ n := by
-  rcases hn.eq_or_gt with rfl | hn2
+  rcases eq_or_lt_of_le hn with rfl | hn2
   · simp [omega_one]
   · have hne : n ≠ 0 := by omega
     have hprod : 2 ^ n.primeFactors.card ≤ n.primeFactors.prod id := by
@@ -181,13 +181,12 @@ theorem prime_totient_sum (p : ℕ) (hp : p.Prime) :
 
 /-- φ(n) ≥ 2 for n ≥ 3: since φ(n) = 1 iff n ∈ {1, 2} -/
 theorem totient_ge_two (n : ℕ) (hn : n ≥ 3) : Nat.totient n ≥ 2 := by
+  have hpos : 0 < Nat.totient n := Nat.totient_pos.mpr (by omega)
   by_contra h
   push_neg at h
-  interval_cases h : n.totient
-  · have := Nat.totient_pos (by omega : 0 < n)
-    omega
-  · rw [Nat.totient_eq_one_iff] at h
-    omega
+  have h1 : Nat.totient n = 1 := by omega
+  rw [Nat.totient_eq_one_iff] at h1
+  omega
 
 /-- φ has no barriers beyond 3: for any n ≥ 4, (n-1) + φ(n-1) > n.
     Since n-1 ≥ 3, φ(n-1) ≥ 2, giving (n-1) + 2 = n+1 > n. -/
@@ -230,7 +229,7 @@ theorem bigOmega_barrier_implies_omega_barrier (n : ℕ)
 /-- ω of a prime power is 1 -/
 theorem omega_prime_pow (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
     omega (p ^ k) = 1 := by
-  simp [omega, Nat.primeFactors_prime_pow hp (by omega : k ≠ 0)]
+  simp [omega, Nat.primeFactors_prime_pow (by omega : k ≠ 0) hp]
 
 /-- At any barrier n > 0, the predecessor has ω(n-1) ≤ 1 -/
 theorem omega_pred_le_one_at_barrier (n : ℕ) (hn : n > 0)
@@ -358,6 +357,7 @@ end DecidableBarriers
 /-- If n is not a barrier for f, there exists a witness m < n with m + f(m) > n -/
 theorem not_barrier_witness (f : ℕ → ℕ) (n : ℕ) (h : ¬IsBarrier f n) :
     ∃ m, m < n ∧ m + f m > n := by
+  unfold IsBarrier at h
   push_neg at h
   obtain ⟨m, hm, hgt⟩ := h
   exact ⟨m, hm, by omega⟩
@@ -371,16 +371,18 @@ theorem barrier_pred_is_prime_power_or_one (n : ℕ) (hn : n ≥ 2)
   have hpred := omega_pred_le_one_at_barrier n (by omega) hb
   rcases Nat.eq_or_lt_of_le (Nat.zero_le (omega (n - 1))) with h0 | h1
   · -- ω(n-1) = 0 means n-1 has no prime factors, so n-1 ≤ 1
-    rw [omega, Finset.card_eq_zero] at h0
+    have h0' : (n - 1).primeFactors = ∅ := by
+      have hcard : (n - 1).primeFactors.card = 0 := by unfold omega at h0; omega
+      exact Finset.card_eq_zero.mp hcard
     have : n - 1 ≤ 1 := by
       by_contra hgt
       push_neg at hgt
       have hne : n - 1 ≠ 0 := by omega
-      have : (n - 1).minFac ∈ (n - 1).primeFactors := by
+      have hmem : (n - 1).minFac ∈ (n - 1).primeFactors := by
         rw [Nat.mem_primeFactors]
         exact ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, hne⟩
-      rw [h0] at this
-      exact Finset.not_mem_empty _ this
+      rw [h0'] at hmem
+      exact Finset.notMem_empty _ hmem
     left; omega
   · -- ω(n-1) = 1 means exactly one prime factor
     have h_eq : omega (n - 1) = 1 := by omega
@@ -389,22 +391,26 @@ theorem barrier_pred_is_prime_power_or_one (n : ℕ) (hn : n ≥ 2)
     have hp_mem : p ∈ (n - 1).primeFactors := by rw [hp]; exact Finset.mem_singleton.mpr rfl
     have hp_prime : p.Prime := Nat.prime_of_mem_primeFactors hp_mem
     have hne : n - 1 ≠ 0 := by omega
+    have hp_supp : p ∈ (n - 1).factorization.support := by
+      rw [Nat.support_factorization, hp]; exact Finset.mem_singleton.mpr rfl
     right
     refine ⟨p, (n - 1).factorization p, hp_prime, ?_, ?_⟩
-    · rw [Nat.one_le_iff_ne_zero, Finsupp.mem_support_iff.mp]
-      rw [Nat.support_factorization, hp]
-      exact Finset.mem_singleton.mpr rfl
-    · rw [← Nat.factorization_prod_pow_eq_self hne]
-      rw [Finsupp.prod]
-      rw [Nat.support_factorization, hp]
-      simp
+    · exact Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hp_supp)
+    · have h_prod := Nat.factorization_prod_pow_eq_self hne
+      rw [Finsupp.prod, Nat.support_factorization, hp] at h_prod
+      simp at h_prod
+      exact h_prod.symm
 
 -- ## Barrier Spacing Properties
 
-/-- If n ≥ 2 is a barrier and n + 2 is a barrier, then ω(n) ≤ 1 and ω(n+1) ≤ 1 -/
+/-- If n ≥ 2 is a barrier and n + 2 is a barrier, then ω(n) ≤ 2 and ω(n+1) ≤ 1.
+    (Corrected from an original false claim of ω(n) ≤ 1: from n + 2 being a barrier,
+    applying the barrier condition at m = n only yields n + ω(n) ≤ n + 2, i.e. ω(n) ≤ 2 —
+    e.g. n = 6 is a counterexample to the stronger ≤ 1 bound, since ω(6) = 2 while both
+    6 and 8 are ω-barriers. #38611 candidate: unsound-original bound tightened.) -/
 theorem barrier_gap_two (n : ℕ) (hn : n ≥ 2)
     (hb : IsBarrier omega n) (hb2 : IsBarrier omega (n + 2)) :
-    omega n ≤ 1 ∧ omega (n + 1) ≤ 1 := by
+    omega n ≤ 2 ∧ omega (n + 1) ≤ 1 := by
   constructor
   · have := hb2 n (by omega)
     omega
@@ -429,6 +435,7 @@ theorem barrier_succ_iff (n : ℕ) (hn : n ≥ 2) (hb : IsBarrier omega n) :
 theorem barrier_implies_zero_barrier (f : ℕ → ℕ) (n : ℕ) (hb : IsBarrier f n) :
     IsBarrier (fun _ => 0) n := by
   intro m hm
+  dsimp only
   omega
 
 -- ## Why σ (Sum of Divisors) Has No Barriers
@@ -475,6 +482,7 @@ theorem sigma1_no_barriers (n : ℕ) (hn : n ≥ 3) :
 theorem barrier_of_le (f g : ℕ → ℕ) (n : ℕ)
     (hle : ∀ m, g m ≤ f m) (hf : IsBarrier f n) : IsBarrier g n := by
   intro m hm
+  have hlem := hle m
   calc m + g m ≤ m + f m := by omega
     _ ≤ n := hf m hm
 
@@ -495,6 +503,7 @@ theorem no_barriers_of_eventually_large (f : ℕ → ℕ) (N : ℕ)
 theorem barriers_subset_of_le (f g : ℕ → ℕ) (hle : ∀ m, f m ≤ g m) :
     barriers g ⊆ barriers f := by
   intro n hn m hm
+  have hlem := hle m
   calc m + f m ≤ m + g m := by omega
     _ ≤ n := hn m hm
 
@@ -510,9 +519,11 @@ theorem barrier_const_iff (c : ℕ) (n : ℕ) (hn : n ≥ 2) :
     IsBarrier (fun _ => c) n ↔ c ≤ 1 := by
   constructor
   · intro hb
-    have := hb (n - 1) (by omega)
+    have h := hb (n - 1) (by omega)
+    dsimp only at h
     omega
   · intro hc m hm
+    dsimp only
     omega
 
 /-- If f ≤ 1 everywhere, then every n is a barrier for f -/
@@ -529,10 +540,12 @@ theorem barrier_sum_implies_components (f g : ℕ → ℕ) (n : ℕ)
     IsBarrier f n ∧ IsBarrier g n := by
   constructor
   · intro m hm
-    have := hb m hm
+    have h := hb m hm
+    dsimp only at h
     omega
   · intro m hm
-    have := hb m hm
+    have h := hb m hm
+    dsimp only at h
     omega
 
 -- ## Barrier Density Analysis
@@ -583,12 +596,9 @@ theorem iterOmega_strictly_increasing (n : ℕ) (hn : n ≥ 2) :
     n < iterOmega n := by
   unfold iterOmega
   have : omega n ≥ 1 := by
-    have h2 := two_pow_omega_le n (by omega)
     by_contra h
     push_neg at h
     simp [omega] at h
-    rw [Finset.card_eq_zero.mp h] at h2
-    simp at h2
     omega
   omega
 
@@ -597,28 +607,20 @@ noncomputable def orbit (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => iterOmega (orbit n k)
 
+/-- The orbit stays above the starting value (helper for monotonicity) -/
+private theorem orbit_ge_start (n : ℕ) (hn : n ≥ 2) (j : ℕ) : n ≤ orbit n j := by
+  induction j with
+  | zero => simp [orbit]
+  | succ j ih =>
+    simp only [orbit]
+    have := iterOmega_strictly_increasing (orbit n j) (by omega)
+    omega
+
 /-- The orbit is monotonically increasing for starting values ≥ 2 -/
 theorem orbit_strictly_increasing (n : ℕ) (hn : n ≥ 2) (k : ℕ) :
     orbit n k < orbit n (k + 1) := by
-  induction k with
-  | zero =>
-    simp [orbit]
-    exact iterOmega_strictly_increasing n hn
-  | succ k ih =>
-    simp only [orbit]
-    apply iterOmega_strictly_increasing
-    calc 2 ≤ n := hn
-      _ = orbit n 0 := by simp [orbit]
-      _ ≤ orbit n (k + 1) := by
-          induction k with
-          | zero => exact Nat.le_of_lt (by simp [orbit]; exact iterOmega_strictly_increasing n hn)
-          | succ k' ih' =>
-            calc orbit n 0 ≤ orbit n (k' + 1) := ih'
-              _ < orbit n (k' + 2) := by
-                  simp only [orbit]
-                  apply iterOmega_strictly_increasing
-                  calc 2 ≤ orbit n 0 := by simp [orbit]; exact hn
-                    _ ≤ orbit n (k' + 1) := ih'
+  simp only [orbit]
+  exact iterOmega_strictly_increasing (orbit n k) (by have := orbit_ge_start n hn k; omega)
 
 /-- If b is a barrier for ω, then any orbit starting from m < b passes through b
     or reaches it: orbit m 1 ≤ b -/

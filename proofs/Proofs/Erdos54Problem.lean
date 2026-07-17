@@ -22,6 +22,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Monochromatic subset sums -/
 
 /-- A 2-colouring of a set `A`. -/
@@ -30,7 +32,7 @@ def Colouring2 (A : Set ℕ) := { n : ℕ // n ∈ A } → Bool
 /-- The subset sums from a single colour class. -/
 def monoSubsetSums (A : Set ℕ) (c : Colouring2 A) (colour : Bool) : Set ℕ :=
     { s | ∃ (S : Finset ℕ),
-      (∀ n ∈ S, n ∈ A ∧ c ⟨n, ‹_›⟩ = colour) ∧
+      (∀ n ∈ S, ∃ hn : n ∈ A, c ⟨n, hn⟩ = colour) ∧
       S.sum id = s }
 
 /- ## Ramsey 2-completeness -/
@@ -51,12 +53,12 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 
 /- ## Burr–Erdős lower bound -/
 
-/-- Burr–Erdős (1985): No Ramsey 2-complete set can be too sparse.
+/-  Burr–Erdős (1985): No Ramsey 2-complete set can be too sparse.
 There exists `c > 0` such that no Ramsey 2-complete `A` has
 `|A ∩ [1,N]| ≤ c · (log N)²` for all large `N`. -/
 /- ## Conlon–Fox–Pham upper bound -/
 
-/-- Conlon–Fox–Pham (2021): There exists a Ramsey 2-complete set
+/-  Conlon–Fox–Pham (2021): There exists a Ramsey 2-complete set
 with `|A ∩ [1,N]| ≪ (log N)²`. -/
 /- ## Main problem (solved) -/
 
@@ -74,5 +76,5 @@ def ErdosProblem54 : Prop :=
 
 /- ## Earlier upper bound -/
 
-/-- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
+/- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
 `|A ∩ [1,N]| < (2 log₂ N)³`. This was improved by Conlon–Fox–Pham. -/

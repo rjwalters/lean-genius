@@ -153,13 +153,12 @@ theorem gaussian_fourier_first_hermite (t : ℝ) :
       = Complex.I * t * Complex.exp (-(t : ℂ) ^ 2 / 2) * ((Real.sqrt (2 * π) : ℝ) : ℂ) := by
   -- Differentiate F(s) = ∫ e^{i s x} e^{-x²/2} dx under the integral sign at s = t.
   obtain ⟨_, hderiv⟩ := hasDerivAt_integral_of_dominated_loc_of_deriv_le
-    (ε := 1)
     (bound := fun x : ℝ => ‖(x : ℝ) * Real.exp (-(1 / 2) * x ^ 2)‖)
     (F := fun s x : ℝ => Complex.exp (Complex.I * s * x) * Complex.exp (-(x : ℂ) ^ 2 / 2))
     (F' := fun s x : ℝ =>
       Complex.I * x * Complex.exp (Complex.I * s * x) * Complex.exp (-(x : ℂ) ^ 2 / 2))
     (x₀ := t)
-    one_pos
+    (Metric.ball_mem_nhds t one_pos)
     (Filter.Eventually.of_forall (fun s => (integrable_integrand s).aestronglyMeasurable))
     (integrable_integrand t)
     (by
@@ -195,8 +194,9 @@ theorem gaussian_fourier_first_hermite (t : ℝ) :
       have hquad : HasDerivAt (fun z : ℂ => -z ^ 2 / 2) (-(t : ℂ)) (t : ℂ) := by
         have h : HasDerivAt (fun z : ℂ => z ^ 2) (2 * (t : ℂ)) (t : ℂ) := by
           simpa using hasDerivAt_pow 2 (t : ℂ)
-        convert h.neg.div_const 2 using 1
-        ring
+        have hval : -(t:ℂ) = -(2*(t:ℂ))/2 := by ring
+        rw [hval]
+        exact h.neg.div_const 2
       exact (hquad.cexp).mul_const ((Real.sqrt (2 * π) : ℝ) : ℂ)
     have := hbase.comp_ofReal (z := t)
     convert this using 1

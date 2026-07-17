@@ -20,11 +20,9 @@ Status: OPEN
 Reference: https://erdosproblems.com/750
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph
 
@@ -90,18 +88,21 @@ theorem bipartite_benchmark :
   set B := S.filter (fun v => c v ≠ (0 : Fin 2)) with hB_def
   -- A and B are complementary filters, so |A| + |B| = |S|
   have hpart : A.card + B.card = S.card :=
-    Finset.filter_card_add_filter_neg_card_eq_card S (fun v => c v = (0 : Fin 2))
+    Finset.filter_card_add_filter_neg_card_eq_card (s := S) (fun v => c v = (0 : Fin 2))
   -- Both color classes are independent sets
   have hA_indep : ∀ v ∈ A, ∀ w ∈ A, v ≠ w → ¬G.Adj v w := by
     intro v hv w hw _ hadj
     simp only [hA_def, Finset.mem_filter] at hv hw
     -- c maps adjacent vertices to different colors; but v, w have same color 0
-    exact (c.map_rel' hadj) (hv.2 ▸ hw.2)
+    have hvw : c v = c w := by rw [hv.2, hw.2]
+    exact (c.map_rel' hadj) hvw
   have hB_indep : ∀ v ∈ B, ∀ w ∈ B, v ≠ w → ¬G.Adj v w := by
     intro v hv w hw _ hadj
     simp only [hB_def, Finset.mem_filter] at hv hw
     -- c v ≠ 0 and c w ≠ 0 ⟹ both = 1 in Fin 2, so same color
-    exact (c.map_rel' hadj) (by rw [fin2_ne_zero_eq_one _ hv.2, fin2_ne_zero_eq_one _ hw.2])
+    have hvw : c v = c w := by
+      rw [fin2_ne_zero_eq_one _ hv.2, fin2_ne_zero_eq_one _ hw.2]
+    exact (c.map_rel' hadj) hvw
   -- Both are in the filtered powerset (independent subsets of S)
   have hA_mem : A ∈ S.powerset.filter
       (fun I => ∀ v ∈ I, ∀ w ∈ I, v ≠ w → ¬G.Adj v w) := by

@@ -81,7 +81,7 @@ theorem isCongruent_refl (S : Set (EuclideanSpace ℝ (Fin 2))) :
   · exact isometry_id
   · simp [image_id]
 
-/-- Congruence is symmetric (axiomatized for simplicity). -/
+/-  Congruence is symmetric (axiomatized for simplicity). -/
 /-
 ## Part III: The Steinhaus Property
 
@@ -136,8 +136,8 @@ theorem erdos_215_answer : ∃ S : Set (EuclideanSpace ℝ (Fin 2)),
 We explore some necessary conditions for Steinhaus sets.
 -/
 
-/-- A Steinhaus set must be unbounded. -/
-/-- A Steinhaus set cannot have finite positive Lebesgue measure. -/
+/-  A Steinhaus set must be unbounded. -/
+/-  A Steinhaus set cannot have finite positive Lebesgue measure. -/
 /-
 ## Part VI: The Constructive Question (Open)
 
@@ -183,5 +183,5 @@ def HigherDimensionalSteinhaus (n : ℕ) : Prop :=
       Isometry f ∧ T = f '' S) →
     ∃! p, p ∈ T ∧ ∀ i, ∃ m : ℤ, p i = m
 
-/-- Jackson-Mauldin generalizes to ℝⁿ for n ≥ 2. -/
+/- Jackson-Mauldin generalizes to ℝⁿ for n ≥ 2. -/
 end Erdos215

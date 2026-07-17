@@ -15,13 +15,15 @@ Known results:
 Reference: https://erdosproblems.com/691
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
+
+open scoped Classical
 
 open Finset Set Filter
 
@@ -111,14 +113,19 @@ theorem multiplesOf_union (A B : Set ℕ) :
 /-- Counting function is monotone for subsets. -/
 theorem countingFunction_mono {A B : Set ℕ} (h : A ⊆ B) (n : ℕ) :
     countingFunction A n ≤ countingFunction B n := by
+  unfold countingFunction
   apply Finset.card_le_card
-  exact Finset.filter_subset_filter _ (fun x hx => h hx)
+  intro x hx
+  rw [Finset.mem_filter] at hx ⊢
+  exact ⟨hx.1, h hx.2⟩
 
 /-- Counting function is bounded by n + 1 (at most n+1 elements in [0..n]). -/
 theorem countingFunction_le (S : Set ℕ) (n : ℕ) :
     countingFunction S n ≤ n + 1 := by
   unfold countingFunction
-  exact Finset.card_filter_le _ _
+  calc ((Finset.range (n + 1)).filter (· ∈ S)).card
+      ≤ (Finset.range (n + 1)).card := Finset.card_filter_le _ _
+    _ = n + 1 := Finset.card_range _
 
 /- ## Part IV: Pairwise Coprime Characterization -/
 
@@ -133,9 +140,9 @@ def HasDivergentReciprocalSum (A : Set ℕ) : Prop :=
   ∀ C : ℝ, 0 < C → ∃ (S : Finset ℕ), ↑S ⊆ A ∧
     C ≤ S.sum (fun a => (1 : ℝ) / (a : ℝ))
 
-/-- For pairwise coprime A: Behrend iff Σ 1/a = ∞.
+/-  For pairwise coprime A: Behrend iff Σ 1/a = ∞.
     This is a classical result in multiplicative number theory. -/
-/-- The set of all primes is Behrend (since Σ 1/p = ∞). -/
+/-  The set of all primes is Behrend (since Σ 1/p = ∞). -/
 /- ## Part V: Block Sequences and Tenenbaum's Theorem -/
 
 /-- A lacunary sequence with bounded ratios:
@@ -151,8 +158,8 @@ def IsBlockSequence (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ) : Prop :=
   ∀ m : ℕ, m ∈ A ↔
     ∃ k : ℕ, (n k : ℝ) < (m : ℝ) ∧ (m : ℝ) ≤ (1 + η k) * (n k : ℝ)
 
-/-- If Σ ηₖ < ∞ (converges), the block sequence is NOT Behrend. -/
-/-- **Tenenbaum's Theorem (1996)**: For lacunary block sequences with bounded
+/-  If Σ ηₖ < ∞ (converges), the block sequence is NOT Behrend. -/
+/-  **Tenenbaum's Theorem (1996)**: For lacunary block sequences with bounded
     ratios and ηₖ = k^{−β}:
     - β < log 2 implies A is Behrend
     - β > log 2 implies A is not Behrend
@@ -162,7 +169,7 @@ def IsBlockSequence (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ) : Prop :=
     Math. Proc. Cambridge Philos. Soc. (1996), 355-367. -/
 /- ## Part VI: The Erdős Problem (Open) -/
 
-/-- Erdős Problem 691: Find a necessary and sufficient condition for
+/- Erdős Problem 691: Find a necessary and sufficient condition for
     A to be a Behrend sequence.
 
     The general characterization remains OPEN. Known partial results:

@@ -94,7 +94,7 @@ theorem psi_asymp_iff_theta_asymp :
     have hadd := h.add hcorr
     rw [add_zero] at hadd
     refine hadd.congr fun x => ?_
-    rw [div_add_div_same]
+    rw [← add_div]
     ring_nf
 
 end ChebyshevBoundsOQ03

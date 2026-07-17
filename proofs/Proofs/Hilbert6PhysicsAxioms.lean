@@ -88,13 +88,13 @@ theorem kolmogorov_axiom_2 : P ∅ = 0 :=
     the measure of their union is the sum of their measures.
     This is the key axiom that enables limit theorems. -/
 theorem kolmogorov_axiom_3 {ι : Type*} [Countable ι] {f : ι → Set Ω}
-    (hf : ∀ i, MeasurableSet (f i)) (hd : Pairwise (Disjoint on f)) :
+    (hf : ∀ i, MeasurableSet (f i)) (hd : Pairwise (Function.onFun Disjoint f)) :
     P (⋃ i, f i) = ∑' i, P (f i) :=
   MeasureTheory.measure_iUnion hd hf
 
 /-- Probability is non-negative (derived property) -/
 theorem probability_nonneg (A : Set Ω) : 0 ≤ P A :=
-  zero_le _
+  zero_le
 
 /-- Probability is at most 1 (derived property) -/
 theorem probability_le_one (A : Set Ω) : P A ≤ 1 := by
@@ -148,7 +148,7 @@ axiom bayes_theorem (A B : Set Ω) :
     This is an axiom capturing the fundamental partitioning principle. -/
 axiom total_probability {ι : Type*} [Fintype ι] (A : Set Ω) {B : ι → Set Ω}
     (hcover : (⋃ i, B i) = Set.univ)
-    (hdisjoint : Pairwise (Disjoint on B))
+    (hdisjoint : Pairwise (Function.onFun Disjoint B))
     (hBmeas : ∀ i, MeasurableSet (B i))
     (hAmeas : MeasurableSet A) :
     P A = ∑ i, P (A ∩ B i)
@@ -177,7 +177,7 @@ structure QuantumState (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ
 /-- The Born rule probability: |⟨ψ|φ⟩|² gives transition probability -/
 noncomputable def bornProbability {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (ψ φ : QuantumState H) : ℝ :=
-  Complex.normSq (inner ψ.vector φ.vector)
+  Complex.normSq (inner ℂ ψ.vector φ.vector)
 
 /-- Born probability is non-negative -/
 theorem born_probability_nonneg {H : Type*} [NormedAddCommGroup H]

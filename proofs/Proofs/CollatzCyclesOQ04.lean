@@ -55,8 +55,33 @@ def CycleConfig.M {j : ℕ} {hj : 0 < j} (c : CycleConfig j hj) : ℕ :=
 def cyclicSucc (j : ℕ) (hj : 0 < j) : Equiv.Perm (Fin j) where
   toFun   i := ⟨(i.val + 1) % j, Nat.mod_lt _ hj⟩
   invFun  i := ⟨(i.val + j - 1) % j, Nat.mod_lt _ hj⟩
-  left_inv  := by intro ⟨i, hi⟩; ext; simp only; omega
-  right_inv := by intro ⟨i, hi⟩; ext; simp only; omega
+  left_inv  := by
+    intro ⟨i, hi⟩; ext
+    show ((i + 1) % j + j - 1) % j = i
+    rcases Nat.lt_or_ge (i + 1) j with h | h
+    · rw [Nat.mod_eq_of_lt h]
+      have : i + 1 + j - 1 = i + j := by omega
+      rw [this, Nat.add_mod_right, Nat.mod_eq_of_lt hi]
+    · have hij : i + 1 = j := by omega
+      rw [hij, Nat.mod_self]
+      have : 0 + j - 1 = j - 1 := by omega
+      rw [this, Nat.mod_eq_of_lt (by omega)]; omega
+  right_inv := by
+    intro ⟨i, hi⟩; ext
+    show ((i + j - 1) % j + 1) % j = i
+    rcases Nat.eq_zero_or_pos i with rfl | hipos
+    · have : (0 + j - 1) % j = j - 1 := by
+        rw [Nat.mod_eq_of_lt (by omega)]; omega
+      rw [this]
+      have : j - 1 + 1 = j := by omega
+      rw [this, Nat.mod_self]
+    · have hlt : i + j - 1 < j + (j - 1) := by omega
+      have : (i + j - 1) % j = i - 1 := by
+        have h1 : i + j - 1 = (i - 1) + j := by omega
+        rw [h1, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+      rw [this]
+      have : i - 1 + 1 = i := by omega
+      rw [this, Nat.mod_eq_of_lt hi]
 
 /-! ## Part III: Key Product Identities -/
 
@@ -91,6 +116,7 @@ theorem cycle_product_equation {j : ℕ} (hj : 0 < j) (c : CycleConfig j hj) :
         (∏ i : Fin j, c.odds ((cyclicSucc j hj) i)) :=
           Finset.prod_mul_distrib
     _ = 2 ^ c.M * ∏ i : Fin j, c.odds i := by
+          unfold CycleConfig.M
           rw [prod_two_pow, prod_perm_eq (cyclicSucc j hj) c.odds]
 
 /-! ## Part V: The Halving Constraint -/
@@ -113,7 +139,7 @@ theorem prod_step_gt {j : ℕ} (hj : 0 < j) (n : Fin j → ℕ) (hpos : ∀ i, 0
     have hposR : ∀ i : Fin j', 0 < n i.succ := fun i => hpos i.succ
     rcases Nat.eq_zero_or_pos j' with rfl | hj'p
     · -- Base case: j' = 0, so Fin 0 products are 1
-      simp [Fin.prod_univ_zero]; omega
+      simp [Fin.prod_univ_zero]
     · -- Inductive step: apply IH to the tail
       have ih' := ih hj'p (fun i => n i.succ) hposR
       -- Let P = ∏_tail, Q = ∏_tail_steps, r = 3^j'
@@ -165,7 +191,7 @@ theorem no_power_eq {M j : ℕ} (hM : 0 < M) : 2 ^ M ≠ 3 ^ j := by
 
 /-- For j ≥ 1: 2^j < 3^j. -/
 theorem two_pow_lt_three_pow {j : ℕ} (hj : 0 < j) : 2 ^ j < 3 ^ j :=
-  Nat.pow_lt_pow_left (by norm_num) hj
+  Nat.pow_lt_pow_left (by norm_num) hj.ne'
 
 /-- For any Collatz cycle with j odd steps and M halvings, M ≥ j + 1.
     Proof: 2^M > 3^j > 2^j (for j ≥ 1), so M > j by monotonicity of 2^·. -/

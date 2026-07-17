@@ -114,7 +114,7 @@ theorem sidonChain_card : ∀ n, (sidonChain n).card = n
   | 0 => by simp [sidonChain]
   | n + 1 => by
       have hnot : 2 * (sidonChain n).sup id + 1 ∉ sidonChain n := two_sup_add_one_not_mem
-      simp only [sidonChain, Finset.card_insert_of_not_mem hnot, sidonChain_card n]
+      simp only [sidonChain, Finset.card_insert_of_notMem hnot, sidonChain_card n]
 
 /-- **Existence of arbitrarily large Sidon sets.** For every `n` there is a Sidon
 set of cardinality `n`. Hence finite Sidon sets are unbounded in size, which is the

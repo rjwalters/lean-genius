@@ -127,7 +127,7 @@ theorem crossing4_not_isNonCrossing : ¬ IsNonCrossing crossing4 := by
   intro h
   -- `h 0 1 2 3` would force `0 ~ 1`, i.e. `0 % 2 = 1 % 2`.
   have h01 : crossing4.r 0 1 := h 0 1 2 3 (by decide) (by decide) (by decide) (by decide) (by decide)
-  simp only [crossing4, Setoid.ker, Function.onFun] at h01
+  skip
   exact absurd h01 (by decide)
 
 /-- The Finpartition realising the crossing partition `{{0,2},{1,3}}` on `Fin 4`. It is a

@@ -25,6 +25,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
+import Mathlib.NumberTheory.Wilson
 
 namespace Erdos1056
 
@@ -39,13 +40,13 @@ def intervalProd (a b : ℕ) : ℕ :=
 /-- A sequence of k+1 boundary points defining k consecutive intervals.
     Boundaries must be strictly increasing. -/
 def IsValidBoundary (boundaries : List ℕ) (k : ℕ) : Prop :=
-  boundaries.length = k + 1 ∧ boundaries.Chain' (· < ·)
+  boundaries.length = k + 1 ∧ boundaries.IsChain (· < ·)
 
 /-- All k interval products are ≡ 1 (mod p). -/
 def AllProductsCongruentOne (p : ℕ) (boundaries : List ℕ) (k : ℕ) : Prop :=
   IsValidBoundary boundaries k ∧
-  ∀ i : Fin k, intervalProd (boundaries.get ⟨i.val, by omega⟩)
-    (boundaries.get ⟨i.val + 1, by omega⟩) % p = 1
+  ∀ i : Fin k, intervalProd (boundaries.getD i.val 0)
+    (boundaries.getD (i.val + 1) 0) % p = 1
 
 /-- A solution for a given k: a prime p and valid boundaries with all
     interval products ≡ 1 (mod p). -/
@@ -71,7 +72,7 @@ theorem IsValidBoundary.length_pos {boundaries : List ℕ} {k : ℕ}
 /-- In a valid boundary list, boundaries are strictly increasing. -/
 theorem IsValidBoundary.chain {boundaries : List ℕ} {k : ℕ}
     (h : IsValidBoundary boundaries k) :
-    boundaries.Chain' (· < ·) := h.2
+    boundaries.IsChain (· < ·) := h.2
 
 /-- The number of boundary points is k + 1. -/
 theorem IsValidBoundary.intervals_count {boundaries : List ℕ} {k : ℕ}
@@ -79,7 +80,7 @@ theorem IsValidBoundary.intervals_count {boundaries : List ℕ} {k : ℕ}
     boundaries.length = k + 1 := h.1
 
 /-- Interval products are positive when the interval starts at ≥ 1. -/
-theorem intervalProd_pos {a b : ℕ} (ha : 1 ≤ a) (hab : a < b) :
+theorem intervalProd_pos {a b : ℕ} (ha : 1 ≤ a) (_hab : a < b) :
     0 < intervalProd a b := by
   unfold intervalProd
   apply Finset.prod_pos
@@ -91,8 +92,8 @@ theorem intervalProd_pos {a b : ℕ} (ha : 1 ≤ a) (hab : a < b) :
 /-- Multiplying two numbers both ≡ 1 mod p gives a product ≡ 1 mod p. -/
 theorem mod_mul_of_mod_eq_one {a b p : ℕ} (ha : a % p = 1) (hb : b % p = 1) :
     (a * b) % p = 1 := by
-  rw [Nat.mul_mod, ha, hb]
-  simp
+  rw [Nat.mul_mod, ha, hb, one_mul]
+  exact Nat.one_mod_eq_one.mpr (by rintro rfl; omega)
 
 /- ## Part III: Verified Solutions (Proved) -/
 
@@ -173,19 +174,24 @@ theorem wilson_constraint (p : ℕ) (hp : p.Prime) :
     (Finset.Ico 1 p).prod id % p = p - 1 := by
   haveI : Fact p.Prime := ⟨hp⟩
   -- Step 1: Relate Finset.Ico 1 p product to (p-1)!
-  -- ∏ i in Ico 1 p, i = ∏ i in range (p-1), (i+1) = (p-1)!
+  -- ∏ i ∈ Ico 1 p, i = ∏ i ∈ range (p-1), (i+1) = (p-1)!
   have h_eq : (Finset.Ico 1 p).prod id = (p - 1).factorial := by
     rw [Finset.prod_Ico_eq_prod_range]
     simp only [id]
     symm
     induction p - 1 with
     | zero => simp
-    | succ n ih => rw [Finset.prod_range_succ, Nat.factorial_succ, ih, add_comm]
+    | succ n ih => rw [Finset.prod_range_succ, Nat.factorial_succ, ih, add_comm]; ring
   rw [h_eq]
   -- Step 2: (p-1)! % p = p - 1 by Wilson's theorem
+  have hp2 : 2 ≤ p := hp.two_le
   have h := ZMod.wilsons_lemma p
-  have hval := congr_arg ZMod.val h
-  rw [ZMod.val_natCast, ZMod.val_neg_one'] at hval
+  have hcast : ((p - 1 : ℕ) : ZMod p) = -1 := by
+    push_cast [Nat.cast_sub (by omega : 1 ≤ p)]
+    simp
+  have hval := congr_arg ZMod.val (h.trans hcast.symm)
+  rw [ZMod.val_natCast, ZMod.val_natCast,
+    Nat.mod_eq_of_lt (by omega : p - 1 < p)] at hval
   exact hval
 
 /- ## Part V: The Main Conjecture -/
@@ -197,7 +203,7 @@ axiom erdos_1056_conjecture : ∀ k : ℕ, k ≥ 2 → HasSolution k
 
 /- ## Part VI: Noll–Simmons Generalization -/
 
-/-- The Noll–Simmons question: For arbitrarily large k, do there exist
+/-  The Noll–Simmons question: For arbitrarily large k, do there exist
     q₁ < q₂ < ... < qₖ < p (all less than prime p) such that
     q₁! ≡ q₂! ≡ ... ≡ qₖ! (mod p)?
 

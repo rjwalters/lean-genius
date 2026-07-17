@@ -169,8 +169,8 @@ theorem pinnedDistance_pos (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x �
 theorem pinnedDistance_le (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x ∈ A) :
     pinnedDistanceCount x A ≤ A.card - 1 := by
   unfold pinnedDistanceCount pinnedDistances
-  have h : (A.filter (· ≠ x)).image (euclideanDist x) |>.card < A.card :=
-    calc (A.filter (· ≠ x)).image (euclideanDist x) |>.card
+  have h : ((A.filter (· ≠ x)).image (euclideanDist x)).card < A.card :=
+    calc ((A.filter (· ≠ x)).image (euclideanDist x)).card
         ≤ (A.filter (· ≠ x)).card := Finset.card_image_le
       _ < A.card := Finset.card_lt_card (Finset.filter_ssubset.mpr ⟨x, hx, by simp⟩)
   omega
@@ -203,11 +203,15 @@ theorem pinnedDistances_subset_all (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (h
     pinnedDistances x A ⊆ allDistinctDistances A := by
   intro d hd
   unfold pinnedDistances at hd
-  simp only [mem_image, mem_filter] at hd
-  obtain ⟨y, ⟨hy_mem, hy_ne⟩, hy_dist⟩ := hd
+  rw [Finset.mem_image] at hd
+  obtain ⟨y, hy_mem_filter, hy_dist⟩ := hd
+  rw [Finset.mem_filter] at hy_mem_filter
+  obtain ⟨hy_mem, hy_ne⟩ := hy_mem_filter
   unfold allDistinctDistances
-  simp only [mem_image, mem_filter, mem_product]
-  exact ⟨(x, y), ⟨⟨hx, hy_mem⟩, hy_ne⟩, hy_dist⟩
+  rw [Finset.mem_image]
+  refine ⟨(x, y), ?_, hy_dist⟩
+  rw [Finset.mem_filter]
+  exact ⟨Finset.mk_mem_product hx hy_mem, hy_ne.symm⟩
 
 /- ## Main Open Problem Statement -/
 

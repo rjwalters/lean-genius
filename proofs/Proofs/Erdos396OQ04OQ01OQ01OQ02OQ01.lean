@@ -97,14 +97,15 @@ theorem catalan_log_div_tendsto_log_four :
     Tendsto (fun n : ℕ => Real.log (catalan n) / n) atTop (𝓝 (Real.log 4)) := by
   -- Core analytic input: `(log n)/n → 0`.
   have hlog : Tendsto (fun n : ℕ => Real.log n / n) atTop (𝓝 0) := by
-    simpa using
+    simpa [Function.comp_def] using
       Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp tendsto_natCast_atTop_atTop
   -- Lower flank `log 4 − (log 2)/n − 2·(log n)/n → log 4`.
   have hlower : Tendsto
       (fun n : ℕ => Real.log 4 - Real.log 2 / n - 2 * (Real.log n / n))
       atTop (𝓝 (Real.log 4)) := by
     have h1 : Tendsto (fun n : ℕ => Real.log 2 / (n : ℝ)) atTop (𝓝 0) := by
-      simpa [mul_one_div] using tendsto_one_div_atTop_nhds_zero_nat.const_mul (Real.log 2)
+      simpa [mul_one_div, div_eq_mul_inv] using
+        tendsto_one_div_atTop_nhds_zero_nat.const_mul (Real.log 2)
     have h2 : Tendsto (fun n : ℕ => 2 * (Real.log n / n)) atTop (𝓝 0) := by
       simpa using hlog.const_mul 2
     have := ((tendsto_const_nhds (x := Real.log 4)).sub h1).sub h2

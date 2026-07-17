@@ -1,6 +1,4 @@
-import Mathlib.Tactic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Order.LiminfLimsup
+import Mathlib
 
 -- Test: division lemmas for ratio proofs
 example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 < b) (hab : a ≤ b) : a / b ≤ 1 := by
@@ -14,9 +12,9 @@ example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 < b) : 0 ≤ a / b :=
 example : (1 : ℝ) / 2 < 2 / Real.pi := by
   have hpi : Real.pi > 3 := Real.pi_gt_three
   have hpi_pos : (0 : ℝ) < Real.pi := by linarith
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) hpi_pos]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) hpi_pos]
   -- Need: 1 * π < 2 * 2 = 4, i.e., π < 4
-  have : Real.pi < 4 := by linarith [Real.pi_lt_3141593]
+  have : Real.pi < 4 := Real.pi_lt_four
   linarith
 
 -- Test: if_neg simplification

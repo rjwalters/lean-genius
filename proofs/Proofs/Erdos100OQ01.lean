@@ -1,5 +1,6 @@
 import Mathlib.Tactic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Proofs.Erdos100OQ01WIP01
 
 /-
@@ -54,17 +55,16 @@ theorem log_tendsto_atTop : Filter.Tendsto Real.log Filter.atTop Filter.atTop :=
     This shows the Guth-Katz bound is strictly sublinear. -/
 theorem n_over_log_sublinear :
     Filter.Tendsto (fun n : ℝ => 1 / Real.log n) Filter.atTop (nhds 0) := by
-  rw [show (0 : ℝ) = 1 / 0 from by simp]
-  exact Filter.Tendsto.div tendsto_const_nhds Real.tendsto_log_atTop (Or.inr rfl)
+  have h : Filter.Tendsto (fun n : ℝ => (Real.log n)⁻¹) Filter.atTop (nhds 0) :=
+    Real.tendsto_log_atTop.inv_tendsto_atTop
+  simpa only [one_div] using h
 
 /-- For n ≥ 3, log n > 1, so n/log n < n. The known bound is strictly weaker. -/
 theorem log_gt_one (n : ℕ) (hn : 3 ≤ n) : 1 < Real.log n := by
-  calc 1 < Real.log (Real.exp 1) := by rw [Real.log_exp]; norm_num
-    _ ≤ Real.log n := by
-        apply Real.log_le_log (by positivity)
-        calc Real.exp 1 ≤ 3 := by
-              have := Real.add_one_le_exp (by norm_num : (0 : ℝ) ≤ 1)
-              linarith [Real.exp_pos 1]
+  calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
+    _ < Real.log n := by
+        apply Real.log_lt_log (Real.exp_pos 1)
+        calc Real.exp 1 < 3 := Real.exp_one_lt_three
           _ ≤ (n : ℝ) := by exact_mod_cast hn
 
 /-- The linear conjecture implies the known bound: cn ≥ cn/log n for n ≥ 3.
@@ -106,9 +106,11 @@ def sublinearBound : Prop :=
 theorem linear_implies_known :
     linearDiameterConjecture → sublinearBound := by
   intro ⟨c, hc, hev⟩
-  exact ⟨c, hc, hev.mono (fun n hn diam h => le_trans (div_le_self
+  refine ⟨c, hc, ?_⟩
+  filter_upwards [hev, Filter.eventually_ge_atTop (3 : ℕ)] with n hn hn3 diam
+  exact le_trans (div_le_self
     (mul_nonneg hc.le (by exact_mod_cast Nat.zero_le n))
-    (le_of_lt (log_gt_one n (by omega)))) h)⟩
+    (le_of_lt (log_gt_one n hn3))) (hn diam)
 
 /-! ## Part III: Known Small Cases
 

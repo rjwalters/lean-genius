@@ -25,10 +25,8 @@ The function F_k(n) is axiomatized along with the main conjecture and
 the Burr-Erdős-Graham-Sós lower bound.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
+open scoped Classical
 
 open Finset
 
@@ -87,7 +85,7 @@ are distinct.
 structure Cycle (n : ℕ) (G : Graph n) (m : ℕ) where
   vertices : Fin m → Fin n
   distinct : ∀ i j, i ≠ j → i.val < m - 1 → j.val < m - 1 → vertices i ≠ vertices j
-  edges : ∀ i : Fin m, G.Adj (vertices i) (vertices ⟨(i.val + 1) % m, by omega⟩)
+  edges : ∀ i : Fin m, G.Adj (vertices i) (vertices ⟨(i.val + 1) % m, by have := i.isLt; exact Nat.mod_lt _ (by omega)⟩)
 
 /- ## Part III: The Function F_k(n)
 
@@ -158,7 +156,6 @@ theorem threshold_significance :
     ∀ n : ℕ, n ≥ 2 → turanThreshold n > n^2 / 4 := by
   intro n _
   simp [turanThreshold]
-  omega
 
 /- ## Part VII: Summary
 

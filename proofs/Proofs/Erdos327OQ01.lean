@@ -21,10 +21,7 @@ with reduced form (a', b') are exactly { (m·s·a', m·s·b') : m ≥ 1 } where 
 *Reference:* [erdosproblems.com/327](https://www.erdosproblems.com/327)
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 
@@ -55,7 +52,7 @@ theorem construct_sumDvdProd_distinct {a' b' m : ℕ}
   intro h
   have : a' = b' := by
     have hm' : 0 < m * (a' + b') := by positivity
-    exact Nat.eq_of_mul_eq_left hm' h
+    exact Nat.eq_of_mul_eq_mul_left hm' h
   exact hab' this
 
 /- ## Concrete verified examples -/
@@ -88,6 +85,7 @@ example : ¬((4 + 5) ∣ (4 * 5)) := by omega
 theorem smallest_sumDvdProd_pair :
     ∀ a b : ℕ, 0 < a → 0 < b → a < b → b ≤ 5 → ¬(a + b ∣ a * b) := by
   intro a b ha hb hab hb5
+  have ha5 : a ≤ 5 := by omega
   interval_cases a <;> interval_cases b <;> omega
 
 /- ## Pair counting -/

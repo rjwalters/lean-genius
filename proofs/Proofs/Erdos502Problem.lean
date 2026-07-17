@@ -15,8 +15,8 @@ The problem was posed to Erdős by Coxeter.
 Reference: https://erdosproblems.com/502
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Combinatorics.Choose.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
@@ -41,10 +41,10 @@ noncomputable def maxTwoDistSize (n : ℕ) : ℕ :=
 def binaryTwoVec (n : ℕ) (i j : Fin n) (h : i ≠ j) : Fin n → ℝ :=
   fun k => if k = i ∨ k = j then 1 else 0
 
-/-- The two distances in the binary construction are √2 and 2. -/
+/-  The two distances in the binary construction are √2 and 2. -/
 /- ## Lower Bound -/
 
-/-- Basic lower bound: f(n) ≥ C(n, 2) from binary vectors. -/
+/-  Basic lower bound: f(n) ≥ C(n, 2) from binary vectors. -/
 /-- Improved lower bound via projection: f(n) ≥ C(n+1, 2). -/
 axiom lower_bound_improved (n : ℕ) (hn : 2 ≤ n) :
     (n + 1).choose 2 ≤ maxTwoDistSize n
@@ -67,8 +67,8 @@ theorem erdos_502_bounds (n : ℕ) (hn : 2 ≤ n) :
 
 /- ## Small Cases -/
 
-/-- In ℝ², the maximum two-distance set has size 5 (regular pentagon). -/
-/-- In ℝ³, the maximum two-distance set has size 6. -/
+/-  In ℝ², the maximum two-distance set has size 5 (regular pentagon). -/
+/-  In ℝ³, the maximum two-distance set has size 6. -/
 /- ## Coxeter's Original Question -/
 
 /-- Coxeter asked Erdős whether f(n) is polynomial in n.
@@ -77,6 +77,6 @@ theorem coxeter_polynomial_growth (n : ℕ) :
     maxTwoDistSize n ≤ (n + 2).choose 2 :=
   upper_bound_bbs n
 
-/-- Erdős initially claimed f(n) ≤ n^O(1) but found an error,
+/- Erdős initially claimed f(n) ≤ n^O(1) but found an error,
     only obtaining f(n) ≤ exp(n^{1-o(1)}). The BBS result vindicated
     his original belief. -/

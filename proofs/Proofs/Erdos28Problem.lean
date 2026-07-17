@@ -53,9 +53,9 @@ axiom erdos_turan_conjecture (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
 
 /- ## Stronger Forms -/
 
-/-- Stronger conjecture: lim sup r(n) / log n > 0.
+/-  Stronger conjecture: lim sup r(n) / log n > 0.
     This would mean r(n) ≥ c log n infinitely often. -/
-/-- Alternative strengthening: the conclusion holds under the weaker
+/-  Alternative strengthening: the conclusion holds under the weaker
     hypothesis |A ∩ [1,N]| ≫ √N. This encompasses all bases of order 2. -/
 /- ## Known Results -/
 
@@ -163,7 +163,7 @@ theorem repFunction_pos_of_mem (A : Set ℕ) (n : ℕ) (hn : n ∈ A + A) :
   obtain ⟨x, hxA, y, hyA, hxy⟩ := Set.mem_image2.mp hn
   unfold repFunction
   apply Finset.card_pos.mpr
-  rcases le_or_lt x y with hle | hlt
+  rcases le_or_gt x y with hle | hlt
   · refine ⟨x, Finset.mem_filter.mpr
       ⟨Finset.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩, hxA, ?_, by omega⟩⟩
     rwa [show n - x = y from by omega]
@@ -173,7 +173,7 @@ theorem repFunction_pos_of_mem (A : Set ℕ) (n : ℕ) (hn : n ∈ A + A) :
 
 /- ## Partial Results -/
 
-/-- Erdős and Fuchs (1956): If A is any set, then
+/-  Erdős and Fuchs (1956): If A is any set, then
     Σ_{n≤N} r(n) cannot be cN + o(N^{1/4} / (log N)^{1/2}).
     This means the average of r(n) fluctuates from its mean. -/
 /-- The total representation sum Σ_{n≤N} r(n) grows without bound for any basis.
@@ -193,7 +193,7 @@ theorem total_rep_unbounded (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
   set M := hfin.toFinset.sup id
   have hM : ∀ n, M < n → n ∈ A + A := by
     intro n hn; by_contra h_not
-    exact absurd (Finset.le_sup (f := id) (hfin.mem_toFinset.mpr h_not)) (by omega)
+    exact absurd (Finset.le_sup (f := id) (hfin.mem_toFinset.mpr h_not)) (by simp only [id_eq]; omega)
   intro b
   use M + b + 1
   intro N hN

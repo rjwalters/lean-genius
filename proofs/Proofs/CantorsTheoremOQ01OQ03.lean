@@ -1,10 +1,6 @@
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ02
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # König's Constraint, Formalized Without Axioms
@@ -87,7 +83,7 @@ open Cardinal
 
     Proved without explicit axioms via Mathlib's `Cardinal.lt_cof_power`. -/
 theorem konig_general {κ : Cardinal.{0}} (hκ : ℵ₀ ≤ κ) :
-    κ < (2 ^ κ).ord.cof :=
+    κ < ((2 : Cardinal) ^ κ).ord.cof :=
   Cardinal.lt_cof_power hκ (by norm_num)
 
 -- ============================================================
@@ -100,7 +96,7 @@ theorem konig_general {κ : Cardinal.{0}} (hκ : ℵ₀ ≤ κ) :
     Equivalent statement to `CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real`,
     proved here as an immediate corollary of the general form. -/
 theorem konig_constraint_continuum :
-    (𝔠 : Cardinal.{0}) < (2 ^ (𝔠 : Cardinal.{0})).ord.cof :=
+    (𝔠 : Cardinal.{0}) < ((2 : Cardinal) ^ (𝔠 : Cardinal.{0})).ord.cof :=
   konig_general Cardinal.aleph0_le_continuum
 
 /-- **König's constraint for ℵ_α**: For any ordinal α, ℵ_α < cf(2^ℵ_α).
@@ -110,7 +106,7 @@ theorem konig_constraint_continuum :
     than κ. The constraint is uniform over the entire aleph hierarchy. -/
 theorem konig_constraint_aleph (α : Ordinal.{0}) :
     (Cardinal.aleph α : Cardinal.{0}) <
-      (2 ^ (Cardinal.aleph α : Cardinal.{0})).ord.cof :=
+      ((2 : Cardinal) ^ (Cardinal.aleph α : Cardinal.{0})).ord.cof :=
   konig_general (Cardinal.aleph0_le_aleph α)
 
 /-- **König's constraint for ℶ_α (ordinal generalization)**: For any
@@ -122,12 +118,12 @@ theorem konig_constraint_aleph (α : Ordinal.{0}) :
     to establish `ℵ₀ ≤ ℶ_α`, then invokes `konig_general`. -/
 theorem konig_constraint_beth (α : Ordinal.{0}) :
     (Cardinal.beth α : Cardinal.{0}) <
-      (2 ^ (Cardinal.beth α : Cardinal.{0})).ord.cof := by
+      ((2 : Cardinal) ^ (Cardinal.beth α : Cardinal.{0})).ord.cof := by
   apply konig_general
   calc (ℵ₀ : Cardinal.{0})
       = Cardinal.beth 0 := Cardinal.beth_zero.symm
     _ ≤ Cardinal.beth α :=
-        Cardinal.beth_strictMono.monotone (Ordinal.zero_le _)
+        Cardinal.beth_strictMono.monotone (zero_le)
 
 -- ============================================================
 -- PART 3: Application to |𝒫(ℝ)|
@@ -169,9 +165,9 @@ theorem cf_powerSet_real_ne_aleph0 :
     proved above, demonstrating the affirmative resolution of the OQ. -/
 theorem oq01oq03_resolution :
     -- (1) General König for any infinite cardinal
-    (∀ {κ : Cardinal.{0}}, ℵ₀ ≤ κ → κ < (2 ^ κ).ord.cof) ∧
+    (∀ {κ : Cardinal.{0}}, ℵ₀ ≤ κ → κ < ((2 : Cardinal) ^ κ).ord.cof) ∧
     -- (2) König applied to 𝔠
-    ((𝔠 : Cardinal.{0}) < (2 ^ (𝔠 : Cardinal.{0})).ord.cof) ∧
+    ((𝔠 : Cardinal.{0}) < ((2 : Cardinal) ^ (𝔠 : Cardinal.{0})).ord.cof) ∧
     -- (3) König applied to |𝒫(ℝ)|
     ((𝔠 : Cardinal.{0}) < (#(Set ℝ)).ord.cof) ∧
     -- (4) Cofinality of |𝒫(ℝ)| is not ℵ₀
