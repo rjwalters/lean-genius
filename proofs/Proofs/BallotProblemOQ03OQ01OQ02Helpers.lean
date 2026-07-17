@@ -6296,7 +6296,6 @@ private lemma a21YD_card (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).card = a + 3 :=
   · rw [Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
         Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
         Finset.card_singleton, Finset.card_range, Finset.card_range]
-    omega
   · apply Finset.disjoint_left.mpr
     intro ⟨x, y⟩ hx hy
     simp only [Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hx hy
@@ -6473,7 +6472,9 @@ private lemma tele_prod (n : ℕ) :
   | succ n ih =>
     have hnotin : n + 1 ∉ Finset.Ico 1 (n + 1) := by simp [Finset.mem_Ico]
     rw [show Finset.Ico 1 (n + 1 + 1) = insert (n + 1) (Finset.Ico 1 (n + 1)) from by
-      ext k; simp [Finset.mem_Ico]; omega]
+      ext k
+      simp only [Finset.mem_Ico, Finset.mem_insert]
+      omega]
     rw [Finset.prod_insert hnotin, ih]
     have hpos : (0 : ℚ) < (n : ℚ) + 1 := by positivity
     field_simp
@@ -6532,7 +6533,8 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
       ext k; simp [Finset.mem_Ico, Finset.mem_range]; omega
     have hdisj1 : Disjoint ({0} : Finset ℕ) {1} := by simp
     have hdisj2 : Disjoint ({0} ∪ {1} : Finset ℕ) (Finset.Ico 2 (a - 1)) := by
-      simp [Finset.disjoint_left, Finset.mem_Ico]; omega
+      simp only [Finset.disjoint_left, Finset.mem_union, Finset.mem_singleton, Finset.mem_Ico]
+      omega
     rw [hsplit, Finset.prod_union hdisj2, Finset.prod_union hdisj1,
         Finset.prod_singleton, Finset.prod_singleton]
     simp only [hookLength_a21YD_00, hookLength_a21YD_01]
@@ -6552,7 +6554,9 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
     rw [htail]
     have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
     have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+    have hne1' : (1 + (a : ℚ)) ≠ 0 := by linarith
     have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
+    have hne2' : (-1 + (a : ℚ)) ≠ 0 := by linarith
     push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
     field_simp
     ring
@@ -6565,6 +6569,7 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
     simp only [hookLength_a21YD_10, hookLength_a21YD_01]
     have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
     have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
+    have hne2' : (-1 + (a : ℚ)) ≠ 0 := by linarith
     push_cast [Nat.cast_sub (by omega : 1 ≤ a)]
     field_simp; ring
   -- R_bot: ratio at corner (2, 0)
@@ -6578,6 +6583,7 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
     simp only [hookLength_a21YD_00, hookLength_a21YD_10]
     have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
     have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+    have hne1' : (1 + (a : ℚ)) ≠ 0 := by linarith
     push_cast
     field_simp; ring
   -- Rewrite each summand using its ratio value
@@ -6605,7 +6611,9 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
   rw [hcorners]
   rw [show (({(0, a - 1), (1, 1), (2, 0)} : Finset (ℕ × ℕ)) : Finset (ℕ × ℕ)) =
       insert (0, a - 1) (insert (1, 1) {(2, 0)}) from rfl]
-  rw [Finset.sum_insert (by simp [Prod.mk.injEq]; omega),
+  rw [Finset.sum_insert (by
+        simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, not_or, not_and]
+        omega),
       Finset.sum_insert (by simp [Prod.mk.injEq]),
       Finset.sum_singleton]
   -- Each term evaluates to its ratio value
@@ -6617,7 +6625,9 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
   -- Sum = a+3
   have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
   have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+  have hne1' : (1 + (a : ℚ)) ≠ 0 := by linarith
   have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
+  have hne2' : (-1 + (a : ℚ)) ≠ 0 := by linarith
   push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
   field_simp
   ring
@@ -6742,7 +6752,9 @@ private lemma prod_div_telescope (K m : ℕ) (hKm : m < K) :
     ∏ s ∈ Finset.range m, ((K : ℚ) - s) / ((K : ℚ) - s - 1) =
     (K : ℚ) / ((K : ℚ) - m) := by
   induction m with
-  | zero => simp [div_self (Nat.cast_pos.mpr hKm).ne']
+  | zero =>
+    have hK : (K : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    simp [div_self hK]
   | succ m ih =>
     have hKm' : m < K := Nat.lt_of_succ_lt hKm
     rw [Finset.prod_range_succ, ih hKm']
@@ -6943,11 +6955,15 @@ private lemma threeRow_arm_row1 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
       (↑(b - cv) - ↑k) / (↑(b - cv) - ↑k - 1) := fun k _ => by
     push_cast [Nat.cast_sub hcb]; ring
   rw [Finset.prod_congr rfl hconv2b, prod_div_telescope (b - cv) (b - 1 - cv) (by omega)]
-  have hbc1 : (b : ℚ) - cv + 1 ≠ 0 := by
-    have h1 : (cv : ℚ) ≤ (b : ℚ) := by exact_mod_cast hcb
-    intro h0; linarith
-  push_cast [Nat.cast_sub hcb, Nat.cast_sub (show b - 1 - cv ≤ b - cv by omega)]
-  field_simp [hbc1]; push_cast [Nat.cast_sub hcb]; ring
+  have hcbQ : (cv : ℚ) ≤ (b : ℚ) := by exact_mod_cast hcb
+  have hbcQ : (cv : ℚ) < (b : ℚ) := by exact_mod_cast hbc
+  have hbc1 : (b : ℚ) - cv + 1 ≠ 0 := by intro h0; linarith
+  have hbc2 : (b : ℚ) + 1 - cv ≠ 0 := by intro h0; linarith
+  have hbc3 : (b : ℚ) - cv ≠ 0 := by intro h0; linarith
+  push_cast [Nat.cast_sub hcb, Nat.cast_sub (show cv ≤ b - 1 by omega),
+    Nat.cast_sub (show 1 ≤ b by omega)]
+  field_simp
+  ring
 
 /-- Arm product for corner (0, a-1) telescopes to (a+2)(a-c+1)(a-b)/[(a-c+2)(a-b+1)]. -/
 private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
@@ -7017,14 +7033,21 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
       (↑(a - b) - ↑k) / (↑(a - b) - ↑k - 1) := fun k _ => by
     push_cast [Nat.cast_sub hba]; ring
   rw [Finset.prod_congr rfl hconv3b, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
-  have hd1 : (a : ℚ) - cv + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - cv + 2 by omega)
-  have hd2 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - b + 1 by omega)
+  have hcaQ : (cv : ℚ) ≤ (a : ℚ) := by exact_mod_cast Nat.le_trans hcb hba
+  have hbaQ : (b : ℚ) ≤ (a : ℚ) := by exact_mod_cast hba
+  have habQ : (b : ℚ) < (a : ℚ) := by exact_mod_cast hab
+  have hd1 : (a : ℚ) - cv + 2 ≠ 0 := by intro h0; linarith
+  have hd2 : (a : ℚ) - b + 1 ≠ 0 := by intro h0; linarith
+  have hd3 : (a : ℚ) + 2 - cv ≠ 0 := by intro h0; linarith
+  have hd4 : (a : ℚ) - cv + 1 - (b - cv) ≠ 0 := by intro h0; linarith
+  have hd5 : (a : ℚ) - b ≠ 0 := by intro h0; linarith
   push_cast [Nat.cast_sub (Nat.le_trans hcb hba), Nat.cast_sub hba, Nat.cast_sub hcb,
              Nat.cast_sub (show b - cv ≤ a - cv + 1 by omega),
-             Nat.cast_sub (show a - 1 - b ≤ a - b by omega)]
-  field_simp [hd1, hd2]; ring
+             Nat.cast_sub (show a - 1 - b ≤ a - b by omega),
+             Nat.cast_sub (show b ≤ a - 1 by omega),
+             Nat.cast_sub (show 1 ≤ a by omega)]
+  field_simp
+  ring
 
 /-- The hook walk identity for exactly-3-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
@@ -7146,12 +7169,12 @@ lemma hook_walk_identity_threeRow (μ : YoungDiagram)
       insert (2, cv - 1) (insert (1, b - 1) {(0, a - 1)}) from rfl,
       Finset.sum_insert hd1, Finset.sum_insert hd2, Finset.sum_singleton,
       hR2, hR1, hR0]
-  have hd_cv2 : (a : ℚ) - cv + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - cv + 2 by omega)
-  have hd_bc1 : (b : ℚ) - cv + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (b : ℤ) - cv + 1 by omega)
-  have hd_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - b + 1 by omega)
+  have hcaQ : (cv : ℚ) ≤ (a : ℚ) := by exact_mod_cast Nat.le_trans hcb hba
+  have hbaQ : (b : ℚ) ≤ (a : ℚ) := by exact_mod_cast hba
+  have hcbQ : (cv : ℚ) ≤ (b : ℚ) := by exact_mod_cast hcb
+  have hd_cv2 : (a : ℚ) - cv + 2 ≠ 0 := by intro h0; linarith
+  have hd_bc1 : (b : ℚ) - cv + 1 ≠ 0 := by intro h0; linarith
+  have hd_ab1 : (a : ℚ) - b + 1 ≠ 0 := by intro h0; linarith
   push_cast [Nat.cast_sub (Nat.le_trans hcb hba), Nat.cast_sub hcb, Nat.cast_sub hba]
   field_simp [hd_cv2, hd_bc1, hd_ab1]
   ring
@@ -7286,10 +7309,15 @@ private lemma fourRow_hookLen_row0_ge {μ : YoungDiagram} {s : ℕ}
 /-- corner (3, d-1) always exists in a 4-row shape (rowLen 3 > 0, rowLen 4 = 0). -/
 private lemma fourRow_corner_bot {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
     (h3 : 0 < μ.rowLen 3) : isCorner μ (3, μ.rowLen 3 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega),
-          fun h => ?_, fun h => ?_⟩
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show μ.rowLen 3 - 1 < μ.rowLen 3 by omega),
+    fun h => ?_, fun h => ?_⟩
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
 
 /-- Corners of a 4-row shape are classified into at most 4 positions. -/
 private lemma fourRow_corner_cases {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
@@ -7668,9 +7696,16 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       ((b : ℚ) - c + 2) / ((b : ℚ) - c + 1) := by
     by_cases hcd : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -7706,9 +7741,16 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hbc : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -7735,9 +7777,16 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       (((a : ℚ) - d + 3) * ((a : ℚ) - c + 2) * ((a : ℚ) - b + 1)) := by
     by_cases hab : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -7953,10 +8002,15 @@ private lemma fiveRow_hookLen_row0_ge {μ : YoungDiagram} {s : ℕ}
 /-- The bottom-row corner (4, rowLen 4 - 1) always exists in a 5-row shape. -/
 private lemma fiveRow_corner_bot {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
     (h4 : 0 < μ.rowLen 4) : isCorner μ (4, μ.rowLen 4 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega),
-          fun h => ?_, fun h => ?_⟩
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show μ.rowLen 4 - 1 < μ.rowLen 4 by omega),
+    fun h => ?_, fun h => ?_⟩
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
 
 /-- Corners of a 5-row shape are classified into at most 5 positions. -/
 private lemma fiveRow_corner_cases {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
@@ -8446,9 +8500,16 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       ((a : ℚ) - d + 4) / ((a : ℚ) - d + 3) := by
     by_cases hde : e < d
     · have hmid : isCorner μ (3, d - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < d by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -8486,9 +8547,16 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       ((a : ℚ) - c + 3) / ((a : ℚ) - c + 2) := by
     by_cases hdc' : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -8522,9 +8590,16 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hcb' : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -8553,9 +8628,16 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
        ((a : ℚ) - b + 1)) := by
     by_cases hab : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -9324,9 +9406,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
   have hcb : c ≤ b := μ.rowLen_anti 1 2 (by omega)
   have hba : b ≤ a := μ.rowLen_anti 0 1 (by omega)
   have hbot : isCorner μ (5, f - 1) := by
-    refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-    · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-    · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+    refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+        (Nat.sub_lt (show 0 < f by omega) Nat.one_pos), ?_, ?_⟩
+    · intro h
+      have := YoungDiagram.mem_iff_lt_rowLen.mp h
+      norm_num at this
+      omega
+    · intro h
+      have := YoungDiagram.mem_iff_lt_rowLen.mp h
+      norm_num at this
+      omega
   have hcard : (μ.card : ℚ) = (a : ℚ) + b + c + d + e + f := by
     exact_mod_cast sixRow_card h6
   rw [hcard]
@@ -9432,9 +9521,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       ((d : ℚ) - e + 2) / ((d : ℚ) - e + 1) := by
     by_cases hef : f < e
     · have hmid : isCorner μ (4, e - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < e by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -9475,9 +9571,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       ((c : ℚ) - d + 2) / ((c : ℚ) - d + 1) := by
     by_cases hde : e < d
     · have hmid : isCorner μ (3, d - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < d by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -9515,9 +9618,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       ((b : ℚ) - c + 2) / ((b : ℚ) - c + 1) := by
     by_cases hcd : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -9553,9 +9663,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hbc : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -9588,9 +9705,16 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
        ((a : ℚ) - c + 2) * ((a : ℚ) - b + 1)) := by
     by_cases hab : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -9921,10 +10045,16 @@ private lemma sevenRow_hookLen_row0_ge {μ : YoungDiagram} {s : ℕ}
 /-- Bottom corner (6, rowLen 6 - 1) always exists in a 7-row shape. -/
 private lemma sevenRow_corner_bot {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) (h6 : 0 < μ.rowLen 6) :
     isCorner μ (6, μ.rowLen 6 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show μ.rowLen 6 - 1 < μ.rowLen 6 by omega), ?_, ?_⟩
   · intro h
-    have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
 
 /-- Corner classification for 7-row shapes: corners are among the 7 possible positions. -/
 private lemma sevenRow_corner_cases {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) (h6 : 0 < μ.rowLen 6)
@@ -10684,9 +10814,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       ((a : ℚ) - f + 6) / ((a : ℚ) - f + 5) := by
     by_cases hgf' : g < f
     · have hmid : isCorner μ (5, f - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < f by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -10731,9 +10868,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       ((a : ℚ) - e + 5) / ((a : ℚ) - e + 4) := by
     by_cases hfe' : f < e
     · have hmid : isCorner μ (4, e - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < e by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -10774,9 +10918,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       ((a : ℚ) - d + 4) / ((a : ℚ) - d + 3) := by
     by_cases hed' : e < d
     · have hmid : isCorner μ (3, d - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < d by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -10814,9 +10965,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       ((a : ℚ) - c + 3) / ((a : ℚ) - c + 2) := by
     by_cases hdc' : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -10850,9 +11008,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hcb' : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -10880,9 +11045,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
        ((a : ℚ) - d + 3) * ((a : ℚ) - c + 2) * ((a : ℚ) - b + 1)) := by
     by_cases hab' : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -11289,10 +11461,16 @@ private lemma eightRow_hookLen_row0_ge {μ : YoungDiagram} {s : ℕ}
 /-- Bottom corner (7, rowLen 7 - 1) always exists in an 8-row shape. -/
 private lemma eightRow_corner_bot {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) (h7 : 0 < μ.rowLen 7) :
     isCorner μ (7, μ.rowLen 7 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show μ.rowLen 7 - 1 < μ.rowLen 7 by omega), ?_, ?_⟩
   · intro h
-    have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
 
 /-- Corner classification for 8-row shapes: corners are among the 8 possible positions. -/
 private lemma eightRow_corner_cases {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) (h7 : 0 < μ.rowLen 7)
@@ -12218,9 +12396,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - g + 7) / ((a : ℚ) - g + 6) := by
     by_cases hkg' : k < g
     · have hmid : isCorner μ (6, g - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < g by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12270,9 +12455,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - f + 6) / ((a : ℚ) - f + 5) := by
     by_cases hgf' : g < f
     · have hmid : isCorner μ (5, f - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < f by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12317,9 +12509,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - e + 5) / ((a : ℚ) - e + 4) := by
     by_cases hfe' : f < e
     · have hmid : isCorner μ (4, e - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < e by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12362,9 +12561,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - d + 4) / ((a : ℚ) - d + 3) := by
     by_cases hed' : e < d
     · have hmid : isCorner μ (3, d - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < d by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12402,9 +12608,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - c + 3) / ((a : ℚ) - c + 2) := by
     by_cases hdc' : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12439,9 +12652,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hcb' : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -12471,9 +12691,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
        ((a : ℚ) - b + 1)) := by
     by_cases hab' : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -12973,10 +13200,16 @@ private lemma nineRow_hookLen_row0_ge {μ : YoungDiagram} {s : ℕ}
 /-- Bottom corner (8, rowLen 8 - 1) always exists in a 9-row shape. -/
 private lemma nineRow_corner_bot {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) (h8 : 0 < μ.rowLen 8) :
     isCorner μ (8, μ.rowLen 8 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show μ.rowLen 8 - 1 < μ.rowLen 8 by omega), ?_, ?_⟩
   · intro h
-    have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
 
 /-- Corner classification for 9-row shapes: corners are among the 9 possible positions. -/
 private lemma nineRow_corner_cases {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) (h8 : 0 < μ.rowLen 8)
@@ -14057,9 +14290,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - k + 8) / ((a : ℚ) - k + 7) := by
     by_cases hjk' : j < k
     · have hmid : isCorner μ (7, k - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < k by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14113,9 +14353,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - g + 7) / ((a : ℚ) - g + 6) := by
     by_cases hkg' : k < g
     · have hmid : isCorner μ (6, g - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < g by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14165,9 +14412,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - f + 6) / ((a : ℚ) - f + 5) := by
     by_cases hgf' : g < f
     · have hmid : isCorner μ (5, f - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < f by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14213,9 +14467,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - e + 5) / ((a : ℚ) - e + 4) := by
     by_cases hfe' : f < e
     · have hmid : isCorner μ (4, e - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < e by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14258,9 +14519,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - d + 4) / ((a : ℚ) - d + 3) := by
     by_cases hed' : e < d
     · have hmid : isCorner μ (3, d - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < d by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14299,9 +14567,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - c + 3) / ((a : ℚ) - c + 2) := by
     by_cases hdc' : d < c
     · have hmid : isCorner μ (2, c - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < c by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14336,9 +14611,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
     by_cases hcb' : c < b
     · have hmid : isCorner μ (1, b - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < b by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -14368,9 +14650,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
        ((a : ℚ) - b + 1)) := by
     by_cases hab' : b < a
     · have htop : isCorner μ (0, a - 1) := by
-        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-        · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr
+            (Nat.sub_lt (show 0 < a by omega) Nat.one_pos), ?_, ?_⟩
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
+        · intro h
+          have := YoungDiagram.mem_iff_lt_rowLen.mp h
+          norm_num at this
+          omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
