@@ -39,35 +39,11 @@ open Filter Topology
 /-! ## The per-`n` wideband ceiling, stated for the sequence `n : ℕ`
 
 `rate_equalNoise_le_wideband` bounds `(Fintype.card ι / 2)·log(1 + P/(card·c))`.
-Here we restate the same bound directly for the natural-number channel count `n`,
-including the degenerate `n = 0` case (where the rate is `0`), so it lines up with
-the sequence used in `rate_equalNoise_tendsto_wideband`. -/
-
-/-- **Sequence form of the wideband ceiling.**  For `c > 0`, `P ≥ 0` and any channel
-count `n : ℕ`, the equal-noise rate `(n/2)·log(1 + P/(n·c))` is capped by `P/(2c)`.
-For `n = 0` the rate is `0 ≤ P/(2c)`; for `n ≥ 1` it is the tangent-line bound
-`log u ≤ u − 1` at `u = 1 + P/(n·c)`, exactly as in `rate_equalNoise_le_wideband`. -/
-theorem rate_equalNoise_seq_le_wideband {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 ≤ P)
-    (n : ℕ) :
-    (n : ℝ) / 2 * Real.log (1 + P / (n * c)) ≤ P / (2 * c) := by
-  rcases Nat.eq_zero_or_pos n with hn0 | hpos
-  · subst hn0
-    simp only [Nat.cast_zero, zero_div, zero_mul]
-    exact div_nonneg hP (by positivity)
-  · have hn : 0 < (n : ℝ) := by exact_mod_cast hpos
-    have hcne : c ≠ 0 := hc.ne'
-    have hnne : (n : ℝ) ≠ 0 := hn.ne'
-    have hnc : 0 < (n : ℝ) * c := mul_pos hn hc
-    have hu : (0 : ℝ) < 1 + P / (n * c) := by
-      have : 0 ≤ P / (n * c) := div_nonneg hP hnc.le
-      linarith
-    have hlog : Real.log (1 + P / (n * c)) ≤ P / (n * c) := by
-      have h := Real.log_le_sub_one_of_pos hu
-      linarith
-    calc (n : ℝ) / 2 * Real.log (1 + P / (n * c))
-        ≤ (n : ℝ) / 2 * (P / (n * c)) :=
-          mul_le_mul_of_nonneg_left hlog (by positivity)
-      _ = P / (2 * c) := by field_simp
+The natural-number restatement `rate_equalNoise_seq_le_wideband`, including the
+degenerate `n = 0` case (where the rate is `0`), now lives upstream in
+`ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean` (imported above) so it lines up
+with the sequence used in `rate_equalNoise_tendsto_wideband`; we reuse it directly
+below rather than redeclaring it here. -/
 
 /-! ## The supremum over the channel count -/
 
