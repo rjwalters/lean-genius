@@ -109,7 +109,9 @@ theorem benchmark_family_bracket (n : ℕ) (hn : n > 0) :
   refine ⟨?_, benchmark_upper n hn⟩
   have hdeg : (rootsOfUnity n hn).degree > 0 := hn
   have hlow := pommerenke_lower (rootsOfUnity n hn) hdeg
-  simpa using hlow
+  have hdeg_eq : (rootsOfUnity n hn).degree = n := rfl
+  rw [hdeg_eq] at hlow
+  exact hlow
 
 /-
 ## Krishnapur-Lundberg-Ramachandran Bound (2025)
@@ -1013,9 +1015,10 @@ noncomputable def UnitDiscPolynomial.rotate (f : UnitDiscPolynomial) (u : ℂ) (
 theorem rotate_eval (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) (z : ℂ) :
     (f.rotate u hu).eval z = u ^ f.degree * f.eval (u⁻¹ * z) := by
   have hu0 : u ≠ 0 := by rintro rfl; rw [norm_zero] at hu; exact zero_ne_one hu
-  simp only [UnitDiscPolynomial.eval, UnitDiscPolynomial.rotate]
   have hfac : ∀ i : Fin f.degree, z - u * f.roots i = u * (u⁻¹ * z - f.roots i) := by
     intro i; rw [mul_sub, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul]
+  show (∏ i : Fin f.degree, (z - u * f.roots i)) =
+      u ^ f.degree * ∏ i : Fin f.degree, (u⁻¹ * z - f.roots i)
   rw [Finset.prod_congr rfl (fun i _ => hfac i), Finset.prod_mul_distrib, Finset.prod_const,
     Finset.card_univ, Fintype.card_fin]
 
