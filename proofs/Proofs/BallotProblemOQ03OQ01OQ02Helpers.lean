@@ -5614,16 +5614,6 @@ private lemma hookLength_removeCornerC'_leg_of_c
     rintro ⟨_, h2⟩; omega
   exact hookLength_eq_of_not_arm_leg hc' hsmem hxc' hxarm hxleg
 
-/-- **At the doubly-affected cell `d = (c.1, c'.2)`, the hook length is at least 3.**
-
-For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`
-by `corner_col_lt_of_row_lt`), the cell `d = (c.1, c'.2)` lies strictly in
-the arm of `c` (row `c.1`, column `c'.2 < c.2`) and strictly in the leg of
-`c'` (column `c'.2`, row `c.1 < c'.1`).  Algebraically,
-* `armLen μ c.1 c'.2 = rowLen c.1 − c'.2 − 1 = (c.2 + 1) − c'.2 − 1 = c.2 − c'.2 ≥ 1`,
-* `legLen μ c.1 c'.2 = colLen c'.2 − c.1 − 1 = (c'.1 + 1) − c.1 − 1 = c'.1 − c.1 ≥ 1`,
-so `hookLength μ c.1 c'.2 = armLen + legLen + 1 ≥ 3`.
-
 /-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
 private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
     {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
@@ -5796,6 +5786,16 @@ lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner
   linear_combination key_Q
 
 
+
+/-- **At the doubly-affected cell `d = (c.1, c'.2)`, the hook length is at least 3.**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`
+by `corner_col_lt_of_row_lt`), the cell `d = (c.1, c'.2)` lies strictly in
+the arm of `c` (row `c.1`, column `c'.2 < c.2`) and strictly in the leg of
+`c'` (column `c'.2`, row `c.1 < c'.1`).  Algebraically,
+* `armLen μ c.1 c'.2 = rowLen c.1 − c'.2 − 1 = (c.2 + 1) − c'.2 − 1 = c.2 − c'.2 ≥ 1`,
+* `legLen μ c.1 c'.2 = colLen c'.2 − c.1 − 1 = (c'.1 + 1) − c.1 − 1 = c'.1 − c.1 ≥ 1`,
+so `hookLength μ c.1 c'.2 = armLen + legLen + 1 ≥ 3`.
 
 This bound is the geometric prerequisite for working with the rational
 factor `(h_d − 1)² / (h_d (h_d − 2))` that appears in the GNW exchange
@@ -5981,7 +5981,7 @@ private lemma corners_gHookYD_cases (a b : ℕ) (ha : 0 < a) (hb : 0 < b) {c : �
       have : ¬(i + 1 ≤ b) := fun hle =>
         hbelow (mem_gHookYD.mpr (Or.inr ⟨by omega, hle, rfl⟩))
       omega
-    exact ⟨hib, rfl⟩
+    exact Prod.ext_iff.mpr ⟨hib, rfl⟩
 
 /-- The hook walk identity for generalized hook shapes [a, 1^b] with b ≥ 1.
     Non-circular proof: hook_length_formula_gHookYD is proved independently,
@@ -6045,8 +6045,7 @@ lemma hook_walk_identity_gHookYD (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
     cases hcard : (gHookYD a b ha).card with
     | zero => rw [hN] at hcard; omega
     | succ n =>
-      rw [show (gHookYD a b ha).card - 1 = n by omega,
-          show (gHookYD a b ha).card = n + 1 from hcard, Nat.factorial_succ]
+      simp only [Nat.add_sub_cancel, Nat.factorial_succ]
       push_cast; ring
   -- Each summand: HP/HPc = card(SYT(μ\c)) × HP/(N-1)!
   have hterm : ∀ cx : { x // x ∈ corners (gHookYD a b ha) },
@@ -6060,7 +6059,7 @@ lemma hook_walk_identity_gHookYD (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
         (hookProd (removeCorner (gHookYD a b ha) c (mem_corners.mp hcx)) : ℚ) ≠ 0 :=
       hookProdQ_ne_zero _
     have hIHc := hμc ⟨c, hcx⟩
-    rw [mul_div_assoc, div_eq_div_iff hHPc hfact]
+    rw [← mul_div_assoc, div_eq_div_iff hHPc hfact]
     linear_combination -(hookProd (gHookYD a b ha) : ℚ) * hIHc
   -- Assemble: same algebra as hook_walk_identity_atMostTwoRows
   simp_rw [hterm]
@@ -6104,13 +6103,13 @@ private lemma hookProd_transpose (μ : YoungDiagram) : hookProd μ = hookProd μ
     simp only [YoungDiagram.mem_cells, YoungDiagram.mem_transpose,
       Finset.mem_image, Prod.exists]
     exact ⟨fun h => ⟨j, i, h, rfl⟩, fun ⟨a, b, hab, heq⟩ => by
-      simp only [Prod.mk.injEq] at heq
+      simp only [Prod.swap_prod_mk, Prod.mk.injEq] at heq
       obtain ⟨rfl, rfl⟩ := heq
       exact hab⟩
   rw [hcells, Finset.prod_image (fun x _ y _ h => Prod.swap_injective h)]
   apply Finset.prod_congr rfl
   intro ⟨i, j⟩ _
-  exact (hookLength_transpose μ i j).symm
+  exact hookLength_transpose μ i j
 
 /-- The transpose of a Standard Young Tableau: if T : SYT(μ), then sytTranspose T : SYT(μ.transpose).
     The entry at cell (i,j) of the transposed tableau is the entry of T at (j,i).
@@ -6119,7 +6118,7 @@ private def sytTranspose {μ : YoungDiagram} (T : StandardYoungTableau μ) :
     StandardYoungTableau μ.transpose where
   entry c := T.entry c.swap
   entry_zero c hc := T.entry_zero c.swap
-    (by rwa [YoungDiagram.mem_transpose, Prod.swap_swap] at hc)
+    (by rwa [YoungDiagram.mem_transpose] at hc)
   entry_range c hc := by
     have hmem : c.swap ∈ μ := YoungDiagram.mem_transpose.mp hc
     have hrange := T.entry_range c.swap hmem
@@ -6139,7 +6138,7 @@ private lemma sytTranspose_injective {μ : YoungDiagram} :
     Function.Injective (@sytTranspose μ) := by
   intro T₁ T₂ h
   apply StandardYoungTableau.ext
-  funext c
+  intro c
   have : (sytTranspose T₁).entry c.swap = (sytTranspose T₂).entry c.swap :=
     congrFun (congrArg StandardYoungTableau.entry h) c.swap
   change T₁.entry c.swap.swap = T₂.entry c.swap.swap at this
@@ -6183,7 +6182,7 @@ private theorem hook_length_formula_atMostTwoCols (μ : YoungDiagram) (h2 : μ.c
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   have h2t : μ.transpose.rowLen 2 = 0 := by rw [YoungDiagram.rowLen_transpose]; exact h2
   have hT := hook_length_formula_atMostTwoRows μ.transpose h2t
-  rw [← card_SYT_transpose, ← hookProd_transpose, ← card_transpose] at hT
+  rw [← card_SYT_transpose, ← hookProd_transpose, card_transpose] at hT
   exact hT
 
 /-- The hook walk identity for at-most-2-column Young diagrams.
@@ -6281,7 +6280,7 @@ private def a21YD (a : ℕ) (ha : 3 ≤ a) : YoungDiagram where
       interval_cases x
       · left; left; exact ⟨0, by omega, rfl, rfl⟩
       · left; right; exact ⟨0, by omega, rfl, rfl⟩
-      · right; rfl
+      · right; exact ⟨rfl, rfl⟩
 
 private lemma mem_a21YD {a : ℕ} {ha : 3 ≤ a} {i j : ℕ} :
     (i, j) ∈ a21YD a ha ↔ (i = 0 ∧ j < a) ∨ (i = 1 ∧ j < 2) ∨ (i = 2 ∧ j = 0) := by
@@ -6295,7 +6294,7 @@ private lemma mem_a21YD {a : ℕ} {ha : 3 ≤ a} {i j : ℕ} :
   · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩ | ⟨rfl, rfl⟩)
     · left; left; exact ⟨j, hj, rfl, rfl⟩
     · left; right; exact ⟨j, hj, rfl, rfl⟩
-    · right; rfl
+    · right; exact ⟨rfl, rfl⟩
 
 private lemma a21YD_card (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).card = a + 3 := by
   unfold YoungDiagram.card a21YD
@@ -6312,50 +6311,51 @@ private lemma a21YD_card (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).card = a + 3 :=
     simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,
                Finset.mem_singleton, Prod.mk.injEq] at hx hy
     rcases hx with (⟨k, _, rfl, rfl⟩ | ⟨k, _, rfl, rfl⟩)
-    · obtain ⟨rfl, rfl⟩ := hy; omega
-    · obtain ⟨rfl, rfl⟩ := hy; omega
+    · omega
+    · omega
 
 -- Row lengths
 private lemma rowLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 0 = a := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]
   · cases a with
     | zero => omega
     | succ a =>
-      have := YoungDiagram.mem_iff_lt_rowLen.mp
-        (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
+      have hmem : ((0 : ℕ), a) ∈ a21YD (a + 1) ha :=
+        mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩)
+      have := YoungDiagram.mem_iff_lt_rowLen.mp hmem
       omega
 
 private lemma rowLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 1 = 2 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]; omega
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]; omega
   · have := YoungDiagram.mem_iff_lt_rowLen.mp
       (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
     omega
 
 private lemma rowLen_a21YD_two (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 2 = 1 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]; omega
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]; omega
   · have := YoungDiagram.mem_iff_lt_rowLen.mp
       (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
     omega
 
 private lemma rowLen_a21YD_ge_three (a : ℕ) (ha : 3 ≤ a) {i : ℕ} (hi : 3 ≤ i) :
     (a21YD a ha).rowLen i = 0 := by
-  rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
-  simp [mem_a21YD]; omega
+  rw [← Nat.le_zero, ← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+  simp [mem_a21YD (ha := ha)]; omega
 
 -- Column lengths
 private lemma colLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 0 = 3 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
   · have := YoungDiagram.mem_iff_lt_colLen.mp
       (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
     omega
 
 private lemma colLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 1 = 2 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
   · have := YoungDiagram.mem_iff_lt_colLen.mp
       (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
     omega
@@ -6363,15 +6363,15 @@ private lemma colLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 1 
 private lemma colLen_a21YD_mid {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hj2 : 2 ≤ j) (hja : j < a) :
     (a21YD a ha).colLen j = 1 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
   · have := YoungDiagram.mem_iff_lt_colLen.mp
       (mem_a21YD.mpr (Or.inl ⟨rfl, hja⟩))
     omega
 
 private lemma colLen_a21YD_ge_a {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hja : a ≤ j) :
     (a21YD a ha).colLen j = 0 := by
-  rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
-  simp [mem_a21YD]; omega
+  rw [← Nat.le_zero, ← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+  simp [mem_a21YD (ha := ha)]; omega
 
 -- Hook lengths
 private lemma hookLength_a21YD_00 (a : ℕ) (ha : 3 ≤ a) :
@@ -6414,20 +6414,20 @@ private lemma hookLength_a21YD_20 (a : ℕ) (ha : 3 ≤ a) :
 private lemma isCorner_a21YD_top (a : ℕ) (ha : 3 ≤ a) :
     isCorner (a21YD a ha) (0, a - 1) := by
   refine ⟨mem_a21YD.mpr (Or.inl ⟨rfl, by omega⟩), ?_, ?_⟩
-  · simp [mem_a21YD]; omega
-  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD (ha := ha)]; omega
+  · simp [mem_a21YD (ha := ha)]; omega
 
 private lemma isCorner_a21YD_mid (a : ℕ) (ha : 3 ≤ a) :
     isCorner (a21YD a ha) (1, 1) := by
   refine ⟨mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)), ?_, ?_⟩
-  · simp [mem_a21YD]; omega
-  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD (ha := ha)]
+  · simp [mem_a21YD (ha := ha)]
 
 private lemma isCorner_a21YD_bot (a : ℕ) (ha : 3 ≤ a) :
     isCorner (a21YD a ha) (2, 0) := by
   refine ⟨mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)), ?_, ?_⟩
-  · simp [mem_a21YD]; omega
-  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD (ha := ha)]
+  · simp [mem_a21YD (ha := ha)]
 
 private lemma corners_a21YD_cases (a : ℕ) (ha : 3 ≤ a) {c : ℕ × ℕ}
     (hc : isCorner (a21YD a ha) c) :
