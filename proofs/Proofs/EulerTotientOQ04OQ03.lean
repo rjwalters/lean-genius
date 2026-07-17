@@ -3882,9 +3882,9 @@ theorem shared_landing_opposite_verdict_129_145 (k : ℕ) :
   refine ⟨?_, ?_, ?_, ?_⟩
   · simpa using dblIter_primeTriple (m := 7) (by norm_num) (by norm_num) k
   · simpa using dblIter_fiveTimes (m := 7) (by norm_num) (by norm_num) (by norm_num) k
-  · simpa using mem_ReversalSet_primeTriple (m := 7) (by norm_num) (by norm_num)
+  · exact mem_ReversalSet_primeTriple (m := 7) (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) k
-  · simpa using mem_ForwardSet_fiveTimes (q := 29) (by norm_num) (by norm_num)
+  · exact mem_ForwardSet_fiveTimes (q := 29) (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) k
 
 -- ----------------------------------------------------------------------------
