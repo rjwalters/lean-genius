@@ -142,11 +142,12 @@
       "affinePullback_isUniversalExistentialDefinition: Π₂ (∀∃) is closed under affine pullback; dual of the Σ₂ case.",
       "affinePullback_int_isUniversalExistentialDefinition: for any a, b : ℚ the set {q | a·q + b ∈ ℤ} is Π₂-definable — affine invariance of the SETTLED (Koenigsmann) level. Specializes to scaled lattices {q | a·q ∈ ℤ} and translates {q | q + b ∈ ℤ}.",
       "affinePullback_notInt_isExistentialUniversalDefinition: dual corollary — {q | a·q + b ∉ ℤ} is Σ₂-definable for any a, b : ℚ.",
-      "int_diophantine_iff_affinePullback_diophantine: for a ≠ 0, ℤ is Σ₁-definable over ℚ iff its affine pullback {q | a·q + b ∈ ℤ} is — the OPEN question is invariant under affine reparametrization (converse pulls back along the inverse map q ↦ a⁻¹·q − a⁻¹·b)."
+      "int_diophantine_iff_affinePullback_diophantine: for a ≠ 0, ℤ is Σ₁-definable over ℚ iff its affine pullback {q | a·q + b ∈ ℤ} is — the OPEN question is invariant under affine reparametrization (converse pulls back along the inverse map q ↦ a⁻¹·q − a⁻¹·b).",
+      "Affine group action laws for affinePullback (Hilbert10OQ01OQ02.lean): affinePullback_id, affinePullback_comp (affinePullback a b (affinePullback c d S) = affinePullback (c·a) (c·b+d) S), affinePullback_cancel (invertibility for a≠0). These identities are the algebraic backbone of the affine-invariance equivalences — the affine group ℚ⋊ℚˣ acts contravariantly on RatSubset via affinePullback, and each of the four Σ₁/Π₁/Σ₂/Π₂ definability classes is an invariant subset. Axiom-free."
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 3502,
+    "lineCount": 3625,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -154,7 +155,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 110,
+    "theoremCount": 116,
     "definitionCount": 17
   },
   "overview": {
@@ -302,9 +303,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 3502,
+    "lineCount": 3625,
     "axiomCount": 1,
-    "theoremCount": 110,
+    "theoremCount": 113,
     "definitionCount": 17,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0

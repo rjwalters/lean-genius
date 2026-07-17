@@ -31,16 +31,24 @@
       "The product-Fubini step holds for EVERY real weight vector b — no positivity or integrability hypothesis — because the closed value of each factor is supplied by integral_gaussian, which is itself unconditional; positivity is needed only later to write the determinant under a single square root.",
       "The product of weights ∏ᵢ bᵢ is exactly the determinant of the diagonal matrix diag(b₁,…,bₙ), so the closed form π^{n/2}/√(∏ᵢ bᵢ) is literally the diagonal instance of the general quadratic-form Gaussian π^{n/2}/√(det A).",
       "The two algebraic identities that assemble the determinant form — ∏ᵢ √bᵢ = √(∏ᵢ bᵢ) (multiplicativity of the square root on nonnegatives, via rpow at exponent 1/2) and (√π)ⁿ = π^{n/2} — are handled uniformly through Real.sqrt_eq_rpow and the rpow power laws.",
-      "Setting bᵢ = c collapses the product back to a power and recovers the parent's (π/c)^{n/2}, certifying this entry as a strict generalization rather than a parallel result."
+      "Setting bᵢ = c collapses the product back to a power and recovers the parent's (π/c)^{n/2}, certifying this entry as a strict generalization rather than a parallel result.",
+      "Probabilistically, the weight bᵢ is an inverse variance: e^{-bᵢ xᵢ²} is (unnormalized) the density of an independent centered Gaussian with variance σᵢ² = 1/(2bᵢ). The anisotropic integrand is thus a product of independent, differently-scaled coordinates — a diagonal covariance Σ = diag(σ₁²,…,σₙ²) — and the factor √(∏ᵢ bᵢ) = √(det diag b) in the denominator is exactly the |Σ|^{-1/2} that normalizes the multivariate normal density (Bishop, PRML §2.3). Anisotropy is precisely the statement that the coordinates, though still independent, no longer share a common scale."
     ]
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: the diagonal Gaussian and the determinant target",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports, docstring, and namespace preamble. The load-bearing import Mathlib.MeasureTheory.Integral.Pi supplies the general n-variable Fubini lemma integral_fintype_prod_volume_eq_prod (distinct per-axis factors), and GaussianIntegral supplies the base line integral. ℝⁿ is Fin n → ℝ under the product Lebesgue measure and the integrand is the separable product e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ e^{-bᵢ xᵢ²}. The docstring frames the target π^{n/2}/√(∏ᵢ bᵢ) as the diagonal case A = diag(b₁,…,bₙ) of the general quadratic-form Gaussian π^{n/2}/√(det A)."
+    },
+    {
       "id": "product-fubini",
       "title": "The Anisotropic Product–Fubini Step",
-      "startLine": 1,
+      "startLine": 51,
       "endLine": 72,
-      "summary": "gaussian_anisotropic_eq_prod: for every real weight vector b, ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ), via separable factoring (Real.exp_sum), general n-variable Fubini (integral_fintype_prod_volume_eq_prod), and per-axis integral_gaussian."
+      "summary": "gaussian_anisotropic_eq_prod: for every real weight vector b, ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ), via separable factoring (Real.exp_sum), general n-variable Fubini (integral_fintype_prod_volume_eq_prod), and per-axis integral_gaussian. An explicit beta-reduction (simp only []) is needed before Real.exp_sum matches the integrand."
     },
     {
       "id": "determinant-closed-form",
@@ -53,7 +61,7 @@
       "id": "isotropic-recovery",
       "title": "Isotropic Recovery",
       "startLine": 100,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "gaussian_isotropic_recover: the constant weight bᵢ = c collapses the product to a power, recovering the parent's isotropic (π/c)^{n/2} and certifying this as a strict generalization."
     }
   ],
@@ -145,6 +153,11 @@
       "targetId": "area-of-circle-oq-07-oq-04-oq-01",
       "relationship": "extends",
       "description": "Grandparent. Recovers the planar value as the isotropic n = 2 case ∫_{ℝ²} e^{-b(x²+y²)} = π/b."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Lineage root (∫_ℝ e^{-x²} = √π). That entry's n-dimensional open question asks for the general positive-definite quadratic-form Gaussian ∫_{ℝⁿ} e^{-⟨Ax,x⟩} = π^{n/2}/√(det A); this entry supplies its diagonal case, since ∏ᵢ bᵢ = det diag(b₁,…,bₙ) makes π^{n/2}/√(∏ᵢ bᵢ) exactly π^{n/2}/√(det A) for A = diag b. Together with the isotropic sibling area-of-circle-oq-07-oq-04-oq-01-oq-01 (the A = bI case), it reduces the general open question to the orthogonal-diagonalization step left as this entry's own follow-up."
     }
   ],
   "references": [
@@ -172,7 +185,7 @@
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "For every weight vector b : Fin n → ℝ the anisotropic (diagonal) Gaussian integral over ℝⁿ = Fin n → ℝ factors as a product of per-axis one-dimensional Gaussians: ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ) (gaussian_anisotropic_eq_prod), valid for every b with no positivity hypothesis. The separable integrand e^{-∑ᵢ bᵢ xᵢ²} is rewritten as the product ∏ᵢ e^{-bᵢ xᵢ²} (Real.exp_sum) and the general n-variable Fubini theorem integral_fintype_prod_volume_eq_prod collapses the product integral to a product of distinct line integrals, each evaluated by Mathlib's integral_gaussian. For positive weights bᵢ > 0 the product re-assembles into the determinant closed form π^{n/2}/√(∏ᵢ bᵢ) (gaussian_anisotropic_closed_form), using Real.sqrt_div to factor √π and Real.finset_prod_rpow to collect ∏ᵢ √bᵢ = √(∏ᵢ bᵢ). The constant weight bᵢ = c recovers the parent's isotropic (π/c)^{n/2} (gaussian_isotropic_recover). 112 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries. Every Mathlib dependency was checked against the Mathlib v4 source (integral_fintype_prod_volume_eq_prod, integral_gaussian, Real.exp_sum, Real.finset_prod_rpow, Real.sqrt_div, Real.sqrt_eq_rpow, Real.rpow_natCast, Real.rpow_mul, Finset.prod_div_distrib, Finset.sum_neg_distrib, Fintype.card_fin); the file is kernel-verified with `lake env lean` on Mathlib v4.26.0 — all three theorems depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound]. (The product–Fubini step required an explicit beta-reduction (`simp only []`) before `Real.exp_sum` could rewrite the integrand.)",
+    "summary": "For every weight vector b : Fin n → ℝ the anisotropic (diagonal) Gaussian integral over ℝⁿ = Fin n → ℝ factors as a product of per-axis one-dimensional Gaussians: ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ) (gaussian_anisotropic_eq_prod), valid for every b with no positivity hypothesis. The separable integrand e^{-∑ᵢ bᵢ xᵢ²} is rewritten as the product ∏ᵢ e^{-bᵢ xᵢ²} (Real.exp_sum) and the general n-variable Fubini theorem integral_fintype_prod_volume_eq_prod collapses the product integral to a product of distinct line integrals, each evaluated by Mathlib's integral_gaussian. For positive weights bᵢ > 0 the product re-assembles into the determinant closed form π^{n/2}/√(∏ᵢ bᵢ) (gaussian_anisotropic_closed_form), using Real.sqrt_div to factor √π and Real.finset_prod_rpow to collect ∏ᵢ √bᵢ = √(∏ᵢ bᵢ). The constant weight bᵢ = c recovers the parent's isotropic (π/c)^{n/2} (gaussian_isotropic_recover). 114 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries. Every Mathlib dependency was checked against the Mathlib v4 source (integral_fintype_prod_volume_eq_prod, integral_gaussian, Real.exp_sum, Real.finset_prod_rpow, Real.sqrt_div, Real.sqrt_eq_rpow, Real.rpow_natCast, Real.rpow_mul, Finset.prod_div_distrib, Finset.sum_neg_distrib, Fintype.card_fin); the file is kernel-verified with `lake env lean` on Mathlib v4.26.0 — all three theorems depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound]. (The product–Fubini step required an explicit beta-reduction (`simp only []`) before `Real.exp_sum` could rewrite the integrand.)",
     "implications": "This upgrades the isotropic n-dimensional Gaussian from a single weight to a diagonal covariance, identifying the normalizing constant π^{n/2}/√(∏ᵢ bᵢ) = π^{n/2}/√(det diag b) as the diagonal case of the general positive-definite quadratic-form value π^{n/2}/√(det A). The engine is the same separable Fubini factorization as the parent, upgraded from a power of one integral to a product of n distinct line integrals; the parent is exactly the constant-weight specialization. The general quadratic-form statement (via orthogonal diagonalization) is left as the open follow-up.",
     "openQuestions": [
       "Extend to a general positive-definite quadratic form ∫_{ℝⁿ} e^{-⟨Ax,x⟩} = π^{n/2}/√(det A) by orthogonal diagonalization, reducing to the diagonal case proved here.",

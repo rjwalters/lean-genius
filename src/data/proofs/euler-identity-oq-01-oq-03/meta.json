@@ -160,32 +160,36 @@
     "theoremCount": 7,
     "definitionCount": 1
   },
-  "references": {
-    "papers": [
-      {
-        "title": "Miscellanea Analytica de Seriebus et Quadraturis",
-        "authors": [
-          "Abraham de Moivre"
-        ],
-        "year": 1730,
-        "description": "Source of the power law (cos θ + i sin θ)^n = cos nθ + i sin nθ that bears de Moivre's name."
-      },
-      {
-        "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": [
-          "Leonhard Euler"
-        ],
-        "year": 1748,
-        "description": "Euler's formula e^{ix} = cos x + i sin x, the identity that turns De Moivre's power law into the exponent law."
-      }
-    ],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.Complex.Trigonometric",
-      "Mathlib.Analysis.Complex.Exponential",
-      "Mathlib.Algebra.Field.GeomSum"
-    ]
-  },
+  "references": [
+    {
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "authors": [
+        "Abraham de Moivre"
+      ],
+      "year": 1730,
+      "description": "Source of the power law (cos θ + i sin θ)^n = cos nθ + i sin nθ that bears de Moivre's name."
+    },
+    {
+      "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "year": 1748,
+      "description": "Euler's formula e^{ix} = cos x + i sin x, the identity that turns De Moivre's power law into the exponent law."
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.Complex.Trigonometric",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Complex/Trigonometric.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.Complex.Exponential",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Complex/Exponential.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Algebra.Field.GeomSum",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Field/GeomSum.html"
+    }
+  ],
   "crossReferences": [
     {
       "type": "extends",

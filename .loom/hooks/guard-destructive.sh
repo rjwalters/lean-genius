@@ -20,7 +20,7 @@
 #   - Allow: Everything else (exit 0, no output)
 #
 # Output format (Claude Code hooks spec):
-#   { "hookSpecificOutput": { "permissionDecision": "deny|ask", "permissionDecisionReason": "..." } }
+#   { "hookSpecificOutput": { "hookEventName": "PreToolUse", "permissionDecision": "deny|ask", "permissionDecisionReason": "..." } }
 #
 # Error handling: This script MUST never exit with a non-zero code or produce
 # invalid output. Any internal error is caught by the trap, logged for
@@ -75,6 +75,7 @@ deny() {
     local reason="$1"
     if jq -n --arg reason "$reason" '{
         hookSpecificOutput: {
+            hookEventName: "PreToolUse",
             permissionDecision: "deny",
             permissionDecisionReason: $reason
         }
@@ -84,7 +85,7 @@ deny() {
     # jq failed — emit raw JSON as fallback
     local escaped_reason
     escaped_reason=$(echo "$reason" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g; s/\n/\\n/g')
-    echo "{\"hookSpecificOutput\":{\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"${escaped_reason}\"}}"
+    echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"${escaped_reason}\"}}"
     exit 0
 }
 
@@ -93,6 +94,7 @@ ask() {
     local reason="$1"
     if jq -n --arg reason "$reason" '{
         hookSpecificOutput: {
+            hookEventName: "PreToolUse",
             permissionDecision: "ask",
             permissionDecisionReason: $reason
         }
@@ -102,7 +104,7 @@ ask() {
     # jq failed — emit raw JSON as fallback
     local escaped_reason
     escaped_reason=$(echo "$reason" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g; s/\n/\\n/g')
-    echo "{\"hookSpecificOutput\":{\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"${escaped_reason}\"}}"
+    echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"${escaped_reason}\"}}"
     exit 0
 }
 
@@ -123,9 +125,12 @@ ALWAYS_BLOCK_PATTERNS=(
     'git push --force-with-lease origin main'
     'git push --force-with-lease origin master'
 
-    # Filesystem destruction
-    'rm -rf /'
-    'rm -rf /\*'
+    # Filesystem destruction — root only. Anchor the target to exactly `/`
+    # (end / whitespace / glob) so legitimate absolute paths like
+    # `rm -rf /Volumes/Stripe/...` fall through to the scope check below
+    # instead of being caught by a bare `/` substring. Flag order tolerant.
+    'rm\s+-[a-zA-Z]*[rf][a-zA-Z]*\s+/(\s|$|\*)'
+    'rm\s+-[a-zA-Z]*[rf][a-zA-Z]*\s+/\*'
     'rm -rf ~'
     'rm -rf \$HOME'
 
@@ -174,40 +179,48 @@ done
 
 # =============================================================================
 # rm -rf SCOPE CHECK - Block rm with recursive/force flags outside repo
+#
+# Only inspects command SEGMENTS whose command word is a bare filesystem `rm`.
+# `docker rm` / `git rm` / `podman rm` are container/index ops, not filesystem
+# path removals, and are exempt. Target paths are extracted from the rm segment
+# ONLY (split on ; && || | newline), so a path mentioned in an unrelated
+# segment of a compound command (e.g. `docker rm c ; git -C /Volumes/... ...`)
+# is not misread as an rm target. Agent worktree roots (default .loom/worktrees
+# and any configured worktree.root such as /Volumes/Stripe) are in-scope.
 # =============================================================================
 
-# Match rm commands with -r or -f flags (in any combination: -rf, -r -f, -fr, etc.)
-if echo "$COMMAND" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || \
-   echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*r[a-zA-Z]*\s' || \
-   echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*f[a-zA-Z]*\s+-[a-zA-Z]*r[a-zA-Z]*\s'; then
+# Configured worktree root (best-effort; runtime .loom/config.json is gitignored)
+WORKTREE_ROOT=""
+if [[ -n "$REPO_ROOT" ]] && [[ -f "$REPO_ROOT/.loom/config.json" ]] && command -v jq &>/dev/null; then
+    WORKTREE_ROOT=$(jq -r '.worktree.root // empty' "$REPO_ROOT/.loom/config.json" 2>/dev/null) || WORKTREE_ROOT=""
+fi
 
-    # Extract target paths from the rm command (skip flags)
-    TARGETS=$(echo "$COMMAND" | sed 's/rm\s\+//' | tr ' ' '\n' | grep -v '^-' | head -20)
+# Split the compound command into segments and inspect each that is a bare `rm`.
+while IFS= read -r segment; do
+    # Trim leading whitespace
+    segment="${segment#"${segment%%[![:space:]]*}"}"
+    # Command word must be exactly `rm` (exempts docker/git/podman rm, and words
+    # like `confirm`, `rmdir`).
+    [[ "$segment" =~ ^rm[[:space:]] ]] || continue
+    # Only care about recursive/force removals
+    echo "$segment" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || continue
+
+    TARGETS=$(echo "$segment" | sed 's/rm\s\+//' | tr ' ' '\n' | grep -v '^-' | head -20)
 
     for target in $TARGETS; do
-        # Skip empty targets
         [[ -z "$target" ]] && continue
 
         # Skip known-safe patterns (allowlist)
         case "$target" in
-            node_modules|./node_modules|*/node_modules)
-                continue ;;
-            target|./target|*/target)
-                continue ;;
-            dist|./dist|*/dist)
-                continue ;;
-            build|./build|*/build)
-                continue ;;
-            .loom/worktrees/*|*/.loom/worktrees/*)
-                continue ;;
-            .next|./.next|*/.next)
-                continue ;;
-            __pycache__|./__pycache__|*/__pycache__)
-                continue ;;
-            .pytest_cache|./.pytest_cache|*/.pytest_cache)
-                continue ;;
-            *.pyc)
-                continue ;;
+            node_modules|./node_modules|*/node_modules) continue ;;
+            target|./target|*/target) continue ;;
+            dist|./dist|*/dist) continue ;;
+            build|./build|*/build) continue ;;
+            .loom/worktrees/*|*/.loom/worktrees/*) continue ;;
+            .next|./.next|*/.next) continue ;;
+            __pycache__|./__pycache__|*/__pycache__) continue ;;
+            .pytest_cache|./.pytest_cache|*/.pytest_cache) continue ;;
+            *.pyc) continue ;;
         esac
 
         # Resolve path to absolute
@@ -226,14 +239,22 @@ if echo "$COMMAND" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || \
             deny "BLOCKED: rm on protected system path: $ABS_PATH"
         fi
 
-        # Block if outside repo root (when we know the repo root)
-        if [[ -n "$REPO_ROOT" ]] && [[ -n "$ABS_PATH" ]]; then
-            if [[ "$ABS_PATH" != "$REPO_ROOT"* ]]; then
-                deny "BLOCKED: rm target outside repository: $ABS_PATH (repo: $REPO_ROOT)"
+        # In-scope roots: repo root, configured worktree root, and the default
+        # worktree area. rm inside any of these is fine.
+        if [[ -n "$ABS_PATH" ]]; then
+            in_scope=0
+            [[ -n "$REPO_ROOT" ]] && [[ "$ABS_PATH" == "$REPO_ROOT"* ]] && in_scope=1
+            [[ -n "$WORKTREE_ROOT" ]] && [[ "$ABS_PATH" == "$WORKTREE_ROOT"* ]] && in_scope=1
+            # Agent worktrees for this repo (basename match) under any root
+            case "$ABS_PATH" in
+                */lean-genius/*) in_scope=1 ;;
+            esac
+            if [[ -n "$REPO_ROOT" ]] && [[ "$in_scope" -eq 0 ]]; then
+                deny "BLOCKED: rm target outside repository/worktree roots: $ABS_PATH (repo: $REPO_ROOT)"
             fi
         fi
     done
-fi
+done < <(echo "$COMMAND" | tr ';|&' '\n')
 
 # =============================================================================
 # DELETE without WHERE - Database safety
@@ -245,14 +266,91 @@ if echo "$COMMAND" | grep -qiE 'DELETE\s+FROM\s+' && \
 fi
 
 # =============================================================================
+# BRANCH-AWARE GIT FORCE OPS
+#
+# Force pushes and hard resets stay strict on main/master but are allowed
+# without confirmation on working branches, so autonomous/background agents
+# (which cannot answer an "ask" prompt) don't stall on routine branch resets.
+# Operator preference: merge-and-fix-conflicts on shared history; force ops
+# are only routine on single-owner working branches.
+#
+# Destination resolution, in order:
+#   1. explicit refspec on the push command (dst side of src:dst)
+#   2. the branch checked out where the command runs (cwd or `git -C <path>`)
+#   3. unresolvable (detached HEAD, not a repo) -> ask, as before
+# =============================================================================
+
+is_protected_branch() {
+    case "$1" in
+        main|master) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# First simple-command segment of COMMAND matching a pattern (splits on ;|&)
+command_segment() {
+    echo "$COMMAND" | tr ';|&' '\n' | grep -m1 -E "$1" 2>/dev/null || true
+}
+
+# Branch checked out where the command will run (honors `git -C <path>`)
+checked_out_branch() {
+    local seg="$1" path="${CWD:-.}" c_path=""
+    c_path=$(echo "$seg" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+([^[:space:]]+).*/\1/p' 2>/dev/null) || c_path=""
+    [[ -n "$c_path" ]] && path="$c_path"
+    git -C "$path" symbolic-ref --short -q HEAD 2>/dev/null || true
+}
+
+# --- git push --force / -f / --force-with-lease ---
+if echo "$COMMAND" | grep -qE 'git[[:space:]].*push[[:space:]].*(--force([[:space:]=]|$)|--force-with-lease|-[a-zA-Z]*f[a-zA-Z]*([[:space:]]|$))'; then
+    seg=$(command_segment 'git[[:space:]].*push')
+    push_dest=""
+    if [[ -n "$seg" ]]; then
+        # Non-flag tokens after 'push' are [remote] [refspec...]
+        rest="${seg#*push}"
+        pos_args=()
+        for tok in $rest; do
+            case "$tok" in
+                -*) ;;                 # skip flags (incl. --force-with-lease=ref)
+                *) pos_args+=("$tok") ;;
+            esac
+        done
+        if (( ${#pos_args[@]} >= 2 )); then
+            push_dest="${pos_args[1]##*:}"   # dst side of refspec
+            push_dest="${push_dest#refs/heads/}"
+        fi
+    fi
+    # No explicit refspec -> the push targets the checked-out branch
+    if [[ -z "$push_dest" ]]; then
+        push_dest=$(checked_out_branch "$seg")
+    fi
+    if [[ -z "$push_dest" ]]; then
+        ask "Force push with unresolvable target branch — confirm: $COMMAND"
+    elif is_protected_branch "$push_dest"; then
+        deny "BLOCKED: Force push targeting protected branch '$push_dest'"
+    fi
+    # Working branch -> allowed, fall through
+fi
+
+# --- git reset --hard ---
+if echo "$COMMAND" | grep -qE 'git[[:space:]].*reset[[:space:]]+.*--hard'; then
+    seg=$(command_segment 'git[[:space:]].*reset')
+    reset_branch=$(checked_out_branch "$seg")
+    if [[ -z "$reset_branch" ]]; then
+        ask "Hard reset with unresolvable checkout (detached HEAD or not a repo) — confirm: $COMMAND"
+    elif is_protected_branch "$reset_branch"; then
+        ask "Hard reset on protected branch '$reset_branch' — confirm: $COMMAND"
+    fi
+    # Working branch -> allowed, fall through
+fi
+
+# =============================================================================
 # REQUIRE CONFIRMATION - Potentially dangerous but sometimes legitimate
 # =============================================================================
 
 ASK_PATTERNS=(
-    # Git destructive operations (not on main/master - those are blocked above)
-    'git push --force'
-    'git push -f '
-    'git reset --hard'
+    # Git destructive operations
+    # NOTE: force pushes and hard resets are handled by the branch-aware
+    # section below (strict on main/master, allowed on working branches).
     'git clean -fd'
     'git checkout \.'
     'git restore \.'
@@ -269,11 +367,15 @@ ASK_PATTERNS=(
     'aws lambda'
 
     # Docker operations
-    'docker rm'
+    # Container lifecycle ops (rm/stop/kill/restart) are intentionally NOT
+    # listed — containers are disposable and agents routinely manage their
+    # own build containers. Images and volumes stay guarded: images are
+    # shared and volumes hold multi-hour mathlib cache builds.
     'docker rmi'
-    'docker stop'
-    'docker kill'
-    'docker restart'
+    'docker image rm'
+    'docker image prune'
+    'docker volume rm'
+    'docker volume prune'
 
     # Service management
     'systemctl restart'
@@ -297,8 +399,15 @@ ASK_PATTERNS=(
     'cat.*/\.aws/credentials'
 )
 
+# Match ask-patterns against the command with quoted strings removed, so a
+# pattern appearing only inside a string argument (grep "docker rmi" file,
+# echo 'gh pr close', a commit message mentioning a command) doesn't prompt.
+# Real invocations are unquoted at command position and still match. The
+# deny tier above intentionally keeps matching the raw text (fail-safe).
+COMMAND_UNQUOTED=$(printf '%s' "$COMMAND" | sed -E "s/'[^']*'/ /g; s/\"[^\"]*\"/ /g" 2>/dev/null) || COMMAND_UNQUOTED="$COMMAND"
+
 for pattern in "${ASK_PATTERNS[@]}"; do
-    if echo "$COMMAND" | grep -qE "$pattern"; then
+    if echo "$COMMAND_UNQUOTED" | grep -qE "$pattern"; then
         ask "Command requires confirmation: $COMMAND"
     fi
 done
@@ -308,7 +417,21 @@ done
 # =============================================================================
 
 if echo "$COMMAND" | grep -qE 'gh\s+pr\s+merge'; then
-    deny "Use ./.loom/scripts/merge-pr.sh <PR_NUMBER> instead of 'gh pr merge'. The script merges via the GitHub API without local checkout, which avoids worktree errors."
+    # .loom/scripts/ is gitignored runtime state and is not installed in this
+    # repo, so resolve the merge script from the loom checkout as a fallback
+    # rather than pointing agents at a path that doesn't exist.
+    MERGE_PR_SCRIPT="./.loom/scripts/merge-pr.sh"
+    if [[ ! -x "$MERGE_PR_SCRIPT" ]]; then
+        for candidate in \
+            "${LOOM_HOME:-$HOME/GitHub/loom}/defaults/scripts/merge-pr.sh" \
+            "$HOME/GitHub/loom/defaults/scripts/merge-pr.sh"; do
+            if [[ -x "$candidate" ]]; then
+                MERGE_PR_SCRIPT="$candidate"
+                break
+            fi
+        done
+    fi
+    deny "Use $MERGE_PR_SCRIPT <PR_NUMBER> instead of 'gh pr merge'. The script merges via the GitHub API without local checkout, which avoids worktree errors. Known issue: on this host the script's post-merge verify false-negatives ('Merge API call returned but PR is not merged') even when the merge succeeded — always confirm with 'gh pr view <PR_NUMBER> --json state' before retrying."
 fi
 
 # =============================================================================

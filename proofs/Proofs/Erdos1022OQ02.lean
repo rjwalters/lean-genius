@@ -230,6 +230,28 @@ theorem firstMoment_threshold_ge_self (t : ℕ) (ht : 1 ≤ t) :
 theorem firstMomentThreshold_two : firstMomentThreshold 2 = 2 := by
   unfold firstMomentThreshold; norm_num
 
+/-- The first-moment threshold is always strictly positive: `2^{t-1} ≥ 1`.  A base
+    positivity fact for the sparseness bound `c · n ≤ 2^{t-1}` — the admissible density is
+    never vacuously zero. -/
+theorem firstMomentThreshold_pos (t : ℕ) : 0 < firstMomentThreshold t := by
+  unfold firstMomentThreshold; positivity
+
+/-- **Lovász base case `t = 1`** (companion to `firstMomentThreshold_two`).  The threshold
+    at `t = 1` is `1`: `2^0 = 1`.  A single-element set family is trivially 2-colorable, and
+    the crude first-moment bound reflects this with the minimal threshold `1`. -/
+theorem firstMomentThreshold_one : firstMomentThreshold 1 = 1 := by
+  unfold firstMomentThreshold; norm_num
+
+/-- **The threshold is `1` exactly on the degenerate regime `t ≤ 1`.**  `2^{t-1} = 1 ↔ t ≤ 1`:
+    the first-moment sparseness threshold sits at its minimal value `1` precisely for the two
+    truncated-subtraction-collapsed cases `t = 0, 1`, and is `≥ 2` (strictly growing) from
+    `t = 2` onward.  This pins the boundary of the exponential-growth regime driving
+    `firstMoment_threshold_lt` / `_doubles`. -/
+theorem firstMomentThreshold_eq_one_iff (t : ℕ) : firstMomentThreshold t = 1 ↔ t ≤ 1 := by
+  unfold firstMomentThreshold
+  rw [Nat.pow_eq_one]
+  omega
+
 -- ══════════════════════════════════════════════════════════════════
 -- § 6: The threshold diverges — a formal `c_t → ∞`
 -- ══════════════════════════════════════════════════════════════════
@@ -595,6 +617,49 @@ theorem admissibleCoeff_ge_two_pow_sub (hV : 0 < Fintype.card V) (t : ℕ)
   have hk := admissibleCoeff_ge_two_pow_of_card hV (t - Fintype.card V - 1)
   rwa [show Fintype.card V + 1 + (t - Fintype.card V - 1) = t from by omega] at hk
 
+/-
+  §§ 5-7 above bound the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` up to the unavoidable
+  truncated-division `±1` error (`admissibleCoeff_step_bracket`, `admissibleCoeff_bracket`).
+  That error vanishes *exactly* when `|V|` divides the threshold — i.e. when `|V|` is a
+  power of two.  In that case the floor is inert: the coefficient is a clean power of two
+  and doubles with no correction, exhibiting the sharpness of the `+1` slack in the step
+  bracket (it is attained only away from power-of-two ground sets).
+-/
+
+/-- **Exact coefficient for a power-of-two ground set.**  When `|V| = 2^j` with `j ≤ t-1`,
+    the divisor exactly divides the threshold `2^{t-1}`, so the floor in
+    `c(t) = ⌊2^{t-1}/|V|⌋` is inert and the coefficient is the clean power of two
+
+        `c(t) = 2^{t-1-j}`.
+
+    This is the exact special case of the "tracks the real density to within one vertex"
+    bracket `threshold_lt_succ_coeff_mul`: for power-of-two ground sets the one-vertex slack
+    is zero.  Proof: `2^{t-1} / 2^j = 2^{t-1-j}` by `Nat.pow_div`. -/
+theorem admissibleCoeff_eq_of_card_eq_two_pow {j : ℕ} (t : ℕ)
+    (hcard : Fintype.card V = 2 ^ j) (hj : j ≤ t - 1) :
+    firstMomentThreshold t / Fintype.card V = 2 ^ (t - 1 - j) := by
+  unfold firstMomentThreshold
+  rw [hcard, Nat.pow_div hj (by norm_num)]
+
+/-- **The coefficient doubles *exactly* for a power-of-two ground set.**  When `|V| = 2^j`
+    the truncated division loses nothing, so the "at least doubles / at most doubles + 1"
+    step bracket `admissibleCoeff_step_bracket` collapses to exact doubling:
+
+        `c(t+1) = 2·c(t)`      (for `t ≥ 1`, `j ≤ t-1`).
+
+    So the `+1` slack in `admissibleCoeff_step_bracket` / `admissibleCoeff_le_two_mul_succ`
+    is a genuine feature of non-power-of-two ground sets: it is contributed entirely by the
+    per-step remainder `2^{t-1} mod |V|`, which is `0` precisely when `|V| ∣ 2^{t-1}`.  Proof:
+    evaluate the exact value `admissibleCoeff_eq_of_card_eq_two_pow` at `t` and `t+1`. -/
+theorem admissibleCoeff_doubles_of_card_eq_two_pow {j : ℕ} (t : ℕ) (ht : 1 ≤ t)
+    (hcard : Fintype.card V = 2 ^ j) (hj : j ≤ t - 1) :
+    firstMomentThreshold (t + 1) / Fintype.card V
+      = 2 * (firstMomentThreshold t / Fintype.card V) := by
+  rw [admissibleCoeff_eq_of_card_eq_two_pow (t + 1) hcard (by omega),
+      admissibleCoeff_eq_of_card_eq_two_pow t hcard hj,
+      show t + 1 - 1 - j = (t - 1 - j) + 1 from by omega, pow_succ]
+  ring
+
 -- ══════════════════════════════════════════════════════════════════
 -- § 8: Monotonicity of the admissible coefficient in `t`
 -- ══════════════════════════════════════════════════════════════════
@@ -628,5 +693,272 @@ theorem admissibleCoeff_mono {a b : ℕ} (hab : a ≤ b) :
     firstMomentThreshold a / Fintype.card V
       ≤ firstMomentThreshold b / Fintype.card V :=
   Nat.div_le_div_right (firstMomentThreshold_mono hab)
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: Modulus of divergence in *value* form, and the Property-B payoff
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  §§ 5-7 measure the growth of the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` *by rate*:
+  every explicit bound is phrased as "`2^k ≤ c(t + k)`" — a statement about the
+  exponent `k`, not the value reached.  What is still missing is the dual,
+  *value*-indexed reading of the same divergence: given a target coefficient
+  `N`, at which step is it attained?  This section supplies the explicit
+  (linear) modulus `t₀ = |V| + 1 + N` with `N ≤ c(t₀)`, names the coefficient's
+  own `Tendsto … atTop` (used only inline so far, inside
+  `exists_admissible_coeff`), and — the mathematical point — *inverts* the
+  divergence back to Property B: because `c(t)` overtakes every fixed `N`, any
+  *fixed* sparseness coefficient `N`, however large, is defeated once the
+  minimum set size is large enough.  This is the effective converse to
+  `exists_admissible_coeff`, which fixed a diverging `c(t)`; here `N` is fixed
+  and the minimum size varies.
+-/
+
+/-- **The admissible coefficient tends to infinity (named).**  Over a fixed
+    nonempty ground set, `c(t) = ⌊2^{t-1}/|V|⌋ → ∞` as `t → ∞`.  This divergence
+    is used *inline* in the proof of `exists_admissible_coeff` (as the first
+    conjunct of its witness), but is recorded here as a standalone lemma — the
+    coefficient-level companion of `firstMomentThreshold_tendsto_atTop`, and the
+    literal `c_t → ∞` of Problem #1022 read off the explicit coefficient. -/
+theorem admissibleCoeff_tendsto_atTop (hV : 0 < Fintype.card V) :
+    Filter.Tendsto (fun t => firstMomentThreshold t / Fintype.card V)
+      Filter.atTop Filter.atTop :=
+  (tendsto_div_const_atTop hV).comp firstMomentThreshold_tendsto_atTop
+
+/-- **Explicit linear modulus of divergence (value form).**  Every target
+    coefficient value `N` is reached by the explicit, *linear* step
+    `t₀ = |V| + 1 + N`:
+
+        `N ≤ c(|V| + 1 + N) = ⌊2^{|V| + N}/|V|⌋`.
+
+    Where §§ 5-7 bound the coefficient by rate (`2^k ≤ c(|V|+1+k)`, an exponent
+    statement), this reads the same divergence off in the dual direction — as an
+    explicit *inverse* modulus telling, for each desired value `N`, a concrete
+    step at which the coefficient has surpassed it.  Proof: the exponential
+    bound `2^N ≤ c(|V|+1+N)` of `admissibleCoeff_ge_two_pow_of_card` combined
+    with `N ≤ 2^N`. -/
+theorem admissibleCoeff_ge_self (hV : 0 < Fintype.card V) (N : ℕ) :
+    N ≤ firstMomentThreshold (Fintype.card V + 1 + N) / Fintype.card V := by
+  have hpow := admissibleCoeff_ge_two_pow_of_card hV N
+  have hN : N ≤ 2 ^ N := Nat.le_of_lt Nat.lt_two_pow_self
+  exact le_trans hN hpow
+
+/-- **Eventual dominance of any target (value form, filter).**  Packaging
+    `admissibleCoeff_ge_self` with the monotonicity `admissibleCoeff_mono`: for
+    every target `N`, the coefficient is *eventually* at least `N`,
+
+        `∀ N, ∀ᶠ t, N ≤ c(t)`,
+
+    with the explicit witness step `t₀ = |V| + 1 + N`.  This is the value-indexed
+    shadow of `admissibleCoeff_tendsto_atTop` with a concrete modulus attached. -/
+theorem admissibleCoeff_eventually_ge (hV : 0 < Fintype.card V) (N : ℕ) :
+    ∀ᶠ t in Filter.atTop, N ≤ firstMomentThreshold t / Fintype.card V :=
+  Filter.eventually_atTop.mpr
+    ⟨Fintype.card V + 1 + N, fun _t ht =>
+      le_trans (admissibleCoeff_ge_self hV N) (admissibleCoeff_mono ht)⟩
+
+/-- **Large minimum size defeats any fixed sparseness coefficient (the payoff).**
+    The effective converse of `exists_admissible_coeff`.  There the coefficient
+    `c(t)` was allowed to grow with `t`; here we *fix* an arbitrary target
+    sparseness coefficient `N` and show it is tolerated once the minimum set size
+    is large enough: there is an explicit threshold `t₀` (namely `|V| + 1 + N`)
+    such that every `N`-sparse family whose members all have size at least `t₀`
+    has Property B.
+
+        `∀ N, ∃ t₀ ≥ 1, ∀ F, (∀ e ∈ F, t₀ ≤ |e|) → IsSparse F N → HasPropertyB F`.
+
+    So no *constant* sparseness bound is an obstruction to first-moment
+    2-colorability: the minimum size can always be pushed high enough to absorb
+    it.  Proof: `admissibleCoeff_ge_self` gives `N ≤ c(t₀)`, hence
+    `N · |V| ≤ 2^{t₀-1}`, which is exactly the hypothesis `propertyB_of_sparse`
+    needs. -/
+theorem exists_min_size_for_sparse_bound [DecidableEq V] (hV : 0 < Fintype.card V)
+    (N : ℕ) :
+    ∃ t₀ : ℕ, 1 ≤ t₀ ∧ ∀ (F : Finset (Finset V)),
+      (∀ e ∈ F, t₀ ≤ e.card) → IsSparse F N → HasPropertyB F := by
+  refine ⟨Fintype.card V + 1 + N, by omega, fun F hmin hsparse => ?_⟩
+  have hcoeff : N ≤ firstMomentThreshold (Fintype.card V + 1 + N) / Fintype.card V :=
+    admissibleCoeff_ge_self hV N
+  have hbound : N * Fintype.card V ≤ firstMomentThreshold (Fintype.card V + 1 + N) :=
+    (Nat.le_div_iff_mul_le hV).mp hcoeff
+  exact propertyB_of_sparse F (Fintype.card V + 1 + N) N (by omega) hmin hsparse hbound
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 10: Sharp *logarithmic* modulus of divergence
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 9 exhibits an *explicit* modulus of divergence in value form: the target
+  coefficient `N` is reached by step `t₀ = |V| + 1 + N` (`admissibleCoeff_ge_self`,
+  `exists_min_size_for_sparse_bound`).  That modulus is honest but *crude* — it is
+  **linear** in `N`, obtained by throwing away the exponential in `2^N ≤ c(|V|+1+N)`.
+  Yet the defining relation `N ≤ c(t) ⇔ N·|V| ≤ 2^{t-1}` shows the true cost of
+  reaching value `N` is only **logarithmic**: `t` need only clear `1 + ⌈log₂(N·|V|)⌉`.
+
+  This section installs that sharp threshold.  The pivot is the elementary
+  characterization `admissibleCoeff_ge_iff` (a one-line consequence of
+  `Nat.le_div_iff_mul_le`), which via `Nat.clog` sharpens to the exact
+  `N ≤ c(t) ⇔ clog₂(N·|V|) ≤ t-1`.  Reading it forwards gives the logarithmic
+  modulus `t₀ = clog₂(N·|V|) + 1`; a machine-checked inequality then confirms this
+  is never worse than § 9's linear `|V| + 1 + N` (and generically exponentially
+  smaller).  The Property-B payoff of § 9 is re-derived with this sharp `t₀`.
+-/
+
+/-- **Coefficient exceeds a target iff the threshold clears `N·|V|`.**  The defining
+    equivalence behind every divergence bound in this file, stated once as a clean
+    `↔`: the admissible coefficient `c(t) = ⌊2^{t-1}/|V|⌋` reaches a target value `N`
+    exactly when the raw first-moment threshold `2^{t-1}` clears `N` full copies of
+    the ground set,
+
+        `N ≤ c(t)  ↔  N·|V| ≤ 2^{t-1}`.
+
+    Immediate from `Nat.le_div_iff_mul_le` (the floor's Galois connection with
+    multiplication).  Every bound of §§ 5-9 is an estimate of one side of this
+    equivalence; isolating it makes the sharp logarithmic modulus below a two-line
+    consequence. -/
+theorem admissibleCoeff_ge_iff (hV : 0 < Fintype.card V) (N t : ℕ) :
+    N ≤ firstMomentThreshold t / Fintype.card V
+      ↔ N * Fintype.card V ≤ firstMomentThreshold t := by
+  rw [Nat.le_div_iff_mul_le hV]
+
+/-- **Sharp `clog` characterization of the modulus.**  Feeding
+    `admissibleCoeff_ge_iff` through the ceiling-logarithm Galois connection
+    `Nat.le_pow_iff_clog_le` (`x ≤ 2^y ↔ clog₂ x ≤ y`) pins the *exact* step at which
+    the coefficient reaches `N`:
+
+        `N ≤ c(t)  ↔  clog₂(N·|V|) ≤ t - 1`.
+
+    So the threshold is attained precisely when `t` clears `clog₂(N·|V|) + 1`: a
+    **logarithmic** modulus, exponentially sharper than § 9's linear `|V| + 1 + N`. -/
+theorem admissibleCoeff_ge_iff_clog_le (hV : 0 < Fintype.card V) (N t : ℕ) :
+    N ≤ firstMomentThreshold t / Fintype.card V
+      ↔ Nat.clog 2 (N * Fintype.card V) ≤ t - 1 := by
+  rw [admissibleCoeff_ge_iff hV]
+  unfold firstMomentThreshold
+  exact (Nat.clog_le_iff_le_pow (by norm_num)).symm
+
+/-- **The logarithmic modulus (forward form).**  Reading
+    `admissibleCoeff_ge_iff_clog_le` forwards: the target coefficient `N` is reached
+    at *every* step past the logarithmic threshold `t₀ = clog₂(N·|V|) + 1`,
+
+        `clog₂(N·|V|) + 1 ≤ t  ⟹  N ≤ c(t)`.
+
+    This is the sharp counterpart of `admissibleCoeff_ge_self` (whose witness step is
+    the linear `|V| + 1 + N`); here the step is only logarithmic in `N`. -/
+theorem admissibleCoeff_ge_of_clog_le (hV : 0 < Fintype.card V) (N t : ℕ)
+    (ht : Nat.clog 2 (N * Fintype.card V) + 1 ≤ t) :
+    N ≤ firstMomentThreshold t / Fintype.card V := by
+  rw [admissibleCoeff_ge_iff_clog_le hV]
+  omega
+
+/-- **The logarithmic modulus improves on § 9's linear one.**  A machine-checked
+    proof that the sharp threshold never exceeds the crude one,
+
+        `clog₂(N·|V|) + 1  ≤  |V| + 1 + N`,
+
+    so `admissibleCoeff_ge_of_clog_le` strictly dominates `admissibleCoeff_ge_self`.
+    Proof: `N·|V| ≤ 2^N · 2^{|V|} = 2^{N+|V|}` (from `n < 2^n` twice), hence
+    `clog₂(N·|V|) ≤ N + |V|` by `Nat.clog_le_of_le_pow`.  The gap between the two
+    moduli is generically exponential — `clog₂(N·|V|) ≈ log₂ N + log₂ |V|` against the
+    linear `N + |V|`. -/
+theorem admissibleCoeff_log_modulus_le_linear (N : ℕ) :
+    Nat.clog 2 (N * Fintype.card V) + 1 ≤ Fintype.card V + 1 + N := by
+  have hb : N * Fintype.card V ≤ 2 ^ (N + Fintype.card V) := by
+    calc N * Fintype.card V
+          ≤ 2 ^ N * 2 ^ (Fintype.card V) :=
+            Nat.mul_le_mul (Nat.le_of_lt Nat.lt_two_pow_self)
+              (Nat.le_of_lt Nat.lt_two_pow_self)
+      _ = 2 ^ (N + Fintype.card V) := (pow_add 2 N (Fintype.card V)).symm
+  have hc : Nat.clog 2 (N * Fintype.card V) ≤ N + Fintype.card V :=
+    Nat.clog_le_of_le_pow hb
+  omega
+
+/-- **Eventual dominance with the sharp witness.**  The `atTop` companion of
+    `admissibleCoeff_ge_of_clog_le`: for every target `N` the coefficient is
+    eventually at least `N`, now with the *logarithmic* witness step
+    `t₀ = clog₂(N·|V|) + 1` in place of the linear witness of
+    `admissibleCoeff_eventually_ge`. -/
+theorem admissibleCoeff_eventually_ge_sharp (hV : 0 < Fintype.card V) (N : ℕ) :
+    ∀ᶠ t in Filter.atTop, N ≤ firstMomentThreshold t / Fintype.card V :=
+  Filter.eventually_atTop.mpr
+    ⟨Nat.clog 2 (N * Fintype.card V) + 1,
+      fun _t ht => admissibleCoeff_ge_of_clog_le hV N _ ht⟩
+
+/-- **Large minimum size defeats any fixed sparseness coefficient — logarithmically
+    (the sharp payoff).**  The § 9 payoff `exists_min_size_for_sparse_bound` with the
+    linear modulus replaced by the sharp logarithmic one: every fixed `N`-sparse
+    family of `≥ t₀`-sets has Property B already for a minimum size
+
+        `t₀ = clog₂(N·|V|) + 1`,
+
+    only *logarithmic* in the sparseness bound `N`, and — as certified by the middle
+    conjunct `t₀ ≤ |V| + 1 + N` — never worse than the linear threshold of § 9.  So
+    absorbing a constant sparseness coefficient `N` costs only `O(log N)` in the
+    minimum set size, not `O(N)`.  Proof: `admissibleCoeff_ge_of_clog_le` at the
+    logarithmic step yields `N ≤ c(t₀)`, hence `N·|V| ≤ 2^{t₀-1}`, exactly the
+    hypothesis `propertyB_of_sparse` needs; the improvement bound is
+    `admissibleCoeff_log_modulus_le_linear`. -/
+theorem exists_min_size_for_sparse_bound_sharp [DecidableEq V] (hV : 0 < Fintype.card V)
+    (N : ℕ) :
+    ∃ t₀ : ℕ, 1 ≤ t₀ ∧ t₀ ≤ Fintype.card V + 1 + N ∧ ∀ (F : Finset (Finset V)),
+      (∀ e ∈ F, t₀ ≤ e.card) → IsSparse F N → HasPropertyB F := by
+  refine ⟨Nat.clog 2 (N * Fintype.card V) + 1, by omega,
+    admissibleCoeff_log_modulus_le_linear N, fun F hmin hsparse => ?_⟩
+  have hcoeff : N ≤ firstMomentThreshold (Nat.clog 2 (N * Fintype.card V) + 1)
+      / Fintype.card V :=
+    admissibleCoeff_ge_of_clog_le hV N _ (le_refl _)
+  have hbound : N * Fintype.card V
+      ≤ firstMomentThreshold (Nat.clog 2 (N * Fintype.card V) + 1) :=
+    (admissibleCoeff_ge_iff hV N _).mp hcoeff
+  exact propertyB_of_sparse F _ N (by omega) hmin hsparse hbound
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: Strict monotonicity past the positivity threshold
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 8 records the unconditional *non-strict* monotone envelope `c(a) ≤ c(b)`,
+  and `admissibleCoeff_lt_of_pos` records the *consecutive* strict step
+  `c(t) < c(t+1)` (given `0 < c(t)`).  Neither yet says the coefficient is
+  strictly increasing across an *arbitrary* gap `a < b`, which is the precise
+  qualitative shape OQ-02 asks about: past the positivity threshold the
+  admissible sparseness coefficient is not merely non-decreasing but *strictly*
+  increasing — it is never eventually constant.  This section supplies the
+  arbitrary-gap strict bound and packages it as the canonical `StrictMonoOn`.
+-/
+
+/-- **Strict growth over an arbitrary gap, past the positivity threshold.**
+    For `|V| ≤ a < b` the coefficient strictly increases: `c(a) < c(b)`.  Once
+    `a` is large enough that `c(a) > 0` (guaranteed by `|V| ≤ a`, via
+    `admissibleCoeff_pos_of_card_le`), the consecutive strict step
+    `admissibleCoeff_lt_of_pos` gives `c(a) < c(a+1)`, and the non-strict
+    envelope `admissibleCoeff_mono` carries `c(a+1) ≤ c(b)` across the rest of
+    the gap.  This is the multi-step strict refinement of `admissibleCoeff_mono`
+    — the coefficient is strictly increasing on `t ≥ |V|`, not merely between
+    neighbours. -/
+theorem admissibleCoeff_lt_of_card_le_of_lt (hV : 0 < Fintype.card V) {a b : ℕ}
+    (ha : Fintype.card V ≤ a) (hab : a < b) :
+    firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold b / Fintype.card V := by
+  have hpos : 0 < firstMomentThreshold a / Fintype.card V :=
+    admissibleCoeff_pos_of_card_le hV a ha
+  have hstep : firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold (a + 1) / Fintype.card V :=
+    admissibleCoeff_lt_of_pos hV a (by omega) hpos
+  exact lt_of_lt_of_le hstep (admissibleCoeff_mono (by omega))
+
+/-- **The admissible coefficient is strictly monotone on `t ≥ |V|`.**  The
+    canonical `StrictMonoOn` packaging of `admissibleCoeff_lt_of_card_le_of_lt`:
+    on the ray `Set.Ici |V|` the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` is strictly
+    increasing.  This is the sharp qualitative answer to OQ-02's growth-rate
+    question at the ordinal level — beyond the exponential *rate* bounds of
+    §§ 5-7, it records that the sparseness coefficient of a bounded ground set
+    is a genuine strictly increasing sequence in the minimum set size `t`, with
+    no plateau, once past the explicit threshold `|V|`. -/
+theorem admissibleCoeff_strictMonoOn (hV : 0 < Fintype.card V) :
+    StrictMonoOn (fun t => firstMomentThreshold t / Fintype.card V)
+      (Set.Ici (Fintype.card V)) := by
+  intro a ha b _ hab
+  exact admissibleCoeff_lt_of_card_le_of_lt hV (Set.mem_Ici.mp ha) hab
 
 end Erdos1022OQ02

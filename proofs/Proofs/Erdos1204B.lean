@@ -1,6 +1,7 @@
 import Proofs.Erdos1204Problem
 import Proofs.Erdos1204A4
 import Proofs.Erdos1204A5
+import Proofs.Erdos1204A6
 
 /-
 # Erdős #1204 — the second extremal quantity `B(k)`
@@ -382,6 +383,37 @@ theorem A_add_S_le_S_succ (k : ℕ) : A (k + 1) + S k ≤ S (k + 1) := by
   rw [← hsum, hsplit]
   omega
 
+/-- **Sharp per-step sum increment.** Combining the sum recurrence `A_add_S_le_S_succ`
+(`A(k+1) + S(k) ≤ S(k+1)`) with the parity diameter floor `two_mul_sub_one_le_A (k+1)`
+(`2·k ≤ A(k+1)`) yields an explicit lower bound on the one-step growth of the minimal
+sum:
+
+`2·k + S(k) ≤ S(k+1)`.
+
+Telescoped, `∑_{j<k} 2j = k(k-1) ≤ S(k)` recovers the parity floor `sub_mul_le_S`; this
+is exactly its per-step form, and the quantitative sharpening of the qualitative
+`S_le_S_succ`. -/
+theorem two_mul_add_S_le_S_succ (k : ℕ) : 2 * k + S k ≤ S (k + 1) := by
+  have h1 := A_add_S_le_S_succ k
+  have h2 : 2 * k ≤ A (k + 1) := by simpa using two_mul_sub_one_le_A (k + 1)
+  omega
+
+/-- **Strict monotonicity of the minimal sum (for `k ≥ 1`).** For `k ≥ 1` the minimal
+sum strictly increases, `S(k) < S(k+1)`: the per-step increment `two_mul_add_S_le_S_succ`
+gives `S(k+1) ≥ S(k) + 2k ≥ S(k) + 2`. (At `k = 0` only equality holds, `S 0 = S 1 = 0`.)
+This is the sum-side analogue of the diameter's `A_lt_A_succ`, upgrading the weak
+`S_le_S_succ` to a strict inequality off the degenerate `0 → 1` step. -/
+theorem S_lt_S_succ {k : ℕ} (hk : 1 ≤ k) : S k < S (k + 1) := by
+  have h := two_mul_add_S_le_S_succ k
+  omega
+
+/-- **The shifted minimal sum is strictly monotone.** `j ↦ S(j+1)` is strictly
+increasing, each step `S(j+1) < S(j+2)` being `S_lt_S_succ` at `k = j+1 ≥ 1`. The
+sum-side analogue of `A_succ_strictMono`; it strengthens `S_monotone` to strict growth
+on `{k ≥ 1}` (where `S` is only weakly monotone at the `0 → 1` step, `S 0 = S 1 = 0`). -/
+theorem S_succ_strictMono : StrictMono (fun j => S (j + 1)) :=
+  strictMono_nat_of_lt_succ (fun j => S_lt_S_succ (Nat.succ_le_succ (Nat.zero_le j)))
+
 /- ## Divergence of the sum and average extremal quantities
 
 The diameter `A(k)` diverges (`A_tendsto_atTop` in `Erdos1204Problem`). Since the
@@ -389,6 +421,48 @@ minimal sum dominates the minimal diameter (`A_le_S`) and the minimal average is
 bounded below by `k - 1` (`sub_one_le_B`), both `S(k)` and `B(k)` diverge too. The
 sharp rates (`A(k) ∼ k log k`, and the analogous unknown rates for `S` and `B`)
 remain OPEN; only the qualitative unboundedness is recorded here. -/
+
+/-! ### The `k = 6` frontier: `S(6)` and `B(6)` bracketed
+
+Through `k = 5` the minimal-sum and minimal-diameter optima coincided, giving exact
+values `S(2..5)`. At `k = 6` the two optima need not agree: the minimal-diameter witness
+`{0, 4, 6, 10, 12, 16}` (the `A(6) = 16` extremal set) has sum `48`, while the recurrence
+`A_add_S_le_S_succ` only forces `S(6) ≥ A(6) + S(5) = 16 + 28 = 44`. Whether a *lower-sum*
+admissible `6`-set exists (making `S(6) < 48`) is open — it would require a sum-`≤ 47`
+admissible `6`-set, whose admissibility (a condition over *all* primes) is not a finite
+check. We record the resulting exact bracket `44 ≤ S(6) ≤ 48`, hence `22/3 ≤ B(6) ≤ 8`. -/
+
+/-- **Lower bound `44 ≤ S(6)`.** From the sum recurrence `A_add_S_le_S_succ 5`
+(`A(6) + S(5) ≤ S(6)`) with `A(6) = 16` (`A_six`) and `S(5) = 28` (`S_five`). -/
+theorem S_six_ge : 44 ≤ S 6 := by
+  have h : A 6 + S 5 ≤ S 6 := A_add_S_le_S_succ 5
+  rw [A_six, S_five] at h
+  omega
+
+/-- **Upper bound `S(6) ≤ 48`.** The minimal-diameter `A(6)`-extremal set
+`{0, 4, 6, 10, 12, 16}` is admissible (`admissible_witness_six`) with sum `48`, so it bounds
+`S(6)` from above via `S_le`. Together with `S_six_ge` this brackets `44 ≤ S(6) ≤ 48`; the
+exact value is open (it turns on whether a lower-sum admissible `6`-set exists). -/
+theorem S_six_le : S 6 ≤ 48 := by
+  have h := S_le (show ({0, 4, 6, 10, 12, 16} : Finset ℕ).card = 6 by decide)
+    admissible_witness_six
+  have hsum : ({0, 4, 6, 10, 12, 16} : Finset ℕ).sum id = 48 := by decide
+  rw [hsum] at h
+  exact h
+
+/-- **Lower bound `22/3 ≤ B(6)`.** The average form of `S_six_ge`: `B(6) = S(6)/6 ≥ 44/6 = 22/3`. -/
+theorem B_six_ge : (22 : ℚ) / 3 ≤ B 6 := by
+  have h : (44 : ℚ) ≤ (S 6 : ℚ) := by exact_mod_cast S_six_ge
+  rw [B, le_div_iff₀ (by positivity)]
+  push_cast
+  linarith
+
+/-- **Upper bound `B(6) ≤ 8`.** The average form of `S_six_le`: `B(6) = S(6)/6 ≤ 48/6 = 8`. -/
+theorem B_six_le : B 6 ≤ 8 := by
+  have h : (S 6 : ℚ) ≤ 48 := by exact_mod_cast S_six_le
+  rw [B, div_le_iff₀ (by positivity)]
+  push_cast
+  linarith
 
 /-- **`S(k)` diverges.** The minimal admissible sum tends to infinity as `k → ∞`.
 Immediate from `A(k) ≤ S(k)` (`A_le_S`) and the divergence of the diameter

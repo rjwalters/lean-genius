@@ -83,28 +83,44 @@
   },
   "sections": [
     {
-      "id": "bottom-floors",
-      "title": "The Bottom Floors of the Tower",
+      "id": "definition",
+      "title": "The r-Simplex (Figurate) Numbers: Definition",
       "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring framing OQ#3 and the definition figurate r n = (n+r).choose r = C(n+r, r), the count of lattice points in a discrete r-dimensional simplex with n+1 points per edge. The floors of the tower are r = 0 (constant 1), r = 1 (naturals), r = 2 (triangular), r = 3 (tetrahedral), etc.",
+      "mathContext": "figurate r n = C(n+r, r): the r-dimensional simplex/figurate numbers, generalizing the triangular and tetrahedral sequences to arbitrary dimension."
+    },
+    {
+      "id": "bottom-floors",
+      "title": "The Bottom Floors: r = 0, 1, 2, 3",
+      "startLine": 53,
       "endLine": 79,
-      "summary": "Module docstring framing OQ#3, the definition figurate r n = C(n+r, r), and the identifications of the bottom floors: figurate 0 = 1, figurate 1 = n+1, figurate 2 = (n+1)(n+2)/2 (triangular), and 6·figurate 3 = (n+1)(n+2)(n+3) (tetrahedral).",
-      "mathContext": "The constant, line, triangular, and tetrahedral sequences are the r=0,1,2,3 floors of the simplex tower."
+      "summary": "The concrete identifications of the first four floors: figurate 0 = 1 and figurate 1 = n+1 (both @[simp], via Nat.choose_one_right), figurate 2 = (n+1)(n+2)/2 (triangular, via Nat.choose_two_right), and 6·figurate 3 = (n+1)(n+2)(n+3) (tetrahedral, via Nat.ascFactorial expansion).",
+      "mathContext": "The constant, line, triangular, and tetrahedral sequences recovered as the r = 0, 1, 2, 3 floors of the simplex tower."
     },
     {
       "id": "figurate-tower",
-      "title": "The Figurate Tower: Hockey-Stick at Arbitrary r",
+      "title": "The Figurate Tower: Hockey-Stick and Pascal Recurrences",
       "startLine": 81,
       "endLine": 104,
-      "summary": "The central result figurate (r+1) n = ∑_{i=0}^{n} figurate r i (every floor is the running total of the floor below, via Nat.sum_range_add_choose), plus the Pascal recurrence figurate (r+1)(n+1) = figurate r (n+1) + figurate (r+1) n.",
-      "mathContext": "The hockey-stick identity, read uniformly across all dimensions r."
+      "summary": "The central result figurate (r+1) n = ∑_{i=0}^{n} figurate r i (every floor is the running total of the floor below, via Nat.sum_range_add_choose), plus the Pascal recurrence between floors figurate (r+1)(n+1) = figurate r (n+1) + figurate (r+1) n (Nat.choose_succ_succ).",
+      "mathContext": "The hockey-stick (Zhu Shijie) identity read uniformly across all dimensions r, and the two-term Pascal recurrence stepping between adjacent floors."
     },
     {
-      "id": "closed-forms",
-      "title": "Closed Forms",
+      "id": "closed-form",
+      "title": "General Closed Form: the Rising Factorial",
       "startLine": 106,
+      "endLine": 114,
+      "summary": "factorial_mul_figurate: r!·figurate r n = (n+1).ascFactorial r = (n+1)(n+2)···(n+r), via Nat.ascFactorial_eq_factorial_mul_choose. Dividing by r! recovers figurate r n = C(n+r, r); the r = 2, 3 instances are the triangular and tetrahedral formulas from the bottom-floors section.",
+      "mathContext": "r!·figurate r n = (n+1)(n+2)···(n+r): the rising-factorial product form unifying all the per-floor closed forms."
+    },
+    {
+      "id": "multiset-interpretation",
+      "title": "Multiset Interpretation (Stars and Bars)",
+      "startLine": 115,
       "endLine": 124,
-      "summary": "The general product closed form r!·figurate r n = (n+1).ascFactorial r = (n+1)(n+2)···(n+r), and the identification figurate r n = multichoose (n+1) r with Mathlib's multiset count.",
-      "mathContext": "Rising-factorial product form and the stars-and-bars multiset interpretation."
+      "summary": "figurate_eq_multichoose: figurate r n = Nat.multichoose (n+1) r, identifying the r-simplex numbers with Mathlib's multiset count — the number of size-r multisets drawn from n+1 symbols (the stars-and-bars count), via Nat.multichoose_eq.",
+      "mathContext": "figurate r n = multichoose (n+1) r = C(n+r, r): the simplex numbers as the stars-and-bars count of size-r multisets from n+1 symbols."
     }
   ],
   "conclusion": {

@@ -72,6 +72,25 @@ theorem jacobiCount_le_eight_mul_sigma (n : ℕ) :
   unfold jacobiCount
   omega
 
+/-- **Equality in the upper bound holds for odd `n`:** `jacobiCount n = 8·σ₁(n)`.  Every
+divisor `d` of an odd `n` is itself odd, so `4 ∤ d` and the Jacobi filter `4 ∤ d` removes
+nothing — the restricted divisor sum equals the full `σ₁(n)`.  This is the equality case
+promised in `jacobiCount_le_eight_mul_sigma` (the upper bound `8·σ₁(n)` is attained exactly
+when no divisor is a multiple of `4`, in particular for all odd `n`), and matches Jacobi's
+classical `r₄(n) = 8σ₁(n)` for odd `n`. -/
+theorem jacobiCount_odd_eq_eight_mul_sigma {n : ℕ} (hn : Odd n) :
+    jacobiCount n = 8 * ∑ d ∈ n.divisors, d := by
+  unfold jacobiCount
+  have hfilter : n.divisors.filter (fun d => ¬ 4 ∣ d) = n.divisors := by
+    apply Finset.filter_true_of_mem
+    intro d hd h4
+    rw [Nat.mem_divisors] at hd
+    have h2d : (2 : ℕ) ∣ d := dvd_trans ⟨2, rfl⟩ h4
+    have h2n : (2 : ℕ) ∣ n := h2d.trans hd.1
+    have hodd := Nat.odd_iff.mp hn
+    omega
+  rw [hfilter]
+
 /-- Sanity check: `jacobiCount 1 = 8`, so the lower bound is attained at `n = 1`. -/
 example : jacobiCount 1 = 8 := by decide
 

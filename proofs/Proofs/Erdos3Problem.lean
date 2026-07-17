@@ -168,6 +168,25 @@ def SharpRequiredBound (k : ℕ) : Prop :=
   ∃ δ : ℝ, δ > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
     (rothNumber k N : ℝ) ≤ C * N / (Real.log N * (Real.log (Real.log N)) ^ (1 + δ))
 
+/-- **Super-sharp (double-iterated-log) threshold hypothesis.**
+    `r_k(N) = O(N / (log N · log log N · (log log log N)^{1+δ}))` for some `δ > 0`.
+
+    This sits an *entire iterated logarithm below* `SharpRequiredBound`: for large `N`
+    the denominator `log N · log log N · (log log log N)^{1+δ}` is dominated by
+    `log N · (log log N)^{1+δ'}` (any `δ' > 0`), so
+    `SharpRequiredBound ⇒ SuperSharpRequiredBound` while the converse fails. Yet — as with
+    the sharp bound — this even weaker hypothesis *still* forces a convergent reciprocal sum
+    (`summable_of_superSharpBound`), so it *still* implies Erdős #3
+    (`superSharp_required_bound_implies_conjecture`), pushing the provable sufficient
+    threshold down to `N / (log N · log log N · log log log N)` — one more iterated
+    logarithm toward the open divergence borderline. The analytic engine is the
+    constant-in-log *second-axis* Bertrand series
+    `Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const` (with `c = log 2`). -/
+def SuperSharpRequiredBound (k : ℕ) : Prop :=
+  ∃ δ : ℝ, δ > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
+    (rothNumber k N : ℝ) ≤ C * N /
+      (Real.log N * Real.log (Real.log N) * (Real.log (Real.log (Real.log N))) ^ (1 + δ))
+
 /-- If r_k(N) = o(N / log N) for all k, then the conjecture holds.
 
     OPEN CRUX. See `countingFunction_le_rothNumber` (proved) for the first step and
@@ -450,6 +469,85 @@ theorem rothNumber_two (N : ℕ) : rothNumber 2 N = 1 := by
     have h := @rothNumber_ge_min 2 N
     rwa [show (2 - 1 : ℕ) = 1 from rfl, Nat.min_eq_left (by omega : (1 : ℕ) ≤ N + 1)] at h
 
+/-- **A concrete unbounded `3`-AP-free family: the powers of two.**
+    The set `{2^0, 2^1, …, 2^{m-1}}` contains no `3`-term arithmetic progression.
+    Indeed, if three of its members `2^p, 2^q, 2^r` formed an AP `a, a+d, a+2d`
+    (`d > 0`, so `p < r`), then `2^p + 2^r = 2·2^q = 2^{q+1}`. Since `2^p > 0` this
+    forces `2^r < 2^{q+1}`, i.e. `r < q+1`; and since `2^p < 2^r` it forces
+    `2^{q+1} < 2^{r+1}`, i.e. `q < r` — an impossible squeeze `q < r ≤ q`.
+
+    This is the first *explicit AP-free construction* in the file (all previous Roth
+    bounds were counting arguments): a `3`-AP-free set can be arbitrarily large,
+    which is exactly what makes `k ≥ 3` nontrivial. Fully machine-checked, axiom-free,
+    `sorry`-free. -/
+theorem powersOfTwo_isAPFree (m : ℕ) :
+    IsAPFree (↑((Finset.range m).image (fun i => 2 ^ i)) : Set ℕ) 3 := by
+  intro hAP
+  obtain ⟨a, d, hd, hsub⟩ := hAP
+  -- each of the three progression terms `a + i·d` (i < 3) lies in the set
+  have mem : ∀ i : ℕ, i < 3 →
+      a + i * d ∈ (Finset.range m).image (fun i => 2 ^ i) := by
+    intro i hi
+    have hmem : a + i * d ∈ ArithProg a d 3 := by
+      rw [ArithProg, Finset.mem_image]
+      exact ⟨i, Finset.mem_range.mpr hi, rfl⟩
+    exact Finset.mem_coe.mp (hsub (Finset.mem_coe.mpr hmem))
+  obtain ⟨p, _, hp⟩ := Finset.mem_image.mp (mem 0 (by norm_num))
+  obtain ⟨q, _, hq⟩ := Finset.mem_image.mp (mem 1 (by norm_num))
+  obtain ⟨r, _, hr⟩ := Finset.mem_image.mp (mem 2 (by norm_num))
+  -- read off the three defining equalities (β-reduction is definitional)
+  have e0 : (2 : ℕ) ^ p = a + 0 * d := hp
+  have e1 : (2 : ℕ) ^ q = a + 1 * d := hq
+  have e2 : (2 : ℕ) ^ r = a + 2 * d := hr
+  have hsum : 2 ^ p + 2 ^ r = 2 * 2 ^ q := by omega
+  have hpr : 2 ^ p < 2 ^ r := by omega
+  have hpow : 2 * 2 ^ q = 2 ^ (q + 1) := by rw [pow_succ]; ring
+  have hrpow : 2 ^ (r + 1) = 2 ^ r + 2 ^ r := by rw [pow_succ]; ring
+  have hppos : 0 < 2 ^ p := pow_pos (by norm_num) p
+  have h1 : 2 ^ r < 2 ^ (q + 1) := by omega
+  have h2 : 2 ^ (q + 1) < 2 ^ (r + 1) := by omega
+  have hr_lt : r < q + 1 := (Nat.pow_lt_pow_iff_right (by norm_num)).mp h1
+  have hq_lt : q + 1 < r + 1 := (Nat.pow_lt_pow_iff_right (by norm_num)).mp h2
+  omega
+
+/-- **A logarithmic lower bound on the Roth number at `k = 3`:** `r₃(2^m) ≥ m + 1`.
+
+    The `m + 1` distinct powers `2^0, …, 2^m` all lie in the window `{0, …, 2^m}`
+    and form a `3`-AP-free set (`powersOfTwo_isAPFree`), so they enter the family
+    `r₃` maximises over. In particular `r₃(2^m) → ∞`, so the trivial floor
+    `min (k-1) (N+1)` — which for `k = 3` is the *constant* `2` once `N ≥ 2` — is
+    **not** tight for `k = 3`. This is the sharp complement to `rothNumber_two`
+    (`r₂(N) = 1`, floor exactly attained): the boundary `k = 2` is precisely where the
+    floor stops being sharp. Fully machine-checked, axiom-free, `sorry`-free. -/
+theorem rothNumber_three_ge_log (m : ℕ) : m + 1 ≤ rothNumber 3 (2 ^ m) := by
+  set S := (Finset.range (m + 1)).image (fun i => 2 ^ i) with hS
+  have hsub : S ⊆ Finset.range (2 ^ m + 1) := by
+    intro x hx
+    rw [hS, Finset.mem_image] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    rw [Finset.mem_range] at hi ⊢
+    have : 2 ^ i ≤ 2 ^ m := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+  have hfree : IsAPFree (↑S : Set ℕ) 3 := by
+    rw [hS]; exact powersOfTwo_isAPFree (m + 1)
+  have hcard : S.card = m + 1 := by
+    rw [hS, Finset.card_image_of_injective _ (Nat.pow_right_injective (by norm_num)),
+      Finset.card_range]
+  have hmem : S ∈ ((Finset.range (2 ^ m + 1)).powerset.filter
+      (fun T : Finset ℕ => IsAPFree (↑T : Set ℕ) 3)) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨hsub, hfree⟩
+  calc m + 1 = S.card := hcard.symm
+    _ ≤ rothNumber 3 (2 ^ m) := by unfold rothNumber; exact Finset.le_sup hmem
+
+/-- **`r₃` is unbounded.** For every bound `B` there is a window `N` (namely
+    `N = 2^B`) with `r₃(N) ≥ B`. Contrast `rothNumber_two` (`r₂ ≡ 1`, bounded):
+    avoiding `3`-term progressions is genuinely weaker than avoiding `2`-term ones,
+    so no absolute constant caps `r₃`. This is the qualitative dividing line that
+    makes Erdős #3 open at `k ≥ 3` and trivial at `k ≤ 2`. Axiom-free, `sorry`-free. -/
+theorem rothNumber_three_unbounded : ∀ B : ℕ, ∃ N : ℕ, B ≤ rothNumber 3 N :=
+  fun B => ⟨2 ^ B, le_trans (by omega) (rothNumber_three_ge_log B)⟩
+
 /-- **The Roth number vanishes at length `0`:** `r₀(N) = 0`.
 
     A `0`-term progression is the *empty* progression (`ArithProg a d 0 = ∅`), which
@@ -519,7 +617,7 @@ theorem summable_of_strongBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 
       have h1' := (summable_nat_add_iff 1).mpr h1
       simpa using h1'
     rw [hgdef]
-    simpa [div_eq_mul_inv] using h2.mul_left K
+    simpa [mul_one_div] using h2.mul_left K
   -- Threshold beyond which the counting bound holds.
   obtain ⟨N0, hN0⟩ := eventually_atTop.1 hbound
   -- Dyadic block masses.
@@ -921,6 +1019,314 @@ theorem sharp_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N * (Real.log (Real.log N)) ^ (1 + δ)) := hN
   exact hdiv (summable_of_sharpBound hδ hC hcount)
 
+/-- **Super-sharp analytic core of the reduction (double-iterated-log threshold).**
+    If the counting function of `A` obeys
+    `f_A(N) ≤ C · N / (log N · log log N · (log log log N)^{1+δ})` for all large `N`
+    (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. This strengthens `summable_of_sharpBound`:
+    the hypothesis is *weaker* still (its denominator carries an extra `log log N` factor),
+    so the same convergence conclusion says even more.
+
+    Proof by dyadic blocking, exactly as `summable_of_sharpBound`, but the block masses now
+    form the *constant-in-log second-axis* Bertrand series: the reciprocal mass of the block
+    `A ∩ [2^j, 2^{j+1})` is at most
+    `f_A(2^{j+1}) / 2^j ≤ 2C / ((j+1)·log 2 · log((j+1)·log 2) · (log log((j+1)·log 2))^{1+δ})`,
+    the general term of the convergent series
+    `Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const` (with `c = log 2`),
+    whose convergence is exactly what makes this even sharper threshold go through. -/
+theorem summable_of_superSharpBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0 < C)
+    (hbound : ∀ᶠ N in atTop,
+      (countingFunction A N : ℝ)
+        ≤ C * (N : ℝ) / (Real.log N * Real.log (Real.log N) *
+            (Real.log (Real.log (Real.log N))) ^ (1 + δ))) :
+    Summable (fun n : A => (1 : ℝ) / (n : ℝ)) := by
+  classical
+  set F : ℕ → ℝ := fun n => (1 : ℝ) / (n : ℝ) with hF
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog2gt : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
+  set K : ℝ := 2 * C / Real.log 2 with hKdef
+  have hKpos : 0 < K := by rw [hKdef]; positivity
+  obtain ⟨N0, hN0⟩ := eventually_atTop.1 hbound
+  -- Effective dyadic threshold: also forces `(j+1)·log 2 > e`, so the inner `log log` is > 0.
+  set Nthr : ℕ := max N0 5 with hNthrdef
+  have hlogpos : ∀ j : ℕ, Nthr ≤ j → 1 < Real.log (((j : ℝ) + 1) * Real.log 2) := by
+    intro j hj
+    have hj5 : (5 : ℕ) ≤ j := le_trans (le_max_right N0 5) hj
+    have hjr : (6 : ℝ) ≤ (j : ℝ) + 1 := by
+      have : (6 : ℕ) ≤ j + 1 := by omega
+      exact_mod_cast this
+    have hxpos : 0 < ((j : ℝ) + 1) * Real.log 2 := mul_pos (by positivity) hlog2
+    rw [Real.lt_log_iff_exp_lt hxpos]
+    have hle : (6 : ℝ) * Real.log 2 ≤ ((j : ℝ) + 1) * Real.log 2 :=
+      mul_le_mul_of_nonneg_right hjr hlog2.le
+    have hexp : Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+    calc Real.exp 1 < 6 * Real.log 2 := by linarith [hlog2gt, hexp]
+      _ ≤ ((j : ℝ) + 1) * Real.log 2 := hle
+  -- The block-mass envelope: the const-in-log second-axis Bertrand term above threshold.
+  set full : ℕ → ℝ :=
+    fun j => K / (((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+      (Real.log (Real.log (((j : ℝ) + 1) * Real.log 2))) ^ (1 + δ))
+    with hfulldef
+  have hfullpos : ∀ j : ℕ, Nthr ≤ j → 0 < full j := by
+    intro j hj
+    rw [hfulldef]
+    have hlp : 1 < Real.log (((j : ℝ) + 1) * Real.log 2) := hlogpos j hj
+    have hllp : 0 < Real.log (Real.log (((j : ℝ) + 1) * Real.log 2)) := Real.log_pos hlp
+    have hden : 0 < ((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+        (Real.log (Real.log (((j : ℝ) + 1) * Real.log 2))) ^ (1 + δ) :=
+      mul_pos (mul_pos (by positivity) (lt_trans one_pos hlp)) (Real.rpow_pos_of_pos hllp _)
+    exact div_pos hKpos hden
+  set g : ℕ → ℝ := {j : ℕ | Nthr ≤ j}.indicator full with hgdef
+  have hg_nonneg : ∀ j, 0 ≤ g j := by
+    intro j
+    rw [hgdef, Set.indicator_apply]
+    split_ifs with hj
+    · exact (hfullpos j hj).le
+    · exact le_refl 0
+  -- g is summable: `full` is a constant multiple of the convergent second-axis series.
+  have hfull_summable : Summable full := by
+    have hbase := Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const
+      (c := Real.log 2) hlog2 hδ
+    have hshift := (summable_nat_add_iff 1).mpr hbase
+    rw [hfulldef]
+    refine (hshift.mul_left K).congr (fun j => ?_)
+    push_cast
+    rw [mul_one_div]
+  have hg_summable : Summable g := by
+    rw [hgdef]
+    refine (summable_nat_add_iff Nthr).mp ?_
+    refine ((summable_nat_add_iff Nthr).mpr hfull_summable).congr (fun n => ?_)
+    exact (Set.indicator_of_mem (Nat.le_add_left Nthr n) full).symm
+  -- Dyadic block masses.
+  set block : ℕ → ℝ := fun j => ∑ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), A.indicator F i
+    with hblockdef
+  have hterm_le : ∀ j, ∀ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)),
+      A.indicator F i ≤ 1 / (2 : ℝ) ^ j := by
+    intro j i hi
+    rw [Finset.mem_Ico] at hi
+    have h2j : (2 : ℝ) ^ j ≤ (i : ℝ) := by exact_mod_cast hi.1
+    by_cases hmem : i ∈ A
+    · rw [Set.indicator_of_mem hmem, hF]
+      exact one_div_le_one_div_of_le (by positivity) h2j
+    · rw [Set.indicator_of_notMem hmem]; positivity
+  have hcrude : ∀ j, block j ≤ 1 := by
+    intro j
+    simp only [hblockdef]
+    calc ∑ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), A.indicator F i
+        ≤ ∑ _i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), (1 / (2 : ℝ) ^ j) :=
+          Finset.sum_le_sum (hterm_le j)
+      _ = (Finset.Ico (2 ^ j) (2 ^ (j + 1))).card • (1 / (2 : ℝ) ^ j) := by
+          rw [Finset.sum_const]
+      _ = 1 := by
+          rw [Nat.card_Ico, nsmul_eq_mul]
+          have hsub : 2 ^ (j + 1) - 2 ^ j = 2 ^ j := by rw [pow_succ]; omega
+          rw [hsub, Nat.cast_pow, Nat.cast_ofNat, mul_one_div,
+            div_self (by positivity)]
+  -- Strong bound: for j ≥ Nthr, block mass ≤ g j.
+  have hstrong : ∀ j, Nthr ≤ j → block j ≤ g j := by
+    intro j hj
+    have hgj : g j = full j := by rw [hgdef]; exact Set.indicator_of_mem hj full
+    rw [hgj]
+    have hbe : block j
+        = ∑ i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), F i := by
+      simp only [hblockdef, Set.indicator_apply]
+      rw [← Finset.sum_filter]
+    have hN0le : N0 ≤ 2 ^ (j + 1) :=
+      le_trans (le_trans (le_max_left N0 5) hj)
+        (le_trans (Nat.le_succ j) (Nat.le_of_lt Nat.lt_two_pow_self))
+    have hcb := hN0 (2 ^ (j + 1)) hN0le
+    have hcard : ((Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A)).card
+        ≤ countingFunction A (2 ^ (j + 1)) := by
+      rw [countingFunction]
+      apply Finset.card_le_card
+      intro x hx
+      rw [Finset.mem_filter, Finset.mem_Ico] at hx
+      rw [Finset.mem_filter, Finset.mem_range]
+      exact ⟨by omega, hx.2⟩
+    have hlogval : Real.log ((2 ^ (j + 1) : ℕ) : ℝ) = ((j : ℝ) + 1) * Real.log 2 := by
+      rw [Nat.cast_pow, Nat.cast_ofNat, Real.log_pow]; push_cast; ring
+    have hloglogval : Real.log (Real.log ((2 ^ (j + 1) : ℕ) : ℝ))
+        = Real.log (((j : ℝ) + 1) * Real.log 2) := by rw [hlogval]
+    have hnum : ((2 ^ (j + 1) : ℕ) : ℝ) = (2 : ℝ) ^ j * 2 := by
+      rw [Nat.cast_pow, Nat.cast_ofNat, pow_succ]
+    rw [hbe]
+    calc ∑ i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), F i
+        ≤ ∑ _i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), (1 / (2 : ℝ) ^ j) := by
+          apply Finset.sum_le_sum
+          intro i hi
+          rw [Finset.mem_filter, Finset.mem_Ico] at hi
+          rw [hF]
+          exact one_div_le_one_div_of_le (by positivity) (by exact_mod_cast hi.1.1)
+      _ = (((Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A)).card : ℝ) * (1 / (2 : ℝ) ^ j) := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ ≤ (countingFunction A (2 ^ (j + 1)) : ℝ) * (1 / (2 : ℝ) ^ j) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          exact_mod_cast hcard
+      _ ≤ (C * ((2 ^ (j + 1) : ℕ) : ℝ)
+            / (Real.log ((2 ^ (j + 1) : ℕ) : ℝ)
+              * Real.log (Real.log ((2 ^ (j + 1) : ℕ) : ℝ))
+              * (Real.log (Real.log (Real.log ((2 ^ (j + 1) : ℕ) : ℝ)))) ^ (1 + δ)))
+            * (1 / (2 : ℝ) ^ j) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          exact hcb
+      _ = full j := by
+          rw [hfulldef, hloglogval, hlogval, hnum, hKdef]
+          have ha : (2 : ℝ) ^ j ≠ 0 := by positivity
+          have hb : ((j : ℝ) + 1) ≠ 0 := by positivity
+          have hln2 : Real.log 2 ≠ 0 := ne_of_gt hlog2
+          have hlp : 1 < Real.log (((j : ℝ) + 1) * Real.log 2) := hlogpos j hj
+          have hlp0 : Real.log (((j : ℝ) + 1) * Real.log 2) ≠ 0 :=
+            ne_of_gt (lt_trans one_pos hlp)
+          have hllp : 0 < Real.log (Real.log (((j : ℝ) + 1) * Real.log 2)) := Real.log_pos hlp
+          have hpw : (Real.log (Real.log (((j : ℝ) + 1) * Real.log 2))) ^ (1 + δ) ≠ 0 :=
+            ne_of_gt (Real.rpow_pos_of_pos hllp _)
+          field_simp
+  have hcombine : ∀ j, block j ≤ (if j < Nthr then (1 : ℝ) else 0) + g j := by
+    intro j
+    by_cases hjN : j < Nthr
+    · simp only [hjN, if_true]
+      linarith [hcrude j, hg_nonneg j]
+    · simp only [hjN, if_false, zero_add]
+      exact hstrong j (Nat.le_of_not_lt hjN)
+  have hind0 : A.indicator F 0 = 0 := by simp [Set.indicator_apply, hF]
+  have hdyadic : ∀ J : ℕ, ∑ i ∈ Finset.Ico 1 (2 ^ J), A.indicator F i
+      = ∑ j ∈ Finset.range J, block j := by
+    intro J
+    induction J with
+    | zero => simp
+    | succ J ih =>
+      rw [Finset.sum_range_succ, ← ih]
+      simp only [hblockdef]
+      exact (Finset.sum_Ico_consecutive (A.indicator F)
+        (Nat.one_le_pow J 2 (by norm_num))
+        (Nat.pow_le_pow_right (by norm_num) (Nat.le_succ J))).symm
+  suffices hind : Summable (A.indicator F) by
+    exact summable_subtype_iff_indicator.mpr hind
+  apply summable_of_sum_range_le (c := (Nthr : ℝ) + ∑' j, g j)
+  · intro n
+    exact Set.indicator_nonneg (fun i _ => by rw [hF]; positivity) n
+  · intro M
+    have hsubM : Finset.range M ⊆ Finset.range (2 ^ M) := by
+      intro x hx
+      rw [Finset.mem_range] at hx ⊢
+      exact lt_of_lt_of_le hx (Nat.le_of_lt Nat.lt_two_pow_self)
+    have hle1 : ∑ i ∈ Finset.range M, A.indicator F i
+        ≤ ∑ i ∈ Finset.range (2 ^ M), A.indicator F i := by
+      apply Finset.sum_le_sum_of_subset_of_nonneg hsubM
+      intro i _ _
+      exact Set.indicator_nonneg (fun a _ => by rw [hF]; positivity) i
+    have hsplit : ∑ i ∈ Finset.range (2 ^ M), A.indicator F i
+        = ∑ i ∈ Finset.Ico 1 (2 ^ M), A.indicator F i := by
+      rw [Finset.range_eq_Ico,
+        ← Finset.sum_Ico_consecutive (A.indicator F) (Nat.zero_le 1)
+          (Nat.one_le_pow M 2 (by norm_num)),
+        ← Finset.range_eq_Ico, Finset.sum_range_one, hind0, zero_add]
+    calc ∑ i ∈ Finset.range M, A.indicator F i
+        ≤ ∑ j ∈ Finset.range M, block j := by rw [← hdyadic M, ← hsplit]; exact hle1
+      _ ≤ ∑ j ∈ Finset.range M, ((if j < Nthr then (1 : ℝ) else 0) + g j) :=
+          Finset.sum_le_sum (fun j _ => hcombine j)
+      _ = (∑ j ∈ Finset.range M, (if j < Nthr then (1 : ℝ) else 0))
+            + ∑ j ∈ Finset.range M, g j := by rw [Finset.sum_add_distrib]
+      _ ≤ (Nthr : ℝ) + ∑' j, g j := by
+          apply _root_.add_le_add
+          · rw [Finset.sum_boole]
+            have hsub2 : (Finset.range M).filter (· < Nthr) ⊆ Finset.range Nthr := by
+              intro x hx
+              rw [Finset.mem_filter] at hx
+              exact Finset.mem_range.2 hx.2
+            calc (((Finset.range M).filter (· < Nthr)).card : ℝ)
+                ≤ ((Finset.range Nthr).card : ℝ) := by exact_mod_cast Finset.card_le_card hsub2
+              _ = (Nthr : ℝ) := by rw [Finset.card_range]
+          · exact Summable.sum_le_tsum _ (fun j _ => hg_nonneg j) hg_summable
+
+/-- **The super-sharp reduction goes through at the double-iterated-log threshold.**
+    If `r_k(N) = O(N / (log N · log log N · (log log log N)^{1+δ}))` for some `δ > 0` and
+    every `k ≥ 3` (`SuperSharpRequiredBound`), then Erdős #3 holds. This strictly sharpens
+    `sharp_required_bound_implies_conjecture`: the hypothesis is one further *iterated
+    logarithm* weaker (see `SuperSharpRequiredBound`), yet it still forces a convergent
+    reciprocal sum (`summable_of_superSharpBound`) and hence still implies the conjecture.
+
+    Fully machine-checked, `sorry`-free, axiom-free (it only depends on the verified
+    constant-in-log second-axis Bertrand series
+    `Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const`). -/
+theorem superSharp_required_bound_implies_conjecture :
+    (∀ k : ℕ, k ≥ 3 → SuperSharpRequiredBound k) → Erdos3Conjecture := by
+  intro hbound A hdiv k
+  apply containsAP_of_le (le_max_left k 3)
+  by_contra hAPfree
+  have hApf : IsAPFree A (max k 3) := hAPfree
+  obtain ⟨δ, hδ, C, hC, hev⟩ := hbound (max k 3) (le_max_right k 3)
+  have hcount : ∀ᶠ N in atTop,
+      (countingFunction A N : ℝ)
+        ≤ C * (N : ℝ) / (Real.log N * Real.log (Real.log N) *
+            (Real.log (Real.log (Real.log N))) ^ (1 + δ)) := by
+    filter_upwards [hev] with N hN
+    calc (countingFunction A N : ℝ) ≤ (rothNumber (max k 3) N : ℝ) := by
+          exact_mod_cast countingFunction_le_rothNumber A (max k 3) N hApf
+      _ ≤ C * (N : ℝ) / (Real.log N * Real.log (Real.log N) *
+            (Real.log (Real.log (Real.log N))) ^ (1 + δ)) := hN
+  exact hdiv (summable_of_superSharpBound hδ hC hcount)
+
+/- ## Sharpness of the super-sharp reduction: the innermost `1+δ` exponent is essential
+
+   The reduction `summable_of_superSharpBound` runs by *dyadic blocking*: the reciprocal
+   mass of the `j`-th block `[2ʲ, 2ʲ⁺¹)` is bounded by the second-axis Bertrand envelope
+   `1 / ((j+1)·log((j+1)·log 2)·(log log((j+1)·log 2))^{1+δ})`. The key structural fact is
+   that the *third* iterated logarithm `log log log N` at level `N = 2ʲ⁺¹` collapses to a
+   *second* iterated logarithm `log log((j+1)·log 2)` in the block index `j`, because
+   `log N = (j+1)·log 2` — one iterated logarithm is "spent" by the dyadic substitution.
+
+   The two lemmas below isolate this envelope and pin the convergence/divergence transition
+   of the whole method *exactly* at `δ = 0`:
+
+   * `summable_superSharp_envelope` (δ > 0): the envelope converges — the analytic engine
+     of `summable_of_superSharpBound`.
+   * `not_summable_superSharp_envelope_borderline` (δ = 0): dropping the innermost exponent
+     to `1` — i.e. weakening the threshold to `N/(log N·log log N·log log log N)` — makes the
+     envelope the *divergent* second-axis Bertrand borderline. So the dyadic method cannot
+     reach that borderline; the `1+δ` power in `SuperSharpRequiredBound` is sharp.
+
+   Both are axiom-free, resting only on the verified Bertrand series of `Erdos3Bertrand`. -/
+
+/-- **The dyadic block-mass envelope of the super-sharp reduction converges (`δ > 0`).**
+    The `j`-th dyadic block `[2ʲ, 2ʲ⁺¹)` contributes reciprocal mass at most
+    `1 / ((j+1)·log((j+1)·log 2)·(log log((j+1)·log 2))^{1+δ})`, the constant-in-log
+    *second-axis* Bertrand term (the level-`N` factor `(log log log N)^{1+δ}` becomes
+    `(log log((j+1)·log 2))^{1+δ}` at `N = 2ʲ⁺¹`). This envelope is summable for every
+    `δ > 0`; it is exactly the analytic input that powers `summable_of_superSharpBound`.
+    Isolated here as a reusable, axiom-free lemma. -/
+theorem summable_superSharp_envelope {δ : ℝ} (hδ : 0 < δ) :
+    Summable (fun j : ℕ =>
+      1 / (((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+        (Real.log (Real.log (((j : ℝ) + 1) * Real.log 2))) ^ (1 + δ))) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hbase := Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const
+    (c := Real.log 2) hlog2 hδ
+  rw [← summable_nat_add_iff 1] at hbase
+  refine hbase.congr (fun j => ?_)
+  simp only [Nat.cast_add, Nat.cast_one]
+
+/-- **Sharpness: at the borderline `δ = 0` the block-mass envelope diverges.**
+    If the innermost iterated logarithm in `SuperSharpRequiredBound` carried exponent `1`
+    instead of `1+δ` — i.e. the threshold `r_k(N) = O(N/(log N·log log N·log log log N))` —
+    the dyadic block-mass envelope would be the second-axis Bertrand *borderline*
+    `1 / ((j+1)·log((j+1)·log 2)·log log((j+1)·log 2))`, which **diverges** (it is a shift
+    and constant multiple of `Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const`
+    with `c = log 2`). Consequently the dyadic-blocking reduction of `summable_of_superSharpBound`
+    is *sharp*: its innermost `1+δ` power cannot be dropped to `1`. Together with
+    `summable_superSharp_envelope` this locates the method's convergence/divergence transition
+    precisely at `δ = 0`. Axiom-free. -/
+theorem not_summable_superSharp_envelope_borderline :
+    ¬ Summable (fun j : ℕ =>
+      1 / (((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+        Real.log (Real.log (((j : ℝ) + 1) * Real.log 2)))) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  intro hsum
+  apply Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const
+    (c := Real.log 2) hlog2
+  rw [← summable_nat_add_iff 1]
+  refine hsum.congr (fun j => ?_)
+  simp only [Nat.cast_add, Nat.cast_one]
+
 /-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
     The contrapositive of `summable_of_strongBound`, packaged as a positive density
     statement: if `∑_{a∈A} 1/a = ∞` then for every `C, δ > 0` the counting function
@@ -1093,6 +1499,69 @@ theorem sharpRequiredBound_implies_requiredBound {k : ℕ}
     mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL0.le) (by linarith)
   nlinarith [hfac]
 
+/-- **The super-sharp threshold implies the weak (`o(N/log N)`) threshold.**
+    `SuperSharpRequiredBound k ⇒ RequiredBound k`.  Even the double-iterated-log bound
+    `r_k(N) = O(N / (log N · log log N · (log log log N)^{1+δ}))` still sits below every
+    `c · N / log N`, because its extra denominator factor `log log N · (log log log N)^{1+δ}`
+    tends to `∞`.  The super-sharp analogue of `sharpRequiredBound_implies_requiredBound`;
+    together with `sharpRequiredBound_implies_superSharpRequiredBound` it places
+    `SuperSharpRequiredBound` fully inside the ordering lattice
+    `Strong ⇒ Sharp ⇒ SuperSharp ⇒ Required`, so `superSharp_required_bound_implies_conjecture`
+    is a genuine conditional sufficient hypothesis strictly weaker than the sharp one yet still
+    below the `o(N/log N)` divergence borderline.  Axiom-free. -/
+theorem superSharpRequiredBound_implies_requiredBound {k : ℕ}
+    (h : SuperSharpRequiredBound k) : RequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  intro c hc
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlog
+  have hlogloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (Real.log (N : ℝ))))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hloglog
+  have hδ1 : (0 : ℝ) < 1 + δ := by linarith
+  have hMgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (Real.log (N : ℝ)) :=
+    hloglog.eventually (eventually_gt_atTop 1)
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  -- The extra denominator factor `log log N · (log log log N)^{1+δ}` tends to `∞`.
+  have hextratop : Filter.Tendsto
+      (fun N : ℕ => Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ)) Filter.atTop Filter.atTop := by
+    refine Filter.tendsto_atTop_mono' Filter.atTop ?_ ((tendsto_rpow_atTop hδ1).comp hlogloglog)
+    filter_upwards [hMgt] with N hM
+    exact le_mul_of_one_le_left (Real.rpow_nonneg (Real.log_pos hM).le _) hM.le
+  -- Hence `C / (that factor) → 0`, so eventually it is `< c`.
+  have hneg : Filter.Tendsto
+      (fun N : ℕ => C * (Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ))⁻¹) Filter.atTop (nhds 0) := by
+    have hmul := hextratop.inv_tendsto_atTop.const_mul C
+    simpa using hmul
+  have hlt : ∀ᶠ N : ℕ in Filter.atTop,
+      C * (Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ))⁻¹ < c := by
+    have hmem : Set.Iio c ∈ nhds (0 : ℝ) := isOpen_Iio.mem_nhds hc
+    filter_upwards [hneg.eventually hmem] with N hN using hN
+  filter_upwards [hev, hlt, hLgt, hMgt] with N hN hNlt hL hM
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  set M : ℝ := Real.log (Real.log (N : ℝ)) with hMdef
+  set P : ℝ := Real.log (Real.log (Real.log (N : ℝ))) with hPdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hM0 : 0 < M := lt_trans one_pos hM
+  have hP0 : 0 < P := Real.log_pos hM
+  have hPpow : (0 : ℝ) < P ^ (1 + δ) := Real.rpow_pos_of_pos hP0 _
+  have hextra_pos : (0 : ℝ) < M * P ^ (1 + δ) := mul_pos hM0 hPpow
+  -- Turn the leading-factor bound into `C ≤ c · (M · P^{1+δ})`.
+  rw [← div_eq_mul_inv] at hNlt
+  have hCle : C ≤ c * (M * P ^ (1 + δ)) := (div_le_iff₀ hextra_pos).mp hNlt.le
+  -- Bigger denominator on the left ⇒ the super-sharp bound transfers to the weak one.
+  refine le_trans hN ?_
+  have hden_pos : (0 : ℝ) < L * M * P ^ (1 + δ) := mul_pos (mul_pos hL0 hM0) hPpow
+  rw [div_le_div_iff₀ hden_pos hL0]
+  have hfac : 0 ≤ (N : ℝ) * L * (c * (M * P ^ (1 + δ)) - C) :=
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL0.le) (by linarith)
+  nlinarith [hfac]
+
 /-- **The strong threshold hypothesis is downward-closed in the length.**
     `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
     witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.
@@ -1117,6 +1586,83 @@ theorem sharpRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
   refine ⟨δ, hδ, C, hC, ?_⟩
   filter_upwards [hev] with N hN
   exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The super-sharp threshold hypothesis is downward-closed in the length.**
+    `SuperSharpRequiredBound m` implies `SuperSharpRequiredBound k` for every `k ≤ m`: the
+    same witnesses `δ, C` work because `r_k(N) ≤ r_m(N)` by `rothNumber_mono`, and the
+    (double-iterated-log) denominator is unchanged. Completes the monotonicity row of the
+    threshold lattice alongside `strongRequiredBound_mono`, `sharpRequiredBound_mono`, and
+    `requiredBound_mono`. Axiom-free. -/
+theorem superSharpRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : SuperSharpRequiredBound m) : SuperSharpRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨δ, hδ, C, hC, ?_⟩
+  filter_upwards [hev] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The sharp threshold implies the super-sharp threshold.**
+    `SharpRequiredBound k` (`r_k(N) = O(N/(log N · (log log N)^{1+δ}))`) implies
+    `SuperSharpRequiredBound k` (`r_k(N) = O(N/(log N · log log N · (log log log N)^{1+δ'}))`).
+    Setting `M = log log N`, the super-sharp denominator `log N · M · (log M)^2` is dominated
+    by the sharp one `log N · M^{1+δ}` because `(log M)^2 ≤ M^δ` eventually: `log M = o(M^{δ/2})`
+    (`isLittleO_log_rpow_atTop` with exponent `δ/2 > 0`, composed with `log log N → ∞`), and
+    squaring gives the bound. A bigger denominator makes a smaller quotient, so the sharp
+    bound transfers.
+
+    This is the exact analogue of `strongRequiredBound_implies_sharpRequiredBound` one
+    iterated logarithm lower, formalizing the ordering asserted in the
+    `SuperSharpRequiredBound` docstring (`SharpRequiredBound ⇒ SuperSharpRequiredBound`,
+    converse fails) and extending the implication lattice to
+    `StrongRequiredBound ⇒ SharpRequiredBound ⇒ SuperSharpRequiredBound`. It certifies that
+    `superSharp_required_bound_implies_conjecture` genuinely sharpens
+    `sharp_required_bound_implies_conjecture`: its hypothesis is *implied by* — hence no
+    stronger than — the sharp one. Axiom-free. -/
+theorem sharpRequiredBound_implies_superSharpRequiredBound {k : ℕ}
+    (h : SharpRequiredBound k) : SuperSharpRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨1, one_pos, C, hC, ?_⟩
+  -- `log N → ∞`, hence `log log N → ∞`, so `log (log log N) = o((log log N)^{δ/2})`.
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlog
+  have hr : (0 : ℝ) < δ / 2 := by linarith
+  have hlittle := (isLittleO_log_rpow_atTop hr).comp_tendsto hloglog
+  have hbound := Asymptotics.isLittleO_iff.mp hlittle (one_pos)
+  simp only [Function.comp_apply] at hbound
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  have hMgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (Real.log (N : ℝ)) :=
+    hloglog.eventually (eventually_gt_atTop 1)
+  filter_upwards [hev, hbound, hLgt, hMgt] with N hN hb hL hM
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  set M : ℝ := Real.log L with hMdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hM0 : 0 < M := lt_trans one_pos hM
+  have hLM0 : 0 < Real.log M := Real.log_pos hM
+  have hpow0 : (0 : ℝ) < M ^ (δ / 2) := Real.rpow_pos_of_pos hM0 _
+  rw [one_mul, Real.norm_of_nonneg hLM0.le, Real.norm_of_nonneg hpow0.le] at hb
+  -- `(log M)^2 ≤ (M^{δ/2})^2 = M^δ`.
+  have hstep : (Real.log M) ^ (1 + 1 : ℝ) ≤ (M ^ (δ / 2)) ^ (1 + 1 : ℝ) :=
+    Real.rpow_le_rpow hLM0.le hb (by norm_num)
+  have hcollapse : (M ^ (δ / 2)) ^ (1 + 1 : ℝ) = M ^ δ := by
+    rw [← Real.rpow_mul hM0.le]; congr 1; ring
+  have hpow_le : (Real.log M) ^ (1 + 1 : ℝ) ≤ M ^ δ := hcollapse ▸ hstep
+  -- The super-sharp denominator is dominated by the sharp one: `L·M·(log M)^2 ≤ L·M^{1+δ}`.
+  have hMd : M * M ^ δ = M ^ (1 + δ) := by rw [Real.rpow_add hM0, Real.rpow_one]
+  have hdenom_le : L * M * (Real.log M) ^ (1 + 1 : ℝ) ≤ L * M ^ (1 + δ) := by
+    calc L * M * (Real.log M) ^ (1 + 1 : ℝ)
+          ≤ L * M * M ^ δ :=
+            mul_le_mul_of_nonneg_left hpow_le (mul_nonneg hL0.le hM0.le)
+      _ = L * M ^ (1 + δ) := by rw [mul_assoc, hMd]
+  -- Bigger denominator ⇒ smaller quotient, so the sharp bound `hN` transfers.
+  refine le_trans hN ?_
+  have hsharp_pos : (0 : ℝ) < L * M ^ (1 + δ) :=
+    mul_pos hL0 (Real.rpow_pos_of_pos hM0 _)
+  have hsuper_pos : (0 : ℝ) < L * M * (Real.log M) ^ (1 + 1 : ℝ) :=
+    mul_pos (mul_pos hL0 hM0) (Real.rpow_pos_of_pos hLM0 _)
+  rw [div_le_div_iff₀ hsharp_pos hsuper_pos]
+  exact mul_le_mul_of_nonneg_left hdenom_le (mul_nonneg hC.le (Nat.cast_nonneg N))
 
 /-- **The weak threshold hypothesis is downward-closed in the length.**
     `RequiredBound m` implies `RequiredBound k` for every `k ≤ m`, again by `rothNumber_mono`

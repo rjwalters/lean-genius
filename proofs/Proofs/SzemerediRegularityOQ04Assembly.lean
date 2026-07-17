@@ -288,6 +288,80 @@ theorem afks_sharp_energy_iteration_count_of_prod_witness
   linarith [hgain, hfloor]
 
 -- ═══════════════════════════════════════════════════════════════════
+-- THE TOWER-FREE, VERTEX-COUNT-INDEPENDENT BOUND  N ≤ k²/ε⁴
+-- ═══════════════════════════════════════════════════════════════════
+
+omit [DecidableEq V] in
+/-- **Equipartition mass floor collapses the sharp bound to `k²/ε⁴`.**  The sharp
+    iteration count `afks_sharp_energy_iteration_count` reads `N ≤ n²/(ε⁴·m²)`,
+    where `n = |V|` and `m` is the minimum mass of a refined part.  This bound still
+    carries the ambient vertex count `n`.  The classical AFKS/Szemerédi payoff is that
+    it is in fact **independent of `n`**: if the refinement keeps the partition
+    *equitable* — every refined part carries at least the equipartition mass `n/k`,
+    i.e. `n ≤ k·m` — then the `n²` in the numerator is absorbed by the `m² ≥ n²/k²` in
+    the denominator and the bound collapses to the purely `(k, ε)`-explicit
+
+    `N ≤ k²/ε⁴`,
+
+    with no dependence on the number of vertices.  (A genuine equitable partition of
+    `n` vertices into `k` parts realizes `m ≥ ⌊n/k⌋`, so the idealized floor `n ≤ k·m`
+    is the exact-equipartition limit; the hypothesis is stated on `m` so that any
+    caller supplying an equitable mass floor obtains the tower-free count directly.)
+
+    This is a pure ordered-field consequence of the sharp bound: squaring the mass
+    floor `n ≤ k·m` gives `n² ≤ k²·m²`, so `n²/(ε⁴·m²) ≤ k²/ε⁴`. -/
+theorem afks_sharp_energy_iteration_count_tower_free
+    (N : ℕ) (eps m k : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hk : 0 < k) (hn : 0 < (Fintype.card V : ℚ))
+    (hmass : (Fintype.card V : ℚ) ≤ k * m)
+    (hbound : (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2)) :
+    (N : ℚ) ≤ k ^ 2 / eps ^ 4 := by
+  have heps4 : (0 : ℚ) < eps ^ 4 := by positivity
+  -- Square the equipartition mass floor `n ≤ k·m`.
+  have hn2 : (Fintype.card V : ℚ) ^ 2 ≤ k ^ 2 * m ^ 2 := by
+    nlinarith [mul_le_mul hmass hmass hn.le (mul_nonneg hk.le hm.le)]
+  -- Absorb `n²` into `m²`, so the sharp bound loses its vertex-count dependence.
+  have hkey : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) ≤ k ^ 2 / eps ^ 4 := by
+    rw [div_le_div_iff₀ (by positivity) heps4]
+    nlinarith [hn2, heps4.le]
+  linarith [hbound, hkey]
+
+/-- **Tower-free AFKS iteration count from an equitable irregular-product witness.**
+    The end-to-end `n`-independent certificate: combining the per-step irregular-product
+    witness bound `afks_sharp_energy_iteration_count_of_prod_witness`
+    (`N ≤ n²/(ε⁴·m²)`) with an equitable mass floor `n ≤ k·m` yields the tower-free
+
+    `N ≤ k²/ε⁴`.
+
+    Every hypothesis is inherited verbatim from `_of_prod_witness`, plus the single
+    equipartition datum `hmass : |V| ≤ k·m` (each of the `≥ m`-mass refined parts is at
+    least the equipartition size `n/k`).  The conclusion no longer mentions `|V|`: the
+    number of sharp `ε`-irregular `2×2` refinement steps before a regular step is reached
+    is bounded by `k²/ε⁴`, depending only on the part count `k` and the tolerance `ε`. -/
+theorem afks_sharp_energy_iteration_count_of_equipartition_witness
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps m k : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hk : 0 < k) (hcard : 0 < (Fintype.card V : ℚ))
+    (hmass : (Fintype.card V : ℚ) ≤ k * m)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hwit : ∀ n, n < N → ∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A ∉ insert B R ∧ B ∉ R ∧
+      A₁ ∉ insert A₂ (insert B₁ (insert B₂ R)) ∧ A₂ ∉ insert B₁ (insert B₂ R) ∧
+      B₁ ∉ insert B₂ R ∧ B₂ ∉ R ∧
+      m ≤ (A.card : ℚ) ∧ m ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) :
+    (N : ℚ) ≤ k ^ 2 / eps ^ 4 := by
+  have hbound := afks_sharp_energy_iteration_count_of_prod_witness
+    G parts N eps m hε hm hcard hcover hdisjoint hwit
+  exact afks_sharp_energy_iteration_count_tower_free N eps m k hε hm hk hcard hmass hbound
+
+-- ═══════════════════════════════════════════════════════════════════
 -- TERMINATION: A REGULAR REFINEMENT STEP IS REACHED IN BOUNDED TIME
 -- ═══════════════════════════════════════════════════════════════════
 
@@ -338,5 +412,54 @@ theorem afks_regular_step_within_bound
     G parts N eps m hε hm hcard hcover hdisjoint (fun n hn => hcon n hn)
   -- The bound `N ≤ n²/(ε⁴m²)` contradicts the assumed horizon `n²/(ε⁴m²) < N`.
   exact absurd hle (not_le.mpr hN)
+
+-- ═══════════════════════════════════════════════════════════════════
+-- TOWER-FREE k-EXPLICIT ITERATION COUNT (EQUIPARTITION FLOOR)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **k-explicit tower-free AFKS iteration count.**  Specialising the sharp
+    per-step-witness bound `afks_sharp_energy_iteration_count_of_prod_witness`
+    (`N ≤ n²/(ε⁴·m²)`, with `n = |V|` and `m` the uniform refined-pair mass floor)
+    to the *equipartition* mass floor `m = n/k` — every refined part carries at least
+    a `1/k` fraction of the vertices, as it does while the partition stays coarser than
+    `k` parts of size `≈ n/k` — collapses the vertex count entirely:
+
+    `N ≤ n² / (ε⁴ · (n/k)²) = k² / ε⁴`.
+
+    This is the textbook *tower-free, dimension-free* AFKS bound: the number of sharp
+    `2×2` irregular-refinement steps sustainable against an equipartition into `k` parts
+    is at most `k²/ε⁴`, independent of the number of vertices `n`.  Everything below the
+    substitution — the size-dependent cell gain, the `[0,1]`-potential termination engine,
+    and the flooring `|A||B| ≥ (n/k)²` — is inherited fully machine-checked from the
+    underlying witness bound; the only new content is eliminating `n` from the estimate. -/
+theorem afks_sharp_iteration_count_equipartition
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N k : ℕ) (eps : ℚ)
+    (hε : 0 < eps) (hk : 0 < k) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hwit : ∀ n, n < N → ∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A ∉ insert B R ∧ B ∉ R ∧
+      A₁ ∉ insert A₂ (insert B₁ (insert B₂ R)) ∧ A₂ ∉ insert B₁ (insert B₂ R) ∧
+      B₁ ∉ insert B₂ R ∧ B₂ ∉ R ∧
+      (Fintype.card V : ℚ) / k ≤ (A.card : ℚ) ∧ (Fintype.card V : ℚ) / k ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) :
+    (N : ℚ) ≤ (k : ℚ) ^ 2 / eps ^ 4 := by
+  have hepsne : eps ≠ 0 := hε.ne'
+  have hcardne : (Fintype.card V : ℚ) ≠ 0 := hcard.ne'
+  have hkq : (0 : ℚ) < (k : ℚ) := by exact_mod_cast hk
+  have hkne : (k : ℚ) ≠ 0 := hkq.ne'
+  have hmpos : (0 : ℚ) < (Fintype.card V : ℚ) / k := div_pos hcard hkq
+  have hle := afks_sharp_energy_iteration_count_of_prod_witness
+    G parts N eps ((Fintype.card V : ℚ) / k) hε hmpos hcard hcover hdisjoint hwit
+  have heq : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * ((Fintype.card V : ℚ) / k) ^ 2)
+      = (k : ℚ) ^ 2 / eps ^ 4 := by
+    field_simp
+  rwa [heq] at hle
 
 end Szemeredi.RegularityOQ04Bridge

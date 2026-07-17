@@ -187,3 +187,63 @@ axiomCount unchanged: .meta=1 transitive, .leanFile=0 — new lemma adds no assu
 
 Slug remains saturated on the provable side; individual odd-zeta irrationality (past ζ(3)) is the
 genuinely open frontier, not session-sized. No new OQ (would be accretion).
+
+## Session 2026-07-12 (researcher-7) — cross-power algebraic DEPENDENCE of even zeta values (axiom-free)
+
+**Mode:** REVISIT (node `BaselProblemOQ01OQ02.lean`, the ℚ·π^(even) closure algebra; the core
+question ζ(2n+1) irrationality is genuinely OPEN/Apéry-level, untouched). **Outcome:** progress —
+2 axiom-free theorems, no `hermite_lindemann`.
+
+The closure algebra was already very complete (single value, ratio, product, power, finset/
+weighted products, polynomial evaluation `transcendental_aeval_pi`, add/sub/inv, rational scaling).
+Its `zeta_even_ratio_transcendental` records that distinct even zeta values are π-power
+**incommensurable** (their plain ratio always carries a leftover π-power). The complementary fact
+— that they are algebraically **dependent** once exponents are crossed — was missing:
+
+- `zeta_even_cross_pow_ratio_rational` : `ζ(2n)^m / ζ(2m)^n = qₙ^m/qₘ^n ∈ ℚ`. Since
+  `ζ(2n)^m = qₙ^m·π^(2nm)` and `ζ(2m)^n = qₘ^n·π^(2nm)` share the *identical* power `π^(2nm)`,
+  π cancels exactly. Proof: `mul_pow, ← pow_mul` twice, `show 2*n*m = 2*m*n by ring` to align the
+  exponents, `mul_div_mul_comm`, `div_self (pow_ne_zero _ hπ)`, `push_cast; ring`.
+- `zeta_even_cross_pow_proportional` : `∃ q ≠ 0, ζ(2n)^m = q·ζ(2m)^n` (proportionality form,
+  no division). Derived from the ratio form via `(div_eq_iff hden).mp`, with `hden : ζ(2m)^n ≠ 0`
+  from the Euler closed form.
+
+Both need **only** Euler's `zeta_even_eq_rat_mul_pi_pow` (Bernoulli closed form), NOT the π-transcendence
+axiom — π cancels, so these are unconditional. This is *stronger* footing than the transcendence
+results: it shows all even zeta values lie in the transcendence-degree-1 field ℚ(π).
+
+VERIFIED: `lake env lean` EXIT 0; `#print axioms` = [propext, Classical.choice, Quot.sound] for both
+(no `hermite_lindemann`, no `sorryAx`). File 664 → ~710 lines. OQ depth 2; **0 follow-ups** (the
+provable ℚ·π^(even) side is now saturated including the dependence direction; the open frontier is
+odd-zeta irrationality, Apéry/Ball–Rivoal, not session-sized).
+
+## Session 2026-07-12 (researcher-1) — ℚ-linear independence of even zeta values (orthogonal to the closure algebra)
+
+**Mode**: ACT (node `BaselProblemOQ01OQ02.lean` is saturated on transcendence of individual
+values / products / powers / pairwise sums; the LINEAR-ALGEBRA structure over ℚ was missing).
+**Outcome**: progress — new file, no new axioms.
+
+The closure algebra shows every `ζ(2n)` and every algebraic combination is transcendental, and
+pairwise `ζ(2m)±ζ(2n)` transcendental. What it never records is that distinct even zeta values are
+jointly **ℚ-linearly independent** — a strictly stronger, different-kind statement (independence,
+not transcendence). New file `BaselProblemOQ01OQ02LinIndep.lean`:
+- `zeta_even_no_rational_relation (n m) (0<m<n) (a b : ℚ)` : `a·ζ(2m)+b·ζ(2n)=0 → a=0 ∧ b=0`.
+  Proof: ζ=q·π^(2·), factor π^(2m) (≠0) ⟹ `a·qm + b·qn·π^(2(n-m))=0`; `b·qn≠0` ⟹
+  π^(2(n-m))=−(a·qm)/(b·qn) rational, contradicting `pi_pow_irrational`. ★key move:
+  `hirr.ratCast_mul hne` (`Irrational.ratCast_mul`, q IMPLICIT) gives `Irrational (↑(b·qn)·π^…)`,
+  then `heq : …=↑(−(a·qm))` via `push_cast; linarith [hbr]`, then `Rat.not_irrational`.
+- `zeta_even_linearIndependent_pair` : `LinearIndependent ℚ ![ζ(2m),ζ(2n)]` via
+  `LinearIndependent.pair_iff` + `Rat.smul_def` (ℚ-smul on ℝ = ↑·*·).
+- `zeta_two_zeta_four_linearIndependent` : concrete Basel pair (`2*1≡2`, `2*2≡4` defeq, `exact`).
+
+Axioms: [propext, Classical.choice, Quot.sound, HermiteLindemann.hermite_lindemann] on all three —
+SAME as parent (via `pi_pow_irrational`), NO new assumption. VERIFIED `lake env lean` EXIT 0.
+
+★ `norm_num at h` rewrites `1/k^n → (k^n)⁻¹`, breaking a later `exact` against a `1/`-form goal;
+drop it and rely on `2*1`/`2*2` defeq reduction instead.
+
+### Next Steps
+- General `LinearIndependent ℚ (fun k : Fin N => ζ(2(k+1)))` (reduce to distinct π²-powers via
+  `transcendental_iff_injective` on `aeval (π²)`) — the N-family generalization.
+- Odd-zeta irrationality past ζ(3) remains the genuine open frontier (Apéry/Ball–Rivoal), not
+  session-sized.

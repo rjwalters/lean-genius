@@ -55,6 +55,30 @@ find_repo_root() {
 
 REPO_ROOT="$(find_repo_root)"
 
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees). The Phase 4
+# worktree passes below must service BOTH the legacy default location and the
+# resolved override root (when they differ) so worktrees never leak at either
+# location during the transition (issue #37509).
+# shellcheck source=lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREE_ROOT_RESOLVED="$(loom_worktree_root "$REPO_ROOT")"
+WORKTREE_SCAN_ROOTS=("$REPO_ROOT/.loom/worktrees")
+if [[ "$WORKTREE_ROOT_RESOLVED" != "$REPO_ROOT/.loom/worktrees" ]]; then
+    WORKTREE_SCAN_ROOTS+=("$WORKTREE_ROOT_RESOLVED")
+fi
+
+# wt_scan_label <scan_root> <wt_name> — human-facing label for log lines.
+# Keeps the historical ".loom/worktrees/<name>" form for the default root and
+# uses the absolute path for an override root.
+wt_scan_label() {
+    if [[ "$1" == "$REPO_ROOT/.loom/worktrees" ]]; then
+        echo ".loom/worktrees/$2"
+    else
+        echo "$1/$2"
+    fi
+}
+
 # Parse arguments
 DRY_RUN=false
 FORCE=false
@@ -144,13 +168,18 @@ Worktree cleanup:
   Only after every guard passes:
   - .claude/worktrees/*: REMOVE once its branch is merged/closed/gone on
     origin or it has no activity for WORKTREE_MAX_AGE_DAYS
+  All .loom/worktrees/ passes below also scan the resolved worktree root
+  when a LOOM_WORKTREE_ROOT env var or .loom/config.json worktree.root
+  override is set (e.g. /Volumes/Stripe/<repo>/), so worktrees are serviced
+  at BOTH locations during a transition:
   - .loom/worktrees/issue-* for closed GitHub issues: REMOVE
   - .loom/worktrees/temp-* (temporary rebase worktrees): REMOVE
   - .loom/worktrees/* (scratch: audit-*, auditor-*, mechanic-*,
     researcher-*, enricher-*, …): REMOVE when its branch is merged/closed/
     gone on origin OR it has no activity anywhere in its tree for
     WORKTREE_MAX_AGE_DAYS (default 30). Preserved otherwise.
-  - git-registered worktrees OUTSIDE .loom/worktrees/ and .claude/worktrees/
+  - git-registered worktrees OUTSIDE .loom/worktrees/, .claude/worktrees/,
+    and the resolved override worktree root
     additionally get rescue-then-reclaim: once clean and idle everywhere in
     the tree for OUT_OF_TREE_RESCUE_HOURS (default 24), local-only commits
     are pushed to a backup/ ref on origin and the stray is reclaimed —
@@ -305,6 +334,12 @@ trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTE
 
 # main is always protected (master was retired via #13577)
 echo "main" >> "$PROTECTED_BRANCHES_FILE"
+
+# The deployer's long-lived worktree branch is always protected, even if the
+# worktree has temporarily drifted off it (2026-07-11: a deploy cycle left the
+# worktree on `main`, and the orphaned feature/deployer was swept, making the
+# drift unrecoverable by relaunch).
+echo "feature/deployer" >> "$PROTECTED_BRANCHES_FILE"
 
 # Branches checked out in worktrees are protected
 git worktree list --porcelain 2>/dev/null | grep "^branch refs/heads/" | sed 's|^branch refs/heads/||' >> "$PROTECTED_BRANCHES_FILE"
@@ -990,9 +1025,10 @@ echo ""
 
 # --- .loom/worktrees/issue-* (closed issues) ---
 
-header "  Checking .loom/worktrees/issue-*..."
+header "  Checking .loom/worktrees/issue-* (all worktree roots)..."
 
-for wt_dir in "$REPO_ROOT/.loom/worktrees"/issue-*/; do
+for wt_scan_root in "${WORKTREE_SCAN_ROOTS[@]}"; do
+for wt_dir in "$wt_scan_root"/issue-*/; do
     [[ ! -d "$wt_dir" ]] && continue
     wt_name=$(basename "$wt_dir")
     issue_num="${wt_name#issue-}"
@@ -1004,26 +1040,29 @@ for wt_dir in "$REPO_ROOT/.loom/worktrees"/issue-*/; do
         # Closed issue is the reclaim trigger; reclaim_worktree still applies
         # every structural guard (live session, recent activity, dirty tree,
         # unpushed commits, open PR, …) before removing anything.
-        reclaim_worktree "${wt_dir%/}" ".loom/worktrees/$wt_name" "issue #$issue_num closed"
+        reclaim_worktree "${wt_dir%/}" "$(wt_scan_label "$wt_scan_root" "$wt_name")" "issue #$issue_num closed"
     else
         ((worktrees_preserved++)) || true
-        info "    Preserving: .loom/worktrees/$wt_name (issue $issue_state)"
+        info "    Preserving: $(wt_scan_label "$wt_scan_root" "$wt_name") (issue $issue_state)"
     fi
+done
 done
 
 echo ""
 
 # --- .loom/worktrees/temp-* (temporary rebase worktrees) ---
 
-header "  Checking .loom/worktrees/temp-*..."
+header "  Checking .loom/worktrees/temp-* (all worktree roots)..."
 
-for wt_dir in "$REPO_ROOT/.loom/worktrees"/temp-*/; do
+for wt_scan_root in "${WORKTREE_SCAN_ROOTS[@]}"; do
+for wt_dir in "$wt_scan_root"/temp-*/; do
     [[ ! -d "$wt_dir" ]] && continue
     wt_name=$(basename "$wt_dir")
 
     # "temporary" is the reclaim trigger; the structural guards still protect
     # an in-flight rebase (dirty tree, recent activity, live process).
-    reclaim_worktree "${wt_dir%/}" ".loom/worktrees/$wt_name" "temporary"
+    reclaim_worktree "${wt_dir%/}" "$(wt_scan_label "$wt_scan_root" "$wt_name")" "temporary"
+done
 done
 
 echo ""
@@ -1066,10 +1105,13 @@ echo ""
 #   upstream present + stale             => REMOVE   (reason: stale)
 #   upstream present + recent            => PRESERVE (unmerged, recent)
 
-header "  Checking .loom/worktrees/* (scratch)..."
+header "  Checking .loom/worktrees/* (scratch, all worktree roots)..."
 
-if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
-    for wt_dir in "$REPO_ROOT/.loom/worktrees"/*/; do
+wt_scratch_found=0
+for wt_scan_root in "${WORKTREE_SCAN_ROOTS[@]}"; do
+    [[ ! -d "$wt_scan_root" ]] && continue
+    wt_scratch_found=1
+    for wt_dir in "$wt_scan_root"/*/; do
         [[ ! -d "$wt_dir" ]] && continue
         wt_name=$(basename "$wt_dir")
 
@@ -1078,10 +1120,11 @@ if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
             issue-*|temp-*) continue ;;
         esac
 
-        reclaim_worktree "${wt_dir%/}" ".loom/worktrees/$wt_name"
+        reclaim_worktree "${wt_dir%/}" "$(wt_scan_label "$wt_scan_root" "$wt_name")"
     done
-else
-    info "    No .loom/worktrees/ directory found"
+done
+if [[ "$wt_scratch_found" -eq 0 ]]; then
+    info "    No worktree root directory found"
 fi
 
 echo ""
@@ -1153,6 +1196,10 @@ rescue_out_of_tree() {
 # other, unrelated repository.
 repo_common_dir="$(cd "$REPO_ROOT" 2>/dev/null && git rev-parse --path-format=absolute --git-common-dir 2>/dev/null || echo "")"
 loom_wt_root="$(cd "$REPO_ROOT/.loom/worktrees" 2>/dev/null && pwd -P || echo "$REPO_ROOT/.loom/worktrees")"
+# An overridden worktree root (LOOM_WORKTREE_ROOT / worktree.root) is
+# Loom-managed too: its worktrees are serviced by the passes above, and must
+# NOT fall through to this stricter out-of-tree policy.
+override_wt_root="$(cd "$WORKTREE_ROOT_RESOLVED" 2>/dev/null && pwd -P || echo "$WORKTREE_ROOT_RESOLVED")"
 claude_wt_root="$(cd "$REPO_ROOT/.claude/worktrees" 2>/dev/null && pwd -P || echo "$REPO_ROOT/.claude/worktrees")"
 repo_root_real="$(cd "$REPO_ROOT" 2>/dev/null && pwd -P || echo "$REPO_ROOT")"
 
@@ -1172,6 +1219,7 @@ while IFS= read -r line; do
     # .loom/worktrees/ or .claude/worktrees/. Prefix-match on the real path.
     [[ "$oot_real" == "$loom_wt_root"/* ]] && continue
     [[ "$oot_real" == "$claude_wt_root"/* ]] && continue
+    [[ "$oot_real" == "$override_wt_root"/* ]] && continue
 
     # Log-and-skip if the directory is gone (a prune candidate, handled below).
     if [[ ! -d "$oot_real" ]]; then

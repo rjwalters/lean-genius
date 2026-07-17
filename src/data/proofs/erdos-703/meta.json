@@ -50,14 +50,18 @@
       "T_n_n: fully machine-checked exact diagonal value T(n,n) = 2^n − 1 — the maximal n-avoiding family is the powerset of [n] minus the single full set [n], since [n] with itself is the only pair of subsets meeting in exactly n elements. This is the third exactly-known boundary of T, alongside T(n,0) = 2^{n-1} and T(n,r) = 2^n for n < r.",
       "inter_card_eq_n_iff: the supporting characterization that for A, B ⊆ [n], |A ∩ B| = n iff A = B = [n]; the combinatorial core of the diagonal value.",
       "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction.",
-      "T_le_pow_sub_choose / T_le_pow_sub_one: sharpened upper bound T(n,r) ≤ 2^n − C(n,r), machine-checked. An r-avoiding family can contain no set of size exactly r (its self-pair A,A meets in |A| = r), so the family omits all C(n,r) subsets of size r, giving T(n,r) ≤ 2^n − C(n,r); for r ≤ n this yields the uniform strict improvement T(n,r) ≤ 2^n − 1 over the trivial ceiling, and it is tight at the diagonal r = n (C(n,n) = 1 recovers T(n,n) = 2^n − 1)."
+      "T_le_pow_sub_choose / T_le_pow_sub_one: sharpened upper bound T(n,r) ≤ 2^n − C(n,r), machine-checked. An r-avoiding family can contain no set of size exactly r (its self-pair A,A meets in |A| = r), so the family omits all C(n,r) subsets of size r, giving T(n,r) ≤ 2^n − C(n,r); for r ≤ n this yields the uniform strict improvement T(n,r) ≤ 2^n − 1 over the trivial ceiling, and it is tight at the diagonal r = n (C(n,n) = 1 recovers T(n,n) = 2^n − 1).",
+      "smallSetsFamily / smallSetsFamily_avoids_r / smallSetsFamily_card / sum_choose_le_T / n_add_one_le_T_n_2: the 'small' disjunct {A ⊆ [n] : |A| < r} of the Frankl–Füredi families, isolated as its own r-avoiding family (|A ∩ B| ≤ |A| < r). It admits an EXACT binomial-sum cardinality ∑_{k<r} C(n,k) (proved by partitioning into powersetCard k layers), giving the first certified POLYNOMIAL lower bound T(n,r) ≥ ∑_{k<r} C(n,k) for all n,r — specialising to T(n,2) ≥ n+1, a nontrivial bound on the r=2 line at the start of the middle range the Frankl–Rödl question concerns. Axiom-free ([propext, Classical.choice, Quot.sound]).",
+      "T_L(n,L) + T_L_singleton / T_L_antitone_forbidden / T_L_insert_le / T_L_le_T_of_mem: the Frankl–Wilson L-avoiding analogue of the extremal quantity T — T_L(n,L) is the max size of a family avoiding EVERY intersection size in L. It faithfully generalizes T (T_L n {r} = T n r), is antitone in the forbidden-size set (L ⊆ L' ⟹ T_L n L' ≤ T_L n L, via Finset.sup_mono), and is bounded by any single-size extremal it forbids (r ∈ L ⟹ T_L n L ≤ T n r), tying the L-avoiding hierarchy back to the concrete T(n,r) values. Axiom-free ([propext, Classical.choice, Quot.sound]).",
+      "Large-sets family and combined polynomial lower bound (Erdos703Problem.lean): largeSetsFamilyR (sets of size > (n+r)/2 avoid r-intersection since |A∩B| ≥ |A|+|B|−n > r), its exact card ∑_{(n+r)/2<k≤n} C(n,k), the lower bound sum_choose_large_le_T, and — combining with the disjoint small-sets family — small_add_large_le_T giving T(n,r) ≥ ∑_{k<r} C(n,k) + ∑_{(n+r)/2<k≤n} C(n,k). The top-layer dual of the existing small-sets bound. Axiom-free.",
+      "Positive lower endpoint of the L-avoiding hierarchy (Erdos703Problem.lean): avoidsLIntersections_singleton_family (a singleton family {A} avoids L iff |A| ∉ L, since its only pair is the self-intersection A∩A = A) and one_le_T_L_of_zero_notMem (0 ∉ L ⟹ 1 ≤ T_L n L, witnessed by the family {∅}). Together with the ceiling T_L_le_pow this sandwiches 1 ≤ T_L n L ≤ 2ⁿ for every L missing 0 — the L-avoiding analogue of one_le_T, complementing the empty-forbidden endpoint T_L n ∅ = 2ⁿ. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "axiomCount": 1,
-    "lineCount": 795,
+    "lineCount": 1331,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 33,
-    "definitionCount": 8
+    "theoremCount": 61,
+    "definitionCount": 11
   },
   "crossReferences": [
     {
@@ -183,10 +187,10 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 795,
+    "lineCount": 1331,
     "axiomCount": 1,
-    "theoremCount": 33,
-    "definitionCount": 8,
+    "theoremCount": 61,
+    "definitionCount": 11,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
   },

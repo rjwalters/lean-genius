@@ -2933,6 +2933,288 @@ theorem classifySeed_175 : classifySeed 175 = Ordering.lt := by
 theorem mem_ReversalSet_175 (k : ℕ) : 175 * 2 ^ (k + 1) ∈ ReversalSet :=
   (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_175
 
+-- ----------------------------------------------------------------------------
+-- A COMPOSITE-landing reversal seed: `165 = 3·5·11`
+-- ----------------------------------------------------------------------------
+-- Every reversal seed exhibited so far (`21, 55, 129, 175, 453`) has a *prime*
+-- landing odd-part `seedE a` (`17, 43, 101, 131, 353` respectively), so each is
+-- reachable by the prime-landing reversal engine
+-- `classifySeed_lt_iff_of_seedS_one_seedE_prime`, whose criterion `φ(seedB a) +
+-- 2^seedT a < 2(a − φ(a))` presupposes `seedE a` prime (using `φ(e) = e − 1`).
+-- The seed `165` breaks this pattern: its landing odd-part is
+-- `seedE 165 = 115 = 5·23`, which is COMPOSITE, so `165` lies genuinely OUTSIDE
+-- the prime-landing engine — yet it still reverses.  Transport data:
+--   `φ(165) = 80`,  `2·165 − 80 = 250 = 125·2¹`  (so `s = 1`, `b = 125 = 5³`);
+--   `C = 2·165 − φ(125) = 330 − 100 = 230 = 115·2¹`  (so `t = 1`, `e = 115 = 5·23`);
+--   classifier compares `φ(165) = 80` against `φ(115)·2^0 = 88`; `80 < 88`, `lt`.
+-- This upgrades the prose observation "reversals are not confined to prime
+-- landings" into a machine-checked theorem, and shows the prime-landing engine
+-- is provably incomplete: it cannot certify the reversal seed `165`.
+
+/-- `φ(165) = 80`  (`165 = 15·11`, coprime factors, `φ(15) = 8`). -/
+theorem totient_165 : Nat.totient 165 = 80 := by
+  rw [show (165 : ℕ) = 15 * 11 from rfl, Nat.totient_mul (by decide), totient_15,
+      Nat.totient_prime (by norm_num)]
+
+/-- `φ(125) = 100`  (`125 = 5³`, so `φ = 5²·(5−1) = 100`). -/
+theorem totient_125 : Nat.totient 125 = 100 := by
+  rw [show (125 : ℕ) = 5 ^ 3 from rfl,
+      Nat.totient_prime_pow (by norm_num : Nat.Prime 5) (by norm_num : 0 < 3)]
+  norm_num
+
+/-- **Classifier value on the seed `165 = 3·5·11`.**  Transport data: `b = 125 = 5³`
+    (`2·165 − φ(165) = 250 = 125·2¹`, so `s = 1`), landing `C = 2·165 − φ(125) = 230 =
+    115·2¹` (so `t = 1`, `e = 115 = 5·23` **composite**), and the classifier compares
+    `φ(165) = 80` against `φ(115)·2^0 = 88`; `80 < 88`, so the total decision procedure
+    classifies `165` as `lt` (reversal) — a reversal seed with a *composite* landing
+    odd-part, hence outside the prime-landing engine. -/
+theorem classifySeed_165 : classifySeed 165 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 125) (t := 1) (e := 115) (by decide) (by decide)
+      (by norm_num [totient_165]) (by norm_num [totient_125])]
+  rw [totient_165, totient_115]; decide
+
+/-- **The landing odd-part of the reversal seed `165` is composite.**  Extracting
+    the transport data by two 2-adic splits, `seedE 165 = 115 = 5·23`, which is not
+    prime.  This is what places `165` outside the prime-landing reversal engine. -/
+theorem seedE_165 : seedE 165 = 115 := by
+  have hstep : 2 * 165 - Nat.totient 165 = 125 * 2 ^ 1 := by norm_num [totient_165]
+  have hS : seedS 165 = 1 := (factor_two_split (show Odd 125 by decide) hstep).1
+  have hB : seedB 165 = 125 := (factor_two_split (show Odd 125 by decide) hstep).2
+  have hSC : seedC 165 = 115 * 2 ^ 1 := by
+    show 2 * 165 - Nat.totient (seedB 165) * 2 ^ (seedS 165 - 1) = 115 * 2 ^ 1
+    rw [hB, hS]; norm_num [totient_125]
+  exact (factor_two_split (show Odd 115 by decide) hSC).2
+
+/-- `seedE 165 = 115 = 5·23` is not prime. -/
+theorem seedE_165_not_prime : ¬ (seedE 165).Prime := by
+  rw [seedE_165]; norm_num
+
+/-- **Reversal family `165·2^(k+1)` with a composite landing.**  Since
+    `classifySeed 165 = lt`, the whole family lies in `ReversalSet` (`φ(n) < φ(D(n))`
+    for every `k`), yet its landing odd-part `seedE 165 = 115 = 5·23` is composite. -/
+theorem mem_ReversalSet_165 (k : ℕ) : 165 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_165
+
+/-- **Reversals are not confined to prime landings — classifier form.**  The seed
+    `165` reverses its whole family `165·2^(k+1)` (`φ(n) < φ(D(n))`), yet its landing
+    odd-part `seedE 165 = 115 = 5·23` is composite.  So the prime-landing reversal
+    engine `classifySeed_lt_iff_of_seedS_one_seedE_prime` (which requires
+    `(seedE a).Prime`) is provably incomplete: `165` is a reversal seed it cannot
+    certify.  This upgrades the empirical observation about `165` into a theorem. -/
+theorem reversal_seed_composite_landing :
+    classifySeed 165 = Ordering.lt ∧ ¬ (seedE 165).Prime ∧
+    (∀ k, 165 * 2 ^ (k + 1) ∈ ReversalSet) :=
+  ⟨classifySeed_165, seedE_165_not_prime, mem_ReversalSet_165⟩
+
+-- ----------------------------------------------------------------------------
+-- PRIME-POWER-landing engine (`seedS a = 1`, `seedE a = p^m`)
+-- ----------------------------------------------------------------------------
+-- The prime-landing engine `classifySeed_eq_compare_of_seedS_one_seedE_prime`
+-- collapses the classifier to a linear criterion when the landing odd-part is a
+-- *prime* (`seedE a` prime).  The seed `165` shows composite landings occur —
+-- but its landing `115 = 5·23` is a general semiprime, with no closed form for
+-- `φ`.  The next tier where `φ(seedE a)` *does* have a closed form is a **prime
+-- power** `seedE a = p^m`, via `φ(p^m) = p^{m-1}·(p−1)`.  This block builds the
+-- corresponding engine; it strictly generalises the prime engine (the case
+-- `m = 1`, where `p^{m-1} = 1` recovers the exact prior criterion) and, unlike
+-- it, certifies genuine composite-landing reversal seeds such as `561` (landing
+-- `19² = 361`), `1225` (landing `31²`), `1595` (landing `11³`).
+
+/-- **Prime-power-landing trichotomy (the full classifier value).**  For a
+    transport-admissible seed (`seedS a = 1`) whose landing odd-part is a *prime
+    power* `seedE a = p^m` (`p` prime, `m ≥ 1`), the classifier collapses to a
+    single linear comparison:
+    `classifySeed a = compare (φ(seedB a) + p^{m-1}·2^{seedT a}) (2·(a − φ(a)))`.
+
+    This is the common generalisation of `classifySeed_eq_compare_of_seedS_one_
+    seedE_prime`: taking `m = 1` gives `p^{m-1} = 1` and recovers the exact prime
+    criterion `φ(seedB a) + 2^{seedT a} ⋛ 2·(a − φ(a))`.
+
+    Mechanism (`s = 1`): `2a − φ(a) = 2·seedB a` and `2a − φ(seedB a) = seedE a·
+    2^{seedT a}`.  With `e := seedE a = p^m`, `φ(e) = p^{m-1}·(p−1) = e − p^{m-1}`,
+    so `φ(e)·2^{t−1} = e·2^{t−1} − p^{m-1}·2^{t−1} = (a − φ(seedB a)/2) −
+    p^{m-1}·2^{t−1}`.  Doubling the comparison `φ(a) ⋛ φ(e)·2^{t−1}` clears the
+    halves into the stated `(φ(seedB a) + p^{m-1}·2^{seedT a}) ⋛ 2·(a − φ(a))`. -/
+theorem classifySeed_eq_compare_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a
+      = compare (Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a)
+          (2 * (a - Nat.totient a)) := by
+  obtain ⟨hob, hoe, _, ht1, hstep, hCeq⟩ := seed_spec ha3
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  rw [hs1, pow_one] at hstep
+  have hb2 : 2 ≤ seedB a := by omega
+  have hb3 : 3 ≤ seedB a := by rcases hob with ⟨i, hi⟩; omega
+  obtain ⟨jb, hjb⟩ := Nat.totient_even (show 2 < seedB a by omega)
+  rw [hs1] at hCeq
+  simp only [Nat.sub_self, pow_zero, mul_one] at hCeq
+  -- prime-power landing: `φ(e) = e − p^{m-1}`, a LINEAR identity.  (Keeping the
+  -- nonlinear `φ(e) = p^{m-1}·(p−1)` in context would make `omega` substitute it,
+  -- turning the product atoms `seedE a·2^{…}` nonlinear and dropping `hCeq`.)
+  have hEfac : seedE a = p ^ (m - 1) * p := by rw [hepp, ← pow_succ]; congr 1; omega
+  have hPle : p ^ (m - 1) ≤ seedE a := by
+    rw [hEfac]; exact Nat.le_mul_of_pos_right _ hp.pos
+  have hkey : Nat.totient (seedE a) + p ^ (m - 1) = seedE a := by
+    rw [show Nat.totient (seedE a) = p ^ (m - 1) * (p - 1) from by
+          rw [hepp, Nat.totient_prime_pow hp (by omega)], hEfac]
+    calc p ^ (m - 1) * (p - 1) + p ^ (m - 1)
+          = p ^ (m - 1) * (p - 1) + p ^ (m - 1) * 1 := by ring
+      _ = p ^ (m - 1) * (p - 1 + 1) := by rw [← mul_add]
+      _ = p ^ (m - 1) * p := by have := hp.pos; congr 1; omega
+  -- LINEAR totient identity — the crux for `omega` (the nonlinear
+  -- `φ(e) = p^{m-1}·(p−1)` would be substituted and break the product atoms).
+  have hφe : Nat.totient (seedE a) = seedE a - p ^ (m - 1) := by omega
+  have hepos : 0 < seedE a := by rw [hepp]; exact pow_pos hp.pos m
+  -- drop the two NONLINEAR `seedE a = p^{m-1}·p` / `= p^m` facts: otherwise `omega`
+  -- substitutes them into the product atoms `seedE a·2^{…}` and drops the bridges.
+  clear hEfac hepp
+  have hne : 0 < seedE a * 2 ^ seedT a := mul_pos hepos (pow_pos (by norm_num) _)
+  have hφa_le : Nat.totient a ≤ a := Nat.totient_le a
+  have hp2 : 1 ≤ (2 : ℕ) ^ (seedT a - 1) := Nat.one_le_two_pow
+  have hP : (2 : ℕ) ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hEPt : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hPt : p ^ (m - 1) * 2 ^ seedT a = 2 * (p ^ (m - 1) * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hsub : Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+      = seedE a * 2 ^ (seedT a - 1) - p ^ (m - 1) * 2 ^ (seedT a - 1) := by
+    rw [hφe, Nat.sub_mul]
+  have hEPge : p ^ (m - 1) * 2 ^ (seedT a - 1) ≤ seedE a * 2 ^ (seedT a - 1) := by
+    gcongr
+  simp only [classifySeed]
+  rw [hsub]
+  rcases lt_trichotomy (Nat.totient a)
+      (seedE a * 2 ^ (seedT a - 1) - p ^ (m - 1) * 2 ^ (seedT a - 1)) with h | h | h
+  · rw [compare_lt_iff_lt.mpr h,
+        compare_lt_iff_lt.mpr (show Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a
+          < 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_eq_iff_eq.mpr h,
+        compare_eq_iff_eq.mpr (show Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a
+          = 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_gt_iff_gt.mpr h,
+        compare_gt_iff_gt.mpr (show 2 * (a - Nat.totient a)
+          < Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a by omega)]
+
+/-- **Prime-power-landing reversal criterion** (`.lt` case).  A transport-
+    admissible seed with a prime-power landing `seedE a = p^m` reverses its whole
+    family (`classifySeed a = .lt`) iff
+    `φ(seedB a) + p^{m-1}·2^{seedT a} < 2·(a − φ(a))`. -/
+theorem classifySeed_lt_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.lt ↔
+      Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a < 2 * (a - Nat.totient a) := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_lt_iff_lt]
+
+/-- **Prime-power-landing equality criterion** (`.eq` case). -/
+theorem classifySeed_eq_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.eq ↔
+      Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a = 2 * (a - Nat.totient a) := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_eq_iff_eq]
+
+/-- **Prime-power-landing forward criterion** (`.gt` case). -/
+theorem classifySeed_gt_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.gt ↔
+      2 * (a - Nat.totient a) < Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_gt_iff_gt]
+
+/-- **Prime-power-landing reversal family.**  Under the criterion inequality, the
+    *entire* family `n = a·2^(k+1)` lies in `ReversalSet` (`φ(n) < φ(D(n))` for
+    every `k`).  Packages the prime-power reversal criterion into an
+    infinitely-often statement per qualifying seed (e.g. `a = 561`, landing
+    `19²`, gives `1122, 2244, …`). -/
+theorem primePow_landing_family_reversal
+    {a p m : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime)
+    (hm : 1 ≤ m) (hepp : seedE a = p ^ m)
+    (hcrit : Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a < 2 * (a - Nat.totient a))
+    (k : ℕ) : a * 2 ^ (k + 1) ∈ ReversalSet := by
+  rw [classifySeed_lt_iff ha ha3 k]
+  exact (classifySeed_lt_iff_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp).2 hcrit
+
+-- ----------------------------------------------------------------------------
+-- Concrete prime-power-landing reversal witness:  `a = 561 = 3·11·17`
+-- ----------------------------------------------------------------------------
+-- `561` (the smallest Carmichael number) is a reversal seed whose landing
+-- odd-part is a *prime square* `19² = 361` — composite, so outside the
+-- prime-landing engine `..._seedE_prime`, yet inside the prime-*power* engine.
+--   `φ(561) = 320`,  `2·561 − 320 = 802 = 401·2¹`  (`s = 1`, `b = 401` prime);
+--   `C = 2·561 − φ(401) = 1122 − 400 = 722 = 361·2¹`  (`t = 1`, `e = 361 = 19²`);
+--   classifier compares `φ(561) = 320` against `φ(361)·2^0 = 342`; `320 < 342`, `lt`.
+
+/-- `φ(401) = 400`  (`401` is prime). -/
+theorem totient_401 : Nat.totient 401 = 400 := Nat.totient_prime (by norm_num)
+
+/-- `φ(361) = 342`  (`361 = 19²`, so `φ = 19·(19−1) = 342`). -/
+theorem totient_361 : Nat.totient 361 = 342 := by
+  rw [show (361 : ℕ) = 19 ^ 2 from rfl,
+      Nat.totient_prime_pow (by norm_num : Nat.Prime 19) (by norm_num : 0 < 2)]
+  norm_num
+
+/-- `φ(561) = 320`  (`561 = 33·17`, coprime, `φ(33) = 20`). -/
+theorem totient_561 : Nat.totient 561 = 320 := by
+  rw [show (561 : ℕ) = 33 * 17 from rfl, Nat.totient_mul (by norm_num),
+      show (33 : ℕ) = 3 * 11 from rfl, Nat.totient_mul (by norm_num),
+      totient_3, totient_11, Nat.totient_prime (by norm_num)]
+
+/-- **Classifier value on the seed `561 = 3·11·17`.**  Transport data
+    `b = 401` prime (`2·561 − 320 = 802 = 401·2¹`, `s = 1`), landing
+    `C = 2·561 − φ(401) = 722 = 361·2¹` (`t = 1`, `e = 361 = 19²`), and the
+    classifier compares `φ(561) = 320` against `φ(361)·2^0 = 342`; `320 < 342`,
+    so `561` classifies `lt` — a reversal seed with a *prime-square* landing. -/
+theorem classifySeed_561 : classifySeed 561 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 401) (t := 1) (e := 361) (by decide) (by decide)
+      (by norm_num [totient_561]) (by norm_num [totient_401])]
+  rw [totient_561, totient_361]; decide
+
+set_option maxRecDepth 4000 in
+/-- **The landing odd-part of the reversal seed `561` is the prime square `19²`.**
+    Extracting the transport data by two 2-adic splits, `seedE 561 = 361 = 19²`,
+    which is a prime power (`m = 2`) but *not* prime — outside the prime-landing
+    engine, inside the prime-power engine. -/
+theorem seedE_561 : seedE 561 = 361 := by
+  have hstep : 2 * 561 - Nat.totient 561 = 401 * 2 ^ 1 := by rw [totient_561]; norm_num
+  have hodd401 : Odd (401 : ℕ) := Nat.odd_iff.mpr (by norm_num)
+  have hS : seedS 561 = 1 := (factor_two_split hodd401 hstep).1
+  have hB : seedB 561 = 401 := (factor_two_split hodd401 hstep).2
+  have hSC : seedC 561 = 361 * 2 ^ 1 := by
+    show 2 * 561 - Nat.totient (seedB 561) * 2 ^ (seedS 561 - 1) = 361 * 2 ^ 1
+    rw [hB, hS, totient_401]; norm_num
+  exact (factor_two_split (Nat.odd_iff.mpr (by norm_num)) hSC).2
+
+/-- `seedE 561 = 361 = 19²` is not prime (it is a proper prime power). -/
+theorem seedE_561_not_prime : ¬ (seedE 561).Prime := by
+  rw [seedE_561]; norm_num
+
+/-- **Reversal family `561·2^(k+1)` with a prime-square landing.**  Since
+    `classifySeed 561 = lt`, the whole family lies in `ReversalSet`
+    (`φ(n) < φ(D(n))` for every `k`), with landing odd-part `seedE 561 = 361 =
+    19²` a proper prime power. -/
+theorem mem_ReversalSet_561 (k : ℕ) : 561 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_561
+
+/-- **A prime-power-landing reversal seed the prime engine cannot certify.**  The
+    seed `561` reverses its whole family `561·2^(k+1)` (`φ(n) < φ(D(n))`), its
+    landing odd-part `seedE 561 = 361 = 19²` is a proper prime power (composite,
+    so outside `classifySeed_lt_iff_of_seedS_one_seedE_prime`), yet the
+    prime-*power* engine `classifySeed_lt_iff_of_seedS_one_seedE_primePow`
+    certifies it via `φ(401) + 19·2 = 438 < 482 = 2·(561 − 320)`.  This exhibits a
+    reversal regime strictly between the prime-landing seeds and the general
+    composite seed `165`. -/
+theorem reversal_seed_primePow_landing :
+    classifySeed 561 = Ordering.lt ∧ seedE 561 = 19 ^ 2 ∧ ¬ (seedE 561).Prime ∧
+    (∀ k, 561 * 2 ^ (k + 1) ∈ ReversalSet) :=
+  ⟨classifySeed_561, by rw [seedE_561]; norm_num, seedE_561_not_prime, mem_ReversalSet_561⟩
+
 /-- **The necessary condition `4 ∣ φ(a)` is not sufficient for reversal.**
 `reversal_seed_four_dvd_totient` proves every reversing seed `a` (`classifySeed a = lt`)
 satisfies `4 ∣ φ(a)`.  The converse *fails*: the Sophie–Germain equality seed `a = 15 = 3·5`
@@ -3043,6 +3325,140 @@ theorem reversal_gap_primeTriple_ge {m : ℕ} (hm : 1 ≤ m)
     _ ≤ (2 * m + 2) * 2 ^ k := by gcongr; omega
 
 -- ----------------------------------------------------------------------------
+-- Master (symbolic-landing) form of the prime-triple reversal family
+-- ----------------------------------------------------------------------------
+-- `reversal_gap_primeTriple` computes the exact reversal gap `(2m+2)·2^k` but *requires*
+-- the landing `14m+3` to be prime (it evaluates `φ(14m+3) = 14m+2`).  The forward family
+-- already has a symbolic-landing master form `forward_gap_fiveTimes_eq_totient`, with the
+-- totient of its landing left symbolic; the reversal family lacked the mirror.  Here we
+-- supply it: the two totients along `n = (18m+3)·2^(k+1)` are `φ(n) = 12m·2^k` and
+-- `φ(D(n)) = φ(14m+3)·2^k`, needing only `4m+1`, `6m+1` prime (NOT the landing).  From
+-- these one line each: the signed gap `(φ(14m+3) − 12m)·2^k`, its unconditional `2^k`
+-- divisibility, the exact reversal criterion `12m < φ(14m+3)`, and — specialising the
+-- landing to a prime — a re-derivation of `reversal_gap_primeTriple`.
+-- ----------------------------------------------------------------------------
+
+/-- **Master totient values of the prime-triple reversal family (symbolic landing).**
+    For a seed `a = 18m+3 = 3·(6m+1)` with only the *family* primes `4m+1`, `6m+1` prime
+    (`m ≥ 1`) — and **no** assumption on the landing `14m+3` — both totients along
+    `n = (18m+3)·2^(k+1)` have closed forms `φ(n) = 12m·2^k` and `φ(D(n)) = φ(14m+3)·2^k`,
+    with the landing's totient left *symbolic*.  This is the reversal-side analogue of the
+    computation underneath `forward_gap_fiveTimes_eq_totient`; every quantitative statement
+    about the family below is a one-line consequence. -/
+theorem primeTriple_totient_values {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = 12 * m * 2 ^ k ∧
+      Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        = Nat.totient (14 * m + 3) * 2 ^ k := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(18m+3)·2^k = 12m·2^k
+  have copa : Nat.Coprime (18 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = 12 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3) = 2 * (12 * m + 3) := by
+    rw [hφa]; omega
+  have hD : dblIter ((18 * m + 3) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (18 * m + 3) - 8 * m = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, keeping φ(14m+3) SYMBOLIC (no primality of the landing)
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφD : Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      = Nat.totient (14 * m + 3) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2]
+  exact ⟨hφn, hφD⟩
+
+/-- **Master exact reversal gap (symbolic landing) — the reversal mirror of
+    `forward_gap_fiveTimes_eq_totient`.**  For a seed `a = 18m+3` with only `4m+1`, `6m+1`
+    prime (`m ≥ 1`) and **no** assumption on the landing `14m+3`, the signed reversal gap
+    along `n = (18m+3)·2^(k+1)` is exactly `φ(D(n)) − φ(n) = (φ(14m+3) − 12m)·2^k`.  The ℕ
+    subtraction distributes over `2^k` (`Nat.sub_mul`) regardless of sign, so no primality
+    of the landing is needed; specialising `φ(14m+3) = 14m+2` when the landing is prime
+    recovers `reversal_gap_primeTriple`'s exact `(2m+2)·2^k` (see
+    `reversal_gap_primeTriple_of_prime_landing`). -/
+theorem reversal_gap_primeTriple_eq_totient {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1))
+      = (Nat.totient (14 * m + 3) - 12 * m) * 2 ^ k := by
+  obtain ⟨hφn, hφD⟩ := primeTriple_totient_values hm hp hq k
+  rw [hφD, hφn, ← Nat.sub_mul]
+
+/-- **Unconditional 2-adic structure of the prime-triple reversal gap.**  Immediate from
+    `reversal_gap_primeTriple_eq_totient`: the whole family gap scales by `2^k`, so
+    `2^k ∣ (φ(D(n)) − φ(n))` for every `k` with **no** condition on the landing `14m+3`.
+    The reversal mirror of `forward_gap_fiveTimes_pow_dvd`. -/
+theorem reversal_gap_primeTriple_pow_dvd {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    2 ^ k ∣ (Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1))) := by
+  rw [reversal_gap_primeTriple_eq_totient hm hp hq k]
+  exact ⟨Nat.totient (14 * m + 3) - 12 * m, by ring⟩
+
+/-- **Reversal criterion for the prime-triple family (symbolic landing).**  For a seed
+    `a = 18m+3` with `4m+1`, `6m+1` prime (`m ≥ 1`), the entire family `(18m+3)·2^(k+1)`
+    lies in the reversal regime `φ(n) < φ(D(n))` **iff** the landing's totient exceeds
+    `12m`: `(18m+3)·2^(k+1) ∈ ReversalSet ↔ 12m < φ(14m+3)`.  This pins reversal of the
+    family entirely on the single arithmetic quantity `φ(14m+3)`, `k`-freely: a prime
+    landing (`φ(14m+3) = 14m+2 > 12m`) forces reversal — recovering the hypothesis of
+    `reversal_gap_primeTriple` — while a composite landing with `φ(14m+3) ≤ 12m` (e.g.
+    `m = 3`, landing `45`, `φ(45) = 24 < 36`, see `primeTriple_shape_not_reversal_57`) puts
+    the *same* seed shape outside the reversal regime. -/
+theorem reversal_primeTriple_iff_totient_landing {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet ↔ 12 * m < Nat.totient (14 * m + 3) := by
+  obtain ⟨hφn, hφD⟩ := primeTriple_totient_values hm hp hq k
+  have h2k : 0 < 2 ^ k := pow_pos (by norm_num) k
+  rw [ReversalSet, Set.mem_setOf_eq, hφn, hφD]
+  exact Nat.mul_lt_mul_right h2k
+
+/-- **Consistency: the master form re-derives `reversal_gap_primeTriple`.**  Specialising
+    the symbolic-landing gap `reversal_gap_primeTriple_eq_totient` to a *prime* landing
+    (`φ(14m+3) = 14m+2`) recovers the exact reversal gap `(2m+2)·2^k`, confirming the
+    master form subsumes the prime-landing computation. -/
+theorem reversal_gap_primeTriple_of_prime_landing {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = (2 * m + 2) * 2 ^ k := by
+  rw [reversal_gap_primeTriple_eq_totient hm hp hq k, Nat.totient_prime he,
+      show 14 * m + 3 - 1 = 14 * m + 2 from by omega,
+      show 14 * m + 2 - 12 * m = 2 * m + 2 from by omega]
+
+/-- **A prime-triple *shape* need not reverse — landing primality in
+    `reversal_gap_primeTriple` is essential.**  At `m = 3` the family primes `4m+1 = 13`
+    and `6m+1 = 19` are prime, so the seed `18·3+3 = 57` has the prime-triple shape, yet
+    the landing `14·3+3 = 45 = 3²·5` is composite with `φ(45) = 24 ≤ 36 = 12m`.  By
+    `reversal_primeTriple_iff_totient_landing` the whole family `57·2^(k+1)` therefore does
+    **not** reverse — the identical seed shape that reverses at `m = 1` (`a = 21`) fails to
+    reverse at `m = 3`. -/
+theorem primeTriple_shape_not_reversal_57 (k : ℕ) :
+    57 * 2 ^ (k + 1) ∉ ReversalSet := by
+  have h := reversal_primeTriple_iff_totient_landing (m := 3) (by norm_num)
+    (by norm_num) (by norm_num) k
+  have h45 : Nat.totient (14 * 3 + 3) = 24 := by
+    rw [show 14 * 3 + 3 = 9 * 5 from by norm_num, Nat.totient_mul (by norm_num),
+        totient_9, totient_5]
+  rw [show (18 * 3 + 3) = 57 from by norm_num] at h
+  rw [h, h45]
+  omega
+
+-- ----------------------------------------------------------------------------
 -- Quantitative sharpening: a divergent FORWARD margin of the fiveTimes family
 -- ----------------------------------------------------------------------------
 -- `mem_ForwardSet_fiveTimes` shows the family `n = 5·(4m+1)·2^(k+1)` is forward
@@ -3117,5 +3533,557 @@ theorem forward_gap_fiveTimes_ge_pow {m : ℕ} (hm : 3 ≤ m)
   refine le_trans ?_ (forward_gap_fiveTimes_ge hm hq hb k)
   calc 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
     _ ≤ (2 * m - 2) * 2 ^ k := by gcongr; omega
+
+-- ----------------------------------------------------------------------------
+-- Quantitative closure of the EQUALITY regime: the exact zero gap of the
+-- Sophie–Germain family `n = 3q·2^(k+1)`
+-- ----------------------------------------------------------------------------
+-- `mem_EqualitySet_sophieGermain` shows `φ(n) = φ(D(n))` for the Sophie–Germain
+-- seeds `a = 3q` (`q, 2q+1` prime, `q ≥ 5`), but only *qualitatively* — it asserts
+-- equality without exhibiting the landing `D(n)` or the common totient value.  Here
+-- we compute both exactly, completing the quantitative trichotomy alongside
+-- `reversal_gap_primeTriple` (exact gap `(2m+2)·2^k > 0`) and
+-- `forward_gap_fiveTimes_ge` (margin `≥ (2m−2)·2^k > 0`):
+--
+--   D(3q·2^(k+1)) = q·2^(k+2)  and  φ(n) = φ(D(n)) = (q−1)·2^(k+1),
+--
+-- so the equality-regime "gap" `φ(D(n)) − φ(n)` is not merely small but *identically
+-- zero* along the whole family, for every `k`.  Mechanism (via `dblIter_transport`
+-- with `a = 3q`, `b = 2q+1`): `2a − φ(a) = 6q − 2(q−1) = 2(2q+1)`, so the first
+-- cototient step lands on `(2q+1)·2^(k+1)`; then `D(n) = (2a − φ(b))·2^k =
+-- (6q − 2q)·2^k = q·2^(k+2)`.
+
+/-- **Exact double-iterate landing of the Sophie–Germain equality family.**  For a
+    seed `a = 3q` with `q` and `2q+1` both prime (`q ≥ 5`), the double iterate collapses
+    the entire family `n = 3q·2^(k+1)` onto the pure form `q·2^(k+2)`:
+    `D(3q·2^(k+1)) = q·2^(k+2)`.  (First cototient step lands on `(2q+1)·2^(k+1)`; the
+    second recombines to `q·2^(k+2)`.)  This is the equality-regime analogue of the
+    reversal landing `D(21·2^(k+1)) = 17·2^(k+1)` and generalizes the concrete
+    `dblIter_eq_family` (`q = 5`: `D(15·2^(k+1)) = 5·2^(k+2)`) to the whole family. -/
+theorem sophieGermain_dblIter_landing {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    dblIter (3 * q * 2 ^ (k + 1)) = q * 2 ^ (k + 2) := by
+  have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+  have hcop : Nat.Coprime 3 q := (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hφ3q : Nat.totient (3 * q) = 2 * (q - 1) := by
+    rw [Nat.totient_mul hcop, Nat.totient_prime hq, show Nat.totient 3 = 2 from by decide]
+  have hodd3q : Odd (3 * q) := by rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  have hodd2q1 : Odd (2 * q + 1) := ⟨q, by ring⟩
+  have hφ2q1 : Nat.totient (2 * q + 1) = 2 * q := by rw [Nat.totient_prime hsg]; omega
+  have hstep : 2 * (3 * q) - Nat.totient (3 * q) = 2 * (2 * q + 1) := by rw [hφ3q]; omega
+  rw [dblIter_transport hodd3q hodd2q1 hstep k, hφ2q1,
+      show 2 * (3 * q) - 2 * q = 4 * q from by omega,
+      show (2 : ℕ) ^ (k + 2) = 4 * 2 ^ k from by rw [pow_succ, pow_succ]; ring]
+  ring
+
+/-- **Exact common totient value of the Sophie–Germain equality family.**  For a seed
+    `a = 3q` with `q`, `2q+1` both prime (`q ≥ 5`), both `φ(n)` and `φ(D(n))` along
+    `n = 3q·2^(k+1)` equal the same closed form `(q−1)·2^(k+1)`.  The first is a direct
+    totient computation (`φ(3q·2^(k+1)) = φ(3q)·2^k = 2(q−1)·2^k`); the second uses the
+    exact landing `sophieGermain_dblIter_landing` (`D(n) = q·2^(k+2)`, so
+    `φ(D(n)) = φ(q)·2^(k+1) = (q−1)·2^(k+1)`).  This is the quantitative refinement of
+    `mem_EqualitySet_sophieGermain`, which only asserted the two are equal. -/
+theorem sophieGermain_totient_eq_value {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    Nat.totient (3 * q * 2 ^ (k + 1)) = (q - 1) * 2 ^ (k + 1) ∧
+      Nat.totient (dblIter (3 * q * 2 ^ (k + 1))) = (q - 1) * 2 ^ (k + 1) := by
+  have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+  have oddCop : ∀ (c m : ℕ), Odd c → Nat.Coprime c (2 ^ m) := by
+    intro c m hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd; rw [Nat.dvd_iff_mod_eq_zero] at hd; have := Nat.odd_iff.mp hc; omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right m
+  have hcop : Nat.Coprime 3 q := (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hφ3q : Nat.totient (3 * q) = 2 * (q - 1) := by
+    rw [Nat.totient_mul hcop, Nat.totient_prime hq, show Nat.totient 3 = 2 from by decide]
+  have hodd3q : Odd (3 * q) := by rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have hp2' : Nat.totient (2 ^ (k + 2)) = 2 ^ (k + 1) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 1))]; simp
+  refine ⟨?_, ?_⟩
+  · rw [Nat.totient_mul (oddCop (3 * q) (k + 1) hodd3q), hφ3q, hp2,
+        show (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k from by rw [pow_succ]; ring]
+    ring
+  · rw [sophieGermain_dblIter_landing hq hq5 hsg k,
+        Nat.totient_mul (oddCop q (k + 2) hqodd), Nat.totient_prime hq, hp2']
+
+/-- **The equality regime has an identically-zero gap.**  Completing the quantitative
+    trichotomy: where the reversal family has gap `φ(D(n)) − φ(n) = (2m+2)·2^k > 0`
+    (`reversal_gap_primeTriple`) and the forward family has margin `≥ (2m−2)·2^k > 0`
+    (`forward_gap_fiveTimes_ge`), the Sophie–Germain equality family sits exactly on the
+    diagonal for *every* `k`: `φ(D(n)) − φ(n) = 0`. -/
+theorem sophieGermain_gap_zero {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    Nat.totient (dblIter (3 * q * 2 ^ (k + 1)))
+      - Nat.totient (3 * q * 2 ^ (k + 1)) = 0 := by
+  obtain ⟨h1, h2⟩ := sophieGermain_totient_eq_value hq hq5 hsg k
+  rw [h1, h2, Nat.sub_self]
+
+-- ----------------------------------------------------------------------------
+-- Exact FORWARD gap under a prime landing: the missing mirror of
+-- `reversal_gap_primeTriple`
+-- ----------------------------------------------------------------------------
+-- `forward_gap_fiveTimes_ge` gives only a *lower bound* `φ(n) − φ(D(n)) ≥ (2m−2)·2^k`
+-- for the forward family `n = 5·(4m+1)·2^(k+1)`, precisely because it makes no
+-- assumption on the landing `14m+3` (`φ(14m+3) ≤ 14m+2` is a one-sided bound).  As
+-- soon as `14m+3` is *prime* the bound tightens to an equality `φ(14m+3) = 14m+2`, and
+-- the forward margin collapses to the EXACT closed form `(2m−2)·2^k` — the direct
+-- forward analogue of the reversal exact gap `(2m+2)·2^k` of `reversal_gap_primeTriple`.
+-- Concrete triple-prime seeds exist: `m = 4` (`a = 5·17 = 85`, landing `59`, gap `6·2^k`),
+-- `m = 7` (`a = 5·29 = 145`, landing `101`, gap `12·2^k`), … , so the statement is not
+-- vacuous.  With this, all three regimes now have an *exact* gap once the landing is
+-- prime:  reversal `+(2m+2)·2^k`, forward `−(2m−2)·2^k`, equality `0`.
+
+/-- **Master exact forward gap of the fiveTimes family (closed form in `φ` of the landing).**
+    For a seed `a = 5·(4m+1)` with only the *family* primes `4m+1`, `12m+5` (`= 3q+2`) prime
+    (`m ≥ 3`) — and **no** assumption on the landing `14m+3` — the forward margin along
+    `n = 5·(4m+1)·2^(k+1)` is exactly
+        `φ(n) − φ(D(n)) = (16m − φ(14m+3))·2^k`.
+    This is the unifying identity underneath both `forward_gap_fiveTimes_ge` (apply
+    `φ(14m+3) ≤ 14m+2` to get the lower bound `(2m−2)·2^k`) and `forward_gap_fiveTimes_eq`
+    (apply `φ(14m+3) = 14m+2` when the landing is prime to get the exact `(2m−2)·2^k`): both
+    were previously proved directly, but each hid this closed form. The mechanism is the same
+    `dblIter_transport` landing `D(n) = (14m+3)·2^(k+1)`, so `φ(D(n)) = φ(14m+3)·2^k` and the
+    gap is `16m·2^k − φ(14m+3)·2^k = (16m − φ(14m+3))·2^k` — with the totient of the landing
+    left *symbolic*, so the identity needs nothing about `14m+3`'s factorisation. -/
+theorem forward_gap_fiveTimes_eq_totient {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = (16 * m - Nat.totient (14 * m + 3)) * 2 ^ k := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  -- φ(a) = 16m  (a = 5·(4m+1))
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hq]; omega
+  -- φ(b) = 12m+4  (b = 12m+5 prime)
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by
+    rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(5·(4m+1))·2^k = 16m·2^k
+  have copa : Nat.Coprime (5 * (4 * m + 1)) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1)) = 16 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)  (landing factorisation unused)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  have hD : dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, keeping φ(14m+3) SYMBOLIC (no primality of the landing)
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφD : Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = Nat.totient (14 * m + 3) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2]
+  rw [hφn, hφD, ← Nat.sub_mul]
+
+/-- **The forward gap of the fiveTimes family is always a multiple of `2^k`.**  Immediate from
+    the master closed form `forward_gap_fiveTimes_eq_totient`: the whole family scales by `2^k`,
+    so `2^k ∣ (φ(n) − φ(D(n)))` for *every* `k`, with **no** condition on the landing `14m+3`.
+    (When the landing is prime, `forward_gap_fiveTimes_eq` identifies the cofactor as the
+    explicit `2m−2`.) This is the unconditional 2-adic structure of the forward margin. -/
+theorem forward_gap_fiveTimes_pow_dvd {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    2 ^ k ∣ (Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))) := by
+  rw [forward_gap_fiveTimes_eq_totient hm hq hb k]
+  exact ⟨16 * m - Nat.totient (14 * m + 3), by ring⟩
+
+/-- **Exact forward gap of the fiveTimes family under a prime landing.**  For a seed
+    `a = 5·(4m+1)` with `4m+1`, `12m+5` (`= 3q+2`) *and* the landing `14m+3` all prime
+    (`m ≥ 3`), the forward margin along `n = 5·(4m+1)·2^(k+1)` is not merely bounded below
+    but *exactly*
+        `φ(n) − φ(D(n)) = (2m−2)·2^k`.
+    This is the sharp mirror of `reversal_gap_primeTriple` (exact reversal gap
+    `(2m+2)·2^k`): the extra hypothesis `(14m+3).Prime` upgrades the one-sided bound of
+    `forward_gap_fiveTimes_ge` to an equality, since then `φ(14m+3) = 14m+2` exactly and
+    `φ(D(n)) = (14m+2)·2^k`, whence `16m·2^k − (14m+2)·2^k = (2m−2)·2^k`. -/
+theorem forward_gap_fiveTimes_eq {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (hland : (14 * m + 3).Prime)
+    (k : ℕ) :
+    Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = (2 * m - 2) * 2 ^ k := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  -- φ(a) = 16m  (a = 5·(4m+1))
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hq]; omega
+  -- φ(b) = 12m+4  (b = 12m+5 prime)
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by
+    rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(5·(4m+1))·2^k = 16m·2^k
+  have copa : Nat.Coprime (5 * (4 * m + 1)) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1)) = 16 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  have hD : dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, and with 14m+3 prime this is EXACTLY (14m+2)·2^k
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφland : Nat.totient (14 * m + 3) = 14 * m + 2 := by
+    rw [Nat.totient_prime hland]; omega
+  have hφD : Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = (14 * m + 2) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2, hφland]
+  rw [hφn, hφD, ← Nat.sub_mul, show 16 * m - (14 * m + 2) = 2 * m - 2 from by omega]
+
+/-- **Concrete smallest forward exact-gap witness.**  The least admissible seed for
+    `forward_gap_fiveTimes_eq` is `m = 4`, i.e. `a = 5·17 = 85` (with `4m+1 = 17`,
+    `12m+5 = 53`, landing `14m+3 = 59`, all prime).  Along `n = 85·2^(k+1)` the forward
+    margin is exactly `6·2^k`:
+        `φ(85·2^(k+1)) − φ(D(85·2^(k+1))) = 6 · 2^k`. -/
+theorem forward_gap_fiveTimes_eq_85 (k : ℕ) :
+    Nat.totient (85 * 2 ^ (k + 1))
+        - Nat.totient (dblIter (85 * 2 ^ (k + 1))) = 6 * 2 ^ k := by
+  have h := forward_gap_fiveTimes_eq (m := 4) (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num) k
+  norm_num at h
+  exact h
+
+-- ----------------------------------------------------------------------------
+-- Shared landing, opposite verdict:  the trichotomy is NOT a function of D(n)
+-- ----------------------------------------------------------------------------
+-- Both parametric families transport onto the SAME landing.  The reversal seed
+-- `18m+3 = 3·(6m+1)` and the forward seed `20m+5 = 5·(4m+1)` are distinct, yet
+--     D((18m+3)·2^(k+1))  =  D((20m+5)·2^(k+1))  =  (14m+3)·2^(k+1),
+-- because the double iterate keeps only `2a − φ(b) = 2(14m+3)` and forgets the
+-- seed shape.  Consequently `φ(D(n))` is IDENTICAL for the two families.  Yet the
+-- verdict differs: because `φ(18m+3) = 12m·2^k < φ(20m+5) = 16m·2^k`, the shared
+-- landing sits ABOVE `18m+3` (reversal) and BELOW `20m+5` (forward).  So the
+-- double-iterate comparison `φ(n) vs φ(D(n))` is decided by the seed's own totient,
+-- NOT by the landing point: two seeds with an identical `D(n)` (hence identical
+-- `φ(D(n))`) can fall on opposite sides of the trichotomy.
+
+/-- **`D`-landing of the prime-triple reversal family.**  For a seed `a = 18m+3`
+    with `4m+1`, `6m+1` prime, the double iterate of the whole family is
+    `D((18m+3)·2^(k+1)) = (14m+3)·2^(k+1)`.  (Extracted from the transport chain
+    inside `reversal_gap_primeTriple`; the landing is proved WITHOUT assuming
+    `14m+3` prime — that primality only enters when evaluating `φ` of the landing.) -/
+theorem dblIter_primeTriple {m : ℕ} (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (k : ℕ) : dblIter ((18 * m + 3) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3) = 2 * (12 * m + 3) := by
+    rw [hφa]; omega
+  rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+      show 2 * (18 * m + 3) - 8 * m = (14 * m + 3) * 2 from by omega]
+  ring
+
+/-- **`D`-landing of the fiveTimes forward family.**  For a seed `a = 5·(4m+1)`
+    (`m ≥ 3`) with `4m+1`, `12m+5` prime, the double iterate of the whole family is
+    `D(5·(4m+1)·2^(k+1)) = (14m+3)·2^(k+1)` — the SAME landing as the prime-triple
+    reversal family `dblIter_primeTriple`, from a genuinely different seed. -/
+theorem dblIter_fiveTimes {m : ℕ} (hm : 3 ≤ m) (hp : (4 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (k : ℕ) :
+    dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hp]; omega
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+      show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+  ring
+
+/-- **Shared landing.**  The prime-triple reversal seed `18m+3` and the fiveTimes
+    forward seed `5·(4m+1) = 20m+5` — two different odd seeds — send their entire
+    `·2^(k+1)` families onto the IDENTICAL double iterate `(14m+3)·2^(k+1)`.  So
+    `φ(D(n))` is the same for both families, for every `k`. -/
+theorem dblIter_primeTriple_eq_fiveTimes {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    dblIter ((18 * m + 3) * 2 ^ (k + 1)) = dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) := by
+  rw [dblIter_primeTriple hp hq k, dblIter_fiveTimes hm hp hb k]
+
+/-- **Shared landing, opposite verdict.**  For `m ≥ 3` with `4m+1`, `6m+1`, `12m+5`,
+    `14m+3` all prime, the reversal seed `18m+3` and the forward seed `5·(4m+1)`
+    send their families onto the *same* double iterate `(14m+3)·2^(k+1)`, yet fall
+    on opposite sides of the totient trichotomy: `(18m+3)·2^(k+1) ∈ ReversalSet`
+    (`φ(n) < φ(D(n))`) while `5·(4m+1)·2^(k+1) ∈ ForwardSet` (`φ(D(n)) < φ(n)`).
+    This is a structural obstruction to any "landing determines verdict" heuristic:
+    the classification is decided by the seed's own totient, not by `D(n)`.
+    (An `m` realising all four primalities exists, e.g. `m = 7`:
+    `4m+1=29, 6m+1=43, 12m+5=89, 14m+3=101`, cf. `shared_landing_opposite_verdict_129_145`.) -/
+theorem shared_landing_opposite_verdict {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    dblIter ((18 * m + 3) * 2 ^ (k + 1)) = dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) ∧
+      (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet ∧
+      5 * (4 * m + 1) * 2 ^ (k + 1) ∈ ForwardSet :=
+  ⟨dblIter_primeTriple_eq_fiveTimes hm hp hq hb k,
+   mem_ReversalSet_primeTriple (by omega) hp hq he k,
+   mem_ForwardSet_fiveTimes (q := 4 * m + 1) hp (by omega) (by omega)
+     (by rw [show 3 * (4 * m + 1) + 2 = 12 * m + 5 from by ring]; exact hb) k⟩
+
+/-- **The two verdict margins differ by exactly `2^(k+2)` at the shared landing.**
+    The families share `φ(D(n)) = (14m+2)·2^k`; the reversal seed has totient
+    `12m·2^k` and the forward seed `16m·2^k`.  So the reversal margin
+    `φ(D(n)) − φ(reversal) = (2m+2)·2^k` exceeds the forward margin
+    `φ(forward) − φ(D(n)) = (2m−2)·2^k` by exactly `4·2^k = 2^(k+2)`, a fixed offset
+    independent of `m` (the two margins straddle the common landing and their sum,
+    `4m·2^k`, is the seed-totient gap `16m·2^k − 12m·2^k`).  Reuses the exact forward
+    gap `forward_gap_fiveTimes_eq`. -/
+theorem shared_landing_gap_difference {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    (Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)))
+      - (Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))) = 2 ^ (k + 2) := by
+  rw [reversal_gap_primeTriple (by omega) hp hq he k, forward_gap_fiveTimes_eq hm hp hb he k,
+      ← Nat.sub_mul, show 2 * m + 2 - (2 * m - 2) = 4 from by omega,
+      show 2 ^ (k + 2) = 4 * 2 ^ k from by rw [pow_add]; ring]
+
+/-- **Concrete instance at `m = 7` (`seeds 129 and 145`).**  The reversal seed
+    `129 = 3·43` and the forward seed `145 = 5·29` both send their `·2^(k+1)`
+    families onto the shared prime landing `101·2^(k+1)`, yet `129·2^(k+1)` reverses
+    (`φ = 84·2^k < 100·2^k = φ(D)`) while `145·2^(k+1)` goes forward
+    (`φ(D) = 100·2^k < 112·2^k = φ`).  `129` is one of the four isolated reversal
+    seeds named in the original problem; `145` is a fiveTimes forward seed. -/
+theorem shared_landing_opposite_verdict_129_145 (k : ℕ) :
+    dblIter (129 * 2 ^ (k + 1)) = 101 * 2 ^ (k + 1) ∧
+      dblIter (145 * 2 ^ (k + 1)) = 101 * 2 ^ (k + 1) ∧
+      Nat.totient (129 * 2 ^ (k + 1)) < Nat.totient (dblIter (129 * 2 ^ (k + 1))) ∧
+      Nat.totient (dblIter (145 * 2 ^ (k + 1))) < Nat.totient (145 * 2 ^ (k + 1)) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · simpa using dblIter_primeTriple (m := 7) (by norm_num) (by norm_num) k
+  · simpa using dblIter_fiveTimes (m := 7) (by norm_num) (by norm_num) (by norm_num) k
+  · simpa using mem_ReversalSet_primeTriple (m := 7) (by norm_num) (by norm_num)
+      (by norm_num) (by norm_num) k
+  · simpa using mem_ForwardSet_fiveTimes (q := 29) (by norm_num) (by norm_num)
+      (by norm_num) (by norm_num) k
+
+-- ----------------------------------------------------------------------------
+-- General shared-landing criterion, and a THREE-way shared landing
+-- ----------------------------------------------------------------------------
+-- `shared_landing_opposite_verdict` shows two seeds with a common double iterate
+-- falling on OPPOSITE sides of the trichotomy (reversal vs forward).  Two natural
+-- questions remain (both flagged as next steps): (1) is there a *general* principle
+-- behind such coincidences, and (2) can a single shared landing realise ALL THREE
+-- verdicts — reversal, forward AND equality — at once?  Both are answered here.
+
+/-- **General shared-landing criterion.**  Two transport-admissible odd seeds
+    `a₁, a₂` — each with an odd transport partner `bᵢ` (`2aᵢ − φ(aᵢ) = 2bᵢ`) — send
+    their `·2^(k+1)` families onto the SAME double iterate iff their *landing values*
+    `2aᵢ − φ(bᵢ)` agree:
+        `D(a₁·2^(k+1)) = D(a₂·2^(k+1))  ↔  2a₁ − φ(b₁) = 2a₂ − φ(b₂)`.
+    Both sides reduce, via `dblIter_transport`, to `(2aᵢ − φ(bᵢ))·2^k`, and the shared
+    positive factor `2^k` cancels.  This is the general principle underneath every
+    concrete shared landing (`dblIter_primeTriple_eq_fiveTimes`, and the triple
+    `shared_landing_triple_verdict_917` below): a landing coincidence is EXACTLY a
+    coincidence of landing values, uniformly in `k`. -/
+theorem dblIter_eq_iff_landing_value {a₁ a₂ b₁ b₂ : ℕ}
+    (ha₁ : Odd a₁) (hb₁ : Odd b₁) (hstep₁ : 2 * a₁ - Nat.totient a₁ = 2 * b₁)
+    (ha₂ : Odd a₂) (hb₂ : Odd b₂) (hstep₂ : 2 * a₂ - Nat.totient a₂ = 2 * b₂)
+    (k : ℕ) :
+    dblIter (a₁ * 2 ^ (k + 1)) = dblIter (a₂ * 2 ^ (k + 1))
+      ↔ 2 * a₁ - Nat.totient b₁ = 2 * a₂ - Nat.totient b₂ := by
+  rw [dblIter_transport ha₁ hb₁ hstep₁ k, dblIter_transport ha₂ hb₂ hstep₂ k]
+  constructor
+  · exact fun h => mul_right_cancel₀ (pow_ne_zero k (by norm_num)) h
+  · exact fun h => by rw [h]
+
+/-- **Constructive shared landing.**  The `←` direction of
+    `dblIter_eq_iff_landing_value`, packaged for direct use: equal landing values
+    force a shared double iterate for every `k`. -/
+theorem dblIter_eq_of_landing_value_eq {a₁ a₂ b₁ b₂ : ℕ}
+    (ha₁ : Odd a₁) (hb₁ : Odd b₁) (hstep₁ : 2 * a₁ - Nat.totient a₁ = 2 * b₁)
+    (ha₂ : Odd a₂) (hb₂ : Odd b₂) (hstep₂ : 2 * a₂ - Nat.totient a₂ = 2 * b₂)
+    (hval : 2 * a₁ - Nat.totient b₁ = 2 * a₂ - Nat.totient b₂) (k : ℕ) :
+    dblIter (a₁ * 2 ^ (k + 1)) = dblIter (a₂ * 2 ^ (k + 1)) :=
+  (dblIter_eq_iff_landing_value ha₁ hb₁ hstep₁ ha₂ hb₂ hstep₂ k).mpr hval
+
+-- Concrete totients for the three-way witness at landing `917`.  Computed through
+-- the factorisations (NOT kernel `decide` on `Nat.totient`, which blows the stack
+-- for arguments this size — cf. the note near `totient_15`).
+theorem totient_1097 : Nat.totient 1097 = 1096 := Nat.totient_prime (by norm_num)
+
+theorem totient_1137 : Nat.totient 1137 = 756 := by
+  rw [show (1137 : ℕ) = 3 * 379 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+theorem totient_1179 : Nat.totient 1179 = 780 := by
+  rw [show (1179 : ℕ) = 3 ^ 2 * 131 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime_pow (by norm_num) (by norm_num), Nat.totient_prime (by norm_num)]
+  norm_num
+
+theorem totient_549 : Nat.totient 549 = 360 := by
+  rw [show (549 : ℕ) = 3 ^ 2 * 61 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime_pow (by norm_num) (by norm_num), Nat.totient_prime (by norm_num)]
+  norm_num
+
+theorem totient_759 : Nat.totient 759 = 440 := by
+  rw [show (759 : ℕ) = 3 * 253 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), show (253 : ℕ) = 11 * 23 from rfl,
+      Nat.totient_mul (by decide), Nat.totient_prime (by norm_num),
+      Nat.totient_prime (by norm_num)]
+
+theorem totient_789 : Nat.totient 789 = 524 := by
+  rw [show (789 : ℕ) = 3 * 263 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+theorem totient_917 : Nat.totient 917 = 780 := by
+  rw [show (917 : ℕ) = 7 * 131 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+/-- `D(1137·2^(k+1)) = 917·2^(k+1)` (seed `1137 = 3·379`, partner `759 = 3·11·23`). -/
+theorem dblIter_seed1137 (k : ℕ) :
+    dblIter (1137 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1137) (b := 759)
+    (by decide) (by decide) (by rw [totient_1137]) k
+  rw [h, totient_759, show (2 * 1137 - 440 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- `D(1179·2^(k+1)) = 917·2^(k+1)` (seed `1179 = 3²·131`, partner `789 = 3·263`). -/
+theorem dblIter_seed1179 (k : ℕ) :
+    dblIter (1179 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1179) (b := 789)
+    (by decide) (by decide) (by rw [totient_1179]) k
+  rw [h, totient_789, show (2 * 1179 - 524 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- `D(1097·2^(k+1)) = 917·2^(k+1)` (seed `1097` prime, partner `549 = 3²·61`). -/
+theorem dblIter_seed1097 (k : ℕ) :
+    dblIter (1097 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1097) (b := 549)
+    (by decide) (by decide) (by rw [totient_1097]) k
+  rw [h, totient_549, show (2 * 1097 - 360 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- **Three-way shared landing — all three verdicts at one point.**  The odd seeds
+    `1137 = 3·379`, `1179 = 3²·131` and `1097` (prime) send their `·2^(k+1)` families
+    onto the identical double iterate `917·2^(k+1)` (`917 = 7·131`, `φ(917) = 780`),
+    yet realise all three regimes of the totient trichotomy simultaneously:
+      `1137·2^(k+1) ∈ ReversalSet`  (`φ = 756·2^k < 780·2^k = φ(D)`),
+      `1179·2^(k+1) ∈ EqualitySet`  (`φ = 780·2^k = 780·2^k = φ(D)`),
+      `1097·2^(k+1) ∈ ForwardSet`   (`φ = 1096·2^k > 780·2^k = φ(D)`).
+    This is the sharpest landing-independence statement: one shared value of `D(n)`
+    (hence of `φ(D(n))`) is compatible with reversal, equality AND forward at once,
+    so the trichotomy is decided purely by the seed's own totient, never by `D(n)`.
+    `L = 917` is the least common landing admitting all three verdicts (exhaustive
+    search over odd seeds).  Strengthens the two-way `shared_landing_opposite_verdict`
+    (reversal vs forward only). -/
+theorem shared_landing_triple_verdict_917 (k : ℕ) :
+    dblIter (1137 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      dblIter (1179 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      dblIter (1097 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      1137 * 2 ^ (k + 1) ∈ ReversalSet ∧
+      1179 * 2 ^ (k + 1) ∈ EqualitySet ∧
+      1097 * 2 ^ (k + 1) ∈ ForwardSet := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have pos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  have hφ1137 : Nat.totient (1137 * 2 ^ (k + 1)) = 756 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1137 2).pow_right (k + 1)), hp2,
+        totient_1137]
+  have hφ1179 : Nat.totient (1179 * 2 ^ (k + 1)) = 780 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1179 2).pow_right (k + 1)), hp2,
+        totient_1179]
+  have hφ1097 : Nat.totient (1097 * 2 ^ (k + 1)) = 1096 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1097 2).pow_right (k + 1)), hp2,
+        totient_1097]
+  have hφ917 : Nat.totient (917 * 2 ^ (k + 1)) = 780 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 917 2).pow_right (k + 1)), hp2,
+        totient_917]
+  have hD1137 := dblIter_seed1137 k
+  have hD1179 := dblIter_seed1179 k
+  have hD1097 := dblIter_seed1097 k
+  refine ⟨hD1137, hD1179, hD1097, ?_, ?_, ?_⟩
+  · show Nat.totient (1137 * 2 ^ (k + 1)) < Nat.totient (dblIter (1137 * 2 ^ (k + 1)))
+    rw [hD1137, hφ1137, hφ917]
+    exact mul_lt_mul_of_pos_right (by norm_num) pos
+  · show Nat.totient (1179 * 2 ^ (k + 1)) = Nat.totient (dblIter (1179 * 2 ^ (k + 1)))
+    rw [hD1179, hφ1179, hφ917]
+  · show Nat.totient (dblIter (1097 * 2 ^ (k + 1))) < Nat.totient (1097 * 2 ^ (k + 1))
+    rw [hD1097, hφ1097, hφ917]
+    exact mul_lt_mul_of_pos_right (by norm_num) pos
+
+/-! ## The three regimes partition ℕ
+
+`ReversalSet`, `EqualitySet`, and `ForwardSet` are defined by the three cases of the
+comparison `φ(n)` vs `φ(D(n))` (with `D = dblIter`).  Being the `<`, `=`, `>` slices of a
+single `Nat` comparison, they are automatically **pairwise disjoint** and **cover ℕ** — every
+`n` lands in *exactly one* regime.  This is the global well-definedness of the whole
+classification (of which `classifySeed_classifies` is the seed-family decision procedure):
+no `n` is both a reversal and a forward point, and none escapes classification.  These hold
+for *all* `n`, needing none of the seed/transport machinery — only the trichotomy of `φ(n)`
+against `φ(D(n))`. -/
+
+/-- Reversal and equality are disjoint: `φ(n) < φ(D(n))` and `φ(n) = φ(D(n))` cannot both hold. -/
+theorem reversalSet_disjoint_equalitySet : Disjoint ReversalSet EqualitySet := by
+  rw [Set.disjoint_left]
+  intro n hR hE
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  omega
+
+/-- Reversal and forward are disjoint: `φ(n) < φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem reversalSet_disjoint_forwardSet : Disjoint ReversalSet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hR hF
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- Equality and forward are disjoint: `φ(n) = φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem equalitySet_disjoint_forwardSet : Disjoint EqualitySet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hE hF
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- **The three regimes cover ℕ.**  Every `n` is a reversal, equality, or forward point,
+by the trichotomy of `φ(n)` against `φ(D(n))`. -/
+theorem reversalSet_union_equalitySet_union_forwardSet :
+    ReversalSet ∪ EqualitySet ∪ ForwardSet = Set.univ := by
+  ext n
+  simp only [Set.mem_union, ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq,
+    Set.mem_univ, iff_true]
+  omega
+
+/-- **Exactly one regime per `n`.**  The three sets partition ℕ: every `n` lies in one of
+`ReversalSet`, `EqualitySet`, `ForwardSet` and in neither of the other two.  The global
+trichotomy behind the classifier. -/
+theorem regime_trichotomy (n : ℕ) :
+    (n ∈ ReversalSet ∧ n ∉ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∈ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∉ EqualitySet ∧ n ∈ ForwardSet) := by
+  simp only [ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq]
+  omega
 
 end Erdos1064OQ03

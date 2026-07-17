@@ -53,14 +53,37 @@ exhibiting *exactly* the two roots `n(1±s)/4`) are local-lean verified
 (Lean v4.26.0 + pinned Mathlib oleans, 0 errors).  The graph-level section
 (`kst_cherry_count_nat`,
 `kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
-leading-order closed form added in this session (`kst_radical_envelope`,
+leading-order closed form (`kst_radical_envelope`,
 `kst_edge_bound_leading_order`, giving the recognisable
 `ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`), together with the exact C₄
 specialisations `reiman_edge_bound_of_free` (the graph-level Reiman bound
 `4 m ≤ n(1+√(4n-3))`) and its forcing contrapositive `hasK2t_two_of_edge_bound_lt`,
-are elaboration-checked but UNVERIFIED in docker — the containerd build backend was
-down (meta.db / content-store I/O errors) at authoring time.  They should be
-re-verified once the build infra is repaired.
+were authored while the docker containerd backend was down; the *entire file* has
+since been re-verified local-lean (Lean v4.26.0 + pinned Mathlib oleans, 0 errors,
+every key theorem `#print axioms` = `[propext, Classical.choice, Quot.sound]`).
+This session further adds the Vieta relations `kst_vieta_sum` / `kst_vieta_prod`
+(pinning `R⁺+R⁻ = n/2` and `R⁺·R⁻ = -(t-1)n²(n-1)/4` to the quadratic's
+coefficients) and the `K_{2,3}` closed form `k23_quadratic_solve_of_kst`
+(discriminant `8n-7`, `m ≤ ¼ n(1+√(8n-7))`), also local-lean verified.
+
+The final `GraphLevel` subsection generalises the whole graph-level development
+from the `s = 2` (`K_{2,t}`) slice to the full **`K_{s,t}`** family, at the level
+of the Kővári–Sós–Turán *combinatorial core* (the `s`-star double-count): `HasKst`
+(the general `K_{s,t}` containment), the bridge `hasKst_two_iff_hasK2t`,
+`codegree_lt_of_kstFree`, and the double-count `kst_star_count_nat` /
+`kst_star_count_choose` / `kst_star_count_of_free` proving
+`∑_v C(d_v, s) ≤ (t-1)·C(n, s)` for `K_{s,t}`-free graphs — the exact `s`-analogue
+of `kst_cherry_count_nat`.  This session then carries out the remaining **convexity
+(Jensen) step** and lands the closed-form edge bound: `kst_analytic_core` (the
+abstract power-mean upgrade), `kst_general_power_bound`
+(`(2m-(s-1)n)^s ≤ (t-1) n^{2s-1}`) and its `s`-th root
+`kst_general_edge_bound_rpow` (`2m ≤ (t-1)^{1/s} n^{2-1/s} + (s-1)n`), the classical
+Kővári–Sós–Turán bound for the full `K_{s,t}` family.  The convexity input is
+Mathlib's power-mean inequality `pow_sum_le_card_mul_sum_pow` (Jensen for `x ↦ x^s`),
+fed by the elementary casts `Nat.pow_sub_le_descFactorial` and
+`Nat.descFactorial_le_pow`.  All additions are local-lean verified (Lean v4.26.0 +
+pinned Mathlib oleans, 0 errors) and axiom-free
+(`#print axioms kst_general_edge_bound_rpow = [propext, Classical.choice, Quot.sound]`).
 -/
 
 import Mathlib
@@ -106,6 +129,22 @@ theorem reiman_quadratic_solve_of_kst (m n s : ℝ)
     (hkst : 4 * m ^ 2 ≤ n ^ 2 * (n - 1) + 2 * n * m) :
     4 * m ≤ n * (1 + s) := by
   refine kst_quadratic_solve 2 m n s hn hs ?_ ?_
+  · rw [hs2]; ring
+  · nlinarith [hkst]
+
+/-- **The `K_{2,3}` case is `t = 3`.**  The next explicit instance of the family
+above `C₄`: for a `K_{2,3}`-free graph the Kővári–Sós–Turán quadratic is
+`4 m² ≤ 2 n²(n-1) + 2 n m` (coefficient `t-1 = 2`), whose discriminant collapses to
+`1 + 4·2·(n-1) = 8n - 7`.  Solving it gives the explicit closed form
+`m ≤ ¼ n(1 + √(8n-7))`, one rung of the Zarankiewicz ladder above the C₄ bound
+`¼ n(1 + √(4n-3))`.  This is the direct analogue of `reiman_quadratic_solve_of_kst`
+at `t = 3`, obtained by specialising `kst_quadratic_solve`. -/
+theorem k23_quadratic_solve_of_kst (m n s : ℝ)
+    (hn : 1 ≤ n) (hs : 0 ≤ s)
+    (hs2 : s ^ 2 = 8 * n - 7)
+    (hkst : 4 * m ^ 2 ≤ 2 * n ^ 2 * (n - 1) + 2 * n * m) :
+    4 * m ≤ n * (1 + s) := by
+  refine kst_quadratic_solve 3 m n s hn hs ?_ ?_
   · rw [hs2]; ring
   · nlinarith [hkst]
 
@@ -160,6 +199,26 @@ theorem kst_quadratic_factor (t n s x : ℝ)
     4 * x ^ 2 - 2 * n * x - (t - 1) * n ^ 2 * (n - 1) =
       4 * (x - n * (1 + s) / 4) * (x - n * (1 - s) / 4) := by
   linear_combination (n ^ 2 / 4) * hs2
+
+/-- **Vieta's sum relation.**  The two roots `R^± = n(1 ± s)/4` of the generalised
+Kővári–Sós–Turán quadratic `4 x² - 2 n x - (t-1) n²(n-1)` sum to `n/2`, matching
+`-b/a = 2n/4` read off from the leading coefficient `a = 4` and linear coefficient
+`b = -2n`.  Note this holds for *any* `s` (the sum is discriminant-free), reflecting
+that the axis of symmetry `n/4` of the parabola does not depend on `t`. -/
+theorem kst_vieta_sum (n s : ℝ) :
+    n * (1 + s) / 4 + n * (1 - s) / 4 = n / 2 := by
+  ring
+
+/-- **Vieta's product relation.**  The two roots `R^± = n(1 ± s)/4`, with
+`s² = 1 + 4(t-1)(n-1)`, multiply to `-(t-1) n²(n-1) / 4`, matching `c/a` read off
+from the leading coefficient `a = 4` and constant coefficient `c = -(t-1)n²(n-1)`.
+Together with `kst_vieta_sum` these are the Vieta relations promised in the
+`kst_quadratic_factor` docstring, pinning both symmetric functions of the roots to
+the quadratic's coefficients; the product carries the whole discriminant dependence
+via `1 - s² = -4(t-1)(n-1)`. -/
+theorem kst_vieta_prod (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
+    (n * (1 + s) / 4) * (n * (1 - s) / 4) = -((t - 1) * n ^ 2 * (n - 1)) / 4 := by
+  nlinarith [hs2]
 
 /-- **Classical Kővári–Sós–Turán closed form.**  From the generalised KST quadratic
 `4 m² ≤ (t-1)·n²(n-1) + 2 n m` (for `t ≥ 2`, `n ≥ 1`, `m ≥ 0`) the edge count obeys the
@@ -487,6 +546,70 @@ theorem not_hasK2t_mono (G : SimpleGraph V) {s t : ℕ} (hst : s ≤ t)
     (h : ¬ HasK2t G s) : ¬ HasK2t G t :=
   fun hcon => h (hasK2t_mono G hst hcon)
 
+/-- **`K_{2,t}`-containment is a monotone graph property.**  If `G ≤ H` (every edge of `G`
+is an edge of `H`) and `G` already contains a `K_{2,t}`, then so does `H`: the very same
+pair `a, b` and common-neighbour set `T` still works, since each adjacency `G.Adj a y`
+promotes to `H.Adj a y` along `G ≤ H`.  Together with `hasK2t_mono` (antitone in `t`) this
+places `HasK2t` in the standard monotone-property framework — containment only grows as the
+graph gains edges. -/
+theorem hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ} (h : HasK2t G t) :
+    HasK2t H t := by
+  obtain ⟨a, b, T, hab, htc, hadj⟩ := h
+  exact ⟨a, b, T, hab, htc, fun y hy => ⟨hle (hadj y hy).1, hle (hadj y hy).2⟩⟩
+
+/-- **`K_{2,t}`-freeness is hereditary to subgraphs.**  Dual to `hasK2t_mono_graph`: if
+`G ≤ H` and `H` is `K_{2,t}`-free, then so is its subgraph `G` — deleting edges cannot create
+a `K_{2,t}`.  So the class of `K_{2,t}`-free graphs is closed under taking subgraphs, the
+hypothesis under which the Kővári–Sós–Turán edge bound (`kst_edge_bound_of_free`) applies. -/
+theorem not_hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ}
+    (h : ¬ HasK2t H t) : ¬ HasK2t G t :=
+  fun hcon => h (hasK2t_mono_graph hle hcon)
+
+/-- **Common neighbours grow with the graph.**  If `G ≤ H` then every common neighbour of a
+pair `a, b` in `G` is one in `H`: `commonNbrs G a b ⊆ commonNbrs H a b`.  The `Finset`-level
+witness behind `hasK2t_mono_graph`, and the reason the codegree `(commonNbrs · a b).card`
+is monotone under edge addition. -/
+theorem commonNbrs_subset_of_le {G H : SimpleGraph V} [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hle : G ≤ H) (a b : V) : commonNbrs G a b ⊆ commonNbrs H a b := by
+  intro v hv
+  simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hv ⊢
+  exact ⟨hle hv.1, hle hv.2⟩
+
+/-- **`K_{2,t}`-containment via the codegree Finset.**  The forbidden-subgraph definition
+`HasK2t` (a distinct pair with a witness set `T` of `≥ t` common neighbours) is equivalent
+to the concrete codegree statement `∃ a ≠ b, t ≤ (commonNbrs G a b).card`.  Forward: any
+witness `T` embeds into `commonNbrs G a b` (`mem_commonNbrs`), so `t ≤ |T| ≤ |commonNbrs|`;
+backward: `commonNbrs G a b` *is* a valid witness set.  This is the bridge between the
+abstract `HasK2t` used in the monotonicity API and the concrete `(commonNbrs · ·).card`
+codegree quantity the Kővári–Sós–Turán counting bounds are stated in — it internalises the
+ad-hoc packing done inside `commonNbrs_card_lt_of_free`. -/
+theorem hasK2t_iff_exists_commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] (t : ℕ) :
+    HasK2t G t ↔ ∃ a b : V, a ≠ b ∧ t ≤ (commonNbrs G a b).card := by
+  constructor
+  · rintro ⟨a, b, T, hab, htc, hadj⟩
+    refine ⟨a, b, hab, le_trans htc (Finset.card_le_card ?_)⟩
+    intro y hy
+    rw [mem_commonNbrs]
+    exact hadj y hy
+  · rintro ⟨a, b, hab, hcard⟩
+    refine ⟨a, b, commonNbrs G a b, hab, hcard, fun y hy => ?_⟩
+    rw [mem_commonNbrs] at hy
+    exact hy
+
+/-- **The `t = 0` base case: `K_{2,0}` is contained iff the graph has ≥ 2 vertices.**
+`HasK2t G 0` asks only for a distinct pair `a ≠ b` (the empty common-neighbour set `T = ∅`
+vacuously satisfies the `0 ≤ |T|` and adjacency requirements), so it holds exactly when `V`
+is `Nontrivial`.  This is the bottom of the antitone-in-`t` tower (`hasK2t_mono`): every
+graph on two or more vertices contains `K_{2,0}`, and the content only begins at `t ≥ 1`
+where actual common neighbours are required. -/
+theorem hasK2t_zero_iff (G : SimpleGraph V) : HasK2t G 0 ↔ Nontrivial V := by
+  rw [nontrivial_iff]
+  constructor
+  · rintro ⟨a, b, _, hab, -, -⟩
+    exact ⟨a, b, hab⟩
+  · rintro ⟨a, b, hab⟩
+    exact ⟨a, b, ∅, hab, Nat.zero_le _, by simp⟩
+
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
 (`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
 
@@ -526,6 +649,43 @@ theorem kst_exact_bound_mono_t (t t' : ℕ) (htt' : t ≤ t') (n : ℝ) (hn : 1 
     nlinarith [hdiff]
   have hsqrt := Real.sqrt_le_sqrt harg
   exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
+
+/-- **Monotonicity of the exact KST bound in `n`.**  For fixed `t ≥ 1` and `1 ≤ n ≤ n'`
+the Reiman/KST right-hand side is non-decreasing in the vertex count `n`:
+
+      n · (1 + √(1 + 4(t-1)(n-1)))  ≤  n' · (1 + √(1 + 4(t-1)(n'-1))).
+
+Both factors grow: the leading `n ≤ n'`, and the radicand `1 + 4(t-1)(n-1)` increases
+with `n` because `(t-1) ≥ 0`, so its `√` increases; the product of two nonnegative
+non-decreasing factors is non-decreasing.  This is the `n`-companion of
+`kst_exact_bound_mono_t`, recording that the extremal count `ex(n ; K_{2,t})` grows with
+the number of vertices. -/
+theorem kst_exact_bound_mono_n (t : ℕ) (ht : 1 ≤ t) {n n' : ℝ} (hn : 1 ≤ n)
+    (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n' - 1))) := by
+  have htm1 : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hstep : (0 : ℝ) ≤ 4 * ((t : ℝ) - 1) * (n' - n) :=
+    mul_nonneg (mul_nonneg (by norm_num) htm1) (by linarith)
+  have harg : 1 + 4 * ((t : ℝ) - 1) * (n - 1) ≤ 1 + 4 * ((t : ℝ) - 1) * (n' - 1) := by
+    nlinarith [hstep]
+  have hsqrt := Real.sqrt_le_sqrt harg
+  have hc : (0 : ℝ) ≤ 1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) := by positivity
+  exact mul_le_mul hnn' (by linarith) hc (by linarith)
+
+/-- **Joint monotonicity of the exact KST bound.**  Combining the `t`- and `n`-directions:
+for `t ≤ t'` (with `t ≥ 1`) and `1 ≤ n ≤ n'`, the Reiman/KST bound at `(t, n)` is dominated
+by the one at `(t', n')`.  A single order statement folding `kst_exact_bound_mono_t` and
+`kst_exact_bound_mono_n`: forbidding a larger `K_{2,t'}` on more vertices only loosens the
+edge bound. -/
+theorem kst_exact_bound_mono (t t' : ℕ) (ht : 1 ≤ t) (htt' : t ≤ t')
+    {n n' : ℝ} (hn : 1 ≤ n) (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t' : ℝ) - 1) * (n' - 1))) :=
+  le_trans (kst_exact_bound_mono_n t ht hn hnn')
+    (kst_exact_bound_mono_t t t' htt' n' (le_trans hn hnn'))
 
 /-- **Monotone (weaker-forbidden) KST bound.**  A `K_{2,t}`-free nonempty graph
 (`t ≥ 1`) also satisfies the KST edge bound for every *larger* forbidden parameter
@@ -693,6 +853,547 @@ theorem hasK2t_two_of_edge_bound_lt (G : SimpleGraph V) [DecidableRel G.Adj] [No
     HasK2t G 2 := by
   by_contra hfree
   exact absurd (reiman_edge_bound_of_free G hfree) (not_le.2 hm)
+
+/-! ### Codegree basics: the common-neighbour count is bounded by the degree
+
+The Kővári–Sós–Turán codegree hypothesis caps `(commonNbrs G a b).card` from above by
+the forbidden-subgraph parameter (`< t` in a `K_{2,t}`-free graph, via
+`commonNbrs_card_lt_of_free`).  Independently of any freeness hypothesis, the codegree
+is bounded by the *degree* of either endpoint — every common neighbour of `a, b` is in
+particular a neighbour of `a` (and of `b`).  These are the elementary set-inclusions
+behind that bound, plus the observation (asserted in the `HasK2t` docstring) that a
+vertex is never its own common neighbour: `a ∉ commonNbrs G a b`, since a simple graph
+has no loops. -/
+
+/-- **Common neighbours are neighbours of the first vertex:**
+    `commonNbrs G a b ⊆ N(a)`.  Immediate from `commonNbrs = N(a) ∩ N(b)`. -/
+theorem commonNbrs_subset_neighborFinset_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset a := by
+  simp only [commonNbrs]; exact Finset.inter_subset_left
+
+/-- **Common neighbours are neighbours of the second vertex:**
+    `commonNbrs G a b ⊆ N(b)`.  The right-hand companion of
+    `commonNbrs_subset_neighborFinset_left`. -/
+theorem commonNbrs_subset_neighborFinset_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset b := by
+  simp only [commonNbrs]; exact Finset.inter_subset_right
+
+/-- **Codegree is bounded by the first degree:** `(commonNbrs G a b).card ≤ d(a)`.
+    Every common neighbour of `a, b` is a neighbour of `a`, so the codegree cannot
+    exceed `a`'s degree.  A freeness-free upper bound complementing
+    `commonNbrs_card_lt_of_free` (`< t` in a `K_{2,t}`-free graph). -/
+theorem commonNbrs_card_le_degree_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree a := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_left G a b)
+
+/-- **Codegree is bounded by the second degree:** `(commonNbrs G a b).card ≤ d(b)`.
+    The right-hand companion of `commonNbrs_card_le_degree_left`; together they give
+    `(commonNbrs G a b).card ≤ min (d a) (d b)`. -/
+theorem commonNbrs_card_le_degree_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree b := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_right G a b)
+
+/-- **A vertex is not its own common neighbour:** `a ∉ commonNbrs G a b`.  Membership
+    would require `G.Adj a a`, impossible in a loopless simple graph (`G.irrefl`).  This
+    proves the parenthetical in the `HasK2t` definition — the common neighbours are
+    automatically distinct from the pair `a, b`. -/
+theorem notMem_commonNbrs_left (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    a ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨haa, -⟩
+  exact G.irrefl haa
+
+/-- **A vertex is not its own common neighbour (second slot):** `b ∉ commonNbrs G a b`.
+    The companion of `notMem_commonNbrs_left`; membership would need `G.Adj b b`. -/
+theorem notMem_commonNbrs_right (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    b ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨-, hbb⟩
+  exact G.irrefl hbb
+
+/-!
+### General `K_{s,t}` codegree double-count (Kővári–Sós–Turán combinatorial core)
+
+The graph-level bounds above are the `s = 2` slice of Kővári–Sós–Turán: two
+vertices (`K_{2,t}`) and a codegree hypothesis on *pairs*.  The genuine
+Kővári–Sós–Turán double-count is the `s`-general statement — count *`s`-stars*
+`(S, v)` with `S` an `s`-subset of `N(v)`:
+
+      ∑_v C(d_v, s) = ∑_{S : |S| = s} codeg(S) ≤ (t-1)·C(n, s),
+
+valid in a `K_{s,t}`-free graph because every `s`-set of vertices then has at
+most `t-1` common neighbours.  This is the exact `s`-generalisation of
+`kst_cherry_count_nat` (which is the `s = 2` case, `∑ d(d-1) = ∑ 2·C(d,2)`).
+
+The double-count itself needs no analysis and is proved here in full.  The
+convexity step toward a closed-form `ex(n ; K_{s,t}) = O((t-1)^{1/s}·n^{2-1/s})`
+edge bound — `∑_v C(d_v, s) ≥ n·C(2m/n, s)`, Jensen for the convex map
+`x ↦ C(x, s)` — **is now carried out** below (`kst_analytic_core`,
+`kst_general_power_bound`, `kst_general_edge_bound_rpow`).  Rather than proving
+convexity of the descending factorial directly, we route through the sharp
+elementary lower bound `C(d, s) ≥ (d-s+1)^s/s!` (each of the `s` descending factors
+is `≥ d-s+1`, `Nat.pow_sub_le_descFactorial`) and Mathlib's power-mean inequality
+`pow_sum_le_card_mul_sum_pow` (Jensen for the convex `x ↦ x^s`), which for `s = 2`
+degenerates to the Cauchy–Schwarz `sq_sum_le_card` used above.
+-/
+
+/-- **General `K_{s,t}` containment.**  There is a set `S` of `s` vertices with at
+least `t` common neighbours `T` (every vertex of `T` adjacent to every vertex of
+`S`).  This is the bipartite `K_{s,t}` as a subgraph — no edges are required
+*within* `S` or *within* `T`.  For `s = 2` it is equivalent to `HasK2t`
+(`hasKst_two_iff_hasK2t`).  The common neighbours `T` are automatically disjoint
+from `S` (a vertex adjacent to itself is excluded by `G.irrefl`), so no extra
+disjointness hypothesis is needed.  `Fintype`/`DecidableEq` are carried by the
+enclosing section but unused by this definition and the `s = 2` bridge. -/
+def HasKst (G : SimpleGraph V) (s t : ℕ) : Prop :=
+  ∃ (S T : Finset V), S.card = s ∧ t ≤ T.card ∧ (∀ a ∈ S, ∀ v ∈ T, G.Adj a v)
+
+/-- **`HasKst` at `s = 2` is `HasK2t`.**  The general `s`-set formulation
+specialises to the ordered-pair `K_{2,t}` definition used by the graph-level KST
+API above: an `s = 2` witness set `{a, b}` (`a ≠ b` from `S.card = 2`) is exactly
+a distinct pair, and "every vertex of `T` adjacent to every vertex of `S`" unpacks
+to "adjacent to both `a` and `b`". -/
+theorem hasKst_two_iff_hasK2t (G : SimpleGraph V) (t : ℕ) :
+    HasKst G 2 t ↔ HasK2t G t := by
+  constructor
+  · rintro ⟨S, T, hScard, hTcard, hadj⟩
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hScard
+    refine ⟨a, b, T, hab, hTcard, fun y hy => ⟨?_, ?_⟩⟩
+    · exact hadj a (by simp) y hy
+    · exact hadj b (by simp) y hy
+  · rintro ⟨a, b, T, hab, hTcard, hadj⟩
+    refine ⟨{a, b}, T, Finset.card_pair hab, hTcard, ?_⟩
+    intro x hx v hv
+    rw [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact (hadj v hv).1
+    · exact (hadj v hv).2
+
+/-- **`HasKst` is antitone in the common-neighbour count `t`.**  Shrinking the required
+number of common neighbours cannot destroy a `K_{s,t}`: the same witness `⟨S, T⟩` serves,
+its cardinality bound merely weakened `t ↦ t'` (`le_trans`).  The `s`-general analogue of
+`hasK2t_mono`. -/
+theorem hasKst_mono_t (G : SimpleGraph V) {s t t' : ℕ} (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s t' := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  exact ⟨S, T, hS, le_trans htt' hT, hadj⟩
+
+/-- **`HasKst` is antitone in the part size `s`.**  Shrinking the `s`-side cannot destroy a
+`K_{s,t}`: any `s'`-subset `S' ⊆ S` (`s' ≤ s = |S|`) keeps all of `T` as common neighbours,
+since fewer vertices impose fewer adjacency constraints.  Uses `Finset.exists_subset_card_eq`
+to extract `S'`; the adjacency clause restricts along `S' ⊆ S`. -/
+theorem hasKst_mono_s (G : SimpleGraph V) {s s' t : ℕ} (hss' : s' ≤ s)
+    (h : HasKst G s t) : HasKst G s' t := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq (hss'.trans_eq hS.symm)
+  exact ⟨S', T, hS'card, hT, fun a ha v hv => hadj a (hS'sub ha) v hv⟩
+
+/-- **`HasKst` is monotone in both indices.**  `K_{s',t'} ⊆ K_{s,t}` whenever `s' ≤ s` and
+`t' ≤ t`, so a graph containing the larger complete bipartite graph contains the smaller.
+Compose `hasKst_mono_s` and `hasKst_mono_t`. -/
+theorem hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s' t' :=
+  hasKst_mono_t G htt' (hasKst_mono_s G hss' h)
+
+/-- **`K_{s,t}`-freeness nests.**  A graph free of the smaller `K_{s',t'}` (`s' ≤ s`,
+`t' ≤ t`) is automatically free of the larger `K_{s,t}` — the contrapositive of
+`hasKst_mono`.  So the `K_{s,t}`-free graph classes form a lattice-decreasing family,
+`Free(s',t') ⊆ Free(s,t)`. -/
+theorem not_hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : ¬ HasKst G s' t') : ¬ HasKst G s t :=
+  fun hc => h (hasKst_mono G hss' htt' hc)
+
+/-- **Symmetry of `K_{s,t}` containment: `K_{s,t} ≅ K_{t,s}`.**  A graph contains `K_{s,t}`
+iff it contains `K_{t,s}`: the complete bipartite graph is symmetric under swapping its two
+parts.  Given an `s`-set `S` with `≥ t` common neighbours `T`, cut `T` down to a `t`-set
+`T'` (`Finset.exists_subset_card_eq`); then `T'` is an `t`-set whose `s` common neighbours
+include all of `S` (every `v ∈ S` is adjacent to every `a ∈ T' ⊆ T`, using `G.Adj` symmetry).
+Both directions are the same argument with `s, t` swapped.  A consequence:
+`ex(n; K_{s,t}) = ex(n; K_{t,s})`, so the KST forcing applies from either side. -/
+theorem hasKst_comm (G : SimpleGraph V) (s t : ℕ) :
+    HasKst G s t ↔ HasKst G t s := by
+  constructor
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+
+/-- **Codegree bound from `K_{s,t}`-freeness.**  In a `K_{s,t}`-free graph any
+`s`-set `S` of vertices has fewer than `t` common neighbours: otherwise those
+`≥ t` common neighbours would witness a `K_{s,t}`.  The `s`-general analogue of
+`commonNbrs_card_lt_of_free` (the `s = 2` codegree-`< t` statement).  The common
+neighbours of `S` are collected as `univ.filter (S ⊆ N(v))`. -/
+theorem codegree_lt_of_kstFree (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hfree : ¬ HasKst G s t) (S : Finset V) (hS : S.card = s) :
+    (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card < t := by
+  by_contra h
+  push_neg at h
+  refine hfree ⟨S, Finset.univ.filter (fun v => S ⊆ G.neighborFinset v), hS, h, ?_⟩
+  intro a ha v hv
+  rw [Finset.mem_filter] at hv
+  have hav : a ∈ G.neighborFinset v := hv.2 ha
+  rw [SimpleGraph.mem_neighborFinset] at hav
+  exact hav.symm
+
+/-- **General `s`-star double count (`ℕ`, powerset form).**  If every `s`-set of
+vertices has at most `κ` common neighbours, then the total number of `s`-stars
+`∑_v |{S ⊆ N(v) : |S| = s}|` is at most `κ · C(n, s)`.
+
+The proof double-counts incidences `(S, v)` with `S ∈ (N(v)).powersetCard s`:
+summed over `v` and swapped (`Finset.sum_comm`), the fibre over each `s`-set `S`
+is exactly its common-neighbour set `univ.filter (S ⊆ N(v))`, bounded by `κ`; the
+number of `s`-sets is `C(n, s)` (`Finset.card_powersetCard`).  This is the
+`s`-generalisation of the cherry double-count `kst_cherry_count_nat`. -/
+theorem kst_star_count_nat (G : SimpleGraph V) [DecidableRel G.Adj] (s κ : ℕ)
+    (hfree : ∀ S : Finset V, S.card = s →
+      (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card ≤ κ) :
+    ∑ v : V, ((G.neighborFinset v).powersetCard s).card ≤
+      κ * (Fintype.card V).choose s := by
+  have hsub : ∀ v : V,
+      (G.neighborFinset v).powersetCard s ⊆ (Finset.univ : Finset V).powersetCard s := by
+    intro v S hS
+    rw [Finset.mem_powersetCard] at hS ⊢
+    exact ⟨Finset.subset_univ _, hS.2⟩
+  have expand : ∀ v : V, ((G.neighborFinset v).powersetCard s).card =
+      ∑ S ∈ (Finset.univ : Finset V).powersetCard s,
+        (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) := by
+    intro v
+    rw [← Finset.card_filter, Finset.filter_mem_eq_inter,
+      Finset.inter_eq_right.mpr (hsub v)]
+  calc ∑ v : V, ((G.neighborFinset v).powersetCard s).card
+      = ∑ v : V, ∑ S ∈ (Finset.univ : Finset V).powersetCard s,
+          (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) :=
+        Finset.sum_congr rfl (fun v _ => expand v)
+    _ = ∑ S ∈ (Finset.univ : Finset V).powersetCard s, ∑ v : V,
+          (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) := Finset.sum_comm
+    _ ≤ ∑ _S ∈ (Finset.univ : Finset V).powersetCard s, κ := by
+        apply Finset.sum_le_sum
+        intro S hS
+        rw [Finset.mem_powersetCard] at hS
+        rw [← Finset.card_filter]
+        have hset : (Finset.univ.filter
+            (fun v => S ∈ (G.neighborFinset v).powersetCard s)) =
+            Finset.univ.filter (fun v => S ⊆ G.neighborFinset v) := by
+          ext v
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_powersetCard]
+          constructor
+          · rintro ⟨hsv, _⟩; exact hsv
+          · intro hsv; exact ⟨hsv, hS.2⟩
+        rw [hset]
+        exact hfree S hS.2
+    _ = ((Finset.univ : Finset V).powersetCard s).card * κ := by
+        rw [Finset.sum_const, smul_eq_mul]
+    _ = κ * (Fintype.card V).choose s := by
+        rw [Finset.card_powersetCard, Finset.card_univ]; ring
+
+/-- **General `s`-star double count (`choose` form).**  The recognisable
+Kővári–Sós–Turán inequality on binomial codegrees: if every `s`-set has at most
+`κ` common neighbours then
+
+      ∑_v C(d_v, s) ≤ κ · C(n, s).
+
+Rewrites `kst_star_count_nat` via `|{S ⊆ N(v) : |S| = s}| = C(d_v, s)`
+(`Finset.card_powersetCard` + `card_neighborFinset_eq_degree`).  Setting `s = 2`,
+`κ = t-1` recovers the content of `kst_cherry_count_nat`
+(`∑ d(d-1) = ∑ 2·C(d,2) ≤ (t-1)·2·C(n,2)`). -/
+theorem kst_star_count_choose (G : SimpleGraph V) [DecidableRel G.Adj] (s κ : ℕ)
+    (hfree : ∀ S : Finset V, S.card = s →
+      (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card ≤ κ) :
+    ∑ v : V, (G.degree v).choose s ≤ κ * (Fintype.card V).choose s := by
+  have h := kst_star_count_nat G s κ hfree
+  calc ∑ v : V, (G.degree v).choose s
+      = ∑ v : V, ((G.neighborFinset v).powersetCard s).card := by
+        apply Finset.sum_congr rfl
+        intro v _
+        rw [Finset.card_powersetCard, SimpleGraph.card_neighborFinset_eq_degree]
+    _ ≤ κ * (Fintype.card V).choose s := h
+
+/-- **`K_{s,t}`-free binomial codegree bound.**  The genuine Kővári–Sós–Turán
+double-count in its forbidden-subgraph form: a `K_{s,t}`-free graph (`t ≥ 1`)
+satisfies
+
+      ∑_v C(d_v, s) ≤ (t-1) · C(n, s).
+
+Combines `kst_star_count_choose` with `codegree_lt_of_kstFree` (every `s`-set has
+`< t`, i.e. `≤ t-1`, common neighbours).  This is the `s`-general combinatorial
+core; the passage to a closed-form edge bound needs the convexity of
+`x ↦ C(x, s)` (Jensen), the analytic step recorded in the section note above. -/
+theorem kst_star_count_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    ∑ v : V, (G.degree v).choose s ≤ (t - 1) * (Fintype.card V).choose s := by
+  apply kst_star_count_choose G s (t - 1)
+  intro S hS
+  have h := codegree_lt_of_kstFree G s t hfree S hS
+  omega
+
+/-! ### The convexity (Jensen) step: from codegrees to a closed-form power bound
+
+The combinatorial core `kst_star_count_of_free` delivers `∑_v C(d_v, s) ≤ (t-1) C(n, s)`.
+The section note above flagged the remaining passage to a closed-form edge bound as
+"the convexity of `x ↦ C(x, s)` (Jensen)".  We now carry out exactly that step, in the
+sharp elementary form used in the classical Kővári–Sós–Turán proof.
+
+The convexity input is packaged by Mathlib's power-mean inequality
+`pow_sum_le_card_mul_sum_pow` (`(∑ f)^s ≤ n^{s-1} ∑ f^s` for `f ≥ 0`), which is Jensen
+for the convex map `x ↦ x^s`.  Two elementary casts feed it:
+
+* `Nat.pow_sub_le_descFactorial` : `(d+1-s)^s ≤ d(d-1)⋯(d-s+1) = s! · C(d, s)`
+  (each of the `s` descending factors is `≥ d-s+1`), giving `f_v := (d_v+1-s)` with
+  `f_v^s ≤ s! · C(d_v, s)`;
+* `Nat.descFactorial_le_pow` : `s! · C(n, s) ≤ n^s`.
+
+Chaining `(2m - (s-1)n) ≤ ∑_v f_v`, the power mean, the codegree bound and `s!·C(n,s) ≤ n^s`
+yields the sharp KST power bound `(2m - (s-1)n)^s ≤ (t-1) · n^{2s-1}`. -/
+
+/-- **Abstract analytic core of general Kővári–Sós–Turán.**  For any degree sequence
+`d : ι → ℕ` on a finite vertex set with `2M = ∑_v d_v` (handshake) satisfying the
+codegree double-count `∑_v C(d_v, s) ≤ (t-1) · C(n, s)`, the power-mean inequality
+(Jensen for `x ↦ x^s`) upgrades it to the closed-form power bound
+
+      (2M - (s-1)·n)^s ≤ (t-1) · n^{2s-1}
+
+whenever `2M ≥ (s-1)·n` (the meaningful regime; below it the graph is trivially sparse).
+This is stated abstractly in the degree sequence so it can be instantiated on any graph
+via `kst_general_power_bound`. -/
+theorem kst_analytic_core {ι : Type*} [Fintype ι] (d : ι → ℕ) (s t : ℕ)
+    (hs : 1 ≤ s) (ht : 1 ≤ t) (M : ℝ)
+    (hM : (2 : ℝ) * M = ∑ v, (d v : ℝ))
+    (hcore : ∑ v, ((d v).choose s : ℝ) ≤ ((t : ℝ) - 1) * ((Fintype.card ι).choose s : ℝ))
+    (hL : (0 : ℝ) ≤ 2 * M - ((s : ℝ) - 1) * (Fintype.card ι)) :
+    (2 * M - ((s : ℝ) - 1) * (Fintype.card ι)) ^ s
+      ≤ ((t : ℝ) - 1) * (Fintype.card ι : ℝ) ^ (2 * s - 1) := by
+  set N : ℝ := (Fintype.card ι : ℝ) with hN
+  set f : ι → ℝ := fun v => ((d v + 1 - s : ℕ) : ℝ) with hf_def
+  have htR : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+  have hNnn : (0 : ℝ) ≤ N := by positivity
+  have hfnn : ∀ v ∈ (Finset.univ : Finset ι), 0 ≤ f v := fun v _ => by positivity
+  -- per-vertex factor bound: `f_v^s ≤ s! · C(d_v, s)`
+  have per : ∀ v, f v ^ s ≤ (s.factorial : ℝ) * ((d v).choose s : ℝ) := by
+    intro v
+    have h : (d v + 1 - s) ^ s ≤ s.factorial * (d v).choose s := by
+      calc (d v + 1 - s) ^ s ≤ (d v).descFactorial s := Nat.pow_sub_le_descFactorial _ _
+        _ = s.factorial * (d v).choose s := Nat.descFactorial_eq_factorial_mul_choose _ _
+    have := (Nat.cast_le (α := ℝ)).mpr h
+    push_cast at this ⊢
+    simpa [hf_def] using this
+  -- `s! · C(n, s) ≤ n^s`
+  have facN : (s.factorial : ℝ) * ((Fintype.card ι).choose s : ℝ) ≤ N ^ s := by
+    have h : s.factorial * (Fintype.card ι).choose s ≤ (Fintype.card ι) ^ s := by
+      calc s.factorial * (Fintype.card ι).choose s = (Fintype.card ι).descFactorial s :=
+            (Nat.descFactorial_eq_factorial_mul_choose _ _).symm
+        _ ≤ (Fintype.card ι) ^ s := Nat.descFactorial_le_pow _ _
+    have := (Nat.cast_le (α := ℝ)).mpr h
+    push_cast at this
+    simpa [hN] using this
+  -- summed factor bound: `∑ f_v^s ≤ (t-1) n^s`
+  have sumf_sq : ∑ v, f v ^ s ≤ ((t : ℝ) - 1) * N ^ s := by
+    calc ∑ v, f v ^ s ≤ ∑ v, (s.factorial : ℝ) * ((d v).choose s : ℝ) :=
+          Finset.sum_le_sum (fun v _ => per v)
+      _ = (s.factorial : ℝ) * ∑ v, ((d v).choose s : ℝ) := by rw [← Finset.mul_sum]
+      _ ≤ (s.factorial : ℝ) * (((t : ℝ) - 1) * ((Fintype.card ι).choose s : ℝ)) :=
+          mul_le_mul_of_nonneg_left hcore (by positivity)
+      _ = ((t : ℝ) - 1) * ((s.factorial : ℝ) * ((Fintype.card ι).choose s : ℝ)) := by ring
+      _ ≤ ((t : ℝ) - 1) * N ^ s := mul_le_mul_of_nonneg_left facN (by linarith)
+  -- linear lower bound: `2M - (s-1)n ≤ ∑ f_v`
+  have sumf_lin : 2 * M - ((s : ℝ) - 1) * N ≤ ∑ v, f v := by
+    have hterm : ∀ v ∈ (Finset.univ : Finset ι), ((d v : ℝ) + 1 - s) ≤ f v := by
+      intro v _
+      have hsub : (↑(d v + 1) : ℝ) - s ≤ ((d v + 1 - s : ℕ) : ℝ) := by
+        rcases le_total s (d v + 1) with h | h
+        · rw [Nat.cast_sub h]
+        · rw [Nat.sub_eq_zero_of_le h]
+          simp only [Nat.cast_zero, sub_nonpos]
+          exact_mod_cast h
+      simpa [hf_def] using (by push_cast at hsub ⊢; linarith : ((d v : ℝ) + 1 - s) ≤ f v)
+    calc 2 * M - ((s : ℝ) - 1) * N
+        = ∑ v, ((d v : ℝ) + 1 - s) := by
+          rw [Finset.sum_sub_distrib, Finset.sum_add_distrib, hM]
+          simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, hN]
+          ring
+      _ ≤ ∑ v, f v := Finset.sum_le_sum hterm
+  -- power mean (Jensen for `x ↦ x^s`)
+  have hpm : (∑ v, f v) ^ s ≤ N ^ (s - 1) * ∑ v, f v ^ s := by
+    have h := pow_sum_le_card_mul_sum_pow hfnn (s - 1)
+    rw [Nat.sub_add_cancel hs] at h
+    simpa [hN, Finset.card_univ] using h
+  -- assemble
+  have step1 : (2 * M - ((s : ℝ) - 1) * N) ^ s ≤ (∑ v, f v) ^ s :=
+    pow_le_pow_left₀ hL sumf_lin s
+  have step2 : (∑ v, f v) ^ s ≤ N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) :=
+    hpm.trans (mul_le_mul_of_nonneg_left sumf_sq (by positivity))
+  have hexp : N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) = ((t : ℝ) - 1) * N ^ (2 * s - 1) := by
+    rw [show 2 * s - 1 = (s - 1) + s by omega, pow_add]; ring
+  calc (2 * M - ((s : ℝ) - 1) * N) ^ s
+      ≤ N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) := step1.trans step2
+    _ = ((t : ℝ) - 1) * N ^ (2 * s - 1) := hexp
+
+/-- **General Kővári–Sós–Turán closed-form power bound.**  A `K_{s,t}`-free graph on
+`n` vertices with `m` edges (`s ≥ 1`, `t ≥ 1`) satisfies
+
+      (2m - (s-1)·n)^s ≤ (t-1) · n^{2s-1}
+
+whenever `2m ≥ (s-1)·n`.  This is the sharp closed form of the codegree double-count
+`kst_star_count_of_free`: instantiating the abstract Jensen core `kst_analytic_core` at
+`d = G.degree`, `2m = ∑_v d_v` (handshake), and the `K_{s,t}`-free codegree bound.
+
+Taking `s`-th roots gives the classical leading-order edge bound
+`2m ≤ (t-1)^{1/s} · n^{2-1/s} + (s-1)·n`, i.e.
+`ex(n; K_{s,t}) ≤ ½ (t-1)^{1/s} n^{2-1/s} + ½(s-1) n` — see `kst_general_edge_bound_rpow`. -/
+theorem kst_general_power_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t)
+    (hL : ((s : ℝ) - 1) * (Fintype.card V) ≤ 2 * (G.edgeFinset.card : ℝ)) :
+    (2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V)) ^ s
+      ≤ ((t : ℝ) - 1) * (Fintype.card V : ℝ) ^ (2 * s - 1) := by
+  refine kst_analytic_core (fun v => G.degree v) s t hs ht (G.edgeFinset.card : ℝ) ?_ ?_ ?_
+  · rw [← Nat.cast_sum, G.sum_degrees_eq_twice_card_edges]; push_cast; ring
+  · have h := kst_star_count_of_free G s t ht hfree
+    calc ∑ v, ((G.degree v).choose s : ℝ)
+        = ((∑ v, (G.degree v).choose s : ℕ) : ℝ) := by push_cast; rfl
+      _ ≤ (((t - 1) * (Fintype.card V).choose s : ℕ) : ℝ) := by exact_mod_cast h
+      _ = ((t : ℝ) - 1) * ((Fintype.card V).choose s : ℝ) := by
+          rw [Nat.cast_mul, Nat.cast_sub ht, Nat.cast_one]
+  · linarith [hL]
+
+/-- **General Kővári–Sós–Turán edge bound (classical closed form).**  Taking `s`-th
+roots in `kst_general_power_bound` gives the recognisable Kővári–Sós–Turán bound: a
+`K_{s,t}`-free graph on `n` vertices with `m` edges (`s ≥ 1`, `t ≥ 1`) satisfies
+
+      2m ≤ (t-1)^{1/s} · n^{2 - 1/s} + (s-1)·n,
+
+i.e. `ex(n; K_{s,t}) ≤ ½ (t-1)^{1/s} n^{2 - 1/s} + ½(s-1) n`.  Unconditional: in the
+sparse regime `2m < (s-1)n` the bound is immediate from nonnegativity of the leading
+term; otherwise `kst_general_power_bound` supplies `(2m-(s-1)n)^s ≤ (t-1) n^{2s-1}`
+and the monotone `s`-th root (`Real.rpow`) extracts the stated inequality
+(`((t-1) n^{2s-1})^{1/s} = (t-1)^{1/s} n^{(2s-1)/s} = (t-1)^{1/s} n^{2-1/s}`).
+
+For `s = 2` this reads `2m ≤ (t-1)^{1/2} n^{3/2} + n`, the `√(t-1)·n^{3/2}` leading
+order matched by the algebraic solve `kst_edge_bound_leading_order` in the `s = 2` core. -/
+theorem kst_general_edge_bound_rpow (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    2 * (G.edgeFinset.card : ℝ)
+      ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹)
+        + ((s : ℝ) - 1) * (Fintype.card V) := by
+  have hNnn : (0 : ℝ) ≤ (Fintype.card V : ℝ) := by positivity
+  have hTnn : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hrhs : (0 : ℝ) ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) :=
+    mul_nonneg (Real.rpow_nonneg hTnn _) (Real.rpow_nonneg hNnn _)
+  rcases le_or_gt (((s : ℝ) - 1) * (Fintype.card V : ℝ)) (2 * (G.edgeFinset.card : ℝ)) with hL | hL
+  · -- main regime `2m ≥ (s-1)n`: take the `s`-th root of the power bound
+    have hpow := kst_general_power_bound G s t hs ht hfree hL
+    have hLnn : (0 : ℝ) ≤ 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ) := by
+      linarith
+    have hcast : ((2 * s - 1 : ℕ) : ℝ) = 2 * (s : ℝ) - 1 := by
+      have h2 : 1 ≤ 2 * s := by omega
+      rw [Nat.cast_sub h2]; push_cast; ring
+    have key : ((Fintype.card V : ℝ) ^ (2 * s - 1)) ^ ((s : ℝ)⁻¹)
+        = (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) := by
+      rw [← Real.rpow_natCast (Fintype.card V : ℝ) (2 * s - 1), ← Real.rpow_mul hNnn]
+      congr 1
+      rw [hcast]; field_simp
+    have hroot : 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)
+        = ((2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)) ^ s) ^ ((s : ℝ)⁻¹) :=
+      (Real.pow_rpow_inv_natCast hLnn (by omega)).symm
+    have hLle : 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)
+        ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) := by
+      rw [hroot]
+      refine (Real.rpow_le_rpow (by positivity) hpow (by positivity)).trans ?_
+      rw [Real.mul_rpow hTnn (by positivity), key]
+    linarith [hLle]
+  · -- sparse regime `2m < (s-1)n`: bound is immediate
+    linarith [hrhs, hL]
+
+/-- **General `K_{s,t}` edge-count bound (`ex` form).**  The `÷2` restatement of
+`kst_general_edge_bound_rpow`: a `K_{s,t}`-free graph (`s, t ≥ 1`) on `n` vertices has
+
+      m ≤ ½ (t-1)^{1/s} · n^{2 - 1/s} + ½ (s-1)·n,
+
+the standard `ex(n; K_{s,t}) ≤ …` form of the Kővári–Sós–Turán theorem. -/
+theorem kst_general_edge_card_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    (G.edgeFinset.card : ℝ)
+      ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) / 2
+        + ((s : ℝ) - 1) * (Fintype.card V) / 2 := by
+  have h := kst_general_edge_bound_rpow G s t hs ht hfree
+  linarith
+
+/-- **Forcing form (general `K_{s,t}`).**  The contrapositive of
+`kst_general_edge_bound_rpow`: a graph whose edge count *exceeds* the Kővári–Sós–Turán
+bound must contain a `K_{s,t}`.  Concretely, if
+
+      (t-1)^{1/s} · n^{2 - 1/s} + (s-1)·n  <  2m       (`s, t ≥ 1`),
+
+then `HasKst G s t`.  The general-`s` companion of `hasK2t_of_edge_bound_lt` (the `s = 2`
+forcing form), making the KST bound a genuine extremal threshold for every `s`. -/
+theorem hasKst_of_edge_bound_rpow_lt (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hm : ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹)
+        + ((s : ℝ) - 1) * (Fintype.card V) < 2 * (G.edgeFinset.card : ℝ)) :
+    HasKst G s t := by
+  by_contra hfree
+  exact absurd (kst_general_edge_bound_rpow G s t hs ht hfree) (not_le.2 hm)
+
+/-! ### Leading-order asymptotic constant
+
+The finite-`n` closed form `kst_edge_bound_leading_order`
+(`m ≤ ½(√(t-1)·n^{3/2} + n)`) determines the *asymptotic* leading coefficient of
+`ex(n; K_{2,t})`.  We package the bound as a function of `n` and show its ratio to
+`n^{3/2}` converges to `½·√(t-1)`, discharging the analytic content of the
+textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`. -/
+
+/-- **Closed-form leading-order KST bound as a function of `n`.**  The right-hand
+side of `kst_edge_bound_leading_order`: `½·(√(t-1)·n^{3/2} + n)`, with `n^{3/2}`
+written `n·√n`.  Packaging it as a function of `n` lets us state the asymptotic
+leading constant (`kst_leading_order_ratio_tendsto`). -/
+noncomputable def kstLeadingBound (t : ℕ) (n : ℝ) : ℝ :=
+  (Real.sqrt ((t : ℝ) - 1) * n * Real.sqrt n + n) / 2
+
+/-- The leading-order bound restated with `kstLeadingBound`: a nonempty
+`K_{2,t}`-free graph (`t ≥ 1`) satisfies `m ≤ kstLeadingBound t n`. -/
+theorem kst_edge_bound_leading_order_def (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤ kstLeadingBound t (Fintype.card V) :=
+  kst_edge_bound_leading_order G t ht hfree
+
+/-- **Leading-order asymptotic constant for `ex(n; K_{2,t})`.**  The closed-form
+Kővári–Sós–Turán upper bound `kstLeadingBound t n = ½(√(t-1)·n^{3/2} + n)`,
+divided by `n^{3/2}`, tends to `½·√(t-1)` as `n → ∞`:
+
+      kstLeadingBound t n / n^{3/2}  →  ½·√(t-1).
+
+Combined with `kst_edge_bound_leading_order_def` (`m ≤ kstLeadingBound t n`), this
+makes rigorous the textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`:
+the `+n` correction term contributes `n / n^{3/2} = n^{-1/2} → 0`, so the leading
+coefficient of the proven upper bound is exactly `½√(t-1)`.  For `t = 2` this
+recovers Reiman's `ex(n; C₄) ≤ (½ + o(1))·n^{3/2}`.  The `√(t-1)` factor is a fixed
+constant, so no monotonicity/nonnegativity hypothesis on `t` is needed. -/
+theorem kst_leading_order_ratio_tendsto (t : ℕ) :
+    Filter.Tendsto (fun n : ℝ => kstLeadingBound t n / (n * Real.sqrt n))
+      Filter.atTop (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := by
+  -- `√n → ∞`, hence `2√n → ∞`, hence `(2√n)⁻¹ → 0`.
+  have hsqrt_atTop : Filter.Tendsto (fun n : ℝ => Real.sqrt n) Filter.atTop Filter.atTop := by
+    have h : (fun n : ℝ => Real.sqrt n) = fun n : ℝ => n ^ (1 / (2 : ℝ)) := by
+      funext x; exact Real.sqrt_eq_rpow x
+    rw [h]; exact tendsto_rpow_atTop (by norm_num)
+  have hinv : Filter.Tendsto (fun n : ℝ => (2 * Real.sqrt n)⁻¹) Filter.atTop (nhds 0) :=
+    (Filter.Tendsto.const_mul_atTop (by norm_num : (0 : ℝ) < 2) hsqrt_atTop).inv_tendsto_atTop
+  -- The target eventually equals the constant `½√(t-1)` plus the vanishing `(2√n)⁻¹`.
+  have hconst : Filter.Tendsto (fun _ : ℝ => Real.sqrt ((t : ℝ) - 1) / 2) Filter.atTop
+      (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := tendsto_const_nhds
+  have hsum := hconst.add hinv
+  rw [add_zero] at hsum
+  refine hsum.congr' ?_
+  filter_upwards [Filter.eventually_gt_atTop (0 : ℝ)] with n hn
+  have hs : (0 : ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hn
+  have hnn : n ≠ 0 := hn.ne'
+  have hsn : Real.sqrt n ≠ 0 := hs.ne'
+  simp only [kstLeadingBound]
+  field_simp
 
 end GraphLevel
 

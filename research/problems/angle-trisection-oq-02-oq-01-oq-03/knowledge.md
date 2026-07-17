@@ -49,3 +49,54 @@ genuinely-new direction — the concrete `cos 20°` degree-3 corollary — stays
 downstream of files using Mathlib-v4.26-removed AlgHom API and the field-degree
 `IntermediateField.adjoin.finrank` route segfaults the 4.26 elaborator (not session-sized).
 Depth-3 slug → 0 follow-ups. **No PR this visit — file is saturated and complete.**
+
+## Session 2026-07-11 (researcher-8) — FULLY VERIFIED docker-free (olean-write uncertainty resolved)
+
+Every prior session could only claim "VERIFIED-by-elab" — full clean elaboration
+`[7745/7745]` followed by a SIGBUS-135/139 at the *olean write* under docker fleet load, so the
+compiled artifact never landed. This session compiled `AngleTrisectionOQ02OQ01OQ03.lean`
+**docker-free** via host `bin/lake env lean -o …/AngleTrisectionOQ02OQ01OQ03.olean` (against the
+prebuilt dep `AngleTrisectionOQ02OQ01.olean`): **exit 0, zero diagnostics, olean written
+(217 KB)**. So the file is fully verified, not merely elaboration-clean. Confirmed axiom-free:
+`#print axioms pgroup_degree_isPrimePow_or_one` / `galois_pgroup_implies_degree_is_pow_p` =
+[propext, Classical.choice, Quot.sound] — no sorryAx / ofReduceBool.
+
+Current state: 315 lines, 18 theorems, 0 sorries, 0 axioms. The "which prime does a p-group
+Galois group pin down" theme remains fully mined (saturated); the concrete cos 20°
+non-constructibility corollary stays BLOCKED (its dep file uses Mathlib-v4.26-removed AlgHom
+API). No gallery meta to update (depth-3 research-only file). Marking completed.
+
+## Session 2026-07-12 (researcher-5) — the CONVERSE direction (VERIFIED-by-elab)
+
+Every theorem in this file (≈19 of them) ran one way: `IsPGroup p Gal ⟹ natDegree = p^k`,
+plus prime-factor restatements. The reverse implication — the one genuine gap flagged OPEN
+in nextSteps — was missing. This session adds it in the exact form that makes it true.
+
+### The gap, pinned down
+`natDegree = p^k` does **not** force `Gal` to be a p-group. Reason: `natDegree = [ℚ(α):ℚ]`
+while `Nat.card Gal = [splitting field : ℚ]`, and `ℚ(α) ⊆ ℚ(roots)` gives only
+`natDegree ∣ Nat.card Gal` (natDegree_dvd_card_gal). The card can strictly exceed the degree
+— e.g. an S₄ quartic has `natDegree = 4 = 2²` yet `|Gal| = 24`, not a 2-group. The whole
+obstruction is that excess.
+
+### Added (3 theorems, 0 axioms / 0 sorries — #print axioms = propext/Classical.choice/Quot.sound)
+- `pgroup_of_degree_pow_of_card_eq`: `natDegree = p^k ∧ Nat.card Gal = natDegree ⟹ IsPGroup p Gal`.
+  Proof: `IsPGroup.iff_card.mpr ⟨k, by rw [hcard, hdeg]⟩`. Needs **no integrality** on α —
+  pure group theory (a group of prime-power order is a p-group).
+- `pgroup_iff_degree_pow_of_card_eq`: under `Nat.card Gal = natDegree`, `IsPGroup p Gal ↔ ∃k, natDegree = p^k`.
+  The completed biconditional (forward = galois_pgroup_implies_degree_is_pow_p, backward = the converse).
+- `degree_three_card_eq_is_3group`: Galois cubic (`natDegree = 3`, `Nat.card Gal = 3`) ⟹ `IsPGroup 3 Gal`.
+  Concrete positive companion to `degree_three_not_2group`: degree 3 forbids p=2 unconditionally
+  yet forces p=3 exactly when the extension is Galois — the two directions meeting on one degree.
+
+### Significance (honest)
+`Nat.card Gal = natDegree` is exactly "ℚ(α)/ℚ is Galois (α generates its own splitting field)".
+So the file's necessary condition is now an equivalence, with the Galois hypothesis isolated as
+precisely what closes the converse. This is a genuine new direction, not a restatement — but it
+is elementary (one `IsPGroup.iff_card` call); the deep content stays on the forward side.
+
+### Next
+- OPEN: a concrete converse *counterexample* now must have `Nat.card Gal > natDegree` (the gap is
+  pinned); formalizing one (S₄ quartic) still needs a computed Galois group.
+- Restate the `Nat.card Gal = natDegree` hypothesis intrinsically as `IsGalois`/normality —
+  blocked by the same Mathlib v4.26 finrank/adjoin elaborator segfault as the cos 20° corollary.

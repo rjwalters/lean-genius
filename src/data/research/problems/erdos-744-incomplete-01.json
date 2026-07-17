@@ -29,19 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: replaced ill-formed bipartitionNumber (Nat.find over an undetermined predicate, with a sorry) with a correct, constructive, axiom-free definition; un-bit-rotted the whole file so it builds on Lean v4.26.0. 0 sorries; 2 legitimate axioms remain (chromaticNumber, rodl_tuza_theorem).",
+    "progressSummary": "COMPLETE + extended (Part 3e added): complement Gc and complete graph Kn introduced (both absent before); per-coloring partition monochromaticEdges G + Gc = Kn, its edgeCount specialization edgeCount G + Gc = Kn, and both cut-invariant sums bounded by edgeCount Kn. All 0-axiom (tautological Rodl-Tuza axiom untouched). File: 0 sorries, 1 axiom, 47 theorems, 1114 lines.",
     "builtItems": [
       "monochromaticEdges G c : ℕ — count of same-colored adjacent pairs u<v (Erdos744Problem.lean:99)",
       "bipartitionNumber G := inf over c:V→Bool of monochromaticEdges G c — total, sorry-free, no chromaticNumber axiom (Erdos744Problem.lean:115)",
       "monochromaticEdges_eq_zero_iff: c has no monochromatic edge ↔ proper 2-coloring (Erdos744Problem.lean:120)",
       "bipartitionNumber_eq_zero_iff: bipartitionNumber G = 0 ↔ G properly 2-colorable — intrinsic bipartiteness, 0-axiom (Erdos744Problem.lean:136)",
-      "bipartitionNumber_eq_edgeCount_iff : bipartitionNumber G = edgeCount G ↔ edgeCount G = 0 — the fourth/final corner of the max-cut/min-uncut square (dual of maxCut_eq_edgeCount_iff), bipartitionNumber saturates edgeCount iff G edgeless. Proof rw[← maxCut_eq_zero_iff]; complementarity; omega [VERIFIED axiom-free, lean-elab exit 0, #print axioms = propext/Classical.choice/Quot.sound]"
+      "bipartitionNumber_eq_edgeCount_iff : bipartitionNumber G = edgeCount G ↔ edgeCount G = 0 — the fourth/final corner of the max-cut/min-uncut square (dual of maxCut_eq_edgeCount_iff), bipartitionNumber saturates edgeCount iff G edgeless. Proof rw[← maxCut_eq_zero_iff]; complementarity; omega [VERIFIED axiom-free, lean-elab exit 0, #print axioms = propext/Classical.choice/Quot.sound]",
+      "edgeCount_mono / bichromaticEdges_mono / maxCut_mono: the cut-side monotonicity trio under edge addition (G⊆H ⇒ edgeCount, bichromaticEdges c, and maxCut all non-decreasing), dual to monochromaticEdges_mono/bipartitionNumber_mono. maxCut_mono via the optimal cut of G already separating maxCut G edges of H (Erdos744Problem.lean, Part 3c) [VERIFIED axiom-free: propext/Classical.choice/Quot.sound, lake env lean exit 0]",
+      "monochromaticEdges_add_edge_le / bichromaticEdges_add_edge_le: per-coloring single-edge step bounds (Erdos744Problem.lean, Part 3d) [VERIFIED axiom-free]",
+      "bipartitionNumber_add_edge_le / maxCut_add_edge_le: invariant rises by ≤1 per added edge [VERIFIED axiom-free]",
+      "bipartitionNumber_add_edge_sandwich / maxCut_add_edge_sandwich: both invariants are 1-Lipschitz under a single-edge edit [VERIFIED axiom-free]",
+      "completeGraph and complement (Gc) definitions + DecidableRel instances in Erdos744Problem.lean (Part 3e)",
+      "monochromaticEdges_add_complement: monochromaticEdges G c + monochromaticEdges Gc c = monochromaticEdges Kn c (per-coloring outer partition)",
+      "edgeCount_add_edgeCount_complement: edgeCount G + edgeCount Gc = edgeCount Kn (0-axiom)",
+      "maxCut_add_maxCut_complement_le & bipartitionNumber_add_bipartitionNumber_complement_le: cut invariants of G,Gc fit inside edgeCount Kn"
     ],
     "insights": [
       "The original bipartitionNumber was Nat.find ⟨witness, sorry⟩ over a metavariable predicate p — ill-formed, not a real definition; the right completion is a redefinition, not discharging the sorry.",
       "Realizing the bipartition number as min monochromatic edges over 2-colorings avoids the chromaticNumber axiom entirely: bipartiteness becomes the intrinsic property bipartitionNumber = 0.",
       "log_conjecture_false needs only f 4 n = 3 by definition (no Rödl-Tuza axiom): #print axioms shows it depends only on propext/Classical/Quot.",
-      "The four extremal characterizations of the bipartitionNumber/maxCut engine form a 2x2 square: maxCut=0⟺edgeless, maxCut=edgeCount⟺bipartite, bipartitionNumber=0⟺bipartite, bipartitionNumber=edgeCount⟺edgeless. All four follow from the single complementarity identity bipartitionNumber+maxCut=edgeCount plus one of the ⟺ endpoints via omega."
+      "The four extremal characterizations of the bipartitionNumber/maxCut engine form a 2x2 square: maxCut=0⟺edgeless, maxCut=edgeCount⟺bipartite, bipartitionNumber=0⟺bipartite, bipartitionNumber=edgeCount⟺edgeless. All four follow from the single complementarity identity bipartitionNumber+maxCut=edgeCount plus one of the ⟺ endpoints via omega.",
+      "Both extremal invariants grow with the graph: bipartitionNumber_mono (min-uncut side) and maxCut_mono (max-cut side) are duals, each reducing to per-colouring monotonicity of monochromatic/bichromatic edge counts. This is the formal content of Erdős's original growth intuition for f_k, cleanly separated from the (false) asymptotic-divergence claim.",
+      "Single-edge Lipschitz continuity: adding one edge {a,b} raises both bipartitionNumber and maxCut by AT MOST 1 (they land in {v(G), v(G)+1}). This sharpens the earlier monotonicity (which only gave ≥) with a matching +1 upper bound — the exact modulus of continuity for the edge-edit metric. Proof: for a fixed coloring the monochromatic/bichromatic edge set of H is contained in that of G together with the single added ordered pair (a,b), so its card rises by ≤1 (Finset.card_insert_le); transfer through the optimal coloring.",
+      "Complement/complete-graph give a genuinely new direction orthogonal to the saturated single-graph max-cut/min-uncut square: G join Gc = Kn at the coloring level partitions monochromatic counts.",
+      "ne_of_lt discharges the p.1 != p.2 conjunct of complement/completeGraph adjacency; tauto cannot derive != from <, so filter-equality steps need explicit iff witnesses."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -39,6 +39,15 @@
     set shrinks as `eps` grows) and `card_irregularOrderedPairs_antitone` (its count is
     non-increasing in `eps`).
 
+  * `isRegularPartition_iff` / `irregularOrderedPairs_eq_regularityFilter` — bridge to the
+    gallery predicate: the count set thresholded by `IsRegularPartition` *is*
+    `irregularOrderedPairs`, so the whole toolkit above applies to it.
+  * `isRegularPartition_compl` — **`IsRegularPartition` is self-complementary**: on a
+    pairwise-disjoint nonempty partition with `0 < eps`, a partition is ε-regular for `G`
+    iff for `Gᶜ`, lifting `card_irregularOrderedPairs_compl` to the full gallery predicate.
+  * `isRegularPartition_of_one_le` — at `eps ≥ 1` the only content of `IsRegularPartition`
+    is equitability of the part sizes (the irregular-count bound is vacuous).
+
   All results are fully machine-checked (0 axioms, 0 sorries).
 
   Reference: Szemerédi (1975); Komlós–Simonovits (1996).
@@ -466,5 +475,122 @@ theorem isEpsilonRegular_empty_right (G : SimpleGraph V) [DecidableRel G.Adj]
     {eps : ℚ} (heps : 0 ≤ eps) (A : Finset V) :
     IsEpsilonRegular G eps A ∅ :=
   (isEpsilonRegular_comm G eps A ∅).mpr (isEpsilonRegular_empty_left G heps A)
+
+/-- **`irregularOrderedPairs` *is* the count set thresholded by `IsRegularPartition`.**
+    The gallery predicate `IsRegularPartition G eps parts` (in `Szemeredi.Core`) bounds
+    the cardinality of `(parts ×ˢ parts).filter (fun pq => pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular …)`
+    — which is *definitionally* our `irregularOrderedPairs G eps parts`.  Recording this
+    equality on the nose lets every result about `irregularOrderedPairs` (evenness,
+    monotonicity in `eps` and in `parts`, the off-diagonal ceiling, complement invariance)
+    speak directly about the object the regularity threshold constrains. -/
+theorem irregularOrderedPairs_eq_regularityFilter
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) :
+    irregularOrderedPairs G eps parts
+      = (parts.product parts).filter
+          (fun pq => pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2) := rfl
+
+/-- **`IsRegularPartition` re-expressed in this file's vocabulary.**  Unfolding the gallery
+    definition, a partition is ε-regular exactly when it is equitable (adjacent part sizes
+    differ by at most one) and its ordered irregular-pair count meets the threshold
+    `eps · k(k−1)`, with `k = #parts`.  The irregular count is literally
+    `(irregularOrderedPairs G eps parts).card` (`irregularOrderedPairs_eq_regularityFilter`),
+    so this is a definitional restatement — but it is the bridge that makes the whole
+    `irregularOrderedPairs` toolkit apply to `IsRegularPartition`. -/
+theorem isRegularPartition_iff (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) :
+    IsRegularPartition G eps parts ↔
+      (∀ P Q : Finset V, P ∈ parts → Q ∈ parts → (P.card : ℤ) - Q.card ≤ 1) ∧
+      (irregularOrderedPairs G eps parts).card
+        ≤ eps * (parts.card * (parts.card - 1)) :=
+  Iff.rfl
+
+/-- **`IsRegularPartition` is self-complementary.**  For a positive parameter `eps` and a
+    family of *pairwise-disjoint, nonempty* parts — the standing hypotheses of a genuine
+    vertex partition — a partition is ε-regular for `G` iff it is ε-regular for the
+    complement graph `Gᶜ`:
+
+        `IsRegularPartition Gᶜ eps parts ↔ IsRegularPartition G eps parts`.
+
+    Both defining conditions transfer.  The equitability clause depends only on the part
+    *sizes*, so it is literally the same for `G` and `Gᶜ`.  The irregular-count clause
+    transfers because `card_irregularOrderedPairs_compl` makes the ordered irregular-pair
+    counts of `G` and `Gᶜ` equal on such a partition, while the threshold `eps · k(k−1)`
+    is graph-independent.  This lifts the per-pair `isEpsilonRegular_compl` and the count
+    identity `card_irregularOrderedPairs_compl` all the way up to the gallery regularity
+    predicate: witnessing regularity of a partition is a property of the *unordered edge
+    partition* `{E(G), E(Gᶜ)}`, invariant under swapping a graph with its complement. -/
+theorem isRegularPartition_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
+    (hne : ∀ P ∈ parts, P.Nonempty)
+    (hdisj : ∀ P ∈ parts, ∀ Q ∈ parts, P ≠ Q → Disjoint P Q) :
+    IsRegularPartition Gᶜ eps parts ↔ IsRegularPartition G eps parts := by
+  rw [isRegularPartition_iff, isRegularPartition_iff,
+    card_irregularOrderedPairs_compl G eps heps parts hne hdisj]
+
+/-- **Every equitable partition is ε-regular once `eps ≥ 1`.**  At the trivial threshold the
+    ε-regularity condition is vacuous (`isEpsilonRegular_of_one_le`), so the ordered irregular
+    set is empty and its count `0` trivially meets the (nonnegative) bound `eps · k(k−1)`.
+    Hence the *only* remaining content of `IsRegularPartition` at `eps ≥ 1` is equitability of
+    the part sizes — the partition-level counterpart of `irregularOrderedPairs_eq_empty_of_one_le`. -/
+theorem isRegularPartition_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V))
+    (hequit : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts → (P.card : ℤ) - Q.card ≤ 1) :
+    IsRegularPartition G eps parts := by
+  rw [isRegularPartition_iff]
+  refine ⟨hequit, ?_⟩
+  rw [card_irregularOrderedPairs_eq_zero_of_one_le G heps parts, Nat.cast_zero]
+  rcases Nat.eq_zero_or_pos parts.card with h0 | hpos
+  · simp [h0]
+  · have h1 : (1 : ℚ) ≤ (parts.card : ℚ) := by exact_mod_cast hpos
+    have hcard : (0 : ℚ) ≤ (parts.card : ℚ) * ((parts.card : ℚ) - 1) := by nlinarith [h1]
+    have he : (0 : ℚ) ≤ eps := by linarith
+    exact mul_nonneg he hcard
+
+/-- **`IsRegularPartition` is monotone in the parameter `eps`.**  Raising the regularity
+    parameter can only make a partition *more* regular: if `parts` is `eps₁`-regular and
+    `eps₁ ≤ eps₂`, then it is `eps₂`-regular.  This is the partition-level capstone of the
+    two per-object monotonicities: the equitability clause is `eps`-independent, while the
+    irregular-count clause survives because the count only drops as `eps` grows
+    (`card_irregularOrderedPairs_antitone`) *and* the threshold `eps · k(k−1)` only grows,
+
+        card irregular(eps₂) ≤ card irregular(eps₁) ≤ eps₁·k(k−1) ≤ eps₂·k(k−1).
+
+    Combined with `isRegularPartition_of_one_le` (regularity is automatic at `eps ≥ 1`),
+    this says the set of `eps` witnessing regularity of a fixed partition is an up-set of
+    `ℚ`. -/
+theorem isRegularPartition_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps₁ eps₂ : ℚ} (h : eps₁ ≤ eps₂) (parts : Finset (Finset V))
+    (hreg : IsRegularPartition G eps₁ parts) :
+    IsRegularPartition G eps₂ parts := by
+  rw [isRegularPartition_iff] at hreg ⊢
+  obtain ⟨hequit, hcount⟩ := hreg
+  refine ⟨hequit, ?_⟩
+  have h1 : ((irregularOrderedPairs G eps₂ parts).card : ℚ)
+          ≤ ((irregularOrderedPairs G eps₁ parts).card : ℚ) := by
+    exact_mod_cast card_irregularOrderedPairs_antitone G h parts
+  have hknn : (0 : ℚ) ≤ (parts.card : ℚ) * ((parts.card : ℚ) - 1) := by
+    rcases Nat.eq_zero_or_pos parts.card with h0 | hpos
+    · simp [h0]
+    · have h1' : (1 : ℚ) ≤ (parts.card : ℚ) := by exact_mod_cast hpos
+      nlinarith [h1']
+  have h3 : eps₁ * ((parts.card : ℚ) * ((parts.card : ℚ) - 1))
+          ≤ eps₂ * ((parts.card : ℚ) * ((parts.card : ℚ) - 1)) :=
+    mul_le_mul_of_nonneg_right h hknn
+  exact h1.trans (hcount.trans h3)
+
+/-- **The empty partition is `eps`-regular for every parameter.**  With no parts there are
+    no distinct pairs to be irregular, so the ordered irregular count is `0`, and the
+    threshold `eps · (0 · (0−1)) = 0` is met with equality; equitability is vacuous.  This
+    is the unconditional base case of any regularity-partition construction — it needs no
+    sign hypothesis on `eps`, unlike `isRegularPartition_of_one_le`. -/
+theorem isRegularPartition_empty (G : SimpleGraph V) [DecidableRel G.Adj] (eps : ℚ) :
+    IsRegularPartition G eps (∅ : Finset (Finset V)) := by
+  rw [isRegularPartition_iff]
+  refine ⟨fun P Q hP _ => absurd hP (Finset.notMem_empty P), ?_⟩
+  have hempty : irregularOrderedPairs G eps (∅ : Finset (Finset V)) = ∅ := by
+    simp [irregularOrderedPairs]
+  rw [hempty]
+  simp
 
 end Szemeredi.Regularity.OQ01

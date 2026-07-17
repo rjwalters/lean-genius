@@ -1,0 +1,615 @@
+/-
+# Cantor Diagonalization OQ-06-OQ-01: the explicit diagonal real
+
+## Open Question
+The parent entry `CantorDiagonalizationOQ06` proves `¬ Countable ℝ` abstractly, through
+the cardinal inequality `ℵ₀ < #ℝ` (Mathlib's `Cardinal.not_countable_real`). This entry
+supplies Cantor's *constructive* 1891 diagonal argument at the level of decimal digits:
+given any enumeration `f : ℕ → ℝ` it builds an **explicit, definable** real
+`diagonalReal f` and proves directly, digit by digit, that `diagonalReal f ≠ f n` for
+every `n` — with no appeal to `Cardinal.not_countable_real` or `#ℝ = 𝔠`.
+
+## Construction
+* `digit r n := ⌊r * 10^(n+1)⌋ % 10` is the `n`-th decimal digit of `r` (an integer in
+  `[0,10)`).
+* `db f n := if digit (f n) n = 1 then 2 else 1` is a digit in `{1,2}` that *disagrees*
+  with the `n`-th digit of `f n`.  Restricting the produced digits to `{1,2}` sidesteps
+  the `0.999… = 1.000…` non-uniqueness that would make a naive digit argument false.
+* `diagonalReal f := ∑' n, (db f n : ℝ) / 10^(n+1)` assembles the disagreeing digits into
+  a real in `[0,1]`.
+
+The crux lemma `digit_diagonalReal : digit (diagonalReal f) n = db f n` is proved by a
+head/tail split of `diagonalReal f * 10^(n+1) = A + T`, where `A : ℤ` is the integer head
+and `0 ≤ T ≤ 2/9 < 1` is a geometric tail, so `⌊diagonalReal f * 10^(n+1)⌋ = A` and
+`A % 10 = db f n`.  Then `diagonalReal f = f n` would force
+`digit (diagonalReal f) n = digit (f n) n`, contradicting `db f n ≠ digit (f n) n`.
+
+Sorry-free and axiom-free.  Uses only foundational axioms
+`[propext, Classical.choice, Quot.sound]`.
+-/
+import Mathlib
+
+namespace CantorDiagonalizationOQ06OQ01
+
+/-- The `n`-th decimal digit of a real number `r`, as an integer in `[0,10)`. -/
+noncomputable def digit (r : ℝ) (n : ℕ) : ℤ := ⌊r * 10 ^ (n + 1)⌋ % 10
+
+/-- The diagonal digit at position `n`: a value in `{1,2}` chosen to differ from the
+`n`-th digit of `f n`. -/
+noncomputable def db (f : ℕ → ℝ) (n : ℕ) : ℤ := if digit (f n) n = 1 then 2 else 1
+
+/-- **Cantor's explicit diagonal real.**  Given an enumeration `f : ℕ → ℝ`, the digits
+`db f n ∈ {1,2}` assemble into a real number in `[0,1]`. -/
+noncomputable def diagonalReal (f : ℕ → ℝ) : ℝ := ∑' n, (db f n : ℝ) / 10 ^ (n + 1)
+
+/-! ## Elementary facts about the diagonal digits -/
+
+theorem db_eq (f : ℕ → ℝ) (n : ℕ) : db f n = 1 ∨ db f n = 2 := by
+  unfold db; split_ifs <;> simp
+
+theorem db_pos (f : ℕ → ℝ) (n : ℕ) : 0 < db f n := by
+  rcases db_eq f n with h | h <;> rw [h] <;> norm_num
+
+theorem db_le_two (f : ℕ → ℝ) (n : ℕ) : db f n ≤ 2 := by
+  rcases db_eq f n with h | h <;> rw [h] <;> norm_num
+
+/-- The diagonal digit differs from the `n`-th digit of `f n` — the heart of the
+disagreement. -/
+theorem db_ne_digit (f : ℕ → ℝ) (n : ℕ) : db f n ≠ digit (f n) n := by
+  unfold db
+  split_ifs with h
+  · rw [h]; norm_num
+  · exact fun hc => h hc.symm
+
+/-! ## Summability -/
+
+/-- A generic term bound: `db f m / 10^(i+1) ≤ 2 * (1/10)^(i+1)`, valid for any index `m`
+appearing in the numerator. -/
+theorem term_le' (f : ℕ → ℝ) (m i : ℕ) :
+    (db f m : ℝ) / 10 ^ (i + 1) ≤ 2 * (1 / 10) ^ (i + 1) := by
+  rw [div_pow, one_pow, mul_one_div]
+  gcongr
+  exact_mod_cast db_le_two f m
+
+/-- Each term of the defining series is nonnegative. -/
+theorem term_nonneg (f : ℕ → ℝ) (m i : ℕ) : 0 ≤ (db f m : ℝ) / 10 ^ (i + 1) := by
+  apply div_nonneg
+  · exact_mod_cast (db_pos f m).le
+  · positivity
+
+/-- The shifted geometric series `∑' i, 2 * (1/10)^(i+1)` is summable. -/
+theorem summable_geo_shift : Summable (fun i : ℕ => 2 * (1 / 10 : ℝ) ^ (i + 1)) := by
+  apply Summable.mul_left
+  exact (summable_nat_add_iff 1).mpr
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+
+/-- The defining series of `diagonalReal` is summable. -/
+theorem summable_term (f : ℕ → ℝ) :
+    Summable (fun k => (db f k : ℝ) / 10 ^ (k + 1)) := by
+  apply Summable.of_nonneg_of_le (fun k => term_nonneg f k k) (fun k => term_le' f k k)
+  exact summable_geo_shift
+
+/-! ## The head/tail decomposition -/
+
+/-- The integer head: `A f n = ∑_{i≤n} db f i * 10^(n-i)`.  This is an integer whose last
+decimal digit is `db f n`. -/
+noncomputable def headInt (f : ℕ → ℝ) (n : ℕ) : ℤ :=
+  ∑ i ∈ Finset.range (n + 1), db f i * 10 ^ (n - i)
+
+/-- The head sum over reals equals `(headInt f n : ℝ)`. -/
+theorem head_real_eq (f : ℕ → ℝ) (n : ℕ) :
+    (∑ i ∈ Finset.range (n + 1), (db f i : ℝ) / 10 ^ (i + 1)) * 10 ^ (n + 1)
+      = (headInt f n : ℝ) := by
+  rw [Finset.sum_mul, headInt]
+  push_cast
+  apply Finset.sum_congr rfl
+  intro i hi
+  have hin : i ≤ n := by simp only [Finset.mem_range] at hi; omega
+  have hpow : (10 : ℝ) ^ (n + 1) / 10 ^ (i + 1) = 10 ^ (n - i) := by
+    rw [eq_comm, eq_div_iff (by positivity), ← pow_add]
+    congr 1; omega
+  rw [div_mul_eq_mul_div, mul_div_assoc, hpow]
+
+/-- The `A % 10 = db f n` step: the last decimal digit of the head is `db f n`. -/
+theorem headInt_emod (f : ℕ → ℝ) (n : ℕ) : headInt f n % 10 = db f n := by
+  rw [headInt, Finset.sum_range_succ]
+  simp only [Nat.sub_self, pow_zero, mul_one]
+  set S := ∑ i ∈ Finset.range n, db f i * 10 ^ (n - i) with hS
+  have hdvd : (10 : ℤ) ∣ S := by
+    rw [hS]
+    apply Finset.dvd_sum
+    intro i hi
+    have hin : i < n := by simpa only [Finset.mem_range] using hi
+    have he : n - i = (n - 1 - i) + 1 := by omega
+    rw [he, pow_succ, ← mul_assoc]
+    exact dvd_mul_left 10 (db f i * 10 ^ (n - 1 - i))
+  obtain ⟨B, hB⟩ := hdvd
+  rw [hB, add_comm, Int.add_mul_emod_self_left]
+  exact Int.emod_eq_of_lt (db_pos f n).le (by have := db_le_two f n; omega)
+
+/-! ## The crux lemma -/
+
+/-- **Crux:** the `n`-th digit of the diagonal real is exactly `db f n`. -/
+theorem digit_diagonalReal (f : ℕ → ℝ) (n : ℕ) :
+    digit (diagonalReal f) n = db f n := by
+  have hsum := summable_term f
+  -- Split the series at n+1: diagonalReal f = head + tail.
+  have hsplit := Summable.sum_add_tsum_nat_add (f := fun k => (db f k : ℝ) / 10 ^ (k + 1))
+    (n + 1) hsum
+  set tail := ∑' i, (db f (i + (n + 1)) : ℝ) / 10 ^ (i + (n + 1) + 1) with htail_def
+  have hx : diagonalReal f =
+      (∑ i ∈ Finset.range (n + 1), (db f i : ℝ) / 10 ^ (i + 1)) + tail := by
+    rw [diagonalReal, htail_def]; exact hsplit.symm
+  -- Multiply through by 10^(n+1).
+  have hxmul : diagonalReal f * 10 ^ (n + 1)
+      = (headInt f n : ℝ) + tail * 10 ^ (n + 1) := by
+    rw [hx, add_mul, head_real_eq]
+  set T := tail * 10 ^ (n + 1) with hT_def
+  -- The scaled tail equals ∑' i, db f (i+n+1) / 10^(i+1).
+  have hT_eq : T = ∑' i, (db f (i + (n + 1)) : ℝ) / 10 ^ (i + 1) := by
+    rw [hT_def, htail_def, ← tsum_mul_right]
+    apply tsum_congr
+    intro i
+    have hp : (10 : ℝ) ^ (i + (n + 1) + 1) = 10 ^ (i + 1) * 10 ^ (n + 1) := by
+      rw [← pow_add]; congr 1; omega
+    have h1 : (10 : ℝ) ^ (i + 1) ≠ 0 := by positivity
+    have h2 : (10 : ℝ) ^ (n + 1) ≠ 0 := by positivity
+    rw [hp]; field_simp
+  -- Tail is nonnegative.
+  have hT_nonneg : 0 ≤ T := by
+    rw [hT_eq]
+    exact tsum_nonneg fun i => term_nonneg f (i + (n + 1)) i
+  -- Tail is summable (comparison with geometric).
+  have hT_summ : Summable (fun i => (db f (i + (n + 1)) : ℝ) / 10 ^ (i + 1)) :=
+    Summable.of_nonneg_of_le (fun i => term_nonneg f (i + (n + 1)) i)
+      (fun i => term_le' f (i + (n + 1)) i) summable_geo_shift
+  -- Tail < 1.
+  have hT_lt : T < 1 := by
+    rw [hT_eq]
+    calc ∑' i, (db f (i + (n + 1)) : ℝ) / 10 ^ (i + 1)
+        ≤ ∑' i, 2 * (1 / 10 : ℝ) ^ (i + 1) :=
+          Summable.tsum_le_tsum (fun i => term_le' f (i + (n + 1)) i) hT_summ summable_geo_shift
+      _ = 2 * ∑' i, (1 / 10 : ℝ) ^ (i + 1) := by rw [tsum_mul_left]
+      _ = 2 * ((∑' i, (1 / 10 : ℝ) ^ i) * (1 / 10)) := by
+            congr 1
+            rw [← tsum_mul_right]
+            apply tsum_congr; intro i; rw [pow_succ]
+      _ = 2 * ((1 - 1 / 10 : ℝ)⁻¹ * (1 / 10)) := by
+            rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+      _ < 1 := by norm_num
+  -- Floor of x * 10^(n+1) is headInt f n.
+  have hfloor : ⌊diagonalReal f * 10 ^ (n + 1)⌋ = headInt f n := by
+    have hTfloor : ⌊T⌋ = 0 := by
+      rw [Int.floor_eq_zero_iff]; exact ⟨hT_nonneg, hT_lt⟩
+    rw [hxmul, Int.floor_intCast_add, hTfloor, add_zero]
+  rw [digit, hfloor, headInt_emod]
+
+/-! ## The diagonal real differs from every listed real -/
+
+/-- **Diagonal disagreement.**  The explicit real `diagonalReal f` is different from every
+term `f n` of the enumeration, because their `n`-th decimal digits differ. -/
+theorem diagonalReal_ne (f : ℕ → ℝ) (n : ℕ) : diagonalReal f ≠ f n := by
+  intro hEq
+  have hdig : digit (diagonalReal f) n = digit (f n) n := by rw [hEq]
+  rw [digit_diagonalReal] at hdig
+  exact db_ne_digit f n hdig
+
+/-- **Cantor's constructive theorem:** no `f : ℕ → ℝ` is surjective, witnessed explicitly
+by `diagonalReal f`. -/
+theorem not_surjective_nat_real (f : ℕ → ℝ) : ¬ Function.Surjective f := by
+  intro hf
+  obtain ⟨n, hn⟩ := hf (diagonalReal f)
+  exact diagonalReal_ne f n hn.symm
+
+/-- The reals are uncountable, proved via the explicit diagonal witness (no appeal to
+`Cardinal.not_countable_real`). -/
+theorem not_exists_surjective_nat_real : ¬ ∃ f : ℕ → ℝ, Function.Surjective f :=
+  fun ⟨f, hf⟩ => not_surjective_nat_real f hf
+
+/-! ## Standard consequences, derived from the explicit diagonal
+
+The two headline statements below are the textbook corollaries of Cantor's
+diagonal argument.  We obtain them *from the bespoke construction above* — the
+only input is `not_surjective_nat_real`, never `Cardinal.not_countable_real` —
+so the entry's originality is preserved while it still delivers the expected
+`Uncountable ℝ` conclusion in Mathlib's own vocabulary. -/
+
+/-- **`ℝ` is uncountable** (`Uncountable` instance), obtained purely from the explicit
+diagonal `diagonalReal`.  Were `ℝ` countable, `exists_surjective_nat` would supply a
+surjection `ℕ → ℝ`, which `not_exists_surjective_nat_real` forbids.  No appeal to
+`Cardinal.not_countable_real`. -/
+theorem uncountable_real : Uncountable ℝ := by
+  rw [← not_countable_iff]
+  exact fun _ => not_exists_surjective_nat_real (exists_surjective_nat ℝ)
+
+/-- **No countable type surjects onto `ℝ`.**  The diagonal argument scales from `ℕ`
+to any countable index type `α`: a surjection `g : α → ℝ` with `α` countable would,
+composed with a surjection `ℕ → α` (from `exists_surjective_nat`), yield a surjection
+`ℕ → ℝ`; and if `α` is empty there is no surjection onto the non-empty `ℝ` at all.
+Either way `not_surjective_nat_real` closes it.  So `ℝ` is not the surjective image of
+any countable set — the general form of the uncountability statement. -/
+theorem not_surjective_of_countable {α : Type*} [Countable α] (g : α → ℝ) :
+    ¬ Function.Surjective g := by
+  intro hg
+  rcases isEmpty_or_nonempty α with hα | hα
+  · exact (hg 0).elim (fun a _ => (IsEmpty.false a))
+  · obtain ⟨e, he⟩ := exists_surjective_nat α
+    exact not_surjective_nat_real (g ∘ e) (hg.comp he)
+
+/-! ## The diagonal lives in the unit interval `(0,1)`
+
+The construction above concludes `Uncountable ℝ`, but the diagonal `diagonalReal f`
+built from digits in `{1,2}` in fact lands in the open unit interval `(0,1)` — it is
+squeezed between `∑ 1/10^(n+1) = 1/9` and `∑ 2/10^(n+1) = 2/9`.  Recording this
+strengthens the headline result: uncountability is already carried by an arbitrarily
+small subinterval, and every statement below still routes through the bespoke
+`diagonalReal`, never `Cardinal.not_countable_real`. -/
+
+/-- The geometric majorant sums to `2/9`: `∑' i, 2·(1/10)^(i+1) = 2/9`. -/
+theorem tsum_geo_shift : ∑' i : ℕ, 2 * (1 / 10 : ℝ) ^ (i + 1) = 2 / 9 := by
+  calc ∑' i : ℕ, 2 * (1 / 10 : ℝ) ^ (i + 1)
+      = ∑' i : ℕ, (2 * (1 / 10 : ℝ)) * (1 / 10 : ℝ) ^ i :=
+        tsum_congr (fun i => by rw [pow_succ]; ring)
+    _ = (2 * (1 / 10 : ℝ)) * ∑' i : ℕ, (1 / 10 : ℝ) ^ i := by rw [tsum_mul_left]
+    _ = (2 * (1 / 10 : ℝ)) * (1 - 1 / 10)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+    _ = 2 / 9 := by norm_num
+
+/-- **The diagonal is strictly positive.**  `diagonalReal f > 0`: every term is
+nonnegative and the `n = 0` term `db f 0 / 10 ≥ 1/10` is strictly positive. -/
+theorem diagonalReal_pos (f : ℕ → ℝ) : 0 < diagonalReal f := by
+  rw [diagonalReal]
+  refine Summable.tsum_pos (summable_term f) (fun k => term_nonneg f k k) 0 ?_
+  have h : (db f 0 : ℝ) / 10 ^ (0 + 1) = (db f 0 : ℝ) / 10 := by norm_num
+  have hpos : (1 : ℝ) ≤ (db f 0 : ℝ) := by exact_mod_cast db_pos f 0
+  rw [h]; positivity
+
+/-- **The diagonal is strictly below `1`.**  `diagonalReal f ≤ 2/9 < 1`, since every
+term is bounded by the geometric majorant `2·(1/10)^(n+1)` summing to `2/9`. -/
+theorem diagonalReal_lt_one (f : ℕ → ℝ) : diagonalReal f < 1 := by
+  have hle : diagonalReal f ≤ 2 / 9 := by
+    rw [diagonalReal, ← tsum_geo_shift]
+    exact Summable.tsum_mono (summable_term f) summable_geo_shift (fun k => term_le' f k k)
+  linarith
+
+/-- **The diagonal lies in the open unit interval.**  `diagonalReal f ∈ (0,1)`. -/
+theorem diagonalReal_mem_Ioo (f : ℕ → ℝ) : diagonalReal f ∈ Set.Ioo (0 : ℝ) 1 :=
+  ⟨diagonalReal_pos f, diagonalReal_lt_one f⟩
+
+/-- **Cantor for the unit interval:** no `g : ℕ → (0,1)` is surjective, witnessed by the
+diagonal of the underlying reals — which itself lies in `(0,1)`. -/
+theorem not_surjective_nat_Ioo (g : ℕ → Set.Ioo (0 : ℝ) 1) : ¬ Function.Surjective g := by
+  intro hg
+  obtain ⟨n, hn⟩ := hg ⟨diagonalReal (fun m => (g m : ℝ)), diagonalReal_mem_Ioo _⟩
+  have : diagonalReal (fun m => (g m : ℝ)) = (g n : ℝ) := congrArg Subtype.val hn.symm
+  exact diagonalReal_ne (fun m => (g m : ℝ)) n this
+
+/-- **The open unit interval `(0,1)` is uncountable**, proved from the explicit diagonal:
+the diagonal of any listing lands in `(0,1)` yet differs from every listed real, so no
+surjection `ℕ → (0,1)` exists.  A strengthening of `uncountable_real` — uncountability is
+already carried by an arbitrarily small subinterval.  No appeal to
+`Cardinal.not_countable_real`. -/
+theorem uncountable_Ioo : Uncountable (Set.Ioo (0 : ℝ) 1) := by
+  rw [← not_countable_iff]
+  intro h
+  have : Nonempty (Set.Ioo (0 : ℝ) 1) := ⟨⟨1 / 2, by norm_num⟩⟩
+  obtain ⟨e, he⟩ := exists_surjective_nat (Set.Ioo (0 : ℝ) 1)
+  exact not_surjective_nat_Ioo e he
+
+/-! ## The sharp localization interval `[1/9, 2/9]`
+
+The docstring claims the diagonal is *squeezed between* `∑ 1/10^(n+1) = 1/9` and
+`∑ 2/10^(n+1) = 2/9`, but only the upper end (`≤ 2/9`, inside `diagonalReal_lt_one`)
+was formalized.  Here we supply the matching lower bound `1/9 ≤ diagonalReal f` — every
+digit `db f n ≥ 1`, so the series dominates the geometric minorant `∑ (1/10)^(n+1) = 1/9`
+— and record the sharp two-sided localization `diagonalReal f ∈ [1/9, 2/9]`, tightening
+`diagonalReal_mem_Ioo`.  Still routed entirely through the bespoke `diagonalReal`. -/
+
+/-- The shifted geometric minorant `∑' i, (1/10)^(i+1)` is summable (the `db f · ≥ 1`
+lower bound of the defining series). -/
+theorem summable_geo_shift_one : Summable (fun i : ℕ => (1 / 10 : ℝ) ^ (i + 1)) :=
+  (summable_nat_add_iff 1).mpr
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+
+/-- The geometric minorant sums to `1/9`: `∑' i, (1/10)^(i+1) = 1/9`.  The lower dual of
+`tsum_geo_shift` (which gives the majorant `2/9`). -/
+theorem tsum_geo_shift_one : ∑' i : ℕ, (1 / 10 : ℝ) ^ (i + 1) = 1 / 9 := by
+  calc ∑' i : ℕ, (1 / 10 : ℝ) ^ (i + 1)
+      = ∑' i : ℕ, (1 / 10 : ℝ) * (1 / 10 : ℝ) ^ i :=
+        tsum_congr (fun i => by rw [pow_succ]; ring)
+    _ = (1 / 10 : ℝ) * ∑' i : ℕ, (1 / 10 : ℝ) ^ i := by rw [tsum_mul_left]
+    _ = (1 / 10 : ℝ) * (1 - 1 / 10)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+    _ = 1 / 9 := by norm_num
+
+/-- A generic term *lower* bound: `(1/10)^(i+1) ≤ db f m / 10^(i+1)`, since every diagonal
+digit is `≥ 1`.  The lower dual of `term_le'`. -/
+theorem term_ge' (f : ℕ → ℝ) (m i : ℕ) :
+    (1 / 10 : ℝ) ^ (i + 1) ≤ (db f m : ℝ) / 10 ^ (i + 1) := by
+  rw [div_pow, one_pow]
+  gcongr
+  have h1 : (1 : ℤ) ≤ db f m := by have := db_pos f m; omega
+  exact_mod_cast h1
+
+/-- **The diagonal is at least `1/9`.**  `1/9 ≤ diagonalReal f`: every term dominates the
+geometric minorant `(1/10)^(n+1)` (as `db f n ≥ 1`), and the minorant sums to `1/9`.  The
+sharp lower dual of `diagonalReal_le_two_ninths`, strengthening `diagonalReal_pos`. -/
+theorem diagonalReal_ge_one_ninth (f : ℕ → ℝ) : 1 / 9 ≤ diagonalReal f := by
+  rw [diagonalReal, ← tsum_geo_shift_one]
+  exact Summable.tsum_mono summable_geo_shift_one (summable_term f)
+    (fun k => term_ge' f k k)
+
+/-- **The diagonal is at most `2/9`.**  `diagonalReal f ≤ 2/9`, since every term is bounded
+by the geometric majorant `2·(1/10)^(n+1)` summing to `2/9`.  This is the sharp upper bound
+(previously available only inline inside `diagonalReal_lt_one`), named here to pair with
+`diagonalReal_ge_one_ninth`. -/
+theorem diagonalReal_le_two_ninths (f : ℕ → ℝ) : diagonalReal f ≤ 2 / 9 := by
+  rw [diagonalReal, ← tsum_geo_shift]
+  exact Summable.tsum_mono (summable_term f) summable_geo_shift (fun k => term_le' f k k)
+
+/-- **Sharp localization `diagonalReal f ∈ [1/9, 2/9]`.**  Digits in `{1,2}` squeeze the
+diagonal between the geometric minorant `1/9` and majorant `2/9`.  This is the tight form
+of `diagonalReal_mem_Ioo` (which only asserted `∈ (0,1)`): uncountability is carried by the
+tiny subinterval `[1/9, 2/9]`, and every digit-`1` listing has its diagonal at `1/9` while
+every digit-`2` listing reaches `2/9`, so both endpoints are attained. -/
+theorem diagonalReal_mem_Icc (f : ℕ → ℝ) :
+    diagonalReal f ∈ Set.Icc (1 / 9 : ℝ) (2 / 9) :=
+  ⟨diagonalReal_ge_one_ninth f, diagonalReal_le_two_ninths f⟩
+
+/-! ## Both endpoints of `[1/9, 2/9]` are attained
+
+`diagonalReal_mem_Icc` localizes the diagonal to `[1/9, 2/9]`; its docstring asserts
+that *both endpoints are attained* — the minorant `1/9` by listings whose `n`-th digit
+is never `1` (so `db f n ≡ 1`), the majorant `2/9` by listings whose `n`-th digit is
+always `1` (so `db f n ≡ 2`).  Here we formalize exactly that claim: the two conditional
+evaluations, and explicit witnesses realizing each endpoint (`f ≡ 0` reaches `1/9`;
+`f n = 10^{-(n+1)}`, whose `n`-th digit is `1`, reaches `2/9`).  So the localization
+`[1/9, 2/9]` is *sharp* — neither bound can be tightened.  Still routed entirely through
+the bespoke `diagonalReal`. -/
+
+/-- **The majorant `2/9` is realized by all-`1`-digit listings.**  If every `f n` has
+`n`-th digit equal to `1`, then each disagreeing digit is `db f n = 2`, and the diagonal
+is exactly the geometric majorant `∑ 2/10^(n+1) = 2/9`. -/
+theorem diagonalReal_eq_two_ninths_of {f : ℕ → ℝ} (h : ∀ n, digit (f n) n = 1) :
+    diagonalReal f = 2 / 9 := by
+  have hdb : ∀ n, (db f n : ℝ) = 2 := fun n => by
+    unfold db; rw [if_pos (h n)]; norm_num
+  rw [diagonalReal, ← tsum_geo_shift]
+  apply tsum_congr; intro n
+  rw [hdb n, div_pow, one_pow, mul_one_div]
+
+/-- **The minorant `1/9` is realized by never-`1`-digit listings.**  If no `f n` has
+`n`-th digit equal to `1`, then each disagreeing digit is `db f n = 1`, and the diagonal
+is exactly the geometric minorant `∑ 1/10^(n+1) = 1/9`. -/
+theorem diagonalReal_eq_one_ninth_of {f : ℕ → ℝ} (h : ∀ n, digit (f n) n ≠ 1) :
+    diagonalReal f = 1 / 9 := by
+  have hdb : ∀ n, (db f n : ℝ) = 1 := fun n => by
+    unfold db; rw [if_neg (h n)]; norm_num
+  rw [diagonalReal, ← tsum_geo_shift_one]
+  apply tsum_congr; intro n
+  rw [hdb n, div_pow, one_pow]
+
+/-- **The minorant `1/9` is attained.**  The constant listing `f ≡ 0` has every `n`-th
+digit `0 ≠ 1`, so its diagonal is exactly `1/9` — the lower endpoint of the localization
+interval is achieved. -/
+theorem exists_diagonalReal_eq_one_ninth : ∃ f : ℕ → ℝ, diagonalReal f = 1 / 9 := by
+  refine ⟨fun _ => 0, diagonalReal_eq_one_ninth_of (fun n => ?_)⟩
+  show digit (0 : ℝ) n ≠ 1
+  unfold digit
+  rw [zero_mul, Int.floor_zero]
+  decide
+
+/-- **The majorant `2/9` is attained.**  The listing `f n = 10^{-(n+1)}` has `n`-th digit
+`⌊10^{-(n+1)}·10^(n+1)⌋ % 10 = ⌊1⌋ % 10 = 1`, so its diagonal is exactly `2/9` — the upper
+endpoint of the localization interval is achieved.  Together with
+`exists_diagonalReal_eq_one_ninth` this shows `[1/9, 2/9]` is the *sharp* range of
+`diagonalReal`, matching the `diagonalReal_mem_Icc` docstring. -/
+theorem exists_diagonalReal_eq_two_ninths : ∃ f : ℕ → ℝ, diagonalReal f = 2 / 9 := by
+  refine ⟨fun n => 1 / 10 ^ (n + 1), diagonalReal_eq_two_ninths_of (fun n => ?_)⟩
+  have h10 : (10 : ℝ) ^ (n + 1) ≠ 0 := by positivity
+  show digit (1 / 10 ^ (n + 1) : ℝ) n = 1
+  unfold digit
+  rw [one_div, inv_mul_cancel₀ h10, Int.floor_one]
+  decide
+
+/-! ## Structural behavior of the diagonal map `f ↦ diagonalReal f`
+
+The three preceding sections pin `diagonalReal f` to the sharp interval `[1/9, 2/9]` and
+show both endpoints are attained.  Here we record how the map `f ↦ diagonalReal f` behaves
+as a function of `f`.  Three facts capture its structure:
+
+* **Locality.**  `diagonalReal f` reads only the *diagonal* digits `digit (f n) n`; two
+  listings agreeing on their diagonal digits have the same diagonal real, regardless of
+  their off-diagonal values.  This is the mechanical content of "diagonal" argument.
+* **Monotonicity.**  The map is monotone in the disagreeing-digit sequence `db f`.
+* **Binary decomposition.**  `diagonalReal f = 1/9 + (a `{0,1}`-digit real)`, exhibiting the
+  diagonal as the minorant `1/9` plus an indicator tail that flags exactly the positions
+  where `f`'s diagonal digit equals `1`.
+
+All three remain routed entirely through the bespoke `diagonalReal`, axiom-free. -/
+
+/-- **Locality of the diagonal map.**  `diagonalReal f` depends only on the *diagonal*
+digits `digit (f n) n`: if two enumerations agree on their diagonal digits then their
+diagonal reals coincide, no matter how they differ off the diagonal.  This is the essence
+of the diagonal argument — only the `n`-th digit of the `n`-th real is ever consulted. -/
+theorem diagonalReal_congr {f g : ℕ → ℝ} (h : ∀ n, digit (f n) n = digit (g n) n) :
+    diagonalReal f = diagonalReal g := by
+  unfold diagonalReal
+  apply tsum_congr
+  intro n
+  have hdb : db f n = db g n := by unfold db; rw [h n]
+  rw [hdb]
+
+/-- **Monotonicity in the disagreeing digits.**  If `db f n ≤ db g n` at every position,
+then `diagonalReal f ≤ diagonalReal g`: the diagonal real is monotone in its digit
+sequence.  (Since each `db · n ∈ {1,2}`, the hypothesis says `g` selects the larger digit
+`2` at least as often as `f` does.) -/
+theorem diagonalReal_mono {f g : ℕ → ℝ} (h : ∀ n, db f n ≤ db g n) :
+    diagonalReal f ≤ diagonalReal g := by
+  unfold diagonalReal
+  apply Summable.tsum_le_tsum _ (summable_term f) (summable_term g)
+  intro n
+  gcongr
+  exact_mod_cast h n
+
+/-- The indicator tail `∑' n, [digit (f n) n = 1]/10^(n+1)` is summable — it is dominated
+termwise by the geometric minorant `(1/10)^(n+1)`. -/
+theorem summable_indicator_shift (f : ℕ → ℝ) :
+    Summable (fun n => (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1)) := by
+  apply Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) summable_geo_shift_one
+  · apply div_nonneg _ (by positivity); split_ifs <;> norm_num
+  · rw [div_pow, one_pow]; gcongr; split_ifs <;> norm_num
+
+/-- **Binary `{0,1}`-digit decomposition.**  Writing `db f n = 1 + [digit (f n) n = 1]`
+splits the diagonal into the geometric minorant `∑ 1/10^(n+1) = 1/9` plus an *indicator*
+tail whose `n`-th digit is `1` exactly when `f`'s `n`-th diagonal digit is `1`.  Thus
+`diagonalReal f - 1/9 ∈ [0, 1/9]` is itself a real with all digits in `{0,1}`, making the
+localization `diagonalReal f ∈ [1/9, 2/9]` transparent: the tail contributes at most
+`∑ 1/10^(n+1) = 1/9`. -/
+theorem diagonalReal_eq_one_ninth_add (f : ℕ → ℝ) :
+    diagonalReal f
+      = 1 / 9 + ∑' n, (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1) := by
+  have hterm : ∀ n, (db f n : ℝ) / 10 ^ (n + 1)
+      = (1 / 10 : ℝ) ^ (n + 1)
+        + (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1) := by
+    intro n
+    have hdb : (db f n : ℝ) = 1 + (if digit (f n) n = 1 then (1 : ℝ) else 0) := by
+      unfold db; split_ifs <;> norm_num
+    rw [hdb, add_div, div_pow, one_pow]
+  rw [diagonalReal, tsum_congr hterm,
+      Summable.tsum_add summable_geo_shift_one (summable_indicator_shift f), tsum_geo_shift_one]
+
+/-! ## An explicit injection `(ℕ → Bool) ↪ ℝ`
+
+The open question `cantor-diagonalization-oq-06-oq-01` asks not only for the "no surjection
+`ℕ → ℝ`" *upper* form of uncountability, but to "package the result as an explicit injection
+`{sequences} ↪ ℝ`" — the *lower* (cardinality `𝔠 ≤ #ℝ`) form, again with an explicit witness
+rather than a cardinal computation.
+
+We supply it directly from the digit machinery.  To a binary sequence `s : ℕ → Bool`
+associate the listing `n ↦ (if s n then 10^{-(n+1)} else 0)`, whose `n`-th diagonal digit is
+`1` exactly when `s n = true` (the same floor computation as
+`exists_diagonalReal_eq_two_ninths`/`exists_diagonalReal_eq_one_ninth`).  Feeding this listing
+to `diagonalReal` yields `seqReal s`, whose `n`-th digit is `2` when `s n = true` and `1`
+otherwise — so the whole sequence `s` is *read back* from the digits of the single real
+`seqReal s`, making `seqReal` injective.  The result is an explicit embedding
+`(ℕ → Bool) ↪ ℝ` whose entire range lies in the tiny interval `[1/9, 2/9]`, and the
+cardinality bound `#(ℕ → Bool) ≤ #ℝ` — all still routed through the bespoke `diagonalReal`,
+never `Cardinal.not_countable_real`. -/
+
+/-- The `n`-th digit of the indicator listing `if s n then 10^{-(n+1)} else 0` is `1` exactly
+when `s n = true`, and `0` otherwise.  Combines the two floor computations used to attain the
+endpoints of `[1/9, 2/9]`. -/
+theorem digit_indicator (s : ℕ → Bool) (n : ℕ) :
+    digit (if s n then (1 : ℝ) / 10 ^ (n + 1) else 0) n = if s n then 1 else 0 := by
+  by_cases h : s n
+  · rw [if_pos h, if_pos h]
+    have h10 : (10 : ℝ) ^ (n + 1) ≠ 0 := by positivity
+    unfold digit
+    rw [one_div, inv_mul_cancel₀ h10, Int.floor_one]
+    decide
+  · rw [if_neg h, if_neg h]
+    unfold digit
+    rw [zero_mul, Int.floor_zero]
+    decide
+
+/-- **The explicit binary-sequence real.**  To a binary sequence `s : ℕ → Bool` associate the
+real `seqReal s` whose `n`-th decimal digit is `2` when `s n = true` and `1` otherwise. -/
+noncomputable def seqReal (s : ℕ → Bool) : ℝ :=
+  diagonalReal (fun n => if s n then (1 : ℝ) / 10 ^ (n + 1) else 0)
+
+/-- The digits of `seqReal s` read back the sequence: `digit (seqReal s) n = 2` when
+`s n = true` and `= 1` otherwise. -/
+theorem digit_seqReal (s : ℕ → Bool) (n : ℕ) :
+    digit (seqReal s) n = if s n then 2 else 1 := by
+  unfold seqReal
+  rw [digit_diagonalReal]
+  unfold db
+  simp only [digit_indicator]
+  cases h : s n <;> simp
+
+/-- **The binary-sequence map is injective.**  Distinct sequences give distinct reals: if
+`seqReal s = seqReal t`, comparing `n`-th digits (`2` vs `1`) forces `s n = t n` for every
+`n`. -/
+theorem seqReal_injective : Function.Injective seqReal := by
+  intro s t h
+  funext n
+  have hd : digit (seqReal s) n = digit (seqReal t) n := by rw [h]
+  rw [digit_seqReal, digit_seqReal] at hd
+  cases hs : s n <;> cases ht : t n <;> simp_all
+
+/-- **Explicit embedding `(ℕ → Bool) ↪ ℝ`.**  The injective digit-encoding `seqReal`, packaged
+as a `Function.Embedding` — the constructive `𝔠 ≤ #ℝ` lower bound the open question asks for,
+dual to the `no surjection ℕ → ℝ` upper bound and still routed through `diagonalReal`. -/
+noncomputable def seqEmbedding : (ℕ → Bool) ↪ ℝ := ⟨seqReal, seqReal_injective⟩
+
+/-- Every value of the embedding lands in the sharp localization interval `[1/9, 2/9]`: the
+whole continuum-sized range is packed into that tiny interval. -/
+theorem seqReal_mem_Icc (s : ℕ → Bool) : seqReal s ∈ Set.Icc (1 / 9 : ℝ) (2 / 9) :=
+  diagonalReal_mem_Icc _
+
+/-- **Constructive cardinality lower bound.**  `#(ℕ → Bool) ≤ #ℝ`, witnessed by the explicit
+injection `seqReal` — the `𝔠 ≤ #ℝ` half of `#ℝ = 𝔠`, obtained with an actual embedding and no
+appeal to `Cardinal.not_countable_real` or `#ℝ = 𝔠`. -/
+theorem mk_seq_le_mk_real : Cardinal.mk (ℕ → Bool) ≤ Cardinal.mk ℝ :=
+  Cardinal.mk_le_of_injective seqReal_injective
+
+/-! ## Injectivity of the diagonal map on its digit-choices
+
+`diagonalReal_congr` shows the diagonal map is *constant* on enumerations sharing a
+diagonal digit-sequence.  The converse — that it *separates* distinct digit-sequences —
+was missing.  It falls straight out of the crux `digit_diagonalReal` (the `n`-th digit of
+`diagonalReal f` reads back exactly `db f n`), giving an exact biconditional and hence an
+order-preserving embedding of `{1,2}`-digit sequences into `[1/9, 2/9]`. -/
+
+/-- **Converse of `diagonalReal_congr` (injectivity on digit-choices).**  Equal diagonal
+reals have equal diagonal digit-choices at every position.  Reading the `n`-th digit of
+each side and applying the crux `digit_diagonalReal` collapses the hypothesis to
+`db f n = db g n`. -/
+theorem db_eq_of_diagonalReal_eq {f g : ℕ → ℝ} (h : diagonalReal f = diagonalReal g)
+    (n : ℕ) : db f n = db g n := by
+  have hd := congrArg (fun x => digit x n) h
+  simpa only [digit_diagonalReal] using hd
+
+/-- **Characterization of equal diagonal reals.**  `diagonalReal f = diagonalReal g` iff the
+diagonal digit-choices agree everywhere.  Forward is `db_eq_of_diagonalReal_eq`; reverse is a
+termwise `tsum_congr`, since `diagonalReal` depends on `f` only through the sequence `db f`.
+This sharpens `diagonalReal_congr` (whose digit-equality hypothesis is merely sufficient) to
+an exact biconditional at the level of the `{1,2}`-valued choices actually used. -/
+theorem diagonalReal_eq_iff_db {f g : ℕ → ℝ} :
+    diagonalReal f = diagonalReal g ↔ ∀ n, db f n = db g n := by
+  refine ⟨fun h n => db_eq_of_diagonalReal_eq h n, fun h => ?_⟩
+  unfold diagonalReal
+  exact tsum_congr fun n => by rw [h n]
+
+/-- **Digit-choices separate diagonal reals.**  Contrapositive of
+`db_eq_of_diagonalReal_eq`: a single position of disagreement in the digit-choices already
+forces the diagonal reals apart.  Combined with `diagonalReal_mono`, the diagonal
+construction is an order-preserving *embedding* of digit-choice sequences into the reals. -/
+theorem diagonalReal_ne_of_db_ne {f g : ℕ → ℝ} {n : ℕ} (h : db f n ≠ db g n) :
+    diagonalReal f ≠ diagonalReal g :=
+  fun heq => h (db_eq_of_diagonalReal_eq heq n)
+
+/-! ## Set-theoretic form: the witness is missing from the enumeration -/
+
+/-- **The diagonal real is missing from the enumeration** — the set-theoretic form of
+`diagonalReal_ne` and of this problem's title.  `diagonalReal f` lies outside `Set.range f`,
+so no enumeration `f : ℕ → ℝ` lists it. -/
+theorem diagonalReal_notMem_range (f : ℕ → ℝ) : diagonalReal f ∉ Set.range f := by
+  rintro ⟨n, hn⟩
+  exact diagonalReal_ne f n hn.symm
+
+/-- **The range of any enumeration is a proper subset of `ℝ`.**  `Set.range f ≠ Set.univ`,
+exhibited by the explicit missing witness `diagonalReal f`; the `Set.range` restatement of
+`not_surjective_nat_real`. -/
+theorem range_ne_univ (f : ℕ → ℝ) : Set.range f ≠ Set.univ := by
+  intro h
+  apply diagonalReal_notMem_range f
+  rw [h]
+  exact Set.mem_univ _
+
+-- Axiom audit: the new results are axiom-free (only propext/Classical.choice/Quot.sound).
+#print axioms diagonalReal_eq_iff_db
+#print axioms diagonalReal_notMem_range
+
+end CantorDiagonalizationOQ06OQ01

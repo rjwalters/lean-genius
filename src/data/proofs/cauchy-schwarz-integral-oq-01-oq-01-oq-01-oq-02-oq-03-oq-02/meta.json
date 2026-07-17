@@ -34,12 +34,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√x)² = x for x ≥ 0, used to square the WAM = WQM equality",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_sq",
         "description": "√(x²) = x for x ≥ 0, used in the strict WAM < WQM bound and the collapse value of WQM",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.div_rpow",

@@ -289,4 +289,42 @@ theorem choose_odd_iff_digitSum_add (a b : ℕ) :
   rw [dvd_iff_padicValNat_ne_zero hchoose, not_not]
   omega
 
+/-- **The carry criterion (strict subadditivity).**  The binomial `C(a+b,a)` is even iff
+adding `a` and `b` in base `2` produces at least one carry iff the binary digit-sum
+subadditivity `digitSum_two_add_le` is *strict*:
+    `2 ∣ C(a+b,a) ↔ s₂(a+b) < s₂(a) + s₂(b)`.
+The exact complement of the no-carry criterion `choose_odd_iff_digitSum_add`: a carry occurs
+iff a digit-sum bit is lost. -/
+theorem choose_even_iff_digitSum_lt (a b : ℕ) :
+    2 ∣ Nat.choose (a + b) a ↔
+      (Nat.digits 2 (a + b)).sum < (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hchoose : Nat.choose (a + b) a ≠ 0 := (Nat.choose_pos (Nat.le_add_right a b)).ne'
+  have hkey := v2_choose_add_digitSum a b
+  rw [dvd_iff_padicValNat_ne_zero hchoose]
+  omega
+
+/-- **Vanishing carry count ⟺ additive digit sums.**  The `2`-adic valuation of the central
+binomial vanishes exactly when the binary digit sums add without loss:
+    `v₂(C(a+b,a)) = 0 ↔ s₂(a+b) = s₂(a) + s₂(b)`.
+The valuation form of the no-carry criterion `choose_odd_iff_digitSum_add` (`v₂ = 0` is the
+carry count being zero). -/
+theorem v2_choose_eq_zero_iff_digitSum_add (a b : ℕ) :
+    padicValNat 2 (Nat.choose (a + b) a) = 0 ↔
+      (Nat.digits 2 (a + b)).sum = (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  have hkey := v2_choose_add_digitSum a b
+  omega
+
+/-- **Positive carry count ⟺ strict subadditivity.**  The `2`-adic valuation of the central
+binomial is positive exactly when a carry is lost from the digit sums:
+    `0 < v₂(C(a+b,a)) ↔ s₂(a+b) < s₂(a) + s₂(b)`.
+Since `v₂(C(a+b,a)) = s₂(a) + s₂(b) − s₂(a+b)` is Kummer's carry count (`excess_eq_v2_choose`),
+this says "at least one carry" `⟺` "the digit-sum bound is strict" — the valuation form of
+`choose_even_iff_digitSum_lt`. -/
+theorem v2_choose_pos_iff_digitSum_lt (a b : ℕ) :
+    0 < padicValNat 2 (Nat.choose (a + b) a) ↔
+      (Nat.digits 2 (a + b)).sum < (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  have hkey := v2_choose_add_digitSum a b
+  omega
+
 end Erdos729DigitSum

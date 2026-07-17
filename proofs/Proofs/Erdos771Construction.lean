@@ -7,10 +7,11 @@ The answer `f(n) = (1/2 + o(1)) · n / log n` is known (Erdős–Graham lower bo
 Alon–Freiman upper bound), and both bounds are deep.
 
 This file does NOT reprove the asymptotics. It **fully verifies (0 axioms, 0 sorries)** the
-elementary **construction** at the heart of the Erdős–Graham *lower* bound, which the
-companion `Erdos771Problem.lean` left as `sorry` (and which, in any case, no longer compiles
-under Mathlib 4.26.0 — stale module path, `DecidablePred` gaps, and dangling doc-comments;
-flagged for a Mechanic). The construction is:
+elementary **construction** at the heart of the Erdős–Graham *lower* bound. The companion
+`Erdos771Problem.lean` packages the same lower bound via the axiom `erdos_graham_lower_bound`;
+that file's earlier Mathlib-4.26 drift has since been repaired and it now compiles cleanly, so
+this standalone construction stands alongside it as an axiom-free witness of the underlying
+combinatorial fact. The construction is:
 
 > Take `S = ` the multiples of a prime `p` in `{1,…,n}`. Every subset sum of `S` is a
 > multiple of `p`, so if `p ∤ m` then `m` is **not** a subset sum — `S` avoids `m`.
@@ -404,6 +405,160 @@ theorem avoid_three_card_le (n : ℕ) (hn : 3 ≤ n) (S : Finset ℕ) (hS : S �
         rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h2mem, Icc_n, Nat.card_Icc]
         omega
 
+/-! ## The case `m = 4`: the first plateau at `n − 2`
+
+Like `m = 3`, the number `4` has **two** representations as a sum of distinct positive integers:
+`4 = {4}` and `4 = {1, 3}`. So avoiding the subset sum `4` again costs *two* deletions from
+`{1,…,n}` — remove `4`, and break the pair `{1, 3}` — pinning the maximum at `n − 2` (for
+`n ≥ 4`), exactly the `m = 3` value. This is the first time the value **stays put** as `m`
+increases: `m = 3, 4` both give `n − 2`, the beginning of the `n − ⌈m/2⌉` staircase (each value
+is held for two consecutive `m` before dropping). Unlike `m = 3`, the pair `{1, 3}` is a *gap*
+pair rather than the consecutive `{1, 2}`, so the crude "excluded element overshoots" bound no
+longer identifies it directly; the characterization is instead decided over the `16` subsets of
+`{0, 1, 2, 3}`. -/
+
+/-- `4` is a positive subset sum of `S` iff `4 ∈ S` **or** both `1 ∈ S` and `3 ∈ S`: the only
+    nonempty sets of distinct naturals summing to `4` are `{4}` and `{1, 3}` (any element `≥ 5`
+    overshoots, so all elements lie in `{0, 1, 2, 3}`, over whose `16` subsets the claim is
+    decidable). -/
+theorem four_mem_subsetSums_iff (S : Finset ℕ) :
+    (4 : ℕ) ∈ subsetSums S ↔ (4 ∈ S ∨ (1 ∈ S ∧ 3 ∈ S)) := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have hle : ∀ a ∈ A, a ≤ 4 := by
+      intro a ha
+      have hsum := Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+      rw [hAsum] at hsum; exact hsum
+    by_cases h4 : (4 : ℕ) ∈ A
+    · exact Or.inl (hA h4)
+    · refine Or.inr ?_
+      have hsub : A ⊆ ({0, 1, 2, 3} : Finset ℕ) := by
+        intro a ha
+        have hle4 := hle a ha
+        have ha4 : a ≠ 4 := fun he => h4 (he ▸ ha)
+        simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      have key : ∀ B ∈ ({0, 1, 2, 3} : Finset ℕ).powerset,
+          (∑ x ∈ B, x = 4) → (1 ∈ B ∧ 3 ∈ B) := by decide
+      obtain ⟨h1, h3⟩ := key A (Finset.mem_powerset.mpr hsub) hAsum
+      exact ⟨hA h1, hA h3⟩
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    rcases h with h4 | ⟨h1, h3⟩
+    · refine ⟨⟨{4}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h4
+      · simp
+    · refine ⟨⟨{1, 3}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+        exact ⟨h1, h3⟩
+      · rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 3)]
+
+/-- **The case `m = 4`.** `S` avoids the subset sum `4` iff `4 ∉ S` and not both `1, 3 ∈ S`.
+    Immediate from `four_mem_subsetSums_iff` by negation (`not_or`). -/
+theorem avoid_four_iff (S : Finset ℕ) :
+    AvoidSum S 4 ↔ (4 ∉ S ∧ ¬ (1 ∈ S ∧ 3 ∈ S)) := by
+  unfold AvoidSum
+  rw [four_mem_subsetSums_iff, not_or]
+
+/-- **Exact `m = 4` realization.** For `n ≥ 4` the explicit set `{1,…,n} ∖ {3, 4}` witnesses
+    the value `n − 2` at `m = 4`: it lies inside `{1,…,n}`, avoids the subset sum `4` (since
+    `4 ∉ S` and `3 ∉ S` breaks the pair `{1, 3}`, via `avoid_four_iff`), and has cardinality
+    `n − 2`. -/
+theorem Icc_erase_three_four_avoid_four (n : ℕ) (hn : 4 ≤ n) :
+    (((Icc_n n).erase 3).erase 4) ⊆ Icc_n n ∧
+      AvoidSum (((Icc_n n).erase 3).erase 4) 4 ∧
+      (((Icc_n n).erase 3).erase 4).card = n - 2 := by
+  have h3 : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have h4 : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+    rw [Finset.mem_erase, Icc_n, Finset.mem_Icc]; omega
+  refine ⟨(Finset.erase_subset _ _).trans (Finset.erase_subset _ _), ?_, ?_⟩
+  · rw [avoid_four_iff]
+    refine ⟨Finset.notMem_erase 4 _, ?_⟩
+    rintro ⟨_, hmem3⟩
+    have hno3 : (3 : ℕ) ∉ (Icc_n n).erase 3 := Finset.notMem_erase 3 _
+    exact hno3 (Finset.mem_of_mem_erase hmem3)
+  · rw [Finset.card_erase_of_mem h4, Finset.card_erase_of_mem h3, Icc_n, Nat.card_Icc]
+    omega
+
+/-- **Optimality at `m = 4`.** For `n ≥ 4` every `4`-avoiding subset of `{1,…,n}` has size at
+    most `n − 2`: avoiding `4` forces `4 ∉ S` and (`1 ∉ S` or `3 ∉ S`), so `S` misses `4` and at
+    least one of `1, 3` — two distinct elements of `{1,…,n}`. Together with
+    `Icc_erase_three_four_avoid_four` this pins the exact maximum `n − 2` at `m = 4`, equal to
+    the `m = 3` value — the first plateau of the `n − ⌈m/2⌉` staircase. -/
+theorem avoid_four_card_le (n : ℕ) (hn : 4 ≤ n) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
+    (hav : AvoidSum S 4) : S.card ≤ n - 2 := by
+  rw [avoid_four_iff] at hav
+  obtain ⟨h4, h13⟩ := hav
+  have h4mem : (4 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  rw [not_and_or] at h13
+  rcases h13 with h1 | h3
+  · have h1mem : (1 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 1).erase 4 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h4 (he ▸ hx), fun he => h1 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 1).erase 4).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h4e : (4 : ℕ) ∈ (Icc_n n).erase 1 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+        rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]
+        omega
+  · have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 3).erase 4 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h4 (he ▸ hx), fun he => h3 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 3).erase 4).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h4e : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+        rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h3mem, Icc_n, Nat.card_Icc]
+        omega
+
+/-! ## General structural lemmas: the uniform upper bound `f(n) ≤ n − 1`
+
+The exact small cases above each begin from the same elementary observation — the singleton
+`{m}` is always a subset that sums to `m`, so **any** `m`-avoiding set must omit `m` itself.
+Recorded once and for all, this gives a uniform upper bound: for every `m` with `1 ≤ m ≤ n`,
+the largest `m`-avoiding subset of `{1,…,n}` has size at most `n − 1` (the single forced
+deletion of `m`). The `m = 1, 2` cases show this bound is *tight*; from `m = 3` on the value
+drops strictly below it. (The complementary monotonicity — avoidance is inherited by subsets —
+is recorded below as `subsetSums_mono` / `AvoidSum_antitone`.) -/
+
+/-- **The singleton is always a subset sum.** For `0 < m`, if `m ∈ S` then `m` is a positive
+    subset sum of `S`, witnessed by the singleton `{m}`. This is the common seed of every
+    optimality argument: avoiding `m` forces `m ∉ S`. -/
+theorem subsetSums_self_mem (S : Finset ℕ) (m : ℕ) (hm : 0 < m) (hmem : m ∈ S) :
+    m ∈ subsetSums S := by
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  refine ⟨⟨{m}, ?_, ?_⟩, hm⟩
+  · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr hmem
+  · simp
+
+/-- **General necessary condition.** For `0 < m`, any `m`-avoiding set omits `m`: the singleton
+    `{m}` would otherwise realize `m` as a subset sum (`subsetSums_self_mem`). This single fact
+    underlies the optimality half of every case `avoid_one_card_le`, `avoid_two_card_le`,
+    `avoid_three_card_le`. -/
+theorem avoid_imp_notMem (S : Finset ℕ) (m : ℕ) (hm : 0 < m) (hav : AvoidSum S m) :
+    m ∉ S := fun hmem => hav (subsetSums_self_mem S m hm hmem)
+
+/-- **Uniform upper bound `f(n) ≤ n − 1`.** For every `m` with `1 ≤ m ≤ n`, every `m`-avoiding
+    subset of `{1,…,n}` has size at most `n − 1`: avoiding `m` forces `m ∉ S` (`avoid_imp_notMem`)
+    and `m ∈ {1,…,n}`, so `S ⊆ {1,…,n} ∖ {m}`. This is the single deletion common to all cases;
+    the sharper drops (e.g. `n − 2` at `m = 3`) come from *additional* forced deletions. -/
+theorem avoid_card_le (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) (S : Finset ℕ)
+    (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) : S.card ≤ n - 1 := by
+  have hmS : m ∉ S := avoid_imp_notMem S m hm hav
+  have hmem : m ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have hsub : S ⊆ (Icc_n n).erase m := by
+    intro x hx
+    rw [Finset.mem_erase]
+    exact ⟨fun he => hmS (he ▸ hx), hS hx⟩
+  calc S.card ≤ ((Icc_n n).erase m).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Finset.card_erase_of_mem hmem, Icc_n, Nat.card_Icc]; omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
@@ -411,10 +566,125 @@ lower bound for `f(n)` — the multiples of a prime `p` in `{1,…,n}` have size
 any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`; and, via Bertrand's
 postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The two
 smallest cases are pinned exactly: at `m = 1` and (for `n ≥ 2`) at `m = 2` the largest
-avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`; and at `m = 3`
+avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`; at `m = 3`
 (for `n ≥ 3`) the maximum drops to `n − 2`, realized by `{1,…,n} ∖ {2, 3}` — the first case
-where the two representations `3 = {3} = {1,2}` force a second deletion. The deep asymptotics
-(the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed here.
+where the two representations `3 = {3} = {1,2}` force a second deletion; and at `m = 4`
+(for `n ≥ 4`) it **stays** at `n − 2`, realized by `{1,…,n} ∖ {3, 4}` breaking the gap pair
+`4 = {4} = {1,3}` — the first plateau of the `n − ⌈m/2⌉` staircase (each value held for two
+consecutive `m`). The deep asymptotics (the matching `(1/2 + o(1)) n / log n` lower and upper
+bounds) are not addressed here.
 -/
+
+/-- **Subset-sum monotonicity.**  Enlarging the ground set can only add subset sums:
+`S ⊆ T ⟹ subsetSums S ⊆ subsetSums T`.  Every subset of `S` is a subset of `T`, so its
+sum is already a `T`-subset-sum.  The structural backbone of the avoidance ladder. -/
+theorem subsetSums_mono {S T : Finset ℕ} (h : S ⊆ T) : subsetSums S ⊆ subsetSums T := by
+  unfold subsetSums
+  apply Finset.filter_subset_filter
+  apply Finset.image_subset_image
+  exact Finset.powerset_mono.mpr h
+
+/-- **Avoidance is downward closed.**  If the larger set `T` avoids the sum `m`, then so
+does every subset `S ⊆ T`: `AvoidSum T m ⟹ AvoidSum S m`.  Contrapositive of
+`subsetSums_mono` — a subset of a sum-`m`-avoiding set still avoids `m`, so the avoidance
+property is inherited by all subsets (the reason maximal avoiding sets are the object of
+interest). -/
+theorem AvoidSum_antitone {S T : Finset ℕ} (h : S ⊆ T) {m : ℕ} (hT : AvoidSum T m) :
+    AvoidSum S m :=
+  fun hS => hT (subsetSums_mono h hS)
+
+/-! ## General pairing bound — the optimality of the per-`m` ladder, uniformly
+
+The per-`m` optimality lemmas (`avoid_one_card_le`, `avoid_two_card_le`,
+`avoid_three_card_le`, `avoid_four_card_le`) each show that an `m`-avoiding subset of
+`{1,…,n}` has at most `n − ⌈m/2⌉` elements. That common bound is a single **general**
+fact, proved once here by a pairing argument, and it subsumes all four cases (and every
+larger `m`). Two atoms drive it: an `m`-avoiding set cannot contain `m` itself, nor both
+members of any pair `{a, b}` with `a + b = m`. Mapping each element `t ≤ m` to
+`min t (m − t)` injects the low part of the set into `{1,…,⌊m/2⌋}` (injectivity is exactly
+the no-complementary-pair property), capping it at `⌊m/2⌋`; the high part contributes at
+most `n − m`, and `⌊m/2⌋ + (n − m) = n − ⌈m/2⌉`. -/
+
+/-- **Avoidance atom I: `m ∉ S`.** An `m`-avoiding set cannot contain `m` itself, since the
+    singleton `{m}` is a nonempty subset summing to `m`. -/
+theorem avoid_not_mem_self (S : Finset ℕ) (m : ℕ) (hm : 1 ≤ m) (hav : AvoidSum S m) :
+    m ∉ S := by
+  intro hmem
+  apply hav
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  exact ⟨⟨{m}, Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr hmem),
+    Finset.sum_singleton _ _⟩, hm⟩
+
+/-- **Avoidance atom II: no complementary pair.** An `m`-avoiding set cannot contain two
+    distinct elements `a ≠ b` with `a + b = m`, since the pair `{a, b}` is a nonempty subset
+    summing to `m`. -/
+theorem avoid_not_pair (S : Finset ℕ) (m a b : ℕ) (hav : AvoidSum S m)
+    (ha : a ∈ S) (hb : b ∈ S) (hne : a ≠ b) (hsum : a + b = m) : False := by
+  apply hav
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  refine ⟨⟨{a, b}, Finset.mem_powerset.mpr ?_, ?_⟩, by omega⟩
+  · exact Finset.insert_subset_iff.mpr ⟨ha, Finset.singleton_subset_iff.mpr hb⟩
+  · rw [Finset.sum_pair hne]; exact hsum
+
+/-- **The low part of an `m`-avoiding set has at most `⌊m/2⌋` elements.** For any
+    `m`-avoiding `S ⊆ {1,…,n}`, the elements of `S` that are `≤ m` number at most `⌊m/2⌋`.
+    The map `t ↦ min t (m − t)` sends each such element into `{1,…,⌊m/2⌋}`, and it is
+    injective on `S`: if `min t (m−t) = min t' (m−t')` with `t ≠ t'` then `{t, t'}` is a
+    complementary pair `t + t' = m`, contradicting `avoid_not_pair`. -/
+theorem avoid_low_card_le (n m : ℕ) (hm : 1 ≤ m)
+    (S : Finset ℕ) (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) :
+    (S.filter (· ≤ m)).card ≤ m / 2 := by
+  have hmS : m ∉ S := avoid_not_mem_self S m hm hav
+  have hbounds : ∀ x ∈ S.filter (· ≤ m), 1 ≤ x ∧ x < m := by
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    obtain ⟨hxS, hxm⟩ := hx
+    have hx1 : 1 ≤ x := (Finset.mem_Icc.mp (hS hxS)).1
+    have hxne : x ≠ m := fun h => hmS (h ▸ hxS)
+    exact ⟨hx1, by omega⟩
+  calc (S.filter (· ≤ m)).card
+      ≤ (Finset.Icc 1 (m / 2)).card := by
+        apply Finset.card_le_card_of_injOn (fun x => min x (m - x))
+        · intro x hx
+          rw [Finset.mem_coe] at hx
+          obtain ⟨hx1, hx2⟩ := hbounds x hx
+          rw [Finset.mem_coe, Finset.mem_Icc]
+          dsimp only
+          omega
+        · intro x hx y hy hxy
+          rw [Finset.mem_coe] at hx hy
+          dsimp only at hxy
+          obtain ⟨hbx1, hbx2⟩ := hbounds x hx
+          obtain ⟨hby1, hby2⟩ := hbounds y hy
+          have hxS := (Finset.mem_filter.mp hx).1
+          have hyS := (Finset.mem_filter.mp hy).1
+          by_contra hne
+          exact avoid_not_pair S m x y hav hxS hyS hne (by omega)
+    _ = m / 2 := by rw [Nat.card_Icc]; omega
+
+/-- **General optimality of the avoidance ladder.** For `1 ≤ m ≤ n`, every `m`-avoiding
+    subset of `{1,…,n}` has at most `n − ⌈m/2⌉` elements (`⌈m/2⌉ = (m+1)/2` in `ℕ`). This
+    single bound subsumes the individual optimality lemmas `avoid_one_card_le` (`n−1`),
+    `avoid_two_card_le` (`n−1`), `avoid_three_card_le` (`n−2`) and `avoid_four_card_le`
+    (`n−2`), and extends the ladder to all `m`. Split `S` into its part `≤ m` (at most
+    `⌊m/2⌋` by `avoid_low_card_le`) and its part `> m` (at most `n − m`, being contained in
+    `{m+1,…,n}`); the two bounds sum to `⌊m/2⌋ + (n − m) = n − ⌈m/2⌉`. -/
+theorem avoid_card_le_general (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n)
+    (S : Finset ℕ) (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) :
+    S.card ≤ n - (m + 1) / 2 := by
+  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card (s := S) (p := (· ≤ m))
+  have hlow : (S.filter (· ≤ m)).card ≤ m / 2 := avoid_low_card_le n m hm S hS hav
+  have hhigh : (S.filter (fun x => ¬ x ≤ m)).card ≤ n - m := by
+    have hsub : S.filter (fun x => ¬ x ≤ m) ⊆ Finset.Icc (m + 1) n := by
+      intro x hx
+      rw [Finset.mem_filter] at hx
+      obtain ⟨hxS, hxm⟩ := hx
+      have hxn := (Finset.mem_Icc.mp (hS hxS)).2
+      rw [Finset.mem_Icc]
+      omega
+    calc (S.filter (fun x => ¬ x ≤ m)).card
+        ≤ (Finset.Icc (m + 1) n).card := Finset.card_le_card hsub
+      _ = n - m := by rw [Nat.card_Icc]; omega
+  omega
 
 end Erdos771Construction

@@ -31,6 +31,7 @@ import Mathlib.Combinatorics.HalesJewett
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Order.Interval.Set.Infinite
 
 open Set Finset
 
@@ -495,6 +496,83 @@ theorem hasRamseyProperty_antitone {A : Finset Point} {k k' : ℕ} (hk : k' ≤ 
   obtain ⟨S, hSA, ⟨hSk, hline⟩, hSmono⟩ := hA c
   exact ⟨S, hSA, ⟨le_trans hk hSk, hline⟩, hSmono⟩
 
+/-
+### Affine invariance
+
+The Ramsey property is a purely *affine-combinatorial* feature of a point
+configuration: it survives every injective affine self-map of the plane.  This is
+the structural counterpart of the monotonicity/padding results — the extremal
+configurations of Erdős #1090 come in whole affine-equivalence classes, so a
+witness realised in one coordinate frame is a witness for every affine image of
+it (any relabelling, translation, rotation, shear, or dilation of the plane).
+-/
+
+/--
+**Affine invariance.**
+If `A` has the Ramsey property for `k`, then so does its image under any
+injective affine self-map `x ↦ b + L x` of the plane (`L` an injective linear
+map, `b` a translation).  An affine map carries collinear points to collinear
+points, colours pull back through it, and injectivity preserves cardinality, so a
+monochromatic `k`-collinear subset of `A` maps to one of the image.  Together with
+`hasRamseyProperty_mono` this shows the Ramsey property depends only on the affine
+type of the configuration, not on its metric placement.
+-/
+theorem hasRamseyProperty_affine_image {A : Finset Point} {k : ℕ}
+    (L : Point →ₗ[ℝ] Point) (hL : Function.Injective L) (b : Point)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => b + L x)) k := by
+  set f : Point → Point := fun x => b + L x with hf
+  have hfinj : Function.Injective f := by
+    intro x y hxy
+    simp only [hf] at hxy
+    exact hL (add_left_cancel hxy)
+  intro c'
+  -- Pull the colouring back through `f` and apply the property to `A`.
+  obtain ⟨S, hSA, ⟨hSk, l, hl⟩, hSmono⟩ := hA (fun x => c' (f x))
+  -- The image line's direction is nonzero because `L` is injective.
+  have hdir : L l.direction ≠ 0 := fun h0 =>
+    l.nonzero (hL (h0.trans (map_zero L).symm))
+  refine ⟨S.image f, Finset.image_subset_image hSA,
+    ⟨?_, ⟨b + L l.point, L l.direction, hdir⟩, ?_⟩, ?_⟩
+  · -- Injectivity preserves the cardinality bound.
+    rw [Finset.card_image_of_injective _ hfinj]; exact hSk
+  · -- Every image point lies on the image line (same parameter `t`).
+    rintro p hp
+    obtain ⟨q, hqS, rfl⟩ := Finset.mem_image.1 hp
+    obtain ⟨t, ht⟩ := hl q hqS
+    refine ⟨t, ?_⟩
+    show f q = (b + L l.point) + t • L l.direction
+    simp only [hf, ht, map_add, map_smul]
+    abel
+  · -- Monochromaticity transports back through `f`.
+    rintro p q hp hq
+    obtain ⟨p', hp'S, rfl⟩ := Finset.mem_image.1 hp
+    obtain ⟨q', hq'S, rfl⟩ := Finset.mem_image.1 hq
+    exact hSmono p' q' hp'S hq'S
+
+/--
+**Translation invariance.**  The Ramsey property is preserved under translating
+the whole configuration by a fixed vector `b` (the `L = id` case of
+`hasRamseyProperty_affine_image`). -/
+theorem hasRamseyProperty_vadd {A : Finset Point} {k : ℕ} (b : Point)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => b + x)) k := by
+  simpa using hasRamseyProperty_affine_image LinearMap.id Function.injective_id b hA
+
+/--
+**Dilation invariance.**  The Ramsey property is preserved under scaling the whole
+configuration by a nonzero factor `c` (the `b = 0`, `L = c • id` case of
+`hasRamseyProperty_affine_image`).  Combined with `hasRamseyProperty_vadd` this
+gives invariance under every homothety `x ↦ b + c • x`, `c ≠ 0`. -/
+theorem hasRamseyProperty_smul {A : Finset Point} {k : ℕ} {c : ℝ} (hc : c ≠ 0)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => c • x)) k := by
+  have hLinj : Function.Injective ((c • LinearMap.id : Point →ₗ[ℝ] Point)) := by
+    intro x y h
+    have hxy : c • x = c • y := by simpa using h
+    exact smul_right_injective Point hc hxy
+  simpa using hasRamseyProperty_affine_image (c • LinearMap.id) hLinj 0 hA
+
 /--
 **Trivial Lower Bound:**
 R(k) ≥ k since we need at least k points to have k collinear.
@@ -728,6 +806,68 @@ the colored hierarchy to the `2`-coloring case studied above.
 -/
 theorem ramseyNumberColored_bool (k : ℕ) :
     ramseyNumberColored Bool k = ramseyNumber k := rfl
+
+/--
+**The single-colour palette collapses to pure collinearity.**  With a `Subsingleton` (at most
+one colour) *nonempty* palette `C`, every colouring is constant, so the monochromaticity
+constraint `c p = c q` is vacuous: `HasRamseyPropertyColored C A k` holds iff `A` already
+contains a `k`-collinear subset, `∃ S ⊆ A, IsKCollinear S k`.  This is the `|C| = 1` boundary
+of the palette hierarchy — the degenerate bottom end below `ramseyNumberColored_bool` (`|C| = 2`),
+where the Ramsey condition strips down to the underlying Erdős collinearity question with no
+colouring content at all. -/
+theorem hasRamseyPropertyColored_subsingleton_iff {C : Type*} [Subsingleton C] [Nonempty C]
+    {A : Finset Point} {k : ℕ} :
+    HasRamseyPropertyColored C A k ↔ ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k := by
+  constructor
+  · intro h
+    obtain ⟨S, hSA, hSk, _⟩ := h (fun _ => Classical.arbitrary C)
+    exact ⟨S, hSA, hSk⟩
+  · rintro ⟨S, hSA, hSk⟩ c
+    exact ⟨S, hSA, hSk, fun p q _ _ => Subsingleton.elim _ _⟩
+
+/--
+**One colour is the easiest: the bottom of the palette monotonicity chain.**  For a
+`Subsingleton` palette `C` and `k ≥ 3`, `R_C(k) ≤ ramseyNumber k`: a single colour can only
+*lower* the threshold, since `C` embeds into `Bool` (`ramseyNumberColored_mono_colors`) and
+`R_{Bool}(k) = ramseyNumber k` (`ramseyNumberColored_bool`).  This is the lower counterpart of
+`ramseyNumber_le_ramseyNumberColored_fin` (which bounds the `≥ 2`-colour numbers from *below*
+by `ramseyNumber k`); together they pin `ramseyNumber k` as the value at `|C| = 2`, with the
+whole chain `R_{|C|=1}(k) ≤ ramseyNumber k ≤ R_{Fin r}(k)` monotone in the palette size. -/
+theorem ramseyNumberColored_subsingleton_le {C : Type*} [Subsingleton C] {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k ≤ ramseyNumber k := by
+  have e : C ↪ Bool := ⟨fun _ => false, fun a b _ => Subsingleton.elim a b⟩
+  calc ramseyNumberColored C k
+      ≤ ramseyNumberColored Bool k := ramseyNumberColored_mono_colors e hk
+    _ = ramseyNumber k := ramseyNumberColored_bool k
+
+/--
+**The single-colour Ramsey number is exactly `k`.**  Sharpening
+`ramseyNumberColored_subsingleton_le` (`R_C(k) ≤ ramseyNumber k`) to an *equality* at the very
+bottom of the palette hierarchy: for a `Subsingleton` *nonempty* palette `C` and `k ≥ 3`,
+`ramseyNumberColored C k = k`.  With a single colour the monochromaticity constraint is vacuous
+(`hasRamseyPropertyColored_subsingleton_iff`), so the property reduces to "`A` contains `k`
+collinear points"; shrinking the collinear subset supplied by the construction down to exactly
+`k` points gives a witnessing set of size `k`, hence `R_C(k) ≤ k`, while
+`ramseyNumberColored_lower_bound` gives `k ≤ R_C(k)`.  Unlike the genuinely open uncolored
+`ramseyNumber k` (only known to satisfy `≥ k`), the one-colour number is pinned down *exactly* —
+there is no colouring left to defeat, so the Ramsey threshold is simply the collinearity
+threshold `k`. -/
+theorem ramseyNumberColored_subsingleton_eq {C : Type*} [Subsingleton C] [Nonempty C]
+    {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k = k := by
+  haveI : Finite C := Finite.of_subsingleton
+  refine le_antisymm ?_ (ramseyNumberColored_lower_bound C k hk)
+  -- Upper bound: exhibit a witnessing set of size exactly `k`.
+  obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk
+  obtain ⟨S, hSA, hcard, l, hline⟩ :=
+    (hasRamseyPropertyColored_subsingleton_iff (C := C)).1 hA
+  obtain ⟨S', hS'S, hS'card⟩ := Finset.exists_subset_card_eq hcard
+  have hprop : HasRamseyPropertyColored C S' k :=
+    (hasRamseyPropertyColored_subsingleton_iff (C := C)).2
+      ⟨S', subset_rfl, hS'card.ge, l, fun p hp => hline p (hS'S hp)⟩
+  calc ramseyNumberColored C k
+      ≤ S'.card := Nat.sInf_le ⟨S', rfl, hprop⟩
+    _ = k := hS'card
 
 /--
 **A monotone chain in the number of colors.**  For `r ≤ r'`, `R_{Fin r}(k) ≤ R_{Fin r'}(k)`,
@@ -1171,9 +1311,142 @@ theorem erdos_1090_summary :
     (∀ k ≥ 3, ∃ A : Finset Point, HasRamseyProperty A k) :=
   ⟨graham_selfridge, fun k hk => hunter_observation k hk⟩
 
+/-! ## The Ramsey number as a least element
+
+`ramseyNumber` / `ramseyNumberColored` are defined as `sInf` of a set of realizable sizes.
+The two `exists_…_card_eq_ramseyNumber…` theorems show that infimum is *attained*, and the
+`…_le_of_hasRamseyProperty` theorems show it lower-bounds every realizable size.  The `IsLeast`
+packagings below combine these into the single reusable fact that `R(k)` (resp. `R_C(k)`) is the
+**minimum** realizable size — the "genuine minimum, not a mere infimum" the API's prose asserts —
+handing downstream users both membership and lower-bound-ness in one object. -/
+
+/-- **`R(k)` is positive** for `k ≥ 3`: it is at least `k ≥ 3 > 0` (`ramsey_lower_bound`). -/
+theorem ramseyNumber_pos (k : ℕ) (hk : k ≥ 3) : 0 < ramseyNumber k :=
+  lt_of_lt_of_le (by omega) (ramsey_lower_bound k hk)
+
+/-- **`R(k)` is the least realizable size.**  For `k ≥ 3`, `ramseyNumber k` is the minimum of
+the set of cardinalities of finite point sets with the Ramsey property: it is realized by an
+extremal witness (`exists_hasRamseyProperty_card_eq_ramseyNumber`) and bounds every realizable
+size from below (`ramseyNumber_le_of_hasRamseyProperty`).  The `IsLeast` packaging of
+`hasRamseyProperty_realizable_card_iff`. -/
+theorem ramseyNumber_isLeast (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+      (ramseyNumber k) :=
+  ⟨exists_hasRamseyProperty_card_eq_ramseyNumber k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumber_le_of_hasRamseyProperty hA⟩
+
+/-- **`R_C(k)` is the least realizable size (colored).**  For a finite palette `C` and `k ≥ 3`,
+`ramseyNumberColored C k` is the minimum cardinality of a finite point set with the `C`-colored
+Ramsey property — realized by `exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored` and a
+lower bound via `ramseyNumberColored_le_of_hasRamseyProperty`.  The colored analogue of
+`ramseyNumber_isLeast`. -/
+theorem ramseyNumberColored_isLeast (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+      (ramseyNumberColored C k) :=
+  ⟨exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored C k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumberColored_le_of_hasRamseyProperty hA⟩
+
+/-! ## The realizable-size set as an up-ray `Set.Ici`
+
+The `…_realizable_card_iff` theorems characterise which cardinalities `n` admit a Ramsey
+witness by the *pointwise* condition `R(k) ≤ n`.  Repackaging that iff as a single **set
+equality** identifies the realizable-size set with the order up-ray `Set.Ici (R k)` — a closed,
+gap-free interval `[R(k), ∞)` — which in turn exhibits it as an *infinite* set.  This is the
+`Set.Ici` counterpart of the `IsLeast` packaging: `IsLeast` records the bottom element, while
+`= Set.Ici (R k)` records the entire shape.  A colored positivity fact
+(`ramseyNumberColored_pos`) rounds out the colored API to match the uncolored `ramseyNumber_pos`.
+-/
+
+/-- **`R_C(k)` is positive** for a finite nonempty palette `C` and `k ≥ 3`: it is at least
+`k ≥ 3 > 0` (`ramseyNumberColored_lower_bound`).  The colored analogue of `ramseyNumber_pos`. -/
+theorem ramseyNumberColored_pos (C : Type*) [Finite C] [Nonempty C] (k : ℕ) (hk : k ≥ 3) :
+    0 < ramseyNumberColored C k :=
+  lt_of_lt_of_le (by omega) (ramseyNumberColored_lower_bound C k hk)
+
+/-- **The realizable-size set is exactly the up-ray `[R(k), ∞)`.**  For `k ≥ 3`, the set of
+cardinalities of finite point sets with the Ramsey property equals `Set.Ici (ramseyNumber k)`.
+This is the set-level form of `hasRamseyProperty_realizable_card_iff`: no gaps, no upper cutoff —
+every size at or above the threshold is realized and nothing below it is. -/
+theorem hasRamseyProperty_realizable_setOf_eq_Ici {k : ℕ} (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+      = Set.Ici (ramseyNumber k) := by
+  ext n
+  simpa only [Set.mem_setOf_eq, Set.mem_Ici] using hasRamseyProperty_realizable_card_iff hk n
+
+/-- **The realizable-size set is infinite.**  For `k ≥ 3` there are arbitrarily large finite
+point sets with the Ramsey property: the realizable cardinalities form the infinite up-ray
+`Set.Ici (ramseyNumber k)` (`hasRamseyProperty_realizable_setOf_eq_Ici`), and `ℕ` has no maximal
+element.  The Ramsey property is therefore not a knife-edge phenomenon confined near the
+threshold. -/
+theorem hasRamseyProperty_realizable_setOf_infinite {k : ℕ} (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Infinite := by
+  rw [hasRamseyProperty_realizable_setOf_eq_Ici hk]
+  exact Set.Ici_infinite _
+
+/-- **The colored realizable-size set is exactly the up-ray `[R_C(k), ∞)`.**  For a finite
+palette `C` and `k ≥ 3`, the set of cardinalities of finite point sets with the `C`-colored
+Ramsey property equals `Set.Ici (ramseyNumberColored C k)`.  The colored analogue of
+`hasRamseyProperty_realizable_setOf_eq_Ici`, the set-level form of
+`hasRamseyPropertyColored_realizable_card_iff`. -/
+theorem hasRamseyPropertyColored_realizable_setOf_eq_Ici {C : Type*} [Finite C] {k : ℕ}
+    (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+      = Set.Ici (ramseyNumberColored C k) := by
+  ext n
+  simpa only [Set.mem_setOf_eq, Set.mem_Ici] using
+    hasRamseyPropertyColored_realizable_card_iff hk n
+
+/-- **The colored realizable-size set is infinite.**  For a finite palette `C` and `k ≥ 3`
+there are arbitrarily large finite point sets with the `C`-colored Ramsey property: the
+realizable cardinalities form the infinite up-ray `Set.Ici (ramseyNumberColored C k)`
+(`hasRamseyPropertyColored_realizable_setOf_eq_Ici`), and `ℕ` has no maximal element.  The
+colored analogue of `hasRamseyProperty_realizable_setOf_infinite`, completing the colored
+realizable-set characterization. -/
+theorem hasRamseyPropertyColored_realizable_setOf_infinite {C : Type*} [Finite C] {k : ℕ}
+    (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}.Infinite := by
+  rw [hasRamseyPropertyColored_realizable_setOf_eq_Ici hk]
+  exact Set.Ici_infinite _
+
 /--
 The main theorem: Erdős #1090 is solved affirmatively.
 -/
 theorem erdos_1090 : ∀ k ≥ 3, Erdos1090Question k := erdos_1090_affirmative
+
+/-- **The colored Ramsey property is antitone in the run length `k`.**  If a set `A` forces a
+monochromatic `k`-collinear subset under every `C`-coloring, it also forces a `k'`-collinear one
+for every `k' ≤ k`: the witnessing `S` has `|S| ≥ k ≥ k'`, so it is already `k'`-collinear (the
+same line, the weaker cardinality bound).  No subset extraction is needed because
+`IsKCollinear S k` only lower-bounds `|S|`. -/
+theorem hasRamseyPropertyColored_mono_k (C : Type*) (A : Finset Point) {k k' : ℕ}
+    (hk' : k' ≤ k) (h : HasRamseyPropertyColored C A k) :
+    HasRamseyPropertyColored C A k' := by
+  intro c
+  obtain ⟨S, hSA, ⟨hSk, l, hl⟩, hmono⟩ := h c
+  exact ⟨S, hSA, ⟨le_trans hk' hSk, l, hl⟩, hmono⟩
+
+/-- **The colored Ramsey number is monotone in the run length `k`.**  For a finite palette `C`
+and `3 ≤ k' ≤ k`, `ramseyNumberColored C k' ≤ ramseyNumberColored C k`: demanding a longer
+monochromatic collinear run can only require more points.  This is the run-length companion of
+the palette-monotonicity `ramseyNumberColored_mono_colors`; together they make
+`ramseyNumberColored` monotone in both of its arguments.
+
+Proof: the extremal `k`-witness `B` (`Nat.sInf_mem`, using the construction to see the defining
+set is nonempty) has `|B| = R_C(k)` and, by `hasRamseyPropertyColored_mono_k`, also witnesses the
+`k'`-property, so `R_C(k') ≤ |B| = R_C(k)` by `Nat.sInf_le`. -/
+theorem ramseyNumberColored_mono_k (C : Type*) [Finite C] {k k' : ℕ}
+    (hk' : 3 ≤ k') (hkk : k' ≤ k) :
+    ramseyNumberColored C k' ≤ ramseyNumberColored C k := by
+  have hk3 : 3 ≤ k := le_trans hk' hkk
+  obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk3
+  have hne : {n : ℕ | ∃ B : Finset Point, B.card = n ∧ HasRamseyPropertyColored C B k}.Nonempty :=
+    ⟨A.card, A, rfl, hA⟩
+  obtain ⟨B, hBcard, hB⟩ := Nat.sInf_mem hne
+  have hBk' : HasRamseyPropertyColored C B k' := hasRamseyPropertyColored_mono_k C B hkk hB
+  have h1 : ramseyNumberColored C k' ≤ B.card := by
+    unfold ramseyNumberColored
+    exact Nat.sInf_le ⟨B, rfl, hBk'⟩
+  have h2 : B.card = ramseyNumberColored C k := hBcard
+  omega
 
 end Erdos1090

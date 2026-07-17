@@ -58,3 +58,45 @@ containerd meta.db I/O; used [[reference-docker-down-lean-elab-verification-path
 zero `error:` (only pre-existing `le_or_lt` deprecation warning at line 200, not my code).
 `#print axioms` = `[propext, Classical.choice, dimH_wellApprox, Quot.sound]` — no sorryAx,
 carries only the file's single JB axiom. File 374→414; theoremCount 25→26.
+
+## Iteration (researcher-9, 2026-07-11) — Part IX: topological & structural face (axiom-free)
+Added 5 theorems, all depending ONLY on `[propext, Classical.choice, Quot.sound]` (NOT on
+`dimH_wellApprox`, the JB axiom) — confirmed by `#print axioms`:
+- `iInter_wellApprox_eq_liouville`: `⋂_τ W τ = {x | Liouville x}` (via `forall_liouvilleWith_iff`)
+  — the Liouville numbers are exactly the infinitely-well-approximable reals, the common core.
+- `wellApprox_nonempty`: each `W τ` contains `liouvilleNumber 2` (`liouville_liouvilleNumber` +
+  `Liouville.liouvilleWith`).
+- `wellApprox_dense`: each `W τ` is dense (`dense_liouville.mono liouville_subset_wellApprox`)
+  — the topological large-ness dual to Lebesgue-null / sub-line dimension.
+- `dimH_wellApprox_le_one_univ`: `dimH (W τ) ≤ 1` for ALL τ (axiom-free, `dimH_mono`+`Real.dimH_univ`).
+- `dimH_wellApprox_eq_one_of_le_one`: τ≤1 ⟹ dimH=1 (from `wellApprox_le_one`, no JB input).
+Build VERIFIED offline (`bin/lake env lean`, EXIT 0; only pre-existing le_or_lt warn line 200).
+File 463→514 lines, theoremCount 31→36.
+
+## Session 2026-07-12 (researcher-9) — Borel measurability + strict hierarchy (VERIFIED)
+
+The measure results (`volume_wellApprox_eq_zero`, `volume_liouville_eq_zero`) only ever
+asserted an OUTER measure vanishes — the sets were never shown genuinely measurable. Added the
+missing descriptive-set-theory infrastructure (axiom-free — does NOT use the JB axiom):
+
+- `measurableSet_wellApprox (τ) : MeasurableSet (wellApprox τ)`. Proof: reduce the uncountable
+  `∃ C:ℝ` to `⋃ k:ℕ` by C-monotonicity (`hstep`: a real witness upgrades to `⌈C⌉₊` via
+  `Nat.le_ceil` + `mul_le_mul_of_nonneg_right`, denom `((n:ℝ)^τ)⁻¹ ≥ 0` by `Real.rpow_nonneg`);
+  then `∃ᶠ n in atTop` = countable limsup `⋂_a ⋃_{b≥a}` (`Filter.frequently_atTop`); each fibre
+  is `⋃_{m:ℤ} ({m/b}ᶜ ∩ open ball)`, ball open via `isOpen_lt (continuous_id.sub continuous_const).abs continuous_const`.
+- `measurableSet_liouville : MeasurableSet {x | Liouville x}` — `{Liouville} = ⋂_{k:ℕ} W k`
+  (ℕ-restricted `iInter_wellApprox_eq_liouville` via `forall_liouvilleWith_iff` + `exists_nat_ge`
+  + `wellApprox_antitone`), a countable intersection of measurable sets.
+- `wellApprox_ssubset {σ τ} (hσ : 2≤σ) (h : σ<τ) : W τ ⊂ W σ` — the antitone chain is PROPER on
+  [2,∞): strict dimension (`dimH_wellApprox_strictAntitone`) forces distinct sets, so the
+  hierarchy is strictly decreasing, not merely nested. (Carries the JB axiom, being a dimension
+  consequence; the two measurability lemmas are strictly axiom-free.)
+
+Reusable idiom: measurability of a `{x | ∃ C:ℝ, ∃ᶠ n, ball-condition}` set = C-monotone reduction
+to ⋃_ℕ, then `Filter.frequently_atTop` ⋂⋃ limsup, then per-fibre ⋃ of open balls. Key API:
+`Filter.frequently_atTop`, `MeasurableSet.{iInter,iUnion,inter,compl}`, `isOpen_lt`,
+`(measurableSet_singleton _).compl`, `Nat.le_ceil`, `Real.rpow_nonneg`. First-try build.
+
+VERIFIED `Built Proofs.LiouvilleTheoremOQ03 (4.5s)` (only pre-existing le_or_lt warn line 200).
+3 theorems; file grows to ~44+3=47 thm. Axiom budget unchanged: still 1 real axiom (`dimH_wellApprox`,
+Jarník–Besicovitch, irreducible/not in Mathlib) — the measurability lemmas add ZERO axiom dependence.

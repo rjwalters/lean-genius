@@ -120,8 +120,16 @@
     ]
   },
   "crossReferences": [
-    "triangle-angle-sum-oq-04",
-    "triangle-angle-sum-oq-07"
+    {
+      "targetId": "triangle-angle-sum-oq-04",
+      "relationship": "related",
+      "description": "Related result: Triangle Angle Sum OQ-04: Werner Product-to-Sum Identities and the Finite Dirichlet Kernel."
+    },
+    {
+      "targetId": "triangle-angle-sum-oq-07",
+      "relationship": "related",
+      "description": "Related result: Triangle Angle Sum OQ-07: Degenerate (Collinear) Triangles and the Angle Sum."
+    }
   ],
   "mainTheorems": [
     {

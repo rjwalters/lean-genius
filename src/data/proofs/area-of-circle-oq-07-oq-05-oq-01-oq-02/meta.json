@@ -64,11 +64,19 @@
       "mathContext": "$\\int x^{2n} e^{-a x^2} = (2n-1)!!\\,\\dfrac{\\sqrt{\\pi/a}}{(2a)^n}$"
     },
     {
-      "id": "consistency-checks",
-      "title": "Consistency Checks",
+      "id": "consistency-check-unit-scale",
+      "title": "Consistency Check: a = 1 Recovers the Parent",
       "startLine": 102,
+      "endLine": 107,
+      "summary": "scaled_gaussian_even_moment_one: specializing a = 1 collapses √(π/1)/(2·1)ⁿ back to the parent's unscaled (2n-1)‼·√π/2ⁿ, confirming the dilation lift is a strict generalization.",
+      "mathContext": "$\\int_{\\mathbb R} x^{2n} e^{-x^2} = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^n}$"
+    },
+    {
+      "id": "consistency-check-second-moment",
+      "title": "Consistency Check: the Scaled Second Moment",
+      "startLine": 109,
       "endLine": 119,
-      "summary": "scaled_gaussian_even_moment_one recovers the parent's a = 1 moment; scaled_gaussian_second_moment gives ∫ x² e^{-a x²} = √(π/a)/(2a), twice the half-line sibling value by even symmetry.",
+      "summary": "scaled_gaussian_second_moment: the n = 1 case gives ∫ x² e^{-a x²} = √(π/a)/(2a), which is twice the half-line value √(π/a)/(4a) of sibling area-of-circle-oq-07-oq-02-oq-02, since the even integrand makes the whole line double the (0,∞) half.",
       "mathContext": "$\\int_{\\mathbb R} x^2 e^{-a x^2} = \\dfrac{\\sqrt{\\pi/a}}{2a}$"
     }
   ],
@@ -113,12 +121,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√a)² = a for a ≥ 0, used to identify (√a·x)^{2n} = aⁿ x^{2n} and (√a·x)² = a x² after the substitution.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_div",
         "description": "√(x/y) = √x/√y for x ≥ 0, used to simplify √(π/a) = √π/√a so the dilated value matches the stated closed form.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "integrable_rpow_mul_exp_neg_mul_sq",
@@ -149,6 +157,11 @@
       "targetId": "area-of-circle-oq-07-oq-02-oq-02",
       "relationship": "related",
       "description": "Sibling half-line moments. Its second moment ∫_{(0,∞)} x² e^{-b x²} = √(π/b)/(4b) is exactly half of this entry's whole-line value √(π/a)/(2a) (scaled_gaussian_second_moment), the even-symmetry doubling made explicit."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-05-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling (same parent), the odd/parity complement. It proves the odd moments ∫_ℝ x^{2n+1} e^{-x²} = 0 and packages the full parity-indexed moment sequence at unit scale. This entry lifts the even moments to arbitrary scale a > 0; the odd moments vanish at every scale by the same symmetry, so scaling this entry's even formula and folding in that entry's odd vanishing gives the complete scaled moment table ∫_ℝ x^k e^{-a x²}."
     }
   ],
   "references": [

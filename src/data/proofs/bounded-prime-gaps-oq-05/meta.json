@@ -69,11 +69,28 @@
       "mathContext": "Each inequality is a strictly-monotone image of $a^n < b^{n+1}$: ROOT via power $1/(n(n+1))$, RPOW via power $1/n$."
     },
     {
-      "id": "sec-bgp-oq05-prime",
-      "title": "Part II: Specialization to the Prime Sequence and TFAE",
-      "startLine": 92,
+      "id": "sec-bgp-oq05-prime-defs",
+      "title": "Part II: The Prime Sequence and the Three Formulations",
+      "startLine": 91,
+      "endLine": 115,
+      "summary": "Defines nthPrime n = Nat.nth Nat.Prime n (with nthPrime_pos: 0 < nthPrime n from Nat.prime_nth_prime) and the three prime formulations of Firoozbakht's conjecture: FiroozbakhtRoot (root form), FiroozbakhtRpow (real-power form), and FiroozbakhtIntPow (integer-power form pₙ₊₁ⁿ < pₙⁿ⁺¹).",
+      "mathContext": "The three statements ROOT: pₙ₊₁^{1/(n+1)} < pₙ^{1/n}, RPOW: pₙ₊₁ < pₙ^{(n+1)/n}, and INTPOW: pₙ₊₁ⁿ < pₙⁿ⁺¹, all over the prime sequence pₙ = nthPrime n."
+    },
+    {
+      "id": "sec-bgp-oq05-equivalences",
+      "title": "Equivalence of the Three Formulations",
+      "startLine": 116,
+      "endLine": 143,
+      "summary": "The three pairwise equivalences firoozbakht_root_iff_intPow, firoozbakht_rpow_iff_intPow, and firoozbakht_root_iff_rpow, each proved by chaining the Part I pointwise lemmas (root_lt_iff, rpow_lt_iff, core_real_iff_nat) with nthPrime_pos to move between the root/rpow forms and the integer-power core.",
+      "mathContext": "All three prime formulations reduce to the single integer inequality pₙ₊₁ⁿ < pₙⁿ⁺¹, so they are pairwise equivalent term-by-term."
+    },
+    {
+      "id": "sec-bgp-oq05-tfae",
+      "title": "The TFAE Packaging",
+      "startLine": 144,
       "endLine": 150,
-      "summary": "Defines nthPrime = Nat.nth Nat.Prime and the three prime formulations FiroozbakhtRoot / FiroozbakhtRpow / FiroozbakhtIntPow, proves the three pairwise equivalences by chaining the pointwise lemmas with core_real_iff_nat and nthPrime_pos, and packages them as firoozbakht_forms_tfae (List.TFAE)."
+      "summary": "firoozbakht_forms_tfae bundles the three equivalent formulations as a List.TFAE ([FiroozbakhtRoot, FiroozbakhtRpow, FiroozbakhtIntPow]), the canonical Mathlib idiom for 'the following are equivalent', assembled from the pairwise equivalences above.",
+      "mathContext": "TFAE [FiroozbakhtRoot, FiroozbakhtRpow, FiroozbakhtIntPow]: the three formulations are logically interchangeable, so any proof of one settles all three."
     }
   ],
   "references": [

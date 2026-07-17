@@ -385,6 +385,230 @@ theorem franklFurediEven_card_le_T (n r : ℕ) (hn : 1 ≤ n) (hpar : (n + r) % 
   exact Finset.le_sup hmem
 
 /-
+## Part IV.a: The Small-Sets Family and a Polynomial Lower Bound
+
+The "small" disjunct `{A ⊆ [n] : |A| < r}` of the Frankl–Füredi families is itself
+an `r`-avoiding family, for the trivial reason that two sets of size `< r` cannot
+meet in `r` points. Unlike the large-set part it admits an *exact* closed-form count
+`∑_{k<r} C(n,k)`, yielding the first certified **polynomial** lower bound on `T(n,r)`
+across the whole middle range `r ≥ 2` that the Frankl–Rödl question concerns.
+-/
+
+/--
+**The small-sets family.**
+`F = {A ⊆ [n] : |A| < r}` — all subsets of `[n]` of size strictly below the
+forbidden size `r`. It is the "small" disjunct of `franklFurediOdd`/`franklFurediEven`
+isolated on its own.
+-/
+def smallSetsFamily (n r : ℕ) : Finset (Finset ℕ) :=
+  (Finset.range n).powerset.filter (fun A => A.card < r)
+
+/--
+**The small-sets family avoids `r`-intersection.**
+Any two sets of size `< r` meet in fewer than `r` points, since
+`|A ∩ B| ≤ |A| < r`. Holds for every `n, r` with no parity or size hypothesis. -/
+theorem smallSetsFamily_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (smallSetsFamily n r) := by
+  intro A B hA hB
+  rw [smallSetsFamily, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  have hle : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  omega
+
+/--
+**Exact cardinality of the small-sets family: `∑_{k<r} C(n,k)`.**
+Partitioning `{A ⊆ [n] : |A| < r}` by exact size `k ∈ {0,…,r−1}` gives a disjoint
+union of the `powersetCard k` layers of `[n]`, each of size `C(n,k)`. -/
+theorem smallSetsFamily_card (n r : ℕ) :
+    (smallSetsFamily n r).card = ∑ k ∈ Finset.range r, n.choose k := by
+  have hbi : smallSetsFamily n r
+      = (Finset.range r).biUnion (fun k => (Finset.range n).powersetCard k) := by
+    ext A
+    simp only [smallSetsFamily, Finset.mem_filter, Finset.mem_powerset, Finset.mem_biUnion,
+      Finset.mem_range, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hsub, hlt⟩
+      exact ⟨A.card, hlt, hsub, rfl⟩
+    · rintro ⟨k, hk, hsub, hcard⟩
+      exact ⟨hsub, by omega⟩
+  have hdisj : (↑(Finset.range r) : Set ℕ).PairwiseDisjoint
+      (fun k => (Finset.range n).powersetCard k) := by
+    intro i _ j _ hij
+    apply Finset.disjoint_left.mpr
+    intro A hAi hAj
+    rw [Finset.mem_powersetCard] at hAi hAj
+    apply hij
+    rw [← hAi.2, hAj.2]
+  rw [hbi, Finset.card_biUnion hdisj]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.card_powersetCard, Finset.card_range]
+
+/--
+**Polynomial lower bound `T(n,r) ≥ ∑_{k<r} C(n,k)`.**
+The small-sets family is a valid `r`-avoiding subfamily of `2^{[n]}`, so its exact
+binomial-sum cardinality bounds `T(n,r)` from below. Unlike the exponential-order
+large-set constructions this bound is fully explicit and holds for every `n, r`. -/
+theorem sum_choose_le_T (n r : ℕ) : (∑ k ∈ Finset.range r, n.choose k) ≤ T n r := by
+  rw [← smallSetsFamily_card n r]
+  have hmem : smallSetsFamily n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), smallSetsFamily_avoids_r n r⟩
+  exact Finset.le_sup hmem
+
+/--
+**`T(n,2) ≥ n + 1`.** Specialising `sum_choose_le_T` at `r = 2`:
+`∑_{k<2} C(n,k) = C(n,0) + C(n,1) = 1 + n`. This is a certified *polynomial* lower
+bound on the `r = 2` line — the smallest forbidden size in the middle range that the
+Frankl–Rödl question actually concerns (`r ≥ 2`) — complementing the exact boundary
+values `T(n,0) = 2^{n-1}`, `T(n,n) = 2^n − 1`, and `T(n,r) = 2^n` for `n < r`. -/
+theorem n_add_one_le_T_n_2 (n : ℕ) : n + 1 ≤ T n 2 := by
+  have h := sum_choose_le_T n 2
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.choose_zero_right,
+    Nat.choose_one_right] at h
+  omega
+
+/-
+## Part III.b: The large-sets family — the complementary polynomial lower bound
+
+Dual to `smallSetsFamily`: instead of sets too *small* to meet in `r` points, take
+sets too *large* to meet in only `r` points. If `|A|, |B| > (n+r)/2` then, since
+`A, B ⊆ [n]`, `|A ∩ B| = |A| + |B| − |A ∪ B| ≥ |A| + |B| − n > r`, so the intersection
+is never exactly `r`. This yields a second explicit binomial-sum lower bound on
+`T(n,r)`, supported on the *top* layers of the cube (the `r`-general analogue of the
+`r = 1` `largeSetsFamily`). Combined with the small-sets family (whose sizes are
+disjoint from the large ones once `r ≤ n`), the two give a single `r`-avoiding family
+and the summed bound
+`∑_{k<r} C(n,k) + ∑_{(n+r)/2 < k ≤ n} C(n,k) ≤ T(n,r)`.
+-/
+
+/-- The **large-sets family for general `r`**: all subsets of `[n]` of size strictly
+greater than `(n+r)/2`. The `r`-general analogue of `largeSetsFamily` (its `r = 1`
+version). -/
+def largeSetsFamilyR (n r : ℕ) : Finset (Finset ℕ) :=
+  (Finset.range n).powerset.filter (fun A => (n + r) / 2 < A.card)
+
+/-- **The large-sets family avoids `r`-intersection.** Two sets of size `> (n+r)/2`
+inside `[n]` meet in more than `r` points: `|A ∩ B| ≥ |A| + |B| − n > r`. -/
+theorem largeSetsFamilyR_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (largeSetsFamilyR n r) := by
+  intro A B hA hB
+  rw [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  obtain ⟨hAsub, hAcard⟩ := hA
+  obtain ⟨hBsub, hBcard⟩ := hB
+  have hunion : (A ∪ B).card ≤ n := by
+    calc (A ∪ B).card ≤ ((Finset.range n)).card :=
+          Finset.card_le_card (Finset.union_subset hAsub hBsub)
+      _ = n := Finset.card_range n
+  have hadd : (A ∪ B).card + (A ∩ B).card = A.card + B.card :=
+    Finset.card_union_add_card_inter A B
+  omega
+
+/-- **Exact cardinality of the large-sets family: `∑_{(n+r)/2 < k ≤ n} C(n,k)`.**
+Partitioning `{A ⊆ [n] : |A| > (n+r)/2}` by exact size gives a disjoint union of the
+`powersetCard k` layers with `k ∈ ((n+r)/2, n]`. -/
+theorem largeSetsFamilyR_card (n r : ℕ) :
+    (largeSetsFamilyR n r).card = ∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k := by
+  have hbi : largeSetsFamilyR n r
+      = (Finset.Ioc ((n + r) / 2) n).biUnion
+          (fun k => (Finset.range n).powersetCard k) := by
+    ext A
+    simp only [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset, Finset.mem_biUnion,
+      Finset.mem_Ioc, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hsub, hlt⟩
+      refine ⟨A.card, ⟨hlt, ?_⟩, hsub, rfl⟩
+      calc A.card ≤ (Finset.range n).card := Finset.card_le_card hsub
+        _ = n := Finset.card_range n
+    · rintro ⟨k, ⟨hlt, _⟩, hsub, hcard⟩
+      exact ⟨hsub, by omega⟩
+  have hdisj : (↑(Finset.Ioc ((n + r) / 2) n) : Set ℕ).PairwiseDisjoint
+      (fun k => (Finset.range n).powersetCard k) := by
+    intro i _ j _ hij
+    apply Finset.disjoint_left.mpr
+    intro A hAi hAj
+    rw [Finset.mem_powersetCard] at hAi hAj
+    apply hij
+    rw [← hAi.2, hAj.2]
+  rw [hbi, Finset.card_biUnion hdisj]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.card_powersetCard, Finset.card_range]
+
+/-- **Large-sets polynomial lower bound `T(n,r) ≥ ∑_{(n+r)/2 < k ≤ n} C(n,k)`.**
+The complement of `sum_choose_le_T`: the top-layer family is a valid `r`-avoiding
+subfamily of `2^{[n]}`, so its cardinality bounds `T(n,r)` from below. -/
+theorem sum_choose_large_le_T (n r : ℕ) :
+    (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) ≤ T n r := by
+  rw [← largeSetsFamilyR_card n r]
+  have hmem : largeSetsFamilyR n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), largeSetsFamilyR_avoids_r n r⟩
+  exact Finset.le_sup hmem
+
+/-- **The small- and large-sets families are disjoint (`r ≤ n`).** A set of size
+`< r` and a set of size `> (n+r)/2` can never coincide, since `r ≤ (n+r)/2 + 1`
+when `r ≤ n`, so the two size ranges do not overlap. -/
+theorem smallSetsFamily_disjoint_largeSetsFamilyR {n r : ℕ} (hr : r ≤ n) :
+    Disjoint (smallSetsFamily n r) (largeSetsFamilyR n r) := by
+  rw [Finset.disjoint_left]
+  intro A hA hB
+  rw [smallSetsFamily, Finset.mem_filter] at hA
+  rw [largeSetsFamilyR, Finset.mem_filter] at hB
+  omega
+
+/-- **The union of the small- and large-sets families avoids `r`-intersection.**
+Small–small pairs meet in `< r` points, large–large in `> r`, and a small–large
+pair in `≤ |small| < r`, so no pair meets in exactly `r`. -/
+theorem smallLargeFamily_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (smallSetsFamily n r ∪ largeSetsFamilyR n r) := by
+  intro A B hA hB
+  rw [Finset.mem_union] at hA hB
+  have hsmall : ∀ S ∈ smallSetsFamily n r, S.card < r := by
+    intro S hS; rw [smallSetsFamily, Finset.mem_filter] at hS; exact hS.2
+  have hsub : ∀ S ∈ largeSetsFamilyR n r, S ⊆ Finset.range n := by
+    intro S hS; rw [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset] at hS; exact hS.1
+  have hlarge : ∀ S ∈ largeSetsFamilyR n r, (n + r) / 2 < S.card := by
+    intro S hS; rw [largeSetsFamilyR, Finset.mem_filter] at hS; exact hS.2
+  have hinter_le_left : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  have hinter_le_right : (A ∩ B).card ≤ B.card := Finset.card_le_card Finset.inter_subset_right
+  rcases hA with hA | hA <;> rcases hB with hB | hB
+  · have := hsmall A hA; omega
+  · have := hsmall A hA; omega
+  · have := hsmall B hB; omega
+  · have hAl := hlarge A hA; have hBl := hlarge B hB
+    have hunion : (A ∪ B).card ≤ n := by
+      calc (A ∪ B).card ≤ (Finset.range n).card :=
+            Finset.card_le_card (Finset.union_subset (hsub A hA) (hsub B hB))
+        _ = n := Finset.card_range n
+    have hadd : (A ∪ B).card + (A ∩ B).card = A.card + B.card :=
+      Finset.card_union_add_card_inter A B
+    omega
+
+/-- **Combined polynomial lower bound.** For `r ≤ n`, the small- and large-sets
+families are disjoint and their union avoids `r`-intersection, so
+`T(n,r) ≥ ∑_{k<r} C(n,k) + ∑_{(n+r)/2 < k ≤ n} C(n,k)`: both the bottom `r` layers and
+the top `⌊(n−r)/2⌋` layers of the cube can be used simultaneously. -/
+theorem small_add_large_le_T {n r : ℕ} (hr : r ≤ n) :
+    (∑ k ∈ Finset.range r, n.choose k)
+      + (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) ≤ T n r := by
+  have hcard : (smallSetsFamily n r ∪ largeSetsFamilyR n r).card
+      = (∑ k ∈ Finset.range r, n.choose k)
+        + (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) := by
+    rw [Finset.card_union_of_disjoint (smallSetsFamily_disjoint_largeSetsFamilyR hr),
+      smallSetsFamily_card, largeSetsFamilyR_card]
+  rw [← hcard]
+  have hmem : smallSetsFamily n r ∪ largeSetsFamilyR n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_powerset.mpr ?_, smallLargeFamily_avoids_r n r⟩
+    apply Finset.union_subset
+    · exact Finset.filter_subset _ _
+    · exact Finset.filter_subset _ _
+  exact Finset.le_sup hmem
+
+/-
 ## Part IV.b: Structural Properties of `T`
 
 Elementary structural facts about the extremal function `T(n,r)` that hold for
@@ -758,6 +982,318 @@ theorem avoidsLIntersections_insert {r : ℕ} {L : Finset ℕ} {F : Finset (Fins
       avoidsRIntersection r F ∧ avoidsLIntersections L F := by
   rw [Finset.insert_eq, avoidsLIntersections_union,
       avoidsRIntersection_iff_avoidsLIntersections_singleton]
+
+/--
+**T_L(n, L):** the maximum size of a family `F ⊆ 2^{[n]}` avoiding *every* intersection
+size in `L` — the Frankl–Wilson `L`-avoiding analogue of `T(n,r)`. The maximisation ranges
+over the same families as `T` (`F ∈ (range n).powerset.powerset`) but under the stronger
+`avoidsLIntersections L` constraint, so `T_L` interpolates the whole `T`-theory across the
+hierarchy: `T_L n {r} = T n r`, and forbidding more sizes can only shrink the maximum.
+-/
+noncomputable def T_L (n : ℕ) (L : Finset ℕ) : ℕ :=
+  (((Finset.range n).powerset.powerset).filter (avoidsLIntersections L)).sup
+    (fun F => F.card)
+
+/--
+**`T_L` specializes to `T` at a singleton.** Forbidding the single intersection size `r`
+recovers exactly `T(n,r)`, since `avoidsLIntersections {r}` and `avoidsRIntersection r` cut
+out the same families (`avoidsRIntersection_iff_avoidsLIntersections_singleton`). This is the
+statement that `T_L` genuinely generalizes the extremal quantity `T`.
+-/
+theorem T_L_singleton (n r : ℕ) : T_L n {r} = T n r := by
+  have hfilt :
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections {r})
+        = ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    apply Finset.ext
+    intro F
+    simp only [Finset.mem_filter, and_congr_right_iff]
+    intro _
+    exact (avoidsRIntersection_iff_avoidsLIntersections_singleton r F).symm
+  unfold T_L T
+  rw [hfilt]
+
+/--
+**`T_L` is antitone in the forbidden-size set.** Forbidding a *larger* set of intersection
+sizes is a stronger constraint, so it can only shrink the extremal family: `L ⊆ L'` gives
+`T_L n L' ≤ T_L n L`. Proved from `avoidsLIntersections_of_subset_forbidden` — every family
+counted by `T_L n L'` is also counted by `T_L n L` — via `Finset.sup_mono`.
+-/
+theorem T_L_antitone_forbidden {n : ℕ} {L L' : Finset ℕ} (hL : L ⊆ L') :
+    T_L n L' ≤ T_L n L := by
+  unfold T_L
+  apply Finset.sup_mono
+  intro F hF
+  rw [Finset.mem_filter] at hF ⊢
+  exact ⟨hF.1, avoidsLIntersections_of_subset_forbidden hL hF.2⟩
+
+/--
+**Adding a forbidden size cannot increase `T_L`.** The `insert` corollary of antitonicity:
+`T_L n (insert r L) ≤ T_L n L`. Assembling the forbidden set one size at a time (cf.
+`avoidsLIntersections_insert`) only tightens the bound. -/
+theorem T_L_insert_le {n r : ℕ} {L : Finset ℕ} : T_L n (insert r L) ≤ T_L n L :=
+  T_L_antitone_forbidden (Finset.subset_insert r L)
+
+/--
+**An `L`-avoiding maximum is bounded by the `r`-avoiding maximum for any forbidden `r ∈ L`.**
+If `r ∈ L` then `T_L n L ≤ T n r`: an `L`-avoiding family is in particular `r`-avoiding, so it
+cannot beat the single-size extremal `T(n,r)`. Ties the `L`-avoiding hierarchy back to the
+concrete quantities `T(n,r)` computed in Parts II–VI. -/
+theorem T_L_le_T_of_mem {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) : T_L n L ≤ T n r := by
+  rw [← T_L_singleton]
+  exact T_L_antitone_forbidden (Finset.singleton_subset_iff.mpr hr)
+
+/--
+**Trivial ceiling `T_L n L ≤ 2ⁿ`.** Every `L`-avoiding family still lives inside `2^{[n]}`,
+which has `2ⁿ` members, so the sup of family sizes is at most `2ⁿ` regardless of which
+intersection sizes are forbidden. This is the `L`-avoiding analogue of `T_le_pow`, and the
+uniform upper endpoint of the whole hierarchy: `T_L n L ≤ 2ⁿ` for *every* `L`, with equality
+at `L = ∅` (`T_L_empty`). -/
+theorem T_L_le_pow (n : ℕ) (L : Finset ℕ) : T_L n L ≤ 2 ^ n := by
+  unfold T_L
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  calc F.card ≤ ((Finset.range n).powerset).card := Finset.card_le_card hF.1
+    _ = 2 ^ n := by rw [Finset.card_powerset, Finset.card_range]
+
+/--
+**`T_L` is monotone in the ground set.** If `m ≤ n` then any `L`-avoiding family of subsets
+of `[m]` is also an `L`-avoiding family of subsets of `[n]` — the predicate
+`avoidsLIntersections L` depends only on the sets, not on the ambient ground set — so
+`T_L m L ≤ T_L n L`. The `L`-avoiding analogue of `T_mono_ground`. -/
+theorem T_L_mono_ground {m n : ℕ} {L : Finset ℕ} (h : m ≤ n) : T_L m L ≤ T_L n L := by
+  unfold T_L
+  apply Finset.sup_mono
+  apply Finset.filter_subset_filter
+  apply Finset.powerset_mono.mpr
+  apply Finset.powerset_mono.mpr
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/--
+**Empty-forbidden endpoint `T_L n ∅ = 2ⁿ`.** With no forbidden intersection sizes the
+constraint is vacuous (`avoidsLIntersections_empty`), so the full powerset `2^{[n]}` is itself
+an admissible family, of size `2ⁿ`; combined with the ceiling `T_L_le_pow` this pins the value
+exactly. This is the lower endpoint of the antitone hierarchy `T_L n · `: as forbidden sizes
+are added the maximum only shrinks from `2ⁿ` (cf. `T_L_antitone_forbidden`, `T_L_insert_le`),
+and it complements the single-size ceiling `T_L n {r} = T n r` at the top. -/
+theorem T_L_empty (n : ℕ) : T_L n ∅ = 2 ^ n := by
+  refine le_antisymm (T_L_le_pow n ∅) ?_
+  unfold T_L
+  have hmem : (Finset.range n).powerset ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections ∅) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _),
+      avoidsLIntersections_empty _⟩
+  calc 2 ^ n = ((Finset.range n).powerset).card := by
+        rw [Finset.card_powerset, Finset.card_range]
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
+**A singleton family avoids `L` iff its one set has a permitted cardinality.**
+The family `{A}` has only the self-pair `A ∩ A = A`, so it avoids every forbidden size
+in `L` exactly when `|A| ∉ L`. This is the `L`-avoiding structural analogue of the
+`avoidsRIntersection` self-pair observation, and the tool that produces admissible
+singleton families for lower bounds on `T_L`. -/
+theorem avoidsLIntersections_singleton_family {L : Finset ℕ} {A : Finset ℕ} :
+    avoidsLIntersections L {A} ↔ A.card ∉ L := by
+  unfold avoidsLIntersections
+  constructor
+  · intro h
+    have := h A A (Finset.mem_singleton_self A) (Finset.mem_singleton_self A)
+    simpa using this
+  · intro h B C hB hC
+    rw [Finset.mem_singleton] at hB hC
+    subst hB; subst hC
+    simpa using h
+
+/--
+**Positive lower endpoint `1 ≤ T_L n L` whenever `0 ∉ L`.** The singleton family `{∅}`
+has its only intersection size equal to `0` (`avoidsLIntersections_singleton_family`), so as
+long as `0` is not a forbidden size it is an admissible `L`-avoiding family, giving
+`T_L n L ≥ 1`. This is the nontrivial lower endpoint of the antitone hierarchy `T_L n ·`:
+together with the ceiling `T_L_le_pow` it sandwiches `1 ≤ T_L n L ≤ 2ⁿ` for every `L` missing
+`0`, the `L`-avoiding analogue of `one_le_T`. -/
+theorem one_le_T_L_of_zero_notMem {n : ℕ} {L : Finset ℕ} (h : 0 ∉ L) :
+    1 ≤ T_L n L := by
+  unfold T_L
+  have hmem : ({∅} : Finset (Finset ℕ)) ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections L) := by
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · rw [Finset.mem_powerset]
+      intro B hB
+      rw [Finset.mem_singleton] at hB
+      subst hB
+      rw [Finset.mem_powerset]
+      exact Finset.empty_subset _
+    · rw [avoidsLIntersections_singleton_family]
+      simpa using h
+  calc 1 = ({∅} : Finset (Finset ℕ)).card := (Finset.card_singleton _).symm
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
+**When every forbidden size exceeds the ground set, the full powerset is `L`-avoiding.**
+If `n < r` for every `r ∈ L`, then no two subsets `A, B ⊆ [n]` can meet in a forbidden
+size: `|A ∩ B| ≤ n < r` for each `r ∈ L`, so `|A ∩ B| ∉ L`. Hence the entire powerset
+`2^{[n]}` (vacuously) avoids `L`. This is the `L`-avoiding analogue of
+`full_powerset_avoids_r_of_lt`; the hypothesis is vacuously true for `L = ∅`, recovering
+`avoidsLIntersections_empty`. -/
+theorem full_powerset_avoidsL_of_lt (n : ℕ) (L : Finset ℕ) (h : ∀ r ∈ L, n < r) :
+    avoidsLIntersections L ((Finset.range n).powerset) := by
+  intro A B hA _hB
+  rw [Finset.mem_powerset] at hA
+  have hle : (A ∩ B).card ≤ n :=
+    calc (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+      _ ≤ (Finset.range n).card := Finset.card_le_card hA
+      _ = n := Finset.card_range n
+  intro hmem
+  exact absurd (h _ hmem) (by omega)
+
+/--
+**Exact value `T_L n L = 2ⁿ` when every forbidden size exceeds `n`.**
+Once every intersection size in `L` is larger than the ground-set size `n`, no two
+subsets of `[n]` can meet in a forbidden size (`|A ∩ B| ≤ n`), so the whole powerset is a
+valid `L`-avoiding family of size `2ⁿ` (`full_powerset_avoidsL_of_lt`); combined with the
+ceiling `T_L_le_pow` this pins the value exactly. This is the `L`-avoiding analogue of
+`T_eq_pow_of_lt`, and it strictly generalizes the empty-forbidden endpoint `T_L_empty`
+(`L = ∅` satisfies the hypothesis vacuously): the antitone hierarchy `T_L n ·` stays pinned
+at its maximum `2ⁿ` for *every* `L` whose sizes all exceed `n`, and only drops below `2ⁿ`
+once a forbidden size `≤ n` is admitted (`T_L_le_pow_sub_one`). -/
+theorem T_L_eq_pow_of_lt (n : ℕ) (L : Finset ℕ) (h : ∀ r ∈ L, n < r) :
+    T_L n L = 2 ^ n := by
+  refine le_antisymm (T_L_le_pow n L) ?_
+  unfold T_L
+  have hmem : (Finset.range n).powerset ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections L) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _),
+      full_powerset_avoidsL_of_lt n L h⟩
+  calc 2 ^ n = ((Finset.range n).powerset).card := by
+        rw [Finset.card_powerset, Finset.card_range]
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
+**Strict improvement `T_L n L ≤ 2ⁿ − 1` once a forbidden size is attainable.**
+If some forbidden size `r ∈ L` satisfies `r ≤ n`, then an `L`-avoiding family is in
+particular `r`-avoiding (`T_L_le_T_of_mem`), and no `r`-avoiding family can be the full
+powerset (`T_le_pow_sub_one`, since `C(n,r) ≥ 1`). Hence `T_L n L ≤ T n r ≤ 2ⁿ − 1`. This
+is the strict-drop companion of `T_L_eq_pow_of_lt`: together they give the dichotomy
+`T_L n L = 2ⁿ` exactly when every forbidden size exceeds `n`, and `T_L n L ≤ 2ⁿ − 1` as
+soon as any attainable size (`≤ n`) is forbidden. -/
+theorem T_L_le_pow_sub_one {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) (hrn : r ≤ n) :
+    T_L n L ≤ 2 ^ n - 1 :=
+  le_trans (T_L_le_T_of_mem hr) (T_le_pow_sub_one hrn)
+
+/--
+**Forbidding an unattainable size is vacuous.** For any family `F ⊆ 2^{[n]}`, every
+realized intersection size is `≤ n` (since `|A ∩ B| ≤ |A| ≤ n`), so a forbidden size
+`> n` is never met: `F` avoids `L` iff it avoids only the attainable part
+`L.filter (· ≤ n)`. This is the family-level windowing lemma underlying `T_L_filter_le`. -/
+theorem avoidsLIntersections_filter_le_of_mem_powerset
+    {n : ℕ} {L : Finset ℕ} {F : Finset (Finset ℕ)}
+    (hF : F ∈ (Finset.range n).powerset.powerset) :
+    avoidsLIntersections L F ↔ avoidsLIntersections (L.filter (· ≤ n)) F := by
+  have hFsub : F ⊆ (Finset.range n).powerset := Finset.mem_powerset.mp hF
+  constructor
+  · intro h A B hA hB hmem
+    exact h A B hA hB (Finset.mem_filter.mp hmem).1
+  · intro h A B hA hB hmem
+    have hAsub : A ⊆ Finset.range n := Finset.mem_powerset.mp (hFsub hA)
+    have hcard : (A ∩ B).card ≤ n :=
+      calc (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+        _ ≤ (Finset.range n).card := Finset.card_le_card hAsub
+        _ = n := Finset.card_range n
+    exact h A B hA hB (Finset.mem_filter.mpr ⟨hmem, hcard⟩)
+
+/--
+**`T_L` only sees the attainable window of forbidden sizes.** Since no two subsets of
+`[n]` can meet in a size exceeding `n`, forbidding sizes `> n` does not change the
+extremal quantity: `T_L n L = T_L n (L.filter (· ≤ n))`. This is the exact structural
+reason the hierarchy `T_L n ·` depends on `L` only through `L ∩ {0, …, n}`; it strictly
+**subsumes** `T_L_eq_pow_of_lt` (if every `r ∈ L` has `n < r` then the filter is empty
+and `T_L n L = T_L n ∅ = 2ⁿ`). -/
+theorem T_L_filter_le (n : ℕ) (L : Finset ℕ) :
+    T_L n L = T_L n (L.filter (· ≤ n)) := by
+  unfold T_L
+  refine congrArg _ (Finset.filter_congr ?_)
+  intro F hF
+  simpa using avoidsLIntersections_filter_le_of_mem_powerset hF
+
+/--
+**Only intersection sizes `0, …, n` matter.** The clean restatement of `T_L_filter_le`:
+`T_L n L = T_L n (L ∩ range (n+1))`, since `L.filter (· ≤ n) = L ∩ range (n+1)`. The
+`L`-avoiding hierarchy on ground set `[n]` factors through the intersection of the
+forbidden set with the attainable window `{0, 1, …, n}`. -/
+theorem T_L_inter_range (n : ℕ) (L : Finset ℕ) :
+    T_L n L = T_L n (L ∩ Finset.range (n + 1)) := by
+  have hfilt : L.filter (· ≤ n) = L ∩ Finset.range (n + 1) := by
+    ext r
+    simp only [Finset.mem_filter, Finset.mem_inter, Finset.mem_range, Nat.lt_succ_iff]
+  rw [T_L_filter_le, hfilt]
+
+/--
+**Fully-forbidden top endpoint `T_L n L = 0`.** If *every* attainable intersection size is
+forbidden — `range (n+1) ⊆ L`, i.e. `0, 1, …, n ∈ L` — then no nonempty family can avoid `L`:
+any set `A` in a family of subsets of `[n]` has the self-pair `A ∩ A = A` with size
+`|A| ≤ n`, which is forbidden. Hence the only admissible family is the empty one and
+`T_L n L = 0`. This is the opposite endpoint of the antitone hierarchy from `T_L_empty`
+(`T_L n ∅ = 2ⁿ`): forbidding nothing gives the full `2ⁿ`, forbidding everything collapses it
+to `0`. -/
+theorem T_L_eq_zero_of_range_subset {n : ℕ} {L : Finset ℕ}
+    (hL : Finset.range (n + 1) ⊆ L) : T_L n L = 0 := by
+  unfold T_L
+  refine Nat.le_zero.mp ?_
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  obtain ⟨hFsub, hFavoid⟩ := hF
+  rw [Nat.le_zero, Finset.card_eq_zero]
+  by_contra hne
+  obtain ⟨A, hA⟩ := Finset.nonempty_iff_ne_empty.mpr hne
+  have hAsub : A ⊆ Finset.range n := Finset.mem_powerset.mp (hFsub hA)
+  have hcard : A.card ≤ n := by
+    calc A.card ≤ (Finset.range n).card := Finset.card_le_card hAsub
+      _ = n := Finset.card_range n
+  have hmem : A.card ∈ L := hL (Finset.mem_range.mpr (by omega))
+  have hself := hFavoid A A hA hA
+  rw [Finset.inter_self] at hself
+  exact hself hmem
+
+/--
+**Union bound at the extremal level.** Forbidding the union `L ∪ L'` is the conjunction of
+the two constraints (`avoidsLIntersections_union`), so at the level of maxima it can only be
+tighter than either: `T_L n (L ∪ L') ≤ min (T_L n L) (T_L n L')`. The extremal-quantity
+companion of `avoidsLIntersections_union`, obtained by applying antitonicity
+`T_L_antitone_forbidden` along `L ⊆ L ∪ L'` and `L' ⊆ L ∪ L'`. -/
+theorem T_L_union_le_min {n : ℕ} {L L' : Finset ℕ} :
+    T_L n (L ∪ L') ≤ min (T_L n L) (T_L n L') :=
+  le_min (T_L_antitone_forbidden Finset.subset_union_left)
+    (T_L_antitone_forbidden Finset.subset_union_right)
+
+/--
+**Sharp top-endpoint characterization `T_L n L = 2ⁿ ↔ ∀ r ∈ L, n < r`.**
+The antitone hierarchy `L ↦ T_L n L` sits at its maximum `2ⁿ` *exactly* when every
+forbidden intersection size exceeds the ground-set size `n`.  This packages as a single
+`iff` the dichotomy that `T_L_eq_pow_of_lt` and `T_L_le_pow_sub_one` state only in prose:
+* `⟸` is `T_L_eq_pow_of_lt` — with all forbidden sizes `> n`, no two subsets of `[n]` can
+  meet in a forbidden size, so the entire powerset is admissible and `T_L = 2ⁿ`;
+* `⟹` is the contrapositive of `T_L_le_pow_sub_one` — the moment some *attainable* size
+  `r ∈ L` with `r ≤ n` is forbidden, the count drops strictly to `≤ 2ⁿ − 1 < 2ⁿ`.
+Together with the bottom endpoint `T_L_eq_zero_of_range_subset` (`T_L = 0` once
+`range (n+1) ⊆ L`) this pins both extremes of the hierarchy. -/
+theorem T_L_eq_pow_iff {n : ℕ} {L : Finset ℕ} :
+    T_L n L = 2 ^ n ↔ ∀ r ∈ L, n < r := by
+  constructor
+  · intro h
+    by_contra hcon
+    push_neg at hcon
+    obtain ⟨r, hrL, hrn⟩ := hcon
+    have hle : T_L n L ≤ 2 ^ n - 1 := T_L_le_pow_sub_one hrL hrn
+    have hpos : 0 < 2 ^ n := pow_pos (by norm_num) n
+    omega
+  · exact T_L_eq_pow_of_lt n L
 
 /-
 ## Part VIII: Summary

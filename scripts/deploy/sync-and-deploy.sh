@@ -32,6 +32,13 @@
 #   BUILD_NODE_OPTIONS=...  Extra Node options for the build. Defaults to
 #                           "--max-old-space-size=8192" so vite does not OOM on
 #                           the current bundle.
+#   DEPLOY_GATE_MAX_DELETIONS=100
+#                           Diff-stat merge gate (issue #38398, dc9fdffa30
+#                           incident): skip auto-merging any PR whose
+#                           GitHub-reported deleted LINES exceed this; the PR
+#                           is flagged with a comment for operator review.
+#   DEPLOY_GATE_MAX_CHANGED_FILES=500
+#                           Same gate, limit on the PR's changedFiles count.
 #   SKIP_NOOP_BUILD_DETECTION=1
 #                           Disable Strategy F (issue #22149): skipping the
 #                           whole `pnpm build` invocation when no app-relevant
@@ -61,6 +68,12 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_BASE="$(loom_worktree_root "$REPO_ROOT")"
 cd "$REPO_ROOT"
 
 # Pin gh to the correct repo — this repo has a mathlib-fork remote that gh
@@ -128,6 +141,42 @@ if $ONLY_DEPLOY; then run_sync_branch=false; run_merge=false; run_sync=false; ru
 [[ "${SKIP_BUILD:-}" == "1" ]] && run_build=false
 [[ "${SKIP_DEPLOY:-}" == "1" ]] && run_deploy=false
 
+# The deployer's long-lived worktree lives on this branch, never on `main`
+# (launch-agent.sh BRANCH_NAME must match).
+DEPLOYER_BRANCH="${DEPLOYER_BRANCH:-feature/deployer}"
+
+# True when this checkout is the deployer's long-lived worktree (a linked
+# worktree whose directory is named "deployer").
+in_deployer_worktree() {
+    [[ "$(basename "$(pwd -P)")" == "deployer" ]] &&
+        [[ "$(git rev-parse --git-dir 2>/dev/null)" != "$(git rev-parse --git-common-dir 2>/dev/null)" ]]
+}
+
+# Bring the working tree to origin/main WITHOUT stealing the `main` ref from
+# another worktree. On 2026-07-11 the old `git checkout main` here ran inside
+# the deployer worktree, moved it off feature/deployer, and squatted on `main`
+# for two days — blocking every other checkout of main, after which the
+# orphaned feature/deployer branch was swept by clean-branches.sh. It also had
+# a latent footgun: when `checkout main` failed (main held elsewhere), the
+# follow-up `reset --hard origin/main` nuked whatever branch was checked out.
+sync_tree_to_main() {
+    local cur
+    cur=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "HEAD")
+    if in_deployer_worktree; then
+        if [[ "$cur" != "$DEPLOYER_BRANCH" ]]; then
+            print_warning "Deployer worktree is on '$cur' — self-healing to $DEPLOYER_BRANCH"
+        fi
+        git checkout -B "$DEPLOYER_BRANCH" origin/main
+    elif [[ "$cur" == "main" || "$cur" == "$DEPLOYER_BRANCH" ]]; then
+        git reset --hard origin/main
+    elif git checkout main 2>/dev/null; then
+        git reset --hard origin/main
+    else
+        print_warning "'main' is checked out in another worktree — using detached origin/main instead"
+        git checkout --detach origin/main
+    fi
+}
+
 # ============================================================================
 # Step 0a: Sync current branch to origin/main (fast-forward only)
 # ============================================================================
@@ -155,6 +204,14 @@ sync_branch() {
     fi
 
     if [[ "$current_branch" == "main" ]]; then
+        if in_deployer_worktree; then
+            # Drifted state (see sync_tree_to_main): the deployer worktree
+            # must never occupy the `main` ref. Heal it now, before merge.
+            print_warning "Deployer worktree has 'main' checked out — self-healing to $DEPLOYER_BRANCH"
+            git fetch origin main --quiet || print_warning "git fetch origin main failed"
+            git checkout -B "$DEPLOYER_BRANCH" origin/main
+            return 0
+        fi
         # merge_prs already handles main directly via reset --hard; nothing
         # to do here. We still fetch so subsequent steps see fresh refs.
         print_info "On main — fetching only (merge step will reset to origin/main)"
@@ -251,6 +308,82 @@ pr_branch_safe() {
     return 0
 }
 
+# ----------------------------------------------------------------------------
+# Diff-stat merge gate (issue #38398 — the dc9fdffa30 mass deletion)
+# ----------------------------------------------------------------------------
+# On 2026-07-11 a single-file research PR (#37576) silently carried 9,927 file
+# deletions (a disk-slimmed worktree without sparse-checkout + `git add -A`)
+# through this auto-merge path: research PRs are outside the loom judge
+# lifecycle and nothing anywhere checked the diff stat, so +103/-1,201,128
+# merged on mergeability alone. This gate refuses to AUTO-merge any PR whose
+# reported deletions (lines, per GitHub) exceed DEPLOY_GATE_MAX_DELETIONS
+# (default 100) or whose changedFiles exceed DEPLOY_GATE_MAX_CHANGED_FILES
+# (default 500). Gated PRs are skipped and flagged with an idempotent PR
+# comment for operator review — the deploy script must never silently label
+# or close a PR. Intentional large PRs: an operator merges manually or raises
+# the limits via env for one cycle.
+#
+# Complementary to pr_branch_safe above: pr_branch_safe catches corrupted/
+# ancient branch TIPS (which GitHub's stats miss); this gate catches honest
+# diff stats that are simply too destructive/wide to merge unreviewed.
+DEPLOY_GATE_MAX_DELETIONS="${DEPLOY_GATE_MAX_DELETIONS:-100}"
+DEPLOY_GATE_MAX_CHANGED_FILES="${DEPLOY_GATE_MAX_CHANGED_FILES:-500}"
+DEPLOY_GATE_MARKER="<!-- deploy-diffstat-gate:38398 -->"
+
+post_diffstat_gate_comment() {
+    local pr="$1" additions="$2" deletions="$3" changed="$4"
+
+    if $DRY_RUN; then
+        echo "  Would post diff-stat gate comment on #$pr"
+        return 0
+    fi
+
+    # Idempotent: post at most once per PR (marker survives edits/rebases).
+    if gh pr view "$pr" --json comments --jq '.comments[].body' 2>/dev/null \
+        | grep -qF "$DEPLOY_GATE_MARKER"; then
+        return 0
+    fi
+
+    # Body goes via a temp file: a heredoc inside "$(...)" breaks under the
+    # host's bash 3.2 parser, and --body-file also sidesteps quoting issues.
+    local body_file
+    body_file=$(mktemp)
+    cat > "$body_file" <<EOF
+$DEPLOY_GATE_MARKER
+**Deployer diff-stat gate: auto-merge skipped.**
+
+This PR reports **+$additions / -$deletions lines across $changed files**, exceeding the deployer auto-merge limits (deletions > $DEPLOY_GATE_MAX_DELETIONS or changedFiles > $DEPLOY_GATE_MAX_CHANGED_FILES).
+
+Context: on 2026-07-11, a single-file research PR silently carried **9,927 file deletions** (a disk-slimmed worktree plus \`git add -A\`) through the auto-merge path and wiped most of the repository (commit dc9fdffa30 — see issue #38398). The deployer therefore no longer auto-merges deletion-heavy or very wide PRs.
+
+- **If this diff is intentional**: an operator can merge manually (\`gh pr merge $pr --squash\`) or raise the limits for one cycle via \`DEPLOY_GATE_MAX_DELETIONS\` / \`DEPLOY_GATE_MAX_CHANGED_FILES\`.
+- **If it is not**: check the branch for phantom deletions: \`git diff --name-status --diff-filter=D origin/main...HEAD\`.
+EOF
+    gh pr comment "$pr" --body-file "$body_file" >/dev/null 2>&1 \
+        || print_warning "  Could not post gate comment on #$pr"
+    rm -f "$body_file"
+}
+
+# Returns 0 when the PR's diff stat is within auto-merge limits; 1 when the
+# gate trips (skip the merge). Fails OPEN on inspection errors — the tree-level
+# pr_branch_safe and assert_main_intact guards still stand behind it.
+pr_diffstat_safe() {
+    local pr="$1"
+    local stats additions deletions changed
+    stats=$(gh pr view "$pr" --json additions,deletions,changedFiles 2>/dev/null) || return 0
+    additions=$(echo "$stats" | jq -r '.additions // 0' 2>/dev/null) || return 0
+    deletions=$(echo "$stats" | jq -r '.deletions // 0' 2>/dev/null) || return 0
+    changed=$(echo "$stats" | jq -r '.changedFiles // 0' 2>/dev/null) || return 0
+    [[ "$deletions" =~ ^[0-9]+$ && "$changed" =~ ^[0-9]+$ ]] || return 0
+
+    if (( deletions > DEPLOY_GATE_MAX_DELETIONS || changed > DEPLOY_GATE_MAX_CHANGED_FILES )); then
+        print_warning "  #$pr: DIFF-STAT GATE — +$additions/-$deletions across $changed files exceeds auto-merge limits (deletions <= $DEPLOY_GATE_MAX_DELETIONS, changedFiles <= $DEPLOY_GATE_MAX_CHANGED_FILES); skipping, operator review required (dc9fdffa30 guard, #38398)"
+        post_diffstat_gate_comment "$pr" "$additions" "$deletions" "$changed"
+        return 1
+    fi
+    return 0
+}
+
 # Assert origin/main still holds a full tree. Call after the merge loop; if main
 # has collapsed, something merged a destructive branch — abort before deploying.
 assert_main_intact() {
@@ -281,8 +414,7 @@ merge_prs() {
     git fetch origin main --quiet || git fetch origin main --quiet || true
     # Stash before checkout — dirty files block branch switch
     git stash 2>/dev/null || true
-    git checkout main 2>/dev/null || git checkout -b main origin/main 2>/dev/null || true
-    git reset --hard origin/main
+    sync_tree_to_main
 
     local merged=0
     local failed=0
@@ -306,12 +438,19 @@ merge_prs() {
     # Try to merge each PR
     for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "MERGEABLE") | .number'); do
         if $DRY_RUN; then
-            echo "  Would merge PR #$pr"
-            ((++merged))
+            if ! pr_diffstat_safe "$pr"; then
+                echo "  Would skip PR #$pr (diff-stat gate)"
+            else
+                echo "  Would merge PR #$pr"
+                ((++merged))
+            fi
         else
             echo -n "  #$pr: "
             if ! pr_branch_safe "$pr"; then
                 echo "skipped (unsafe tree)"
+                ((++failed))
+            elif ! pr_diffstat_safe "$pr"; then
+                echo "skipped (diff-stat gate — operator review required)"
                 ((++failed))
             elif gh pr merge "$pr" --squash 2>/dev/null; then
                 echo "merged"
@@ -335,6 +474,8 @@ merge_prs() {
                 echo -n "  #$pr: "
                 if ! pr_branch_safe "$pr"; then
                     echo "skipped (unsafe tree)"
+                elif ! pr_diffstat_safe "$pr"; then
+                    echo "skipped (diff-stat gate — operator review required)"
                 elif gh pr merge "$pr" --squash 2>/dev/null; then
                     echo "merged"
                     ((++merged))
@@ -406,8 +547,9 @@ This branch has been deleted. If you believe this version carries unique content
         # If no worktree found, create a temporary one
         local temp_worktree=false
         if [[ -z "$worktree_path" ]]; then
-            worktree_path="$REPO_ROOT/.loom/worktrees/temp-rebase-$$"
+            worktree_path="$WORKTREES_BASE/temp-rebase-$$"
             print_info "Creating temporary worktree for rebase..."
+            mkdir -p "$WORKTREES_BASE"
             git fetch origin "$branch"
             git worktree add "$worktree_path" "origin/$branch" --detach 2>/dev/null || {
                 print_warning "Could not create worktree for #$pr"
@@ -551,7 +693,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
         sleep 3
         local new_status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
         echo -n "  #$pr (after rebase): "
-        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
+        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && pr_diffstat_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
             echo "merged"
             ((++merged))
         else
@@ -1030,9 +1172,8 @@ EOF
         else
             print_warning "Could not push sync branch"
         fi
-        # Return to main
-        git checkout main 2>/dev/null || true
-        git reset --hard origin/main 2>/dev/null || true
+        # Return to the pipeline branch (never steal `main` from another worktree)
+        sync_tree_to_main
         git branch -D "$sync_branch" 2>/dev/null || true
     else
         print_info "No staged changes to commit"
@@ -1059,6 +1200,16 @@ main() {
     echo "  Build:       $run_build"
     echo "  Deploy:      $run_deploy"
     echo "  Dry Run:     $DRY_RUN"
+
+    # The primary checkout is shared by every concurrently-running agent:
+    # cycles run here dirty the tree others read, and past cycles left it
+    # stuck on chore/sync-data branches when `checkout main` failed. The
+    # deployer agent must run from its worktree (.loom/worktrees/deployer).
+    if [[ "$(git rev-parse --git-dir 2>/dev/null)" == "$(git rev-parse --git-common-dir 2>/dev/null)" ]]; then
+        print_warning "Running in the PRIMARY checkout, not a worktree."
+        print_warning "  Deployer agents: cd to your worktree (.loom/worktrees/deployer) first."
+        print_warning "  Ad-hoc/manual runs: this is allowed but concurrent agents share this tree."
+    fi
 
     $run_sync_branch && sync_branch
     $run_merge && merge_prs

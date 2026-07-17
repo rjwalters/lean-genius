@@ -345,12 +345,200 @@ theorem exists_threeAP_of_finite_recip_sum_gt
     · have h : c + 2 * (b - c) = a := by omega
       rw [h]; exact Finset.mem_coe.mp ha
 
+/-
+## Dilation covariance of the reciprocal bound
+
+The 3-AP-free property is preserved by the dilation `x ↦ k·x` (`k ≠ 0`): scaling every
+element by a common factor cannot create a 3-term progression, because `k·a, k·b, k·c`
+form one iff `a, b, c` do (`k` cancels).  Under the same dilation the reciprocal sum
+scales by *exactly* `1/k`, so the dilate `k·A` obeys the **sharper** bound
+`∑' 1/(k·a) ≤ recipBound/k`.  This exhibits the universal reciprocal bound as
+dilation-covariant, and shows the family of dilates `k·A` (`k ≥ 2`) satisfies strictly
+smaller reciprocal bounds than the uniform constant — structural information orthogonal
+to the (subset-)monotone universal bound, which only ever gives the single constant
+`recipBound`.
+-/
+
+/-- **Dilation preserves 3-AP-freeness.**  For `k ≠ 0` the image of a 3-AP-free set under
+`x ↦ k·x` is again 3-AP-free: `k·a + k·c = 2·k·b ⟺ a + c = 2b`, so a progression in the
+dilate forces one in the original. -/
+theorem threeAPFree_nat_mul_image {k : ℕ} (hk : k ≠ 0) {A : Set ℕ} (hA : ThreeAPFree A) :
+    ThreeAPFree ((fun a => k * a) '' A) := by
+  rw [threeAPFree_iff_eq_right]
+  rintro _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ _ ⟨c, hc, rfl⟩ hsum
+  have hac : a + c = b + b := by
+    have hmul : k * (a + c) = k * (b + b) := by rw [Nat.mul_add, Nat.mul_add]; exact hsum
+    exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hk) hmul
+  have hEq : a = c := threeAPFree_iff_eq_right.mp hA ha hb hc hac
+  rw [hEq]
+
+/-- `0 ∉ k·A` when `0 ∉ A` and `k ≠ 0` (the only preimage of `0` under `x ↦ k·x` is `0`). -/
+theorem zero_notMem_nat_mul_image {k : ℕ} (hk : k ≠ 0) {A : Set ℕ} (hA0 : 0 ∉ A) :
+    (0 : ℕ) ∉ (fun a => k * a) '' A := by
+  rintro ⟨a, ha, h0⟩
+  have ha0 : a = 0 := by
+    rcases Nat.mul_eq_zero.mp h0 with hk0 | ha0
+    · exact absurd hk0 hk
+    · exact ha0
+  exact hA0 (ha0 ▸ ha)
+
+/-- **Reciprocal-sum covariance under dilation.**  For `k ≠ 0` and any `A ⊆ ℕ`, the
+reciprocal sum of the dilate `k·A` is exactly `1/k` times that of `A`:
+`∑'_{x ∈ k·A} 1/x = (1/k)·∑'_{a ∈ A} 1/a`. -/
+theorem dilate_tsum_reciprocal_eq {k : ℕ} (hk : k ≠ 0) (A : Set ℕ) :
+    ∑' x : ((fun a => k * a) '' A), (1 : ℝ) / (x : ℝ)
+      = (1 / (k : ℝ)) * ∑' a : A, (1 : ℝ) / (a : ℝ) := by
+  have hinj : Function.Injective (fun a : ℕ => k * a) :=
+    fun a b h => Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hk) h
+  let e := Equiv.Set.image (fun a : ℕ => k * a) A hinj
+  rw [← Equiv.tsum_eq e (fun x : ((fun a => k * a) '' A) => (1 : ℝ) / (x : ℝ)),
+    ← tsum_mul_left]
+  refine tsum_congr (fun a => ?_)
+  have hcoe : ((e a : ((fun a => k * a) '' A)) : ℕ) = k * (a : ℕ) := rfl
+  rw [hcoe, Nat.cast_mul, div_mul_div_comm, one_mul]
+
+/-- **Sharper (dilation-covariant) reciprocal bound.**  A 3-AP-free set dilated by `k ≥ 1`
+obeys `∑'_{x ∈ k·A} 1/x ≤ recipBound / k` — strictly smaller than the uniform constant
+`recipBound` for `k ≥ 2`.  Combines dilation covariance with the universal bound on `A`. -/
+theorem dilate_tsum_reciprocal_le {k : ℕ} (hk : k ≠ 0) {A : Set ℕ}
+    (hA : ThreeAPFree A) (hA0 : 0 ∉ A) :
+    ∑' x : ((fun a => k * a) '' A), (1 : ℝ) / (x : ℝ) ≤ (1 / (k : ℝ)) * recipBound := by
+  rw [dilate_tsum_reciprocal_eq hk A]
+  exact mul_le_mul_of_nonneg_left (threeAPFree_tsum_reciprocal_le hA hA0) (by positivity)
+
+/-
+## Effective tail decay of the reciprocal bound (concentration at height `2^m`)
+
+The universal bound `∑'_{a ∈ A} 1/a ≤ recipBound` is a single constant.  A finer, orthogonal
+question is *where* the reciprocal mass of a 3-AP-free set can sit.  Define the **tail majorant**
+
+  `recipTail m := ∑'_k recipMajorant (k + m)`   (the dyadic majorant summed from block `m` on).
+
+If a 3-AP-free set `A` lives entirely at height `≥ 2^m` (every element `2^m ≤ a`), then all its
+dyadic blocks have index `≥ m`, so its reciprocal sum is bounded by `recipTail m`, *not merely*
+by the full `recipBound`.  Since `recipMajorant` is summable, `recipTail m → 0` as `m → ∞`
+(`tendsto_sum_nat_add`).  Hence the reciprocal mass carried by 3-AP-free sets of large minimum
+element vanishes — uniformly and at an explicit rate — a quantitative *concentration* statement
+that neither the total-sum bound nor the dilation covariance provides.
+-/
+
+/-- The **tail majorant** `recipTail m = ∑'_k recipMajorant (k + m)`: the dyadic majorant summed
+over blocks of index `≥ m`.  `recipTail 0 = recipBound`, and `recipTail m → 0` as `m → ∞`. -/
+noncomputable def recipTail (m : ℕ) : ℝ := ∑' k, recipMajorant (k + m)
+
+/-- The shifted majorant `k ↦ recipMajorant (k + m)` is summable (shift of a summable series). -/
+theorem summable_recipMajorant_add (m : ℕ) : Summable (fun k => recipMajorant (k + m)) :=
+  (summable_nat_add_iff m).2 summable_recipMajorant
+
+/-- The tail majorant is nonnegative. -/
+theorem recipTail_nonneg (m : ℕ) : 0 ≤ recipTail m :=
+  tsum_nonneg (fun k => recipMajorant_nonneg _)
+
+/-- At `m = 0` the tail majorant is the full absolute constant `recipBound`. -/
+theorem recipTail_zero : recipTail 0 = recipBound := by
+  unfold recipTail recipBound
+  simp
+
+/-- **Tail reciprocal bound (finite form).**  A finite 3-AP-free set `T` (`0 ∉ T`) whose elements
+all sit at height `≥ 2^m` has reciprocal sum bounded by the *tail* majorant `recipTail m`.  This
+sharpens `finite_recip_sum_le` (which only gives `recipBound = recipTail 0`) whenever `m ≥ 1`.
+
+Proof: every element `a ∈ T` has `2^m ≤ a`, so its dyadic index `k = ⌊log₂ a⌋ ≥ m`
+(`Nat.pow_le_iff_le_log`); the fiber decomposition of `T` therefore ranges over block indices
+`k ≥ m` only.  Bounding each fiber by `recipMajorant k` and reindexing `k ↦ k - m` identifies the
+resulting finite sum with a partial sum of `∑'_k recipMajorant (k + m) = recipTail m`. -/
+theorem finite_recip_sum_le_of_min_ge (T : Finset ℕ) (hT : ThreeAPFree (T : Set ℕ)) (hT0 : 0 ∉ T)
+    (m : ℕ) (hmin : ∀ a ∈ T, 2 ^ m ≤ a) :
+    ∑ a ∈ T, (1 : ℝ) / a ≤ recipTail m := by
+  classical
+  have hmaps : ∀ a ∈ T, Nat.log 2 a ∈ T.image (Nat.log 2) :=
+    fun a ha => Finset.mem_image_of_mem _ ha
+  -- Every block index appearing in `T` is `≥ m`.
+  have hK : ∀ k ∈ T.image (Nat.log 2), m ≤ k := by
+    intro k hk
+    rw [Finset.mem_image] at hk
+    obtain ⟨a, ha, rfl⟩ := hk
+    have ha0 : a ≠ 0 := fun h => hT0 (h ▸ ha)
+    exact (Nat.pow_le_iff_le_log (by norm_num) ha0).mp (hmin a ha)
+  rw [← Finset.sum_fiberwise_of_maps_to hmaps (fun a => (1 : ℝ) / a)]
+  -- Fiberwise bound, then reindex the block sum against the tail tsum.
+  have hfib : ∑ k ∈ T.image (Nat.log 2), ∑ a ∈ T.filter (fun a => Nat.log 2 a = k), (1 : ℝ) / a
+      ≤ ∑ k ∈ T.image (Nat.log 2), recipMajorant k :=
+    Finset.sum_le_sum (fun k _ => fiber_sum_le T hT hT0 k)
+  refine hfib.trans ?_
+  -- `∑_{k ∈ K} recipMajorant k = ∑_{j ∈ K.image (·-m)} recipMajorant (j+m)` (reindex by `-m`).
+  have hinj : ∀ x ∈ T.image (Nat.log 2), ∀ y ∈ T.image (Nat.log 2), x - m = y - m → x = y := by
+    intro x hx y hy h
+    have hxm := hK x hx; have hym := hK y hy; omega
+  have hreindex : ∑ k ∈ T.image (Nat.log 2), recipMajorant k
+      = ∑ j ∈ (T.image (Nat.log 2)).image (· - m), recipMajorant (j + m) := by
+    rw [Finset.sum_image hinj]
+    refine Finset.sum_congr rfl (fun k hk => ?_)
+    have hkm : k - m + m = k := by have := hK k hk; omega
+    rw [hkm]
+  rw [hreindex]
+  exact Summable.sum_le_tsum _ (fun j _ => recipMajorant_nonneg _) (summable_recipMajorant_add m)
+
+/-- **Tail reciprocal bound (infinite form).**  Every 3-AP-free set `A ⊆ ℕ` (`0 ∉ A`) whose
+elements all sit at height `≥ 2^m` satisfies `∑'_{a ∈ A} 1/a ≤ recipTail m`.  The tail constant
+shrinks to `0` as `m → ∞` (`recipTail_tendsto_zero`), so this is a genuine height-indexed
+sharpening of the uniform bound `threeAPFree_tsum_reciprocal_le`. -/
+theorem threeAPFree_tsum_reciprocal_le_of_min_ge
+    {A : Set ℕ} (hA : ThreeAPFree A) (hA0 : 0 ∉ A) (m : ℕ) (hmin : ∀ a ∈ A, 2 ^ m ≤ a) :
+    ∑' a : A, (1 : ℝ) / (a : ℝ) ≤ recipTail m := by
+  classical
+  refine (threeAPFree_summable_reciprocal hA hA0).tsum_le_of_sum_le (fun s => ?_)
+  set T : Finset ℕ := s.image Subtype.val with hT
+  have hsum_eq : ∑ i ∈ s, (1 : ℝ) / (i : ℝ) = ∑ a ∈ T, (1 : ℝ) / (a : ℝ) := by
+    rw [hT, Finset.sum_image (Subtype.val_injective.injOn)]
+  rw [hsum_eq]
+  have hTsub : (T : Set ℕ) ⊆ A := by
+    intro x hx
+    rw [hT, Finset.coe_image, Set.mem_image] at hx
+    obtain ⟨i, _, rfl⟩ := hx
+    exact i.property
+  have hTAP : ThreeAPFree (T : Set ℕ) := ThreeAPFree.mono hTsub hA
+  have hT0 : (0 : ℕ) ∉ T := by
+    intro h0
+    rw [hT, Finset.mem_image] at h0
+    obtain ⟨i, _, hi⟩ := h0
+    exact hA0 (by rw [← hi]; exact i.property)
+  have hTmin : ∀ a ∈ T, 2 ^ m ≤ a := by
+    intro a ha
+    rw [hT, Finset.mem_image] at ha
+    obtain ⟨i, _, rfl⟩ := ha
+    exact hmin _ i.property
+  exact finite_recip_sum_le_of_min_ge T hTAP hT0 m hTmin
+
+/-- **The tail majorant vanishes.**  `recipTail m → 0` as `m → ∞`.  Immediate from
+`tendsto_sum_nat_add` applied to the summable `recipMajorant`. -/
+theorem recipTail_tendsto_zero : Filter.Tendsto recipTail Filter.atTop (nhds 0) := by
+  have h := tendsto_sum_nat_add recipMajorant
+  exact h
+
+/-- **Uniform reciprocal concentration.**  For every `ε > 0` there is a height threshold `m` such
+that *every* 3-AP-free set `A ⊆ ℕ` (`0 ∉ A`) living entirely at height `≥ 2^m` has reciprocal sum
+`≤ ε`.  A single `m` works for all such sets at once: the reciprocal mass carried by high 3-AP-free
+sets is uniformly negligible.  Combines the tail bound with `recipTail_tendsto_zero`. -/
+theorem exists_height_recip_small (ε : ℝ) (hε : 0 < ε) :
+    ∃ m : ℕ, ∀ (A : Set ℕ), ThreeAPFree A → 0 ∉ A → (∀ a ∈ A, 2 ^ m ≤ a) →
+      ∑' a : A, (1 : ℝ) / (a : ℝ) ≤ ε := by
+  have hev : ∀ᶠ n in Filter.atTop, recipTail n < ε :=
+    (tendsto_order.1 recipTail_tendsto_zero).2 ε hε
+  obtain ⟨m, hm⟩ := hev.exists
+  exact ⟨m, fun A hA hA0 hAmin =>
+    (threeAPFree_tsum_reciprocal_le_of_min_ge hA hA0 m hAmin).trans hm.le⟩
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
 #check @summable_recipMajorant
 #check @threeAPFree_tsum_reciprocal_le
 #check @exists_universal_recip_bound
+#check @finite_recip_sum_le_of_min_ge
+#check @threeAPFree_tsum_reciprocal_le_of_min_ge
+#check @recipTail_tendsto_zero
+#check @exists_height_recip_small
 
 -- Axiom audit: the reciprocal-sum theorem rests on exactly the single imported Bloom–Sisask
 -- assumption `RothTheoremOQ02.rothNumberNat_bloom_sisask` — no new axiom, no `sorryAx`.
@@ -359,5 +547,9 @@ theorem exists_threeAP_of_finite_recip_sum_gt
 #print axioms exists_nontrivial_threeAP_of_not_summable_reciprocal
 #print axioms threeAPFree_tsum_reciprocal_le
 #print axioms exists_universal_recip_bound
+#print axioms threeAPFree_nat_mul_image
+#print axioms dilate_tsum_reciprocal_le
+#print axioms threeAPFree_tsum_reciprocal_le_of_min_ge
+#print axioms exists_height_recip_small
 
 end RothTheoremOQ01Reciprocal

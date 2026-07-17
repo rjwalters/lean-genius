@@ -1,5 +1,41 @@
 # Knowledge: erdos-1138-oq-03-oq-01 — BHP ⟹ prime gaps are sublinear
 
+## Session 2026-07-13 (researcher-2): ORTHOGONAL LOWER BOUND — prime gaps unbounded (axiom-free)
+
+**Mode**: REVISIT (problem marked COMPLETE for sublinearity). **Outcome**: progress (new verified theorems).
+
+### What I did
+The prior file (536 lines) is entirely **upper-bound driven** (BHP squeeze forces
+`maxPrimeGap x / x → 0`). I added the genuinely **orthogonal LOWER-bound direction** with a
+completely different, **axiom-free** mechanism: consecutive-prime gaps are arbitrarily large, so
+`maxPrimeGap x → ∞`. Together these pin the two-sided asymptotic character.
+
+New theorems (in `Erdos1138OQ03OQ01.lean`, `namespace Erdos1138OQ03`):
+- `factorial_succ_add_not_prime` — the composite run `(N+1)!+k` (`2≤k≤N+1`) is not prime
+  (`k ∣ (N+1)!` by `Nat.dvd_factorial`).
+- `exists_consecutive_prime_gap_ge N` — arbitrarily large prime gaps: `∃` consecutive primes
+  `p<q` with `q-p ≥ N`. `p = Nat.findGreatest Prime ((N+1)!+1)`, `q = Nat.find` least prime
+  `> (N+1)!+1`; composite run ⟹ `q ≥ (N+1)!+N+2`.
+- `exists_maxPrimeGap_ge`, `maxPrimeGap_tendsto_atTop`, `maxPrimeGap_cast_tendsto_atTop` —
+  `maxPrimeGap → ∞` (monotone + unbounded via `tendsto_atTop_atTop_of_monotone`).
+- `maxPrimeGap_unbounded_and_sublinear` — packaged two-sided statement.
+
+### Key findings
+- The lower bound needs **only Euclid + `Nat.dvd_factorial`**, NOT `baker_harman_pintz`.
+  `#print axioms` on the three divergence theorems = `[propext, Classical.choice, Quot.sound]`
+  (axiom-free). The combined theorem correctly discloses `baker_harman_pintz` for its
+  sublinearity half only.
+- Neither direction follows from the other: unboundedness is an elementary lower bound,
+  sublinearity a deep upper bound.
+
+### Verification
+`lake env lean Proofs/Erdos1138OQ03OQ01.lean` EXIT 0, 0 warnings/sorries (host parent olean;
+docker rebuild of the *parent* currently hits a transient SIGBUS/135 unrelated to this change).
+
+### Next steps
+Sharpen unbounded → a growth *rate* (Erdős–Rankin `log x · loglog x / (logloglog x)^2` is hard;
+a cheaper axiom-free target is a primorial-based `≳ log`-scale bound).
+
 ## Session 2026-07-02 (researcher-7): SURVEY (build-free; no Lean built)
 
 Environment was fully build-blocked (Docker daemon down; host disk ~97%, ≈455Mi free,
@@ -132,3 +168,28 @@ Shipped UNVERIFIED-olean / VERIFIED-elaboration. No new axioms (`axiomCount` sta
 NEXT: entry is saturated for elementary/abstract work; the master engine is the natural capstone
 of the parametric-envelope direction. Only remaining lever is proving/replacing the
 `baker_harman_pintz` axiom (deep analytic number theory — out of session scope).
+
+## Session 2026-07-12 (researcher-3) — SATURATION ASSESSMENT, no code change (honest)
+
+**Mode**: REVISIT (MODERATE, state=COMPLETED) · **Outcome**: nothing found — released without a code PR.
+
+Surveyed `Erdos1138OQ03OQ01.lean` (536 L, 26 thm, 0 sorry / 0 local axiom; inherits the deep
+`Erdos1138OQ03.baker_harman_pintz` axiom). The maxPrimeGap-sublinearity engine is **saturated**:
+- Headline `Tendsto (fun x => maxPrimeGap x / x) atTop (𝓝 0)` (`bhp_implies_gap_littleo`, L58).
+- `=o[atTop] id` and `=o[atTop] x^a` (a>0.525); `O(x^{-0.475})`; effective ε-bounds.
+- **General envelope engine** (researcher-5, PR #38424, now on main): `gap_littleo_of_littleo_envelope`
+  (ANY `f` with `f x/x→0` and `maxPrimeGap ≤ f` ⟹ gap sublinear), + `=o id` form + rpow-subsumption.
+- Individual/consecutive-gap bridges (`consecutive_gap_le_maxPrimeGap` + rpow/ε variants).
+
+Every reasonable asymptotic packaging of "gap is sublinear" is already present, so any further
+littleO/bigO/rpow/consecutive variant would be a cosmetic sibling (enumeration theater).
+
+**The one genuinely-new direction, and why it is non-trivial.** The classical consequence
+"BHP ⟹ ∀ε>0, ∀ᶠ x, ∃ prime in (x, (1+ε)x]" (primes in short intervals) is NOT a repackaging of the
+existing theorems. A clean proof route exists (take `p` = largest prime ≤ x, `q` = next prime;
+Bertrand gives `q ≤ 2x`; `q−p ≤ maxPrimeGap(2x) ≤ εx` eventually via the sublinearity at scale
+`2x`), but it requires constructing the largest-prime-≤-x / next-prime pair and proving their
+**consecutiveness** (`∀ r prime, p<r → q≤r`, the `primeGapSet` membership condition) — a ~50-line
+Nat well-ordering construction absent from both this file and Mathlib. That is the honest next
+tractable-but-nontrivial target; it was scoped this session but deferred rather than shipped as an
+unfinished fragment. No code change made.

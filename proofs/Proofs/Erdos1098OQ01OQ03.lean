@@ -53,6 +53,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   and finite-commutator-set (BFC) classes, via the Mathlib Schur endgame
   `Subgroup.finiteIndex_center`. These pin the axiom's residual content to the single
   implication `BoundedCliques G → Finite (commutatorSet G)`.
+* `boundedCliques_prod_iff` — **(fully proved, new)** the multiplicativity capstone:
+  `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`, completing the product
+  story of `boundedCliques_of_prod_left` / `boundedCliques_of_prod_right` /
+  `boundedCliques_prod_of_finiteIndex`. (Reverse routes through Neumann's dichotomy, so this
+  equivalence carries the theory's single BFC axiom rather than being axiom-free.)
 
 ## Honesty
 
@@ -80,6 +85,7 @@ import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.GroupTheory.Subgroup.Centralizer
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.Commutator.Finite
+import Mathlib.GroupTheory.Schreier
 import Mathlib.GroupTheory.CosetCover
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Data.Finset.Card
@@ -106,6 +112,24 @@ def IsClique (S : Finset G) : Prop :=
 /-- ω(Γ(G)) is finite: there is a uniform bound on the size of every clique. -/
 def BoundedCliques (G : Type*) [Group G] : Prop :=
   ∃ B : ℕ, ∀ S : Finset G, IsClique S → S.card ≤ B
+
+/-- **The non-commuting graph Γ(G) is undirected: `nonCommuting` is symmetric.**
+    `g` and `h` fail to commute iff `h` and `g` do — the edge relation `g*h ≠ h*g`
+    is symmetric by `ne_comm`. -/
+theorem nonCommuting_comm {g h : G} : nonCommuting g h ↔ nonCommuting h g := by
+  unfold nonCommuting; exact ne_comm
+
+/-- **Γ(G) has no self-loops: `nonCommuting` is irreflexive.**  No element fails to
+    commute with itself, since `g * g = g * g`. -/
+theorem nonCommuting_irrefl (g : G) : ¬ nonCommuting g g := by
+  unfold nonCommuting; simp
+
+/-- **Edges of Γ(G) are exactly the non-commuting pairs.**  The negation of
+    `nonCommuting g h` is Mathlib's `Commute g h`: two elements are joined by no edge
+    iff they commute.  This bridges the local `nonCommuting` relation to the library's
+    `Commute`/`SemiconjBy` API. -/
+theorem not_nonCommuting_iff_commute {g h : G} : ¬ nonCommuting g h ↔ Commute g h := by
+  unfold nonCommuting; rw [not_not]; exact Iff.rfl
 
 -- ============================================================
 -- SECTION II: Cosets of the centre separate non-commuting elements
@@ -168,6 +192,16 @@ theorem clique_card_le_index {S : Finset G} (hS : IsClique S)
 theorem bounded_cliques_of_finite_index
     (hfin : (Subgroup.center G).index ≠ 0) : BoundedCliques G :=
   ⟨(Subgroup.center G).index, fun _ hS => clique_card_le_index hS hfin⟩
+
+/-- **(Base case, fully proved.)** Every *finite* group has bounded cliques: no clique
+    can be larger than the whole group.  Any clique `S` is a `Finset G`, so
+    `S.card ≤ Fintype.card G` unconditionally (`Finset.card_le_univ`).  This is the
+    trivial-but-fundamental base of the theory — finite groups automatically satisfy the
+    ω(Γ(G))-finite hypothesis of Neumann's theorem (and indeed their centre has finite
+    index), so the interesting content is entirely about infinite groups. -/
+theorem boundedCliques_of_finite [Finite G] : BoundedCliques G := by
+  haveI : Fintype G := Fintype.ofFinite G
+  exact ⟨Fintype.card G, fun S _ => Finset.card_le_univ S⟩
 
 -- ============================================================
 -- SECTION III.5: First step of the hard direction — the centralizer cover
@@ -394,6 +428,37 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
   rw [CommGroup.center_eq_top, Subgroup.index_top]
   exact one_ne_zero
 
+/-- **Clique number `≤ 1` characterizes commutativity (`Γ(G)` is edgeless iff `G` is
+    abelian).**  Every clique of the non-commuting graph has size at most `1` if and only
+    if `G` is abelian: a clique of size `2` is precisely a non-commuting pair, i.e. an edge
+    of `Γ(G)`.  This is the base value grounding `abelian_bounded_cliques` — for an abelian
+    group the sharpest uniform clique bound is `B = 1`, and conversely `ω(Γ(G)) ≤ 1` forces
+    every pair to commute. -/
+theorem clique_card_le_one_iff_comm :
+    (∀ S : Finset G, IsClique S → S.card ≤ 1) ↔ (∀ a b : G, a * b = b * a) := by
+  classical
+  constructor
+  · intro h a b
+    by_contra hab
+    have hnc : nonCommuting a b := hab
+    have hne : a ≠ b := by rintro rfl; exact hnc rfl
+    have hcl : IsClique ({a, b} : Finset G) := by
+      intro g hg h hh hgh
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hg hh
+      rcases hg with rfl | rfl <;> rcases hh with rfl | rfl
+      · exact absurd rfl hgh
+      · exact hnc
+      · exact fun heq => hnc heq.symm
+      · exact absurd rfl hgh
+    have h2 := h {a, b} hcl
+    rw [Finset.card_pair hne] at h2
+    omega
+  · intro hcomm S hS
+    by_contra hcard
+    push_neg at hcard
+    obtain ⟨a, ha, b, hb, hne⟩ := Finset.one_lt_card.mp hcard
+    exact hS a ha b hb hne (hcomm a b)
+
 /-- **Bounded cliques pass to subgroups (heredity of ω(Γ)).**  The non-commuting
     graph `Γ(H)` of a subgroup `H ≤ G` is an *induced subgraph* of `Γ(G)`: the
     inclusion `H ↪ G` is an injective homomorphism, so it carries every clique of
@@ -470,6 +535,18 @@ theorem boundedCliques_of_surjective {K : Type*} [Group K] (f : G →* K)
   rw [← Finset.card_image_of_injective S hginj]
   exact hB _ hclique
 
+/-- **Bounded cliques pass to quotients (`ω(Γ(G/N)) ≤ ω(Γ(G))`).**  If `Γ(G)` has finite
+    clique number, then so does `Γ(G/N)` for every normal subgroup `N`: the canonical
+    projection `QuotientGroup.mk' N : G →* G/N` is surjective, so this is the special case
+    `f = mk' N` of `boundedCliques_of_surjective` (surjections push cliques back to a clique
+    of the same size in `G`).  Complements `boundedCliques_of_subgroup`
+    (`f = H.subtype`, injective, heredity downward): quotients and subgroups of a
+    bounded-clique group are again bounded-clique.  Axiom-free — only the elementary clique
+    transfer, not the BFC core `neumann_hard_direction`. -/
+theorem boundedCliques_quotient (N : Subgroup G) [N.Normal] (h : BoundedCliques G) :
+    BoundedCliques (G ⧸ N) :=
+  boundedCliques_of_surjective (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) h
+
 /-- **Bounded cliques pull back along any injective homomorphism (heredity of ω(Γ)).**
     If `f : G →* K` is an *injective* homomorphism and `Γ(K)` has finite clique number,
     then so does `Γ(G)`: `ω(Γ(G)) ≤ ω(Γ(K))`.  The embedding `f` carries each clique
@@ -543,6 +620,58 @@ theorem neumann_hard_direction_of_finite_commutatorSet
     [Group.FG G] [Finite (commutatorSet G)] (_ : BoundedCliques G) :
     (Subgroup.center G).index ≠ 0 :=
   Subgroup.FiniteIndex.index_ne_zero
+
+/-- **The residual gap in canonical (finite derived subgroup) form.**  The finiteness of
+    the *set* of commutators `{[a,b] : a,b ∈ G}` and the finiteness of the derived
+    *subgroup* `G' = commutator G = ⁅⊤, ⊤⁆` are equivalent:
+
+    > `Finite (commutatorSet G)  ↔  Finite (commutator G)`.
+
+    *Proof.* (`→`) is Schur's theorem — a group with finitely many commutators has a
+    finite commutator subgroup (`Mathlib.GroupTheory.Schreier`, the instance
+    `Finite (commutatorSet G) → Finite (commutator G)`; no finite-generation needed). (`←`)
+    is immediate: every commutator `⁅g₁, g₂⁆` lies in `commutator G`
+    (`commutator_mem_commutator` at `⊤`), so `commutatorSet G ⊆ ↑(commutator G)`, and a
+    subset of a finite set is finite.
+
+    This recasts the localization narrative of `center_finiteIndex_iff_relIndex_core` and
+    `neumann_hard_direction_of_finite_commutatorSet` into the *textbook* form of Neumann's
+    theorem: the entire remaining content of the axiom `neumann_hard_direction` is the
+    single implication `BoundedCliques G → Finite (commutator G)` — that bounded
+    non-commuting sets force a **finite derived subgroup** (the "boundedly finite-by-abelian"
+    ⟺ finite-`G'` dichotomy of B. H. Neumann, 1976). Axiom-free. -/
+theorem finite_commutatorSet_iff_finite_commutator :
+    Finite (commutatorSet G) ↔ Finite (_root_.commutator G) := by
+  constructor
+  · intro h
+    haveI := h
+    infer_instance
+  · intro h
+    haveI := h
+    have hsub : commutatorSet G ⊆ (↑(_root_.commutator G) : Set G) := by
+      rintro x ⟨g₁, g₂, rfl⟩
+      exact commutator_mem_commutator (mem_top g₁) (mem_top g₂)
+    have hfin : (↑(_root_.commutator G) : Set G).Finite := Set.toFinite _
+    exact Set.finite_coe_iff.mpr (hfin.subset hsub)
+
+/-- **The hard direction holds — axiom-free — whenever the derived subgroup is finite.**
+    If `G` is finitely generated and its commutator subgroup `G' = commutator G` is finite,
+    then the centre has finite index: `[G : Z(G)] ≠ 0`.  This is the derived-subgroup
+    (canonical BFC) phrasing of `neumann_hard_direction_of_finite_commutatorSet`, obtained
+    through the equivalence `finite_commutatorSet_iff_finite_commutator`.
+
+    As before `BoundedCliques G` is unused — retained only so the statement is a literal
+    drop-in for the axiom's signature on the finite-`G'` class.  Together with
+    `finite_commutatorSet_iff_finite_commutator` this pins the sole remaining content of
+    `neumann_hard_direction` (for finitely generated `G`) to `BoundedCliques G →
+    Finite (commutator G)`: bounded non-commuting cliques must be shown to force a finite
+    derived subgroup, exactly Neumann's BFC theorem. -/
+theorem neumann_hard_direction_of_finite_commutator
+    [Group.FG G] [Finite (_root_.commutator G)] (_ : BoundedCliques G) :
+    (Subgroup.center G).index ≠ 0 := by
+  haveI : Finite (commutatorSet G) :=
+    finite_commutatorSet_iff_finite_commutator.mpr inferInstance
+  exact Subgroup.FiniteIndex.index_ne_zero
 
 /-- **Bounded cliques are a group-isomorphism invariant.**  If `G ≃* K` then `Γ(G)` has
     finite clique number iff `Γ(K)` does: `BoundedCliques G ↔ BoundedCliques K`.  An
@@ -622,5 +751,43 @@ theorem boundedCliques_of_prod_left {K : Type*} [Group K]
 theorem boundedCliques_of_prod_right {K : Type*} [Group K]
     (h : BoundedCliques (G × K)) : BoundedCliques K :=
   boundedCliques_of_surjective (MonoidHom.snd G K) (fun k => ⟨(1, k), rfl⟩) h
+
+/-- **The class of `BoundedCliques` groups is exactly closed under finite direct products.**
+    `Γ(G × K)` has finite clique number if and only if *both* `Γ(G)` and `Γ(K)` do:
+
+    > `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`.
+
+    This is the capstone the projection lemmas `boundedCliques_of_prod_left` /
+    `boundedCliques_of_prod_right` explicitly advertise: forward is their pair (each factor
+    inherits bounded cliques from the product, via the elementary surjective clique transfer),
+    while the reverse is `boundedCliques_prod_of_finiteIndex` fed by Neumann's dichotomy
+    `neumann_full_theorem` on each factor — turning bounded cliques into finite central index
+    on `G` and `K`, whose product then has finite central index and hence bounded cliques.
+
+    The reverse implication routes through `neumann_hard_direction` (via `neumann_full_theorem`),
+    so — unlike the individual heredity lemmas — this equivalence is *not* axiom-free; it inherits
+    exactly the one BFC assumption of the theory. Combined with `boundedCliques_congr` it says the
+    `BoundedCliques` groups form an isomorphism-closed class that is closed under finite products
+    and factors, i.e. Neumann's finiteness property is genuinely multiplicative. -/
+theorem boundedCliques_prod_iff {K : Type*} [Group K] :
+    BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K := by
+  refine ⟨fun h => ⟨boundedCliques_of_prod_left h, boundedCliques_of_prod_right h⟩, ?_⟩
+  rintro ⟨hG, hK⟩
+  exact boundedCliques_prod_of_finiteIndex
+    (neumann_full_theorem.mp hG) ((neumann_full_theorem (G := K)).mp hK)
+
+/-- **Schur's theorem gives the easy direction unconditionally (axiom-free).**  A finitely
+    generated group with only *finitely many commutators* has bounded cliques — with no appeal
+    to the deep Neumann axiom `neumann_hard_direction`.  This realizes the Mathlib endgame the
+    theory's docstrings advertise (`Subgroup.index_center_le_pow`, "gated on
+    `Finite (commutatorSet G)`"): under `[Finite (commutatorSet G)] [Group.FG G]`, Schur's
+    theorem (Mathlib `Subgroup.finiteIndex_center`) makes `Z(G)` finite-index, so
+    `(center G).index ≠ 0`, and the fully-proved easy direction `bounded_cliques_of_finite_index`
+    finishes.  This is a genuine Mathlib-checkable *sufficient* condition for `BoundedCliques`
+    that sits strictly below the axiomatized hard direction: it does not assert the equivalence,
+    only that finite-commutator (FG) groups land in the class. -/
+theorem boundedCliques_of_finite_commutatorSet
+    [Finite (commutatorSet G)] [Group.FG G] : BoundedCliques G :=
+  bounded_cliques_of_finite_index Subgroup.FiniteIndex.index_ne_zero
 
 end Erdos1098OQ01OQ03

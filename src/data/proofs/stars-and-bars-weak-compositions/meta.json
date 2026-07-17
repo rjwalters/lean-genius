@@ -126,8 +126,16 @@
     ]
   },
   "crossReferences": [
-    "composition-parts-choose-oq-01",
-    "composition-card-2pow-oq-01"
+    {
+      "targetId": "composition-parts-choose-oq-01",
+      "relationship": "related",
+      "description": "Companion counting result in the compositions line: Compositions of n into k parts number C(n−1, k−1)."
+    },
+    {
+      "targetId": "composition-card-2pow-oq-01",
+      "relationship": "related",
+      "description": "Companion counting result in the compositions line: There are 2^(n−1) compositions of n."
+    }
   ],
   "references": [
     {

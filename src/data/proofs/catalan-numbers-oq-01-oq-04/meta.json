@@ -45,7 +45,7 @@
       {
         "theorem": "lt_of_mul_lt_mul_left",
         "description": "a·b < a·c → 0 ≤ a → b < c. Cancels the positive scaling factor D = 2(2n+1)(2n+3) to pass from D·b² < D·(a·c) to b² < a·c.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ],
     "originalContributions": [

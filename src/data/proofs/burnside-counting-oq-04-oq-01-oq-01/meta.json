@@ -83,28 +83,52 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: generic action and the counts b(5), b(6)",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Import (Mathlib), the module docstring, and the namespace/open setup. The docstring frames the open question OQ-01 of the parent (which built only the length-4 instance): compute the binary bracelet counts b(5) = 8 and b(6) = 13, the first two lengths where the dihedral group genuinely exceeds the cyclic one (odd 5 and even 6 exercise both reflection types). It previews the strategy — build the D_n action generically in n, then read off the two counts by kernel decide — and records the honesty note that these are OEIS A000029(5), A000029(6), obtained axiom-free (kernel decide, no native_decide, no Lean.ofReduceBool).",
+      "mathContext": "Goal: $b(5) = |\\text{Coloring}\\,5 / D_5| = 8$ and $b(6) = |\\text{Coloring}\\,6 / D_6| = 13$ (OEIS A000029), via a generic $D_n$ action."
+    },
+    {
       "id": "representation",
-      "title": "The Generic Faithful Dihedral Representation ρ",
+      "title": "Part I: The Generic Faithful Dihedral Representation ρ",
       "startLine": 57,
       "endLine": 97,
-      "summary": "posPerm sends r i ↦ (x ↦ x+i) and sr i ↦ (x ↦ -i-x) on ZMod n; posPerm_mul verifies the homomorphism property against the dihedral multiplication table for all n, packaged as ρ : DihedralGroup n →* Equiv.Perm (ZMod n).",
+      "summary": "The colouring type Coloring n = ZMod n → Fin 2 (2^n colourings), then posPerm sending r i ↦ (x ↦ x+i) and sr i ↦ (x ↦ -i-x) on ZMod n; posPerm_one and posPerm_mul verify the homomorphism property against the dihedral multiplication table for all n, packaged as ρ : DihedralGroup n →* Equiv.Perm (ZMod n).",
       "mathContext": "$\\rho(r_i)(x) = x + i,\\quad \\rho(s r_i)(x) = -i - x \\quad (\\text{in } \\mathbb{Z}/n).$"
     },
     {
       "id": "action",
-      "title": "The Induced Generic Action on Colourings",
+      "title": "Part II: The Induced Generic Action on Colourings",
       "startLine": 99,
-      "endLine": 134,
-      "summary": "(g • c) p = c ((ρ g)⁻¹ p) is a genuine MulAction of D_n on Coloring n = ZMod n → Fin 2 because ρ is a homomorphism; DecidablePred / Fintype instances (needing NeZero n) and a decidable orbit relation follow.",
+      "endLine": 115,
+      "summary": "instMulAction: (g • c) p = c ((ρ g)⁻¹ p) is a genuine MulAction of D_n on Coloring n because ρ is a homomorphism (one_smul from ρ.map_one, mul_smul from ρ.map_mul); smul_apply unfolds the action pointwise for the fixed-point computations.",
       "mathContext": "$(g \\cdot c)(p) = c\\big((\\rho g)^{-1} p\\big).$"
     },
     {
-      "id": "count",
-      "title": "Burnside Reduction and the Counts b(5), b(6)",
+      "id": "fintype-instances",
+      "title": "Part III: Fintype and Decidability Instances for Burnside",
+      "startLine": 117,
+      "endLine": 134,
+      "summary": "The instances (all needing NeZero n) that make Burnside applicable and the count well-defined: decFixed (each g • c = c decidable), fintypeFixedBy (each Fix(g) finite), decOrbitRel (the orbit relation is decidable), and fintypeQuot (the orbit quotient is a Fintype, so its cardinality — the bracelet count — is defined).",
+      "mathContext": "$\\mathrm{Fix}(g)$ decidable and finite; orbit relation decidable $\\Rightarrow$ orbit quotient a $\\mathrm{Fintype}$ (given $\\mathrm{NeZero}\\,n$)."
+    },
+    {
+      "id": "generic-reduction",
+      "title": "Part IV: The Generic Burnside Reduction",
       "startLine": 136,
+      "endLine": 150,
+      "summary": "bracelet_count_mul: for any n with NeZero n, if the dihedral fixed-point sum equals S then bracelets · 2n = S, from Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) and |D_n| = 2n (DihedralGroup.card). This is the generic reduction consumed by both concrete counts.",
+      "mathContext": "$\\sum_{g \\in D_n} |\\mathrm{Fix}(g)| = S \\Rightarrow b(n)\\cdot 2n = S.$"
+    },
+    {
+      "id": "counts",
+      "title": "Part V: The Two Unconditional Counts b(5) = 8, b(6) = 13",
+      "startLine": 152,
       "endLine": 188,
-      "summary": "bracelet_count_mul gives bracelets · 2n = Σ_{g ∈ D_n} |Fix(g)| from Burnside and DihedralGroup.card; kernel decide evaluates the sum to 80 at n = 5 and 156 at n = 6, so b(5) = 80/10 = 8 and b(6) = 156/12 = 13.",
-      "mathContext": "$\\sum_{g \\in D_n} |\\mathrm{Fix}(g)| = b(n)\\cdot 2n;\\ 80 = 8\\cdot 10,\\ 156 = 13\\cdot 12.$"
+      "summary": "Kernel decide evaluates the fixed-point sums: fixed_sum_five = 80 (10 elements × 32 colourings) and fixed_sum_six = 156 (12 × 64); feeding these into bracelet_count_mul gives bracelet_five (b(5) = 80/10 = 8) and bracelet_six (b(6) = 156/12 = 13), unconditionally and with no native_decide.",
+      "mathContext": "$80 = b(5)\\cdot 10 \\Rightarrow b(5) = 8;\\quad 156 = b(6)\\cdot 12 \\Rightarrow b(6) = 13.$"
     }
   ],
   "references": [

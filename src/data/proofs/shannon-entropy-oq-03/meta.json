@@ -40,11 +40,13 @@
     "originalContributions": [
       "Three-variable 'conditioning reduces entropy' H(X|Y,Z) ≤ H(X|Y) as a corollary of SSA",
       "Non-negativity of conditional mutual information I(X;Z|Y) ≥ 0",
-      "Conditional mutual information as a first-class definition (conditionalMutualInfo), with the deficit identity I(X;Z|Y) = H(X|Y) − H(X|Y,Z) formalizing the prose claim of the conditioning corollaries"
+      "Conditional mutual information as a first-class definition (conditionalMutualInfo), with the deficit identity I(X;Z|Y) = H(X|Y) − H(X|Y,Z) formalizing the prose claim of the conditioning corollaries",
+      "Entropy monotonicity under adding a variable H(Y,Z) ≤ H(X,Y,Z) (entropy_marginalYZ_le), via the definitional identity α×β×γ = α×(β×γ) and the parent chain rule",
+      "Upper bound I(X;Z|Y) ≤ H(X|Y) (conditionalMutualInfo_le_conditional_entropy), giving the sandwich 0 ≤ I(X;Z|Y) ≤ H(X|Y)"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 191,
-    "theoremCount": 8,
+    "lineCount": 300,
+    "theoremCount": 10,
     "definitionCount": 1,
     "additionalFiles": [],
     "mathlib_version": "4.26.0",
@@ -172,9 +174,9 @@
       "Finset"
     ],
     "namespace": "InformationTheory.SSA",
-    "lineCount": 191,
+    "lineCount": 300,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 12,
     "definitionCount": 1,
     "path": "Proofs/ShannonEntropySSA.lean",
     "sorries": 0,
@@ -204,6 +206,12 @@
       "type": "corollary",
       "description": "Conditional mutual information is non-negative: I(X;Z | Y) ≥ 0",
       "leanType": "shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ) - shannonEntropy pXYZ - shannonEntropy (marginalY pXYZ) ≥ 0"
+    },
+    {
+      "name": "conditionalMutualInfo_swap",
+      "type": "theorem",
+      "description": "The X↔Z symmetry of conditional mutual information at the distribution level: I(X;Z|Y) computed from the swapped joint law pXYZ∘reorderXZ equals I(X;Z|Y) from pXYZ. Upgrades the algebraic conditioning_deficit_symm to a genuine invariance, via shannonEntropy_comp_equiv (entropy is unchanged by relabeling outcomes): each of the four entropy terms transports across the swap by a coordinate flip. Axiom-free.",
+      "leanType": "conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ"
     }
   ],
   "sorries": 0,

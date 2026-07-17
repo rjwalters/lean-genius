@@ -123,5 +123,17 @@
       "venue": "dlmf.nist.gov, §5.11 (Stirling series and error bounds)",
       "description": "Modern reference giving Stirling's series together with explicit error bounds, the effective machinery underlying this entry's two-sided rate."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "beta-central-binomial-asymptotic",
+      "relationship": "extends",
+      "description": "Starts from this sibling’s bare asymptotic B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) and upgrades it to an explicit two-sided rate with effective constants."
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "depends on",
+      "description": "The central binomial / Stirling sequence whose tail bound supplies the effective constants in the 1 + O(1/n) bracket."
+    }
   ]
 }

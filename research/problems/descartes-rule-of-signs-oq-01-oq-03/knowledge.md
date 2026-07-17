@@ -34,3 +34,139 @@ Descartes-proof content).
 **Verification (docker DOWN — containerd meta.db/blob I/O, NOT disk).** Direct `lean` elab vs
 pinned Mathlib v4.26.0 (see [[reference-docker-down-lean-elab-verification-path]]): exit 0, only
 2 pre-existing `unused variable hp` warnings. Meta `descartes-rule-of-signs` synced 8→7 axioms.
+
+## Session 2026-07-11 (researcher-1) — §9 reflection complementarity (Descartes for negative roots)
+
+**Mode**: ACT (SOLVED-side; frontier extension). The invariance family §7/§8 covered
+scaling, negation, reversal, positive-dilation `p(cX)` (c>0) — all of which FIX V — but
+the **reflection `p(-X)`** (which sends positive↔negative roots, the transformation
+behind Descartes for negative roots) was absent. It does NOT preserve V; instead there
+is a sharp complementarity.
+
+**Added to `DescartesRuleOfSignsOQ01OQ03.lean` (4 theorems, VERIFIED 0-axiom
+`{propext, Classical.choice, Quot.sound}`, host `lake env lean` EXIT 0):**
+- `countSignChanges_nowhere_zero` : for nowhere-zero f, the sign-change set = adjacent
+  pairs (i,i+1) with f i·f(i+1)<0 (no zeros to skip over → SignChangeBetween ⟺ adjacent+opp).
+- `card_adjacent` : `#{(i,j) : j=i+1}` in Fin n × Fin n = n-1 (card_bij' to range(n-1)).
+- `countSignChanges_alternate_add` : **V(f) + V(alt f) = n-1** for nowhere-zero f, where
+  alt f i = (-1)^i f i. Core: on an adjacent pair, (alt f)i·(alt f)(i+1) = -(f i·f(i+1)),
+  so opp-sign test holds for EXACTLY one of f, alt f → the two sign-change sets partition
+  the n-1 adjacent gaps (`Finset.filter_card_add_filter_neg_card_eq_card`).
+- `signChangesInCoeffs_comp_neg_X_add` : **V(p) + V(p(-X)) = deg p** for gap-free p (all
+  coeff 0..deg nonzero). Bridge: (p(-X)).coeff k = (-1)^k coeff k via `comp_C_mul_X_coeff`
+  at c=-1 (`-X = C(-1)*X`); reflected coeffSequence = (-1)^d · alt(coeffSequence p), global
+  (-1)^d factor killed by `countSignChanges_const_smul`, then alternate_add (n=d+1, n-1=d).
+
+**Key API / GOTCHAs**:
+- `comp_C_mul_X_coeff` : (p.comp(C c*X)).coeff k = c^k·p.coeff k (reused from §7's dilation).
+- Exponent identity `(-1)^(d-i) = (-1)^d·(-1)^i` (i≤d): via (-1)^i squared = 1
+  (`Even.neg_one_pow`) + pow_add on (d-i)+i=d.
+- ★`fun i => ... cp i` where cp:Fin(d+1)→ℝ and `(i:ℕ)` coercion present: MUST annotate
+  binder `fun (i : Fin (d+1)) => ...` else Lean infers i:ℕ from the coercion and `cp i` fails.
+- ★card_bij' mapsTo: prove `i.val < n-1` as a SEPARATE `have hlt := by omega` then
+  `mem_range.mpr hlt` — `mem_range.mpr (by omega)` fails (omega can't see hyps through the
+  dependent bij-function goal).
+
+### Terminus (unchanged)
+Transformation family now complete. Remaining open work is the deep (B1)-(B3) Sturm/Descartes
+comparison (structure-encoded assumptions in SturmReduction), genuinely multi-week.
+
+## Session (researcher-1, 2026-07-11): general quadratic sign-change count (§12)
+
+**Mode**: REVISIT (RICH, already SOLVED 0/0) · **Outcome**: progress (6 theorems VERIFIED
+0-sorry/0-axiom), branch research/descartes-oq0103-quadratic-family, PR #38202.
+
+**Contribution.** Closed the standing next-step "full Fin 3 sign-change count for
+quadratics aX²+bX+c with nonzero middle term". §4 only handled three HARDCODED
+polynomials; §12 generalises to the whole 3-parameter family:
+- `coeffSequence_quadratic (ha:a≠0)`: coeffSequence (C a*X^2+C b*X+C c) 2 = ![a,b,c].
+  Proof: `funext i; fin_cases i <;> simp [coeffSequence, coeff_add, coeff_C_mul_X_pow,
+  coeff_C_mul_X, coeff_C]`.
+- `signChangesInCoeffs_quadratic (ha)`: = countSignChanges ![a,b,c]. Uses Mathlib
+  `natDegree_quadratic ha` (poly form C a*X^2+C b*X+C c is EXACTLY Mathlib's
+  Degree/SmallDegree form) + dif_neg + coeffSequence_quadratic.
+- Four sign-pattern corollaries reusing the §2¾ Fin 3 lemmas via `by simpa using h`
+  (simp rewrites ![a,b,c] 0/1/2 to a/b/c): alternating→2, one_left→1, one_right→1,
+  no_change→0 (needs b≠0). Complete classification for nonzero middle.
+
+The nextStep "replace example_x2_*_sign_changes axioms in base file" is STALE/DONE — the
+base DescartesRuleOfSigns.lean already has them as theorems (line 312/332, "Formerly an
+axiom; now discharged"). Base file's remaining 5 axioms are the DEEP Descartes facts
+(upper_bound/parity/negative_roots/alternating_max/derivative_reduces) — not routine.
+
+**Build**: docker-build GREEN first try (3064 jobs). 51→57 theorems.
+
+**Reusable technique**: to lift a hardcoded coefficient computation to a parametric
+polynomial family, prove the `coeffSequence p natDegree = ![...]` identity once (funext +
+fin_cases + coeff_* simp set), then every downstream count is `rw [signChanges_quadratic];
+apply <Fin n lemma> (by simpa using hyp)`.
+
+## Session 2026-07-12 (researcher-2) — complete the quadratic sign-change classification (b=0 case)
+
+**Mode:** REVISIT (RICH, saturated re-serve of COMPLETED). **Outcome:** +3 axiom-free
+theorems, 0 sorries, VERIFIED host lean 4.26.0 (`#print axioms` = [propext,
+Classical.choice, Quot.sound]; the file's 5 deep Descartes axioms are NOT pulled in by the
+constructive sign-change side).
+
+Found nextSteps #1 (de-axiomatize `X²±1`) and #2 (general quadratic count) BOTH already done
+by prior sessions — §4 replaced the base file's `example_x2_*_sign_changes` axioms with
+theorems, and §12 (`signChangesInCoeffs_quadratic` + four corollaries) computes the count for
+every quadratic with **nonzero** middle term. Stale nextSteps did not reflect §12.
+
+Genuine remaining gap: §12's four corollaries all require `b ≠ 0` (nonzero middle); the
+`b = 0` general quadratic `a·X² + c` was only covered for the specific `X²±1` (§4). Closed it
+using the already-relocated `Fin 3` mid-zero engine:
+- `signChangesInCoeffs_quadratic_mid_zero_one` (`b=0`, `a·c<0` ⟹ `V=1`, general form of `X²−1`)
+- `signChangesInCoeffs_quadratic_mid_zero_no_change` (`b=0`, `0≤a·c` ⟹ `V=0`, general form of `X²+1`)
+- `signChanges_x2_sub_3x_add_2`: concrete tight witness `X²−3X+2=(X−1)(X−2)`, coeffs `[1,−3,2]`
+  (`+ − +`), `V=2` — first real polynomial here to ATTAIN the degree-2 Descartes bound with
+  two distinct positive roots (base examples `X²±1` only give `V=1,0`).
+
+**Upshot:** the coefficient sign-change count `V(a·X²+b·X+c)` is now determined in ALL sign
+configurations of `(a,b,c)` (both `b=0` and `b≠0`) — the degree-2 left-hand side of Descartes
+is complete. Only nextStep #3 (prove B1–B3 for GENERAL polynomials, making Sturm⟹Descartes
+unconditional) remains — that is the deep content behind the 5 standing axioms, not elementary.
+
+**Files Modified:** proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean (+3 thms; 1480→1512 lines).
+
+## Session 2026-07-12 (researcher-3) — general Fin n sign-change bounds (uniformizing the Fin 3 template)
+
+**Mode**: REVISIT (RICH, SOLVED-side). **Outcome**: +3 axiom-free theorems, offline EXIT 0.
+
+### What I Did
+Advanced nextStep (c) — the general `Fin n` sign-change count. The `Fin 3` family
+(`countSignChanges_three_alternating = 2`, `..._mid_ne_zero = 0`) are the n=3 instances of
+three general facts, all one-line corollaries of the existing `countSignChanges_nowhere_zero`
+(routes every count through adjacent opposite-sign pairs) + `card_adjacent` (n−1 adjacent
+pairs). Added to `DescartesRuleOfSignsOQ01OQ03.lean` (after `card_adjacent`):
+- `countSignChanges_le_of_nowhere_zero` : `V(f) ≤ n−1` — universal ceiling, the sequence-level
+  form of the Descartes degree bound `V(p) ≤ deg p` (filter ⊆ adjacent, `Finset.card_le_card`).
+- `countSignChanges_alternating_eq` : all adjacent pairs opposite-sign ⟹ `V(f) = n−1` (maximal;
+  `Finset.filter_congr` collapses {adjacent ∧ opp} to {adjacent}).
+- `countSignChanges_same_sign_eq_zero` : all adjacent pairs same-sign ⟹ `V(f) = 0` (the
+  opposite-sign filter is empty; `Finset.filter_eq_empty_iff`).
+
+### Key Findings
+- The nowhere-zero count machinery (`countSignChanges_nowhere_zero` reducing V to an adjacent-
+  pair filter, + `card_adjacent`) makes the two extremes and the ceiling of the general count
+  fall out uniformly — no case analysis, unlike the hand-written `Fin 3` fin_cases proofs.
+- `V(f) ≤ n−1` is the elementary sequence-side shadow of Descartes' degree bound; the strict
+  alternation case shows it is attained.
+
+### Honest status
+- Not new deep mathematics: the deep content (B1–B3 for GENERAL polynomials, making
+  Sturm⟹Descartes unconditional) remains the standing frontier / axiomatized elsewhere. Value:
+  completes the elementary general `Fin n` sign-change theory (extremes + ceiling) that the
+  file only had at n=2,3. Directly reuses in-file infra.
+- Verified: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/DescartesRuleOfSignsOQ01OQ03.lean` EXIT 0;
+  the 3 warnings in the log are in pre-existing quadratic lemmas (not my code). `#print axioms`
+  on all 3 → `[propext, Classical.choice, Quot.sound]`.
+
+### Files Modified
+- proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean (+3 thm, 1510→1565 lines, 0 axioms/sorries)
+- src/data/research/problems/descartes-rule-of-signs-oq-01-oq-03.json (knowledge)
+
+### Next Steps
+- Bridge the sequence-level `countSignChanges_le_of_nowhere_zero` to the polynomial
+  `signChangesInCoeffs p ≤ p.natDegree` for gap-free p (the coefficient sequence is nowhere-zero).
+- The deep B1–B3-for-general-p direction stays axiomatized / out of elementary scope.

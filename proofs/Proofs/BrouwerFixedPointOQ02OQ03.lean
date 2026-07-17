@@ -25,9 +25,11 @@
   The quadratic factor explains why Newton's method doubles the number of
   correct decimal digits at each step (when it converges).
 
-  **Status**: 0 sorries, 1 axiom (Taylor remainder existence for non-smooth side).
+  **Status**: 0 sorries, 0 axioms (fully machine-checked).
   The main result (one-step bound) is fully proved from an explicit ξ hypothesis.
-  A second theorem uses Mathlib's Taylor theorem to get ξ for C² functions.
+  A second theorem uses Mathlib's Taylor theorem to get ξ for C² functions, and
+  `newton_convergence_rate` proves the full doubling-exponent rate |xₙ - x*| ≤
+  ε·(C·ε)^(2ⁿ - 1) inside the Newton basin (C + 1)·ε ≤ 1.
 
   See BrouwerFixedPointOQ02.lean for the parent (computational fixed-point complexity).
 -/
@@ -87,16 +89,15 @@ theorem newton_step_quadratic_bound
     field_simp [hf'_nz]
     linarith [hfx₀]
   -- Step 2: Bound |error| ≤ |f''(ξ)| / (2|f'(x₀)|) · |x₀ - x*|²
-  rw [heq]
-  rw [abs_mul, abs_div]
-  rw [show |(x_star - x₀) ^ 2| = (x_star - x₀) ^ 2 from abs_of_nonneg (sq_nonneg _)]
-  rw [show (x_star - x₀) ^ 2 = (x₀ - x_star) ^ 2 from by ring]
-  rw [sq_abs]
-  gcongr <;>
-    first
-      | positivity
-      | exact hf''
-      | (rw [abs_mul, abs_of_pos two_pos]; linarith)
+  rw [heq, abs_mul, abs_div]
+  -- `|(x* - x₀)²| = |x₀ - x*|²` since squares are nonnegative and `|·|` is symmetric.
+  have hsq : |(x_star - x₀) ^ 2| = |x₀ - x_star| ^ 2 := by
+    rw [abs_of_nonneg (sq_nonneg _), ← sq_abs, abs_sub_comm]
+  rw [hsq, abs_mul, abs_of_pos (show (0 : ℝ) < 2 by norm_num)]
+  -- Goal: |f''(ξ)| / (2 * |f'(x₀)|) * |x₀ - x*|² ≤ M / (2 * m) * |x₀ - x*|²
+  -- `gcongr` reduces to `|f''(ξ)| ≤ M` and `2 * m ≤ 2 * |f'(x₀)|`, both discharged from
+  -- the hypotheses `hf''` and `hf'` already in context.
+  gcongr
 
 /-! ## Applying Mathlib's Taylor Theorem to Get ξ -/
 
@@ -110,24 +111,20 @@ theorem taylor_remainder_exists {f : ℝ → ℝ} {x₀ x_star : ℝ} (hlt : x�
     ∃ ξ ∈ Ioo x₀ x_star,
       f x_star - (f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀)) =
       iteratedDerivWithin 2 f (Icc x₀ x_star) ξ * (x_star - x₀) ^ 2 / 2 := by
-  -- Use Mathlib's taylor_mean_remainder_lagrange with n = 1
-  -- (v4.31: the lemma is now stated over the unordered interval `uIcc`/`uIoo`,
-  -- which coincide with `Icc`/`Ioo` here since `x₀ < x_star`.)
-  have huIcc : (Set.uIcc x₀ x_star : Set ℝ) = Icc x₀ x_star := uIcc_of_le hlt.le
-  have huIoo : uIoo x₀ x_star = Ioo x₀ x_star := uIoo_of_le hlt.le
-  have hrl := taylor_mean_remainder_lagrange (f := f) (x := x_star) (x₀ := x₀) (n := 1)
-      hlt.ne (by rw [huIcc]; exact hf_diff) (by rw [huIcc, huIoo]; exact hf'_diff)
-  rw [huIcc, huIoo] at hrl
-  obtain ⟨ξ, hξ, hrem⟩ := hrl
+  -- Use Mathlib's taylor_mean_remainder_lagrange with n = 1 forced as a literal, so the
+  -- Taylor polynomial and remainder appear as `taylorWithinEval f 1` / `iteratedDerivWithin 2`
+  -- (avoiding an elaboration mismatch between `1` and `One.one`).
+  obtain ⟨ξ, hξ, hrem⟩ :=
+    @taylor_mean_remainder_lagrange f x_star x₀ 1 hlt hf_diff hf'_diff
   refine ⟨ξ, hξ, ?_⟩
-  -- The Mathlib form: f x - taylorWithinEval f 1 (Icc x₀ x) x₀ x = f^(2)(ξ) * (x-x₀)^2 / 2!
-  -- taylorWithinEval f 1 gives f(x₀) + f'(x₀)(x-x₀) up to order 1
+  -- `taylorWithinEval f 1` is the order-1 Taylor polynomial `f(x₀) + f'(x₀)(x - x₀)`.
   have htw : taylorWithinEval f 1 (Icc x₀ x_star) x₀ x_star =
       f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀) := by
-    simp [taylorWithinEval_succ, taylor_within_zero_eval, mul_comm]
-  rw [← htw]
-  rw [hrem]
-  simp [Nat.factorial]
+    rw [taylor_within_apply]
+    simp [Finset.sum_range_succ, iteratedDerivWithin_zero, smul_eq_mul, Nat.factorial]
+    ring
+  rw [← htw, hrem]
+  norm_num [Nat.factorial]
 
 /-! ## Quadratic Convergence with C² Assumptions -/
 
@@ -154,10 +151,9 @@ theorem newton_step_C2_bound
   have hf_C1 : ContDiffOn ℝ 1 f (Icc x₀ x_star) := hf_C2.of_le (by norm_num)
   have hf'_cont : ContinuousOn (iteratedDerivWithin 1 f (Icc x₀ x_star)) (Icc x₀ x_star) := by
     exact (hf_C2.continuousOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt))
-  have hf'_diff : DifferentiableOn ℝ (iteratedDerivWithin 1 f (Icc x₀ x_star)) (Ioo x₀ x_star) := by
-    intro x hx
-    exact (hf_C2.differentiableOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt)
-      x (Ioo_subset_Icc_self hx)).mono Ioo_subset_Icc_self
+  have hf'_diff : DifferentiableOn ℝ (iteratedDerivWithin 1 f (Icc x₀ x_star)) (Ioo x₀ x_star) :=
+    (hf_C2.differentiableOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt)).mono
+      Ioo_subset_Icc_self
   obtain ⟨ξ, hξ, hrem⟩ := taylor_remainder_exists hlt hf_C1 hf'_diff
   -- Reformulate Taylor remainder as: f x_star = f x₀ + f'(x₀)(x* - x₀) + f''(ξ)/2 · (x*-x₀)²
   have htaylor : f x_star = f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀) +
@@ -171,23 +167,61 @@ theorem newton_step_C2_bound
 /-- Contraction ratio for Newton's method: C = M / (2 * m). -/
 noncomputable def newtonConstant (M m : ℝ) : ℝ := M / (2 * m)
 
-/-- If the one-step bound holds with constant C < 1, and C · |x₀ - x*| < 1,
-    then Newton's method converges to x* (the bound becomes exponentially better). -/
+/-- **Newton basin quadratic-convergence rate.**  If the one-step quadratic bound holds with
+    constant `C` (whenever the current iterate is within `1/(C+1)` of the root), and the initial
+    error is at most `ε` inside the Newton basin `(C + 1)·ε ≤ 1`, then the `n`-th iterate satisfies
+      `|xₙ - x*| ≤ ε · (C·ε)^{2ⁿ - 1}`,
+    the doubling-exponent hallmark of quadratic convergence.
+
+    The basin hypothesis `(C + 1)·ε ≤ 1` (equivalently `ε ≤ 1/(C+1)`) is the correct precondition:
+    the weaker `C·ε < 1` is insufficient because each application of `hstep` needs
+    `|xₙ - x*| ≤ 1/(C+1)`, and only `(C + 1)·ε ≤ 1` guarantees that from the inductive bound. -/
 theorem newton_convergence_rate
-    {f f' : ℝ → ℝ} {x_star : ℝ}
+    {f f' : ℝ → ℝ} {x_star x₀ : ℝ}
     {C : ℝ} (hC : 0 ≤ C)
     -- Each step satisfies the quadratic bound with the SAME constant C
     (hstep : ∀ n, |newtonIter f f' n x₀ - x_star|
       ≤ 1 / (C + 1) →
       |newtonStep f f' (newtonIter f f' n x₀) - x_star|
       ≤ C * |newtonIter f f' n x₀ - x_star| ^ 2)
-    {x₀ : ℝ} {ε : ℝ} (hε : 0 < ε) (hε1 : C * ε < 1)
+    {ε : ℝ} (hε : 0 < ε) (hε1 : (C + 1) * ε ≤ 1)
     (h0 : |x₀ - x_star| ≤ ε) :
     ∀ n, |newtonIter f f' n x₀ - x_star| ≤ ε * (C * ε) ^ (2^n - 1) := by
+  -- Basic facts about the contraction factor `C·ε ∈ [0, 1]`.
+  have hCε0 : 0 ≤ C * ε := mul_nonneg hC hε.le
+  have hCε1 : C * ε ≤ 1 := by nlinarith [hε.le]
   intro n
   induction n with
-  | zero => simp [newtonIter, hε.le, h0]
-  | succ n ih => sorry -- Deep induction: convergence rate doubles each step
+  | zero => simpa [newtonIter] using h0
+  | succ n ih =>
+    -- The inductive bound already keeps the iterate inside the basin `1/(C+1)`.
+    have hpow_le_one : (C * ε) ^ (2 ^ n - 1) ≤ 1 := by
+      calc (C * ε) ^ (2 ^ n - 1) ≤ 1 ^ (2 ^ n - 1) := pow_le_pow_left₀ hCε0 hCε1 _
+        _ = 1 := one_pow _
+    have hbasin : ε * (C * ε) ^ (2 ^ n - 1) ≤ 1 / (C + 1) := by
+      have hεbasin : ε ≤ 1 / (C + 1) := by
+        rw [le_div_iff₀ (by linarith)]; linarith [hε1]
+      calc ε * (C * ε) ^ (2 ^ n - 1) ≤ ε * 1 := by
+            exact mul_le_mul_of_nonneg_left hpow_le_one hε.le
+        _ = ε := mul_one ε
+        _ ≤ 1 / (C + 1) := hεbasin
+    -- Apply the one-step bound at the `n`-th iterate.
+    have hstep_n := hstep n (ih.trans hbasin)
+    have hsucc : |newtonIter f f' (n + 1) x₀ - x_star|
+        ≤ C * |newtonIter f f' n x₀ - x_star| ^ 2 := by
+      rw [newtonIter]; exact hstep_n
+    -- Square the inductive bound and simplify the exponent `2·(2ⁿ - 1) + 1 = 2^{n+1} - 1`.
+    have hsq : |newtonIter f f' n x₀ - x_star| ^ 2 ≤ (ε * (C * ε) ^ (2 ^ n - 1)) ^ 2 :=
+      pow_le_pow_left₀ (abs_nonneg _) ih 2
+    calc |newtonIter f f' (n + 1) x₀ - x_star|
+        ≤ C * |newtonIter f f' n x₀ - x_star| ^ 2 := hsucc
+      _ ≤ C * (ε * (C * ε) ^ (2 ^ n - 1)) ^ 2 := mul_le_mul_of_nonneg_left hsq hC
+      _ = ε * (C * ε) ^ (2 ^ (n + 1) - 1) := by
+            have hp : (2 : ℕ) ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+            have h1 : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+            have hk : 2 ^ (n + 1) - 1 = 2 * (2 ^ n - 1) + 1 := by omega
+            rw [hk, pow_add, pow_mul, pow_one]
+            ring
 
 /-! ## Key Mathematical Insight -/
 

@@ -20,7 +20,11 @@ DEFAULT_AGENTS=3
 MAX_AGENTS=8
 SESSION_PREFIX="erdos-enhancer"
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
 ROLE_FILE="$REPO_ROOT/.lean/roles/erdos-enhancer.md"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
@@ -77,7 +81,7 @@ get_running_agents() {
 # Create worktree for an agent.
 #
 # Historically this force-deleted any existing worktree at the slot-keyed path
-# (.loom/worktrees/enhancer-N) with `git worktree remove --force || rm -rf`,
+# (enhancer-N under the resolved worktree root) with `git worktree remove --force || rm -rf`,
 # silently destroying an in-flight agent's uncommitted work (#35223 / #35255).
 #
 # This version:
@@ -483,7 +487,8 @@ PROMPT_EOF
     print_success "All agents launched in isolated worktrees!"
     echo ""
     echo "Each agent has:"
-    echo "  - Its own worktree in .loom/worktrees/enhancer-N"
+    echo "  - Its own worktree: enhancer-N under the resolved worktree root"
+    echo "    (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT or .loom/config.json worktree.root)"
     echo "  - Its own branch: feature/enhancer-N"
     echo "  - Creates PRs instead of committing to main"
     echo ""
@@ -545,7 +550,9 @@ Usage:
   $0 --help             Show this help
 
 How it works:
-  1. Each agent gets its own worktree: .loom/worktrees/enhancer-N
+  1. Each agent gets its own worktree: enhancer-N under the resolved
+     worktree root (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT
+     env var or .loom/config.json worktree.root)
   2. Each agent works on its own branch: feature/enhancer-N
   3. Agents claim stubs atomically (no duplicates)
   4. Each agent: claim → enhance → commit → push → create PR → repeat

@@ -8,7 +8,8 @@
     ],
     "opens": [
       "Real",
-      "MeasureTheory"
+      "MeasureTheory",
+      "Nat"
     ],
     "namespace": "AreaOfCircleOQ07OQ05OQ01OQ01",
     "lineCount": 98,
@@ -61,12 +62,12 @@
       {
         "theorem": "Odd.neg_pow",
         "description": "(-a)^n = -(a^n) when n is odd. Applied with the odd exponent 2n+1 (witness ⟨n, rfl⟩ : Odd (2n+1)) to show the integrand x^{2n+1} e^{-x²} is odd.",
-        "module": "Mathlib.Algebra.GroupPower.Basic"
+        "module": "Mathlib.Algebra.Ring.Parity"
       },
       {
         "theorem": "integral_neg",
         "description": "∫ x, -f x = -∫ x, f x, the linearity step that turns the oddness rewrite ∫ f(-x) = ∫ -f into ∫ f(-x) = -∫ f.",
-        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
       },
       {
         "theorem": "AreaOfCircleOQ07OQ05OQ01.gaussian_even_moment",
@@ -83,23 +84,24 @@
       "Odd symmetry alone forces the integral to vanish — no value computation is needed. The entire content is that f(-x) = -f(x) and that the measure is negation-invariant, so the integral is its own negative.",
       "The vanishing is symmetry, not non-integrability. A naive reading might attribute ∫ = 0 to the integral failing to converge, but x^{2n+1} e^{-x²} is genuinely Lebesgue integrable (parent's integrable_pow_mul_gaussian); the integral converges and its value is exactly 0 because positive and negative halves cancel.",
       "integral_neg_eq_self is the clean encapsulation of the symmetry. Rather than splitting ℝ into (-∞,0] and [0,∞) and substituting, the single negation-invariance lemma (the additive image of integral_inv_eq_self for IsNegInvariant measures) does all the work in one rewrite.",
-      "Even and odd moments assemble into one parity-indexed statement. gaussian_moment puts the parent's combinatorial even formula and this entry's vanishing odd formula under a single if Even k, giving the complete moment table E[X^k]·√π-normalization in one theorem keyed on k."
+      "Even and odd moments assemble into one parity-indexed statement. gaussian_moment puts the parent's combinatorial even formula and this entry's vanishing odd formula under a single if Even k, giving the complete moment table E[X^k]·√π-normalization in one theorem keyed on k.",
+      "Having the complete sequence is a determinacy statement, not just a table of values. The Gaussian's moments grow slowly — the (2n)-th is (2n-1)‼·√π, of order (2n)!/(2ⁿ n!) — slowly enough to satisfy Carleman's condition ∑ₙ m₂ₙ^{-1/(2n)} = ∞, so e^{-x²} is (up to normalization) the *unique* weight with these moments: the Hamburger moment problem for the Gaussian is determinate. This is why computing every ∫ x^k e^{-x²} matters beyond bookkeeping — the sequence pins down the distribution itself, and it is the same slow growth that makes the Hermite polynomials (the open question below) a complete orthogonal basis under this weight."
     ]
   },
   "sections": [
     {
       "id": "docstring",
-      "title": "Module Docstring: Open Question and Symmetry Strategy",
+      "title": "Module Docstring, Imports, and Namespace Setup",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence.",
+      "endLine": 49,
+      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence. Closes with the `open Real MeasureTheory` / `open scoped Nat` setup (making `⁼‼` double-factorial notation available) and the `namespace AreaOfCircleOQ07OQ05OQ01OQ01` declaration.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
     },
     {
       "id": "odd-moment",
       "title": "The Odd Moments Vanish",
       "startLine": 50,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "theorem gaussian_odd_moment: ∫_ℝ x^{2n+1} e^{-x²} = 0. Sets f x = x^{2n+1} e^{-x²}, proves oddness f(-x) = -f(x) via Odd.neg_pow and neg_sq, then chains integral_neg_eq_self (∫ f(-x) = ∫ f) with the oddness rewrite ∫ f(-x) = -∫ f (integral_neg) to get ∫ f = -∫ f, closed by linarith. Unconditional — no integrability needed.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
     },
@@ -107,7 +109,7 @@
       "id": "first-moment",
       "title": "Sanity Check: The First Odd Moment",
       "startLine": 73,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "theorem gaussian_first_odd_moment: ∫_ℝ x e^{-x²} = 0, the n = 0 instance, confirming the general formula on the simplest case.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x\\, e^{-x^2}\\,dx = 0$"
     },
@@ -115,7 +117,7 @@
       "id": "full-sequence",
       "title": "The Full Moment Sequence",
       "startLine": 79,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "theorem gaussian_moment: ∫_ℝ x^k e^{-x²} = if Even k then (k-1)‼·√π/2^{k/2} else 0. Case-splits on Nat.even_or_odd k; the even branch k = k'+k' rewrites to the parent's gaussian_even_moment (using (k'+k')/2 = k' and k'+k' = 2k'), the odd branch k = 2k'+1 reduces to gaussian_odd_moment with the parity discharged by Nat.not_even_iff_odd.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{k} e^{-x^2}\\,dx = \\begin{cases}(k-1)!!\\sqrt{\\pi}/2^{k/2} & k\\text{ even}\\\\ 0 & k\\text{ odd}\\end{cases}$"
     }
@@ -142,6 +144,11 @@
       "targetId": "area-of-circle-oq-07-oq-05-oq-01-oq-02",
       "relationship": "related",
       "description": "Sibling (same parent). Lifts the even moments to an arbitrary Gaussian scale, ∫ x^{2n} e^{-a x²} = (2n-1)‼·√(π/a)/(2a)ⁿ, by the dilation x ↦ √a·x. It generalizes the even branch of this entry's full moment sequence in the scale parameter a; the odd moments proved here vanish at every scale by the same symmetry, so the two together give the complete scaled moment table."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-03",
+      "relationship": "related",
+      "description": "The even complement. That entry proves the even moments ∫_ℝ x^{2n} e^{-x²} = Γ(n+1/2) = (2n-1)‼·√π/2ⁿ (the half-integer Gamma ladder); this entry proves the odd moments ∫_ℝ x^{2n+1} e^{-x²} = 0. Together they give the complete moment sequence of the Gaussian weight e^{-x²} — and answer that entry's open question of packaging odd-moment vanishing with the even ladder into one statement about all moments."
     }
   ],
   "references": [

@@ -106,3 +106,52 @@ warning on `hasK2t_mono`, which does not use `[Fintype V]`). `#print axioms` on 
 
 File `Erdos1008OQ02OQ02.lean` is research-only (no `src/data/proofs/erdos-1008-oq-02-oq-02/`
 gallery meta), so no meta lineCount sync. 536→554 lines.
+
+## Session (researcher-1, 2026-07-11): VERIFICATION — build infra repaired, file VERIFIED axiom-free
+
+Discharged the standing next-step "VERIFY the graph-level GraphLevel section once the
+containerd/docker build backend is repaired". The build backend (`lake env lean` vs the
+prebuilt Mathlib oleans) is healthy again.
+
+- `lake env lean Proofs/Erdos1008OQ02OQ02.lean` → **exit 0**, 0 errors, 0 sorries
+  (only pre-existing deprecation / unused-section-variable warnings).
+- `#print axioms` on the headline theorems — `kst_edge_bound_of_free`,
+  `kst_edge_bound_leading_order`, `reiman_edge_bound_of_free`,
+  `hasK2t_two_of_edge_bound_lt` — each reports `[propext, Classical.choice, Quot.sound]`
+  only: **axiom-free** (no `sorryAx`, no `Lean.ofReduceBool`).
+
+The 2026-07-09 "UNVERIFIED (docker infra down)" caveat on the graph-level section is now
+resolved: the K_{2,t} development (both the free-graph edge bounds and the forcing
+converse, plus the leading-order closed form `ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`) is
+machine-checked. The OQ deliverable is complete and verified; the only remaining item
+noted earlier — an explicit ℝ leading-order corollary — was already shipped as
+`kst_edge_bound_leading_order` / `kst_radical_envelope`.
+
+## Session 2026-07-12 (researcher-7) — general K_{s,t} structural layer: monotonicity + symmetry
+
+**Mode:** REVISIT (node `Erdos1008OQ02OQ02.lean`, 1292→1338 lines, 0-axiom/0-sorry; JSON
+`leanFiles` lineCount is stale). **Outcome:** progress — 5 new axiom-free theorems.
+
+The general `HasKst G s t` (`∃ S T, |S|=s ∧ t ≤ |T| ∧ complete bipartite`) had the s=2
+monotonicity (`hasK2t_mono`) but no general-s structural closure and, notably, no symmetry.
+Added, right after `hasKst_two_iff_hasK2t`:
+
+- `hasKst_mono_t` — antitone in `t` (weaken `t ≤ |T|` via `le_trans`; same witness).
+- `hasKst_mono_s` — antitone in `s`: restrict to an `s'`-subset `S' ⊆ S` via
+  `Finset.exists_subset_card_eq (hss'.trans_eq hS.symm)`; fewer vertices ⇒ fewer adjacency
+  constraints, `T` still common.
+- `hasKst_mono` — monotone in both indices (compose the two).
+- `not_hasKst_mono` — contrapositive: `K_{s',t'}`-free ⇒ `K_{s,t}`-free (`s'≤s`, `t'≤t`);
+  the free classes nest.
+- `hasKst_comm : HasKst G s t ↔ HasKst G t s` — **symmetry `K_{s,t} ≅ K_{t,s}`**: cut the
+  `≥ t` common neighbours down to a `t`-set `T'`, which is a `t`-set whose `s` common
+  neighbours include `S` (via `G.Adj` symmetry). Both directions identical with `s,t` swapped.
+  Consequence: `ex(n; K_{s,t}) = ex(n; K_{t,s})`, so the KST forcing applies from either side.
+
+★Mathlib lemma is `Finset.exists_subset_card_eq (h : n ≤ #s) : ∃ t ⊆ s, #t = n`
+(NOT `Finset.exists_smaller_set`, which does not exist in this Mathlib v4.26).
+
+VERIFIED: `lake env lean` EXIT 0, no errors/sorries; `#print axioms` = [propext,(Classical.choice,)
+Quot.sound] for all five (no `sorryAx`, no `Lean.ofReduceBool`). File research-only (no gallery
+meta). OQ depth 2; **0 follow-ups** generated (general K_{s,t} theory saturated; the open frontier
+is the sharp lower-bound / Reiman construction, already tracked).

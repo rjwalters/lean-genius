@@ -124,8 +124,20 @@
     ]
   },
   "crossReferences": [
-    "stars-and-bars-weak-compositions",
-    "stars-and-bars-weak-compositions-oq-01",
-    "stars-and-bars-weak-compositions-oq-01-oq-01"
+    {
+      "targetId": "stars-and-bars-weak-compositions",
+      "relationship": "related",
+      "description": "Related result: Stars and Bars: Weak Compositions of n into k Parts Number C(n+k−1, n)."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-01",
+      "relationship": "related",
+      "description": "Related result: Generating-Function View of Weak Compositions: ∑ₙ #(weak comps) Xⁿ = 1/(1−X)ᵏ."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Related result: Generating Function of Positive Compositions: ∑ₙ #(positive comps) Xⁿ = Xᵏ/(1−X)ᵏ."
+    }
   ]
 }

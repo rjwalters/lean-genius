@@ -35,7 +35,7 @@
       {
         "theorem": "Even.pow_pos",
         "description": "For even n and nonzero base, 0 < baseⁿ. Gives (1+a)ⁿ > 0 for a < −1 in strict_even, where 1 + n·a is already negative.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Basic"
       },
       {
         "theorem": "exists_nat_gt",
@@ -45,7 +45,7 @@
       {
         "theorem": "mul_lt_mul_of_pos_right",
         "description": "Strict monotonicity of multiplication by a positive constant; drives the a > −1 induction in strict_pos.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ],
     "originalContributions": [

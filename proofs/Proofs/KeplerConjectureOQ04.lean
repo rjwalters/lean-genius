@@ -1249,4 +1249,129 @@ theorem hierarchy_rung_gaps :
    tetrahedronDimer_to_octahedron_gap_gt,
    octahedron_to_rhombicDodecahedron_gap_gt⟩
 
+/-!
+## The bottom of the density scale — `δ = 0` is the attained infimum
+
+`isGreatest_packingDensity_range` / `csSup_packingDensity_range_eq_one` (S21–S22) pin
+the *top* of the achievable-density range at the attained maximum `δ = 1` (the
+space-filling rhombic dodecahedron). This section records the dual *bottom*: the
+degenerate density-`0` packing `⟨0, …⟩` realizes `δ = 0`, which is a lower bound of the
+whole range by the `PackingDensity.nonneg` field, so `0` is the attained **minimum**.
+Together with the top these show the density functional's range is contained in `[0, 1]`
+with **both** endpoints attained. No axioms — purely the structure's `nonneg` / `le_one`
+fields (the Ulam/Bezdek–Kuperberg axioms bound only the *shape-restricted* sub-classes,
+not the abstract range). -/
+
+/-- **The density functional attains its infimum (`IsLeast` form).**  `0` is the least
+element of the range of `PackingDensity.density`: it lies in the range (witnessed by the
+degenerate packing `⟨0, le_refl 0, zero_le_one⟩`) and is a lower bound of the whole range
+(every `d.density ≥ 0` by `PackingDensity.nonneg`).  The dual of
+`isGreatest_packingDensity_range` (`δ = 1` attained at the top). No axioms. -/
+theorem isLeast_packingDensity_range :
+    IsLeast (Set.range (PackingDensity.density)) 0 := by
+  refine ⟨⟨⟨0, le_refl 0, zero_le_one⟩, rfl⟩, ?_⟩
+  rintro x ⟨d, rfl⟩
+  exact d.nonneg
+
+/-- **The packing-density infimum equals `0`.**  `sInf (range PackingDensity.density) = 0`:
+the greatest lower bound of all achievable convex-body packing densities is exactly the
+degenerate value `δ = 0`, and it is *attained*, so the infimum is a genuine minimum.  The
+Mathlib-native `sInf` packaging of `isLeast_packingDensity_range`, dual to
+`csSup_packingDensity_range_eq_one`.  No axioms. -/
+theorem csInf_packingDensity_range_eq_zero :
+    sInf (Set.range (PackingDensity.density)) = 0 :=
+  isLeast_packingDensity_range.csInf_eq
+
+/-- **The range of achievable densities is bounded below.**  `BddBelow (range
+PackingDensity.density)`: the density functional is bounded below by the degenerate floor
+`δ = 0`.  Immediate from `isLeast_packingDensity_range`; the dual of
+`bddAbove_packingDensity_range`. No axioms. -/
+theorem bddBelow_packingDensity_range :
+    BddBelow (Set.range (PackingDensity.density)) :=
+  isLeast_packingDensity_range.bddBelow
+
+/-- **Every achievable density lies in `[0, 1]`.**  `range PackingDensity.density ⊆
+Set.Icc 0 1`: each packing density is between `0` and `1` by the structure's `nonneg` and
+`le_one` fields.  Combined with `isLeast_packingDensity_range` (`0` attained) and
+`isGreatest_packingDensity_range` (`1` attained), the range sits inside the unit interval
+with both endpoints realized. No axioms. -/
+theorem packingDensity_range_subset_Icc :
+    Set.range (PackingDensity.density) ⊆ Set.Icc 0 1 := by
+  rintro x ⟨d, rfl⟩
+  exact ⟨d.nonneg, d.le_one⟩
+
+/-- **The density functional attains exactly the unit interval.**
+`range PackingDensity.density = Set.Icc 0 1`: the image of the density projection is
+*precisely* `[0, 1]`, not merely contained in it. This upgrades
+`packingDensity_range_subset_Icc` (`⊆`) to an equality by supplying the reverse
+inclusion — every `x ∈ [0, 1]` is realized, by the packing `⟨x, hx.1, hx.2⟩` whose two
+structure fields are exactly the interval endpoints. So beyond having its two endpoints
+attained (`isLeast_packingDensity_range`, `isGreatest_packingDensity_range`), the
+functional is *surjective onto* `[0, 1]`: it attains every intermediate value too — a
+genuine strengthening, since a bounded map with both endpoints attained can still skip
+interior values. No axioms. -/
+theorem range_packingDensity_eq_Icc :
+    Set.range (PackingDensity.density) = Set.Icc 0 1 := by
+  apply Set.Subset.antisymm packingDensity_range_subset_Icc
+  rintro x ⟨hx0, hx1⟩
+  exact ⟨⟨x, hx0, hx1⟩, rfl⟩
+
+/-!
+## S25 — topology and order-structure of the density spectrum
+
+S24 identifies the achievable-density range *exactly*: `range PackingDensity.density = Icc 0 1`
+(`range_packingDensity_eq_Icc`). Transporting the standard interval facts across that equality
+reveals the qualitative *shape* of the packing-density spectrum: it is **compact**,
+**connected**, **order-connected** (no gaps), and **infinite**. Two consequences of substance:
+
+* the five named benchmarks of `grand_density_hierarchy`
+  (`π/(3√2) < 0.7707 < 4000/4671 < 18/19 < 1`) are a *finite sample of a continuum* — the
+  spectrum has infinitely many achievable densities;
+* between any two achievable densities every intermediate density is achievable, so the entire
+  band above the FCC sphere floor up to the space-filling ceiling `δ = 1` is realized, with no
+  forbidden density gap (`exists_packingDensity_eq_of_mem_fcc_one`).
+
+All facts transport from `Set.Icc` lemmas across `range_packingDensity_eq_Icc`; no new axioms.
+-/
+
+/-- **The density spectrum is compact.** `IsCompact (range PackingDensity.density)`: the set of
+achievable convex-body packing densities is a compact subset of `ℝ`, being the closed bounded
+interval `[0, 1]`. Transported from `isCompact_Icc`. No axioms. -/
+theorem isCompact_packingDensity_range :
+    IsCompact (Set.range (PackingDensity.density)) := by
+  rw [range_packingDensity_eq_Icc]; exact isCompact_Icc
+
+/-- **The density spectrum is connected.** `IsConnected (range PackingDensity.density)`: the
+achievable densities form a single connected continuum `[0, 1]`, not a union of separated
+density regimes. Transported from `isConnected_Icc`. No axioms. -/
+theorem isConnected_packingDensity_range :
+    IsConnected (Set.range (PackingDensity.density)) := by
+  rw [range_packingDensity_eq_Icc]; exact isConnected_Icc (by norm_num)
+
+/-- **The density spectrum has no gaps (order-connected).** `(range density).OrdConnected`:
+whenever two densities `x ≤ y` are achievable, every intermediate density `z ∈ [x, y]` is
+achievable too. The packing landscape contains no forbidden density band between the sphere
+floor and the space-filling ceiling. Transported from `Set.ordConnected_Icc`. No axioms. -/
+theorem ordConnected_packingDensity_range :
+    (Set.range (PackingDensity.density)).OrdConnected := by
+  rw [range_packingDensity_eq_Icc]; exact Set.ordConnected_Icc
+
+/-- **The density spectrum is infinite.** `(range density).Infinite`: there are infinitely many
+achievable convex-body packing densities. The five named benchmarks of `grand_density_hierarchy`
+form a finite sample of a continuum — a qualitative complement to the extremal
+(`isLeast`/`isGreatest`) and exact-range (`range_packingDensity_eq_Icc`) results. Transported
+from `Set.Icc_infinite`. No axioms. -/
+theorem infinite_packingDensity_range :
+    (Set.range (PackingDensity.density)).Infinite := by
+  rw [range_packingDensity_eq_Icc]; exact Set.Icc_infinite (by norm_num)
+
+/-- **Every density in the band `[fccDensity, 1]` is realized by a packing.** For any target
+`t` with `fccDensity ≤ t ≤ 1` there is a convex-body packing of *exactly* density `t`: the whole
+band from the FCC sphere floor up to the space-filling ceiling `δ = 1` is filled, not merely the
+five named benchmarks. Immediate from `range_packingDensity_eq_Icc` and `fccDensity_pos`
+(so `0 ≤ t`). No axioms. -/
+theorem exists_packingDensity_eq_of_mem_fcc_one {t : ℝ}
+    (ht : fccDensity ≤ t) (ht1 : t ≤ 1) : ∃ p : PackingDensity, p.density = t :=
+  ⟨⟨t, le_trans fccDensity_pos.le ht, ht1⟩, rfl⟩
+
 end KeplerConjectureOQ04

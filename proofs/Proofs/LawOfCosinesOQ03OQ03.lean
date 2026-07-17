@@ -790,6 +790,273 @@ theorem hyperbolic_law_of_sines_ac (t : HyperbolicTriangle) :
   rw [div_eq_div_iff hA hC]; linear_combination law_of_sines_ac t
 
 -- ============================================================
+-- PART 9a: Explicit closed form of the common law-of-sines ratio
+-- ============================================================
+
+/-- **Square-root extraction of the Gram numerator along side `a`.** `sinh_a_num_sq`
+    only pins the *square* `(sinh a · sin B · sin C)² = gramNumerator`; since the base
+    `sinh a · sin B · sin C` is strictly positive it is the *positive* square root of the
+    Gram numerator: `sinh a · sin B · sin C = √(gramNumerator)`. This is the step that
+    turns the squared law of sines into an explicit (unsquared) value. -/
+theorem sinh_a_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.a * (Real.sin t.B * Real.sin t.C) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.a * (Real.sin t.B * Real.sin t.C) :=
+    mul_pos (sinh_a_pos t) (mul_pos (sin_B_pos t) (sin_C_pos t))
+  rw [← sinh_a_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **The common law-of-sines ratio in closed form.** `hyperbolic_law_of_sines` shows the
+    three ratios `sinh(side)/sin(opposite angle)` coincide but does not say *what* they
+    equal. Extracting the positive root of the Gram numerator pins the common value
+    explicitly and symmetrically in the three angles:
+
+      sinh a / sin A  =  √(cos²A + cos²B + cos²C + 2 cos A cos B cos C − 1)
+                          / (sin A · sin B · sin C).
+
+    So the "hyperbolic circumradius" constant of the law of sines is a function of the
+    *angles alone* — the manifest symmetry of the right-hand side under permuting
+    `A, B, C` is an independent proof that the three ratios agree. -/
+theorem law_of_sines_common_ratio (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A
+      = Real.sqrt (gramNumerator t)
+          / (Real.sin t.A * Real.sin t.B * Real.sin t.C) := by
+  have hA : Real.sin t.A ≠ 0 := (sin_A_pos t).ne'
+  have hprod : Real.sin t.A * Real.sin t.B * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hA (sin_B_pos t).ne') (sin_C_pos t).ne'
+  rw [div_eq_div_iff hA hprod]
+  linear_combination Real.sin t.A * sinh_a_mul_sin_eq_sqrt_gram t
+
+/-- **The common ratio is the same symmetric expression for all three sides.** Combining
+    the side-`a` closed form `law_of_sines_common_ratio` with the equality of ratios
+    (`hyperbolic_law_of_sines`, `hyperbolic_law_of_sines_ac`) shows every one of the three
+    law-of-sines ratios equals the *single* symmetric value `√(gramNumerator)/(sin A·sin B·sin C)`.
+    This exhibits the invariant `R = sinh(side)/sin(opposite angle)` of the hyperbolic
+    triangle in explicit closed form. -/
+theorem law_of_sines_common_ratio_symm (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C)
+      ∧ Real.sinh t.b / Real.sin t.B
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C)
+      ∧ Real.sinh t.c / Real.sin t.C
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C) := by
+  have ha := law_of_sines_common_ratio t
+  refine ⟨ha, ?_, ?_⟩
+  · rw [← (hyperbolic_law_of_sines t).1]; exact ha
+  · rw [← hyperbolic_law_of_sines_ac t]; exact ha
+
+-- ============================================================
+-- PART 9b: The FIRST law of cosines (dual identity, derived from the second)
+-- ============================================================
+
+/-- **Square-root extraction of the Gram numerator along side `b`.** The `b`-companion of
+    `sinh_a_mul_sin_eq_sqrt_gram`: since `sinh b · sin A · sin C > 0` and its square is the
+    Gram numerator, it is the positive square root `√(gramNumerator)`. -/
+theorem sinh_b_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.b * (Real.sin t.A * Real.sin t.C) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.b * (Real.sin t.A * Real.sin t.C) :=
+    mul_pos (sinh_b_pos t) (mul_pos (sin_A_pos t) (sin_C_pos t))
+  rw [← sinh_b_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **Square-root extraction of the Gram numerator along side `c`.** The `c`-companion of
+    `sinh_a_mul_sin_eq_sqrt_gram`. -/
+theorem sinh_c_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.c * (Real.sin t.A * Real.sin t.B) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.c * (Real.sin t.A * Real.sin t.B) :=
+    mul_pos (sinh_c_pos t) (mul_pos (sin_A_pos t) (sin_B_pos t))
+  rw [← sinh_c_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **First law of cosines at vertex `C`.** The classical hyperbolic identity dual to the
+    second law encoded in the triangle structure:
+
+      cosh c = cosh a · cosh b − sinh a · sinh b · cos C.
+
+    Unlike the second law (`lawA/lawB/lawC`, which give angles from sides), this expresses
+    a side directly from the other two sides and the included angle. It is *derived* from
+    the second-law structure: clearing denominators in the angle-only side formulas
+    (`cosh_a_eq`, `cosh_b_eq`, `cosh_c_eq`) and using that the two `sinh`-numerators share
+    the Gram numerator (`√gram · √gram = gram`) reduces the whole identity to the polynomial
+    Gram relation `(cos C + cos A cos B)(1 − cos²C) = NA·NB − gram·cos C`. Together with the
+    second law and the law of sines this closes the elementary trigonometry of the
+    hyperbolic triangle. -/
+theorem first_law_of_cosines_C (t : HyperbolicTriangle) :
+    Real.cosh t.c
+      = Real.cosh t.a * Real.cosh t.b - Real.sinh t.a * Real.sinh t.b * Real.cos t.C := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+      * (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) = gramNumerator t := by
+    rw [sinh_a_mul_sin_eq_sqrt_gram t, sinh_b_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2 ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsA hsB) (pow_ne_zero 2 hsC)
+  have hab : Real.cosh t.a * Real.cosh t.b
+        * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.B + Real.cos t.A * Real.cos t.C) := by
+    have e : Real.cosh t.a * Real.cosh t.b
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+        = (Real.cosh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.cosh t.b * (Real.sin t.A * Real.sin t.C)) := by ring
+    rw [e, h_a, h_b]
+  have hsab : Real.sinh t.a * Real.sinh t.b
+        * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) = gramNumerator t := by
+    have e : Real.sinh t.a * Real.sinh t.b
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+        = (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.c * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+        - gramNumerator t * Real.cos t.C := by
+    have pC : Real.sin t.C ^ 2 = 1 - Real.cos t.C ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.C; linarith
+    rw [pC]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.C ^ 2) * h_c
+  have hfin : Real.cosh t.c * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cosh t.a * Real.cosh t.b - Real.sinh t.a * Real.sinh t.b * Real.cos t.C)
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) := by
+    rw [key, show (Real.cosh t.a * Real.cosh t.b
+              - Real.sinh t.a * Real.sinh t.b * Real.cos t.C)
+            * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+          = Real.cosh t.a * Real.cosh t.b
+              * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+            - Real.sinh t.a * Real.sinh t.b
+                * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) * Real.cos t.C from by ring,
+      hab, hsab]
+  exact mul_right_cancel₀ hden hfin
+
+/-- **First law of cosines at vertex `A`.** `cosh a = cosh b · cosh c − sinh b · sinh c · cos A`.
+    The vertex-`A` instance of `first_law_of_cosines_C`, obtained by the same
+    denominator-clearing reduction to the Gram relation `NA·(1 − cos²A) = NB·NC − gram·cos A`. -/
+theorem first_law_of_cosines_A (t : HyperbolicTriangle) :
+    Real.cosh t.a
+      = Real.cosh t.b * Real.cosh t.c - Real.sinh t.b * Real.sinh t.c * Real.cos t.A := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.b * (Real.sin t.A * Real.sin t.C))
+      * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) = gramNumerator t := by
+    rw [sinh_b_mul_sin_eq_sqrt_gram t, sinh_c_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hsA) hsB) hsC
+  have hbc : Real.cosh t.b * Real.cosh t.c
+        * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B) := by
+    have e : Real.cosh t.b * Real.cosh t.c
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+        = (Real.cosh t.b * (Real.sin t.A * Real.sin t.C))
+            * (Real.cosh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, h_b, h_c]
+  have hsbc : Real.sinh t.b * Real.sinh t.c
+        * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) = gramNumerator t := by
+    have e : Real.sinh t.b * Real.sinh t.c
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+        = (Real.sinh t.b * (Real.sin t.A * Real.sin t.C))
+            * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.a * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B)
+        - gramNumerator t * Real.cos t.A := by
+    have pA : Real.sin t.A ^ 2 = 1 - Real.cos t.A ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.A; linarith
+    rw [pA]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.A ^ 2) * h_a
+  have hfin : Real.cosh t.a * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cosh t.b * Real.cosh t.c - Real.sinh t.b * Real.sinh t.c * Real.cos t.A)
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) := by
+    rw [key, show (Real.cosh t.b * Real.cosh t.c
+              - Real.sinh t.b * Real.sinh t.c * Real.cos t.A)
+            * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+          = Real.cosh t.b * Real.cosh t.c
+              * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+            - Real.sinh t.b * Real.sinh t.c
+                * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) * Real.cos t.A from by ring,
+      hbc, hsbc]
+  exact mul_right_cancel₀ hden hfin
+
+/-- **First law of cosines at vertex `B`.** `cosh b = cosh a · cosh c − sinh a · sinh c · cos B`.
+    The vertex-`B` instance, via the Gram relation `NB·(1 − cos²B) = NA·NC − gram·cos B`. -/
+theorem first_law_of_cosines_B (t : HyperbolicTriangle) :
+    Real.cosh t.b
+      = Real.cosh t.a * Real.cosh t.c - Real.sinh t.a * Real.sinh t.c * Real.cos t.B := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+      * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) = gramNumerator t := by
+    rw [sinh_a_mul_sin_eq_sqrt_gram t, sinh_c_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsA (pow_ne_zero 2 hsB)) hsC
+  have hac : Real.cosh t.a * Real.cosh t.c
+        * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B) := by
+    have e : Real.cosh t.a * Real.cosh t.c
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+        = (Real.cosh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.cosh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, h_a, h_c]
+  have hsac : Real.sinh t.a * Real.sinh t.c
+        * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) = gramNumerator t := by
+    have e : Real.sinh t.a * Real.sinh t.c
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+        = (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.b * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B)
+        - gramNumerator t * Real.cos t.B := by
+    have pB : Real.sin t.B ^ 2 = 1 - Real.cos t.B ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.B; linarith
+    rw [pB]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.B ^ 2) * h_b
+  have hfin : Real.cosh t.b * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cosh t.a * Real.cosh t.c - Real.sinh t.a * Real.sinh t.c * Real.cos t.B)
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) := by
+    rw [key, show (Real.cosh t.a * Real.cosh t.c
+              - Real.sinh t.a * Real.sinh t.c * Real.cos t.B)
+            * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+          = Real.cosh t.a * Real.cosh t.c
+              * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+            - Real.sinh t.a * Real.sinh t.c
+                * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) * Real.cos t.B from by ring,
+      hac, hsac]
+  exact mul_right_cancel₀ hden hfin
+
+-- ============================================================
 -- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
 -- ============================================================
 
@@ -933,5 +1200,228 @@ theorem equilateral_cosh_a (t : HyperbolicTriangle)
     Real.cosh t.a = Real.cos t.C / (1 - Real.cos t.C) := by
   obtain ⟨hab, hbc⟩ := equilateral_sides_eq t hAB hBC
   rw [hab, hbc, equilateral_cosh t hAB hBC]
+
+-- ============================================================
+-- PART 12: The full equilateral ⟺ equiangular characterization
+-- ============================================================
+
+/-- **Cyclic relabeling of a hyperbolic triangle** `(A,B,C) ↦ (B,C,A)`,
+    `(a,b,c) ↦ (b,c,a)`. The three second-law-of-cosines fields permute cyclically
+    (`lawA ↦ lawB ↦ lawC ↦ lawA`, each up to commutativity of the products), so the
+    rotation is again a valid `HyperbolicTriangle`. It carries the `B`-vs-`C` pair into the
+    `A`-vs-`B` slots, letting the `(a,b)/(A,B)` order and isosceles lemmas be reused for the
+    `(b,c)/(B,C)` pair without re-deriving the `cosh` comparison. -/
+def HyperbolicTriangle.rotate (t : HyperbolicTriangle) : HyperbolicTriangle where
+  a := t.b; b := t.c; c := t.a
+  A := t.B; B := t.C; C := t.A
+  ha := t.hb; hb := t.hc; hc := t.ha
+  hA := t.hB; hB := t.hC; hC := t.hA
+  hA_lt := t.hB_lt; hB_lt := t.hC_lt; hC_lt := t.hA_lt
+  lawA := by rw [t.lawB]; ring
+  lawB := by rw [t.lawC]; ring
+  lawC := t.lawA
+
+/-- **Isosceles criterion for the `(b,c)/(B,C)` pair.** `b = c ↔ B = C`, the companion of
+    `side_eq_iff_angle_eq` (`a = b ↔ A = B`), obtained by applying it to the cyclic
+    relabeling `rotate` (which puts `(B,C,b,c)` into the `(A,B,a,b)` roles). -/
+theorem side_eq_iff_angle_eq_bc (t : HyperbolicTriangle) : t.b = t.c ↔ t.B = t.C :=
+  side_eq_iff_angle_eq t.rotate
+
+/-- **Isosceles criterion for the `(c,a)/(C,A)` pair.** `c = a ↔ C = A`, the third leg of
+    the cyclic isosceles trio completing `side_eq_iff_angle_eq` (`a = b ↔ A = B`) and
+    `side_eq_iff_angle_eq_bc` (`b = c ↔ B = C`), obtained by applying the `(b,c)` criterion
+    to `rotate` (which cycles `(a,b,c) → (b,c,a)`, sending the `(b,c)` pair to `(c,a)`). With
+    its two companions this gives the isosceles criterion for every pair of a hyperbolic
+    triangle. -/
+theorem side_eq_iff_angle_eq_ca (t : HyperbolicTriangle) : t.c = t.a ↔ t.C = t.A :=
+  side_eq_iff_angle_eq_bc t.rotate
+
+/-- **Equilateral ⟺ equiangular.** A hyperbolic triangle has all three sides equal iff it
+    has all three angles equal. The `⟸` direction is `equilateral_sides_eq` (equal angles
+    force equal sides); the `⟹` direction combines the two isosceles criteria
+    `side_eq_iff_angle_eq` (for `a, b`) and `side_eq_iff_angle_eq_bc` (for `b, c`).
+    Together with hyperbolic AAA congruence this pins down the equilateral triangles as
+    exactly the equiangular ones — a single congruence class for each admissible common
+    angle `θ ∈ (0, π/3)`. -/
+theorem equilateral_iff_equiangular (t : HyperbolicTriangle) :
+    (t.a = t.b ∧ t.b = t.c) ↔ (t.A = t.B ∧ t.B = t.C) := by
+  constructor
+  · rintro ⟨hab, hbc⟩
+    exact ⟨(side_eq_iff_angle_eq t).mp hab, (side_eq_iff_angle_eq_bc t).mp hbc⟩
+  · rintro ⟨hAB, hBC⟩
+    exact equilateral_sides_eq t hAB hBC
+
+-- ============================================================
+-- PART 12: Cyclic completion of the side–angle order-equivalence
+-- ============================================================
+
+/-- **Side–angle order-equivalence for the `(b,c)/(B,C)` pair (strict).** `b < c ↔ B < C`,
+    the cyclic companion of `side_lt_iff_angle_lt` (`a < b ↔ A < B`), obtained by applying it
+    to the relabeling `rotate` (which cycles `(a,b,c) → (b,c,a)` and `(A,B,C) → (B,C,A)`, so the
+    `(a,b)/(A,B)` slots become the `(b,c)/(B,C)` pair). -/
+theorem side_lt_iff_angle_lt_bc (t : HyperbolicTriangle) : t.b < t.c ↔ t.B < t.C :=
+  side_lt_iff_angle_lt t.rotate
+
+/-- **Side–angle order-equivalence for the `(c,a)/(C,A)` pair (strict).** `c < a ↔ C < A`, the
+    third leg completing the strict order trio, obtained by applying the `(b,c)` criterion to
+    `rotate`. With its two companions this gives the strict order-equivalence for every pair. -/
+theorem side_lt_iff_angle_lt_ca (t : HyperbolicTriangle) : t.c < t.a ↔ t.C < t.A :=
+  side_lt_iff_angle_lt_bc t.rotate
+
+/-- **Non-strict side–angle order-equivalence for the `(b,c)/(B,C)` pair.** `b ≤ c ↔ B ≤ C`,
+    the `≤` companion via `rotate`. -/
+theorem side_le_iff_angle_le_bc (t : HyperbolicTriangle) : t.b ≤ t.c ↔ t.B ≤ t.C :=
+  side_le_iff_angle_le t.rotate
+
+/-- **Non-strict side–angle order-equivalence for the `(c,a)/(C,A)` pair.** `c ≤ a ↔ C ≤ A`,
+    completing the `≤` order trio for every pair of a hyperbolic triangle. -/
+theorem side_le_iff_angle_le_ca (t : HyperbolicTriangle) : t.c ≤ t.a ↔ t.C ≤ t.A :=
+  side_le_iff_angle_le_bc t.rotate
+
+/-- **Global side–angle order correspondence.** Sorting the angles sorts the sides the same
+    way: `A ≤ B ≤ C ⟹ a ≤ b ≤ c`, so the longest side lies opposite the largest angle and the
+    shortest opposite the smallest. The qualitative ordering matches the Euclidean law even
+    though hyperbolic sides are a strictly *decreasing* function of the opposite angle when the
+    other two are pinned (`side_antitone_in_angle`): the two facts are consistent because
+    reordering the angles also reindexes which side is "opposite". Assembles the three cyclic
+    non-strict order-equivalences. -/
+theorem sides_ordered_of_angles_ordered (t : HyperbolicTriangle)
+    (hAB : t.A ≤ t.B) (hBC : t.B ≤ t.C) : t.a ≤ t.b ∧ t.b ≤ t.c :=
+  ⟨(side_le_iff_angle_le t).mpr hAB, (side_le_iff_angle_le_bc t).mpr hBC⟩
+
+-- ============================================================
+-- PART 8: The hyperbolic triangle inequality
+-- ============================================================
+
+/-- **Hyperbolic triangle inequality at side `a`.** In every hyperbolic triangle the
+    side `a` is shorter than the sum of the other two sides: `a < b + c`. This is the
+    metric companion to the AAA / order results above, and it follows cleanly from the
+    *first* law of cosines. Since `cosh(b + c) = cosh b cosh c + sinh b sinh c`
+    (`Real.cosh_add`) while `first_law_of_cosines_A` gives
+    `cosh a = cosh b cosh c − sinh b sinh c cos A`, the difference is
+    `cosh(b + c) − cosh a = sinh b sinh c (1 + cos A) > 0` — positive because
+    `sinh b, sinh c > 0` and `cos A > −1` (from `0 < A < π`, via the antitonicity of
+    `cos` on `[0, π]`). Strict monotonicity of `cosh` on `[0, ∞)` then upgrades
+    `cosh a < cosh(b + c)` to `a < b + c`. -/
+theorem hyperbolic_triangle_inequality_a (t : HyperbolicTriangle) : t.a < t.b + t.c := by
+  have hcosA : -1 < Real.cos t.A := by
+    have h := Real.cos_lt_cos_of_nonneg_of_le_pi t.hA.le le_rfl t.hA_lt
+    rwa [Real.cos_pi] at h
+  have hsb := sinh_b_pos t
+  have hsc := sinh_c_pos t
+  have hcosh_lt : Real.cosh t.a < Real.cosh (t.b + t.c) := by
+    rw [Real.cosh_add, first_law_of_cosines_A t]
+    nlinarith [mul_pos (mul_pos hsb hsc) (show (0 : ℝ) < 1 + Real.cos t.A by linarith)]
+  exact (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t.ha.le)
+    (mem_Ici.mpr (add_pos t.hb t.hc).le)).mp hcosh_lt
+
+/-- **Hyperbolic triangle inequality at side `b`.** `b < a + c`, the cyclic image of
+    `hyperbolic_triangle_inequality_a` under the relabeling `rotate` (which sends
+    `(a, b, c) ↦ (b, c, a)`). -/
+theorem hyperbolic_triangle_inequality_b (t : HyperbolicTriangle) : t.b < t.a + t.c := by
+  have h : t.b < t.c + t.a := hyperbolic_triangle_inequality_a t.rotate
+  linarith
+
+/-- **Hyperbolic triangle inequality at side `c`.** `c < a + b`, the second cyclic image
+    of `hyperbolic_triangle_inequality_a` under `rotate`. Together with the `a` and `b`
+    forms this gives all three hyperbolic triangle inequalities. -/
+theorem hyperbolic_triangle_inequality_c (t : HyperbolicTriangle) : t.c < t.a + t.b :=
+  hyperbolic_triangle_inequality_a t.rotate.rotate
+
+/-- **Reverse hyperbolic triangle inequality at side `a`.** `|b − c| < a`: the side `a`
+    exceeds the absolute difference of the other two sides. This is the two-sided packaging
+    of the `b` and `c` triangle inequalities (`b < a + c` and `c < a + b`), and completes
+    the standard metric bracket `|b − c| < a < b + c` for a hyperbolic triangle. -/
+theorem hyperbolic_abs_sub_lt_a (t : HyperbolicTriangle) : |t.b - t.c| < t.a := by
+  rw [abs_lt]
+  exact ⟨by linarith [hyperbolic_triangle_inequality_c t],
+    by linarith [hyperbolic_triangle_inequality_b t]⟩
+
+-- ============================================================
+-- PART 13: Angle-from-sides inversion and the SSS / SAS / ASA congruence criteria
+-- ============================================================
+
+/-- **Cosine of angle `A` from the three sides.** Solving the first law of cosines at `A`
+    (`first_law_of_cosines_A`) for the angle: `cos A = (cosh b · cosh c − cosh a)/(sinh b ·
+    sinh c)`. This is the exact dual of `cosh_a_eq` (which recovers a side from the angles):
+    here the three *sides* determine each angle. Because `sinh b, sinh c > 0` the quotient is
+    well defined, and the value lies in `(−1, 1)` for a genuine triangle. -/
+theorem cos_A_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.A =
+      (Real.cosh t.b * Real.cosh t.c - Real.cosh t.a) / (Real.sinh t.b * Real.sinh t.c) := by
+  have hbc : Real.sinh t.b * Real.sinh t.c ≠ 0 := (mul_pos (sinh_b_pos t) (sinh_c_pos t)).ne'
+  rw [eq_div_iff hbc]
+  linear_combination first_law_of_cosines_A t
+
+/-- **Cosine of angle `B` from the three sides.** `cos B = (cosh a · cosh c − cosh b)/(sinh a
+    · sinh c)`, the vertex-`B` inversion of `first_law_of_cosines_B`. -/
+theorem cos_B_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.B =
+      (Real.cosh t.a * Real.cosh t.c - Real.cosh t.b) / (Real.sinh t.a * Real.sinh t.c) := by
+  have hac : Real.sinh t.a * Real.sinh t.c ≠ 0 := (mul_pos (sinh_a_pos t) (sinh_c_pos t)).ne'
+  rw [eq_div_iff hac]
+  linear_combination first_law_of_cosines_B t
+
+/-- **Cosine of angle `C` from the three sides.** `cos C = (cosh a · cosh b − cosh c)/(sinh a
+    · sinh b)`, the vertex-`C` inversion of `first_law_of_cosines_C`. -/
+theorem cos_C_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.C =
+      (Real.cosh t.a * Real.cosh t.b - Real.cosh t.c) / (Real.sinh t.a * Real.sinh t.b) := by
+  have hab : Real.sinh t.a * Real.sinh t.b ≠ 0 := (mul_pos (sinh_a_pos t) (sinh_b_pos t)).ne'
+  rw [eq_div_iff hab]
+  linear_combination first_law_of_cosines_C t
+
+/-- **Hyperbolic SSS congruence.** Two hyperbolic triangles with the same three *sides* have
+    the same three angles. This is the converse direction to AAA congruence (PART 4): where
+    AAA recovers the sides from the angles via the second law, SSS recovers the angles from
+    the sides via the first law. Each angle's cosine is a function of the three sides
+    (`cos_A_eq_of_sides` etc.), so equal sides force equal cosines, and `cos` is injective on
+    `[0, π]` (`Real.strictAntiOn_cos.injOn`), giving equal angles. -/
+theorem sss_congruence (t₁ t₂ : HyperbolicTriangle)
+    (ha : t₁.a = t₂.a) (hb : t₁.b = t₂.b) (hc : t₁.c = t₂.c) :
+    t₁.A = t₂.A ∧ t₁.B = t₂.B ∧ t₁.C = t₂.C := by
+  refine ⟨?_, ?_, ?_⟩
+  · have hcos : Real.cos t₁.A = Real.cos t₂.A := by
+      rw [cos_A_eq_of_sides t₁, cos_A_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hA.le, t₁.hA_lt.le⟩ ⟨t₂.hA.le, t₂.hA_lt.le⟩ hcos
+  · have hcos : Real.cos t₁.B = Real.cos t₂.B := by
+      rw [cos_B_eq_of_sides t₁, cos_B_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hB.le, t₁.hB_lt.le⟩ ⟨t₂.hB.le, t₂.hB_lt.le⟩ hcos
+  · have hcos : Real.cos t₁.C = Real.cos t₂.C := by
+      rw [cos_C_eq_of_sides t₁, cos_C_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hC.le, t₁.hC_lt.le⟩ ⟨t₂.hC.le, t₂.hC_lt.le⟩ hcos
+
+/-- **Hyperbolic SAS congruence.** Two hyperbolic triangles agreeing on two sides and the
+    *included* angle (`a`, `b`, and the angle `C` between them) are congruent: the third side
+    `c` and the remaining angles `A, B` all coincide. The included side `c` is pinned by the
+    first law of cosines at `C` (`first_law_of_cosines_C`: `cosh c` is a function of `a, b, C`),
+    and `cosh` is injective on `[0, ∞)`; once all three sides agree, `sss_congruence` supplies
+    the remaining angles. -/
+theorem sas_congruence (t₁ t₂ : HyperbolicTriangle)
+    (ha : t₁.a = t₂.a) (hb : t₁.b = t₂.b) (hC : t₁.C = t₂.C) :
+    t₁.c = t₂.c ∧ t₁.A = t₂.A ∧ t₁.B = t₂.B := by
+  have hc : t₁.c = t₂.c := by
+    have hcosh : Real.cosh t₁.c = Real.cosh t₂.c := by
+      rw [first_law_of_cosines_C t₁, first_law_of_cosines_C t₂, ha, hb, hC]
+    exact Real.cosh_strictMonoOn.injOn (mem_Ici.mpr t₁.hc.le) (mem_Ici.mpr t₂.hc.le) hcosh
+  obtain ⟨hA, hB, _⟩ := sss_congruence t₁ t₂ ha hb hc
+  exact ⟨hc, hA, hB⟩
+
+/-- **Hyperbolic ASA congruence.** Two hyperbolic triangles agreeing on two angles and the
+    *included* side (`A`, `B`, and the side `c` between them) are congruent: the third angle
+    `C` and the remaining sides `a, b` all coincide. Unlike Euclidean geometry, two angles do
+    **not** determine the third (the angle sum is not fixed) — but the included side closes the
+    gap: the second law at `C` (`lawC`: `cos C = −cos A cos B + sin A sin B · cosh c`) makes
+    `cos C` a function of `A, B, c`, so `C` is pinned by injectivity of `cos` on `[0, π]`; then
+    all three angles agree and AAA congruence (PART 4) supplies the remaining sides. -/
+theorem asa_congruence (t₁ t₂ : HyperbolicTriangle)
+    (hA : t₁.A = t₂.A) (hB : t₁.B = t₂.B) (hc : t₁.c = t₂.c) :
+    t₁.C = t₂.C ∧ t₁.a = t₂.a ∧ t₁.b = t₂.b := by
+  have hC : t₁.C = t₂.C := by
+    have hcos : Real.cos t₁.C = Real.cos t₂.C := by
+      rw [t₁.lawC, t₂.lawC, hA, hB, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hC.le, t₁.hC_lt.le⟩ ⟨t₂.hC.le, t₂.hC_lt.le⟩ hcos
+  obtain ⟨ha, hb, _⟩ := aaa_congruence t₁ t₂ hA hB hC
+  exact ⟨hC, ha, hb⟩
 
 end HyperbolicAAA

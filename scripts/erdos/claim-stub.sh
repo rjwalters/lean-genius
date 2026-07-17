@@ -43,6 +43,12 @@ STUBS_SCRIPT="$REPO_ROOT/scripts/erdos/find-stubs.ts"
 HAS_QUALITY_ISSUES="$REPO_ROOT/scripts/erdos/has-quality-issues.sh"
 COMPLETIONS_DIR="$REPO_ROOT/.loom/signals/completions"
 
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
+
 # Defaults
 TTL_MINUTES="${CLAIM_TTL:-60}"
 AGENT_ID="${ENHANCER_ID:-enhancer-$$}"
@@ -122,7 +128,7 @@ claim_stub() {
     local erdos_number="$1"
     local lock_dir="$CLAIMS_DIR/erdos-$erdos_number.lock"
     local claim_file="$CLAIMS_DIR/erdos-$erdos_number.json"
-    local worktree_path="$REPO_ROOT/.loom/worktrees/erdos-$erdos_number"
+    local worktree_path="$WORKTREES_DIR/erdos-$erdos_number"
     local branch_name="feature/erdos-$erdos_number-enhance"
 
     # Check if already completed
@@ -197,7 +203,7 @@ EOF
 # Setup problem-specific worktree (creates new or reuses existing with partial work)
 setup_problem_worktree() {
     local erdos_number="$1"
-    local worktree_path="$REPO_ROOT/.loom/worktrees/erdos-$erdos_number"
+    local worktree_path="$WORKTREES_DIR/erdos-$erdos_number"
     local branch_name="feature/erdos-$erdos_number-enhance"
 
     # Check if worktree already exists (has partial work from previous agent)
@@ -209,6 +215,10 @@ setup_problem_worktree() {
         (cd "$worktree_path" && git fetch origin main 2>/dev/null) || true
         return 0
     fi
+
+    # Ensure the resolved worktree base exists before `git worktree add`
+    # (the resolver never creates directories).
+    mkdir -p "$WORKTREES_DIR"
 
     # Check if branch exists on remote (previous work pushed)
     if git ls-remote --heads origin "$branch_name" 2>/dev/null | grep -q "$branch_name"; then

@@ -10,7 +10,13 @@ a saturated planar graph with more than 3 vertices?
 Reference: https://erdosproblems.com/1019
 -/
 
-import Mathlib
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
+import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic
 
 open SimpleGraph
 
@@ -57,17 +63,11 @@ structure GraphMinorWitness {α : Type*} {β : Type*}
 def HasMinor {α : Type*} {β : Type*} (G : SimpleGraph α) (H : SimpleGraph β) : Prop :=
   Nonempty (GraphMinorWitness G H)
 
-/-- The complete graph K_n.
-    NOTE: defined here (rather than at first logical use point) because Lean requires
-    definitions before use; `completeGraph`/`completeBipartite` below are referenced by
-    K5/K33 immediately, so they must be reordered above this point (v4.31 no longer lets
-    a later local `def` shadow-resolve an earlier forward reference — it instead resolves
-    to Mathlib's `SimpleGraph.completeGraph : Type* → SimpleGraph α`, which rejects a
-    numeral argument). -/
+/-- The complete graph K_n (local definition on `Fin n`). -/
 def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j
-  symm.symm := fun _ _ h => h.symm
-  loopless.irrefl := fun _ h => h rfl
+  symm := fun _ _ h => h.symm
+  loopless := fun _ h => h rfl
 
 instance completeGraph_decidable (n : ℕ) : DecidableRel (completeGraph n).Adj :=
   fun i j => if h : i = j then isFalse (fun h' => h' h) else isTrue h
@@ -78,8 +78,8 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => True
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
-  symm.symm := fun x y h => by cases x <;> cases y <;> simp_all
-  loopless.irrefl := fun x h => by cases x <;> simp at h
+  symm := fun x y h => by cases x <;> cases y <;> simp_all
+  loopless := fun x h => by cases x <;> simp at h
 
 instance completeBipartite_decidable (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
   fun x y => match x, y with
@@ -106,10 +106,10 @@ private theorem no_minor_of_card_lt {α : Type*} {β : Type*}
   have hf : Function.Injective f := by
     intro i j heq
     by_contra hij
-    have h1 : f i ∈ w.branchSet i := (w.nonempty i).choose_spec
-    have h2 : f j ∈ w.branchSet j := (w.nonempty j).choose_spec
-    rw [heq] at h1
-    exact Set.disjoint_left.mp (w.disjoint hij) h1 h2
+    have hi : f i ∈ w.branchSet i := (w.nonempty i).choose_spec
+    have hj : f j ∈ w.branchSet j := (w.nonempty j).choose_spec
+    rw [heq] at hi
+    exact Set.disjoint_left.mp (w.disjoint hij) hi hj
   exact absurd (Fintype.card_le_of_injective f hf) (by omega)
 
 /-
@@ -123,7 +123,7 @@ A graph is planar iff it has no K₅ or K₃,₃ minor (Wagner's theorem, 1937).
 def isPlanar (G : SimpleGraph V) : Prop :=
   ¬HasMinor G K5 ∧ ¬HasMinor G K33
 
-/-  Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
+/- Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
 /-
 ## Saturated Planar Graphs
 
@@ -185,7 +185,7 @@ theorem K3_saturated_planar : isSaturatedPlanar K3 := by
     exact no_minor_of_card_lt K3 K33 (by decide)
   · -- |V| = 3 ≥ 3
     simp [Fintype.card_fin]
-  · -- edgeCount K₃ = 3 = 3·3-6
+  · -- edgeCount K₃ = C(3,2) = 3 = 3·3-6
     native_decide
 
 /-- Turán's theorem: graphs with > n²/4 edges contain triangles.
@@ -202,31 +202,14 @@ theorem turan_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
     intro S ⟨hClique, hCard⟩
     obtain ⟨u, hu, v, hv, huv, hnadj⟩ := h S hCard
     exact hnadj (hClique (Finset.mem_coe.mpr hu) (Finset.mem_coe.mpr hv) huv)
-  -- By Mathlib Turán bound, |E| ≤ n²/4
+  -- By Mathlib Turán bound (r = 2), |E| ≤ ⌊n²/4⌋
   unfold edgeCount turanEdges at hedge
-  -- `card_edgeFinset_le` is now stated for general clique-size `r+1` via the Turán-graph
-  -- formula `(n^2 - (n%r)^2)*(r-1)/(2*r) + (n%r).choose 2`; here r = 2. Fully expand n in
-  -- terms of its even/odd witness so the nonlinear `n^2` becomes a consistent atom that
-  -- `omega` can relate across both bounds (rather than leaving mismatched `n^2/4` vs.
-  -- `(n^2-1)/4` opaque subterms).
   have hbound := hcf.card_edgeFinset_le
-  dsimp only at hbound
-  generalize hn : Fintype.card V = n at hedge hbound
-  rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
-  · subst hk
-    have hmod : (k + k) % 2 = 0 := by omega
-    simp only [hmod] at hbound
-    norm_num [Nat.choose] at hbound
-    have hexp : (k + k) ^ 2 = 4 * (k * k) := by ring
-    rw [hexp] at hedge hbound
-    omega
-  · subst hk
-    have hmod : (2 * k + 1) % 2 = 1 := by omega
-    simp only [hmod] at hbound
-    norm_num [Nat.choose] at hbound
-    have hexp : (2 * k + 1) ^ 2 = 4 * (k * k) + 4 * k + 1 := by ring
-    rw [hexp] at hedge hbound
-    omega
+  have hkey : G.edgeFinset.card ≤ Fintype.card V ^ 2 / 4 := by
+    refine le_trans hbound ?_
+    rcases Nat.mod_two_eq_zero_or_one (Fintype.card V) with hm | hm <;>
+      rw [hm] <;> norm_num <;> omega
+  omega
 
 /-
 ## The Induced Subgraph
@@ -237,8 +220,8 @@ Checking for substructures.
 /-- The induced subgraph on a set of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj u v := G.Adj u.val v.val
-  symm.symm := fun _ _ h => G.symm.symm _ _ h
-  loopless.irrefl := fun _ h => G.loopless.irrefl _ h
+  symm := fun _ _ h => G.symm h
+  loopless := fun _ h => G.loopless _ h
 
 /-- A graph contains a saturated planar subgraph on k vertices. -/
 def hasSaturatedPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -280,9 +263,9 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     · -- G.Adj u v → u ≠ v (as subtypes)
       intro hadj heq
       -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so u = v
-      have huv : u = v := congrArg Subtype.val heq
+      have huv : u = v := congr_arg Subtype.val heq
       rw [huv] at hadj
-      exact G.loopless.irrefl v hadj
+      exact G.loopless v hadj
     · -- ⟨u,hu⟩ ≠ ⟨v,hv⟩ → G.Adj u v
       intro hne
       exact hClique u hu v hv (fun h => hne (Subtype.ext h))
@@ -295,20 +278,16 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
       rw [hScard, Fintype.card_sum, Fintype.card_fin]; norm_num)
   · -- |↥S| ≥ 3
     omega
-  · -- edgeCount = 3 * 4 - 6 = 6
-    -- (⊤ : SimpleGraph ↥S).edgeFinset.card = C(4,2) = 6
-    unfold edgeCount
-    -- Rewriting `inducedSubgraph G S` to `⊤` directly inside `.edgeFinset.card` fails
-    -- ("motive is not type correct") because `edgeFinset` also depends on the
-    -- `DecidableRel` instance, whose *type* mentions the graph being rewritten. Instead,
-    -- equate the edgeFinsets themselves via membership (a purely propositional statement
-    -- with no dependent instance to break), then rewrite that concrete Finset equality.
-    have hEdgeEq : (inducedSubgraph G S).edgeFinset = (⊤ : SimpleGraph ↥S).edgeFinset := by
-      apply Finset.ext
-      intro e
+  · -- edgeCount = C(4,2) = 6 = 3·4 - 6
+    -- The induced subgraph is `⊤`; a complete graph on a 4-element type has C(4,2) = 6 edges.
+    have hEC : edgeCount (inducedSubgraph G S) = (Fintype.card ↥S).choose 2 := by
+      unfold edgeCount
+      rw [← card_edgeFinset_top_eq_card_choose_two (V := ↥S)]
+      congr 1
+      ext e
       simp only [SimpleGraph.mem_edgeFinset]
       rw [heq]
-    rw [hEdgeEq, SimpleGraph.card_edgeFinset_top_eq_card_choose_two, hScard]
+    rw [hEC, hScard]
     decide
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
@@ -408,7 +387,7 @@ Erdős also proved a quantitative lower bound on the size of saturated planar su
 /-- The lower bound on saturated planar subgraph size. -/
 def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
 
-/-  Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
+/- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
 /-
 ## Connection to Turán Theory
 

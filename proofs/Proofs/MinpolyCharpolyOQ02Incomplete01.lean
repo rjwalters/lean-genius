@@ -24,12 +24,21 @@ the definition but which the parent omits:
   * `IsDiagonalizable.neg`       — `-M` stays diagonalizable.
   * `IsDiagonalizable.transpose` — the transpose `Mᵀ` is diagonalizable, with
     diagonalizer `(Pᵀ)⁻¹` (eigenvalues are preserved under transpose).
+  * `IsDiagonalizable.conjTranspose` — over a `StarRing` of scalars, the conjugate
+    transpose (Hermitian adjoint) `Mᴴ` is diagonalizable, with diagonalizer
+    `(Pᴴ)⁻¹` (the star-analogue of `transpose`).
   * `IsDiagonalizable.inv`       — the inverse `M⁻¹` is diagonalizable (same `P`),
     because `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹` and the inverse of a diagonal matrix is
     diagonal (`isDiag_inv`).
   * `IsDiagonalizable.pow`       — every power `Mᵏ` is diagonalizable (same `P`),
     because `P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ` (`conj_pow`) and powers of a diagonal matrix
     are diagonal (`isDiag_pow`, built on `isDiag_mul`).
+  * `IsDiagonalizable.zpow`      — every *integer* power `Mᶻ` is diagonalizable,
+    extending `pow` from `ℕ` to `ℤ` via `inv` (negative exponents).
+  * `IsDiagonalizable.conj_iff`  — similarity invariance as a *biconditional*:
+    `U⁻¹ M U` is diagonalizable iff `M` is (diagonalizability is basis-independent).
+  * `IsDiagonalizable.add_smul_one` — a scalar shift `M + c • 1` stays diagonalizable
+    (the degree-`1` case of the `aeval` closure; shifts the spectrum by `c`).
 
 All are fully machine-checked (0 axioms, 0 sorries) and reuse only the
 parent's *definition* (not its open reverse-direction obligation).
@@ -68,6 +77,25 @@ theorem IsDiagonalizable.conj {M : Matrix n n K} (hM : M.IsDiagonalizable)
   rw [hsimp]
   exact hD
 
+/-- **Similarity invariance is a biconditional.**  Strengthens `IsDiagonalizable.conj`:
+    for invertible `U`, the conjugate `U⁻¹ * M * U` is diagonalizable *iff* `M` is.  The
+    reverse direction is `IsDiagonalizable.conj`; the forward direction conjugates back by
+    the (also invertible) `U⁻¹` and cancels `U * U⁻¹ = 1`.  This is the precise sense in
+    which diagonalizability is a property of the underlying operator, invariant under any
+    change of basis. -/
+theorem IsDiagonalizable.conj_iff {M U : Matrix n n K} (hU : IsUnit U) :
+    (U⁻¹ * M * U).IsDiagonalizable ↔ M.IsDiagonalizable := by
+  refine ⟨fun hN => ?_, fun hM => hM.conj hU⟩
+  have hUdet : IsUnit U.det := (Matrix.isUnit_iff_isUnit_det U).mp hU
+  have hUinv : IsUnit U⁻¹ := Matrix.isUnit_nonsing_inv_iff.mpr hU
+  have hback := hN.conj hUinv
+  have heq : U * (U⁻¹ * M * U) * U⁻¹ = M := by
+    have hUU : U * U⁻¹ = 1 := Matrix.mul_nonsing_inv U hUdet
+    calc U * (U⁻¹ * M * U) * U⁻¹
+        = (U * U⁻¹) * M * (U * U⁻¹) := by simp only [mul_assoc]
+      _ = M := by rw [hUU]; simp
+  rwa [Matrix.nonsing_inv_nonsing_inv U hUdet, heq] at hback
+
 /-- **Scalar multiples stay diagonalizable.**  The same `P` diagonalizes `c • M`,
     since `P⁻¹ (c • M) P = c • (P⁻¹ M P)` is again diagonal. -/
 theorem IsDiagonalizable.smul {M : Matrix n n K} (hM : M.IsDiagonalizable) (c : K) :
@@ -105,6 +133,27 @@ theorem IsDiagonalizable.transpose {M : Matrix n n K} (hM : M.IsDiagonalizable) 
     simp only [Matrix.transpose_mul, mul_assoc]
   rw [heq]
   exact hD.transpose
+
+/-- **The conjugate transpose (Hermitian adjoint) is diagonalizable.**  The
+    star-analogue of `IsDiagonalizable.transpose`, requiring a `StarRing` structure
+    on the scalars (e.g. complex conjugation over `ℂ`, or the trivial star over `ℝ`
+    or `ℚ`).  If `P⁻¹ M P` is diagonal then `((Pᴴ)⁻¹)⁻¹ Mᴴ (Pᴴ)⁻¹ = (P⁻¹ M P)ᴴ` is
+    diagonal (`IsDiag.conjTranspose`), so `(Pᴴ)⁻¹` diagonalizes `Mᴴ`.  Unlike the
+    transpose case the diagonalizer involves the conjugate transpose of `P`, and
+    `(P⁻¹)ᴴ = (Pᴴ)⁻¹` is `Matrix.conjTranspose_nonsing_inv`. -/
+theorem IsDiagonalizable.conjTranspose [StarRing K] {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) : (Mᴴ).IsDiagonalizable := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPh : IsUnit (Pᴴ) := by
+    rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_conjTranspose]
+    exact isUnit_star.mpr ((Matrix.isUnit_iff_isUnit_det P).mp hP)
+  have hPhdet : IsUnit (Pᴴ).det := (Matrix.isUnit_iff_isUnit_det _).mp hPh
+  refine ⟨(Pᴴ)⁻¹, Matrix.isUnit_nonsing_inv_iff.mpr hPh, ?_⟩
+  have heq : (Pᴴ)⁻¹⁻¹ * Mᴴ * (Pᴴ)⁻¹ = (P⁻¹ * M * P)ᴴ := by
+    rw [Matrix.nonsing_inv_nonsing_inv _ hPhdet, ← Matrix.conjTranspose_nonsing_inv]
+    simp only [Matrix.conjTranspose_mul, mul_assoc]
+  rw [heq]
+  exact hD.conjTranspose
 
 /-- **The inverse of a diagonal matrix is diagonal.**  Writing `A = diagonal (diag A)`
     (valid because `A` is diagonal), `Matrix.inv_diagonal` gives
@@ -178,6 +227,20 @@ theorem IsDiagonalizable.pow {M : Matrix n n K} (hM : M.IsDiagonalizable) (k : �
   rw [conj_pow hPdet]
   exact isDiag_pow hD k
 
+/-- **Integer powers stay diagonalizable.**  Extends `IsDiagonalizable.pow` from `ℕ` to
+    `ℤ` via the square-matrix `zpow` (Mathlib's `DivInvMonoid (Matrix n n K)` built on the
+    nonsingular inverse).  A nonnegative power `M ^ (n : ℤ) = M ^ n` is handled by `pow`;
+    a negative power `M ^ (Int.negSucc n) = (M ^ (n + 1))⁻¹` by `pow` followed by
+    `IsDiagonalizable.inv`.  So the diagonalizable matrices are closed under the full
+    `ℤ`-power operation (in particular `M ^ (-1) = M⁻¹`, recovering `inv`). -/
+theorem IsDiagonalizable.zpow {M : Matrix n n K} (hM : M.IsDiagonalizable) (z : ℤ) :
+    (M ^ z).IsDiagonalizable := by
+  rcases z with n | n
+  · rw [Int.ofNat_eq_natCast, zpow_natCast]
+    exact IsDiagonalizable.pow hM n
+  · rw [zpow_negSucc]
+    exact IsDiagonalizable.inv (IsDiagonalizable.pow hM (n + 1))
+
 /-- **A finite sum of diagonal matrices is diagonal.**  Pointwise off the
     diagonal every summand vanishes, so does their sum. -/
 theorem isDiag_sum {ι : Type*} (s : Finset ι) (A : ι → Matrix n n K)
@@ -208,6 +271,17 @@ theorem IsDiagonalizable.aeval {M : Matrix n n K} (hM : M.IsDiagonalizable)
     rw [Matrix.mul_smul, Matrix.smul_mul, conj_pow hPdet]
   rw [hconj]
   exact isDiag_sum _ _ fun i _ => IsDiag.smul (q.coeff i) (isDiag_pow hD i)
+
+/-- **Spectral shift stays diagonalizable.**  Adding a scalar matrix `c • 1` to a
+    diagonalizable `M` preserves diagonalizability: `M + c • 1 = aeval M (X + C c)`, the
+    degree-`1` case of `IsDiagonalizable.aeval`, so the same `P` diagonalizes it.
+    Geometrically `c • 1` shifts every eigenvalue by `c` while fixing the eigenvectors,
+    the affine reparametrisation `M ↦ M + c` of the spectrum. -/
+theorem IsDiagonalizable.add_smul_one {M : Matrix n n K} (hM : M.IsDiagonalizable)
+    (c : K) : (M + c • 1).IsDiagonalizable := by
+  have h := IsDiagonalizable.aeval hM (Polynomial.X + Polynomial.C c)
+  simpa only [map_add, Polynomial.aeval_X, Polynomial.aeval_C,
+    Algebra.algebraMap_eq_smul_one] using h
 
 /-!
 ## Simultaneous diagonalization — the common-diagonalizer closure laws
@@ -400,6 +474,85 @@ theorem commonDiagonalizer_of_commute_distinct {M N P : Matrix n n K}
     rw [h1, h2, hcomm]
   exact isDiag_of_commute_diag_distinct hMdiag hdist hAD
 
+/-!
+### Simultaneous diagonalization — the distinct-eigenvalue payoff
+
+`commonDiagonalizer_of_commute_distinct` supplies the hard half (commuting with a
+distinct-spectrum diagonalizable `M` forces the same `P` to diagonalize `N`) and the
+`*_of_commonDiagonalizer` laws supply the easy half (a shared `P` diagonalizes the
+sum/product).  Composing them settles the **generic (distinct-eigenvalue) case of the
+classical simultaneous-diagonalization theorem**: if `M` is diagonalizable with pairwise
+distinct eigenvalues and `N` commutes with `M`, then `N` is itself diagonalizable and both
+`M + N` and `M * N` are diagonalizable — *without any separate diagonalizability hypothesis
+on `N`*, which comes for free.  Only the repeated-eigenvalue case (needing eigenspace
+decomposition) of the full converse remains open.
+-/
+
+/-- **Distinct-eigenvalue case: a matrix commuting with a diagonalizable matrix of
+    distinct eigenvalues is itself diagonalizable, sharing its diagonalizer.**  If `P`
+    diagonalizes `M` (`P⁻¹MP` diagonal) with pairwise *distinct* diagonal entries and `N`
+    commutes with `M`, then the same `P` diagonalizes `N`
+    (`commonDiagonalizer_of_commute_distinct`), so `N` is diagonalizable.  No independent
+    diagonalizability hypothesis on `N` is required — commuting with a distinct-spectrum
+    diagonalizable matrix supplies it. -/
+theorem IsDiagonalizable.of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    N.IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact ⟨P, hP, commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm⟩
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the sum.**  If `P` diagonalizes
+    `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then `M + N` is
+    diagonalizable.  Commuting with the distinct-spectrum `M` forces `N` to share `M`'s
+    diagonalizer (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P` sum
+    law `add_of_commonDiagonalizer` applies.  The additive generic case of the classical
+    "commuting diagonalizable ⟹ sum diagonalizable". -/
+theorem IsDiagonalizable.add_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M + N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.add_of_commonDiagonalizer hP hMdiag hNdiag
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the product.**  If `P`
+    diagonalizes `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then
+    `M * N` is diagonalizable.  As in the additive case, commuting with the distinct-spectrum
+    `M` forces `N` to share `M`'s diagonalizer, so the shared-`P` product law
+    `mul_of_commonDiagonalizer` applies.  This is the generic (distinct-eigenvalue) case of
+    the classical theorem that commuting diagonalizable matrices have a diagonalizable
+    product; the counterexample `exists_diagonalizable_mul_not_diagonalizable` shows the
+    commuting hypothesis is essential (its witnesses do *not* commute). -/
+theorem IsDiagonalizable.mul_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M * N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.mul_of_commonDiagonalizer hP hMdiag hNdiag
+
+/-- **The commutant of a distinct-spectrum diagonalizable matrix is commutative.**
+    If `P` diagonalizes `M` with pairwise *distinct* eigenvalues, then any two matrices
+    `N₁`, `N₂` that each commute with `M` also commute with **each other**.  Because `M` has
+    distinct eigenvalues, commuting with `M` forces each `Nₖ` to be diagonalized by the same
+    `P` (`commonDiagonalizer_of_commute_distinct`); the two diagonal conjugates `P⁻¹NₖP`
+    commute, so `commute_of_commonDiagonalizer` transports the commutation back to `N₁N₂ =
+    N₂N₁`.  This is the classical fact that the commutant of a matrix with distinct
+    eigenvalues is an abelian algebra (it is exactly the algebra of polynomials in `M`). -/
+theorem commute_of_commute_distinct {M N₁ N₂ P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm₁ : M * N₁ = N₁ * M) (hcomm₂ : M * N₂ = N₂ * M) :
+    N₁ * N₂ = N₂ * N₁ := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hN₁diag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm₁
+  have hN₂diag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm₂
+  exact commute_of_commonDiagonalizer hP hN₁diag hN₂diag
+
 /-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
     multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
     *not* commutative, the product must be taken over an ordered `List` rather than
@@ -451,6 +604,180 @@ theorem IsDiagonalizable.prod_of_commonDiagonalizer {P : Matrix n n K} (hP : IsU
   rw [List.mem_map] at hA
   obtain ⟨B, hB, rfl⟩ := hA
   exact hM B hB
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the (ordered) product of a whole
+    family.**  If `P` diagonalizes `M` with pairwise distinct eigenvalues and *every* matrix
+    in a list `L` commutes with `M`, then the ordered product `L.prod` is diagonalizable.
+    Each `N ∈ L` is forced to share `M`'s diagonalizer `P`
+    (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P` product law
+    `prod_of_commonDiagonalizer` applies.  The list-indexed generalization of
+    `mul_of_commute_distinct`: no independent diagonalizability hypothesis on the members of
+    `L` is needed — commuting with the distinct-spectrum `M` supplies it.  Ordering matters
+    (matrix multiplication is non-commutative), so this is a `List`, not a `Finset`
+    statement; the members themselves need not be assumed to pairwise commute for the
+    *ordered* product to diagonalize, though in fact `commute_of_commute_distinct` shows
+    they do. -/
+theorem IsDiagonalizable.listProd_of_commute_distinct {M P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (L : List (Matrix n n K)) (hL : ∀ N ∈ L, M * N = N * M) :
+    L.prod.IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  refine IsDiagonalizable.prod_of_commonDiagonalizer hP L (fun N hN => ?_)
+  exact commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hL N hN)
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the difference.**  If `P` diagonalizes
+    `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then `M - N` is
+    diagonalizable.  Commuting with the distinct-spectrum `M` forces `N` to share `M`'s
+    diagonalizer (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P`
+    difference law `sub_of_commonDiagonalizer` applies.  The subtractive companion of
+    `add_of_commute_distinct`; with it the distinct-spectrum commutant is closed under `+`,
+    `-` and `*`. -/
+theorem IsDiagonalizable.sub_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M - N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.sub_of_commonDiagonalizer hP hMdiag hNdiag
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the sum of a whole family.**  If `P`
+    diagonalizes `M` with pairwise distinct eigenvalues and *every* matrix `N i` (`i ∈ s`)
+    commutes with `M`, then the finite sum `∑ i ∈ s, N i` is diagonalizable.  Each `N i` is
+    forced to share `M`'s diagonalizer `P` (`commonDiagonalizer_of_commute_distinct`), after
+    which the shared-`P` sum law `sum_of_commonDiagonalizer` applies.  The `Finset`-indexed
+    additive analogue of `listProd_of_commute_distinct` (a genuine `Finset` — not merely a
+    `List` — statement, since addition is commutative); it shows the distinct-spectrum
+    commutant `ℂ[M]` is closed under arbitrary finite sums. -/
+theorem IsDiagonalizable.sum_of_commute_distinct {ι : Type*} (s : Finset ι)
+    {M P : Matrix n n K} (N : ι → Matrix n n K)
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : ∀ i ∈ s, M * N i = N i * M) :
+    (∑ i ∈ s, N i).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact IsDiagonalizable.sum_of_commonDiagonalizer s N hP
+    (fun i hi => commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hcomm i hi))
+
+/-! ### The splitting annihilator — a diagonalizable matrix satisfies a product of
+distinct linear factors
+
+The parent proves abstractly that a diagonalizable matrix has a *squarefree* minimal
+polynomial (`Matrix.IsDiagonalizable.squarefree_minpoly`).  That structural fact has an
+entirely **constructive** shadow, recorded here: if `P` diagonalizes `M`, then `M` is
+annihilated by the explicit product `∏_{λ} (M − λ·1)` ranging over the **distinct**
+diagonal entries `λ` of `D = P⁻¹MP` — i.e. `M`'s eigenvalues.  This polynomial splits
+into *distinct* linear factors, so it is radical/squarefree; the annihilation exhibits a
+concrete squarefree annihilator without invoking any minimal-polynomial machinery.
+
+Because the factors `M − λ·1` all lie in the commutative subalgebra `K[M]`, the order of
+the product is immaterial; the statement takes it over the ordered list `S.toList` of the
+eigenvalue finset `S`, matching the `List.prod` idiom of `isDiag_listProd` / `conj_listProd`
+used above.
+-/
+
+/-- **An ordered product of diagonal matrices collapses to a single diagonal.**  For any
+    list `L : List ι` and scalar vectors `g : ι → n → K`, the product of the diagonal
+    matrices `diagonal (g s)` is diagonal, with `i`-th diagonal entry the (scalar) product
+    of the `i`-th entries `g s i`.  A direct consequence of `diagonalRingHom` being a ring
+    homomorphism (so it commutes with the list product, `map_list_prod`) together with the
+    pointwise evaluation of a `Pi`-type list product (`Pi.list_prod_apply`).  This is the
+    multiplicative, diagonal-valued companion of `isDiag_sum`, keeping the *values* of the
+    diagonal rather than merely certifying diagonality. -/
+theorem listProd_diagonal {ι : Type*} (L : List ι) (g : ι → n → K) :
+    (L.map (fun s => (diagonal (g s) : Matrix n n K))).prod
+      = diagonal (fun i => (L.map (fun s => g s i)).prod) := by
+  have hhom : (L.map (fun s => (diagonal (g s) : Matrix n n K))).prod
+      = diagonal ((L.map g).prod) := by
+    rw [show (L.map (fun s => (diagonal (g s) : Matrix n n K)))
+          = (L.map g).map (diagonalRingHom n K) by rw [List.map_map]; rfl]
+    exact (map_list_prod (diagonalRingHom n K) (L.map g)).symm
+  rw [hhom]
+  congr 1
+  funext i
+  rw [Pi.list_prod_apply, List.map_map, Function.comp_def]
+
+/-- **The splitting annihilator of a diagonalizable matrix.**  If `P` diagonalizes `M`
+    (so `D = P⁻¹MP` is diagonal), then `M` is annihilated by the ordered product
+    `∏_{λ ∈ S} (M − λ·1)` over the finite set `S` of *distinct* diagonal entries
+    (eigenvalues) of `D`.  Conjugating the product by `P` turns each factor `M − λ·1` into
+    the diagonal `D − λ·1` (`conj_listProd` plus the interior `P⁻¹P = 1` cancellation); the
+    conjugated product is therefore diagonal with `i`-th entry `∏_{λ ∈ S} (D i i − λ)`
+    (`listProd_diagonal`), and that scalar product vanishes because `D i i` is itself one of
+    the values `λ ∈ S`, so one factor is `D i i − D i i = 0` (`List.prod_eq_zero`).  Hence
+    the conjugate is `0`, and undoing the conjugation gives the original product `= 0`.
+
+    The factors range over the *image* of the diagonal, i.e. the **distinct** eigenvalues,
+    so `∏_{λ ∈ S}(X − λ)` is a squarefree polynomial: this is the concrete content behind
+    the parent's `Matrix.IsDiagonalizable.squarefree_minpoly`. -/
+theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    (((Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ).toList).map
+        (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
+  set D := P⁻¹ * M * P with hDdef
+  set S := Finset.image (fun i => D i i) Finset.univ with hSdef
+  -- conjugating a single factor `M - s•1` by `P` gives `D - s•1`
+  have hfactor : ∀ s : K, P⁻¹ * (M - s • (1 : Matrix n n K)) * P = D - s • (1 : Matrix n n K) := by
+    intro s
+    rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+        Matrix.nonsing_inv_mul P hP, ← hDdef]
+  -- and `D - s•1` is the diagonal matrix with entries `D i i - s`
+  have hdiagfactor : ∀ s : K,
+      (D - s • (1 : Matrix n n K)) = diagonal (fun i => D i i - s) := by
+    intro s; ext i j
+    by_cases hij : i = j
+    · subst hij
+      simp [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply_eq, diagonal_apply_eq]
+    · simp [Matrix.sub_apply, Matrix.smul_apply, hD hij, Matrix.one_apply_ne hij,
+            diagonal_apply_ne _ hij]
+  -- conjugate the whole ordered product; it becomes diagonal
+  have hconj : P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P
+      = (S.toList.map (fun s => diagonal (fun i => D i i - s))).prod := by
+    rw [conj_listProd hP, List.map_map]
+    apply congrArg List.prod
+    apply List.map_congr_left
+    intro s _
+    show P⁻¹ * (M - s • (1 : Matrix n n K)) * P = diagonal (fun i => D i i - s)
+    rw [hfactor s, hdiagfactor s]
+  have hconj2 : P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P
+      = diagonal (fun i => (S.toList.map (fun s => D i i - s)).prod) := by
+    rw [hconj]; exact listProd_diagonal S.toList (fun s i => D i i - s)
+  -- every diagonal entry of the conjugated product vanishes (`D i i` is one of the roots)
+  have hzero : (fun i => (S.toList.map (fun s => D i i - s)).prod) = fun _ : n => (0 : K) := by
+    funext i
+    apply List.prod_eq_zero
+    rw [List.mem_map]
+    exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩),
+      sub_self _⟩
+  rw [hzero] at hconj2
+  -- undo the conjugation: from `P⁻¹ · prod · P = 0` conclude `prod = 0`
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
+  have hcancel : ∀ X : Matrix n n K, P * (P⁻¹ * X * P) * P⁻¹ = X := by
+    intro X
+    rw [show P * (P⁻¹ * X * P) * P⁻¹ = (P * P⁻¹) * X * (P * P⁻¹) by simp only [mul_assoc]]
+    rw [hPP]; simp only [one_mul, mul_one]
+  calc (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod
+      = P * (P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P) * P⁻¹ :=
+        (hcancel _).symm
+    _ = P * diagonal (fun _ : n => (0 : K)) * P⁻¹ := by rw [hconj2]
+    _ = 0 := by rw [Matrix.diagonal_zero, Matrix.mul_zero, Matrix.zero_mul]
+
+/-- **A diagonalizable matrix is annihilated by a product of distinct linear factors.**
+    The existential, diagonalizer-free form of `prod_sub_eigen_smul_eq_zero`: every
+    diagonalizable `M` admits a finite set `S` of scalars (its eigenvalues) with
+    `∏_{λ ∈ S} (M − λ·1) = 0`.  Since `S` is a `Finset`, the factors `X − λ` are pairwise
+    distinct, so `∏_{λ ∈ S}(X − λ)` is squarefree — a concrete, constructively-exhibited
+    squarefree annihilator, complementing the parent's abstract
+    `Matrix.IsDiagonalizable.squarefree_minpoly`. -/
+theorem IsDiagonalizable.exists_prod_linear_factors_eq_zero {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) :
+    ∃ S : Finset K, (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
+  classical
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact ⟨Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
+    prod_sub_eigen_smul_eq_zero hPdet hD⟩
 
 /-! ### Necessity of the common-diagonalizer hypothesis
 
@@ -564,5 +891,63 @@ theorem exists_diagonalizable_sub_not_diagonalizable :
       M.IsDiagonalizable ∧ N.IsDiagonalizable ∧ ¬ (M - N).IsDiagonalizable := by
   obtain ⟨M, N, hM, hN, hMN⟩ := exists_diagonalizable_add_not_diagonalizable
   exact ⟨M, -N, hM, IsDiagonalizable.neg hN, by rwa [sub_neg_eq_add]⟩
+
+/-! ### The minimal polynomial divides the splitting annihilator (constructive squarefreeness)
+
+The splitting annihilator `∏_{λ ∈ S}(M − λ·1) = 0` (over the distinct eigenvalues `S`,
+`prod_sub_eigen_smul_eq_zero`) is exactly `aeval M` applied to the polynomial
+`∏_{λ ∈ S}(X − C λ)`.  Hence the minimal polynomial `minpoly K M` divides this product of
+*distinct* linear factors (`minpoly.dvd`), which is separable — its roots, the elements of
+`S`, are pairwise distinct (`separable_prod_X_sub_C_iff'`) — and therefore squarefree.  This
+gives a self-contained, constructive proof that the minimal polynomial of a diagonalizable
+matrix is squarefree, built entirely from this file's splitting annihilator rather than the
+parent's abstract `Matrix.IsDiagonalizable.squarefree_minpoly`.  It is the polynomial-level
+counterpart of `exists_prod_linear_factors_eq_zero`. -/
+
+open Polynomial in
+/-- `aeval M` of the product `∏_{λ ∈ S}(X − C λ)` over the distinct eigenvalues equals the
+splitting-annihilator list product `∏_{λ ∈ S}(M − λ·1)`, hence vanishes. -/
+theorem aeval_prod_X_sub_C_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    aeval M (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s)) = 0 := by
+  rw [map_prod,
+    show (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, aeval M (X - C s))
+        = ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
+            (M - s • (1 : Matrix n n K)) from
+      Finset.prod_congr rfl (fun s _ => by
+        rw [map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]),
+    ← Finset.prod_map_toList]
+  exact prod_sub_eigen_smul_eq_zero hP hD
+
+open Polynomial in
+/-- **The minimal polynomial divides the splitting annihilator.**  For a matrix `M`
+diagonalized by `P`, `minpoly K M` divides `∏_{λ ∈ S}(X − C λ)` over the finite set `S` of
+distinct eigenvalues (diagonal entries of `P⁻¹MP`). -/
+theorem IsDiagonalizable.minpoly_dvd_prod_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    minpoly K M ∣
+      ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s) := by
+  apply minpoly.dvd
+  exact aeval_prod_X_sub_C_eigen hP hD
+
+open Polynomial in
+/-- The product `∏_{s ∈ S}(X − C s)` over a `Finset` of scalars is squarefree: it is separable
+because its roots (the elements of `S`) are pairwise distinct. -/
+theorem squarefree_prod_X_sub_C_finset (S : Finset K) :
+    Squarefree (∏ s ∈ S, (X - C s)) :=
+  (Polynomial.separable_prod_X_sub_C_iff'.mpr (fun _ _ _ _ h => h)).squarefree
+
+open Polynomial in
+/-- **Constructive squarefreeness of the minimal polynomial of a diagonalizable matrix.**
+Since `minpoly K M` divides the separable product `∏_{λ ∈ S}(X − C λ)` (the splitting
+annihilator), it is itself squarefree.  A self-contained re-derivation of the parent's
+`Matrix.IsDiagonalizable.squarefree_minpoly`, sourced from this file's annihilator. -/
+theorem IsDiagonalizable.squarefree_minpoly_of_annihilator {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) : Squarefree (minpoly K M) := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact Squarefree.squarefree_of_dvd
+    (IsDiagonalizable.minpoly_dvd_prod_eigen hPdet hD)
+    (squarefree_prod_X_sub_C_finset _)
 
 end MinpolyCharpolyOQ02Incomplete01

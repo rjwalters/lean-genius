@@ -109,19 +109,27 @@
       "mathContext": "$\\int_a^b \\sqrt{1+m^2}\\,dt = (b-a)\\sqrt{1+m^2}$."
     },
     {
+      "id": "pythagorean",
+      "title": "The Pythagorean Integrand Simplification √(1+sinh²)=cosh",
+      "startLine": 57,
+      "endLine": 65,
+      "summary": "sqrt_one_add_sinh_sq: the identity √(1 + sinh²x) = cosh x, from cosh²x = 1 + sinh²x and cosh x > 0. This single lemma is the linchpin reused twice below — it collapses both the arc-length integrand and the catenoid surface-of-revolution integrand.",
+      "mathContext": "$\\sqrt{1+\\sinh^2 x} = \\cosh x$ since $\\cosh^2 x = 1 + \\sinh^2 x$ and $\\cosh x>0$."
+    },
+    {
       "id": "antiderivative",
-      "title": "The New Antiderivative of cosh²",
-      "startLine": 58,
-      "endLine": 92,
-      "summary": "sqrt_one_add_sinh_sq (√(1 + sinh²x) = cosh x), hasDerivAt_coshSqAntideriv (the from-scratch derivative d/dx [½(x + sinh x·cosh x)] = cosh²x via the product rule and cosh²x = 1 + sinh²x), and continuous_cosh_sq (the integrand is continuous, hence interval-integrable for the FTC).",
-      "mathContext": "$\\dfrac{d}{dx}\\left[\\tfrac12\\left(x + \\sinh x\\cosh x\\right)\\right] = \\cosh^2 x$."
+      "title": "The New Antiderivative of cosh² and its FTC Evaluation",
+      "startLine": 66,
+      "endLine": 100,
+      "summary": "hasDerivAt_coshSqAntideriv (the from-scratch derivative d/dx [½(x + sinh x·cosh x)] = cosh²x via the product rule and cosh²x = 1 + sinh²x — Mathlib has the sinh/cosh derivatives but no cosh² antiderivative), continuous_cosh_sq (the integrand is continuous, hence interval-integrable), and integral_cosh_sq_zero_to (the FTC evaluation ∫_0^b cosh²x dx = ½(b + sinh b·cosh b)).",
+      "mathContext": "$\\dfrac{d}{dx}\\left[\\tfrac12\\left(x + \\sinh x\\cosh x\\right)\\right] = \\cosh^2 x$; hence $\\int_0^b \\cosh^2 x\\,dx = \\tfrac12(b + \\sinh b\\cosh b)$."
     },
     {
       "id": "catenoid",
       "title": "The Catenoid Surface of Revolution",
-      "startLine": 94,
+      "startLine": 101,
       "endLine": 126,
-      "summary": "integral_cosh_sq_zero_to (∫_0^b cosh²x dx = ½(b + sinh b·cosh b)), catenoid_surface_area (the surface area of the catenoid over [0, b] is 2π ∫_0^b cosh x·√(1 + sinh²x) dx = π(b + sinh b·cosh b)), and catenoid_surface_area_zero_to_one (the concrete value π(1 + sinh 1·cosh 1) over [0, 1]).",
+      "summary": "catenoid_surface_area (revolving the catenary y = cosh x over [0, b] about the x-axis gives the catenoid, whose area 2π ∫_0^b cosh x·√(1 + sinh²x) dx collapses via √(1 + sinh²x) = cosh x to 2π ∫_0^b cosh²x dx = π(b + sinh b·cosh b)) and catenoid_surface_area_zero_to_one (the concrete value π(1 + sinh 1·cosh 1) over [0, 1]).",
       "mathContext": "$2\\pi\\int_0^b \\cosh x\\,\\sqrt{1+\\sinh^2 x}\\,dx = 2\\pi\\int_0^b \\cosh^2 x\\,dx = \\pi(b + \\sinh b\\cosh b)$."
     }
   ],
@@ -147,6 +155,11 @@
       "targetId": "arsinh-log-formula-oq-01-oq-01",
       "relationship": "ancestor",
       "description": "The grandparent supplies the antiderivative of the conjugate integrand 1/√(1+t²) (namely arsinh); this entry continues the same hand-built-antiderivative theme, here for cosh² (absent from Mathlib)."
+    },
+    {
+      "targetId": "arsinh-log-formula-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Parallel cousin. It derives the identical catenoid lateral surface area π(b + sinh b·cosh b) by the same √(1 + sinh²x) = cosh x collapse and the same hand-built cosh² antiderivative, but complements this entry by also giving the catenary arc length in classical logarithmic closed form ½(b√(1+b²) + log(b + √(1+b²))) — using arsinh x = log(x + √(1+x²)). Read together they present the catenoid area from two matching routes and the arc length in both the sinh and the logarithmic forms."
     }
   ],
   "references": [

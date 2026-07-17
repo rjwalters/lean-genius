@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RESOLVED. OQ-04 asked to strengthen expected_mono_cliques to E(n,k) < 1 for n < 2^(k/2). ProbMethodExpectationOQ04.lean now PROVES this: erdos_1947_clique_bound (n^2 < 2^k ∧ k≥3 ⟹ 2·C(n,k) < 2^C(k,2)) discharges the pure-ℕ power inequality the prior session had only reduced to, and expectedMonoCliques_lt_one_of_sq_lt combines it with expectedMonoCliques_lt_one_iff to give E(n,k) < 1 unconditionally on n^2 < 2^k. This is the Erdős 1947 diagonal Ramsey lower bound R(k,k) > n. Proof compares squares to stay in ℕ (descFactorial_le_pow + factorial growth 2^(k+2) ≤ (k!)^2 + identity 2·C(k,2)+k = k^2). Verified: 0 axioms (propext/Classical/Quot only), 0 sorries, no native_decide. Also retains the non-strict first-moment averaging lemmas. Follow-up (researcher-1, 2026-07-08): added expectedMonoCliques_lt_one_pow — the explicit-witness/unconditional form of Erdős 1947, R(k,k) > 2^⌊(k-1)/2⌋, by instantiating expectedMonoCliques_lt_one_of_sq_lt at n=2^⌊(k-1)/2⌋. VERIFIED 0 axioms / 0 sorries, no native_decide.",
+    "progressSummary": "RESOLVED (Erdős 1947 R(k,k)>2^⌊(k-1)/2⌋ complete, 0-axiom). This session added the SECOND-MOMENT sibling the first-moment file lacked: sq_sum_le_card_support_mul_sum_sq (Cauchy–Schwarz (∑g)²≤#support·∑g²) + sq_sum_div_sum_sq_le_card_support (#support ≥ (∑g)²/∑g²) — the second-moment method base bound, dual to the first-moment existence-of-zero engine.",
     "builtItems": [
       "ProbMethodExpectationOQ04.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "exists_ge_of_card_mul_le / exists_le_of_card_mul_ge: division-free first moment via by_contra + Finset.sum_lt_sum_of_nonempty + sum_const/nsmul_eq_mul + linarith.",
@@ -42,7 +42,8 @@
       "expectedMonoCliques_lt_one_of_sq_lt in ProbMethodExpectationOQ04.lean (E(n,k) < 1 for n^2<2^k, k≥3 — OQ-04 target)",
       "two_pow_add_two_le_factorial_sq and two_mul_choose_two_add helper lemmas",
       "expectedMonoCliques_lt_one_pow in ProbMethodExpectationOQ04.lean: explicit witness n=2^⌊(k-1)/2⌋ (k≥3) gives E(n,k)<1 — the unconditional Erdős-1947 form R(k,k) > 2^⌊(k-1)/2⌋.",
-      "ProbMethodExpectationOQ04.lean: exists_le_and_ge_average + exists_nonneg_spread_of_average (two-sided first moment). VERIFIED green [7743/7743], 0 axioms/sorries. File now 17 theorems."
+      "ProbMethodExpectationOQ04.lean: exists_le_and_ge_average + exists_nonneg_spread_of_average (two-sided first moment). VERIFIED green [7743/7743], 0 axioms/sorries. File now 17 theorems.",
+      "ProbMethodExpectationOQ04.lean SECOND-MOMENT sibling (was entirely first-moment): sq_sum_le_card_support_mul_sum_sq ((∑g)² ≤ #{a∈s:g a≠0}·∑g² for g:α→ℕ over ℚ, Cauchy–Schwarz sq_sum_le_card_mul_sum_sq applied over support T={g≠0}, zeros vanish via Finset.sum_subset) + sq_sum_div_sum_sq_le_card_support (support ≥ (∑g)²/∑g² via div_le_iff₀). The second-moment method base inequality, dual to first-moment exists_eq_zero_of_average_lt_one (small mean⟹∃ zero vs large first/second-moment ratio⟹many nonzeros). 2 thm axiom-free, elaboration-clean."
     ],
     "insights": [
       "The division-free shapes (t·|s| ≤ ∑f ⟹ ∃ f a ≥ t) are the practical lower-bound forms of the first moment method — they avoid dividing by |s| and feed directly into existence arguments.",

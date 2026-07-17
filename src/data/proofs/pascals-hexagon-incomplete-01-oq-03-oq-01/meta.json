@@ -39,12 +39,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√x)² = x for 0 ≤ x — turns the pullback of stdConic's form into the form of diag(a,b,c) coefficient by coefficient",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_pos",
         "description": "0 < √x ↔ 0 < x — gives strict positivity of the three diagonal scale factors, hence det ≠ 0",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Matrix.det_fin_three",

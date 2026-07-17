@@ -188,4 +188,113 @@ theorem conditioning_deficit_symm (pXYZ : α × β × γ → ℝ) :
         (shannonEntropy pXYZ - shannonEntropy (marginalXY pXYZ)) := by
   ring
 
+/-! ## The `X ↔ Z` symmetry of `I(X ; Z | Y)` at the level of distributions
+
+`conditioning_deficit_symm` records the symmetry `I(X ; Z | Y) = I(Z ; X | Y)` as an
+*algebraic* rearrangement of the four entropy terms.  The lemmas below upgrade it to a
+genuine statement about the distribution: relabeling outcomes never changes an entropy
+(`shannonEntropy_comp_equiv`), so physically swapping the roles of `X` and `Z` in the joint
+law leaves `I(X ; Z | Y)` invariant. -/
+
+/-- **Shannon entropy is a symmetric function of the probability vector.**  Relabeling the
+outcomes by any bijection `e : α ≃ β` leaves the entropy unchanged: `H(p ∘ e) = H(p)`.
+Entropy depends only on the multiset of probabilities, not on how the outcomes are named. -/
+theorem shannonEntropy_comp_equiv {δ ε : Type*} [Fintype δ] [DecidableEq δ]
+    [Fintype ε] [DecidableEq ε] (e : δ ≃ ε) (p : ε → ℝ) :
+    shannonEntropy (p ∘ e) = shannonEntropy p := by
+  unfold shannonEntropy
+  simp only [Function.comp_apply]
+  congr 1
+  exact Equiv.sum_comp e (fun y => if p y = 0 then (0 : ℝ) else p y * Real.log (p y))
+
+/-- The coordinate reordering `(z, y, x) ↦ (x, y, z)`, packaged as an `Equiv`.  Composing a
+joint law `pXYZ : α × β × γ → ℝ` with it produces the law of the swapped triple `(Z, Y, X)`. -/
+def reorderXZ {α β γ : Type*} : γ × β × α ≃ α × β × γ where
+  toFun := fun p => (p.2.2, p.2.1, p.1)
+  invFun := fun p => (p.2.2, p.2.1, p.1)
+  left_inv := fun _ => rfl
+  right_inv := fun _ => rfl
+
+variable [Fintype α] [Fintype β] [Fintype γ]
+  [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+
+/-- **Conditional mutual information is symmetric in `X` and `Z` (distribution form).**
+Writing `pZYX := pXYZ ∘ reorderXZ` for the joint law with `X` and `Z` swapped,
+`I(X ; Z | Y)` computed from `pZYX` equals `I(X ; Z | Y)` computed from `pXYZ`:
+`conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ`.
+
+Each of the four entropy terms transports across the swap by relabeling
+(`shannonEntropy_comp_equiv`): `marginalXY` of the swapped law is `marginalYZ` of the
+original up to the coordinate flip `Equiv.prodComm`, `marginalYZ` ↔ `marginalXY` likewise,
+`marginalY` is literally unchanged (a `Finset.sum_comm`), and the full entropy is invariant
+because `reorderXZ` is a bijection.  This is the true `I(X ; Z | Y) = I(Z ; X | Y)`, of which
+`conditioning_deficit_symm` is the shadow after the four terms are already written out. -/
+theorem conditionalMutualInfo_swap (pXYZ : α × β × γ → ℝ) :
+    conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ := by
+  have hXY : marginalXY (pXYZ ∘ reorderXZ) = marginalYZ pXYZ ∘ Equiv.prodComm γ β := by
+    funext zy; obtain ⟨z, y⟩ := zy; rfl
+  have hYZ : marginalYZ (pXYZ ∘ reorderXZ) = marginalXY pXYZ ∘ Equiv.prodComm β α := by
+    funext yx; obtain ⟨y, x⟩ := yx; rfl
+  have hY : marginalY (pXYZ ∘ reorderXZ) = marginalY pXYZ := by
+    funext y
+    simp only [marginalY, Function.comp_apply, reorderXZ]
+    exact Finset.sum_comm
+  have hP : shannonEntropy (pXYZ ∘ reorderXZ) = shannonEntropy pXYZ :=
+    shannonEntropy_comp_equiv reorderXZ pXYZ
+  unfold conditionalMutualInfo
+  rw [hXY, hYZ, hY, hP, shannonEntropy_comp_equiv (Equiv.prodComm γ β) (marginalYZ pXYZ),
+    shannonEntropy_comp_equiv (Equiv.prodComm β α) (marginalXY pXYZ)]
+  ring
+
+/-! ## Entropy monotonicity under adding a variable, and the bound `I(X ; Z | Y) ≤ H(X | Y)`
+
+All results above bound differences of entropies against each other; a complementary
+*absolute* fact is that entropy only *grows* when a variable is added: dropping `X` from
+the triple cannot increase entropy,
+
+    H(Y, Z) ≤ H(X, Y, Z).
+
+Because `α × β × γ` is definitionally `α × (β × γ)`, the joint law `pXYZ` is *itself* a
+two-variable distribution over `α × (β × γ)`, and its `(β × γ)`-marginal
+`fun (y,z) => ∑ x, pXYZ (x,y,z)` is exactly `marginalYZ pXYZ`.  The parent chain rule
+`entropy_chain_rule` then reads `H(X,Y,Z) = H(Y,Z) + H(X | Y,Z)` with the conditional
+entropy `H(X | Y,Z) ≥ 0` (`conditionalEntropy_nonneg`), giving the monotonicity directly.
+
+Feeding this into the conditioning-deficit identity yields the standard sandwich for the
+conditional mutual information: `0 ≤ I(X ; Z | Y) ≤ H(X | Y)`.  The lower bound is
+`conditionalMutualInfo_nonneg` (strong subadditivity); the upper bound says the extra
+variable `Z` can reduce the conditional entropy of `X` by *at most* all of it — `X` is never
+made *more* uncertain by learning `Z`, and cannot lose more information than it had. -/
+
+/-- **Entropy is monotone under adding a variable.**  `H(Y, Z) ≤ H(X, Y, Z)`: marginalizing
+    out `X` cannot increase entropy.  Since `α × β × γ = α × (β × γ)` definitionally, `pXYZ`
+    is a two-variable law over `α × (β × γ)` whose `(β × γ)`-marginal is `marginalYZ pXYZ`;
+    the parent chain rule `H(X,Y,Z) = H(Y,Z) + H(X | Y,Z)` with `H(X | Y,Z) ≥ 0`
+    (`conditionalEntropy_nonneg`) gives the bound. -/
+theorem entropy_marginalYZ_le {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    shannonEntropy (marginalYZ pXYZ) ≤ shannonEntropy pXYZ := by
+  have hmarg : (fun w : β × γ => ∑ x : α, pXYZ (x, w)) = marginalYZ pXYZ := by
+    funext w; obtain ⟨y, z⟩ := w; rfl
+  have hchain := entropy_chain_rule (pXY := pXYZ) hp hsum
+  rw [hmarg] at hchain
+  have hce := conditionalEntropy_nonneg (pXY := pXYZ) hp hsum
+  linarith
+
+/-- **The conditional mutual information is bounded by the conditional entropy.**
+    `I(X ; Z | Y) ≤ H(X | Y)`, where `H(X | Y) = H(X, Y) − H(Y)`.  Combined with
+    `conditionalMutualInfo_nonneg` this is the sandwich `0 ≤ I(X ; Z | Y) ≤ H(X | Y)`:
+    learning `Z` reduces the conditional entropy of `X` by an amount between `0` and all of
+    `H(X | Y)`.  Immediate from the deficit identity
+    `I(X ; Z | Y) = H(X | Y) − H(X | Y, Z)` and `H(X | Y, Z) = H(X,Y,Z) − H(Y,Z) ≥ 0`
+    (`entropy_marginalYZ_le`). -/
+theorem conditionalMutualInfo_le_conditional_entropy {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    conditionalMutualInfo pXYZ ≤
+      shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ) := by
+  unfold conditionalMutualInfo
+  linarith [entropy_marginalYZ_le hp hsum]
+
 end InformationTheory.SSA

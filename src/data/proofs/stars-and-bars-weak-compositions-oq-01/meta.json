@@ -125,8 +125,20 @@
     ]
   },
   "crossReferences": [
-    "stars-and-bars-weak-compositions",
-    "stars-and-bars-weak-compositions-oq-02",
-    "composition-parts-choose-oq-01"
+    {
+      "targetId": "stars-and-bars-weak-compositions",
+      "relationship": "extends",
+      "description": "Builds on this entry’s parent line: Stars and Bars: Weak Compositions of n into k Parts Number C(n+k−1, n). The present entry extends/refines that result."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-02",
+      "relationship": "related",
+      "description": "Related result in the stars-and-bars / weak-compositions family: Bounded-parts refinement of weak compositions via inclusion–exclusion."
+    },
+    {
+      "targetId": "composition-parts-choose-oq-01",
+      "relationship": "related",
+      "description": "Companion counting result in the compositions line: Compositions of n into k parts number C(n−1, k−1)."
+    }
   ]
 }

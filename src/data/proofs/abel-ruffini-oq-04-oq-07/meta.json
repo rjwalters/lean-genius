@@ -73,7 +73,7 @@
       "id": "poly-defs",
       "title": "Polynomial Type Definitions",
       "startLine": 85,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Defines quinticPoly (5 free parameters), depressedQuintic (4 free parameters, no x⁴ term), and bringJerrardPoly (2 free parameters, Bring-Jerrard normal form x⁵+px+q).",
       "mathContext": "Three polynomial types over $\\mathbb{C}$ representing the three normal forms in the reduction chain: quintic → depressed quintic → Bring-Jerrard form.",
       "theorems": []
@@ -82,7 +82,7 @@
       "id": "tschirnhaus",
       "title": "Linear Tschirnhaus Transform (Proved)",
       "startLine": 104,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Proves the forward (depressed_quintic_forward), backward (depressed_quintic_backward), and biconditional (depressed_quintic_iff) forms of the linear Tschirnhaus transform y = x + a₄/5 that eliminates the x⁴ term. All proved by linear_combination.",
       "mathContext": "The substitution $y = x + a_4/5$ gives $b_4 = -5(a_4/5) + a_4 = 0$, with explicit formulas for $b_3, b_2, b_1, b_0$. Proved by `linear_combination h`.",
       "theorems": [
@@ -95,7 +95,7 @@
       "id": "bring-jerrard",
       "title": "Full Bring-Jerrard Reduction (Axiomatized)",
       "startLine": 172,
-      "endLine": 222,
+      "endLine": 223,
       "summary": "Axiomatizes the full Bring-Jerrard reduction (quadratic and cubic Tschirnhaus steps). Proves quintic_to_bringJerrard by chaining the linear transform with the axiom.",
       "mathContext": "The axiom $\\exists\\, p, q, \\varphi,\\ \\forall y.\\ y^5 + b_3 y^3 + \\cdots = 0 \\Rightarrow (\\varphi(y))^5 + p(\\varphi(y)) + q = 0$ requires polynomial resultant theory not in Mathlib.",
       "theorems": [
@@ -104,32 +104,36 @@
       ]
     },
     {
-      "id": "strict-mono",
-      "title": "Strict Monotonicity and IVT Existence",
+      "id": "bring-strict-mono",
+      "title": "Part 4: The Bring Radical — Strict Monotonicity",
       "startLine": 224,
-      "endLine": 294,
-      "summary": "Proves bringRad_strictMono (x↦x⁵+x is strictly increasing) and bringRad_exists (x⁵+x+t=0 has a real root for every t) via IVT with bounds ±(|t|+1).",
-      "mathContext": "$f(x) = x^5 + x$ is strictly monotone (Odd.strictMono_pow + linarith) and continuous, with $f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$.",
-      "theorems": [
-        "bringRad_strictMono",
-        "bringRad_exists"
-      ]
+      "endLine": 249,
+      "summary": "`bringRad_strictMono`: the map x ↦ x⁵ + x is strictly increasing on ℝ (via `Odd.strictMono` on the odd power together with `linarith`). Strict monotonicity is what makes the Bring radical single-valued, setting up the existence and uniqueness arguments that follow.",
+      "mathContext": "$f(x) = x^5 + x$ is strictly monotone on $\\mathbb{R}$."
     },
     {
-      "id": "bring-radical",
-      "title": "Bring Radical: Definition and Properties",
+      "id": "bring-existence-ivt",
+      "title": "Part 5: The Bring Radical — Existence via IVT",
+      "startLine": 250,
+      "endLine": 295,
+      "summary": "`bringRad_exists`: for every real t the equation x⁵ + x + t = 0 has a real root. The private lemmas `bringRad_pos_at_upper` and `bringRad_neg_at_lower` supply the sign change f(-(|t|+1)) < 0 < f(|t|+1), and the Intermediate Value Theorem on the continuous f closes existence.",
+      "mathContext": "$f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$, so by the IVT $x^5 + x + t = 0$ has a real root."
+    },
+    {
+      "id": "bring-radical-def",
+      "title": "Part 6: The Bring Radical — Definition and Properties",
       "startLine": 296,
+      "endLine": 343,
+      "summary": "`bringRadical t` := the unique real root of x⁵ + x + t = 0 (chosen via `bringRad_exists`). Proves `bringRadical_spec` (satisfies the defining equation), `bringRadical_unique` (from strict monotonicity), `bringRadical_anti_mono` (strictly decreasing in t), `bringRadical_zero` (BR(0) = 0) and `bringRadical_neg` (BR is odd).",
+      "mathContext": "$\\mathrm{BR}(t)^5 + \\mathrm{BR}(t) + t = 0$; $\\mathrm{BR}$ is strictly anti-monotone, odd, and $\\mathrm{BR}(0) = 0$."
+    },
+    {
+      "id": "bring-algebraic-significance",
+      "title": "Part 7: Algebraic Significance and Summary",
+      "startLine": 344,
       "endLine": 376,
-      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). (An earlier degenerate axiom bringRadical_not_in_radicals was removed as unsound; the genuine axiom-free replacement lives in the sibling entry OQ-04-OQ-07-OQ-02.) Summary theorem packages the main results.",
-      "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
-      "theorems": [
-        "bringRadical_spec",
-        "bringRadical_unique",
-        "bringRadical_anti_mono",
-        "bringRadical_zero",
-        "bringRadical_neg",
-        "bringJerrard_summary"
-      ]
+      "summary": "Documents that an earlier version axiomatized 'the Bring radical is not expressible in radicals' as `bringRadical_not_in_radicals`, but that axiom was **degenerate and unsound** — its 'expressible in radicals' predicate was a literal `True`, making the negated statement outright false (witnessed by F := bringRadical). The axiom was removed; the honest, axiom-free conditional replacement (`bringRadical_not_solvableByRad`) lives in the sibling entry `AbelRuffiniOQ04OQ07OQ02`. Closes with `bringJerrard_summary`, which packages existence/uniqueness, the defining equation, and strict monotonicity.",
+      "mathContext": "The prior non-radical-expressibility axiom was unsound (predicate = True) and was removed; the genuine result is a conditional theorem in the sibling entry OQ-04-OQ-07-OQ-02."
     }
   ],
   "conclusion": {

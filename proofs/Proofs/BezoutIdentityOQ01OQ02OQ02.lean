@@ -115,6 +115,30 @@ theorem isPrimitive_iff_forall_isUnit_of_dvd (v : Fin n → ℤ) :
     rw [← hgen]
     exact Ideal.span_singleton_eq_top.mpr hu
 
+/-- **Primitivity via the `Finset`-gcd (unit form).**  Packaging
+`isPrimitive_iff_forall_isUnit_of_dvd` through the universal property of
+`Finset.gcd`: the single element `Finset.univ.gcd v` is *the* greatest common
+divisor of the entries (it divides each `vᵢ` and is divisible by every common
+divisor), so "every common divisor is a unit" collapses to the single statement
+that this gcd is a unit. -/
+theorem isPrimitive_iff_isUnit_finsetGcd (v : Fin n → ℤ) :
+    IsPrimitive v ↔ IsUnit (Finset.univ.gcd v) := by
+  rw [isPrimitive_iff_forall_isUnit_of_dvd]
+  constructor
+  · intro h
+    exact h _ fun i => Finset.gcd_dvd (Finset.mem_univ i)
+  · intro hu d hd
+    exact isUnit_of_dvd_unit (Finset.dvd_gcd fun i _ => hd i) hu
+
+/-- **Primitivity is setwise coprimality: `gcd(v₁, …, vₙ) = 1`.**  The classical
+entry-level statement named in the opening docstring, now literally in terms of
+the normalized `ℤ`-gcd.  Since `Finset.gcd` over `ℤ` is normalized (nonnegative),
+being a unit is the same as being `1` (`normalize_eq_one`), so this is the unit
+form `isPrimitive_iff_isUnit_finsetGcd` written in normal form. -/
+theorem isPrimitive_iff_finsetGcd_eq_one (v : Fin n → ℤ) :
+    IsPrimitive v ↔ Finset.univ.gcd v = 1 := by
+  rw [isPrimitive_iff_isUnit_finsetGcd, ← normalize_eq_one, Finset.normalize_gcd]
+
 /-! ### `SLₙ(ℤ)` preserves primitivity -/
 
 /-- **`SLₙ(ℤ)` sends primitive vectors to primitive vectors.**  If `w ⬝ᵥ v = 1`
@@ -233,6 +257,42 @@ theorem IsPrimitive.comp_perm (σ : Equiv.Perm (Fin n)) {v : Fin n → ℤ}
     simp only [dotProduct, Function.comp_apply]
     exact Equiv.sum_comp σ (fun i => w i * v i)
   rw [hsum, hw]
+
+/-- **A unit scalar preserves primitivity.**  Multiplying every entry of `v` by a unit
+`c` (over `ℤ`, `c = ±1`) keeps it primitive: if `w ⬝ᵥ v = 1` then `(c⁻¹ · w) ⬝ᵥ (c · v)
+= c⁻¹·c·(w ⬝ᵥ v) = 1`.  This is the common generalization of `IsPrimitive.neg` (the case
+`c = -1`); like negation and `IsPrimitive.comp_perm`, unit scaling is a primitivity
+invariance that lives beyond the `SLₙ`-orbit itself (it is an `SLₙ`-move only when `n` is
+even), yet holds in every dimension. -/
+theorem IsPrimitive.isUnit_smul {c : ℤ} (hc : IsUnit c) {v : Fin n → ℤ}
+    (h : IsPrimitive v) : IsPrimitive (c • v) := by
+  obtain ⟨w, hw⟩ := h
+  obtain ⟨u, rfl⟩ := hc
+  refine ⟨((u⁻¹ : ℤˣ) : ℤ) • w, ?_⟩
+  rw [smul_dotProduct, dotProduct_smul, hw, smul_eq_mul, smul_eq_mul, mul_one,
+    ← Units.val_mul, inv_mul_cancel, Units.val_one]
+
+/-- **A scalar multiple can only be primitive through a unit scalar.**  If `c · v` is
+primitive then `c` is a unit: a dual `w` gives `c·(w ⬝ᵥ v) = w ⬝ᵥ (c · v) = 1`, so `c ∣ 1`.
+This is the converse companion to `IsPrimitive.isUnit_smul` — together they say that the
+primitivity of a scalar multiple is governed *entirely* by whether the scalar is a unit,
+independently of `v`. -/
+theorem isUnit_of_isPrimitive_smul {c : ℤ} {v : Fin n → ℤ}
+    (h : IsPrimitive (c • v)) : IsUnit c := by
+  obtain ⟨w, hw⟩ := h
+  rw [dotProduct_smul, smul_eq_mul] at hw
+  exact isUnit_of_dvd_one ⟨w ⬝ᵥ v, hw.symm⟩
+
+/-- **Unit scaling is a primitivity equivalence.**  For a unit `c`, `c · v` is primitive
+iff `v` is — the invariance form of `IsPrimitive.isUnit_smul`, obtained by scaling back by
+`c⁻¹`.  Generalizes the sign-invariance implicit in `IsPrimitive.neg` to both directions
+for every unit. -/
+theorem isPrimitive_isUnit_smul_iff {c : ℤ} (hc : IsUnit c) {v : Fin n → ℤ} :
+    IsPrimitive (c • v) ↔ IsPrimitive v := by
+  refine ⟨fun h => ?_, fun h => h.isUnit_smul hc⟩
+  obtain ⟨u, rfl⟩ := hc
+  have h2 := h.isUnit_smul (c := ((u⁻¹ : ℤˣ) : ℤ)) (Units.isUnit u⁻¹)
+  rwa [smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul] at h2
 
 /-- **One-dimensional base case of the descent.**  A vector `v : Fin 1 → ℤ` is
 primitive iff its single entry is a unit, i.e. `v 0 = 1` or `v 0 = -1`.  So in
@@ -520,5 +580,160 @@ theorem exists_sl_mulVec_basis_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
     (hv : IsPrimitive v) (t : Fin n) :
     ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, ↑ₘA *ᵥ v = Pi.single t (1 : ℤ) :=
   exists_sl_mulVec_eq_of_isPrimitive hn hv (isPrimitive_single t)
+
+/-- **Unimodular column completion (`n ≥ 2`).**  A vector is primitive **iff** it is a
+column of some matrix in `SLₙ(ℤ)`: `IsPrimitive v ↔ ∃ A k, ↑ₘA *ᵥ eₖ = v` — the right side
+says `v` is the `k`-th column of `A` (`↑ₘA *ᵥ Pi.single k 1` extracts that column).  The
+backward direction is `orbit_e_isPrimitive` (any column of a unimodular matrix is
+primitive); the forward direction inverts `exists_sl_mulVec_basis_of_isPrimitive` — the `U`
+carrying `v` onto `e₀` has `U⁻¹` with `v` as its `0`-th column.  This is the classical
+statement that a primitive integer vector **extends to a `ℤ`-basis** (unimodular
+completion): the columns of `SLₙ(ℤ)` are *exactly* the primitive vectors.
+
+The dimension hypothesis `1 < n` is essential and not an artefact: for `n = 1` the only
+unimodular matrix is the identity, whose sole column is `e₀ = (1)`, so the primitive vector
+`(-1)` is *not* a column of any `SL₁(ℤ)` matrix — the same sign obstruction that keeps the
+uniform `c · eₖ` normal form (`isPrimitive_iff_exists_sl_single`) from sharpening at `n = 1`. -/
+theorem isPrimitive_iff_exists_sl_column (hn : 1 < n) (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n),
+      ↑ₘA *ᵥ Pi.single k (1 : ℤ) = v := by
+  refine ⟨fun hv => ?_, ?_⟩
+  · obtain ⟨A, hA⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv ⟨0, by omega⟩
+    refine ⟨A⁻¹, ⟨0, by omega⟩, ?_⟩
+    rw [← hA, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul, inv_mul_cancel,
+      SpecialLinearGroup.coe_one, one_mulVec]
+  · rintro ⟨A, k, rfl⟩
+    exact orbit_e_isPrimitive A k
+
+/-! ### Sharpness of the dimension hypothesis: the `n = 1` obstruction
+
+Every transitivity statement above (`exists_sl_mulVec_eq_of_isPrimitive`,
+`exists_sl_mulVec_basis_of_isPrimitive`, `isPrimitive_iff_exists_sl_column`) carries the
+hypothesis `1 < n`, and their docstrings assert that this is *genuinely necessary* rather
+than a proof artefact: in dimension `1` the group `SL₁(ℤ)` is trivial, so it acts trivially
+on vectors and cannot connect the two primitive vectors `(1)` and `(-1)`.  The lemmas below
+turn that repeated prose remark into machine-checked statements, pinning down the orbit
+structure at the base dimension: `SL₁(ℤ)` has **two** orbits of primitive vectors
+(`{(1)}` and `{(-1)}`), in contrast with the single orbit for `n ≥ 2`. -/
+
+/-- **`SL₁(ℤ)` is the trivial group at the matrix level.**  The only `1 × 1` integer matrix
+of determinant `1` is the identity `(1)`: the determinant of a `1 × 1` matrix is its sole
+entry (`Matrix.det_fin_one`), so `det = 1` forces that entry to be `1`, and a
+`Fin 1`-indexed matrix is determined by its single entry. -/
+theorem coe_sl_fin_one_eq_one (A : Matrix.SpecialLinearGroup (Fin 1) ℤ) :
+    (A : Matrix (Fin 1) (Fin 1) ℤ) = 1 := by
+  have hdet : (A : Matrix (Fin 1) (Fin 1) ℤ) 0 0 = 1 := by
+    have h : (A : Matrix (Fin 1) (Fin 1) ℤ).det = 1 := A.2
+    rwa [Matrix.det_fin_one] at h
+  ext i j
+  rw [Subsingleton.elim i 0, Subsingleton.elim j 0, Matrix.one_apply_eq]
+  exact hdet
+
+/-- **`SL₁(ℤ)` acts trivially on every vector.**  Immediate from `coe_sl_fin_one_eq_one`:
+multiplying by the identity matrix fixes `v`.  So no `SL₁(ℤ)` move changes a vector at all —
+the one-dimensional orbits are singletons. -/
+theorem sl_fin_one_mulVec (A : Matrix.SpecialLinearGroup (Fin 1) ℤ) (v : Fin 1 → ℤ) :
+    (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = v := by
+  rw [coe_sl_fin_one_eq_one, Matrix.one_mulVec]
+
+/-- **No `SL₁(ℤ)` move connects `(1)` and `(-1)`.**  Both are primitive
+(`isPrimitive_fin_one_iff`), yet since `SL₁(ℤ)` acts trivially (`sl_fin_one_mulVec`) any
+image of `e₀ = (1)` is `(1)`, never `(-1)`.  This is the sign obstruction that forces the
+`1 < n` hypothesis in the transitivity theorems: the uniform normal form
+`isPrimitive_iff_exists_sl_single` reaches only a *unit multiple* `c · eₖ` precisely because
+the sign `c` cannot be normalized away at `n = 1`. -/
+theorem not_exists_sl_fin_one_single_neg :
+    ¬ ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+      (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ Pi.single 0 (1 : ℤ) = Pi.single 0 (-1 : ℤ) := by
+  rintro ⟨A, hA⟩
+  rw [sl_fin_one_mulVec] at hA
+  have h0 := congrFun hA 0
+  rw [Pi.single_eq_same, Pi.single_eq_same] at h0
+  norm_num at h0
+
+/-- **Transitivity fails outright at `n = 1`.**  The single-orbit conclusion of
+`exists_sl_mulVec_eq_of_isPrimitive` is false without `1 < n`: the primitive vectors `(1)`
+and `(-1)` are not `SL₁(ℤ)`-equivalent.  Hence the dimension hypothesis in that theorem (and
+all its corollaries) cannot be dropped — the sharpness statement the docstrings claimed. -/
+theorem not_forall_sl_fin_one_orbit :
+    ¬ ∀ (v w : Fin 1 → ℤ), IsPrimitive v → IsPrimitive w →
+      ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+        (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w := by
+  intro H
+  have hp1 : IsPrimitive (Pi.single (0 : Fin 1) (1 : ℤ)) := isPrimitive_single 0
+  have hp2 : IsPrimitive (Pi.single (0 : Fin 1) (-1 : ℤ)) := by
+    rw [isPrimitive_fin_one_iff]
+    right
+    rw [Pi.single_eq_same]
+  exact not_exists_sl_fin_one_single_neg (H _ _ hp1 hp2)
+
+/-- **`SL₁(ℤ)`-orbits are singletons.**  In dimension `1` two vectors are
+`SL₁(ℤ)`-equivalent iff they are *equal*: the action is trivial
+(`sl_fin_one_mulVec`), so each orbit is a single point.  Contrast
+`exists_sl_mulVec_eq_of_isPrimitive`, where for `n ≥ 2` all primitive vectors
+form one orbit. -/
+theorem sl_one_equiv_iff_eq (v w : Fin 1 → ℤ) :
+    (∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+      (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w) ↔ v = w := by
+  constructor
+  · rintro ⟨A, hA⟩
+    rw [← hA, sl_fin_one_mulVec]
+  · rintro rfl
+    exact ⟨1, by rw [SpecialLinearGroup.coe_one, Matrix.one_mulVec]⟩
+
+/-- **The obstruction is exactly the determinant sign.**  The reflection `U = !![-1]`
+has `det U = -1` (a *unit* of `ℤ`, so `U` is unimodular / lies in `GL₁(ℤ)`) and
+carries `-e₀` to `e₀`.  Thus enlarging `SL₁(ℤ)` (`det = 1`) to `GL₁(ℤ)` (`det = ±1`)
+merges the two orbits that `not_exists_sl_fin_one_single_neg` keeps apart: the `n = 1`
+failure of transitivity is *precisely* the `det = 1` constraint, nothing deeper. -/
+theorem exists_unimodular_mulVec_neg_single_fin_one :
+    ∃ U : Matrix (Fin 1) (Fin 1) ℤ, IsUnit U.det ∧
+      U *ᵥ (Pi.single 0 (-1) : Fin 1 → ℤ) = Pi.single 0 1 := by
+  refine ⟨!![-1], ?_, ?_⟩
+  · rw [Matrix.det_fin_one_of]
+    exact Int.isUnit_iff.mpr (Or.inr rfl)
+  · funext i
+    fin_cases i
+    simp [Matrix.mulVec, dotProduct, Pi.single_eq_same]
+
+/-! ### Unimodular completion and the classical `gcd = 1` phrasing -/
+
+/-- **Unimodular completion (`n ≥ 2`).**  Every primitive integer vector `v` is a
+*column* of some `A ∈ SLₙ(ℤ)`: for any target column index `t`, there is a unimodular
+matrix whose `t`-th column is exactly `v`.  Equivalently, a primitive vector extends
+to a `ℤ`-basis of `ℤⁿ` (Newman, *Integral Matrices*; the completability of a primitive
+vector to a unimodular matrix).  This is the *dual* face of transitivity: whereas
+`exists_sl_mulVec_basis_of_isPrimitive` carries `v` **onto** a basis vector, here we
+carry a basis vector **onto** `v` by taking the inverse matrix — its `t`-th column is
+`A⁻¹ · eₜ = v`.  The two together say the `SLₙ(ℤ)`-orbit of `eₜ` (for `n ≥ 2`) is
+simultaneously the set of primitive vectors and the set of columns realizable in
+`SLₙ(ℤ)`.  (The `mulVec`-of-`Pi.single` face of this statement is
+`isPrimitive_iff_exists_sl_column`.) -/
+theorem exists_sl_col_eq_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (t : Fin n) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, (↑ₘA).col t = v := by
+  obtain ⟨U, hU⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv t
+  refine ⟨U⁻¹, ?_⟩
+  rw [← Matrix.mulVec_single_one, ← hU, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul,
+    inv_mul_cancel, SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+
+/-- **The `n = 2` bridge to the parent's `IsCoprime` phrasing.**  For a pair
+`v : Fin 2 → ℤ`, the coordinate-free primitivity predicate is exactly Bézout
+coprimality of the two entries: `IsPrimitive v ↔ IsCoprime (v 0) (v 1)`.  This makes
+the connection to the parent entry `bezout-identity-oq-01-oq-02` — which works with a
+coprime pair `(a, b)` and its `bezoutSL` — completely explicit: both `IsPrimitive` and
+`IsCoprime` unfold to the *same* Bézout relation `w₀·v₀ + w₁·v₁ = 1`, so the dual
+vector `w` and the Bézout coefficients coincide. -/
+theorem isPrimitive_fin_two_iff_isCoprime (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ IsCoprime (v 0) (v 1) := by
+  constructor
+  · rintro ⟨w, hw⟩
+    have hwv : w 0 * v 0 + w 1 * v 1 = 1 := by
+      simpa [dotProduct, Fin.sum_univ_two] using hw
+    exact ⟨w 0, w 1, hwv⟩
+  · rintro ⟨a, b, hab⟩
+    refine ⟨![a, b], ?_⟩
+    simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+    linarith [hab]
 
 end BezoutPrimitive

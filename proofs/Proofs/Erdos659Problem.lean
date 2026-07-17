@@ -350,6 +350,16 @@ theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) 
 theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
   representable_pow two_representable k
 
+/-- **The form `x² + 2y²` represents infinitely many integers.** The set
+    `representable_x2_2y2` is infinite, witnessed by the injective family of powers of `2`
+    (`two_pow_representable`, each `2ᵏ` being a norm from `ℤ[√-2]`). This is the qualitative
+    floor beneath Landau's quantitative growth `B₂(N) ∼ c·N/√(log N)` (`moreeOsburnWorks`):
+    the counting function is unbounded regardless of the deep asymptotic. No axioms. -/
+theorem representable_infinite : representable_x2_2y2.Infinite :=
+  Set.infinite_of_injective_forall_mem
+    (f := fun k : ℕ => 2 ^ k)
+    (Nat.pow_right_injective (le_refl 2)) two_pow_representable
+
 /-- **Closure under finite products.** A product `∏ i ∈ s, f i` of representable
     integers is representable. Generalises `representable_pow` (the constant-`f` case)
     from a single repeated factor to an arbitrary finite family, via
@@ -407,6 +417,36 @@ theorem B2_le (N : ℕ) : B2 N ≤ N := by
     rw [← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]; omega
   omega
 
+/-- **Growth lower bound: `√N ≤ B₂(N)`.** Every perfect square `1², 2², …, ⌊√N⌋²` is `≤ N`
+    and representable (`sq_representable`), and these `⌊√N⌋` squares are distinct, so the
+    counted set has at least `Nat.sqrt N` elements. This is the unconditional *lower* companion
+    to `B2_le` (`B₂(N) ≤ N`): together they bracket `√N ≤ B₂(N) ≤ N`, and in particular `B₂`
+    tends to infinity (the counting reflection of `representable_infinite`), far below yet
+    consistent with Landau's asymptotic `∼ c·N/√(log N)` isolated in `moreeOsburnWorks`. No
+    axioms. -/
+theorem sqrt_le_B2 (N : ℕ) : Nat.sqrt N ≤ B2 N := by
+  unfold B2
+  have hfin : (representable_x2_2y2 ∩ Set.Icc 1 N).Finite :=
+    (Set.finite_Icc 1 N).inter_of_right _
+  set F : Finset ℕ := (Finset.Icc 1 (Nat.sqrt N)).image (fun i => i ^ 2) with hF
+  -- The squares `i²` (`1 ≤ i ≤ √N`) are distinct representable integers inside the window.
+  have hinj : Function.Injective (fun i : ℕ => i ^ 2) :=
+    fun a b h => Nat.pow_left_injective (by decide) h
+  have hcard : F.card = Nat.sqrt N := by
+    rw [hF, Finset.card_image_of_injective _ hinj, Nat.card_Icc]; omega
+  have hsub : (F : Set ℕ) ⊆ representable_x2_2y2 ∩ Set.Icc 1 N := by
+    intro m hm
+    rw [hF, Finset.coe_image, Finset.coe_Icc, Set.mem_image] at hm
+    obtain ⟨i, hi, rfl⟩ := hm
+    rw [Set.mem_Icc] at hi
+    refine ⟨sq_representable i, ?_, ?_⟩
+    · exact Nat.one_le_pow 2 i (by omega)
+    · calc i ^ 2 ≤ (Nat.sqrt N) ^ 2 := Nat.pow_le_pow_left hi.2 2
+        _ ≤ N := Nat.sqrt_le' N
+  calc Nat.sqrt N = F.card := hcard.symm
+    _ = (F : Set ℕ).ncard := (Set.ncard_coe_finset F).symm
+    _ ≤ _ := Set.ncard_le_ncard hsub hfin
+
 /-! ### The mod-8 obstruction (necessity side of the characterization)
 
 The lemmas above are all *positivity* results — they exhibit integers that **are**
@@ -461,6 +501,53 @@ theorem representable_mod8_ne_five_seven {n : ℕ} (hn : n ∈ representable_x2_
     n % 8 ≠ 5 ∧ n % 8 ≠ 7 :=
   ⟨fun h => not_representable_of_mod8 n (Or.inl h) hn,
    fun h => not_representable_of_mod8 n (Or.inr h) hn⟩
+
+/-- **Sharpness of the mod-8 obstruction (attained side).** The set of residues mod 8
+    actually *attained* by representable numbers is **exactly** `{0, 1, 2, 3, 4, 6}`.
+    The `⊆` inclusion is the necessity lemma `representable_mod8_ne_five_seven` (residues
+    `5, 7` are excluded) together with `n % 8 < 8`; the `⊇` inclusion exhibits an explicit
+    representable witness for each of the six permitted residues (`1, 2, 3, 4, 6, 8`). This
+    complements `not_representable_of_mod8`: not only are `5, 7` blocked, but *every* other
+    residue occurs, so the mod-8 test is sharp as a congruence filter. -/
+theorem representable_mod8_image :
+    {r : ℕ | ∃ n, n ∈ representable_x2_2y2 ∧ n % 8 = r} = {0, 1, 2, 3, 4, 6} := by
+  ext r
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨n, hn, rfl⟩
+    have h57 := representable_mod8_ne_five_seven hn
+    have hlt : n % 8 < 8 := Nat.mod_lt n (by norm_num)
+    omega
+  · intro hr
+    rcases hr with h | h | h | h | h | h <;> subst h
+    · exact ⟨8, ⟨0, 2, by norm_num⟩, by norm_num⟩
+    · exact ⟨1, one_representable, by norm_num⟩
+    · exact ⟨2, two_representable, by norm_num⟩
+    · exact ⟨3, three_representable, by norm_num⟩
+    · exact ⟨4, ⟨2, 0, by norm_num⟩, by norm_num⟩
+    · exact ⟨6, ⟨2, 1, by norm_num⟩, by norm_num⟩
+
+/-- **Sharpness of the mod-8 obstruction (blocked side).** The residues mod 8 that *block*
+    representability — those `r < 8` such that no `n ≡ r (mod 8)` is representable — are
+    **exactly** `{5, 7}`. `⊇`: `not_representable_of_mod8`. `⊆`: any other residue `r < 8`
+    lies in `{0,1,2,3,4,6}`, which by `representable_mod8_image` is attained by some
+    representable `n`, contradicting the blocking hypothesis. This is the exact statement
+    that the mod-8 congruence obstruction is `{5, 7}` and nothing more. -/
+theorem mod8_blocking_residues :
+    {r : ℕ | r < 8 ∧ ∀ n, n % 8 = r → n ∉ representable_x2_2y2} = {5, 7} := by
+  ext r
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨hlt, hblock⟩
+    by_contra hne
+    have hr6 : r ∈ ({0, 1, 2, 3, 4, 6} : Set ℕ) := by
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; omega
+    rw [← representable_mod8_image] at hr6
+    obtain ⟨n, hn, hnr⟩ := hr6
+    exact hblock n hnr hn
+  · intro hr
+    refine ⟨by omega, fun n hn => not_representable_of_mod8 n ?_⟩
+    rcases hr with h | h <;> subst h <;> [left; right] <;> exact hn
 
 /-- **Strict upper count once a gap appears: `B₂(N) < N` for `N ≥ 5`.** Sharpening `B2_le`
     (`B₂(N) ≤ N`): as soon as the window reaches the first non-representable integer `5`
@@ -572,4 +659,134 @@ theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
   push_neg at hContra  -- distinctDistances T < 3
   omega
 
+/-! ## More closure structure and explicit families of representable numbers
+
+The `representable_x2_2y2` API above records that the norm form `x² + 2y²` is
+multiplicative (`representable_mul`), contains `1, 2, 3`, all squares, and all powers
+of `2`.  The following round out the closure properties actually used when reasoning
+about which integers appear as distances in the Moree–Osburn lattice. -/
+
+/-- **Multiplying by a square preserves representability.**  If `n = x² + 2y²` then so is
+    `k²·n` for every `k`.  Immediate from `representable_mul` and `sq_representable`; it
+    expresses that representability by the norm form `x² + 2y²` only depends on `n` up to
+    square factors (one direction — the "square part is free" half). -/
+theorem representable_mul_sq {n : ℕ} (hn : n ∈ representable_x2_2y2) (k : ℕ) :
+    k ^ 2 * n ∈ representable_x2_2y2 :=
+  representable_mul (sq_representable k) hn
+
+/-- **Doubling preserves representability.**  If `n = x² + 2y²` then so is `2n`
+    (`2 = 0² + 2·1²` is representable and the form is multiplicative).  The ramified prime
+    `√-2` may always be adjoined. -/
+theorem two_mul_representable {n : ℕ} (hn : n ∈ representable_x2_2y2) :
+    2 * n ∈ representable_x2_2y2 :=
+  representable_mul two_representable hn
+
+/-- **The "twice-a-square" family `2k²` is representable**, with the direct witness
+    `2k² = 0² + 2·k²`.  A family of representable numbers distinct from the squares
+    (`sq_representable`) and the powers of two (`two_pow_representable`): these are the
+    norms of the elements `k·√-2 ∈ ℤ[√-2]`. -/
+theorem two_mul_sq_representable (k : ℕ) : 2 * k ^ 2 ∈ representable_x2_2y2 :=
+  ⟨0, (k : ℤ), by push_cast; ring⟩
+
+/-- **A square times a power of two is representable**, `k²·2ʲ = x² + 2y²`.  Combines
+    `sq_representable` and `two_pow_representable` through `representable_mul`, exhibiting a
+    two-parameter family of norms from `ℤ[√-2]`. -/
+theorem sq_mul_two_pow_representable (k j : ℕ) :
+    k ^ 2 * 2 ^ j ∈ representable_x2_2y2 :=
+  representable_mul (sq_representable k) (two_pow_representable j)
+
+/-- `13 ≡ 5 (mod 8)` is **not** representable as `x² + 2y²` (`13` is inert in `ℤ[√-2]`).
+    Extends the inert-prime catalogue `five_not_representable`, `seven_not_representable`
+    past the first two, via the mod-8 obstruction `not_representable_of_mod8`. -/
+theorem thirteen_not_representable : 13 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 13 (Or.inl (by decide))
+
+/-- `23 ≡ 7 (mod 8)` is **not** representable as `x² + 2y²` (`23` inert in `ℤ[√-2]`), the
+    inert-`7 mod 8` companion of `thirteen_not_representable`. -/
+theorem twentythree_not_representable : 23 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 23 (Or.inr (by decide))
+
+/-! ## The metric matters: Chebyshev (`dist`) versus Euclidean
+
+Erdős #659 is a statement about **Euclidean** distances in the plane, but the
+`distinctDistances`, `isConfiguration`, and `fourPointProperty` definitions above are
+phrased through Mathlib's `dist` on `ℝ × ℝ`, which is the **sup (Chebyshev) metric**
+`dist (x₁,y₁) (x₂,y₂) = max |x₁-x₂| |y₁-y₂|` — *not* the Euclidean metric. The two
+notions of distance genuinely disagree on the distinct-distance count of concrete
+sets, so the `dist`-based layer is not a faithful model of the Euclidean problem. (On
+the Moree–Osburn lattice this is invisible because `latticeDistSq` hard-codes the
+Euclidean form `x²+2y²`; the mismatch only surfaces for the general geometric
+predicates.) The lemmas below make the discrepancy a **machine-checked fact** rather
+than a prose caveat, and introduce the correct Euclidean squared distance.
+
+The witness is the unit square `(0,0), (1,0), (1,1), (0,1)`: under the Chebyshev
+metric a *side* and a *diagonal* have equal length `1`, so the square collapses to a
+single distance; under the Euclidean metric they are `1` and `√2`, the genuine
+two-distance square configuration. -/
+
+/-- Euclidean squared distance on the coordinate plane `ℝ × ℝ`. Unlike the ambient
+    `dist` (which is the sup/Chebyshev metric), this is the metric of Erdős #659. Its
+    restriction to Moree–Osburn lattice points is exactly `latticeDistSq`. -/
+def euclSq (p q : ℝ × ℝ) : ℝ := (p.1 - q.1) ^ 2 + (p.2 - q.2) ^ 2
+
+/-- `euclSq` restricted to two Moree–Osburn lattice points reproduces `latticeDistSq`:
+    the general Euclidean squared distance agrees with the lattice's own quadratic form
+    `x² + 2y²`. This is why the `latticeDistSq_*` API is Euclidean-faithful even though
+    the ambient `dist` is not. -/
+theorem euclSq_latticePoint (a₁ b₁ a₂ b₂ : ℤ) :
+    euclSq (latticePoint a₁ b₁) (latticePoint a₂ b₂)
+      = ((latticeDistSq a₁ b₁ a₂ b₂ : ℤ) : ℝ) := by
+  have hsq : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  simp only [euclSq, latticePoint, latticeDistSq]
+  push_cast
+  have hb : ((b₁ : ℝ) * Real.sqrt 2 - (b₂ : ℝ) * Real.sqrt 2) ^ 2
+      = 2 * ((b₁ : ℝ) - (b₂ : ℝ)) ^ 2 := by
+    rw [show ((b₁ : ℝ) * Real.sqrt 2 - (b₂ : ℝ) * Real.sqrt 2)
+          = ((b₁ : ℝ) - (b₂ : ℝ)) * Real.sqrt 2 by ring, mul_pow, hsq]; ring
+  rw [hb]
+
+/-- **The four sides of the unit square have Euclidean squared length `1`.** -/
+theorem unitSquare_sides :
+    euclSq (0, 0) (1, 0) = 1 ∧ euclSq (1, 0) (1, 1) = 1 ∧
+    euclSq (1, 1) (0, 1) = 1 ∧ euclSq (0, 1) (0, 0) = 1 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> · simp only [euclSq]; norm_num
+
+/-- **The two diagonals of the unit square have Euclidean squared length `2`.** Together
+    with `unitSquare_sides`, the square realises exactly two Euclidean distances (`1` and
+    `√2`), so it is a genuine two-distance `square` configuration in the Euclidean plane. -/
+theorem unitSquare_diagonals :
+    euclSq (0, 0) (1, 1) = 2 ∧ euclSq (1, 0) (0, 1) = 2 := by
+  refine ⟨?_, ?_⟩ <;> · simp only [euclSq]; norm_num
+
+/-- **Chebyshev conflates a side and a diagonal of the unit square.** Under the ambient
+    sup metric `dist`, the diagonal `(0,0)–(1,1)` and the side `(0,0)–(1,0)` both have
+    length `1`. -/
+theorem chebyshev_conflates_square_side_and_diagonal :
+    dist ((0 : ℝ), (0 : ℝ)) (1, 1) = dist ((0 : ℝ), (0 : ℝ)) (1, 0) := by
+  rw [Prod.dist_eq, Prod.dist_eq]
+  simp only [Real.dist_eq]
+  norm_num
+
+/-- **Euclidean separates the same side and diagonal.** The two segments Chebyshev
+    identifies (`chebyshev_conflates_square_side_and_diagonal`) have *different* Euclidean
+    squared lengths (`2` versus `1`). -/
+theorem euclid_separates_square_side_and_diagonal :
+    euclSq (0, 0) (1, 1) ≠ euclSq (0, 0) (1, 0) := by
+  simp only [euclSq]; norm_num
+
+/-- **The sup metric is not the Euclidean metric on the plane** — a self-contained
+    witness that the `dist`-based `distinctDistances`/`isConfiguration`/`fourPointProperty`
+    layer does not faithfully count Euclidean distances. There are three collinear-free
+    points (two adjacent corners and the opposite corner of the unit square) at which the
+    Euclidean metric sees two distinct distances while the ambient Chebyshev `dist` sees
+    only one. Consequently a Euclidean two-distance classification cannot be read off the
+    `dist`-based predicates directly; the geometric layer must be reformulated over
+    `euclSq` (as `euclSq_latticePoint` already does for the lattice). -/
+theorem chebyshev_ne_euclidean_distinctness :
+    ∃ p q r : ℝ × ℝ, dist p q = dist p r ∧ euclSq p q ≠ euclSq p r :=
+  ⟨(0, 0), (1, 1), (1, 0),
+    chebyshev_conflates_square_side_and_diagonal,
+    euclid_separates_square_side_and_diagonal⟩
+
 end Erdos659
+

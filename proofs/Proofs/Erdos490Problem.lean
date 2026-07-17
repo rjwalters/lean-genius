@@ -72,6 +72,26 @@ theorem productSet_eq_image (A B : Finset ℕ) :
   · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
   · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩; exact ⟨a, ha, b, hb, rfl⟩
 
+/-- **The universal product-count bound**: `|A·B| ≤ |A|·|B|`, with *no* distinctness
+hypothesis.  The product set is the image of the product map on `A ×ˢ B`, and an image
+never has more elements than its domain (`Finset.card_image_le`), so `|A·B| ≤ |A ×ˢ B| =
+|A|·|B|`.  This is the trivial upper bound that the entire problem is about *saturating*:
+`HasDistinctProducts A B` is exactly the equality case (see `hasDistinctProducts_iff_card_le`),
+and Szemerédi's theorem asks how large `|A|·|B|` can be while the bound stays tight. -/
+theorem productSet_card_le (A B : Finset ℕ) :
+    (productSet A B).card ≤ A.card * B.card := by
+  rw [productSet_eq_image, ← Finset.card_product A B]
+  exact Finset.card_image_le
+
+/-- **`HasDistinctProducts` is empty on the left**: `A·∅ = ∅` and `∅·B = ∅`, so the
+degenerate pairs carry no products.  (Recorded as `simp` lemmas so the product set
+collapses automatically.) -/
+@[simp] theorem productSet_empty_left (B : Finset ℕ) : productSet ∅ B = ∅ := by
+  simp [productSet]
+
+@[simp] theorem productSet_empty_right (A : Finset ℕ) : productSet A ∅ = ∅ := by
+  ext n; simp [productSet]
+
 /-- **`HasDistinctProducts` is injectivity of the product map.**  The cardinality
 condition `|A·B| = |A||B|` holds iff `(a, b) ↦ a·b` is injective on `A ×ˢ B`
 (via `Finset.card_image_iff`). -/
@@ -79,6 +99,19 @@ theorem hasDistinctProducts_iff_injOn (A B : Finset ℕ) :
     HasDistinctProducts A B ↔ Set.InjOn (fun p : ℕ × ℕ => p.1 * p.2) ↑(A ×ˢ B) := by
   rw [HasDistinctProducts, productSet_eq_image, ← Finset.card_product A B,
     Finset.card_image_iff]
+
+/-- **Distinct products = saturating the universal bound.**  Since `|A·B| ≤ |A|·|B|`
+always holds (`productSet_card_le`), the equality defining `HasDistinctProducts` is
+equivalent to the single reverse inequality `|A|·|B| ≤ |A·B|`.  So to certify a pair has
+distinct products one need only exhibit that its product set is *at least* as large as
+`|A|·|B|` — the matching upper bound is automatic.  This is the inequality form used
+throughout extremal arguments. -/
+theorem hasDistinctProducts_iff_card_le (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ A.card * B.card ≤ (productSet A B).card := by
+  rw [HasDistinctProducts]
+  constructor
+  · intro h; rw [h]
+  · intro h; exact le_antisymm (productSet_card_le A B) h
 
 /-- **The two distinctness notions agree.**  `ProductMapInjective` (the elementwise
 quantified form) is equivalent to `HasDistinctProducts` (the cardinality form). -/
@@ -532,6 +565,39 @@ theorem optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
   exact optimal_works_because_primes a₁ a₂ b₁ b₂ ha₁1 ha₂1 ha₁2 ha₂2
     hb₁p hb₂p hb₁lt hb₂lt heq
 
+/-- **The explicit optimal example is a valid witness for `maxProductSize`** (0-axiom).
+The pair `A = optimalA N`, `B = optimalB N` satisfies `IsSubsetUpTo _ N` (both sit inside
+`[1, N]`) and `HasDistinctProducts` (by `optimal_has_distinct_products`), so it is one of
+the pairs over which `maxProductSize N` is defined as the least upper bound.  Hence the
+extremal function dominates the size of the explicit construction — the missing link
+tying Part IV (the optimal example) to Part II (the extremal function `maxProductSize`).
+Combined with `optimal_example_upper_bound`, this pins `maxProductSize N` from below by a
+`Θ(N²/log N)` construction with no dependence on `szemeredi_theorem`. -/
+theorem optimal_example_le_maxProductSize (N : ℕ) (hN : N ≥ 4) :
+    (optimalA N).card * (optimalB N).card ≤ maxProductSize N := by
+  unfold maxProductSize
+  refine Nat.find_spec (maxProductSize.max_exists N)
+    (optimalA N) (optimalB N) ?_ ?_ (optimal_has_distinct_products N hN)
+  · -- `optimalA N = Icc 1 (N/2) ⊆ [1, N]`
+    intro a ha
+    simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha
+    obtain ⟨_, ha1, ha2⟩ := ha
+    exact ⟨ha1, by omega⟩
+  · -- every `p ∈ optimalB N` is a prime in `(N/2, N] ⊆ [1, N]`
+    intro p hp
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨_, hpp, _, hpN⟩ := hp
+    exact ⟨hpp.one_lt.le, hpN⟩
+
+/-- **The extremal function is at least `⌊N/2⌋ · |{primes in (N/2, N]}|`** (0-axiom).
+Rewriting `optimal_example_le_maxProductSize` with `optimalA_card` gives an explicit
+`maxProductSize` lower bound in terms of the number of upper-half primes counted by
+`optimalB N`. -/
+theorem maxProductSize_ge_optimal (N : ℕ) (hN : N ≥ 4) :
+    (N / 2) * (optimalB N).card ≤ maxProductSize N := by
+  have h := optimal_example_le_maxProductSize N hN
+  rwa [optimalA_card] at h
+
 /-
 ## Part V: The Limit Question (Open)
 -/
@@ -583,6 +649,31 @@ theorem primes_products_determine_pair {p₁ q₁ p₂ q₂ : ℕ}
     refine Or.inr ⟨hp₁q₂, ?_⟩
     rw [← hp₁q₂, Nat.mul_comm p₂ p₁] at h
     exact Nat.eq_of_mul_eq_mul_left hp₁.pos h
+
+/-- **The ordered multiplicative-Sidon property is degenerate.**  For the *ordered*
+notion `IsMultiplicativeSidon A = HasDistinctProducts A A` (which demands the product
+map injective on `A ×ˢ A`),
+
+    `IsMultiplicativeSidon A  ↔  A.card ≤ 1`.
+
+This makes precise the observation, sketched in prose above for `A = {2, 3}`, that the
+ordered notion collapses: any two *distinct* elements `a, b ∈ A` give the coincidence
+`a·b = b·a` with `(a, b) ≠ (b, a)`, so injectivity of the product map on `A ×ˢ A` forces
+`A` to have at most one element (and conversely a set of size `≤ 1` trivially satisfies
+it).  Hence the honest multiplicative-Sidon content for `|A| ≥ 2` is the *unordered*
+statement `primes_products_determine_pair`, not this ordered one.  Axiom-free. -/
+theorem isMultiplicativeSidon_iff_card_le_one (A : Finset ℕ) :
+    IsMultiplicativeSidon A ↔ A.card ≤ 1 := by
+  rw [IsMultiplicativeSidon, ← productMapInjective_iff_hasDistinctProducts]
+  constructor
+  · intro h
+    by_contra hc
+    push_neg at hc
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hc
+    exact hab (h a b b a ha hb hb ha (by ring)).1
+  · intro h a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ _
+    have hall := Finset.card_le_one.mp h
+    exact ⟨hall a₁ ha₁ a₂ ha₂, hall b₁ hb₁ b₂ hb₂⟩
 
 /-
 ## Part VII: Related Problems
@@ -763,6 +854,77 @@ theorem multiplicativeEnergy_comm (A B : Finset ℕ) :
     rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ _; rfl
   case right =>
     rintro ⟨⟨b₁, b₂⟩, ⟨a₁, a₂⟩⟩ _; rfl
+
+/-- **Multiplicative energy is monotone under subsets**: if `A' ⊆ A` and `B' ⊆ B` then
+`E(A', B') ≤ E(A, B)`.  Enlarging the two factor sets can only add coincidence
+quadruples: `(A' ×ˢ A') ×ˢ (B' ×ˢ B') ⊆ (A ×ˢ A) ×ˢ (B ×ˢ B)`, and the energy filter
+predicate `a₁·b₁ = a₂·b₂` is unchanged, so `Finset.filter_subset_filter` gives the
+inclusion of energy sets and `Finset.card_le_card` the bound.  This is the
+`multiplicativeEnergy` companion to `productSet_mono` and `HasDistinctProducts.subset`. -/
+theorem multiplicativeEnergy_mono {A A' B B' : Finset ℕ} (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    multiplicativeEnergy A' B' ≤ multiplicativeEnergy A B := by
+  classical
+  unfold multiplicativeEnergy
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro q hq
+  simp only [Finset.mem_product] at hq ⊢
+  obtain ⟨⟨ha1, ha2⟩, hb1, hb2⟩ := hq
+  exact ⟨⟨hA ha1, hA ha2⟩, hB hb1, hB hb2⟩
+
+/-- **Trivial upper bound on multiplicative energy**: `E(A, B) ≤ (|A|·|B|)²`.  The energy
+set is a `filter` of the full quadruple set `(A ×ˢ A) ×ˢ (B ×ˢ B)`, whose cardinality is
+`|A|²·|B|² = (|A||B|)²`, so the count of coincidences never exceeds it.  Together with the
+lower bound `multiplicativeEnergy_ge` (`|A||B| ≤ E`) this two-sidedly sandwiches the
+energy: `|A||B| ≤ E(A, B) ≤ (|A||B|)²`. -/
+theorem multiplicativeEnergy_le_sq (A B : Finset ℕ) :
+    multiplicativeEnergy A B ≤ (A.card * B.card) ^ 2 := by
+  classical
+  unfold multiplicativeEnergy
+  refine le_trans (Finset.card_filter_le _ _) ?_
+  rw [Finset.card_product, Finset.card_product, Finset.card_product]
+  apply le_of_eq
+  ring
+
+/-- **Sharp upper bound on multiplicative energy** (positive factor `A`): `E(A, B) ≤ |A|²·|B|`.
+When `0 ∉ A`, an energy quadruple `((a₁, a₂), (b₁, b₂))` is determined by its first three
+coordinates `(a₁, a₂, b₁)`: the relation `a₁·b₁ = a₂·b₂` fixes `b₂` uniquely because `a₂ ≠ 0`
+is cancellable.  So the forgetful map `((a₁, a₂), (b₁, b₂)) ↦ ((a₁, a₂), b₁)` injects the
+energy set into `(A ×ˢ A) ×ˢ B`, giving `E ≤ |A|²·|B|`.  This is far sharper than the trivial
+`multiplicativeEnergy_le_sq` (`E ≤ (|A||B|)²`): it replaces one factor of `|A||B|` by a single
+`|A|`, tightening the sandwich to `|A||B| ≤ E(A, B) ≤ |A|²·|B|`.  The positivity hypothesis is
+necessary — with `0 ∈ A` the collisions `0·b₁ = 0·b₂` make `b₂` free and the bound fails. -/
+theorem multiplicativeEnergy_le_sq_mul {A B : Finset ℕ} (hA : (0 : ℕ) ∉ A) :
+    multiplicativeEnergy A B ≤ A.card ^ 2 * B.card := by
+  classical
+  unfold multiplicativeEnergy
+  refine le_trans (Finset.card_le_card_of_injOn
+    (t := (A ×ˢ A) ×ˢ B) (fun q => (q.1, q.2.1)) ?_ ?_) ?_
+  · rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hq ⊢
+    exact ⟨⟨hq.1.1.1, hq.1.1.2⟩, hq.1.2.1⟩
+  · rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq ⟨⟨a₁', a₂'⟩, ⟨b₁', b₂'⟩⟩ hq' heq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hq hq'
+    simp only [Prod.mk.injEq] at heq
+    obtain ⟨⟨rfl, rfl⟩, rfl⟩ := heq
+    have hrel : a₁ * b₁ = a₂ * b₂ := hq.2
+    have hrel' : a₁ * b₁ = a₂ * b₂' := hq'.2
+    have ha2ne : a₂ ≠ 0 := fun h => hA (h ▸ hq.1.1.2)
+    have : b₂ = b₂' := Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero ha2ne)
+      (by rw [← hrel, hrel'])
+    subst this; rfl
+  · exact le_of_eq (by rw [Finset.card_product, Finset.card_product]; ring)
+
+/-- **Sharp upper bound on multiplicative energy** (positive factor `B`): `E(A, B) ≤ |A|·|B|²`.
+The mirror of `multiplicativeEnergy_le_sq_mul` in the second factor, obtained from it by the
+symmetry `multiplicativeEnergy_comm`.  Requiring `0 ∉ B`, the third coordinate `a₂` is now the
+one pinned down, so the energy injects into `A ×ˢ (B ×ˢ B)`.  Together the two sharp bounds give
+`E(A, B) ≤ |A|·|B|·min(|A|, |B|)`. -/
+theorem multiplicativeEnergy_le_mul_sq {A B : Finset ℕ} (hB : (0 : ℕ) ∉ B) :
+    multiplicativeEnergy A B ≤ A.card * B.card ^ 2 := by
+  rw [multiplicativeEnergy_comm]
+  calc multiplicativeEnergy B A ≤ B.card ^ 2 * A.card := multiplicativeEnergy_le_sq_mul hB
+    _ = A.card * B.card ^ 2 := by ring
 
 /-- **Strict energy excess characterizes product collisions.**  Combining the general
 lower bound `|A||B| ≤ E(A, B)` (`multiplicativeEnergy_ge`) with its equality case

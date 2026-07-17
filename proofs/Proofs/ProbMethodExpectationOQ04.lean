@@ -202,6 +202,53 @@ theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.No
   rw [hz] at hmem
   exact absurd hmem (Finset.notMem_empty i)
 
+/-- **Probabilistic-method existence, uniform per-event bound.**  The interface a concrete
+model actually plugs into: if *every* event `A i` occurs at no more than `c` samples and the
+crude union total `|I| · c` is still `< |Ω|`, then some sample avoids **every** event.  This
+is the shape of the Ramsey argument — each of the `C(n,k)` candidate `k`-cliques is
+monochromatic in the same `2^{1 - C(k,2)}` fraction of colourings, and `C(n,k) · that < 1`
+delivers a good colouring — with no per-event bookkeeping beyond the uniform bound `c`.
+Derived from `exists_avoiding_all_events` by `∑_{i} #{w : A i w} ≤ ∑_{i} c = |I| · c`. -/
+theorem exists_avoiding_all_events_of_uniform_bound {ω ι : Type*}
+    (Ω : Finset ω) (hΩ : Ω.Nonempty) (I : Finset ι) (A : ι → ω → Prop)
+    [∀ i w, Decidable (A i w)] {c : ℚ}
+    (hc : ∀ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ) ≤ c)
+    (h : (I.card : ℚ) * c < Ω.card) :
+    ∃ w ∈ Ω, ∀ i ∈ I, ¬ A i w := by
+  apply exists_avoiding_all_events Ω hΩ I A
+  calc ∑ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ)
+      ≤ ∑ _i ∈ I, c := Finset.sum_le_sum hc
+    _ = (I.card : ℚ) * c := by rw [Finset.sum_const, nsmul_eq_mul]
+    _ < Ω.card := h
+
+/-- **Union-bound count of good samples (Bonferroni).**  A quantitative refinement of
+`exists_avoiding_all_events`: the number of samples avoiding every event is at least
+`|Ω| − ∑_i #{w : A i w}` — here stated additively over `ℕ` as
+`|Ω| ≤ #{avoiding} + ∑_i #{w : A i w}`.  Where `exists_avoiding_all_events` produces *one*
+good sample when the total incidence is `< |Ω|`, this bounds *how many* there are, so a
+strict inequality yields a whole positive-density set of good outcomes.  Proof: the bad
+samples `{w : ∃ i ∈ I, A i w}` inject into `⋃_i {w : A i w}`, whose size is at most
+`∑_i #{w : A i w}` by `Finset.card_biUnion_le`; add the complement split. -/
+theorem card_avoiding_add_events_ge {ω ι : Type*} (Ω : Finset ω) (I : Finset ι)
+    (A : ι → ω → Prop) [∀ i w, Decidable (A i w)] [DecidableEq ω] :
+    Ω.card ≤ (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+  classical
+  have hsplit : (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card = Ω.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  have hbad : (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card
+      ≤ ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+    have hsub : Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)
+        ⊆ I.biUnion (fun i => Ω.filter (fun w => A i w)) := by
+      intro w hw
+      rw [Finset.mem_filter] at hw
+      push_neg at hw
+      obtain ⟨i, hi, hAi⟩ := hw.2
+      exact Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_filter.mpr ⟨hw.1, hAi⟩⟩
+    exact (Finset.card_le_card hsub).trans Finset.card_biUnion_le
+  omega
+
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
 The parent gallery lemma `expected_mono_cliques` only records that the expected
@@ -401,5 +448,280 @@ theorem expectedMonoCliques_lt_one_of_lt_sqrt {n k : ℕ} (hk : 3 ≤ k)
   -- Descend to `ℕ`.
   have hcast : ((n ^ 2 : ℕ) : ℝ) < ((2 ^ k : ℕ) : ℝ) := by push_cast; linarith
   exact_mod_cast hcast
+
+/-! ## Base values of the expected count
+
+The Ramsey block above pins `E(n,k)` against `1` (the density threshold). The three
+values below pin the *formula* itself at its natural boundary points, dual to the
+sub-threshold range: it vanishes below the diagonal, is positive exactly from the
+diagonal onward, and takes an explicit value at the diagonal. -/
+
+/-- **Below the diagonal the expected count vanishes.**  For `n < k` there are no
+`k`-subsets of an `n`-set, so `C(n,k) = 0` and `E(n,k) = 0`.  The `δ = 0` base value of
+the formula, complementing the positivity characterization `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_eq_zero_of_lt {n k : ℕ} (h : n < k) :
+    expectedMonoCliques n k = 0 := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_eq_zero_of_lt h, Nat.cast_zero, zero_mul]
+
+/-- **Positivity characterizes `k ≤ n`.**  The expected number of monochromatic
+`k`-cliques is strictly positive iff the vertex set is large enough to contain a
+`k`-clique at all: `0 < E(n,k) ↔ k ≤ n`.  The `2^{1−C(k,2)}` factor is always positive,
+so positivity is governed entirely by `C(n,k)`; the "iff" companion of
+`expectedMonoCliques_eq_zero_of_lt`. -/
+theorem expectedMonoCliques_pos_iff {n k : ℕ} :
+    0 < expectedMonoCliques n k ↔ k ≤ n := by
+  unfold expectedMonoCliques
+  have hpow : (0 : ℚ) < (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by positivity
+  constructor
+  · intro hpos
+    by_contra hlt
+    push_neg at hlt
+    rw [Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero, zero_mul] at hpos
+    exact lt_irrefl 0 hpos
+  · intro hle
+    have hc : (0 : ℚ) < (n.choose k : ℚ) := by exact_mod_cast Nat.choose_pos hle
+    exact mul_pos hc hpow
+
+/-- **Exact value on the diagonal.**  `E(k,k) = 2^{1−C(k,2)}`: an `n = k` vertex set has a
+single potential `k`-clique (`C(k,k) = 1`), monochromatic with probability `2·2^{−C(k,2)}`.
+The base value at the diagonal; for `k ≥ 3` it is already `< 1` (since `C(k,2) ≥ 3`),
+the trivial endpoint `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`. -/
+theorem expectedMonoCliques_self (k : ℕ) :
+    expectedMonoCliques k k = (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_self, Nat.cast_one, one_mul]
+
+/-- **Canonical `zpow`-free rational form of the expected count.**
+`E(n,k) = (C(n,k)·2) / 2^{C(k,2)}` — the value-level companion of
+`expectedMonoCliques_lt_one_iff` (which compares the numerator to the denominator).
+Rewriting away the integer `zpow (1 − C(k,2))` into a plain `ℕ`-power quotient is the form
+every downstream numeric estimate or evaluation of `E` actually wants; the `< 1` iff is
+then just `div_lt_one` on this quotient. -/
+theorem expectedMonoCliques_eq_div (n k : ℕ) :
+    expectedMonoCliques n k = ((n.choose k : ℚ) * 2) / (2 : ℚ) ^ (k.choose 2) := by
+  unfold expectedMonoCliques
+  rw [sub_eq_add_neg, zpow_add₀ (by norm_num : (2 : ℚ) ≠ 0), zpow_one, zpow_neg,
+    zpow_natCast, div_eq_mul_inv]
+  ring
+
+/-- **The expected count is nonnegative** — the base fact recorded by the parent gallery
+lemma `expected_mono_cliques`, on which the whole first-moment argument rests: `E(n,k) ≥ 0`
+for all `n, k`. The `< 1` upper bounds sit *above* this floor; together they trap `E` in
+`[0, 1)` on the sub-threshold range, the exact window the probabilistic method exploits.
+The strict companion `0 < E ↔ k ≤ n` is `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_nonneg (n k : ℕ) : 0 ≤ expectedMonoCliques n k := by
+  unfold expectedMonoCliques
+  exact mul_nonneg (Nat.cast_nonneg _) (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
+
+/-- **The `≥ 1` threshold — dual of `expectedMonoCliques_lt_one_iff`.**  The expected count
+is at least `1` *exactly* when `2^{C(k,2)} ≤ C(n,k)·2`.  Together with the strict `< 1`
+criterion this pins the sharp cutoff of the first-moment method: below it (`E < 1`) a
+clique-free 2-colouring is forced to exist, while at or above it the first moment no longer
+delivers one.  Proof: `one_le_div` on the `zpow`-free quotient `expectedMonoCliques_eq_div`. -/
+theorem expectedMonoCliques_one_le_iff (n k : ℕ) :
+    1 ≤ expectedMonoCliques n k ↔ (2 : ℚ) ^ (k.choose 2) ≤ (n.choose k : ℚ) * 2 := by
+  rw [expectedMonoCliques_eq_div,
+    le_div_iff₀ (by positivity : (0 : ℚ) < (2 : ℚ) ^ (k.choose 2)), one_mul]
+
+/-- **Diagonal endpoint `E(k,k) < 1` for `k ≥ 3`.**  The value `expectedMonoCliques_self`
+computes `E(k,k) = 2^{1−C(k,2)}`, and for `k ≥ 3` the exponent `1 − C(k,2) ≤ −2` (since
+`C(k,2) ≥ C(3,2) = 3`), so `E(k,k) ≤ 2^{−2} = 1/4 < 1`.  This is the trivial diagonal Ramsey
+bound `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`, promoted from the prose
+remark in `expectedMonoCliques_self`'s docstring to a lemma.  Notably it is *not* an instance
+of `expectedMonoCliques_lt_one_of_sq_lt` (which needs `k² < 2^k`, false at `k = 3`: `9 > 8`) —
+on the diagonal the bound is governed directly by the negative exponent, not the square. -/
+theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques k k < 1 := by
+  rw [expectedMonoCliques_self]
+  have hc2 : 3 ≤ k.choose 2 := by
+    have h := Nat.choose_mono 2 hk
+    simpa using h
+  have hexp : (1 : ℤ) - (k.choose 2 : ℤ) ≤ -2 := by omega
+  calc (2 : ℚ) ^ (1 - (k.choose 2 : ℤ))
+      ≤ (2 : ℚ) ^ (-2 : ℤ) := zpow_le_zpow_right₀ (by norm_num) hexp
+    _ < 1 := by norm_num
+
+/-! ## Second-moment sibling: a Cauchy–Schwarz lower bound on the support
+
+Everything above is the **first** moment method: the *mean* of a count controls
+existence — a mean below `1` forces some outcome to vanish
+(`exists_eq_zero_of_average_lt_one`).  The dual **second** moment tool controls the
+opposite tail: it lower-bounds *how many* outcomes are nonzero in terms of the first
+and second moments.  Cauchy–Schwarz over the support gives
+`(∑ g)² ≤ #{a : g a ≠ 0} · ∑ g²`, i.e. `#support ≥ (∑ g)² / ∑ g²` — the base
+inequality of the second moment method.  These are the "second-moment sibling"
+lemmas the spread section (`exists_nonneg_spread_of_average`) pointed toward. -/
+
+/-- **Second-moment support bound (Cauchy–Schwarz).**  For a nonnegative integer count
+`g : α → ℕ`, the square of the total is at most the number of nonzero outcomes times the
+sum of squares: `(∑ g)² ≤ #{a ∈ s : g a ≠ 0} · ∑ g²`.  Cauchy–Schwarz
+(`sq_sum_le_card_mul_sum_sq`) applied over the support `T = {a ∈ s : g a ≠ 0}` with the
+constant weight `1`, using that the zero terms contribute nothing to either sum. -/
+theorem sq_sum_le_card_support_mul_sum_sq (g : α → ℕ) :
+    (∑ a ∈ s, (g a : ℚ)) ^ 2
+      ≤ ((s.filter (fun a => g a ≠ 0)).card : ℚ) * ∑ a ∈ s, ((g a : ℚ)) ^ 2 := by
+  classical
+  set T := s.filter (fun a => g a ≠ 0) with hT
+  have hz : ∀ a ∈ s, a ∉ T → (g a : ℚ) = 0 := by
+    intro a ha haT
+    have : g a = 0 := by
+      by_contra hne; exact haT (Finset.mem_filter.mpr ⟨ha, hne⟩)
+    simp [this]
+  have hsum : ∑ a ∈ T, (g a : ℚ) = ∑ a ∈ s, (g a : ℚ) :=
+    Finset.sum_subset (Finset.filter_subset _ s) hz
+  have hsumsq : ∑ a ∈ T, ((g a : ℚ)) ^ 2 = ∑ a ∈ s, ((g a : ℚ)) ^ 2 :=
+    Finset.sum_subset (Finset.filter_subset _ s) (fun a ha haT => by rw [hz a ha haT]; ring)
+  have hCS := sq_sum_le_card_mul_sum_sq (s := T) (f := fun a => (g a : ℚ))
+  rw [hsum, hsumsq] at hCS
+  exact hCS
+
+/-- **Second moment method (support lower bound).**  When the sum of squares is positive,
+the number of nonzero outcomes is at least `(∑ g)² / ∑ g²`.  The classic second-moment
+existence tool, dual to the first-moment `exists_eq_zero_of_average_lt_one`: a first moment
+that is large relative to the second moment forces *many* nonzero outcomes.  Immediate from
+`sq_sum_le_card_support_mul_sum_sq` by `div_le_iff₀`. -/
+theorem sq_sum_div_sum_sq_le_card_support (g : α → ℕ)
+    (h : 0 < ∑ a ∈ s, ((g a : ℚ)) ^ 2) :
+    (∑ a ∈ s, (g a : ℚ)) ^ 2 / (∑ a ∈ s, ((g a : ℚ)) ^ 2)
+      ≤ ((s.filter (fun a => g a ≠ 0)).card : ℚ) := by
+  rw [div_le_iff₀ h]
+  exact sq_sum_le_card_support_mul_sum_sq g
+/-! ## The concrete colouring/counting model: a self-contained Ramsey existence
+
+The sections above closed the *quantitative* half of OQ-04 (`E(n,k) < 1` whenever
+`n² < 2^k`) and supplied the abstract *existence* engine
+(`exists_avoiding_all_events`) that turns "expected number of bad events `< 1`" into a
+sample avoiding every event.  What was still missing was the **concrete colouring model**
+instantiating that engine — the piece the knowledge base flagged as the genuinely-remaining
+lift.  This section provides it, entirely combinatorially and model-agnostically.
+
+Model a 2-colouring of a finite set of edges `E` as a function `c : E → Bool`.  A "clique"
+is an edge set `F : Finset E`; it is **monochromatic** under `c` when all its edges share a
+colour.  The two facts a probabilistic-method Ramsey argument needs are:
+
+* `card_const` / `card_monoOn` — the *exact* count of colourings monochromatic on a fixed
+  nonempty edge set `F` is `2^(|E| − |F| + 1)` (choose the common colour two ways, the
+  `|E| − |F|` edges outside `F` are free).
+* `exists_no_mono_colouring` — if `∑_F 2^(|E| − |F| + 1) < 2^|E|` over the clique family,
+  some colouring makes **no** clique monochromatic.
+
+Specialising to `E =` the `C(n,2)` edges of `Kₙ` and the family of `C(n,k)` many `k`-cliques
+(each with `|F| = C(k,2)` internal edges) turns the counting threshold into exactly
+`E(n,k) < 1`, delivering the Erdős 1947 bound `R(k,k) > n`. -/
+
+section ColouringModel
+
+variable {E : Type*} [Fintype E] [DecidableEq E] {ι : Type*}
+
+/-- **Count of colourings constant on an edge set.**  The number of Bool-colourings of a
+finite edge set `E` that take the fixed value `b` on every edge of `F` is `2^(|E| − |F|)`:
+the `|E| − |F|` edges outside `F` are unconstrained.  Proved by an explicit bijection with
+the colourings of the complement of `F`. -/
+theorem card_const (F : Finset E) (b : Bool) :
+    (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = b)).card
+      = 2 ^ (Fintype.card E - F.card) := by
+  classical
+  have hbij :
+      (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = b)).card
+        = (Finset.univ : Finset ({x : E // x ∉ F} → Bool)).card := by
+    refine Finset.card_bij'
+      (fun c _ => fun x : {x : E // x ∉ F} => c x.1)
+      (fun h _ => fun e => if he : e ∈ F then b else h ⟨e, he⟩)
+      ?_ ?_ ?_ ?_
+    · intro c _; exact Finset.mem_univ _
+    · intro h _
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
+      intro e he; simp [he]
+    · intro c hc
+      have hct : ∀ e ∈ F, c e = b := (Finset.mem_filter.mp hc).2
+      funext e
+      by_cases he : e ∈ F
+      · simp [he, hct e he]
+      · simp [he]
+    · intro h _
+      funext x
+      have : x.1 ∉ F := x.2
+      simp [this]
+  rw [hbij, Finset.card_univ, Fintype.card_fun, Fintype.card_subtype_compl,
+    Fintype.card_coe]
+  norm_num
+
+/-- A colouring `c` is **monochromatic** on the edge set `F` when all edges of `F`
+share a colour. -/
+def MonoOn (F : Finset E) (c : E → Bool) : Prop := ∃ b, ∀ e ∈ F, c e = b
+
+instance (F : Finset E) (c : E → Bool) : Decidable (MonoOn F c) := by
+  unfold MonoOn; infer_instance
+
+/-- **Count of monochromatic colourings on a nonempty edge set.**  For a nonempty `F`, the
+number of colourings monochromatic on `F` is `2^(|E| − |F| + 1)`: two colour choices, then
+the `|E| − |F|` edges outside `F` are free.  The two colour classes are disjoint precisely
+because `F` is nonempty. -/
+theorem card_monoOn (F : Finset E) (hF : F.Nonempty) :
+    (Finset.univ.filter (fun c : E → Bool => MonoOn F c)).card
+      = 2 ^ (Fintype.card E - F.card + 1) := by
+  classical
+  have hsplit :
+      (Finset.univ.filter (fun c : E → Bool => MonoOn F c))
+        = (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = true))
+          ∪ (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = false)) := by
+    ext c
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, MonoOn]
+    constructor
+    · rintro ⟨b, hb⟩; cases b
+      · exact Or.inr hb
+      · exact Or.inl hb
+    · rintro (h | h)
+      · exact ⟨true, h⟩
+      · exact ⟨false, h⟩
+  have hdisj :
+      Disjoint (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = true))
+        (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = false)) := by
+    rw [Finset.disjoint_left]
+    intro c hct hcf
+    obtain ⟨e, he⟩ := hF
+    have h1 : c e = true := (Finset.mem_filter.mp hct).2 e he
+    have h2 : c e = false := (Finset.mem_filter.mp hcf).2 e he
+    rw [h1] at h2; exact absurd h2 (by decide)
+  rw [hsplit, Finset.card_union_of_disjoint hdisj, card_const, card_const]
+  ring
+
+/-- **Concrete probabilistic-method Ramsey existence.**  Over a finite edge type `E`, a
+finite family of "cliques" indexed by `I`, each carrying a nonempty edge set `edges i`, if
+the total `∑_i 2^(|E| − |edges i| + 1)` of monochromatic-colouring counts is strictly below
+the total number of colourings `2^|E|`, then some 2-colouring makes **no** clique
+monochromatic.  This is exactly the existence step of the probabilistic method with the
+colouring model plugged in: it composes the exact count `card_monoOn` with linearity of
+expectation (`Finset.sum_comm`) and the integrality pigeonhole `exists_eq_zero_of_sum_lt_card`.
+Specialised to `Kₙ` (with `|E| = C(n,2)`, `C(n,k)` cliques of `|edges i| = C(k,2)`) the
+hypothesis becomes `E(n,k) < 1`, yielding the Erdős 1947 bound `R(k,k) > n`. -/
+theorem exists_no_mono_colouring (I : Finset ι) (edges : ι → Finset E)
+    (hne : ∀ i ∈ I, (edges i).Nonempty)
+    (hcount : ∑ i ∈ I, 2 ^ (Fintype.card E - (edges i).card + 1) < 2 ^ Fintype.card E) :
+    ∃ c : E → Bool, ∀ i ∈ I, ¬ MonoOn (edges i) c := by
+  classical
+  set g : (E → Bool) → ℕ := fun c => (I.filter (fun i => MonoOn (edges i) c)).card with hg
+  have hsum : ∑ c ∈ (Finset.univ : Finset (E → Bool)), g c
+      < (Finset.univ : Finset (E → Bool)).card := by
+    have hdc : ∑ c ∈ Finset.univ, g c
+        = ∑ i ∈ I, (Finset.univ.filter (fun c => MonoOn (edges i) c)).card := by
+      simp_rw [hg, Finset.card_filter]
+      rw [Finset.sum_comm]
+    rw [hdc]
+    have hcnt : ∑ i ∈ I, (Finset.univ.filter (fun c => MonoOn (edges i) c)).card
+        = ∑ i ∈ I, 2 ^ (Fintype.card E - (edges i).card + 1) :=
+      Finset.sum_congr rfl (fun i hi => card_monoOn (edges i) (hne i hi))
+    rw [hcnt, Finset.card_univ, Fintype.card_fun]
+    simpa using hcount
+  obtain ⟨c, _, hc0⟩ :=
+    exists_eq_zero_of_sum_lt_card (s := (Finset.univ : Finset (E → Bool))) (g := g) hsum
+  refine ⟨c, fun i hi hmono => ?_⟩
+  have hmem : i ∈ I.filter (fun i => MonoOn (edges i) c) := Finset.mem_filter.mpr ⟨hi, hmono⟩
+  have hempty : (I.filter (fun i => MonoOn (edges i) c)) = ∅ := Finset.card_eq_zero.mp hc0
+  rw [hempty] at hmem
+  exact absurd hmem (Finset.notMem_empty i)
+
+end ColouringModel
 
 end ProbMethod.ExpectationOQ04

@@ -1,5 +1,6 @@
 import Mathlib.Data.Fintype.Perm
 import Mathlib.GroupTheory.Perm.Basic
+import Mathlib.Combinatorics.Derangements.Finite
 import Mathlib.Tactic
 
 /-
@@ -182,6 +183,43 @@ theorem card_fixedPointFree :
     meaning; the `90` `(4,2)`-permutations are inert. -/
 theorem fixedPointFree_census_sum : 120 + 90 + 40 + 15 = 265 := by norm_num
 
+/-! ### Bridge to Mathlib's derangement theory (kernel-checkable `D₆`)
+
+`card_fixedPointFree` establishes `D₆ = 265` by `native_decide` (which trusts the
+compiler via `Lean.ofReduceBool`). The predicate `FixedPointFree σ = ∀ i, σ i ≠ i` is
+*definitionally* membership in Mathlib's `derangements (Fin 6)`, so the count is an
+instance of Mathlib's derangement theory. Making that identification explicit both
+records the mathematical content (the census counts derangements) and yields a
+`Lean.ofReduceBool`-free derivation of the total `265`, since `numDerangements 6`
+reduces in the kernel via the derangement recurrence. -/
+
+/-- **The fixed-point-free permutations are exactly the derangements.** The filter count
+equals Mathlib's `numDerangements`: `#{σ ∈ Sym(6) | FixedPointFree σ} = numDerangements 6`.
+Since `FixedPointFree σ` unfolds to `∀ i, σ i ≠ i`, i.e. `σ ∈ derangements (Fin 6)`, the
+subtype is `↥(derangements (Fin 6))`, whose cardinality is `numDerangements (card (Fin 6)) =
+numDerangements 6` by `card_derangements_eq_numDerangements`. This identifies the census's
+total with the standard derangement number. -/
+theorem card_fixedPointFree_eq_numDerangements :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card
+      = numDerangements 6 := by
+  have h1 : (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card
+      = Fintype.card {σ : Equiv.Perm (Fin 6) // FixedPointFree σ} :=
+    (Fintype.card_subtype _).symm
+  have h2 : Fintype.card {σ : Equiv.Perm (Fin 6) // FixedPointFree σ}
+      = Fintype.card ↑(derangements (Fin 6)) :=
+    Fintype.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
+  have h3 : Fintype.card ↑(derangements (Fin 6)) = numDerangements 6 := by
+    rw [card_derangements_eq_numDerangements, Fintype.card_fin]
+  rw [h1, h2, h3]
+
+/-- **`D₆ = 265`, kernel-checkable.** The `Lean.ofReduceBool`-free companion of
+`card_fixedPointFree`: routing the count through `card_fixedPointFree_eq_numDerangements`
+reduces the claim to `numDerangements 6 = 265`, which the kernel evaluates from the
+derangement recurrence via `decide` (no `native_decide`, hence no compiler-trust axiom). -/
+theorem card_fixedPointFree_eq_265_kernel :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card = 265 := by
+  rw [card_fixedPointFree_eq_numDerangements]; decide
+
 /-!
 ## Hexagrammum Mysticum object counts (Conway–Ryba pairing)
 
@@ -288,5 +326,127 @@ theorem hexagrammum_classes_disjoint :
       (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.2.1 ⟨h1, h2⟩),
    Finset.disjoint_filter.mpr
       (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.2.2.2.2 ⟨h1, h2⟩)⟩
+
+/-! ### Sign (parity) structure of the census
+
+The census fixes the *sizes* of the four fixed-point-free classes; it does not
+record their **parity**. Each cycle type has a uniform sign, and the split of the
+derangements of `Fin 6` into even (`A₆`) and odd permutations is visible in the
+Hexagrammum indexing:
+
+* the **6-cycles** (Pascal lines / Kirkman points) are **odd** — a 6-cycle is a
+  product of 5 transpositions;
+* the **(2,2,2)** class (Plücker lines / Salmon points) is **odd** — three
+  transpositions;
+* the **(3,3)** class (Steiner points / Cayley lines) is **even** — two 3-cycles,
+  each even;
+* the geometrically-inert **(4,2)** class is **even** — a 4-cycle (odd) times a
+  transposition (odd).
+
+So the two *odd* fixed-point-free classes are exactly the ones carrying the
+Pascal/Kirkman and Plücker/Salmon objects, while both *even* classes are the
+Steiner/Cayley class and the inert `(4,2)` class. Numerically the derangements
+split as `120 + 15 = 135` odd against `90 + 40 = 130` even. -/
+
+/-- Every **6-cycle** of `Sym(6)` is an **odd** permutation (`sign = -1`): it is a
+    product of five transpositions. These are the Pascal-line / Kirkman-point class. -/
+theorem sixCycle_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsSixCycle σ → Equiv.Perm.sign σ = -1 := by
+  native_decide
+
+/-- Every `(4,2)` permutation of `Sym(6)` is **even** (`sign = 1`): a 4-cycle
+    (odd) composed with a disjoint transposition (odd). This is the geometrically
+    inert fixed-point-free class. -/
+theorem fourTwo_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsFourTwoCycle σ → Equiv.Perm.sign σ = 1 := by
+  native_decide
+
+/-- Every **double 3-cycle** of `Sym(6)` is **even** (`sign = 1`): a product of two
+    3-cycles, each of which is even. These are the Steiner-point / Cayley-line class. -/
+theorem doubleThreeCycle_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsDoubleThreeCycle σ → Equiv.Perm.sign σ = 1 := by
+  native_decide
+
+/-- Every **triple transposition** of `Sym(6)` is **odd** (`sign = -1`): a product
+    of three transpositions. These are the Plücker-line / Salmon-point class. -/
+theorem tripleTransposition_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsTripleTransposition σ → Equiv.Perm.sign σ = -1 := by
+  native_decide
+
+/-- **Parity characterisation of the derangements.** Among the fixed-point-free
+    permutations of `Sym(6)`, the **even** ones are exactly the `(4,2)` and `(3,3)`
+    classes, and (by `fixedPointFree_iff_census`) the **odd** ones are exactly the
+    6-cycles and triple transpositions. Equivalently: the Steiner/Cayley class and
+    the inert `(4,2)` class make up `A₆ ∩ derangements`, while the Pascal/Kirkman
+    and Plücker/Salmon classes are the odd derangements. -/
+theorem even_derangement_iff_census :
+    ∀ σ : Equiv.Perm (Fin 6), FixedPointFree σ →
+      (Equiv.Perm.sign σ = 1 ↔ (IsFourTwoCycle σ ∨ IsDoubleThreeCycle σ)) := by
+  native_decide
+
+/-- **130 even derangements.** The fixed-point-free permutations of `Sym(6)` lying
+    in the alternating group `A₆` number `130 = 90 + 40` — the `(4,2)` class plus
+    the `(3,3)` (Steiner) class. -/
+theorem card_even_derangements :
+    (Finset.univ.filter
+      (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = 1)).card = 130 := by
+  native_decide
+
+/-- **135 odd derangements.** The fixed-point-free permutations of `Sym(6)` outside
+    `A₆` number `135 = 120 + 15` — the six-cycle (Pascal/Kirkman) class plus the
+    triple-transposition (Plücker/Salmon) class. -/
+theorem card_odd_derangements :
+    (Finset.univ.filter
+      (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = -1)).card = 135 := by
+  native_decide
+
+/-- **Parity split closure.** The even and odd derangement counts sum to `D₆ = 265`:
+    `130 + 135 = 265`. Since `sign` takes only the values `±1`, this partitions the
+    derangements of `Fin 6` into the two parity halves with no remainder — the
+    `A₆`-refinement of `card_fixedPointFree`. -/
+theorem derangement_parity_split : 130 + 135 = 265 := by norm_num
+
+/-- **The even derangements are exactly the two even classes.** The `130` even
+    fixed-point-free permutations decompose as the `(4,2)` class (`90`) plus the double
+    3-cycle / Steiner class (`40`): `130 = 90 + 40`.  Stated at the level of the actual
+    filtered cardinalities (not just the numerals), it identifies `A₆ ∩ derangements` with
+    the union of the two even cycle-type classes.  Derived by rewriting the established
+    census cards — it introduces no new `native_decide`. -/
+theorem card_even_derangements_eq_even_classes :
+    (Finset.univ.filter
+        (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = 1)).card
+      = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsFourTwoCycle σ)).card
+        + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card := by
+  rw [card_even_derangements, card_fourTwoCycles, card_doubleThreeCycles]
+
+/-- **The odd derangements are exactly the two odd classes.** The `135` odd
+    fixed-point-free permutations decompose as the six-cycle / Pascal–Kirkman class (`120`)
+    plus the triple-transposition / Plücker–Salmon class (`15`): `135 = 120 + 15`.  The
+    odd-parity companion of `card_even_derangements_eq_even_classes`, identifying the odd
+    derangements with the two geometrically-active Hexagrammum classes.  No new
+    `native_decide`. -/
+theorem card_odd_derangements_eq_odd_classes :
+    (Finset.univ.filter
+        (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = -1)).card
+      = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card
+        + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)).card := by
+  rw [card_odd_derangements, card_sixCycles, card_tripleTranspositions]
+
+/-- **Pascal lines are half the six-cycles.** The `60` Pascal lines are precisely the
+    six-cycle class (`120`) folded by the outer-automorphism pairing: `120 / 2 = 60`.
+    Bridges the permutation census (`card_sixCycles`) directly to the geometric count,
+    sharpening the numeral-only `pascal_lines_eq_60` by anchoring the `120` to the actual
+    filtered cardinality.  No new `native_decide`. -/
+theorem pascal_lines_eq_half_card_sixCycles :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card / 2 = 60 := by
+  rw [card_sixCycles]
+
+/-- **Steiner points are half the double 3-cycles.** The `20` Steiner points are the
+    double-3-cycle class (`40`) folded by the outer-automorphism pairing: `40 / 2 = 20`.
+    The Steiner/Cayley companion of `pascal_lines_eq_half_card_sixCycles`, anchoring
+    `steiner_points_eq_20` to `card_doubleThreeCycles`.  No new `native_decide`. -/
+theorem steiner_points_eq_half_card_doubleThreeCycles :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card / 2 = 20 := by
+  rw [card_doubleThreeCycles]
 
 end PascalsHexagonOQ03Incomplete01

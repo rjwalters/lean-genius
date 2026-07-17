@@ -1,0 +1,75 @@
+{
+  "id": null,
+  "slug": "cauchy-interlacing-theorem-oq-02-oq-02-oq-01",
+  "title": "Poincaré Separation in Native Matrix-Eigenvalue Form",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "path": "full",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 6,
+  "started": "2026-07-11T23:48:00.000Z",
+  "completed": "2026-07-12T08:55:30.000Z",
+  "lastUpdate": "2026-07-12",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-07-12T08:55:30.000Z",
+    "iteration": 1,
+    "focus": "Restate principal-submatrix Poincaré separation through Matrix.IsHermitian.eigenvalues₀; verify build + axiom cleanliness against current Mathlib.",
+    "blockers": [],
+    "nextAction": "None — solved, axiom-free, and build-verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "problemStatement": {
+    "formal": "For A : Matrix (Fin (n+m)) (Fin (n+m)) 𝕜 Hermitian and e : Fin n → Fin (n+m) injective, with λ := hA.eigenvalues₀ and μ := (hA.submatrix e).eigenvalues₀ : λ⟨k+m⟩ ≤ μ⟨k⟩ ≤ λ⟨k⟩ for every k : Fin n.",
+    "plain": "Restate the principal-submatrix Poincaré separation / Cauchy interlacing theorem (parent oq-02-oq-02) purely through Mathlib's native matrix eigenvalues Matrix.IsHermitian.eigenvalues₀, rather than the operator-layer LinearMap.IsSymmetric.eigenvalues of toEuclideanLin, answering the parent entry's first open question with a fully matrix-facing signature.",
+    "whyMatters": [
+      "Gives the interlacing conclusion a signature stated entirely in Mathlib's native matrix-eigenvalue API, so downstream users need no operator-layer detour through toEuclideanLin.",
+      "Isolates a reusable finrank-witness independence lemma (LinearMap.IsSymmetric.eigenvalues_cast) that any eigenvalues₀-vs-operator-eigenvalues bridge can reuse."
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE + VERIFIED. Target theorem poincare_separation_submatrix_eigenvalues₀ (native Matrix.IsHermitian.eigenvalues₀ interlacing λ⟨k+m⟩≤μ⟨k⟩≤λ⟨k⟩) already present in CauchyInterlacingPoincareSubmatrixEigenvalues.lean (111 L, 0 sorry, 0 axiom, no native_decide → foundational-only). Session 2026-07-12 (researcher-8): re-verified the whole transitive build green via docker (buildStatus was null). No genuine gap remains; depth-3 OQ, adding corollaries would be trivial-specialization filler. Stood down without filler per honesty standards.",
+    "insights": [
+      "Matrix.IsHermitian.eigenvalues₀ hA is definitionally (isHermitian_iff_isSymmetric.1 hA).eigenvalues finrank_euclideanSpace, so the only gap to any operator-layer statement is the choice of finrank witness and the induced Fin.cast on the index bound.",
+      "LinearMap.IsSymmetric.eigenvalues_cast: the sorted eigenvalues of a symmetric operator are independent of which proof `finrank 𝕜 E = N` is supplied — obtain rfl on N₁ = N₂ then the Fin.cast is Fin.ext rfl. This is the whole reindexing bridge and is a reusable Mathlib-gap lemma.",
+      "Fintype.card (Fin N) = N is propositional (unfolds through List.length_finRange), not definitional, which is exactly why eigenvalues₀ and the parent's lam/mu do not agree on the nose and a cast is unavoidable.",
+      "Once eigenvalues₀_eq_op rewrites every eigenvalues₀ back to the operator eigenvalues, the residual Fin.cast of the explicit index literals ⟨k+m⟩ / ⟨k⟩ collapses to the parent's literals under `convert ... using 2`, so no fresh spectral reasoning is needed."
+    ],
+    "builtItems": [
+      "LinearMap.IsSymmetric.eigenvalues_cast — sorted operator eigenvalues independent of finrank witness (reusable Mathlib-gap bridge)",
+      "eigenvalues₀_eq_op — Matrix.IsHermitian.eigenvalues₀ = operator eigenvalues at the Fintype.card-cast coordinate",
+      "poincare_separation_submatrix_eigenvalues₀ — Poincaré separation / Cauchy interlacing in fully matrix-facing eigenvalues₀ form (the deliverable)"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no lemma asserting that IsHermitian.eigenvalues₀ (finrank_euclideanSpace witness) equals IsSymmetric.eigenvalues under an arbitrary finrank proof; eigenvalues_cast fills this locally."
+    ],
+    "nextSteps": [
+      "TERMINUS: native eigenvalues₀ restatement complete + verified. Depth-3 OQ → no new child OQ (depth guard). Any per-index specialization (top/bottom eigenvalue monotonicity under compression) is a trivial corollary of the existing theorem — filler, not pursued."
+    ],
+    "buildStatus": "VERIFIED (docker-build.sh Proofs.CauchyInterlacingPoincareSubmatrixEigenvalues, 7746 jobs, exit 0, 2026-07-12 by researcher-8) — whole transitive closure green, no Mathlib drift",
+    "score": 8
+  },
+  "knownResults": [],
+  "references": [],
+  "relatedProofs": [
+    "cauchy-interlacing-theorem",
+    "cauchy-interlacing-theorem-oq-02",
+    "cauchy-interlacing-theorem-oq-02-oq-02"
+  ],
+  "tags": [
+    "linear-algebra",
+    "spectral-theory",
+    "eigenvalues",
+    "cauchy-interlacing",
+    "poincare-separation",
+    "hermitian-matrix",
+    "principal-submatrix",
+    "euclidean-space",
+    "seeker-selected"
+  ]
+}

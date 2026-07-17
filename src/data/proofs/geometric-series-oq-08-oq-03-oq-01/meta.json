@@ -36,6 +36,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview: Promoting the Slice Bound to CauchySeq and Summable",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (GeomSum, SpecificLimits.Basic, InfiniteSum.Real) and the docstring. The sibling GeometricSeriesOQ08OQ03 gave the bespoke ε–N estimate geometric_slice_cauchy (every middle block ∑_{k∈Ico m n} rᵏ ≤ ε past a threshold). This entry translates that hand-rolled inequality into Mathlib's abstract predicates so it plugs into the library's convergence machinery: geometric_partialSum_dist / _dist_le (the block IS the metric distance between partial sums, ≤ r^{min m n}/(1−r)), geometric_partialSum_cauchySeq (the headline CauchySeq via Metric.cauchySeq_iff), geometric_partialSum_le (bounded by (1−r)⁻¹), geometric_summable (via summable_of_sum_range_le), and geometric_cauchySeq_finset (the Mathlib-native net over finsets, summable_iff_cauchySeq_finset). All route around hasSum_geometric — the closed form is a consequence, not a premise. Opens namespace GeometricSeriesOQ08OQ03OQ01, Finset, variable {r : ℝ}.",
+      "mathContext": "$\\mathrm{dist}(S_m, S_n) = \\sum_{k\\in[m,n)} r^k \\le \\dfrac{r^{\\min(m,n)}}{1-r}$; hence CauchySeq and Summable, without the closed form."
+    },
+    {
       "id": "metric-slice",
       "title": "The Metric Reading of the Slice",
       "startLine": 65,
@@ -175,7 +183,8 @@
     "summary": "For 0 ≤ r < 1 the geometric series is shown to converge as a Cauchy sequence and to be summable, from first principles. The Ico-slice bound rᵐ/(1 − r) is read metrically — dist (∑_{k<m} rᵏ) (∑_{k<n} rᵏ) ≤ r^{min m n}/(1 − r) — and fed to Metric.cauchySeq_iff to give geometric_partialSum_cauchySeq; the m = 0 bound ∑_{k<n} rᵏ ≤ (1 − r)⁻¹ feeds summable_of_sum_range_le to give geometric_summable; and summable_iff_cauchySeq_finset yields the finset-net CauchySeq. 152 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The sibling geometric-series-oq-08-oq-03 stated the Cauchy property as a bespoke inequality; this entry is the translation into Mathlib's convergence vocabulary (CauchySeq, Summable, cauchySeq over finsets), so the geometric series can be dropped into the library's general theorems. Conceptually it closes a loop: the series is exhibited as convergent/summable using only bounded blocks and bounded monotone partial sums, with the closed form (1 − r)⁻¹ appearing as a consequence of convergence rather than as the premise — a derivation that deliberately routes around hasSum_geometric.",
     "openQuestions": [
-      "Combine geometric_partialSum_cauchySeq with completeness (cauchySeq_tendsto_of_complete) and the truncation defect rⁿ/(1 − r) → 0 to identify the limit as (1 − r)⁻¹, recovering hasSum_geometric independently."
+      "Combine geometric_partialSum_cauchySeq with completeness (cauchySeq_tendsto_of_complete) and the truncation defect rⁿ/(1 − r) → 0 to identify the limit as (1 − r)⁻¹, recovering hasSum_geometric independently.",
+      "Abstract the pattern into a reusable comparison lemma: any real series whose tail blocks satisfy a geometric-type bound ∑_{k∈Ico m n} aₖ ≤ C·ρᵐ (0 ≤ ρ < 1) is CauchySeq and Summable by the same Metric.cauchySeq_iff argument, so the geometric case here becomes one instance of a general tail-block convergence test."
     ]
   }
 }

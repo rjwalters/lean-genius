@@ -1,3 +1,35 @@
+## Session 2026-07-12 (researcher-6): BLOCKER SHARPENED — K5 route needs geometric Erdős–Szekeres, not Euler
+
+**Mode**: SURVEY (audit; no tractable low-risk code increment). **Outcome**: corrected the
+recorded blocker. No Lean change.
+
+Audited `Erdos1018OQ04Incomplete01.lean` (1 axiom `kostochka_pyber_r2`, 1 real sorry
+`planar_graphs_edge_bound`). The concrete `isEmbeddableConc H 2` unfolds, for 2-uniform H, to a
+**straight-line non-crossing drawing**: convexHull of a 2-edge is its segment, so the separation
+condition says disjoint edges have disjoint segments and shared-vertex edges meet only at that
+vertex.
+
+Two genuine gaps, both absent from Mathlib v4.26:
+1. `planar_graphs_edge_bound` (the sole sorry, |E| ≤ 3n) — needs the **Euler planar edge bound**
+   |E| ≤ 3n − 6. Not in Mathlib.
+2. The missing `K5_not_planar` (`¬ isEmbeddableConc K5 2`) — reduces to the **geometric
+   Erdős–Szekeres / Happy-Ending** lemma: any 5 points in general position contain a convex
+   quadrilateral, whose two diagonals are independent K5-edges with crossing segments → violates
+   separation (plus a collinear-degenerate case handled directly).
+
+**KEY (dead-end pinned):** Mathlib HAS `radon_partition` (`Analysis/Convex/Radon.lean`) but it is
+**insufficient alone** for K5. Applied to 4 points in ℝ², `radon_partition` can return a **(1,3)**
+partition — a point inside a triangle — which yields NO pair of crossing *independent* edges.
+Forcing the useful **(2,2)** crossing case is precisely the convex-quadrilateral statement, i.e.
+geometric Erdős–Szekeres, which Mathlib lacks (it has only the monotone-subsequence
+Erdős–Szekeres, not the geometric one). So the previously-recorded blocker ("needs planar
+embeddings / Euler / graph minors") is imprecise: the K5 obstruction does NOT need full planarity
+theory — it needs the geometric Erdős–Szekeres convex-quadrilateral lemma (~150–300 LOC standalone),
+and only the *sharp* 3n−6 bound needs Euler. Either is a large standalone formalization, not
+session-sized.
+
+---
+
 # erdos-1018-incomplete-01 — Erdős #1018 Non-Planar Subgraph: Sorry Completion & Compile Repair
 
 ## Session 2026-07-01 (researcher-1): close erdos_1018_solved sorry via Kuratowski axiom (6→5) [VERIFIED]
@@ -189,3 +221,106 @@ theorems (`self_containsSubdivision`); axioms 6→3 per file. The axiom-free cro
 planar-graph theory (embeddings + Euler's formula). Updated json `blockers`/`nextSteps` to
 mark this explicitly so depth-first does not re-serve it as routine-actionable. Did NOT add
 filler theorems (honesty: the remaining content is genuinely deep, not session-bounded).
+
+## Session 2026-07-11 (researcher-6): remove INCONSISTENT `kostochka_pyber_explicit` axiom [VERIFIED]
+
+**Mode**: ACT (axiom-integrity fix — found a second genuine inconsistency, parallel
+to the earlier `constant_grows` finding).
+**Outcome**: PROGRESS. The `kostochka_pyber_explicit` axiom was **inconsistent** and
+is removed from BOTH `Proofs/Erdos1018Problem.lean` and its `Proofs/Stubs/` duplicate,
+replaced (main file) by a machine-checked disproof. Main-file axioms **3→2**, aggregate
+`meta.axiomCount` **6→4**. Both files build VERIFIED (`bin/lake env lean`, exit 0).
+
+### The inconsistency
+`axiom kostochka_pyber_explicit (ε)(hε) : ∃ N, ∀ V …, isDense G ε → hasSmallK5Subdivision G (explicitBound ε)`
+with `explicitBound ε = ⌈1/ε²⌉`. At **ε = 1/2**, `explicitBound (1/2) = ⌈1/(1/2)²⌉ = ⌈4⌉ = 4`.
+But a `K₅`-subdivision needs 5 branch vertices, so via the file's own
+`smallK5_forces_smallNonPlanar → bounding_constant_ge_five` (which rests on
+`nonPlanar_needs_five`) the axiom forces `5 ≤ 4`. Arbitrarily large `1/2`-dense graphs
+exist (complete `Kₙ` has `n(n−1)/2 ≥ n^{3/2}` edges for `n ≥ 6`), so the hypothesis is
+non-vacuous ⇒ the axiom could derive `False`.
+
+### The fix (both files)
+- Removed `axiom kostochka_pyber_explicit`.
+- **Main file** adds (axiom-free, `[propext, Classical.choice, Quot.sound]`):
+  - `complete_graph_half_dense (n) (hn : 16 ≤ n) : isDense (⊤ : SimpleGraph (Fin n)) (1/2)`
+    — via `card_edgeFinset_top_eq_card_choose_two` + the core real inequality
+    `n^{3/2} ≤ n.choose 2`, proved by squaring both sides (`le_of_pow_le_pow_left₀`,
+    `(n^{3/2})² = n³` by `Real.rpow_natCast`/`Real.rpow_mul`, then `nlinarith`).
+  - `explicit_bound_half_is_false` — negates the `ε = 1/2`, universe-`0` instance of the
+    axiom's claim, instantiating a complete graph on `Fin (N+16)`.
+- Removed the dependent (and, for `ε ≥ 1/2`, itself false) theorem `explicit_small_nonplanar`.
+- Kept `def explicitBound` (used by the disproof and by the `Erdos1018Aristotle` analytic facts).
+- Added `import Mathlib.Data.Nat.Choose.Cast` (for `Nat.cast_choose_two`).
+
+### Notes / gotchas
+- `Nat.cast_choose_two : (n.choose 2 : K) = n*(n-1)/2` lives in `Mathlib.Data.Nat.Choose.Cast`
+  (not in the graph imports) — needs the explicit import.
+- `pow_le_pow_iff_left` here takes only `(hn : n ≠ 0)` (wrong context for ℝ with negatives);
+  use `le_of_pow_le_pow_left₀ (hn) (hb : 0 ≤ b) (h : a^n ≤ b^n) : a ≤ b`.
+- Stub file lacks the helper lemmas (`nonPlanar_needs_five` etc.) and the `Finite` import,
+  so it only *removes* the axiom + `explicitBound` def with a pointer to the main-file disproof
+  (its 3 pre-existing sorries are untouched). Stub axioms 3→2.
+- The 2 remaining axioms are genuine deep results: `kostochka_pyber` (1988) and
+  `planar_linear_bound` (Euler `3n−6`). Same blocker as before: no Mathlib planar-graph theory.
+
+## Session 2026-07-11 (researcher-11): add planarity threshold dual (≤4 vertices ⇒ planar) [VERIFIED]
+
+**Mode**: ACT (axiom-free content — completing a characterization, not filler).
+**Outcome**: PROGRESS. Added the exact converse of `nonPlanar_imp_five_le_card`,
+which was previously one-directional. `main` file only (Docker-build VERIFIED, 1955
+jobs, exit 0). No new axioms/sorries; axioms stay 2 (main) / 4 (aggregate).
+
+### What was added (`Proofs/Erdos1018Problem.lean`, after `nonPlanar_imp_five_le_card`)
+- `card_le_four_isPlanar (G) (h : Fintype.card V ≤ 4) : isPlanar G` — `by_contra` gives
+  `¬ isPlanar G` (defeq `isNonPlanar G`), feed to `nonPlanar_imp_five_le_card` for
+  `5 ≤ card V`, `omega` against `≤ 4`. Recovers the classical "K₄ and smaller are planar".
+- `completeGraph_four_isPlanar : isPlanar (completeGraph 4)` — concrete corollary via
+  `card_le_four_isPlanar (completeGraph 4) (by simp [Fintype.card_fin])`.
+
+Together with `K5_nonplanar` these pin the vertex threshold for non-planarity at
+*exactly* five: 4 vertices ⇒ forced planar, 5 vertices ⇒ non-planar is achievable.
+theoremCount (leanFile) 21→23, lineCount 643→694.
+
+### Still blocked (unchanged)
+The 2 remaining axioms `kostochka_pyber` (1988) and `planar_linear_bound` (Euler `3n−6`)
+are genuine deep results; no Mathlib planar-graph theory exists to discharge them. This
+addition is honest supporting structure around the definitional Kuratowski planarity, not
+progress on the deep blockers.
+
+## Session 2026-07-12 (researcher-2): compile-repair Erdos1018OQ04 + sub-hypergraph monotonicity [VERIFIED docker]
+
+**Mode**: ACT — genuine compile-repair (the problem's stated goal) + new structural content.
+**Outcome**: PROGRESS. Docker build `Proofs.Erdos1018OQ04Mono` = SUCCESS; all 4 new thms
+`#print axioms` = [propext, Classical.choice, Quot.sound] (0 extra axioms; none of OQ04's deep
+axioms invoked). Branch feature/researcher-2-1018.
+
+### Compile repair (Erdos1018OQ04.lean was BROKEN on origin/main)
+- `completeHypergraph_edgeCount` (line ~76) failed: `rw [h, …]` gave "motive is not type
+  correct" — the filter, after `unfold completeHypergraph`, carries a `DecidablePred` instance
+  that mismatches the freshly-stated `h`. Fix: rewrite `.edges` (not the unfolded filter) and use
+  `simp only [Hypergraph.edgeCount, h, …]` instead of `rw` (simp's congruence sidesteps the
+  motive check). File now builds (only its pre-existing `turanNumber` def-sorry warning remains).
+
+### New content — Erdos1018OQ04Mono.lean (5 thms, 0-axiom)
+Sub-hypergraph monotonicity of `isEmbeddable` (OQ04's convex-hull embeddability), which OQ04
+lacked (it only had `Hypergraph.induced` + edge-count bound):
+- `isEmbeddable_of_edges_subset`: H₁.edges ⊆ H₂.edges ∧ embeddable H₂ ⟹ embeddable H₁ (same φ).
+- `isNonEmbeddable_of_edges_subset`: contrapositive — non-embeddable subgraph obstructs whole.
+- `induced_edges_subset` + `isEmbeddable_induced`: vertex-induced special case.
+- `isNonEmbeddable_of_hasSmallNonEmbeddable`: **capstone** — closes the gap
+  `hasSmallNonEmbeddable H k → isNonEmbeddable H (criticalDim r)` (the Kostochka–Pyber reduction
+  shape: a small non-embeddable induced piece certifies the whole graph is non-embeddable).
+
+### STILL BROKEN (out of scope this session): Erdos1018OQ04Incomplete01.lean
+Massively drift-broken under v4.26 (~20 errors, NOT session-fixable quickly):
+- Parse errors: docstring `/--` after non-command at 642/701; malformed
+  `axiom kostochka_pyber_r2 : ∀ ε : ℝ, ε > 0,` (line 707 — `ε > 0,` isn't `ε > 0 → …`).
+- Unknown constants: `Real.tendsto_rpow_atTop`, `Nat.le_of_max_le_left/right` (renamed/moved).
+- Heartbeat timeouts at 194, 319 (`isDefEq` / tactic exec > 200000) — proofs need reworking.
+- Several `rw` "pattern not found" (128/182/293/303/313).
+My Mono content was re-based onto OQ04's `isEmbeddable` (identical predicate) to avoid this file.
+The lone deep sorry `planar_graphs_edge_bound` (line 676, needs Euler `3n−6`) remains blocked.
+
+### Files
+- `proofs/Proofs/Erdos1018OQ04.lean` (repaired), `proofs/Proofs/Erdos1018OQ04Mono.lean` (new).

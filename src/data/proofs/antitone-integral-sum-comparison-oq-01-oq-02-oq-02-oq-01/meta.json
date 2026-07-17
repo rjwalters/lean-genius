@@ -60,7 +60,8 @@
       "The parent's abstract construction was engineered so that the harmonic case reproduces the classical Euler–Mascheroni sequence exactly, not merely up to an o(1) error: defect (1/·) n = harmonic n − log(n+1) is a termwise identity, so no limit comparison or squeeze is needed — the two convergent sequences are literally equal and uniqueness of limits does all the work.",
       "The right-open Riemann sum ∑_{i<n} f(1+i) is what makes the sum equal harmonic n on the nose (indices 1..n), and the integral endpoint 1+n is what makes the integral log(n+1) rather than log n — matching Mathlib's Hₙ − log(n+1) normalization rather than the textbook Hₙ − log n (both converge to the same γ since log(n+1) − log n → 0).",
       "This is a value identification, not a new convergence result: the convergence of defect (1/·) is the parent's bounded-monotone theorem and the convergence to γ is Mathlib's; the contribution is the bridge that forces them to be the same number.",
-      "The corollary shows the payoff of pinning the value: the parent could only bound generalizedEuler (1/·) ∈ [0, 1] (the crude f 1 = 1 enclosure), whereas the identification imports Mathlib's sharp γ ∈ (1/2, 2/3) for free."
+      "The corollary shows the payoff of pinning the value: the parent could only bound generalizedEuler (1/·) ∈ [0, 1] (the crude f 1 = 1 enclosure), whereas the identification imports Mathlib's sharp γ ∈ (1/2, 2/3) for free.",
+      "The whole proof rides on uniqueness of limits: the defect sequence harmonic n − log(n+1) is shown to converge to *two* named limits — generalizedEuler (1/·) by the parent's antitone/nonnegative machinery, and γ by Mathlib's Real.tendsto_harmonic_sub_log_add_one — and tendsto_nhds_unique collapses them. No new convergence analysis is done here; the entire content is recognizing that the parent's abstractly-constructed constant and the classical Euler–Mascheroni constant are limits of the *same* explicit sequence, so any two definitions of γ agree once both are exhibited as its limit."
     ],
     "prerequisites": [
       "Parent: antitone-integral-sum-comparison-oq-01-oq-02-oq-02 (defect, generalizedEuler, tendsto_defect)",
@@ -95,11 +96,19 @@
     },
     {
       "id": "identify",
-      "title": "The Identification and Sharp Enclosure",
+      "title": "The Main Identification: generalizedEuler(1/·) = γ",
       "startLine": 74,
+      "endLine": 84,
+      "summary": "generalizedEuler_one_div_eq_eulerMascheroniConstant: feed antitonicity and nonnegativity to the parent's tendsto_defect (so defect (1/·) → generalizedEuler (1/·)), rewrite the defect to the harmonic-minus-log sequence (funext defect_one_div_eq), and observe that sequence also converges to γ (Real.tendsto_harmonic_sub_log_add_one). Uniqueness of limits (tendsto_nhds_unique) forces the two limits equal: generalizedEuler (1/·) = γ.",
+      "mathContext": "$\\mathrm{defect}(1/\\cdot)\\to\\mathrm{generalizedEuler}(1/\\cdot)$ and $\\to\\gamma$, so $\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma$ by uniqueness of limits."
+    },
+    {
+      "id": "sharp-enclosure",
+      "title": "Corollary: the Sharp Enclosure γ ∈ (1/2, 2/3)",
+      "startLine": 85,
       "endLine": 95,
-      "summary": "generalizedEuler_one_div_eq_eulerMascheroniConstant: feed the two hypotheses to tendsto_defect, rewrite the defect to the harmonic-minus-log sequence (funext defect_one_div_eq), and apply tendsto_nhds_unique against Real.tendsto_harmonic_sub_log_add_one to get generalizedEuler (1/·) = γ. generalizedEuler_one_div_mem_Ioo sharpens the parent's [0,1] enclosure to γ ∈ (1/2, 2/3). #print axioms confirms only propext / Classical.choice / Quot.sound.",
-      "mathContext": "$\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma\\in(\\tfrac12,\\tfrac23)$; $\\#\\mathrm{print\\ axioms}=\\{\\mathrm{propext},\\mathrm{Classical.choice},\\mathrm{Quot.sound}\\}$."
+      "summary": "generalizedEuler_one_div_mem_Ioo: rewriting by the identification turns the value into γ and imports Mathlib's sharp bounds Real.one_half_lt_eulerMascheroniConstant and Real.eulerMascheroniConstant_lt_two_thirds, giving generalizedEuler (1/·) ∈ (1/2, 2/3) — a strict improvement on the parent's crude [0,1] enclosure. The closing #print axioms on both results confirms dependence on only propext / Classical.choice / Quot.sound.",
+      "mathContext": "$\\tfrac12 < \\gamma < \\tfrac23$; $\\#\\mathrm{print\\ axioms}=\\{\\mathrm{propext},\\mathrm{Classical.choice},\\mathrm{Quot.sound}\\}$."
     }
   ],
   "conclusion": {

@@ -136,3 +136,56 @@ VERIFIED green via direct lean-elab vs pinned Mathlib v4.26.0 (docker containerd
 built the dep chain deepest-first into /tmp — `Proofs.HermiteLindemann` (Mathlib-only, ~20s) then
 `Proofs.eTranscendental` (imports HermiteLindemann) — then elaborated target, exit 0. Gallery meta
 e-transcendental-oq-02: lineCount 2016→2029, theoremCount 89→90.
+
+## Session 2026-07-11 (Researcher-2) — Effective recurrence (bounded-gap occurrences)
+
+**Mode**: REVISIT (RICH) | **Outcome**: progress (VERIFIED, 0 sorry, 0 new axiom)
+
+### What I did
+Extended the effective-modulus layer (PART IV.9) of `ETranscendentalOQ02.lean`.
+The prior layer bounded only the *first* occurrence (`first_occurrence_lt_of_modulus`)
+and the density (`match_count_ge_linear_of_modulus`); nothing bounded the *next*
+occurrence after an arbitrary point. Added:
+
+- `exists_match_ge_of_count_gt` (pure `Finset`, no normality hypothesis) — if the
+  tuple-`s` match count over `range N` *exceeds* a threshold `P` (with `P ≤ N`),
+  then a match exists at a position `P ≤ n < N`. Proof: matches in `[0,P)` number
+  `≤ P`, so `A \ B` (matches in `[0,N)` minus matches in `[0,P)`) is nonempty once
+  the total exceeds `P`. Uses `Finset.sdiff_nonempty` + `Finset.card_le_card`.
+- `next_occurrence_lt_of_modulus` — with a modulus `M`, every `k`-tuple recurs
+  after any threshold `P` below the explicit bound
+  `max (max (M k (b^{-k}/2)) 1) (2·bᵏ·P + 1)`. This is the effective (bounded-gap)
+  form of infinitely-many-occurrences: it upgrades `first_occurrence_lt_of_modulus`
+  (its `P = 0` content) to arbitrary `P`, and makes the qualitative
+  `normal_ktuple_infinitely_often` quantitative with an explicit inter-occurrence
+  gap. Proof: `match_count_ge_linear_of_modulus` gives `≥ (b^{-k}/2)·N₀` matches
+  below `N₀`; picking `N₀ > 2·bᵏ·P` makes the count exceed `P`, then
+  `exists_match_ge_of_count_gt` extracts the match at position `≥ P`.
+
+### Key findings
+- The gap constant is forced by the density rate: to guarantee more than `P`
+  matches at density `b^{-k}/2` one needs a window `≳ 2·bᵏ·P`, hence the `2·bᵏ·P`
+  term. The `b^{-k}·bᵏ = 1` identity (`zpow_natCast` + `zpow_add₀`) is the crux of
+  the arithmetic `(b^{-k}/2)·(2·bᵏ·P + 1) = P + b^{-k}/2 > P`.
+- Gotchas (Mathlib v4.26.0): `Finset.range_subset.mpr` did not accept `P ≤ N`
+  directly (expects the unfolded `∀ x < P, x ∈ range N`) — build the subset by a
+  membership lambda instead. `Finset.card_sdiff hBA` failed (the resolved lemma is
+  the unconditional `(s\t).card = s.card - (s∩t).card`); route nonemptiness through
+  `Finset.sdiff_nonempty : (s\t).Nonempty ↔ ¬ s ⊆ t` + `card_le_card` + `omega`.
+
+### Status
+Core axiom `e_absolutely_normal` remains **genuinely open** (no base proved normal
+for `e` as of 2026) — not eliminable. The oq-06 goal (`normal_imp_irrational`) was
+long discharged (a theorem, not an axiom). This session sharpens the effective
+theory, not the open core.
+
+### Files modified
+- `proofs/Proofs/ETranscendentalOQ02.lean` (+2 theorems, PART IV.9; 2062→2160 lines)
+- `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount 2062→2160,
+  theoremCount 90→92, +2 originalContributions)
+- `src/data/research/problems/e-transcendental-oq-02-oq-06.json` (knowledge)
+
+### Next steps
+- Iterate `next_occurrence_lt_of_modulus` (with `P := previous+1`) to build an
+  explicit strictly-increasing enumeration of occurrence positions with
+  modulus-controlled gaps.

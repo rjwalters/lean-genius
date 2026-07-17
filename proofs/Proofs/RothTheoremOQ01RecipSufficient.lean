@@ -87,9 +87,26 @@ theorem exists_nontrivial_threeAP_of_recipBound_lt_tsum {A : Set ℕ} (hA0 : 0 �
     ∃ a d : ℕ, 0 < d ∧ a ∈ A ∧ a + d ∈ A ∧ a + 2 * d ∈ A :=
   exists_threeAP_of_not_threeAPFree (not_threeAPFree_of_recipBound_lt_tsum hA0 hbig)
 
+/-- **A reciprocal-heavy set stays heavy inside any superset.**  If a finite `S ⊆ ℕ`
+already carries more reciprocal mass than the absolute constant `recipBound`, then *any*
+finite superset `S' ⊇ S` with `0 ∉ S'` contains a nontrivial three-term arithmetic
+progression.  Enlarging a reciprocal certificate can only add nonnegative mass
+(`Finset.sum_le_sum_of_subset_of_nonneg`), so `S'` also clears the threshold and
+`exists_threeAP_of_finite_recip_sum_gt` applies.  This makes the finite reciprocal
+criterion *stable under enlargement*: one may exhibit the over-threshold mass on a small,
+convenient subset yet conclude the progression lives in the whole ambient set. -/
+theorem exists_threeAP_of_subset_recip_sum_gt
+    (S S' : Finset ℕ) (hsub : S ⊆ S') (hS'0 : 0 ∉ S')
+    (hgt : recipBound < ∑ a ∈ S, (1 : ℝ) / (a : ℝ)) :
+    ∃ a d : ℕ, 0 < d ∧ a ∈ S' ∧ a + d ∈ S' ∧ a + 2 * d ∈ S' := by
+  have hmono : ∑ a ∈ S, (1 : ℝ) / (a : ℝ) ≤ ∑ a ∈ S', (1 : ℝ) / (a : ℝ) :=
+    Finset.sum_le_sum_of_subset_of_nonneg hsub (fun i _ _ => by positivity)
+  exact exists_threeAP_of_finite_recip_sum_gt S' hS'0 (lt_of_lt_of_le hgt hmono)
+
 #check @exists_threeAP_of_not_threeAPFree
 #check @not_threeAPFree_of_recipBound_lt_tsum
 #check @exists_nontrivial_threeAP_of_recipBound_lt_tsum
+#check @exists_threeAP_of_subset_recip_sum_gt
 
 -- Axiom audit: rests on exactly the single imported Bloom–Sisask assumption
 -- `RothTheoremOQ02.rothNumberNat_bloom_sisask` (via the reciprocal file); no new axiom.

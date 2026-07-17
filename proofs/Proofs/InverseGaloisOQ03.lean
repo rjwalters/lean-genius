@@ -149,6 +149,28 @@ theorem seven_dvd_Monster_card : 7 ∣ Fintype.card Monster := by
 theorem seventyone_dvd_Monster_card : 71 ∣ Fintype.card Monster := by
   rw [Monster_card]; norm_num
 
+/-- 𝕄 is nontrivial as a group. Immediate from `|𝕄| > 1`; recorded because the
+    element-order (Cauchy) results below are stated for a genuine group with `> 1` element. -/
+theorem Monster_nontrivial : Nontrivial Monster :=
+  Fintype.one_lt_card_iff_nontrivial.mp Monster_card_pos
+
+/-- **𝕄 contains an involution** — an element of order exactly 2.
+    By Cauchy's theorem (`exists_prime_orderOf_dvd_card`), since the prime `2` divides `|𝕄|`
+    there is an element of order `2`. The Monster's even order (`2⁴⁶ ∥ |𝕄|`) is what makes its
+    involution centralizers — the seed of Griess's 1982 construction of 𝕄 — nonempty. -/
+theorem Monster_exists_involution : ∃ g : Monster, orderOf g = 2 :=
+  haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 2 two_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 71.**
+    Cauchy's theorem applied to the largest prime factor `71 ∣ |𝕄|` produces an element of order
+    exactly `71`, substantiating the remark on `seventyone_dvd_Monster_card` that `71` is realised
+    as an element order in the Monster (in fact `71` is the largest prime order of any element
+    of 𝕄). -/
+theorem Monster_exists_element_orderOf_71 : ∃ g : Monster, orderOf g = 71 :=
+  haveI : Fact (Nat.Prime 71) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 71 seventyone_dvd_Monster_card
+
 -- ============================================================================
 -- Part III: Non-Solvability — The Core Structural Result
 -- ============================================================================
@@ -186,13 +208,10 @@ theorem Monster_commutator_eq_top : commutator Monster = ⊤ := by
     h | h
   · exfalso
     apply Monster_not_commutative
-    -- v4.31: `commutator_eq_bot_iff_center_eq_top` is absent from the pinned
-    -- Mathlib oleans; route through `commutator_eq_bot_iff_le_centralizer`.
-    have hle : (⊤ : Subgroup Monster) ≤ Subgroup.centralizer (⊤ : Subgroup Monster) :=
-      Subgroup.commutator_eq_bot_iff_le_centralizer.mp h
+    have hcenter : Subgroup.center Monster = ⊤ := (commutator_eq_bot_iff_center_eq_top (G := Monster)).mp h
     intro a b
-    have hb := hle (Subgroup.mem_top b)
-    exact Subgroup.mem_centralizer_iff.mp hb a (Subgroup.mem_top a)
+    have ha : a ∈ Subgroup.center Monster := hcenter ▸ Subgroup.mem_top a
+    exact (Subgroup.mem_center_iff.mp ha b).symm
   · exact h
 
 /-- 𝕄 has trivial center: `Z(𝕄) = ⊥`.
@@ -280,8 +299,7 @@ theorem Monster_realizing_field_finrank :
       Module.finrank ℚ K =
         808017424794512875886459904961710757005754368000000000 := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  -- (v4.31: obtained class hypotheses are already local instances;
-  -- re-registering them via haveI creates divergent instance keys)
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   have hgal : Nat.card (K ≃ₐ[ℚ] K) = Module.finrank ℚ K :=
     IsGalois.card_aut_eq_finrank ℚ K
@@ -302,8 +320,7 @@ theorem Monster_realizing_field_not_solvable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K), ¬ IsSolvable (K ≃ₐ[ℚ] K) := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  -- (v4.31: obtained class hypotheses are already local instances;
-  -- re-registering them via haveI creates divergent instance keys)
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   intro hsolv
   haveI := hsolv
@@ -360,7 +377,264 @@ Status of sporadic simple groups for the Inverse Galois Problem over ℚ:
 - M₂₃ is the sole remaining open case — see InverseGaloisOQ02.lean.
 -/
 
+/-! ### More element orders (Cauchy) and structural refinements -/
+
+/-- **𝕄 contains an element of order 3.**  Cauchy's theorem applied to the prime
+    `3 ∣ |𝕄|` (`three_dvd_Monster_card`); `3²⁰ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_3 : ∃ g : Monster, orderOf g = 3 :=
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 3 three_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 5.**  Cauchy's theorem applied to the prime
+    `5 ∣ |𝕄|` (`five_dvd_Monster_card`); `5⁹ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_5 : ∃ g : Monster, orderOf g = 5 :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 5 five_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 7.**  Cauchy's theorem applied to the prime
+    `7 ∣ |𝕄|` (`seven_dvd_Monster_card`); `7⁶ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_7 : ∃ g : Monster, orderOf g = 7 :=
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 7 seven_dvd_Monster_card
+
+/-- **𝕄 is not cyclic.**  A cyclic group is commutative (`IsCyclic.commGroup`), which
+    would contradict `Monster_not_commutative`.  (Every nonabelian group is non-cyclic; for
+    the simple 𝕄 this is another face of `Monster_center_eq_bot`.) -/
+theorem Monster_not_cyclic : ¬ IsCyclic Monster := by
+  intro h
+  apply Monster_not_commutative
+  intro a b
+  letI := @IsCyclic.commGroup Monster _ h
+  exact mul_comm a b
+
+/-- **𝕄 is not nilpotent.**  Every nilpotent group is solvable
+    (`IsNilpotent.to_isSolvable`), so non-solvability (`Monster_not_solvable`) upgrades to
+    non-nilpotency.  A strengthening of `Monster_not_solvable`: 𝕄 sits outside even the
+    larger class of nilpotent groups, as any non-abelian simple group must. -/
+theorem Monster_not_nilpotent : ¬ Group.IsNilpotent Monster := by
+  intro h
+  haveI := h
+  exact Monster_not_solvable inferInstance
+
 /-- 25 sporadic groups realized + 1 open (M₂₃) = 26 sporadic groups total. -/
 theorem sporadic_census : 25 + 1 = 26 := by norm_num
+
+-- ============================================================================
+-- Part VIII: The uniform Cauchy principle, and further arithmetic transport
+-- ============================================================================
+
+/-
+Parts II and VII produce elements of order `2, 3, 5, 7, 71` one prime at a time.  Each is an
+instance of a single statement: *every* prime dividing `|𝕄|` is realised as an element order.
+We record that uniform principle once (`Monster_cauchy`), then read off two more prime orders
+(`11, 13`) and complete the field-side arithmetic transport begun in Part VI (`2 ∣ [K:ℚ]`,
+`71 ∣ [K:ℚ]`).  Everything is derived from the six axioms of Part I; no new assumptions.
+-/
+
+/-- **Cauchy's theorem for 𝕄 (uniform form).**  For *every* prime `p` dividing `|𝕄|`, the
+    Monster contains an element of order exactly `p`.  This is the single statement behind all
+    the individual `Monster_exists_element_orderOf_*` lemmas (`p = 2, 3, 5, 7, 71`, and `11, 13`
+    below): the fifteen primes `2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 47, 59, 71` of the
+    factorization `Monster_card_factored` are exactly the prime element orders forced by Cauchy. -/
+theorem Monster_cauchy (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintype.card Monster) :
+    ∃ g : Monster, orderOf g = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact exists_prime_orderOf_dvd_card p hdvd
+
+/-- 11 divides |𝕄| (`11² ∥ |𝕄|`). -/
+theorem eleven_dvd_Monster_card : 11 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- 13 divides |𝕄| (`13³ ∥ |𝕄|`). -/
+theorem thirteen_dvd_Monster_card : 13 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- **𝕄 contains an element of order 11.**  `Monster_cauchy` applied to `11 ∣ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_11 : ∃ g : Monster, orderOf g = 11 :=
+  Monster_cauchy 11 (by norm_num) eleven_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 13.**  `Monster_cauchy` applied to `13 ∣ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_13 : ∃ g : Monster, orderOf g = 13 :=
+  Monster_cauchy 13 (by norm_num) thirteen_dvd_Monster_card
+
+/-- **Field-side: the Monster-realizing degree is even.**  Since `[K:ℚ] = |𝕄|`
+    (`Monster_realizing_field_finrank`) and `2 ∣ |𝕄|`, Thompson's field has even degree over
+    ℚ — the field-side analogue of `two_dvd_Monster_card`, extending the Part VI transport
+    (`Monster_realizing_field_finrank_factored` / `_not_prime`). -/
+theorem Monster_realizing_field_finrank_even :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), 2 ∣ Module.finrank ℚ K := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]; norm_num
+
+/-- **Field-side: 71 divides the Monster-realizing degree.**  The field-side analogue of
+    `seventyone_dvd_Monster_card`: since `[K:ℚ] = |𝕄|` and `71 ∣ |𝕄|` (the largest prime
+    factor), the largest prime order of the Monster also divides the degree of Thompson's
+    field over ℚ. -/
+theorem Monster_realizing_field_finrank_71_dvd :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), 71 ∣ Module.finrank ℚ K := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]; norm_num
+
+/-! ### Thompson's rigid triple `(2A, 3B, 29A)` — the element-order skeleton
+
+The realizability of 𝕄 over ℚ (Thompson 1984) rests on a *rigid rational triple*
+of conjugacy classes — the classes 2A, 3B, 29A, of element orders 2, 3, 29
+respectively.  The orders 2 and 3 are already realized above
+(`Monster_exists_involution`, `Monster_exists_element_orderOf_3`); here we add the
+missing prime 29 and package the three class orders together.  All derived from
+`Monster_card` alone via `Monster_cauchy` — no new axioms. -/
+
+/-- 29 divides `|𝕄|` (the prime of Thompson's class 29A). -/
+theorem twentynine_dvd_Monster_card : 29 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- **𝕄 contains an element of order 29**: the class **29A** of Thompson's rigid
+    triple `(2A, 3B, 29A)` — the rational rigid triple whose existence forces,
+    via the rigidity criterion, the Galois realization `Gal(K/ℚ) ≅ 𝕄`
+    (`Monster_realizable_over_Q`). -/
+theorem Monster_exists_orderOf_twentynine : ∃ g : Monster, orderOf g = 29 :=
+  Monster_cauchy 29 (by norm_num) twentynine_dvd_Monster_card
+
+/-- **Thompson's rigid triple has genuine group elements.** Packaging the three
+    class orders `(2, 3, 29)` of the rigid triple `(2A, 3B, 29A)` into a single
+    statement: 𝕄 simultaneously contains elements of orders 2, 3 and 29 — the
+    element-order skeleton of the rational rigid triple underlying Thompson's
+    (1984) realization of 𝕄 over ℚ. -/
+theorem Monster_rigid_triple_orders :
+    (∃ g : Monster, orderOf g = 2) ∧ (∃ g : Monster, orderOf g = 3) ∧
+      (∃ g : Monster, orderOf g = 29) :=
+  ⟨Monster_exists_involution, Monster_exists_element_orderOf_3,
+    Monster_exists_orderOf_twentynine⟩
+
+-- ============================================================================
+-- Part IX: 𝕄 is not a prime power — genuinely multi-prime Sylow theory
+-- ============================================================================
+
+/-
+The structural results so far (non-abelian, perfect, non-solvable, non-nilpotent,
+non-cyclic) all flow from `|𝕄|` being *non-prime*.  A sharper arithmetic fact is
+that `|𝕄|` is not even a prime *power*: `Monster_card_factored` exhibits fifteen
+distinct prime factors `2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 47, 59, 71`
+— which are exactly the *supersingular primes* of monstrous moonshine.  In
+particular 𝕄 is not a `p`-group for any prime `p`, so its Sylow theory is
+genuinely multi-prime: no single Sylow subgroup exhausts the group (contrast a
+`p`-group, where the whole group is its own unique Sylow `p`-subgroup).  All
+derived from the six axioms of Part I; no new assumptions.
+-/
+
+/-- **`|𝕄|` is not a prime power.**  If `|𝕄| = p ^ k` with `p` prime, then since both
+    `2 ∣ |𝕄|` and `3 ∣ |𝕄|`, the prime `p` would be forced to equal both `2` and `3`
+    (`Nat.Prime.dvd_of_dvd_pow`), which is absurd.  This is strictly stronger than
+    `Monster_card_not_prime`: `|𝕄|` is not `p^k` for *any* exponent `k`, reflecting the
+    fifteen distinct primes in its factorization. -/
+theorem Monster_not_prime_power :
+    ¬ ∃ p k : ℕ, Nat.Prime p ∧ Fintype.card Monster = p ^ k := by
+  rintro ⟨p, k, hp, hpk⟩
+  have h2 : (2 : ℕ) ∣ p ^ k := hpk ▸ two_dvd_Monster_card
+  have h3 : (3 : ℕ) ∣ p ^ k := hpk ▸ three_dvd_Monster_card
+  have hp2 : (2 : ℕ) ∣ p := Nat.prime_two.dvd_of_dvd_pow h2
+  have hp3 : (3 : ℕ) ∣ p := Nat.prime_three.dvd_of_dvd_pow h3
+  have e2 : (2 : ℕ) = p := (hp.eq_one_or_self_of_dvd 2 hp2).resolve_left (by norm_num)
+  have e3 : (3 : ℕ) = p := (hp.eq_one_or_self_of_dvd 3 hp3).resolve_left (by norm_num)
+  omega
+
+/-- **𝕄 is not a `p`-group** for any prime `p`.  A finite `p`-group has prime-power
+    order (`IsPGroup.iff_card`), but `|𝕄|` is not a prime power
+    (`Monster_not_prime_power`).  Hence, unlike a `p`-group — which is its own unique
+    Sylow `p`-subgroup — the Monster's Sylow structure spans all fifteen of its prime
+    divisors. -/
+theorem Monster_not_pgroup (p : ℕ) [Fact p.Prime] : ¬ IsPGroup p Monster := by
+  intro h
+  obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp h
+  refine Monster_not_prime_power ⟨p, n, Fact.out, ?_⟩
+  simpa [Nat.card_eq_fintype_card] using hn
+
+/-- **`|𝕄|` has at least two distinct prime factors.**  Both `2` and `3` lie in
+    `(|𝕄|).primeFactors` (each is prime, divides `|𝕄|`, and `|𝕄| ≠ 0`), so the set of
+    prime factors has cardinality `≥ 2`.  The Finset-cardinality shadow of
+    `Monster_not_prime_power` (the full count is `15`, the supersingular primes). -/
+theorem Monster_two_le_card_primeFactors :
+    2 ≤ (Fintype.card Monster).primeFactors.card := by
+  have hne : Fintype.card Monster ≠ 0 := by have := Monster_card_pos; omega
+  have h2 : 2 ∈ (Fintype.card Monster).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨Nat.prime_two, two_dvd_Monster_card, hne⟩
+  have h3 : 3 ∈ (Fintype.card Monster).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨Nat.prime_three, three_dvd_Monster_card, hne⟩
+  have hsub : ({2, 3} : Finset ℕ) ⊆ (Fintype.card Monster).primeFactors := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  calc (2 : ℕ) = ({2, 3} : Finset ℕ).card := by decide
+    _ ≤ (Fintype.card Monster).primeFactors.card := Finset.card_le_card hsub
+
+-- ============================================================================
+-- Part VII: Perfectness — no abelian quotient, and its field-side consequence
+-- ============================================================================
+
+/-
+`Monster_commutator_eq_top` says `𝕄` is *perfect* (`[𝕄, 𝕄] = 𝕄`).  Its
+structural meaning is a universal property: a perfect group has **no nontrivial
+abelian quotient**.  We record that here, and then transport perfectness across
+Thompson's isomorphism `𝕄 ≃* Gal(K/ℚ)` to obtain the field-side statement that
+the Monster-realizing field's Galois group is itself perfect — so `K/ℚ` has no
+nontrivial abelian subextension over `ℚ` (its maximal abelian subextension, the
+fixed field of the commutator subgroup, is `ℚ` itself).
+-/
+
+/-- **𝕄 has no nontrivial abelian quotient.**  Any surjective homomorphism from
+    the Monster onto a *commutative* group `A` has trivial image, i.e. `A` is
+    trivial.  This is the universal-property form of perfectness
+    (`Monster_commutator_eq_top`): since `[𝕄, 𝕄] = 𝕄`, the image of `𝕄` in any
+    abelian group is `⁅⊤, ⊤⁆ = ⊥`, so a surjection forces the target to be
+    trivial.  Equivalently, the abelianization of `𝕄` is trivial. -/
+theorem Monster_no_nontrivial_abelian_quotient {A : Type*} [CommGroup A]
+    (φ : Monster →* A) (hφ : Function.Surjective φ) : Subsingleton A := by
+  -- Image of the commutator subgroup: `(commutator 𝕄).map φ = ⁅range φ, range φ⁆`.
+  have hrange : φ.range = ⊤ := MonoidHom.range_eq_top.mpr hφ
+  have hmap : (commutator Monster).map φ = ⁅φ.range, φ.range⁆ := map_commutator_eq Monster φ
+  rw [Monster_commutator_eq_top, Subgroup.map_top_of_surjective _ hφ, hrange] at hmap
+  -- So `commutator A = ⊤`.
+  have hcommA_top : commutator A = ⊤ := by rw [commutator_def]; exact hmap.symm
+  -- But `A` is abelian, so `commutator A = ⊥`.
+  have hcommA_bot : commutator A = ⊥ := by
+    rw [commutator_def, eq_bot_iff, Subgroup.commutator_le]
+    intro g₁ _ g₂ _
+    rw [Subgroup.mem_bot, commutatorElement_eq_one_iff_mul_comm]
+    exact mul_comm g₁ g₂
+  -- `⊤ = ⊥` in `Subgroup A` forces `A` to be a singleton.
+  have htb : (⊤ : Subgroup A) = ⊥ := hcommA_top ▸ hcommA_bot
+  refine ⟨fun a b => ?_⟩
+  have ha : a ∈ (⊥ : Subgroup A) := htb ▸ Subgroup.mem_top a
+  have hb : b ∈ (⊥ : Subgroup A) := htb ▸ Subgroup.mem_top b
+  rw [Subgroup.mem_bot] at ha hb
+  rw [ha, hb]
+
+/-- **The Monster-realizing field's Galois group is perfect.**  For any field `K`
+    with `Gal(K/ℚ) ≅ 𝕄` (Thompson 1984), the commutator subgroup of `Gal(K/ℚ)` is
+    the whole group: `[Gal(K/ℚ), Gal(K/ℚ)] = Gal(K/ℚ)`.  Perfectness transports
+    across the isomorphism `e : 𝕄 ≃* Gal(K/ℚ)` from `Monster_commutator_eq_top`
+    (`map_commutator_eq` sends `[𝕄, 𝕄] = ⊤` to `⁅range e, range e⁆ = ⁅⊤, ⊤⁆`).
+    The field-side counterpart of `Monster_commutator_eq_top`, in the same spirit
+    as `Monster_realizing_field_not_solvable`.  Consequently, by the Galois
+    correspondence, `K/ℚ` has **no nontrivial abelian subextension**: the maximal
+    abelian subextension — the fixed field of the commutator subgroup — is `ℚ`
+    itself. -/
+theorem Monster_realizing_field_gal_commutator_eq_top :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), commutator (K ≃ₐ[ℚ] K) = ⊤ := by
+  obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
+  letI := fK; letI := aK; letI := fdK; letI := gK
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  have hsurj : Function.Surjective e.toMonoidHom := e.surjective
+  have hrange : e.toMonoidHom.range = ⊤ := MonoidHom.range_eq_top.mpr hsurj
+  have hmap : (commutator Monster).map e.toMonoidHom = ⁅e.toMonoidHom.range, e.toMonoidHom.range⁆ :=
+    map_commutator_eq Monster e.toMonoidHom
+  rw [Monster_commutator_eq_top, Subgroup.map_top_of_surjective _ hsurj, hrange] at hmap
+  rw [commutator_def]
+  exact hmap.symm
 
 end InverseGaloisOQ03

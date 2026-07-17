@@ -139,20 +139,36 @@
       "mathContext": "Pointwise bounded family of bounded operators on a Banach space ⇒ uniformly bounded operator norms."
     },
     {
-      "id": "uniform-boundedness",
-      "title": "The Uniform Boundedness Principle",
+      "id": "ubp-baire-extraction",
+      "title": "UBP, Part I: the Baire extraction of a ball",
       "startLine": 50,
-      "endLine": 97,
-      "summary": "uniform_boundedness: closed sublevel sets e n = ⋂ i {x | ‖g i x‖ ≤ n} (closed via isClosed_le) whose union is the whole space (pointwise boundedness); baire_nonempty_interior gives a ball of local uniform boundedness; the shell estimate opNorm_le_of_shell turns the off-center ball bound into ‖g i‖ ≤ 2m/(ε/‖c‖).",
-      "mathContext": "Baire ⇒ ball ball x ε with ∀ i, ‖g i ·‖ ≤ m on it; translation g i y = g i(y+x) − g i x ⇒ ‖g i y‖ ≤ 2m on the shell ⇒ ‖g i‖ ≤ 2m/(ε/‖c‖)."
+      "endLine": 77,
+      "summary": "uniform_boundedness, first phase. Forms the closed sublevel sets e n = ⋂ i {x | ‖g i x‖ ≤ n} (closed via isClosed_le on continuous g i), shows pointwise boundedness exhausts the space (⋃ n, e n = univ), and applies the gallery Baire theorem baire_nonempty_interior to get an m whose e m has nonempty interior — i.e. a ball ball x ε on which every g i is bounded by m (ball_le).",
+      "mathContext": "$e_n=\\bigcap_i\\{x:\\|g_i x\\|\\le n\\}$ closed, $\\bigcup_n e_n=E$; Baire ⇒ some $e_m$ has interior ⇒ ball $B(x,\\varepsilon)$ with $\\|g_i\\cdot\\|\\le m$."
     },
     {
-      "id": "consequences",
-      "title": "Equicontinuity and Resonance Forms",
+      "id": "ubp-shell-estimate",
+      "title": "UBP, Part II: the shell operator-norm estimate",
+      "startLine": 78,
+      "endLine": 97,
+      "summary": "uniform_boundedness, second phase. Converts the off-center ball bound into a uniform operator-norm bound via ContinuousLinearMap.opNorm_le_of_shell: for y in the shell, the translation g i y = g i(y+x) − g i x with both y+x and x in the ball gives ‖g i y‖ ≤ m+m, and the shell hypothesis ε/‖c‖ ≤ ‖y‖ upgrades this flat bound to the proportional ‖g i‖ ≤ (m+m)/(ε/‖c‖).",
+      "mathContext": "$g_i y = g_i(y+x)-g_i x \\Rightarrow \\|g_i y\\|\\le 2m$; shell $\\varepsilon/\\|c\\|\\le\\|y\\| \\Rightarrow \\|g_i\\|\\le 2m/(\\varepsilon/\\|c\\|)$."
+    },
+    {
+      "id": "equicontinuity-form",
+      "title": "The Equicontinuity Form",
       "startLine": 99,
+      "endLine": 107,
+      "summary": "uniform_boundedness_with_const repackages the uniform operator-norm bound as a single constant C' ≥ 0 with ‖g i x‖ ≤ C'·‖x‖ for every operator i and point x, via (g i).le_opNorm and taking max C' 0.",
+      "mathContext": "$\\exists C'\\ge 0,\\ \\forall i\\,x,\\ \\|g_i x\\|\\le C'\\|x\\|$."
+    },
+    {
+      "id": "resonance-form",
+      "title": "The Resonance (Contrapositive) Form",
+      "startLine": 109,
       "endLine": 117,
-      "summary": "uniform_boundedness_with_const repackages the uniform bound as a single constant C' ≥ 0 with ‖g i x‖ ≤ C'·‖x‖ (via le_opNorm). exists_resonance_of_not_uniformly_bounded is the contrapositive resonance principle: non-uniformly-bounded norms force a single point x with sup_i ‖g i x‖ = ∞.",
-      "mathContext": "Equicontinuity form ‖g i x‖ ≤ C'‖x‖; resonance: ¬(uniform op-norm bound) ⇒ ∃ x, ¬∃ C, ∀ i, ‖g i x‖ ≤ C."
+      "summary": "exists_resonance_of_not_uniformly_bounded is the contrapositive resonance principle: if the operator norms are not uniformly bounded, the family cannot be pointwise bounded — there is a single point x of resonance at which sup_i ‖g i x‖ is infinite. Proved by by_contra + push_neg feeding uniform_boundedness.",
+      "mathContext": "$\\lnot(\\exists C',\\forall i,\\|g_i\\|\\le C') \\Rightarrow \\exists x,\\ \\lnot\\exists C,\\forall i,\\|g_i x\\|\\le C$."
     }
   ],
   "sorries": 0,

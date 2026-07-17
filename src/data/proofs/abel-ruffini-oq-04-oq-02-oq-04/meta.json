@@ -59,12 +59,20 @@
       "mathContext": "$D_n$ metabelian: $1 \\to \\mathbb{Z}/n \\to D_n \\to \\mathbb{Z}/2 \\to 1$ with both ends abelian $\\Rightarrow \\mathrm{IsSolvable}(D_n)$ for all $n$; contrast $S_5$ not solvable."
     },
     {
-      "id": "two-homomorphisms",
-      "title": "The Parity Hom and the Rotation Inclusion",
+      "id": "parity-hom",
+      "title": "The Parity Homomorphism Dₙ → ℤ/2",
       "startLine": 50,
+      "endLine": 64,
+      "summary": "parity : Dₙ →* ℤ/2 sends every rotation r i to 0 and every reflection sr i to the generator ofAdd 1. The homomorphism property map_mul' is discharged by `cases x <;> cases y` — a four-case check against Mathlib's dihedral multiplication table (r_mul_r, r_mul_sr, sr_mul_r, sr_mul_sr), each product's parity matching addition in ℤ/2.",
+      "mathContext": "$\\text{parity}(r_i)=0,\\ \\text{parity}(s r_i)=1$; the products $r\\,r=r,\\ r\\,sr=sr,\\ sr\\,r=sr,\\ sr\\,sr=r$ map to $0+0,\\,0+1,\\,1+0,\\,1+1=0$ in $\\mathbb Z/2$ — the four cases that make parity a homomorphism."
+    },
+    {
+      "id": "rotation-inclusion",
+      "title": "The Rotation Inclusion ℤ/n → Dₙ",
+      "startLine": 66,
       "endLine": 81,
-      "summary": "parity : Dₙ →* ℤ/2 (rotations ↦ 0, reflections ↦ 1), proved a homomorphism by a four-case check on the dihedral multiplication table; rotation : ℤ/n →* Dₙ, i ↦ r i. simp lemmas record their values.",
-      "mathContext": "$\\text{parity}(r_i)=0,\\ \\text{parity}(s r_i)=1$; the products $r r=r,\\ r\\,sr=sr,\\ sr\\,r=sr,\\ sr\\,sr=r$ map to $0+0,\\,0+1,\\,1+0,\\,1+1=0$ in $\\mathbb Z/2$. $\\text{rotation}(i+j)=r_{i+j}=r_i r_j$."
+      "summary": "rotation : ℤ/n →* Dₙ, i ↦ r i, a homomorphism because r i · r j = r (i+j) (map_mul' is (r_mul_r _ _).symm). Its range is the cyclic rotation subgroup. Three simp lemmas (parity_r, parity_sr, rotation_apply) record the two maps' values by rfl, feeding the kernel/range computation that follows.",
+      "mathContext": "$\\text{rotation}(i+j)=r_{i+j}=r_i\\,r_j$, so $\\operatorname{im}(\\text{rotation})=\\langle r\\rangle\\cong\\mathbb Z/n$ is the cyclic rotation subgroup — the abelian normal factor of the metabelian decomposition."
     },
     {
       "id": "kernel-range",

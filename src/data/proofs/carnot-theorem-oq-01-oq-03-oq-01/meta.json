@@ -80,6 +80,7 @@
       "endLine": 42,
       "description": "Docstring framing the upgrade from the parent's sharp bound sin A + sin B + sin C ≤ 3√3/2 to the uniqueness statement: equality holds iff A = B = C = π/3. Explains why strict concavity (not ordinary concavity) is needed, and outlines the two-strict-Jensen-step proof reaching the barycentre π/3.",
       "summary": "Module header",
+      "mathContext": "$\\sin A + \\sin B + \\sin C \\le \\tfrac{3\\sqrt3}{2}$ for a triangle ($A+B+C=\\pi$), with equality iff $A=B=C=\\tfrac{\\pi}{3}$ (equilateral).",
       "id": "module-header"
     },
     {
@@ -88,6 +89,7 @@
       "endLine": 63,
       "description": "sin_jensen_eq_imp_eq: if a two-point Jensen equality a·sin x + b·sin y = sin(a·x + b·y) holds with positive weights and x, y ∈ [0, π], then x = y. Proved as the contrapositive of strict concavity: assuming x ≠ y, strictConcaveOn_sin_Icc.2 gives a strict inequality contradicting the assumed equality (closed by linarith on the chord/graph atoms).",
       "summary": "Saturated strict Jensen forces equal sample points",
+      "mathContext": "For $x \\ne y$ in $[0,\\pi]$ and weights $a,b>0$, $a+b=1$: strict concavity gives $a\\sin x + b\\sin y < \\sin(ax+by)$; hence equality $a\\sin x + b\\sin y = \\sin(ax+by)$ forces $x=y$.",
       "id": "strict-jensen-eq"
     },
     {
@@ -96,6 +98,7 @@
       "endLine": 118,
       "description": "sin_sum_eq_iff_equilateral: sin A + sin B + sin C = 3√3/2 ↔ A = π/3 ∧ B = π/3 ∧ C = π/3. Forward: two ordinary Jensen steps (midpoint M = (B+C)/2 of B,C, then A weighted 1/3 against M weighted 2/3 landing at π/3) bound the sum by 3√3/2; saturating the bound forces both steps tight (the two non-negative slacks sum to zero), and sin_jensen_eq_imp_eq turns each tightness into B = C and A = M = (B+C)/2 = C, with A + B + C = π pinning each angle to π/3. Backward: substitute the equilateral angles and evaluate 3·sin(π/3) = 3√3/2.",
       "summary": "Equality iff equilateral, via strict-Jensen tightness",
+      "mathContext": "$\\sin A + \\sin B + \\sin C = \\tfrac{3\\sqrt3}{2} \\iff A=B=C=\\tfrac{\\pi}{3}$: saturating the two Jensen steps forces both slacks to $0$, so $B=C$ and $A=\\tfrac{B+C}{2}$, which with $A+B+C=\\pi$ pins each angle to $\\tfrac{\\pi}{3}$.",
       "id": "uniqueness"
     }
   ],

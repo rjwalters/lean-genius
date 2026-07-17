@@ -53,7 +53,7 @@
       {
         "theorem": "mul_le_mul_of_nonneg_right",
         "description": "a ≤ b → 0 ≤ c → a·c ≤ b·c — divides the Loewner hypothesis re⟪Tx,x⟫ ≤ re⟪Ux,x⟫ by ‖x‖² > 0 (via div_eq_mul_inv) to get the pointwise Rayleigh comparison in Weyl monotonicity",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "Fin.card_Ici",

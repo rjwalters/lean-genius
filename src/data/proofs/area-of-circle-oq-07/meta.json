@@ -28,18 +28,34 @@
       "The Gaussian integral has no elementary antiderivative, so the integral I itself cannot be evaluated by the fundamental theorem of calculus; only its square I² — a genuine planar integral — admits a clean polar evaluation, which is why the squared identity is stated separately.",
       "Squaring and switching to polar coordinates produces the factor π through the Jacobian r dr dθ — exactly the circle-area object of the parent entry — so the appearance of π here is not coincidental but the same geometric fact in analytic disguise.",
       "Formalization-wise this is an honest, routine specialization: Mathlib's integral_gaussian already encapsulates the hard analytic work, so the entry's value is curatorial (the iconic b = 1 case) rather than a new proof. The badge 'mathlib' reflects this honestly.",
-      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — flagged as the first open question.",
+      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — a step since carried out in the sibling entry area-of-circle-oq-05-incomplete-01, which derives ∫_ℝ (1/√(2π)) e^{-x²/2} dx = 1 from this √π seed.",
       "Under Mathlib's Bochner-integral convention, ∫ x, f x silently returns 0 for a non-integrable f, so asserting the value is √π ≠ 0 makes the theorem an implicit integrability certificate for e^{-x²} on ℝ, not merely an evaluation — a formalization subtlety with no counterpart in the informal statement."
     ]
   },
   "sections": [
     {
-      "id": "overview",
-      "title": "Overview: the Gaussian integral and the circle-area link",
+      "id": "question",
+      "title": "The Open Question: ∫ e^{-x²} = √π",
       "startLine": 1,
+      "endLine": 11,
+      "summary": "Header docstring stating the open question (area-of-circle-oq-07): the total integral of the Gaussian bell curve e^{-x²} over the whole real line equals √π — the normalization constant behind the standard normal distribution.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$."
+    },
+    {
+      "id": "answer",
+      "title": "Answer: the b = 1 specialization of integral_gaussian",
+      "startLine": 13,
+      "endLine": 19,
+      "summary": "The answer is YES: it is the b = 1 case of Mathlib's parametrized integral_gaussian b = √(π/b). Setting b = 1 turns exp(-1·x²) into exp(-x²) via neg_one_mul and √(π/1) into √π via div_one.",
+      "mathContext": "$\\int e^{-b x^2} = \\sqrt{\\pi/b}$; at $b=1$, $\\sqrt{\\pi/1}=\\sqrt{\\pi}$."
+    },
+    {
+      "id": "polar-link",
+      "title": "The circle-area link and the squared identity",
+      "startLine": 21,
       "endLine": 29,
-      "summary": "Header docstring stating the open question ∫_{-∞}^{∞} e^{-x²} dx = √π and its answer: the b = 1 specialization of Mathlib's integral_gaussian b = √(π/b). It also recalls the classical evaluation — square the integral and pass to polar coordinates, where the circle-area Jacobian of the parent entry area-of-circle appears — which the squared corollary records algebraically.",
-      "mathContext": "$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$, the $b=1$ case of $\\int e^{-bx^2} = \\sqrt{\\pi/b}$."
+      "summary": "Recalls the classical evaluation — square the integral and pass to polar coordinates, where the circle-area Jacobian of the parent entry area-of-circle appears. The corollary gaussian_integral_sq records that squared identity (∫ e^{-x²})² = π algebraically. Closes noting no new axioms: a routine specialization of an existing Mathlib result.",
+      "mathContext": "$\\left(\\int e^{-x^2}\\right)^2 = \\iint e^{-(x^2+y^2)}\\,dx\\,dy = \\pi$ via polar coordinates."
     },
     {
       "id": "main",
@@ -94,7 +110,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "0 ≤ a → √a ^ 2 = a — used to square √π back to π in gaussian_integral_sq.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.pi_nonneg",
+        "description": "0 ≤ π — the side condition supplied to Real.sq_sqrt so that (√π)² = π; π ≥ 0 is exactly the hypothesis Real.sq_sqrt requires.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ]
   },
@@ -115,6 +136,36 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Parent. The classical evaluation of ∫ e^{-x²} squares the integral and passes to polar coordinates, where the circle-area Jacobian r dr dθ — the subject of the parent entry — appears. gaussian_integral_sq records the squared value π that this Jacobian computation produces."
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "Companion sibling under the same parent: proves the identical Gaussian integral ∫ e^{-x²} dx = √π and, like this entry, ties the factor of π to the polar-coordinate / circle-area Jacobian. The two are parallel treatments of the same OQ, so an improvement or polar-explicit proof in one applies directly to the other."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "related",
+      "description": "The Gamma-function view of the same value: Γ(½) = √π is the s = ½ special value of Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) (giving Γ(½)² = π). Under the substitution t = x² one has Γ(½) = ∫_ℝ e^{-x²} dx, so this entry's √π and the reflection formula's Γ(½) are literally the same number reached by different routes."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "A sibling landmark where π appears from a non-geometric object: Basel gives ∑ 1/n² = π²/6, as this entry gives ∫ e^{-x²} = √π. Both are canonical instances of π surfacing outside its defining circle — one from an infinite series, one from an integral with no elementary antiderivative."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child: generalizes the b = 1 real value √π proved here to the complex parameter, ∫_ℝ e^{-b x²} dx = (π/b)^{1/2} for every b : ℂ with Re b > 0 (from Mathlib's integral_gaussian_complex over the right half-plane), and includes a bridge theorem recovering this entry's real √π as the b = 1 specialization."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child: evaluates the half-line Gaussian ∫_{0}^{∞} e^{-b x²} dx = √(π/b)/2 (from integral_gaussian_Ioi) and, via the even-symmetry bridge ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}, re-derives this entry's ∫_ℝ e^{-x²} = √π along an independent route — a cross-check of the value proved here."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-incomplete-01",
+      "relationship": "related",
+      "description": "Resolves this entry's first open question. From the same integral_gaussian it proves the standard-normal normalization ∫ (1/√(2π))e^{-x²/2} = 1 (and the b = 1/2 value ∫ e^{-x²/2} = √(2π)), turning the √π seed established here into the full normal-distribution density normalization constants."
     }
   ],
   "references": [
@@ -131,6 +182,20 @@
       "year": "1812",
       "venue": "Courcier, Paris",
       "description": "Classical home of the Gaussian integral and its role as the normalization of the normal distribution."
+    },
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "author": "Gerald B. Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Develops the rigorous evaluation of ∫_ℝ e^{-x²} = √π by Tonelli's theorem and the polar-coordinate change of variables on ∫∫_{ℝ²} e^{-(x²+y²)} — the double-integral/Jacobian method this entry's second open question asks to formalize, and the measure-theoretic content encapsulated inside Mathlib's integral_gaussian."
+    },
+    {
+      "title": "Probability and Measure (3rd ed.)",
+      "author": "Patrick Billingsley",
+      "year": "1995",
+      "venue": "Wiley",
+      "description": "Standard measure-theoretic probability text; treats the normal distribution and its √(2π) normalization constant, the b = 1/2 companion of the √π value proved here (the target of this entry's first open question)."
     }
   ],
   "sorries": 0,
@@ -138,8 +203,8 @@
     "summary": "The total integral of the Gaussian bell curve, ∫_ℝ e^{-x²} dx, equals √π. The proof is a one-step specialization of Mathlib's parametrized Gaussian integral integral_gaussian at b = 1: the integrand exp (-1 · x²) collapses to exp (-x²) via neg_one_mul and the value √(π/1) collapses to √π via div_one. A short corollary, gaussian_integral_sq, squares the result to (∫ e^{-x²})² = π using Real.sq_sqrt. 41 lines, 2 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This is an honest, routine specialization rather than original mathematics — Mathlib already contains the hard analytic work (the polar-coordinate evaluation lives inside integral_gaussian). Its value to the gallery is as the iconic b = 1 case: the normalization constant of the standard normal distribution and the simplest non-trivial definite integral whose value involves π without an explicit circle. The squared form π = (∫ e^{-x²})² ties the entry back to the parent area-of-circle proof, where the same factor of π enters through the circle-area Jacobian of the polar-coordinate substitution.",
     "openQuestions": [
-      "Normalize the standard-normal density: ∫_ℝ (1/√(2π)) e^{-x²/2} dx = 1 from integral_gaussian at b = 1/2.",
-      "Recover gaussian_integral_sq via an explicit Fubini/polar change of variables on ∫∫_{ℝ²} e^{-(x²+y²)}, surfacing the r dr dθ Jacobian of the parent."
+      "Recover gaussian_integral_sq via an explicit Fubini/polar change of variables on ∫∫_{ℝ²} e^{-(x²+y²)}, surfacing the r dr dθ Jacobian of the parent rather than inheriting it inside integral_gaussian.",
+      "Generalize the squared identity to n dimensions: ∫_{ℝⁿ} e^{-‖x‖²} dx = π^{n/2} (the n = 2 case is exactly gaussian_integral_sq = π), and further ∫_{ℝⁿ} e^{-⟨x, A x⟩} dx = π^{n/2}/√(det A) for symmetric positive-definite A — the multivariate Gaussian normalization behind the general normal distribution. (The standard-normal density normalization, previously listed here, is now formalized in the sibling area-of-circle-oq-05-incomplete-01.)"
     ]
   }
 }

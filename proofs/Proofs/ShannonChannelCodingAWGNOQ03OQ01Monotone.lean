@@ -15,6 +15,10 @@ sorry-free:
   nonnegative rate `½ log(1 + P/N) ≥ 0`.
 * `perUseCapacity_mono`     — the per-channel rate is monotone in the allotted
   power `P`.
+* `perUseCapacity_antitone_noise` — the per-channel rate is *antitone* in the noise
+  power `N` (the noise-side dual of `perUseCapacity_mono`).
+* `parallelRate_antitone_noise` — at a fixed power allocation, the total parallel-channel
+  rate is antitone in the noise profile (pointwise `N₁ ≤ N₂`).
 * `waterAlloc_mono_level`   — the water-filling depth `(μ − Nᵢ)₊` is monotone in
   the water level `μ`.
 * `rate_waterAlloc_nonneg`  — the water-filling rate is nonnegative.
@@ -70,6 +74,49 @@ theorem perUseCapacity_mono {N : ℝ} (hN : 0 < N) {P₁ P₂ : ℝ}
     linarith
   · have hdiv : P₁ / N ≤ P₂ / N := by gcongr
     linarith
+
+/-- **The per-channel rate is antitone in the noise power.**  For fixed allotted power
+`P ≥ 0`, raising the noise `N` never increases the per-use AWGN capacity
+`½ log(1 + P/N)`, since `P/N` decreases with `N`.  The noise-side dual of
+`perUseCapacity_mono` (which is monotone in the power). -/
+theorem perUseCapacity_antitone_noise {P N₁ N₂ : ℝ} (hP : 0 ≤ P) (hN₁ : 0 < N₁)
+    (h : N₁ ≤ N₂) : perUseCapacity P N₂ ≤ perUseCapacity P N₁ := by
+  have hN₂ : 0 < N₂ := lt_of_lt_of_le hN₁ h
+  unfold perUseCapacity
+  apply mul_le_mul_of_nonneg_left _ (by norm_num : (0 : ℝ) ≤ 1 / 2)
+  apply Real.log_le_log (by positivity)
+  have hdiv : P / N₂ ≤ P / N₁ := div_le_div_of_nonneg_left hP hN₁ h
+  linarith
+
+/-- **The parallel-Gaussian rate is antitone in the noise profile.**  At a *fixed* power
+allocation `P`, raising any noise power (pointwise `N₁ ≤ N₂`) never increases the total
+rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ)` — a term-by-term consequence of `perUseCapacity_antitone_noise`.
+The multi-channel form of noise monotonicity, complementing the power-side monotonicities. -/
+theorem parallelRate_antitone_noise (P N₁ N₂ : ι → ℝ) (hP : ∀ i, 0 ≤ P i)
+    (hN₁ : ∀ i, 0 < N₁ i) (h : ∀ i, N₁ i ≤ N₂ i) :
+    parallelRate N₂ P ≤ parallelRate N₁ P := by
+  unfold parallelRate
+  exact Finset.sum_le_sum fun i _ => perUseCapacity_antitone_noise (hP i) (hN₁ i) (h i)
+
+/-- **The parallel-Gaussian rate is monotone in the power profile.**  At a *fixed* noise
+profile `N`, allocating pointwise more (nonnegative) power `P₁ ≤ P₂` never decreases the
+total rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ)` — a term-by-term consequence of `perUseCapacity_mono`.
+The power-side companion of `parallelRate_antitone_noise` (which is antitone in the noise),
+lifting the single-channel `perUseCapacity_mono` to the multi-channel sum. -/
+theorem parallelRate_mono_power (N : ι → ℝ) (hN : ∀ i, 0 < N i)
+    {P₁ P₂ : ι → ℝ} (hP₁ : ∀ i, 0 ≤ P₁ i) (h : ∀ i, P₁ i ≤ P₂ i) :
+    parallelRate N P₁ ≤ parallelRate N P₂ := by
+  unfold parallelRate
+  exact Finset.sum_le_sum fun i _ => perUseCapacity_mono (hN i) (hP₁ i) (h i)
+
+/-- **The parallel-Gaussian rate is nonnegative.**  For a positive noise profile and any
+nonnegative power allocation, the total rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ) ≥ 0` — the term-by-term
+sum of `perUseCapacity_nonneg`.  The generic (arbitrary-allocation) form of the floor,
+specializing to `rate_waterAlloc_nonneg` at the water-filling depths. -/
+theorem parallelRate_nonneg (N P : ι → ℝ) (hN : ∀ i, 0 < N i) (hP : ∀ i, 0 ≤ P i) :
+    0 ≤ parallelRate N P := by
+  unfold parallelRate
+  exact Finset.sum_nonneg fun i _ => perUseCapacity_nonneg (hP i) (hN i)
 
 /-! ## Per-channel rate: strict positivity and its zero set -/
 
@@ -169,20 +216,10 @@ theorem waterBudget_nonneg (N : ι → ℝ) (μ : ℝ) : 0 ≤ waterBudget N μ 
   unfold waterBudget
   exact Finset.sum_nonneg fun i _ => waterAlloc_nonneg μ N i
 
-/-- **A positive budget forces a positive water level.**  If the water level `μ`
-realises a strictly positive budget `P > 0` (with positive noise floors) then
-`μ > 0`: at `μ ≤ 0` every channel is dry (`μ − Nᵢ < 0`) and the budget vanishes. -/
-theorem waterLevel_pos_mono (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
-    (hbudget : waterBudget N μ = P) (hP : 0 < P) : 0 < μ := by
-  by_contra hcon
-  push_neg at hcon
-  have hzero : waterBudget N μ = 0 := by
-    unfold waterBudget waterAlloc
-    apply Finset.sum_eq_zero
-    intro i _
-    exact max_eq_right (by linarith [hN i])
-  rw [hbudget] at hzero
-  linarith
+-- NOTE: `waterLevel_pos` (a positive budget forces a positive water level) was moved
+-- into the base file `ShannonChannelCodingAWGNOQ03OQ01` (namespace `ShannonWaterFilling`);
+-- the former duplicate here is removed to avoid a name clash.  Its base signature is
+-- `waterLevel_pos (N) (hN) {P} (hP : 0 < P) {μ} (hμ : waterBudget N μ = P) : 0 < μ`.
 
 /-- **A zero budget yields zero rate.**  When no power is poured in
 (`g(μ) = 0`) every channel is switched off and the water-filling rate is `0`. -/
@@ -272,10 +309,11 @@ theorem capacity_mono_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
     have hP2 : P₂ = 0 := hP2z.symm
     have hP1nonneg : 0 ≤ P₁ := by rw [← h1]; exact waterBudget_nonneg N μ₁
     have hP1 : P₁ = 0 := le_antisymm (hP2 ▸ hP) hP1nonneg
+    -- both capacities are 0, so the rewrite closes the goal `0 ≤ 0`
     rw [rate_waterAlloc_eq_zero_of_budget_zero N (h1.trans hP1),
         rate_waterAlloc_eq_zero_of_budget_zero N (h2.trans hP2)]
   · -- generic: P₂ > 0, so μ₂ > 0 and optimality at P₂ dominates the P₁ allocation
-    have hμ₂ : 0 < μ₂ := waterLevel_pos_mono N hN h2 hP2pos
+    have hμ₂ : 0 < μ₂ := waterLevel_pos N hN hP2pos h2
     have hxsum : ∑ i, waterAlloc μ₁ N i ≤ P₂ := by
       have hb : (∑ i, waterAlloc μ₁ N i) = P₁ := h1
       rw [hb]; exact hP
@@ -308,5 +346,81 @@ theorem waterLevel_mono_budget (N : ι → ℝ) {μ₁ μ₂ P₁ P₂ : ℝ}
   rw [h2, h1] at hlt
   -- `P₂ < P₁` contradicts `P₁ ≤ P₂`
   linarith
+
+/-! ## Strict monotonicity in the power budget -/
+
+/-- **The per-channel rate is *strictly* monotone in power.**  For fixed positive
+noise `N`, allocating strictly more power strictly increases the rate:
+`P₁ < P₂ ⟹ ½ log(1 + P₁/N) < ½ log(1 + P₂/N)`.  The strict sharpening of
+`perUseCapacity_mono`, using strict monotonicity of `Real.log`. -/
+theorem perUseCapacity_strictMono {N : ℝ} (hN : 0 < N) {P₁ P₂ : ℝ}
+    (hP1 : 0 ≤ P₁) (hP : P₁ < P₂) :
+    perUseCapacity P₁ N < perUseCapacity P₂ N := by
+  unfold perUseCapacity
+  apply mul_lt_mul_of_pos_left _ (by norm_num : (0 : ℝ) < 1 / 2)
+  apply Real.log_lt_log
+  · have : 0 ≤ P₁ / N := div_nonneg hP1 hN.le
+    linarith
+  · have hdiv : P₁ / N < P₂ / N := by
+      apply (div_lt_div_iff_of_pos_right hN).mpr hP
+    linarith
+
+/-- **The water level is *strictly* monotone in the power budget.**  Let `μ₁`, `μ₂`
+realise budgets `P₁`, `P₂` with `0 < P₁` and `P₁ < P₂`.  Then `μ₁ < μ₂`: strictly
+more power strictly raises the water surface.  The strict sharpening of
+`waterLevel_mono_budget` — if the level failed to rise (`μ₁ = μ₂`) the budgets
+`g(μ₁) = g(μ₂)` would coincide, contradicting `P₁ < P₂`. -/
+theorem waterLevel_strictMono_budget (N : ι → ℝ) {μ₁ μ₂ P₁ P₂ : ℝ}
+    (h1 : waterBudget N μ₁ = P₁) (h2 : waterBudget N μ₂ = P₂)
+    (hP1 : 0 < P₁) (hP : P₁ < P₂) :
+    μ₁ < μ₂ := by
+  rcases eq_or_lt_of_le (waterLevel_mono_budget N h1 h2 hP1 hP.le) with heq | hlt
+  · exfalso
+    have : P₁ = P₂ := by rw [← h1, ← h2, heq]
+    linarith
+  · exact hlt
+
+/-- **The parallel-Gaussian capacity is *strictly* monotone in the power budget.**
+Let `μ₁`, `μ₂` be the water levels realising budgets `P₁`, `P₂` with `0 < P₁` and
+`P₁ < P₂`.  Then the water-filling capacity strictly increases:
+
+    parallelRate N (waterAlloc μ₁ N) < parallelRate N (waterAlloc μ₂ N).
+
+The strict sharpening of `capacity_mono_budget`.  Since `P₁ > 0` some channel is
+active at `μ₁` (`Nᵢ₀ < μ₁`); as the level strictly rises (`μ₁ < μ₂`, by
+`waterLevel_strictMono_budget`) that channel receives strictly more power and hence
+strictly more rate (`perUseCapacity_strictMono`), while every other channel's rate
+is nondecreasing (`waterAlloc_mono_level` + `perUseCapacity_mono`).  Summing with
+`Finset.sum_lt_sum` gives the strict inequality. -/
+theorem capacity_strictMono_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
+    {μ₁ μ₂ P₁ P₂ : ℝ}
+    (h1 : waterBudget N μ₁ = P₁) (h2 : waterBudget N μ₂ = P₂)
+    (hP1 : 0 < P₁) (hP : P₁ < P₂) :
+    parallelRate N (waterAlloc μ₁ N) < parallelRate N (waterAlloc μ₂ N) := by
+  have hμlt : μ₁ < μ₂ := waterLevel_strictMono_budget N h1 h2 hP1 hP
+  -- a positive budget forces some active channel at level μ₁
+  have hact : ∃ i, 0 < waterAlloc μ₁ N i := by
+    by_contra hcon
+    push_neg at hcon
+    have hle : waterBudget N μ₁ ≤ 0 := by
+      unfold waterBudget; exact Finset.sum_nonpos fun i _ => hcon i
+    rw [h1] at hle; linarith
+  obtain ⟨i₀, hi₀⟩ := hact
+  have hNlt : N i₀ < μ₁ := (waterAlloc_pos_iff μ₁ N i₀).mp hi₀
+  -- the active channel gets strictly more power
+  have haa : waterAlloc μ₁ N i₀ < waterAlloc μ₂ N i₀ := by
+    unfold waterAlloc
+    rw [max_eq_left (by linarith : (0 : ℝ) ≤ μ₁ - N i₀),
+        max_eq_left (by linarith : (0 : ℝ) ≤ μ₂ - N i₀)]
+    linarith
+  have hstrict : perUseCapacity (waterAlloc μ₁ N i₀) (N i₀)
+      < perUseCapacity (waterAlloc μ₂ N i₀) (N i₀) :=
+    perUseCapacity_strictMono (hN i₀) (waterAlloc_nonneg μ₁ N i₀) haa
+  unfold parallelRate
+  apply Finset.sum_lt_sum
+  · intro i _
+    exact perUseCapacity_mono (hN i) (waterAlloc_nonneg μ₁ N i)
+      (waterAlloc_mono_level hμlt.le N i)
+  · exact ⟨i₀, Finset.mem_univ i₀, hstrict⟩
 
 end ShannonWaterFilling

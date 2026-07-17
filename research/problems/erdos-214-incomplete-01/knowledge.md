@@ -1,5 +1,28 @@
 # Knowledge: erdos-214-incomplete-01
 
+## Session 2026-07-12 (researcher-1) — isometry/translation invariance of the hypothesis class
+
+**Mode:** INFRASTRUCTURE (core still BLOCKED on `juhasz_stronger`; added verified,
+axiom-free structural content). VERIFIED, 0 sorry / axiom count unchanged (1). Docker
+build green (2364 jobs, 5.4s).
+
+### Added (2 theorems, axiom-free)
+- `IsUnitDistanceFree.image_of_isometry` — if `f` preserves `dist` then `f '' S` is
+  unit-distance-free when `S` is. Hypothesis-side companion of the existing
+  `isUnitSquare_of_isometry` (which pushes a unit *square* forward). No injectivity
+  needed: distance preservation forces `f a ≠ f b` from `a ≠ b`. Proof:
+  `rintro _ _ ⟨a,ha,rfl⟩ ⟨b,hb,rfl⟩ hne; rw [hf]; refine hS a b ha hb ?_; rintro rfl; exact hne rfl`.
+- `IsUnitDistanceFree.translate` — translation by any `v` preserves unit-distance-freeness;
+  concrete instance via `add_sub_add_right_eq_sub` ((p+v)-(q+v)=p-q).
+
+### Why this matters (non-cosmetic)
+Problem #214 is stated up to congruence (Juhász's theorem is about congruent copies), so
+the admissible-configuration class is closed under the plane's isometry group. These make
+that closure explicit and reusable for future WLOG-style arguments. Still peripheral to the
+BLOCKED analytic core.
+
+---
+
 ## Overview
 
 Gallery entry `erdos-214` (Erdős #214: unit-distance-free sets & unit squares).
@@ -230,3 +253,110 @@ Prior session (researcher-3, n≡12 mod 16 family showing mod-8 dichotomy NOT sh
 UNVERIFIED (docker down). `Erdos214Incomplete01OQ01.lean` (373 L, Mathlib-only, 0 ax/0 sorry)
 verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]): EXIT 0, zero
 errors/warnings. Standing work confirmed correct (no bug). Marked completed.
+
+## Session 2026-07-11 (researcher-10) — first ODD-PRIME (mod 3) obstruction [VERIFIED axiom-free]
+
+Extended Erdos214Incomplete01OQ01.lean (373→445, Mathlib-only, 0 ax/0 sorry) past the
+power-of-2 congruence families (mod4/8/16) with the FIRST odd-prime obstruction — the k=3
+Fermat-two-square mechanism. VERIFIED host lake env lean exit 0, #print axioms foundational
+only (no sorryAx). PR #37682. Three thms:
+- `sq_add_sq_three_dvd (u v : ℤ) (h : 3 ∣ u²+v²) : 3∣u ∧ 3∣v` (−1 non-residue mod 3; squares
+  mod3∈{0,1}, only 0+0≡0). Proof mirrors sq_add_sq_mod_eight_ne_six idiom: w=3k+w%3, per-residue
+  `w²=3*(…)+c` ring identity + omega; final `rcases key u/key v <;> omega`.
+- `scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine {n} (h3: 3∣n)(h9: ¬9∣n)`: avoided (3∣u²+v²
+  →9∣u²+v²→9∣n contra). Key omega steps: 3∣n∧n=2(u²+v²)⟹3∣(u²+v²) (gcd(3,2)=1, omega does it);
+  9∣(u²+v²) needs EXPLICIT witness ⟨a²+b²,…⟩ from u=3a,v=3b (omega can't square); 9∣n via omega.
+- `scaledLattice_dist_ne_sqrt_twentyfour`: √24 avoided — 24≡0 mod8 (achievable residue!) AND
+  24≡8 mod16 (escapes n≡12 mod16 family) → caught by NEITHER power-of-2 family. New witness.
+
+★The achievable-distance set is 2·(sum of two squares); no single-residue mod-p obstruction
+exists for odd p (all residues of u²+v² mod 3,7 achievable) — the real obstruction is STRUCTURAL
+(prime ≡3 mod4 to odd power), captured as "p∣sum ⟹ p²∣sum". Next: mod-7/mod-11 analogues, or the
+full Fermat characterization scaledLattice_achievable_iff already stubbed at line 421 (open frontier).
+
+REMAINING: core #214 BLOCKED on juhasz_stronger (deep incidence geometry, not in Mathlib).
+
+## Session 2026-07-11 (researcher-8) — GENERAL prime ≡ 3 (mod 4) obstruction [VERIFIED axiom-free]
+
+**Mode:** REVISIT — lifted the file's concrete `p = 3` obstruction to the full odd-prime
+mechanism. Extended `Erdos214Incomplete01OQ01.lean` (596→665, Mathlib-only, 0 ax / 0 sorry).
+VERIFIED host `bin/lake env lean` exit 0; `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` only (no `sorryAx`/`ofReduceBool`) for all 3 new thms.
+
+### Key realization
+`sq_add_sq_three_dvd` (3∣u²+v² ⟹ 3∣u ∧ 3∣v) and its avoidance corollary
+`scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine` were only the `r=3` special case. The
+real mechanism is: for ANY prime `r ≡ 3 (mod 4)`, `-1` is a quadratic non-residue mod `r`,
+so `r∣u²+v² ⟹ r∣u ∧ r∣v`. Mathlib supplies the crux directly:
+`ZMod.mod_four_ne_three_of_sq_eq_neg_sq (hx : x≠0) (hxy : x²=-y²) : p%4≠3`.
+
+### Added (3 theorems, 0 sorry, 0 axioms)
+- `sq_add_sq_prime_dvd {r} [Fact r.Prime] (hr : r%4=3) (u v : ℤ) (h : (r:ℤ)∣u²+v²) :
+  (r:ℤ)∣u ∧ (r:ℤ)∣v` — the general obstruction; `sq_add_sq_three_dvd` is now its `r=3`
+  instance. Proof: cast `u²+v²=0` into `ZMod r` (`ZMod.intCast_zmod_eq_zero_iff_dvd` +
+  `push_cast; linear_combination`), get `u²=-v²`; if `¬r∣u` then `(u:ZMod r)≠0` and
+  `mod_four_ne_three_of_sq_eq_neg_sq` contradicts `hr`; symmetric for `v`.
+- `scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq {p q} … {r n} [Fact r.Prime] (hr:r%4=3)
+  (hdvd:r∣n) (hnsq:¬r²∣n) : dist p q ≠ √n` — generalizes `_of_three_dvd_not_nine`. From
+  `dist²=2(u²+v²)=n` and `r` odd (r%4=3), `r∣2(u²+v²) ⟹ r∣u²+v²` via
+  `Prime.dvd_mul` (r∣2 impossible: `Nat.le_of_dvd`+omega), then `sq_add_sq_prime_dvd`
+  ⟹ r²∣u²+v² ⟹ r²∣n, contradicting `hnsq`.
+- `scaledLattice_dist_ne_sqrt_fiftysix` — concrete √56 (=2³·7) avoided via `r=7`. Chosen to
+  escape ALL earlier families: 56≡0 mod8 (achievable residue), 56≡8 mod16 (escapes n≡12
+  mod16), 3∤56 (escapes r=3) — caught ONLY by the r=7 obstruction. `Fact (Nat.Prime 7)`
+  must be supplied by `haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩` (not auto-synthesized).
+
+### Gotchas (reusable)
+- `Int.coe_nat_prime` is GONE; use `Nat.prime_iff_prime_int.mp (Fact.out) : Prime (r:ℤ)`.
+- Concrete prime instances (`r=7`) need an explicit local `haveI : Fact (Nat.Prime 7)`;
+  term-mode application fails "failed to synthesize Fact (Nat.Prime 7)".
+
+### Frontier
+Unchanged: core #214 BLOCKED on `juhasz_stronger`. The odd-prime obstruction now holds for
+every `r≡3 mod4` — the last elementary sufficient-avoidance mechanism before the full Fermat
+sum-of-two-squares characterization (`n/2` a SoS ⟺ every prime ≡3 mod4 in `n/2` to even
+power). Formalizing that biconditional (Mathlib has `Nat.Prime.sq_add_sq` and
+`SumTwoSquares.lean`) is the remaining substantial axiom-free target.
+
+## Session 2026-07-12 (researcher-1) — CAPSTONE: complete Fermat characterization [VERIFIED axiom-free]
+
+**Mode:** REVISIT — closed the "open frontier" of the OQ01 companion file. Extended
+`Erdos214Incomplete01OQ01.lean` (757→834, Mathlib-only, 0 ax / 0 sorry). VERIFIED via
+`lake env lean` against the main-repo Mathlib oleans: EXIT 0, zero errors/warnings;
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`/`ofReduceBool`)
+for all 3 new theorems.
+
+### The capstone (subsumes every prior avoidance/realizability lemma in the file)
+- `scaledLattice_realizes_sqrt_two_mul_iff_factorization (m : ℕ)`: `√(2m)` is a distance
+  of `√2·ℤ²` **iff** `∀ r ∈ m.primeFactors, r%4=3 → Even (padicValNat r m)`. This is the
+  complete Fermat characterization: realizable half-values are exactly the sums of two
+  squares (Gaussian-integer norms). Every earlier result is a special case — `√6/√14/√22`
+  (r=3,7,11 to odd power), `√12=√(2·6)` (padicValNat 3 6=1), `√56=√(2·28)` (padicValNat 7
+  28=1) avoided; `√10/√26/√34` and `√8=√(2·4)` realized.
+- `exists_sq_add_sq_int_iff_nat (m : ℕ)`: the `ℤ↔ℕ` sum-of-two-squares bridge. `←` cast;
+  `→` via `u.natAbs`/`v.natAbs` + `sq_abs`.
+- `scaledLattice_dist_ne_sqrt_two_mul_of_odd_padicValNat`: odd-power prime `r≡3 mod4` ⟹
+  `√(2m)` avoided — reproves every ad-hoc avoidance lemma directly from the capstone.
+
+### Proof architecture (3-step Iff chain)
+`scaledLattice_achievable_iff (2m)` (realizable ⟺ `2m = 2(u²+v²)`, i.e. `m = u²+v²` over ℤ)
+→ `exists_sq_add_sq_int_iff_nat` (ℤ→ℕ) → Mathlib `Nat.eq_sq_add_sq_iff` (ℕ sum-of-two-squares
+⟺ prime-factorization condition). Assembled by `rw [hcast, scaledLattice_achievable_iff,
+← Nat.eq_sq_add_sq_iff, ← exists_sq_add_sq_int_iff_nat]` leaving only the `2·` cancellation
+(closed by `push_cast; linarith`).
+
+### Gotchas (reusable)
+- `push_cast` rewrites `(↑n.natAbs : ℤ)` to `|n|` (via `Int.cast_natAbs`) BEFORE `Int.natAbs_sq`
+  can fire, leaving `|u|²`. Fix: `push_cast; rw [sq_abs, sq_abs]` (not `push_cast [Int.natAbs_sq]`).
+- Mathlib key lemma: `Nat.eq_sq_add_sq_iff {n} : (∃ x y, n = x²+y²) ↔ ∀ q ∈ n.primeFactors,
+  q%4=3 → Even (padicValNat q n)` (in `Mathlib.NumberTheory.SumTwoSquares`).
+
+### Frontier
+The realizable distance set of `√2·ℤ²` is now COMPLETELY characterized (this file is
+essentially done). Core #214 unchanged: BLOCKED on `juhasz_stronger` (deep incidence
+geometry, not in Mathlib).
+
+### Verification note
+Worktree `.lake` has 0 mathlib oleans; verified a scratch copy (`import Mathlib`, self-contained)
+against the main-repo Mathlib oleans via `lake env lean` — the main repo auto-reverts uncommitted
+edits so edits live only in the researcher-1-2 worktree / feature branch.

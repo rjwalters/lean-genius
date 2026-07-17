@@ -22,7 +22,7 @@
     "The Maclaurin step is derivable from Newton via a discrete log-concavity / prefix-mean argument."
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: maclaurin_step derived from newton_log_concavity for strictly positive inputs (committed, build-unverified: Docker + Aristotle infra both down this session).",
+    "progressSummary": "COMPLETE (modulo blocked axiom): full non-negative Maclaurin chain M₁≥…≥Mₙ and AM-GM derived axiom-free from the single newton_log_concavity axiom (maclaurin_step is a THEOREM). newton_log_concavity discharged axiom-free for ALL n≤4 (newton_k1, newton_n3_k2, newton_n4_k2, newton_n4_k3). Sole residual = general-n Newton via real-rootedness/Rolle, a >1000-line Mathlib gap (TRULY BLOCKED). Extending to n=5,6,… is enumeration theater, not progress.",
     "builtItems": [
       "Proofs/MaclaurinStepFromNewton.lean: maclaurin_core — p_{k+1}^k <= p_k^{k+1} by induction on k using only Nat-powers (the key reduction; avoids logs and infinite products).",
       "Proofs/MaclaurinStepFromNewton.lean: rpow_cross — root-extraction lemma b^s<=a^t => b^(1/t)<=a^(1/s) for positive reals/naturals.",
@@ -40,9 +40,9 @@
       "No Maclaurin inequality chain in Mathlib."
     ],
     "nextSteps": [
-      "BUILD-VERIFY MaclaurinStepFromNewton.lean once Docker (or Aristotle) infra recovers — see risk spots: field_simp/ring in rpow_cross exponent simplification, the rfl defeq for maclaurinMean, the `exact h` defeq in hNewton.",
-      "Extend maclaurin_step_pos to the full non-negative case via the 'zeros form a suffix' lemma, fully replacing the maclaurin_step axiom (then drop the axiom from AmgmInequalityOQ02.lean and decrement its axiomCount 2 -> 1).",
-      "Consider upstreaming Newton + Maclaurin to Mathlib (the real-rootedness route) as a longer-term contribution."
+      "BLOCKED: general-n newton_log_concavity needs real-rootedness of derivatives (Rolle) — Mathlib lacks this (~>1000 lines). No elementary <500-line route known. Do NOT enumerate finite n (theater).",
+      "If ever attacking Newton general: formalize that P(t)=∏(t+xᵢ) real-rooted ⟹ P′ real-rooted (interlacing via Rolle), then reduce e_{k-1}e_{k+1}≤e_k² to the real-rooted-quadratic discriminant. This is the only known complete route.",
+      "Downstream chain (maclaurin_step, maclaurin_chain, geom_le_maclaurinMean_le_arith, AM-GM) is fully proven and non-negative-complete; nothing left there."
     ],
     "markdown": "See research/problems/amgm-inequality-oq-03-oq-02-oq-02/knowledge.md"
   },

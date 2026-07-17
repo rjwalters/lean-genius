@@ -67,11 +67,19 @@
   },
   "sections": [
     {
-      "id": "sec-header",
-      "title": "Module Header, Imports, and Setup",
+      "id": "sec-overview",
+      "title": "Overview Docstring: Statement, Corollaries, and Strategy",
       "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring framing the result: the British-flag defect |PA|² + |PC|² − |PB|² − |PD|² of a parallelogram (vertices A, A+u, A+u+v, A+v) equals 2⟪u,v⟫, independent of the observer P and the base point A, and vanishes exactly when u ⊥ v. Enumerates the main theorem (parallelogram_defect) and the two corollaries, and lays out the translate-to-A-then-expand proof strategy that makes every P- and A-dependent term cancel.",
+      "mathContext": "$|PA|^2 + |PC|^2 - |PB|^2 - |PD|^2 = 2\\langle u, v\\rangle$, independent of $P$ and $A$."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports, Namespace, and Inner-Product-Space Setup",
+      "startLine": 31,
       "endLine": 43,
-      "summary": "Module docstring stating the defect identity, its corollaries, and the translate-and-expand strategy. Imports Mathlib, opens the InnerProductSpace scope (for the ⟪·,·⟫_ℝ notation), and fixes a real inner product space V via `variable`.",
+      "summary": "Imports Mathlib, opens the InnerProductSpace scope (enabling the ⟪·,·⟫_ℝ notation), enters the namespace, and fixes an arbitrary real inner product space V via `variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]` — the abstraction that lets the theorem hold in every dimension rather than only in the plane.",
       "mathContext": "The ambient structure is `[NormedAddCommGroup V] [InnerProductSpace ℝ V]`; the notation `⟪x, y⟫_ℝ` denotes the real inner product."
     },
     {
@@ -83,12 +91,20 @@
       "mathContext": "With x = P − A: ‖x‖² + ‖x−u−v‖² − ‖x−u‖² − ‖x−v‖² = 2⟪u,v⟫. Every term in x cancels; the residue is 2⟪u,v⟫."
     },
     {
-      "id": "sec-corollaries",
-      "title": "Corollaries: Orthogonal Case and Vertex Form",
+      "id": "sec-cor-orthogonal",
+      "title": "Corollary: The Orthogonal (Rectangle-Edge) Case",
       "startLine": 58,
+      "endLine": 63,
+      "summary": "british_flag_of_orthogonal: substituting ⟪u,v⟫ = 0 into the defect identity kills the right-hand side, so the two diagonal sums coincide (rw the hypothesis, mul_zero, then linarith). This is the British Flag Theorem stated directly in edge-vector form.",
+      "mathContext": "$u \\perp v \\Rightarrow \\|P-A\\|^2 + \\|P-(A+u+v)\\|^2 = \\|P-(A+u)\\|^2 + \\|P-(A+v)\\|^2$."
+    },
+    {
+      "id": "sec-cor-vertex",
+      "title": "Corollary: The Rectangle Vertex Form (Any Dimension)",
+      "startLine": 64,
       "endLine": 79,
-      "summary": "british_flag_of_orthogonal: substituting ⟪u,v⟫ = 0 gives defect 0, i.e. equal diagonal sums (linarith). british_flag: the vertex form with C = B + D − A and ⟪B−A, D−A⟫ = 0, reducing to parallelogram_defect with u = B−A, v = D−A after rewriting A+(B−A)=B, A+(D−A)=D, B+(D−A)=C.",
-      "mathContext": "The British Flag Theorem ‖PA‖² + ‖PC‖² = ‖PB‖² + ‖PD‖² is the zero-defect specialization, now valid in any dimension."
+      "summary": "british_flag: the classical vertex statement. Given a rectangle ABCD (C = B + D − A closes the parallelogram, ⟪B−A, D−A⟫ = 0 makes it right-angled), the defect vanishes for every P. Reduces to parallelogram_defect with u = B−A, v = D−A after the bookkeeping rewrites A+(B−A)=B, A+(D−A)=D, B+(D−A)=C (each by abel).",
+      "mathContext": "$\\|P-A\\|^2 + \\|P-C\\|^2 = \\|P-B\\|^2 + \\|P-D\\|^2$ for a rectangle $ABCD$ in any real inner product space."
     }
   ],
   "crossReferences": [
@@ -96,6 +112,21 @@
       "targetId": "british-flag-theorem-oq-01",
       "relationship": "extends",
       "description": "Parent: the British Flag Theorem in the coordinate plane ℝ². This entry generalizes it to an arbitrary parallelogram in any real inner product space, with the defect 2⟪u,v⟫ measuring the deviation from a right angle — the parent's first open question."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling that answers this entry's first open question (orthotopes vs. parallelepipeds): it pushes the same norm-expansion identity from the 4-vertex parallelogram to an n-dimensional box, summing squared distances over the 2ⁿ vertices with alternating signs and expressing the defect through the pairwise edge inner products Σ_{i<j} ±2⟪uᵢ,uⱼ⟫. This 2-D parallelogram case is the n = 2 instance."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's second open question (weighted / affine-combination version): the Weighted Leibniz identity replaces the four parallelogram corners by a weighted affine simplex, connecting the defect to the Leibniz / Stewart relations and absorbing the parallelogram identity proved here as a special case."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The defect value 2⟪u,v⟫ isolated here is exactly the cross term of the law of cosines (|A+u|² relative to |A|² and ‖u‖² differs by 2⟪·,u⟫). The British-flag defect vanishes precisely when u ⊥ v — the same orthogonality that collapses the cosine term — so the rectangle case of the theorem is the law of cosines with a right angle."
     }
   ],
   "conclusion": {

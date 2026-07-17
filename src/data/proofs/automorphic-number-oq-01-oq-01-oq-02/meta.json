@@ -157,19 +157,27 @@
       "mathContext": "The maximal-prime-power map and its inverse primeFactors set up the bijection with subsets of the primes."
     },
     {
-      "id": "into-and-onto",
-      "title": "Part II: the product is a unitary divisor, and every unitary divisor arises",
+      "id": "into-unitary",
+      "title": "Part II: the maximal-prime-power product is a unitary divisor",
       "startLine": 100,
-      "endLine": 175,
-      "summary": "prod_mem_unitaryDivisors: for S ⊆ primeFactors, with T the complementary primes, a = ∏_S and b = ∏_T satisfy a·b = n (Finset.prod_union on the disjoint union) and are coprime (Nat.Coprime.prod_left/prod_right over distinct prime powers), so a is a unitary divisor with n/a = b. factorization_eq_of_unitary: the unitary condition forces v_p(d) = v_p(n) at each prime p ∣ d (else p ∣ gcd(d, n/d) = 1). unitaryDivisors_eq_image assembles these into the image characterization, and injOn_prod_pow gives injectivity from the left inverse.",
-      "mathContext": "The coprimality gcd(d, n/d)=1 is precisely what prevents splitting a prime power, making the maximal-prime-power products exactly the unitary divisors."
+      "endLine": 132,
+      "summary": "prod_mem_unitaryDivisors (the 'into' direction): for S ⊆ n.primeFactors, with T the complementary primes, a = ∏_S p^v_p(n) and b = ∏_T p^v_p(n) satisfy a·b = n (Finset.prod_union over the disjoint union) and are coprime (Nat.Coprime.prod_left/prod_right over distinct prime powers). Hence a ∣ n, n/a = b, and gcd(a, n/a) = 1, so a lands in unitaryDivisors n.",
+      "mathContext": "$a=\\prod_{p\\in S} p^{v_p(n)}$ and $b=\\prod_{p\\notin S} p^{v_p(n)}$ give $a\\cdot b = n$ with $\\gcd(a,b)=1$."
+    },
+    {
+      "id": "onto-unitary",
+      "title": "Part III: every unitary divisor arises (the image characterization)",
+      "startLine": 133,
+      "endLine": 173,
+      "summary": "factorization_eq_of_unitary: the unitary condition gcd(d, n/d) = 1 forces v_p(d) = v_p(n) at each prime p ∣ d — otherwise p would divide both d and n/d, contradicting coprimality. unitaryDivisors_eq_image assembles this (recovering d as ∏_{p∈d.primeFactors} p^v_p(n)) with the 'into' direction to characterize unitaryDivisors n as the image of n.primeFactors.powerset under S ↦ ∏_{p∈S} p^v_p(n).",
+      "mathContext": "$\\gcd(d,n/d)=1 \\Rightarrow v_p(d)=v_p(n)$ for every $p\\mid d$, so $d=\\prod_{p\\mid d} p^{v_p(n)}$."
     },
     {
       "id": "count-and-bridge",
-      "title": "Part III: the count 2^ω(n), the idempotent bridge, and corollaries",
-      "startLine": 176,
+      "title": "Part IV: the count 2^ω(n), the idempotent bridge, and corollaries",
+      "startLine": 174,
       "endLine": 212,
-      "summary": "unitaryDivisors_card: card_image_of_injOn on the bijection plus Finset.card_powerset gives #unitaryDivisors = 2^ω(n). idempotents_eq_unitaryDivisors: composing with the parent's idempotent_count shows the automorphic residues of n are equinumerous with its unitary divisors. Corollaries pin the degenerate cases: count = 2 for prime powers (unitaryDivisors_card_prime_pow) and count = 1 ⟺ n = 1 (unitaryDivisors_card_eq_one_iff).",
+      "summary": "injOn_prod_pow gives injectivity of the maximal-prime-power map from the left inverse. unitaryDivisors_card: card_image_of_injOn on the resulting bijection plus Finset.card_powerset gives #unitaryDivisors = 2^ω(n). idempotents_eq_unitaryDivisors composes with the parent's idempotent_count to show the automorphic residues of n are equinumerous with its unitary divisors. Corollaries pin the degenerate cases: count = 2 for prime powers (unitaryDivisors_card_prime_pow) and count = 1 ⟺ n = 1 (unitaryDivisors_card_eq_one_iff).",
       "mathContext": "#{idempotents of ZMod n} = #{unitary divisors of n} = #{squarefree divisors of n} = 2^ω(n)."
     }
   ],

@@ -266,4 +266,83 @@ theorem sphericalNinePointCircle_equidistant [FiniteDimensional ℝ E]
       sdist (sMidpoint A C) O = sdist (sMidpoint A B) O :=
   sphericalCircumcircle_equidistant (sMidpoint B C) (sMidpoint A C) (sMidpoint A B) hdim
 
+/-! ### The spherical midpoint lies strictly in the near hemisphere
+
+The half-arc computations `sdist_sMidpoint_half` / `sdist_sMidpoint_half_right` locate the
+midpoint at spherical distance `½·sdist A B` from each endpoint. Since a non-degenerate side
+has `sdist A B < π`, both half-arcs are strictly less than `π/2`: the midpoint sits strictly
+inside the open hemisphere centred at each endpoint. This positional bound (`scos > 0`, i.e.
+positive inner product with each endpoint) is what a Feuerbach tangency argument needs to place
+contact points on the *minor* arc and rule out their antipodes. -/
+
+/-- **The spherical midpoint is at positive inner product with its endpoint.**
+For a non-degenerate side (`A + B ≠ 0`, i.e. `B` not antipodal to `A`) the spherical midpoint
+`M = sMidpoint A B` satisfies `scos A M = ‖A+B‖⁻¹(1 + ⟪A,B⟫) > 0`, because `A + B ≠ 0` forces
+`⟪A,B⟫ > -1` (from `‖A+B‖² = 2 + 2⟪A,B⟫ > 0`). -/
+theorem scos_sMidpoint_pos (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    0 < scos A (sMidpoint A B) := by
+  have hnormpos : 0 < ‖A + B‖ := norm_pos_iff.mpr hAB
+  have hnsq : ‖A + B‖ ^ 2 = 2 + 2 * ⟪A, B⟫ := norm_add_sq_unit A B hA hB
+  have hnsqpos : 0 < ‖A + B‖ ^ 2 := pow_pos hnormpos 2
+  have hip : (-1 : ℝ) < ⟪A, B⟫ := by rw [hnsq] at hnsqpos; linarith
+  rw [scos_sMidpoint_left A B hA hB]
+  exact mul_pos (inv_pos.mpr hnormpos) (by linarith)
+
+/-- **Explicit spherical cosine from the far endpoint to the midpoint.**
+`scos B (sMidpoint A B) = ‖A+B‖⁻¹ (1 + ⟪A,B⟫)` — the same closed form as `scos_sMidpoint_left`,
+confirming the midpoint is equidistant from both endpoints (`scos_sMidpoint_eq`) at this explicit
+value.  The `B`-side companion of `scos_sMidpoint_left`, by the symmetry `sMidpoint_comm` together
+with `‖B+A‖ = ‖A+B‖` and `⟪B,A⟫ = ⟪A,B⟫`. -/
+theorem scos_sMidpoint_right (A B : E) (hA : OnSphere A) (hB : OnSphere B) :
+    scos B (sMidpoint A B) = (‖A + B‖)⁻¹ * (1 + ⟪A, B⟫) := by
+  rw [sMidpoint_comm, scos_sMidpoint_left B A hB hA, add_comm B A, real_inner_comm B A]
+
+/-- **The spherical midpoint is at positive inner product with the far endpoint.**
+`0 < scos B (sMidpoint A B)`.  The `B`-side companion of `scos_sMidpoint_pos`, by the symmetry
+`sMidpoint_comm`.  Together with `scos_sMidpoint_pos` this places the midpoint strictly inside the
+open near hemisphere of *each* endpoint (`scos_sMidpoint_pos_both`). -/
+theorem scos_sMidpoint_pos_right (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    0 < scos B (sMidpoint A B) := by
+  rw [sMidpoint_comm]
+  exact scos_sMidpoint_pos B A hB hA (by rwa [add_comm])
+
+/-- **The spherical midpoint lies strictly in the near hemisphere of *both* endpoints.**
+`0 < scos A (sMidpoint A B) ∧ 0 < scos B (sMidpoint A B)`.  Combining `scos_sMidpoint_pos` and its
+far-endpoint companion `scos_sMidpoint_pos_right`, the midpoint of a non-degenerate side sits at
+positive inner product with each vertex — i.e. within a quarter-turn of both.  This is exactly the
+positional bound a spherical Feuerbach tangency argument uses to place the contact points on the
+*minor* arc and rule out their antipodes. -/
+theorem scos_sMidpoint_pos_both (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    0 < scos A (sMidpoint A B) ∧ 0 < scos B (sMidpoint A B) :=
+  ⟨scos_sMidpoint_pos A B hA hB hAB, scos_sMidpoint_pos_right A B hA hB hAB⟩
+
+/-- **The spherical midpoint lies strictly in the near hemisphere of its endpoint:**
+`sdist A (sMidpoint A B) < π/2`. Equivalent to the positive-inner-product bound
+`scos_sMidpoint_pos` via `arccos x < π/2 ↔ 0 < x`; geometrically the midpoint of a
+non-degenerate side is closer than a quarter-turn to each vertex. -/
+theorem sdist_sMidpoint_lt_pi_div_two (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    sdist A (sMidpoint A B) < Real.pi / 2 := by
+  unfold sdist
+  exact Real.arccos_lt_pi_div_two.mpr (scos_sMidpoint_pos A B hA hB hAB)
+
+/-- **Near-hemisphere bound from the far endpoint:** `sdist (sMidpoint A B) B < π/2`.
+Companion of `sdist_sMidpoint_lt_pi_div_two`, by the symmetry `sdist_comm` / `sMidpoint_comm`. -/
+theorem sdist_sMidpoint_lt_pi_div_two_right (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    sdist (sMidpoint A B) B < Real.pi / 2 := by
+  rw [sdist_comm, sMidpoint_comm]
+  exact sdist_sMidpoint_lt_pi_div_two B A hB hA (by rw [add_comm]; exact hAB)
+
+/-- **Arc-doubling form of the bisection identity:** `2 · sdist A (sMidpoint A B) = sdist A B`.
+The multiplicative restatement of `sdist_sMidpoint_half`, often more convenient than the
+`/2` form when the full side length is the quantity of interest. -/
+theorem two_sdist_sMidpoint (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    2 * sdist A (sMidpoint A B) = sdist A B := by
+  rw [sdist_sMidpoint_half A B hA hB hAB]; ring
+
 end FeuerbachsTheoremOQ04

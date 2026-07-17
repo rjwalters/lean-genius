@@ -8,12 +8,10 @@ Make meaningful progress on open mathematical problems by proving theorems, buil
 
 ## Honesty Standards
 
-- Do not describe trivial results as significant
-- Do not inflate novelty claims -- if the result is routine, say so
-- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
-- Judge results relative to current gallery state, not in absolute terms
-- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
-- When uncertain about significance, default to understating rather than overstating
+Follow the fleet-wide Honesty Standards in
+[`COMMON.md`](./COMMON.md#honesty-standards) (no inflation, "nothing found"
+over fabricated value, judge relative to current gallery state, understate
+when uncertain).
 
 ## Environment Setup
 
@@ -49,7 +47,8 @@ while true:
     2. Claim a problem from the candidate pool
     3. Run one research iteration (following the research skill)
     4. Commit meaningful progress
-    5. Create a PR with findings (run the Supersession Guard first — Step 5.5)
+    5. Create a PR with findings (run the Supersession Guard first — Step 5.5,
+       then close any ancestor PRs from the same branch — Step 5.6)
     6. Update problem status and knowledge
     7. Release claim
     8. Repeat
@@ -168,7 +167,7 @@ Knowledge score: 8 (MODERATE)
 cd $REPO_ROOT/.loom/worktrees/researcher-$N
 ```
 
-`.loom/worktrees/researcher-$N` is the sanctioned location — the create path preserves in-flight work, so avoid making defensive worktrees under `$HOME` or `/tmp`. The backstop janitor (`scripts/clean-branches.sh`) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale; dirty or unpushed worktrees are always preserved.
+`.loom/worktrees/researcher-$N` is the sanctioned location — the create path preserves in-flight work, so avoid making defensive worktrees under `$HOME` or `/tmp`. The backstop janitor (`scripts/clean-branches.sh` — currently missing from `main`, see the [Known-Gaps Ledger](./COMMON.md#known-gaps-ledger-issue-38387)) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale; dirty or unpushed worktrees are always preserved.
 
 If no problems are available, wait 5 minutes and retry.
 
@@ -198,24 +197,34 @@ When you claim a problem with a high axiom count:
 
 ### Solved/Unsolved Strategy (MANDATORY)
 
-Before starting work, classify the problem state and choose strategy:
+Before starting work, classify the problem state (STUCK / MAKING PROGRESS /
+SOLVED) and choose strategy per the shared convention in
+`research/PROBLEMS-STRUCTURE.md` §"Session strategy by problem state". Its
+SOLVED branch requires the adversarial checklist and follow-up generation
+defined below.
 
-**STUCK (sorries remain, no clear path forward):**
-- Do NOT generalize or broaden scope
-- Decompose into concrete subgoals or intermediate lemmas
-- Try a different decomposition of the same target
-- Check if the blocking sorry can be submitted to Aristotle
-- If 3+ sessions stuck on same sorry: flag as BLOCKED, move on
+### Adversarial Checklist Before Claiming SOLVED (MANDATORY)
 
-**MAKING PROGRESS (some sorries eliminated this session):**
-- Continue current approach
-- Document which techniques worked for knowledge propagation
+Before recording a SOLVED claim, author or update the **Adversarial checklist**
+element of the target's `research/problems/<slug>/problem.md` (element 6 in
+`research/PROBLEMS-STRUCTURE.md`). The checklist tells whoever audits the claim
+exactly how THIS claim could be wrong:
 
-**SOLVED (0 sorries, axiom count acceptable):**
-- Generate 1-2 follow-up open questions (see below)
-- Look outward: generalizations, converses, sharp boundaries
-- Check if proved lemmas help other active research problems
-- Update technique index with successful approaches
+- **Statement-mismatch variants** — each way the Lean theorem could differ from
+  the pinned target. Enumerate against the "Must prove exactly / does not
+  count" section of the same problem.md (element 5): every definitional pin and
+  named near-miss there becomes a checklist entry ("confirm the theorem does
+  not merely prove <near-miss>").
+- **Multiplicity/exactness and boundary/degenerate-case traps** specific to this
+  claim (empty/trivial instances, off-by-one in bounds, exact-vs-at-least).
+- **Circular use of equivalent statements** — any axiom, hypothesis, or imported
+  lemma as strong as the target itself.
+- **Wrong-multiplicity / restricted-subclass near-misses** the proof could be
+  silently establishing instead of the full result.
+
+Entries must name the actual definitions, hypotheses, and edge cases at risk —
+never generic boilerplate ("verify carefully"). Adopted from the OpenAI CDC
+prompt's per-problem adversarial-checklist technique (see issue #37505).
 
 ### Follow-Up Question Generation (after SOLVED)
 
@@ -226,6 +235,38 @@ Generate 1-2 strong follow-up questions. Apply quality criteria:
 - REJECT: variable renamings, trivial corollaries, shallow specializations
 
 If no strong follow-up exists, generate 0 questions. This is preferable to weak proposals.
+
+**Equivalent-strength check (MANDATORY at OQ spawn).** Every proposed child OQ
+must include an explicit note stating whether the child is **materially weaker**
+than the parent target. The test: would proving the child immediately yield the
+parent by a known argument? If yes, the child is of equivalent strength — record
+it on the parent as a **blocked route** (reopen bar: "materially new mechanism
+required"), NOT as decomposition progress. An elegant reduction that ends at a
+lemma as strong as the target earns zero progress credit. Judge strength against
+the parent's "Must prove exactly / does not count" section in
+`research/problems/<slug>/problem.md` (element 5 in `research/PROBLEMS-STRUCTURE.md`)
+— an equivalent same-strength restatement is already a named near-miss there.
+
+**Blocked-route registry (tracker JSON shape, issue #38388).** Record blocked
+routes in the problem tracker `src/data/research/problems/<id>.json` under
+`currentState.blockers`. Entries are either a legacy plain string (valid
+forever) or — REQUIRED for new blocked-route entries — a structured object:
+
+```json
+{
+  "route": "second-moment / L² averaging",
+  "reopenCriterion": "materially new mechanism required",
+  "blockedAt": "2026-07-12"
+}
+```
+
+`route` names the blocked approach by mathematical mechanism;
+`reopenCriterion` states when it may be retried (default, and the bar for
+equivalent-strength blocks: "materially new mechanism required");
+`blockedAt` is an optional ISO date. **Enforcement:** do not re-attempt a
+blocked route unless its `reopenCriterion` is met. An entry without an
+explicit criterion (including every legacy string entry) carries the implicit
+default "materially new mechanism required".
 
 **OQ-chain depth guard (MANDATORY).** Follow-up questions become child gallery
 entries via the Seeker (`<parent>-oq-NN`), which can recurse without bound. Before
@@ -245,6 +286,42 @@ OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
 - Keep chains shallow: prefer broadening back toward the original gallery entry
   (new sibling questions) over drilling deeper into an already-deep OQ descendant.
 
+### Independence Preservation (Multi-Researcher Problems)
+
+When several researchers work one problem or problem family concurrently
+(distinct OQ children of the same parent count as one family):
+
+- **Record your route by mathematical idea, not wording.** In the problem's
+  knowledge tracker (`research/problems/<id>/knowledge.md` and
+  `src/data/research/problems/<id>.json`), label your approach by its
+  underlying mechanism (e.g. "discharging via flows", "second-moment / L²
+  averaging") so two differently-worded write-ups of the same idea are
+  recognizably one route.
+- **Develop your route independently first.** On joining a problem that other
+  researchers are actively working, read the settled artifacts (proved lemmas,
+  dead-ends, the "Must prove exactly / does not count" pinning) but defer
+  reading other active researchers' favored-approach notes until you have
+  committed to your own attack. Cross-pollinate only after independent
+  development, or when stuck. This refines — it does not replace — the
+  "build on prior work" rule from Step 2: facts are shared immediately;
+  hypotheses are not.
+- **Keep incompatible routes alive.** Do not abandon your route merely because
+  another researcher's route looks favored; converge only when your route is
+  properly blocked. A route stalling at a lemma of equivalent strength to the
+  target is blocked per the equivalent-strength check above — reopen bar:
+  "materially new mechanism required". Record it as a structured
+  `currentState.blockers` entry (`{ route, reopenCriterion, blockedAt? }`) per
+  the blocked-route registry above.
+
+**Spawner-side convention (binding on the orchestrator/operator, not just
+researchers):** when dispatching multiple researchers onto one problem family,
+do not seed them all with the currently favored approach; stagger
+cross-pollination so each surviving route is developed independently before
+its author reads the others.
+
+Adopted from the OpenAI CDC prompt's independence-preservation technique (see
+issue #37505).
+
 ### Work Categories
 
 | Decision | Criteria | Action |
@@ -255,252 +332,43 @@ OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
 | **SURVEY** | Can state but not prove yet | Document findings |
 | **BLOCKED** | Needs > 1000 lines foundational work | Document blocker |
 
-### Create/Update Aristotle Companion File
-
-After writing or updating a main proof file, create a companion file with routine supporting lemmas:
-
-```bash
-# Create companion file for Erdős #N
-# Name: ErdosNAristotle.lean (alongside ErdosNProblem.lean)
-```
-
-**Template for companion files:**
-```lean
-/-
-  Aristotle targets for Erdős Problem #N
-  Routine supporting lemmas for automated proof search.
-  See ErdosNProblem.lean for the main formalization.
-
-  Criteria for inclusion:
-  - NOT the main open conjecture
-  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
-  - Clean theorem statement with no definition sorries
-  - No axioms (use theorem ... := by sorry instead)
--/
-import Mathlib
-
-namespace ErdosN
-
--- [Routine lemmas here, one per theorem]
--- GOOD: standard bounds, combinatorial identities, known estimates
-lemma helper_bound : ... := by sorry
-lemma routine_calc : ... := by sorry
-
--- DO NOT include:
--- * The main open conjecture
--- * axiom declarations (convert to theorem ... := by sorry)
--- * definition sorries
-
-end ErdosN
-```
-
-**What to include:**
-- Monotonicity lemmas, cardinality bounds, standard inequalities
-- Known results from literature that are likely in Mathlib
-- Supporting lemmas for the main proof (NOT the main conjecture itself)
-
-**What NOT to include:**
-- The main open conjecture (`erdos_N` theorem)
-- `axiom` declarations (Aristotle won't attempt these — use `theorem ... := by sorry`)
-- Definition sorries (blocks everything)
-
 ### Use Aristotle Strategically
 
-- **TRIVIAL sorries**: Try manually first — faster to write yourself than to round-trip through Aristotle
-- **HARD sorries**: **Preferred path is per-sorry MCP `prove()` (see "Per-sorry Aristotle (MCP) usage" below)**. The legacy multi-sorry `*Aristotle.lean` companion-file pipeline is deprecated for new work but remains available as a fallback; existing companion files are not being deleted in this transition.
-- **OPEN sorries**: Work manually — Aristotle can't help with unsolved problems (it will spin on the server until it times out)
-- **Definition sorries**: Never submit — Aristotle skips `def ... := by sorry` entirely. Complete the definition first, then submit downstream theorem sorries.
+**Single source of truth: `research/ARISTOTLE-WORKFLOW.md`** — CLI pipeline
+details, `*StatementOnly.lean` packaging, v2 status model, rate limits and the
+cooldown file, result caching, the Mathlib v4.28 toolchain caveat, the
+deprecated `*Aristotle.lean` companion-file pattern, and anti-patterns. (The
+former MCP wrapper is dead — HTTP 426 against the v2 API, removed in issue
+#38098. Use the CLI pipeline only.)
 
-### Aristotle MCP (interactive proving)
+Quick reference — classify each sorry per `research/SORRY-CLASSIFICATION.md`:
 
-In addition to the batch companion-file pipeline above, an MCP wrapper for
-Aristotle is registered in this repo's `.mcp.json` (server name: `aristotle`,
-pinned to `vendor/lean-aristotle-mcp.sha`). It exposes Harmonic's prover as
-two MCP tools you can call directly from a session:
+| Classification | Action |
+|----------------|--------|
+| **TRIVIAL** | Prove it yourself — `simp`/`omega`/`linarith`/`decide` is faster than the round trip |
+| **HARD** (known in the literature, only tactical search needed) | Package as a one-theorem `*StatementOnly.lean` file and submit via `submit-batch.sh` |
+| **OPEN** | Work on it yourself — that is **the mission**; Aristotle will only spin |
+| **DEF SORRY** (`def foo := by sorry`) | Complete the definition first, *then* submit downstream theorem sorries — Aristotle skips definition sorries |
+| **Sorry inside an axiom** | Convert `axiom` → `theorem ... := by sorry` if it really is provable, else leave it |
 
-- `prove(code, context_files=[...], wait=False)` — submit a single snippet
-  with optional supporting Lean files for imports/definitions. Use this when
-  you hit one isolated hard sorry mid-session and want to keep working on
-  other things while Aristotle searches.
-- `prove_file(path, wait=False)` — submit a whole Lean file with automatic
-  Lake/Mathlib resolution. Use this when the sorry lives inside a tangled
-  proof that depends on many neighbours in the same file, or when you want
-  Aristotle to attempt several sorries in one shot.
-
-**When to reach for `prove()` vs `prove_file()`**
-
-| Situation | Tool |
-|-----------|------|
-| One isolated lemma, small context | `prove()` with a hand-picked `context_files` list |
-| Multiple sorries scattered in one file | `prove_file()` on that file |
-| A standalone helper you can extract into a snippet | `prove()` |
-| Proof depends on local definitions you'd rather not duplicate | `prove_file()` |
-
-**Async pattern (strongly recommended)**
-
-Aristotle searches can take minutes to hours. Use `wait=False` and treat
-each call as a fire-and-poll job:
-
-1. **Submit** — call `prove(snippet, wait=False)` (or `prove_file(...)`)
-   and record the returned `project_id`.
-2. **Continue other work** — pick up a different sorry, refactor, write
-   docs. Do not block the session on a single search.
-3. **Poll** — call `check_proof(project_id)` (or `check_prove_file`)
-   periodically. Status `IN_PROGRESS` means keep waiting; `SUCCEEDED`
-   returns the filled-in code.
-4. **Integrate** — paste the proof in, rebuild, and verify. If it
-   times out or fails, fall back to the batch companion-file flow or
-   manual proof.
-
-**Context-files etiquette**
-
-`prove(context_files=...)` accepts a list of Lean files that the snippet
-depends on (imports, helper lemmas, custom typeclasses). Keep this list
-**minimal**: just the upstream definitions the snippet actually references.
-Do not pass the whole proof file or the whole project — the wrapper
-re-uploads context on every call, and large contexts measurably slow the
-search. If a snippet has no nontrivial dependencies, omit `context_files`
-entirely.
-
-**Result caching**
-
-Aristotle caches project results for **30 days** server-side. If you
-re-submit the exact same snippet within that window you'll get the prior
-result quickly without burning fresh solver budget — so it's safe to
-re-issue a `prove()` call after a session restart rather than carefully
-preserving the `project_id` across restarts.
-
-**Sanity check**
-
-Before relying on the MCP in a session, run the smoke test once on the
-host:
+The pipeline commands:
 
 ```bash
-./scripts/aristotle/mcp-smoke-test.sh
+./scripts/aristotle/cli-smoke-test.sh          # auth/reachability check (free)
+./scripts/aristotle/submit-batch.sh --target 5 # submit batch (~3–5 concurrent cap)
+./scripts/aristotle/check-jobs.sh --update     # poll + update research/aristotle-jobs.json
+./scripts/aristotle/retrieve-integrate.sh      # download + integrate results
 ```
 
-It confirms `ARISTOTLE_API_KEY` is reachable, the wrapper launches, and a
-trivial `prove()` returns a project id. The batch pipeline
-(`scripts/aristotle/submit-batch.sh`, `find-candidates.sh`,
-`retrieve-integrate.sh`) is unchanged and remains the right path for
-companion-file fleets — the MCP route is additive, for in-session
-interactive proving.
+**Async, don't block**: submit, keep working, poll every ~10 minutes. Before
+submitting fresh work, check the cooldown file
+(`.loom/state/aristotle-rate-limit-until`) and the scale-to-zero marker
+(`.loom/state/aristotle-scaled-to-zero`). Rebuild retrieved proofs locally —
+the backend vendors Mathlib v4.28 and rewrites `lean-toolchain`.
 
-### Per-sorry Aristotle (MCP) usage
-
-This is the **preferred** in-session workflow for hard supporting lemmas.
-It supersedes the legacy "create a multi-sorry `*Aristotle.lean` companion
-file and wait for the batch agent" pattern for *new* work. (Existing
-companion files keep working; do not delete them in passing.)
-
-The flow is conversational and per-sorry: classify the sorry, submit
-**one snippet** via `prove()`, record the project id, **continue other
-work**, poll, integrate. This mirrors Harmonic's iterative pattern from
-the Aristotle paper (§4) and the Polya–Szego study where this approach
-produced 80/80.
-
-#### When to call `prove()`
-
-Call it as soon as you hit a sorry that classifies as **HARD** per
-[`research/SORRY-CLASSIFICATION.md`](../../research/SORRY-CLASSIFICATION.md):
-
-- The result is **known in the literature** (paper, textbook, Mathlib
-  lemma you can name but haven't located) and
-- The proof requires **no creative insight from you** — only tactical
-  search and bookkeeping.
-
-Typical fits: monotonicity, cardinality bounds, standard inequalities,
-named theorems, computational lemmas that should "just go through".
-
-#### When NOT to call `prove()`
-
-| Classification | Why not | What to do instead |
-|----------------|---------|--------------------|
-| **TRIVIAL** | Round-tripping through Aristotle is slower than writing the 1–3 line tactic yourself | Write it manually (`simp`, `omega`, `linarith`, `decide`, `Finset.card_*`, etc.) |
-| **OPEN** | Aristotle has no proof in its training distribution; MCTS will spin until the server-side cap or the cooldown kicks in | Work on it yourself; that is **the mission** |
-| **DEF SORRY** (`def foo : T := by sorry`) | Aristotle skips definition sorries entirely — submitting wastes a slot | Complete the definition first, *then* submit the downstream theorem sorries |
-| **Sorry inside an axiom** | Axioms are skipped; restate as `theorem ... := by sorry` if you want it attempted | Convert `axiom` → `theorem ... := by sorry` if it really is provable |
-
-#### Pattern (recommended)
-
-1. **Extract** the sorry as a self-contained snippet. Include just the
-   `theorem` / `lemma` statement, its `by` block, and the local
-   variable hypotheses it actually mentions. Do not paste the whole
-   surrounding file.
-2. **List minimal `context_files`**. Include the file that *defines the
-   sorry's symbols* and at most one or two of its direct dependency
-   files. Aristotle pays (in time and credit) for everything it loads
-   — passing the whole project measurably slows search and is a common
-   mistake. If the snippet only uses Mathlib, omit `context_files`
-   entirely.
-3. **Submit async**: `prove(snippet, context_files=[...], wait=False)`
-   and capture the returned `project_id`.
-4. **Record the project id** in a per-session scratch file so you don't
-   lose it across restarts (project results cache for 30 days
-   server-side, but re-submitting the same snippet is the safety net
-   if you do lose the id):
-
-   ```bash
-   mkdir -p .loom/state/aristotle-mcp
-   SCRATCH=".loom/state/aristotle-mcp/$(date -u +%Y%m%dT%H%M%SZ)-$$.jsonl"
-   echo '{"project_id":"<id>","problem":"<problem-id>","sorry":"<short-tag>","submitted":"'"$(date -u +%FT%TZ)"'"}' >> "$SCRATCH"
-   ```
-
-5. **Continue other work**. Pick up a different sorry, refactor, write
-   docs, work on the OPEN main conjecture. Do **not** block the
-   session on a single Aristotle call.
-6. **Poll every ~10 minutes** with `check_proof(project_id)`. Faster
-   polling burns API calls; slower wastes wall-clock. Ten minutes is
-   the cadence the `septract/lean-aristotle-mcp` README recommends.
-7. **Integrate** when status is `SUCCEEDED`: paste the returned code,
-   rebuild via `./proofs/scripts/docker-build.sh Proofs.<YourProof>`,
-   and verify. On `FAILED` or timeout, either rewrite the snippet
-   (better statement, smaller context) and resubmit, or fall back to
-   manually proving it.
-
-#### Concurrency cap
-
-**At most 3 concurrent per-sorry `prove()` submissions per researcher.**
-The Aristotle server cap is shared with the bulk pipeline, and exceeding
-it triggers 429 responses that propagate into a cooldown.
-
-Before submitting, check the cooldown file from #22487:
-
-```bash
-COOLDOWN=".loom/state/aristotle-rate-limit-until"
-if [ -f "$COOLDOWN" ] && [ "$(cat "$COOLDOWN")" -gt "$(date +%s)" ]; then
-  echo "Aristotle is rate-limited until $(date -r "$(cat "$COOLDOWN")"). Skip prove() this cycle."
-  # work on other things — write the proof yourself, refactor, do the OPEN problem
-fi
-```
-
-Also check the scale-to-zero marker from #22486
-(`.loom/state/aristotle-scaled-to-zero`); if present, the queue is empty
-and you should not submit fresh per-sorry work without confirming the
-batch agent is back up.
-
-Count your own in-flight submissions by reading the per-session scratch
-files; if you already have 3 unfinished `prove()` calls, finish polling
-those before submitting another.
-
-#### Deprecation of hand-curated `*Aristotle.lean` companion files
-
-Going forward, **do not hand-curate new multi-sorry `*Aristotle.lean`
-companion files**. The MCTS proof search Aristotle uses is conditioned
-on *proof state + history + informal statement* per sorry, so bundling
-many unrelated sorries into one file dilutes the search budget. New
-work has exactly two supported routes:
-
-1. **Per-sorry interactive**: `prove()` via MCP (this section). Best
-   for in-session work on a single hard supporting lemma.
-2. **Single-theorem batch**: a `*StatementOnly.lean` file (one theorem,
-   informal-proof docstring, full imports) for end-of-session
-   submission to the batch pipeline. See `research/SORRY-CLASSIFICATION.md`
-   §"Harmonic Submission Format (recommended)" for the file template.
-
-Existing `*Aristotle.lean` files keep working — the batch agent still
-picks them up as a fallback — but they are no longer the recommended
-shape for new submissions.
+Do **not** hand-curate new multi-sorry `*Aristotle.lean` companion files — the
+pattern is deprecated (dilutes per-sorry search budget); existing ones still
+get picked up as a fallback. Details in `research/ARISTOTLE-WORKFLOW.md`.
 
 ## Step 4: Update Knowledge
 
@@ -530,12 +398,35 @@ apply mathlib-contribution skill to proofs/Proofs/YourFile.lean
 
 The skill bundles a style/naming scan, a curated gotchas catalog, and trust-but-verify auto-edit rules adapted from Terence Tao's "AI with Lean" workflow. See `.claude/skills/mathlib-contribution/SKILL.md` for the workflow and `STYLE-SCAN.md` for the checklist. The skill is a red-team tool only -- use it after the proof compiles and the mathematics is settled. Tracking issue: #20854.
 
+> The skill files (`.claude/skills/mathlib-contribution/`) are currently
+> **missing from `main`** (mass-deletion casualty; Known-Gaps Ledger in
+> [`COMMON.md`](./COMMON.md#known-gaps-ledger-issue-38387), recoverable via
+> `git show dc9fdffa30^:.claude/skills/mathlib-contribution/SKILL.md`).
+
 This pass does **not** apply to research-only files or gallery proofs; gallery work follows looser conventions on purpose.
 
 ## Step 5: Commit and Push
 
+**Stage explicit paths — do not blind-stage with `git add -A`.** On 2026-07-11 a
+disk-slimmed researcher worktree (tracked files deleted from disk WITHOUT
+sparse-checkout) plus a stage-everything commit silently staged **9,927 file
+deletions** alongside one new Lean file, and the merge wiped most of the
+repository (commit `dc9fdffa30`, issue #38398). Two guards now stand in this path:
+
+- Researcher worktrees carry a `pre-commit` **mass-deletion tripwire**
+  (`scripts/research/check-staged-deletions.sh`, installed by
+  `parallel-research.sh`) that **blocks any commit staging more than 20
+  deletions**. If it fires on deletions you did NOT make: unstage them
+  (`git restore --staged <paths>`), restore the files (`git checkout -- .`),
+  and if you were slimming for disk space use
+  `scripts/research/slim-worktree.sh` instead (see COMMON.md Worktree Hygiene).
+  Only a genuinely intended, operator-acknowledged mass deletion may bypass:
+  `ALLOW_MASS_DELETION=1 git commit ...`.
+- Before committing, review `git status --porcelain | grep '^D\|^ D'` — any
+  deletion you did not intentionally make is a red flag, whatever the count.
+
 ```bash
-git add -A
+git add proofs/Proofs/YourFile.lean src/data/research/problems/<problem>.json  # your actual touched paths
 git commit -m "$(cat <<'EOF'
 Research: [problem-id] - [brief description]
 
@@ -577,6 +468,46 @@ if [[ "$verdict" == "SUPERSEDED" ]]; then
 fi
 # verdict is NOT_SUPERSEDED or NO_PROOF_FILES → safe to proceed.
 ```
+
+## Step 5.6: Close Ancestor PRs When a Newer Head Opens (MANDATORY)
+
+The Supersession Guard above catches duplicates against **main**. This step
+catches duplicates against **your own open PRs**. A long-lived branch (e.g.
+`feature/researcher-N`) accumulates commits across sessions, and opening a new
+PR from that branch after each session produces **stacked snapshots**: the new
+PR's commits are a superset of the previous PR's, so the older PRs carry no
+unique content, go CONFLICTING the moment any sibling merges, and each one
+costs a doctor a full statement-level supersession analysis. The 2026-07-13
+backlog drain closed ~49 of 106 open PRs for exactly this reason (4–5 stacked
+snapshots per branch was typical).
+
+Rules, applied **at the moment you open a new PR**:
+
+1. **Check your own open PRs first** — look for ones from the same branch or
+   touching the same `proofs/Proofs/*.lean` files:
+
+   ```bash
+   gh pr list --author @me --state open --json number,headRefName,title
+   # Scoped variant:
+   gh pr list --author @me --state open --search "<file-or-branch>"
+   ```
+
+2. **If the new PR's commits are a superset of an older open PR's** (same
+   branch, newer head — verify with
+   `git merge-base --is-ancestor <old-pr-head-sha> HEAD`), **close the
+   ancestor with a supersession comment** pointing at the new head:
+
+   ```bash
+   gh pr close <old-number> \
+     --comment "Superseded by #<new-number> — same branch, newer head; all commits are included there."
+   ```
+
+3. **Prefer one PR per unit of work from a fresh `origin/main` branch** over
+   accumulating a long-lived branch. If a long-lived branch is unavoidable,
+   keep exactly **one** open PR tracking its head — never two.
+
+Leaving the ancestor open is not a courtesy — it is wasted doctor effort. The
+old snapshot has no unique content; close it yourself when the new head opens.
 
 ## Step 6: Create Pull Request
 

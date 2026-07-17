@@ -1165,6 +1165,104 @@ theorem match_count_ge_linear_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   rw [div_mul_cancel₀ _ hNR.ne'] at hmul
   exact le_of_lt hmul
 
+/-- **Occurrence past a threshold.** A pure-`Finset` strengthening of
+    `exists_match_lt_of_count_pos`: if the count of tuple-`s` matches over
+    `Finset.range N` *exceeds* the threshold `P` (with `P ≤ N`), then a matching
+    position exists with `P ≤ n < N` — an occurrence *beyond* the first `P`
+    starting positions. Proof: the matches below `P` number at most `P`, so once
+    the total exceeds `P` the set-difference `A \ B` (matches in `[0,N)` minus
+    matches in `[0,P)`) is nonempty; any element is a match at a position `≥ P`.
+    Carries no normality hypothesis. -/
+theorem exists_match_ge_of_count_gt (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b)
+    (P N : ℕ) (hPN : P ≤ N)
+    (hgt : P < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card) :
+    ∃ n, P ≤ n ∧ n < N ∧ ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  set A := (Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hA
+  set B := (Finset.range P).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hB
+  have hsub : Finset.range P ⊆ Finset.range N :=
+    fun a ha => Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp ha) hPN)
+  have hBA : B ⊆ A := Finset.filter_subset_filter _ hsub
+  have hBcard : B.card ≤ P := by
+    calc B.card ≤ (Finset.range P).card := Finset.card_filter_le _ _
+      _ = P := Finset.card_range P
+  have hne : (A \ B).Nonempty := by
+    rw [Finset.sdiff_nonempty]
+    intro hAB
+    have hle := Finset.card_le_card hAB
+    omega
+  obtain ⟨n, hn⟩ := hne
+  rw [Finset.mem_sdiff] at hn
+  obtain ⟨hnA, hnB⟩ := hn
+  have hnA' := hnA
+  rw [hA, Finset.mem_filter, Finset.mem_range] at hnA'
+  refine ⟨n, ?_, hnA'.1, hnA'.2⟩
+  by_contra hlt
+  push_neg at hlt
+  exact hnB (by rw [hB, Finset.mem_filter, Finset.mem_range]; exact ⟨hlt, hnA'.2⟩)
+
+/-- **Effective recurrence (bounded-gap occurrences).** Given a modulus of
+    normality, *every* tuple `s` of length `k` occurs at some position in the
+    window `[P, N₀)` for the explicit bound
+    `N₀ := max (max (M k (b^{-k}/2)) 1) (2·bᵏ·P + 1)`, for *every* threshold `P`.
+    So occurrences are not merely infinite (`normal_ktuple_infinitely_often`) but
+    appear with an explicit gap: after any point `P`, the next occurrence lies
+    below a concrete function of the modulus, `k`, and `P`. This upgrades
+    `first_occurrence_lt_of_modulus` (essentially its `P = 0` content) to an
+    effective recurrence statement at an arbitrary starting point. Proof: the
+    effective density bound `match_count_ge_linear_of_modulus` gives at least
+    `(b^{-k}/2)·N₀` matches below `N₀`; the choice `N₀ > 2·bᵏ·P` makes this count
+    exceed `P`, so `exists_match_ge_of_count_gt` extracts a match at position
+    `≥ P`. -/
+theorem next_occurrence_lt_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) (P : ℕ) :
+    ∃ n, P ≤ n ∧
+      n < max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1) (2 * b ^ k * P + 1) ∧
+      ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set N₀ : ℕ :=
+    max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1) (2 * b ^ k * P + 1) with hN0def
+  have hmodle : max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1 ≤ N₀ := le_max_left _ _
+  have hTle : 2 * b ^ k * P + 1 ≤ N₀ := le_max_right _ _
+  have hcount := match_count_ge_linear_of_modulus b hb x M hM k s N₀ hmodle
+  -- b^{-k} · b^k = 1
+  have hbk1 : (b : ℝ) ^ (-(k : ℤ)) * (b : ℝ) ^ k = 1 := by
+    rw [← zpow_natCast (b : ℝ) k, ← zpow_add₀ hbR.ne']
+    simp
+  -- P < (b^{-k}/2)·N₀
+  have hPcountR : (P : ℝ) <
+      (((Finset.range N₀).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+    have hpos2 : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) / 2 := div_pos hposk two_pos
+    have hTleR : ((2 * b ^ k * P + 1 : ℕ) : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast hTle
+    have hexp : ((2 * b ^ k * P + 1 : ℕ) : ℝ) = 2 * (b : ℝ) ^ k * (P : ℝ) + 1 := by
+      push_cast; ring
+    have hmono : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+        ≤ (b : ℝ) ^ (-(k : ℤ)) / 2 * (N₀ : ℝ) := by
+      apply mul_le_mul_of_nonneg_left _ (le_of_lt hpos2)
+      rw [← hexp]; exact hTleR
+    have hval : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+        = (P : ℝ) + (b : ℝ) ^ (-(k : ℤ)) / 2 := by
+      have hrw : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+          = (b : ℝ) ^ (-(k : ℤ)) * (b : ℝ) ^ k * (P : ℝ)
+              + (b : ℝ) ^ (-(k : ℤ)) / 2 := by ring
+      rw [hrw, hbk1]; ring
+    have hstep : (P : ℝ) < (b : ℝ) ^ (-(k : ℤ)) / 2 * (N₀ : ℝ) := by
+      linarith [hmono, hval, hpos2]
+    linarith [hstep, hcount]
+  have hPcount : P < ((Finset.range N₀).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card := by
+    exact_mod_cast hPcountR
+  have hPN : P ≤ N₀ := by
+    have h1 : 1 ≤ b ^ k := Nat.one_le_pow _ _ (by omega)
+    have hPT : P ≤ 2 * b ^ k * P + 1 := by nlinarith [h1, Nat.zero_le P]
+    exact le_trans hPT hTle
+  exact exists_match_ge_of_count_gt b x k s P N₀ hPN hPcount
+
 -- ============================================================
 -- PART IV.10: THE CONSERVATION LAW
 -- ============================================================
@@ -1340,6 +1438,149 @@ theorem isNormalInBase_of_all_but_one (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   · subst hs
     simpa only [matchFreq] using matchFreq_tendsto_of_others b hb x k (s₀ k) (h k)
   · simpa only [matchFreq] using h k s hs
+
+-- ============================================================
+-- PART IV.11: TRANSLATION INVARIANCE
+-- ============================================================
+
+/-!
+## Normality is invariant under integer translation
+
+Normality is a property of the *tail* digit structure: only the digit at
+position `0` (the integer part) can change when an integer `m` is added to `x`.
+For every position `n ≥ 1` the digit is literally unchanged
+(`nthDigit_add_int`), because `⌊bⁿ(x+m)⌋ = ⌊bⁿ x⌋ + bⁿ m` and `b ∣ bⁿ m` for
+`n ≥ 1`, so the residue mod `b` is preserved. Consequently, for any fixed tuple
+length `k` and tuple `s`, the two matching counts over `range N` — one for `x`,
+one for `x + m` — can differ only at the single starting position `n = 0` (the
+only window that touches digit `0`). Their difference is therefore at most `1`,
+which is `o(N)`, so the empirical frequencies share the same limit:
+
+* `isNormalInBase_add_int` — `IsNormalInBase b x → IsNormalInBase b (x + m)`;
+* `isNormalInBase_add_int_iff` — the two-sided form (apply the forward map with
+  `+m` and then `-m`);
+* `isAbsolutelyNormal_add_int` — the same for absolute normality, base by base.
+
+Note none of these needs `b ≥ 2`: the shift identity is purely arithmetic. This
+places normality alongside irrationality as a translation-invariant property, and
+shows the equidistribution phenomenon lives entirely in the fractional expansion.
+-/
+
+/-- **Integer shift preserves every positive-index digit.** For `n ≥ 1` and any
+    integer `m`, the `n`-th base-`b` digit of `x + m` equals that of `x`: writing
+    `⌊bⁿ(x+m)⌋ = ⌊bⁿ x⌋ + bⁿ m` and using `b ∣ bⁿ m` (valid because `n ≥ 1`), the
+    residue mod `b` is unchanged. -/
+lemma nthDigit_add_int (b : ℕ) (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (m : ℤ) :
+    nthDigit b n (x + (m : ℝ)) = nthDigit b n x := by
+  unfold nthDigit
+  set M : ℤ := (b : ℤ) ^ n * m with hM
+  have hreal : (b : ℝ) ^ n * (x + (m : ℝ)) = (b : ℝ) ^ n * x + (M : ℝ) := by
+    rw [hM]; push_cast; ring
+  rw [hreal, Int.floor_add_intCast]
+  obtain ⟨j, hj⟩ : ∃ j, n = j + 1 := ⟨n - 1, by omega⟩
+  have hMdvd : M = (b : ℤ) * ((b : ℤ) ^ j * m) := by rw [hM, hj]; ring
+  rw [hMdvd, Int.add_mul_emod_self_left]
+
+/-- **Difference-of-one squeeze.** Two `ℕ`-valued sequences whose values differ by
+    at most `1` at every index have the same limiting frequency `count / N`
+    (the correction is bounded by `1/N → 0`). Used to transfer the normality
+    limit across the single-position perturbation of an integer shift. -/
+private lemma tendsto_div_of_diff_le_one {A B : ℕ → ℕ} {L : ℝ}
+    (hAB : ∀ N, A N ≤ B N + 1) (hBA : ∀ N, B N ≤ A N + 1)
+    (hB : Tendsto (fun N => (B N : ℝ) / (N : ℝ)) atTop (nhds L)) :
+    Tendsto (fun N => (A N : ℝ) / (N : ℝ)) atTop (nhds L) := by
+  have h_inv : Tendsto (fun N : ℕ => (N : ℝ)⁻¹) atTop (nhds 0) :=
+    tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+  have hlow : Tendsto (fun N : ℕ => (B N : ℝ) / (N : ℝ) - (N : ℝ)⁻¹) atTop (nhds L) := by
+    have h := hB.sub h_inv; rwa [sub_zero] at h
+  have hhigh : Tendsto (fun N : ℕ => (B N : ℝ) / (N : ℝ) + (N : ℝ)⁻¹) atTop (nhds L) := by
+    have h := hB.add h_inv; rwa [add_zero] at h
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' hlow hhigh ?_ ?_
+  · refine Filter.Eventually.of_forall (fun N => ?_)
+    rcases Nat.eq_zero_or_pos N with hN | hN
+    · simp [hN]
+    · have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
+      have hnum : (B N : ℝ) - 1 ≤ (A N : ℝ) := by
+        have : (B N : ℝ) ≤ (A N : ℝ) + 1 := by exact_mod_cast hBA N
+        linarith
+      rw [show (N : ℝ)⁻¹ = (1 : ℝ) / (N : ℝ) from (one_div _).symm, div_sub_div_same,
+        div_le_div_iff_of_pos_right hNR]
+      exact hnum
+  · refine Filter.Eventually.of_forall (fun N => ?_)
+    rcases Nat.eq_zero_or_pos N with hN | hN
+    · simp [hN]
+    · have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
+      have hnum : (A N : ℝ) ≤ (B N : ℝ) + 1 := by exact_mod_cast hAB N
+      rw [show (N : ℝ)⁻¹ = (1 : ℝ) / (N : ℝ) from (one_div _).symm, ← add_div,
+        div_le_div_iff_of_pos_right hNR]
+      exact hnum
+
+/-- **Translation invariance (forward).** Adding an integer to a normal number
+    yields a normal number. Only the digit at position `0` can change, so for each
+    tuple `s` the matching counts of `x` and `x + m` over `range N` differ by at
+    most one; `tendsto_div_of_diff_le_one` then transfers the definitional limit.
+    No hypothesis `b ≥ 2` is required — the digit-shift identity is arithmetic. -/
+theorem isNormalInBase_add_int (b : ℕ) (x : ℝ) (m : ℤ)
+    (hx : IsNormalInBase b x) : IsNormalInBase b (x + (m : ℝ)) := by
+  intro k s
+  have hpred : ∀ n : ℕ, 1 ≤ n →
+      ((∀ i : Fin k, nthDigit b (n + i.val) (x + (m : ℝ)) = (s i : ℤ)) ↔
+        (∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))) := by
+    intro n hn
+    refine forall_congr' (fun i => ?_)
+    rw [nthDigit_add_int b (n + i.val) (by omega) x m]
+  set Qm : ℕ → Prop :=
+    fun n => ∀ i : Fin k, nthDigit b (n + i.val) (x + (m : ℝ)) = (s i : ℤ) with hQm
+  set Q : ℕ → Prop :=
+    fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) with hQ
+  have hAB : ∀ N, ((Finset.range N).filter Qm).card
+      ≤ ((Finset.range N).filter Q).card + 1 := by
+    intro N
+    have hsub : (Finset.range N).filter Qm ⊆ insert 0 ((Finset.range N).filter Q) := by
+      intro n hn
+      rw [Finset.mem_filter, Finset.mem_range] at hn
+      rcases Nat.eq_zero_or_pos n with h0 | hpos
+      · subst h0; exact Finset.mem_insert_self 0 _
+      · refine Finset.mem_insert_of_mem ?_
+        rw [Finset.mem_filter, Finset.mem_range]
+        exact ⟨hn.1, (hpred n hpos).mp hn.2⟩
+    calc ((Finset.range N).filter Qm).card
+        ≤ (insert 0 ((Finset.range N).filter Q)).card := Finset.card_le_card hsub
+      _ ≤ ((Finset.range N).filter Q).card + 1 := Finset.card_insert_le _ _
+  have hBA : ∀ N, ((Finset.range N).filter Q).card
+      ≤ ((Finset.range N).filter Qm).card + 1 := by
+    intro N
+    have hsub : (Finset.range N).filter Q ⊆ insert 0 ((Finset.range N).filter Qm) := by
+      intro n hn
+      rw [Finset.mem_filter, Finset.mem_range] at hn
+      rcases Nat.eq_zero_or_pos n with h0 | hpos
+      · subst h0; exact Finset.mem_insert_self 0 _
+      · refine Finset.mem_insert_of_mem ?_
+        rw [Finset.mem_filter, Finset.mem_range]
+        exact ⟨hn.1, (hpred n hpos).mpr hn.2⟩
+    calc ((Finset.range N).filter Q).card
+        ≤ (insert 0 ((Finset.range N).filter Qm)).card := Finset.card_le_card hsub
+      _ ≤ ((Finset.range N).filter Qm).card + 1 := Finset.card_insert_le _ _
+  exact tendsto_div_of_diff_le_one hAB hBA (hx k s)
+
+/-- **Translation invariance (two-sided).** `x + m` is normal in base `b` iff `x`
+    is. The backward direction applies the forward map to `x + m` with shift `-m`. -/
+theorem isNormalInBase_add_int_iff (b : ℕ) (x : ℝ) (m : ℤ) :
+    IsNormalInBase b (x + (m : ℝ)) ↔ IsNormalInBase b x := by
+  constructor
+  · intro h
+    have hback := isNormalInBase_add_int b (x + (m : ℝ)) (-m) h
+    have heq : (x + (m : ℝ)) + (((-m : ℤ)) : ℝ) = x := by push_cast; ring
+    rwa [heq] at hback
+  · exact isNormalInBase_add_int b x m
+
+/-- **Absolute normality is translation invariant.** If `x` is absolutely normal
+    then so is `x + m` for every integer `m` (apply `isNormalInBase_add_int` in
+    each base `b ≥ 2`). -/
+theorem isAbsolutelyNormal_add_int (x : ℝ) (m : ℤ) (hx : IsAbsolutelyNormal x) :
+    IsAbsolutelyNormal (x + (m : ℝ)) := by
+  intro b hb
+  exact isNormalInBase_add_int b x m (hx b hb)
 
 -- ============================================================
 -- PART V: OPEN QUESTION

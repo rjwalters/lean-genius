@@ -77,28 +77,44 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Roadmap",
+      "summary": "Module docstring: the No-Retraction Theorem is proved homologically by splitting the identity of Hₙ₋₁(Sⁿ⁻¹) ≅ ℤ through Hₙ₋₁(Bⁿ). This entry isolates the general algebraic obstruction — the identity of ℤ cannot factor through any finite, indeed any torsion, group — and lists the five results building to it. Declares the ambient AddCommGroup G.",
+      "startLine": 1,
+      "endLine": 56,
+      "mathContext": "A retraction r : Bⁿ → Sⁿ⁻¹ would split id on Hₙ₋₁(Sⁿ⁻¹) ≅ ℤ through Hₙ₋₁(Bⁿ); the algebraic core is whether id_ℤ can factor through the disc's homology."
+    },
+    {
       "id": "splitting",
       "title": "The Splitting of a Retract",
-      "summary": "retract_apply (psi(phi n) = n), injective_of_retract, surjective_of_retract — the section/retraction splitting of Z as a retract of G.",
-      "startLine": 1,
-      "endLine": 75,
-      "mathContext": "psi . phi = id gives phi a left inverse (injective) and psi a right inverse (surjective)."
+      "summary": "retract_apply (ψ(φ n) = n from ψ ∘ φ = id), injective_of_retract (φ has left inverse ψ), surjective_of_retract (ψ has right inverse φ) — the elementary section/retraction facts underlying everything below.",
+      "startLine": 57,
+      "endLine": 70,
+      "mathContext": "ψ ∘ φ = id gives φ a left inverse (so φ injective) and ψ a right inverse (so ψ surjective)."
     },
     {
       "id": "infinite-finite",
-      "title": "Z Retracts Only onto Infinite Groups",
-      "summary": "infinite_of_retract (G is infinite), not_retract_of_finite (no finite group), not_retract_of_subsingleton (the parent's trivial-group core).",
-      "startLine": 76,
-      "endLine": 107,
-      "mathContext": "phi embeds the infinite group Z into G, so G is infinite; finite and subsingleton groups are excluded."
+      "title": "ℤ Retracts Only onto Infinite Groups",
+      "summary": "infinite_of_retract (φ embeds ℤ, so G is Infinite), not_retract_of_finite (no finite group is a retract target), and not_retract_of_subsingleton — the parent's trivial-group core recovered as the subsingleton special case.",
+      "startLine": 72,
+      "endLine": 93,
+      "mathContext": "φ embeds the infinite group ℤ into G, so G is infinite; finite and subsingleton (e.g. trivial) groups are thereby excluded."
     },
     {
       "id": "torsion",
-      "title": "Z Is Not a Retract of Any Torsion Group",
-      "summary": "gen_not_isOfFinAddOrder (phi 1 has infinite order), not_isTorsion_of_retract, not_retract_of_isTorsion — strictly generalizing the finite case.",
-      "startLine": 108,
-      "endLine": 142,
-      "mathContext": "n . phi 1 = 0 forces n = psi(n . phi 1) = 0, so phi 1 has infinite additive order; a torsion group has none."
+      "title": "The Infinite-Order Obstruction: No Torsion Retract",
+      "summary": "gen_not_isOfFinAddOrder (φ 1 has infinite additive order), not_isTorsion_of_retract (a torsion group cannot be a retract target since it lacks an infinite-order element), and the packaged not_retract_of_isTorsion — strictly generalizing the finite case.",
+      "startLine": 95,
+      "endLine": 118,
+      "mathContext": "n • φ 1 = 0 with n > 0 forces n = ψ(n • φ 1) = 0, so φ 1 has infinite additive order; a torsion group (every element finite order) has no such element."
+    },
+    {
+      "id": "significance",
+      "title": "Significance",
+      "summary": "Closing discussion: the homological proof never needed Hₙ₋₁(Bⁿ) to be zero — only torsion. The trivial group was a red herring; any contractible-enough computation giving a torsion disc-homology drives the contradiction. The splitting lemmas and infinite-order obstruction are reusable facts about retracts of ℤ in abelian groups, independent of topology.",
+      "startLine": 120,
+      "endLine": 140,
+      "mathContext": "The obstruction needs only that Hₙ₋₁(Bⁿ) is torsion, not zero — a strict weakening of the hypothesis the classical proof uses."
     }
   ],
   "conclusion": {

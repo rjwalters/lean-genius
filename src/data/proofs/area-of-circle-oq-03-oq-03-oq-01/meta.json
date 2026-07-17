@@ -46,7 +46,7 @@
       {
         "theorem": "MeasureTheory.integral_Icc_eq_integral_Ioc",
         "description": "∫ over Icc equals ∫ over Ioc (endpoints are null) — bridges the set integral of volume_regionBetween to the interval integral",
-        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Set"
       }
     ],
     "originalContributions": [
@@ -95,26 +95,42 @@
   },
   "sections": [
     {
+      "id": "sec-setup",
+      "title": "The Open Question and the Change-of-Variables Route",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "The header docstring frames the problem: the parent entry (area-of-circle-oq-03-oq-03) states the ellipse area π·a·b but proves only the algebraic tautology a·b·π = π·a·b, and its first open question asks for a rigorous proof via Mathlib's measure-theoretic change-of-variables API. This file follows exactly that route (intervalIntegral.integral_comp_div). The namespace opens Real, MeasureTheory, and intervalIntegral, fixing the notation used throughout.",
+      "mathContext": "Goal: replace a·b·π = π·a·b (a placeholder) with a real computation of ∫_{−a}^{a} 2b·√(1 − (x/a)²) dx = π·a·b, and certify π·a·b as the genuine 2D Lebesgue measure of the filled ellipse."
+    },
+    {
       "id": "sec-changeofvars",
       "title": "The Change of Variables: Half-Height Integral",
-      "startLine": 1,
-      "endLine": 57,
-      "summary": "ellipse_halfheight_integral proves ∫ x in −a..a, √(1 − (x/a)²) = a·(π/2). The substitution x ↦ x/a via intervalIntegral.integral_comp_div rescales the limits (−a/a = −1, a/a = 1) and extracts the factor a, reducing to Mathlib's integral_sqrt_one_sub_sq = π/2.",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "ellipse_halfheight_integral proves ∫ x in −a..a, √(1 − (x/a)²) = a·(π/2). The substitution x ↦ x/a via intervalIntegral.integral_comp_div rescales the limits (−a/a = −1, a/a = 1) and extracts the factor a, reducing to Mathlib's integral_sqrt_one_sub_sq = π/2. This is the crux — the genuine change of variables the open question requested.",
       "mathContext": "∫_{−a}^{a} √(1 − (x/a)²) dx = a ∫_{−1}^{1} √(1 − u²) du = a · (π/2): the substitution u = x/a turns the ellipse's normalized arc into the unit circle's."
     },
     {
       "id": "sec-areaformula",
-      "title": "The Ellipse Area Formula and the Circle Special Case",
-      "startLine": 58,
-      "endLine": 78,
-      "summary": "ellipse_area_integral pulls the constant 2b out of ∫ 2b·√(1 − (x/a)²) (integral_const_mul) and applies the half-height integral to get π·a·b. circle_area_special sets a = b = r to recover π·r², and ellipse_area_pos records strict positivity.",
-      "mathContext": "Area = ∫_{−a}^{a} [upper − lower] dx = ∫_{−a}^{a} 2b·√(1 − (x/a)²) dx = 2b · a·(π/2) = π·a·b; with a = b = r this is π·r²."
+      "title": "The Ellipse Area Formula",
+      "startLine": 56,
+      "endLine": 62,
+      "summary": "ellipse_area_integral proves ∫ x in −a..a, 2b·√(1 − (x/a)²) = π·a·b: the constant 2b is pulled out with intervalIntegral.integral_const_mul, the half-height integral supplies a·(π/2), and ring finishes. This is the rigorous ellipse area formula that replaces the parent's algebraic placeholder.",
+      "mathContext": "Area = ∫_{−a}^{a} 2b·√(1 − (x/a)²) dx = 2b · a·(π/2) = π·a·b — linear in the vertical semi-axis b, since b enters only as a constant multiplier."
+    },
+    {
+      "id": "sec-circle-pos",
+      "title": "The Circle Special Case and Positivity",
+      "startLine": 64,
+      "endLine": 75,
+      "summary": "circle_area_special sets a = b = r to recover the disc area π·r² from the ellipse formula, reconnecting to the parent circle result. ellipse_area_pos records that the area is strictly positive for positive semi-axes (via positivity and π > 0).",
+      "mathContext": "The circle is the ellipse with equal semi-axes: π·r·r = π·r². For a, b > 0 the area π·a·b is manifestly positive."
     },
     {
       "id": "sec-2dvolume",
       "title": "Upgrading to the 2D Lebesgue Measure",
-      "startLine": 80,
-      "endLine": 107,
+      "startLine": 77,
+      "endLine": 108,
       "summary": "ellipse_volume shows the filled ellipse — the region between the arcs ∓b·√(1 − (x/a)²) over Icc(−a,a) — has 2D Lebesgue measure ENNReal.ofReal (π·a·b). Both arcs are continuous (hence integrable on the compact interval), the lower ≤ upper, and volume_regionBetween_eq_integral reduces the planar measure to ∫ (upper − lower), evaluated by the interval integral (after Icc→Ioc→interval bridging).",
       "mathContext": "The genuine area is the 2D Lebesgue measure of the solid ellipse, and volume_regionBetween_eq_integral certifies it equals the integral of the vertical extent — π·a·b."
     }
@@ -138,6 +154,16 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "The circle area π·r² is recovered here as the a = b = r special case (circle_area_special)."
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "related",
+      "description": "The complementary route to the same area. That entry derives the circle's area by Archimedes' method of exhaustion (inscribed/circumscribed polygons); this entry derives the more general ellipse area by an affine change of variables in the integral. Exhaustion versus change-of-variables are the two classical paths to area, here applied to the circle and its affine image."
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Sibling addressing the parent's SECOND open question — the one this entry's own open questions flag as the natural complement. It formalizes the sub-triangle area ratios in Archimedes' parabolic exhaustion (the 4/3 rule), the exhaustion counterpart to this entry's change-of-variables computation of a conic-section area."
     }
   ],
   "references": [
@@ -154,6 +180,20 @@
       "year": "2020",
       "venue": "CPP 2020",
       "note": "integral_sqrt_one_sub_sq, intervalIntegral.integral_comp_div, and volume_regionBetween_eq_integral"
+    },
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Calculus, Volume I: One-Variable Calculus, with an Introduction to Linear Algebra",
+      "year": "1967",
+      "venue": "2nd ed., Wiley",
+      "note": "Develops area as a definite integral and the substitution (change-of-variables) rule for integrals — the 1D content behind ellipse_halfheight_integral, where x ↦ x/a reduces the ellipse arc integral to the unit-circle integral ∫√(1−x²)=π/2."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": "1999",
+      "venue": "2nd ed., Wiley",
+      "note": "Product measures, Fubini–Tonelli, and the measure of a region between two graphs — the measure-theoretic foundation of volume_regionBetween_eq_integral that certifies the 1D integral π·a·b is the genuine 2D Lebesgue measure of the filled ellipse (ellipse_volume)."
     }
   ],
   "sorries": [],

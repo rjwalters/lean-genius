@@ -21,6 +21,27 @@
     ]
   },
   {
+    "id": "ann-galois-normal-setup",
+    "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "technique",
+    "title": "Ambient Setup: a Finite Galois Extension E/F",
+    "content": "Every result in the file is stated relative to the typeclass context on the `variable` line: `[Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [IsGalois F E]`. These four instances are exactly the hypotheses of the Fundamental Theorem — finite dimension makes the Galois group finite and the correspondence a bijection (not merely a Galois connection), while `IsGalois F E` (= normal + separable) is what forces `fixedField ∘ fixingSubgroup = id` and makes both implications of the normal refinement available. Separability of the ambient extension is also what lets the `Normal F K` rephrasing recover `IsGalois F K` for free. The import of `Proofs.AbelRuffiniGaloisExtensionsOQ02` brings the parent's `intermediateFieldEquivSubgroup'` bijection and `IsGalois` instances into scope; `open IntermediateField` exposes `fixedField`/`fixingSubgroup`.",
+    "mathContext": "Ambient hypotheses: $E/F$ finite ($[E:F] < \\infty$) and Galois ($\\mathrm{Normal} \\wedge \\mathrm{Separable}$), so $\\mathrm{Gal}(E/F)$ is finite and $K \\mapsto K.\\mathrm{fixingSubgroup}$ is a bijection.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "FiniteDimensional",
+      "IsGalois = Normal + Separable",
+      "fixedField ∘ fixingSubgroup = id",
+      "finite Galois group"
+    ],
+    "prerequisites": [
+      "Lean typeclass variables",
+      "finite-dimensional field extensions",
+      "the definition of a Galois extension"
+    ]
+  },
+  {
     "id": "ann-galois-normal-biconditional",
     "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
     "range": { "startLine": 66, "endLine": 81 },
@@ -105,8 +126,8 @@
     "range": { "startLine": 113, "endLine": 127 },
     "type": "theorem",
     "title": "Instantiation on the Abel–Ruffini Quintic X⁵ − 4X + 2",
-    "content": "Specializes the counting corollary to the OQ-01 witness q = X⁵ − 4X + 2, whose splitting field is a finite Galois extension of ℚ with Galois group S₅ (OQ-01's galEquivS5). The Galois subextensions of the splitting field biject with the normal subgroups of S₅. Since S₅ has exactly three normal subgroups ({1}, A₅, S₅), this pins the number of ℚ-Galois subextensions at three — the concrete payoff of the abstract correspondence and the link back to the Abel–Ruffini unsolvability chain.",
-    "mathContext": "For $q = X^5 - 4X + 2$: $\\#\\{K \\mid \\mathrm{IsGalois}\\,\\mathbb{Q}\\,K\\} = \\#\\{H \\trianglelefteq S_5\\} = 3$.",
+    "content": "Specializes the counting corollary to the OQ-01 witness q = X⁵ − 4X + 2, whose splitting field is a finite Galois extension of ℚ with Galois group S₅ (OQ-01's galEquivS5). The Galois subextensions of the splitting field biject with the normal subgroups of S₅. Since S₅ has exactly three normal subgroups ({1}, A₅, S₅), this pins the number of ℚ-Galois subextensions at three, and the correspondence even names them: the splitting field itself (fixing subgroup {1}), the base ℚ (fixing subgroup S₅), and the unique quadratic ℚ(√Δ) — the fixed field of A₅, with Δ the discriminant of X⁵ − 4X + 2. This is the concrete payoff of the abstract correspondence and the link back to the Abel–Ruffini unsolvability chain.",
+    "mathContext": "For $q = X^5 - 4X + 2$: $\\#\\{K \\mid \\mathrm{IsGalois}\\,\\mathbb{Q}\\,K\\} = \\#\\{H \\trianglelefteq S_5\\} = 3$; the three are $E$, $\\mathbb{Q}(\\sqrt{\\Delta}) = E^{A_5}$, and $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "Abel–Ruffini quintic",

@@ -41,3 +41,24 @@ Completes the two-sided estimate on the total count. UNVERIFIED: docker infra ST
 session (containerd meta.db/blob input/output error at image build — same as researcher-1's
 earlier note on this file). Trivial consequences of verified in-file lemmas; high confidence.
 File →23 theorems.
+
+## Session 2026-07-12 (researcher-3, merged by Doctor from PR #38048) — reversal (reflection) symmetry
+
+Added the reversal map and proved it is a genuine structural symmetry of the k-AP count set
+(1 def + 5 theorems, 0 axioms / 0 sorries):
+
+- `kAPReflect k (x,d) := (x + (k-1)•d, -d)` — reversal of a length-k progression
+  (for k=3 the classical `(x,d) ↦ (x+2d, -d)`).
+- `kAPReflect_involutive k` : `Function.Involutive (kAPReflect k)`.
+- `kAPCount_count_reflect_mem` / `kAPCount_nondeg_reflect_mem` : count sets closed under
+  reversal. Key step: reflected i-th term = original (k-1-i)-th term, via
+  `(k-1)•d = (k-1-i)•d + i•d` (`add_nsmul`, `omega`, `abel`), reindex by `⟨k-1-i.val, _⟩`.
+- `kAPCount_count_reflect_image` / `kAPCount_nondeg_reflect_image` :
+  `Finset.image (kAPReflect k) (countset) = countset`.
+
+Honest scope: set-invariance, NOT parity — reversal has FIXED POINTS (any pair with
+`(k-1)d = 0` and `2d = 0`), so no evenness conclusion. Documented in an in-file NOTE.
+
+Note: the Euler-totient (165 composite landing) and Shannon wideband-limit portions of the
+original PR #38048 were dropped at merge time — they had already landed on main via later PRs
+(`reversal_seed_composite_landing`, `rate_equalNoise_tendsto_wideband` + isLUB/supremum forms).

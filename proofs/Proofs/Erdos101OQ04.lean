@@ -204,6 +204,77 @@ theorem fourPointLineCount_ge_of_injOn_family (P : PlanarPointSet) (k : ℕ)
   rwa [Finset.card_image_of_injective _ hinj, Finset.card_univ,
     Fintype.card_fin] at hsub
 
+/-- **Monotonicity of the four-point-line count.**  Adding points to a planar set can only
+increase the number of four-point lines: if `P.points ⊆ Q.points` then
+`fourPointLineCount P ≤ fourPointLineCount Q`.  Every 4-element collinear subset of `P` is
+also a 4-element collinear subset of `Q` — the defining filter predicate depends only on
+the subset `S`, not on the ambient point set — so the powerset-filter defining the count
+is monotone.  This is the external counterpart of `fourPointLineCount_ge_of_subset` and the
+structural fact any growing construction relies on. -/
+theorem fourPointLineCount_mono {P Q : PlanarPointSet} (h : P.points ⊆ Q.points) :
+    fourPointLineCount P ≤ fourPointLineCount Q := by
+  rw [fourPointLineCount, fourPointLineCount]
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.powerset_mono.mpr h))
+
+/-- **Lower-bound constructions survive point addition in general position.**  If `P` is a
+lower-bound construction for threshold `t` (no five collinear and `t ≤ fourPointLineCount P`)
+and `Q ⊇ P` is still in general position (`NoFiveCollinear Q`), then `Q` is also a
+lower-bound construction for `t`: since `fourPointLineCount` is monotone, the bound is
+inherited.  `NoFiveCollinear` itself is *not* monotone — adding points can create five
+collinear — so it must be assumed for `Q`, which is exactly the no-five-collinear
+certificate a growing construction has to supply at each step. -/
+theorem isLowerBoundConstruction_mono {P Q : PlanarPointSet} {t : ℝ}
+    (hPQ : P.points ⊆ Q.points) (hQ : NoFiveCollinear Q)
+    (hP : IsLowerBoundConstruction P t) :
+    IsLowerBoundConstruction Q t :=
+  ⟨hQ, hP.2.trans (Nat.cast_le.mpr (fourPointLineCount_mono hPQ))⟩
+
+/-- **Trivial upper cap on the four-point-line count.**  Every four-point line is in
+particular a `4`-element subset of `P.points`, so `fourPointLineCount P` is at most the
+number of such subsets, `C(|P|, 4)`.  This is the crude combinatorial ceiling against which
+the whole problem is measured: the parent's sharp bound `n(n-1)/12` improves this `Θ(n⁴)`
+count to `Θ(n²)`, and the Solymosi–Stojaković construction shows the truth sits at
+`n^{2-o(1)}` — but even the trivial cap already forces `fourPointLineCount = O(n⁴)` with no
+geometry at all.  The defining powerset-filter is contained in the `4`-uniform layer
+`powersetCard 4 P.points` (dropping the collinearity clause), whose card is `C(n,4)`. -/
+theorem fourPointLineCount_le_choose (P : PlanarPointSet) :
+    fourPointLineCount P ≤ P.points.card.choose 4 := by
+  rw [fourPointLineCount, ← Finset.card_powersetCard]
+  apply Finset.card_le_card
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  rw [Finset.mem_powersetCard]
+  exact ⟨hS.1, hS.2.1⟩
+
+/-- **One-shot lower-bound constructor from an injective family.**  Packages the counting
+engine `fourPointLineCount_ge_of_injOn_family` together with the `NoFiveCollinear`
+certificate into the `IsLowerBoundConstruction` predicate directly: an injective family of
+`k` four-point collinear subsets of a no-five-collinear `P` certifies
+`IsLowerBoundConstruction P k`.  This is the exact shape every explicit witness in this file
+produces, so it removes the boilerplate of re-deriving the `Nat.cast`/`fourPointLineCount`
+plumbing at each construction. -/
+theorem isLowerBoundConstruction_of_injOn_family (P : PlanarPointSet)
+    (hP : NoFiveCollinear P) (k : ℕ) (L : Fin k → Finset (ℝ × ℝ))
+    (hmem : ∀ i, L i ⊆ P.points) (hcard : ∀ i, (L i).card = 4)
+    (hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p)
+    (hinj : Function.Injective L) :
+    IsLowerBoundConstruction P (k : ℝ) :=
+  ⟨hP, by exact_mod_cast fourPointLineCount_ge_of_injOn_family P k L hmem hcard hcol hinj⟩
+
+/-- **One-shot lower-bound constructor from a finite family of lines (set form).**  The
+`Finset`-indexed companion of `isLowerBoundConstruction_of_injOn_family`, wrapping
+`fourPointLineCount_ge_of_subset`: a finite collection `T` of four-point collinear subsets
+of a no-five-collinear `P` certifies `IsLowerBoundConstruction P T.card`.  Distinctness is
+carried by `T.card` itself, so the caller supplies only the per-line geometry. -/
+theorem isLowerBoundConstruction_of_family (P : PlanarPointSet)
+    (hP : NoFiveCollinear P) (T : Finset (Finset (ℝ × ℝ)))
+    (hmem : ∀ S ∈ T, S ⊆ P.points) (hcard : ∀ S ∈ T, S.card = 4)
+    (hcol : ∀ S ∈ T, ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p) :
+    IsLowerBoundConstruction P (T.card : ℝ) :=
+  ⟨hP, by exact_mod_cast fourPointLineCount_ge_of_subset P T hmem hcard hcol⟩
+
 /-- **Lower bound vacuous below size 4**: for `P` with fewer than 4
 points, no four-point line exists.  Restatement of
 `fourPointLineCount_lt_four` to fix the OQ-04 namespace conventions. -/
@@ -584,6 +655,30 @@ private theorem no_three_quadratic_roots {F : Type*} [Field F]
   -- Then `e1` forces `b = 0`, contradicting `(a, b) ≠ (0, 0)`.
   have hb : b = 0 := by rw [ha, zero_mul, zero_add] at e1; exact e1
   exact hab ⟨ha, hb⟩
+
+/-- **A nonzero quadratic has at most two roots (Finset-cardinality form).**  Over any
+finite field `F`, the solution set of `a·t² + b·t + c = 0` has at most two elements
+whenever the leading pair `(a, b) ≠ (0, 0)`.  The packaged `Finset.card` form of
+`no_three_quadratic_roots`, and the abstract root-counting fact behind the parabola secant
+bound `parabola_inter_line_card_le_two` (which is its instance for the substituted line
+quadratic over `ZMod p`). -/
+theorem quadratic_roots_card_le_two {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (a b c : F) (hab : ¬ (a = 0 ∧ b = 0)) :
+    (Finset.univ.filter (fun t => a * t ^ 2 + b * t + c = 0)).card ≤ 2 := by
+  by_contra hcon
+  rw [not_le] at hcon
+  obtain ⟨i, j, k, hi, hj, hk, hij, hik, hjk⟩ := Finset.two_lt_card_iff.mp hcon
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi hj hk
+  exact no_three_quadratic_roots a b c hab i j k hi hj hk hij hik hjk
+
+/-- **Nonzero quadratic over `ZMod p` has at most two roots.**  The `ZMod p`
+specialization of `quadratic_roots_card_le_two`, in the exact finite field where the
+Grünbaum parabola lives — the directly-usable root-count feeding
+`parabola_inter_line_card_le_two`. -/
+theorem zmod_quadratic_roots_card_le_two (p : ℕ) [NeZero p] [Fact p.Prime]
+    (a b c : ZMod p) (hab : ¬ (a = 0 ∧ b = 0)) :
+    (Finset.univ.filter (fun t : ZMod p => a * t ^ 2 + b * t + c = 0)).card ≤ 2 :=
+  quadratic_roots_card_le_two a b c hab
 
 /-- **Parabola secant bound** (S3-B2 deliverable).
 
@@ -2933,6 +3028,72 @@ theorem four_onQuartic_collinear_iff_sq {a b c d : ℝ × ℝ}
     exact ⟨h1, by
       linear_combination (1 / 2 : ℝ) * (a.1 + b.1 + c.1 + d.1) * h1 - (1 / 2 : ℝ) * h2⟩
 
+/-- **Anchored-pair collinearity is common-line membership.**
+For any four planar points whose first two have distinct abscissae (`a.1 ≠ b.1`),
+the two anchored triples `a b c` and `a b d` are *simultaneously* collinear iff all
+four points lie on a single common non-vertical affine line `y = m·x + e`.
+
+This is the missing bridge between the file's signed-area determinant predicate
+`collinear` (used throughout `fourPointLineCount`) and an *explicit* line: the slope
+and intercept are `m = (b.2 − a.2)/(b.1 − a.1)` and `e = a.2 − m·a.1`.  It is purely
+planar — no `onQuartic` hypothesis — so it is reusable for any curve-incidence
+argument that needs to name the line through a four-point line (e.g. the
+Solymosi–Stojaković construction, which reasons about slopes/intercepts rather than
+determinants). -/
+theorem collinear_anchored_pair_iff_common_line {a b c d : ℝ × ℝ} (hab : a.1 ≠ b.1) :
+    (collinear a b c ∧ collinear a b d) ↔
+      ∃ m e : ℝ, a.2 = m * a.1 + e ∧ b.2 = m * b.1 + e ∧
+        c.2 = m * c.1 + e ∧ d.2 = m * d.1 + e := by
+  have hne : b.1 - a.1 ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  constructor
+  · rintro ⟨hcol_c, hcol_d⟩
+    have hcol_c' : (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2) := hcol_c
+    have hcol_d' : (b.1 - a.1) * (d.2 - a.2) = (d.1 - a.1) * (b.2 - a.2) := hcol_d
+    refine ⟨(b.2 - a.2) / (b.1 - a.1), a.2 - (b.2 - a.2) / (b.1 - a.1) * a.1, ?_, ?_, ?_, ?_⟩
+    · ring
+    · have hb2 : b.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (b.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]
+      linear_combination hb2
+    · have hc2 : c.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (c.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]; linear_combination hcol_c'
+      linear_combination hc2
+    · have hd2 : d.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (d.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]; linear_combination hcol_d'
+      linear_combination hd2
+  · rintro ⟨m, e, ha, hb, hc, hd⟩
+    refine ⟨?_, ?_⟩
+    · show (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2)
+      rw [ha, hb, hc]; ring
+    · show (b.1 - a.1) * (d.2 - a.2) = (d.1 - a.1) * (b.2 - a.2)
+      rw [ha, hb, hd]; ring
+
+/-- **A line meets the quartic `y = x⁴ − 5x²` in four points iff their abscissae lie
+on the fixed sphere `Σx = 0 ∧ Σx² = 10`.**
+
+Chains the common-line bridge `collinear_anchored_pair_iff_common_line` with the Vieta
+sum-of-squares criterion `four_onQuartic_collinear_iff_sq`: four points on the quartic
+with pairwise-distinct abscissae lie on one affine line `y = m·x + e` iff their
+abscissae satisfy `Σx = 0` and `Σx² = 10`.
+
+This is the geometric phrasing of the arithmetization the file describes in prose (a
+line `y = mx + e` meets the quartic where `x⁴ − 5x² − mx − e = 0`, whose four roots
+have `e₁ = 0`, `e₂ = −5`, equivalently `Σx² = 10`): every four-point line's abscissae
+lie on a *single fixed* 2-sphere `{Σx = 0, Σx² = 10} ⊂ ℝ⁴`, independent of the slope
+`m` and intercept `e`.  The rigidity of that fixed sphere (no scaling freedom) is
+exactly why beating the linear floor `quartic_linear_lower_bound` is hard: the OPEN
+`solymosi_stojakovic_lower_bound` asks for super-linearly many distinct 4-subsets of an
+`n`-set all landing on this one sphere. -/
+theorem four_onQuartic_onLine_iff_sq {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1) :
+    (∃ m e : ℝ, a.2 = m * a.1 + e ∧ b.2 = m * b.1 + e ∧
+        c.2 = m * c.1 + e ∧ d.2 = m * d.1 + e) ↔
+      (a.1 + b.1 + c.1 + d.1 = 0 ∧
+       a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + d.1 ^ 2 = 10) := by
+  rw [← collinear_anchored_pair_iff_common_line hab,
+      four_onQuartic_collinear_iff_sq ha hb hc hd hab hbc hca hbd hda hcd]
+
 /-- **The four-point-line quadruple condition is a fixed ternary conic.**
 Eliminating the fourth abscissa via `Σx = 0` (so `x₃ = −(x₀+x₁+x₂)`), the engine's
 sum-of-squares condition `Σx² = 10` is *equivalent* to the ternary quadratic relation
@@ -3290,5 +3451,337 @@ theorem ternary_conic_sq_sum_le_of_mem (p q r : ℝ)
     (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
     p ^ 2 + q ^ 2 + r ^ 2 ≤ 10 := by
   nlinarith [sq_nonneg (p + q + r), h]
+
+/-- **The solution surface is bounded away from the origin.** On the ternary conic `Q = 5`,
+the squared abscissa radius satisfies `5/2 ≤ p² + q² + r²`.  From
+`Q = ½·((p²+q²+r²) + (p+q+r)²)`: at `Q = 5` we have `(p²+q²+r²) + (p+q+r)² = 10`, and the trace
+obeys `(p+q+r)² ≤ 3·(p²+q²+r²)` (Cauchy–Schwarz, i.e.
+`3·(p²+q²+r²) − (p+q+r)² = (p−q)² + (q−r)² + (r−p)² ≥ 0`).  Substituting,
+`10 = (p²+q²+r²) + (p+q+r)² ≤ 4·(p²+q²+r²)`, so `p²+q²+r² ≥ 5/2`.  This is the missing lower
+companion to `ternary_conic_sq_sum_le_of_mem`: the surface `Q = 5` never approaches the
+origin, so it is a genuine ellipsoidal *shell*, not a full solid ball. -/
+theorem ternary_conic_sq_sum_ge_of_mem (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    5 / 2 ≤ p ^ 2 + q ^ 2 + r ^ 2 := by
+  nlinarith [sq_nonneg (p - q), sq_nonneg (q - r), sq_nonneg (r - p), h]
+
+/-- **The squared abscissa radius lives in the closed interval `[5/2, 10]`.** Packaging the two
+one-sided bounds `ternary_conic_sq_sum_ge_of_mem` and `ternary_conic_sq_sum_le_of_mem`: every
+point of the ternary conic `Q = 5` satisfies `p² + q² + r² ∈ [5/2, 10]`.  These are the
+squares of the extreme semi-axes of the ellipsoid (eigenvalues `2` and `½` of the conic form,
+giving radii `√(5/2)` along the trace direction `(1,1,1)` and `√10` in the trace-free plane),
+so the interval is sharp: the surface `Q = 5` is exactly the ellipsoidal shell between the two
+concentric spheres of radius `√(5/2)` and `√10`. -/
+theorem ternary_conic_sq_sum_mem_Icc (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    p ^ 2 + q ^ 2 + r ^ 2 ∈ Set.Icc (5 / 2 : ℝ) 10 :=
+  ⟨ternary_conic_sq_sum_ge_of_mem p q r h, ternary_conic_sq_sum_le_of_mem p q r h⟩
+
+/-- **The solution surface avoids the origin.** No point of the ternary conic `Q = 5` is the
+origin: `(p,q,r) = (0,0,0)` would force `p²+q²+r² = 0 < 5/2`, contradicting
+`ternary_conic_sq_sum_ge_of_mem`.  Concretely `0 < p² + q² + r²`, so at least one abscissa is
+nonzero on every family four-point line — the degenerate all-zero "quadruple" is not a
+solution, confirming the surface is a bona-fide shell around (but never through) the origin. -/
+theorem ternary_conic_sq_sum_pos_of_mem (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    0 < p ^ 2 + q ^ 2 + r ^ 2 :=
+  lt_of_lt_of_le (by norm_num) (ternary_conic_sq_sum_ge_of_mem p q r h)
+
+/-! ### Sharpness of the ellipsoidal shell: both extreme radii are attained
+
+`ternary_conic_sq_sum_mem_Icc` confines the squared abscissa radius to `[5/2, 10]`, and the
+docstring identifies these as the squared extreme semi-axes.  The two witnesses below prove
+those endpoints are actually *attained* on the surface `Q = 5`, so the image of `p²+q²+r²`
+over the conic is exactly the closed interval `[5/2, 10]` — the shell characterization is
+sharp, not merely an enclosure. -/
+
+/-- The upper radius bound `10` is attained on `Q = 5`: the trace-free point
+`(√5, -√5, 0)` satisfies `Q = 5` and `p²+q²+r² = 10`.  The trace `p+q+r` vanishes, so all of
+`Q = ½·((p²+q²+r²) + (p+q+r)²)` comes from the radius term — the maximal-radius direction. -/
+theorem exists_ternary_conic_sq_sum_eq_ten :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+      ∧ p ^ 2 + q ^ 2 + r ^ 2 = 10 := by
+  refine ⟨Real.sqrt 5, -Real.sqrt 5, 0, ?_, ?_⟩
+  · have h : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
+/-- The lower radius bound `5/2` is attained on `Q = 5`: the diagonal point
+`(√(5/6), √(5/6), √(5/6))` satisfies `Q = 5` and `p²+q²+r² = 5/2`.  Here `p = q = r`, the
+trace direction `(1,1,1)` — the minimal-radius semi-axis of the ellipsoid. -/
+theorem exists_ternary_conic_sq_sum_eq_five_halves :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+      ∧ p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2 := by
+  refine ⟨Real.sqrt (5 / 6), Real.sqrt (5 / 6), Real.sqrt (5 / 6), ?_, ?_⟩
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
+/-- **The `[5/2, 10]` radius range is sharp.**  Both endpoints of
+`ternary_conic_sq_sum_mem_Icc` are attained on the conic `Q = 5`: the maximum `10` at the
+trace-free point `(√5, -√5, 0)` and the minimum `5/2` at the diagonal point
+`(√(5/6), √(5/6), √(5/6))`.  Together with the containment `ternary_conic_sq_sum_mem_Icc`,
+the image of `p²+q²+r²` over the surface is *exactly* `[5/2, 10]`: the ellipsoidal shell's
+extreme semi-axes `√(5/2)` and `√10` are genuinely realized, upgrading the docstring's
+"sharp" from prose to proof. -/
+theorem ternary_conic_sq_sum_range_sharp :
+    (∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+        ∧ p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2)
+      ∧ (∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+        ∧ p ^ 2 + q ^ 2 + r ^ 2 = 10) :=
+  ⟨exists_ternary_conic_sq_sum_eq_five_halves, exists_ternary_conic_sq_sum_eq_ten⟩
+
+/-! ### A rational parametrization of the symmetric slice, and an infinite family
+
+The prior sections locate the solution surface `Q = 5` (a bounded ellipsoidal shell) but leave
+its most consequential feature — that it carries **infinitely many** quadruples with genuinely
+different abscissae — implicit.  Here we make one infinite subfamily *explicit*.
+
+The symmetric slice `q = −p` of `Q = 5` is the circle `p² + r² = 5`
+(`conic_slice_neg_eq_circle`).  This circle has the rational point `(−1, 2)` (attained at the
+base value `t = 0` below), so sweeping the pencil of lines of slope `t` through it rationally
+parametrizes the whole circle:
+  `pParam t = (t² − 4t − 1)/(t² + 1)`,   `rParam t = (−2t² − 2t + 2)/(t² + 1)`.
+The key identity `pParam t ² + rParam t ² = 5` holds because the numerator collapses to
+`5·(t² + 1)²` (`pParam_sq_add_rParam_sq`).  Hence for every `t` the quadruple
+`(pParam t, −pParam t, rParam t, −rParam t)` lies on `Q = 5` and satisfies the arithmetic
+four-point-line criterion `Σx = 0 ∧ Σx² = 10` (`param_quadruple_criterion`).
+
+Finally the parameter map `t ↦ pParam t` is *injective on* `[1, ∞)`
+(`pParam_injOn_one_le`: `pParam t = pParam s` forces either `t = s` or the excluded relation
+`t + s + 2ts = 2`, impossible when `t, s ≥ 1`), so `t ↦ pParam (t)` restricted to
+`{1, 2, 3, …}` realizes infinitely many distinct abscissae on the surface
+(`pParam_range_infinite`).  This turns the docstrings' recurring qualitative remark — that the
+OPEN super-linear question is one of *packing distinct abscissa sets*, never of existence — into
+a concrete infinite, rational, explicitly-parametrized supply of four-point-line quadruples on
+the fixed compact conic. -/
+
+/-- The abscissa parametrization of the circle slice `p² + r² = 5` through `(−1, 2)`. -/
+noncomputable def pParam (t : ℝ) : ℝ := (t ^ 2 - 4 * t - 1) / (t ^ 2 + 1)
+
+/-- The companion abscissa of `pParam`, tracing the same circle slice. -/
+noncomputable def rParam (t : ℝ) : ℝ := (-2 * t ^ 2 - 2 * t + 2) / (t ^ 2 + 1)
+
+/-- **The parametrization lands on the circle `p² + r² = 5`.**  The numerator of
+`pParam t ² + rParam t ²` is `5·(t² + 1)²`, cancelling the squared denominator.  So every value
+of the parameter `t` yields a point of the symmetric slice of the solution surface `Q = 5`. -/
+theorem pParam_sq_add_rParam_sq (t : ℝ) : pParam t ^ 2 + rParam t ^ 2 = 5 := by
+  have hD2 : (t ^ 2 + 1) ^ 2 ≠ 0 := pow_ne_zero 2 (by positivity)
+  rw [pParam, rParam, div_pow, div_pow, ← add_div, div_eq_iff hD2]
+  ring
+
+/-- **The parametrized quadruple lies on the ternary conic `Q = 5`.**  Combining
+`conic_slice_neg_eq_circle` (which collapses `Q(p, −p, r)` to `p² + r²`) with
+`pParam_sq_add_rParam_sq`. -/
+theorem param_on_conic (t : ℝ) :
+    pParam t ^ 2 + (-pParam t) ^ 2 + rParam t ^ 2
+      + pParam t * (-pParam t) + (-pParam t) * rParam t + rParam t * pParam t = 5 :=
+  (conic_slice_neg_eq_circle (pParam t) (rParam t)).trans (pParam_sq_add_rParam_sq t)
+
+/-- **The parametrized quadruple satisfies the arithmetic four-point-line criterion.**
+For every `t`, the abscissae `(pParam t, −pParam t, rParam t, −rParam t)` satisfy the two
+Vieta/sum-of-squares relations `Σx = 0` and `Σx² = 10`, so the four points above them on the
+quartic `y = x⁴ − 5x²` form a four-point line whenever the abscissae are distinct
+(`quartic_quadruple_family_onQuartic_collinear`).  A one-parameter rational supply of
+four-point-line quadruples. -/
+theorem param_quadruple_criterion (t : ℝ) :
+    pParam t + (-pParam t) + rParam t + (-(pParam t + (-pParam t) + rParam t)) = 0 ∧
+      pParam t ^ 2 + (-pParam t) ^ 2 + rParam t ^ 2
+        + (-(pParam t + (-pParam t) + rParam t)) ^ 2 = 10 :=
+  quartic_quadruple_family_criterion (pParam t) (-pParam t) (rParam t) (param_on_conic t)
+
+/-- **The parameter map is injective on `[1, ∞)`.**  If `pParam t = pParam s` then, after
+clearing denominators, `2·(t − s)·(t + s + 2ts − 2) = 0`.  The second factor is `≥ 2` when
+`t, s ≥ 1` (indeed `t + s ≥ 2` and `2ts ≥ 2`), so it cannot vanish; hence `t = s`.  Thus the
+rational family sweeps distinct abscissae along `[1, ∞)`. -/
+theorem pParam_injOn_one_le {t s : ℝ} (ht : 1 ≤ t) (hs : 1 ≤ s)
+    (h : pParam t = pParam s) : t = s := by
+  have hdt : t ^ 2 + 1 ≠ 0 := by positivity
+  have hds : s ^ 2 + 1 ≠ 0 := by positivity
+  rw [pParam, pParam, div_eq_div_iff hdt hds] at h
+  have hpos : 0 < t + s + 2 * t * s - 2 := by
+    nlinarith [mul_nonneg (sub_nonneg.2 ht) (sub_nonneg.2 hs), ht, hs]
+  have hfac : (t - s) * (t + s + 2 * t * s - 2) = 0 := by linear_combination h / 2
+  rcases mul_eq_zero.mp hfac with h1 | h2
+  · exact sub_eq_zero.mp h1
+  · exfalso; linarith
+
+/-- **The rational family realizes infinitely many distinct abscissae on `Q = 5`.**  Restricting
+`pParam` to the integers `n + 1 ≥ 1` gives an injective `ℕ`-indexed sequence (by
+`pParam_injOn_one_le`), so its range — a set of abscissae all lying on the solution surface — is
+infinite.  This is the concrete infinite supply the surface's docstrings gesture at: the OPEN
+super-linear-growth question restricted to this slice is not existence but the packing of
+distinct abscissa sets. -/
+theorem pParam_range_infinite :
+    Set.Infinite (Set.range (fun n : ℕ => pParam ((n : ℝ) + 1))) := by
+  apply Set.infinite_range_of_injective
+  intro a b hab
+  have hle : ∀ m : ℕ, (1 : ℝ) ≤ (m : ℝ) + 1 := by
+    intro m; have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m; linarith
+  have := pParam_injOn_one_le (hle a) (hle b) hab
+  exact_mod_cast (by linarith : (a : ℝ) = (b : ℝ))
+
+/-- **The upper radius bound `10` is attained.**  The trace-free point `(√5, −√5, 0)` lies
+on the ternary conic `Q = 5` (its trace `p+q+r = 0` kills the `(p+q+r)²` term, so
+`Q = ½·(p²+q²+r²) = 5`) and realises `p²+q²+r² = 10`.  So the ceiling
+`ternary_conic_sq_sum_le_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the outer
+sphere of radius `√10` (the long semi-axis, in the trace-free eigenplane of eigenvalue `½`). -/
+theorem ternary_conic_sq_sum_upper_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 10 := by
+  refine ⟨Real.sqrt 5, -Real.sqrt 5, 0, ?_, ?_⟩
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+
+/-- **The lower radius bound `5/2` is attained.**  The diagonal point `(√(5/6), √(5/6),
+√(5/6))` lies on the ternary conic `Q = 5` (along the trace direction `(1,1,1)`,
+`Q = 6·p² = 5`) and realises `p²+q²+r² = 5/2`.  So the floor
+`ternary_conic_sq_sum_ge_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the inner
+sphere of radius `√(5/2)` (the short semi-axis, in the trace eigendirection of eigenvalue
+`2`).  Together with `ternary_conic_sq_sum_upper_sharp` this certifies the interval
+`[5/2, 10]` of `ternary_conic_sq_sum_mem_Icc` as *exactly* the range of `p²+q²+r²`. -/
+theorem ternary_conic_sq_sum_lower_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2 := by
+  refine ⟨Real.sqrt (5 / 6), Real.sqrt (5 / 6), Real.sqrt (5 / 6), ?_, ?_⟩
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
+/-! ### A one-parameter *family* of oblique four-point-line quadruples
+
+`oblique_quadruple_onQuartic_collinear` exhibits a *single* oblique quadruple. The two
+lemmas below upgrade that isolated point to a genuine one-parameter family: for every
+`s` and every `u` with `u² = 5 − 3s²`, the abscissae `(2s, 0, −s+u, −s−u)` solve the
+arithmetic criterion `Σx = 0 ∧ Σx² = 10`, hence form a four-point line on the quartic.
+The family is parametrised by a point `(s, u)` on the ellipse `3s² + u² = 5`.  Every
+member carries the abscissa `0`, so a *symmetric* member `(a, −a, b, −b)` would have to be
+the degenerate `(0, 0, u, −u)` (the slice `s = 0`); hence every **non-degenerate** member,
+`s ≠ 0`, is genuinely oblique — the abscissa `0` is present but its would-be partner
+`2s ≠ 0` breaks the negation symmetry.  This does **not** touch the OPEN super-linear growth
+(`solymosi_stojakovic_lower_bound`), which needs super-linearly many *distinct* solution
+sets; it records that the oblique solutions the engine accepts form a continuum, not a
+lone example. -/
+
+/-- **A one-parameter family of oblique quadruples solves the arithmetic criterion.**
+For any `s u : ℝ` with `u² = 5 − 3s²` (i.e. `(s, u)` on the ellipse `3s² + u² = 5`), the
+abscissae `(2s, 0, −s+u, −s−u)` satisfy `Σx = 0` and `Σx² = 10`.  The sum vanishes
+identically; the sum of squares is `4s² + 0 + (s²−2su+u²) + (s²+2su+u²) = 6s² + 2u²`, which
+`u² = 5 − 3s²` collapses to `6s² + 2(5 − 3s²) = 10`. -/
+theorem parametric_oblique_criterion (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2) :
+    2 * s + 0 + (-s + u) + (-s - u) = 0 ∧
+      (2 * s) ^ 2 + (0 : ℝ) ^ 2 + (-s + u) ^ 2 + (-s - u) ^ 2 = 10 := by
+  refine ⟨by ring, ?_⟩
+  linear_combination 2 * hu
+
+/-- **The one-parameter family forms four-point lines on the quartic.**
+For `u² = 5 − 3s²` with the four abscissae `2s, 0, −s+u, −s−u` pairwise distinct, the four
+points above them on `y = x⁴ − 5x²` are collinear — a genuine four-point line anchored
+through the `(2s, ·)` and `(0, ·)` points.  The parametric analogue of
+`symmetric_quadruple_onQuartic_collinear` and `oblique_quadruple_onQuartic_collinear`,
+derived directly from the sum-of-squares criterion `four_onQuartic_collinear_iff_sq` via
+`parametric_oblique_criterion`; the members with `s ≠ 0` are oblique. -/
+theorem parametric_oblique_onQuartic_collinear (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2)
+    (h01 : 2 * s ≠ 0) (h12 : (0 : ℝ) ≠ -s + u) (h20 : -s + u ≠ 2 * s)
+    (h13 : (0 : ℝ) ≠ -s - u) (h30 : -s - u ≠ 2 * s) (h23 : -s + u ≠ -s - u) :
+    collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) ∧
+      collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) from rfl)
+      (show onQuartic (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2) from rfl)
+      (show onQuartic (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) from rfl)
+      (show onQuartic (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) from rfl)
+      h01 h12 h20 h13 h30 h23]
+  exact parametric_oblique_criterion s u hu
+
+/-! ### Four-point lines realized on the fixed ternary conic `Q = 5`
+
+`quartic_quadruple_sum_zero_sq_iff_ternary` reduces the sum-of-squares condition
+`Σx² = 10` (with `Σx = 0`) to the fixed ternary conic
+`Q(x₀,x₁,x₂) = x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in the three free abscissae,
+and its docstring records the structural upshot in prose: *a four-point line on the
+quartic is exactly a point `(x₀,x₁,x₂)` on `Q = 5` with `x₃ = −(x₀+x₁+x₂)`*.  The two
+theorems below make that statement a checked fact and pin the concrete symmetric family
+onto the same conic. -/
+
+/-- **A four-point line on the quartic is a point on the ternary conic `Q = 5`.**
+Four collinear points on `y = x⁴ − 5x²` with pairwise-distinct abscissae satisfy both
+`Σx = 0` and the ternary conic relation
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in their first three abscissae (the fourth being
+`x₃ = −(x₀+x₁+x₂)`).  This upgrades the prose remark on
+`quartic_quadruple_sum_zero_sq_iff_ternary` into a theorem, composing the sum-of-squares
+criterion `four_onQuartic_collinear_iff_sq` with the conic reduction: the four-point-line
+locus is exactly the fixed conic `Q = 5`, with no `x⁴` term surviving. -/
+theorem four_onQuartic_collinear_ternary_conic {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1)
+    (hcol : collinear a b c ∧ collinear a b d) :
+    a.1 + b.1 + c.1 + d.1 = 0 ∧
+      a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 = 5 := by
+  obtain ⟨hsum, hsq⟩ :=
+    (four_onQuartic_collinear_iff_sq ha hb hc hd hab hbc hca hbd hda hcd).mp hcol
+  exact ⟨hsum, (quartic_quadruple_sum_zero_sq_iff_ternary a.1 b.1 c.1 d.1 hsum).mp hsq⟩
+
+/-- **The symmetric family lies on the ternary conic `Q = 5`.**  For `a² + b² = 5`, the free
+triple `(a, −a, b)` of the symmetric quadruple `(a, −a, b, −b)` satisfies the ternary conic
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5`, because the cross terms collapse to
+`Q(a, −a, b) = a² + b²`.  So the concrete linear witnesses of `quartic_linear_lower_bound`
+are exactly points of the conic `Q = 5` that `four_onQuartic_collinear_ternary_conic`
+identifies as the four-point-line locus — the linear baseline of the open
+super-linear-growth question, realized on the conic. -/
+theorem symmetric_triple_on_ternary_conic (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5) :
+    a ^ 2 + (-a) ^ 2 + b ^ 2 + a * (-a) + (-a) * b + b * a = 5 := by
+  linear_combination hab
+
+
+/-! ### Positive definiteness of the four-point-line ternary form
+
+`ternary_conic_nonneg` shows `Q ≥ 0` (positive semidefiniteness).  Here we add the
+cyclic sum-of-squares certificate `2Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²` and upgrade
+semidefiniteness to *definiteness*: `Q = 0` only at the origin.  This is what makes the
+level set `Q = 5` a nondegenerate compact ellipsoid, complementing the shell bounds
+`ternary_conic_sq_sum_mem_Icc` and their sharpness. -/
+
+/-- **The four-point-line ternary form is a sum of squares.**  The quadratic form
+`Q(x₀,x₁,x₂) = x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀` governing the reduced four-point-line
+locus satisfies `2·Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²`.  This is the certificate behind the
+"ellipse" classification of the conic `Q = 5`. -/
+theorem quartic_ternary_form_two_mul_eq_sos (x₀ x₁ x₂ : ℝ) :
+    2 * (x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₀ * x₁ + x₁ * x₂ + x₂ * x₀)
+      = (x₀ + x₁) ^ 2 + (x₁ + x₂) ^ 2 + (x₂ + x₀) ^ 2 := by ring
+
+
+/-- **The four-point-line ternary form is positive definite.**  `Q = 0` forces
+`x₀ = x₁ = x₂ = 0`: with `2Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²`, a zero value makes all three
+squares vanish, and the linear system `x₀+x₁ = x₁+x₂ = x₂+x₀ = 0` has only the trivial
+solution.  Positive-definiteness is exactly what makes `Q = 5` a *nondegenerate, bounded*
+ellipse (a single point would need `Q = 0`), confirming the file's ellipse framing. -/
+theorem quartic_ternary_form_eq_zero_iff (x₀ x₁ x₂ : ℝ) :
+    x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₀ * x₁ + x₁ * x₂ + x₂ * x₀ = 0 ↔
+      x₀ = 0 ∧ x₁ = 0 ∧ x₂ = 0 := by
+  constructor
+  · intro h
+    have hsos : (x₀ + x₁) ^ 2 + (x₁ + x₂) ^ 2 + (x₂ + x₀) ^ 2 = 0 := by
+      have hid := quartic_ternary_form_two_mul_eq_sos x₀ x₁ x₂
+      linarith
+    have h01 : x₀ + x₁ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₁ + x₂), sq_nonneg (x₂ + x₀)]) (sq_nonneg _))
+    have h12 : x₁ + x₂ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₀ + x₁), sq_nonneg (x₂ + x₀)]) (sq_nonneg _))
+    have h20 : x₂ + x₀ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₀ + x₁), sq_nonneg (x₁ + x₂)]) (sq_nonneg _))
+    exact ⟨by linarith, by linarith, by linarith⟩
+  · rintro ⟨rfl, rfl, rfl⟩; ring
 
 end Erdos101OQ04

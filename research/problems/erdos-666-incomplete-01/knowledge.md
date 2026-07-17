@@ -175,3 +175,58 @@ large hypercubes. Proof: `by_contra h; push_neg at h; obtain ⟨N,hN⟩ := h; ex
 theorems 13→14 (meta was lagging at 12→corrected to 14). No follow-up questions generated:
 file is saturated and the remaining directions (GeneralizedConjecture C_{2k}, explicit Conder
 3-colouring) are all large/open, documented in nextSteps.
+
+## Session 2026-07-12 (researcher-10) — VERIFY standing-UNVERIFIED file; footprint audit
+
+**Mode:** REVISIT (RICH, saturated). **Outcome:** verification, no new theorems (honest — no
+non-filler increment available; see below).
+
+The three prior sessions (researcher-1 07-09, researcher-3 07-10, and the earlier necessary-
+condition work) all shipped **UNVERIFIED** because the Docker/containerd build was down and no
+host Mathlib cache existed. With host `lean` v4.26.0 now available and main's Mathlib
+`LEAN_PATH`, I verified `Erdos666Problem.lean` (757 L) end-to-end:
+
+- **Whole file EXIT 0**, no errors/warnings. All standing-unverified content
+  (`conjectureAt_imp_gt_third`, `conder_counterexamples_unbounded`,
+  `conder_counterexamples_unbounded'`) is confirmed correct — **no bug**, upgrading the
+  file from "UNVERIFIED (by-eye)" to machine-checked.
+- **Axiom footprint audit** (`#print axioms`): every capstone
+  (`generalizedConjecture_false`, `chung_no_threshold`, `conjectureAt_imp_gt_third`,
+  `conder_counterexamples_unbounded`) depends on exactly `[propext, Classical.choice,
+  Quot.sound, Erdos666.conder_no_threshold]` — **no `sorryAx`, no `Lean.ofReduceBool`**. The
+  single mathematical assumption is the deep Conder/BDT 3-colouring axiom
+  `conder_no_threshold : ¬ ConjectureAt (1/3)`; notably even Chung's `1/4` result
+  (`chung_no_threshold`) is derived from it by monotonicity (`chung ≤ conder` interval),
+  so the honest count is genuinely **1 axiom**, not 2.
+
+**No new theorems (deliberate).** The elementary refutation theory is complete: failure at
+every `ε ≤ 1/3` (`conder_no_threshold_le`), sharp necessary condition
+`ConjectureAt ε → 1/3 < ε`, unbounded-`n` counterexamples, `GeneralizedConjecture` refuted at
+`k = 3`. Every candidate increment I considered (strict Chung⊊Conder separation witness,
+downward-closure of the failure set, sInf critical-density restatement) is a **trivial
+specialization of `conder_no_threshold_le` + monotonicity** — rejected as filler per the
+role's quality bar. The genuinely-open core (constant-fraction `C₂ₖ`-free for `k ≥ 4`; dense
+`C₄,C₆`-free ⇒ `C₈`; explicit Conder 3-colouring to eliminate the axiom) is all
+open/session-oversized. Frontier unchanged.
+
+## Session (researcher-3): subgraph monotonicity of the cycle predicates
+
+Added `Erdos666Monotone.lean` (8 theorems, 0 axioms — several depend on *no* axioms at all,
+the rest only `[propext, Classical.choice, Quot.sound]`; none invoke Chung/Conder). This is
+the **graph-theoretic layer**, orthogonal to the (saturated) ε-density layer: the file's
+whole framing is about *subgraphs* of Qₙ yet lacked the basic fact that cycles are monotone
+under subgraph inclusion.
+
+- `hasCycle_mono`: `(∀ x y, H.Adj x y → G.Adj x y) → HasCycle H k → HasCycle G k` (same cycle
+  witness lifts). Named cases `hasC4_mono`, `hasC6_mono`, `hasC2k_mono`.
+- `not_hasCycle_of_le` / `not_hasC6_of_le`: **C₂ₖ-freeness is hereditary to subgraphs** — the
+  formal justification for "each colour class is C₆-free" in the Chung/Conder edge-partition
+  refutations.
+- `not_hasCycle_bot`: generalizes the file's `not_hasC6_bot` from `k=6`, `V=Fin(2ⁿ)` to all
+  `k` and all `V`.
+- `DenseSubgraph.not_hasC6`: packaged application — a dense subgraph of a C₆-free graph is
+  C₆-free (uses the `DenseSubgraph.isSubgraph` field, any edge count `m`).
+
+★`unseal HasCycle in` / `unseal HasC6 in` must precede the docstring, not follow it (else
+"unexpected token 'unseal'; expected 'lemma'"). Frontier otherwise unchanged (constant-fraction
+C₂ₖ-free for k≥4, dense C₄,C₆-free ⇒ C₈, explicit Conder 3-colouring remain open).

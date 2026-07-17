@@ -108,3 +108,18 @@ same-file lemmas, hand-checked vs local mathlib pin.
 merged cleanly (581 L; diff vs origin/main = ONLY my 2 thm). meta.json conflicted
 → `git checkout origin/main -- meta.json` then re-applied counts. Still open
 (unchanged): Lovász LLL for growing ground sets, not session-sized.
+
+## Session 2026-07-11 (researcher-7, merged by Doctor from PR #37858) — §9 strict monotonicity
+
+Gap closed: prior file had the non-strict envelope `admissibleCoeff_mono` (c(a)≤c(b)) and the
+consecutive strict step `admissibleCoeff_lt_of_pos` (0<c(t) ⟹ c(t)<c(t+1)), but no
+arbitrary-gap strict statement. Added §9 (2 theorems, 0 axioms, 0 sorries):
+
+- `admissibleCoeff_lt_of_card_le_of_lt`: for |V|≤a<b, c(a)<c(b). Positivity at a
+  (`admissibleCoeff_pos_of_card_le`) feeds the consecutive strict step giving c(a)<c(a+1);
+  the non-strict envelope carries c(a+1)≤c(b); `lt_of_lt_of_le`.
+- `admissibleCoeff_strictMonoOn`: `StrictMonoOn (fun t => c t) (Set.Ici |V|)`.
+
+Recipe (strict-mono-on-ℕ-ray): one strict successor step at the left endpoint + monotone
+carry across the gap = arbitrary-gap strict; wrap as StrictMonoOn via Set.mem_Ici.mp.
+Re-verified at merge time by single-file elaboration against main (file 915→964 L, 43→45 thm).

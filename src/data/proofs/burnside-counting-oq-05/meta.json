@@ -76,11 +76,19 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Mathlib and gives the module docstring: for the dihedral action on an n-cycle, count the k-colorings fixed by a reflection, modelled as negation i ↦ −i on ZMod n. Lists the main results (the reflection is an involution fixing only 0 for odd n, the fundamental-domain folding bijection, and the count k^((n+1)/2)). Enters the namespace and fixes the color count k as an ambient variable.",
+      "mathContext": "Burnside setting: fixed colorings of a reflection $i \\mapsto -i$ on $\\mathrm{ZMod}\\,n$; for odd $n$ the answer is $k^{(n+1)/2}$."
+    },
+    {
       "id": "reflection",
       "title": "The Reflection as an Involution",
-      "startLine": 40,
+      "startLine": 37,
       "endLine": 64,
-      "summary": "reflect i = −i on ZMod n is an involution; for odd n = 2m+1 it fixes only 0, because 2 is a unit modulo the odd modulus.",
+      "summary": "def reflect i = −i on ZMod n and its basic properties: reflect is an involution (reflect_involutive); for odd n = 2m+1 it fixes only 0 (reflect_fixed_iff_zero), because 2 is a unit modulo the odd modulus.",
       "mathContext": "$\\mathrm{reflect}(i) = -i$, and for odd $n$, $-i = i \\iff i = 0$."
     },
     {

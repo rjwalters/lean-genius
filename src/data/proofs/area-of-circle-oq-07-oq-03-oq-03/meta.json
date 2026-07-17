@@ -77,12 +77,28 @@
       "mathContext": "$\\int_{x>0} x^{2n} e^{-x^2}\\,dx = \\tfrac12\\Gamma(n+\\tfrac12)$; evenness doubles it."
     },
     {
-      "id": "closed-and-values",
-      "title": "Closed Form and Base Cases",
-      "startLine": 91,
+      "id": "closed-form",
+      "title": "The Double-Factorial Closed Form",
+      "startLine": 90,
+      "endLine": 94,
+      "summary": "gaussian_moment_closed turns the Gamma-valued ladder into an elementary closed form: ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼·√π/2ⁿ. A one-line proof — rewrite by the ladder identity, then by Mathlib's Real.Gamma_nat_add_half, which supplies Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = (2n-1)!!\\,\\sqrt\\pi/2^n$, so the even Gaussian moment is elementary in $n$."
+    },
+    {
+      "id": "base-zero",
+      "title": "Base Case n = 0: Recovering the Parent √π",
+      "startLine": 96,
+      "endLine": 100,
+      "summary": "gaussian_moment_zero specializes the ladder at n = 0 to recover the parent entry's Gaussian integral ∫_ℝ e^{-x²} dx = √π, using Γ(1/2) = √π (Real.Gamma_one_half_eq). The zeroth even moment is the total mass of the Gaussian weight.",
+      "mathContext": "$\\int_{\\mathbb R} x^{0} e^{-x^2}\\,dx = \\Gamma(\\tfrac12) = \\sqrt\\pi$."
+    },
+    {
+      "id": "base-two",
+      "title": "Base Case n = 1: The Second Even Moment √π/2",
+      "startLine": 102,
       "endLine": 109,
-      "summary": "gaussian_moment_closed gives the double-factorial form (2n-1)‼·√π/2ⁿ via Real.Gamma_nat_add_half. gaussian_moment_zero recovers the parent's ∫_ℝ e^{-x²} dx = √π, and gaussian_moment_two gives ∫_ℝ x² e^{-x²} dx = √π/2 (from Γ(3/2) = √π/2).",
-      "mathContext": "$\\Gamma(\\tfrac12)=\\sqrt\\pi$, $\\Gamma(\\tfrac32)=\\tfrac{\\sqrt\\pi}2$."
+      "summary": "gaussian_moment_two specializes at n = 1: ∫_ℝ x² e^{-x²} dx = √π/2. The proof reduces Γ(3/2) via Γ(s+1) = s·Γ(s) (Real.Gamma_add_one) to (1/2)·Γ(1/2) = √π/2. This second moment is the (unnormalized) variance datum of the Gaussian weight.",
+      "mathContext": "$\\int_{\\mathbb R} x^{2} e^{-x^2}\\,dx = \\Gamma(\\tfrac32) = \\tfrac12\\Gamma(\\tfrac12) = \\tfrac{\\sqrt\\pi}{2}$."
     }
   ],
   "openQuestions": [
@@ -128,6 +144,16 @@
       "targetId": "area-of-circle",
       "relationship": "ancestor",
       "description": "Root of the OQ chain: the area πr² ultimately rests on the constant π, of which √π = Γ(1/2) (the n = 0 rung here) is the Gaussian avatar. This entry sits at the analytic end of that lineage, expressing the whole √π ladder Γ(n + 1/2) through Gaussian moments."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Parallel treatment of the same result: it also proves the half-integer ladder ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ, identifying each rung with an even Gaussian moment. The two entries are sibling formalizations of the identical moment–Gamma identity reached by the same substitution-and-symmetry route, and are worth reading together."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "The Gaussian √π base entry proving ∫_ℝ e^{-x²} dx = √π — exactly the n = 0 rung of the ladder here (gaussian_moment_zero). Every higher even moment computed in this entry sits above that single value, so this ladder is the moment tower over oq-07's base case."
     }
   ],
   "references": [

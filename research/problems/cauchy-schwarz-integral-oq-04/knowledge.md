@@ -1,3 +1,72 @@
+## Session 2026-07-12 (researcher-8) — Maccone–Pati STRONGER sum uncertainty relation (VERIFIED axiom-free)
+
+The file was flagged TERMINUS by several prior sessions, but the tracker `nextAction`
+still named one genuine theory-level direction untouched: the **Maccone–Pati stronger
+uncertainty relation** (PRL 113, 260401, 2014). The existing additive forms
+(`robertson_sum_form`, `heisenberg_sum_form`, `robertson_weighted_sum_form`) are all
+AM–GM consequences of the product bound and share a defect: their lower bound is
+proportional to `‖⟪ψ,[A,B]ψ⟫‖` and so **vanishes** whenever the commutator expectation
+does — uninformative even for genuinely incompatible observables in such a state. MP
+fixes this. Added 5 theorems (1134→~1230 lines, still 0 axioms / 0 sorries):
+
+- `normSq_add_I_smul` / `normSq_sub_I_smul` — polarization identity
+  `‖u ± i·v‖² = ‖u‖² + ‖v‖² ∓ 2·Im⟪u,v⟫`. Proof: Mathlib `norm_add_sq` (giving
+  `2·Re⟪u,I·v⟫`) then `inner_smul_right` + `RCLike.I_mul_re` (`Re(I·z) = −Im z`) and
+  `RCLike.norm_I_of_ne_zero`. The `−i` version reuses the `+i` one at `(u,−v)`.
+- `maccone_pati_uncertainty` (`+i`) / `maccone_pati_uncertainty_neg` (`−i`) — for a
+  UNIT `w ⊥ ψ` (abstract `ψ⊥`), `±2·Im⟪(A−a)ψ,(B−b)ψ⟫ + ‖⟪w,(A±iB)ψ⟫‖² ≤ Var-sum`.
+  Proof: `Γ = u ± i·v` obeys `‖⟪w,Γ⟫‖² ≤ ‖w‖²‖Γ‖² = ‖Γ‖²` (Cauchy–Schwarz, `‖w‖=1`),
+  rewrite `‖Γ‖²` by the polarization identity, and `⟪w,Γ⟫ = ⟪w,(A±iB)ψ⟫` because the
+  real shifts drop out under `⟪w,ψ⟫ = 0` (`inner_smul_right` + `mul_zero`). The extra
+  projection term is the genuine strengthening — positive even when the commutator
+  term is zero.
+- `maccone_pati_variance_form` — specialize at `a=⟨A⟩=Re⟪ψ,Aψ⟫`, `b=⟨B⟩`.
+- `maccone_pati_stronger_than_robertson_sum` — combining both orientations and taking
+  the sign with `2·Im⟪u,v⟫ ≥ 0` gives `‖⟪ψ,[A,B]ψ⟫‖ + min(both projection terms) ≤
+  Var-sum`, i.e. `robertson_sum_form` PLUS a nonnegative Maccone–Pati term.
+
+BUILD: **VERIFIED axiom-free** via the Docker-free host path
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean <abs-worktree-file>` (v4.26 oleans);
+all 5 theorems `#print axioms` = `[propext, Classical.choice, Quot.sound]`, 0 sorries,
+no `native_decide`. ★ENV gotcha: `cd .../lean-genius/proofs` is the MAIN checkout, whose
+copy of the file lacks worktree edits — must pass the WORKTREE absolute file path to
+`lake env lean` while using MAIN `.lake`.
+
+---
+
+## Session 2026-07-11 (researcher-2) — VERIFIED axiom-free + literal Δx·Δp ≥ ℏ/2 (standard-deviation form)
+
+Two developments this session on `CauchySchwarzIntegralOQ04.lean`:
+
+**(1) BUILD VERIFIED (finally).** Every prior OQ04 session (researcher-1/3/4) marked the
+file BUILD: UNVERIFIED because the Docker image build died at a containerd metadata I/O
+error. This session confirmed the file elaborates **axiom-free** via the Docker-free path
+`proofs/bin/lake env lean File.lean` against the prebuilt Mathlib oleans (5.3G .lake). All
+key theorems (`robertson_uncertainty`, `heisenberg_canonical`, `gram_eq_iff_parallel`,
+`exists_im_inner_sq_saturated`, `im_inner_smul_saturated_iff`, ...) depend only on
+`[propext, Classical.choice, Quot.sound]`. The 22 pre-existing theorems are all genuinely
+verified — the accumulated UNVERIFIED backlog was purely an operator-docker artifact.
+
+**(2) New content — the literal standard-deviation form.** The whole file stated only the
+*squared* (variance) bound `Var(A)·Var(B) ≥ ¼‖⟪[A,B]⟫‖²`; the OQ-04 prompt literally asks
+for `Δx·Δp ≥ ℏ/2` (product of standard deviations). Added three theorems, 535→~600 lines:
+- `robertson_std_form`: `½‖⟪ψ,(AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖` — the un-squared Robertson
+  bound. Proof: `Real.sqrt` of both sides of `robertson_uncertainty`; `key : lhs² ≤ rhs²`
+  closes by `nlinarith [hrob]` (ring-normalizes `(½x)²=¼x²` and `(‖u‖‖v‖)²=‖u‖²‖v‖²`), then
+  a `calc` chain `x = √(x²) ≤ √(y²) = y` via `Real.sqrt_sq` (nonneg) + `Real.sqrt_le_sqrt`.
+- `heisenberg_std_form`: same at `a=⟨A⟩=Re⟪ψ,Aψ⟫`, `b=⟨B⟩` → `Δ_ψ(A)·Δ_ψ(B) ≥ ½‖⟪[A,B]⟫‖`.
+- `heisenberg_canonical_std`: for unit `ψ` with `(AB−BA)ψ = c•ψ`, the literal
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ‖c‖/2` (= `Δx·Δp ≥ ℏ/2` at `‖c‖=ℏ`). `hnorm : ‖⟪ψ,[A,B]ψ⟫‖ = ‖c‖` via
+  `inner_smul_right`, `inner_self_eq_norm_sq_to_K`, `RCLike.norm_ofReal`, `hψ`.
+All three VERIFIED axiom-free (bin/lake env lean, `#print axioms` = foundational only).
+
+Note: gallery slug `cauchy-schwarz-integral` tracks the PARENT file, not this OQ04 research
+file (confirmed: no src/data/proofs meta references CauchySchwarzIntegralOQ04.lean), so no
+gallery resync needed. The file is now essentially at TERMINUS: squared + std forms,
+Robertson + Schrödinger + canonical, saturation characterization + attainability witness.
+
+---
+
 ## Session 2026-07-10 (researcher-4) — ATTAINABILITY: the Heisenberg bound is sharp (nonempty saturating set)
 
 Added `im_inner_I_smul_saturated` and `exists_im_inner_sq_saturated` to

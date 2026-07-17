@@ -214,6 +214,38 @@ theorem unboundedOnPrimePowers_add_nonneg {f g : ℕ → ℝ}
   have hgnn := hg p k hp hk
   linarith
 
+/-- **Closure under bounded-below perturbation on prime powers.**  If `f` is unbounded on
+prime powers and `g` has a floor at every prime power (`g(p^k) ≥ -C` for some constant
+`C ≥ 0`), then `f + g` is still unbounded on prime powers.  A constant additive shift, or
+any perturbation bounded from below, cannot spoil the unbounded ratio: the deficit `C` is
+absorbed by demanding `f(p^k)/log(p^k)` exceed the larger threshold `M + C/log 2`, which is
+legitimate because `log(p^k) ≥ log 2 > 0` on every prime power (`p ≥ 2`, `k ≥ 1`).  This
+generalizes `unboundedOnPrimePowers_add_nonneg` (the case `C = 0`): unboundedness on prime
+powers is a tail property, insensitive to any bounded-below correction term. -/
+theorem unboundedOnPrimePowers_add_bddBelow {f g : ℕ → ℝ} {C : ℝ} (hC : 0 ≤ C)
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → -C ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers (fun n => f n + g n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf (M + C / Real.log 2)
+  refine ⟨p, k, hp, hk, ?_⟩
+  show f (p ^ k) + g (p ^ k) > M * Real.log (p ^ k)
+  have hgb := hg p k hp hk
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : Real.log 2 ≤ Real.log (p ^ k) := by
+    apply Real.log_le_log (by norm_num)
+    have h2pk : 2 ≤ p ^ k := le_trans hp.two_le (Nat.le_self_pow (by omega) p)
+    exact_mod_cast h2pk
+  have hdiv_nn : 0 ≤ C / Real.log 2 := div_nonneg hC hlog2.le
+  have key : C ≤ C / Real.log 2 * Real.log (p ^ k) := by
+    have h1 : C / Real.log 2 * Real.log 2 ≤
+        C / Real.log 2 * Real.log (p ^ k) :=
+      mul_le_mul_of_nonneg_left hL hdiv_nn
+    rwa [div_mul_cancel₀ C hlog2.ne'] at h1
+  have hexp : (M + C / Real.log 2) * Real.log (p ^ k) =
+      M * Real.log (p ^ k) + C / Real.log 2 * Real.log (p ^ k) := by ring
+  linarith [hgt, hgb, key, hexp]
+
 /-
 ## (4) A strongly-additive reduction
 
@@ -352,6 +384,32 @@ theorem unboundedOnPrimePowers_of_ge_logSqWeight {g : ℕ → ℝ}
     UnboundedOnPrimePowers g :=
   unboundedOnPrimePowers_of_ge logSqWeight_unboundedOnPrimePowers hg
 
+/-- **Congruence: the hypothesis is an invariant of the prime-power restriction.**
+`UnboundedOnPrimePowers f` reads `f` only through its values `f(p^k)` at prime powers
+(`p` prime, `k ≥ 1`), so two functions agreeing there share the property:
+
+`(∀ prime powers p^k, f(p^k) = g(p^k)) → (UnboundedOnPrimePowers f ↔ UnboundedOnPrimePowers g)`.
+
+This is the equality core unifying the domination lemma `unboundedOnPrimePowers_of_ge`
+with its contrapositive `not_unboundedOnPrimePowers_of_le`: agreement on prime powers
+supplies both `≤` directions at once, so the property genuinely factors through the
+restriction of `f` to the prime powers. In particular the values of `f` *off* the prime
+powers are irrelevant to the Erdős #897 hypothesis. -/
+theorem unboundedOnPrimePowers_congr {f g : ℕ → ℝ}
+    (h : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) = g (p ^ k)) :
+    UnboundedOnPrimePowers f ↔ UnboundedOnPrimePowers g :=
+  ⟨fun hf => unboundedOnPrimePowers_of_ge hf (fun p k hp hk => (h p k hp hk).le),
+   fun hg => unboundedOnPrimePowers_of_ge hg (fun p k hp hk => (h p k hp hk).ge)⟩
+
+/-- **Equality companion of the `logSqWeight` cone.** Any function that *equals*
+`logSqWeight` on every prime power satisfies the Erdős #897 hypothesis — the equality
+specialization of the domination corollary `unboundedOnPrimePowers_of_ge_logSqWeight`,
+routed through `unboundedOnPrimePowers_congr`. -/
+theorem unboundedOnPrimePowers_of_eq_logSqWeight {g : ℕ → ℝ}
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → g (p ^ k) = logSqWeight (p ^ k)) :
+    UnboundedOnPrimePowers g :=
+  (unboundedOnPrimePowers_congr hg).mpr logSqWeight_unboundedOnPrimePowers
+
 /-
 ## (7) Structural properties of the witness `logSqWeight`
 
@@ -440,6 +498,28 @@ theorem not_unboundedOnPrimePowers_of_le_const_mul_log {f : ℕ → ℝ} {C : �
   intro h
   obtain ⟨p, k, hp, hk, hgt⟩ := h C
   exact absurd hgt (not_lt.mpr (hf p k hp hk))
+
+/-- **Closure of the failing class under nonnegative scaling (ideal-side dual of
+`unboundedOnPrimePowers_smul`).**  If `f` fails the Erdős #897 hypothesis — say
+`f(p^k) ≤ M·log(p^k)` on every prime power — then so does `c • f` for any `c ≥ 0`:
+scaling the bound by `c ≥ 0` gives `c·f(p^k) ≤ (c·M)·log(p^k)`, so the `O(log)`
+criterion `not_unboundedOnPrimePowers_of_le_const_mul_log` applies with constant `c·M`.
+Together with `unboundedOnPrimePowers_smul` (largeness survives positive scaling) this
+shows both the "large" filter and the complementary `O(log)` ideal are **positive
+cones** — closed under multiplication by nonnegative scalars — completing the cone
+structure recorded in the module header. -/
+theorem not_unboundedOnPrimePowers_smul {f : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) {c : ℝ} (hc : 0 ≤ c) :
+    ¬ UnboundedOnPrimePowers (fun n => c * f n) := by
+  unfold UnboundedOnPrimePowers at hf
+  push_neg at hf
+  obtain ⟨M, hM⟩ := hf
+  apply not_unboundedOnPrimePowers_of_le_const_mul_log (C := c * M)
+  intro p k hp hk
+  show c * f (p ^ k) ≤ c * M * Real.log (p ^ k)
+  calc c * f (p ^ k)
+      ≤ c * (M * Real.log (p ^ k)) := mul_le_mul_of_nonneg_left (hM p k hp hk) hc
+    _ = c * M * Real.log (p ^ k) := by ring
 
 /-
 ## (9) Sup-closure: the order structure is a lattice filter / ideal
@@ -539,5 +619,175 @@ theorem not_unboundedOnPrimePowers_of_bounded {f : ℕ → ℝ} {C : ℝ}
       mul_le_mul_of_nonneg_left hloglow hmaxnn
     linarith
   exact le_trans (hf p k hp hk) hmid
+
+/-
+## (11) The failing class is a genuine order ideal and additive cone
+
+Sections (9)–(10) established the *join* structure: the large functions are closed
+under `max` with anything (a sup-closed filter), and the failing `O(log)` functions
+are closed under `max` of two (`not_unboundedOnPrimePowers_max`).  This section
+completes the algebraic and lattice picture of the failing class:
+
+* **Additivity.** If `f ≤ Mf·log` and `g ≤ Mg·log` on prime powers, then
+  `f + g ≤ (Mf + Mg)·log`, so the sum fails too — no sign or positivity hypothesis
+  is needed, the two upper bounds simply add (`not_unboundedOnPrimePowers_add`).
+  Thus the failing class is closed under addition, dual to the filter-side
+  `unboundedOnPrimePowers_add_bddBelow` (which added *largeness* to a below-bounded
+  function).
+* **Meet-closure.** Dual to the sup-closure `unboundedOnPrimePowers_max_left`: if `f`
+  fails, then `min (f, g)` fails for *any* `g`, because `min (f, g) ≤ f` on every
+  prime power, and failure transfers downward (`not_unboundedOnPrimePowers_of_le`).
+  So the failing class is closed under `min` with an arbitrary function
+  (`not_unboundedOnPrimePowers_min_left` / `_min_right`).
+
+Combined with (9)–(10) this shows the `O(log)`-on-prime-powers functions form a
+genuine **order ideal** — a down-set closed under both `max` (join of two) and `min`
+(meet with anything) — that is *additionally* an additive convex cone (closed under
+`+` and, by `unboundedOnPrimePowers_smul`'s contrapositive shape, under nonnegative
+scaling).  By contrast the large class is only join-closed (a filter), never
+meet-closed: two functions each large on a different infinite set of primes have a
+pointwise `min` that is small everywhere, so no analogue of `min`-closure holds on
+the filter side.
+-/
+
+/-- **The failing class is closed under addition.**  If both `f` and `g` fail the
+Erdős #897 hypothesis — each bounded above on prime powers by a constant multiple of
+`log`, say `f ≤ Mf·log` and `g ≤ Mg·log` — then their pointwise sum also fails:
+`(f + g)(p^k) ≤ (Mf + Mg)·log(p^k)` on every prime power, so the `O(log)` criterion
+of section (8) applies with `C = Mf + Mg`.  Unlike the `max` case this needs no
+`log ≥ 0` sign input: the two upper bounds add directly.  Together with
+`not_unboundedOnPrimePowers_max` this makes the failing class an additive cone as
+well as a sup-closed ideal. -/
+theorem not_unboundedOnPrimePowers_add {f g : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) (hg : ¬ UnboundedOnPrimePowers g) :
+    ¬ UnboundedOnPrimePowers (fun n => f n + g n) := by
+  unfold UnboundedOnPrimePowers at hf hg
+  push_neg at hf hg
+  obtain ⟨Mf, hMf⟩ := hf
+  obtain ⟨Mg, hMg⟩ := hg
+  refine not_unboundedOnPrimePowers_of_le_const_mul_log
+    (C := Mf + Mg) (fun p k hp hk => ?_)
+  have h1 := hMf p k hp hk
+  have h2 := hMg p k hp hk
+  have hsum : f (p ^ k) + g (p ^ k) ≤ (Mf + Mg) * Real.log (p ^ k) :=
+    calc f (p ^ k) + g (p ^ k)
+        ≤ Mf * Real.log (p ^ k) + Mg * Real.log (p ^ k) := add_le_add h1 h2
+      _ = (Mf + Mg) * Real.log (p ^ k) := by ring
+  exact hsum
+
+/-- **Meet-closure of the failing class (ideal side, dual of
+`unboundedOnPrimePowers_max_left`).**  If `f` fails the Erdős #897 hypothesis, then so
+does its pointwise minimum with *any* function `g`: `min (f n) (g n) ≤ f n` on every
+prime power, so failure transfers downward through the anti-domination lemma
+`not_unboundedOnPrimePowers_of_le`.  The failing class is therefore closed under `min`
+with an arbitrary function — the exact meet-dual of the filter's `max`-closure, and
+what upgrades "sup-closed ideal" to "genuine order ideal". -/
+theorem not_unboundedOnPrimePowers_min_left {f g : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) :
+    ¬ UnboundedOnPrimePowers (fun n => min (f n) (g n)) :=
+  not_unboundedOnPrimePowers_of_le hf (fun _ _ _ _ => min_le_left _ _)
+
+/-- **Meet-closure of the failing class (symmetric form).**  Likewise `min` fails when
+the *right* argument fails: `min (f n) (g n) ≤ g n`, so `¬ UnboundedOnPrimePowers g`
+suffices. -/
+theorem not_unboundedOnPrimePowers_min_right {f g : ℕ → ℝ}
+    (hg : ¬ UnboundedOnPrimePowers g) :
+    ¬ UnboundedOnPrimePowers (fun n => min (f n) (g n)) :=
+  not_unboundedOnPrimePowers_of_le hg (fun _ _ _ _ => min_le_right _ _)
+
+/-
+## Positive-affine invariance of the unbounded-on-prime-powers class
+
+`unboundedOnPrimePowers_add_bddBelow` shows the class is insensitive to any
+bounded-below perturbation.  The following record the exact algebraic invariance this
+gives: the class is preserved by *subtracting* anything bounded above (the mirror of
+`add_bddBelow`), by adding any constant, and — combining with the positive scaling
+`unboundedOnPrimePowers_smul` — by every strictly-positive affine map `f ↦ c·f + d`
+(`c > 0`).  So the Erdős #897 hypothesis is a property of `f` modulo the positive-affine
+group, exactly as one expects of an "unbounded ratio to `log`" condition.
+-/
+
+/-- **Closure under subtracting a function bounded above on prime powers** (mirror of
+`unboundedOnPrimePowers_add_bddBelow`).  If `f` is unbounded on prime powers and `g` has a
+ceiling `g(p^k) ≤ C` at every prime power, then `f − g` is still unbounded on prime powers:
+`f − g ≥ f − C`, and subtracting a constant cannot spoil the unbounded ratio.  The dual of
+the bounded-below closure, obtained from it via `g ↦ −g`. -/
+theorem unboundedOnPrimePowers_sub_bddAbove {f g : ℕ → ℝ} {C : ℝ} (hC : 0 ≤ C)
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → g (p ^ k) ≤ C) :
+    UnboundedOnPrimePowers (fun n => f n - g n) := by
+  have h := unboundedOnPrimePowers_add_bddBelow (C := C) hC hf (g := fun n => - g n)
+    (fun p k hp hk => by show -C ≤ - g (p ^ k); linarith [hg p k hp hk])
+  simpa [sub_eq_add_neg] using h
+
+/-- **Closure under an additive constant.**  `f` unbounded on prime powers ⟹ `f + c` is,
+for every real `c` (positive or negative).  The `g ≡ c` case of
+`unboundedOnPrimePowers_add_bddBelow` with floor `−|c| ≤ c`: a constant shift never changes
+whether `f(p^k)/log(p^k)` is unbounded. -/
+theorem unboundedOnPrimePowers_add_const {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    (c : ℝ) : UnboundedOnPrimePowers (fun n => f n + c) :=
+  unboundedOnPrimePowers_add_bddBelow (C := |c|) (abs_nonneg c) hf
+    (fun _ _ _ _ => neg_abs_le c)
+
+/-- **Positive-affine invariance.**  For `c > 0` and any `d`, `f` unbounded on prime powers
+⟹ `c·f + d` is.  Combining positive scaling (`unboundedOnPrimePowers_smul`) with the
+constant shift (`unboundedOnPrimePowers_add_const`): the Erdős #897 hypothesis depends on
+`f` only through its class under the strictly-positive affine group `f ↦ c·f + d`, `c > 0`.
+So a witness may be normalized (`c = 1`, `d = 0`) without loss of generality. -/
+theorem unboundedOnPrimePowers_affine {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    {c d : ℝ} (hc : 0 < c) : UnboundedOnPrimePowers (fun n => c * f n + d) :=
+  unboundedOnPrimePowers_add_const (unboundedOnPrimePowers_smul hf hc) d
+
+/-
+## (15) Negation normal form and the explicit witness value
+
+The many ad-hoc selectivity criteria of sections (2), (8), (10) — `logN`, `ω`,
+`O(log)`, bounded — all instantiate a single fact: `f` *fails* the hypothesis
+exactly when it is bounded by *some* constant multiple of `log` on prime powers.
+This is the De Morgan normal form of the `∀ M, ∃ …` definition; making it an `iff`
+turns every "not unbounded" proof into "exhibit one witnessing constant `M`", and
+`not_unboundedOnPrimePowers_of_le_const_mul_log` becomes its immediate `←` half.
+
+We also record the explicit value of the reference witness `logSqWeight` on a
+prime power: it is *constant in the exponent*, `logSqWeight (p^k) = (log p)²`,
+which is precisely why `logSqWeight` witnesses the hypothesis (its normalized
+value `logSqWeight(p^k)/log(p^k) = (log p)/k` blows up along `k = 1`, `p → ∞`).
+-/
+
+/-- **Negation normal form of the Erdős #897 hypothesis.** `f` fails to be unbounded
+on prime powers *iff* it is dominated on prime powers by a single constant multiple of
+`log`: `∃ M, ∀ prime power p^k, f(p^k) ≤ M·log(p^k)`.  This is the De Morgan dual of the
+`∀ M, ∃ …` definition (`push_neg`), and it subsumes every selectivity criterion in the
+file — `not_unboundedOnPrimePowers_of_le_const_mul_log` is exactly its reverse implication,
+and `logN`/`ω`/bounded are the special constants `M = 1`, `1/log 2`, `C/log 2`. -/
+theorem not_unboundedOnPrimePowers_iff {f : ℕ → ℝ} :
+    ¬ UnboundedOnPrimePowers f ↔
+      ∃ M : ℝ, ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ M * Real.log (p ^ k) := by
+  unfold UnboundedOnPrimePowers
+  push_neg
+  rfl
+
+/-- **Explicit witness value on a prime power.** `logSqWeight (p^k) = (log p)²` for prime
+`p` and `k ≥ 1`: the weight is *constant in the exponent* because `p^k` and `p` share the
+prime support `{p}` (`logSqWeight_eq_of_primeFactors_eq` + `logSqWeight_prime`).  This is the
+structural reason `logSqWeight` witnesses the hypothesis: the numerator `(log p)²` grows with
+`p` while the denominator `log(p^k) = k·log p` only carries a single `log p`, so the ratio
+`(log p)/k` is unbounded along `k = 1`, `p → ∞`. -/
+theorem logSqWeight_primePow {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) :
+    logSqWeight (p ^ k) = (Real.log p) ^ 2 := by
+  rw [logSqWeight_eq_of_primeFactors_eq (Nat.primeFactors_pow p (by omega)),
+    logSqWeight_prime hp]
+
+/-- **The normalized witness value is exactly `(log p)/k`.**
+`logSqWeight (p^k) / log(p^k) = (log p)/k` for prime `p` and `k ≥ 1`.  Combines
+`logSqWeight_primePow` with `log(p^k) = k·log p`; cancelling one factor of the positive
+`log p` leaves `(log p)/k`.  Taking `k = 1` and `p → ∞` makes this unbounded, giving a
+fully explicit re-derivation of `logSqWeight_unboundedOnPrimePowers`. -/
+theorem logSqWeight_primePow_div_log {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) :
+    logSqWeight (p ^ k) / Real.log ((p : ℝ) ^ k) = Real.log p / k := by
+  have hlogp : 0 < Real.log p := Real.log_pos (by exact_mod_cast hp.one_lt)
+  have hlogp' : Real.log p ≠ 0 := ne_of_gt hlogp
+  rw [logSqWeight_primePow hp hk, Real.log_pow, pow_two,
+    mul_comm (k : ℝ) (Real.log p), mul_div_mul_left _ _ hlogp']
 
 end Erdos897

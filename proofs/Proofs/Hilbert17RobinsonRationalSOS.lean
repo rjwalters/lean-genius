@@ -136,14 +136,56 @@ theorem multiplier_isSumOfSquares : IsSumOfSquaresMv multiplier := by
   simp only [multiplier]
   ring
 
+/-! ### The certificate proves nonnegativity (the Positivstellensatz payoff)
+
+An SOS Positivstellensatz certificate `s·R = Σ squares` is a *proof* that `R ≥ 0`.
+Unlike the Motzkin case, the homogeneous multiplier `s = 4x² + 4y² + 4z²` vanishes
+at the origin, so we split: away from the origin `s(v) > 0` and evaluating the
+certificate gives `R(v) ≥ 0`; at the origin `R(0,0,0) = 0 ≥ 0` outright.  This
+recovers Robinson nonnegativity (`Hilbert17SumOfSquares.robinson_nonneg`, proved
+there by a direct Schur-inequality `nlinarith`) as a *corollary of the exhibited
+certificate*. -/
+
+/-- The multiplier `4x² + 4y² + 4z²` is nonnegative at every real point. -/
+theorem multiplier_eval_nonneg (v : Fin 3 → ℝ) : 0 ≤ eval v multiplier := by
+  simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X]
+  positivity
+
+/-- **Certificate-based nonnegativity of Robinson.**  For every real point `v`,
+`R(v) ≥ 0`, derived from the SOS certificate `multiplier·R = Q1² + 3Q2² + Ga² +
+Gb² + Gc²`.  (Independent route to `robinson_nonneg`.) -/
+theorem robinson_eval_nonneg (v : Fin 3 → ℝ) : 0 ≤ eval v robinson := by
+  have key : eval v multiplier * eval v robinson
+      = (eval v Q1) ^ 2 + (eval v Q2) ^ 2 + (eval v Q2) ^ 2 + (eval v Q2) ^ 2
+        + (eval v Ga) ^ 2 + (eval v Gb) ^ 2 + (eval v Gc) ^ 2 := by
+    have h := congrArg (eval v) multiplier_mul_robinson_eq
+    simpa only [map_mul, map_add, map_pow] using h
+  have hrhs : 0 ≤ eval v multiplier * eval v robinson := by rw [key]; positivity
+  rcases eq_or_ne (eval v multiplier) 0 with hz | hnz
+  · -- The multiplier vanishes only at the origin, where `R` is `0`.
+    have hsum : (v 0) ^ 2 + (v 1) ^ 2 + (v 2) ^ 2 = 0 := by
+      have := hz
+      simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X] at this
+      nlinarith [sq_nonneg (v 0), sq_nonneg (v 1), sq_nonneg (v 2)]
+    have e0 : v 0 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1), sq_nonneg (v 2)]
+    have e1 : v 1 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1), sq_nonneg (v 2)]
+    have e2 : v 2 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1), sq_nonneg (v 2)]
+    simp only [robinson, map_add, map_sub, map_mul, map_pow, eval_X, map_ofNat, e0, e1, e2]
+    norm_num
+  · have hpos : 0 < eval v multiplier :=
+      lt_of_le_of_ne (multiplier_eval_nonneg v) (Ne.symm hnz)
+    rcases le_or_gt 0 (eval v robinson) with h | h
+    · exact h
+    · exact absurd hrhs (not_le.mpr (mul_neg_of_pos_of_neg hpos h))
+
 /-! ### The rational-function corollary (Artin for Robinson, constructively) -/
 
-/-- The multiplier is nonzero in `ℝ[x, y, z]` (its coefficient of `x²` is `4`). -/
+/-- The multiplier is nonzero in `ℝ[x, y, z]` (it evaluates to `12` at `(1,1,1)`). -/
 theorem multiplier_ne_zero : multiplier ≠ 0 := by
   intro h
-  have := congrArg (eval (fun i => if i = 0 then (1 : ℝ) else 0)) h
-  simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X, map_zero] at this
-  simp only [show (2 : Fin 3) ≠ 0 by decide, if_false] at this
+  have := congrArg (eval (fun _ => (1 : ℝ))) h
+  simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X, map_zero,
+    one_pow, mul_one] at this
   norm_num at this
 
 /-- The image of the multiplier in `ℝ(x, y, z)` is nonzero. -/

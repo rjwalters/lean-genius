@@ -444,7 +444,203 @@ theorem motzkinFun_three_not_posDef : ¬ ∀ x y : ℝ, 0 < motzkinFun 3 x y := 
   rw [motzkinFun_three_zero_at_one_one] at h11
   exact lt_irrefl 0 h11
 
+/-- **Evenness in the first argument.** `motzkinFun c` depends on `x` only through the
+    even powers `x⁴`, `x²`, so reflecting `x ↦ -x` leaves the value unchanged:
+    `Mₐ(-x, y) = Mₐ(x, y)`.  Together with `motzkinFun_symm` this exhibits the full
+    `(ℤ/2)² ⋊ swap` dihedral symmetry of the family. -/
+theorem motzkinFun_even_left (c x y : ℝ) : motzkinFun c (-x) y = motzkinFun c x y := by
+  unfold motzkinFun; ring
+
+/-- **Evenness in the second argument.** `Mₐ(x, -y) = Mₐ(x, y)`, symmetric to
+    `motzkinFun_even_left` (equivalently, its conjugate by `motzkinFun_symm`). -/
+theorem motzkinFun_even_right (c x y : ℝ) : motzkinFun c x (-y) = motzkinFun c x y := by
+  unfold motzkinFun; ring
+
+/-- **Full sign symmetry.** `Mₐ(-x, -y) = Mₐ(x, y)`: combining evenness in each argument
+    (`motzkinFun_even_left`, `motzkinFun_even_right`) gives invariance under the full
+    Klein-four sign group acting on `(x, y)`. -/
+theorem motzkinFun_even_both (c x y : ℝ) : motzkinFun c (-x) (-y) = motzkinFun c x y := by
+  rw [motzkinFun_even_left, motzkinFun_even_right]
+
+/-- **Value on the `y`-axis is the constant `1`.** `Mₐ(0, y) = 1` for every `c` and `y`:
+    setting `x = 0` annihilates all three `x`-bearing monomials, leaving the constant term.
+    So the whole family agrees with the trivial PSD polynomial `1` along the `y`-axis. -/
+theorem motzkinFun_on_axis_left (c y : ℝ) : motzkinFun c 0 y = 1 := by
+  unfold motzkinFun; ring
+
+/-- **Value on the `x`-axis is the constant `1`.** `Mₐ(x, 0) = 1` for every `c` and `x`,
+    the `motzkinFun_symm` mirror of `motzkinFun_on_axis_left`. -/
+theorem motzkinFun_on_axis_right (c x : ℝ) : motzkinFun c x 0 = 1 := by
+  unfold motzkinFun; ring
+
+/-- **The real variety of `Mₐ` avoids both coordinate axes.** If `Mₐ(x, y) = 0` then
+    `x ≠ 0` and `y ≠ 0`, since `Mₐ` takes the value `1 ≠ 0` on each axis
+    (`motzkinFun_on_axis_left` / `_right`).  In particular every real zero of the family
+    (e.g. the `(±1, ±1)` zeros of the boundary member) lies strictly off the axes. -/
+theorem motzkinFun_ne_zero_on_axes {c x y : ℝ} (h : motzkinFun c x y = 0) :
+    x ≠ 0 ∧ y ≠ 0 := by
+  refine ⟨?_, ?_⟩
+  · rintro rfl; rw [motzkinFun_on_axis_left] at h; exact one_ne_zero h
+  · rintro rfl; rw [motzkinFun_on_axis_right] at h; exact one_ne_zero h
+
+/-- **The boundary member vanishes at all four sign-variants of `(1,1)`.**  Because
+    `motzkinFun 3` is even in each argument (`motzkinFun_even_left`/`_even_right`) and
+    vanishes at `(1,1)` (`motzkinFun_three_zero_at_one_one`), it vanishes at every
+    `(±1, ±1)`.  These four points are exactly the real zeros of the Motzkin polynomial —
+    the geometric obstruction that pins `c = 3` onto the PSD-cone boundary and, classically,
+    the reason it admits no sum-of-squares certificate. -/
+theorem motzkinFun_three_zero_at_sign_ones :
+    motzkinFun 3 1 1 = 0 ∧ motzkinFun 3 (-1) 1 = 0 ∧
+      motzkinFun 3 1 (-1) = 0 ∧ motzkinFun 3 (-1) (-1) = 0 := by
+  refine ⟨motzkinFun_three_zero_at_one_one, ?_, ?_, ?_⟩
+  · rw [motzkinFun_even_left]; exact motzkinFun_three_zero_at_one_one
+  · rw [motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
+  · rw [motzkinFun_even_left, motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
+
+/-! ## The positive-definite threshold: `c < 3`
+
+`motzkinFun_psd_iff` pins the PSD (`≥ 0`) threshold at `c ≤ 3`, and
+`motzkinFun_three_not_posDef` shows the boundary member `c = 3` fails *strict*
+positivity (it has real zeros at `(±1, ±1)`). What the file never states is the
+sharp *positive-definite* threshold: strictly below `c = 3` the family is
+strictly positive **everywhere** on `ℝ²`. Together these give three nested sharp
+thresholds for the Motzkin family,
+
+    positive-definite  ⟺  c < 3      (this section)
+    PSD                ⟺  c ≤ 3      (`motzkinFun_psd_iff`)
+    SOS                ⟺  c ≤ 0      (`motzkinPoly_sos_iff`),
+
+so `c = 3` is exactly where strict positivity is lost while non-negativity
+survives — the geometric meaning of "sitting on the PSD-cone boundary". All
+`0`-axiom. -/
+
+/-- **Strict positivity below the threshold, everywhere.** For every `c < 3` the
+    family `Mₐ` is strictly positive at *all* real `(x, y)`, not merely at the
+    diagonal critical point `(1,1)` (`motzkinFun_pos_at_one_one_of_lt_three`).
+    Hence `c < 3` is exactly the positive-definite regime of the family.
+
+    Proof: split on whether `x²y² = 0`. If it vanishes then only the constant `1`
+    survives (`Mₐ = 1 > 0`). Otherwise `x²y² > 0`, and writing
+    `Mₐ = M₃ + (3−c)·x²y²` with `M₃ ≥ 0` (`motzkinFun_nonneg`) and the strictly
+    positive deficit `(3−c)·x²y² > 0` gives `Mₐ > 0`. -/
+theorem motzkinFun_pos_of_lt_three {c : ℝ} (hc : c < 3) (x y : ℝ) :
+    0 < motzkinFun c x y := by
+  rcases eq_or_ne (x ^ 2 * y ^ 2) 0 with h0 | h0
+  · have hval : motzkinFun c x y = 1 := by
+      unfold motzkinFun; linear_combination (x ^ 2 + y ^ 2 - c) * h0
+    rw [hval]; norm_num
+  · have hpos : 0 < x ^ 2 * y ^ 2 :=
+      (mul_nonneg (sq_nonneg x) (sq_nonneg y)).lt_of_ne (Ne.symm h0)
+    have hM3 : 0 ≤ motzkinFun 3 x y := motzkinFun_nonneg (le_refl 3) x y
+    have heq : motzkinFun c x y = motzkinFun 3 x y + (3 - c) * (x ^ 2 * y ^ 2) := by
+      unfold motzkinFun; ring
+    have hterm : 0 < (3 - c) * (x ^ 2 * y ^ 2) := mul_pos (by linarith) hpos
+    rw [heq]; linarith
+
+/-- **Sharp positive-definite threshold: `posDef ⟺ c < 3`.** The family `Mₐ` is
+    strictly positive on all of `ℝ²` if and only if `c < 3`. This is the exact
+    strict-positivity analogue of the PSD threshold `motzkinFun_psd_iff` (`≥ 0 ⟺
+    c ≤ 3`): the positive-definite region is the *open* half-line `c < 3`, one
+    endpoint short of the (closed) PSD region `c ≤ 3`. The single missing point
+    `c = 3` is the Motzkin polynomial itself — PSD but with genuine real zeros
+    (`motzkinFun_three_not_posDef`), sitting exactly on the PSD-cone boundary. -/
+theorem motzkinFun_posDef_iff (c : ℝ) :
+    (∀ x y : ℝ, 0 < motzkinFun c x y) ↔ c < 3 := by
+  constructor
+  · intro h
+    have h11 := h 1 1
+    rw [motzkinFun_at_one_one] at h11
+    linarith
+  · intro hc x y
+    exact motzkinFun_pos_of_lt_three hc x y
+
+/-! ## Constructive Artin certificate for the whole PSD family (rational SOS)
+
+`motzkinPoly_psd_not_sos` shows every `0 < c ≤ 3` member is PSD but *not* a
+polynomial sum of squares.  Artin's theorem nevertheless guarantees each is a sum
+of squares of *rational functions*.  Here we make that constructive **uniformly
+across the entire PSD segment** `c ≤ 3`, extending the classical single-`c = 3`
+Motzkin certificate (`Hilbert17MotzkinRationalSOS`) to the whole family.
+
+The multiplier `g = 4 + 4x² + 4y²` is itself a strictly positive sum of squares,
+and the Positivstellensatz identity
+
+    g · Mₐ  =  3·G₀² + G₁² + G₂² + G₃² + G₄²
+             + (√(3−c)·2xy)² + (√(3−c)·2x²y)² + (√(3−c)·2xy²)²
+
+is an honest 10-term SOS whenever `c ≤ 3` (so `√(3−c)` is real), where
+`G₀ = 2xy − x³y − xy³`, `G₁ = x³y − xy³`, `G₂ = 2x − 2xy²`, `G₃ = 2y − 2x²y`,
+`G₄ = 2 − 2x²y²`.  The first five squares are exactly the `c = 3` certificate;
+the extra three absorb the non-negative slack `(3 − c)·g·x²y²` opened up when
+`c < 3`.  Since `g` is a positive SOS, `Mₐ = (g·Mₐ)/g` is a sum of squares of
+rational functions — a concrete instance of Artin's theorem valid across the full
+PSD range, recovering the Motzkin certificate at the boundary `c = 3`.  All
+`0`-axiom. -/
+
+/-- The positive SOS multiplier `g = 4 + 4x² + 4y²` of the Artin certificate. -/
+noncomputable def motzkinMultiplier : MvPolynomial (Fin 2) ℝ :=
+  4 + 4 * X 0 ^ 2 + 4 * X 1 ^ 2
+
+/-- The multiplier is a sum of squares: `g = 2² + (2x)² + (2y)²`. -/
+theorem motzkinMultiplier_isSOS : IsSOS motzkinMultiplier := by
+  refine ⟨3, ![2, 2 * X 0, 2 * X 1], ?_⟩
+  rw [motzkinMultiplier, Fin.sum_univ_three]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The multiplier is strictly positive everywhere (`≥ 4 > 0`), so dividing by it
+    is legitimate — this is what makes the certificate a genuine rational-SOS
+    representation. -/
+theorem motzkinMultiplier_pos (v : Fin 2 → ℝ) :
+    0 < MvPolynomial.eval v motzkinMultiplier := by
+  rw [motzkinMultiplier]
+  simp only [map_add, map_mul, map_pow, map_ofNat, eval_X]
+  positivity
+
+/-- **Positivstellensatz certificate for the PSD family.** For every `c ≤ 3` the
+    product `g · Mₐ` of the positive multiplier `g = 4 + 4x² + 4y²` with the family
+    member `Mₐ` is an explicit sum of `10` squares.  The extra `√(3−c)` squares
+    vanish at `c = 3`, recovering the classical Motzkin certificate. -/
+theorem motzkinPoly_mul_multiplier_isSOS {c : ℝ} (hc : c ≤ 3) :
+    IsSOS (motzkinMultiplier * motzkinPoly c) := by
+  set s : MvPolynomial (Fin 2) ℝ := C (Real.sqrt (3 - c)) with hs_def
+  have hs : s ^ 2 = 3 - C c := by
+    rw [hs_def, ← map_pow, Real.sq_sqrt (by linarith : (0 : ℝ) ≤ 3 - c),
+      map_sub, map_ofNat]
+  refine ⟨10, ![
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 - 2 * (X 0 * X 1 ^ 2),
+    2 * X 1 - 2 * (X 0 ^ 2 * X 1),
+    2 - 2 * (X 0 ^ 2 * X 1 ^ 2),
+    s * (2 * X 0 * X 1),
+    s * (2 * X 0 ^ 2 * X 1),
+    s * (2 * X 0 * X 1 ^ 2)], ?_⟩
+  rw [motzkinMultiplier, motzkinPoly]
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero,
+    Matrix.cons_val_succ, mul_pow, hs]
+  ring
+
+/-- **Constructive Artin for the whole PSD Motzkin family.** For every `c ≤ 3`
+    there is a strictly positive sum-of-squares multiplier `g` with `g · Mₐ` a sum
+    of squares.  Hence `Mₐ = (g · Mₐ)/g` is a sum of squares of rational functions
+    — a concrete, uniform instance of Artin's theorem across the entire PSD segment
+    `c ≤ 3`, complementing the polynomial-SOS *failure* on `0 < c ≤ 3`
+    (`motzkinPoly_psd_not_sos`) and recovering the classical certificate at
+    `c = 3`. -/
+theorem motzkinPoly_artin_certificate {c : ℝ} (hc : c ≤ 3) :
+    ∃ g : MvPolynomial (Fin 2) ℝ,
+      IsSOS g ∧
+      (∀ v : Fin 2 → ℝ, 0 < MvPolynomial.eval v g) ∧
+      IsSOS (g * motzkinPoly c) :=
+  ⟨motzkinMultiplier, motzkinMultiplier_isSOS, motzkinMultiplier_pos,
+    motzkinPoly_mul_multiplier_isSOS hc⟩
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
 #print axioms Hilbert17OQ03OQ05.motzkinPoly_not_sos
+#print axioms Hilbert17OQ03OQ05.motzkinPoly_artin_certificate

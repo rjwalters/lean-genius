@@ -1120,6 +1120,72 @@ theorem infinite_nonRepresentable_four_two :
     rw [NonRepresentable, Set.mem_setOf_eq, isRepresentable_four_two_iff]
     exact hnp
 
+/-! ### The full base-power family `(q^k, q)`
+
+The concrete `(4, 2)` results above are the `q = 2, k = 2` instance of a uniform
+phenomenon: whenever the larger base is a *power* of the smaller, `p = q^k`, the pair is
+non-coprime and its power forms `(q^k)^a q^b = q^{ka+b}` are all powers of `q`, hence a
+divisibility chain. The chain collapse then makes representability coincide with being a
+power form for every `n`, and every number that is not a power of `q` is non-representable
+— giving infinitely many non-representables with no axiom. This characterises the entire
+non-coprime base-power regime, the exact complement of the coprime hypothesis of the deep
+axiom `erdos_lewin_infinite`. -/
+
+/-- Every `(q^k, q)`-power form with `k ≥ 1` is either `1` or divisible by `q`:
+`(q^k)^a q^b = q^{ka+b}` equals `1` only when `a = b = 0`, and is a positive power of `q`
+otherwise. The general-base companion of `isPowerForm_four_two_one_or_even`. -/
+theorem isPowerForm_base_pow_one_or_dvd {q k n : ℕ} (hk : 1 ≤ k)
+    (h : IsPowerForm (q ^ k) q n) : n = 1 ∨ q ∣ n := by
+  obtain ⟨a, b, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos b with hb | hb
+  · rcases Nat.eq_zero_or_pos a with ha | ha
+    · subst ha; subst hb; left; norm_num
+    · subst hb; right
+      simp only [pow_zero, mul_one]
+      exact dvd_pow (dvd_pow_self q (by omega : k ≠ 0)) ha.ne'
+  · right
+    exact (dvd_pow_self q hb.ne').mul_left ((q ^ k) ^ a)
+
+/-- **Base-power regime `p = q^k`: representable ⇔ power form, unconditionally (0-axiom).**
+Since `q^k` and `q` generate a divisibility chain (`powerForm_chain_of_base_pow`), a
+representing antichain collapses to a singleton, so `IsRepresentable (q^k) q n ↔
+IsPowerForm (q^k) q n` for every `n`. Generalises `isRepresentable_four_two_iff` (the
+`q = 2, k = 2` instance) to the whole family. -/
+theorem isRepresentable_base_pow_iff {q k n : ℕ} :
+    IsRepresentable (q ^ k) q n ↔ IsPowerForm (q ^ k) q n :=
+  isRepresentable_iff_isPowerForm_of_chain (powerForm_chain_of_base_pow k) n
+
+/-- **Infinitely many non-representables for every base-power pair `(q^k, q)` — elementary,
+0-axiom.** For `q ≥ 2` and `k ≥ 1`, each number `q(m+1)+1` exceeds `1` and leaves
+remainder `1` on division by `q`, so it is neither `1` nor divisible by `q`; hence it is
+not a `(q^k, q)`-power form (`isPowerForm_base_pow_one_or_dvd`) and therefore
+non-representable (`isRepresentable_base_pow_iff`). The injection `m ↦ q(m+1)+1` embeds
+`ℕ` into `NonRepresentable (q^k) q`. This is the full non-coprime base-power family of the
+Erdős–Lewin phenomenon, obtained with no axiom; `infinite_nonRepresentable_four_two` is the
+`q = 2, k = 2` case, and the coprimality hypothesis of `erdos_lewin_infinite` is exactly
+what excludes this regime. -/
+theorem infinite_nonRepresentable_base_pow {q k : ℕ} (hq : 2 ≤ q) (hk : 1 ≤ k) :
+    Set.Infinite (NonRepresentable (q ^ k) q) := by
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun m : ℕ => q * (m + 1) + 1) ?_ ?_
+  · intro a b hab
+    change q * (a + 1) + 1 = q * (b + 1) + 1 at hab
+    have h1 : q * (a + 1) = q * (b + 1) := by omega
+    have := Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) h1
+    omega
+  · intro m
+    have hnp : ¬ IsPowerForm (q ^ k) q (q * (m + 1) + 1) := by
+      intro h
+      rcases isPowerForm_base_pow_one_or_dvd hk h with h1 | hd
+      · have : 0 < q * (m + 1) := Nat.mul_pos (by omega) (by omega)
+        omega
+      · have hone : q ∣ 1 := (Nat.dvd_add_right (dvd_mul_right q (m + 1))).mp hd
+        have := Nat.le_of_dvd one_pos hone
+        omega
+    show (q * (m + 1) + 1) ∈ NonRepresentable (q ^ k) q
+    rw [NonRepresentable, Set.mem_setOf_eq, isRepresentable_base_pow_iff]
+    exact hnp
+
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/

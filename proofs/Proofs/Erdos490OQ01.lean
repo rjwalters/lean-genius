@@ -16,6 +16,7 @@
   3. Limsup/liminf sandwich: c ≤ productRatio ≤ C (§4)
   4. Limit existence → limit in [c, C] (§5)
   5. Structural analysis: cardinality bounds, trivial bound (§6)
+  6. Monotonicity of maxProd in N and unconditional divergence maxProd → ∞ (§7)
 
   Sorry count: 0
   Axiom count: 1 (Szemerédi upper bound only). The optimal-example lower bound
@@ -356,6 +357,38 @@ theorem productRatio_sandwich :
   linarith
 
 -- ============================================================================
+-- § 7. Monotonicity and Divergence of maxProd
+-- ============================================================================
+
+/-- **Monotonicity of `maxProd` in `N`** (0-axiom).  Any valid pair for parameter `M`
+is again valid for a larger parameter `N ≥ M`: the elements still lie in `{1,…,N}` and
+the products stay distinct, so the optimum can only grow, `maxProd M ≤ maxProd N`.
+This is the natural monotonicity underlying the limit question — the un-normalized
+optimum is non-decreasing, so any oscillation of `productRatio'` comes purely from the
+`log N / N²` normalization, not from the raw maximum. -/
+theorem maxProd_mono {M N : ℕ} (hM : 2 ≤ M) (hN : 2 ≤ N) (hMN : M ≤ N) :
+    maxProd M hM ≤ maxProd N hN := by
+  obtain ⟨A, B, hA, hB, hd, heq⟩ := maxProd_is_achieved M hM
+  have hA' : IsSubsetUpTo' A N := fun a ha => ⟨(hA a ha).1, le_trans (hA a ha).2 hMN⟩
+  have hB' : IsSubsetUpTo' B N := fun b hb => ⟨(hB b hb).1, le_trans (hB b hb).2 hMN⟩
+  calc maxProd M hM = A.card * B.card := heq.symm
+    _ ≤ maxProd N hN := maxProd_is_upper N hN A B hA' hB' hd
+
+/-- **`maxProd` diverges** (0-axiom, unconditional).  Since `maxProd N ≥ N`
+(`maxProd_ge_self`), the shifted sequence `k ↦ maxProd (k+2)` tends to `+∞`.  Combined
+with `maxProd_mono`, the (un-normalized) maximum grows without bound *and* monotonically:
+the entire content of the open limit question lives in the `log N / N²` normalization,
+never in the growth of the raw optimum. -/
+theorem maxProd_tendsto_atTop :
+    Tendsto (fun k => (maxProd (k + 2) (Nat.le_add_left 2 k) : ℝ)) atTop atTop := by
+  have hlb : Tendsto (fun k : ℕ => ((k : ℝ) + 2)) atTop atTop :=
+    tendsto_atTop_add_const_right atTop 2 tendsto_natCast_atTop_atTop
+  refine tendsto_atTop_mono (fun k => ?_) hlb
+  have hge := maxProd_ge_self (k + 2) (Nat.le_add_left 2 k)
+  push_cast at hge
+  linarith
+
+-- ============================================================================
 -- Summary
 -- ============================================================================
 
@@ -369,3 +402,5 @@ theorem productRatio_sandwich :
 #check @card_le_of_subset_upto
 #check @maxProd_le_sq
 #check @productRatio_sandwich
+#check @maxProd_mono
+#check @maxProd_tendsto_atTop

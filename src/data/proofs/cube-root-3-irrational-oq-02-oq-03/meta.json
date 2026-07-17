@@ -2,7 +2,7 @@
   "id": "cube-root-3-irrational-oq-02-oq-03",
   "title": "Vahlen–Capelli Criterion for Binomial Irreducibility",
   "slug": "cube-root-3-irrational-oq-02-oq-03",
-  "description": "Formalizes the classical Vahlen–Capelli criterion: over a field K, X^n − C a is irreducible iff (1) a is not a p-th power for any prime p | n, and (2) if 4 | n then a ∉ −4·K⁴. Generalizes the Eisenstein ∛3 argument to arbitrary exponents. The odd case is a complete iff (wrapping Mathlib's X_pow_sub_C_irreducible_iff_forall_prime_of_odd); the Sophie Germain identity and both necessity-obstruction factorizations are proved; the even-sufficiency direction (the genuine Mathlib TODO, Lang Algebra VI §9) is isolated as the sole sorry.",
+  "description": "Formalizes the classical Vahlen–Capelli criterion: over a field K, X^n − C a is irreducible iff (1) a is not a p-th power for any prime p | n, and (2) if 4 | n then a ∉ −4·K⁴. Generalizes the Eisenstein ∛3 argument to arbitrary exponents. The odd case is a complete iff (wrapping Mathlib's X_pow_sub_C_irreducible_iff_forall_prime_of_odd); the Sophie Germain identity and both necessity-obstruction factorizations are proved; the even-sufficiency direction (the genuine Mathlib TODO, Lang Algebra VI §9) is now fully proved (two_power_capelli_neg_square), leaving the entry sorry-free and axiom-free.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-07-04",
@@ -18,13 +18,13 @@
       "sophie-germain",
       "eisenstein"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
-    "assumptions": "Builds cleanly (Docker-verified 2026-07-05, 3061 jobs, 0 axioms, exactly 1 sorry). The sole remaining sorry is now confined to the pure 2-power regime 8 ∣ n WITH −a ∈ K² (a = −c²) — a strict narrowing of the earlier 'even n ≥ 4' gap, and precisely the residual open content of Mathlib/FieldTheory/KummerExtension.lean's TODO (Lang, Algebra, VI §9). Everything else is machine-checked: the Sophie Germain identity, both necessity factorizations, the full necessity direction for ALL n (both parities), the complete odd-case iff, the even base cases n=2 (prime-exponent criterion) and n=4 (vahlen_capelli_four_suff — the full Sophie-Germain two-quadratic factor analysis via capelli_four_coeff_contra + quartic_two_two_coeffs + no_linear_factor), the odd-part peel-off vahlen_capelli_even_mul_odd (norm transfer through the tower), and the norm-descent keystone two_power_capelli_of_neg_not_square which discharges the ENTIRE −a ∉ K² branch of the 2-power tower unconditionally. Net verified coverage: every even n with 8 ∤ n is fully irreducibility-decided, and for 8 ∣ n only the −a ∈ K² sub-case remains.",
-    "lineCount": 819,
-    "theoremCount": 21,
+    "assumptions": "Builds cleanly and is now FULLY sorry-free and axiom-free (host-verified via lake env lean, 2026-07-12: no errors, 0 axioms, 0 sorries). The last open sub-case — the pure 2-power regime 8 ∣ n WITH −a ∈ K² (a = −c²), precisely the residual open content of Mathlib/FieldTheory/KummerExtension.lean's TODO (Lang, Algebra, VI §9, X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — was closed by the Aristotle prover (project 958405df) via a Lang VI §9 quadratic descent across K(√a) and inlined as two_power_capelli_neg_square (helpers quad_repr/quad_indep/descent/two_power_irred); two v4.28→v4.31 toolchain-drift grind steps were reproved by hand (a Fin-cardinality vacuous goal and a linear_combination field identity). The whole Vahlen–Capelli criterion vahlen_capelli (both parities, necessity + sufficiency), two_power_capelli, and the ∛3 corollaries (cubeRootThree_irreducible/_irrational) now depend only on [propext, Classical.choice, Quot.sound].",
+    "lineCount": 1293,
+    "theoremCount": 39,
     "definitionCount": 1,
     "originalContributions": [
       "VahlenCapelliCond: the full criterion as a reusable predicate over any field",
@@ -39,27 +39,31 @@
       "vahlen_capelli_four_suff: n=4 sufficiency (X⁴ − C a irreducible over EVERY field when a not a square and a ∉ −4K⁴) — the Sophie-Germain quartic base case, fully proved",
       "vahlen_capelli_even_mul_odd: coprime odd-part peel-off — transfers the odd exponent factor through the tower by a field-norm computation (N(x) = −a since the base degree is even)",
       "two_power_capelli_of_neg_not_square: norm-descent keystone — X^(2^k) − C a irreducible for all k≥1 whenever neither a nor −a is a square; discharges the entire −a ∉ K² branch of the 2-power tower by induction with no auxiliary hypothesis",
-      "two_power_capelli / vahlen_capelli: full assembly; every case closed except the isolated 8 ∣ n with −a ∈ K² sub-case (the sole sorry, = Mathlib's open TODO)"
+      "two_power_capelli / vahlen_capelli: full assembly; EVERY case closed, including the isolated 8 ∣ n with −a ∈ K² sub-case (Mathlib's open TODO), via two_power_capelli_neg_square (Lang VI §9 descent, Aristotle project 958405df) — the whole criterion is sorry-free",
+      "three_not_cube_rat / cubeRootThree_irreducible / cubeRootThree_irrational: the concrete namesake instance — X³ − 3 is irreducible over ℚ, recovered as a direct instance of the general criterion vahlen_capelli_pos_prime (p=3, a=3), with 3-not-a-cube proved by a one-prime 3-adic valuation argument (3·v₃(b)=1 impossible); closes the loop from the abstract criterion back to the ∛3-irrationality headline. All three axiom-free and sorry-free.",
+      "neg_not_square_of_neg_one_square / capelli_cond_two_of_neg_one_square: when i=√−1 ∈ K, a non-square a forces −a non-square and a ∉ −4·K⁴ (since (i·b)²=−b² and (i·2b²)²=−4b⁴), so both the −a∈K² branch and condition (2) collapse into condition (1)",
+      "two_power_capelli_of_neg_one_square: pure 2-power base X^(2^k)−C a irreducible for all k≥1 over any field containing i whenever a is a non-square — routed through the norm-descent keystone alone, so the Lang VI §9 quadratic-descent branch never fires",
+      "vahlen_capelli_of_neg_one_square: Vahlen–Capelli iff with condition (2) dropped, over any field with i∈K (ℂ, alg. closures, ℚ(i), 𝔽_q with q≡1 mod 4) — the imaginary-unit twin of the ordered-field simplification vahlen_capelli_pos (PART 7)"
     ]
   },
   "leanFile": {
-    "lineCount": 819,
+    "lineCount": 1293,
     "path": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
     "axiomCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 21
+    "theoremCount": 39
   },
   "overview": {
     "historicalContext": "The irreducibility of pure binomials X^n − a is one of the oldest questions in the theory of equations. Abel and Galois already understood the odd-prime case, but the definitive criterion is due to Theodor Vahlen (1895) and Alfredo Capelli (1897), who independently settled when X^n − a is irreducible over a field: it is irreducible iff a is not a p-th power for any prime p ∣ n and — the subtle extra clause — a ∉ −4·K⁴ whenever 4 ∣ n. This last condition traces directly to the Sophie Germain identity u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²), which Germain introduced around 1825 during her work on Fermat's Last Theorem. Serge Lang's Algebra (VI §9) gives the modern textbook treatment. Mathlib formalises only the odd-exponent half (X_pow_sub_C_irreducible_iff_forall_prime_of_odd) and leaves the even case as an explicit TODO citing exactly this Lang reference — so this entry attacks a concrete, named gap in the library. The problem descends from the parent gallery entry proving ∛3 irrational by Eisenstein: that argument is the case n = 3, a = 3, and Vahlen–Capelli is the exact iff that generalises the ad hoc Eisenstein bound to every exponent and radicand.",
     "problemStatement": "For a field $K$, an element $a \\in K$, and $n \\ge 1$: $X^n - Ca$ is irreducible over $K$ iff (1) $a$ is not a $p$-th power in $K$ for every prime $p \\mid n$, and (2) if $4 \\mid n$ then $a \\notin -4K^4$, i.e. $a \\ne -4b^4$ for all $b \\in K$.",
-    "proofStrategy": "Encode the two-part criterion as a predicate VahlenCapelliCond, then split the biconditional by parity. Necessity holds for all n and is fully proved: two obstruction lemmas exhibit explicit proper divisors — obstruction_pow_dvd (if a = cᵖ then X^{n/p} − Cc divides the binomial, via x−y ∣ xⁿ−yⁿ) for condition (1), and capelli_factor_dvd (the Sophie Germain / Capelli factorisation of X^{4m} + 4(Cb)⁴ into two degree-2m quadratics) for condition (2). The odd branch of sufficiency is complete: for odd n condition (2) is vacuous (4 ∤ n by omega), so the criterion reduces verbatim to Mathlib's Kummer-extension theorem. The even-sufficiency direction — the hard Capelli theorem — is progressively dismantled: write n = 2ᵏt with t odd, dispatch the odd part via vahlen_capelli_even_mul_odd (a norm transfer through the tower), reducing to the pure 2-power base X^(2ᵏ) − C a. The base cases k=1 (n=2, prime exponent) and k=2 (n=4, vahlen_capelli_four_suff via the Sophie-Germain two-quadratic coefficient contradiction) are proved, so every even n with 8 ∤ n is fully decided. For k≥3 the tower splits on whether −a is a square: the −a ∉ K² branch is closed unconditionally by the norm-descent keystone two_power_capelli_of_neg_not_square (a root x of the even-degree base has norm −a; a square root would put −a in K²). The SOLE remaining sorry is thus the narrow residual 8 ∣ n WITH −a ∈ K², where norm descent is inconclusive and condition (2)'s −4·K⁴ obstruction becomes indispensable — exactly Mathlib's open TODO.",
+    "proofStrategy": "Encode the two-part criterion as a predicate VahlenCapelliCond, then split the biconditional by parity. Necessity holds for all n and is fully proved: two obstruction lemmas exhibit explicit proper divisors — obstruction_pow_dvd (if a = cᵖ then X^{n/p} − Cc divides the binomial, via x−y ∣ xⁿ−yⁿ) for condition (1), and capelli_factor_dvd (the Sophie Germain / Capelli factorisation of X^{4m} + 4(Cb)⁴ into two degree-2m quadratics) for condition (2). The odd branch of sufficiency is complete: for odd n condition (2) is vacuous (4 ∤ n by omega), so the criterion reduces verbatim to Mathlib's Kummer-extension theorem. The even-sufficiency direction — the hard Capelli theorem — is progressively dismantled: write n = 2ᵏt with t odd, dispatch the odd part via vahlen_capelli_even_mul_odd (a norm transfer through the tower), reducing to the pure 2-power base X^(2ᵏ) − C a. The base cases k=1 (n=2, prime exponent) and k=2 (n=4, vahlen_capelli_four_suff via the Sophie-Germain two-quadratic coefficient contradiction) are proved, so every even n with 8 ∤ n is fully decided. For k≥3 the tower splits on whether −a is a square: the −a ∉ K² branch is closed unconditionally by the norm-descent keystone two_power_capelli_of_neg_not_square (a root x of the even-degree base has norm −a; a square root would put −a in K²). The narrow residual 8 ∣ n WITH −a ∈ K² sub-case, where norm descent is inconclusive and condition (2)'s −4·K⁴ obstruction becomes indispensable (exactly Mathlib's open TODO), is closed by two_power_capelli_neg_square via the Lang VI §9 quadratic descent across K(√a) — so the criterion is fully proved with no sorry.",
     "keyInsights": [
       "The entire even/odd asymmetry of binomial irreducibility comes from a single algebraic fact: u⁴+4v⁴ factors into two quadratics (Sophie Germain, ~1825). Condition (2) of the criterion exists only because this factorisation exists.",
       "Necessity and sufficiency have completely different difficulty profiles. Necessity is elementary and holds for every n — it is just producing an explicit proper divisor. Sufficiency for 4 ∣ n is the genuinely hard content and is precisely what Mathlib leaves open.",
       "Both necessity witnesses are the *same idea* applied to different factorisations: condition (1) uses x−y ∣ xⁿ−yⁿ (a p-th power splits off a linear-in-X^m factor); condition (2) uses u⁴+4v⁴ (a −4b⁴ radicand splits off a quadratic-in-X^m factor).",
       "For odd n the criterion collapses onto Mathlib's existing theorem because condition (2)'s hypothesis 4 ∣ n can never fire — a structural vacuity, not an omission. The Lean proof makes this collapse a theorem about the predicate rather than a re-derivation.",
-      "The sole sorry is honest and well-localised — and progressively narrowed: it no longer covers 'even n ≥ 4' but only the 2-power tail 8 ∣ n WITH −a ∈ K². The −a ∉ K² half of the 2-power tower falls to a clean norm-descent induction (N(x) = −a for a base root x), and only when −a is itself a square does that argument stall, leaving the −4·K⁴ obstruction of condition (2) as the essential missing ingredient — coinciding exactly with Mathlib's open KummerExtension TODO.",
+      "The former sole sorry is now closed: the −a ∉ K² half of the 2-power tower falls to a clean norm-descent induction (N(x) = −a for a base root x), and the −a ∈ K² half (where that argument stalls and the −4·K⁴ obstruction of condition (2) is essential) is discharged by two_power_capelli_neg_square, a Lang VI §9 quadratic descent — resolving Mathlib's open KummerExtension TODO in this file.",
       "The reduction n = 2ᵏt (odd t) shows the even case is not monolithic: coprime-exponent multiplicativity of irreducibility peels away t, concentrating all difficulty in the pure 2-power tower n = 2ᵏ, where induction on k meets the Sophie Germain obstruction."
     ]
   },
@@ -111,14 +115,14 @@
       "title": "Part 5 — The full criterion and the open even-sufficiency gap",
       "startLine": 172,
       "endLine": 202,
-      "summary": "Assembles vahlen_capelli by parity: odd branch closed via Part 4, even branch carries the sole sorry with a documented n = 2ᵏt reduction — the exact even-sufficiency TODO from Mathlib's KummerExtension."
+      "summary": "Assembles vahlen_capelli by parity: odd branch closed via Part 4, even branch closed via the n = 2ᵏt reduction down to two_power_irred / two_power_capelli_neg_square — the even-sufficiency TODO from Mathlib's KummerExtension, now discharged."
     }
   ],
   "conclusion": {
-    "summary": "This entry formalises the Vahlen–Capelli criterion for binomial irreducibility as a single predicate and proves everything except the one direction Mathlib itself leaves open. The Sophie Germain identity, both necessity-obstruction factorisations (for conditions (1) and (2)), and the complete odd-exponent biconditional are all established; the even-sufficiency step (conditions (1),(2) ⟹ irreducible when 4 ∣ n) is isolated as the sole sorry, matching the explicit TODO in Mathlib/FieldTheory/KummerExtension.lean.",
-    "implications": "Closing the remaining sorry would upgrade Mathlib's odd-only Kummer-extension result to the full classical criterion, giving a complete, uniform account of when a pure binomial is irreducible over an arbitrary field — the exact generalisation the parent ∛3-irrationality (Eisenstein, n=3) entry motivates. The reusable VahlenCapelliCond predicate and the two elementary obstruction lemmas are already independently useful: they supply machine-checked necessity witnesses for every n, and the Sophie Germain factorisation is a standalone ring identity applicable well beyond this criterion (Aurifeuillian factorisations, sums of powers).",
+    "summary": "This entry formalises the Vahlen–Capelli criterion for binomial irreducibility as a single predicate and proves everything except the one direction Mathlib itself leaves open. The Sophie Germain identity, both necessity-obstruction factorisations (for conditions (1) and (2)), and the complete odd-exponent biconditional are all established; the even-sufficiency step (conditions (1),(2) ⟹ irreducible when 4 ∣ n) was the last open sub-case — the explicit TODO in Mathlib/FieldTheory/KummerExtension.lean — and is now closed by two_power_capelli_neg_square (Aristotle project 958405df, Lang VI §9 quadratic descent), so the entry is fully sorry-free and axiom-free.",
+    "implications": "Closing the remaining sorry (now done, via two_power_capelli_neg_square) upgrades Mathlib's odd-only Kummer-extension result to the full classical criterion, giving a complete, uniform account of when a pure binomial is irreducible over an arbitrary field — the exact generalisation the parent ∛3-irrationality (Eisenstein, n=3) entry motivates. The reusable VahlenCapelliCond predicate and the two elementary obstruction lemmas are already independently useful: they supply machine-checked necessity witnesses for every n, and the Sophie Germain factorisation is a standalone ring identity applicable well beyond this criterion (Aurifeuillian factorisations, sums of powers).",
     "openQuestions": [
-      "Complete the even-sufficiency sorry: prove conditions (1),(2) ⟹ Irreducible(X^n − Ca) for 4 ∣ n, following the n = 2ᵏt reduction and induction on the 2-adic valuation k sketched in the docstring.",
+      "DONE — the even-sufficiency case (conditions (1),(2) ⟹ Irreducible(X^n − Ca) for 4 ∣ n) is now fully proved via the n = 2ᵏt reduction plus two_power_irred / two_power_capelli_neg_square; the entry is 0-sorry.",
       "Formalise the coprime-exponent multiplicativity of binomial irreducibility (X^{st} − Ca behaviour under gcd(s,t)=1) that the reduction relies on, if not already available in Mathlib.",
       "Upstream the finished criterion to Mathlib to discharge the standing TODO in KummerExtension.lean, generalising X_pow_sub_C_irreducible_iff_forall_prime_of_odd to all n.",
       "Derive the classical corollaries (e.g. irreducibility of cyclotomic-adjacent binomials, degree of radical field extensions K(a^{1/n})/K) as immediate consequences of the full iff."
@@ -136,5 +140,5 @@
       "description": "OQ-04 gives an unconditional Eisenstein criterion for squarefree radicands; Vahlen–Capelli is the exact iff that replaces the sufficient Eisenstein hypothesis."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

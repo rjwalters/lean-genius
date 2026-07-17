@@ -46,12 +46,15 @@
       "fixed_point_sum_binary_4 (BurnsideCounting.lean:349): theorem (formerly axiom) — sum of |Fix(r)| over r in {0,1,2,3} of Coloring 4 2 equals 24, closed by native_decide on the decidable IsFixedByRotation subtype cardinalities.",
       "polya_cyclic_fixed_count (BurnsideCountingOQ03.lean:184): general theorem that the cyclic fixed-coloring count for rotation r is k^gcd(r,n).",
       "fp_sum_binary4 / polya_sum_Z4_binary (BurnsideCountingOQ03.lean:253,265): the binary length-4 fixed-point sum equals 24 in both subtype-cardinality and divisor-sum 2^gcd(r,4) forms.",
-      "polya_binary4_necklace_count (BurnsideCountingOQ03.lean:374): the Burnside/Polya count (sum 2^gcd(r,4))/4 = 6 distinct binary 4-necklaces."
+      "polya_binary4_necklace_count (BurnsideCountingOQ03.lean:374): the Burnside/Polya count (sum 2^gcd(r,4))/4 = 6 distinct binary 4-necklaces.",
+      "BurnsideCounting.card_group_dvd_sum_fixedBy (0-axiom): necklace integrality n | sum_a |Fix(a)| for k-colored cyclic necklaces of length n, general in (n,k) — from the engine sum_fixedBy_eq_card_necklaces_mul. BurnsideCounting.card_necklaces_eq_sum_fixedBy_div (0-axiom): exact Burnside average |necklaces| = (sum_a |Fix(a)|)/n, the general form of the concrete (8+2+2)/3=4 and (16+2+4+2)/4=6 evaluations."
     ],
     "insights": [
       "Both framings of this problem are already resolved in main: the parent native_decide discharge (oq-01 S3) and the OQ03 Polya divisor-sum theorems. Verification, not new proof, was the remaining work.",
       "The headline necklace count never required bridging Mathlib's multiplicative burnside_lemma to the additive ZMod n action: once IsFixedByRotation/the orbit relation are decidable, both the fixed-point sum and the 6-necklace count collapse to native_decide (BurnsideCounting.lean) or explicit Fin-sum evaluation (BurnsideCountingOQ03.lean).",
-      "native_decide closes the two finite counts at the cost of the Lean.ofReduceBool axiom (compiler-trusted, not kernel-reduced); the divisor-sum identity polya_sum_Z4_binary in OQ03 is an alternative kernel-checked route to the same value 24."
+      "native_decide closes the two finite counts at the cost of the Lean.ofReduceBool axiom (compiler-trusted, not kernel-reduced); the divisor-sum identity polya_sum_Z4_binary in OQ03 is an alternative kernel-checked route to the same value 24.",
+      "The Burnside engine sum_fixedBy_eq_card_necklaces_mul (sum |Fix(a)| = |necklaces|*n) gives necklace integrality n | sum |Fix(a)| as a one-liner (dvd_mul_left) and the exact Burnside average |necklaces| = (sum |Fix(a)|)/n via Nat.mul_div_cancel — the general statements behind every concrete /n necklace count in the cluster, previously only used implicitly per-case.",
+      "§8 (researcher-8, 2026-07-11): the headline Burnside sum 16+2+4+2=24 also has an ofReduceBool-free proof: fp_sum_binary4_kernel specializes the general kernel-checked polya_cyclic_fixed_count at each of the four rotations and closes the residual gcd-power arithmetic with plain decide, avoiding the native_decide route of fp_sum_binary4. The same specialization yields general corollaries fixed_count_identity (r=0 -> k^n), fixed_count_of_coprime (Coprime step -> k), fixed_count_dvd_pow (|Fix(r)| | k^n), and the sandwich k <= |Fix(r)| <= k^n (k>=1)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -95,15 +98,15 @@
     "mathlib": []
   },
   "started": "2026-04-03T15:38:25.652Z",
-  "lastUpdate": "2026-04-03T15:38:25.669Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "significance": 6,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/BurnsideCounting.lean",
       "filename": "BurnsideCounting.lean",
-      "lineCount": 671,
-      "theoremCount": 18,
+      "lineCount": 715,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,
@@ -113,8 +116,8 @@
     {
       "path": "Proofs/BurnsideCountingOQ03.lean",
       "filename": "BurnsideCountingOQ03.lean",
-      "lineCount": 405,
-      "theoremCount": 16,
+      "lineCount": 463,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

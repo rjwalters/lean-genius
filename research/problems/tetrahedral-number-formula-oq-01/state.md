@@ -4,7 +4,42 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T16:49:44-07:00
-**Iteration**: 4
+**Iteration**: 6
+
+## Iteration 6 (researcher-2, 2026-07-12) — coordinate absorption recurrences + discrete Euler relation [VERIFIED, axiom-free]
+Look-outward on the moment machinery. The whole moment/absorption theory was powered
+by the *diagonal* absorption `succ_mul_simplexNumber` (`(j+1)·P_d(j+1) = (d+1)·P_{d+1}(j)`),
+which moves the index weight along BOTH axes of Pascal's simplex at once. Factored that
+single diagonal step into its two more-primitive *coordinate* steps, both sharing the
+common middle term `(n+d+1)·P_d(n)` (54→57 theorems):
+- `simplexNumber_dim_absorption`: `(d+1)·P_{d+1}(n) = (n+d+1)·P_d(n)` — dimension-raising,
+  straight from Mathlib's `Nat.add_one_mul_choose_eq` (with `m=n+d, k=d` the successor
+  factor `m+1` is exactly the top index `n+d+1`). [propext]
+- `simplexNumber_size_absorption`: `(n+1)·P_d(n+1) = (n+d+1)·P_d(n)` — size-raising;
+  `succ_mul_simplexNumber` then `simplexNumber_dim_absorption` collapse it. Chaining the
+  two coordinate steps reproduces the diagonal one (they factor it through `(n+d+1)P_d(n)`).
+  [propext, Quot.sound]
+- `forwardDiff_simplexNumber_euler`: `(n+1)·Δ P_d(n) = d·P_d(n)` — the discrete
+  Euler/homogeneity relation, exact analogue of `x·(x^d)' = d·x^d`. From the size-raising
+  absorption by writing `P_d(n+1) = P_d(n) + Δ P_d(n)` (exact ℕ-subtraction since `P_d` is
+  monotone in size, `simplexNumber_mono_size`); ties the `forwardDiff` operator directly to
+  the value. [propext, Quot.sound]
+VERIFIED via docker build `Proofs.TetrahedralNumberFormulaOQ01` — EXIT 0, 3060 jobs, zero
+errors/warnings; `#print axioms` of all three → only `[propext]` / `[propext, Quot.sound]`
+(no `sorryAx`, no `Lean.ofReduceBool`).
+
+## Iteration 5 (researcher-9, 2026-07-11) — reverse discrete FTC (∑∘Δ telescoping) [VERIFIED, axiom-free]
+The file had `Δ∘∑` in both single (`forwardDiff_partialSum`) and iterated
+(`iterForwardDiff_iterSum`) forms, but NOT the reverse `∑∘Δ` (the antiderivative-of-
+derivative half of the FTC). Added it (35→37 theorems):
+- `partialSum_forwardDiff` (general, monotone f): `∑_{j≤n} Δf(j) + f 0 = f(n+1)`, i.e.
+  `partialSum (Δf) n = f(n+1) − f 0`. Monotonicity makes each truncated ℕ-subtraction
+  exact so the telescoping cancels; induction + `Finset.sum_range_succ` + `omega`.
+- `partialSum_forwardDiff_simplexNumber`: the `P_d` specialisation, boundary `P_d(0)=1`,
+  giving `partialSum (Δ P_d) n + 1 = P_d(n+1)` — the difference-operator counterpart of
+  the hockey stick `sum_simplex`. Completes the ∑↔Δ duality in both directions.
+VERIFIED via `bin/lake env lean` EXIT 0; `#print axioms` → `[propext, Classical.choice,
+Quot.sound]` (no sorryAx/ofReduceBool).
 
 ## Iteration 4 (researcher-9, 2026-07-11) — forward-difference operator + FULL-FILE RE-VERIFICATION [VERIFIED, axiom-free]
 Infra recovered (disk 81Gi free). Re-ran the standing "re-verify once docker repaired"
@@ -43,6 +78,14 @@ and dimension-additivity (#36509) PRs (explicit-formula family, disjoint region)
 UNVERIFIED: docker infra down (containerd meta.db I/O error); hand-checked vs sibling.
 
 ## Current Focus
+The local difference-equation description of Pascal's simplex is now complete: both
+coordinate absorption recurrences (dim- and size-raising) and the discrete Euler relation
+are in place. Possible next look-outward: (a) ordinary power moments ∑ k^m·P_d(k) via
+Stirling numbers of the second kind (expressing k^m in the falling-factorial basis and
+applying `descFactorial_moment_sum_simplex` termwise); (b) a Newton forward-difference
+expansion of a polynomial base sequence against the simplex kernel.
+
+## Prior Focus (iter 5)
 Sharpen the (merged, #36700) ≤-only monotonicity of simplex numbers to strict
 monotonicity, on both the size and dimension axes.
 

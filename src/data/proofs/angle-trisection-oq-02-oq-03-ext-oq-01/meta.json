@@ -51,7 +51,8 @@
       "**Doubling invariance**: TotientIsPow2 (2n) ↔ TotientIsPow2 n. The reverse direction is angle bisection (n-gon ⇒ 2n-gon); the forward direction (2n-gon ⇒ n-gon) is the arithmetically forced converse — bisection can never *create* constructibility where there was none.",
       "**The prime 2 splits by parity**: φ(2n) equals 2φ(n) for even n but only φ(n) for odd n. Both cases nonetheless preserve the power-of-2 property, which is why the prime 2 is 'free' in the Gauss–Wantzel criterion and only the odd part of n matters.",
       "**Reduction to the odd part**: writing n = 2^a·m collapses constructibility of the n-gon to that of the m-gon. This complements the parent's coprime multiplicativity — together they reduce the whole criterion to odd prime powers.",
-      "**Infinite families from one computation**: φ(15)=8 gives that every 2^a·15-gon (15,30,60,120,…) is constructible; φ(7)=6 has the odd prime factor 3, so no 2^a·7-gon (7,14,28,56,…) is ever constructible, regardless of how many bisections are applied."
+      "**Infinite families from one computation**: φ(15)=8 gives that every 2^a·15-gon (15,30,60,120,…) is constructible; φ(7)=6 has the odd prime factor 3, so no 2^a·7-gon (7,14,28,56,…) is ever constructible, regardless of how many bisections are applied.",
+      "**The two Gauss–Wantzel primes play asymmetric roles.** This file and its parent together explain the *shape* of the characterization n = 2^a × (product of distinct Fermat primes): the prime 2 is *inert*, admitting an arbitrarily high power a with no effect (proved here), whereas each odd Fermat prime may appear **at most once** — a squared odd prime p² already forces the factor p(p−1) into φ, killing the power-of-2 property (the parent's coprime multiplicativity). The doubling invariance is exactly the statement that 2 sits outside this squarefree constraint; only the odd primes are rationed."
     ]
   },
   "sections": [
@@ -147,6 +148,16 @@
       "targetId": "angle-trisection-oq-02",
       "relationship": "related",
       "description": "OQ02 characterizes constructibility via [ℚ(cos 2π/n):ℚ] being a power of 2; the doubling invariance is the arithmetic shadow of the angle-bisection construction"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "related",
+      "description": "The general power-of-two obstruction on the other side of Gauss–Wantzel. That entry proves 'a number with an odd prime factor is not a power of two' and applies it to polynomial degree and Galois group order; here the same power-of-two predicate is applied to φ(n), and the doubling invariance TotientIsPow2(2n) ↔ TotientIsPow2(n) is precisely the statement that multiplying by the prime 2 never disturbs the power-of-two property — the constructive complement to that entry's odd-prime obstruction."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The arithmetic function this entry's predicate is built on: TotientIsPow2 n asserts Euler's totient φ(n) is a power of two, the Gauss–Wantzel condition for constructibility of the regular n-gon. That entry develops φ through Euler's theorem a^φ(n) ≡ 1 (mod n); the doubling and 2-power reductions here are statements about φ's behaviour under multiplication by 2."
     }
   ],
   "mainTheorems": [
@@ -163,6 +174,20 @@
       "statement": "∀ a n, TotientIsPow2 (2^a * n) ↔ TotientIsPow2 n",
       "description": "Constructibility of a regular polygon depends only on the odd part of n.",
       "significance": "Reduces Gauss–Wantzel to odd prime powers when combined with coprime multiplicativity"
+    },
+    {
+      "name": "totient_pow2_iff_odd_part",
+      "type": "core",
+      "statement": "n = 2^a * m → (TotientIsPow2 n ↔ TotientIsPow2 m)",
+      "description": "Reduction to the odd part: writing n = 2^a·m, the regular n-gon is constructible iff the regular m-gon is. A one-line corollary of the 2-power invariance (rw ∘ totient_pow2_two_pow_mul_iff).",
+      "significance": "The clean statement of keyInsight #3 — every factor of 2 in n is inert, so only the odd part carries constructibility information"
+    },
+    {
+      "name": "constructible_two_pow_mul_fifteen",
+      "type": "corollary",
+      "statement": "∀ a, TotientIsPow2 (2^a * 15)",
+      "description": "Every 2^a·15-gon (15, 30, 60, 120, …) is constructible, from the single input φ(15) = 2^3 propagated by the 2-power invariance.",
+      "significance": "Positive counterpart to the 7-gon obstruction: one odd base computation generates an infinite constructible tower via bisection"
     },
     {
       "name": "not_constructible_two_pow_mul_seven",

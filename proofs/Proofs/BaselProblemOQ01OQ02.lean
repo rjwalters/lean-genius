@@ -253,6 +253,48 @@ theorem zeta_even_product_transcendental (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
   rw [hprod]
   exact transcendental_ratCast_mul (pi_transcendental_over_rationals.pow (by omega)) hq
 
+/-- **Cross-power ratio of even zeta values is rational — axiom-free.**  The plain ratio
+    `ζ(2n)/ζ(2m)` always carries a leftover nonzero even power of π
+    (`zeta_even_ratio_eq_rat_mul_pi_pow`), so distinct even zeta values are π-power
+    *incommensurable*.  Raising to the *crossed* exponents cancels π exactly, though:
+    `ζ(2n)^m / ζ(2m)^n = qₙ^m / qₘ^n ∈ ℚ`, because `ζ(2n)^m = qₙ^m·π^(2nm)` and
+    `ζ(2m)^n = qₘ^n·π^(2nm)` share the *identical* power `π^(2nm)`.  This exhibits the
+    algebraic *dependence* of the even zeta values: any two become commensurable once raised
+    to the crossed exponents, reflecting that they all live in the transcendence-degree-1
+    field `ℚ(π)`.  Uses only Euler's closed form, **no** `hermite_lindemann`. -/
+theorem zeta_even_cross_pow_ratio_rational (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ m / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n
+        = (q : ℝ) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
+  refine ⟨qn ^ m / qm ^ n, div_ne_zero (pow_ne_zero _ hqn) (pow_ne_zero _ hqm), ?_⟩
+  rw [hqn_eq, hqm_eq, mul_pow, mul_pow, ← pow_mul, ← pow_mul,
+    show 2 * n * m = 2 * m * n by ring, mul_div_mul_comm,
+    div_self (pow_ne_zero _ hπ), mul_one]
+  push_cast; ring
+
+/-- **Proportionality form of the cross-power dependence — axiom-free.**  Equivalent
+    multiplicative statement of `zeta_even_cross_pow_ratio_rational`: for `n, m ≥ 1` there is a
+    nonzero rational `q` with `ζ(2n)^m = q · ζ(2m)^n`.  So any two even zeta values are
+    *rationally proportional after crossing exponents* — the concrete witness of their algebraic
+    dependence, avoiding the division hypotheses of the ratio form.  Derived from the ratio form
+    by clearing the (nonzero) denominator `ζ(2m)^n`.  **No** `hermite_lindemann`. -/
+theorem zeta_even_cross_pow_proportional (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ m
+        = (q : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n := by
+  obtain ⟨q, hq, hratio⟩ := zeta_even_cross_pow_ratio_rational n m hn hm
+  refine ⟨q, hq, ?_⟩
+  have hden : (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n ≠ 0 := by
+    obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+    have hqmR : (qm : ℝ) ≠ 0 := by exact_mod_cast hqm
+    have hz : (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ≠ 0 := by
+      rw [hqm_eq]; exact mul_ne_zero hqmR (pow_ne_zero _ Real.pi_ne_zero)
+    exact pow_ne_zero _ hz
+  exact (div_eq_iff hden).mp hratio
+
 /-- **Normalization returns to ℚ — the sharp axiom-free contrast.**  Dividing `ζ(2n)` by the
     *matching* power `π^(2n)` lands back in the rationals: `ζ(2n)/π^(2n) = qₙ ∈ ℚ`.  This pins
     down exactly which factor carries the transcendence — it is precisely the `π^(2n)` and
@@ -428,6 +470,229 @@ theorem zeta_even_weighted_prod_transcendental {ι : Type*} (f g : ι → ℕ) (
   have hpos : 0 < ∑ i ∈ s, f i * g i :=
     Finset.sum_pos (fun i hi => Nat.mul_pos (hf i hi) (hg i hi)) hs
   omega
+
+/-- **Master engine: every nonconstant ℚ-polynomial of π is transcendental over ℚ.**
+
+    For any `f ∈ ℚ[X]` of positive degree, `f(π)` is transcendental over ℚ.  This is the
+    additive counterpart of `transcendental_ratCast_mul`/`Transcendental.pow`: those two engines
+    handle *monomials* `q·π^m`, whereas this one covers *arbitrary* rational polynomial
+    combinations of powers of π — in particular sums such as `qₙ·π^(2n) + qₘ·π^(2m)` that are no
+    longer monomials and therefore lie outside the multiplicative class `ℚ∖{0}·π^(even)`.  It
+    follows from `Transcendental ℚ π` (`pi_transcendental_over_rationals`) via `Transcendental.aeval`:
+    a nonconstant polynomial has nonzero leading coefficient, which over the field ℚ is a
+    nonzerodivisor, so `aeval` preserves transcendence.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π), via `Proofs.PiTranscendental`. -/
+theorem transcendental_aeval_pi (f : Polynomial ℚ) (hf : f.natDegree ≠ 0) :
+    Transcendental ℚ (Polynomial.aeval π f) := by
+  refine pi_transcendental_over_rationals.aeval f hf ?_
+  rw [mem_nonZeroDivisors_iff_ne_zero, Polynomial.leadingCoeff_ne_zero]
+  intro h0
+  exact hf (by rw [h0, Polynomial.natDegree_zero])
+
+/-- **Sums of two distinct even zeta values are transcendental over ℚ.**
+
+    For `m < n`, `ζ(2n) + ζ(2m) = qₙ·π^(2n) + qₘ·π^(2m)` is a *nonconstant* rational polynomial in
+    π (its two π-powers have distinct even degrees `2n > 2m`, so no cancellation collapses it to a
+    monomial or a constant), hence transcendental over ℚ by the master engine
+    `transcendental_aeval_pi`.  Concretely `ζ(2) + ζ(4) = π²/6 + π⁴/90`, `ζ(2) + ζ(6)`, … are all
+    transcendental.
+
+    This is the genuinely *additive* frontier of the file: the multiplicative results
+    (`zeta_even_product_transcendental`, `zeta_even_ratio_transcendental`,
+    `zeta_even_pow_transcendental`, and their `Finset` generalisations) all keep the value inside
+    the single-π-power class `ℚ∖{0}·π^(even)`, where transcendence reduces to a lone
+    `Transcendental.pow`.  A *sum* of two distinct even zeta values escapes that class — it is a
+    two-term polynomial in π — so it genuinely requires the full polynomial engine.  (For `n < m`
+    the sum is symmetric, so the same conclusion holds by commutativity.)
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_add_transcendental (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  -- The two-term polynomial qₙ·X^(2n) + qₘ·X^(2m); evaluating at π gives the sum.
+  set p : Polynomial ℚ :=
+    Polynomial.C qn * Polynomial.X ^ (2 * n) + Polynomial.C qm * Polynomial.X ^ (2 * m) with hp
+  -- Its degree is 2n ≠ 0: the higher-degree monomial dominates (2m < 2n, both coeffs nonzero).
+  have hdeg_left : (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree = 2 * n :=
+    Polynomial.natDegree_C_mul_X_pow (2 * n) qn hqn
+  have hdeg_right : (Polynomial.C qm * Polynomial.X ^ (2 * m)).natDegree = 2 * m :=
+    Polynomial.natDegree_C_mul_X_pow (2 * m) qm hqm
+  have hlt : (Polynomial.C qm * Polynomial.X ^ (2 * m)).natDegree
+      < (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree := by
+    rw [hdeg_left, hdeg_right]; omega
+  have hpne : p.natDegree ≠ 0 := by
+    rw [hp, Polynomial.natDegree_add_eq_left_of_natDegree_lt hlt, hdeg_left]; omega
+  -- aeval π p is exactly ζ(2n) + ζ(2m).
+  have haeval : Polynomial.aeval π p
+      = (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) := by
+    rw [hqn_eq, hqm_eq, hp]
+    simp [map_add, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X]
+  rw [← haeval]
+  exact transcendental_aeval_pi p hpne
+
+/-- **ζ(2) + ζ(4) = π²/6 + π⁴/90 is transcendental over ℚ** — a concrete two-term sum. -/
+theorem zeta_two_add_zeta_four_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) + (∑' k : ℕ, 1 / (k : ℝ) ^ 4)) := by
+  have := zeta_even_add_transcendental 2 1 one_pos (by norm_num)
+  simpa [add_comm] using this
+
+/-- **Adding a rational preserves transcendence over ℚ — axiom-free.**  The additive companion of
+    `transcendental_ratCast_mul` (which scales by a nonzero rational): if `x` is transcendental over
+    ℚ then so is `x + q` for every `q ∈ ℚ`, since `x = (x + q) − q` would otherwise be a difference
+    of algebraics.  Reusable engine for the rational-shift closure of the even zeta values below. -/
+theorem transcendental_add_ratCast {x : ℝ} (hx : Transcendental ℚ x) (q : ℚ) :
+    Transcendental ℚ (x + (q : ℝ)) := by
+  intro halg
+  apply hx
+  have hq : IsAlgebraic ℚ ((q : ℝ)) := by
+    simpa using isAlgebraic_algebraMap (R := ℚ) (A := ℝ) q
+  have hx_eq : x = (x + (q : ℝ)) - (q : ℝ) := by ring
+  rw [hx_eq]
+  exact halg.sub hq
+
+/-- **Rational shifts of even zeta values are transcendental over ℚ.**  For `n ≥ 1` and any
+    `q ∈ ℚ`, `ζ(2n) + q` is transcendental — the additive analogue of the ℚ*-scaling closure
+    `zeta_even_ratCast_mul_transcendental`.  Immediate from `zeta_even_transcendental` and the
+    axiom-free shift engine `transcendental_add_ratCast`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_add_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (q : ℝ)) :=
+  transcendental_add_ratCast (zeta_even_transcendental n hn) q
+
+/-- **Every nonconstant ℚ-polynomial of a single even zeta value is transcendental over ℚ.**
+
+    For `n ≥ 1` and any `f ∈ ℚ[X]` of positive degree, `f(ζ(2n))` is transcendental over ℚ.  This is
+    the single-value analogue of the master engine `transcendental_aeval_pi` (which handles `f(π)`):
+    it unifies *all* rational-polynomial expressions in one even zeta value under a single statement.
+    In particular it subsumes the per-shape closure results as special cases —
+    `zeta_even_pow_transcendental` (`f = Xʲ`), `zeta_even_ratCast_mul_transcendental` (`f = C c · X`),
+    and `zeta_even_add_ratCast_transcendental` (`f = X + C q`) — and it further covers *mixed*
+    polynomials such as `X² + X` that combine a power and the value itself, which none of those
+    shape-specific theorems reach.  It follows from `zeta_even_transcendental` via
+    `Transcendental.aeval`: a nonconstant polynomial has nonzero leading coefficient, which over the
+    field ℚ is a nonzerodivisor, so `aeval` preserves transcendence.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_aeval_transcendental (n : ℕ) (hn : 0 < n) (f : Polynomial ℚ) (hf : f.natDegree ≠ 0) :
+    Transcendental ℚ (Polynomial.aeval (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) f) := by
+  refine (zeta_even_transcendental n hn).aeval f hf ?_
+  rw [mem_nonZeroDivisors_iff_ne_zero, Polynomial.leadingCoeff_ne_zero]
+  intro h0
+  exact hf (by rw [h0, Polynomial.natDegree_zero])
+
+/-- **ζ(2)² + ζ(2) is transcendental over ℚ** — a concrete *mixed* polynomial of a single even zeta
+    value (`f = X² + X`, so `f(ζ(2)) = ζ(2)² + ζ(2) = π⁴/36 + π²/6`).  Unlike the two-term sum
+    `zeta_two_add_zeta_four_transcendental` (which adds two *distinct* zeta values) this combines a
+    *power* of one value with the value itself, an expression reachable only through the general
+    polynomial engine `zeta_even_aeval_transcendental`. -/
+theorem zeta_two_sq_add_zeta_two_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) ^ 2 + (∑' k : ℕ, 1 / (k : ℝ) ^ 2)) := by
+  -- The mixed polynomial X² + X has natDegree 2 ≠ 0 (the X² term dominates the X term).
+  have hlt : (Polynomial.X : Polynomial ℚ).natDegree
+      < (Polynomial.X ^ 2 : Polynomial ℚ).natDegree := by
+    rw [Polynomial.natDegree_X, Polynomial.natDegree_X_pow]; omega
+  have hf : (Polynomial.X ^ 2 + Polynomial.X : Polynomial ℚ).natDegree ≠ 0 := by
+    rw [Polynomial.natDegree_add_eq_left_of_natDegree_lt hlt, Polynomial.natDegree_X_pow]; omega
+  have h := zeta_even_aeval_transcendental 1 one_pos (Polynomial.X ^ 2 + Polynomial.X) hf
+  simpa using h
+
+/-- **Differences of two distinct even zeta values are transcendental over ℚ.**
+
+    The subtractive companion of `zeta_even_add_transcendental`.  For `m < n`,
+    `ζ(2n) − ζ(2m) = qₙ·π^(2n) − qₘ·π^(2m) = qₙ·π^(2n) + (−qₘ)·π^(2m)` is a *nonconstant* rational
+    polynomial in π: writing the lower term with coefficient `−qₘ ≠ 0` keeps both π-powers present
+    with distinct even degrees `2n > 2m`, so nothing collapses it to a monomial or a constant.  Hence
+    it is transcendental over ℚ by the master engine `transcendental_aeval_pi`.  Concretely
+    `ζ(4) − ζ(2) = π⁴/90 − π²/6`, `ζ(6) − ζ(2)`, … are all transcendental.
+
+    Together with `zeta_even_add_transcendental` this closes the two-distinct-value ± frontier:
+    both the sum and the difference of any two even zeta values escape the single-π-power class
+    `ℚ∖{0}·π^(even)` and require the full polynomial engine.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_sub_transcendental (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hqmneg : (-qm) ≠ 0 := neg_ne_zero.mpr hqm
+  -- The two-term polynomial qₙ·X^(2n) + (−qₘ)·X^(2m); evaluating at π gives the difference.
+  set p : Polynomial ℚ :=
+    Polynomial.C qn * Polynomial.X ^ (2 * n) + Polynomial.C (-qm) * Polynomial.X ^ (2 * m) with hp
+  have hdeg_left : (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree = 2 * n :=
+    Polynomial.natDegree_C_mul_X_pow (2 * n) qn hqn
+  have hdeg_right : (Polynomial.C (-qm) * Polynomial.X ^ (2 * m)).natDegree = 2 * m :=
+    Polynomial.natDegree_C_mul_X_pow (2 * m) (-qm) hqmneg
+  have hlt : (Polynomial.C (-qm) * Polynomial.X ^ (2 * m)).natDegree
+      < (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree := by
+    rw [hdeg_left, hdeg_right]; omega
+  have hpne : p.natDegree ≠ 0 := by
+    rw [hp, Polynomial.natDegree_add_eq_left_of_natDegree_lt hlt, hdeg_left]; omega
+  -- aeval π p is exactly ζ(2n) − ζ(2m).
+  have haeval : Polynomial.aeval π p
+      = (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) := by
+    rw [hqn_eq, hqm_eq, hp]
+    simp only [map_add, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, map_neg,
+      eq_ratCast]
+    ring
+  rw [← haeval]
+  exact transcendental_aeval_pi p hpne
+
+/-- **ζ(4) − ζ(2) = π⁴/90 − π²/6 is transcendental over ℚ** — a concrete two-term difference. -/
+theorem zeta_four_sub_zeta_two_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 4) - (∑' k : ℕ, 1 / (k : ℝ) ^ 2)) := by
+  have := zeta_even_sub_transcendental 2 1 one_pos (by norm_num)
+  simpa using this
+
+/-- **Subtracting a rational preserves transcendence over ℚ — axiom-free.**  The subtractive
+    companion of `transcendental_add_ratCast`: if `x` is transcendental over ℚ then so is `x − q`
+    for every `q ∈ ℚ`, since `x = (x − q) + q` would otherwise be a sum of algebraics.  Immediate
+    from `transcendental_add_ratCast` applied to `−q`. -/
+theorem transcendental_sub_ratCast {x : ℝ} (hx : Transcendental ℚ x) (q : ℚ) :
+    Transcendental ℚ (x - (q : ℝ)) := by
+  have h := transcendental_add_ratCast hx (-q)
+  simpa [sub_eq_add_neg, Rat.cast_neg] using h
+
+/-- **Rational shifts (by subtraction) of even zeta values are transcendental over ℚ.**  For `n ≥ 1`
+    and any `q ∈ ℚ`, `ζ(2n) − q` is transcendental — the subtractive analogue of
+    `zeta_even_add_ratCast_transcendental`.  Immediate from `zeta_even_transcendental` and the
+    axiom-free shift engine `transcendental_sub_ratCast`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_sub_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (q : ℝ)) :=
+  transcendental_sub_ratCast (zeta_even_transcendental n hn) q
+
+/-- **The multiplicative inverse preserves transcendence over ℚ — axiom-free.**  The
+    reciprocal companion of `transcendental_ratCast_mul`/`transcendental_div_ratCast`,
+    completing the *field*-operation closure (`+`, `−`, `×`, `⁻¹`): if `x` is transcendental
+    over ℚ then so is `x⁻¹`.  Since the algebraic elements of a field are closed under inverse
+    (`IsAlgebraic.inv_iff`), an algebraic `x⁻¹` would force `x = (x⁻¹)⁻¹` algebraic, contradicting
+    transcendence of `x`.  (For `x = 0`, transcendence already fails, so the hypothesis excludes
+    that degenerate case.) -/
+theorem transcendental_inv {x : ℝ} (hx : Transcendental ℚ x) : Transcendental ℚ x⁻¹ :=
+  fun h => hx (IsAlgebraic.inv_iff.mp h)
+
+/-- **Reciprocals of even zeta values are transcendental over ℚ.**  For `n ≥ 1`,
+    `1/ζ(2n) = qₙ⁻¹·π^(−2n)` is transcendental — the multiplicative-inverse closure of the even
+    zeta values, immediate from `zeta_even_transcendental` and the axiom-free engine
+    `transcendental_inv`.  Together with the sum/difference/product/ratio/power results this
+    closes the field operations on the even zeta values: every one keeps the value transcendental.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_inv_transcendental (n : ℕ) (hn : 0 < n) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n))⁻¹) :=
+  transcendental_inv (zeta_even_transcendental n hn)
+
+/-- **1/ζ(2) = 6/π² is transcendental over ℚ** — a concrete reciprocal instance. -/
+theorem zeta_two_inv_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2)⁻¹) := by
+  have := zeta_even_inv_transcendental 1 one_pos
+  simpa using this
 
 /-!
 ## The open odd case (documentation only)

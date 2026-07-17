@@ -473,6 +473,29 @@ theorem sum_fixedBy_eq_card_necklaces_mul (n k : ℕ) [NeZero n] :
     _ = @Fintype.card (Quotient (@coloringSetoid n k _))
           (coloringQuotientFintype n k) * n := rfl
 
+/-- **Necklace integrality (Burnside divisibility).**  The total fixed-point sum
+    `∑_{a : ZMod n} |Fix(a)|` over the rotation group is divisible by the group
+    order `n`.  Immediate from the Burnside engine
+    `sum_fixedBy_eq_card_necklaces_mul` (the sum equals `|necklaces| · n`).  This is
+    the general reason every concrete necklace count in this file comes out an
+    integer: the averaged Burnside quotient `(∑ |Fix|)/n` is *exact*, never a
+    truncated division. -/
+theorem card_group_dvd_sum_fixedBy (n k : ℕ) [NeZero n] :
+    n ∣ ∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c } := by
+  rw [sum_fixedBy_eq_card_necklaces_mul n k]
+  exact dvd_mul_left n _
+
+/-- **Burnside average (exact form).**  The number of `k`-colored cyclic necklaces
+    of length `n` is exactly the average of the fixed-point counts over the rotation
+    group: `|necklaces| = (∑_{a} |Fix(a)|) / n`, an *exact* natural-number division
+    (no truncation, thanks to `card_group_dvd_sum_fixedBy`).  This is Burnside's
+    lemma in the necklace setting, solved for the orbit count — the general form of
+    the concrete `(8+2+2)/3 = 4` and `(16+2+4+2)/4 = 6` evaluations below. -/
+theorem card_necklaces_eq_sum_fixedBy_div (n k : ℕ) [NeZero n] :
+    @Fintype.card (Quotient (@coloringSetoid n k _)) (coloringQuotientFintype n k)
+      = (∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c }) / n := by
+  rw [sum_fixedBy_eq_card_necklaces_mul n k, Nat.mul_div_cancel _ (NeZero.pos n)]
+
 /-- The fixed-point sum for binary 3-necklaces.
     - |Fix(0)| = 8 (identity fixes all `2^3` colorings)
     - |Fix(1)| = 2 (only the two constant colorings have period 1)
@@ -669,6 +692,34 @@ theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p 
   rw [hrw]
   exact Nat.dvd_sub hdvd1 hdvd2
 
+/-- **Explicit prime-length necklace count.**  Dividing the multiplicative identity
+`|necklaces| · p = kᵖ + (p−1)·k` (`necklaces_prime_length_mul`) through by the prime
+`p` gives the closed form
+
+  `|necklaces| = (kᵖ − k) / p + k`.
+
+The division is exact because `p ∣ kᵖ − k` (`prime_dvd_pow_sub_self`), so the `k` free
+orbits (the constant colorings, each a singleton necklace) sit on top of the
+`(kᵖ − k) / p` orbits of size exactly `p` into which the cyclic group partitions the
+non-constant colorings.  For binary length `2` this reads `(4 − 2)/2 + 2 = 3`, and for
+`p = 3` `(k³ − k)/3 + k`, recovering `binary_necklaces_3 = 4` at `k = 2`. -/
+theorem card_necklaces_prime_length {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k)
+      = (k ^ p - k) / p + k := by
+  obtain ⟨d, hd⟩ := prime_dvd_pow_sub_self hp k
+  have hkp : k ≤ k ^ p := Nat.le_self_pow hp.pos.ne' k
+  have hddiv : (k ^ p - k) / p = d := by rw [hd, Nat.mul_div_cancel_left d hp.pos]
+  rw [hddiv]
+  have hmul := necklaces_prime_length_mul hp k
+  have hkpe : k ^ p = p * d + k := by omega
+  have hpk : (p - 1) * k + k = p * k := by
+    rw [Nat.sub_one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left k hp.pos)]
+  have hexp : (d + k) * p = p * d + p * k := by ring
+  have key : (@Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k)) * p
+      = (d + k) * p := by
+    rw [hmul, hexp, hkpe]; omega
+  exact Nat.eq_of_mul_eq_mul_right hp.pos key
+
 /-- **Fermat's little theorem, congruence form.**  The divisibility `p ∣ kᵖ − k` proved
     combinatorially above (`prime_dvd_pow_sub_self`) is exactly the modular statement
     `kᵖ ≡ k [MOD p]`.  We transfer it via `Nat.modEq_iff_dvd'`, using `k ≤ kᵖ` (`p ≠ 0`).
@@ -690,3 +741,25 @@ theorem pow_prime_sub_one_modEq_one {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : ¬ 
   have hstep : k * k ^ (p - 1) ≡ k * 1 [MOD p] := by
     rw [mul_one, hrw]; exact pow_prime_modEq_self hp k
   exact Nat.ModEq.cancel_left_of_coprime hcop hstep
+
+/-- **At least the constant necklaces.**  For a prime `p`, the number of `k`-colored
+necklaces of length `p` is at least `k` — the `k` monochromatic colorings are each fixed
+by every rotation, so each is its own singleton orbit.  Immediate from the closed form
+`card_necklaces_prime_length = (kᵖ − k)/p + k`, whose leading term is a nonnegative
+`ℕ`-quotient. -/
+theorem card_necklaces_prime_length_ge {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    k ≤ @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) := by
+  rw [card_necklaces_prime_length hp k]
+  exact Nat.le_add_left k _
+
+/-- **Aperiodic prime-length necklace count.**  Subtracting the `k` constant necklaces from
+the total leaves exactly `(kᵖ − k)/p` necklaces — the *aperiodic* ones.  Because `p` is
+prime, a coloring of length `p` has trivial rotational stabiliser unless it is constant, so
+every non-constant coloring lies in a free orbit of size exactly `p`; the `kᵖ − k`
+non-constant colorings therefore split into `(kᵖ − k)/p` necklaces.  This is the exact-orbit
+refinement underlying the combinatorial Fermat proof `prime_dvd_pow_sub_self`, and for prime
+`p` it equals the number of length-`p` Lyndon words up to rotation. -/
+theorem card_aperiodic_necklaces_prime_length {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) - k
+      = (k ^ p - k) / p := by
+  rw [card_necklaces_prime_length hp k, Nat.add_sub_cancel]

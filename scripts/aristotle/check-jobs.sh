@@ -46,35 +46,58 @@ if [[ -z "${ARISTOTLE_API_KEY:-}" ]]; then
     fi
 fi
 
+# --- Aristotle v2 status model -------------------------------------------
+# The v2 CLI (aristotlelib >= 1.0) splits status into two levels:
+#   * PROJECT status (`aristotle list --status`) is only RUNNING | IDLE.
+#     RUNNING = a task is actively searching; IDLE = no task running (terminal
+#     from the project's perspective — the task underneath may have COMPLETEd,
+#     FAILED, etc.).
+#   * TASK status (`aristotle tasks <project-id>` STATUS column, also shown by
+#     `aristotle show <project-id>`) carries the fine-grained terminal states:
+#     IN_PROGRESS | COMPLETE | COMPLETE_WITH_ERRORS | FAILED | CANCELED | ...
+# The removed v1 project-level enums (NOT_STARTED, QUEUED, COMPLETE,
+# COMPLETE_WITH_ERRORS, OUT_OF_BUDGET, FAILED, CANCELED) now error out with
+# "invalid choice" if passed to `aristotle list --status`. See issue #38098.
+
 # Parse project entries from 'aristotle list' table output.
-# Each line matching a UUID pattern is a project entry.
-# Format: ID STATUS CREATED PROGRESS
-# Example: 5b609df4-dcc6-4e9b-8742-d0b4560f222b COMPLETE 2 days ago 100%
+# v2 columns: ID CREATED NAME STATUS   (STATUS is RUNNING | IDLE)
+# The NAME column can contain spaces / a trailing "..." ellipsis, so we read
+# the first field (ID) and the LAST field (project STATUS) and ignore the
+# middle. `aristotle list` does not report a numeric progress percentage in v2.
 parse_list_output() {
     local output="$1"
     while IFS= read -r line; do
         [[ "$line" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} ]] || continue
 
-        local pid status progress
+        local pid proj_status
         pid=$(echo "$line" | awk '{print $1}')
-        status=$(echo "$line" | awk '{print $2}')
-        # Progress is the last field, may be "100%" or "-"
-        progress=$(echo "$line" | awk '{print $NF}' | sed 's/%//')
-        [[ "$progress" == "-" ]] && progress="0"
-        echo "$pid|$status|$progress"
+        proj_status=$(echo "$line" | awk '{print $NF}')
+        echo "$pid|$proj_status"
     done <<< "$output"
+}
+
+# Resolve a project's terminal TASK status via `aristotle tasks <project-id>`.
+# Returns the STATUS of the newest task (last column of the first data row),
+# e.g. COMPLETE, COMPLETE_WITH_ERRORS, FAILED, IN_PROGRESS. Empty if none.
+task_status_for_project() {
+    local pid="$1"
+    local tasks_output
+    tasks_output=$(uvx --from aristotlelib aristotle tasks "$pid" --limit 1 2>/dev/null) || return 0
+    echo "$tasks_output" | awk '
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/ { print $NF; exit }
+    '
 }
 
 # Query the Aristotle server for all projects across all statuses.
 # Builds a combined JSON result compatible with the rest of the script.
 # Output format: {"submitted": N, "results": [...], "server_projects": [...]}
 # Look up a project ID in the server data string.
-# Args: project_id, all_server_projects (pipe-delimited lines: pid|status|progress)
-# Outputs: status|progress or empty string if not found
+# Args: project_id, all_server_projects (pipe-delimited lines: pid|status)
+# Outputs: status (the resolved task-level status) or empty string if not found
 lookup_server_project() {
     local target_pid="$1"
     local server_data="$2"
-    awk -F'|' -v target_pid="$target_pid" '$1 == target_pid { print $2 "|" $3; exit }' <<< "$server_data"
+    awk -F'|' -v target_pid="$target_pid" '$1 == target_pid { print $2; exit }' <<< "$server_data"
 }
 
 # Convert Lean file names like Erdos1002OQ01OQ01.lean to canonical
@@ -107,24 +130,52 @@ lean_file_to_problem_id() {
 
 run_check() {
     local all_server_projects=""
-    local all_statuses="NOT_STARTED QUEUED IN_PROGRESS COMPLETE COMPLETE_WITH_ERRORS OUT_OF_BUDGET FAILED CANCELED"
 
-    # Fetch all projects from server
-    for status in $all_statuses; do
+    # v2: enumerate projects at the two valid project-level statuses
+    # (RUNNING | IDLE), then resolve each project's fine-grained TASK status.
+    # RUNNING projects are in flight; IDLE projects have a terminal task whose
+    # exact outcome (COMPLETE / COMPLETE_WITH_ERRORS / FAILED / ...) we read
+    # from `aristotle tasks`.
+    local raw_projects=""
+    for proj_status in RUNNING IDLE; do
         local output
-        output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || continue
+        output=$(uvx --from aristotlelib aristotle list --status "$proj_status" --limit 100 2>&1) || continue
 
         local parsed
         parsed=$(parse_list_output "$output")
         if [[ -n "$parsed" ]]; then
-            if [[ -n "$all_server_projects" ]]; then
-                all_server_projects="$all_server_projects
+            if [[ -n "$raw_projects" ]]; then
+                raw_projects="$raw_projects
 $parsed"
             else
-                all_server_projects="$parsed"
+                raw_projects="$parsed"
             fi
         fi
     done
+
+    # Resolve project-level status to task-level status for downstream logic.
+    # RUNNING -> keep as IN_PROGRESS (a task is actively searching).
+    # IDLE    -> query the task's terminal status; fall back to COMPLETE if the
+    #            task lookup yields nothing (idle with an unreadable task).
+    while IFS='|' read -r pid proj_status; do
+        [[ -z "$pid" ]] && continue
+        local resolved
+        if [[ "$proj_status" == "RUNNING" ]]; then
+            resolved="IN_PROGRESS"
+        else
+            resolved=$(task_status_for_project "$pid")
+            # An IDLE project with no readable task never ran a solve job — the
+            # v2 analogue of the old NOT_STARTED "zombie". Flag it with a
+            # sentinel so reconciliation can detect it.
+            [[ -z "$resolved" ]] && resolved="NO_TASK"
+        fi
+        if [[ -n "$all_server_projects" ]]; then
+            all_server_projects="$all_server_projects
+$pid|$resolved"
+        else
+            all_server_projects="$pid|$resolved"
+        fi
+    done <<< "$raw_projects"
 
     # Get submitted jobs from local tracking
     local submitted_jobs
@@ -142,12 +193,13 @@ $parsed"
             prob=$(echo "$job" | jq -r '.problem_id // "unknown"')
 
             local server_status="NOT_FOUND"
+            # v2 has no numeric progress; retain the field (default 0) so
+            # downstream JSON consumers keep working.
             local server_progress="0"
             local server_entry
             server_entry=$(lookup_server_project "$pid" "$all_server_projects")
             if [[ -n "$server_entry" ]]; then
-                server_status=$(echo "$server_entry" | cut -d'|' -f1)
-                server_progress=$(echo "$server_entry" | cut -d'|' -f2)
+                server_status="$server_entry"
             fi
 
             results_json=$(echo "$results_json" | jq \
@@ -160,13 +212,12 @@ $parsed"
     # Build server_projects JSON array for reconciliation
     local server_json="[]"
     if [[ -n "$all_server_projects" ]]; then
-        while IFS='|' read -r pid status progress; do
+        while IFS='|' read -r pid status; do
             [[ -z "$pid" ]] && continue
-            # CLI list does not provide file_name; use null
+            # CLI list does not provide file_name or numeric progress; use null/0.
             server_json=$(echo "$server_json" | jq \
                 --arg pid "$pid" --arg status "$status" \
-                --argjson percent "${progress:-0}" \
-                '. += [{"project_id": $pid, "status": $status, "percent": $percent, "file_name": null}]')
+                '. += [{"project_id": $pid, "status": $status, "percent": 0, "file_name": null}]')
         done <<< "$all_server_projects"
     fi
 
@@ -229,12 +280,16 @@ update_jobs_file() {
     echo "$results" | jq -r '.results[] | "\(.project_id)|\(.status)"' | while IFS='|' read -r pid status; do
         [[ -z "$pid" ]] && continue
 
+        # $status here is the resolved v2 TASK status (from `aristotle tasks`),
+        # not a project-level enum. Terminal task states map to local lifecycle
+        # states; non-terminal (IN_PROGRESS) and untracked (NO_TASK/NOT_FOUND
+        # handled elsewhere) are left alone.
         local new_status
         case "$status" in
             COMPLETE|COMPLETE_WITH_ERRORS) new_status="completed" ;;
             FAILED|OUT_OF_BUDGET) new_status="failed" ;;
             NOT_FOUND|CANCELED) new_status="expired" ;;
-            *) continue ;;  # Don't update in-progress jobs (QUEUED, IN_PROGRESS, NOT_STARTED)
+            *) continue ;;  # Don't update non-terminal jobs (IN_PROGRESS, NO_TASK)
         esac
 
         # For failed/expired jobs, categorize the failure and count submissions
@@ -292,9 +347,10 @@ reconcile_server_projects() {
             problem_id=$(lean_file_to_problem_id "$fname")
         fi
 
-        if [[ "$status" == "NOT_STARTED" ]]; then
-            # Flag NOT_STARTED as zombies (these have no solve job)
-            echo -e "  ${YELLOW}ZOMBIE:${NC} $pid (NOT_STARTED, file: ${fname:-unknown})"
+        if [[ "$status" == "NO_TASK" ]]; then
+            # v2 zombie: an IDLE project with no readable solve task — the
+            # analogue of the old v1 NOT_STARTED zombie (accepted but never ran).
+            echo -e "  ${YELLOW}ZOMBIE:${NC} $pid (IDLE, no task, file: ${fname:-unknown})"
 
             if [[ "$UPDATE_STATUS" == true ]]; then
                 local now
@@ -308,12 +364,12 @@ reconcile_server_projects() {
                         problem_id: ("zombie-" + ($pid | split("-") | .[0])),
                         submitted: "unknown",
                         status: "zombie",
-                        notes: ("Zombie project discovered by reconciliation at " + $now + ". NOT_STARTED on server, not tracked locally.")
+                        notes: ("Zombie project discovered by reconciliation at " + $now + ". IDLE with no solve task on server, not tracked locally.")
                     }]
                 ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
                 echo -e "    ${GREEN}Added to tracking${NC}"
             fi
-        elif [[ "$status" == "IN_PROGRESS" || "$status" == "QUEUED" ]]; then
+        elif [[ "$status" == "IN_PROGRESS" ]]; then
             # Only re-adopt if we can map the filename to a real local proof file
             local can_map_active=false
             if [[ -n "${fname:-}" && "$fname" != "null" ]]; then
@@ -445,10 +501,10 @@ main() {
                     echo -e "  ${GREEN}$prob${NC}: COMPLETE"
                     ;;
                 IN_PROGRESS)
-                    echo -e "  ${YELLOW}$prob${NC}: IN_PROGRESS ($percent%)"
+                    echo -e "  ${YELLOW}$prob${NC}: IN_PROGRESS"
                     ;;
-                QUEUED|NOT_STARTED)
-                    echo -e "  ${CYAN}$prob${NC}: QUEUED"
+                NO_TASK)
+                    echo -e "  ${CYAN}$prob${NC}: IDLE (no solve task — possible zombie)"
                     ;;
                 COMPLETE_WITH_ERRORS)
                     echo -e "  ${YELLOW}$prob${NC}: COMPLETE_WITH_ERRORS (results may be partial)"

@@ -32,6 +32,9 @@ independently proved it in 1885 for the context of variational calculus.
 - [x] Squared integral form
 - [x] Equality characterization
 - [x] Squared equality characterization (inner and integral forms)
+- [x] Strict inequality characterization (inner and integral forms, abs and squared)
+- [x] Signed (two-sided) bound `-‖f‖·‖g‖ ≤ ∫f·g ≤ ‖f‖·‖g‖` (inner and integral forms)
+- [x] Signed equality/strict characterization `∫f·g = ‖f‖·‖g‖ ↔ ‖g‖•f = ‖f‖•g`
 -/
 
 noncomputable section
@@ -148,6 +151,124 @@ theorem bunyakovsky_schwarz_sq_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g
   rw [← L2_inner_eq_integral]
   exact cauchy_schwarz_L2_sq_eq_iff f g hf hg
 
+-- Strict Inequality Characterization
+--
+-- The strict companion of `cauchy_schwarz_L2_eq_iff`. Since Cauchy–Schwarz is
+-- always an inequality (`|⟪f,g⟫| ≤ ‖f‖·‖g‖`) and equality holds exactly on
+-- linearly dependent pairs, the inequality is STRICT exactly when `f` and `g`
+-- are linearly INDEPENDENT: for nonzero L² functions,
+-- `|⟪f,g⟫| < ‖f‖·‖g‖ ↔ ¬ ∃ c, f = c • g`. Derived from the `≤` bound and the
+-- equality case via `lt_iff_le_and_ne` (a ≤ b already holds, so `a < b ↔ a ≠ b`).
+theorem cauchy_schwarz_L2_abs_lt_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    |@inner ℝ _ _ f g| < ‖f‖ * ‖g‖ ↔ ¬ ∃ c : ℝ, f = c • g := by
+  rw [lt_iff_le_and_ne, and_iff_right (cauchy_schwarz_L2 f g), ne_eq,
+    cauchy_schwarz_L2_eq_iff f g hf hg]
+
+-- Strict Inequality Characterization (Integral Form)
+--
+-- The integral-form companion of `cauchy_schwarz_L2_abs_lt_iff` and the strict
+-- case of `bunyakovsky_schwarz_abs`. For nonzero L² functions,
+-- `|∫ f·g dμ| < ‖f‖·‖g‖ ↔ ¬ ∃ c, f = c • g`. Same `L2_inner_eq_integral`
+-- bridge used throughout this file.
+theorem bunyakovsky_schwarz_abs_lt_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    |∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ| < ‖f‖ * ‖g‖ ↔ ¬ ∃ c : ℝ, f = c • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_abs_lt_iff f g hf hg
+
+-- Strict Inequality Characterization (Squared Inner-Product Form)
+--
+-- The strict companion of `cauchy_schwarz_L2_sq_eq_iff` and the strict case of
+-- `cauchy_schwarz_L2_sq`. For nonzero L² functions,
+-- `⟪f,g⟫² < ‖f‖²·‖g‖² ↔ ¬ ∃ c, f = c • g`. Note no absolute value is needed on
+-- the squared form. Derived from the squared `≤` bound and squared equality case.
+theorem cauchy_schwarz_L2_sq_lt_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    (@inner ℝ _ _ f g) ^ 2 < ‖f‖ ^ 2 * ‖g‖ ^ 2 ↔ ¬ ∃ c : ℝ, f = c • g := by
+  rw [lt_iff_le_and_ne, and_iff_right (cauchy_schwarz_L2_sq f g), ne_eq,
+    cauchy_schwarz_L2_sq_eq_iff f g hf hg]
+
+-- Strict Inequality Characterization (Squared Integral Form)
+--
+-- The integral-form companion of `cauchy_schwarz_L2_sq_lt_iff` and the strict
+-- case of `bunyakovsky_schwarz_sq`. For nonzero L² functions,
+-- `(∫ f·g dμ)² < ‖f‖²·‖g‖² ↔ ¬ ∃ c, f = c • g`.
+theorem bunyakovsky_schwarz_sq_lt_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    (∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ) ^ 2 < ‖f‖ ^ 2 * ‖g‖ ^ 2 ↔ ¬ ∃ c : ℝ, f = c • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_sq_lt_iff f g hf hg
+
+-- Signed (Two-Sided) Inner-Product Bound
+--
+-- Every previous bound in this file is stated in absolute value or squared form,
+-- which loses the SIGN of the pairing. The signed Cauchy–Schwarz bound keeps it:
+-- `⟪f,g⟫ ≤ ‖f‖·‖g‖` (the positive extreme). Combined with its lower companion it
+-- pins `⟪f,g⟫ ∈ [-‖f‖·‖g‖, ‖f‖·‖g‖]`. This is the sharp form: `|⟪f,g⟫| ≤ ‖f‖·‖g‖`
+-- is exactly the conjunction of the two one-sided signed bounds.
+theorem cauchy_schwarz_L2_signed (f g : Lp ℝ 2 μ) :
+    @inner ℝ _ _ f g ≤ ‖f‖ * ‖g‖ :=
+  real_inner_le_norm f g
+
+-- Signed lower bound: `-(‖f‖·‖g‖) ≤ ⟪f,g⟫`, the other half of the two-sided
+-- pinch. Follows from the absolute-value bound `|⟪f,g⟫| ≤ ‖f‖·‖g‖`.
+theorem cauchy_schwarz_L2_signed_lower (f g : Lp ℝ 2 μ) :
+    -(‖f‖ * ‖g‖) ≤ @inner ℝ _ _ f g :=
+  neg_le_of_abs_le (abs_real_inner_le_norm f g)
+
+-- Signed Bunyakovsky–Schwarz (Integral Form)
+--
+-- The integral-form companion of `cauchy_schwarz_L2_signed`: for L² functions,
+-- the SIGNED pairing (no absolute value) is bounded above by the norm product,
+-- `∫ f·g dμ ≤ ‖f‖·‖g‖`. Same `L2_inner_eq_integral` bridge used throughout.
+theorem bunyakovsky_schwarz_signed (f g : Lp ℝ 2 μ) :
+    ∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ ≤ ‖f‖ * ‖g‖ := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_signed f g
+
+-- Signed lower bound (Integral Form): `-(‖f‖·‖g‖) ≤ ∫ f·g dμ`.
+theorem bunyakovsky_schwarz_signed_lower (f g : Lp ℝ 2 μ) :
+    -(‖f‖ * ‖g‖) ≤ ∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_signed_lower f g
+
+-- Signed Equality Characterization
+--
+-- The equality case of the SIGNED bound `⟪f,g⟫ ≤ ‖f‖·‖g‖`. Unlike the
+-- absolute-value equality case (`cauchy_schwarz_L2_eq_iff`, which yields the
+-- symmetric `∃ c, f = c • g` allowing EITHER sign), attaining the positive
+-- extreme forces `f` and `g` to point in the SAME direction:
+-- `⟪f,g⟫ = ‖f‖·‖g‖ ↔ ‖g‖ • f = ‖f‖ • g`. Note no `f ≠ 0`/`g ≠ 0` hypotheses are
+-- needed — the degenerate cases satisfy both sides. Direct from Mathlib's
+-- `inner_eq_norm_mul_iff_real`.
+theorem cauchy_schwarz_L2_signed_eq_iff (f g : Lp ℝ 2 μ) :
+    @inner ℝ _ _ f g = ‖f‖ * ‖g‖ ↔ ‖g‖ • f = ‖f‖ • g :=
+  inner_eq_norm_mul_iff_real
+
+-- Signed Equality Characterization (Integral Form)
+--
+-- Integral-form companion: for L² functions, `∫ f·g dμ = ‖f‖·‖g‖` (the positive
+-- extreme) holds iff `f` and `g` point in the same direction, `‖g‖ • f = ‖f‖ • g`.
+theorem bunyakovsky_schwarz_signed_eq_iff (f g : Lp ℝ 2 μ) :
+    (∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ = ‖f‖ * ‖g‖) ↔ ‖g‖ • f = ‖f‖ • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_signed_eq_iff f g
+
+-- Signed Strict Inequality Characterization
+--
+-- The strict companion of `cauchy_schwarz_L2_signed_eq_iff`: the signed bound is
+-- STRICT exactly when `f` and `g` do NOT point in the same direction,
+-- `⟪f,g⟫ < ‖f‖·‖g‖ ↔ ‖g‖ • f ≠ ‖f‖ • g`. Direct from Mathlib's
+-- `inner_lt_norm_mul_iff_real`.
+theorem cauchy_schwarz_L2_signed_lt_iff (f g : Lp ℝ 2 μ) :
+    @inner ℝ _ _ f g < ‖f‖ * ‖g‖ ↔ ‖g‖ • f ≠ ‖f‖ • g :=
+  inner_lt_norm_mul_iff_real
+
+-- Signed Strict Inequality Characterization (Integral Form)
+--
+-- Integral-form companion: `∫ f·g dμ < ‖f‖·‖g‖ ↔ ‖g‖ • f ≠ ‖f‖ • g`.
+theorem bunyakovsky_schwarz_signed_lt_iff (f g : Lp ℝ 2 μ) :
+    (∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ < ‖f‖ * ‖g‖) ↔ ‖g‖ • f ≠ ‖f‖ • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_signed_lt_iff f g
+
 -- Summary check
 #check @bunyakovsky_schwarz_abs
 #check @bunyakovsky_schwarz_sq
@@ -155,6 +276,18 @@ theorem bunyakovsky_schwarz_sq_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g
 #check @bunyakovsky_schwarz_abs_eq_iff
 #check @cauchy_schwarz_L2_sq_eq_iff
 #check @bunyakovsky_schwarz_sq_eq_iff
+#check @cauchy_schwarz_L2_abs_lt_iff
+#check @bunyakovsky_schwarz_abs_lt_iff
+#check @cauchy_schwarz_L2_sq_lt_iff
+#check @bunyakovsky_schwarz_sq_lt_iff
+#check @cauchy_schwarz_L2_signed
+#check @cauchy_schwarz_L2_signed_lower
+#check @bunyakovsky_schwarz_signed
+#check @bunyakovsky_schwarz_signed_lower
+#check @cauchy_schwarz_L2_signed_eq_iff
+#check @bunyakovsky_schwarz_signed_eq_iff
+#check @cauchy_schwarz_L2_signed_lt_iff
+#check @bunyakovsky_schwarz_signed_lt_iff
 
 end BunyakovskySchwarz
 

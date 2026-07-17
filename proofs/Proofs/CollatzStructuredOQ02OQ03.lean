@@ -1064,12 +1064,61 @@ theorem colMin_eq_min_collatz (n : ℕ) : colMin n = min n (colMin (collatz n)) 
       exact hstep.symm
     exact le_trans (min_le_right _ _) hcn
 
+/-- **When a Collatz step preserves the orbit minimum.**  Peeling the head off the orbit
+(`colMin_eq_min_collatz`: `colMin n = min n (colMin (collatz n))`), the step `n ↦ collatz n`
+leaves the orbit minimum unchanged *exactly* when the tail minimum already lies at or below
+the start `n`: `colMin (collatz n) = colMin n ↔ colMin (collatz n) ≤ n`.  Equivalently, the
+head `n` is never the unique orbit minimum unless it is a genuine new low. -/
+theorem colMin_collatz_eq_iff {n : ℕ} :
+    colMin (collatz n) = colMin n ↔ colMin (collatz n) ≤ n := by
+  rw [colMin_eq_min_collatz n]
+  constructor
+  · intro h
+    calc colMin (collatz n) = min n (colMin (collatz n)) := h
+      _ ≤ n := min_le_left _ _
+  · intro h; rw [min_eq_right h]
+
+/-- **A decreasing step preserves the orbit minimum.**  If one Collatz step already drops
+below the start (`collatz n < n`), then `colMin (collatz n) = colMin n`: the minimum of the
+whole orbit is already determined by the post-step value, since the head `n` is not the
+minimum.  This is the abstract principle behind `colMin_two_mul` (where `collatz (2n) = n < 2n`)
+and, iterated along a residue-determined drop window, is why the per-residue families of
+Part II pin down `colMin n` below the start. -/
+theorem colMin_collatz_of_lt {n : ℕ} (h : collatz n < n) :
+    colMin (collatz n) = colMin n :=
+  colMin_collatz_eq_iff.mpr ((colMin_le_self _).trans h.le)
+
 /-- Sharpening `colMin_pow_two_le_one`: the orbit minimum of `2^k` is **exactly**
 `1` (the orbit hits `1` and, being positive, never goes lower). -/
 theorem colMin_pow_two_eq_one (k : ℕ) : colMin (2 ^ k) = 1 := by
   have hle := colMin_pow_two_le_one k
   have hpos := colMin_pos (n := 2 ^ k) (by positivity)
   omega
+
+/-- **Doubling-invariance of the orbit minimum.**  `colMin (2n) = colMin n`: the orbit
+minimum is unchanged when the start is doubled.  Indeed `collatz (2n) = n`
+(`collatz_two_mul`), so the orbit of `2n` is `2n` followed by the entire orbit of `n`;
+since `colMin n ≤ n ≤ 2n` the doubled head `2n` is never the minimum, and the two orbits
+share their infimum.  Formally, `colMin (2n) = min (2n) (colMin n) = colMin n` via
+`colMin_eq_min_collatz`.  This is the general structural fact underlying
+`colMin_pow_two_eq_one` (the `n = 1` iterate). -/
+theorem colMin_two_mul (n : ℕ) : colMin (2 * n) = colMin n := by
+  rw [colMin_eq_min_collatz (2 * n), collatz_two_mul]
+  have h : colMin n ≤ n := colMin_le_self n
+  omega
+
+/-- **Invariance of the orbit minimum under multiplication by a power of two.**
+`colMin (2^k · n) = colMin n`: prepending any number of halving steps (i.e. starting from
+`2^k · n` instead of `n`) leaves the orbit minimum unchanged, since each doubling is
+absorbed by `colMin_two_mul`.  Taking `n = 1` recovers `colMin (2^k) = 1`
+(`colMin_pow_two_eq_one`); the `2`-adic valuation of the start is irrelevant to its
+orbit minimum. -/
+theorem colMin_two_pow_mul (k n : ℕ) : colMin (2 ^ k * n) = colMin n := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    have hrw : 2 ^ (k + 1) * n = 2 * (2 ^ k * n) := by ring
+    rw [hrw, colMin_two_mul, ih]
 
 /-- **Bridge between Parts II and III.**  Any number that attains a value below
 itself has orbit minimum strictly below its start: `colMin n < n`.  This connects
@@ -1153,6 +1202,52 @@ gives `colMin 1 = 1`.  This is the base/valley companion of `colMin_pow_two_eq_o
 stops. -/
 theorem colMin_one : colMin 1 = 1 :=
   colMin_eq_self_iff.mpr not_attainsBelow_one
+
+/-- The orbit of `0` is constantly `0`: `collatz 0 = 0 / 2 = 0`, so no iterate of `0`
+is ever positive.  This is the degenerate companion of `collatz_iterate_pos` (which keeps
+`0` out of every *positive* orbit) and is exactly what forces a start that reaches `1`
+to be positive. -/
+theorem collatz_iterate_zero (k : ℕ) : collatz^[k] 0 = 0 := by
+  induction k with
+  | zero => rfl
+  | succ k ih => rw [Function.iterate_succ_apply', ih]; simp [collatz]
+
+/-- **The orbit minimum is `1` exactly when the trajectory reaches `1`.**  The Collatz
+conjecture asserts every positive integer eventually reaches `1`; this lemma re-expresses
+that terminal event through the file's central object, the orbit minimum:
+`colMin n = 1 ↔ ∃ k, collatz^[k] n = 1`.  Forward, `1` is the *attained* minimum, so it
+literally occurs on the orbit (`colMin_mem_orbit`).  Backward, an orbit value `1` forces
+the start positive — the orbit of `0` is constantly `0` (`collatz_iterate_zero`) — whence
+`1 ≤ colMin n ≤ 1` by `colMin_pos` and `colMin_le_iterate`.  So `colMin n = 1` is precisely
+the statement "the Collatz conjecture holds for `n`", pinning the conjecture to a single
+value of the orbit minimum. -/
+theorem colMin_eq_one_iff_reaches_one {n : ℕ} :
+    colMin n = 1 ↔ ∃ k, collatz^[k] n = 1 := by
+  constructor
+  · intro h
+    obtain ⟨k, hk⟩ := colMin_mem_orbit n
+    exact ⟨k, by rw [hk, h]⟩
+  · rintro ⟨k, hk⟩
+    have hn : 0 < n := by
+      rcases Nat.eq_zero_or_pos n with h0 | hpos
+      · rw [h0, collatz_iterate_zero k] at hk; omega
+      · exact hpos
+    have hle : colMin n ≤ 1 := by rw [← hk]; exact colMin_le_iterate n k
+    have hpos := colMin_pos hn
+    omega
+
+/-- **Collatz conjecture, orbit-minimum form.**  The Collatz conjecture ("every positive
+integer reaches `1`") is *equivalent* to the assertion that every positive integer has
+orbit minimum exactly `1`:
+`(∀ n, 0 < n → ∃ k, collatz^[k] n = 1) ↔ (∀ n, 0 < n → colMin n = 1)`.  This is the global
+package of the per-`n` characterization `colMin_eq_one_iff_reaches_one`, recasting the whole
+conjecture as a statement purely about `colMin` — the same object whose *strict* drop
+`colMin n < n` this file certifies for `115/128` of the integers. -/
+theorem collatz_conjecture_iff_colMin_eq_one :
+    (∀ n, 0 < n → ∃ k, collatz^[k] n = 1) ↔ (∀ n, 0 < n → colMin n = 1) := by
+  constructor
+  · intro h n hn; exact colMin_eq_one_iff_reaches_one.mpr (h n hn)
+  · intro h n hn; exact colMin_eq_one_iff_reaches_one.mp (h n hn)
 
 /-- Consequently the entire three-quarters family of Part II — the even numbers
 and the odd class `1 + 4ℕ` (`n ≥ 5`) — has orbit minimum strictly below the start,
@@ -2089,5 +2184,143 @@ theorem affOrbit_realize_of_interior {v : List Bool} {c d : ℕ} (hv : AffValid 
       = (affOrbit v (c, d)).1 * m + (affOrbit v (c, d)).2 := by
   have h := affOrbit_realize_interior hv m v.length (le_refl _)
   rwa [List.take_length] at h
+
+/-! ## Part X: Certificate composition — chaining and slicing certified windows
+
+Every prior part treats a certificate `AffValid v c d` as a single monolithic window.
+But windows should *compose*: running the class `c·m + d` through window `v` lands it in
+the class `c'·m + d'` with `(c', d') = affOrbit v (c, d)`, and if a second certificate
+`w` is valid there, the two windows join into one valid certificate `v ++ w` for the
+original class.  The lemmas below establish this monoid-like structure on certified
+windows and its slicing converse:
+
+* `affOrbit_append` / `leadCoeff_append` — the affine fold and its leading coefficient
+  are *functorial* under concatenation: folding `v ++ w` is folding `w` after `v`.
+* `affValid_append` — validity is preserved by concatenation, provided the second
+  window is valid **at the affine class the first one produces**.  This is the
+  composition law: a long certified window is a chain of short ones.
+* `affValid_take` — validity is inherited by every prefix (the slicing converse),
+  the certificate-level companion of Part IX's interior realization.
+* `affOrbit_realize_append` — the payoff: the concatenated window realizes the composed
+  affine map over the summed step count, so drop certificates literally chain.
+
+Everything is axiom-free and structural, matching the rest of the engine. -/
+
+/-- **Affine fold is functorial under concatenation.**  Folding a coefficient pair along
+`v ++ w` is the same as folding along `v` and then along `w` from the result — the affine
+maps of the two windows compose. -/
+theorem affOrbit_append (v w : List Bool) (p : ℕ × ℕ) :
+    affOrbit (v ++ w) p = affOrbit w (affOrbit v p) := by
+  induction v generalizing p with
+  | nil => rfl
+  | cons b v ih =>
+    show affOrbit (v ++ w) (affStep b p) = affOrbit w (affOrbit v (affStep b p))
+    exact ih (affStep b p)
+
+/-- **Leading coefficient is multiplicative under concatenation.**  The Terras leading
+coefficient of a joined window is the second window's coefficient evolution applied to the
+first's — the value-level shadow of `affOrbit_append` on the first component. -/
+theorem leadCoeff_append (v w : List Bool) (c : ℕ) :
+    leadCoeff (v ++ w) c = leadCoeff w (leadCoeff v c) := by
+  induction v generalizing c with
+  | nil => rfl
+  | cons b v ih => cases b <;> exact ih _
+
+/-- **Composition law for certificates.**  If `v` is a valid parity certificate for the
+affine class `c·m + d`, and `w` is a valid certificate for the class produced by running
+`v` — namely `(affOrbit v (c, d)).1 · m + (affOrbit v (c, d)).2` — then the concatenated
+window `v ++ w` is a valid certificate for the original class.  Certified windows compose:
+a long window is a chain of short ones glued at their affine hand-off points. -/
+theorem affValid_append : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ {w : List Bool},
+      AffValid w (affOrbit v (c, d)).1 (affOrbit v (c, d)).2 →
+      AffValid (v ++ w) c d := by
+  intro v c d hv
+  induction hv with
+  | nil => intro w hw; simpa using hw
+  | @odd v c d hc hd _ ih => intro w hw; exact AffValid.odd hc hd (ih hw)
+  | @even v c d hc hd _ ih => intro w hw; exact AffValid.even hc hd (ih hw)
+
+/-- **Prefixes of a valid certificate are valid.**  Truncating a certified window `v` to
+any prefix length `i` yields a certificate `v.take i` valid for the *same* starting class
+`c·m + d`.  This is the certificate-level converse of `affValid_append` (slicing rather
+than gluing) and the structural companion of `affOrbit_realize_interior`: not only is the
+interior value affine, the interior window is itself a bona fide certificate. -/
+theorem affValid_take : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ i : ℕ, AffValid (v.take i) c d := by
+  intro v c d hv
+  induction hv with
+  | nil => intro i; rw [List.take_nil]; exact AffValid.nil
+  | @odd v c d hc hd _ ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.nil
+    | succ j => exact AffValid.odd hc hd (ih j)
+  | @even v c d hc hd _ ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.nil
+    | succ j => exact AffValid.even hc hd (ih j)
+
+/-- **Chained realization — the composition payoff.**  Two certified windows `v` then `w`
+(with `w` valid at the class `v` produces) realize the *composed* affine map over the
+summed step count `v.length + w.length`: the Collatz iterate of every member of the
+original class is the coefficient pair obtained by folding `v` and then `w`.  This is the
+value-level statement that residue-drop certificates literally concatenate — the endpoint
+realization `affOrbit_realize` applied to the glued window `affValid_append hv hw`. -/
+theorem affOrbit_realize_append {v w : List Bool} {c d : ℕ} (hv : AffValid v c d)
+    (hw : AffValid w (affOrbit v (c, d)).1 (affOrbit v (c, d)).2) (m : ℕ) :
+    collatz^[v.length + w.length] (c * m + d)
+      = (affOrbit w (affOrbit v (c, d))).1 * m + (affOrbit w (affOrbit v (c, d))).2 := by
+  have h := affOrbit_realize (affValid_append hv hw) m
+  rw [List.length_append, affOrbit_append] at h
+  exact h
+
+/-- **Suffixes of a valid certificate are valid at the hand-off class.**  Dropping the first
+`i` parities of a certified window `v` leaves a certificate `v.drop i` valid for the affine
+class the prefix `v.take i` produces — namely `(affOrbit (v.take i) (c, d)).1 · m +
+(affOrbit (v.take i) (c, d)).2`.  This is the genuine slicing dual of `affValid_append`
+(which *glues* two windows at their hand-off): a suffix is a bona fide certificate starting
+where the prefix left off, complementing the prefix-validity `affValid_take`.  Proof by
+induction on the certificate, splitting `i` at each step exactly as `affValid_take` does —
+the `affOrbit (v.take i) (c, d)` coefficients evolve by `affStep` in lockstep with the
+`AffValid.odd`/`even` recursion, so the interior hand-off is precisely the induction
+hypothesis. -/
+theorem affValid_drop : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ i : ℕ, AffValid (v.drop i)
+      (affOrbit (v.take i) (c, d)).1 (affOrbit (v.take i) (c, d)).2 := by
+  intro v c d hv
+  induction hv with
+  | nil =>
+    intro i
+    simp only [List.drop_nil, List.take_nil]
+    exact AffValid.nil
+  | @odd v c d hc hd hrec ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.odd hc hd hrec
+    | succ j =>
+      simp only [List.drop_succ_cons, List.take_succ_cons]
+      exact ih j
+  | @even v c d hc hd hrec ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.even hc hd hrec
+    | succ j =>
+      simp only [List.drop_succ_cons, List.take_succ_cons]
+      exact ih j
+
+/-- **Certificate splitting law.**  Every certified window splits at any position `i` into a
+valid prefix and a valid suffix that meet at the affine hand-off class:
+`v.take i` is valid for the original class `c·m + d`, and `v.drop i` is valid for the class
+`(affOrbit (v.take i) (c, d))` that the prefix hands off.  This is the exact inverse of the
+gluing law `affValid_append` (there `v ++ w` is assembled from two windows meeting at a
+hand-off; here one window is cut into two at a hand-off), packaging `affValid_take` with
+`affValid_drop`.  Since `v.take i ++ v.drop i = v`, feeding the two halves back into
+`affValid_append` reconstructs the original certificate. -/
+theorem affValid_split {v : List Bool} {c d : ℕ} (hv : AffValid v c d) (i : ℕ) :
+    AffValid (v.take i) c d ∧
+      AffValid (v.drop i) (affOrbit (v.take i) (c, d)).1 (affOrbit (v.take i) (c, d)).2 :=
+  ⟨affValid_take hv i, affValid_drop hv i⟩
 
 end CollatzStructuredOQ02OQ03

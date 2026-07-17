@@ -170,3 +170,90 @@ the main checkout's oleans; `Finset.not_mem_erase` is deprecated → `Finset.not
 Deep asymptotics `f(n) = (1/2 + o(1)) n / log n` (the two external axioms in
 `Erdos771Problem.lean`) remain BLOCKED. This file is self-contained and not tracked in gallery
 meta → Lean-only increment, no meta sync.
+
+## Session 2026-07-11 (researcher-7) — exact m=4 case (first n−2 plateau)
+
+Extended `Erdos771Construction.lean` (now 20 thm/4 def, 0 axioms, 0 sorries, VERIFIED) with the
+exact `m = 4` characterization, continuing the per-`m` ladder (m=1/2/3 merged prior). PR #37665.
+- `four_mem_subsetSums_iff`: `4 ∈ subsetSums S ↔ 4 ∈ S ∨ (1 ∈ S ∧ 3 ∈ S)`. Distinct-positive
+  subsets summing to 4 are exactly `{4}`, `{1,3}`; all elements ≤4 ≠4 ⇒ `A ⊆ {0,1,2,3}`, then
+  the forward `1∈A ∧ 3∈A` is `decide`d over the 16 subsets.
+- `avoid_four_iff`, witness `Icc_erase_three_four_avoid_four` (`{1,…,n}∖{3,4}`, card n−2, n≥4),
+  optimality `avoid_four_card_le` (n≥4): value pinned to **n−2**, EQUAL to m=3 — first plateau of
+  the `n−⌈m/2⌉` staircase (each value held for two consecutive m: m=1,2→n−1; m=3,4→n−2).
+
+### Key difference from m=3 (why decide)
+m=3's representation `{1,2}` is the *consecutive* pair, so excluding either 1 or 2 leaves a set
+(`{0,2}`/`{0,1}`) whose total `≤2<3` — the crude `Finset.sum_le_sum_of_subset` overshoot bound
+isolates it directly. m=4's second representation `{1,3}` is a *gap* pair: excluding 1 leaves
+`{0,2,3}` with total `5 ≥ 4`, so the crude bound fails. Deciding over the 16 subsets of `{0,1,2,3}`
+sidesteps this cleanly. NB `decide` (kernel), NOT `native_decide` → axiom-free
+`[propext,Classical.choice,Quot.sound]`, no `Lean.ofReduceBool`.
+
+### Verification
+VERIFIED axiom-free: `./bin/lake env lean Proofs/Erdos771Construction.lean` exit 0; `#print axioms`
+on all 4 new thms = the 3 foundational axioms only. Recipe (docker-free, reaper-proof): external
+worktree `/Users/rwalters/lg-r7-771` + symlink `proofs/.lake` → main's prebuilt 6.8G oleans, commit
+IMMEDIATELY (the `.loom/worktrees/researcher-7` checkout was reverted mid-edit by a concurrent
+`git reset` — the recurring shared-checkout thrash).
+
+### Still open (unchanged)
+Deep asymptotics `f(n)=(1/2+o(1))·n/log n` (external Erdős–Graham/Alon–Freiman) remain BLOCKED.
+Next ladder rung m=5 first drops to n−3 (reps `{5},{1,4},{2,3}` — two disjoint gap pairs).
+
+## Session 2026-07-12 (researcher-2) — GENERAL upper bound n − ⌈m/2⌉ (subsumes the m=1..4 ladder)
+
+**Mode**: FRESH structural generalization (replaces one-off per-m rungs).
+**Outcome**: progress (0-sorry/0-axiom, VERIFIED `lake env lean` against real oleans; `#print axioms` = 3 foundational only). PR on branch feature/researcher-2-771.
+
+### What I Did
+- Created `proofs/Proofs/Erdos771GeneralUpperBound.lean` (7 decls).
+- Proved the **general optimality bound** `avoid_card_le_general`: for `1 ≤ m ≤ n`, any
+  `m`-avoiding `S ⊆ {1,…,n}` has `|S| ≤ n − ⌈m/2⌉` (= `n − (m+1)/2` in ℕ). This subsumes the
+  hand-proved `avoid_one/two/three/four_card_le` at once and settles the small-`m` regime.
+
+### Route (by mechanism: "disjoint family of m-representations → forced deletions")
+- `blk m i` = `{m}` (i=0) or `{i, m−i}` (i≥1): the `⌈m/2⌉` blocks indexed by `i < (m+1)/2`.
+- `blk_sum` (each sums to m), `blk_subset` (⊆ {1,…,n} when m≤n), `blk_disjoint` (pairwise
+  disjoint over `i < (m+1)/2` — pure `omega`, which handles the ℕ-division bound `(m+1)/2`).
+- Since `AvoidSum S m`, no block ⊆ S (`sum_mem_subsetSums` general helper: A⊆S, ∑A=m>0 ⟹
+  m∈subsetSums S), so each block meets `D := {1,…,n} \ S`. `Finset.card_biUnion` on the disjoint
+  `F i = blk m i ∩ D` gives `|D| ≥ Σ 1 = ⌈m/2⌉`; then `|S| = n − |D| ≤ n − ⌈m/2⌉`.
+- `avoid_card_le_general_matches_ladder`: reproduces n−1 (m=2) and n−2 (m=4).
+
+### Gotchas
+- `Finset.card_biUnion` wants `(↑s : Set _).PairwiseDisjoint t`, NOT the `∀i∈s∀j∈s,i≠j→Disjoint`
+  form — build the `PairwiseDisjoint` term (intro + `mem_coe`+`mem_range`).
+- Subset form of card-sdiff is `Finset.card_sdiff_of_subset` (bare `Finset.card_sdiff` is the
+  unconditional `#(t\s)=#t−#(s∩t)`).
+- omega natively reasons about `(m+1)/2` (ℕ division by a literal) — no manual `2*i ≤ m` needed.
+
+### Files Modified
+- `proofs/Proofs/Erdos771GeneralUpperBound.lean` (new)
+
+### Still open (unchanged)
+- Deep asymptotics `f(n)=(1/2+o(1))·n/log n` (Erdős–Graham / Alon–Freiman) remain BLOCKED.
+- Matching general LOWER bound (a witness of size `n − ⌈m/2⌉` for every `m ≤ n`) — the tightness
+  half; the per-m witnesses `{1,…,n}∖(hitting set)` exist for m=1..4, general construction is next.
+
+## Session 2026-07-12 (researcher-2, cont.) — MATCHING general LOWER bound (exact max n − ⌈m/2⌉)
+
+**Outcome**: progress (0-sorry/0-axiom, VERIFIED `lake env lean`). Added to branch/PR of the
+upper bound (#38524). Together they pin the EXACT maximum `f_m(n) = n − ⌈m/2⌉` for `1 ≤ m ≤ n`.
+
+### What I Did — `Erdos771GeneralLowerBound.lean` (5 decls)
+- Uniform tight witness `avoider n m := (Finset.Icc ((m+1)/2) n).erase m` (delete the ⌈m/2⌉−1
+  smallest AND m itself). No case analysis on m.
+- `avoider_avoids`: a nonempty subset summing to m lives in {⌈m/2⌉,…,m−1} (bigger elements
+  overshoot); a single one is <m, two distinct are ≥ ⌈m/2⌉+(⌈m/2⌉+1)=2⌈m/2⌉+1 > m ⟹ none sums
+  to m. `avoider_card` = n − ⌈m/2⌉; `avoider_subset ⊆ {1,…,n}`; `exists_avoiding_card_eq` packages.
+
+### Key formalization facts
+- Two distinct elements a≠b both ≥K ⟹ a+b ≥ 2K+1 is pure `omega` (feed a≠b, K≤a, K≤b).
+- `Finset.add_sum_erase A (fun x=>x) ha` (= a + Σ_{erase} = Σ) + `Finset.single_le_sum` bound b
+  ≤ Σ_{erase}, then `omega` closes vs Σ=m using 2*((m+1)/2) ≥ m.
+- singleton case: `Finset.card_eq_one` after `card_pos` (nonempty since Σ=m≥1) + a≠m.
+
+### Status
+Small-m regime (1≤m≤n) now EXACTLY resolved: max avoiding-set size = n − ⌈m/2⌉ (upper #38524 +
+this lower). Deep asymptotics f(n)=(1/2+o(1))·n/log n (Erdős–Graham/Alon–Freiman) remain BLOCKED.

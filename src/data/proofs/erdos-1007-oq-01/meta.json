@@ -34,7 +34,7 @@
       {
         "theorem": "Real.sqrt_one",
         "description": "√1 = 1.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Nat.choose_le_choose",
@@ -44,7 +44,7 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√a)² = a for a ≥ 0. Used in simplex embedding distance computation.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Finset.add_sum_erase",

@@ -10,9 +10,16 @@
 #
 # On the janitor side, those guards 1-5 (plus the reclaim-eligibility triggers)
 # live in a single `reclaim_worktree` function shared by both the
-# `.loom/worktrees/*` scratch pass and the pass that reclaims git-registered
-# worktrees located OUTSIDE `.loom/worktrees/` (issue #35257); this helper stays
-# in lock-step with those guards.
+# `.loom/worktrees/*` scratch pass (which also scans the resolved worktree
+# root when a LOOM_WORKTREE_ROOT / worktree.root override is set — see
+# scripts/lib/worktree-root.sh, issue #37509) and the pass that reclaims
+# git-registered worktrees located OUTSIDE the sanctioned worktree roots
+# (issue #35257); this helper stays in lock-step with those guards.
+#
+# All guards below operate on the ABSOLUTE worktree path passed by the caller
+# and make no assumption about where that path lives — they work identically
+# for worktrees under the default `.loom/worktrees/` and under an overridden
+# external root (e.g. /Volumes/Stripe/<repo>/).
 #
 # Guards (a worktree is removed ONLY when ALL hold):
 #   1. Not the current checkout (real-path normalized compare).

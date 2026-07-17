@@ -1403,6 +1403,30 @@ theorem compress_eigenvalue_mem_Icc_of_poincare
   ⟨bot_le_compress_eigenvalue_of_poincare hT hVdim H hHdim k,
    compress_eigenvalue_le_top_of_poincare hT hVdim H hHdim k⟩
 
+/-- **Spectral confinement onto the span of an orthonormal `n`-frame.**
+
+The orthonormal-frame counterpart of `compress_eigenvalue_mem_Icc_of_poincare`,
+specialising `H` to `span (range f)` for an orthonormal `f : Fin n → V` exactly as
+`poincare_separation_compression_span` does for the interlacing bound itself: every
+eigenvalue `μ_k` of `compress T (span (range f))` lies in the numerical range
+`[λ_{n+m-1}, λ_0]` of `T`.  The dimension hypothesis is discharged automatically from
+`finrank_span_eq_card`, so no separate `finrank H = n` obligation is needed — the
+common application picture (compressing onto the span of a chosen orthonormal frame)
+gets the confinement bound directly. -/
+theorem compress_eigenvalue_mem_Icc_span_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (f : Fin n → V) (hf : Orthonormal 𝕜 f)
+    (k : Fin n) :
+    (hT.eigenvalues hVdim) ⟨n + m - 1, by have := k.isLt; omega⟩
+        ≤ (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+      ∧ (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+          ≤ (hT.eigenvalues hVdim) ⟨0, by have := k.isLt; omega⟩ :=
+  compress_eigenvalue_mem_Icc_of_poincare hT hVdim (Submodule.span 𝕜 (Set.range f))
+    ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+
 /-! ## Minimal polynomial: the compression's minpoly *divides* the ambient one
 
 Every polynomial invariant recorded above — trace, determinant, characteristic
@@ -1450,7 +1474,7 @@ theorem coe_aeval_compress_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule �
       simp only [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
         Module.End.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
         Submodule.coe_smul]
-      rw [Module.End.pow_restrict, LinearMap.restrict_coe_apply]
+      rw [Module.End.pow_restrict n hinv, LinearMap.restrict_coe_apply]
 
 /-- **Annihilation transports to the invariant-block compression.**
 
@@ -1571,5 +1595,242 @@ theorem minpoly_dvd_mul_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodu
   rw [hNv]
   -- `N (P_H v)` lies back in `H`; `M` kills it.
   exact hMkill _ (aeval_mem_of_invariant hH (minpoly 𝕜 (compress T Hᗮ)) haH)
+
+/-- **The lcm of the block minpolys annihilates `T` (reducing pair).**
+
+If `H` reduces `T` (both `H` and `Hᗮ` are `T`-invariant) then the least common
+multiple of the two block minimal polynomials annihilates the ambient operator:
+
+  `aeval T (lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))) = 0`.
+
+This is the substantive content pinning `minpoly T` as the lcm (rather than merely
+dividing the *product* `minpoly (compress T H) · minpoly (compress T Hᗮ)`, which is
+`minpoly_dvd_mul_compress_of_reducing`).  Writing `L := lcm p q`, both `p ∣ L` and
+`q ∣ L`, so `aeval T L` factors through `aeval T p` on the `H`-block (which
+annihilates `H`, since `compress T H = T` there) and through `aeval T q` on the
+`Hᗮ`-block; splitting any `v = P_H v + (v - P_H v)` orthogonally kills both pieces.
+Symmetry-free. -/
+theorem aeval_lcm_compress_eq_zero_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    Polynomial.aeval T
+        (lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ))) = 0 := by
+  set p := minpoly 𝕜 (compress T H) with hp_def
+  set q := minpoly 𝕜 (compress T Hᗮ) with hq_def
+  -- `aeval T p` annihilates the `H`-block; `aeval T q` annihilates the `Hᗮ`-block.
+  have hMkill : ∀ w ∈ H, Polynomial.aeval T p w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant H hH p ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  have hNkill : ∀ w ∈ Hᗮ, Polynomial.aeval T q w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant Hᗮ hHp q ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  -- The lcm annihilates each block: `L = p * s = q * t`, and the leading factor kills.
+  obtain ⟨s, hs⟩ := dvd_lcm_left p q
+  obtain ⟨t, ht⟩ := dvd_lcm_right p q
+  have hLkillH : ∀ w ∈ H, Polynomial.aeval T (lcm p q) w = 0 := fun w hw => by
+    rw [hs, map_mul, Module.End.mul_apply]
+    exact hMkill _ (aeval_mem_of_invariant hH s hw)
+  have hLkillHp : ∀ w ∈ Hᗮ, Polynomial.aeval T (lcm p q) w = 0 := fun w hw => by
+    rw [ht, map_mul, Module.End.mul_apply]
+    exact hNkill _ (aeval_mem_of_invariant hHp t hw)
+  -- Split any `v` orthogonally; both pieces are killed.
+  ext v
+  simp only [LinearMap.zero_apply]
+  have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  have hav : H.starProjection v + (v - H.starProjection v) = v := by abel
+  conv_lhs => rw [← hav]
+  rw [map_add, hLkillH _ haH, hLkillHp _ hbHp, add_zero]
+
+/-- **The ambient minpoly divides the lcm of the block minpolys (reducing pair).**
+
+Sharper than the product divisibility `minpoly_dvd_mul_compress_of_reducing`: since
+the lcm of the two block minpolys already annihilates `T`
+(`aeval_lcm_compress_eq_zero_of_reducing`), `minpoly.dvd` gives
+
+  `minpoly T ∣ lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))`. -/
+theorem minpoly_dvd_lcm_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 T ∣ lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) :=
+  minpoly.dvd 𝕜 T (aeval_lcm_compress_eq_zero_of_reducing H hH hHp)
+
+/-- **Minimal-polynomial reading of the block-diagonal decomposition (capstone).**
+
+If `H` reduces `T` then the minimal polynomial of `T` is *exactly* the least common
+multiple of the two block minimal polynomials:
+
+  `minpoly T = lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))`.
+
+This is the equality repeatedly promised by the section docstrings, completing the
+`minpoly` picture: unlike the *characteristic* polynomial, which multiplies across a
+reducing pair (`charpoly_eq_mul_compress_of_reducing`), the *minimal* polynomial takes
+the lcm.  The `∣` direction is `minpoly_dvd_lcm_compress_of_reducing`; the `∣`-reverse is
+`lcm_dvd` applied to the two block divisibilities `minpoly_compress_dvd_of_reducing`.
+Both `minpoly T` and the (normalized) lcm are monic, so mutual divisibility upgrades to
+equality via `normalize`.  Symmetry-free. -/
+theorem minpoly_eq_lcm_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 T =
+      lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) := by
+  obtain ⟨hdvdH, hdvdHp⟩ := minpoly_compress_dvd_of_reducing H hH hHp
+  have d1 : minpoly 𝕜 T ∣
+      lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) :=
+    minpoly_dvd_lcm_compress_of_reducing H hH hHp
+  have d2 : lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) ∣
+      minpoly 𝕜 T := lcm_dvd hdvdH hdvdHp
+  -- `T` is integral (finite-dimensional endomorphism algebra), so `minpoly T` is monic.
+  have hint : IsIntegral 𝕜 T :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 V) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral T
+  have hmonic : (minpoly 𝕜 T).Monic := minpoly.monic hint
+  calc minpoly 𝕜 T = normalize (minpoly 𝕜 T) := (hmonic.normalize_eq_self).symm
+    _ = normalize (lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ))) :=
+        normalize_eq_normalize_iff.mpr ⟨d1, d2⟩
+    _ = lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) := normalize_lcm _ _
+
+/-- **Each block minpoly has degree at most the ambient one (reducing pair).**
+Since each block minimal polynomial divides `minpoly T`
+(`minpoly_compress_dvd_of_reducing`) and `minpoly T ≠ 0` (it is monic, `T` being a
+finite-dimensional endomorphism), their degrees are bounded by `deg (minpoly T)`.  The
+lower half of the degree bracket for `minpoly T`, complementing the sum upper bound
+`natDegree_minpoly_le_add_compress_of_reducing`. -/
+theorem natDegree_minpoly_compress_le_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (minpoly 𝕜 (compress T H)).natDegree ≤ (minpoly 𝕜 T).natDegree ∧
+      (minpoly 𝕜 (compress T Hᗮ)).natDegree ≤ (minpoly 𝕜 T).natDegree := by
+  have hint : IsIntegral 𝕜 T :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 V) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral T
+  have hT0 : minpoly 𝕜 T ≠ 0 := (minpoly.monic hint).ne_zero
+  obtain ⟨hdvdH, hdvdHp⟩ := minpoly_compress_dvd_of_reducing H hH hHp
+  exact ⟨Polynomial.natDegree_le_of_dvd hdvdH hT0,
+    Polynomial.natDegree_le_of_dvd hdvdHp hT0⟩
+
+/-- **The ambient minpoly degree is at most the sum of the block minpoly degrees
+(reducing pair).**  From the product divisibility `minpoly T ∣ minpoly (compress T H) ·
+minpoly (compress T Hᗮ)` (`minpoly_dvd_mul_compress_of_reducing`) and the fact that both
+block minpolys are monic (hence nonzero, so their product is nonzero and its degree is the
+sum of theirs), `deg (minpoly T) ≤ deg (minpoly (compress T H)) + deg (minpoly (compress T
+Hᗮ))`.  The upper half of the degree bracket; together with
+`natDegree_minpoly_compress_le_of_reducing` this pins `deg (minpoly T)` between the block
+maximum and the block sum — the degree shadow of `minpoly T = lcm` of the two blocks. -/
+theorem natDegree_minpoly_le_add_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (minpoly 𝕜 T).natDegree ≤
+      (minpoly 𝕜 (compress T H)).natDegree + (minpoly 𝕜 (compress T Hᗮ)).natDegree := by
+  have hpint : IsIntegral 𝕜 (compress T H) :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 (↥H)) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral (compress T H)
+  have hqint : IsIntegral 𝕜 (compress T Hᗮ) :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 (↥Hᗮ)) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral (compress T Hᗮ)
+  have hp0 : minpoly 𝕜 (compress T H) ≠ 0 := (minpoly.monic hpint).ne_zero
+  have hq0 : minpoly 𝕜 (compress T Hᗮ) ≠ 0 := (minpoly.monic hqint).ne_zero
+  have hprod : minpoly 𝕜 (compress T H) * minpoly 𝕜 (compress T Hᗮ) ≠ 0 :=
+    mul_ne_zero hp0 hq0
+  calc (minpoly 𝕜 T).natDegree
+      ≤ (minpoly 𝕜 (compress T H) * minpoly 𝕜 (compress T Hᗮ)).natDegree :=
+        Polynomial.natDegree_le_of_dvd (minpoly_dvd_mul_compress_of_reducing H hH hHp) hprod
+    _ = (minpoly 𝕜 (compress T H)).natDegree + (minpoly 𝕜 (compress T Hᗮ)).natDegree :=
+        Polynomial.natDegree_mul hp0 hq0
+
+/-! ## Ky Fan: the compression's eigenvalue-sum (= trace) is bracketed by the
+extreme eigenvalue sums of `T`
+
+Summing the *termwise* Poincaré interlacing `λ_{k+m} ≤ μ_k ≤ λ_k` over all `k`
+gives the **Ky Fan** trace bracket for the compression.  The upper bound is the
+Ky Fan maximum principle in compression form: the sum of the eigenvalues of
+`compress T H` — equivalently, by `trace_eq_sum_eigenvalues`, its trace — never
+exceeds the sum of the `n = finrank H` *largest* eigenvalues of `T`,
+
+  `∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+Dually it is at least the sum of the `n` *smallest* eigenvalues of `T`,
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k`.
+
+Both are one-line `Finset.sum_le_sum` consequences of the two halves of
+`poincare_separation_compression`.  This is the summed (Ky Fan) shadow of the
+termwise interlacing, and the eigenvalue-list refinement of the coarse trace
+additivity `sum_eigenvalues_eq_add_of_reducing` — but where that identity needs
+`H` *reducing*, the Ky Fan bracket holds for a **completely arbitrary** subspace
+`H` (only its dimension enters).  Symmetry-free apart from `T.IsSymmetric` (real
+spectrum), which the eigenvalue lists require. -/
+
+/-- **Ky Fan maximum principle (compression form).**  The sum of the eigenvalues
+of the compression `compress T H` onto an arbitrary `n`-dimensional subspace is at
+most the sum of the `n` largest eigenvalues of `T`:
+
+  `∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+Termwise `μ_k ≤ λ_k` (`poincare_separation_compression`, upper half) summed over
+`k : Fin n`.  No reducing / invariance hypothesis on `H`. -/
+theorem sum_compress_eigenvalues_le_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+      ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  Finset.sum_le_sum fun k _ => (poincare_separation_compression hT hVdim H hHdim k).2
+
+/-- **Ky Fan minimum principle (compression form).**  Dually to
+`sum_compress_eigenvalues_le_of_poincare`, the eigenvalue-sum of the compression
+is at least the sum of the `n` *smallest* eigenvalues of `T`:
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k`.
+
+Termwise `λ_{k+m} ≤ μ_k` (`poincare_separation_compression`, lower half) summed
+over `k : Fin n`. -/
+theorem sum_le_sum_compress_eigenvalues_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+      ≤ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k :=
+  Finset.sum_le_sum fun k _ => (poincare_separation_compression hT hVdim H hHdim k).1
+
+/-- **The Ky Fan trace bracket.**  Combining the two principles, the eigenvalue-sum
+of the compression `compress T H` onto an arbitrary `n`-dimensional subspace lies
+between the sum of the `n` smallest and the sum of the `n` largest eigenvalues of
+`T`:
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+By `trace_eq_sum_eigenvalues` the middle sum is the trace of `compress T H`, so this
+is exactly the statement that compressing a symmetric operator to an `n`-dimensional
+subspace can move its trace no further than the extreme `n`-eigenvalue sums permit —
+the summed shadow of the pointwise spectral confinement
+`compress_eigenvalue_mem_Icc_of_poincare`. -/
+theorem sum_compress_eigenvalues_mem_Icc_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+        ≤ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+      ∧ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+          ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  ⟨sum_le_sum_compress_eigenvalues_of_poincare hT hVdim H hHdim,
+   sum_compress_eigenvalues_le_of_poincare hT hVdim H hHdim⟩
+
+/-- **The Ky Fan trace bracket, orthonormal-frame form.**  The `_span` companion of
+`sum_compress_eigenvalues_mem_Icc_of_poincare`, specialising `H` to `span (range f)`
+for an orthonormal `f : Fin n → V` exactly as `poincare_separation_compression_span`
+does for the pointwise bound: the eigenvalue-sum of the compression onto the span of
+an orthonormal `n`-frame is bracketed by the extreme `n`-eigenvalue sums of `T`, with
+the dimension hypothesis discharged automatically from `finrank_span_eq_card`. -/
+theorem sum_compress_eigenvalues_mem_Icc_span_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (f : Fin n → V) (hf : Orthonormal 𝕜 f) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+        ≤ ∑ k, (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+      ∧ ∑ k, (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+          ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  sum_compress_eigenvalues_mem_Icc_of_poincare hT hVdim (Submodule.span 𝕜 (Set.range f))
+    ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n))
+
 
 end CauchyInterlacing.PoincareCompression

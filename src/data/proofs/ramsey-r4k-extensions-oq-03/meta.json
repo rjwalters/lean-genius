@@ -89,6 +89,13 @@
   },
   "sections": [
     {
+      "id": "overview-lll-for-ramsey",
+      "title": "Overview: improving R(k,k) via the symmetric Lovász Local Lemma",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "The file's docstring frames the goal: the classical Erdős first-moment bound R(k,k) > 2^{⌊k/2⌋} (proved axiom-free in ErdosRamseyLowerBound.lean) is sharpened by a Θ(k) factor using the symmetric LLL. The bad events \"the k-clique S is monochromatic\" are not independent but depend only on cliques sharing an edge with S. It enumerates the four ingredients supplied here — the probability p = cliqueMonoProb, the dependency degree d = cliqueDependencyBound with its proved count, the feasibility test RamseyLLLCondition, and the hypothesis-clean reduction SymmetricLLLForRamsey → ramsey_lll_lower_bound — and names the single missing ingredient (the LLL avoidance principle, an explicit labelled hypothesis, not an axiom). Erdős–Lovász (1975); Spencer (1977)."
+    },
+    {
       "id": "lll-parameters",
       "title": "The LLL parameters p, d and the feasibility test",
       "startLine": 42,
@@ -117,17 +124,49 @@
       "summary": "cliqueDependencyBound_mono shows the dependency degree is monotone in the number of vertices, and RamseyLLLCondition_antitone concludes the feasibility test is a genuine threshold: holding at m vertices implies holding at every n ≤ m."
     },
     {
+      "id": "part-v-integer-criterion",
+      "title": "A checkable integer criterion and a concrete improvement",
+      "startLine": 232,
+      "endLine": 273,
+      "summary": "ramseyLLLCondition_iff clears the denominator 2^{C(k,2)} and the surrogate e ≤ 3 to show the rational test 3·(2/2^{C(k,2)})·(d+1) ≤ 1 is exactly the ℕ inequality 6·(d+1) ≤ 2^{C(k,2)}, yielding a Decidable instance for RamseyLLLCondition. Concrete witnesses ramseyLLLCondition_13_6 (6·(C(6,2)·C(11,4)+1) = 29706 ≤ 32768 = 2^15) and ramseyLLLCondition_7_5 are then discharged by decide, exhibiting regimes where the LLL feasibility holds."
+    },
+    {
+      "id": "part-vi-dependency-identity",
+      "title": "Why LLL beats the union bound: the dependency-vs-total identity",
+      "startLine": 274,
+      "endLine": 312,
+      "summary": "cliqueDependency_total_identity isolates the structural reason LLL improves on the first moment: what matters is the local dependency degree d = C(k,2)·C(n−2,k−2), not the total number of bad events C(n,k). cliqueDependencyBound_le_total confirms d ≤ (total − 1), so the LLL always sees a smaller obstruction than the union bound over all cliques."
+    },
+    {
+      "id": "part-vii-union-bound-comparison",
+      "title": "Honest comparison with the optimized union bound (crossover setup)",
+      "startLine": 313,
+      "endLine": 388,
+      "summary": "firstMomentCondition packages the sharp first-moment test 2·C(n,k) < 2^{C(k,2)} (Decidable). lll_core_eq_firstMoment_core / _le_firstMoment_core relate the two cores, and the explicit small cases unionBound_beats_lll_at_6 and _at_7 record — honestly — that for small k the optimized union bound can still win, locating where the LLL's asymptotic advantage actually begins."
+    },
+    {
       "id": "sharp-crossover-characterization",
       "title": "Sharp LLL-vs-union-bound crossover characterization",
       "startLine": 389,
       "endLine": 432,
       "summary": "firstMoment_core_lt_lll_core is the strict small-n converse of lll_core_le_firstMoment_core: when C(n,2) < 3·C(k,2)² the union-bound core 2·C(n,k) is strictly below the LLL core 6·d, obtained by cancelling the positive factor 2·C(n,k) out of the exact identity C(n,2)·6d = 3·C(k,2)²·2·C(n,k). Combining both directions, lll_core_gt_firstMoment_core_iff proves the equivalence 2·C(n,k) < 6·d ↔ C(n,2) < 3·C(k,2)², pinning the crossover between the symmetric-LLL feasibility core and the sharp union bound to the single scalar comparison C(n,2) ⋛ 3·C(k,2)². This subsumes the numeric witnesses unionBound_beats_lll_at_6/7 (small-n side) and the asymptotic lll_core_le_firstMoment_core (large-n side) as the two halves of one iff."
+    },
+    {
+      "id": "part-viii-e-constant",
+      "title": "The real LLL constant e < 3 justifies the integer surrogate",
+      "startLine": 433,
+      "endLine": 593,
+      "summary": "The closing part discharges the e ≤ 3 surrogate against the genuine Lovász constant: symmetric_avoidance_factor_ge_third bounds the avoidance factor, and cliqueMonoProb_le_symmetric_lll_rhs, symmetric_reserved_lt_one, and cliqueMonoProb_le_symmetric_lll_block verify that whenever RamseyLLLCondition holds, p meets the sharp symmetric-LLL inequality p·e·(d+1) ≤ 1 — so the decidable integer test is a sound (conservative) proxy for the exact LLL applicability condition."
     }
   ],
   "conclusion": {
     "summary": "This entry formalizes Key Lemma 3 of the LLL-for-Ramsey plan — the dependency degree d ≤ C(k,2)·C(n−2,k−2) of the monochromatic-clique bad events — entirely by finite counting, with 0 axioms and 0 sorries, and packages it with the bad-event probability and the feasibility test into a hypothesis-clean reduction ramsey_lll_lower_bound from the symmetric-LLL avoidance principle to the Ramsey lower bound R(k,k) > n.",
     "implications": "Together with the sibling entry's bad-event probability p (Key Lemma 2), the dependency degree d is the complete Ramsey-specific input to the symmetric LLL feasibility test e·p·(d+1) ≤ 1; both are now machine-checked, axiom-free counting statements independent of the (not-yet-formalized) measure-theoretic LLL machinery. The reduction isolates the one remaining ingredient — the abstract symmetric LLL itself — as a single explicit, clearly-labelled hypothesis.",
-    "openQuestions": "Formalizing the symmetric Lovász Local Lemma proper (the conditional-probability induction over dependency graphs; see the sibling problem lovasz-local-lemma-oq-01 for the induction-step engine) in Mathlib, discharging the SymmetricLLLForRamsey hypothesis, and combining it with Key Lemmas 2 and 3 to replace the axiom erdos_probabilistic_lower_bound / spencer_diagonal_lower_bound in Proofs/RamseyR4kExtensions.lean with a proved theorem."
+    "openQuestions": [
+      "Formalizing the symmetric Lovász Local Lemma proper (the conditional-probability induction over dependency graphs; see the sibling problem lovasz-local-lemma-oq-01 for the induction-step engine) in Mathlib, discharging the SymmetricLLLForRamsey hypothesis, and combining it with Key Lemmas 2 and 3 to replace the axiom erdos_probabilistic_lower_bound / spencer_diagonal_lower_bound in Proofs/RamseyR4kExtensions.lean with a proved theorem.",
+      "Does replacing the integer surrogate e ≤ 3 (Part VIII, symmetric_avoidance_factor_ge_third) with the sharp Lovász constant e = 2.71828… widen the feasibility window 6·(d+1) ≤ 2^{C(k,2)} enough to recover the full Spencer (1977) asymptotic R(k,k) > (1+o(1))·(k / (e·√2))·2^{k/2}, and can that Θ(k)-factor gain over the Erdős first-moment bound R(k,k) > 2^{⌊k/2⌋} be certified inside this file's decidable ℕ criterion rather than only in the rational condition?",
+      "Can the same hypothesis-clean dependency-degree machinery (cliqueNeighbors_card_le) be adapted to the off-diagonal problem R(s,t), where the bad events for s- and t-cliques carry asymmetric probabilities and the symmetric-LLL surrogate must be replaced by the general (asymmetric) Local Lemma?"
+    ]
   },
   "references": [
     {

@@ -372,3 +372,56 @@ unused-var line 341, not my code.) ★Used MAIN repo's proofs/.lake for oleans s
 `git worktree add .loom/worktrees/researcher-1-2 -B <branch> origin/main`, redid edits, and
 COMMITTED BEFORE building. Frontier now: S(2..5), B(2..5) all exact. Next S(6) needs A(6)
 (Erdos1204A6 exists — check admissible_six_sup_ge) + witness with sum = A(6)+S(5).
+
+## Session 2026-07-11 (researcher-5) — next A(k) ladder rung: slope-77/16 via prime 11 (NEW FILE, VERIFIED)
+
+**Mode:** ACT (RICH, but Erdos1204B.lean is under active daily iteration by researcher-1 —
+worked in a NEW file to avoid add/add conflict). **Outcome:** 0-axiom/0-sorry, docker-VERIFIED.
+
+### New file `Erdos1204F.lean` (imports Erdos1204E; 3 theorems + 1 helper)
+Extends the CRT+pigeonhole diameter ladder C(slope 3)→D(15/4)→E(35/8) with the prime 11:
+- `card_filter_ne {n}[NeZero n](c:ZMod n) : (univ.filter (·≠c)).card = n-1` (helper; filter_ne'
+  + card_erase_of_mem + card_univ + ZMod.card).
+- `five_classes_prod : (univ.filter (avoid one class mod 2,3,5,7,11)).card = 480`. ★KEY GOTCHA:
+  E's `four_classes_prod` used plain `decide` over 210 elts, but the p=11 analogue is 2310 elts →
+  kernel `decide` CRASHES the build with SIGBUS (exit 135), TWICE, fast (~900ms). FIX: factor the
+  card compositionally — rewrite the filter as a 5-fold `×ˢ` product of single-coordinate "≠"-sets
+  (`ext`+`simp only [mem_filter,mem_univ,true_and,mem_product]` closes the iff, no tauto needed),
+  then `card_product ×4 + card_filter_ne ×5` → 1·2·4·6·10=480 by rfl. Avoids the giant decide.
+- `admissible_eleven_le_sup : 77*(a.card-480) ≤ 16*a.sup id` (p=11 clone of admissible_seven_le_sup;
+  CRT chain 2·3→6, 6·5→30, 30·7→210, 210·11→2310 via Nat.modEq_and_modEq_iff_modEq_mul; reuses
+  same_mod_sup_ge with modulus 2310; small-branch threshold card<481).
+- `sixteen_mul_A_ge (k) : 77*(k-480) ≤ 16*A k` (via A_mem).
+- `eleven_bound_gt_seven_bound {k}(4801≤k) : 70*(k-48) < 77*(k-480)` (F beats 2×E for k≥4801;
+  crossover 7k>33600 from offset −480 vs −48).
+
+Slope 2310/480 = 77/16 ≈ 4.8125, up from E's 35/8 = 4.375. All 3 mains #print axioms =
+[propext, Classical.choice, Quot.sound] only (verified this session).
+
+### Verification — VERIFIED (docker)
+`./proofs/scripts/docker-build.sh Proofs.Erdos1204F` EXIT 0 (lakefile auto-globs Proofs.* so the
+new file needs no shared-file registration → no conflict). ★Also cleared a pre-existing corrupt
+mathlib cache `.ir` earlier this session (see researcher-5 szemeredi note).
+
+### Next rung
+prime 13 → 1·2·4·6·10·12 = 5760 classes mod 30030, slope 30030/5760 = 1001/192 ≈ 5.214. Same
+compositional-card template (NOT decide). Offset −5760 pushes the crossover to ~k≥60000.
+
+## Session 2026-07-11 (researcher-8) — vanishing locus of A(k)
+
+**Mode:** REVISIT (RICH, mature 0-axiom/0-sorry multi-file entry)
+**Outcome:** progress — 3 new verified structural lemmas in `Erdos1204Problem.lean`.
+
+Characterized the low structure of `A(k) = min a_k`:
+- `A_pos {k} (hk : 2 ≤ k) : 0 < A k` — positivity, from the prime-2 bound `2(k-1) ≤ A k`.
+- `A_eq_zero_iff (k) : A k = 0 ↔ k ≤ 1` — the exact vanishing locus (`A` is 0 only on
+  {0,1}: ∅ and {0}), positive from k=2 onward.
+- `two_le_A_iff (k) : 2 ≤ A k ↔ 2 ≤ k` — complement; `A` first hits the
+  admissibility-forced value 2 exactly at k=2 (sharp, matching `A 2 = 2`).
+
+All three follow cleanly from the existing `two_mul_sub_one_le_A`, `A_zero`, `A_one`.
+34 → 37 theorems; still 0 sorries / 0 axioms.
+
+**Verification:** host elan `lean` v4.26.0 (main Mathlib LEAN_PATH) — EXIT 0, no errors
+(one pre-existing `mul_le_mul_right'` deprecation warning at the primorial bound,
+unrelated). Docker build unusable this session (transient exit-135 SIGBUS).

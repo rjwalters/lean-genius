@@ -396,6 +396,486 @@ theorem bipartitionNumber_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder 
   have h := bipartitionNumber_add_maxCut G
   omega
 
+/-- **The max-cut is positive iff `G` has an edge.** The positivity dual of
+`maxCut_eq_zero_iff` (`maxCut = 0 ↔ edgeless`): some edge can be cut exactly when some
+edge exists to cut. -/
+theorem maxCut_pos_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    0 < maxCut G ↔ 0 < edgeCount G := by
+  simp only [Nat.pos_iff_ne_zero, ne_eq, maxCut_eq_zero_iff]
+
+/-- **The min-uncut equals the max-cut iff the optimal cut splits the edges exactly in
+half.** By the complementarity `bipartitionNumber G + maxCut G = edgeCount G`, the two
+extremal invariants coincide precisely when each is half the edge count
+(`2 * bipartitionNumber G = edgeCount G`, equivalently `2 * maxCut G = edgeCount G`). This
+is the balanced middle case between the two saturated corners already characterized:
+bipartite (`bipartitionNumber = 0`, `maxCut = edgeCount`) and edgeless
+(`maxCut = 0`, `bipartitionNumber = edgeCount`). -/
+theorem bipartitionNumber_eq_maxCut_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G = maxCut G ↔ 2 * bipartitionNumber G = edgeCount G := by
+  have h := bipartitionNumber_add_maxCut G
+  omega
+
+/-
+# Part 3c: Monotonicity of the cut quantities under edge addition
+
+The dual side of `monochromaticEdges_mono` / `bipartitionNumber_mono`: the
+*cut* quantities (`edgeCount`, `bichromaticEdges`, `maxCut`) are likewise
+monotone when edges are added. Together the two groups say that adding an edge
+can only push a colouring's monochromatic and bichromatic counts *up*, and
+hence both extremal invariants `bipartitionNumber` and `maxCut` grow with the
+graph — the "quantities increase with the graph" intuition behind Erdős #744.
+All axiom-free.
+-/
+
+/-- **The edge count is monotone under edge addition.** If every edge of `G` is
+    an edge of `H` then `edgeCount G ≤ edgeCount H`: a supergraph has at least as
+    many edges. -/
+theorem edgeCount_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) :
+    edgeCount G ≤ edgeCount H := by
+  unfold edgeCount
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact ⟨hp.1, hsub p.1 p.2 hp.2⟩
+
+/-- **Bichromatic edges are monotone under edge addition.** Dual to
+    `monochromaticEdges_mono`: if every edge of `G` is an edge of `H`, then for a
+    *fixed* 2-colouring the supergraph `H` cuts at least as many edges as `G`.
+    A newly added edge either is or is not separated by `c`, but it can never
+    remove one of `G`'s already-separated edges. -/
+theorem bichromaticEdges_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) (c : V → Bool) :
+    bichromaticEdges G c ≤ bichromaticEdges H c := by
+  unfold bichromaticEdges
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact ⟨hp.1, hsub p.1 p.2 hp.2.1, hp.2.2⟩
+
+/-- **The max-cut is monotone under edge addition.** If every edge of `G` is an
+    edge of `H` then `maxCut G ≤ maxCut H`: a supergraph can be cut at least as
+    deeply. The exact dual of `bipartitionNumber_mono`, and the max-cut side of
+    the "both invariants grow with the graph" phenomenon. The optimal cut of `G`
+    already separates `maxCut G` edges of `H` (`bichromaticEdges_mono`), so the
+    best cut of `H` does at least that well. -/
+theorem maxCut_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) :
+    maxCut G ≤ maxCut H := by
+  unfold maxCut
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_sup' (Finset.univ_nonempty (α := V → Bool)) (bichromaticEdges G)
+  rw [hc]
+  calc bichromaticEdges G c
+      ≤ bichromaticEdges H c := bichromaticEdges_mono G H hsub c
+    _ ≤ (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges H) :=
+        Finset.le_sup' (bichromaticEdges H) (Finset.mem_univ c)
+
+/-
+# Part 3c: The Erdős max-cut bound — every graph cuts at least half its edges
+
+The single most famous fact about the max-cut, due to Erdős himself: some
+2-coloring separates at least half of all edges, equivalently `edgeCount G ≤ 2 ·
+maxCut G`. Dually, at most half of the edges must be deleted to make `G`
+bipartite (`bipartitionNumber G ≤ maxCut G`).
+
+The proof is the classical averaging argument. Over all `2^{|V|}` colorings, a
+fixed edge `u v` is separated by exactly half of them — the involution flipping
+the color of `u` alone pairs the separating colorings with the non-separating
+ones (`card_colorings_cut`). Summing over edges (Fubini) shows the *average*
+bichromatic count is `edgeCount G / 2`, and the maximum is at least the average.
+Everything is `ℕ`-valued and axiom-free; we clear denominators to avoid division.
+-/
+
+/-- **Half of all colorings separate a fixed edge.** For `u ≠ v`, exactly half of
+the `2^{|V|}` two-colorings give `u` and `v` different colors:
+`2 · |{c | c u ≠ c v}| = |all colorings|`. The involution flipping the color of
+`u` alone is a bijection between the separating and non-separating colorings. -/
+theorem card_colorings_cut {V : Type*} [Fintype V] [LinearOrder V] (u v : V)
+    (huv : u ≠ v) :
+    2 * (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      = Fintype.card (V → Bool) := by
+  have hpart : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      + (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card
+      = Fintype.card (V → Bool) := by
+    rw [Finset.filter_card_add_filter_neg_card_eq_card]; rfl
+  have hcard : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      = (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card := by
+    apply Finset.card_bij'
+      (fun c _ => Function.update c u (!c u))
+      (fun c _ => Function.update c u (!c u))
+    · intro c hc
+      funext w; by_cases hw : w = u
+      · subst hw; simp only [Function.update_self, Bool.not_not]
+      · simp only [Function.update_of_ne hw]
+    · intro c hc
+      funext w; by_cases hw : w = u
+      · subst hw; simp only [Function.update_self, Bool.not_not]
+      · simp only [Function.update_of_ne hw]
+    · intro c hc
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+        Function.update_self, Function.update_of_ne (Ne.symm huv)] at hc ⊢
+      revert hc; cases c u <;> cases c v <;> decide
+    · intro c hc
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+        Function.update_self, Function.update_of_ne (Ne.symm huv)] at hc ⊢
+      revert hc; cases c u <;> cases c v <;> decide
+  omega
+
+/-- **The total bichromatic count over all colorings.** Summing the cut size over
+every 2-coloring double-counts each edge exactly `2^{|V|-1}` times; clearing the
+`½` this reads `2 · ∑_c bichromaticEdges G c = edgeCount G · |all colorings|`.
+This is the Fubini/averaging identity behind the max-cut bound. -/
+theorem two_mul_sum_bichromaticEdges {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    2 * (∑ c : V → Bool, bichromaticEdges G c)
+      = edgeCount G * Fintype.card (V → Bool) := by
+  set E : Finset (V × V) := Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)
+    with hE
+  -- rewrite each cut count as a filter of the edge set E
+  have hbi : ∀ c : V → Bool,
+      bichromaticEdges G c = (E.filter (fun p => c p.1 ≠ c p.2)).card := by
+    intro c
+    unfold bichromaticEdges
+    rw [hE, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter]; tauto
+  -- Fubini: swap the sum over colorings with the sum over edges
+  have hsum : (∑ c : V → Bool, bichromaticEdges G c)
+      = ∑ p ∈ E, (Finset.univ.filter (fun c : V → Bool => c p.1 ≠ c p.2)).card := by
+    simp only [hbi, Finset.card_filter]
+    rw [Finset.sum_comm]
+  rw [hsum, Finset.mul_sum]
+  -- each edge is separated by exactly half the colorings
+  have hterm : ∀ p ∈ E, 2 * (Finset.univ.filter (fun c : V → Bool => c p.1 ≠ c p.2)).card
+      = Fintype.card (V → Bool) := by
+    intro p hp
+    simp only [hE, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    exact card_colorings_cut p.1 p.2 (_root_.ne_of_lt hp.1)
+  rw [Finset.sum_congr rfl hterm, Finset.sum_const, smul_eq_mul, hE]
+  rfl
+
+/-- **Erdős's max-cut bound.** Every graph has a 2-coloring separating at least
+half of its edges: `edgeCount G ≤ 2 · maxCut G`. This is the foundational lower
+bound on the max-cut, proved by averaging over all colorings. -/
+theorem edgeCount_le_two_mul_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    edgeCount G ≤ 2 * maxCut G := by
+  have hpos : 0 < Fintype.card (V → Bool) := Fintype.card_pos
+  -- the average is at most the maximum, over all colorings
+  have hle : (∑ c : V → Bool, bichromaticEdges G c)
+      ≤ Fintype.card (V → Bool) * maxCut G := by
+    have := Finset.sum_le_card_nsmul (Finset.univ : Finset (V → Bool))
+      (bichromaticEdges G) (maxCut G)
+      (fun c _ => Finset.le_sup' (bichromaticEdges G) (Finset.mem_univ c))
+    simpa [Finset.card_univ, smul_eq_mul] using this
+  -- edgeCount · card = 2 · ∑ ≤ 2 · card · maxCut, then cancel card
+  have hchain : edgeCount G * Fintype.card (V → Bool)
+      ≤ (2 * maxCut G) * Fintype.card (V → Bool) := by
+    rw [← two_mul_sum_bichromaticEdges G]
+    calc 2 * (∑ c : V → Bool, bichromaticEdges G c)
+        ≤ 2 * (Fintype.card (V → Bool) * maxCut G) := by
+          exact Nat.mul_le_mul_left 2 hle
+      _ = (2 * maxCut G) * Fintype.card (V → Bool) := by ring
+  exact Nat.le_of_mul_le_mul_right hchain hpos
+
+/-- **At most half of the edges need deleting to make `G` bipartite.** Dual form
+of Erdős's max-cut bound: `bipartitionNumber G ≤ maxCut G`, i.e. the minimum
+number of edges whose removal makes `G` bipartite never exceeds the number the
+best cut separates. Immediate from `edgeCount_le_two_mul_maxCut` and the
+complementarity `bipartitionNumber G + maxCut G = edgeCount G`. -/
+theorem bipartitionNumber_le_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ maxCut G := by
+  have hcomp := bipartitionNumber_add_maxCut G
+  have hbound := edgeCount_le_two_mul_maxCut G
+  omega
+
+/-- **At most half of the edges are monochromatic under the best 2-coloring:**
+`2 · bipartitionNumber G ≤ edgeCount G`.  This is the min-uncut dual of Erdős's
+max-cut half-bound `edgeCount_le_two_mul_maxCut` (`edgeCount G ≤ 2 · maxCut G`): the
+same averaging argument that guarantees a cut separating at least half the edges
+guarantees a 2-coloring leaving at most half monochromatic.  Immediate from
+`bipartitionNumber_le_maxCut` and the complementarity
+`bipartitionNumber G + maxCut G = edgeCount G` (`2·bip ≤ bip + maxCut = edgeCount`).
+Together with `edgeCount_le_two_mul_maxCut` it packages the two-sided
+`edgeCount/2`-sandwich `bipartitionNumber ≤ edgeCount/2 ≤ maxCut`. -/
+theorem two_mul_bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    2 * bipartitionNumber G ≤ edgeCount G := by
+  have hcomp := bipartitionNumber_add_maxCut G
+  have hle := bipartitionNumber_le_maxCut G
+  omega
+
+/-- **Erdős's max-cut bound, canonical ceiling form:** the best 2-colouring
+separates at least `⌈m/2⌉` edges, `(edgeCount G + 1) / 2 ≤ maxCut G` (natural-number
+`/` is floor division, so `(m + 1) / 2 = ⌈m/2⌉`). This is the sharp textbook
+statement of `edgeCount_le_two_mul_maxCut` (`m ≤ 2·maxCut`): for an odd number of
+edges it strictly beats the naive `⌊m/2⌋`, guaranteeing e.g. `2` cut edges when
+`m = 3`. -/
+theorem edgeCount_add_one_div_two_le_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    (edgeCount G + 1) / 2 ≤ maxCut G := by
+  have hbound := edgeCount_le_two_mul_maxCut G
+  omega
+
+/-- **Min-uncut floor bound:** the best 2-colouring leaves at most `⌊m/2⌋` edges
+monochromatic, `bipartitionNumber G ≤ edgeCount G / 2`. The natural-number
+division form of `two_mul_bipartitionNumber_le_edgeCount` (`2·bip ≤ m`) and the
+exact dual of `edgeCount_add_one_div_two_le_maxCut`: at most half the edges must be
+deleted to make `G` bipartite. -/
+theorem bipartitionNumber_le_edgeCount_div_two {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ edgeCount G / 2 := by
+  have hbound := two_mul_bipartitionNumber_le_edgeCount G
+  omega
+
+/-- **The canonical half-edge sandwich (⌊⌋ / ⌈⌉ forms).** Packages Erdős's max-cut
+bound and its min-uncut dual in their sharp natural-number-division forms:
+
+    bipartitionNumber G  ≤  ⌊m/2⌋  ≤  ⌈m/2⌉  ≤  maxCut G,
+
+where `m = edgeCount G`. The textbook rendering of the `2·`-multiplied sandwich
+`bipartitionNumber ≤ edgeCount/2 ≤ maxCut` implicit in
+`two_mul_bipartitionNumber_le_edgeCount` / `edgeCount_le_two_mul_maxCut`: at most
+half the edges are monochromatic and at least half are cut, under one optimal
+colouring. -/
+theorem half_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ edgeCount G / 2 ∧
+      edgeCount G / 2 ≤ (edgeCount G + 1) / 2 ∧
+      (edgeCount G + 1) / 2 ≤ maxCut G :=
+  ⟨bipartitionNumber_le_edgeCount_div_two G,
+   Nat.div_le_div_right (Nat.le_succ _),
+   edgeCount_add_one_div_two_le_maxCut G⟩
+
+/-
+# Part 3d: Single-edge Lipschitz continuity
+
+Monotonicity (`bipartitionNumber_mono`, `maxCut_mono`) says both extremal
+invariants can only *grow* when edges are added, but says nothing about how
+*fast*. The sharp statement is that they are **1-Lipschitz** for the single-edge
+edit: adding one edge `{a,b}` changes each invariant by *at most one*. The only
+new monochromatic (resp. bichromatic) pair a fixed colouring `c` can acquire is
+the added ordered pair `(a,b)` itself, so its count rises by at most one; passing
+to the optimal colouring transfers the bound to the invariant. Combined with
+monotonicity this pins `bipartitionNumber H ∈ {bipartitionNumber G,
+bipartitionNumber G + 1}` when `H = G + {a,b}` (and likewise for `maxCut`). All
+axiom-free.
+-/
+
+/-- **Single-edge step bound for monochromatic edges.** If every edge of `H` is
+either an edge of `G` or the single new edge `{a,b}` (with `a < b`), then for any
+fixed 2-colouring the monochromatic-edge count of `H` exceeds that of `G` by at
+most one — the added ordered pair `(a,b)` is the only pair that can become
+monochromatic. -/
+theorem monochromaticEdges_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a))
+    (c : V → Bool) :
+    monochromaticEdges H c ≤ monochromaticEdges G c + 1 := by
+  unfold monochromaticEdges
+  refine le_trans (Finset.card_le_card ?_) (Finset.card_insert_le (a, b) _)
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hlt, hadj, hc⟩ := hp
+  rcases hnew p.1 p.2 hadj with hG | ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · apply Finset.mem_insert_of_mem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hlt, hG, hc⟩
+  · have hp_eq : p = (a, b) := Prod.ext_iff.mpr ⟨h1, h2⟩
+    rw [hp_eq]; exact Finset.mem_insert_self _ _
+  · exfalso; rw [h1, h2] at hlt; exact absurd hlt (not_lt.mpr hab.le)
+
+/-- **Single-edge step bound for bichromatic edges.** Dual of
+`monochromaticEdges_add_edge_le`: adding the edge `{a,b}` (with `a < b`) raises
+the cut size of any fixed colouring by at most one, the added pair `(a,b)` being
+the only pair that can become newly separated. -/
+theorem bichromaticEdges_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a))
+    (c : V → Bool) :
+    bichromaticEdges H c ≤ bichromaticEdges G c + 1 := by
+  unfold bichromaticEdges
+  refine le_trans (Finset.card_le_card ?_) (Finset.card_insert_le (a, b) _)
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hlt, hadj, hc⟩ := hp
+  rcases hnew p.1 p.2 hadj with hG | ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · apply Finset.mem_insert_of_mem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hlt, hG, hc⟩
+  · have hp_eq : p = (a, b) := Prod.ext_iff.mpr ⟨h1, h2⟩
+    rw [hp_eq]; exact Finset.mem_insert_self _ _
+  · exfalso; rw [h1, h2] at hlt; exact absurd hlt (not_lt.mpr hab.le)
+
+/-- **Adding one edge raises the bipartition number by at most one.** If `H` is
+`G` together with a single edge `{a,b}`, then `bipartitionNumber H ≤
+bipartitionNumber G + 1`: transfer the per-colouring step bound
+(`monochromaticEdges_add_edge_le`) through the `G`-optimal colouring. -/
+theorem bipartitionNumber_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    bipartitionNumber H ≤ bipartitionNumber G + 1 := by
+  obtain ⟨c, hc⟩ := exists_coloring_eq_bipartitionNumber G
+  calc bipartitionNumber H ≤ monochromaticEdges H c := bipartitionNumber_le H c
+    _ ≤ monochromaticEdges G c + 1 := monochromaticEdges_add_edge_le G H a b hab hnew c
+    _ = bipartitionNumber G + 1 := by rw [hc]
+
+/-- **Adding one edge raises the max-cut by at most one.** Dual of
+`bipartitionNumber_add_edge_le`: `maxCut H ≤ maxCut G + 1`, via the `H`-optimal
+cut and the per-colouring step bound `bichromaticEdges_add_edge_le`. -/
+theorem maxCut_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    maxCut H ≤ maxCut G + 1 := by
+  unfold maxCut
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_sup' (Finset.univ_nonempty (α := V → Bool)) (bichromaticEdges H)
+  rw [hc]
+  have hstep := bichromaticEdges_add_edge_le G H a b hab hnew c
+  have hle : bichromaticEdges G c
+      ≤ (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges G) :=
+    Finset.le_sup' (bichromaticEdges G) (Finset.mem_univ c)
+  omega
+
+/-- **The bipartition number is 1-Lipschitz under a single-edge edit.** If `H` is
+`G` with one edge `{a,b}` added (`G ⊆ H` and `H` adds nothing beyond `{a,b}`),
+then `bipartitionNumber H` is either `bipartitionNumber G` or `bipartitionNumber
+G + 1`. The lower bound is monotonicity (`bipartitionNumber_mono`); the upper
+bound is the single-edge step `bipartitionNumber_add_edge_le`. -/
+theorem bipartitionNumber_add_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    bipartitionNumber G ≤ bipartitionNumber H ∧
+      bipartitionNumber H ≤ bipartitionNumber G + 1 :=
+  ⟨bipartitionNumber_mono G H hsub, bipartitionNumber_add_edge_le G H a b hab hnew⟩
+
+/-- **The max-cut is 1-Lipschitz under a single-edge edit.** Dual of
+`bipartitionNumber_add_edge_sandwich`: adding one edge `{a,b}` leaves `maxCut H`
+either equal to `maxCut G` or one larger. Lower bound `maxCut_mono`, upper bound
+`maxCut_add_edge_le`. -/
+theorem maxCut_add_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    maxCut G ≤ maxCut H ∧ maxCut H ≤ maxCut G + 1 :=
+  ⟨maxCut_mono G H hsub, maxCut_add_edge_le G H a b hab hnew⟩
+
+/-
+# Part 3e: Complement and the complete graph
+
+The complement `Gᶜ` and the complete graph `Kₙ` are absent from the single-graph
+cut engine above, yet they carry the natural *outer* partition of the vertex-pair
+set. For any fixed 2-coloring `c`, an edge of `Kₙ` is monochromatic exactly when
+its two (same-colored) endpoints are joined in `G` *or* in `Gᶜ` — never both, never
+neither. So the monochromatic counts of `G` and `Gᶜ` partition those of `Kₙ`,
+which specializes (at a constant coloring) to the edge-count identity
+`edgeCount G + edgeCount Gᶜ = edgeCount Kₙ`. This is a genuinely new direction:
+it relates a graph to its complement rather than adding another corner to the
+single-graph max-cut / min-uncut square. -/
+
+/-- **The complete graph on `V`.** Every pair of distinct vertices is adjacent. -/
+def completeGraph' (V : Type*) : SimpleGraph' V where
+  Adj u v := u ≠ v
+  sym _ _ h := h.symm
+  loopless _ h := h rfl
+
+instance completeGraph'.instDecidableRelAdj {V : Type*} [DecidableEq V] :
+    DecidableRel (completeGraph' V).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v))
+
+/-- **The complement `Gᶜ` of `G`.** Distinct vertices are adjacent in `Gᶜ`
+exactly when they are *non*-adjacent in `G`. -/
+def complement {V : Type*} (G : SimpleGraph' V) : SimpleGraph' V where
+  Adj u v := u ≠ v ∧ ¬ G.Adj u v
+  sym _ _ h := ⟨h.1.symm, fun hadj => h.2 (G.sym _ _ hadj)⟩
+  loopless _ h := h.1 rfl
+
+instance complement.instDecidableRelAdj {V : Type*} [DecidableEq V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] : DecidableRel (complement G).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v ∧ ¬ G.Adj u v))
+
+/-- **Monochromatic-edge partition through the complement.** For a fixed
+2-coloring `c`, the monochromatic edges of `G` and of `Gᶜ` together exhaust the
+monochromatic edges of the complete graph: every same-colored pair `u < v` lies
+in exactly one of `G`, `Gᶜ`.
+
+    monochromaticEdges G c + monochromaticEdges Gᶜ c = monochromaticEdges Kₙ c. -/
+theorem monochromaticEdges_add_complement {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) :
+    monochromaticEdges G c + monochromaticEdges (complement G) c
+      = monochromaticEdges (completeGraph' V) c := by
+  -- Base set: the same-colored ordered pairs `u < v` (= `Kₙ`'s monochromatic edges).
+  set S := Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ c p.1 = c p.2) with hS
+  have hbase : monochromaticEdges (completeGraph' V) c = S.card := by
+    rw [hS, monochromaticEdges]
+    congr 1; ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, completeGraph']
+    exact ⟨fun ⟨h1, _, h3⟩ => ⟨h1, h3⟩, fun ⟨h1, h3⟩ => ⟨h1, ne_of_lt h1, h3⟩⟩
+  have hG : monochromaticEdges G c = (S.filter (fun p => G.Adj p.1 p.2)).card := by
+    rw [hS, monochromaticEdges, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter]; tauto
+  have hGc : monochromaticEdges (complement G) c
+      = (S.filter (fun p => ¬ G.Adj p.1 p.2)).card := by
+    rw [hS, monochromaticEdges, Finset.filter_filter]
+    congr 1; ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, complement]
+    exact ⟨fun ⟨h1, ⟨_, h3⟩, h4⟩ => ⟨⟨h1, h4⟩, h3⟩,
+      fun ⟨⟨h1, h4⟩, h3⟩ => ⟨h1, ⟨ne_of_lt h1, h3⟩, h4⟩⟩
+  rw [hbase, hG, hGc, Finset.filter_card_add_filter_neg_card_eq_card]
+
+/-- `edgeCount` is the monochromatic count of the constant `true` coloring: every
+edge is monochromatic when all endpoints share a color. -/
+theorem monochromaticEdges_const_true {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    monochromaticEdges G (fun _ => true) = edgeCount G := by
+  unfold monochromaticEdges edgeCount
+  congr 1; ext p; simp [Finset.mem_filter]
+
+/-- **Edge-count complementarity.** A graph and its complement partition the edges
+of the complete graph: `edgeCount G + edgeCount Gᶜ = edgeCount Kₙ`. The constant-
+coloring specialization of `monochromaticEdges_add_complement`. -/
+theorem edgeCount_add_edgeCount_complement {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    edgeCount G + edgeCount (complement G) = edgeCount (completeGraph' V) := by
+  rw [← monochromaticEdges_const_true G, ← monochromaticEdges_const_true (complement G),
+      ← monochromaticEdges_const_true (completeGraph' V)]
+  exact monochromaticEdges_add_complement G (fun _ => true)
+
+/-- **The max-cuts of `G` and `Gᶜ` fit inside the complete graph.** Since each
+max-cut is bounded by its own edge count and the two edge counts partition
+`edgeCount Kₙ`, we get `maxCut G + maxCut Gᶜ ≤ edgeCount Kₙ`. -/
+theorem maxCut_add_maxCut_complement_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    maxCut G + maxCut (complement G) ≤ edgeCount (completeGraph' V) := by
+  have h1 := maxCut_le_edgeCount G
+  have h2 := maxCut_le_edgeCount (complement G)
+  have h3 := edgeCount_add_edgeCount_complement G
+  omega
+
+/-- **The bipartition numbers of `G` and `Gᶜ` fit inside the complete graph.**
+Dual of `maxCut_add_maxCut_complement_le`:
+`bipartitionNumber G + bipartitionNumber Gᶜ ≤ edgeCount Kₙ`. -/
+theorem bipartitionNumber_add_bipartitionNumber_complement_le {V : Type*} [Fintype V]
+    [LinearOrder V] (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G + bipartitionNumber (complement G) ≤ edgeCount (completeGraph' V) := by
+  have h1 := bipartitionNumber_le_edgeCount G
+  have h2 := bipartitionNumber_le_edgeCount (complement G)
+  have h3 := edgeCount_add_edgeCount_complement G
+  omega
+
 /--
 **The f_k(n) Function**
 

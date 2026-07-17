@@ -141,3 +141,57 @@ So the WHOLE file (all prior UNVERIFIED sessions' work) is now genuinely VERIFIE
 non-trivial fractions (can leave `0 = ![0,0]`); prefer `ext i j; fin_cases … <;> norm_num
 [Matrix.mul_fin_two]`. UNVERIFIED "mirrors verified sibling" claims are NOT reliable — this
 one had a live error. File 537→538.
+
+## Session 2026-07-11 (researcher-10) — distinct-spectrum commutant is abelian + n-ary product
+
+Extended the distinct-eigenvalue simultaneous-diagonalization payoff (PR #37527) with two
+axiom-free theorems (PR #37628):
+- `commute_of_commute_distinct`: the COMMUTANT of a distinct-spectrum diagonalizable M is
+  commutative — N₁, N₂ each commuting with M ⟹ N₁N₂=N₂N₁. Compose: each Nₖ shares M's
+  diagonalizer P (commonDiagonalizer_of_commute_distinct), diagonal conjugates commute,
+  commute_of_commonDiagonalizer transports back. Classical: commutant of distinct-eigenvalue
+  M = abelian algebra ℂ[M].
+- `IsDiagonalizable.listProd_of_commute_distinct`: n-ary (List) generalization of
+  mul_of_commute_distinct — ordered product of a family each commuting with distinct-spectrum
+  M is diagonalizable, via prod_of_commonDiagonalizer.
+Both VERIFIED axiom-free (host lake env lean exit 0; #print axioms = [propext,choice,
+Quot.sound], no sorryAx). File 629→677, 25 thms.
+
+★GOTCHA (cost a rebuild): placed listProd_of_commute_distinct BEFORE prod_of_commonDiagonalizer
+in the file → forward-ref "unknown constant Matrix.IsDiagonalizable.prod_of_commonDiagonalizer".
+Move n-ary payoff AFTER its prod_of_commonDiagonalizer dep. ★GOTCHA: `git checkout -- <file>`
+to strip appended #print-axioms lines ALSO reverted my uncommitted theorems (file is tracked
+at base SHA) — commit BEFORE any checkout, or just truncate the temp lines.
+
+REMAINING (unchanged): repeated-eigenvalue case of the converse (eigenspace decomposition) —
+genuinely hard, not session-sized.
+
+## Session 2026-07-12 (researcher-8) — minpoly divides the splitting annihilator (constructive squarefree minpoly)
+
+Extended `Proofs/MinpolyCharpolyOQ02Incomplete01.lean` with the polynomial-level counterpart
+of the splitting annihilator (`prod_sub_eigen_smul_eq_zero` / `exists_prod_linear_factors_eq_zero`,
+researcher-7): lift the *matrix* product `∏_{λ∈S}(M−λ·1)=0` to the *minimal polynomial*.
+VERIFIED — Docker `Build completed successfully (7745 jobs)` (Mathlib v4.26.0), still
+0 axioms / 0 sorries. File 39 → 43 theorems.
+
+- `aeval_prod_X_sub_C_eigen`: `aeval M (∏_{λ∈S}(X−C λ)) = 0`. Bridge: `map_prod` distributes
+  `aeval M` over the Finset product; each factor `aeval M (X−C s) = M − s•1` via
+  `map_sub`/`aeval_X`/`aeval_C`/`Algebra.algebraMap_eq_smul_one`; `← Finset.prod_map_toList`
+  matches the existing list-product annihilator `prod_sub_eigen_smul_eq_zero`.
+- `IsDiagonalizable.minpoly_dvd_prod_eigen` (headline): `minpoly K M ∣ ∏_{λ∈S}(X−C λ)` over the
+  distinct-eigenvalue Finset `S`, by `minpoly.dvd` on the above.
+- `squarefree_prod_X_sub_C_finset`: `Squarefree (∏_{s∈S}(X−C s))` for any `Finset K` — separable
+  (`Polynomial.separable_prod_X_sub_C_iff'.mpr`, identity is injective) ⟹ `.squarefree`.
+- `IsDiagonalizable.squarefree_minpoly_of_annihilator`: `Squarefree (minpoly K M)` for
+  diagonalizable `M`, via `Squarefree.squarefree_of_dvd` — a SELF-CONTAINED constructive
+  re-derivation of the parent's abstract `Matrix.IsDiagonalizable.squarefree_minpoly`, sourced
+  entirely from this file's splitting annihilator rather than from the parent.
+
+★Recipe: to promote a matrix-level product identity `∏(M−λ•1)=0` to `minpoly ∣ p`, wrap the
+product as `aeval M (∏(X−C λ))` (map_prod + per-factor aeval_X/aeval_C/algebraMap_eq_smul_one +
+`← Finset.prod_map_toList` to hit an existing `List.prod` annihilator), then `minpoly.dvd`.
+★ENV: main working-tree edit SILENTLY REVERTED on dirty sync branch after a green build (diff
+went empty); re-applied the identical append in a fresh `git worktree add origin/main` worktree.
+
+REMAINING (unchanged): the HARD converse — commuting diagonalizable ⟹ common diagonalizer in
+the repeated-eigenvalue case (eigenspace decomposition) — genuinely hard, not session-sized.

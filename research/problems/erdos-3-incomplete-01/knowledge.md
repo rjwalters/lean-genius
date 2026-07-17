@@ -477,3 +477,57 @@ Gallery meta `src/data/proofs/erdos-3/meta.json` additionalFiles entry resynced
 Only real sorry remains `required_bound_implies_conjecture` — deliberately kept OPEN CRUX,
 as hard as / not known to be equivalent to Erdős #3. All tractable analytic bracketing on
 both logarithmic axes is now complete (both sides, both axes).
+
+## Session 2026-07-11 (researcher-7) — VERIFY standing toolkit + scope the third-log frontier
+
+Docker back UP. Built `Proofs.Erdos3LogHarmonic` on current `origin/main` (HEAD 5e5af7ed67):
+`✔ Built Proofs.Erdos3LogHarmonic (10s)`, 7743 jobs, **green**. This confirms the
+previously-UNVERIFIED (docker-down) second-axis additions
+(`summable_one_div_nat_mul_log_mul_loglog_rpow`, `..._rpow_const`,
+`not_summable_one_div_nat_mul_log_mul_loglog_mul_const`) are elaboration-clean; the file's
+lone `sorry` match is a docstring word (line 20), 0 real sorries. The main crux
+`required_bound_implies_conjecture` (in Erdos3Problem.lean) stays the deliberately-OPEN,
+as-hard-as-Erdős-#3 sorry — untouched.
+
+NO new theorem added: the two-axis Bertrand dichotomy is genuinely saturated (public toolkit
+= {not_summable, summable_rpow, summable_mul_const, not_summable_mul_const} on BOTH the
+`log` and `log log` axes — 8 public theorems, both sides both axes). Adding a fourth
+same-axis variant would be padding.
+
+**Concrete next frontier (genuine, tractable-but-large — deferred):** the THIRD iterated-log
+tier. `∑ 1/(n·log n·log log n·log log log n)` DIVERGES (p=1) and its `(·)^{1+δ}` twin
+converges. By Cauchy condensation the divergent third tier collapses ONE logarithm and reduces
+*exactly* to the already-verified const-in-loglog divergent lemma
+`not_summable_one_div_nat_mul_log_mul_loglog_mul_const` (c = log 2): condensed term
+`2^k·h(2^k) = 1/((k log2)·log(k log2)·loglog(k log2))`. Mirrors how
+`not_summable_one_div_nat_mul_log_mul_loglog` reduces via `g₃`/`not_summable_g₃` to the
+first-tier const lemma. Cost: replicate the `g₃`/`cond_lower`/`not_summable_g` condensation
+scaffolding (~150 L) at the third level, with the harder positivity threshold `log log log n > 0`
+⟺ `log n ≥ e` ⟺ `n ≥ e^e` (certify via `exp(exp 1) ≤ …`). Left for a dedicated session.
+
+---
+
+## ADDENDUM (researcher-1, 2026-07-09; rebased+verified by doctor 2026-07-12, PR #36374): first explicit AP-free construction
+
+Every prior Roth-number result in the file was a *counting* argument
+(`isAPFree_of_card_lt`, `rothNumber_ge_min`, `rothNumber_two`, the monotonicity
+suite). None exhibited an actual AP-free set of nontrivial size. Added the first
+**explicit construction** and its structural consequence:
+
+- **`powersOfTwo_isAPFree (m)`** — `{2^0,…,2^{m-1}}` is 3-AP-free. If `2^p,2^q,2^r`
+  form an AP `a,a+d,a+2d` (`d>0`⟹`p<r`) then `2^p+2^r = 2·2^q = 2^{q+1}`; `2^p>0`
+  gives `r<q+1` while `2^p<2^r` gives `q<r` — the squeeze `q<r≤q` is impossible.
+  Only Nat facts: `Nat.pow_lt_pow_iff_right`, `pow_pos`, `omega` on the pow atoms.
+- **`rothNumber_three_ge_log (m)`** — `r₃(2^m) ≥ m+1`. The `m+1` powers `2^0…2^m`
+  live in `{0,…,2^m}` and are 3-AP-free, entering the sup; card `m+1` via
+  `Nat.pow_right_injective`.
+- **`rothNumber_three_unbounded`** — `∀ B, ∃ N, r₃(N) ≥ B` (take `N=2^B`).
+
+**Why this is theory-level, not cosmetic.** `rothNumber_two` pinned `r₂(N)=1`
+(the `min(k-1,N+1)` floor *attained*). These lemmas show that at `k=3` the same
+floor is the *constant* `2` yet `r₃` is unbounded — the floor undershoots by an
+unbounded gap. So `k=2` is the **exact boundary** at which the trivial floor stops
+being sharp: the qualitative dividing line between the trivial (`k≤2`) and open
+(`k≥3`) regimes of Erdős #3, now witnessed by a concrete family rather than only
+by the analytic reduction. Logarithmic and far from Behrend/Szekeres `N^{1-o(1)}`,
+but it is the honest elementary floor-vs-construction separation.

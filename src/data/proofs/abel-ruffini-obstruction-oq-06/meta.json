@@ -2,7 +2,7 @@
   "id": "abel-ruffini-obstruction-oq-06",
   "title": "The Abel–Ruffini Obstruction: Sₙ is Unsolvable for n ≥ 5, and Non-Solvable Galois Groups Block Radicals",
   "slug": "abel-ruffini-obstruction-oq-06",
-  "description": "A fully machine-checked formalization of the group-theoretic core of the Abel–Ruffini theorem. The symmetric group Sₙ is solvable for n ≤ 4 (giving the classical radical formulas for degrees 1–4) but not solvable for any n ≥ 5 — the non-solvability is proved for the whole range n ≥ 5 at once (symmetricGroup_not_solvable), generalizing Mathlib's Equiv.Perm.fin_5_not_solvable, which is stated only for Fin 5. The low endpoint S₂ is shown solvable (it is abelian), pinning both ends of the threshold. The bridge to polynomials is the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal: if an algebraic element α is a root of an irreducible q ∈ F[X] whose Galois group is not solvable, then α is not solvable by radicals — the exact contrapositive of Mathlib's solvableByRad.isSolvable', and the engine behind every concrete unsolvable quintic. 0 axioms, 0 sorries. The deep characteristic-p refinements (wild ramification, the Abhyankar conjecture) are explicitly out of scope.",
+  "description": "A fully machine-checked formalization of the group-theoretic core of the Abel–Ruffini theorem. The symmetric group Sₙ is solvable for n ≤ 4 (giving the classical radical formulas for degrees 1–4) but not solvable for any n ≥ 5 — the non-solvability is proved for the whole range n ≥ 5 at once (symmetricGroup_not_solvable), generalizing Mathlib's Equiv.Perm.fin_5_not_solvable, which is stated only for Fin 5. The entire solvable side is discharged as well: S₂, S₃, and S₄ are each shown solvable (perm_fin_two/three/four_solvable, with A₄'s Klein-four derived series A₄ ⊳ V₄ ⊳ 1 the crucial non-abelian case), so symmetric_threshold_full pins the sharp dividing line Sₙ solvable ⟺ n ≤ 4. The bridge to polynomials is the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal: if an algebraic element α is a root of an irreducible q ∈ F[X] whose Galois group is not solvable, then α is not solvable by radicals — the exact contrapositive of Mathlib's solvableByRad.isSolvable', and the engine behind every concrete unsolvable quintic. 0 axioms, 0 sorries. The deep characteristic-p refinements (wild ramification, the Abhyankar conjecture) are explicitly out of scope.",
   "meta": {
     "author": "Abel (1824), Ruffini (1799), Galois (1830s); formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -45,16 +45,16 @@
     ],
     "originalContributions": [
       "symmetricGroup_not_solvable: the symmetric group Sₙ is not solvable for *every* n ≥ 5, proved uniformly in n by reducing to Mathlib's Equiv.Perm.not_solvable via Cardinal.mk_fin — Mathlib itself only states the single case Fin 5",
-      "symmetric_threshold: both endpoints of the Abel–Ruffini threshold in one statement — S₂ is solvable while Sₙ is not solvable for all n ≥ 5, isolating solvability of the symmetric group as the exact frontier between radically-solvable and radically-unsolvable degrees",
+      "symmetric_threshold / symmetric_threshold_full: the Abel–Ruffini dividing line packaged as a single statement — S₂, S₃ (and, in the full version, S₄) are solvable while Sₙ is not solvable for all n ≥ 5, discharging the complete classification Sₙ solvable ⟺ n ≤ 4 at the level of the concrete small groups and isolating solvability of the symmetric group as the exact frontier between radically-solvable and radically-unsolvable degrees",
       "not_solvableByRad_of_not_solvable_gal: the Abel–Ruffini criterion as a directly usable lemma — a root of an irreducible polynomial with non-solvable Galois group is not solvable by radicals (the contrapositive of solvableByRad.isSolvable'), which is the precise implication invoked to certify any concrete unsolvable quintic",
       "solvable_gal_of_solvableByRad: the converse direction re-exposed under a local name so the criterion and its converse stand side by side"
     ],
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
     "lineCount": 215,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all four results (none of which count as assumptions). The single `decide` (for S₂ commutativity) is kernel decidability, not native_decide, so it does not introduce Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar-conjecture refinements are not formalized.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all four results (none of which count as assumptions). The two `decide` calls (S₂ commutativity at line 69 and the |A₃| = 3 cardinality at line 82) are kernel decidability, not native_decide, so neither introduces Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar-conjecture refinements are not formalized.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -79,12 +79,28 @@
       "mathContext": "solvable by radicals $\\iff$ $\\mathrm{Gal}$ solvable; $S_n$ solvable $\\iff n \\le 4$."
     },
     {
-      "id": "part-i-symmetric-obstruction",
-      "title": "Part I: The Symmetric-Group Obstruction",
+      "id": "part-i-obstruction",
+      "title": "Part I(a): Sₙ is not solvable for n ≥ 5",
       "startLine": 42,
+      "endLine": 67,
+      "summary": "symmetricGroup_not_solvable: the symmetric group on n symbols is not solvable once n ≥ 5, generalizing Mathlib's Fin 5 case (Equiv.Perm.fin_5_not_solvable) to every n ≥ 5 — any such Sₙ contains a copy of S₅, whose derived series never reaches the trivial subgroup because A₅ is perfect (its own commutator subgroup) and nonabelian simple. This is the obstruction itself.",
+      "mathContext": "$A_5$ perfect nonabelian simple $\\Rightarrow$ $S_n$ not solvable for all $n \\ge 5$."
+    },
+    {
+      "id": "part-i-small-groups",
+      "title": "Part I(b): S₂, S₃, S₄, A₄ are solvable",
+      "startLine": 68,
+      "endLine": 144,
+      "summary": "The solvable side, each built as a one-step (or two-step) extension closed by solvable_of_ker_le_range: perm_fin_two_solvable (S₂ abelian), perm_fin_three_solvable (A₃ cyclic of prime order 3, quotient via the sign map), alt_fin_four_solvable (A₄ ⊳ V₄ ⊳ 1 with Klein-four kernel of exponent 2 and cyclic order-3 quotient), and perm_fin_four_solvable (S₄ over the sign sequence with A₄ as kernel). These are the concrete low-degree witnesses making the threshold sharp.",
+      "mathContext": "$S_2$ abelian; $A_3 \\cong C_3$; $A_4 \\rhd V_4 \\rhd 1$; $S_4 \\rhd A_4 \\rhd V_4 \\rhd 1$ — all solvable."
+    },
+    {
+      "id": "part-i-threshold",
+      "title": "Part I(c): the sharp threshold Sₙ solvable ⟺ n ≤ 4",
+      "startLine": 145,
       "endLine": 176,
-      "summary": "The full group-theoretic threshold. symmetricGroup_not_solvable: Sₙ is not solvable for every n ≥ 5 (via Equiv.Perm.not_solvable, generalizing Mathlib's Fin 5 case). The solvable side, each built as a one-step extension closed by solvable_of_ker_le_range: perm_fin_two_solvable (S₂ abelian), perm_fin_three_solvable (A₃ cyclic of prime order 3, quotient via sign), alt_fin_four_solvable (A₄ ⊳ V₄ ⊳ 1 with Klein-four kernel of exponent 2 and cyclic order-3 quotient), and perm_fin_four_solvable (S₄ over the sign sequence with A₄ kernel). symmetric_threshold and symmetric_threshold_full package the dividing line Sₙ solvable ⟺ n ≤ 4.",
-      "mathContext": "$A_5$ perfect simple $\\Rightarrow S_n$ unsolvable for $n\\ge5$; $S_2,S_3,S_4$ solvable via derived series $A_4 \\rhd V_4 \\rhd 1$."
+      "summary": "symmetric_threshold and symmetric_threshold_full package the two sides into a single dividing line: S₂, S₃ (and S₄, in the full form) are solvable while Sₙ is not solvable for any n ≥ 5. This is the group-theoretic skeleton of Abel–Ruffini — solvability of the symmetric group is exactly what separates the radically-solvable low degrees from the radically-unsolvable high ones.",
+      "mathContext": "$S_n$ solvable $\\iff n \\le 4$ — the sharp group-theoretic dividing line behind Abel–Ruffini."
     },
     {
       "id": "part-ii-radical-criterion",
@@ -192,11 +208,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This 121-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance), that S₂ is solvable, and packages both endpoints in symmetric_threshold. It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse re-exposed alongside it.",
+    "summary": "This 215-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance) and, on the positive side, that S₂, S₃, S₄, and the non-abelian A₄ are each solvable (perm_fin_two/three/four_solvable, alt_fin_four_solvable). The sharp dividing line is packaged both as symmetric_threshold (the two endpoints) and symmetric_threshold_full (all small cases discharged: Sₙ solvable ⟺ n ≤ 4). It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse solvable_gal_of_solvableByRad re-exposed alongside it.",
     "implications": "The criterion is the reusable engine for certifying concrete unsolvable polynomials: any irreducible degree-n polynomial (n ≥ 5) whose Galois group contains a non-solvable symmetric group has roots provably not expressible by radicals. Combined with a route that pins a specific polynomial's Galois group to S₅ — such as the discriminant/Jordan argument for X⁵ − X − 1 — it yields a fully formal proof that a named quintic has no radical solution. The uniform n ≥ 5 statement also means no per-degree re-proof is ever needed downstream.",
     "openQuestions": [
       "Formalize a self-contained construction of an irreducible quintic with Galois group exactly S₅ (e.g. via the discriminant being a non-square plus a transposition from a single real pair of complex roots), so an end-to-end 'this specific polynomial is unsolvable by radicals' theorem chains directly off this criterion.",
-      "Extend the solvable side to the full threshold by formalizing solvability of S₃ and S₄ (and hence the existence of the Cardano and Ferrari radical formulas), completing the 'Sₙ solvable ⟺ n ≤ 4' equivalence rather than only its two endpoints.",
+      "The solvable side (S₂, S₃, S₄) certifies only that radical formulas *can* exist for degrees ≤ 4; it does not exhibit them. Formalize the explicit Cardano (cubic) and Ferrari (quartic) radical expressions and verify they solve the general polynomial, turning the abstract 'Sₙ solvable ⟺ n ≤ 4' classification into constructive solution formulas.",
       "Address the characteristic-p story left out of scope: radical solvability in positive characteristic interacts with wild ramification and inseparability, and the Abhyankar conjecture (Raynaud–Harbater) on Galois groups of covers of curves lies far beyond the characteristic-independent core formalized here."
     ]
   },

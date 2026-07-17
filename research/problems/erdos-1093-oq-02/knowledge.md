@@ -1,5 +1,253 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-12 (researcher-2) — TRUST-SURFACE: de-native_decide `smooth_indices_284_28`
+
+**Mode:** REVISIT (RICH). **Outcome:** trust-surface reduction (1 `native_decide` → kernel-checkable
+manual proof; a substantive fact loses its `Lean.ofReduceBool` dependency). VERIFIED (full Docker build
+`✔ [3060/3060]`, 10s; scratch `#print axioms smooth_indices_284_28 = [propext, Classical.choice, Quot.sound]`).
+
+### Why this, not another window-check ladder slice
+The window-check ladder (Sections XVII–XXXIV, closing one `k` per session, frontier now `k≥34`) is, per
+its own honesty notes and the fleet Honesty Standards, **marginal enumeration theater**: each slice closes
+one more `k` with a growing `native_decide` window and can never finish elementarily (the tail is
+irreducibly the analytic Erdős–Lacampagne–Selfridge input, absent from Mathlib). So instead of adding
+k=34, I took the one remaining **bounded, genuinely-valuable** win flagged by earlier sessions
+(researcher-2's 2026-07-08 "one remaining bounded trust-surface win"; researcher-3's TERMINUS recipe):
+removing `native_decide` from `smooth_indices_284_28`.
+
+### What I did (1 theorem rewritten, 0 sorry, 0 new axioms, 0 new theorems)
+`smooth_indices_284_28` asserts `(range 28).filter (IsKSmooth 28 (284-·)) = {4,8,9,11,12,14,18,20,24}`.
+Old proof: `native_decide` (factors each `284-i` via `Nat.primeFactors`, well-founded recursion → does
+not reduce under kernel `decide` → `native_decide` → `Lean.ofReduceBool`). New proof certifies all 28
+window values by hand:
+- **9 smooth values** built from smoothness of primes ≤28 (`isKSmooth_prime_iff`) combined via
+  `isKSmooth_mul`/`isKSmooth_pow` on their factorisations: 280=2³·5·7, 276=2²·3·23, 275=5²·11,
+  273=3·7·13, 272=2⁴·17, 270=2·3³·5, 266=2·7·19, 264=2³·3·11, 260=2²·5·13.
+- **19 non-smooth values** refuted by exhibiting one prime factor >28 (`fun h => absurd (h P _ _) _`):
+  284=4·71, 282=6·47, 279=9·31, 278=2·139, 274=2·137, 268=4·67, 267=3·89, 265=5·53, 262=2·131,
+  261=9·29, 259=7·37, 258=6·43, and the primes 283,281,277,271,269,263,257.
+- Closer: `ext i; simp only [mem_filter,mem_range,mem_insert,mem_singleton]; constructor` then
+  `interval_cases i <;> first | omega | (norm_num at hs; exact absurd hs (by assumption))` forward,
+  `rintro (rfl|…) <;> exact ⟨by norm_num, by norm_num; assumption⟩` reverse.
+
+### Gotchas (reusable)
+- The `IsKSmooth` **Decidable instance** is what makes `Finset.filter (IsKSmooth 28 ·)` typecheck; a
+  standalone scratch copy of `IsKSmooth` must copy `isKSmooth_decidable` too or `filter` fails to
+  synthesise `DecidablePred` (and error-recovery injects `sorryAx` into `#print axioms`).
+- Prototyped the whole proof in a Mathlib-only scratch file (`lake env lean`, ~17s) — no need to build
+  the heavy parent (`native_decide` C(284,28), SIGBUS-prone) just to iterate the factorisation logic.
+- `norm_num` proves both `Nat.Prime 71` and `71 ∣ 284` on literals; `dvd_refl _` for the self-prime cases.
+- ★ENV: the loom worktree branch `feature/researcher-2-191` was STALE — behind the restore commits
+  (#38422/#38423) and carrying a divergent OQ02 file; `git diff origin/main` showed 10k deletions.
+  Rebuilt the change in a FRESH `git worktree add -b … origin/main` and re-applied. Always diff-vs-origin/main
+  before committing loom-worktree work.
+
+### Trust surface after this session
+`smooth_indices_284_28`, `noSmallPrimeFactors_284_28`, and the `(28!)²<47!` certificate are now all
+`ofReduceBool`-free. Remaining `native_decide` in the OQ02 file: exactly the **per-k window facts**
+`window_kNN_admissible_deficiency_le_nine` (Sections XVII+) — inherently `native_decide` (bignum
+`C(m,k)` over thousands of `m`). The **parent** `deficiency_284_28` also remains `native_decide`.
+
+### Frontier (UNCHANGED)
+The universal upper bound (`MaximalDeficiencyIs 9`) is BLOCKED on effective analytic NT (an effective
+ELS / short-interval smooth-count bound) absent from Mathlib v4.26. **Do not extend the window-check
+ladder as "progress" — it is theater.** This file is research-only (no gallery entry; parent erdos-1093
+is axiomatized on `els_upper_bound`), so this session is a trust-surface improvement, not a gallery flip.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (rewrote `smooth_indices_284_28`; updated `## Axioms` header)
+- `src/data/research/problems/erdos-1093-oq-02.json` (counts + knowledge)
+- `research/problems/erdos-1093-oq-02/knowledge.md` (this note)
+
+---
+
+
+## Session 2026-07-12 (researcher-5) — Section XXXV: closed-form log ceiling + saturation is now uniformly machine-checked
+
+**Mode:** REVISIT (RICH tier, score 60). **Outcome:** one new axiom-free theorem + honest knowledge cleanup; elementary theory confirmed **saturated**, open frontier **analytically blocked**.
+
+### What I did
+- **Assessed, did NOT extend, the per-k location ladder.** The file already closes `k ≤ 33` via 18 near-identical `native_decide` sections (`deficiency_le_nine_of_k_eq_{16..33}`). This is enumeration theater — one `k` per session, can never reach all `k`. A `k = 34` rung was deliberately **not** written.
+- **Found the size-method impossibility is already UNIFORMLY machine-checked**, not merely prose: `sharp_bound_permits_deficiency_ten` proves `∀ k ≥ 16, (k+10)! ≤ (k!)²`, i.e. the sharp-factorial ceiling provably cannot exclude deficiency `10` at any `k ≥ 16`. So a divergence/impossibility lemma would be **redundant**.
+- **Added the one genuinely-new, non-redundant form the file lacked:** a *closed-form* deficiency ceiling.
+
+### New theorem (Section XXXV, `Erdos1093ProblemOQ02.lean`)
+```lean
+theorem deficiency_le_log_factorial {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors n k) :
+    deficiency n k ≤ Nat.log (k + 1) (Nat.factorial k) :=
+  Nat.le_log_of_pow_le (by omega) (deficiency_pow_succ_le_factorial hn h)
+```
+Every prior ceiling (`deficiency_le_of_sq_factorial_lt`, `deficiency_le_of_windowFloor_pow_lt`) is a *transfer principle* consuming an external numeric certificate. This is the first ceiling exposed as an **explicit computable function of `k`** — `log_{k+1}(k!)`. It is the crude power ceiling (at `k=28`: `Nat.log 29 (28!) = 20`, vs the sharp `deficiency_ascFactorial_le_factorial`'s `18`), and grows without bound in `k`, so like every size-only bound it cannot reach `9`.
+
+**Verification:** docker `Proofs.Erdos1093ProblemOQ02` exit 0 (3060 jobs); `#print axioms deficiency_le_log_factorial` = `[propext, Classical.choice, Quot.sound]` (axiom-free); 0 `sorry`; ELS-free.
+
+### Key findings / honesty
+- Elementary theory is **saturated**. Both the sharp factorial ceiling and the location bound are provably powerless for large `k`; the impossibility is uniform and machine-checked.
+- Two prior `nextSteps` (the `∀D ∃k₀` meta-theorem and its binomial form) are **already proven** in `Erdos1093OQ02FactorialGrowth.lean` (`exists_factorial_add_le_sq`, `exists_choose_mul_factorial_le`).
+- One prior `nextStep` was **malformed**: exhibiting an admissible pair of deficiency `> 9` would *disprove* the conjecture; it conflated the factorial window-shift `D` (unbounded) with the deficiency `d` (conjecturally `≤ 9`).
+- **Blocker:** the only remaining input is an unconditional short-interval `k`-smooth-count / Dickman-ρ density bound. Mathlib v4.26 lacks it; building it is `>1000` lines of deep analytic infrastructure. Truly blocked pending that.
+
+### Files modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (+~45 lines, Section XXXV)
+- `src/data/research/problems/erdos-1093-oq-02.json` (knowledge)
+
+### Next steps
+See refreshed `nextSteps` in the JSON: do not extend the ladder; do not build large-deficiency witnesses; unblock only via Mathlib smooth-number-density infrastructure.
+
+
+## Session 2026-07-12 (researcher-5) — Section XXXVI: window-check closes k=34 → frontier k≥35
+
+**Mode:** REVISIT (RICH tier). **Outcome:** strict but MARGINAL advance (frontier `k ≥ 34 → k ≥ 35`),
+one more slice of the elementary window-check ladder. The Lean file had already advanced through
+Sections XXXIII (k=32) and XXXIV (k=33) past this knowledge.md's Section XXXII (k=31) entry; this
+continues the identical pattern one slice further.
+
+### Numeric input (Python-verified sharp)
+Deficiency `≥ 10` at `k = 34` forces `(n-33)^{10} ≤ 34!`, and `34! < 7031^{10}` is sharp:
+`34! = 295232799039604140847618609643520000000 < 295237133028067705118634149496938950801 = 7031^{10}`,
+while `7030^{10} = 294817493935202715907278900490000000000 ≤ 34!`. So `n - 33 < 7031 ⟹ n ≤ 7063`.
+Floor `n ≥ 68 (= 2·34)` gives the window `n ∈ {68,…,7063}` (6996 values). Python: the window is
+**empty of admissible pairs** — every `m` has some prime `p ∈ {2,3,5,7,11,13,17,19,23,29,31}`
+dividing `C(m,34)`. `34 = 2·17` is composite, so the prime set is UNCHANGED from k=33 (largest
+prime `≤ 34` is still 31).
+
+### What I did — Section XXXV (5 theorems, 0 sorry, 0 new axioms), VERIFIED
+- `factorial_34_lt_7031_pow_ten` — `34! < 7031^10` (kernel `decide`, `[propext]`, ofReduceBool-free).
+- `window_k34_admissible_deficiency_le_nine` — the single `native_decide` fact over the
+  6996-value window (full-file build ~27s including this).
+- `admissible_k34_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (11-prime `rcases`, each `h p prime hd; omega`).
+- `deficiency_le_nine_of_k_eq_34` — one-line instantiation of the window-check engine
+  `deficiency_le_nine_of_location_window` at `k=34, M=7031`.
+- `deficiency_le_nine_of_k_le_34`, `maximalDeficiencyIs_nine_iff_kGe35`.
+
+### Verification (Docker-free, `proofs/bin/lake env lean` v4.26.0, prebuilt oleans)
+Full file compiles clean (exit 0, 27s). `#print axioms`: `factorial_34_lt_7031_pow_ten` = `[propext]`;
+`deficiency_le_nine_of_k_eq_34` / `maximalDeficiencyIs_nine_iff_kGe35` carry
+`[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` — the
+`ofReduceBool`/`trustCompiler` from the single `native_decide` window fact, exactly as every prior
+section. **No new axiom declaration; 0 sorry** (file still `grep -c '^axiom '` = 0).
+
+### Honesty note
+Marginal incremental advance — same window-check ladder that closes one `k` per session and can
+NEVER finish by elementary means: `k ≥ 35` still has infinitely many `k`, and the irreducibly
+analytic Erdős–Lacampagne–Selfridge input (`els_upper_bound`, NON-EFFECTIVE constant `n ≪ 2^k√k`)
+governs all large `k` uniformly. The window native_decide also grows (860 values at k=28 → 6996 at
+k=34, `(k!)^{1/10}`-sized) and will eventually become infeasible. Value is one more concrete `k`
+discharged, record-slice reach now `k ≤ 34`. NO follow-up OQ generated (depth-1 slug, but the
+follow-up would just re-ask the same open universal bound — degenerate; the ladder itself is the
+only elementary continuation).
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXXV, +97 lines, +5 theorems)
+
+---
+
+## Session 2026-07-11 (researcher-6) — Section XXXII: window-check closes k=31 → frontier k≥32
+
+**Mode:** REVISIT (RICH tier). **Outcome:** strict advance (frontier `k ≥ 31 → k ≥ 32`),
+one more slice of the elementary ladder. NOTE: this knowledge.md was behind the Lean file —
+the file had already advanced through Sections XXX (k=29) and XXXI (k=30) since the Section XXIX
+entry below. Section XXXII continues the established window-check pattern one slice further.
+
+### Numeric input (Python-verified sharp)
+Deficiency `≥ 10` at `k = 31` forces `(n-30)^{10} ≤ 31!`, and `31! < 2464^{10}` is sharp:
+`31! = 8222838654177922817725562880000000 < 8249108861550475694138713729662976 = 2464^{10}`,
+while `2463^{10} = 8215691410991820804190254776742849 ≤ 31!`. So `n - 30 < 2464 ⟹ n ≤ 2493`.
+Floor `n ≥ 62 (= 2·31)` gives the window `n ∈ {62,…,2493}` (2432 values). Python: the window
+is **empty of admissible pairs** — every `m` has some prime `p ∈ {2,3,5,7,11,13,17,19,23,29,31}`
+dividing `C(m,31)`. `31` is prime, so the prime set gains `31` relative to `k = 30`.
+
+### What I did — Section XXXII (5 theorems, 0 sorry, 0 new axioms), VERIFIED
+- `factorial_31_lt_2464_pow_ten` — `31! < 2464^10` (kernel `decide`, `[propext]`, ofReduceBool-free).
+- `window_k31_admissible_deficiency_le_nine` — the single `native_decide` fact over the
+  2432-value window (full-file build ~21s including this).
+- `admissible_k31_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (11-prime `rcases`, each `h p prime hd; omega`; adds the `31` branch).
+- `deficiency_le_nine_of_k_eq_31` — one-line instantiation of the window-check engine
+  `deficiency_le_nine_of_location_window` at `k=31, M=2464`.
+- `deficiency_le_nine_of_k_le_31`, `maximalDeficiencyIs_nine_iff_kGe32`.
+
+### Verification (Docker-free, `proofs/bin/lake env lean` v4.26.0, prebuilt oleans)
+Full file compiles clean (exit 0). `#print axioms`: `factorial_31_lt_2464_pow_ten` = `[propext]`;
+structural engine `deficiency_le_nine_of_location_window` = `[propext, Classical.choice, Quot.sound]`
+(ofReduceBool-free); `deficiency_le_nine_of_k_eq_31` / `maximalDeficiencyIs_nine_iff_kGe32` carry
+`[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` — the
+`ofReduceBool`/`trustCompiler` from the single `native_decide` window fact, exactly as every prior
+section. **No new axiom declaration; 0 sorry.**
+
+### Honesty note
+This is a genuinely strict but **marginal** advance: the window-check ladder closes one `k` per
+section and can never finish by elementary means (`k ≥ 32` still has infinitely many `k`; the
+irreducibly analytic Erdős–Lacampagne–Selfridge input governs all large `k` uniformly). Each slice
+also costs a growing `native_decide` window (2432 values here) that will eventually become
+infeasible. Value is incremental — one more concrete `k` discharged, record-slice reach now `k ≤ 31`.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXXII, +5 theorems)
+
+---
+
+## Session 2026-07-11 (researcher-6) — Section XXIX: window-check CLOSES k=28 (the record slice!) → frontier k≥29
+
+**Mode:** REVISIT (RICH tier). **Outcome:** BREAKTHROUGH — closes `k = 28`, the slice
+*containing the record pair* `(284, 28)`. Prior sessions (up to Section XXVIII in the Lean
+file, which had already silently advanced far past this knowledge.md's Section XXIII) called
+`k = 28` the **terminal** elementary step, because the pure **inadmissibility** engine
+(`deficiency_le_nine_of_location`: *some* prime `≤ k` divides `C(n,k)` for *every* window `n`)
+provably fails at `k = 28` — the location window is inhabited by the admissible record.
+
+### Key realization — the window is finite, so USE the deficiency, don't just rule out admissibility
+The inadmissibility engine is not the only elementary tool. A deficiency `≥ 10` at `k = 28`
+forces `(n-27)^{10} ≤ 28!`, and `28! = 304888344611713860501504000000 < 889^{10} =
+308331296938836253127540655601` (`889` sharp: `888^{10} = 304880506868562346036873396224 ≤
+28!`), so `n - 27 < 889 ⟹ n ≤ 915`. With floor `n ≥ 56 (=2·28)` the window is
+`n ∈ {56,…,915}` (860 values). **Python-verified: exactly ONE admissible pair in the whole
+window — the record `(284,28)` itself — with deficiency exactly 9 (not ≥10).** Every other
+`n` is inadmissible via a prime in `{2,3,5,7,11,13,17,19,23}` dividing `C(n,28)`. So no
+admissible `k=28` pair has deficiency `≥10`.
+
+### What I did — Section XXIX (7 theorems, 0 sorry, 0 NEW axioms), VERIFIED
+- `factorial_28_lt_889_pow_ten` — `28! < 889^10` (kernel `decide`, `ofReduceBool`-free).
+- `window_k28_admissible_deficiency_le_nine` — the single `native_decide` fact: `∀ m ∈
+  Icc 56 915`, (small prime `∈{2,…,23}` divides `C(m,28)`) `∨ deficiency m 28 ≤ 9`.
+  Compiled in ~5s standalone; full-file build clean.
+- `admissible_k28_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (the 9-prime `rcases`, each `h p prime hd; omega`).
+- `deficiency_le_nine_of_location_window` — NEW **window-check engine** (variant of
+  `deficiency_le_nine_of_location` whose finite-window hyp is "admissible ⟹ deficiency ≤ 9"
+  not "inadmissible"); `ofReduceBool`-FREE `[propext,choice,Quot.sound]`.
+- `deficiency_le_nine_of_k_eq_28` — one-line instantiation at `k=28, M=889`.
+- `deficiency_le_nine_of_k_le_28`, `maximalDeficiencyIs_nine_iff_kGe29`.
+
+### Verification — VERIFIED axiom-free engine (Docker-free)
+`proofs/bin/lake env lean` (v4.26.0, prebuilt mathlib oleans). Full file compiles clean
+(exit 0). `#print axioms`: `deficiency_le_nine_of_location_window` and
+`factorial_28_lt_889_pow_ten` are `ofReduceBool`-free; `maximalDeficiencyIs_nine_iff_kGe29`
+carries `[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` —
+the `ofReduceBool`/`trustCompiler` come from the single `native_decide` window fact, exactly
+as every prior section. **No new axiom declaration.**
+
+### Why this is more than the mechanical k-ladder
+Sections XVII–XXVIII each closed one `k` by the *inadmissibility* engine and stopped at `k=27`
+because `k=28`'s window contains the record. This is a genuinely different (strictly stronger)
+argument that resolves the record slice by isolating `(284,28)` as the *unique admissible pair*
+in its location window. The elementary resolution of OQ-02 now covers **all `k ≤ 28`**; open
+content is confined to `k ≥ 29`, where no record pair survives and the remaining universal
+bound is the irreducibly analytic Erdős–Lacampagne–Selfridge input.
+
+### Gotcha logged
+Shared-main-checkout thrash bit again: my first `Edit` targeted the main checkout path
+(`/Users/rwalters/GitHub/lean-genius/proofs/...`, on an unrelated enricher branch) and a
+concurrent `git reset` reverted it before build. FIX: edit the researcher-6-2 *worktree*
+file, build it (`.lake` symlinked to main's prebuilt oleans), commit immediately.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXIX, +~150 lines, +7 theorems)
+
+---
+
 ## Session 2026-07-09 (researcher-3) — Section XXIII: location bound CLOSES k=22 → frontier k≥23
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥22→k≥23),
@@ -756,3 +1004,37 @@ already-merged engine `deficiency_le_nine_of_location` → high confidence.
 window `{50..b+23}`; `25 = 11001₂` odd binomials and their covering primes (may again need
 ≥3 primes). Clone Section XXV with new constants. Deep frontier (universal bound / `10≤d≤18`
 at k=28) remains BLOCKED on effective analytic NT (ELS) absent from Mathlib.
+
+## Session 2026-07-12 (researcher-6) — Section XXXI: window check closes k=30, frontier k≥31
+
+**Mode:** ACT. Extended the elementary ELS-free location ladder one slice (k=29 → k=30),
+cloning Section XXX (k=29) with new constants. Added 6 theorems (0 sorry, 0 new axiom):
+- `factorial_30_lt_1748_pow_ten` — `30! < 1748^10` (kernel `decide`, ofReduceBool-free;
+  `30! = 265252859812191058636308480000000 < 266326439446884528657715271041024 = 1748^10`;
+  1748 is the LEAST base with `30! < b^10`: `1747^10 = 264806749164448508676772280919049 ≤ 30!`).
+- `window_k30_admissible_deficiency_le_nine` — `native_decide` over `Icc 60 1776` (1717 values):
+  for every m, some prime ∈{2,3,5,7,11,13,17,19,23,29} divides C(m,30) OR deficiency m 30 ≤ 9.
+- `admissible_k30_window_deficiency_le_nine`, `deficiency_le_nine_of_k_eq_30` (one-line via the
+  merged engine `deficiency_le_nine_of_location_window` at k=30,M=1748),
+  `deficiency_le_nine_of_k_le_30`, `maximalDeficiencyIs_nine_iff_kGe31`.
+
+**Numerics (Python-verified before Lean, then confirmed by native_decide):** window-floor
+`(n-29)^10 ≤ 30! < 1748^10` ⇒ `n ≤ 1776`; floor `n ≥ 60 (=2·30)`; window `{60..1776}` = 1717
+values. Prime set `{2,…,29}` unchanged from k=29 (30 is composite, no new prime ≤30). KEY:
+the k=30 window contains **ZERO admissible pairs** — the divisibility disjunct holds for ALL
+1717 m (every C(m,30) has a prime factor ≤30). So k=30 closes by pure inadmissibility; the
+window-check engine's deficiency escape hatch is vacuous here (used anyway for uniformity).
+
+**Build:** VERIFIED (host lean v4.26.0, prebuilt Mathlib+parent oleans, no Docker). Full file
+elaborated 0 errors ~8.5s. `#print axioms`: `factorial_30_lt_1748_pow_ten = [propext]`
+(ofReduceBool-free); window/derived theorems = [propext, Classical.choice, Lean.ofReduceBool,
+Lean.trustCompiler, Quot.sound] (native_decide footprint, matches k=28/29). No sorryAx.
+
+**Frontier:** now `k ≥ 31`. NEXT (k=31): least base b with `31! < b^10` (31 IS prime → prime
+set becomes {2,…,31}, add the `31 ∣ C(m,31)` disjunct); floor `n ≥ 62`; window `{62..b+29}`;
+clone Section XXXI. Deep frontier (universal bound / `10≤d≤18` at k=28) remains BLOCKED on
+effective analytic NT (ELS) absent from Mathlib — the incremental k-by-k march is the only
+session-sized advance. NOTE: this file is research-only (no gallery entry for erdos-1093-oq-02;
+parent erdos-1093 is axiomatized on els_upper_bound), so this is trust-surface-neutral ladder
+extension, not a gallery flip. NOTE: knowledge.md sections were stale (documented ≤k=24) while
+the Lean file had already reached k=29 on origin/main.

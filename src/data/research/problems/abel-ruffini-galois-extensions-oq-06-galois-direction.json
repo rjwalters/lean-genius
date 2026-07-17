@@ -74,12 +74,15 @@
       "S18: resolved the σ∈H glue gap — Step 5 H_le_normalizer needs hσH:σ∈H, which Step 3 old output (ι(P)⊆⟨σ⟩) did NOT supply (recovering it needs ι(P)=⟨σ⟩ via |P|=p, ~25 LOC). Fix: strengthened Step 3 sylow_p_is_pcycle to EXPORT σ∈H (free: σ=ι a=↑(P.subtype a), SetLike.coe_mem). Updated registered stub (sorry, build-safe well-typed conjunct, no callers) AND Step-3 orphan (proved). Build-pending under continued dual blackout (docker run hangs exit 124; Aristotle prove 404).",
       "BUILD DIAGNOSIS CORRECTED (researcher-1, 2026-06-18 S19): the long-standing 'dual blackout — proofs/.lake self-symlink breaks all builds (git-128 multi-GB re-clone)' claim is WRONG for Docker. The tracked self-referential symlink proofs/.lake (-> its own abs path, committed in #22746) does NOT prevent docker-build.sh: the cache-volume bind-mount at /workspace/proofs/.lake/build shadows the link inside the container, so .lake is a real dir there. Empirical proof: a full 7743-job Docker build (mantel-theorem-oq-01) succeeded earlier today WITH the symlink present on main. The per-build re-clone of dep git repos (proofwidgets/aesop/Qq/batteries) seen in build logs is NORMAL — only .lake/build (oleans) is volume-mounted, not .lake/packages. The symlink only breaks HOST-side tooling (pnpm/lake/IDE). Fix shipped: PR #25509 removes the tracked symlink fleet-wide.",
       "REAL blockers this session (researcher-1 S19): (1) Aristotle still 404 — mcp-smoke-test.sh hits HTTPStatusError 404 on https://aristotle.harmonic.fun/api/v1/project?project_type=2, so prove()/prove_file() unusable; (2) host IO-load severe (load avg 17+, 10+ concurrent lean-build-* containers, docker volume `du` probes time out >25s) — Docker builds run but are brutally slow and at risk of daemon-restart kill. Builds are POSSIBLE, not blocked; they are just slow + contended right now.",
-      "Step-3 verification attempt (researcher-1 S19): launched a properly-detached (nohup+disown+sentinel) Docker build of the complete Step3 orphan AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3 (0 real sorries) -> /tmp/r1-step3-verify.{log,done}. If green, fold sylow_p_is_pcycle body verbatim into the registered file (signatures match) to take the frontier 4 sorries -> 3 (Steps 1/4 + main remain). Next session: check the sentinel before relaunching."
+      "Step-3 verification attempt (researcher-1 S19): launched a properly-detached (nohup+disown+sentinel) Docker build of the complete Step3 orphan AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3 (0 real sorries) -> /tmp/r1-step3-verify.{log,done}. If green, fold sylow_p_is_pcycle body verbatim into the registered file (signatures match) to take the frontier 4 sorries -> 3 (Steps 1/4 + main remain). Next session: check the sentinel before relaunching.",
+      "AUDIT 2026-07-12 (researcher-1): the registered file AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean is genuinely COMPLETE. Offline `lake env lean` EXIT 0 (only a benign unused-section-variable warning), 0 real `sorry` tokens. `#print axioms primitive_solvable_subgroup_embeds_AGL1Z` = [propext, Classical.choice, Quot.sound] only — no sorryAx, no Lean.ofReduceBool. The main theorem signature matches the pinned formal target verbatim (H : Subgroup (Equiv.Perm (ZMod p)), IsPreprimitive, IsSolvable ⟹ ∃ φ : H →* AGL1Z p, Injective φ). The long-standing lone Step-4 sorry (normalizer_iso_AGL1Z, ~19 sessions) was discharged; corollary primitive_solvable_subgroup_card_dvd (Nat.card H ∣ p*(p-1)) is also axiom-free.",
+      "S28 (researcher-5, 2026-07-12): the metabelian follow-up flagged in nextSteps is DISCHARGED. Key: AGL(1,p) metabelian = commutator lands in ker scaleHom (abelian translations) so derivedSeries 2 ≤ ⁅ker,ker⁆ = ⊥ (via commutator_eq_bot_iff_le_centralizer); transfer to any subgroup H along an injective hom uses map_derivedSeries_le_derivedSeries + Subgroup.map_eq_bot_iff + φ.ker_eq_bot_iff.mpr. Note map_eq_bot_iff_of_injective takes hf explicit but H implicit — prefer the two-rw route."
     ],
     "nextSteps": [
       "S2 ORIENT: author Lean file skeleton with ~6 file-level + step sorries.",
       "S3-S5 ACT: discharge the 5 step sorries individually (Sylow → P-normal → P-is-p-cycle → N_{S_p}(P) ≅ AGL → H ≤ N).",
-      "S6/S7 BUILD-VERIFY: Docker build, target ~3000 jobs (parent forward direction targets 1884)."
+      "S6/S7 BUILD-VERIFY: Docker build, target ~3000 jobs (parent forward direction targets 1884).",
+      "FOLLOW-UP (materially weaker structural consequence, valid child OQ): 'Every primitive solvable subgroup H ≤ S_p is metabelian (derived length ≤ 2).' Follows from the completed embedding φ : H ↪ AGL(1,p) since AGL(1,p) is metabelian (normal abelian translations ℤ/p with abelian quotient (ℤ/p)ˣ) and metabelian-ness is inherited by subgroups. Distinct from the parent (structure, not embedding); proving it does NOT yield the embedding, so it is weaker — a legitimate downstream corollary, not an equivalent-strength restatement. Needs: AGL(1,p) metabelian + pullback of derived-length bound along an injective hom."
     ],
     "builtItems": [
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/problem.md",
@@ -87,7 +90,11 @@
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md",
       "src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json",
       "verify_step1_sylow_unique.py — sympy verify-before-assert for Step 1 of the Galois-direction structure theorem (fills the gap; Steps 4/5 already had scripts)",
-      "primitive_solvable_subgroup_card_eq_prime_mul (|H| = p*m, m | (p-1); researcher-8 S27, VERIFIED 0/0)"
+      "primitive_solvable_subgroup_card_eq_prime_mul (|H| = p*m, m | (p-1); researcher-8 S27, VERIFIED 0/0)",
+      "Proofs/AbelRuffiniGaloisExtensionsOQ06Metabelian.lean — metabelian corollary (AGL(1,p) & every primitive solvable H ≤ S_p have derived length ≤ 2); researcher-5 S28, 0/0"
+    ],
+    "completedThisIter": [
+      "S28 ACT (researcher-5, 2026-07-12): added the metabelian downstream corollary in new file Proofs.AbelRuffiniGaloisExtensionsOQ06Metabelian.lean — flagged as a valid child OQ in nextSteps. Three theorems, 0 sorry, 0 axiom (only propext/Classical.choice/Quot.sound): AGL1Z_scaleHom_ker_commutator_eq_bot (pure-translation kernel is commutative), AGL1Z_derivedSeries_two_eq_bot (AGL(1,p) is metabelian: derivedSeries 2 = ⊥, sharpening the parent AGL1Z_isSolvable's length-free claim to derived length ≤ 2), and primitive_solvable_subgroup_metabelian (every primitive solvable H ≤ S_p has derivedSeries ↥H 2 = ⊥, transferred along the injective affine embedding via map_derivedSeries_le_derivedSeries + φ.ker = ⊥). Offline lake env lean EXIT 0."
     ]
   },
   "references": [
@@ -112,7 +119,7 @@
       "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
     }
   ],
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-07-12T00:00:00.000Z",
   "relatedProofs": [
     "abel-ruffini",
     "abel-ruffini-galois-extensions"

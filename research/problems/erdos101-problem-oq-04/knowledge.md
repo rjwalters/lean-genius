@@ -302,3 +302,58 @@ elementary structural/arithmetization advance, not a resolution of the open boun
 12288) all hit fleet SIGBUS-135 at the olean-write stage AFTER clean elaboration
 `[3062/3062]` in ~2–3s (zero type-error lines on the file) — memory/write contention,
 not math. Lower memory footprint (8GB) fit in a quiet fleet window.
+
+## Iteration (researcher-6, 2026-07-12) — ACT: rational (Diophantine) parametrization of the conic (VERIFIED)
+
+**Outcome (VERIFIED, 0 axioms, 0 sorries).** New companion
+`Proofs/Erdos101OQ04Rational.lean` (docker-build Lean v4.26.0, 3063 jobs,
+`✔ Built Proofs.Erdos101OQ04Rational`) opening the *arithmetic* geometry of the
+four-point-line conic `Q(p,q,r)=p²+q²+r²+pq+qr+rp=5`.
+
+Prior sessions established the *metric* geometry of `Q=5` (positive-definite
+ellipsoidal shell, squared radius `[5/2,10]`, sharp endpoints). Its arithmetic
+geometry had only isolated witnesses: the irrational endpoints and the single rational
+oblique point `(−8/3,1/3,1)`. A conic carrying one rational point is rationally
+parametrized (secant construction) — this session supplies that tool.
+
+New declarations:
+- `ternary_conic_secant` — **general secant / rational-parametrization lemma**. From a
+  base point on `Q=5` and a direction `(da,db,dc)`, the algebraic secant relation
+  `τ·Q_d = −N` (with `N` the directional gradient
+  `(2a₀+b₀+c₀)da+(2b₀+a₀+c₀)db+(2c₀+a₀+b₀)dc` and `Q_d = da²+db²+dc²+da·db+db·dc+dc·da`)
+  yields another conic point `(a₀,b₀,c₀)+τ(da,db,dc)`. Stated division-free so it is a
+  polynomial identity valid over any commutative ring; the proof is
+  `linear_combination hbase + τ * hsec`, exploiting
+  `Q(P₀+τd)=Q(P₀)+τN+τ²Q_d` and `τ²Q_d = τ(τQ_d) = τ(−N)`. Consequence: since `Q=5`
+  has the rational point `(−8/3,1/3,1)`, it has a dense (hence infinite) set of rational
+  points — **infinitely many rational four-point lines** on the quartic `y=x⁴−5x²`.
+- A **second explicit oblique rational four-point line** `(−7/3,2,−1/3,2/3)`, obtained
+  by a concrete secant from the integer point `(−1,2,1)` in direction `(1,0,1)` with
+  `τ=−4/3`: verified on `Q=5` (`new_oblique_point_via_secant` via the lemma;
+  `new_oblique_triple_on_ternary_conic`), satisfies the arithmetic criterion
+  `Σx=0 ∧ Σx²=10` (`new_oblique_quadruple_criterion`), is genuinely oblique — abscissa
+  `2` present, `−2` absent, so the set is not negation-closed
+  (`new_oblique_quadruple_not_symmetric`) — is distinct from the iter-12 witness
+  `−7/3 ∉ {−8/3,1/3,1,4/3}` (`new_oblique_quadruple_distinct_from_witness`), and is a
+  genuine four-point line on the quartic (`new_oblique_quadruple_onQuartic_collinear`,
+  via `four_onQuartic_collinear_iff_sq`).
+
+**Watch-out uncovered.** The clean integer point `(−1,2,1)` is NOT a new oblique
+family: under `x₃=−(p+q+r)` it is the *symmetric* quadruple `{−2,−1,1,2}` (i.e.
+`(2,−2,1,−1)`, the `(a,b)=(2,1)` member of the `q=−p` circle). A secant *step away*
+from it is what reaches genuine oblique points. Future oblique-family hunts should
+secant from a known oblique point, or verify non-negation-closure explicitly.
+
+**Scope honesty.** Arithmetic-structure layer only — does NOT touch the OPEN
+`solymosi_stojakovic_lower_bound` (line 358, the deep `n^{2−o(1)}` random-projection
+construction). The quartic route caps at `Ω(n)`; the rational parametrization is the
+mechanism any explicit rational/integer construction would build on, not a resolution
+of the super-linear bound.
+
+**Build notes.** Same fleet SIGSEGV-139 at parent-olean *import-load* seen in prior
+iterations (crashes at ~1s while loading `Erdos101OQ04.olean` under concurrent fleet
+builds; independent of code and memory limit). A corrupt shared-cache olean
+(`Mathlib/Tactic/Simproc/Factors.ir`, invalid header) needed
+`docker-build.sh --repair-cache` (`lake exe cache get!` force-overwrite). Clean build
+succeeded once the import-load landed in a quieter window (retry loop, attempt
+succeeded past the ~2s mark: parent 19s, companion 8.1s).

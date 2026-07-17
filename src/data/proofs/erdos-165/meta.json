@@ -53,13 +53,14 @@
       "Axiom-free incompatibility lemma asymptotic_constant_le: two strictly ordered asymptotic constants cannot both bound the same k²/log k-scale sequence (pure real analysis, 0 new axioms)",
       "R3_upper_constant_ge_half: HHKP lower bound recast as an obstruction — any valid first-order upper constant for R(3,k) is ≥ 1/2",
       "pgm_conjecture_refuted: machine-checked proof that the PGM conjecture (c=1/4) is false (previously only an informal comment)",
-      "Repaired latent Mathlib-drift breakage in erdos_165 (linarith could not widen 5/4 to 2 without k²/log k ≥ 0)"
+      "Repaired latent Mathlib-drift breakage in erdos_165 (linarith could not widen 5/4 to 2 without k²/log k ≥ 0)",
+      "Part XI valid-asymptotic-constant interface (2 defs + 11 thm, no new axioms): ValidUpperConstant/ValidLowerConstant name the recurring upper/lower half-predicates; up-set (ValidUpperConstant_mono) / down-set (ValidLowerConstant_anti) structure; proven members (Shearer 1 / HHKP 1/2) and fences (every upper >=1/2, every lower <=1); validLowerConstant_le_validUpperConstant (every valid lower <= every valid upper); headline mainConjecture_iff_validUpperConstant_half (Erdos #165 <-> 1/2 is a valid upper constant) and mainConjecture_imp_isLeast_validUpperConstant (under the conjecture 1/2 = least valid upper constant = the exact asymptotic constant)"
     ],
     "axiomCount": 10,
-    "lineCount": 418,
+    "lineCount": 751,
     "assumptions": "10 axioms (unchanged): ramseyNumber, ramseyNumber_symm, ramseyNumber_recurrence, R3_small_values, aks_upper_bound, shearer_upper_bound, kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound. 0 sorries. New theorems add no axioms; asymptotic_constant_le is fully axiom-free; pgm_conjecture_refuted depends only on the existing hhkp_bound.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 37,
     "definitionCount": 4,
     "additionalFiles": [
       "Proofs/Stubs/Erdos165Aristotle.lean"
@@ -166,10 +167,10 @@
       "Real"
     ],
     "namespace": "Erdos165",
-    "lineCount": 418,
+    "lineCount": 895,
     "axiomCount": 10,
-    "theoremCount": 11,
-    "definitionCount": 4,
+    "theoremCount": 48,
+    "definitionCount": 8,
     "path": "Proofs/Erdos165Problem.lean",
     "sorries": 0,
     "additionalFiles": [

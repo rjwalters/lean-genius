@@ -253,6 +253,64 @@ theorem binary_implies_weak (h : BinaryGoldbachConjecture) : WeakGoldbachConject
   apply sumOfTwoPrimes_add_three
   exact h m hm_gt hm_even
 
+/-- **Adding any prime to a sum of two primes gives a sum of three primes.**
+    The general form of `sumOfTwoPrimes_add_three` (the case `r = 3`): the extra prime need
+    not be `3`. Prepending any prime `r` to a binary Goldbach decomposition `m = p + q`
+    yields the ternary decomposition `r + m = r + p + q`. -/
+theorem sumOfTwoPrimes_add_prime {m r : ℕ} (hm : IsSumOfTwoPrimes m) (hr : Nat.Prime r) :
+    IsSumOfThreePrimes (r + m) := by
+  obtain ⟨p, q, hp, hq, heq⟩ := hm
+  exact ⟨r, p, q, hr, hp, hq, by omega⟩
+
+/-- **"Peel one prime": the ternary–binary bridge as an exact characterization.**
+    A number is a sum of three primes iff some prime `r ≤ n` can be removed to leave a sum of
+    two primes: `IsSumOfThreePrimes n ↔ ∃ r, Nat.Prime r ∧ r ≤ n ∧ IsSumOfTwoPrimes (n - r)`.
+    The backward direction is `sumOfTwoPrimes_add_prime` (reassembling `n = r + (n - r)` using
+    `r ≤ n`); the forward direction peels off the first prime of a ternary decomposition. This
+    makes the one-directional reduction `binary_implies_weak` reversible at the level of the
+    predicates, exhibiting the sum-of-three-primes property as exactly one prime away from the
+    sum-of-two-primes property. -/
+theorem isSumOfThreePrimes_iff_prime_add_sumOfTwoPrimes {n : ℕ} :
+    IsSumOfThreePrimes n ↔ ∃ r, Nat.Prime r ∧ r ≤ n ∧ IsSumOfTwoPrimes (n - r) := by
+  constructor
+  · rintro ⟨p, q, r, hp, hq, hr, hn⟩
+    exact ⟨p, hp, by omega, q, r, hq, hr, by omega⟩
+  · rintro ⟨r, hr, hrn, p, q, hp, hq, hpq⟩
+    exact ⟨r, p, q, hr, hp, hq, by omega⟩
+
+/-- If `m` is a sum of two primes, then `2 + m` is a sum of three primes (adjoin the
+    prime `2`).  The `+2` companion of `sumOfTwoPrimes_add_three` (`+3`) — the `r = 2`
+    instance of `sumOfTwoPrimes_add_prime`: together the two shifts realize the two
+    parity-shifting reductions of ternary Goldbach to binary Goldbach. -/
+theorem sumOfTwoPrimes_add_two {m : ℕ} (hm : IsSumOfTwoPrimes m) :
+    IsSumOfThreePrimes (2 + m) :=
+  sumOfTwoPrimes_add_prime hm Nat.prime_two
+
+/-- **Binary Goldbach ⟹ ternary Goldbach for even numbers.**  Assuming binary
+    Goldbach, every even `n ≥ 6` is a sum of three primes: `n − 2` is even and `> 2`,
+    so `n − 2 = p + q`, whence `n = 2 + p + q`.  This is the *even*-parity complement
+    of `binary_implies_weak` (which covers odd `n`), built on `sumOfTwoPrimes_add_two`
+    in place of `sumOfTwoPrimes_add_three`. -/
+theorem binary_implies_ternary_even (h : BinaryGoldbachConjecture) {n : ℕ}
+    (hn : 6 ≤ n) (hEven : Even n) : IsSumOfThreePrimes n := by
+  have hm : IsSumOfTwoPrimes (n - 2) := by
+    refine h (n - 2) (by omega) ?_
+    obtain ⟨k, hk⟩ := hEven
+    exact ⟨k - 1, by omega⟩
+  have h3 := sumOfTwoPrimes_add_two hm
+  rwa [show 2 + (n - 2) = n from by omega] at h3
+
+/-- **Binary Goldbach ⟹ every integer `n ≥ 6` is a sum of three primes.**  Uniting
+    the odd case (`binary_implies_weak`, valid for odd `n > 5`) with the even case
+    (`binary_implies_ternary_even`, valid for even `n ≥ 6`) covers *all* `n ≥ 6`
+    regardless of parity — the classical equivalent form of ternary Goldbach as a
+    statement about all sufficiently large integers, not only the odd ones. -/
+theorem binary_implies_ternary_ge_six (h : BinaryGoldbachConjecture) {n : ℕ}
+    (hn : 6 ≤ n) : IsSumOfThreePrimes n := by
+  rcases Nat.even_or_odd n with hEven | hOdd
+  · exact binary_implies_ternary_even h hn hEven
+  · exact binary_implies_weak h n (by omega) hOdd
+
 /-! ## Axiomatized Results -/
 
 /-- Helfgott (2013): the weak Goldbach conjecture is true.

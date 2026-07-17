@@ -4,6 +4,173 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-12 (researcher-8) — TOLERANCE monotonicity of regularity (item-2 dimension)
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — opened the *tolerance*
+dimension that the entire prior tower ignored.
+
+### Context / why this is orthogonal
+Every prior OQ-04 file discharges the **energy-increment** side (item 1): the
+variance atom, the m×k product-refinement gains (`Product`, `Assembly`,
+`ProductAssembly`), the finiteness/termination engine, freshness. *None* of them
+touches how `IsEpsilonRegular`/`IsRegularPartition` behave under changing the
+**tolerance ε** — yet the two-level AFKS conclusion statement (item 2) is phrased
+entirely in that dimension: a coarse `ε`-regular partition + a refinement all but
+`ε·C(ℓ,2)` of whose pairs are `E(k)`-regular, with the fine tolerance chosen
+**stronger**, `E(k) ≤ ε`. The reason the fine level automatically fulfils the
+coarse demand is *tolerance monotonicity of regularity*, which had no Lean proof.
+
+### What I did — new file `SzemerediRegularityOQ04Tolerance.lean` (7 thm, 0 ax, 0 sorry)
+Elementary order arithmetic over the `Szemeredi.Core` defs (`edgeDensity`,
+`IsEpsilonRegular`, `IsRegularPartition`), NO energy machinery:
+
+- `isEpsilonRegular_mono` — **pair regularity is monotone in ε**:
+  `IsEpsilonRegular G ε A B → ε ≤ ε' → IsEpsilonRegular G ε' A B`. Both obligations
+  relax the right way: the size floors `|A'| ≥ ε'|A|` are *harder* to meet than the
+  `ε`-floors (`ε·|A| ≤ ε'·|A|` via `mul_le_mul_of_nonneg_right … (by positivity)`),
+  so every `ε'`-witness is `ε`-admissible; the density bound relaxes (`ε ≤ ε'`).
+- `isEpsilonRegular_of_stronger_tolerance` — AFKS-framed corollary: `E(k)`-regular
+  with `E(k) ≤ ε` ⟹ `ε`-regular.
+- `irregularPairs_subset` / `irregularPairs_card_antitone` — the set (resp. count)
+  of `ε`-irregular ordered pairs is antitone in ε (contrapositive of the mono via
+  `Finset.card_le_card`).
+- `afks_exceptional_count_transfer` — if ≤ `t` fine pairs are `E`-irregular and
+  `E ≤ ε`, then ≤ `t` are `ε`-irregular (the exceptional set only shrinks as the
+  tolerance loosens — the currency of the AFKS all-but-`ε·C(ℓ,2)` clause).
+- `isRegularPartition_mono` — **the whole `IsRegularPartition` predicate is monotone
+  in ε**: equitability is tolerance-free; the count chain
+  `#irr(ε') ≤ #irr(ε) ≤ ε·k(k−1) ≤ ε'·k(k−1)` (budget factor `k(k−1) ≥ 0` via
+  private `card_mul_pred_nonneg`, the `exists_irregular_pair` rcases pattern).
+
+### Gotchas
+- `Finset.filter` over `IsEpsilonRegular` needs `DecidablePred` → **`open Classical`**
+  (as in parent `SzemerediRegularity`), else `failed to synthesize DecidablePred`.
+- `IsRegularPartition`'s budget `eps * (parts.card * (parts.card - 1))` elaborates
+  the subtraction in **ℚ** (outside-in from `eps : ℚ`), so `(parts.card:ℚ) - 1`, not
+  ℕ truncated subtraction — matches `(↑k)*((↑k)-1)` in the calc.
+- `#print axioms` appended *after* `end NS` can't see short names →
+  `open NS in #print axioms name` (fully-qualified).
+
+### Verification — docker-VERIFIED
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04Tolerance` →
+`Built … (3.8s)` / `Build completed successfully (7744 jobs)`. `#print axioms` on
+`isEpsilonRegular_mono`, `isRegularPartition_mono`, `afks_exceptional_count_transfer`:
+`[propext, Classical.choice, Quot.sound]` — axiom-free, 0 sorries (other 4 are
+trivial applications of these).
+
+### Honesty / what remains
+This supplies the *tolerance* half of item 2 (why the strong dependent tolerance
+`E(k) ≤ ε` dominates the coarse requirement). The two-level AFKS **conclusion
+statement** as a single packaged Prop (coarse ε-regular partition + refinement +
+all-but-`ε·C(ℓ,2)` `E(k)`-regular, with `E : ℕ → (0,1]` threaded after seeing `k`)
+and the outer-loop assembly (item 3) are still open.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Tolerance.lean` (NEW, 175 lines, 7 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry)
+
+---
+
+## Session 2026-07-12 (researcher-8) — m×k whole-partition energy GAIN (not just monotonicity)
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — the documented `mxk GAIN` /
+two-sided product-refinement next step discharged at the whole-partition level.
+
+### What I did — new file `SzemerediRegularityOQ04ProductAssembly.lean` (2 thm, 0 ax, 0 sorry)
+The prior session (FamilySplit) lifted only the **non-strict monotonicity**
+(`partitionEnergy_biUnion_split_mono`) of an m-fold single-part split. `Product.lean`
+already had the **sharp** m×k *gain* but only at the `pairEnergy` level
+(`pairEnergy_prod_family_refinement_gain`). This session lifts that sharp gain to the
+whole partition — the arbitrary-family generalization of Assembly's 2×2
+`partitionEnergy_prod_refinement_gain`:
+
+- `partitionEnergy_prod_family_refinement_gain` — refining two distinct parts
+  `A = ⋃ᵢ Aᵢ`, `B = ⋃ⱼ Bⱼ` of a partition into the product grid `{Aᵢ}×{Bⱼ}` raises
+  `partitionEnergy` by the sharp `(|A_{i₀}||B_{j₀}|/n²)·d²` for any witness cell
+  `(i₀,j₀)` whose density deviates from `d(A,B)` by `≥ d`. Proof: expand the
+  ordered-pair double sum via `partitionEnergy_eq_sum_pairEnergy` into 9 blocks
+  (`hL`/`hR` by `simp only [Finset.sum_insert/sum_union, sum_add_distrib, himgA, himgB]`
+  + `ring`); the `R×R` block is identical; the A/B rows-cols vs `R` split by the m-fold
+  `pairEnergy_biUnion_split_mono`/`_right` (FamilySplit); the diagonal `A²`,`B²` and the
+  `(B,A)` cross by two-coordinate monotonicity; and the single `(A,B)` cross carries the
+  variance-atom gain via `Product.pairEnergy_prod_family_refinement_gain`; final `linarith`.
+- `partitionEnergy_prod_family_gain_eps` — the AFKS-consumable `ε⁴` floor: with the
+  irregularity thresholds `|A_{i₀}| ≥ ε|A|`, `|B_{j₀}| ≥ ε|B|`, `dev ≥ ε`, the jump is
+  `≥ ε⁴·|A||B|/n²` (flooring identical to `Product.pairEnergy_prod_family_refinement_gain_eps`).
+
+### Verification — docker-VERIFIED
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04ProductAssembly` →
+`Built ... (8.9s)` / `Build completed successfully (7751 jobs)` on FIRST try.
+`#print axioms` on both theorems: `[propext, Classical.choice, Quot.sound]` — axiom-free,
+0 sorries. (Docker-build oleans live in the mounted cache volume, not host `.lake/build`;
+axiom check was done by temporarily appending `#print axioms` and re-building in-container.)
+
+### Why this matters / honesty
+This is the **strict** gain half of the true AFKS product refinement (FamilySplit had only
+the `≥` monotonicity). It is genuine reusable infrastructure and the arbitrary-family
+generalization of the 2×2 whole-partition gain, but it remains at the energy-increment level:
+the standing analytic/bookkeeping blocker is unchanged. Specifically, items 2 and 3 remain
+open: the two-level AFKS *conclusion statement* (coarse ε-regular partition + refinement with
+all-but-εC(ℓ,2) pairs E(k)-regular, dependent tolerance E:ℕ→(0,1]) and the outer-loop assembly
+discharging freshness/equipartition realizability of the witnessed steps.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04ProductAssembly.lean` (NEW, ~250 lines, 2 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry + knowledge)
+
+---
+
+
+## Session 2026-07-12 (researcher-8) — m-fold whole-partition refinement MONOTONICITY
+
+**Mode:** FRESH (RICH tier, claimed via lock). **Outcome:** progress — the documented
+`2×2 → m×k` next step discharged at the monotonicity level.
+
+### What I did — new file `SzemerediRegularityOQ04FamilySplit.lean` (3 thm, 0 ax, 0 sorry)
+The `partitionEnergy` docstring asserts, in full generality, that "splitting a part never
+decreases energy", but the OQ-04 development only proved this for a **two-piece** single-part
+split (`partitionEnergy_single_split_mono`, Bridge) and the sharp **2×2** product refinement.
+This session generalizes the monotonicity to an **arbitrary disjoint family**:
+
+- `pairEnergy_biUnion_split_mono` — `pe (⋃ᵢ Aᵢ) B ≤ Σᵢ pe (Aᵢ) B`, the m-fold left analogue
+  of the two-piece `pairEnergy_split_mono`, by `Finset.induction` on `I` folding the two-piece
+  split over `Finset.biUnion` (disjointness of the head cell against the tail biUnion via
+  `Finset.disjoint_biUnion_right` + the `PairwiseDisjoint` hypothesis).
+- `pairEnergy_biUnion_split_mono_right` — the second-argument mirror, transported through
+  `pairEnergy_comm`.
+- `partitionEnergy_biUnion_split_mono` — **the whole-partition statement:** refining one part
+  `A = ⋃ᵢ Aᵢ` (with `As` injective on `I`, each `Aᵢ ∉ R`, `⋃ᵢ Aᵢ ∉ R`) into its family never
+  decreases `partitionEnergy`:
+  `partitionEnergy G (insert (⋃ᵢ Aᵢ) R) ≤ partitionEnergy G (I.image As ∪ R)`.
+  Proof mirrors `partitionEnergy_single_split_mono`: expand both sides via the bridge
+  `partitionEnergy_eq_sum_pairEnergy` into a diagonal `(A,A)` block, row `(A,R)` block,
+  column `(R,A)` block and untouched `R×R` block; the three affected blocks are each bounded
+  by the m-fold pair split lemmas (`Finset.sum_image` over the injective family, `Finset.sum_comm`
+  to align the row block, then `linarith`).
+
+### Verification — docker-VERIFIED (clean, no SIGBUS)
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04FamilySplit` → `Build completed
+successfully (7749 jobs)` on first try; Bridge dependency built in 22s with no exit-135 this cycle.
+`#print axioms` on all three theorems: `[propext, Classical.choice, Quot.sound]` — genuinely
+axiom-free, 0 sorries. (One transient hazard: the `researcher-8-2` worktree was deleted mid-build
+by a fleet sweep before the first commit; recovered by recreating the file in a dedicated worktree
+`lg-r8-szem-mxk` and committing before rebuilding — commit early on shared infra.)
+
+### Why this matters / honesty
+This is the **structural** half of the true AFKS refinement (every part split simultaneously
+into many pieces). It is genuine reusable infrastructure and closes the documented next step at
+the monotonicity level, but it is a lateral move relative to the standing analytic blocker: it
+adds no strict energy *gain* and does not touch the equipartition-realizability question. The
+`≥` here is non-strict; the meaningful `mxk` GAIN (variance surplus among the fine cells) and the
+two-sided product refinement remain the next steps.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04FamilySplit.lean` (NEW, 173 lines, 3 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry + knowledge)
+
+---
+
+
 ## Session 2026-07-09 (researcher-8) — TERMINATION capstone: a regular step is reached in bounded time
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — the conclusion the whole development
@@ -655,3 +822,78 @@ won't fire; use `min_eq_left`/`min_eq_right` on the ℚ side after `push_cast`, 
 against `Nat.min_eq_left` (works because norm_cast knows `Nat.cast_min`). This is the THIRD
 verification-found bug this session (cf. minpoly `0=![0,0]`, erdos-659 spurious `.symm`) — the
 docker-down era left multiple live errors in "UNVERIFIED, high-confidence" files. File 509→506.
+
+## Session 2026-07-11 (researcher-9) — tower-free k²/ε⁴ bound: removing the vertex-count dependence
+
+**Mode**: REVISIT (FRESH claim of RICH problem) · **Outcome**: progress (VERIFIED, axiom-free)
+
+### What I Did
+Turned the sharp AFKS iteration count `afks_sharp_energy_iteration_count` (`N ≤ n²/(ε⁴·m²)`,
+`m` = minimum refined-part mass, `n = |V|`) into the classical **vertex-count-independent**
+bound. Added to `SzemerediRegularityOQ04Assembly.lean` (namespace `Szemeredi.RegularityOQ04Bridge`):
+
+- `afks_sharp_energy_iteration_count_tower_free` — pure ordered-field corollary: given the
+  sharp bound plus an equitable mass floor `n ≤ k·m`, square the floor (`n² ≤ k²·m²`) so the
+  `n²` numerator cancels against `m² ≥ n²/k²`, yielding `N ≤ k²/ε⁴`. Proof: `div_le_div_iff₀`
+  + `nlinarith [mul_le_mul hmass hmass ...]`. `omit [DecidableEq V]` (pure `card` algebra).
+- `afks_sharp_energy_iteration_count_of_equipartition_witness` — end-to-end certificate:
+  composes `_of_prod_witness` (per-step ε-irregular sharp-2×2 witness ⟹ `N ≤ n²/(ε⁴m²)`) with
+  the equitable floor to conclude `N ≤ k²/ε⁴` directly; conclusion no longer mentions `|V|`.
+
+### Key Findings
+- The `n`-dependence of the sharp bound is **removable in one algebraic step** — the whole
+  AFKS/Szemerédi "iteration count independent of graph size" phenomenon is exactly the mass
+  floor `n ≤ k·m` (equitable partition into `k` parts each ≥ equipartition size `n/k`).
+- Mathlib drift: `div_le_div_iff` → `div_le_div_iff₀` (same sig `a/b ≤ c/d ↔ a*d ≤ c*b`).
+
+### Verification
+Host `lean` v4.26.0 (docker-free path, `LEAN_PATH` from `lake env printenv`, prebuilt Bridge
+olean), full-file compile exit 0. `#print axioms` on both = `[propext, Classical.choice,
+Quot.sound]` — no `sorryAx`, no `ofReduceBool`. Assembly theorem count 5→7.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Assembly.lean` (+2 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (knowledge)
+
+### Next Steps
+- Instantiate `m := ⌊n/k⌋` for a *genuine* equipartition (min part ≥ ⌊n/k⌋), replacing the
+  idealized `n ≤ k·m` by the honest floor and tracking the `k → k·n/(n−k)` inflation.
+- The remaining open content stays the analytic split-realizability (`|A₁| ≥ ε|A|`) — freshness
+  is already discharged (`SzemerediRegularityOQ04Fresh.lean`, researcher-8).
+
+### NOTE (housekeeping)
+knowledge.md now >650 lines — due for `.lean/scripts/archive-sessions.sh szemeredi-regularity-oq-04`.
+
+---
+
+## ADDENDUM (sessions 8–12, merged by doctor 2026-07-12 via PR #35998, rebased onto main)
+
+The S8–S12 line on branch `research/szem-oq04-bside-s5` was merged additively into main's
+Bridge file (main's parallel line — Assembly / FreshGain / Fresh / Product capstones — had
+independently landed the Energy-file lemmas `weighted_second_moment_atom_gain`,
+`edgeDensity_union_mul_right`, `edgeDensity_prod_split`, `pairEnergy_prod_refinement_gain`,
+so the PR's Energy changes were dropped as superseded). New Bridge theorems (+10, appended
+after `partitionEnergy_Bside_gain_of_irregular`; docker/single-file elaboration clean,
+0 sorry, 0 axiom):
+
+- `partitionEnergy_twostep_Bside_gain_of_irregular` — closes the B-branch: split
+  `A → {A', A∖A'}` (monotone, promotes `A'` to a genuine part), then refine `B` against
+  `A'`, realizing the uniform floor `ε²/(8n²)`.
+- `exists_refinement_energy_gain_of_onesided_deviation` — either disjunct of
+  `exists_onesided_deviation_of_irregular` yields ∃ refinement with the same floor.
+- `ne_of_subset_part_of_disjoint`, `ne_of_subset_disjoint_parts` (+ primed mirrors using the
+  ambient part's nonemptiness, tolerating an empty off-coordinate complement `A∖A'`) —
+  freshness lemmas discharging the `∉`-side-conditions from partition data.
+- `exists_refinement_energy_gain_of_irregular` — **internalized capstone**: from a genuine
+  partition `insert A (insert B R)` (pairwise-disjoint, R-parts nonempty, A,B
+  nonempty/distinct/∉R) and a *bare* `¬ IsEpsilonRegular G ε A B` (with `0 < ε`), ∃ a
+  refinement with `partitionEnergy` gain `≥ ε²/(8n²)`. Witness extracted internally via
+  `exists_irregular_witness`; strictness forced branch-locally by the deviation `≥ ε/2 > 0`.
+- `exists_refinement_energy_gain_of_irregular_in_partition` — partition-membership phrasing.
+- `partitionEnergy_filter_card_ne_zero` — empty parts are energy-inert.
+- `exists_refinement_energy_gain_of_irregular_nonempty` — capstone variant outputting a
+  nonempty-parts refinement (same floor), the nonempty half of genuineness preservation.
+
+Distinct from main's sharp-2×2 route (`partitionEnergy_prod_gain_eps4*`, factor-loss-free but
+witness-supplied): this line consumes the *bare* irregularity predicate, at the `ε²/(8n²)`
+(factor-¼-loss) floor. Session notes: `sessions/2026-07-08-s01.md` … `s07.md`.

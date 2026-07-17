@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-dm0602-docstring",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "From Pointwise to Uniform Dirichlet-Kernel Bounds",
+    "content": "The docstring frames the upgrade. The parent (de-moivre-oq-06) proves the *pointwise* estimates $|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2|\\sin(\\theta/2)|}$ and $|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{|\\sin(\\theta/2)|}$, which blow up as $\\theta\\to0\\pmod{2\\pi}$. The form used in harmonic analysis is uniform in both $n$ and $\\theta$ on a compact arc $\\theta\\in[\\delta,2\\pi-\\delta]$ excising a $\\delta$-neighbourhood of the singularities $\\theta\\in2\\pi\\mathbb{Z}$. The single geometric input is the endpoint lower bound $\\sin(\\theta/2)\\ge\\sin(\\delta/2)$.",
+    "mathContext": "Excising $[- \\delta,\\delta]\\pmod{2\\pi}$ replaces the $\\theta$-dependent denominator $\\sin(\\theta/2)$ by the uniform $\\sin(\\delta/2)>0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet kernel",
+      "uniform boundedness",
+      "Fourier series convergence",
+      "Dirichlet's test"
+    ],
+    "prerequisites": [
+      "pointwise Dirichlet kernel bounds",
+      "compactness away from singularities"
+    ]
+  },
+  {
+    "id": "ann-dm0602-endpoint",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "The Half-Angle Sine Attains its Minimum at the Endpoints",
+    "content": "`sin_half_ge_of_mem_arc` proves $\\sin(\\delta/2)\\le\\sin(\\theta/2)$ for $\\theta\\in[\\delta,2\\pi-\\delta]$, $0<\\delta\\le\\pi$. The half-angle $\\theta/2$ ranges over $[\\delta/2,\\pi-\\delta/2]$, on which $\\sin$ — concave on $[0,\\pi]$ with equal endpoint values $\\sin(\\delta/2)$ — is minimised at the boundary. Rather than a concavity argument, the difference is cleared through the product identity $\\sin x-\\sin y=2\\sin(\\tfrac{x-y}{2})\\cos(\\tfrac{x+y}{2})$ with $x=\\theta/2,\\ y=\\delta/2$: the factor $\\sin(\\tfrac{\\theta-\\delta}{4})\\ge0$ because its argument lies in $[0,\\pi/2]\\subseteq[0,\\pi]$, and $\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$ because its argument lies in $[0,\\pi/2]\\subseteq[-\\pi/2,\\pi/2]$. Both factors nonnegative gives the difference nonnegative. The block also records the small private helper `sin_half_pos` ($\\sin(\\delta/2)>0$ for $0<\\delta\\le\\pi$, from `Real.sin_pos_of_pos_of_lt_pi`), factored out once because every uniform-bound proof below needs the strict positivity of the endpoint value to divide by it.",
+    "mathContext": "$\\sin(\\theta/2)-\\sin(\\delta/2)=2\\sin(\\tfrac{\\theta-\\delta}{4})\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$; and $\\sin(\\delta/2)>0$ (helper `sin_half_pos`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "product-to-sum identity",
+      "monotonicity of sine",
+      "sign analysis by argument range"
+    ],
+    "prerequisites": [
+      "Real.sin_sub_sin",
+      "sin/cos sign lemmas"
+    ]
+  },
+  {
+    "id": "ann-dm0602-uniform-bounds",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "The Cosine Kernel: Removing θ-Dependence by Reciprocal Monotonicity",
+    "content": "`dirichlet_kernel_uniform_bound` upgrades the parent's *pointwise* cosine estimate to a bound uniform in $n$ and $\\theta$. The cosine partial sum $\\sum_{k\\le n}\\cos(k\\theta)$ centred at $\\tfrac12$ is exactly the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$, so the parent bound has the $\\theta$-dependent denominator $2\\sin(\\theta/2)$. Since $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$ on the arc, $|\\sin(\\theta/2)|=\\sin(\\theta/2)$ and reciprocal monotonicity (`one_div_le_one_div_of_le`) replaces it by the constant denominator: $\\frac{1}{2\\sin(\\theta/2)}\\le\\frac{1}{2\\sin(\\delta/2)}$. Chaining with the pointwise bound (`le_trans`) yields the uniform constant $\\frac{1}{2\\sin(\\delta/2)}$, independent of both $n$ and $\\theta$.",
+    "mathContext": "$|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2\\sin(\\delta/2)}$ for all $n$ and all $\\theta\\in[\\delta,2\\pi-\\delta]$; the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reciprocal monotonicity",
+      "uniform bound",
+      "Dirichlet kernel"
+    ],
+    "prerequisites": [
+      "parent pointwise bounds",
+      "one_div_le_one_div_of_le"
+    ]
+  },
+  {
+    "id": "ann-dm0602-conjugate",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 97,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "The Conjugate (Sine) Kernel and the Conjugate Fourier Series",
+    "content": "`dirichlet_conjugate_uniform_bound` gives the companion estimate for the *sine* partial sums $\\widetilde{D}_n(\\theta)=\\sum_{k\\le n}\\sin(k\\theta)$ — the **conjugate Dirichlet kernel**. The proof is the same reciprocal-monotonicity chain applied to the parent's conjugate bound (now with a single $\\sin(\\theta/2)$ in the denominator, so the uniform constant is $\\frac{1}{\\sin(\\delta/2)}$ — twice the cosine constant). Its significance is distinct from the cosine kernel: $\\widetilde{D}_n$ is the kernel of the *conjugate partial sums* $\\widetilde{S}_n f$, whose limit is the conjugate function $\\widetilde f$ — the circle analogue of the Hilbert transform, and the boundary value of the harmonic conjugate. A uniform bound on $\\widetilde{D}_n$ away from the singularities $\\theta\\in 2\\pi\\mathbb{Z}$ is exactly what Dirichlet's test needs to establish convergence of the *conjugate* Fourier series, in parallel with the ordinary one.",
+    "mathContext": "$|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{\\sin(\\delta/2)}$ for all $n$, $\\theta\\in[\\delta,2\\pi-\\delta]$; conjugate kernel $\\widetilde{D}_n(\\theta)=\\sum_{k=1}^n\\sin(k\\theta)=\\tfrac{\\cos(\\theta/2)-\\cos((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugate Dirichlet kernel",
+      "conjugate function / Hilbert transform",
+      "conjugate Fourier series",
+      "reciprocal monotonicity"
+    ],
+    "prerequisites": [
+      "parent conjugate pointwise bound",
+      "one_div_le_one_div_of_le",
+      "conjugate function on the circle"
+    ]
+  },
+  {
+    "id": "ann-dm0602-packaged",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "A Single Constant for Dirichlet's Test",
+    "content": "`dirichlet_partial_sums_uniformly_bounded` packages the two estimates into one $\\exists C>0,\\ \\forall n\\,\\theta$ statement: taking $C=1/\\sin(\\delta/2)$ — which dominates the cosine constant $1/(2\\sin(\\delta/2))$ — a single constant simultaneously bounds every cosine partial sum (centred at $\\tfrac12$) and every sine partial sum on the arc. This $\\exists C,\\forall n\\,\\theta$ shape is precisely the uniform-boundedness hypothesis that, combined with Abel summation, powers Dirichlet's test for the convergence of Fourier and trigonometric series.",
+    "mathContext": "$\\exists C>0,\\ \\forall n\\,\\forall\\theta\\in[\\delta,2\\pi-\\delta],\\ |\\sum\\cos-\\tfrac12|\\le C\\ \\wedge\\ |\\sum\\sin|\\le C$, with $C=1/\\sin(\\delta/2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet's test",
+      "Abel summation",
+      "uniform convergence of Fourier series"
+    ],
+    "prerequisites": [
+      "uniform Dirichlet bounds"
+    ]
+  }
+]

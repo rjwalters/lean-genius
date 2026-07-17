@@ -19,3 +19,27 @@ built the `Proofs.AreaOfCircleOQ01OQ02OQ02` dep olean into /tmp (Mathlib-only pa
 target with it on LEAN_PATH — exit 0, no errors, `#print axioms` = `[propext, Classical.choice,
 Quot.sound]`. Depth-4 slug → 0 follow-ups per OQ-chain depth guard. No gallery meta references this
 file (pure research-layer). File now 177→202 lines, 7→8 theorems.
+
+## Session 2026-07-12 (researcher-9) — FIRST-ORDER Wirtinger ladder (VERIFIED 0-axiom, PR #38567)
+
+The file's narrative is Wirtinger's inequality but it skipped the base **first-order**
+ladder (jumped straight to `‖ĉₙ(f'')‖=n²‖ĉₙ(f)‖`). Added the genuine classical content
+for the C¹ first derivative from the parent IBP identity `ĉₙ(f')=i·n·ĉₙ(f)`:
+- `norm_fourierCoeffOn_deriv_eq` : ‖ĉₙ(f')‖ = |n|·‖ĉₙ(f)‖ (exact per-mode magnitude)
+- `norm_fourierCoeffOn_le_deriv` : ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f')‖ (Wirtinger's inequality, mode-wise)
+- `norm_fourierCoeffOn_deriv_eq_of_natAbs_one` : equality on first harmonic |n|=1
+- `norm_fourierCoeffOn_lt_deriv_of_natAbs_ge_two` : strict |n|≥2
+- `norm_fourierCoeffOn_deriv2_eq_abs_mul_deriv` : n²=|n|·|n| composition law d²=d∘d
+- `fourierCoeffOn_deriv_eq_zero_iff` : first-order kernel iff
+Placed as SECTION IV, complementary to (not superseding) Section III's general
+(i·n)ᵐ complex-eigenvalue identity (#38380). Proof kit: `simp only [norm_mul,
+Complex.norm_I, Complex.norm_intCast, one_mul]` collapses ‖i·n·ĉ‖→|n|·‖ĉ‖; `Int.one_le_abs hn`.
+
+### Infra gotchas (this session)
+- **origin/main advanced past worktree base** (532→659-line file via #38380 iterated-deriv
+  section). First "successful" compile was accidentally against the MAIN-repo copy (evolved,
+  different file). Fix: `git reset --hard origin/main` in worktree, re-apply to CURRENT file,
+  renumber section III→IV. ALWAYS diff worktree vs origin/main before editing shared files.
+- **docker-build.sh SIGBUS (exit 135)** on corrupt cache blob `Mathlib/Algebra/Group/Hom/
+  Instances.trace` — infra, reproducible 3x. Verified via direct single-file `lean` elaboration
+  (LEAN_PATH=main-repo packages+Proofs oleans, `#print axioms` on /tmp copy of WORKTREE file).

@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-05T23:54:18-07:00",
-    "iteration": 2,
-    "focus": "General-prime Legendre recurrences companion shipped (verified, 0-axiom): the p=2 doubling/digit-sum/maximality results lifted to every prime p.",
+    "iteration": 3,
+    "focus": "Filled the twice-delegated digit-sum-one characterization s_p(n)=1 <-> n=p^k (general prime p); the maximality lemma now closes to fully-explicit power-of-p form.",
     "blockers": [],
-    "nextAction": "Optional: prove s_p(n)=1 <-> n=p^k for general p (digit-sum-one characterization), or the dual Kummer-style carry count for v_p(C(m+n, n)) at general p.",
+    "nextAction": "Elementary p-adic theory is saturated (Legendre identity, general-p Kummer/multinomial carry theory, digit-sum recurrences, digit-sum-one characterization -- all axiom-free). Only the deep barreto_leeham_theorem axiom in the parent remains (open-question resolution, not session-sized).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION (researcher-1 2026-07-08): removed the UNSOUND barreto_leeham_bound axiom (Erdos729Problem.lean 2->1 axioms). It asserted a FALSE proposition — for any D it fails at n in {0,1} (e.g. n=1,a=b=1: DividesFactorialModSmall holds yet a+b=2 > 1+D*log 1 = 1), the same small-n defect as the retired erdos_1968_classical. Since DividesFactorialModSmall n a b C unfolds to exists k (small primes) with k*a!*b! | n!, which forces a!*b! | n!, the SOUND uniform form (2<=n) is a corollary of the axiom-free Erdos729DigitSum.erdos_1968_uniform. Converted the axiom to a verified theorem and tightened erdos_729_summary with 2<=n. Only barreto_leeham_theorem (the deep Barreto-Leeham resolution) remains as a documented axiom. VERIFIED docker Built; #print axioms: barreto_leeham_bound axiom-free, erdos_729_summary depends only on barreto_leeham_theorem.",
+    "progressSummary": "PROGRESS: closed the open power-of-two converse (s_2(n)=1⟹n=2^k), completing the iff and the sharp v_2(C(2n,n))=1 ↔ n=2^k. Elementary p-adic theory saturated + axiom-free; only deep parent barreto_leeham_theorem remains.",
     "builtItems": [
       "digitSum_prime_mul_add (p n r)(hp:1<p)(hr:r<p): (Nat.digits p (p*n+r)).sum = (Nat.digits p n).sum + r -- general base-p digit left-shift, Erdos729LegendrePrimeRecurrence.lean",
       "digitSum_prime_mul (p n)(hp:1<p): s_p(p*n)=s_p(n) -- r=0 invariant",
@@ -49,7 +49,21 @@
       "Erdos729DigitSumBound.lean: digitSum_two_le_log — s₂(m) ≤ Nat.log 2 m + 1 (List.sum_le_card_nsmul + Nat.digits_len)",
       "Erdos729DigitSumBound.lean: erdos_two_adic_bound_log — log form a+b ≤ n+(log₂a+1)+(log₂b+1)",
       "natLog_two_mul_log_two_le_log (Erdos729DigitSumBound.lean): (⌊log₂ n⌋:ℝ)·log 2 ≤ log n via Real.log of 2^⌊log₂n⌋≤n + Real.log_pow.",
-      "erdos_1968_uniform (Erdos729DigitSumBound.lean): ∃ uniform C=4/log2>0, ∀ n≥2 ∀ a,b, a!b!∣n! → (a+b:ℝ)≤n+C·log n — axiom-free honest Erdős-1968; correct replacement for the unsound/vacuous main-file axiom erdos_1968_classical."
+      "erdos_1968_uniform (Erdos729DigitSumBound.lean): ∃ uniform C=4/log2>0, ∀ n≥2 ∀ a,b, a!b!∣n! → (a+b:ℝ)≤n+C·log n — axiom-free honest Erdős-1968; correct replacement for the unsound/vacuous main-file axiom erdos_1968_classical.",
+      "Erdos729LegendreGeneral.lean: sub_one_mul_padicValNat_choose_add_digitSum — carry-free additive Kummer (p-1)·v_p(C(m+n,m))+s_p(m+n)=s_p(m)+s_p(n); via C·m!·n!=(m+n)! (padicValNat.mul additivity) + Legendre per m,n,m+n + omega on bounded ℕ subtraction",
+      "Erdos729LegendreGeneral.lean: digitSum_add_le — base-p digit-sum SUBADDITIVITY s_p(m+n)≤s_p(m)+s_p(n) (base-p Hamming-weight triangle ineq; NOT in Mathlib), corollary of additive Kummer since shortfall=(p-1)·v_p≥0",
+      "Erdos729LegendreGeneral.lean: not_dvd_choose_iff_digitSum_add — p∤C(m+n,m) ↔ s_p(m+n)=s_p(m)+s_p(n) (no base-p carries); via dvd_iff_padicValNat_ne_zero; NOT in Mathlib",
+      "Erdos729LegendreGeneral.lean: dvd_choose_iff_digitSum_lt — p∣C(m+n,m) ↔ s_p(m+n)<s_p(m)+s_p(n) (≥1 carry); complement via subadditivity",
+      "Erdos729LegendreGeneral.lean: padicValNat_choose_eq_div — division-form Kummer in gallery digitSum shape v_p(C)=(s_p(m)+s_p(n)-s_p(m+n))/(p-1)",
+      "digitSum_base_mul + digitSum_pos + 3 central-binomial theorems (Erdos729LegendreGeneral.lean, researcher-2): digitSum_base_mul (s_p(p*n)=s_p(n), digit-sum invariance under multiplication by base, Mathlib gap, via Nat.digits_def'+mul_mod_right+mul_div_cancel_left); digitSum_pos (n!=0 => s_p(n)>0, via getLast_digit_ne_zero+List.le_sum_of_mem); padicValNat_centralBinom_eq_div (Kummer v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1)); not_dvd_centralBinom_iff (p not-dvd C(2n,n) iff s_p(2n)=2*s_p(n)); centralBinom_even (2|C(2n,n) for n>=1, classical, via base invariance at p=2). All axiom-free [propext,Classical.choice,Quot.sound]; host-lean elaboration 0 errors (docker exit-135 = known transient SIGBUS at C-codegen, NOT elaboration failure).",
+      "Erdos729LegendreGeneral.lean: sub_one_mul_padicValNat_centralBinom — general-p exact form (p-1)·v_p(C(2n,n))+s_p(2n)=2·s_p(n)",
+      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_eq_digitSum — SHARP v_2(C(2n,n))=s_2(n) (classical Kummer specialisation, was missing)",
+      "Erdos729LegendreGeneral.lean: one_le_padicValNat_centralBinom_two — 1≤v_2(C(2n,n)) for n≥1 (sharpens centralBinom_even)",
+      "Erdos729LegendreGeneral.lean: digitSum_two_pow — s_2(2^k)=1",
+      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_pow — v_2(C(2·2^k,2^k))=1 (C(2^{k+1},2^k)≡2 mod 4)",
+      "digitSum_le_length_mul, digitSum_le_log_succ_mul (sharp digit-sum upper bounds by digit count / log) in Erdos729LegendreGeneral.lean",
+      "sub_one_mul_padicValNat_factorial_ge (general-p sharp lower bound on (p-1)*v_p(n!))",
+      "padicValNat_factorial_two_ge / _two_le / _two_sandwich (two-sided quantitative Legendre bound n - log2 n - 1 <= v_2(n!) <= n - 1)"
     ],
     "insights": [
       "The 2-adic doubling recurrence v_2((2n)!)=n+v_2(n!) is the p=2 shadow of a general-prime law: for EVERY prime p and residue 0<=r<p, v_p((p*n+r)!) = n + v_p(n!), the increment n being INDEPENDENT of r. So all p consecutive arguments pn, pn+1, ..., pn+(p-1) share one valuation step. Proof: (p-1)*v_p(m!)=m-s_p(m) (Mathlib) plus s_p(p*n+r)=s_p(n)+r and (p-1)*n+n=p*n, then cancel p-1>0. Not a named Mathlib lemma.",
@@ -58,13 +72,22 @@
       "The exact 2-adic core of the Erdős (1968) constraint is elementary and axiom-free: a!·b! ∣ n! ⟹ v₂(a!)+v₂(b!) ≤ v₂(n!) (factorization is monotone under divisibility and additive over products), so by Legendre v₂(m!)=m−s₂(m) one gets the SHARP subtraction-free bound a + b ≤ n + s₂(a) + s₂(b). The excess a+b−n never exceeds the total 1-bit count of the two parts — no O(·) needed. The log form a+b ≤ n+(⌊log₂a⌋+1)+(⌊log₂b⌋+1) follows from s₂(m) ≤ Nat.log 2 m + 1 (each binary digit ≤ 1, digit count = log₂+1). Parent file carries this only as the deep axiom erdos_1968_classical.",
       "The main-file axiom erdos_1968_classical (∀ n a b, a!b!∣n! → ∃C>0, a+b≤n+C·log n) is defective TWO ways: unsound at n∈{0,1} (Real.log=0 there, but a+b can be 2>n), and mathematically VACUOUS for n≥2 because the ∃C sits INSIDE the ∀ (pick C=(a+b)/log n). The meaningful form puts a single uniform C outside the quantifiers; that form IS provable axiom-free with C=4/log2 for n≥2.",
       "Nat.log→Real.log bridge: 2^⌊log₂ n⌋≤n (Nat.pow_log_le_self) ⟹ (via Real.log monotone + Real.log_pow) ⌊log₂ n⌋·log2≤log n ⟹ ⌊log₂ n⌋≤log n/log2. Combined with a,b≤n (from a!∣a!b!∣n! ⟹ a!≤n! ⟹ a≤n via Nat.factorial_lt) the ℕ digit-sum bound a+b≤n+2⌊log₂n⌋+2 lifts to the real n+O(log n) shape with explicit constant.",
-      "v4.26 rename: le_div_iff → le_div_iff₀ (one_le_div still exists as an alias in Field/Basic)."
+      "v4.26 rename: le_div_iff → le_div_iff₀ (one_le_div still exists as an alias in Field/Basic).",
+      "Mathlib DOES carry Kummer: sub_one_mul_padicValNat_choose_eq_sub_sum_digits(_) and padicValNat_choose(_) (carries form) in NumberTheory/Padics/PadicVal/Basic.lean — but only the truncated-ℕ-subtraction shape. The subtraction-free additive rearrangement (p-1)·v_p(C)+s_p(m+n)=s_p(m)+s_p(n) is cleaner and is what yields subadditivity + the divisibility criteria as one-line omega corollaries.",
+      "Genuine Mathlib GAPS confirmed (v4.26.0): (1) base-p digit-sum subadditivity s_p(m+n)≤s_p(m)+s_p(n) — only digit_sum_le (s_p(n)≤n) exists; (2) digit-sum criterion p∤C(m+n,m) ↔ s_p(m+n)=s_p(m)+s_p(n). Both now proven axiom-free in the gallery. p=2 case of the criterion = classical odd-binomial ↔ disjoint binary supports (Lucas/Kummer).",
+      "digitSum_base_mul: s_p(p*n)=s_p(n) -- multiplying by base appends a trailing 0 digit ((p*n)%p=0, (p*n)/p=n via Nat.digits_def'), leaving digit sum unchanged. General reusable lemma (Mathlib gap). Its p=2 instance s_2(2n)=s_2(n) turns the no-carry criterion into classical 2|C(2n,n): at p=2, p not-dvd C(2n,n) iff s_2(2n)=2*s_2(n) forces s_2(n)=0 iff n=0.",
+      "Central binomial C(2n,n)=Nat.centralBinom n is the m=n case of the Kummer digit-sum machinery: v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1) counts carries of n+n base p. digitSum_pos (n!=0 => s_p(n)>0) from getLast_digit_ne_zero (top base-p digit nonzero) + List.le_sum_of_mem.",
+      "The sharp 2-adic valuation v_2(C(2n,n))=s_2(n) follows because doubling never carries in base 2 (s_2(2n)=s_2(n) via digitSum_base_mul), cancelling one of the two s_2(n) terms in the m=n Kummer identity.",
+      "At n=2^k the central binomial coefficient is exactly ≡2 mod 4 (v_2=1) since s_2(2^k)=1.",
+      "Part: power-of-2 characterization — digitSum_two_eq_one_imp_two_pow (converse s_2(n)=1⟹∃k,n=2^k via strong induction on digit recurrence s_2(n)=n%2+s_2(n/2)), digitSum_two_eq_one_iff (full iff), padicValNat_centralBinom_two_eq_one_iff (v_2(C(2n,n))=1 ↔ n=2^k, sharp form of ..two_pow). 3 axiom-free thm, host-lean EXIT 0. Closes the open converse from PR#38419.",
+      "Sharp two-sided quantitative Legendre bound at p=2 (Erdos729LegendreGeneral.lean): n - (log2 n + 1) <= v_2(n!) <= n - 1. The theory had digitSum_pos (lower bound on s_p) and used s_p(n)<=n, but lacked the SHARP upper bound s_p(n) <= (p-1)*(digit count) = (p-1)*(floor(log_p n)+1). That bound makes the Legendre defect logarithmically small, so v_2(n!) = n - O(log n) and v_2(n!)/n -> 1.",
+      "Key API: each base-p digit < p (Nat.digits_lt_base), digit count = floor(log_p n)+1 (Nat.digits_len), List.sum_le_card_nsmul for sum <= length*(p-1). General multiplied lower bound sub_one_mul_padicValNat_factorial_ge: n - (log_p n + 1)*(p-1) <= (p-1)*v_p(n!), complementing the existing sub_one_mul_padicValNat_factorial_le (<= n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "PROPOSE main-file fix (auditor/follow-up): replace the unsound axiom erdos_1968_classical with either a `2 ≤ n` hypothesis + reference to erdos_1968_uniform, or import the companion and delete the axiom (reduces main-file axiomCount 3→2). erdos_729_statement's first conjunct is currently backed by a false axiom.",
-      "Kummer refinement: s₂(a)+s₂(b)−s₂(n) = number of base-2 carries adding a and n−a; characterize equality a+b=n+carries.",
-      "The two barreto_leeham axioms (mod-small-primes resolution) are the genuinely deep research inputs — not Mathlib-eliminable; leave and document."
+      "The two barreto_leeham axioms in Erdos729Problem.lean remain the genuine deep research inputs — not Mathlib-eliminable.",
+      "Possible: consider upstreaming digitSum_add_le (digit-sum subadditivity) and the not_dvd_choose criterion to Mathlib — both are general-purpose and fill obvious gaps.",
+      "Possible sharp-boundary follow-up: equality case of subadditivity s_p(m+n)=s_p(m)+s_p(n) is EXACTLY the no-carry condition = p∤C(m+n,m); a fully carry-based characterization would connect to Mathlib padicValNat_choose (carries Finset form)."
     ],
     "markdown": "# Knowledge Base: erdos-729-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -105,8 +128,8 @@
     {
       "path": "Proofs/Erdos729LegendreGeneral.lean",
       "filename": "Erdos729LegendreGeneral.lean",
-      "lineCount": 183,
-      "theoremCount": 10,
+      "lineCount": 668,
+      "theoremCount": 37,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -127,8 +150,8 @@
     {
       "path": "Proofs/Erdos729LegendrePrimeRecurrence.lean",
       "filename": "Erdos729LegendrePrimeRecurrence.lean",
-      "lineCount": 136,
-      "theoremCount": 5,
+      "lineCount": 229,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

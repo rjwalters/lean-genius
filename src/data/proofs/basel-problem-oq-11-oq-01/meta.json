@@ -153,6 +153,11 @@
         "id": "basel-problem-oq-11-oq-01-oq-01",
         "question": "Package the generic relation against Mathlib's hasSum_zeta_nat to obtain η(2m) = (1 − 2^{1−2m})·(−1)^{m+1} B_{2m} (2π)^{2m} / (2·(2m)!) as a closed form in the Bernoulli numbers for all m ≥ 1.",
         "significance": "medium"
+      },
+      {
+        "id": "basel-problem-oq-11-oq-01-oq-02",
+        "question": "The generic relation η(e) = (1 − 2^{1−e})ζ(e) is proved at an arbitrary natural exponent e, so it applies verbatim to odd arguments — e.g. η(3) = (3/4)ζ(3). Unlike the even case, however, no elementary closed form is known for ζ(2m+1): ζ(3) (Apéry's constant) was proved irrational by Apéry (1979), but its transcendence is open, and the irrationality of ζ(5), ζ(7), … remains unknown (only that infinitely many ζ(2m+1) are irrational, Ball–Rivoal 2001). What, if anything, can be said constructively about the odd-index eta/zeta values beyond reducing η(2m+1) to ζ(2m+1) — and does the parity split that closes the even case leave any exploitable structure at odd exponents?",
+        "significance": "high"
       }
     ]
   },

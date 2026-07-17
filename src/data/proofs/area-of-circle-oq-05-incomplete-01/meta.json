@@ -154,6 +154,20 @@
       "year": "2024",
       "venue": "leanprover-community/mathlib4",
       "note": "Provides integral_gaussian, the source of every rescaling here."
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "2nd ed., Wiley",
+      "note": "The normal distribution N(μ, σ²), its density, and the normalization constant σ√(2π) — the probability-theory strand this entry derives from the bare Gaussian integral ∫e^{−x²}=√π."
+    },
+    {
+      "authors": "Billingsley, Patrick",
+      "title": "Probability and Measure",
+      "year": "1995",
+      "venue": "3rd ed., Wiley",
+      "note": "Rigorous measure-theoretic treatment of the normal density, including that ∫ e^{−x²/2}/√(2π) dx = 1 — the identity the rescaling family here makes explicit and machine-checked."
     }
   ],
   "mainTheorems": [

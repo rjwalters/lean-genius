@@ -568,6 +568,148 @@ theorem ssa_inequality {α β γ : Type*}
   linarith
 
 -- ═══════════════════════════════════════════════════════════════
+-- PART IV′: The per-conditioning-value refinement of SSA
+--
+-- `cmiSum` aggregates the deficit over all values of `Y`.  The natural
+-- strengthening is that the contribution of **each individual** value `y` is
+-- already nonnegative: `I(X;Z | Y=y) ≥ 0`, so SSA holds "locally" at every
+-- conditioning value, not merely on average.  The averaged `cmiSum_nonneg` is
+-- then the sum of these per-slice nonnegativities.
+-- ═══════════════════════════════════════════════════════════════
+
+/-- The **per-`y` slice** of the conditional mutual information: the inner
+    `(x, z)`-sum of `cmiSum` at a fixed value `y` of the conditioning variable.
+    Equals `p_Y(y) · I(X;Z | Y = y)` (a relative entropy weighted by the mass of
+    `y`), with the same zero-probability convention as `cmiSum`. -/
+noncomputable def cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) (y : β) : ℝ :=
+  ∑ x : α, ∑ z : γ,
+    (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+     else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) *
+       (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+       ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)))))
+
+/-- **The CMI is the sum of its per-`y` slices.**  `I(X;Z|Y) = ∑_y (slice at y)`
+    — purely a reordering of `cmiSum`'s triple sum (`Finset.sum_comm` on the
+    `x`,`y` axes). -/
+theorem cmiSum_eq_sum_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum pXYZ = ∑ y : β, cmiSlice pXYZ y := by
+  unfold cmiSum cmiSlice
+  rw [Finset.sum_comm]
+
+/-- **Local (per-conditioning-value) strong subadditivity.**  For *every* value
+    `y` of the conditioning variable, the slice `p_Y(y) · I(X;Z | Y=y)` is
+    nonnegative.  This strengthens `cmiSum_nonneg` (which only bounds the average
+    over `y`): SSA is not merely nonnegative on aggregate, it is nonnegative at
+    each conditioning value separately.  Proof: the same Gibbs bound
+    `p − q ≤ p·log(p/q)` used in `cmiSum_nonneg`, summed over just `(x, z)` at the
+    fixed `y`; the reference kernel `q` has the same `(x,z)`-mass as `p` at that
+    `y`, so the linear lower bound telescopes to `0`. -/
+theorem cmiSlice_nonneg {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) (y : β) :
+    0 ≤ cmiSlice pXYZ y := by
+  set q := fun x z => (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)) /
+    (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) with hq_def
+  have hq_nn : ∀ x z, 0 ≤ q x z := fun x z => by
+    simp only [hq_def]
+    exact div_nonneg
+      (mul_nonneg (Finset.sum_nonneg fun z' _ => hp _) (Finset.sum_nonneg fun x' _ => hp _))
+      (Finset.sum_nonneg fun x' _ => Finset.sum_nonneg fun z' _ => hp _)
+  have hmarg_pos : ∀ x z, pXYZ (x, y, z) ≠ 0 →
+      0 < (∑ z' : γ, pXYZ (x, y, z')) ∧ 0 < (∑ x' : α, pXYZ (x', y, z)) ∧
+      0 < (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+    intro x z hne
+    have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hne)
+    have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z))
+    have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp (x', y, z)) (Finset.mem_univ x))
+    have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
+      lt_of_lt_of_le hpXY (Finset.single_le_sum
+        (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x))
+    exact ⟨hpXY, hpYZ, hpY⟩
+  have hq_pos_of : ∀ x z, pXYZ (x, y, z) ≠ 0 → 0 < q x z := by
+    intro x z hne
+    obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x z hne
+    simp only [hq_def]; exact div_pos (mul_pos hpXY hpYZ) hpY
+  have hq_sum : ∑ x : α, ∑ z : γ, q x z = ∑ x, ∑ z, pXYZ (x, y, z) := by
+    simp only [hq_def]
+    by_cases hpy : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) = 0
+    · have hall : ∀ x z, pXYZ (x, y, z) = 0 := by
+        have h2 := (Finset.sum_eq_zero_iff_of_nonneg
+          (fun x _ => Finset.sum_nonneg fun z _ => hp (x, y, z))).mp hpy
+        intro x z
+        exact (Finset.sum_eq_zero_iff_of_nonneg
+          (fun z _ => hp (x, y, z))).mp (h2 x (Finset.mem_univ x)) z (Finset.mem_univ z)
+      simp [hall]
+    · have hD : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) ≠ 0 := hpy
+      have step1 : ∀ x : α, (∑ z : γ,
+            (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')))
+          = (∑ z' : γ, pXYZ (x, y, z')) * (∑ z : γ, ∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+        intro x
+        rw [← Finset.sum_div, ← Finset.mul_sum]
+      simp_rw [step1]
+      rw [← Finset.sum_div, ← Finset.sum_mul]
+      rw [show (∑ z : γ, ∑ x' : α, pXYZ (x', y, z)) = ∑ x' : α, ∑ z : γ, pXYZ (x', y, z) from
+        Finset.sum_comm]
+      rw [mul_div_assoc, div_self hD, mul_one]
+  have hcmi_q : cmiSlice pXYZ y = ∑ x : α, ∑ z : γ,
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) := by
+    unfold cmiSlice
+    refine Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun z _ => ?_))
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · simp [hpxyz]
+    · rw [if_neg hpxyz, if_neg hpxyz]
+      obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x z hpxyz
+      have hlog_eq : pXYZ (x, y, z) * (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+          ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))) =
+          pXYZ (x, y, z) / q x z := by
+        simp only [hq_def]
+        field_simp
+      rw [hlog_eq]
+  rw [hcmi_q]
+  have hbound : ∀ x z, pXYZ (x, y, z) - q x z ≤
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) := by
+    intro x z
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · rw [if_pos hpxyz]; have := hq_nn x z; linarith
+    · rw [if_neg hpxyz]
+      have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
+      exact kl_lb hpos (hq_pos_of x z hpxyz)
+  have hsum_pq : ∑ x : α, ∑ z : γ, (pXYZ (x, y, z) - q x z) = 0 := by
+    simp only [Finset.sum_sub_distrib]
+    linarith [hq_sum]
+  calc (0 : ℝ) = ∑ x : α, ∑ z : γ, (pXYZ (x, y, z) - q x z) := hsum_pq.symm
+    _ ≤ ∑ x : α, ∑ z : γ,
+          (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+           else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) :=
+      Finset.sum_le_sum fun x _ => Finset.sum_le_sum fun z _ => hbound x z
+
+/-- **The SSA deficit decomposes into nonnegative per-`y` contributions.**  The
+    entropy deficit `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` equals `∑_y (slice at y)`,
+    a sum of terms each `≥ 0` by `cmiSlice_nonneg`.  This is a strictly finer
+    account of *why* SSA holds than `ssa_inequality`: the deficit is not just
+    nonnegative, it is a nonnegative combination indexed by the conditioning
+    value, and it vanishes iff every slice vanishes. -/
+theorem ssa_deficit_eq_sum_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+      - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ)
+    = ∑ y : β, cmiSlice pXYZ y :=
+  (ssa_deficit_eq_cmi hp).trans (cmiSum_eq_sum_cmiSlice pXYZ)
+
+-- ═══════════════════════════════════════════════════════════════
 -- PART V: Equality condition for "conditioning reduces entropy"
 -- ═══════════════════════════════════════════════════════════════
 
@@ -599,5 +741,218 @@ theorem conditioning_reduces_entropy_eq_iff {α β γ : Type*}
   constructor
   · intro h; linarith
   · intro h; linarith
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VI: Symmetry of conditional mutual information  I(X;Z|Y) = I(Z;X|Y)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Flatten a triple `Finset`-sum over `α × β × γ` into a single sum over the
+    product type, so that a coordinate permutation becomes an `Equiv` reindexing. -/
+private lemma triple_sum_prod {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ] (f : α → β → γ → ℝ) :
+    (∑ x : α, ∑ y : β, ∑ z : γ, f x y z)
+      = ∑ w : α × β × γ, f w.1 w.2.1 w.2.2 := by
+  rw [Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [Fintype.sum_prod_type]
+
+/-- The `X ↔ Z` reflection of a joint law: `reflectXZ p (z,y,x) = p (x,y,z)`.
+    Reflecting the law and re-reading it as a law on `Z – Y – X` swaps the two
+    outer marginals (`marginalXY ↔ marginalYZ`) while fixing the middle marginal
+    `marginalY_3`; it is the joint distribution of `(Z, Y, X)`. -/
+noncomputable def reflectXZ {α β γ : Type*}
+    (pXYZ : α × β × γ → ℝ) : γ × β × α → ℝ :=
+  fun q => pXYZ (q.2.2, q.2.1, q.1)
+
+/-- **Symmetry of conditional mutual information.**  `I(X;Z|Y) = I(Z;X|Y)`:
+    the conditional mutual information is invariant under exchanging the two outer
+    variables `X` and `Z`.  Concretely, reflecting the joint law by
+    `(z,y,x) ↦ (x,y,z)` leaves `cmiSum` unchanged.  Combined with
+    `ssa_deficit_eq_cmi`, this says the strong-subadditivity deficit
+    `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` is symmetric in `X` and `Z` — as it must
+    be, since `H(X,Y,Z) = H(Z,Y,X)` and the middle marginal `H(Y)` is fixed while
+    the two outer marginals merely swap.  The proof reindexes the defining triple
+    sum by the coordinate transposition; the summand is invariant because its
+    numerator `p·p_Y` is symmetric and its denominator `p_{XY}·p_{YZ}` only
+    commutes. -/
+theorem cmiSum_reflectXZ {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum (reflectXZ pXYZ) = cmiSum pXYZ := by
+  unfold cmiSum
+  dsimp only [reflectXZ]
+  rw [triple_sum_prod, triple_sum_prod]
+  refine (Fintype.sum_equiv
+    { toFun := fun (w : α × β × γ) => (w.2.2, w.2.1, w.1)
+      invFun := fun (w : γ × β × α) => (w.2.2, w.2.1, w.1)
+      left_inv := fun ⟨_, _, _⟩ => rfl
+      right_inv := fun ⟨_, _, _⟩ => rfl } _ _ ?_).symm
+  rintro ⟨x, y, z⟩
+  dsimp only [Equiv.coe_fn_mk]
+  by_cases h : pXYZ (x, y, z) = 0
+  · simp [h]
+  · rw [if_neg h, if_neg h]
+    exact congrArg (fun t => pXYZ (x, y, z) * Real.log t)
+      (by rw [show (∑ x' : γ, ∑ z' : α, pXYZ (z', y, x'))
+                   = ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') from Finset.sum_comm]; ring)
+
+/-- **Symmetry of the strong-subadditivity deficit.**  The SSA deficit is
+    unchanged under swapping the roles of the outer variables `X` and `Z`, stated
+    at the level of Shannon entropies of the reflected law.  This is the
+    entropy-side reading of `cmiSum_reflectXZ`. -/
+theorem ssa_deficit_reflectXZ {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY (reflectXZ pXYZ))
+        + shannonEntropy' (marginalYZ (reflectXZ pXYZ))
+        - shannonEntropy' (reflectXZ pXYZ)
+        - shannonEntropy' (marginalY_3 (reflectXZ pXYZ))
+      = shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+        - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ) := by
+  have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
+  rw [ssa_deficit_eq_cmi hpr, ssa_deficit_eq_cmi hp, cmiSum_reflectXZ]
+
+/-- **`reflectXZ` is an involution.**  Reflecting the outer variables twice restores the
+    original law: `reflectXZ (reflectXZ p) = p`.  So `reflectXZ` is a genuine involution on
+    joint distributions, and the `X ↔ Z` symmetry of the SSA deficit (`ssa_deficit_reflectXZ`)
+    and of the conditional mutual information (`cmiSum_reflectXZ`) is the symmetry of a
+    `ℤ/2` action, not merely a one-way inequality. -/
+theorem reflectXZ_involutive {α β γ : Type*}
+    (pXYZ : α × β × γ → ℝ) : reflectXZ (reflectXZ pXYZ) = pXYZ := by
+  funext ⟨x, y, z⟩; rfl
+
+/-- **`reflectXZ` fixes the middle marginal.**  `p_Y(reflectXZ p) = p_Y(p)`: reflecting the
+    outer variables leaves the distribution of the middle variable `Y` unchanged.  This is
+    the `H(Y)` term that stays put while the two outer marginals swap. -/
+theorem marginalY_3_reflectXZ {α β γ : Type*} [Fintype α] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    marginalY_3 (reflectXZ pXYZ) = marginalY_3 pXYZ := by
+  funext y
+  simp only [marginalY_3, reflectXZ]
+  exact Finset.sum_comm
+
+/-- **`reflectXZ` swaps the `(X,Y)` and `(Y,Z)` marginals (first swap).**  The `(X,Y)`-marginal
+    of the reflected law, read at `(z,y)`, is the `(Y,Z)`-marginal of the original at `(y,z)`:
+    `p_{XY}(reflectXZ p)(z,y) = p_{YZ}(p)(y,z)`.  Concretely `∑ₓ p(x,y,z)` computed on either
+    side.  Together with `marginalYZ_reflectXZ` this is the outer-marginal swap the prose of
+    `reflectXZ` describes. -/
+theorem marginalXY_reflectXZ {α β γ : Type*} [Fintype α]
+    (pXYZ : α × β × γ → ℝ) (z : γ) (y : β) :
+    marginalXY (reflectXZ pXYZ) (z, y) = marginalYZ pXYZ (y, z) := by
+  simp only [marginalXY, marginalYZ, reflectXZ]
+
+/-- **`reflectXZ` swaps the `(X,Y)` and `(Y,Z)` marginals (second swap).**  The `(Y,Z)`-marginal
+    of the reflected law, read at `(y,x)`, is the `(X,Y)`-marginal of the original at `(x,y)`:
+    `p_{YZ}(reflectXZ p)(y,x) = p_{XY}(p)(x,y)`.  Both equal `∑_z p(x,y,z)`. -/
+theorem marginalYZ_reflectXZ {α β γ : Type*} [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) (y : β) (x : α) :
+    marginalYZ (reflectXZ pXYZ) (y, x) = marginalXY pXYZ (x, y) := by
+  simp only [marginalXY, marginalYZ, reflectXZ]
+
+/-- **The strong-subadditivity equality condition is symmetric in `X` and `Z`.**  A joint law
+    `p` saturates SSA (equivalently, `cmiSum p = 0` — the Markov chain `X – Y – Z`) iff its
+    `X ↔ Z` reflection does.  Immediate from `cmiSum_reflectXZ`; it records that the Markov
+    property `X – Y – Z` is the same as `Z – Y – X`. -/
+theorem cmiSum_eq_zero_reflectXZ_iff {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum (reflectXZ pXYZ) = 0 ↔ cmiSum pXYZ = 0 := by
+  rw [cmiSum_reflectXZ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VII: Reversibility of the Markov condition  (X–Y–Z ⟺ Z–Y–X)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- The `X ↔ Z` reflection preserves the total mass: `∑ reflectXZ p = ∑ p`.
+    It merely permutes the summation index `(z,y,x) ↦ (x,y,z)`, so in particular a
+    probability law reflects to a probability law. -/
+private lemma reflectXZ_sum {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ] (pXYZ : α × β × γ → ℝ) :
+    (∑ q : γ × β × α, reflectXZ pXYZ q) = ∑ w : α × β × γ, pXYZ w :=
+  Fintype.sum_equiv
+    { toFun := fun (q : γ × β × α) => (q.2.2, q.2.1, q.1)
+      invFun := fun (w : α × β × γ) => (w.2.2, w.2.1, w.1)
+      left_inv := fun ⟨_, _, _⟩ => rfl
+      right_inv := fun ⟨_, _, _⟩ => rfl } _ _ (fun ⟨_, _, _⟩ => rfl)
+
+/-- **Reversibility of the Markov condition.**  `X – Y – Z` is a Markov chain iff
+    `Z – Y – X` is: the conditional-independence factorization
+
+      `p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z)`
+
+    holds for the joint law `p` exactly when the corresponding factorization holds
+    for its `X ↔ Z` reflection `reflectXZ p`.  This is the classical fact that
+    Markov chains are reversible, obtained here as a direct consequence of the
+    symmetry of conditional mutual information: both factorizations are equivalent
+    to their respective CMI vanishing (`ssa_cmi_eq_zero_iff`), and
+    `cmiSum_reflectXZ` identifies the two CMIs.  So conditional independence of the
+    outer variables given the middle one is a symmetric relation, as it must be. -/
+theorem markov_reflectXZ_iff {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    (∀ x y z, pXYZ (x, y, z) * marginalY_3 pXYZ y
+        = marginalXY pXYZ (x, y) * marginalYZ pXYZ (y, z))
+    ↔ (∀ x y z, reflectXZ pXYZ (x, y, z) * marginalY_3 (reflectXZ pXYZ) y
+        = marginalXY (reflectXZ pXYZ) (x, y) * marginalYZ (reflectXZ pXYZ) (y, z)) := by
+  have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
+  have hsumr : ∑ q : γ × β × α, reflectXZ pXYZ q = 1 := (reflectXZ_sum pXYZ).trans hsum
+  rw [← ssa_cmi_eq_zero_iff hp hsum, ← ssa_cmi_eq_zero_iff hpr hsumr, cmiSum_reflectXZ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: Slice-local vanishing — SSA equality holds iff it holds
+--            at every conditioning value separately
+-- ═══════════════════════════════════════════════════════════════
+
+/-- **CMI vanishes iff every slice vanishes.**  Because `I(X;Z|Y) = ∑_y (slice at
+    `y`)` (`cmiSum_eq_sum_cmiSlice`) is a sum of *nonnegative* terms
+    (`cmiSlice_nonneg`), it is zero exactly when each term is zero.  This is the
+    statement promised (but not proved) by the docstring of
+    `ssa_deficit_eq_sum_cmiSlice`: the aggregate conditional mutual information
+    vanishes iff it vanishes at every value `y` of the conditioning variable. -/
+theorem cmiSum_eq_zero_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    cmiSum pXYZ = 0 ↔ ∀ y : β, cmiSlice pXYZ y = 0 := by
+  rw [cmiSum_eq_sum_cmiSlice,
+    Finset.sum_eq_zero_iff_of_nonneg (fun y _ => cmiSlice_nonneg hp y)]
+  exact ⟨fun h y => h y (Finset.mem_univ y), fun h y _ => h y⟩
+
+/-- **The SSA deficit vanishes iff every slice vanishes.**  Combining
+    `ssa_deficit_eq_cmi` (deficit `= I(X;Z|Y)`) with
+    `cmiSum_eq_zero_iff_forall_cmiSlice`: the entropy deficit
+    `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` is `0` exactly when the per-`y`
+    contribution `p_Y(y)·I(X;Z | Y=y)` is `0` for every conditioning value `y`.
+    Strong subadditivity is an equality iff it is a local equality at each `y`. -/
+theorem ssa_deficit_eq_zero_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+      - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ) = 0
+    ↔ ∀ y : β, cmiSlice pXYZ y = 0 := by
+  rw [ssa_deficit_eq_cmi hp]
+  exact cmiSum_eq_zero_iff_forall_cmiSlice hp
+
+/-- **The Markov condition localizes over the conditioning variable.**  For a
+    probability law `p`, the global conditional-independence factorization
+    `p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z)` (the `X – Y – Z` Markov property)
+    holds iff the CMI slice at every conditioning value `y` vanishes.  Combines the
+    global characterization `ssa_cmi_eq_zero_iff` (Markov iff `I(X;Z|Y) = 0`) with
+    the slice decomposition `cmiSum_eq_zero_iff_forall_cmiSlice`.  So conditional
+    independence of `X` and `Z` given `Y` is genuinely a *pointwise* condition: it
+    can be checked one value of `Y` at a time. -/
+theorem markov_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    (∀ x y z, pXYZ (x, y, z) * marginalY_3 pXYZ y
+        = marginalXY pXYZ (x, y) * marginalYZ pXYZ (y, z))
+    ↔ ∀ y : β, cmiSlice pXYZ y = 0 :=
+  (ssa_cmi_eq_zero_iff hp hsum).symm.trans (cmiSum_eq_zero_iff_forall_cmiSlice hp)
 
 end InformationTheory

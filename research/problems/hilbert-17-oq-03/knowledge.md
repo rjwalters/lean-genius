@@ -558,3 +558,97 @@ and its dep `Hilbert17MotzkinNotSOS.lean` via dep-building lean-elab
 ([[reference-docker-down-lean-elab-verification-path]]): both EXIT 0, zero errors/warnings. The
 prior session's VERIFIED claim holds; standing work is correct against the current Mathlib pin
 (no drift, unlike 6 build-repairs found elsewhere this session). 0 sorries; marked completed.
+
+## Session 2026-07-11 (researcher-10) — constructive Artin certificate for the whole PSD Motzkin family (VERIFIED)
+
+Worked in the direct child file `Hilbert17OQ03OQ05.lean` (Motzkin family
+Mₐ = x⁴y²+x²y⁴+1−c·x²y²). It already had the sharp PSD threshold (`c ≤ 3`), the
+sharp *polynomial*-SOS threshold (`IsSOS ↔ c ≤ 0`, researcher-3), and the
+PSD-but-not-SOS band `0 < c ≤ 3`. The missing piece was the **positive** side of
+Artin's theorem made constructive *across the whole PSD range*. Added (0-axiom,
+docker `[7744/7744]` green, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- `motzkinMultiplier := 4 + 4·X0² + 4·X1²` + `motzkinMultiplier_isSOS`
+  (= 2²+(2x)²+(2y)²) + `motzkinMultiplier_pos` (eval ≥ 4 > 0, `positivity`).
+- `motzkinPoly_mul_multiplier_isSOS (hc : c ≤ 3)`: `g·Mₐ` is an explicit **10-term
+  SOS**. Certificate = the classical 5-square `c=3` Motzkin certificate
+  (3·G₀²+G₁²+G₂²+G₃²+G₄², G's from `Hilbert17MotzkinRationalSOS`) PLUS three
+  `√(3−c)`-scaled squares `(√(3−c)·2xy)², (√(3−c)·2x²y)², (√(3−c)·2xy²)²`
+  absorbing the non-negative slack `(3−c)·g·x²y² = (3−c)·(4x²y²+4x⁴y²+4x²y⁴)`.
+- `motzkinPoly_artin_certificate (hc : c ≤ 3)`: packaged
+  `∃ g, IsSOS g ∧ (∀v, 0 < eval v g) ∧ IsSOS (g·Mₐ)` — Mₐ = (g·Mₐ)/g is a rational
+  SOS, uniform over the entire PSD segment, recovering the classical certificate
+  at the boundary c=3. Directly answers the entry's open question on an *effective
+  Positivstellensatz certificate*.
+
+### Certificate derivation / Lean technique
+- Algebra pre-verified in sympy: `(4+4x²+4y²)·Mₐ = base₅ + (3−c)·((2xy)²+(2x²y)²+(2xy²)²)`
+  where base₅ is the `c=3` certificate. The `(3−c)` slack splits `g·x²y²` into three
+  squares (`g·x²y² = x²y²·(4+4x²+4y²) = (2xy)²+(2x²y)²+(2xy²)²`).
+- Lean: `set s := C (Real.sqrt (3−c))`; `have hs : s^2 = 3 − C c` via
+  `← map_pow, Real.sq_sqrt (0 ≤ 3−c), map_sub, map_ofNat`. Witness `![…]` : Fin 10,
+  then `simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero,
+  Matrix.cons_val_succ, mul_pow, hs]; ring`. `mul_pow` exposes `s²` on the three
+  scaled terms so `hs` (as a simp lemma) rewrites them before `ring` (ring treats
+  `s`, `C c`, `X0`, `X1` as atoms — it cannot use `s²=3−Cc` itself).
+
+### Infra gotcha
+- **WORKTREE REAPED mid-session** (documented hazard): the sanctioned
+  `.loom/worktrees/researcher-10` dir was deleted while I was mid-edit (pre-build),
+  losing uncommitted edits. Recovered: `git worktree add .loom/worktrees/researcher-10
+  -b research/… origin/main`, re-applied the edit, **committed immediately before
+  building**. Docker build then went green first try.
+
+## Still open (parent hilbert-17, 1 axiom) — unchanged
+- `pfister_bound_aux` (Pfister's 2ⁿ bound over formally real fields) — the last
+  parent axiom, genuinely deep, no short Mathlib path, correctly axiomatized.
+  This session added no parent-axiom reduction (this slug's remaining hard target
+  is Pfister, a multi-session effort); it enriched the oq-03 subtree with the
+  constructive positive-side counterpart to the already-formalized negative side.
+
+## Session 2026-07-12 (researcher-5) — frontier assessment: square-count reduction is CEP-hard (no clean session win)
+Investigated the two open nextSteps that ask to reduce the number of squares in
+the Motzkin/Robinson rational-SOS certificates toward the Pfister bound 2ⁿ
+(Motzkin n=2 → 4, Robinson n=3 → 8). **Conclusion: not a clean session; this is
+the Cassels–Ellison–Pfister boundary case.** Motzkin `M = 1+x⁴y²+x²y⁴−3x²y²` is
+*the* classical polynomial witnessing that the Pythagoras number of ℝ(x,y) is
+exactly 4 — it IS a sum of 4 rational squares (Pfister upper bound) but provably
+NOT a sum of 3 (Cassels–Ellison–Pfister 1971, a hard theorem). So hitting 4 is a
+known-hard result, and 4 is optimal.
+
+What I ruled out concretely (all verified in sympy):
+- **Naive Cassels–Pfister descent in x overshoots.** Completing the square with
+  the leading x-coeff y² gives the exact identity
+  `M = (y·x² + (y³−3y)/2)² + ¼(y²−1)²(4−y²)`; the remainder ¼(y²−1)²(4−y²) is a
+  function of y alone but is **negative for |y|>2**, so it is not a sum of squares
+  in ℝ(y). The completion is algebraically valid but useless for a real SOS. Same
+  for the symmetric descent in y. No polynomial completion works (the "1−p²≥0 for
+  all y" constraint forces p constant, then the x²-coeff constraint fails).
+- **Product-compression stalls at the "5th-square obstruction."** The certificate
+  gives `(4+4x²+4y²)·M = 3G0²+G1²+G2²+G3²+G4²` = 5 (rationally-distinct) squares.
+  A sum-of-4-squares is a quaternion norm |q|² (Euler's 4-square identity is
+  multiplicative), but the extra 5th square e² breaks multiplicativity:
+  `(|p|²+e²)·|q|² = |pq|² + e²|q|²` = 4+4 = 8 squares, never 4. Removing the 5th
+  square genuinely requires the Pfister induction (closure of D(4-Pfister) under
+  addition over ℝ(x,y)), i.e. the deep content — not a product identity.
+- **Gram-rank reduction gives no clean rational win.** The 21-square rep
+  `N²M = Σ_{21}(qᵢdⱼ)²` (N=4+4x²+4y²) has Gram **rank exactly 11** over the
+  degree-≤5 monomials, so `(1+x²+y²)²·M` is a *weighted* 11-square SOS
+  `Σₖ dₖ ℓₖ²` with pivots dₖ ∈ {1,2,1,2,5,7/2,3/4,5/14,1,7/2,5/14} (exact rational
+  LDLᵀ). Most pivots are non-square, so as a real SOS it is 11 squares with
+  IRRATIONAL √dₖ coefficients (awkward but valid for IsSumOfSquaresRF). Clearing
+  the weights to rational **unit**-coefficient squares via Lagrange (each dₖ =
+  sum of ≤4 rational squares) balloons the count to **24 > 21** — worse than the
+  file's existing 21. So there is no clean rational improvement below 21 with these
+  denominators; 21 (rational, unit-coeff) is near the practical floor short of the
+  full Pfister/CEP machinery.
+
+**Recommendation for future sessions:** do NOT re-attempt "21→4 Motzkin" as a
+quick certificate hunt — it is CEP-boundary-hard. A genuine 4-square rep would
+need either (a) formalizing Pfister's constructive n=2 bound (Cassels–Pfister
+subform descent + level of ℝ(y)=2), or (b) importing a specific published
+explicit 4-rational-square Motzkin certificate and verifying it by field_simp;ring
+(the verification is cheap; FINDING the exact rational functions is the hard part
+and is the CEP content). Same story one dimension up for Robinson (n=3 → 8).
+The oq-03 strand is at its tractable frontier; the sole remaining parent axiom
+pfister_bound_aux is the honest deep frontier.

@@ -96,11 +96,25 @@
       "summary": "dense_countable_isFσ_and_not_isGδ over an arbitrary nonempty perfect T1 Baire space, with the two projections isFσ_of_dense_countable and not_isGδ_of_dense_countable."
     },
     {
+      "id": "dual-and-dichotomy",
+      "title": "The dual (Gδ-only) side and the packaged dichotomy",
+      "startLine": 79,
+      "endLine": 106,
+      "summary": "dense_countable_compl_isGδ_not_isFσ mirrors the main theorem through complementation (Dᶜ is Gδ but not Fσ, using IsFσ.isGδ_compl and compl_compl), and dense_countable_gδ_fσ_dichotomy bundles both one-sided results into the complete statement (D ∈ Σ⁰₂∖Π⁰₂ while Dᶜ ∈ Π⁰₂∖Σ⁰₂)."
+    },
+    {
       "id": "rationals-instance",
       "title": "The classical ℚ ⊆ ℝ instance",
-      "startLine": 79,
-      "endLine": 89,
+      "startLine": 107,
+      "endLine": 116,
       "summary": "rationals_isFσ_and_not_isGδ: ℚ is Fσ but not Gδ in ℝ, recovered by applying the abstract theorem to the dense countable range of ℚ → ℝ."
+    },
+    {
+      "id": "axiom-audit",
+      "title": "Axiom audit",
+      "startLine": 117,
+      "endLine": 121,
+      "summary": "#print axioms on the dual-side and dichotomy theorems confirms the proof rests only on the standard propext / Classical.choice / Quot.sound — no extra axioms."
     }
   ],
   "theorems": [
@@ -123,6 +137,18 @@
       "leanType": "{X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X] [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) → IsFσ D"
     },
     {
+      "name": "dense_countable_compl_isGδ_not_isFσ",
+      "type": "core",
+      "description": "The dual half: the complement of a dense countable set is Gδ but not Fσ. Gδ is immediate from compl_countable_isDenseGδ; not Fσ is the mirror of the 'not Gδ' argument via complementation (IsFσ.isGδ_compl plus compl_compl would make D itself Gδ, contradicting the main theorem).",
+      "leanType": "{X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X] [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) → IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ"
+    },
+    {
+      "name": "dense_countable_gδ_fσ_dichotomy",
+      "type": "core",
+      "description": "The complete generic dichotomy, packaged: a dense countable set D and its complement sit on opposite sides of the second Borel level — D is Fσ but not Gδ (Σ⁰₂ ∖ Π⁰₂) while Dᶜ is Gδ but not Fσ (Π⁰₂ ∖ Σ⁰₂). The abstract shape of the parent's algebraic-vs-transcendental reals dichotomy.",
+      "leanType": "{X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X] [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) → (IsFσ D ∧ ¬ IsGδ D) ∧ (IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ)"
+    },
+    {
       "name": "rationals_isFσ_and_not_isGδ",
       "type": "core",
       "description": "The classical instance: ℚ is Fσ but not Gδ in ℝ, placing the rationals at Borel level exactly Σ⁰₂ ∖ Π⁰₂. A one-line corollary of the abstract theorem applied to the dense countable range of ℚ → ℝ.",
@@ -142,6 +168,21 @@
       "targetId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
       "relationship": "extends",
       "description": "Parent: proves the concrete ℝ dichotomy (algebraic reals Fσ-not-Gδ, transcendentals dense Gδ). This entry abstracts the Baire-category engine of the 'not Gδ' half to arbitrary perfect T1 Baire spaces and recovers ℚ ⊆ ℝ as a corollary."
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta-oq-01",
+      "relationship": "related",
+      "description": "A concrete instance of the abstract theorem here: the algebraic reals are an explicit Fσ, completing the Gδ/Fσ dichotomy on ℝ. This entry's 'dense countable ⇒ Fσ-but-not-Gδ' specialises to exactly that statement (with density supplied by ℚ ⊆ algebraic reals)."
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta",
+      "relationship": "related",
+      "description": "The complement side of the same concrete instance: the transcendental reals as an explicit dense Gδ. Here it is the abstract 'complement of a countable set is a dense Gδ' half, applied to the countable algebraic reals in ℝ."
+    },
+    {
+      "targetId": "baire-category-theorem-oq-01",
+      "relationship": "related",
+      "description": "Foundational input: the BaireSpace hypothesis driving the 'not Gδ' obstruction is the Baire category theorem. That entry establishes it (and derives the uncountability of ℝ); this entry consumes it abstractly via the four typeclass hypotheses (T1, perfect, Baire, nonempty)."
     }
   ],
   "references": [

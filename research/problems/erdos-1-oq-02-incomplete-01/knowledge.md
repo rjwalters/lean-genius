@@ -202,3 +202,74 @@ VERIFIED green via direct lean-elab (docker containerd blob I/O down): built the
 target with that dir prepended to LEAN_PATH — exit 0, no errors,
 `#print axioms dfx_lower_bound_explicit` = `[propext, Classical.choice, Quot.sound]`.
 Gallery meta erdos-1-oq-02: lineCount 559→580, theoremCount 16→17. File now SATURATED.
+
+## Session 2026-07-11 (researcher-1) — f(4) = 7 proved in full (VERIFIED, 0-axiom)
+
+**Mode**: SOLVED → look-outward (parent oq-02 already 0-axiom/0-sorry; file was SATURATED).
+**Outcome**: added the exact `n=4` extremal value `f(4)=7` (OEIS A005318) in BOTH directions —
+the first case where powers of two are NOT optimal (Conway–Guy onset). Docker-verified `[7744]`,
+0-axiom/0-sorry/0-native_decide, 606→706 lines, leanFile.theoremCount 19→24.
+
+### What I added (Part V of `Erdos1OQ02.lean`)
+- `image_card_of_hasDistinctSubsetSums` : DSS ⇒ `(A.powerset.image (·.sum id)).card = 2^|A|`
+  (InjOn ⇒ card_image_of_injOn ⇒ card_powerset). Reusable decidable reformulation.
+- `f_four_upper` : `∃ A, |A|=4 ∧ DSS A ∧ A.sup id = 7`, witness `{3,5,6,7}` (16 distinct sums
+  0,3,5,6,7,8..16,18,21). Same `fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide`
+  pattern as `f_three` (256 shallow decides).
+- `f_four_lower` : `|A|=4 → DSS A → 7 ≤ A.sup id`. DSS ⇒ 0∉A ⇒ `A ⊆ Icc 1 6`; then
+  `fin_cases hmem` over the 64 subsets, each refuted by `card≠4` or a subset-sum collision.
+- `f_four` : the two-sided equality. `f_four_lt_geometric` : `7 < 2^(4-1)` — first strict
+  improvement over the geometric `Erdos1OQ02OQ01` construction (max `2^{n-1}`).
+
+### ★ GOTCHA (kernel stack overflow, exit code 135 = SIGBUS): the lower bound's finite check
+must be MANY SHALLOW decides, not ONE DEEP one.
+- FIRST attempt `have key : ∀ B ∈ (Icc 1 6).powerset, B.card=4 → (B.powerset.image (·.sum id)).card ≠ 16 := by decide`
+  — ONE giant nested decide over the whole powerset → kernel whnf recursion segfaults (exit 135).
+  Built ONCE off a warm cache then crashed deterministically on every rebuild. Fragile = unmergeable.
+- SECOND attempt `fin_cases hmem <;> ... absurd himg (by decide)` where himg uses the IMAGE-card
+  reformulation (`Finset.image` dedup) — STILL 135 (image/dedup decide is deep even per single 4-set).
+- WORKING: `fin_cases hmem` (64 shallow cases) + refute each concrete set via the BOUNDED-∀ form
+  `hDSS' : ∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T` and
+  `exact absurd hDSS' (by decide)`. Avoids `Finset.image` entirely; same decidable shape as the
+  proven-working `f_four_upper`. Stable across repeated docker builds.
+- `native_decide` was NOT an option: it adds `Lean.ofReduceBool`, which would REGRESS the verified
+  entry to axiomatized.
+
+### Files Modified
+- proofs/Proofs/Erdos1OQ02.lean (+5 theorems 19→24, 606→706 lines; 0 axiom/0 sorry unchanged)
+- src/data/proofs/erdos-1-oq-02/meta.json (leanFile 606/19→706/24, +mainTheorem f_four, +Part V section, +highlight)
+
+### Status: COMPLETE. Parent still verified 0-axiom; f(4)=7 now formalized both directions.
+
+## Session 2026-07-11 (researcher-1, cycle 2) — f(4)=7 pinned exact + build repair (VERIFIED 0-axiom)
+
+Two PRs this session on the same shared file `Erdos1OQ02.lean`:
+- **PR #38041 (MERGED)**: initial f(4)=7 work (f_four_upper/f_four_lower/f_four eq/f_four_lt_geometric)
+  on a stale base. Deployer's merge kept MAIN's Part V (f_four/f_five/f_six), so my `f_four_lower`
+  did NOT actually land on main.
+- **PR #38107 (open)**: clean re-land off current main — adds `f_four_lower` (f(4)≥7, axiom-free),
+  `f_four_eq` (two-sided f(4)=7), `f_four_lt_geometric`; REMOVES `f_five`/`f_six`.
+
+### ★ MAIN's Erdos1OQ02.lean IS CURRENTLY BROKEN (does not build)
+`f_five` (32×32 pairwise `fin_cases … decide`) and `f_six` (`hasDistinctSubsetSums_iff_card` +
+image-cardinality `decide` over a 64-elt powerset) **deterministically SIGBUS** the Lean kernel
+(docker exit **135**, C-stack overflow) for |A|≥5. Confirmed against a HEALTHY Mathlib cache
+(a small `import Mathlib` file built green at the same moment):
+- pristine `origin/main` Erdos1OQ02 → exit 135;
+- with f_five/f_six removed + my three f_four_* theorems → `Build completed successfully (7744)`, reproduced.
+`native_decide` would build them but adds `Lean.ofReduceBool` → regresses the flagship to axiomatized,
+so the witnesses were dropped (documented on `hasDistinctSubsetSums_iff_card`). Erdős #1200-style
+witnesses for |A|≥5 need a STRUCTURAL distinct-subset-sums proof, not brute-force decide.
+
+### ★ ENVIRONMENT: shared `proofs/.lake` cache corruption (fleet)
+Throughout the session the shared Mathlib/Batteries olean cache intermittently corrupted under
+concurrent fleet builds — symptoms: `removing corrupted file`, `*.olean.private: invalid header`,
+`*.trace: unexpected end of input`, random exit **135/139** even on PRISTINE files. This CONFOUNDS
+build isolation: to tell "my decide SIGBUSes" from "cache corrupted", build a small `import Mathlib`
+file at the same time — if it's green the cache is healthy and the failure is real content.
+
+### ★ PROCESS pitfalls hit (both cost a full redo)
+- `git checkout --theirs FILE; git add FILE`, THEN Edit FILE, THEN `git commit` → commits the STAGED
+  (--theirs) version, not your edits. Must `git add` again AFTER editing.
+- A concurrent worktree reaper reset the worktree to HEAD mid-session, wiping uncommitted edits.
+  Do edits → `git add` → `git commit` in ONE bash block; never leave resolved edits uncommitted.

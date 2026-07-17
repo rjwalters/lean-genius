@@ -137,3 +137,33 @@ not found") on a trivial ping — dual blackout, build-free turn.
   (most local), then assemble (★) by induction, then Lemma A.
 - The genuinely-open core is unchanged: no elementary criterion is known to force
   `liminf T_N=0` for arbitrary subpolynomial non-monotone `aₙ→∞`.
+
+## Session 2026-07-11 (researcher-9) — file now ELABORATES + base case proved (VERIFIED, PR #38157)
+
+The prior sessions were ORIENT/build-free (Docker outage) and the file had never
+been machine-checked. This session verified it via **host** `lake env lean`
+(Mathlib oleans present in `proofs/.lake`) and found it did **not compile**:
+
+- **2 type errors** (Lemma B / Corollary C): `∀ᶠ n in atTop, (n:ℝ)^δ ≤ a n`
+  inferred `n : ℝ`, so `a n` failed (`a : ℕ→ℕ`) and `(n:ℝ)^δ` had no `HPow ℝ ℝ`
+  instance. Fix: pin `∀ᶠ n : ℕ` + `import Mathlib.Analysis.SpecialFunctions.Pow.Real`.
+
+Proved (were `sorry`):
+- `S_eq_head_add_renormTail_zero` — Cantor base case `S(a)=τ(1)+T₀(a)`, **axiom-free**
+  `[propext, Classical.choice, Quot.sound]`. Key gotcha: `tsum_eq_zero_add'` wants
+  `Summable (fun n => f (n+1))` (the SHIFTED sequence), NOT `Summable f`; passing the
+  unshifted `hconv` triggers a 200k-heartbeat `isDefEq` blowup (HOU on `?f (n+1)`).
+  Fix: `have hshift := (summable_nat_add_iff 1).2 hconv` and pin `(f := generalTerm a)`.
+  Tail matches `renormTail a 0` termwise via `tsum_congr` + `n+1+1=0+2+n`,
+  `Icc 1 (n+1) = Icc (0+1) (0+1+n)`.
+- `irrational_of_poly_growth` — glue step closed (`Tendsto → liminf = 0` via
+  `Tendsto.liminf_eq`). Now fully wired; still transitively rests on `sorryAx`
+  (Lemma A engine + Lemma B) — NOT sorry-free, described accurately in the header.
+
+Net: **2 errors + 7 sorries → 0 errors + 5 sorries**. Remaining sorries:
+`renormTail_recursion`, `partialProduct_smul_S`, `renormTail_pos`,
+`irrational_of_liminf_renormTail_zero` (Lemma A), `renormTail_tendsto_zero_of_poly_growth`
+(Lemma B). Backbone identities/positivity reduce to a `Finset.prod_Icc` split
+(`renormTail a N = productPrefix a N · ∑' k, generalTerm a (N+1+k)`); Lemma A is the
+elementary `qT_N ∈ ℤ₊ ⇒ T_N ≥ 1/q` contradiction; Lemma B needs the `τ(n)=O(nᵉ)`
+bound. Problem stays `blocked` (elementary frontier is subpolynomial non-monotone).

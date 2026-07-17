@@ -48,7 +48,7 @@
       {
         "theorem": "Real.sqrt_sq_eq_abs",
         "description": "√(a²) = |a|. Converts the polynomial bound (I − |P|)² ≤ |L|²·|P| into the square-root form I − |P| ≤ |L|·√|P| in the m < I case of incidence_bound_sqrt.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "originalContributions": [

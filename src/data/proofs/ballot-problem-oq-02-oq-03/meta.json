@@ -118,12 +118,26 @@
     ]
   },
   "crossReferences": [
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-02-oq-04"
+    {
+      "targetId": "ballot-problem-oq-02",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Continuous-Time Ballot Problem via Brownian Motion. The present entry extends or refines it."
+    },
+    {
+      "targetId": "ballot-problem-oq-02-oq-04",
+      "relationship": "related",
+      "description": "Related result: The Arcsine Distribution: verified core of Lévy's Arcsine Law."
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Set", "intervalIntegral"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "intervalIntegral"
+    ],
     "namespace": "ArcsineLawDensity",
     "lineCount": 216,
     "mainTheorems": [

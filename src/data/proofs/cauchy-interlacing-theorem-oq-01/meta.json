@@ -76,34 +76,50 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Imports Mathlib and the parent assembly file (Proofs.CauchyInterlacingAssembly), and gives the module docstring: the parent proves abstract Cauchy interlacing with a Rayleigh-agreement hypothesis; this file constructs the orthogonal compression explicitly and discharges that hypothesis. Opens the inner-product-space and parent namespaces and fixes the ambient variables (𝕜 an RCLike field, V an inner product space).",
+      "mathContext": "Set-up: symmetric $T$ on a finite-dimensional inner product space $V$, and a codimension-one subspace $H$; goal is the unconditional interlacing $\\lambda_{k+1} \\le \\mu_k \\le \\lambda_k$."
+    },
+    {
       "id": "compress-def",
       "title": "The Compression Operator",
-      "startLine": 60,
-      "endLine": 70,
-      "summary": "Defines compress T H := (P_H : V →L[𝕜] H) ∘ₗ (T ∘ₗ H.subtype) and the unfolding simp lemma compress_apply: compress T H y = P_H (T ↑y). This is the orthogonal compression of T to H, the coordinate-free principal-submatrix operator.",
+      "startLine": 63,
+      "endLine": 71,
+      "summary": "Defines compress T H := (P_H : V →L[𝕜] H) ∘ₗ (T ∘ₗ H.subtype), the orthogonal compression of T to H — the coordinate-free principal-submatrix operator that projects T ↑y back into H.",
       "mathContext": "Projecting T ↑y back into H is exactly what deleting the rows/columns outside H does to a matrix."
+    },
+    {
+      "id": "projection-adjoint",
+      "title": "The Projection-Adjoint Identity",
+      "startLine": 72,
+      "endLine": 99,
+      "summary": "inner_compress_eq and inner_compress_eq' (unconditional, left- and right-slot): ⟪compress T H y, z⟫_H = ⟪T ↑y, ↑z⟫ and ⟪y, compress T H z⟫_H = ⟪↑y, T ↑z⟫, both via the orthogonal-projection adjoint identity ⟪P_H v, u⟫ = ⟪v, u⟫ for u ∈ H. This one identity powers both the symmetry and the Rayleigh lemmas below.",
+      "mathContext": "$\\langle P_H v, u\\rangle = \\langle v, u\\rangle$ for $u \\in H$ — the orthogonal projection is self-adjoint and fixes H pointwise."
     },
     {
       "id": "symmetry",
       "title": "Symmetry of the Compression",
-      "startLine": 72,
-      "endLine": 85,
-      "summary": "isSymmetric_compress: both ⟪compress y, z⟫_H and ⟪y, compress z⟫_H collapse to ambient inner products via the projection adjoint identity, then agree because T is symmetric.",
+      "startLine": 100,
+      "endLine": 114,
+      "summary": "isSymmetric_compress: both ⟪compress y, z⟫_H and ⟪y, compress z⟫_H collapse to ambient inner products via the projection-adjoint identities, then agree because T is symmetric.",
       "mathContext": "The orthogonal projection is self-adjoint and fixes H, so it disappears when paired against a vector of H."
     },
     {
       "id": "rayleigh",
       "title": "Rayleigh-Quotient Agreement",
-      "startLine": 87,
-      "endLine": 96,
+      "startLine": 115,
+      "endLine": 125,
       "summary": "rayleigh_compress_eq: re⟪compress y, y⟫_H / ‖y‖² = re⟪T ↑y, ↑y⟫_V / ‖↑y‖² exactly — the projection identity plus the subspace-norm equality ‖y‖ = ‖↑y‖. This is the hypothesis the abstract theorem demands, now proved.",
       "mathContext": "The compression and the ambient operator have identical Rayleigh quotients on H, which is the defining property used to transport eigenvalue bounds across the compression."
     },
     {
       "id": "corollary",
       "title": "The Compression Corollary",
-      "startLine": 98,
-      "endLine": 138,
+      "startLine": 126,
+      "endLine": 166,
       "summary": "cauchy_interlacing_compression: pulls the spectral data of T (on V) and of compress T H (on H) from Mathlib's spectral theorem, packages rayleigh_compress_eq as the Rayleigh hypothesis, and applies the parent's cauchy_interlacing to conclude λ(k.succ) ≤ μ(k) ∧ μ(k) ≤ λ(k.castSucc).",
       "mathContext": "The unconditional operator-level Cauchy interlacing theorem: any symmetric operator interlaces its compression to any hyperplane."
     }

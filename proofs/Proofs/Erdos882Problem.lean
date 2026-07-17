@@ -23,7 +23,6 @@ Tags: number-theory, combinatorics, subset-sums, divisibility
 -/
 
 import Mathlib
-open scoped Classical
 
 namespace Erdos882
 
@@ -60,6 +59,7 @@ def ValidSubset (n : ℕ) (A : Finset ℕ) : Prop :=
 Find max |A| such that ValidSubset n A holds.
 -/
 
+open Classical in
 /-- The maximum size of a valid subset of {1,...,n} -/
 noncomputable def maxValidSize (n : ℕ) : ℕ :=
   if h : ∃ A : Finset ℕ, ValidSubset n A
@@ -97,7 +97,7 @@ def DistinctSubsetSums (A : Finset ℕ) : Prop :=
 lemma sum_bound (n : ℕ) (A : Finset ℕ) (h : ∀ a ∈ A, a ≤ n) :
     A.sum id ≤ A.card * n := by
   calc A.sum id ≤ A.sum (fun _ => n) := Finset.sum_le_sum (fun a ha => h a ha)
-    _ = A.card * n := by simp [Finset.sum_const, Algebra.id.smul_eq_mul]
+    _ = A.card * n := by simp [Finset.sum_const, smul_eq_mul]
 
 /-- Upper bound: |A| ≤ log₂ n + ½ log₂(log n) + O(1) -/
 axiom upper_bound_refined (n : ℕ) (A : Finset ℕ) (hn : n ≥ 16)

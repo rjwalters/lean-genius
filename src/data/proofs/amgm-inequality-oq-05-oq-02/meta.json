@@ -38,7 +38,8 @@
       "**Strict concavity of log is the equality engine.** The ordinary weighted AM-GM inequality holds because log is concave (Jensen). The *sharp* equality case requires *strict* concavity: Mathlib's StrictConcaveOn.map_sum_eq_iff says that for a strictly concave f and positive weights, f(∑ wᵢ•xᵢ) = ∑ wᵢ•f(xᵢ) forces every xⱼ to equal the center of mass. Specialising f = log on (0,∞) (strictConcaveOn_log_Ioi) is exactly the AM-GM equality case. This is the dual of the parent entry's strict-convexity-of-exp argument.",
       "**Logs linearise the geometric mean.** The multiplicative quantity ∏ xᵢ^{wᵢ} becomes the linear ∑ wᵢ·log xᵢ under log (log_prod_rpow), turning the geometric/arithmetic equality into the additive Jensen equality on which the convexity lemma acts directly. The two rpow facts needed are that xᵢ^{wᵢ} > 0 and log(xᵢ^{wᵢ}) = wᵢ·log xᵢ.",
       "**Injectivity of log transports equality across the bridge.** Because both means are strictly positive and log is injective on (0,∞) (Real.log_injOn_pos), the multiplicative equality and its logarithm are interchangeable; this is what lets the Jensen equality case, an additive statement, characterise the original multiplicative one.",
-      "**Two equivalent phrasings of the equality locus.** The canonical Jensen output is 'every xⱼ equals the weighted mean'; the more familiar phrasing is 'all the xⱼ are equal'. These coincide here precisely because the weights sum to 1, so the mean of a constant sequence is that constant — the bridge in weighted_amgm_eq_iff_pairwise."
+      "**Two equivalent phrasings of the equality locus.** The canonical Jensen output is 'every xⱼ equals the weighted mean'; the more familiar phrasing is 'all the xⱼ are equal'. These coincide here precisely because the weights sum to 1, so the mean of a constant sequence is that constant — the bridge in weighted_amgm_eq_iff_pairwise.",
+      "**The equality locus is independent of the weights.** Although the inequality itself is weighted, the equality set {all xⱼ equal} does not depend on the particular positive weight vector w — any strictly positive weights give the same locus. This is a direct consequence of strict concavity: Jensen's equality holds iff the points are all equal, a condition on the xⱼ alone, with the wᵢ entering only through the requirement wᵢ > 0. The weights bias the mean's value, never the equality condition."
     ],
     "prerequisites": [
       "Real powers Real.rpow and Real.log_rpow, Real.rpow_pos_of_pos",
@@ -65,6 +66,16 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Sharpens the AM-GM family: the equal-weight specialisation of the equality characterisation proved here is the classical statement that the geometric and arithmetic means of n positive reals coincide iff all the reals are equal."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01",
+      "relationship": "related",
+      "description": "The abstract engine: 'The Equality Case of Strict Jensen, and the Sharp Weighted AM–GM Equality'. This entry is the concrete geometric-mean instance of that strict-Jensen equality theorem — applying strictConcaveOn_log_Ioi.map_sum_eq_iff to the log-transported means. The two together give the equality case at both the abstract (arbitrary strictly concave f) and concrete (f = log, geometric mean) levels."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials — the symmetric-function refinement of AM-GM. The equality case here (all xⱼ equal) is the same diagonal that saturates every rung of the Maclaurin chain, connecting the weighted-mean equality locus to the symmetric-mean one."
     }
   ],
   "leanFile": {
@@ -123,11 +134,18 @@
       "summary": "weighted_amgm_eq_iff: for positive weights summing to 1, the weighted geometric mean equals the weighted arithmetic mean iff every xⱼ equals that common mean. Proof injects the equality through log (both sides positive), rewrites via log_prod_rpow, and feeds strictConcaveOn_log_Ioi.map_sum_eq_iff — Mathlib's strict-Jensen equality characterisation."
     },
     {
-      "id": "pairwise-and-converse",
-      "title": "Pairwise form and the trivial converse",
+      "id": "pairwise-form",
+      "title": "Pairwise Equality Form",
       "startLine": 87,
+      "endLine": 104,
+      "summary": "weighted_amgm_eq_iff_pairwise restates the equality locus in the familiar 'all xⱼ over the weight support are equal' form, deriving the canonical constant-mean condition from pairwise equality via ∑ wᵢxⱼ = xⱼ·∑wᵢ = xⱼ (weights sum to 1). This is the phrasing users expect from AM = GM."
+    },
+    {
+      "id": "trivial-converse",
+      "title": "Trivial Converse (all-equal ⟹ equality)",
+      "startLine": 105,
       "endLine": 114,
-      "summary": "weighted_amgm_eq_iff_pairwise restates equality as 'all xⱼ over the weight support are equal', deriving the constant-mean condition from pairwise equality via ∑ wᵢxⱼ = xⱼ∑wᵢ = xⱼ. weighted_amgm_eq_of_const records the easy direction: if all xⱼ = c the two means coincide."
+      "summary": "weighted_amgm_eq_of_const records the easy direction explicitly: if every xⱼ equals a constant c then both the weighted arithmetic and weighted geometric means equal c, so equality holds. Completes the iff by supplying the direction Jensen does not directly give."
     }
   ]
 }

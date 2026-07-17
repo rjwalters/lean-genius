@@ -36,17 +36,17 @@
       {
         "theorem": "Real.sqrt_mul",
         "description": "sqrt(ab) = sqrt(a) * sqrt(b) for a >= 0",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "sq_nonneg",
         "description": "x^2 >= 0 for all x",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       },
       {
         "theorem": "Real.sq_sqrt",
         "description": "For x >= 0, (sqrt x)^2 = x — critical to both the elementary proof and equality characterization",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.geom_mean_le_arith_mean3_weighted",
@@ -61,7 +61,7 @@
       {
         "theorem": "sq_le_sq'",
         "description": "Monotonicity of squaring for non-negative reals, used in the product-sum corollary",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Abs"
       }
     ],
     "originalContributions": [

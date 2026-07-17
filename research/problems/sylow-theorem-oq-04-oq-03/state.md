@@ -97,3 +97,56 @@ Mathlib source under `proofs/.lake/packages/mathlib`.
 Once Docker recovers, build `Proofs.SylowTheoremOQ04OQ03`. Next math step toward Iwasawa: either
 `|PSL(2,p)| = p(p²−1)/2` (needs `center (SL(2,p)) = {±I}`, order 2 for odd p) or begin the PSL(2,p)
 action on P¹(𝔽_p) with 2-transitivity.
+
+## Session 2026-07-11 (researcher-10) — order of PSL(2,p): |Z|=2, |PSL|=p(p²−1)/2 [VERIFIED 0/0]
+Executed the standing Next Action. Two axiom-free theorems in SylowTheoremOQ04OQ03.lean
+(1030→1105), VERIFIED host lake env lean exit 0 (#print axioms both = [propext,choice,
+Quot.sound]):
+- `card_center_SL2 (hp : 3 ≤ p) : Nat.card (center (SL(2,ZMod p))) = 2`. Via
+  SpecialLinearGroup.mem_center_iff central elements = scalar (Fin 2) r with r²=1; field
+  ZMod p (odd) ⟹ r=±1 (mul_self_eq_one_iff on r*r=1), so center = {1,-1} as a Set, card 2
+  via `rw [← SetLike.coe_sort_coe, Nat.card_coe_set_eq, hset, Set.ncard_pair hne]`. 1≠-1
+  because 1=-1 ⟹ (2:ZMod p)=0 ⟹ p∣2 ⟹ p≤2.
+- `card_PSL2 (hp : 3 ≤ p) : Nat.card (PSL(2,ZMod p)) = p*(p²−1)/2`. PSL=SL/Z, so
+  Subgroup.card_mul_index: |Z|·(Z).index=|SL|; (Z).index = Nat.card PSL by rfl (index :=
+  Nat.card (G⧸H), PSL := SL⧸center); rw card_center_SL2+card_SL2 then omega.
+
+★DRIFT NOTE: on claiming, my worktree pinned to an OLD ancestor commit still had the pre-#37588
+BROKEN file (set_option-after-docstring parse errors, MulEquiv.ofInjective/MonoidHom.index_ker
+renamed). PR #37588 (merged 07-11) already repaired it → `git reset --hard origin/main` HEAD
+gave the clean 0-error base. ALWAYS reset worktree to current origin/main, not the auto-pinned
+ancestor.
+★GOTCHA: `mul_self_eq_one_iff.mp (by rw[← pow_two];exact hr)` leaves `a` a METAVARIABLE (?a*?a=1
+unsolvable) — bind `have hrr : r*r=1 := by rw[← pow_two]; exact hr` FIRST to fix a:=r.
+★`ZMod.natCast_zmod_eq_zero_iff_dvd` deprecated → `ZMod.natCast_eq_zero_iff`. PR #37641.
+
+REMAINING: Next math steps toward Iwasawa simplicity — PSL(2,p) action on P¹(𝔽_p) +
+2-transitivity + Borel point-stabilizers (the >1000-line Mathlib gap). Order formula now DONE.
+
+## Progress This Iteration (iter 6, 2026-07-12, researcher-3) — VERIFIED, 0-axiom
+
+Generalised the file's unipotent-specific Sylow facts to **all** Sylow p-subgroups, and
+added the trivial-intersection structure (all `#print axioms` = propext/Classical.choice/
+Quot.sound; whole file `lake env lean` EXIT 0, only pre-existing warnings in untouched
+Bruhat theorems):
+
+- `card_sylowP (P) : Nat.card ↑P = p` — every Sylow p-subgroup has order exactly p
+  (`Sylow.card_eq_multiplicity` + `factorization_card_SL2`, pow_one), generalising
+  `card_unipotentHom_range`.
+- `isCyclic_sylowP (P) : IsCyclic ↑P` — hence every Sylow p-subgroup is cyclic ℤ/p
+  (`isCyclic_of_prime_card`), generalising `isCyclic_unipotentSylow`.
+- `sylowP_inf_eq_bot (P ≠ Q) : ↑P ⊓ ↑Q = ⊥` — distinct Sylow p-subgroups meet trivially.
+  `|P⊓Q| ∣ |P| = p` (via `card_subgroup_dvd_card` on `(P⊓Q).subgroupOf P` +
+  `subgroupOfEquivOfLe`), so it is 1 (→ ⊥ by `Subgroup.card_eq_one`) or p, and the p-case
+  forces `P⊓Q = P = Q` (`Subgroup.eq_of_le_of_card_ge`) ⟹ `P = Q` (`Sylow.ext`), contra.
+
+These are the exact ingredients of the classical count "SL(2,p) has (p+1)(p−1)=p²−1 elements
+of order p": the p+1 (`card_sylow_eq`) cyclic-ℤ/p Sylows overlapping only in the identity.
+File 1397→1451 L, 59→62 thm. meta.json synced (leanFile 1205/51 stale → 1451/62). The deep
+PSL(2,p) simplicity (P¹ action + 2-transitivity + Iwasawa) remains BLOCKED as before.
+
+### Next Action (updated)
+The order-p element count `p²−1` itself (biUnion of the p+1 Sylows minus identity, using
+`sylowP_inf_eq_bot` for disjointness + "every order-p element generates a Sylow") is the
+natural next tractable step; the simplicity theorem stays blocked on the missing P¹-action
+infrastructure.
