@@ -48,20 +48,15 @@ theorem simplexNumber_absorption (d n : ℕ) :
   rw [show n + (d + 1) = n + d + 1 from by ring, key]
   ring
 
-/-- **Size absorption (row recurrence).**  Read along the size axis:
-`(n+d+1) · P_d(n) = (n+1) · P_d(n+1)`.  Obtained from `simplexNumber_absorption` through
-the reflection symmetry `P_d(n) = P_n(d)` — the multiplicative analogue of how
-`sum_simplex_over_dim` mirrors `sum_simplex`. -/
-theorem simplexNumber_size_absorption (d n : ℕ) :
-    (n + d + 1) * simplexNumber d n = (n + 1) * simplexNumber d (n + 1) := by
-  rw [simplexNumber_symm d n, simplexNumber_symm d (n + 1), Nat.add_comm n d]
-  exact simplexNumber_absorption n d
+/- **Size absorption (row recurrence).**  Read along the size axis:
+`(n+d+1) · P_d(n) = (n+1) · P_d(n+1)`.  The parent file now states the same identity
+(reflection of this one) directly as `simplexNumber_size_absorption` — we reuse that
+declaration here (via `.symm`) rather than re-declaring the name. -/
 
-/-- **Central simplex number.**  On the diagonal `d = n` of Pascal's simplex the figurate
-number is the central binomial coefficient: `P_d(d) = C(2d, d)`. -/
-theorem simplexNumber_diag (d : ℕ) : simplexNumber d d = (2 * d).choose d := by
-  unfold simplexNumber
-  rw [two_mul]
+/- **Central simplex number.**  On the diagonal `d = n` of Pascal's simplex the figurate
+number is the central binomial coefficient: `P_d(d) = C(2d, d) = centralBinom d`.  The
+parent file now states this directly as `simplexNumber_diag : simplexNumber d d =
+Nat.centralBinom d` — we reuse that declaration here rather than re-declaring the name. -/
 
 /-- **Central simplex-number doubling recurrence.**  Along the diagonal `d = n` the
 figurate number is the central binomial coefficient `P_d(d) = C(2d, d)`
@@ -90,9 +85,8 @@ places the Catalan numbers `catalan d = C(2d,d)/(d+1)` inside the figurate ladde
 `(d+1)`-quotient of the central simplex diagonal, complementing the diagonal doubling
 recurrence `simplexNumber_diag_succ`. -/
 theorem simplexNumber_diag_catalan (d : ℕ) :
-    (d + 1) * catalan d = simplexNumber d d := by
-  rw [simplexNumber_diag d, ← Nat.centralBinom_eq_two_mul_choose]
-  exact succ_mul_catalan_eq_centralBinom d
+    (d + 1) * catalan d = simplexNumber d d :=
+  succ_mul_catalan_eq_simplexNumber_diag d
 
 
 /-- **The central simplex diagonal is Mathlib's central binomial coefficient.**  The
@@ -100,8 +94,8 @@ explicit bridge `P_d(d) = Nat.centralBinom d`, making the identification behind
 `simplexNumber_diag` reusable with Mathlib's `Nat.centralBinom` API (growth bounds,
 positivity, Bertrand's postulate, …). -/
 theorem simplexNumber_diag_eq_centralBinom (d : ℕ) :
-    simplexNumber d d = Nat.centralBinom d := by
-  rw [simplexNumber_diag d, ← Nat.centralBinom_eq_two_mul_choose]
+    simplexNumber d d = Nat.centralBinom d :=
+  simplexNumber_diag d
 
 /-- **Exponential lower bound on the central simplex diagonal.**  For `d ≥ 4`,
 `4^d < d · P_d(d)`.  Via `simplexNumber_diag_eq_centralBinom` this is exactly Mathlib's
@@ -135,7 +129,7 @@ triangular↔tetrahedral column relations. -/
 theorem simplexNumber_dim_size_absorption (d n : ℕ) :
     (d + 1) * simplexNumber (d + 1) n = (n + 1) * simplexNumber d (n + 1) := by
   rw [← simplexNumber_absorption d n]
-  exact simplexNumber_size_absorption d n
+  exact (simplexNumber_size_absorption d n).symm
 
 /-- **The central simplex diagonal is strictly increasing.**  `d ↦ P_d(d) = C(2d, d)` is a
 `StrictMono` function of `d`.  From the diagonal doubling recurrence
