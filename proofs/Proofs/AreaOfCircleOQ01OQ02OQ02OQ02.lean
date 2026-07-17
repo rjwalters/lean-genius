@@ -331,7 +331,7 @@ theorem fourierCoeffOn_deriv2_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
   have hdf1 : ContDiff ℝ 1 (deriv f) :=
     (contDiff_succ_iff_deriv (n := 1)).mp hf |>.2.2
   have hdf_diff : ∀ x, DifferentiableAt ℝ (deriv f) x :=
-    fun x => (hdf1.differentiable (le_refl 1)).differentiableAt
+    fun x => (hdf1.differentiable one_ne_zero).differentiableAt
   have hcont : Continuous (deriv (deriv f)) := hdf1.continuous_deriv (le_refl 1)
   have hint : IntervalIntegrable (deriv (deriv f)) volume 0 (2 * π) :=
     hcont.intervalIntegrable 0 (2 * π)
