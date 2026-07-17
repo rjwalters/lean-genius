@@ -2574,6 +2574,10 @@ private lemma sytRow0Set_ballot (m : ℕ) (T : StandardYoungTableau (twoRectYD m
 -- PART IXc: Inverse Map (Ballot Finset → SYT)
 -- ============================================================
 
+/-- Any cell of the two-row rectangle has column index < m. -/
+private lemma mem_twoRectYD_snd_lt {m : ℕ} {c : ℕ × ℕ} (h : c ∈ twoRectYD m) : c.2 < m := by
+  rcases mem_twoRectYD.mp h with ⟨_, hj⟩ | ⟨_, hj⟩ <;> exact hj
+
 /-- Construct a SYT from a ballot Finset S of size m: row-0 gets sorted S, row-1 gets
     sorted complement. -/
 private noncomputable def ballotSYT (m : ℕ) (S : Finset (Fin (2 * m))) (hS : S.card = m)
@@ -2584,17 +2588,10 @@ private noncomputable def ballotSYT (m : ℕ) (S : Finset (Fin (2 * m))) (hS : S
   entry := fun c =>
     if h : c ∈ twoRectYD m then
       if c.1 = 0 then
-        have hj : c.2 < m := by
-          rcases mem_twoRectYD.mp h with ⟨_, hj⟩ | ⟨hi, _⟩
-          · exact hj
-          · simp [show c.1 = 1 from by rw [← hi]; rfl] at *
-        (S.orderEmbOfFin hS ⟨c.2, hj⟩).val + 1
+        (S.orderEmbOfFin hS ⟨c.2, mem_twoRectYD_snd_lt h⟩).val + 1
       else -- c.1 = 1
-        have hj : c.2 < m := by
-          rcases mem_twoRectYD.mp h with ⟨hi, _⟩ | ⟨_, hj⟩
-          · simp [show c.1 = 0 from by rw [← hi]; rfl] at *
-          · exact hj
-        ((compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c.2, hj⟩).val + 1
+        ((compFin m S).orderEmbOfFin (compFin_card m S hS)
+          ⟨c.2, mem_twoRectYD_snd_lt h⟩).val + 1
     else 0
   entry_zero := by
     intro c hc; simp [dif_neg hc]
@@ -2602,94 +2599,95 @@ private noncomputable def ballotSYT (m : ℕ) (S : Finset (Fin (2 * m))) (hS : S
     intro c hc
     simp only [dif_pos hc]
     split_ifs with hi
-    · have hj : c.2 < m := by
-        rcases mem_twoRectYD.mp hc with ⟨_, hj⟩ | ⟨h1, _⟩
-        · exact hj; · simp [show c.1 = 1 from by rw [← h1]; rfl] at hi
-      constructor
-      · omega
-      · have := (S.orderEmbOfFin hS ⟨c.2, hj⟩).isLt
-        rw [twoRectYD_card]; omega
-    · have hj : c.2 < m := by
-        rcases mem_twoRectYD.mp hc with ⟨h0, _⟩ | ⟨_, hj⟩
-        · exact absurd (by rw [← h0]; rfl : c.1 = 0) hi
-        · exact hj
-      constructor
-      · omega
-      · have := ((compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c.2, hj⟩).isLt
-        rw [twoRectYD_card]; omega
+    · refine ⟨Nat.le_add_left 1 _, ?_⟩
+      have := (S.orderEmbOfFin hS ⟨c.2, mem_twoRectYD_snd_lt hc⟩).isLt
+      rw [twoRectYD_card]; omega
+    · refine ⟨Nat.le_add_left 1 _, ?_⟩
+      have := ((compFin m S).orderEmbOfFin (compFin_card m S hS)
+        ⟨c.2, mem_twoRectYD_snd_lt hc⟩).isLt
+      rw [twoRectYD_card]; omega
   entry_injOn := by
     intro c₁ c₂ hc₁ hc₂ heq
+    obtain ⟨i₁, j₁⟩ := c₁
+    obtain ⟨i₂, j₂⟩ := c₂
     simp only [dif_pos hc₁, dif_pos hc₂] at heq
     -- Both cells in twoRectYD m; each has row 0 or 1
     rcases mem_twoRectYD.mp hc₁ with ⟨h1i, h1j⟩ | ⟨h1i, h1j⟩ <;>
-    rcases mem_twoRectYD.mp hc₂ with ⟨h2i, h2j⟩ | ⟨h2i, h2j⟩ <;>
-    simp only [h1i, h2i, ↓reduceIte, show (0 : ℕ) ≠ 1 from Nat.zero_ne_one,
-               show (1 : ℕ) ≠ 0 from Nat.one_ne_zero, not_false_eq_true] at heq ⊢
+      rcases mem_twoRectYD.mp hc₂ with ⟨h2i, h2j⟩ | ⟨h2i, h2j⟩ <;>
+      subst h1i <;> subst h2i <;>
+      simp only [↓reduceIte, if_neg (Nat.one_ne_zero : ¬((1 : ℕ) = 0))] at heq
     · -- Both row 0: S[j₁]+1 = S[j₂]+1 → j₁ = j₂
-      have : S.orderEmbOfFin hS ⟨c₁.2, h1j⟩ = S.orderEmbOfFin hS ⟨c₂.2, h2j⟩ := by
-        ext; omega
-      have := (S.orderEmbOfFin hS).injective this
-      ext <;> [rw [← h1i, ← h2i]; exact congr_arg Prod.snd (Fin.ext_iff.mpr this)]
-    · -- Row 0 and row 1: S[j₁]+1 = S'[j₂]+1 → S[j₁] = S'[j₂]
+      have hv : (S.orderEmbOfFin hS ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin (2 * m)) =
+          S.orderEmbOfFin hS ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ := Fin.ext (by omega)
+      have hj := congr_arg Fin.val ((S.orderEmbOfFin hS).injective hv)
+      simp only [Prod.mk.injEq]
+      exact ⟨rfl, hj⟩
+    · -- Row 0 and row 1: S[j₁]+1 = S'[j₂]+1 → same element in S and Sᶜ, impossible
       exfalso
-      have heqv : S.orderEmbOfFin hS ⟨c₁.2, h1j⟩ =
-          (compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c₂.2, h2j⟩ := by
-        ext; omega
-      have hlt := hB ⟨c₁.2, h1j⟩
-      rw [heqv] at hlt
-      -- Now hlt: comp[j₁] < comp[j₂]? No: same element in S and S' impossible
-      have hmem₁ := Finset.orderEmbOfFin_mem S hS ⟨c₁.2, h1j⟩
-      have hmem₂ := Finset.orderEmbOfFin_mem (compFin m S) (compFin_card m S hS) ⟨c₂.2, h2j⟩
+      have hv : (S.orderEmbOfFin hS ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin (2 * m)) =
+          (compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ :=
+        Fin.ext (by omega)
+      have hmem₁ := Finset.orderEmbOfFin_mem S hS ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩
+      have hmem₂ := Finset.orderEmbOfFin_mem (compFin m S) (compFin_card m S hS)
+        ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩
+      rw [← hv] at hmem₂
       simp only [compFin, Finset.mem_filter, Finset.mem_univ, true_and] at hmem₂
-      rw [← heqv] at hmem₂
       exact hmem₂ hmem₁
     · -- Row 1 and row 0: symmetric
       exfalso
-      have heqv : (compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c₁.2, h1j⟩ =
-          S.orderEmbOfFin hS ⟨c₂.2, h2j⟩ := by
-        ext; omega
-      have hmem₁ := Finset.orderEmbOfFin_mem (compFin m S) (compFin_card m S hS) ⟨c₁.2, h1j⟩
-      have hmem₂ := Finset.orderEmbOfFin_mem S hS ⟨c₂.2, h2j⟩
+      have hv : ((compFin m S).orderEmbOfFin (compFin_card m S hS)
+            ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin (2 * m)) =
+          S.orderEmbOfFin hS ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ := Fin.ext (by omega)
+      have hmem₁ := Finset.orderEmbOfFin_mem (compFin m S) (compFin_card m S hS)
+        ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩
+      have hmem₂ := Finset.orderEmbOfFin_mem S hS ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩
+      rw [hv] at hmem₁
       simp only [compFin, Finset.mem_filter, Finset.mem_univ, true_and] at hmem₁
-      rw [heqv] at hmem₁
       exact hmem₁ hmem₂
     · -- Both row 1: S'[j₁]+1 = S'[j₂]+1 → j₁ = j₂
-      have : (compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c₁.2, h1j⟩ =
-          (compFin m S).orderEmbOfFin (compFin_card m S hS) ⟨c₂.2, h2j⟩ := by
-        ext; omega
-      have := ((compFin m S).orderEmbOfFin (compFin_card m S hS)).injective this
-      ext <;> [rw [← h1i, ← h2i]; exact congr_arg Prod.snd (Fin.ext_iff.mpr this)]
+      have hv : ((compFin m S).orderEmbOfFin (compFin_card m S hS)
+            ⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin (2 * m)) =
+          (compFin m S).orderEmbOfFin (compFin_card m S hS)
+            ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ := Fin.ext (by omega)
+      have hj := congr_arg Fin.val
+        (((compFin m S).orderEmbOfFin (compFin_card m S hS)).injective hv)
+      simp only [Prod.mk.injEq]
+      exact ⟨rfl, hj⟩
   row_strict := by
     intro i j₁ j₂ hc₁ hc₂ hjlt
     simp only [dif_pos hc₁, dif_pos hc₂]
-    rcases mem_twoRectYD.mp hc₁ with ⟨hi, h1j⟩ | ⟨hi, h1j⟩ <;>
-    rcases mem_twoRectYD.mp hc₂ with ⟨hi2, h2j⟩ | ⟨hi2, h2j⟩ <;>
-    simp only [hi, hi2, show (0 : ℕ) ≠ 1 from Nat.zero_ne_one, not_false_eq_true, ↓reduceIte]
-    all_goals try (rw [← hi, ← hi2] at hjlt ⊢)
-    -- Row 0, j₁ < j₂: S[j₁] < S[j₂] by orderEmb strict mono
-    · have hlt : (S.orderEmbOfFin hS ⟨j₁, h1j⟩) < S.orderEmbOfFin hS ⟨j₂, h2j⟩ := by
-        apply (S.orderEmbOfFin hS).strictMono; simpa
-      simp only [Fin.lt_iff_val_lt_val] at hlt; omega
-    -- Row 1, j₁ < j₂: comp[j₁] < comp[j₂]
-    · have hlt := ((compFin m S).orderEmbOfFin (compFin_card m S hS)).strictMono
-        (show (⟨j₁, h1j⟩ : Fin m) < ⟨j₂, h2j⟩ from by simpa)
-      simp only [Fin.lt_iff_val_lt_val] at hlt; omega
+    by_cases hi : i = 0
+    · subst hi
+      simp only [↓reduceIte]
+      have hlt := (S.orderEmbOfFin hS).strictMono
+        (show (⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin m) <
+          ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ from Fin.mk_lt_mk.mpr hjlt)
+      simp only [Fin.lt_def] at hlt
+      omega
+    · simp only [if_neg hi]
+      have hlt := ((compFin m S).orderEmbOfFin (compFin_card m S hS)).strictMono
+        (show (⟨j₁, mem_twoRectYD_snd_lt hc₁⟩ : Fin m) <
+          ⟨j₂, mem_twoRectYD_snd_lt hc₂⟩ from Fin.mk_lt_mk.mpr hjlt)
+      simp only [Fin.lt_def] at hlt
+      omega
   col_strict := by
     intro i₁ i₂ j hc₁ hc₂ hilt
-    simp only [dif_pos hc₁, dif_pos hc₂]
     -- i₁ < i₂, with i₁, i₂ ∈ {0, 1}: so i₁ = 0, i₂ = 1
     have hi₁ : i₁ = 0 := by
-      rcases mem_twoRectYD.mp hc₁ with ⟨h, _⟩ | ⟨h, _⟩ <;> [exact h; omega]
+      rcases mem_twoRectYD.mp hc₁ with ⟨h, _⟩ | ⟨h, _⟩ <;>
+        rcases mem_twoRectYD.mp hc₂ with ⟨h', _⟩ | ⟨h', _⟩ <;> omega
     have hi₂ : i₂ = 1 := by
-      rcases mem_twoRectYD.mp hc₂ with ⟨h, _⟩ | ⟨h, _⟩ <;> [omega; exact h]
-    have hj : j < m := by
-      rcases mem_twoRectYD.mp hc₁ with ⟨_, h⟩ | ⟨_, h⟩; exact h; omega
+      rcases mem_twoRectYD.mp hc₂ with ⟨h', _⟩ | ⟨h', _⟩ <;> omega
+    have hj : j < m := mem_twoRectYD_snd_lt hc₁
     subst hi₁; subst hi₂
-    simp only [show (0 : ℕ) ≠ 1 from Nat.zero_ne_one, not_false_eq_true,
-               show ¬(1 : ℕ) = 0 from Nat.one_ne_zero, ↓reduceIte]
+    simp only [dif_pos hc₁, dif_pos hc₂, ↓reduceIte,
+      if_neg (Nat.one_ne_zero : ¬((1 : ℕ) = 0))]
     -- S[j] + 1 < comp[j] + 1 ↔ S[j] < comp[j]: ballot condition
-    have hlt := hB ⟨j, hj⟩
-    simp only [Fin.lt_iff_val_lt_val] at hlt; omega
+    have hlt : (S.orderEmbOfFin hS ⟨j, mem_twoRectYD_snd_lt hc₁⟩ : Fin (2 * m)) <
+        (compFin m S).orderEmbOfFin (compFin_card m S hS)
+          ⟨j, mem_twoRectYD_snd_lt hc₂⟩ := hB ⟨j, hj⟩
+    simp only [Fin.lt_def] at hlt
+    omega
 
 -- Bijection: SYT(m,m) ≃ {S // S.card = m ∧ ballot cond}
 private noncomputable def sytBallotEquiv (m : ℕ) :
@@ -2701,60 +2699,59 @@ private noncomputable def sytBallotEquiv (m : ℕ) :
   toFun T := ⟨sytRow0Set m T,
     sytRow0Set_card m T,
     sytRow0Set_ballot m T⟩
-  invFun := fun ⟨S, hS, hB⟩ => ballotSYT m S hS hB
+  invFun := fun p => ballotSYT m p.1 p.2.choose p.2.choose_spec
   left_inv := by
     intro T
     apply StandardYoungTableau.ext
     intro c
     by_cases hc : c ∈ twoRectYD m
     · -- c ∈ twoRectYD m: check row 0 or 1
-      simp only [ballotSYT, dif_pos hc]
+      obtain ⟨i, j⟩ := c
       rcases mem_twoRectYD.mp hc with ⟨hi, hj⟩ | ⟨hi, hj⟩
       · -- Row 0: ballotSYT gives S[j]+1 = T.entry(0,j)-1+1 = T.entry(0,j)
-        subst hi; simp only [show (0 : ℕ) ≠ 1 from Nat.zero_ne_one, ↓reduceIte, not_false_eq_true]
+        subst hi
+        simp only [ballotSYT, dif_pos hc, ↓reduceIte]
         rw [sytRow0Set_orderEmb]
-        have hr := (T.entry_range (0, c.2) (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))).1
+        have hr := (T.entry_range (0, j) (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))).1
+        simp only [Fin.val_mk]
         omega
       · -- Row 1: ballotSYT gives comp[j]+1 = T.entry(1,j)-1+1 = T.entry(1,j)
         subst hi
-        have h01 : ¬(1 : ℕ) = 0 := Nat.one_ne_zero
-        simp only [h01, ↓reduceIte, not_false_eq_true]
+        simp only [ballotSYT, dif_pos hc, ↓reduceIte,
+          if_neg (Nat.one_ne_zero : ¬((1 : ℕ) = 0))]
         rw [sytRow1Set_orderEmb]
-        have hr := (T.entry_range (1, c.2) (mem_twoRectYD.mpr (Or.inr ⟨rfl, hj⟩))).1
+        have hr := (T.entry_range (1, j) (mem_twoRectYD.mpr (Or.inr ⟨rfl, hj⟩))).1
+        simp only [Fin.val_mk]
         omega
     · simp [ballotSYT, dif_neg hc, T.entry_zero c hc]
   right_inv := by
-    intro ⟨S, hS, hB⟩
-    try simp only
-    ext
+    rintro ⟨S, hS, hB⟩
+    apply Subtype.ext
+    dsimp only
     apply Finset.Subset.antisymm
     · -- sytRow0Set (ballotSYT S hS hB) ⊆ S
       intro x hx
-      simp only [sytRow0Set, Finset.mem_image, Finset.mem_univ, true_and] at hx
-      obtain ⟨j, _, hxj⟩ := hx
+      simp only [sytRow0Set, Finset.mem_image] at hx
+      obtain ⟨j, -, hxj⟩ := hx
       simp only [ballotSYT, dif_pos (mem_twoRectYD.mpr (Or.inl ⟨rfl, j.isLt⟩)),
-                 show (0 : ℕ) ≠ 1 from Nat.zero_ne_one, ↓reduceIte,
-                 not_false_eq_true] at hxj
-      -- x = S[j]
-      have : x = S.orderEmbOfFin hS j := by ext; omega
-      rw [this]; exact Finset.orderEmbOfFin_mem S hS j
+                 ↓reduceIte] at hxj
+      -- x = S[j] (definitionally: val+1-1 reduces, proofs are irrelevant, Fin has eta)
+      rw [← hxj]
+      exact Finset.orderEmbOfFin_mem S hS j
     · -- S ⊆ sytRow0Set (ballotSYT S hS hB)
       intro x hx
-      simp only [sytRow0Set, Finset.mem_image, Finset.mem_univ, true_and]
+      simp only [sytRow0Set, Finset.mem_image]
       -- x = S[j] for some j: use image_orderEmbOfFin_univ
       have hximg : x ∈ Finset.image (S.orderEmbOfFin hS) Finset.univ := by
         rw [Finset.image_orderEmbOfFin_univ S hS]; exact hx
       obtain ⟨j, -, hjx⟩ := Finset.mem_image.mp hximg
-      refine ⟨j, ?_⟩
+      refine ⟨j, Finset.mem_univ j, ?_⟩
       -- (ballotSYT).entry(0, j) = S[j].val + 1, so entry - 1 = S[j].val
       simp only [ballotSYT, dif_pos (mem_twoRectYD.mpr (Or.inl ⟨rfl, j.isLt⟩)),
-                 show (0 : ℕ) ≠ 1 from Nat.zero_ne_one, ↓reduceIte, not_false_eq_true]
-      -- Need: ⟨S[j].val + 1 - 1, ...⟩ = x
-      -- By hjx: S[j] = x, so S[j].val = x.val, and S[j].val + 1 - 1 = x.val
-      ext
-      simp only [Fin.val_mk]
-      have hval : (S.orderEmbOfFin hS j).val = x.val := congr_arg Fin.val hjx
-      omega
+                 ↓reduceIte]
+      -- Need: ⟨S[j].val + 1 - 1, ...⟩ = x; by hjx: S[j] = x, and the rest is definitional
+      rw [← hjx]
+      exact Fin.ext rfl
 
 -- ============================================================
 -- PART IXd: Lindstrom Reflection Bijection for Ballot Count
@@ -2801,7 +2798,7 @@ private lemma filter_le_orderEmb_eq {α : Type*} [LinearOrder α] [Fintype α]
       rw [← Finset.image_orderEmbOfFin_univ S hS] at hx
       obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hx
       exact ⟨i, (S.orderEmbOfFin hS).le_iff_le.mp hle, rfl⟩
-    · intro ⟨i, hij, rfl⟩
+    · rintro ⟨i, hij, rfl⟩
       exact ⟨Finset.orderEmbOfFin_mem S hS i, (S.orderEmbOfFin hS).le_iff_le.mpr hij⟩
   rw [heq, Finset.card_image_of_injective _ (S.orderEmbOfFin hS).injective, Fin.card_Iic]
 
@@ -2818,7 +2815,7 @@ private lemma lRefl_bad_card {m : ℕ} (S : Finset (Fin (2 * m))) (hS : S.card =
     rw [Finset.disjoint_left]
     intro x hx1 hx2
     simp only [compFin, mem_filter, mem_univ, true_and] at hx1
-    exact hx1 (mem_filter.mp hx2).1
+    exact hx1.1 (mem_filter.mp hx2).1
   rw [Finset.card_union_of_disjoint hdisj]
   -- Count |comp(S).filter(≤k)| = j + 1
   have hcomp_count : ((compFin m S).filter (· ≤ k)).card = j + 1 :=
@@ -2839,7 +2836,7 @@ private lemma lRefl_bad_card {m : ℕ} (S : Finset (Fin (2 * m))) (hS : S.card =
         · rw [heq] at hbad; exact absurd hle (not_le.mpr hbad)
         · exact absurd hle (not_le.mpr
             (lt_trans hbad ((S.orderEmbOfFin hS).strictMono hgt)))
-      · intro ⟨i, hi, rfl⟩
+      · rintro ⟨i, hi, rfl⟩
         refine ⟨Finset.orderEmbOfFin_mem S hS i, ?_⟩
         -- S[i] < comp[i] ≤ comp[j] = k, so S[i] ≤ k
         have h1 : S.orderEmbOfFin hS i < (compFin m S).orderEmbOfFin (compFin_card m S hS) i :=
@@ -2874,8 +2871,9 @@ private lemma firstBad_is_bad (m : ℕ) (S : Finset (Fin (2 * m))) (hS : S.card 
     ¬(S.orderEmbOfFin hS (firstBad m S hS hbad) <
       (compFin m S).orderEmbOfFin (compFin_card m S hS) (firstBad m S hS hbad)) := by
   simp only [firstBad]
-  have := Finset.min'_mem _ _
-  exact (mem_filter.mp this).2
+  exact (mem_filter.mp (Finset.min'_mem (Finset.univ.filter (fun j : Fin m =>
+    ¬(S.orderEmbOfFin hS j <
+      (compFin m S).orderEmbOfFin (compFin_card m S hS) j))) _)).2
 
 /-- All indices before firstBad satisfy the ballot condition. -/
 private lemma before_firstBad_is_good (m : ℕ) (S : Finset (Fin (2 * m))) (hS : S.card = m)
@@ -2884,7 +2882,10 @@ private lemma before_firstBad_is_good (m : ℕ) (S : Finset (Fin (2 * m))) (hS :
     (i : Fin m) (hi : i < firstBad m S hS hbad) :
     S.orderEmbOfFin hS i < (compFin m S).orderEmbOfFin (compFin_card m S hS) i := by
   by_contra h
-  have := Finset.min'_le _ i (mem_filter.mpr ⟨mem_univ _, h⟩)
+  have := Finset.min'_le (Finset.univ.filter (fun j : Fin m =>
+    ¬(S.orderEmbOfFin hS j <
+      (compFin m S).orderEmbOfFin (compFin_card m S hS) j))) i
+    (mem_filter.mpr ⟨mem_univ _, h⟩)
   exact absurd hi (not_lt.mpr this)
 
 /-- The barrier k₀ for a bad m-subset. -/
@@ -2899,7 +2900,17 @@ private lemma lRefl_badBarrier_card {m : ℕ} (S : Finset (Fin (2 * m))) (hS : S
         (compFin m S).orderEmbOfFin (compFin_card m S hS) j)) :
     (lRefl m S (badBarrier m S hS hbad)).card = m + 1 := by
   apply lRefl_bad_card S hS (firstBad m S hS hbad)
-  · exact not_lt.mp (firstBad_is_bad m S hS hbad)
+  · -- comp[fb] ≤ S[fb], and equality is impossible since S ∩ comp(S) = ∅
+    have hle := not_lt.mp (firstBad_is_bad m S hS hbad)
+    rcases hle.lt_or_eq with hlt | heq
+    · exact hlt
+    · exfalso
+      have h₁ := Finset.orderEmbOfFin_mem S hS (firstBad m S hS hbad)
+      have h₂ := Finset.orderEmbOfFin_mem (compFin m S) (compFin_card m S hS)
+        (firstBad m S hS hbad)
+      rw [heq] at h₂
+      simp only [compFin, Finset.mem_filter, Finset.mem_univ, true_and] at h₂
+      exact h₂ h₁
   · exact before_firstBad_is_good m S hS hbad
 
 /-- The "first above-zero barrier" of an (m+1)-subset: the smallest k ∈ T with
@@ -2910,7 +2921,10 @@ private noncomputable def firstAbove (m : ℕ) (T : Finset (Fin (2 * m))) (hT : 
       (T.filter (· ≤ k)).card > ((compFin m T).filter (· ≤ k)).card)).min'
   (by
     by_cases hm : m = 0
-    · subst hm; simp [Fintype.card_fin] at hT
+    · exfalso
+      have hle := Finset.card_le_univ T
+      rw [Finset.card_univ, Fintype.card_fin] at hle
+      omega
     · have hTne : T.Nonempty := Finset.card_pos.mp (by omega)
       refine ⟨T.max' hTne, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
       simp only [gt_iff_lt]
@@ -2929,7 +2943,8 @@ private lemma firstAbove_spec {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card 
     (T.filter (· ≤ firstAbove m T hT)).card >
     ((compFin m T).filter (· ≤ firstAbove m T hT)).card := by
   simp only [firstAbove]
-  exact (mem_filter.mp (Finset.min'_mem _ _)).2
+  exact (mem_filter.mp (Finset.min'_mem (Finset.univ.filter (fun k : Fin (2 * m) =>
+    (T.filter (· ≤ k)).card > ((compFin m T).filter (· ≤ k)).card)) _)).2
 
 -- ============================================================
 -- Helper lemmas for the Lindstrom reflection bijection
@@ -2943,21 +2958,24 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
   by_contra hkT
   have hkC : k ∈ compFin m T := by simp [compFin, hkT]
   have hspec := firstAbove_spec T hT
+  rw [← hk_def] at hspec
   rcases Nat.eq_zero_or_pos k.val with hk0 | hkpos
   · -- k = 0: T.filter(≤0) = ∅ since 0 ∉ T; comp.filter(≤0) ∋ 0
     have hempty : (T.filter (· ≤ k)).card = 0 := by
       apply Finset.card_eq_zero.mpr
       ext x; simp only [mem_filter, Finset.notMem_empty, iff_false]
-      intro ⟨hx, hle⟩
-      have hxk : x = k := Fin.le_antisymm (Fin.le_def.mpr (by
-        have := Fin.le_def.mp hle; omega)) (Fin.zero_le _)
-      exact hkT (hxk ▸ hx)
+      rintro ⟨hx, hle⟩
+      have h1 : (x : ℕ) ≤ (k : ℕ) := hle
+      have hxk : x = k := Fin.ext (by omega)
+      rw [hxk] at hx
+      exact hkT hx
     have hcpos : 0 < ((compFin m T).filter (· ≤ k)).card :=
       Finset.card_pos.mpr ⟨k, Finset.mem_filter.mpr ⟨hkC, le_refl k⟩⟩
     omega
   · -- k > 0: use predecessor k' = k-1
     set k' : Fin (2 * m) := ⟨k.val - 1, by omega⟩ with hk'_def
     have hk'k : k' < k := Fin.mk_lt_mk.mpr (by omega)
+    have hk'val : (k' : ℕ) = (k : ℕ) - 1 := by rw [hk'_def]
     -- By minimality of firstAbove, k' does not satisfy the condition
     have hbefore : (T.filter (· ≤ k')).card ≤ ((compFin m T).filter (· ≤ k')).card := by
       by_contra h; push_neg at h
@@ -2966,38 +2984,41 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
         Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩
       have hle : firstAbove m T hT ≤ k' := by
         simp only [firstAbove]; exact Finset.min'_le _ k' hmem
+      rw [← hk_def] at hle
       exact absurd hle (not_le.mpr hk'k)
     -- Since k ∉ T: T.filter(≤k) = T.filter(≤k')
     have hTeq : (T.filter (· ≤ k)).card = (T.filter (· ≤ k')).card := by
-      apply Finset.card_nbij id
-      · intro x hx
-        simp only [mem_filter, id] at hx ⊢
-        exact ⟨hx.1, Fin.le_def.mpr (by
-          have h := Fin.le_def.mp hx.2
-          rcases Nat.lt_or_eq_of_le h with hlt | heq
-          · exact Nat.lt_succ_iff.mp (by omega)
-          · exact absurd (Fin.ext heq.symm ▸ hx.1) hkT)⟩
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        exact ⟨hx.1, Fin.le_def.mpr (by omega)⟩
-      · intros; rfl
+      congr 1
+      ext x
+      simp only [mem_filter, and_congr_right_iff]
+      intro hxT
+      have hne : (x : ℕ) ≠ (k : ℕ) := fun h => hkT (Fin.ext h ▸ hxT)
+      simp only [Fin.le_def, hk'val]
+      constructor <;> intro h <;> omega
     -- Since k ∈ comp: comp.filter(≤k) = comp.filter(≤k') ∪ {k}, card +1
     have hCsucc : ((compFin m T).filter (· ≤ k)).card =
         ((compFin m T).filter (· ≤ k')).card + 1 := by
       have heq : (compFin m T).filter (· ≤ k) = (compFin m T).filter (· ≤ k') ∪ {k} := by
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
-        · intro ⟨hx, hle⟩
-          rcases le_or_gt x k' with h | h
-          · exact Or.inl ⟨hx, h⟩
-          · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
-              simp only [Fin.lt_def] at h; omega)))
+        · rintro ⟨hx, hle⟩
+          have h1 : (x : ℕ) ≤ (k : ℕ) := hle
+          rcases eq_or_ne x k with heq' | hne
+          · exact Or.inr heq'
+          · have h2 : (x : ℕ) ≠ (k : ℕ) := fun h => hne (Fin.ext h)
+            exact Or.inl ⟨hx, Fin.le_def.mpr (by rw [hk'val]; omega)⟩
         · rintro (⟨hx, hle⟩ | rfl)
-          · exact ⟨hx, Fin.le_def.mpr (by simp only [k', Fin.val_mk]; omega)⟩
+          · have h1 : (x : ℕ) ≤ (k' : ℕ) := hle
+            rw [hk'val] at h1
+            exact ⟨hx, Fin.le_def.mpr (by omega)⟩
           · exact ⟨hkC, le_refl k⟩
       have hdisj : Disjoint ((compFin m T).filter (· ≤ k')) ({k} : Finset (Fin (2 * m))) := by
         rw [Finset.disjoint_singleton_right]
         simp only [mem_filter, not_and]
-        intro _; simp only [Fin.le_def, k', Fin.val_mk]; omega
+        intro _ hle
+        have h1 : (k : ℕ) ≤ (k' : ℕ) := hle
+        rw [hk'val] at h1
+        omega
       rw [heq, Finset.card_union_of_disjoint hdisj, Finset.card_singleton]
     -- |T.filter(≤k)| ≤ |comp.filter(≤k')| = |comp.filter(≤k)| - 1 < |comp.filter(≤k)|
     rw [hTeq, hCsucc] at hspec; omega
@@ -3010,28 +3031,35 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
   set k := firstAbove m T hT with hk_def
   have hspec := firstAbove_spec T hT
   have hkT := firstAbove_mem T hT
+  rw [← hk_def] at hspec hkT
   have hknotC : k ∉ compFin m T := by simp [compFin, hkT]
   rcases Nat.eq_zero_or_pos k.val with hk0 | hkpos
-  · -- k = 0 ∈ T: T.filter(≤0) = {0}, comp.filter(≤0) = ∅
+  · -- k = 0 ∈ T: T.filter(≤0) = {k}, comp.filter(≤0) = ∅
     have h1 : (T.filter (· ≤ k)).card = 1 := by
       rw [Finset.card_eq_one]
-      exact ⟨k, by ext x; simp only [mem_filter, mem_singleton];
-        constructor
-        · intro ⟨hx, hle⟩; exact Fin.le_antisymm (Fin.le_def.mpr (by
-            have := Fin.le_def.mp hle; omega)) (Fin.zero_le _)
-        · intro h; exact ⟨h ▸ hkT, le_refl k⟩⟩
+      refine ⟨k, ?_⟩
+      ext x
+      simp only [mem_filter, mem_singleton]
+      constructor
+      · rintro ⟨hx, hle⟩
+        have hxle : (x : ℕ) ≤ (k : ℕ) := hle
+        exact Fin.ext (by omega)
+      · rintro rfl
+        exact ⟨hkT, le_refl k⟩
     have h2 : ((compFin m T).filter (· ≤ k)).card = 0 := by
       apply Finset.card_eq_zero.mpr; ext x
       simp only [mem_filter, Finset.notMem_empty, iff_false]
-      intro ⟨hxC, hle⟩
+      rintro ⟨hxC, hle⟩
       simp only [compFin, mem_filter, mem_univ, true_and] at hxC
-      have hxk : x = k := Fin.le_antisymm (Fin.le_def.mpr (by
-        have := Fin.le_def.mp hle; omega)) (Fin.zero_le _)
-      exact hxC (hxk ▸ hkT)
+      have hxle : (x : ℕ) ≤ (k : ℕ) := hle
+      have hxk : x = k := Fin.ext (by omega)
+      rw [hxk] at hxC
+      exact hxC hkT
     omega
   · -- k > 0: use k' = k-1
     set k' : Fin (2 * m) := ⟨k.val - 1, by omega⟩ with hk'_def
     have hk'k : k' < k := Fin.mk_lt_mk.mpr (by omega)
+    have hk'val : (k' : ℕ) = (k : ℕ) - 1 := by rw [hk'_def]
     have hbefore : (T.filter (· ≤ k')).card ≤ ((compFin m T).filter (· ≤ k')).card := by
       by_contra h; push_neg at h
       have hmem : k' ∈ Finset.univ.filter (fun k'' : Fin (2 * m) =>
@@ -3039,50 +3067,55 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
         Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩
       have hle : firstAbove m T hT ≤ k' := by
         simp only [firstAbove]; exact Finset.min'_le _ k' hmem
+      rw [← hk_def] at hle
       exact absurd hle (not_le.mpr hk'k)
     -- T.filter(≤k) = T.filter(≤k') ∪ {k}, card +1 (since k ∈ T)
     have hTsucc : (T.filter (· ≤ k)).card = (T.filter (· ≤ k')).card + 1 := by
       have heq : T.filter (· ≤ k) = T.filter (· ≤ k') ∪ {k} := by
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
-        · intro ⟨hx, hle⟩
-          rcases le_or_gt x k' with h | h
-          · exact Or.inl ⟨hx, h⟩
-          · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
-              simp only [Fin.lt_def] at h; omega)))
+        · rintro ⟨hx, hle⟩
+          have h1 : (x : ℕ) ≤ (k : ℕ) := hle
+          rcases eq_or_ne x k with heq' | hne
+          · exact Or.inr heq'
+          · have h2 : (x : ℕ) ≠ (k : ℕ) := fun h => hne (Fin.ext h)
+            exact Or.inl ⟨hx, Fin.le_def.mpr (by rw [hk'val]; omega)⟩
         · rintro (⟨hx, hle⟩ | rfl)
-          · exact ⟨hx, Fin.le_def.mpr (by simp only [k', Fin.val_mk]; omega)⟩
+          · have h1 : (x : ℕ) ≤ (k' : ℕ) := hle
+            rw [hk'val] at h1
+            exact ⟨hx, Fin.le_def.mpr (by omega)⟩
           · exact ⟨hkT, le_refl k⟩
       have hdisj : Disjoint (T.filter (· ≤ k')) ({k} : Finset (Fin (2 * m))) := by
         rw [Finset.disjoint_singleton_right]; simp only [mem_filter, not_and]
-        intro _; simp only [Fin.le_def, k', Fin.val_mk]; omega
+        intro _ hle
+        have h1 : (k : ℕ) ≤ (k' : ℕ) := hle
+        rw [hk'val] at h1
+        omega
       rw [heq, Finset.card_union_of_disjoint hdisj, Finset.card_singleton]
     -- comp.filter(≤k) = comp.filter(≤k') (since k ∉ comp)
     have hCeq : ((compFin m T).filter (· ≤ k)).card = ((compFin m T).filter (· ≤ k')).card := by
-      apply Finset.card_nbij id
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        exact ⟨hx.1, Fin.le_def.mpr (by
-          have h := Fin.le_def.mp hx.2
-          rcases Nat.lt_or_eq_of_le h with hlt | heq
-          · exact Nat.lt_succ_iff.mp (by omega)
-          · exact absurd (Fin.ext heq.symm ▸ hx.1) hknotC)⟩
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        exact ⟨hx.1, Fin.le_def.mpr (by omega)⟩
-      · intros; rfl
-    linarith
+      congr 1
+      ext x
+      simp only [mem_filter, and_congr_right_iff]
+      intro hxC
+      have hne : (x : ℕ) ≠ (k : ℕ) := fun h => hknotC (Fin.ext h ▸ hxC)
+      simp only [Fin.le_def, hk'val]
+      constructor <;> intro h <;> omega
+    omega
 
 /-- lRefl at firstAbove of an (m+1)-subset has exactly m elements. -/
 private lemma lRefl_firstAbove_card {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card = m + 1) :
     (lRefl m T (firstAbove m T hT)).card = m := by
-  set k := firstAbove m T hT
+  set k := firstAbove m T hT with hk_def
   simp only [lRefl]
   have hdisj : Disjoint ((compFin m T).filter (· ≤ k)) (T.filter (k < ·)) := by
     rw [Finset.disjoint_left]
     intro x hx1 hx2
     simp only [compFin, mem_filter, mem_univ, true_and] at hx1
-    exact hx1 (Finset.mem_filter.mp hx2).1
+    exact hx1.1 (Finset.mem_filter.mp hx2).1
   rw [Finset.card_union_of_disjoint hdisj]
   have hdiff := firstAbove_count_diff T hT
+  rw [← hk_def] at hdiff
   have hTpart : (T.filter (· ≤ k)).card + (T.filter (k < ·)).card = m + 1 := by
     have h := T.filter_card_add_filter_neg_card_eq_card (· ≤ k)
     simp only [hT] at h; convert h using 2; congr 1; ext x; simp [not_le]
@@ -3101,16 +3134,16 @@ private lemma comp_filter_le_S_filter_below_barrier {m : ℕ}
   let A := Finset.univ.filter (fun i : Fin m => (compFin m S).orderEmbOfFin hcS i ≤ k)
   -- A.card = |comp(S).filter(≤k)| via orderEmbOfFin bijection
   have hA_card : A.card = ((compFin m S).filter (· ≤ k)).card := by
-    apply Finset.card_nbij (fun i => (compFin m S).orderEmbOfFin hcS i)
+    apply Finset.card_bij (fun i _ => (compFin m S).orderEmbOfFin hcS i)
     · intro i hi
       simp only [A, Finset.mem_filter, Finset.mem_univ, true_and] at hi
       exact Finset.mem_filter.mpr ⟨Finset.orderEmbOfFin_mem _ hcS i, hi⟩
+    · intro i _ j _ h; exact ((compFin m S).orderEmbOfFin hcS).injective h
     · intro c hc
       simp only [Finset.mem_filter] at hc
       rw [← Finset.image_orderEmbOfFin_univ _ hcS] at hc
       obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hc.1
       exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc.2⟩, rfl⟩
-    · intro i _ j _ h; exact ((compFin m S).orderEmbOfFin hcS).injective h
   -- For each i ∈ A: i < firstBad and S[i] < comp(S)[i] ≤ k, so S[i] ∈ S.filter(≤k)
   have hS_image_sub : A.image (S.orderEmbOfFin hS) ⊆ S.filter (· ≤ k) := by
     intro x hx
@@ -3144,39 +3177,42 @@ private lemma lRefl_firstAbove_is_bad {m : ℕ} (T : Finset (Fin (2 * m))) (hT :
   -- This means T'[j] > comp(T')[j] for j = |T'.filter(≤k₁)| - 1...
   -- More precisely: pick j₁ = |T'.filter(· ≤ k₁)|. Then T'[j₁] > k₁ and comp(T')[j₁] ≤ k₁.
   -- Use filter cardinalities to find the witness j.
+  have hT'card : T'.card = m := by
+    rw [hT'_def, hk₁_def]; exact lRefl_firstAbove_card T hT
+  have hcT'card : (compFin m T').card = m := compFin_card m T' hT'c
   have hT'_le : (T'.filter (· ≤ k₁)).card = ((compFin m T).filter (· ≤ k₁)).card := by
-    apply Finset.card_nbij id
-    · intro x hx; simp only [mem_filter, id] at hx ⊢
-      simp only [T', lRefl, mem_union, mem_filter] at hx
-      exact ⟨by simp [compFin]; exact (hx.1.elim (fun h => h.1) (fun h => by
-        simp [compFin] at h ⊢; exact fun hT' => h.1 hT')), hx.2⟩
-    · intro x hx
-      simp only [mem_filter, id] at hx ⊢
-      have hxle := hx.2
-      have hxC : x ∈ compFin m T := hx.1
-      simp only [T', lRefl, mem_union, mem_filter]
-      exact ⟨Or.inl ⟨hxC, hxle⟩, hxle⟩
-    · intros; rfl
+    congr 1
+    rw [hT'_def]
+    ext x
+    simp only [lRefl, Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨⟨hxC, -⟩ | ⟨-, hgt⟩, hle⟩
+      · exact ⟨hxC, hle⟩
+      · exact absurd hle (not_le.mpr hgt)
+    · rintro ⟨hxC, hle⟩
+      exact ⟨Or.inl ⟨hxC, hle⟩, hle⟩
   have hcT'_le : ((compFin m T').filter (· ≤ k₁)).card = (T.filter (· ≤ k₁)).card := by
-    rw [compFin_lRefl]
-    apply Finset.card_nbij id
-    · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-      rcases hx.1 with h | h
-      · exact ⟨h.1, h.2⟩
-      · exact ⟨h.1, hx.2⟩
-    · intro x hx; simp only [mem_filter, id] at hx ⊢
-      simp only [mem_union, mem_filter]
-      exact ⟨Or.inl ⟨hx.1, hx.2⟩, hx.2⟩
-    · intros; rfl
+    rw [hT'_def, compFin_lRefl]
+    congr 1
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨⟨hxT, -⟩ | ⟨-, hgt⟩, hle⟩
+      · exact ⟨hxT, hle⟩
+      · exact absurd hle (not_le.mpr hgt)
+    · rintro ⟨hxT, hle⟩
+      exact ⟨Or.inl ⟨hxT, hle⟩, hle⟩
   -- |comp(T').filter(≤k₁)| = |T.filter(≤k₁)| = |comp(T).filter(≤k₁)| + 1 = |T'.filter(≤k₁)| + 1
   have hdiff := firstAbove_count_diff T hT
+  rw [← hk₁_def] at hdiff
   -- So |comp(T').filter(≤k₁)| > |T'.filter(≤k₁)|
   have hcount : (T'.filter (· ≤ k₁)).card < ((compFin m T').filter (· ≤ k₁)).card := by
     rw [hT'_le, hcT'_le]; omega
   -- T'[j₁] is the first element of T' above k₁, comp(T')[j₁] is still ≤ k₁
   -- Pick j₁ = |T'.filter(≤k₁)|
   have hj1_lt : (T'.filter (· ≤ k₁)).card < m := by
-    have : (T'.filter (· ≤ k₁)).card ≤ T'.card := Finset.card_le_card (Finset.filter_subset _ _)
+    have h1 : ((compFin m T').filter (· ≤ k₁)).card ≤ (compFin m T').card :=
+      Finset.card_le_card (Finset.filter_subset _ _)
     omega
   set j₁ : Fin m := ⟨(T'.filter (· ≤ k₁)).card, hj1_lt⟩
   use j₁
@@ -3184,15 +3220,17 @@ private lemma lRefl_firstAbove_is_bad {m : ℕ} (T : Finset (Fin (2 * m))) (hT :
   -- T'[j₁] is the (j₁+1)-th element of T' in order; it's the first one > k₁
   have hT'_j1 : k₁ < T'.orderEmbOfFin hT'c j₁ := by
     -- j₁ = |T'.filter(≤k₁)|, so T'[j₁] is NOT in T'.filter(≤k₁), hence T'[j₁] > k₁
-    have hmem : T'.orderEmbOfFin hT'c j₁ ∈ T' := Finset.orderEmbOfFin_mem T' hT'c j₁
-    by_contra h; push_neg at h
-    -- T'[j₁] ≤ k₁ means T'[j₁] ∈ T'.filter(≤k₁)
-    have : T'.orderEmbOfFin hT'c j₁ ∈ T'.filter (· ≤ k₁) :=
-      Finset.mem_filter.mpr ⟨hmem, h⟩
-    -- T'.filter(≤k₁) has card j₁, so max index in orderEmb is j₁-1
-    have := filter_le_orderEmb_eq T' hT'c j₁
-    -- |T'.filter(≤k₁)| = j₁+1 > j₁ = card, contradiction
-    simp only [j₁, Fin.val_mk] at this; omega
+    by_contra h
+    rw [not_lt] at h
+    -- T'[j₁] ≤ k₁ means filter(≤T'[j₁]) ⊆ filter(≤k₁), so j₁+1 ≤ j₁: contradiction
+    have hsub : T'.filter (· ≤ T'.orderEmbOfFin hT'c j₁) ⊆ T'.filter (· ≤ k₁) := by
+      intro y hy
+      simp only [Finset.mem_filter] at hy ⊢
+      exact ⟨hy.1, le_trans hy.2 h⟩
+    have hcard_le := Finset.card_le_card hsub
+    rw [filter_le_orderEmb_eq T' hT'c j₁] at hcard_le
+    simp only [j₁, Fin.val_mk] at hcard_le
+    omega
   -- comp(T')[j₁] ≤ k₁
   have hcT'_j1 : (compFin m T').orderEmbOfFin hcT' j₁ ≤ k₁ := by
     -- j₁ < |comp(T').filter(≤k₁)| (since |comp.filter(≤k₁)| = j₁+1 by hcount)
@@ -3206,33 +3244,35 @@ private lemma lRefl_firstAbove_is_bad {m : ℕ} (T : Finset (Fin (2 * m))) (hT :
     -- i.e., comp(T') has at least j₁+1 elements ≤ k₁, so the (j₁+1)-th (= comp[j₁]) is ≤ k₁
     have hj_in : (compFin m T').orderEmbOfFin hcT' j₁ ∈
         (compFin m T').filter (· ≤ k₁) := by
-      rw [← Finset.image_orderEmbOfFin_univ (compFin m T') hcT'] at *
-      -- comp(T').filter(≤k₁) has card > j₁, so comp(T')[j₁] is in it
-      -- Use: orderEmbOfFin is increasing and its first j₁+1 elements are ≤ k₁
-      -- Actually: comp(T')[j₁] ∈ comp(T').filter(≤k₁) iff comp(T')[j₁] ≤ k₁
-      -- We know |comp(T').filter(≤k₁)| > j₁, so comp(T')[j₁] ≤ k₁
+      refine Finset.mem_filter.mpr
+        ⟨Finset.orderEmbOfFin_mem (compFin m T') hcT' j₁, ?_⟩
       by_contra h
-      push_neg at h
-      simp only [Finset.mem_filter, Finset.not_and] at h
-      have hnotmem := h (Finset.orderEmbOfFin_mem (compFin m T') hcT' j₁)
+      rw [not_le] at h
       -- comp(T')[j₁] > k₁, so all comp(T')[i] with i ≥ j₁ are > k₁
       -- Hence |comp(T').filter(≤k₁)| ≤ j₁, contradicting hcount
       have hle_j1 : ((compFin m T').filter (· ≤ k₁)).card ≤ j₁.val := by
-        apply Finset.card_le_card_of_lt
-        · intro c hc
+        have hsub : (compFin m T').filter (· ≤ k₁) ⊆
+            Finset.image ((compFin m T').orderEmbOfFin hcT') (Finset.Iio j₁) := by
+          intro c hc
           simp only [Finset.mem_filter] at hc
-          rw [← Finset.image_orderEmbOfFin_univ (compFin m T') hcT'] at hc
-          obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hc.1
-          -- comp(T')[i] ≤ k₁ and comp(T')[j₁] > k₁, so i < j₁
-          apply Finset.mem_Iio.mpr
-          rcases lt_or_le i j₁ with h | h
-          · exact h
+          have hc1 := hc.1
+          rw [← Finset.image_orderEmbOfFin_univ (compFin m T') hcT'] at hc1
+          obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hc1
+          refine Finset.mem_image.mpr ⟨i, Finset.mem_Iio.mpr ?_, rfl⟩
+          rcases lt_or_le i j₁ with hij | hij
+          · exact hij
           · exact absurd hc.2 (not_le.mpr
-              (lt_of_lt_of_le hnotmem ((compFin m T').orderEmbOfFin hcT' |>.monotone h)))
-      simp only [j₁, Fin.val_mk] at hle_j1; omega
+              (lt_of_lt_of_le h (((compFin m T').orderEmbOfFin hcT').monotone hij)))
+        calc ((compFin m T').filter (· ≤ k₁)).card
+            ≤ (Finset.image ((compFin m T').orderEmbOfFin hcT') (Finset.Iio j₁)).card :=
+              Finset.card_le_card hsub
+          _ ≤ (Finset.Iio j₁).card := Finset.card_image_le
+          _ = j₁.val := by rw [Fin.card_Iio]
+      simp only [j₁, Fin.val_mk] at hle_j1
+      omega
     exact (Finset.mem_filter.mp hj_in).2
   -- T'[j₁] > k₁ ≥ comp(T')[j₁]
-  exact not_lt.mpr (le_of_lt (lt_of_le_of_lt hcT'_j1 hT'_j1))
+  exact le_of_lt (lt_of_le_of_lt hcT'_j1 hT'_j1)
 
 /-- firstAbove(lRefl S k₀) = k₀: the reflection maps badBarrier back to firstAbove.
     This is the key round-trip identity for the Lindstrom bijection. -/
@@ -3261,26 +3301,26 @@ private lemma firstAbove_eq_badBarrier_of_refl {m : ℕ}
     left; exact ⟨Finset.orderEmbOfFin_mem _ hcS j₀, le_refl k₀⟩
   -- At k₀: T'.filter(≤k₀) = comp(S).filter(≤k₀) and comp(T').filter(≤k₀) = S.filter(≤k₀)
   have hT'_at_k₀ : (T'.filter (· ≤ k₀)).card = ((compFin m S).filter (· ≤ k₀)).card := by
-    apply Finset.card_nbij id
-    · intro x hx; simp only [mem_filter, id] at hx ⊢
-      have hxle := hx.2
-      simp only [T', lRefl, mem_union, mem_filter] at hx
-      rcases hx.1 with h | h
-      · exact ⟨h.1, h.2⟩
-      · exact absurd hxle (not_le.mpr h.1)
-    · intro x hx; simp only [mem_filter, id] at hx ⊢
-      exact ⟨by simp [T', lRefl, mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-    · intros; rfl
+    congr 1
+    ext x
+    simp only [T', lRefl, Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨⟨hxC, -⟩ | ⟨-, hgt⟩, hle⟩
+      · exact ⟨hxC, hle⟩
+      · exact absurd hle (not_le.mpr hgt)
+    · rintro ⟨hxC, hle⟩
+      exact ⟨Or.inl ⟨hxC, hle⟩, hle⟩
   have hcT'_at_k₀ : ((compFin m T').filter (· ≤ k₀)).card = (S.filter (· ≤ k₀)).card := by
     rw [compFin_lRefl]
-    apply Finset.card_nbij id
-    · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-      rcases hx.1 with h | h
-      · exact ⟨h.1, h.2⟩
-      · exact ⟨h.1, hx.2⟩
-    · intro x hx; simp only [mem_filter, id] at hx ⊢
-      exact ⟨by simp [mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-    · intros; rfl
+    congr 1
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨⟨hxS, -⟩ | ⟨-, hgt⟩, hle⟩
+      · exact ⟨hxS, hle⟩
+      · exact absurd hle (not_le.mpr hgt)
+    · rintro ⟨hxS, hle⟩
+      exact ⟨Or.inl ⟨hxS, hle⟩, hle⟩
   -- |comp(S).filter(≤k₀)| = j₀+1 (by filter_le_orderEmb_eq)
   have hcomp_count : ((compFin m S).filter (· ≤ k₀)).card = j₀.val + 1 :=
     filter_le_orderEmb_eq (compFin m S) hcS j₀
@@ -3289,7 +3329,7 @@ private lemma firstAbove_eq_badBarrier_of_refl {m : ℕ}
     have heq : S.filter (· ≤ k₀) = Finset.image (S.orderEmbOfFin hS) (Finset.Iio j₀) := by
       ext x; simp only [mem_filter, mem_image, mem_Iio]
       constructor
-      · intro ⟨hx, hle⟩
+      · rintro ⟨hx, hle⟩
         rw [← Finset.image_orderEmbOfFin_univ S hS] at hx
         obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hx
         refine ⟨i, ?_, rfl⟩
@@ -3308,7 +3348,7 @@ private lemma firstAbove_eq_badBarrier_of_refl {m : ℕ}
                   have : k₀ ∈ compFin m S := Finset.orderEmbOfFin_mem _ hcS j₀
                   simp [compFin] at this; exact this (Finset.orderEmbOfFin_mem S hS j₀)))
               ((S.orderEmbOfFin hS).strictMono hgt).le))
-      · intro ⟨i, hi, rfl⟩
+      · rintro ⟨i, hi, rfl⟩
         refine ⟨Finset.orderEmbOfFin_mem S hS i, ?_⟩
         have h1 := before_firstBad_is_good m S hS hbad i hi
         have h2 := ((compFin m S).orderEmbOfFin hcS).strictMono.monotone hi.le
@@ -3324,26 +3364,27 @@ private lemma firstAbove_eq_badBarrier_of_refl {m : ℕ}
     intro k hk
     -- T'.filter(≤k) = comp(S).filter(≤k) for k < k₀
     have hT'_k : (T'.filter (· ≤ k)).card = ((compFin m S).filter (· ≤ k)).card := by
-      apply Finset.card_nbij id
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        simp only [T', lRefl, mem_union, mem_filter] at hx
-        rcases hx.1 with h | h
-        · exact ⟨h.1, h.2⟩
-        · exact absurd (lt_of_lt_of_le hk hx.2) (lt_irrefl _)
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        exact ⟨by simp [T', lRefl, mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-      · intros; rfl
+      congr 1
+      ext x
+      simp only [T', lRefl, Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨⟨hxC, -⟩ | ⟨-, hgt⟩, hle⟩
+        · exact ⟨hxC, hle⟩
+        · exact absurd (lt_trans hgt (lt_of_le_of_lt hle hk)) (lt_irrefl _)
+      · rintro ⟨hxC, hle⟩
+        exact ⟨Or.inl ⟨hxC, le_trans hle (le_of_lt hk)⟩, hle⟩
     -- comp(T').filter(≤k) = S.filter(≤k) for k < k₀
     have hcT'_k : ((compFin m T').filter (· ≤ k)).card = (S.filter (· ≤ k)).card := by
       rw [compFin_lRefl]
-      apply Finset.card_nbij id
-      · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-        rcases hx.1 with h | h
-        · exact ⟨h.1, h.2⟩
-        · exact absurd (lt_of_lt_of_le hk hx.2) (lt_irrefl _)
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        exact ⟨by simp [mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-      · intros; rfl
+      congr 1
+      ext x
+      simp only [Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨⟨hxS, -⟩ | ⟨-, hgt⟩, hle⟩
+        · exact ⟨hxS, hle⟩
+        · exact absurd (lt_trans hgt (lt_of_le_of_lt hle hk)) (lt_irrefl _)
+      · rintro ⟨hxS, hle⟩
+        exact ⟨Or.inl ⟨hxS, le_trans hle (le_of_lt hk)⟩, hle⟩
     rw [hT'_k, hcT'_k]
     exact not_lt.mpr (comp_filter_le_S_filter_below_barrier S hS hbad k hk)
   -- k₀ is in the firstAbove filter set and is a lower bound for it
@@ -3458,26 +3499,26 @@ private lemma badBarrier_eq_firstAbove_of_refl {m : ℕ}
     -- Show: comp(S')[firstBad(S')] ≤ k₁
     -- Equivalently: firstBad(S') < |comp(S').filter(≤k₁)|
     have hcT_count : ((compFin m T).filter (· ≤ k₁)).card = (S'.filter (· ≤ k₁)).card := by
-      apply Finset.card_nbij id
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        simp only [S', lRefl, mem_union, mem_filter]
-        exact ⟨Or.inl ⟨hx.1, hx.2⟩, hx.2⟩
-      · intro x hx; simp only [mem_filter, id] at hx ⊢
-        simp only [S', lRefl, mem_union, mem_filter] at hx
-        rcases hx.1 with h | h
-        · exact ⟨h.1, h.2⟩
-        · exact absurd (lt_of_lt_of_le hx.2 (le_refl k₁)) (not_lt.mpr (le_of_lt h.1))
-      · intros; rfl
+      congr 1
+      ext x
+      simp only [S', lRefl, Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨hxC, hle⟩
+        exact ⟨Or.inl ⟨hxC, hle⟩, hle⟩
+      · rintro ⟨⟨hxC, -⟩ | ⟨-, hgt⟩, hle⟩
+        · exact ⟨hxC, hle⟩
+        · exact absurd hle (not_le.mpr hgt)
     have hT_count : (T.filter (· ≤ k₁)).card = ((compFin m S').filter (· ≤ k₁)).card := by
       rw [compFin_lRefl]
-      apply Finset.card_nbij id
-      · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-        exact ⟨Or.inl ⟨hx.1, hx.2⟩, hx.2⟩
-      · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-        rcases hx.1 with h | h
-        · exact ⟨h.1, h.2⟩
-        · exact absurd (lt_of_lt_of_le hx.2 (le_refl k₁)) (not_lt.mpr (le_of_lt h.1))
-      · intros; rfl
+      congr 1
+      ext x
+      simp only [Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨hxT, hle⟩
+        exact ⟨Or.inl ⟨hxT, hle⟩, hle⟩
+      · rintro ⟨⟨hxT, -⟩ | ⟨-, hgt⟩, hle⟩
+        · exact ⟨hxT, hle⟩
+        · exact absurd hle (not_le.mpr hgt)
     have hdiff := firstAbove_count_diff T hT
     -- |comp(S').filter(≤k₁)| = |T.filter(≤k₁)| = |S'.filter(≤k₁)| + 1
     have hgt : (S'.filter (· ≤ k₁)).card < ((compFin m S').filter (· ≤ k₁)).card := by
@@ -3538,7 +3579,7 @@ private lemma badBarrier_eq_firstAbove_of_refl {m : ℕ}
                   rw [← Finset.image_orderEmbOfFin_univ _ hcS'] at hx
                   obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hx
                   exact ⟨i, ((compFin m S').orderEmbOfFin hcS').strictMono.lt_iff_lt.mp hlt, rfl⟩
-                · intro ⟨i, hi, rfl⟩
+                · rintro ⟨i, hi, rfl⟩
                   exact ⟨Finset.orderEmbOfFin_mem _ hcS' i,
                     ((compFin m S').orderEmbOfFin hcS').strictMono hi⟩
               rw [heq, Finset.card_image_of_injective _
@@ -3729,29 +3770,30 @@ private lemma badBarrier_eq_firstAbove_of_refl {m : ℕ}
             (firstBad m S' hS'c hbad'))).card =
             ((compFin m T).filter (· ≤ (compFin m S').orderEmbOfFin hcS'
             (firstBad m S' hS'c hbad'))).card := by
-          apply Finset.card_nbij id
-          · intro x hx; simp only [mem_filter, id] at hx ⊢
-            simp only [S', lRefl, mem_union, mem_filter] at hx
-            rcases hx.1 with h | h
-            · exact ⟨h.1, h.2⟩
-            · exact absurd (lt_of_lt_of_le hk_lt hx.2) (lt_irrefl _)
-          · intro x hx; simp only [mem_filter, id] at hx ⊢
-            exact ⟨by simp [S', lRefl, mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-          · intros; rfl
+          congr 1
+          ext x
+          simp only [S', lRefl, Finset.mem_filter, Finset.mem_union]
+          constructor
+          · rintro ⟨⟨hxC, -⟩ | ⟨-, hgt⟩, hle⟩
+            · exact ⟨hxC, hle⟩
+            · exact absurd (lt_trans hgt (lt_of_le_of_lt hle hk_lt)) (lt_irrefl _)
+          · rintro ⟨hxC, hle⟩
+            exact ⟨Or.inl ⟨hxC, le_trans hle (le_of_lt hk_lt)⟩, hle⟩
         -- |comp(S').filter(≤k)| = |T.filter(≤k)|
         have hcS'_eq : ((compFin m S').filter (· ≤ (compFin m S').orderEmbOfFin hcS'
             (firstBad m S' hS'c hbad'))).card =
             (T.filter (· ≤ (compFin m S').orderEmbOfFin hcS'
             (firstBad m S' hS'c hbad'))).card := by
           rw [compFin_lRefl]
-          apply Finset.card_nbij id
-          · intro x hx; simp only [mem_union, mem_filter, id] at hx ⊢
-            rcases hx.1 with h | h
-            · exact ⟨h.1, h.2⟩
-            · exact absurd (lt_of_lt_of_le hk_lt hx.2) (lt_irrefl _)
-          · intro x hx; simp only [mem_filter, id] at hx ⊢
-            exact ⟨by simp [mem_union, mem_filter, hx.1, hx.2], hx.2⟩
-          · intros; rfl
+          congr 1
+          ext x
+          simp only [Finset.mem_filter, Finset.mem_union]
+          constructor
+          · rintro ⟨⟨hxT, -⟩ | ⟨-, hgt⟩, hle⟩
+            · exact ⟨hxT, hle⟩
+            · exact absurd (lt_trans hgt (lt_of_le_of_lt hle hk_lt)) (lt_irrefl _)
+          · rintro ⟨hxT, hle⟩
+            exact ⟨Or.inl ⟨hxT, le_trans hle (le_of_lt hk_lt)⟩, hle⟩
         rw [hS'_eq, hcS'_eq]
         -- T.filter(≤k).card ≤ comp(T).filter(≤k).card for k < k₁ = firstAbove(T)
         by_contra h; push_neg at h
