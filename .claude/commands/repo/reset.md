@@ -9,15 +9,17 @@ user-invocable: true
 # /repo:reset — Back to Baseline
 
 The end-of-task ritual: review and prune stale git state, sync with the
-remote, and land back on the default branch with a clean working tree.
-Report-first — nothing is deleted or dropped without appearing in the report
-and getting a yes.
+remote, and land back on the default branch with a clean working tree. The
+reversible steps (fetch, land on the default branch) run by default; nothing
+irreversible — dropping a stash, deleting a branch or worktree — ever happens
+without an explicit opt-in and the permanent-loss check.
 
 ## Usage
 
 ```
-/repo:reset                    # Interactive: review everything, act on approval
-/repo:reset --prune            # Also delete confirmed-safe branches/worktrees without per-item prompts
+/repo:reset                    # Run the reversible baseline steps; keep all stashes, land on default
+/repo:reset --ask              # Confirm each step before acting
+/repo:reset --prune            # Also delete confirmed-safe branches/worktrees (after the loss check)
 ```
 
 ## Steps
@@ -44,14 +46,19 @@ git stash list --format='%gd %cr %gs'
 ```
 
 For each stash, show what's in it (`git stash show --stat <ref>`) and its age.
-Ask per stash: **apply**, **drop**, or **keep**. Old stashes (>30 days) are
-usually droppable but the user decides — never auto-drop.
+A stash is unique work and dropping it is irreversible, so **keep every stash
+by default** — just report them (flagging any older than 30 days as likely
+droppable). Only under `--ask` ask per stash whether to **apply**, **drop**,
+or **keep**. Never auto-drop, regardless of flags.
 
 ### 3. Branch & worktree review
 
 Run the full [[branches]] classification (PROTECTED / merged-PR / closed-issue
 / orphaned-automation / UNKNOWN, plus stale worktrees). With `--prune`, delete
-the SAFE TO DELETE category after presenting it; otherwise ask.
+the SAFE TO DELETE category after presenting it; otherwise ask. Either way,
+[[branches]]' **permanent-loss check** applies — a branch with commits found
+nowhere else, or a worktree with uncommitted changes, is never removed
+automatically, so nothing here can permanently destroy work.
 
 ### 4. Sync with remote
 

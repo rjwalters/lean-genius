@@ -39,9 +39,10 @@ Structure it like this:
 ```
 ## Repo Skills v<version> (installed <date>)
 
-General repository hygiene and environment tools. Everything is
-**report-first**: commands show findings and wait for your direction
-before changing anything.
+General repository hygiene and environment tools. Commands **apply their
+safe, reversible fixes by default** and report each change; add `--ask`
+to review and confirm first. Irreversible removals (branches, worktrees,
+stashes, untracked files) always need an explicit opt-in.
 
 ### Everyday
 | Command | When to reach for it |
@@ -54,13 +55,17 @@ before changing anything.
 | /repo:audit | Monthly sweep, or after a big refactor/import |
 | /repo:update-tools | Keep Loom/Anvil/Repo Skills installs current |
 
-### Focused checks (audit runs all of these)
+### Focused checks
+| /repo:docs | Documentation health — content, README structure, cross-refs |
 | /repo:branches | ... |
 | /repo:gitignore | ... |
 | /repo:links | ... |
 | /repo:orphans | ... |
 | /repo:readme | ... |
 ```
+
+(`audit` runs the branch/gitignore/links/orphans/readme checks; `docs` is the
+canonical doc command and subsumes `readme` + `links`.)
 
 Group whatever is actually installed into those three buckets (everyday /
 periodic / focused); put unrecognized commands in a fourth "Other" group with
@@ -70,8 +75,9 @@ their frontmatter descriptions.
 
 - Where to start: `/repo:audit` for a first look at repo health, `/repo:reset`
   at the end of a work session
-- Most commands take an optional path to limit scope, and a flag to apply
-  fixes (`--prune`, `--apply`) — without it they only report
+- Most commands take an optional path to limit scope. Safe fixes apply by
+  default; add `--ask` to review first, or `--prune` to also remove
+  confirmed-safe branches/worktrees (after a permanent-loss check)
 - Full details per command: `/repo:help <command>` or the files in
   `.claude/commands/repo/`
 - Updating: `/repo:update-tools` (source: https://github.com/rjwalters/repo)

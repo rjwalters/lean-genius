@@ -116,19 +116,46 @@ STALE WORKTREES (0):
 
 ### 5. If `--prune` flag is set
 
-After presenting the report, delete branches in the SAFE TO DELETE category:
+**Before deleting anything, run the permanent-loss check.** No branch or
+worktree is removed until it passes — irreversible removal of work that exists
+nowhere else is never acceptable, `--prune` or not.
+
+For every branch about to be deleted, list commits that live *only* on that
+branch — not reachable from the default branch and not present on any remote:
 
 ```bash
-git branch -D <branch_name>
+git log --oneline <branch> --not --remotes --not <default>
 ```
 
-For stale worktrees:
+- **Empty** → the work is preserved elsewhere (merged or pushed); safe to delete.
+- **Non-empty** → those commits would be **permanently lost**. Do NOT auto-delete
+  even under `--prune`. Reclassify the branch as UNKNOWN, show the count and the
+  commit subjects, and require an explicit per-branch confirmation.
+
+(A merged PR whose remote branch was already deleted may show commits here after
+a squash-merge — that's the safe direction to err: surface it and let the user
+confirm the work is truly in the PR.)
+
+For each worktree about to be removed, refuse if it has uncommitted changes —
+that work exists nowhere else:
+
 ```bash
-git worktree unlock <path> 2>/dev/null
-git worktree remove --force <path>
+if [ -n "$(git -C <path> status --porcelain)" ]; then
+  echo "SKIP <path>: uncommitted changes — resolve before removing"
+else
+  git worktree remove <path>          # no --force; only remove clean worktrees
+fi
 ```
 
-Report what was deleted and what remains.
+Then delete the branches that passed the loss check:
+
+```bash
+git branch -d <branch_name>           # -d (safe): refuses if not merged
+# escalate to -D only for a branch the loss check proved is pushed/merged
+```
+
+Report what was deleted, what was skipped for potential data loss, and what
+remains.
 
 ### 6. If no `--prune` flag
 
@@ -145,6 +172,9 @@ To investigate unknown branches: git log --oneline -5 <branch>
 3. **NEVER delete branches named as long-lived by the repo's own docs**
 4. **Always report before deleting** — the user must see the full list before `--prune` acts
 5. **When in doubt, classify as UNKNOWN** — let the user decide
+6. **Never destroy unique work** — run the permanent-loss check (step 5) before
+   any deletion; a branch with commits found nowhere else, or a worktree with
+   uncommitted changes, is never removed automatically, regardless of flags
 
 ## Notes
 

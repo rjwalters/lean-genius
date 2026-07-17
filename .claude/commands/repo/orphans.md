@@ -54,5 +54,8 @@ Present findings grouped by type. For each orphan, show:
 - What was searched for (e.g., "grepped for `extract.py` — 0 references")
 - Suggested action: delete, move, or add a reference
 
-Ask before taking any action. Some "orphans" are legitimate standalone files —
-the user knows which.
+Deleting an orphan is destructive and a judgment call — an "orphan" is often a
+legitimate standalone file the user keeps deliberately — so unlike the safe-fix
+commands this one never auto-acts. It reports and waits for your decision
+(delete, move, or add a reference), with no `--ask` needed: report-and-wait
+is the only mode.
