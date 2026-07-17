@@ -85,7 +85,7 @@ theorem qBinom_reciprocal (q : R) (hq : q ≠ 0) :
   | _, 0 => by simp
   | 0, k + 1 => by simp
   | n + 1, k + 1 => by
-    rcases le_or_lt (k + 1) n with hkn | hkn
+    rcases (show k + 1 ≤ n ∨ n < k + 1 from by omega) with hkn | hkn
     · -- k + 1 ≤ n, i.e. k < n : generic interior case
       have hsplit : n - k = (n - k - 1) + 1 := by omega
       -- Expand LHS via the SECOND q-Pascal identity (P2)

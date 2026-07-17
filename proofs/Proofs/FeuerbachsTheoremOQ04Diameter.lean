@@ -2,16 +2,15 @@
 # Feuerbach's Theorem in Non-Euclidean Geometry (OQ-04): the spherical model has diameter π
 
 Companion to `Proofs.FeuerbachsTheoremOQ04Metric`, which packaged the spherical model
-`SphereModel E` (unit vectors of `E`) as a bundled `MetricSpace` with `dist = sdist` and
-recorded the pointwise bound `dist P Q ≤ π` (`SphereModel.dist_le_pi`).
+`SphereModel E` (unit vectors of `E`) as a bundled `MetricSpace` with `dist = sdist`,
+recorded the pointwise bound `dist P Q ≤ π` (`SphereModel.dist_le_pi`), and already
+supplies the antipodal self-map `SphereModel.antipode` together with
+`SphereModel.dist_antipode : dist P (antipode P) = π` (the antipode realises the bound).
 
-That bound is *sharp*: `dist P (−P) = π` for the antipode of any model point
-(`FeuerbachsTheoremOQ04.sdist_antipode`).  This file promotes the pointwise bound into the
-two metric-space statements it was aiming at, now expressed through Mathlib's `Bornology` /
-`Metric.diam` API on the bundled instance:
+This file promotes that pointwise bound into the two metric-space statements it was
+aiming at, expressed through Mathlib's `Bornology` / `Metric.diam` API on the bundled
+instance:
 
-* `SphereModel.antipode` — the antipodal involution `P ↦ −P` as a self-map of the model.
-* `SphereModel.dist_antipode` — `dist P (antipode P) = π`: the antipode realises the bound.
 * `SphereModel.isBounded_univ` — the whole spherical model is metrically bounded
   (`Bornology.IsBounded Set.univ`), so it plugs into Mathlib's boundedness API.
 * `SphereModel.diam_le_pi` — `Metric.diam Set.univ ≤ π`.
@@ -32,16 +31,6 @@ open scoped RealInnerProductSpace
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 namespace SphereModel
-
-/-- The **antipodal involution** of the spherical model: `P ↦ −P`, again a model point
-(`onSphere_neg`).  A point and its antipode are the diametrically opposite pair. -/
-def antipode (P : SphereModel E) : SphereModel E := ⟨-P.1, onSphere_neg P.2⟩
-
-/-- **The antipode realises the diameter bound.**  `dist P (antipode P) = π`: a model point
-and its antipode sit at the maximal spherical distance, so the bound `dist ≤ π`
-(`dist_le_pi`) is attained.  Directly `sdist_antipode`. -/
-@[simp] theorem dist_antipode (P : SphereModel E) : dist P (antipode P) = Real.pi := by
-  rw [dist_eq]; exact sdist_antipode P.2
 
 /-- **The spherical model is bounded.**  Every distance is at most `π`, so `Set.univ` is a
 `Bornology.IsBounded` set — the spherical model is a bounded metric space, usable with
