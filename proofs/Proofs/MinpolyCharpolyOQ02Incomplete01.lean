@@ -907,24 +907,23 @@ counterpart of `exists_prod_linear_factors_eq_zero`. -/
 open Polynomial in
 /-- `aeval M` of the product `∏_{λ ∈ S}(X − C λ)` over the distinct eigenvalues equals the
 splitting-annihilator list product `∏_{λ ∈ S}(M − λ·1)`, hence vanishes. -/
-theorem aeval_prod_X_sub_C_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
+theorem aeval_prod_X_sub_C_eigen [DecidableEq K] {M P : Matrix n n K} (hP : IsUnit P.det)
     (hD : (P⁻¹ * M * P).IsDiag) :
     aeval M (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s)) = 0 := by
-  rw [map_prod,
-    show (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, aeval M (X - C s))
-        = ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
-            (M - s • (1 : Matrix n n K)) from
-      Finset.prod_congr rfl (fun s _ => by
-        rw [map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]),
-    ← Finset.prod_map_toList]
+  -- `Matrix n n K` need not be commutative, so the codomain-side `Finset.prod` machinery
+  -- (`map_prod`) does not apply here; route through `List.prod`/`map_list_prod` instead,
+  -- which only needs `Monoid` on the codomain (matching the file's `List`-based idiom).
+  rw [← Finset.prod_map_toList, map_list_prod]
+  simp only [List.map_map, Function.comp_def, map_sub, aeval_X, aeval_C,
+    Algebra.algebraMap_eq_smul_one]
   exact prod_sub_eigen_smul_eq_zero hP hD
 
 open Polynomial in
 /-- **The minimal polynomial divides the splitting annihilator.**  For a matrix `M`
 diagonalized by `P`, `minpoly K M` divides `∏_{λ ∈ S}(X − C λ)` over the finite set `S` of
 distinct eigenvalues (diagonal entries of `P⁻¹MP`). -/
-theorem IsDiagonalizable.minpoly_dvd_prod_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
-    (hD : (P⁻¹ * M * P).IsDiag) :
+theorem IsDiagonalizable.minpoly_dvd_prod_eigen [DecidableEq K] {M P : Matrix n n K}
+    (hP : IsUnit P.det) (hD : (P⁻¹ * M * P).IsDiag) :
     minpoly K M ∣
       ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s) := by
   apply minpoly.dvd
@@ -944,6 +943,7 @@ annihilator), it is itself squarefree.  A self-contained re-derivation of the pa
 `Matrix.IsDiagonalizable.squarefree_minpoly`, sourced from this file's annihilator. -/
 theorem IsDiagonalizable.squarefree_minpoly_of_annihilator {M : Matrix n n K}
     (hM : M.IsDiagonalizable) : Squarefree (minpoly K M) := by
+  classical
   obtain ⟨P, hP, hD⟩ := hM
   have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
   exact Squarefree.squarefree_of_dvd
