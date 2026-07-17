@@ -50,16 +50,10 @@ variable {ι : Type*} [Fintype ι]
 
 /-! ## Per-channel rate: nonnegativity and power-monotonicity -/
 
-/-- **A single sub-channel has nonnegative rate.**  With nonnegative allotted
-power `P` and positive noise `N`, the per-use AWGN capacity `½ log(1 + P/N)` is
-nonnegative, since `1 + P/N ≥ 1`. -/
-theorem perUseCapacity_nonneg {P N : ℝ} (hP : 0 ≤ P) (hN : 0 < N) :
-    0 ≤ perUseCapacity P N := by
-  unfold perUseCapacity
-  apply mul_nonneg (by norm_num)
-  apply Real.log_nonneg
-  have : 0 ≤ P / N := div_nonneg hP hN.le
-  linarith
+-- NOTE: `perUseCapacity_nonneg` (a single sub-channel has nonnegative rate,
+-- `0 ≤ P → 0 < N → 0 ≤ perUseCapacity P N`) was moved into the base file
+-- `ShannonChannelCodingAWGNOQ03OQ01` (namespace `ShannonWaterFilling`); the
+-- former duplicate here is removed to avoid a name clash.
 
 /-- **Per-channel rate is monotone in power.**  For fixed positive noise `N`,
 allocating more (nonnegative) power to a sub-channel never decreases its rate:
@@ -120,18 +114,12 @@ theorem parallelRate_nonneg (N P : ι → ℝ) (hN : ∀ i, 0 < N i) (hP : ∀ i
 
 /-! ## Per-channel rate: strict positivity and its zero set -/
 
-/-- **A single sub-channel with positive power has strictly positive rate.**  For
-positive noise `N` and strictly positive allotted power `P`, the per-use AWGN
-capacity `½ log(1 + P/N)` is strictly positive, since `1 + P/N > 1`.  This
-sharpens `perUseCapacity_nonneg` and is the atomic building block behind the
-sum-level `rate_waterAlloc_pos`. -/
-theorem perUseCapacity_pos {P N : ℝ} (hP : 0 < P) (hN : 0 < N) :
-    0 < perUseCapacity P N := by
-  unfold perUseCapacity
-  apply mul_pos (by norm_num)
-  apply Real.log_pos
-  have hpos : 0 < P / N := div_pos hP hN
-  linarith
+-- NOTE: `perUseCapacity_pos` (a single sub-channel with positive power has
+-- strictly positive rate, `0 < P → 0 < N → 0 < perUseCapacity P N`) was moved
+-- into the base file `ShannonChannelCodingAWGNOQ03OQ01` (namespace
+-- `ShannonWaterFilling`); the former duplicate here is removed to avoid a
+-- name clash.  It sharpens `perUseCapacity_nonneg` and is the atomic
+-- building block behind the sum-level `rate_waterAlloc_pos`.
 
 /-- **A single sub-channel's rate vanishes exactly at zero power.**  For positive
 noise `N` and nonnegative power `P`, the per-use AWGN capacity is zero iff no power
@@ -179,12 +167,10 @@ theorem perUseCapacity_pos_iff {P N : ℝ} (hP : 0 ≤ P) (hN : 0 < N) :
 
 /-! ## Water-filling depth: monotonicity in the water level -/
 
-/-- **The water-filling depth is monotone in the water level.**  Raising the
-surface `μ₁ ≤ μ₂` never decreases any channel's depth `(μ − Nᵢ)₊`. -/
-theorem waterAlloc_mono_level {μ₁ μ₂ : ℝ} (h : μ₁ ≤ μ₂) (N : ι → ℝ) (i : ι) :
-    waterAlloc μ₁ N i ≤ waterAlloc μ₂ N i := by
-  unfold waterAlloc
-  exact max_le_max (by linarith) le_rfl
+-- NOTE: `waterAlloc_mono_level` (raising the water surface `μ₁ ≤ μ₂` never
+-- decreases any channel's depth `(μ − Nᵢ)₊`) was moved into the base file
+-- `ShannonChannelCodingAWGNOQ03OQ01` (namespace `ShannonWaterFilling`); the
+-- former duplicate here is removed to avoid a name clash.
 
 /-! ## Water-filling rate: nonnegativity and monotonicity in the water level -/
 
@@ -211,10 +197,10 @@ theorem rate_waterAlloc_mono_level (N : ι → ℝ) (hN : ∀ i, 0 < N i)
 
 /-! ## Budget positivity ⇒ water-level positivity, and the zero-budget degeneracy -/
 
-/-- The poured-in power `g(μ) = ∑ᵢ (μ − Nᵢ)₊` is nonnegative. -/
-theorem waterBudget_nonneg (N : ι → ℝ) (μ : ℝ) : 0 ≤ waterBudget N μ := by
-  unfold waterBudget
-  exact Finset.sum_nonneg fun i _ => waterAlloc_nonneg μ N i
+-- NOTE: `waterBudget_nonneg` (the poured-in power `g(μ) = ∑ᵢ (μ − Nᵢ)₊` is
+-- nonnegative) was moved into the base file `ShannonChannelCodingAWGNOQ03OQ01`
+-- (namespace `ShannonWaterFilling`); the former duplicate here is removed to
+-- avoid a name clash.
 
 -- NOTE: `waterLevel_pos` (a positive budget forces a positive water level) was moved
 -- into the base file `ShannonChannelCodingAWGNOQ03OQ01` (namespace `ShannonWaterFilling`);
@@ -237,37 +223,13 @@ theorem rate_waterAlloc_eq_zero_of_budget_zero (N : ι → ℝ)
   rw [hzero i]
   simp [perUseCapacity]
 
-/-- **Strict positivity of the water-filling rate.**  As soon as a strictly
-positive total power `P > 0` is poured in (with positive noise floors), the
-water-filling rate is strictly positive: `0 < R(waterAlloc μ N)`.  Some channel is
-necessarily active (`Pᵢ⋆ > 0`) — otherwise the whole budget `∑ᵢ Pᵢ⋆ = P` would
-vanish — and that active channel contributes a strictly positive
-`½ log(1 + Pᵢ⋆/Nᵢ)`, while every other term is nonnegative.  This sharpens
-`rate_waterAlloc_nonneg` and is the general-noise counterpart of the equal-noise
-`rate_equalNoise_pos`. -/
-theorem rate_waterAlloc_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
-    (hbudget : waterBudget N μ = P) (hP : 0 < P) :
-    0 < parallelRate N (waterAlloc μ N) := by
-  -- some channel is active, else the whole budget `∑ᵢ Pᵢ⋆ = P` would vanish
-  have hact : ∃ i, 0 < waterAlloc μ N i := by
-    by_contra hcon
-    push_neg at hcon
-    have hle : waterBudget N μ ≤ 0 := by
-      unfold waterBudget
-      exact Finset.sum_nonpos fun i _ => hcon i
-    rw [hbudget] at hle
-    linarith
-  obtain ⟨i₀, hi₀⟩ := hact
-  unfold parallelRate
-  refine Finset.sum_pos'
-    (fun i _ => perUseCapacity_nonneg (waterAlloc_nonneg μ N i) (hN i))
-    ⟨i₀, Finset.mem_univ i₀, ?_⟩
-  -- the active channel `i₀` has strictly positive per-use capacity
-  unfold perUseCapacity
-  apply mul_pos (by norm_num)
-  apply Real.log_pos
-  have hpos : 0 < waterAlloc μ N i₀ / N i₀ := div_pos hi₀ (hN i₀)
-  linarith
+-- NOTE: `rate_waterAlloc_pos` (a positive budget forces a strictly positive
+-- water-filling rate) was moved into the base file
+-- `ShannonChannelCodingAWGNOQ03OQ01` (namespace `ShannonWaterFilling`); the
+-- former duplicate here is removed to avoid a name clash.  Its base signature
+-- is `rate_waterAlloc_pos (N) (hN) {μ} (hex : ∃ i, N i < μ) :
+-- 0 < parallelRate N (waterAlloc μ N)` (phrased via an active channel rather
+-- than a realised budget `P`).
 
 /-- **The water-filling rate vanishes exactly at zero budget.**  For positive noise
 floors and a water level `μ` realising a budget `P ≥ 0`, the water-filling rate is
@@ -282,7 +244,18 @@ theorem rate_waterAlloc_eq_zero_iff (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P
   constructor
   · intro h
     by_contra hP0
-    exact (rate_waterAlloc_pos N hN hbudget (lt_of_le_of_ne hP (Ne.symm hP0))).ne' h
+    have hPpos : 0 < P := lt_of_le_of_ne hP (Ne.symm hP0)
+    -- some channel is active, else the whole budget `∑ᵢ Pᵢ⋆ = P` would vanish
+    have hex : ∃ i, N i < μ := by
+      by_contra hcon
+      push_neg at hcon
+      have hz : ∀ i, waterAlloc μ N i = 0 := fun i => by
+        unfold waterAlloc; exact max_eq_right (by linarith [hcon i])
+      have hzero : waterBudget N μ = 0 := by
+        unfold waterBudget; simp [hz]
+      rw [hbudget] at hzero
+      linarith
+    exact (rate_waterAlloc_pos N hN hex).ne' h
   · intro h
     exact rate_waterAlloc_eq_zero_of_budget_zero N (hbudget.trans h)
 
