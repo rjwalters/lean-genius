@@ -525,7 +525,7 @@ theorem sqDiffFree_density_bound_minfac_of_odd {N : ℕ} [NeZero N] (hodd : Odd 
     which overwhelms the `|A|²` main term.  Resolving `o(N)` for bounded-`minFac` moduli requires a
     *good modulus* (`minFac → ∞`) or the classical multi-modulus / interval reduction, not a sharper
     bound at the fixed modulus `N`.  `0` axioms. -/
-theorem sqDiffFree_card_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N))
+theorem sqDiffFree_card_le_minfac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N))
     (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
     (A.card : ℝ)
       ≤ (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card + (N : ℝ) / Real.sqrt N.minFac := by
@@ -553,7 +553,7 @@ theorem sqDiffFree_card_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finse
     linarith
 
 /-- **Sárközy's `√N` density bound at prime moduli — the clean single-modulus form.**
-    Specializing the sharp odd-modulus ceiling `sqDiffFree_card_le_of_odd` to a prime `N ≠ 2`
+    Specializing the sharp odd-modulus ceiling `sqDiffFree_card_le_minfac_of_odd` to a prime `N ≠ 2`
     makes *both* structural quantities collapse to their extreme values:
     * `minFac(N) = N` (the smallest prime factor of a prime is itself), so the sub-maximal
       Gauss magnitude is the sharp `N/√minFac(N) = N/√N = √N` (`Real.div_sqrt`);
@@ -573,7 +573,7 @@ theorem sqDiffFree_card_le_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N
     (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
     (A.card : ℝ) ≤ 1 + Real.sqrt N := by
   have hodd : Odd N := hp.odd_of_ne_two hN2
-  have hbase := sqDiffFree_card_le_of_odd hodd A hfree
+  have hbase := sqDiffFree_card_le_minfac_of_odd hodd A hfree
   -- `minFac N = N`: the smallest prime factor of a prime is itself.
   have hmf : N.minFac = N := by
     rcases hp.eq_one_or_self_of_dvd N.minFac (Nat.minFac_dvd N) with h | h

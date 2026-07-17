@@ -2237,7 +2237,10 @@ theorem affValid_append : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
       AffValid (v ++ w) c d := by
   intro v c d hv
   induction hv with
-  | nil => intro w hw; simpa using hw
+  | @nil c d =>
+    intro w hw
+    have hEq : affOrbit ([] : List Bool) (c, d) = (c, d) := rfl
+    rwa [hEq] at hw
   | @odd v c d hc hd _ ih => intro w hw; exact AffValid.odd hc hd (ih hw)
   | @even v c d hc hd _ ih => intro w hw; exact AffValid.even hc hd (ih hw)
 
