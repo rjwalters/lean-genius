@@ -2977,8 +2977,10 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
     omega
   · -- k > 0: use predecessor k' = k-1
     set k' : Fin (2 * m) := ⟨k.val - 1, lt_of_le_of_lt (Nat.sub_le _ _) k.isLt⟩ with hk'_def
-    have hk'k : k' < k := Fin.mk_lt_mk.mpr (by omega)
     have hk'val : (k' : ℕ) = (k : ℕ) - 1 := by rw [hk'_def]
+    have hk'k : k' < k := by
+      rw [Fin.lt_def, hk'val]
+      omega
     -- By minimality of firstAbove, k' does not satisfy the condition
     have hbefore : (T.filter (· ≤ k')).card ≤ ((compFin m T).filter (· ≤ k')).card := by
       by_contra h; push_neg at h
@@ -3061,8 +3063,10 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
     omega
   · -- k > 0: use k' = k-1
     set k' : Fin (2 * m) := ⟨k.val - 1, lt_of_le_of_lt (Nat.sub_le _ _) k.isLt⟩ with hk'_def
-    have hk'k : k' < k := Fin.mk_lt_mk.mpr (by omega)
     have hk'val : (k' : ℕ) = (k : ℕ) - 1 := by rw [hk'_def]
+    have hk'k : k' < k := by
+      rw [Fin.lt_def, hk'val]
+      omega
     have hbefore : (T.filter (· ≤ k')).card ≤ ((compFin m T).filter (· ≤ k')).card := by
       by_contra h; push_neg at h
       have hmem : k' ∈ Finset.univ.filter (fun k'' : Fin (2 * m) =>
@@ -3928,10 +3932,21 @@ private lemma ballot_finset_card (m : ℕ) :
             lRefl_badBarrier_card p.1 p.2.choose p.2.choose_spec⟩
       invFun := fun q =>
           ⟨lRefl m q.1 (firstAbove m q.1 q.2), lRefl_fA_card q.1 q.2, lRefl_fA_bad q.1 q.2⟩
-      left_inv := fun ⟨S, hS, hbad⟩ =>
-          Subtype.ext (by rw [fA_eq_bB S hS hbad]; exact lRefl_invol S _)
-      right_inv := fun ⟨T, hT⟩ =>
-          Subtype.ext (by rw [bB_eq_fA T hT]; exact lRefl_invol T _) }
+      left_inv := fun p => Subtype.ext (by
+        have h1 := fA_eq_bB p.1 p.2.choose p.2.choose_spec
+        dsimp only
+        rw [h1]
+        exact lRefl_invol p.1 _)
+      right_inv := fun q => Subtype.ext (by
+        have h1 : ∀ (hc : (lRefl m q.1 (firstAbove m q.1 q.2)).card = m)
+            (hb' : ∃ j : Fin m, ¬((lRefl m q.1 (firstAbove m q.1 q.2)).orderEmbOfFin hc j <
+              (compFin m (lRefl m q.1 (firstAbove m q.1 q.2))).orderEmbOfFin
+                (compFin_card m _ hc) j)),
+            badBarrier m (lRefl m q.1 (firstAbove m q.1 q.2)) hc hb' =
+              firstAbove m q.1 q.2 := fun hc hb' => bB_eq_fA q.1 q.2
+        dsimp only
+        rw [h1]
+        exact lRefl_invol q.1 _) }
   -- Step 2: partition ballot + bad = all m-subsets = C(2m,m).
   have hAll : Fintype.card {S : Finset (Fin (2 * m)) // S.card = m} =
       Nat.choose (2 * m) m := by
@@ -3960,17 +3975,21 @@ private lemma ballot_finset_card (m : ℕ) :
       left_inv := by
         intro x
         rcases x with ⟨S, hS, h⟩ | ⟨S, hS, hb⟩
-        · rw [dif_pos h]
-        · have hnp : ¬∀ j : Fin m, S.orderEmbOfFin hS j <
-              (compFin m S).orderEmbOfFin (compFin_card m S hS) j :=
-            not_forall.mpr hb
-          rw [dif_neg hnp]
+        · simp only [Sum.elim_inl]
+          split_ifs with hcond
+          · rfl
+          · exact absurd h hcond
+        · simp only [Sum.elim_inr]
+          split_ifs with hcond
+          · obtain ⟨j, hj⟩ := hb
+            exact absurd (hcond j) hj
+          · rfl
       right_inv := by
         intro p
-        by_cases h : ∀ j : Fin m, p.1.orderEmbOfFin p.2 j <
-            (compFin m p.1).orderEmbOfFin (compFin_card m p.1 p.2) j
-        · rw [dif_pos h]
-        · rw [dif_neg h] }
+        dsimp only
+        split_ifs with hcond
+        · rfl
+        · rfl }
   -- Step 3: arithmetic to conclude.
   show _ = Nat.choose (2 * m) m - Nat.choose (2 * m) (m + 1)
   rw [hBad, hAll] at hPartition
@@ -4137,8 +4156,8 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
       Finset.prod_image (fun x _ y _ h => (Prod.mk.inj h).2)]
   -- Row 0: split range a = range b ∪ Ico b a
   have hsplit : Finset.range a = Finset.range b ∪ Finset.Ico b a := by
-    rw [Finset.range_eq_Ico, ← Finset.Ico_union_Ico_eq_Ico (Nat.zero_le b) hab]
-    simp [Finset.range_eq_Ico]
+    rw [Finset.range_eq_Ico, ← Finset.Ico_union_Ico_eq_Ico (Nat.zero_le b) hab,
+      Finset.range_eq_Ico]
   have hdisj : Disjoint (Finset.range b) (Finset.Ico b a) :=
     Finset.disjoint_left.mpr (fun x hx hy =>
       absurd (Finset.mem_range.mp hx) (by simp [Finset.mem_Ico] at hy; omega))
@@ -4404,7 +4423,10 @@ private noncomputable def extendSYT0 {a b : ℕ}
             by have hne_ : _ ≠ _ := fun heq => h₂ (Prod.ext_iff.mpr ⟨hi, heq⟩); omega⟩)
         · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
       have := (T₁.entry_range c₂ hcμ₂).2
-      rw [twoRowYD_card (a - 1) b hab₁] at this; omega
+      rw [twoRowYD_card (a - 1) b hab₁] at this
+      have ha1 : 1 ≤ a := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨-, hj⟩ | ⟨-, hj⟩ <;> omega
+      exact absurd h (by omega)
     · simp only [h₁, h₂, ↓reduceIte, if_true, if_false] at h
       have hcμ₁ : c₁ ∈ twoRowYD (a - 1) b hab₁ := by
         rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -4412,7 +4434,10 @@ private noncomputable def extendSYT0 {a b : ℕ}
             by have hne_ : _ ≠ _ := fun heq => h₁ (Prod.ext_iff.mpr ⟨hi, heq⟩); omega⟩)
         · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
       have := (T₁.entry_range c₁ hcμ₁).2
-      rw [twoRowYD_card (a - 1) b hab₁] at this; omega
+      rw [twoRowYD_card (a - 1) b hab₁] at this
+      have ha1 : 1 ≤ a := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨-, hj⟩ | ⟨-, hj⟩ <;> omega
+      exact absurd h (by omega)
     · simp only [h₁, h₂, ↓reduceIte] at h
       have hcμ₁ : c₁ ∈ twoRowYD (a - 1) b hab₁ := by
         rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -4507,7 +4532,8 @@ private noncomputable def extendSYT1 {a b : ℕ}
         · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
             by have hne_ : _ ≠ _ := fun heq => h₂ (Prod.ext_iff.mpr ⟨hi, heq⟩); omega⟩)
       have := (T₂.entry_range c₂ hcμ₂).2
-      rw [twoRowYD_card a (b - 1) hab₂] at this; omega
+      rw [twoRowYD_card a (b - 1) hab₂] at this
+      exact absurd h (by omega)
     · simp only [h₁, h₂, ↓reduceIte, if_true, if_false] at h
       have hcμ₁ : c₁ ∈ twoRowYD a (b - 1) hab₂ := by
         rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -4515,7 +4541,8 @@ private noncomputable def extendSYT1 {a b : ℕ}
         · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
             by have hne_ : _ ≠ _ := fun heq => h₁ (Prod.ext_iff.mpr ⟨hi, heq⟩); omega⟩)
       have := (T₂.entry_range c₁ hcμ₁).2
-      rw [twoRowYD_card a (b - 1) hab₂] at this; omega
+      rw [twoRowYD_card a (b - 1) hab₂] at this
+      exact absurd h (by omega)
     · simp only [h₁, h₂, ↓reduceIte] at h
       have hcμ₁ : c₁ ∈ twoRowYD a (b - 1) hab₂ := by
         rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -4665,10 +4692,12 @@ private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
         simp only [extendSYT0, restrictSYT0]
         split_ifs with hce hcμ
         · -- c = (0, a-1)
+          subst hce
           exact hT.symm
         · -- c ∈ μ₁, c ≠ (0, a-1)
           rfl
         · -- c ∉ μ₁, c ≠ (0, a-1)
+          symm
           apply T.entry_zero; intro hcμ_big
           rcases mem_twoRowYD hab |>.mp hcμ_big with ⟨hi, hj⟩ | ⟨hi, hj⟩
           · exact hcμ (mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
@@ -4678,10 +4707,12 @@ private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
         simp only [extendSYT1, restrictSYT1]
         split_ifs with hce hcμ
         · -- c = (1, b-1)
+          subst hce
           exact ((max_at_corner T).resolve_left hT).symm
         · -- c ∈ μ₂, c ≠ (1, b-1)
           rfl
         · -- c ∉ μ₂, c ≠ (1, b-1)
+          symm
           apply T.entry_zero; intro hcμ_big
           rcases mem_twoRowYD hab |>.mp hcμ_big with ⟨hi, hj⟩ | ⟨hi, hj⟩
           · exact hcμ (mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩))
@@ -4699,37 +4730,25 @@ private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
         congr 1
         apply StandardYoungTableau.ext; intro c
         simp only [restrictSYT0, extendSYT0]
-        split_ifs with hcμ hce
-        · -- c ∈ μ₁: entry = if c=(0,a-1) then a+b else T₁.entry c
-          -- c ∈ μ₁ implies c ≠ (0,a-1), so entry = T₁.entry c
-          simp only [if_neg (by
-            intro h; exact absurd (h ▸ hcμ) (by simp [mem_twoRowYD hab₁]))]
-        · -- c = (0,a-1): entry = a+b, but (0,a-1) ∉ μ₁: branch is else = 0
-          simp only [if_pos rfl]
-          -- hcμ : c ∉ μ₁, hce : c = (0, a-1)
-          -- We want T₁.entry_zero applied to prove T₁.entry c = 0... wait,
-          -- the "if c ∈ μ₁ then T.entry c else 0" branch: c ∉ μ₁, so = 0.
-          -- But wait: the split_ifs split on c ∈ μ₁ first, then something else?
-          -- The outer if is "if c ∈ μ₁ then T.entry c else 0" (from restrictSYT0)
-          -- and the inner if is "if c = (0,a-1) then a+b else T₁.entry c" (from extendSYT0)
-          -- Case hcμ (c ∉ μ₁) and hce (c = (0,a-1)):
-          -- restrictSYT0 of extendSYT0 at c: (if c ∈ μ₁ then (extendSYT0).entry c else 0) = 0
-          -- We need 0 = T₁.entry c. By T₁.entry_zero c (hcμ) — no wait, the split_ifs is wrong here
-          -- Let me think: the goal here is:
-          -- (if c ∈ μ₁ then (if c = (0,a-1) then a+b else T₁.entry c) else 0) = T₁.entry c
-          -- c ∉ μ₁ (hcμ), c = (0,a-1) (hce): LHS = 0. RHS = T₁.entry (0,a-1).
-          -- T₁.entry (0,a-1) = 0 since (0,a-1) ∉ μ₁. ✓
-          exact (T₁.entry_zero c hcμ).symm
-        · -- c ∉ μ₁, c ≠ (0, a-1):
-          -- LHS = 0, RHS = T₁.entry c = 0 (by T₁.entry_zero)
+        by_cases hcμ : c ∈ twoRowYD (a - 1) b hab₁
+        · rw [if_pos hcμ]
+          -- c ∈ μ₁ implies c ≠ (0, a-1), so the inner if takes the else branch
+          have hce : c ≠ (0, a - 1) := by
+            intro h
+            rw [h] at hcμ
+            rcases mem_twoRowYD hab₁ |>.mp hcμ with ⟨-, hj⟩ | ⟨hi, -⟩
+            · omega
+            · exact absurd hi (by norm_num)
+          rw [if_neg hce]
+        · rw [if_neg hcμ]
           exact (T₁.entry_zero c hcμ).symm
       | Sum.inr T₂ =>
         have h1b1 : (extendSYT1 hab hab₂ hb T₂).entry (1, b - 1) = a + b := by
           simp [extendSYT1]
         have h0a1 : (extendSYT1 hab hab₂ hb T₂).entry (0, a - 1) ≠ a + b := by
           simp only [extendSYT1]
-          rw [if_neg (by
-            intro h; simp [Prod.ext_iff] at h)]
+          rw [if_neg (show ¬(((0 : ℕ), a - 1) = ((1 : ℕ), b - 1)) from fun h => by
+            simp [Prod.ext_iff] at h)]
           have hcμ₂ : (0, a - 1) ∈ twoRowYD a (b - 1) hab₂ :=
             mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨rfl, by omega⟩)
           have := (T₂.entry_range _ hcμ₂).2
@@ -4741,12 +4760,18 @@ private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
         congr 1
         apply StandardYoungTableau.ext; intro c
         simp only [restrictSYT1, extendSYT1]
-        split_ifs with hcμ hce
-        · -- c ∈ μ₂: entry = if c=(1,b-1) then a+b else T₂.entry c
-          simp only [if_neg (by
-            intro h; exact absurd (h ▸ hcμ) (by simp [mem_twoRowYD hab₂]))]
-        · exact (T₂.entry_zero c hcμ).symm
-        · exact (T₂.entry_zero c hcμ).symm
+        by_cases hcμ : c ∈ twoRowYD a (b - 1) hab₂
+        · rw [if_pos hcμ]
+          -- c ∈ μ₂ implies c ≠ (1, b-1), so the inner if takes the else branch
+          have hce : c ≠ (1, b - 1) := by
+            intro h
+            rw [h] at hcμ
+            rcases mem_twoRowYD hab₂ |>.mp hcμ with ⟨hi, -⟩ | ⟨-, hj⟩
+            · exact absurd hi (by norm_num)
+            · omega
+          rw [if_neg hce]
+        · rw [if_neg hcμ]
+          exact (T₂.entry_zero c hcμ).symm
   }
 
 /-- **Card of SYT of general 2-row shape equals ballotSeqCount.**
@@ -4769,9 +4794,10 @@ theorem card_SYT_twoRowYD (a b : ℕ) (hab : b ≤ a) :
           card_SYT_twoRowYD a (b - 1) (by omega),
           show a - 1 + 1 = a from by omega,
           ← ballotSeqCount_rec a b ha hb]
-    · -- Square: b = a.  twoRowYD a a = twoRectYD a; card = Cn a = ballotSeqCount (a+1) a
-      rw [twoRowYD_sq_eq_twoRectYD a, card_SYT_twoRectYD]
-      exact catalan_eq_ballot a
+    · -- Square: b = a.  twoRowYD b b = twoRectYD b; card = Cn b = ballotSeqCount (b+1) b
+      -- (v4.31 subst eliminated `a`, keeping `b`)
+      rw [twoRowYD_sq_eq_twoRectYD b, card_SYT_twoRectYD]
+      exact catalan_eq_ballot b
 termination_by a + b
 decreasing_by all_goals omega
 
@@ -4878,8 +4904,8 @@ private lemma eq_twoRowYD_of_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2
     · exact Or.inl ⟨rfl, hlt⟩
     · exact Or.inr ⟨rfl, hlt⟩
     · -- i+2 ≥ 2: rowLen (i+2) ≤ rowLen 2 = 0, so j < 0, contradiction
-      have hzero : μ.rowLen (i + 2) = 0 :=
-        Nat.le_zero.mp (le_trans (μ.rowLen_anti 2 (i + 2) (by omega)) (le_of_eq h2))
+      have hzero : μ.rowLen (i + 1 + 1) = 0 :=
+        Nat.le_zero.mp (le_trans (μ.rowLen_anti 2 (i + 1 + 1) (by omega)) (le_of_eq h2))
       omega
   · rintro (⟨rfl, hlt⟩ | ⟨rfl, hlt⟩) <;> exact hlt
 
@@ -5389,7 +5415,7 @@ private lemma hookLength_doubleRemove_arm_of_c_off_d
   have hxleg : ¬((c.1, s).1 < c'.1 ∧ (c.1, s).2 = c'.2) := by
     rintro ⟨_, h2⟩; exact hs' h2
   have h_unaff := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm hxleg
-  dsimp only at h_unaff
+  try dsimp only at h_unaff
   -- Goal: hookLength ((μ\c)\c') c.1 s + 1 = hookLength μ c.1 s
   -- h_unaff : hookLength ((μ\c)\c') c.1 s = hookLength (μ\c) c.1 s
   -- h_arm   : hookLength (μ\c) c.1 s + 1 = hookLength μ c.1 s
@@ -5424,7 +5450,7 @@ private lemma hookLength_doubleRemove_leg_of_c
   have hxleg : ¬((r, c.2).1 < c'.1 ∧ (r, c.2).2 = c'.2) := by
     rintro ⟨_, h2⟩; omega
   have h_unaff := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm hxleg
-  dsimp only at h_unaff
+  try dsimp only at h_unaff
   rw [h_unaff]; exact h_leg
 
 /-- **Arm of c': shift by 1.**
@@ -5451,7 +5477,7 @@ private lemma hookLength_doubleRemove_arm_of_c'
   have hxleg : ¬((c'.1, s).1 < c.1 ∧ (c'.1, s).2 = c.2) := by
     rintro ⟨_, h2⟩; omega
   have h_unaff_c := hookLength_eq_of_not_arm_leg hc hsmem hxc hxarm hxleg
-  dsimp only at h_unaff_c
+  try dsimp only at h_unaff_c
   -- Step 2: hookLength_{(μ\c)\c'}(c'.1, s) + 1 = hookLength_{μ\c}(c'.1, s) (arm of c' in μ\c)
   have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
     isCorner_removeCorner_of_ne hc hc' hne
@@ -5486,7 +5512,7 @@ private lemma hookLength_doubleRemove_leg_of_c'_off_d
   have hxleg : ¬((r, c'.2).1 < c.1 ∧ (r, c'.2).2 = c.2) := by
     rintro ⟨_, h2⟩; omega
   have h_unaff_c := hookLength_eq_of_not_arm_leg hc hsmem hxc hxarm hxleg
-  dsimp only at h_unaff_c
+  try dsimp only at h_unaff_c
   -- Step 2: hookLength_{(μ\c)\c'}(r, c'.2) + 1 = hookLength_{μ\c}(r, c'.2) (leg of c' in μ\c)
   have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
     isCorner_removeCorner_of_ne hc hc' hne
@@ -5512,7 +5538,7 @@ private lemma hookLength_doubleRemove_other
       hookLength μ x.1 x.2 := by
   -- Step 1: removing c doesn't change hookLength (not in arm/leg of c)
   have h_unaff_c := hookLength_eq_of_not_arm_leg hc hxμ hxc hxarm_c hxleg_c
-  dsimp only at h_unaff_c
+  try dsimp only at h_unaff_c
   -- Step 2: removing c' from μ\c doesn't change hookLength (not in arm/leg of c')
   have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
     isCorner_removeCorner_of_ne hc hc' hne
@@ -5597,6 +5623,179 @@ the arm of `c` (row `c.1`, column `c'.2 < c.2`) and strictly in the leg of
 * `armLen μ c.1 c'.2 = rowLen c.1 − c'.2 − 1 = (c.2 + 1) − c'.2 − 1 = c.2 − c'.2 ≥ 1`,
 * `legLen μ c.1 c'.2 = colLen c'.2 − c.1 − 1 = (c'.1 + 1) − c.1 − 1 = c'.1 − c.1 ≥ 1`,
 so `hookLength μ c.1 c'.2 = armLen + legLen + 1 ≥ 3`.
+
+/-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
+private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (c.1, s) ∈ μ: rowLen μ c.1 = c.2 + 1 > s
+    exact YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
+  · -- (c.1, s) ≠ c: their second components differ
+    intro h
+    have : s = c.2 := (Prod.ext_iff.mp h).2
+    omega
+
+/-- Leg cells (r, c.2) with r < c.1 belong to ν = removeCorner μ c hc. -/
+private lemma leg_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {r : ℕ} (hr : r < c.1) : (r, c.2) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (r, c.2) ∈ μ: colLen μ c.2 = c.1 + 1 > r
+    exact YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
+  · -- (r, c.2) ≠ c: their first components differ
+    intro h
+    have : r = c.1 := (Prod.ext_iff.mp h).1
+    omega
+
+/-- The hookProd ratio for a corner c equals the product of h/(h-1) over arm and leg cells.
+    Proof outline:
+    1. hookProd(μ) = 1 × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase + corner = 1]
+    2. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [field_simp]
+    3. armCells = {(i,s) : s < j} ⊆ ν.cells  [arm_mem_nu]
+    4. legCells = {(r,j) : r < i} ⊆ ν.cells  [leg_mem_nu], disjoint from armCells
+    5. restCells = ν.cells \ (armCells ∪ legCells): hookLength ratio = 1  [hookLength_eq_of_not_arm_leg]
+    6. ∏_{arm} ratio = ∏_s hookLen(i,s)/(hookLen(i,s)-1)  [hookLength_removeCorner_arm]
+    7. ∏_{leg} ratio = ∏_r hookLen(r,j)/(hookLen(r,j)-1)  [hookLength_removeCorner_leg]
+    Blocked on: Finset.prod_union decomposition of ν.cells (~50 lines). -/
+lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) =
+      (∏ s ∈ Finset.range c.2, (hookLength μ c.1 s : ℚ) / (hookLength μ c.1 s - 1)) *
+      (∏ r ∈ Finset.range c.1, (hookLength μ r c.2 : ℚ) / (hookLength μ r c.2 - 1)) := by
+  obtain ⟨i, j⟩ := c
+  simp only [Prod.fst, Prod.snd]
+  set ν := removeCorner μ (i, j) hc with hν_def
+  -- ν.cells = μ.cells.erase (i,j) by definition
+  have hν_cells : ν.cells = μ.cells.erase (i, j) := rfl
+  have hcmem : (i, j) ∈ μ.cells := id hc.1
+  have hcorner_one : (hookLength μ i j : ℚ) = 1 :=
+    by exact_mod_cast hookLength_corner_eq_one hc
+  -- hookProd μ = ∏_{x ∈ ν.cells} hookLength μ x  (corner factor = 1)
+  have hμ_via_ν : (hookProd μ : ℚ) = ∏ x ∈ ν.cells, (hookLength μ x.1 x.2 : ℚ) := by
+    simp only [hookProd, Nat.cast_prod]
+    rw [← Finset.mul_prod_erase μ.cells (fun x => (hookLength μ x.1 x.2 : ℚ)) hcmem]
+    simp only [Prod.fst, Prod.snd]
+    rw [hcorner_one, one_mul, hν_cells]
+  -- hookProd ν > 0
+  have hνpos : 0 < (hookProd ν : ℚ) := by exact_mod_cast hookProd_pos ν
+  have hν_ne : (hookProd ν : ℚ) ≠ 0 := ne_of_gt hνpos
+  -- Define arm and leg cell finsets
+  let armCells : Finset (ℕ × ℕ) := Finset.image (fun s => (i, s)) (Finset.range j)
+  let legCells : Finset (ℕ × ℕ) := Finset.image (fun r => (r, j)) (Finset.range i)
+  -- arm/leg subsets of ν.cells
+  have harm_sub : armCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
+    exact id (arm_mem_nu hc (Finset.mem_range.mp hs))
+  have hleg_sub : legCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨r, hr, rfl⟩ := Finset.mem_image.mp hx
+    exact id (leg_mem_nu hc (Finset.mem_range.mp hr))
+  -- arm ∩ leg = ∅ (arm cells have first coord i, leg cells have first coord < i)
+  have hdisj : Disjoint armCells legCells := by
+    simp only [armCells, legCells, Finset.disjoint_left, Finset.mem_image, Finset.mem_range]
+    rintro _ ⟨s, _, rfl⟩ ⟨r, hr, h⟩
+    simp [Prod.mk.injEq] at h
+    omega
+  -- Split ν.cells = armCells ∪ legCells ∪ restCells and derive ratio formula
+  let restCells := ν.cells \ (armCells ∪ legCells)
+  have harm_leg_sub : armCells ∪ legCells ⊆ ν.cells := Finset.union_subset harm_sub hleg_sub
+  -- hookLength change: hν = hμ - 1 for arm/leg cells
+  have harm_diff : ∀ s ∈ Finset.range j, (hookLength ν i s : ℚ) = (hookLength μ i s : ℚ) - 1 :=
+    fun s hs => by
+      have h := hookLength_removeCorner_arm hc (Finset.mem_range.mp hs)
+      simp only [Prod.fst, Prod.snd] at h
+      have hQ : (hookLength ν i s : ℚ) + 1 = hookLength μ i s := by exact_mod_cast h
+      linarith
+  have hleg_diff : ∀ r ∈ Finset.range i, (hookLength ν r j : ℚ) = (hookLength μ r j : ℚ) - 1 :=
+    fun r hr => by
+      have h := hookLength_removeCorner_leg hc (Finset.mem_range.mp hr)
+      simp only [Prod.fst, Prod.snd] at h
+      have hQ : (hookLength ν r j : ℚ) + 1 = hookLength μ r j := by exact_mod_cast h
+      linarith
+  have harm_ν_ne : ∀ s ∈ Finset.range j, (hookLength ν i s : ℚ) ≠ 0 :=
+    fun s _ => Nat.cast_ne_zero.mpr (hookLength_pos ν i s).ne'
+  have hleg_ν_ne : ∀ r ∈ Finset.range i, (hookLength ν r j : ℚ) ≠ 0 :=
+    fun r _ => Nat.cast_ne_zero.mpr (hookLength_pos ν r j).ne'
+  have hprod_arm_ν : (∏ s ∈ Finset.range j, (hookLength ν i s : ℚ)) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr harm_ν_ne
+  have hprod_leg_ν : (∏ r ∈ Finset.range i, (hookLength ν r j : ℚ)) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr hleg_ν_ne
+  -- rest cells: hookLength unchanged by removeCorner
+  have hrest_inv : ∀ x ∈ restCells, hookLength ν x.1 x.2 = hookLength μ x.1 x.2 := by
+    intro x hx
+    obtain ⟨hxν, hxnot⟩ := Finset.mem_sdiff.mp hx
+    have hxμ : x ∈ μ := ((mem_removeCorner hc).mp (id hxν)).1
+    have hxc : x ≠ (i, j) :=
+      fun h => ((mem_removeCorner hc).mp (id hxν)).2 h
+    apply hookLength_eq_of_not_arm_leg hc hxμ hxc
+    · intro ⟨h1, h2⟩
+      exact hxnot (Finset.mem_union_left _ (Finset.mem_image.mpr
+        ⟨x.2, Finset.mem_range.mpr h2, Prod.ext h1.symm rfl⟩))
+    · intro ⟨h1, h2⟩
+      exact hxnot (Finset.mem_union_right _ (Finset.mem_image.mpr
+        ⟨x.1, Finset.mem_range.mpr h1, Prod.ext rfl h2.symm⟩))
+  -- Key ℕ equality (avoids division): hookProd μ × ∏ hν_arm × ∏ hν_leg = hookProd ν × ∏ hμ_arm × ∏ hμ_leg
+  have key_nat : hookProd μ *
+      (∏ s ∈ Finset.range j, hookLength ν i s) * (∏ r ∈ Finset.range i, hookLength ν r j) =
+      hookProd ν *
+      (∏ s ∈ Finset.range j, hookLength μ i s) * (∏ r ∈ Finset.range i, hookLength μ r j) := by
+    have h_μ : hookProd μ = ∏ x ∈ ν.cells, hookLength μ x.1 x.2 := by
+      simp only [hookProd]
+      rw [← Finset.mul_prod_erase μ.cells (fun x => hookLength μ x.1 x.2) hcmem]
+      simp only [Prod.fst, Prod.snd, hookLength_corner_eq_one hc, one_mul, hν_cells]
+    have h_ν : hookProd ν = ∏ x ∈ ν.cells, hookLength ν x.1 x.2 := rfl
+    have harm_μ : ∏ s ∈ Finset.range j, hookLength μ i s =
+        ∏ x ∈ armCells, hookLength μ x.1 x.2 := by
+      simp only [armCells]
+      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
+      simp only [Prod.fst, Prod.snd]
+    have harm_ν2 : ∏ s ∈ Finset.range j, hookLength ν i s =
+        ∏ x ∈ armCells, hookLength ν x.1 x.2 := by
+      simp only [armCells]
+      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
+      simp only [Prod.fst, Prod.snd]
+    have hleg_μ : ∏ r ∈ Finset.range i, hookLength μ r j =
+        ∏ x ∈ legCells, hookLength μ x.1 x.2 := by
+      simp only [legCells]
+      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
+      simp only [Prod.fst, Prod.snd]
+    have hleg_ν2 : ∏ r ∈ Finset.range i, hookLength ν r j =
+        ∏ x ∈ legCells, hookLength ν x.1 x.2 := by
+      simp only [legCells]
+      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
+      simp only [Prod.fst, Prod.snd]
+    have hcells_eq : ν.cells = armCells ∪ legCells ∪ restCells :=
+      (Finset.union_sdiff_of_subset harm_leg_sub).symm
+    have hdisj_union : Disjoint (armCells ∪ legCells) restCells := disjoint_sdiff_self_right
+    have hμ_split : ∏ x ∈ ν.cells, hookLength μ x.1 x.2 =
+        (∏ x ∈ armCells, hookLength μ x.1 x.2) * (∏ x ∈ legCells, hookLength μ x.1 x.2) *
+        (∏ x ∈ restCells, hookLength μ x.1 x.2) := by
+      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
+    have hν_split : ∏ x ∈ ν.cells, hookLength ν x.1 x.2 =
+        (∏ x ∈ armCells, hookLength ν x.1 x.2) * (∏ x ∈ legCells, hookLength ν x.1 x.2) *
+        (∏ x ∈ restCells, hookLength ν x.1 x.2) := by
+      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
+    rw [h_μ, h_ν, harm_μ, harm_ν2, hleg_μ, hleg_ν2, hμ_split, hν_split,
+        Finset.prod_congr rfl hrest_inv]
+    ring
+  -- Cast ℕ equality to ℚ
+  have key_Q : (hookProd μ : ℚ) * (∏ s ∈ Finset.range j, (hookLength ν i s : ℚ)) *
+      (∏ r ∈ Finset.range i, (hookLength ν r j : ℚ)) =
+      (hookProd ν : ℚ) * (∏ s ∈ Finset.range j, (hookLength μ i s : ℚ)) *
+      (∏ r ∈ Finset.range i, (hookLength μ r j : ℚ)) := by exact_mod_cast key_nat
+  have harm_prod_eq : ∏ s ∈ Finset.range j, ((hookLength μ i s : ℚ) - 1) =
+      ∏ s ∈ Finset.range j, (hookLength ν i s : ℚ) :=
+    Finset.prod_congr rfl (fun s hs => (harm_diff s hs).symm)
+  have hleg_prod_eq : ∏ r ∈ Finset.range i, ((hookLength μ r j : ℚ) - 1) =
+      ∏ r ∈ Finset.range i, (hookLength ν r j : ℚ) :=
+    Finset.prod_congr rfl (fun r hr => (hleg_diff r hr).symm)
+  rw [Finset.prod_div_distrib, Finset.prod_div_distrib,
+      harm_prod_eq, hleg_prod_eq, div_mul_div_comm,
+      div_eq_div_iff hν_ne (mul_ne_zero hprod_arm_ν hprod_leg_ν)]
+  linear_combination key_Q
+
+
 
 This bound is the geometric prerequisite for working with the rational
 factor `(h_d − 1)² / (h_d (h_d − 2))` that appears in the GNW exchange
@@ -5743,178 +5942,6 @@ private lemma hookProd_doubleRemove_factor
   rw [hR1, hR2]
   field_simp
   ring
-
-/-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
-private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
-    {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
-  rw [mem_removeCorner]
-  constructor
-  · -- (c.1, s) ∈ μ: rowLen μ c.1 = c.2 + 1 > s
-    exact YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
-  · -- (c.1, s) ≠ c: their second components differ
-    intro h
-    have : s = c.2 := (Prod.ext_iff.mp h).2
-    omega
-
-/-- Leg cells (r, c.2) with r < c.1 belong to ν = removeCorner μ c hc. -/
-private lemma leg_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
-    {r : ℕ} (hr : r < c.1) : (r, c.2) ∈ removeCorner μ c hc := by
-  rw [mem_removeCorner]
-  constructor
-  · -- (r, c.2) ∈ μ: colLen μ c.2 = c.1 + 1 > r
-    exact YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
-  · -- (r, c.2) ≠ c: their first components differ
-    intro h
-    have : r = c.1 := (Prod.ext_iff.mp h).1
-    omega
-
-/-- The hookProd ratio for a corner c equals the product of h/(h-1) over arm and leg cells.
-    Proof outline:
-    1. hookProd(μ) = 1 × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase + corner = 1]
-    2. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [field_simp]
-    3. armCells = {(i,s) : s < j} ⊆ ν.cells  [arm_mem_nu]
-    4. legCells = {(r,j) : r < i} ⊆ ν.cells  [leg_mem_nu], disjoint from armCells
-    5. restCells = ν.cells \ (armCells ∪ legCells): hookLength ratio = 1  [hookLength_eq_of_not_arm_leg]
-    6. ∏_{arm} ratio = ∏_s hookLen(i,s)/(hookLen(i,s)-1)  [hookLength_removeCorner_arm]
-    7. ∏_{leg} ratio = ∏_r hookLen(r,j)/(hookLen(r,j)-1)  [hookLength_removeCorner_leg]
-    Blocked on: Finset.prod_union decomposition of ν.cells (~50 lines). -/
-lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
-    (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) =
-      (∏ s ∈ Finset.range c.2, (hookLength μ c.1 s : ℚ) / (hookLength μ c.1 s - 1)) *
-      (∏ r ∈ Finset.range c.1, (hookLength μ r c.2 : ℚ) / (hookLength μ r c.2 - 1)) := by
-  obtain ⟨i, j⟩ := c
-  simp only [Prod.fst, Prod.snd]
-  set ν := removeCorner μ (i, j) hc with hν_def
-  -- ν.cells = μ.cells.erase (i,j) by definition
-  have hν_cells : ν.cells = μ.cells.erase (i, j) := rfl
-  have hcmem : (i, j) ∈ μ.cells := id hc.1
-  have hcorner_one : (hookLength μ i j : ℚ) = 1 :=
-    by exact_mod_cast hookLength_corner_eq_one hc
-  -- hookProd μ = ∏_{x ∈ ν.cells} hookLength μ x  (corner factor = 1)
-  have hμ_via_ν : (hookProd μ : ℚ) = ∏ x ∈ ν.cells, (hookLength μ x.1 x.2 : ℚ) := by
-    simp only [hookProd, Nat.cast_prod]
-    rw [← Finset.mul_prod_erase μ.cells (fun x => (hookLength μ x.1 x.2 : ℚ)) hcmem]
-    simp only [Prod.fst, Prod.snd]
-    rw [hcorner_one, one_mul, hν_cells]
-  -- hookProd ν > 0
-  have hνpos : 0 < (hookProd ν : ℚ) := by exact_mod_cast hookProd_pos ν
-  have hν_ne : (hookProd ν : ℚ) ≠ 0 := ne_of_gt hνpos
-  -- Define arm and leg cell finsets
-  let armCells : Finset (ℕ × ℕ) := Finset.image (fun s => (i, s)) (Finset.range j)
-  let legCells : Finset (ℕ × ℕ) := Finset.image (fun r => (r, j)) (Finset.range i)
-  -- arm/leg subsets of ν.cells
-  have harm_sub : armCells ⊆ ν.cells := by
-    intro x hx
-    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
-    exact id (arm_mem_nu hc (Finset.mem_range.mp hs))
-  have hleg_sub : legCells ⊆ ν.cells := by
-    intro x hx
-    obtain ⟨r, hr, rfl⟩ := Finset.mem_image.mp hx
-    exact id (leg_mem_nu hc (Finset.mem_range.mp hr))
-  -- arm ∩ leg = ∅ (arm cells have first coord i, leg cells have first coord < i)
-  have hdisj : Disjoint armCells legCells := by
-    simp only [armCells, legCells, Finset.disjoint_left, Finset.mem_image, Finset.mem_range]
-    rintro _ ⟨s, _, rfl⟩ ⟨r, hr, h⟩
-    simp [Prod.mk.injEq] at h
-    omega
-  -- Split ν.cells = armCells ∪ legCells ∪ restCells and derive ratio formula
-  let restCells := ν.cells \ (armCells ∪ legCells)
-  have harm_leg_sub : armCells ∪ legCells ⊆ ν.cells := Finset.union_subset harm_sub hleg_sub
-  -- hookLength change: hν = hμ - 1 for arm/leg cells
-  have harm_diff : ∀ s ∈ Finset.range j, (hookLength ν i s : ℚ) = (hookLength μ i s : ℚ) - 1 :=
-    fun s hs => by
-      have h := hookLength_removeCorner_arm hc (Finset.mem_range.mp hs)
-      simp only [Prod.fst, Prod.snd] at h
-      have hQ : (hookLength ν i s : ℚ) + 1 = hookLength μ i s := by exact_mod_cast h
-      linarith
-  have hleg_diff : ∀ r ∈ Finset.range i, (hookLength ν r j : ℚ) = (hookLength μ r j : ℚ) - 1 :=
-    fun r hr => by
-      have h := hookLength_removeCorner_leg hc (Finset.mem_range.mp hr)
-      simp only [Prod.fst, Prod.snd] at h
-      have hQ : (hookLength ν r j : ℚ) + 1 = hookLength μ r j := by exact_mod_cast h
-      linarith
-  have harm_ν_ne : ∀ s ∈ Finset.range j, (hookLength ν i s : ℚ) ≠ 0 :=
-    fun s _ => Nat.cast_ne_zero.mpr (hookLength_pos ν i s).ne'
-  have hleg_ν_ne : ∀ r ∈ Finset.range i, (hookLength ν r j : ℚ) ≠ 0 :=
-    fun r _ => Nat.cast_ne_zero.mpr (hookLength_pos ν r j).ne'
-  have hprod_arm_ν : (∏ s ∈ Finset.range j, (hookLength ν i s : ℚ)) ≠ 0 :=
-    Finset.prod_ne_zero harm_ν_ne
-  have hprod_leg_ν : (∏ r ∈ Finset.range i, (hookLength ν r j : ℚ)) ≠ 0 :=
-    Finset.prod_ne_zero hleg_ν_ne
-  -- rest cells: hookLength unchanged by removeCorner
-  have hrest_inv : ∀ x ∈ restCells, hookLength ν x.1 x.2 = hookLength μ x.1 x.2 := by
-    intro x hx
-    obtain ⟨hxν, hxnot⟩ := Finset.mem_sdiff.mp hx
-    have hxμ : x ∈ μ := ((mem_removeCorner hc).mp (id hxν)).1
-    have hxc : x ≠ (i, j) :=
-      fun h => ((mem_removeCorner hc).mp (id hxν)).2 h
-    apply hookLength_eq_of_not_arm_leg hc hxμ hxc
-    · intro ⟨h1, h2⟩
-      exact hxnot (Finset.mem_union_left _ (Finset.mem_image.mpr
-        ⟨x.2, Finset.mem_range.mpr h2, Prod.ext h1.symm rfl⟩))
-    · intro ⟨h1, h2⟩
-      exact hxnot (Finset.mem_union_right _ (Finset.mem_image.mpr
-        ⟨x.1, Finset.mem_range.mpr h1, Prod.ext rfl h2.symm⟩))
-  -- Key ℕ equality (avoids division): hookProd μ × ∏ hν_arm × ∏ hν_leg = hookProd ν × ∏ hμ_arm × ∏ hμ_leg
-  have key_nat : hookProd μ *
-      (∏ s ∈ Finset.range j, hookLength ν i s) * (∏ r ∈ Finset.range i, hookLength ν r j) =
-      hookProd ν *
-      (∏ s ∈ Finset.range j, hookLength μ i s) * (∏ r ∈ Finset.range i, hookLength μ r j) := by
-    have h_μ : hookProd μ = ∏ x ∈ ν.cells, hookLength μ x.1 x.2 := by
-      simp only [hookProd]
-      rw [← Finset.mul_prod_erase μ.cells (fun x => hookLength μ x.1 x.2) hcmem]
-      simp only [Prod.fst, Prod.snd, hookLength_corner_eq_one hc, one_mul, hν_cells]
-    have h_ν : hookProd ν = ∏ x ∈ ν.cells, hookLength ν x.1 x.2 := rfl
-    have harm_μ : ∏ s ∈ Finset.range j, hookLength μ i s =
-        ∏ x ∈ armCells, hookLength μ x.1 x.2 := by
-      simp only [armCells]
-      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
-      simp only [Prod.fst, Prod.snd]
-    have harm_ν2 : ∏ s ∈ Finset.range j, hookLength ν i s =
-        ∏ x ∈ armCells, hookLength ν x.1 x.2 := by
-      simp only [armCells]
-      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
-      simp only [Prod.fst, Prod.snd]
-    have hleg_μ : ∏ r ∈ Finset.range i, hookLength μ r j =
-        ∏ x ∈ legCells, hookLength μ x.1 x.2 := by
-      simp only [legCells]
-      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
-      simp only [Prod.fst, Prod.snd]
-    have hleg_ν2 : ∏ r ∈ Finset.range i, hookLength ν r j =
-        ∏ x ∈ legCells, hookLength ν x.1 x.2 := by
-      simp only [legCells]
-      rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
-      simp only [Prod.fst, Prod.snd]
-    have hcells_eq : ν.cells = armCells ∪ legCells ∪ restCells :=
-      (Finset.union_sdiff_of_subset harm_leg_sub).symm
-    have hdisj_union : Disjoint (armCells ∪ legCells) restCells := disjoint_sdiff_self_right
-    have hμ_split : ∏ x ∈ ν.cells, hookLength μ x.1 x.2 =
-        (∏ x ∈ armCells, hookLength μ x.1 x.2) * (∏ x ∈ legCells, hookLength μ x.1 x.2) *
-        (∏ x ∈ restCells, hookLength μ x.1 x.2) := by
-      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
-    have hν_split : ∏ x ∈ ν.cells, hookLength ν x.1 x.2 =
-        (∏ x ∈ armCells, hookLength ν x.1 x.2) * (∏ x ∈ legCells, hookLength ν x.1 x.2) *
-        (∏ x ∈ restCells, hookLength ν x.1 x.2) := by
-      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
-    rw [h_μ, h_ν, harm_μ, harm_ν2, hleg_μ, hleg_ν2, hμ_split, hν_split,
-        Finset.prod_congr rfl hrest_inv]
-    ring
-  -- Cast ℕ equality to ℚ
-  have key_Q : (hookProd μ : ℚ) * (∏ s ∈ Finset.range j, (hookLength ν i s : ℚ)) *
-      (∏ r ∈ Finset.range i, (hookLength ν r j : ℚ)) =
-      (hookProd ν : ℚ) * (∏ s ∈ Finset.range j, (hookLength μ i s : ℚ)) *
-      (∏ r ∈ Finset.range i, (hookLength μ r j : ℚ)) := by exact_mod_cast key_nat
-  have harm_prod_eq : ∏ s ∈ Finset.range j, ((hookLength μ i s : ℚ) - 1) =
-      ∏ s ∈ Finset.range j, (hookLength ν i s : ℚ) :=
-    Finset.prod_congr rfl (fun s hs => (harm_diff s hs).symm)
-  have hleg_prod_eq : ∏ r ∈ Finset.range i, ((hookLength μ r j : ℚ) - 1) =
-      ∏ r ∈ Finset.range i, (hookLength ν r j : ℚ) :=
-    Finset.prod_congr rfl (fun r hr => (hleg_diff r hr).symm)
-  rw [Finset.prod_div_distrib, Finset.prod_div_distrib,
-      harm_prod_eq, hleg_prod_eq, div_mul_div_comm,
-      div_eq_div_iff hν_ne (mul_ne_zero hprod_arm_ν hprod_leg_ν)]
-  linear_combination key_Q
-
 
 -- ============================================================
 -- Hook walk identity for generalized hook shapes [a, 1^b] (PART XIVb)
