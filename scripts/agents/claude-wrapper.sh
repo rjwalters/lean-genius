@@ -49,6 +49,15 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
 
     # Bootstrap: if .loom/tokens is missing/empty/broken-symlink but .env
     # has ACCOUNT_KEY_N entries, materialize them into the tokens dir.
+    #
+    # NOTE (see issue #38967): tokens are written POSITIONALLY as
+    # "agent-N.token" using the index N from ACCOUNT_KEY_N. Selection/rotation
+    # below globs "*.token", so the .token files are the source of truth. The
+    # .env ACCOUNT_TOKEN_FILE_N column is a human-facing label only and is NOT
+    # read here; to stay accurate it must equal "agent-N.token". Verify with
+    # scripts/agents/check-token-registry.sh; regenerate with
+    # scripts/agents/sync-token-registry.sh. Do NOT switch this to
+    # ACCOUNT_TOKEN_FILE_N naming without migrating the live pool first.
     if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null 2>&1; then
         _env_file="$_repo_root/.env"
         if [[ -f "$_env_file" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null; then
