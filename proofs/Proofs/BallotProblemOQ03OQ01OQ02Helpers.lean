@@ -6699,6 +6699,7 @@ private lemma threeRow_hookLen_row2 {μ : YoungDiagram} {s : ℕ}
 private lemma threeRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h3 : μ.rowLen 3 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [threeRow_colLen_lt h3 hs] at key
   have hs1 : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
@@ -6717,6 +6718,7 @@ private lemma threeRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma threeRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h3 : μ.rowLen 3 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [threeRow_colLen_lt h3 hs] at key
   have hs0 : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
@@ -6727,6 +6729,7 @@ private lemma threeRow_hookLen_row0_mid {μ : YoungDiagram} {s : ℕ}
     (h3 : μ.rowLen 3 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s)
     (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [threeRow_colLen_mid h3 hs_ge hs_lt] at key
   have hs0 : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
@@ -7232,6 +7235,7 @@ private lemma fourRow_hookLen_row3 {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (2, s) ∈ μ) (hs : s < μ.rowLen 3) :
     hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_lt h4 hs] at key
   have hs2 : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7248,6 +7252,7 @@ private lemma fourRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 3) :
     hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_lt h4 hs] at key
   have hs1 : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7256,6 +7261,7 @@ private lemma fourRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row1_mid {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_mid1 h4 hs_ge hs_lt] at key
   have hs1 : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7272,6 +7278,7 @@ private lemma fourRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 3) :
     hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_lt h4 hs] at key
   have hs0 : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7280,6 +7287,7 @@ private lemma fourRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_mid1 h4 hs_ge hs_lt] at key
   have hs0 : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7288,6 +7296,7 @@ private lemma fourRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
 private lemma fourRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h4 : μ.rowLen 4 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s) (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fourRow_colLen_mid2 h4 hs_ge hs_lt] at key
   have hs0 : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
@@ -7903,6 +7912,7 @@ private lemma fiveRow_hookLen_row4 {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row3_lt {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (3, s) ∈ μ) (hs : s < μ.rowLen 4) :
     hookLength μ 3 s = μ.rowLen 3 - s + 1 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_lt h5 hs] at key; omega
 
@@ -7918,6 +7928,7 @@ private lemma fiveRow_hookLen_row3_ge {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (2, s) ∈ μ) (hs : s < μ.rowLen 4) :
     hookLength μ 2 s = μ.rowLen 2 - s + 2 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_lt h5 hs] at key; omega
 
@@ -7925,6 +7936,7 @@ private lemma fiveRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row2_mid1 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s)
     (hs_lt : s < μ.rowLen 3) : hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid1 h5 hs_ge hs_lt] at key; omega
 
@@ -7940,6 +7952,7 @@ private lemma fiveRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 4) :
     hookLength μ 1 s = μ.rowLen 1 - s + 3 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_lt h5 hs] at key; omega
 
@@ -7947,6 +7960,7 @@ private lemma fiveRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s)
     (hs_lt : s < μ.rowLen 3) : hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid1 h5 hs_ge hs_lt] at key; omega
 
@@ -7954,6 +7968,7 @@ private lemma fiveRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row1_mid2 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s)
     (hs_lt : s < μ.rowLen 2) : hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid2 h5 hs_ge hs_lt] at key; omega
 
@@ -7969,6 +7984,7 @@ private lemma fiveRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 4) :
     hookLength μ 0 s = μ.rowLen 0 - s + 4 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_lt h5 hs] at key; omega
 
@@ -7976,6 +7992,7 @@ private lemma fiveRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s)
     (hs_lt : s < μ.rowLen 3) : hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid1 h5 hs_ge hs_lt] at key; omega
 
@@ -7983,6 +8000,7 @@ private lemma fiveRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s)
     (hs_lt : s < μ.rowLen 2) : hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid2 h5 hs_ge hs_lt] at key; omega
 
@@ -7990,6 +8008,7 @@ private lemma fiveRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
 private lemma fiveRow_hookLen_row0_mid3 {μ : YoungDiagram} {s : ℕ}
     (h5 : μ.rowLen 5 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s)
     (hs_lt : s < μ.rowLen 1) : hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [fiveRow_colLen_mid3 h5 hs_ge hs_lt] at key; omega
 
@@ -8792,6 +8811,7 @@ private lemma sixRow_hookLen_row5 {μ : YoungDiagram} {s : ℕ}
 private lemma sixRow_hookLen_row4_lt {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (4, s) ∈ μ) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 4 s = μ.rowLen 4 - s + 1 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_lt h6 hs_lt] at key; omega
 
@@ -8807,6 +8827,7 @@ private lemma sixRow_hookLen_row4_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sixRow_hookLen_row3_lt {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (3, s) ∈ μ) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 3 s = μ.rowLen 3 - s + 2 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_lt h6 hs_lt] at key; omega
 
@@ -8815,6 +8836,7 @@ private lemma sixRow_hookLen_row3_mid1 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (3, s) ∈ μ)
     (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 3 s = μ.rowLen 3 - s + 1 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid1 h6 hs_ge hs_lt] at key; omega
 
@@ -8830,6 +8852,7 @@ private lemma sixRow_hookLen_row3_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sixRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (2, s) ∈ μ) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 2 s = μ.rowLen 2 - s + 3 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_lt h6 hs_lt] at key; omega
 
@@ -8838,6 +8861,7 @@ private lemma sixRow_hookLen_row2_mid1 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (2, s) ∈ μ)
     (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 2 s = μ.rowLen 2 - s + 2 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid1 h6 hs_ge hs_lt] at key; omega
 
@@ -8846,6 +8870,7 @@ private lemma sixRow_hookLen_row2_mid2 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (2, s) ∈ μ)
     (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid2 h6 hs_ge hs_lt] at key; omega
 
@@ -8861,6 +8886,7 @@ private lemma sixRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sixRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (1, s) ∈ μ) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 1 s = μ.rowLen 1 - s + 4 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_lt h6 hs_lt] at key; omega
 
@@ -8869,6 +8895,7 @@ private lemma sixRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (1, s) ∈ μ)
     (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 1 s = μ.rowLen 1 - s + 3 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid1 h6 hs_ge hs_lt] at key; omega
 
@@ -8877,6 +8904,7 @@ private lemma sixRow_hookLen_row1_mid2 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (1, s) ∈ μ)
     (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid2 h6 hs_ge hs_lt] at key; omega
 
@@ -8885,6 +8913,7 @@ private lemma sixRow_hookLen_row1_mid3 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (1, s) ∈ μ)
     (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid3 h6 hs_ge hs_lt] at key; omega
 
@@ -8900,6 +8929,7 @@ private lemma sixRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sixRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (0, s) ∈ μ) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 0 s = μ.rowLen 0 - s + 5 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_lt h6 hs_lt] at key; omega
 
@@ -8908,6 +8938,7 @@ private lemma sixRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (0, s) ∈ μ)
     (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 0 s = μ.rowLen 0 - s + 4 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid1 h6 hs_ge hs_lt] at key; omega
 
@@ -8916,6 +8947,7 @@ private lemma sixRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (0, s) ∈ μ)
     (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid2 h6 hs_ge hs_lt] at key; omega
 
@@ -8924,6 +8956,7 @@ private lemma sixRow_hookLen_row0_mid3 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (0, s) ∈ μ)
     (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid3 h6 hs_ge hs_lt] at key; omega
 
@@ -8932,6 +8965,7 @@ private lemma sixRow_hookLen_row0_mid4 {μ : YoungDiagram} {s : ℕ}
     (h6 : μ.rowLen 6 = 0) (hmem : (0, s) ∈ μ)
     (hs_ge : μ.rowLen 2 ≤ s) (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sixRow_colLen_mid4 h6 hs_ge hs_lt] at key; omega
 
@@ -9886,6 +9920,7 @@ private lemma sevenRow_hookLen_row6 {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row5_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (5, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 5 s = μ.rowLen 5 - s + 1 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
@@ -9900,12 +9935,14 @@ private lemma sevenRow_hookLen_row5_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row4_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (4, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 4 s = μ.rowLen 4 - s + 2 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
 private lemma sevenRow_hookLen_row4_mid1 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 4 s = μ.rowLen 4 - s + 1 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid1 h7 hs_ge hs_lt] at key; omega
 
@@ -9920,18 +9957,21 @@ private lemma sevenRow_hookLen_row4_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row3_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (3, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 3 s = μ.rowLen 3 - s + 3 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
 private lemma sevenRow_hookLen_row3_mid1 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 3 s = μ.rowLen 3 - s + 2 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid1 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row3_mid2 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 3 s = μ.rowLen 3 - s + 1 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid2 h7 hs_ge hs_lt] at key; omega
 
@@ -9946,24 +9986,28 @@ private lemma sevenRow_hookLen_row3_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (2, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 2 s = μ.rowLen 2 - s + 4 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
 private lemma sevenRow_hookLen_row2_mid1 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 2 s = μ.rowLen 2 - s + 3 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid1 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row2_mid2 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 2 s = μ.rowLen 2 - s + 2 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid2 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row2_mid3 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid3 h7 hs_ge hs_lt] at key; omega
 
@@ -9978,30 +10022,35 @@ private lemma sevenRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 1 s = μ.rowLen 1 - s + 5 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
 private lemma sevenRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 1 s = μ.rowLen 1 - s + 4 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid1 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row1_mid2 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 1 s = μ.rowLen 1 - s + 3 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid2 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row1_mid3 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid3 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row1_mid4 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid4 h7 hs_ge hs_lt] at key; omega
 
@@ -10016,36 +10065,42 @@ private lemma sevenRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma sevenRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 6) :
     hookLength μ 0 s = μ.rowLen 0 - s + 6 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_lt h7 hs] at key; omega
 
 private lemma sevenRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 0 s = μ.rowLen 0 - s + 5 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid1 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 0 s = μ.rowLen 0 - s + 4 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid2 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row0_mid3 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid3 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row0_mid4 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid4 h7 hs_ge hs_lt] at key; omega
 
 private lemma sevenRow_hookLen_row0_mid5 {μ : YoungDiagram} {s : ℕ}
     (h7 : μ.rowLen 7 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s) (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [sevenRow_colLen_mid5 h7 hs_ge hs_lt] at key; omega
 
@@ -11253,6 +11308,7 @@ private lemma eightRow_hookLen_row7 {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row6_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (6, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 6 s = μ.rowLen 6 - s + 1 := by
+  have hs_row : s < μ.rowLen 6 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
@@ -11267,12 +11323,14 @@ private lemma eightRow_hookLen_row6_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row5_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (5, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 5 s = μ.rowLen 5 - s + 2 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row5_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (5, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 5 s = μ.rowLen 5 - s + 1 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
@@ -11287,18 +11345,21 @@ private lemma eightRow_hookLen_row5_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row4_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (4, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 4 s = μ.rowLen 4 - s + 3 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row4_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 4 s = μ.rowLen 4 - s + 2 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row4_mid2 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 4 s = μ.rowLen 4 - s + 1 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid2 h8 hs_ge hs_lt] at key; omega
 
@@ -11313,24 +11374,28 @@ private lemma eightRow_hookLen_row4_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row3_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (3, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 3 s = μ.rowLen 3 - s + 4 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row3_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 3 s = μ.rowLen 3 - s + 3 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row3_mid2 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 3 s = μ.rowLen 3 - s + 2 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid2 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row3_mid3 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 3 s = μ.rowLen 3 - s + 1 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid3 h8 hs_ge hs_lt] at key; omega
 
@@ -11345,30 +11410,35 @@ private lemma eightRow_hookLen_row3_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (2, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 2 s = μ.rowLen 2 - s + 5 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row2_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 2 s = μ.rowLen 2 - s + 4 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row2_mid2 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 2 s = μ.rowLen 2 - s + 3 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid2 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row2_mid3 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 2 s = μ.rowLen 2 - s + 2 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid3 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row2_mid4 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid4 h8 hs_ge hs_lt] at key; omega
 
@@ -11383,36 +11453,42 @@ private lemma eightRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 1 s = μ.rowLen 1 - s + 6 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 1 s = μ.rowLen 1 - s + 5 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row1_mid2 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 1 s = μ.rowLen 1 - s + 4 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid2 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row1_mid3 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 1 s = μ.rowLen 1 - s + 3 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid3 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row1_mid4 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid4 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row1_mid5 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid5 h8 hs_ge hs_lt] at key; omega
 
@@ -11427,42 +11503,49 @@ private lemma eightRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma eightRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 7) :
     hookLength μ 0 s = μ.rowLen 0 - s + 7 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_lt h8 hs] at key; omega
 
 private lemma eightRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 0 s = μ.rowLen 0 - s + 6 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid1 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 0 s = μ.rowLen 0 - s + 5 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid2 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row0_mid3 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 0 s = μ.rowLen 0 - s + 4 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid3 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row0_mid4 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid4 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row0_mid5 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid5 h8 hs_ge hs_lt] at key; omega
 
 private lemma eightRow_hookLen_row0_mid6 {μ : YoungDiagram} {s : ℕ}
     (h8 : μ.rowLen 8 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s) (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [eightRow_colLen_mid6 h8 hs_ge hs_lt] at key; omega
 
@@ -12936,6 +13019,7 @@ private lemma nineRow_hookLen_row8 {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row7_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (7, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 7 s = μ.rowLen 7 - s + 1 := by
+  have hs_row : s < μ.rowLen 7 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
@@ -12950,12 +13034,14 @@ private lemma nineRow_hookLen_row7_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row6_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (6, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 6 s = μ.rowLen 6 - s + 2 := by
+  have hs_row : s < μ.rowLen 6 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row6_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (6, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 6 s = μ.rowLen 6 - s + 1 := by
+  have hs_row : s < μ.rowLen 6 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
@@ -12970,18 +13056,21 @@ private lemma nineRow_hookLen_row6_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row5_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (5, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 5 s = μ.rowLen 5 - s + 3 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row5_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (5, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 5 s = μ.rowLen 5 - s + 2 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row5_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (5, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 5 s = μ.rowLen 5 - s + 1 := by
+  have hs_row : s < μ.rowLen 5 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
@@ -12996,24 +13085,28 @@ private lemma nineRow_hookLen_row5_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row4_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (4, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 4 s = μ.rowLen 4 - s + 4 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row4_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 4 s = μ.rowLen 4 - s + 3 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row4_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 4 s = μ.rowLen 4 - s + 2 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row4_mid3 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (4, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 4 s = μ.rowLen 4 - s + 1 := by
+  have hs_row : s < μ.rowLen 4 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid3 h9 hs_ge hs_lt] at key; omega
 
@@ -13028,30 +13121,35 @@ private lemma nineRow_hookLen_row4_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row3_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (3, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 3 s = μ.rowLen 3 - s + 5 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row3_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 3 s = μ.rowLen 3 - s + 4 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row3_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 3 s = μ.rowLen 3 - s + 3 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row3_mid3 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 3 s = μ.rowLen 3 - s + 2 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid3 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row3_mid4 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (3, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 3 s = μ.rowLen 3 - s + 1 := by
+  have hs_row : s < μ.rowLen 3 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid4 h9 hs_ge hs_lt] at key; omega
 
@@ -13066,36 +13164,42 @@ private lemma nineRow_hookLen_row3_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row2_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 2 s = μ.rowLen 2 - s + 6 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row2_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 2 s = μ.rowLen 2 - s + 5 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row2_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 2 s = μ.rowLen 2 - s + 4 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row2_mid3 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 2 s = μ.rowLen 2 - s + 3 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid3 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row2_mid4 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 2 s = μ.rowLen 2 - s + 2 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid4 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row2_mid5 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (2, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 2 s = μ.rowLen 2 - s + 1 := by
+  have hs_row : s < μ.rowLen 2 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid5 h9 hs_ge hs_lt] at key; omega
 
@@ -13110,42 +13214,49 @@ private lemma nineRow_hookLen_row2_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row1_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 1 s = μ.rowLen 1 - s + 7 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row1_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 1 s = μ.rowLen 1 - s + 6 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row1_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 1 s = μ.rowLen 1 - s + 5 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row1_mid3 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 1 s = μ.rowLen 1 - s + 4 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid3 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row1_mid4 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 1 s = μ.rowLen 1 - s + 3 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid4 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row1_mid5 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 1 s = μ.rowLen 1 - s + 2 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid5 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row1_mid6 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (1, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 1 s = μ.rowLen 1 - s + 1 := by
+  have hs_row : s < μ.rowLen 1 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid6 h9 hs_ge hs_lt] at key; omega
 
@@ -13160,48 +13271,56 @@ private lemma nineRow_hookLen_row1_ge {μ : YoungDiagram} {s : ℕ}
 private lemma nineRow_hookLen_row0_lt {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs : s < μ.rowLen 8) :
     hookLength μ 0 s = μ.rowLen 0 - s + 8 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_lt h9 hs] at key; omega
 
 private lemma nineRow_hookLen_row0_mid1 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 8 ≤ s) (hs_lt : s < μ.rowLen 7) :
     hookLength μ 0 s = μ.rowLen 0 - s + 7 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid1 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid2 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 7 ≤ s) (hs_lt : s < μ.rowLen 6) :
     hookLength μ 0 s = μ.rowLen 0 - s + 6 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid2 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid3 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 6 ≤ s) (hs_lt : s < μ.rowLen 5) :
     hookLength μ 0 s = μ.rowLen 0 - s + 5 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid3 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid4 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 5 ≤ s) (hs_lt : s < μ.rowLen 4) :
     hookLength μ 0 s = μ.rowLen 0 - s + 4 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid4 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid5 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 4 ≤ s) (hs_lt : s < μ.rowLen 3) :
     hookLength μ 0 s = μ.rowLen 0 - s + 3 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid5 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid6 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 3 ≤ s) (hs_lt : s < μ.rowLen 2) :
     hookLength μ 0 s = μ.rowLen 0 - s + 2 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid6 h9 hs_ge hs_lt] at key; omega
 
 private lemma nineRow_hookLen_row0_mid7 {μ : YoungDiagram} {s : ℕ}
     (h9 : μ.rowLen 9 = 0) (hmem : (0, s) ∈ μ) (hs_ge : μ.rowLen 2 ≤ s) (hs_lt : s < μ.rowLen 1) :
     hookLength μ 0 s = μ.rowLen 0 - s + 1 := by
+  have hs_row : s < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have key := hookLength_add_eq μ hmem
   rw [nineRow_colLen_mid7 h9 hs_ge hs_lt] at key; omega
 
