@@ -7787,6 +7787,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
     rw [fourRow_hookLen_row0_lt h4 hmem0 hd1,
         fourRow_hookLen_row1_lt h4 hmem1 hd1,
         fourRow_hookLen_row2_lt h4 hmem2 hd1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def]
     push_cast [Nat.cast_sub (show 1 ≤ d from h3),
                Nat.cast_sub (show d - 1 ≤ a by omega),
                Nat.cast_sub (show d - 1 ≤ b by omega),
@@ -7824,6 +7825,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       rw [fourRow_hookLen_row0_mid1 h4 hmem0 hdc1 (by omega)]
       -- h(1, c-1): zone [d, c), so h = b-(c-1)+1 = b-c+2
       rw [fourRow_hookLen_row1_mid h4 hmem1 hdc1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def]
       push_cast [Nat.cast_sub (show 1 ≤ c by omega),
                  Nat.cast_sub (show c - 1 ≤ a by omega),
                  Nat.cast_sub (show c - 1 ≤ b by omega),
@@ -7866,6 +7868,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       -- h(0, b-1): b-1 ≥ c, b-1 < b ≤ a; zone [c, b)
       rw [fourRow_hookLen_row0_mid2 h4 hmem0 (by omega) (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hbc.le, Nat.cast_sub (show d ≤ b by omega)]
@@ -7900,8 +7903,6 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [fourRow_arm_row0 h4 h3 hab]
-      push_cast [Nat.cast_sub hab.le, Nat.cast_sub hcb, Nat.cast_sub hdc]
-      ring
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         rintro ⟨-, -, hbelow⟩
@@ -7927,17 +7928,23 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       hR3, hR2, hR1, hR0]
   -- Close with field_simp + ring using nonzero denominators
   have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
   have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
   have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
   have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
   have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
   have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hdc, Nat.cast_sub hcb, Nat.cast_sub hba,
              Nat.cast_sub (show d ≤ b by omega), Nat.cast_sub (show d ≤ a by omega),
              Nat.cast_sub (show c ≤ a by omega)]
@@ -8759,6 +8766,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
         fiveRow_hookLen_row1_lt h5 hmem1 he1,
         fiveRow_hookLen_row2_lt h5 hmem2 he1,
         fiveRow_hookLen_row3_lt h5 hmem3 he1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def]
     push_cast [Nat.cast_sub (show 1 ≤ e from h4),
                Nat.cast_sub (show e - 1 ≤ a by omega),
                Nat.cast_sub (show e - 1 ≤ b by omega),
@@ -8798,6 +8806,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       rw [fiveRow_hookLen_row0_mid1 h5 hmem0 hed1 (by omega),
           fiveRow_hookLen_row1_mid1 h5 hmem1 hed1 (by omega),
           fiveRow_hookLen_row2_mid1 h5 hmem2 hed1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def]
       push_cast [Nat.cast_sub (show 1 ≤ d from by omega),
                  Nat.cast_sub (show d - 1 ≤ a by omega),
                  Nat.cast_sub (show d - 1 ≤ b by omega),
@@ -8846,6 +8855,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [fiveRow_hookLen_row0_mid2 h5 hmem0 hdc1 (by omega),
           fiveRow_hookLen_row1_mid2 h5 hmem1 hdc1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def]
       push_cast [Nat.cast_sub (show 1 ≤ c by omega),
                  Nat.cast_sub (show c - 1 ≤ a by omega),
                  Nat.cast_sub (show c - 1 ≤ b by omega),
@@ -8887,6 +8897,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [fiveRow_hookLen_row0_mid3 h5 hmem0 (by omega) (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hcb'.le, Nat.cast_sub hdc, Nat.cast_sub hed]
@@ -8924,8 +8935,6 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [fiveRow_arm_row0 h5 h4 hab]
-      push_cast [Nat.cast_sub hab.le, Nat.cast_sub hcb, Nat.cast_sub hdc, Nat.cast_sub hed]
-      ring
     · -- a = b: corner (0, a-1) doesn't exist; ratio = 0
       have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
@@ -8954,25 +8963,35 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       hR4, hR3, hR2, hR1, hR0]
   -- Close with field_simp + ring
   have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - e + 1 by omega)
+    have hxyQ : (e : ℚ) ≤ d := by exact_mod_cast (show e ≤ d by omega)
+    intro h0; linarith
   have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - e + 2 by omega)
+    have hxyQ : (e : ℚ) ≤ c := by exact_mod_cast (show e ≤ c by omega)
+    intro h0; linarith
   have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - e + 3 by omega)
+    have hxyQ : (e : ℚ) ≤ b := by exact_mod_cast (show e ≤ b by omega)
+    intro h0; linarith
   have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - e + 4 by omega)
+    have hxyQ : (e : ℚ) ≤ a := by exact_mod_cast (show e ≤ a by omega)
+    intro h0; linarith
   have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
   have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
   have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
   have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
   have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
   have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hed, Nat.cast_sub hdc, Nat.cast_sub hcb, Nat.cast_sub hba,
              Nat.cast_sub (show e ≤ c by omega), Nat.cast_sub (show e ≤ b by omega),
              Nat.cast_sub (show e ≤ a by omega), Nat.cast_sub (show d ≤ b by omega),
@@ -10036,6 +10055,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         sixRow_hookLen_row2_lt h6 hmem2 hf1,
         sixRow_hookLen_row3_lt h6 hmem3 hf1,
         sixRow_hookLen_row4_lt h6 hmem4 hf1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
     push_cast [Nat.cast_sub (show 1 ≤ f from h5),
                Nat.cast_sub (show f - 1 ≤ a by omega),
                Nat.cast_sub (show f - 1 ≤ b by omega),
@@ -10079,6 +10099,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
           sixRow_hookLen_row1_mid1 h6 hmem1 hef1 he1,
           sixRow_hookLen_row2_mid1 h6 hmem2 hef1 he1,
           sixRow_hookLen_row3_mid1 h6 hmem3 hef1 he1]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
       push_cast [Nat.cast_sub (show 1 ≤ e from by omega),
                  Nat.cast_sub hef.le,
                  Nat.cast_sub (show e - 1 ≤ a by omega),
@@ -10130,6 +10151,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       rw [sixRow_hookLen_row0_mid2 h6 hmem0 hed1 hd1,
           sixRow_hookLen_row1_mid2 h6 hmem1 hed1 hd1,
           sixRow_hookLen_row2_mid2 h6 hmem2 hed1 hd1]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
       push_cast [Nat.cast_sub (show 1 ≤ d from by omega),
                  Nat.cast_sub hde.le,
                  Nat.cast_sub hfe,
@@ -10177,6 +10199,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [sixRow_hookLen_row0_mid3 h6 hmem0 hdc1 hc1,
           sixRow_hookLen_row1_mid3 h6 hmem1 hdc1 hc1]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
       push_cast [Nat.cast_sub (show 1 ≤ c from by omega),
                  Nat.cast_sub hcd.le,
                  Nat.cast_sub hed,
@@ -10223,6 +10246,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       rw [show Finset.range 1 = {0} from by ext k; simp; omega]
       rw [Finset.prod_singleton]
       rw [sixRow_hookLen_row0_mid4 h6 hmem0 hcb1 hb1]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
       push_cast [Nat.cast_sub (show 1 ≤ b from by omega),
                  Nat.cast_sub hbc.le,
                  Nat.cast_sub hdc,
@@ -10262,7 +10286,6 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [sixRow_arm_row0 h6 h5 hab]
-      ring
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         rintro ⟨-, -, hbelow⟩
@@ -10291,35 +10314,50 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       Finset.sum_insert hd4, Finset.sum_insert hd5, Finset.sum_singleton,
       hR5, hR4, hR3, hR2, hR1, hR0]
   have hne_ef1 : (e : ℚ) - f + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - f + 1 by omega)
+    have hxyQ : (f : ℚ) ≤ e := by exact_mod_cast (show f ≤ e by omega)
+    intro h0; linarith
   have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - e + 1 by omega)
+    have hxyQ : (e : ℚ) ≤ d := by exact_mod_cast (show e ≤ d by omega)
+    intro h0; linarith
   have hne_df2 : (d : ℚ) - f + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - f + 2 by omega)
+    have hxyQ : (f : ℚ) ≤ d := by exact_mod_cast (show f ≤ d by omega)
+    intro h0; linarith
   have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
   have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - e + 2 by omega)
+    have hxyQ : (e : ℚ) ≤ c := by exact_mod_cast (show e ≤ c by omega)
+    intro h0; linarith
   have hne_cf3 : (c : ℚ) - f + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - f + 3 by omega)
+    have hxyQ : (f : ℚ) ≤ c := by exact_mod_cast (show f ≤ c by omega)
+    intro h0; linarith
   have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
   have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
   have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - e + 3 by omega)
+    have hxyQ : (e : ℚ) ≤ b := by exact_mod_cast (show e ≤ b by omega)
+    intro h0; linarith
   have hne_bf4 : (b : ℚ) - f + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - f + 4 by omega)
+    have hxyQ : (f : ℚ) ≤ b := by exact_mod_cast (show f ≤ b by omega)
+    intro h0; linarith
   have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
   have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
   have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - e + 4 by omega)
+    have hxyQ : (e : ℚ) ≤ a := by exact_mod_cast (show e ≤ a by omega)
+    intro h0; linarith
   have hne_af5 : (a : ℚ) - f + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - f + 5 by omega)
+    have hxyQ : (f : ℚ) ≤ a := by exact_mod_cast (show f ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc, Nat.cast_sub hcb,
              Nat.cast_sub hba,
              Nat.cast_sub (show f ≤ d by omega), Nat.cast_sub (show f ≤ c by omega),
@@ -11706,6 +11744,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         sevenRow_hookLen_row3_lt h7 hmem3 hg1,
         sevenRow_hookLen_row4_lt h7 hmem4 hg1,
         sevenRow_hookLen_row5_lt h7 hmem5 hg1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
     push_cast [Nat.cast_sub (show 1 ≤ g from h6),
                Nat.cast_sub (show g - 1 ≤ a by omega),
                Nat.cast_sub (show g - 1 ≤ b by omega),
@@ -11753,6 +11792,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
           sevenRow_hookLen_row2_mid1 h7 hmem2 hgf1 (by omega),
           sevenRow_hookLen_row3_mid1 h7 hmem3 hgf1 (by omega),
           sevenRow_hookLen_row4_mid1 h7 hmem4 hgf1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
       push_cast [Nat.cast_sub (show 1 ≤ f by omega),
                  Nat.cast_sub (show f - 1 ≤ a by omega),
                  Nat.cast_sub (show f - 1 ≤ b by omega),
@@ -11808,6 +11848,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
           sevenRow_hookLen_row1_mid2 h7 hmem1 hfe1 (by omega),
           sevenRow_hookLen_row2_mid2 h7 hmem2 hfe1 (by omega),
           sevenRow_hookLen_row3_mid2 h7 hmem3 hfe1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
       push_cast [Nat.cast_sub (show 1 ≤ e by omega),
                  Nat.cast_sub (show e - 1 ≤ a by omega),
                  Nat.cast_sub (show e - 1 ≤ b by omega),
@@ -11858,6 +11899,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       rw [sevenRow_hookLen_row0_mid3 h7 hmem0 hed1 (by omega),
           sevenRow_hookLen_row1_mid3 h7 hmem1 hed1 (by omega),
           sevenRow_hookLen_row2_mid3 h7 hmem2 hed1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
       push_cast [Nat.cast_sub (show 1 ≤ d by omega),
                  Nat.cast_sub (show d - 1 ≤ a by omega),
                  Nat.cast_sub (show d - 1 ≤ b by omega),
@@ -11906,6 +11948,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [sevenRow_hookLen_row0_mid4 h7 hmem0 hdc1 (by omega),
           sevenRow_hookLen_row1_mid4 h7 hmem1 hdc1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
       push_cast [Nat.cast_sub (show 1 ≤ c by omega),
                  Nat.cast_sub (show c - 1 ≤ a by omega),
                  Nat.cast_sub (show c - 1 ≤ b by omega),
@@ -11947,6 +11990,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [sevenRow_hookLen_row0_mid5 h7 hmem0 (by omega) (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hcb'.le, Nat.cast_sub hdc, Nat.cast_sub hed,
@@ -11984,9 +12028,6 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [sevenRow_arm_row0 h7 h6 hab']
-      push_cast [Nat.cast_sub hab'.le, Nat.cast_sub hcb, Nat.cast_sub hdc,
-                 Nat.cast_sub hed, Nat.cast_sub hfe, Nat.cast_sub hgf]
-      ring
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         rintro ⟨-, -, hbelow⟩
@@ -12017,47 +12058,68 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
       Finset.sum_singleton,
       hR6, hR5, hR4, hR3, hR2, hR1, hR0]
   have hne_fg1 : (f : ℚ) - g + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < f - g + 1 by omega)
+    have hxyQ : (g : ℚ) ≤ f := by exact_mod_cast (show g ≤ f by omega)
+    intro h0; linarith
   have hne_eg2 : (e : ℚ) - g + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - g + 2 by omega)
+    have hxyQ : (g : ℚ) ≤ e := by exact_mod_cast (show g ≤ e by omega)
+    intro h0; linarith
   have hne_dg3 : (d : ℚ) - g + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - g + 3 by omega)
+    have hxyQ : (g : ℚ) ≤ d := by exact_mod_cast (show g ≤ d by omega)
+    intro h0; linarith
   have hne_cg4 : (c : ℚ) - g + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - g + 4 by omega)
+    have hxyQ : (g : ℚ) ≤ c := by exact_mod_cast (show g ≤ c by omega)
+    intro h0; linarith
   have hne_bg5 : (b : ℚ) - g + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - g + 5 by omega)
+    have hxyQ : (g : ℚ) ≤ b := by exact_mod_cast (show g ≤ b by omega)
+    intro h0; linarith
   have hne_ag6 : (a : ℚ) - g + 6 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - g + 6 by omega)
+    have hxyQ : (g : ℚ) ≤ a := by exact_mod_cast (show g ≤ a by omega)
+    intro h0; linarith
   have hne_ef1 : (e : ℚ) - f + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - f + 1 by omega)
+    have hxyQ : (f : ℚ) ≤ e := by exact_mod_cast (show f ≤ e by omega)
+    intro h0; linarith
   have hne_df2 : (d : ℚ) - f + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - f + 2 by omega)
+    have hxyQ : (f : ℚ) ≤ d := by exact_mod_cast (show f ≤ d by omega)
+    intro h0; linarith
   have hne_cf3 : (c : ℚ) - f + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - f + 3 by omega)
+    have hxyQ : (f : ℚ) ≤ c := by exact_mod_cast (show f ≤ c by omega)
+    intro h0; linarith
   have hne_bf4 : (b : ℚ) - f + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - f + 4 by omega)
+    have hxyQ : (f : ℚ) ≤ b := by exact_mod_cast (show f ≤ b by omega)
+    intro h0; linarith
   have hne_af5 : (a : ℚ) - f + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - f + 5 by omega)
+    have hxyQ : (f : ℚ) ≤ a := by exact_mod_cast (show f ≤ a by omega)
+    intro h0; linarith
   have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - e + 1 by omega)
+    have hxyQ : (e : ℚ) ≤ d := by exact_mod_cast (show e ≤ d by omega)
+    intro h0; linarith
   have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - e + 2 by omega)
+    have hxyQ : (e : ℚ) ≤ c := by exact_mod_cast (show e ≤ c by omega)
+    intro h0; linarith
   have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - e + 3 by omega)
+    have hxyQ : (e : ℚ) ≤ b := by exact_mod_cast (show e ≤ b by omega)
+    intro h0; linarith
   have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - e + 4 by omega)
+    have hxyQ : (e : ℚ) ≤ a := by exact_mod_cast (show e ≤ a by omega)
+    intro h0; linarith
   have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
   have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
   have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
   have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
   have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
   have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc,
              Nat.cast_sub hcb, Nat.cast_sub hba,
              Nat.cast_sub (show g ≤ e by omega), Nat.cast_sub (show g ≤ d by omega),
@@ -13776,6 +13838,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         eightRow_hookLen_row4_lt h8 hmem4 hk1,
         eightRow_hookLen_row5_lt h8 hmem5 hk1,
         eightRow_hookLen_row6_lt h8 hmem6 hk1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
     push_cast [Nat.cast_sub (show 1 ≤ k from h7),
                Nat.cast_sub (show k - 1 ≤ a by omega),
                Nat.cast_sub (show k - 1 ≤ b by omega),
@@ -13828,6 +13891,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
           eightRow_hookLen_row3_mid1 h8 hmem3 hkg1 (by omega),
           eightRow_hookLen_row4_mid1 h8 hmem4 hkg1 (by omega),
           eightRow_hookLen_row5_mid1 h8 hmem5 hkg1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ g by omega),
                  Nat.cast_sub (show g - 1 ≤ a by omega),
                  Nat.cast_sub (show g - 1 ≤ b by omega),
@@ -13887,6 +13951,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
           eightRow_hookLen_row2_mid2 h8 hmem2 hgf1 (by omega),
           eightRow_hookLen_row3_mid2 h8 hmem3 hgf1 (by omega),
           eightRow_hookLen_row4_mid2 h8 hmem4 hgf1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ f by omega),
                  Nat.cast_sub (show f - 1 ≤ a by omega),
                  Nat.cast_sub (show f - 1 ≤ b by omega),
@@ -13942,6 +14007,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
           eightRow_hookLen_row1_mid3 h8 hmem1 hfe1 (by omega),
           eightRow_hookLen_row2_mid3 h8 hmem2 hfe1 (by omega),
           eightRow_hookLen_row3_mid3 h8 hmem3 hfe1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ e by omega),
                  Nat.cast_sub (show e - 1 ≤ a by omega),
                  Nat.cast_sub (show e - 1 ≤ b by omega),
@@ -13994,6 +14060,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       rw [eightRow_hookLen_row0_mid4 h8 hmem0 hed1 (by omega),
           eightRow_hookLen_row1_mid4 h8 hmem1 hed1 (by omega),
           eightRow_hookLen_row2_mid4 h8 hmem2 hed1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ d by omega),
                  Nat.cast_sub (show d - 1 ≤ a by omega),
                  Nat.cast_sub (show d - 1 ≤ b by omega),
@@ -14042,6 +14109,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [eightRow_hookLen_row0_mid5 h8 hmem0 hdc1 (by omega),
           eightRow_hookLen_row1_mid5 h8 hmem1 hdc1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ c by omega),
                  Nat.cast_sub (show c - 1 ≤ a by omega),
                  Nat.cast_sub (show c - 1 ≤ b by omega),
@@ -14084,6 +14152,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [eightRow_hookLen_row0_mid6 h8 hmem0 (by omega) (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hcb'.le, Nat.cast_sub hdc, Nat.cast_sub hed,
@@ -14123,9 +14192,6 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [eightRow_arm_row0 h8 h7 hab']
-      push_cast [Nat.cast_sub hab'.le, Nat.cast_sub hcb, Nat.cast_sub hdc,
-                 Nat.cast_sub hed, Nat.cast_sub hfe, Nat.cast_sub hgf, Nat.cast_sub hkg]
-      ring
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         rintro ⟨-, -, hbelow⟩
@@ -14159,61 +14225,89 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
       Finset.sum_insert hne10, Finset.sum_singleton,
       hR7, hR6, hR5, hR4, hR3, hR2, hR1, hR0]
   have hne_gk1 : (g : ℚ) - k + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < g - k + 1 by omega)
+    have hxyQ : (k : ℚ) ≤ g := by exact_mod_cast (show k ≤ g by omega)
+    intro h0; linarith
   have hne_fk2 : (f : ℚ) - k + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < f - k + 2 by omega)
+    have hxyQ : (k : ℚ) ≤ f := by exact_mod_cast (show k ≤ f by omega)
+    intro h0; linarith
   have hne_ek3 : (e : ℚ) - k + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - k + 3 by omega)
+    have hxyQ : (k : ℚ) ≤ e := by exact_mod_cast (show k ≤ e by omega)
+    intro h0; linarith
   have hne_dk4 : (d : ℚ) - k + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - k + 4 by omega)
+    have hxyQ : (k : ℚ) ≤ d := by exact_mod_cast (show k ≤ d by omega)
+    intro h0; linarith
   have hne_ck5 : (c : ℚ) - k + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - k + 5 by omega)
+    have hxyQ : (k : ℚ) ≤ c := by exact_mod_cast (show k ≤ c by omega)
+    intro h0; linarith
   have hne_bk6 : (b : ℚ) - k + 6 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - k + 6 by omega)
+    have hxyQ : (k : ℚ) ≤ b := by exact_mod_cast (show k ≤ b by omega)
+    intro h0; linarith
   have hne_ak7 : (a : ℚ) - k + 7 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - k + 7 by omega)
+    have hxyQ : (k : ℚ) ≤ a := by exact_mod_cast (show k ≤ a by omega)
+    intro h0; linarith
   have hne_fg1 : (f : ℚ) - g + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < f - g + 1 by omega)
+    have hxyQ : (g : ℚ) ≤ f := by exact_mod_cast (show g ≤ f by omega)
+    intro h0; linarith
   have hne_eg2 : (e : ℚ) - g + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - g + 2 by omega)
+    have hxyQ : (g : ℚ) ≤ e := by exact_mod_cast (show g ≤ e by omega)
+    intro h0; linarith
   have hne_dg3 : (d : ℚ) - g + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - g + 3 by omega)
+    have hxyQ : (g : ℚ) ≤ d := by exact_mod_cast (show g ≤ d by omega)
+    intro h0; linarith
   have hne_cg4 : (c : ℚ) - g + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - g + 4 by omega)
+    have hxyQ : (g : ℚ) ≤ c := by exact_mod_cast (show g ≤ c by omega)
+    intro h0; linarith
   have hne_bg5 : (b : ℚ) - g + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - g + 5 by omega)
+    have hxyQ : (g : ℚ) ≤ b := by exact_mod_cast (show g ≤ b by omega)
+    intro h0; linarith
   have hne_ag6 : (a : ℚ) - g + 6 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - g + 6 by omega)
+    have hxyQ : (g : ℚ) ≤ a := by exact_mod_cast (show g ≤ a by omega)
+    intro h0; linarith
   have hne_ef1 : (e : ℚ) - f + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < e - f + 1 by omega)
+    have hxyQ : (f : ℚ) ≤ e := by exact_mod_cast (show f ≤ e by omega)
+    intro h0; linarith
   have hne_df2 : (d : ℚ) - f + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - f + 2 by omega)
+    have hxyQ : (f : ℚ) ≤ d := by exact_mod_cast (show f ≤ d by omega)
+    intro h0; linarith
   have hne_cf3 : (c : ℚ) - f + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - f + 3 by omega)
+    have hxyQ : (f : ℚ) ≤ c := by exact_mod_cast (show f ≤ c by omega)
+    intro h0; linarith
   have hne_bf4 : (b : ℚ) - f + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - f + 4 by omega)
+    have hxyQ : (f : ℚ) ≤ b := by exact_mod_cast (show f ≤ b by omega)
+    intro h0; linarith
   have hne_af5 : (a : ℚ) - f + 5 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - f + 5 by omega)
+    have hxyQ : (f : ℚ) ≤ a := by exact_mod_cast (show f ≤ a by omega)
+    intro h0; linarith
   have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < d - e + 1 by omega)
+    have hxyQ : (e : ℚ) ≤ d := by exact_mod_cast (show e ≤ d by omega)
+    intro h0; linarith
   have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - e + 2 by omega)
+    have hxyQ : (e : ℚ) ≤ c := by exact_mod_cast (show e ≤ c by omega)
+    intro h0; linarith
   have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - e + 3 by omega)
+    have hxyQ : (e : ℚ) ≤ b := by exact_mod_cast (show e ≤ b by omega)
+    intro h0; linarith
   have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - e + 4 by omega)
+    have hxyQ : (e : ℚ) ≤ a := by exact_mod_cast (show e ≤ a by omega)
+    intro h0; linarith
   have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
   have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
   have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
   have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
   have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
   have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed,
              Nat.cast_sub hdc, Nat.cast_sub hcb, Nat.cast_sub hba,
              Nat.cast_sub (show k ≤ f by omega), Nat.cast_sub (show k ≤ e by omega),
@@ -16317,6 +16411,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         nineRow_hookLen_row5_lt h9 hmem5 hj1,
         nineRow_hookLen_row6_lt h9 hmem6 hj1,
         nineRow_hookLen_row7_lt h9 hmem7 hj1]
+    simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
     push_cast [Nat.cast_sub (show 1 ≤ j from h8),
                Nat.cast_sub (show j - 1 ≤ a by omega),
                Nat.cast_sub (show j - 1 ≤ b by omega),
@@ -16373,6 +16468,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
           nineRow_hookLen_row4_mid1 h9 hmem4 hjk1 (by omega),
           nineRow_hookLen_row5_mid1 h9 hmem5 hjk1 (by omega),
           nineRow_hookLen_row6_mid1 h9 hmem6 hjk1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ k by omega),
                  Nat.cast_sub (show k - 1 ≤ a by omega),
                  Nat.cast_sub (show k - 1 ≤ b by omega),
@@ -16437,6 +16533,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
           nineRow_hookLen_row3_mid2 h9 hmem3 hkg1 (by omega),
           nineRow_hookLen_row4_mid2 h9 hmem4 hkg1 (by omega),
           nineRow_hookLen_row5_mid2 h9 hmem5 hkg1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ g by omega),
                  Nat.cast_sub (show g - 1 ≤ a by omega),
                  Nat.cast_sub (show g - 1 ≤ b by omega),
@@ -16496,6 +16593,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
           nineRow_hookLen_row2_mid3 h9 hmem2 hgf1 (by omega),
           nineRow_hookLen_row3_mid3 h9 hmem3 hgf1 (by omega),
           nineRow_hookLen_row4_mid3 h9 hmem4 hgf1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ f by omega),
                  Nat.cast_sub (show f - 1 ≤ a by omega),
                  Nat.cast_sub (show f - 1 ≤ b by omega),
@@ -16552,6 +16650,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
           nineRow_hookLen_row1_mid4 h9 hmem1 hfe1 (by omega),
           nineRow_hookLen_row2_mid4 h9 hmem2 hfe1 (by omega),
           nineRow_hookLen_row3_mid4 h9 hmem3 hfe1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ e by omega),
                  Nat.cast_sub (show e - 1 ≤ a by omega),
                  Nat.cast_sub (show e - 1 ≤ b by omega),
@@ -16604,6 +16703,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       rw [nineRow_hookLen_row0_mid5 h9 hmem0 hed1 (by omega),
           nineRow_hookLen_row1_mid5 h9 hmem1 hed1 (by omega),
           nineRow_hookLen_row2_mid5 h9 hmem2 hed1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ d by omega),
                  Nat.cast_sub (show d - 1 ≤ a by omega),
                  Nat.cast_sub (show d - 1 ≤ b by omega),
@@ -16653,6 +16753,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [nineRow_hookLen_row0_mid6 h9 hmem0 hdc1 (by omega),
           nineRow_hookLen_row1_mid6 h9 hmem1 hdc1 (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ c by omega),
                  Nat.cast_sub (show c - 1 ≤ a by omega),
                  Nat.cast_sub (show c - 1 ≤ b by omega),
@@ -16695,6 +16796,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [nineRow_hookLen_row0_mid7 h9 hmem0 (by omega) (by omega)]
+      simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def, ← hg_def, ← hk_def, ← hj_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hcb'.le, Nat.cast_sub hdc, Nat.cast_sub hed,
@@ -16734,10 +16836,6 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
       rw [nineRow_arm_row0 h9 h8 hab']
-      push_cast [Nat.cast_sub hab'.le, Nat.cast_sub hcb, Nat.cast_sub hdc,
-                 Nat.cast_sub hed, Nat.cast_sub hfe, Nat.cast_sub hgf,
-                 Nat.cast_sub hkg, Nat.cast_sub hjk]
-      ring
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         rintro ⟨-, -, hbelow⟩
@@ -16774,42 +16872,114 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
       Finset.sum_insert hne21, Finset.sum_insert hne10, Finset.sum_singleton,
       hR8, hR7, hR6, hR5, hR4, hR3, hR2, hR1, hR0]
   -- Non-zero denominators
-  have hne_kj1 : (k : ℚ) - j + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < k - j + 1 by omega)
-  have hne_gj2 : (g : ℚ) - j + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < g - j + 2 by omega)
-  have hne_fj3 : (f : ℚ) - j + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < f - j + 3 by omega)
-  have hne_ej4 : (e : ℚ) - j + 4 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < e - j + 4 by omega)
-  have hne_dj5 : (d : ℚ) - j + 5 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < d - j + 5 by omega)
-  have hne_cj6 : (c : ℚ) - j + 6 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - j + 6 by omega)
-  have hne_bj7 : (b : ℚ) - j + 7 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - j + 7 by omega)
-  have hne_aj8 : (a : ℚ) - j + 8 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - j + 8 by omega)
-  have hne_gk1 : (g : ℚ) - k + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < g - k + 1 by omega)
-  have hne_fk2 : (f : ℚ) - k + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < f - k + 2 by omega)
-  have hne_ek3 : (e : ℚ) - k + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < e - k + 3 by omega)
-  have hne_dk4 : (d : ℚ) - k + 4 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < d - k + 4 by omega)
-  have hne_ck5 : (c : ℚ) - k + 5 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - k + 5 by omega)
-  have hne_bk6 : (b : ℚ) - k + 6 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - k + 6 by omega)
-  have hne_ak7 : (a : ℚ) - k + 7 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - k + 7 by omega)
-  have hne_fg1 : (f : ℚ) - g + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < f - g + 1 by omega)
-  have hne_eg2 : (e : ℚ) - g + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < e - g + 2 by omega)
-  have hne_dg3 : (d : ℚ) - g + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < d - g + 3 by omega)
-  have hne_cg4 : (c : ℚ) - g + 4 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - g + 4 by omega)
-  have hne_bg5 : (b : ℚ) - g + 5 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - g + 5 by omega)
-  have hne_ag6 : (a : ℚ) - g + 6 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - g + 6 by omega)
-  have hne_ef1 : (e : ℚ) - f + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < e - f + 1 by omega)
-  have hne_df2 : (d : ℚ) - f + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < d - f + 2 by omega)
-  have hne_cf3 : (c : ℚ) - f + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - f + 3 by omega)
-  have hne_bf4 : (b : ℚ) - f + 4 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - f + 4 by omega)
-  have hne_af5 : (a : ℚ) - f + 5 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - f + 5 by omega)
-  have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < d - e + 1 by omega)
-  have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - e + 2 by omega)
-  have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - e + 3 by omega)
-  have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - e + 4 by omega)
-  have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < c - d + 1 by omega)
-  have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - d + 2 by omega)
-  have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - d + 3 by omega)
-  have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < b - c + 1 by omega)
-  have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - c + 2 by omega)
-  have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by exact_mod_cast (show (0 : ℤ) < a - b + 1 by omega)
+  have hne_kj1 : (k : ℚ) - j + 1 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ k := by exact_mod_cast (show j ≤ k by omega)
+    intro h0; linarith
+  have hne_gj2 : (g : ℚ) - j + 2 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ g := by exact_mod_cast (show j ≤ g by omega)
+    intro h0; linarith
+  have hne_fj3 : (f : ℚ) - j + 3 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ f := by exact_mod_cast (show j ≤ f by omega)
+    intro h0; linarith
+  have hne_ej4 : (e : ℚ) - j + 4 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ e := by exact_mod_cast (show j ≤ e by omega)
+    intro h0; linarith
+  have hne_dj5 : (d : ℚ) - j + 5 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ d := by exact_mod_cast (show j ≤ d by omega)
+    intro h0; linarith
+  have hne_cj6 : (c : ℚ) - j + 6 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ c := by exact_mod_cast (show j ≤ c by omega)
+    intro h0; linarith
+  have hne_bj7 : (b : ℚ) - j + 7 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ b := by exact_mod_cast (show j ≤ b by omega)
+    intro h0; linarith
+  have hne_aj8 : (a : ℚ) - j + 8 ≠ 0 := by
+    have hxyQ : (j : ℚ) ≤ a := by exact_mod_cast (show j ≤ a by omega)
+    intro h0; linarith
+  have hne_gk1 : (g : ℚ) - k + 1 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ g := by exact_mod_cast (show k ≤ g by omega)
+    intro h0; linarith
+  have hne_fk2 : (f : ℚ) - k + 2 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ f := by exact_mod_cast (show k ≤ f by omega)
+    intro h0; linarith
+  have hne_ek3 : (e : ℚ) - k + 3 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ e := by exact_mod_cast (show k ≤ e by omega)
+    intro h0; linarith
+  have hne_dk4 : (d : ℚ) - k + 4 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ d := by exact_mod_cast (show k ≤ d by omega)
+    intro h0; linarith
+  have hne_ck5 : (c : ℚ) - k + 5 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ c := by exact_mod_cast (show k ≤ c by omega)
+    intro h0; linarith
+  have hne_bk6 : (b : ℚ) - k + 6 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ b := by exact_mod_cast (show k ≤ b by omega)
+    intro h0; linarith
+  have hne_ak7 : (a : ℚ) - k + 7 ≠ 0 := by
+    have hxyQ : (k : ℚ) ≤ a := by exact_mod_cast (show k ≤ a by omega)
+    intro h0; linarith
+  have hne_fg1 : (f : ℚ) - g + 1 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ f := by exact_mod_cast (show g ≤ f by omega)
+    intro h0; linarith
+  have hne_eg2 : (e : ℚ) - g + 2 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ e := by exact_mod_cast (show g ≤ e by omega)
+    intro h0; linarith
+  have hne_dg3 : (d : ℚ) - g + 3 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ d := by exact_mod_cast (show g ≤ d by omega)
+    intro h0; linarith
+  have hne_cg4 : (c : ℚ) - g + 4 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ c := by exact_mod_cast (show g ≤ c by omega)
+    intro h0; linarith
+  have hne_bg5 : (b : ℚ) - g + 5 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ b := by exact_mod_cast (show g ≤ b by omega)
+    intro h0; linarith
+  have hne_ag6 : (a : ℚ) - g + 6 ≠ 0 := by
+    have hxyQ : (g : ℚ) ≤ a := by exact_mod_cast (show g ≤ a by omega)
+    intro h0; linarith
+  have hne_ef1 : (e : ℚ) - f + 1 ≠ 0 := by
+    have hxyQ : (f : ℚ) ≤ e := by exact_mod_cast (show f ≤ e by omega)
+    intro h0; linarith
+  have hne_df2 : (d : ℚ) - f + 2 ≠ 0 := by
+    have hxyQ : (f : ℚ) ≤ d := by exact_mod_cast (show f ≤ d by omega)
+    intro h0; linarith
+  have hne_cf3 : (c : ℚ) - f + 3 ≠ 0 := by
+    have hxyQ : (f : ℚ) ≤ c := by exact_mod_cast (show f ≤ c by omega)
+    intro h0; linarith
+  have hne_bf4 : (b : ℚ) - f + 4 ≠ 0 := by
+    have hxyQ : (f : ℚ) ≤ b := by exact_mod_cast (show f ≤ b by omega)
+    intro h0; linarith
+  have hne_af5 : (a : ℚ) - f + 5 ≠ 0 := by
+    have hxyQ : (f : ℚ) ≤ a := by exact_mod_cast (show f ≤ a by omega)
+    intro h0; linarith
+  have hne_de1 : (d : ℚ) - e + 1 ≠ 0 := by
+    have hxyQ : (e : ℚ) ≤ d := by exact_mod_cast (show e ≤ d by omega)
+    intro h0; linarith
+  have hne_ce2 : (c : ℚ) - e + 2 ≠ 0 := by
+    have hxyQ : (e : ℚ) ≤ c := by exact_mod_cast (show e ≤ c by omega)
+    intro h0; linarith
+  have hne_be3 : (b : ℚ) - e + 3 ≠ 0 := by
+    have hxyQ : (e : ℚ) ≤ b := by exact_mod_cast (show e ≤ b by omega)
+    intro h0; linarith
+  have hne_ae4 : (a : ℚ) - e + 4 ≠ 0 := by
+    have hxyQ : (e : ℚ) ≤ a := by exact_mod_cast (show e ≤ a by omega)
+    intro h0; linarith
+  have hne_cd1 : (c : ℚ) - d + 1 ≠ 0 := by
+    have hxyQ : (d : ℚ) ≤ c := by exact_mod_cast (show d ≤ c by omega)
+    intro h0; linarith
+  have hne_bd2 : (b : ℚ) - d + 2 ≠ 0 := by
+    have hxyQ : (d : ℚ) ≤ b := by exact_mod_cast (show d ≤ b by omega)
+    intro h0; linarith
+  have hne_ad3 : (a : ℚ) - d + 3 ≠ 0 := by
+    have hxyQ : (d : ℚ) ≤ a := by exact_mod_cast (show d ≤ a by omega)
+    intro h0; linarith
+  have hne_bc1 : (b : ℚ) - c + 1 ≠ 0 := by
+    have hxyQ : (c : ℚ) ≤ b := by exact_mod_cast (show c ≤ b by omega)
+    intro h0; linarith
+  have hne_ac2 : (a : ℚ) - c + 2 ≠ 0 := by
+    have hxyQ : (c : ℚ) ≤ a := by exact_mod_cast (show c ≤ a by omega)
+    intro h0; linarith
+  have hne_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
+    have hxyQ : (b : ℚ) ≤ a := by exact_mod_cast (show b ≤ a by omega)
+    intro h0; linarith
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe,
              Nat.cast_sub hed, Nat.cast_sub hdc, Nat.cast_sub hcb, Nat.cast_sub hba,
              Nat.cast_sub (show j ≤ g by omega), Nat.cast_sub (show j ≤ f by omega),
