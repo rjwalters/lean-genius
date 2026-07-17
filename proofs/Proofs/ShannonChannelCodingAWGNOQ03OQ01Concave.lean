@@ -162,14 +162,12 @@ theorem parallelRate_concaveOn_power (N : ι → ℝ) (hN : ∀ i, 0 < N i) :
   -- each coordinate term is concave on the orthant `s`
   have hterm : ∀ i, ConcaveOn ℝ s (fun P : ι → ℝ => perUseCapacity (P i) (N i)) := by
     intro i
-    have hc := (perUseCapacity_concaveOn (hN i)).comp_linearMap
-      (LinearMap.proj (R := ℝ) (φ := fun _ : ι => ℝ) i)
-    have hsub : s ⊆ (LinearMap.proj (R := ℝ) (φ := fun _ : ι => ℝ) i) ⁻¹' Set.Ici 0 := by
-      intro P hP
-      simp only [Set.mem_preimage, LinearMap.proj_apply, Set.mem_Ici]
-      exact (hmem P).mp hP i
-    have hres := hc.subset hsub hs
-    simpa [Function.comp, LinearMap.proj_apply] using hres
+    refine ⟨hs, fun x hx y hy a b ha hb hab => ?_⟩
+    have hcx : (0 : ℝ) ≤ x i := (hmem x).mp hx i
+    have hcy : (0 : ℝ) ≤ y i := (hmem y).mp hy i
+    have hstep := (perUseCapacity_concaveOn (hN i)).2 (Set.mem_Ici.mpr hcx)
+      (Set.mem_Ici.mpr hcy) ha hb hab
+    simpa [Pi.add_apply, Pi.smul_apply, smul_eq_mul] using hstep
   have hsum := concaveOn_finset_sum hs hterm (Finset.univ : Finset ι)
   simpa only [parallelRate] using hsum
 
