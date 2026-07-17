@@ -359,25 +359,83 @@ Hint: Omit it from the simp argument list.
   ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5868:14: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5852:73: error: unsolved goals
-μ : YoungDiagram
-c c' : ℕ × ℕ
-hc : isCorner μ c
-hc' : isCorner μ c'
-hne : c ≠ c'
-hi : c.1 < c'.1
-h_col_lt : c'.2 < c.2
-hc_in_ν₂ : isCorner (removeCorner μ c' hc') c
-hd_ge_3 : 3 ≤ hookLength μ c.1 c'.2
-hd_ge_3_Q : 3 ≤ ↑(hookLength μ c.1 c'.2)
-hd_sub1_ne : ↑(hookLength μ c.1 c'.2) - 1 ≠ 0
-hd_sub2_ne : ↑(hookLength μ c.1 c'.2) - 2 ≠ 0
-hHνc_ne : ↑(hookProd (removeCorner μ c hc)) ≠ 0
-hHνc'c_ne : ↑(hookProd (removeCorner (removeCorner μ c' hc') c hc_in_ν₂)) ≠ 0
-⊢ ↑(hookProd μ) * ↑(hookProd (removeCorner (removeCorner μ c hc) c' ⋯)) * (↑(hookLength μ c.1 c'.2) - 1) ^ 2 =
-    ↑(hookProd (removeCorner μ c hc)) * ↑(hookProd (removeCorner μ c' hc')) * ↑(hookLength μ c.1 c'.2) *
-      (↑(hookLength μ c.1 c'.2) - 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5742:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5747:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5752:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5757:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5764:78: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5768:78: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5656:13: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5656:23: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5667:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5667:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5697:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5697:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5703:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5703:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5736:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.f̵st̵,̵ ̵P̵r̵o̵d̵.̵s̵nd, hookLength_corner_eq_one hc, one_mul, hν_cells]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5736:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵hookLength_corner_eq_one hc, one_mul, hν_cells]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5944:2: error: No goals to be solved
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5971:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
@@ -385,185 +443,19 @@ open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5984:10: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6048:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
-  (gHookYD a b ha).card - 1
-in the target expression
-  ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
-
-case succ
-a b : ℕ
-ha : 0 < a
-hb : 0 < b
-hHP : ↑(hookProd (gHookYD a b ha)) ≠ 0
-hN : (gHookYD a b ha).card = a + b
-hpos : 0 < (gHookYD a b ha).card
-hfact : ↑((gHookYD a b ha).card - 1).factorial ≠ 0
-hμ :
-  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) * ↑(hookProd (gHookYD a b ha)) =
-    ↑(gHookYD a b ha).card.factorial
-hstepQ :
-  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) =
-    ∑ cx ∈ (corners (gHookYD a b ha)).attach,
-      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯)))
-hμc :
-  ∀ (cx : ↥(corners (gHookYD a b ha))),
-    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
-        ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
-      ↑((gHookYD a b ha).card - 1).factorial
-n : ℕ
-hcard : (gHookYD a b ha).card = n + 1
-⊢ ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6063:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
-  ?a * ?b / ?c
-in the target expression
-  ↑(hookProd (gHookYD a b ha)) / ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
-    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
-      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial)
-
-a b : ℕ
-ha : 0 < a
-hb : 0 < b
-hHP : ↑(hookProd (gHookYD a b ha)) ≠ 0
-hN : (gHookYD a b ha).card = a + b
-hpos : 0 < (gHookYD a b ha).card
-hfact : ↑((gHookYD a b ha).card - 1).factorial ≠ 0
-hμ :
-  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) * ↑(hookProd (gHookYD a b ha)) =
-    ↑(gHookYD a b ha).card.factorial
-hstepQ :
-  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) =
-    ∑ cx ∈ (corners (gHookYD a b ha)).attach,
-      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯)))
-hμc :
-  ∀ (cx : ↥(corners (gHookYD a b ha))),
-    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
-        ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
-      ↑((gHookYD a b ha).card - 1).factorial
-hfact_succ : ↑(gHookYD a b ha).card.factorial = ↑(gHookYD a b ha).card * ↑((gHookYD a b ha).card - 1).factorial
-c : ℕ × ℕ
-hcx : c ∈ corners (gHookYD a b ha)
-hHPc : ↑(hookProd (removeCorner (gHookYD a b ha) c ⋯)) ≠ 0
-hIHc :
-  ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
-      ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
-    ↑((gHookYD a b ha).card - 1).factorial
-⊢ ↑(hookProd (gHookYD a b ha)) / ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
-    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
-      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6107:6: error: `simp` made no progress
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6113:2: error: Type mismatch
-  Eq.symm (hookLength_transpose μ i j)
-has type
-  hookLength μ.transpose j i = hookLength μ i j
-but is expected to have type
-  hookLength μ (i, j).1 (i, j).2 = hookLength μ.transpose (i, j).swap.1 (i, j).swap.2
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6122:41: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6145:23: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   (Prod.swap ?x).swap
 in the target expression
-  c.swap ∉ μ
-
-μ : YoungDiagram
-T : StandardYoungTableau μ
-c : ℕ × ℕ
-hc : c.swap ∉ μ
-⊢ c.swap ∉ μ
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6142:2: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
-  (∀ (x : ?α), ?f x = ?g x) → ?f = ?g
-with the goal
-  ∀ (c : ℕ × ℕ), T₁.entry c = T₂.entry c
-
-Note: The full type of `@funext` is
-  ∀ {α : Sort ?u.6} {β : α → Sort ?u.5} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+  T₁.entry c = T₂.entry c
 
 μ : YoungDiagram
 T₁ T₂ : StandardYoungTableau μ
 h : sytTranspose T₁ = sytTranspose T₂
-⊢ ∀ (c : ℕ × ℕ), T₁.entry c = T₂.entry c
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6187:2: error: Type mismatch
-  hT
-has type
-  Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.transpose.transpose.card.factorial
-but is expected to have type
-  Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6284:15: error: Tactic `rfl` failed: The left-hand side
-  2 = 2
-is not definitionally equal to the right-hand side
-  0 = 0
-
-case inr.«2»
-a : ℕ
-ha : 3 ≤ a
-x : ℕ
-hyv : 0 ≤ 0
-hxu : 2 ≤ 2
-⊢ 2 = 2 ∧ 0 = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6298:13: error: Tactic `rfl` failed: The left-hand side
-  2 = 2
-is not definitionally equal to the right-hand side
-  0 = 0
-
-case mpr.inr.inr
-a : ℕ
-ha : 3 ≤ a
-⊢ 2 = 2 ∧ 0 = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6288:13: warning: declaration uses `sorry`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6305:70: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6315:14: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
-  0 = 2
-
-case inl
-a : ℕ
-ha : 3 ≤ a
-k : ℕ
-left✝¹ : k < a
-left✝ : 0 = 2
-right✝ : k = 0
-⊢ False
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6316:14: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
-  1 = 2
-
-case inr
-a : ℕ
-ha : 3 ≤ a
-k : ℕ
-left✝¹ : k < 2
-left✝ : 1 = 2
-right✝ : k = 0
-⊢ False
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6325:14: error: don't know how to synthesize implicit argument `b`
-  @Iff.mp ((0, a) ∈ a21YD a.succ ?m.66) (a < (a21YD a.succ ?m.66).rowLen 0) mem_iff_lt_rowLen
-    (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
-context:
-a : ℕ
-ha : 3 ≤ a + 1
-⊢ Prop
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6325:14: error: don't know how to synthesize implicit argument `a`
-  @Iff.mp ((0, a) ∈ a21YD a.succ ?m.66) (a < (a21YD a.succ ?m.66).rowLen 0) mem_iff_lt_rowLen
-    (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
-context:
-a : ℕ
-ha : 3 ≤ a + 1
-⊢ Prop
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6326:9: error: don't know how to synthesize implicit argument `a`
-  @Iff.mpr ((0, a) ∈ a21YD a.succ ?m.66) (0 = 0 ∧ a < a.succ ∨ 0 = 1 ∧ a < 2 ∨ 0 = 2 ∧ a = 0) mem_a21YD
-    (Or.inl ⟨rfl, Nat.lt_succ_self a⟩)
-context:
-a : ℕ
-ha : 3 ≤ a + 1
-⊢ Prop
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6326:19: error: don't know how to synthesize placeholder
-context:
-a : ℕ
-ha : 3 ≤ a + 1
-⊢ 3 ≤ a.succ
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6325:45: error: don't know how to synthesize placeholder
-context:
-a : ℕ
-ha : 3 ≤ a + 1
-⊢ YoungDiagram
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6325:11: error: failed to infer `have` declaration type
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6331:71: error: No goals to be solved
+c : ℕ × ℕ
+this : T₁.entry c = T₂.entry c
+⊢ T₁.entry c = T₂.entry c
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6304:70: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6331:82: error: No goals to be solved
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6333:46: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 2
@@ -571,19 +463,9 @@ a possible counterexample may satisfy the constraints
 where
  b := ↑a
  c := ↑?m.33
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6338:71: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6345:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
-  ?m.16 ≤ ?m.15
-in the target expression
-  (a21YD a ha).rowLen i = 0
-
-a : ℕ
-ha : 3 ≤ a
-i : ℕ
-hi : 3 ≤ i
-⊢ (a21YD a ha).rowLen i = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6351:71: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6358:71: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6338:82: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6351:82: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6358:82: error: No goals to be solved
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6360:46: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 2
@@ -635,20 +517,6 @@ hj2 : 2 ≤ j
 hja : j < a
 ⊢ YoungDiagram
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6367:9: error: failed to infer `have` declaration type
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6373:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
-  ?m.14 ≤ ?m.13
-in the target expression
-  (a21YD a ha).colLen j = 0
-
-a : ℕ
-ha : 3 ≤ a
-j : ℕ
-hja : a ≤ j
-⊢ (a21YD a ha).colLen j = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6423:22: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6424:22: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6429:22: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6430:22: error: No goals to be solved
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6459:44: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
   (i, j) = (0, a - 1)
 
@@ -661,9 +529,92 @@ h✝ : (i, j) = (0, a - 1)
 ⊢ i = 0 ∧ j = a - 1 ∨ i = 1 ∧ j = 1 ∨ i = 2 ∧ j = 0
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6476:36: error: No goals to be solved
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6486:28: error: unexpected token ':'; expected ')'
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6527:8: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6560:8: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6569:8: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6535:51: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6546:45: error: unsolved goals
+a : ℕ
+ha : 3 ≤ a
+μ : YoungDiagram := a21YD a ha
+hμ_def : μ = a21YD a ha
+h_top : isCorner (a21YD a ha) (0, a - 1)
+h_mid : isCorner (a21YD a ha) (1, 1)
+h_bot : isCorner (a21YD a ha) (2, 0)
+hcorners : corners μ = {(0, a - 1), (1, 1), (2, 0)}
+hd01 : (0, a - 1) ≠ (1, 1)
+hd02 : (0, a - 1) ≠ (2, 0)
+hd12 : (1, 1) ≠ (2, 0)
+hsplit : range (a - 1) = {0} ∪ {1} ∪ Ico 2 (a - 1)
+hdisj1 : Disjoint {0} {1}
+hdisj2 : Disjoint ({0} ∪ {1}) (Ico 2 (a - 1))
+s : ℕ
+hs : 2 ≤ s ∧ s < a - 1
+⊢ (↑a - ↑s) / (↑a - ↑s - 1) = (↑a - ↑s) / (↑a - ↑s - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6553:88: error: linarith failed to find a contradiction
+a : ℕ
+ha : 3 ≤ a
+μ : YoungDiagram := a21YD a ha
+hμ_def : μ = a21YD a ha
+h_top : isCorner (a21YD a ha) (0, a - 1)
+h_mid : isCorner (a21YD a ha) (1, 1)
+h_bot : isCorner (a21YD a ha) (2, 0)
+hcorners : corners μ = {(0, a - 1), (1, 1), (2, 0)}
+hd01 : (0, a - 1) ≠ (1, 1)
+hd02 : (0, a - 1) ≠ (2, 0)
+hd12 : (1, 1) ≠ (2, 0)
+hsplit : range (a - 1) = {0} ∪ {1} ∪ Ico 2 (a - 1)
+hdisj1 : Disjoint {0} {1}
+hdisj2 : Disjoint ({0} ∪ {1}) (Ico 2 (a - 1))
+htail : ∏ s ∈ Ico 2 (a - 1), ↑(hookLength (a21YD a ha) 0 s) / (↑(hookLength (a21YD a ha) 0 s) - 1) = ↑a - 2
+ha1 : 1 ≤ ↑a
+a✝ : ↑a - 1 < 1
+⊢ False
+failed
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6526:77: error: unsolved goals
+a : ℕ
+ha : 3 ≤ a
+μ : YoungDiagram := a21YD a ha
+hμ_def : μ = a21YD a ha
+h_top : isCorner (a21YD a ha) (0, a - 1)
+h_mid : isCorner (a21YD a ha) (1, 1)
+h_bot : isCorner (a21YD a ha) (2, 0)
+hcorners : corners μ = {(0, a - 1), (1, 1), (2, 0)}
+hd01 : (0, a - 1) ≠ (1, 1)
+hd02 : (0, a - 1) ≠ (2, 0)
+hd12 : (1, 1) ≠ (2, 0)
+hsplit : range (a - 1) = {0} ∪ {1} ∪ Ico 2 (a - 1)
+hdisj1 : Disjoint {0} {1}
+hdisj2 : Disjoint ({0} ∪ {1}) (Ico 2 (a - 1))
+htail : ∏ s ∈ Ico 2 (a - 1), ↑(hookLength (a21YD a ha) 0 s) / (↑(hookLength (a21YD a ha) 0 s) - 1) = ↑a - 2
+ha1 : 1 ≤ ↑a
+ha2 : 1 ≤ ↑a - 1
+⊢ -(↑a * (1 + ↑a)⁻¹) + ↑a ^ 2 * (1 + ↑a)⁻¹ - (1 + ↑a)⁻¹ * 2 = -2 + ↑a
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6568:49: error: unsolved goals
+a : ℕ
+ha : 3 ≤ a
+μ : YoungDiagram := a21YD a ha
+hμ_def : μ = a21YD a ha
+h_top : isCorner (a21YD a ha) (0, a - 1)
+h_mid : isCorner (a21YD a ha) (1, 1)
+h_bot : isCorner (a21YD a ha) (2, 0)
+hcorners : corners μ = {(0, a - 1), (1, 1), (2, 0)}
+hd01 : (0, a - 1) ≠ (1, 1)
+hd02 : (0, a - 1) ≠ (2, 0)
+hd12 : (1, 1) ≠ (2, 0)
+hR_top :
+  ↑(hookProd μ) / ↑(hookProd (removeCorner μ (0, a - 1) h_top)) = (↑a + 2) * ↑a * (↑a - 2) / ((↑a + 1) * (↑a - 1))
+hR_mid : ↑(hookProd μ) / ↑(hookProd (removeCorner μ (1, 1) h_mid)) = 3 * ↑a / (2 * (↑a - 1))
+⊢ ↑(2 + a) * ↑a * (-1 + ↑(2 + a))⁻¹ * 6 + ↑(2 + a) * (-1 + ↑(2 + a))⁻¹ * 6 = 12 + ↑a * 6
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6594:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∑ x ∈ attach ?s, ?f ↑x
 in the target expression
@@ -696,6 +647,77 @@ hterm :
       if ↑x = (0, a - 1) then (↑a + 2) * ↑a * (↑a - 2) / ((↑a + 1) * (↑a - 1))
       else if ↑x = (1, 1) then 3 * ↑a / (2 * (↑a - 1)) else 3 * (↑a + 2) / (2 * (↑a + 1))) =
     ↑(a + 3)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_empty, mul_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵Finset.prod_empty, mul_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:35: warning: This simp argument is unused:
+  Finset.prod_empty
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, Prod.snd, F̵i̵n̵s̵e̵t̵.̵p̵r̵o̵d̵_̵e̵m̵p̵t̵y̵,̵ ̵mul_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:54: warning: This simp argument is unused:
+  mul_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, Prod.snd, Finset.prod_empty,̵ ̵m̵u̵l̵_̵o̵n̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6561:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6561:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6570:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_empty, one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6570:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵Finset.prod_empty, one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6570:35: warning: This simp argument is unused:
+  Finset.prod_empty
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, Prod.snd, F̵i̵n̵s̵e̵t̵.̵p̵r̵o̵d̵_̵e̵m̵p̵t̵y̵,̵ ̵one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6570:54: warning: This simp argument is unused:
+  one_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, Prod.snd, Finset.prod_empty,̵ ̵o̵n̵e̵_̵m̵u̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6646:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
@@ -994,8 +1016,6 @@ has type
   dite (isCorner μ x) ?m.371 ?m.372 = ?m.372 ⋯
 but is expected to have type
   ratio x = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7011:8: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7031:10: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7045:53: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   e ≥ 0
@@ -1035,7 +1055,6 @@ hbc_eq : b = cv
 hnotcorner : ¬isCorner μ (1, b - 1)
 this : ↑b - ↑cv = 0
 ⊢ sorry = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7055:10: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
 Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7063:53: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   e ≥ 0
@@ -1421,4 +1440,454 @@ where
  f := ↑(μ.rowLen 1)
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7482:41: error: maximum number of errors (100; from option `maxErrors`) reached, exiting
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7482:41: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+  g ≥ 1
+  g - h ≤ 0
+  f ≥ 0
+  f - h ≥ 0
+  e ≥ 0
+  e - f ≥ 1
+where
+ e := ↑(μ.rowLen 0)
+ f := ↑(μ.rowLen 1)
+ g := ↑(μ.rowLen 3)
+ h := ↑(μ.rowLen 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7483:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∏ s ∈ range d, (↑(a + 3) - ↑s) / (↑(a + 3) - ↑s - 1)
+in the target expression
+  (((∏ x ∈ range d, (↑a + 3 - ↑x) / (↑a + 3 - ↑x - 1)) *
+          ∏ x ∈ Ico d c, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+        ∏ x ∈ Ico c b, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+      ∏ x ∈ Ico b (a - 1), ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1) =
+    (↑a + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) / ((↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+
+μ : YoungDiagram
+h4 : μ.rowLen 4 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+hab : b < a
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+h3 : 0 < d
+hdc : d ≤ c
+hcb : c ≤ b
+hconv1 : ∀ s ∈ range d, ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1) = (↑a + 3 - ↑s) / (↑a + 3 - ↑s - 1)
+⊢ (((∏ x ∈ range d, (↑a + 3 - ↑x) / (↑a + 3 - ↑x - 1)) *
+          ∏ x ∈ Ico d c, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+        ∏ x ∈ Ico c b, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+      ∏ x ∈ Ico b (a - 1), ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1) =
+    (↑a + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) / ((↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7547:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Decidable (isCorner μ x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7553:16: error: Type mismatch
+  dif_pos (mem_corners.mp cx.property)
+has type
+  dite (isCorner μ ↑cx) ?m.210 ?m.211 = ?m.210 ⋯
+but is expected to have type
+  ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) = ratio ↑cx
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7565:20: error: Type mismatch
+  dif_neg (mt mem_corners.mpr hxnc)
+has type
+  dite (isCorner μ x) ?m.452 ?m.453 = ?m.453 ⋯
+but is expected to have type
+  ratio x = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7599:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 2
+  g ≥ 0
+  f ≥ 0
+  f - g ≤ 0
+  f - j ≥ 1
+  e ≥ 1
+  e - j ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 1)
+ g := ↑(μ.rowLen 0)
+ i := ↑(μ.rowLen (2, c - 1).1)
+ j := ↑(c - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7600:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 1
+  g ≥ 0
+  f ≥ 0
+  f - g ≤ 0
+  f - j ≥ 1
+  e ≥ 1
+  e - j ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 1)
+ g := ↑(μ.rowLen 0)
+ i := ↑(μ.rowLen ((2, c - 1).1 + 1))
+ j := ↑(c - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7625:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+  g ≥ 0
+  g - h ≥ 0
+  f ≥ 0
+  e ≥ 0
+  e - f ≤ 0
+  e - g ≥ 1
+where
+ e := ↑(μ.rowLen 1)
+ f := ↑(μ.rowLen 0)
+ g := ↑(c - 1)
+ h := ↑(μ.rowLen ((2, c - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7621:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h4 : μ.rowLen 4 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+h3 : 0 < d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (3, d - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR3 :
+  ratio (3, d - 1) = ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1)
+hcd : ¬d < c
+hcd_eq : c = d
+hnotcorner : ¬isCorner μ (2, c - 1)
+this : ↑c - ↑d = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7637:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 2
+  g ≥ 0
+  g - j ≥ 1
+  f ≥ 0
+  f - j ≤ 0
+  e ≥ 1
+  e - f ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 2)
+ g := ↑(μ.rowLen 0)
+ i := ↑(μ.rowLen (1, b - 1).1)
+ j := ↑(b - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7638:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 1
+  g ≥ 0
+  g - j ≥ 1
+  f ≥ 0
+  f - j ≤ 0
+  e ≥ 1
+  e - f ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 2)
+ g := ↑(μ.rowLen 0)
+ i := ↑(μ.rowLen ((1, b - 1).1 + 1))
+ j := ↑(b - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7655:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+  g ≥ 0
+  g - h ≥ 0
+  f ≥ 0
+  f - g ≥ 1
+  e ≥ 1
+  e - g ≤ 1
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 0)
+ g := ↑(b - 1)
+ h := ↑(μ.rowLen ((1, b - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7652:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h4 : μ.rowLen 4 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+h3 : 0 < d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (3, d - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR3 :
+  ratio (3, d - 1) = ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 1) * (↑c - ↑d) / (↑c - ↑d + 1) * (↑a - ↑c + 3) / (↑a - ↑c + 2) * (↑b - ↑c + 2) / (↑b - ↑c + 1)
+hbc : ¬c < b
+hbc_eq : b = c
+hnotcorner : ¬isCorner μ (1, b - 1)
+this : ↑b - ↑c = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7666:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 2
+  g ≥ 0
+  g - j ≤ 0
+  f ≥ 0
+  f - g ≤ 0
+  e ≥ 1
+  e - f ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 2)
+ g := ↑(μ.rowLen 1)
+ i := ↑(μ.rowLen (0, a - 1).1)
+ j := ↑(a - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7667:74: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 1
+  g ≥ 0
+  g - j ≤ 0
+  f ≥ 0
+  f - g ≤ 0
+  e ≥ 1
+  e - f ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 2)
+ g := ↑(μ.rowLen 1)
+ i := ↑(μ.rowLen ((0, a - 1).1 + 1))
+ j := ↑(a - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7677:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  h ≥ 0
+  g ≥ 0
+  g - h ≥ 0
+  f ≥ 0
+  f - g ≤ 1
+  e ≥ 1
+  e - f ≤ 0
+where
+ e := ↑(μ.rowLen 3)
+ f := ↑(μ.rowLen 2)
+ g := ↑(a - 1)
+ h := ↑(μ.rowLen ((0, a - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7674:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h4 : μ.rowLen 4 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+h3 : 0 < d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (3, d - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR3 :
+  ratio (3, d - 1) = ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 1) * (↑c - ↑d) / (↑c - ↑d + 1) * (↑a - ↑c + 3) / (↑a - ↑c + 2) * (↑b - ↑c + 2) / (↑b - ↑c + 1)
+hR1 :
+  ratio (1, b - 1) =
+    (↑b + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑d + 2) * (↑b - ↑c + 1)) * (↑a - ↑b + 2) / (↑a - ↑b + 1)
+hab : ¬b < a
+hab_eq : a = b
+hnotcorner : ¬isCorner μ (0, a - 1)
+this : ↑a - ↑b = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7693:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ratio (2, c - 1)
+in the target expression
+  ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+      (↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+        (↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+          ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1))) =
+    ↑a + ↑b + ↑c + ↑d
+
+μ : YoungDiagram
+h4 : μ.rowLen 4 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+h3 : 0 < d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (3, d - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR3 :
+  ratio (3, d - 1) = ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 1) * (↑c - ↑d) / (↑c - ↑d + 1) * (↑a - ↑c + 3) / (↑a - ↑c + 2) * (↑b - ↑c + 2) / (↑b - ↑c + 1)
+hR1 :
+  ratio (1, b - 1) =
+    (↑b + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑d + 2) * (↑b - ↑c + 1)) * (↑a - ↑b + 2) / (↑a - ↑b + 1)
+hR0 :
+  ratio (0, a - 1) =
+    (↑a + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) / ((↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+hne31 : (3, d - 1) ∉ {(2, c - 1), (1, b - 1), (0, a - 1)}
+hne21 : (2, c - 1) ∉ {(1, b - 1), (0, a - 1)}
+hne10 : (1, b - 1) ∉ {(0, a - 1)}
+⊢ ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+      (↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+        (↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
+          ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1))) =
+    ↑a + ↑b + ↑c + ↑d
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7571:22: warning: This simp argument is unused:
+  dif_pos hbot
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵b̵o̵t̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7601:24: warning: This simp argument is unused:
+  dif_pos hmid
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7626:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7639:24: warning: This simp argument is unused:
+  dif_pos hmid
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7656:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7668:24: warning: This simp argument is unused:
+  dif_pos htop
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵t̵o̵p̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7678:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7727:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7738:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7735:5: warning: Variable name `h5` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7748:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7745:5: warning: Variable name `h5` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7758:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7755:5: warning: Variable name `h5` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7776:39: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≤ 1
+  b ≤ 0
+  b ≤ 0
+  a ≥ 0
+  a + b - c ≥ 2
+where
+ a := ↑(μ.rowLen 4)
+ b := ↑(hookLength μ 3 s)
+ c := ↑(μ.rowLen 3)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7791:39: error: maximum number of errors (100; from option `maxErrors`) reached, exiting

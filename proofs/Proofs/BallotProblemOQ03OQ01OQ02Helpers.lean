@@ -5739,33 +5739,29 @@ lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner
         ∏ x ∈ armCells, hookLength μ x.1 x.2 := by
       simp only [armCells]
       rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
-      simp only [Prod.fst, Prod.snd]
     have harm_ν2 : ∏ s ∈ Finset.range j, hookLength ν i s =
         ∏ x ∈ armCells, hookLength ν x.1 x.2 := by
       simp only [armCells]
       rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
-      simp only [Prod.fst, Prod.snd]
     have hleg_μ : ∏ r ∈ Finset.range i, hookLength μ r j =
         ∏ x ∈ legCells, hookLength μ x.1 x.2 := by
       simp only [legCells]
       rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
-      simp only [Prod.fst, Prod.snd]
     have hleg_ν2 : ∏ r ∈ Finset.range i, hookLength ν r j =
         ∏ x ∈ legCells, hookLength ν x.1 x.2 := by
       simp only [legCells]
       rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
-      simp only [Prod.fst, Prod.snd]
     have hcells_eq : ν.cells = armCells ∪ legCells ∪ restCells :=
       (Finset.union_sdiff_of_subset harm_leg_sub).symm
     have hdisj_union : Disjoint (armCells ∪ legCells) restCells := disjoint_sdiff_self_right
     have hμ_split : ∏ x ∈ ν.cells, hookLength μ x.1 x.2 =
         (∏ x ∈ armCells, hookLength μ x.1 x.2) * (∏ x ∈ legCells, hookLength μ x.1 x.2) *
         (∏ x ∈ restCells, hookLength μ x.1 x.2) := by
-      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
+      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]
     have hν_split : ∏ x ∈ ν.cells, hookLength ν x.1 x.2 =
         (∏ x ∈ armCells, hookLength ν x.1 x.2) * (∏ x ∈ legCells, hookLength ν x.1 x.2) *
         (∏ x ∈ restCells, hookLength ν x.1 x.2) := by
-      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]; ring
+      rw [hcells_eq, Finset.prod_union hdisj_union, Finset.prod_union hdisj]
     rw [h_μ, h_ν, harm_μ, harm_ν2, hleg_μ, hleg_ν2, hμ_split, hν_split,
         Finset.prod_congr rfl hrest_inv]
     ring
@@ -5941,7 +5937,6 @@ private lemma hookProd_doubleRemove_factor
   -- Substitute hR1 and hR2 into the goal, then clear d-factor denominators
   rw [hR1, hR2]
   field_simp
-  ring
 
 -- ============================================================
 -- Hook walk identity for generalized hook shapes [a, 1^b] (PART XIVb)
@@ -6141,8 +6136,7 @@ private lemma sytTranspose_injective {μ : YoungDiagram} :
   intro c
   have : (sytTranspose T₁).entry c.swap = (sytTranspose T₂).entry c.swap :=
     congrFun (congrArg StandardYoungTableau.entry h) c.swap
-  change T₁.entry c.swap.swap = T₂.entry c.swap.swap at this
-  rwa [Prod.swap_swap, Prod.swap_swap] at this
+  exact this
 
 /-- The number of SYT of shape μ equals the number of SYT of shape μ.transpose.
     Proof: sytTranspose is injective, and applying it to μ.transpose gives
@@ -6301,7 +6295,8 @@ private lemma a21YD_card (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).card = a + 3 :=
   rw [Finset.card_union_of_disjoint, Finset.card_union_of_disjoint]
   · rw [Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
         Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
-        Finset.card_singleton, Finset.card_range, Finset.card_range]; omega
+        Finset.card_singleton, Finset.card_range, Finset.card_range]
+    omega
   · apply Finset.disjoint_left.mpr
     intro ⟨x, y⟩ hx hy
     simp only [Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hx hy
@@ -6328,16 +6323,18 @@ private lemma rowLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 0
 
 private lemma rowLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 1 = 2 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]; omega
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp
-      (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]
+  · have hmem : ((1 : ℕ), 1) ∈ a21YD a ha :=
+      mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩))
+    have := YoungDiagram.mem_iff_lt_rowLen.mp hmem
     omega
 
 private lemma rowLen_a21YD_two (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 2 = 1 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]; omega
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp
-      (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD (ha := ha)]
+  · have hmem : ((2 : ℕ), 0) ∈ a21YD a ha :=
+      mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩))
+    have := YoungDiagram.mem_iff_lt_rowLen.mp hmem
     omega
 
 private lemma rowLen_a21YD_ge_three (a : ℕ) (ha : 3 ≤ a) {i : ℕ} (hi : 3 ≤ i) :
@@ -6348,24 +6345,27 @@ private lemma rowLen_a21YD_ge_three (a : ℕ) (ha : 3 ≤ a) {i : ℕ} (hi : 3 �
 -- Column lengths
 private lemma colLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 0 = 3 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
-  · have := YoungDiagram.mem_iff_lt_colLen.mp
-      (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]
+  · have hmem : ((2 : ℕ), 0) ∈ a21YD a ha :=
+      mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩))
+    have := YoungDiagram.mem_iff_lt_colLen.mp hmem
     omega
 
 private lemma colLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 1 = 2 := by
   apply Nat.le_antisymm
-  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
-  · have := YoungDiagram.mem_iff_lt_colLen.mp
-      (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]
+  · have hmem : ((1 : ℕ), 1) ∈ a21YD a ha :=
+      mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩))
+    have := YoungDiagram.mem_iff_lt_colLen.mp hmem
     omega
 
 private lemma colLen_a21YD_mid {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hj2 : 2 ≤ j) (hja : j < a) :
     (a21YD a ha).colLen j = 1 := by
   apply Nat.le_antisymm
   · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD (ha := ha)]; omega
-  · have := YoungDiagram.mem_iff_lt_colLen.mp
-      (mem_a21YD.mpr (Or.inl ⟨rfl, hja⟩))
+  · have hmem : ((0 : ℕ), j) ∈ a21YD a ha :=
+      mem_a21YD.mpr (Or.inl ⟨rfl, hja⟩)
+    have := YoungDiagram.mem_iff_lt_colLen.mp hmem
     omega
 
 private lemma colLen_a21YD_ge_a {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hja : a ≤ j) :
@@ -6456,10 +6456,10 @@ private lemma corners_a21YD (a : ℕ) (ha : 3 ≤ a) :
   simp only [mem_corners, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
   constructor
   · intro hc
-    rcases corners_a21YD_cases a ha hc with rfl | rfl | rfl
-    · left; exact ⟨rfl, rfl⟩
-    · right; left; exact ⟨rfl, rfl⟩
-    · right; right; exact ⟨rfl, rfl⟩
+    rcases corners_a21YD_cases a ha hc with h | h | h
+    · left; exact Prod.ext_iff.mp h
+    · right; left; exact Prod.ext_iff.mp h
+    · right; right; exact Prod.ext_iff.mp h
   · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
     · exact isCorner_a21YD_top a ha
     · exact isCorner_a21YD_mid a ha
@@ -6483,7 +6483,7 @@ private lemma tele_prod (n : ℕ) :
 private lemma tail_prod_a21YD (a : ℕ) (ha : 3 ≤ a) :
     ∏ s ∈ Finset.Ico 2 (a - 1), ((a : ℚ) - s) / ((a : ℚ) - s - 1) = (a : ℚ) - 2 := by
   -- Rewrite RHS as tele_prod(a-3)
-  have ha3_cast : (a - 3 : ℕ : ℚ) + 1 = (a : ℚ) - 2 := by
+  have ha3_cast : ((a - 3 : ℕ) : ℚ) + 1 = (a : ℚ) - 2 := by
     rw [Nat.cast_sub (by omega : 3 ≤ a)]; push_cast; ring
   rw [← ha3_cast, ← tele_prod (a - 3)]
   -- Bijection: s ↦ a-1-s from Ico 2 (a-1) to Ico 1 (a-3+1)
@@ -6495,7 +6495,7 @@ private lemma tail_prod_a21YD (a : ℕ) (ha : 3 ≤ a) :
   · intro s hs
     simp only [Finset.mem_Ico] at hs
     have hle : s + 1 ≤ a := by omega
-    have hcast : (a - 1 - s : ℕ : ℚ) = (a : ℚ) - s - 1 := by
+    have hcast : ((a - 1 - s : ℕ) : ℚ) = (a : ℚ) - s - 1 := by
       rw [show a - 1 - s = a - (s + 1) from by omega, Nat.cast_sub hle]
       push_cast; ring
     rw [hcast]; ring
@@ -6546,11 +6546,13 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
           Finset.prod_congr rfl (fun s hs => by
             simp only [Finset.mem_Ico] at hs
             rw [hookLength_a21YD_0j ha (by omega) (by omega)]
-            push_cast [Nat.cast_sub (show s ≤ a by omega)])]
+            push_cast [Nat.cast_sub (show s ≤ a by omega)]
+            ring)]
       exact tail_prod_a21YD a ha
     rw [htail]
-    have ha1 : (1 : ℚ) ≤ (a : ℚ) := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (by omega)
-    have ha2 : (1 : ℚ) ≤ (a : ℚ) - 1 := by push_cast [Nat.cast_sub (by omega : 1 ≤ a)]; linarith
+    have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
+    have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+    have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
     push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
     field_simp
     ring
@@ -6561,6 +6563,8 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
     simp only [Prod.fst, Prod.snd,
                Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
     simp only [hookLength_a21YD_10, hookLength_a21YD_01]
+    have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
+    have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
     push_cast [Nat.cast_sub (by omega : 1 ≤ a)]
     field_simp; ring
   -- R_bot: ratio at corner (2, 0)
@@ -6572,6 +6576,9 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
     rw [show Finset.range 2 = {0} ∪ {1} from by ext k; simp; omega]
     rw [Finset.prod_union (by simp), Finset.prod_singleton, Finset.prod_singleton]
     simp only [hookLength_a21YD_00, hookLength_a21YD_10]
+    have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
+    have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+    push_cast
     field_simp; ring
   -- Rewrite each summand using its ratio value
   have hterm : ∀ cx : {x // x ∈ corners μ},
@@ -6591,7 +6598,10 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
             show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq]]
   simp_rw [hterm]
   -- Convert from sum over attach to sum over corners μ, then substitute hcorners
-  rw [Finset.sum_attach]
+  rw [Finset.sum_attach (corners μ) (fun c =>
+    if c = (0, a - 1) then ((a : ℚ) + 2) * a * ((a : ℚ) - 2) / (((a : ℚ) + 1) * ((a : ℚ) - 1))
+    else if c = (1, 1) then 3 * (a : ℚ) / (2 * ((a : ℚ) - 1))
+    else 3 * ((a : ℚ) + 2) / (2 * ((a : ℚ) + 1)))]
   rw [hcorners]
   rw [show (({(0, a - 1), (1, 1), (2, 0)} : Finset (ℕ × ℕ)) : Finset (ℕ × ℕ)) =
       insert (0, a - 1) (insert (1, 1) {(2, 0)}) from rfl]
@@ -6605,6 +6615,9 @@ private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
              show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq],
              ite_true, ite_false]
   -- Sum = a+3
+  have ha3Q : (3 : ℚ) ≤ (a : ℚ) := by exact_mod_cast ha
+  have hne1 : ((a : ℚ) + 1) ≠ 0 := by linarith
+  have hne2 : ((a : ℚ) - 1) ≠ 0 := by linarith
   push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
   field_simp
   ring
@@ -6729,16 +6742,14 @@ private lemma prod_div_telescope (K m : ℕ) (hKm : m < K) :
     ∏ s ∈ Finset.range m, ((K : ℚ) - s) / ((K : ℚ) - s - 1) =
     (K : ℚ) / ((K : ℚ) - m) := by
   induction m with
-  | zero => simp
+  | zero => simp [div_self (Nat.cast_pos.mpr hKm).ne']
   | succ m ih =>
     have hKm' : m < K := Nat.lt_of_succ_lt hKm
     rw [Finset.prod_range_succ, ih hKm']
-    have hd1 : (K : ℚ) - ↑m - 1 ≠ 0 := by
-      have : m + 1 < K := hKm; exact_mod_cast (by push_cast; omega)
-    have hd2 : (K : ℚ) - (↑m + 1) ≠ 0 := by
-      have : m + 1 < K := hKm; exact_mod_cast (by push_cast; omega)
-    have hd3 : (K : ℚ) - ↑m ≠ 0 := by
-      have : m < K := hKm'; exact_mod_cast (by push_cast; omega)
+    have hcast : (m : ℚ) + 1 < (K : ℚ) := by exact_mod_cast hKm
+    have hd1 : (K : ℚ) - ↑m - 1 ≠ 0 := by intro h0; linarith
+    have hd2 : (K : ℚ) - (↑m + 1) ≠ 0 := by intro h0; linarith
+    have hd3 : (K : ℚ) - ↑m ≠ 0 := by intro h0; linarith
     push_cast
     field_simp [hd1, hd2, hd3]
     ring
@@ -6750,17 +6761,22 @@ private lemma threeRow_arm_row2 (μ : YoungDiagram) (h3 : μ.rowLen 3 = 0)
     ∏ s ∈ Finset.range (μ.rowLen 2 - 1),
       ((hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1)) =
     (μ.rowLen 2 : ℚ) := by
-  set c := μ.rowLen 2
-  have hc_pos : 0 < c := hc.1 |>.1 |> YoungDiagram.mem_iff_lt_rowLen.mp |> (by simp)
+  set c := μ.rowLen 2 with hc_def
+  have hc_pos : 0 < c := by
+    show 0 < μ.rowLen 2
+    have := YoungDiagram.mem_iff_lt_rowLen.mp hc.1
+    omega
   have hconv : ∀ s ∈ Finset.range (c - 1),
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
       ((c : ℚ) - s) / ((c : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < c - 1 := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (show s < μ.rowLen 2 by omega)
     rw [threeRow_hookLen_row2 h3 hmem]
-    push_cast
-    congr 1 <;> push_cast <;> omega
+    have hsc' : s ≤ c := by omega
+    rw [hc_def] at hsc'
+    push_cast [Nat.cast_sub hsc']
+    rw [hc_def]
   rw [Finset.prod_congr rfl hconv]
   have hcm : c - 1 < c := Nat.sub_lt hc_pos Nat.one_pos
   rw [prod_div_telescope c (c - 1) hcm]
@@ -6770,10 +6786,13 @@ private lemma threeRow_arm_row2 (μ : YoungDiagram) (h3 : μ.rowLen 3 = 0)
 /-- corner (2, c−1) is always a corner of a 3-row shape with c > 0. -/
 private lemma threeRow_corner_bot {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     (h2 : 0 < μ.rowLen 2) : isCorner μ (2, μ.rowLen 2 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega),
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (show μ.rowLen 2 - 1 < μ.rowLen 2 by omega),
           fun h => ?_, fun h => ?_⟩
-  · have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
   · have h3s := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at h3s
     omega
 
 /-- Corners of a 3-row shape are classified: each is (0,a−1) if a>b, (1,b−1) if b>c, (2,c−1). -/
@@ -6787,8 +6806,8 @@ private lemma threeRow_corner_cases {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   simp only [Prod.fst, Prod.snd] at *
   have hi_lt_3 : i < 3 := by
     by_contra hlt; push_neg at hlt
-    have := YoungDiagram.rowLen_mono hlt
-    rw [h3] at this
+    have hanti := μ.rowLen_anti 3 i hlt
+    rw [h3] at hanti
     have := YoungDiagram.mem_iff_lt_rowLen.mp hmem; omega
   have hj : j = μ.rowLen i - 1 := by
     have hlt : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
@@ -6808,16 +6827,32 @@ private lemma threeRow_corner_cases {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
 /-- (1, b-1) is a corner of a 3-row shape when rowLen 2 < rowLen 1. -/
 private lemma threeRow_corner_mid {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     (hbc : μ.rowLen 2 < μ.rowLen 1) : isCorner μ (1, μ.rowLen 1 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (show μ.rowLen 1 - 1 < μ.rowLen 1 by omega),
+    ?_, ?_⟩
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    have hanti := μ.rowLen_anti 1 2 (by omega)
+    omega
 
 /-- (0, a-1) is a corner of a 3-row shape when rowLen 1 < rowLen 0. -/
 private lemma threeRow_corner_top {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     (hab : μ.rowLen 1 < μ.rowLen 0) : isCorner μ (0, μ.rowLen 0 - 1) := by
-  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
-  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (show μ.rowLen 0 - 1 < μ.rowLen 0 by omega),
+    ?_, ?_⟩
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    omega
+  · intro h
+    have := YoungDiagram.mem_iff_lt_rowLen.mp h
+    norm_num at this
+    have hanti := μ.rowLen_anti 0 1 (by omega)
+    omega
 
 /-- A 3-row YoungDiagram has card = rowLen 0 + rowLen 1 + rowLen 2. -/
 private lemma threeRow_card {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0) :
@@ -6871,7 +6906,8 @@ private lemma threeRow_arm_row1 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
       ((hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1)) =
     ((μ.rowLen 1 : ℚ) + 1) * ((μ.rowLen 1 : ℚ) - μ.rowLen 2) /
     ((μ.rowLen 1 : ℚ) - μ.rowLen 2 + 1) := by
-  set b := μ.rowLen 1; set cv := μ.rowLen 2
+  set b := μ.rowLen 1 with hb_def
+  set cv := μ.rowLen 2 with hcv_def
   have hcb : cv ≤ b := Nat.le_of_lt hbc
   have hsplit : Finset.range (b - 1) = Finset.range cv ∪ Finset.Ico cv (b - 1) := by
     ext k; simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ico]; omega
@@ -6881,18 +6917,26 @@ private lemma threeRow_arm_row1 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   rw [hsplit, Finset.prod_union hdisj]
   have hconv1 : ∀ s ∈ Finset.range cv,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 1 - s) / ((b : ℚ) + 1 - s - 1) := fun s hs => by
+      (((b + 1 : ℕ) : ℚ) - s) / (((b + 1 : ℕ) : ℚ) - s - 1) := fun s hs => by
     have hsc : s < cv := Finset.mem_range.mp hs
-    rw [threeRow_hookLen_row1_lt h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)) hsc]
+    rw [threeRow_hookLen_row1_lt h3
+      (YoungDiagram.mem_iff_lt_rowLen.mpr
+        (show s < μ.rowLen 1 from by rw [← hb_def]; omega)) hsc,
+      ← hb_def]
     push_cast [Nat.cast_sub (show s ≤ b by omega)]; ring
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 1) cv (by omega)]
   have hconv2 : ∀ s ∈ Finset.Ico cv (b - 1),
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
       ((b : ℚ) - s) / ((b : ℚ) - s - 1) := fun s hs => by
     have hs_mem := Finset.mem_Ico.mp hs
-    rw [threeRow_hookLen_row1_ge h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
-        (by omega : μ.rowLen 2 ≤ s)]
-    push_cast [Nat.cast_sub (show s ≤ b - 1 by omega)]; ring
+    rw [threeRow_hookLen_row1_ge h3
+        (YoungDiagram.mem_iff_lt_rowLen.mpr
+          (show s < μ.rowLen 1 from by rw [← hb_def]; omega))
+        (show μ.rowLen 2 ≤ s from by rw [← hcv_def]; omega),
+      ← hb_def]
+    push_cast [Nat.cast_sub (show s ≤ b - 1 by omega)]
+    push_cast [Nat.cast_sub (show s ≤ b by omega)]
+    ring
   rw [Finset.prod_congr rfl hconv2, Finset.prod_Ico_eq_prod_range]
   have hconv2b : ∀ k ∈ Finset.range (b - 1 - cv),
       ((b : ℚ) - ↑(cv + k)) / ((b : ℚ) - ↑(cv + k) - 1) =
@@ -6900,7 +6944,8 @@ private lemma threeRow_arm_row1 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     push_cast [Nat.cast_sub hcb]; ring
   rw [Finset.prod_congr rfl hconv2b, prod_div_telescope (b - cv) (b - 1 - cv) (by omega)]
   have hbc1 : (b : ℚ) - cv + 1 ≠ 0 := by
-    exact_mod_cast (show (0 : ℤ) < (b : ℤ) - cv + 1 by omega)
+    have h1 : (cv : ℚ) ≤ (b : ℚ) := by exact_mod_cast hcb
+    intro h0; linarith
   push_cast [Nat.cast_sub hcb, Nat.cast_sub (show b - 1 - cv ≤ b - cv by omega)]
   field_simp [hbc1]; push_cast [Nat.cast_sub hcb]; ring
 
@@ -6912,7 +6957,9 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     ((μ.rowLen 0 : ℚ) + 2) * ((μ.rowLen 0 : ℚ) - μ.rowLen 2 + 1) *
     ((μ.rowLen 0 : ℚ) - μ.rowLen 1) /
     (((μ.rowLen 0 : ℚ) - μ.rowLen 2 + 2) * ((μ.rowLen 0 : ℚ) - μ.rowLen 1 + 1)) := by
-  set a := μ.rowLen 0; set b := μ.rowLen 1; set cv := μ.rowLen 2
+  set a := μ.rowLen 0 with ha_def
+  set b := μ.rowLen 1 with hb_def
+  set cv := μ.rowLen 2 with hcv_def
   have hba : b ≤ a := Nat.le_of_lt hab
   have hcb : cv ≤ b := μ.rowLen_anti 1 2 (by omega)
   have hsplit : Finset.range (a - 1) =
@@ -6927,17 +6974,24 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   rw [hsplit, Finset.prod_union hdisj2, Finset.prod_union hdisj1]
   have hconv1 : ∀ s ∈ Finset.range cv,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 2 - s) / ((a : ℚ) + 2 - s - 1) := fun s hs => by
+      (((a + 2 : ℕ) : ℚ) - s) / (((a + 2 : ℕ) : ℚ) - s - 1) := fun s hs => by
     have hsc : s < cv := Finset.mem_range.mp hs
-    rw [threeRow_hookLen_row0_lt h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)) hsc]
+    rw [threeRow_hookLen_row0_lt h3
+      (YoungDiagram.mem_iff_lt_rowLen.mpr
+        (show s < μ.rowLen 0 from by rw [← ha_def]; omega)) hsc,
+      ← ha_def]
     push_cast [Nat.cast_sub (show s ≤ a by omega)]; ring
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 2) cv (by omega)]
   have hconv2 : ∀ s ∈ Finset.Ico cv b,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
       ((a : ℚ) + 1 - s) / ((a : ℚ) + 1 - s - 1) := fun s hs => by
     have hs_mem := Finset.mem_Ico.mp hs
-    rw [threeRow_hookLen_row0_mid h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
-        hs_mem.1 hs_mem.2]
+    rw [threeRow_hookLen_row0_mid h3
+        (YoungDiagram.mem_iff_lt_rowLen.mpr
+          (show s < μ.rowLen 0 from by rw [← ha_def]; omega))
+        (show μ.rowLen 2 ≤ s from by rw [← hcv_def]; omega)
+        (show s < μ.rowLen 1 from by rw [← hb_def]; omega),
+      ← ha_def]
     push_cast [Nat.cast_sub (show s ≤ a by omega)]; ring
   rw [Finset.prod_congr rfl hconv2, Finset.prod_Ico_eq_prod_range]
   have hconv2b : ∀ k ∈ Finset.range (b - cv),
@@ -6949,9 +7003,14 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
       ((a : ℚ) - s) / ((a : ℚ) - s - 1) := fun s hs => by
     have hs_mem := Finset.mem_Ico.mp hs
-    rw [threeRow_hookLen_row0_ge h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
-        hs_mem.1]
-    push_cast [Nat.cast_sub (show s ≤ a - 1 by omega)]; ring
+    rw [threeRow_hookLen_row0_ge h3
+        (YoungDiagram.mem_iff_lt_rowLen.mpr
+          (show s < μ.rowLen 0 from by rw [← ha_def]; omega))
+        (show μ.rowLen 1 ≤ s from by rw [← hb_def]; omega),
+      ← ha_def]
+    push_cast [Nat.cast_sub (show s ≤ a - 1 by omega)]
+    push_cast [Nat.cast_sub (show s ≤ a by omega)]
+    ring
   rw [Finset.prod_congr rfl hconv3, Finset.prod_Ico_eq_prod_range]
   have hconv3b : ∀ k ∈ Finset.range (a - 1 - b),
       ((a : ℚ) - ↑(b + k)) / ((a : ℚ) - ↑(b + k) - 1) =
@@ -6976,7 +7035,10 @@ lemma hook_walk_identity_threeRow (μ : YoungDiagram)
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
     = (μ.card : ℚ) := by
-  set a := μ.rowLen 0; set b := μ.rowLen 1; set cv := μ.rowLen 2
+  classical
+  set a := μ.rowLen 0 with ha_def
+  set b := μ.rowLen 1 with hb_def
+  set cv := μ.rowLen 2 with hcv_def
   have hcb : cv ≤ b := μ.rowLen_anti 1 2 (by omega)
   have hba : b ≤ a := μ.rowLen_anti 0 1 (by omega)
   have hbot : isCorner μ (2, cv - 1) := threeRow_corner_bot h3 h2
@@ -7015,9 +7077,12 @@ lemma hook_walk_identity_threeRow (μ : YoungDiagram)
           Finset.mem_insert, Finset.mem_singleton]; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_singleton]
     have hcv1 : cv - 1 < cv := Nat.sub_lt h2 Nat.one_pos
-    have hmem0 : (0, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show cv - 1 < μ.rowLen 0 from by rw [← ha_def]; omega)
+    have hmem1 : (1, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr
+      (show cv - 1 < μ.rowLen 1 from by rw [← hb_def]; omega)
     rw [threeRow_hookLen_row0_lt h3 hmem0 hcv1, threeRow_hookLen_row1_lt h3 hmem1 hcv1]
+    simp only [← ha_def, ← hb_def, ← hcv_def]
     push_cast [Nat.cast_sub (show 1 ≤ cv from h2),
                Nat.cast_sub (show cv - 1 ≤ a by omega),
                Nat.cast_sub (show cv - 1 ≤ b by omega)]
@@ -7032,17 +7097,23 @@ lemma hook_walk_identity_threeRow (μ : YoungDiagram)
       simp only [Prod.fst, Prod.snd]
       rw [threeRow_arm_row1 h3 hbc,
           Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      rw [threeRow_hookLen_row0_mid h3 hmem0 (by omega : cv ≤ b - 1) (by omega : b - 1 < b)]
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr
+        (show b - 1 < μ.rowLen 0 from by rw [← ha_def]; omega)
+      rw [threeRow_hookLen_row0_mid h3 hmem0
+        (show μ.rowLen 2 ≤ b - 1 from by rw [← hcv_def]; omega)
+        (show b - 1 < μ.rowLen 1 from by rw [← hb_def]; omega)]
+      simp only [← ha_def, ← hb_def, ← hcv_def]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
                  Nat.cast_sub (show b - 1 ≤ a by omega),
                  Nat.cast_sub hcb.le]
       ring
     · have hbc_eq : b = cv := Nat.le_antisymm (not_lt.mp hbc) hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
-        intro ⟨_, _, hbelow⟩
-        apply hbelow
-        exact YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+        rintro ⟨-, -, hbelow⟩
+        refine hbelow ?_
+        have hmem : ((2 : ℕ), b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr
+          (show b - 1 < μ.rowLen 2 from by rw [← hcv_def]; omega)
+        exact hmem
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - cv = 0 := by rw [hbc_eq]; ring
       rw [this]; ring
@@ -7058,9 +7129,11 @@ lemma hook_walk_identity_threeRow (μ : YoungDiagram)
       ring
     · have hba_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
-        intro ⟨_, _, hbelow⟩
-        apply hbelow
-        exact YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+        rintro ⟨-, -, hbelow⟩
+        refine hbelow ?_
+        have hmem : ((1 : ℕ), a - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr
+          (show a - 1 < μ.rowLen 1 from by rw [← hb_def]; omega)
+        exact hmem
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hba_eq]; ring
       rw [this]; ring
