@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 331,
-    "assumptions": "3 axioms: tau_perp_lower_bound (τ⊥(n) ≥ ω(n), basic coprimality bound requiring intricate sorted-divisor reasoning), erdos_hall_max_lower_bound (max_{n<x} τ⊥(n) > exp((log log x)^(2−ε)), Erdős-Hall 1978), and erdos_simonovits_bounds (exponential bounds on g(k), Erdős-Simonovits).",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `p` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'p'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). (The transitive import-wrapper `Erdos1100ProblemAristotle.lean`, Class D, cascades green once this parent is fixed.) ORIGINAL METADATA: 3 axioms: tau_perp_lower_bound (τ⊥(n) ≥ ω(n), basic coprimality bound requiring intricate sorted-divisor reasoning), erdos_hall_max_lower_bound (max_{n<x} τ⊥(n) > exp((log log x)^(2−ε)), Erdős-Hall 1978), and erdos_simonovits_bounds (exponential bounds on g(k), Erdős-Simonovits).",
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 7,

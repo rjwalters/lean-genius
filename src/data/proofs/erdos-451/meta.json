@@ -24,7 +24,7 @@
     "mathlib_version": "4.31.0",
     "axiomCount": 3,
     "lineCount": 185,
-    "assumptions": "3 axioms: nk, nk_gt_2k, nk_minimal. 0 sorries.",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `hp` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'hp'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 3 axioms: nk, nk_gt_2k, nk_minimal. 0 sorries.",
     "theoremCount": 8,
     "definitionCount": 8
   },

@@ -98,7 +98,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 306,
-    "assumptions": "7 axioms: endToEndDistance (end-to-end distance function), expectedEndDistance (expected distance function), tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim. 0 sorries.",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `d_2` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'd_2'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 7 axioms: endToEndDistance (end-to-end distance function), expectedEndDistance (expected distance function), tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim. 0 sorries.",
     "theoremCount": 6,
     "definitionCount": 6
   },

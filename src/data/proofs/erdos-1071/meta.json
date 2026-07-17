@@ -72,7 +72,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 323,
-    "assumptions": "1 axiom (danzer_finite_maximal_packing), 0 sorries. Zorn existence proof added. Danzer finite maximal packing axiomatized.",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `s` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 's'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom (danzer_finite_maximal_packing), 0 sorries. Zorn existence proof added. Danzer finite maximal packing axiomatized.",
     "theoremCount": 23,
     "definitionCount": 16
   },

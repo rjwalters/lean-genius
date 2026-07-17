@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `p` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'p'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 424,
     "mathlib_version": "4.31.0",
     "theoremCount": 18,
