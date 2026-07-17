@@ -825,7 +825,7 @@ theorem sublevelMeasure_one : sublevelMeasure (1 : Polynomial ℝ) = 0 := by
 theorem sublevelInf'_eq_zero : sublevelInf' = 0 :=
   le_antisymm
     (iInf_le_of_le 1 (iInf_le_of_le one_admissible' sublevelMeasure_one.le))
-    (zero_le _)
+    (zero_le)
 
 /-! ### The genuinely non-degenerate object: positive-degree faithful admissibility
 
