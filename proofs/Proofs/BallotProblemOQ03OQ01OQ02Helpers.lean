@@ -8700,6 +8700,7 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
 /-- The hook walk identity for exactly-5-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
+set_option maxHeartbeats 2000000 in
 lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
     (h5 : μ.rowLen 5 = 0) (h4 : 0 < μ.rowLen 4) :
     ∑ c ∈ (corners μ).attach,
@@ -9262,6 +9263,10 @@ private lemma sixRow_card {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0) :
                Finset.mem_union, Finset.mem_image, Finset.mem_range, Prod.mk.injEq]
     constructor
     · intro h
+      have hil : i ≤ 5 := by
+        by_contra hlt; push_neg at hlt
+        have hanti := μ.rowLen_anti 6 i (by omega)
+        omega
       interval_cases i <;> simp_all <;> omega
     · rintro (((((⟨_, _, rfl, rfl⟩ | ⟨_, _, rfl, rfl⟩) | ⟨_, _, rfl, rfl⟩) |
                 ⟨_, _, rfl, rfl⟩) | ⟨_, _, rfl, rfl⟩) | ⟨_, _, rfl, rfl⟩) <;>
@@ -9938,6 +9943,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
 
 /-- The hook walk identity for 6-row Young diagrams [a,b,c,d,e,f].
     NON-CIRCULAR: proved directly via hookProd_ratio_formula. -/
+set_option maxHeartbeats 2000000 in
 lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     (h6 : μ.rowLen 6 = 0) (h5 : 0 < μ.rowLen 5) :
     ∑ c ∈ (corners μ).attach,
@@ -9986,44 +9992,42 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     simp only [Finset.mem_insert, Finset.mem_singleton]
     obtain ⟨i, j⟩ := x
     obtain ⟨hmem, hright, hbelow⟩ := hxc
+    have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
     have hi_lt : i < 6 := by
       by_contra h6i; push_neg at h6i
-      have : (6, j) ∈ μ := by
-        calc (6, j) ≤ (i, j) := by constructor <;> omega
-          _ ∈ μ := hmem
-        |>.mp hmem
-      exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp this) (by omega)
+      have hanti := μ.rowLen_anti 6 i h6i
+      omega
     interval_cases i
     · right; right; right; right; right
       have hja : j = a - 1 := by
         have : ¬(j + 1 < a) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hja⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hja⟩
     · right; right; right; right; left
       have hjb : j = b - 1 := by
         have : ¬(j + 1 < b) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hjb⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hjb⟩
     · right; right; right; left
       have hjc : j = c - 1 := by
         have : ¬(j + 1 < c) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hjc⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hjc⟩
     · right; right; left
       have hjd : j = d - 1 := by
         have : ¬(j + 1 < d) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hjd⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hjd⟩
     · right; left
       have hje : j = e - 1 := by
         have : ¬(j + 1 < e) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hje⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hje⟩
     · left
       have hjf : j = f - 1 := by
         have : ¬(j + 1 < f) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
         omega
-      exact ⟨rfl, hjf⟩
+      exact Prod.ext_iff.mpr ⟨rfl, hjf⟩
   have hext : ∑ x ∈ corners μ, ratio x =
       ∑ x ∈ ({(5, f - 1), (4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)} :
              Finset (ℕ × ℕ)), ratio x := by
@@ -10243,7 +10247,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
       have hb1 : b - 1 < b := Nat.sub_lt (by omega) Nat.one_pos
       have hcb1 : c ≤ b - 1 := by omega
       have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      rw [show Finset.range 1 = {0} from by ext k; simp; omega]
+      rw [show Finset.range 1 = {0} from by ext k; simp]
       rw [Finset.prod_singleton]
       rw [sixRow_hookLen_row0_mid4 h6 hmem0 hcb1 hb1]
       simp only [← ha_def, ← hb_def, ← hc_def, ← hd_def, ← he_def, ← hf_def]
@@ -10672,72 +10676,64 @@ private lemma sevenRow_corner_cases {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) (
     (cell = (1, μ.rowLen 1 - 1) ∧ μ.rowLen 2 < μ.rowLen 1) ∨
     (cell = (0, μ.rowLen 0 - 1) ∧ μ.rowLen 1 < μ.rowLen 0) := by
   obtain ⟨hmem, hnext, hprev⟩ := hc
-  have hrow := YoungDiagram.mem_iff_lt_rowLen.mp hmem
-  -- cell = (i, j) for some i, j
   obtain ⟨i, j⟩ := cell
   simp only [Prod.mk.injEq]
+  have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   -- i ≤ 6 since rowLen 7 = 0 means no row 7
   have hi6 : i ≤ 6 := by
-    by_contra h; push_neg at h
-    have : μ.rowLen 7 > 0 := by
-      calc μ.rowLen 7 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-        _ > 0 := by omega
+    by_contra hgt0; push_neg at hgt0
+    have hanti := μ.rowLen_anti 7 i (by omega)
     omega
   -- j = rowLen i - 1 (since (i, j+1) ∉ μ)
   have hj : j = μ.rowLen i - 1 := by
-    apply Nat.le_antisymm
-    · by_contra h; push_neg at h
-      have : (i, j + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      exact hnext this
-    · have : ¬ (i, j + 1) ∈ μ := hnext
-      by_contra h; push_neg at h
-      have : μ.rowLen i > j + 1 := by omega
-      exact absurd (YoungDiagram.mem_iff_lt_rowLen.mpr this) hnext
+    have hnext' : ¬ j + 1 < μ.rowLen i :=
+      fun hlt0 => hnext (YoungDiagram.mem_iff_lt_rowLen.mpr hlt0)
+    omega
   subst hj
   interval_cases i
   · right; right; right; right; right; right
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 1 = μ.rowLen 0 := Nat.le_antisymm (μ.rowLen_anti 0 1 (by omega)) h
       have : (1, μ.rowLen 0 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 2 = μ.rowLen 1 := Nat.le_antisymm (μ.rowLen_anti 1 2 (by omega)) h
       have : (2, μ.rowLen 1 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 3 = μ.rowLen 2 := Nat.le_antisymm (μ.rowLen_anti 2 3 (by omega)) h
       have : (3, μ.rowLen 2 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 4 = μ.rowLen 3 := Nat.le_antisymm (μ.rowLen_anti 3 4 (by omega)) h
       have : (4, μ.rowLen 3 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 5 = μ.rowLen 4 := Nat.le_antisymm (μ.rowLen_anti 4 5 (by omega)) h
       have : (5, μ.rowLen 4 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 6 = μ.rowLen 5 := Nat.le_antisymm (μ.rowLen_anti 5 6 (by omega)) h
       have : (6, μ.rowLen 5 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
-  · left; rfl
+  · left; exact ⟨rfl, rfl⟩
 
 /-- Card of a 7-row shape equals sum of row lengths. -/
 private lemma sevenRow_card {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) :
@@ -10758,12 +10754,10 @@ private lemma sevenRow_card {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) :
     · intro h
       have hil : i ≤ 6 := by
         by_contra hlt; push_neg at hlt
-        have : μ.rowLen 7 > 0 := calc
-          μ.rowLen 7 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-          _ > 0 := by
-            have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+        have hanti := μ.rowLen_anti 7 i (by omega)
+        have hj0 : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
         omega
-      have hj := YoungDiagram.mem_iff_lt_rowLen.mp h
+      have hj : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
       interval_cases i <;> simp_all [Prod.mk.injEq]
     · rintro (((((( ⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
                   ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
@@ -11462,6 +11456,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
 /-- Arm product for corner (0, a-1) in a 7-row shape:
     ∏ = (a+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b)/
         ((a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
+set_option maxHeartbeats 2000000 in
 private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
     (h6 : 0 < μ.rowLen 6) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -11665,6 +11660,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
 /-- The hook walk identity for exactly-7-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
+set_option maxHeartbeats 4000000 in
 lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     (h7 : μ.rowLen 7 = 0) (h6 : 0 < μ.rowLen 6) :
     ∑ c ∈ (corners μ).attach,
@@ -12502,76 +12498,69 @@ private lemma eightRow_corner_cases {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) (
     (cell = (1, μ.rowLen 1 - 1) ∧ μ.rowLen 2 < μ.rowLen 1) ∨
     (cell = (0, μ.rowLen 0 - 1) ∧ μ.rowLen 1 < μ.rowLen 0) := by
   obtain ⟨hmem, hnext, hprev⟩ := hc
-  have hrow := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   obtain ⟨i, j⟩ := cell
   simp only [Prod.mk.injEq]
+  have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have hi7 : i ≤ 7 := by
-    by_contra h; push_neg at h
-    have : μ.rowLen 8 > 0 := by
-      calc μ.rowLen 8 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-        _ > 0 := by omega
+    by_contra hgt0; push_neg at hgt0
+    have hanti := μ.rowLen_anti 8 i (by omega)
     omega
   have hj : j = μ.rowLen i - 1 := by
-    apply Nat.le_antisymm
-    · by_contra h; push_neg at h
-      have : (i, j + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      exact hnext this
-    · have : ¬ (i, j + 1) ∈ μ := hnext
-      by_contra h; push_neg at h
-      have : μ.rowLen i > j + 1 := by omega
-      exact absurd (YoungDiagram.mem_iff_lt_rowLen.mpr this) hnext
+    have hnext' : ¬ j + 1 < μ.rowLen i :=
+      fun hlt0 => hnext (YoungDiagram.mem_iff_lt_rowLen.mpr hlt0)
+    omega
   subst hj
   interval_cases i
   · right; right; right; right; right; right; right
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 1 = μ.rowLen 0 := Nat.le_antisymm (μ.rowLen_anti 0 1 (by omega)) h
       have : (1, μ.rowLen 0 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 2 = μ.rowLen 1 := Nat.le_antisymm (μ.rowLen_anti 1 2 (by omega)) h
       have : (2, μ.rowLen 1 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 3 = μ.rowLen 2 := Nat.le_antisymm (μ.rowLen_anti 2 3 (by omega)) h
       have : (3, μ.rowLen 2 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 4 = μ.rowLen 3 := Nat.le_antisymm (μ.rowLen_anti 3 4 (by omega)) h
       have : (4, μ.rowLen 3 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 5 = μ.rowLen 4 := Nat.le_antisymm (μ.rowLen_anti 4 5 (by omega)) h
       have : (5, μ.rowLen 4 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 6 = μ.rowLen 5 := Nat.le_antisymm (μ.rowLen_anti 5 6 (by omega)) h
       have : (6, μ.rowLen 5 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 7 = μ.rowLen 6 := Nat.le_antisymm (μ.rowLen_anti 6 7 (by omega)) h
       have : (7, μ.rowLen 6 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
-  · left; rfl
+  · left; exact ⟨rfl, rfl⟩
 
 /-- Card of an 8-row shape equals sum of row lengths. -/
 private lemma eightRow_card {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) :
@@ -12593,12 +12582,10 @@ private lemma eightRow_card {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) :
     · intro h
       have hil : i ≤ 7 := by
         by_contra hlt; push_neg at hlt
-        have : μ.rowLen 8 > 0 := calc
-          μ.rowLen 8 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-          _ > 0 := by
-            have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+        have hanti := μ.rowLen_anti 8 i (by omega)
+        have hj0 : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
         omega
-      have hj := YoungDiagram.mem_iff_lt_rowLen.mp h
+      have hj : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
       interval_cases i <;> simp_all [Prod.mk.injEq]
     · rintro (((((((⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
                    ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
@@ -13318,6 +13305,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
 /-- Arm product for corner (1, b-1) in an 8-row shape:
     ∏ = (b+6)(b-k+5)(b-g+4)(b-f+3)(b-e+2)(b-d+1)(b-c)/
         ((b-k+6)(b-g+5)(b-f+4)(b-e+3)(b-d+2)(b-c+1)). -/
+set_option maxHeartbeats 2000000 in
 private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
     (hcb : μ.rowLen 2 < μ.rowLen 1) :
     ∏ s ∈ Finset.range (μ.rowLen 1 - 1),
@@ -13521,6 +13509,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
 /-- Arm product for corner (0, a-1) in an 8-row shape:
     ∏ = (a+7)(a-k+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b)/
         ((a-k+7)(a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
+set_option maxHeartbeats 4000000 in
 private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
     (h7 : 0 < μ.rowLen 7) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -13753,6 +13742,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
 /-- The hook walk identity for exactly-8-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
+set_option maxHeartbeats 8000000 in
 lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     (h8 : μ.rowLen 8 = 0) (h7 : 0 < μ.rowLen 7) :
     ∑ c ∈ (corners μ).attach,
@@ -14775,83 +14765,76 @@ private lemma nineRow_corner_cases {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) (h
     (cell = (1, μ.rowLen 1 - 1) ∧ μ.rowLen 2 < μ.rowLen 1) ∨
     (cell = (0, μ.rowLen 0 - 1) ∧ μ.rowLen 1 < μ.rowLen 0) := by
   obtain ⟨hmem, hnext, hprev⟩ := hc
-  have hrow := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   obtain ⟨i, j⟩ := cell
   simp only [Prod.mk.injEq]
+  have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
   have hi8 : i ≤ 8 := by
-    by_contra h; push_neg at h
-    have : μ.rowLen 9 > 0 := by
-      calc μ.rowLen 9 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-        _ > 0 := by omega
+    by_contra hgt0; push_neg at hgt0
+    have hanti := μ.rowLen_anti 9 i (by omega)
     omega
   have hj : j = μ.rowLen i - 1 := by
-    apply Nat.le_antisymm
-    · by_contra h; push_neg at h
-      have : (i, j + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      exact hnext this
-    · have : ¬ (i, j + 1) ∈ μ := hnext
-      by_contra h; push_neg at h
-      have : μ.rowLen i > j + 1 := by omega
-      exact absurd (YoungDiagram.mem_iff_lt_rowLen.mpr this) hnext
+    have hnext' : ¬ j + 1 < μ.rowLen i :=
+      fun hlt0 => hnext (YoungDiagram.mem_iff_lt_rowLen.mpr hlt0)
+    omega
   subst hj
   interval_cases i
   · right; right; right; right; right; right; right; right
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 1 = μ.rowLen 0 := Nat.le_antisymm (μ.rowLen_anti 0 1 (by omega)) h
       have : (1, μ.rowLen 0 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 2 = μ.rowLen 1 := Nat.le_antisymm (μ.rowLen_anti 1 2 (by omega)) h
       have : (2, μ.rowLen 1 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 3 = μ.rowLen 2 := Nat.le_antisymm (μ.rowLen_anti 2 3 (by omega)) h
       have : (3, μ.rowLen 2 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 4 = μ.rowLen 3 := Nat.le_antisymm (μ.rowLen_anti 3 4 (by omega)) h
       have : (4, μ.rowLen 3 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 5 = μ.rowLen 4 := Nat.le_antisymm (μ.rowLen_anti 4 5 (by omega)) h
       have : (5, μ.rowLen 4 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 6 = μ.rowLen 5 := Nat.le_antisymm (μ.rowLen_anti 5 6 (by omega)) h
       have : (6, μ.rowLen 5 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 7 = μ.rowLen 6 := Nat.le_antisymm (μ.rowLen_anti 6 7 (by omega)) h
       have : (7, μ.rowLen 6 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
   · right; left
     constructor
-    · rfl
+    · exact ⟨rfl, rfl⟩
     · by_contra h; push_neg at h
       have heq : μ.rowLen 8 = μ.rowLen 7 := Nat.le_antisymm (μ.rowLen_anti 7 8 (by omega)) h
       have : (8, μ.rowLen 7 - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
       exact hprev this
-  · left; rfl
+  · left; exact ⟨rfl, rfl⟩
 
 /-- Card of a 9-row shape equals sum of row lengths. -/
 private lemma nineRow_card {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) :
@@ -14874,12 +14857,10 @@ private lemma nineRow_card {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) :
     · intro h
       have hil : i ≤ 8 := by
         by_contra hlt; push_neg at hlt
-        have : μ.rowLen 9 > 0 := calc
-          μ.rowLen 9 ≥ μ.rowLen i := μ.rowLen_anti (by omega) (by omega)
-          _ > 0 := by
-            have := YoungDiagram.mem_iff_lt_rowLen.mp h; omega
+        have hanti := μ.rowLen_anti 9 i (by omega)
+        have hj0 : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
         omega
-      have hj := YoungDiagram.mem_iff_lt_rowLen.mp h
+      have hj : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
       interval_cases i <;> simp_all [Prod.mk.injEq]
     · rintro ((((((((⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
                     ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩) |
@@ -15624,6 +15605,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
 /-- Arm product for corner (2, c-1) in a 9-row shape:
     ∏ = (c+6)(c-j+5)(c-k+4)(c-g+3)(c-f+2)(c-e+1)(c-d) /
         ((c-j+6)(c-k+5)(c-g+4)(c-f+3)(c-e+2)(c-d+1)). -/
+set_option maxHeartbeats 2000000 in
 private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (hdc : μ.rowLen 3 < μ.rowLen 2) :
     ∏ s ∈ Finset.range (μ.rowLen 2 - 1),
@@ -15827,6 +15809,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
 /-- Arm product for corner (1, b-1) in a 9-row shape:
     ∏ = (b+7)(b-j+6)(b-k+5)(b-g+4)(b-f+3)(b-e+2)(b-d+1)(b-c) /
         ((b-j+7)(b-k+6)(b-g+5)(b-f+4)(b-e+3)(b-d+2)(b-c+1)). -/
+set_option maxHeartbeats 4000000 in
 private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (hcb : μ.rowLen 2 < μ.rowLen 1) :
     ∏ s ∈ Finset.range (μ.rowLen 1 - 1),
@@ -16059,6 +16042,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
 /-- Arm product for corner (0, a-1) in a 9-row shape:
     ∏ = (a+8)(a-j+7)(a-k+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b) /
         ((a-j+8)(a-k+7)(a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
+set_option maxHeartbeats 4000000 in
 private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (h8 : 0 < μ.rowLen 8) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -16318,6 +16302,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   ring
 
 /-- Hook walk identity for 9-row shapes: Σ_corners hookProd(μ)/hookProd(μ\c) = card(μ). -/
+set_option maxHeartbeats 8000000 in
 lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     (h9 : μ.rowLen 9 = 0) (h8 : 0 < μ.rowLen 8) :
     ∑ c ∈ (corners μ).attach,
@@ -17024,16 +17009,16 @@ private lemma cells_transpose_eq_image_swap (μ : YoungDiagram) :
 -- B. isCorner is transpose-symmetric: isCorner μᵀ c ↔ isCorner μ c.swap
 private lemma isCorner_transpose_iff (μ : YoungDiagram) (c : ℕ × ℕ) :
     isCorner μ.transpose c ↔ isCorner μ c.swap := by
-  simp only [isCorner, YoungDiagram.mem_transpose, Prod.swap_fst, Prod.swap_snd]
+  obtain ⟨i, j⟩ := c
   constructor
   · rintro ⟨hmem, h1, h2⟩
-    exact ⟨hmem,
-           fun h => h1 (YoungDiagram.mem_transpose.mpr h),
-           fun h => h2 (YoungDiagram.mem_transpose.mpr h)⟩
+    exact ⟨YoungDiagram.mem_transpose.mp hmem,
+           fun h => h2 (YoungDiagram.mem_transpose.mpr h),
+           fun h => h1 (YoungDiagram.mem_transpose.mpr h)⟩
   · rintro ⟨hmem, h1, h2⟩
-    exact ⟨hmem,
-           fun h => h1 (YoungDiagram.mem_transpose.mp h),
-           fun h => h2 (YoungDiagram.mem_transpose.mp h)⟩
+    exact ⟨YoungDiagram.mem_transpose.mpr hmem,
+           fun h => h2 (YoungDiagram.mem_transpose.mp h),
+           fun h => h1 (YoungDiagram.mem_transpose.mp h)⟩
 
 -- C. corners μᵀ = (corners μ).image Prod.swap
 private lemma corners_image_swap (μ : YoungDiagram) :
