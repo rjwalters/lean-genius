@@ -616,8 +616,11 @@ theorem summable_of_strongBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 
     have h2 : Summable (fun n : ℕ => (1 : ℝ) / ((n : ℝ) + 1) ^ (1 + δ)) := by
       have h1' := (summable_nat_add_iff 1).mpr h1
       simpa using h1'
-    rw [hgdef]
-    simpa [mul_one_div] using h2.mul_left K
+    have heq : (fun j : ℕ => K / ((j : ℝ) + 1) ^ (1 + δ))
+        = fun n : ℕ => K * (1 / ((n : ℝ) + 1) ^ (1 + δ)) := by
+      funext n; rw [mul_one_div]
+    rw [hgdef, heq]
+    exact h2.mul_left K
   -- Threshold beyond which the counting bound holds.
   obtain ⟨N0, hN0⟩ := eventually_atTop.1 hbound
   -- Dyadic block masses.
