@@ -248,6 +248,13 @@ while IFS= read -r segment; do
             # Agent worktrees for this repo (basename match) under any root
             case "$ABS_PATH" in
                 */lean-genius/*) in_scope=1 ;;
+                # Ephemeral temp/scratchpad roots. Only SUBPATHS are allowed here
+                # (bare /tmp, /var, etc. are already denied by the protected-path
+                # block above). This matches upstream loom, which permits
+                # `rm -rf /tmp/whatever`, and covers the Claude Code scratchpad at
+                # /private/tmp/... and $TMPDIR on macOS (/var/folders/...), so
+                # agents can clean up their own temp files.
+                /tmp/*|/private/tmp/*|/var/tmp/*|/private/var/tmp/*|/var/folders/*|/private/var/folders/*) in_scope=1 ;;
             esac
             if [[ -n "$REPO_ROOT" ]] && [[ "$in_scope" -eq 0 ]]; then
                 deny "BLOCKED: rm target outside repository/worktree roots: $ABS_PATH (repo: $REPO_ROOT)"
