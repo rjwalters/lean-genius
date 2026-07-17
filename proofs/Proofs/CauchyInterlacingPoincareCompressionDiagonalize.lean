@@ -77,7 +77,7 @@ so `normalizedFactors (lcm p q) ≤ s`.  Squarefreeness of `p` and `q` says
 `normalizedFactors p` and `normalizedFactors q` are `Nodup`, whence `s` is `Nodup`
 (`nodup_union`), and any sub-multiset of a `Nodup` multiset is `Nodup`.  Therefore
 `normalizedFactors (lcm p q)` is `Nodup`, i.e. `lcm p q` is squarefree. -/
-theorem squarefree_lcm {α : Type*} [CancelCommMonoidWithZero α] [Nontrivial α]
+theorem squarefree_lcm {α : Type*} [CommMonoidWithZero α] [IsCancelMulZero α] [Nontrivial α]
     [NormalizedGCDMonoid α] [UniqueFactorizationMonoid α] {p q : α}
     (hp : Squarefree p) (hq : Squarefree q) : Squarefree (lcm p q) := by
   classical
