@@ -1,0 +1,1596 @@
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:157:5: warning: Variable name `hm` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:177:29: warning: This simp argument is unused:
+  LGVConfig.wellFormed
+
+Hint: Omit it from the simp argument list.
+  simp only [youngLGVConfig,̵ ̵L̵G̵V̵C̵o̵n̵f̵i̵g̵.̵w̵e̵l̵l̵F̵o̵r̵m̵e̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:294:26: warning: `Set.mem_diff` has been deprecated: Use `Set.mem_sdiff` instead
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:294:26: warning: `Set.mem_diff` has been deprecated: Use `Set.mem_sdiff` instead
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:380:5: warning: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1080:37: warning: This simp argument is unused:
+  YoungDiagram.mem_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [YoungDiagram.mem_cells, Y̵o̵u̵n̵g̵D̵i̵a̵g̵r̵a̵m̵.̵m̵e̵m̵_̵m̵k̵,̵ ̵mem_gHookYD, mem_oneRowYD, Finset.mem_Ico]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1081:4: warning: This simp argument is unused:
+  Finset.mem_Ico
+
+Hint: Omit it from the simp argument list.
+  simp only [YoungDiagram.mem_cells, YoungDiagram.mem_mk, mem_gHookYD, mem_oneRowYD,̵
+  ̵ ̵ ̵ ̵ ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵I̵c̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1090:37: warning: This simp argument is unused:
+  YoungDiagram.mem_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [YoungDiagram.mem_cells, Y̵o̵u̵n̵g̵D̵i̵a̵g̵r̵a̵m̵.̵m̵e̵m̵_̵m̵k̵,̵ ̵mem_gHookYD, mem_oneColYD]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1198:33: warning: This simp argument is unused:
+  Prod.mk.injEq
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.mem_union, Finset.mem_singleton, Finset.mem_image, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵I̵c̵o̵,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵]̵F̲i̲n̲s̲e̲t̲.̲m̲e̲m̲_̲I̲c̲o̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1213:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1213:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1234:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1234:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1850:22: warning: This simp argument is unused:
+  List.length_singleton
+
+Hint: Omit it from the simp argument list.
+  simp only [hookShapeYD, YoungDiagram.mem_ofRowLens, L̵i̵s̵t̵.̵l̵e̵n̵g̵t̵h̵_̵c̵o̵n̵s̵,̵ ̵L̵i̵s̵t̵.̵l̵e̵n̵g̵t̵h̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵]̵L̲i̲s̲t̲.̲l̲e̲n̲g̲t̲h̲_̲c̲o̲n̲s̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:1986:28: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2041:6: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2071:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2190:8: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2289:70: warning: This simp argument is unused:
+  List.length_singleton
+
+Hint: Omit it from the simp argument list.
+  simp only [twoRectYD, YoungDiagram.mem_ofRowLens, List.length_cons,̵ ̵L̵i̵s̵t̵.̵l̵e̵n̵g̵t̵h̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2718:19: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only ̵[̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2722:42: warning: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  simp only [ballotSYT, dif_pos hc, ↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵if_neg (Nat.one_ne_zero : ¬((1 : ℕ) = 0))]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2726:19: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only ̵[̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2835:8: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2853:18: warning: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2980:47: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+  e ≥ 0
+  e - f ≥ 0
+  d ≥ 0
+  c ≥ 0
+  b ≥ 0
+  b - c ≥ 1
+  a ≥ 0
+  2*a - d ≥ 1
+  2*a - e ≥ 2
+  2*a - f ≥ 1
+where
+ a := ↑m
+ b := ↑(#({x ∈ T | x ≤ k}))
+ c := ↑(#({x ∈ compFin m T | x ≤ k}))
+ d := ↑↑⟨↑k - 1, ⋯⟩
+ e := ↑(↑k - 1)
+ f := ↑↑(match {k | #({x ∈ T | x ≤ k}) > #({x ∈ compFin m T | x ≤ k})}.inf (WithTop.some ∘ id), ⋯ with
+    | some x, x_1 => x)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:2984:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3064:47: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+  e ≥ 0
+  e - f ≥ 0
+  d ≥ 0
+  c ≥ 0
+  b ≥ 0
+  b - c ≥ 1
+  a ≥ 0
+  2*a - d ≥ 1
+  2*a - e ≥ 2
+  2*a - f ≥ 1
+where
+ a := ↑m
+ b := ↑(#({x ∈ T | x ≤ k}))
+ c := ↑(#({x ∈ compFin m T | x ≤ k}))
+ d := ↑↑⟨↑k - 1, ⋯⟩
+ e := ↑(↑k - 1)
+ f := ↑↑(match {k | #({x ∈ T | x ≤ k}) > #({x ∈ compFin m T | x ≤ k})}.inf (WithTop.some ∘ id), ⋯ with
+    | some x, x_1 => x)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3067:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3123:16: warning: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3158:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3223:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3266:17: error(lean.unknownIdentifier): Unknown identifier `lt_or_le`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3266:36: error: Tactic `rcases` failed: `x✝ : ?m.649` is not an inductive datatype
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3236:19: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j₁,̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵] at hcard_le
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3243:21: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j₁,̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3275:21: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j₁,̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵] at hle_j1
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3348:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3409:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3617:8: error: `simp` made no progress
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3730:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3822:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3566:26: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j'',̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵] at hcard_le
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3571:28: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j'',̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3607:22: warning: This simp argument is unused:
+  Fin.val_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [j'',̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵m̵k̵] at hfB_le
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3919:30: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯
+in the target expression
+  ↑((fun q => ⟨lRefl m (↑q) (firstAbove m ↑q ⋯), ⋯⟩) ((fun p => ⟨lRefl m (↑p) (badBarrier m ↑p ⋯ ⋯), ⋯⟩) ⟨S, ⋯⟩)) =
+    ↑⟨S, ⋯⟩
+
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+x✝ : { S // ∃ (hS : #S = m), ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j }
+S : Finset (Fin (2 * m))
+hS : #S = m
+hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j
+⊢ ↑((fun q => ⟨lRefl m (↑q) (firstAbove m ↑q ⋯), ⋯⟩) ((fun p => ⟨lRefl m (↑p) (badBarrier m ↑p ⋯ ⋯), ⋯⟩) ⟨S, ⋯⟩)) =
+    ↑⟨S, ⋯⟩
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3921:30: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯
+in the target expression
+  ↑((fun p => ⟨lRefl m (↑p) (badBarrier m ↑p ⋯ ⋯), ⋯⟩) ((fun q => ⟨lRefl m (↑q) (firstAbove m ↑q ⋯), ⋯⟩) ⟨T, hT⟩)) =
+    ↑⟨T, hT⟩
+
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+x✝ : { s // #s = m + 1 }
+T : Finset (Fin (2 * m))
+hT : #T = m + 1
+⊢ ↑((fun p => ⟨lRefl m (↑p) (badBarrier m ↑p ⋯ ⋯), ⋯⟩) ((fun q => ⟨lRefl m (↑q) (firstAbove m ↑q ⋯), ⋯⟩) ⟨T, hT⟩)) =
+    ↑⟨T, hT⟩
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3950:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (∀ (j : Fin m), (S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j) ?m.551 ?m.552
+in the target expression
+  (fun p =>
+        if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+        else Sum.inr ⟨↑p, ⋯⟩)
+      ((fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x) (Sum.inl ⟨S, ⋯⟩)) =
+    Sum.inl ⟨S, ⋯⟩
+
+case inl
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+hBad :
+  Fintype.card { S // ∃ (hS : #S = m), ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j } =
+    (2 * m).choose (m + 1)
+hAll : Fintype.card { S // #S = m } = (2 * m).choose m
+S : Finset (Fin (2 * m))
+hS : #S = m
+h : ∀ (j : Fin m), (S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j
+⊢ (fun p =>
+        if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+        else Sum.inr ⟨↑p, ⋯⟩)
+      ((fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x) (Sum.inl ⟨S, ⋯⟩)) =
+    Sum.inl ⟨S, ⋯⟩
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3954:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (∀ (j : Fin m), (S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j) ?m.572 ?m.573
+in the target expression
+  (fun p =>
+        if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+        else Sum.inr ⟨↑p, ⋯⟩)
+      ((fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x) (Sum.inr ⟨S, ⋯⟩)) =
+    Sum.inr ⟨S, ⋯⟩
+
+case inr
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+hBad :
+  Fintype.card { S // ∃ (hS : #S = m), ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j } =
+    (2 * m).choose (m + 1)
+hAll : Fintype.card { S // #S = m } = (2 * m).choose m
+S : Finset (Fin (2 * m))
+hS : #S = m
+hb : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j
+hnp : ¬∀ (j : Fin m), (S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j
+⊢ (fun p =>
+        if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+        else Sum.inr ⟨↑p, ⋯⟩)
+      ((fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x) (Sum.inr ⟨S, ⋯⟩)) =
+    Sum.inr ⟨S, ⋯⟩
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3959:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j) ?m.608 ?m.609
+in the target expression
+  (fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x)
+      ((fun p =>
+          if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+          else Sum.inr ⟨↑p, ⋯⟩)
+        p) =
+    p
+
+case pos
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+hBad :
+  Fintype.card { S // ∃ (hS : #S = m), ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j } =
+    (2 * m).choose (m + 1)
+hAll : Fintype.card { S // #S = m } = (2 * m).choose m
+p : { S // #S = m }
+h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j
+⊢ (fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x)
+      ((fun p =>
+          if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+          else Sum.inr ⟨↑p, ⋯⟩)
+        p) =
+    p
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:3960:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j) ?m.613 ?m.614
+in the target expression
+  (fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x)
+      ((fun p =>
+          if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+          else Sum.inr ⟨↑p, ⋯⟩)
+        p) =
+    p
+
+case neg
+m : ℕ
+lRefl_fA_card : ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), #(lRefl m T (firstAbove m T hT)) = m
+lRefl_fA_bad :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1),
+    ∃ j,
+      ¬((lRefl m T (firstAbove m T hT)).orderEmbOfFin ⋯) j <
+          ((compFin m (lRefl m T (firstAbove m T hT))).orderEmbOfFin ⋯) j
+fA_eq_bB :
+  ∀ (S : Finset (Fin (2 * m))) (hS : #S = m) (hbad : ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j),
+    firstAbove m (lRefl m S (badBarrier m S hS hbad)) ⋯ = badBarrier m S hS hbad
+bB_eq_fA :
+  ∀ (T : Finset (Fin (2 * m))) (hT : #T = m + 1), badBarrier m (lRefl m T (firstAbove m T hT)) ⋯ ⋯ = firstAbove m T hT
+hBad :
+  Fintype.card { S // ∃ (hS : #S = m), ∃ j, ¬(S.orderEmbOfFin hS) j < ((compFin m S).orderEmbOfFin ⋯) j } =
+    (2 * m).choose (m + 1)
+hAll : Fintype.card { S // #S = m } = (2 * m).choose m
+p : { S // #S = m }
+h : ¬∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j
+⊢ (fun x => Sum.elim (fun p => ⟨↑p, ⋯⟩) (fun p => ⟨↑p, ⋯⟩) x)
+      ((fun p =>
+          if h : ∀ (j : Fin m), ((↑p).orderEmbOfFin ⋯) j < ((compFin m ↑p).orderEmbOfFin ⋯) j then Sum.inl ⟨↑p, ⋯⟩
+          else Sum.inr ⟨↑p, ⋯⟩)
+        p) =
+    p
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4007:69: warning: This simp argument is unused:
+  List.length_singleton
+
+Hint: Omit it from the simp argument list.
+  simp only [twoRowYD, YoungDiagram.mem_ofRowLens, List.length_cons,̵ ̵L̵i̵s̵t̵.̵l̵e̵n̵g̵t̵h̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4064:4: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4129:4: error: failed to synthesize
+  SetLike ?S ?m.129
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4154:78: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+  e ≥ 0
+  d ≥ 0
+  d - f ≤ 0
+  c ≥ 0
+  c - d ≥ 0
+  c - f ≥ 1
+where
+ c := ↑a
+ d := ↑b
+ e := ↑((a + 1).descFactorial b)
+ f := ↑x
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4186:2: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4194:13: warning: This simp argument is unused:
+  show a + 1 - 1 = a from by omega
+
+Hint: Omit it from the simp argument list.
+  simp only [LatticePathLGV.ballotSeqCount, show a + 1 + 0 - 1 = a from by omega, s̵h̵o̵w̵ ̵a̵ ̵+̵ ̵1̵ ̵-̵ ̵1̵ ̵=̵ ̵a̵ ̵f̵r̵o̵m̵ ̵b̵y̵ ̵o̵m̵e̵g̵a̵,̵Nat.choose_self,
+      Nat.choose_eq_zero_of_lt (Nat.lt_succ_self a), Nat.sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4241:4: error: linarith failed to find a contradiction
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hPas1 : (a + b).choose a = (a + b - 1).choose (a - 1) + (a + b - 1).choose a
+hPas2 : (a + b).choose (a + 1) = (a + b - 1).choose a + (a + b - 1).choose (a + 1)
+hge1 : (a + b - 1).choose a ≤ (a + b - 1).choose (a - 1)
+hkey : (a + b - 1).choose (a + 1) * (a + 1) = (a + b - 1).choose a * (b - 1)
+a✝ : (a + b - 1).choose a < (a + b - 1).choose (a + 1)
+⊢ False
+failed
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4209:13: warning: This simp argument is unused:
+  show a + 1 + (b - 1) - 1 = a + b - 1 from by omega
+
+Hint: Omit it from the simp argument list.
+  simp only [LatticePathLGV.ballotSeqCount, show a + 1 + b - 1 = a + b from by omega,
+      show a + 1 - 1 = a from by omega, show a + 1 + (b - 1) -̵ ̵1̵ ̵= a + b -̵ ̵1̵ ̵from by o̵m̵e̵g̵a̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵s̵h̵o̵w̵ ̵a̵ ̵+̵ ̵1̵ ̵+̵ ̵(̵b̵ ̵-̵ ̵1̵)̵ ̵=̵ ̵a̵ ̵+̵ ̵b̵ ̵f̵r̵o̵m̵ ̵b̵y̵ ̵omega]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4282:50: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  d ≥ 0
+where
+ d := ↑(twoRowYD a b hab).card
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4316:50: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+  d ≥ 0
+  d - e ≥ 0
+where
+ d := ↑(twoRowYD a b hab).card
+ e := ↑(T.entry c)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4341:55: error: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4349:19: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4347:30: error: unsolved goals
+case inr
+a b : ℕ
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+T₁ : StandardYoungTableau (twoRowYD (a - 1) b hab₁)
+c : ℕ × ℕ
+hc : c ∈ twoRowYD a b hab
+hce : c = (0, a - 1)
+h : 0 = 1
+right✝ : a - 1 < b
+⊢ a - 1 < a
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4371:49: error: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4379:49: error: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4422:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (i₁, j).2
+in the target expression
+  j < b
+
+case neg.inr
+a b : ℕ
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+T₁ : StandardYoungTableau (twoRowYD (a - 1) b hab₁)
+i₁ i₂ j : ℕ
+hc₁ : (i₁, j) ∈ twoRowYD a b hab
+hc₂ : (i₂, j) ∈ twoRowYD a b hab
+hlt : i₁ < i₂
+h₁ : (i₁, j) = (0, a - 1)
+h₂ : ¬(i₂, j) = (0, a - 1)
+hja : (i₁, j).2 = (0, a - 1).2
+left✝ : i₂ = 1
+hj₂ : j < b
+⊢ a + b < T₁.entry (i₂, j)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4364:37: warning: This simp argument is unused:
+  if_false
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte,̵ ̵i̵f̵_̵f̵a̵l̵s̵e̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4372:37: warning: This simp argument is unused:
+  if_true
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte, if_t̵r̵u̵e̵,̵ ̵i̵f_̵f̵alse] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4372:46: warning: This simp argument is unused:
+  if_false
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte, if_true,̵ ̵i̵f̵_̵f̵a̵l̵s̵e̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4444:55: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  d ≥ 0
+  d ≥ 0
+where
+ d := ↑a
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4452:40: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4450:30: error: unsolved goals
+case inr
+a b : ℕ
+hab : b ≤ a
+hab₂ : b - 1 ≤ a
+T₂ : StandardYoungTableau (twoRowYD a (b - 1) hab₂)
+c : ℕ × ℕ
+hc : c ∈ twoRowYD a b hab
+hce : c = (1, b - 1)
+left✝ : 1 = 1
+h : b - 1 < b
+⊢ b - 1 < b
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4474:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+where
+ c := ↑(T₂.entry c₂)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4482:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+where
+ c := ↑(T₂.entry c₁)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4529:59: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≥ 1
+where
+ c := ↑a
+ d := ↑(b - 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4467:37: warning: This simp argument is unused:
+  if_false
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte,̵ ̵i̵f̵_̵f̵a̵l̵s̵e̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4475:37: warning: This simp argument is unused:
+  if_true
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte, if_t̵r̵u̵e̵,̵ ̵i̵f_̵f̵alse] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4475:46: warning: This simp argument is unused:
+  if_false
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁, h₂, ↓reduceIte, if_true,̵ ̵i̵f̵_̵f̵a̵l̵s̵e̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4573:68: error: unsolved goals
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+T : StandardYoungTableau (twoRowYD a b hab)
+hcells_card : #(twoRowYD a b hab).cells = a + b
+himage_card : #(image T.entry (twoRowYD a b hab).cells) = a + b
+himage_sub : image T.entry (twoRowYD a b hab).cells ⊆ Icc 1 (a + b)
+hIcc_card : #(Icc 1 (a + b)) = a + b
+himage_eq : image T.entry (twoRowYD a b hab).cells = Icc 1 (a + b)
+⊢ 1 ≤ a + b
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4581:17: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (twoRowYD a b hab).card
+in the target expression
+  a + b < T.entry (c.1, c.2 + 1)
+
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+T : StandardYoungTableau (twoRowYD a b hab)
+hcells_card : #(twoRowYD a b hab).cells = a + b
+himage_card : #(image T.entry (twoRowYD a b hab).cells) = a + b
+himage_sub : image T.entry (twoRowYD a b hab).cells ⊆ Icc 1 (a + b)
+hIcc_card : #(Icc 1 (a + b)) = a + b
+himage_eq : image T.entry (twoRowYD a b hab).cells = Icc 1 (a + b)
+hab_in : a + b ∈ image T.entry (twoRowYD a b hab).cells
+c : ℕ × ℕ
+hc_cell : c ∈ (twoRowYD a b hab).cells
+hc_eq : T.entry c = a + b
+hc_mem : c ∈ (twoRowYD a b hab).cells
+h : (c.1, c.2 + 1) ∈ twoRowYD a b hab
+hlt : a + b < T.entry (c.1, c.2 + 1)
+⊢ False
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4614:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (T.entry (0, a - 1) = a + b) ?m.673 ?m.674
+in the target expression
+  ((fun x =>
+            match x with
+            | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+            | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+          ((fun T =>
+              if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+              else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+            T)).entry
+      c =
+    T.entry c
+
+case pos
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+max_at_corner : ∀ (T : StandardYoungTableau (twoRowYD a b hab)), T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b
+T : StandardYoungTableau (twoRowYD a b ⋯)
+c : ℕ × ℕ
+hT : T.entry (0, a - 1) = a + b
+⊢ ((fun x =>
+            match x with
+            | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+            | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+          ((fun T =>
+              if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+              else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+            T)).entry
+      c =
+    T.entry c
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4627:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite (T.entry (0, a - 1) = a + b) ?m.678 ?m.679
+in the target expression
+  ((fun x =>
+            match x with
+            | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+            | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+          ((fun T =>
+              if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+              else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+            T)).entry
+      c =
+    T.entry c
+
+case neg
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+max_at_corner : ∀ (T : StandardYoungTableau (twoRowYD a b hab)), T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b
+T : StandardYoungTableau (twoRowYD a b ⋯)
+c : ℕ × ℕ
+hT : ¬T.entry (0, a - 1) = a + b
+⊢ ((fun x =>
+            match x with
+            | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+            | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+          ((fun T =>
+              if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+              else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+            T)).entry
+      c =
+    T.entry c
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4647:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite ((extendSYT0 hab hab₁ T₁).entry (0, a - 1) = a + b) ?m.727 ?m.728
+in the target expression
+  (fun T =>
+        if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+        else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+      ((fun x =>
+          match x with
+          | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+          | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+        (Sum.inl T₁)) =
+    Sum.inl T₁
+
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+max_at_corner : ∀ (T : StandardYoungTableau (twoRowYD a b hab)), T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b
+x : StandardYoungTableau (twoRowYD (a - 1) b ⋯) ⊕ StandardYoungTableau (twoRowYD a (b - 1) ⋯)
+T₁ : StandardYoungTableau (twoRowYD (a - 1) b ⋯)
+h0a1 : (extendSYT0 hab hab₁ T₁).entry (0, a - 1) = a + b
+⊢ (fun T =>
+        if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+        else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+      ((fun x =>
+          match x with
+          | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+          | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+        (Sum.inl T₁)) =
+    Sum.inl T₁
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4685:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (twoRowYD a (b - 1) hab₂).card
+in the target expression
+  T₂.entry (0, a - 1) ≠ a + b
+
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+max_at_corner : ∀ (T : StandardYoungTableau (twoRowYD a b hab)), T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b
+x : StandardYoungTableau (twoRowYD (a - 1) b ⋯) ⊕ StandardYoungTableau (twoRowYD a (b - 1) ⋯)
+T₂ : StandardYoungTableau (twoRowYD a (b - 1) ⋯)
+h1b1 : (extendSYT1 hab hab₂ T₂).entry (1, b - 1) = a + b
+hcμ₂ : (0, a - 1) ∈ twoRowYD a (b - 1) hab₂
+this : T₂.entry (0, a - 1) ≤ (twoRowYD a (b - 1) ⋯).card
+⊢ T₂.entry (0, a - 1) ≠ a + b
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4686:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dite ((extendSYT1 hab hab₂ T₂).entry (0, a - 1) = a + b) ?m.837 ?m.838
+in the target expression
+  (fun T =>
+        if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+        else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+      ((fun x =>
+          match x with
+          | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+          | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+        (Sum.inr T₂)) =
+    Sum.inr T₂
+
+a b : ℕ
+ha : b < a
+hb : 0 < b
+hab : b ≤ a
+hab₁ : b ≤ a - 1
+hab₂ : b - 1 ≤ a
+hcard : (twoRowYD a b hab).card = a + b
+max_at_corner : ∀ (T : StandardYoungTableau (twoRowYD a b hab)), T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b
+x : StandardYoungTableau (twoRowYD (a - 1) b ⋯) ⊕ StandardYoungTableau (twoRowYD a (b - 1) ⋯)
+T₂ : StandardYoungTableau (twoRowYD a (b - 1) ⋯)
+h1b1 : (extendSYT1 hab hab₂ T₂).entry (1, b - 1) = a + b
+h0a1 : (extendSYT1 hab hab₂ T₂).entry (0, a - 1) ≠ a + b
+⊢ (fun T =>
+        if hT : T.entry (0, a - 1) = a + b then Sum.inl (restrictSYT0 hab hab₁ T hT)
+        else Sum.inr (restrictSYT1 hab hab₂ T ⋯))
+      ((fun x =>
+          match x with
+          | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+          | Sum.inr T₂ => extendSYT1 hab hab₂ T₂)
+        (Sum.inr T₂)) =
+    Sum.inr T₂
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4646:16: warning: declaration uses `sorry`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4677:16: warning: declaration uses `sorry`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4718:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  LatticePathLGV.ballotSeqCount a b + LatticePathLGV.ballotSeqCount (a + 1) (b - 1)
+in the target expression
+  LatticePathLGV.ballotSeqCount (a - 1 + 1) b + LatticePathLGV.ballotSeqCount (a + 1) (b - 1) =
+    LatticePathLGV.ballotSeqCount (a + 1) b
+
+case inr.inl
+a b : ℕ
+hab : b ≤ a
+hb : b > 0
+ha : b < a
+⊢ LatticePathLGV.ballotSeqCount (a - 1 + 1) b + LatticePathLGV.ballotSeqCount (a + 1) (b - 1) =
+    LatticePathLGV.ballotSeqCount (a + 1) b
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4720:35: error(lean.unknownIdentifier): Unknown identifier `a`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4722:0: warning: unused termination hints, function is not recursive
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4748:4: error: Type mismatch
+  LatticePathLGV.ballot_formula (a + 1) b ?m.350 ?m.351 hb
+has type
+  LatticePathLGV.ballotSeqCount (a + 1) b * (a + 1 + b) = (a + 1 - b) * (a + 1 + b).choose (a + 1)
+but is expected to have type
+  LatticePathLGV.ballotSeqCount (a + 1) b * (a + b + 1) = (a + 1 - b) * (a + b + 1).choose (a + 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4791:68: error: Tactic `native_decide` evaluated that the proposition
+  LatticePathLGV.ballotSeqCount 3 1 * (2 * 1 * 1) = 2
+is false
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4792:68: error: Tactic `native_decide` evaluated that the proposition
+  LatticePathLGV.ballotSeqCount 4 1 * (6 * 1 * 1) = 6
+is false
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4793:69: error: Tactic `native_decide` evaluated that the proposition
+  LatticePathLGV.ballotSeqCount 4 2 * (3 * 1 * 2) = 24
+is false
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4794:70: error: Tactic `native_decide` evaluated that the proposition
+  LatticePathLGV.ballotSeqCount 5 3 * (4 * 1 * 6) = 720
+is false
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4825:24: error: unexpected token; expected ')', ',' or ':'
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4824:24: error: 'calc' expression has type
+  (↑(μ.rowLen (i + 2)) ≤ μ.rowLen) = (↑(μ.rowLen (i + 2)) ≤ μ.rowLen)
+but is expected to have type
+  μ.rowLen (i + 2) ≤ 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4822:4: error: unsolved goals
+case mp.succ.succ
+μ : YoungDiagram
+h2 : μ.rowLen 2 = 0
+hab : μ.rowLen 1 ≤ μ.rowLen 0
+j i : ℕ
+hlt : j < μ.rowLen (i + 1 + 1)
+hzero : μ.rowLen (i + 2) = 0
+⊢ i + 1 + 1 = 0 ∧ j < μ.rowLen 0 ∨ i + 1 + 1 = 1 ∧ j < μ.rowLen 1
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4811:85: error: unsolved goals
+case mpr
+μ : YoungDiagram
+h2 : μ.rowLen 2 = 0
+hab : μ.rowLen 1 ≤ μ.rowLen 0
+i j : ℕ
+⊢ i = 0 ∧ j < μ.rowLen 0 ∨ i = 1 ∧ j < μ.rowLen 1 → j < μ.rowLen i
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4922:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  μ.card - 1
+in the target expression
+  ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+
+case succ
+μ : YoungDiagram
+h2 : μ.rowLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+n : ℕ
+hcard : μ.card = n + 1
+⊢ ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4934:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+
+μ : YoungDiagram
+h2 : μ.rowLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+hfact_succ : ↑μ.card.factorial = ↑μ.card * ↑(μ.card - 1).factorial
+c : ℕ × ℕ
+hcx : c ∈ corners μ
+hHPc : ↑(hookProd (removeCorner μ c ⋯)) ≠ 0
+hIHc :
+  ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(μ.card - 1).factorial
+⊢ ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4938:34: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(Fintype.card (StandardYoungTableau μ)) * (↑(hookProd μ) / ↑(μ.card - 1).factorial) = ↑μ.card
+
+μ : YoungDiagram
+h2 : μ.rowLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+hfact_succ : ↑μ.card.factorial = ↑μ.card * ↑(μ.card - 1).factorial
+hterm :
+  ∀ (cx : ↥(corners μ)),
+    ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+⊢ ↑(Fintype.card (StandardYoungTableau μ)) * (↑(hookProd μ) / ↑(μ.card - 1).factorial) = ↑μ.card
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4977:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4994:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5066:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  a ≥ 0
+  a - b ≥ 0
+  a - c ≤ -1
+where
+ a := ↑j
+ b := ↑((removeCorner μ (i, j) hc).rowLen i)
+ c := ↑((removeCorner μ (i, j) hc).rowLen (i, j).1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5075:6: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≥ 0
+  a ≥ 0
+  a - b ≥ 1
+where
+ a := ↑((removeCorner μ (i, j) hc).rowLen i)
+ b := ↑(j - 1)
+ c := ↑((removeCorner μ (i, j) hc).rowLen (i, j).1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5109:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  a ≥ 0
+  a - b ≥ 0
+  a - c ≤ -1
+where
+ a := ↑i
+ b := ↑((removeCorner μ (i, j) hc).colLen j)
+ c := ↑((removeCorner μ (i, j) hc).colLen (i, j).2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5118:6: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≥ 0
+  a ≥ 0
+  a - b ≥ 1
+where
+ a := ↑((removeCorner μ (i, j) hc).colLen j)
+ b := ↑(i - 1)
+ c := ↑((removeCorner μ (i, j) hc).colLen (i, j).2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5191:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5199:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5187:13: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at hxarm hxleg hxc
+  ̲  ̲ ̲ ̲ ̲ ̲⊢
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲-̲-̲ ̲D̲e̲r̲i̲v̲e̲:̲ ̲a̲ ̲≠̲ ̲i̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5187:23: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲f̲s̲t̲]̲ at hxarm hxleg hxc
+  ̲  ̲ ̲ ̲ ̲ ̲⊢
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲-̲-̲ ̲D̲e̲r̲i̲v̲e̲:̲ ̲a̲ ̲≠̲ ̲i̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5328:44: error: Application type mismatch: The argument
+  h
+has type
+  (c.1, s) = c'
+but is expected to have type
+  c = c'
+in the application
+  congr_arg Prod.fst h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5362:44: error: Application type mismatch: The argument
+  h
+has type
+  (r, c.2) = c'
+but is expected to have type
+  c = c'
+in the application
+  congr_arg Prod.snd h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5388:44: error: Application type mismatch: The argument
+  h
+has type
+  (c'.1, s) = c
+but is expected to have type
+  c' = c
+in the application
+  congr_arg Prod.fst h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5401:2: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+  h ≥ 1
+  h - i ≤ -1
+  g ≥ 0
+  f ≥ 0
+  e ≥ 0
+  d ≥ 0
+  d - e ≥ 1
+  d - f ≤ -1
+  b ≥ 0
+  a ≥ 0
+  a - b ≥ 1
+where
+ a := ↑c'.1
+ b := ↑c.1
+ d := ↑c'.2
+ e := ↑s
+ f := ↑c.2
+ g := ↑(hookLength μ (c'.1, s).1 (c'.1, s).2)
+ h := ↑(hookLength (removeCorner μ c hc) c'.1 s)
+ i := ↑(hookLength μ c'.1 s)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5422:44: error: Application type mismatch: The argument
+  h
+has type
+  (r, c'.2) = c
+but is expected to have type
+  c' = c
+in the application
+  congr_arg Prod.snd h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5432:2: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+  h ≥ 1
+  h - i ≤ -1
+  g ≥ 0
+  f ≥ 0
+  e ≥ 0
+  e - f ≥ 1
+  d ≥ 0
+  b ≥ 0
+  b - d ≤ -1
+  a ≥ 0
+  a - b ≥ 1
+  a - d ≥ 1
+where
+ a := ↑c'.1
+ b := ↑c.1
+ d := ↑r
+ e := ↑c.2
+ f := ↑c'.2
+ g := ↑(hookLength μ (r, c'.2).1 (r, c'.2).2)
+ h := ↑(hookLength (removeCorner μ c hc) r c'.2)
+ i := ↑(hookLength μ r c'.2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5494:44: error: Application type mismatch: The argument
+  h
+has type
+  (c.1, s) = c'
+but is expected to have type
+  c = c'
+in the application
+  congr_arg Prod.fst h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5521:44: error: Application type mismatch: The argument
+  h
+has type
+  (r, c.2) = c'
+but is expected to have type
+  c = c'
+in the application
+  congr_arg Prod.snd h
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5606:14: error(lean.unknownIdentifier): Unknown identifier `hookProd_ratio_formula`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5590:73: error: unsolved goals
+μ : YoungDiagram
+c c' : ℕ × ℕ
+hc : isCorner μ c
+hc' : isCorner μ c'
+hne : c ≠ c'
+hi : c.1 < c'.1
+h_col_lt : c'.2 < c.2
+hc_in_ν₂ : isCorner (removeCorner μ c' hc') c
+hd_ge_3 : 3 ≤ hookLength μ c.1 c'.2
+hd_ge_3_Q : 3 ≤ ↑(hookLength μ c.1 c'.2)
+hd_sub1_ne : ↑(hookLength μ c.1 c'.2) - 1 ≠ 0
+hd_sub2_ne : ↑(hookLength μ c.1 c'.2) - 2 ≠ 0
+hHνc_ne : ↑(hookProd (removeCorner μ c hc)) ≠ 0
+hHνc'c_ne : ↑(hookProd (removeCorner (removeCorner μ c' hc') c hc_in_ν₂)) ≠ 0
+⊢ ↑(hookProd μ) * ↑(hookProd (removeCorner (removeCorner μ c hc) c' ⋯)) * (↑(hookLength μ c.1 c'.2) - 1) ^ 2 =
+    ↑(hookProd (removeCorner μ c hc)) * ↑(hookProd (removeCorner μ c' hc')) * ↑(hookLength μ c.1 c'.2) *
+      (↑(hookLength μ c.1 c'.2) - 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5778:4: error(lean.unknownIdentifier): Unknown constant `Finset.prod_ne_zero`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5780:4: error(lean.unknownIdentifier): Unknown constant `Finset.prod_ne_zero`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5809:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5814:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5819:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5824:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5831:78: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5835:78: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5723:13: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5723:23: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5734:15: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5734:25: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5764:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5764:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5770:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5770:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5803:17: warning: This simp argument is unused:
+  Prod.fst
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.f̵st̵,̵ ̵P̵r̵o̵d̵.̵s̵nd, hookLength_corner_eq_one hc, one_mul, hν_cells]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5803:27: warning: This simp argument is unused:
+  Prod.snd
+
+Hint: Omit it from the simp argument list.
+  simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵hookLength_corner_eq_one hc, one_mul, hν_cells]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5881:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5894:10: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5958:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (gHookYD a b ha).card - 1
+in the target expression
+  ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+
+case succ
+a b : ℕ
+ha : 0 < a
+hb : 0 < b
+hHP : ↑(hookProd (gHookYD a b ha)) ≠ 0
+hN : (gHookYD a b ha).card = a + b
+hpos : 0 < (gHookYD a b ha).card
+hfact : ↑((gHookYD a b ha).card - 1).factorial ≠ 0
+hμ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) * ↑(hookProd (gHookYD a b ha)) =
+    ↑(gHookYD a b ha).card.factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) =
+    ∑ cx ∈ (corners (gHookYD a b ha)).attach,
+      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯)))
+hμc :
+  ∀ (cx : ↥(corners (gHookYD a b ha))),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
+        ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
+      ↑((gHookYD a b ha).card - 1).factorial
+n : ℕ
+hcard : (gHookYD a b ha).card = n + 1
+⊢ ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5973:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(hookProd (gHookYD a b ha)) / ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
+      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial)
+
+a b : ℕ
+ha : 0 < a
+hb : 0 < b
+hHP : ↑(hookProd (gHookYD a b ha)) ≠ 0
+hN : (gHookYD a b ha).card = a + b
+hpos : 0 < (gHookYD a b ha).card
+hfact : ↑((gHookYD a b ha).card - 1).factorial ≠ 0
+hμ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) * ↑(hookProd (gHookYD a b ha)) =
+    ↑(gHookYD a b ha).card.factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) =
+    ∑ cx ∈ (corners (gHookYD a b ha)).attach,
+      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯)))
+hμc :
+  ∀ (cx : ↥(corners (gHookYD a b ha))),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
+        ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
+      ↑((gHookYD a b ha).card - 1).factorial
+hfact_succ : ↑(gHookYD a b ha).card.factorial = ↑(gHookYD a b ha).card * ↑((gHookYD a b ha).card - 1).factorial
+c : ℕ × ℕ
+hcx : c ∈ corners (gHookYD a b ha)
+hHPc : ↑(hookProd (removeCorner (gHookYD a b ha) c ⋯)) ≠ 0
+hIHc :
+  ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
+      ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
+    ↑((gHookYD a b ha).card - 1).factorial
+⊢ ↑(hookProd (gHookYD a b ha)) / ↑(hookProd (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑⟨c, hcx⟩ ⋯))) *
+      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5977:34: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) *
+      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial) =
+    ↑(gHookYD a b ha).card
+
+a b : ℕ
+ha : 0 < a
+hb : 0 < b
+hHP : ↑(hookProd (gHookYD a b ha)) ≠ 0
+hN : (gHookYD a b ha).card = a + b
+hpos : 0 < (gHookYD a b ha).card
+hfact : ↑((gHookYD a b ha).card - 1).factorial ≠ 0
+hμ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) * ↑(hookProd (gHookYD a b ha)) =
+    ↑(gHookYD a b ha).card.factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) =
+    ∑ cx ∈ (corners (gHookYD a b ha)).attach,
+      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯)))
+hμc :
+  ∀ (cx : ↥(corners (gHookYD a b ha))),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
+        ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
+      ↑((gHookYD a b ha).card - 1).factorial
+hfact_succ : ↑(gHookYD a b ha).card.factorial = ↑(gHookYD a b ha).card * ↑((gHookYD a b ha).card - 1).factorial
+hterm :
+  ∀ (cx : ↥(corners (gHookYD a b ha))),
+    ↑(hookProd (gHookYD a b ha)) / ↑(hookProd (removeCorner (gHookYD a b ha) ↑cx ⋯)) =
+      ↑(Fintype.card (StandardYoungTableau (removeCorner (gHookYD a b ha) ↑cx ⋯))) *
+        (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial)
+⊢ ↑(Fintype.card (StandardYoungTableau (gHookYD a b ha))) *
+      (↑(hookProd (gHookYD a b ha)) / ↑((gHookYD a b ha).card - 1).factorial) =
+    ↑(gHookYD a b ha).card
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6017:6: error: `simp` made no progress
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6023:2: error: Type mismatch
+  Eq.symm (hookLength_transpose μ i j)
+has type
+  hookLength μ.transpose j i = hookLength μ i j
+but is expected to have type
+  hookLength μ (i, j).1 (i, j).2 = hookLength μ.transpose (i, j).swap.1 (i, j).swap.2
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6032:41: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Prod.swap ?x).swap
+in the target expression
+  c.swap ∉ μ
+
+μ : YoungDiagram
+T : StandardYoungTableau μ
+c : ℕ × ℕ
+hc : c.swap ∉ μ
+⊢ c.swap ∉ μ
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6052:2: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
+  (∀ (x : ?α), ?f x = ?g x) → ?f = ?g
+with the goal
+  ∀ (c : ℕ × ℕ), T₁.entry c = T₂.entry c
+
+Note: The full type of `@funext` is
+  ∀ {α : Sort ?u.6} {β : α → Sort ?u.5} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+
+μ : YoungDiagram
+T₁ T₂ : StandardYoungTableau μ
+h : sytTranspose T₁ = sytTranspose T₂
+⊢ ∀ (c : ℕ × ℕ), T₁.entry c = T₂.entry c
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6097:2: error: Type mismatch
+  hT
+has type
+  Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.transpose.transpose.card.factorial
+but is expected to have type
+  Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6136:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  μ.card - 1
+in the target expression
+  ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+
+case succ
+μ : YoungDiagram
+h2 : μ.colLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+n : ℕ
+hcard : μ.card = n + 1
+⊢ ↑(n + 1).factorial = ↑(n + 1) * ↑(n + 1 - 1).factorial
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6148:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+
+μ : YoungDiagram
+h2 : μ.colLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+hfact_succ : ↑μ.card.factorial = ↑μ.card * ↑(μ.card - 1).factorial
+c : ℕ × ℕ
+hcx : c ∈ corners μ
+hHPc : ↑(hookProd (removeCorner μ c ⋯)) ≠ 0
+hIHc :
+  ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(μ.card - 1).factorial
+⊢ ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑⟨c, hcx⟩ ⋯)) =
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑⟨c, hcx⟩ ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6152:34: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b / ?c
+in the target expression
+  ↑(Fintype.card (StandardYoungTableau μ)) * (↑(hookProd μ) / ↑(μ.card - 1).factorial) = ↑μ.card
+
+μ : YoungDiagram
+h2 : μ.colLen 2 = 0
+hpos : 0 < μ.card
+hHP : ↑(hookProd μ) ≠ 0
+hfact : ↑(μ.card - 1).factorial ≠ 0
+hμ : ↑(Fintype.card (StandardYoungTableau μ)) * ↑(hookProd μ) = ↑μ.card.factorial
+hμc :
+  ∀ (cx : ↥(corners μ)),
+    ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(μ.card - 1).factorial
+hstepQ :
+  ↑(Fintype.card (StandardYoungTableau μ)) =
+    ∑ cx ∈ (corners μ).attach, ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯)))
+hfact_succ : ↑μ.card.factorial = ↑μ.card * ↑(μ.card - 1).factorial
+hterm :
+  ∀ (cx : ↥(corners μ)),
+    ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) =
+      ↑(Fintype.card (StandardYoungTableau (removeCorner μ ↑cx ⋯))) * (↑(hookProd μ) / ↑(μ.card - 1).factorial)
+⊢ ↑(Fintype.card (StandardYoungTableau μ)) * (↑(hookProd μ) / ↑(μ.card - 1).factorial) = ↑μ.card
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6194:15: error: Tactic `rfl` failed: The left-hand side
+  2 = 2
+is not definitionally equal to the right-hand side
+  0 = 0
+
+case inr.«2»
+a : ℕ
+ha : 3 ≤ a
+x : ℕ
+hyv : 0 ≤ 0
+hxu : 2 ≤ 2
+⊢ 2 = 2 ∧ 0 = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6208:13: error: Tactic `rfl` failed: The left-hand side
+  2 = 2
+is not definitionally equal to the right-hand side
+  0 = 0
+
+case mpr.inr.inr
+a : ℕ
+ha : 3 ≤ a
+⊢ 2 = 2 ∧ 0 = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6198:13: warning: declaration uses `sorry`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6215:70: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6225:14: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  0 = 2
+
+case inl
+a : ℕ
+ha : 3 ≤ a
+k : ℕ
+left✝¹ : k < a
+left✝ : 0 = 2
+right✝ : k = 0
+⊢ False
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6226:14: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  1 = 2
+
+case inr
+a : ℕ
+ha : 3 ≤ a
+k : ℕ
+left✝¹ : k < 2
+left✝ : 1 = 2
+right✝ : k = 0
+⊢ False
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6235:14: error: don't know how to synthesize implicit argument `b`
+  @Iff.mp ((0, a) ∈ a21YD a.succ ?m.66) (a < (a21YD a.succ ?m.66).rowLen 0) mem_iff_lt_rowLen
+    (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
+context:
+a : ℕ
+ha : 3 ≤ a + 1
+⊢ Prop
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6235:14: error: don't know how to synthesize implicit argument `a`
+  @Iff.mp ((0, a) ∈ a21YD a.succ ?m.66) (a < (a21YD a.succ ?m.66).rowLen 0) mem_iff_lt_rowLen
+    (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
+context:
+a : ℕ
+ha : 3 ≤ a + 1
+⊢ Prop
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6236:9: error: don't know how to synthesize implicit argument `a`
+  @Iff.mpr ((0, a) ∈ a21YD a.succ ?m.66) (0 = 0 ∧ a < a.succ ∨ 0 = 1 ∧ a < 2 ∨ 0 = 2 ∧ a = 0) mem_a21YD
+    (Or.inl ⟨rfl, Nat.lt_succ_self a⟩)
+context:
+a : ℕ
+ha : 3 ≤ a + 1
+⊢ Prop
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6236:19: error: don't know how to synthesize placeholder
+context:
+a : ℕ
+ha : 3 ≤ a + 1
+⊢ 3 ≤ a.succ
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6235:45: error: don't know how to synthesize placeholder
+context:
+a : ℕ
+ha : 3 ≤ a + 1
+⊢ YoungDiagram
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6235:11: error: failed to infer `have` declaration type
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6241:71: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6243:46: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 2
+  b ≥ 3
+where
+ b := ↑a
+ c := ↑?m.33
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6248:71: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6255:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.16 ≤ ?m.15
+in the target expression
+  (a21YD a ha).rowLen i = 0
+
+a : ℕ
+ha : 3 ≤ a
+i : ℕ
+hi : 3 ≤ i
+⊢ (a21YD a ha).rowLen i = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6261:71: error: maximum number of errors (100; from option `maxErrors`) reached, exiting
