@@ -148,18 +148,23 @@ theorem not_isPrimePlusKPowers_one_of_even_covering {n : ℕ}
     (h17 : n % 17 = 8) (h13 : n % 13 = 11) (h241 : n % 241 = 121)
     (heven : n % 2 = 0) (hbig : 242 < n) :
     ¬ IsPrimePlusKPowers 1 n := by
-  refine not_isPrimePlusKPowers_of_even heven (by omega) ?_
+  -- NB: throughout this proof `omega` must NOT run with the mod-241 residue hypothesis in
+  -- context — under the v4.31 toolchain that makes omega's decision procedure blow up (100% CPU,
+  -- no progress).  We keep the residue facts only until `prime_forced_small` consumes them, then
+  -- `clear` them so the parity `omega`s below stay cheap; the `2 < n` bound is derived by term.
+  refine not_isPrimePlusKPowers_of_even heven (lt_of_lt_of_le (by norm_num) hbig.le) ?_
   intro w hwpos hwn hwc hp
   obtain ⟨a, rfl⟩ := eq_two_pow_of_pos_of_popcount_le_one hwpos hwc
   set p := n - 2 ^ a with hpdef
-  have hrep : n = 2 ^ a + p := by omega
+  have hrep : n = 2 ^ a + p := by rw [hpdef, Nat.add_sub_cancel' hwn]
   have hpc : p ∈ coveringPrimes := prime_forced_small h3 h7 h5 h17 h13 h241 hp hrep
+  clear h3 h7 h5 h17 h13 h241
   have hpodd : p % 2 = 1 := Nat.odd_iff.mp (coveringPrimes_odd hpc)
   have hple : p ≤ 241 := coveringPrimes_le hpc
   have hpow : 2 ^ a % 2 = 1 := by omega
   have ha0 : a = 0 := by
     by_contra ha
-    have : Even (2 ^ a) := by rw [Nat.even_pow]; exact ⟨by decide, ha⟩
+    have : Even (2 ^ a) := by rw [Nat.even_pow]; exact ⟨⟨1, rfl⟩, ha⟩
     rw [Nat.even_iff] at this
     omega
   subst ha0

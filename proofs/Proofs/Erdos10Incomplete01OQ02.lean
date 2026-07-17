@@ -49,11 +49,11 @@ open Erdos10Incomplete01 Erdos10OQ01Incomplete01
 
 /-- Each of the six covering primes `{3, 5, 7, 13, 17, 241}` is odd. -/
 theorem coveringPrimes_odd {q : ℕ} (hq : q ∈ coveringPrimes) : Odd q := by
-  fin_cases hq <;> decide
+  fin_cases hq <;> simp [Nat.odd_iff]
 
 /-- Each of the six covering primes is at most `241`. -/
 theorem coveringPrimes_le {q : ℕ} (hq : q ∈ coveringPrimes) : q ≤ 241 := by
-  fin_cases hq <;> decide
+  fin_cases hq <;> omega
 
 /-! ## Bridge: `prime_forced_small` restated against `sumPrimeAndTwoPows 1` -/
 
@@ -69,7 +69,9 @@ theorem mem_one_forced {n : ℕ}
   rw [mem_one_iff] at hn
   rcases hn with hp | ⟨p, a, hp, hrep⟩
   · exact Or.inl hp
-  · have hrep' : n = 2 ^ a + p := by omega
+  · -- `omega` would be poisoned by the mod-241 hypothesis in context, so use `ring` for the
+    -- purely commutative rewrite `p + 2^a = 2^a + p` (see below on `not_mem_one_of_even`).
+    have hrep' : n = 2 ^ a + p := by rw [hrep]; ring
     exact Or.inr ⟨a, p, prime_forced_small h3 h7 h5 h17 h13 h241 hp hrep', hrep'⟩
 
 /-! ## The parity refinement: even numbers in the class are outside level 1 -/
@@ -87,20 +89,24 @@ theorem not_mem_one_of_even {n : ℕ}
   rw [mem_one_iff] at hn
   rcases hn with hp | ⟨p, a, hp, hrep⟩
   · -- `n` even and `> 2` cannot be prime.
-    have h2 : (2 : ℕ) ∣ n := Nat.dvd_of_mod_eq_zero heven
-    rcases hp.eq_one_or_self_of_dvd 2 h2 with h | h
-    · exact absurd h (by norm_num)
-    · omega
+    -- NB: `omega` must NOT see the mod-241 residue hypothesis — under the v4.31 toolchain that
+    -- makes omega's decision procedure blow up (100% CPU, no progress). Clear the covering-class
+    -- residue facts (not needed for this branch) before calling omega.
+    clear h3 h7 h5 h17 h13 h241
+    rcases hp.eq_two_or_odd with h | h <;> omega
   · -- `n = p + 2^a`: the covering obstruction forces `p ∈ coveringPrimes` (all odd).
-    have hrep' : n = 2 ^ a + p := by omega
+    -- Commutativity via `ring` (not `omega`) while the mod hypotheses are still needed for
+    -- `prime_forced_small`; then clear them so the parity `omega`s below stay cheap.
+    have hrep' : n = 2 ^ a + p := by rw [hrep]; ring
     have hpc : p ∈ coveringPrimes := prime_forced_small h3 h7 h5 h17 h13 h241 hp hrep'
+    clear h3 h7 h5 h17 h13 h241
     have hpodd : p % 2 = 1 := Nat.odd_iff.mp (coveringPrimes_odd hpc)
     have hple : p ≤ 241 := coveringPrimes_le hpc
     -- Parity of `n = p + 2^a`: `n` even, `p` odd ⟹ `2^a` odd ⟹ `a = 0`.
     have hpow : 2 ^ a % 2 = 1 := by omega
     have ha0 : a = 0 := by
       by_contra ha
-      have : Even (2 ^ a) := by rw [Nat.even_pow]; exact ⟨by decide, ha⟩
+      have : Even (2 ^ a) := by rw [Nat.even_pow]; exact ⟨⟨1, rfl⟩, ha⟩
       rw [Nat.even_iff] at this
       omega
     subst ha0
