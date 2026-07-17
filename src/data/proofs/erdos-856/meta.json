@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 260,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `A` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'A'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 10
