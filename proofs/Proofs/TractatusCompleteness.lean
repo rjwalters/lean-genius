@@ -94,10 +94,21 @@ omit [DecidableEq S] in
 /-- The minterm for `v` is true at `w` exactly when `w = v`. -/
 lemma minterm_evalBool (s0 : S) (v w : S → Bool) :
     (minterm s0 v).evalBool w = decide (w = v) := by
-  have := @conjFold_evalBool;
-  convert this s0 v w ( Finset.univ.toList ) using 1;
-  by_cases h : w = v <;> simp +decide [ h ];
-  exact Function.ne_iff.mp h
+  have hfold : (minterm s0 v).evalBool w
+      = (Finset.univ.toList).all (fun s => w s == v s) :=
+    conjFold_evalBool s0 v w (Finset.univ.toList)
+  rw [hfold]
+  by_cases h : w = v
+  · subst h
+    simp
+  · rw [decide_eq_false h]
+    apply Bool.of_not_eq_true
+    intro hall
+    apply h
+    funext s
+    have hs : (w s == v s) = true :=
+      List.all_eq_true.mp hall s (Finset.mem_toList.mpr (Finset.mem_univ s))
+    exact beq_iff_eq.mp hs
 
 /-- Disjunction folded over a list, anchored by an always-false base. -/
 def bigDisj (s0 : S) (L : List (Proposition S)) : Proposition S :=
