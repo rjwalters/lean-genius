@@ -593,10 +593,10 @@ theorem finrank_quotient_span_singleton {v : Fin n → ℤ} (hv0 : v ≠ 0) :
   have hrankN : finrank ℤ (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) = 1 := by
     rw [← LinearEquiv.finrank_eq (LinearEquiv.toSpanNonzeroSingleton ℤ (Fin n → ℤ) v hv0),
       finrank_self]
-  have hadd := Submodule.finrank_quotient_add_finrank
-      (R := ℤ) (M := Fin n → ℤ) (Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
-  rw [hrankN, Module.finrank_fin_fun] at hadd
-  omega
+  have hq := Submodule.finrank_quotient (R := ℤ)
+    (N := Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
+  rw [hrankN, Module.finrank_fin_fun] at hq
+  exact hq
 
 /-- **A primitive vector's quotient is free.**  For primitive `v`, `ℤⁿ / (ℤ·v)` is a free
 `ℤ`-module.  It is finitely generated (a quotient of the finite free `ℤⁿ`) and torsion-free
@@ -609,6 +609,8 @@ theorem IsPrimitive.free_quotient {v : Fin n → ℤ} (hv : IsPrimitive v) :
   have hnz : NoZeroSMulDivisors ℤ
       ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) :=
     (isPrimitive_iff_noZeroSMulDivisors_quotient hv.ne_zero).mp hv
+  haveI : Module.Finite ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) :=
+    Module.Finite.quotient ℤ (Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
   infer_instance
 
 /-- **Unimodular completion, rank form.**  For primitive `v`, the quotient `ℤⁿ / (ℤ·v)` is
@@ -621,9 +623,11 @@ whose quotient line is a clean rank-`(n-1)` free complement. -/
 theorem IsPrimitive.quotientEquiv_fin {v : Fin n → ℤ} (hv : IsPrimitive v) :
     Nonempty (((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
       ≃ₗ[ℤ] (Fin (n - 1) → ℤ)) := by
-  have hfree := hv.free_quotient
+  haveI hfree := hv.free_quotient
   have hrank : finrank ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) = n - 1 :=
     finrank_quotient_span_singleton hv.ne_zero
+  haveI : Module.Finite ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) :=
+    Module.Finite.quotient ℤ (Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
   exact ⟨(Module.finBasisOfFinrankEq ℤ _ hrank).equivFun⟩
 
 /-! ### Sharp boundary: the exact torsion of `ℤⁿ / (ℤ·v)` for a **non-primitive** `v`
