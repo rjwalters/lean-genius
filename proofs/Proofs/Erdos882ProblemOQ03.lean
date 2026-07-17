@@ -815,7 +815,7 @@ theorem card_le_log_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
     (hpos : ∀ a ∈ A, 1 ≤ a) (hle : ∀ a ∈ A, a ≤ n) (hd : DistinctSubsetSums A) :
     A.card ≤ Nat.log 2 (n * A.card + 1) := by
   have h := two_pow_le_of_distinct_bounded hpos hle hd
-  exact (Nat.le_log_iff_pow_le (by norm_num) (by omega)).mpr h
+  exact (Nat.pow_le_iff_le_log (by norm_num) (by omega)).mp h
 
 /-!
 ## Distinct-subset-sums: the injectivity meaning, and its heredity
