@@ -86,7 +86,7 @@ theorem tendsto_sharpRadius {C : ℝ} (hC : 0 < C) :
   have hCk : Tendsto (fun k : ℕ => C ^ ((k : ℝ)⁻¹)) atTop (𝓝 1) := by
     rw [hexp]
     have h := (Real.continuous_exp.tendsto 0).comp harg
-    simpa [Real.exp_zero] using h
+    simpa [Function.comp_def, Real.exp_zero] using h
   have h2 : Tendsto (fun k : ℕ => 1 + C ^ ((k : ℝ)⁻¹)) atTop (𝓝 (1 + 1)) :=
     hCk.const_add 1
   have he : (1 : ℝ) + 1 = 2 := by norm_num
