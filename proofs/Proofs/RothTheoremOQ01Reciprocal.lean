@@ -444,7 +444,7 @@ all sit at height `≥ 2^m` has reciprocal sum bounded by the *tail* majorant `r
 sharpens `finite_recip_sum_le` (which only gives `recipBound = recipTail 0`) whenever `m ≥ 1`.
 
 Proof: every element `a ∈ T` has `2^m ≤ a`, so its dyadic index `k = ⌊log₂ a⌋ ≥ m`
-(`Nat.pow_le_iff_le_log`); the fiber decomposition of `T` therefore ranges over block indices
+(`Nat.le_log_iff_pow_le`); the fiber decomposition of `T` therefore ranges over block indices
 `k ≥ m` only.  Bounding each fiber by `recipMajorant k` and reindexing `k ↦ k - m` identifies the
 resulting finite sum with a partial sum of `∑'_k recipMajorant (k + m) = recipTail m`. -/
 theorem finite_recip_sum_le_of_min_ge (T : Finset ℕ) (hT : ThreeAPFree (T : Set ℕ)) (hT0 : 0 ∉ T)
@@ -459,7 +459,7 @@ theorem finite_recip_sum_le_of_min_ge (T : Finset ℕ) (hT : ThreeAPFree (T : Se
     rw [Finset.mem_image] at hk
     obtain ⟨a, ha, rfl⟩ := hk
     have ha0 : a ≠ 0 := fun h => hT0 (h ▸ ha)
-    exact (Nat.pow_le_iff_le_log (by norm_num) ha0).mp (hmin a ha)
+    exact (Nat.le_log_iff_pow_le (by norm_num) ha0).mpr (hmin a ha)
   rw [← Finset.sum_fiberwise_of_maps_to hmaps (fun a => (1 : ℝ) / a)]
   -- Fiberwise bound, then reindex the block sum against the tail tsum.
   have hfib : ∑ k ∈ T.image (Nat.log 2), ∑ a ∈ T.filter (fun a => Nat.log 2 a = k), (1 : ℝ) / a

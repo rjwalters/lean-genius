@@ -1388,7 +1388,6 @@ theorem kAPCount_diag_sub_major_norm_le {N : ℕ} [NeZero N] (k : ℕ)
       refine (kAPCount_norm_le k _ (fun i => if i ∈ S then β else 1) ?_).trans
         (prod_ite_le_self S hSpos β hβ0 hβ1)
       intro i x
-      dsimp only
       by_cases hi : i ∈ S
       · rw [if_pos hi, if_pos hi]; exact hβx x
       · rw [if_neg hi, if_neg hi]; simp
