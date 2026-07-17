@@ -53,7 +53,7 @@
     "axiomCount": 1,
     "lineCount": 550,
     "assumptions": "1 axiom (Lean.ofReduceBool), 0 sorries. Numerous named theorems (e.g. thirtyseven_dvd_base1000, ninetynine_dvd_base100, casting_out_nines, casting_out_threes, three_dvd_hex, six_dvd_iff … ninety_dvd_iff, and the master divisibility_rules_summary) discharge their side hypotheses (b % d = 1, Nat.Coprime d₁ d₂) via `by native_decide`, which depends on Lean.ofReduceBool, so the file is not axiom-free. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum. (Each native_decide side condition is decidable and could be discharged by kernel `decide` to restore an axiom-free proof.) Note: leanFile.axiomCount reflects literal `axiom` declarations (0).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 56,
     "definitionCount": 1
   },

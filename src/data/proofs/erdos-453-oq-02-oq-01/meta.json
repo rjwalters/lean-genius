@@ -16,7 +16,7 @@
     "erdosUrl": "https://erdosproblems.com/453",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {"theorem": "Nat.four_pow_lt_mul_centralBinom", "description": "4^n < n · C(2n,n): exponential lower bound on the central binomial coefficient", "module": "Mathlib.Data.Nat.Choose.Central"},
       {"theorem": "Nat.pow_factorization_choose_le", "description": "Each prime power dividing a binomial coefficient C(n,k) is at most n", "module": "Mathlib.Data.Nat.Choose.Factorization"},

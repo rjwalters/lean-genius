@@ -25,7 +25,7 @@
     "lineCount": 213,
     "definitionCount": 1,
     "assumptions": "None. Fully machine-checked; #print axioms reports only propext, Classical.choice, Quot.sound (no extra axioms, no sorries).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The series Σ 1/(n·(log n)^p) is the classical Bertrand series, named for Joseph Bertrand who studied such logarithmic refinements of the p-series in the mid-19th century. It is the first non-trivial rung of du Bois-Reymond's (1873) logarithmico-exponential scale and the standard textbook example separating convergence from divergence at a logarithmic correction: the bare p-series Σ 1/n^q has its threshold at q = 1, and inserting a single logarithm shifts the delicate boundary to the exponent of that logarithm. The whole family is handled by one tool, Cauchy's condensation test (Cours d'Analyse, 1827), which collapses Σ f(n) to Σ 2^k f(2^k); for the Bertrand term the 2^k factors cancel exactly and log(2^k) = k·log 2 turns the condensed series into a constant multiple of an ordinary p-series. The parent entry (OQ-02) formalized only the two endpoints p = 1 (divergent borderline) and p = 2 (convergent); this entry establishes the complete threshold for a continuous real exponent.",

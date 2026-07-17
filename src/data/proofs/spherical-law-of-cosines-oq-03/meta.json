@@ -39,7 +39,7 @@
     "lineCount": 424,
     "assumptions": "No axioms or sorries. The dual law is reduced to a polynomial identity (ring) after clearing all radicals and denominators, so no non-degeneracy side conditions are needed in the cleared form. VERIFIED: Proofs.SphericalLawOfCosinesOQ03 compiles green via docker-build.sh (7743 jobs, 2026-06-15), so all theorems (Parts I–VII: Binet–Cauchy/Lagrange/Gram infrastructure, cleared abstract/geometric dual law, literal trig form, cross-product form, and polar-triangle form) are machine-checked.",
     "dateAdded": "2026-06-15",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Radical-free, division-free statement and proof of the dual (angles) spherical law of cosines cos C = −cos A·cos B + sin A·sin B·cos c",
       "Self-contained 3-field vector structure V with dot/cross/triple products and the Binet–Cauchy and Lagrange identities",

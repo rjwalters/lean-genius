@@ -60,7 +60,7 @@
         "module": "Mathlib.Algebra.Module.LinearMap.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Weyl's 1912 perturbation inequalities for Hermitian matrices bound the eigenvalues of A + B in terms of those of A and B from BOTH sides: λ_{i+j−1}(A+B) ≤ λ_i(A) + λ_j(B) (the subadditive / upper bound) and λ_i(A) + λ_j(B) ≤ λ_{i+j−n}(A+B) (the superadditive / lower bound), in 1-based descending notation (Horn–Johnson Thm 4.3.7, Bhatia §III.2). The two together form the Weyl perturbation bracket that sandwiches each eigenvalue of A + B and underlies the Lidskii–Wielandt majorisation theory. Classically the lower bound is obtained from the upper bound by the reflection A ↦ −A, B ↦ −B, which sends λ_k(A) to −λ_{n+1−k}(A): negation turns the max–min Courant–Fischer characterisation into a min–max one and reverses the eigenvalue order. The parent gallery entry oq-03 proves the subadditive inequality (weyl_add_le) from the from-scratch Courant–Fischer keystone; this entry supplies the missing lower bracket by formalising exactly that reflection, completing the two-sided Weyl bound.",

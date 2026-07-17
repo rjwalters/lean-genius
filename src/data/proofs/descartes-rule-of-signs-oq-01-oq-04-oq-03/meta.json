@@ -22,7 +22,7 @@
     "lineCount": 202,
     "assumptions": "None. All results proved from Mathlib. The worked examples are discharged by kernel `decide` (not `native_decide`), so the only axioms are the foundational propext / Classical.choice / Quot.sound (confirmed by #print axioms on signVariations_map, signVarList_eq_signVariations_ratCast, realRoots_countP_pos_le_signVarList).",
     "theoremCount": 9,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.signVariations",

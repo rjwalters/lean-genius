@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 226,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/BezoutIdentityOQ02OQ01OQ03.lean` (no errors, no warnings); `#print axioms` on all five top-level results reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Relies on standard Mathlib lemmas (Nat.gcd_eq_gcd_ab, IsCoprime.dvd_of_dvd_mul_left, Nat.isCoprime_iff_coprime) plus linear_combination/ring. The uniqueness results are stated for coprime a, b (the gcd = 1 case, which carries all the content); the general case rescales by g = gcd(a,b).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 18,
     "dateAdded": "2026-06-27",
     "definitionCount": 0

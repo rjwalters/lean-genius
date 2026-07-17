@@ -69,7 +69,7 @@
     "axiomCount": 0,
     "lineCount": 130,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool; verifiable with #print axioms). The Dirichlet-body volume lemma assumes N > 0 (so that 1/N is defined and the box sides 2N, 2/N are the genuine interval lengths). The load-bearing Mathlib input is addHaar_image_linearMap; the original in-file content is the specialisation to Lebesgue volume with the matrix determinant, the identification of Mathlib's parallelepiped with Matrix.toLin', the concrete 2-D area formula, and the closing volume(body) = 4 computation. Badge is 'original' because the reusable concrete lemmas (volume/Matrix.det form, the parallelepiped identification, and the shear volume closure) are assembled here rather than borrowed.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

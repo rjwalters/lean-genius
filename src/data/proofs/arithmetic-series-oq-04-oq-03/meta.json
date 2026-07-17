@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 215,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The deep analytic content — the meromorphic continuation of the Riemann zeta function and the functional equation, culminating in `riemannZeta_neg_nat_eq_bernoulli'` — is supplied by Mathlib. The new content here (the Faulhaber↔ζ bridge, convention reconciliation, trivial zeros, and special values) is fully machine-checked over ℂ.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "riemannZeta_neg_nat_eq_bernoulli'",

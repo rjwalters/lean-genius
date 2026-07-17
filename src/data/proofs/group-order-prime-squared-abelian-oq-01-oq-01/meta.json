@@ -60,7 +60,7 @@
         "module": "Mathlib.GroupTheory.OrderOfElement"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Once a group of order p² is known to be abelian and to split into the cyclic ℤ/p² and elementary-abelian (ℤ/p)² types, the natural next question is which invariant separates them. The exponent — the least n with gⁿ = 1 for all g — is the canonical answer: it is p² for ℤ/p² and p for (ℤ/p)². The parent entry phrased the split via the typeclass-free predicate '∀ g, gᵖ = 1'; this follow-up shows that predicate is exactly the statement 'exponent ≤ p', and packages the dichotomy as a computation of the exponent invariant itself.",

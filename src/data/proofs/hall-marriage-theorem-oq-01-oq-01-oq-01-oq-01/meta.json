@@ -34,7 +34,7 @@
     "lineCount": 127,
     "theoremCount": 4,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "That every k-regular bipartite graph (k ≥ 1) has a perfect matching is one of the oldest facts in matching theory — it in fact predates Philip Hall's 1935 marriage theorem by two decades. Dénes König proved in 1916 that a k-regular bipartite graph is k-edge-colourable, i.e. its edges decompose into k disjoint perfect matchings (a 1-factorization); the existence of a single matching, proved here, is the base case of that decomposition. The fact also has a linear-algebraic reading: the biadjacency matrix of a k-regular bipartite graph has constant row and column sums k, so dividing by k gives a doubly stochastic matrix, and the Birkhoff–von Neumann theorem (Birkhoff 1946) expresses any doubly stochastic matrix as a convex combination of permutation matrices — each permutation matrix being exactly a perfect matching. Frobenius's 1917 study of the permanent and its zero patterns (the König–Frobenius theorem) is the classical root of this circle of ideas; the one-line double-counting derivation of Hall's condition used here is the modern textbook route. The deficiency endpoint connects the result to Ore's 1955 defect form via the parent entry.",

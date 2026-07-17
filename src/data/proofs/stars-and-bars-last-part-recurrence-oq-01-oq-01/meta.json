@@ -57,7 +57,7 @@
     "axiomCount": 0,
     "lineCount": 156,
     "assumptions": "0 axioms, 0 sorries, no native_decide. Every public result — wc_zero (base case C(n,0) = [n=0]), wc_one (C(n,1) = 1), fiber_card (the first-coordinate fibre of the (k+1)-tuples equals a k-tuple count), wc_recurrence (the headline last-part recurrence C(n,k+1) = ∑_{j=0}^n C(n−j,k)), wc_closed (the closed form C(n,k+1) = (n+k).choose k derived from the recurrence via the hockey-stick identity), and wc_eq_card_weakComposition (bridge to the subtype cardinality used by the generating-function entries) — was verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The count is defined as (Finset.Nat.antidiagonalTuple k n).card, which Mathlib's mem_antidiagonalTuple characterizes as the k-tuples of naturals summing to n; the recurrence proof uses Finset.card_eq_sum_card_fiberwise to partition by the first coordinate and Finset.card_nbij' with Fin.tail / Fin.cons j for the fibre bijection, and the closed form uses Finset.sum_range_reflect (to turn ∑ C(n−j,·) into ∑ C(j,·)) followed by Nat.sum_range_add_choose. Sanity check (proved as an example in the file): wc n 2 = n+1, the n+1 weak compositions (0,n), (1,n−1), …, (n,0). Note on naming: the seeker assigned this research problem the slug stars-and-bars-weak-compositions-oq-01-oq-01, which was already taken by the (distinct) positive-composition generating-function entry; this gallery entry therefore uses the descriptive slug stars-and-bars-last-part-recurrence-oq-01-oq-01.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 1
   },

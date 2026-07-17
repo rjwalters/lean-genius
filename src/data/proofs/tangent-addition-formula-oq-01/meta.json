@@ -49,7 +49,7 @@
     "axiomCount": 0,
     "lineCount": 130,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All six theorems and the example depend only on the foundational propext / Classical.choice / Quot.sound. tan_add_of_cos_ne_zero and tan_sub_of_cos_ne_zero apply Real.tan_add' / Real.tan_sub' after converting cos x ≠ 0 to ¬∃k, x = (2k+1)π/2 via Real.cos_eq_zero_iff. sin_cos_triangle_identity eliminates C via C = π−(A+B) (linarith) and expands with Real.sin_pi_sub, Real.cos_pi_sub, Real.sin_add, Real.cos_add, closed by ring. tan_sum_eq_tan_prod and cot_sum_eq_one reduce to that single identity after rewriting tan = sin/cos (Real.tan_eq_sin_div_cos) / cot = cos/sin (Real.cot_eq_cos_div_sin), clearing denominators with field_simp under the cos≠0 / sin≠0 hypotheses, and applying it via rw / linear_combination. arctan_half_add_arctan_third uses Real.arctan_add (xy<1) and Real.arctan_one with a norm_num computation. The genuine hypotheses are the geometric side-conditions: A+B+C = π and the non-degeneracy cos·≠0 (no right angle) or sin·≠0 (no straight/zero angle).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

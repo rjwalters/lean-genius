@@ -23,7 +23,7 @@
     "theoremCount": 5,
     "definitionCount": 3,
     "lineCount": 142,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound) — verified by #print axioms on galEquivZMod2, galCyclicEquiv, and complex_gal_equiv_zmod2. No native_decide, so no Lean.ofReduceBool. The isomorphism is noncomputable (it uses mulEquivOfPrimeCardEq / zmodCyclicMulEquiv, which rest on Classical.choice), but this introduces no axioms beyond the three foundational ones.",
     "originalContributions": [
       "galEquivZMod2: for ANY finite-dimensional Galois extension L/K with finrank K L = 2, the isomorphism (L ≃ₐ[K] L) ≃* Multiplicative (ZMod 2) — the group-theoretic core of the parent's real-closed-field open question, valid over an arbitrary base field",

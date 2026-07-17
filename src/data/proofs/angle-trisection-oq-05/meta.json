@@ -69,7 +69,7 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries — all 27 theorems are literally true and machine-checked. However, the geometric content is encoded definitionally, not formalized: (1) IsOrigamiConstructible (_α : ℝ) (d : ℕ) ignores its real-number argument _α — there is no minpoly / aeval / IsIntegral / polynomial-degree computation anywhere in the file; (2) the degrees attached to named numbers (e.g. cos(π/9), 2^(1/3) with d = 3) are hand-supplied literals, NOT derived as minimal-polynomial degrees, so theorems like cos_20_origami_constructible assert only '3 > 0 ∧ ∃ a b, 3 ∣ 2^a·3^b' with the real as a discarded label; (3) the degree-1-12 classification uses (0 : ℝ) as the discarded argument; (4) the HHAxioms structure is declared but unused — no theorem takes it as a hypothesis, so the Huzita-Hatori axioms do not drive any result; (5) the algebraic characterization (degree divides 2^a · 3^b) is the definition of IsOrigamiConstructible, and origami ↔ neusis (Alperin-Lang 2006) holds by definitional equality since IsNeusisConstructible is defined identically. The genuinely proved content is elementary number theory about the predicate d ∣ 2^a·3^b (e.g. three_not_dvd_power_of_two, degrees 5/7/11 excluded).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 27,
     "definitionCount": 12
   },

@@ -66,7 +66,7 @@
       "Finite geometric / alternating sums",
       "The parent bijection submultisetEquiv (subset-count-multiset-oq-01)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Where the parent proof (OQ-01) counted the distinct submultisets of a multiset s as ∏ᵢ(mᵢ+1), this follow-up weighs each submultiset by the sign (-1)^|t|. The signed count is the multiset analogue of the classical fact that a nonempty finite set has equally many even and odd subsets (∑_{A ⊆ X} (-1)^|A| = 0 for X ≠ ∅). For multisets the answer is more refined: the signed count factors over the distinct elements, and each element of multiplicity m contributes the finite alternating sum 1 - 1 + 1 - ⋯ ± 1 = ∑_{j=0}^{m} (-1)^j, which is 1 if m is even and 0 if m is odd. The full signed count is therefore the product ∏ᵢ [mᵢ even]: it is 1 exactly when every multiplicity is even, and 0 the moment a single multiplicity is odd.\n\nThis is the generating-function statement evaluated at x = -1: the distinct-submultiset generating function is ∏ᵢ (1 + x + ⋯ + x^{mᵢ}), and at x = -1 each factor collapses to [mᵢ even]. The vanishing case (some mᵢ odd) gives the parity corollary: the distinct submultisets of even size are exactly balanced by those of odd size.",

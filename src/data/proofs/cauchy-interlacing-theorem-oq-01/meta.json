@@ -54,7 +54,7 @@
         "module": "Mathlib.Analysis.Normed.Group.Submodule"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The parent entry (cauchy-interlacing-theorem) proves Cauchy interlacing in abstract operator/compression form: it takes the smaller operator TH on a codimension-one subspace H together with a hypothesis that TH's Rayleigh quotient agrees with T's on H. That hypothesis is exactly the defining property of the orthogonal compression P_H ∘ T ∘ ι_H — the operator-theoretic avatar of deleting a row and column from a Hermitian matrix — but the abstract theorem leaves it as an input. This follow-up builds the compression and discharges the hypothesis, turning the conditional statement into an unconditional corollary about any symmetric operator and any hyperplane.",

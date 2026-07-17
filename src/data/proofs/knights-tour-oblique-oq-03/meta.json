@@ -38,7 +38,7 @@
     "lineCount": 96,
     "assumptions": "The four theorems in this file are fully machine-checked and depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms — no axiom declarations, no native_decide, no sorries. The status is marked 'axiomatized' because the entry sits in the Knight's-Tour-Oblique lineage whose base file KnightsTourOblique.lean both uses native_decide (Lean.ofReduceBool) for the explicit minimal tour and accepts the uniqueness theorem unique_four_oblique as an axiom (Knuth's computational enumeration of ~1.3×10¹³ tours). This file imports that lineage for the ClosedTour / applyD4Tour / reverseTour infrastructure but introduces no new assumptions; its own results are assumption-free.",
     "dateAdded": "2026-06-21",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "List.map_reverse",

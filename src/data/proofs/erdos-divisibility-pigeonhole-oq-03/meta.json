@@ -58,7 +58,7 @@
   ],
   "lineCount": 164,
   "assumptions": "0 axioms, 0 sorries. The two headline theorems collisions_confined_to_pairs and ambient_chain_length_unbounded depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified by #print axioms in-file); no Lean.ofReduceBool (no native_decide) and no sorryAx. Built on the parent's verified erdos_divisibility_pigeonhole plus foundational Mathlib lemmas (Nat.le_of_dvd, Nat.pow_right_injective, pow_dvd_pow). The only hypotheses are structural (n ≥ 1, and the size/membership conditions that are part of each statement). Badge is 'original' because the chain-refinement resolution — distinguishing forced pairs from forced chains, with both the confinement witness and the contrasting unbounded ambient chains — is formalized from first principles; Mathlib does not contain this result.",
-  "mathlib_version": "4.26.0",
+  "mathlib_version": "4.31.0",
   "theoremCount": 6,
   "definitionCount": 1
  },

@@ -24,7 +24,7 @@
     "lineCount": 219,
     "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The converse carries a non-degeneracy hypothesis (the edge determinant / signed area is non-zero) — a standard mathematical hypothesis on the triangle, not an axiom.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Converse of Viviani's theorem for a general (non-coordinate-fixed) planar triangle: the signed distance-sum is constant ⇔ the triangle is equilateral, proved in the plane ℂ",
       "The normal-vector heart normalSum_zero_iff_equilateral: for inward normals with the closing identity Na+Nb+Nc=0 and two of them linearly independent, the unit-normal sum a⁻¹•Na+b⁻¹•Nb+c⁻¹•Nc vanishes iff a=b=c",

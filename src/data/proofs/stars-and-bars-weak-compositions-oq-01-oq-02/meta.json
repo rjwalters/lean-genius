@@ -57,7 +57,7 @@
     "axiomCount": 0,
     "lineCount": 146,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All results were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The identities over ℤ require k ≥ 1 so that k+n−1 is a genuine natural number (Nat.choose upper index); the general upper-negation lemma ringChoose_neg_eq holds over any commutative binomial ring with no positivity hypothesis. The new content beyond Mathlib is the elementary form of the negative-binomial identity — the sign carried as the plain ring element (−1)ⁿ rather than the unit Int.negOnePow n ∈ ℤˣ — and its connection to the parent entry's coefficient formula and the stars-and-bars count. Mathlib supplies Ring.choose with its upper negation Ring.choose_neg and natural-index specialization Ring.choose_natCast, the binomial power series binomialSeries, and the rescale relation rescale_neg_one_invOneSubPow; the imported parent supplies coeff_invOneSubPow_eq_choose and the count card_weakComposition. Sanity checks compiled: C(−2, 3) = −4 (while C(4, 3) = 4, and (−1)³·(−4) = 4), and (−1)²·C(−3, 2) = C(4, 2) = 6.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
   },

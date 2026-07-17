@@ -40,7 +40,7 @@
     "axiomCount": 0,
     "lineCount": 171,
     "assumptions": "None. All theorems are universally quantified over α and t with explicit hypotheses (e.g. 0 < α, α < 2, 0 < t < 1); there are no axiom declarations and no assumption-carrying structures. The deterministic kernel bounds are wrappers around Mathlib lemmas, attributed in the docstring. The α-stable characteristic function is taken in its real symmetric form φ_α(t) = exp(−|t|^α), matching the parent file; the analytic obstruction is proved about this object, not assumed. #print axioms reports only [propext, Classical.choice, Quot.sound] — no Lean.ofReduceBool, no native_decide, no sorryAx. This is an analysis-of-the-obstruction entry: it does NOT prove an α-stable Berry–Esseen rate (the open question), and says so.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 1
   },

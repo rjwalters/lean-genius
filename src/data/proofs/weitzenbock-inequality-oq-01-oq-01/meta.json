@@ -48,7 +48,7 @@
     ],
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 3,
     "assumptions": "0 axioms, 0 sorries. The area is supplied via Heron's squared identity 16T² = 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴ and the triangle inequalities a ≤ b+c, b ≤ c+a, c ≤ a+b are taken as hypotheses (they are precisely what is needed for L ≥ 0). All results are fully machine-checked from Real.sqrt basics and nlinarith; #print axioms reports only propext / Classical.choice / Quot.sound.",

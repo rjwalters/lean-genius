@@ -69,7 +69,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 89,
     "assumptions": "None. Fully verified with 0 sorries and 0 axioms beyond Mathlib's foundational propext / Classical.choice / Quot.sound (which do not count; confirmed by #print axioms on both the main theorem and the corollary — only the standard triple appears, no sorryAx or Lean.ofReduceBool). The representative selection classRep is noncomputable (it uses Classical.choice via ConjClasses.exists_rep), which is immaterial to the verified equalities. The statements use Nat.card and ∑ᶠ, so [Finite G] is the only typeclass hypothesis; they recover the classical finite class equation.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 1
   },

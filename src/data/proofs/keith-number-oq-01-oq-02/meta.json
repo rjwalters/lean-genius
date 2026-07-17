@@ -24,7 +24,7 @@
     "theoremCount": 9,
     "definitionCount": 3,
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. The concrete base-b membership and minimality facts use kernel `decide` (not `native_decide`), so they carry no `Lean.ofReduceBool` axiom; `#print axioms` reports only the foundational `propext`/`Quot.sound`. The base-b digit recurrence reuses the parent's fuel-bounded `lsdDigits` pattern (generalized to `lsdDigitsB`) precisely so the kernel can reduce the decision procedure.",
     "originalContributions": [
       "Generalizes the parent's decimal Keith predicate to an arbitrary base: `lsdDigitsB`/`msdDigitsB` extract base-b digits and `IsKeithBase b n := b ≤ n ∧ reaches n 40 (msdDigitsB b n) = true`, reusing the parent's base-independent `step`/`reaches` window dynamics unchanged.",

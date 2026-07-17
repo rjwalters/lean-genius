@@ -187,7 +187,7 @@
     "axiomCount": 0,
     "lineCount": 91,
     "assumptions": "None beyond Mathlib. The four theorems are sorry-free and contain no `axiom` declarations or structure-encoded assumptions; they depend only on Mathlib (notably `niven`, which is itself proved from the integrality of 2cos(qπ)) and the foundational propext / Classical.choice / Quot.sound. Scope: this entry proves only the tetrahedral-angle transcendence fact and discharges the parent's corresponding axiom; it does not by itself rebuild the full Dehn-invariant argument, and the parent file's other axioms (e.g. Dehn invariance under scissors congruence, Sydler completeness) remain untouched.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   }

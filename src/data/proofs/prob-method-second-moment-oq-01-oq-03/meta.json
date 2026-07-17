@@ -55,7 +55,7 @@
         "module": "Mathlib.Data.Real.ConjExponents"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Paley-Zygmund inequality was proved by Raymond Paley and Antoni Zygmund in 1932 during their study of lacunary trigonometric series. It gives a quantitative lower bound on the probability that a non-negative random variable exceeds a fraction θ of its mean, strengthening the qualitative second moment method. In its native form it is a measure-theoretic statement about random variables on a probability space. The parent gallery entry `prob-method-second-moment-oq-01` formalizes it in a finite, discrete (Finset over ℚ) setting to keep the proof elementary and explicitly leaves as an open question whether it generalizes to Mathlib's measure-theoretic Lᵖ framework. This entry answers that question affirmatively.",

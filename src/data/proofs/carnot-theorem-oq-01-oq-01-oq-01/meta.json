@@ -70,7 +70,7 @@
     "axiomCount": 0,
     "lineCount": 221,
     "assumptions": "0 axioms (only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, appear in #print axioms; no Lean.ofReduceBool, no sorryAx). 0 sorries. The signed-distance sum identity needs only A + B + C = π; the circumradius certification additionally uses R ≥ 0, and the genuine-triangle reading takes A, B, C > 0. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Note: local Docker kernel build was unavailable this session, so verification used host single-file elaboration (lake env lean) against Mathlib v4.26.0; the entry is gated by the deployer build before merge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 8
   },

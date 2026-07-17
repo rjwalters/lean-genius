@@ -53,7 +53,7 @@
       "sq_ne_two: a worked application — no rational number squares to 2, obtained purely inside ℚ from the rational root theorem (the rational shadow of √2 ∉ ℚ)."
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "0 axioms, 0 sorries; only Lean/Mathlib foundational axioms (propext, Classical.choice, Quot.sound). HONEST SCOPE: the underlying divisibility (num_dvd_of_is_root, den_dvd_of_is_root) and the num/den-to-Rat.num/Rat.den bridge (Rat.associated_num_den) are all Mathlib. The contribution is the concrete specialization to Rat.num/Rat.den — the directly usable statement absent from both Mathlib and the abstract sibling entry OQ-02 — plus the root-test/candidate-set corollaries and the √2 application. The proofs are short; this is a usability/synthesis entry, not a new theorem.",

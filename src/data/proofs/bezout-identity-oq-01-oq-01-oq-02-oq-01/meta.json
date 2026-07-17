@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "lineCount": 272,
     "assumptions": "",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "ebGcd: a constructive extended binary GCD over ℕ returning (g, x, y), threading Bézout coefficients through each step of Stein's algorithm",
       "The subtract-don't-rehalve design: replacing the both-odd step gcd a b = gcd a ((b-a)/2) by gcd a b = gcd a (b-a), so no coefficient is ever halved in a subtraction branch (the classic extended-binary-GCD pitfall)",

@@ -22,7 +22,7 @@
     "lineCount": 263,
     "assumptions": "0 axioms, 0 sorries. Depends only on Mathlib's foundational axioms (propext, Classical.choice, Quot.sound) — confirmed via #print axioms; no sorryAx, no Lean.ofReduceBool, no native_decide. The atomic-cost symmetry and diagonal-vanishing hypotheses are explicit arguments to the theorems, not structure-encoded assumptions.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "chainCost: front-accumulated cost of a chain p, mid…, q with no list-head/last partial functions, eliminating nonemptiness side-conditions throughout",
       "chainCost_concat: chain splicing at a shared vertex is additive — the combinatorial heart of the triangle inequality",

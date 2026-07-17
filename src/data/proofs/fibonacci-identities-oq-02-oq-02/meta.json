@@ -55,7 +55,7 @@
     "dateAdded": "2026-07-01",
     "lineCount": 167,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No native_decide, so no Lean.ofReduceBool. Only the FORWARD divisibility direction is proved; the converse Uₘ ∣ Uₙ ⟹ m ∣ n is not claimed here — it genuinely requires gcd(P,Q)=1 (for the strong-divisibility gcd law) plus a growth condition, and fails for the companion Lucas numbers of oq-02-oq-01.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 1
   },

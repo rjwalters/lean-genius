@@ -63,7 +63,7 @@
     "dateAdded": "2026-06-24",
     "lineCount": 123,
     "assumptions": "None beyond Mathlib's foundations. Fully verified with 0 axioms and 0 sorries; #print axioms reports only propext / Classical.choice / Quot.sound for all three theorems (no Lean.ofReduceBool, no sorryAx; the concrete example uses kernel decide, not native_decide). HONESTY: the headline result (a nontrivial finite p-group has nontrivial center) is already in Mathlib as IsPGroup.center_nontrivial, proved there by counting fixed points of the conjugation action. The contribution here is the alternative class-equation derivation requested by the parent's open question, together with the intermediate lemma noncentral_class_card_eq_prime_pow (noncentral classes have size a positive power of p), which Mathlib does not state on its own.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

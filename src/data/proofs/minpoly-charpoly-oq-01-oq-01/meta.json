@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "lineCount": 197,
     "assumptions": "0 axioms, 0 sorries. Build-verified via `lake env lean Proofs/MinpolyCharpolyOQ01OQ01.lean` against Mathlib pin v4.26.0; `#print axioms` on `minpoly_jordanBlock`, `shift_pow_apply`, `shift_pow_dim_eq_zero`, and `shift_pow_pred_ne_zero` reports only `[propext, Classical.choice, Quot.sound]` (the standard foundational axioms — no `sorryAx`, no `Lean.ofReduceBool`/native_decide, no added `axiom`). The file is deliberately self-contained: it restates the `jordanBlock` definition from the parent `Proofs.MinpolyCharpolyOQ01` rather than importing it, so it verifies independently of the parent file's build state and imports only `Mathlib`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-07-02",
     "theoremCount": 8,
     "definitionCount": 1,

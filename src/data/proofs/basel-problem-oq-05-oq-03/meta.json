@@ -64,7 +64,7 @@
     "trueStubs": 0,
     "lineCount": 166,
     "assumptions": "None. 0 axioms, 0 sorries. The proof depends only on Mathlib. Note on 'avoiding complex analysis': Mathlib's Real.tendsto_euler_sin_prod avoids the Weierstrass factorization theorem and complex contour integration (it uses the elementary recursion for the Wallis-type integrals ∫₀^{π/2} cos^{2n}(t)cos(2zt) dt), but it does route through the complex sine internally as a bookkeeping device for the same real integral identity.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "overview": {

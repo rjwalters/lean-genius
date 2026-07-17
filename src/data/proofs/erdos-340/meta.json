@@ -26,7 +26,7 @@
     "assumptions": "5 axioms: greedy_sidon_values (first 11 OEIS A005282 terms), greedy_sidon_lower_bound (Ω(N^{1/3}) growth), erdos_turan_upper_bound (O(√N + N^{1/4}) upper bound), greedy_sidon_growth_conjecture (open: Ω(N^{1/2-ε}) for all ε>0), greedy_sidon_diffset_pos_density (open: A-A has positive upper density). The former axioms greedy_sidon_strict_mono and greedy_sidon_is_sidon are now PROVED as theorems from the sInf-based definition, via the explicit Sidon-extension witness m = 2·sup(prefix)+1 and induction over prefixes (axiomCount reduced 7→5). This revision also repairs the file against current Mathlib (4.26.0): the obsolete `Mathlib.Order.Filter.AtTopBot` umbrella import was replaced by the analysis modules that actually supply √ and rpow, and the `greedySidon` recursion was made to pass the termination checker by guarding its self-reference with `Finset.attach` so each recursive call is visibly applied to an index `< n+1`.",
     "lineCount": 202,
     "theoremCount": 7,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 4
   },
   "overview": {

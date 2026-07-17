@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "lineCount": 196,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, and — the point of the file — NO `native_decide`. `#print axioms` reports only the ordinary foundational axioms (propext, Classical.choice, Quot.sound) for every declaration, including the concrete `16` witness; in particular `Lean.ofReduceBool` is absent. Imports the verified Erdos10WIP01 file (and through it Erdos10OQ02 / Erdos10OQ02Popcount) and reuses `popcount`, `isPrimePlusKPowers_iff_popcount`, `Nat.bitIndices`, `Nat.twoPowSum_bitIndices`, and `Nat.bitIndices_two_pow`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.twoPowSum_bitIndices",

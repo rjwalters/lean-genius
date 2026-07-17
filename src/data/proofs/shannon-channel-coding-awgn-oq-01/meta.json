@@ -70,7 +70,7 @@
       }
     ],
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Shannon's capacity for the additive white Gaussian noise channel, C = ½ log(1 + P/N), is operationally the maximal mutual information I(X;Y) between channel input and output. Because the output alphabet is continuous, I(X;Y) is expressed through differential entropies as I(X;Y) = h(Y) − h(Y|X), and for the additive channel Y = X + Z with noise Z independent of X the conditional entropy h(Y|X) equals the noise entropy h(Z). The single fact making this work is that differential entropy is translation invariant: adding the known input x to the noise merely shifts its density and leaves its entropy unchanged. The parent AWGN formalization assembled the capacity as the bare entropy difference h(Y) − h(Z) and described the mutual-information interpretation only in prose; this entry supplies the missing identity h(Y|X) = h(Z) and the resulting chain-rule decomposition I(X;Y) = h(Y) − h(Z).",

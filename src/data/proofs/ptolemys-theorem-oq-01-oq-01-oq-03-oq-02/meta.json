@@ -141,7 +141,7 @@
     "lineCount": 373,
     "theoremCount": 12,
     "definitionCount": 2,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond the explicit hypotheses (four distinct points on the unit circle, ‖zⱼ‖ = 1, and positive proportionality t > 0 with t·(z₁-z₂)(z₃-z₄) = (z₂-z₃)(z₁-z₄)). Verified 0 axioms, 0 sorries: #print axioms on positive_ratio_implies_cyclic_order_thm and ptolemy_equality_implies_ccw_or_cw_axiomfree reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool, and crucially no positive_ratio_implies_cyclic_order. IsCCWOrder is imported from PtolemysTheoremOQ01; IsCWOrder/FourDistinct are restated verbatim because the parent leaf PtolemysTheoremOQ01OQ01 (which declares the axiom) currently has unrelated Mathlib-v4.26.0 drift in a numerical sanity-example.",
     "originalContributions": [
       "positive_ratio_implies_cyclic_order_thm: the parent's axiom positive_ratio_implies_cyclic_order, proved as a theorem — for four distinct unit-circle points, positive real proportionality of the opposite-side products implies IsCCWOrder ∨ IsCWOrder, via angle extraction and a finite half-angle sign analysis.",

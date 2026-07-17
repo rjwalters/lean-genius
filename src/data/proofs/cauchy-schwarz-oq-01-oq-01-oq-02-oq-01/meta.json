@@ -62,7 +62,7 @@
       "robertson_of_schrodinger: dropping the nonnegative covariance square recovers the parent's Robertson bound, so the strengthening is genuine",
       "schrodinger_gap_nonneg: the exact gap σ_A²σ_B² − (½|⟨[A,B]⟩|)² ≥ Cov(A,B)² quantifies how much Schrödinger improves on Robertson"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "**Schrödinger's Uncertainty Relation (1930)**\n\nIn 1929 Robertson proved the general uncertainty inequality $\\Delta A \\cdot \\Delta B \\geq \\frac{1}{2}|\\langle[A,B]\\rangle|$ by applying Cauchy–Schwarz to the centered vectors $u = (A-\\langle A\\rangle)\\psi$ and $v = (B-\\langle B\\rangle)\\psi$ and keeping only the **antisymmetric (imaginary) part** of $\\langle u,v\\rangle$.\n\nOne year later, Erwin Schrödinger observed that Cauchy–Schwarz actually controls the *full* modulus\n$$\\|u\\|^2\\,\\|v\\|^2 \\geq |\\langle u,v\\rangle|^2 = (\\operatorname{Re}\\langle u,v\\rangle)^2 + (\\operatorname{Im}\\langle u,v\\rangle)^2.$$\nThe imaginary part is the commutator (Robertson's term); the **real part is the covariance** $\\tfrac{1}{2}\\langle\\{A,B\\}\\rangle - \\langle A\\rangle\\langle B\\rangle$ — the anticommutator contribution Robertson discards. Retaining it gives the strictly sharper Schrödinger relation\n$$\\sigma_A^2\\,\\sigma_B^2 \\geq \\Big(\\tfrac{1}{2}\\langle\\{A,B\\}\\rangle - \\langle A\\rangle\\langle B\\rangle\\Big)^2 + \\Big(\\tfrac{1}{2}|\\langle[A,B]\\rangle|\\Big)^2,$$\nwhich improves on Robertson whenever the observables are correlated.",

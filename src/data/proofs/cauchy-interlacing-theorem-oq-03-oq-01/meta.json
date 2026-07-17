@@ -61,7 +61,7 @@
         "module": "Mathlib.Order.Monotone.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Weyl's 1912 perturbation theory for Hermitian eigenvalues culminates in the stability bound |λ_k(A) − λ_k(B)| ≤ ‖A − B‖₂: the k-th eigenvalue is a 1-Lipschitz function of the operator in the spectral (operator) norm. It is the quantitative backbone of numerical linear algebra — it guarantees that eigenvalues computed from a perturbed or rounded matrix are accurate to the size of the perturbation — and the scalar case of the Hoffman–Wielandt and Lidskii majorisation theorems (Horn–Johnson Cor. 4.3.15, Bhatia §III.2, VI.3). Classically it follows from the Courant–Fischer min-max principle via the monotonicity A ⪯ B ⟹ λ_k(A) ≤ λ_k(B) applied to the Loewner sandwich B − ‖A−B‖·I ⪯ A ⪯ B + ‖A−B‖·I. The parent gallery entry oq-03 proves Weyl monotonicity from the from-scratch keystone and lists this stability bound as its lead open question; this entry closes it.",

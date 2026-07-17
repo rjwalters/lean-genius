@@ -43,7 +43,7 @@
     "lineCount": 202,
     "theoremCount": 10,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The alternating harmonic series ∑_{n=1}^∞ (−1)^{n+1}/n = log 2 was first published by Nicolaus Mercator in 1668 in his Logarithmotechnia. Mercator derived it by integrating the geometric series 1/(1+x) = 1 − x + x² − ⋯ term by term and evaluating at x = 1. The rigorous justification requires Abel's theorem on boundary convergence of power series, published much later by Abel in 1826. Leonhard Euler studied numerous variants of harmonic and alternating harmonic sums in the 18th century, introducing what we now call the Euler-Mascheroni constant and the digamma function. The product denominators n(n+k) appear naturally via partial fractions: 1/(n(n+k)) = (1/k)(1/n − 1/(n+k)), reducing the product sum to a telescoping structure. The even-odd dichotomy — rational answers for even k, answers involving log 2 for odd k — is a recurring theme in the theory of alternating Euler sums and polylogarithms.",

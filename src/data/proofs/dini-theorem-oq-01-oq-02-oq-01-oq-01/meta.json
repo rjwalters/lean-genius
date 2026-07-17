@@ -24,7 +24,7 @@
     "lineCount": 186,
     "assumptions": "None. Fully machine-verified: lake env lean of Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for pow_le_iff_log_div, pow_le_iff_ceil_le, isLeast_modulus, lt_pow_of_lt_modulus, one_le_modulus, and lt_pow_pred_modulus. The file imports only Mathlib and is self-contained.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_le_exp",

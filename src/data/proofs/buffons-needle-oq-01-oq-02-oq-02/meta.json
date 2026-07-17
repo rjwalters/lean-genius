@@ -61,7 +61,7 @@
       "Log-convexity of Γ (Bohr–Mollerup)",
       "Filters, Tendsto, and the squeeze theorem in Mathlib"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Buffon's needle problem (1733) computes the probability that a randomly dropped needle crosses one of a family of equally spaced parallel lines. Its higher-dimensional generalization — a convex body dropped on a stationary arrangement of parallel hyperplanes in ℝⁿ — relates the expected number of crossings to the body's mean width through a dimension-dependent constant c_n built from Gamma functions (Cauchy 1850; Bonnesen–Fenchel 1934). The parent gallery proof buffons-needle-oq-01-oq-02 derives c_n in closed Gamma-function form and computes the small-dimension values c₂=2/π, c₃=1/2, c₄=4/(3π). This file resolves the parent's stated open question: the large-dimension decay rate of c_n.",

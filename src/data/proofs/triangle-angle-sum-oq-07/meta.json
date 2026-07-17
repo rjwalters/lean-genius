@@ -50,7 +50,7 @@
     "axiomCount": 0,
     "lineCount": 75,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All three theorems depend only on the foundational propext / Classical.choice / Quot.sound. They are built directly on Mathlib's unoriented-angle API: Sbtw.angle₁₂₃_eq_pi, angle_eq_zero_of_angle_eq_pi_left, angle_comm, and angle_self_left. The strictly-between case carries the genuine geometric hypothesis Sbtw ℝ A B C (equivalently ∠ABC = π); the coincident case is unconditional.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

@@ -45,7 +45,7 @@
     "axiomCount": 0,
     "lineCount": 110,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1047OQ02` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 3061 jobs; verified 2026-06-17, researcher-5). Registered in Proofs.lean. **AXIOM-FREE**: the last analytic assumption (goodman_counterexample) has been discharged in Proofs/Erdos1047OQ02Certificate.lean, which proves `goodman_counterexample_proof` (the exact statement) with no sorry and no axiom — the Goodman polynomial (z²+1)(z-2)² at c = 5^(3/2)/4 has a non-convex lemniscate component, witnessed by a preconnected 4-segment arc inside the lemniscate whose chord midpoint (0, |f|=4>c) escapes it, via the topological reduction bridge componentContaining_lemniscate_not_convex_of_chord_exits. This entry imports that certificate, so `grunsky_false_faithful` no longer depends on any problem-specific axiom. `#print axioms grunsky_false_faithful` = [propext, Classical.choice, Quot.sound] (Mathlib standard, non-counting). axiomCount = 0.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 1
   },

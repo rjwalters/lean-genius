@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 203,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` for popcount_add_eq_iff, popcount_add_lt, popcount_add_le reports only the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The file is self-contained on Mathlib (Nat.bitIndices + Nat.testBit bitwise lemmas); it does not import the parent Erdos10WIP01, re-deriving subadditivity directly so the equality characterization is fully machine-checked from primitives.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.bitIndices_two_mul / bitIndices_two_mul_add_one",

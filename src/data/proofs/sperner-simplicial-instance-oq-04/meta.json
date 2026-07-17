@@ -43,7 +43,7 @@
       "exists_root_of_continuous: continuous intermediate-value theorem derived from the 1-d Sperner lemma — for continuous f with f 0 ≤ 0 < f 1 there is a root x ∈ [0,1]"
     ],
     "dateAdded": "2026-07-04",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Sperner's lemma (Sperner 1928) is the combinatorial heart of Brouwer's fixed-point theorem: a Sperner-colored triangulation of a simplex always contains a panchromatic (fully-colored) cell. In dimension 1 the lemma degenerates to a discrete parity statement — a 2-coloring of a path `0, 1/m, …, 1` with different endpoint colors must have an adjacent pair of opposite colors — which is the discrete skeleton of the Bolzano intermediate-value theorem (Bolzano 1817). The `sperner-simplicial-instance` program formalizes Sperner at the abstract `CellComplex` level and its concrete `Triangulation` instances; its open question OQ-04 asks to climb from the 1-d Sperner lemma back up to (a case of) Brouwer, i.e. to reconstruct an honest analytic fixed-point / root theorem on top of the purely combinatorial input, rather than importing Mathlib's ready-made `intermediate_value_Icc`. This entry answers OQ-04 for the interval (1-d) case: it exhibits the full pipeline discrete-Sperner ⇒ sign-change brackets ⇒ continuous limit ⇒ root. The `n`-dimensional case (Brouwer proper) requires barycentric subdivision of a d-simplex triangulation and is a multi-thousand-line formalization absent from Mathlib; it is recorded BLOCKED in the slug's research tracker.",

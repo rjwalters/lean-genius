@@ -28,7 +28,7 @@
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "open-question",
     "assumptions": "Zero axioms, zero sorries. Fully verified: character_orthogonality (shift argument), reprCount_fourier_expansion (product expansion + character orthogonality), norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound, and erdos_renyi_decay all proved from Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card_eq_sum_card_fiberwise",

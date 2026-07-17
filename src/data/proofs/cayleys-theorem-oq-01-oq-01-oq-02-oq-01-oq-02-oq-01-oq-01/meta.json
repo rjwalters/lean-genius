@@ -62,7 +62,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 143,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; the headline theorems depend only on Mathlib's foundational propext/Classical.choice/Quot.sound (Classical.choice/arbitrary supplies a basepoint and underlies MulEquiv.ofInjective via codRestrict; Classical.arbitrary picks the basepoint in the geometric section). No decide/native_decide, so no Lean.ofReduceBool. regularRepHom, regularRepHom_injective, regularRep and cayley hold for an arbitrary group G with no finiteness; the geometric tie-in additionally assumes α nonempty (for the orbit basepoint) but no finiteness.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 2
   },

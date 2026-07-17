@@ -43,7 +43,7 @@
     "theoremCount": 2,
     "definitionCount": 0,
     "assumptions": "Headline identity delegates to Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum; the new content is the reindexing of the filtered antidiagonal to a closed-form interval sum. 0 sorries, 0 axiom declarations, no native_decide (the `decide` calls are kernel-level Finset facts on small literals).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities — also called Newton–Girard identities — relate the power sums $p_k = \\sum_i x_i^k$ to the elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1}\\cdots x_{i_k}$. Albert Girard recorded the low-degree cases in 1629; Newton stated the general recurrence in *Arithmetica Universalis* (1707); Waring and Lagrange later used them in the theory of polynomial resolvents.\n\nMathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum` proves the recurrence for all $k \\ge 1$ over any `CommRing` and any `Fintype` index, but it states it in a *filtered-antidiagonal* form: the lower-order terms appear as a sum over $\\{a \\in \\text{antidiagonal } k \\mid 0 < a_1 < k\\}$. The ancestor gallery entries (k=1,2,3 and k=4,5) each unfolded this filter by hand for one fixed degree.\n\nThis entry closes the loop by proving the recurrence once, for *arbitrary* $k$, in the familiar closed form $p_k = \\sum_{i=1}^{k-1}(-1)^{i+1} e_i p_{k-i} + (-1)^{k+1} k e_k$. It directly answers the first open question posed by the parent entry.",

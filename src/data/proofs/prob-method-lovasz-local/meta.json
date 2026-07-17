@@ -47,7 +47,7 @@
       "Moser-Tardos resampling algorithm (constructive LLL)"
     ],
     "assumptions": "The formalized results are fully machine-checked (0 axioms, 0 sorries), but they cover the algebraic/threshold core only: avoidance-product positivity, the T(d) = d^d/(d+1)^(d+1) threshold and its bounds, the LLL condition-verification, and the k-SAT and Moser-Tardos arithmetic facts. The probabilistic existence conclusion P[∩ Āᵢ] > 0 (which requires a measure-theoretic model of events and independence) is NOT formalized here; the ℚ-valued avoidance products are the rational skeleton that would multiply the true probability bound in the full setting. The core also uses the simplified condition p(d+1) ≤ 1/3 as a stand-in for the exact ep(d+1) ≤ 1.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 29,
     "definitionCount": 3,
     "additionalFiles": [

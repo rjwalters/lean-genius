@@ -22,7 +22,7 @@
     "theoremCount": 13,
     "definitionCount": 1,
     "assumptions": "1 axiom: buDim_le_formula (the open conjecture: buDim(n,d) ≤ max_{p|n} buDim(p,d)). Lower bound direction proved from buDim_mono in parent file. Specific cases n=4,6,9 proved. buDim function and known results axiomatized in parent file BorsukUlamOQ02OQ01.lean. The specific cases n=4,6,9 are discharged via `native_decide` (computing `Nat.primeFactors 4 = {2}`, `{2,3}`, `{3}`), so those presented theorems additionally depend on `Lean.ofReduceBool` (kernel-trusted compiler reduction). Counting this compiler-trust assumption alongside the buDim_le_formula axiom gives meta.axiomCount = 2; leanFile.axiomCount = 1 counts only the literal `axiom` declaration.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The equivariant Borsuk-Ulam theorem for Z/n-actions asks: what is the minimum sphere dimension before Z/n-equivariant maps to d-dimensional spaces must vanish? For prime p, Yang (1954) gave the exact answer: buDim(p, 2n) = 2n-1. For composite n, the answer is controlled by the prime factorization, but the precise formula is open. The conjecture that buDim(n, d) = max_{p|n} buDim(p, d) — that composite groups add no extra topological constraint beyond their prime subgroups — is supported by Smith theory (for prime powers) and Yang-Borsuk lifting (for standard representations), but remains unproved in full generality. The Fadell-Husseini index theory (1988) provides the main tool for attacking this problem.",

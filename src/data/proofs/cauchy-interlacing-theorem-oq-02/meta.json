@@ -53,7 +53,7 @@
         "module": "Mathlib.Order.Interval.Finset.Fin"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Cauchy's 1829 interlacing theorem concerns deleting one row and column from a Hermitian matrix; the general statement for deleting m rows/columns — equivalently, compressing to a codimension-m subspace — is the Poincaré separation theorem (Poincaré 1890), a staple of matrix analysis (Horn–Johnson Thm 4.3.17, Bhatia §III). The parent gallery entry formalises the codimension-one case in abstract operator form, built on a from-scratch bound-form Courant–Fischer max–min keystone. Because that keystone characterises the k-th eigenvalue variationally over subspaces of ANY dimension, the jump to arbitrary codimension costs no new spectral theory — only a different dimension count — which is what this entry makes precise.",

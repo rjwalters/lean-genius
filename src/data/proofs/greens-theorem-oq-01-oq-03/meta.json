@@ -48,7 +48,7 @@
     "lineCount": 219,
     "theoremCount": 6,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The standard textbook route from Green's theorem on a single rectangle to Green's theorem on a general region is to approximate the region by a union of rectangles (a grid or 'staircase' region) and add the rectangle-wise identities. The crucial — and often hand-waved — observation is that the contributions along the interior edges shared by adjacent rectangles cancel, because each interior edge is traversed once in each direction. This file formalizes exactly that cancellation for the concrete intervalIntegral formulation of Green's theorem introduced in greens-theorem-oq-01.",

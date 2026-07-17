@@ -59,7 +59,7 @@
     "axiomCount": 0,
     "lineCount": 169,
     "assumptions": "0 axioms. 0 sorries. The only hypothesis is the ambient datum t : Affine.Triangle ℝ P (an affinely independent triple of points in a real inner-product space) — the angle sum, the [0, π] angle membership, the non-degeneracy (each angle in (0, π)), and the positive circumradius are all derived from it via Mathlib. Both headline theorems are stated for a general real inner-product space P (with the [NormedAddTorsor V P] instances), so they apply verbatim to EuclideanSpace ℝ (Fin 2). Note: local kernel verification was blocked this session — the Docker build host hung at start-up and the Aristotle prover returned a service error — so the proof was checked by grep-confirming every Mathlib lemma signature against the pinned Mathlib v4.26.0 toolchain (dist_div_sin_angle_eq_two_mul_circumradius, angle_add_angle_add_angle_eq_pi, angle_pos_of_not_collinear, angle_lt_pi_of_not_collinear, affineIndependent_iff_not_collinear_of_ne, circumradius_pos, mul_right_inj', div_eq_iff) and hand-checking the linarith / nlinarith arithmetic and the Fin 3 index bookkeeping. It is gated by the deployer build before merge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

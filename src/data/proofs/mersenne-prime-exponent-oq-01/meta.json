@@ -57,7 +57,7 @@
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only standard tactics (by_contra, omega, norm_num, ring, push_cast, strong induction) and named Mathlib lemmas — no decide or native_decide, so no Lean.ofReduceBool. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No sorryAx, no structure-encoded hypotheses. The hypothesis 0 < n is a genuine mathematical hypothesis (2^0 + 1 = 2 is prime but 0 is not a power of two), not an assumption on the ambient theory.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

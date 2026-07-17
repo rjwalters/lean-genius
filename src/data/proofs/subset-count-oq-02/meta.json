@@ -47,7 +47,7 @@
       "Powerset and submultiset membership",
       "Binomial coefficients"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The subset counting theorem |P(S)| = 2^n is among the oldest results in combinatorics, appearing in various forms since antiquity (Leibniz's 1666 Dissertatio de Arte Combinatoria catalogues it). The generalization to multisets requires careful bookkeeping: the powerset of a multiset counts submultisets with multiplicity, where each occurrence of a repeated element independently contributes a binary choice. This leads to the same 2^n formula (n = total elements with multiplicity), contrasting with the DISTINCT submultiset count, which follows the product formula ∏(mᵢ + 1) over distinct elements with multiplicities mᵢ. The fixed-size count by binomial coefficients C(n,k) generalizes the Vandermonde identity and connects to the theory of symmetric functions: the elementary symmetric polynomials eₖ count weighted k-element submultisets. In Mathlib, multiset powerset theory lives in `Mathlib.Data.Multiset.Powerset`, which formalizes the recursive decomposition `powerset (a ::ₘ s) = powerset s + map (a ::ₘ ·) (powerset s)` that drives the 2^n induction.",

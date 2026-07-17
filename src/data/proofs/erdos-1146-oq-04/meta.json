@@ -62,7 +62,7 @@
     "axiomCount": 0,
     "lineCount": 108,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The file imports Proofs.Erdos37Problem to reuse the definitions countingFunction (Set.ncard (A ∩ Icc 1 N)) and smoothNumbers23 ({n | ∃ m k, n = 2^m·3^k}); although that parent file contains axioms (e.g. smooth23_counting, mann_theorem), #print axioms confirms that smooth23_counting_upper, smooth23_counting_isBigO, and smooth_inter_eq_image depend on none of them — only the foundational propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool). Only the upper bound is proved; the matching lower bound Ω((log N)²) is recorded as future work.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   },

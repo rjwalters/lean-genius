@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 126,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/CauchySchwarzOQ01OQ03OQ02OQ01.lean` (no errors, no warnings); `#print axioms` on maassen_uffink_eigenstate and shannonEntropy_ge_neg_log_of_max reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Uses Mathlib's Real.negMulLog, Real.log_le_log, Real.log_pow, Finset.sum_le_sum, and nlinarith. SCOPE: this is the eigenstate (H(p) = 0) special case of Maassen–Uffink, proved from the min-entropy bound; the general-state lower bound needs Hausdorff–Young / Riesz–Thorin interpolation, which is not in Mathlib (recorded in openQuestions, as in the parent).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "dateAdded": "2026-06-27",
     "definitionCount": 1

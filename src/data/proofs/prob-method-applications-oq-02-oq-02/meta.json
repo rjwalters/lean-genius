@@ -64,7 +64,7 @@
     "axiomCount": 0,
     "lineCount": 132,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The two mathematical hypotheses — TwoLinesMeetOnce (two distinct lines share at most one point) and TwoPointsJoinOnce (two distinct points share at most one line) — are inputs to the statements, not standing assumptions; together they are the defining nondegeneracy axioms of a point-line incidence structure. The point type P and line type L are arbitrary Fintypes with DecidableEq and a decidable incidence relation Inc : P → L → Prop. The file imports Proofs.IncidenceCauchySchwarz and reuses its 0-axiom theorems; #print axioms reports only the foundational propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 1
   },

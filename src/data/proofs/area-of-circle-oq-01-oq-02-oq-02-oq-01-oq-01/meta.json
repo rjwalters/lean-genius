@@ -26,7 +26,7 @@
     "lineCount": 196,
     "theoremCount": 6,
     "definitionCount": 2,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "arclength_reparam_invariant: circumference ∫₀²π √((x∘φ)'²+(y∘φ)'²) = ∫₀²π √(x'²+y'²) for C¹ coordinates and a C¹ increasing period-commuting reparametrization φ — the chain rule factors the speed as φ'·(speed∘φ), substitution gives ∫_{φ0}^{φ(2π)} speed, and periodicity collapses it to one period",
       "signed_area_reparam_invariant: Green's-theorem integral ∫₀²π ((x∘φ)·(y∘φ)'−(y∘φ)·(x∘φ)') = ∫₀²π (x·y'−y·x'); no monotonicity hypothesis is needed since φ' enters linearly",

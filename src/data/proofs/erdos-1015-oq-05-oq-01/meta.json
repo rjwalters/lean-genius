@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "lineCount": 223,
     "assumptions": "No axioms and no sorries. The concrete combinatorial definitions (TwoColoring, CliquePartition, coveredVertices, leftover) are mirrored verbatim from Erdos1015Problem.lean; the axiomatized f, ramseyNumber, and Burr-Erdős-Spencer are deliberately NOT imported, so this file carries none of the parent's assumptions. #print axioms reports only propext / Classical.choice / Quot.sound.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 10,
     "definitionCount": 6
   },

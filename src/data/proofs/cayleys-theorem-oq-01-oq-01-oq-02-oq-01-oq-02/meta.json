@@ -51,7 +51,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 90,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, the latter via Classical.arbitrary to pick a basepoint). No decide/native_decide is used. α is assumed nonempty (required: an empty α would give #H = 1 ≠ 0 = #α). The cardinal equality holds for arbitrary α, finite or infinite; the infinitude statements require α infinite as stated.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

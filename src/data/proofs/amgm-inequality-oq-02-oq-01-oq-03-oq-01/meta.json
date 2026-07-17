@@ -50,7 +50,7 @@
     "theoremCount": 6,
     "definitionCount": 2,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only [propext, Classical.choice, Quot.sound] for both psum_four_closed and newton_girard_four_finset (no sorryAx, no Lean.ofReduceBool). The universal identity is a ring-level corollary of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum together with the sibling k=1/2/3 closed forms; the concrete-Finset form reuses the k=3 entry's aeval bridge and holds over an arbitrary CommRing including characteristic 2.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities (Newton-Girard identities) relate the power sums pₖ = Σ xᵢᵏ to the elementary symmetric polynomials eₖ. Girard stated them around 1629 and Newton independently around 1666 (Arithmetica Universalis, 1707). The fourth identity, p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, is the first case in which the reduced closed form acquires a quadratic e₂² term and a four-distinct elementary symmetric polynomial e₄. While Mathlib provides the general recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, the fully reduced k=4 closed form purely in e₁, e₂, e₃, e₄ — and its concrete Finset incarnation valid in every commutative ring, characteristic 2 included — is not present in Mathlib.",

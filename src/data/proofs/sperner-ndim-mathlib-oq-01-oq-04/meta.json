@@ -24,7 +24,7 @@
     "lineCount": 207,
     "assumptions": "No axioms or sorries. The signed_interior_doors_sum_zero theorem is discharged via Finset.sum_involution applied to the signedAdjMap involution, using only the structure's sign_adj coherence and the parent's adj_symm, adj_vertices, adj_ne axioms.",
     "dateAdded": "2026-05-16",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "SignedCellComplex: structure extending CellComplex with per-facet ℤ-valued ±1 sign field and sign_adj coherence (adjacent facets sum to 0)",
       "signedAdjMap: lift of the parent's adjacency map to the signed signature",

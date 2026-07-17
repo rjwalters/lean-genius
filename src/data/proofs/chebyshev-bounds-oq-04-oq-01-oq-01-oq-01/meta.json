@@ -27,7 +27,7 @@
     "theoremCount": 7,
     "definitionCount": 1,
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked: #print axioms on the main theorem mertensRecip_abs_le_one reports only propext, Classical.choice, Quot.sound (the standard foundational axioms). 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions; imports only Mathlib. The result is unconditional in N (the N = 0 case is M₁(0) = 0). It is independent of the two deep PNT axioms (chebyshevPsi_asymptotic, pnt_equivalence) carried by the grandparent file ChebyshevBoundsOQ04.lean — this proof does not import that file.",
     "originalContributions": [
       "A complete, axiom-free Lean proof of the weak Mertens reciprocal bound |∑_{d=1}^{N} μ(d)/d| ≤ 1 for all N — not available as a named Mathlib lemma. This realizes the standing open question of the sibling entry chebyshev-bounds-oq-04-oq-01-oq-01 (which proved only the integer-valued floor identity).",

@@ -24,7 +24,7 @@
     "lineCount": 142,
     "assumptions": "None. All nine theorems are axiom-free and self-contained: lemniscates are taken of bare functions ℂ → ℂ (lemOf), so no polynomial-structure scaffolding and no dependence on the parent entry's open transfinite-diameter question. No native_decide is used (so no Lean.ofReduceBool). Build NOT kernel-verified this session (Docker daemon unavailable, as in prior sessions); all Mathlib signatures (Complex.volume_ball, norm_pow, norm_div, Complex.norm_real, Real.norm_eq_abs, pow_lt_one_iff_of_nonneg, div_lt_one, div_nonneg, norm_nonneg, abs_of_pos, ENNReal.ofReal_pow, ENNReal.ofReal_mul, ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, ENNReal.ofReal_pos, ENNReal.ofReal_lt_ofReal_iff, Real.sqrt_pos, Real.sq_sqrt, div_mul_cancel₀, Real.pi_pos, Real.pi_ne_zero, div_pos, half_pos, dist_eq_norm, Metric.mem_ball) were checked against Mathlib v4.26.0 source. The deployer build-gate is the final check before merge.",
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "lemOf: the lemniscate (open sub-level set) {z : ‖f z‖ < 1} of a bare function f : ℂ → ℂ — no polynomial scaffolding, keeping the entry self-contained",
       "scaledPure: the rescaled pure power f_R(z) = ((z - c)/R)^n = R^{-n}(z - c)^n, a single-root degree-n polynomial whose leading coefficient R^{-n} is the only thing varied (monic exactly when R = 1)",

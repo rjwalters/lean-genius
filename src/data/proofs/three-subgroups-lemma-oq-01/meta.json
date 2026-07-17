@@ -42,7 +42,7 @@
     "axiomCount": 0,
     "lineCount": 130,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All named theorems depend only on the foundational propext / Classical.choice / Quot.sound (verified with #print axioms). Mathlib contains the bottom case of the three subgroups lemma (Subgroup.commutator_commutator_eq_bot_of_rotate, the = ⊥ rotation from the Hall–Witt identity) but NOT the classical ≤ N form relative to an arbitrary normal subgroup N. The ≤ N statement, its full cyclic symmetry, the inner-bracket-first formulation, and the 'commutes-with-both-implies-commutes-with-the-commutator' corollary are the original content, derived by transporting the = ⊥ lemma across the quotient projection G ⧸ N via Subgroup.map_commutator, Subgroup.map_eq_bot_iff and QuotientGroup.ker_mk'.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

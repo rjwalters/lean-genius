@@ -54,7 +54,7 @@
     "lineCount": 79,
     "theoremCount": 4,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "In 1972 Édouard Zeckendorf published the theorem (which he had circulated decades earlier) that every positive integer can be written, in exactly one way, as a sum of non-consecutive Fibonacci numbers. The representation is produced by the obvious greedy algorithm — repeatedly subtract the largest Fibonacci number not exceeding what remains — and the non-consecutiveness of the chosen indices is precisely what makes it unique. Zeckendorf representations underlie Fibonacci coding, the Fibonacci number system, and combinatorial games, and are the additive analogue of base-b expansions with the Fibonacci sequence in place of powers.",

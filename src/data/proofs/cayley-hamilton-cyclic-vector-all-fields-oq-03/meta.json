@@ -36,7 +36,7 @@
     "definitionCount": 2,
     "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, FiniteDimensional bases, and (for the Section V span bridge) basisOfLinearIndependentOfCardEqFinrank, Fintype.linearIndependent_iff, and the Polynomial natDegree API. The span bridge also imports the registered module-theoretic file CayleyHamiltonMinpolyOQ05OQ01OQ03 (NonderogatoryModule.cyclicSubspace / finiteSpan_le_cyclicSubspace). Registered in Proofs.lean and verified by the aggregate fleet build; all Mathlib bearers checked against the pinned rev (v4.26.0), and the Section V Krylov-independence argument mirrors the compiled matrix proof CyclicCommutant.krylov_linearIndependent. The PID-module half of OQ-03 is now formalized in the registered companion CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean (0 sorry / 0 axiom; PRs #25497, #25552), listed in additionalFiles.",
     "dateAdded": "2026-06-15",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "operator_nonderogatory_has_cyclic_vector: a finite-dimensional linear operator T with (minpoly K T).natDegree = finrank K V has a cyclic vector — the coordinate-free form of the matrix cyclic-vector theorem, with no chosen basis in the statement",
       "matrix_nonderog_of_minpoly_natDegree: a matrix whose minimal polynomial has degree n is nonderogatory (minpoly = charpoly), via the monic-cofactor argument on minpoly ∣ charpoly",

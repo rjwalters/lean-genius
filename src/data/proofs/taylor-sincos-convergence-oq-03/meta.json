@@ -33,7 +33,7 @@
     "additionalFiles": [
       "Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The alternating series estimation theorem was known to Leibniz (1682) who observed that the error of an alternating series is bounded by the first omitted term when the terms decrease to zero. Applied to the Taylor series sin(x) = x - x³/3! + x⁵/5! - ... (which alternates in sign for real x), this gives bounds sharper than the general Lagrange remainder formula from the mean value theorem.\n\nThe classical Lagrange bound for sin uses the (n+1)-th derivative bounded by 1, giving |remainder| ≤ |x|^{n+1}/n!. The alternating bound gives |x|^{2k+1}/(2k+1)! — a factor of (2k+1) smaller. At x=1 with k=3 (through the x⁷ term): Lagrange gives 1/720 ≈ 0.0014, alternating gives 1/5040 ≈ 0.0002, a 7× improvement. This matters in numerical analysis where tight error bounds reduce the number of terms needed for a target precision.\n\nThis formalization extends the parent taylor-sincos-convergence entry (which used axioms) by proving the alternating estimation theorem from first principles, establishing that sin/cos series terms are decreasing for |x| ≤ 1, and comparing the two types of bounds explicitly.",

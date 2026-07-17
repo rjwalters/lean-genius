@@ -66,7 +66,7 @@
       "Pigeonhole on finite types: injective ⇒ surjective on Fin a"
     ],
     "dateAdded": "2026-06-16",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The **Frobenius coin problem** (Chicken McNugget theorem, postage-stamp problem) for two coprime generators $a, b$ was solved by **James Joseph Sylvester** (1880s): the largest non-representable integer is the *Frobenius number* $g(a, b) = ab - a - b$ (parent entry `frobenius-number`), and there are exactly $\\frac{(a-1)(b-1)}{2}$ non-representable positive integers (sibling `frobenius-number-oq-01`). Underlying *both* of Sylvester's theorems is a single structural fact: the numerical semigroup $\\langle a, b\\rangle$ is **symmetric**. A numerical semigroup $S$ with Frobenius number $g$ is called symmetric when for every $k \\in \\{0, 1, \\ldots, g\\}$, $k \\in S \\Leftrightarrow g - k \\notin S$. For two coprime generators this symmetry *always holds* — and that is precisely the statement formalized here: $\\text{Rep}(n) \\Leftrightarrow \\neg\\text{Rep}(g - n)$ for $0 < n < g$.\n\nThe notion of symmetric numerical semigroups was crystallized by **Kunz (1970)** and connected to **Gorenstein** local rings: $\\langle a, b\\rangle$ symmetric corresponds to $k[t^a, t^b]$ being a Gorenstein ring. **Herzog (1970)** generalized this to complete-intersection numerical semigroups. So the unassuming biconditional in this file is the elementary shadow of a deep duality in commutative algebra.",

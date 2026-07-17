@@ -53,7 +53,7 @@
       "six_dvd_diff: in a 3-term progression of primes all exceeding 3, the common difference is divisible by 6 (proved via a 9-case ZMod 3 exhaustion for the mod-3 part)"
     ],
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 164,
     "assumptions": "0 axioms, 0 sorries (only propext, Classical.choice, Quot.sound — Lean's foundational axioms). The Green–Tao theorem itself is recorded only as a Prop (GreenTao) and is NOT proved; all theorems in the file are the verified elementary results surrounding it. The mod-3 step uses kernel-checked `decide` over ZMod 3 (not native_decide).",

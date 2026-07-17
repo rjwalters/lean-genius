@@ -91,7 +91,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries, no native_decide. #print axioms reports only the foundational propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool. HONEST SCOPE: the file proves the sharp dimensional upper bound (equilateral set in ℝ^d has ≤ d+1 points) and exhibits n-point equilateral sets in ℝ^n (standard basis), establishing the qualitative 'grows without bound with dimension' answer to OQ-05. The exact maximum is d+1 (the regular simplex realises the upper bound), of which this entry proves the lower bound d via the basis; the tightening from d to d+1 (a regular d-simplex on d+1 vertices in ℝ^d) is not formalized here. The parent Erdős #100 diameter conjecture diam ≫ n remains OPEN and is unrelated to this single-distance extreme.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "lineCount": 203,
     "theoremCount": 7,
     "definitionCount": 2

@@ -41,7 +41,7 @@
     "lineCount": 810,
     "theoremCount": 61,
     "definitionCount": 15,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Gauss-Bonnet theorem is the cornerstone of the relationship between differential geometry (local curvature) and topology (global Euler characteristic). Gauss (1827) proved the local version; Bonnet (1848) proved the global integral formula for surfaces. Chern (1944) gave the intrinsic proof and extended it to all even-dimensional manifolds (the Chern-Gauss-Bonnet theorem).\n\nThe formula ∫_M K dA = 2πχ(M) says the total Gaussian curvature is a topological invariant: it doesn't change under metric deformations, only under topological surgery. This is why the sphere (χ=2) must have positive curvature, the torus (χ=0) can be flat, and higher-genus surfaces (χ<0) must have negative curvature.\n\nSince Mathlib 4.26.0 lacks Riemannian metrics and integration on manifolds, this formalization axiomatizes the theorem as a structure field and proves the many interesting consequences — genus determination, curvature sign constraints, Girard's formula, Gauss-Bonnet with boundary, Poincaré-Hopf, and Morse inequalities.",

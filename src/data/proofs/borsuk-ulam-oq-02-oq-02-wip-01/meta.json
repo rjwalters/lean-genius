@@ -47,7 +47,7 @@
     "lineCount": 210,
     "assumptions": "Depends on exactly ONE axiom, `borsuk_ulam_free_involution`: the G = ℤ/2 case of the general equivariant Borsuk-Ulam theorem (Dold 1983) — for a free involution σ on Sⁿ and a fixed-point-free (away from 0) target map τ, no continuous (σ,τ)-equivariant map Sⁿ → ℝⁿ avoids 0. This is the deep topological input (equivariant no-retraction), requiring equivariant algebraic topology not yet in Mathlib. It strictly generalizes BorsukUlam.no_continuous_odd_nonzero_on_sphere (the σ = τ = negation case). `#print axioms classical_of_free_involution` reports only [propext, Classical.choice, Quot.sound, borsuk_ulam_free_involution] — NOT the classical odd-map axiom — confirming the recovery is non-circular. No sorryAx, no Lean.ofReduceBool.",
     "theoremCount": 7,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 2
   },
   "overview": {

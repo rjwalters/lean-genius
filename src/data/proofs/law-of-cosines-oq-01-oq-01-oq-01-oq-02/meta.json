@@ -23,7 +23,7 @@
     "lineCount": 141,
     "assumptions": "No axioms or sorries. Inherits Mathlib's inner-product-space and trigonometric theory and, from the dependency chain, the symmetric Gram identities sinA_sq_times_bc / sinB_sq_times_ac and the multiplicative law of sines spherical_law_of_sines_mul (Proofs/LawOfCosinesOQ01OQ02.lean) together with the angle-C law of cosines cos_C_mul (Proofs/LawOfCosinesOQ01OQ01.lean). All hypotheses (positive sines of all three sides and all three angles, the non-degeneracy conditions for a spherical triangle) are explicit in the theorem statements. NOTE: not locally kernel-rebuilt this session — the Docker build wrapper was unavailable and no oleans were cached, so verification rests on the deployer build-gate; the proof mirrors the already-verified patterns of spherical_law_of_sines_mul and sinB_sq_times_ac line-for-line.",
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "sinC_sq_times_ab: the third, previously-missing member of the cyclic family of symmetric Gram identities, sin²(C)·sin²(a)·sin²(b) = gramDet, derived from the angle-C law of cosines cos_C_mul by substitution into sin²(C) = 1 - cos²(C) and clearing denominators (mirrors the existing sinA_sq_times_bc / sinB_sq_times_ac). The parent file never formed this identity — it obtained the third sine ratio by a vertex permutation instead.",
       "sin_angleC_nonneg: sin(angleC) ≥ 0 (the C-vertex companion of the existing sin_angleA_nonneg / sin_angleB_nonneg), needed to take a positive square root in the cross-product step.",

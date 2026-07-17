@@ -52,7 +52,7 @@
       "The total count identity ∑_g F_A(g) = 2^|A| (total_reprCount)",
       "Nat.clog as the integer ceiling logarithm and Nat.clog_pow"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős problem #1179 (Erdős–Hall 1976) concerns ε-uniform subset-sum representations in a finite abelian group of order N: the representation function F_A(g) counts subsets of A summing to g, with average μ = 2^|A|/N, and ε-uniformity asks |F_A(g) − μ| ≤ ε·μ for all g. The proved asymptotic is gₑ(N) = (1 + oₑ(1))·log₂N; open question OQ-02 asks whether the multiplicative (1+o(1)) factor sharpens to a bounded additive error gₑ(N) ≤ log₂N + Oₑ(1). The sibling entry erdos-1179-oq-02 formalizes the matching trivial lower bound gₑ(N) ≥ log₂N axiom-free (N ≤ 2^|A|). This entry characterizes exactly when that lower bound is tight — the equality case — completing the rigidity picture around the trivial bound.",

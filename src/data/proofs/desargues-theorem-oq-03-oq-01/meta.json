@@ -70,7 +70,7 @@
     "axiomCount": 0,
     "lineCount": 301,
     "assumptions": "None. Fully machine-checked with 0 sorries and 0 axiom declarations; no native_decide and no decide on any substantive result, so the trusted axioms are exactly Mathlib's foundational propext / Classical.choice / Quot.sound. Verified via a clean `lake env lean` build (exit 0, no errors, no warnings, no sorries). The deep converse of the FTPG (every collineation is semilinear) is discussed as the open direction and is NOT assumed anywhere in the Lean development.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 2
   },

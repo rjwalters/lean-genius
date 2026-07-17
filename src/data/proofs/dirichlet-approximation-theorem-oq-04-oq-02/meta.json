@@ -78,7 +78,7 @@
     "axiomCount": 0,
     "lineCount": 102,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms denseRange_zsmul_add_of_irrational and #print axioms exists_int_zsmul_sub_round_lt). All three results are unconditional. Mathlib supplies AddCircle.denseRange_zsmul_coe_iff (density of multiples on a circle ⟺ irrationality of a/p), the DenseRange API (DenseRange.comp, Function.Surjective.denseRange, DenseRange.exists_mem_open), and the AddCircle normed-group API (AddCircle.norm_eq giving ‖(x : AddCircle 1)‖ = |x − round x|, AddCircle.coe_sub). The original in-file content is the minimality upgrade via composition with the translation and the inhomogeneous approximation extraction reading the circle norm back as distance to the nearest integer.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

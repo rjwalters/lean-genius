@@ -31,7 +31,7 @@
     "lineCount": 160,
     "theoremCount": 3,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Chebyshev (1852) proved the first rigorous bounds of the right order of magnitude for the prime-counting function: c₁·x/log x ≤ π(x) ≤ c₂·x/log x with explicit constants (his 0.921 and 1.106), half a century before the Prime Number Theorem (Hadamard, de la Vallée Poussin, 1896) showed π(x) ∼ x/log x. The Lean parent ChebyshevPNTBridge.lean reproves Chebyshev-type bounds with weaker constants (log 2 and 2 log 4) using the primorial bound primorial(n) ≤ 4^n for the upper bound and the central binomial coefficient C(2n,n) for the lower bound. OQ-05 packaged the lower bound in real-logarithmic form for all m; this OQ-06 packages the upper bound, completing the pair.",

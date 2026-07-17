@@ -54,7 +54,7 @@
         "module": "Mathlib.NumberTheory.Padics.PadicVal"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kummer's theorem (1852) identifies the $p$-adic valuation $v_p(\\binom{n}{k})$ with the number of carries when adding $k$ and $n-k$ in base $p$; equivalently, Legendre's formula gives $(p-1)\\,v_p(\\binom{n}{k}) = s_p(k) + s_p(n-k) - s_p(n)$ where $s_p$ is the base-$p$ digit sum. The central binomial coefficient $\\binom{2n}{n}$ is one of the most studied sequences in combinatorics — it counts lattice paths, appears in Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$, and its growth $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$ underlies Erdős's elementary proof of Bertrand's postulate. The exact 2-adic valuation $v_2(\\binom{2n}{n}) = s_2(n)$ (the binary popcount) is a classical gem: it says $\\binom{2n}{n}$ is divisible by exactly as many factors of $2$ as $n$ has $1$-bits. A famous corollary, going back to observations on Pascal's triangle mod 2 (Sierpiński's gasket), is that $\\binom{2n}{n}$ is odd iff $n=0$, and the only $n$ with $\\binom{2n}{n}$ squarefree-at-2 patterns track the binary digits of $n$.",

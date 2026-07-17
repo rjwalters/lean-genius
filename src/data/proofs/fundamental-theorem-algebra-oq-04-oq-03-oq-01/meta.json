@@ -23,7 +23,7 @@
     "theoremCount": 9,
     "definitionCount": 1,
     "lineCount": 164,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). The two finite checks (ofAdd_one_ne_one, zmod2_eq_one_or) use kernel `decide`, not `native_decide`, so no `Lean.ofReduceBool` is introduced.",
     "originalContributions": [
       "galoisGroupEquivZMod2: the explicit MulEquiv (ℂ ≃ₐ[ℝ] ℂ) ≃* Multiplicative (ZMod 2), with every component (toFun, invFun, both inverse laws, map_mul) spelled out — no generator chosen by Classical.choice, unlike Mathlib's zmodCyclicMulEquiv",

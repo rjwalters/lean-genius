@@ -58,7 +58,7 @@
     "theoremCount": 6,
     "definitionCount": 1,
     "assumptions": "None — fully verified from Mathlib and the parent bridge files (ChebyshevThetaFourPow, ChebyshevPNTBridge, ChebyshevPNTBridgeOQ05) with 0 axioms (only propext / Classical.choice / Quot.sound, confirmed by #print axioms) and 0 sorries; no native_decide, no decide. This entry proves ONLY the elementary reduction: the two-sided θ ↔ π·log sandwich. The full PNT asymptotic π(x)·log x / x → 1 (equivalently θ(x)/x → 1) is NOT proved here — it is the irreducible deep content of the Prime Number Theorem and remains an open question, requiring either the Wiener–Ikehara Tauberian theorem (ζ non-vanishing on Re s = 1) or Selberg's symmetry formula, neither present in the pinned Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Chebyshev's 1852 memoir introduced the functions θ(x) = ∑_{p≤x} log p and ψ(x) = ∑_{p^k≤x} log p and proved π(x) has the right order of magnitude, x/log x, decades before Hadamard and de la Vallée Poussin proved the sharp Prime Number Theorem π(x) ~ x/log x in 1896. A cornerstone of the elementary theory is that all three normalized quantities ψ(x)/x, θ(x)/x, and π(x)·log x / x have the same limit if any of them does — so PNT can be attacked through whichever of ψ, θ, π is most convenient (ψ for the analytic zeta approach, π for the statement of record). The transfer θ ↔ π is the most elementary link in this chain, needing only monotonicity of log, and is the one formalized here.",

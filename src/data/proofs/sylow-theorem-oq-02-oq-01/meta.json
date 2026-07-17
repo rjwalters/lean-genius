@@ -63,7 +63,7 @@
         "module": "Mathlib.Algebra.Group.Subgroup.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "That a finite group is nilpotent precisely when each of its Sylow subgroups is normal — equivalently when it is the (internal) direct product of its Sylow subgroups — is one of the cornerstone structure theorems of finite group theory (Hall, Theory of Groups, Ch. 10; Isaacs, Finite Group Theory, Thm 1.26). It packages nilpotency, an a-priori recursive condition on the lower/upper central series, into a single statement about prime-local structure: the global group is built without 'interference' between distinct primes, exactly when each prime's Sylow subgroup sits normally. The Sylow counting numbers n_p, governed by Sylow III (n_p ≡ 1 mod p, n_p ∣ [G:P]) and by the parent entry's orbit formula n_p = [G : N_G(P)], all collapse to 1 in this regime.",

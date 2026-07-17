@@ -38,7 +38,7 @@
     "lineCount": 199,
     "theoremCount": 3,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Extending Green's theorem from a single rectangle to a general region proceeds by tiling the region with a grid of rectangles and adding the cell-wise identities; the interior edges shared by adjacent cells cancel because each is traversed once in each direction. The parent greens-theorem-oq-01-oq-03 isolated this cancellation for a single cut (vertical or horizontal) and packaged the vertical direction into a gluing capstone. The remaining step toward a genuine grid is to handle cuts in both directions at once.",

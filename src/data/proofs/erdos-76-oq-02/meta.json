@@ -25,7 +25,7 @@
     "lineCount": 169,
     "assumptions": "None. All results are axiom-free and self-contained: the complete multipartite graph is re-declared locally as a SimpleGraph (multipartiteGraph part, Adj u v := part u ≠ part v), so nothing depends on the parent entry's axioms (gruslys_letzter, balanced_achieves_bound, extremal_uniqueness) nor on its sorry (packing_upper_bound). No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms` on all five named results (not_cliqueFree_three_iff, cliqueFree_three_iff, bipartite_cliqueFree, K3_not_cliqueFree, extremal_crossclass_is_two_color_phenomenon) reports only [propext, Classical.choice, Quot.sound]. Mathlib lemmas used: Finset.two_lt_card_iff, Finset.mem_image, Finset.card_image_of_injOn, Finset.image_subset_image, Finset.card_le_card, Finset.subset_univ, Finset.card_eq_three, Finset.card_le_univ, SimpleGraph.CliqueFree, SimpleGraph.IsNClique / IsClique.",
     "dateAdded": "2026-06-28",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "multipartiteGraph: a self-contained, axiom-free model of the cross-part color class of a k-partition as a SimpleGraph on V, with two vertices adjacent iff they lie in different parts (Adj u v := part u ≠ part v). For β = Fin 2 this is exactly the complete bipartite 'red' class of the Erdős #76 balanced coloring.",
       "not_cliqueFree_three_iff: the cross-part graph contains a triangle iff the partition uses ≥ 3 parts — formally, ¬ CliqueFree 3 ↔ 3 ≤ (univ.image part).card. A triangle injects three vertices onto three distinct parts (forward via Set.InjOn from pairwise adjacency); three distinct parts yield a transversal triangle (backward via Finset.two_lt_card_iff).",

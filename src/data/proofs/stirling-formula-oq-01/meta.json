@@ -54,7 +54,7 @@
     "additionalFiles": [
       "Proofs/StirlingExpansionAristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "James Stirling published 'Methodus Differentialis' in 1730, giving the asymptotic formula n! ~ \u221a(2\u03c0n)(n/e)^n and the full asymptotic series with Bernoulli number coefficients. Abraham de Moivre independently arrived at the same formula in 1733, and the constant \u221a(2\u03c0) was supplied by de Moivre (Stirling had initially left it implicit). The higher-order terms n! ~ \u221a(2\u03c0n)(n/e)^n \u00b7 (1 + 1/(12n) + 1/(288n\u00b2) \u2212 139/(51840n\u00b3) + ...) were known to both Stirling and de Moivre. The coefficients are given by the Euler-Maclaurin formula: applying the summation formula to \u03a3_{k=1}^n log(k) = log(n!) yields the asymptotic series, with the k-th correction coefficient a_k = B_{2k}/(2k(2k\u22121)n^k) involving Bernoulli numbers B_{2k}. Leonhard Euler's contributions to the Maclaurin-Euler formula (1730s) provided the systematic tool for deriving these coefficients. In the 20th century, the Stirling series was understood as the asymptotic expansion of the log-Gamma function: log \u0393(z) ~ (z\u22121/2)log(z) \u2212 z + (1/2)log(2\u03c0) + \u03a3 B_{2k}/[2k(2k\u22121)z^{2k-1}]. Mathlib's formalization uses the Wallis product as the entry point for Stirling's formula, making the connection to Bernoulli numbers indirect.",

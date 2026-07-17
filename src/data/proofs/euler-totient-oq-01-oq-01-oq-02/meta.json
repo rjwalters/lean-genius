@@ -23,7 +23,7 @@
     "lineCount": 82,
     "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The proofs are short specialisations of Mathlib's monoid-exponent API (Monoid.pow_exponent_eq_one, Monoid.exponent_dvd_iff_forall_pow_eq_one, Monoid.exists_orderOf_eq_exponent, Monoid.ExponentExists.of_finite, Group.exponent_dvd_nat_card) applied to the parent's definition carmichael n = Monoid.exponent (ZMod n)ˣ, with the totient bridge ZMod.card_units_eq_totient; the contribution is the assembly of Carmichael's theorem, its sharpness, and the λ∣φ refinement as a coherent named package, which Mathlib does not provide for an ℕ-indexed Carmichael function. The card/totient and attainment statements carry the standard hypothesis NeZero n (n ≥ 1), not an axiom.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "unit_pow_carmichael — Carmichael's theorem for the gallery's λ: every unit of ℤ/nℤ satisfies a ^ λ(n) = 1, the universal-exponent statement underlying λ (specialising Monoid.pow_exponent_eq_one to the unit group)",
       "carmichael_dvd_of_forall_pow_eq_one — minimality: any k with a^k = 1 for all units a is a multiple of λ(n), so with Carmichael's theorem λ(n) is the LEAST positive universal exponent",

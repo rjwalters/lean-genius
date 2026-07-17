@@ -55,7 +55,7 @@
     "axiomCount": 0,
     "lineCount": 208,
     "assumptions": "0 axioms, 0 sorries, no native_decide. Both public theorems (card_boundedComposition_powerset, card_boundedComposition), the bijection shiftEquiv, and the supporting lemmas were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The result is unconditional for all k, n, b ≥ 0. The new content beyond Mathlib is the shift bijection shiftEquiv and the two count theorems; Mathlib supplies the inclusion–exclusion principle (Finset.inclusion_exclusion_card_inf_compl) and, via the imported parent, the unrestricted stars-and-bars count. A Fintype instance on the bounded-composition subtype is supplied through the parent's Fintype instance (it is not auto-derivable, since the codomain ℕ is infinite). The closed form was cross-checked numerically: for (k,n,b) = (2,3,2) it evaluates to 2 (the compositions (1,2),(2,1)) and for (3,5,2) to 3 ((1,2,2),(2,1,2),(2,2,1)).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 4
   },

@@ -25,7 +25,7 @@
     "axiomCount": 3,
     "lineCount": 397,
     "assumptions": "3 axioms: chenErdos_false (Chen-Erdős conjecture is false, Cambie-Chan-Hunter 2023), cambieChanHunter_construction (counterexample construction exists for all n≥4), ramseyNumber (Ramsey numbers axiomatized as exact values are unknown). 0 sorries. (oq-02 update: added multiplicity_k_bound generalizing limited_multiplicity_bound to arbitrary k; informal disproof of generalBoundConjecture recorded as general_bound_conjecture_informally_false; pre-existing Mathlib v4.26.0 drift in counterexample_works / degree_diversity_no_ramsey_help / cambie_is_optimal / limited_multiplicity_bound / degree_bound / maxTrivialSize / Aristotle pigeonhole repaired in same patch — file now Docker-builds clean.)",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.degree",

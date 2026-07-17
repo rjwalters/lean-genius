@@ -72,7 +72,7 @@
       "The Chebyshev connection: the explicit binomial sum is proved equal to T_n(cos θ), directly answering the parent entry's leading open question"
     ],
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 156,
     "assumptions": "0 axioms, 0 sorries. #print axioms confirms all main theorems depend only on the foundational propext / Classical.choice / Quot.sound. Real-part extraction uses Mathlib's Complex.exp_mul_I and exp_ofReal_mul_I_re; the closed form is derived by elementary Finset reindexing (sum_range_reflect, sum_subset, sum_image); the Chebyshev identity uses T_real_cos.",

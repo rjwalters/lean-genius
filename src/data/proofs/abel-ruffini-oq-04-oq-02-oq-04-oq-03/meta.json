@@ -29,7 +29,7 @@
     "lineCount": 129,
     "theoremCount": 5,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-07-01"
   },
   "description": "Answers the parent's open question asking to generalize the dihedral solvability argument to the metacyclic and supersolvable families. Proves the structural theorem the parent's dihedral proof instantiates: any cyclic-by-cyclic (metacyclic) group — a group with a cyclic normal subgroup and cyclic quotient — is solvable, and more generally any abelian-by-abelian (metabelian) group is solvable. Crucially it sharpens 'solvable' to the exact solvable class: `derivedSeries_two_eq_bot_of_metabelian` proves `derivedSeries G 2 = ⊥`, i.e. derived length at most 2 ([[G,G],[G,G]] = 1), an explicit subgroup equality that Mathlib's `solvable_of_ker_le_range` (which only yields some trivialising index) does not expose. The dihedral groups Dₙ (parent) and the solvable symmetric groups S₂,S₃,S₄ are all instances. 0 sorries, 0 axioms.",

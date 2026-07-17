@@ -54,7 +54,7 @@
       "chebyshevC_nest_eval_zmod_int and chebyshevC_nest_eval_padic_int: the finite-field and p-adic specializations of the nesting law, free corollaries"
     ],
     "dateAdded": "2026-06-28",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 162,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms on chebyshevCEnd, chebyshevCEnd_mul, chebyshevC_nest_eval_field_int, chebyshevC_comp_comm). chebyshevCEnd is noncomputable because the Chebyshev polynomial C is noncomputable; this is a definitional attribute, not a logical assumption.",

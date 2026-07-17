@@ -34,7 +34,7 @@
       "Keeping the growth function abstract (f : I → ℝ) lets the entire development stay axiom-free: the parent's `leastPrimeInAP` sorries and `linnik_theorem` axiom are replaced by an explicit nonemptiness hypothesis on the admissible set, so Lean fully checks every step.",
       "The whole package is a reusable blueprint for any infimum-defined exponent in analytic number theory. Nothing here uses the arithmetic-progression instance until the final specialization, so the ray / sandwich / monotonicity theorems transfer verbatim to the abscissa of convergence of a Dirichlet series, the growth exponent of an arithmetic function, or any 'critical exponent' cut out as inf{L : bound of type c·b^L holds} — the only per-instance work is discharging nonemptiness."
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Abstract admissible-exponent set `admissible f b` parametrized by a growth function and base, recovering the parent's `admissibleExponents` as an instance",
       "Axiom-free proof that admissible exponents form an upward-closed, below-bounded ray",

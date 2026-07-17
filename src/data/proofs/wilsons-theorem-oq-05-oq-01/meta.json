@@ -25,7 +25,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.prime_iff_fac_equiv_neg_one` (the ZMod-valued Wilson biconditional, for the prime branch) and elementary divisibility/factorial lemmas (`Nat.dvd_factorial`, `Nat.factorial_dvd_factorial`, `Nat.minFac_prime`, `Nat.minFac_le_of_dvd`, `Nat.prime_def_minFac`). The single exceptional value (4-1)! % 4 = 2 is discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.prime_iff_fac_equiv_neg_one",

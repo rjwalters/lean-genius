@@ -59,7 +59,7 @@
         "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Classifying the groups of small order is the first chapter of finite group theory, and the order-p² case is its first genuinely structural step beyond Lagrange and Cauchy. The result splits into two classical facts: every group of order p² is abelian (a consequence of the nontrivial center of a p-group, since the central quotient cannot be a nontrivial cyclic group without forcing commutativity), and every abelian group of order p² is either cyclic ℤ/p² or the elementary abelian (ℤ/p)² — exactly the two abelian groups of that order. Together they give the complete classification: up to isomorphism there are precisely two groups of order p², both abelian. Mathlib proves the commutativity (IsPGroup.commutative_of_card_eq_prime_sq) but stops short of the cyclic/elementary-abelian dichotomy; this entry adds it.",

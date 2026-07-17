@@ -48,7 +48,7 @@
     "axiomCount": 1,
     "lineCount": 271,
     "assumptions": "1 axiom: barreto_leeham_theorem (the deep Barreto-Leeham resolution ¬InfinitelyManyExceptions C, an external research result — genuinely open/hard for small C, left as a documented axiom). 0 sorries. The former barreto_leeham_bound axiom was UNSOUND (asserted a false proposition — failed at n∈{0,1}, e.g. n=1,a=b=1) and has been eliminated: its sound uniform form (2≤n) is now a verified theorem derived axiom-free from Erdos729DigitSum.erdos_1968_uniform via DividesFactorialModSmall ⟹ a!·b!∣n!. The classical Erdős 1968 bound is proved axiom-free (erdos_1968_uniform); its former erdos_1968_classical axiom was removed. The Legendre identity v_2(n!) = n - s_2(n) is proved from Mathlib; the former legendre_identity axiom was removed.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 8
   },

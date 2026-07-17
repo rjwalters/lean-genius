@@ -60,7 +60,7 @@
       "MvPolynomial (multivariate polynomial rings)",
       "Euler's prime/irreducible distinction"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Gauss proved in Disquisitiones Arithmeticae (1801) that the product of two primitive polynomials over ℤ is primitive, which implies ℤ[X] is a UFD. The generalization to 'R UFD implies R[X] UFD' was made explicit by Kronecker (1882) and became standard in the work of Emmy Noether and Krull in the 1920s-30s, as they axiomatized ring theory. The inductive extension to multivariate rings ℤ[X₁,...,Xₙ] is immediate but foundational: these are the coordinate rings of affine n-space in algebraic geometry, and their UFD property underlies the geometric notion that hypersurfaces factor into irreducible components. Dedekind's recognition that ℤ[√−5] fails to be a UFD (with 6 = 2·3 = (1+√−5)(1−√−5)) motivated the development of ideal theory as a substitute for unique factorization — making the UFD property of polynomial rings a meaningful structural theorem rather than a vacuous definition. The Lean 4 formalization leverages Mathlib's typeclass system: the single instance Polynomial.uniqueFactorizationMonoid composes automatically to handle any finite iteration.",

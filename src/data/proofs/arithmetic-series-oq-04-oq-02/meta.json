@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 163,
     "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). No literal axiom declarations, no structure-encoded assumptions, 0 sorries, and no native_decide (so Lean.ofReduceBool is not used). The headline Bernoulli generating function bernoulli_egf is a restatement of Mathlib's bernoulliPowerSeries_mul_exp_sub_one; the power-sum generating function and the Faulhaber↔Bernoulli bridge are assembled here from Mathlib's exp_pow_sum, geom_sum_mul, exp_pow_eq_rescale_exp, and coeff_rescale.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "bernoulliPowerSeries_mul_exp_sub_one",

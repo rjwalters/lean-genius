@@ -64,7 +64,7 @@
       "Construction-free form orthogonalComplement_eq_bot_iff_parseval expressing completeness as totality ⟺ Parseval over 𝕜"
     ],
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The equivalence of completeness criteria for an orthonormal system — *basis* ⟺ *totality* ⟺ *Parseval saturation* ⟺ *Fourier expansion converges* — is the organizing theorem of Hilbert-space geometry, crystallized in von Neumann's 1929 axiomatization and standard since Stone's 1932 *Linear Transformations in Hilbert Space*. Over a complex Hilbert space the inner product is sesquilinear, so Parseval is naturally stated with the *squared norm* of the (complex) Fourier coefficient, $\\sum_i \\|\\langle v_i, x\\rangle\\|^2 = \\|x\\|^2$, rather than the bare square that suffices over $\\mathbb{R}$. The parent entry (`cauchy-schwarz-oq-02-oq-02-oq-01`, Parseval Completeness) proved the criterion over real Hilbert spaces and explicitly recorded its complex/RCLike generalization as open question oq-01, noting that 'the reverse (totality) argument is field-agnostic; only the forward Parseval algebra needs the complex bilinear form.' This entry settles that question for an arbitrary `RCLike` field $\\mathbb{K}$ (covering both $\\mathbb{R}$ and $\\mathbb{C}$).",

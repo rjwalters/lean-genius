@@ -52,7 +52,7 @@
     ],
     "lineCount": 118,
     "assumptions": "0 axioms, 0 sorries. Built entirely from the parent file's two verified theorems (erdos_divisibility_pigeonhole and erdos_divisibility_pigeonhole_sharp) plus foundational Mathlib order lemmas (IsAntichain, IsGreatest). The only hypotheses are structural: membership in {1,…,2n} and the antichain property, both part of the statement. Badge is 'original' because the extremal/optimality packaging is formalized from first principles on top of the original parent proof; Mathlib does not contain this application.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   },

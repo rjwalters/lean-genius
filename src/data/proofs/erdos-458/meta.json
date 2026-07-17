@@ -24,7 +24,7 @@
     "axiomCount": 1,
     "lineCount": 239,
     "assumptions": "1 axiom: `Lean.ofReduceBool` (with `Lean.trustCompiler`). There are 0 literal `axiom` declarations and 0 sorries, but the credited small-value theorems (lcm_upto_two/three/four/five/six) and the verified small cases erdos458_k1/erdos458_k2 are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` (and `Lean.trustCompiler`) to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. The concrete prime-value theorems (nthPrime_zero..four) are proved from the `Nat.nth Nat.Prime` definition via `Nat.nth_count` with kernel `decide` (NOT native_decide), so they add no `Lean.ofReduceBool` dependency. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Open conjecture; supporting lemmas verified (free of mathematical axioms, depending only on `Lean.ofReduceBool` via native_decide).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 21,
     "definitionCount": 4
   },

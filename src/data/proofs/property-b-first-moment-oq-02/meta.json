@@ -68,7 +68,7 @@
     "axiomCount": 0,
     "lineCount": 169,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k ≥ 2, C(n,k)·2 < 2^(C(k,2))) are inputs to the statement, not standing assumptions. The point type P is an arbitrary Fintype with DecidableEq, n = Fintype.card P; the sample space is the full edge-coloring space Edge P → Bool. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for ramsey_lower_bound, exists_ramsey_coloring, and card_edgesWithin — no sorryAx, no Lean.ofReduceBool.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 3
   },

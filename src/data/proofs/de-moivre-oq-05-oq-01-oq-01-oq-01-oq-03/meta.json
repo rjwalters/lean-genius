@@ -106,7 +106,7 @@
       "dftLIE_symm_apply: the inverse isometry (dftLIE)⁻¹ acts as toEuclideanLin Uᴴ — the inverse / conjugate-transpose discrete Fourier transform"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 137,
     "assumptions": "0 axioms, 0 sorries (proofs depend only on propext / Classical.choice / Quot.sound). The single nontrivial mathematical input is the parent's dftMatrix_mem_unitaryGroup (U ∈ unitaryGroup); everything else is the standard repackaging of a unitary matrix as an isometric isomorphism via Mathlib's toEuclideanLin / adjoint / LinearIsometryEquiv machinery.",

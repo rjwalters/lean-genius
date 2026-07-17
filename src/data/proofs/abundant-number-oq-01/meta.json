@@ -24,7 +24,7 @@
     "theoremCount": 13,
     "definitionCount": 0,
     "dateAdded": "2026-06-18",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries across both source files. Minimality (AbundantNumberOQ01.lean) uses kernel `decide` — not `native_decide` — so it carries no `Lean.ofReduceBool` axiom; it builds directly on Mathlib's `Nat.abundant_twelve`. The closure and infinitude results (AbundantMultiplesOQ01.lean) are elementary Finset/divisor-sum arithmetic over ℕ with no decision procedure at all.",
     "originalContributions": [
       "Proves `IsLeast {n | n.Abundant} 12` (minimality of the smallest abundant number) using Mathlib's canonical `Nat.Abundant` predicate and the bounded kernel-`decide` check `∀ n < 12, ¬ Nat.Abundant n` — keeping the result axiom-free (no `native_decide`, hence no `Lean.ofReduceBool`).",

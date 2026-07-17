@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 222,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries over a general field (and, for the shift-coefficient and characteristic-3 results, a general commutative ring). The hypothesis (3 : K) ≠ 0 is a mathematical premise of the positive reduction, not a logical axiom. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; no native_decide, no Lean.ofReduceBool. The characteristic-3 sanity check uses `decide` on (3 : ZMod 3) = 0 (kernel reduction, no Lean.ofReduceBool).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 4
   },

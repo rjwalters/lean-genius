@@ -53,7 +53,7 @@
     "axiomCount": 1,
     "lineCount": 191,
     "assumptions": "0 sorries; 1 axiom (boundedCount_eq_rhs), no native_decide. The two definitions (boundedCount, boundedRHS) and the four theorems (boundedCount_of_le, boundedRHS_of_le, boundedCount_eq_rhs_of_le, boundedCount_eq_rhs_of_one) are fully machine-checked, depending only on the foundational propext / Classical.choice / Quot.sound. The single axiom boundedCount_eq_rhs asserts the general bounded-part inclusion–exclusion identity (boundedCount r k n : ℤ) = boundedRHS r k n for k ≥ 1 — a classical, textbook result whose Lean proof (the subset inclusion–exclusion sieve over the k overflow events {f i ≥ r+1} together with the overflow-shift bijection A_S ≃ {weak compositions of n − |S|(r+1) into k parts}) is not yet discharged. Its exact statement and normalisation are cross-checked by two verified special cases: boundedCount_eq_rhs_of_le (the vacuous-cap regime n ≤ r, both sides C(n+k−1, n)) and boundedCount_eq_rhs_of_one (the k = 1 case for all n, including the cap-active regime n > r where the sum's j = 1 correction term is active). Mathlib supplies the count backbone via the imported parent (StarsAndBars.card_weakComposition), Finset.single_le_sum, Nat.choose_symm, Fin.sum_univ_one, and Nat.le_mul_of_pos_left; the new content is the bounded-count definition, the ℤ-guarded inclusion–exclusion RHS with its correct normalisation, and the two verified boundary/degenerate confirmations. Sanity: at k = 1 the sum is 1 − [r+1 ≤ n] = [n ≤ r]; for n ≤ r every j ≥ 1 term is dropped and only C(n+k−1, k−1) = C(n+k−1, n) survives.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
   },

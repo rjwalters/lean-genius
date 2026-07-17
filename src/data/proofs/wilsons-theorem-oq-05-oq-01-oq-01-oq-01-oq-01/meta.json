@@ -26,7 +26,7 @@
     "theoremCount": 7,
     "definitionCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The development rests on elementary Mathlib divisibility infrastructure: `Nat.Prime.dvd_factorial` (p ∣ n! ↔ p ≤ n, for prime p), `Nat.coprime_primes` (Coprime p q ↔ p ≠ q for primes p, q), `Nat.Coprime.mul_dvd_of_dvd_of_dvd` (coprime a, b each dividing c ⟹ a·b ∣ c), `Nat.dvd_factorial`, and the order lemmas `lt_mul_of_one_lt_right` / `lt_mul_of_one_lt_left` for the strict drop. The Kempner function is built on `Nat.sInf` (`Nat.sInf_mem`, `Nat.sInf_le`). The three numeric sanity checks (S(6)=3, S(15)=5, S(35)=7) use `decide` on concrete `max` values — plain kernel decidability, NOT native_decide — so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime.dvd_factorial",

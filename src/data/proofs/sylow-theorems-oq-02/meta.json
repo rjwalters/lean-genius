@@ -55,7 +55,7 @@
     ],
     "assumptions": "3 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups. Two earlier axioms have been discharged: the projection of Sylow pro-p subgroups to p-groups in finite quotients was retired in sylow-theorems-oq-03 (continuity-enhanced theorem ProfiniteSylow.sylowProP_projects_pgroup_continuous), and the trivial-intersection axiom `sylowProP_inter_trivial` for distinct primes was retired in sylow-theorems-oq-03 (S6 ACT Candidate B — proved as ProfiniteSylow.sylowProP_inter_trivial_via_quotient in Proofs/SylowTheoremOQ03B.lean via the PREP-2 finite-quotient route).",
     "dateAdded": "2026-03-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 4
   },

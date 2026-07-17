@@ -50,7 +50,7 @@
     "lineCount": 534,
     "theoremCount": 18,
     "definitionCount": 7,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Ruzsa and Szemerédi (1978) introduced their famous tripartite graph construction while studying the (6,3)-problem: can one place 3N points in {1,...,N}³ such that every N points contain a 3-AP? They showed such configurations are impossible for dense sets by encoding 3-APs as triangles and applying the triangle removal lemma — a consequence of Szemerédi's regularity lemma (also 1978). As a corollary, they recovered Roth's theorem (1953), which Roth had originally proved using Hardy-Littlewood circle method / Fourier analysis on Z/NZ.\n\nThe RS construction is elegant: given A ⊆ Z/NZ, build a tripartite graph G(A) on 3N vertices where each 3-AP in A corresponds to a triangle. If A is AP-free, every edge lies in exactly one triangle (edge-disjointness), creating a rigid structure that the triangle removal lemma cannot accommodate for dense sets.\n\nThis approach revealed a profound connection between two pillars of combinatorics: Szemerédi's regularity lemma (graph theory) and additive combinatorics. However, the quantitative bounds differ significantly: Roth's Fourier proof gives r₃(N) = O(N/log log N), while the regularity-based TRL approach yields only tower-type bounds. The gap persisted until Kelley-Meka (2023) achieved r₃(N) = O(N · exp(-c√(log N))) via purely Fourier methods — the best known bound to date.",

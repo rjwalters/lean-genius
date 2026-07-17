@@ -56,7 +56,7 @@
     "axiomCount": 0,
     "lineCount": 123,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All four named theorems (sum_pow_card, parts_genfun, parts_genfun_eval_one, parts_genfun_binomial) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The generating-function identity ∑_{c : Composition n} t^(c.length) = t(1+t)^(n−1) holds over an arbitrary commutative semiring R; the specialisations at t = 1 (count) and the binomial-coefficient form are unconditional. The hypothesis n ≥ 1 is the natural domain (the empty composition of 0 is excluded so that n − 1 does not underflow). Mathlib supplies Finset.prod_add and the binomial theorem add_pow, but neither the subset generating function ∑_{s ⊆ Fin m} t^(|s|) = (t+1)^m in this form nor any statement about the part-count distribution of a composition; both are original content here, built on the parent's gapsEquiv and length_eq_card_gaps.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

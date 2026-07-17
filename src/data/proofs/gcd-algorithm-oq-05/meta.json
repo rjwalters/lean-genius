@@ -22,7 +22,7 @@
     "lineCount": 167,
     "assumptions": "None. Fully machine-verified: lake env lean of Proofs/GCDAlgorithmOQ05.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for gaussKuzmin_tsum and gaussKuzmin_pos. The file imports only Mathlib and is self-contained. Scope note: this proves the Gauss–Kuzmin weights are a normalized probability distribution; the full Gauss–Kuzmin–Lévy theorem (that the Euclidean/continued-fraction quotients are asymptotically Gauss–Kuzmin distributed) additionally requires the ergodicity of the Gauss map and invariance of the Gauss measure, which are not yet in Mathlib.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.logb_pos",

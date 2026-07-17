@@ -37,7 +37,7 @@
     "lineCount": 178,
     "assumptions": "No axioms or sorries. All results proved bilinearly from the inner-product structure. Docker-verified GREEN (7744 jobs) under the current Mathlib pin. The companion file Proofs/LawOfCosinesOQ04OQ01Bisector.lean (also registered and verified) proves the coordinate-free Angle Bisector Theorem (angle_bisector_ratio_of_equal_angle), resolving open question 1 below: the segment ratio BD:DC = c:b is derived from genuine equal angles at A rather than assumed.",
     "dateAdded": "2026-06-15",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Coordinate-free Stewart / cevian-length identity over an arbitrary real inner product space, valid in any dimension",
       "Replaces the parent file's abstract cosine parameter t by the genuine inner product ⟪A−B, A−C⟫",

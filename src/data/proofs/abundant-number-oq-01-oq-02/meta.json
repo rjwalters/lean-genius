@@ -25,7 +25,7 @@
     "assumptions": "One assumption: `Lean.ofReduceBool`. The two substantive finite computations — `abundant_945` (945 is abundant) and `check_odd_below` (every odd n < 945 has proper-divisor sum ≤ n) — are discharged by `native_decide` (2× in this file, lines 73 and 82). `native_decide` trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom, which appears under `#print axioms`; per the project's Axiom Integrity Policy the entry is `axiomatized`, not axiom-free. There are 0 literal `axiom` declarations and 0 structure-encoded assumptions, so `leanFile.axiomCount` reads 0; `meta.axiomCount` is 1 to count the `Lean.ofReduceBool` dependency. The symbolic bridge lemmas (`listRange_filter_sum_eq`, `pdSum_eq`) and the small check `odd_945` are ordinary kernel proofs (kernel `decide`, no `Lean.ofReduceBool`). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "lineCount": 103,
     "dateAdded": "2026-07-06",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Abundant",

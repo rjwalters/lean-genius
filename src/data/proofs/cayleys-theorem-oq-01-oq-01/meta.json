@@ -67,7 +67,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 107,
     "assumptions": "None beyond Mathlib. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used. Tier B: the embedding's injectivity rests on Mathlib's MulAction.toPerm_injective (faithfulness of the regular representation — the mathematical heart, inherited from the parent entry); this file supplies the codomain-refinement bridge (relabelling along G ≃ Fin n) and packaging, hence badge 'mathlib'.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 4
   },

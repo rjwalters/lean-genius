@@ -59,7 +59,7 @@
     "dateAdded": "2026-05-06",
     "axiomCount": 1,
     "lineCount": 180,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "No literal `axiom` declarations and 0 sorries. However, the named contribution `example_8_mod3_mod5` discharges its `Satisfies` congruence checks (x ≡ 2 mod 3, x ≡ 3 mod 5) solely via `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom. The 8 symbolic bridge contributions (`satisfies_pair_iff` through `crt_unique_two_fold`) are `native_decide`-free and fully kernel-checked.",
     "theoremCount": 12,
     "definitionCount": 0

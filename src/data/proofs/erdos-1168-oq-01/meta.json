@@ -26,7 +26,7 @@
     "theoremCount": 11,
     "definitionCount": 2,
     "assumptions": "0 axioms, 0 sorries. Self-contained: rebuilds the small ℵ_ω cardinal infrastructure it needs (the parent Erdos1168Problem.lean has API drift under Mathlib 4.26). Uses only Mathlib's König cofinality consequences (Cardinal.lt_power_cof, Cardinal.lt_cof_power) and standard cardinal arithmetic.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-24",
     "prerequisites": [
       "Cardinal arithmetic and cardinal exponentiation",

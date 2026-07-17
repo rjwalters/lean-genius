@@ -63,7 +63,7 @@
     "axiomCount": 0,
     "lineCount": 497,
     "assumptions": "0 axiom(s) and 0 sorry(s) — fully machine-checked. This entry does NOT resolve Erdős #633 (which remains OPEN, $25); instead it rigorously establishes a sharp NEGATIVE result about the natural first-attempt formalization. The area+side-ratio relaxation CongruentDissection (and its similar analogue CanDissectIntoSimilar) is too coarse to see the square-only phenomenon: by Triangle.area_scale the scaled copy T.scale (1/√n) witnesses EVERY count n ≥ 1, so dissectionCounts_eq gives DissectionCounts T = {n | 1 ≤ n} and all_similar_counts gives CanDissectIntoSimilar T n for all n ≥ 1. Consequently no_square_only_in_model (no triangle is square-only), no_exceptional_similar_in_model (no #634 exceptions survive), and the proved negations soiferTriangle_not_square_only_in_model / no_square_only_witness_in_model / squareOnly_empty_in_model. The prior 5 sorries asserted square-only statements the model actually DISPROVES (a soundness smell); they have been removed and replaced by their proved negations or honest corollaries. A faithful resolution of #633/#634 requires replacing the relaxation with a real non-overlapping tiling predicate — the hard, open core left for future work.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 17,
     "definitionCount": 18,
     "additionalFiles": []

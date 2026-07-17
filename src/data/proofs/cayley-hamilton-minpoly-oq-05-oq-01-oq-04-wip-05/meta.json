@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "lineCount": 190,
     "assumptions": "None. Axiom-free. Imports WIP04 (which is itself axiom-free) and adds UFD factorization to remove the factored-form hypothesis.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Axiom elimination via UFD wrapping: closes the WIP01 axiom (nonderogatory_similar_to_companion, the rational canonical form structure theorem) by extracting the prime-power factorization of the minimal polynomial automatically through UniqueFactorizationMonoid.normalizedFactors — making the cluster (WIP01–WIP05) the first 0-axiom Lean formalization of the nonderogatory cyclic vector theorem over any field.",
       "Three-step coprimality chain for distinct monic irreducibles in K[X]: combines Irreducible.associated_of_dvd, Polynomial.eq_of_monic_of_associated, and Irreducible.coprime_iff_not_dvd to convert distinctness into IsCoprime, then lifts via IsCoprime.pow to coprime prime powers — the key technical lemma feeding WIP04's primary decomposition.",

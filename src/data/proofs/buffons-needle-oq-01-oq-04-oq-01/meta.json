@@ -26,7 +26,7 @@
     "theoremCount": 14,
     "definitionCount": 2,
     "assumptions": "None. All theorems proved, 0 axioms. Verified axiom-free: #print axioms on line_through_interior_meets_frontier_in_two, line_through_interior_frontier_ncard_two, lineParams_convex, lineParams_eq_Icc reports only propext, Classical.choice, Quot.sound. Hypotheses are explicit: K convex and compact, direction v ≠ 0, and an interior crossing (∃ t₀, ℓ(t₀) ∈ interior K). The interior-crossing hypothesis is essential and is exactly the condition separating the count 2 from the supporting-line (0-or-flat-edge) case.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Convex.combo_interior_self_mem_interior",

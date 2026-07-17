@@ -24,7 +24,7 @@
     "lineCount": 228,
     "assumptions": "No axioms or sorries. The proof depends only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions), plus results from Mathlib and its Archive (Theorems100 Euclid–Euler, itself 0-axiom): specifically the 2-adic split eq_two_pow_mul_odd and the σ(2^k) value. The mathematical result was independently cross-checked this session by a self-contained reproof whose #print axioms reports only propext, Classical.choice, Quot.sound.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "euler_converse_self_contained: Euler's converse — every even perfect number n equals 2^k·mersenne(k+1) with mersenne(k+1) prime — assembled from six named steps rather than quoted as one Archive block",
       "cofactor_one_and_prime: the two-divisor pinch — if σ(m) = m + c with c ∣ m and c < m then c = 1 and m is prime, since the self-dividing proper-divisor sum (Nat.sum_properDivisors_dvd) must be 1 or m and the m-branch contradicts c < m",

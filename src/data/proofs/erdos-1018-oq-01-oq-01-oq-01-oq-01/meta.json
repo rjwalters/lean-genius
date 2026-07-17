@@ -28,7 +28,7 @@
     "lineCount": 174,
     "assumptions": "None. 0 axioms, 0 sorries (verified by `#print axioms`: splitGraph_choosability depends only on propext, Classical.choice, Quot.sound — the standard foundational axioms, no sorryAx or Lean.ofReduceBool). Builds on the parent entry Erdos1018OQ01OQ01OQ01 (imported for splitGraph_not_colorable) and the grandparent Erdos1018OQ01OQ01 (for the IsKDegenerate definition, the split graph splitGraph, and its k-degeneracy splitGraph_kDegenerate). Verified with the Docker Lean harness against pinned Mathlib 4.26.0.",
     "dateAdded": "2026-06-30",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.strongInduction",

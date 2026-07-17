@@ -24,7 +24,7 @@
     "theoremCount": 6,
     "definitionCount": 2,
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. The minimality bound `not_abundant_odd_below_945 : ∀ n < 945, Odd n → sigmaFast n ≤ 2n` is discharged by kernel `decide` — not `native_decide` — so it carries no `Lean.ofReduceBool` axiom; `#print axioms smallest_odd_abundant` reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). Feasibility of the kernel check rests on the file's own kernel-reducible `sigmaFast` (structural ℕ recursion, no Finset/Multiset at reduction time); `decide` on Mathlib's Finset-based `Nat.Abundant` does not scale to n = 945.",
     "originalContributions": [
       "Proves `smallest_odd_abundant : IsLeast {n : ℕ | Odd n ∧ Nat.Abundant n} 945` — 945 is the least odd abundant number — using Mathlib's canonical `Nat.Abundant` predicate, axiom-free (kernel `decide`, no `native_decide`/`Lean.ofReduceBool`). This realizes the open question recorded in the `abundant-number-oq-01` entry, whose `n < 12` minimality `decide` does not scale to the n < 945 range.",

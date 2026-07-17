@@ -22,7 +22,7 @@
     "lineCount": 187,
     "assumptions": "One stated assumption: gelfond_schneider_real, the real form of the Gelfond-Schneider theorem (positive algebraic base a ≠ 1, irrational algebraic exponent b ⟹ a^b transcendental), re-declared as an `axiom` exactly as in the gallery parent `gelfond-schneider` — the full Gelfond-Schneider proof (Siegel's lemma, auxiliary functions, zero estimates) is not formalized. Every theorem in this file is otherwise fully machine-checked: `lake env lean` builds Proofs/GelfondSchneiderOQ04.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports, beyond the foundational propext / Classical.choice / Quot.sound, only the single GelfondSchneiderOQ04.gelfond_schneider_real assumption (no sorryAx, no Lean.ofReduceBool). In particular irrational_log_three_div_log_two depends on NO Gelfond-Schneider assumption — it is unconditional. The file imports only Mathlib.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.rpow_def_of_pos",

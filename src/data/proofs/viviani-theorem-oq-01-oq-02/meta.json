@@ -24,7 +24,7 @@
     "lineCount": 186,
     "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The regular-polygon instance takes a primitive n-th root ζ with n ≥ 2; the regular-simplex instance takes the centroid hypothesis ∑ vᵢ = (n+1)•g and a nonzero circumradius R — standard mathematical descriptions of the figures, not axioms.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "sum_signedDist_eq: the single algebraic principle behind all Viviani-type theorems — in any real inner-product space, if the outward unit facet normals sum to zero then ∑ᵢ (cᵢ − ⟪uᵢ,P⟫) = ∑ᵢ cᵢ, independent of the point P",
       "regularPolygon_viviani: the sharp constant for a regular n-gon (n ≥ 2), modeled in ℂ with normals the n-th roots of unity ζ^k; the perpendicular-distance sum is exactly n·a (n × apothem), proved from ∑ₖ ζ^k = 0",

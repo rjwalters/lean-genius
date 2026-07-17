@@ -42,7 +42,7 @@
     "lineCount": 154,
     "theoremCount": 4,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Fubini's theorem was proved by Guido Fubini in 1907, establishing that the double integral of an absolutely integrable function can be computed as an iterated integral in either order. Leonida Tonelli's 1909 extension (now called the Fubini-Tonelli theorem) relaxed the hypothesis from absolute integrability to nonnegativity, enabling the theorem to be used to prove integrability. The result was fundamental to the development of Lebesgue's integration theory and has been a cornerstone of modern analysis ever since. In Lean 4/Mathlib, the theorem appears as `MeasureTheory.integral_integral_swap` for Bochner integrals on product measures, but the gallery's Green's theorem formalization uses Mathlib's `intervalIntegral` API, which requires a concrete bridge. This file provides exactly that bridge: a three-step conversion (interval integral → set integral → product measure integral → Fubini → reverse) that makes the abstract theorem concrete enough for the rectangle integrals appearing in Green's theorem.",

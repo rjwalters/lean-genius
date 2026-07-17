@@ -179,7 +179,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The factorisation uses `Nat.totient_even` (φ(k) even for k > 2) and `Nat.gcd_mul_left` (gcd(k·a, k·b) = k·gcd(a,b)); the corollaries are closed by `omega`. The `decide` calls evaluate φ at concrete small naturals (3, 4, 5, 7, 9) in the kernel, not `native_decide`, so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound` (confirmed by `#print axioms`).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_even",

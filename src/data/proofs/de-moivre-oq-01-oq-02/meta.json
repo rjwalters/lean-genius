@@ -184,7 +184,7 @@
       "Complex De Moivre composition law cos(mn·z) = T_m(T_n(cos z)) and its hyperbolic analogue, derived from Chebyshev T_mul"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 222,
     "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard foundational axioms), 0 sorries, no native_decide. The complex/hyperbolic Chebyshev cores are Mathlib's T_complex_cos/cosh and U_complex_cos/cosh; the explicit degree-4/5 formulas and the unification/composition results are original ring-level derivations.",

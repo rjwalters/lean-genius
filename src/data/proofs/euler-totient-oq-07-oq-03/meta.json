@@ -26,7 +26,7 @@
     "theoremCount": 7,
     "definitionCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The two-argument characterization is `Nat.totient_coprime_totient_iff` from Mathlib; evenness of non-unital totients rests on `Nat.totient_even` (n = 0 handled directly since φ 0 = 0). The finite-family lemmas add only `Finset.card_le_one`, `Finset.dvd_gcd`/`Finset.gcd_dvd`/`Finset.gcd_eq_zero_iff`, and `Nat.dvd_prime_pow`. The `decide` calls in the examples evaluate φ and gcd at concrete naturals in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_coprime_totient_iff",

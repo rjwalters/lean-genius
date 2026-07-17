@@ -50,7 +50,7 @@
       "Cayley–Klein metrics and the projective model of constant-curvature geometries",
       "Barycentric/projective coordinates on a triangle side"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Ceva's theorem (Giovanni Ceva, De lineis rectis, 1678) states that three cevians of a triangle are concurrent iff the product of the three signed side-ratios equals 1. The theorem has spherical and hyperbolic analogues, classically proved case-by-case with the trigonometric functions appropriate to each geometry. Felix Klein and Arthur Cayley showed that all three constant-curvature plane geometries are projective geometries equipped with an absolute conic — the Cayley–Klein viewpoint. This entry realizes that viewpoint for Ceva: it presents a single projective cevian configuration with a curvature sentinel κ, and proves one unification theorem from which the spherical (κ=+1), Euclidean (κ=0), and hyperbolic (κ=−1) cases all follow by choosing the appropriate geometric factor. The parent file CevasTheoremOQ02OQ01OQ02.lean proved the hyperbolic case (and observed the criterion coincides across geometries) but still derived the side-ratios separately; this file supplies the genuine unification the open question asks for.",

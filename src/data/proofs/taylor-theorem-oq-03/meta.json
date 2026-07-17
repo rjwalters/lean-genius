@@ -61,7 +61,7 @@
     "theoremCount": 17,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries. Power-series representation (NormedSpace.exp_eq_tsum) and the Lagrange remainder estimate (taylor_mean_remainder_lagrange) come from Mathlib; original work is the exponential convergence analysis and Euler-number tail bound.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Taylor's theorem (1715) provides the theoretical foundation for polynomial approximation of smooth functions, but the question of *convergence* of the Taylor series is more subtle. A function can be infinitely differentiable yet have a divergent Taylor series (e.g., f(x) = e^{-1/x^2} at x=0 in the real-analytic sense). The exponential function is the prototypical example where convergence succeeds everywhere: since every derivative of exp is exp itself, the Lagrange remainder exp(xi) * |x|^{n+1}/(n+1)! tends to zero because factorial growth dominates any fixed power. This was understood by Euler, who used the series e = sum 1/n! to compute e to arbitrary precision. The Cauchy remainder form, introduced by Augustin-Louis Cauchy in his 1823 Resume des lecons, provides an alternative that is sometimes sharper for bounding the error. This formalization, the third entry under the parent Taylor's theorem (Wiedijk #35), proves convergence of exp's Taylor series and specializes the Lagrange remainder form to exp; a Cauchy-remainder treatment of exp is left as future work.",

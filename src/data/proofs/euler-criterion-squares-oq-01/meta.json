@@ -32,7 +32,7 @@
     "lineCount": 105,
     "theoremCount": 11,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Euler's criterion, established by Leonhard Euler in the mid-18th century, is the foundational computational tool of quadratic-residue theory: it converts 'is a a square mod p?' into a single modular exponentiation, a^((p−1)/2). It refines Fermat's little theorem — a^(p−1) ≡ 1 for a ≢ 0 — by extracting the square root of that congruence, forcing a^((p−1)/2) to the ±1 dichotomy that decides residuosity. Adrien-Marie Legendre encapsulated the criterion in the Legendre symbol (a | p) ∈ {−1, 0, 1}, introducing the notation in his Essai sur la théorie des nombres (1798); Gauss's Disquisitiones Arithmeticae (1801) then placed the criterion at the heart of the first complete proof of the law of quadratic reciprocity. The symbol's complete multiplicativity together with the criterion drives both reciprocity and efficient residuosity testing.",

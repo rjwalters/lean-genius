@@ -37,7 +37,7 @@
     "lineCount": 2105,
     "theoremCount": 84,
     "definitionCount": 12,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Inverse Galois Problem (IGP) asks: for which finite groups G does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G? Hilbert (1892) proved S_n and A_n are realizable for all n using Hilbert's irreducibility theorem. Shafarevich (1954) proved every solvable group is realizable. Whether every finite group is realizable remains open.\n\nA₅ (order 60) is the smallest non-solvable simple group — the alternating group on 5 elements. It is the Galois group of many polynomials of degree 5 with non-square discriminant. The polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 is a translate of p(x) = x⁵ + 20x + 16, a classical example. The key steps are: prove Gal ≤ A₅ via the perfect-square discriminant, then force |Gal| = 60 via divisibility constraints from Cauchy's theorem and the structure of subgroups of S₅.",

@@ -88,7 +88,7 @@
       "The four hypotheses map cleanly: continuity ↦ upper hemicontinuity, and 'single value' ↦ nonempty + closed (T1) + convex values. The T1 assumption is exactly what closedness of singletons needs; convexity needs a real module structure. Naming these minimal ambient hypotheses is part of the contribution.",
       "Fixed points transfer as an iff (`singleton_isFixedPoint_iff`): x ∈ {f x} ⟺ f x = x. The set-valued fixed-point equation x ∈ F(x) genuinely specializes to the scalar equation f x = x, so no spurious or missing fixed points are introduced by the embedding."
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "A fully axiom-free Lean formalization of the singleton-correspondence embedding of single-valued into set-valued fixed point theory.",
       "`singleton_uhc_iff_continuous`: the equivalence (not just implication) of upper hemicontinuity of F_f with continuity of f.",

@@ -60,7 +60,7 @@
     "dateAdded": "2026-06-20",
     "lineCount": 128,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which are not counted). decide is used to discharge tiny numeric facts like (2 : ℤ).natAbs ≠ 1; no native_decide is used (#print axioms confirms no Lean.ofReduceBool).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

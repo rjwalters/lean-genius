@@ -83,7 +83,7 @@
     "axiomCount": 0,
     "lineCount": 243,
     "assumptions": "0 axioms, 0 sorries, no native_decide. Hypotheses are inputs to the statements, not standing assumptions: the weight is nonnegative (0 ≤ w i on s), X is nonnegative (0 ≤ X i on s), the total weight is positive (0 < ∑ w), the fraction parameter satisfies 0 ≤ θ ≤ 1, and the probability form additionally assumes a positive weighted second moment (0 < ∑ w·X²) so the ratio is defined. The carrier α is an arbitrary type and all sums are over an explicit Finset s : Finset α; everything is over ℚ. #print axioms reports only the foundational propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
   },

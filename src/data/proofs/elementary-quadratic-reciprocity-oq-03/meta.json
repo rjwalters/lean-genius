@@ -79,7 +79,7 @@
     "dateAdded": "2026-03-22",
     "axiomCount": 1,
     "lineCount": 199,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "The second supplement `jacobiSym_two` proves J(2,n) = (-1)^((n²-1)/8) by evaluating the χ₈ character on residues 1,3,5,7 mod 8 via `native_decide`, which depends on the `Lean.ofReduceBool` axiom (it trusts the compiler's kernel reduction). The other six theorems are axiom-free. 0 sorries.",
     "theoremCount": 10,
     "definitionCount": 0

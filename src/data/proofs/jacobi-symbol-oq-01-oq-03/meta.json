@@ -62,7 +62,7 @@
     "lineCount": 143,
     "theoremCount": 8,
     "definitionCount": 2,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Jacobi symbol (Jacobi, 1837) extends the Legendre symbol multiplicatively to composite odd moduli and can be evaluated rapidly by quadratic reciprocity WITHOUT factoring n. The price is that it no longer detects quadratic residues: J(a|n) = 1 does not force a to be a square. The parent entry exhibits this with J(2|15) = 1 and 2 a non-residue mod 15. The natural follow-up — recorded as that entry's third open question — is to characterize EXACTLY when this happens. The answer is a parity count, and it is exactly the mechanism behind the 'false witnesses' of the Solovay–Strassen primality test.",

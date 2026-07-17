@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "lineCount": 359,
     "assumptions": "None on the proof itself (axiom-free, sorry-free). The main theorem takes the prime power factorization of minpoly K M as a hypothesis (data: a finite indexed family of monic irreducibles p_i, exponents e_i, pairwise coprimality, and the equation minpoly K M = ∏ i, p i ^ e i). Eliminating this hypothesis to obtain the unconditional theorem requires applying UFD factorization for K[X], which is a separate (open) step.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Matrix.charpoly_natDegree_eq_dim",

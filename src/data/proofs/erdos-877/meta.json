@@ -46,7 +46,7 @@
     "axiomCount": 3,
     "lineCount": 379,
     "assumptions": "3 axioms, all deep literature results not provable from Mathlib: cameron_erdos_lower_bound (f_m(n) > 2^{n/4}), luczak_schoen_theorem (f_m(n) < 2^{cn}, c<1/2, resolving o(2^{n/2})), and blst_upper_bound (f_m(n) ≤ C·2^{n/4}, the BLST 2015/2018 container-method sharp upper bound). 0 sorries: erdos_877 (Θ(2^{n/4})) follows from cameron_erdos + blst; maximal_vs_all (2^{n/4} ≤ f_m ≤ f) from cameron_erdos + f_m_le_f. #print axioms confirms no sorryAx.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 6,
     "additionalFiles": [

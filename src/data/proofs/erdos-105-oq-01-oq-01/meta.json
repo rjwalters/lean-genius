@@ -23,7 +23,7 @@
     "lineCount": 182,
     "assumptions": "None. All theorems are axiom-free over the parent definitions: the parent's inherited xichuan_counterexample and beck_szemeredi_trotter_positive axioms are NOT used. The boundedness condition BddAbove (avoidSet n) appears only as an explicit, named hypothesis on the threshold-characterization theorems (it is itself the subject of open question 02), never as a global assumption.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "avoidSet n: the set of obstacle counts that are always avoidable at size n, defined so that thresholdFunction n = sSup (avoidSet n) holds definitionally (thresholdFunction_eq_sSup)",
       "avoidSet_downwardClosed: avoidSet n is an initial segment of ℕ — if m obstacles are always avoidable, so are any m' ≤ m (immediate, no padding needed)",

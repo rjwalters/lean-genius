@@ -32,7 +32,7 @@
     "lineCount": 142,
     "theoremCount": 8,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The binomial transform sends a sequence (aₖ) to (∑ C(n,k) aₖ). Applied to the Fibonacci sequence it doubles the index, ∑ C(n,k) Fₖ = F₂ₙ (the parent entry) — the discrete shadow of 1 + φ = φ², since ∑ C(n,k) φᵏ = (1+φ)ⁿ = φ²ⁿ. A natural next question is what happens on iteration: feed the transform the even-indexed sequence F₂ₖ that it just produced. Naively one might expect the index to double again to F₄ₙ. It does not. By Binet, ∑ C(n,k) φ²ᵏ = (1+φ²)ⁿ, and since φ² = φ+1 the base is 1+φ² = φ+2 = √5·φ (because φ+2 = (5+√5)/2 = √5·(1+√5)/2), with 1+ψ² = −√5·ψ. Thus φ+2 and ψ+2 are the two roots of x² − 5x + 5, so the transformed sequence obeys the (P,Q)=(5,5) Lucas recurrence Cₙ₊₂ = 5Cₙ₊₁ − 5Cₙ. The √5 factors give the closed form Cₙ = 5^{n/2}·Fₙ for even n and 5^{(n−1)/2}·Lₙ for odd n (Lₙ the Lucas numbers): the iterate scales by powers of √5 and alternates between the Fibonacci and Lucas sequences.",

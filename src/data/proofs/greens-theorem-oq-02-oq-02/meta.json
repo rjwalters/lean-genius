@@ -48,7 +48,7 @@
     "axiomCount": 1,
     "lineCount": 58,
     "assumptions": "Docker-VERIFIED. The orientation fix is now landed in the registered files GreensTheoremOQ02.lean and GreensTheoremOQ02OQ04.lean (both reachable from Proofs.lean) and the build passes; two pre-existing Mathlib-incompatibility errors latent in the registered OQ04 file (merged unbuilt during the Docker + Aristotle blackout) were repaired in the same pass. The single remaining assumption is the registered axiom greens_theorem_l1curl (the genuine Whitney minimal-regularity input, now orientation-sound) — that is the 1 in axiomCount. This entry's anchor file GreensTheoremOQ02Corrected.lean is itself axiom-free (axiomCount 0 in leanFile): it holds only the soundness witness counterexample_violates_hLineEq confirming the S5 counterexample fails the new hypothesis. The corrected axiom is not claimed verified — discharging it awaits the FTC-for-absolutely-continuous-functions keystone (Mathlib >= v4.28.0, PR #29508) reducing it to OQ-01's boundary algebra by Fubini.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 1,
     "definitionCount": 0
   },

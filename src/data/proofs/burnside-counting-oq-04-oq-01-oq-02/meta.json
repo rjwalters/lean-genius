@@ -24,7 +24,7 @@
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide: the numeric closed-form evaluations and the two fresh Burnside fixed-point sums (24 for n=3, 48 for n=4) are all discharged by KERNEL decide on closed ℕ / finite data, so every headline depends only on propext, Classical.choice, Quot.sound (confirmed via #print axioms — no Lean.ofReduceBool, no sorryAx). Scope caveat: the rotation half of the formula is proved to equal the true rotation fixed-point total for all n (rotTerm_eq), but the reflection half is used in its classical closed form and validated against the true orbit counts only for n ≤ 6; a fully generic Lean proof of the per-reflection count 2^(orbits of the reflection involution) is the stated next open question and is NOT proved here.",
     "lineCount": 189,

@@ -75,7 +75,7 @@
     "axiomCount": 5,
     "assumptions": "5 axiom(s), all in the AMGMOperatorMeans.lean chain companion (operator/Loewner-order AM-GM, a separate matrix-AM-GM formalization): matGeomMean, matGeomMean_self (matrix geometric mean), operator_am_gm (the operator AM-GM inequality, Ando 1979 / Kubo-Ando 1980), matHarmonicMean, harmonic_le_geometric. The main scalar AMGMInequality.lean (Wiedijk #38) is itself axiom-free: the elementary two-variable proof (`am_gm_two`) and equality characterization (`am_gm_two_eq_iff`) are original constructions using `sq_nonneg`, `Real.sq_sqrt`, and `linarith`; the general weighted form (`am_gm_weighted`) and three-variable case (`am_gm_three`) are pedagogical wrappers around Mathlib's `Real.geom_mean_le_arith_mean_weighted` and `Real.geom_mean_le_arith_mean3_weighted`. No sorries.",
     "lineCount": 225,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "relatedProblems": [
       {
         "id": "amgm-inequality-oq-02",

@@ -53,7 +53,7 @@
       "Expected representation count μ = 2^|A|/N and total_reprCount Σ_g F_A(g) = 2^|A|",
       "Nat.clog as the integer ceiling logarithm"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős problem #1179, resolved by Erdős and Hall (1976), concerns ε-uniform subset-sum representations in a finite abelian group of order N: how many random group elements A are needed so that the number of subsets of A summing to each group element g is within a factor (1±ε) of the average μ = 2^|A|/N? The answer is gₑ(N) = (1 + oₑ(1))·log₂N. Open question OQ-02 asks whether the (1 + o(1)) multiplicative factor can be sharpened to a bounded additive error, gₑ(N) ≤ log₂N + Oₑ(1), which would match the trivial lower bound gₑ(N) ≥ log₂N exactly. This entry formalizes the lower-bound side of that matching target, axiom-free and at the concrete per-subset level — replacing the parent file's abstract axiom basic_lower_bound.",

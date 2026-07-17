@@ -60,7 +60,7 @@
         "module": "Mathlib.Analysis.InnerProductSpace.Subspace"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Cauchy's 1829 interlacing theorem bounds the eigenvalues of a principal submatrix obtained by deleting one row and column; the general delete-m statement is the Poincaré separation theorem (Poincaré 1890; Horn–Johnson Thm 4.3.17 & 4.3.28, Bhatia §III). The parent gallery entry (oq-02) proves the abstract operator form of the delete-m inequality but leaves the Rayleigh-agreement hypothesis and the abstract compression operator as inputs, and explicitly lists — as its second open question — the bridge to the literal matrix statement in terms of Matrix.IsHermitian eigenvalues. This entry supplies that bridge, closing the loop from the variational keystone all the way down to a concrete Hermitian matrix and its principal submatrix.",

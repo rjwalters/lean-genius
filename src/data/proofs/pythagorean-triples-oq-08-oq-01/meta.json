@@ -71,7 +71,7 @@
       "Coprimality (IsCoprime) and units in ℤ",
       "Prime divisibility (Euclid's lemma) in ℤ"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "That the legs of a Pythagorean triangle obey strong divisibility constraints is classical (Sierpiński, Pythagorean Triangles): one leg is divisible by 3, one by 4, and one side by 5, so 60 divides the product of the sides. The parent entry (oq-08) formalises the product-level statements 3 ∣ x·y, 4 ∣ x·y, 60 ∣ x·y·z for every triple, with no coprimality hypothesis. But the textbook claim is sharper: in a primitive triangle the obstructions sit on *individual legs* — exactly one leg is divisible by 4 and exactly one by 3. The parent's product results cannot see this (4 ∣ x·y is compatible with 2 ∣ x and 2 ∣ y), and it lists the per-leg sharpening as its first open question. This leaf supplies it, the missing ingredient being primitivity: coprimality forbids a prime from dividing both legs.",

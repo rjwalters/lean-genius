@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 540,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/ChineseRemainderConstructiveOQ03OQ02.lean` (no errors, no warnings); `#print axioms` on all top-level results reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool (the n=2,3,4 cross-checks use kernel `decide`, not `native_decide`). The proof relies only on standard current Mathlib lemmas (Nat.dvd_sub, Nat.gcd_dvd_left/right, Nat.dvd_prime, Nat.prime_two, Nat.sub_add_cancel, Nat.Coprime.mul_left, List.Pairwise.cons, omega/ring/decide/norm_num). Global optimality over all bases is NOT claimed — that remains the open parent question; this entry formalizes why this specific widely-used base is valid and balanced.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 42,
     "dateAdded": "2026-06-27",
     "definitionCount": 6

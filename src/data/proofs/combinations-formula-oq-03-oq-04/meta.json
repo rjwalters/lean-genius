@@ -25,7 +25,7 @@
       "quantum-groups"
     ],
     "dateAdded": "2026-07-11",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Machine-checked self-reciprocity (palindromy) of the Gaussian binomial: [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} over an arbitrary field, proved by induction on n using BOTH parent q-Pascal identities (the first for the reflected side, the second for the original)",
       "Identification of the exact algebraic mechanism of palindromy: the reflected recurrence matches the original because expanding the left by the second q-Pascal identity and the reflected right by the first q-Pascal identity produces termwise-equal sides after the cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}",

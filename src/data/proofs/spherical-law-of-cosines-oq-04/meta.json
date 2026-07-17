@@ -24,7 +24,7 @@
     "lineCount": 390,
     "assumptions": "None. Fully machine-checked with 0 sorries and 0 axiom declarations; the only axioms in the dependency closure are Lean/Mathlib's standard foundational propext, Classical.choice, Quot.sound (verified via #print axioms). No structure-encoded assumptions: the unified law of cosines is derived from the ambient bilinear form, not assumed.",
     "dateAdded": "2026-06-30",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "A single constant-curvature quadric model (CKVec, bK, geoK) hosting the sphere (K>0), the Euclidean plane (K=0), and the hyperboloid (K<0) simultaneously",
       "geoK_onQuadric: the geodesic-polar points lie on B_K(·,·)=1, identifying the generalized Pythagorean identity cs_K²+K·sn_K²=1 with membership in the curvature quadric",

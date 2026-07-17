@@ -75,7 +75,7 @@
       "dftMatrix_mem_unitaryGroup: U ∈ Matrix.unitaryGroup (Fin n) ℂ — the (j,l) entry of U·Uᴴ is (1/n)∑_{k<n} char(j,k)·conj(char(l,k)) = [j=l], so U·Uᴴ = 1, exhibiting the DFT as a genuine unitary operator"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 121,
     "assumptions": "0 axioms, 0 sorries (proofs depend only on propext / Classical.choice / Quot.sound). The two nontrivial mathematical inputs are both parent results: the energy law dft_parseval_norm and the character orthonormality char_inner. The normalisation itself is √n·√n = n bookkeeping plus the standard Matrix.unitaryGroup membership criterion U·Uᴴ = 1.",

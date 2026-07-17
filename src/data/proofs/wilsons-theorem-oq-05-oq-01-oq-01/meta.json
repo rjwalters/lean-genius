@@ -26,7 +26,7 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The prime branches rest on Mathlib's `ZMod.wilsons_lemma` (the ZMod-valued Wilson statement ((p-1)! : ZMod p) = -1 for prime p). The composite branch uses elementary divisibility/factorial lemmas (`Nat.dvd_factorial`, `Nat.factorial_dvd_factorial`, `Nat.minFac_prime`, `Nat.minFac_le_of_dvd`, `Nat.prime_def_minFac`) and the Kempner necessity uses `Nat.Prime.dvd_factorial`. The exceptional values at n = 4 are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.wilsons_lemma",

@@ -111,7 +111,7 @@
     "axiomCount": 0,
     "lineCount": 200,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound may appear (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms EulerIdentityOQ05.IsSumFourSq.mul). The result is unconditional over any commutative ring. Mathlib supplies the bilinear identity (euler_four_squares / sum_four_sq_mul_sum_four_sq, both ring identities) and Lagrange's four-square theorem; the original in-file content is the four-square sum-of-squares PREDICATE IsSumFourSq and its multiplicative-monoid structure — closure under multiplication (the four-square analogue of Mathlib's two-square sq_add_sq_mul, which has no four-square counterpart), under finite products and powers, membership of 0/1/squares, and the two-square embedding — together with the worked closure examples over ℤ. The identity itself is restated and re-discharged by ring so the file is self-contained.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 2
   },

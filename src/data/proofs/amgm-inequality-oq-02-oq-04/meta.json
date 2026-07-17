@@ -89,7 +89,7 @@
     "axiomCount": 0,
     "lineCount": 179,
     "assumptions": "0 axioms, 0 sorries. #print axioms reports only [propext, Classical.choice, Quot.sound] for newton_n3_k1, newton_n3_k2, maclaurin_n3_chain, and maclaurin_n3_am_ge_gm. Crucially, the parent's newton_log_concavity axiom is NOT used — both Newton inequalities for n=3 are proved directly from sum-of-squares certificates (and are in fact valid for all real inputs, not merely nonnegative ones). The Maclaurin chain M₁ ≥ M₂ ≥ M₃ is over the honest radical means for nonnegative x, y, z. Verified with Lean toolchain 4.26.0.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 3
   },

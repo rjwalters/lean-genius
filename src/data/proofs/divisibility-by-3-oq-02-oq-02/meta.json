@@ -67,7 +67,7 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. The general weighted rule is derived from Mathlib's exact positional expansion Nat.ofDigits_eq_sum_mapIdx together with a termwise modular reduction. Numerical witnesses use native_decide, which depends on Lean.ofReduceBool; the substantive theorems (weighted_modEq, dvd_iff_dvd_weighted, the period lemmas) are proved without it.",
-    "mathlib_version": "4.27.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 1
   },
   "overview": {

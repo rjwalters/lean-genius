@@ -23,7 +23,7 @@
     "lineCount": 139,
     "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.26.0 (single-file elaboration via `lake env lean Proofs/LebesgueMeasureOQ04.lean`, exit 0; `#print axioms cantorSet_null_and_uncountable` lists only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). Mathlib's `Topology.Instances.CantorSet` supplies the Cantor set itself (definition, the antitone pre-Cantor stages, and the bijection cantorSetEquivNatToBool : cantorSet ≃ (ℕ → Bool)); the measure-zero theorem and the explicit uncountability statement are NOT in Mathlib and are proved here. Measure zero is assembled from Measure.addHaar_image_homothety (one-dimensional homothety scaling, finrank ℝ ℝ = 1), measure_union_le, an induction bounding volume (preCantorSet n) by (2/3)^n, and a squeeze using tendsto_pow_atTop_nhds_zero_of_lt_one. Uncountability of ℕ → Bool is derived from Cardinal.power_def + Cardinal.cantor (ℵ₀ < 2^ℵ₀) and transferred along the Mathlib equivalence.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Lebesgue measure zero of the ternary Cantor set, proved from Mathlib's cantorSet definition — a result Mathlib's CantorSet file does not contain — via the homothety scaling law for Haar measure plus an induction bounding each stage's measure by (2/3)^n and a squeeze to the limit.",
       "An explicit uncountability statement for the Cantor set (not_countable_cantorSet / uncountable_cantorSet), obtained by transferring uncountability of ℕ → Bool across Mathlib's cantorSetEquivNatToBool bijection.",

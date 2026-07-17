@@ -47,7 +47,7 @@
     "lineCount": 150,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The headline `constructible_upto_100` (the formally verified complete list of 24 constructible n-gons with 3 ≤ n ≤ 100), plus `fermat257_constructible`/`fermat65537_constructible`, are proved by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",

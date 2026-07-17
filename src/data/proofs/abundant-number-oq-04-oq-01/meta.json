@@ -25,7 +25,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms` on scaled_sigma_lt, sigma_dvd_strict_mono, abundancy_gap_ge, and deficient_of_proper_dvd_perfect' reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no native_decide, hence no Lean.ofReduceBool. The proofs are purely arithmetic over ℕ (with a ℚ-cast corollary) and reuse only the parent's deficient bridge deficient_iff_sigma_lt_two_mul.",
     "originalContributions": [
       "Proves `scaled_sigma_lt : 0 < d → 2 ≤ t → t·σ(d) + 1 ≤ σ(d·t)` — the STRICT refinement of the parent's scaled_sigma_le. The scaled image {t·e : e ∣ d} is a proper subset of divisors (d·t) that omits the divisor 1 (since t·e ≥ t ≥ 2), so Finset.sum_lt_sum_of_subset gains exactly that missing term.",

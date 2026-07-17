@@ -51,7 +51,7 @@
     "axiomCount": 0,
     "lineCount": 118,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All nine theorems depend only on the foundational propext / Classical.choice / Quot.sound. The modulus is defined as absValue A = CFC.sqrt (Aᴴ · A) (Mathlib's C⋆-algebraic square root), positive semidefinite via CFC.sqrt_nonneg with LE.le.posSemidef, Hermitian via Matrix.PosSemidef.isHermitian, and satisfies absValue A · absValue A = Aᴴ · A via CFC.sqrt_mul_sqrt_self applied to Matrix.posSemidef_conjTranspose_mul_self; uniqueness as the PSD square root of AᴴA is CFC.sqrt_unique. The quadratic-form collapse star (M *ᵥ x) ⬝ᵥ (M *ᵥ x) = star x ⬝ᵥ ((Mᴴ*M) *ᵥ x) is pure matrix algebra (Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec). Norm preservation ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩ then follows because (absValue A)ᴴ · absValue A = Aᴴ · A. The Euclidean-norm form ∑ᵢ‖(Ax)ᵢ‖² = ∑ᵢ‖(|A|x)ᵢ‖² is obtained from the identity star y ⬝ᵥ y = ↑(∑ᵢ‖yᵢ‖²) (RCLike.conj_mul, RCLike.star_def, RCLike.ofReal_sum) and RCLike coercion injectivity. Everything holds over an arbitrary RCLike field 𝕜 (real or complex); there are no additional hypotheses beyond the finiteness of the index type.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 1
   },

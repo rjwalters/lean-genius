@@ -24,7 +24,7 @@
     "theoremCount": 8,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The proof rests on Euler's product formula `Nat.totient_eq_mul_prod_factors` together with `Nat.primeFactors_mul`, `Nat.primeFactors_pow`, and the single-prime scaling lemma `Nat.totient_mul_of_prime_of_dvd`, all from Mathlib; everything else is elementary exponent and divisibility algebra. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_eq_mul_prod_factors",

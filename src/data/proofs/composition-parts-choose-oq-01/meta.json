@@ -74,7 +74,7 @@
     "axiomCount": 0,
     "lineCount": 185,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The two small numeric examples close with the kernel decision procedure `decide` (evaluating Nat.choose 3 1 = 3 and Nat.choose 4 2 = 6); plain `decide` is kernel-checked and introduces no Lean.ofReduceBool. All four named theorems were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib does NOT contain the part-graded count C(n−1, k−1) nor the cut-count = length − 1 bookkeeping; both are original content here, built on Mathlib's compositionEquiv, compositionAsSetEquiv, Fintype.card_finset_len, and Nat.sum_range_choose. The result is unconditional (the hypotheses n, k ≥ 1 are the natural domain, since for n = 0 or k = 0 the truncated subtraction n−1, k−1 degenerates).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   },

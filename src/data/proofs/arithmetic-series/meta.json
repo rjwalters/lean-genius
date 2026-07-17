@@ -53,7 +53,7 @@
       }
     ],
     "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, and no `Lean.ofReduceBool`. The two concrete corollaries `gauss_100` (∑_{i<101} i = 5050) and `sum_0_to_10` (∑_{i<11} i = 55) are now derived from the kernel-checked `gauss_sum` by index shifting (`rw [show (101:ℕ) = 100 + 1 from rfl, gauss_sum]`) instead of `native_decide`, so `#print axioms` lists only `propext`, `Classical.choice`, `Quot.sound`. The entry is fully machine-checked (`verified`).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 1
   },

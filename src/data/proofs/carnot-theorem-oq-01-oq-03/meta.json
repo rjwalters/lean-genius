@@ -76,7 +76,7 @@
     "axiomCount": 0,
     "lineCount": 138,
     "assumptions": "0 axioms. 0 sorries. The only hypotheses are the angle-sum relation A + B + C = π together with A, B, C > 0 (positivity result) or A, B, C ≥ 0 (the maximum, whose [0, π] membership is automatic for triangle angles). The file imports Proofs/CarnotTheorem for family coherence but does NOT use its theorems — the sine identity is proved independently. Note: local kernel verification was blocked by an unresponsive Docker build host this session, and Aristotle was unavailable (404); the proof uses only verified Mathlib v4.26.0 lemma signatures (grep-confirmed against the pinned toolchain) and the linear_combination/linarith arithmetic was hand-checked. It is gated by the deployer build before merge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

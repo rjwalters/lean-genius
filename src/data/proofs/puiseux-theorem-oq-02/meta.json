@@ -35,7 +35,7 @@
     "lineCount": 238,
     "theoremCount": 6,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Puiseux's theorem (1850) establishes that the field of Puiseux series over an algebraically closed field of characteristic 0 is itself algebraically closed. Puiseux series are formal power series with rational exponents: elements of K⦃⦃x⦄⦄ = ⋃ₙ K((x^{1/n})). The multivariate generalization asks: what is the algebraic closure of the field of formal Laurent series K((x₁,...,xₙ)) in several variables?\n\nThe answer, established by McDonald (1995) and refined by Aroca, Cano, and Jung (2003), is the iterated Puiseux series field K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄, defined by applying the univariate Puiseux construction once per variable. The key subtlety is the ordering: multivariate Puiseux series require a well-order on ℚⁿ for the support to be well-ordered, and the lexicographic ordering of the iterated construction handles this automatically.\n\nThis formalization uses Mathlib's HahnSeries ℚ K as the Lean model for one-variable Puiseux series (Hahn series over the rationals), then iterates: MultiHahnSeries 0 K = K, MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K).",

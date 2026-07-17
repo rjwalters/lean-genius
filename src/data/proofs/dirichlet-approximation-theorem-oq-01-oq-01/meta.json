@@ -64,7 +64,7 @@
     "axiomCount": 0,
     "lineCount": 239,
     "assumptions": "0 axioms, 0 sorries. The only hypothesis is c > √5 (Real.sqrt 5 < c), which is exactly the threshold past which optimality kicks in. The result is proved in-file from elementary Mathlib facts about the golden ratio (the symmetric-function identities φ+ψ=1, φψ=−1, φ−ψ=√5 and the irrationality of φ, ψ) together with Int.one_le_abs and standard finiteness machinery. Badge is 'original' because the optimality theorem and all corollaries are new in-file results, not restatements of any Mathlib theorem (Mathlib contains neither Hurwitz's bound nor its sharpness).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

@@ -32,7 +32,7 @@
     "lineCount": 259,
     "theoremCount": 14,
     "definitionCount": 5,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Mersenne primes — primes of the form 2^p - 1 — have fascinated mathematicians since antiquity due to their connection with perfect numbers (Euclid: n is even perfect ↔ n = 2^(p-1)(2^p-1) where 2^p-1 is prime). The necessity theorem (2^n-1 prime implies n prime) was known to Euler. The Lucas congruence (prime factor q of 2^p-1 satisfies q ≡ 1 (mod p)) was proved by Lucas in 1876 and underlies the Lucas-Lehmer primality test.\n\nAs of 2024, only 51 Mersenne primes are known, the largest being 2^(136279841)-1 (discovered 2024 by GIMPS). Whether there are infinitely many Mersenne primes is a famous open problem. The Lenstra-Pomerance-Wagstaff (LPW) conjecture gives a heuristic count: the number of Mersenne primes with exponent ≤ N grows as (e^γ/log 2) · log log N ≈ 2.57 · log log N where γ ≈ 0.5772 is the Euler-Mascheroni constant.",

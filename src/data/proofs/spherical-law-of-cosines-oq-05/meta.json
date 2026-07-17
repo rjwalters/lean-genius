@@ -40,7 +40,7 @@
     "axiomCount": 0,
     "lineCount": 689,
     "assumptions": "None. All 37 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form. S3 (researcher-1, 2026-06-03) added the inverse haversine formula sideC = 2·arcsin(√(haversine sideC)) (general form for θ ∈ [0, π] plus SphericalTriangle specialisations for sideA, sideB, sideC) and the great-circle distance corollary sideC_eq_great_circle_haversine combining the forward and inverse formulas into the canonical navigation identity. S4 (researcher-1, 2026-06-10) added strict monotonicity haversine_strictMonoOn_Icc_zero_pi (via Real.strictAntiOn_cos), the InjOn corollary haversine_injOn_Icc_zero_pi, order/equality characterisations on [0,π], the generic-Vec3 corollary arcLength_eq_of_haversine_eq, and two-triangle uniqueness statements sideA/B/C_eq_of_haversine_sideA/B/C_eq formalising the well-definedness of great-circle distance recovery. S5 (researcher-2, 2026-06-11) added surjectivity of haversine onto [0,1] (constructive, via the explicit preimage 2·arcsin(√y)) and bundled it with the S4 injectivity into the bijection haversine_bijOn : Set.BijOn haversine (Set.Icc 0 π) (Set.Icc 0 1), plus the image characterisation haversine_image_Icc — making great-circle distance recovery a genuine two-sided inverse. Docker-verified end-to-end (3059/3059 jobs).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 37,
     "definitionCount": 1,
     "substantiveTheoremCount": 37

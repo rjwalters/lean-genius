@@ -26,7 +26,7 @@
     "theoremCount": 8,
     "definitionCount": 1,
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms` on both infinite_primitiveAbundant and isPrimitiveAbundant_two_pow_mul_prime reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). No `axiom` declarations, no `sorry`, and no `native_decide` — the only `decide`-style step is `norm_num` on the concrete 20 = 2^2·5 consistency check, which is kernel-checked (no Lean.ofReduceBool).",
     "originalContributions": [
       "Proves `infinite_primitiveAbundant : {n | IsPrimitiveAbundant n}.Infinite` — there are infinitely many primitive abundant numbers. This answers the standing open question of the sibling entry abundant-number-oq-04-oq-01-oq-02 (which certified 20 as the least primitive abundant number but left infinitude open), and the notion of primitive abundant number is absent from Mathlib.",

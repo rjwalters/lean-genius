@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 108,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. The concrete values at 6 and 28 use ordinary kernel `decide` (not `native_decide`), so `#print axioms` reports only propext, Classical.choice, Quot.sound — the ordinary foundational axioms, not counted under the project's axiom-integrity policy. Uses Mathlib's Nat.sum_div_divisors and Nat.perfect_iff_sum_divisors_eq_two_mul.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.sum_div_divisors",

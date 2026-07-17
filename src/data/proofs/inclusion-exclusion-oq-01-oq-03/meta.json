@@ -53,7 +53,7 @@
       "Inclusion–exclusion and the divisor–totient identity Σ_{d|n} φ(d) = n (parent entry)",
       "Mathlib's ArithmeticFunction / divisorsAntidiagonal API"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Möbius inversion, introduced by August Ferdinand Möbius in 1832, is the number-theoretic form of inclusion–exclusion: the Möbius function μ plays the role of the inclusion–exclusion sign on the lattice of divisors. The classical statement is that f(n) = Σ_{d|n} g(d) for all n is equivalent to g(n) = Σ_{d|n} μ(d)·f(n/d). This entry — open question OQ-03 of the parent gallery entry inclusion-exclusion-oq-01, which proves the divisor–totient identity Σ_{d|n} φ(d) = n via the inclusion–exclusion sieve — formalizes the textbook divisor-form inversion and uses it to invert the parent's identity into the Möbius form of Euler's totient. The formula soon became a workhorse of analytic number theory: written through Dirichlet generating series it is the relation 1/ζ(s) = Σ_{n≥1} μ(n)/nˢ, so the Möbius function controls the inversion of the Riemann zeta function's Euler product and, through Mertens' estimates on Σ μ(n), the error terms in the prime number theorem. In 1964 Gian-Carlo Rota, in 'On the foundations of combinatorial theory I', recognized Möbius inversion as a single phenomenon living in the incidence algebra of any locally finite partially ordered set: the number-theoretic μ is the Möbius function of the divisor lattice, while the alternating signs of ordinary inclusion–exclusion are the Möbius function of the Boolean (subset) lattice — unifying this entry with the classical inclusion–exclusion results.",

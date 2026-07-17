@@ -92,7 +92,7 @@
     "axiomCount": 0,
     "lineCount": 261,
     "assumptions": "None beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). The file has 0 sorries, 0 axiom declarations, and uses no native_decide (so it does not depend on Lean.ofReduceBool). The finite-ground results card_le_sum_choose_vcDim and vcDim_le_card carry a [Fintype α] instance as a hypothesis of their statements; the growth-function results trace_card_le_sum_choose / _of_le / _range_choose make no finiteness assumption on the ambient type α. Note: the machine build of this specific file could not be re-executed in the authoring session because the local Docker/host-disk build environment was unavailable; correctness rests on the completed proof term (0 sorries/axioms), on the parent module being present on main, and on a static check confirming every referenced Mathlib lemma exists with a matching signature in the pinned Mathlib (4.26.0, Mathlib.Combinatorics.SetFamily.Shatter et al.). A CI/Docker rebuild should confirm before this entry is treated as machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "relatedProblems": [
       {
         "id": "pac-learning-bounds-wip-01",

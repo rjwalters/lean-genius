@@ -47,7 +47,7 @@
     "axiomCount": 0,
     "lineCount": 141,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All six theorems depend only on the foundational propext / Classical.choice / Quot.sound (verified via #print axioms). weierstrass_epsilon is exists_polynomial_near_of_continuousOn restated as the headline; weierstrass_density is polynomialFunctions_closure_eq_top; bernstein_tendstoUniformly is bernsteinApproximation_uniform. The genuinely new content, exists_polynomial_seq_tendstoUniformlyOn, uses choose to pick pₙ within 1/(n+1) of f from the epsilon form, then proves TendstoUniformlyOn via Metric.tendstoUniformlyOn_iff: given ε>0, exists_nat_gt (1/ε) supplies an index N beyond which 1/(n+1) ≤ ε (div_le_iff₀ / div_lt_iff₀ + nlinarith), and abs_sub_comm matches the chosen bound. exists_polynomial_near_abs and exists_polynomial_seq_abs specialize the epsilon and sequence forms to f = |·| via _root_.continuous_abs.continuousOn. The only mathematical hypothesis anywhere is continuity of f on the interval.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 118,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/AbelRuffiniOQ04OQ01OQ04OQ01.lean` (no errors, no warnings); `#print axioms` on not_isSolvable_of_isPretransitive_of_mem_isSwap and not_isSolvable_top reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Assembles standard Mathlib results: orbit–stabilizer, Cauchy (exists_prime_orderOf_dvd_card), isCycle_of_prime_order, closure_prime_cycle_swap, Equiv.Perm.not_solvable, solvable_of_surjective, Subgroup.topEquiv. The Key Lemma is re-proved self-contained so the file stands alone.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "dateAdded": "2026-06-27",
     "definitionCount": 0

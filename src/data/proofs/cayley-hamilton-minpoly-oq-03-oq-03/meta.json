@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "lineCount": 208,
     "assumptions": "No axioms, no sorries. All 6 theorems fully proved. Imports the parent Proofs.CayleyHamiltonMinpolyOQ03 (itself 0-axiom for the Krylov core) and uses only Mathlib lemmas (Matrix.mul_apply, Matrix.mulVec/dotProduct unfolding, Fin.sum_univ_eq_sum_range, Finset.sum_neg_distrib, Monic.coeff_natDegree, Matrix.linearIndependent_cols_iff_isUnit, Matrix.isUnit_iff_isUnit_det, Matrix.nonsing_inv_mul). No native_decide.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 2
   },

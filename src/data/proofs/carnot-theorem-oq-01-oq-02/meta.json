@@ -56,7 +56,7 @@
     "axiomCount": 0,
     "lineCount": 163,
     "assumptions": "0 axioms. 0 sorries. The only hypotheses are the triangle conditions A, B, C > 0 and the angle-sum relation A + B + C = π. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Note: local kernel verification was blocked by an unresponsive Docker build host this session; the proof uses only verified Mathlib v4.26.0 lemma signatures (grep-confirmed against the pinned toolchain) and is gated by the deployer build before merge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
   },

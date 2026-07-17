@@ -70,7 +70,7 @@
     ],
     "lineCount": 168,
     "assumptions": "0 axioms, 0 sorries. Self-contained over Mathlib: the odd-part / 2-adic decomposition (Nat.ordProj_mul_ordCompl_eq_self, Nat.ordCompl_dvd, Nat.ordCompl_le, Nat.ordCompl_pos, Nat.not_dvd_ordCompl), Finset image-cardinality lemmas (card_image_of_injOn, card_image_of_injective, card_le_card, image_subset_image), and order-theoretic packaging (IsGreatest, upperBounds). All arithmetic (counting odd numbers, the top-half cardinality via Nat.card_Icc, the comparability cofactor bound) is discharged by omega and nlinarith. Badge is 'original' because the explicit chain partition and the comparability lemma making the fibers chains are formalized from first principles; the parent proves only the bound via a pigeonhole count.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 13,
     "definitionCount": 1
   },

@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 200,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The LYM inequality and Sperner's theorem are supplied by Mathlib (lubell_yamamoto_meshalkin_inequality_sum_inv_choose, IsAntichain.sperner); all results here, including the bridge from the parent's order-theoretic isAntichain to Mathlib's IsAntichain, the antichain extremal theorem, and the 2-union-free lower bound, are fully machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "lubell_yamamoto_meshalkin_inequality_sum_inv_choose",

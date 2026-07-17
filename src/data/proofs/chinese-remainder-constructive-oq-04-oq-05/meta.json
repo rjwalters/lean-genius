@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "lineCount": 146,
     "assumptions": "None. All results — `crtCanonical_satisfies`, `crtCanonical_lt`, `crtCanonical_eq_min`, `crtCanonical_isLeast`, and the worked Sunzi example `sunzi_canonical_eq_23` — depend only on the standard foundational axioms `propext`, `Classical.choice`, `Quot.sound` (confirmed via `#print axioms`). Unlike the sibling OQ-04-OQ-04 (which uses `native_decide` and is therefore axiomatized), the Sunzi example here is discharged with `decide`, so the entry is fully verified with no `Lean.ofReduceBool` dependency.",
     "mathlibDependencies": [

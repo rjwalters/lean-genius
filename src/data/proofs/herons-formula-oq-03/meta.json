@@ -51,7 +51,7 @@
       "Square roots and non-negativity",
       "Triangle inequality"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The classical Heron formula $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ has been known since antiquity (Hero of Alexandria, c. 60 AD). However, when implemented in finite-precision floating-point arithmetic, the formula suffers from **catastrophic cancellation**: for nearly degenerate triangles where one side is almost equal to the sum of the other two, $s \\approx a$ and $s - a \\approx 0$, losing many significant digits.\n\n**William Kahan** (1986), one of the founders of floating-point arithmetic and recipient of the Turing Award (1989), proposed a numerically stable alternative that avoids this precision loss. For sides $a \\geq b \\geq c$, Kahan's formula groups the computation as\n$$T = (a + (b + c)) \\cdot (c - (a - b)) \\cdot (c + (a - b)) \\cdot (a + (b - c))$$\n$$\\text{Area} = \\frac{1}{4}\\sqrt{T}$$\nThe key is that $a - b$ is computed first (it is small when $a \\approx b$), and then used to compute $c - (a - b)$ — which avoids the large-minus-large catastrophe.\n\nIn **exact arithmetic**, the two formulas are identical: $T = 16 \\cdot s(s-a)(s-b)(s-c)$ (a pure algebraic identity). This formalization proves this identity and the full equivalence.",

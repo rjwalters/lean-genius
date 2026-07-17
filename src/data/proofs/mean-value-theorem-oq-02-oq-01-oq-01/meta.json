@@ -45,7 +45,7 @@
     "lineCount": 149,
     "assumptions": "None. All four theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms on exp_taylor_tendsto_all, exp_taylor_tendsto_neg, and iteratedDeriv_exp_neg. The remainder-convergence engine taylorPolynomial_tendsto and the x > 0 base case exp_taylor_tendsto are reused as proven 0-axiom theorems from the parent file Proofs/MeanValueTheoremOQ02OQ01.lean; no axioms or sorries are introduced or inherited.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.hasDerivAt_exp",

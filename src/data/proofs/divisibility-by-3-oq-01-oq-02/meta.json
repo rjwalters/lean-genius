@@ -58,7 +58,7 @@
     "definitionCount": 1,
     "theoremCount": 6,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Builds on the parent's truncation_pos (also 0-axiom).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Osculator divisibility tests — multiply the last digit by a fixed constant and add it to the truncated number — were systematized by V. Ramaswami Aiyar in 1907 and popularized for a general audience by Martin Gardner in Scientific American (1962). Classically, each divisor comes with its own memorized osculator: 5 for 7, 4 for 13, 2 for 19, and so on. Textbooks and recreational columns present these as a table of magic numbers to be looked up. But the osculator of $d$ is nothing mysterious: it is the multiplicative inverse of $10$ modulo $d$, which exists precisely when $\\gcd(10, d) = 1$ and is produced constructively by the extended Euclidean algorithm through Bezout's identity $10s + dt = 1$. The parent formalization (divisibility-truncation-general) captured the parametric theorems but still required a human to supply the constant $c$ and a proof that $d \\mid 10c \\pm 1$ for each individual divisor, reproducing the classical table by hand. This entry closes the loop: it replaces the lookup table with the algorithm that generates it, defining $\\mathrm{osculator}(d) = \\mathtt{Int.gcdA}\\,10\\,d$ and proving that this single computable function is a correct osculator for every $d$ coprime to $10$ at once.",

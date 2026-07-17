@@ -34,7 +34,7 @@
     "lineCount": 188,
     "theoremCount": 6,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "problemStatement": "**Muirhead's inequality via majorization.** For an exponent vector a = (a₁,…,aₙ) the symmetric mean is [a](x) = (1/n!)·Σ_{σ∈Sₙ} ∏ᵢ xᵢ^{a_{σ(i)}}. Muirhead's theorem (Hardy–Littlewood–Pólya §2.18) states that for non-negative x, [a](x) ≥ [b](x) for all x iff a majorizes b. The parent problem (amgm-inequality-oq-02-oq-02) proves Newton's log-concavity and the Maclaurin chain M₁ ≥ ⋯ ≥ Mₙ, which is a special case of Muirhead; open question OQ-03 asks to formalize the majorization ordering itself. Its engine is a single 'Robin-Hood' transfer between two coordinates — the two-variable case settled here.",

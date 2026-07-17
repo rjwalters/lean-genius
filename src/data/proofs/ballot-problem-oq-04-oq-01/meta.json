@@ -48,7 +48,7 @@
     "axiomCount": 0,
     "lineCount": 60,
     "assumptions": "0 axioms, 0 sorries, no native_decide (the small Fin 4 facts use ordinary decide on decidable Nat/Fin propositions, which depends only on the foundational propext / Classical.choice / Quot.sound, NOT Lean.ofReduceBool). The crossing partition is the kernel Setoid.ker (fun x : Fin 4 => x.val % 2); the interleaving facts 0 ~ 2, 1 ~ 3, ¬ 0 ~ 1 and the order facts 0 < 1 < 2 < 3 are discharged by decide. The result ¬ IsNonCrossing crossing4 then follows from the parent's IsNonCrossing definition.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   },

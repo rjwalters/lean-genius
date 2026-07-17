@@ -25,7 +25,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Each prime-power factor reuses the parent entry's `EulerTotientOQ08.pow_add_mul_totient_modEq_primePow` (itself 0-axiom); the composite assembly is the Chinese Remainder Theorem in its `Nat.ModEq` guise via `Nat.modEq_and_modEq_iff_modEq_mul` over the pairwise-coprime prime powers, with `φ(p^e) ∣ φ(n)` supplied by `Nat.totient_dvd_of_dvd`. The `decide` calls in the examples evaluate concrete powers and modular reductions over small naturals in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",

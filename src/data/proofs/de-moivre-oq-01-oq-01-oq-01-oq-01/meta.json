@@ -30,7 +30,7 @@
     "definitionCount": 2,
     "lineCount": 187,
     "theoremCount": 7,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "The explicit integer-coefficient closed form U_n(X) = Σ_{k=0}^{⌊n/2⌋} (-1)^k C(n-k,k) (2X)^{n-2k}, proved as an identity of Polynomial ℤ — a formula Mathlib does not provide (its Chebyshev source lists an explicit coefficient formula as an open TODO)",
       "A termwise Pascal recurrence term (n+2) (k+1) = 2X·term (n+1) (k+1) - term n k, obtained by shifting the summation index so every binomial coefficient takes the successor form C((n-k)+1, k+1) that Pascal's rule consumes directly",

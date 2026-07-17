@@ -59,7 +59,7 @@
       "Lattice points and geometric counting"
     ],
     "assumptions": "None — 0 axioms, 0 sorries. The core result is obtained via a Mathlib bridge: the reciprocity law `elementary_quadratic_reciprocity` restates Mathlib's `legendreSym.quadratic_reciprocity`, and the three proof-chain steps wrap `ZMod.gauss_lemma`, `ZMod.eisenstein_lemma`, and `ZMod.sum_mul_div_add_sum_mul_div_eq_mul`. The file's contribution is the readable exposition of the Eisenstein chain, not an independent re-derivation (badge: mathlib).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0
   },

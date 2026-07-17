@@ -144,7 +144,7 @@
     "lineCount": 161,
     "theoremCount": 5,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond the pointwise non-degeneracy needed for the inversion images to be defined (x ≠ a in the core equivalence; p ≠ a / q ≠ a for the set-level statements). The ambient space is an arbitrary real inner-product (Euclidean) space presented as a NormedAddTorsor over it. Verified 0 axioms, 0 sorries: #print axioms on inversion_inner_eq_half_iff, cospherical_imp_inversion_image_inner_eq_half, inner_eq_half_imp_inversion_image_cospherical and cospherical_four_imp_inversion_images_collinear_witness reports only [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool).",
     "originalContributions": [
       "inversion_inner_eq_half_iff: the core circle⇔line identity — for x ≠ a and any o, dist x o = dist a o ↔ ⟪inversion a 1 x -ᵥ a, o -ᵥ a⟫ = 1/2. x lies on the sphere THROUGH a centred at o exactly when its inversion image lies on the fixed affine hyperplane with normal o -ᵥ a at level 1/2 (a line in the plane). Proved by reducing the sphere condition to the affine-linear relation ‖y‖² = 2⟪y, m⟫ and clearing the positive denominator ‖y‖².",

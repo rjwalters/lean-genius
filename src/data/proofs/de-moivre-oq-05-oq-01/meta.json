@@ -59,7 +59,7 @@
       "sum_geom_eq_zero: recovers the parent statement ∑_{k<n} ζ^k = 0 (n>1) as the j=1 corollary"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 198,
     "assumptions": "0 axioms, 0 sorries (proofs depend only on propext / Classical.choice / Quot.sound). The geometric collapse uses Mathlib's geom_sum_mul and the primitive-root order criteria (pow_eq_one_iff_dvd / zpow_eq_one_iff_dvd); the orthogonality dichotomy, its signed-frequency form, and the DFT-character orthonormality are assembled here and are not individually in Mathlib.",

@@ -61,7 +61,7 @@
     "dateAdded": "2025-12-29",
     "lineCount": 514,
     "assumptions": "5 axioms: dehn_invariance_axiom, tetrahedron_angle_not_rational_pi, sydler_theorem, bolyai_gerwien_theorem, cube_tetrahedron_different_dehn. Additionally, the `scissorsCongruent`/`scissorsCongruent2D` relations are defined as `True` placeholders (the geometric decomposition machinery is not formalized). Because of this, the `dehn_invariance_axiom` and `sydler_theorem` axioms — which are stated over `scissorsCongruent` — collapse to statements quantified over all polyhedra; the headline `¬scissorsCongruent` theorems are therefore structural rather than genuine non-congruence results. The mathematically substantive, machine-checked content is the Dehn-invariant computation: D(cube)=0 (fully proved) and D(tetrahedron)≠0 (proved modulo the axiomatized Niven's theorem tetrahedron_angle_not_rational_pi). See Lean source for complete statements.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 14
   },

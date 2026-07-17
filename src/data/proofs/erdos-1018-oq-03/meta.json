@@ -25,7 +25,7 @@
     "lineCount": 158,
     "assumptions": "None. 0 axioms, 0 sorries. The geometric input of a girth-4 (bipartite) 2-cell embedding — Euler's relation V − E + F = 2 and the face-degree inequality 4F ≤ 2E — appears as explicit hypotheses; the file proves the linear edge-bound implication these encode and its numeric instance for K₃,₃. The topological theorem 'edge excess forces a K₃,₃ subdivision' and the linearity of the K₃,₃-subdivision extremal function enter only through their quantitative shadow (a linear edge threshold c·n); everything downstream is machine-checked by omega/linarith and the Mathlib rpow asymptotics.",
     "dateAdded": "2026-07-08",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "tendsto_rpow_atTop",

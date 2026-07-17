@@ -68,7 +68,7 @@
         "module": "Mathlib.Analysis.RCLike.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Every practical eigenvalue computation produces an approximate pair (λ, x) and must answer: how close is λ to a true eigenvalue? For Hermitian (and normal) operators the answer is the residual bound dist(λ, spectrum) ≤ ‖T x − λ x‖ / ‖x‖ — the symmetric special case of the Bauer–Fike theorem (1960). It is the a-posteriori counterpart of Weyl's a-priori perturbation bound |λ_k(A) − λ_k(B)| ≤ ‖A − B‖: rather than comparing two operators, it certifies a single computed eigenpair from data the solver already has in hand. The bound is sharp (an exact eigenvector gives residual 0) and underlies stopping criteria for Lanczos, Davidson, and inverse-iteration methods (Parlett, The Symmetric Eigenvalue Problem, §4; Trefethen–Bau, Lecture 26). The parent gallery entry oq-03-oq-01 proves Weyl's a-priori stability and lists this a-posteriori bound as its lead open question; this entry closes it.",

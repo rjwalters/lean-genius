@@ -27,7 +27,7 @@
     "lineCount": 113,
     "theoremCount": 5,
     "definitionCount": 2,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-27"
   },
   "description": "Answers the dihedral half of the parent's fourth open question ('other infinite families: Dₙ solvable, GLₙ(𝔽ₚ) not solvable') by proving DihedralGroup n is solvable for EVERY n (including n = 0, the infinite dihedral group) — a result Mathlib does not provide. The proof exhibits Dₙ as metabelian: a parity homomorphism Dₙ → ℤ/2 (rotations ↦ 0, reflections ↦ 1) whose kernel is exactly the range of the rotation inclusion ℤ/n → Dₙ, both groups abelian, so `solvable_of_ker_le_range` applies. Packaged with the contrast S5_not_isSolvable_but_dihedral_is: Sym(Fin 5) is non-solvable while every dihedral group is solvable, showing the Abel–Ruffini obstruction is special to the symmetric groups, not generic to infinite families. The GLₙ(𝔽ₚ) non-solvability half (needing PSL₂ simplicity) is left open. 0 sorries, 0 axioms.",

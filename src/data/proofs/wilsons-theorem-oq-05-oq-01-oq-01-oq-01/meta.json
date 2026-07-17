@@ -27,7 +27,7 @@
     "theoremCount": 10,
     "definitionCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The development rests on Mathlib's Legendre infrastructure: `Nat.Prime.pow_dvd_iff_le_factorization` (p^k ∣ n ↔ k ≤ n.factorization p for n ≠ 0), `Nat.factorization_factorial_mul` ((p·n)!.factorization p = (n!).factorization p + n, Legendre at multiples), `Nat.factorization_factorial_eq_zero_of_lt` (t < p ⟹ (t!).factorization p = 0), `Nat.Prime.factorization_pos_of_dvd`, `Nat.dvd_of_factorization_pos`, `Nat.Prime.dvd_factorial`, and `Nat.dvd_factorial`. The Kempner function is built on `Nat.sInf` (`Nat.sInf_mem`, `Nat.sInf_le`). No `decide` or `native_decide` is used; the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorization_factorial_mul",

@@ -25,7 +25,7 @@
     "lineCount": 110,
     "theoremCount": 2,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "isMatching_saturating_both_of_balanced: in a locally finite bipartite graph with balanced parts (p₁.ncard = p₂.ncard, p₂ finite), the ONE-SIDED Hall condition on p₁ produces a matching M with p₁ ⊆ M.verts AND p₂ ⊆ M.verts. Neither Mathlib nor the parent has this: both state the perfect-matching theorem only for the global condition (every s : Set V). The proof takes a p₁-saturating matching from the parent's hall_marriage, forms the matched-partner map φ, shows φ injects p₁ into p₂ (bipartiteness) and into M.verts (partners are matched endpoints), and uses Set.eq_of_subset_of_ncard_le to upgrade the injection to φ '' p₁ = p₂ via the cardinality balance — so every vertex of p₂ is matched.",
       "exists_isPerfectMatching_of_balanced: the practical bipartite perfect-matching criterion — balanced parts that cover V (p₁ ∪ p₂ = univ) plus one-sided Hall on p₁ give a genuine SimpleGraph perfect matching. Derived from the both-sides-saturating matching by Subgraph.isSpanning_iff, since p₁ ⊆ M.verts and p₂ ⊆ M.verts cover every vertex.",

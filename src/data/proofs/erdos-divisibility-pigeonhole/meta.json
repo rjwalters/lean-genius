@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 143,
     "assumptions": "0 axioms, 0 sorries. The only hypotheses are the structural ones in the statement: S ⊆ {1,…,2n} and |S| ≥ n+1. The proof is self-contained over Mathlib — the abstract Finset pigeonhole principle and the 2-adic factorization m = 2^k·(odd part) are the only non-elementary inputs; everything else is divisibility and Nat arithmetic. Badge is 'original' because the theorem and its sharpness are formalized from first principles (Mathlib does not contain this application).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

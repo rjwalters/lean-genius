@@ -42,7 +42,7 @@
     "lineCount": 122,
     "assumptions": "The main conjecture of Erdős #866 (the exact growth of g_k(N) for k ≥ 4) remains OPEN and is untouched here. All six Lean declarations are fully machine-checked and depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms — no axiom declarations, no structure-encoded assumptions, no sorries. IMPORTANT SCOPE NOTE: the value g_3(N) = 1 proved here is the exact threshold for the configuration predicate HasAllPairwiseSums as defined in the base files, where the family b : Fin 3 → ℤ is NOT required to be injective. The CLASSICAL value from the literature is g_3(N) = 2, which is defined with three DISTINCT integers; the drop to 1 is caused entirely by the degenerate constant configuration b ≡ e/2 (its three pairwise sums all equal a single even element e), exhibited by config_of_even_mem. This entry therefore does not claim the classical 2, nor does it resolve the open problem; per gallery policy an entry attached to an open Erdős problem is marked 'axiomatized'.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.not_even_iff",

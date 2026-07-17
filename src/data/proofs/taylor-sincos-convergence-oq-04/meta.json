@@ -50,7 +50,7 @@
         "module": "Mathlib.Analysis.Calculus.ContDiff.Defs"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Taylor's theorem (1715) gives a polynomial approximation to smooth functions with an explicit remainder term. The classical Lagrange form of the remainder shows |f(x) - T_n(x)| ≤ M·|x|^{n+1}/(n+1)!, where M = sup|f^{(n+1)}|. When all derivatives are uniformly bounded by a constant C, this simplifies to C·|x|^{n+1}/n!, and since |x|^n/n! → 0 (the terms of the convergent exponential series), the Taylor series converges.\n\nThe class of real-valued C^∞ functions with all derivatives bounded by C is characterized by Bernstein's theorem: they are exactly the bounded entire functions of exponential type at most 1. This includes sin (C=1), cos (C=1), and their finite linear combinations a·sin(x) + b·cos(x) (C = |a|+|b|). The parent formalization proved convergence for sin and cos individually; this entry abstracts the proof to the general class.\n\nThe generalization is not merely academic: it shows that the convergence mechanism (factorial growth dominating power growth in the remainder) depends only on the derivative bound, not on any specific algebraic structure of the function. This makes the Taylor convergence theorem a modular building block.",

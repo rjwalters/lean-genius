@@ -35,7 +35,7 @@
     "lineCount": 135,
     "theoremCount": 13,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Polynomial interpolation through n distinct points is well-posed: there is exactly one polynomial of degree < n matching the data. The companion entry established uniqueness from the nonvanishing of the Vandermonde determinant; the existence half is classically witnessed by the explicit Lagrange interpolating polynomial ∑_i r_i · ℓ_i, where ℓ_i is the i-th Lagrange basis polynomial (ℓ_i(v_j) = δ_{ij}). Lagrange's construction (1795), anticipated by Waring (1779) and Euler (1783), turns the abstract existence-uniqueness statement into a usable formula and is the foundation of Newton–Cotes quadrature, Reed–Solomon codes, and finite-element shape functions.",

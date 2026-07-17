@@ -31,7 +31,7 @@
       "ssa_cmi_eq_zero_iff: I(X;Z|Y)=0 iff the Markov factorization p·p_Y = p_XY·p_YZ holds everywhere (forward via strict KL bound, backward by direct substitution)",
       "strong_subadditivity_eq_iff: SSA holds with equality iff X-Y-Z is a Markov chain"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Strong subadditivity (SSA) of entropy — H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) — is the deepest inequality of classical information theory and, in its von Neumann form, was proved by Lieb and Ruskai (1973). A standard companion question is the equality case: when is the inequality tight? Classically the SSA deficit equals the conditional mutual information I(X;Z|Y), a weighted sum of per-slice KL divergences, each strictly positive unless the conditional distribution factors. Equality therefore characterizes conditional independence of X and Z given Y — the statement that X–Y–Z forms a Markov chain. This equality condition is the classical shadow of the quantum equality case (Hayden–Jozsa–Petz–Winter 2004), where SSA is saturated exactly by quantum Markov states / states with a Petz recovery map; the classical characterization formalized here is the elementary special case.",

@@ -61,7 +61,7 @@
         "module": "Mathlib.Order.Interval.Finset.Fin"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Hermann Weyl's 1912 perturbation inequalities for the eigenvalues of a sum of Hermitian matrices — λ_{i+j-1}(A+B) ≤ λ_i(A) + λ_j(B) and its dual, with monotonicity A ⪯ B ⟹ λ_k(A) ≤ λ_k(B) as the special case B = A + (positive) — are the foundational stability results of spectral perturbation theory (Horn–Johnson Thm 4.3.1, Bhatia §III.2). All of them are corollaries of the Courant–Fischer min-max principle. The parent gallery entry proves that principle from scratch in bound form (CauchyInterlacingKeystone), and its oq-02 (Poincaré separation) explicitly observes that 'Weyl monotonicity, Lidskii … likewise only need the dimension count to vary'. This entry makes that observation precise.",

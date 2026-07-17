@@ -36,7 +36,7 @@
     "lineCount": 131,
     "theoremCount": 11,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Polynomial interpolation through n distinct points is the prototypical well-posed linear problem: the data-to-polynomial correspondence is a bijection between value vectors (Fin n → F) and polynomials of degree < n. The companion entries proved the two implications separately — uniqueness from the Vandermonde determinant, existence from the explicit Lagrange interpolant. The structural way to say both at once is that evaluation at the nodes is a linear isomorphism of the n-dimensional spaces degreeLT F n and F^n, with the Lagrange interpolant as its inverse. This is the abstract content behind the change of representation between a polynomial and its sample values that underlies Reed–Solomon codes, the discrete Fourier transform viewpoint, and finite-element shape functions.",

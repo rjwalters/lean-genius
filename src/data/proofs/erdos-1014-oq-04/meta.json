@@ -26,7 +26,7 @@
     "axiomCount": 2,
     "lineCount": 210,
     "assumptions": "Two assumptions, both literal `axiom` declarations in Erdos1014OQ04.lean, each a published theorem stated as a hypothesis: (1) `R3_upper_bound_aks` — the Ajtai–Komlós–Szemerédi (1980) upper bound R(3,l) ≤ C·l²/log l for large l; (2) `R4_lower_bound_mv` — the Mattheus–Verstraëte (2024) lower bound R(4,l) ≥ c·l³/(log l)⁴ for large l. The inherited Ramsey-number infrastructure adds no assumption: `ramseyNumber` (imported from Erdos1014OQ01.lean, defined via `Nat.find`) rests on `ramsey_theorem`, which is fully proved by strong induction in RamseysTheorem.lean (no sorry, no axiom in its dependency chain), so `ramseyNumber` and its recurrence/monotonicity/positivity are axiom-free. The `multicolor_ramsey_exists` axiom in RamseysTheorem.lean is declared after `ramsey_theorem` and is not in this file's dependency chain. The unrelated Kim–Shearer axiom `R3_lower_bound` in Erdos1014OQ01.lean is NOT used by this file either. Accordingly both `meta.axiomCount` and `leanFile.axiomCount` are 2, counting exactly the two literal `axiom` declarations in this file. 0 sorries. The analysis lemmas ((log l)⁴/l → 0, the increment bound) and the main convergence proof are otherwise axiom-free, resting only on Mathlib and the foundational axioms.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "leanFiles": [
       {
         "path": "Proofs/Erdos1014OQ04.lean",

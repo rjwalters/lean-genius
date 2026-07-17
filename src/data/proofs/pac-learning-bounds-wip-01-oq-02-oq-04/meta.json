@@ -67,7 +67,7 @@
     "axiomCount": 0,
     "lineCount": 200,
     "assumptions": "None beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). The file has 0 sorries, 0 axiom declarations, and uses no native_decide (so it does not depend on Lean.ofReduceBool); #print axioms confirms all four exported theorems depend only on the three foundational axioms. Machine-checked: the file builds under the project Docker wrapper (LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.PACLearningBoundsWIP01OQ02OQ04) against the pinned Mathlib on top of the verified parent module PACLearningBoundsWIP01SauerShelah. SCOPE: the entry proves the hypograph Sauer–Shelah bound and the resulting O((m/γ)^d) growth-function bound for level/integer-valued classes; it deliberately does NOT formalize (a) the reduction of a general L∞ γ-cover to threshold patterns, nor (b) the sharp middle constant Σ_k C(m,k)(2/γ)^k (Alon–Ben-David–Cesa-Bianchi–Haussler, which needs a separate multivalued Natarajan/Haussler shifting argument). Both quantities are ~(mb)^d/d! to leading order, so the O((m/γ)^d) claim is fully delivered; only the sharp constant remains a documented follow-up.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "relatedProblems": [
       {
         "id": "pac-learning-bounds-wip-01-oq-02",

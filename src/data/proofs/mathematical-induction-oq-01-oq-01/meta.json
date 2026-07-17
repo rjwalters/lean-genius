@@ -63,7 +63,7 @@
       "The Cantor normal form theorem"
     ],
     "assumptions": "0 axioms, 0 sorries. All four theorems are built directly on Mathlib's Ordinal.CNF API (foldr, sorted, lt_snd, snd_lt, fst_le_log, zero_right) and mod_opow_log_lt_self, introducing no new assumptions. #print axioms would report only the standard foundational axioms (propext, Classical.choice, Quot.sound); none counts under the project's axiom policy, and no sorryAx or Lean.ofReduceBool appears.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

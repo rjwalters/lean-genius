@@ -45,7 +45,7 @@
       "Proofs/RothTheoremOQ02.lean",
       "Proofs/RothTheoremOQ01Reciprocal.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Roth's 1953 theorem showed that any subset of {1,…,N} with no 3-term arithmetic progression has size o(N); his Fourier-analytic density-increment argument gives r₃(N) ≪ N/log log N. Bourgain (1999) improved the saving from a single log log to a power of log: r₃(N) ≪ N·(log log N/log N)^(1/2). A long chain of refinements followed — Bourgain (2008), Sanders (2011), Bloom (2016), and finally Bloom–Sisask (2020), who broke the logarithmic barrier with r₃(N) ≪ N/(log N)^(1+c), and Kelley–Meka (2023) with the quasi-polynomial r₃(N) ≪ N·exp(-c(log N)^β). This entry records Bourgain's landmark bound as a typed Lean target and, crucially, does not assume it: because the later Bloom–Sisask bound decays strictly faster, it implies Bourgain, and the implication is discharged formally.",

@@ -21,7 +21,7 @@
     "lineCount": 250,
     "assumptions": "Uses Mathlib's Real.negMulLog (Shannon entropy term) with its concavity (concaveOn_negMulLog), strict concavity (strictConcaveOn_negMulLog), the finite Jensen inequality (ConcaveOn.le_map_sum), and its equality case (StrictConcaveOn.eq_of_map_sum_eq); Gibbs' inequality uses the elementary log bound Real.log_le_sub_one_of_pos. No additional axioms or assumptions.",
     "theoremCount": 8,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 2
   },
   "overview": {

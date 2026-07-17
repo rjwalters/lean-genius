@@ -25,7 +25,7 @@
     "lineCount": 152,
     "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The affine-reduction characterisation holds with no hypothesis at all; the regular n-gon corollary carries only n ≥ 2 (a standard mathematical hypothesis, not an axiom).",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "The convex n-gon Viviani characterisation distSum_const_iff_normalSum_zero / viviani_ngon_characterisation: over an arbitrary finite index set s, the signed distance-sum x ↦ ∑ᵢ(cᵢ − ⟪x,νᵢ⟫) is constant on the whole plane ℂ if and only if ∑ᵢ νᵢ = 0 — the genuinely general phenomenon, with no triangle non-degeneracy and no equilaterality",
       "The affine/gradient identity distSum_sub: S(x) − S(y) = ⟪∑ᵢ νᵢ, y − x⟫, isolating the normal sum as the gradient of the distance functional, proved by reducing to a finite sum of per-edge identities",

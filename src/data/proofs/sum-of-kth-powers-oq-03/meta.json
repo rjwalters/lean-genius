@@ -55,7 +55,7 @@
       "Triangular and squared-triangular numbers",
       "Induction over ℕ"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Nicomachus of Gerasa stated in his Introductio Arithmetica (c. 100 CE) that the sum of the first n cubes equals the square of the n-th triangular number: 1³ + 2³ + ⋯ + n³ = (1 + 2 + ⋯ + n)². The identity is often called the squared triangular number theorem (or Nicomachus's theorem). Among its many proofs, the odd-number partition is the most visual and combinatorial: writing the odd numbers 1, 3, 5, 7, … in order and grouping them as (1), (3, 5), (7, 9, 11), …, the i-th group contains i consecutive odds summing to i³, while the union of the first n groups is the first T(n+1) odd numbers, whose sum is (T(n+1))² — a perfect square. This file formalizes that classical argument, complementing the parent SumOfKthPowers.lean which proves the same identity by composing Faulhaber-style closed forms.",

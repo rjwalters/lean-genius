@@ -60,7 +60,7 @@
     "lineCount": 73,
     "theoremCount": 8,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Carl Gustav Jacob Jacobi introduced his symbol in 1837 as a multiplicative extension of the Legendre symbol to composite (odd) moduli. Its decisive feature is that it can be computed rapidly by the quadratic-reciprocity recursion WITHOUT factoring the modulus — which is exactly why it appears in primality tests (Solovay–Strassen) and in fast evaluation of Legendre symbols. The price of that efficiency is that the Jacobi symbol no longer detects quadratic residues: J(a|n) = 1 does not imply a is a square mod composite n.",

@@ -25,7 +25,7 @@
     "theoremCount": 2,
     "definitionCount": 1,
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms odd_abundant_counting_lower_bound` and `#print axioms odd_abundant_density_lower` report only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no native_decide, hence no Lean.ofReduceBool, and no sorryAx. The counting filter is defined classically (Nat.Abundant carries no registered Decidable instance), which affects only computability, not logical content. The proof reuses the parent's odd_abundant_945_mul and odd_mul_succ_injective (themselves reducing to the kernel-reducible abundant_945), composing them with an injective-image cardinality bound and omega arithmetic; no new computation is performed.",
     "originalContributions": [
       "Proves `odd_abundant_counting_lower_bound : ∀ x, x < 1890 · countOddAbundant x + 945` — a quantitative lower bound on the odd-abundant counting function A(x) = #{ n ∈ [1, x] : Odd n ∧ Nat.Abundant n }, equivalently A(x) > x/1890 − 1/2. This settles the quantitative-counting open question recorded in the parent abundant-number-oq-03 entry, strengthening its qualitative infinitude result.",

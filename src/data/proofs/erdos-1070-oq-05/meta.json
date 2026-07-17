@@ -27,7 +27,7 @@
     "axiomCount": 0,
     "lineCount": 166,
     "assumptions": "None. The construction uses only Mathlib's EuclideanSpace inner-product API (EuclideanSpace.orthonormal_single / inner_single_left / norm_single) and elementary real algebra. #print axioms reports only propext / Classical.choice / Quot.sound on the main theorem erdos_1070_oq05_dimension_dependence and on the core computation simplexPoint_dist. Independent of the parent #1070 formalization (which is heavily axiomatized); this file imports only Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 5
   },

@@ -60,7 +60,7 @@
         "module": "Proofs.DerangementsConvergence"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Derangements — permutations with no fixed points — were analysed by Pierre de Montmort (1708) and Leonhard Euler (1751), who established D(n) = n!·Σ_{k=0}^n (−1)^k/k! and the limit D(n)/n! → e⁻¹. The convergence-rate gallery entry proves the sharp one-sided bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)!, and its rounding descendant OQ-06 uses the integer-scale form |D(n) − n!·e⁻¹| ≤ 1/(n+1) to prove D(n) = round(n!/e) for all n ≥ 1. That upper bound alone leaves open how large the error really is; OQ-06's first open question asks explicitly for a Lean-verified two-sided sandwich on the exact gap. The error is exactly the alternating factorial tail, whose leading term is 1/(n+1)!, so the true error is 1/(n+1)! to leading order — i.e. 1/(n+1) at integer scale. This entry makes that precise with a clean matching lower bound.",

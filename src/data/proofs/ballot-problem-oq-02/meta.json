@@ -51,7 +51,7 @@
     ],
     "lineCount": 339,
     "assumptions": "3 axioms across the chain: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property), (3) donsker_fclt in BallotProblemOQ02OQ05.lean — functional CLT for iid mean-zero unit-variance increments (Wiedijk #45, beyond Mathlib v4.26.0). Arcsine law is discussed but not formally axiomatized.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 4,
     "additionalFiles": [

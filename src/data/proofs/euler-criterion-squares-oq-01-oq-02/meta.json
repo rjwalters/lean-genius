@@ -67,7 +67,7 @@
     "axiomCount": 0,
     "lineCount": 131,
     "assumptions": "0 axioms (depends only on propext / Classical.choice / Quot.sound — the foundational Lean axioms; no sorry, no native_decide / Lean.ofReduceBool). 0 sorries. Fully verified. Honest scope: the FIRST supplementary law (−1 | p) is derived from the parent's Euler criterion (an original route); the SECOND supplementary law (2 | p) packages Mathlib's Gauss-sum result ZMod.exists_sq_eq_two_iff into an explicit p (mod 8) dictionary rather than re-deriving the Gauss-sum evaluation from scratch.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "parentProof": "euler-criterion-squares-oq-01",
     "theoremCount": 11,
     "definitionCount": 0

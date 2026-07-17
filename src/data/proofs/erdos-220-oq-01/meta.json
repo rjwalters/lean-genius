@@ -55,7 +55,7 @@
       }
     ],
     "dateAdded": "2026-06-21",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #220 asks for the order of magnitude of the sum of squared gaps between consecutive reduced residues modulo n. Writing 1 = a₁ < a₂ < ⋯ < a_{φ(n)} = n−1 for the integers in [1, n−1] coprime to n, the quantity of interest is ∑(a_{k+1} − a_k)². The distribution of reduced residues — how evenly the φ(n) totatives spread across [1, n] — is a classical theme going back to studies of Jacobsthal's function and the largest gap between consecutive totatives. Hooley, Erdős, and others investigated moments of these gaps; the second moment studied here is governed by the deep upper bound of Montgomery and Vaughan (1986), who showed ∑(a_{k+1} − a_k)² ≪ n²/φ(n). The parent gallery entry axiomatizes that hard analytic upper bound; this entry supplies the elementary matching lower bound, pinning the true order at n²/φ(n).",

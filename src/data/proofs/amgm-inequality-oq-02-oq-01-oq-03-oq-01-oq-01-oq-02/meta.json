@@ -50,7 +50,7 @@
     "theoremCount": 6,
     "definitionCount": 2,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only [propext, Classical.choice, Quot.sound] for both psum_six_closed and newton_girard_six_finset (no sorryAx, no Lean.ofReduceBool). The universal identity is a ring-level corollary of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum together with the sibling k=1..5 closed forms; the concrete-Finset form reuses the k=3 entry's aeval bridge and holds over an arbitrary CommRing.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities (Newton-Girard identities) relate the power sums pₖ = Σ xᵢᵏ to the elementary symmetric polynomials eₖ. Girard stated them around 1629 and Newton independently around 1666 (Arithmetica Universalis, 1707). The sixth identity, p₆ = e₁⁶ − 6e₁⁴e₂ + 9e₁²e₂² − 2e₂³ + 6e₁³e₃ − 12e₁e₂e₃ + 3e₃² − 6e₁²e₄ + 6e₂e₄ + 6e₁e₅ − 6e₆, is the first rung involving the sixth elementary symmetric polynomial e₆ and, more notably, the first whose reduced form carries a pure cube e₂³ and a pure square e₃². While Mathlib provides the general recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, the fully reduced k=6 closed form purely in e₁,…,e₆ — and its concrete Finset incarnation valid in every commutative ring — is not present in Mathlib.",

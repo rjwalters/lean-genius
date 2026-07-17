@@ -58,7 +58,7 @@
     "axiomCount": 0,
     "lineCount": 119,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All three public theorems — weakCompositionGenFun_eq_invOneSubPow (the generating function equals Mathlib's invOneSubPow), weakCompositionGenFun_mul_one_sub_pow (W k · (1−X)ᵏ = 1), and coeff_invOneSubPow_eq_choose (the n-th coefficient is C(n+k−1, n)) — were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The results require 0 < k (for k = 0 the empty product is the constant power series 1, a separate degenerate case). The new content beyond Mathlib is the identification of the enumerative generating function of weak-composition counts with the algebraic series invOneSubPow; Mathlib supplies invOneSubPow with its coefficient formula (invOneSubPow_val_succ_eq_mk_add_choose) and inverse relation (invOneSubPow_inv_eq_one_sub_pow), and the imported parent supplies the unrestricted count card_weakComposition. The binomial bridge C(n+k−1, n) = C(d+n, d) for k = d+1 is Nat.choose_symm. Sanity check: at k = 1 the series is ∑ₙ 1·Xⁿ = 1/(1−X) (every n has the unique weak composition (n)); at k = 2 the coefficient of Xⁿ is n+1 = C(n+1, n), the n+1 weak compositions (i, n−i).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 1
   },

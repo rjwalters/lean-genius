@@ -52,7 +52,7 @@
       "medial_sides_halved: each medial triangle has side lengths exactly dist A B / 2, dist B C / 2, dist C A / 2, exhibiting the dissection as 4 = 2^2 congruent half-copies (the k=2 square reptiling base case)."
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "Mathlib isometry API (IsometryEquiv, LinearIsometryEquiv.neg, IsometryEquiv.constVAdd)",
       "Mathlib midpoint API in affine/normed spaces (midpoint, midpoint_vsub_midpoint_same_left, dist_left_midpoint)",

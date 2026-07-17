@@ -55,7 +55,7 @@
       "Set.ncard of a singleton (Mathlib.Data.Set.Card)"
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The two-generator **Frobenius coin problem** (Chicken McNugget theorem) has a rich invariant theory beyond the largest gap $g = ab - a - b$. A numerical semigroup $S$ with Frobenius number $g$ is **symmetric** when $k \\in S \\Leftrightarrow g - k \\notin S$ for all integers $k$; equivalently (Kunz 1970) its coordinate ring $k[t^a, t^b]$ is **Gorenstein**. Symmetry is measured by the **type** of $S$ — the cardinality of the set $\\mathrm{PF}(S)$ of *pseudo-Frobenius numbers* (the maximal gaps under the order $u \\preceq v \\Leftrightarrow v - u \\in S$). The fundamental structural fact, going back to the work crystallized by Kunz and by Fröberg–Gottlieb–Häggkvist, is that $S$ is symmetric **iff** $\\mathrm{type}(S) = 1$, i.e. $\\mathrm{PF}(S) = \\{g\\}$. Two-generator semigroups are the prototypical type-one (symmetric, complete-intersection) examples. This entry proves $\\mathrm{PF}(\\langle a, b\\rangle) = \\{g\\}$ directly, and completes the sibling OQ-02 symmetry to the full gap interval.",

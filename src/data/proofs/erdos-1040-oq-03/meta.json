@@ -70,7 +70,7 @@
     "axiomCount": 0,
     "lineCount": 184,
     "assumptions": "0 axioms. 0 sorries. The minimal EHP definitions (PolynomialInF, eval, sublevelSet, sublevelMeasure, muPosDeg) are copied from Erdos1040Problem.lean to keep the file self-contained; muPosDeg is the degree-≥1 corrected infimum. The degree-1 facts hold for an arbitrary nonempty F; the non-convexity result is a concrete witness over the convex segment [-1, 1]. The parent open conjecture (μ determined by transfinite diameter) is NOT asserted — only these elementary base-case/obstruction facts. Build note: local kernel verification was blocked by an unresponsive Docker build host this session (the container failed to materialize and `docker ps` hung). The proof uses only Mathlib v4.26.0 lemma signatures grep-confirmed against the pinned toolchain (Complex.volume_ball, convex_ball, dist_eq_norm, Fin.prod_univ_one/two, iInf₂_le, left_/right_mem_segment with explicit 𝕜, Complex.real_smul with implicit args, Matrix.cons_val_*), and the arithmetic (ring/norm_num) was hand-checked; it is gated by the deployer build before merge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 7
   },

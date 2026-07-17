@@ -26,7 +26,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond Mathlib's foundational axioms (propext / Classical.choice / Quot.sound). No `sorry`, no `axiom`, no `decide`/`native_decide`; the five theorems compose existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`, `IsPrimitiveRoot.isIntegral`, `IsIntegral.fg_adjoin_singleton`, `IsIntegral.of_mem_of_fg`). The result holds over any finite field F and integral domain R (`Fintype F`, `Field F`, `CommRing R`, `IsDomain R`). Machine-verified: the file elaborates cleanly under Lean 4 / Mathlib v4.26.0, and `#print axioms` on all three integrality theorems reports only `[propext, Classical.choice, Quot.sound]`.",
     "originalContributions": [
       "Records the diagonal Jacobi-sum integrality fact `jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ}` (under `χ ^ n = 1` and `IsPrimitiveRoot μ n`) as a standalone, directly citable `theorem jacobiSum_self_mem_algebraAdjoin` — the exact φ = χ instance of Mathlib's two-character `jacobiSum_mem_algebraAdjoin_of_pow_eq_one` that the higher power-reciprocity laws actually invoke.",

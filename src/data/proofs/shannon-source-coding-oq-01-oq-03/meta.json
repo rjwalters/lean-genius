@@ -49,7 +49,7 @@
     "axiomCount": 0,
     "lineCount": 90,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All six theorems depend only on the foundational propext / Classical.choice / Quot.sound. They are built on Mathlib's Real.binEntropy and its lemmas binEntropy_zero, binEntropy_nonneg, binEntropy_le_log_two, and binEntropy_strictMonoOn (binary entropy is strictly increasing on [0, 1/2]). The nonnegativity and monotonicity results carry the genuine domain hypotheses 0 ≤ D ≤ p ≤ 1/2 of the rate–distortion regime. SCOPE: this entry formalizes the explicit binary FORMULA R(D) = h(p) − h(D) and its structural properties, not the variational characterization R(D) = inf I(X;X̂) nor the operational achievability theorem (open questions #3's derivation-from-first-principles and #4 in the parent), which require Lean's probability theory.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 1
   },

@@ -57,7 +57,7 @@
     "axiomCount": 1,
     "lineCount": 416,
     "assumptions": "Depends on `Lean.ofReduceBool`. The advertised concrete worked examples — the classic Sunzi problem solution (23 mod 105) and the four-moduli example (53 mod 210), along with the other numeric congruence checks — are established solely by `native_decide`, which trusts the Lean compiler's kernel reduction and so introduces the `Lean.ofReduceBool` axiom. The general structural results (existence `crt_exists`, uniqueness `crt_unique`/`crt_three_unique`/`crt_four_unique`, the Bezout construction, and modular-arithmetic preservation) are proved symbolically and are axiom-free; only the named computational examples carry the `native_decide` dependency. No literal `axiom` declarations and 0 sorries.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 17,
     "definitionCount": 2
   },

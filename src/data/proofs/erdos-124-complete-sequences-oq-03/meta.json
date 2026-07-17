@@ -23,7 +23,7 @@
     "lineCount": 143,
     "assumptions": "Fully machine-checked, 0 sorries, 0 axiom declarations; all theorems depend only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool — kernel-verified, no native_decide). Honest scope: this proves the CONVERSE (necessity) of the Erdős #124 condition only at the single-base boundary k = 1, where it becomes an exact characterisation. It does NOT prove general (k ≥ 2) necessity, which is the delicate asymptotic density statement of Burr–Erdős–Graham–Li and is not attempted here.",
     "dateAdded": "2026-06-22",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "single_base_complete_iff_sum_cond: at k = 1 the Erdős sum condition 1 ≤ 1/(d−1), proved SUFFICIENT in the parent, is necessary AND sufficient for completeness",
       "zeroOne_all_iff_two: for a single base d ≥ 2, every n is 0/1-representable in base d ⇔ d = 2",

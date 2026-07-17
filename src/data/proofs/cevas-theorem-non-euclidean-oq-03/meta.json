@@ -33,7 +33,7 @@
     "axiomCount": 0,
     "lineCount": 174,
     "assumptions": "None. Every theorem is universally quantified over GeneralizedCevianConfig (or Spherical/HyperbolicCevianConfig) whose positivity fields are ordinary hypotheses inherited from the parent structure — these are definitional positivity conditions on lengths/arcs, not mathematical axioms. There are no axiom declarations, no native_decide, no sorries; field_simp/ring/positivity introduce no axioms. #print axioms reports only [propext, Classical.choice, Quot.sound]. Honest scope: the entry proves the algebraic hexagon invariant underlying non-Euclidean Pappus–Brianchon, NOT the full projective incidence theorem, and says so explicitly.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 2
   },

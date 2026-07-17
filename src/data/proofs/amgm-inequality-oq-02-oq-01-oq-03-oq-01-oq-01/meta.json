@@ -50,7 +50,7 @@
     "theoremCount": 6,
     "definitionCount": 2,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only [propext, Classical.choice, Quot.sound] for both psum_five_closed and newton_girard_five_finset (no sorryAx, no Lean.ofReduceBool). The universal identity is a ring-level corollary of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum together with the sibling k=1/2/3/4 closed forms; the concrete-Finset form reuses the k=3 entry's aeval bridge and holds over an arbitrary CommRing including characteristic 5.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities (Newton-Girard identities) relate the power sums pₖ = Σ xᵢᵏ to the elementary symmetric polynomials eₖ. Girard stated them around 1629 and Newton independently around 1666 (Arithmetica Universalis, 1707). The fifth identity, p₅ = e₁⁵ − 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ − 5e₂e₃ − 5e₁e₄ + 5e₅, is the first rung involving the fifth elementary symmetric polynomial e₅ and two distinct degree-(1,1) cross terms (5e₁e₂² and 5e₂e₃) with coefficient 5. While Mathlib provides the general recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, the fully reduced k=5 closed form purely in e₁,…,e₅ — and its concrete Finset incarnation valid in every commutative ring, characteristic 5 included — is not present in Mathlib.",
