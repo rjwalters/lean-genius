@@ -11,12 +11,16 @@ user-invocable: true
 Validate that internal cross-references across the repo actually resolve.
 Catches broken links from reorganization, renames, and deletions.
 
+This is the cross-reference layer of [[docs]]. Use it directly when that's all
+you want to check; use [[docs]] for the full documentation sweep.
+
 ## Usage
 
 ```
-/repo:links                    # Full repo
+/repo:links                    # Full repo — fix unambiguous links, report as you go
 /repo:links CLAUDE.md          # Check one file
 /repo:links .claude/           # Check skill/command files
+/repo:links --ask              # Review findings and confirm before fixing
 ```
 
 ## What It Checks
@@ -62,5 +66,7 @@ Group findings by source file:
 ...
 ```
 
-For each broken link, suggest the most likely correct target (fuzzy match on
-filename) if one exists. Ask before fixing.
+For each broken link, find the most likely correct target (fuzzy match on
+filename). When there's a single confident match, fix the link and report it;
+when the match is ambiguous or no target exists, report it for a human call.
+Under `--ask`, propose every fix and confirm before editing.

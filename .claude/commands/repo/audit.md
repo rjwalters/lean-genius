@@ -24,7 +24,8 @@ findings for discussion.
 Run each of the following checks and compile results into a single report:
 
 ### 1. README Accuracy (see [[readme]])
-- Directories with >5 files that lack a README
+- Browsable directory levels that lack a README (top-level and significant
+  subdirs — so GitHub renders docs at each level someone navigates to)
 - READMEs whose file/folder listings don't match actual contents
 - Stale "gitignored" or "TODO" annotations that are no longer true
 

@@ -14,8 +14,9 @@ that shouldn't be ignored and build artifacts that should be.
 ## Usage
 
 ```
-/repo:gitignore                  # Full repo
+/repo:gitignore                  # Full repo — apply clear rule fixes, report as you go
 /repo:gitignore data/            # Check one subtree
+/repo:gitignore --ask            # Review findings and confirm before editing
 ```
 
 ## Context First
@@ -69,4 +70,8 @@ For each `.gitignore` file, show:
 - Suggested additions or removals
 - Files affected by changes
 
-Ask before modifying any gitignore.
+By default, apply the clear-cut rule changes (adding an obvious build-artifact
+ignore, removing a rule that hides real content) and report each edit — gitignore
+changes are fully git-reversible. Leave anything ambiguous, or that would change
+whether a **tracked** file stays tracked, as a reported recommendation. Under
+`--ask`, confirm every edit before writing.

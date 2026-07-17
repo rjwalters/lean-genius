@@ -20,6 +20,11 @@ to update the stale ones.
 /repo:update-tools loom        # Only check/update one tool
 ```
 
+An update runs the tool's own installer (executing code from its source repo
+and rewriting `.claude/`), so unlike the safe-fix hygiene commands this one is
+**not** auto-applied — it reports and confirms before updating. `--check` is
+the report-only form.
+
 ## Steps
 
 ### 1. Discover installed tools
