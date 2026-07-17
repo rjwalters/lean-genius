@@ -127,7 +127,7 @@ theorem iterate_altSum_limit_one {a : ℕ → ℝ} {n : ℕ} {S : ℝ}
     (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) :
     Tendsto (fun m => altSum (fdiff a) n m) atTop (𝓝 ((-1 : ℝ) ^ n * a n - 2 * S)) := by
   have h := iterate_altSum_limit_closed ha0 hS 1
-  simpa using h
+  simpa [sub_eq_add_neg] using h
 
 /-- **Self-consistency with `boole_general_tendsto`.**  Substituting the explicit closed form for
 `T_K` into the order-`K` Boole limit identity reproduces exactly `S`: the boundary sum with the
