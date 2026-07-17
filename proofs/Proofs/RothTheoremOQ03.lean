@@ -221,7 +221,7 @@ theorem kAPCount_indicator_apFree {N : ℕ} [NeZero N] {A : Finset (ZMod N)}
       obtain ⟨i, hi⟩ := hnot
       exact Finset.prod_eq_zero (Finset.mem_univ i)
         (by simp only [hind]; exact if_neg hi)
-    rw [Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N)),
+    rw [Finset.sum_eq_add_sum_sdiff_singleton_of_mem (Finset.mem_univ (0 : ZMod N)),
         Finset.sum_eq_zero hzero, add_zero, hdiag]
   simp only [kAPCount]
   rw [Finset.sum_congr rfl (fun x _ => key x)]
