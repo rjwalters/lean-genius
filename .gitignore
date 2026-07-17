@@ -4,6 +4,8 @@
 # ── Secrets — never commit ─────────────────────────────────────────────
 .env
 .env.*
+# Exception: the placeholder template carries no secrets and is tracked.
+!.env.example
 .loom/tokens/
 .loom/lean-daemon-state.json
 .loom/usage-cache.json
