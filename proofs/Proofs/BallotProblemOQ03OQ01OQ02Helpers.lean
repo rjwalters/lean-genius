@@ -9001,7 +9001,6 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
   field_simp [hne_de1, hne_ce2, hne_be3, hne_ae4, hne_cd1, hne_bd2,
               hne_ad3, hne_bc1, hne_ac2, hne_ab1]
   ring
-#exit -- PROBE
 
 
 -- ============================================================
@@ -10375,6 +10374,8 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
               hne_bc1, hne_bd2, hne_be3, hne_bf4,
               hne_ab1, hne_ac2, hne_ad3, hne_ae4, hne_af5]
   ring
+
+
 
 
 
