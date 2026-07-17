@@ -10,6 +10,7 @@ import Proofs.BallotProblemOQ03OQ02
 import Proofs.BallotProblemOQ03OQ03
 
 namespace HookLengthFormula
+set_option Elab.async false
 
 open YoungDiagram Finset LGV
 
@@ -8697,10 +8698,10 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- The hook walk identity for exactly-5-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
-set_option maxHeartbeats 2000000 in
 lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
     (h5 : μ.rowLen 5 = 0) (h4 : 0 < μ.rowLen 4) :
     ∑ c ∈ (corners μ).attach,
@@ -9941,9 +9942,9 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- The hook walk identity for 6-row Young diagrams [a,b,c,d,e,f].
     NON-CIRCULAR: proved directly via hookProd_ratio_formula. -/
-set_option maxHeartbeats 2000000 in
 lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     (h6 : μ.rowLen 6 = 0) (h5 : 0 < μ.rowLen 5) :
     ∑ c ∈ (corners μ).attach,
@@ -11453,10 +11454,10 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- Arm product for corner (0, a-1) in a 7-row shape:
     ∏ = (a+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b)/
         ((a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
-set_option maxHeartbeats 2000000 in
 private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
     (h6 : 0 < μ.rowLen 6) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -11657,10 +11658,10 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 4000000 in
 /-- The hook walk identity for exactly-7-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
-set_option maxHeartbeats 4000000 in
 lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     (h7 : μ.rowLen 7 = 0) (h6 : 0 < μ.rowLen 6) :
     ∑ c ∈ (corners μ).attach,
@@ -13302,10 +13303,10 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- Arm product for corner (1, b-1) in an 8-row shape:
     ∏ = (b+6)(b-k+5)(b-g+4)(b-f+3)(b-e+2)(b-d+1)(b-c)/
         ((b-k+6)(b-g+5)(b-f+4)(b-e+3)(b-d+2)(b-c+1)). -/
-set_option maxHeartbeats 2000000 in
 private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
     (hcb : μ.rowLen 2 < μ.rowLen 1) :
     ∏ s ∈ Finset.range (μ.rowLen 1 - 1),
@@ -13506,10 +13507,10 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 4000000 in
 /-- Arm product for corner (0, a-1) in an 8-row shape:
     ∏ = (a+7)(a-k+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b)/
         ((a-k+7)(a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
-set_option maxHeartbeats 4000000 in
 private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
     (h7 : 0 < μ.rowLen 7) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -13739,10 +13740,10 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 8000000 in
 /-- The hook walk identity for exactly-8-row Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     NON-CIRCULAR: does not call hook_length_formula_Q or hook_walk_identity. -/
-set_option maxHeartbeats 8000000 in
 lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     (h8 : μ.rowLen 8 = 0) (h7 : 0 < μ.rowLen 7) :
     ∑ c ∈ (corners μ).attach,
@@ -15602,10 +15603,10 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- Arm product for corner (2, c-1) in a 9-row shape:
     ∏ = (c+6)(c-j+5)(c-k+4)(c-g+3)(c-f+2)(c-e+1)(c-d) /
         ((c-j+6)(c-k+5)(c-g+4)(c-f+3)(c-e+2)(c-d+1)). -/
-set_option maxHeartbeats 2000000 in
 private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (hdc : μ.rowLen 3 < μ.rowLen 2) :
     ∏ s ∈ Finset.range (μ.rowLen 2 - 1),
@@ -15806,10 +15807,10 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 4000000 in
 /-- Arm product for corner (1, b-1) in a 9-row shape:
     ∏ = (b+7)(b-j+6)(b-k+5)(b-g+4)(b-f+3)(b-e+2)(b-d+1)(b-c) /
         ((b-j+7)(b-k+6)(b-g+5)(b-f+4)(b-e+3)(b-d+2)(b-c+1)). -/
-set_option maxHeartbeats 4000000 in
 private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (hcb : μ.rowLen 2 < μ.rowLen 1) :
     ∏ s ∈ Finset.range (μ.rowLen 1 - 1),
@@ -16039,10 +16040,10 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   field_simp
   ring
 
+set_option maxHeartbeats 4000000 in
 /-- Arm product for corner (0, a-1) in a 9-row shape:
     ∏ = (a+8)(a-j+7)(a-k+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b) /
         ((a-j+8)(a-k+7)(a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1)). -/
-set_option maxHeartbeats 4000000 in
 private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
     (h8 : 0 < μ.rowLen 8) (hab : μ.rowLen 1 < μ.rowLen 0) :
     ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
@@ -16301,8 +16302,8 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   field_simp
   ring
 
-/-- Hook walk identity for 9-row shapes: Σ_corners hookProd(μ)/hookProd(μ\c) = card(μ). -/
 set_option maxHeartbeats 8000000 in
+/-- Hook walk identity for 9-row shapes: Σ_corners hookProd(μ)/hookProd(μ\c) = card(μ). -/
 lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     (h9 : μ.rowLen 9 = 0) (h8 : 0 < μ.rowLen 8) :
     ∑ c ∈ (corners μ).attach,
