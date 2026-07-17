@@ -88,8 +88,10 @@ theorem negQuad_involutive : Function.Involutive negQuad := by
 
 /-- `box n` is symmetric under negation: `x ∈ box n ↔ -x ∈ box n`. -/
 theorem neg_mem_box {n : ℕ} {x : ℤ} (hx : x ∈ box n) : -x ∈ box n := by
-  rw [box, Finset.mem_Icc] at hx ⊢
-  omega
+  rw [box, Finset.mem_image] at hx ⊢
+  obtain ⟨i, hi, hix⟩ := hx
+  rw [Finset.mem_range] at hi
+  exact ⟨2 * Nat.sqrt n - i, Finset.mem_range.mpr (by omega), by omega⟩
 
 /-- **`r₄` is even for every positive `n`.** The sign involution `negQuad` maps the
 representation set to itself, and on `n ≥ 1` it is fixed-point-free (a fixed
