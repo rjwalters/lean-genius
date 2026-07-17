@@ -63,7 +63,8 @@ theorem algEquiv_map_centralizer
   constructor
   · rintro ⟨x, hx, rfl⟩
     rintro g ⟨b, hb, rfl⟩
-    rw [AlgHom.coe_coe, ← map_mul, ← map_mul, hx b hb]
+    show e b * e x = e x * e b
+    rw [← map_mul, ← map_mul, hx b hb]
   · intro hy
     refine ⟨e.symm y, ?_, e.apply_symm_apply y⟩
     intro b hb
