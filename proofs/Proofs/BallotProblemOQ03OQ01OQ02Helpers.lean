@@ -6802,7 +6802,7 @@ private lemma threeRow_corner_bot {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
           fun h => ?_, fun h => ?_⟩
   · have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · have h3s := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at h3s
     omega
@@ -6844,7 +6844,7 @@ private lemma threeRow_corner_mid {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
@@ -6859,7 +6859,7 @@ private lemma threeRow_corner_top {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
@@ -7000,7 +7000,7 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 2) cv (by omega)]
   have hconv2 : ∀ s ∈ Finset.Ico cv b,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 1 - s) / ((a : ℚ) + 1 - s - 1) := fun s hs => by
+      (((a + 1 : ℕ) : ℚ) - s) / (((a + 1 : ℕ) : ℚ) - s - 1) := fun s hs => by
     have hs_mem := Finset.mem_Ico.mp hs
     rw [threeRow_hookLen_row0_mid h3
         (YoungDiagram.mem_iff_lt_rowLen.mpr
@@ -7011,7 +7011,7 @@ private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
     push_cast [Nat.cast_sub (show s ≤ a by omega)]; ring
   rw [Finset.prod_congr rfl hconv2, Finset.prod_Ico_eq_prod_range]
   have hconv2b : ∀ k ∈ Finset.range (b - cv),
-      ((a : ℚ) + 1 - ↑(cv + k)) / ((a : ℚ) + 1 - ↑(cv + k) - 1) =
+      (((a + 1 : ℕ) : ℚ) - ↑((cv) + k)) / (((a + 1 : ℕ) : ℚ) - ↑((cv) + k) - 1) =
       (↑(a - cv + 1) - ↑k) / (↑(a - cv + 1) - ↑k - 1) := fun k _ => by
     push_cast [Nat.cast_sub (Nat.le_trans hcb hba)]; ring
   rw [Finset.prod_congr rfl hconv2b, prod_div_telescope (a - cv + 1) (b - cv) (by omega)]
@@ -7314,10 +7314,10 @@ private lemma fourRow_corner_bot {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
     fun h => ?_, fun h => ?_⟩
   · have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
 
 /-- Corners of a 4-row shape are classified into at most 4 positions. -/
 private lemma fourRow_corner_cases {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
@@ -7340,13 +7340,22 @@ private lemma fourRow_corner_cases {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
   interval_cases i
   · left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; right; left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; right; right; simpa
 
 /-- A 4-row YoungDiagram has card = rowLen 0 + rowLen 1 + rowLen 2 + rowLen 3. -/
@@ -7423,7 +7432,7 @@ private lemma fourRow_arm_row3 (μ : YoungDiagram) (h4 : μ.rowLen 4 = 0)
       ((d : ℚ) - s) / ((d : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < d - 1 := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d] at *; omega)
     rw [fourRow_hookLen_row3 h4 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope d (d - 1) (Nat.sub_lt hd_pos Nat.one_pos)]
@@ -7445,10 +7454,10 @@ private lemma fourRow_arm_row2 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
   -- First product: s ∈ [0,d), h(2,s) = c-s+1
   have hconv1 : ∀ s ∈ Finset.range d,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 1 - s) / ((c : ℚ) + 1 - s - 1) := by
+      (((c + 1 : ℕ) : ℚ) - s) / (((c + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsd : s < d := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d] at *; omega)
     rw [fourRow_hookLen_row2_lt h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 1) d (by omega)]
@@ -7458,7 +7467,7 @@ private lemma fourRow_arm_row2 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((c : ℚ) - s) / ((c : ℚ) - s - 1) := by
     intro s hs
     have ⟨hsd, hsc⟩ := Finset.mem_Ico.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d] at *; omega)
     rw [fourRow_hookLen_row2_ge h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   -- Reindex [d, c-1) to [0, c-d-1) for prod_div_telescope
@@ -7470,7 +7479,7 @@ private lemma fourRow_arm_row2 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht
     have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d] at *; omega)
     rw [fourRow_hookLen_row2_ge h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2', prod_div_telescope (c - d) (c - 1 - d) (by omega)]
@@ -7498,20 +7507,20 @@ private lemma fourRow_arm_row1 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
   -- Product 1: [0,d), h(1,s) = b-s+2
   have hconv1 : ∀ s ∈ Finset.range d,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 2 - s) / ((b : ℚ) + 2 - s - 1) := by
+      (((b + 2 : ℕ) : ℚ) - s) / (((b + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsd : s < d := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d] at *; omega)
     rw [fourRow_hookLen_row1_lt h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 2) d (by omega)]
   -- Product 2: [d, c), h(1,s) = b-s+1
   have hconv2 : ∀ s ∈ Finset.Ico d c,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 1 - s) / ((b : ℚ) + 1 - s - 1) := by
+      (((b + 1 : ℕ) : ℚ) - s) / (((b + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have ⟨hsd, hsc⟩ := Finset.mem_Ico.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d] at *; omega)
     rw [fourRow_hookLen_row1_mid h4 hmem hsd hsc]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -7522,7 +7531,7 @@ private lemma fourRow_arm_row1 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d] at *; omega)
     rw [fourRow_hookLen_row1_mid h4 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2', prod_div_telescope (b - d + 1) (c - d) (by omega)]
@@ -7532,7 +7541,7 @@ private lemma fourRow_arm_row1 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((b : ℚ) - s) / ((b : ℚ) - s - 1) := by
     intro s hs
     have ⟨hsc, hsb⟩ := Finset.mem_Ico.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d] at *; omega)
     rw [fourRow_hookLen_row1_ge h4 hmem hsc]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [show Finset.Ico c (b - 1) = (Finset.range (b - 1 - c)).image (· + c) from by
@@ -7543,7 +7552,7 @@ private lemma fourRow_arm_row1 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht
     have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d] at *; omega)
     rw [fourRow_hookLen_row1_ge h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3', prod_div_telescope (b - c) (b - 1 - c) (by omega)]
@@ -7576,9 +7585,9 @@ private lemma fourRow_arm_row0 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
   -- Product 1: [0,d), h(0,s) = a-s+3
   have hconv1 : ∀ s ∈ Finset.range d,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 3 - s) / ((a : ℚ) + 3 - s - 1) := by
+      (((a + 3 : ℕ) : ℚ) - s) / (((a + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
     rw [fourRow_hookLen_row0_lt h4 hmem (by exact_mod_cast Finset.mem_range.mp hs)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 3) d (by omega)]
@@ -7591,7 +7600,7 @@ private lemma fourRow_arm_row0 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
     rw [fourRow_hookLen_row0_mid1 h4 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - d + 2) (c - d) (by omega)]
@@ -7604,7 +7613,7 @@ private lemma fourRow_arm_row0 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht
     have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
     rw [fourRow_hookLen_row0_mid2 h4 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - c + 1) (b - c) (by omega)]
@@ -7617,7 +7626,7 @@ private lemma fourRow_arm_row0 {μ : YoungDiagram} (h4 : μ.rowLen 4 = 0)
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht
     have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
     rw [fourRow_hookLen_row0_ge h4 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
@@ -7675,9 +7684,9 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
     rw [fourRow_arm_row3 μ h4 hbot]
     -- Leg: rows 0,1,2 at column d-1
     have hd1 : d - 1 < d := Nat.sub_lt h3 Nat.one_pos
-    have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
+    have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
+    have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
     rw [show Finset.range 3 = {0, 1, 2} from by ext k; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_singleton]
@@ -7701,11 +7710,11 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -7713,8 +7722,8 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       -- Leg: rows 0 and 1 at column c-1 (which is in zone [d, c))
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       -- h(0, c-1): zone [d, c), so h = a-(c-1)+2 = a-c+3
@@ -7730,7 +7739,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
       have hcd_eq : c = d := Nat.le_antisymm (not_lt.mp hcd) hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hcd_eq]; ring
       rw [this]; ring
@@ -7746,17 +7755,17 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [fourRow_arm_row1 h4 hbc]
       -- Leg: row 0 at column b-1
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       -- h(0, b-1): b-1 ≥ c, b-1 < b ≤ a; zone [c, b)
       rw [fourRow_hookLen_row0_mid2 h4 hmem0 (by omega) (by omega)]
@@ -7767,7 +7776,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
     · have hbc_eq : b = c := Nat.le_antisymm (not_lt.mp hbc) hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hbc_eq]; ring
       rw [this]; ring
@@ -7782,11 +7791,11 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -7796,7 +7805,7 @@ lemma hook_walk_identity_fourRow (μ : YoungDiagram)
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring
@@ -8007,10 +8016,10 @@ private lemma fiveRow_corner_bot {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
     fun h => ?_, fun h => ?_⟩
   · have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
 
 /-- Corners of a 5-row shape are classified into at most 5 positions. -/
 private lemma fiveRow_corner_cases {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
@@ -8034,16 +8043,28 @@ private lemma fiveRow_corner_cases {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   interval_cases i
   · left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; right; left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; right; right; left; refine ⟨by simpa, ?_⟩
     by_contra h; push_neg at h
-    exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega) |> hj ▸ id)
+    have hj0 := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+    refine hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr ?_)
+    norm_num
+    omega
   · right; right; right; right; simpa
 
 /-- A 5-row YoungDiagram has card = rowLen 0 + rowLen 1 + rowLen 2 + rowLen 3 + rowLen 4. -/
@@ -8139,7 +8160,7 @@ private lemma fiveRow_arm_row4 (μ : YoungDiagram) (h5 : μ.rowLen 5 = 0)
       ((e : ℚ) - s) / ((e : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < e - 1 := Finset.mem_range.mp hs
-    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e] at *; omega)
     rw [fiveRow_hookLen_row4 h5 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope e (e - 1) (Nat.sub_lt he_pos Nat.one_pos)]
@@ -8161,10 +8182,10 @@ private lemma fiveRow_arm_row3 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   -- First product: s ∈ [0,e), h(3,s) = d-s+1 → (d+1-s)/(d+1-s-1)
   have hconv1 : ∀ s ∈ Finset.range e,
       (hookLength μ 3 s : ℚ) / ((hookLength μ 3 s : ℚ) - 1) =
-      ((d : ℚ) + 1 - s) / ((d : ℚ) + 1 - s - 1) := by
+      (((d + 1 : ℕ) : ℚ) - s) / (((d + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < e := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e] at *; omega)
     rw [fiveRow_hookLen_row3_lt h5 hmem hse]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (d + 1) e (by omega)]
@@ -8174,7 +8195,7 @@ private lemma fiveRow_arm_row3 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((d : ℚ) - s) / ((d : ℚ) - s - 1) := by
     intro s hs
     have ⟨hse, hsd⟩ := Finset.mem_Ico.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e] at *; omega)
     rw [fiveRow_hookLen_row3_ge h5 hmem hse]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [show Finset.Ico e (d - 1) = (Finset.range (d - 1 - e)).image (· + e) from by
@@ -8185,7 +8206,7 @@ private lemma fiveRow_arm_row3 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((d : ℚ) - e - t) / ((d : ℚ) - e - t - 1) := by
     intro t ht
     have htm : t < d - 1 - e := Finset.mem_range.mp ht
-    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e] at *; omega)
     rw [fiveRow_hookLen_row3_ge h5 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2', prod_div_telescope (d - e) (d - 1 - e) (by omega)]
@@ -8212,10 +8233,10 @@ private lemma fiveRow_arm_row2 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   -- Product 1: [0,e), h(2,s) = c-s+2 → (c+2-s)/(c+2-s-1)
   have hconv1 : ∀ s ∈ Finset.range e,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 2 - s) / ((c : ℚ) + 2 - s - 1) := by
+      (((c + 2 : ℕ) : ℚ) - s) / (((c + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < e := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e] at *; omega)
     rw [fiveRow_hookLen_row2_lt h5 hmem hse]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 2) e (by omega)]
@@ -8228,7 +8249,7 @@ private lemma fiveRow_arm_row2 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((c : ℚ) - e + 1 - t) / ((c : ℚ) - e + 1 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e] at *; omega)
     rw [fiveRow_hookLen_row2_mid1 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (c - e + 1) (d - e) (by omega)]
@@ -8241,7 +8262,7 @@ private lemma fiveRow_arm_row2 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht
     have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e] at *; omega)
     rw [fiveRow_hookLen_row2_ge h5 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (c - d) (c - 1 - d) (by omega)]
@@ -8273,10 +8294,10 @@ private lemma fiveRow_arm_row1 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   -- Product 1: [0,e), h(1,s) = b-s+3
   have hconv1 : ∀ s ∈ Finset.range e,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 3 - s) / ((b : ℚ) + 3 - s - 1) := by
+      (((b + 3 : ℕ) : ℚ) - s) / (((b + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < e := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row1_lt h5 hmem hse]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 3) e (by omega)]
@@ -8289,7 +8310,7 @@ private lemma fiveRow_arm_row1 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((b : ℚ) - e + 2 - t) / ((b : ℚ) - e + 2 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row1_mid1 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (b - e + 2) (d - e) (by omega)]
@@ -8302,7 +8323,7 @@ private lemma fiveRow_arm_row1 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row1_mid2 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (b - d + 1) (c - d) (by omega)]
@@ -8315,7 +8336,7 @@ private lemma fiveRow_arm_row1 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht
     have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row1_ge h5 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (b - c) (b - 1 - c) (by omega)]
@@ -8354,10 +8375,10 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
   -- Product 1: [0,e), h(0,s) = a-s+4
   have hconv1 : ∀ s ∈ Finset.range e,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 4 - s) / ((a : ℚ) + 4 - s - 1) := by
+      (((a + 4 : ℕ) : ℚ) - s) / (((a + 4 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < e := Finset.mem_range.mp hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row0_lt h5 hmem hse]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 4) e (by omega)]
@@ -8370,7 +8391,7 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((a : ℚ) - e + 3 - t) / ((a : ℚ) - e + 3 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row0_mid1 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - e + 3) (d - e) (by omega)]
@@ -8383,7 +8404,7 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row0_mid2 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - d + 2) (c - d) (by omega)]
@@ -8396,7 +8417,7 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht
     have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row0_mid3 h5 hmem (by omega) (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - c + 1) (b - c) (by omega)]
@@ -8409,7 +8430,7 @@ private lemma fiveRow_arm_row0 {μ : YoungDiagram} (h5 : μ.rowLen 5 = 0)
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht
     have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [fiveRow_hookLen_row0_ge h5 hmem (by omega)]
     push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
@@ -8475,10 +8496,10 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
     rw [fiveRow_arm_row4 μ h5 hbot]
     -- Leg: rows 0,1,2,3 at column e-1 (zone s < e)
     have he1 : e - 1 < e := Nat.sub_lt h4 Nat.one_pos
-    have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+    have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+    have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+    have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
     rw [show Finset.range 4 = {0, 1, 2, 3} from by ext k; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -8505,11 +8526,11 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -8517,9 +8538,9 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       -- Leg: rows 0,1,2 at column d-1 (zone [e,d))
       have hd1 : d - 1 < d := Nat.sub_lt (by omega) Nat.one_pos
       have hed1 : e ≤ d - 1 := by omega
-      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
       rw [show Finset.range 3 = {0, 1, 2} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [fiveRow_hookLen_row0_mid1 h5 hmem0 hed1 (by omega),
@@ -8535,7 +8556,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       have hde_eq : d = e := Nat.le_antisymm (not_lt.mp hde) hed
       have hnotcorner : ¬ isCorner μ (3, d - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (d : ℚ) - e = 0 := by rw [hde_eq]; ring
       rw [this]; ring
@@ -8552,11 +8573,11 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
@@ -8564,8 +8585,8 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       -- Leg: rows 0,1 at column c-1 (zone [d,c))
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [fiveRow_hookLen_row0_mid2 h5 hmem0 hdc1 (by omega),
@@ -8579,7 +8600,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       have hdc_eq : c = d := Nat.le_antisymm (not_lt.mp hdc') hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hdc_eq]; ring
       rw [this]; ring
@@ -8595,17 +8616,17 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [fiveRow_arm_row1 h5 hcb']
       -- Leg: row 0 at column b-1 (zone [c,b))
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [fiveRow_hookLen_row0_mid3 h5 hmem0 (by omega) (by omega)]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
@@ -8616,7 +8637,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       have hbc_eq : b = c := Nat.le_antisymm (not_lt.mp hcb') hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hbc_eq]; ring
       rw [this]; ring
@@ -8633,11 +8654,11 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -8648,7 +8669,7 @@ lemma hook_walk_identity_fiveRow (μ : YoungDiagram)
       have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring
@@ -9030,7 +9051,7 @@ private lemma sixRow_arm_row5 (μ : YoungDiagram) (h6 : μ.rowLen 6 = 0)
       ((f : ℚ) - s) / ((f : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < f - 1 := Finset.mem_range.mp hs
-    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f] at *; omega)
     rw [sixRow_hookLen_row5 h6 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope f (f - 1) (Nat.sub_lt hf_pos Nat.one_pos)]
@@ -9052,10 +9073,10 @@ private lemma sixRow_arm_row4 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   -- Product 1: [0,f), h(4,s) = e-s+1
   have hconv1 : ∀ s ∈ Finset.range f,
       (hookLength μ 4 s : ℚ) / ((hookLength μ 4 s : ℚ) - 1) =
-      ((e : ℚ) + 1 - s) / ((e : ℚ) + 1 - s - 1) := by
+      (((e + 1 : ℕ) : ℚ) - s) / (((e + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < f := Finset.mem_range.mp hs
-    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f] at *; omega)
     rw [sixRow_hookLen_row4_lt h6 hmem hse]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (e + 1) f (by omega)]
   -- Product 2: [f, e-1), reindex t = s-f, h(4,t+f) = e-f-t
@@ -9067,7 +9088,7 @@ private lemma sixRow_arm_row4 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((e : ℚ) - f - t) / ((e : ℚ) - f - t - 1) := by
     intro t ht
     have htm : t < e - 1 - f := Finset.mem_range.mp ht
-    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f] at *; omega)
     rw [sixRow_hookLen_row4_ge h6 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (e - f) (e - 1 - f) (by omega)]
   push_cast [Nat.cast_sub hef.le, Nat.cast_sub (show 1 ≤ e - f by omega)]
@@ -9093,10 +9114,10 @@ private lemma sixRow_arm_row3 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   -- Product 1: [0,f), h(3,s) = d-s+2
   have hconv1 : ∀ s ∈ Finset.range f,
       (hookLength μ 3 s : ℚ) / ((hookLength μ 3 s : ℚ) - 1) =
-      ((d : ℚ) + 2 - s) / ((d : ℚ) + 2 - s - 1) := by
+      (((d + 2 : ℕ) : ℚ) - s) / (((d + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < f := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f] at *; omega)
     rw [sixRow_hookLen_row3_lt h6 hmem hse]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (d + 2) f (by omega)]
   -- Product 2: [f, e), h(3,t+f) = d-f+1-t
@@ -9108,7 +9129,7 @@ private lemma sixRow_arm_row3 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((d : ℚ) - f + 1 - t) / ((d : ℚ) - f + 1 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f] at *; omega)
     rw [sixRow_hookLen_row3_mid1 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (d - f + 1) (e - f) (by omega)]
   -- Product 3: [e, d-1), h(3,t+e) = d-e-t
@@ -9120,7 +9141,7 @@ private lemma sixRow_arm_row3 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((d : ℚ) - e - t) / ((d : ℚ) - e - t - 1) := by
     intro t ht
     have htm : t < d - 1 - e := Finset.mem_range.mp ht
-    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f] at *; omega)
     rw [sixRow_hookLen_row3_ge h6 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (d - e) (d - 1 - e) (by omega)]
   push_cast [Nat.cast_sub hfe, Nat.cast_sub hed.le, Nat.cast_sub (show 1 ≤ d - e by omega)]
@@ -9150,10 +9171,10 @@ private lemma sixRow_arm_row2 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   -- Product 1: [0,f), h(2,s) = c-s+3
   have hconv1 : ∀ s ∈ Finset.range f,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 3 - s) / ((c : ℚ) + 3 - s - 1) := by
+      (((c + 3 : ℕ) : ℚ) - s) / (((c + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < f := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row2_lt h6 hmem hse]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 3) f (by omega)]
   -- Product 2: [f, e), h(2,t+f) = c-f+2-t
@@ -9165,7 +9186,7 @@ private lemma sixRow_arm_row2 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((c : ℚ) - f + 2 - t) / ((c : ℚ) - f + 2 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row2_mid1 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (c - f + 2) (e - f) (by omega)]
   -- Product 3: [e, d), h(2,t+e) = c-e+1-t
@@ -9177,7 +9198,7 @@ private lemma sixRow_arm_row2 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((c : ℚ) - e + 1 - t) / ((c : ℚ) - e + 1 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row2_mid2 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (c - e + 1) (d - e) (by omega)]
   -- Product 4: [d, c-1), h(2,t+d) = c-d-t
@@ -9189,7 +9210,7 @@ private lemma sixRow_arm_row2 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht
     have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row2_ge h6 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (c - d) (c - 1 - d) (by omega)]
   push_cast [Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc.le,
@@ -9225,10 +9246,10 @@ private lemma sixRow_arm_row1 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   -- Product 1: [0,f), h(1,s) = b-s+4
   have hconv1 : ∀ s ∈ Finset.range f,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 4 - s) / ((b : ℚ) + 4 - s - 1) := by
+      (((b + 4 : ℕ) : ℚ) - s) / (((b + 4 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < f := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row1_lt h6 hmem hse]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 4) f (by omega)]
   -- Product 2: [f, e), h(1,t+f) = b-f+3-t
@@ -9240,7 +9261,7 @@ private lemma sixRow_arm_row1 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((b : ℚ) - f + 3 - t) / ((b : ℚ) - f + 3 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row1_mid1 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (b - f + 3) (e - f) (by omega)]
   -- Product 3: [e, d), h(1,t+e) = b-e+2-t
@@ -9252,7 +9273,7 @@ private lemma sixRow_arm_row1 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((b : ℚ) - e + 2 - t) / ((b : ℚ) - e + 2 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row1_mid2 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (b - e + 2) (d - e) (by omega)]
   -- Product 4: [d, c), h(1,t+d) = b-d+1-t
@@ -9264,7 +9285,7 @@ private lemma sixRow_arm_row1 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row1_mid3 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (b - d + 1) (c - d) (by omega)]
   -- Product 5: [c, b-1), h(1,t+c) = b-c-t
@@ -9276,7 +9297,7 @@ private lemma sixRow_arm_row1 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht
     have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row1_ge h6 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (b - c) (b - 1 - c) (by omega)]
   push_cast [Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc, Nat.cast_sub hcb.le,
@@ -9316,10 +9337,10 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
   -- Product 1: [0,f), h(0,s) = a-s+5
   have hconv1 : ∀ s ∈ Finset.range f,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 5 - s) / ((a : ℚ) + 5 - s - 1) := by
+      (((a + 5 : ℕ) : ℚ) - s) / (((a + 5 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hse : s < f := Finset.mem_range.mp hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_lt h6 hmem hse]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 5) f (by omega)]
   -- Product 2: [f, e), h(0,t+f) = a-f+4-t
@@ -9331,7 +9352,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((a : ℚ) - f + 4 - t) / ((a : ℚ) - f + 4 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_mid1 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - f + 4) (e - f) (by omega)]
   -- Product 3: [e, d), h(0,t+e) = a-e+3-t
@@ -9343,7 +9364,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((a : ℚ) - e + 3 - t) / ((a : ℚ) - e + 3 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_mid2 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - e + 3) (d - e) (by omega)]
   -- Product 4: [d, c), h(0,t+d) = a-d+2-t
@@ -9355,7 +9376,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_mid3 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - d + 2) (c - d) (by omega)]
   -- Product 5: [c, b), h(0,t+c) = a-c+1-t
@@ -9367,7 +9388,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht
     have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_mid4 h6 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (a - c + 1) (b - c) (by omega)]
   -- Product 6: [b, a-1), h(0,t+b) = a-b-t
@@ -9379,7 +9400,7 @@ private lemma sixRow_arm_row0 {μ : YoungDiagram} (h6 : μ.rowLen 6 = 0)
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht
     have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [sixRow_hookLen_row0_ge h6 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
   push_cast [Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc, Nat.cast_sub hcb,
@@ -9411,11 +9432,11 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · intro h
       have := YoungDiagram.mem_iff_lt_rowLen.mp h
       norm_num at this
-      omega
+      all_goals omega
     · intro h
       have := YoungDiagram.mem_iff_lt_rowLen.mp h
       norm_num at this
-      omega
+      all_goals omega
   have hcard : (μ.card : ℚ) = (a : ℚ) + b + c + d + e + f := by
     exact_mod_cast sixRow_card h6
   rw [hcard]
@@ -9446,32 +9467,32 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     interval_cases i
     · right; right; right; right; right
       have hja : j = a - 1 := by
-        have : ¬(j + 1 < a) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < a) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hja⟩
     · right; right; right; right; left
       have hjb : j = b - 1 := by
-        have : ¬(j + 1 < b) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < b) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hjb⟩
     · right; right; right; left
       have hjc : j = c - 1 := by
-        have : ¬(j + 1 < c) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < c) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hjc⟩
     · right; right; left
       have hjd : j = d - 1 := by
-        have : ¬(j + 1 < d) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < d) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hjd⟩
     · right; left
       have hje : j = e - 1 := by
-        have : ¬(j + 1 < e) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < e) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hje⟩
     · left
       have hjf : j = f - 1 := by
-        have : ¬(j + 1 < f) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        have : ¬(j + 1 < f) := fun hlt => hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
         omega
       exact ⟨rfl, hjf⟩
   have hext : ∑ x ∈ corners μ, ratio x =
@@ -9491,11 +9512,11 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     simp only [Prod.fst, Prod.snd]
     rw [sixRow_arm_row5 μ h6 hbot]
     have hf1 : f - 1 < f := Nat.sub_lt h5 Nat.one_pos
-    have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+    have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+    have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+    have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+    have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
     rw [show Finset.range 5 = {0, 1, 2, 3, 4} from by ext k; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -9526,21 +9547,21 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sixRow_arm_row4 h6 hef]
       have he1 : e - 1 < e := Nat.sub_lt (by omega) Nat.one_pos
       have hef1 : f ≤ e - 1 := by omega
-      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
       rw [show Finset.range 4 = {0, 1, 2, 3} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -9558,7 +9579,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · have hef_eq : e = f := Nat.le_antisymm (not_lt.mp hef) hfe
       have hnotcorner : ¬ isCorner μ (4, e - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (e : ℚ) - f = 0 := by rw [hef_eq]; ring
       rw [this]; ring
@@ -9576,20 +9597,20 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sixRow_arm_row3 h6 hde]
       have hd1 : d - 1 < d := Nat.sub_lt (by omega) Nat.one_pos
       have hed1 : e ≤ d - 1 := by omega
-      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
       rw [show Finset.range 3 = {0, 1, 2} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_singleton]
@@ -9606,7 +9627,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · have hde_eq : d = e := Nat.le_antisymm (not_lt.mp hde) hed
       have hnotcorner : ¬ isCorner μ (3, d - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (d : ℚ) - e = 0 := by rw [hde_eq]; ring
       rw [this]; ring
@@ -9623,19 +9644,19 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sixRow_arm_row2 h6 hcd]
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [sixRow_hookLen_row0_mid3 h6 hmem0 hdc1 hc1,
@@ -9650,7 +9671,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · have hcd_eq : c = d := Nat.le_antisymm (not_lt.mp hcd) hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hcd_eq]; ring
       rw [this]; ring
@@ -9668,18 +9689,18 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sixRow_arm_row1 h6 hbc]
       have hb1 : b - 1 < b := Nat.sub_lt (by omega) Nat.one_pos
       have hcb1 : c ≤ b - 1 := by omega
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega)
       rw [show Finset.range 1 = {0} from by ext k; simp; omega]
       rw [Finset.prod_singleton]
       rw [sixRow_hookLen_row0_mid4 h6 hmem0 hcb1 hb1]
@@ -9693,7 +9714,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · have hbc_eq : b = c := Nat.le_antisymm (not_lt.mp hbc) hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hbc_eq]; ring
       rw [this]; ring
@@ -9710,11 +9731,11 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -9723,7 +9744,7 @@ lemma hook_walk_identity_sixRow (μ : YoungDiagram)
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring
@@ -10050,11 +10071,11 @@ private lemma sevenRow_corner_bot {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) (h6
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
 
 /-- Corner classification for 7-row shapes: corners are among the 7 possible positions. -/
 private lemma sevenRow_corner_cases {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0) (h6 : 0 < μ.rowLen 6)
@@ -10264,7 +10285,7 @@ private lemma sevenRow_arm_row6 (μ : YoungDiagram) (h7 : μ.rowLen 7 = 0)
       ((g : ℚ) - s) / ((g : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < g - 1 := Finset.mem_range.mp hs
-    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g] at *; omega)
     rw [sevenRow_hookLen_row6 h7 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope g (g - 1) (Nat.sub_lt hg_pos Nat.one_pos)]
@@ -10284,10 +10305,10 @@ private lemma sevenRow_arm_row5 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
   rw [Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 5 s : ℚ) / ((hookLength μ 5 s : ℚ) - 1) =
-      ((f : ℚ) + 1 - s) / ((f : ℚ) + 1 - s - 1) := by
+      (((f + 1 : ℕ) : ℚ) - s) / (((f + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g] at *; omega)
     rw [sevenRow_hookLen_row5_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (f + 1) g (by omega)]
   rw [show Finset.Ico g (f - 1) = (Finset.range (f - 1 - g)).image (· + g) from by
@@ -10298,7 +10319,7 @@ private lemma sevenRow_arm_row5 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((f : ℚ) - g - t) / ((f : ℚ) - g - t - 1) := by
     intro t ht
     have htm : t < f - 1 - g := Finset.mem_range.mp ht
-    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g] at *; omega)
     rw [sevenRow_hookLen_row5_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (f - g) (f - 1 - g) (by omega)]
   push_cast [Nat.cast_sub hgf.le, Nat.cast_sub (show 1 ≤ f - g by omega)]
@@ -10322,10 +10343,10 @@ private lemma sevenRow_arm_row4 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 4 s : ℚ) / ((hookLength μ 4 s : ℚ) - 1) =
-      ((e : ℚ) + 2 - s) / ((e : ℚ) + 2 - s - 1) := by
+      (((e + 2 : ℕ) : ℚ) - s) / (((e + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g] at *; omega)
     rw [sevenRow_hookLen_row4_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (e + 2) g (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -10336,7 +10357,7 @@ private lemma sevenRow_arm_row4 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((e : ℚ) - g + 1 - t) / ((e : ℚ) - g + 1 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g] at *; omega)
     rw [sevenRow_hookLen_row4_mid1 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (e - g + 1) (f - g) (by omega)]
   rw [show Finset.Ico f (e - 1) = (Finset.range (e - 1 - f)).image (· + f) from by
@@ -10347,7 +10368,7 @@ private lemma sevenRow_arm_row4 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((e : ℚ) - f - t) / ((e : ℚ) - f - t - 1) := by
     intro t ht
     have htm : t < e - 1 - f := Finset.mem_range.mp ht
-    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g] at *; omega)
     rw [sevenRow_hookLen_row4_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (e - f) (e - 1 - f) (by omega)]
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe.le, Nat.cast_sub (show 1 ≤ e - f by omega)]
@@ -10376,10 +10397,10 @@ private lemma sevenRow_arm_row3 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 3 s : ℚ) / ((hookLength μ 3 s : ℚ) - 1) =
-      ((d : ℚ) + 3 - s) / ((d : ℚ) + 3 - s - 1) := by
+      (((d + 3 : ℕ) : ℚ) - s) / (((d + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row3_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (d + 3) g (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -10390,7 +10411,7 @@ private lemma sevenRow_arm_row3 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((d : ℚ) - g + 2 - t) / ((d : ℚ) - g + 2 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row3_mid1 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (d - g + 2) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -10401,7 +10422,7 @@ private lemma sevenRow_arm_row3 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((d : ℚ) - f + 1 - t) / ((d : ℚ) - f + 1 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row3_mid2 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (d - f + 1) (e - f) (by omega)]
   rw [show Finset.Ico e (d - 1) = (Finset.range (d - 1 - e)).image (· + e) from by
@@ -10412,7 +10433,7 @@ private lemma sevenRow_arm_row3 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((d : ℚ) - e - t) / ((d : ℚ) - e - t - 1) := by
     intro t ht
     have htm : t < d - 1 - e := Finset.mem_range.mp ht
-    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row3_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (d - e) (d - 1 - e) (by omega)]
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed.le,
@@ -10448,10 +10469,10 @@ private lemma sevenRow_arm_row2 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 4 - s) / ((c : ℚ) + 4 - s - 1) := by
+      (((c + 4 : ℕ) : ℚ) - s) / (((c + 4 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row2_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 4) g (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -10462,7 +10483,7 @@ private lemma sevenRow_arm_row2 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((c : ℚ) - g + 3 - t) / ((c : ℚ) - g + 3 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row2_mid1 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (c - g + 3) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -10473,7 +10494,7 @@ private lemma sevenRow_arm_row2 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((c : ℚ) - f + 2 - t) / ((c : ℚ) - f + 2 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row2_mid2 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (c - f + 2) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -10484,7 +10505,7 @@ private lemma sevenRow_arm_row2 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((c : ℚ) - e + 1 - t) / ((c : ℚ) - e + 1 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row2_mid3 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (c - e + 1) (d - e) (by omega)]
   rw [show Finset.Ico d (c - 1) = (Finset.range (c - 1 - d)).image (· + d) from by
@@ -10495,7 +10516,7 @@ private lemma sevenRow_arm_row2 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht
     have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row2_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (c - d) (c - 1 - d) (by omega)]
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc.le,
@@ -10534,10 +10555,10 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 5 - s) / ((b : ℚ) + 5 - s - 1) := by
+      (((b + 5 : ℕ) : ℚ) - s) / (((b + 5 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 5) g (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -10548,7 +10569,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((b : ℚ) - g + 4 - t) / ((b : ℚ) - g + 4 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_mid1 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (b - g + 4) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -10559,7 +10580,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((b : ℚ) - f + 3 - t) / ((b : ℚ) - f + 3 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_mid2 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (b - f + 3) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -10570,7 +10591,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((b : ℚ) - e + 2 - t) / ((b : ℚ) - e + 2 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_mid3 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (b - e + 2) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -10581,7 +10602,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_mid4 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (b - d + 1) (c - d) (by omega)]
   rw [show Finset.Ico c (b - 1) = (Finset.range (b - 1 - c)).image (· + c) from by
@@ -10592,7 +10613,7 @@ private lemma sevenRow_arm_row1 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht
     have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row1_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (b - c) (b - 1 - c) (by omega)]
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc,
@@ -10637,10 +10658,10 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range g,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 6 - s) / ((a : ℚ) + 6 - s - 1) := by
+      (((a + 6 : ℕ) : ℚ) - s) / (((a + 6 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsg : s < g := Finset.mem_range.mp hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_lt h7 hmem hsg]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 6) g (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -10651,7 +10672,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - g + 5 - t) / ((a : ℚ) - g + 5 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_mid1 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - g + 5) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -10662,7 +10683,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - f + 4 - t) / ((a : ℚ) - f + 4 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_mid2 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - f + 4) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -10673,7 +10694,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - e + 3 - t) / ((a : ℚ) - e + 3 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_mid3 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - e + 3) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -10684,7 +10705,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_mid4 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (a - d + 2) (c - d) (by omega)]
   rw [show Finset.Ico c b = (Finset.range (b - c)).image (· + c) from by
@@ -10695,7 +10716,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht
     have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_mid5 h7 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (a - c + 1) (b - c) (by omega)]
   rw [show Finset.Ico b (a - 1) = (Finset.range (a - 1 - b)).image (· + b) from by
@@ -10706,7 +10727,7 @@ private lemma sevenRow_arm_row0 {μ : YoungDiagram} (h7 : μ.rowLen 7 = 0)
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht
     have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [sevenRow_hookLen_row0_ge h7 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
   push_cast [Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed, Nat.cast_sub hdc,
@@ -10780,12 +10801,12 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     simp only [Prod.fst, Prod.snd]
     rw [sevenRow_arm_row6 μ h7 hbot]
     have hg1 : g - 1 < g := Nat.sub_lt h6 Nat.one_pos
-    have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+    have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+    have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+    have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+    have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+    have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
     rw [show Finset.range 6 = {0, 1, 2, 3, 4, 5} from by ext k; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -10819,22 +10840,22 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sevenRow_arm_row5 h7 hgf']
       have hf1 : f - 1 < f := Nat.sub_lt (by omega) Nat.one_pos
       have hgf1 : g ≤ f - 1 := by omega
-      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
       rw [show Finset.range 5 = {0, 1, 2, 3, 4} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -10854,7 +10875,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hgf_eq : f = g := Nat.le_antisymm (not_lt.mp hgf') hgf
       have hnotcorner : ¬ isCorner μ (5, f - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (f : ℚ) - g = 0 := by rw [hgf_eq]; ring
       rw [this]; ring
@@ -10873,21 +10894,21 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sevenRow_arm_row4 h7 hfe']
       have he1 : e - 1 < e := Nat.sub_lt (by omega) Nat.one_pos
       have hfe1 : f ≤ e - 1 := by omega
-      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
       rw [show Finset.range 4 = {0, 1, 2, 3} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -10905,7 +10926,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hfe_eq : e = f := Nat.le_antisymm (not_lt.mp hfe') hfe
       have hnotcorner : ¬ isCorner μ (4, e - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (e : ℚ) - f = 0 := by rw [hfe_eq]; ring
       rw [this]; ring
@@ -10923,20 +10944,20 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sevenRow_arm_row3 h7 hed']
       have hd1 : d - 1 < d := Nat.sub_lt (by omega) Nat.one_pos
       have hed1 : e ≤ d - 1 := by omega
-      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
       rw [show Finset.range 3 = {0, 1, 2} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [sevenRow_hookLen_row0_mid3 h7 hmem0 hed1 (by omega),
@@ -10951,7 +10972,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hed_eq : d = e := Nat.le_antisymm (not_lt.mp hed') hed
       have hnotcorner : ¬ isCorner μ (3, d - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (d : ℚ) - e = 0 := by rw [hed_eq]; ring
       rw [this]; ring
@@ -10970,19 +10991,19 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sevenRow_arm_row2 h7 hdc']
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext k; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [sevenRow_hookLen_row0_mid4 h7 hmem0 hdc1 (by omega),
@@ -10995,7 +11016,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hdc_eq : c = d := Nat.le_antisymm (not_lt.mp hdc') hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hdc_eq]; ring
       rw [this]; ring
@@ -11013,16 +11034,16 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [sevenRow_arm_row1 h7 hcb']
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [sevenRow_hookLen_row0_mid5 h7 hmem0 (by omega) (by omega)]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
@@ -11033,7 +11054,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hcb_eq : b = c := Nat.le_antisymm (not_lt.mp hcb') hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hcb_eq]; ring
       rw [this]; ring
@@ -11050,11 +11071,11 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -11065,7 +11086,7 @@ lemma hook_walk_identity_sevenRow (μ : YoungDiagram)
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring
@@ -11466,11 +11487,11 @@ private lemma eightRow_corner_bot {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) (h7
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
 
 /-- Corner classification for 8-row shapes: corners are among the 8 possible positions. -/
 private lemma eightRow_corner_cases {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0) (h7 : 0 < μ.rowLen 7)
@@ -11707,7 +11728,7 @@ private lemma eightRow_arm_row7 (μ : YoungDiagram) (h8 : μ.rowLen 8 = 0)
       ((k : ℚ) - s) / ((k : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < k - 1 := Finset.mem_range.mp hs
-    have hmem : (7, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (7, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [k] at *; omega)
     rw [eightRow_hookLen_row7 h8 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope k (k - 1) (Nat.sub_lt hk_pos Nat.one_pos)]
@@ -11727,10 +11748,10 @@ private lemma eightRow_arm_row6 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
   rw [Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 6 s : ℚ) / ((hookLength μ 6 s : ℚ) - 1) =
-      ((g : ℚ) + 1 - s) / ((g : ℚ) + 1 - s - 1) := by
+      (((g + 1 : ℕ) : ℚ) - s) / (((g + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g, k] at *; omega)
     rw [eightRow_hookLen_row6_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (g + 1) k (by omega)]
   rw [show Finset.Ico k (g - 1) = (Finset.range (g - 1 - k)).image (· + k) from by
@@ -11741,7 +11762,7 @@ private lemma eightRow_arm_row6 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((g : ℚ) - k - t) / ((g : ℚ) - k - t - 1) := by
     intro t ht
     have htm : t < g - 1 - k := Finset.mem_range.mp ht
-    have hmem : (6, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g, k] at *; omega)
     rw [eightRow_hookLen_row6_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (g - k) (g - 1 - k) (by omega)]
   push_cast [Nat.cast_sub hkg.le, Nat.cast_sub (show 1 ≤ g - k by omega)]
@@ -11765,10 +11786,10 @@ private lemma eightRow_arm_row5 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 5 s : ℚ) / ((hookLength μ 5 s : ℚ) - 1) =
-      ((f : ℚ) + 2 - s) / ((f : ℚ) + 2 - s - 1) := by
+      (((f + 2 : ℕ) : ℚ) - s) / (((f + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k] at *; omega)
     rw [eightRow_hookLen_row5_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (f + 2) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -11779,7 +11800,7 @@ private lemma eightRow_arm_row5 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((f : ℚ) - k + 1 - t) / ((f : ℚ) - k + 1 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (5, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k] at *; omega)
     rw [eightRow_hookLen_row5_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (f - k + 1) (g - k) (by omega)]
   rw [show Finset.Ico g (f - 1) = (Finset.range (f - 1 - g)).image (· + g) from by
@@ -11790,7 +11811,7 @@ private lemma eightRow_arm_row5 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((f : ℚ) - g - t) / ((f : ℚ) - g - t - 1) := by
     intro t ht
     have htm : t < f - 1 - g := Finset.mem_range.mp ht
-    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k] at *; omega)
     rw [eightRow_hookLen_row5_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (f - g) (f - 1 - g) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf.le, Nat.cast_sub (show 1 ≤ f - g by omega)]
@@ -11819,10 +11840,10 @@ private lemma eightRow_arm_row4 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 4 s : ℚ) / ((hookLength μ 4 s : ℚ) - 1) =
-      ((e : ℚ) + 3 - s) / ((e : ℚ) + 3 - s - 1) := by
+      (((e + 3 : ℕ) : ℚ) - s) / (((e + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row4_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (e + 3) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -11833,7 +11854,7 @@ private lemma eightRow_arm_row4 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((e : ℚ) - k + 2 - t) / ((e : ℚ) - k + 2 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (4, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row4_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (e - k + 2) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -11844,7 +11865,7 @@ private lemma eightRow_arm_row4 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((e : ℚ) - g + 1 - t) / ((e : ℚ) - g + 1 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row4_mid2 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (e - g + 1) (f - g) (by omega)]
   rw [show Finset.Ico f (e - 1) = (Finset.range (e - 1 - f)).image (· + f) from by
@@ -11855,7 +11876,7 @@ private lemma eightRow_arm_row4 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((e : ℚ) - f - t) / ((e : ℚ) - f - t - 1) := by
     intro t ht
     have htm : t < e - 1 - f := Finset.mem_range.mp ht
-    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row4_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (e - f) (e - 1 - f) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe.le,
@@ -11890,10 +11911,10 @@ private lemma eightRow_arm_row3 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 3 s : ℚ) / ((hookLength μ 3 s : ℚ) - 1) =
-      ((d : ℚ) + 4 - s) / ((d : ℚ) + 4 - s - 1) := by
+      (((d + 4 : ℕ) : ℚ) - s) / (((d + 4 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row3_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (d + 4) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -11904,7 +11925,7 @@ private lemma eightRow_arm_row3 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((d : ℚ) - k + 3 - t) / ((d : ℚ) - k + 3 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (3, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row3_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (d - k + 3) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -11915,7 +11936,7 @@ private lemma eightRow_arm_row3 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((d : ℚ) - g + 2 - t) / ((d : ℚ) - g + 2 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row3_mid2 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (d - g + 2) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -11926,7 +11947,7 @@ private lemma eightRow_arm_row3 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((d : ℚ) - f + 1 - t) / ((d : ℚ) - f + 1 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row3_mid3 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (d - f + 1) (e - f) (by omega)]
   rw [show Finset.Ico e (d - 1) = (Finset.range (d - 1 - e)).image (· + e) from by
@@ -11937,7 +11958,7 @@ private lemma eightRow_arm_row3 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((d : ℚ) - e - t) / ((d : ℚ) - e - t - 1) := by
     intro t ht
     have htm : t < d - 1 - e := Finset.mem_range.mp ht
-    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row3_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (d - e) (d - 1 - e) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed.le,
@@ -11976,10 +11997,10 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 5 - s) / ((c : ℚ) + 5 - s - 1) := by
+      (((c + 5 : ℕ) : ℚ) - s) / (((c + 5 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 5) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -11990,7 +12011,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((c : ℚ) - k + 4 - t) / ((c : ℚ) - k + 4 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (2, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (c - k + 4) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -12001,7 +12022,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((c : ℚ) - g + 3 - t) / ((c : ℚ) - g + 3 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_mid2 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (c - g + 3) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -12012,7 +12033,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((c : ℚ) - f + 2 - t) / ((c : ℚ) - f + 2 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_mid3 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (c - f + 2) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -12023,7 +12044,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((c : ℚ) - e + 1 - t) / ((c : ℚ) - e + 1 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_mid4 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (c - e + 1) (d - e) (by omega)]
   rw [show Finset.Ico d (c - 1) = (Finset.range (c - 1 - d)).image (· + d) from by
@@ -12034,7 +12055,7 @@ private lemma eightRow_arm_row2 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht
     have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row2_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (c - d) (c - 1 - d) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed,
@@ -12079,10 +12100,10 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 6 - s) / ((b : ℚ) + 6 - s - 1) := by
+      (((b + 6 : ℕ) : ℚ) - s) / (((b + 6 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 6) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -12093,7 +12114,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - k + 5 - t) / ((b : ℚ) - k + 5 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (1, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (b - k + 5) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -12104,7 +12125,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - g + 4 - t) / ((b : ℚ) - g + 4 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_mid2 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (b - g + 4) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -12115,7 +12136,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - f + 3 - t) / ((b : ℚ) - f + 3 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_mid3 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (b - f + 3) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -12126,7 +12147,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - e + 2 - t) / ((b : ℚ) - e + 2 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_mid4 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (b - e + 2) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -12137,7 +12158,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_mid5 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (b - d + 1) (c - d) (by omega)]
   rw [show Finset.Ico c (b - 1) = (Finset.range (b - 1 - c)).image (· + c) from by
@@ -12148,7 +12169,7 @@ private lemma eightRow_arm_row1 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht
     have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row1_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (b - c) (b - 1 - c) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed,
@@ -12198,10 +12219,10 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range k,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 7 - s) / ((a : ℚ) + 7 - s - 1) := by
+      (((a + 7 : ℕ) : ℚ) - s) / (((a + 7 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsk : s < k := Finset.mem_range.mp hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_lt h8 hmem hsk]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 7) k (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -12212,7 +12233,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - k + 6 - t) / ((a : ℚ) - k + 6 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (0, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid1 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - k + 6) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -12223,7 +12244,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - g + 5 - t) / ((a : ℚ) - g + 5 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid2 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - g + 5) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -12234,7 +12255,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - f + 4 - t) / ((a : ℚ) - f + 4 - t - 1) := by
     intro t ht
     have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid3 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - f + 4) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -12245,7 +12266,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - e + 3 - t) / ((a : ℚ) - e + 3 - t - 1) := by
     intro t ht
     have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid4 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (a - e + 3) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -12256,7 +12277,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht
     have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid5 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (a - d + 2) (c - d) (by omega)]
   rw [show Finset.Ico c b = (Finset.range (b - c)).image (· + c) from by
@@ -12267,7 +12288,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht
     have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_mid6 h8 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (a - c + 1) (b - c) (by omega)]
   rw [show Finset.Ico b (a - 1) = (Finset.range (a - 1 - b)).image (· + b) from by
@@ -12278,7 +12299,7 @@ private lemma eightRow_arm_row0 {μ : YoungDiagram} (h8 : μ.rowLen 8 = 0)
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht
     have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [eightRow_hookLen_row0_ge h8 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv8, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
   push_cast [Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe, Nat.cast_sub hed,
@@ -12358,13 +12379,13 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     simp only [Prod.fst, Prod.snd]
     rw [eightRow_arm_row7 μ h8 hbot]
     have hk1 : k - 1 < k := Nat.sub_lt h7 Nat.one_pos
-    have hmem0 : (0, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem3 : (3, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem4 : (4, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem5 : (5, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem6 : (6, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem1 : (1, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem2 : (2, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem3 : (3, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem4 : (4, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem5 : (5, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+    have hmem6 : (6, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
     rw [show Finset.range 7 = {0, 1, 2, 3, 4, 5, 6} from by ext m; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -12401,23 +12422,23 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row6 h8 hkg']
       have hg1 : g - 1 < g := Nat.sub_lt (by omega) Nat.one_pos
       have hkg1 : k ≤ g - 1 := by omega
-      have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [show Finset.range 6 = {0, 1, 2, 3, 4, 5} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -12440,7 +12461,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hkg_eq : g = k := Nat.le_antisymm (not_lt.mp hkg') hkg
       have hnotcorner : ¬ isCorner μ (6, g - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (g : ℚ) - k = 0 := by rw [hkg_eq]; ring
       rw [this]; ring
@@ -12460,22 +12481,22 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row5 h8 hgf']
       have hf1 : f - 1 < f := Nat.sub_lt (by omega) Nat.one_pos
       have hgf1 : g ≤ f - 1 := by omega
-      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [show Finset.range 5 = {0, 1, 2, 3, 4} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -12495,7 +12516,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hgf_eq : f = g := Nat.le_antisymm (not_lt.mp hgf') hgf
       have hnotcorner : ¬ isCorner μ (5, f - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (f : ℚ) - g = 0 := by rw [hgf_eq]; ring
       rw [this]; ring
@@ -12514,21 +12535,21 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row4 h8 hfe']
       have he1 : e - 1 < e := Nat.sub_lt (by omega) Nat.one_pos
       have hfe1 : f ≤ e - 1 := by omega
-      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [show Finset.range 4 = {0, 1, 2, 3} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -12546,7 +12567,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hfe_eq : e = f := Nat.le_antisymm (not_lt.mp hfe') hfe
       have hnotcorner : ¬ isCorner μ (4, e - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (e : ℚ) - f = 0 := by rw [hfe_eq]; ring
       rw [this]; ring
@@ -12566,20 +12587,20 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row3 h8 hed']
       have hd1 : d - 1 < d := Nat.sub_lt (by omega) Nat.one_pos
       have hed1 : e ≤ d - 1 := by omega
-      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [show Finset.range 3 = {0, 1, 2} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [eightRow_hookLen_row0_mid4 h8 hmem0 hed1 (by omega),
@@ -12594,7 +12615,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hed_eq : d = e := Nat.le_antisymm (not_lt.mp hed') hed
       have hnotcorner : ¬ isCorner μ (3, d - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (d : ℚ) - e = 0 := by rw [hed_eq]; ring
       rw [this]; ring
@@ -12613,19 +12634,19 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row2 h8 hdc']
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [eightRow_hookLen_row0_mid5 h8 hmem0 hdc1 (by omega),
@@ -12639,7 +12660,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hdc_eq : c = d := Nat.le_antisymm (not_lt.mp hdc') hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hdc_eq]; ring
       rw [this]; ring
@@ -12657,16 +12678,16 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [eightRow_arm_row1 h8 hcb']
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [eightRow_hookLen_row0_mid6 h8 hmem0 (by omega) (by omega)]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
@@ -12677,7 +12698,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hcb_eq : b = c := Nat.le_antisymm (not_lt.mp hcb') hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hcb_eq]; ring
       rw [this]; ring
@@ -12696,11 +12717,11 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -12711,7 +12732,7 @@ lemma hook_walk_identity_eightRow (μ : YoungDiagram)
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring
@@ -13205,11 +13226,11 @@ private lemma nineRow_corner_bot {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) (h8 
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
   · intro h
     have := YoungDiagram.mem_iff_lt_rowLen.mp h
     norm_num at this
-    omega
+    all_goals omega
 
 /-- Corner classification for 9-row shapes: corners are among the 9 possible positions. -/
 private lemma nineRow_corner_cases {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0) (h8 : 0 < μ.rowLen 8)
@@ -13480,7 +13501,7 @@ private lemma nineRow_arm_row8 (μ : YoungDiagram) (h9 : μ.rowLen 9 = 0)
       ((j : ℚ) - s) / ((j : ℚ) - s - 1) := by
     intro s hs
     have hsc : s < j - 1 := Finset.mem_range.mp hs
-    have hmem : (8, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (8, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j] at *; omega)
     rw [nineRow_hookLen_row8 h9 hmem]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv]
   rw [prod_div_telescope j (j - 1) (Nat.sub_lt hj_pos Nat.one_pos)]
@@ -13500,10 +13521,10 @@ private lemma nineRow_arm_row7 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
   rw [Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 7 s : ℚ) / ((hookLength μ 7 s : ℚ) - 1) =
-      ((k : ℚ) + 1 - s) / ((k : ℚ) + 1 - s - 1) := by
+      (((k + 1 : ℕ) : ℚ) - s) / (((k + 1 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (7, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (7, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [k, j] at *; omega)
     rw [nineRow_hookLen_row7_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (k + 1) j (by omega)]
   rw [show Finset.Ico j (k - 1) = (Finset.range (k - 1 - j)).image (· + j) from by
@@ -13514,7 +13535,7 @@ private lemma nineRow_arm_row7 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((k : ℚ) - j - t) / ((k : ℚ) - j - t - 1) := by
     intro t ht
     have htm : t < k - 1 - j := Finset.mem_range.mp ht
-    have hmem : (7, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (7, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [k, j] at *; omega)
     rw [nineRow_hookLen_row7_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (k - j) (k - 1 - j) (by omega)]
   push_cast [Nat.cast_sub hjk.le, Nat.cast_sub (show 1 ≤ k - j by omega)]
@@ -13538,10 +13559,10 @@ private lemma nineRow_arm_row6 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 6 s : ℚ) / ((hookLength μ 6 s : ℚ) - 1) =
-      ((g : ℚ) + 2 - s) / ((g : ℚ) + 2 - s - 1) := by
+      (((g + 2 : ℕ) : ℚ) - s) / (((g + 2 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g, k, j] at *; omega)
     rw [nineRow_hookLen_row6_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (g + 2) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13552,7 +13573,7 @@ private lemma nineRow_arm_row6 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((g : ℚ) - j + 1 - t) / ((g : ℚ) - j + 1 - t - 1) := by
     intro t ht
     have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (6, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g, k, j] at *; omega)
     rw [nineRow_hookLen_row6_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (g - j + 1) (k - j) (by omega)]
   rw [show Finset.Ico k (g - 1) = (Finset.range (g - 1 - k)).image (· + k) from by
@@ -13563,7 +13584,7 @@ private lemma nineRow_arm_row6 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((g : ℚ) - k - t) / ((g : ℚ) - k - t - 1) := by
     intro t ht
     have htm : t < g - 1 - k := Finset.mem_range.mp ht
-    have hmem : (6, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (6, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [g, k, j] at *; omega)
     rw [nineRow_hookLen_row6_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (g - k) (g - 1 - k) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg.le, Nat.cast_sub (show 1 ≤ g - k by omega)]
@@ -13592,10 +13613,10 @@ private lemma nineRow_arm_row5 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 5 s : ℚ) / ((hookLength μ 5 s : ℚ) - 1) =
-      ((f : ℚ) + 3 - s) / ((f : ℚ) + 3 - s - 1) := by
+      (((f + 3 : ℕ) : ℚ) - s) / (((f + 3 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row5_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (f + 3) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13606,7 +13627,7 @@ private lemma nineRow_arm_row5 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((f : ℚ) - j + 2 - t) / ((f : ℚ) - j + 2 - t - 1) := by
     intro t ht
     have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (5, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row5_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (f - j + 2) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -13617,7 +13638,7 @@ private lemma nineRow_arm_row5 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((f : ℚ) - k + 1 - t) / ((f : ℚ) - k + 1 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (5, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row5_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (f - k + 1) (g - k) (by omega)]
   rw [show Finset.Ico g (f - 1) = (Finset.range (f - 1 - g)).image (· + g) from by
@@ -13628,7 +13649,7 @@ private lemma nineRow_arm_row5 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((f : ℚ) - g - t) / ((f : ℚ) - g - t - 1) := by
     intro t ht
     have htm : t < f - 1 - g := Finset.mem_range.mp ht
-    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (5, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row5_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (f - g) (f - 1 - g) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf.le,
@@ -13663,10 +13684,10 @@ private lemma nineRow_arm_row4 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 4 s : ℚ) / ((hookLength μ 4 s : ℚ) - 1) =
-      ((e : ℚ) + 4 - s) / ((e : ℚ) + 4 - s - 1) := by
+      (((e + 4 : ℕ) : ℚ) - s) / (((e + 4 : ℕ) : ℚ) - s - 1) := by
     intro s hs
     have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row4_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (e + 4) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13677,7 +13698,7 @@ private lemma nineRow_arm_row4 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((e : ℚ) - j + 3 - t) / ((e : ℚ) - j + 3 - t - 1) := by
     intro t ht
     have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (4, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row4_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (e - j + 3) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -13688,7 +13709,7 @@ private lemma nineRow_arm_row4 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((e : ℚ) - k + 2 - t) / ((e : ℚ) - k + 2 - t - 1) := by
     intro t ht
     have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (4, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row4_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (e - k + 2) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -13699,7 +13720,7 @@ private lemma nineRow_arm_row4 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((e : ℚ) - g + 1 - t) / ((e : ℚ) - g + 1 - t - 1) := by
     intro t ht
     have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row4_mid3 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (e - g + 1) (f - g) (by omega)]
   rw [show Finset.Ico f (e - 1) = (Finset.range (e - 1 - f)).image (· + f) from by
@@ -13710,7 +13731,7 @@ private lemma nineRow_arm_row4 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       ((e : ℚ) - f - t) / ((e : ℚ) - f - t - 1) := by
     intro t ht
     have htm : t < e - 1 - f := Finset.mem_range.mp ht
-    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (4, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row4_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (e - f) (e - 1 - f) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe.le,
@@ -13749,9 +13770,9 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 3 s : ℚ) / ((hookLength μ 3 s : ℚ) - 1) =
-      ((d : ℚ) + 5 - s) / ((d : ℚ) + 5 - s - 1) := by
+      (((d + 5 : ℕ) : ℚ) - s) / (((d + 5 : ℕ) : ℚ) - s - 1) := by
     intro s hs; have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (d + 5) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13761,7 +13782,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 3 (t + j) : ℚ) / ((hookLength μ 3 (t + j) : ℚ) - 1) =
       ((d : ℚ) - j + 4 - t) / ((d : ℚ) - j + 4 - t - 1) := by
     intro t ht; have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (3, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (d - j + 4) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -13771,7 +13792,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 3 (t + k) : ℚ) / ((hookLength μ 3 (t + k) : ℚ) - 1) =
       ((d : ℚ) - k + 3 - t) / ((d : ℚ) - k + 3 - t - 1) := by
     intro t ht; have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (3, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (d - k + 3) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -13781,7 +13802,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 3 (t + g) : ℚ) / ((hookLength μ 3 (t + g) : ℚ) - 1) =
       ((d : ℚ) - g + 2 - t) / ((d : ℚ) - g + 2 - t - 1) := by
     intro t ht; have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_mid3 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (d - g + 2) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -13791,7 +13812,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 3 (t + f) : ℚ) / ((hookLength μ 3 (t + f) : ℚ) - 1) =
       ((d : ℚ) - f + 1 - t) / ((d : ℚ) - f + 1 - t - 1) := by
     intro t ht; have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_mid4 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (d - f + 1) (e - f) (by omega)]
   rw [show Finset.Ico e (d - 1) = (Finset.range (d - 1 - e)).image (· + e) from by
@@ -13801,7 +13822,7 @@ private lemma nineRow_arm_row3 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 3 (t + e) : ℚ) / ((hookLength μ 3 (t + e) : ℚ) - 1) =
       ((d : ℚ) - e - t) / ((d : ℚ) - e - t - 1) := by
     intro t ht; have htm : t < d - 1 - e := Finset.mem_range.mp ht
-    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (3, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row3_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (d - e) (d - 1 - e) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe,
@@ -13845,9 +13866,9 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 2 s : ℚ) / ((hookLength μ 2 s : ℚ) - 1) =
-      ((c : ℚ) + 6 - s) / ((c : ℚ) + 6 - s - 1) := by
+      (((c + 6 : ℕ) : ℚ) - s) / (((c + 6 : ℕ) : ℚ) - s - 1) := by
     intro s hs; have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (c + 6) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13857,7 +13878,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + j) : ℚ) / ((hookLength μ 2 (t + j) : ℚ) - 1) =
       ((c : ℚ) - j + 5 - t) / ((c : ℚ) - j + 5 - t - 1) := by
     intro t ht; have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (2, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (c - j + 5) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -13867,7 +13888,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + k) : ℚ) / ((hookLength μ 2 (t + k) : ℚ) - 1) =
       ((c : ℚ) - k + 4 - t) / ((c : ℚ) - k + 4 - t - 1) := by
     intro t ht; have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (2, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (c - k + 4) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -13877,7 +13898,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + g) : ℚ) / ((hookLength μ 2 (t + g) : ℚ) - 1) =
       ((c : ℚ) - g + 3 - t) / ((c : ℚ) - g + 3 - t - 1) := by
     intro t ht; have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_mid3 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (c - g + 3) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -13887,7 +13908,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + f) : ℚ) / ((hookLength μ 2 (t + f) : ℚ) - 1) =
       ((c : ℚ) - f + 2 - t) / ((c : ℚ) - f + 2 - t - 1) := by
     intro t ht; have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_mid4 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (c - f + 2) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -13897,7 +13918,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + e) : ℚ) / ((hookLength μ 2 (t + e) : ℚ) - 1) =
       ((c : ℚ) - e + 1 - t) / ((c : ℚ) - e + 1 - t - 1) := by
     intro t ht; have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_mid5 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (c - e + 1) (d - e) (by omega)]
   rw [show Finset.Ico d (c - 1) = (Finset.range (c - 1 - d)).image (· + d) from by
@@ -13907,7 +13928,7 @@ private lemma nineRow_arm_row2 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 2 (t + d) : ℚ) / ((hookLength μ 2 (t + d) : ℚ) - 1) =
       ((c : ℚ) - d - t) / ((c : ℚ) - d - t - 1) := by
     intro t ht; have htm : t < c - 1 - d := Finset.mem_range.mp ht
-    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (2, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row2_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (c - d) (c - 1 - d) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe,
@@ -13956,9 +13977,9 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
-      ((b : ℚ) + 7 - s) / ((b : ℚ) + 7 - s - 1) := by
+      (((b + 7 : ℕ) : ℚ) - s) / (((b + 7 : ℕ) : ℚ) - s - 1) := by
     intro s hs; have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 7) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -13968,7 +13989,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + j) : ℚ) / ((hookLength μ 1 (t + j) : ℚ) - 1) =
       ((b : ℚ) - j + 6 - t) / ((b : ℚ) - j + 6 - t - 1) := by
     intro t ht; have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (1, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (b - j + 6) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -13978,7 +13999,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + k) : ℚ) / ((hookLength μ 1 (t + k) : ℚ) - 1) =
       ((b : ℚ) - k + 5 - t) / ((b : ℚ) - k + 5 - t - 1) := by
     intro t ht; have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (1, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (b - k + 5) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -13988,7 +14009,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + g) : ℚ) / ((hookLength μ 1 (t + g) : ℚ) - 1) =
       ((b : ℚ) - g + 4 - t) / ((b : ℚ) - g + 4 - t - 1) := by
     intro t ht; have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid3 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (b - g + 4) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -13998,7 +14019,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + f) : ℚ) / ((hookLength μ 1 (t + f) : ℚ) - 1) =
       ((b : ℚ) - f + 3 - t) / ((b : ℚ) - f + 3 - t - 1) := by
     intro t ht; have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid4 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (b - f + 3) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -14008,7 +14029,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + e) : ℚ) / ((hookLength μ 1 (t + e) : ℚ) - 1) =
       ((b : ℚ) - e + 2 - t) / ((b : ℚ) - e + 2 - t - 1) := by
     intro t ht; have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid5 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (b - e + 2) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -14018,7 +14039,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + d) : ℚ) / ((hookLength μ 1 (t + d) : ℚ) - 1) =
       ((b : ℚ) - d + 1 - t) / ((b : ℚ) - d + 1 - t - 1) := by
     intro t ht; have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_mid6 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (b - d + 1) (c - d) (by omega)]
   rw [show Finset.Ico c (b - 1) = (Finset.range (b - 1 - c)).image (· + c) from by
@@ -14028,7 +14049,7 @@ private lemma nineRow_arm_row1 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 1 (t + c) : ℚ) / ((hookLength μ 1 (t + c) : ℚ) - 1) =
       ((b : ℚ) - c - t) / ((b : ℚ) - c - t - 1) := by
     intro t ht; have htm : t < b - 1 - c := Finset.mem_range.mp ht
-    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (1, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row1_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv8, prod_div_telescope (b - c) (b - 1 - c) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe,
@@ -14083,9 +14104,9 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       Finset.prod_union (by simp [Finset.disjoint_left, Finset.mem_Ico]; omega)]
   have hconv1 : ∀ s ∈ Finset.range j,
       (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
-      ((a : ℚ) + 8 - s) / ((a : ℚ) + 8 - s - 1) := by
+      (((a + 8 : ℕ) : ℚ) - s) / (((a + 8 : ℕ) : ℚ) - s - 1) := by
     intro s hs; have hsj : s < j := Finset.mem_range.mp hs
-    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_lt h9 hmem hsj]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 8) j (by omega)]
   rw [show Finset.Ico j k = (Finset.range (k - j)).image (· + j) from by
@@ -14095,7 +14116,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + j) : ℚ) / ((hookLength μ 0 (t + j) : ℚ) - 1) =
       ((a : ℚ) - j + 7 - t) / ((a : ℚ) - j + 7 - t - 1) := by
     intro t ht; have htm : t < k - j := Finset.mem_range.mp ht
-    have hmem : (0, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid1 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv2, prod_div_telescope (a - j + 7) (k - j) (by omega)]
   rw [show Finset.Ico k g = (Finset.range (g - k)).image (· + k) from by
@@ -14105,7 +14126,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + k) : ℚ) / ((hookLength μ 0 (t + k) : ℚ) - 1) =
       ((a : ℚ) - k + 6 - t) / ((a : ℚ) - k + 6 - t - 1) := by
     intro t ht; have htm : t < g - k := Finset.mem_range.mp ht
-    have hmem : (0, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid2 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv3, prod_div_telescope (a - k + 6) (g - k) (by omega)]
   rw [show Finset.Ico g f = (Finset.range (f - g)).image (· + g) from by
@@ -14115,7 +14136,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + g) : ℚ) / ((hookLength μ 0 (t + g) : ℚ) - 1) =
       ((a : ℚ) - g + 5 - t) / ((a : ℚ) - g + 5 - t - 1) := by
     intro t ht; have htm : t < f - g := Finset.mem_range.mp ht
-    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + g) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid3 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv4, prod_div_telescope (a - g + 5) (f - g) (by omega)]
   rw [show Finset.Ico f e = (Finset.range (e - f)).image (· + f) from by
@@ -14125,7 +14146,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + f) : ℚ) / ((hookLength μ 0 (t + f) : ℚ) - 1) =
       ((a : ℚ) - f + 4 - t) / ((a : ℚ) - f + 4 - t - 1) := by
     intro t ht; have htm : t < e - f := Finset.mem_range.mp ht
-    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + f) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid4 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv5, prod_div_telescope (a - f + 4) (e - f) (by omega)]
   rw [show Finset.Ico e d = (Finset.range (d - e)).image (· + e) from by
@@ -14135,7 +14156,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + e) : ℚ) / ((hookLength μ 0 (t + e) : ℚ) - 1) =
       ((a : ℚ) - e + 3 - t) / ((a : ℚ) - e + 3 - t - 1) := by
     intro t ht; have htm : t < d - e := Finset.mem_range.mp ht
-    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + e) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid5 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv6, prod_div_telescope (a - e + 3) (d - e) (by omega)]
   rw [show Finset.Ico d c = (Finset.range (c - d)).image (· + d) from by
@@ -14145,7 +14166,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + d) : ℚ) / ((hookLength μ 0 (t + d) : ℚ) - 1) =
       ((a : ℚ) - d + 2 - t) / ((a : ℚ) - d + 2 - t - 1) := by
     intro t ht; have htm : t < c - d := Finset.mem_range.mp ht
-    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + d) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid6 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv7, prod_div_telescope (a - d + 2) (c - d) (by omega)]
   rw [show Finset.Ico c b = (Finset.range (b - c)).image (· + c) from by
@@ -14155,7 +14176,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + c) : ℚ) / ((hookLength μ 0 (t + c) : ℚ) - 1) =
       ((a : ℚ) - c + 1 - t) / ((a : ℚ) - c + 1 - t - 1) := by
     intro t ht; have htm : t < b - c := Finset.mem_range.mp ht
-    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + c) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_mid7 h9 hmem (by omega) (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv8, prod_div_telescope (a - c + 1) (b - c) (by omega)]
   rw [show Finset.Ico b (a - 1) = (Finset.range (a - 1 - b)).image (· + b) from by
@@ -14165,7 +14186,7 @@ private lemma nineRow_arm_row0 {μ : YoungDiagram} (h9 : μ.rowLen 9 = 0)
       (hookLength μ 0 (t + b) : ℚ) / ((hookLength μ 0 (t + b) : ℚ) - 1) =
       ((a : ℚ) - b - t) / ((a : ℚ) - b - t - 1) := by
     intro t ht; have htm : t < a - 1 - b := Finset.mem_range.mp ht
-    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem : (0, t + b) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [a, b, c, d, e, f, g, k, j] at *; omega)
     rw [nineRow_hookLen_row0_ge h9 hmem (by omega)]; push_cast; congr 1 <;> push_cast <;> omega
   rw [Finset.prod_congr rfl hconv9, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
   push_cast [Nat.cast_sub hjk, Nat.cast_sub hkg, Nat.cast_sub hgf, Nat.cast_sub hfe,
@@ -14247,14 +14268,14 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     simp only [Prod.fst, Prod.snd]
     rw [nineRow_arm_row8 μ h9 hbot]
     have hj1 : j - 1 < j := Nat.sub_lt h8 Nat.one_pos
-    have hmem0 : (0, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem1 : (1, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem2 : (2, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem3 : (3, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem4 : (4, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem5 : (5, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem6 : (6, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-    have hmem7 : (7, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem0 : (0, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem1 : (1, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem2 : (2, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem3 : (3, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem4 : (4, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem5 : (5, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem6 : (6, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+    have hmem7 : (7, j - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
     rw [show Finset.range 8 = {0, 1, 2, 3, 4, 5, 6, 7} from by ext m; simp; omega]
     rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
         Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -14295,24 +14316,24 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row7 h9 hjk']
       have hk1 : k - 1 < k := Nat.sub_lt (by omega) Nat.one_pos
       have hjk1 : j ≤ k - 1 := by omega
-      have hmem0 : (0, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem5 : (5, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem6 : (6, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem2 : (2, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem3 : (3, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem4 : (4, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem5 : (5, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem6 : (6, k - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 7 = {0, 1, 2, 3, 4, 5, 6} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -14337,7 +14358,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hjk_eq : k = j := Nat.le_antisymm (not_lt.mp hjk') hjk
       have hnotcorner : ¬ isCorner μ (7, k - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (k : ℚ) - j = 0 := by rw [hjk_eq]; ring
       rw [this]; ring
@@ -14358,23 +14379,23 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row6 h9 hkg']
       have hg1 : g - 1 < g := Nat.sub_lt (by omega) Nat.one_pos
       have hkg1 : k ≤ g - 1 := by omega
-      have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem2 : (2, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem3 : (3, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem4 : (4, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem5 : (5, g - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 6 = {0, 1, 2, 3, 4, 5} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp),
@@ -14397,7 +14418,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hkg_eq : g = k := Nat.le_antisymm (not_lt.mp hkg') hkg
       have hnotcorner : ¬ isCorner μ (6, g - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (g : ℚ) - k = 0 := by rw [hkg_eq]; ring
       rw [this]; ring
@@ -14417,22 +14438,22 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row5 h9 hgf']
       have hf1 : f - 1 < f := Nat.sub_lt (by omega) Nat.one_pos
       have hgf1 : g ≤ f - 1 := by omega
-      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem2 : (2, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem3 : (3, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem4 : (4, f - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 5 = {0, 1, 2, 3, 4} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -14452,7 +14473,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hgf_eq : f = g := Nat.le_antisymm (not_lt.mp hgf') hgf
       have hnotcorner : ¬ isCorner μ (5, f - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (f : ℚ) - g = 0 := by rw [hgf_eq]; ring
       rw [this]; ring
@@ -14472,21 +14493,21 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row4 h9 hfe']
       have he1 : e - 1 < e := Nat.sub_lt (by omega) Nat.one_pos
       have hfe1 : f ≤ e - 1 := by omega
-      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem2 : (2, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem3 : (3, e - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 4 = {0, 1, 2, 3} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp),
           Finset.prod_insert (by simp), Finset.prod_singleton]
@@ -14504,7 +14525,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hfe_eq : e = f := Nat.le_antisymm (not_lt.mp hfe') hfe
       have hnotcorner : ¬ isCorner μ (4, e - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (e : ℚ) - f = 0 := by rw [hfe_eq]; ring
       rw [this]; ring
@@ -14524,20 +14545,20 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row3 h9 hed']
       have hd1 : d - 1 < d := Nat.sub_lt (by omega) Nat.one_pos
       have hed1 : e ≤ d - 1 := by omega
-      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem2 : (2, d - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 3 = {0, 1, 2} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [nineRow_hookLen_row0_mid5 h9 hmem0 hed1 (by omega),
@@ -14553,7 +14574,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hed_eq : d = e := Nat.le_antisymm (not_lt.mp hed') hed
       have hnotcorner : ¬ isCorner μ (3, d - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (d : ℚ) - e = 0 := by rw [hed_eq]; ring
       rw [this]; ring
@@ -14572,19 +14593,19 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row2 h9 hdc']
       have hc1 : c - 1 < c := Nat.sub_lt (by omega) Nat.one_pos
       have hdc1 : d ≤ c - 1 := by omega
-      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
-      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
+      have hmem1 : (1, c - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [show Finset.range 2 = {0, 1} from by ext m; simp; omega]
       rw [Finset.prod_insert (by simp), Finset.prod_singleton]
       rw [nineRow_hookLen_row0_mid6 h9 hmem0 hdc1 (by omega),
@@ -14598,7 +14619,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hdc_eq : c = d := Nat.le_antisymm (not_lt.mp hdc') hdc
       have hnotcorner : ¬ isCorner μ (2, c - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (c : ℚ) - d = 0 := by rw [hdc_eq]; ring
       rw [this]; ring
@@ -14616,16 +14637,16 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos hmid]
       rw [hookProd_ratio_formula hmid]
       simp only [Prod.fst, Prod.snd]
       rw [nineRow_arm_row1 h9 hcb']
-      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega)
       rw [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
       rw [nineRow_hookLen_row0_mid7 h9 hmem0 (by omega) (by omega)]
       push_cast [Nat.cast_sub (show 1 ≤ b by omega),
@@ -14636,7 +14657,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hcb_eq : b = c := Nat.le_antisymm (not_lt.mp hcb') hcb
       have hnotcorner : ¬ isCorner μ (1, b - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (b : ℚ) - c = 0 := by rw [hcb_eq]; ring
       rw [this]; ring
@@ -14655,11 +14676,11 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
         · intro h
           have := YoungDiagram.mem_iff_lt_rowLen.mp h
           norm_num at this
-          omega
+          all_goals omega
       simp only [ratio, dif_pos htop]
       rw [hookProd_ratio_formula htop]
       simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
@@ -14671,7 +14692,7 @@ lemma hook_walk_identity_nineRow (μ : YoungDiagram)
     · have hab_eq : a = b := Nat.le_antisymm (not_lt.mp hab') hba
       have hnotcorner : ¬ isCorner μ (0, a - 1) := by
         intro ⟨_, _, hbelow⟩
-        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        exact hbelow (YoungDiagram.mem_iff_lt_rowLen.mpr (by simp only [j, k, g, f, e, d, c, b, a] at *; omega))
       simp only [ratio, dif_neg hnotcorner]
       have : (a : ℚ) - b = 0 := by rw [hab_eq]; ring
       rw [this]; ring

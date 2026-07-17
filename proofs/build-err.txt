@@ -436,16 +436,13 @@ open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6299:4: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6476:36: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6535:51: error: No goals to be solved
 Try this:
   [apply] ring_nf
   
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
     
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6526:77: error: unsolved goals
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6527:77: error: unsolved goals
 a : ℕ
 ha : 3 ≤ a
 μ : YoungDiagram := a21YD a ha
@@ -463,7 +460,9 @@ hdisj2 : Disjoint ({0} ∪ {1}) (Ico 2 (a - 1))
 htail : ∏ s ∈ Ico 2 (a - 1), ↑(hookLength (a21YD a ha) 0 s) / (↑(hookLength (a21YD a ha) 0 s) - 1) = ↑a - 2
 ha3Q : 3 ≤ ↑a
 hne1 : ↑a + 1 ≠ 0
+hne1' : 1 + ↑a ≠ 0
 hne2 : ↑a - 1 ≠ 0
+hne2' : -1 + ↑a ≠ 0
 ⊢ -(↑a * (1 + ↑a)⁻¹) + ↑a ^ 2 * (1 + ↑a)⁻¹ - (1 + ↑a)⁻¹ * 2 = -2 + ↑a
 Try this:
   [apply] ring_nf
@@ -471,7 +470,7 @@ Try this:
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
     
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6572:49: error: unsolved goals
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6577:49: error: unsolved goals
 a : ℕ
 ha : 3 ≤ a
 μ : YoungDiagram := a21YD a ha
@@ -488,44 +487,44 @@ hR_top :
 hR_mid : ↑(hookProd μ) / ↑(hookProd (removeCorner μ (1, 1) h_mid)) = 3 * ↑a / (2 * (↑a - 1))
 ha3Q : 3 ≤ ↑a
 hne1 : ↑a + 1 ≠ 0
+hne1' : 1 + ↑a ≠ 0
 ⊢ ↑a * (1 + ↑a)⁻¹ * 2 + (1 + ↑a)⁻¹ * 2 = 2
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6608:50: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:15: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6529:15: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_empty, mul_one]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:25: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6529:25: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵Finset.prod_empty, mul_one]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:35: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6529:35: warning: This simp argument is unused:
   Finset.prod_empty
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, Prod.snd, F̵i̵n̵s̵e̵t̵.̵p̵r̵o̵d̵_̵e̵m̵p̵t̵y̵,̵ ̵mul_one]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6528:54: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6529:54: warning: This simp argument is unused:
   mul_one
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, Prod.snd, Finset.prod_empty,̵ ̵m̵u̵l̵_̵o̵n̵e̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6563:15: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6567:15: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6563:25: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6567:25: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
@@ -533,35 +532,35 @@ Hint: Omit it from the simp argument list.
   ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6574:15: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6579:15: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵,̵[̲P̲r̲o̲d̲.̲s̲n̲d̲,̲ Finset.prod_empty, one_mul]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6574:25: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6579:25: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵Finset.prod_empty, one_mul]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6574:35: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6579:35: warning: This simp argument is unused:
   Finset.prod_empty
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, Prod.snd, F̵i̵n̵s̵e̵t̵.̵p̵r̵o̵d̵_̵e̵m̵p̵t̵y̵,̵ ̵one_mul]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6574:54: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6579:54: warning: This simp argument is unused:
   one_mul
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, Prod.snd, Finset.prod_empty,̵ ̵o̵n̵e̵_̵m̵u̵l̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6612:22: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6620:22: warning: This simp argument is unused:
   show (0, a - 1) = (0, a - 1) from rfl
 
 Hint: Omit it from the simp argument list.
@@ -571,7 +570,7 @@ Hint: Omit it from the simp argument list.
       show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq], ite_true, ite_false]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6616:13: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6624:13: warning: This simp argument is unused:
   ite_true
 
 Hint: Omit it from the simp argument list.
@@ -581,863 +580,301 @@ Hint: Omit it from the simp argument list.
       show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq], i̵t̵e̵_̵t̵r̵u̵e̵,̵ ̵ite_false]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6659:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6669:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6673:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6683:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6668:5: warning: Variable name `h3` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6678:5: warning: Variable name `h3` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6733:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6743:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6727:5: warning: Variable name `h3` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6737:5: warning: Variable name `h3` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6745:27: error: Application type mismatch: The argument
-  LT.lt.ne' (Nat.cast_pos.mpr hKm)
-has type
-  ↑K ≠ @OfNat.ofNat ?m.58 0 (@Zero.toOfNat0 ?m.58 (@MulZeroClass.toZero ?m.58 instMulZeroClassOfSemiring))
-but is expected to have type
-  ?m.49 ≠
-    @OfNat.ofNat ?m.47 0
-      (@Zero.toOfNat0 ?m.47
-        (@MulZeroClass.toZero ?m.47 GroupWithZero.toMonoidWithZero.toMulZeroOneClass.toMulZeroClass))
-in the application
-  div_self (LT.lt.ne' (Nat.cast_pos.mpr hKm))
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6745:9: error: unsolved goals
-case zero
-K : ℕ
-hKm : 0 < K
-⊢ 1 = ↑K / ↑K
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6783:2: warning: 'push_cast' tactic does nothing
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6795:2: warning: 'push_cast' tactic does nothing
 
 Note: This linter can be disabled with `set_option linter.unusedTactic false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6808:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6820:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6818:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6830:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6819:77: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6831:77: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   a ≥ 1
 where
  a := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6822:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6834:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6806:13: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6818:13: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6806:23: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6818:23: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6828:54: warning: Variable name `h3` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6840:54: warning: Variable name `h3` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6843:54: warning: Variable name `h3` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6855:54: warning: Variable name `h3` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6873:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6885:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6886:6: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6894:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6895:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6892:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6898:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6906:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6907:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6904:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Try this:
-  [apply] ring_nf
-  
-  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
-    
-  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6908:43: error: unsolved goals
-μ : YoungDiagram
-h3 : μ.rowLen 3 = 0
-b : ℕ := μ.rowLen 1
-hb_def : b = μ.rowLen 1
-cv : ℕ := μ.rowLen 2
-hbc : cv < b
-hcv_def : cv = μ.rowLen 2
-hcb : cv ≤ b
-hsplit : range (b - 1) = range cv ∪ Ico cv (b - 1)
-hdisj : Disjoint (range cv) (Ico cv (b - 1))
-hconv1 : ∀ s ∈ range cv, ↑(hookLength μ 1 s) / (↑(hookLength μ 1 s) - 1) = (↑(b + 1) - ↑s) / (↑(b + 1) - ↑s - 1)
-hconv2 : ∀ s ∈ Ico cv (b - 1), ↑(hookLength μ 1 s) / (↑(hookLength μ 1 s) - 1) = (↑b - ↑s) / (↑b - ↑s - 1)
-hconv2b : ∀ k ∈ range (b - 1 - cv), (↑b - ↑(cv + k)) / (↑b - ↑(cv + k) - 1) = (↑(b - cv) - ↑k) / (↑(b - cv) - ↑k - 1)
-hbc1 : ↑b - ↑cv + 1 ≠ 0
-⊢ -(↑b * ↑cv *
-                  (↑b - ↑b * ↑cv * 2 - ↑b * ↑(b - 1 - cv) + ↑b ^ 2 - ↑cv + ↑cv * ↑(b - 1 - cv) + ↑cv ^ 2 -
-                      ↑(b - 1 - cv))⁻¹ *
-                2) +
-            ↑b *
-              (↑b - ↑b * ↑cv * 2 - ↑b * ↑(b - 1 - cv) + ↑b ^ 2 - ↑cv + ↑cv * ↑(b - 1 - cv) + ↑cv ^ 2 -
-                  ↑(b - 1 - cv))⁻¹ +
-          ↑b ^ 2 *
-            (↑b - ↑b * ↑cv * 2 - ↑b * ↑(b - 1 - cv) + ↑b ^ 2 - ↑cv + ↑cv * ↑(b - 1 - cv) + ↑cv ^ 2 - ↑(b - 1 - cv))⁻¹ -
-        ↑cv *
-          (↑b - ↑b * ↑cv * 2 - ↑b * ↑(b - 1 - cv) + ↑b ^ 2 - ↑cv + ↑cv * ↑(b - 1 - cv) + ↑cv ^ 2 - ↑(b - 1 - cv))⁻¹ +
-      ↑cv ^ 2 *
-        (↑b - ↑b * ↑cv * 2 - ↑b * ↑(b - 1 - cv) + ↑b ^ 2 - ↑cv + ↑cv * ↑(b - 1 - cv) + ↑cv ^ 2 - ↑(b - 1 - cv))⁻¹ =
-    ↑b - ↑cv
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7021:4: error: mod_cast has type
-  0 < Int.subNatNat a cv + 2
-but is expected to have type
-  ¬Int.subNatNat a cv + 2 = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7023:4: error: mod_cast has type
-  0 < a - b + 1
-but is expected to have type
-  ¬False
-Try this:
-  [apply] ring_nf
-  
-  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
-    
-  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6959:83: error: unsolved goals
-μ : YoungDiagram
-h3 : μ.rowLen 3 = 0
-a : ℕ := μ.rowLen 0
-ha_def : a = μ.rowLen 0
-b : ℕ := μ.rowLen 1
-hab : b < a
-hb_def : b = μ.rowLen 1
-cv : ℕ := μ.rowLen 2
-h2 : 0 < cv
-hcv_def : cv = μ.rowLen 2
-hba : b ≤ a
-hcb : cv ≤ b
-hsplit : range (a - 1) = range cv ∪ Ico cv b ∪ Ico b (a - 1)
-hdisj1 : Disjoint (range cv) (Ico cv b)
-hdisj2 : Disjoint (range cv ∪ Ico cv b) (Ico b (a - 1))
-hconv1 : ∀ s ∈ range cv, ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1) = (↑(a + 2) - ↑s) / (↑(a + 2) - ↑s - 1)
-hconv2 : ∀ s ∈ Ico cv b, ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1) = (↑a + 1 - ↑s) / (↑a + 1 - ↑s - 1)
-hconv2b :
-  ∀ k ∈ range (b - cv),
-    (↑a + 1 - ↑(cv + k)) / (↑a + 1 - ↑(cv + k) - 1) = (↑(a - cv + 1) - ↑k) / (↑(a - cv + 1) - ↑k - 1)
-hconv3 : ∀ s ∈ Ico b (a - 1), ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1) = (↑a - ↑s) / (↑a - ↑s - 1)
-hconv3b : ∀ k ∈ range (a - 1 - b), (↑a - ↑(b + k)) / (↑a - ↑(b + k) - 1) = (↑(a - b) - ↑k) / (↑(a - b) - ↑k - 1)
-hd1 : ↑a - ↑cv + 2 ≠ 0
-hd2 : ↑a - ↑b + 1 ≠ 0
-⊢ ↑a * ↑cv * ↑b *
-                                                      (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                          ↑a * ↑b * 5 +
-                                                                                        ↑a * ↑b * ↑(a - 1 - b) +
-                                                                                      ↑a * ↑b ^ 2 -
-                                                                                    ↑a * ↑(a - 1 - b) * 3 +
-                                                                                  ↑a ^ 2 * 3 -
-                                                                                ↑a ^ 2 * ↑cv -
-                                                                              ↑a ^ 2 * ↑b * 2 -
-                                                                            ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                          ↑a ^ 3 +
-                                                                        ↑cv * ↑b -
-                                                                      ↑cv * ↑b * ↑(a - 1 - b) -
-                                                                    ↑cv * ↑b ^ 2 +
-                                                                  ↑cv * ↑(a - 1 - b) -
-                                                                ↑b * 2 +
-                                                              ↑b * ↑(a - 1 - b) * 2 +
-                                                            ↑b ^ 2 * 2 -
-                                                          ↑(a - 1 - b) * 2)⁻¹ *
-                                                    8 -
-                                                  ↑a * ↑cv * ↑b ^ 2 *
-                                                      (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                          ↑a * ↑b * 5 +
-                                                                                        ↑a * ↑b * ↑(a - 1 - b) +
-                                                                                      ↑a * ↑b ^ 2 -
-                                                                                    ↑a * ↑(a - 1 - b) * 3 +
-                                                                                  ↑a ^ 2 * 3 -
-                                                                                ↑a ^ 2 * ↑cv -
-                                                                              ↑a ^ 2 * ↑b * 2 -
-                                                                            ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                          ↑a ^ 3 +
-                                                                        ↑cv * ↑b -
-                                                                      ↑cv * ↑b * ↑(a - 1 - b) -
-                                                                    ↑cv * ↑b ^ 2 +
-                                                                  ↑cv * ↑(a - 1 - b) -
-                                                                ↑b * 2 +
-                                                              ↑b * ↑(a - 1 - b) * 2 +
-                                                            ↑b ^ 2 * 2 -
-                                                          ↑(a - 1 - b) * 2)⁻¹ *
-                                                    2 -
-                                                ↑a * ↑cv *
-                                                    (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                        ↑a * ↑b * 5 +
-                                                                                      ↑a * ↑b * ↑(a - 1 - b) +
-                                                                                    ↑a * ↑b ^ 2 -
-                                                                                  ↑a * ↑(a - 1 - b) * 3 +
-                                                                                ↑a ^ 2 * 3 -
-                                                                              ↑a ^ 2 * ↑cv -
-                                                                            ↑a ^ 2 * ↑b * 2 -
-                                                                          ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                        ↑a ^ 3 +
-                                                                      ↑cv * ↑b -
-                                                                    ↑cv * ↑b * ↑(a - 1 - b) -
-                                                                  ↑cv * ↑b ^ 2 +
-                                                                ↑cv * ↑(a - 1 - b) -
-                                                              ↑b * 2 +
-                                                            ↑b * ↑(a - 1 - b) * 2 +
-                                                          ↑b ^ 2 * 2 -
-                                                        ↑(a - 1 - b) * 2)⁻¹ *
-                                                  3 -
-                                              ↑a * ↑cv ^ 2 * ↑b *
-                                                  (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                      ↑a * ↑b * 5 +
-                                                                                    ↑a * ↑b * ↑(a - 1 - b) +
-                                                                                  ↑a * ↑b ^ 2 -
-                                                                                ↑a * ↑(a - 1 - b) * 3 +
-                                                                              ↑a ^ 2 * 3 -
-                                                                            ↑a ^ 2 * ↑cv -
-                                                                          ↑a ^ 2 * ↑b * 2 -
-                                                                        ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                      ↑a ^ 3 +
-                                                                    ↑cv * ↑b -
-                                                                  ↑cv * ↑b * ↑(a - 1 - b) -
-                                                                ↑cv * ↑b ^ 2 +
-                                                              ↑cv * ↑(a - 1 - b) -
-                                                            ↑b * 2 +
-                                                          ↑b * ↑(a - 1 - b) * 2 +
-                                                        ↑b ^ 2 * 2 -
-                                                      ↑(a - 1 - b) * 2)⁻¹ *
-                                                2 +
-                                            ↑a * ↑cv ^ 2 *
-                                              (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                  ↑a * ↑b * 5 +
-                                                                                ↑a * ↑b * ↑(a - 1 - b) +
-                                                                              ↑a * ↑b ^ 2 -
-                                                                            ↑a * ↑(a - 1 - b) * 3 +
-                                                                          ↑a ^ 2 * 3 -
-                                                                        ↑a ^ 2 * ↑cv -
-                                                                      ↑a ^ 2 * ↑b * 2 -
-                                                                    ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                  ↑a ^ 3 +
-                                                                ↑cv * ↑b -
-                                                              ↑cv * ↑b * ↑(a - 1 - b) -
-                                                            ↑cv * ↑b ^ 2 +
-                                                          ↑cv * ↑(a - 1 - b) -
-                                                        ↑b * 2 +
-                                                      ↑b * ↑(a - 1 - b) * 2 +
-                                                    ↑b ^ 2 * 2 -
-                                                  ↑(a - 1 - b) * 2)⁻¹ -
-                                          ↑a * ↑b *
-                                              (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                  ↑a * ↑b * 5 +
-                                                                                ↑a * ↑b * ↑(a - 1 - b) +
-                                                                              ↑a * ↑b ^ 2 -
-                                                                            ↑a * ↑(a - 1 - b) * 3 +
-                                                                          ↑a ^ 2 * 3 -
-                                                                        ↑a ^ 2 * ↑cv -
-                                                                      ↑a ^ 2 * ↑b * 2 -
-                                                                    ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                  ↑a ^ 3 +
-                                                                ↑cv * ↑b -
-                                                              ↑cv * ↑b * ↑(a - 1 - b) -
-                                                            ↑cv * ↑b ^ 2 +
-                                                          ↑cv * ↑(a - 1 - b) -
-                                                        ↑b * 2 +
-                                                      ↑b * ↑(a - 1 - b) * 2 +
-                                                    ↑b ^ 2 * 2 -
-                                                  ↑(a - 1 - b) * 2)⁻¹ *
-                                            7 +
-                                        ↑a * ↑b ^ 2 *
-                                            (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                                ↑a * ↑b * 5 +
-                                                                              ↑a * ↑b * ↑(a - 1 - b) +
-                                                                            ↑a * ↑b ^ 2 -
-                                                                          ↑a * ↑(a - 1 - b) * 3 +
-                                                                        ↑a ^ 2 * 3 -
-                                                                      ↑a ^ 2 * ↑cv -
-                                                                    ↑a ^ 2 * ↑b * 2 -
-                                                                  ↑a ^ 2 * ↑(a - 1 - b) +
-                                                                ↑a ^ 3 +
-                                                              ↑cv * ↑b -
-                                                            ↑cv * ↑b * ↑(a - 1 - b) -
-                                                          ↑cv * ↑b ^ 2 +
-                                                        ↑cv * ↑(a - 1 - b) -
-                                                      ↑b * 2 +
-                                                    ↑b * ↑(a - 1 - b) * 2 +
-                                                  ↑b ^ 2 * 2 -
-                                                ↑(a - 1 - b) * 2)⁻¹ *
-                                          3 +
-                                      ↑a *
-                                          (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) -
-                                                                              ↑a * ↑b * 5 +
-                                                                            ↑a * ↑b * ↑(a - 1 - b) +
-                                                                          ↑a * ↑b ^ 2 -
-                                                                        ↑a * ↑(a - 1 - b) * 3 +
-                                                                      ↑a ^ 2 * 3 -
-                                                                    ↑a ^ 2 * ↑cv -
-                                                                  ↑a ^ 2 * ↑b * 2 -
-                                                                ↑a ^ 2 * ↑(a - 1 - b) +
-                                                              ↑a ^ 3 +
-                                                            ↑cv * ↑b -
-                                                          ↑cv * ↑b * ↑(a - 1 - b) -
-                                                        ↑cv * ↑b ^ 2 +
-                                                      ↑cv * ↑(a - 1 - b) -
-                                                    ↑b * 2 +
-                                                  ↑b * ↑(a - 1 - b) * 2 +
-                                                ↑b ^ 2 * 2 -
-                                              ↑(a - 1 - b) * 2)⁻¹ *
-                                        2 +
-                                    ↑a ^ 2 * ↑cv * ↑b *
-                                        (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                          ↑a * ↑b * ↑(a - 1 - b) +
-                                                                        ↑a * ↑b ^ 2 -
-                                                                      ↑a * ↑(a - 1 - b) * 3 +
-                                                                    ↑a ^ 2 * 3 -
-                                                                  ↑a ^ 2 * ↑cv -
-                                                                ↑a ^ 2 * ↑b * 2 -
-                                                              ↑a ^ 2 * ↑(a - 1 - b) +
-                                                            ↑a ^ 3 +
-                                                          ↑cv * ↑b -
-                                                        ↑cv * ↑b * ↑(a - 1 - b) -
-                                                      ↑cv * ↑b ^ 2 +
-                                                    ↑cv * ↑(a - 1 - b) -
-                                                  ↑b * 2 +
-                                                ↑b * ↑(a - 1 - b) * 2 +
-                                              ↑b ^ 2 * 2 -
-                                            ↑(a - 1 - b) * 2)⁻¹ *
-                                      4 -
-                                  ↑a ^ 2 * ↑cv *
-                                      (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                        ↑a * ↑b * ↑(a - 1 - b) +
-                                                                      ↑a * ↑b ^ 2 -
-                                                                    ↑a * ↑(a - 1 - b) * 3 +
-                                                                  ↑a ^ 2 * 3 -
-                                                                ↑a ^ 2 * ↑cv -
-                                                              ↑a ^ 2 * ↑b * 2 -
-                                                            ↑a ^ 2 * ↑(a - 1 - b) +
-                                                          ↑a ^ 3 +
-                                                        ↑cv * ↑b -
-                                                      ↑cv * ↑b * ↑(a - 1 - b) -
-                                                    ↑cv * ↑b ^ 2 +
-                                                  ↑cv * ↑(a - 1 - b) -
-                                                ↑b * 2 +
-                                              ↑b * ↑(a - 1 - b) * 2 +
-                                            ↑b ^ 2 * 2 -
-                                          ↑(a - 1 - b) * 2)⁻¹ *
-                                    5 +
-                                ↑a ^ 2 * ↑cv ^ 2 *
-                                  (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                    ↑a * ↑b * ↑(a - 1 - b) +
-                                                                  ↑a * ↑b ^ 2 -
-                                                                ↑a * ↑(a - 1 - b) * 3 +
-                                                              ↑a ^ 2 * 3 -
-                                                            ↑a ^ 2 * ↑cv -
-                                                          ↑a ^ 2 * ↑b * 2 -
-                                                        ↑a ^ 2 * ↑(a - 1 - b) +
-                                                      ↑a ^ 3 +
-                                                    ↑cv * ↑b -
-                                                  ↑cv * ↑b * ↑(a - 1 - b) -
-                                                ↑cv * ↑b ^ 2 +
-                                              ↑cv * ↑(a - 1 - b) -
-                                            ↑b * 2 +
-                                          ↑b * ↑(a - 1 - b) * 2 +
-                                        ↑b ^ 2 * 2 -
-                                      ↑(a - 1 - b) * 2)⁻¹ -
-                              ↑a ^ 2 * ↑b *
-                                  (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                    ↑a * ↑b * ↑(a - 1 - b) +
-                                                                  ↑a * ↑b ^ 2 -
-                                                                ↑a * ↑(a - 1 - b) * 3 +
-                                                              ↑a ^ 2 * 3 -
-                                                            ↑a ^ 2 * ↑cv -
-                                                          ↑a ^ 2 * ↑b * 2 -
-                                                        ↑a ^ 2 * ↑(a - 1 - b) +
-                                                      ↑a ^ 3 +
-                                                    ↑cv * ↑b -
-                                                  ↑cv * ↑b * ↑(a - 1 - b) -
-                                                ↑cv * ↑b ^ 2 +
-                                              ↑cv * ↑(a - 1 - b) -
-                                            ↑b * 2 +
-                                          ↑b * ↑(a - 1 - b) * 2 +
-                                        ↑b ^ 2 * 2 -
-                                      ↑(a - 1 - b) * 2)⁻¹ *
-                                7 +
-                            ↑a ^ 2 * ↑b ^ 2 *
-                              (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                ↑a * ↑b * ↑(a - 1 - b) +
-                                                              ↑a * ↑b ^ 2 -
-                                                            ↑a * ↑(a - 1 - b) * 3 +
-                                                          ↑a ^ 2 * 3 -
-                                                        ↑a ^ 2 * ↑cv -
-                                                      ↑a ^ 2 * ↑b * 2 -
-                                                    ↑a ^ 2 * ↑(a - 1 - b) +
-                                                  ↑a ^ 3 +
-                                                ↑cv * ↑b -
-                                              ↑cv * ↑b * ↑(a - 1 - b) -
-                                            ↑cv * ↑b ^ 2 +
-                                          ↑cv * ↑(a - 1 - b) -
-                                        ↑b * 2 +
-                                      ↑b * ↑(a - 1 - b) * 2 +
-                                    ↑b ^ 2 * 2 -
-                                  ↑(a - 1 - b) * 2)⁻¹ +
-                          ↑a ^ 2 *
-                              (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                                ↑a * ↑b * ↑(a - 1 - b) +
-                                                              ↑a * ↑b ^ 2 -
-                                                            ↑a * ↑(a - 1 - b) * 3 +
-                                                          ↑a ^ 2 * 3 -
-                                                        ↑a ^ 2 * ↑cv -
-                                                      ↑a ^ 2 * ↑b * 2 -
-                                                    ↑a ^ 2 * ↑(a - 1 - b) +
-                                                  ↑a ^ 3 +
-                                                ↑cv * ↑b -
-                                              ↑cv * ↑b * ↑(a - 1 - b) -
-                                            ↑cv * ↑b ^ 2 +
-                                          ↑cv * ↑(a - 1 - b) -
-                                        ↑b * 2 +
-                                      ↑b * ↑(a - 1 - b) * 2 +
-                                    ↑b ^ 2 * 2 -
-                                  ↑(a - 1 - b) * 2)⁻¹ *
-                            5 -
-                        ↑a ^ 3 * ↑cv *
-                            (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                              ↑a * ↑b * ↑(a - 1 - b) +
-                                                            ↑a * ↑b ^ 2 -
-                                                          ↑a * ↑(a - 1 - b) * 3 +
-                                                        ↑a ^ 2 * 3 -
-                                                      ↑a ^ 2 * ↑cv -
-                                                    ↑a ^ 2 * ↑b * 2 -
-                                                  ↑a ^ 2 * ↑(a - 1 - b) +
-                                                ↑a ^ 3 +
-                                              ↑cv * ↑b -
-                                            ↑cv * ↑b * ↑(a - 1 - b) -
-                                          ↑cv * ↑b ^ 2 +
-                                        ↑cv * ↑(a - 1 - b) -
-                                      ↑b * 2 +
-                                    ↑b * ↑(a - 1 - b) * 2 +
-                                  ↑b ^ 2 * 2 -
-                                ↑(a - 1 - b) * 2)⁻¹ *
-                          2 -
-                      ↑a ^ 3 * ↑b *
-                          (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                            ↑a * ↑b * ↑(a - 1 - b) +
-                                                          ↑a * ↑b ^ 2 -
-                                                        ↑a * ↑(a - 1 - b) * 3 +
-                                                      ↑a ^ 2 * 3 -
-                                                    ↑a ^ 2 * ↑cv -
-                                                  ↑a ^ 2 * ↑b * 2 -
-                                                ↑a ^ 2 * ↑(a - 1 - b) +
-                                              ↑a ^ 3 +
-                                            ↑cv * ↑b -
-                                          ↑cv * ↑b * ↑(a - 1 - b) -
-                                        ↑cv * ↑b ^ 2 +
-                                      ↑cv * ↑(a - 1 - b) -
-                                    ↑b * 2 +
-                                  ↑b * ↑(a - 1 - b) * 2 +
-                                ↑b ^ 2 * 2 -
-                              ↑(a - 1 - b) * 2)⁻¹ *
-                        2 +
-                    ↑a ^ 3 *
-                        (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                          ↑a * ↑b * ↑(a - 1 - b) +
-                                                        ↑a * ↑b ^ 2 -
-                                                      ↑a * ↑(a - 1 - b) * 3 +
-                                                    ↑a ^ 2 * 3 -
-                                                  ↑a ^ 2 * ↑cv -
-                                                ↑a ^ 2 * ↑b * 2 -
-                                              ↑a ^ 2 * ↑(a - 1 - b) +
-                                            ↑a ^ 3 +
-                                          ↑cv * ↑b -
-                                        ↑cv * ↑b * ↑(a - 1 - b) -
-                                      ↑cv * ↑b ^ 2 +
-                                    ↑cv * ↑(a - 1 - b) -
-                                  ↑b * 2 +
-                                ↑b * ↑(a - 1 - b) * 2 +
-                              ↑b ^ 2 * 2 -
-                            ↑(a - 1 - b) * 2)⁻¹ *
-                      4 +
-                  ↑a ^ 4 *
-                    (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                      ↑a * ↑b * ↑(a - 1 - b) +
-                                                    ↑a * ↑b ^ 2 -
-                                                  ↑a * ↑(a - 1 - b) * 3 +
-                                                ↑a ^ 2 * 3 -
-                                              ↑a ^ 2 * ↑cv -
-                                            ↑a ^ 2 * ↑b * 2 -
-                                          ↑a ^ 2 * ↑(a - 1 - b) +
-                                        ↑a ^ 3 +
-                                      ↑cv * ↑b -
-                                    ↑cv * ↑b * ↑(a - 1 - b) -
-                                  ↑cv * ↑b ^ 2 +
-                                ↑cv * ↑(a - 1 - b) -
-                              ↑b * 2 +
-                            ↑b * ↑(a - 1 - b) * 2 +
-                          ↑b ^ 2 * 2 -
-                        ↑(a - 1 - b) * 2)⁻¹ +
-                ↑cv * ↑b *
-                    (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                      ↑a * ↑b * ↑(a - 1 - b) +
-                                                    ↑a * ↑b ^ 2 -
-                                                  ↑a * ↑(a - 1 - b) * 3 +
-                                                ↑a ^ 2 * 3 -
-                                              ↑a ^ 2 * ↑cv -
-                                            ↑a ^ 2 * ↑b * 2 -
-                                          ↑a ^ 2 * ↑(a - 1 - b) +
-                                        ↑a ^ 3 +
-                                      ↑cv * ↑b -
-                                    ↑cv * ↑b * ↑(a - 1 - b) -
-                                  ↑cv * ↑b ^ 2 +
-                                ↑cv * ↑(a - 1 - b) -
-                              ↑b * 2 +
-                            ↑b * ↑(a - 1 - b) * 2 +
-                          ↑b ^ 2 * 2 -
-                        ↑(a - 1 - b) * 2)⁻¹ *
-                  3 -
-              ↑cv * ↑b ^ 2 *
-                  (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 +
-                                                    ↑a * ↑b * ↑(a - 1 - b) +
-                                                  ↑a * ↑b ^ 2 -
-                                                ↑a * ↑(a - 1 - b) * 3 +
-                                              ↑a ^ 2 * 3 -
-                                            ↑a ^ 2 * ↑cv -
-                                          ↑a ^ 2 * ↑b * 2 -
-                                        ↑a ^ 2 * ↑(a - 1 - b) +
-                                      ↑a ^ 3 +
-                                    ↑cv * ↑b -
-                                  ↑cv * ↑b * ↑(a - 1 - b) -
-                                ↑cv * ↑b ^ 2 +
-                              ↑cv * ↑(a - 1 - b) -
-                            ↑b * 2 +
-                          ↑b * ↑(a - 1 - b) * 2 +
-                        ↑b ^ 2 * 2 -
-                      ↑(a - 1 - b) * 2)⁻¹ *
-                3 -
-            ↑cv ^ 2 * ↑b *
-              (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 + ↑a * ↑b * ↑(a - 1 - b) +
-                                              ↑a * ↑b ^ 2 -
-                                            ↑a * ↑(a - 1 - b) * 3 +
-                                          ↑a ^ 2 * 3 -
-                                        ↑a ^ 2 * ↑cv -
-                                      ↑a ^ 2 * ↑b * 2 -
-                                    ↑a ^ 2 * ↑(a - 1 - b) +
-                                  ↑a ^ 3 +
-                                ↑cv * ↑b -
-                              ↑cv * ↑b * ↑(a - 1 - b) -
-                            ↑cv * ↑b ^ 2 +
-                          ↑cv * ↑(a - 1 - b) -
-                        ↑b * 2 +
-                      ↑b * ↑(a - 1 - b) * 2 +
-                    ↑b ^ 2 * 2 -
-                  ↑(a - 1 - b) * 2)⁻¹ +
-          ↑cv ^ 2 * ↑b ^ 2 *
-            (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 + ↑a * ↑b * ↑(a - 1 - b) +
-                                            ↑a * ↑b ^ 2 -
-                                          ↑a * ↑(a - 1 - b) * 3 +
-                                        ↑a ^ 2 * 3 -
-                                      ↑a ^ 2 * ↑cv -
-                                    ↑a ^ 2 * ↑b * 2 -
-                                  ↑a ^ 2 * ↑(a - 1 - b) +
-                                ↑a ^ 3 +
-                              ↑cv * ↑b -
-                            ↑cv * ↑b * ↑(a - 1 - b) -
-                          ↑cv * ↑b ^ 2 +
-                        ↑cv * ↑(a - 1 - b) -
-                      ↑b * 2 +
-                    ↑b * ↑(a - 1 - b) * 2 +
-                  ↑b ^ 2 * 2 -
-                ↑(a - 1 - b) * 2)⁻¹ -
-        ↑b *
-            (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 + ↑a * ↑b * ↑(a - 1 - b) +
-                                            ↑a * ↑b ^ 2 -
-                                          ↑a * ↑(a - 1 - b) * 3 +
-                                        ↑a ^ 2 * 3 -
-                                      ↑a ^ 2 * ↑cv -
-                                    ↑a ^ 2 * ↑b * 2 -
-                                  ↑a ^ 2 * ↑(a - 1 - b) +
-                                ↑a ^ 3 +
-                              ↑cv * ↑b -
-                            ↑cv * ↑b * ↑(a - 1 - b) -
-                          ↑cv * ↑b ^ 2 +
-                        ↑cv * ↑(a - 1 - b) -
-                      ↑b * 2 +
-                    ↑b * ↑(a - 1 - b) * 2 +
-                  ↑b ^ 2 * 2 -
-                ↑(a - 1 - b) * 2)⁻¹ *
-          2 +
-      ↑b ^ 2 *
-          (↑a * 2 - ↑a * ↑cv + ↑a * ↑cv * ↑b * 2 + ↑a * ↑cv * ↑(a - 1 - b) - ↑a * ↑b * 5 + ↑a * ↑b * ↑(a - 1 - b) +
-                                          ↑a * ↑b ^ 2 -
-                                        ↑a * ↑(a - 1 - b) * 3 +
-                                      ↑a ^ 2 * 3 -
-                                    ↑a ^ 2 * ↑cv -
-                                  ↑a ^ 2 * ↑b * 2 -
-                                ↑a ^ 2 * ↑(a - 1 - b) +
-                              ↑a ^ 3 +
-                            ↑cv * ↑b -
-                          ↑cv * ↑b * ↑(a - 1 - b) -
-                        ↑cv * ↑b ^ 2 +
-                      ↑cv * ↑(a - 1 - b) -
-                    ↑b * 2 +
-                  ↑b * ↑(a - 1 - b) * 2 +
-                ↑b ^ 2 * 2 -
-              ↑(a - 1 - b) * 2)⁻¹ *
-        2 =
-    ↑a - ↑a * ↑cv - ↑a * ↑b + ↑a ^ 2 + ↑cv * ↑b - ↑b
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7056:4: error: Type mismatch
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6949:4: warning: 'push_cast [Nat.cast_sub (show s ≤ b - 1 by omega)]' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:6970:5: warning: Variable name `h2` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7027:4: warning: 'push_cast [Nat.cast_sub (show s ≤ a - 1 by omega)]' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7079:4: error: Type mismatch
   dif_pos (mem_corners.mp cx.property)
 has type
   dite (isCorner μ ↑cx) ?m.207 ?m.208 = ?m.207 ⋯
 but is expected to have type
   ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) = ratio ↑cx
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7108:34: error(lean.invalidField): Invalid field `le`: The environment does not contain `Nat.le.le`, so it is not possible to project the field `le` from an expression
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7131:34: error(lean.invalidField): Invalid field `le`: The environment does not contain `Nat.le.le`, so it is not possible to project the field `le` from an expression
   hcb
 of type `cv.le b`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7129:6: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7150:4: error: mod_cast has type
-  0 < Int.subNatNat a cv + 2
-but is expected to have type
-  ¬Int.subNatNat a cv + 2 = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7152:4: error: mod_cast has type
-  0 < b - cv + 1
-but is expected to have type
-  ¬False
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7154:4: error: mod_cast has type
-  0 < a - b + 1
-but is expected to have type
-  ¬False
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7074:15: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7152:6: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7097:15: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7074:25: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7097:25: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7097:17: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7120:17: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7097:27: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7120:27: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7127:17: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7150:17: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.f̵st̵,̵ ̵P̵r̵o̵d̵.̵s̵nd, Finset.prod_range_zero, mul_one]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7127:27: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7150:27: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst, P̵r̵o̵d̵.̵s̵n̵d̵,̵ ̵Finset.prod_range_zero, mul_one]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7174:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7197:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7185:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7208:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7182:5: warning: Variable name `h4` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7205:5: warning: Variable name `h4` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7195:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7218:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7192:5: warning: Variable name `h4` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7215:5: warning: Variable name `h4` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7280:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7303:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7274:5: warning: Variable name `h4` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7297:5: warning: Variable name `h4` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7291:49: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  b ≥ 0
-  a ≥ 0
-  a - b ≥ 2
-where
- a := ↑(μ.rowLen (3, μ.rowLen 3 - 1).1)
- b := ↑(μ.rowLen 3 - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7292:49: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  b ≥ 0
-  a ≥ 0
-  a - b ≥ 1
-where
- a := ↑(μ.rowLen ((3, μ.rowLen 3 - 1).1 + 1))
- b := ↑(μ.rowLen 3 - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7305:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7333:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7314:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7342:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7315:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7343:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 0 - 1
 but neither side of the equality is mentioned in the type
   ?m.274 → ?m.274
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7317:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7345:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7318:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7346:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 1 - 1
 but neither side of the equality is mentioned in the type
   ?m.298 → ?m.298
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7320:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7348:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7321:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7349:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 2 - 1
 but neither side of the equality is mentioned in the type
   ?m.325 → ?m.325
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7303:13: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7331:13: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7303:23: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7331:23: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7341:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7369:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7354:53: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7362:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7363:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7372:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7373:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7374:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7360:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7382:53: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7390:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7391:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7400:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7401:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7402:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7388:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7370:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7398:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7399:76: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7427:76: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   b ≥ 0
   a ≥ 0
@@ -1445,7 +882,7 @@ a possible counterexample may satisfy the constraints
 where
  a := ↑(d - 1)
  b := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7399:76: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7427:76: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   b ≥ 0
   a ≥ 0
@@ -1453,7 +890,7 @@ a possible counterexample may satisfy the constraints
 where
  a := ↑(d - 1)
  b := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7425:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7453:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   e ≥ 0
   b ≥ 0
@@ -1464,7 +901,7 @@ where
  a := ↑(μ.rowLen 2)
  b := ↑(μ.rowLen 3)
  e := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7425:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7453:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   e ≥ 0
   b ≥ 0
@@ -1475,7 +912,7 @@ where
  a := ↑(μ.rowLen 2)
  b := ↑(μ.rowLen 3)
  e := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7426:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7454:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range d, (↑(c + 1) - ↑s) / (↑(c + 1) - ↑s - 1)
 in the target expression
   (∏ x ∈ range d, (↑c + 1 - ↑x) / (↑c + 1 - ↑x - 1)) *
@@ -1491,7 +928,7 @@ hconv1 : ∀ s ∈ range d, ↑(hookLength μ 2 s) / (↑(hookLength μ 2 s) - 1
 ⊢ (∏ x ∈ range d, (↑c + 1 - ↑x) / (↑c + 1 - ↑x - 1)) *
       ∏ x ∈ Ico d (c - 1), ↑(hookLength μ 2 x) / (↑(hookLength μ 2 x) - 1) =
     (↑c + 1) * (↑c - ↑d) / (↑c - ↑d + 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7478:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7506:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   g ≥ 0
   f ≥ 0
@@ -1505,7 +942,7 @@ where
  e := ↑(μ.rowLen 2)
  f := ↑(μ.rowLen 3)
  g := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7478:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7506:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   g ≥ 0
   f ≥ 0
@@ -1519,7 +956,7 @@ where
  e := ↑(μ.rowLen 2)
  f := ↑(μ.rowLen 3)
  g := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7479:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7507:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range d, (↑(b + 2) - ↑s) / (↑(b + 2) - ↑s - 1)
 in the target expression
   ((∏ x ∈ range d, (↑b + 2 - ↑x) / (↑b + 2 - ↑x - 1)) *
@@ -1539,7 +976,7 @@ hconv1 : ∀ s ∈ range d, ↑(hookLength μ 1 s) / (↑(hookLength μ 1 s) - 1
         ∏ x ∈ Ico d c, ↑(hookLength μ 1 x) / (↑(hookLength μ 1 x) - 1)) *
       ∏ x ∈ Ico c (b - 1), ↑(hookLength μ 1 x) / (↑(hookLength μ 1 x) - 1) =
     (↑b + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑d + 2) * (↑b - ↑c + 1))
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7553:69: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7581:69: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   i ≥ 0
   h ≥ 0
@@ -1556,7 +993,7 @@ where
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 2)
  i := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7555:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7583:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   h ≥ 0
   g ≥ 1
@@ -1570,7 +1007,7 @@ where
  f := ↑(μ.rowLen 1)
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7555:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7583:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   h ≥ 0
   g ≥ 1
@@ -1584,7 +1021,7 @@ where
  f := ↑(μ.rowLen 1)
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7556:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7584:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range d, (↑(a + 3) - ↑s) / (↑(a + 3) - ↑s - 1)
 in the target expression
   (((∏ x ∈ range d, (↑a + 3 - ↑x) / (↑a + 3 - ↑x - 1)) *
@@ -1609,57 +1046,23 @@ hconv1 : ∀ s ∈ range d, ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1
         ∏ x ∈ Ico c b, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
       ∏ x ∈ Ico b (a - 1), ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1) =
     (↑a + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) / ((↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7620:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7648:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
   Decidable (isCorner μ x)
 
 Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7626:16: error: Type mismatch
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7654:16: error: Type mismatch
   dif_pos (mem_corners.mp cx.property)
 has type
   dite (isCorner μ ↑cx) ?m.210 ?m.211 = ?m.210 ⋯
 but is expected to have type
   ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) = ratio ↑cx
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7638:20: error: Type mismatch
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7666:20: error: Type mismatch
   dif_neg (mt mem_corners.mpr hxnc)
 has type
   dite (isCorner μ x) ?m.452 ?m.453 = ?m.453 ⋯
 but is expected to have type
   ratio x = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7672:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 2
-  g ≥ 0
-  f ≥ 0
-  f - g ≤ 0
-  f - j ≥ 1
-  e ≥ 1
-  e - j ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 1)
- g := ↑(μ.rowLen 0)
- i := ↑(μ.rowLen (2, c - 1).1)
- j := ↑(c - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7673:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 1
-  g ≥ 0
-  f ≥ 0
-  f - g ≤ 0
-  f - j ≥ 1
-  e ≥ 1
-  e - j ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 1)
- g := ↑(μ.rowLen 0)
- i := ↑(μ.rowLen ((2, c - 1).1 + 1))
- j := ↑(c - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7698:61: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7733:61: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   h ≥ 0
   g ≥ 0
@@ -1679,7 +1082,7 @@ Try this:
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
     
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7694:4: error: unsolved goals
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7729:4: error: unsolved goals
 case neg
 μ : YoungDiagram
 h4 : μ.rowLen 4 = 0
@@ -1704,41 +1107,7 @@ hcd_eq : c = d
 hnotcorner : ¬isCorner μ (2, c - 1)
 this : ↑c - ↑d = 0
 ⊢ sorry = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7710:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 2
-  g ≥ 0
-  g - j ≥ 1
-  f ≥ 0
-  f - j ≤ 0
-  e ≥ 1
-  e - f ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 2)
- g := ↑(μ.rowLen 0)
- i := ↑(μ.rowLen (1, b - 1).1)
- j := ↑(b - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7711:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 1
-  g ≥ 0
-  g - j ≥ 1
-  f ≥ 0
-  f - j ≤ 0
-  e ≥ 1
-  e - f ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 2)
- g := ↑(μ.rowLen 0)
- i := ↑(μ.rowLen ((1, b - 1).1 + 1))
- j := ↑(b - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7728:61: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7770:61: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   h ≥ 0
   g ≥ 0
@@ -1758,7 +1127,7 @@ Try this:
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
     
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7725:4: error: unsolved goals
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7767:4: error: unsolved goals
 case neg
 μ : YoungDiagram
 h4 : μ.rowLen 4 = 0
@@ -1786,41 +1155,7 @@ hbc_eq : b = c
 hnotcorner : ¬isCorner μ (1, b - 1)
 this : ↑b - ↑c = 0
 ⊢ sorry = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7739:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 2
-  g ≥ 0
-  g - j ≤ 0
-  f ≥ 0
-  f - g ≤ 0
-  e ≥ 1
-  e - f ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 2)
- g := ↑(μ.rowLen 1)
- i := ↑(μ.rowLen (0, a - 1).1)
- j := ↑(a - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7740:74: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  j ≥ 0
-  i ≥ 0
-  i - j ≥ 1
-  g ≥ 0
-  g - j ≤ 0
-  f ≥ 0
-  f - g ≤ 0
-  e ≥ 1
-  e - f ≤ 0
-where
- e := ↑(μ.rowLen 3)
- f := ↑(μ.rowLen 2)
- g := ↑(μ.rowLen 1)
- i := ↑(μ.rowLen ((0, a - 1).1 + 1))
- j := ↑(a - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7750:61: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7799:61: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   h ≥ 0
   g ≥ 0
@@ -1840,7 +1175,7 @@ Try this:
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
     
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7747:4: error: unsolved goals
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7796:4: error: unsolved goals
 case neg
 μ : YoungDiagram
 h4 : μ.rowLen 4 = 0
@@ -1871,7 +1206,7 @@ hab_eq : a = b
 hnotcorner : ¬isCorner μ (0, a - 1)
 this : ↑a - ↑b = 0
 ⊢ sorry = 0
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7766:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7815:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ratio (2, c - 1)
 in the target expression
   ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
@@ -1915,99 +1250,99 @@ hne10 : (1, b - 1) ∉ {(0, a - 1)}
         (↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1) +
           ↑d * (↑a - ↑d + 4) / (↑a - ↑d + 3) * (↑b - ↑d + 3) / (↑b - ↑d + 2) * (↑c - ↑d + 2) / (↑c - ↑d + 1))) =
     ↑a + ↑b + ↑c + ↑d
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7644:22: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7672:22: warning: This simp argument is unused:
   dif_pos hbot
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵b̵o̵t̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7674:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7709:24: warning: This simp argument is unused:
   dif_pos hmid
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7699:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7734:24: warning: This simp argument is unused:
   dif_neg hnotcorner
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7712:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7754:24: warning: This simp argument is unused:
   dif_pos hmid
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7729:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7771:24: warning: This simp argument is unused:
   dif_neg hnotcorner
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7741:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7790:24: warning: This simp argument is unused:
   dif_pos htop
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵t̵o̵p̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7751:24: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7800:24: warning: This simp argument is unused:
   dif_neg hnotcorner
 
 Hint: Omit it from the simp argument list.
   simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7800:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7849:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7811:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7860:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7808:5: warning: Variable name `h5` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7857:5: warning: Variable name `h5` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7821:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7870:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7818:5: warning: Variable name `h5` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7867:5: warning: Variable name `h5` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7831:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7880:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7828:5: warning: Variable name `h5` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7877:5: warning: Variable name `h5` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7849:39: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7898:39: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2020,7 +1355,7 @@ where
  a := ↑(μ.rowLen 4)
  b := ↑(hookLength μ 3 s)
  c := ↑(μ.rowLen 3)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7864:39: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7913:39: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2033,7 +1368,7 @@ where
  a := ↑(μ.rowLen 4)
  b := ↑(hookLength μ 2 s)
  c := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7871:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7920:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2049,7 +1384,7 @@ where
  b := ↑(μ.rowLen 3)
  c := ↑(hookLength μ 2 s)
  d := ↑(μ.rowLen 2)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7886:39: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7935:39: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2062,7 +1397,7 @@ where
  a := ↑(μ.rowLen 4)
  b := ↑(hookLength μ 1 s)
  c := ↑(μ.rowLen 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7893:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7942:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2078,7 +1413,7 @@ where
  b := ↑(μ.rowLen 3)
  c := ↑(hookLength μ 1 s)
  d := ↑(μ.rowLen 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7900:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7949:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2094,7 +1429,7 @@ where
  b := ↑(μ.rowLen 2)
  c := ↑(hookLength μ 1 s)
  d := ↑(μ.rowLen 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7915:39: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7964:39: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2107,7 +1442,7 @@ where
  a := ↑(μ.rowLen 4)
  b := ↑(hookLength μ 0 s)
  c := ↑(μ.rowLen 0)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7922:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7971:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2123,7 +1458,7 @@ where
  b := ↑(μ.rowLen 3)
  c := ↑(hookLength μ 0 s)
  d := ↑(μ.rowLen 0)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7929:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7978:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2139,7 +1474,7 @@ where
  b := ↑(μ.rowLen 2)
  c := ↑(hookLength μ 0 s)
  d := ↑(μ.rowLen 0)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7936:50: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7985:50: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   d ≥ 0
   c ≥ 0
@@ -2155,146 +1490,130 @@ where
  b := ↑(μ.rowLen 1)
  c := ↑(hookLength μ 0 s)
  d := ↑(μ.rowLen 0)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7947:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7996:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7940:5: warning: Variable name `h5` is not explicitly referenced.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7989:5: warning: Variable name `h5` is not explicitly referenced.
 
 The binding can be removed (if unused) or named `_` (if used implicitly).
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7958:49: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  b ≥ 0
-  a ≥ 0
-  a - b ≥ 2
-where
- a := ↑(μ.rowLen (4, μ.rowLen 4 - 1).1)
- b := ↑(μ.rowLen 4 - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7959:49: error: omega could not prove the goal:
-a possible counterexample may satisfy the constraints
-  b ≥ 0
-  a ≥ 0
-  a - b ≥ 1
-where
- a := ↑(μ.rowLen ((4, μ.rowLen 4 - 1).1 + 1))
- b := ↑(μ.rowLen 4 - 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7973:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8027:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7982:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8036:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7983:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8037:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 0 - 1
 but neither side of the equality is mentioned in the type
   ?m.310 → ?m.310
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7985:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8039:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7986:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8040:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 1 - 1
 but neither side of the equality is mentioned in the type
   ?m.334 → ?m.334
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7988:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8042:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7989:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8043:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 2 - 1
 but neither side of the equality is mentioned in the type
   ?m.361 → ?m.361
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7991:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8045:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7992:67: error: invalid `▸` notation, the equality
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8046:67: error: invalid `▸` notation, the equality
   hj
 has type 
   j = μ.rowLen 3 - 1
 but neither side of the equality is mentioned in the type
   ?m.391 → ?m.391
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7971:13: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8025:13: warning: This simp argument is unused:
   Prod.fst
 
 Hint: Omit it from the simp argument list.
   simp only [̵P̵r̵o̵d̵.̵f̵s̵t̵,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵]̵[̲P̲r̲o̲d̲.̲s̲n̲d̲]̲ at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:7971:23: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8025:23: warning: This simp argument is unused:
   Prod.snd
 
 Hint: Omit it from the simp argument list.
   simp only [Prod.fst,̵ ̵P̵r̵o̵d̵.̵s̵n̵d̵] at *
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8013:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8067:23: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
 If you'd rather continue using `push_neg` in your project, you can implement it as follows:
 ```
 open Lean.Parser.Tactic in
 macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
   `(tactic| push $cfg:optConfig Not $[$loc]?)
 ```
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8028:53: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8036:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8037:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8046:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8047:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8048:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8059:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8060:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8061:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8062:35: error: No goals to be solved
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8034:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8082:53: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8090:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8091:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8100:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8101:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8102:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8113:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8114:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8115:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8116:35: error: No goals to be solved
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8088:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8044:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8098:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8056:71: warning: This simp argument is unused:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8110:71: warning: This simp argument is unused:
   Prod.mk.injEq
 
 Hint: Omit it from the simp argument list.
   simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,̵ ̵P̵r̵o̵d̵.̵m̵k̵.̵i̵n̵j̵E̵q̵] at hx hy
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8089:76: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8143:76: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   b ≥ 0
   a ≥ 0
@@ -2302,7 +1621,7 @@ a possible counterexample may satisfy the constraints
 where
  a := ↑(e - 1)
  b := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8089:76: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8143:76: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   b ≥ 0
   a ≥ 0
@@ -2310,7 +1629,7 @@ a possible counterexample may satisfy the constraints
 where
  a := ↑(e - 1)
  b := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8115:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8169:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2321,7 +1640,7 @@ where
  a := ↑(μ.rowLen 3)
  b := ↑(μ.rowLen 4)
  c := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8115:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8169:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   c ≥ 0
   b ≥ 0
@@ -2332,7 +1651,7 @@ where
  a := ↑(μ.rowLen 3)
  b := ↑(μ.rowLen 4)
  c := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8116:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8170:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range e, (↑(d + 1) - ↑s) / (↑(d + 1) - ↑s - 1)
 in the target expression
   (∏ x ∈ range e, (↑d + 1 - ↑x) / (↑d + 1 - ↑x - 1)) *
@@ -2348,7 +1667,7 @@ hconv1 : ∀ s ∈ range e, ↑(hookLength μ 3 s) / (↑(hookLength μ 3 s) - 1
 ⊢ (∏ x ∈ range e, (↑d + 1 - ↑x) / (↑d + 1 - ↑x - 1)) *
       ∏ x ∈ Ico e (d - 1), ↑(hookLength μ 3 x) / (↑(hookLength μ 3 x) - 1) =
     (↑d + 1) * (↑d - ↑e) / (↑d - ↑e + 1)
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8166:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8220:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   g ≥ 0
   f ≥ 0
@@ -2362,7 +1681,7 @@ where
  b := ↑(μ.rowLen 3)
  f := ↑(μ.rowLen 4)
  g := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8166:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8220:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   g ≥ 0
   f ≥ 0
@@ -2376,7 +1695,7 @@ where
  b := ↑(μ.rowLen 3)
  f := ↑(μ.rowLen 4)
  g := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8167:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8221:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range e, (↑(c + 2) - ↑s) / (↑(c + 2) - ↑s - 1)
 in the target expression
   ((∏ x ∈ range e, (↑c + 2 - ↑x) / (↑c + 2 - ↑x - 1)) *
@@ -2396,7 +1715,7 @@ hconv1 : ∀ s ∈ range e, ↑(hookLength μ 2 s) / (↑(hookLength μ 2 s) - 1
         ∏ x ∈ Ico e d, ↑(hookLength μ 2 x) / (↑(hookLength μ 2 x) - 1)) *
       ∏ x ∈ Ico d (c - 1), ↑(hookLength μ 2 x) / (↑(hookLength μ 2 x) - 1) =
     (↑c + 2) * (↑c - ↑e + 1) * (↑c - ↑d) / ((↑c - ↑e + 2) * (↑c - ↑d + 1))
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8227:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8281:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   i ≥ 0
   h ≥ 0
@@ -2413,7 +1732,7 @@ where
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 4)
  i := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8227:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8281:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   i ≥ 0
   h ≥ 0
@@ -2430,7 +1749,7 @@ where
  g := ↑(μ.rowLen 3)
  h := ↑(μ.rowLen 4)
  i := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8228:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8282:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
   ∏ s ∈ range e, (↑(b + 3) - ↑s) / (↑(b + 3) - ↑s - 1)
 in the target expression
   (((∏ x ∈ range e, (↑b + 3 - ↑x) / (↑b + 3 - ↑x - 1)) *
@@ -2454,7 +1773,7 @@ hconv1 : ∀ s ∈ range e, ↑(hookLength μ 1 s) / (↑(hookLength μ 1 s) - 1
         ∏ x ∈ Ico d c, ↑(hookLength μ 1 x) / (↑(hookLength μ 1 x) - 1)) *
       ∏ x ∈ Ico c (b - 1), ↑(hookLength μ 1 x) / (↑(hookLength μ 1 x) - 1) =
     (↑b + 3) * (↑b - ↑e + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑e + 3) * (↑b - ↑d + 2) * (↑b - ↑c + 1))
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8308:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8362:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   k ≥ 0
   j ≥ 0
@@ -2474,7 +1793,7 @@ where
  i := ↑(μ.rowLen 3)
  j := ↑(μ.rowLen 2)
  k := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8308:41: error: omega could not prove the goal:
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8362:41: error: omega could not prove the goal:
 a possible counterexample may satisfy the constraints
   k ≥ 0
   j ≥ 0
@@ -2494,4 +1813,634 @@ where
  i := ↑(μ.rowLen 3)
  j := ↑(μ.rowLen 2)
  k := ↑s
-Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8309:36: error: maximum number of errors (100; from option `maxErrors`) reached, exiting
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8363:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∏ s ∈ range e, (↑(a + 4) - ↑s) / (↑(a + 4) - ↑s - 1)
+in the target expression
+  ((((∏ x ∈ range e, (↑a + 4 - ↑x) / (↑a + 4 - ↑x - 1)) *
+            ∏ x ∈ Ico e d, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+          ∏ x ∈ Ico d c, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+        ∏ x ∈ Ico c b, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+      ∏ x ∈ Ico b (a - 1), ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1) =
+    (↑a + 4) * (↑a - ↑e + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) /
+      ((↑a - ↑e + 4) * (↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+hab : b < a
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hconv1 : ∀ s ∈ range e, ↑(hookLength μ 0 s) / (↑(hookLength μ 0 s) - 1) = (↑a + 4 - ↑s) / (↑a + 4 - ↑s - 1)
+⊢ ((((∏ x ∈ range e, (↑a + 4 - ↑x) / (↑a + 4 - ↑x - 1)) *
+            ∏ x ∈ Ico e d, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+          ∏ x ∈ Ico d c, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+        ∏ x ∈ Ico c b, ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1)) *
+      ∏ x ∈ Ico b (a - 1), ↑(hookLength μ 0 x) / (↑(hookLength μ 0 x) - 1) =
+    (↑a + 4) * (↑a - ↑e + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) /
+      ((↑a - ↑e + 4) * (↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8443:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Decidable (isCorner μ x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8449:16: error: Type mismatch
+  dif_pos (mem_corners.mp cx.property)
+has type
+  dite (isCorner μ ↑cx) ?m.235 ?m.236 = ?m.235 ⋯
+but is expected to have type
+  ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cx ⋯)) = ratio ↑cx
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8465:20: error: Type mismatch
+  dif_neg (mt mem_corners.mpr hxnc)
+has type
+  dite (isCorner μ x) ?m.536 ?m.537 = ?m.537 ⋯
+but is expected to have type
+  ratio x = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8538:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 0
+  h ≥ 0
+  g ≥ 0
+  g - h ≤ 0
+  f ≥ 0
+  f - g ≤ 0
+  f - i ≥ 1
+where
+ f := ↑(μ.rowLen 2)
+ g := ↑(μ.rowLen 1)
+ h := ↑(μ.rowLen 0)
+ i := ↑(d - 1)
+ j := ↑(μ.rowLen ((3, d - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8534:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (4, e - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d + ↑e
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR4 :
+  ratio (4, e - 1) =
+    ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+      (↑a - ↑e + 4)
+hde : ¬e < d
+hde_eq : d = e
+hnotcorner : ¬isCorner μ (3, d - 1)
+this : ↑d - ↑e = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8582:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 0
+  h ≥ 0
+  g ≥ 0
+  g - h ≤ 0
+  g - i ≥ 1
+  f ≥ 1
+  f - i ≤ 1
+where
+ f := ↑(μ.rowLen 4)
+ g := ↑(μ.rowLen 1)
+ h := ↑(μ.rowLen 0)
+ i := ↑(c - 1)
+ j := ↑(μ.rowLen ((2, c - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8578:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (4, e - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d + ↑e
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR4 :
+  ratio (4, e - 1) =
+    ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+      (↑a - ↑e + 4)
+hR3 :
+  ratio (3, d - 1) =
+    (↑d + 1) * (↑d - ↑e) / (↑d - ↑e + 1) * (↑c - ↑d + 2) / (↑c - ↑d + 1) * (↑b - ↑d + 3) / (↑b - ↑d + 2) *
+        (↑a - ↑d + 4) /
+      (↑a - ↑d + 3)
+hdc' : ¬d < c
+hdc_eq : c = d
+hnotcorner : ¬isCorner μ (2, c - 1)
+this : ↑c - ↑d = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8619:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 0
+  h ≥ 0
+  h - i ≥ 1
+  g ≥ 0
+  g - i ≤ 1
+  f ≥ 1
+  f - g ≤ 0
+where
+ f := ↑(μ.rowLen 4)
+ g := ↑(μ.rowLen 3)
+ h := ↑(μ.rowLen 0)
+ i := ↑(b - 1)
+ j := ↑(μ.rowLen ((1, b - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8615:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (4, e - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d + ↑e
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR4 :
+  ratio (4, e - 1) =
+    ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+      (↑a - ↑e + 4)
+hR3 :
+  ratio (3, d - 1) =
+    (↑d + 1) * (↑d - ↑e) / (↑d - ↑e + 1) * (↑c - ↑d + 2) / (↑c - ↑d + 1) * (↑b - ↑d + 3) / (↑b - ↑d + 2) *
+        (↑a - ↑d + 4) /
+      (↑a - ↑d + 3)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 2) * (↑c - ↑e + 1) * (↑c - ↑d) / ((↑c - ↑e + 2) * (↑c - ↑d + 1)) * (↑b - ↑c + 2) / (↑b - ↑c + 1) *
+        (↑a - ↑c + 3) /
+      (↑a - ↑c + 2)
+hcb' : ¬c < b
+hbc_eq : b = c
+hnotcorner : ¬isCorner μ (1, b - 1)
+this : ↑b - ↑c = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8651:61: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  i - j ≥ 0
+  h ≥ 0
+  h - i ≤ 1
+  g ≥ 0
+  g - h ≤ 0
+  f ≥ 1
+  f - g ≤ 0
+where
+ f := ↑(μ.rowLen 4)
+ g := ↑(μ.rowLen 3)
+ h := ↑(μ.rowLen 2)
+ i := ↑(a - 1)
+ j := ↑(μ.rowLen ((0, a - 1).1 + 1))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8647:4: error: unsolved goals
+case neg
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (4, e - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d + ↑e
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR4 :
+  ratio (4, e - 1) =
+    ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+      (↑a - ↑e + 4)
+hR3 :
+  ratio (3, d - 1) =
+    (↑d + 1) * (↑d - ↑e) / (↑d - ↑e + 1) * (↑c - ↑d + 2) / (↑c - ↑d + 1) * (↑b - ↑d + 3) / (↑b - ↑d + 2) *
+        (↑a - ↑d + 4) /
+      (↑a - ↑d + 3)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 2) * (↑c - ↑e + 1) * (↑c - ↑d) / ((↑c - ↑e + 2) * (↑c - ↑d + 1)) * (↑b - ↑c + 2) / (↑b - ↑c + 1) *
+        (↑a - ↑c + 3) /
+      (↑a - ↑c + 2)
+hR1 :
+  ratio (1, b - 1) =
+    (↑b + 3) * (↑b - ↑e + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑e + 3) * (↑b - ↑d + 2) * (↑b - ↑c + 1)) *
+        (↑a - ↑b + 2) /
+      (↑a - ↑b + 1)
+hab : ¬b < a
+hab_eq : a = b
+hnotcorner : ¬isCorner μ (0, a - 1)
+this : ↑a - ↑b = 0
+⊢ sorry = 0
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8669:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ratio (3, d - 1)
+in the target expression
+  ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+        (↑a - ↑e + 4) +
+      (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+            (↑a - ↑e + 5) /
+          (↑a - ↑e + 4) +
+        (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+              (↑a - ↑e + 5) /
+            (↑a - ↑e + 4) +
+          (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+                (↑a - ↑e + 5) /
+              (↑a - ↑e + 4) +
+            ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+                (↑a - ↑e + 5) /
+              (↑a - ↑e + 4)))) =
+    ↑a + ↑b + ↑c + ↑d + ↑e
+
+μ : YoungDiagram
+h5 : μ.rowLen 5 = 0
+a : ℕ := μ.rowLen 0
+b : ℕ := μ.rowLen 1
+c : ℕ := μ.rowLen 2
+d : ℕ := μ.rowLen 3
+e : ℕ := μ.rowLen 4
+h4 : 0 < e
+hed : e ≤ d
+hdc : d ≤ c
+hcb : c ≤ b
+hba : b ≤ a
+hbot : isCorner μ (4, e - 1)
+hcard : ↑μ.card = ↑a + ↑b + ↑c + ↑d + ↑e
+ratio : ℕ × ℕ → ℚ := fun x => sorry
+hconvert : ∑ cc ∈ (corners μ).attach, ↑(hookProd μ) / ↑(hookProd (removeCorner μ ↑cc ⋯)) = ∑ x ∈ corners μ, ratio x
+hsub : corners μ ⊆ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hext : ∑ x ∈ corners μ, ratio x = ∑ x ∈ {(4, e - 1), (3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}, ratio x
+hR4 :
+  ratio (4, e - 1) =
+    ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+      (↑a - ↑e + 4)
+hR3 :
+  ratio (3, d - 1) =
+    (↑d + 1) * (↑d - ↑e) / (↑d - ↑e + 1) * (↑c - ↑d + 2) / (↑c - ↑d + 1) * (↑b - ↑d + 3) / (↑b - ↑d + 2) *
+        (↑a - ↑d + 4) /
+      (↑a - ↑d + 3)
+hR2 :
+  ratio (2, c - 1) =
+    (↑c + 2) * (↑c - ↑e + 1) * (↑c - ↑d) / ((↑c - ↑e + 2) * (↑c - ↑d + 1)) * (↑b - ↑c + 2) / (↑b - ↑c + 1) *
+        (↑a - ↑c + 3) /
+      (↑a - ↑c + 2)
+hR1 :
+  ratio (1, b - 1) =
+    (↑b + 3) * (↑b - ↑e + 2) * (↑b - ↑d + 1) * (↑b - ↑c) / ((↑b - ↑e + 3) * (↑b - ↑d + 2) * (↑b - ↑c + 1)) *
+        (↑a - ↑b + 2) /
+      (↑a - ↑b + 1)
+hR0 :
+  ratio (0, a - 1) =
+    (↑a + 4) * (↑a - ↑e + 3) * (↑a - ↑d + 2) * (↑a - ↑c + 1) * (↑a - ↑b) /
+      ((↑a - ↑e + 4) * (↑a - ↑d + 3) * (↑a - ↑c + 2) * (↑a - ↑b + 1))
+hne43 : (4, e - 1) ∉ {(3, d - 1), (2, c - 1), (1, b - 1), (0, a - 1)}
+hne32 : (3, d - 1) ∉ {(2, c - 1), (1, b - 1), (0, a - 1)}
+hne21 : (2, c - 1) ∉ {(1, b - 1), (0, a - 1)}
+hne10 : (1, b - 1) ∉ {(0, a - 1)}
+⊢ ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) * (↑a - ↑e + 5) /
+        (↑a - ↑e + 4) +
+      (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+            (↑a - ↑e + 5) /
+          (↑a - ↑e + 4) +
+        (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+              (↑a - ↑e + 5) /
+            (↑a - ↑e + 4) +
+          (↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+                (↑a - ↑e + 5) /
+              (↑a - ↑e + 4) +
+            ↑e * (↑d - ↑e + 2) / (↑d - ↑e + 1) * (↑c - ↑e + 3) / (↑c - ↑e + 2) * (↑b - ↑e + 4) / (↑b - ↑e + 3) *
+                (↑a - ↑e + 5) /
+              (↑a - ↑e + 4)))) =
+    ↑a + ↑b + ↑c + ↑d + ↑e
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8472:22: warning: This simp argument is unused:
+  dif_pos hbot
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵b̵o̵t̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8513:24: warning: This simp argument is unused:
+  dif_pos hmid
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8539:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8560:24: warning: This simp argument is unused:
+  dif_pos hmid
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8583:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8603:24: warning: This simp argument is unused:
+  dif_pos hmid
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵m̵i̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8620:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8641:24: warning: This simp argument is unused:
+  dif_pos htop
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵p̵o̵s̵ ̵h̵t̵o̵p̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8652:24: warning: This simp argument is unused:
+  dif_neg hnotcorner
+
+Hint: Omit it from the simp argument list.
+  simp only [ratio,̵ ̵d̵i̵f̵_̵n̵e̵g̵ ̵h̵n̵o̵t̵c̵o̵r̵n̵e̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8715:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8725:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8722:5: warning: Variable name `h6` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8735:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8732:5: warning: Variable name `h6` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8745:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8742:5: warning: Variable name `h6` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8755:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8752:5: warning: Variable name `h6` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8775:41: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≤ 1
+  b ≤ 0
+  b ≤ 0
+  a ≥ 0
+  a + b - c ≥ 2
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(hookLength μ 4 s)
+ c := ↑(μ.rowLen 4)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8790:41: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≤ 2
+  b ≤ 1
+  b ≤ 1
+  a ≥ 0
+  a + b - c ≥ 3
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(hookLength μ 3 s)
+ c := ↑(μ.rowLen 3)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8798:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 1
+  c ≤ 0
+  c ≤ 0
+  b ≥ 0
+  b + c - d ≥ 2
+  a ≥ 0
+  a + c - d ≤ 1
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(μ.rowLen 4)
+ c := ↑(hookLength μ 3 s)
+ d := ↑(μ.rowLen 3)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8813:41: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≤ 3
+  b ≤ 2
+  b ≤ 2
+  a ≥ 0
+  a + b - c ≥ 4
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(hookLength μ 2 s)
+ c := ↑(μ.rowLen 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8821:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 2
+  c ≤ 1
+  c ≤ 1
+  b ≥ 0
+  b + c - d ≥ 3
+  a ≥ 0
+  a + c - d ≤ 2
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(μ.rowLen 4)
+ c := ↑(hookLength μ 2 s)
+ d := ↑(μ.rowLen 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8829:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 1
+  c ≤ 0
+  c ≤ 0
+  b ≥ 0
+  b + c - d ≥ 2
+  a ≥ 0
+  a + c - d ≤ 1
+where
+ a := ↑(μ.rowLen 4)
+ b := ↑(μ.rowLen 3)
+ c := ↑(hookLength μ 2 s)
+ d := ↑(μ.rowLen 2)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8844:41: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+  b ≥ 0
+  b - c ≤ 4
+  b ≤ 3
+  b ≤ 3
+  a ≥ 0
+  a + b - c ≥ 5
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(hookLength μ 1 s)
+ c := ↑(μ.rowLen 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8852:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 3
+  c ≤ 2
+  c ≤ 2
+  b ≥ 0
+  b + c - d ≥ 4
+  a ≥ 0
+  a + c - d ≤ 3
+where
+ a := ↑(μ.rowLen 5)
+ b := ↑(μ.rowLen 4)
+ c := ↑(hookLength μ 1 s)
+ d := ↑(μ.rowLen 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8860:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 2
+  c ≤ 1
+  c ≤ 1
+  b ≥ 0
+  b + c - d ≥ 3
+  a ≥ 0
+  a + c - d ≤ 2
+where
+ a := ↑(μ.rowLen 4)
+ b := ↑(μ.rowLen 3)
+ c := ↑(hookLength μ 1 s)
+ d := ↑(μ.rowLen 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8868:49: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≤ 1
+  c ≤ 0
+  c ≤ 0
+  b ≥ 0
+  b + c - d ≥ 2
+  a ≥ 0
+  a + c - d ≤ 1
+where
+ a := ↑(μ.rowLen 3)
+ b := ↑(μ.rowLen 2)
+ c := ↑(hookLength μ 1 s)
+ d := ↑(μ.rowLen 1)
+Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:8883:41: error: maximum number of errors (100; from option `maxErrors`) reached, exiting
