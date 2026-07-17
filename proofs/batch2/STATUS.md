@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 364 (Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: BallotProblemOQ03OQ01OQ01OQ01Aristotle (rewrote 2 helper lemmas from broken generic
+{α}[LinearOrder α] sig (never unified w/ JacobiTrudi.ColStrictSym's Fin n) to concrete Fin n; added
+colStrictSym_a_one_iff_phead_lt_qhead; re-derived bijection targeting hsymm(Fin n)R(a+1) via simp only
+[hsymm] not broken convert-chain). Repair: none (dead/broken helper code, never elaborated on old Mathlib
+either). OQ01 Ballot sub-chain COMPLETE.
+SEAM: generic-type helper quietly ill-typed vs Fin n-specialized def (pre-existing, not v4.31).
+
 # DOCTOR SINGLE-PROOF BATCH 363 (Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: BallotProblemOQ03OQ01OQ01OQ01 (finished 5-error cluster from a prior 678-line fix:
