@@ -17,8 +17,10 @@ Reproducing it on the compiling foundation makes the cell geometry — the
 tracking, and the `incDir` complement surjection — available to the "Option C"
 *unoriented* `SpernerTriangulation` instance (`sperner-ndim-oq-02`) without
 importing the broken file. `GridSimplex` is an **oriented chain** encoding; the
-Phase-1 instance quotients out that orientation with a canonicality predicate
-(see `SpernerNDimOQ02Cell.lean`).
+Phase-1 instance quotients out that orientation with the canonicality predicate
+`SpernerGrid.IsCanon` from `SpernerGridBase` (see the canonical-cell subtype
+`CanonCell` in `SpernerNDimOQ02Cell.lean` and the parallel `CanonSimplex`
+development in `SpernerNDimOQ02.lean`).
 
 Namespace is kept as `SpernerGrid` (import-disjoint from the broken file, so no
 module ever sees two `SpernerGrid.GridSimplex`). No new axioms or sorries.
