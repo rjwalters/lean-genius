@@ -24,6 +24,19 @@ RESULTS_DIR="$PROJECT_ROOT/aristotle-results/new"
 PROCESSED_DIR="$PROJECT_ROOT/aristotle-results/processed"
 PROOFS_DIR="$PROJECT_ROOT/proofs/Proofs"
 
+# Boundary translation (issue #38622): the Aristotle backend vendors Mathlib
+# v4.28 and returns v4.28-era Lean. Every retrieved proof is drift-repaired to
+# the v4.31 pin before integration, and (optionally) gated on an in-container
+# v4.31 build before it is treated as verified — we do NOT trust the backend's
+# own v4.28 success signal across the version gap.
+DRIFT_REPAIR="$SCRIPT_DIR/drift-repair.sh"
+VERIFY_BUILD="$SCRIPT_DIR/verify-v431-build.sh"
+# Run the heavy in-container build gate inline? Default 0: integrate the
+# improved proof but leave it verification-pending (the standalone gate — or the
+# Aristotle agent/daemon — runs verify-v431-build.sh later, before any gallery
+# entry is marked verified). Set ARISTOTLE_VERIFY_BUILD=1 to gate inline.
+VERIFY_BUILD_INLINE="${ARISTOTLE_VERIFY_BUILD:-0}"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -219,6 +232,52 @@ count_theorems_proved() {
     echo "$proved"
 }
 
+# Drift-repair a retrieved solution in place (v4.28 -> v4.31). Non-fatal:
+# drift-repair.sh returns 2 when it finds names needing manual review, which we
+# treat as advisory (integrate the improvement, but the build gate below decides
+# verification). Renames never change sorry counts, so this is safe to run
+# before the sorry-count comparison.
+drift_repair_file() {
+    local f="$1"
+    [[ -x "$DRIFT_REPAIR" && -f "$f" ]] || return 0
+    "$DRIFT_REPAIR" --no-backup "$f" || true
+}
+
+# Run the v4.31 build gate on an integrated proof and echo a verification token:
+#   verified | failed | pending
+# Always returns 0; the caller records the token. "pending" means the heavy
+# build was not run inline (default) — the proof is integrated but NOT verified.
+run_v431_gate() {
+    local module_arg="$1"
+    if [[ "$VERIFY_BUILD_INLINE" != "1" ]]; then
+        echo "pending"; return 0
+    fi
+    [[ -x "$VERIFY_BUILD" ]] || { echo "pending"; return 0; }
+    local rc=0
+    "$VERIFY_BUILD" "$module_arg" >&2 || rc=$?
+    case "$rc" in
+        0) echo "verified" ;;
+        3) echo "pending" ;;
+        *) echo "failed" ;;
+    esac
+}
+
+# Record the v4.31 verification result on a job. `v431_verified` is true ONLY
+# when the in-container build passed; "pending"/"failed" leave it false so no
+# downstream step treats an unbuilt v4.28 proof as verified (#38622).
+update_job_verification() {
+    local project_id="$1"
+    local verification="$2"
+
+    local tmp_file
+    tmp_file=$(mktemp)
+    jq --arg pid "$project_id" --arg v "$verification" '
+        .jobs |= map(if .project_id == $pid then
+            .v431_verified = ($v == "verified") | .v431_verification = $v
+        else . end)
+    ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+}
+
 # Integrate a solution
 integrate_solution() {
     local job="$1"
@@ -296,6 +355,10 @@ integrate_solution() {
         fi
 
         echo -e "  ${GREEN}Retrieved${NC}"
+
+        # Boundary translation (#38622): rewrite v4.28-era output to the v4.31
+        # pin before comparing/integrating.
+        drift_repair_file "$solution_file"
     fi
 
     if [[ "$RETRIEVE_ONLY" == true ]]; then
@@ -345,10 +408,23 @@ integrate_solution() {
                 # Move to processed
                 mv "$solution_file" "$PROCESSED_DIR/"
 
+                # Boundary verification (#38622): gate on an in-container v4.31
+                # build before treating the proof as verified. "pending" (the
+                # default) integrates the improvement but leaves it unverified.
+                local verification
+                verification=$(run_v431_gate "$original_path")
+                if [[ "$verification" == "failed" ]]; then
+                    echo -e "  ${RED}v4.31 build gate FAILED${NC} — integrated as UNVERIFIED (residual v4.28->v4.31 drift needs manual repair)"
+                elif [[ "$verification" == "verified" ]]; then
+                    echo -e "  ${GREEN}v4.31 build gate PASSED${NC} — verified on our pin"
+                fi
+
                 # Update job status with theorems_proved
                 local outcome_note="$new_sorries sorries remaining"
                 [[ "$is_companion" == "true" ]] && outcome_note="$new_sorries sorries remaining (companion file — merge into ${basename/Aristotle/Problem}.lean)"
+                [[ "$verification" != "verified" ]] && outcome_note="$outcome_note [v4.31: $verification]"
                 update_job_status_with_theorems "$project_id" "integrated" "$outcome_note" "$theorems_proved"
+                update_job_verification "$project_id" "$verification"
 
                 # Create completion signal for daemon stats tracking
                 local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
@@ -636,6 +712,10 @@ recover_server_completed() {
 
         echo -e "  ${GREEN}Mapped to:${NC} $target_file"
 
+        # Boundary translation (#38622): rewrite v4.28-era output to the v4.31
+        # pin before comparing/integrating.
+        drift_repair_file "$tmp_solution"
+
         # Compare sorry counts
         local orig_sorries new_sorries
         orig_sorries=$(count_sorries "$target_file")
@@ -663,20 +743,31 @@ recover_server_completed() {
             cp "$tmp_solution" "$target_file"
             mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}.lean"
 
+            # Boundary verification (#38622): gate on an in-container v4.31 build
+            # before treating the recovered proof as verified.
+            local rec_verification
+            rec_verification=$(run_v431_gate "$target_file")
+            if [[ "$rec_verification" == "failed" ]]; then
+                echo -e "  ${RED}v4.31 build gate FAILED${NC} — recovered as UNVERIFIED"
+            fi
+
             # Track in jobs.json
             local tmp_jq
             tmp_jq=$(mktemp)
             jq --arg pid "$pid" --arg file "proofs/Proofs/${target_basename}.lean" \
                --arg prob "$problem_id" --arg now "$now" \
-               --argjson proved "$theorems_proved" '
+               --argjson proved "$theorems_proved" \
+               --arg verification "$rec_verification" '
                 .jobs += [{
                     project_id: $pid,
                     file: $file,
                     problem_id: $prob,
                     submitted: "unknown",
                     status: "integrated",
-                    outcome: ("\($proved) theorems proved via server recovery"),
+                    outcome: ("\($proved) theorems proved via server recovery [v4.31: " + $verification + "]"),
                     theorems_proved: $proved,
+                    v431_verified: ($verification == "verified"),
+                    v431_verification: $verification,
                     notes: ("Recovered and integrated from server at " + $now)
                 }]
             ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"

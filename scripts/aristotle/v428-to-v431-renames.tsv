@@ -1,0 +1,99 @@
+# v428-to-v431-renames.tsv
+#
+# Machine-readable subset of research/toolchain-v4.31-rename-map.md (§1
+# "Confident renames"), curated for BLIND, safe application to Aristotle
+# proof-search output.
+#
+# WHY THIS FILE EXISTS
+#   The Aristotle backend vendors Mathlib v4.28 and normalizes every submission
+#   (and therefore every returned proof) to v4.28-era Lean. Our `main` pin is
+#   v4.31. drift-repair.sh applies these renames to a retrieved proof before it
+#   is integrated + gated on an in-container v4.31 build. See
+#   research/ARISTOTLE-WORKFLOW.md ("Boundary translation") and issue #38622.
+#
+# FORMAT
+#   old_name<TAB>new_name         (a literal identifier rename)
+#   Blank lines and lines starting with `#` are ignored.
+#   Whitespace around each field is trimmed.
+#
+# MATCHING SEMANTICS (see drift-repair.sh)
+#   Each old_name is matched as a whole identifier: it must not be preceded by
+#   a word char or `.` and must not be followed by a word char, `.`, `'`, or a
+#   subscript-zero. This makes qualification-adds (bare -> Namespaced) and
+#   `₀`-suffix adds idempotent, and protects primed sibling lemmas.
+#
+# SCOPE / SAFETY
+#   ONLY pure identifier renames whose semantics are unchanged live here.
+#   Renames that also change a signature, argument order, field layout, or the
+#   statement (RHS) are NOT here — they are in v428-to-v431-flags.tsv so a human
+#   / Doctor handles them. Provenance for every row: rename-map §1a-§1f.
+#
+# HOW TO EXTEND
+#   When Aristotle output reveals a new v4.28->v4.31 drift, first record it in
+#   research/toolchain-v4.31-rename-map.md (with evidence), then add the safe
+#   pure-rename subset here. Keep the two in sync.
+
+# --- §1a Galois / group theory (pure renames only; the type-changing
+#         IsSolvableByRad / IsCyclic.commutative pair lives in the flags file) ---
+commutative_of_cyclic_center_quotient	MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center
+nilpotent_of_mulEquiv	Group.nilpotent_of_mulEquiv
+nilpotent_of_surjective	Group.nilpotent_of_surjective
+isNilpotent_of_ker_le_center	Subgroup.isNilpotent_of_ker_le_center
+
+# --- §1b Order / algebra basics ---
+le_or_lt	le_or_gt
+Ne.lt_or_lt	Ne.lt_or_gt
+eq_or_gt_of_le	eq_or_lt_of_le'
+div_le_div_iff	div_le_div_iff₀
+div_lt_div_iff	div_lt_div_iff₀
+pow_le_pow_right	pow_le_pow_right₀
+pow_le_pow_left	pow_le_pow_left₀
+pow_lt_pow_left	pow_lt_pow_left₀
+one_lt_pow_of_one_lt_of_ne_zero	one_lt_pow₀
+abs_add	abs_add_le
+pi_lt_four	Real.pi_lt_four
+tendsto_const_div_atTop_nhds_0_nat	tendsto_const_div_atTop_nhds_zero_nat
+
+# --- §1c not_mem -> notMem wave ---
+Finset.card_insert_of_not_mem	Finset.card_insert_of_notMem
+Finset.not_mem_empty	Finset.notMem_empty
+Set.not_mem_empty	Set.notMem_empty
+Finset.eq_empty_iff_forall_not_mem	Finset.eq_empty_iff_forall_notMem
+Set.eq_empty_iff_forall_not_mem	Set.eq_empty_iff_forall_notMem
+Finset.ne_univ_iff_exists_not_mem	Finset.ne_univ_iff_exists_notMem
+
+# --- §1d diff -> sdiff wave (Set / measure) ---
+Set.mem_diff	Set.mem_sdiff
+Set.diff_empty	Set.sdiff_empty
+MeasureTheory.measure_diff_null	MeasureTheory.measure_sdiff_null
+Convex.mem_extremePoints_iff_mem_diff_convexHull_diff	Convex.mem_extremePoints_iff_mem_sdiff_convexHull_sdiff
+
+# --- §1e Analysis / measure theory (setIntegral_const/_congr changed their RHS
+#         and live in the flags file; the rows below are pure renames) ---
+Filter.eventually_of_forall	Filter.Eventually.of_forall
+continuous_finset_prod	continuous_finsetProd
+continuous_finset_sum	continuous_finsetSum
+MeasureTheory.integral_finset_sum	MeasureTheory.integral_finsetSum
+MeasureTheory.Integrable.bdd_mul'	MeasureTheory.Integrable.bdd_mul
+integral_mul_left	MeasureTheory.integral_const_mul
+MeasureTheory.Lp.memℒp	MeasureTheory.Lp.memLp
+Memℒp.of_bound	MemLp.of_bound
+memℒp_two_iff_integrable_sq_norm	memLp_two_iff_integrable_sq_norm
+norm_sq_eq_inner	norm_sq_eq_re_inner
+tsum_pos	Summable.tsum_pos
+
+# --- §1f Data / number theory / misc ---
+ZMod.natCast_zmod_eq_zero_iff_dvd	ZMod.natCast_eq_zero_iff
+Matrix.smul_mulVec_assoc	Matrix.smul_mulVec
+Finset.range_succ	Finset.range_add_one
+Nat.dvd_sub'	Nat.dvd_sub
+Algebra.id.map_eq_id	Algebra.algebraMap_self
+List.Chain'	List.IsChain
+Fin.coe_sub	Fin.val_sub
+Fin.coe_castSucc	Fin.val_castSucc
+Nat.twoPowSum_bitIndices	Nat.sum_map_two_pow_bitIndices
+Finset.toFinset_bitIndices_twoPowSum	Finset.toFinset_bitIndices_sum_two_pow
+Finset.filter_card_add_filter_neg_card_eq_card	Finset.card_filter_add_card_filter_not
+SimpleGraph.chromaticNumber_pos	SimpleGraph.Colorable.chromaticNumber_pos
+Set.ncard_image_of_injOn	Set.InjOn.ncard_image
+Real.geom_mean_eq_arith_mean_weighted_iff'	Real.geom_mean_eq_arith_mean_weighted_iff_of_pos'
