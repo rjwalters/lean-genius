@@ -120,8 +120,8 @@
     },
     "type": "insight",
     "title": "Concrete σ-Pair Examples",
-    "content": "Three families of $\\sigma$-pairs illustrating different phenomena. **Consecutive integers**: $\\sigma(14) = \\sigma(15) = 24$ (ratio $14/15 \\approx 0.93$) and $\\sigma(957) = \\sigma(958)$ (ratio $\\approx 0.999$). **Non-consecutive**: $\\sigma(206) = \\sigma(210) = 432$ (ratio $\\approx 0.981$). The $14, 15$ pair works because $14 = 2 \\cdot 7$ gives $\\sigma = 3 \\cdot 8 = 24$ and $15 = 3 \\cdot 5$ gives $\\sigma = 4 \\cdot 6 = 24$. Such coincidences are not rare: Erdős and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ is $\\gg x/(\\log x)^c$.",
-    "mathContext": "$\\sigma(14) = (1+2)(1+7) = 24 = (1+3)(1+5) = \\sigma(15)$. $\\sigma(206) = \\sigma(210) = 432$. $\\sigma(957) = \\sigma(958)$.",
+    "content": "Three families of $\\sigma$-pairs illustrating different phenomena. **Consecutive integers**: $\\sigma(14) = \\sigma(15) = 24$ (ratio $14/15 \\approx 0.93$) and $\\sigma(957) = \\sigma(958)$ (ratio $\\approx 0.999$). **Non-consecutive**: $\\sigma(33) = \\sigma(35) = 48$ (ratio $\\approx 0.943$). The $14, 15$ pair works because $14 = 2 \\cdot 7$ gives $\\sigma = 3 \\cdot 8 = 24$ and $15 = 3 \\cdot 5$ gives $\\sigma = 4 \\cdot 6 = 24$. Such coincidences are not rare: Erdős and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ is $\\gg x/(\\log x)^c$.",
+    "mathContext": "$\\sigma(14) = (1+2)(1+7) = 24 = (1+3)(1+5) = \\sigma(15)$. $\\sigma(33) = (1+3)(1+11) = 48 = (1+5)(1+7) = \\sigma(35)$. $\\sigma(957) = \\sigma(958)$.",
     "significance": "key",
     "relatedConcepts": [
       "σ-coincidences",
