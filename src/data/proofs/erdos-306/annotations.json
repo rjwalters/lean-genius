@@ -170,19 +170,19 @@
       "endLine": 157
     },
     "type": "concept",
-    "title": "Representation of 1",
-    "content": "**example_one_representation**: The integer 1 can be represented with 2-distinct-prime denominators:\n\n```lean\naxiom example_one_representation :\n  (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1\n```\n\nVerification: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n\nSum: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 35+21+15+14+10+6 / 210 = 1",
-    "mathContext": "This shows the conjecture holds for q = 1. The denominators form all products of pairs from {2,3,5,7}.",
+    "title": "Reciprocal sum over 2-prime denominators",
+    "content": "**example_one_representation**: an illustrative reciprocal sum over the six 2-distinct-prime products drawn from {2,3,5,7}:\n\n```lean\ntheorem example_one_representation :\n  (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 101 / 210 := by norm_num\n```\n\nVerification: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n\nSum: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = (35+21+15+14+10+6) / 210 = 101/210\n\n(An earlier version claimed this sum equals 1; that was arithmetically incorrect — the numerators over the common denominator 210 total 101, not 210.)",
+    "mathContext": "The six denominators are all products of pairs from {2,3,5,7}; their reciprocals sum to 101/210. This is a worked illustration of 2-distinct-prime denominators, not a representation of the integer 1.",
     "significance": "supporting",
     "relatedConcepts": [
       "specific examples",
-      "perfect Egyptian fraction",
+      "sums of distinct unit fractions",
       "pairs of primes"
     ],
     "prerequisites": [
       "summing unit fractions over a common denominator of 210",
       "products of pairs from the prime set {2,3,5,7}",
-      "representing the integer 1 as an Egyptian fraction"
+      "reducing a sum of distinct unit fractions to lowest terms"
     ]
   },
   {
