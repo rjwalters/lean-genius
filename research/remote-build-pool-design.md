@@ -242,5 +242,3 @@ Queue-depth-driven, scale-to-zero:
 3. ASG launch template + target-tracking policy (or Karpenter provisioner).
 4. Worker-side result uploader that writes `verify-results.tsv` rows + diag blocks to the store.
 5. Wire `submit-job.sh` to the live endpoint behind `REMOTE_BUILD_LIVE=1`.
-</content>
-</invoke>
