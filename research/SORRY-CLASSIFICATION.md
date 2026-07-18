@@ -167,6 +167,17 @@ sorry, so batching unrelated sorries dilutes the search budget. Existing
 companion files remain a working fallback; the batch agent still picks
 them up.
 
+> **Boundary translation (v4.28 → v4.31).** The Aristotle backend vendors
+> Mathlib **v4.28** and returns **v4.28-era Lean**; our pin is **v4.31**. A
+> returned proof is therefore *not* automatically GREEN on our pin. The
+> `retrieve-integrate.sh` path handles this automatically — it drift-repairs
+> each solution (`scripts/aristotle/drift-repair.sh`, driven by
+> `v428-to-v431-renames.tsv` from rename-map §1) and gates verification on an
+> in-container v4.31 build (`scripts/aristotle/verify-v431-build.sh`); the
+> backend's own success signal is **not** trusted across the version gap. Full
+> workflow: `research/ARISTOTLE-WORKFLOW.md` → "Boundary translation". This is
+> the ongoing operational job owned by issue #38622.
+
 ## Aristotle Companion Files (DEPRECATED — early multi-sorry pattern)
 
 > **Status (2026-06-05):** This multi-sorry companion-file pattern is **superseded** by the

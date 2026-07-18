@@ -105,7 +105,13 @@ trap cleanup_tmp_dir EXIT
 
 cp "$INPUT_FILE" "$tmp_file"
 
-# Copy Lean project files so aristotlelib recognizes it as a valid project
+# Copy Lean project files so aristotlelib recognizes it as a valid project.
+# We ship our current pin's lean-toolchain (v4.31.0 post-flip #38066). The
+# Aristotle backend NORMALIZES the submitted lean-toolchain to its vendored
+# Mathlib v4.28 before elaborating — this rewrite is EXPECTED, not an error
+# (issue #38622). The returned proof therefore comes back as v4.28-era Lean and
+# is drift-repaired to v4.31 on integration by scripts/aristotle/drift-repair.sh.
+# See research/ARISTOTLE-WORKFLOW.md ("Boundary translation").
 cp "$PROJECT_ROOT/proofs/lakefile.toml" "$tmp_dir/"
 cp "$PROJECT_ROOT/proofs/lean-toolchain" "$tmp_dir/"
 

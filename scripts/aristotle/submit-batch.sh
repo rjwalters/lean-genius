@@ -379,7 +379,12 @@ submit_file() {
     if [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]]; then
         project_dir="$(dirname "$preprocessed_tmp")"
     else
-        # Create a temp project dir with the file and Lean project metadata
+        # Create a temp project dir with the file and Lean project metadata.
+        # We submit our current pin's lean-toolchain (v4.31.0). The Aristotle
+        # backend normalizes it to its vendored Mathlib v4.28 — that rewrite is
+        # EXPECTED (issue #38622); returned proofs are v4.28-era and are
+        # drift-repaired to v4.31 on integration (retrieve-integrate.sh ->
+        # drift-repair.sh). See research/ARISTOTLE-WORKFLOW.md.
         project_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-submit-XXXXXX")
         cp "$submit_file" "$project_dir/"
         cp "$PROJECT_ROOT/proofs/lakefile.toml" "$project_dir/"

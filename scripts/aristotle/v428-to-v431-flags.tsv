@@ -1,0 +1,39 @@
+# v428-to-v431-flags.tsv
+#
+# Names that appear in v4.28-era Aristotle output and DRIFT on the v4.31 pin,
+# but must NOT be blind-renamed: the fix also changes a signature, argument
+# order, field layout, statement (RHS), or is an import-move rather than a
+# rename. drift-repair.sh only WARNS when it sees these, pointing at the recipe
+# in research/toolchain-v4.31-rename-map.md (§2/§3/§4/§5) so a human / Doctor
+# adapts the proof.
+#
+# FORMAT
+#   old_name<TAB>reason (one line; keep the map section reference)
+#   Blank lines and lines starting with `#` are ignored.
+
+# --- §5 API / signature changes (rename-map §5) ---
+IsSolvableByRad	§5: replacement `solvableByRad` is an IntermediateField, not a predicate; every use-site changes (x ∈ solvableByRad F E)
+solvableByRad.isSolvable'	§5: -> isSolvable_gal_of_irreducible swaps argument roles (Irreducible q vs root hypothesis)
+IsCyclic.commutative	§5: -> IsCyclic.isMulCommutative returns IsMulCommutative with no .comm field; use mul_comm / .is_comm.comm
+AdjoinRoot.liftHom	§5: -> AdjoinRoot.liftAlgHom now takes an R ->ₐ[S] T argument; .toRingHom projections break
+List.Sorted	§5: definition changed from Pairwise r to Monotone l.get; sortedness proofs need adaptation
+mul_le_mul_right'	§1b/§5: -> _root_.mul_le_mul_left is a left/right convention swap; check each use-site
+setIntegral_const	§5: RHS changed from (μ s).toReal • c to μ.real s • c (rename ok, proof body may drift)
+set_integral_congr	§1e/§5: -> setIntegral_congr_fun; NullMeasurableSet uses the ₀ variant
+pow_eq_zero	§1b: -> eq_zero_of_pow_eq_zero adds an [IsReduced R] hypothesis
+isUnit_of_mul_eq_one	§1b: -> IsUnit.of_mul_eq_one needs [IsDedekindFiniteMonoid M] (auto for comm monoids)
+div_le_div_right	§1b: -> div_le_div_iff_of_pos_right is an iff, not the ₀ implication form; usage changes
+div_lt_div_right	§1b: -> div_lt_div_iff_of_pos_right is an iff, not the ₀ implication form; usage changes
+Nat.Prime.multiplicity_choose	§1f: -> emultiplicity_choose result type is ℕ∞, not ℕ
+Polynomial.aeval_pow	§1f: dedicated lemma gone; use generic map_pow (aeval is an AlgHom)
+Finset.toSet	§1f: no rename; use the coercion (↑s : Set α) and the coe API (mem_coe, coe_inj)
+List.get?	§1f: removed in v4.28+; use List.getElem? or l[i]? (indexing form differs)
+
+# --- §5 import-move (still exists under same name; add the explicit import) ---
+alternatingGroup.isSimpleGroup_five	§1a/§5: NOT removed — import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
+
+# --- §4 pre-existing removals (NOT a migration rename; modern spelling noted) ---
+Complex.abs	§4: removed pre-pin; use norm / ‖·‖ and the Complex.norm_* lemma family
+
+# --- §1g tactic deprecation (warning-only today; safe to defer) ---
+push_neg	§1g: -> push Not is warning-only in v4.31 but slated for removal (93 files)

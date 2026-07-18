@@ -167,19 +167,78 @@ Aristotle caches project results ~30 days server-side, so re-submitting the
 exact same file within that window returns the prior result quickly without
 burning fresh solver budget.
 
-## Toolchain caveat (Mathlib v4.28)
+## Boundary translation (Mathlib v4.28 ↔ our v4.31 pin)
 
-Aristotle's backend vendors **Mathlib v4.28.0** and **rewrites submitted
-projects' `lean-toolchain` to v4.28.0** (observed in issue #38098; tracked
-against the toolchain flip in #38066). Our repo pins
-`proofs/lean-toolchain` (currently `leanprover/lean4:v4.26.0`), so:
+Aristotle's backend vendors **Mathlib v4.28.0** and **rewrites every submitted
+project's `lean-toolchain` to v4.28.0** (issue #38098). Our `main` pins
+`proofs/lean-toolchain` at **`leanprover/lean4:v4.31.0`** (flip #38066). The
+operator decision (2026-07-13) was NOT to wait for the backend to move off its
+pin, but to **translate at the boundary** — submit-side and integration-side —
+because "they will eventually update too" (issue #38622).
 
-- A proof that Aristotle verified on v4.28 may not elaborate unchanged on our
-  toolchain (and vice versa). **Always rebuild retrieved proofs locally**
-  before counting them as integrated — `retrieve-integrate.sh` compares
-  against the original but does not replace a local verification build.
-- Do not commit a `lean-toolchain` that came back inside an Aristotle result
-  bundle.
+Concretely, three rules govern the boundary:
+
+**1. Submission side — the v4.28 rewrite is EXPECTED, not an error.**
+`submit-batch.sh` / `preprocess-for-aristotle.sh` ship our pin's
+`lean-toolchain` (v4.31.0) inside the temp project. The backend normalizes it
+to v4.28 before elaborating. That is correct and requires no action. Do **not**
+commit a `lean-toolchain` that came back inside an Aristotle result bundle.
+
+**2. Integration side — drift-repair v4.28 → v4.31, automatically.**
+Every returned proof is **v4.28-era Lean** and will not necessarily elaborate
+on our v4.31 pin. `retrieve-integrate.sh` runs each retrieved solution through
+`scripts/aristotle/drift-repair.sh` **before** integrating it:
+
+- Applies the confident pure-rename subset of
+  `research/toolchain-v4.31-rename-map.md` (§1), curated into the
+  machine-readable table `scripts/aristotle/v428-to-v431-renames.tsv`
+  (e.g. `le_or_lt`→`le_or_gt`, `div_le_div_iff`→`div_le_div_iff₀`,
+  `not_mem`→`notMem` wave, `Set.mem_diff`→`Set.mem_sdiff`).
+- Whole-identifier matching with Unicode-aware boundaries, so
+  qualification-adds and `₀`-suffix adds are idempotent (safe to run on a file
+  that is already partly v4.31).
+- **Flags** — but does not blindly rewrite — names whose fix also changes a
+  signature / argument order / field layout / RHS (rename-map §5), listed in
+  `scripts/aristotle/v428-to-v431-flags.tsv` (e.g. `IsSolvableByRad`,
+  `IsCyclic.commutative`, `AdjoinRoot.liftHom`). These need a human/Doctor.
+
+Run it standalone to inspect drift on any file:
+
+```bash
+scripts/aristotle/drift-repair.sh --check proofs/Proofs/Foo.lean   # report only
+scripts/aristotle/drift-repair.sh proofs/Proofs/Foo.lean           # repair in place (+.drift.bak)
+```
+
+**3. Verification side — gate on an in-container v4.31 build.**
+Renaming makes a proof *elaborate-able*; it does not prove it GOES GREEN. Do
+**not** trust the backend's own v4.28 success signal across the version gap. A
+returned proof is only **verified** once it passes the same in-container v4.31
+build gate as migration increments:
+
+```bash
+scripts/aristotle/verify-v431-build.sh proofs/Proofs/Foo.lean
+#   exit 0 -> may mark verified   exit 1 -> do NOT mark verified   exit 3 -> pending (gate skipped)
+```
+
+This delegates to `./proofs/scripts/docker-build.sh` (NEVER bare `lake build`)
+and targets whatever pin `main` carries, so it is automatically "the current
+pin". `retrieve-integrate.sh` records the result on each job as
+`v431_verified` (true only on exit-0) and `v431_verification`
+(`verified` / `failed` / `pending`).
+
+By default the heavy build gate is **not** run inline (a 60-min build per proof
+would stall the integrate loop): retrieved proofs are integrated but left
+`pending`. Set `ARISTOTLE_VERIFY_BUILD=1` on `retrieve-integrate.sh` to gate
+inline, or run `verify-v431-build.sh` later (Aristotle agent / daemon) before
+any gallery `meta.json` is marked `verified`. `ARISTOTLE_SKIP_BUILD_GATE=1`
+forces the standalone gate to return `pending` without building.
+
+> **Drift probe (follow-up).** Characterizing the *typical* v4.28→v4.31 drift by
+> submitting a small live prove job and elaborating its output (originally gate
+> (b) of #38066) is left to the Aristotle agent — it costs live API quota and is
+> not needed to build the translation mechanism. The rename catalog (§1) already
+> seeds the repair table from the #38065 burn-down; extend
+> `v428-to-v431-renames.tsv` (and the map) as new drift is observed.
 
 ## Job tracking
 
