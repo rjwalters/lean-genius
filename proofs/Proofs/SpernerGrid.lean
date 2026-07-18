@@ -6,6 +6,33 @@ Authors: RJ Walters
 import Mathlib
 
 /-
+# ⚠ DEPRECATED / QUARANTINED — does not compile (see #38578, #8998)
+
+This legacy file **does not compile**. Its errors are confined to the
+*oriented* `gridAdj` / `interiorFlip` / `boundary_doors_odd` block, whose
+`boundary_doors_odd` claim is mathematically **false** as stated for `d = 1`
+because of a structural double-counting in the `GridSimplex` / `gridAdj`
+representation. That defect predates — and is unaffected by — the v4.26 → v4.31
+toolchain migration (#37508); it can only be resolved by the `GridSimplex` /
+`gridAdj` redesign tracked in #8998 (see also #9044).
+
+Do **not** repair this file in place: the oriented adjacency machinery here is
+exactly the code the #8998 redesign replaces. It is deliberately excluded from
+`proofs/scripts/build-safe-subset.sh` so the safe-subset build is not polluted
+with its known failures.
+
+**Canonical replacement:** the compiling `BaryPoint` / `GridSimplex` foundation
+now lives in `Proofs.SpernerGridBase` (the unoriented cell geometry, canonicality
+`IsCanon`, and lexicographic order), extended by `Proofs.SpernerGridCell` and
+`Proofs.SpernerNDimOQ02Cell` for the "Option C" unoriented `SpernerTriangulation`
+instance. New work should build on those, not on this file.
+
+The gallery's `sperner-mathlib4` verified badge applies to the *abstract* proof
+in `Proofs.SpernerMathlib4`, **not** to this file — so no verification overclaim
+exists today.
+
+--------------------------------------------------------------------------------
+
 # Grid Triangulation Instance for Abstract Sperner's Lemma
 
 We construct a concrete `CellComplex` instance from the standard
