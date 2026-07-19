@@ -294,7 +294,7 @@ theorem exists_subset_sum_eq :
     by_cases hcase : k ≤ ∑ a ∈ Icc_n n, a
     · obtain ⟨A, hAsub, hAsum⟩ := ih k hcase
       exact ⟨A, hAsub.trans (by rw [hins]; exact Finset.subset_insert _ _), hAsum⟩
-    · push_neg at hcase
+    · push Not at hcase
       have hnle : n ≤ ∑ a ∈ Icc_n n, a := by
         rcases Nat.eq_zero_or_pos n with h0 | hpos
         · simp [h0]
@@ -355,9 +355,9 @@ theorem maxAvoidingSize_eq_n_iff (n m : ℕ) :
   constructor
   · intro heq
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hnotavoid : ¬ AvoidSum (Icc_n n) m := by
-      rw [avoid_full_iff]; push_neg; exact hcon
+      rw [avoid_full_iff]; push Not; exact hcon
     obtain ⟨S, hSsub, hScard, hSavoid⟩ :=
       (maxAvoidingSize_ge_iff n m n).mpr (le_of_eq heq.symm)
     have hcardn : (Icc_n n).card = n := by rw [Icc_n, Nat.card_Icc]; omega
