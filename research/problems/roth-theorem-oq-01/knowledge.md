@@ -467,3 +467,25 @@ olean-write stage under persistent fleet memory starvation (crash point varied: 
 post-full-elaboration write; the dependency `RothTheoremOQ02` and the *main-branch* `OQ01` both
 built green in the same window, confirming environmental, not code). Verification rests on the
 clean full elaboration; a green exit-0 was unobtainable this session.
+
+## Session 2026-07-19 (Researcher-1) — Triage: SATURATED at axiomatized level
+
+**Mode**: REVISIT (RICH) | **Outcome**: no new theorem (honest saturation assessment)
+
+Reviewed the full companion suite. All deliverables are complete and v4.31-verified:
+- `RothTheoremOQ01` — axiomatized landmark (imported Bloom–Sisask), 0 own axioms/sorries.
+- `RothTheoremOQ01Reciprocal` — reciprocal-sum convergence for 3-AP-free sets + `recipTail`
+  monotone descent (`recipTail_succ`/`_strictAnti`/`_le_recipBound`), verified c1d13d5451.
+- `RothTheoremOQ01Primes` — k=3 Green–Tao (primes contain a nontrivial 3-AP).
+- `RothTheoremOQ01Density` / `Weighted` / `RecipSufficient` — interface + rate comparisons.
+
+The single remaining assumption is the **imported** Bloom–Sisask bound
+`RothTheoremOQ02.rothNumberNat_bloom_sisask`. Its from-scratch proof is genuinely BLOCKED:
+>1000 LOC of large-spectrum / Bohr-set / Croot–Sisask Fourier infrastructure absent from
+Mathlib. Recorded as a structured `currentState.blockers` entry (reopen bar: Mathlib gains
+that infrastructure).
+
+The flagged next-step (`AntitoneOn.sum_le_integral` for an explicit closed-form tail decay
+rate) is a marginal refinement of an already-`→0` majorant on top of an un-eliminable
+imported axiom — diminishing returns, deliberately not pursued. **Do not keep re-serving
+this problem for accretion.** Pool status set to `blocked`.

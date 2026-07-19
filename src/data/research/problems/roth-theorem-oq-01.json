@@ -22,7 +22,11 @@
     "focus": "Feasibility and approach identified (Session 1, ORIENT). Statement anchored to Mathlib",
     "activeApproach": "SURVEY/axiomatized route. The genuine Fourier/density-increment proof is blocked on missing",
     "blockers": [
-      "- Docker build environment down (cannot compile/verify Lean this session)."
+      {
+        "route": "from-scratch quantitative Bourgain / Bloom–Sisask bound (large-spectrum / Bohr-set Fourier analysis)",
+        "reopenCriterion": "Mathlib gains additive-combinatorics infrastructure (large spectrum, Bohr sets, Croot–Sisask almost-periodicity) — materially new mechanism required",
+        "blockedAt": "2026-07-19"
+      }
     ],
     "nextAction": "Explicit closed-form tail majorant recipTail m ≤ C/m^blasiConst via AntitoneOn.sum_le_integral telescoping (monotone scaffold recipTail_succ/_strictAnti now in place, Session 2026-07-19).",
     "attemptCounts": {
@@ -32,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-13, researcher-9): Added an effective TAIL-DECAY section to RothTheoremOQ01Reciprocal.lean — recipTail m = ∑'_k recipMajorant(k+m) bounds the reciprocal sum of any 3-AP-free set at height ≥2^m, sharpening the universal recipBound; recipTail m→0 gives uniform ε-concentration (one threshold for all such sets). 6 decls, 0 new axioms, full build OK (2511 jobs). Orthogonal to researcher-6 dilation and researcher-8 total-sum work.",
+    "progressSummary": "SATURATED (axiomatized): landmark + downstream consequences complete and v4.31-verified; only remaining assumption is the imported Bloom–Sisask bound whose from-scratch proof is BLOCKED (Fourier infra out of scope). No productive increment available without new Mathlib infrastructure.",
     "builtItems": [
       "proofs/Proofs/RothTheoremOQ01.lean — axiomatized Bourgain-1999 landmark (1 axiom, 0 sorries, 6 theorems)",
       "threeAPFree_summable_reciprocal in Proofs/RothTheoremOQ01Reciprocal.lean: 3-AP-free ⟹ Summable (1/a). VERIFIED, no new axiom (rests on rothNumberNat_bloom_sisask via threeAPFree_card_le_blasi).",
@@ -51,7 +55,8 @@
       "Dilation covariance (researcher-6): the additive 3-AP-free property over ℕ is preserved by the dilation x↦k·x (k≠0) — threeAPFree_nat_mul_image, proved directly from Mathlibs threeAPFree_iff_eq_right (k·a+k·c=2k·b ⟺ a+c=2b, cancel k via Nat.eq_of_mul_eq_mul_left). Mathlib only has the MULTIPLICATIVE smul_set₀ (GP-free/CancelCommMonoidWithZero); the additive-dilation lemma is NOT in Mathlib. Under the same dilation the reciprocal sum scales by EXACTLY 1/k (dilate_tsum_reciprocal_eq, via Equiv.Set.image + Equiv.tsum_eq + tsum_mul_left), so the dilate k·A obeys the SHARPER bound ∑1/(k·a) ≤ recipBound/k — strictly below the uniform constant for k≥2. Exhibits the universal reciprocal bound as dilation-covariant; orthogonal to the subset-monotone (ThreeAPFree.mono) universal bound. 0 new axioms (threeAPFree_nat_mul_image = [propext] only).",
       "Tail decay (effective concentration): a 3-AP-free set living entirely at height ≥ 2^m has reciprocal sum ≤ recipTail m := ∑'_k recipMajorant(k+m), the dyadic majorant summed over blocks of index ≥ m — a strictly sharper (height-indexed) bound than the single universal constant recipBound = recipTail 0.",
       "recipTail m → 0 as m → ∞ (tendsto_sum_nat_add on the summable recipMajorant), so the reciprocal mass carried by high 3-AP-free sets is uniformly negligible: ∀ε>0 ∃m one threshold works for ALL such sets at once (exists_height_recip_small).",
-      "recipTail is not merely →0 but strictly monotone-descending in an EXPLICIT step: recipTail m = recipMajorant m + recipTail (m+1) (recipTail_succ), so recipTail (m+1) = recipTail m − recipMajorant m and recipTail is strictly antitone (recipTail_strictAnti), with recipTail m < recipBound for m≥1. This upgrades the qualitative tendsto_zero into an exact monotone descent — the scaffold for an explicit decay rate. Verified v4.31, no new axiom."
+      "recipTail is not merely →0 but strictly monotone-descending in an EXPLICIT step: recipTail m = recipMajorant m + recipTail (m+1) (recipTail_succ), so recipTail (m+1) = recipTail m − recipMajorant m and recipTail is strictly antitone (recipTail_strictAnti), with recipTail m < recipBound for m≥1. This upgrades the qualitative tendsto_zero into an exact monotone descent — the scaffold for an explicit decay rate. Verified v4.31, no new axiom.",
+      "SATURATED at the axiomatized level (2026-07-19, researcher-1 triage): landmark RothTheoremOQ01 + downstream consequences all delivered and v4.31-verified — reciprocal-sum convergence for 3-AP-free sets (RothTheoremOQ01Reciprocal), k=3 Green–Tao / primes 3-AP (RothTheoremOQ01Primes), recipTail monotone descent, density interface. The only remaining assumption is the IMPORTED Bloom–Sisask bound (rothNumberNat_bloom_sisask); its from-scratch proof is genuinely BLOCKED (>1000 LOC Fourier infra absent from Mathlib). Further tail-majorant sharpening is diminishing returns — do NOT keep re-serving for accretion."
     ],
     "mathlibGaps": [],
     "nextSteps": [
