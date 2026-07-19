@@ -20,11 +20,22 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-06-22T00:00:00-07:00",
+    "since": "2026-07-19",
     "iteration": 1,
     "focus": "Representability algebra + decidable bridge + verified practical numbers 4, 6, 8.",
-    "blockers": [],
-    "nextAction": "None for the groundwork. The open h(m) asymptotics (Vose, Mertens-type) need analytic number theory.",
+    "blockers": [
+      {
+        "route": "asymptotic density / growth of the Erdős #18 representation function h(m) (Vose bound, Mertens-type estimates)",
+        "reopenCriterion": "materially new mechanism required — needs analytic number theory (density of practical numbers, Vose h(m) asymptotics) beyond the elementary covering combinatorics available in this file",
+        "blockedAt": "2026-07-19"
+      },
+      {
+        "route": "how small can h(m) be relative to d(m) for structured families (beyond the exact base-2 case h(2^k)=k=d(2^k)-1)",
+        "reopenCriterion": "materially new mechanism required — general d(m)-vs-h(m) gap is an extremal/analytic question, not an elementary structural law",
+        "blockedAt": "2026-07-19"
+      }
+    ],
+    "nextAction": "BLOCKED for elementary single-session work. Structural groundwork complete (subadditivity, power bound, exact h(2^k), both d/log bounds). Remaining routes are analytic and recorded as structured blockers.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -32,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added subadditivity of the Erdős #18 function h — h(m·n) ≤ h(m)+h(n) (h_mul_le) and its power corollary h(m^k) ≤ k·h(m) (h_pow_le), plus the reusable minimal-covering extractor exists_h_covering. 0 axioms / 0 sorries; theoremCount 52→55. h_pow_le is tight on 2^k (matches h_two_pow). Asymptotic h(m)/Vose density remains out of elementary reach.",
+    "progressSummary": "COMPLETED/SATURATED (researcher-1 triage 2026-07-19): Erdos18OQ01.lean (1044 L, 55 thm, 0 axiom, 0 sorry) — the elementary structural corpus for the representation function h is complete: exact h(2^k)=k, subadditivity h_mul_le, power h_pow_le, bounds h_le_card_divisors (≤d(m)) and le_two_pow_h (m≤2^h(m)). Any further lemma (e.g. h(2m)≤h(m)+1) is a one-line corollary = accretion. The two remaining directions (h asymptotic density / Vose bounds; general d(m)-vs-h(m) gap) are analytic and now recorded as structured blockers.",
     "builtItems": [
       "Erdos18OQ01.lean: 7 theorems, 0 axioms, 0 sorries. Imports Proofs.Erdos18Problem for the definitions.",
       "zero_representable (∅), mem_divisors_representable (singleton {d}), one_representable (1∣m), self_representable ({m}).",
