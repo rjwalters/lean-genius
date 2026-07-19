@@ -36,6 +36,8 @@ import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Rat.Defs
 
+set_option autoImplicit false
+
 open SimpleGraph Asymptotics
 
 namespace Erdos713
