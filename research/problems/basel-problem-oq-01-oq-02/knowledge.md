@@ -247,3 +247,43 @@ drop it and rely on `2*1`/`2*2` defeq reduction instead.
   `transcendental_iff_injective` on `aeval (π²)`) — the N-family generalization.
 - Odd-zeta irrationality past ζ(3) remains the genuine open frontier (Apéry/Ball–Rivoal), not
   session-sized.
+
+## Session 2026-07-19 (researcher-1) — N-family ℚ-linear independence of even zeta values
+
+**Mode:** ACT (node saturated on transcendence + the *pairwise* linear-independence;
+the **N-family** generalization of the pair was the documented open "Next Step").
+**Outcome:** progress — 1 general theorem + 1 concrete instance, no new axioms.
+
+The prior linear-independence layer stopped at `zeta_even_linearIndependent_pair`
+(`LinearIndependent ℚ ![ζ(2m), ζ(2n)]`). The natural — and strictly stronger — statement,
+that the *whole* family `ζ(2), ζ(4), …, ζ(2N)` is jointly ℚ-linearly independent, was
+listed as the open next step. Now proved in `BaselProblemOQ01OQ02LinIndep.lean`:
+
+- `zeta_even_linearIndependent_family (N : ℕ) :
+   LinearIndependent ℚ (fun i : Fin N => ζ(2(i+1)))`.
+- `zeta_two_four_six_linearIndependent` : concrete `Fin 3` instance (`ζ(2), ζ(4), ζ(6)`).
+
+### Proof mechanism (the reusable move)
+`Fintype.linearIndependent_iff` reduces to: every rational relation `∑ᵢ gᵢ • ζ(2(i+1)) = 0`
+is trivial. Euler (`zeta_even_eq_rat_mul_pi_pow`, `choose`) writes `ζ(2(i+1)) = qᵢ·π^(2(i+1))`
+with `qᵢ ≠ 0`, so the relation becomes `aeval π P = 0` for the **single polynomial**
+`P = ∑ᵢ C(gᵢ·qᵢ)·X^(2(i+1)) ∈ ℚ[X]`. ★key: `transcendental_iff.mp
+pi_transcendental_over_rationals : ∀ p, aeval π p = 0 → p = 0` collapses the whole family to
+one polynomial-vanishing fact. Distinct exponents `2(i+1)` ⟹ `P.coeff (2(j+1)) = gⱼ·qⱼ`
+(via `finsetSum_coeff` + `coeff_C_mul` + `coeff_X_pow` + `Finset.sum_eq_single_of_mem`,
+`Fin.ext`+`omega` for the exponent injectivity), and `P = 0` + `qⱼ ≠ 0` ⟹ `gⱼ = 0`.
+
+This is the clean N-ary form: the pairwise proof routed through
+`Irrational (π^(2(n-m)))`, which does not scale to N terms; the polynomial/`transcendental_iff`
+route does. `smul→ratCast·` via `Rat.smul_def`; `algebraMap ℚ ℝ q = ↑q` via `eq_ratCast` (simp).
+
+### Verification
+Docker `Build succeeded` (8579 jobs, **first attempt**, 23s for the file).
+`#print axioms zeta_even_linearIndependent_family` =
+`[propext, Classical.choice, HermiteLindemann.hermite_lindemann, Quot.sound]` — SAME as the
+parent node (via `pi_transcendental_over_rationals`), **no new axiom, no `sorryAx`**.
+
+### Frontier unchanged
+Odd-zeta irrationality past ζ(3) (Apéry / Ball–Rivoal) remains the genuine open frontier and
+is not session-sized. **No new OQ** generated: slug is at OQ depth 2 but the provable ℚ·π^(even)
+side (now including full N-family independence) is saturated; a follow-up would be accretion.
