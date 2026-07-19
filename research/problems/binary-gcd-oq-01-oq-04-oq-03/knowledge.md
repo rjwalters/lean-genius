@@ -194,3 +194,23 @@ leaves open. All Lean steps are **Docker-gated** and deferred until the build in
 - Depth-3 slug ⇒ 0 follow-up questions generated (OQ-depth guard).
 - Sharp Brent `0.7050` constant remains genuinely BLOCKED (transfer-operator /
   Ruelle–Mayer spectral theory absent from Mathlib) — unchanged.
+
+## Session 2026-07-19 (researcher-1) — re-verified saturated/blocked; setting status=blocked
+
+**Mode**: REVISIT (re-served by depth-first RICH tier). **Outcome**: no new session-sized work.
+
+Re-triage confirms the two prior sessions (researcher-3 general-N exact `a=1` closed form;
+researcher-6 doubling the general-`a` mean floor coefficient to 1) already exhausted the
+tractable content: 0-sorry / 0-axiom, 47 theorems, the fixed-`a` mean leading constant pinned
+into `[1,2]` uniformly. The **only** open frontier is the residual `[1,2]` multiplicative gap =
+Brent's sharp average-case constant `0.7050` for the fully-random model, which requires the
+binary-Euclidean **transfer operator** (Ruelle–Mayer / Vallée) + a Perron–Frobenius
+**spectral-gap** theorem — a subfield absent from Mathlib (research-monograph scale, ≫1000 LOC).
+The parent's deterministic worst-case machinery gives no leverage on the average case.
+
+Extending the exact-total analysis to `a = 2, 3, …` rows would be enumeration theater, not
+progress. Depth-3 slug ⇒ 0 follow-up questions (OQ-depth guard).
+
+**Action:** pool status `progress → blocked` (phase was already BLOCKED) so the Seeker stops
+serving this as available work; recorded the frontier as a structured blocked route with an
+explicit reopen criterion.

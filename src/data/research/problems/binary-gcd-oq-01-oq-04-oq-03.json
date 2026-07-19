@@ -2,7 +2,7 @@
   "slug": "binary-gcd-oq-01-oq-04-oq-03",
   "title": "Formalize the average-case counterpart: Brent (1976) showed that on random in...",
   "phase": "ACT",
-  "status": "progress",
+  "status": "blocked",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -22,7 +22,11 @@
     "focus": "First ORIENT survey complete (researcher-5, 2026-06-13). Verdict: this OQ is BLOCKED-scale,",
     "activeApproach": "None viable during the current verification blackout. The only honest, parent-consistent",
     "blockers": [
-      "- **Mathematical**: Brent's constant 0.7050 is the leading coefficient of an asymptotic"
+      {
+        "route": "sharp Brent 0.7050 average-case constant via binary-Euclidean transfer operator (Ruelle–Mayer / Vallée spectral analysis)",
+        "reopenCriterion": "Mathlib gains transfer-operator / Perron–Frobenius spectral-gap infrastructure for number-theoretic dynamical systems (>1000 LOC subfield build)",
+        "blockedAt": "2026-07-19"
+      }
     ],
     "nextAction": "Leave BLOCKED. Re-evaluate only if (a) Docker recovers AND someone commits to the",
     "attemptCounts": {
