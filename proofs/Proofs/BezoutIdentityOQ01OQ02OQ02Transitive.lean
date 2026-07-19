@@ -40,15 +40,14 @@
   - Grandparent `BezoutIdentityOQ01OQ02` (`bezoutMatrix`, `bezoutMatrix_mulVec`).
   - Companion `BezoutIdentityOQ01OQ02OQ02Descent` (`embedOneSL`, `headBlockNSL`).
 
-  BUILD STATUS (2026-07-09): **UNVERIFIED — not yet machine-checked.**  The Docker build
-  infrastructure was down this session (containerd content-store blob I/O error, operator-level)
-  and the Aristotle service was unreachable, so this file could not be elaborated even once.  The
-  proof strategy was validated by hand and every Mathlib API call was cross-checked against the
-  pinned Mathlib source (`Fin.append`/`cons` lemmas, `Matrix.mulVec_mulVec`,
-  `SpecialLinearGroup.coe_mul`, `Int.gcd_dvd_left/right`, `Int.eq_one_of_dvd_one`), but the two
-  pure-`Fin` bridge lemmas below (`gcdForm_two`, `cons_gcdForm`) are finicky index-arithmetic
-  tactic proofs and are the most likely to need adjustment on first build.  Do NOT report this entry
-  as `verified` until a clean build confirms it.
+  BUILD STATUS (2026-07-19): **VERIFIED — machine-checked on Lean 4.31 / Mathlib.**  Builds green
+  via `./proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ01OQ02OQ02Transitive` with 0 sorries
+  and 0 `axiom` declarations; `#print axioms sln_acts_transitive` reports only the standard
+  foundational trio `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`).
+  The two pure-`Fin` bridge lemmas flagged at authoring time (`gcdForm_two`, `cons_gcdForm`) did
+  require repair: the `2 + (m + 1)` grouping forced `Fin.addCases` (`m := 2`) and `headBlockNSL`
+  (`m := m + 1`) to be pinned explicitly, and `cons_gcdForm` was re-proved coordinatewise with
+  auxiliary `hzero`/`gcdZero`/`key` helpers.
 -/
 
 import Mathlib
