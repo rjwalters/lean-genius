@@ -32,8 +32,8 @@
       "pigeonhole_ramsey: k=1 proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
     ],
     "axiomCount": 1,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom: hypergraph_ramsey_k2 (k ≥ 2 existence requiring the stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k=1 pigeonhole), and monotonicity are fully proved. The axiom isolates exactly the inductive step of the k-uniform stepping-up argument.",
-    "lineCount": 301,
+    "assumptions": "1 axiom: hypergraph_ramsey_k2 (k ≥ 2 existence requiring the stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k=1 pigeonhole), and monotonicity are fully proved. The axiom isolates exactly the inductive step of the k-uniform stepping-up argument. REPAIRED (issue #39077, batch 5): the file compiles green on Lean v4.31 with `set_option autoImplicit false` and the previously auto-bound free variables (r in IsMonochromatic, r/n/N in k1_is_pigeonhole, k in kSubsets_mem_of_subset) now explicitly bound. Verified via docker-build: 0 sorries, 1 axiom; every proved theorem (pigeonhole_ramsey, ramsey_property_mono, classical_ramsey_is_k2, hypergraph_ramsey_exists\\''s k=1 branch) depends only on the foundational axioms propext/Classical.choice/Quot.sound — no sorryAx, no native_decide. The prior #39061 audit retraction (\"never validly compiled\") is resolved.",
+    "lineCount": 262,
     "mathlibDependencies": [
       {
         "theorem": "Finset.powersetCard",
