@@ -71,8 +71,8 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 323,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `s` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 's'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom (danzer_finite_maximal_packing), 0 sorries. Zorn existence proof added. Danzer finite maximal packing axiomatized.",
+    "lineCount": 325,
+    "assumptions": "Formalized with one assumption: the axiom danzer_finite_maximal_packing (Danzer's theorem, the $10-prize SOLVED half of Erdős 1071(a): a finite maximal set of pairwise non-intersecting unit segments exists). REPAIR (issue #39077, follow-on to #39061, batch 7): this entry compiles green on Lean v4.31 with `set_option autoImplicit false` added. The #39061 audit flagged a masked free identifier `s`, but that was a false positive — `s` is bound as an explicit parameter throughout; with autoImplicit off the file still builds with no free-variable errors and no additional proof defects. The single axiom is a deliberate, disclosed mathematical assumption (Danzer's theorem is not reproved here); 0 sorries. Zorn-based existence of maximal packings is proved from it.",
     "theoremCount": 23,
     "definitionCount": 16
   },

@@ -23,6 +23,8 @@ import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit false
+
 open Nat Finset
 
 namespace Erdos1054OQ02
@@ -79,14 +81,15 @@ theorem divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
   constructor
   · intro ⟨hd, hne⟩
     have hd_pos : d ≥ 1 := by
-      by_contra h; push_neg at h
-      interval_cases d; simp [Nat.zero_dvd] at hd; exact hne hd
+      rcases Nat.eq_zero_or_pos d with h0 | h0
+      · subst h0; rw [zero_dvd_iff] at hd; exact absurd hd hne
+      · exact h0
     exact divisor_of_prime_product q p hq hp hlt d hd hd_pos
   · intro h
     have hqpos : q ≥ 1 := hq.pos
     have hppos : p ≥ 1 := hp.pos
-    have hne : q * p ≠ 0 := by omega
-    rcases h with h | h | h | h <;> subst h
+    have hne : q * p ≠ 0 := Nat.mul_ne_zero (by omega) (by omega)
+    rcases h with h | h | h | h <;> subst d
     · exact ⟨one_dvd _, hne⟩
     · exact ⟨dvd_mul_right q p, hne⟩
     · exact ⟨dvd_mul_left p q, hne⟩
@@ -99,6 +102,8 @@ theorem card_divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
   rw [divisors_prime_product q p hq hp hlt]
   have hq2 := hq.two_le
   have hp2 := hp.two_le
+  have hqp1 : q < q * p := by nlinarith
+  have hqp2 : p < q * p := by nlinarith
   rw [Finset.card_insert_of_notMem (by simp; omega)]
   rw [Finset.card_insert_of_notMem (by simp; omega)]
   rw [Finset.card_pair (by omega)]

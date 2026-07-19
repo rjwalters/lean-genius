@@ -17,6 +17,8 @@ Reference: https://erdosproblems.com/1071
 
 import Mathlib
 
+set_option autoImplicit false
+
 open Set
 
 namespace Erdos1071
