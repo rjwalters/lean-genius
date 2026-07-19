@@ -34,7 +34,7 @@
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Real
@@ -250,7 +250,7 @@ theorem asymptotic_constant_le
     (upper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → f k ≤ (b + ε) * k^2 / log k) :
     a ≤ b := by
   by_contra h
-  push_neg at h          -- h : b < a
+  push Not at h          -- h : b < a
   set ε := (a - b) / 4 with hε_def
   have hε : ε > 0 := by rw [hε_def]; linarith
   obtain ⟨k₁, hk₁⟩ := lower ε hε
@@ -370,10 +370,10 @@ theorem constantConjecture_forces_bracket (c : ℝ) (h : constantConjecture c) :
     (1:ℝ)/2 ≤ c ∧ c ≤ 1 := by
   refine ⟨?_, ?_⟩
   · by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     exact constantConjecture_refuted_of_lt_half c hlt h
   · by_contra hgt
-    push_neg at hgt
+    push Not at hgt
     exact constantConjecture_refuted_of_one_lt c hgt h
 
 /-- **Uniqueness of the exact asymptotic constant.**  At most one constant can be the
