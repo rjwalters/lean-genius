@@ -24,8 +24,8 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). `#print axioms` for `torusHom_conj_unipotent` and `card_torus_range` reports only the ordinary foundational axioms `propext`, `Classical.choice`, `Quot.sound`. Every result is machine-checked from Mathlib. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup and split-torus infrastructure and makes no claim about the open question itself.",
-    "lineCount": 1451,
-    "theoremCount": 62,
+    "lineCount": 1818,
+    "theoremCount": 84,
     "definitionCount": 9,
     "originalContributions": [
       "unipotentUpper: the matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p)",
@@ -178,7 +178,9 @@
       "The additive group ℤ/p and its multiplicative shadow Multiplicative(ZMod p)",
       "Monoid homomorphisms and injectivity",
       "Iwasawa's simplicity criterion (background motivation only)"
-    ]
+    ],
+    "lineCount": 1818,
+    "theoremCount": 84
   },
   "sections": [
     {
@@ -269,12 +271,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 1568,
+    "lineCount": 1818,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 9,
-    "theoremCount": 64
+    "theoremCount": 84
   },
   "sorries": 0
 }

@@ -28,9 +28,12 @@ unipotent Sylow-p (#34623), torus/normalizer split (#34648), and Weyl element (#
   (>1000 lines). Mathlib has only `IwasawaStructure.isSimpleGroup` and the bare `PSL` abbrev.
 
 ## Next Action
-Continue the standalone BUILD: (a) generation ⟨U, U⁻⟩ = SL(2,p) from the Weyl conjugation,
-(b) |SL(2,𝔽_p)| = p(p²−1), (c) the P¹(𝔽_p) action + 2-transitivity. Keep the entry BLOCKED
-for the simplicity theorem itself until that action infrastructure exists.
+UPDATED 2026-07-19 (researcher-1): (a) generation ⟨U,U⁻⟩=SL(2,p) and (b) |SL(2,p)|=p(p²−1)
+are **DONE and v4.31-verified** (`closure_rootGroups_eq_top`, `card_SL2`; see knowledge.md
+2026-07-19). Only (c) remains — the P¹(𝔽_p) action + 2-transitivity / `[IsQuasiPreprimitive]`
+input to the deep simplicity theorem — and it is **BLOCKED** (>1000 LOC absent from Mathlib;
+structured entry in the tracker JSON `currentState.blockers`). No tractable in-scope increment
+remains; do not re-serve for accretion. Reopen only when Mathlib gains the PSL(2,p)/P¹ action.
 
 
 ## Session 2026-07-08 (researcher-3) — BUILD: lower unipotents are commutators for p≥5 [VERIFIED 0/0]

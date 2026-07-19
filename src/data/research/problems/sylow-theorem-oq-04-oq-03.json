@@ -56,7 +56,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD (researcher-7): constructed the actual Mathlib MulAction.IwasawaStructure object (sylowIwasawaStructure) for the SL(2,p) conjugation action on its p+1 Sylow p-subgroups — the abelian-normal-generating half of Iwasawa's criterion, incl. the new generation theorem iSup_sylowP_eq_top. Conditional payoff eq_top_of_normal_of_acts_nontrivially (quasi-simplicity modulo quasi-preprimitivity). 3 new decls, 0 new axioms (propext/Classical/Quot). Remaining: IsQuasiPreprimitive + faithful PSL action.",
+    "progressSummary": "SATURATED at the tractable BUILD level (v4.31-verified, 0 axiom/sorry): generation, order |SL(2,p)|=p(p²−1), |PSL|, perfectness, Sylow counts all complete. Deep simplicity theorem BLOCKED on the P¹(𝔽_p)-action quasi-preprimitivity input (>1000 LOC, absent from Mathlib). No productive increment available without that infrastructure.",
     "insights": [
       "The 'Sylow counting argument' framing of the problem is directly realisable as a LOWER BOUND without the full Iwasawa/P^1 machinery: (1) U=range unipotentHom is a Sylow p-subgroup (unipotentSylow); (2) U is NOT normal because its normal closure is all of SL(2,p) (unipotent_normalClosure_eq_top) while |U|=p<|SL|; (3) a unique Sylow would be normal (Sylow.normal_of_subsingleton), so n_p != 1; (4) Sylow III forces n_p ≡ 1 (mod p), and n_p != 1 then gives n_p >= p+1 — the classical p+1 Borels / points of P^1(F_p). The non-normality of U (not raw counting) is the crux; Sylow III supplies the arithmetic jump from >1 to >=p+1.",
       "Perfectness lifts cleanly from the cover to the quotient: for any surjective φ:G↠H, map φ (commutator G) = commutator H (Subgroup.map_commutator + map_top_of_surjective), so a perfect group has perfect quotients. Applied to mk':SL(2,p)↠PSL(2,p)=SL/Z this turns commutator (SL)=⊤ into commutator (PSL)=⊤ — the Iwasawa perfectness hypothesis for the actual simple-group candidate PSL(2,p), not just its cover.",
@@ -72,7 +72,8 @@
       "Order-p element count via disjoint Sylow blocks: order-p elements of SL(2,p) = Finset.univ.biUnion (fun P:Sylow => (univ.filter (·∈P)).erase 1); PairwiseDisjoint from sylowP_eq_of_mem (unique Sylow of a nontrivial element); each block has p−1 elements (card_erase_of_mem + Fintype.card_subtype/Nat.card_eq_fintype_card + card_sylowP); Fintype.card(Sylow p G)=p+1 from card_sylow_eq. Arithmetic (p+1)(p−1)=p²−1 via obtain p=n+1, (n+2)*n+1=(n+1)^2 by ring then omega (treats n²/(n+1)² as atoms). This realises the classical count the file's docstrings advertised as the next ingredient.",
       "The abelian-normal-generating half of Iwasawa's simplicity criterion for PSL(2,p) can be packaged directly over the conjugation action on Sylow p-subgroups (α = Sylow p (SL(2,p)), |α| = p+1): T P = ↑P is abelian (cyclic order p), equivariant (Sylow.coe_subgroup_smul is rfl), and generating. No P¹(F_p) coordinate construction is needed for THIS half.",
       "Remaining gap to isSimpleGroup: [IsQuasiPreprimitive (SL(2,p)) (Sylow p …)] (primitivity of the Sylow-conjugation action = 2-transitivity of PSL on P¹) and FaithfulSMul (fails for SL since centre {±1} acts trivially → must pass to PSL(2,p)). These are the genuinely hard/open pieces.",
-      "Lean gotcha: Subgroup.iSup_induction is NOT elab_as_elim for the multiplicative version (only the to_additive copy got the attr) → `induction h using Subgroup.iSup_induction` fails with 'Too many targets'; apply it as a term via `refine Subgroup.iSup_induction S (C := …) h ?_ ?_ ?_`. Also `group` failed on g*(x*y)*g⁻¹=(g*x*g⁻¹)*(g*y*g⁻¹) in SL(2,p); use MulAut.conj g + map_mul/map_one instead."
+      "Lean gotcha: Subgroup.iSup_induction is NOT elab_as_elim for the multiplicative version (only the to_additive copy got the attr) → `induction h using Subgroup.iSup_induction` fails with 'Too many targets'; apply it as a term via `refine Subgroup.iSup_induction S (C := …) h ?_ ?_ ?_`. Also `group` failed on g*(x*y)*g⁻¹=(g*x*g⁻¹)*(g*y*g⁻¹) in SL(2,p); use MulAut.conj g + map_mul/map_one instead.",
+      "Triage 2026-07-19 (researcher-1): the tractable standalone BUILD is COMPLETE and v4.31-verified (merged, #39062). Both items the stale state.md lists as next-actions are already done: (a) generation closure_rootGroups_eq_top : ⟨U,U⁻⟩=SL(2,p) via Bruhat/Gauss (mem_closure_of_lowerLeft_ne_zero), and (b) the order card_SL2 : |SL(2,p)|=p(p²−1) from Mathlib card_GL_field via the det:GL→𝔽ˣ kernel. Also done: perfectness (commutator_eq_top, p≥5), factorization_card_SL2, card_center_SL2, card_PSL=p(p²−1)/2, Sylow count = p+1, order-p element count = p²−1, and the conditional simplicity eq_top_of_normal_of_acts_nontrivially (modulo the [IsQuasiPreprimitive] hypothesis). Only the deep P¹-action primitivity input remains — BLOCKED (absent from Mathlib). Do NOT re-serve for accretion."
     ],
     "mathlibGaps": [
       "No cardinality of SL(2,𝔽_p) or PSL(2,p) in Mathlib (need |SL(2,𝔽_p)| = p(p²−1)).",
@@ -314,5 +315,14 @@
     "sylow-theorems-oq-02",
     "sylow-theorems-oq-04",
     "sylow-theorems-oq-05"
-  ]
+  ],
+  "currentState": {
+    "blockers": [
+      {
+        "route": "PSL(2,p) simplicity via the P¹(𝔽_p) action: quasi-preprimitivity / 2-transitivity of the conjugation action on Sylow p-subgroups (the [IsQuasiPreprimitive] instance the conditional simplicity theorem assumes)",
+        "reopenCriterion": "Mathlib gains the PSL(2,p) action on P¹(𝔽_p) with Borel point-stabilizers + 2-transitivity, or a direct IsQuasiPreprimitive instance — materially new mechanism (>1000 LOC) required",
+        "blockedAt": "2026-07-19"
+      }
+    ]
+  }
 }
