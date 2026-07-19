@@ -50,12 +50,16 @@ the full audit table and re-grounded line numbers at the pinned SHA.
   hypothesis).
 * Step (d) discharged as standalone geometry-free lemma
   `bisector_factor_algebra` (pure-`ℝ` `linear_combination`; the algebraic
-  factorization of Path A). The remaining glue in the main theorem is the
-  Docker-gated geometry — Step (c) bilinear expansion + denominator clearing
-  to produce `bisector_factor_algebra`'s hypothesis, Step (e) Cauchy-Schwarz
-  non-collinearity exclusion, Step (f) `s = c/(b+c)` conclusion — all
-  paste-ready in `s5-statesync-audit-extension.md` §§4-7.
-* Sorries: 1 (`angle_bisector_ratio_from_geometry` — the main theorem).
+  factorization of Path A).
+* Main theorem `angle_bisector_ratio_from_geometry` **now fully discharged**
+  (previously the sole `sorry`): Step (c) bilinear expansion + common-norm
+  cancellation produces `bisector_factor_algebra`'s hypothesis; Step (e)
+  excludes the `‖u‖‖v‖ = ⟪u,v⟫` factor via
+  `real_inner_div_norm_mul_norm_eq_one_iff` + `collinear_iff_of_mem` against
+  `¬ Collinear ℝ {A,B,C}`; Step (f) reads off `dist B D · dist A C =
+  dist D C · dist A B` from the surviving factor `(1-s)‖u‖ = s‖v‖`. Follows
+  the paste-ready plan in `s5-statesync-audit-extension.md` §§4-7.
+* Sorries: 0.
 * Axioms: 0.
 -/
 
@@ -191,7 +195,88 @@ theorem angle_bisector_ratio_from_geometry
     (hD : Sbtw ℝ B D C)
     (hbis : ∠ B A D = ∠ D A C) :
     dist B D * dist A C = dist D C * dist A B := by
-  sorry
+  -- Non-degeneracy: `D` cannot coincide with `A` (else `A ∈ seg(B,C)` ⟹ collinear).
+  have hDA : D ≠ A := by
+    intro h
+    apply hncol
+    have hD' : Sbtw ℝ B A C := h ▸ hD
+    have hc : Collinear ℝ ({B, A, C} : Set P) := hD'.wbtw.collinear
+    rwa [Set.insert_comm] at hc
+  -- Nonzero vectors and norms.
+  have hu_ne : (B -ᵥ A : V) ≠ 0 := vsub_ne_zero.mpr hAB.symm
+  have hv_ne : (C -ᵥ A : V) ≠ 0 := vsub_ne_zero.mpr hAC.symm
+  have hw_ne : (D -ᵥ A : V) ≠ 0 := vsub_ne_zero.mpr hDA
+  have hun : ‖(B -ᵥ A : V)‖ ≠ 0 := norm_ne_zero_iff.mpr hu_ne
+  have hvn : ‖(C -ᵥ A : V)‖ ≠ 0 := norm_ne_zero_iff.mpr hv_ne
+  have hwn : ‖(D -ᵥ A : V)‖ ≠ 0 := norm_ne_zero_iff.mpr hw_ne
+  -- Step 1: barycentric parameter `s` placing `D` on segment `BC`.
+  obtain ⟨s, hs, hw⟩ := bisector_param_exists hD A
+  -- Cevian direction rewrites feeding the length lemmas.
+  have hDB : D -ᵥ B = s • (C -ᵥ B) := by
+    have e1 : (D -ᵥ B : V) = (D -ᵥ A) - (B -ᵥ A) := (vsub_sub_vsub_cancel_right D B A).symm
+    have e2 : (C -ᵥ B : V) = (C -ᵥ A) - (B -ᵥ A) := (vsub_sub_vsub_cancel_right C B A).symm
+    rw [e1, e2, hw]; module
+  have hCD : C -ᵥ D = (1 - s) • (C -ᵥ B) := by
+    have e1 : (C -ᵥ D : V) = (C -ᵥ A) - (D -ᵥ A) := (vsub_sub_vsub_cancel_right C D A).symm
+    have e2 : (C -ᵥ B : V) = (C -ᵥ A) - (B -ᵥ A) := (vsub_sub_vsub_cancel_right C B A).symm
+    rw [e1, e2, hw]; module
+  -- Step 2: cevian segment lengths.
+  have hDBdist : dist B D = s * dist B C := bisector_dist_BD hs hDB
+  have hDCdist : dist D C = (1 - s) * dist B C := bisector_dist_DC hs hCD
+  -- Step (b): cosine-equality form of the bisector hypothesis.
+  have hcos := cos_BAD_eq_cos_DAC_inner_form hbis
+  have hd1 : ‖(B -ᵥ A : V)‖ * ‖(D -ᵥ A : V)‖ ≠ 0 := mul_ne_zero hun hwn
+  have hd2 : ‖(D -ᵥ A : V)‖ * ‖(C -ᵥ A : V)‖ ≠ 0 := mul_ne_zero hwn hvn
+  rw [div_eq_div_iff hd1 hd2] at hcos
+  -- Cancel the common `‖D -ᵥ A‖` from both sides.
+  have h2 :
+      (⟪B -ᵥ A, D -ᵥ A⟫_ℝ * ‖(C -ᵥ A : V)‖) * ‖(D -ᵥ A : V)‖
+        = (⟪D -ᵥ A, C -ᵥ A⟫_ℝ * ‖(B -ᵥ A : V)‖) * ‖(D -ᵥ A : V)‖ := by
+    linear_combination hcos
+  have key : ⟪B -ᵥ A, D -ᵥ A⟫_ℝ * ‖(C -ᵥ A : V)‖
+      = ⟪D -ᵥ A, C -ᵥ A⟫_ℝ * ‖(B -ᵥ A : V)‖ := mul_right_cancel₀ hwn h2
+  -- Step (c): bilinear expansion of the two inner products via `D -ᵥ A = (1-s)u + s v`.
+  have hiw : ⟪B -ᵥ A, D -ᵥ A⟫_ℝ
+      = (1 - s) * ‖(B -ᵥ A : V)‖ ^ 2 + s * ⟪B -ᵥ A, C -ᵥ A⟫_ℝ := by
+    rw [hw, inner_add_right, real_inner_smul_right, real_inner_smul_right,
+        real_inner_self_eq_norm_sq]
+  have hwv : ⟪D -ᵥ A, C -ᵥ A⟫_ℝ
+      = (1 - s) * ⟪B -ᵥ A, C -ᵥ A⟫_ℝ + s * ‖(C -ᵥ A : V)‖ ^ 2 := by
+    rw [hw, inner_add_left, real_inner_smul_left, real_inner_smul_left,
+        real_inner_self_eq_norm_sq]
+  rw [hiw, hwv] at key
+  -- Step (d): algebraic factorization.
+  have hcc :
+      ‖(C -ᵥ A : V)‖ * ((1 - s) * ‖(B -ᵥ A : V)‖ ^ 2 + s * ⟪B -ᵥ A, C -ᵥ A⟫_ℝ)
+        = ‖(B -ᵥ A : V)‖ * ((1 - s) * ⟪B -ᵥ A, C -ᵥ A⟫_ℝ + s * ‖(C -ᵥ A : V)‖ ^ 2) := by
+    linear_combination key
+  have hfac := bisector_factor_algebra hcc
+  -- Step (e)/(f): one factor vanishes; the second is excluded by non-collinearity.
+  rcases mul_eq_zero.mp hfac with hL | hR
+  · -- First factor zero ⟹ `s = c/(b+c)`, giving the ratio directly.
+    rw [hDBdist, hDCdist,
+        show dist A C = ‖(C -ᵥ A : V)‖ by rw [dist_comm]; exact dist_eq_norm_vsub V C A,
+        show dist A B = ‖(B -ᵥ A : V)‖ by rw [dist_comm]; exact dist_eq_norm_vsub V B A]
+    linear_combination (-(dist B C)) * hL
+  · -- Second factor zero ⟹ `⟪u,v⟫ = ‖u‖‖v‖` ⟹ `A,B,C` collinear: contradiction.
+    exfalso
+    have h_eq : ⟪B -ᵥ A, C -ᵥ A⟫_ℝ = ‖(B -ᵥ A : V)‖ * ‖(C -ᵥ A : V)‖ := by
+      have h0 : ⟪B -ᵥ A, C -ᵥ A⟫_ℝ = ‖(C -ᵥ A : V)‖ * ‖(B -ᵥ A : V)‖ := by linarith [hR]
+      rw [h0, mul_comm]
+    have h_div : ⟪B -ᵥ A, C -ᵥ A⟫_ℝ / (‖(B -ᵥ A : V)‖ * ‖(C -ᵥ A : V)‖) = 1 := by
+      rw [h_eq]; exact div_self (mul_ne_zero hun hvn)
+    obtain ⟨_, r, hr_pos, hrv⟩ :=
+      (real_inner_div_norm_mul_norm_eq_one_iff (B -ᵥ A) (C -ᵥ A)).mp h_div
+    have hcol : Collinear ℝ ({A, B, C} : Set P) := by
+      rw [collinear_iff_of_mem (Set.mem_insert A ({B, C} : Set P))]
+      refine ⟨B -ᵥ A, ?_⟩
+      intro p hp
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
+      rcases hp with rfl | rfl | rfl
+      · exact ⟨0, by simp⟩
+      · exact ⟨1, by rw [one_smul, vsub_vadd]⟩
+      · exact ⟨r, by rw [← hrv, vsub_vadd]⟩
+    exact hncol hcol
 
 /-! ## Downstream chaining (deferred to S3)
 
