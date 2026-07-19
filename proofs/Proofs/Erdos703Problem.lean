@@ -1288,7 +1288,7 @@ theorem T_L_eq_pow_iff {n : ℕ} {L : Finset ℕ} :
   constructor
   · intro h
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     obtain ⟨r, hrL, hrn⟩ := hcon
     have hle : T_L n L ≤ 2 ^ n - 1 := T_L_le_pow_sub_one hrL hrn
     have hpos : 0 < 2 ^ n := pow_pos (by norm_num) n
