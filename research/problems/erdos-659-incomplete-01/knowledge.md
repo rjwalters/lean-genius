@@ -229,3 +229,21 @@ finite-residue set membership; `rcases … <;> subst h <;> [left;right] <;> exac
 dispatch a two-case disjunction into `not_representable_of_mod8`.
 
 Terminus unchanged: main result `erdos_659` still axiomatized on `moreeOsburnWorks`.
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + 4× deprecation fixes (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: COMPLETED item — `Erdos659Problem.lean` is 0-sorry,
+sole axiom `moreeOsburnWorks` (packages Landau 1908 O(N/√log N) count + 4-point
+classification; not in Mathlib). Saturated.
+
+**Genuine action** (migration hygiene): host-verified GREEN under **v4.31.0** (pure Mathlib,
+`lake env lean`, EXIT 0). Fixed **4 v4.31 deprecations** → 0 warnings:
+- 3× `push_neg at h` → `push Not at h` (lines 606, 612, 659).
+- 1× deprecated import `Mathlib.Data.Real.Sqrt` → `Mathlib.Analysis.Real.Sqrt` (line 25).
+Post-fix: EXIT 0, 0 errors, 0 warnings. lineCount unchanged (792); axiom count stays 1.
+
+Scoped to `Erdos659Problem.lean` only (the `-incomplete-01` file); sibling OQ01/OQ05/OQ06
+files belong to distinct OQ slugs and were left for their own claims.
+
+**Conclusion**: file v4.31-green and deprecation-clean; item stays COMPLETED at its sole deep
+axiom. Main result irreducibly axiomatized on Landau's theorem.

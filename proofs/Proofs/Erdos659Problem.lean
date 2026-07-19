@@ -23,7 +23,7 @@
 
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Real.Sqrt
+import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Data.Finset.Card
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Tactic
@@ -603,13 +603,13 @@ theorem thirtyfive_not_representable : 35 ∉ representable_x2_2y2 := by
   rw [representable_iff_nat]
   rintro ⟨a, b, hab⟩
   have ha : a ≤ 5 := by
-    by_contra hcon; push_neg at hcon
+    by_contra hcon; push Not at hcon
     have h36 : 36 ≤ a ^ 2 := by
       calc 36 = 6 ^ 2 := by norm_num
         _ ≤ a ^ 2 := Nat.pow_le_pow_left hcon 2
     omega
   have hb : b ≤ 4 := by
-    by_contra hcon; push_neg at hcon
+    by_contra hcon; push Not at hcon
     have h25 : 25 ≤ b ^ 2 := by
       calc 25 = 5 ^ 2 := by norm_num
         _ ≤ b ^ 2 := Nat.pow_le_pow_left hcon 2
@@ -656,7 +656,7 @@ theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
     intro he
     exact hcfg ⟨hT4, he, trivial⟩
   by_contra hContra
-  push_neg at hContra  -- distinctDistances T < 3
+  push Not at hContra  -- distinctDistances T < 3
   omega
 
 /-! ## More closure structure and explicit families of representable numbers
