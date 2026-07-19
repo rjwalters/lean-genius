@@ -28,8 +28,8 @@
       "Hereditary families (downsets / independence systems)",
       "Extremal set theory fundamentals"
     ],
-    "lineCount": 284,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `A` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'A'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 0 axioms. All constructs are definitions and theorems; no axiom declarations or structure-encoded assumptions. Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 286,
+    "assumptions": "0 axioms, 0 sorries — the file compiles green on Lean v4.31. Chvátal's conjecture is an OPEN problem: it is stated as the definition `ChvatalConjecture` and is NOT proven here. What is machine-verified are the supporting lemmas (powerset_hereditary, bounded_card_hereditary, empty/singleton/star_intersecting, star_subset, uniform_not_hereditary, etc.) around hereditary and intersecting families. Status remains `axiomatized` per the Axiom Integrity Policy (open conjectures are never `verified`), with axiomCount 0 since no axiom asserts the conjecture. REPAIRED (issue #39077, batch 6): added `set_option autoImplicit false` and fixed the autoImplicit-masked defect (a `subst` had eliminated the parameter `A` in singleton_intersecting, later reused) plus v4.31 drift in uniform_not_hereditary (Set.ncard_pos.mp → Set.nonempty_of_ncard_ne_zero; dropped the now-autoParam finiteness arg of Set.ncard_diff_singleton_of_mem). The prior #39061 audit retraction (\"never validly compiled\") is resolved.",
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 8
