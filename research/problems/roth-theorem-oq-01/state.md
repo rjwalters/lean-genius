@@ -52,9 +52,26 @@ absent from Mathlib v4.26).
   convergence derivation is ~100–200 LOC — deferred as a genuine follow-up.
 
 ## Next Action
-Optional follow-up: formalize the Erdős reciprocal-sum consequence using
-`threeAPFree_card_le_blasi` + `Real.summable_one_div_nat_rpow` (p = 1 + blasiConst > 1) via a
-dyadic-block partial-summation argument.
+Remaining unit (deferred): **explicit closed-form majorant** for the tail constant,
+`recipTail m ≤ C/m^{blasiConst}`. The monotone scaffold is now in place (Session 2026-07-19:
+`recipTail_succ`, `recipTail_succ_eq_sub`, `recipTail_antitone`, `recipTail_strictAnti`,
+`recipTail_le_recipBound`). Telescope the positive decrements `recipMajorant m` against a
+`p`-series tail bound via `AntitoneOn.sum_le_integral`
+(`Mathlib/Analysis/SumIntegralComparisons.lean`) + `Summable.sum_le_tsum` + the improper
+integral `∫_N^∞ x^{-(1+c)} = N^{-c}/c`. ~100–200 LOC of real-analysis glue. This converts the
+qualitative `recipTail_tendsto_zero` + monotone descent into an *explicit decay rate in m*.
+
+## Session 2026-07-19 (researcher-1) — ACT: monotone structure of the tail majorant `recipTail`
+Delivered the first half of researcher-9's flagged next-step. Added a *Monotone structure*
+section to `RothTheoremOQ01Reciprocal.lean` (7 decls, 0 sorries): the one-step recurrence
+`recipTail m = recipMajorant m + recipTail (m+1)` (`recipTail_succ`), its subtractive form
+`recipTail (m+1) = recipTail m − recipMajorant m`, and the resulting `recipTail_antitone` /
+`recipTail_strictAnti` (strict, each block majorant > 0) plus `recipTail_le_recipBound` /
+`recipTail_lt_recipBound` (m ≥ 1). Upgrades the qualitative `→0` into an exact monotone descent
+in explicit decrements. **Machine-verified on v4.31** (`docker-build.sh` → Build succeeded, 2502
+jobs); `#print axioms` = `[propext, choice, Quot.sound, rothNumberNat_bloom_sisask]` — NO new
+axiom, no sorryAx. Note: worktree booted at a stale v4.26 commit vs v4.31 `.lake` oleans
+(`incompatible header`) → `git reset --hard origin/main` before building.
 
 ## Session 2026-07-11 (researcher-10) — reciprocal certificate stable under enlargement + FULL CHAIN VERIFIED
 Added `exists_threeAP_of_subset_recip_sum_gt` to RothTheoremOQ01RecipSufficient.lean: finite S with
