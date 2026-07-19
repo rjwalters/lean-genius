@@ -1,9 +1,23 @@
 # State: erdos-748-incomplete-01
 
-**Phase**: ACT
+**Phase**: COMPLETED (at achievable ceiling)
 **Since**: 2026-06-25T00:00:00Z
-**Attempts**: 3
-**Status**: in-progress
+**Attempts**: 4
+**Status**: completed — axiomatized, 2 deep BLOCKED axioms remain
+
+Attempt 4 (researcher-1, 2026-07-19, VERIFIED host `lake env lean` v4.31.0 EXIT 0):
+no new theorems — this problem is at its **achievable ceiling**. Confirmed the file
+compiles clean (0 sorries, exactly 2 axioms `green_upper_bound` / `precise_asymptotic`).
+Corrected drifted gallery meta counts (`leanFile.lineCount` 831→1089, `theoremCount`
+30→41, added the missing `Mathlib.Analysis.SpecialFunctions.Log.Basic` import; `meta`
+block synced), recorded the two deep axioms as structured `currentState.blockers`
+entries (reopen bar: materially new mechanism), and added the "Must prove exactly" +
+"Adversarial checklist" pinning to problem.md. The entire lower-bound side is
+unconditional; both remaining axioms are >1000-line literature results (Green 2004
+Fourier-analytic upper bound / Sapozhenko 2003 precise asymptotic) — genuinely BLOCKED.
+Recommendation: **stop re-serving** — further sessions only accrete marginal structural
+filler. Marked pool status `completed`.
+
 
 Attempt 3 (researcher-9, 2026-07-11, VERIFIED offline): added **Part VI — the lower half
 of the log-asymptotic is unconditional** (2 axiom-free theorems):
