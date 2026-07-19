@@ -29,10 +29,12 @@ References:
 - Related: Erdős Problem #571
 -/
 
-import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.Rat.Defs
 
 open SimpleGraph Asymptotics
 
@@ -67,10 +69,11 @@ Axiomatized as a function of n and a bipartite graph family index.
 -/
 axiom extremalNumber (n : ℕ) (G : SimpleGraph (Fin n)) : ℕ
 
-/- 
-**Basic bound:** ex(n; G) ≤ n(n-1)/2.
+/-
+**Basic bound:** ex(n; G) ≤ n(n-1)/2. (Narrative note; not separately formalized.)
+
+## Asymptotic Growth
 -/
-/- ## Asymptotic Growth -/
 
 /--
 **Power-Law Growth:**
@@ -96,7 +99,7 @@ For every bipartite graph G, does there exist α ∈ [1,2) and c > 0
 such that ex(n; G) ~ c·n^α?
 -/
 def erdos713StrongQuestion : Prop :=
-  ∀ (G : ℕ → SimpleGraph (Fin n)) (hBip : ∀ n, @isBipartite (Fin n) _ _ (G n)),
+  ∀ (G : (n : ℕ) → SimpleGraph (Fin n)) (hBip : ∀ n, isBipartite (G n)),
     ∃ c α : ℝ, hasPowerLawGrowth (fun n => extremalNumber n (G n)) c α
 
 /--
@@ -105,7 +108,7 @@ For every bipartite graph G, does there exist α ∈ [1,2)
 such that ex(n; G) ≍ n^α?
 -/
 def erdos713WeakQuestion : Prop :=
-  ∀ (G : ℕ → SimpleGraph (Fin n)) (hBip : ∀ n, @isBipartite (Fin n) _ _ (G n)),
+  ∀ (G : (n : ℕ) → SimpleGraph (Fin n)) (hBip : ∀ n, isBipartite (G n)),
     ∃ α : ℝ, hasPowerLawOrder (fun n => extremalNumber n (G n)) α
 
 /--
@@ -113,21 +116,23 @@ def erdos713WeakQuestion : Prop :=
 Must the exponent α be rational?
 -/
 def erdos713RationalQuestion : Prop :=
-  ∀ (G : ℕ → SimpleGraph (Fin n)) (hBip : ∀ n, @isBipartite (Fin n) _ _ (G n)),
+  ∀ (G : (n : ℕ) → SimpleGraph (Fin n)) (hBip : ∀ n, isBipartite (G n)),
     ∃ α : ℝ, hasPowerLawOrder (fun n => extremalNumber n (G n)) α →
       ∃ q : ℚ, α = q
 
 /- ## Known Results -/
 
-/- 
+/-
 **Kővári-Sós-Turán Theorem (1954):**
 ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t.
 Axiomatized because the proof requires constructing the K_{s,t} graph.
--/
-/- 
+(Narrative note; not separately formalized as a theorem.)
+
 **Lower Bound for Complete Bipartite Graphs:**
 ex(n; K_{s,t}) = Ω(n^{2-1/s}) for s ≤ t.
+(Narrative note; not separately formalized as a theorem.)
 -/
+
 /--
 **Complete Bipartite Exponent:**
 For K_{s,t} with s ≤ t, the exponent is 2 - 1/s (rational!).
@@ -135,7 +140,6 @@ For K_{s,t} with s ≤ t, the exponent is 2 - 1/s (rational!).
 theorem complete_bipartite_exponent (s t : ℕ) (hs : s ≥ 2) (hst : s ≤ t) :
     ∃ α : ℚ, α = 2 - 1/s := by
   use 2 - 1/s
-  ring
 
 /- ## Erdős's Original Conjecture (Disproved) -/
 
@@ -144,7 +148,7 @@ theorem complete_bipartite_exponent (s t : ℕ) (hs : s ≥ 2) (hst : s ≤ t) :
 α always has the form 1 + 1/k or 2 - 1/k for integer k ≥ 2.
 -/
 def erdosOriginalConjecture : Prop :=
-  ∀ (G : ℕ → SimpleGraph (Fin n)) (hBip : ∀ n, @isBipartite (Fin n) _ _ (G n)),
+  ∀ (G : (n : ℕ) → SimpleGraph (Fin n)) (hBip : ∀ n, isBipartite (G n)),
     ∃ α : ℝ, hasPowerLawOrder (fun n => extremalNumber n (G n)) α →
       (∃ k : ℕ, k ≥ 2 ∧ α = 1 + 1/k) ∨ (∃ k : ℕ, k ≥ 2 ∧ α = 2 - 1/k)
 
@@ -163,12 +167,13 @@ exponent exists. Füredi-Gerbner (2021) extended this to all k ≥ 5.
 Cases k = 3 and k = 4 remain open.
 -/
 
-/- 
+/-
 **Frankl-Füredi-Gerbner: Hypergraph counterexample for k ≥ 5.**
 For k-uniform hypergraphs with k ≥ 5, there exist hypergraphs H such that
 ex(n; H) has no power-law growth (no α with ex(n; H) ≍ n^α).
--/
-/- ## Summary
+(Narrative note; the hypergraph generalization is not separately formalized here.)
+
+## Summary
 
 **Erdős Problem #713 - OPEN ($500 prize)**
 

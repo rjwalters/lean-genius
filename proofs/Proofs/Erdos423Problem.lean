@@ -26,8 +26,6 @@ import Mathlib.Data.List.Range
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-set_option autoImplicit true
-
 open Nat Finset
 
 namespace Erdos423
@@ -159,7 +157,7 @@ private theorem buildSeq_ne_nil (n : ℕ) : buildSeq n ≠ [] := by
 /-- getLast! of a list appended with a singleton is that element. -/
 private theorem getLast!_append_singleton (l : List ℕ) (a : ℕ) :
     (l ++ [a]).getLast! = a := by
-  simp [List.getLast!_eq_getLast?_getD, List.getLast?_concat]
+  simp [List.getLast!_eq_getLast?_getD]
 
 /-- Key equation: consSeq (n+2) equals the findNextElem starting after consSeq (n+1). -/
 private theorem consSeq_succ_eq (n : ℕ) :
@@ -188,7 +186,7 @@ theorem consSeq_strictMono : StrictMono consSeq := by
   | zero => omega
   | succ n ih =>
     rcases Nat.eq_or_lt_of_le (Nat.lt_succ_iff.mp hab) with rfl | h
-    · exact consSeq_succ_gt n
+    · exact consSeq_succ_gt a
     · exact lt_trans (ih h) (consSeq_succ_gt n)
 
 /- ## Part V: Consecutive Sum Predicate -/
@@ -199,9 +197,13 @@ def IsConsecutiveSum (m n : ℕ) : Prop :=
   ∃ i j, i < j ∧ j < n ∧
     (List.range (j - i + 1)).foldl (fun acc k => acc + consSeq (i + k)) 0 = m
 
-/-  The defining property: consSeq(k) is a consecutive sum of previous terms. -/
-/-  No smaller integer > consSeq(k-1) is a consecutive sum (minimality). -/
-/- ## Part VI: Growth Properties -/
+/-
+The defining property: consSeq(k) is a consecutive sum of previous terms.
+No smaller integer > consSeq(k-1) is a consecutive sum (minimality).
+(Narrative notes; not separately formalized as theorems.)
+
+## Part VI: Growth Properties
+-/
 
 /-- The sequence grows at least linearly: consSeq(n) ≥ n + 1.
     Proved from strict monotonicity and consSeq(0) = 1. -/
@@ -209,7 +211,7 @@ theorem consSeq_lower_bound (n : ℕ) : consSeq n ≥ n + 1 := by
   induction n with
   | zero => simp [consSeq_zero]
   | succ k ih =>
-    have h := consSeq_strictMono (Nat.lt_succ_of_le (Nat.le_refl k))
+    have h : consSeq k < consSeq (k + 1) := consSeq_strictMono (by omega)
     omega
 
 /-- The excess consSeq(n) - n is nondecreasing (Bolan, Tang 2024-2025). -/

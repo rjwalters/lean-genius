@@ -46,6 +46,8 @@ open Finset
 ## Two-Colorings and Monochromatic Cliques
 -/
 
+variable {n : ℕ}
+
 /-- A two-coloring of edges of a complete graph -/
 def TwoColoring (n : ℕ) := Fin n → Fin n → Bool
 
@@ -63,8 +65,8 @@ def isMonochromaticClique (c : TwoColoring n) (S : Finset (Fin n)) (b : Bool) : 
 
 /-- A collection of vertex-disjoint sets -/
 def areDisjoint (sets : List (Finset (Fin n))) : Prop :=
-  ∀ i j, i < sets.length → j < sets.length → i ≠ j →
-    Disjoint (sets.get ⟨i, by omega⟩) (sets.get ⟨j, by omega⟩)
+  ∀ i j (hi : i < sets.length) (hj : j < sets.length), i ≠ j →
+    Disjoint (sets.get ⟨i, hi⟩) (sets.get ⟨j, hj⟩)
 
 /-- A partition into monochromatic Kₜ's with some vertices left over -/
 structure CliquePartition (c : TwoColoring n) (t : ℕ) where
@@ -77,11 +79,12 @@ structure CliquePartition (c : TwoColoring n) (t : ℕ) where
   disjoint : areDisjoint cliques
 
 /-- Vertices covered by a partition -/
-def CliquePartition.coveredVertices (p : CliquePartition c t) : Finset (Fin n) :=
+def CliquePartition.coveredVertices {c : TwoColoring n} {t : ℕ} (p : CliquePartition c t) :
+    Finset (Fin n) :=
   p.cliques.foldl (· ∪ ·) ∅
 
 /-- Leftover vertices in a partition -/
-def CliquePartition.leftover (p : CliquePartition c t) : ℕ :=
+def CliquePartition.leftover {c : TwoColoring n} {t : ℕ} (p : CliquePartition c t) : ℕ :=
   n - p.coveredVertices.card
 
 /-
@@ -106,9 +109,11 @@ noncomputable def f (t : ℕ) : ℕ :=
 ## Moon's Theorem: f(3) = 4
 -/
 
-/-  Moon (1966): f(3) = 4 for triangles -/
-/-  Moon's result for specific n ≥ 8 -/
 /-
+Moon (1966): f(3) = 4 for triangles, for n ≥ 8. (Narrative note; not separately
+formalized — the exact value is subsumed by the general Burr-Erdős-Spencer
+formula below.)
+
 ## Ramsey Bound
 -/
 
@@ -117,9 +122,10 @@ noncomputable def f (t : ℕ) : ℕ :=
     as a function since the definition via sInf requires an existence proof. -/
 axiom ramseyNumber (s t : ℕ) : ℕ
 
-/-  Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t -/
-/-  R(t,t) ≤ 4^t (crude bound) -/
 /-
+Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t, using R(t,t) ≤ 4^t (crude bound).
+(Narrative note; not separately formalized — subsumed by the exact formula below.)
+
 ## Burr-Erdős-Spencer Exact Formula
 -/
 
@@ -145,5 +151,9 @@ theorem f_upper_bound (t : ℕ) (ht : t ≥ 3) : f t < ramseyNumber t (t - 1) + 
 The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
 -/
 
-/-  f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
-/- f(t) grows exponentially, not linearly -/
+/-
+f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t, so f(t) grows
+exponentially, not linearly. (Narrative note; the asymptotic claim itself is
+not separately formalized as a theorem — see f_lower_bound / f_upper_bound
+above for the machine-checked bounds it summarizes.)
+-/
