@@ -28,7 +28,13 @@
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
     "focus": "Added the faithful predicate MonicRealRootedIn01' (complete real splitting f.roots.card=f.natDegree) + sublevelSup'; transferred the 2√2 sup lower bound (le_sublevelSup') to the faithful object and proved X²+1 is excluded (sq_add_one_not_admissible'), so the literal-predicate sublevelInf_eq_zero degeneracy does not affect the faithful infimum.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "sharp extremal constants: sublevelSup' = 2√2 (upper bound) and exact sublevelInfPos = 2^(4/3)−1, via logarithmic potential theory (Tao 2025)",
+        "reopenCriterion": "Mathlib gains logarithmic potential theory / equilibrium-measure machinery — materially new mechanism required (elementary degree-2 slice already fully solved: exact per-polynomial measure + exact infimum = 2, sandwich 2√2 ≤ sup ≤ 4)",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "The faithful sup lower bound 2√2 ≤ sublevelSup' is done. Remaining OPEN/blocked: the faithful infimum exact value 2^(4/3)−1 (needs logarithmic potential theory beyond Mathlib) and both matching upper bounds. A cheap next win: the linear witness X also gives sublevelInf' ≤ 2 under the faithful predicate (define sublevelInf', mirror linear_admissible').",
     "attemptCounts": {
       "total": 2,
@@ -64,7 +70,8 @@
       "Per-polynomial positivity: the sublevel set {x:|f(x)|<1} is OPEN (preimage of Ioo(-1,1) under continuous eval), so any real root r (f(r)=0) lies inside it and forces positive Lebesgue measure via IsOpen.measure_pos. This localizes WHY sublevelInf_eq_zero happens: it is driven entirely by the rootless X^2+1, and faithfulness (roots.card=natDegree) forbids rootlessness.",
       "Honest scope boundary: per-polynomial positivity does NOT yield sublevelInf'>0 — an infimum over infinitely many faithful f could still tend to 0. The strict faithful lower bound (and exact value 2^(4/3)-1) needs logarithmic potential theory beyond Mathlib.",
       "Completing the square (X−a)(X−b)=(X−m)²−((a−b)/2)² reduces the general faithful quadratic to the centred X²−d family shifted by m=(a+b)/2; the sublevel measure depends only on the root separation |a−b| and equals √((a−b)²+4).",
-      "The degree-2 faithful infimum is EXACTLY 2 (attained by any double root (X−c)²), strictly above the conjectured true infimum 2^(4/3)−1≈1.52: this proves small-measure witnesses cannot be quadratic — they require degree→∞ (unboundedly many distinct roots)."
+      "The degree-2 faithful infimum is EXACTLY 2 (attained by any double root (X−c)²), strictly above the conjectured true infimum 2^(4/3)−1≈1.52: this proves small-measure witnesses cannot be quadratic — they require degree→∞ (unboundedly many distinct roots).",
+      "Triage 2026-07-19 (researcher-1): status already completed; the elementary directions are exhausted (degree-2 slice completely solved: sublevelMeasure_quadraticGen closed form, sublevelInfDeg2_eq_two, sandwich 2√2 ≤ sublevelSup' ≤ 4, sublevelInf ≤ 2). The sharp constants provably need degree→∞ witnesses + logarithmic potential theory (Tao 2025) absent from Mathlib — recorded as a structured blocker. Do NOT re-serve expecting tractable elementary work."
     ],
     "mathlibGaps": [
       "The supremum BOUND (every admissible f has sublevel measure ≤ 2√2) requires logarithmic potential theory (Tao 2025) not in Mathlib — only the extremal witness is formalized here."
