@@ -16,14 +16,14 @@
       "primes",
       "dynamical-systems"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 409,
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `p` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'p'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
-    "lineCount": 424,
+    "axiomCount": 1,
+    "assumptions": "Compiles green on Lean v4.31.0 (mathlib 4.31.0) with 0 sorries and 0 `axiom` declarations (repaired under #39077 from the never-compiled state flagged in #39061). Three supporting facts are discharged by `native_decide` (two_fixed_point: phi(2)+1=2; four_to_three: phi(4)+1=3; and the n=1 base case of iteration_terminates), so the build depends on the `Lean.ofReduceBool` axiom -- hence axiomatized rather than fully verified. Erdos #409 is an OPEN problem: the main quantitative questions (sharp bounds on F(n), whether infinitely many n reach the same prime, the density of n reaching a fixed prime) are stated but not resolved; only the supporting lemmas are proved. Fully-proved supporting results (18 theorems) include iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) <= n-2), iteration_reaches_prime_half (F(n) <= n/2), one_iteration_infinite (F(n)=1 infinitely often), sigma_prime_fixed (sigma(p)-1=p), and sigma_composite_growth.",
+    "lineCount": 423,
     "mathlib_version": "4.31.0",
     "theoremCount": 18,
     "definitionCount": 3
@@ -45,7 +45,7 @@
       "Number theory (primes, divisibility)"
     ]
   },
-  "sections":   [
+  "sections": [
     {
       "id": "header",
       "title": "Header, Context, and Imports",
@@ -122,7 +122,7 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 424,
+    "lineCount": 423,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 3,
