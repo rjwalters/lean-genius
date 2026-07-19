@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED (37 decls, 4 deep published axioms, 0 sorry): established the O(2) rotation invariance of ρ — ρ depends only on the rotation orbit of the root configuration (rotate_rho), with negation as a special case.",
+    "progressSummary": "SOLVED/axiomatized (stable). 4 deep published axioms (EHP benchmark_upper, Pommerenke 1961 pommerenke_lower, KLR 2025 klr_lower + klr_area_bound) — reproducing any is paper-scale, not session work. 0 sorries, 43 theorems. This session (researcher-1 2026-07-19): v4.31 integrity build GREEN + 2 push_neg→push Not fixes + reconciled stale gallery meta counts. No new axioms dischargeable (all deep); the one open formalization target (Expected[rho] Theta(1/sqrt n) functional) is a multi-session probability-model build.",
     "builtItems": [
       "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
       "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
@@ -48,7 +48,8 @@
       "STATIC VERIFICATION (researcher-9, 07-02): the hardest proof area_implies_disc_bound's measure-coercion chain (Complex.volume_ball -> ENNReal.toReal_mul/pow/ofReal -> ENNReal.coe_toReal, NNReal.coe_real_pi) mirrors Mathlib's own ConvexBody.lean/Asymptotics.lean idiom EXACTLY. Confirmed against packages/mathlib source: Complex.volume_ball (a r) : volume (ball a r) = .ofReal r ^2 * NNReal.pi (VolumeOfBalls.lean:438); NNReal.pi and NNReal.coe_real_pi both exist.",
       "The multiplicative gap between the KLR lower bound and the EHP-conjectured c/n rate is EXACTLY √log n (conjecturedBound_div_klrBound) and is unbounded — a clean, axiom-free quantification of why KLR does not resolve EHP: it is asymptotically infinitely far (in constants) from the conjecture. √log n → ∞ proved via sqrt→atTop (tendsto_atTop_atTop char, b<=|b|=√(b²)<=√x) composed with tendsto_log_atTop∘tendsto_natCast_atTop_atTop, transported through the exact ratio identity by Tendsto.congr'.",
       "benchmark_family_bracket: 1/(2e·n²) ≤ ρ(zⁿ-1) ≤ π/(2n) — first result pinning the ACTUAL inscribed-disc radius of the extremal family (rootsOfUnity n), by specializing pommerenke_lower to it and pairing with benchmark_upper; multiplicative band width π·e·n",
-      "Rotation invariance (researcher-6): ρ(f) is invariant under rotating all roots by any unimodular u (‖u‖=1), i.e. rho(rotate f u)=rho f. The rigid rotation z↦u·z is an isometry of ℂ carrying the sublevel set {|f|<1} onto u·{|f|<1} and inscribed discs to inscribed discs of equal radius. Hence the Erdős #1039 extremal quantity depends only on the rotation ORBIT of the root configuration — the minimisation carries the full circle-group O(2) symmetry, so one may WLOG fix the argument of a single root. Negation (u=-1) is the special case neg_roots_rho."
+      "Rotation invariance (researcher-6): ρ(f) is invariant under rotating all roots by any unimodular u (‖u‖=1), i.e. rho(rotate f u)=rho f. The rigid rotation z↦u·z is an isometry of ℂ carrying the sublevel set {|f|<1} onto u·{|f|<1} and inscribed discs to inscribed discs of equal radius. Hence the Erdős #1039 extremal quantity depends only on the rotation ORBIT of the root configuration — the minimisation carries the full circle-group O(2) symmetry, so one may WLOG fix the argument of a single root. Negation (u=-1) is the special case neg_roots_rho.",
+      "v4.31 integrity build 2026-07-19 (researcher-1): Erdos1039Problem.lean GREEN under v4.31.0 (docker-build, 4 deep axioms / 0 sorries preserved). Fixed 2 push_neg→push Not (lines 461/495). Reconciled stale gallery meta counts (lineCount 854→1101, theoremCount 24→43; axiomCount 4 / defCount 17 / sorries 0 already correct)."
     ],
     "mathlibGaps": [
       "No ball_subset_ball_iff for open balls (necessary direction); had to prove inscribed_radius_le by hand."
@@ -75,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-07-12",
+  "lastUpdate": "2026-07-19",
   "significance": 6,
   "tractability": 6
 }

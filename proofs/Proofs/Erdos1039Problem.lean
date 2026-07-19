@@ -458,7 +458,7 @@ theorem inscribed_ball_subset {S : Set ℂ} {c : ℂ} {r : ℝ}
 theorem inscribed_radius_le {c z0 : ℂ} {r R : ℝ} (hr : 0 < r) (hR : 0 < R)
     (h : ∀ z : ℂ, ‖z - c‖ < r → ‖z - z0‖ < R) : r ≤ R := by
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   obtain ⟨u, hu, hcu⟩ : ∃ u : ℂ, ‖u‖ = 1 ∧ (c - z0) = (‖c - z0‖ : ℝ) • u := by
     rcases eq_or_ne (c - z0) 0 with h0 | h0
     · exact ⟨1, norm_one, by rw [h0]; simp⟩
@@ -492,7 +492,7 @@ theorem sublevelSet_subset_ball (hf : 0 < f.degree) :
   simp only [sublevelSet, Set.mem_setOf_eq, UnitDiscPolynomial.eval] at hz
   rw [Metric.mem_ball, dist_zero_right]
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have hfac : ∀ i : Fin f.degree, (1 : ℝ) ≤ ‖z - f.roots i‖ := by
     intro i
     have htri : ‖z‖ ≤ ‖z - f.roots i‖ + ‖f.roots i‖ := by
