@@ -384,6 +384,33 @@ theorem expectedMonoCliques_lt_one_of_sq_lt {n k : ℕ} (hk : 3 ≤ k) (hn : n ^
   push_cast at hcast
   linarith
 
+/-- **Ramsey `hcount` bridge (pure `ℕ`).**  This is the exact hypothesis
+`exists_no_mono_colouring` (in the `ColouringModel` section below) requires when it is
+specialised to `Kₙ`.  In that model the edge type has `Fintype.card E = C(n,2)`
+(`Sym2.card_subtype_not_isDiag`), there are `C(n,k)` candidate `k`-cliques, and each
+clique carries `C(k,2)` edges, so the monochromatic-colouring count
+`∑_i 2^(|E| − |edges i| + 1)` collapses to `C(n,k)·2^(C(n,2) − C(k,2) + 1)`; the
+hypothesis is that this is `< 2^(C(n,2))`.
+
+The inequality is `erdos_1947_clique_bound` (`2·C(n,k) < 2^(C(k,2))`) scaled by the
+common factor `2^(C(n,2) − C(k,2))`, valid because `C(k,2) ≤ C(n,2)`
+(`Nat.choose_le_choose`, from `k ≤ n`).  Combined with the concrete edge model this
+discharges `exists_no_mono_colouring` and yields the Erdős 1947 diagonal Ramsey lower
+bound `R(k,k) > n` as an actual 2-colouring existence statement — the remaining wiring
+is purely the `Sym2 (Fin n)` off-diagonal edge model (see the problem's `knowledge.md`
+for the full instantiation plan). -/
+theorem ramsey_monoCount_sum_lt {n k : ℕ} (hk : 3 ≤ k) (hkn : k ≤ n) (hn : n ^ 2 < 2 ^ k) :
+    n.choose k * 2 ^ (n.choose 2 - k.choose 2 + 1) < 2 ^ (n.choose 2) := by
+  have hbound : 2 * n.choose k < 2 ^ (k.choose 2) := erdos_1947_clique_bound hk hn
+  have hmM : k.choose 2 ≤ n.choose 2 := Nat.choose_le_choose 2 hkn
+  have hpos : 0 < 2 ^ (n.choose 2 - k.choose 2) := pow_pos (by norm_num) _
+  calc n.choose k * 2 ^ (n.choose 2 - k.choose 2 + 1)
+      = 2 * n.choose k * 2 ^ (n.choose 2 - k.choose 2) := by rw [pow_succ]; ring
+    _ < 2 ^ (k.choose 2) * 2 ^ (n.choose 2 - k.choose 2) :=
+        mul_lt_mul_of_pos_right hbound hpos
+    _ = 2 ^ (k.choose 2 + (n.choose 2 - k.choose 2)) := by rw [← pow_add]
+    _ = 2 ^ (n.choose 2) := by rw [Nat.add_sub_cancel' hmM]
+
 /-- **Erdős 1947, explicit witness form.**  The conditional bound
 `expectedMonoCliques_lt_one_of_sq_lt` requires an `n` with `n² < 2^k`; here we exhibit one
 that grows like `2^{k/2}`.  For every `k ≥ 3`, the explicit choice

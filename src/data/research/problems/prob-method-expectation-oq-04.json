@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RESOLVED (Erdős 1947 R(k,k)>2^⌊(k-1)/2⌋ complete, 0-axiom). This session added the SECOND-MOMENT sibling the first-moment file lacked: sq_sum_le_card_support_mul_sum_sq (Cauchy–Schwarz (∑g)²≤#support·∑g²) + sq_sum_div_sum_sq_le_card_support (#support ≥ (∑g)²/∑g²) — the second-moment method base bound, dual to the first-moment existence-of-zero engine.",
+    "progressSummary": "VERIFIED (host, lake env lean, 0-axiom): added ramsey_monoCount_sum_lt -- the exact hcount hypothesis exists_no_mono_colouring needs when specialised to Kn (C(n,k)*2^(C(n,2)-C(k,2)+1) < 2^(C(n,2))), bridging the proved bound erdos_1947_clique_bound to the abstract probabilistic-method existence engine. Confirmed the full R(k,k)>n colouring-existence instantiation is Mathlib-supported and host-verifiable (~120-180 LOC) via the off-diagonal Sym2(Fin n) edge model; precise step-by-step plan written into knowledge.md. Remaining non-trivial sub-step is only the per-clique edge count (edges S).card = C(k,2). File ProbMethodExpectationOQ04.lean now 754 lines / 39 decls, 0 sorry / 0 axiom.",
     "builtItems": [
       "ProbMethodExpectationOQ04.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "exists_ge_of_card_mul_le / exists_le_of_card_mul_ge: division-free first moment via by_contra + Finset.sum_lt_sum_of_nonempty + sum_const/nsmul_eq_mul + linarith.",
@@ -54,7 +54,9 @@
       "Square-comparison keeps the whole Erdős 1947 argument in ℕ: prove (2·C(n,k))^2 < (2^C(k,2))^2 via multiplying through by (k!)^2, then lt_of_pow_lt_pow_left₀.",
       "Key sublemmas: Nat.descFactorial_le_pow gives C(n,k)·k! ≤ n^k; factorial growth 2^(k+2) ≤ (k!)^2 (induction, base 32 ≤ 36); and 2·C(k,2)+k = k^2 (induction via choose_succ_succ).",
       "Instantiating the conditional bound at n=2^⌊(k-1)/2⌋ yields the classical unconditional Ramsey lower bound: 2·⌊(k-1)/2⌋ ≤ k-1 < k so n²=2^{2⌊(k-1)/2⌋}<2^k (via Nat.pow_lt_pow_right + omega for the exponent inequality).",
-      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the two-sided first-moment lemmas (nextStep 1). exists_le_and_ge_average (the mean is STRADDLED: ∃a∈s, f a ≤ avg ∧ ∃b∈s, avg ≤ f b — combines exists_le_average + exists_ge_average) and exists_nonneg_spread_of_average (∃a,b∈s, 0 ≤ f b − f a, the nonneg max−min spread). Two-sided companion of first_moment_ge/first_moment_le; the base for second-moment/variance arguments that need both tails of the mean at once. f:α→ℚ."
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the two-sided first-moment lemmas (nextStep 1). exists_le_and_ge_average (the mean is STRADDLED: ∃a∈s, f a ≤ avg ∧ ∃b∈s, avg ≤ f b — combines exists_le_average + exists_ge_average) and exists_nonneg_spread_of_average (∃a,b∈s, 0 ≤ f b − f a, the nonneg max−min spread). Two-sided companion of first_moment_ge/first_moment_le; the base for second-moment/variance arguments that need both tails of the mean at once. f:α→ℚ.",
+      "ramsey_monoCount_sum_lt (2026-07-19, host-verified 0-axiom): the hcount discharge C(n,k)*2^(C(n,2)-C(k,2)+1) < 2^(C(n,2)) = erdos_1947_clique_bound (2*C(n,k) < 2^C(k,2)) scaled by 2^(C(n,2)-C(k,2)), using C(k,2) <= C(n,2) via Nat.choose_le_choose. This is exactly the hypothesis exists_no_mono_colouring requires for the concrete Kn model.",
+      "The full R(k,k)>n colouring-existence instantiation is NOT blocked -- it is Mathlib-supported: E = {a : Sym2 (Fin n) // not a.IsDiag} has Fintype.card = n.choose 2 (Sym2.card_subtype_not_isDiag, Data/Sym/Card.lean:150); I = powersetCard k has card n.choose k; the only non-trivial remaining sub-step is the per-clique edge count (edges S).card = k.choose 2. ~120-180 LOC, host-verifiable. Step-by-step plan in knowledge.md."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -97,8 +99,8 @@
     {
       "path": "Proofs/ProbMethodExpectationOQ04.lean",
       "filename": "ProbMethodExpectationOQ04.lean",
-      "lineCount": 345,
-      "theoremCount": 19,
+      "lineCount": 754,
+      "theoremCount": 39,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -116,5 +118,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodExpectationOQ05.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-19"
 }
