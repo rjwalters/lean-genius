@@ -143,7 +143,7 @@
     {
       "id": "small-values-ratio",
       "title": "Small Values and BFL Ratio Reformulation",
-      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound $f(n) \\leq n(n-1)/2$. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds on the ratio) maximally transparent. The ratio formulation is the sharpest way to see the BFL-conjecture gap: BFL allows the ratio to drift at sub-polynomial speed, while the conjecture pins it between constants.",
+      "summary": "Base cases ($f(0) \\leq 0$ from the complete-graph edge bound $f(n) \\leq n(n-1)/2$; $f(1) \\leq 1/4$ and $f(2) \\leq 1$ from the Mantel bound $f(n) \\leq n^2/4$). Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds on the ratio) maximally transparent. The ratio formulation is the sharpest way to see the BFL-conjecture gap: BFL allows the ratio to drift at sub-polynomial speed, while the conjecture pins it between constants.",
       "startLine": 254,
       "endLine": 304,
       "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
