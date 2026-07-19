@@ -117,23 +117,28 @@ theorem exact_answer :
 def IsOddCycle (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
     (cycle : Fin (2*k+1) → V) : Prop :=
   (∀ i j, i ≠ j → cycle i ≠ cycle j) ∧
-  (∀ i : Fin (2*k+1), G.Adj (cycle i) (cycle ⟨(i.val + 1) % (2*k+1), by omega⟩))
+  (∀ i : Fin (2*k+1), G.Adj (cycle i) (cycle ⟨(i.val + 1) % (2*k+1), Nat.mod_lt _ (by omega)⟩))
 
 /-- Edges in any C_{2k+1}. -/
 noncomputable def edgesInOddCycle (G : SimpleGraph V) [DecidableRel G.Adj]
     (k : ℕ) : ℕ :=
   (G.edgeFinset.filter (fun e =>
     ∃ cycle : Fin (2*k+1) → V, IsOddCycle G k cycle ∧
-    ∃ i, e = s(cycle i, cycle ⟨(i.val + 1) % (2*k+1), by omega⟩))).card
+    ∃ i, e = s(cycle i, cycle ⟨(i.val + 1) % (2*k+1), Nat.mod_lt _ (by omega)⟩))).card
 
-/-- For k ≥ 3, the bound (2/9)n² IS correct. -/
+/-- For k ≥ 3, the bound (2/9)n² IS correct.
+
+    The informal statement "≥ (2/9)n² − O(1)·n" is encoded here by existentially
+    quantifying a constant `C` (independent of `n` and `G`) governing the lower-order
+    term, i.e. there is a `C` such that for all sufficiently large `n` every dense
+    graph has at least `2/9·n² − C·n` edges in some C_{2k+1}. -/
 theorem odd_cycle_bound_general (k : ℕ) (hk : k ≥ 3) :
-    ∀ᶠ n in Filter.atTop,
+    ∃ C : ℝ, ∀ᶠ n in Filter.atTop,
     ∀ (V : Type) [Fintype V] [DecidableEq V]
       (G : SimpleGraph V) [DecidableRel G.Adj],
     Fintype.card V = n →
     (G.edgeFinset.card : ℝ) > (n : ℝ)^2 / 4 →
-    (edgesInOddCycle G k : ℝ) ≥ 2/9 * (n : ℝ)^2 - O(1) * n := by
+    (edgesInOddCycle G k : ℝ) ≥ 2/9 * (n : ℝ)^2 - C * n := by
   sorry
 
 /- ## Part VII: Triangles -/
