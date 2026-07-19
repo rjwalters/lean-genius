@@ -103,7 +103,7 @@ theorem cons_gcdForm (m : ℕ) (a b : ℤ) :
   have gcdZero : gcdForm m b (0 : Fin (2 + m)) = b := by
     simp only [gcdForm]
     have h0 : (0 : Fin (2 + m)) = Fin.castAdd m (0 : Fin 2) := by apply Fin.ext; simp
-    rw [h0, Fin.append_left]
+    rw [h0, Fin.append_left]; rfl
   -- the composite `Fin.cons a (gcdForm m b)` vanishes at every coordinate `≥ 2`
   have key : ∀ i : Fin (2 + (m + 1)), 2 ≤ (i : ℕ) →
       (Fin.cons a (gcdForm m b) : Fin (2 + (m + 1)) → ℤ) i = 0 := by
@@ -130,7 +130,7 @@ theorem cons_gcdForm (m : ℕ) (a b : ℤ) :
       subst hj'
       have hc : (Fin.castAdd (m + 1) (Fin.succ 0 : Fin 2) : Fin (2 + (m + 1)))
           = Fin.succ (0 : Fin (2 + m)) := by
-        apply Fin.ext; simp only [Fin.val_castAdd, Fin.val_succ, Fin.val_zero]; omega
+        apply Fin.ext; simp only [Fin.val_castAdd, Fin.val_succ, Fin.val_zero]
       rw [hc, Fin.cons_succ, gcdZero]; simp
   · -- right block `j : Fin (m+1)`: coordinate `Fin.natAdd 2 j` has value `≥ 2`
     rw [Fin.append_right, Pi.zero_apply]
