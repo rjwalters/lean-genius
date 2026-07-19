@@ -230,3 +230,35 @@ invoked). File: 102 `^theorem` + 17 def, 0 sorries, 0 axiom decls.
 Unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form integration /
 manifold χ). Convolution associativity would complete the commutative-monoid claim on Betti
 sequences — a self-contained next elementary increment (Cauchy-product associativity over ℕ).
+
+## Session 2026-07-19 (researcher-1) — Künneth convolution associativity (VERIFIED axiom-free)
+
+**Mode:** REVISIT (mature axiomatized entry; the elementary `kunnethBetti` convolution algebra).
+**Outcome:** +1 theorem, 0 axioms — closes the named frontier.
+
+Parts XVIII–XIX built the Künneth convolution `kunnethBetti b c k = ∑_{i∈range(k+1)} bᵢ·c_{k−i}`
+on Betti sequences and proved its **commutativity** (`kunnethBetti_comm`) and **two-sided unit**
+`pointBetti = δ` (`kunnethBetti_pointBetti_left`/`_right`). The stated remaining increment was
+**associativity** (Cauchy-product associativity over ℕ). Added:
+
+- `kunnethBetti_assoc (a b c k) : kunnethBetti (kunnethBetti a b) c k = kunnethBetti a (kunnethBetti b c) k`.
+  Both sides expand to `∑_{i+j+l=k} aᵢbⱼcₗ`. Proof: `unfold`, distribute the outer factor into each
+  convolution (`simp_rw [Finset.sum_mul, Finset.mul_sum]`), flatten both double sums with
+  `Finset.sum_sigma'`, then match the triangular index sets `{(m,i):i≤m≤k}` and `{(i,j):i+j≤k}`
+  by the reindexing bijection `(m,i) ↦ (i, m−i)` / inverse `(i,j) ↦ (i+j, i)` via `Finset.sum_bij'`.
+
+With comm + unit this makes `⋆` a **commutative-monoid** operation on Betti sequences — the
+homological shadow of associativity of the Cartesian product `(M×N)×P ≅ M×(N×P)`.
+
+Reusable idiom (Cauchy-product associativity over ℕ): distribute with `sum_mul`/`mul_sum`, flatten
+nested sums with `Finset.sum_sigma'`, then `Finset.sum_bij'` between the two triangular sigma
+finsets — **all five `sum_bij'` obligations (both membership, both inverses, the term equality)
+close by `simp only [Finset.mem_sigma, Finset.mem_range] at …` followed by `omega` (with `ring` for
+the term)**. Key: `simp only [mem_sigma, mem_range]` reduces the `Sigma.mk` projections so `omega`
+sees the raw naturals; the sigma-equality inverse goals close by `simp only [<omega-fact>]` rewriting
+the single differing first component (the second components are already syntactically equal).
+
+**Build: VERIFIED** host-elab vs prebuilt Mathlib v4.31.0 oleans (`bin/lake env lean`, EXIT 0, no
+errors/warnings in the new code). `#print axioms ChernGaussBonnet.kunnethBetti_assoc`
+= `[propext, Classical.choice, Quot.sound]`. File 1302→1340 lines, +1 theorem; node stays 0-axiom
+(the deep CGB core assumptions live in sibling files and are not invoked here).
