@@ -24,7 +24,9 @@
       "Complementation/reflection symmetry: the map s↦∑A−s reflects subsetSums A about ∑A/2 away from its top point. Core subsetSums_reflection (s∈subsetSums A, s≠∑A ⟹ ∑A−s∈subsetSums A) needs NO positivity: any witnessing S with ∑S=s is proper (∑S≠∑A), so complement A\\S is nonempty with ∑(A\\S)=∑A−∑S (Finset.sum_sdiff + Finset.sdiff_nonempty). With positivity it upgrades to an INVOLUTION on the proper subset sums (subsetSums_reflection_mem_erase_iff: s∈(subsetSums A).erase(∑A) ↔ ∑A−s∈…erase, since proper sums are ≥1 so reflections stay <∑A). Sharpest consequence: the LARGEST proper subset sum is EXACTLY ∑A−A.min' (max'_proper_subsetSums_eq) — attained by dropping the min element (sum_erase_mem_subsetSums/sum_sub_min'_mem_subsetSums) and dominating all proper sums via reflection+min'_le_subsetSums. This is the reflection-DUAL of min'_subsetSums_eq_min' and identifies the second-largest value below max'=∑A.",
       "New necessary condition for #882 validity: no PROPER partial sum divides the total. For S⊊A nonempty in valid A, ∑S ∤ ∑A (validSubset_subsetSum_not_dvd_total) — both are subset sums and ∑S<∑A so distinct values, divisibility-free forbids ∑S∣∑A. Specialises (singleton, |A|≥2) to: no element divides ∑A (validSubset_elem_not_dvd_total); |A|=1 needs excluding since the sole element IS the total.",
       "Superincreasing (distinct-subset-sum) ⇏ ValidSubset: {1,2} is superincreasing (attains full 2^2-1=3 distinct sums) but subsetSums {1,2}={1,2,3} has 1|2, so invalid (extremal_distinct_not_valid). Formalizes the gap between the counting extremum and the #882 divisibility-free constraint.",
-      "ValidSubset ⟹ DivisibilityFree A (generators primitive) via A ⊆ subsetSums A + DivisibilityFree.mono (ValidSubset.divisibilityFree_base) — a necessary but far-from-sufficient condition."
+      "ValidSubset ⟹ DivisibilityFree A (generators primitive) via A ⊆ subsetSums A + DivisibilityFree.mono (ValidSubset.divisibilityFree_base) — a necessary but far-from-sufficient condition.",
+      "Per-step growth constraint (nextStep #4, prefix-sum chain): the nested-subset non-divisibility mechanism is now formalized WITHOUT needing a sort. validSubset_nested_sum_not_dvd generalizes validSubset_subsetSum_not_dvd_total (the T=A case) to ANY nested pair S⊊T⊆A of a valid set: ∑S∤∑T, since both are subset sums and ∑S<∑T (Finset.sum_lt_sum_of_subset on a positive set) makes them distinct values that divisibility-freeness separates. This is the antichain-along-a-chain fact — every strictly increasing chain of subset sums is a divisibility antichain.",
+      "Sharp corollary validSubset_partialSum_not_dvd_elem: in a valid A, for S⊆A nonempty and a∈A with a∉S, ∑S∤a. Obtained by taking T=insert a S in the nested lemma: ∑S∤∑(insert a S)=a+∑S, and ∑S∣(a+∑S)⟺∑S∣a (dvd_add / dvd_refl). This is exactly the σ_i∤a_{i+1} per-step constraint behind the (1+o(1))log₂n upper bound, stated for arbitrary supports rather than a sorted prefix — no element outside a partial support is ever divisible by that partial sum."
     ],
     "builtItems": [
       "Erdos882ProblemOQ03.lean: 4 defs + 17 theorems, 0 axioms, 0 sorries, self-contained.",
@@ -41,14 +43,15 @@
       "Erdos882Problem.lean (PARENT) TOOLCHAIN-DRIFT REPAIR: now builds under current Mathlib (v4.26). Fixes: granular imports → import Mathlib (Finset.sum_le_sum unavailable under old barrels); Algebra.id.smul_eq_mul → smul_eq_mul (renamed); maxValidSize Nat.find/dite needed Decidable — added `open Classical in` for classical DecidablePred. 2 axioms intact (upper_bound_refined, lower_bound_max — deep analytic bounds), 0 sorries. Restores the broken parent gallery file.",
       "Erdos882ProblemOQ03.lean: divisibilityFree_iff_isAntichain (DivisibilityFree S ↔ IsAntichain (·∣·) (↑S:Set ℕ)) + DivisibilityFree.isAntichain — bridges the ad-hoc predicate to Mathlib IsAntichain, unlocking the antichain API (the explicit nextStep request). Key: IsAntichain already quantifies over BOTH orders of each pair, so single ¬(a∣b) ∀a≠b ≡ symmetric ¬(a∣b)∧¬(b∣a). Membership via Finset.mem_coe. 2 thm, axiom-free.",
       "Erdos882ProblemOQ03.lean: validSubset_subsetSums_isAntichain (subset sums of a valid A form an IsAntichain(·∣·), via the divisibilityFree_iff_isAntichain bridge) + validSubset_subsetSum_not_dvd_total (no proper partial sum divides the total) + validSubset_elem_not_dvd_total (singleton specialisation, |A|≥2). 3 thm, 0 axioms, 0 sorries.",
-      "Erdos882ProblemOQ03.lean: ValidSubset.divisibilityFree_base (valid ⟹ base set divisibility-free) + extremal_distinct_not_valid (superincreasing counting-extremal witness {1,2} is invalid for every n). 2 thm, 0 axioms, plain decide only. Also modernized deprecated Finset.notMem_erase/notMem_empty/card_insert_of_notMem call sites."
+      "Erdos882ProblemOQ03.lean: ValidSubset.divisibilityFree_base (valid ⟹ base set divisibility-free) + extremal_distinct_not_valid (superincreasing counting-extremal witness {1,2} is invalid for every n). 2 thm, 0 axioms, plain decide only. Also modernized deprecated Finset.notMem_erase/notMem_empty/card_insert_of_notMem call sites.",
+      "Erdos882ProblemOQ03.lean: added Nested-subset non-divisibility section (2 thm, 0-axiom, host-VERIFIED via lake env lean under v4.31.0 main toolchain — propext/Classical.choice/Quot.sound only): validSubset_nested_sum_not_dvd (S⊊T⊆A valid ⟹ ∑S∤∑T, generalizes the T=A total case) and validSubset_partialSum_not_dvd_elem (S⊆A nonempty, a∈A\\S ⟹ ∑S∤a, the σ_i∤a_{i+1} growth constraint). File now 1176 lines, 0 axioms, 0 sorries."
     ],
-    "progressSummary": "PROGRESS: formalized that the counting extremum (superincreasing/distinct sums) is strictly weaker than #882 validity via extremal_distinct_not_valid ({1,2}) and the necessary condition ValidSubset.divisibilityFree_base. 0-axiom (propext/choice/Quot only, plain decide).",
+    "progressSummary": "PROGRESS: formalized the per-step growth mechanism (nextStep #4) as nested-subset non-divisibility — validSubset_nested_sum_not_dvd (∑S∤∑T for S⊊T⊆A valid) and its corollary validSubset_partialSum_not_dvd_elem (∑S∤a for excluded a), the σ_i∤a_{i+1} constraint, without needing a sorted prefix. 0-axiom, host-verified.",
     "nextSteps": [
-      "Investigate the divisibility-free (ValidSubset) upper bound proper: does DivisibilityFree(subsetSums A) force any near-distinctness, or is a genuinely different antichain argument needed? Now that DivisibilityFree ↔ IsAntichain (·∣·) is available, reuse Mathlib antichain lemmas on subsetSums A.",
-      "With the parent repaired, consider re-linking the self-contained OQ03 structural lemmas back against the parent predicates (or confirm the re-declaration is intentionally kept independent).",
-      "Push the antichain framing further: with subsetSums A an IsAntichain(·∣·) all in [1,∑A]⊆[1,n|A|], investigate whether any Mathlib antichain/Sperner-type bound applies (note plain divisibility antichains in [1,N] can be ~N/2, so the log bound needs the subset-sum lattice structure, not antichain size alone).",
-      "Formalise the sorted prefix-sum chain σ_1<…<σ_k=∑A: divisibility-free ⟹ σ_i∤σ_j (i<j), equivalently σ_i∤a_{i+1}, giving a per-step growth constraint toward the log₂n bound."
+      "Quantify the growth: from validSubset_partialSum_not_dvd_elem (∑S∤a for a outside S), derive a per-step LOWER bound on how fast a maximal nested chain of partial sums must grow — the arithmetic step from σ_i∤a_{i+1} toward σ_{i+1}≥(1+c)σ_i that powers the (1+o(1))log₂n bound (note: the full Erdős upper bound proof is non-elementary; target only the elementary chain steps).",
+      "Package the sorted prefix chain explicitly: use A.sort (·≤·) to realize σ_1<…<σ_k=∑A as a concrete strictly increasing sequence in subsetSums A of length |A|, and instantiate validSubset_nested_sum_not_dvd along it to get a length-|A| divisibility antichain inside [1,∑A].",
+      "Push the antichain framing: with subsetSums A an IsAntichain(·∣·) in [1,∑A]⊆[1,n|A|], investigate whether a Mathlib antichain/Sperner-type bound applies (plain divisibility antichains in [1,N] can be ~N/2, so the log bound needs the subset-sum lattice structure, not antichain size alone).",
+      "Re-link the self-contained OQ03 structural lemmas back against the repaired parent predicates, or confirm the re-declaration is intentionally kept independent."
     ]
   },
   "relatedProofs": [
@@ -71,10 +74,10 @@
     {
       "path": "Proofs/Erdos882ProblemOQ03.lean",
       "filename": "Erdos882ProblemOQ03.lean",
-      "lineCount": 496,
-      "theoremCount": 25,
+      "lineCount": 1176,
+      "theoremCount": 67,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos882ProblemOQ03.lean"
