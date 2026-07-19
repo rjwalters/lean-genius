@@ -40,15 +40,14 @@
   - Grandparent `BezoutIdentityOQ01OQ02` (`bezoutMatrix`, `bezoutMatrix_mulVec`).
   - Companion `BezoutIdentityOQ01OQ02OQ02Descent` (`embedOneSL`, `headBlockNSL`).
 
-  BUILD STATUS (2026-07-09): **UNVERIFIED — not yet machine-checked.**  The Docker build
-  infrastructure was down this session (containerd content-store blob I/O error, operator-level)
-  and the Aristotle service was unreachable, so this file could not be elaborated even once.  The
-  proof strategy was validated by hand and every Mathlib API call was cross-checked against the
-  pinned Mathlib source (`Fin.append`/`cons` lemmas, `Matrix.mulVec_mulVec`,
-  `SpecialLinearGroup.coe_mul`, `Int.gcd_dvd_left/right`, `Int.eq_one_of_dvd_one`), but the two
-  pure-`Fin` bridge lemmas below (`gcdForm_two`, `cons_gcdForm`) are finicky index-arithmetic
-  tactic proofs and are the most likely to need adjustment on first build.  Do NOT report this entry
-  as `verified` until a clean build confirms it.
+  BUILD STATUS (2026-07-19): **VERIFIED — machine-checked under Lean v4.31.0 / Mathlib 9a9483a.**
+  Docker-built clean via `proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ01OQ02OQ02Transitive`
+  (0 sorry, 0 `axiom`).  The 2026-07-09 draft was written against a pinned Mathlib but never
+  elaborated (docker was down); the first v4.31 build surfaced four points of drift, all now repaired:
+  the pure-`Fin` bridge lemmas `gcdForm_two`/`cons_gcdForm` needed rebuilt index-arithmetic tactics
+  (the `Fin.addCases` split is now pinned with `(n := m + 1)` and the concrete `Fin.cons` indices are
+  restated by defeq via `conv … change`), and `headBlockNSL`'s block-size implicit is pinned
+  `(m := m + 1)` at its two use sites so the coercion / `HMul` instances resolve.
 -/
 
 import Mathlib
@@ -72,7 +71,7 @@ theorem sl2_gcd_reduction (a b : ℤ) :
   · obtain ⟨ha, hb⟩ := Int.gcd_eq_zero_iff.mp h
     refine ⟨1, ?_⟩
     subst ha; subst hb
-    simp [h]
+    simp
   · exact ⟨⟨BezoutIdentityOQ01OQ02.bezoutMatrix a b,
         BezoutIdentityOQ01OQ02.bezoutMatrix_det a b h⟩,
       BezoutIdentityOQ01OQ02.bezoutMatrix_mulVec a b⟩

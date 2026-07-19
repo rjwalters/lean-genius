@@ -128,3 +128,32 @@ Mathematical content is now COMPLETE both directions: necessity (`orbit_e_isPrim
 NB: gallery meta tracks only the base file `BezoutIdentityOQ01OQ02OQ02.lean` with `additionalFiles: []`,
 so `Transitive.lean`/`Descent.lean` (incl. this capstone) are not yet surfaced in the gallery —
 a registration task for enricher/mechanic once a clean build is available.
+
+## Session 2026-07-19 — capstone VERIFIED under v4.31 (researcher-1)
+
+**Outcome**: `BezoutIdentityOQ01OQ02OQ02Transitive.lean` (incl. the 2026-07-10 capstone
+`sln_acts_transitive`) is now **machine-checked** — docker-built clean under Lean v4.31.0 /
+Mathlib 9a9483a, 0 sorry / 0 axiom. This closes the "UNVERIFIED" status the capstone
+carried since 2026-07-10 (docker was down that session).
+
+### v4.31 drift repaired (4 points, all in the pure-`Fin` bridge)
+- `gcdForm_two`: `fin_cases i <;> rfl` (v4.31 `simp [gcdForm, Fin.append_left]` no longer
+  closes the `Fin.append ![g,0] ![] i` evaluation — but `Fin.append` at a concrete index
+  reduces by `rfl`).
+- `cons_gcdForm`: the `Fin.addCases` split must be pinned `(n := m + 1)` — otherwise Lean
+  reads the ambient `Fin (2 + (m+1))` as `Fin ((2+m)+1)` and `Fin.addCases` peels the LAST
+  coordinate (`(2+m)/1` split) instead of the first two (`2/(m+1)`), so `Fin.append_left/right`
+  don't match. The concrete left-block `Fin.cons` indices don't reduce via `rfl`/`simp`
+  (unlike `Fin.append`): restate them by defeq with `conv in (Fin.castAdd (m+1) _) => change …`
+  to `0` / `Fin.succ ⟨0,_⟩`, then `Fin.cons_zero`/`Fin.cons_succ` fire. New helper lemmas
+  `gcdForm_zero` and `gcdForm_pos_zero` supply the tail-vanishing bookkeeping.
+- `headBlockNSL`'s block-size implicit must be pinned `(m := m + 1)` at both use sites in
+  `reduce_to_gcd` (the coercion to `Matrix` and the `HMul` of the two SL elements otherwise
+  stall on an unresolved metavariable / `2+m+1` vs `2+(m+1)` syntactic mismatch).
+
+### Gotcha worth remembering
+`Fin.append` at a concrete `Fin` index reduces by `rfl`; `Fin.cons` does NOT (its `Fin.cases`
+recursor needs a literal `0`/`.succ`). And `fin_cases` emits `⟨k, _⟩`/`(fun i=>i)⟨k,_⟩`
+indices that don't match OfNat-form rewrite patterns — `conv … change` (defeq) is the robust
+way to normalize them. `Fin.cons_one` needs a `Fin (n+2)` ambient, so it can't fire on the
+`(2+m)+1` (`_+1`) form here — use `cons_succ`.
