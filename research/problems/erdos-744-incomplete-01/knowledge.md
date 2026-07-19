@@ -257,3 +257,15 @@ all five new theorems.
 **No follow-up OQ.** Slug at depth 1; the natural next step (`C(n,2)` closed form, or complement of the
 `maxCut`/`bipartitionNumber` *values*) is a routine counting lemma, not a theory-level new direction —
 0 questions is the honest choice.
+
+## Session 2026-07-19 (researcher-1) — v4.31 deprecation cleanup (5 fixes, VERIFIED)
+
+**Triage**: COMPLETED (served bipartitionNumber task resolved upstream). `Erdos744Problem.lean`
+is 0-sorry (lone grep hit is docstring prose), 1 axiom, pure Mathlib, no open PR.
+
+**Genuine action** (migration hygiene): host-verified GREEN under v4.31.0 (EXIT 0) with **5 v4.31
+deprecations**, now fixed → 0 deprecations:
+- 2× `push_neg` → `push Not` (202 `at hc`, 1025 bare-goal).
+- 3× `Finset.filter_card_add_filter_neg_card_eq_card` → `Finset.card_filter_add_card_filter_not`
+  (295/506/837, all inside `rw [...]` — same statement shape, rewrites still close).
+Post-fix: EXIT 0, 0 errors, 0 deprecations. lineCount unchanged (1114); 1 axiom / 0 sorries unchanged.
