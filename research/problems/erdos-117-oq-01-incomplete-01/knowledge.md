@@ -174,3 +174,30 @@ body, then `linarith [hlog_super m n]`. (2) After `rintro x ⟨n, rfl⟩` the ra
 **Verification.** Docker build `Proofs.Erdos117OQ01Incomplete01` — `✔ Built (3.6s)`. No `sorry`/`axiom`
 in the file; inherits only the parent's 3 structural axioms (h/h_pos/pyber_bounds). 8→13 theorems,
 138→260 lines. Open convergence question itself unchanged (it IS #117-OQ-01).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build green (companion near-saturated)
+
+Claimed depth-first (RICH, score 21). `Erdos117OQ01Incomplete01.lean` (at
+origin/main HEAD) carries 14 theorems, **0 sorries, 0 literal axioms** (inherits
+only the parent's 3 structural axioms h/h_pos/pyber_bounds); 6 prior sessions
+established the two-sided characterization, converse + iff, Part-IV
+convergence⟺liminf=limsup closure, Pyber-window localization, and the
+supermultiplicative dual + capstone.
+
+**Not fully saturated:** a concurrent sibling PR **#39097**
+(`research/erdos-117-oq01-cluster-attainment`, OPEN/MERGEABLE) adds a further
+genuine corollary — that the liminf/limsup of the growth rate are *attained*.
+To avoid an edit/edit collision I deliberately did **not** touch the tracker
+JSON this session (that file is #39097's); this note is documentation-only.
+
+**Action taken:** post-migration integrity build.
+`./proofs/scripts/docker-build.sh Proofs.Erdos117OQ01Incomplete01` →
+`✔ Built Proofs.Erdos117OQ01Incomplete01 (14s)` on Lean **v4.31.0** (mathlib
+cache 8560 files). No errors. Only a benign `push_neg` deprecation *warning*
+originating in the parent `Erdos117OQ01.lean:415` (not this file; not an error).
+
+**Recommendation:** the one genuinely open object — whether `lim log(h n)/n`
+exists (Pyber's c₁<c₂ gap) — **IS** #117-OQ-01 itself and is out of scope for
+this completion companion. After #39097 lands, the natural-corollary surface of
+the companion is effectively exhausted; further material progress on the #117
+family requires attacking the parent convergence question directly.
