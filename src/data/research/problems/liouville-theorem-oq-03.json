@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-22T12:51:58.295Z",
-    "iteration": 2,
-    "focus": "Shipped Jarník–Besicovitch dimension formalization (axiomatized JB formula, derived Liouville dim 0).",
+    "iteration": 3,
+    "focus": "Added axiom-free uncountability of the Liouville set via Baire category (not_countable_liouville) — a witness dimension/measure cannot give, since dimH{Liouville}=0.",
     "blockers": [],
     "nextAction": "Discharge dimH_wellApprox axiom via Borel–Cantelli (upper) + Frostman mass distribution (lower).",
     "attemptCounts": {
@@ -29,8 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BOREL MEASURABILITY + STRICT NESTING (researcher-9, 2026-07-12, VERIFIED): added axiom-free Borel measurability of the well-approximable sets — measurableSet_wellApprox (W τ is Borel: C-monotone reduction of the uncountable ∃C to a countable union, frequently_atTop limsup ⋂_a⋃_{b≥a}, open-ball fibres) and measurableSet_liouville ({x | Liouville x} = ⋂_k W k is Borel), upgrading the null-set results from outer-measure to honest measure statements; plus wellApprox_ssubset (2 ≤ σ < τ ⟹ W τ ⊊ W σ, proper strict nesting of the hierarchy via dimH_wellApprox_strictAntitone). --- ℚ-AFFINE INVARIANCE (researcher-5, 2026-07-12, VERIFIED 0-axiom): added the rational-affine invariance of wellApprox tau = {x|LiouvilleWith tau x} to LiouvilleTheoremOQ03.lean — membership is fixed by translation by a rational/integer (wellApprox_add_rat_iff/_add_int_iff/_sub_rat_iff), by negation (wellApprox_neg_iff, symmetric about 0), and by dilation by a nonzero rational (wellApprox_mul_rat_iff), plus the set-equality capstone image_add_rat_wellApprox ((·+r)''wellApprox tau = wellApprox tau). So wellApprox tau is invariant under the whole rational-affine group x↦a·x+b (a,b∈ℚ, a≠0) — the self-similarity underneath its everywhere-equal Hausdorff dimension. All from Mathlib LiouvilleWith.add_rat_iff/neg_iff/mul_rat_iff; none touches the dimH_wellApprox (Jarník–Besicovitch) axiom. 6 theorems, all [propext,Classical.choice,Quot.sound]. --- FOLLOW-UP (researcher-7, 2026-07-11, VERIFIED): added Part X, the category (Baire) face — each well-approximable set W τ is comeagre (wellApprox_residual: W τ ∈ residual ℝ, AXIOM-FREE, from eventually_residual_liouville + upward-closed residual filter), its complement is meagre (meagre_compl_wellApprox, AXIOM-FREE), and for τ>2 W τ is simultaneously comeagre and Lebesgue-null (wellApprox_residual_and_volume_zero) — the textbook category/measure dichotomy. Strengthens the prior wellApprox_dense. --- Formalized Jarník–Besicovitch dimH(W τ)=2/τ (τ≥2) over Mathlib LiouvilleWith + dimH; JB formula = single axiom; derived dimH{Liouville}=0 by tendsto squeeze. Structural lemmas 0-axiom (LiouvilleWith.mono, Liouville.liouvilleWith, dimH_mono). 210L, 17 thm, 2 def, 1 axiom.",
+    "progressSummary": "UNCOUNTABILITY VIA CATEGORY (researcher-1, 2026-07-19, VERIFIED axiom-free): added not_countable_liouville — the Liouville set is uncountable, proved through Baire category rather than dimension. Unlike not_countable_wellApprox (which reads uncountability off the positive dimension 2/tau), the Liouville set has dimH=0 and Lebesgue measure 0, so neither smallness gauge can witness its uncountability; instead {x|Liouville x} is residual (liouville_residual) and a residual set in the nonempty Baire space R cannot be meagre (not_isMeagre_of_mem_residual), while every countable subset of R IS meagre (isMeagre_of_countable: R has no isolated points, so each singleton is nowhere dense via IsClosed.isNowhereDense_iff + interior_singleton, and a countable union of nowhere-dense sets is meagre). Supporting axiom-free lemmas isNowhereDense_singleton_real and isMeagre_of_countable are reusable. Capstone liouville_uncountable_yet_null_dimzero packages 'uncountable yet dimension-0 and Lebesgue-null'. #print axioms: the three uncountability lemmas are [propext,Classical.choice,Quot.sound]; the capstone carries only dimH_wellApprox via its dimension component. File 787->837 lines, 4 new theorem-decls. --- BOREL MEASURABILITY + STRICT NESTING (researcher-9, 2026-07-12, VERIFIED): added axiom-free Borel measurability of the well-approximable sets — measurableSet_wellApprox (W τ is Borel: C-monotone reduction of the uncountable ∃C to a countable union, frequently_atTop limsup ⋂_a⋃_{b≥a}, open-ball fibres) and measurableSet_liouville ({x | Liouville x} = ⋂_k W k is Borel), upgrading the null-set results from outer-measure to honest measure statements; plus wellApprox_ssubset (2 ≤ σ < τ ⟹ W τ ⊊ W σ, proper strict nesting of the hierarchy via dimH_wellApprox_strictAntitone). --- ℚ-AFFINE INVARIANCE (researcher-5, 2026-07-12, VERIFIED 0-axiom): added the rational-affine invariance of wellApprox tau = {x|LiouvilleWith tau x} to LiouvilleTheoremOQ03.lean — membership is fixed by translation by a rational/integer (wellApprox_add_rat_iff/_add_int_iff/_sub_rat_iff), by negation (wellApprox_neg_iff, symmetric about 0), and by dilation by a nonzero rational (wellApprox_mul_rat_iff), plus the set-equality capstone image_add_rat_wellApprox ((·+r)''wellApprox tau = wellApprox tau). So wellApprox tau is invariant under the whole rational-affine group x↦a·x+b (a,b∈ℚ, a≠0) — the self-similarity underneath its everywhere-equal Hausdorff dimension. All from Mathlib LiouvilleWith.add_rat_iff/neg_iff/mul_rat_iff; none touches the dimH_wellApprox (Jarník–Besicovitch) axiom. 6 theorems, all [propext,Classical.choice,Quot.sound]. --- FOLLOW-UP (researcher-7, 2026-07-11, VERIFIED): added Part X, the category (Baire) face — each well-approximable set W τ is comeagre (wellApprox_residual: W τ ∈ residual ℝ, AXIOM-FREE, from eventually_residual_liouville + upward-closed residual filter), its complement is meagre (meagre_compl_wellApprox, AXIOM-FREE), and for τ>2 W τ is simultaneously comeagre and Lebesgue-null (wellApprox_residual_and_volume_zero) — the textbook category/measure dichotomy. Strengthens the prior wellApprox_dense. --- Formalized Jarník–Besicovitch dimH(W τ)=2/τ (τ≥2) over Mathlib LiouvilleWith + dimH; JB formula = single axiom; derived dimH{Liouville}=0 by tendsto squeeze. Structural lemmas 0-axiom (LiouvilleWith.mono, Liouville.liouvilleWith, dimH_mono). 210L, 17 thm, 2 def, 1 axiom.",
     "builtItems": [
+      "not_countable_liouville + isMeagre_of_countable + isNowhereDense_singleton_real + liouville_uncountable_yet_null_dimzero (researcher-1, 2026-07-19, VERIFIED): uncountability of the Liouville set via Baire category (residual not meagre) — axiom-free, the route dimension/measure cannot supply since dimH{Liouville}=0.",
       "wellApprox ℚ-affine invariance block (researcher-5, 2026-07-12, 0-axiom VERIFIED): wellApprox_add_rat_iff, wellApprox_add_int_iff, wellApprox_sub_rat_iff, wellApprox_neg_iff, wellApprox_mul_rat_iff, and set-equality image_add_rat_wellApprox. wellApprox tau invariant under x↦a·x+b (a,b∈ℚ,a≠0), via Mathlib LiouvilleWith iff-API. In LiouvilleTheoremOQ03.lean.",
       "wellApprox τ := {x | LiouvilleWith τ x} + antitonicity (LiouvilleWith.mono) and {Liouville}⊆W τ (Liouville.liouvilleWith), 0-axiom",
       "dimH_mono transport: dimH(W τ) antitone, dimH{Liouville} ≤ dimH(W τ)",
@@ -46,7 +47,8 @@
       "Only the dimension VALUE dimH(W τ)=2/τ is missing from Mathlib (needs Borel–Cantelli covering + Frostman mass distribution); isolate as one axiom, prove the rest unconditionally.",
       "Dimension zero sharpens the sibling's Lebesgue-measure-zero result; dimH is a finer gauge than cardinality or measure.",
       "The whole family dimH(W τ)=2/τ decays to 0 (dimH_wellApprox_tendsto_zero) — this is the family-level driver that forces the Liouville set (⊆ every W τ) to dimension 0; strict antitonicity comes from the formula, not just the set inclusion (which gives only ≤).",
-      "The well-approximable sets W(τ) are Borel measurable (measurableSet_wellApprox), as is the Liouville set (measurableSet_liouville) — proved axiom-free by C-monotone reduction to a countable union, frequently_atTop limsup, and open-ball fibres. Upgrades the null-set results from outer-measure to honest measure statements."
+      "The well-approximable sets W(τ) are Borel measurable (measurableSet_wellApprox), as is the Liouville set (measurableSet_liouville) — proved axiom-free by C-monotone reduction to a countable union, frequently_atTop limsup, and open-ball fibres. Upgrades the null-set results from outer-measure to honest measure statements.",
+      "The Liouville set's uncountability CANNOT come from dimension or measure (both are 0) — it is witnessed by Baire category: a residual set in a nonempty perfect Baire space is uncountable, because every countable set of reals is meagre (singletons are nowhere dense in a space with no isolated points)."
     ],
     "mathlibGaps": [
       "No Jarník–Besicovitch / Hausdorff-measure estimates for well-approximable sets; no irrationality-measure def; no mass transference principle."
@@ -73,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.295Z",
-  "lastUpdate": "2026-07-12",
+  "lastUpdate": "2026-07-19",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -91,8 +93,8 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ03.lean",
       "filename": "LiouvilleTheoremOQ03.lean",
-      "lineCount": 787,
-      "theoremCount": 49,
+      "lineCount": 837,
+      "theoremCount": 59,
       "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,

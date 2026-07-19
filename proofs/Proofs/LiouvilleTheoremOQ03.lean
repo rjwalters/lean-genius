@@ -784,4 +784,54 @@ theorem wellApprox_ssubset {σ τ : ℝ} (hσ : 2 ≤ σ) (h : σ < τ) :
   rw [heq] at hlt
   exact lt_irrefl _ hlt
 
+/-! ## Part XI: Uncountability of the Liouville set — via category, not dimension
+
+`not_countable_wellApprox` shows `W τ` is uncountable *because its Hausdorff dimension
+`2/τ` is positive* (a countable set has dimension `0`).  That argument is unavailable for
+the Liouville set itself: `dimH {Liouville} = 0` (`dimH_liouville_eq_zero`), and it is also
+Lebesgue-null (`volume_liouville_eq_zero`) — so **neither dimension nor measure can witness
+its uncountability**.  The witness is Baire category: `{x | Liouville x}` is residual
+(`liouville_residual`), and a residual set in the nonempty Baire space `ℝ` cannot be meagre
+(`not_isMeagre_of_mem_residual`), whereas *every* countable set of reals *is* meagre (`ℝ`
+has no isolated points, so each singleton is nowhere dense).  This exhibits a set that is
+simultaneously dimension-`0`, measure-`0`, and yet uncountable — the sharpest sense in which
+the two classical smallness gauges undercount the Liouville numbers.  Axiom-free apart from
+the dimension/measure components of the capstone. -/
+
+/-- **Singletons are nowhere dense in `ℝ`.**  `ℝ` has no isolated points (it is a
+`PerfectSpace`), so `interior {x} = ∅` (`interior_singleton`) and, `{x}` being closed,
+`{x}` is nowhere dense. -/
+theorem isNowhereDense_singleton_real (x : ℝ) : IsNowhereDense ({x} : Set ℝ) :=
+  (isClosed_singleton.isNowhereDense_iff).mpr (interior_singleton x)
+
+/-- **Every countable set of reals is meagre.**  Write `s = ⋃_{x ∈ s} {x}`, a countable
+union of the nowhere-dense singletons (`isNowhereDense_singleton_real`); a countable union
+of nowhere-dense sets is meagre (`isMeagre_biUnion`, `IsNowhereDense.isMeagre`).  This is
+the ingredient the measure/dimension arguments cannot supply — it is what forces a residual
+set to be uncountable. -/
+theorem isMeagre_of_countable {s : Set ℝ} (hs : s.Countable) : IsMeagre s := by
+  rw [← Set.biUnion_of_singleton s]
+  exact isMeagre_biUnion hs fun x _ => (isNowhereDense_singleton_real x).isMeagre
+
+/-- **The Liouville numbers are uncountable.**  If `{x | Liouville x}` were countable it
+would be meagre (`isMeagre_of_countable`); but it is residual (`liouville_residual`), and a
+residual set in the nonempty Baire space `ℝ` is not meagre (`not_isMeagre_of_mem_residual`).
+Unlike `not_countable_wellApprox`, this cannot go through Hausdorff dimension — the Liouville
+set has dimension `0` (`dimH_liouville_eq_zero`) — so category is essential.  Axiom-free. -/
+theorem not_countable_liouville : ¬ {x : ℝ | Liouville x}.Countable := fun hc =>
+  not_isMeagre_of_mem_residual liouville_residual (isMeagre_of_countable hc)
+
+open MeasureTheory in
+/-- **Uncountable yet doubly negligible.**  The Liouville set is uncountable
+(`not_countable_liouville`) while having Hausdorff dimension `0` (`dimH_liouville_eq_zero`)
+and Lebesgue measure `0` (`volume_liouville_eq_zero`): a set that both classical smallness
+gauges declare negligible is nonetheless too large to enumerate.  The uncountability rests
+on Baire category (axiom-free); the dimension component carries the entry's
+Jarník–Besicovitch axiom `dimH_wellApprox`. -/
+theorem liouville_uncountable_yet_null_dimzero :
+    ¬ {x : ℝ | Liouville x}.Countable ∧
+      dimH {x : ℝ | Liouville x} = 0 ∧
+      volume {x : ℝ | Liouville x} = 0 :=
+  ⟨not_countable_liouville, dimH_liouville_eq_zero, volume_liouville_eq_zero⟩
+
 end LiouvilleTheoremOQ03
