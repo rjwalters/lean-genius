@@ -33,7 +33,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 open Real
 
@@ -74,8 +74,6 @@ their probability.
 -/
 noncomputable axiom expectedEndDistance (k n : ℕ) : ℝ
 
-notation "d_" k "(" n ")" => expectedEndDistance k n
-
 /-
 ## Part II: Critical Exponent ν
 
@@ -97,25 +95,22 @@ noncomputable def criticalExponent (k : ℕ) : ℝ :=
   else if k = 3 then 0.588
   else 1/2
 
-notation "ν_" k => criticalExponent k
-
 /--
 **Mean-Field Exponent:**
 For k ≥ 5, the critical exponent is 1/2 (like simple random walk).
 -/
-theorem meanField_exponent (k : ℕ) (hk : k ≥ 5) : ν_k = 1/2 := by
-  skip
-  omega
+theorem meanField_exponent (k : ℕ) (hk : k ≥ 5) : criticalExponent k = 1/2 := by
+  unfold criticalExponent
+  rw [if_neg (by omega : ¬ k = 2), if_neg (by omega : ¬ k = 3)]
 
 /-
 ## Part III: High-Dimensional Results (k ≥ 5)
 -/
 
--- Notation for asymptotic limit
+/-- Marks that a sequence `f` tends to the limit `L` as `n → ∞`. -/
 axiom tendsTo {α : Type*} (f : ℕ → α) (L : α) : Prop
-notation:50 f " → " L " as n → ∞" => tendsTo f L
 
-/- 
+/-
 **Slade's Theorem (1987):**
 For k sufficiently large, d_k(n) ~ D·√n for some constant D > 0.
 
@@ -131,13 +126,13 @@ This extended Slade's result to all k ≥ 5.
 axiom haraSlade_five_dim :
     ∀ k : ℕ, k ≥ 5 →
     ∃ D : ℝ, D > 0 ∧
-    (fun n => d_k(n) / n^(1/2 : ℝ)) → D as n → ∞
+    tendsTo (fun n => expectedEndDistance k n / (n : ℝ) ^ (1/2 : ℝ)) D
 
 /--
 Combined high-dimensional result.
 -/
 theorem high_dim_sqrt (k : ℕ) (hk : k ≥ 5) :
-    ∃ D : ℝ, D > 0 ∧ (fun n => d_k(n) / n^(1/2 : ℝ)) → D as n → ∞ :=
+    ∃ D : ℝ, D > 0 ∧ tendsTo (fun n => expectedEndDistance k n / (n : ℝ) ^ (1/2 : ℝ)) D :=
   haraSlade_five_dim k hk
 
 /-
@@ -151,7 +146,7 @@ Is lim_{n→∞} d_2(n)/√n = ∞?
 This asks whether 2D SAW grows strictly faster than √n.
 -/
 def question1 : Prop :=
-  ∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, d_2(n) / n^(1/2 : ℝ) ≥ M
+  ∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, expectedEndDistance 2 n / (n : ℝ) ^ (1/2 : ℝ) ≥ M
 
 /--
 **Sub-Ballistic Result (Duminil-Copin-Hammond 2013):**
@@ -160,9 +155,9 @@ d_2(n) = o(n), meaning SAW in 2D is sub-ballistic.
 This doesn't fully answer Question 1, but shows 2D SAW grows slower than linearly.
 -/
 axiom duminilCopin_subBallistic :
-    (fun n => d_2(n) / (n : ℝ)) → (0 : ℝ) as n → ∞
+    tendsTo (fun n => expectedEndDistance 2 n / (n : ℝ)) (0 : ℝ)
 
-/- 
+/-
 **Conjectured 2D Behavior:**
 d_2(n) ~ D·n^{3/4} for some constant D > 0.
 
@@ -174,7 +169,7 @@ If the 2D conjecture is true, Question 1 is answered YES.
 d_2(n)/√n = (d_2(n)/n^{3/4}) · n^{1/4} → ∞
 -/
 axiom conjecture_implies_question1 :
-    (∃ D : ℝ, D > 0 ∧ (fun n => d_2(n) / n^(3/4 : ℝ)) → D as n → ∞) →
+    (∃ D : ℝ, D > 0 ∧ tendsTo (fun n => expectedEndDistance 2 n / (n : ℝ) ^ (3/4 : ℝ)) D) →
     question1
 
 /-
@@ -188,16 +183,16 @@ Is d_k(n) ≪ √n for k ≥ 3?
 Now believed FALSE for k = 3, 4 (with logarithmic correction for k = 4).
 -/
 def question2 (k : ℕ) : Prop :=
-  k ≥ 3 → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, d_k(n) ≤ C * n^(1/2 : ℝ)
+  k ≥ 3 → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, expectedEndDistance k n ≤ C * (n : ℝ) ^ (1/2 : ℝ)
 
-/- 
+/-
 **Conjectured 3D Behavior:**
 d_3(n) ~ n^ν where ν ≈ 0.588.
 
 This exceeds √n since 0.588 > 0.5, meaning Question 2 is FALSE for k = 3.
 -/
 
-/- 
+/-
 **Conjectured 4D Behavior:**
 d_4(n) ~ D·(log n)^{1/8}·√n.
 
@@ -212,7 +207,7 @@ For k = 3, 4: Conjectured FALSE (anomalous exponents exceed √n).
 axiom question2_high_dim :
     ∀ k : ℕ, k ≥ 5 → question2 k
 
-/- 
+/-
 Conditional refutation: if 3D conjecture holds, Question 2 fails for k = 3.
 -/
 
@@ -229,17 +224,17 @@ d_c = 4 is the dimension above which SAW behaves like simple random walk
 -/
 def upperCriticalDimension : ℕ := 4
 
-/- 
+/-
 **Below Critical Dimension (k < 4):**
 SAW has anomalous scaling with ν > 1/2.
 -/
 
-/- 
+/-
 **Above Critical Dimension (k > 4):**
 SAW has mean-field scaling with ν = 1/2.
 -/
 
-/- 
+/-
 **At Critical Dimension (k = 4):**
 SAW has ν = 1/2 with logarithmic corrections.
 -/
@@ -282,8 +277,9 @@ Combines established results:
 3. ν = 3/4 for 2D (critical exponent definition)
 -/
 theorem erdos_529_summary :
-    (∀ k ≥ 5, ∃ D : ℝ, D > 0 ∧ (fun n => d_k(n) / n^(1/2 : ℝ)) → D as n → ∞) ∧
-    ((fun n => d_2(n) / (n : ℝ)) → (0 : ℝ) as n → ∞) ∧
+    (∀ k ≥ 5, ∃ D : ℝ, D > 0 ∧
+        tendsTo (fun n => expectedEndDistance k n / (n : ℝ) ^ (1/2 : ℝ)) D) ∧
+    (tendsTo (fun n => expectedEndDistance 2 n / (n : ℝ)) (0 : ℝ)) ∧
     (criticalExponent 2 = 3/4) :=
   ⟨haraSlade_five_dim, duminilCopin_subBallistic, rfl⟩
 
@@ -298,9 +294,10 @@ Combines:
 -/
 theorem erdos_529 :
     -- High dimensions resolved (Hara-Slade)
-    (∀ k ≥ 5, ∃ D : ℝ, D > 0 ∧ (fun n => d_k(n) / n^(1/2 : ℝ)) → D as n → ∞) ∧
+    (∀ k ≥ 5, ∃ D : ℝ, D > 0 ∧
+        tendsTo (fun n => expectedEndDistance k n / (n : ℝ) ^ (1/2 : ℝ)) D) ∧
     -- 2D sub-ballistic (Duminil-Copin-Hammond)
-    ((fun n => d_2(n) / (n : ℝ)) → (0 : ℝ) as n → ∞) ∧
+    (tendsTo (fun n => expectedEndDistance 2 n / (n : ℝ)) (0 : ℝ)) ∧
     -- Question 2 resolved for high dimensions
     (∀ k : ℕ, k ≥ 5 → question2 k) :=
   ⟨haraSlade_five_dim, duminilCopin_subBallistic, question2_high_dim⟩

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/529",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "dateUpdated": "2026-02-12",
+    "dateUpdated": "2026-07-19",
     "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
@@ -97,8 +97,8 @@
       "erdos_529 theorem: combines Hara-Slade + sub-ballistic + Question 2"
     ],
     "axiomCount": 7,
-    "lineCount": 306,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `d_2` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'd_2'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 7 axioms: endToEndDistance (end-to-end distance function), expectedEndDistance (expected distance function), tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim. 0 sorries.",
+    "lineCount": 305,
+    "assumptions": "Repaired (issue #39077): machine-checked on Lean v4.31 (autoImplicit off), 0 sorries. The earlier non-compilation was caused by three fragile notations (`d_`, `ν_`, and a `tendsTo` notation using the reserved `→` atom) that lexed as identifiers / invalid atoms; these were removed and the underlying objects (`expectedEndDistance`, `criticalExponent`, `tendsTo`) are now referenced directly, and `meanField_exponent` was reproved. Status remains axiomatized: 7 stated axioms encode the research-level results and primitives — endToEndDistance (end-to-end distance function), expectedEndDistance (expected distance function), tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim.",
     "theoremCount": 6,
     "definitionCount": 6
   },
