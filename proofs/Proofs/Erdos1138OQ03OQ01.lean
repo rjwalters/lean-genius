@@ -671,15 +671,15 @@ theorem exists_consecutive_prime_gap_ge (N : ℕ) :
   have hcons : ∀ r, Nat.Prime r → p < r → q ≤ r := by
     intro r hr hpr
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have hmin := Nat.find_min hqex hlt
     have hrle : r ≤ Nat.factorial (N + 1) + 1 := by
-      by_contra hc; push_neg at hc; exact hmin ⟨hc, hr⟩
+      by_contra hc; push Not at hc; exact hmin ⟨hc, hr⟩
     exact (Nat.findGreatest_is_greatest hpr hrle) hr
   -- gap lower bound: the composite run forces q ≥ M + N + 2
   have hq_big : Nat.factorial (N + 1) + N + 2 ≤ q := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     set k := q - Nat.factorial (N + 1) with hk
     have hk2 : 2 ≤ k := by omega
     have hkN : k ≤ N + 1 := by omega
