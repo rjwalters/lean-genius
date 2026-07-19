@@ -70,7 +70,8 @@
       "Adding reflections to Burnside is, abstractly, nothing more than splitting the Burnside sum along an index-2 subgroup: the rotation part re-sums to the necklace count, the reflection part is the leftover complement sum",
       "The restricted action of a subgroup H ≤ G fixes a point iff the underlying element of G does, so fixedBy X (h:G) = fixedBy X h definitionally; only the Fintype instances differ, which Fintype.card_congr absorbs",
       "The result is stated for an arbitrary subgroup, not just index 2 — the dihedral case is the motivating instance, obtained by also assuming |G| = 2|H|",
-      "Combined with the rotation count k^gcd(n,r) (oq-03) and the reflection count k^((n+1)/2) (oq-05), this folding theorem is the assembly step those entries leave open: it is exactly what turns per-symmetry fixed-point counts into the dihedral bracelet number"
+      "Combined with the rotation count k^gcd(n,r) (oq-03) and the reflection count k^((n+1)/2) (oq-05), this folding theorem is the assembly step those entries leave open: it is exactly what turns per-symmetry fixed-point counts into the dihedral bracelet number",
+      "The reflections form a coset G∖H, not a subgroup — which is precisely why folding, and not a second application of Burnside, is the right tool. The complement G∖H (the n reflections in D_n) is not closed under multiplication, so Σ_{g∉H}|Fix(g)| is not itself the orbit-count of any group action and cannot be simplified by Burnside's lemma. Folding sidesteps this entirely: it subtracts the rotation-subgroup Burnside instance from the full-group one, leaving the reflection contribution as a raw fixed-point sum that never has to be a Burnside total. This is exactly why the theorem hypothesises only H ≤ G and demands no structure on the complement"
     ],
     "prerequisites": [
       "Group actions, orbits, and the orbit-counting (Burnside/Cauchy–Frobenius) lemma",
@@ -99,9 +100,17 @@
       "id": "doubling",
       "title": "The Dihedral Doubling Form",
       "startLine": 101,
-      "endLine": 127,
-      "summary": "When |G| = 2|H| (the dihedral size relation), folding rearranges to 2·|X/G|·|H| = |X/H|·|H| + Σ_{g ∉ H} |Fix(g)|; |DihedralGroup n| = 2n anchors the instance.",
-      "mathContext": "$2\\,|X/G|\\,|H| = |X/H|\\,|H| + \\sum_{g \\notin H} |\\mathrm{Fix}(g)|,\\quad |D_n| = 2n$."
+      "endLine": 121,
+      "summary": "dihedral_doubling: when |G| = 2|H| (the dihedral size relation), folding rearranges by `ring` to 2·|X/G|·|H| = |X/H|·|H| + Σ_{g ∉ H} |Fix(g)|, i.e. bracelets·2|H| = necklaces·|H| + (reflection fixed points).",
+      "mathContext": "$2\\,|X/G|\\,|H| = |X/H|\\,|H| + \\sum_{g \\notin H} |\\mathrm{Fix}(g)|$."
+    },
+    {
+      "id": "dihedral-order",
+      "title": "The Order Relation |D_n| = 2n",
+      "startLine": 122,
+      "endLine": 128,
+      "summary": "dihedralGroup_card: re-export of Mathlib's DihedralGroup.card giving |DihedralGroup n| = 2n for NeZero n. This is the concrete size relation that places the cyclic rotation subgroup at index 2 inside D_n, turning the abstract |G| = 2|H| hypothesis of dihedral_doubling into the genuine dihedral instance.",
+      "mathContext": "$|D_n| = 2n = 2\\,|\\mathbb{Z}/n\\mathbb{Z}|$ (index-2 rotation subgroup)."
     },
     {
       "id": "numeric",
