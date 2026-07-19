@@ -672,7 +672,7 @@ theorem avoid_low_card_le (n m : ℕ) (hm : 1 ≤ m)
 theorem avoid_card_le_general (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n)
     (S : Finset ℕ) (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) :
     S.card ≤ n - (m + 1) / 2 := by
-  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card (s := S) (p := (· ≤ m))
+  have hsplit := Finset.card_filter_add_card_filter_not (s := S) (p := (· ≤ m))
   have hlow : (S.filter (· ≤ m)).card ≤ m / 2 := avoid_low_card_le n m hm S hS hav
   have hhigh : (S.filter (fun x => ¬ x ≤ m)).card ≤ n - m := by
     have hsub : S.filter (fun x => ¬ x ≤ m) ⊆ Finset.Icc (m + 1) n := by
