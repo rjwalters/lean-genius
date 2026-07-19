@@ -192,3 +192,56 @@ Remaining open (unchanged): a matching LOWER bound on products beyond `h(m·n) �
 log₂ n` (from `le_two_pow_h`); exact `h(2^a·3^b)` to probe tightness off the single-base
 powers; the greedy sorted-divisor full-range theorem; asymptotic h(m)/Vose density
 (analytic, out of elementary reach).
+
+---
+
+## Session 2026-07-19 (researcher-1) — exact `h` off the base-2 family + subadditivity tightness
+
+Realized Next-Action option (b): exact `h(2^a·3^b)` values probing tightness of the
+subadditivity law `h(m·n) ≤ h(m)+h(n)` off the single-base powers. Added a general
+exact-value criterion and the first two composite exact values, plus the tightness corollary.
+**Machine-verified on v4.31** (`docker-build.sh Proofs.Erdos18OQ01` → Build succeeded, 8577
+jobs), 0 axioms / 0 sorries preserved.
+
+- `h_le_of_covering (S) (hS : S ⊆ divisors m) (hcard : S.card = s) (hcov) : h m ≤ s` — named
+  reusable form of the `Nat.sInf_le` upper-bound step (previously inlined in `h_two_pow_le`).
+- `h_eq_of_covering (hp : IsPractical m) (hlow : 2^(s-1) < m) (S) (hS) (hcard) (hcov) : h m = s`
+  — the **exact-value pincer**: upper bound from the exhibited `s`-element covering, lower
+  bound *free* from `le_two_pow_h` (`m ≤ 2^{h m}`), since `2^(s-1) < m ≤ 2^{h m} ⟹ s ≤ h m`.
+- `h_six : h 6 = 3` — first exact value off the powers of two; covering `{1,2,3}`, and
+  `2^2 = 4 < 6` gives the lower bound. `= d(6) − 1` (top divisor `6` unused).
+- `h_twelve : h 12 = 4` — covering `{1,2,4,6}` (`{1,2,4}` gives `0..7`, `+6` reaches `13`),
+  `2^3 = 8 < 12` gives the lower bound. `= d(12) − 2`.
+- `h_twelve_eq_h_two_add_h_six : h 12 = h 2 + h 6` (`= 1 + 3 = 4`) — **subadditivity is TIGHT**
+  at `(2,6)` (`12 = 2·6`): `h_mul_le` is attained, so no strict improvement holds in general.
+  Contrast the base-2 family, where `h(2^k)=k=k·h(2)` saturates `h_pow_le` by exact equality.
+
+### Key findings
+- The counting lower bound `le_two_pow_h` does *all* the work on the lower side: once
+  `2^(s-1) < m`, an `s`-element covering pins `h(m) = s` exactly. So determining `h` on any
+  practical `m` reduces to *exhibiting a size-⌈log₂(m+1)⌉ covering* — a finite search.
+- Subadditivity `h(m·n) ≤ h(m)+h(n)` is genuinely tight (not merely an inequality): `(2,6)`
+  attains it. This settles that no universally-strict sharpening exists.
+
+### Lean gotchas (v4.31)
+- The `sInf`-membership witness for `h_le_of_covering` typechecks by DEFEQ against `def h`;
+  the anonymous constructor `⟨S, hS, hcard, hcov⟩` must present the covering predicate in the
+  exact `∃ T ⊆ S, T.sum id = k` shape (`hcov : ∀ k, 1≤k → k<m → ∃ T ⊆ S, T.sum id = k`).
+- Covering discharge: `interval_cases k` then `exact ⟨{…}, by decide, by decide⟩` per value —
+  `decide` evaluates both `T ⊆ S` and `T.sum id = k` on the small literal finsets. `by decide`
+  also cleared `{1,2,3} ⊆ divisors 6` / `{1,2,4,6} ⊆ divisors 12` (kernel-computes
+  `Nat.divisors` at 6, 12).
+- `s` is fixed by the goal `h 6 = 3` (unifies `s := 3`), so `hlow : 2^(s-1) < m` becomes the
+  concrete `2^2 < 6`, closed by `norm_num`.
+- Use `rw [not_le] at hlt` (not `push_neg`, now deprecated in v4.31) after `by_contra`.
+
+### Files modified
+- `proofs/Proofs/Erdos18OQ01.lean` (+~75 lines; theoremCount 55→60, lineCount 1023→1120)
+- `research/problems/erdos-18-oq-01/{knowledge.md,state.md}`, tracker JSON.
+
+### Next steps
+- Push the exact-value search further: `h(24) = h(2^3·3)`, `h(36) = h(2^2·3^2)` (probe
+  `h_pow_le` tightness at `h(6^2) ≤ 2·h(6) = 6`), and a general `h(2^a·3^b)` formula.
+- The still-open elementary target: a matching *lower* bound on `h(m·n)` beyond the `log₂`
+  envelope, or `h(m) ≥ d(m) − c` gap results. Asymptotic h(m)/Vose density stays out of
+  elementary reach.

@@ -39,9 +39,21 @@ function `h(m)`** — the actual subject of Erdős #18, previously untouched:
   machinery (needs full `[0,σ(m)]` coverage + gcd analysis).
 
 ## Next Action
-Subadditivity `h(m·n) ≤ h(m)+h(n)` is now DONE (researcher-3, `h_mul_le`).
-Options: (a) a matching LOWER bound on products beyond `h(m·n) ≥ log₂ m + log₂ n`
-(already implied by `le_two_pow_h`); (b) exact `h(2^a·3^b)` to probe tightness of
-subadditivity off the single-base powers; (c) `h(m) ≥ d(m) - c` gaps or
-abundancy-based refinements; (d) the greedy sorted-divisor full-range theorem
-(larger project).
+Option (b) DONE (researcher-1, 2026-07-19): exact `h` off the base-2 family via the
+new pincer `h_eq_of_covering` (upper = exhibited covering, lower = free from
+`le_two_pow_h`): `h(6)=3`, `h(12)=4`, and subadditivity shown **tight** via
+`h_twelve_eq_h_two_add_h_six : h 12 = h 2 + h 6`. Remaining options:
+(a) a matching LOWER bound on `h(m·n)` beyond the `log₂ m + log₂ n` envelope
+(`le_two_pow_h`) — the genuinely open elementary target;
+(b') extend the exact-value search: `h(24)`, `h(36)=h(2^2·3^2)` (probe `h_pow_le`
+tightness at `h(6^2) ≤ 2·h(6)=6`), a general `h(2^a·3^b)` formula;
+(c) `h(m) ≥ d(m) - c` gaps or abundancy refinements;
+(d) the greedy sorted-divisor full-range theorem (larger project).
+
+## Session 2026-07-19 (researcher-1) — exact `h` off base-2 + subadditivity tightness
+Added `h_le_of_covering` (named `Nat.sInf_le` upper-bound witness), the exact-value criterion
+`h_eq_of_covering` (`2^(s-1)<m` + `s`-element covering ⟹ `h m = s`, lower bound free from
+`le_two_pow_h`), and exact values `h_six : h 6 = 3`, `h_twelve : h 12 = 4`, plus
+`h_twelve_eq_h_two_add_h_six : h 12 = h 2 + h 6` (subadditivity tight at `12 = 2·6`). Verified
+v4.31 (`docker-build.sh Proofs.Erdos18OQ01` → Build succeeded, 8577 jobs), 0 axioms / 0
+sorries. theoremCount 55→60.
