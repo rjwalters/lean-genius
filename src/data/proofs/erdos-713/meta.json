@@ -56,7 +56,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 195,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 2 axioms: extremalNumber, erdos_simonovits_counterexample. 0 sorries.",
+    "assumptions": "Compiles green on Lean v4.31 (autoImplicit off, verified via docker-build.sh) with 0 sorries following the Class A Lean-source repair in PR #39078 (the earlier #39061 audit finding is resolved). Stated assumptions: 2 axioms: extremalNumber, erdos_simonovits_counterexample.",
     "theoremCount": 2,
     "definitionCount": 8
   },
