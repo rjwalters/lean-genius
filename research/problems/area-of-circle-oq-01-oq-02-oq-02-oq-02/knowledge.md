@@ -43,3 +43,29 @@ Complex.norm_I, Complex.norm_intCast, one_mul]` collapses ‖i·n·ĉ‖→|n|·
 - **docker-build.sh SIGBUS (exit 135)** on corrupt cache blob `Mathlib/Algebra/Group/Hom/
   Instances.trace` — infra, reproducible 3x. Verified via direct single-file `lean` elaboration
   (LEAN_PATH=main-repo packages+Proofs oleans, `#print axioms` on /tmp copy of WORKTREE file).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity + ORIENT: capstone blocker analysis
+
+**Mode**: REVISIT (RICH, depth-4 slug → 0 follow-ups). **Triage**: `AreaOfCircleOQ01OQ02OQ02OQ02.lean`
+host-verified GREEN under v4.31.0 (built the pure-Mathlib dep `Proofs.AreaOfCircleOQ01OQ02OQ02`
+olean, then `lake env lean` the target: EXIT 0, 0 errors, one benign `simpa`→`simp` linter hint
+at :304, NOT a deprecation — left as-is). No v4.31 deprecation debt here.
+
+**Eigenvalue-ladder surface is SATURATED**: 34 theorems already cover the derivative
+Fourier-coefficient magnitudes at orders 1/2/4/m — magnitude identities
+(`norm_fourierCoeffOn_derivᵏ_eq`), strict higher-mode damping (`k²·`, `4·`, `16·`),
+first-harmonic equality cases, and kernel iffs (`fourierCoeffOn_derivᵏ_eq_zero_iff`). Adding
+another mode-wise inequality would be accretion.
+
+**Capstone blocker (why nextSteps 1–3 are a distinct BUILD, not a quick lemma):** every theorem
+here is phrased with **`fourierCoeffOn hab (ofReal ∘ f) n`** (Mathlib's *interval* coefficient on
+`[a,b]`), whereas the three open next steps — reconstruct `f = a·cos t + b·sin t` from
+`∀|n|≠1, ĉₙ f = 0`, and assemble `C² ≥ 4πA` — require **Fourier inversion / `hasSum_fourier_series`
+on `AddCircle T`** (the *summed-series* direction, absent from this file entirely). The missing
+infrastructure is the bridge `fourierCoeffOn` (interval, ℝ→ℝ via `ofReal`) ↔ `fourierCoeff`
+(`AddCircle`, the space where `hasSum_fourier_series` / `fourierCoeff_eq_...` live), plus L²/continuity
+membership and summability side-goals. That bridge is the real next unit of work; it is materially
+new mechanism, not covered by the present ladder. Recorded as a structured blocker.
+
+**Outcome**: no code change (file already v4.31-green + ladder saturated); released with the
+capstone-infrastructure blocker documented for the next session.
