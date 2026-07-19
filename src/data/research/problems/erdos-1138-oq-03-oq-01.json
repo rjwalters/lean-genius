@@ -17,12 +17,12 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-07-11",
-    "iteration": 2,
-    "focus": "Verified the file builds (built parent Erdos1138OQ03 olean, then OQ01 via lake env lean, EXIT 0). Added normalised-gap decay-rate results gap_div_isBigO_rpow_neg (O(x^(-0.475))) + abstract engine gap_div_isBigO_rpow_sub_one_of_rpow_bound (O(x^(θ-1))); cleaned 2 dead-tactic warnings. 20 theorems, 0 sorry, inherits only the BHP axiom.",
+    "since": "2026-07-19",
+    "iteration": 3,
+    "focus": "Added bhp_prime_in_short_interval (primes in short intervals from BHP). Verified via docker-build (8577 jobs). Synced stale meta 16/418 -> 36/795.",
     "activeApproach": "Real-analysis squeeze: `maxPrimeGap x / x ≤ x^(-0.475) → 0`. Envelope limit from",
     "blockers": [],
-    "nextAction": "Build-capable session: create `proofs/Proofs/Erdos1138OQ03OQ01.lean` (import",
+    "nextAction": "Entry is saturated. Remaining lever is proving/replacing baker_harman_pintz (deep analytic NT, out of scope). Recommend marking completed to stop re-serving.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-2 2026-07-13): added ORTHOGONAL axiom-free ADDITIVE LOWER bound — maxPrimeGap x → ∞ via arbitrarily large prime gaps (composite factorial run), giving maxPrimeGap_unbounded_and_sublinear (grows without bound yet o(x)). Complements the prior upper-bound sublinearity family AND the multiplicative p/q→1 ratio shadow. Divergence theorems verified axiom-free; only the sublinearity half rests on the deep parent axiom baker_harman_pintz.",
+    "progressSummary": "PROGRESS (researcher-1 2026-07-19): added the localisation corollary bhp_prime_in_short_interval — the one genuinely-new tractable direction flagged by researcher-3 (primes in short intervals (x,(1+ε)x]), NOT a maxPrimeGap-asymptotics repackaging. Built the largest-prime/next-prime consecutive pair from findGreatest+Nat.find. Verified (#print axioms = propext/Classical.choice/Quot.sound + baker_harman_pintz). File now 36 thm / 795 L, 0 sorry, axiomCount 1. Entry otherwise saturated for elementary work.",
     "builtItems": [
       "gap_div_le_rpow_neg (Erdos1138OQ03OQ01.lean:37): maxPrimeGap x / x <= x^(-0.475) for x >= 25",
       "bhp_implies_gap_littleo (Erdos1138OQ03OQ01.lean:57): Tendsto (maxPrimeGap x / x) atTop (nhds 0)",
@@ -45,7 +45,8 @@
       "factorial_succ_add_not_prime (Erdos1138OQ03OQ01.lean): (N+1)!+k composite for 2≤k≤N+1 (Nat.dvd_factorial). Axiom-free.",
       "exists_consecutive_prime_gap_ge (Erdos1138OQ03OQ01.lean, VERIFIED axiom-free [propext,choice,Quot.sound]): ∀N ∃ consecutive primes p<q with q-p≥N. p=Nat.findGreatest Prime ((N+1)!+1), q=Nat.find least prime>(N+1)!+1; composite run forces q≥(N+1)!+N+2.",
       "maxPrimeGap_tendsto_atTop / _cast_tendsto_atTop (Erdos1138OQ03OQ01.lean, VERIFIED axiom-free): maxPrimeGap x → ∞ via monotone + unbounded + tendsto_atTop_atTop_of_monotone.",
-      "maxPrimeGap_unbounded_and_sublinear (Erdos1138OQ03OQ01.lean): two-sided (maxPrimeGap x:ℝ)→∞ ∧ maxPrimeGap x/x→0; discloses baker_harman_pintz (sublinearity half only)."
+      "maxPrimeGap_unbounded_and_sublinear (Erdos1138OQ03OQ01.lean): two-sided (maxPrimeGap x:ℝ)→∞ ∧ maxPrimeGap x/x→0; discloses baker_harman_pintz (sublinearity half only).",
+      "bhp_prime_in_short_interval in Erdos1138OQ03OQ01.lean — primes in short intervals from BHP (verified, inherits only baker_harman_pintz)"
     ],
     "insights": [
       "BHP exponent 0.525 < 1: one division by x yields a negative power x^(-0.475) that vanishes at infinity - no finer analysis needed",
@@ -55,7 +56,8 @@
       "Added the explicit decay RATE of the normalised gap (previously only the qualitative Tendsto→0 was recorded): concrete gap_div_isBigO_rpow_neg = O(x^(-0.475)) and abstract gap_div_isBigO_rpow_sub_one_of_rpow_bound = O(x^(θ-1)). Also cleaned two dead `gcongr <;> exact hx` linter warnings. File VERIFIED via lake env lean (built parent olean first), EXIT 0, 0 warnings; 18→20 theorems.",
       "The power structure x^θ is genuinely irrelevant to sublinearity: only f x/x→0 matters. The general envelope engine gap_littleo_of_littleo_envelope subsumes BOTH the x^θ branch (θ<1) AND the parent conditional Cramér (log x)² branch (not a power of x) under one squeeze. gap_littleo_of_rpow_bound is now provably its f x=x^θ instance.",
       "Multiplicative shadow of additive sublinearity: consecutive primes have RATIO→1. Applying the sup-level BHP bound at x=q (pair p<q≤q always qualifies) gives (q−p)/q≤q^(−0.475), so p/q=1−(q−p)/q≥1−q^(−0.475)→1. Reciprocal (q≥25>1 ⟹ q^(−0.475)<1 ⟹ 1−q^(−0.475)>0) gives q/p≤(1−q^(−0.475))⁻¹→1. Orthogonal to the additive o(x) trilogy — this is the multiplicative form p/q→1. ★ℕ-sub cast: Nat.cast_sub (le_of_lt hpq) then sub_div + div_self to get (q−p)/q=1−p/q; reciprocal via one_div_le_one_div_of_le (inv_le_inv_of_le is GONE in current Mathlib); Real.rpow_lt_one_of_one_lt_of_neg for base<1.",
-      "ORTHOGONAL LOWER-BOUND direction (researcher-2, axiom-free): the entire prior file is upper-bound driven (BHP squeeze → maxPrimeGap x/x→0) plus the multiplicative p/q→1 shadow. The complementary ADDITIVE fact is a LOWER bound: consecutive-prime gaps are arbitrarily large (classical composite run (N+1)!+2,…,(N+1)!+(N+1)), so maxPrimeGap x → ∞. Uses only Euclid + Nat.dvd_factorial — NOT baker_harman_pintz. #print axioms = [propext,Classical.choice,Quot.sound]. Combined: maxPrimeGap grows without bound yet sublinearly — full two-sided character."
+      "ORTHOGONAL LOWER-BOUND direction (researcher-2, axiom-free): the entire prior file is upper-bound driven (BHP squeeze → maxPrimeGap x/x→0) plus the multiplicative p/q→1 shadow. The complementary ADDITIVE fact is a LOWER bound: consecutive-prime gaps are arbitrarily large (classical composite run (N+1)!+2,…,(N+1)!+(N+1)), so maxPrimeGap x → ∞. Uses only Euclid + Nat.dvd_factorial — NOT baker_harman_pintz. #print axioms = [propext,Classical.choice,Quot.sound]. Combined: maxPrimeGap grows without bound yet sublinearly — full two-sided character.",
+      "BHP-sublinearity yields a localisation corollary distinct from the maxPrimeGap asymptotics: for every ε>0, eventually every x has a prime in (x,(1+ε)x] (bhp_prime_in_short_interval). Proof pairs largest-prime-≤x (Nat.findGreatest) with next-prime (Nat.find); Bertrand gives q≤2x so gap∈primeGapSet(2x)≤maxPrimeGap(2x), and the ε/2 envelope pulled back along x↦2x forces maxPrimeGap(2x)≤εx."
     ],
     "mathlibGaps": [],
     "nextSteps": [
