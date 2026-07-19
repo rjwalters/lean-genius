@@ -1,0 +1,252 @@
+{
+  "id": "alternating-series-boole-summation-oq-01-oq-01",
+  "title": "The Order-K Boole Summation Limit and Its Explicit Remainder Closed Form",
+  "slug": "alternating-series-boole-summation-oq-01-oq-01",
+  "description": "The parent entry passes the first-order finite Boole summation identity to the limit m → ∞, tying the sum S of a convergent alternating series to the limit of its first forward-difference series. This entry does the same at every order K at once: it carries the finite order-K Boole identity boole_general to the limit, yielding S = ∑_{k<K} ((-1)^k/2^{k+1})·(-1)^n(Δᵏa)_n + ((-1)^K/2^K)·T_K (boole_general_tendsto), where Δᵏa = fdiff^[k] a is the k-th forward difference and T_K := lim_m altSum(Δᴷa) n m is the limit of the alternating series of the K-th differences. The single analytic input is that every alternating endpoint term (-1)^m(Δᵏa)_m of a null sequence vanishes; the structural engine is iterate_fdiff_tendsto_zero (each iterated forward difference of a null sequence is again null), which forces the whole order-K boundary sum to converge termwise. Two supporting open items are settled: iterate_altSum_tendsto (every intermediate difference series converges, so T_K is automatic, not an extra hypothesis) and boole_general_tendsto_of_antitone (for antitone null sequences convergence is supplied by Mathlib's alternating-series test, so the identity holds with no convergence hypothesis at all). The companion file supplies the explicit non-recursive closed form iterate_altSum_limit_closed: T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S, unrolling the recursion T_{k+1} = (-1)^n(Δᵏa)_n − 2 T_k of iterate_altSum_tendsto into a standalone formula in the base sum S and the boundary data, and boole_general_tendsto_closed substitutes it back to give a fully explicit order-K identity. All results are over ℝ and axiom-free.",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AlternatingSeriesBooleSummation"
+    ],
+    "opens": [
+      "AlternatingSeriesBooleSummation",
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "AlternatingSeriesBooleSummationOQ01OQ01",
+    "lineCount": 386,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/AlternatingSeriesBooleSummationOQ01OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean"
+    ]
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Boole_summation_formula",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlternatingSeriesBooleSummationOQ01OQ01.lean",
+    "additionalFiles": [
+      "Proofs/AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean"
+    ],
+    "tags": [
+      "analysis",
+      "series",
+      "alternating-series",
+      "boole-summation",
+      "euler-summation",
+      "finite-differences",
+      "forward-difference",
+      "convergence",
+      "limits"
+    ],
+    "badge": "mathlib",
+    "mathlibDependencies": [
+      {
+        "theorem": "Antitone.tendsto_alternating_series_of_tendsto_zero",
+        "description": "The alternating-series (Leibniz) test: for an antitone sequence tending to 0, the alternating partial sums converge. This is the sole convergence input for the unconditional antitone version boole_general_tendsto_of_antitone (and, via altSum_tendsto_of_antitone, for the closed-form antitone corollary), removing the abstract convergence hypotheses from the order-K identity.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "tendsto_of_tendsto_of_tendsto_of_le_of_le",
+        "description": "The squeeze (sandwich) theorem for filters. Used in sign_mul_tendsto_zero to force the signed endpoint term (-1)^m a_m to 0 between ∓|a m|, the key that makes every boundary term of the finite Boole identity vanish in the limit.",
+        "module": "Mathlib.Order.Topology.Basic"
+      },
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Uniqueness of limits in a Hausdorff space. Identifies the two limits of altSum a n · — the given S and the convergent order-K Boole model — to conclude the order-K identity in boole_general_tendsto.",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "tendsto_finset_sum",
+        "description": "A finite sum of convergent sequences converges to the sum of the limits. Applied to the order-K boundary sum so that each endpoint-dependent term converges to its m-free part while the remainder converges to T_K.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "sorries": 0,
+    "dateAdded": "2026-07-19",
+    "relatedProblems": [
+      {
+        "id": "alternating-series-boole-summation-oq-01",
+        "relationship": "Direct parent. That entry passes the first-order finite Boole identity boole_first to the limit m → ∞, proving the first-order limit-form identity S = ½(-1)^n a_n − ½T for a convergent alternating series of a null sequence. This entry generalizes it to every order K at once (boole_general_tendsto, with the parent's result recovered as boole_general_tendsto_one at K = 1), reusing the base file's altSum, fdiff, boole_first, and boole_general, and additionally proves the explicit non-recursive closed form for the higher-difference remainder T_K."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 386,
+    "assumptions": "0 axioms, 0 sorries, no native_decide across both files (Proofs/AlternatingSeriesBooleSummationOQ01OQ01.lean, 234 lines/10 theorems; and the companion Proofs/AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean, 152 lines/4 theorems). All fourteen theorems were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The results hold over ℝ for any a : ℕ → ℝ with a → 0 (Tendsto a atTop (𝓝 0)); the general theorem boole_general_tendsto takes convergence of the base series (altSum a n · → S) and of the K-th difference series (→ T) as hypotheses, but both are shown satisfiable: iterate_altSum_tendsto derives convergence of every difference series from the base convergence, and boole_general_tendsto_of_antitone supplies both convergences outright for antitone null sequences via Mathlib's alternating-series test — so the hypotheses are not vacuous. The limit objects are limits of partial sums (Filter.Tendsto), not HasSum/tsum, since alternating series such as ∑ (-1)^j/(j+1) converge conditionally but are not summable. The companion closed form iterate_altSum_limit_closed expresses T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S with no reference to intermediate limits.",
+    "mathlib_version": "4.31.0",
+    "theoremCount": 14,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Boole's summation formula (George Boole, A Treatise on the Calculus of Finite Differences, 1860) is the finite-difference analogue of the Euler–Maclaurin formula: it expresses an alternating sum through the forward differences of the summand evaluated at the endpoints, weighted by the Euler numbers / the coefficients (-1)^k/2^{k+1}. Truncating at order K leaves a remainder that is itself an alternating sum of the K-th forward differences. Passing the finite identity to the limit m → ∞ turns it into a summation-acceleration statement for convergent alternating series: the value S is recovered from a finite boundary sum in the differences plus a remainder term. This entry formalizes that limit at general order K, together with the two structural facts that make it unconditional — the nullity of all iterated forward differences of a null sequence, and the automatic convergence of every higher-difference series.",
+    "problemStatement": "Let a : ℕ → ℝ be a null sequence (a → 0) whose alternating partial sums altSum a n m = ∑_{j=n}^{m-1} (-1)^j a_j converge to S. For every order K, pass the finite Boole identity boole_general to the limit m → ∞ to prove S = ∑_{k<K} ((-1)^k/2^{k+1})·(-1)^n(Δᵏa)_n + ((-1)^K/2^K)·T_K, where Δᵏa is the k-th forward difference and T_K = lim_m altSum(Δᴷa) n m. Show T_K always exists (so it is not an extra hypothesis), give the unconditional antitone form, and produce an explicit non-recursive closed form for T_K.",
+    "text": "The parent entry (alternating-series-boole-summation-oq-01) establishes the first-order limit-form Boole identity. This entry lifts it to arbitrary order K uniformly, then settles the remainder T_K completely: it is always well defined, it is supplied unconditionally for antitone null sequences, and it has an explicit closed form in the base sum and the boundary differences. Everything reuses the base file's altSum/fdiff definitions and the finite identities boole_first/boole_general; the only genuinely new analytic content is the nullity of iterated forward differences.",
+    "proofStrategy": "abs_sign_mul and sign_mul_tendsto_zero first record that the signed endpoint term (-1)^m a_m of a null sequence tends to 0 (its modulus is |a m|, squeezed between ∓|a m|). iterate_fdiff_tendsto_zero then proves by induction that every iterated forward difference Δᵏa of a null sequence is again null: Δ^{k+1}a_j = (Δᵏa)_{j+1} − (Δᵏa)_j is a difference of two shifted null copies. fdiff_altSum_tendsto restates the first-order limit engine for the base definitions (from boole_first, the endpoint terms vanishing), and iterate_altSum_tendsto iterates it to show every difference series converges — supplying the recursion T_{k+1} = (-1)^n(Δᵏa)_n − 2 T_k. The headline boole_general_tendsto rewrites altSum a n m via the finite boole_general for m ≥ n, then takes the limit: each boundary term converges (tendsto_finset_sum with sign_mul_tendsto_zero on Δᵏa) and the remainder converges to T, with tendsto_nhds_unique against the given S. altSum_zero_add + altSum_tendsto_of_antitone route Mathlib's alternating-series test to every tail, giving the unconditional boole_general_tendsto_of_antitone; boole_general_tendsto_one specializes K = 1 back to the parent. The companion iterate_altSum_limit_closed unrolls the T-recursion by induction into T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S, and boole_general_tendsto_closed substitutes it back into boole_general_tendsto for a fully explicit identity.",
+    "keyInsights": [
+      "**One structural fact powers the whole limit**: every endpoint term in the finite Boole identity is a signed value (-1)^m(Δᵏa)_m, and all of them vanish as m → ∞ because each iterated forward difference of a null sequence is again null (iterate_fdiff_tendsto_zero). This single induction is what lets the finite order-K identity survive the limit termwise, for all K simultaneously.",
+      "**The remainder T_K is not an extra assumption**: iterate_altSum_tendsto shows that base convergence alone forces every higher-difference alternating series to converge, via the recursion T_{k+1} = (-1)^n(Δᵏa)_n − 2 T_k. So the hypothesis hT of the general theorem is automatically discharged, and boole_general_tendsto_of_antitone removes convergence hypotheses entirely for antitone sequences.",
+      "**Uniform in K, with the parent as K = 1**: because ((-1)^K/2^K) = −((-1)^{K-1}/2^K), the order-K identity is exactly the closed form of the open question valid for every K at once — K = 0 reads S = S, and boole_general_tendsto_one recovers the parent's first-order S = ½(-1)^n a_n − ½T. The single statement subsumes the entire Boole/Euler acceleration hierarchy.",
+      "**The remainder has a standalone closed form**: iterate_altSum_tendsto only exhibits T_K recursively (each T_k through T_{k-1}). The companion unrolls that recursion into T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S — purely in the base sum S and the boundary differences, with the geometric weights (-2)^{K-1-k} recombining via (-2)^{K-k} = −2·(-2)^{K-1-k}. This makes the remainder computable without tracking intermediate limits.",
+      "**Conditional convergence dictates the limit object**: the natural target series (e.g. the alternating harmonic ∑ (-1)^j/(j+1)) converge conditionally but are not summable, so every result is phrased against limits of partial sums (Filter.Tendsto of altSum … atTop), not HasSum/tsum — a deliberate choice inherited from the base development."
+    ],
+    "prerequisites": [
+      "The base file's altSum (windowed alternating partial sum), fdiff (forward difference), and the finite Boole identities boole_first / boole_general (Proofs/AlternatingSeriesBooleSummation.lean)",
+      "The parent entry's first-order limit-form Boole identity (alternating-series-boole-summation-oq-01)",
+      "Mathlib's alternating-series test Antitone.tendsto_alternating_series_of_tendsto_zero for the unconditional versions",
+      "Filter limits of sequences: the squeeze theorem, tendsto_nhds_unique, tendsto_finset_sum, and tendsto_congr' with eventually_ge_atTop"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "The Order-K Boole Limit: Statement and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "mathContext": "$S = \\sum_{k<K} \\frac{(-1)^k}{2^{k+1}} (-1)^n (\\Delta^k a)_n + \\frac{(-1)^K}{2^K} T_K$.",
+      "summary": "The module docstring recalls the parent's first-order limit-form identity and states the goal: pass the finite order-K Boole identity boole_general to the limit m → ∞, uniformly in K. It identifies the single analytic input (endpoint terms of a null sequence vanish), previews the structural lemma iterate_fdiff_tendsto_zero, and lists the supporting deliverables (automatic convergence of every difference series, the unconditional antitone form). Lines 48–53 import Mathlib and the base module Proofs.AlternatingSeriesBooleSummation and open its namespace to reuse altSum, fdiff, boole_first, and boole_general."
+    },
+    {
+      "id": "endpoint-vanishing",
+      "title": "Endpoint Terms of a Null Sequence Vanish",
+      "startLine": 55,
+      "endLine": 88,
+      "mathContext": "$(-1)^m a_m \\to 0$; and $\\Delta^k a \\to 0$ for every $k$.",
+      "summary": "abs_sign_mul records |(-1)^m a_m| = |a m| (the sign has modulus 1), and sign_mul_tendsto_zero squeezes the signed endpoint term to 0 between ∓|a m|. iterate_fdiff_tendsto_zero is the structural heart: by induction, every iterated forward difference Δᵏa of a null sequence is again null, since Δ^{k+1}a_j = (Δᵏa)_{j+1} − (Δᵏa)_j is a difference of two shifted null copies. This makes every endpoint term in boole_general vanish in the limit."
+    },
+    {
+      "id": "first-order-engine",
+      "title": "The First-Order Limit Engine and Convergence of Every Difference Series",
+      "startLine": 90,
+      "endLine": 130,
+      "mathContext": "$\\mathrm{altSum}(\\Delta a)\\,n\\cdot \\to (-1)^n a_n - 2S$; every $T_k$ exists.",
+      "summary": "fdiff_altSum_tendsto restates the first-order limit of the forward-difference series for the base definitions: from boole_first, the endpoint terms vanish, so altSum(Δa) n · → (-1)^n a_n − 2S. iterate_altSum_tendsto then iterates this engine (feeding it iterate_fdiff_tendsto_zero for nullity) to show that base convergence forces every higher-difference series altSum(Δᵏa) n · to converge, with the recursion T_{k+1} = (-1)^n(Δᵏa)_n − 2 T_k. In particular the limit T_K of the main theorem always exists."
+    },
+    {
+      "id": "order-k-limit",
+      "title": "The Order-K Boole Summation Limit",
+      "startLine": 132,
+      "endLine": 173,
+      "mathContext": "$S = \\sum_{k<K} \\frac{(-1)^k}{2^{k+1}} (-1)^n (\\Delta^k a)_n + \\frac{(-1)^K}{2^K} T$.",
+      "summary": "boole_general_tendsto is the headline result. For m ≥ n it rewrites altSum a n m via the finite boole_general identity, then passes to the limit: each order-K boundary term converges to its m-free part (tendsto_finset_sum, using sign_mul_tendsto_zero applied to Δᵏa) and the remainder ((-1)^K/2^K)·altSum(Δᴷa) n m converges to ((-1)^K/2^K)·T. Uniqueness of limits (tendsto_nhds_unique) against the given S yields the order-K closed identity, valid uniformly in K."
+    },
+    {
+      "id": "antitone-and-sanity",
+      "title": "Unconditional Antitone Version and K = 1 Sanity Check",
+      "startLine": 175,
+      "endLine": 234,
+      "mathContext": "Antitone $a \\to 0 \\Rightarrow$ identity holds with no convergence hypothesis; $K=1$ gives $S = \\tfrac12(-1)^n a_n - \\tfrac12 T$.",
+      "summary": "altSum_zero_add gives consecutive-window additivity, and altSum_tendsto_of_antitone routes Mathlib's alternating-series test (Antitone.tendsto_alternating_series_of_tendsto_zero) to every tail. boole_general_tendsto_of_antitone then delivers the order-K identity for antitone null sequences with the base and difference convergences supplied automatically. boole_general_tendsto_one specializes K = 1 to recover exactly the parent's first-order limit S = ½(-1)^n a_n − ½T."
+    }
+  ],
+  "conclusion": {
+    "summary": "The order-K Boole summation limit is formalized sorry-free and axiom-free: for a null sequence whose alternating series converges to S, passing the finite Boole identity to the limit gives S = ∑_{k<K} ((-1)^k/2^{k+1})·(-1)^n(Δᵏa)_n + ((-1)^K/2^K)·T_K for every order K at once (boole_general_tendsto). The remainder T_K is shown always to exist (iterate_altSum_tendsto), to be available unconditionally for antitone null sequences (boole_general_tendsto_of_antitone), and to admit an explicit non-recursive closed form T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S (iterate_altSum_limit_closed), substituted back into a fully explicit identity by boole_general_tendsto_closed. The parent's first-order result is recovered at K = 1.",
+    "implications": "The uniform-in-K identity is the summation-acceleration backbone of the Boole/Euler framework: it re-expresses a conditionally convergent alternating sum through a finite boundary sum in the forward differences plus a controlled remainder, the mechanism behind Euler's transformation for accelerating slowly convergent alternating series (Leibniz's π/4, log 2). The explicit closed form for T_K makes the remainder computable directly from the base sum and boundary data, and the automatic-convergence lemma iterate_altSum_tendsto shows the hierarchy is self-supporting: no order beyond the first requires a new convergence hypothesis.",
+    "openQuestions": [
+      "Identify the remainder T_K with Mathlib's sharp two-sided alternating-series tail bounds (as formalized for the first-order antitone case in alternating-series-boole-summation-oq-01-oq-02) to obtain an unconditional effective error term at general order — the difficulty being that Δᴷa is antitone only under complete monotonicity of a, so an unconditional order-K bound needs a hypothesis strictly stronger than antitonicity.",
+      "Combine boole_general_tendsto_closed with the geometric decay of the Euler weights (-1)^k/2^{k+1} to quantify the convergence rate of the accelerated boundary sum toward S as K → ∞ for a completely monotone null sequence, making the Euler-transformation speedup effective."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-boole-summation-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent. It passes the first-order finite Boole identity to the limit m → ∞, proving S = ½(-1)^n a_n − ½T for a convergent alternating series of a null sequence. This entry lifts that to every order K uniformly (boole_general_tendsto, with the parent recovered as boole_general_tendsto_one at K = 1) and adds the explicit closed form for the higher-difference remainder T_K, reusing the base file's altSum, fdiff, boole_first, and boole_general."
+    },
+    {
+      "targetId": "alternating-series-boole-summation",
+      "relationship": "related",
+      "description": "The base development that introduces the Boole/Euler summation framework and proves the finite identities boole_first and boole_general on every window with no convergence assumed. This entry is the m → ∞ limit of boole_general at arbitrary order, together with the structural nullity of iterated forward differences that makes that limit well defined."
+    },
+    {
+      "targetId": "alternating-series-boole-summation-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling. It supplies the sharp first-order remainder bound |L − S_m| ≤ a_m and the bracketing of L by consecutive partial sums for antitone null sequences. This entry provides the complementary structural direction — the order-K limit identity and the explicit closed form of the higher-difference remainder — and its first open question is exactly to fuse the two: transport that sharp tail bound to general order K."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Boole, George",
+      "title": "A Treatise on the Calculus of Finite Differences",
+      "year": "1860",
+      "venue": "Macmillan",
+      "note": "Origin of the Boole summation formula: the finite-difference analogue of Euler–Maclaurin expressing an alternating sum through the forward differences of the summand at the endpoints, weighted by the coefficients (-1)^k/2^{k+1}. The order-K finite identity formalized in the base file and passed to the limit here is Boole's."
+    },
+    {
+      "authors": "Knopp, Konrad",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1990",
+      "venue": "Dover (repr. of 2nd English ed., Blackie & Son, 1951)",
+      "note": "Standard reference for Euler's transformation of alternating series and the role of forward differences and the coefficients 1/2^{k+1} in accelerating convergence — the summation-acceleration content behind boole_general_tendsto and its closed form."
+    },
+    {
+      "authors": "Nörlund, Niels Erik",
+      "title": "Vorlesungen über Differenzenrechnung",
+      "year": "1924",
+      "venue": "Springer",
+      "note": "Classical systematic treatment of the calculus of finite differences, including the Boole/Euler summation identities and the higher forward differences Δᵏa whose alternating series limits T_K are computed in explicit closed form here."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "boole_general_tendsto",
+      "type": "main",
+      "description": "The order-K Boole summation limit: for a null sequence a whose alternating series converges to S and whose K-th forward-difference series converges to T, passing the finite Boole identity to m → ∞ gives S = ∑_{k<K} ((-1)^k/2^{k+1})·(-1)^n(Δᵏa)_n + ((-1)^K/2^K)·T. Every endpoint term vanishes by iterate_fdiff_tendsto_zero, the boundary sum converges termwise (tendsto_finset_sum), and tendsto_nhds_unique against S closes it. Valid uniformly in K.",
+      "leanType": "{a : ℕ → ℝ} {n K : ℕ} {S T : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) (hT : Tendsto (fun m => altSum (fdiff^[K] a) n m) atTop (𝓝 T)) : S = (∑ k ∈ Finset.range K, ((-1) ^ k / 2 ^ (k + 1)) * ((-1) ^ n * (fdiff^[k] a) n)) + ((-1) ^ K / 2 ^ K) * T"
+    },
+    {
+      "name": "iterate_altSum_limit_closed",
+      "type": "main",
+      "description": "Explicit non-recursive closed form for the higher-difference remainder (companion file): T_K = ∑_{k<K} (-2)^{K-1-k}·(-1)^n(Δᵏa)_n + (-2)^K·S, unrolling the recursion T_{k+1} = (-1)^n(Δᵏa)_n − 2 T_k into a standalone formula in the base sum S and the boundary differences. Proved by induction on K, the successor step applying the first-order engine fdiff_altSum_tendsto to the inductive hypothesis with the geometric weights recombining via (-2)^{K-k} = −2·(-2)^{K-1-k}.",
+      "leanType": "{a : ℕ → ℝ} {n : ℕ} {S : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) (K : ℕ) : Tendsto (fun m => altSum (fdiff^[K] a) n m) atTop (𝓝 ((∑ k ∈ Finset.range K, (-2) ^ (K - 1 - k) * ((-1) ^ n * (fdiff^[k] a) n)) + (-2) ^ K * S))"
+    },
+    {
+      "name": "iterate_altSum_tendsto",
+      "type": "main",
+      "description": "Automatic convergence of every intermediate higher-difference series: base convergence (altSum a n · → S) forces altSum(Δᵏa) n · to converge for every k. Proved by induction using fdiff_altSum_tendsto and iterate_fdiff_tendsto_zero. This discharges the hypothesis hT of boole_general_tendsto — the remainder T_K is not an extra assumption.",
+      "leanType": "{a : ℕ → ℝ} {n : ℕ} {S : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) : ∀ k, ∃ T, Tendsto (fun m => altSum (fdiff^[k] a) n m) atTop (𝓝 T)"
+    },
+    {
+      "name": "boole_general_tendsto_of_antitone",
+      "type": "main",
+      "description": "The unconditional order-K identity for antitone null sequences: no convergence hypothesis is needed, since Mathlib's alternating-series test (via altSum_tendsto_of_antitone) and iterate_altSum_tendsto supply the base and difference convergences outright.",
+      "leanType": "{a : ℕ → ℝ} (ha : Antitone a) (ha0 : Tendsto a atTop (𝓝 0)) (n K : ℕ) : ∃ S T, Tendsto (fun m => altSum a n m) atTop (𝓝 S) ∧ Tendsto (fun m => altSum (fdiff^[K] a) n m) atTop (𝓝 T) ∧ S = (∑ k ∈ Finset.range K, ((-1) ^ k / 2 ^ (k + 1)) * ((-1) ^ n * (fdiff^[k] a) n)) + ((-1) ^ K / 2 ^ K) * T"
+    },
+    {
+      "name": "iterate_fdiff_tendsto_zero",
+      "type": "key",
+      "description": "The structural engine: every iterated forward difference Δᵏa of a null sequence is again null. By induction, Δ^{k+1}a_j = (Δᵏa)_{j+1} − (Δᵏa)_j is a difference of two shifted copies of Δᵏa, each tending to 0. This is what makes every endpoint term in the finite Boole identity vanish in the limit, for all K.",
+      "leanType": "{a : ℕ → ℝ} (ha0 : Tendsto a atTop (𝓝 0)) : ∀ k, Tendsto (fdiff^[k] a) atTop (𝓝 0)"
+    },
+    {
+      "name": "sign_mul_tendsto_zero",
+      "type": "supporting",
+      "description": "For a null sequence, the signed endpoint term (-1)^m a_m tends to 0, squeezed between ∓|a m| (its modulus is |a m| by abs_sign_mul). The base case of the endpoint-vanishing mechanism.",
+      "leanType": "{a : ℕ → ℝ} (ha0 : Tendsto a atTop (𝓝 0)) : Tendsto (fun m => (-1) ^ m * a m) atTop (𝓝 0)"
+    },
+    {
+      "name": "fdiff_altSum_tendsto",
+      "type": "supporting",
+      "description": "The first-order limit engine restated for the base definitions: if a → 0 and altSum a n · → S then altSum(Δa) n · → (-1)^n a_n − 2S. Obtained from the finite boole_first with the endpoint term vanishing; it composes with boole_general and drives both iterate_altSum_tendsto and the closed-form induction.",
+      "leanType": "{a : ℕ → ℝ} {n : ℕ} {S : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) : Tendsto (fun m => altSum (fdiff a) n m) atTop (𝓝 ((-1) ^ n * a n - 2 * S))"
+    },
+    {
+      "name": "boole_general_tendsto_one",
+      "type": "supporting",
+      "description": "Sanity check that K = 1 recovers the parent's first-order limit S = ½(-1)^n a_n − ½T, confirming the uniform-in-K identity subsumes the parent entry.",
+      "leanType": "{a : ℕ → ℝ} {n : ℕ} {S T : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) (hT : Tendsto (fun m => altSum (fdiff a) n m) atTop (𝓝 T)) : S = (1 / 2) * ((-1) ^ n * a n) - (1 / 2) * T"
+    },
+    {
+      "name": "boole_general_tendsto_closed",
+      "type": "supporting",
+      "description": "Self-consistency (companion file): substituting the explicit closed form for T_K back into boole_general_tendsto reproduces exactly S, giving a fully explicit order-K identity in which the remainder is the formula from iterate_altSum_limit_closed rather than an abstract limit.",
+      "leanType": "{a : ℕ → ℝ} {n K : ℕ} {S : ℝ} (ha0 : Tendsto a atTop (𝓝 0)) (hS : Tendsto (fun m => altSum a n m) atTop (𝓝 S)) : S = (∑ k ∈ Finset.range K, ((-1) ^ k / 2 ^ (k + 1)) * ((-1) ^ n * (fdiff^[k] a) n)) + ((-1) ^ K / 2 ^ K) * ((∑ k ∈ Finset.range K, (-2) ^ (K - 1 - k) * ((-1) ^ n * (fdiff^[k] a) n)) + (-2) ^ K * S)"
+    }
+  ]
+}
