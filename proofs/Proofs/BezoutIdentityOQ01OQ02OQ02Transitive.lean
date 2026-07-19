@@ -86,29 +86,54 @@ def gcdForm (m : ℕ) (g : ℤ) : Fin (2 + m) → ℤ :=
 
 theorem gcdForm_two (g : ℤ) : gcdForm 0 g = ![g, 0] := by
   funext i
-  fin_cases i <;> simp [gcdForm, Fin.append_left]
+  fin_cases i <;> rfl
+
+/-- **`gcdForm` at coordinate `0`.** The leading entry of the gcd-normal form is `g`. -/
+theorem gcdForm_zero (m : ℕ) (b : ℤ) : gcdForm m b (0 : Fin (2 + m)) = b := by
+  have h : (0 : Fin (2 + m)) = Fin.castAdd m (0 : Fin 2) := by apply Fin.ext; simp
+  rw [gcdForm, h, Fin.append_left]; rfl
+
+/-- **`gcdForm` vanishes off coordinate `0`.** Every non-leading entry of `(g, 0, …, 0)` is `0` —
+the bookkeeping fact that lets the `Fin.cons`/`Fin.append` bridge collapse the tail. -/
+theorem gcdForm_pos_zero (m : ℕ) (b : ℤ) (k : Fin (2 + m)) (hk : 1 ≤ (k : ℕ)) :
+    gcdForm m b k = 0 := by
+  rcases lt_or_ge (k : ℕ) 2 with h2 | h2
+  · have hk1 : (k : ℕ) = 1 := by omega
+    have hkc : k = Fin.castAdd m (1 : Fin 2) := by
+      apply Fin.ext; simp [Fin.castAdd, Fin.castLE, hk1]
+    rw [hkc, gcdForm, Fin.append_left]; rfl
+  · have hkc : k = Fin.natAdd 2 (⟨(k : ℕ) - 2, by omega⟩ : Fin m) := by
+      apply Fin.ext; simp [Fin.natAdd]; omega
+    rw [hkc, gcdForm, Fin.append_right]; rfl
 
 /-- **Content bridge.**  Prepending `a` to the gcd-normal form `(b, 0, …, 0) ∈ ℤ^{2+m}` gives the
 vector `(a, b, 0, …, 0) ∈ ℤ^{2+(m+1)}`, repackaged in `Fin.append` shape so the head block acts. -/
 theorem cons_gcdForm (m : ℕ) (a b : ℤ) :
     Fin.cons a (gcdForm m b) = Fin.append (![a, b] : Fin 2 → ℤ) (0 : Fin (m + 1) → ℤ) := by
   funext i
-  -- split the ambient `Fin (2 + (m + 1))` into the first two coordinates and the tail
-  refine Fin.addCases (fun j => ?_) (fun j => ?_) i
+  -- split the ambient `Fin (2 + (m + 1))` at its own `2 / (m + 1)` boundary; `(n := m + 1)`
+  -- pins the split (otherwise `Fin.addCases` reads the type as `(2 + m) + 1` and peels the last
+  -- coordinate instead of the first two).
+  refine Fin.addCases (n := m + 1) (fun j => ?_) (fun j => ?_) i
   · -- left block: the two leading coordinates, `j : Fin 2`
     rw [Fin.append_left]
     fin_cases j
-    · -- coordinate 0 → `a` (head of the `Fin.cons`)
-      simp [gcdForm]
-    · -- coordinate 1 → `b` (head of the inner `Fin.append` inside `gcdForm`)
-      simp [gcdForm, Fin.append_left]
+    · -- coordinate 0 → `a` (head of the `Fin.cons`); restate the index as `0` by defeq
+      conv_lhs => conv in (Fin.castAdd (m + 1) _) => change (0 : Fin (2 + m + 1))
+      simp
+    · -- coordinate 1 → `b`; restate the index as `Fin.succ 0` so `Fin.cons_succ` peels to `gcdForm`
+      conv_lhs => conv in (Fin.castAdd (m + 1) _) => change Fin.succ (⟨0, by omega⟩ : Fin (2 + m))
+      rw [Fin.cons_succ]
+      exact gcdForm_zero m b
   · -- right block: the remaining coordinates, `j : Fin (m + 1)`; every entry is `0`
     rw [Fin.append_right]
-    -- `Fin.natAdd 2 j = (Fin.natAdd 1 j).succ`, so the `Fin.cons` peels to the tail append
-    have hj : (Fin.natAdd 2 j : Fin (2 + (m + 1))) = (Fin.natAdd 1 j).succ := by
-      apply Fin.ext; simp [Fin.natAdd, Fin.succ, Nat.add_comm, Nat.add_assoc, Nat.add_left_comm]
-    rw [hj, Fin.cons_succ]
-    simp [gcdForm, Fin.append_right]
+    -- `Fin.natAdd 2 j` has value `2 + j ≥ 1`, so the `Fin.cons` peels to the tail, where
+    -- `gcdForm` already vanishes off coordinate `0`.
+    have hs : (Fin.natAdd 2 j : Fin (2 + (m + 1)))
+        = (⟨1 + (j : ℕ), by omega⟩ : Fin (2 + m)).succ := by
+      apply Fin.ext; simp [Fin.natAdd, Fin.succ]; omega
+    rw [hs, Fin.cons_succ]
+    exact gcdForm_pos_zero m b _ (by simp)
 
 /-! ### The general reduction to gcd-normal form -/
 
@@ -150,14 +175,14 @@ theorem reduce_to_gcd (m : ℕ) :
       rw [Fin.cons_self_tail] at h1
       rw [h1, hT]
     -- Step 2: the head block clears coordinate `1` against coordinate `0`.
-    have hHd : (headBlockNSL N : Matrix (Fin (2 + (m + 1))) (Fin (2 + (m + 1))) ℤ)
+    have hHd : (headBlockNSL (m := m + 1) N : Matrix (Fin (2 + (m + 1))) (Fin (2 + (m + 1))) ℤ)
         *ᵥ Fin.cons (v 0) (gcdForm m gw) = gcdForm (m + 1) g := by
       rw [cons_gcdForm]
       show headBlockN (N : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ Fin.append ![v 0, gw] (0 : Fin (m + 1) → ℤ)
           = gcdForm (m + 1) g
       rw [headBlockN_mulVec, hN]
       rfl
-    refine ⟨headBlockNSL N * embedOneSL T, g, ?_, Int.natCast_nonneg _, ?_⟩
+    refine ⟨headBlockNSL (m := m + 1) N * embedOneSL T, g, ?_, Int.natCast_nonneg _, ?_⟩
     · rw [Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hE, hHd]
     · intro i
       refine Fin.cases ?_ (fun j => ?_) i
