@@ -53,8 +53,8 @@
       "erdos_1153_full_interval"
     ],
     "axiomCount": 1,
-    "lineCount": 169,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `k` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'k'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom: erdos_1153 (the logarithmic lower bound, proved by Bernstein/Erdős).",
+    "lineCount": 172,
+    "assumptions": "1 axiom: `erdos_1153` — the (2/π)·log n Lebesgue-constant lower bound on arbitrary subintervals, proved classically by Bernstein (1931) and Erdős (1961) but stated here as an axiom rather than reproved. Repaired under #39077 (Class A): the file now compiles green on Lean v4.31 with `autoImplicit false` (0 sorries), confirming no identifier is silently masked and the theorems are not vacuous. Three genuine proof errors — previously hidden by the old `autoImplicit true` default — were fixed: the equality direction in `lagrangeBasis_self`, an unpinned `Finset.single_le_sum` function metavariable in `lebesgueFunction_at_node`, and a `subst` that erased `k` in `lebesgueFunction_at_node_eq`. The machine-checked content (Lagrange Kronecker-delta property lₖ(xⱼ)=δₖⱼ and λ(xₖ)=1 at nodes) is genuine; only the asymptotic lower bound itself is axiomatized.",
     "theoremCount": 6,
     "definitionCount": 4
   },
@@ -136,7 +136,7 @@
       "Finset"
     ],
     "namespace": "Erdos1153",
-    "lineCount": 169,
+    "lineCount": 172,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 4,
