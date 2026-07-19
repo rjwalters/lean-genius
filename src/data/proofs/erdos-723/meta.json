@@ -132,8 +132,8 @@
       "title": "Examples of Small Orders",
       "startLine": 128,
       "endLine": 155,
-      "summary": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers.",
-      "mathContext": "Mathematical content: Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
+      "summary": "Verified computations: IsPrimePow for orders 2-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 1, 6, 10, 12 confirming these are not prime powers.",
+      "mathContext": "Mathematical content: Verified computations: IsPrimePow for orders 2-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 1, 6, 10, 12 confirming these are not prime powers."
     },
     {
       "id": "bruck-ryser-applications",
@@ -145,7 +145,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #723 (Prime Power Conjecture) is OPEN in general. The formalization includes verified proofs that orders 1-5 are prime powers, a complete Bruck-Ryser application ruling out order 6, and records Lam's computational result for order 10. Order 12 remains the smallest unknown case.",
+    "summary": "Erdős Problem #723 (Prime Power Conjecture) is OPEN in general. The formalization includes verified proofs that orders 2-5 are prime powers (and that order 1 is not a prime power), a complete Bruck-Ryser application ruling out order 6, and records Lam's computational result for order 10. Order 12 remains the smallest unknown case.",
     "implications": "**Theoretical Significance**: The conjecture sits at the intersection of finite geometry, algebraic number theory, and combinatorial design theory.\n\nThe Bruck-Ryser necessary condition links plane existence to quadratic form theory, while the equivalence between projective planes and complete sets of MOLS connects to Latin square combinatorics. If a non-prime-power projective plane were found, it would require construction methods fundamentally different from finite field algebra—potentially revolutionizing our understanding of combinatorial designs.",
     "openQuestions": [
       "Does a projective plane of order 12 exist? This is the smallest open case and would require an order-of-magnitude leap in computational methods beyond Lam's work on order 10.",
