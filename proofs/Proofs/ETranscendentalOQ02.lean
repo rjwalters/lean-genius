@@ -2299,4 +2299,113 @@ theorem e_disjunctive (b k : ℕ) (hb : 2 ≤ b) (s : Fin k → Fin b) :
     ∃ n : ℕ, ∀ i : Fin k, nthDigit b (n + i.val) (Real.exp 1) = (s i : ℤ) :=
   absolutely_normal_imp_disjunctive (Real.exp 1) e_absolutely_normal b k hb s
 
+-- ============================================================
+-- PART IV.9.a: EXPLICIT MONOTONE ENUMERATION OF OCCURRENCES
+-- ============================================================
+
+/-!
+## From effective recurrence to an explicit occurrence sequence
+
+`next_occurrence_lt_of_modulus` guarantees, for every threshold `P`, an
+occurrence of the tuple `s` in the window `[P, N₀(P))` with the explicit bound
+`N₀(P) = max (max (M k (b^{-k}/2)) 1) (2·bᵏ·P + 1)`. Iterating it with
+`P := previous + 1` produces an **explicit strictly increasing** enumeration
+`occSeq 0 < occSeq 1 < …` of positions at which the tuple `s` occurs, each
+successor bounded by the effective gap function of its predecessor. This upgrades
+the qualitative `normal_ktuple_infinitely_often` (an infinite occurrence *set*)
+to a concrete monotone *sequence* with modulus-controlled gaps — the form a
+downstream quantitative argument iterates over.
+-/
+
+/-- The next occurrence position of the tuple `s` at or after the threshold `P`,
+    chosen from `next_occurrence_lt_of_modulus`. -/
+noncomputable def nextOcc (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b)
+    (P : ℕ) : ℕ :=
+  (next_occurrence_lt_of_modulus b hb x M hM k s P).choose
+
+/-- `nextOcc` lands at or after its threshold. -/
+theorem nextOcc_ge (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) (P : ℕ) :
+    P ≤ nextOcc b hb x M hM k s P :=
+  (next_occurrence_lt_of_modulus b hb x M hM k s P).choose_spec.1
+
+/-- `nextOcc` obeys the explicit effective gap bound of `next_occurrence_lt_of_modulus`. -/
+theorem nextOcc_lt (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) (P : ℕ) :
+    nextOcc b hb x M hM k s P <
+      max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1) (2 * b ^ k * P + 1) :=
+  (next_occurrence_lt_of_modulus b hb x M hM k s P).choose_spec.2.1
+
+/-- `nextOcc` is a genuine occurrence: the block of digits starting there matches `s`. -/
+theorem nextOcc_isMatch (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) (P : ℕ)
+    (i : Fin k) :
+    nthDigit b (nextOcc b hb x M hM k s P + i.val) x = (s i : ℤ) :=
+  (next_occurrence_lt_of_modulus b hb x M hM k s P).choose_spec.2.2 i
+
+/-- Explicit enumeration of occurrence positions of the tuple `s`: `occSeq 0` is
+    the first occurrence (threshold `0`), and `occSeq (j+1)` is the next
+    occurrence strictly after `occSeq j` (threshold `occSeq j + 1`). -/
+noncomputable def occSeq (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) :
+    ℕ → ℕ
+  | 0 => nextOcc b hb x M hM k s 0
+  | (j + 1) => nextOcc b hb x M hM k s (occSeq b hb x M hM k s j + 1)
+
+/-- Every term of `occSeq` is a genuine occurrence of the tuple `s`. -/
+theorem occSeq_isMatch (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b)
+    (j : ℕ) (i : Fin k) :
+    nthDigit b (occSeq b hb x M hM k s j + i.val) x = (s i : ℤ) := by
+  cases j with
+  | zero => exact nextOcc_isMatch b hb x M hM k s 0 i
+  | succ n => exact nextOcc_isMatch b hb x M hM k s (occSeq b hb x M hM k s n + 1) i
+
+/-- The occurrence enumeration is strictly increasing: each next occurrence is
+    taken strictly after its predecessor (threshold `occSeq n + 1`), so
+    `occSeq n < occSeq (n+1)`. -/
+theorem occSeq_strictMono (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) :
+    StrictMono (occSeq b hb x M hM k s) := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  have h := nextOcc_ge b hb x M hM k s (occSeq b hb x M hM k s n + 1)
+  have heq : occSeq b hb x M hM k s (n + 1)
+      = nextOcc b hb x M hM k s (occSeq b hb x M hM k s n + 1) := rfl
+  omega
+
+/-- The gap between consecutive occurrences is controlled by the modulus: the
+    successor `occSeq (n+1)` lies below the explicit bound
+    `max (max (M k (b^{-k}/2)) 1) (2·bᵏ·(occSeq n + 1) + 1)`. -/
+theorem occSeq_succ_lt (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) (k : ℕ) (s : Fin k → Fin b) (n : ℕ) :
+    occSeq b hb x M hM k s (n + 1) <
+      max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1)
+          (2 * b ^ k * (occSeq b hb x M hM k s n + 1) + 1) := by
+  have h := nextOcc_lt b hb x M hM k s (occSeq b hb x M hM k s n + 1)
+  show nextOcc b hb x M hM k s (occSeq b hb x M hM k s n + 1) <
+      max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1)
+          (2 * b ^ k * (occSeq b hb x M hM k s n + 1) + 1)
+  exact h
+
+/-- **Explicit monotone enumeration of occurrences.** From a modulus of
+    normality there is a strictly increasing sequence `f : ℕ → ℕ` all of whose
+    terms are occurrences of the tuple `s`, with each successor bounded by the
+    effective gap function of its predecessor. This is the sequence-level packaging
+    of `next_occurrence_lt_of_modulus`, making the infinitude of occurrences
+    (`normal_ktuple_infinitely_often`) concrete and quantitatively iterable. -/
+theorem exists_strictMono_occurrence_enumeration (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M) (k : ℕ)
+    (s : Fin k → Fin b) :
+    ∃ f : ℕ → ℕ, StrictMono f ∧
+      (∀ (j : ℕ) (i : Fin k), nthDigit b (f j + i.val) x = (s i : ℤ)) ∧
+      (∀ n : ℕ, f (n + 1) <
+        max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1)
+            (2 * b ^ k * (f n + 1) + 1)) :=
+  ⟨occSeq b hb x M hM k s,
+   occSeq_strictMono b hb x M hM k s,
+   occSeq_isMatch b hb x M hM k s,
+   occSeq_succ_lt b hb x M hM k s⟩
+
 end ETranscendentalOQ02
