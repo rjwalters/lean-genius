@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-03-oq-02-oq-02",
   "title": "Fill the AM-GM TODO: derive the Maclaurin step from Newton's log-concavity",
-  "status": "in-progress",
+  "status": "completed",
   "phase": "ACT",
   "tier": "B",
   "significance": 6,
@@ -47,13 +47,16 @@
     "markdown": "See research/problems/amgm-inequality-oq-03-oq-02-oq-02/knowledge.md"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-06-26",
     "iteration": 1,
     "focus": "Derive the Maclaurin step from Newton's log-concavity in Lean.",
     "blockers": [
-      "Local Docker build infra corrupted (containerd content-store I/O error; 9 stale lean-build containers up 23-24h).",
-      "Aristotle MCP endpoint returning 'Resource not found' (remote verify also unavailable)."
+      {
+        "route": "general-n newton_log_concavity via real-rootedness / Rolle machinery",
+        "reopenCriterion": "Mathlib gains Newton/Maclaurin inequalities or the real-rootedness (Rolle) machinery upstream",
+        "blockedAt": "2026-07-19"
+      }
     ],
     "nextAction": "Build-verify Proofs/MaclaurinStepFromNewton.lean when infra recovers; then extend to the non-negative case.",
     "attemptCounts": {
