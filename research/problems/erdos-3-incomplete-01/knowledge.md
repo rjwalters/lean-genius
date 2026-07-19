@@ -531,3 +531,22 @@ being sharp: the qualitative dividing line between the trivial (`k≤2`) and ope
 (`k≥3`) regimes of Erdős #3, now witnessed by a concrete family rather than only
 by the analytic reduction. Logarithmic and far from Behrend/Szekeres `N^{1-o(1)}`,
 but it is the honest elementary floor-vs-construction separation.
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + 2× Set-diff deprecation fixes (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: COMPLETE-EXCEPT-OPEN-CRUX. `Erdos3Problem.lean` has
+exactly **1 real sorry** (line 207, `required_bound_implies_conjecture`) — the genuinely OPEN
+Erdős #3 crux (the analytic Abel-summation gap; docstring notes it is "not known to be provable"
+with `RequiredBound` as stated). The other 15 grep "sorry" hits are docstring prose.
+`Erdos3LogHarmonic.lean` has 0 real sorries.
+
+**Genuine action** (migration hygiene): host-verified both GREEN under **v4.31.0** (LogHarmonic
+pure-Mathlib olean built host-side, then Erdos3Problem via `lake env lean`). Fixed **2 v4.31
+deprecations** in `Erdos3Problem.lean` (`containsAP_two_of_infinite`, line 425–426):
+`Set.Infinite.diff` → `Set.Infinite.sdiff` (`h.diff` → `h.sdiff`) and `Set.mem_diff` →
+`Set.mem_sdiff` (rw target — same iff shape, `rw` still closes). Post-fix: EXIT 0, 0 errors,
+0 deprecations; only the expected open-crux `sorry` warning remains. lineCount unchanged (1770);
+0 axioms; 1 (open) sorry — all unchanged.
+
+**Conclusion**: file v4.31-green and deprecation-clean; sole remaining sorry is the irreducibly
+open Erdős #3 conjecture reduction. Analytic Bertrand-boundary toolkit around it stays complete.
