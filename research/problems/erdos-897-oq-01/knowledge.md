@@ -222,3 +222,23 @@ needed this session). Counts: 741→793 lines, 37→40 thm, 1 def, 0 axioms/0 so
 
 **No follow-up OQ.** The normal form closes the selectivity story; the remaining frontier is the
 analytic Part I forward implication (documented OPEN across all prior sessions).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + 6× push_neg deprecation fixes (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: entry is COMPLETED — `Erdos897OQ01.lean` (companion,
+imports `Proofs.Erdos897Problem`) and the primary `Erdos897Problem.lean` are both sorry-free /
+axiom-free; gallery meta `erdos-897-oq-01` = `verified / original / axiomCount 0 / sorries 0`.
+
+**Genuine action** (migration hygiene): host-verified GREEN under **v4.31.0**.
+- Primary `Erdos897Problem.lean` (pure Mathlib): EXIT 0, **clean** (0 errors/warnings).
+- Companion `Erdos897OQ01.lean`: built the primary olean host-side (v4.31) to satisfy the
+  `Proofs.Erdos897Problem` import (the shared olean was stale Jul-11/pre-flip → `incompatible
+  header`), then verified: EXIT 0, 0 errors, but **6 `push_neg` deprecation warnings** (v4.31
+  prefers `push Not`) at lines 281/317/515/570/665/767. Replaced all six `push_neg` → `push Not`
+  (tactic invocations only; the prose reference at line 760 left intact). Post-fix: **EXIT 0,
+  0 errors, 0 warnings**. Token-only edits; lineCount unchanged (793), theoremCount unchanged
+  (40); meta needs no sync.
+
+**Conclusion**: both files v4.31-green and deprecation-clean; entry stays COMPLETED. Part I
+forward implication (prime-power growth ⟹ unbounded normalized consecutive differences) remains
+the genuine OPEN analytic-number-theory frontier, untouched.
