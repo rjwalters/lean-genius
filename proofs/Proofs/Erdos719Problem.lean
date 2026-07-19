@@ -19,6 +19,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
 
+set_option autoImplicit false
+
 -- ## r-Uniform Hypergraphs
 
 /-- An r-uniform hypergraph on a finite vertex set V, represented by a family
@@ -492,10 +494,10 @@ theorem turanHypergraph_graph_le (n : ℕ) :
   · -- For each clique-free H, show H.edges.card ≤ n²/4
     rintro m ⟨H, hcf, rfl⟩
     -- Bridge: build a SimpleGraph with the same edge structure
-    let G : SimpleGraph (Fin n) where
-      Adj v w := ({v, w} : Finset (Fin n)) ∈ H.edges
-      symm := fun h => by rwa [Finset.pair_comm]
-      loopless v h := by have := H.uniform _ h; simp at this
+    let G : SimpleGraph (Fin n) :=
+      { Adj := fun v w => ({v, w} : Finset (Fin n)) ∈ H.edges
+        symm.symm := fun _ _ h => by rwa [Finset.pair_comm]
+        loopless.irrefl := fun v h => by have := H.uniform _ h; simp at this }
     haveI : DecidableRel G.Adj := fun v w => Finset.decidableMem _ _
     -- G is triangle-free (CliqueFree 3)
     have hcf3 : G.CliqueFree 3 := by
@@ -512,7 +514,7 @@ theorem turanHypergraph_graph_le (n : ℕ) :
       intro e he
       obtain ⟨v, w, _, rfl⟩ := Finset.card_eq_two.mp (H.uniform e he)
       exact Finset.mem_image.mpr ⟨s(v, w),
-        SimpleGraph.mem_edgeFinset.mpr (SimpleGraph.mem_edgeSet.mpr he),
+        SimpleGraph.mem_edgeFinset.mpr (show s(v, w) ∈ G.edgeSet from he),
         Sym2.toFinset_mk_eq⟩
     -- Chain: |H.edges| ≤ |image| ≤ |G.edgeFinset| ≤ n²/4
     calc H.edges.card
