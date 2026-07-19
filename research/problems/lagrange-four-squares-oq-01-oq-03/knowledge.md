@@ -136,3 +136,38 @@ prime + anchor values, all axiom-free (base's `Lean.ofReduceBool` is only the r4
 further lemma would be cosmetic. The genuinely-open part — the actual `r4 = jacobiCount`
 identity (Hurwitz quaternions / weight-2 modular forms, ≫1000 LOC) and the r2 count — is not
 session-sized. No new lemma; marked completed.
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build GREEN + saturation triage
+
+**Mode**: REVISIT (triage). **Outcome**: integrity/maintenance (no new math — elementary
+layer is saturated, general theorem deeply blocked).
+
+### What I did
+- **v4.31 deprecation cleanup**: fixed 4 `push_neg` → `push Not` (OQ03 main ×3 lines
+  131/237/354, Even ×1 line 66). No deeper v4.31 drift.
+- **Integrity build**: docker-build of `Proofs.LagrangeFourSquaresOQ01OQ03` (main, includes
+  the `native_decide` r4=jacobiCount oracle for n≤24) and `…OQ03Closed` (imports Even) —
+  both **GREEN under v4.31.0**. Family confirmed compiling.
+
+### Saturation assessment (why no new theorem this session)
+The elementary layer is **complete**:
+- RHS `jacobiCount` closed form on ALL n: odd `8σ(n)`, even `24σ(oddpart)`, prime-power
+  values (`jacobiCount_odd_prime_pow`/`…_geom`, `jacobiCount_two_pow`), multiplicativity
+  (`jacobiCount_mul_coprime`, sibling Closed) — together these determine jacobiCount from any
+  factorization. Plus bounds (`eight_le_jacobiCount`, `jacobiCount_le`), positivity,
+  `jacobiCount_eq_zero_iff`.
+- Brute-force `r4`: defined via a finite `box`; general 0-axiom `r4_pos`; `r4 = jacobiCount`
+  oracle for `1 ≤ n ≤ 24` (`jacobi_oracle`, `native_decide` → depends on `Lean.ofReduceBool`,
+  axiomatized) + explicit `r4_anchor_values`.
+
+The **only** remaining piece is the general `r4 = jacobiCount` equality — Jacobi's four-square
+theorem — which is deeply Mathlib-blocked (see structured `currentState.blockers`):
+1. Hurwitz-quaternion order arithmetic — not in Mathlib;
+2. weight-2 modular forms `θ⁴ ∈ M₂(Γ₀(4))` — not in Mathlib;
+3. elementary Lambert/Liouville identity — ≫1000 LOC;
+   the one Lean-able reduction `r4 = r2 ⋆ r2` bottoms out on the absent two-square count `r2`.
+
+### Do NOT (guardrails for the next claimant)
+- Extending the `native_decide` oracle range (n≤24 → n≤48…) is **enumeration theater** — no
+  new information, and it grows the `Lean.ofReduceBool` surface. Skip it.
+- The general theorem stays BLOCKED until a `reopenCriterion` in the tracker is met.

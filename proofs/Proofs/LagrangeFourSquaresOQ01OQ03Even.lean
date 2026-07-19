@@ -63,7 +63,7 @@ theorem filter_four_dvd_divisors {n : ℕ} (hn : 4 ∣ n) :
       exact (mul_dvd_mul_iff_left (by norm_num : (4 : ℕ) ≠ 0)).mp hdvd
     · have h4 : n / 4 ≠ 0 := by
         rw [Ne, Nat.div_eq_zero_iff]
-        push_neg
+        push Not
         exact ⟨by norm_num, Nat.le_of_dvd (Nat.pos_of_ne_zero hn0) hn⟩
       exact h4
   · rintro ⟨e, ⟨hen, -⟩, rfl⟩
