@@ -486,7 +486,7 @@ artifact: the counterexamples occur for arbitrarily large `n`.  Pure logic (De M
 theorem conder_counterexamples_unbounded :
     ∀ N : ℕ, ∃ n, N ≤ n ∧ ¬ DenseForcesC6 n (1/3) := by
   by_contra h
-  push_neg at h
+  push Not at h
   obtain ⟨N, hN⟩ := h
   exact conder_no_threshold ⟨N, hN⟩
 
