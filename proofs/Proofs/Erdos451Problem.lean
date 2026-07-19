@@ -20,7 +20,7 @@ Reference: https://erdosproblems.com/451
 
 import Mathlib
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 open Finset Real
 
@@ -65,7 +65,7 @@ axiom nk_minimal (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 2 * k < n)
 
 /-- For prime p > k, at most one of n-1, ..., n-k is divisible by p.
     If p | (n-i) and p | (n-j) then p | (i-j), but |i-j| < k < p. -/
-theorem at_most_one_div (n k p : ℕ) (hp : Nat.Prime p) (hpk : k < p)
+theorem at_most_one_div (n k p : ℕ) (_hp : Nat.Prime p) (hpk : k < p)
     (i j : ℕ) (hi : i ∈ Finset.Icc 1 k) (hj : j ∈ Finset.Icc 1 k)
     (hdi : p ∣ (n - i)) (hdj : p ∣ (n - j)) (hn : k < n) :
     i = j := by
@@ -132,7 +132,7 @@ theorem avoids_when_divisible_by_all (n k : ℕ) (hn : 2 * k < n)
     (hdiv : ∀ p : ℕ, IsInBertrandRange p k → p ∣ n) :
     AvoidsBertrandPrimes n k := by
   intro p hp hprod
-  obtain ⟨hpk, _, hprime⟩ := hp
+  obtain ⟨hpk, _, hprime⟩ := id hp
   rw [prime_dvd_descendingProduct n k p hprime (by omega)] at hprod
   obtain ⟨i, hi, hdi⟩ := hprod
   rw [Finset.mem_Icc] at hi
