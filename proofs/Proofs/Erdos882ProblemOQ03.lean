@@ -45,6 +45,8 @@ Reference: Erdős Problem #882, https://erdosproblems.com/882
 
 import Mathlib
 
+set_option autoImplicit false
+
 namespace Erdos882OQ03
 
 open Finset BigOperators
