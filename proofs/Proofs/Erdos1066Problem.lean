@@ -27,6 +27,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Rat.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
+set_option autoImplicit false
+
 open Real
 
 namespace Erdos1066
