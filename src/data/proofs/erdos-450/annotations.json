@@ -52,7 +52,7 @@
       "endLine": 109
     },
     "title": "Infrastructure Lemmas",
-    "content": "Seven lemmas are **proved**: (1) `countWithDivisor_le` — count $\\leq y$ (via `card_filter_le`). (2) `countWithDivisor_zero` — empty interval has count $0$. (3,4) `countWithDivisor_n_zero/one` — degenerate $n$ cases. (5) `countWithDivisor_mono_y` — monotonicity in interval length. (6) `hasDivisorIn_of_dvd` — any multiple of $d \\in (n, 2n)$ qualifies. (7) `hasDivisorIn_succ` — $n+1$ has divisor $n+1 \\in (n, 2n)$ for $n \\geq 1$.",
+    "content": "Seven lemmas are **proved**: (1) `countWithDivisor_le` — count $\\leq y$ (via `card_filter_le`). (2) `countWithDivisor_zero` — empty interval has count $0$. (3,4) `countWithDivisor_n_zero/one` — degenerate $n$ cases. (5) `countWithDivisor_mono_y` — monotonicity in interval length. (6) `hasDivisorIn_of_dvd` — any multiple of $d \\in (n, 2n)$ qualifies. (7) `hasDivisorIn_succ` — $n+1$ has divisor $n+1 \\in (n, 2n)$ for $n \\geq 2$.",
     "mathContext": "The monotonicity proof uses `Finset.card_le_card` and `Finset.filter_subset_filter` with `Finset.range_mono`. The bound $N(x, y, n) \\leq y$ follows from $|\\text{filter}(S, P)| \\leq |S|$. The degenerate cases $n = 0$ (interval $(0, 0)$ empty) and $n = 1$ (interval $(1, 2)$ empty) use `omega` to derive contradictions on divisor bounds.",
     "significance": "key",
     "relatedConcepts": [
