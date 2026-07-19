@@ -66,12 +66,14 @@
       "Translation invariance (kAPCount_count_translate, kAPCount_nondeg_translate, kAPCount_indicator_translate): the affine symmetry Λ_k(1_{A+t}) = Λ_k(1_A) underlying the density-increment method",
       "kAPCount_count_dilate: scaling A by a unit c ∈ (ℤ/N)ˣ preserves the k-AP count — the bijection (x,d)↦(c·x,c·d); completes the affine-invariance suite (translation ⋊ dilation = AGL(1,ℤ/N)) and subsumes kAPCount_count_neg (c=−1)",
       "kAPCount_nondeg_dilate: dilation invariance of the nondegenerate (d≠0) k-AP count Roth controls (a unit sends nonzero to nonzero)",
-      "kAPCount_indicator_dilate: analytic form Λ_k(1_{c·A}) = Λ_k(1_A), the multiplicative half of the affine invariance of the density-k-AP-count functional"
+      "kAPCount_indicator_dilate: analytic form Λ_k(1_{c·A}) = Λ_k(1_A), the multiplicative half of the affine invariance of the density-k-AP-count functional",
+      "gowersNorm_nonneg: 0 ≤ gowersNorm N s f — nonnegativity of the Gowers U^s norm (defined as the modulus of a normalized complex average). Axiom-free foundational fact for the previously single-lemma gowersNorm.",
+      "gowersNorm_order_zero: gowersNorm N 0 f = ‖(N:ℂ)⁻¹ · Σ_x f x‖ — the U^0 base case of the Gowers hierarchy equals the modulus of the mean of f (the sole hypercube vertex is the empty ω with even weight, and the empty shift vector collapses the average). Grounds the U^s tower at its base. Axiom-free."
     ],
     "axiomCount": 0,
-    "lineCount": 1211,
+    "lineCount": 1597,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 45,
+    "theoremCount": 66,
     "definitionCount": 5
   },
   "overview": {
@@ -225,9 +227,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 1572,
+    "lineCount": 1597,
     "axiomCount": 0,
-    "theoremCount": 64,
+    "theoremCount": 66,
     "definitionCount": 5,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0
