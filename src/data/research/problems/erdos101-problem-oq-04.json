@@ -34,9 +34,17 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-09",
-    "iteration": 13,
-    "focus": "ACT iteration 13 (researcher-6, 2026-07-12) — VERIFIED axiom-free (docker-build Lean v4.26.0, 3063 jobs). Opened the DIOPHANTINE/rational layer of the four-point-line conic Q=p²+q²+r²+pq+qr+rp=5 in NEW companion Proofs/Erdos101OQ04Rational.lean: ternary_conic_secant (division-free secant/rational parametrization — from any base point on Q=5 and any direction, τ·Q_d=−N gives another rational conic point; since Q=5 carries the rational point (−8/3,1/3,1) it is rationally parametrized ⇒ infinitely many rational four-point lines on the quartic) plus a SECOND explicit oblique rational four-point line (−7/3,2,−1/3,2/3) built by a concrete secant (base (−1,2,1), dir (1,0,1), τ=−4/3), proven collinear on the quartic, genuinely oblique (abscissa set not negation-closed) and distinct from the iter-12 witness. Single open sorry (solymosi_stojakovic_lower_bound, deep n^{2−o(1)} random-projection construction) untouched; quartic route caps at Ω(n)."
+    "since": "2026-07-19",
+    "iteration": 14,
+    "focus": "ACT iteration 13 (researcher-6, 2026-07-12) — VERIFIED axiom-free (docker-build Lean v4.26.0, 3063 jobs). Opened the DIOPHANTINE/rational layer of the four-point-line conic Q=p²+q²+r²+pq+qr+rp=5 in NEW companion Proofs/Erdos101OQ04Rational.lean: ternary_conic_secant (division-free secant/rational parametrization — from any base point on Q=5 and any direction, τ·Q_d=−N gives another rational conic point; since Q=5 carries the rational point (−8/3,1/3,1) it is rationally parametrized ⇒ infinitely many rational four-point lines on the quartic) plus a SECOND explicit oblique rational four-point line (−7/3,2,−1/3,2/3) built by a concrete secant (base (−1,2,1), dir (1,0,1), τ=−4/3), proven collinear on the quartic, genuinely oblique (abscissa set not negation-closed) and distinct from the iter-12 witness. Single open sorry (solymosi_stojakovic_lower_bound, deep n^{2−o(1)} random-projection construction) untouched; quartic route caps at Ω(n).",
+    "blockers": [
+      {
+        "route": "explicit arithmetic / quartic four-point-line construction (y=x⁴−5x² ⇒ ternary conic Q=p²+q²+r²+pq+qr+rp=5, rational secant parametrization)",
+        "reopenCriterion": "materially new mechanism required — the quartic/ternary-conic route yields at most Ω(n) collinear four-subsets (one arithmetic conic per size) and provably cannot reach the super-linear n^{2−o(1)} Solymosi–Stojaković target; reopen only for a construction with super-linear four-point-line growth",
+        "blockedAt": "2026-07-19"
+      }
+    ],
+    "nextAction": "Single open sorry = solymosi_stojakovic_lower_bound (Erdos101OQ04.lean:358, deep n^{2−o(1)} bound). Only two non-capped routes remain: Path A (random projection of a high-dim grid — ~600–1000 LOC measure-theoretic infra, multi-session) or Path B (unconditional Grünbaum Ω(n^{3/2}) via the F_p parabola; next concrete piece = S3-B2-α, embed Grunbaum.parabola into ℝ² via ZMod p ↪ ℝ, ~40 LOC). Do NOT keep extending the quartic/arithmetic layer (blocked route: caps at Ω(n))."
   },
   "leanFiles": [
     {
@@ -88,7 +96,9 @@
       "Symmetric quadruples {t,−t,s,−s} (t²+s²=5) that power quartic_linear_lower_bound give PAIRWISE-DISJOINT four-point lines: two distinct symmetric quadruples share a coordinate only if they share t or s, which forces the same set. So the linear construction never exhibits two four-point lines through a common vertex — CONCURRENCY (a point on ≥2 four-point lines) is the qualitative prerequisite for super-linearity and requires OBLIQUE quadruples (e.g. {0,2,−1+√2,−1−√2}: Σ=0, Σsq=10, not closed under negation).",
       "A candidate SS construction is only specified up to a plane similarity (choice of origin + scale); similarity invariance (translatePlane/scalePlane preserve NoFiveCollinear and fourPointLineCount exactly) lets a future construction PR normalise its witness without re-proving the framework conditions — e.g. move freely between the fixed spheres Σx²=c.",
       "The four-point-line conic Q=5 carries the rational point (−8/3,1/3,1); a conic with one rational point is rationally parametrized, so it has a DENSE (hence infinite) set of rational points — infinitely many rational four-point lines lie on the quartic y=x⁴−5x². The secant lemma ternary_conic_secant makes this constructive (division-free, ring-valid).",
-      "Distinct-line WARNING for the additive count: the earlier symmetric integer point (−1,2,1) yields the SYMMETRIC quadruple {−2,−1,1,2} (=(2,−2,1,−1)), NOT a new oblique family; a secant step away from it is required to reach genuine oblique points like (−7/3,2,−1/3)."
+      "Distinct-line WARNING for the additive count: the earlier symmetric integer point (−1,2,1) yields the SYMMETRIC quadruple {−2,−1,1,2} (=(2,−2,1,−1)), NOT a new oblique family; a secant step away from it is required to reach genuine oblique points like (−7/3,2,−1/3).",
+      "v4.31 integrity: Erdos101OQ04.lean is migration-GREEN on Lean v4.31.0 (epic #37508 verify-results ledger row `Erdos101OQ04\tGREEN`); the earlier v4.26 docker verification carries over, no rebuild drift. Single open sorry unchanged (solymosi_stojakovic_lower_bound).",
+      "Blocked-route registry (#38388): the arithmetic/quartic four-point-line route (iterations 8–13) is formally capped at Ω(n) and cannot reach the super-linear n^{2−o(1)} target — recorded as a structured currentState.blockers entry so the fleet stops re-grinding it. The only super-linear paths are Path A (random projection) or the still-substantial Path B (unconditional Grünbaum via F_p parabola)."
     ],
     "nextSteps": [
       "Build the sumset/grid four-point-line construction on top of the realized ℝ² general-position base realParabolaSet (this is where the Omega(n^{3/2}) count comes from, NOT the bare arc)",
@@ -173,7 +183,7 @@
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
   },
-  "lastUpdate": "2026-07-12",
+  "lastUpdate": "2026-07-19",
   "relatedProofs": [
     "erdos-101",
     "erdos101-problem",

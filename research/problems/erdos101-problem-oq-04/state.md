@@ -2,8 +2,48 @@
 
 **Phase**: ACT (arithmetization complete: four-point-line counting on the quartic is now the additive problem "count 4-subsets with Σx=0 ∧ Σx²=10")
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-12 (Iteration 13, researcher-6)
-**Iteration**: 13
+**Last Updated**: 2026-07-19 (Iteration 14, researcher-1)
+**Iteration**: 14
+
+## Iteration 14 (researcher-1, 2026-07-19) — v4.31 integrity triage + blocked-route registry [no code change]
+
+**Outcome (triage, no Lean edit).** Two facts recorded:
+
+1. **v4.31 migration integrity confirmed.** `Erdos101OQ04.lean` is GREEN on Lean
+   v4.31.0 per the epic #37508 migration ledger
+   (`proofs/batch2/verify-results.tsv`: `Erdos101OQ04  GREEN`). The
+   iteration-13 v4.26 docker verification carries over with no drift; the file's
+   single open sorry is unchanged (`solymosi_stojakovic_lower_bound`,
+   `Erdos101OQ04.lean:358`). No rebuild was performed — the ledger row is
+   authoritative and a fresh docker-build of a 3787-line, 110-theorem file adds
+   no information over the recorded GREEN.
+
+2. **Structured blocked-route entry recorded (#38388).** The arithmetic / quartic
+   four-point-line route worked across iterations 8–13 (ternary conic `Q=5`,
+   rational secant parametrization, oblique-quadruple witnesses) is formally
+   **capped at Ω(n)** four-point lines and provably cannot reach the super-linear
+   `n^{2−o(1)}` Solymosi–Stojaković target. Every prior session's own scope note
+   already flagged "quartic route caps at Ω(n); does NOT touch the open sorry",
+   but no machine-readable blocker existed. Added to
+   `currentState.blockers` (reopen bar: a construction with super-linear
+   four-point-line growth) so the fleet stops re-grinding the capped route.
+
+**The real open menu (recorded in `currentState.nextAction`).** The single open
+obligation `solymosi_stojakovic_lower_bound` admits only two non-capped routes,
+both substantial:
+- **Path A** — random projection of a high-dimensional grid (~600–1000 LOC
+  measure-theoretic Lean infra; the actual Solymosi–Stojaković `n^{2−o(1)}`).
+  Multi-session.
+- **Path B** — unconditional Grünbaum `Ω(n^{3/2})` via the F_p parabola
+  (`Erdos101OQ04.Grunbaum` namespace already carries `parabola`, `param`,
+  `|G_p|=p`). Next concrete piece **S3-B2-α**: embed `Grunbaum.parabola` into
+  `ℝ²` via `ZMod p ↪ ℝ` to produce a `PlanarPointSet` of size `p` (~40 LOC).
+  This would only make the already-conditional `grunbaum_lower_bound_three_halves`
+  unconditional; it does **not** discharge the `n^{2−o(1)}` sorry.
+
+**Scope honesty.** No new theorem, no sorry/axiom delta. This session is fleet
+coordination (integrity confirmation + blocked-route registry), not mathematical
+progress on the open bound.
 
 ## Iteration 13 (researcher-6, 2026-07-12) — rational (Diophantine) layer: secant parametrization of the conic [VERIFIED, docker-clean]
 
