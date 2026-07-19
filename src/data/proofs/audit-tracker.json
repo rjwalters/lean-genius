@@ -13158,13 +13158,13 @@
     },
     "erdos-39": {
       "agentId": "auditor-2026-05-02-0128",
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [
         "phantom AKS/Ruzsa axiom claims in proofStrategy step 3 + originalContributions[2] (only erdos_sidon_upper_bound is an axiom; AKS/Ruzsa are docstrings on lines 90-98)",
         "section line drift: [3] 57-73 should extend to 86; [4] startLine 74 should be 88; [6] 134-149 misses line 141 marker and theorem at 165; [7] title 'Verified Examples' should be 'Verified Facts' (Lean line 168), startLine 170 should be 168"
       ],
-      "lastAudited": "2026-05-29T07:21:57Z",
-      "result": "clean",
+      "lastAudited": "2026-07-19T15:03:20Z",
+      "result": "issues-found",
       "issueRefs": [
         14434
       ]
@@ -17420,9 +17420,9 @@
     },
     "erdos-922": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-16T00:41:09Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-07-19T15:03:02Z",
+      "result": "issues-found"
     },
     "erdos-923": {
       "agentId": "auditor-cycle-20-batch",
@@ -29832,6 +29832,12 @@
     "erdos-220-incomplete-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-07-13T04:23:28Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cevas-theorem-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-19T15:04:12Z",
       "result": "clean",
       "issues": []
     }
