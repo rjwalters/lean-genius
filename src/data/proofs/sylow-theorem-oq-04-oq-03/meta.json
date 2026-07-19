@@ -24,9 +24,9 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). `#print axioms` for `torusHom_conj_unipotent` and `card_torus_range` reports only the ordinary foundational axioms `propext`, `Classical.choice`, `Quot.sound`. Every result is machine-checked from Mathlib. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup and split-torus infrastructure and makes no claim about the open question itself.",
-    "lineCount": 1451,
-    "theoremCount": 62,
-    "definitionCount": 9,
+    "lineCount": 1961,
+    "theoremCount": 91,
+    "definitionCount": 12,
     "originalContributions": [
       "unipotentUpper: the matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p)",
       "unipotentUpper_mul: additivity [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]], giving an abelian one-parameter subgroup",
@@ -160,6 +160,42 @@
       "type": "definition",
       "description": "The upper unipotent matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p); the SpecialLinearGroup membership det = 1 = 1·1 − t·0 is discharged by Matrix.det_fin_two_of.",
       "leanType": "(t : ZMod p) → Matrix.SpecialLinearGroup (Fin 2) (ZMod p)"
+    },
+    {
+      "name": "index_normalizer_unipotent",
+      "type": "main",
+      "description": "For p ≥ 5, the normalizer of the unipotent Sylow p-subgroup U has index p+1 in SL(2,p), equal to the number of Sylow p-subgroups n_p = p+1 (card_sylow_eq). Uses the Sylow orbit–stabiliser identity Sylow.card_eq_index_normalizer with the bridge coe_unipotentSylow (unipotentSylow = unipotentSubgroup by definition).",
+      "leanType": "(Subgroup.normalizer (↑(unipotentSubgroup (p := p)) : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))).index = p + 1"
+    },
+    {
+      "name": "card_normalizer_unipotent",
+      "type": "main",
+      "description": "For p ≥ 5, |N(U)| = p·(p−1). From |N(U)|·[SL:N(U)] = |SL| = p(p²−1) (Subgroup.card_mul_index, card_SL2) and [SL:N(U)] = p+1 (index_normalizer_unipotent), cancelling the factor p+1 = (p²−1)/(p−1).",
+      "leanType": "Nat.card (Subgroup.normalizer (↑(unipotentSubgroup (p := p)) : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) = p * (p - 1)"
+    },
+    {
+      "name": "card_borel_ge",
+      "type": "supporting",
+      "description": "Reverse cardinality bound p(p−1) ≤ |B| via the injection ZMod p × (ZMod p)ˣ → B, (a,b) ↦ u(a)·diag(b), injective because U ∩ T = 1 (unipotent_inter_torus_trivial).",
+      "leanType": "p * (p - 1) ≤ Nat.card (borel (p := p))"
+    },
+    {
+      "name": "borel_eq_normalizer_unipotent",
+      "type": "main",
+      "description": "For p ≥ 5, B = N(U): the Borel subgroup equals the normalizer of the unipotent radical. Combines borel ≤ N(U) (borel_le_normalizer_unipotent) with |N(U)| = p(p−1) ≤ |B| (card_normalizer_unipotent, card_borel_ge) via Subgroup.eq_of_le_of_card_ge — a matrix-free identification of the Borel as the Sylow normalizer.",
+      "leanType": "borel (p := p) = Subgroup.normalizer (↑(unipotentSubgroup (p := p)) : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))"
+    },
+    {
+      "name": "card_borel",
+      "type": "main",
+      "description": "For p ≥ 5, |B| = p·(p−1) — the order of the Borel subgroup, discharging the |B| = p(p−1) claim previously only asserted in the B = U ⋊ T docstrings.",
+      "leanType": "Nat.card (borel (p := p)) = p * (p - 1)"
+    },
+    {
+      "name": "index_borel",
+      "type": "main",
+      "description": "For p ≥ 5, [SL(2,p):B] = p+1: the Borel has exactly p+1 cosets — the p+1 points of P¹(𝔽_p) / the p+1 Sylow p-subgroups on which the conjugation action is realised.",
+      "leanType": "(borel (p := p)).index = p + 1"
     }
   ],
   "overview": {
@@ -269,12 +305,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 1568,
+    "lineCount": 1961,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 9,
-    "theoremCount": 64
+    "definitionCount": 12,
+    "theoremCount": 91
   },
   "sorries": 0
 }

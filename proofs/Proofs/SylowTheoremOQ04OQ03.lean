@@ -1806,6 +1806,143 @@ theorem eq_top_of_normal_of_acts_nontrivially (hp : 5 ≤ p)
   rw [commutator_eq_top hp] at h
   exact top_le_iff.mp h
 
+/-! ### The Borel is the normalizer of `U`: `[SL : B] = p + 1` and `|B| = p(p − 1)`
+
+Sylow's theorem pins the normalizer of the unipotent Sylow `p`-subgroup `U` *without* the
+explicit "normaliser-is-upper-triangular" matrix computation.  The conjugation action of
+`SL(2, p)` on its `p + 1` Sylow `p`-subgroups (`card_sylow_eq`) is transitive with point
+stabiliser `N(U)`, so
+
+* `[SL : N(U)] = n_p = p + 1`  (`Sylow.card_eq_index_normalizer`), and hence
+* `|N(U)| = |SL| / (p + 1) = p(p² − 1)/(p + 1) = p(p − 1)`  (`Subgroup.card_mul_index`).
+
+Combined with `borel ≤ N(U)` (`borel_le_normalizer_unipotent`) and the reverse cardinality
+bound `|B| ≥ |U| · |T| = p(p − 1)` — the injection `ZMod p × (ZMod p)ˣ ↪ B`,
+`(a, b) ↦ u(a)·diag(b)`, is injective because `U ∩ T = 1`
+(`unipotent_inter_torus_trivial`) — this identifies the Borel exactly:
+
+    B = N(U),   |B| = p(p − 1),   [SL : B] = p + 1.
+
+`B` is the point stabiliser of the `(p + 1)`-point conjugation action — the concrete
+`|P¹(𝔽_p)| = p + 1` on which the Iwasawa route to simplicity of `PSL(2, p)` runs.  This
+discharges the `|B| = p(p − 1)` claim previously only *asserted* in the `B = U ⋊ T`
+docstrings. -/
+
+/-- **The unipotent Sylow subgroup coincides with the unipotent radical `U`.**  `unipotentSylow`
+is built from `unipotentHom.range = unipotentSubgroup` via `Sylow.ofCard`, so the two agree
+definitionally.  This bridges the Sylow-theoretic normalizer facts (stated for `↑unipotentSylow`)
+and the Borel infrastructure (stated for `unipotentSubgroup`). -/
+theorem coe_unipotentSylow :
+    ((unipotentSylow (p := p) :
+        Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) = unipotentSubgroup :=
+  rfl
+
+/-- **`[SL(2, p) : N(U)] = p + 1`.**  The index of the normalizer of the unipotent Sylow
+subgroup is the number of Sylow `p`-subgroups `n_p = p + 1` (`card_sylow_eq`), by the
+Sylow orbit–stabiliser identity `Sylow.card_eq_index_normalizer`. -/
+theorem index_normalizer_unipotent (hp : 5 ≤ p) :
+    (Subgroup.normalizer
+        (↑(unipotentSubgroup (p := p)) :
+          Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))).index = p + 1 := by
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  have h := (unipotentSylow (p := p)).card_eq_index_normalizer
+  rw [card_sylow_eq hp] at h
+  exact h.symm
+
+/-- **`|N(U)| = p(p − 1)`.**  From `|N(U)| · [SL : N(U)] = |SL| = p(p² − 1)`
+(`Subgroup.card_mul_index`, `card_SL2`) and `[SL : N(U)] = p + 1`
+(`index_normalizer_unipotent`), cancelling the common factor `p + 1 = (p² − 1)/(p − 1)`. -/
+theorem card_normalizer_unipotent (hp : 5 ≤ p) :
+    Nat.card (Subgroup.normalizer
+        (↑(unipotentSubgroup (p := p)) :
+          Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) = p * (p - 1) := by
+  have hmul := Subgroup.card_mul_index
+    (Subgroup.normalizer
+      (↑(unipotentSubgroup (p := p)) :
+        Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+  rw [index_normalizer_unipotent hp, card_SL2] at hmul
+  -- hmul : Nat.card (N U) * (p + 1) = p * (p ^ 2 - 1)
+  have hpsq : p ^ 2 - 1 = (p - 1) * (p + 1) := by
+    obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by omega⟩
+    have h2 : (k + 1) ^ 2 = k * (k + 1 + 1) + 1 := by ring
+    simp only [Nat.add_sub_cancel]
+    omega
+  have key : Nat.card (Subgroup.normalizer
+      (↑(unipotentSubgroup (p := p)) :
+        Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) * (p + 1)
+      = (p * (p - 1)) * (p + 1) := by
+    rw [hmul, hpsq]; ring
+  exact Nat.eq_of_mul_eq_mul_right (by omega) key
+
+/-- **Lower bound `p(p − 1) ≤ |B|`.**  The map `ZMod p × (ZMod p)ˣ → B`,
+`(a, b) ↦ u(a)·diag(b)`, lands in the Borel (both factors are among its generators) and is
+injective: if `u(a₁)·diag(b₁) = u(a₂)·diag(b₂)` then `u(a₁ − a₂) = u(a₂)⁻¹u(a₁) =
+diag(b₂)diag(b₁)⁻¹ = diag(b₂b₁⁻¹) ∈ U ∩ T = 1` (`unipotent_inter_torus_trivial`), forcing
+`a₁ = a₂`, `b₁ = b₂`.  Hence `|B| ≥ |ZMod p × (ZMod p)ˣ| = p(p − 1)`. -/
+theorem card_borel_ge :
+    p * (p - 1) ≤ Nat.card (borel (p := p)) := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  set f : ZMod p × (ZMod p)ˣ → borel (p := p) := fun q =>
+    ⟨unipotentUpper q.1 * torusDiag q.2,
+      mul_mem
+        (Subgroup.subset_closure (Set.mem_union_left _ ⟨q.1, rfl⟩))
+        (Subgroup.subset_closure (Set.mem_union_right _ ⟨q.2, rfl⟩))⟩ with hf_def
+  have hf : Function.Injective f := by
+    rintro ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ hq
+    rw [hf_def] at hq
+    simp only [Subtype.mk_eq_mk] at hq
+    -- hq : u(a₁) * diag(b₁) = u(a₂) * diag(b₂)
+    have hu : (unipotentUpper a₂)⁻¹ * unipotentUpper a₁ = unipotentUpper (a₁ - a₂) := by
+      rw [unipotentUpper_inv, unipotentUpper_mul]; ring_nf
+    have ht : torusDiag b₂ * (torusDiag b₁)⁻¹ = torusDiag (b₂ * b₁⁻¹) := by
+      rw [torusDiag_inv, ← torusHom_apply, ← torusHom_apply, ← torusHom_apply, ← map_mul]
+    have key' : (unipotentUpper a₂)⁻¹ * unipotentUpper a₁
+        = torusDiag b₂ * (torusDiag b₁)⁻¹ := by
+      have h2 : unipotentUpper a₁
+          = unipotentUpper a₂ * torusDiag b₂ * (torusDiag b₁)⁻¹ := by
+        rw [← hq]; group
+      rw [h2]; group
+    rw [hu, ht] at key'
+    obtain ⟨ha, hb⟩ := unipotent_inter_torus_trivial _ _ key'
+    have hae : a₁ = a₂ := by rwa [sub_eq_zero] at ha
+    have hbe : b₁ = b₂ := by rw [mul_inv_eq_one] at hb; exact hb.symm
+    exact Prod.ext hae hbe
+  have hdom : Nat.card (ZMod p × (ZMod p)ˣ) = p * (p - 1) := by
+    rw [Nat.card_prod, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, ZMod.card,
+      ZMod.card_units]
+  have hle := Nat.card_le_card_of_injective f hf
+  rwa [hdom] at hle
+
+/-- **The Borel equals the normalizer of `U`.**  `borel ≤ N(U)` (`borel_le_normalizer_unipotent`)
+and `|N(U)| = p(p − 1) ≤ |B|` (`card_normalizer_unipotent`, `card_borel_ge`), so the two finite
+subgroups coincide (`Subgroup.eq_of_le_of_card_ge`).  This upgrades the containment
+`B ⊆ N(U)` to an identity, giving the exact matrix-free description of the Borel as the Sylow
+normalizer. -/
+theorem borel_eq_normalizer_unipotent (hp : 5 ≤ p) :
+    borel (p := p) = Subgroup.normalizer
+      (↑(unipotentSubgroup (p := p)) :
+        Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) := by
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  refine Subgroup.eq_of_le_of_card_ge borel_le_normalizer_unipotent ?_
+  rw [card_normalizer_unipotent hp]
+  exact card_borel_ge
+
+/-- **`|B| = p(p − 1)`.**  Immediate from `B = N(U)` (`borel_eq_normalizer_unipotent`) and
+`|N(U)| = p(p − 1)` (`card_normalizer_unipotent`).  This discharges the internal
+`B = U ⋊ T`, `|B| = p(p − 1)` claim of the Borel docstrings. -/
+theorem card_borel (hp : 5 ≤ p) :
+    Nat.card (borel (p := p)) = p * (p - 1) := by
+  rw [borel_eq_normalizer_unipotent hp, card_normalizer_unipotent hp]
+
+/-- **`[SL(2, p) : B] = p + 1`.**  From `B = N(U)` (`borel_eq_normalizer_unipotent`) and
+`[SL : N(U)] = p + 1` (`index_normalizer_unipotent`).  So the Borel has exactly `p + 1`
+cosets — the `p + 1` points of `P¹(𝔽_p)` / the `p + 1` Sylow `p`-subgroups on which the
+conjugation action is realised. -/
+theorem index_borel (hp : 5 ≤ p) :
+    (borel (p := p)).index = p + 1 := by
+  rw [borel_eq_normalizer_unipotent hp, index_normalizer_unipotent hp]
+
 
 end SylowOQ04OQ03
 
@@ -1816,3 +1953,9 @@ end SylowOQ04OQ03
 #print axioms SylowOQ04OQ03.iSup_sylowP_eq_top
 #print axioms SylowOQ04OQ03.sylowIwasawaStructure
 #print axioms SylowOQ04OQ03.eq_top_of_normal_of_acts_nontrivially
+#print axioms SylowOQ04OQ03.index_normalizer_unipotent
+#print axioms SylowOQ04OQ03.card_normalizer_unipotent
+#print axioms SylowOQ04OQ03.card_borel_ge
+#print axioms SylowOQ04OQ03.borel_eq_normalizer_unipotent
+#print axioms SylowOQ04OQ03.card_borel
+#print axioms SylowOQ04OQ03.index_borel
