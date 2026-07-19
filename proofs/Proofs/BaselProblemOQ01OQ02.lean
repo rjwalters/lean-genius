@@ -694,6 +694,65 @@ theorem zeta_two_inv_transcendental :
   have := zeta_even_inv_transcendental 1 one_pos
   simpa using this
 
+/-- **ℚ-linear independence of the even zeta values.**  An arbitrary finite ℚ-linear
+    combination of *distinct* even zeta values is transcendental over ℚ as soon as one
+    coefficient is nonzero: for a finite index set `s`, an index map `f` that is injective
+    on `s` with `f i ≥ 1`, and rationals `c i` not all zero on `s`, the value
+    `∑_{i∈s} c i · ζ(2 f i)` is transcendental.
+
+    This is the *additive* capstone matching the multiplicative
+    `zeta_even_finset_prod_transcendental`, and it strictly generalises the two-term
+    `zeta_even_add_transcendental` / `zeta_even_sub_transcendental` to any number of terms.
+    Writing each `ζ(2 f i) = q_{f i}·π^(2 f i)` (Euler, axiom-free), the combination equals
+    `aeval π (∑_{i∈s} C(c i · q_{f i})·X^(2 f i))`.  Because `f` is injective on `s` the
+    monomials have pairwise-distinct degrees `2 f i`, so no two can cancel; picking any `j`
+    with `c j ≠ 0` the coefficient at degree `2 f j` is `c j · q_{f j} ≠ 0` with `2 f j > 0`,
+    so the polynomial is nonconstant and `transcendental_aeval_pi` applies.  In particular no
+    nontrivial rational relation `∑ c i · ζ(2 f i) = 0` holds — the even zeta values
+    `ζ(2), ζ(4), ζ(6), …` are **ℚ-linearly independent** (the additive counterpart of the
+    algebraic *dependence* recorded by `zeta_even_cross_pow_ratio_rational`).
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_linearCombo_transcendental {ι : Type*} (f : ι → ℕ) (c : ι → ℚ)
+    (s : Finset ι) (hf_pos : ∀ i ∈ s, 0 < f i) (hf_inj : Set.InjOn f s)
+    (hc : ∃ j ∈ s, c j ≠ 0) :
+    Transcendental ℚ (∑ i ∈ s, (c i : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i))) := by
+  classical
+  -- Euler's axiom-free closed form for each index: ζ(2 f i) = q i · π^(2 f i), q i ≠ 0.
+  have hex : ∀ i ∈ s, ∃ r : ℚ, r ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i)) = (r : ℝ) * π ^ (2 * f i) :=
+    fun i hi => zeta_even_eq_rat_mul_pi_pow (f i) (hf_pos i hi)
+  choose! q hq_ne hq_eq using hex
+  -- The rational polynomial whose evaluation at π is the combination.
+  set p : Polynomial ℚ :=
+    ∑ i ∈ s, Polynomial.C (c i * q i) * Polynomial.X ^ (2 * f i) with hp
+  -- aeval π p reproduces ∑ c i · ζ(2 f i).
+  have haeval : Polynomial.aeval π p
+      = ∑ i ∈ s, (c i : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i)) := by
+    rw [hp, map_sum]
+    refine Finset.sum_congr rfl fun i hi => ?_
+    rw [map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, hq_eq i hi, eq_ratCast]
+    push_cast; ring
+  -- p is nonconstant: pick j with c j ≠ 0; the coefficient at degree 2·f j survives.
+  obtain ⟨j, hjs, hcj⟩ := hc
+  have hcoeff : p.coeff (2 * f j) = c j * q j := by
+    rw [hp, Polynomial.finsetSum_coeff, Finset.sum_eq_single j]
+    · rw [Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, if_pos rfl, mul_one]
+    · intro i hi hij
+      have hne : ¬ (2 * f j = 2 * f i) := by
+        intro heq
+        exact hij (hf_inj (Finset.mem_coe.mpr hi) (Finset.mem_coe.mpr hjs) (by omega))
+      rw [Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, if_neg hne, mul_zero]
+    · intro hjs'; exact absurd hjs hjs'
+  have hpne : p.natDegree ≠ 0 := by
+    have hcq : c j * q j ≠ 0 := mul_ne_zero hcj (hq_ne j hjs)
+    have hle : 2 * f j ≤ p.natDegree :=
+      Polynomial.le_natDegree_of_ne_zero (by rw [hcoeff]; exact hcq)
+    have hpos : 0 < f j := hf_pos j hjs
+    omega
+  rw [← haeval]
+  exact transcendental_aeval_pi p hpne
+
 /-!
 ## The open odd case (documentation only)
 
