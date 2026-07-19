@@ -266,7 +266,7 @@ theorem limit_in_sandwich :
   · obtain ⟨c, hc_pos, hc_bound⟩ := productRatio_bounded_below
     refine ⟨c, hc_pos, ?_⟩
     by_contra h
-    push_neg at h
+    push Not at h
     have hε : 0 < c - L := by linarith
     obtain ⟨N₀, hN₀⟩ := hL (c - L) hε
     have hN₀_bound := hN₀ (max N₀ 2) (by omega) (by omega)
@@ -276,7 +276,7 @@ theorem limit_in_sandwich :
   · obtain ⟨C, hC_pos, hC_bound⟩ := productRatio_bounded_above
     refine ⟨C, hC_pos, ?_⟩
     by_contra h
-    push_neg at h
+    push Not at h
     have hε : 0 < L - C := by linarith
     obtain ⟨N₀, hN₀⟩ := hL (L - C) hε
     have hN₀_bound := hN₀ (max N₀ 2) (by omega) (by omega)

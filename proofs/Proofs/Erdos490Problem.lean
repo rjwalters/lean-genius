@@ -306,7 +306,7 @@ theorem theta_gap_eq_sum_optimalB (N : ℕ) :
     constructor
     · rintro ⟨⟨⟨hp0, hpN⟩, hpr⟩, hnot⟩
       refine ⟨by omega, hpr, ?_, hpN⟩
-      by_contra h; push_neg at h
+      by_contra h; push Not at h
       exact hnot ⟨⟨hp0, by omega⟩, hpr⟩
     · rintro ⟨_, hpr, hlt, hle⟩
       exact ⟨⟨⟨hpr.pos, hle⟩, hpr⟩, by rintro ⟨⟨_, h2⟩, _⟩; omega⟩
@@ -501,7 +501,7 @@ theorem optimalB_card_eq_primeCounting (N : ℕ) :
     · rintro ⟨_, hp, hle⟩; exact ⟨by omega, hp⟩
     · rintro ⟨hlt, hp⟩; exact ⟨by omega, hp, by omega⟩
   -- Partition the primes `≤ N` by whether they exceed `N/2`.
-  have hpart := Finset.filter_card_add_filter_neg_card_eq_card
+  have hpart := Finset.card_filter_add_card_filter_not
     (s := (Finset.range (N + 1)).filter Nat.Prime) (p := fun p => N / 2 < p)
   rw [Finset.filter_filter, Finset.filter_filter, ← hB, hlow] at hpart
   rw [hπ N, hπ (N / 2)]
@@ -668,7 +668,7 @@ theorem isMultiplicativeSidon_iff_card_le_one (A : Finset ℕ) :
   constructor
   · intro h
     by_contra hc
-    push_neg at hc
+    push Not at hc
     obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hc
     exact hab (h a b b a ha hb hb ha (by ring)).1
   · intro h a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ _

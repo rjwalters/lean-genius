@@ -617,3 +617,25 @@ building the `Erdos490Chebyshev` dependency first). **The completion task is fin
 **Conclusion**: nothing tractable remains — the sole axiom is the fundamental Szemerédi bound,
 not present in Mathlib. Marking the completion task **completed** (verification-only; no code
 change needed, file + meta already correct on main).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + 8× deprecation fixes (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: entry COMPLETED/saturated — 0 sorries, sole axiom
+`szemeredi_theorem` (Szemerédi 1976 N²/log N bound, not in Mathlib), gallery meta
+`erdos-490` / `erdos-490-oq-01` both `axiomatized / axiomCount 1 / sorries 0`.
+
+**Genuine action** (migration hygiene): host-verified the whole family GREEN under **v4.31.0**
+(chain: `Erdos490Chebyshev` [pure Mathlib] → `Erdos490Problem` → `Erdos490OQ01`/`Erdos490Energy`,
+building dep oleans host-side). Fixed **8 v4.31 deprecations** → 0 warnings-of-that-class:
+- 6× `push_neg [at h]` → `push Not [at h]` (Chebyshev:86,156; Problem:309,671; OQ01:269,279).
+- 1× `primorial_le_4_pow` → `primorial_le_four_pow` (Chebyshev:50).
+- 1× `Finset.filter_card_add_filter_neg_card_eq_card` → `Finset.card_filter_add_card_filter_not`
+  (Problem:504) — verified the downstream `rw [Finset.filter_filter, …] at hpart` still closes
+  (new lemma has the same statement shape).
+All token-only; lineCount unchanged; axiom count stays 1. Every file EXIT 0, 0 errors,
+0 deprecations post-fix. (Benign unreferenced-binder lint warnings remain — not deprecations.)
+
+**FLAG for auditor/mechanic (meta count drift, NOT touched here):** `erdos-490/meta.json`
+`leanFile.lineCount = 1083` but `wc -l Proofs/Erdos490Problem.lean = 1141` (+58, likely from
+#37966 degenerate-characterization growth not synced); `leanFile.theoremCount = 37` vs a
+permissive-regex count of 45 on the primary. Left for the count-convention owners to reconcile.

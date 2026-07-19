@@ -47,7 +47,7 @@ lemma small_prime_prod_le (n : ℕ) (hn : 0 < n) :
     obtain ⟨h1, h2⟩ := Finset.mem_filter.1 hx
     exact Finset.mem_Icc.mpr ⟨(Finset.mem_filter.1 h1).2.one_lt.le, h2⟩
   · -- primes `√(2n) < p ≤ 2n/3`: each has multiplicity `≤ 1`, product `≤ primorial ≤ 4^(2n/3)`.
-    refine le_trans ?_ (primorial_le_4_pow (2 * n / 3))
+    refine le_trans ?_ (primorial_le_four_pow (2 * n / 3))
     refine (Finset.prod_le_prod' fun p hp => (?_ : f p ≤ p)).trans ?_
     · obtain ⟨h1, h2⟩ := Finset.mem_filter.1 hp
       refine (pow_right_mono₀ (Finset.mem_filter.1 h1).2.one_lt.le ?_).trans (pow_one p).le
@@ -83,7 +83,7 @@ theorem centralBinom_le_small_mul_large (n : ℕ) (hn : 2 < n) :
       simp only [Finset.mem_filter, Finset.mem_range] at hx hxnot
       by_cases hxp : x.Prime
       · have hgt : 2 * n / 3 < x := by
-          by_contra h; push_neg at h
+          by_contra h; push Not at h
           exact hxnot ⟨by omega, hxp⟩
         rw [Nat.factorization_centralBinom_of_two_mul_self_lt_three_mul hn (by omega) (by omega),
           pow_zero]
@@ -153,7 +153,7 @@ theorem theta_gap_eq_log_prod (n : ℕ) :
     constructor
     · rintro ⟨⟨⟨hp0, hp2n⟩, hpr⟩, hnot⟩
       refine ⟨by omega, ?_, hpr⟩
-      by_contra h; push_neg at h; exact hnot ⟨⟨hp0, by omega⟩, hpr⟩
+      by_contra h; push Not at h; exact hnot ⟨⟨hp0, by omega⟩, hpr⟩
     · rintro ⟨_, hnp, hpr⟩
       exact ⟨⟨⟨hpr.pos, by omega⟩, hpr⟩, by rintro ⟨⟨_, h2⟩, _⟩; omega⟩
   rw [e1, e2, ← Finset.sum_sdiff_eq_sub hsub, hset, Nat.cast_prod]
