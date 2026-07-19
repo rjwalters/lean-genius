@@ -38,9 +38,8 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
-
-set_option autoImplicit true
 
 open Nat Real Finset BigOperators
 
@@ -105,7 +104,8 @@ noncomputable def harmonicSum (A : Finset ℕ) : ℝ :=
 The maximum harmonic sum over all k-LCM-free subsets of {1,...,N}.
 -/
 noncomputable def f_k (k N : ℕ) : ℝ :=
-  sSup { harmonicSum A | A : Finset ℕ ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k }
+  sSup { s : ℝ | ∃ A : Finset ℕ,
+    (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k ∧ s = harmonicSum A }
 
 /-
 ## Part IV: Erdős's Upper Bound
@@ -148,7 +148,7 @@ There exist constants 0 < b_k ≤ c_k ≤ 1 such that
 A k-sunflower is a collection of k sets where any two have the same
 intersection (the "core").
 -/
-def IsSunflower {α : Type*} (sets : Finset (Finset α)) (k : ℕ) : Prop :=
+def IsSunflower {α : Type*} [DecidableEq α] (sets : Finset (Finset α)) (k : ℕ) : Prop :=
   sets.card = k ∧
   ∃ core : Finset α, ∀ S ∈ sets, ∀ T ∈ sets, S ≠ T → S ∩ T = core
 
@@ -179,7 +179,8 @@ c_k < 1 (non-trivial upper bound) iff sunflower conjecture holds for k.
 Instead of maximizing Σ 1/n, we maximize |A|.
 -/
 noncomputable def g_k (k N : ℕ) : ℕ :=
-  sSup { A.card | A : Finset ℕ ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k }
+  sSup { m : ℕ | ∃ A : Finset ℕ,
+    (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k ∧ m = A.card }
 
 /- 
 **Erdős's Construction (1970):**
@@ -201,7 +202,7 @@ The k=3 case for natural density (Problem #536) remains interesting.
 If A = {d : d | n}, then all pairs have lcm = n (if coprime to core).
 So divisor sets typically have uniform pairwise LCM structure.
 -/
-theorem divisor_set_lcm (n : ℕ) (hn : n > 0) :
+theorem divisor_set_lcm (n : ℕ) (_hn : n > 0) :
     ∀ a b : ℕ, a ∣ n → b ∣ n → a ≠ b → myLcm a b ∣ n := by
   intros a b ha hb _
   exact Nat.lcm_dvd_iff.mpr ⟨ha, hb⟩

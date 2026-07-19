@@ -23,8 +23,8 @@
     "erdosUrl": "https://erdosproblems.com/856",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 260,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `A` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'A'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 263,
+    "assumptions": "REPAIRED (issue #39077, follow-on to #39061): the Lean file now compiles green on Lean v4.31 (autoImplicit off) with 0 axioms and 0 sorries. The previously-masked defects were fixed: two malformed image set-builders `{ f A | A : Finset ℕ ∧ ... }` (whose `Type ∧ Prop` binder had left `A` silently auto-bound) were rewritten as explicit existential comprehensions; `IsSunflower` gained the `[DecidableEq α]` needed for Finset `∩`; and the missing `Mathlib.Analysis.SpecialFunctions.Pow.Real` import was added for the real-exponent `Real.log N ^ (c ± ε)`. The formalization states the definitions (k-LCM-free sets, harmonic-sum extremal function f_k, sunflowers) and proves supporting lemmas (lcm commutativity/idempotence, divisor-set LCM divisibility). Erdős Problem #856 itself — the precise growth rate of f_k(N) — remains OPEN; it is stated as a Prop, not assumed, so there are no axioms or structure-encoded assumptions.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 10
@@ -144,7 +144,7 @@
       "Nat"
     ],
     "namespace": "Erdos856",
-    "lineCount": 260,
+    "lineCount": 263,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 10,
