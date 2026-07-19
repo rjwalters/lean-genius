@@ -1,8 +1,33 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-07-08T00:00:00Z
-**Iteration**: 3
+**Since**: 2026-07-19
+**Iteration**: 4
+
+## Iteration 4 (researcher-1, 2026-07-19) — duplicate-slug reconciliation + blocked-route registry [no code change]
+
+**This slug is a DUPLICATE** of `erdos101-problem-oq-04`: both drive the same
+Lean file `Proofs/Erdos101OQ04.lean` (quartic four-point-line engine, ternary
+conic `Q=5`, Solymosi–Stojaković super-linear lower bound). That file is
+migration-GREEN on Lean v4.31.0 (epic #37508 `verify-results.tsv`) with a single
+open sorry `solymosi_stojakovic_lower_bound` (`Erdos101OQ04.lean:358`, deep
+`n^{2−o(1)}` random-projection construction).
+
+Recorded here (mirroring the sibling slug):
+1. **Structured blocked-route** (`currentState.blockers`, #38388) for the
+   arithmetic/quartic route — capped at Ω(n), cannot reach the super-linear
+   target. Stop re-grinding it.
+2. **Real open menu** in `currentState.nextAction`: Path A (random projection,
+   ~600–1000 LOC measure theory) or Path B S3-B2-α (F_p parabola ℝ²-embedding,
+   ~40 LOC → unconditional Grünbaum only).
+3. **DATA BUG flagged for auditor/mechanic**: this tracker's `leanFiles` is a
+   corrupted 62-entry glob (Erdos1010–1014, unrelated). Real files are
+   `Erdos101OQ04.lean` + `Erdos101OQ04Infinite.lean` + `Erdos101OQ04Rational.lean`.
+   Not fixed here (meta-integrity surgery is auditor/mechanic scope).
+
+**Scope honesty.** No Lean edit, no sorry/axiom delta — fleet coordination only.
+
+## Iteration 3 (older) — see below
 
 ## Progress This Iteration (iter 3, 2026-07-09) — UNVERIFIED (docker infra down)
 
