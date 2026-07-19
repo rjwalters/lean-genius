@@ -22,9 +22,9 @@ Key Results:
 Reference: https://erdosproblems.com/1066
 -/
 
-import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 open Real
@@ -32,6 +32,8 @@ open Real
 namespace Erdos1066
 
 /- ## Part I: Basic Definitions -/
+
+variable {n : ℕ}
 
 /-- A point in ℝ². -/
 abbrev Point2D := EuclideanSpace ℝ (Fin 2)
@@ -48,17 +50,20 @@ structure UnitDistancePointSet where
 
 /-- The graph where vertices are points, and edges connect pairs at
     distance exactly 1. -/
-def unitDistanceEdge (P : UnitDistancePointSet) (i j : Fin n) : Prop :=
+def unitDistanceEdge {n : ℕ} (P : @UnitDistancePointSet n) (i j : Fin n) : Prop :=
   i ≠ j ∧ dist (P.points i) (P.points j) = 1
 
 /-- A set of vertices with no edges between them. -/
-def IsIndependentSet (P : UnitDistancePointSet) (S : Finset (Fin n)) : Prop :=
+def IsIndependentSet {n : ℕ} (P : @UnitDistancePointSet n) (S : Finset (Fin n)) : Prop :=
   ∀ i j : Fin n, i ∈ S → j ∈ S → i ≠ j →
     dist (P.points i) (P.points j) ≠ 1
 
 /-- The size of the largest independent set. -/
-noncomputable def independenceNumber (P : UnitDistancePointSet) : ℕ :=
-  Nat.find (⟨n, fun S _ => S.card ≤ n⟩ : ∃ k, ∀ S : Finset (Fin n), IsIndependentSet P S → S.card ≤ k)
+noncomputable def independenceNumber {n : ℕ} (P : @UnitDistancePointSet n) : ℕ := by
+  classical
+  exact Nat.find
+    (⟨n, fun S _ => by simpa using Finset.card_le_univ S⟩ :
+      ∃ k, ∀ S : Finset (Fin n), IsIndependentSet P S → S.card ≤ k)
 
 /- ## Part II: The Function g(n) -/
 
@@ -72,14 +77,14 @@ axiom g (n : ℕ) : ℕ
 
 /-- Numerical comparison: n/4 = 0.25 < 9/35 ≈ 0.257 < 8/31 ≈ 0.258 -/
 theorem lower_bounds_comparison :
-    (1 : ℚ) / 4 < 9 / 35 ∧ 9 / 35 < 8 / 31 := by
+    (1 : ℚ) / 4 < 9 / 35 ∧ (9 : ℚ) / 35 < 8 / 31 := by
   constructor <;> norm_num
 
 /- ## Part IV: Upper Bounds -/
 
 /-- Numerical comparison: 5/16 = 0.3125 < 6/19 ≈ 0.316 < 1/3 ≈ 0.333 -/
 theorem upper_bounds_comparison :
-    (5 : ℚ) / 16 < 6 / 19 ∧ 6 / 19 < 1 / 3 := by
+    (5 : ℚ) / 16 < 6 / 19 ∧ (6 : ℚ) / 19 < 1 / 3 := by
   constructor <;> norm_num
 
 /- ## Part V: Current Best Bounds -/
@@ -111,8 +116,8 @@ axiom g_d (d n : ℕ) : ℕ
 theorem erdos_1066_summary :
     ((8 : ℚ) / 31 < 5 / 16) ∧
     ((5 : ℚ) / 16 - 8 / 31 = 27 / 496) ∧
-    ((1 : ℚ) / 4 < 9 / 35 ∧ 9 / 35 < 8 / 31) ∧
-    ((5 : ℚ) / 16 < 6 / 19 ∧ 6 / 19 < 1 / 3) :=
+    ((1 : ℚ) / 4 < 9 / 35 ∧ (9 : ℚ) / 35 < 8 / 31) ∧
+    ((5 : ℚ) / 16 < 6 / 19 ∧ (6 : ℚ) / 19 < 1 / 3) :=
   ⟨current_best_bounds, bound_gap, lower_bounds_comparison, upper_bounds_comparison⟩
 
 end Erdos1066
