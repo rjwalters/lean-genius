@@ -31,6 +31,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic
 import Proofs.KummerTheorem
 
+set_option autoImplicit false
+
 namespace KummerTheoremOQ02
 
 open Polynomial Finset Nat
@@ -75,14 +77,22 @@ noncomputable def qBinomial : ℕ → ℕ → ℤ[X]
 theorem qBinomial_succ_succ (n k : ℕ) :
     qBinomial (n + 1) (k + 1) = qBinomial n k + X ^ (k + 1) * qBinomial n (k + 1) := rfl
 
+/-- qBinomial vanishes when k > n. -/
+theorem qBinomial_eq_zero : ∀ n k, n < k → qBinomial n k = 0
+  | _, 0, h => absurd h (Nat.not_lt_zero _)
+  | 0, _ + 1, _ => rfl
+  | n + 1, k + 1, h => by
+    rw [qBinomial_succ_succ,
+        qBinomial_eq_zero n k (by omega),
+        qBinomial_eq_zero n (k + 1) (by omega),
+        mul_zero, add_zero]
+
 /-- [n choose n]_q = 1 for all n. -/
 @[simp] theorem qBinomial_self : ∀ n, qBinomial n n = 1
   | 0 => rfl
   | n + 1 => by
-    simp [qBinomial_succ_succ, qBinomial_self n]
-    cases n with
-    | zero => simp [qBinomial]
-    | succ n => simp [qBinomial]
+    rw [qBinomial_succ_succ, qBinomial_self n,
+        qBinomial_eq_zero n (n + 1) (by omega), mul_zero, add_zero]
 
 /-- [1]_q = 1. -/
 @[simp] theorem qNumber_one : qNumber 1 = 1 := by
@@ -120,23 +130,14 @@ theorem qNumber_eval_one (n : ℕ) : (qNumber n).eval 1 = (n : ℤ) := by
 theorem qFactorial_eval_one : ∀ n, (qFactorial n).eval 1 = (n ! : ℤ)
   | 0 => by simp [qFactorial]
   | n + 1 => by
-    simp [qFactorial, Polynomial.eval_mul, qFactorial_eval_one n, qNumber_eval_one]
+    rw [qFactorial, Polynomial.eval_mul, qFactorial_eval_one n, qNumber_eval_one,
+        Nat.factorial_succ]
     push_cast
     ring
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part V-A: Additional Basic Properties
 -- ══════════════════════════════════════════════════════════════════
-
-/-- qBinomial vanishes when k > n. -/
-theorem qBinomial_eq_zero : ∀ n k, n < k → qBinomial n k = 0
-  | _, 0, h => absurd h (Nat.not_lt_zero _)
-  | 0, _ + 1, _ => rfl
-  | n + 1, k + 1, h => by
-    rw [qBinomial_succ_succ,
-        qBinomial_eq_zero n k (by omega),
-        qBinomial_eq_zero n (k + 1) (by omega),
-        mul_zero, add_zero]
 
 /-- Evaluating [n choose k]_q at q = 1 gives the ordinary binomial coefficient. -/
 theorem qBinomial_eval_one : ∀ n k, (qBinomial n k).eval 1 = (n.choose k : ℤ)
@@ -167,7 +168,7 @@ theorem qNumber_add_shift (a m : ℕ) :
     This is the q-analog of C(n,k) · k! · (n-k)! = n!. -/
 theorem qBinomial_factorial : ∀ n k, k ≤ n →
     qBinomial n k * qFactorial k * qFactorial (n - k) = qFactorial n
-  | _, 0, _ => by simp
+  | _, 0, _ => by simp [qFactorial]
   | n + 1, k + 1, h => by
     have hk : k ≤ n := by omega
     by_cases hlt : k < n
@@ -186,7 +187,7 @@ theorem qBinomial_factorial : ∀ n k, k ≤ n →
       have ih2' : qBinomial n (k + 1) * (qFactorial k * qNumber (k + 1)) *
           qFactorial (n - k - 1) = qFactorial n := by
         have : qFactorial (k + 1) = qFactorial k * qNumber (k + 1) := rfl
-        rw [← this, show n - (k + 1) = n - k - 1 from by omega] at ih2
+        rw [this, show n - (k + 1) = n - k - 1 from by omega] at ih2
         exact ih2
       -- q-Number addition: [k+1]_q + q^(k+1) · [n-k]_q = [n+1]_q
       have add_eq : qNumber (k + 1) + X ^ (k + 1) * qNumber (n - k) = qNumber (n + 1) := by
@@ -199,7 +200,7 @@ theorem qBinomial_factorial : ∀ n k, k ≤ n →
       linear_combination qNumber (k + 1) * ih1' +
         X ^ (k + 1) * qNumber (n - k) * ih2' + qFactorial n * add_eq
     · -- Case k = n: qBinomial (n+1) (n+1) = 1
-      have hkn : k = n := by omega
+      have hkn : n = k := by omega
       subst hkn
       simp [show n + 1 - (n + 1) = 0 from Nat.sub_self _, show qFactorial 0 = (1 : ℤ[X]) from rfl]
 
@@ -208,10 +209,12 @@ theorem qBinomial_factorial : ∀ n k, k ≤ n →
 -- ══════════════════════════════════════════════════════════════════
 
 /-- Subadditivity of floor division: ⌊a/d⌋ + ⌊b/d⌋ ≤ ⌊(a+b)/d⌋. -/
-private lemma div_add_div_le (a b d : ℕ) (hd : 0 < d) : a / d + b / d ≤ (a + b) / d := by
-  rw [Nat.le_div_iff_mul_le hd]
-  calc (a / d + b / d) * d = a / d * d + b / d * d := by ring
-    _ ≤ a + b := Nat.add_le_add (Nat.div_mul_le_self a d) (Nat.div_mul_le_self b d)
+private lemma div_add_div_le (a b d : ℕ) : a / d + b / d ≤ (a + b) / d := by
+  rcases Nat.eq_zero_or_pos d with hd | hd
+  · subst hd; simp
+  · rw [Nat.le_div_iff_mul_le hd]
+    calc (a / d + b / d) * d = a / d * d + b / d * d := by ring
+      _ ≤ a + b := Nat.add_le_add (Nat.div_mul_le_self a d) (Nat.div_mul_le_self b d)
 
 /-- The "floor deficiency" at d: measures how divisibility of n by d
     exceeds that of k and n-k separately.
@@ -225,7 +228,7 @@ theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
     floorDeficiency n k d + k / d + (n - k) / d = n / d := by
   unfold floorDeficiency
   have : k / d + (n - k) / d ≤ n / d := by
-    have := div_add_div_le k (n - k) d hd
+    have := div_add_div_le k (n - k) d
     rwa [Nat.add_sub_cancel' hkn] at this
   omega
 
@@ -243,16 +246,9 @@ private theorem qFactorial_eq_prod (n : ℕ) :
         Finset.prod_Icc_succ_top (by omega : 1 ≤ n + 1)]
 
 /-- Step identity for natural division: (n+1)/d = n/d + (1 if d ∣ n+1, else 0). -/
-private theorem succ_div_step (n d : ℕ) (hd : 0 < d) :
-    (n + 1) / d = n / d + if d ∣ (n + 1) then 1 else 0 := by
-  split
-  · next h =>
-    have hmod : (n + 1) % d = 0 := Nat.mod_eq_zero_iff_dvd.mpr h
-    have hmod' : n % d = d - 1 := by omega
-    omega
-  · next h =>
-    have hmod : (n + 1) % d ≠ 0 := fun hc => h (Nat.dvd_of_mod_eq_zero hc)
-    omega
+private theorem succ_div_step (n d : ℕ) :
+    (n + 1) / d = n / d + if d ∣ (n + 1) then 1 else 0 :=
+  Nat.succ_div
 
 /-- The cyclotomic factorization of q-factorials:
     [n]_q! = ∏_{d=2}^{n} Φ_d^{⌊n/d⌋}. -/
@@ -266,32 +262,32 @@ theorem qFactorial_cyclotomic : ∀ n,
     -- Split the product using the step identity
     conv_rhs =>
       arg 2; ext d
-      rw [succ_div_step n d (by omega), pow_add]
+      rw [succ_div_step n d, pow_add]
     rw [Finset.prod_mul_distrib]
     congr 1
-    · -- ∏ Φ_d^(n/d) over Icc 2 (n+1) = ∏ Φ_d^(n/d) over Icc 2 n
-      symm
+    · -- ∏ Φ_d^(n/d) over Icc 2 n = ∏ Φ_d^(n/d) over Icc 2 (n+1)
       apply Finset.prod_subset (Finset.Icc_subset_Icc_right (by omega : n ≤ n + 1))
       intro d hd hdn
       simp only [Finset.mem_Icc] at hd hdn
-      push_neg at hdn
-      have : n / d = 0 := Nat.div_eq_of_lt (by omega)
-      simp [this]
+      rw [Nat.div_eq_of_lt (show n < d by omega), pow_zero]
     · -- ∏ Φ_d^(if d ∣ n+1 then 1 else 0) over Icc 2 (n+1) = qNumber (n+1)
       by_cases hn : n + 1 < 2
-      · interval_cases n; simp [qNumber]
+      · have hn0 : n = 0 := by omega
+        subst hn0
+        simp [qNumber_one, show Finset.Icc 2 1 = (∅ : Finset ℕ) from by decide]
       · push_neg at hn
         rw [qNumber_eq_prod_cyclotomic (by omega : 0 < n + 1)]
-        symm
-        rw [← Finset.prod_filter_mul_prod_filter_not (Icc 2 (n + 1)) (· ∣ (n + 1))]
-        simp only [ite_true, pow_one, ite_false, pow_zero, Finset.prod_const_one, mul_one]
-        congr 1; ext d
+        simp only [pow_ite, pow_one, pow_zero]
+        rw [← Finset.prod_filter]
+        apply Finset.prod_congr _ (fun _ _ => rfl)
+        ext d
         simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_erase, Nat.mem_divisors]
         constructor
+        · rintro ⟨hd1, hdvd, hne⟩
+          have hpos : 0 < d := Nat.pos_of_dvd_of_pos hdvd (by omega)
+          exact ⟨⟨by omega, Nat.le_of_dvd (by omega) hdvd⟩, hdvd⟩
         · rintro ⟨⟨hd2, hdn⟩, hdvd⟩
           exact ⟨by omega, hdvd, by omega⟩
-        · rintro ⟨hd1, hdvd, hne⟩
-          exact ⟨⟨by omega, Nat.le_of_dvd (by omega) hdvd⟩, hdvd⟩
 
 /-- Extend a cyclotomic product to a larger range. -/
 private theorem qFactorial_cyclotomic_ext (m n : ℕ) (hmn : m ≤ n) :
@@ -300,8 +296,7 @@ private theorem qFactorial_cyclotomic_ext (m n : ℕ) (hmn : m ≤ n) :
   apply Finset.prod_subset (Finset.Icc_subset_Icc_right hmn)
   intro d hd hdm
   simp only [Finset.mem_Icc] at hd hdm
-  push_neg at hdm
-  simp [Nat.div_eq_of_lt (by omega)]
+  rw [Nat.div_eq_of_lt (show m < d by omega), pow_zero]
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part VIII: q-Kummer Theorem
@@ -337,22 +332,23 @@ theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
       (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ ((n - k) / d)) =
       ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d) := by
     rw [← Finset.prod_mul_distrib]
-    congr 1; ext d; exact (pow_add _ _ _).symm
+    exact Finset.prod_congr rfl fun d _ =>
+      (pow_add (cyclotomic d ℤ) (k / d) ((n - k) / d)).symm
   rw [mul_assoc, merge] at hfact
   -- Factor RHS: ∏ Φ_d^(n/d) = ∏ Φ_d^(k/d + (n-k)/d) * ∏ Φ_d^(floorDeficiency)
   have split_exp : ∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (n / d) =
       (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d)) *
       (∏ d ∈ Icc 2 n, (cyclotomic d ℤ) ^ floorDeficiency n k d) := by
     rw [← Finset.prod_mul_distrib]
-    congr 1; ext d; rw [← pow_add, floorDeficiency]
+    refine Finset.prod_congr rfl fun d _ => ?_
+    rw [← pow_add, floorDeficiency]
     congr 1
-    have := div_add_div_le k (n - k) d (by
-      by_contra h; push_neg at h; interval_cases d; simp)
+    have := div_add_div_le k (n - k) d
     rw [Nat.add_sub_cancel' hkn] at this; omega
-  rw [split_exp] at hfact
-  -- Cancel: qBinomial * P = P * Q → qBinomial = Q (in integral domain ℤ[X])
+  rw [split_exp, mul_comm (qBinomial n k)] at hfact
+  -- Cancel: P * qBinomial = P * Q → qBinomial = Q (in integral domain ℤ[X])
   exact mul_left_cancel₀
-    (Finset.prod_ne_zero _ fun d _ => pow_ne_zero _ (Polynomial.cyclotomic_ne_zero d ℤ))
+    (Finset.prod_ne_zero_iff.mpr fun d _ => pow_ne_zero _ (Polynomial.cyclotomic_ne_zero d ℤ))
     hfact
 
 -- ══════════════════════════════════════════════════════════════════
