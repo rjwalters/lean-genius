@@ -725,4 +725,97 @@ theorem maxPrimeGap_unbounded_and_sublinear :
       Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) :=
   ⟨maxPrimeGap_cast_tendsto_atTop, bhp_implies_gap_littleo⟩
 
+-- ============================================================================
+-- Part IX: Primes in short intervals (BHP consequence, not a repackaging)
+-- ============================================================================
+
+/-- **Consecutive primes straddling `x`.** For `x ≥ 2` there is a *consecutive*
+prime pair `p < q` with `p ≤ x < q` and `q ≤ 2x`: take `p` = the largest prime
+`≤ x` and `q` = the smallest prime `> x`. Consecutiveness (`∀ r prime, p<r → q≤r`)
+is exactly what makes `q - p` a member of `primeGapSet (2x)`, so this lemma is
+the bridge from the abstract `maxPrimeGap` bound to a concrete prime location.
+The bound `q ≤ 2x` is Bertrand's postulate applied at `p`. Axiom-free. -/
+theorem exists_consecutive_primes_straddling (x : ℕ) (hx : 2 ≤ x) :
+    ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ p ≤ x ∧ x < q ∧ p < q ∧
+      (∀ r, Nat.Prime r → p < r → q ≤ r) ∧ q ≤ 2 * x := by
+  -- q : the smallest prime strictly greater than x.
+  have hQ : ∃ m, x < m ∧ Nat.Prime m := by
+    obtain ⟨m, hm, hmp⟩ := Nat.exists_infinite_primes (x + 1)
+    exact ⟨m, by omega, hmp⟩
+  obtain ⟨q, ⟨hxq, hq⟩, hq_min⟩ :
+      ∃ q, (x < q ∧ Nat.Prime q) ∧ ∀ m, x < m → Nat.Prime m → q ≤ m := by
+    classical
+    exact ⟨Nat.find hQ, Nat.find_spec hQ, fun m hm hmp => Nat.find_min' hQ ⟨hm, hmp⟩⟩
+  -- p : the largest prime ≤ x (max of the primes in `range (x+1)`).
+  have hpne : ((Finset.range (x + 1)).filter Nat.Prime).Nonempty := by
+    refine ⟨2, ?_⟩
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, Nat.prime_two⟩
+  obtain ⟨p, hp_mem, hp_max⟩ :
+      ∃ p ∈ (Finset.range (x + 1)).filter Nat.Prime,
+        ∀ m ∈ (Finset.range (x + 1)).filter Nat.Prime, m ≤ p :=
+    ⟨_, Finset.max'_mem _ hpne, fun m hm => Finset.le_max' _ m hm⟩
+  rw [Finset.mem_filter, Finset.mem_range] at hp_mem
+  obtain ⟨hp_lt, hp⟩ := hp_mem
+  have hpx : p ≤ x := by omega
+  have hpq : p < q := lt_of_le_of_lt hpx hxq
+  -- Consecutiveness: any prime `r > p` is either `≤ x` (impossible, `p` is
+  -- maximal there) or `> x` (hence `≥ q`, `q` minimal there).
+  have hcons : ∀ r, Nat.Prime r → p < r → q ≤ r := by
+    intro r hr hpr
+    by_cases hrx : r ≤ x
+    · have hrmem : r ∈ (Finset.range (x + 1)).filter Nat.Prime := by
+        simp only [Finset.mem_filter, Finset.mem_range]
+        exact ⟨by omega, hr⟩
+      have := hp_max r hrmem
+      omega
+    · exact hq_min r (by omega) hr
+  -- Bertrand at `p` yields a prime `s ∈ (p, 2p]`; by consecutiveness `q ≤ s ≤ 2x`.
+  have hq2x : q ≤ 2 * x := by
+    obtain ⟨s, hs, hps, hs2p⟩ := Nat.bertrand p hp.ne_zero
+    have hqs := hcons s hs hps
+    omega
+  exact ⟨p, q, hp, hq, hpx, hxq, hpq, hcons, hq2x⟩
+
+/-- **Baker–Harman–Pintz ⟹ primes in arbitrarily short intervals.**
+For every `ε > 0`, eventually every large `x` has a prime in the half-open
+interval `(x, (1+ε)x]`.
+
+This is a genuine consequence of BHP, *not* a repackaging of the sublinearity
+`bhp_implies_gap_littleo`: it converts the asymptotic upper bound on gaps into a
+concrete existence statement about primes near `x`. The proof takes the
+consecutive pair `p ≤ x < q` straddling `x`
+(`exists_consecutive_primes_straddling`), notes `q - p ≤ maxPrimeGap (2x)` since
+`q ≤ 2x`, and uses `maxPrimeGap (2x) ≤ ε x` eventually (BHP sublinearity at
+scale `2x`) to conclude `q ≤ p + (q-p) ≤ x + εx = (1+ε)x`.
+
+Bertrand's postulate is the special case `ε = 1` (a prime in `(x, 2x]`) but
+holds *unconditionally*; the strength here is that BHP shrinks the interval to
+`(x, (1+ε)x]` for every `ε > 0`. Inherits only the parent `baker_harman_pintz`
+axiom. -/
+theorem bhp_prime_in_short_interval (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ x : ℕ in atTop, ∃ q : ℕ, Nat.Prime q ∧ (x : ℝ) < q ∧ (q : ℝ) ≤ (1 + ε) * x := by
+  -- `maxPrimeGap (2x) ≤ ε·x` eventually: apply the ε/2-form at scale `2x`.
+  have h2x : Tendsto (fun x : ℕ => 2 * x) atTop atTop :=
+    tendsto_atTop_mono (fun x => by simp only [id_eq]; omega) tendsto_id
+  have hbase : ∀ᶠ y : ℕ in atTop, (maxPrimeGap y : ℝ) ≤ (ε / 2) * y :=
+    bhp_gap_eventually_le_eps (ε / 2) (by linarith)
+  have hgap2x : ∀ᶠ x : ℕ in atTop, (maxPrimeGap (2 * x) : ℝ) ≤ ε * x := by
+    filter_upwards [h2x.eventually hbase] with x hx
+    calc (maxPrimeGap (2 * x) : ℝ) ≤ (ε / 2) * ((2 * x : ℕ) : ℝ) := hx
+      _ = ε * x := by push_cast; ring
+  filter_upwards [hgap2x, eventually_ge_atTop 2] with x hgapx hx2
+  obtain ⟨p, q, hp, hq, hpx, hxq, hpq, hcons, hq2x⟩ :=
+    exists_consecutive_primes_straddling x hx2
+  refine ⟨q, hq, by exact_mod_cast hxq, ?_⟩
+  -- `q - p ∈ primeGapSet (2x)`, so `q - p ≤ maxPrimeGap (2x)`.
+  have hmem : (q - p) ∈ primeGapSet (2 * x) := ⟨p, q, hp, hq, hpq, hq2x, hcons, rfl⟩
+  have hle : (q - p) ≤ maxPrimeGap (2 * x) := le_csSup (primeGapSet_bddAbove _) hmem
+  -- `q = p + (q-p) ≤ x + maxPrimeGap (2x)` in ℕ, then push to ℝ and use `hgapx`.
+  have hqnat : q ≤ x + maxPrimeGap (2 * x) := by omega
+  have hqreal : (q : ℝ) ≤ (x : ℝ) + (maxPrimeGap (2 * x) : ℝ) := by exact_mod_cast hqnat
+  calc (q : ℝ) ≤ (x : ℝ) + (maxPrimeGap (2 * x) : ℝ) := hqreal
+    _ ≤ (x : ℝ) + ε * x := by linarith [hgapx]
+    _ = (1 + ε) * x := by ring
+
 end Erdos1138OQ03

@@ -47,14 +47,16 @@
       "bhp_gap_eventually_le_eps: epsilon-form, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x",
       "gap_eventually_le_eps_of_rpow_bound: abstract epsilon-form engine, from any eventual envelope maxPrimeGap x <= x^theta with theta < 1, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x (the abstract counterpart of bhp_gap_eventually_le_eps, completing the engine family's term-for-term match with the concrete BHP family)",
       "gap_div_isBigO_rpow_neg: explicit decay RATE of the normalised gap, maxPrimeGap x / x = O(x^(-0.475)) (Landau big-O idiom, constant 1, x>=25) — sharpens bhp_implies_gap_littleo's qualitative Tendsto to 0 into a quantitative polynomial-rate envelope; the normalised counterpart of gap_isBigO_rpow.",
-      "gap_div_isBigO_rpow_sub_one_of_rpow_bound: abstract normalised-decay-rate engine — from any eventual envelope maxPrimeGap x <= x^theta, maxPrimeGap x / x = O(x^(theta-1)); the source-parametric, axiom-free ([propext,choice,Quot.sound]) twin of the concrete gap_div_isBigO_rpow_neg."
+      "gap_div_isBigO_rpow_sub_one_of_rpow_bound: abstract normalised-decay-rate engine — from any eventual envelope maxPrimeGap x <= x^theta, maxPrimeGap x / x = O(x^(theta-1)); the source-parametric, axiom-free ([propext,choice,Quot.sound]) twin of the concrete gap_div_isBigO_rpow_neg.",
+      "exists_consecutive_primes_straddling: for x >= 2, constructs a CONSECUTIVE prime pair p < q with p <= x < q and q <= 2x (p = largest prime <= x via Finset.max, q = smallest prime > x via Nat.find; consecutiveness from the two extremal choices, q <= 2x from Bertrand at p). Axiom-free ([propext, Classical.choice, Quot.sound]); it is the bridge turning the abstract maxPrimeGap bound into a concrete prime location.",
+      "bhp_prime_in_short_interval: Baker-Harman-Pintz ==> primes in arbitrarily short intervals. For every epsilon > 0, eventually every large x has a prime in (x, (1+epsilon)x]. A genuine BHP consequence (NOT a repackaging of sublinearity): via the straddling pair p <= x < q with q - p <= maxPrimeGap(2x) and maxPrimeGap(2x) <= epsilon*x (BHP sublinearity at scale 2x), q <= x + epsilon*x = (1+epsilon)x. Sharpens Bertrand (unconditional prime in (x,2x]) to an epsilon-shrinking interval. Inherits only baker_harman_pintz; #print axioms = {propext, Classical.choice, Quot.sound, baker_harman_pintz}."
     ],
     "dateAdded": "2026-07-05",
     "mathlib_version": "4.31.0",
     "axiomCount": 1,
-    "lineCount": 418,
-    "assumptions": "1 axiom, inherited from the parent Erdos1138OQ03: baker_harman_pintz (maxPrimeGap x <= x^0.525 for x >= 25). No axiom is declared in this file (leanFile.axiomCount = 0); the assumption is imported. #print axioms confirms the results depend only on {propext, Classical.choice, Quot.sound, Erdos1138OQ03.baker_harman_pintz}. No sorries, no native_decide.",
-    "theoremCount": 16,
+    "lineCount": 821,
+    "assumptions": "1 axiom, inherited from the parent Erdos1138OQ03: baker_harman_pintz (maxPrimeGap x <= x^0.525 for x >= 25). No axiom is declared in this file (leanFile.axiomCount = 0); the assumption is imported. #print axioms confirms bhp_prime_in_short_interval depends only on {propext, Classical.choice, Quot.sound, Erdos1138OQ03.baker_harman_pintz}, and the construction lemma exists_consecutive_primes_straddling is axiom-free {propext, Classical.choice, Quot.sound}. No sorries, no native_decide.",
+    "theoremCount": 37,
     "definitionCount": 0
   },
   "overview": {
@@ -143,9 +145,9 @@
       "Topology"
     ],
     "namespace": "Erdos1138OQ03",
-    "lineCount": 418,
+    "lineCount": 821,
     "axiomCount": 0,
-    "theoremCount": 29,
+    "theoremCount": 37,
     "definitionCount": 0,
     "path": "Proofs/Erdos1138OQ03OQ01.lean",
     "sorries": 0
