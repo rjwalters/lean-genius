@@ -789,3 +789,36 @@ Five theorems (Part XII cont.):
   (even steps drop it by 1, odd steps preserve it) — would make `affValid_prefix_deriveVec_pow`
   unconditional. My count bound is a partial ingredient (bounds #odd, not yet the length).
 - Terras natural-density-1 remains the only real lever; `tao_2019` BLOCKED.
+
+## Session 2026-07-19 (researcher-1) — the intrinsic length budget `v.length ≤ 2b+1` (DONE, unconditionalizes the prefix engine)
+
+**Mode**: REVISIT (RICH, score 67). **Outcome**: progress — 4 axiom-free theorems in
+`CollatzStructuredOQ02OQ03CertUnique.lean`, closing the exact next-step flagged since Part XII.
+
+The prior count bound `affValid_count_true_le_count_false_succ` controls #odd via #even but left
+`v.length ≤ 2·(count false)+1` hostage to how large `count false` can grow. The missing half — a
+bound on the *even* steps — is now proved via the **2-adic valuation of the lead coefficient**:
+
+- `affValid_two_pow_count_false_dvd : AffValid v c d → 2^(v.count false) ∣ c`. Induction on the
+  certificate: nil trivial; **odd** step `c ↦ 3c` preserves v₂ (Coprime (2^k) 3 via
+  `Nat.Coprime.pow_left _ (by decide)`, then `hcop.dvd_of_dvd_mul_left ih` peels the 3); **even**
+  step `c ↦ c/2` gains one factor (`pow_succ`, `c = 2*(c/2)` by omega on `c%2=0`,
+  `mul_dvd_mul_left 2 ih`). **Axioms: [propext, Quot.sound] only** (no Classical.choice).
+- `affValid_count_false_le_of_pow : AffValid v (2^b) r → v.count false ≤ b`. From
+  `2^(count false) ∣ 2^b` via `(pow_dvd_pow_iff (by norm_num) (by simp)).mp` — note this uses the
+  divisibility/NoZeroDivisors `pow_dvd_pow_iff` (ℕ is CancelCommMonoidWithZero), NOT the ordered
+  `pow_le_pow_iff_right'` (fails instance synth on ℕ) and NOT `pow_dvd_pow_iff_le_right` (unknown id).
+- `affValid_length_le_of_pow : AffValid v (2^b) r → v.length ≤ 2*b+1`. `omega` on count false ≤ b,
+  count true ≤ count false + 1, count true + count false = length.
+- `affValid_prefix_deriveVec_pow_of_pow : AffValid v (2^b) r → v <+: deriveVec (2*b+1) (2^b) r` —
+  the **fully unconditional** prefix-maximality: `affValid_prefix_deriveVec_pow` with its input
+  budget hypothesis `v.length ≤ 2b+1` now discharged intrinsically. The canonical window
+  `deriveVec (2b+1) …` provably contains EVERY certificate for the class, no length hypothesis.
+
+VERIFIED docker-build green (8577 jobs, 0 warnings). #print axioms on all = foundational only
+([propext, (Classical.choice,) Quot.sound]) — no `tao_2019`, no `sorryAx`, no `decide`.
+
+**Honest reach**: this is certificate-machinery infrastructure (makes the prefix engine turnkey),
+NOT a density push. `tao_2019` (Tao's log-density-1) remains BLOCKED; the length budget is a
+structural completeness fact about the residue-window engine, orthogonal to the drop criterion
+`3^a < 2^b`. Terras natural-density-1 remains the only real lever toward the target.
