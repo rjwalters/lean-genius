@@ -1,7 +1,7 @@
 {
   "slug": "erdos-870-incomplete-01",
   "title": "Complete proof of Erdős Problem #870: Minimal Additive Bases (2 sorries)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -20,7 +20,13 @@
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
     "focus": "Initial exploration of the problem.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "close naturals_basis / basis_subset_reps sorries as stated",
+        "reopenCriterion": "parent representationCount redefined with finitely-supported count (currently degenerate ≡0, sorries assert false)",
+        "blockedAt": "2026-07-20"
+      }
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -29,9 +35,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "FINDING: the two parent sorries (naturals_basis, basis_subset_reps) assert FALSE statements — representationCount is degenerate (≡0). Proved representationCount_eq_zero and not_isAdditiveBasis (axiom-free). The def KRepresentation.count : ℕ→ℕ is unconstrained off terms, making the rep type infinite ⟹ Nat.card=0 ⟹ IsAdditiveBasis unsatisfiable. Needs a parent def fix (finitely-supported count).",
+    "builtItems": [
+      "Erdos870.representationCount_eq_zero in Erdos870Incomplete01.lean",
+      "Erdos870.not_isAdditiveBasis in Erdos870Incomplete01.lean"
+    ],
+    "insights": [
+      "representationCount A k n = Nat.card {rep : KRepresentation A k n // True} is IDENTICALLY 0: KRepresentation.count : ℕ→ℕ is a total function only pinned on terms by sum_eq, so any existing rep spawns infinitely many by perturbing count off terms (Nat.card of infinite = 0); if none exists the type is empty (also 0).",
+      "Consequently IsAdditiveBasis A k (∃n₀,∀n≥n₀, representationCount≥1) is unsatisfiable for every A,k — proved not_isAdditiveBasis. So the parent sorries naturals_basis (line 199) and basis_subset_reps (line 221), both reducing to representationCount≥1, CANNOT be honestly closed; they assert false statements.",
+      "Fix (parent def change, out of scope for a companion): make count finitely supported — count : ℕ →₀ ℕ with support ⊆ terms, or replace count by a multiset of terms. Then representationCount becomes a genuine finite count."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
