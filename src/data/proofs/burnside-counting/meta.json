@@ -262,8 +262,32 @@
       "id": "sec-burnside-axioms",
       "title": "Part IV: Summary, Decidable Predicates, and the (now-proved) Necklace Count",
       "startLine": 306,
-      "endLine": 404,
+      "endLine": 430,
       "summary": "Documents the 6 necklace classes and fixed-point computation in comments. Defines IsFixedByRotation (decidable) and ColoringEquiv. Proves fixed_point_sum_binary_4 (sum=24, kernel `decide`), derives coloringSetoid (= AddAction.orbitRel) + coloringSetoid_decidableRel + coloringQuotientFintype (Quotient.fintype), and proves binary_necklaces_4 (= 6, via the additive Burnside lemma AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup plus the fixed-point sum, `decide` for the finite counts). All four were axioms in earlier revisions; the file is now axiom-free. Ends with #check statements confirming the definitions type-check."
+    },
+    {
+      "id": "sec-necklace-engine",
+      "title": "Part V: A Reusable Necklace-Count Engine",
+      "startLine": 431,
+      "endLine": 527,
+      "summary": "Abstracts the concrete computations into a reusable engine: sum_fixedBy_eq_card_necklaces_mul (the additive-Burnside identity ∑_r |Fix r| = |necklaces|·n), card_group_dvd_sum_fixedBy, and the count formula card_necklaces_eq_sum_fixedBy_div, re-derived for the binary 3-necklaces (fixed_point_sum_binary_3, binary_necklaces_3).",
+      "mathContext": "$\\#\\text{necklaces} = \\frac1n\\sum_{r\\in\\mathbb{Z}/n}|\\mathrm{Fix}(r)|$ (Burnside averaged over rotations)."
+    },
+    {
+      "id": "sec-primitive-fixedpoints",
+      "title": "Part VI: The Primitive-Rotation Fixed-Point Count",
+      "startLine": 528,
+      "endLine": 634,
+      "summary": "Characterizes fixed points of a primitive (unit) rotation: isFixed_nsmul, isConstant_of_isFixedByRotation_one (a coloring fixed by the unit rotation 1 is constant), the unit criterion isFixedByRotation_unit_iff_isConstant, and fixedBy_card_of_isUnit — a rotation by a unit of ℤ/n fixes exactly the k constant colorings.",
+      "mathContext": "A rotation by a unit $r\\in(\\mathbb{Z}/n)^\\times$ fixes only the $k$ constant colorings."
+    },
+    {
+      "id": "sec-prime-fermat",
+      "title": "Part VII: Prime-Length Necklaces and Fermat's Little Theorem",
+      "startLine": 635,
+      "endLine": 765,
+      "summary": "Specializes to prime length p: necklaces_prime_length_mul gives p·(#necklaces) = kᵖ + (p-1)k, whence prime_dvd_pow_sub_self (p ∣ kᵖ − k) and the necklace count card_necklaces_prime_length. Recasts these as Fermat's little theorem — pow_prime_modEq_self (kᵖ ≡ k mod p) and pow_prime_sub_one_modEq_one (k^(p-1) ≡ 1 for p∤k) — plus the aperiodic-necklace count card_aperiodic_necklaces_prime_length.",
+      "mathContext": "Counting length-$p$ necklaces gives $p \\mid k^p - k$, i.e. Fermat's little theorem $k^p \\equiv k \\pmod p$."
     }
   ],
   "sorries": 0
