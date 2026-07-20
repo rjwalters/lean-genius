@@ -26,6 +26,7 @@ References:
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Algebra.Squarefree.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -88,46 +89,20 @@ private lemma divisors_of_prime (p : ℕ) (hp : Nat.Prime p) :
   · rintro ⟨_, hd_dvd⟩
     exact hp.eq_one_or_self_of_dvd d hd_dvd
   · rintro (rfl | rfl)
-    · exact ⟨by omega, one_dvd p⟩
-    · exact ⟨by omega, dvd_refl p⟩
+    · exact ⟨by have := hp.two_le; omega, one_dvd _⟩
+    · exact ⟨by omega, dvd_refl _⟩
 
 /--
 **Helper: divisorList of a prime is [1, p].**
 -/
 private lemma divisorList_prime (p : ℕ) (hp : Nat.Prime p) :
     divisorList p = [1, p] := by
+  have hb : ∀ b ∈ ({p} : Finset ℕ), (1 : ℕ) ≤ b := by
+    intro b hb; rw [Finset.mem_singleton] at hb; subst hb; exact hp.one_lt.le
+  have hnm : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
+    rw [Finset.mem_singleton]; exact hp.one_lt.ne
   unfold divisorList
-  rw [divisors_of_prime p hp]
-  -- Goal: ({1, p} : Finset ℕ).sort (· ≤ ·) = [1, p]
-  -- Characterize by length, membership, sorted, nodup
-  set L := ({1, p} : Finset ℕ).sort (· ≤ ·) with hL_def
-  have hlen : L.length = 2 := by
-    rw [hL_def, Finset.length_sort]
-    rw [Finset.card_insert_of_notMem (show (1 : ℕ) ∉ ({p} : Finset ℕ) by simp [hp.one_lt.ne'])]
-    simp
-  obtain ⟨a, b, hab_eq⟩ := List.length_eq_two.mp hlen
-  have hmem : ∀ x, x ∈ L ↔ x ∈ ({1, p} : Finset ℕ) := fun x => Finset.mem_sort _
-  have hsorted := Finset.sort_sorted (· ≤ ·) ({1, p} : Finset ℕ)
-  rw [hab_eq] at hsorted
-  -- a ≤ b from sorted
-  have hle : a ≤ b := List.pairwise_cons.mp hsorted |>.1 b (List.mem_cons_self b [])
-  -- a, b ∈ {1, p}
-  have ha : a = 1 ∨ a = p := by
-    simpa using (hmem a).mp (hab_eq ▸ List.mem_cons_self a [b])
-  have hb : b = 1 ∨ b = p := by
-    simpa using (hmem b).mp (hab_eq ▸ List.mem_cons.mpr (Or.inr (List.mem_cons_self b [])))
-  -- a ≠ b (1 and p both in L, so if a = b then 1 = p, contradicting p > 1)
-  have hne : a ≠ b := by
-    intro heq; subst heq
-    have h1L : (1 : ℕ) ∈ L := (hmem 1).mpr (by simp)
-    have hpL : p ∈ L := (hmem p).mpr (by simp)
-    rw [hab_eq] at h1L hpL; simp at h1L hpL; omega
-  rw [hab_eq]
-  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
-  · exact absurd rfl hne
-  · rfl
-  · omega
-  · exact absurd rfl hne
+  rw [divisors_of_prime p hp, Finset.sort_insert (· ≤ ·) hb hnm, Finset.sort_singleton]
 
 /--
 **Helper: τ⊥(p) = 1 for any prime p.**
@@ -139,7 +114,7 @@ private lemma tauPerp_prime (p : ℕ) (hp : Nat.Prime p) :
   rw [divisorList_prime p hp]
   -- divs = [1, p], length = 2, range (2-1) = range 1 = [0]
   -- filter: gcd(getD [1,p] 0 0)(getD [1,p] 1 0) = gcd 1 p = 1 ✓
-  simp [List.getD, List.get?, Nat.gcd_one_left]
+  simp [Nat.gcd_one_left]
 
 /--
 **Helper: ω(p) = 1 for any prime p.**
@@ -147,7 +122,7 @@ private lemma tauPerp_prime (p : ℕ) (hp : Nat.Prime p) :
 private lemma omega_prime (p : ℕ) (hp : Nat.Prime p) :
     omega p = 1 := by
   unfold omega
-  rw [hp.primeFactors_eq]
+  rw [hp.primeFactors]
   simp
 
 /--
@@ -193,7 +168,7 @@ This asks if τ⊥(n) grows slower than any fixed power of log n.
 -/
 def question2_upper_bound : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    (tauPerp n : ℝ) < exp ((log n)^ε)
+    (tauPerp n : ℝ) < exp ((Real.log n)^ε)
 
 /--
 **Erdős-Hall lower bound on the maximum (1978):**
@@ -203,7 +178,7 @@ Axiomatized: requires deep analytic number theory (Erdős-Hall 1978).
 -/
 axiom erdos_hall_max_lower_bound :
     ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
-      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε))
+      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((Real.log (Real.log x))^(2 - ε))
 
 /- Status of Question 2: OPEN -/
 
@@ -215,7 +190,7 @@ axiom erdos_hall_max_lower_bound :
 **g(k): Maximum τ⊥ among squarefree n with exactly k prime factors**
 -/
 noncomputable def g (k : ℕ) : ℕ :=
-  sSup { tauPerp n | n : ℕ, Squarefree n ∧ omega n = k }
+  sSup { m : ℕ | ∃ n : ℕ, Squarefree n ∧ omega n = k ∧ tauPerp n = m }
 
 /--
 **Erdős-Simonovits bounds on g(k):**
@@ -321,7 +296,7 @@ theorem erdos_1100_summary :
     (∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n) ∧
     -- Erdős-Hall lower bound on max
     (∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
-      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε))) := by
+      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((Real.log (Real.log x))^(2 - ε))) := by
   constructor
   · exact tau_perp_lower_bound
   constructor
