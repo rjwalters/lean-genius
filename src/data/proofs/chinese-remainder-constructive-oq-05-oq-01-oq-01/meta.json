@@ -81,26 +81,34 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation & Setup",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring situating the entry against the sibling chinese-remainder-constructive-oq-05-oq-01 (which stopped at three moduli), stating the two headline results (crt_list_mod_iff, crt_list_existsUnique) and the deliberate avoidance of native_decide so the worked examples stay Lean.ofReduceBool-free. Imports Mathlib, opens the namespace, and opens scoped Function for the `on` notation in `Nat.Coprime on s`.",
+      "mathContext": "#print axioms on every theorem lists only propext / Classical.choice / Quot.sound — no native_decide, no Lean.ofReduceBool, no sorry, no axiom."
+    },
+    {
       "id": "list-certificate",
       "title": "The Arbitrary-Arity List Certificate",
-      "startLine": 59,
-      "endLine": 80,
+      "startLine": 50,
+      "endLine": 74,
       "summary": "crt_list_mod_iff: for a pairwise-coprime list ms, a witness N < ms.prod, and any x < ms.prod, (∀ m ∈ ms, x % m = N % m) ↔ x = N — generalising crt_pair_iff / crt_triple_iff to any arity via Nat.modEq_list_map_prod_iff and Nat.mod_eq_of_lt.",
       "mathContext": "Removes the sibling's three-modulus ceiling; the pair and triple certificates are the [m,n] and [m,n,p] specialisations."
     },
     {
       "id": "existence-uniqueness",
       "title": "The Existence-and-Uniqueness Capstone",
-      "startLine": 82,
-      "endLine": 102,
+      "startLine": 75,
+      "endLine": 98,
       "summary": "crt_list_existsUnique: for pairwise-coprime nonzero moduli and arbitrary residue targets, a UNIQUE x < (l.map s).prod satisfies all congruences — one ExistsUnique assembled from Mathlib's chineseRemainderOfList, _lt_prod, and _modEq_unique.",
       "mathContext": "The CRT bijection onto Fin (∏ sᵢ) packaged as a single statement, rather than Mathlib's three separate lemmas."
     },
     {
       "id": "worked-examples",
       "title": "Three- and Four-Modulus Worked Examples",
-      "startLine": 104,
-      "endLine": 120,
+      "startLine": 99,
+      "endLine": 123,
       "summary": "crt_11_mod_60 (reproving the sibling's [3,4,5] example through the list certificate) and the new four-modulus crt_100_mod_210 over [2,3,5,7] — both one-line instances of crt_list_mod_iff, kernel-checked.",
       "mathContext": "The four-modulus example is out of reach of the sibling's crt_triple_iff; crt_list_mod_iff handles any arity uniformly."
     }
