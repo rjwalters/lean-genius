@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "MERGED (doctor 2026-07-12, PR #35998 S8-S12 line rebased): internalized irregular->refinement increment now on main. exists_refinement_energy_gain_of_irregular: from a genuine partition insert A (insert B R) and a BARE not-IsEpsilonRegular hypothesis (0<eps), EXISTS a refinement with partitionEnergy gain >= eps^2/(8n^2) — witness extracted internally via exists_irregular_witness, freshness discharged from partition data (ne_of_subset_part_of_disjoint(') / ne_of_subset_disjoint_parts(')), B-branch closed by the two-step promotion split (partitionEnergy_twostep_Bside_gain_of_irregular). Plus partitionEnergy_filter_card_ne_zero (empty parts inert) and the _nonempty capstone variant. Energy-file lemmas of that PR were already on main via the parallel sharp-2x2 line and were dropped as superseded. 0 sorry, 0 axiom. PROGRESS (researcher-11, 2026-07-12): two-sided m×k whole-partition refinement MONOTONICITY (partitionEnergy_biUnion_split_mono_two) — simultaneously splitting two distinct parts A,B into disjoint families never decreases partitionEnergy, via iterating the one-part split twice; plus the pair-level floor pairEnergy_biUnion_split_mono_two. NEW file SzemerediRegularityOQ04FamilyProduct.lean, 2 thm 0 ax 0 sorry docker-VERIFIED. Remaining: the strict two-sided whole-partition GAIN (2·ε⁴ jump via the 3×3 block decomposition).",
+    "progressSummary": "PROGRESS: item-1 (energy-increment step) whole-partition regular-or-refine dichotomy discharged at the sharp ε⁴ floor as exists_prod_gain_of_irregular_partition / regular_count_or_prod_gain (SzemerediRegularityOQ04PartitionGain.lean, 0 ax / 0 sorry). Items 2/3 (two-level statement + outer assembly) in flight via PRs #39363/#39434; remaining crux is the freshness-carrying whole-partition energy_increment_step.",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -81,7 +81,8 @@
       "exists_refinement_energy_gain_of_irregular (Bridge) — INTERNALIZED capstone: bare not-IsEpsilonRegular + genuine partition => EXISTS refinement with gain >= eps^2/(8n^2)",
       "exists_refinement_energy_gain_of_irregular_in_partition (Bridge) — partition-membership phrasing of the capstone",
       "partitionEnergy_filter_card_ne_zero (Bridge) — empty parts are partitionEnergy-inert",
-      "exists_refinement_energy_gain_of_irregular_nonempty (Bridge) — capstone outputs nonempty-parts refinement, same floor"
+      "exists_refinement_energy_gain_of_irregular_nonempty (Bridge) — capstone outputs nonempty-parts refinement, same floor",
+      "exists_prod_gain_of_irregular_partition + regular_count_or_prod_gain in SzemerediRegularityOQ04PartitionGain.lean — item-1 whole-partition regular-or-refine dichotomy at the sharp ε⁴ floor (0 axioms, 0 sorries, docker-verified)"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -110,7 +111,8 @@
       "Parts I-IV only guarantee ONE regular step in a window N>1/δ; adding the MONOTONICITY hypothesis (true for AFKS refinement energy) upgrades this to a COUNTING result: the irregular (δ-increment) steps number at most ⌊1/δ⌋ across the ENTIRE run, so in any window N at least N−1/δ steps are regular. The deficit 1/δ is a fixed constant, so the regular-step fraction →1: irregular steps are a bounded exceptional set. This is genuinely stronger than existence — it is the quantitative why-almost-every-refinement-is-regular statement. Monotonicity is essential: without it a [0,1] potential can bounce 0→δ→0→δ and increment unboundedly often.",
       "The partitionEnergy docstring general monotonicity claim (splitting a part never decreases energy) had only been proved for two-piece splits (partitionEnergy_single_split_mono); the arbitrary-family m-fold generalization is now discharged via the same block decomposition, one m-fold pair-split application per affected block.",
       "The m-fold one-sided pair split (pe (biUnion As) B <= sum_i pe (As i) B) is a clean Finset.induction folding the existing two-piece pairEnergy_split_mono over biUnion; it plus its comm-mirror are the reusable atoms the whole-partition lift consumes.",
-      "The two-part whole-partition refinement MONOTONICITY needs NO fresh block bookkeeping: iterate the one-part partitionEnergy_biUnion_split_mono twice (split A treating insert B R as rest, then split B treating I.image As ∪ R as rest). The distinctness hyps of a genuine partition (Aᵢ≠B, Aᵢ≠Bⱼ, A≠B, all ∉R) discharge the two freshness side-conditions; the middle re-association I.image As ∪ insert B R = insert B (I.image As ∪ R) is exactly Finset.union_insert."
+      "The two-part whole-partition refinement MONOTONICITY needs NO fresh block bookkeeping: iterate the one-part partitionEnergy_biUnion_split_mono twice (split A treating insert B R as rest, then split B treating I.image As ∪ R as rest). The distinctness hyps of a genuine partition (Aᵢ≠B, Aᵢ≠Bⱼ, A≠B, all ∉R) discharge the two freshness side-conditions; the middle re-association I.image As ∪ insert B R = insert B (I.image As ∪ R) is exactly Finset.union_insert.",
+      "Item-1 dichotomy (too-irregular partition ⇒ a sharp 2×2 ε⁴ energy-increment refinement of an irregular pair) chains on merged primitives: Szemeredi.Regularity.exists_irregular_pair ∘ RegularityOQ04Bridge.pairEnergy_prod_gain_of_irregular_eps4. No new machinery; this is the hdich-shaped input the item-3 outer-loop assembly (exists_afksTwoLevel_of_dichotomy, PRs #39363/#39434) takes as an unproved hypothesis."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -309,6 +311,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04ToleranceBridge.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04PartitionGain.lean",
+      "filename": "SzemerediRegularityOQ04PartitionGain.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04PartitionGain.lean"
     }
   ],
   "lastUpdate": "2026-07-12"
