@@ -78,7 +78,7 @@
       "id": "tpi-oq01-inversion-idem",
       "title": "Parts IV–V: Inversion and Self-Regularization",
       "startLine": 115,
-      "endLine": 164,
+      "endLine": 179,
       "summary": "derivedMem_of_not_foundation: mem x x ⇒ derivedMem mem y x ↔ ¬ mem y x (the round-trip inverts). roundtrip_fails_example: a concrete Unit model with total membership witnesses genuine failure. derivedWFM packages the derived membership as a WellFoundedMembership; derivedMem_idempotent: applying the round-trip twice changes nothing (idempotent regularization), from the parent's roundtrip on derivedWFM.",
       "mathContext": "When Foundation fails the round-trip flips to $\\neg\\,\\mathrm{mem}\\,y\\,x$; since $D(\\mathrm{mem})$ is always well-founded, $D \\circ D = D$ — an idempotent projection onto well-founded membership."
     }
