@@ -38,7 +38,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 384,
-    "assumptions": "No axioms or sorries. The dual law is reduced to a polynomial identity (hyp_dual_poly, by ring) after clearing all radicals and denominators, so the cleared and cross-product forms need no non-degeneracy side conditions. The reverse Cauchy–Schwarz lemma reverse_cauchy_schwarz takes the hyperboloid constraints (mdot x x = −1) and future-direction (positive timelike component) as hypotheses on the input vectors. KERNEL-VERIFIED: lake env lean -Dexperimental.module=true compiles green (exit 0) on Mathlib v4.26.0; #print axioms reports the standard [propext, Classical.choice, Quot.sound] for hyp_dual_law_trig, hyp_dual_law_minkowski_cleared, hyp_dual_law_cross_product_form, and reverse_cauchy_schwarz (no sorryAx, no Lean.ofReduceBool).",
+    "assumptions": "No axioms or sorries. The dual law is reduced to a polynomial identity (hyp_dual_poly, by ring) after clearing all radicals and denominators, so the cleared and cross-product forms need no non-degeneracy side conditions. The reverse Cauchy–Schwarz lemma reverse_cauchy_schwarz takes the hyperboloid constraints (mdot x x = −1) and future-direction (positive timelike component) as hypotheses on the input vectors. KERNEL-VERIFIED: lake env lean -Dexperimental.module=true compiles green (exit 0) on Mathlib v4.31.0; #print axioms reports the standard [propext, Classical.choice, Quot.sound] for hyp_dual_law_trig, hyp_dual_law_minkowski_cleared, hyp_dual_law_cross_product_form, and reverse_cauchy_schwarz (no sorryAx, no Lean.ofReduceBool).",
     "dateAdded": "2026-06-23",
     "mathlib_version": "4.31.0",
     "originalContributions": [
