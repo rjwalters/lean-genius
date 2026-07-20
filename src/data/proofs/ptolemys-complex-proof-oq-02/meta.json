@@ -59,7 +59,7 @@
     ],
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "lineCount": 351,
+    "lineCount": 304,
     "assumptions": "Core result derived via Mathlib's Real.sin_add (line 199 of PtolemysComplexProofOQ02.lean): the key chord-length lemma norm_exp_diff uses Real.sin_add to establish ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β). All other steps — Ptolemy equality application, CCW order verification, remaining chord lemmas, and non-degeneracy conditions — are independently formalized. 0 axiom declarations, 0 sorries.",
     "theoremCount": 11,
     "definitionCount": 0
@@ -87,39 +87,39 @@
       "id": "sec-header",
       "title": "Module Header: Classical Derivation Setup",
       "startLine": 1,
-      "endLine": 47,
+      "endLine": 45,
       "summary": "Header describes the classical Ptolemy → sine addition derivation. Four imports: PtolemysTheoremOQ01 (for ptolemy_equality_for_unit_circle_ccw, IsCCWOrder), trigonometric basics, complex analysis, and Tactic. The open statement brings Real and Complex into scope. The namespace PtolemysComplexProofOQ02 contains all lemmas.",
       "mathContext": "The proof strategy is Ptolemy's original: choose z₁=1, z₂=exp(2αI), z₃=−1, z₄=exp(−2βI) on the unit circle. For α,β ∈ (0,π/4), these are in CCW order with angles 0 < 2α < π < 2π−2β < 2π. The Ptolemy equality for these four points gives sin(α+β) = sinα cosβ + cosα sinβ."
     },
     {
       "id": "sec-chord-lemmas",
       "title": "Section I: Chord Length Lemmas",
-      "startLine": 48,
-      "endLine": 208,
+      "startLine": 46,
+      "endLine": 160,
       "summary": "Five public lemmas compute all chord lengths needed for the Ptolemy substitution. Each uses the squared-norm approach: compute ‖z‖² via Complex.normSq, simplify using double-angle formulas, then extract the positive square root using nlinarith. Private helpers normSq_one_sub_exp and norm_sq_one_sub_exp provide the base case ‖1 − exp(θI)‖² = 2 − 2cosθ.",
       "mathContext": "The key identity: $|1 - e^{i\\theta}|^2 = (1 - \\cos\\theta)^2 + \\sin^2\\theta = 2 - 2\\cos\\theta$. Using $\\cos 2\\alpha = 1 - 2\\sin^2\\alpha$: $|1 - e^{2\\alpha i}|^2 = 4\\sin^2\\alpha$. For the diagonal: $|e^{2\\alpha i} - e^{-2\\beta i}|^2 = 2 - 2\\cos(2\\alpha+2\\beta) = 4\\sin^2(\\alpha+\\beta)$."
     },
     {
       "id": "sec-ccw",
       "title": "Section II: CCW Order Verification",
-      "startLine": 209,
-      "endLine": 244,
+      "startLine": 161,
+      "endLine": 194,
       "summary": "Proves IsCCWOrder 1 (exp(2αI)) (−1) (exp(−2βI)) by exhibiting the angle parametrization θ₁=0, θ₂=2α, θ₃=π, θ₄=2π−2β. The verification uses Complex.exp_zero (z₁=1), rfl (z₂), Complex.exp_pi_mul_I (z₃=−1), and Complex.exp_two_pi_mul_I for the periodicity identity exp((2π−2β)I) = exp(−2βI).",
       "mathContext": "The CCW angle conditions: 0 < 2α (from hα), 2α < π (from hα' < π/2), π < 2π−2β (from hβ > 0), 2π−2β < 2π (from hβ > 0). The periodicity step: exp((2π−2β)I) = exp(−2βI · exp(2πI)) = exp(−2βI)·1 = exp(−2βI)."
     },
     {
       "id": "sec-nondeg",
       "title": "Section III: Non-Degeneracy Conditions",
-      "startLine": 246,
-      "endLine": 284,
+      "startLine": 195,
+      "endLine": 236,
       "summary": "Two private lemmas prove the denominator product (z₁−z₂)(z₃−z₄) ≠ 0 and numerator product (z₂−z₃)(z₁−z₄) ≠ 0. Each factor is shown nonzero by contradiction: if it were zero, the corresponding chord length would be 0, but the chord lemmas give it as 2sinθ > 0 or 2cosθ > 0 for the given ranges.",
       "mathContext": "Non-degeneracy is needed for ptolemy_equality_for_unit_circle_ccw. The conditions ‖z_i − z_j‖ > 0 are proved using the chord length lemmas together with Real.sin_pos_of_pos_of_lt_pi and Real.cos_pos_of_mem_Ioo."
     },
     {
       "id": "sec-main",
       "title": "Section IV: Main Theorem — sin(α+β) = sinα cosβ + cosα sinβ",
-      "startLine": 286,
-      "endLine": 351,
+      "startLine": 237,
+      "endLine": 304,
       "summary": "sin_add_from_ptolemy: the main theorem. Sets up the four unit-circle points, gathers unit-circle membership, CCW order, and non-degeneracy conditions, applies ptolemy_equality_for_unit_circle_ccw, then substitutes all six chord lengths (d13=2, d24=2sin(α+β), d12=2sinα, d34=2cosβ, d23=2cosα, d14=2sinβ) into Ptolemy's equality, giving 4sin(α+β) = 4(sinα cosβ + cosα sinβ), closed by linarith.",
       "mathContext": "The Ptolemy equality after substitution is $2 \\cdot 2\\sin(\\alpha+\\beta) = 2\\sin\\alpha \\cdot 2\\cos\\beta + 2\\cos\\alpha \\cdot 2\\sin\\beta$, i.e., $4\\sin(\\alpha+\\beta) = 4(\\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta)$. Since $\\sin(\\alpha+\\beta) > 0$, we divide by 4 to get the result — but `linarith` handles this directly without division."
     }
@@ -161,7 +161,7 @@
       "Real"
     ],
     "namespace": "PtolemysComplexProofOQ02",
-    "lineCount": 351,
+    "lineCount": 304,
     "axiomCount": 0,
     "theoremCount": 11,
     "substantiveTheoremCount": 1,
