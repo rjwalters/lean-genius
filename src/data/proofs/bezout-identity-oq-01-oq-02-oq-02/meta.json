@@ -22,9 +22,9 @@
     "sorries": 0,
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
-    "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked (0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide); #print axioms on the transitivity and unimodular-completion theorems reports only [propext, Classical.choice, Quot.sound]. Verified with `lake env lean` against the prebuilt Mathlib oleans.",
-    "lineCount": 563,
-    "theoremCount": 25,
+    "assumptions": "None beyond Mathlib's foundational axioms. The primary file (BezoutIdentityOQ01OQ02OQ02.lean, 0 sorries / 0 axiom declarations / no native_decide) is machine-checked under Lean/Mathlib v4.31; #print axioms on its transitivity and unimodular-completion theorems reports only [propext, Classical.choice, Quot.sound]. The two registered additionalFiles — BezoutIdentityOQ01OQ02OQ02Descent.lean (descent engine) and BezoutIdentityOQ01OQ02OQ02Transitive.lean (pairwise-transitivity capstone: reduce_to_gcd, sln_transitive, sln_acts_transitive) — were independently verified to compile clean under v4.31 (Docker build + host lake env lean, foundational axioms only). The capstone build fix under v4.31 lands via PR #39180.",
+    "lineCount": 739,
+    "theoremCount": 37,
     "definitionCount": 2,
     "originalContributions": [
       "IsPrimitive v := ∃ w, w ⬝ᵥ v = 1 — a coordinate-free, manifestly SLₙ(ℤ)-invariant notion of primitivity for integer vectors (absent from Mathlib)",
@@ -34,6 +34,10 @@
       "exists_sl_mulVec_eq_of_isPrimitive / exists_sl_mulVec_basis_of_isPrimitive: full transitivity for n ≥ 2 — the primitive vectors form a single SLₙ(ℤ)-orbit, with the sign pinned down onto e₁",
       "exists_sl_col_eq_of_isPrimitive: unimodular completion — every primitive vector is a column of some SLₙ(ℤ) matrix (extends to a ℤ-basis), obtained by inverting the transitivity move",
       "isPrimitive_fin_two_iff_isCoprime: the explicit n=2 bridge — IsPrimitive v ↔ IsCoprime (v 0) (v 1), identifying the dual vector with the parent's Bézout coefficients"
+    ],
+    "additionalFiles": [
+      "Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean",
+      "Proofs/BezoutIdentityOQ01OQ02OQ02Transitive.lean"
     ]
   },
   "overview": {
@@ -106,7 +110,11 @@
     "theoremCount": 37,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean",
+      "Proofs/BezoutIdentityOQ01OQ02OQ02Transitive.lean"
+    ]
   },
   "crossReferences": [
     {
