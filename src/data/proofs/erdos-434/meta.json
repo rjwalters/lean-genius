@@ -68,10 +68,10 @@
       "Greedy construction equals topK (rfl)",
       "Proved zero_representable, mem_representable, add_representable"
     ],
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 465,
-    "assumptions": "4 axioms (kiss_2002, sylvester_frobenius, sylvester_count, frobenius_consecutive). 0 sorries: all supporting lemmas, including the finiteness results nonrep_finite and topK_finite, are fully proved.",
-    "theoremCount": 19,
+    "assumptions": "3 axioms (kiss_2002, sylvester_count, frobenius_consecutive). 0 sorries: all supporting lemmas are fully proved. The Sylvester–Frobenius / Chicken McNugget value formula (frobeniusNumber {a,b} = ab-a-b, formerly axiom sylvester_frobenius) is now proved from Mathlib's Nat.frobeniusNumber_pair via the new representable_iff_mem_closure bridge. The count formula sylvester_count ((a-1)(b-1)/2) remains axiomatized (no Mathlib genus formula).",
+    "theoremCount": 21,
     "definitionCount": 10,
     "additionalFiles": [
       "Proofs/Erdos434Aristotle.lean"
@@ -107,8 +107,8 @@
     "opens": [],
     "namespace": "Erdos434",
     "lineCount": 465,
-    "axiomCount": 4,
-    "theoremCount": 19,
+    "axiomCount": 3,
+    "theoremCount": 21,
     "definitionCount": 10,
     "path": "Proofs/Erdos434Problem.lean",
     "sorries": 0,
