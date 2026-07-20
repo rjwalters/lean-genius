@@ -37,7 +37,12 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Structural facts of the Gaussian *polynomial* `qBinom X n k` over `ℤ[X]`:
       monicity, `natDegree = k(n-k)`, constant term `= 1`, nonnegative coefficients,
       and hence both extreme coefficients pinned to `1`
-- [ ] OPEN: coefficient unimodality (Sylvester/Proctor) — not attempted here
+- [x] Unimodality reduction: `UnimodalCoeffs` predicate + `unimodalCoeffs_of_palindromic_of_monotone_left`
+      (nonneg + palindromic + monotone-left ⇒ two-sided unimodal), instantiated for `qBinom X n k`
+- [x] `k ≤ 1` columns fully unimodal: `k = 0` (`qBinom_X_unimodalCoeffs_zero`) and `k = 1`
+      (`qBinom_X_one_unimodal`, unconditionally — discharges `hmono` from the flat `[n]_q` row),
+      plus the open-question no-valley target form (`CoeffNoValley`, `qBinom_X_{zero,one}_noValley`)
+- [ ] OPEN: one-sided monotonicity `hmono` for general `k` (Sylvester/Proctor) — not attempted here
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
@@ -396,5 +401,196 @@ the root of the `combinations-formula` lineage. -/
 theorem qBinom_X_eval_one (n k : ℕ) :
     (qBinom (X : ℤ[X]) n k).eval 1 = (Nat.choose n k : ℤ) := by
   rw [qBinom_X_eval, qBinom_at_one]
+
+/-! ### Unimodality: reducing the open half to one-sided monotonicity
+
+All results above establish the **symmetric** half of Sylvester's symmetric-unimodal theorem
+(palindromy `qBinom_X_coeff_symm'`, pinned extremes, nonnegativity).  The genuinely deep half
+is **unimodality** — the coefficient array rises to a single central peak and then falls.
+
+The lemma below is the standard structural reduction: for *any* nonnegative, palindromic
+integer polynomial, being weakly increasing up to the middle index already forces full
+two-sided unimodality (the falling half is the mirror image of the rising half).  Applied to
+`qBinom X n k`, whose palindromy is already proven, this isolates the *single* remaining open
+content of Sylvester's theorem into one hypothesis: that the coefficients weakly increase up
+to `⌊k(n-k)/2⌋`.  Everything else is now discharged. -/
+
+open Polynomial in
+/-- A polynomial's integer coefficient sequence is **unimodal**: it weakly rises to some peak
+index `m` and weakly falls thereafter.  Coefficients beyond the degree are `0`, so the falling
+tail stays consistent for a nonnegative polynomial. -/
+def UnimodalCoeffs (P : ℤ[X]) : Prop :=
+  ∃ m : ℕ, (∀ i j, i ≤ j → j ≤ m → P.coeff i ≤ P.coeff j) ∧
+           (∀ i j, m ≤ i → i ≤ j → P.coeff j ≤ P.coeff i)
+
+open Polynomial in
+/-- **Palindromy reduces two-sided unimodality to one-sided monotonicity.**
+If `P : ℤ[X]` has nonnegative coefficients (`hnn`), no coefficient above degree `d` (`htop`), a
+palindromic coefficient array on `[0,d]` (`hpal`: `a_j = a_{d-j}`), and its coefficients are
+weakly increasing up to the midpoint `⌊d/2⌋` (`hmono`), then the whole coefficient sequence is
+unimodal, with peak at `⌈d/2⌉`.  The decreasing half is obtained from the increasing half by
+reflecting indices through `d` via `hpal`; the odd-`d` middle plateau `a_{⌊d/2⌋} = a_{⌈d/2⌉}`
+is itself a consequence of `hpal`. -/
+theorem unimodalCoeffs_of_palindromic_of_monotone_left
+    (P : ℤ[X]) (d : ℕ)
+    (hnn : ∀ i, 0 ≤ P.coeff i)
+    (htop : ∀ i, d < i → P.coeff i = 0)
+    (hpal : ∀ j, j ≤ d → P.coeff j = P.coeff (d - j))
+    (hmono : ∀ i j, i ≤ j → j ≤ d / 2 → P.coeff i ≤ P.coeff j) :
+    UnimodalCoeffs P := by
+  refine ⟨(d + 1) / 2, ?_, ?_⟩
+  · -- increasing up to ⌈d/2⌉ = (d+1)/2
+    intro i j hij hjm
+    by_cases hj2 : j ≤ d / 2
+    · exact hmono i j hij hj2
+    · -- forced: d odd and j = ⌈d/2⌉ = ⌊d/2⌋ + 1; then `a_j = a_{⌊d/2⌋}` by palindromy
+      have hjd : j ≤ d := by omega
+      have hdj : d - j = d / 2 := by omega
+      have hpalj : P.coeff j = P.coeff (d / 2) := by rw [hpal j hjd, hdj]
+      rcases le_or_gt i (d / 2) with hi | hi
+      · rw [hpalj]; exact hmono i (d / 2) hi le_rfl
+      · have hije : i = j := by omega
+        rw [hije]
+  · -- decreasing from ⌈d/2⌉
+    intro i j hmi hij
+    by_cases hjd : j ≤ d
+    · -- both indices ≤ d: reflect through d and use the increasing half
+      have hid : i ≤ d := le_trans hij hjd
+      have e1 : P.coeff i = P.coeff (d - i) := hpal i hid
+      have e2 : P.coeff j = P.coeff (d - j) := hpal j hjd
+      have hji : d - j ≤ d - i := by omega
+      have hidhalf : d - i ≤ d / 2 := by omega
+      rw [e1, e2]; exact hmono (d - j) (d - i) hji hidhalf
+    · -- j past the degree: `a_j = 0 ≤ a_i`
+      have hj0 : P.coeff j = 0 := htop j (by omega)
+      rw [hj0]; exact hnn i
+
+open Polynomial in
+/-- **Sylvester unimodality reduced to one-sided monotonicity for the Gaussian polynomial.**
+Instantiating `unimodalCoeffs_of_palindromic_of_monotone_left` with the palindromy
+(`qBinom_X_coeff_symm'`), nonnegativity (`qBinom_X_coeff_nonneg`) and degree
+(`qBinom_X_natDegree`) already proven for `qBinom X n k`: to conclude the full unimodality of
+the coefficient sequence of `[n,k]_q` it now suffices to prove the coefficients are weakly
+increasing up to the middle index `⌊k(n-k)/2⌋`.  This pins the *single* genuinely deep step of
+Sylvester's theorem (the `hmono` hypothesis) apart from all its symmetric scaffolding. -/
+theorem qBinom_X_unimodalCoeffs_of_monotone_left {n k : ℕ} (h : k ≤ n)
+    (hmono : ∀ i j, i ≤ j → j ≤ k * (n - k) / 2 →
+        (qBinom (X : ℤ[X]) n k).coeff i ≤ (qBinom (X : ℤ[X]) n k).coeff j) :
+    UnimodalCoeffs (qBinom (X : ℤ[X]) n k) := by
+  refine unimodalCoeffs_of_palindromic_of_monotone_left
+    (qBinom (X : ℤ[X]) n k) (k * (n - k))
+    (fun i => qBinom_X_coeff_nonneg n k i) ?_ ?_ hmono
+  · intro i hi
+    exact coeff_eq_zero_of_natDegree_lt (by rw [qBinom_X_natDegree h]; exact hi)
+  · intro j hj
+    exact qBinom_X_coeff_symm' h hj
+
+open Polynomial in
+/-- Sanity instance: the `k = 0` Gaussian polynomial `[n,0]_q = 1` has a unimodal (constant)
+coefficient sequence — the one-sided monotonicity hypothesis is vacuous since the middle index
+is `0`.  Confirms the reduction pipeline `qBinom_X_unimodalCoeffs_of_monotone_left` is usable
+and non-vacuous. -/
+theorem qBinom_X_unimodalCoeffs_zero (n : ℕ) :
+    UnimodalCoeffs (qBinom (X : ℤ[X]) n 0) := by
+  apply qBinom_X_unimodalCoeffs_of_monotone_left (Nat.zero_le n)
+  intro i j hij hj
+  have hj0 : j = 0 := by
+    have : j ≤ 0 := by simpa using hj
+    omega
+  have hi0 : i = 0 := by omega
+  subst hj0; subst hi0
+  exact le_rfl
+
+/-! ### Discharging the reduction for the `k = 1` column (unconditional unimodality)
+
+The reduction `qBinom_X_unimodalCoeffs_of_monotone_left` leaves the single hypothesis
+`hmono` (coefficients weakly increase up to the midpoint). For `k = 1` we can discharge it
+outright, because `[n,1]_q = [n]_q = 1 + q + ⋯ + q^{n-1}` (`qBinom_one_right`) has the flat
+coefficient sequence `1,…,1` on `[0, n-1]`: every coefficient on the left half is `1`, so
+weak monotonicity is trivial. This upgrades the vacuous `k = 0` sanity instance to the first
+**nontrivial** column of Sylvester's theorem proved with no monotonicity assumption — the
+`k = 1` Gaussian polynomial has honest degree `n-1`. -/
+
+open Polynomial in
+/-- **Explicit coefficients of the `q`-number** `[n]_X = 1 + X + ⋯ + X^{n-1} : ℤ[X]`:
+`coeff j = 1` for `j < n` and `0` otherwise. Induction on `n` via `[n+1]_X = 1 + X·[n]_X`:
+the `1` sets the new constant term and `X·[n]_X` shifts the previous coefficients up by one. -/
+theorem qNumber_X_coeff :
+    ∀ (n j : ℕ), (qNumber (X : ℤ[X]) n).coeff j = if j < n then 1 else 0
+  | 0, j => by rw [qNumber_zero]; simp
+  | n + 1, 0 => by simp [qNumber_succ]
+  | n + 1, j + 1 => by
+      rw [qNumber_succ, coeff_add, coeff_X_mul, coeff_one, if_neg (Nat.succ_ne_zero j),
+          zero_add, qNumber_X_coeff n j]
+      simp
+
+open Polynomial in
+/-- **Explicit coefficients of the `k = 1` Gaussian polynomial.**
+`([n,1]_X).coeff j = 1` when `j < n` and `0` otherwise — from `qBinom_one_right`
+(`[n,1]_q = [n]_q`) and `qNumber_X_coeff`. -/
+theorem qBinom_X_one_coeff (n j : ℕ) :
+    (qBinom (X : ℤ[X]) n 1).coeff j = if j < n then 1 else 0 := by
+  rw [qBinom_one_right, qNumber_X_coeff]
+
+open Polynomial in
+/-- **The `k = 1` column is unimodal, unconditionally.** `[n,1]_q = 1 + q + ⋯ + q^{n-1}` has the
+flat coefficient sequence `1,…,1,0,0,…`; the one-sided monotonicity hypothesis `hmono` of
+`qBinom_X_unimodalCoeffs_of_monotone_left` holds because every coefficient on `[0, ⌊(n-1)/2⌋]`
+equals `1`. Hence `UnimodalCoeffs (qBinom X n 1)` with no assumption. This is the first
+**nontrivial** instance of Sylvester's unimodality theorem in this gallery (the `n = 0` case,
+where `[0,1]_q = 0`, is handled separately as the zero polynomial). -/
+theorem qBinom_X_one_unimodal (n : ℕ) : UnimodalCoeffs (qBinom (X : ℤ[X]) n 1) := by
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · -- `[0,1]_q = 0`: the zero polynomial is (vacuously) unimodal
+    subst hn
+    exact ⟨0, by intro i j hij hj; simp, by intro i j hi hij; simp⟩
+  · -- `n ≥ 1`: apply the reduction and discharge `hmono` from the flat left half
+    apply qBinom_X_unimodalCoeffs_of_monotone_left (by omega : 1 ≤ n)
+    intro i j hij hj
+    simp only [one_mul] at hj
+    have hjn : j < n := by
+      have := Nat.div_le_self (n - 1) 2
+      omega
+    have hin : i < n := lt_of_le_of_lt hij hjn
+    rw [qBinom_X_one_coeff, qBinom_X_one_coeff, if_pos hin, if_pos hjn]
+
+/-! ### The open question's exact target: no interior strict valley
+
+The problem statement asks for unimodality in the *no interior strict valley* form: there is
+no index `i` with `a_{i-1} > a_i < a_{i+1}`. We record that predicate (`CoeffNoValley`), show
+it follows from `UnimodalCoeffs`, and discharge it for the `k ≤ 1` columns via the results
+above. -/
+
+open Polynomial in
+/-- **No-interior-strict-valley predicate.** There is no index with `a_i > a_{i+1} < a_{i+2}` —
+verbatim the open question's target ("no `i` with `a_{i-1} > a_i < a_{i+1}`", reindexed so the
+valley sits at `i+1`). -/
+def CoeffNoValley (P : ℤ[X]) : Prop :=
+  ∀ i : ℕ, ¬ (P.coeff (i + 1) < P.coeff i ∧ P.coeff (i + 1) < P.coeff (i + 2))
+
+open Polynomial in
+/-- **Unimodality implies the target no-valley condition.** At any candidate valley `i+1`,
+either it lies on the weakly-rising side (so `a_i ≤ a_{i+1}`, contradicting `a_{i+1} < a_i`) or
+on the weakly-falling side (so `a_{i+2} ≤ a_{i+1}`, contradicting `a_{i+1} < a_{i+2}`). -/
+theorem coeffNoValley_of_unimodalCoeffs {P : ℤ[X]} (h : UnimodalCoeffs P) :
+    CoeffNoValley P := by
+  obtain ⟨m, hup, hdown⟩ := h
+  rintro i ⟨hlt1, hlt2⟩
+  rcases le_total (i + 1) m with hm | hm
+  · exact absurd (hup i (i + 1) (Nat.le_succ i) hm) (not_le.mpr hlt1)
+  · exact absurd (hdown (i + 1) (i + 2) hm (Nat.le_succ _)) (not_le.mpr hlt2)
+
+open Polynomial in
+/-- **Target condition (no valley) for the `k = 0` column** — the open question's statement,
+discharged for `k = 0` via the reduction's k=0 instance. -/
+theorem qBinom_X_zero_noValley (n : ℕ) : CoeffNoValley (qBinom (X : ℤ[X]) n 0) :=
+  coeffNoValley_of_unimodalCoeffs (qBinom_X_unimodalCoeffs_zero n)
+
+open Polynomial in
+/-- **Target condition (no valley) for the `k = 1` column** — the open question's exact
+statement ("no `i` with `a_{i-1} > a_i < a_{i+1}`"), discharged unconditionally for `k = 1`.
+The general `k` case remains open. -/
+theorem qBinom_X_one_noValley (n : ℕ) : CoeffNoValley (qBinom (X : ℤ[X]) n 1) :=
+  coeffNoValley_of_unimodalCoeffs (qBinom_X_one_unimodal n)
 
 end QBinomialCoefficients
