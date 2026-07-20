@@ -174,7 +174,7 @@
       "id": "sign-facts",
       "title": "Sign Facts: Odd Transposition vs. Even Double Transposition",
       "startLine": 96,
-      "endLine": 112,
+      "endLine": 120,
       "summary": "isSwap_not_mem_alternating shows a transposition is odd (the discriminant direction, Gal not-subset A_5). prod_two_swaps_mem_alternating shows a product of two transpositions is even — the formal correction: complex conjugation on the roots of X^5 - X - 1 is a double transposition in A_5, so it cannot be the transposition the curated route assumed.",
       "mathContext": "sign(transposition) = -1; sign(double transposition) = (-1)(-1) = 1. Conjugation fixes the one real root and swaps the two conjugate pairs.",
       "relatedConcepts": [
@@ -187,15 +187,99 @@
     {
       "id": "polynomial",
       "title": "Anchoring the Quintic f = X⁵ − X − 1",
-      "startLine": 114,
-      "endLine": 129,
-      "summary": "Defines f = X^5 - X - 1 over Q and proves degree 5 (compute_degree!), monicity (monicity!), and prime degree (norm_num) — the structural facts that make the prime-degree machinery applicable to f.Gal.",
+      "startLine": 122,
+      "endLine": 136,
+      "summary": "Defines f = X^5 - X - 1 over Q and proves degree 5 (f_natDegree, compute_degree!), monicity (f_monic, monicity!), and prime degree (natDegree_prime, norm_num) — the structural facts that make the prime-degree machinery (subgroup_eq_top_of_swap_mem, prime_degree_dvd_card) applicable to f.Gal.",
       "mathContext": "f monic of prime degree 5; Selmer (1956) proved X^5 - X - 1 irreducible, giving transitivity and 5 | |Gal|.",
       "relatedConcepts": [
         "monic polynomial",
         "Selmer irreducibility",
         "prime degree",
         "compute_degree!"
+      ]
+    },
+    {
+      "id": "order-divisibility-real-gal",
+      "title": "Order Divisibility for the Real Galois Group (five_dvd_card_gal)",
+      "startLine": 137,
+      "endLine": 165,
+      "summary": "Discharges the order-divisibility input 5 | |Gal| for the GENUINE Galois group f.Gal — not an abstract subgroup — directly from irreducibility, with no Frobenius/Dedekind input. five_dvd_card_gal applies Mathlib's Polynomial.Gal.prime_degree_dvd_card (a prime-degree irreducible over a characteristic-zero field acts transitively on its roots, so deg | |Gal| by orbit-stabiliser), specialized at natDegree_prime. This replaces the abstract frob3 half of the bridge by a purely algebraic fact, leaving only the transposition input Frobenius-dependent.",
+      "mathContext": "For irreducible f of prime degree p over a field of characteristic 0, transitivity of Gal on the p roots gives p | |Gal| (orbit-stabiliser). Here p = 5, so 5 | Nat.card f.Gal, conditional only on Irreducible f.",
+      "relatedConcepts": [
+        "prime_degree_dvd_card",
+        "orbit-stabiliser theorem",
+        "transitive Galois action",
+        "Galois group order"
+      ]
+    },
+    {
+      "id": "irreducibility-selmer",
+      "title": "Unconditional Irreducibility via Selmer (f_irreducible, five_dvd_card_gal_unconditional)",
+      "startLine": 167,
+      "endLine": 188,
+      "summary": "Removes the last hypothesis. f_irreducible discharges Irreducible f as a direct instance of Mathlib's Polynomial.X_pow_sub_X_sub_one_irreducible_rat at n = 5 (Selmer's unit-trinomial theorem, proved via Gauss's lemma from the ℤ[X] statement). Feeding it into five_dvd_card_gal yields five_dvd_card_gal_unconditional: 5 | Nat.card f.Gal holds UNCONDITIONALLY, axiom-free and sorry-free, for the real polynomial — the order-divisibility half of the corrected Gal ≅ S₅ proof, with no Dedekind–Frobenius bridge.",
+      "mathContext": "Selmer (1956): X^n − X − 1 is irreducible over ℚ for all n ≠ 1. Instantiated at n = 5, this makes 5 | |Gal(X⁵−X−1)| a theorem with no remaining assumptions.",
+      "relatedConcepts": [
+        "Selmer irreducibility",
+        "unit trinomial",
+        "Gauss's lemma",
+        "X_pow_sub_X_sub_one_irreducible_rat"
+      ]
+    },
+    {
+      "id": "mod3-reduction",
+      "title": "Mod-3 Reduction: the 5-Cycle Corroboration (f3, no_root_mod3)",
+      "startLine": 190,
+      "endLine": 227,
+      "summary": "Sources the concrete frob3 5-cycle witness. Over 𝔽₃ = ZMod 3, irreducibility of the monic quintic rules out a linear and a quadratic factor (Monic.irreducible_iff_lt_natDegree_lt, natDegree/2 = 2). no_root_mod3 verifies the linear half completely by decide: X⁵−X−1 has no root in 𝔽₃ (0↦−1, 1↦−1, 2↦2⁵−2−1 ≡ 2). f3_no_root restates this as the no-linear-factor input. The remaining quadratic obstruction is documented as corroborative future work — the headline 5 | |Gal| is already unconditional via Selmer.",
+      "mathContext": "Irreducible mod 3 ⟹ a Frobenius element at p = 3 is a single 5-cycle. The finite check over ZMod 3 excludes fixed points, ruling out (1,4)/(1,1,3)/… cycle types.",
+      "relatedConcepts": [
+        "reduction mod p",
+        "irreducibility over 𝔽₃",
+        "Frobenius cycle type",
+        "decide"
+      ]
+    },
+    {
+      "id": "frobenius-p2",
+      "title": "Frobenius Witness at p = 2: the Transposition (frob2, f2_factorization)",
+      "startLine": 229,
+      "endLine": 293,
+      "summary": "Makes the swap input of gal_eq_top_of_five_dvd_and_swap concrete. f2_factorization machine-checks X⁵−X−1 ≡ (X²+X+1)(X³+X²+1) in 𝔽₂[X] (the 2-coefficients of the expansion vanish in characteristic 2, via linear_combination against (2 : 𝔽₂[X]) = 0); quad_no_root_mod2 and cubic_no_root_mod2 show each factor is irreducible (no root), giving the (2,3) factor type. frob2 = (0 1)(2 3 4) models the resulting order-6 Frobenius: frob2_not_mem_alternating (it is odd), frob2_pow_three_eq_swap (its cube is the transposition (0 1)), and frob2_pow_three_isSwap package the prose 'order-6 ⟹ transposition' step as verified permutation data.",
+      "mathContext": "Factorisation type (2,3) mod 2 ⟹ Frobenius of cycle type (2,3), an order-6 element whose cube is a transposition. frob2³ = (0 1) supplies hypothesis (b) of the assembly criterion.",
+      "relatedConcepts": [
+        "reduction mod 2",
+        "characteristic 2 identity",
+        "order-6 permutation",
+        "transposition from Frobenius"
+      ]
+    },
+    {
+      "id": "frobenius-p3-capstone",
+      "title": "Frobenius Witness at p = 3 and the Capstone (frob3, gal_eq_top_of_frobenii)",
+      "startLine": 295,
+      "endLine": 354,
+      "summary": "Makes the order-divisibility input concrete and assembles S₅. frob3 = (0 1 2 3 4) models the 5-cycle Frobenius at p = 3: frob3_pow_five and frob3_ne_one feed orderOf_frob3 (order 5, since 5 is prime). five_dvd_card_of_frob3_mem then derives 5 | |G| for any subgroup G containing frob3 via Lagrange. The capstone gal_eq_top_of_frobenii combines both witnesses — frob3 gives 5 | |G|, frob2³ ∈ G gives the transposition — through gal_eq_top_of_five_dvd_and_swap to conclude G = ⊤ = S₅, modulo only the open Dedekind–Frobenius bridge placing the representatives inside the real Galois group.",
+      "mathContext": "orderOf frob3 = 5 ⟹ (Lagrange) 5 | |G| for G ∋ frob3. With frob2³ a transposition in G, the prime-degree criterion forces G = S₅.",
+      "relatedConcepts": [
+        "5-cycle",
+        "Lagrange's theorem",
+        "orderOf_dvd_card",
+        "Galois group assembly"
+      ]
+    },
+    {
+      "id": "closure-generation",
+      "title": "Unconditional Generation: ⟨frob2, frob3⟩ = S₅ (closure_frobenii_eq_top)",
+      "startLine": 356,
+      "endLine": 378,
+      "summary": "Specializes the capstone to the subgroup the two witnesses generate. closure_frobenii_eq_top proves Subgroup.closure {frob2, frob3} = ⊤: since both permutations lie in their own closure, gal_eq_top_of_frobenii applies, so the explicit elements frob2 = (0 1)(2 3 4) and frob3 = (0 1 2 3 4) generate all of S₅ — the concrete, hypothesis-free form of the assembly criterion. Classically, a transposition and a 5-cycle generate S₅; the genuinely-open content of OQ-07 is not this group theory but the Dedekind–Frobenius bridge.",
+      "mathContext": "A transposition (0 1) and the 5-cycle (0 1 2 3 4) generate S₅. The order-5 cycle forces 5 | |⟨frob2,frob3⟩| and frob2³ supplies the transposition, so the generated subgroup cannot be proper.",
+      "relatedConcepts": [
+        "generation of S_p",
+        "Subgroup.closure",
+        "symmetric group generators",
+        "hypothesis-free criterion"
       ]
     }
   ],
