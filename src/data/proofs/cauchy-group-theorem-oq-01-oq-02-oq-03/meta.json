@@ -66,10 +66,18 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Imports and the module docstring framing the result — a squarefree group order forces every Sylow subgroup to be cyclic of prime order — as the uniform theorem behind the parent's concrete S₃ picture, built over Mathlib's Sylow API and factorization; namespace, open Subgroup, and the variable {G} [Group G] [Finite G] setup.",
+      "mathContext": "|G| squarefree $\\Rightarrow$ every Sylow $p$-subgroup is cyclic of order $p$ (or trivial)."
+    },
+    {
       "id": "collapse",
       "title": "The Multiplicity Collapse",
       "startLine": 74,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "factorization_eq_one_of_squarefree_dvd: for |G| squarefree and a prime p ∣ |G|, the p-adic valuation v_p(|G|) = 1. This is the single number-theoretic engine — no prime can appear above the first power in a squarefree number.",
       "mathContext": "Squarefree n and p ∣ n ⟹ n.factorization p = 1; the input that forces Sylow subgroups down to prime order."
     },
@@ -77,15 +85,23 @@
       "id": "prime-order",
       "title": "Every Sylow Subgroup Cyclic of Prime Order",
       "startLine": 86,
-      "endLine": 144,
-      "summary": "sylow_card_eq_prime_of_squarefree: |P| = p^(v_p|G|) = p¹ = p (parent's card_eq_multiplicity + collapse). sylow_isCyclic_of_squarefree_dvd: a group of prime order is cyclic (isCyclic_of_prime_card). sylow_card_eq_one_or_prime_of_squarefree pins the order to 1 or p for every prime; sylow_isCyclic_of_squarefree shows every Sylow subgroup is cyclic with no hypothesis on p (trivial ones via isCyclic_of_subsingleton); sylow_cyclic_of_prime_order_of_squarefree packages |P| = p ∧ IsCyclic P.",
-      "mathContext": "|G| squarefree, p ∣ |G| ⟹ |P| = p and P cyclic; in general |P| ∈ {1,p} and P always cyclic."
+      "endLine": 107,
+      "summary": "sylow_card_eq_prime_of_squarefree: |P| = p^(v_p|G|) = p¹ = p (parent's card_eq_multiplicity composed with the multiplicity collapse). sylow_isCyclic_of_squarefree_dvd: a group of prime order is cyclic (isCyclic_of_prime_card), so under p ∣ |G| every Sylow p-subgroup is cyclic of order exactly p.",
+      "mathContext": "|G| squarefree, p ∣ |G| ⟹ |P| = p^1 = p, and prime order ⟹ P cyclic."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Sharp Dichotomy and Full Cyclicity",
+      "startLine": 108,
+      "endLine": 145,
+      "summary": "sylow_card_eq_one_or_prime_of_squarefree pins the order to 1 or p for every prime (whether or not p ∣ |G|); sylow_isCyclic_of_squarefree shows every Sylow subgroup is cyclic with no hypothesis on p (trivial ones via isCyclic_of_subsingleton); sylow_cyclic_of_prime_order_of_squarefree packages the p ∣ |G| case as |P| = p ∧ IsCyclic P.",
+      "mathContext": "For every prime p: |P| ∈ {1, p} and P always cyclic; p ∣ |G| ⟹ |P| = p ∧ IsCyclic P."
     },
     {
       "id": "s3",
       "title": "Recovering the S₃ Picture in General",
       "startLine": 146,
-      "endLine": 174,
+      "endLine": 176,
       "summary": "squarefree_card_perm_fin3 (|S₃| = 6 = 2·3 squarefree, via Nat.squarefree_mul_iff and Prime.squarefree). sylow2_perm_fin3_cyclic and sylow3_perm_fin3_cyclic produce the order-2 (cyclic) and order-3 (cyclic) Sylow subgroups of S₃ as instances of sylow_cyclic_of_prime_order_of_squarefree — the parent's concrete numbers, now corollaries of the uniform theorem.",
       "mathContext": "S₃ (order 6 = 2·3 squarefree): Sylow 2-subgroup cyclic of order 2, Sylow 3-subgroup cyclic of order 3 (the alternating A₃)."
     }
