@@ -42,7 +42,7 @@
       "erdos_1156_q1_conjecture axiom: constant concentration conjecture",
       "erdos_1156_q2_conjecture theorem: anti-concentration (trivially proved placeholder)",
       "isKColorable_card theorem: n-colorability of n-vertex graphs",
-      "isKColorable_zero_iff theorem: 0-colorable iff edgeless"
+      "isKColorable_zero_iff theorem: 0-colorable iff the vertex type is empty"
     ],
     "axiomCount": 3,
     "lineCount": 124,
@@ -54,7 +54,7 @@
     "historicalContext": "**Erdős Problem #1156: A 35-Year Journey Toward Constant Concentration**\n\nThe chromatic number $\\chi(G)$ of the Erdős–Rényi random graph $G(n, 1/2)$ has been a central subject in probabilistic combinatorics since the 1970s.\n\n**Bollobás (1988)** proved the asymptotic formula $\\chi(G(n,1/2)) \\sim n/(2\\log_2 n)$ almost surely — establishing that the chromatic number grows, but sublinearly. His proof used the second moment method and the observation that dense subgraphs dominate the coloring barrier.\n\n**Shamir–Spencer (1987)** showed $\\chi$ concentrates within $O(n^{1/2})$ values using the martingale method: the Azuma–Hoeffding inequality applied to a vertex exposure martingale (revealing vertices one at a time) gives $|\\chi - \\mathbb{E}[\\chi]| = O(n^{1/2})$ with high probability.\n\n**Alon–Krivelevich (1997)** tightened this to $O(n^{1/2}/\\log n)$ using a more careful analysis of 'color-critical' subgraphs and the structure of the chromatic number near its expectation.\n\n**Heckel (2021)** achieved the breakthrough result: for at least half of all $n$, $\\chi(G(n,1/2))$ concentrates on just *two consecutive values* — meaning $C = 1$ suffices for a density-1 subsequence of $n$. Her proof exploited the 'jumping' behavior of the chromatic number as $n$ increases, related to changes in the structure of extremal color-critical subgraphs.\n\n**Status (2026):** The general conjecture ($C = O(1)$ for ALL $n$) remains open. The gap between Alon–Krivelevich's $O(n^{1/2}/\\log n)$ and the conjectured $O(1)$ is a polynomial factor, with no conditional results known.",
     "problemStatement": "**Question 1 (Constant concentration):**\nDoes there exist a constant C such that chi(G(n, 1/2)) is almost surely concentrated within at most C values?\n\n**Question 2 (Anti-concentration):**\nFor any slowly growing omega(n) -> infinity, does there exist f(n) such that Pr[|chi(G) - f(n)| < omega(n)] < 1/2 for all sufficiently large n?\n\nQuestion 1 remains the central open problem. Question 2 is stated as a placeholder (the measure-theoretic formalization would require MeasureTheory).",
     "text": "Does there exist a constant C such that the chromatic number of G(n, 1/2) is almost surely concentrated within at most C values?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Chromatic Number:** Self-contained definition via IsKColorable' and chromaticNumber' (minimum k for proper k-coloring)\n\n2. **Random Graph Model:** Axiomatized via erdosRenyi type and chromaticNumberRV (no MeasureTheory infrastructure in Mathlib for graph probability spaces)\n\n3. **Question 1:** Axiomatized as erdos_1156_q1_conjecture -- existence of constant C bounding concentration width\n\n4. **Question 2:** Proved trivially (placeholder body is True) -- proper formalization needs measure theory\n\n5. **Basic Facts:** Proved isKColorable_card (every n-vertex graph is n-colorable) and isKColorable_zero_iff (0-colorable iff edgeless)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Chromatic Number:** Self-contained definition via IsKColorable' and chromaticNumber' (minimum k for proper k-coloring)\n\n2. **Random Graph Model:** Axiomatized via erdosRenyi type and chromaticNumberRV (no MeasureTheory infrastructure in Mathlib for graph probability spaces)\n\n3. **Question 1:** Axiomatized as erdos_1156_q1_conjecture -- existence of constant C bounding concentration width\n\n4. **Question 2:** Proved trivially (placeholder body is True) -- proper formalization needs measure theory\n\n5. **Basic Facts:** Proved isKColorable_card (every n-vertex graph is n-colorable) and isKColorable_zero_iff (0-colorable iff the vertex type is empty)",
     "keyInsights": [
       "**Bollobas Asymptotic:** chi(G(n,1/2)) ~ n/(2 log_2 n) a.s. -- the chromatic number grows, but slowly relative to n",
       "**Concentration Gap:** Best known upper bound is O(n^{1/2}/log n) values, but the conjecture is O(1) -- a polynomial gap",
@@ -95,7 +95,7 @@
     {
       "id": "basic-facts",
       "title": "Basic Coloring Facts",
-      "summary": "Proved: every n-vertex graph is n-colorable; 0-colorable iff edgeless",
+      "summary": "Proved: every n-vertex graph is n-colorable; 0-colorable iff the vertex type is empty",
       "startLine": 81,
       "endLine": 96,
       "mathContext": "isKColorable_card and isKColorable_zero_iff theorems"
