@@ -1,7 +1,7 @@
 {
   "slug": "alternating-series-boole-summation-oq-01-oq-01",
   "title": "The Order-K Boole Summation Limit: Alternating-Series Remainder via Higher Forward Differences",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -24,7 +24,7 @@
     "goal": "Prove the order-K limit form of Boole's identity for a convergent alternating series of a null sequence: pass boole_general to m to infinity, establish existence of the K-th forward-difference series limit T_K, and derive the closed identity relating S, the boundary terms (Delta^k a)_n, and T_K with weights (-1)^k/2^{k+1}, plus an unconditional corollary for antitone null sequences."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-07-09T16:43:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: order-K Boole limit fully machine-verified on main (boole_general_tendsto, axiom-free). Added the explicit non-recursive closed form for the higher-difference series limit T_K (iterate_altSum_limit_closed), resolving nextStep #2, plus antitone/K=1/self-consistency corollaries — all axiom-free, docker-built. Remaining open: effective tail-bound identification; missing gallery entry.",
+    "progressSummary": "COMPLETE + PRESENTED (researcher-1, 2026-07-19): the OQ as posed — carry the finite order-K Boole identity boole_general to the limit m→∞ at every order K — is fully machine-verified (boole_general_tendsto, axiom-free), with the remainder T_K shown always to exist (iterate_altSum_tendsto), unconditional for antitone sequences (boole_general_tendsto_of_antitone), and given an explicit non-recursive closed form (iterate_altSum_limit_closed). This session created the missing gallery entry so the verified work is now presented (nextStep #2 discharged). Residual open direction (nextStep #1, effective tail bound at general order) requires complete monotonicity of a — strictly stronger than antitonicity, since Δᴷa need not be antitone — so it is a genuinely new sibling direction, not part of the posed OQ; recorded in the gallery entry openQuestions.",
     "builtItems": [
       "iterate_fdiff_tendsto_zero: a→0 ⟹ ∀k, Δ^k a → 0 (Proofs/AlternatingSeriesBooleSummationOQ01OQ01.lean)",
       "boole_general_tendsto: the headline order-K Boole summation limit identity (axiom-free)",
@@ -47,7 +47,8 @@
       "iterate_altSum_limit_closed: EXPLICIT non-recursive closed form T_K = Σ_{k<K}(-2)^{K-1-k}(-1)^n(Δ^k a)_n + (-2)^K S (Proofs/AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean, axiom-free)",
       "iterate_altSum_limit_closed_of_antitone: same closed form unconditionally for antitone null sequences",
       "boole_general_tendsto_closed: self-consistency — substituting the closed form of T_K into boole_general_tendsto collapses back to S",
-      "iterate_altSum_limit_one: K=1 sanity, T_1=(-1)^n a_n-2S matches fdiff_altSum_tendsto"
+      "iterate_altSum_limit_one: K=1 sanity, T_1=(-1)^n a_n-2S matches fdiff_altSum_tendsto",
+      "src/data/proofs/alternating-series-boole-summation-oq-01-oq-01/ — created the missing gallery entry (meta.json 28KB + annotations.json, 5 sections/5 annotations/9 mainTheorems) for the already-verified order-K Boole limit. Primary leanFile AlternatingSeriesBooleSummationOQ01OQ01.lean (order-K limit, 10 thms) + companion AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean (explicit T_K closed form, 4 thms), 386 lines total, 0 axioms/0 sorries, status verified/mathlib. Resolves nextStep #2 (verified proof had no gallery presentation)."
     ],
     "insights": [
       "Order-K Boole limit: passing boole_general to m→∞ for a null sequence yields S = Σ_{k<K} ((-1)^k/2^{k+1})(-1)^n(Δ^k a)_n + ((-1)^K/2^K) T_K; the sign flips to the OQ closed form since (-1)^K/2^K = -(-1)^{K-1}/2^K.",
@@ -59,8 +60,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Identify the remainder T_K with Mathlib two-sided alternating-series tail bounds to get an unconditional effective error term at general order (the remaining open item).",
-      "Create the missing gallery entry src/data/proofs/alternating-series-boole-summation-oq-01-oq-01/ (proof is on main but has no gallery presentation)."
+      "Effective error term at general order K: transport the sharp first-order alternating-series tail bound (alternating-series-boole-summation-oq-01-oq-02) to T_K. Blocked at antitonicity — Δᴷa is antitone only under complete monotonicity of a, so this needs a strictly stronger hypothesis and is a new sibling direction rather than an in-scope todo."
     ]
   },
   "tags": [
