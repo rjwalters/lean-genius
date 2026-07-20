@@ -135,7 +135,7 @@
       "title": "Part III: Hilton-Milner Theorem (1967)",
       "startLine": 507,
       "endLine": 549,
-      "summary": "IsStar A k: ∃ x, A = Star x k. hiltonMilnerBound n k := C(n-1,k-1) - C(n-k-1,k-1) + 1. hilton_milner axiom: if A is intersecting, not a star, and n≥2k, then |A| ≤ hiltonMilnerBound. hm_bound_n7_k3: hiltonMilnerBound 7 3 = 14 (verified by native_decide). hm_gap_positive: hiltonMilnerBound n k < C(n-1,k-1) when n>2k and k≥2 (since C(n-k-1,k-1) ≥ k ≥ 2 > 1).",
+      "summary": "IsStar A k: ∃ x, A = Star x k. hiltonMilnerBound n k := C(n-1,k-1) - C(n-k-1,k-1) + 1. hilton_milner axiom: if A is intersecting, not a star, and n≥2k, then |A| ≤ hiltonMilnerBound. hm_bound_n7_k3: hiltonMilnerBound 7 3 = 13 (= 15 - 3 + 1, verified by native_decide). hm_gap_positive: hiltonMilnerBound n k < C(n-1,k-1) when n>2k and k≥2 (since C(n-k-1,k-1) ≥ k ≥ 2 > 1).",
       "mathContext": "Hilton-Milner (1967) characterizes the 'second-largest' intersecting family: it consists of one set B plus all k-sets that meet B and contain a fixed core element not in B. The HM bound = C(n-1,k-1) - C(n-k-1,k-1) + 1 is strictly less than the EKR bound C(n-1,k-1) for n>2k, showing stars are significantly larger than non-star intersecting families."
     },
     {
