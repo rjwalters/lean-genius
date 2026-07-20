@@ -13,7 +13,7 @@
     "lineCount": 230,
     "theoremCount": 9,
     "definitionCount": 0,
-    "assumptions": "None. The general closed form ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) is fully machine-checked for all r ≤ n; the r=1,2,3 specialisations and the raw cubic moment are stated for n ≥ r. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). NOTE: not yet kernel-rebuilt in this session (Docker build host was unavailable); the proof is verified by inspection and by exact dependency-signature checks against the cited sibling and Mathlib lemmas, pending a confirming build.",
+    "assumptions": "None. The general closed form ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) is fully machine-checked for all r ≤ n; the r=1,2,3 specialisations and the raw cubic moment are stated for n ≥ r. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). Machine-checked under the pinned Lean/Mathlib toolchain v4.31.0: the full parent chain and this file elaborate with no errors, and #print axioms confirms every top-level theorem carries exactly the axiom set stated above.",
     "tags": [
       "combinatorics",
       "binomial-coefficients",

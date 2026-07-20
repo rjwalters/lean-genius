@@ -13,7 +13,7 @@
     "lineCount": 186,
     "theoremCount": 4,
     "definitionCount": 0,
-    "assumptions": "None. The Stirling bridge m^p = ∑_{r=0}^{p} S(p,r)·(m)_r and the general power moment ∑_{k=0}^{n} k^p·C(n,k)² = ∑_{r=0}^{p} S(p,r)·(n)_r·C(2n−r,n−r) are fully machine-checked for all p and n with no hypotheses. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). NOTE: not kernel-rebuilt in this session (the Docker build host was hung, exit 124); the proof is a careful structural induction whose every tactic mirrors the verified parent CombinationsFormulaOQ07OQ04OQ01, with all Mathlib and sibling lemma names and signatures checked against the installed toolchain. The deployer build-gate verifies before merge.",
+    "assumptions": "None. The Stirling bridge m^p = ∑_{r=0}^{p} S(p,r)·(m)_r and the general power moment ∑_{k=0}^{n} k^p·C(n,k)² = ∑_{r=0}^{p} S(p,r)·(n)_r·C(2n−r,n−r) are fully machine-checked for all p and n with no hypotheses. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). Machine-checked under the pinned Lean/Mathlib toolchain v4.31.0: the full parent chain and this file elaborate with no errors, and #print axioms confirms every top-level theorem carries exactly the axiom set stated above.",
     "tags": [
       "combinatorics",
       "binomial-coefficients",
