@@ -38,10 +38,14 @@ lemma log_pos_of_ge_two (n : ℕ) (hn : n ≥ 2) : Real.log n > 0 :=
 lemma rpow_one_eq (x : ℝ) : x ^ (1 : ℝ) = x :=
   Real.rpow_one x
 
-/-- c * x / y ≥ x / y when c ≥ 1 and y > 0 -/
-lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hy : y > 0) :
-    c * x / y ≥ x / y := by
-  sorry
+/-- `c * x / y ≥ x / y` when `c ≥ 1`, `x ≥ 0` and `y > 0`.
+
+The `x ≥ 0` hypothesis is essential: without it the statement is false (e.g.
+`c = 2, x = -1, y = 1` gives `-2 ≥ -1`), since scaling a *negative* numerator by
+`c ≥ 1` makes it more negative. -/
+lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hx : 0 ≤ x) (hy : y > 0) :
+    c * x / y ≥ x / y :=
+  (div_le_div_iff_of_pos_right hy).mpr (by nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ c - 1) hx])
 
 /-- c * x^2 / log n ≥ x^2 / log n when c ≥ 1 -/
 lemma const_sq_div_log_ge (c x : ℝ) (n : ℕ) (hc : c ≥ 1) (hlog : Real.log n > 0) :
@@ -82,14 +86,37 @@ lemma productSet_card_ge (A : Finset ℤ) (hA : A.Nonempty) :
 noncomputable def multEnergy (A : Finset ℤ) : ℕ :=
   ((A ×ˢ A) ×ˢ (A ×ˢ A)).filter (fun ((a, b), (c, d)) => a * b = c * d) |>.card
 
-/-- E×(A) ≥ |A|^2 (at least the diagonal pairs (a,a), (a,a)) -/
-lemma multEnergy_ge_sq (A : Finset ℤ) : multEnergy A ≥ A.card ^ 2 := by
-  sorry
+/-- `multEnergy A` is Mathlib's `Finset.mulEnergy A A`. -/
+lemma multEnergy_eq_mulEnergy (A : Finset ℤ) :
+    multEnergy A = Finset.mulEnergy A A := by
+  unfold multEnergy
+  exact (Finset.mulEnergy_eq_card_filter A A).symm
 
-/-- Cauchy-Schwarz: E×(A) * |A*A| ≥ |A|^4 -/
-lemma cauchy_schwarz_energy (A : Finset ℤ) (hA : A.card ≥ 2) :
+/-- E×(A) ≥ |A|² (embed the diagonal `(a,b) ↦ ((a,b),(a,b))`, which always
+    satisfies `a·b = a·b`, so the `|A|²` pairs inject into the energy set). -/
+lemma multEnergy_ge_sq (A : Finset ℤ) : multEnergy A ≥ A.card ^ 2 := by
+  unfold multEnergy
+  have hcard : A.card ^ 2 = (A ×ˢ A).card := by rw [Finset.card_product]; ring
+  rw [hcard]
+  refine Finset.card_le_card_of_injOn (fun p => (p, p)) ?_ ?_
+  · intro p hp
+    obtain ⟨a, b⟩ := p
+    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hp, hp⟩, rfl⟩
+  · intro a _ b _ hab
+    exact (Prod.ext_iff.mp hab).1
+
+/-- Cauchy–Schwarz: `E×(A) · |A·A| ≥ |A|⁴`, from Mathlib's
+    `Finset.le_card_mul_mul_mulEnergy`. -/
+lemma cauchy_schwarz_energy (A : Finset ℤ) (_hA : A.card ≥ 2) :
     (multEnergy A : ℝ) * (A * A : Finset ℤ).card ≥ (A.card : ℝ) ^ 4 := by
-  sorry
+  have hnat : A.card ^ 4 ≤ multEnergy A * (A * A : Finset ℤ).card := by
+    rw [multEnergy_eq_mulEnergy]
+    calc A.card ^ 4 = A.card ^ 2 * A.card ^ 2 := by ring
+      _ ≤ (A * A).card * Finset.mulEnergy A A := Finset.le_card_mul_mul_mulEnergy A A
+      _ = Finset.mulEnergy A A * (A * A).card := by ring
+  calc (A.card : ℝ) ^ 4 = ((A.card ^ 4 : ℕ) : ℝ) := by push_cast; ring
+    _ ≤ ((multEnergy A * (A * A : Finset ℤ).card : ℕ) : ℝ) := by exact_mod_cast hnat
+    _ = (multEnergy A : ℝ) * (A * A : Finset ℤ).card := by push_cast; ring
 
 /-
   ## Section 4: Bound Arithmetic
