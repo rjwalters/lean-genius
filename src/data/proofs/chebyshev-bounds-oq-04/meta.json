@@ -2,7 +2,7 @@
   "id": "chebyshev-bounds-oq-04",
   "title": "Chebyshev's Second Function: ψ(n) Bounds",
   "slug": "chebyshev-bounds-oq-04",
-  "description": "The second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) sums the von Mangoldt function Λ over all integers up to n. Unlike the first Chebyshev function θ which sums log p over primes, ψ includes all prime powers p^j. This entry proves θ(n) ≤ ψ(n) (directly from the subset structure), derives the lower bound ψ(2n) - ψ(n) ≥ log(n+1) from Bertrand's postulate, and axiomatizes the upper bound ψ(n) ≤ 2n·log 2 and the Prime Number Theorem equivalence ψ(n)/n → 1.",
+  "description": "The second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) sums the von Mangoldt function Λ over all integers up to n. Unlike the first Chebyshev function θ which sums log p over primes, ψ includes all prime powers p^j. This entry proves θ(n) ≤ ψ(n) (directly from the subset structure), derives the lower bound ψ(2n) - ψ(n) ≥ log(n+1) from Bertrand's postulate, proves the upper bound ψ(n) ≤ 2n·log 2 via the central binomial estimate C(2n,n) ≤ 4ⁿ, and axiomatizes only the Prime Number Theorem asymptotic ψ(n)/n → 1 and its equivalence to π(n) ~ n/log n.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",
@@ -41,7 +41,7 @@
   },
   "overview": {
     "historicalContext": "The second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p was introduced by Chebyshev alongside θ(x) = Σ_{p ≤ x} log p. While θ counts primes with logarithmic weight, ψ also counts prime powers, making it analytic ally more tractable: ψ(x) = Σ_p ⌊log_p(x)⌋ · log p, which connects to the logarithmic derivative of the Riemann zeta function via ψ(x) = -Σ_ρ x^ρ/ρ + x - log(2π) - ½log(1 - x^{-2}) (Riemann's explicit formula). The Prime Number Theorem — proved independently by Hadamard and de la Vallée Poussin in 1896 — is equivalent to ψ(x) ~ x.",
-    "problemStatement": "Define the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) where Λ is the von Mangoldt function, and prove:\n\n1. **θ(n) ≤ ψ(n)**: the first Chebyshev function is bounded by the second\n2. **ψ(2n) − ψ(n) ≥ log(n+1)** for n ≥ 1: the Bertrand lower bound on increments\n3. **ψ(n) ≤ 2n·log 2**: the Chebyshev upper bound (axiomatized)\n4. **ψ(n)/n → 1**: the Prime Number Theorem for ψ (axiomatized)",
+    "problemStatement": "Define the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) where Λ is the von Mangoldt function, and prove:\n\n1. **θ(n) ≤ ψ(n)**: the first Chebyshev function is bounded by the second\n2. **ψ(2n) − ψ(n) ≥ log(n+1)** for n ≥ 1: the Bertrand lower bound on increments\n3. **ψ(n) ≤ 2n·log 2**: the Chebyshev upper bound (proved via the central binomial estimate C(2n,n) ≤ 4ⁿ)\n4. **ψ(n)/n → 1**: the Prime Number Theorem for ψ (axiomatized)",
     "proofStrategy": "The bound θ(n) ≤ ψ(n) follows cleanly: for any prime p ≤ n, Λ(p) = log p, so the sum defining θ is a sub-sum of ψ with the same summand (after rewriting via vonMangoldt_apply_prime). Since Λ(k) ≥ 0 for all k, adding more terms only increases the sum.\n\nThe lower bound ψ(2n) − ψ(n) ≥ log(n+1) uses Bertrand's postulate: there exists a prime p with n < p ≤ 2n (Mathlib's Nat.exists_prime_lt_and_le_two_mul_add_one). Since p > n, we have log p ≥ log(n+1). Since p ∈ range(2n+1) but p ∉ range(n+1), its contribution Λ(p) = log p appears in ψ(2n) but not ψ(n), giving ψ(2n) − ψ(n) ≥ Λ(p) ≥ log(n+1).\n\nThe upper bound ψ(n) ≤ 2n·log 2 follows by telescoping: applying the doubling lemma ψ(m) − ψ(m/2) ≤ m·log 2 repeatedly, the geometric series Σ m·2^{-k} converges to 2m. The doubling lemma itself follows from the central binomial estimate: prime powers in (m/2, m] divide C(m, ⌊m/2⌋) ≤ 2^m.",
     "keyInsights": [
       "The key identity vonMangoldt_apply_prime (Λ(p) = log p for primes) allows rewriting θ as a sum of vonMangoldt values over primes, making the θ ≤ ψ comparison immediate via Finset.sum_le_sum_of_subset_of_nonneg",
@@ -58,7 +58,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This entry defines the second Chebyshev function ψ(n) in Lean 4 using Mathlib's von Mangoldt function, proves the key inequality θ(n) ≤ ψ(n) from the subset structure of the defining sums, and establishes the Bertrand lower bound ψ(2n) − ψ(n) ≥ log(n+1). The Chebyshev upper bound and PNT equivalence are axiomatized with proof sketches.",
+    "summary": "This entry defines the second Chebyshev function ψ(n) in Lean 4 using Mathlib's von Mangoldt function, proves the key inequality θ(n) ≤ ψ(n) from the subset structure of the defining sums, and establishes the Bertrand lower bound ψ(2n) − ψ(n) ≥ log(n+1). The Chebyshev upper bound ψ(n) ≤ 2n·log 2 is proved via the central binomial estimate; only the PNT asymptotic ψ(n)/n → 1 and its equivalence to π(n) ~ n/log n remain axiomatized.",
     "implications": "The second Chebyshev function ψ is the most analytically tractable of the prime-counting functions: its explicit formula connects it directly to zeros of the Riemann zeta function. Proving ψ(n) ~ n is equivalent to proving the Prime Number Theorem, and the Riemann Hypothesis is equivalent to the error term |ψ(n) − n| = O(√n · log²n).",
     "openQuestions": [
       "Prove the full PNT ψ(n)/n → 1 from scratch in Lean 4 — currently requires either complex analysis of ζ(s) or an elementary proof (Selberg/Erdős 1949 style)",
@@ -128,10 +128,10 @@
     },
     {
       "id": "sec-lower-bound",
-      "title": "Lower Bound ψ(n) ≥ (n/2)·log 2",
+      "title": "Lower Bound: ψ(2n) − ψ(n) ≥ log(n+1)",
       "startLine": 322,
       "endLine": 350,
-      "summary": "Proves `chebyshevPsi_doubling_lower`: $\\psi(2n)-\\psi(n) \\ge \\log(n+1)$ for $n \\ge 1$. Uses Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul_add_one`) to produce a prime $p \\in (n, 2n]$; that prime contributes $\\Lambda(p) = \\log p \\ge \\log(n+1)$ to $\\psi(2n)$ but not to $\\psi(n)$, so `Finset.single_le_sum` bounds the difference below — yielding the matching elementary lower bound $\\psi(n) \\ge \\tfrac{n}{2}\\log 2$."
+      "summary": "Proves `chebyshevPsi_doubling_lower`: $\\psi(2n)-\\psi(n) \\ge \\log(n+1)$ for $n \\ge 1$. Uses Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul_add_one`) to produce a prime $p \\in (n, 2n]$; that prime contributes $\\Lambda(p) = \\log p \\ge \\log(n+1)$ to $\\psi(2n)$ but not to $\\psi(n)$, so `Finset.single_le_sum` bounds the difference below. The summary theorem `chebyshevPsi_bounds` packages this as the elementary lower bound $\\psi(n) \\ge \\log(\\lfloor n/2\\rfloor + 1)$; the linear bound $\\psi(n) \\ge \\tfrac{n}{2}\\log 2$ is not formalized in this file."
     },
     {
       "id": "sec-pnt",

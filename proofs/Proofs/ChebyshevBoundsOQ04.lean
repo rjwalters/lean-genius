@@ -319,10 +319,11 @@ theorem chebyshevPsi_upper_bound (n : ℕ) :
       positivity;
     · exact h_step.trans ( by have := ih ( k + 1 + 1 ) ( by linarith ) ; norm_num at * ; nlinarith [ Real.log_nonneg one_le_two ] )
 
-/-! ## Lower Bound ψ(n) ≥ (n/2) · log 2
+/-! ## Lower Bound: ψ(2n) − ψ(n) ≥ log(n+1)
 
 From Bertrand's postulate (π(2n) > π(n)), there's a prime p with n < p ≤ 2n,
-so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives a lower bound. -/
+so θ(2n) - θ(n) ≥ log(n+1). Combined with θ(n) ≤ ψ(n), this gives an elementary
+(logarithmic) lower bound; the linear bound ψ(n) ≥ (n/2)·log 2 is not proved here. -/
 
 /-- From Bertrand: ψ(2n) - ψ(n) ≥ log(n+1) for n ≥ 1 -/
 theorem chebyshevPsi_doubling_lower (n : ℕ) (hn : 1 ≤ n) :
