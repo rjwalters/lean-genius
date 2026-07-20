@@ -58,11 +58,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and the Ballot-Number Framing",
+      "title": "The Ballot-Number Open Question",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Module docstring stating the open question (the row-difference/ballot-number form of the Catalan number), the base-case result catalan n = C(2n,n) − C(2n,n+1), and the three lemmas that deliver it; notes that Mathlib has only the division form catalan n = centralBinom n / (n+1). Import of Mathlib, namespace, and open Nat.",
+      "endLine": 10,
+      "summary": "Module docstring intro: the parent entry catalan-numbers-oq-05 works with the division form catalan n = C(2n,n)/(n+1); its open question asks for the row-difference/ballot-number reading, catalan n as a reflected difference of binomial coefficients C(2n,n−k) − C(2n,n−k−1), exhibiting the Catalan triangle as successive differences.",
       "mathContext": "$C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, the base entry ($k=0$) of the ballot-number triangle $B(m,k) = \\binom{m}{k} - \\binom{m}{k-1}$."
+    },
+    {
+      "id": "result-roadmap",
+      "title": "Result Statement and Lemma Roadmap",
+      "startLine": 11,
+      "endLine": 40,
+      "summary": "The '## Result' block: the base ballot number (k=0) is catalan n = C(2n,n) − C(2n,n+1), the gap between the central binomial coefficient and its neighbour — a form Mathlib lacks (it has only the division form). Roadmap of the three delivering lemmas (choose_two_mul_succ, catalan_eq_choose_sub, catalan_eq_choose_sub_symm), followed by import Mathlib, namespace, and open Nat.",
+      "mathContext": "Roadmap: $\\binom{2n}{n+1} = nC_n$ (neighbour), $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ (headline), $C_{n+1} = \\binom{2(n+1)}{n+1} - \\binom{2(n+1)}{n}$ (reflected)."
     },
     {
       "id": "neighbour",
@@ -94,7 +102,8 @@
       "**Both coefficients are Catalan multiples.** $\\binom{2n}{n} = (n+1)C_n$ and $\\binom{2n}{n+1} = nC_n$, so their difference collapses to $C_n$ with no binomial arithmetic left over.",
       "**The neighbour comes from one Pascal step.** `choose_succ_right_eq` relates $\\binom{2n}{n+1}$ to $\\binom{2n}{n}$; cancelling the common factor $(n+1)$ is the whole content of the neighbour lemma.",
       "**Subtraction-free of division.** Mathlib stores $C_n = \\binom{2n}{n}/(n+1)$; the difference form $\\binom{2n}{n} - \\binom{2n}{n+1}$ avoids division entirely and is a genuine (non-truncated) ℕ subtraction.",
-      "**Mind the ℕ truncation.** The reflected form using $n-1$ is false at $n=0$ (where $n-1=0$ in ℕ), so it must be stated at $n+1$."
+      "**Mind the ℕ truncation.** The reflected form using $n-1$ is false at $n=0$ (where $n-1=0$ in ℕ), so it must be stated at $n+1$.",
+      "**Symmetry gives a two-sided reading.** The headline form subtracts the neighbour on the high side of centre, $\\binom{2n}{n} - \\binom{2n}{n+1}$; binomial symmetry $\\binom{2(n+1)}{n+2} = \\binom{2(n+1)}{n}$ (`choose_symm`) reflects this to the low side, giving $C_{n+1} = \\binom{2(n+1)}{n+1} - \\binom{2(n+1)}{n}$. The same Catalan number is the gap between the centre and *either* adjacent coefficient — the two neighbours being equal by symmetry — so the reflection loses no information and only re-indexes the statement to dodge the $n=0$ truncation."
     ],
     "prerequisites": [
       "Binomial coefficients and Pascal's recurrence",
