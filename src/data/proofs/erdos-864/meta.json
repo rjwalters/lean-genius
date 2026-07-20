@@ -54,7 +54,7 @@
       "reflected_construction_bound: PROVED quantitative lower bound maxAlmostSidon(N) ≥ 2|B| for any Sidon B ⊆ {1,...,N/3}"
     ],
     "axiomCount": 1,
-    "lineCount": 806,
+    "lineCount": 833,
     "assumptions": "1 axiom: erdos_freud_lower_bound. Previously 2; sidon_upper_bound ELIMINATED by proving difference-counting bound (sidon_diff_counting_bound, sidon_card_sq_le_2N). reflected_construction_valid was proved as theorem in prior session.",
     "mathlib_version": "4.31.0",
     "theoremCount": 22,
@@ -165,7 +165,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 806,
+    "lineCount": 833,
     "axiomCount": 1,
     "theoremCount": 22,
     "definitionCount": 5,
