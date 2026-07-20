@@ -101,10 +101,10 @@
     {
       "id": "divisor-function",
       "title": "The Sum of Proper Divisors Function",
-      "summary": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$.",
+      "summary": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`; the two coincide for $n > 0$, though this equivalence is not separately proved in the file.",
       "startLine": 38,
       "endLine": 58,
-      "mathContext": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$."
+      "mathContext": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`; the two coincide for $n > 0$, though this equivalence is not separately proved in the file."
     },
     {
       "id": "perfect-numbers",
