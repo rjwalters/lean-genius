@@ -44,24 +44,16 @@
       "IsSunflower definition: family with common pairwise intersection",
       "ContainsSunflower definition: k-sunflower existence",
       "Petal definition and sunflower_petals_disjoint verified theorem",
-      "sunflowerNumber definition: the function m(n,k)",
+      "sunflower_number_exists axiom + sunflowerNumber definition: the function m(n,k)",
       "erdos_ko_rado_sunflower axiom: classical (k-1)!·ℓ^ℓ bound",
       "bounded_sets_sunflower corollary: verified proof from EKR",
       "naslund_sawin_bound axiom: m(n,3) ≤ (3/2^(2/3))^n",
-      "cap_set_connection: cap set density controls sunflowers",
-      "sunflower_conjecture: c(k)^n bound",
-      "trivial_upper_bound: m(n,k) ≤ 2^n+1",
-      "lower_bound: exponential lower bound for sunflower-free families",
       "singleton_sunflower_example: verified 3-sunflower with ∅ core",
-      "nonempty_core_example: 3-sunflower with 2-element core",
-      "sunflower_free_family_bound: 4-element sunflower-free family",
       "strong_sunflower_bound definition: strong vs weak distinction",
-      "weak_from_strong: weak bound from strong bounds",
-      "union_formulation_equivalent: intersection/union equivalence",
-      "erdos_857 theorem: combines EKR + Naslund-Sawin"
+      "erdos_857_summary + erdos_857 theorems: combine EKR + Naslund-Sawin (0 sorries, 3 axioms)"
     ],
     "axiomCount": 3,
-    "lineCount": 289,
+    "lineCount": 287,
     "assumptions": "3 axioms: sunflower_number_exists, erdos_ko_rado_sunflower, naslund_sawin_bound. 0 sorries.",
     "theoremCount": 5,
     "definitionCount": 5
@@ -70,7 +62,7 @@
     "historicalContext": "**Erdős Problem #857: The Weak Sunflower Problem**\n\nThe sunflower (or Δ-system) concept originates in a seminal 1960 paper by Paul Erdős and Richard Rado, \"Intersection theorems for systems of sets,\" published in the *Journal of the London Mathematical Society*. Their Sunflower Lemma showed that any sufficiently large family of sets of bounded size must contain a sunflower — a subfamily where every pair shares exactly the same intersection (the \"core\").\n\nErdős formulated the weak sunflower problem around 1970 [Er70], asking: what is $m(n,k)$, the minimum number of arbitrary subsets of $\\{1,\\ldots,n\\}$ that guarantees a $k$-sunflower? Unlike the strong version (Erdős Problem #20), which restricts to $\\ell$-uniform families, the weak version allows subsets of any size.\n\nThe problem saw dramatic progress through an unexpected connection. In 2013, Noga Alon, Amir Shpilka, and Christopher Umans showed that improving sunflower bounds for $k=3$ would imply new lower bounds for matrix multiplication algorithms. Then the 2016–2017 cap set revolution — initiated by Ernie Croot, Vsevolod Lev, and Péter Pach for $\\mathbb{Z}_4^n$, and extended to $\\mathbb{F}_3^n$ by Jordan Ellenberg and Dion Gijswijt — broke a 20-year barrier on the cap set problem. Eric Naslund and Will Sawin (2017) leveraged these polynomial method techniques to prove $m(n,3) \\leq (3/2^{2/3})^{(1+o(1))n} \\approx 2.755^n$, the first subexponential-base improvement over the classical bound for 3-sunflowers.\n\nIn 2019, Ryan Alweiss, Shachar Lovett, Kewen Wu, and Jiapeng Zhang proved that the strong sunflower bound grows as $(\\log k)^{\\ell}$ rather than $k^{\\ell}$ (up to lower-order terms), a breakthrough toward the Sunflower Conjecture. Despite this progress, the weak Sunflower Conjecture — that $m(n,k) \\leq c(k)^n$ for a constant depending only on $k$ — remains open for all $k \\geq 3$.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $m = m(n, k)$ be minimal such that any collection of $m$ subsets $A_1, \\ldots, A_m \\subseteq \\{1, \\ldots, n\\}$ contains a $k$-sunflower.\n\nEstimate $m(n, k)$, or give an asymptotic formula.\n\n**Known Results:**\n- Erdős-Ko-Rado: $m(n, k) \\leq (k-1)! \\cdot \\ell^\\ell$ for $\\ell$-bounded families\n- Naslund-Sawin: $m(n, 3) \\leq (3/2^{2/3})^{(1+o(1))n} \\approx 2.755^n$\n\n**Sunflower Conjecture:** $m(n, k) \\leq c(k)^n$ for constant $c(k)$.",
     "text": "Let m(n,k) be minimal such that any collection of m subsets of {1,...,n} contains a k-sunflower. Estimate m(n,k) or give an asymptotic formula. Connected to the Sunflower Conjecture and cap set problem.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization proceeds in layers of increasing mathematical depth:\n\n1. **Core Definitions (Lines 46–88):** Defines `IsSunflower` as a family where $A \\cap B = C$ for all distinct $A, B$ in the family, `ContainsSunflower` as the existence of a $k$-element sunflower subfamily, and `Petal` as $A \\setminus C$. The petal disjointness theorem is **fully proved** by extensionality on set membership.\n\n2. **The Function $m(n,k)$ (Lines 89–107):** Axiomatizes existence of $m(n,k)$ via the pigeonhole argument (at most $2^n$ subsets), then defines `sunflowerNumber` via `Nat.find` to extract the minimum.\n\n3. **Classical and Modern Bounds (Lines 109–169):** States the Erdős-Ko-Rado bound as an axiom (the original proof uses induction on $\\ell$), derives the bounded-sets corollary as a **verified proof**, and axiomatizes the Naslund-Sawin bound and cap set connection.\n\n4. **Structural Theory (Lines 171–275):** Axiomatizes the Sunflower Conjecture, trivial/exponential bounds, concrete examples, and the weak-vs-strong relationship linking to Erdős Problem #20.\n\n5. **Synthesis (Lines 277–324):** The main `erdos_857` theorem combines the classical and modern bounds into a single conjunction.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization proceeds in layers of increasing mathematical depth:\n\n1. **Core Definitions (Lines 46–88):** Defines `IsSunflower` as a family where $A \\cap B = C$ for all distinct $A, B$ in the family, `ContainsSunflower` as the existence of a $k$-element sunflower subfamily, and `Petal` as $A \\setminus C$. The petal disjointness theorem is **fully proved** by extensionality on set membership.\n\n2. **The Function $m(n,k)$ (Lines 89–107):** Axiomatizes existence of $m(n,k)$ via the pigeonhole argument (at most $2^n$ subsets), then defines `sunflowerNumber` via `Nat.find` to extract the minimum.\n\n3. **Classical and Modern Bounds (Lines 109–169):** States the Erdős-Ko-Rado bound as an axiom (the original proof uses induction on $\\ell$), derives the bounded-sets corollary as a **verified proof**, and axiomatizes the Naslund-Sawin bound. The cap set connection is discussed in a commentary block only (no declaration).\n\n4. **Structural Theory (Lines 171–258):** Formally declares `strong_sunflower_bound` and proves the verified `singleton_sunflower_example`. The Sunflower Conjecture, trivial/exponential bounds, the additional examples, and the weak-vs-strong relationship (linking to Erdős Problem #20) appear only as commentary — none are axiomatized.\n\n5. **Synthesis (Lines 260–285):** The `erdos_857_summary` and main `erdos_857` theorems combine the classical and modern axioms into a single conjunction.",
     "keyInsights": [
       "**Petal Disjointness is Key:** The fully-proved `sunflower_petals_disjoint` theorem captures the structural essence of sunflowers — the core accounts for all shared elements, so petals $A \\setminus C$ and $B \\setminus C$ are necessarily disjoint. This uses the fact that $x \\in A \\cap B \\implies x \\in C$ from the sunflower property.",
       "**Cap Set Breakthrough:** The polynomial method revolution of 2016–2017 (Croot–Lev–Pach, Ellenberg–Gijswijt) showed that cap sets in $\\mathbb{F}_3^n$ have size at most $(2.756\\ldots)^n$. Since 3-sunflower-free families embed into cap-set-like structures, this directly improved the 3-sunflower bound from roughly $3^n$ to approximately $2.755^n$.",
@@ -119,34 +111,34 @@
     {
       "id": "naslund-sawin",
       "title": "Naslund-Sawin Bound and Cap Set Connection",
-      "summary": "States the 2017 breakthrough: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. Links this to the cap set problem via `cap_set_connection`: the density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controls $m(n,3)$ up to polynomial factors.",
+      "summary": "Axiomatizes the 2017 breakthrough `naslund_sawin_bound`: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. The cap set connection (density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controlling $m(n,3)$) is described only in a commentary block — there is no `cap_set_connection` declaration.",
       "startLine": 144,
       "endLine": 170,
-      "mathContext": "States the 2017 breakthrough: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. Links this to the cap set problem via `cap_set_connection`: the density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controls $m(n,3)$ up to polynomial factors."
+      "mathContext": "Axiomatizes the 2017 breakthrough `naslund_sawin_bound`: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. The cap set connection (density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controlling $m(n,3)$) is described only in a commentary block — there is no `cap_set_connection` declaration."
     },
     {
       "id": "sunflower-conjecture",
       "title": "The Sunflower Conjecture and Bounds",
-      "summary": "States the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions.",
+      "summary": "Presents, as commentary only (no formal declarations), the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions.",
       "startLine": 171,
       "endLine": 201,
-      "mathContext": "States the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions."
+      "mathContext": "Presents, as commentary only (no formal declarations), the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions."
     },
     {
       "id": "examples",
       "title": "Concrete Sunflower Examples",
-      "summary": "Provides verified and axiomatized examples: `singleton_sunflower_example` proves $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$; `nonempty_core_example` asserts a 3-sunflower with 2-element core; `sunflower_free_family_bound` asserts a maximal 3-sunflower-free family of 2-sets from $[4]$.",
+      "summary": "Proves the verified `singleton_sunflower_example`: $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$. Two further examples — a 3-sunflower with 2-element core, and a maximal 3-sunflower-free family of 2-sets from $[4]$ — appear only as illustrative commentary, not as declarations.",
       "startLine": 202,
       "endLine": 234,
-      "mathContext": "Provides verified and axiomatized examples: `singleton_sunflower_example` proves $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$; `nonempty_core_example` asserts a 3-sunflower with 2-element core; `sunflower_free_family_bound` asserts a maximal 3-sunflower-free family of 2-sets from $[4]$."
+      "mathContext": "Proves the verified `singleton_sunflower_example`: $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$. Two further examples — a 3-sunflower with 2-element core, and a maximal 3-sunflower-free family of 2-sets from $[4]$ — appear only as illustrative commentary, not as declarations."
     },
     {
       "id": "weak-vs-strong",
       "title": "Weak vs Strong Sunflower Problem",
-      "summary": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20), states `weak_from_strong` bounding $m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes, and axiomatizes the equivalence of intersection and union formulations of sunflowers.",
+      "summary": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20). The weak-from-strong relationship ($m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes) and the intersection/union formulation equivalence are described only in commentary — there is no `weak_from_strong` declaration and no axiom for the equivalence.",
       "startLine": 235,
       "endLine": 276,
-      "mathContext": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20), states `weak_from_strong` bounding $m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes, and axiomatizes the equivalence of intersection and union formulations of sunflowers."
+      "mathContext": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20). The weak-from-strong relationship ($m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes) and the intersection/union formulation equivalence are described only in commentary — there is no `weak_from_strong` declaration and no axiom for the equivalence."
     },
     {
       "id": "summary-theorem",
@@ -158,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the state of knowledge on Erdős Problem #857, the weak sunflower problem. It defines sunflowers, the function $m(n,k)$, and formalizes the classical Erdős-Ko-Rado bound, the Naslund-Sawin breakthrough for $k=3$, and the still-open Sunflower Conjecture. Two results are fully verified (petal disjointness and the bounded-sets corollary); the deep results are axiomatized as their proofs require analytic number theory, the polynomial method, and probabilistic combinatorics beyond current Mathlib capabilities.",
+    "summary": "This formalization captures the state of knowledge on Erdős Problem #857, the weak sunflower problem. It defines sunflowers, the function $m(n,k)$, and formalizes the classical Erdős-Ko-Rado bound, the Naslund-Sawin breakthrough for $k=3$, and the still-open Sunflower Conjecture. Three results are fully verified (petal disjointness, the bounded-sets corollary, and the singleton sunflower example); the deep results are axiomatized as their proofs require analytic number theory, the polynomial method, and probabilistic combinatorics beyond current Mathlib capabilities.",
     "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Cap Set Problem:** The 3-sunflower bound is controlled by the maximum size of 3-AP-free subsets of $\\mathbb{F}_3^n$. The Croot–Lev–Pach/Ellenberg–Gijswijt breakthrough resolved this with the polynomial method, directly yielding Naslund-Sawin's sunflower improvement.\n\n**2. Matrix Multiplication:** Alon, Shpilka, and Umans showed that strong enough sunflower bounds would yield faster matrix multiplication algorithms, connecting this combinatorial problem to computational complexity.\n\n3. **Ramsey Theory:** The sunflower lemma is a partition regularity result: large enough collections inevitably contain structured subfamilies, paralleling Ramsey's theorem for graphs and Hales-Jewett for combinatorial lines.\n\n4. **Communication Complexity:** Sunflower-free sets arise as hard instances in multiparty communication complexity, where players holding different \"petals\" of information must reconstruct the core.\n\n5. **Alweiss–Lovett–Wu–Zhang:** The 2019 breakthrough improved the strong sunflower bound from $(k-1)!\\cdot\\ell^\\ell$ to $(C\\log(k\\ell))^\\ell$, an exponential improvement in $k$ that partially resolves the strong Sunflower Conjecture.",
     "openQuestions": [
       "Prove or disprove the weak Sunflower Conjecture: does $m(n,k) \\leq c(k)^n$ hold for a constant $c(k)$ depending only on $k$?",
@@ -180,7 +172,7 @@
       "Finset"
     ],
     "namespace": "Erdos857",
-    "lineCount": 289,
+    "lineCount": 287,
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 5,
