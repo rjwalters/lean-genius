@@ -83,33 +83,21 @@ The OEIS sequence A001274 gives the first values where φ(n) = φ(n+1):
 Let's verify some small cases.
 -/
 
-/--
-φ(1) = φ(2) = 1.
--/
-example : 1 ∈ ConsecutiveEqualTotients := by
-  simp only [ConsecutiveEqualTotients, mem_setOf_eq]
-  native_decide
+/-- φ(1) = φ(2) = 1, so `1 ∈ ConsecutiveEqualTotients` (kernel-checked, axiom-free). -/
+theorem one_mem_consecutiveEqualTotients : 1 ∈ ConsecutiveEqualTotients := by
+  simp only [ConsecutiveEqualTotients, mem_setOf_eq]; decide
 
-/--
-φ(3) = φ(4) = 2.
--/
-example : 3 ∈ ConsecutiveEqualTotients := by
-  simp only [ConsecutiveEqualTotients, mem_setOf_eq]
-  native_decide
+/-- φ(3) = φ(4) = 2, so `3 ∈ ConsecutiveEqualTotients` (kernel-checked, axiom-free). -/
+theorem three_mem_consecutiveEqualTotients : 3 ∈ ConsecutiveEqualTotients := by
+  simp only [ConsecutiveEqualTotients, mem_setOf_eq]; decide
 
-/--
-φ(15) = φ(16) = 8.
--/
-example : 15 ∈ ConsecutiveEqualTotients := by
-  simp only [ConsecutiveEqualTotients, mem_setOf_eq]
-  native_decide
+/-- φ(15) = φ(16) = 8, so `15 ∈ ConsecutiveEqualTotients` (kernel-checked, axiom-free). -/
+theorem fifteen_mem_consecutiveEqualTotients : 15 ∈ ConsecutiveEqualTotients := by
+  simp only [ConsecutiveEqualTotients, mem_setOf_eq]; decide
 
-/--
-φ(104) = φ(105) = 48.
--/
-example : 104 ∈ ConsecutiveEqualTotients := by
-  simp only [ConsecutiveEqualTotients, mem_setOf_eq]
-  native_decide
+/-- φ(104) = φ(105) = 48, so `104 ∈ ConsecutiveEqualTotients` (kernel-checked, axiom-free). -/
+theorem oneOhFour_mem_consecutiveEqualTotients : 104 ∈ ConsecutiveEqualTotients := by
+  simp only [ConsecutiveEqualTotients, mem_setOf_eq]; decide
 
 /-
 ## Consecutive k Equal Values
@@ -205,25 +193,17 @@ Why does φ(104) = φ(105) = 48?
 The pattern often involves a power of 2 matching a product of small primes.
 -/
 
-/--
-φ(15) = 8 because 15 = 3 × 5.
--/
-example : φ 15 = 8 := by native_decide
+/-- φ(15) = 8 because 15 = 3 × 5 (kernel-checked, axiom-free). -/
+theorem totient_fifteen : φ 15 = 8 := by decide
 
-/--
-φ(16) = 8 because 16 = 2⁴.
--/
-example : φ 16 = 8 := by native_decide
+/-- φ(16) = 8 because 16 = 2⁴ (kernel-checked, axiom-free). -/
+theorem totient_sixteen : φ 16 = 8 := by decide
 
-/--
-φ(104) = 48 because 104 = 2³ × 13.
--/
-example : φ 104 = 48 := by native_decide
+/-- φ(104) = 48 because 104 = 2³ × 13 (kernel-checked, axiom-free). -/
+theorem totient_oneOhFour : φ 104 = 48 := by decide
 
-/--
-φ(105) = 48 because 105 = 3 × 5 × 7.
--/
-example : φ 105 = 48 := by native_decide
+/-- φ(105) = 48 because 105 = 3 × 5 × 7 (kernel-checked, axiom-free). -/
+theorem totient_oneOhFive : φ 105 = 48 := by decide
 
 /-
 ## The Consecutive Triple: 5186, 5187, 5188
@@ -258,4 +238,77 @@ formally open.
 Ford-Luca-Pomerance result: there are many solutions.
 For any ε > 0, eventually the count exceeds x^(1-ε).
 -/
+
+/-
+## Foundational Lemmas (axiom-free)
+
+Basic API for `ConsecutiveEqualTotients`, `ConsecutiveKEqualTotients`, and
+`countConsecutiveEqual`.  All lemmas below are fully machine-checked with no
+`sorry`, no `axiom`, and no `native_decide` (host-verified on Lean v4.31.0;
+`#print axioms` = propext/Classical.choice/Quot.sound only).  The main
+conjectures (`erdos_1003_conjecture`, `erdos_1003_strong_conjecture`) remain
+open. -/
+
+/-- Membership characterisation for the base problem. -/
+theorem mem_consecutiveEqualTotients {n : ℕ} :
+    n ∈ ConsecutiveEqualTotients ↔ φ n = φ (n + 1) := Iff.rfl
+
+/-- With `k = 0` the constraint is vacuous (only `φ n = φ n`), so every `n`
+qualifies. -/
+theorem consecutiveKEqualTotients_zero : ConsecutiveKEqualTotients 0 = Set.univ := by
+  ext n
+  simp only [ConsecutiveKEqualTotients, mem_setOf_eq, mem_univ, iff_true]
+  intro i hi
+  obtain rfl : i = 0 := Nat.le_zero.mp hi
+  simp
+
+/-- The `k = 1` layer is exactly the base set `φ n = φ (n+1)`. -/
+theorem consecutiveKEqualTotients_one :
+    ConsecutiveKEqualTotients 1 = ConsecutiveEqualTotients := by
+  ext n
+  simp only [ConsecutiveKEqualTotients, ConsecutiveEqualTotients, mem_setOf_eq]
+  constructor
+  · intro h; exact h 1 (le_refl 1)
+  · intro h i hi
+    rcases i with _ | _ | i
+    · simp
+    · exact h
+    · omega
+
+/-- The `k`-layers are nested: a longer equal-totient run implies every shorter
+run, so `ConsecutiveKEqualTotients` is antitone in `k`. -/
+theorem consecutiveKEqualTotients_antitone {k l : ℕ} (h : k ≤ l) :
+    ConsecutiveKEqualTotients l ⊆ ConsecutiveKEqualTotients k := by
+  intro n hn i hi
+  exact hn i (hi.trans h)
+
+/-- Every `k ≥ 1` layer sits inside the base set `φ n = φ (n+1)`. -/
+theorem consecutiveKEqualTotients_subset_base {k : ℕ} (hk : 1 ≤ k) :
+    ConsecutiveKEqualTotients k ⊆ ConsecutiveEqualTotients := by
+  rw [← consecutiveKEqualTotients_one]
+  exact consecutiveKEqualTotients_antitone hk
+
+/-- The counting function is monotone in the cutoff `N`. -/
+theorem countConsecutiveEqual_mono {N M : ℕ} (h : N ≤ M) :
+    countConsecutiveEqual N ≤ countConsecutiveEqual M := by
+  unfold countConsecutiveEqual
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro x hx
+  exact Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) (by omega))
+
+/-- There are at most `N + 1` solutions below `N` (the whole window `{0,…,N}`). -/
+theorem countConsecutiveEqual_le (N : ℕ) : countConsecutiveEqual N ≤ N + 1 := by
+  unfold countConsecutiveEqual
+  exact (Finset.card_filter_le _ _).trans_eq (Finset.card_range (N + 1))
+
+/-- The strong conjecture (infinitely many `k+1`-term runs for every `k ≥ 1`)
+implies the base conjecture (infinitely many `φ n = φ (n+1)`). -/
+theorem strong_conjecture_imp_conjecture :
+    erdos_1003_strong_conjecture → erdos_1003_conjecture := by
+  intro h
+  have h1 := h 1 (le_refl 1)
+  rw [consecutiveKEqualTotients_one] at h1
+  exact h1
+
 end Erdos1003

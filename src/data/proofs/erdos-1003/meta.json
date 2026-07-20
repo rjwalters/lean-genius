@@ -49,9 +49,9 @@
       "Ford-Luca-Pomerance lower bound (implying infinitude, documented in source comments)"
     ],
     "axiomCount": 0,
-    "lineCount": 261,
-    "assumptions": "0 axioms, 0 sorries. Open problem formalized as Lean Prop definitions. Conjecture stated as def (not axiom). Specific small cases verified via native_decide. Prior axioms removed in refactor; badge updated from 'axiom' to 'wip'.",
-    "theoremCount": 0,
+    "lineCount": 314,
+    "assumptions": "0 axioms, 0 sorries, 0 native_decide. Open problem formalized as Lean Prop definitions (conjecture stated as def, not axiom). Adds 16 axiom-free, kernel-checked foundational lemmas (host-verified Lean v4.31.0): small-case memberships and totient values via kernel decide (replacing the former native_decide examples, so the file no longer depends on Lean.ofReduceBool), the k-layer API (ConsecutiveKEqualTotients nested/antitone, k=0 univ, k=1 = base set), counting-function monotonicity and the N+1 upper bound, and strong-conjecture => base-conjecture. The main conjectures remain open.",
+    "theoremCount": 16,
     "definitionCount": 6
   },
   "overview": {
@@ -266,9 +266,9 @@
       "Real"
     ],
     "namespace": "Erdos1003",
-    "lineCount": 261,
+    "lineCount": 314,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 16,
     "definitionCount": 6,
     "path": "Proofs/Erdos1003Problem.lean",
     "sorries": 0
