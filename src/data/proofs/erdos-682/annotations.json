@@ -115,7 +115,7 @@
     },
     "type": "concept",
     "title": "one_rough_all",
-    "content": "**one_rough_all**: Every $m \\geq 1$ is 1-rough. **Lean proof**: the smallest prime is 2 $\\geq$ 1.",
+    "content": "**one_rough_all**: Every integer $m > 1$ is 1-rough. **Lean proof**: the smallest prime is 2 $\\geq$ 1. ($m = 1$ is excluded: `leastPrimeFactor 1 = 0` is the sentinel for $p(1) = \\infty$.)",
     "mathContext": "This base case confirms the definition is sensible. As $k$ increases, the set of $k$-rough numbers thins out: the density of $k$-rough numbers in $[1,N]$ is $\\sim e^{-\\gamma}/\\log k$.",
     "significance": "supporting",
     "relatedConcepts": [
