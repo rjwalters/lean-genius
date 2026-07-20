@@ -310,12 +310,12 @@ theorem oq03_both_directions_infinite :
   -- the odd primes are infinite
   have : {p : ℕ | p.Prime ∧ 3 ≤ p} = {p : ℕ | p.Prime} \ {2} := by
     ext p
-    simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_setOf_eq, Set.mem_sdiff, Set.mem_singleton_iff]
     constructor
     · rintro ⟨hp, hp3⟩; exact ⟨hp, by omega⟩
     · rintro ⟨hp, hp2⟩; exact ⟨hp, by have := hp.two_le; omega⟩
   rw [this]
-  exact Nat.infinite_setOf_prime.diff (Set.finite_singleton 2)
+  exact Nat.infinite_setOf_prime.sdiff (Set.finite_singleton 2)
 
 -- ===========================================================================
 -- EQUALITY family:  φ(n) = φ(D(n)) holds infinitely often, via  n = 15·2^(k+1).
@@ -926,7 +926,7 @@ theorem prime_triple_family_not_reversal {p : ℕ}
   simp only [Nat.sub_self, pow_zero, mul_one]
   rw [hφa]
   -- goal: ¬ (2j·(2·(2j+1)) < φ(6j²+8j+3));  i.e. φ(e) ≤ φ(a)
-  push_neg
+  push Not
   have he2 : 1 < 6 * j ^ 2 + 8 * j + 3 := by nlinarith [hj3]
   have hφe : Nat.totient (6 * j ^ 2 + 8 * j + 3) < 6 * j ^ 2 + 8 * j + 3 :=
     Nat.totient_lt _ he2
@@ -947,13 +947,13 @@ theorem prime_triple_reversal_iff {p : ℕ}
   constructor
   · intro hmem
     by_contra hne
-    push_neg at hne
+    push Not at hne
     obtain ⟨h3, h5⟩ := hne
     -- an odd prime with `p+2, 2p+1` prime and `p ∉ {3,5}` must be `≥ 7`
     have h2le := hp.two_le
     have hp7 : 7 ≤ p := by
       by_contra hlt
-      push_neg at hlt
+      push Not at hlt
       interval_cases p <;> revert hp hp2 hq h3 h5 <;> decide
     exact prime_triple_family_not_reversal hp hp2 hq hp7 k hmem
   · rintro (rfl | rfl)
@@ -2349,7 +2349,7 @@ theorem prime_pow_le_two_totient {p : ℕ} (hp : p.Prime) (m : ℕ) :
   · obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
     rw [Nat.totient_prime_pow_succ hp m', pow_succ]
     have hpp : p ≤ 2 * (p - 1) := by have := hp.two_le; omega
-    calc p ^ m' * p ≤ p ^ m' * (2 * (p - 1)) := mul_le_mul_left' hpp (p ^ m')
+    calc p ^ m' * p ≤ p ^ m' * (2 * (p - 1)) := _root_.mul_le_mul_right hpp (p ^ m')
       _ = 2 * (p ^ m' * (p - 1)) := by ring
 
 /-- **No excluded prime power `p^k` with `p ≡ 3 (mod 4)` reverses.**  For every
@@ -2368,7 +2368,7 @@ theorem classifySeed_prime_pow_three_mod_four_ne_lt {p k : ℕ}
     have hp7 : 7 ≤ p := by
       have h2 := hp.two_le
       by_contra h7
-      push_neg at h7
+      push Not at h7
       interval_cases p <;> first
         | exact absurd hp (by decide)
         | omega
@@ -2434,7 +2434,7 @@ theorem classifySeed_prime_pow_three_mod_four_ne_lt {p k : ℕ}
         have hw1 : 1 ≤ Nat.totient w := hwpos
         calc (2 : ℕ) ≤ 2 ^ (S - 2) := h2pow
           _ = 1 * 2 ^ (S - 2) := (one_mul _).symm
-          _ ≤ Nat.totient w * 2 ^ (S - 2) := mul_le_mul_right' hw1 (2 ^ (S - 2))
+          _ ≤ Nat.totient w * 2 ^ (S - 2) := _root_.mul_le_mul_left hw1 (2 ^ (S - 2))
     -- assemble the engine's excess bound  p^m ≤ φ(p^m)·φ(w)·2^(S−2)  and conclude
     have hbound : p ^ (m + 1) - Nat.totient (p ^ (m + 1)) ≤
         Nat.totient (seedB (p ^ (m + 1))) * 2 ^ (seedS (p ^ (m + 1)) - 2) := by
@@ -2442,7 +2442,7 @@ theorem classifySeed_prime_pow_three_mod_four_ne_lt {p k : ℕ}
       calc p ^ m ≤ 2 * Nat.totient (p ^ m) := prime_pow_le_two_totient hp m
         _ = Nat.totient (p ^ m) * 2 := by ring
         _ ≤ Nat.totient (p ^ m) * (Nat.totient w * 2 ^ (S - 2)) :=
-              mul_le_mul_left' hQ2 (Nat.totient (p ^ m))
+              _root_.mul_le_mul_right hQ2 (Nat.totient (p ^ m))
         _ = Nat.totient (p ^ m) * Nat.totient w * 2 ^ (S - 2) := by ring
     have hpge : p ≤ p ^ (m + 1) := by
       calc p = p ^ 1 := (pow_one p).symm
@@ -3652,7 +3652,7 @@ theorem forward_gap_fiveTimes_ge {m : ℕ} (hm : 3 ≤ m)
   have hple : Nat.totient (14 * m + 3) ≤ 14 * m + 2 := by
     have := Nat.totient_lt (14 * m + 3) (by omega); omega
   rw [hφn, hφD, ← Nat.sub_mul]
-  exact mul_le_mul_right' (by omega) (2 ^ k)
+  exact _root_.mul_le_mul_left (by omega) (2 ^ k)
 
 /-- **The forward margin is unbounded below by `2^(k+2)`.**  A direct corollary of
     `forward_gap_fiveTimes_ge`: since `2m−2 ≥ 4` for `m ≥ 3`, the forward margin
