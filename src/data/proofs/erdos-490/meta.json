@@ -85,7 +85,7 @@
       "Erdos490Energy.lean: Cauchy–Schwarz energy–product bound |A|²|B|² ≤ |A·B|·E(A,B) (via Mathlib Finset.le_card_mul_mul_mulEnergy, bridging the file's multiplicativeEnergy/productSet to Finset.mulEnergy/pointwise A*B); real-form corollaries |A·B| ≥ |A|²|B|²/E and E ≥ |A|²|B|²/|A·B|; sharpness: equality holds exactly at distinct products (the Erdős #490 extremum). 0 new axioms."
     ],
     "axiomCount": 1,
-    "lineCount": 1083,
+    "lineCount": 1141,
     "assumptions": "1 axiom, 0 sorries. Axiom: szemeredi_theorem (Szemerédi 1976 N²/log N upper bound, deep — the hard analytic input of the problem). The former second axiom chebyshev_theta_upper_half_lower_bound (the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N) is NOW A THEOREM (0-axiom), proved by combining the verified central-binomial estimate Erdos490Cheb.theta_gap_lower_bound with the analytic tail Erdos490Cheb.erdos490_analytic_tail (log n and √(2n)·log(2n) are o(n)) and a Bertrand-based θ(N)−θ(N/2) ≥ log 2 for the finitely many small N. Only the deep Szemerédi upper bound remains axiomatized; status stays 'axiomatized'.",
     "theoremCount": 35,
     "definitionCount": 15,
@@ -117,83 +117,83 @@
   "sections": [
     {
       "id": "header-imports",
-      "title": "Problem Statement and Imports",
-      "summary": "Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial",
+      "title": "Overview — Erdős #490: Distinct Products of Two Sets",
+      "summary": "Module docstring and imports. States Erdős #490 (SOLVED, Szemerédi 1976): for A, B ⊆ {1,…,N} with all products ab distinct, is |A||B| ≪ N²/log N? Answer YES, with the extremal example A = [1, N/2], B = primes in (N/2, N] achieving |A||B| ~ N²/(2 log N). Records the still-open limit question (Erdős 1972) and connections to Problems #425/#896. Imports Finset, Real.log, and the number-theory toolkit (Primorial, PrimeCounting, Bertrand, Chebyshev) plus the local Proofs.Erdos490Chebyshev.",
       "startLine": 1,
-      "endLine": 37,
-      "mathContext": "Mathematical content: Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial"
+      "endLine": 44,
+      "mathContext": "**Erdős #490.** If $A, B \\subseteq \\{1,\\dots,N\\}$ have all products $ab$ ($a\\in A, b\\in B$) distinct, then $|A||B| \\ll N^2/\\log N$ (Szemerédi 1976). The bound is tight: $A = [1, N/2]$, $B = \\{p \\text{ prime} : N/2 < p \\le N\\}$ give $|A||B| \\sim N^2/(2\\log N)$."
     },
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only — no theorem declared",
-      "startLine": 38,
-      "endLine": 62,
-      "mathContext": "Mathematical content: IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only"
+      "id": "part-i-definitions",
+      "title": "Part I — Basic Definitions",
+      "summary": "The core predicates and their equivalences. IsSubsetUpTo (A ⊆ {1,…,N}), productSet A B (the set of products, via image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective. Proves productSet_eq_image, productSet_card_le, the equivalences hasDistinctProducts_iff_injOn / _iff_card_le / productMapInjective_iff_hasDistinctProducts, and the symmetry/monotonicity lemmas productSet_comm, hasDistinctProducts_comm, productSet_mono, HasDistinctProducts.subset.",
+      "startLine": 45,
+      "endLine": 174,
+      "mathContext": "$\\mathrm{productSet}(A,B) = \\{ab : a\\in A, b\\in B\\}$, and $A,B$ have distinct products iff the product map $A\\times B \\to \\mathbb{N}$ is injective iff $|\\mathrm{productSet}(A,B)| = |A||B|$. All three characterizations are proved equivalent, and distinct-products is hereditary under taking subsets."
     },
     {
-      "id": "the-erdos-question",
-      "title": "The Erdős Question",
-      "summary": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| ≤ CN²/log N",
-      "startLine": 63,
-      "endLine": 95,
-      "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| $\\leq$ CN²/log N"
+      "id": "part-ii-erdos-question",
+      "title": "Part II — The Erdős Question",
+      "summary": "maxProductSize N = the largest |A||B| over distinct-product pairs in {1,…,N} (via a bounded search), and ErdosQuestion490 formalizing ∃ C, ∀ N, maxProductSize N ≤ C·N²/log N — the statement to be resolved.",
+      "startLine": 175,
+      "endLine": 211,
+      "mathContext": "$\\mathrm{maxProductSize}(N) = \\max\\{|A||B| : A,B\\subseteq[N],\\ \\text{distinct products}\\}$. The question asks whether $\\mathrm{maxProductSize}(N) = O\\!\\left(N^2/\\log N\\right)$."
     },
     {
-      "id": "szemeredi-theorem",
-      "title": "Szemerédi's Theorem (1976)",
-      "summary": "szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately",
-      "startLine": 96,
-      "endLine": 111,
-      "mathContext": "Verified: szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately"
+      "id": "part-iii-szemeredi",
+      "title": "Part III — Szemerédi's Theorem (1976)",
+      "summary": "The one external input. axiom szemeredi_theorem records the deep upper bound maxProductSize N ≤ C·N²/log N (Szemerédi 1976, J. Number Theory); erdos_490_answer derives the YES answer immediately, and maxProductSize_monotone is proved.",
+      "startLine": 212,
+      "endLine": 245,
+      "mathContext": "**Axiom (Szemerédi 1976).** $\\mathrm{maxProductSize}(N) \\ll N^2/\\log N$. This is the sole assumption of the entry — the hard analytic number theory behind the upper bound is not reformalized here; everything else in the file is machine-checked."
     },
     {
-      "id": "optimal-example",
-      "title": "The Optimal Example",
-      "summary": "optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, proved)",
-      "startLine": 112,
-      "endLine": 133,
-      "mathContext": "Axiomatized: optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, proved)"
+      "id": "part-iv-optimal-example",
+      "title": "Part IV — The Optimal Example (verified via Chebyshev θ)",
+      "summary": "Builds and verifies the extremal construction, now fully proved (no longer axiomatized). optimalA N = [1, N/2] and optimalB N = primes in (N/2, N], with optimalA_card and optimalB_card_eq_primeCounting. The heart is the Chebyshev-θ lower bound on the upper half (chebyshev_theta_upper_half_lower_bound, theta_gap_le_card_mul_log, primes_upper_half_lower_bound, primeCounting_half_lt) giving |optimalB| ≳ N/log N. optimal_works_because_primes and optimal_has_distinct_products (proved theorem, N ≥ 4) show the products are distinct because each product a·p has a unique large prime factor, and maxProductSize_ge_optimal / optimal_example_le_maxProductSize record the resulting lower bound on maxProductSize.",
+      "startLine": 246,
+      "endLine": 601,
+      "mathContext": "For $a_1 p_1 = a_2 p_2$ with $p_i$ prime in $(N/2,N]$ and $a_i \\le N/2$, the large prime $p_1 = p_2$ (it is the unique prime factor $> N/2$), forcing $a_1 = a_2$ — hence $A\\times B$ has distinct products. Chebyshev's $\\vartheta(N) - \\vartheta(N/2) \\gg N$ gives $|B| = \\pi(N) - \\pi(N/2) \\gg N/\\log N$, so $|A||B| \\gg N^2/\\log N$, matching Szemerédi's upper bound."
     },
     {
-      "id": "limit-question",
-      "title": "The Limit Question (Open)",
-      "summary": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation (limit ≥ 1 if it exists) is documented in a docstring comment only — no Lean declaration",
-      "startLine": 134,
-      "endLine": 154,
-      "mathContext": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation is docstring-only"
+      "id": "part-v-limit-question",
+      "title": "Part V — The Limit Question (Open)",
+      "summary": "The still-open refinement. productRatio N = maxProductSize N · log N / N² (the normalized quantity), with LimitQuestion (does the limit exist?) and LimitQuestionOpen. Van Doorn's observation that the limit, if it exists, is ≥ 1 is documented in prose only.",
+      "startLine": 602,
+      "endLine": 619,
+      "mathContext": "**Open (Erdős 1972).** Does $\\displaystyle\\lim_{N\\to\\infty} \\frac{\\mathrm{maxProductSize}(N)\\,\\log N}{N^2}$ exist, and if so what is its value? It must be $\\ge 1$ (van Doorn). Szemerédi pins the order of growth but not the constant."
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases: Multiplicative Sidon Sets",
-      "summary": "IsMultiplicativeSidon (A = B case), primes_products_determine_pair (primes determine their product pair, proved; the false primes_sidon was replaced); the sidon_bound (|A|² ≤ CN²/log N) is noted in a docstring comment only — no axiom or theorem declared",
-      "startLine": 155,
-      "endLine": 177,
-      "mathContext": "IsMultiplicativeSidon (A = B case), primes_products_determine_pair (primes determine their product pair, proved; the false primes_sidon was replaced); sidon_bound is docstring-only"
+      "id": "part-vi-special-cases",
+      "title": "Part VI — Special Cases: Multiplicative Sidon Sets",
+      "summary": "The diagonal A = B case. IsMultiplicativeSidon A (all products within A distinct); primes_products_determine_pair proves that a pair of primes is recovered from its product (unique factorization), and isMultiplicativeSidon_iff_card_le_one characterizes when the strict multiplicative-Sidon predicate degenerates. The asymptotic sidon_bound is discussed in prose only.",
+      "startLine": 620,
+      "endLine": 678,
+      "mathContext": "A set is *multiplicatively Sidon* if all pairwise products are distinct — the $A = B$ specialization of distinct products. For primes, $p_1 q_1 = p_2 q_2 \\Rightarrow \\{p_1,q_1\\} = \\{p_2,q_2\\}$ by unique factorization, the multiplicative analogue of an additive Sidon set."
     },
     {
-      "id": "related-problems",
-      "title": "Related Problems and Multiplicative Energy",
-      "summary": "Connections to Problems #425 (sums) and #896 (products); multiplicativeEnergy counting quadruples; distinct_minimal_energy equivalence (proved, 0-axiom, diagonal-subset argument)",
-      "startLine": 178,
-      "endLine": 202,
-      "mathContext": "Mathematical content: Connections to Problems #425 (sums) and #896 (products); multiplicativeEnergy counting quadruples; distinct_minimal_energy equivalence (proved, 0-axiom, diagonal-subset argument)"
+      "id": "part-vii-related-problems",
+      "title": "Part VII — Related Problems and Multiplicative Energy",
+      "summary": "Connections and the multiplicative-energy toolkit. RelatedProblem425/896 mark the ties to Erdős #425 (sums) and #896 (products). multiplicativeEnergy A B counts quadruples with a₁b₁ = a₂b₂; distinct_minimal_energy shows distinct products ⟺ energy is minimal (the diagonal), and multiplicativeEnergy_ge/comm/mono/le_sq/le_sq_mul/le_mul_sq/gt_iff_not_distinctProducts develop its basic inequalities — all axiom-free.",
+      "startLine": 679,
+      "endLine": 941,
+      "mathContext": "The multiplicative energy $E(A,B) = |\\{(a_1,b_1,a_2,b_2) : a_1 b_1 = a_2 b_2\\}|$ measures multiplicative additive structure. Distinct products is exactly the minimal-energy case $E(A,B) = |A||B|$ (only diagonal quadruples), and $E(A,B) > |A||B|$ iff some product repeats."
     },
     {
-      "id": "bounds-history",
-      "title": "Bounds History",
-      "summary": "Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (proved), szemeredi_bound (derived from axiom)",
-      "startLine": 203,
-      "endLine": 227,
-      "mathContext": "Axiomatized: Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (proved), szemeredi_bound (derived from axiom)"
+      "id": "part-viii-bounds-history",
+      "title": "Part VIII — Bounds History",
+      "summary": "The progression of upper bounds: trivial_bound (the naive |A||B| ≤ N²) and counting_bound (an intermediate estimate), both proved, culminating in szemeredi_bound (|A||B| ≤ C·N²/log N for N ≥ 2, derived from the Szemerédi axiom).",
+      "startLine": 942,
+      "endLine": 973,
+      "mathContext": "From the trivial $|A||B| \\le N^2$ down to Szemerédi's $|A||B| \\le C\\,N^2/\\log N$: the $\\log N$ savings is the content of the problem, reflecting that products cannot avoid collisions as efficiently as the trivial count suggests."
     },
     {
-      "id": "summary",
-      "title": "Summary and Optimality",
-      "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 1 remaining axioms, 0 sorries)",
-      "startLine": 228,
-      "endLine": 282,
-      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 1 remaining axiom (Szemerédi), 0 sorries)"
+      "id": "part-ix-summary",
+      "title": "Part IX — Summary and Optimality",
+      "summary": "Closing results. erdos_490 and erdos_490_main restate the YES answer; bound_is_optimal establishes the matching Θ(N²/log N) lower bound via the prime construction, and optimalB_card_upper_bound / optimal_example_upper_bound bound the extremal example from above — together pinning maxProductSize at order N²/log N (proved modulo the single Szemerédi axiom, 0 sorries).",
+      "startLine": 974,
+      "endLine": 1141,
+      "mathContext": "Combining Part IV's lower bound $\\mathrm{maxProductSize}(N) \\gg N^2/\\log N$ with Part III's Szemerédi upper bound $\\ll N^2/\\log N$ gives $\\mathrm{maxProductSize}(N) = \\Theta\\!\\left(N^2/\\log N\\right)$ — the order of growth is exactly determined, while the leading constant remains the open limit question of Part V."
     }
   ],
   "conclusion": {
@@ -221,7 +221,7 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 1083,
+    "lineCount": 1141,
     "axiomCount": 1,
     "theoremCount": 37,
     "definitionCount": 15,
