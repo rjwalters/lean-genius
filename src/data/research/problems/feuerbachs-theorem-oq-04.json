@@ -23,7 +23,14 @@
     "since": "2026-06-28T10:40:00.000Z",
     "iteration": 5,
     "focus": "ACT iteration 5 (researcher-5, 2026-07-11) — VERIFIED axiom-free (bin/lake env lean, exit 0; #print axioms = [propext, Classical.choice, Quot.sound] for all four new lemmas). Added the antipodal-centre symmetry layer for spherical circles: onSphere_neg (the model is closed under P ↦ -P), scos_neg_right (scos P (-Q) = -scos P Q), sdist_antipode (sdist O (-O) = π for unit O), and the capstone sCircle_antipodal_center (sCircle O ρ = sCircle (-O) (π-ρ) with NO hypothesis on O). This makes precise the intrinsic two-centre ambiguity of a spherical circle — the same locus is cut by pole O at radius ρ and by antipode -O at complementary radius π-ρ — which is exactly the ±⟨O,·⟩ sign symmetry the incircle/excircle contact analysis (incircle_excircleAB_signs_exclusive, the excircle*_distinct family) turns on. Also corrected the stale tracked sorryCount 2→0 (the '2' were docstring '0-sorry' false-positives; the file has no actual sorry). 0 axioms, 0 sorries.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "spherical Feuerbach tangency capstone (⟪O₉,O_in⟫ = cos(ρ₉−ρ_in))",
+        "reopenCriterion": "explicit incentre coordinates constructed from angle bisectors (or a spherical Euler nine-point/incentre distance formula) become available, AND a working docker build path",
+        "blockedAt": "2026-07-19",
+        "note": "Saturated at scaffolding level: all OQ04 files 0-sorry/0-axiom (~14 support lemmas — tritangent family, circumcircle, medial nine-point circle, arc-bisecting midpoints, tangent great circle at a point, equidistance twins). The sole open item is the tangency identity, deferred as not-session-sized by researchers -1/-2/-3/-5. Blocked because SphericalIncircle is only a Prop predicate (FeuerbachsTheoremOQ04.lean:925), NOT explicit coordinates, so ⟪O₉,O_in⟫ cannot be computed until the incentre is constructed from angle-bisector intersections — a research-level spherical-trig build, and the companions import Proofs.* so they need the (flaky) docker wrapper, not host lake env lean. Do NOT re-serve for another scaffolding lemma."
+      }
+    ],
     "nextAction": "Tangent-point existence: exhibit the unique common point on the geodesic between centres for tangent circles (spherical slerp) and verify it lies on both sCircles; then build spherical incircle / nine-point circle and attempt the spherical Feuerbach tangency.",
     "attemptCounts": {
       "total": 1,
@@ -32,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-5, 2026-07-12): added the far-endpoint near-hemisphere companions scos_sMidpoint_right/_pos_right/_pos_both — the spherical side-midpoint is at positive inner product with BOTH endpoints, the positional bound the Feuerbach contact argument needs. Also corrected STALE nextSteps: tangent points, incircle, 3 excircles, and nine-point circle are all already built axiom-free; the true frontier is the tangency computation itself. All axiom-free (docker 7745, #print axioms standard-3 only).",
+    "progressSummary": "SATURATED-AT-SCAFFOLDING (researcher-1 triage, 2026-07-19): every OQ04 file is 0-sorry/0-axiom with ~14 support lemmas; the sole remaining item is the Feuerbach tangency capstone ⟪O₉,O_in⟫=cos(ρ₉−ρ_in), deferred as not-session-sized by 5 prior sessions. Registered a structured blocker: capstone is blocked because SphericalIncircle is only a Prop (no explicit incentre coordinates to compute the inner product), needing an angle-bisector incentre construction / spherical Euler distance formula AND a working docker build. No filler scaffolding added this session.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
