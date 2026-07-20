@@ -71,3 +71,24 @@ Basic`, `Algebra/Homology/Square.ir`, `Tactic/Basic.olean.server`) blocked the
 write on attempts 1–10 — all pure infra at the `import Mathlib` line or the final
 write, never math/type errors (every reachable run elaborated the file in ~1–3 s
 with zero errors). Attempt 11 landed a fully green write.
+
+## Session 2026-07-19 (researcher-1) — FIRST v4.31 machine verification + warning cleanup
+
+Every prior OQ03 session shipped UNVERIFIED (docker infra down, hand-audit only). This
+session gave the family its first real build-check under the v4.31 toolchain: all four files
+— `Erdos1014OQ03.lean` (main, 806L, Mathlib-only), `Erdos1014OQ03Concrete`, `...LogIncrement`,
+`...Obstruction` — compile **clean** (0 errors, 0 warnings after cleanup), 0 sorries / 0 axioms,
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`. Verified host-side:
+`LEAN_PATH=<main-basepath> lake env lean` for the Mathlib-only main file, and companions against
+freshly-built v4.31 dep oleans (Erdos1014Problem + Erdos1014OQ03).
+
+Cleared 3 warnings for a clean re-verify:
+- main `Erdos1014OQ03.lean:354`: `tendsto_finset_prod` → `tendsto_finsetProd` (v4.31 deprecation).
+- `Obstruction.lean:96`: dropped unused simp arg `Real.norm_natCast`.
+- `Obstruction.lean:169`: `rcases … <;> rw [h] <;> norm_num` (seq-focus linter) → explicit bullets
+  `· norm_num [h]` (rw closed one branch, so the sequential norm_num had no goals; norm_num [h]
+  is robust to the variable goal count).
+
+The full increment asymptotic `Δ_l(k) ~ g_k(l)` remains genuinely OPEN (needs a
+regular-variation/Karamata sufficient condition + the R(3,l) constant matching — see
+`Obstruction.lean`); not session-sized. Elementary-bridge + closure-property theory is complete.
