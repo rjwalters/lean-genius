@@ -135,7 +135,7 @@
       "id": "scalar-continuity-reduction",
       "title": "Reducing the Input to Scalar Slice-Volume Continuity",
       "summary": "Discharges the vector-assembly step: continuity of each scalar slice-volume suffices; the continuous discrepancy vector is constructed, not assumed.",
-      "startLine": 176,
+      "startLine": 177,
       "endLine": 222,
       "mathContext": "ham_sandwich_of_scalar_continuity assumes only that each scalar map x |-> vol(body_i intersect pos x i).toReal (and the neg version) is continuous, then assembles them into a continuous EuclideanSpace-valued discrepancy via (EuclideanSpace.equiv (Fin n) R).symm composed with continuous_pi. The component-agreement hypothesis of the capstone holds by rfl, so the SphereFun is built rather than assumed."
     },
@@ -144,15 +144,57 @@
       "title": "Standard Linear Parameterization",
       "summary": "For linear direction/threshold maps, the antipodal swap and volume finiteness are discharged; combined with the scalar-continuity reduction, only scalar slice-volume continuity remains.",
       "startLine": 223,
-      "endLine": 345,
+      "endLine": 338,
       "mathContext": "stdPos_neg / stdNeg_neg follow from linearity; volume_inter_ne_top from the slice being a subset of a finite-volume body; assembled into ham_sandwich_standard. ham_sandwich_standard_of_scalar_continuity then combines these with the scalar-continuity reduction, so its only hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n."
+    },
+    {
+      "id": "part7-exact-halves",
+      "title": "Part 7: A Bisecting Hyperplane Cuts Each Body into Exact Halves",
+      "summary": "Upgrades the Ham Sandwich conclusion 'the two sides have equal volume' to the textbook 'each side is exactly half'. volume_body_eq_slices_add_boundary is the elementary additive measure decomposition of a body over the strict/strict/boundary partition (P union N union B = univ, pairwise disjoint) — measurability only, no continuity. each_slice_exactly_half then combines the bisection equality vol(body cap P) = vol(body cap N) with a null boundary slice vol(body cap B) = 0 to conclude 2 * vol(body cap P) = vol(body), i.e. each strict side is exactly half.",
+      "startLine": 339,
+      "endLine": 397,
+      "mathContext": "vol(body) = vol(body cap P) + vol(body cap N) + vol(body cap B); with vol(body cap P) = vol(body cap N) and vol(body cap B) = 0 this gives 2 vol(body cap P) = vol(body).",
+      "relatedConcepts": [
+        "measure additivity over a partition",
+        "measure_union of disjoint sets",
+        "half-volume bisection",
+        "Ham Sandwich theorem"
+      ]
+    },
+    {
+      "id": "part8-boundary-null",
+      "title": "Part 8: Gap 2 Discharged — the Boundary Hyperplane is Lebesgue-Null",
+      "summary": "Proves the null-boundary hypothesis of each_slice_exactly_half is genuinely elementary (unlike the headline Gap 1, scalar slice-volume continuity). volume_inner_hyperplane_eq_zero shows a real-inner-product level set {y | <u,y> = c} with nonzero normal u is an additive Haar (Lebesgue) null set: it is the translate of the kernel of the nonzero functional <u,.>, a proper submodule (it omits u since <u,u> = ||u||^2 != 0), null by Measure.addHaar_submodule, and translation preserves Haar measure. volume_body_inter_stdBoundary_eq_zero specializes it to the standard cut via body cap B subset B; each_slice_exactly_half_standard then discharges measurability, the partition (via lt_trichotomy), and the null boundary, leaving only the bisection equality (the Ham Sandwich conclusion) as input.",
+      "startLine": 398,
+      "endLine": 502,
+      "mathContext": "{y | <u,y> = c} = (-y0 + .)^{-1}(ker <u,.>), and ker <u,.> is a proper submodule (omits u); Measure.addHaar_submodule + translation-invariance give measure 0.",
+      "relatedConcepts": [
+        "Haar null set",
+        "hyperplane / affine level set",
+        "kernel of a linear functional",
+        "translation-invariance of Lebesgue measure"
+      ]
+    },
+    {
+      "id": "part9-global-continuity-fails",
+      "title": "Part 9: The Global Continuity Hypotheses are Non-Dischargeable",
+      "summary": "Certifies WHY the reduction must use ContinuousOn (Sphere n) rather than global Continuous. The hcont_pos/hcont_neg hypotheses demand continuity of x |-> vol(body cap stdPos x).toReal over ALL of the ambient space, but for the standard linear cut this is false at the origin: stdPos_zero / stdNeg_zero show the slice degenerates to the empty half-space at x = 0 (linearity gives u 0 = 0, t 0 = 0, so the condition reads 0 < 0), while stdPos_smul_pos / stdNeg_smul_pos show the slice is scale-invariant, so the volume is a constant nonzero value along every open ray from the origin. stdPos_global_continuity_fails / stdNeg_global_continuity_fails assemble these into a jump discontinuity at 0 (value 0 at the origin, positive constant along the ray (k+1)^{-1} x0 -> 0). The honest still-true hypothesis is ContinuousOn (Sphere n), since Borsuk-Ulam only reads f on the sphere where x = 0 never occurs.",
+      "startLine": 503,
+      "endLine": 687,
+      "mathContext": "vol(body cap stdPos x).toReal = 0 at x = 0 but equals the positive constant vol(body cap stdPos x0).toReal along (k+1)^{-1} x0 -> 0, so the two limits disagree: continuity fails at 0. Faithful hypothesis: ContinuousOn (Sphere n).",
+      "relatedConcepts": [
+        "jump discontinuity",
+        "scale-invariance of a linear cut",
+        "ContinuousOn vs Continuous",
+        "Borsuk-Ulam reads f on the sphere"
+      ]
     },
     {
       "id": "topological-vs-analytic-summary",
       "title": "Summary: Topological Core vs. the Lone Analytic Input",
       "summary": "Closing docstring confirming the dichotomy is now exact: the topological core (oddness, 'zero implies bisected', and existence of a sphere zero) is fully proved from Borsuk-Ulam, while the single genuinely-remaining analytic input is the Lebesgue continuity of the parameterized half-space volume on S^n. Two of the three originally-listed side conditions (antipodal swap, volume finiteness) are discharged for the standard linear parameterization, so ham_sandwich_standard_of_scalar_continuity states the conclusion with exactly the scalar continuity (plus finiteness) as its only hypotheses.",
-      "startLine": 346,
-      "endLine": 371,
+      "startLine": 688,
+      "endLine": 697,
       "mathContext": "Lone remaining input: continuity of $x \\mapsto \\mathrm{vol}(\\mathrm{body}_i \\cap \\{y : \\langle u(x), y\\rangle < t(x)\\}).\\mathrm{toReal}$ on $S^n$ (dominated convergence) — a self-contained measure-theory fact, not topological."
     }
   ],
