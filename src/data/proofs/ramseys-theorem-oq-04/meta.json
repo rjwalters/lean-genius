@@ -33,7 +33,7 @@
     ],
     "axiomCount": 1,
     "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom: hypergraph_ramsey_k2 (k ≥ 2 existence requiring the stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k=1 pigeonhole), and monotonicity are fully proved. The axiom isolates exactly the inductive step of the k-uniform stepping-up argument.",
-    "lineCount": 301,
+    "lineCount": 260,
     "mathlibDependencies": [
       {
         "theorem": "Finset.powersetCard",
@@ -103,23 +103,23 @@
       "title": "Tower Function and Growth Rates",
       "summary": "tower, tower_2_1, tower_2_2, tower_strictMono",
       "startLine": 149,
-      "endLine": 178,
+      "endLine": 164,
       "mathContext": "`tower b n` = $b^{b^{\\cdots^b}}$ ($n$ times). Base: `tower b 0 = 1`. Step: `tower b (n+1) = b ^ tower b n`. Values: `tower 2 1 = 2`, `tower 2 2 = 4`, `tower 2 3 = 16`, `tower 2 4 = 65536`. Monotonicity: `tower b n < tower b (n+1)` proved by `Nat.lt_two_pow` then `Nat.pow_le_pow_left`."
     },
     {
       "id": "infrastructure",
       "title": "Infrastructure: Counting and Monotonicity",
       "summary": "kSubsets_card, kSubsets_subset, ramsey_property_mono, ramsey_base",
-      "startLine": 180,
-      "endLine": 257,
+      "startLine": 172,
+      "endLine": 249,
       "mathContext": "`kSubsets_card s k`: $|\\binom{s}{k}| = \\binom{|s|}{k}$ via `Finset.card_powersetCard`. `ramsey_property_mono`: if $N$ works for Ramsey, so does $N' \\geq N$, via `Finset.exists_subset_card_le`. `ramsey_base k r n (hn : n ≤ k)`: when $n \\leq k$, $N = n$ works vacuously (no k-subsets if $|S| < k$, or all k-subsets are S itself when n=k)."
     },
     {
       "id": "pigeonhole-proof",
       "title": "Pigeonhole Ramsey: Full k=1 Proof",
       "summary": "pigeonhole_ramsey via Finset.exists_lt_card_fiber_of_nsmul_lt_card",
-      "startLine": 259,
-      "endLine": 300,
+      "startLine": 252,
+      "endLine": 259,
       "mathContext": "Proof: define `f : ℕ → Fin r` mapping elements to their singleton color. Apply `Finset.exists_lt_card_fiber_of_nsmul_lt_card` (pigeonhole for finsets): $r \\cdot (n-1) < N = r(n-1)+1$. The large fiber gives the monochromatic set; `dif_pos` and proof irrelevance close the monochromaticity subgoal."
     }
   ],
@@ -169,7 +169,7 @@
       "Finset"
     ],
     "namespace": "HypergraphRamsey",
-    "lineCount": 301,
+    "lineCount": 260,
     "axiomCount": 1,
     "theoremCount": 16,
     "definitionCount": 5,
