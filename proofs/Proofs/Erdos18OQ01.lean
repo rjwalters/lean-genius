@@ -1022,6 +1022,82 @@ theorem h_pow_le {m : ℕ} (hp : IsPractical m) (k : ℕ) : h (m ^ k) ≤ k * h 
       _ ≤ k * h m + h m := by omega
       _ = (k + 1) * h m := by ring
 
+/-! ## Exact values off the base-2 family, and tightness of subadditivity
+
+`h_two_pow` pins `h(2^k) = k` on the powers of two, where the counting lower bound
+`le_two_pow_h` (`m ≤ 2^{h m}`) meets the binary upper bound.  The same pincer determines
+`h` on any practical `m` for which we can *exhibit* a covering set whose size already meets
+the free lower bound: the general criterion `h_eq_of_covering` says that if `2^{s-1} < m` and
+some `s`-element set of divisors covers `[1, m)`, then `h(m) = s`.  Applying it off the
+single-base powers gives the first exact values on composite `m` — `h(6) = 3` and `h(12) = 4`
+— and exhibits the subadditivity bound `h(m·n) ≤ h(m) + h(n)` as **tight**: `h(12) = h(2) +
+h(6)` (`= 1 + 3`), so no strict improvement holds in general. -/
+
+/-- **Upper-bound witness for `h`.**  Any `s`-element set `S ⊆ divisors m` that represents
+    every `1 ≤ k < m` witnesses `h(m) ≤ s` (it lies in the `sInf` set).  This is the named,
+    reusable form of the `Nat.sInf_le` step inlined in `h_two_pow_le`. -/
+theorem h_le_of_covering {m s : ℕ} (S : Finset ℕ) (hS : S ⊆ divisors m)
+    (hcard : S.card = s) (hcov : ∀ k, 1 ≤ k → k < m → ∃ T ⊆ S, T.sum id = k) :
+    h m ≤ s :=
+  Nat.sInf_le ⟨S, hS, hcard, hcov⟩
+
+/-- **Exact-value criterion for `h`.**  For practical `m`, if `2^{s-1} < m` and some
+    `s`-element set of divisors covers `[1, m)`, then `h(m) = s`.  The upper bound is the
+    exhibited covering (`h_le_of_covering`); the lower bound is free from the counting bound
+    `m ≤ 2^{h m}` (`le_two_pow_h`), since `2^{s-1} < m ≤ 2^{h m}` forces `s ≤ h m`. -/
+theorem h_eq_of_covering {m s : ℕ} (hp : IsPractical m) (hlow : 2 ^ (s - 1) < m)
+    (S : Finset ℕ) (hS : S ⊆ divisors m) (hcard : S.card = s)
+    (hcov : ∀ k, 1 ≤ k → k < m → ∃ T ⊆ S, T.sum id = k) :
+    h m = s := by
+  refine le_antisymm (h_le_of_covering S hS hcard hcov) ?_
+  have hb := le_two_pow_h hp
+  by_contra hlt
+  rw [not_le] at hlt
+  have hle : h m ≤ s - 1 := by omega
+  have hpow : (2 : ℕ) ^ h m ≤ 2 ^ (s - 1) := Nat.pow_le_pow_right (by norm_num) hle
+  omega
+
+/-- **`h(6) = 3`** — the first exact value of the Erdős #18 function off the powers of two.
+    The three divisors `{1, 2, 3}` of `6` cover `[1, 6)` by subset sums, and `2^2 = 4 < 6`
+    forces `h(6) ≥ 3` via `le_two_pow_h`.  Note `h(6) = 3 = d(6) − 1` (the top divisor `6`
+    is unused). -/
+theorem h_six : h 6 = 3 := by
+  refine h_eq_of_covering six_practical (by norm_num) {1, 2, 3} (by decide) (by decide) ?_
+  intro k hk1 hk6
+  interval_cases k
+  · exact ⟨{1}, by decide, by decide⟩
+  · exact ⟨{2}, by decide, by decide⟩
+  · exact ⟨{3}, by decide, by decide⟩
+  · exact ⟨{1, 3}, by decide, by decide⟩
+  · exact ⟨{2, 3}, by decide, by decide⟩
+
+/-- **`h(12) = 4`.**  The four divisors `{1, 2, 4, 6}` of `12` cover `[1, 12)` by subset sums
+    (`0..7` from `{1,2,4}`, shifted by `6` to reach `13`), and `2^3 = 8 < 12` forces
+    `h(12) ≥ 4`.  Here `d(12) = 6`, so `h(12) = 4 = d(12) − 2`. -/
+theorem h_twelve : h 12 = 4 := by
+  refine h_eq_of_covering twelve_practical (by norm_num) {1, 2, 4, 6} (by decide) (by decide) ?_
+  intro k hk1 hk12
+  interval_cases k
+  · exact ⟨{1}, by decide, by decide⟩
+  · exact ⟨{2}, by decide, by decide⟩
+  · exact ⟨{1, 2}, by decide, by decide⟩
+  · exact ⟨{4}, by decide, by decide⟩
+  · exact ⟨{1, 4}, by decide, by decide⟩
+  · exact ⟨{6}, by decide, by decide⟩
+  · exact ⟨{1, 6}, by decide, by decide⟩
+  · exact ⟨{2, 6}, by decide, by decide⟩
+  · exact ⟨{1, 2, 6}, by decide, by decide⟩
+  · exact ⟨{4, 6}, by decide, by decide⟩
+  · exact ⟨{1, 4, 6}, by decide, by decide⟩
+
+/-- **Subadditivity is tight off the base-2 family.**  `h(12) = h(2) + h(6)` (`= 1 + 3 = 4`):
+    the bound `h(m·n) ≤ h(m) + h(n)` (`h_mul_le`, with `12 = 2·6`) is attained, so no strict
+    improvement holds in general.  Contrast the powers of two, where `h(2^k) = k = k·h(2)`
+    saturates `h_pow_le` from below by exact equality throughout. -/
+theorem h_twelve_eq_h_two_add_h_six : h 12 = h 2 + h 6 := by
+  have h2 : h 2 = 1 := by simpa using h_two_pow 1
+  rw [h_twelve, h2, h_six]
+
 /-! ## The multiplicative submonoid of practical numbers
 
 `practical_mul` shows the practical numbers are closed under multiplication and
