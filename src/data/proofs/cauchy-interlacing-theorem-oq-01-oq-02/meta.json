@@ -128,6 +128,94 @@
       "endLine": 147,
       "summary": "poincare_separation_compression_span replaces the explicit dimension hypothesis with an arbitrary orthonormal family f : Fin n → V, compressing onto H = span (range f). The dimension finrank H = n is discharged inline by finrank_span_eq_card hf.linearIndependent composed with Fintype.card_fin, giving the 'compression onto a k-dimensional subspace' form directly from an orthonormal frame.",
       "mathContext": "For an orthonormal frame $f : \\mathrm{Fin}\\,n \\to V$, take $H = \\operatorname{span}(\\operatorname{range} f)$; then $\\dim H = n$ (finrank\\_span\\_eq\\_card) and $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ holds for the compression onto $H$."
+    },
+    {
+      "id": "tightness-invariant-attainment",
+      "title": "Tightness: the Invariant-Subspace (Attainment) Case",
+      "startLine": 148,
+      "endLine": 303,
+      "summary": "Opens the attainment theory of the interlacing bound. On a T-invariant subspace H the compression coincides with the honest restriction: coe_compress_of_invariant gives the pointwise form and compress_eq_restrict_of_invariant the operator form, with invariant_iff_coe_compress_eq and invariant_of_exists_lift the converses (pointwise agreement, resp. the mere existence of a lift, forces invariance). From this the spectrum transfers: hasEigenvalue_compress_eigenvalue_of_invariant and its converse identify eigenvalues of the restriction with eigenvalues of T on H, and spectrum_compress_subset_of_invariant packages the one-sided inclusion spectrum(compress T H) ⊆ spectrum(T) — notably with NO symmetry hypothesis on T.",
+      "mathContext": "If $H$ is $T$-invariant then $\\operatorname{compress} T H = (T|_H)$ (honest restriction), hence $\\sigma(\\operatorname{compress} T H) \\subseteq \\sigma(T)$, with no symmetry assumption on $T$."
+    },
+    {
+      "id": "reducing-spectrum-union",
+      "title": "Reducing Subspaces: the Spectrum Splits as a Union",
+      "startLine": 304,
+      "endLine": 448,
+      "summary": "Sharpens the one-sided inclusion to an equality when H reduces T (both H and Hᗮ are T-invariant). The mechanism is purely projection-theoretic: starProjection_eigenvector_of_reducing shows the orthogonal projections of a T-eigenvector onto the two reducing blocks are themselves eigenvectors, so hasEigenvalue_compress_or_orthogonal_of_reducing captures every eigenvalue of T in one of the two blocks. The result is spectrum_eq_union_of_reducing: spectrum(T) = spectrum(compress T H) ∪ spectrum(compress T Hᗮ), the two-block equality (attainment) form of Poincaré separation — again symmetry-free.",
+      "mathContext": "If $H$ reduces $T$ (both $H,\\,H^\\perp$ invariant) then $\\sigma(T) = \\sigma(\\operatorname{compress} T H) \\cup \\sigma(\\operatorname{compress} T H^\\perp)$; each $T$-eigenvector's two projections $P_H v,\\,P_{H^\\perp} v$ are themselves eigenvectors."
+    },
+    {
+      "id": "eigenspace-decomposition-reducing",
+      "title": "Eigenspace Decomposition over a Reducing Subspace",
+      "startLine": 449,
+      "endLine": 537,
+      "summary": "Upgrades the set-level spectrum union to a multiplicity-exact decomposition of each eigenspace. eigenspace_inf_reducing_disjoint shows the two blockwise pieces eigenspace T μ ⊓ H and eigenspace T μ ⊓ Hᗮ are disjoint, eigenspace_eq_sup_inf_of_reducing that they span the whole eigenspace, and finrank_eigenspace_eq_add_of_reducing that the dimensions add — so geometric multiplicities split exactly across a reducing pair.",
+      "mathContext": "For $H$ reducing $T$ and any $\\mu$: $\\ker(T-\\mu) = (\\ker(T-\\mu)\\cap H) \\oplus (\\ker(T-\\mu)\\cap H^\\perp)$, hence $\\dim\\ker(T-\\mu) = \\dim(\\ker(T-\\mu)\\cap H) + \\dim(\\ker(T-\\mu)\\cap H^\\perp)$."
+    },
+    {
+      "id": "blockwise-eigenspace-multiplicity",
+      "title": "Blockwise Eigenspaces: Exact Multiplicity of a Compression",
+      "startLine": 538,
+      "endLine": 656,
+      "summary": "Identifies each block's contribution with a compression eigenspace. map_eigenspace_compress_eq_inf_of_invariant shows the compression's μ-eigenspace maps isometrically onto eigenspace T μ ⊓ H, giving the exact blockwise multiplicity finrank_eigenspace_compress_eq_of_invariant and the monotonicity finrank_eigenspace_compress_le_of_invariant. Combined with the previous section this yields finrank_eigenspace_eq_add_compress_of_reducing: the with-multiplicity spectral decomposition finrank(eigenspace T μ) = finrank(eigenspace (compress T H) μ) + finrank(eigenspace (compress T Hᗮ) μ).",
+      "mathContext": "On an invariant block the compression's $\\mu$-eigenspace has the same dimension as $\\ker(T-\\mu)\\cap H$; across a reducing pair $\\dim\\ker(T-\\mu) = \\dim\\ker(\\operatorname{compress} T H - \\mu) + \\dim\\ker(\\operatorname{compress} T H^\\perp - \\mu)$."
+    },
+    {
+      "id": "reducing-iff-commuting-projection",
+      "title": "The Operator Root: Reducing ⟺ Commuting with the Projection",
+      "startLine": 657,
+      "endLine": 872,
+      "summary": "Locates the operator-theoretic origin of the reducing hypothesis: reducing_iff_commute_starProjection proves H reduces T iff T commutes with the orthogonal projection P_H (both directions via commute_starProjection_of_reducing and reducing_of_commute_starProjection). This gives the block-diagonal reconstruction starProjection_compress_add_orthogonal_eq_of_reducing (pointwise) and its operator form, and hence additivity of the trace: trace_eq_add_compress_of_reducing states trace T = trace(compress T H) + trace(compress T Hᗮ), with trace_starProjection_compress_eq_trace_compress the cyclic-trace bridge relating the ambient and honest compressions.",
+      "mathContext": "$H$ reduces $T$ $\\iff$ $T P_H = P_H T$; then $T = P_H\\,T\\,P_H + P_{H^\\perp}\\,T\\,P_{H^\\perp}$ (block-diagonal) and $\\operatorname{tr} T = \\operatorname{tr}(\\operatorname{compress} T H) + \\operatorname{tr}(\\operatorname{compress} T H^\\perp)$."
+    },
+    {
+      "id": "spectral-reading-trace-det-charpoly",
+      "title": "Spectral Reading: Trace, Determinant, and Characteristic Polynomial",
+      "startLine": 873,
+      "endLine": 1183,
+      "summary": "Reads the block decomposition through the standard polynomial invariants. trace_eq_sum_eigenvalues expresses the trace of a symmetric operator as the sum of its eigenvalues (from trace_eq_sum_of_apply_basis_smul on the eigenbasis), giving eigenvalue-sum additivity sum_eigenvalues_eq_add_of_reducing. The multiplicative invariants factorize across a reducing pair: det_eq_mul_compress_of_reducing (determinant as a product) and charpoly_eq_mul_compress_of_reducing (characteristic polynomial as a product). The section closes with the corresponding additivity of the charpoly root multiset (roots_charpoly_eq_add_compress_of_reducing, its cardinality, and per-value rootMultiplicity), plus spectrum_compress_eq_restrict_of_invariant.",
+      "mathContext": "For $H$ reducing $T$: $\\operatorname{tr} T = \\sum_k \\lambda_k$, $\\det T = \\det(\\operatorname{compress} T H)\\cdot\\det(\\operatorname{compress} T H^\\perp)$, and $\\chi_T = \\chi_{\\operatorname{compress} T H}\\cdot\\chi_{\\operatorname{compress} T H^\\perp}$; root multisets add."
+    },
+    {
+      "id": "finrank-identity-on-eigenvalue-lists",
+      "title": "Upgrading Count Additivity to a Genuine finrank Identity",
+      "startLine": 1184,
+      "endLine": 1268,
+      "summary": "Converts the unconditional multiset-count additivity into an honest dimension identity. charpoly_compress_dvd_of_reducing shows each block's characteristic polynomial divides the ambient one; card_roots_charpoly_eq_finrank_of_splits (via Polynomial.splits_iff_card_roots and LinearMap.charpoly_natDegree) shows that when a charpoly splits its root list has length exactly finrank. Under a single splitting hypothesis on charpoly T both blocks inherit splitting, so finrank_eq_add_card_roots_compress_of_reducing_of_splits reads finrank V = finrank H + finrank Hᗮ off the eigenvalue lists — the eigenvalues of T partition exactly into those of the two blocks.",
+      "mathContext": "If $\\chi_T$ splits then $\\chi_{\\operatorname{compress} T H}$ and $\\chi_{\\operatorname{compress} T H^\\perp}$ split (they divide $\\chi_T$), so $\\#\\text{roots} = \\dim$ and $\\dim V = \\dim H + \\dim H^\\perp$ is realized on the eigenvalue lists."
+    },
+    {
+      "id": "alg-closed-corollaries",
+      "title": "The Algebraically Closed (ℂ) Corollaries: Splitting Is Free",
+      "startLine": 1269,
+      "endLine": 1331,
+      "summary": "Discharges the splitting hypotheses over an algebraically closed field. With [IsAlgClosed 𝕜] in force — in particular 𝕜 = ℂ, the archetypal RCLike field — IsAlgClosed.splits makes every charpoly split automatically, so card_roots_charpoly_eq_finrank_of_isAlgClosed and the reducing-block companions hold unconditionally, culminating in the hypothesis-free finrank identity finrank_eq_add_card_roots_compress_of_reducing_of_isAlgClosed.",
+      "mathContext": "Over an algebraically closed field (e.g. $\\mathbb{C}$), $\\chi_S$ always splits (IsAlgClosed.splits), so every eigenvalue-list-length = finrank statement and the finrank additivity hold with no splitting side condition."
+    },
+    {
+      "id": "spectral-confinement-icc",
+      "title": "Spectral Confinement: Eigenvalues Stay in [λ_min, λ_max]",
+      "startLine": 1332,
+      "endLine": 1429,
+      "summary": "Telescopes the local Poincaré interlacing into a global confinement using that the ambient eigenvalue list is descending (hT.eigenvalues_antitone). compress_eigenvalue_le_top_of_poincare gives μ_k ≤ λ_0 (largest) and bot_le_compress_eigenvalue_of_poincare gives λ_{n+m-1} ≤ μ_k (smallest), combined in compress_eigenvalue_mem_Icc_of_poincare: every compression eigenvalue lies in the closed interval spanned by the extreme eigenvalues of T. compress_eigenvalue_mem_Icc_span_of_poincare restates this for the orthonormal-frame subspace.",
+      "mathContext": "Since $\\lambda$ is antitone, $\\lambda_{n+m-1} \\le \\mu_k \\le \\lambda_0$ for every $k$: each compression eigenvalue lies in $[\\lambda_{\\min}, \\lambda_{\\max}] = [\\lambda_{n+m-1}, \\lambda_0]$."
+    },
+    {
+      "id": "minpoly-divides",
+      "title": "Minimal Polynomial: the Compression's minpoly Divides",
+      "startLine": 1430,
+      "endLine": 1737,
+      "summary": "Treats the one invariant that does NOT multiply. coe_aeval_compress_of_invariant shows polynomial evaluation transports across the invariant-block compression (evaluation commutes with restriction), so any polynomial annihilating T annihilates the restriction: minpoly_compress_dvd_of_invariant gives minpoly(compress T H) ∣ minpoly(T). Across a reducing pair the ambient minpoly is squeezed — minpoly_dvd_mul_compress_of_reducing and minpoly_dvd_lcm_compress_of_reducing bound it — yielding minpoly_eq_lcm_compress_of_reducing: minpoly T = lcm(minpoly(compress T H), minpoly(compress T Hᗮ)), the minimal-polynomial companion of the charpoly product factorization, with degree bounds natDegree_minpoly_le_add_compress_of_reducing.",
+      "mathContext": "On an invariant block $\\mu_{\\operatorname{compress} T H} \\mid \\mu_T$; across a reducing pair $\\mu_T = \\operatorname{lcm}(\\mu_{\\operatorname{compress} T H},\\, \\mu_{\\operatorname{compress} T H^\\perp})$ — the minpoly takes an lcm, not a product, unlike $\\chi_T$."
+    },
+    {
+      "id": "ky-fan-trace-bracket",
+      "title": "Ky Fan: the Eigenvalue-Sum Is Bracketed by Extreme Sums",
+      "startLine": 1738,
+      "endLine": 1836,
+      "summary": "Sums the termwise interlacing into the Ky Fan trace bracket. sum_compress_eigenvalues_le_of_poincare is the Ky Fan maximum principle in compression form — the eigenvalue-sum (equivalently the trace) of compress T H is at most the sum of the n largest eigenvalues of T — and sum_le_sum_compress_eigenvalues_of_poincare the dual minimum principle against the n smallest, combined in sum_compress_eigenvalues_mem_Icc_of_poincare (with a frame variant). Both are one-line Finset.sum_le_sum consequences of the two halves of the main theorem; crucially, unlike the reducing-subspace trace additivity, the Ky Fan bracket holds for a COMPLETELY ARBITRARY subspace H — only its dimension enters.",
+      "mathContext": "Summing $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ over $k$: $\\sum_{k<n}\\lambda_{k+m} \\le \\sum_k \\mu_k \\le \\sum_{k<n}\\lambda_k$ — the compression trace is bracketed by the sums of the $n$ smallest and $n$ largest eigenvalues of $T$, for arbitrary $H$."
     }
   ],
   "references": [
