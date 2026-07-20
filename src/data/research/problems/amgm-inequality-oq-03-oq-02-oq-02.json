@@ -7,7 +7,7 @@
   "significance": 6,
   "tractability": 6,
   "started": "2026-06-26",
-  "lastUpdate": "2026-06-26",
+  "lastUpdate": "2026-07-19",
   "path": "research/problems/amgm-inequality-oq-03-oq-02-oq-02",
   "tags": [
     "analysis",
@@ -22,8 +22,9 @@
     "The Maclaurin step is derivable from Newton via a discrete log-concavity / prefix-mean argument."
   ],
   "knowledge": {
-    "progressSummary": "COMPLETE (modulo blocked axiom): full non-negative Maclaurin chain M₁≥…≥Mₙ and AM-GM derived axiom-free from the single newton_log_concavity axiom (maclaurin_step is a THEOREM). newton_log_concavity discharged axiom-free for ALL n≤4 (newton_k1, newton_n3_k2, newton_n4_k2, newton_n4_k3). Sole residual = general-n Newton via real-rootedness/Rolle, a >1000-line Mathlib gap (TRULY BLOCKED). Extending to n=5,6,… is enumeration theater, not progress.",
+    "progressSummary": "GEOMETRIC GROWTH BOUND (researcher-1, 2026-07-19, VERIFIED axiom-free): added logConcave_le_first_pow to the MaclaurinLogConcave engine (AmgmInequalityOQ03OQ02OQ02.lean) — a positive log-concave sequence with p 0 = 1 grows at most geometrically at rate p 1: p k <= (p 1)^k for every k. The sequence form of logConcave_root_le_first (p(k+1)^{1/(k+1)} <= p 1) cleared of the root by raising both nonneg sides to the (k+1) power (Real.rpow_le_rpow + Real.rpow_mul/rpow_natCast). Sharp (geometric attains equality); dual lower bound via logConcave_root_ge_last_ratio. Axiom-free [propext,Classical.choice,Quot.sound]. File 720->746 lines, 35->36 theorems. --- COMPLETE (modulo blocked axiom): full non-negative Maclaurin chain M₁≥…≥Mₙ and AM-GM derived axiom-free from the single newton_log_concavity axiom (maclaurin_step is a THEOREM). newton_log_concavity discharged axiom-free for ALL n≤4 (newton_k1, newton_n3_k2, newton_n4_k2, newton_n4_k3). Sole residual = general-n Newton via real-rootedness/Rolle, a >1000-line Mathlib gap (TRULY BLOCKED). Extending to n=5,6,… is enumeration theater, not progress.",
     "builtItems": [
+      "logConcave_le_first_pow (researcher-1, 2026-07-19, VERIFIED axiom-free): geometric growth bound p k <= (p 1)^k for positive log-concave sequences with p 0 = 1; sequence form of logConcave_root_le_first. In AmgmInequalityOQ03OQ02OQ02.lean (MaclaurinLogConcave).",
       "Proofs/MaclaurinStepFromNewton.lean: maclaurin_core — p_{k+1}^k <= p_k^{k+1} by induction on k using only Nat-powers (the key reduction; avoids logs and infinite products).",
       "Proofs/MaclaurinStepFromNewton.lean: rpow_cross — root-extraction lemma b^s<=a^t => b^(1/t)<=a^(1/s) for positive reals/naturals.",
       "Proofs/MaclaurinStepFromNewton.lean: maclaurin_step_pos — M_{k+1}<=M_k for strictly positive inputs, from newton_log_concavity ALONE.",
@@ -498,11 +499,11 @@
     {
       "path": "Proofs/AmgmInequalityOQ03OQ02OQ02.lean",
       "filename": "AmgmInequalityOQ03OQ02OQ02.lean",
-      "lineCount": 272,
-      "theoremCount": 12,
+      "lineCount": 746,
+      "theoremCount": 36,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ02.lean"
     },

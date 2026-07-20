@@ -385,6 +385,32 @@ theorem logConcave_root_le_first (p : ℕ → ℝ) (hp0 : p 0 = 1)
   have hanti := logConcave_root_antitone_seq p hp0 hpos hlc
   simpa using hanti (Nat.zero_le k)
 
+/-- **Geometric growth bound.** A positive log-concave sequence with `p 0 = 1` grows at most
+geometrically at rate `p 1`: `p k ≤ (p 1) ^ k` for every `k`.  This is the sequence form of
+`logConcave_root_le_first` (`p (k+1)^{1/(k+1)} ≤ p 1`) cleared of the root — raise both nonnegative
+sides to the `(k+1)`-th power.  It is sharp: geometric `p k = r^k` attains equality
+(`geometric_root_antitone_eq`).  The dual lower bound `(r_last)^k ≤ p k` comes from
+`logConcave_root_ge_last_ratio`. -/
+theorem logConcave_le_first_pow (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (k : ℕ) :
+    p k ≤ (p 1) ^ k := by
+  cases k with
+  | zero => simp [hp0]
+  | succ j =>
+    have hroot := logConcave_root_le_first p hp0 hpos hlc j
+    have hpj : (0 : ℝ) < p (j + 1) := hpos (j + 1)
+    have he : ((j : ℝ) + 1) ≠ 0 := by positivity
+    have hbase : (0 : ℝ) ≤ p (j + 1) ^ ((1 : ℝ) / ((j : ℝ) + 1)) :=
+      (Real.rpow_pos_of_pos hpj _).le
+    have hpow := Real.rpow_le_rpow hbase hroot (by positivity : (0 : ℝ) ≤ (j : ℝ) + 1)
+    rw [← Real.rpow_natCast (p 1) (j + 1)]
+    push_cast
+    calc p (j + 1)
+        = (p (j + 1) ^ ((1 : ℝ) / ((j : ℝ) + 1))) ^ ((j : ℝ) + 1) := by
+          rw [← Real.rpow_mul hpj.le, one_div, inv_mul_cancel₀ he, Real.rpow_one]
+      _ ≤ (p 1) ^ ((j : ℝ) + 1) := hpow
+
 /-! ## Lower bound: every root mean is at least the last consecutive ratio
 
 `logConcave_root_le_first` bounds each root mean `p (k+1)^{1/(k+1)}` *above* by the
