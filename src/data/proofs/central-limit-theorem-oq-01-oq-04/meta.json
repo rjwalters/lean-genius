@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview, Imports & Setup",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module docstring stating the open question — can the classical Berry–Esseen rate sup_x|F_n − Φ| ≤ Cρ/(σ³√n) be extended to the α-stable limit laws (α < 2)? — and framing the entry's two-part answer: it restates the analytic *mechanism* (the Taylor kernel bounds Mathlib already supplies) and pins down the *obstruction* (the α-stable exponent |t|^α is sub-quadratic near 0, so the a²-remainder integrates to an infinite variance and there is no finite α<2 analogue of the second-order expansion). Imports SpecialFunctions.Pow.Real and Complex.Exponential; opens Real; declares the CLTOQ01OQ04 namespace.",
+      "mathContext": "Berry–Esseen: $\\sup_x|F_n(x)-\\Phi(x)| \\le C\\rho/(\\sigma^3\\sqrt n)$; α-stable correction $1-|t|^\\alpha$ is sub-quadratic for $\\alpha<2$."
+    },
+    {
       "id": "stable-charfun",
       "title": "The α-stable characteristic function (real form)",
       "startLine": 59,
@@ -73,12 +81,20 @@
       "mathContext": "$\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$; $\\varphi_2(t)=e^{-t^2}$ (Gaussian), $\\varphi_1(t)=e^{-|t|}$ (Cauchy)."
     },
     {
-      "id": "crossover",
-      "title": "The frequency-domain crossover vs Gaussian",
+      "id": "exponent-crossover",
+      "title": "The exponent crossover: |t|^α vs t²",
       "startLine": 88,
+      "endLine": 110,
+      "summary": "The pure exponent inequalities driving the whole comparison, by rpow monotonicity: exponent_gt_sq (0 < t < 1, α < 2 ⟹ t² < t^α), exponent_lt_sq (t > 1 ⟹ t^α < t²), and exponent_crossover_at_one (1^α = 1² = 1). The exponent |t|^α crosses the Gaussian exponent t² exactly at |t| = 1 — the analytic heart of 'infinite variance', sub-quadratic near 0.",
+      "mathContext": "$0<t<1 \\Rightarrow t^2 < t^\\alpha$; $t>1 \\Rightarrow t^\\alpha < t^2$; equality at $t=1$ for $0<\\alpha<2$."
+    },
+    {
+      "id": "charfun-crossover",
+      "title": "The frequency-domain crossover: φ_α vs φ_2",
+      "startLine": 112,
       "endLine": 137,
-      "summary": "Exponent inequalities t² < t^α on (0,1) and t^α < t² on (1,∞), equal at t=1, via rpow monotonicity. Exponentiated: φ_α < φ_2 near 0 (sub-quadratic deviation) and φ_α > φ_2 beyond the crossover at |t|=1.",
-      "mathContext": "$0<t<1 \\Rightarrow t^2 < t^\\alpha$; $t>1 \\Rightarrow t^\\alpha < t^2$; crossover at $t=1$ for $0<\\alpha<2$."
+      "summary": "Exponentiating the exponent inequalities (exp is monotone) gives the characteristic-function comparison: stablePhi_lt_gaussian (φ_α < φ_2 for 0 < t < 1 — sub-quadratic deviation, α-stable decays faster near 0), stablePhi_gt_gaussian (φ_α > φ_2 for t > 1 — heavier frequency tail), and stablePhi_eq_at_one (φ_α(1) = φ_2(1) at the crossover).",
+      "mathContext": "$0<t<1 \\Rightarrow \\varphi_\\alpha(t)<\\varphi_2(t)$; $t>1 \\Rightarrow \\varphi_\\alpha(t)>\\varphi_2(t)$; $\\varphi_\\alpha(1)=\\varphi_2(1)$."
     },
     {
       "id": "berry-esseen-kernel",
