@@ -83,7 +83,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 378,
-    "assumptions": "3 axiom(s) (Cambie's bounds + asymptotic conjecture), 0 sorries. See the Lean source for details.",
+    "assumptions": "3 axiom(s) (Cambie's bounds + asymptotic conjecture), 0 sorries. The greatest-prime-factor function P(n) is defined constructively (via Mathlib's `Nat.primeFactorsList`) with its four key properties proved, not axiomatized. Concrete GPF evaluations (e.g. gpf_four, gpf_ten, gpf_sixtyfour) use `native_decide`, so the small-case lower bounds (g_ge_two/three/four, length_four_exists) additionally trust the Lean compiler (`ofReduceBool`-class native_decide axioms) beyond the kernel; the main Θ-result `erdos_648` depends only on the two Cambie axioms. See the Lean source for details.",
     "theoremCount": 41,
     "definitionCount": 9
   },
@@ -118,18 +118,18 @@
     {
       "id": "gpf",
       "title": "Greatest Prime Factor $P(n)$",
-      "summary": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors.",
+      "summary": "Defines `gpf n` as $P(n)$ constructively (the last element of Mathlib's `Nat.primeFactorsList`, returning 0 for $n \\le 1$) and proves — not axiomatizes — four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors. The boundary cases $P(0) = P(1) = 0$ are discharged by `native_decide`.",
       "startLine": 43,
       "endLine": 81,
-      "mathContext": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors."
+      "mathContext": "Defines `gpf n` as $P(n)$ constructively (the last element of Mathlib's `Nat.primeFactorsList`, returning 0 for $n \\le 1$) and proves — not axiomatizes — four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors. The boundary cases $P(0) = P(1) = 0$ are discharged by `native_decide`."
     },
     {
       "id": "examples",
       "title": "Concrete GPF Computations",
-      "summary": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$.",
+      "summary": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$. The composite/prime-power evaluations are discharged by `native_decide` (compiler-trusted), which propagates an `ofReduceBool`-class axiom into the small-case lower bounds.",
       "startLine": 82,
       "endLine": 118,
-      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$."
+      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$. The composite/prime-power evaluations are discharged by `native_decide` (compiler-trusted), which propagates an `ofReduceBool`-class axiom into the small-case lower bounds."
     },
     {
       "id": "sequences",
@@ -150,18 +150,18 @@
     {
       "id": "lower-bounds",
       "title": "Small Lower Bounds on $g(n)$",
-      "summary": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses.",
+      "summary": "Proves that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses (via `g_bddAbove` / `le_csSup`). The proofs are sorry-free but rely on `native_decide` GPF evaluations for the concrete witnesses.",
       "startLine": 200,
       "endLine": 219,
-      "mathContext": "Mathematical content: States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses."
+      "mathContext": "Mathematical content: Proves that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses (via `g_bddAbove` / `le_csSup`). The proofs are sorry-free but rely on `native_decide` GPF evaluations for the concrete witnesses."
     },
     {
       "id": "smooth",
       "title": "Smooth Numbers",
-      "summary": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$.",
+      "summary": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (sorry-free, from the established GPF properties) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$.",
       "startLine": 220,
       "endLine": 241,
-      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $$2^{k}$$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
+      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (sorry-free, from the established GPF properties) that $$2^{k}$$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
     },
     {
       "id": "cambie",
@@ -210,7 +210,7 @@
     "openQuestions": [
       "What is the exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$? Does the limit exist, and if so, is $c = 2$, $c = 2\\sqrt{2}$, or some intermediate value?",
       "What is the growth rate of the dual problem: longest increasing sequence with increasing smallest prime factors $p(a_1) < p(a_2) < \\cdots < p(a_t)$?",
-      "Can the 6 remaining sorry-ed theorems (lower bounds $g(n) \\ge k$ and smooth number properties) be proved from the axiomatized GPF properties, or do they require full Mathlib factorization machinery?",
+      "The small-case lower bounds $g(n) \\ge k$ and the smooth-number properties are now fully proved from the constructive GPF definition (no sorries), though the concrete GPF evaluations rely on `native_decide`. Can these `native_decide` steps be replaced by kernel-checked proofs to remove the compiler-trust dependency?",
       "For the multidimensional generalization, how does $g_k(n)$ behave when we require $k$ simultaneous arithmetic constraints (e.g., decreasing GPF and increasing $\\omega(n)$)?"
     ]
   },
