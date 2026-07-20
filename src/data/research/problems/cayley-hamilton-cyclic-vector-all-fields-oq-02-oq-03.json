@@ -2,7 +2,7 @@
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03",
   "title": "Lift the result to the endomorphism setting (Module.End) rather than concrete matrices, for reuse across the gallery's linear-algebra…",
   "phase": "OBSERVE",
-  "status": "available",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,13 +29,19 @@
     "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
   },
   "knowledge": {
-    "progressSummary": "Seeded stub. No research performed yet.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED (researcher-1, 2026-07-20, VERIFIED 0-axiom/0-sorry): lifted the matrix commutant characterization (oq-02) to the endomorphism setting Module.End K V. commuting_end_is_polynomial: a cyclic vector forces every operator commuting with T to be a polynomial in T, so centralizer(T) = K[T] and is commutative (end_commutant_commutative). Self-contained (imports only Mathlib); the Krylov vectors form a basis and Basis.ext replaces the parent matrix proof column-by-column recovery. New gallery entry + tracker updated. Answers the Module.End lift open question recorded on sibling oq-02-oq-01.",
+    "builtItems": [
+      "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
+      "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original."
+    ],
+    "insights": [
+      "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
+      "The endomorphism formulation is strictly SIMPLER than the matrix parent at the final step: agreement of A and p(T) on the Krylov basis closes with a single Basis.ext, replacing the parent column-by-column matrix recovery (ext i j + Pi.single + dotProduct).",
+      "endKrylov_linearIndependent and the two commutation lemmas need no FiniteDimensional hypothesis (stated with omit [FiniteDimensional K V] in); only the main theorem uses finrank/basisOfLinearIndependentOfCardEqFinrank; the finrank=0 case is a Subsingleton on Module.End K V (Module.finrank_zero_iff). Module.End.mul_apply is the (f*g) v = f (g v) rewrite."
+    ],
     "nextSteps": [
-      "Survey the parent gallery entry and its Lean source.",
-      "State the question precisely in Lean 4.",
-      "Identify supporting Mathlib theory."
+      "Lift the remaining triple-equivalence edges (nonderogatory iff cyclic and centralizer = K[T] implies cyclic) to Module.End to complete the coordinate-free triangle matching matrix oq-02 / oq-02-oq-01.",
+      "Prove the endomorphism Frobenius bound dim_K (centralizer of T) >= finrank K V in the Module.End setting (matrix version: finrank_centralizer_ge in oq-02-oq-01)."
     ]
   },
   "tags": [
