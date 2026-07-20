@@ -725,4 +725,71 @@ theorem maxPrimeGap_unbounded_and_sublinear :
       Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) :=
   ⟨maxPrimeGap_cast_tendsto_atTop, bhp_implies_gap_littleo⟩
 
+-- ============================================================================
+-- Part: Primes in short intervals (localisation consequence of BHP)
+-- ============================================================================
+
+/-- **Primes in short intervals, from Baker–Harman–Pintz.** For every `ε > 0`,
+every sufficiently large `x` contains a prime in the half-open interval
+`(x, (1 + ε)·x]`.
+
+This is a genuinely new *localisation* consequence of BHP-sublinearity, not a
+repackaging of the `maxPrimeGap` asymptotics: those record the *size* of the
+largest gap below `x`, whereas this asserts a prime exists in a *specific short
+window* above `x`. The proof pairs the largest prime `p ≤ x` (`Nat.findGreatest`)
+with the next prime `q` (`Nat.find`); consecutiveness plus Bertrand's postulate
+(`prime_gap_le_prev_prime`) give `q ≤ 2x`, so the gap `q - p` lies in
+`primeGapSet (2x)` and is bounded by `maxPrimeGap (2x)`. BHP-sublinearity applied
+at scale `2x` (the `ε/2` envelope pulled back along `x ↦ 2x`) forces
+`maxPrimeGap (2x) ≤ ε·x` eventually, whence `q - x ≤ q - p ≤ ε·x`, i.e.
+`q ≤ (1 + ε)·x`. Depends only on the parent `baker_harman_pintz` axiom. -/
+theorem bhp_prime_in_short_interval (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ x : ℕ in atTop,
+      ∃ q : ℕ, Nat.Prime q ∧ (x : ℝ) < q ∧ (q : ℝ) ≤ (1 + ε) * x := by
+  classical
+  -- `maxPrimeGap` at scale `2x` is eventually `≤ ε·x` (BHP-sublinearity, ε/2 form).
+  have hhalf : (0 : ℝ) < ε / 2 := by positivity
+  have hgap := bhp_gap_eventually_le_eps (ε / 2) hhalf
+  have hmap : Tendsto (fun x : ℕ => 2 * x) atTop atTop :=
+    tendsto_atTop_atTop_of_monotone (fun a b h => by omega) (fun n => ⟨n, by omega⟩)
+  have htwo := hmap.eventually hgap
+  filter_upwards [htwo, eventually_ge_atTop 2] with x hbound hx2
+  -- `p` := largest prime `≤ x`.
+  set p := Nat.findGreatest Nat.Prime x with hp_def
+  have hp_prime : Nat.Prime p := Nat.findGreatest_spec (m := 2) hx2 Nat.prime_two
+  have hp_le : p ≤ x := Nat.findGreatest_le _
+  -- `q` := least prime `> x`.
+  have hqex : ∃ m, x < m ∧ Nat.Prime m := by
+    obtain ⟨r, hr_ge, hr_prime⟩ := Nat.exists_infinite_primes (x + 1)
+    exact ⟨r, by omega, hr_prime⟩
+  set q := Nat.find hqex with hq_def
+  obtain ⟨hxq, hq_prime⟩ := Nat.find_spec hqex
+  have hpq : p < q := by omega
+  -- Consecutiveness: no prime lies strictly between `p` and `q`.
+  have hcons : ∀ r, Nat.Prime r → p < r → q ≤ r := by
+    intro r hr hpr
+    have hxr : x < r := by
+      by_contra hc
+      exact (Nat.findGreatest_is_greatest hpr (not_lt.mp hc)) hr
+    exact Nat.find_le ⟨hxr, hr⟩
+  -- Gap `≤ p` (Bertrand), hence `q ≤ 2x`.
+  have hgap_le : q - p ≤ p := prime_gap_le_prev_prime p q hp_prime hq_prime hpq hcons
+  have hq2x : q ≤ 2 * x := by omega
+  -- The gap lies in `primeGapSet (2x)`, so is `≤ maxPrimeGap (2x)`.
+  have hmem : (q - p) ∈ primeGapSet (2 * x) :=
+    ⟨p, q, hp_prime, hq_prime, hpq, hq2x, hcons, rfl⟩
+  have hle : (q - p) ≤ maxPrimeGap (2 * x) := le_csSup (primeGapSet_bddAbove _) hmem
+  -- Cast to `ℝ` and finish: `q - x ≤ q - p ≤ maxPrimeGap (2x) ≤ ε·x`.
+  refine ⟨q, hq_prime, by exact_mod_cast hxq, ?_⟩
+  have hcastgap : ((q - p : ℕ) : ℝ) = (q : ℝ) - p := by
+    rw [Nat.cast_sub (le_of_lt hpq)]
+  have hle_real : (q : ℝ) - p ≤ (maxPrimeGap (2 * x) : ℝ) := by
+    rw [← hcastgap]; exact_mod_cast hle
+  have hbound' : (maxPrimeGap (2 * x) : ℝ) ≤ ε * x := by
+    have hcast : (ε / 2) * ((2 * x : ℕ) : ℝ) = ε * x := by push_cast; ring
+    rw [hcast] at hbound; exact hbound
+  have hp_le_real : (p : ℝ) ≤ x := by exact_mod_cast hp_le
+  have expand : (1 + ε) * x = x + ε * x := by ring
+  rw [expand]; linarith [hle_real, hbound', hp_le_real]
+
 end Erdos1138OQ03

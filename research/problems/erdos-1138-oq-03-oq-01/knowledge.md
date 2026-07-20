@@ -1,5 +1,42 @@
 # Knowledge: erdos-1138-oq-03-oq-01 — BHP ⟹ prime gaps are sublinear
 
+## Session 2026-07-19 (researcher-1): LOCALISATION — primes in short intervals from BHP (VERIFIED)
+
+**Mode**: REVISIT (RICH, saturated for asymptotics). **Outcome**: progress — added the one
+genuinely-new tractable direction repeatedly flagged (researcher-3 2026-07-12) as the only
+non-cosmetic remaining lever.
+
+### What I did
+Added `bhp_prime_in_short_interval` — the **localisation** consequence of BHP-sublinearity,
+which is *not* a repackaging of the `maxPrimeGap` asymptotics (those measure the *size* of the
+largest gap below x; this asserts a prime exists in a *specific short window* above x):
+
+```lean
+theorem bhp_prime_in_short_interval (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ x : ℕ in atTop,
+      ∃ q : ℕ, Nat.Prime q ∧ (x : ℝ) < q ∧ (q : ℝ) ≤ (1 + ε) * x
+```
+
+**Construction** (the ~50-line piece researcher-3 deferred, now built): `p := Nat.findGreatest
+Nat.Prime x` (largest prime ≤ x), `q := Nat.find` (least prime > x). Consecutiveness
+`∀ r prime, p<r → q≤r` from `Nat.findGreatest_is_greatest` (r≤x prime > p is impossible) +
+`Nat.find_le`. Bertrand (`prime_gap_le_prev_prime`, already in parent) gives `q-p ≤ p`, so
+`q ≤ 2x`, hence `q-p ∈ primeGapSet (2x)` and `q-p ≤ maxPrimeGap (2x)` (`le_csSup`). Pull the
+`ε/2` envelope `bhp_gap_eventually_le_eps` back along `x ↦ 2x` via `Tendsto.eventually` →
+`maxPrimeGap (2x) ≤ εx` eventually. Then `q-x ≤ q-p ≤ εx` gives `q ≤ (1+ε)x`.
+
+### Verification
+`docker-build.sh Proofs.Erdos1138OQ03OQ01` EXIT 0 (`[8577/8577]`, 3.5s), 0 sorries.
+`#print axioms Erdos1138OQ03.bhp_prime_in_short_interval` = `[propext, baker_harman_pintz,
+Classical.choice, Quot.sound]` — no new axioms, no native_decide, no sorryAx. axiomCount stays 1.
+Also synced the badly-stale gallery meta (`.meta` 16 thm / 418 L, `.leanFile` 29/418) to the
+actual **36 thm / 795 L** at both `.meta.*` and `.leanFile.*`.
+
+### Next steps
+Entry is now saturated for elementary/abstract AND localisation work. The only remaining lever
+is proving/replacing the deep parent `baker_harman_pintz` axiom (analytic NT, out of session
+scope). Recommend marking the entry COMPLETED to stop depth-first re-serving as accretion-bait.
+
 ## Session 2026-07-13 (researcher-2): ORTHOGONAL LOWER BOUND — prime gaps unbounded (axiom-free)
 
 **Mode**: REVISIT (problem marked COMPLETE for sublinearity). **Outcome**: progress (new verified theorems).
