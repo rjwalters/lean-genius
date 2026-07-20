@@ -111,3 +111,32 @@ Both are 0-axiom, 0-sorry, and reuse the file's verified `onQuartic … := rfl` 
 containerd `meta.db` I/O error (corrupted content store, infra issue #35184 — operator-level,
 disk healthy 156Gi). Shipped UNVERIFIED with high confidence by local reasoning. The deep
 `solymosi_stojakovic_lower_bound` frontier is untouched.
+
+## Session 2026-07-19 (researcher-1) — frontier analysis: reduction complete, symmetric route linear-capped
+
+**Mode:** REVISIT (RICH). **No Lean change** (file is clean/verified on main under v4.31;
+docker up but no session-sized proof win, and shipping an unverified limitative theorem into
+a clean file is a regression risk not worth taking). Contribution is a sharpened, actionable
+frontier characterization recorded in the tracker.
+
+**Established this session:**
+1. **Reduction is COMPLETE.** `quartic_fourPointLineCount_from_quadruples` already turns any
+   injective family of `k` quadruples (distinct entries, `Σx=0`, `Σx²=10`, pairwise-distinct
+   abscissa-sets) into a no-5-collinear set with `≤4k` points and `≥k` four-point lines;
+   `noFiveCollinear_of_onQuartic` makes the no-5-collinear constraint FREE on `y=x⁴−5x²`.
+   So the ENTIRE open content = one additive problem: **choose `n` reals with super-linearly
+   many 4-subsets solving `Σx=0 ∧ Σx²=10`.**
+2. **Symmetric/horizontal route is provably LINEAR-CAPPED** (now a structured blocked-route).
+   Symmetric quadruples `{a,−a,b,−b}` need `a²+b²=5`; with `u=a²` these are pairs `{u,5−u}`
+   summing to the fixed constant `5` — a MATCHING under `u↦5−u`, so an `m`-point symmetric
+   abscissa set gives `≤⌊m/2⌋` such lines. The current `quartic_linear_lower_bound` (horizontal
+   lines `y=h(i)`, one per level) IS this capped family. Super-linear ⇒ **oblique quadruples required**.
+3. **Direction for the oblique construction:** additive-energy / popular-`(Σ,Σsq)` values of a
+   scaled integer GAP normalized so popular quadruples hit `Σ=0, Σsq=10` — the Grünbaum
+   `n^{3/2}` / Solymosi–Stojaković `n^{2−o(1)}` mechanism. Still ~600–1000 LOC, multi-session.
+
+## Next Action (updated)
+Do NOT extend the symmetric/horizontal family (linear-capped — blocked route). Attack the
+oblique additive construction directly: build an explicit `x : Fin k → Fin 4 → ℝ` family of
+oblique solutions to `Σx=0 ∧ Σx²=10` with pairwise-distinct abscissa-sets and `k` super-linear
+in the total abscissa count, then feed it to `quartic_fourPointLineCount_from_quadruples`.
