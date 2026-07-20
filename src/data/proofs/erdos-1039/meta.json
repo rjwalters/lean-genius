@@ -92,106 +92,170 @@
     {
       "id": "imports",
       "title": "Imports and Problem Overview",
-      "summary": "Module documentation on the Erdős-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis",
+      "summary": "Module documentation on the Erdős–Herzog–Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis and measure theory.",
       "startLine": 1,
-      "endLine": 24,
-      "mathContext": "Problem #1039 (Erdos-Herzog-Piranian): for monic $f(z) = \\\\prod(z-z_i)$ with $|z_i| \\\\leq 1$, what is $\\\\rho(f)$ = radius of largest disc inside $\\\\{|f(z)| < 1\\\\}$?"
+      "endLine": 25,
+      "mathContext": "Problem #1039 (Erdős–Herzog–Piranian): for monic $f(z) = \\prod_i (z - z_i)$ with all $|z_i| \\le 1$, how large must $\\rho(f)$ — the radius of the largest disc contained in the sublevel set $\\{|f(z)| < 1\\}$ — be, as a function of the degree $n$?"
     },
     {
       "id": "polynomial-setup",
       "title": "Polynomial Setup",
-      "summary": "UnitDiscPolynomial structure (degree, roots, roots_in_disc constraint), UnitDiscPolynomial.eval (product formula), and sublevelSet definition {z : |f(z)| < 1}",
-      "startLine": 25,
-      "endLine": 47,
-      "mathContext": "Structure: degree $n$, roots $z_1,\\\\ldots,z_n \\\\in \\\\overline{\\\\mathbb{D}}$. The sublevel set $\\\\{|f(z)|<1\\\\}$ is open and non-empty."
+      "summary": "The UnitDiscPolynomial structure (degree, roots, and the roots_in_disc constraint |zᵢ| ≤ 1), the evaluator UnitDiscPolynomial.eval as the product ∏(z − zᵢ), and the sublevelSet {z : |f(z)| < 1}.",
+      "startLine": 26,
+      "endLine": 48,
+      "mathContext": "A unit-disc polynomial is monic with all roots $z_1,\\dots,z_n \\in \\overline{\\mathbb{D}}$. Its sublevel set $\\{z : |f(z)| < 1\\}$ is the region where the lemniscate value drops below $1$."
     },
     {
       "id": "inscribed-disc",
       "title": "Inscribed Disc Radius",
-      "summary": "isInscribedDisc (disc B(c,r) ⊆ S), inscribedDiscRadius (supremum of radii), and rho (ρ(f) = inscribedDiscRadius of sublevel set)",
-      "startLine": 48,
-      "endLine": 62,
-      "mathContext": "$\\\\rho(f) = \\\\sup\\\\{r : \\\\exists c, B(c,r) \\\\subseteq \\\\{|f(z)|<1\\\\}\\\\}$. Measures flatness of the lemniscate near its nodes."
+      "summary": "isInscribedDisc S c r (the ball B(c,r) ⊆ S), inscribedDiscRadius (the supremum of inscribed radii), and rho f = ρ(f), the inscribed-disc radius of the sublevel set — the quantity the problem is about.",
+      "startLine": 49,
+      "endLine": 63,
+      "mathContext": "$\\rho(f) = \\sup\\{r : \\exists c,\\ B(c,r) \\subseteq \\{|f(z)| < 1\\}\\}$ — how big a disc fits inside the lemniscate's interior; it measures how 'fat' the sublevel set is."
     },
     {
       "id": "benchmark",
-      "title": "The Benchmark: zⁿ - 1",
-      "summary": "rootsOfUnity construction (roots at e^{2πik/n}) and benchmark_upper axiom: ρ(zⁿ - 1) ≤ π/(2n)",
-      "startLine": 63,
-      "endLine": 79,
-      "mathContext": "Roots of unity $z_k = e^{2\\\\pi ik/n}$: $\\\\rho = (2/n)\\\\sin(\\\\pi/n) \\\\sim 2\\\\pi/n^2$. This worst-case benchmark has $\\\\rho \\\\sim C/n^2$."
+      "title": "The Benchmark: zⁿ − 1",
+      "summary": "The extremal-looking family. rootsOfUnity n builds the polynomial with roots at the n-th roots of unity, and the axiom benchmark_upper records the sharp upper bound ρ(zⁿ − 1) ≤ π/(2n) — the source of the conjectured 1/n rate.",
+      "startLine": 64,
+      "endLine": 86,
+      "mathContext": "**Axiom benchmark_upper.** For $z^n - 1$ (roots $e^{2\\pi i k/n}$), $\\rho \\le \\pi/(2n)$. This equally-spaced configuration shows the conjectured lower bound $\\rho \\gtrsim c/n$ cannot be improved beyond order $1/n$."
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Lower Bound (1961)",
-      "summary": "pommerenke_lower axiom (ρ(f) ≥ 1/(2en²)) and pommerenkeExponent constant (= 2, recording the quadratic rate)",
-      "startLine": 80,
-      "endLine": 90,
-      "mathContext": "Pommerenke: $\\\\rho(f) \\\\geq 1/(2en^2)$. Quadratic in $n$ — not sharp. The conjecture is $\\\\rho \\\\geq c/n$."
+      "summary": "The axiom pommerenke_lower records the classical bound ρ(f) ≥ 1/(2en²); pommerenkeExponent = 2 encodes its quadratic rate, and benchmark_family_bracket brackets the benchmark family between the lower and upper bounds.",
+      "startLine": 87,
+      "endLine": 116,
+      "mathContext": "**Axiom pommerenke_lower.** $\\rho(f) \\ge 1/(2en^2)$ for every degree-$n$ unit-disc polynomial (Pommerenke 1961). The exponent $2$ is not sharp — the conjecture asks for the linear rate $\\rho \\gtrsim c/n$."
     },
     {
       "id": "klr",
       "title": "KLR Bound (2025)",
-      "summary": "klr_lower axiom (ρ(f) ≥ c/(n√log n) for n ≥ 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)",
-      "startLine": 91,
-      "endLine": 105,
-      "mathContext": "Komarov-Lachand-Robert: $\\\\rho(f) \\\\geq c/(n\\\\sqrt{\\\\log n})$. Improves $1/n^2$ to nearly $1/n$ with a $\\\\sqrt{\\\\log n}$ gap."
+      "summary": "The axiom klr_lower records the Krishnapur–Lundberg–Ramachandran bound ρ(f) ≥ c/(n√(log n)) (n ≥ 3), and klr_better_than_pommerenke proves it eventually dominates Pommerenke's 1/(2en²).",
+      "startLine": 117,
+      "endLine": 157,
+      "mathContext": "**Axiom klr_lower.** $\\rho(f) \\ge c/(n\\sqrt{\\log n})$ for $n \\ge 3$ (KLR 2025), improving the exponent from $2$ to nearly $1$ — only a $\\sqrt{\\log n}$ factor short of the conjectured $c/n$."
     },
     {
       "id": "conjecture",
-      "title": "The EHP Conjecture",
-      "summary": "ehpConjecture definition (∃ c > 0, ρ(f) ≥ c/n for all unit disc polynomials) and ehp_open placeholder axiom",
-      "startLine": 106,
-      "endLine": 118,
-      "mathContext": "OPEN: $\\\\exists c > 0$ such that $\\\\rho(f) \\\\geq c/n$ for all unit-disc polynomials of degree $n$. Sharp up to constants."
+      "title": "The Erdős–Herzog–Piranian Conjecture",
+      "summary": "The definition ehpConjecture stating the open conjecture: ∃ c > 0 with ρ(f) ≥ c/n for every unit-disc polynomial. This is a Prop that is defined (as the target), not asserted — no axiom claims it.",
+      "startLine": 158,
+      "endLine": 169,
+      "mathContext": "**Open.** $\\exists c > 0,\\ \\forall f,\\ \\rho(f) \\ge c/\\deg f$. The linear rate $c/n$ is conjectured sharp (matched by the roots-of-unity benchmark); closing the $\\sqrt{\\log n}$ gap to the KLR bound is the crux."
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
-      "summary": "Explicit bound functions pommerenkeBound, klrBound, conjecturedBound, benchmarkBound, and bounds_gap theorem showing KLR < benchmark",
-      "startLine": 119,
-      "endLine": 143,
-      "mathContext": "Bounds: $1/(2en^2) \\\\leq c/(n\\\\sqrt{\\\\log n}) \\\\leq c/n$ (conjecture). KLR-to-conjecture gap: $\\\\sqrt{\\\\log n}$."
+      "summary": "The explicit bound functions pommerenkeBound, klrBound, conjecturedBound, benchmarkBound, and bounds_gap comparing them for n ≥ 3 — establishing the ordering pommerenke ≤ KLR ≤ conjecture ≤ benchmark, with conjecturedBound_lt_benchmarkBound.",
+      "startLine": 170,
+      "endLine": 225,
+      "mathContext": "The four bounds on $\\rho$: $\\dfrac{1}{2en^2} \\le \\dfrac{c}{n\\sqrt{\\log n}} \\le \\dfrac{c}{n} \\le \\dfrac{\\pi}{2n}$ (Pommerenke, KLR, conjectured, benchmark). The gaps between consecutive bounds quantify what remains open."
+    },
+    {
+      "id": "klr-conjecture-gap",
+      "title": "The KLR–Conjecture Gap",
+      "summary": "Quantifies the remaining gap. klrBound_lt_conjecturedBound and conjecturedBound_div_klrBound show the conjectured bound exceeds the KLR bound by a factor tending to ∞ (conjecturedBound_div_klrBound_tendsto_atTop) — precisely the √(log n) shortfall to be closed.",
+      "startLine": 226,
+      "endLine": 293,
+      "mathContext": "$\\dfrac{\\text{conjecturedBound}}{\\text{klrBound}} = \\dfrac{c/n}{c/(n\\sqrt{\\log n})} = \\sqrt{\\log n} \\to \\infty$. The KLR lower bound falls short of the conjecture by exactly this diverging factor."
+    },
+    {
+      "id": "pommerenke-conjecture-gap",
+      "title": "The Pommerenke–Conjecture Gap",
+      "summary": "conjecturedBound_div_pommerenkeBound and its tendsto_atTop variant show the conjectured c/n bound exceeds Pommerenke's 1/(2en²) by a factor ~ n → ∞, measuring how far the 1961 bound is from sharp.",
+      "startLine": 294,
+      "endLine": 337,
+      "mathContext": "$\\dfrac{\\text{conjecturedBound}}{\\text{pommerenkeBound}} = \\dfrac{c/n}{1/(2en^2)} = 2ecn \\to \\infty$: Pommerenke's quadratic bound is a full factor of $n$ below the conjectured linear rate."
+    },
+    {
+      "id": "klr-pommerenke-improvement",
+      "title": "The KLR–Pommerenke Improvement",
+      "summary": "klrBound_div_pommerenkeBound and its tendsto_atTop variant show KLR improves on Pommerenke by a factor ~ n/√(log n) → ∞ — the concrete 2025 gain over the 1961 bound.",
+      "startLine": 338,
+      "endLine": 403,
+      "mathContext": "$\\dfrac{\\text{klrBound}}{\\text{pommerenkeBound}} = \\dfrac{c/(n\\sqrt{\\log n})}{1/(2en^2)} = \\dfrac{2ecn}{\\sqrt{\\log n}} \\to \\infty$: KLR recovers almost the full factor $n$ that Pommerenke was missing, up to $\\sqrt{\\log n}$."
     },
     {
       "id": "lemniscate",
       "title": "Lemniscate Properties",
-      "summary": "lemniscate definition ({z : |f(z)| = 1}), sublevelSet_isOpen, sublevelSet_nonempty, and root_in_sublevelSet (roots lie in sublevel set)",
-      "startLine": 144,
-      "endLine": 165,
-      "mathContext": "The lemniscate $\\\\{|f(z)|=1\\\\}$ is a real-algebraic curve of degree $2n$. The sublevel set is a union of at most $n$ connected components."
+      "summary": "Topological facts about the sublevel set. lemniscate = {z : |f(z)| = 1}, sublevelSet_isOpen (the sublevel set is open), root_in_sublevelSet (each root lies inside it), and sublevelSet_nonempty for positive degree.",
+      "startLine": 404,
+      "endLine": 432,
+      "mathContext": "The lemniscate $\\{|f(z)| = 1\\}$ is the boundary of the sublevel set $\\{|f(z)| < 1\\}$, which is open and contains all $n$ roots (where $f = 0$), hence is non-empty when $\\deg f > 0$."
     },
     {
-      "id": "area",
+      "id": "area-bounds",
       "title": "Area Bounds",
-      "summary": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area ≥ πρ²), and klr_area_bound axiom (area ≥ π/(n² log n))",
-      "startLine": 166,
-      "endLine": 181,
-      "mathContext": "Area bound: $|\\\\{|f(z)|<1\\\\}| \\\\geq \\\\pi/n^2$. Large area implies large inscribed disc (isoperimetric reasoning)."
+      "summary": "sublevelArea f — the Lebesgue measure of the sublevel set — as the bridge from area to inscribed radius, setting up the isoperimetric-style argument used by the KLR approach.",
+      "startLine": 433,
+      "endLine": 442,
+      "mathContext": "$\\mathrm{sublevelArea}(f) = |\\{z : |f(z)| < 1\\}|$ (planar Lebesgue measure). A lower bound on this area feeds a lower bound on $\\rho$: a set of large area must contain a sizeable disc under suitable regularity."
+    },
+    {
+      "id": "geometric-infrastructure",
+      "title": "Geometric Infrastructure",
+      "summary": "The metric-geometry lemmas linking area, containment, and inscribed radius: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero, and area_implies_disc_bound (area ≥ πρ²). Closes with the axiom klr_area_bound recording the KLR area lower bound for degree ≥ 3.",
+      "startLine": 443,
+      "endLine": 618,
+      "mathContext": "Containing the sublevel set in a ball bounds $\\rho$ above; the reverse area estimate $\\mathrm{area} \\ge \\pi \\rho^2$ (area_implies_disc_bound) turns an area lower bound into a radius bound. **Axiom klr_area_bound**: the KLR lower bound on $\\mathrm{sublevelArea}$ for $\\deg f \\ge 3$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "degree_one_optimal (ρ = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots → ρ ≥ 1 - ε)",
-      "startLine": 182,
-      "endLine": 200,
-      "mathContext": "Degree 1: $\\\\rho = 1$ always. Clustered roots ($z_i \\\\approx z_0$): $\\\\rho \\\\approx 1$."
+      "summary": "Concrete regimes and universal ρ-bounds. degree_one_optimal (ρ = 1 in degree 1), hasClusteredRoots / clustered_implies_large_disc (tightly clustered roots force ρ close to 1), equalRoots_rho_eq_one, and the universal bounds rho_pos, sublevelSet_isBounded, rho_le_two, rho_mem_Ioc (ρ ∈ (0, 2] always).",
+      "startLine": 619,
+      "endLine": 802,
+      "mathContext": "$\\rho$ is always strictly positive (every root has a neighbourhood in the sublevel set) and at most $2$. Extreme cases: degree $1$ or fully clustered roots give $\\rho \\approx 1$, the largest values."
     },
     {
-      "id": "random",
+      "id": "random-polynomials",
       "title": "Random Polynomials",
-      "summary": "random_polynomial_expected axiom: E[ρ] ~ 1/√n for random unit disc polynomials, showing worst-case is atypical",
-      "startLine": 201,
-      "endLine": 210,
-      "mathContext": "Random polynomials: $\\\\mathbb{E}[\\\\rho] \\\\sim 1/\\\\sqrt{n}$ for i.i.d. uniform roots on $\\\\overline{\\\\mathbb{D}}$. Much better than worst case."
+      "summary": "random_polynomial_expected — a theorem (not an axiom) recording the expected behaviour E[ρ] ~ 1/√n for random unit-disc polynomials, showing the worst-case c/n rate is far from typical.",
+      "startLine": 803,
+      "endLine": 822,
+      "mathContext": "For polynomials with i.i.d. uniform roots on $\\overline{\\mathbb{D}}$, $\\mathbb{E}[\\rho] \\sim n^{-1/2}$ — much larger than the worst-case order $n^{-1}$, so extremal configurations (like roots of unity) are atypical."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "summary": "erdos_1039_question (alias for ehpConjecture) and erdos_1039_current_state theorem combining KLR lower bound with roots of unity upper bound",
-      "startLine": 211,
-      "endLine": 249,
-      "mathContext": "OPEN: EHP conjecture $\\\\rho(f) \\\\geq c/n$. Closing the $\\\\sqrt{\\\\log n}$ gap from KLR is the main challenge."
+      "summary": "erdos_1039_question (an alias for ehpConjecture) and erdos_1039_current_state, which packages the current knowledge: the KLR lower bound together with the roots-of-unity upper bound, bracketing ρ up to the √(log n) gap.",
+      "startLine": 823,
+      "endLine": 844,
+      "mathContext": "Current state: $\\dfrac{c}{n\\sqrt{\\log n}} \\le \\rho(f) \\le \\dfrac{\\pi}{2n}$ (KLR below, benchmark above). Resolving #1039 means closing the $\\sqrt{\\log n}$ gap to establish the conjectured $\\rho \\gtrsim c/n$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "A recap of the bound hierarchy and the file's contributions, with sublevelArea_pos establishing that the sublevel set has positive area for positive degree — the qualitative fact underpinning the area approach.",
+      "startLine": 845,
+      "endLine": 873,
+      "mathContext": "The sublevel set has strictly positive area whenever $\\deg f > 0$ (it is open and non-empty), the baseline needed before any quantitative area → radius bound can bite."
+    },
+    {
+      "id": "ordering-chain",
+      "title": "The Assembled Ordering Chain of the Four Bound Functions",
+      "summary": "pommerenkeBound_lt_klrBound_of_one_le and the capstone bounds_chain assemble the four bound functions into a single verified ordering pommerenkeBound < klrBound < conjecturedBound < benchmarkBound (for c ≥ 1, n ≥ 3), the machine-checked hierarchy of all known bounds.",
+      "startLine": 874,
+      "endLine": 927,
+      "mathContext": "$\\mathrm{pommerenkeBound}(n) < \\mathrm{klrBound}(c,n) < \\mathrm{conjecturedBound}(c,n) < \\mathrm{benchmarkBound}(n)$ for $1 \\le c < \\pi/2$ and $n \\ge 3$ — the complete, formally verified chain relating every bound in the problem."
+    },
+    {
+      "id": "bounds-vanish",
+      "title": "The Bounds All Vanish as n → ∞",
+      "summary": "conjecturedBound_tendsto_zero, benchmarkBound_tendsto_zero, klrBound_tendsto_zero, and pommerenkeBound_tendsto_zero establish that all four bound functions → 0 as the degree grows — the inscribed radius provably shrinks to zero, so the only question is the rate.",
+      "startLine": 928,
+      "endLine": 992,
+      "mathContext": "All four bounds $\\to 0$ as $n \\to \\infty$: $\\rho$ necessarily degenerates for high-degree polynomials. The problem is entirely about the *rate* of decay — $n^{-2}$ (Pommerenke) vs $n^{-1}$ (conjectured)."
+    },
+    {
+      "id": "rotation-invariance",
+      "title": "Rotation Invariance of ρ",
+      "summary": "The symmetry group of the invariant. UnitDiscPolynomial.rotate (rotate all roots by a unit u), with rotate_eval, rotate_norm_eval, rotate_sublevelSet, isInscribedDisc_rotate, rotate_inscribed_radii_eq, and the conclusions rotate_rho (ρ is rotation-invariant) and neg_roots_rho (invariance under z ↦ −z).",
+      "startLine": 993,
+      "endLine": 1101,
+      "mathContext": "Rotating every root by $u$ with $|u| = 1$ rotates the sublevel set rigidly, so $\\rho$ is unchanged: $\\rho(f_u) = \\rho(f)$. Hence $\\rho$ depends only on the root configuration up to rotation (and reflection $z \\mapsto -z$), reducing the extremal problem modulo this symmetry."
     }
   ],
   "conclusion": {
