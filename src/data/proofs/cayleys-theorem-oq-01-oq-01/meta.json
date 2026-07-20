@@ -80,7 +80,8 @@
       "**The codomain refinement is a relabelling, not new content.** The mathematical heart — faithfulness of the regular representation — is the parent's; the finite form is obtained purely by conjugating along a numbering G ≃ Fin n, which is an isomorphism of symmetric groups and therefore preserves injectivity.",
       "**Conjugation is multiplicative.** σ ↦ e ∘ σ ∘ e⁻¹ is a group isomorphism Equiv.Perm α ≃* Equiv.Perm β (Mathlib bundles it as Equiv.permCongrHom; re-derived here as permCongrMulEquiv), and composing the regular representation with it keeps the result a homomorphism G →* Equiv.Perm (Fin n).",
       "**Fintype.equivFin supplies the numbering.** Any finite group has a canonical bijection to Fin n with n = Fintype.card G; instantiating the general relabelled embedding there gives the textbook 'order n ⟹ embeds in Sₙ'.",
-      "**Three packagings.** Existence of an injective hom, a bundled embedding G ↪ Sₙ, and the isomorphism onto a subgroup G ≃* range are equivalent faces; MonoidHom.ofInjective converts the first into the last."
+      "**Three packagings.** Existence of an injective hom, a bundled embedding G ↪ Sₙ, and the isomorphism onto a subgroup G ≃* range are equivalent faces; MonoidHom.ofInjective converts the first into the last.",
+      "**The image is canonical only up to conjugacy.** The embedding depends on the chosen numbering e : G ≃ Fin n, and two numberings differ by a permutation of Fin n, i.e. by an inner automorphism of Sₙ. So the range subgroup cayleyFinHom e).range is well-defined not as a single subgroup but as a conjugacy class of subgroups of Sₙ. This is why the noncomputable Fintype.equivFin (which invokes choice) costs nothing mathematically: any concrete numbering, such as the ZMod 3 example, yields a conjugate — hence isomorphic — copy of G inside S₃."
     ],
     "prerequisites": [
       "Cayley's theorem in abstract form (the left-regular representation MulAction.toPermHom, parent entry cayleys-theorem-oq-01)",
@@ -117,9 +118,17 @@
       "id": "finite-cayley",
       "title": "Finite Cayley's Theorem and Packagings",
       "startLine": 80,
+      "endLine": 93,
+      "summary": "The three equivalent faces of the finite theorem. cayley_fin : ∃ injective f : G →* Equiv.Perm (Fin (Fintype.card G)), instantiating the relabelled hom at the canonical numbering Fintype.equivFin G. cayleyFinEmbedding : G ↪ Equiv.Perm (Fin n), the same data as a bundled embedding. cayleyFinRangeEquiv : G ≃* (cayleyFinHom e).range via MonoidHom.ofInjective — G realized as an honest subgroup of Sₙ.",
+      "mathContext": "$G \\cong \\mathrm{im}(f) \\le S_n$ for $n = |G|$, in three interchangeable packagings (injective hom / embedding / iso onto range)."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Sanity Check and a Concrete Instance",
+      "startLine": 94,
       "endLine": 107,
-      "summary": "cayley_fin : ∃ injective f : G →* Equiv.Perm (Fin (Fintype.card G)); cayleyFinEmbedding : G ↪ Equiv.Perm (Fin n); cayleyFinRangeEquiv : G ≃* (cayleyFinHom e).range via MonoidHom.ofInjective; plus sanity examples (the existence form and the cyclic group of order 3 embedding in S₃).",
-      "mathContext": "$G \\cong \\mathrm{im} \\le S_n$ for $n = |G|$."
+      "summary": "Two `example` blocks exercising the theorem. The first re-derives the existence form directly from cayley_fin, confirming the embedding lands in Sₙ with n the order of the group. The second is a concrete instance: the cyclic group of order 3, Multiplicative (ZMod 3), embeds in S₃ = Equiv.Perm (Fin 3) — the smallest nontrivial witness that the abstract statement fires on an explicit finite group.",
+      "mathContext": "Concrete witness: $\\mathbb{Z}/3\\mathbb{Z} \\hookrightarrow S_3$; the regular representation of a group of order 3 is its image as the 3-cycles-plus-identity subgroup of $S_3$."
     }
   ],
   "crossReferences": [
