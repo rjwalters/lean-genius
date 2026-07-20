@@ -54,6 +54,14 @@
       "endLine": 162,
       "summary": "fib_sq_sum: ∑_{k=0}^{n} F_k² = F_n·F_{n+1}; lucas_succ_eq_fib_add_fib: L_{n+1} = F_n + F_{n+2}; lucas_sq_sum_fib: ∑_{k=0}^{n+1} L_k² = (F_n+F_{n+2})·(F_{n+1}+F_{n+3}) + 2.",
       "mathContext": "The Fibonacci square-sum telescopes exactly like the Lucas one but with no additive constant (F_0 = 0). Two-step induction proves the bridge, which is then substituted to factor the Lucas square-sum into Fibonacci form."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Section V: Numerical Sanity Checks",
+      "startLine": 164,
+      "endLine": 176,
+      "summary": "Three decide-checked witnesses pinning the closed forms to concrete values: lucas_sq_sum_example (∑_{k<4} L_k² = 30, matching L_3·L_4 + 2), weighted_lucas_sum_example, and fib_sq_sum_example (∑_{k<5} F_k² = 15 = F_4·F_5). These guard the identities against off-by-one and index-convention errors.",
+      "mathContext": "$\\sum_{k=0}^{3} L_k^2 = 30 = L_3 L_4 + 2$ and $\\sum_{k=0}^{4} F_k^2 = 15 = F_4 F_5$, verified by `decide`."
     }
   ],
   "conclusion": {
