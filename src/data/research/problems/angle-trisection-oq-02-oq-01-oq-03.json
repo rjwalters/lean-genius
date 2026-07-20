@@ -39,7 +39,7 @@
       "pgroup_iff_degree_pow_of_card_eq (NEW): under Nat.card Gal = natDegree, IsPGroup p Gal ↔ ∃k, natDegree = p^k — the completed biconditional fusing galois_pgroup_implies_degree_is_pow_p with the converse.",
       "degree_three_card_eq_is_3group (NEW): Galois cubic (natDegree = 3, Nat.card Gal = 3) ⟹ IsPGroup 3 Gal — concrete positive companion to degree_three_not_2group, framing the necessary-vs-sufficient boundary on one degree."
     ],
-    "progressSummary": "GROUP-STRUCTURAL layer, part 2 (researcher-5 2026-07-12, VERIFIED 0-axiom): after nilpotent/solvable, added the CHARACTERISTIC p-group property — a nontrivial p-group Galois group has NONTRIVIAL CENTRE (pgroup_gal_center_nontrivial, via IsPGroup.center_nontrivial class-equation argument), sharper than the nilpotency/solvability which hold for far more groups. Bridged the Nontrivial-Gal hypothesis to the concrete degree condition: gal_nontrivial_of_one_lt_natDegree (1<natDegree ⟹ Nontrivial Gal, since natDegree∣|Gal|) and the combined pgroup_gal_center_nontrivial_of_one_lt_natDegree, which applies directly to the degree-3 cos20° minimal polynomial behind the 60°-trisection obstruction. 27 theorems total, all [propext,Classical.choice,Quot.sound]. --- Child of angle-trisection-oq-02-oq-01. Degree-arithmetic layer (p-group ⟹ degree=p^k + prime-factor obstructions + prime rigidity) is saturated (21 thm). This session (researcher-5 2026-07-12) adds a GROUP-STRUCTURAL layer orthogonal to the degree: pgroup_gal_isNilpotent (p-group Gal is nilpotent), pgroup_gal_isSolvable (hence solvable — gateway to solvable-by-radicals), not_pgroup_of_not_solvable (contrapositive). 24 theorems total, all 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound).",
+    "progressSummary": "SATURATED (triage 2026-07-19): p-group Galois-degree file complete (18 thm, 0 axiom/sorry, forward+converse). Stale cos-20° blocker corrected: resolved on v4.31 and already proven in AngleTrisection.lean. No session-sized work; marked completed.",
     "nextSteps": [
       "OPEN (converse counterexample, unchanged): exhibit a concrete α with natDegree = p^k but Gal not a p-group (e.g. S₄ quartic, natDegree 4, |Gal| 24). pgroup_of_degree_pow_of_card_eq now proves the converse HOLDS under Nat.card Gal = natDegree, so a counterexample must have Nat.card Gal > natDegree — the gap is pinned down; formalizing one still needs a computed Galois group.",
       "Intrinsic-hypothesis restatement: replace the ad-hoc Nat.card Gal = natDegree with the field-theoretic predicate that ℚ(α)/ℚ is normal/Galois (Nat.card Gal = natDegree ↔ IsGalois ℚ ℚ⟮α⟯ / splitting field = ℚ(α)); currently blocked by the same Mathlib v4.26 finrank/adjoin elaborator segfault noted for the concrete cos 20° corollary.",
@@ -752,5 +752,10 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05OQ04Incomplete01.lean"
     }
   ],
-  "lastUpdate": "2026-07-12"
+  "lastUpdate": "2026-07-19",
+  "currentState": {
+    "blockers": [
+      "RESOLVED 2026-07-19 (researcher-1): the cos-20° corollary is no longer blocked — v4.31 restored minpoly_cos_natDegree_eq (φ(n)/2 degree formula) in AngleTrisectionOQ02OQ03OQ01.lean, AND the concrete result already exists in AngleTrisection.lean (cos_20_degree_over_Q, angle_trisection_impossible, degree_three_not_constructible). No gap remains."
+    ]
+  }
 }

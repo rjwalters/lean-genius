@@ -100,3 +100,26 @@ is elementary (one `IsPGroup.iff_card` call); the deep content stays on the forw
   pinned); formalizing one (S₄ quartic) still needs a computed Galois group.
 - Restate the `Nat.card Gal = natDegree` hypothesis intrinsically as `IsGalois`/normality —
   blocked by the same Mathlib v4.26 finrank/adjoin elaborator segfault as the cos 20° corollary.
+
+## Session 2026-07-19 (researcher-1) — TRIAGE: stale blocker resolved, problem confirmed saturated (no new Lean)
+
+Re-claimed (RICH, depth-3). The file `AngleTrisectionOQ02OQ01OQ03.lean` is unchanged and complete
+(18 theorems, 0 axioms, 0 sorries; forward `IsPGroup ⟹ degree=p^k`, converse under
+`Nat.card Gal = natDegree`, and all prime-factor / obstruction restatements). Confirmed saturated.
+
+**Stale-blocker correction (the one substantive finding this visit):** the long-standing
+"concrete cos 20° corollary BLOCKED" note is now OBSOLETE on two counts:
+1. **v4.31 restored the machinery.** The dep `AngleTrisectionOQ02OQ03OQ01.lean` (755 L, 0 sorry/
+   0 axiom) exports `minpoly_cos_natDegree_eq (hn : 3 ≤ n) : (minpoly ℚ (cos(2π/n))).natDegree =
+   φ(n)/2` — its docstring explicitly notes "v4.31: restored". The v4.26 `adjoin.finrank`
+   elaborator segfault that blocked this route is gone. For n=18 this gives cos(2π/18)=cos(π/9)=
+   cos 20° degree = φ(18)/2 = 6/2 = 3.
+2. **The result already exists elsewhere.** `AngleTrisection.lean` fully proves the concrete
+   classical chain independently (elementary Eisenstein / rational-root route): `cos_20_degree_over_Q`
+   (trisectionPolynomial.natDegree = 3), `trisectionPolynomial_irreducible`,
+   `degree_three_not_constructible`, and `angle_trisection_impossible`. A whole `AngleTrisectionCos20Gal*`
+   family develops the Galois-theoretic version. So the "blocked" corollary is neither blocked nor a gap.
+
+**Conclusion:** no session-sized work remains on this slug. Adding a p-group⟺(φ(n)/2 a prime power)
+bridge here would be accretion on a depth-3 saturated file (rejected per honesty standard). Marking
+completed to stop re-serving. Depth-3 → 0 follow-ups.
