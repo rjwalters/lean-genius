@@ -67,7 +67,7 @@
       "one_le_minSummandBound / minSummandBound_le_self: two-sided bound 1 ≤ minSummandBound n ≤ n for every n≥1 (0-axiom). Lower bound: every n≥1 is {2,3}-representable (case_2_3_all_representable) with summands ≥1, so Iio 1 ⊆ witness set, giving sSup ≥ sSup(Iio 1)=1. Upper bound: some summand of any representation is ≤n, so the threshold f<s≤n bounds the witness set above by n. Equality at the upper end holds exactly on the power forms (minSummandBound_powerForm), pinning minSummandBound n ∈ [1,n] and giving Erdős–Lewin's f(n) scaffolding genuine general content beyond the single point n=1"
     ],
     "axiomCount": 1,
-    "lineCount": 1602,
+    "lineCount": 1668,
     "assumptions": "1 axiom: erdos_lewin_infinite (Erdős-Lewin 1996, deep forward direction: {p,q}≠{2,3} ⟹ infinitely many non-representable numbers). The backward direction ({2,3} ⟹ finite, in fact NonRepresentable = {0}) is proved unconditionally (finite_nonRepresentable_of_two_three), and the EXISTENCE of a positive non-representable for every other coprime pair is also proved unconditionally (exists_positive_nonRepresentable_of_ne_two_three) — only the infinitude itself remains axiomatized.",
     "theoremCount": 76,
     "definitionCount": 7
@@ -94,67 +94,123 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Problem Statement & Setup",
+      "summary": "Module docstring stating Erdős Problem #1110: for coprime p > q ≥ 2, characterize the density of integers not representable as an antichain sum of power forms p^k q^l. Records the key results (Erdős-Lewin 1996, Yu-Chen 2022, Yang-Zhao 2025), Erdős's 'silly conjecture' history, and references.",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "Header comment, imports (import Mathlib, open Finset), and the Erdos1110 namespace. Frames the two open questions — density of non-representables and infinitude of coprime non-representables — when {p,q} ≠ {2,3}."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Defines IsPowerForm (n = p^k·q^l), NoOneDividesAnother (antichain under divisibility), IsRepresentable (antichain sum of power forms), and the NonRepresentable set.",
-      "startLine": 42,
-      "endLine": 79,
+      "title": "Part I: Basic Definitions",
+      "summary": "Defines IsPowerForm (n = p^k·q^l), NoOneDividesAnother (antichain under divisibility), IsRepresentable (nonempty antichain of power forms summing to n), and the NonRepresentable set.",
+      "startLine": 38,
+      "endLine": 74,
       "mathContext": "The core predicates: a power form is p^k q^l; a representation is a nonempty antichain (no element divides another) of power forms summing to n; NonRepresentable p q is the set of n with no such representation."
     },
     {
       "id": "case-2-3",
-      "title": "The {2,3} Case",
+      "title": "Part II: The {2,3} Case",
       "summary": "Erdős's '{2,3} silly conjecture', fully proved: case_2_3_all_representable shows every n ≥ 1 is representable, by strong induction (base n=1; even n doubles a representation; odd n subtracts 3^k).",
-      "startLine": 80,
-      "endLine": 277,
+      "startLine": 75,
+      "endLine": 272,
       "mathContext": "Verified (0 sorries): the main {2,3} theorem case_2_3_all_representable proved by strong induction, with helper lemmas isPowerForm_mul_two, noOneDividesAnother_image_mul_two, sum_image_mul_two, mul_two_injOn, isPowerForm_pow_three, even_not_dvd_odd, three_pow_odd, image_mul_two_even. Doubling preserves the antichain/power-form structure; the odd case adds 3^k to a doubled representation of (n-3^k)/2 and checks divisibility via parity and size bounds."
     },
     {
+      "id": "easy-erdos-lewin",
+      "title": "Part IIb: Easy Direction of Erdős–Lewin (unconditional, 0-axiom)",
+      "summary": "Symmetry lemmas (representability depends only on the symmetric base pair), zero is never representable, the exact non-representability characterisation for the {3,2} pair, and the easy backward direction of Erdős–Lewin: finite_nonRepresentable_of_two_three.",
+      "startLine": 273,
+      "endLine": 346,
+      "mathContext": "Unconditional (0-axiom): isRepresentable commutes in the base pair and depends only on the symmetric set of power forms; a nonempty antichain of positive power forms sums to a positive number so 0 is never representable; the {3,2} case is fully characterised; finite_nonRepresentable_of_two_three gives the elementary '{2,3} ⟹ finitely many non-representables' half of the Erdős–Lewin iff."
+    },
+    {
+      "id": "existence-nonrepresentable",
+      "title": "Part IIc: Existence of a Positive Non-representable (unconditional, 0-axiom)",
+      "summary": "Small-value obstructions in degenerate regimes — 2 is non-representable when both bases are ≥ 3, and 3 is non-representable when q = 2 and p ≥ 4 — assembled into exists_positive_nonRepresentable_of_ne_two_three, an unconditional witness for every non-{2,3} pair.",
+      "startLine": 347,
+      "endLine": 486,
+      "mathContext": "Unconditional (0-axiom): lemmas isPowerForm_ge_q_of_ge_two and representable_summands_ge_q bound the smallest usable power forms; two_nonRepresentable / three_nonRepresentable_of_q_two supply concrete obstructions; exists_positive_nonRepresentable_of_ne_two_three concludes that every coprime pair with {p,q} ≠ {2,3} has at least one positive non-representable integer."
+    },
+    {
+      "id": "window-characterization",
+      "title": "Part IId: Window Characterization (unconditional, 0-axiom)",
+      "summary": "Every power form is representable (isRepresentable_powerForm, isRepresentable_one), and on the low window [1, 2q) representability is exactly being a power form (isRepresentable_iff_isPowerForm_window); with corollaries on non-representability below q, the q+1 criterion, and 2 non-representable for q ≥ 3.",
+      "startLine": 487,
+      "endLine": 728,
+      "mathContext": "Unconditional (0-axiom): isRepresentable_of_isPowerForm / isRepresentable_powerForm show power forms are always representable; isRepresentable_iff_isPowerForm_window and _below_two_q pin representability on [1,2q); add_one_nonRepresentable_iff/_of_lt give a sharp criterion for the candidate q+1; nonRepresentable_of_lt_q and two_nonRepresentable_of_q_ge_three cover the sub-unit window."
+    },
+    {
+      "id": "sharp-window",
+      "title": "Part IId': The Sharp Lower Window [1, p + q) (unconditional, 0-axiom)",
+      "summary": "Antichain lower-bound machinery (any two-element antichain of power forms sums to ≥ p + q) upgrades the window result to the sharp threshold: on [1, p + q) representability is exactly being a power form, and p + q itself is representable.",
+      "startLine": 729,
+      "endLine": 885,
+      "mathContext": "Unconditional (0-axiom): isPowerForm_lt_p_pow_q, powerForms_lt_p_dvd, antichain_pair_sum_ge and representable_card_two_sum_ge establish the p + q minimum for multi-summand representations; isRepresentable_iff_isPowerForm_below_p_add_q, nonRepresentable_of_below_p_add_q and isRepresentable_p_add_q give the sharp [1, p+q) characterisation and sharpness of the threshold."
+    },
+    {
+      "id": "multiplicative-closure",
+      "title": "Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)",
+      "summary": "Representability is closed under multiplication by p, by q, by their powers, and by any power form; contrapositively, non-representability propagates to power-form divisors.",
+      "startLine": 886,
+      "endLine": 1024,
+      "mathContext": "Unconditional (0-axiom): scaling an antichain by a positive constant preserves the antichain/power-form structure (noOneDividesAnother_image_mul_const, mul_const_injOn, sum_image_mul_const), giving isRepresentable_mul_base_left/right, isRepresentable_mul_pow_left/right, isRepresentable_mul_powerForm, and nonRepresentable_of_mul_powerForm."
+    },
+    {
+      "id": "chain-regime",
+      "title": "Part IIf: The Degenerate Chain Regime & Base-power Family (q^k, q)",
+      "summary": "When the power forms are totally ordered by divisibility (chain regime), representability collapses to power forms; specialised to the degenerate pair (4,2) and the full base-power family p = q^k, giving infinitely many non-representables by an elementary 0-axiom argument.",
+      "startLine": 1025,
+      "endLine": 1189,
+      "mathContext": "Unconditional (0-axiom): isRepresentable_iff_isPowerForm_of_chain and powerForm_chain_of_base_pow handle the chain regime; isRepresentable_four_two_iff / infinite_nonRepresentable_four_two treat (4,2); isPowerForm_base_pow_one_or_dvd, isRepresentable_base_pow_iff and infinite_nonRepresentable_base_pow give infinitely many non-representables for every base-power pair (q^k, q)."
+    },
+    {
       "id": "general-case",
-      "title": "General Case (p,q) ≠ (2,3)",
-      "summary": "Erdős-Lewin (1996) characterization, stated as axiom erdos_lewin_theorem, with corollary infinitely_many_non_rep deriving infinitude of exceptions when {p,q} ≠ {2,3}.",
-      "startLine": 278,
-      "endLine": 300,
-      "mathContext": "Axiomatized: erdos_lewin_theorem states NonRepresentable p q is finite iff {p,q} = {2,3}. The theorem infinitely_many_non_rep derives Set.Infinite (NonRepresentable p q) for coprime p > q ≥ 2 with {p,q} ≠ {2,3}."
+      "title": "Part III: General Case (p,q) ≠ (2,3)",
+      "summary": "The deep forward direction of Erdős-Lewin (1996) is stated as axiom erdos_lewin_infinite; combined with the unconditional backward direction it yields erdos_lewin_theorem (the full finite-iff-{2,3} characterisation, now a theorem) and infinitely_many_non_rep.",
+      "startLine": 1190,
+      "endLine": 1229,
+      "mathContext": "Axiomatized: axiom erdos_lewin_infinite asserts Set.Infinite (NonRepresentable p q) for coprime p > q ≥ 2 with {p,q} ≠ {2,3} (the genuinely hard half, not in Mathlib). erdos_lewin_theorem is proved as an iff by pairing this axiom with the unconditional finite_nonRepresentable_of_two_three; infinitely_many_non_rep is the direct corollary."
     },
     {
       "id": "yu-chen",
-      "title": "Yu-Chen Results (2022)",
-      "summary": "Yu-Chen (2022): natural-density definition HasDensity, density-zero conditions, the CoprimeNonRepresentable set, and coprime-infinitude conditions.",
-      "startLine": 301,
-      "endLine": 329,
-      "mathContext": "Defines HasDensity A d (natural density via filtered range cardinalities) and CoprimeNonRepresentable p q. Documents Yu-Chen density-zero regimes (q>3, or q=3 ∧ p>6, or q=2 ∧ p>10) and coprime-infinitude regimes (q>3, or q=3 ∧ p≠5, or q=2 ∧ p∉{3,5,9})."
+      "title": "Part IV: Yu-Chen Results (2022)",
+      "summary": "Natural-density definition HasDensity with its basic lemmas (uniqueness, density zero of finite/empty sets), the {3,2} non-representables shown density zero, and the CoprimeNonRepresentable set proved empty (hence density zero) in the {2,3} regimes.",
+      "startLine": 1230,
+      "endLine": 1428,
+      "mathContext": "Defines HasDensity A d via filtered range cardinalities; hasDensity_singleton_zero, hasDensity_empty, hasDensity_zero_of_finite and hasDensity_unique are the utility lemmas. nonRepresentable_{two_three,three_two}_density_zero and coprimeNonRepresentable_{two_three,three_two}_eq_empty (+ _density_zero) record the Yu-Chen (2022) density-zero conclusions for the solved base pairs."
     },
     {
       "id": "minimum-summand",
-      "title": "Minimum Summand Size",
-      "summary": "minSummandBound: the largest f admitting a representation whose summands all exceed f; Yu-Chen and Yang-Zhao (2025) bounds f(n) ~ n/log n.",
-      "startLine": 330,
-      "endLine": 350,
-      "mathContext": "noncomputable minSummandBound n = sSup over thresholds f with a {3,2} antichain representation of n by power forms all exceeding f. Yu-Chen: n/(log n)^{log₂3} ≪ f(n) ≪ n/log n; Yang-Zhao (2025) improves the lower bound to f(n) ≫ n/log n."
+      "title": "Part V: Minimum Summand Size",
+      "summary": "minSummandBound n: the largest threshold f admitting a {3,2} representation whose summands all exceed f, with basic bounds (minSummandBound_one, one_le, le_self, minSummandBound_powerForm); Yu-Chen and Yang-Zhao (2025) asymptotics f(n) ~ n/log n.",
+      "startLine": 1429,
+      "endLine": 1596,
+      "mathContext": "noncomputable minSummandBound n = sSup over thresholds f with a {3,2} antichain representation of n by power forms all exceeding f. Lemmas minSummandBound_one, one_le_minSummandBound, minSummandBound_le_self and minSummandBound_powerForm bound it; Yu-Chen: n/(log n)^{log₂3} ≪ f(n) ≪ n/log n; Yang-Zhao (2025) improves the lower bound to f(n) ≫ n/log n."
     },
     {
       "id": "related",
-      "title": "Related Problems",
+      "title": "Part VI: Related Problems",
       "summary": "Connections to Erdős Problems #123, #845, #246.",
-      "startLine": 351,
-      "endLine": 361,
+      "startLine": 1597,
+      "endLine": 1607,
       "mathContext": "Cross-references: Problem #123 (three coprime bases p,q,r), Problem #845 (further {2,3} representation questions), Problem #246 (representations without the non-divisibility constraint)."
     },
     {
       "id": "examples",
-      "title": "Examples",
+      "title": "Part VII: Examples",
       "summary": "Constructive example example_1_representable (1 = 2^0·3^0) and small-case representability for n = 1..10.",
-      "startLine": 362,
-      "endLine": 389,
+      "startLine": 1608,
+      "endLine": 1621,
       "mathContext": "Verified: example_1_representable exhibits the singleton {1} representing n=1. Documents that 1 through 10 are all representable in the {3,2} setting."
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Part VIII: Summary",
       "summary": "erdos_1110_summary and erdos_1110_status bundle the resolved {2,3} case with the partially-open general case, plus status overview and historical note.",
-      "startLine": 390,
-      "endLine": 437,
+      "startLine": 1622,
+      "endLine": 1668,
       "mathContext": "Verified: erdos_1110_summary and erdos_1110_status conjoin (∀ n ≥ 1, IsRepresentable 3 2 n) with infinitude of non-representables for all coprime {p,q} ≠ {2,3}. Summarizes the answers (density zero in many cases; infinitely many coprime non-representables for most (p,q)) and Erdős's 'silly conjecture' history."
     }
   ],
@@ -265,7 +321,7 @@
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 1602,
+    "lineCount": 1668,
     "axiomCount": 1,
     "theoremCount": 76,
     "definitionCount": 7,
