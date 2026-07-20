@@ -58,14 +58,14 @@
       "preimage_s: Definition of s⁻¹(A)",
       "EGPSConjecture: Main conjecture statement",
       "IsUntouchable: Numbers not in range of s",
-      "pollack_primes: Result for prime set",
-      "troupe_two_squares: Result for sums of squares",
-      "ppt_bound: Threshold x^{1/2+o(1)}",
-      "sparse_sets_work: Corollary of PPT"
+      "IsSumOfTwoSquares: Sum-of-two-squares predicate",
+      "ppt_bound: Axiomatized PPT threshold x^{1/2+o(1)}",
+      "sparse_sets_work: Corollary of the ppt_bound axiom",
+      "erdos_955_summary / erdos_955: Axiomatized combination of the primes (Pollack), sums-of-two-squares (Troupe), and sparse-set (PPT) partial results"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: ppt_bound (Pollack-Pomerance-Thompson 2018: if |A cap [1,x]| <= x^{1/2+o(1)} then s^{-1}(A) has density 0), erdos_955_summary (combined partial results: primes, sums of two squares, sparse sets). Former axioms s_eq_s_alt, six_perfect, twentyeight_perfect, forward_fails, erdos_1973_empty_preimage, two_untouchable, five_untouchable, pollack_primes, troupe_many_factors, troupe_two_squares, s_bound now proved as theorems or definitions.",
+    "assumptions": "2 axiom declarations: ppt_bound (Pollack-Pomerance-Thompson 2018: if |A cap [1,x]| <= x^{1/2+o(1)} then s^{-1}(A) has density 0), erdos_955_summary (asserts the combined partial results: primes, sums of two squares, sparse sets). NOTE: the primes case (Pollack) and sums-of-two-squares case (Troupe) are ASSERTED within the erdos_955_summary axiom, not independently proved. The only proved theorem is sparse_sets_work (a one-line corollary of the ppt_bound axiom). The remaining partial results and contrasts (perfect-number examples, forward-direction failure, untouchable numbers, Troupe many-factors, growth bound) appear only as docstring/comment prose, not as Lean declarations.",
     "lineCount": 192,
     "theoremCount": 2,
     "definitionCount": 14
