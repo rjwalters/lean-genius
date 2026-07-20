@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: added 12 axiom-free foundational lemmas to the previously definitions-only Erdos53Problem.lean (subset-sum/product membership + inclusions, 2^|A| bound on subset sums, monotonicity, |A|^2 bounds on sumset/productset, subsetSums(empty)={0}). Deep results (Chang 2003, Erdos-Szemeredi upper bound) remain documented-only, needing additive combinatorics beyond Mathlib. Meta synced (theoremCount 0 -> 12).",
+    "builtItems": [
+      "zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem in Erdos53Problem.lean",
+      "subsetSums/Products_subset_sumsOrProducts, subsetSumCount/subsetProductCount_le_card in Erdos53Problem.lean",
+      "subsetSums_card_le (<=2^|A|), subsetSums_mono, subsetSums_empty in Erdos53Problem.lean",
+      "sumset_card_le, productset_card_le (<=|A|^2) in Erdos53Problem.lean"
+    ],
+    "insights": [
+      "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
+      "Clean generic Finset targets that generalize across these stubs: image-of-powerset card bound (card_image_le + card_powerset gives <= 2^|A|), image-of-product card bound (card_image_le + card_product gives <= |A|^2), monotonicity via powerset_mono + image_subset_image, membership via singleton subset."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-53-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

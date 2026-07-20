@@ -111,6 +111,87 @@ def subsetSumCount (A : Finset ℤ) : ℕ := (subsetSums A).card
 /-- Count of integers representable as subset products. -/
 def subsetProductCount (A : Finset ℤ) : ℕ := (subsetProducts A).card
 
-/-  The union count is at least the subset sum count. -/
-/- The union count is at least the subset product count. -/
+/-
+## Section 7: Foundational lemmas (axiom-free)
+
+The Erdős–Szemerédi conjecture (Chang's theorem) and the upper bound require deep
+additive combinatorics beyond current Mathlib and stay documented above only.  The
+elementary structural facts about the set-valued definitions in this file are,
+however, fully machine-checkable.  All lemmas below are axiom-free
+(`propext / Classical.choice / Quot.sound` only). -/
+
+/-- The empty sum (empty subset) shows `0` is always a subset sum. -/
+theorem zero_mem_subsetSums (A : Finset ℤ) : (0 : ℤ) ∈ subsetSums A := by
+  rw [subsetSums, Finset.mem_image]
+  exact ⟨∅, Finset.empty_mem_powerset A, by simp⟩
+
+/-- Every element of `A` is itself a subset sum (via the singleton subset). -/
+theorem mem_subsetSums_of_mem {A : Finset ℤ} {a : ℤ} (ha : a ∈ A) :
+    a ∈ subsetSums A := by
+  rw [subsetSums, Finset.mem_image]
+  exact ⟨{a}, Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr ha), by simp⟩
+
+/-- Every element of `A` is itself a subset product (via the singleton subset). -/
+theorem mem_subsetProducts_of_mem {A : Finset ℤ} {a : ℤ} (ha : a ∈ A) :
+    a ∈ subsetProducts A := by
+  rw [subsetProducts, Finset.mem_image]
+  refine ⟨{a}, ?_, by simp⟩
+  rw [Finset.mem_filter]
+  exact ⟨Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr ha),
+    Finset.singleton_nonempty a⟩
+
+/-- Subset sums are among the sum-or-product representable integers. -/
+theorem subsetSums_subset_sumsOrProducts (A : Finset ℤ) :
+    subsetSums A ⊆ sumsOrProducts A := by
+  rw [sumsOrProducts]; exact Finset.subset_union_left
+
+/-- Subset products are among the sum-or-product representable integers. -/
+theorem subsetProducts_subset_sumsOrProducts (A : Finset ℤ) :
+    subsetProducts A ⊆ sumsOrProducts A := by
+  rw [sumsOrProducts]; exact Finset.subset_union_right
+
+/-- There are at most `2^{|A|}` subset sums (image of the powerset). -/
+theorem subsetSums_card_le (A : Finset ℤ) : (subsetSums A).card ≤ 2 ^ A.card := by
+  rw [subsetSums]
+  calc (A.powerset.image (fun S => S.sum id)).card
+      ≤ A.powerset.card := Finset.card_image_le
+    _ = 2 ^ A.card := Finset.card_powerset A
+
+/-- Subset sums are monotone in the ground set. -/
+theorem subsetSums_mono {A B : Finset ℤ} (h : A ⊆ B) : subsetSums A ⊆ subsetSums B := by
+  rw [subsetSums, subsetSums]
+  exact Finset.image_subset_image (Finset.powerset_mono.mpr h)
+
+/-- The union count dominates the subset-sum count. -/
+theorem subsetSumCount_le_card (A : Finset ℤ) :
+    subsetSumCount A ≤ (sumsOrProducts A).card := by
+  rw [subsetSumCount]
+  exact Finset.card_le_card (subsetSums_subset_sumsOrProducts A)
+
+/-- The union count dominates the subset-product count. -/
+theorem subsetProductCount_le_card (A : Finset ℤ) :
+    subsetProductCount A ≤ (sumsOrProducts A).card := by
+  rw [subsetProductCount]
+  exact Finset.card_le_card (subsetProducts_subset_sumsOrProducts A)
+
+/-- The sumset `A + A` has at most `|A|²` elements. -/
+theorem sumset_card_le (A : Finset ℤ) : (sumset A).card ≤ A.card ^ 2 := by
+  rw [sumset]
+  calc ((A ×ˢ A).image (fun p => p.1 + p.2)).card
+      ≤ (A ×ˢ A).card := Finset.card_image_le
+    _ = A.card * A.card := Finset.card_product A A
+    _ = A.card ^ 2 := (sq _).symm
+
+/-- The product set `A · A` has at most `|A|²` elements. -/
+theorem productset_card_le (A : Finset ℤ) : (productset A).card ≤ A.card ^ 2 := by
+  rw [productset]
+  calc ((A ×ˢ A).image (fun p => p.1 * p.2)).card
+      ≤ (A ×ˢ A).card := Finset.card_image_le
+    _ = A.card * A.card := Finset.card_product A A
+    _ = A.card ^ 2 := (sq _).symm
+
+/-- The empty set has exactly one subset sum, namely `0`. -/
+theorem subsetSums_empty : subsetSums (∅ : Finset ℤ) = {0} := by
+  rw [subsetSums, Finset.powerset_empty, Finset.image_singleton, Finset.sum_empty]
+
 end Erdos53

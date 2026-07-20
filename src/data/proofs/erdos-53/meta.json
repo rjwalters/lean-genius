@@ -20,23 +20,23 @@
     "erdosUrl": "https://erdosproblems.com/53",
     "erdosProblemStatus": "proved",
     "axiomCount": 0,
-    "lineCount": 116,
+    "lineCount": 197,
     "prerequisites": [
       "Sumsets and product sets",
       "Additive vs multiplicative structure",
       "Combinatorial number theory",
       "Arithmetic combinatorics"
     ],
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. The file states the problem (defs subsetSums, subsetProducts, sumsOrProducts, ErdosProblem53, sumset, productset, SumProductConjecture, subsetSumCount, subsetProductCount) and proves 12 axiom-free foundational lemmas about those definitions. The Erdos-Szemeredi conjecture (Chang 2003) and the exp((log|A|)^2 loglog|A|) upper bound require deep additive combinatorics beyond current Mathlib and remain described in doc-comments only, NOT formalized. The formalized lemmas are elementary: subset-sum/product membership (0 and each element), inclusion of subset sums/products into sumsOrProducts, the 2^|A| bound on subset sums, monotonicity, the |A|^2 bounds on the sumset/product set, and subsetSums(emptyset)={0}.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 0,
+    "theoremCount": 12,
     "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Erdős and Szemerédi posed this problem in 1983, asking whether sums and products of distinct elements from a finite integer set must be super-polynomially abundant. The question captures a deep principle in additive combinatorics: that additive and multiplicative structure in a set are fundamentally incompatible, so at least one of sums or products must be very rich. The problem is closely related to their more famous sum-product conjecture (Problem 52), which concerns pairwise operations $|A+A| + |A \\cdot A|$ rather than subset operations. Erdős and Szemerédi also established an upper bound, showing that arbitrarily large sets exist where the representable count is at most $\\exp(c(\\log|A|)^2 \\log\\log|A|)$, so the growth is subexponential. In 2003, Mei-Chu Chang resolved the problem affirmatively, proving that for every $k$, sufficiently large sets have at least $|A|^k$ representable integers. Chang's proof combined the Balog-Szemerédi-Gowers theorem with multiplicative energy estimates, building on the growing toolkit of additive combinatorics developed by Gowers, Bourgain, and others. The result confirmed that finite integer sets are inherently arithmetically rich when measured by subset operations.",
     "problemStatement": "Let $A$ be a finite set of integers. For every $k \\geq 1$, if $|A|$ is sufficiently large (depending on $k$), are there at least $|A|^k$ integers representable as sums or products of distinct elements of $A$?",
     "text": "For every k, if |A| is sufficiently large, are there at least |A|^k integers representable as sums or products of distinct elements of A? PROVED by Chang (2003). Erdős–Szemerédi upper bound: exp(c(log|A|)² log log|A|).",
-    "proofStrategy": "The formalization defines subset sums and products via $\\text{Finset.powerset}$ and $\\text{Finset.image}$, states the conjecture as a Lean Prop requiring polynomial growth of the representable count, axiomatizes Chang's affirmative resolution and the Erdős-Szemerédi upper bound, and connects to the pairwise sum-product conjecture (Problem 52) by defining sumsets and product sets separately.",
+    "proofStrategy": "Defines subset sums/products of distinct elements, their union, the Erdos-Szemeredi Problem 53 statement, the related sumset/productset and Problem 52 conjecture, and the two count functionals. Adds 12 axiom-free foundational lemmas: zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem, subsetSums/Products_subset_sumsOrProducts, subsetSums_card_le (<= 2^|A| via card_image_le + card_powerset), subsetSums_mono, subsetSumCount/subsetProductCount_le_card, sumset_card_le and productset_card_le (<= |A|^2 via card_image_le + card_product), and subsetSums_empty ({0}). Chang's theorem and the Erdos-Szemeredi upper bound appear in documentation only, not formalized.",
     "keyInsights": [
       "The problem counts integers representable as $\\sum_{a \\in S} a$ or $\\prod_{a \\in S} a$ for subsets $S \\subseteq A$ — not pairwise sums/products as in Problem 52",
       "Chang's 2003 proof uses the Balog-Szemerédi-Gowers theorem to convert approximate additive structure into exact structure, then applies multiplicative energy estimates",
@@ -124,9 +124,9 @@
       "Finset"
     ],
     "namespace": "Erdos53",
-    "lineCount": 116,
+    "lineCount": 197,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 12,
     "definitionCount": 9,
     "path": "Proofs/Erdos53Problem.lean",
     "sorries": 0
