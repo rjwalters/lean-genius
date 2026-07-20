@@ -87,52 +87,124 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Open Question, and Construction",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring stating the open question (an explicit, fully computable diagonal witness for the uncountability of ℝ) and outlining the construction: from any enumeration f : ℕ → ℝ build a real whose n-th decimal digit is forced to differ from the n-th digit of f n. Imports Mathlib and opens namespace CantorDiagonalizationOQ06OQ01.",
+      "mathContext": "Goal: an explicit $\\mathrm{diagonalReal}\\,f$ with $\\mathrm{digit}\\,(\\mathrm{diagonalReal}\\,f)\\,n \\neq \\mathrm{digit}\\,(f\\,n)\\,n$ for all $n$."
+    },
+    {
       "id": "definitions",
       "title": "Digit, Disagreeing Digit, and the Diagonal Real",
-      "startLine": 36,
-      "endLine": 47,
+      "startLine": 35,
+      "endLine": 44,
       "summary": "digit r n extracts the n-th decimal digit; db f n picks a value in {1,2} disagreeing with digit (f n) n; diagonalReal f assembles the db f n into a real in [0,1].",
       "mathContext": "$\\mathrm{digit}\\,r\\,n = \\lfloor r\\cdot 10^{n+1}\\rfloor \\bmod 10$, $\\mathrm{db}\\,f\\,n \\in \\{1,2\\}$, $\\mathrm{diagonalReal}\\,f = \\sum_n \\mathrm{db}\\,f\\,n / 10^{n+1}$."
     },
     {
       "id": "digit-facts",
       "title": "Elementary Facts About the Diagonal Digits",
-      "startLine": 49,
-      "endLine": 71,
+      "startLine": 45,
+      "endLine": 63,
       "summary": "db_eq / db_pos / db_le_two bound db f n in {1,2}; db_ne_digit is the key disagreement db f n ≠ digit (f n) n.",
       "mathContext": "$\\mathrm{db}\\,f\\,n \\in \\{1,2\\}$ and $\\mathrm{db}\\,f\\,n \\neq \\mathrm{digit}\\,(f\\,n)\\,n$."
     },
     {
       "id": "summability",
       "title": "Summability of the Defining Series",
-      "startLine": 73,
-      "endLine": 103,
+      "startLine": 64,
+      "endLine": 91,
       "summary": "term_le' / term_nonneg bound each term by a geometric term; summable_geo_shift and summable_term establish that ∑' n, db f n / 10^(n+1) converges.",
       "mathContext": "$0 \\le \\mathrm{db}\\,f\\,k/10^{k+1} \\le 2\\,(1/10)^{k+1}$, a convergent geometric bound."
     },
     {
       "id": "head-tail",
       "title": "The Head/Tail Decomposition",
-      "startLine": 105,
-      "endLine": 147,
+      "startLine": 92,
+      "endLine": 129,
       "summary": "headInt f n is the integer head ∑_{i≤n} db f i · 10^(n-i); head_real_eq identifies the real head sum with it, and headInt_emod proves headInt f n % 10 = db f n.",
       "mathContext": "$A = \\sum_{i\\le n} \\mathrm{db}\\,f\\,i\\cdot 10^{n-i}$, $A \\bmod 10 = \\mathrm{db}\\,f\\,n$."
     },
     {
       "id": "crux",
       "title": "Crux: the n-th Digit of the Diagonal Real",
-      "startLine": 149,
-      "endLine": 194,
+      "startLine": 130,
+      "endLine": 186,
       "summary": "digit_diagonalReal splits diagonalReal f · 10^(n+1) into the integer head and a geometric tail 0 ≤ T ≤ 2/9 < 1, so the floor equals headInt f n and its last digit is db f n.",
       "mathContext": "$\\mathrm{digit}\\,(\\mathrm{diagonalReal}\\,f)\\,n = \\mathrm{db}\\,f\\,n$."
     },
     {
       "id": "disagreement",
-      "title": "Diagonal Disagreement and Uncountability",
-      "startLine": 196,
-      "endLine": 209,
+      "title": "The Diagonal Real Differs From Every Listed Real",
+      "startLine": 187,
+      "endLine": 208,
       "summary": "diagonalReal_ne (diagonalReal f ≠ f n for all n), not_surjective_nat_real, and not_exists_surjective_nat_real — Cantor's theorem in constructive enumeration form.",
       "mathContext": "For every $f:\\mathbb{N}\\to\\mathbb{R}$, $\\mathrm{diagonalReal}\\,f \\neq f\\,n$ for all $n$, so $f$ is not surjective."
+    },
+    {
+      "id": "consequences",
+      "title": "Standard Consequences: Uncountability of ℝ",
+      "startLine": 209,
+      "endLine": 238,
+      "summary": "The textbook consequences derived from the explicit diagonal: uncountable_real (ℝ is uncountable) and not_surjective_of_countable (no map from a countable type onto ℝ is surjective), both reduced to the constructive non-surjectivity above.",
+      "mathContext": "$\\mathbb{R}$ is uncountable; no $g : \\alpha \\to \\mathbb{R}$ with $\\alpha$ countable is surjective."
+    },
+    {
+      "id": "unit-interval",
+      "title": "The Diagonal Lives in the Unit Interval (0,1)",
+      "startLine": 239,
+      "endLine": 298,
+      "summary": "Localizes the witness inside (0,1). tsum_geo_shift evaluates the bounding geometric series to 2/9; diagonalReal_pos and diagonalReal_lt_one give 0 < diagonalReal f < 1 (diagonalReal_mem_Ioo). not_surjective_nat_Ioo and uncountable_Ioo transport uncountability to the open unit interval.",
+      "mathContext": "$0 < \\mathrm{diagonalReal}\\,f < 1$, so $\\mathrm{diagonalReal}\\,f \\in (0,1)$ and $(0,1)$ is uncountable."
+    },
+    {
+      "id": "localization",
+      "title": "The Sharp Localization Interval [1/9, 2/9]",
+      "startLine": 299,
+      "endLine": 358,
+      "summary": "Sharpens the range to [1/9, 2/9] using the digits' {1,2} bounds. summable_geo_shift_one / tsum_geo_shift_one evaluate the lower geometric series to 1/9; term_ge' gives the matching lower bound, so diagonalReal_ge_one_ninth and diagonalReal_le_two_ninths yield diagonalReal_mem_Icc: diagonalReal f ∈ [1/9, 2/9].",
+      "mathContext": "$1/9 \\le \\mathrm{diagonalReal}\\,f \\le 2/9$ since every digit is $1$ or $2$."
+    },
+    {
+      "id": "endpoints",
+      "title": "Both Endpoints of [1/9, 2/9] Are Attained",
+      "startLine": 359,
+      "endLine": 414,
+      "summary": "The bounds are tight: diagonalReal_eq_two_ninths_of (all digits forced to 2 when digit (f n) n = 1) and diagonalReal_eq_one_ninth_of (all digits 1 otherwise), with exists_diagonalReal_eq_one_ninth and exists_diagonalReal_eq_two_ninths exhibiting explicit enumerations realising each endpoint.",
+      "mathContext": "$\\mathrm{diagonalReal}\\,f = 2/9$ iff every $\\mathrm{digit}(f\\,n)\\,n = 1$; $= 1/9$ iff none is; both are attained."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Behaviour of the Diagonal Map f ↦ diagonalReal f",
+      "startLine": 415,
+      "endLine": 481,
+      "summary": "diagonalReal_congr (equal digit-disagreement patterns give equal diagonals) and diagonalReal_mono (pointwise db ≤ gives ≤ on diagonals); summable_indicator_shift and diagonalReal_eq_one_ninth_add express diagonalReal f as 1/9 plus an indicator series over the positions where db f n = 2.",
+      "mathContext": "$\\mathrm{diagonalReal}\\,f = 1/9 + \\sum_n [\\mathrm{db}\\,f\\,n = 2]\\,(1/10)^{n+1}$."
+    },
+    {
+      "id": "injection",
+      "title": "An Explicit Injection (ℕ → Bool) ↪ ℝ",
+      "startLine": 482,
+      "endLine": 556,
+      "summary": "Builds a genuine cardinality injection from the digit machinery: digit_indicator / digit_seqReal compute digits of seqReal s (the real with digit s n at place n), seqReal_injective and seqEmbedding package the embedding (ℕ → Bool) ↪ ℝ, seqReal_mem_Icc confines its range to [1/9,2/9], and mk_seq_le_mk_real gives #(ℕ → Bool) ≤ #ℝ.",
+      "mathContext": "$\\mathrm{seqReal} : (\\mathbb{N}\\to\\mathrm{Bool}) \\hookrightarrow \\mathbb{R}$, so $2^{\\aleph_0} = \\#(\\mathbb{N}\\to\\mathrm{Bool}) \\le \\#\\mathbb{R}$."
+    },
+    {
+      "id": "injectivity",
+      "title": "Injectivity of the Diagonal Map on Its Digit-Choices",
+      "startLine": 557,
+      "endLine": 592,
+      "summary": "db_eq_of_diagonalReal_eq recovers the digit sequence from the diagonal value (equal diagonals force equal db), diagonalReal_eq_iff_db packages the iff, and diagonalReal_ne_of_db_ne is its contrapositive — a single differing db digit separates the diagonals.",
+      "mathContext": "$\\mathrm{diagonalReal}\\,f = \\mathrm{diagonalReal}\\,g \\iff \\forall n,\\ \\mathrm{db}\\,f\\,n = \\mathrm{db}\\,g\\,n$."
+    },
+    {
+      "id": "set-theoretic",
+      "title": "Set-Theoretic Form: the Witness Is Missing From the Enumeration",
+      "startLine": 593,
+      "endLine": 615,
+      "summary": "Restates the result set-theoretically: diagonalReal_notMem_range (diagonalReal f ∉ Set.range f) and range_ne_univ (Set.range f ≠ Set.univ) — no enumeration's range is all of ℝ, the range-based phrasing of uncountability.",
+      "mathContext": "$\\mathrm{diagonalReal}\\,f \\notin \\mathrm{range}\\,f$, hence $\\mathrm{range}\\,f \\neq \\mathbb{R}$."
     }
   ],
   "crossReferences": [
