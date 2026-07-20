@@ -86,8 +86,9 @@
   "conclusion": {
     "summary": "Legendre's formula v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋ is re-expressed entirely through Hermite's floor identity: each quotient ⌊n/p^i⌋ is replaced by the Hermite floor sum ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ one level down, giving v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ with 0 axioms and 0 sorries. The Legendre core is cited from Mathlib's padicValNat_factorial; the Hermite splitting of the summand, the floor/division bridge, and the headline double-sum are proved here from the gallery's Hermite identity. This answers the open question recorded by the sibling entry hermite-floor-identity.",
     "openQuestions": [
-      "Iterate the refinement: legendre_summand_split holds at every level, so v_p(n!) can be unfolded to depth d as a (d+1)-fold Hermite floor sum — characterise the resulting nested floor expression and whether it has a closed form.",
-      "Give a Hermite-only proof of the Legendre core itself (the recursion v_p((p·m)!) = m + v_p(m!) or the digit-sum form (p-1)·v_p(n!) = n − s_p(n)) so the entry no longer cites padicValNat_factorial but derives the whole formula from the floor identity."
+      "Iterate the refinement: legendre_summand_split holds at every level, so v_p(n!) can be unfolded to depth d as a (d+1)-fold Hermite floor sum — characterise the resulting nested floor expression and whether it has a closed form. RESOLVED by the child entry hermite-legendre-factorial-oq-01: iterating d times collapses to a single m^d-term Hermite sum one d-block down (legendre_summand_split_depth: ⌊n/m^j⌋ = ∑_{k<m^d} ⌊n/m^{j+d} + k/m^d⌋), lifted to v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p^d} ⌊n/p^{i+d} + k/p^d⌋ (legendre_factorial_hermite_depth); legendre_iterate_collapse shows the depth-d and depth-(d+1) forms are equal, so deepening only re-indexes one Hermite sum into a finer one — no genuinely new nested closed form appears.",
+      "Give a Hermite-only proof of the Legendre core itself (the recursion v_p((p·m)!) = m + v_p(m!) or the digit-sum form (p-1)·v_p(n!) = n − s_p(n)) so the entry no longer cites padicValNat_factorial but derives the whole formula from the floor identity. PARTIALLY RESOLVED by the child entry hermite-legendre-factorial-oq-02: it removes the padicValNat_factorial dependency by proving the recursion v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!) (factorization_factorial_rec) and deriving the full formula by induction (factorization_factorial_legendre) — but via additivity of Nat.factorization over n! = ∏ k, NOT from Hermite's floor identity. Still open: derive the core recursion itself directly from the Hermite splitting, and prove the digit-sum form (p-1)·v_p(n!) = n − s_p(n).",
+      "Fuse the depth-d Hermite refinement (child oq-01) with the from-scratch core (child oq-02) into a fully Hermite-native route to Kummer's theorem v_p(C(m+n, m)) = (number of carries when adding m and n in base p), expressing the carry count directly as a difference of Hermite floor sums ∑_{i,k} (⌊·⌋ − ⌊·⌋) — neither child addresses binomial coefficients."
     ],
     "implications": "The entry makes explicit that Hermite's floor identity is the additive backbone of the Legendre/Gauss prime-power count: the carries counted by ⌊n/p^i⌋ are exactly the Hermite-sampled floors at the next prime power. It gives the gallery a reusable summand-splitting lemma (legendre_summand_split, valid for any m ≥ 1) and the floor/division identity floor_natCast_div_pow, both usable in other floor-sum manipulations."
   },
@@ -96,6 +97,16 @@
       "targetId": "hermite-floor-identity",
       "relationship": "depends-on",
       "description": "Uses HermiteFloorIdentity.hermite_floor_identity (∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋) as the engine for splitting each Legendre summand. This entry answers the open question that hermite-floor-identity poses: deriving Legendre's formula for v_p(n!) from Hermite's identity."
+    },
+    {
+      "targetId": "hermite-legendre-factorial-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[0] (iterate the Hermite refinement to depth d). It proves the flat depth-d split legendre_summand_split_depth (⌊n/m^j⌋ = ∑_{k<m^d} ⌊n/m^{j+d} + k/m^d⌋, Hermite applied with m^d copies), the single-step iteration legendre_summand_refine_step (mixed-radix index k + k'·m^d), and legendre_iterate_collapse showing the depth-d and depth-(d+1) forms coincide — so deepening yields no new nested closed form. Lifts to v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p^d} ⌊n/p^{i+d} + k/p^d⌋ (legendre_factorial_hermite_depth); the depth-1 case recovers this entry's legendre_summand_split."
+    },
+    {
+      "targetId": "hermite-legendre-factorial-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[1] (remove the padicValNat_factorial citation). It gives a self-contained proof of the Legendre core recursion v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!) (factorization_factorial_rec) via additivity of Nat.factorization over n! = ∏_{k=1}^n k plus the multiples-of-p reindexing (image_mul_eq_filter_dvd), then derives the full formula by induction (factorization_factorial_legendre), never invoking padicValNat_factorial. Both factorization and padicValNat forms are provided so this entry's citation can be replaced verbatim. (The derivation uses valuation additivity, not Hermite's identity itself.)"
     }
   ],
   "references": [
