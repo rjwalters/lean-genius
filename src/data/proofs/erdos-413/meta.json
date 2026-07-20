@@ -164,7 +164,7 @@
       "title": "Barrier Structural and Spacing Theorems",
       "startLine": 356,
       "endLine": 433,
-      "summary": "Not-barrier witness extraction (∃ m<n, m+f(m)>n), barrier predecessors are prime powers, downward closure (barrier for constant 0), and spacing: gap-two barriers force ω(n),ω(n+1) ≤ 1, and barrier-to-successor conditions.",
+      "summary": "Not-barrier witness extraction (∃ m<n, m+f(m)>n), barrier predecessors are prime powers, downward closure (barrier for constant 0), and spacing: gap-two barriers force ω(n) ≤ 2 and ω(n+1) ≤ 1, and barrier-to-successor conditions.",
       "mathContext": "Every barrier $n\\geq 2$ for ω has $n-1\\in\\{1\\}\\cup\\{p^k\\}$. If $n$ and $n+2$ are both barriers then $\\omega(n),\\omega(n+1)\\leq 1$ — barriers cannot cluster around composite-rich predecessors."
     },
     {
@@ -340,8 +340,8 @@
     {
       "name": "barrier_gap_two",
       "type": "theorem",
-      "statement": "If n ≥ 2 and both n and n+2 are ω-barriers, then ω(n) ≤ 1 and ω(n+1) ≤ 1",
-      "significance": "A spacing law: two barriers only two apart force the intervening values to have at most one prime factor. This limits how densely ω-barriers can cluster.",
+      "statement": "If n ≥ 2 and both n and n+2 are ω-barriers, then ω(n) ≤ 2 and ω(n+1) ≤ 1",
+      "significance": "A spacing law: two barriers only two apart bound ω(n) ≤ 2 (sharp at n = 6) and force ω(n+1) ≤ 1. This limits how densely ω-barriers can cluster.",
       "description": "Applies the n+2 barrier hypothesis at m = n and m = n+1 and simplifies with omega."
     },
     {
