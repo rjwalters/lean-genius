@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Hölder Infrastructure Without IsFiniteMeasure: lintegral_mul_le_sf",
-    "content": "Three helper lemmas establish the core infrastructure without any IsFiniteMeasure hypothesis. indicator_memLp_sf proves 1_E ∈ Lp(μ) using memLp_indicator_const (which only needs μ(E) < ∞ as Or.inr). lintegral_mul_le_sf is the crucial Hölder bound ∫‖fg‖ ≤ ‖f‖_p · ‖g‖_q, proved by unfolding eLpNorm via eLpNorm_eq_lintegral_rpow_enorm and calling ENNReal.lintegral_mul_le_Lp_mul_Lq. integrable_mul_sf follows by memLp_one_iff_integrable and the Hölder bound. All three work for any measure, confirming IsFiniteMeasure was never needed here.",
+    "content": "Three helper lemmas establish the core infrastructure without any IsFiniteMeasure hypothesis. indicator_memLp_sf proves 1_E ∈ Lp(μ) using memLp_indicator_const (which only needs μ(E) < ∞ as Or.inr). lintegral_mul_le_sf is the crucial Hölder bound ∫‖fg‖ ≤ ‖f‖_p · ‖g‖_q, proved by unfolding eLpNorm via eLpNorm_eq_lintegral_rpow_enorm and calling ENNReal.lintegral_mul_le_Lp_mul_Lq. integrable_mul_sf follows by memLp_one_iff_integrable and the Hölder bound. All three work for any measure, confirming IsFiniteMeasure was never needed here. Provenance: all three helpers are declared and proved in the …Incomplete01Infra companion (indicator_memLp_sf L23, lintegral_mul_le_sf L49, integrable_mul_sf L65) — they are NOT in the 47-line assembling file, which invokes only indicator_memLp_sf, here at line 40 inside the `heq` indicator-reconciliation bridge.",
     "mathContext": "\\int \\|f \\cdot g\\|_{\\text{nn}} \\, d\\mu \\leq \\|f\\|_{L^p} \\cdot \\|g\\|_{L^q} \\quad (1/p + 1/q = 1, \\; \\text{any measure}).",
     "significance": "key",
     "relatedConcepts": [
@@ -51,12 +51,12 @@
     "id": "ann-cs-riesz-integration-clm",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 31,
-      "endLine": 34
+      "startLine": 38,
+      "endLine": 38
     },
     "type": "insight",
     "title": "integrationCLM_sf: IsFiniteMeasure Was Always Superfluous for the CLM",
-    "content": "integrationCLM_sf constructs the integration functional Λ(f) = ∫ f·g as a ContinuousLinearMap on Lp(μ) for SigmaFinite μ, using LinearMap.mkContinuous with the Hölder bound as the continuity estimate. The key observation: the parent entry's integrationCLM required IsFiniteMeasure, but that hypothesis was never used — the CLM only needs Hölder's inequality (lintegral_mul_le_sf), which holds for any measure. integrationCLM_sf_apply verifies the pointwise evaluation. This eliminates the IsFiniteMeasure hypothesis from Step C, reducing the theoretical assumption by one layer.",
+    "content": "integrationCLM_sf constructs the integration functional Λ(f) = ∫ f·g as a ContinuousLinearMap on Lp(μ) for SigmaFinite μ, using LinearMap.mkContinuous with the Hölder bound as the continuity estimate. The key observation: the parent entry's integrationCLM required IsFiniteMeasure, but that hypothesis was never used — the CLM only needs Hölder's inequality (lintegral_mul_le_sf), which holds for any measure. integrationCLM_sf_apply verifies the pointwise evaluation. This eliminates the IsFiniteMeasure hypothesis from Step C, reducing the theoretical assumption by one layer. Provenance: integrationCLM_sf (L81) and integrationCLM_sf_apply (L114) are declared in the …Incomplete01Infra companion, not in the assembling file — which reaches the CLM only transitively through integral_representation_sf (Step C), applied at line 38.",
     "mathContext": "\\Lambda_g: L^p(\\mu) \\to \\mathbb{R}, \\quad f \\mapsto \\int f \\cdot g \\, d\\mu, \\quad \\|\\Lambda_g\\| \\leq \\|g\\|_{L^q}. \\quad \\text{Valid for any SigmaFinite } \\mu.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,7 +80,7 @@
     },
     "type": "insight",
     "title": "integral_representation_sf: Step C Proved — Lp.induction is Valid for SigmaFinite",
-    "content": "integral_representation_sf proves Step C of the sigma-finite Riesz theorem: if a CLM φ on Lp(μ) agrees with ∫ f·g on all indicators 1_E (μ(E) < ∞), then φ = ∫ f·g everywhere. The proof uses Lp.induction, which in Mathlib holds for any SigmaFinite measure (not just finite measures). The three Lp.induction cases are: (1) indicators c·1_s with μ(s) < ∞ — φ = Λ by hypothesis; (2) additivity — both φ and Λ are linear; (3) closedness — {f | φ(f) = Λ(f)} is closed since φ and Λ are continuous. All three cases work for SigmaFinite without IsFiniteMeasure. This is the main contribution of Session 1.",
+    "content": "integral_representation_sf proves Step C of the sigma-finite Riesz theorem: if a CLM φ on Lp(μ) agrees with ∫ f·g on all indicators 1_E (μ(E) < ∞), then φ = ∫ f·g everywhere. The proof uses Lp.induction, which in Mathlib holds for any SigmaFinite measure (not just finite measures). The three Lp.induction cases are: (1) indicators c·1_s with μ(s) < ∞ — φ = Λ by hypothesis; (2) additivity — both φ and Λ are linear; (3) closedness — {f | φ(f) = Λ(f)} is closed since φ and Λ are continuous. All three cases work for SigmaFinite without IsFiniteMeasure. This is the main contribution of Session 1. Provenance: integral_representation_sf is proved in the …Incomplete01Infra companion (L125) and is applied here at line 38 of the assembling file, promoting the indicator agreement supplied by Step A to all of Lp.",
     "mathContext": "\\varphi(c \\cdot \\mathbf{1}_E) = c \\int_E g \\, d\\mu \\; \\forall E \\text{ finite} \\implies \\varphi(f) = \\int f g \\, d\\mu \\; \\forall f \\in L^p(\\mu). \\quad \\text{(Lp.induction for SigmaFinite)}",
     "significance": "key",
     "relatedConcepts": [
@@ -99,12 +99,12 @@
     "id": "ann-cs-riesz-spanning-lemmas",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 28,
-      "endLine": 30
+      "startLine": 36,
+      "endLine": 36
     },
     "type": "concept",
     "title": "Spanning Set Infrastructure: Sigma-Finite Exhaustion Lemmas",
-    "content": "Two spanning set lemmas support the Vitali convergence argument. mem_spanningSets_eventually proves that for any x, x ∈ S_n for all large enough n (where S_n is the sigma-finite exhaustion). pointwise_mul_indicator_tendsto shows f · 1_{S_n} → f pointwise a.e., using eventually_of_forall and the mem_spanningSets lemma. These are used in Step B (lp_truncation_tendsto_zero), which combines pointwise convergence with Vitali's theorem to get Lp norm convergence. The lemmas are identical to those in the parent entry — fully proved, no sorry.",
+    "content": "Two spanning set lemmas support the Vitali convergence argument. mem_spanningSets_eventually proves that for any x, x ∈ S_n for all large enough n (where S_n is the sigma-finite exhaustion). pointwise_mul_indicator_tendsto shows f · 1_{S_n} → f pointwise a.e., using eventually_of_forall and the mem_spanningSets lemma. These are used in Step B (lp_truncation_tendsto_zero), which combines pointwise convergence with Vitali's theorem to get Lp norm convergence. The lemmas are identical to those in the parent entry — fully proved, no sorry. Provenance: mem_spanningSets_eventually (L176) and pointwise_mul_indicator_tendsto (L184) live in the …Incomplete01Infra companion; they feed Step B, which Step A consumes when extending indicator agreement — reached in the assembling file at the localization_existence call on line 36.",
     "mathContext": "S_n \\nearrow \\Omega \\; \\text{(sigma-finite exhaustion)} \\implies f \\cdot \\mathbf{1}_{S_n} \\to f \\text{ pointwise a.e.}",
     "significance": "supporting",
     "relatedConcepts": [
@@ -123,12 +123,12 @@
     "id": "ann-cs-riesz-step-b-vitali",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 35,
-      "endLine": 37
+      "startLine": 36,
+      "endLine": 36
     },
     "type": "concept",
     "title": "Step B (PROVED in Session 2): Lp Truncation via Dominated Convergence",
-    "content": "lp_truncation_tendsto_zero is fully proved (Session 2). The proof uses `tendsto_lintegral_of_dominated_convergence` (NOT Vitali's theorem directly) with dominator |f(a)|^p. The three verification conditions are: (1) AEMeasurable: ‖gₙ‖^p is measurable via subtraction and indicator measurability; (2) Domination: |f(a) - f(a)·1_{Sₙ}(a)|^p ≤ |f(a)|^p by cases on a ∈ Sₙ; (3) Integrability: ∫⁻ |f|^p dμ < ∞ from MemLp. The final step uses `ENNReal.rpow_natCast` to extract the p-th root. The earlier title annotation 'HARD sorry' reflects Session 1 state; this is now a complete proof.",
+    "content": "lp_truncation_tendsto_zero is fully proved (Session 2). The proof uses `tendsto_lintegral_of_dominated_convergence` (NOT Vitali's theorem directly) with dominator |f(a)|^p. The three verification conditions are: (1) AEMeasurable: ‖gₙ‖^p is measurable via subtraction and indicator measurability; (2) Domination: |f(a) - f(a)·1_{Sₙ}(a)|^p ≤ |f(a)|^p by cases on a ∈ Sₙ; (3) Integrability: ∫⁻ |f|^p dμ < ∞ from MemLp. The final step uses `ENNReal.rpow_natCast` to extract the p-th root. The earlier title annotation 'HARD sorry' reflects Session 1 state; this is now a complete proof. Provenance: lp_truncation_tendsto_zero is proved in the …Incomplete01Infra companion (L197); the assembling file invokes it only transitively, via localization_existence (line 36), which uses the truncation convergence to extend indicator agreement from E ⊆ Sₙ to arbitrary finite-measure E.",
     "mathContext": "\\text{For the domination step: } |f(a) - f(a) \\cdot \\mathbf{1}_{S_n}(a)|^p = \\begin{cases} 0 & a \\in S_n \\\\ |f(a)|^p & a \\notin S_n \\end{cases} \\leq |f(a)|^p.",
     "significance": "key",
     "relatedConcepts": [
@@ -148,11 +148,11 @@
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
       "startLine": 36,
-      "endLine": 37
+      "endLine": 36
     },
     "type": "concept",
     "title": "Step A (Proved): Localization — Constructing g ∈ Lq via Spanning Sets",
-    "content": "localization_existence is the deepest step (≈150 lines), proved in PR #15581: given a CLM φ on Lp(μ) for sigma-finite μ, it constructs g ∈ Lq(μ) such that φ(1_E) = ∫_E g for all measurable E with μ(E) < ∞. The classical proof (Folland §6.2, Theorem 6.15) restricts μ to each spanning set Sₙ, applies the finite-measure Riesz theorem to get gₙ ∈ Lq(μ.restrict Sₙ), then glues via monotone convergence. The Lp restriction map Lp(μ) → Lp(μ.restrict S) — earlier a Lean infrastructure gap — was supplied via extByZeroCLM together with a Hölder-extremizer norm bound and cross-level consistency. The construction is careful: gₙ agree on overlapping sets, with gₙ₊₁|_{Sₙ} = gₙ.",
+    "content": "localization_existence is the deepest step (≈150 lines), proved in PR #15581: given a CLM φ on Lp(μ) for sigma-finite μ, it constructs g ∈ Lq(μ) such that φ(1_E) = ∫_E g for all measurable E with μ(E) < ∞. The classical proof (Folland §6.2, Theorem 6.15) restricts μ to each spanning set Sₙ, applies the finite-measure Riesz theorem to get gₙ ∈ Lq(μ.restrict Sₙ), then glues via monotone convergence. The Lp restriction map Lp(μ) → Lp(μ.restrict S) — earlier a Lean infrastructure gap — was supplied via extByZeroCLM together with a Hölder-extremizer norm bound and cross-level consistency. The construction is careful: gₙ agree on overlapping sets, with gₙ₊₁|_{Sₙ} = gₙ. Provenance: localization_existence is proved in the …Incomplete01Loc companion (L33, ~360 lines — the deepest of the four files); the assembling file invokes it at line 36 (`obtain ⟨g, …⟩ := localization_existence …`), supplying g ∈ Lq together with the indicator agreement that Step C then extends to all of Lp.",
     "mathContext": "\\varphi|_{L^p(\\mu|_{S_n})} = \\Lambda_{g_n} \\text{ for each } n \\implies \\exists g \\in L^q(\\mu): \\varphi(\\mathbf{1}_E) = \\int_E g \\, d\\mu \\; \\forall \\mu(E) < \\infty.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -172,7 +172,7 @@
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
       "startLine": 27,
-      "endLine": 44
+      "endLine": 43
     },
     "type": "insight",
     "title": "riesz_lp_surjective_sigma_finite: Full Assembly — All Steps Proved",
@@ -195,7 +195,7 @@
     "id": "ann-cs-riesz-closing-summary",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 44,
+      "startLine": 45,
       "endLine": 47
     },
     "type": "concept",
