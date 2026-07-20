@@ -86,8 +86,15 @@ def dirichletBetaPartialSum (s : ℝ) (n : ℕ) : ℝ :=
     Already proved in the parent file; restated here for completeness. -/
 theorem dirichlet_beta_one :
     Tendsto (dirichletBetaPartialSum 1) atTop (nhds (π / 4)) := by
-  sorry -- Equivalent to Leibniz formula; needs to connect our partial sum
-       -- definition to Mathlib's tendsto_sum_pi_div_four
+  -- The `s = 1` partial sum is literally Mathlib's Leibniz partial sum once the
+  -- real power `(2k+1)^(1:ℝ)` is simplified via `Real.rpow_one`.
+  have h : dirichletBetaPartialSum 1 =
+      fun k => ∑ i ∈ Finset.range k, (-1 : ℝ) ^ i / (2 * i + 1) := by
+    funext n
+    unfold dirichletBetaPartialSum
+    exact Finset.sum_congr rfl (fun i _ => by rw [Real.rpow_one])
+  rw [h]
+  exact tendsto_sum_pi_div_four
 
 -- ============================================================
 -- PART 3: Catalan's Constant
@@ -108,15 +115,64 @@ theorem catalan_eq_beta_two :
     catalansConstant = ∑' n : ℕ, (-1 : ℝ) ^ n / (2 * n + 1 : ℝ) ^ 2 := by
   rfl
 
+/-- The magnitude sequence `1/(2n+1)²` of the Catalan alternating series. -/
+private def catG (n : ℕ) : ℝ := 1 / (2 * n + 1 : ℝ) ^ 2
+
+private lemma catG_pos (n : ℕ) : 0 < catG n := by
+  unfold catG; positivity
+
+private lemma catG_anti : Antitone catG := by
+  intro a b hab
+  have hab' : (a : ℝ) ≤ b := by exact_mod_cast hab
+  unfold catG
+  gcongr
+
+private lemma catG_summable : Summable catG := by
+  -- Dominated by the convergent `p`-series `∑ 1/(n+1)²`.
+  have hcomp : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ 2) := by
+    have h2 : Summable (fun n : ℕ => 1 / (n : ℝ) ^ 2) :=
+      summable_one_div_nat_pow.mpr (by norm_num)
+    refine ((summable_nat_add_iff 1).mpr h2).congr (fun n => ?_)
+    push_cast; ring
+  refine Summable.of_nonneg_of_le (fun n => (catG_pos n).le) (fun n => ?_) hcomp
+  unfold catG
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  gcongr
+  linarith
+
+/-- The alternating series `∑ (-1)ⁿ · catG n` is exactly Catalan's constant. -/
+private lemma catG_alt_tsum : ∑' i : ℕ, (-1 : ℝ) ^ i * catG i = catalansConstant := by
+  unfold catalansConstant catG
+  exact tsum_congr (fun i => by rw [mul_one_div])
+
+/-- Convergence of the alternating Catalan partial sums to the tsum value. -/
+private lemma catalan_alt_conv :
+    Tendsto (fun n => ∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * catG i)
+      atTop (nhds catalansConstant) := by
+  rw [← catG_alt_tsum]
+  exact catG_summable.tendsto_alternating_series_tsum
+
 /-- The partial sums of the Catalan series converge -/
 theorem catalan_series_convergent :
     Tendsto (dirichletBetaPartialSum 2) atTop (nhds catalansConstant) := by
-  sorry -- Alternating series test: |(-1)^n/(2n+1)²| = 1/(2n+1)² → 0 monotonically
+  have h : dirichletBetaPartialSum 2 =
+      fun n => ∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * catG i := by
+    funext n
+    unfold dirichletBetaPartialSum catG
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, mul_one_div]
+  rw [h]
+  exact catalan_alt_conv
 
-/-- Catalan's constant is positive (since 1 > 1/9 > 1/25 > ..., the partial
-    sums are bounded below by the first term 1 > 0) -/
+/-- Catalan's constant is positive: the even partial sum `1 - 1/9 = 8/9` is a
+    lower bound on the alternating-series limit. -/
 theorem catalan_pos : catalansConstant > 0 := by
-  sorry -- First term is 1, subsequent pairs are positive
+  -- `Antitone.alternating_series_le_tendsto` at `k = 1`: `∑_{i<2} (-1)ⁱ catG i ≤ G`.
+  have hb := catG_anti.alternating_series_le_tendsto catalan_alt_conv 1
+  have hsum : ∑ i ∈ Finset.range (2 * 1), (-1 : ℝ) ^ i * catG i = 8 / 9 := by
+    norm_num [Finset.sum_range_succ, Finset.sum_range_zero, catG]
+  rw [hsum] at hb
+  linarith
 
 -- ============================================================
 -- PART 4: β(3) = π³/32
@@ -265,14 +321,79 @@ theorem char_mod4_values :
     This can be verified by computing enough partial sums. -/
 theorem catalan_bounds :
     (0.91 : ℝ) < catalansConstant ∧ catalansConstant < (0.92 : ℝ) := by
-  sorry -- Computational: 4 terms give G ≈ 1 - 1/9 + 1/25 - 1/49 ≈ 0.9216...
-       -- bound corrections from tail
+  -- Alternating-series error bound at 8 terms: |G - S₈| ≤ catG 8 = 1/289.
+  -- S₈ = 1 - 1/9 + 1/25 - 1/49 + 1/81 - 1/121 + 1/169 - 1/225 ≈ 0.91502, so
+  -- G ∈ [S₈ - 1/289, S₈ + 1/289] ⊂ (0.91, 0.92).
+  have herr := alternating_series_error_bound catG catG_anti catG_summable 8
+  rw [catG_alt_tsum, abs_le] at herr
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, catG] at herr
+  norm_num at herr
+  constructor <;> linarith [herr.1, herr.2]
+
+/-- The magnitude sequence `1/(2n+1)` of the (conditionally convergent) Leibniz
+    alternating series. -/
+private def leibG (n : ℕ) : ℝ := 1 / (2 * n + 1 : ℝ)
+
+private lemma leibG_nonneg (n : ℕ) : 0 ≤ leibG n := by unfold leibG; positivity
+
+private lemma leibG_anti : Antitone leibG := by
+  intro a b hab
+  have hab' : (a : ℝ) ≤ b := by exact_mod_cast hab
+  unfold leibG
+  have h1 : (0 : ℝ) < 2 * a + 1 := by positivity
+  have h2 : (2 : ℝ) * a + 1 ≤ 2 * b + 1 := by linarith
+  exact one_div_le_one_div_of_le h1 h2
+
+private lemma leib_alt_conv :
+    Tendsto (fun n => ∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * leibG i)
+      atTop (nhds (π / 4)) := by
+  have h : (fun n => ∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * leibG i)
+      = fun k => ∑ i ∈ Finset.range k, (-1 : ℝ) ^ i / (2 * i + 1) := by
+    funext n
+    exact Finset.sum_congr rfl (fun i _ => by rw [leibG, mul_one_div])
+  rw [h]
+  exact tendsto_sum_pi_div_four
 
 /-- The Leibniz series for π converges slowly: the n-th partial sum
-    has error approximately 1/(2n+1). -/
+    has error at most 1/(2n+1). This is the standard alternating-series error
+    estimate, valid despite the series being only conditionally convergent
+    (Mathlib's `alternating_series_error_bound` requires absolute convergence). -/
 theorem leibniz_error_bound (n : ℕ) (hn : 0 < n) :
     |dirichletBetaPartialSum 1 n - π / 4| ≤ 1 / (2 * n + 1 : ℝ) := by
-  sorry -- Alternating series estimation theorem
+  have hpart : dirichletBetaPartialSum 1 n
+      = ∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * leibG i := by
+    unfold dirichletBetaPartialSum leibG
+    exact Finset.sum_congr rfl (fun i _ => by rw [Real.rpow_one, mul_one_div])
+  rw [hpart]
+  show |(∑ i ∈ Finset.range n, (-1 : ℝ) ^ i * leibG i) - π / 4| ≤ leibG n
+  rw [abs_le]
+  rcases Nat.even_or_odd n with he | ho
+  · -- n = 2k: `S_{2k} ≤ π/4 ≤ S_{2k} + leibG (2k)`.
+    obtain ⟨k, hk⟩ := he
+    have hn2 : n = 2 * k := by omega
+    subst hn2
+    have hlow : ∑ i ∈ Finset.range (2 * k), (-1 : ℝ) ^ i * leibG i ≤ π / 4 :=
+      leibG_anti.alternating_series_le_tendsto leib_alt_conv k
+    have hup : π / 4 ≤ ∑ i ∈ Finset.range (2 * k + 1), (-1 : ℝ) ^ i * leibG i :=
+      leibG_anti.tendsto_le_alternating_series leib_alt_conv k
+    rw [Finset.sum_range_succ] at hup
+    have hpow : (-1 : ℝ) ^ (2 * k) = 1 := by rw [pow_mul, neg_one_sq, one_pow]
+    rw [hpow, one_mul] at hup
+    exact ⟨by linarith [leibG_nonneg (2 * k)], by linarith [leibG_nonneg (2 * k)]⟩
+  · -- n = 2k+1: `S_{2k+1} - leibG (2k+1) ≤ π/4 ≤ S_{2k+1}`.
+    obtain ⟨k, hk⟩ := ho
+    have hn2 : n = 2 * k + 1 := by omega
+    subst hn2
+    have hup : π / 4 ≤ ∑ i ∈ Finset.range (2 * k + 1), (-1 : ℝ) ^ i * leibG i :=
+      leibG_anti.tendsto_le_alternating_series leib_alt_conv k
+    have hlow : ∑ i ∈ Finset.range (2 * (k + 1)), (-1 : ℝ) ^ i * leibG i ≤ π / 4 :=
+      leibG_anti.alternating_series_le_tendsto leib_alt_conv (k + 1)
+    have h2k1 : 2 * (k + 1) = (2 * k + 1) + 1 := by ring
+    rw [h2k1, Finset.sum_range_succ] at hlow
+    have hpow : (-1 : ℝ) ^ (2 * k + 1) = -1 := by
+      rw [pow_succ, pow_mul, neg_one_sq, one_pow, one_mul]
+    rw [hpow] at hlow
+    exact ⟨by linarith [leibG_nonneg (2 * k + 1)], by linarith [leibG_nonneg (2 * k + 1)]⟩
 
 -- ============================================================
 -- PART 11: Summary
