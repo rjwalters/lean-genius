@@ -131,4 +131,36 @@ theorem minDistinctDistances_le_of_card_eq
     minDistinctDistances n ≤ numDistinctDistances S :=
   Nat.sInf_le ⟨S, hn, rfl⟩
 
+/-- **Exact value at the base.** A two-point set determines *exactly* one distance:
+the sharp ceiling gives `≤ 2.choose 2 = 1` and two points give `≥ 1`.  This pins the
+envelope to an equality at `|S| = 2`, closing the bracket at the base case. -/
+theorem numDistinctDistances_eq_one_of_card_eq_two
+    (S : Finset (EuclideanSpace ℝ (Fin 2))) (hS : S.card = 2) :
+    numDistinctDistances S = 1 := by
+  have hle := numDistinctDistances_le_choose_two S
+  have hge := one_le_numDistinctDistances_of_two_le_card S (by omega)
+  rw [hS, show Nat.choose 2 2 = 1 from rfl] at hle
+  omega
+
+/-- **First exact value of Erdős's function.** `g(2) = 1`: two points always
+determine exactly one distance (`numDistinctDistances_eq_one_of_card_eq_two`), and a
+two-point set exists (the space is nontrivial), so the minimum over two-point sets is
+exactly `1`.  The base case of the extremal function `g(n) = minDistinctDistances n`. -/
+theorem minDistinctDistances_two : minDistinctDistances 2 = 1 := by
+  obtain ⟨q, hq⟩ := exists_ne (0 : EuclideanSpace ℝ (Fin 2))
+  have hcard : ({0, q} : Finset (EuclideanSpace ℝ (Fin 2))).card = 2 :=
+    Finset.card_pair (Ne.symm hq)
+  refine le_antisymm ?_ ?_
+  · calc minDistinctDistances 2 ≤ numDistinctDistances {0, q} :=
+          minDistinctDistances_le_of_card_eq hcard
+      _ = 1 := numDistinctDistances_eq_one_of_card_eq_two _ hcard
+  · have hne : {numDistinctDistances S |
+        (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = 2)}.Nonempty :=
+      ⟨1, {0, q}, hcard, numDistinctDistances_eq_one_of_card_eq_two _ hcard⟩
+    obtain ⟨S, hScard, hSeq⟩ := Nat.sInf_mem hne
+    show 1 ≤ minDistinctDistances 2
+    unfold minDistinctDistances
+    rw [← hSeq]
+    exact one_le_numDistinctDistances_of_two_le_card S (by omega)
+
 end Erdos89
