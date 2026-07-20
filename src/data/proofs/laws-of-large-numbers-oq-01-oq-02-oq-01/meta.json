@@ -137,6 +137,118 @@
       "startLine": 299,
       "endLine": 407,
       "summary": "Proves martingale_sum_of_indep_mean_zero (the shifted partial sums f n = ∑_{i≤n} X_i of independent mean-zero integrable variables are a martingale w.r.t. the natural filtration ℱ, since the increment X_{n+1} is independent of ℱ n so E[X_{n+1}|ℱ n] = E[X_{n+1}] = 0) and ae_tendsto_sum_of_indep_of_eLpNorm_bdd (feeding that martingale, once L¹-bounded, into Mathlib's Submartingale.exists_ae_tendsto_of_bdd and shifting the index down by one to conclude a.s. convergence of ∑_{i<n} X_i). Adaptedness is Finset.stronglyMeasurable_sum over Filtration.adapted_natural; the martingale identity is martingale_of_condExp_sub_eq_zero_nat fed by iIndepFun.condExp_natural_ae_eq_of_lt."
+    },
+    {
+      "id": "s4a-l1-from-variance",
+      "title": "S4a — Discharging the L¹ Bound from a Variance-Sum Bound",
+      "startLine": 408,
+      "endLine": 532,
+      "summary": "Closes the last analytic hypothesis of the Kolmogorov criterion. eLpNorm_two_sq_eq_evariance identifies the squared L² norm with the extended variance, eLpNorm_two_partialSum_le bounds the L² norm of a partial sum of independent mean-zero variables by the square root of the variance sum (variance orthogonality), and ae_tendsto_sum_of_indep_of_variance_bdd upgrades ae_tendsto_sum_of_indep_of_eLpNorm_bdd by supplying its uniform L¹ bound from ∑ Var(X_i) < ∞ via eLpNorm exponent monotonicity (‖·‖₁ ≤ ‖·‖₂ on a probability space). This yields the standalone Kolmogorov convergence criterion.",
+      "mathContext": "On a probability space, $\\lVert\\sum_{i\\le n}X_i\\rVert_1 \\le \\lVert\\sum_{i\\le n}X_i\\rVert_2 = \\sqrt{\\operatorname{Var}[\\sum_{i\\le n}X_i]} = \\sqrt{\\sum_{i\\le n}\\operatorname{Var}[X_i]} \\le \\sqrt{\\sum_i\\operatorname{Var}[X_i]}$, so $\\sum_i\\operatorname{Var}(X_i)<\\infty$ gives the uniform $L^1$ bound."
+    },
+    {
+      "id": "s4b-step2-borel-cantelli",
+      "title": "S4b (step 2) — Tail-Sum / Borel–Cantelli Input",
+      "startLine": 533,
+      "endLine": 613,
+      "summary": "The measure-theoretic tail input to the truncation argument. tsum_indicator_add_one_le and tsum_measure_add_one_le_lintegral bound the summed tail probabilities ∑_n μ{|X| ≥ (n+1)^{1/p}} by an integral of |X|^p, and tsum_measure_add_one_ne_top shows that sum is finite when E|X|^p < ∞ — the first Borel–Cantelli hypothesis that the truncated and untruncated sequences agree eventually a.s.",
+      "mathContext": "$\\sum_n \\mu\\{|X| \\ge (n+1)^{1/p}\\} \\le \\int |X|^p\\,d\\mu < \\infty$, the Borel–Cantelli input forcing $X_i \\ne Y_i$ only finitely often almost surely."
+    },
+    {
+      "id": "s5-normalisation-capstone",
+      "title": "S5 — Kolmogorov + Kronecker: the SLLN Normalisation Step",
+      "startLine": 614,
+      "endLine": 693,
+      "summary": "The capstone theorem ae_tendsto_average_zero_of_variance_weighted_bdd: for independent mean-zero L² variables Y_i and a positive nondecreasing weight a_n → ∞ with ∑_i Var(Y_i)/a_i² < ∞, almost surely a_n⁻¹ ∑_{i<n} Y_i → 0. Proved by running the Kolmogorov criterion (S4a) on the rescaled X_i = a_i⁻¹·Y_i — whose variance sum is exactly ∑ Var(Y_i)/a_i² — to get a.s. convergence of ∑ X_i, then feeding that through the a.e. Kronecker lift (ae_tendsto_kronecker_average_zero) to normalise.",
+      "mathContext": "For independent mean-zero $Y_i$ with $\\sum_i \\operatorname{Var}(Y_i)/a_i^2 < \\infty$ and $a_n\\uparrow\\infty$: a.s. $a_n^{-1}\\sum_{i<n}Y_i \\to 0$ — Kolmogorov's criterion on $X_i=a_i^{-1}Y_i$ composed with Kronecker's lemma."
+    },
+    {
+      "id": "s5-centering",
+      "title": "S5 (centering) — Dropping Mean-Zero via Internal Centering",
+      "startLine": 694,
+      "endLine": 776,
+      "summary": "ae_tendsto_centered_average_zero_of_variance_weighted_bdd removes the mean-zero hypothesis: applying the capstone to the centered variables Y_i − E[Y_i] (same variances) gives a.s. a_n⁻¹ ∑_{i<n} (Y_i − E[Y_i]) → 0, the form the Marcinkiewicz–Zygmund truncation actually consumes.",
+      "mathContext": "Applying the normalisation step to $Y_i - \\mathbb{E}[Y_i]$ (variances unchanged): a.s. $a_n^{-1}\\sum_{i<n}(Y_i-\\mathbb{E}[Y_i]) \\to 0$."
+    },
+    {
+      "id": "s4b-step1-truncation",
+      "title": "S4b (step 1) — I.I.D. Truncation Reduction via Borel–Cantelli",
+      "startLine": 777,
+      "endLine": 884,
+      "summary": "Reduces the SLLN for X_i to its truncations Y_i = X_i·1{|X_i| ≤ i^{1/p}}. rpow_inv_lt_iff_lt_rpow is the arithmetic rewrite between the threshold i^{1/p} and its p-th power; tsum_measure_truncation_ne_top_of_identDistrib finitizes the tail-probability sum for identically distributed X_i; and ae_eventually_abs_le_rpow_of_identDistrib applies the first Borel–Cantelli lemma to conclude that a.s. |X_i| ≤ i^{1/p} for all large i, so X_i and Y_i coincide eventually and share the same a.s. Cesàro limit.",
+      "mathContext": "With $Y_i = X_i\\mathbf{1}\\{|X_i|\\le i^{1/p}\\}$: $\\sum_i \\mu\\{|X_i|>i^{1/p}\\}<\\infty$, so by Borel–Cantelli a.s. $X_i=Y_i$ eventually — the truncation is asymptotically free."
+    },
+    {
+      "id": "s4b-steps34-moment-kernels",
+      "title": "S4b (steps 3–4) — Truncation-Moment Kernels and Their Integral Lifts",
+      "startLine": 885,
+      "endLine": 1176,
+      "summary": "The pointwise moment inequalities and their expectations that control the truncated variables. The kernels abs_le_rpow_mul_rpow_of_tail and sq_le_rpow_mul_rpow_of_trunc bound |x| on the tail {|x| > t} and x² on the trunc {|x| ≤ t} by t-powers times |x|^p (the p < 2 / p ≥ 1 exponent trades). Their integral lifts integral_trunc_sq_le, integral_tail_abs_le, integral_tail_abs_le_tail_moment, and abs_integral_trunc_le_tail_moment_of_centered convert these into bounds on E[Y_i²] and on the truncated means E[Y_i], both in terms of the tail p-th moment.",
+      "mathContext": "For $1\\le p<2$: on $\\{|x|\\le t\\}$, $x^2 \\le t^{2-p}|x|^p$; on $\\{|x|>t\\}$, $|x| \\le t^{1-p}|x|^p$. Integrating gives $\\mathbb{E}[Y_i^2]$ and $|\\mathbb{E}[Y_i]|$ bounds in the tail $p$-th moment."
+    },
+    {
+      "id": "step3-null-sequence",
+      "title": "Step-3 Null Sequence — the Tail p-th Moment Vanishes",
+      "startLine": 1177,
+      "endLine": 1262,
+      "summary": "tendsto_integral_tail_rpow_zero: as the threshold t → ∞, the tail p-th moment ∫_{|X|>t} |X|^p → 0 (dominated convergence against the finite total moment E|X|^p). This is the null sequence e_i fed into the Kronecker/Toeplitz machinery to kill the centering-mean contribution of the truncation.",
+      "mathContext": "$\\int_{\\{|X|>t\\}} |X|^p\\,d\\mu \\to 0$ as $t\\to\\infty$ (dominated convergence), the null sequence driving the centered-truncation vanishing."
+    },
+    {
+      "id": "p-series-tail-bound",
+      "title": "Tail Bound for the Real p-Series (Arithmetic Backbone)",
+      "startLine": 1263,
+      "endLine": 1582,
+      "summary": "The purely arithmetic engine behind the MZ variance sum: bounds on the weighted p-series ∑_{i ≥ m} i^{-2/p} (with weight a_i = i^{1/p}, so a_i⁻² = i^{-2/p}). sum_range_shift_rpow_neg_le, tsum_shift_rpow_neg_le, tsum_ge_rpow_neg_le, and tsum_indicator_ge_rpow_neg_le control tails of the real power series; tsum_weight_trunc_sq_le, weight_bound_le_moment_add_one, and variance_integrand_le_moment then package the per-value weight × truncated-second-moment bound into a form bounded by the p-th moment. This is where p < 2 is essential (it makes 2/p > 1, so the series converges).",
+      "mathContext": "For $1\\le p<2$ one has $2/p>1$, so $\\sum_{i\\ge m} i^{-2/p} \\lesssim m^{1-2/p} \\to 0$; combined with the truncation-second-moment kernels this bounds $\\sum_i \\operatorname{Var}(Y_i)/a_i^2$ by (a constant times) $\\mathbb{E}|X|^p$."
+    },
+    {
+      "id": "tonelli-interchange",
+      "title": "Tonelli Interchange for the MZ Variance Sum",
+      "startLine": 1583,
+      "endLine": 1676,
+      "summary": "lintegral_tsum_trunc_sq_weight_le: the measure-theoretic lift of the arithmetic step, swapping the order of the sum over i and the integral over the sample space (Tonelli, valid for the nonnegative integrand) so the variance sum ∑_i a_i⁻² E[Y_i²] becomes a single integral of ∑_i a_i⁻² (truncated x²) against the law of X.",
+      "mathContext": "$\\sum_i a_i^{-2}\\int x^2\\mathbf{1}\\{|x|\\le i^{1/p}\\}\\,d\\mu = \\int \\Big(\\sum_i a_i^{-2} x^2\\mathbf{1}\\{|x|\\le i^{1/p}\\}\\Big)\\,d\\mu$ by Tonelli (nonnegative integrand)."
+    },
+    {
+      "id": "pointwise-domination",
+      "title": "Pointwise Domination of the Interchange Integrand",
+      "startLine": 1677,
+      "endLine": 1731,
+      "summary": "trunc_rpow_weight_sq_le_rpow: the finiteness core — pointwise in x, the inner sum ∑_i a_i⁻² x²·1{|x| ≤ i^{1/p}} is dominated by a constant multiple of |x|^p, since only the indices with i^{1/p} ≥ |x| (i.e. i ≥ |x|^p) contribute and the resulting tail p-series is summable by the previous arithmetic bound.",
+      "mathContext": "$\\sum_i a_i^{-2} x^2\\mathbf{1}\\{|x|\\le i^{1/p}\\} = x^2\\!\\!\\sum_{i\\ge |x|^p} i^{-2/p} \\lesssim x^2\\cdot |x|^{p-2} = |x|^p$ pointwise."
+    },
+    {
+      "id": "master-finiteness-bound",
+      "title": "Master Finiteness Bound for the MZ Variance Sum",
+      "startLine": 1732,
+      "endLine": 1818,
+      "summary": "Composes the Tonelli interchange with the pointwise domination: lintegral_tsum_trunc_sq_weight_le_moment bounds the interchanged integral by a constant times E|X|^p, and tsum_lintegral_trunc_sq_weight_lt_top concludes the weighted truncated-second-moment sum is finite whenever E|X|^p < ∞ — the ∑ Var/a² < ∞ hypothesis the S5 capstone demands.",
+      "mathContext": "$\\sum_i a_i^{-2}\\,\\mathbb{E}[Y_i^2] \\le C\\!\\int |x|^p\\,d\\mu = C\\,\\mathbb{E}|X|^p < \\infty$ (interchange ∘ domination)."
+    },
+    {
+      "id": "real-summability-variance-sum",
+      "title": "Real Summability of the MZ Variance Sum",
+      "startLine": 1819,
+      "endLine": 1935,
+      "summary": "Transfers the finiteness from the extended (lintegral) world to genuine real summability. integrable_trunc_sq establishes integrability of the truncated squares, and summable_trunc_sq_weight_of_integrable with its shifted companion summable_trunc_sq_weight_shift_of_integrable produce the real-valued Summable statement ∑_i a_i⁻² E[Y_i²] < ∞ needed to instantiate the Kolmogorov criterion.",
+      "mathContext": "From $\\sum_i a_i^{-2}\\,\\mathbb{E}[Y_i^2]<\\infty$ (ℝ≥0∞-valued) to the genuine real $\\text{Summable}\\,(i \\mapsto a_i^{-2}\\operatorname{Var}(Y_i))$."
+    },
+    {
+      "id": "weighted-variance-partial-sum",
+      "title": "Weighted-Variance Partial-Sum Bound (Hand-off to S5)",
+      "startLine": 1936,
+      "endLine": 2030,
+      "summary": "variance_trunc_le_integral_sq bounds each truncated variance by its second moment (Var ≤ E[·²]), and weighted_variance_partial_sum_le_tsum bounds every partial sum of the weighted variances by the full convergent series — packaging the finiteness into the exact uniform-boundedness shape the S5 normalisation capstone consumes.",
+      "mathContext": "$\\operatorname{Var}(Y_i)\\le \\mathbb{E}[Y_i^2]$ and $\\sum_{i<n} a_i^{-2}\\operatorname{Var}(Y_i) \\le \\sum_i a_i^{-2}\\operatorname{Var}(Y_i)$, the uniform bound feeding the criterion."
+    },
+    {
+      "id": "mz-normaliser-facts",
+      "title": "Normaliser Sequence Facts for the MZ SLLN",
+      "startLine": 2031,
+      "endLine": 2081,
+      "summary": "The elementary shape hypotheses on the MZ normaliser a_n = n^{1/p}: mz_normaliser_pos (positivity), mz_normaliser_mono (nondecreasing), and mz_normaliser_tendsto (a_n → ∞) — the three properties the S5 normalisation step requires of its weight sequence, discharged for the concrete choice a_n = n^{1/p}.",
+      "mathContext": "For $a_n = n^{1/p}$ ($1\\le p<2$): $a_n>0$, $a_n$ nondecreasing, and $a_n\\to\\infty$ — the weight-sequence hypotheses of the normalisation step."
     }
   ],
   "conclusion": {
