@@ -82,7 +82,7 @@
       "Erdos771InitialSegment.lean — the low-element (initial-segment) construction and the exact avoiding size at the total-sum boundary, filling the intermediate band n < m ≤ n(n+1)/2 where the pairing formula n−⌈m/2⌉ (proven only for m ≤ n) genuinely fails (e.g. maxAvoidingSize 3 5 = 2 ≠ 3−⌈5/2⌉ = 0). avoid_of_sum_lt (any set whose TOTAL is below m avoids m — controls the entire subset-sum set by one inequality, complementing avoid_of_forall_lt which bounds each element from below), initial_segment_avoid + maxAvoidingSize_ge_initial (the initial-segment lower bound, valid for ALL m: j ≤ n ∧ ∑_{a≤j} a < m ⟹ j ≤ maxAvoidingSize n m), maxAvoidingSize_ge_of_triangle_lt (closed form: j(j+1) < 2m suffices), sum_Icc_n (Gauss total ∑_{a≤n} a = n(n+1)/2 in Nat-division form), and the capstone maxAvoidingSize_sum / maxAvoidingSize_triangular: maxAvoidingSize n (n(n+1)/2) = n−1 for n ≥ 1 — the exact value at the boundary, the last drop before the full-box plateau of maxAvoidingSize_eq_n_iff (drop the top element n; {1,…,n−1} totals n(n+1)/2 − n < m). 7 theorems, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only; the entry's 2 deep asymptotic axioms are not invoked)."
     ],
     "axiomCount": 2,
-    "lineCount": 1335,
+    "lineCount": 1542,
     "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 0 sorries.",
     "theoremCount": 50,
     "definitionCount": 16,
@@ -112,84 +112,100 @@
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "startLine": 39,
-      "endLine": 57,
-      "summary": "Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m).",
-      "mathContext": "Mathematical content: Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m)."
+      "id": "header",
+      "title": "Overview — Erdős #771: Subsets Avoiding a Given Sum",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring, imports, and namespace. States Erdős Problem #771 (SOLVED, Alon–Freiman): with f(n) the largest k such that for every m ≥ 1 some S ⊆ {1,…,n} with |S| = k has no nonempty subset summing to m, is f(n) = (1/2 + o(1))·n/log n? Records that the deep asymptotics (the Erdős–Graham lower bound and the Alon–Freiman upper bound) are external results carried as `axiom`s, while the elementary construction is machine-checked here and fully self-contained in Erdos771Construction.lean.",
+      "mathContext": "**Erdős #771.** Let $f(n)$ be maximal such that for every $m \\ge 1$ there is $S \\subseteq \\{1,\\dots,n\\}$ with $|S| = f(n)$ and $m \\ne \\sum_{a \\in A} a$ for every nonempty $A \\subseteq S$. Then $f(n) = \\left(\\tfrac12 + o(1)\\right)\\dfrac{n}{\\log n}$ — the constant $\\tfrac12$ is exact. Lower bound: take multiples of the smallest prime not dividing $m$ (Erdős–Graham). Upper bound: an $\\mathrm{lcm}\\{1,\\dots,s\\}$ argument (Alon–Freiman)."
     },
     {
-      "id": "the-function-f-n",
-      "title": "The Function f(n)",
-      "startLine": 58,
-      "endLine": 82,
-      "summary": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,n^2] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (proved: f is maximal).",
-      "mathContext": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,$n^{2}$] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (proved: f is maximal)."
+      "id": "part-i-definitions",
+      "title": "Part I — Basic Definitions",
+      "startLine": 43,
+      "endLine": 61,
+      "summary": "The core definitions: Icc_n n = Finset.Icc 1 n, subsetSums S (nonempty-subset sums of S), AvoidSum S m (m is not a subset sum of S), and IsMAvoidingSet S n m (S ⊆ {1,…,n} avoiding m).",
+      "mathContext": "For $S \\subseteq \\mathbb{N}$, $\\mathrm{subsetSums}(S) = \\{\\sum_{a \\in A} a : \\emptyset \\ne A \\subseteq S\\}$. Then $\\mathrm{AvoidSum}(S,m)$ means $m \\notin \\mathrm{subsetSums}(S)$, and $S$ is *m-avoiding in $[n]$* when $S \\subseteq \\{1,\\dots,n\\}$ and $\\mathrm{AvoidSum}(S,m)$."
     },
     {
-      "id": "the-erdos-graham-conjecture",
-      "title": "The Erdos-Graham Conjecture",
-      "startLine": 83,
-      "endLine": 102,
-      "summary": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/log n) - 1/2| < epsilon for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/log n with g(n) -> 0.",
-      "mathContext": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/$\\log n$) - 1/2| < $\\varepsilon$ for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/$\\log n$ with g(n) -> 0."
+      "id": "part-ii-function-f",
+      "title": "Part II — The Function f(n) and maxAvoidingSize",
+      "startLine": 62,
+      "endLine": 259,
+      "summary": "Defines maxAvoidingSize n m (largest m-avoiding subset of {1,…,n}) and f n = min over m ∈ [1,n²] of maxAvoidingSize n m, plus f_property. Establishes the toolkit: monotonicity/subset lemmas for subsetSums and AvoidSum (subsetSums_mono, avoidSum_subset, avoidSum_zero), the basic bounds maxAvoidingSize_le/le_succ/monotone, avoid_full (large m > n² is auto-avoided), the criterion maxAvoidingSize_ge_iff, and maxAvoidingSize_eq_of_lt.",
+      "mathContext": "$\\mathrm{maxAvoidingSize}(n,m) = \\max\\{|S| : S \\subseteq [n],\\ m \\notin \\mathrm{subsetSums}(S)\\}$ and $f(n) = \\min_{1 \\le m \\le n^2} \\mathrm{maxAvoidingSize}(n,m)$ — the worst-case avoidable size. Restricting the min to $m \\le n^2$ is justified because every $m > n^2$ exceeds all subset sums of $[n]$, so $\\mathrm{maxAvoidingSize}(n,m) = n$ there."
     },
     {
-      "id": "erdos-graham-lower-bound",
-      "title": "Erdos-Graham Lower Bound",
-      "startLine": 103,
-      "endLine": 132,
-      "summary": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (proved: card = n/p), prime_multiples_avoid (proved: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate).",
-      "mathContext": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (proved: card = n/p), prime_multiples_avoid (proved: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate)."
+      "id": "part-iib-completeness",
+      "title": "Part II.b — Completeness of the Full Box & the Sharp Avoidance Threshold",
+      "startLine": 260,
+      "endLine": 683,
+      "summary": "Computes when the whole box {1,…,n} realizes each subset sum: exists_subset_sum_eq, two_mul_sum_Icc_n (2·∑ = n(n+1)), subsetSums_Icc_n (the full interval hits every sum in [1, n(n+1)/2]), and the equivalences avoid_full_iff / maxAvoidingSize_eq_n_iff / maxAvoidingSize_total_boundary. Derives exact small-m values maxAvoidingSize_zero/one/two/three and the characterization f_characterization, then the upper bounds f_le_pred (f n ≤ n−1) and f_le_sub_two (f n ≤ n−2 for n ≥ 3).",
+      "mathContext": "The full interval $[n]$ has $\\mathrm{subsetSums}([n]) = \\{1,\\dots,\\tfrac{n(n+1)}2\\}$ (every value in range is attained), so $[n]$ avoids $m$ iff $m > \\tfrac{n(n+1)}2$. This pins down the exact edge cases: $\\mathrm{maxAvoidingSize}(n,1) = n-1$ (drop the element $1$), $\\mathrm{maxAvoidingSize}(n,0) = n$, and the uniform bounds $f(n) \\le n-1$, and $f(n) \\le n-2$ for $n \\ge 3$."
     },
     {
-      "id": "alon-freiman-upper-bound",
-      "title": "Alon-Freiman Upper Bound",
-      "startLine": 133,
-      "endLine": 155,
-      "summary": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m).",
-      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/$\\log n$. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m)."
+      "id": "part-iii-conjecture",
+      "title": "Part III — The Erdős–Graham Conjecture",
+      "startLine": 684,
+      "endLine": 703,
+      "summary": "States the asymptotic target: expectedValue n = (1/2)·n/log n, and the two equivalent forms ErdosGrahamConjecture (|f(n)/(n/log n) − 1/2| < ε eventually) and ErdosGrahamConjecture' (f(n) = (1/2 + g(n))·n/log n with g(n) → 0).",
+      "mathContext": "The conjecture asserts $\\dfrac{f(n)}{n/\\log n} \\to \\dfrac12$, equivalently $f(n) = \\left(\\tfrac12 + o(1)\\right)\\dfrac{n}{\\log n}$. The leading constant $\\tfrac12$ is the content — both the lower and upper matching bounds are needed to establish it."
     },
     {
-      "id": "the-complete-answer",
-      "title": "The Complete Answer",
-      "startLine": 156,
-      "endLine": 175,
-      "summary": "erdos_graham_conjecture_true (proved from the two bound axioms): combines lower/upper bounds with epsilon/2. f_asymptotic: alias. The conjecture is TRUE.",
-      "mathContext": "erdos_graham_conjecture_true (proved from the two bound axioms): combines lower/upper bounds with $\\varepsilon$/2. f_asymptotic: alias. The conjecture is TRUE."
+      "id": "part-iv-lower-bound",
+      "title": "Part IV — Erdős–Graham Lower Bound (prime-multiples construction)",
+      "startLine": 704,
+      "endLine": 749,
+      "summary": "The lower-bound half. The deep asymptotic erdos_graham_lower_bound is recorded as an axiom, but the elementary construction is machine-checked: primeMutliples p n (multiples of p in {1,…,n}), prime_multiples_size (its cardinality ≈ n/p), and prime_multiples_avoid (if p is prime and p ∤ m, then multiples of p avoid m, since every subset sum is a multiple of p).",
+      "mathContext": "**Axiom (Erdős–Graham).** For the smallest prime $p \\nmid m$, the set of multiples of $p$ in $[n]$ has size $\\approx n/p \\approx n/(2\\log n)$ and avoids $m$: any nonempty subset sums to a multiple of $p$, which cannot equal $m$. By the prime number theorem this smallest prime is typically near $2\\log n$, giving $f(n) \\ge \\left(\\tfrac12 - o(1)\\right)\\dfrac{n}{\\log n}$."
     },
     {
-      "id": "explicit-bounds",
-      "title": "Explicit Bounds",
-      "startLine": 176,
-      "endLine": 190,
-      "summary": "explicitBounds: 0.4*n/log n <= f(n) <= 0.6*n/log n for n >= 10. leading_constant (proved): f(n)/(n/log n) -> 1/2 via Filter.Tendsto.",
-      "mathContext": "explicitBounds: 0.4*n/$\\log n$ <= f(n) <= 0.6*n/$\\log n$ for n >= 10. leading_constant (proved): f(n)/(n/$\\log n$) -> 1/2 via Filter.Tendsto."
+      "id": "part-v-upper-bound",
+      "title": "Part V — Alon–Freiman Upper Bound (lcm argument)",
+      "startLine": 750,
+      "endLine": 764,
+      "summary": "The upper-bound half. Records the deep result alon_freiman_upper_bound as an axiom and the supporting definition lcm_up_to s = lcm{1,…,s}; the LCM growth estimate lcm{1,…,s} ≤ e^{2s} and the pigeonhole 'large sets must hit some target sum' argument are noted informally.",
+      "mathContext": "**Axiom (Alon–Freiman).** If $|S|$ is too large then $S$ must hit some small target $m$: taking $m = \\mathrm{lcm}\\{1,\\dots,s\\}$ (which grows like $e^{(1+o(1))s}$ by the prime number theorem) and a counting argument forces $f(n) \\le \\left(\\tfrac12 + o(1)\\right)\\dfrac{n}{\\log n}$, matching the lower bound."
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 191,
-      "endLine": 209,
-      "summary": "m_eq_one_case (proved): maxAvoidingSize(n,1) = n-1. m_eq_two_case (proved): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction.",
-      "mathContext": "Mathematical content: m_eq_one_case (proved): maxAvoidingSize(n,1) = n-1. m_eq_two_case (proved): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction."
+      "id": "part-vi-complete-answer",
+      "title": "Part VI — The Complete Answer",
+      "startLine": 765,
+      "endLine": 804,
+      "summary": "Combines the two axiomatic bounds into the theorem erdos_graham_conjecture_true: for any ε > 0, |f(n)/(n/log n) − 1/2| < ε eventually, splitting ε/2 between the lower and upper bounds. f_asymptotic is an alias. This is the machine-checked assembly of the solved answer from its two external ingredients.",
+      "mathContext": "From $f(n) \\ge (\\tfrac12 - \\tfrac\\varepsilon2)\\tfrac{n}{\\log n}$ and $f(n) \\le (\\tfrac12 + \\tfrac\\varepsilon2)\\tfrac{n}{\\log n}$ eventually, one gets $\\left|\\dfrac{f(n)}{n/\\log n} - \\dfrac12\\right| < \\varepsilon$ — the two matching bounds pin the constant to exactly $\\tfrac12$."
     },
     {
-      "id": "connection-to-sum-free-sets",
-      "title": "Connection to Sum-Free Sets",
-      "startLine": 210,
-      "endLine": 228,
-      "summary": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free.",
-      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 $\\log n$) vs n/3 for sum-free."
+      "id": "part-vii-explicit-bounds",
+      "title": "Part VII — Explicit Bounds",
+      "startLine": 805,
+      "endLine": 823,
+      "summary": "explicitBounds n packages a concrete non-asymptotic window (e.g. 0.4·n/log n ≤ f(n) ≤ 0.6·n/log n for n ≥ 10), and leading_constant restates convergence f(n)/(n/log n) → 1/2 as a Filter.Tendsto to the limit 1/2.",
+      "mathContext": "The asymptotic $\\dfrac{f(n)}{n/\\log n} \\to \\dfrac12$ is phrased as $\\mathrm{Tendsto}\\left(n \\mapsto \\dfrac{f(n)}{n/\\log n}\\right)\\,\\mathrm{atTop}\\,(\\mathcal N\\,\\tfrac12)$, with explicit constant bounds $c_- \\le \\dfrac{f(n)}{n/\\log n} \\le c_+$ valid past a threshold."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 229,
-      "endLine": 244,
-      "summary": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true.",
-      "mathContext": "Mathematical content: erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true."
+      "id": "part-viii-special-cases",
+      "title": "Part VIII — Special Cases & the Exact ⌈m/2⌉ Threshold",
+      "startLine": 824,
+      "endLine": 1499,
+      "summary": "The most developed block: exact small-m analysis and a sharp closed form. Proves the membership criteria two/three/four_mem_subsetSums_iff and the avoidance criteria avoid_two/three/four_iff, giving the exact values m_eq_one/two/three/four_case(_exact). Then establishes the general sharp formula maxAvoidingSize_eq_sub_ceil_half (maxAvoidingSize n m = n − ⌈m/2⌉ for 1 ≤ m ≤ n) via matching maxAvoidingSize_ge/le_sub_ceil_half, plus interval_avoiding_lower, primeMultiples_avoiding_lower, the plateau/monotonicity lemmas (maxAvoidingSize_antitone_target, _two_mul, _plateau, _self), and the practical smallPrimeConstruction (using Nat.minFac(m+1), with minFac_succ_not_dvd) and smallPrime_avoiding_lower.",
+      "mathContext": "For $1 \\le m \\le n$ the exact value is $\\mathrm{maxAvoidingSize}(n,m) = n - \\lceil m/2 \\rceil$: keeping the top $n - \\lceil m/2\\rceil$ elements avoids $m$, and no larger set can. The small cases $m = 1,2,3,4$ are proved directly from explicit membership criteria for when $m \\in \\mathrm{subsetSums}(S)$. The construction $S_{m,n}$ built from $\\mathrm{minFac}(m+1)$ (a prime not dividing $m$) realizes a concrete avoiding set for every $m$."
+    },
+    {
+      "id": "part-ix-sum-free",
+      "title": "Part IX — Connection to Sum-Free Sets",
+      "startLine": 1500,
+      "endLine": 1512,
+      "summary": "Defines IsSumFree S (no a + b = c within S) and the comparison marker avoiding_vs_sumfree, contrasting m-avoiding sets (achievable size ≈ n/(2 log n)) with sum-free sets (≤ n/3 + O(1)) — the two are different maximal-set problems.",
+      "mathContext": "A set $S$ is *sum-free* if $a + b \\ne c$ for all $a,b,c \\in S$; the maximum sum-free subset of $[n]$ has size $\\sim n/3$. This is much larger than the worst-case m-avoiding size $\\sim n/(2\\log n)$, because m-avoiding must dodge *one* fixed target while sum-free must dodge *all* internal sums."
+    },
+    {
+      "id": "part-x-summary",
+      "title": "Part X — Summary",
+      "startLine": 1513,
+      "endLine": 1542,
+      "summary": "Closing statements: erdos_771, erdos_771_main (the explicit ∀ε>0 asymptotic on f(n)/(n/log n) → 1/2), and erdos_771_solved — three equivalent phrasings that the Erdős–Graham conjecture holds, all reducing to erdos_graham_conjecture_true.",
+      "mathContext": "The file concludes by re-exporting the solved answer $f(n) = \\left(\\tfrac12 + o(1)\\right)\\dfrac{n}{\\log n}$ under the names $\\mathrm{erdos\\_771}$, $\\mathrm{erdos\\_771\\_main}$, and $\\mathrm{erdos\\_771\\_solved}$, all definitionally the combined-bounds theorem."
     }
   ],
   "conclusion": {
