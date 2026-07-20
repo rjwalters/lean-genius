@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "lineCount": 346,
+    "lineCount": 323,
     "assumptions": "0 axioms. 0 sorries. Fully verified using only 1+ω+ω²=0, ω³=1, and √3²=3.",
     "mathlib_version": "4.31.0",
     "parentProof": "napoleons-theorem",
@@ -97,7 +97,7 @@
     {
       "title": "Complete DFT Filter Picture",
       "startLine": 267,
-      "endLine": 346,
+      "endLine": 323,
       "description": "Bundle theorems: outer Napoleon acts as (X₀↦X₀, X₁↦-X₁, X₂↦0) and inner as (X₀↦X₀, X₁↦0, X₂↦-X₂). IDFT recovery formula: G₁=(X₀-X₁)/3. Summary #check lines.",
       "summary": "Napoleon construction as explicit DFT filter with IDFT recovery",
       "id": "dft-filter-complete",
@@ -191,7 +191,7 @@
       "NapoleonsTheorem"
     ],
     "namespace": "NapoleonsTheoremOQ02",
-    "lineCount": 346,
+    "lineCount": 323,
     "axiomCount": 0,
     "theoremCount": 11,
     "sorries": 0,
