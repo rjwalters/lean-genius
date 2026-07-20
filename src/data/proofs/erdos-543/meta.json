@@ -65,7 +65,7 @@
       "erdos_543_summary: combines disproof and negation"
     ],
     "axiomCount": 2,
-    "lineCount": 173,
+    "lineCount": 167,
     "assumptions": "2 axioms: f, chatgpt_tang_disproof. 0 sorries.",
     "theoremCount": 6,
     "definitionCount": 5
@@ -95,14 +95,14 @@
       "title": "Subset Sums in Groups",
       "summary": "subsetSums, IsSpanningSet, isSpanningSet_iff",
       "startLine": 41,
-      "endLine": 56,
+      "endLine": 58,
       "mathContext": "Mathematical content: subsetSums, IsSpanningSet, isSpanningSet_iff"
     },
     {
       "id": "f-definition",
       "title": "The Function f(N)",
       "summary": "spanningProbability, f axiom, f_le_card",
-      "startLine": 57,
+      "startLine": 59,
       "endLine": 75,
       "mathContext": "Axiomatized: spanningProbability, f axiom, f_le_card"
     },
@@ -111,40 +111,40 @@
       "title": "Elementary Properties",
       "summary": "empty_spanning_iff, spanning_of_generators",
       "startLine": 76,
-      "endLine": 86,
+      "endLine": 83,
       "mathContext": "Mathematical content: empty_spanning_iff, spanning_of_generators"
     },
     {
       "id": "erdos-renyi",
       "title": "Erdős-Rényi Upper Bound",
       "summary": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
-      "startLine": 87,
-      "endLine": 101,
+      "startLine": 84,
+      "endLine": 94,
       "mathContext": "erdos_renyi_upper_bound: f(N) $\\leq$ log₂ N + $O(log log N)$"
     },
     {
       "id": "conjecture-disproof",
       "title": "The Conjecture and Its Disproof",
       "summary": "LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false",
-      "startLine": 102,
-      "endLine": 147,
+      "startLine": 95,
+      "endLine": 132,
       "mathContext": "Verified: LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "naive_lower_bound, erdos_hall_lower",
-      "startLine": 148,
-      "endLine": 163,
+      "startLine": 133,
+      "endLine": 141,
       "mathContext": "Bound: naive_lower_bound, erdos_hall_lower"
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "cyclic_spanning_characterization, prime_full_spanning",
-      "startLine": 164,
-      "endLine": 173,
-      "mathContext": "Mathematical content: cyclic_spanning_characterization, prime_full_spanning"
+      "title": "Special Cases and Summary",
+      "summary": "cyclic_spanning_characterization, prime_full_spanning; erdos_543_summary (the packaged main result: ErdosCounterConjecture ∧ ¬LittleOConjecture)",
+      "startLine": 142,
+      "endLine": 167,
+      "mathContext": "Mathematical content: cyclic_spanning_characterization, prime_full_spanning, erdos_543_summary"
     }
   ],
   "conclusion": {
@@ -171,7 +171,7 @@
       "Real"
     ],
     "namespace": "Erdos543",
-    "lineCount": 173,
+    "lineCount": 167,
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 5,
