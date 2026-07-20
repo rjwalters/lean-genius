@@ -422,4 +422,89 @@ theorem exists_deleteAt_discreteDiameter_ge (hn : 2 ≤ n)
         field_simp
     _ ≤ 2 / ((n : ℝ) * ((n : ℝ) - 1)) * logSpread (deleteAt z k) := hstep
 
+/- ## Fekete monotonicity: the supremum-level statement
+
+The pointwise inequality `exists_deleteAt_discreteDiameter_ge` lifts to the
+classical **supremum** form once we take suprema over all configurations inside a
+compact set.  We do this for the closed unit disc `{|z| ≤ 1}` — the setting of the
+parent lemniscate problem, whose roots lie in the unit disc.  Define
+
+    dₙ := sup { dₙ(Z) : Z an n-point configuration in the closed unit disc }.
+
+Every `dₙ(Z) ≤ 2` (`discreteDiameter_le_two`), so the supremum exists, and the
+pointwise deletion inequality forces `d_{n+1} ≤ dₙ`.  Hence `n ↦ dₙ` is
+non-increasing (for `n ≥ 2`) and, being bounded below by `0`, converges — this is
+the sense in which the transfinite diameter `d = infₙ dₙ` is a well-defined limit. -/
+
+/-- The set of `n`-point discrete diameters `dₙ(Z)` achievable by configurations
+`Z` in the **closed unit disc** `{|z| ≤ 1}`. -/
+def unitDiscDiameters (n : ℕ) : Set ℝ :=
+  { d | ∃ z : Fin n → ℂ, (∀ i, ‖z i‖ ≤ 1) ∧ discreteDiameter z = d }
+
+/-- The **`n`-point transfinite diameter of the closed unit disc**,
+`dₙ = sup_Z dₙ(Z)` over configurations `Z` in `{|z| ≤ 1}`. -/
+noncomputable def transfiniteDiameterN (n : ℕ) : ℝ := sSup (unitDiscDiameters n)
+
+/-- The all-zero configuration realises the diameter `0`, so `0 ∈ unitDiscDiameters n`
+(for `n ≥ 2`, where a repeated point makes the configuration non-injective and hence
+`dₙ = 0`).  In particular the set is non-empty. -/
+theorem zero_mem_unitDiscDiameters (hn : 2 ≤ n) : (0 : ℝ) ∈ unitDiscDiameters n := by
+  refine ⟨fun _ => 0, fun _ => by simp, ?_⟩
+  have hni : ¬ Function.Injective (fun _ : Fin n => (0 : ℂ)) := by
+    intro h
+    have h01 : (⟨0, by omega⟩ : Fin n) = ⟨1, by omega⟩ := h rfl
+    simp [Fin.ext_iff] at h01
+  have hnpos : ¬ 0 < discreteDiameter (fun _ : Fin n => (0 : ℂ)) := fun h =>
+    hni ((discreteDiameter_pos_iff hn).mp h)
+  exact le_antisymm (not_lt.mp hnpos) (discreteDiameter_nonneg _)
+
+/-- `unitDiscDiameters n` is non-empty (contains `0`) for `n ≥ 2`. -/
+theorem unitDiscDiameters_nonempty (hn : 2 ≤ n) : (unitDiscDiameters n).Nonempty :=
+  ⟨0, zero_mem_unitDiscDiameters hn⟩
+
+/-- `unitDiscDiameters n` is bounded above by `2` (`discreteDiameter_le_two`), so its
+supremum `transfiniteDiameterN n` exists. -/
+theorem unitDiscDiameters_bddAbove (hn : 2 ≤ n) : BddAbove (unitDiscDiameters n) := by
+  refine ⟨2, ?_⟩
+  rintro d ⟨z, hz, rfl⟩
+  exact discreteDiameter_le_two hn hz
+
+/-- **Fekete monotonicity (supremum form).**  The `n`-point transfinite diameter of
+the closed unit disc is non-increasing in `n`:  `d_{n+1} ≤ dₙ` for `n ≥ 2`.
+
+For each `(n+1)`-configuration `Z` in the disc: if `Z` has distinct points, the
+pointwise deletion inequality (`exists_deleteAt_discreteDiameter_ge`) supplies an
+`n`-point sub-configuration — still inside the disc — of diameter `≥ d_{n+1}(Z)`,
+which is bounded above by `dₙ`; if `Z` has a repeated point then `d_{n+1}(Z) = 0 ≤ dₙ`.
+Taking the supremum over `Z` gives `d_{n+1} ≤ dₙ`.  Combined with `0 ≤ dₙ ≤ 2` this
+makes the transfinite diameter `d = infₙ dₙ` a well-defined (monotone, bounded) limit. -/
+theorem transfiniteDiameterN_succ_le (hn : 2 ≤ n) :
+    transfiniteDiameterN (n + 1) ≤ transfiniteDiameterN n := by
+  have hbddn : BddAbove (unitDiscDiameters n) := unitDiscDiameters_bddAbove hn
+  refine csSup_le (unitDiscDiameters_nonempty (by omega)) ?_
+  rintro d ⟨z, hzdisc, rfl⟩
+  by_cases hz : Function.Injective z
+  · -- distinct points: some deletion has diameter ≥ d_{n+1}(z), and lies in the disc
+    obtain ⟨k, hk⟩ := exists_deleteAt_discreteDiameter_ge hn z hz
+    have hmem : discreteDiameter (deleteAt z k) ∈ unitDiscDiameters n :=
+      ⟨deleteAt z k, fun i => hzdisc _, rfl⟩
+    exact le_trans hk (le_csSup hbddn hmem)
+  · -- repeated point: d_{n+1}(z) = 0 ≤ dₙ
+    have hnpos : ¬ 0 < discreteDiameter z := fun h =>
+      hz ((discreteDiameter_pos_iff (by omega : 2 ≤ n + 1)).mp h)
+    have hzero : discreteDiameter z = 0 :=
+      le_antisymm (not_lt.mp hnpos) (discreteDiameter_nonneg _)
+    rw [hzero]
+    exact le_csSup hbddn (zero_mem_unitDiscDiameters hn)
+
+/-- `0 ≤ dₙ ≤ 2` for the `n`-point transfinite diameter of the closed unit disc
+(`n ≥ 2`): the monotone sequence of `transfiniteDiameterN_succ_le` is bounded, so its
+infimum — the transfinite diameter of the disc — is well-defined. -/
+theorem transfiniteDiameterN_mem_Icc (hn : 2 ≤ n) :
+    transfiniteDiameterN n ∈ Set.Icc (0 : ℝ) 2 := by
+  constructor
+  · exact le_csSup (unitDiscDiameters_bddAbove hn) (zero_mem_unitDiscDiameters hn)
+  · exact csSup_le (unitDiscDiameters_nonempty hn)
+      (by rintro d ⟨z, hz, rfl⟩; exact discreteDiameter_le_two hn hz)
+
 end Erdos1039TransfiniteDiameter

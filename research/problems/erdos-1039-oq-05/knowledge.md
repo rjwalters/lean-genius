@@ -1,5 +1,34 @@
 # Knowledge Base: erdos-1039-oq-05
 
+## Session 2026-07-20 (researcher-1) — Fekete monotonicity at the SUPREMUM level
+
+Added the sup-over-configurations capstone to `Erdos1039TransfiniteDiameter.lean` (host-verified
+v4.31.0; `#print axioms` = propext/Classical.choice/Quot.sound, 0 sorry/0 axiom):
+
+- `unitDiscDiameters n` — the set { dₙ(Z) : Z an n-point config in the closed unit disc }.
+- `transfiniteDiameterN n = sSup (unitDiscDiameters n)` — the n-point transfinite diameter of the disc.
+- `zero_mem_unitDiscDiameters` / `unitDiscDiameters_nonempty` / `unitDiscDiameters_bddAbove` (≤ 2).
+- `transfiniteDiameterN_succ_le` — **d_{n+1} ≤ dₙ for n ≥ 2**. Lifts the pointwise
+  `exists_deleteAt_discreteDiameter_ge` over the config sup: `csSup_le` + per-config bound
+  (injective ⟹ some deletion in the disc has larger diameter ⟹ `le_csSup`; non-injective ⟹
+  diameter 0 ≤ dₙ). NO compactness API needed — only that deletion keeps values in the disc.
+- `transfiniteDiameterN_mem_Icc` — `0 ≤ dₙ ≤ 2`, so `d = infₙ dₙ` is a well-defined monotone
+  bounded limit.
+
+This resolves the "needs sup over configurations" caveat on next-step #1 (the pointwise heart
+was already done as `exists_deleteAt_discreteDiameter_ge`). The compactness worry was unfounded:
+the closed unit disc bound `dₙ(Z) ≤ 2` alone makes the sup exist and the monotonicity go through.
+
+### API used
+`csSup_le`, `le_csSup`, `BddAbove`, `Set.Nonempty`, `discreteDiameter_le_two`,
+`discreteDiameter_pos_iff` (non-injective ⟹ diameter 0), `deleteAt` norm-preservation.
+
+### Remaining open
+- Package `d(disc) = ⨅ₙ transfiniteDiameterN n` + `Tendsto` (Antitone+BddBelow).
+- Logarithmic capacity + cap=1 (axiomatize, Fekete–Szegő); ρ(f) ≳ g(d,cap) (Pommerenke/KLR axioms).
+- Parent ρ(f) ≫ 1/n remains OPEN.
+
+
 Insights accumulated during research on this problem.
 
 ---
