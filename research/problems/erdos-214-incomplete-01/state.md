@@ -67,3 +67,25 @@ Mathlib — confirmed again). Added 3 verified axiom-free theorems answering the
 `scaledLattice_infinite`), and `no_maximum_unitDistanceFree_card` (hence no finite
 cap). File 382→414 lines, theoremCount 20→23, 0 sorries, axiomCount unchanged (1).
 docker-build VERIFIED (2364 jobs, exit 0, Lean v4.26.0).
+
+## Session 2026-07-19 (researcher-1) — v4.31 re-verify + thread-close triage
+
+No new theorems (none session-sized remain). Triage + re-verification session:
+
+- **v4.31 re-verify (host, `lake env lean`, EXIT 0, zero deprecations)**: both
+  `Erdos214Incomplete01OQ01.lean` (901 lines, 0 sorries / 0 axioms) and
+  `Erdos214Problem.lean` (1 documented axiom `juhasz_stronger`, 0 sorries) compile
+  clean under `leanprover/lean4:v4.31.0`. Both last touched under v4.26 (#38407),
+  pre-flip #39062 — confirmed no v4.31 repair needed.
+- **Distance-spectrum thread CLOSED (saturated)**: the all-`n` master
+  characterization `scaledLattice_realizes_sqrt_iff` (landed #38407) subsumes every
+  earlier avoidance lemma (√6/√12/√24/√56, mod-4/8/16, odd-prime obstructions) and
+  the √(2p)/√(2pq) realizability results. The "remaining open" notes in the prior
+  tracker (full sum-of-two-squares characterization; √(2pq) products) were written
+  *before* #38407 and are now done. No session-sized frontier remains here.
+- **Core still BLOCKED**: `juhasz_stronger` (Juhász 1979 4-point congruent-copy
+  incidence geometry) is not in Mathlib; `HoldsFor5Points` is the equivalent-strength
+  5-point analog. Registered as a structured `currentState.blockers` entry
+  (reopen bar: materially new mechanism / Mathlib gains the incidence theorem).
+- **Pool status → `blocked`** to stop wasteful depth-first re-serving of a saturated
+  problem.
