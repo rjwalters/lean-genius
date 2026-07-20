@@ -53,7 +53,7 @@
     ],
     "assumptions": "12 axioms encoding measure-theoretic infrastructure not yet available in Mathlib: (1) stdGaussian — standard Gaussian measure on ℝ, (2) stdGaussian_isProbabilityMeasure — probability measure instance, (3) gaussian_fourier_identity — Gaussian Fourier transform $\\int e^{itx} dN = e^{-t^2/2}$, (4) charFun_deriv_interchange — differentiation under the integral for characteristic functions, (5) charFun_taylor_remainder — Taylor expansion remainder bound $O(|t|^3)$, (6) charFun_normalized_sum_limit — core CLT convergence $[\\varphi(t/\\sqrt{n})]^n \\to e^{-t^2/2}$, (7) measureWeakTopology — weak-* topology on measures, (8) levy_continuity_axiom — Lévy continuity theorem, (9) clt_general_case_axiom — CLT for non-standardized distributions, (10) renormalization_measure — n-fold convolution and scaling, (11) gaussian_fixed_point_axiom — Gaussian fixed point under renormalization, (12) gaussian_attractor_axiom — Gaussian as attractor of renormalization flow. integral_ofReal_eq_ofReal_integral proved. The substantive original proofs are charFun_zero, charFun_deriv_mean, limit_one_plus_x_over_n, and gaussian_charFun.",
     "proofRepoPath": "Proofs/CentralLimitTheorem.lean",
-    "lineCount": 620,
+    "lineCount": 611,
     "prerequisites": [
       "Probability theory (random variables, expectation, variance)",
       "Measure theory (convergence in distribution)",
@@ -64,7 +64,7 @@
       {
         "axiomCount": 12,
         "theoremCount": 16,
-        "lineCount": 620
+        "lineCount": 611
       }
     ],
     "definitionCount": 2
@@ -158,7 +158,7 @@
       "id": "extensions",
       "title": "Part VIII: Extensions — Berry-Esseen and Stable Distributions",
       "startLine": 562,
-      "endLine": 618,
+      "endLine": 611,
       "summary": "Berry-Esseen bound (placeholder): $\\sup_x |F_n(x) - \\Phi(x)| \\leq C\\rho/\\sqrt{n}$. Stable distributions (placeholder): $\\alpha$-stable laws for $0 < \\alpha \\leq 2$. Conclusion documenting the unification of analysis, dynamics, information theory, and topology.",
       "mathContext": "Berry-Esseen: $\\sup_x |F_n(x) - \\Phi(x)| \\leq \\frac{C \\rho}{\\sqrt{n}}$ where $C \\leq 0.4748$ (Shevtsova 2011) and $\\rho = \\mathbb{E}[|X|^3]$. Stable laws: $(X_1 + \\cdots + X_n)/n^{1/\\alpha} \\xrightarrow{d} S_\\alpha$ when $\\mathbb{P}(|X| > t) \\sim t^{-\\alpha}$, with Gaussian at $\\alpha = 2$ and Cauchy at $\\alpha = 1$."
     }
@@ -306,7 +306,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 620,
+    "lineCount": 611,
     "structureCount": 0,
     "axiomCount": 12,
     "theoremCount": 16,
