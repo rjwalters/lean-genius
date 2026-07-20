@@ -99,6 +99,40 @@ theorem triangleFree_of_no_edges {n : ℕ} (G : Graph n)
   rintro ⟨u, v, w, -, -, -, a1, -, -⟩
   exact hG u v a1
 
+/-- **Having a triangle is monotone in the induced vertex set.** Enlarging the
+    vertex set `S ⊆ T` can only add induced edges, so a triangle of `G.induce S`
+    is still a triangle of `G.induce T`. This strengthens `hasTriangle_induce`
+    (the case `T = Finset.univ`, up to the trivial universal membership) to the
+    monotone form the density analysis needs. -/
+theorem hasTriangle_induce_mono {n : ℕ} (G : Graph n) {S T : Finset (Fin n)}
+    (hST : S ⊆ T) (h : (G.induce S).hasTriangle) : (G.induce T).hasTriangle := by
+  obtain ⟨u, v, w, huv, hvw, huw, a1, a2, a3⟩ := h
+  exact ⟨u, v, w, huv, hvw, huw,
+    ⟨hST a1.1, hST a1.2.1, a1.2.2⟩,
+    ⟨hST a2.1, hST a2.2.1, a2.2.2⟩,
+    ⟨hST a3.1, hST a3.2.1, a3.2.2⟩⟩
+
+/-- **Triangle-freeness is hereditary in the vertex set.** If a larger induced
+    subgraph `G.induce T` is triangle-free then so is every smaller one
+    `G.induce S` with `S ⊆ T` — the contrapositive of `hasTriangle_induce_mono`.
+    (Taking `T = Finset.univ` recovers `triangleFree_induce`.) -/
+theorem triangleFree_induce_mono {n : ℕ} (G : Graph n) {S T : Finset (Fin n)}
+    (hST : S ⊆ T) (hT : (G.induce T).triangleFree) : (G.induce S).triangleFree :=
+  fun h => hT (hasTriangle_induce_mono G hST h)
+
+/-- **The edge count is monotone in the induced vertex set.** For `S ⊆ T`,
+    `(G.induce S).edgeCount ≤ (G.induce T).edgeCount`: every edge surviving the
+    smaller induction (both endpoints in `S`) also survives the larger one (both
+    endpoints in `T`). This is the vertex-set-monotone refinement of
+    `edgeCount_induce_le` (which is the case `T = Finset.univ`) underlying the
+    `denseSubgraphs` density hypothesis. -/
+theorem edgeCount_induce_mono {n : ℕ} (G : Graph n) {S T : Finset (Fin n)}
+    (hST : S ⊆ T) : (G.induce S).edgeCount ≤ (G.induce T).edgeCount := by
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, hp.2.1, hST hp.2.2.1, hST hp.2.2.2.1, hp.2.2.2.2⟩
+
 /-
 ## Significance
 
@@ -115,3 +149,7 @@ These are the first theorems on the scaffold's objects; the hard analytic core
 -/
 
 end Erdos128WIP01
+
+#print axioms Erdos128WIP01.hasTriangle_induce_mono
+#print axioms Erdos128WIP01.triangleFree_induce_mono
+#print axioms Erdos128WIP01.edgeCount_induce_mono

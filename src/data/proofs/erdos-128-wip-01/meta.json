@@ -10,9 +10,9 @@
       "Classical"
     ],
     "namespace": "Erdos128WIP01",
-    "lineCount": 117,
+    "lineCount": 155,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/Erdos128WIP01.lean",
     "sorries": 0
@@ -49,6 +49,30 @@
       "leanType": "{n : ℕ} (G : Graph n) (hG : ∀ u v, ¬ G.adj u v) : G.triangleFree",
       "startLine": 97,
       "endLine": 100
+    },
+    {
+      "name": "hasTriangle_induce_mono",
+      "type": "key",
+      "description": "**Having a triangle is monotone in the induced vertex set.** For S ⊆ T, a triangle of G.induce S is a triangle of G.induce T (enlarging the vertex set only adds induced edges). Strengthens hasTriangle_induce (the T = univ case) to the monotone form the density analysis manipulates.",
+      "leanType": "{n : ℕ} → (G : Graph n) → {S T : Finset (Fin n)} → S ⊆ T → (G.induce S).hasTriangle → (G.induce T).hasTriangle",
+      "startLine": 107,
+      "endLine": 117
+    },
+    {
+      "name": "triangleFree_induce_mono",
+      "type": "key",
+      "description": "**Triangle-freeness is hereditary in the vertex set.** For S ⊆ T, if G.induce T is triangle-free then so is G.induce S (contrapositive of hasTriangle_induce_mono). Taking T = univ recovers triangleFree_induce.",
+      "leanType": "{n : ℕ} → (G : Graph n) → {S T : Finset (Fin n)} → S ⊆ T → (G.induce T).triangleFree → (G.induce S).triangleFree",
+      "startLine": 119,
+      "endLine": 127
+    },
+    {
+      "name": "edgeCount_induce_mono",
+      "type": "key",
+      "description": "**The edge count is monotone in the induced vertex set.** For S ⊆ T, (G.induce S).edgeCount ≤ (G.induce T).edgeCount — every edge with both endpoints in S also has both in T. The vertex-set-monotone refinement of edgeCount_induce_le (the T = univ case) underlying the denseSubgraphs hypothesis.",
+      "leanType": "{n : ℕ} → (G : Graph n) → {S T : Finset (Fin n)} → S ⊆ T → (G.induce S).edgeCount ≤ (G.induce T).edgeCount",
+      "startLine": 129,
+      "endLine": 135
     }
   ],
   "description": "Supplies the first theorems for Erdős Problem #128 ($250, OPEN: if every induced subgraph on >= floor(n/2) vertices has more than n^2/50 edges, must G contain a triangle?). The scaffold Erdos128Problem.lean sets up the objects (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs) and records the known partial results (EFRS 1/16, Krivelevich, Razborov 27/1024, Norin-Yepremyan) as prose but proves no theorems, and currently fails to build (a missing DecidablePred instance for the edge-count filter and trailing docstrings). This entry, self-contained (re-declaring the objects with classical decidability), proves the two monotonicity properties of the induced-subgraph operation that any analysis uses: a triangle in an induced subgraph is a triangle of the ambient graph (hasTriangle_induce); hence triangle-freeness is hereditary (triangleFree_induce) -- exactly why the extremal C5-blow-up witnesses are triangle-free; the edge count is monotone, an induced subgraph has no more edges than the whole graph (edgeCount_induce_le); and a graph with no edges is triangle-free (triangleFree_of_no_edges). 4 theorems, 5 definitions + 1 structure, 0 sorries, 0 axioms.",
@@ -70,14 +94,17 @@
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos128WIP01` builds green (Lean v4.26.0, Mathlib pin, 7743 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms (propext / Classical.choice / Quot.sound) via Mathlib (Classical.choice from `open Classical` for the edge-count filter's decidability does not count as an assumption). Self-contained: the scaffold Erdos128Problem.lean currently fails to build (a missing DecidablePred instance for edgeCount and trailing docstring parse errors), so the objects Graph, edgeCount, induce, hasTriangle, triangleFree are re-declared. Honest scope: the foundational monotonicity structure, not the open optimal-constant question.",
-    "lineCount": 117,
-    "theoremCount": 4,
+    "lineCount": 155,
+    "theoremCount": 7,
     "definitionCount": 5,
     "originalContributions": [
       "hasTriangle_induce: a triangle in an induced subgraph is a triangle of the ambient graph (induced adjacency entails ambient adjacency)",
       "triangleFree_induce: triangle-freeness is HEREDITARY -- every induced subgraph of a triangle-free graph is triangle-free; the structural reason the extremal C5-blow-up witnesses are triangle-free",
       "edgeCount_induce_le: the edge count is MONOTONE under induced subgraphs -- (G.induce S).edgeCount <= G.edgeCount, since induction only deletes edges (Finset.card_le_card on the filtered edge set)",
-      "triangleFree_of_no_edges: a graph with no edges is triangle-free (the degenerate base case)"
+      "triangleFree_of_no_edges: a graph with no edges is triangle-free (the degenerate base case)",
+      "hasTriangle_induce_mono: S ⊆ T ⟹ (G.induce S).hasTriangle → (G.induce T).hasTriangle (vertex-set monotonicity of having a triangle)",
+      "triangleFree_induce_mono: S ⊆ T ⟹ (G.induce T).triangleFree → (G.induce S).triangleFree (triangle-freeness hereditary in the vertex set)",
+      "edgeCount_induce_mono: S ⊆ T ⟹ (G.induce S).edgeCount ≤ (G.induce T).edgeCount (vertex-set monotonicity of the edge count)"
     ]
   },
   "overview": {
@@ -130,8 +157,16 @@
       "title": "Monotone Edge Count, Base Case, and Significance",
       "summary": "edgeCount_induce_le: the induced edge set is a subset of the ambient edge set (same projection), so Finset.card_le_card gives (G.induce S).edgeCount ≤ G.edgeCount. triangleFree_of_no_edges: an edgeless graph is triangle-free. The closing significance docstring situates these two opposing monotonicities as the structural bedrock of any attack on the optimal 1/50 constant.",
       "startLine": 86,
-      "endLine": 117,
+      "endLine": 105,
       "mathContext": "(G.induce S).edgeCount ≤ G.edgeCount via Finset.card_le_card; (∀ u v, ¬G.adj u v) ⟹ G.triangleFree."
+    },
+    {
+      "id": "vertex-set-monotone",
+      "title": "Monotonicity in the Induced Vertex Set",
+      "startLine": 106,
+      "endLine": 135,
+      "summary": "hasTriangle_induce_mono / triangleFree_induce_mono / edgeCount_induce_mono: for S ⊆ T, having a triangle and the edge count are monotone, and triangle-freeness is antitone, in the induced vertex set — refining the T = univ (ambient) forms above.",
+      "mathContext": "S ⊆ T ⟹ induced edges of G.induce S ⊆ those of G.induce T; hence triangles and edge counts grow and triangle-freeness passes downward."
     }
   ],
   "conclusion": {
