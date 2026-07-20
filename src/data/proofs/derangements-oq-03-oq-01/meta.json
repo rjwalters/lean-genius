@@ -50,7 +50,7 @@
     "assumptions": [],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 243,
+    "lineCount": 236,
     "prerequisites": [
       "DerangementsOQ03 convergence rate results",
       "Alternating series estimation theorem",
@@ -64,7 +64,7 @@
   "overview": {
     "historicalContext": "The derangement ratio D(n)/n! = ∑_{k=0}^n (-1)^k/k! converges to 1/e, as established by Montmort (1708) and Euler (1751). The first-order convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! was formalized in DerangementsOQ03. This entry refines that to a two-term asymptotic expansion, capturing the leading correction term and proving the bound is tight.\n\nThe expansion D(n)/n! = 1/e + (-1)^n/(n+1)! + O(1/(n+2)!) is a classical result from the theory of alternating series. Each additional term of the Taylor series for e^{-1} provides one more order of accuracy, with the error bounded by the next omitted term. This is a direct consequence of the Leibniz alternating series estimation theorem applied to e^{-1} = ∑ (-1)^k/k!.",
     "problemStatement": "Prove the second-order derangement convergence rate:\n\n|D(n)/n! - e^{-1} - (-1)^n/(n+1)!| ≤ 1/(n+2)!\n\nThis refines the first-order bound |D(n)/n! - e^{-1}| ≤ 1/(n+1)! by identifying the leading correction term as (-1)^n/(n+1)! and showing the residual is bounded by 1/(n+2)!.",
-    "text": "A 243-line formalization proving the second-order asymptotic expansion for the derangement ratio D(n)/n!. Building on the DerangementsOQ03 convergence rate infrastructure, the main theorem `second_order_convergence_rate` establishes:\n\n|D(n)/n! - e^{-1} - (-1)^n/(n+1)!| ≤ 1/(n+2)!\n\nThe proof splits the tail of the alternating factorial series at one additional term, then applies the existing alternating series bound to the residual. A matching lower bound `second_order_lower_bound` shows the first-order error is at least 1/(n+1)! - 1/(n+2)!, proving tightness. The error ratio formula shows each step improves by a factor of 1/(n+2), and sign theorems characterize the correction term's alternating behavior.",
+    "text": "A 236-line formalization proving the second-order asymptotic expansion for the derangement ratio D(n)/n!. Building on the DerangementsOQ03 convergence rate infrastructure, the main theorem `second_order_convergence_rate` establishes:\n\n|D(n)/n! - e^{-1} - (-1)^n/(n+1)!| ≤ 1/(n+2)!\n\nThe proof splits the tail of the alternating factorial series at one additional term, then applies the existing alternating series bound to the residual. A matching lower bound `second_order_lower_bound` shows the first-order error is at least 1/(n+1)! - 1/(n+2)!, proving tightness. The error ratio formula shows each step improves by a factor of 1/(n+2), and sign theorems characterize the correction term's alternating behavior.",
     "proofStrategy": "The proof proceeds by refining the tail decomposition from DerangementsOQ03:\n\n1. **Tail splitting**: Show ∑' k, f(m+k) = f(m) + ∑' k, f(m+1+k) for summable series, via `tsum_eq_zero_add` applied to the shifted series.\n\n2. **Second-order bound**: Starting from D(n)/n! - e^{-1} = -(∑' k, altFactTerm(n+1+k)), split off the first tail term:\n   - ∑' k, altFactTerm(n+1+k) = altFactTerm(n+1) + ∑' k, altFactTerm(n+2+k)\n   - Since altFactTerm(n+1) = (-1)^{n+1}/(n+1)!, the term -altFactTerm(n+1) = (-1)^n/(n+1)! cancels with the correction\n   - The residual -(∑' k, altFactTerm(n+2+k)) has |·| ≤ 1/(n+2)! by the existing alternating_tail_bound\n\n3. **Lower bound**: By the reverse triangle inequality, |correction + residual| ≥ |correction| - |residual|, giving the lower bound 1/(n+1)! - 1/(n+2)!.\n\n4. **Error ratio**: Direct computation: (n+2)! = (n+1)! · (n+2), so 1/(n+2)! = 1/(n+1)! · 1/(n+2).",
     "keyInsights": [
       "**One more term of the alternating series**: The second-order bound follows by splitting off one additional term from the tail. The existing alternating_tail_bound at the shifted index provides the residual estimate. This is the general pattern: each additional term gives one more order of accuracy.",
@@ -125,7 +125,7 @@
       "id": "concrete-bounds",
       "title": "Concrete Bounds",
       "startLine": 197,
-      "endLine": 243,
+      "endLine": 236,
       "summary": "Second-order error bounds for n = 0 (≤ 1/2), n = 1 (≤ 1/6), and n = 2 (≤ 1/24).",
       "mathContext": "Explicit numerical bounds for small $n$"
     }
@@ -161,7 +161,7 @@
     ],
     "opens": [],
     "namespace": "DerangementsOQ03",
-    "lineCount": 243,
+    "lineCount": 236,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0,
