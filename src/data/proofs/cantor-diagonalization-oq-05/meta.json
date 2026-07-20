@@ -104,30 +104,30 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 33,
       "summary": "Module docstring framing the countable-power strengthening of OQ-07, the Mathlib import, namespace, and Cardinal open.",
       "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{R}) = \\#\\mathbb{R}$, equivalently $\\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}$."
     },
     {
       "id": "engine",
       "title": "The Countable-Power Law 𝔠 ^ ℵ₀ = 𝔠",
-      "startLine": 41,
-      "endLine": 48,
+      "startLine": 34,
+      "endLine": 39,
       "summary": "continuum_pow_aleph0: 𝔠 ^ ℵ₀ = 𝔠, re-exporting Cardinal.continuum_power_aleph0.",
       "mathContext": "$\\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}$, the continuum fixed by countable exponentiation."
     },
     {
       "id": "sequences",
       "title": "Real Sequences Equal the Line",
-      "startLine": 50,
-      "endLine": 67,
+      "startLine": 41,
+      "endLine": 58,
       "summary": "mk_seq_real_eq_continuum (#(ℕ → ℝ) = 𝔠) via mk_arrow + mk_real + mk_nat + continuum_pow_aleph0, mk_seq_real (#(ℕ → ℝ) = #ℝ, the main result), and nonempty_equiv_seq_real (an explicit bijection (ℕ → ℝ) ≃ ℝ).",
       "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{R}) = \\mathfrak{c} = \\#\\mathbb{R}$."
     },
     {
       "id": "general",
       "title": "Baire Space, the Sandwich, and OQ-07",
-      "startLine": 69,
+      "startLine": 60,
       "endLine": 81,
       "summary": "mk_seq_nat_eq_continuum (Baire space #(ℕ → ℕ) = 𝔠), mk_seq_eq_continuum (the unified principle #(ℕ → α) = 𝔠 for 2 ≤ #α ≤ 𝔠), and mk_seq_real_eq_mk_prod_real (#(ℕ → ℝ) = #(ℝ × ℝ), subsuming OQ-07).",
       "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{N}) = \\mathfrak{c}$ and $\\#(\\mathbb{N} \\to \\mathbb{R}) = \\#(\\mathbb{R} \\times \\mathbb{R})$."
