@@ -54,12 +54,12 @@
       "turanDensity: asymptotic density π_r(K_k^r)",
       "turan_theorem axiom: graph case solved",
       "K43_lower_bound axiom: 5/9 lower bound",
-      "erdos_712 theorem: density exists with 0 < π < 1 but value unknown",
-      "erdos_712_summary theorem: combining all results"
+      "erdos_712 theorem: proves the Turán density exists in (0,1) via positivity + the Kruskal-Katona upper bound; the exact value is left open (documented in prose, not asserted as a theorem)",
+      "erdos_712_summary theorem: combines the graph-case value and the 5/9 lower bound"
     ],
-    "axiomCount": 5,
-    "lineCount": 218,
-    "assumptions": "5 axioms: turan_theorem, K43_lower_bound, turan_density_positive, kruskal_katona_upper, erdos_712_open. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "lineCount": 215,
+    "assumptions": "4 axioms: turan_theorem (graph case r=2, Turán 1941), K43_lower_bound (turanDensity 3 4 >= 5/9), turan_density_positive (density > 0), kruskal_katona_upper (density <= 1 - 1/k). The former axiom erdos_712_open was REMOVED: it asserted '¬∃ rational value', i.e. the density is irrational — an unproven claim contradicting the conjectured rational values (5/9, 3/4). The open status of the problem is now documented in prose only, not encoded as a theorem/axiom. See Lean source for complete statements.",
     "theoremCount": 2,
     "definitionCount": 11
   },
@@ -132,10 +132,10 @@
     {
       "id": "general-problem",
       "title": "The General Problem Statement",
-      "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof",
+      "summary": "erdos_712_problem definition, erdos_712 theorem with full proof",
       "startLine": 167,
       "endLine": 202,
-      "mathContext": "Erdős Problem #712: determine $\\pi_r(K_k^r)$ as an explicit (preferably rational) value for all $k > r > 2$. The `erdos_712` theorem proves the density exists in $(0, 1)$ using positivity and Kruskal-Katona, but axiomatizes that no rational value is known. Prize: \\$500 for any single case, \\$1000 for the general solution."
+      "mathContext": "Erdős Problem #712: determine $\\pi_r(K_k^r)$ as an explicit (preferably rational) value for all $k > r > 2$. The `erdos_712` theorem proves the density exists in $(0, 1)$ using positivity and Kruskal-Katona; the exact value is left undetermined and the open status is described in prose only (it is NOT encoded as a `¬∃ rational` axiom, which would falsely assert irrationality). Prize: \\$500 for any single case, \\$1000 for the general solution."
     },
     {
       "id": "conjectures",
@@ -169,8 +169,8 @@
       "Finset"
     ],
     "namespace": "Erdos712",
-    "lineCount": 218,
-    "axiomCount": 5,
+    "lineCount": 215,
+    "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 11,
     "path": "Proofs/Erdos712Problem.lean",
