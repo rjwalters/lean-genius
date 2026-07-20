@@ -65,25 +65,41 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports and the module docstring framing the chain from Cauchy's theorem up to Sylow's first theorem — the prime-power tower, the maximal p-power (Sylow) subgroup and its maximality, and the concrete S₃ instances — noting these are the working-group-theorist corollaries Mathlib does not state directly; namespace, open Subgroup, and the variable {G} [Group G] [Finite G] setup.",
+      "mathContext": "For a finite group $G$: Cauchy ($p \\mid |G| \\Rightarrow$ order-$p$ subgroup) strengthens to the Sylow $p$-subgroup of order $p^{v_p(|G|)}$."
+    },
+    {
       "id": "tower",
       "title": "The Prime-Power Tower and Cauchy as Base Case",
       "startLine": 68,
-      "endLine": 86,
+      "endLine": 88,
       "summary": "exists_subgroup_card_pow_prime: pⁿ ∣ |G| yields a subgroup of order pⁿ (Sylow I, strongest form). cauchy_subgroup recovers the parent's order-p subgroup as the n=1 slice via pow_one.",
       "mathContext": "Sylow's first theorem in tower form; Cauchy's subgroup theorem is its n=1 specialization."
     },
     {
-      "id": "sylow",
-      "title": "The Maximal p-Power Subgroup and Its Maximality",
-      "startLine": 88,
-      "endLine": 150,
-      "summary": "exists_sylow_subgroup: a subgroup of order p^(factorization |G| p) from Mathlib's Sylow type via card_eq_multiplicity. sylow_card_dvd_card (order divides |G|) and sylow_index_not_dvd (index coprime to p, via [G:H] = ordCompl[p]|G|) certify it is a full Sylow subgroup. sylow_nontrivial_iff_dvd: nontrivial iff p ∣ |G|.",
-      "mathContext": "|H| = ordProj[p]|G|, [G:H] = ordCompl[p]|G| with ¬ p ∣ [G:H] — the defining maximality of a Sylow subgroup."
+      "id": "sylow-construction",
+      "title": "The Maximal p-Power (Sylow) Subgroup",
+      "startLine": 89,
+      "endLine": 128,
+      "summary": "exists_sylow_subgroup: a subgroup of order p^(factorization |G| p) from Mathlib's Sylow type via Sylow.card_eq_multiplicity. sylow_card_dvd_card (its order divides |G|) and sylow_index_not_dvd (its index is coprime to p, via [G:H] = ordCompl[p]|G| and Nat.not_dvd_ordCompl) certify it is a genuine Sylow subgroup — the maximal p-power.",
+      "mathContext": "|H| = ordProj[p]|G| = p^{v_p(|G|)}, with [G:H] = ordCompl[p]|G| and ¬ p ∣ [G:H] — the defining maximality of a Sylow subgroup."
+    },
+    {
+      "id": "sylow-maximality",
+      "title": "Nontriviality Boundary",
+      "startLine": 129,
+      "endLine": 152,
+      "summary": "sylow_nontrivial_iff_dvd: the Sylow p-subgroup is nontrivial (1 < p^(factorization |G| p)) iff p ∣ |G| — equivalently the p-adic multiplicity is positive iff p divides the order, pinning down exactly when Cauchy and the whole Sylow tower fire (Nat.dvd_of_factorization_pos / Prime.factorization_pos_of_dvd).",
+      "mathContext": "$1 < p^{v_p(|G|)} \\iff v_p(|G|) > 0 \\iff p \\mid |G|$."
     },
     {
       "id": "concrete",
       "title": "Concrete Sylow Subgroups in S₃",
-      "startLine": 152,
+      "startLine": 153,
       "endLine": 203,
       "summary": "card_perm_fin3 (|S₃| = 6); factorization_six_two/three pin the 2- and 3-adic multiplicities of 6 to 1 via pow_dvd_iff_le_factorization; sylow2_perm_fin3 and sylow3_perm_fin3 produce the order-2 and order-3 Sylow subgroups of S₃ from the tower at p=2,3.",
       "mathContext": "S₃ (order 6 = 2·3) has Sylow 2-subgroup of order 2 and Sylow 3-subgroup of order 3 (the alternating A₃)."
