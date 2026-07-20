@@ -70,7 +70,7 @@
     "dateAdded": "2026-06-24",
     "axiomCount": 0,
     "lineCount": 166,
-    "assumptions": "0 axioms. 0 sorries. The bounds cos A cos B cos C ≤ 1/8 and cos²A + cos²B + cos²C ≥ 3/4 require only A + B + C = π (no positivity); the triangle conditions A, B, C > 0 are used only for the equality characterizations. Builds on the sibling file Proofs/CarnotTheoremOQ01OQ02.lean and the parent Proofs/CarnotTheorem.lean (both axiom-free). Verified locally with lake env lean against Mathlib v4.26.0 (Docker build host unresponsive this session); gated by the deployer build before merge.",
+    "assumptions": "0 axioms. 0 sorries. The bounds cos A cos B cos C ≤ 1/8 and cos²A + cos²B + cos²C ≥ 3/4 require only A + B + C = π (no positivity); the triangle conditions A, B, C > 0 are used only for the equality characterizations. Builds on the sibling file Proofs/CarnotTheoremOQ01OQ02.lean and the parent Proofs/CarnotTheorem.lean (both axiom-free). Machine-checked under the pinned Lean/Mathlib toolchain v4.31.0: all five theorems (eight_cos_prod_identity, cos_prod_le_eighth, cos_sq_sum_ge_three_quarters, cos_prod_eq_eighth_iff, cos_sq_sum_eq_three_quarters_iff) elaborate with no errors, and #print axioms reports each depends only on the foundational axioms propext, Classical.choice, Quot.sound — no native_decide, no Lean.ofReduceBool, no sorryAx.",
     "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
