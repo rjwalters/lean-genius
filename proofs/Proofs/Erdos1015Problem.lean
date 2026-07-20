@@ -40,6 +40,8 @@
 
 import Mathlib
 
+set_option autoImplicit false
+
 open Finset
 
 /-
