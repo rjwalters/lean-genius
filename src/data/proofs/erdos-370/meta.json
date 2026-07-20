@@ -63,10 +63,10 @@
       "erdos_370_infinitely_many: infinitude statement (sorry'd)",
       "erdos_370: injective-function encoding of infinitude (sorry'd)"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 284,
-    "assumptions": "2 axioms (gpf_mul_le, dickman_density) and 2 sorries. gpf function and 7 properties now proved from Mathlib.",
-    "theoremCount": 16,
+    "assumptions": "1 axiom (dickman_density — Dickman-de Bruijn smooth-number density, deep analytic result) and 2 sorries (the two main Steinerberger existence theorems). gpf function and 9 properties now proved from Mathlib, including gpf_mul_le (greatest prime factor of a product ≤ max of the factors' gpfs), previously an axiom.",
+    "theoremCount": 18,
     "definitionCount": 7
   },
   "leanFile": {
@@ -93,8 +93,8 @@
       "ValidSteinerbergerM",
       "PomeranceExponent"
     ],
-    "axiomCount": 2,
-    "theoremCount": 16,
+    "axiomCount": 1,
+    "theoremCount": 18,
     "opens": [
       "Nat",
       "Finset",

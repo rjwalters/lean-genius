@@ -96,9 +96,34 @@ theorem gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p
   · omega
   · simp [List.getLast?_replicate]
 
-/-- gpf of a product is at most the max of the gpfs. -/
-axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
-    gpf (m * n) ≤ max (gpf m) (gpf n)
+/-- Any prime `p` dividing `k > 1` is at most `gpf k`.  `gpf k` is the last
+    element of `k.primeFactorsList`, which Mathlib keeps sorted in ascending
+    order, so every member — in particular `p` — is bounded by it. -/
+theorem le_gpf_of_prime_dvd {p k : ℕ} (hk : k > 1) (hp : p.Prime) (hpd : p ∣ k) :
+    p ≤ gpf k := by
+  have hk0 : k ≠ 0 := by omega
+  have hmem : p ∈ k.primeFactorsList :=
+    Nat.mem_primeFactorsList'.mpr ⟨hp, hpd, hk0⟩
+  have hne : k.primeFactorsList ≠ [] := List.ne_nil_of_mem hmem
+  have hrel := ((Nat.primeFactorsList_sorted k).pairwise).rel_getLast hmem
+  have hg : gpf k = k.primeFactorsList.getLast hne := by
+    unfold gpf
+    rw [List.getLast?_eq_getLast_of_ne_nil hne]
+    rfl
+  rw [hg]
+  exact hrel
+
+/-- gpf of a product is at most the max of the gpfs.  The greatest prime factor
+    of `m * n` is a prime dividing `m * n`, hence dividing `m` or `n`, so it is
+    bounded by the corresponding `gpf`.  (Formerly an axiom.) -/
+theorem gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
+    gpf (m * n) ≤ max (gpf m) (gpf n) := by
+  have hmn : m * n > 1 := by nlinarith
+  have hp : (gpf (m * n)).Prime := gpf_prime_of_gt_one _ hmn
+  have hdvd : gpf (m * n) ∣ m * n := gpf_dvd _ hmn
+  rcases (hp.dvd_mul).mp hdvd with h | h
+  · exact le_trans (le_gpf_of_prime_dvd hm hp h) (le_max_left _ _)
+  · exact le_trans (le_gpf_of_prime_dvd hn hp h) (le_max_right _ _)
 
 /- ## Smooth Numbers -/
 
