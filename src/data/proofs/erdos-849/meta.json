@@ -49,11 +49,12 @@
       "Definition of BinomMultiplicitySet (pairs (n,k) with C(n,k) = a)",
       "Definition of binomMultiplicity using Set.ncard",
       "Definition of binomNMultiplicity (counting distinct n values)",
-      "Singmaster's Conjecture as axiom (bounded multiplicities)",
+      "Definition of HasExactMultiplicity predicate",
+      "Axioms recording known multiplicities: two_multiplicity (2→1), multiplicity_120 (120→3), multiplicity_3003 (3003→4)",
       "Verified examples: C(10,3)=C(16,2)=C(120,1)=120",
       "Verified examples: C(14,6)=C(15,5)=C(78,2)=C(3003,1)=3003",
-      "Theorems for t=1,3,4 cases with explicit witnesses",
-      "Asymptotic bound axiom: multiplicity ≤ O(log a)"
+      "Theorems for t=1,3,4 cases, each derived from the corresponding multiplicity axiom",
+      "Singmaster's bound (N=8) and the O(log a) asymptotic are discussed in prose comments only — not formalized"
     ],
     "axiomCount": 3,
     "lineCount": 193,
@@ -65,7 +66,7 @@
     "historicalContext": "**Erdős and Gordon** posed this question 'many years ago' (before 1996), though it is now commonly known as **Singmaster's Conjecture** (1971).\n\n**The Question**: Does every multiplicity t ≥ 1 occur? That is, for each t, is there an integer a appearing exactly t times in Pascal's triangle (with 1 ≤ k ≤ n/2)?\n\n**Known Cases**:\n- t = 1: a = 2 (appears only as C(2,1))\n- t = 2: a = 6 (appears as C(4,2) and C(6,1))\n- t = 3: a = 120 (appears at C(10,3), C(16,2), C(120,1))\n- t = 4: a = 3003 (appears at C(14,6), C(15,5), C(78,2), C(3003,1))\n- t ≥ 5: **NO KNOWN EXAMPLES**\n\n**Modern Progress**: Matomäki, Radziwill, Shao, Tao, and Teräväinen (2022) proved that in the 'interior' of Pascal's triangle (k large), there are at most 2 solutions for sufficiently large a.",
     "problemStatement": "Define the **multiplicity** of a value a in Pascal's triangle as the number of distinct n such that C(n,k) = a for some 1 ≤ k ≤ n/2.\n\n**Erdős Problem #849 (OPEN)**: For every t ≥ 1, does there exist a value a with multiplicity exactly t?\n\n**Singmaster's Conjecture**: There exists an absolute constant N such that no value appears more than N times. The conjectured bound is N = 8.\n\n**Computational Evidence**: OEIS A003015 lists numbers appearing 5 or more times. Currently only 1 is known (and 1 doesn't count with our k ≥ 1 restriction).",
     "text": "Is it true that for every integer t ≥ 1, there is some integer a such that C(n,k) = a (with 1 ≤ k ≤ n/2) has exactly t solutions? Related to Singmaster's Conjecture.",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: BinomMultiplicitySet captures pairs (n,k) with C(n,k) = a and 1 ≤ k ≤ n/2\n\n2. **Multiplicity functions**: binomMultiplicity (counting pairs) and binomNMultiplicity (counting distinct n)\n\n3. **Basic properties**: Every a ≥ 2 appears at least once as C(a,1) = a\n\n4. **Verified examples**: Using native_decide to verify C(10,3)=120, C(14,6)=3003, etc.\n\n5. **Singmaster's Conjecture**: Axiomatized as multiplicity_bound_8\n\n6. **Main conjecture**: erdos_849_conjecture states existence of a for each t",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: BinomMultiplicitySet captures pairs (n,k) with C(n,k) = a and 1 ≤ k ≤ n/2\n\n2. **Multiplicity functions**: binomMultiplicity (counting pairs) and binomNMultiplicity (counting distinct n)\n\n3. **Basic properties**: Every a ≥ 2 appears at least once as C(a,1) = a\n\n4. **Verified examples**: Using native_decide to verify C(10,3)=120, C(14,6)=3003, etc.\n\n5. **Singmaster's Conjecture**: discussed in prose only; no bound axiom is declared\n\n6. **Known cases**: the t = 1, 3, 4 instances are derived from the multiplicity axioms (two_multiplicity, multiplicity_120, multiplicity_3003); the general conjecture is not stated as a single formal declaration",
     "keyInsights": [
       "**Edge vs Interior**: C(a,1) = a provides one appearance on the 'edge'. Triangular numbers give C(n,2) = n(n-1)/2. The hard part is counting 'deep' appearances.",
       "**Why t=5 is hard**: Values with high multiplicity require multiple coincidences: edge appearance, triangular appearance, AND one or more deep appearances.",
@@ -132,8 +133,8 @@
       "title": "Asymptotic Results",
       "startLine": 164,
       "endLine": 178,
-      "summary": "Upper bounds O(log a) on multiplicities.",
-      "mathContext": "Upper bounds $O(log a)$ on multiplicities."
+      "summary": "Prose note on the infinite C(n,2) family giving multiplicity ≥ 2; no bound is formalized.",
+      "mathContext": "Prose note: the infinite family C(n,2) yields infinitely many values with multiplicity $\\geq$ 2. No asymptotic bound is formalized."
     },
     {
       "id": "oeis",
