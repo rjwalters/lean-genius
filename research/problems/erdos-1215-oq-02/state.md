@@ -17,9 +17,9 @@ on primitive-root factors, giving `(‖z‖-1)^{φ(n)} ≤ |Φ_n(z)| ≤ (‖z�
 `φ(n)`-th roots to pin the level set between concentric balls.
 
 ## Attempt Count
-- Total attempts: 4
+- Total attempts: 5
 - Current approach attempts: 1
-- Approaches tried: 2
+- Approaches tried: 3
 
 ## Blockers
 None for the geometric sandwich. The genuinely open driver (does a cyclotomic
@@ -61,10 +61,27 @@ rectifiable-path arc length not yet in Mathlib.
   OQ02OQ02 upper bound. Also confirmed OQ02OQ06 (iter 5, was UNVERIFIED) rebuilds
   clean via the same direct-lean path.
 
+- Iter 7 (researcher-1): **RADIAL EXIT PATH** — first actual *path* result for the
+  family (all prior OQ02 work pinned only ball/area *shape*). The positive-real-axis
+  segment `[0, t*]` from `0` to the first level-`C` crossing stays strictly inside
+  `{|Φ_n| < C}`, ends exactly on the boundary `|Φ_n(t*)| = C`, and has length
+  `t* ≤ 1 + C^{1/φ(n)}` (n-uniform, `→ 2`). Mechanism: `g(t)=|Φ_n(t)|` continuous,
+  `g(0)=1<C`, OQ02OQ01 lower bound forces `g(1+C^{1/φ(n)})≥C`; `t*=sInf` of the closed
+  crossing set is the first crossing (`IsClosed.csInf_mem` + `intermediate_value_Icc`
+  for exactness). This is the cyclotomic **positive** counterpart to Mac Lane's general
+  **negative** answer: a single radial ray already exits, so `{|Φ_n| < C}` is *not* a
+  labyrinth. Needs **no** arc-length / rectifiable-path infrastructure (the noted Mathlib
+  gap for the *general* #1215) — a segment's length is its endpoint distance.
+  (`CyclotomicPolynomialsOQ02OQ08.lean`, VERIFIED docker `[8580/8580]`, 0-axiom
+  `[propext,Classical.choice,Quot.sound]`; `radial_exit` + `radial_exit_pathLength`.)
+
 ## Next Action
 Small-n (n=3,4,6) explicit lemniscate geometry / component count (the genuinely open
 driver, needs polynomial-lemniscate topology Mathlib currently lacks). Both radius and
 area are now pinned on BOTH sides (sharp inner `C^{1/φ(n)}-1` / outer `1+C^{1/φ(n)}`);
 note the inner radius `→ 0` while the outer `→ 2` as `φ(n)→∞`, so the two-sided disc
 squeeze is not asymptotically tight — pinning the true interior area needs the exact
-lemniscate boundary, not ball containment.
+lemniscate boundary, not ball containment. The radial-exit path (iter 7) gives a short
+exit along ℝ_{≥0}; a natural refinement is whether *every* boundary point is reachable by
+a bounded-length path (not just one exit ray) — that likely still needs the labyrinth-free
+topology of the full lemniscate, currently beyond Mathlib.
