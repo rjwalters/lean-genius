@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/389",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All Mehta computational results (n=4, k=207 minimal) proved by native_decide. Main conjecture stated as def (open problem). Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "0 explicit `axiom` declarations, 0 sorries; the main conjecture is stated as a `def` (open problem), not axiomatized. Trust caveat: the Mehta computational results — erdos_389_n2, erdos_389_n3, and the headline mehta_n4_minimal / mehta_n4_minimality (n=4, k=207 minimal) — discharge their bignum-divisibility goals with `native_decide`, so each depends on the `Lean.ofReduceBool` axiom (`#print axioms` shows a `native_decide.ax` beyond propext/Classical.choice/Quot.sound). These computations shift trust from the kernel to the compiler; the structural lemmas (e.g. consecutiveProd_binomial) are kernel-verified without native_decide.",
     "lineCount": 121,
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
