@@ -51,10 +51,9 @@
       "Defined ErdosKaplanskyFormula: e^{-C(k,2)}(n!)^k",
       "Formalized InEKRegime: k = o((log n)^{3/2-ε})",
       "Formalized InYamamotoRegime: k ≤ n^{1/3-o(1)}",
-      "Stated erdos_kaplansky_1946 and yamamoto_1951 axioms",
       "Defined permanent for matrix connection",
-      "Stated Godsil-McKay bounds using permanents",
-      "Stated exact values: L(1,n) = n!, L(2,n) = n! · D(n)",
+      "Stated godsil_mckay_bounds axiom (two-sided bounds on L(k,n))",
+      "Stated exact-value axiom L_1_n: L(1,n) = n!",
       "Formalized GeneralAsymptotic and ExtendedConjecture (OPEN)"
     ],
     "axiomCount": 3,
@@ -77,15 +76,9 @@
       "LatinRectangle"
     ],
     "axioms": [
-      "erdos_kaplansky_1946",
-      "yamamoto_1951",
-      "L_as_permanent",
       "godsil_mckay_bounds",
       "L_1_n",
-      "derangements",
-      "L_2_n",
-      "L_n_n_upper",
-      "oeis_A001009"
+      "derangements"
     ],
     "theorems": [
       "erdos_725_summary"
@@ -145,15 +138,15 @@
     {
       "id": "erdos-kaplansky",
       "title": "The Erdős-Kaplansky Formula",
-      "summary": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. States `erdos_kaplansky_1946` as an axiom: $L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime.",
+      "summary": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. The Erdős-Kaplansky asymptotic ($L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime) is documented in comments only; it is not stated as a declaration.",
       "startLine": 60,
       "endLine": 80,
-      "mathContext": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. States `erdos_kaplansky_1946` as an axiom: $L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime."
+      "mathContext": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. The Erdős-Kaplansky asymptotic ($L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime) is documented in comments only; it is not stated as a declaration."
     },
     {
       "id": "yamamoto",
       "title": "Yamamoto's Extension",
-      "summary": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`. States `yamamoto_1951` extending the Erdős-Kaplansky asymptotic to this broader polynomial regime.",
+      "summary": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`. Yamamoto's extension of the Erdős-Kaplansky asymptotic to this broader polynomial regime is documented in comments only; it is not stated as a declaration.",
       "startLine": 81,
       "endLine": 96,
       "mathContext": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`."
@@ -161,18 +154,18 @@
     {
       "id": "permanents",
       "title": "Permanent Methods",
-      "summary": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. States `L_as_permanent`: $L(k,n)$ equals a permanent of a $0\\text{-}1$ matrix. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$.",
+      "summary": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. The permanent representation of $L(k,n)$ is noted in comments only. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$.",
       "startLine": 97,
       "endLine": 116,
-      "mathContext": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. States `L_as_permanent`: $L(k,n)$ equals a permanent of a $0\\text{-}1$ matrix. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$."
+      "mathContext": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. The permanent representation of $L(k,n)$ is noted in comments only. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$."
     },
     {
       "id": "exact-values",
       "title": "Known Exact Values",
-      "summary": "States exact formulas: `L_1_n` ($L(1,n) = n!$), `L_2_n` ($L(2,n) = n! \\cdot D(n)$ via derangements), `L_n_n_upper` (Latin square upper bound $L(n,n) \\leq \\prod (i+1)!$), and the OEIS check `oeis_A001009` ($L(3,4) = 3456$).",
+      "summary": "States the exact-value axiom `L_1_n` ($L(1,n) = n!$) and declares the `derangements` function $D(n)$. The remaining exact values ($L(2,n) = n! \\cdot D(n)$, the Latin-square upper bound $L(n,n) \\leq \\prod (i+1)!$, and the OEIS check $L(3,4) = 3456$) are documented in comments only; they are not stated as declarations.",
       "startLine": 117,
       "endLine": 137,
-      "mathContext": "States exact formulas: `L_1_n` ($L(1,n) = n!$), `L_2_n` ($L(2,n) = n! \\cdot D(n)$ via derangements), `L_n_n_upper` (Latin square upper bound $L(n,n) \\leq \\prod (i+1)!$), and the OEIS check `oeis_A001009` ($L(3,4) = 3456$)."
+      "mathContext": "States the exact-value axiom `L_1_n` ($L(1,n) = n!$) and declares the `derangements` function $D(n)$. The remaining exact values ($L(2,n) = n! \\cdot D(n)$, the Latin-square upper bound $L(n,n) \\leq \\prod (i+1)!$, and the OEIS check $L(3,4) = 3456$) are documented in comments only; they are not stated as declarations."
     },
     {
       "id": "open-question",
