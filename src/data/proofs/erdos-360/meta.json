@@ -130,26 +130,26 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Computing f(2)=1 and f(4)=2 directly (both now machine-verified)",
+      "summary": "The exact small values of f, each proved from first principles via the sInf characterization: f_2 (f(2)=1), f_4 (f(4)=2), f_3 (f(3)=2), f_5 (f(5)=2), and f_6 (f(6)=2). Each proof exhibits an explicit valid partition of the required size and shows no smaller one exists (e.g. for f(5)=2, both {1,4} and {2,3} sum to 5 so a single class fails).",
       "startLine": 135,
-      "endLine": 284,
-      "mathContext": "Verified: f(2)=1 and f(4)=2 proved from first principles via the sInf characterization of f"
+      "endLine": 510,
+      "mathContext": "Verified: f(2)=1, f(3)=f(4)=f(5)=f(6)=2, each machine-checked by producing an explicit minimal valid partition."
     },
     {
       "id": "connections",
-      "title": "Connections to Related Problems",
-      "summary": "Links to sum-free sets, Schur numbers, complete sequences",
-      "startLine": 285,
-      "endLine": 296,
-      "mathContext": "Mathematical content: Links to sum-free sets, Schur numbers, complete sequences"
+      "title": "Connection to Subset Sums and Ramsey Theory",
+      "summary": "Docstring section relating the problem to sum-free sets, Schur numbers, complete sequences, and the subset-sum / additive-combinatorics context that motivates the n^{1/3}·(n/φ(n)) growth rate.",
+      "startLine": 511,
+      "endLine": 521,
+      "mathContext": "Mathematical content: links to sum-free sets, Schur numbers, complete sequences, and subset-sum problems."
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "summary": "erdos_360_solved theorem showing problem is resolved",
-      "startLine": 297,
-      "endLine": 306,
-      "mathContext": "Verified: erdos_360_solved theorem showing problem is resolved"
+      "summary": "erdos_360_solved: Problem #360 is resolved — ∃ c₁, c₂ > 0 with c₁·n^{1/3}(n/φ(n))/((log n)^{1/3}(log log n)^{2/3}) ≤ f(n) ≤ c₂·(same) for n ≥ 10, discharged by the conlon_fox_pham_2021 axiom.",
+      "startLine": 522,
+      "endLine": 531,
+      "mathContext": "Axiomatized: f(n) ≍ n^{1/3}·(n/φ(n)) / ((log n)^{1/3}·(log log n)^{2/3}), the Conlon–Fox–Pham (2021) determination."
     }
   ],
   "conclusion": {
