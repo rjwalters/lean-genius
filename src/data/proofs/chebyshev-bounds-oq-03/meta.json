@@ -92,6 +92,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports & Open Question",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports (Mathlib's Chebyshev development, the rpow-asymptotics file supplying log = o(x^r), and Tactic), then the module docstring quoting the parent chebyshev-bounds OQ-03 (formalize ψ and show ψ(x) ∼ x ⟺ π(x) ∼ x/log x) and scoping this file to the first link ψ ∼ θ: ψ − θ collects only prime powers p^k with k ≥ 2, so sparse that ψ(x) − θ(x) = o(x). Lists the four main results, enters namespace ChebyshevBoundsOQ03, and opens Filter, Asymptotics, Chebyshev and the Topology scope.",
+      "mathContext": "ψ(x) = Σ_{p^k ≤ x} log p vs. θ(x) = Σ_{p ≤ x} log p: the difference is the prime-power tail (k ≥ 2), which is o(x), so ψ(x)/x → 1 ⟺ θ(x)/x → 1."
+    },
+    {
       "id": "restated-facts",
       "title": "Section I: The Order and Size Facts",
       "startLine": 39,
@@ -100,19 +108,27 @@
       "mathContext": "ψ dominates θ and exceeds it by at most 2√x·log x — the entire content needed for the equivalence."
     },
     {
-      "id": "decay",
-      "title": "Section II: The Prime-Power Correction Is o(x)",
+      "id": "growth-fact",
+      "title": "Section II: The Growth Fact log x / √x → 0",
       "startLine": 49,
+      "endLine": 55,
+      "summary": "log_div_sqrt_tendsto_zero: log x / √x → 0 as x → ∞. Obtained from isLittleO_log_rpow_atTop at r = 1/2 (log = o(x^{1/2})) via tendsto_div_nhds_zero, then congr' to rewrite √x = x^{1/2} (Real.sqrt_eq_rpow). This is the single growth input driving the squeeze that follows.",
+      "mathContext": "log grows slower than any positive power of x; with power 1/2, log x / √x → 0."
+    },
+    {
+      "id": "correction-o-x",
+      "title": "Section III: The Prime-Power Correction Is o(x)",
+      "startLine": 57,
       "endLine": 77,
-      "summary": "log_div_sqrt_tendsto_zero (log x/√x → 0 from log = o(x^{1/2})) and psi_sub_theta_div_tendsto_zero ((ψ − θ)/x → 0 by squeezing against 2 log x/√x).",
+      "summary": "psi_sub_theta_div_tendsto_zero: (ψ(x) − θ(x))/x → 0. Bounds ‖(ψ − θ)/x‖ ≤ 2√x·log x/x eventually (via abs_psi_sub_theta_le' and gcongr), rewrites the bound as 2·(log x/√x) using √x/x = 1/√x (Real.sqrt_div_self'), and closes by squeeze_zero_norm' against Section II's growth fact.",
       "mathContext": "The difference between the two Chebyshev functions is asymptotically negligible compared to x."
     },
     {
       "id": "equivalence",
-      "title": "Section III: ψ ∼ x ⟺ θ ∼ x",
+      "title": "Section IV: ψ ∼ x ⟺ θ ∼ x",
       "startLine": 79,
       "endLine": 98,
-      "summary": "psi_asymp_iff_theta_asymp: ψ(x)/x → 1 ⟺ θ(x)/x → 1, since ψ/x = θ/x + (ψ−θ)/x and the correction tends to 0.",
+      "summary": "psi_asymp_iff_theta_asymp: ψ(x)/x → 1 ⟺ θ(x)/x → 1, since ψ/x = θ/x + (ψ−θ)/x and the correction tends to 0 (Tendsto.add / Tendsto.sub with the o(x) term, closed by congr and ring_nf on div_sub_div_same / add_div).",
       "mathContext": "The prime number theorem in the form ψ(x) ∼ x is equivalent to θ(x) ∼ x."
     }
   ],
