@@ -128,7 +128,7 @@
     },
     "type": "concept",
     "title": "Verified for n ≤ 11",
-    "content": "**axiom verified_up_to_11**:\nFor all projective planes with order ≤ 11, the order is a prime power.\n\n**Breakdown**:\n- n = 1,2,3,4,5,7,8,9,11: prime powers, planes exist via PG(2,q)\n- n = 6: ruled out by Bruck-Ryser (verified in this file)\n- n = 10: ruled out by Lam's computer search (1989)\n\nThe conjecture holds through order 11.",
+    "content": "**axiom verified_up_to_11**:\nFor all projective planes with order ≤ 11, the order is a prime power.\n\n**Breakdown**:\n- n = 2,3,4,5,7,8,9,11: prime powers, planes exist via PG(2,q)\n- n = 6: ruled out by Bruck-Ryser (verified in this file)\n- n = 10: ruled out by Lam's computer search (1989)\n\nThe conjecture holds through order 11.",
     "mathContext": "Each case beyond prime powers required different techniques. Orders 6, 14, 21, 22 fall to Bruck-Ryser's algebraic obstruction. Order 10 required exhaustive computation because $10 = 1^2 + 3^2$ passes the Bruck-Ryser test. The progression from theoretical to computational methods reflects a general pattern in combinatorics.",
     "significance": "key",
     "relatedConcepts": [
@@ -273,7 +273,7 @@
     },
     "type": "concept",
     "title": "Small Orders (Verified)",
-    "content": "**Verified by `decide`**:\n- `order_1_is_prime_power` ✓ (trivial plane: 3 points)\n- `order_2_is_prime_power` ✓ (Fano plane: 7 points)\n- `order_3_is_prime_power` ✓ (PG(2,3): 13 points)\n- `order_4_is_prime_power` ✓ ($2^2 = 4$: 21 points)\n- `order_5_is_prime_power` ✓ (PG(2,5): 31 points)\n\n**Non-prime-powers (verified)**:\n- `order_6_not_prime_power` ✓\n- `order_10_not_prime_power` ✓\n- `order_12_not_prime_power` ✓\n\nOrder 4 requires special handling: `decide` alone times out, so the proof rewrites $4 = 2^2$ and applies `IsPrimePow.pow`.",
+    "content": "**Verified by `decide`**:\n- `order_2_is_prime_power` ✓ (Fano plane: 7 points)\n- `order_3_is_prime_power` ✓ (PG(2,3): 13 points)\n- `order_4_is_prime_power` ✓ ($2^2 = 4$: 21 points)\n- `order_5_is_prime_power` ✓ (PG(2,5): 31 points)\n\n**Non-prime-powers (verified)**:\n- `order_1_not_prime_power` ✓ (order 1 is the degenerate case, not a prime power)\n- `order_6_not_prime_power` ✓\n- `order_10_not_prime_power` ✓\n- `order_12_not_prime_power` ✓\n\nOrder 4 requires special handling: `decide` alone times out, so the proof rewrites $4 = 2^2$ and applies `IsPrimePow.pow`.",
     "mathContext": "The `decide` tactic reduces `IsPrimePow n` to a finite computation. For $n = 4 = 2^2$, the composite prime power case requires explicitly exhibiting the factorization, since `decide` on `IsPrimePow 4` involves checking divisibility patterns that exceed the default timeout. This illustrates a general pattern: composite prime powers are harder for automated methods than primes.",
     "significance": "key",
     "relatedConcepts": [
