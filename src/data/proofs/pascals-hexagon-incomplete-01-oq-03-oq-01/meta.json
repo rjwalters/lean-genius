@@ -87,17 +87,33 @@
       "id": "main",
       "title": "Invertibility and Equivalence",
       "startLine": 127,
-      "endLine": 159,
+      "endLine": 175,
       "summary": "det_rescale and det_rescale_ne_zero (the rescaling is invertible for a,b > 0, c < 0), the headline diagConic_indefinite_projEquiv_stdConic, and the base case stdConic_projEquiv_stdConic.",
       "mathContext": "det (rescale a b c) = √a·√b·√(-c) ≠ 0 ⟺ signature (2,1)."
+    },
+    {
+      "id": "congruence-engine",
+      "title": "Off the Diagonal: the Congruence Engine",
+      "startLine": 177,
+      "endLine": 249,
+      "summary": "Lifts the already-diagonal result to the whole congruence orbit. Defines the projEquiv predicate; proves the congruence pull-back law conicQuadraticForm_projTransform (Q_C(M·p) = Q_{Mᵀ C M}(p)), that a matrix congruence induces a projective equivalence (projEquiv_of_congr), and transitivity of projEquiv (projEquiv_trans, composing intertwiners by N·M). Repackages the rescaling as diagConic_indefinite_projEquiv_stdConic' and combines the three into congrDiag_indefinite_projEquiv_stdConic: every Mᵀ·diag(a,b,c)·M with M invertible and signature (2,1) is stdConic-equivalent.",
+      "mathContext": "Change of coordinates acts on conics by congruence: (M·p)ᵀ C (M·p) = pᵀ(Mᵀ C M)p, so Mᵀ C₂ M = C₁ with det M ≠ 0 gives projEquiv C₁ C₂, and projEquiv is transitive."
+    },
+    {
+      "id": "spectral-closure",
+      "title": "Spectral Closure of the Hard Sylvester Half",
+      "startLine": 251,
+      "endLine": 314,
+      "summary": "Discharges the remaining spectral statement via Mathlib's spectral theorem. diagConic_eq_diagonal bridges the bespoke diagConic to Matrix.diagonal of the eigenvalue vector; symm_congr_diagEigenvalues congruence-diagonalises any Hermitian conic C as Mᵀ·diag(λ₀,λ₁,λ₂)·M = C with M = Uᵀ invertible (the eigenvector matrix U is unitary, so det Uᵀ = det U ≠ 0). Chaining through the congruence engine, symm_eigen_indefinite_projEquiv_stdConic shows a symmetric conic with eigenvalue signs (+,+,−) in index order is projectively equivalent to stdConic — the hard Sylvester half, closed modulo the elementary permutation reordering an arbitrary (2,1) signature.",
+      "mathContext": "Spectral theorem C = U·diag(λ)·Uᵀ (U unitary) recast with M := Uᵀ; eigenvalue signs (+,+,−) supply the signature (2,1) hypothesis consumed by the congruence engine."
     }
   ],
   "conclusion": {
     "summary": "This entry proves the sufficiency converse to the necessity results: every indefinite diagonal conic diag(a,b,c) with a,b > 0 and c < 0 is projectively equivalent to stdConic over ℝ, witnessed constructively by the invertible rescaling diag(√a, √b, √(-c)). The pullback identity qform_stdConic_rescale is the algebraic heart; det_rescale_ne_zero certifies invertibility exactly in the indefinite signature.",
     "implications": "Combined with posDef_not_projEquiv_stdConic (definite ⟹ not equivalent), the result locates the projective-equivalence boundary exactly at the signature: among diagonal real conics, stdConic-equivalence holds iff the signature is the indefinite (2,1). This is the constructive, already-diagonal half of the open Sylvester reduction sylvester_stdConic_of_isotropic.",
     "openQuestions": [
-      "Complete the hard half of the Sylvester reduction: diagonalise an arbitrary symmetric conic carrying a real point, reducing it to the diagonal signature-(2,1) case handled here (the remaining sorry sylvester_stdConic_of_isotropic in PascalsHexagon.lean).",
-      "Extend the rescaling construction off the diagonal: show any indefinite non-degenerate symmetric conic of signature (2,1) is stdConic-equivalent, by composing a diagonalising change of basis with the rescaling of this file."
+      "Discharge the final residue of the hard Sylvester half: symm_eigen_indefinite_projEquiv_stdConic closes the ordered-signature case (+,+,−) via the spectral theorem, so only the elementary permutation carrying an arbitrary (2,1) signature into index order (+,+,−) remains — a permutation-matrix congruence, orthogonal and hence a projEquiv. Formalise that last reordering to obtain the fully general symmetric-conic statement.",
+      "Port the closure back to PascalsHexagon.lean's sorry sylvester_stdConic_of_isotropic, which still assumes only an isotropic real point rather than an explicit signature-(2,1) spectrum: bridge from 'carries a real point' to the eigenvalue-sign hypothesis consumed here."
     ]
   },
   "crossReferences": [
