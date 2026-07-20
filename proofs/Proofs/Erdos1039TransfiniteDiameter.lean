@@ -340,4 +340,57 @@ theorem sum_logSpread_deleteAt (z : Fin (n + 1) → ℂ) (hz : Function.Injectiv
   refine Finset.sum_congr rfl (fun k _ => ?_)
   rw [log_spreadProduct _ (deleteAt_injective hz k)]
 
+/- ## Fekete monotonicity: the pointwise inequality
+
+The deletion identity, in its additive form `sum_logSpread_deleteAt`, says the
+`n+1` deletion energies average to `(n-1)/(n+1)` of the full energy.  Since some
+term of a finite sum always meets the mean, at least one deletion has energy
+`≥ (n-1)/(n+1) · logSpread z`, and the exponent bookkeeping
+`2/(n(n-1)) · (n-1)/(n+1) = 2/((n+1)n)` turns that into the diameter comparison
+`d_{n+1}(Z) ≤ dₙ(delete k Z)`.  This is the finite heart of Fekete's monotonicity
+theorem `d_{n+1} ≤ dₙ`; the classical statement follows by taking suprema over
+configurations in a compact set (which needs compactness API beyond this file). -/
+
+/-- **Fekete monotonicity (pointwise form).** For every injective `(n+1)`-tuple of
+roots with `n ≥ 2`, at least one `n`-point deletion has `n`-point diameter no
+smaller than the `(n+1)`-point diameter of the whole tuple:
+`∃ k, d_{n+1}(Z) ≤ dₙ(delete k Z)`.  Axiom-free consequence of the deletion
+identity via "some term of a sum meets the mean". -/
+theorem exists_deleteAt_discreteDiameter_ge (hn : 2 ≤ n)
+    (z : Fin (n + 1) → ℂ) (hz : Function.Injective z) :
+    ∃ k : Fin (n + 1), discreteDiameter z ≤ discreteDiameter (deleteAt z k) := by
+  have hr2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hr0 : (0 : ℝ) < (n : ℝ) := by linarith
+  have hrm1 : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+  have hrp1 : (0 : ℝ) < (n : ℝ) + 1 := by linarith
+  -- additive deletion identity, cast cleaned up
+  have hcast : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ n), Nat.cast_one]
+  have hsum : ∑ k, logSpread (deleteAt z k) = ((n : ℝ) - 1) * logSpread z := by
+    rw [sum_logSpread_deleteAt z hz, hcast]
+  -- the constant "mean" term sums to the same total
+  have hconst : (∑ _k : Fin (n + 1), ((n : ℝ) - 1) * logSpread z / ((n : ℝ) + 1))
+      = ((n : ℝ) - 1) * logSpread z := by
+    rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    have hcp : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+    rw [hcp]
+    field_simp
+  -- some deletion beats the mean
+  have hle : (∑ _k : Fin (n + 1), ((n : ℝ) - 1) * logSpread z / ((n : ℝ) + 1))
+      ≤ ∑ k, logSpread (deleteAt z k) := by rw [hconst, hsum]
+  obtain ⟨k, -, hk⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty hle
+  refine ⟨k, ?_⟩
+  have hzk : Function.Injective (deleteAt z k) := deleteAt_injective hz k
+  rw [discreteDiameter_eq_exp z hz, discreteDiameter_eq_exp (deleteAt z k) hzk,
+    Real.exp_le_exp]
+  have hcp : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+  rw [hcp, add_sub_cancel_right]
+  have hc : (0 : ℝ) < 2 / ((n : ℝ) * ((n : ℝ) - 1)) := div_pos (by norm_num) (mul_pos hr0 hrm1)
+  have hstep := mul_le_mul_of_nonneg_left hk (le_of_lt hc)
+  calc 2 / (((n : ℝ) + 1) * (n : ℝ)) * logSpread z
+      = 2 / ((n : ℝ) * ((n : ℝ) - 1))
+          * (((n : ℝ) - 1) * logSpread z / ((n : ℝ) + 1)) := by
+        field_simp
+    _ ≤ 2 / ((n : ℝ) * ((n : ℝ) - 1)) * logSpread (deleteAt z k) := hstep
+
 end Erdos1039TransfiniteDiameter

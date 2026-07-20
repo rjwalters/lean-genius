@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T15:40:19-07:00
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
 Finite discrete transfinite diameter (n-point spread) and the **combinatorial core
