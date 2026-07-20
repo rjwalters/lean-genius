@@ -64,7 +64,7 @@
       "shamirThreshold definition: ℓ(n) = n log n",
       "johansson_kahn_vu axiom: threshold ≍ n log n",
       "kahn_precise_threshold axiom: threshold ~ n log n",
-      "erdos_747 theorem: main result"
+      "erdos_747 axiom: main result (axiomatized)"
     ],
     "axiomCount": 5,
     "lineCount": 313,
@@ -128,18 +128,18 @@
     {
       "id": "answer",
       "title": "The Answer",
-      "summary": "shamirThreshold, johansson_kahn_vu, kahn_precise_threshold axioms",
+      "summary": "shamirThreshold def; johansson_kahn_vu, kahn_precise_threshold axioms",
       "startLine": 145,
       "endLine": 186,
-      "mathContext": "Axiomatized: shamirThreshold, johansson_kahn_vu, kahn_precise_threshold axioms"
+      "mathContext": "shamirThreshold def; axiomatized: johansson_kahn_vu, kahn_precise_threshold"
     },
     {
       "id": "below-threshold",
       "title": "Below the Threshold",
-      "summary": "below_threshold_fails, isolated_vertices_obstruction axioms",
+      "summary": "below_threshold_fails axiom (isolated-vertex obstruction noted in prose)",
       "startLine": 187,
       "endLine": 207,
-      "mathContext": "Axiomatized: below_threshold_fails, isolated_vertices_obstruction axioms"
+      "mathContext": "Axiomatized: below_threshold_fails axiom"
     },
     {
       "id": "above-threshold",
@@ -152,18 +152,18 @@
     {
       "id": "comparison",
       "title": "Comparison with Graphs",
-      "summary": "graph_matching_threshold, uniformity_independence",
+      "summary": "Prose notes: graph case (r=2) threshold and uniformity independence (no declarations)",
       "startLine": 229,
       "endLine": 250,
-      "mathContext": "Mathematical content: graph_matching_threshold, uniformity_independence"
+      "mathContext": "Expository prose: comparison with the r=2 graph case and uniformity independence"
     },
     {
       "id": "history",
       "title": "Historical Notes",
-      "summary": "erdos_comment, shamir_1979, factor_problems",
+      "summary": "Prose notes: Erdős's comment, Shamir's 1979 question, factor problems (no declarations)",
       "startLine": 251,
       "endLine": 275,
-      "mathContext": "Mathematical content: erdos_comment, shamir_1979, factor_problems"
+      "mathContext": "Expository prose: historical notes (Erdős's comment, Shamir 1979, factor problems)"
     },
     {
       "id": "summary",
