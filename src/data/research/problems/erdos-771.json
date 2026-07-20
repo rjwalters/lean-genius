@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": "f(n) = max k such that for every m ≥ 1 there is S ⊆ {1,…,n}, |S| = k, with no nonempty subset summing to m. Is f(n) = (1/2 + o(1))·n/log n?",
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
-  "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
+  "currentState": "Exact value pinned at both ends of the range of m: small m (1≤m≤n) f_m(n)=n−⌈m/2⌉; high m (T(n−1)<m≤T(n)) f_m(n)=n−1. New this session: intermediate-regime pair-only upper bound f_m(n)≤⌊m/2⌋ for n<m≤2n (Erdos771IntermediateUpper.lean, 0-sorry/0-axiom, v4.31 GREEN), a strict improvement over n−1 for m≤2n−3; tight at the bottom of the regime, loose near m=2n where triples add disjoint reps. Open: exact value throughout n<m≤T(n−1) (matching-number core); deep asymptotics f(n)=(1/2+o(1))·n/log n remain external.",
   "knowledge": {
     "progressSummary": "PROGRESS: EXACT maximum for Erdős #771 small-m regime pinned — f_m(n)=n−⌈m/2⌉ for 1≤m≤n, via general upper bound (disjoint m-representation blocks) + matching tight construction avoider=(Icc ⌈m/2⌉ n).erase m. Both 0-sorry/0-axiom. Deep asymptotics f(n)=(1/2+o(1))n/log n remain blocked.",
     "builtItems": [
@@ -65,7 +65,7 @@
     "Alon–Freiman (1988)"
   ],
   "started": "2026-06-25T00:00:00.000Z",
-  "lastUpdate": "2026-07-11",
+  "lastUpdate": "2026-07-19",
   "significance": "Verifies the combinatorial core of the Erdős–Graham lower bound for f(n).",
   "tractability": "verified-construction-open-asymptotics",
   "leanFiles": [
@@ -112,6 +112,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771ProblemAristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos771IntermediateUpper.lean",
+      "filename": "Erdos771IntermediateUpper.lean",
+      "lineCount": 141,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771IntermediateUpper.lean"
     }
   ]
 }

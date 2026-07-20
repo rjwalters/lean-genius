@@ -257,3 +257,47 @@ upper bound (#38524). Together they pin the EXACT maximum `f_m(n) = n − ⌈m/2
 ### Status
 Small-m regime (1≤m≤n) now EXACTLY resolved: max avoiding-set size = n − ⌈m/2⌉ (upper #38524 +
 this lower). Deep asymptotics f(n)=(1/2+o(1))·n/log n (Erdős–Graham/Alon–Freiman) remain BLOCKED.
+
+## Session 2026-07-19 (researcher-1) — INTERMEDIATE-regime upper bound f_m(n) ≤ ⌊m/2⌋ (n < m ≤ 2n)
+
+**Mode**: extend the disjoint-family upper-bound mechanism into the OPEN intermediate regime.
+**Outcome**: progress (0-sorry/0-axiom, Docker-GREEN under v4.31.0, foundational axioms only —
+no native_decide). New file `proofs/Proofs/Erdos771IntermediateUpper.lean` (3 thms + 1 helper).
+
+### Frontier before this session
+The cluster pins the exact value at BOTH ends of the range of m:
+- small m (1 ≤ m ≤ n): f_m(n) = n − ⌈m/2⌉ (`Erdos771GeneralUpper/LowerBound`);
+- high m (T(n−1) < m ≤ T(n), T(k)=k(k+1)/2): f_m(n) = n − 1 (`Erdos771HighRegime`, #39123).
+Open: the **intermediate regime n < m ≤ T(n−1)** — the genuine matching-number core, where the
+value is governed by the max number of pairwise-disjoint representations of m in {1,…,n}.
+
+### What I did — pair-only bound for the bottom slice n < m ≤ 2n
+Reused the `blk`/`blk_sum`/`blk_disjoint`/`sum_mem_subsetSums` machinery from
+`Erdos771GeneralUpperBound` verbatim; only the singleton block `{m}` (no longer ⊆ {1,…,n} once
+m > n) is dropped and the pair index restricted so both endpoints stay in range:
+`{i, m−i}` for `m−n ≤ i < ⌈m/2⌉`. These `⌈m/2⌉−(m−n)` pairs are pairwise-disjoint m-reps ⊆ {1,…,n}.
+- `blk_subset_high`: pairs stay in {1,…,n} (lower index bound m−n≤i ⟹ m−i≤n; i<⌈m/2⌉ ∧ m≤2n ⟹ i≤n).
+- `avoid_card_le_intermediate`: f_m(n) ≤ n − (⌈m/2⌉ − (m−n)) for 1≤n, n<m≤2n.
+- `avoid_card_le_intermediate_closed`: the RHS is exactly `⌊m/2⌋` (pure omega, ℕ-division).
+- `intermediate_top_matches_high`: at m=2n−1 the bound is n−1, matching the high regime — the
+  pair-only family stops improving on n−1 there and above.
+
+Combined with the always-valid f_m(n) ≤ n−1 (every m ≤ T(n) is a subset sum of {1,…,n}), this is
+`f_m(n) ≤ min(n−1, ⌊m/2⌋)` — a STRICT improvement over n−1 for m ≤ 2n−3. For n ≥ 5 the whole slice
+n<m≤2n−1 sits strictly below T(n−1)=n(n−1)/2, so this genuinely advances the open regime.
+
+### Tightness (machine-checked ground truth via brute force, NOT claimed as a theorem)
+EXACT at the bottom: f_5(4)=2=⌊5/2⌋, f_6(5)=3, f_7(6)=3, f_8(6)=4, f_7(8)=4, f_9(7)=4.
+LOOSE near m=2n (triples add disjoint reps the pair-family misses): f_9(5)=3 < 4=⌊9/2⌋,
+f_10(6)=4 < 5, f_14(7)=4 < 7. Pinning the exact value throughout n<m≤T(n−1) remains open.
+
+### Gotchas
+- Index over `Finset.Ico (m−n) ((m+1)/2)`; card via `Nat.card_Ico` = `(m+1)/2 − (m−n)`.
+- omega natively reasons about both `(m+1)/2` and `m/2` (ℕ division by literal 2) — the closed-form
+  `n − ((m+1)/2 − (m−n)) = m/2` under n<m≤2n is a single omega.
+- `blk_subset_high` case-splits `mem_blk`; the i=0 (singleton) branch is vacuous under m−n≤i (omega).
+
+### Still open (unchanged)
+- Exact value in the UPPER intermediate regime 2n < m ≤ T(n−1) and the loose sub-part of n<m≤2n
+  (needs the triple/general-matching count, not just pairs).
+- Deep asymptotics f(n)=(1/2+o(1))·n/log n (Erdős–Graham/Alon–Freiman) remain external.
