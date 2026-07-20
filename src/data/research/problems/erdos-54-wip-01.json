@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: bare stub -> verified axiom-free foundational core (4 theorems); corrected overclaiming meta (theoremCount 0->4, honest assumptions/proofStrategy). Deep bounds remain documented-only.",
+    "builtItems": [
+      "zero_mem_monoSubsetSums / mem_monoSubsetSums_of_mem / countingFn_le / countingFn_mono in proofs/Proofs/Erdos54Problem.lean (4 axiom-free thms; host-verified v4.31)"
+    ],
+    "insights": [
+      "Erdos54Problem.lean was a bare stub: defs (Colouring2, monoSubsetSums, IsRamsey2Complete, countingFn) + ErdosProblem54 as an unproved Prop, ZERO theorems; meta falsely claimed the bounds were axiomatised (axiomCount=0) and All results proved (none existed).",
+      "Axiom-free structural core: 0 is always a monochromatic subset sum (empty subset); a colour-c element is a subset sum via its singleton; countingFn A N <= N and is monotone in N.",
+      "The two deep bounds (Burr-Erdos lower (log N)^2, Conlon-Fox-Pham construction) need additive-combinatorics / density machinery not formalized; left as documented prose."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-54-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

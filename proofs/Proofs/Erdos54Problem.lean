@@ -78,3 +78,42 @@ def ErdosProblem54 : Prop :=
 
 /- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
 `|A ∩ [1,N]| < (2 log₂ N)³`. This was improved by Conlon–Fox–Pham. -/
+
+/- ## Foundational lemmas (axiom-free)
+
+The two deep quantitative bounds above (Burr–Erdős lower bound, Conlon–Fox–Pham
+optimal construction) are documented in the header prose only — they are not
+formalised. What follows are the machine-checkable structural facts about the
+definitions, proved with no axioms and no `sorry`. -/
+
+/-- `0` is always a monochromatic subset sum: the empty subset is (vacuously)
+    monochromatic and sums to `0`. -/
+theorem zero_mem_monoSubsetSums (A : Set ℕ) (c : Colouring2 A) (colour : Bool) :
+    0 ∈ monoSubsetSums A c colour :=
+  ⟨∅, by simp, by simp⟩
+
+/-- A single element of `A` carrying the given colour is itself a monochromatic
+    subset sum (via the singleton subset `{n}`). -/
+theorem mem_monoSubsetSums_of_mem (A : Set ℕ) (c : Colouring2 A) (colour : Bool)
+    {n : ℕ} (hn : n ∈ A) (hc : c ⟨n, hn⟩ = colour) :
+    n ∈ monoSubsetSums A c colour := by
+  refine ⟨{n}, ?_, by simp⟩
+  intro m hm
+  rw [Finset.mem_singleton] at hm
+  subst hm
+  exact ⟨hn, hc⟩
+
+/-- The counting function never exceeds the length of the window: at most `N`
+    elements of `A` lie in `{1, …, N}`. -/
+theorem countingFn_le (A : Set ℕ) (N : ℕ) : countingFn A N ≤ N := by
+  unfold countingFn
+  calc ((Finset.Icc 1 N).filter (· ∈ A)).card
+      ≤ (Finset.Icc 1 N).card := Finset.card_filter_le _ _
+    _ = N := by rw [Nat.card_Icc]; omega
+
+/-- The counting function is monotone in the window size. -/
+theorem countingFn_mono (A : Set ℕ) {M N : ℕ} (h : M ≤ N) :
+    countingFn A M ≤ countingFn A N := by
+  unfold countingFn
+  exact Finset.card_le_card
+    (Finset.filter_subset_filter _ (Finset.Icc_subset_Icc_right h))
