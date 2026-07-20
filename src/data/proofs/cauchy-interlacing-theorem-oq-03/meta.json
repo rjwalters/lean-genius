@@ -72,7 +72,8 @@
       "**Monotonicity is the lower-into-upper pairing.** The keystone's two halves are not only the ingredients of interlacing; pairing the lower half of T with the upper half of U on the *same* optimal subspace immediately yields eigenvalue monotonicity — the cleanest possible consequence of Courant–Fischer.",
       "**The additive inequality is a double Grassmann count.** Weyl's λ_{i+j+1}(A+B) ≤ λ_{i+1}(A) + λ_{j+1}(B) needs exactly one new ingredient over interlacing — Rayleigh additivity R_{T+U} = R_T + R_U — plus intersecting the optimal subspace with two eigenspans instead of one. finrank_inf_lb applied twice supplies the (k+1) − i − j ≥ 1 count.",
       "**No new spectral theory.** Every eigenvalue fact used is the keystone's; no eigenvalue is re-derived, no new variational principle is proved. This realises the structural prediction of oq-02 that the keystone already subsumes Weyl-type perturbation bounds, with only the dimension bookkeeping changing.",
-      "**Monotonicity is not a special case of the additive form here.** Because the three operators carry independent eigenbases, weyl_monotone is proved directly (a single pairing) rather than by specialising weyl_add_le; the two theorems share the keystone but not the proof."
+      "**Monotonicity is not a special case of the additive form here.** Because the three operators carry independent eigenbases, weyl_monotone is proved directly (a single pairing) rather than by specialising weyl_add_le; the two theorems share the keystone but not the proof.",
+    "**Non-commutativity is sidestepped by pointwise Rayleigh additivity.** T, U, and T+U carry three independent eigenbases b, c, d and are generally NOT simultaneously diagonalizable (T and U need not commute), so no shared eigenvector argument is available. The proof never needs one: it produces a single common vector x by dimension counting, and the only additive fact used is that the Rayleigh quotient is additive at that one point, R_{T+U}(x) = R_T(x) + R_U(x) — an identity of inner products (inner_add_left), not of spectra. The whole force of Weyl's inequality is thus the linearity of ⟪T·,·⟫ in T evaluated on one cleverly chosen vector."
     ],
     "prerequisites": [
       "The parent entry's Courant–Fischer max–min keystone (CauchyInterlacingKeystone): eigenvalue_maxmin_lower / eigenvalue_maxmin_upper and the eigenspan Rayleigh bound rayleigh_bounds_on_eigenspan",
@@ -107,12 +108,20 @@
       "mathContext": "Eigenvalues are monotone in the Loewner order — the simplest Courant–Fischer corollary."
     },
     {
-      "id": "additive",
-      "title": "Weyl's Additive Inequality",
+      "id": "additive-dimension",
+      "title": "Weyl's Additive Inequality — the dimension count",
       "startLine": 114,
+      "endLine": 166,
+      "summary": "weyl_add_le (statement + first proof phase): for i + j ≤ k, ρ(k) ≤ μ(i) + ν(j). Take the optimal (k+1)-dimensional subspace S for T+U (lower keystone half eigenvalue_maxmin_lower) and the upper-tail eigenspans A = span{b i,…} (dim n−i) and B = span{c j,…} (dim n−j). Two Grassmann counts (finrank_inf_lb applied to S⊓A then (S⊓A)⊓B, with hEdim = n) give finrank((S⊓A)⊓B) ≥ (k+1) − i − j ≥ 1, so the triple intersection is nonzero and yields a common vector x ≠ 0 lying in S, A, and B.",
+      "mathContext": "$\\dim(S \\cap A \\cap B) \\ge (k+1) - i - j \\ge 1$: the optimal subspace and the two eigenspans must meet in a nonzero vector."
+    },
+    {
+      "id": "additive-rayleigh",
+      "title": "Weyl's Additive Inequality — the Rayleigh estimate",
+      "startLine": 167,
       "endLine": 187,
-      "summary": "weyl_add_le: for i + j ≤ k, ρ(k) ≤ μ(i) + ν(j). The optimal (k+1)-dim subspace for T+U meets the upper-tail eigenspans of T and U; two Grassmann counts leave a common nonzero vector, on which Rayleigh additivity gives ρ(k) ≤ R_T(x) + R_U(x) ≤ μ(i) + ν(j).",
-      "mathContext": "The classical λ_{i+j+1}(A+B) ≤ λ_{i+1}(A) + λ_{j+1}(B) in 0-based descending form — the foundational eigenvalue perturbation bound."
+      "summary": "weyl_add_le (second proof phase): on the common vector x, the upper-eigenspan bound gives R_T(x) ≤ μ(i) and R_U(x) ≤ ν(j) (rayleigh_le_on_upper_eigenspan), while membership in S gives the lower bound ρ(k) ≤ R_{T+U}(x) (hSlb). Rayleigh additivity R_{T+U}(x) = R_T(x) + R_U(x) (from inner_add_left / map_add, then add_div) closes the calc: ρ(k) ≤ R_{T+U}(x) = R_T(x) + R_U(x) ≤ μ(i) + ν(j). This is the classical λ_{i+j+1}(A+B) ≤ λ_{i+1}(A) + λ_{j+1}(B) in 0-based descending form.",
+      "mathContext": "$\\rho(k) \\le R_{T+U}(x) = R_T(x) + R_U(x) \\le \\mu(i) + \\nu(j)$ — the foundational eigenvalue perturbation bound."
     }
   ],
   "mainTheorems": [
