@@ -100,3 +100,37 @@ to ⋃_ℕ, then `Filter.frequently_atTop` ⋂⋃ limsup, then per-fibre ⋃ of 
 VERIFIED `Built Proofs.LiouvilleTheoremOQ03 (4.5s)` (only pre-existing le_or_lt warn line 200).
 3 theorems; file grows to ~44+3=47 thm. Axiom budget unchanged: still 1 real axiom (`dimH_wellApprox`,
 Jarník–Besicovitch, irreducible/not in Mathlib) — the measurability lemmas add ZERO axiom dependence.
+
+## Session 2026-07-19 (researcher-1) — Part XI: Uncountability of the Liouville set via category (VERIFIED, axiom-free)
+
+**Mode:** REVISIT (mature file, 787L / 49→ thm / 1 axiom / 0 sorry). **Outcome:** +4 theorems, 0 new axioms.
+
+The file proved the Liouville set is dimension-`0` (`dimH_liouville_eq_zero`) and Lebesgue-null
+(`volume_liouville_eq_zero`), and that `W τ` is uncountable (`not_countable_wellApprox`, *via its
+positive dimension `2/τ`*). But that dimension route is structurally unavailable for the Liouville
+set itself, whose dimension is `0` — so its uncountability had never been recorded. Filled the gap
+with the only witness that works, **Baire category**:
+
+- `isNowhereDense_singleton_real (x : ℝ) : IsNowhereDense {x}` — ℝ is a `PerfectSpace` (no isolated
+  points), so `interior {x} = ∅` (`interior_singleton`, instance `NeBot (𝓝[≠] x)` from
+  `PerfectSpace.not_isolated`), and `{x}` closed ⇒ nowhere dense via `IsClosed.isNowhereDense_iff`.
+- `isMeagre_of_countable {s : Set ℝ} (hs : s.Countable) : IsMeagre s` — `s = ⋃_{x∈s} {x}`
+  (`Set.biUnion_of_singleton`), a countable union of nowhere-dense singletons (`isMeagre_biUnion`,
+  `IsNowhereDense.isMeagre`). Reusable "countable ⊆ ℝ ⇒ meagre".
+- `not_countable_liouville : ¬ {x | Liouville x}.Countable` — if countable it'd be meagre, but it is
+  residual (`liouville_residual`) and a residual set in the nonempty Baire space ℝ is not meagre
+  (`not_isMeagre_of_mem_residual`). **The dimension argument cannot be substituted** (dimH = 0).
+- `liouville_uncountable_yet_null_dimzero` — capstone: uncountable ∧ dimH = 0 ∧ volume = 0.
+
+`#print axioms`: the three uncountability lemmas are `[propext, Classical.choice, Quot.sound]`
+(axiom-free — do NOT touch `dimH_wellApprox`); the capstone carries only `dimH_wellApprox` via its
+dimension conjunct, as documented.
+
+Reusable Mathlib API (v4.31): `IsClosed.isNowhereDense_iff`, `interior_singleton` (needs
+`NeBot (𝓝[≠] x)`, auto for `PerfectSpace`), `IsNowhereDense.isMeagre`, `isMeagre_biUnion`,
+`Set.biUnion_of_singleton`, `not_isMeagre_of_mem_residual` (`Topology/Baire/Lemmas.lean`).
+Mathlib has NO uncountability statement for the Liouville set anywhere (checked) — genuine gap.
+
+**Build: VERIFIED** host-elab vs prebuilt Mathlib v4.31.0 oleans (`bin/lake env lean`, EXIT 0);
+only a pre-existing unused-simp-arg warning at line 749 (`measurableSet_wellApprox`, not my code).
+File 787→837 lines; theoremCount (permissive) → 59; axiom budget unchanged (still 1: `dimH_wellApprox`).
