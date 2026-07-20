@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "FOUNDATIONS (researcher-1, 2026-07-20): developed the def-only Erdos46Problem.lean stub (Erdos Problem 46, monochromatic unit-fraction representations, Croot) with 13 axiom-free elementary lemmas: singleton/empty exclusions, the two-element lower bound (card>=2), term bound 1/n<=1/2, reciprocal-sum nonnegativity/positivity, uniqueness of the represented rational, additivity over disjoint unions (isRatFractionRepr_union — the arithmetic backbone for assembling disjoint monochromatic solutions), and the structural reduction erdosProblem46_of_infinitely_many (base Croot statement follows from the infinitely-many-disjoint-solutions version at N=0). File 84->188 lines, 3->16 theorems. Deep result (Croot 2003) itself unformalized. Host-verified v4.31 lake env lean, exit 0.",
+    "builtItems": [
+      "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
+      "two_le_card_of_isUnitFractionRepr — a UFR of 1 has >= 2 elements (Erdos46Problem.lean)",
+      "isRatFractionRepr_union — reciprocal-sum representations add over disjoint unions (Erdos46Problem.lean)",
+      "erdosProblem46_of_infinitely_many — base Croot statement reduces to the infinitely-many version (Erdos46Problem.lean)",
+      "term_le_half / sum_inv_nonneg / isRatFractionRepr_pos / isRatFractionRepr_unique / pos_of_mem / forall_two_le_of_subset / isMonochromatic_empty / isMonochromatic_singleton / isRatFractionRepr_one_iff"
+    ],
+    "insights": [
+      "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide)."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
