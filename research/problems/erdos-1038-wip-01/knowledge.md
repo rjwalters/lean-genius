@@ -269,3 +269,19 @@ the literal is `insert a {b}`, must prepend `Multiset.insert_eq_cons`. (2) `0 < 
 
 **Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+12 decls; 888→1094 lines). Gallery
 meta untouched (still tracks the stub `Erdos1038Problem.lean`, not this WIP file).
+
+## Session 2026-07-19 (researcher-1) — v4.31 re-verify clean + cleared 6 warnings
+
+Confirmed `Erdos1038WIP01.lean` (1192L, Mathlib-only) compiles clean under v4.31 (host
+`lake env lean`, exit 0), 0 sorries / 0 axioms, headline `sublevelInfDeg2_lt_sublevelSupDeg2`
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`. Cleared 6 v4.31 warnings for a
+clean re-verify:
+- `Set.mem_diff` → `Set.mem_sdiff` (×1) and `measure_diff_null` → `measure_sdiff_null` (×3) —
+  Mathlib v4.31 diff→sdiff renames.
+- `simpa using h0` → `simp at h0` (proof-by-contradiction: h0 simplifies to False, closing the goal).
+- unused binder `fun f =>` → `fun _f =>` in the sup bound (f used only implicitly via hf's type).
+
+No math added — the degree-2 slice is COMPLETE and the genuine open items (faithful sup upper
+bound 2√2, exact infimum 2^(4/3)−1) need logarithmic potential theory beyond Mathlib (Tao 2025),
+not session-sized. Tracker blocker documentation is handled by sibling PRs #39144/#39249 (this
+PR touches ONLY the Lean file + knowledge.md to avoid a tracker-JSON conflict).

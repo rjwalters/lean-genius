@@ -119,13 +119,13 @@ theorem sublevelSet_quadratic :
   have hs : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
   have hspos : 0 < Real.sqrt 2 := Real.sqrt_pos.mpr (by norm_num)
   ext x
-  rw [mem_sublevelSet_quadratic, Set.mem_diff, Set.mem_Ioo, Set.mem_singleton_iff]
+  rw [mem_sublevelSet_quadratic, Set.mem_sdiff, Set.mem_Ioo, Set.mem_singleton_iff]
   constructor
   · rintro ⟨h0, h2⟩
     refine ⟨⟨?_, ?_⟩, ?_⟩
     · nlinarith [hs, hspos, sq_nonneg (x + Real.sqrt 2)]
     · nlinarith [hs, hspos, sq_nonneg (x - Real.sqrt 2)]
-    · intro hx; rw [hx] at h0; simpa using h0
+    · intro hx; rw [hx] at h0; simp at h0
   · rintro ⟨⟨h1, h2⟩, h3⟩
     refine ⟨?_, ?_⟩
     · have : x ≠ 0 := h3
@@ -138,7 +138,7 @@ theorem sublevelSet_quadratic :
 theorem sublevelMeasure_quadratic :
     sublevelMeasure q = ENNReal.ofReal (2 * Real.sqrt 2) := by
   unfold sublevelMeasure
-  rw [sublevelSet_quadratic, measure_diff_null (by simp), Real.volume_Ioo]
+  rw [sublevelSet_quadratic, measure_sdiff_null (by simp), Real.volume_Ioo]
   congr 1
   ring
 
@@ -738,7 +738,7 @@ theorem sublevelMeasure_le_four {f : Polynomial ℝ} (hf : MonicRealRootedIn01' 
     Together they confine `sublevelSup' ∈ [2√2, 4]` with no potential theory; Tao's sharp
     `= 2√2` sits inside this interval and remains beyond Mathlib. -/
 theorem sublevelSup'_le_four : sublevelSup' ≤ ENNReal.ofReal 4 :=
-  iSup_le fun f => iSup_le fun hf => sublevelMeasure_le_four hf
+  iSup_le fun _f => iSup_le fun hf => sublevelMeasure_le_four hf
 
 /-- **The faithful supremum is sandwiched: `2√2 ≤ sublevelSup' ≤ 4`.**  A fully elementary,
     axiom-free localisation of the open Erdős #1038 extremal constant to a concrete finite
@@ -971,7 +971,7 @@ theorem sublevelMeasure_quadraticGen_ge_two {a b : ℝ} (ha : a ∈ Set.Icc (-1 
         (by linarith [hxIoo.1] : (0:ℝ) < 2 + (2 * x - a - b)), sq_nonneg (a - b)]
   have hvol : volume (Set.Ioo ((a + b) / 2 - 1) ((a + b) / 2 + 1) \ {(a + b) / 2})
       = ENNReal.ofReal 2 := by
-    rw [measure_diff_null (measure_singleton _), Real.volume_Ioo]
+    rw [measure_sdiff_null (measure_singleton _), Real.volume_Ioo]
     congr 1; ring
   calc ENNReal.ofReal 2
       = volume (Set.Ioo ((a + b) / 2 - 1) ((a + b) / 2 + 1) \ {(a + b) / 2}) := hvol.symm
@@ -1033,7 +1033,7 @@ theorem sublevelMeasure_quadraticGen {a b : ℝ} (ha : a ∈ Set.Icc (-1 : ℝ) 
     unfold sublevelMeasure
     calc ENNReal.ofReal s
         = volume (Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2) \ {(a + b) / 2}) := by
-            rw [measure_diff_null (measure_singleton _), hvolIoo]
+            rw [measure_sdiff_null (measure_singleton _), hvolIoo]
       _ ≤ volume (sublevelSet (quadraticGen a b)) := measure_mono hlo
   exact le_antisymm hupM hloM
 
