@@ -1118,4 +1118,61 @@ theorem extremal_distinct_not_valid :
     subset_subsetSums _ (by decide)
   exact (hvalid.2 1 h1 2 h2 (by decide)).1 (by decide)
 
+/-!
+### Nested-subset non-divisibility and the per-step growth constraint
+
+The Erdős #882 upper bound `(1+o(1)) log₂ n` is driven by a *growth* phenomenon:
+if we enumerate `A = {a₁ < a₂ < ⋯ < a_k}` and form the prefix sums
+`σ_i = a₁ + ⋯ + a_i`, then `σ_1 < σ_2 < ⋯ < σ_k = ∑ A` is a strictly increasing
+chain of subset sums, and divisibility-freeness forbids `σ_i ∣ σ_j` for `i < j`.
+Because `σ_{i+1} = σ_i + a_{i+1}`, the relation `σ_i ∣ σ_{i+1}` is equivalent to
+`σ_i ∣ a_{i+1}`; so validity forces `σ_i ∤ a_{i+1}` — a partial sum never divides
+the *next* element added.  Below we prove the mechanism at the level of arbitrary
+nested subsets, which subsumes the sorted-prefix picture without needing a sort.
+-/
+
+/-- **Nested subset sums of a valid set never divide.**  Generalises
+    `validSubset_subsetSum_not_dvd_total` (the `T = A` case): for *any* nested pair
+    of non-empty subsets `S ⊊ T ⊆ A` of a valid set, the smaller partial sum `∑ S`
+    does not divide the larger `∑ T`.  Both are subset sums of `A`, and `∑ S < ∑ T`
+    because passing to a strict superset of a positive set strictly increases the
+    sum, so they are distinct values and the divisibility-free condition on
+    `subsetSums A` forbids `∑ S ∣ ∑ T`.  This is the "antichain along a chain"
+    fact: every strictly increasing chain of subset sums is a divisibility
+    antichain. -/
+theorem validSubset_nested_sum_not_dvd {n : ℕ} {A S T : Finset ℕ}
+    (hV : ValidSubset n A) (hST : S ⊂ T) (hTA : T ⊆ A) (hS : S.Nonempty) :
+    ¬ (S.sum id ∣ T.sum id) := by
+  obtain ⟨hbound, hdf⟩ := hV
+  have hpos : ∀ a ∈ A, 1 ≤ a := fun a ha => (hbound a ha).1
+  have hSA : S ⊆ A := (subset_of_ssubset hST).trans hTA
+  obtain ⟨x, hxT, hxS⟩ := Finset.exists_of_ssubset hST
+  have hlt : S.sum id < T.sum id :=
+    Finset.sum_lt_sum_of_subset (subset_of_ssubset hST) hxT hxS
+      (by simp only [id_eq]; exact hpos x (hTA hxT))
+      (by intro j _ _; exact Nat.zero_le _)
+  have hT : T.Nonempty := hS.mono (subset_of_ssubset hST)
+  have hmemS : S.sum id ∈ subsetSums A := sum_mem_subsetSums_of_subset hSA hS
+  have hmemT : T.sum id ∈ subsetSums A := sum_mem_subsetSums_of_subset hTA hT
+  exact (hdf (S.sum id) hmemS (T.sum id) hmemT (Nat.ne_of_lt hlt)).1
+
+/-- **A partial sum never divides an excluded element.**  In a valid set `A`, if
+    `S ⊆ A` is a non-empty partial support and `a ∈ A` lies outside `S`, then
+    `∑ S ∤ a`.  Taking `T = insert a S` in `validSubset_nested_sum_not_dvd` gives
+    `∑ S ∤ ∑ (insert a S) = a + ∑ S`, which is equivalent to `∑ S ∤ a`.  This is
+    the per-step growth constraint `σ_i ∤ a_{i+1}` behind the `(1+o(1)) log₂ n`
+    upper bound, stated for arbitrary supports rather than a sorted prefix. -/
+theorem validSubset_partialSum_not_dvd_elem {n : ℕ} {A S : Finset ℕ} {a : ℕ}
+    (hV : ValidSubset n A) (hS : S.Nonempty) (hSA : S ⊆ A)
+    (ha : a ∈ A) (haS : a ∉ S) :
+    ¬ (S.sum id ∣ a) := by
+  have hins : insert a S ⊆ A := Finset.insert_subset_iff.mpr ⟨ha, hSA⟩
+  have hss : S ⊂ insert a S := Finset.ssubset_insert haS
+  have hnd := validSubset_nested_sum_not_dvd hV hss hins hS
+  have hsum : (insert a S).sum id = a + S.sum id := by
+    rw [Finset.sum_insert haS, id_eq]
+  rw [hsum] at hnd
+  intro hdvd
+  exact hnd (dvd_add hdvd (dvd_refl _))
+
 end Erdos882OQ03
