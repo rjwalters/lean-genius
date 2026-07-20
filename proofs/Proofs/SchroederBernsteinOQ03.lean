@@ -65,9 +65,11 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
   partial-bijection layer and the two atomic, correspondence-preserving back-and-forth
   extension steps (domain step through f, range step through g). matching_functional /
   matching_cofunctional: the matching is a partial bijection (both coordinates determine
-  the partner). These are the pieces the stage scheduler assembles; only the scheduler
-  (collision-chasing via the alternating f/g chain) remains open.
-- myhill_isomorphism: hard direction has sorry (open: stage-wise back-and-forth construction)
+  the partner). These are the pieces the stage scheduler assembles.
+- myhill_isomorphism: COMPLETE (0-sorry / 0-axiom). Both directions proved; the hard direction
+  uses the computable extension-only scheduler `sigmaC` (Section 5·C), whose read-off is
+  `Computable` (`sigmaC_computable`), so the resulting permutation is a genuine computable
+  bijection. `#print axioms` → `[propext, Classical.choice, Quot.sound]` only.
 
 ## References
 - Myhill, J. (1955). "Creative sets." Z. Math. Logik Grundlag. Math. 1, 97–108.
@@ -3454,14 +3456,13 @@ theorem sigmaC_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Comput
     (c) Membership condition p n ↔ q (σ n) preserved by the back-and-forth
     (d) Computability: σ(n) is determined by the finite stage at which n enters dom
 
-    **Status (Path B assembled).** The bijection and its correspondence are now VERIFIED: Section
-    5·B builds the extension-only cons scheduler `stageSeqB` and reads off
-    `sigmaEquivB : ℕ ≃ ℕ` with `∀ n, p n ↔ q (sigmaEquivB n)` (`sigmaEquivB_corr`), all 0-axiom.
-    The **sole** remaining gap is *computability* of that bijection: `stageSeqB` is
-    `noncomputable` (uses `Classical.choose` on the escape existentials), so `sigmaEquivB` is not
-    yet a `Computable` permutation. Discharging `e.Computable` requires a computable parallel
-    `stageSeqB` (bounded `Nat.rfind` escape search, licensed by `escape_exists'`'s
-    `N ≤ (mRan L).length` bound) — the residual `sorry` below. -/
+    **Status (Path C assembled — COMPLETE, 0-sorry / 0-axiom).** The computability gap that Path B
+    left open is now closed: Section 5·C replaces the `noncomputable` `stageSeqB` with the
+    computable extension-only scheduler behind `sigmaC f g`, whose read-off `sigmaC_computable`
+    (`mLookup_computable ∘ stageListC_computable` at the fixed computable index `2n+1`) makes the
+    permutation `Equiv.ofBijective (sigmaC f g)` a genuine `Computable` permutation. The hard
+    direction below therefore discharges `e.Computable` directly — there is no remaining `sorry`.
+    `#print axioms myhill_isomorphism` → `[propext, Classical.choice, Quot.sound]` only. -/
 theorem myhill_isomorphism (p q : ℕ → Prop) :
     OneOneEquiv p q ↔
     ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n) := by
