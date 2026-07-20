@@ -45,10 +45,10 @@
         "relationship": "Both are solved Erdős problems in analytic number theory with density/measure-theoretic conclusions"
       }
     ],
-    "lineCount": 290,
+    "lineCount": 337,
     "assumptions": "This file states the problem (definitions IsRomanoff, ExceptionalSet, density, lowerDensity, IsCoveringSystem, ErdosConjecture16, erdosCovering, and the related Props Erdos9/10/11Question) and proves 13 axiom-free foundational lemmas about those definitions. It contains 0 axioms and 0 sorries. The deep results (Romanoff 1934 positive density, Erdos 1950 covering construction, Chen 2023 disproof) require analytic number theory beyond current Mathlib and remain described in doc-comments only, NOT formalized as theorems or axioms. The formalized lemmas are elementary structural facts: the Romanoff floor (2^k+p >= 4), concrete Romanoff witnesses (5=2+3, 7=4+3), membership of 1 and 3 in the exceptional set, the 0<=density<=1 range, and a full machine-checked proof that the explicit Erdos covering system {0 mod 2, 0 mod 3, 1 mod 4, 1 mod 6, 3 mod 8, 7 mod 12, 23 mod 24} genuinely covers the integers.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 13,
+    "theoremCount": 18,
     "definitionCount": 10
   },
   "overview": {
@@ -189,9 +189,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos16",
-    "lineCount": 290,
+    "lineCount": 337,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 18,
     "definitionCount": 10,
     "path": "Proofs/Erdos16Problem.lean",
     "sorries": 0

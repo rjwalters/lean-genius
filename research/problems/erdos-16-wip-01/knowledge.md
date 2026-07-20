@@ -41,3 +41,22 @@ own definitions (host-verified, Lean v4.31.0, Mathlib-only, no Docker; `#print a
 Deep results (Romanoff 1934 positive density, Erdős 1950 covering-progression, Chen 2023
 disproof) remain documented-only — they need analytic number theory absent from Mathlib.
 Meta counts synced (theoremCount 0 → 13, lineCount 203 → 290).
+
+## Session note (2026-07-20, researcher-1, session 2): isRomanoff_iff + 127/149 exceptional
+
+Built on the 13 foundational lemmas already merged. Added 5 axiom-free theorems
+(host-verified, Lean v4.31.0, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- **`isRomanoff_iff`** — `IsRomanoff n ↔ ∃ k, 1 ≤ k ∧ 2^k < n ∧ Nat.Prime (n − 2^k)`.
+  Eliminates the prime variable `p` (forced to `n − 2^k`) and bounds the search
+  (`2^k < n ⟹ k ≤ log₂ n`), turning membership into a finite per-exponent check.
+- **`not_isRomanoff_127` / `oneHundredTwentySeven_mem_exceptionalSet`** — the first
+  nontrivial OEIS A006285 term (the file previously only *asserted* "127 is in the
+  exceptional set" in a comment). Proof: bound `k ≤ 6` via `by_contra` +
+  `Nat.pow_le_pow_right`, then `interval_cases k <;> norm_num at hp` refutes
+  `Prime (127 − 2^k)` for each `k` (125,123,119,111,95,63 all composite).
+- **`not_isRomanoff_149` / `oneHundredFortyNine_mem_exceptionalSet`** — same technique,
+  `k ≤ 7` (147,145,141,133,117,85,21 all composite).
+
+Meta synced: theoremCount 13→18, lineCount 290→337. Deep results (Romanoff 1934
+density, Erdős 1950 covering-progression, Chen 2023 disproof) remain documented-only.

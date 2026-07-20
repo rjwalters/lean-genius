@@ -31,17 +31,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added 13 axiom-free foundational lemmas to the previously definitions-only Erdos16Problem.lean (Romanoff floor + concrete witnesses, exceptional-set membership of 1/3, density range 0..1, and a machine-checked proof that the explicit Erdos covering system covers Z). Deep results (Romanoff 1934, Erdos 1950, Chen 2023 disproof) remain documented-only, needing Mathlib analytic NT. Meta counts synced (theoremCount 0 -> 13).",
+    "progressSummary": "PROGRESS (session 2): added isRomanoff_iff (bounded characterisation eliminating the prime variable) and machine-checked proofs that 127 and 149 — the first two nontrivial OEIS A006285 exceptional numbers cited in the file prose — are genuinely exceptional (previously only claimed in a comment). All 5 new lemmas axiom-free (propext/Classical.choice/Quot.sound), host-verified Lean v4.31.0. theoremCount 13→18, lineCount 290→337. Deep results (Romanoff 1934, Erdos 1950, Chen 2023) still documented-only.",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
       "density_nonneg, density_le_one, mem_exceptionalSet_iff in Erdos16Problem.lean",
-      "erdosCovering_moduli_pos, erdosCovering_isCoveringSystem (covering system covers Z) in Erdos16Problem.lean"
+      "erdosCovering_moduli_pos, erdosCovering_isCoveringSystem (covering system covers Z) in Erdos16Problem.lean",
+      "isRomanoff_iff — bounded characterisation: IsRomanoff n ↔ ∃ k≥1, 2^k<n ∧ Prime(n−2^k), eliminating the prime variable p (Erdos16Problem.lean)",
+      "not_isRomanoff_127 + oneHundredTwentySeven_mem_exceptionalSet — first nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
+      "not_isRomanoff_149 + oneHundredFortyNine_mem_exceptionalSet — second nontrivial A006285 term proved exceptional (Erdos16Problem.lean)"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
       "The explicit Erdos covering system [(0,2),(0,3),(1,4),(1,6),(3,8),(7,12),(23,24)] genuinely covers Z: every modulus divides 24, so the disjunction n%2=0 or n%3=0 or n%4=1 or n%6=1 or n%8=3 or n%12=7 or n%24=23 is provable directly by omega, then the residue-class witness is exhibited per case.",
-      "Romanoff floor: 2^k+p >= 4 for k>=1, p prime, so 1 and 3 are exceptional; 5=2+3 and 7=4+3 are concrete Romanoff (non-exceptional) witnesses."
+      "Romanoff floor: 2^k+p >= 4 for k>=1, p prime, so 1 and 3 are exceptional; 5=2+3 and 7=4+3 are concrete Romanoff (non-exceptional) witnesses.",
+      "The unbounded ∃ k p in IsRomanoff collapses to a finite search: p is forced to be n−2^k, and 2^k<n bounds k≤log2 n. isRomanoff_iff makes non-membership a per-exponent compositeness check dischargeable by interval_cases + norm_num prime extension.",
+      "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n−2^k) for each residue."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

@@ -260,6 +260,53 @@ theorem erdosCovering_isCoveringSystem : IsCoveringSystem erdosCovering := by
   · exact ⟨(7, 12), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
   · exact ⟨(23, 24), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
 
+/-- **Bounded characterisation of the Romanoff property.**  The unbounded
+existential `∃ k p, k ≥ 1 ∧ Prime p ∧ n = 2^k + p` is equivalent to the
+*decidable-flavoured* statement that some exponent `k ≥ 1` with `2^k < n` makes
+the complementary residue `n - 2^k` prime.  This eliminates the prime variable
+`p` entirely (it is forced to be `n - 2^k`) and bounds the search: since `2^k < n`
+forces `k ≤ log₂ n`, membership reduces to checking finitely many exponents. -/
+theorem isRomanoff_iff {n : ℕ} :
+    IsRomanoff n ↔ ∃ k, 1 ≤ k ∧ 2 ^ k < n ∧ Nat.Prime (n - 2 ^ k) := by
+  constructor
+  · rintro ⟨k, p, hk, hp, rfl⟩
+    exact ⟨k, hk, by have := hp.two_le; omega, by simpa using hp⟩
+  · rintro ⟨k, hk, hlt, hp⟩
+    exact ⟨k, n - 2 ^ k, hk, hp, by omega⟩
+
+/-- **`127` is exceptional.**  It is the first nontrivial odd integer of OEIS
+A006285: for every `k` with `1 ≤ k` and `2^k < 127`, the complement `127 - 2^k`
+is composite (`125 = 5³`, `123 = 3·41`, `119 = 7·17`, `111 = 3·37`, `95 = 5·19`,
+`63 = 7·9`), so `127` is not of the form `2^k + p`. -/
+theorem not_isRomanoff_127 : ¬ IsRomanoff 127 := by
+  rw [isRomanoff_iff]
+  rintro ⟨k, hk, hlt, hp⟩
+  have hk6 : k ≤ 6 := by
+    by_contra h
+    have h7 : (2 : ℕ) ^ 7 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+    norm_num at h7; omega
+  interval_cases k <;> norm_num at hp
+
+/-- `127` is an exceptional odd integer (`127 ∈ ExceptionalSet`). -/
+theorem oneHundredTwentySeven_mem_exceptionalSet : (127 : ℕ) ∈ ExceptionalSet :=
+  ⟨⟨63, by norm_num⟩, not_isRomanoff_127⟩
+
+/-- **`149` is exceptional** (the second nontrivial term of A006285).  For every
+`k` with `2^k < 149` the complement is composite (`147 = 3·49`, `145 = 5·29`,
+`141 = 3·47`, `133 = 7·19`, `117 = 9·13`, `85 = 5·17`, `21 = 3·7`). -/
+theorem not_isRomanoff_149 : ¬ IsRomanoff 149 := by
+  rw [isRomanoff_iff]
+  rintro ⟨k, hk, hlt, hp⟩
+  have hk7 : k ≤ 7 := by
+    by_contra h
+    have h8 : (2 : ℕ) ^ 8 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+    norm_num at h8; omega
+  interval_cases k <;> norm_num at hp
+
+/-- `149` is an exceptional odd integer (`149 ∈ ExceptionalSet`). -/
+theorem oneHundredFortyNine_mem_exceptionalSet : (149 : ℕ) ∈ ExceptionalSet :=
+  ⟨⟨74, by norm_num⟩, not_isRomanoff_149⟩
+
 /-
 ## Summary
 
