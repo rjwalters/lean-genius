@@ -135,9 +135,17 @@
       "id": "fin-and-divisibility",
       "title": "The k-Part Form and the Kummer Divisibility Criterion",
       "startLine": 134,
-      "endLine": 156,
+      "endLine": 155,
       "summary": "sub_one_mul_padicValNat_multinomial_fin: the identity for k parts indexed by Fin k, matching the parent's 'k > 2' phrasing. prime_dvd_multinomial_iff: p ∣ multinomial s f ↔ s_p(Σ f i) < Σ s_p(f i), via dvd_iff_padicValNat_ne_zero and mul_pos_iff_of_pos_left.",
       "mathContext": "The Fin-k specialization is the literal multinomial n!/(a₁!⋯a_k!); the divisibility criterion is the multinomial Kummer theorem (a prime divides iff adding the parts in base p carries)."
+    },
+    {
+      "id": "binomial-specialisations",
+      "title": "Binomial Specialisations and the No-Carry Criteria",
+      "startLine": 156,
+      "endLine": 234,
+      "summary": "The classical two-part (Nat.choose) corollaries of the multinomial identity. sub_one_mul_padicValNat_choose: (p−1)·v_p(C(m+n,n)) + s_p(m+n) = s_p(m) + s_p(n), obtained by applying legendre_add to the three factorials of (m+n)! = C(m+n,n)·n!·m!. prime_dvd_choose_iff: Kummer's carry criterion p ∣ C(m+n,n) ↔ s_p(m+n) < s_p(m)+s_p(n). The two equality (no-carry) complements not_prime_dvd_multinomial_iff and not_prime_dvd_choose_iff: non-divisibility coincides with equality of digit sums (no carry), specialising at p = 2 to the Lucas/disjoint-binary-support criterion for C(m+n,n) being odd.",
+      "mathContext": "s_p(m+n) ≤ s_p(m)+s_p(n) always (the Kummer identity), so ¬ p ∣ · is equality, not merely ≤; at p = 2 disjoint binary supports ⟺ C(m+n,n) odd."
     }
   ],
   "conclusion": {
