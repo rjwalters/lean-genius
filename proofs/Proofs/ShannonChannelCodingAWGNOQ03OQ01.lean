@@ -308,7 +308,7 @@ theorem waterAlloc_rate_closedForm
 theorem continuous_waterBudget (N : ι → ℝ) :
     Continuous (waterBudget N) := by
   unfold waterBudget waterAlloc
-  exact continuous_finset_sum _ fun i _ =>
+  exact continuous_finsetSum _ fun i _ =>
     (continuous_id.sub continuous_const).max continuous_const
 
 /-- The budget function is monotone in the water level. -/
@@ -365,7 +365,7 @@ theorem waterBudget_strictMono_of_pos (N : ι → ℝ) {a b : ℝ}
   -- some channel is active at level a
   have hact : ∃ i, 0 < waterAlloc a N i := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hle : waterBudget N a ≤ 0 := by
       unfold waterBudget
       exact Finset.sum_nonpos fun i _ => hcon i
@@ -411,7 +411,7 @@ theorem waterLevel_unique (N : ι → ℝ) {P : ℝ} (hP : 0 < P)
 theorem waterLevel_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {P : ℝ} (hP : 0 < P)
     {μ : ℝ} (hμ : waterBudget N μ = P) : 0 < μ := by
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have hmono := monotone_waterBudget N hcon
   rw [waterBudget_zero N hN, hμ] at hmono
   linarith
