@@ -62,7 +62,7 @@
       "Concrete examples for n=3,4,6"
     ],
     "axiomCount": 3,
-    "lineCount": 316,
+    "lineCount": 310,
     "assumptions": "3 axioms: pair_count_necessary, alon_lower_bound, question_2_solved. 0 sorries.",
     "theoremCount": 4,
     "definitionCount": 10
@@ -98,79 +98,79 @@
       "title": "Imports and Setup",
       "summary": "Mathlib imports for Finset, SimpleGraph, and Real, plus the Erdos732 namespace.",
       "startLine": 35,
-      "endLine": 42,
+      "endLine": 40,
       "mathContext": "Mathematical content: Mathlib imports for Finset, SimpleGraph, and Real, plus the Erdos732 namespace."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines Block (Finset of Fin n), Pair (2-element subset), pairsCoveredBy (pairs within a block), and IsPBD (every pair in exactly one block).",
-      "startLine": 43,
-      "endLine": 74,
+      "startLine": 41,
+      "endLine": 72,
       "mathContext": "Formal definition: Defines Block (Finset of Fin n), Pair (2-element subset), pairsCoveredBy (pairs within a block), and IsPBD (every pair in exactly one block)."
     },
     {
       "id": "block-compatible",
       "title": "Block-Compatible Sequences",
       "summary": "Defines IsBlockCompatible (exists a PBD with matching block sizes) and IsWellFormed (2 ≤ Xᵢ ≤ n, sorted, non-empty).",
-      "startLine": 75,
-      "endLine": 97,
+      "startLine": 73,
+      "endLine": 95,
       "mathContext": "Defines IsBlockCompatible (exists a PBD with matching block sizes) and IsWellFormed (2 $\\leq$ Xᵢ $\\leq$ n, sorted, non-empty)."
     },
     {
       "id": "necessary",
       "title": "Necessary Conditions",
       "summary": "Defines PairCountCondition (Σ C(Xᵢ,2) = C(n,2)) and axiomatizes pair_count_necessary. Includes the trivial pair_count_explanation theorem.",
-      "startLine": 98,
-      "endLine": 125,
+      "startLine": 96,
+      "endLine": 124,
       "mathContext": "Defines PairCountCondition ($\\sum$ C(Xᵢ,2) = C(n,2)) and axiomatizes pair_count_necessary. Includes the trivial pair_count_explanation theorem."
     },
     {
       "id": "characterization",
       "title": "Question 1 - Characterization (OPEN)",
       "summary": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Documents in a docstring that pair-counting is not sufficient (Q1 remains open; no characterization_hard axiom is declared).",
-      "startLine": 126,
-      "endLine": 153,
-      "mathContext": "Formal definition: Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Notes in docstring (lines 146-150) that pair-counting is not sufficient; no separate characterization_hard axiom is declared."
+      "startLine": 125,
+      "endLine": 148,
+      "mathContext": "Formal definition: Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Notes in docstring (lines 144-148) that pair-counting is not sufficient; no separate characterization_hard axiom is declared."
     },
     {
       "id": "counting",
       "title": "Question 2 - Counting (SOLVED)",
-      "summary": "Defines B(n), axiomatizes Alon's lower bound (alon_lower_bound) and question_2_solved. Erdős's upper bound is documented in a docstring (lines 163-166) but not declared as an axiom.",
-      "startLine": 154,
-      "endLine": 186,
-      "mathContext": "Formal definition: Defines B(n) as the count of block-compatible sequences. Axioms declared: alon_lower_bound (line 171) and question_2_solved (line 182). Erdős's upper bound appears only in a docstring (lines 163-166) and is not axiomatized."
+      "summary": "Defines B(n), axiomatizes Alon's lower bound (alon_lower_bound) and question_2_solved. Erdős's upper bound is documented in a docstring (lines 160-163) but not declared as an axiom.",
+      "startLine": 149,
+      "endLine": 183,
+      "mathContext": "Formal definition: Defines B(n) as the count of block-compatible sequences. Axioms declared: alon_lower_bound (line 168) and question_2_solved (line 179). Erdős's upper bound appears only in a docstring (lines 160-163) and is not axiomatized."
     },
     {
       "id": "asymptotic",
       "title": "The Asymptotic Constant",
       "summary": "Defines AsymptoticConstant (B(n) = 2^{(c+o(1))√n log n}) and proves constant_at_least_half (c ≥ 1/2) from alon_lower_bound using norm_num.",
-      "startLine": 187,
-      "endLine": 217,
+      "startLine": 184,
+      "endLine": 215,
       "mathContext": "Defines AsymptoticConstant (B(n) = $$2^{{(c+o(1))√n $\\log n$}$}$) and proves constant_at_least_half (c $\\geq$ 1/2) from alon_lower_bound using norm_num."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Verifies PairCountCondition for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) via anonymous `example` blocks using simp/norm_num. Docstrings describe the n=3 case. No named declaration — `example_n3` does not exist as a theorem or axiom.",
-      "startLine": 219,
-      "endLine": 257,
+      "startLine": 216,
+      "endLine": 252,
       "mathContext": "Mathematical content: anonymous example blocks verifying PairCountCondition for specific sequences; n=3 case is docstring only."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n).",
-      "startLine": 259,
-      "endLine": 272,
+      "startLine": 253,
+      "endLine": 267,
       "mathContext": "Mathematical content: Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n)."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias.",
-      "startLine": 274,
-      "endLine": 316,
+      "startLine": 268,
+      "endLine": 310,
       "mathContext": "Mathematical content: erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias."
     }
   ],
@@ -207,7 +207,7 @@
     ],
     "opens": [],
     "namespace": "Erdos732",
-    "lineCount": 316,
+    "lineCount": 310,
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 10,
