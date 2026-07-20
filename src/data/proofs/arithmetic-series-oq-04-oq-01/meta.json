@@ -58,40 +58,40 @@
       "id": "higher-power-sums",
       "title": "Part I: Higher Power Sum Formulas",
       "startLine": 37,
-      "endLine": 83,
+      "endLine": 97,
       "summary": "sum_powers_four: sum k^4 = n(n+1)(2n+1)(3n^2+3n-1)/30. sum_powers_five: sum k^5 = n^2(n+1)^2(2n^2+2n-1)/12. sum_powers_six: sum k^6 = n(n+1)(2n+1)(3n^4+6n^3-3n+1)/42.",
       "mathContext": "$$\\sum_{k=1}^{n} k^4 = \\frac{n(n+1)(2n+1)(3n^2+3n-1)}{30}$$\n$$\\sum_{k=1}^{n} k^5 = \\frac{n^2(n+1)^2(2n^2+2n-1)}{12}$$\n$$\\sum_{k=1}^{n} k^6 = \\frac{n(n+1)(2n+1)(3n^4+6n^3-3n+1)}{42}$$\nThe denominator 30 = 2*3*5 for p=4 comes from $B'_4 = -1/30$, and 42 = 2*3*7 for p=6 comes from $B'_6 = 1/42$."
     },
     {
       "id": "triangular-structure",
       "title": "Part II: Faulhaber's Triangular Number Structure",
-      "startLine": 95,
-      "endLine": 132,
+      "startLine": 98,
+      "endLine": 155,
       "summary": "Defines T(n) = n(n+1)/2. sum_pow_one_eq_triangular: sum k = T(n). sum_pow_three_eq_triangular_sq: sum k^3 = T(n)^2 (Nicomachus). sum_pow_five_eq_triangular: sum k^5 = T(n)^2 * (4T(n)-1)/3.",
       "mathContext": "Faulhaber's observation for odd powers:\n$$\\sum_{k=1}^n k = T(n), \\quad \\sum_{k=1}^n k^3 = T(n)^2, \\quad \\sum_{k=1}^n k^5 = \\frac{T(n)^2(4T(n)-1)}{3}$$\nwhere $T(n) = n(n+1)/2$ is the $n$-th triangular number. The general pattern: for odd $p$, $\\sum k^p$ is $T(n)^2$ times a polynomial in $T(n)$ of degree $(p-3)/2$."
     },
     {
       "id": "divisibility",
       "title": "Part III: Power Sum Divisibility",
-      "startLine": 140,
-      "endLine": 178,
-      "summary": "Cleared-denominator forms: 6*sum k^2 = n(n+1)(2n+1), 4*sum k^3 = n^2(n+1)^2, 30*sum k^4 = n(n+1)(2n+1)(3n^2+3n-1), 12*sum k^5 = n^2(n+1)^2(2n^2+2n-1).",
+      "startLine": 156,
+      "endLine": 221,
+      "summary": "Cleared-denominator / factored forms exposing the integer divisibility of the power sums. sum_sq_cleared: 6*sum k^2 = n(n+1)(2n+1); sum_fourth_cleared: 30*sum k^4 = n(n+1)(2n+1)(3n^2+3n-1); sum_pow_one_factor: 2*sum k = n(n+1); sum_cube_factor: 4*sum k^3 = n^2(n+1)^2; sum_fifth_factor: 12*sum k^5 = n^2(n+1)^2(2n^2+2n-1). Each proved by induction with Finset.sum_Ico_succ_top + push_cast + linarith.",
       "mathContext": "The cleared-denominator forms make integer divisibility visible:\n- $6 \\mid n(n+1)(2n+1)$ always (product of consecutive-ish integers)\n- $4 \\mid n^2(n+1)^2$ always ($n(n+1)$ is even)\n- $30 \\mid n(n+1)(2n+1)(3n^2+3n-1)$ always (non-obvious!)\n- $12 \\mid n^2(n+1)^2(2n^2+2n-1)$ always"
     },
     {
       "id": "even-power-factor",
       "title": "Part IV: Even-Power Common Factor",
-      "startLine": 186,
-      "endLine": 205,
-      "summary": "Even power sums share the factor n(n+1)(2n+1). Demonstrated for p=2 and p=6.",
+      "startLine": 222,
+      "endLine": 252,
+      "summary": "Even power sums sum k^{2m} always contain the factor n(n+1)(2n+1). even_power_factor_p2: 6*sum k^2 = n(n+1)(2n+1); even_power_factor_p6: 42*sum k^6 = n(n+1)(2n+1)(3n^4+6n^3-3n+1). Both by induction; the shared n(n+1)(2n+1) factor is exactly the p=2 (Nicomachus quadratic-pyramidal) form.",
       "mathContext": "For even $p \\geq 2$, $\\sum_{k=1}^n k^p$ always contains the factor $n(n+1)(2n+1)$. This reflects the fact that the Bernoulli polynomial $B_{2m+1}(x)$ has the factor $x(x-1)(2x-1)$, which after evaluation becomes $n(n+1)(2n+1)$ (up to sign)."
     },
     {
       "id": "verification",
       "title": "Part V: Numerical Verifications",
-      "startLine": 211,
-      "endLine": 228,
-      "summary": "Numerical checks for n=10: sum k^4 = 25333, sum k^5 = 220825, sum k^6 = 1978405. Cross-checks via factored forms and Faulhaber structure verification.",
+      "startLine": 253,
+      "endLine": 305,
+      "summary": "Concrete n=10 checks (by native_decide, the source of the entry's Lean.ofReduceBool dependency): sum_fourth_10 = 25333, sum_fifth_10 = 220825, sum_sixth_10 = 1978405, plus cross-checks sum_fourth_10_check (25333*30 = 10*11*21*329), sum_fifth_10_check (220825*12 = 100*121*219), and faulhaber_structure_p5_n10 (3025*73 = 220825, the Faulhaber T(10)^2*(4T(10)-1)/3 structure). The module and noncomputable section close, followed by a summary docstring of all the closed forms and the even-power common factor.",
       "mathContext": "For $n=10$, $T(10) = 55$:\n$$\\sum k^4 = 25333, \\quad \\sum k^5 = 220825 = 55^2 \\cdot 73 = T(10)^2 \\cdot \\frac{4 \\cdot 55 - 1}{3}$$\n$$\\sum k^6 = 1{,}978{,}405$$"
     }
   ],
