@@ -123,7 +123,7 @@
     },
     "type": "concept",
     "title": "Alon-Trotter Upper Bound",
-    "content": "**alon_trotter_bound:** For c < 1/4: f_c(n) ≪ n^{1/2}\n\nAlon and Trotter constructed triangle-saturated graphs with cn² edges where the maximum book size is only O(√n).",
+    "content": "**Alon–Trotter upper bound (external result):** For c < 1/4: f_c(n) ≪ n^{1/2}\n\nAlon and Trotter constructed triangle-saturated graphs with cn² edges where the maximum book size is only O(√n).\n\n(Stated in a source comment for context — not formalized as a declaration in this file.)",
     "significance": "key",
     "mathContext": "See annotation content for formal details of alon-trotter upper bound",
     "relatedConcepts": [
@@ -145,7 +145,7 @@
     },
     "type": "concept",
     "title": "Fox-Loh Upper Bound (2012)",
-    "content": "**fox_loh_bound:** For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}\n\nThis is essentially n^{o(1)}, meaning NO polynomial lower bound exists! This disproved Erdős's conjecture that f_c(n) > n^ε for some ε > 0.\n\nUsed sophisticated probabilistic construction.",
+    "content": "**Fox–Loh upper bound, 2012 (external result):** For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}\n\nThis is essentially n^{o(1)}, meaning NO polynomial lower bound exists! This disproved Erdős's conjecture that f_c(n) > n^ε for some ε > 0.\n\nUsed sophisticated probabilistic construction.\n\n(Stated in a source comment for context — not formalized as a declaration in this file.)",
     "mathContext": "The key breakthrough that resolved one of Erdős's questions negatively.",
     "significance": "key",
     "relatedConcepts": [
@@ -167,7 +167,7 @@
     },
     "type": "concept",
     "title": "Polynomial Conjecture: DISPROVED",
-    "content": "**erdos_polynomial_conjecture_false:** Erdős asked: Is f_c(n) > n^ε for some ε > 0?\n\n**Answer: NO** (for c < 1/4). Fox-Loh's n^{O(1/log log n)} bound eventually falls below any n^ε.",
+    "content": "**Erdős's polynomial-growth conjecture — disproved (external result):** Erdős asked: Is f_c(n) > n^ε for some ε > 0?\n\n**Answer: NO** (for c < 1/4). Fox-Loh's n^{O(1/log log n)} bound eventually falls below any n^ε.\n\n(Stated in a source comment for context — not formalized as a declaration in this file.)",
     "significance": "key",
     "mathContext": "See annotation content for formal details of polynomial conjecture: disproved",
     "relatedConcepts": [
@@ -189,7 +189,7 @@
     },
     "type": "concept",
     "title": "Linear Bound Above Threshold",
-    "content": "**linear_bound_above_threshold:** For c > 1/4: f_c(n) ≥ n/6\n\nAbove the threshold 1/4, books of LINEAR size are guaranteed! Proved independently by Edwards and by Khadziivanov-Nikiforov (1979).",
+    "content": "**Edwards / Khadziivanov–Nikiforov linear bound, 1979 (external result):** For c > 1/4: f_c(n) ≥ n/6\n\nAbove the threshold 1/4, books of LINEAR size are guaranteed! Proved independently by Edwards and by Khadziivanov-Nikiforov (1979).\n\n(External result — stated in a source comment; the file's related statement is the `above_threshold_linear` axiom, not an independent proof.)",
     "mathContext": "This shows the phase transition at c = 1/4 is sharp.",
     "significance": "key",
     "relatedConcepts": [
