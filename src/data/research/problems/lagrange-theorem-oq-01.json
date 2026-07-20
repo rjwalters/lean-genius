@@ -20,7 +20,13 @@
     "since": "2026-03-28T20:57:10.258Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "eliminate the 4 Hall-subgroup axioms (hall_existence/conjugacy/solvable/characterizes_solvability)",
+        "reopenCriterion": "Mathlib upstreams a general Hall π-subgroup existence+conjugacy theorem for finite solvable groups (currently only Combinatorics/Hall marriage + SchurZassenhaus exist)",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -29,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Order-pq classification CLOSED (prior). This session: REPAIRED Mathlib-drift build breakage in the Hall-subgroup companion LagrangeTheoremOQ01OQ03.lean (was silently failing against pinned mathlib 2df2f01 — CI cache masked it) AND added the p-group branch of the converse of Lagrange. Drift fixes: hall_trivial_bot via Subgroup.card_bot; exists_prime_orderOf_dvd_card now [Fact p.Prime]-instance form; orderOf_pow_div_of_dvd needs [Finite G] + Nat.div_div_self's m≠0 arg; hall_solvability_necessary reproved (alternatingGroup.center_eq_bot + IsSimpleGroup.comm_iff_isSolvable, A₅ nonabelian via trivial centre); imports → `import Mathlib`. New theory: converse_lagrange_pgroup (finite p-group has a subgroup of EVERY divisor order — full converse of Lagrange, 2nd class after cyclic) + isHallDivisor_prime_pow (Hall divisors of pⁿ are only 1 and pⁿ) + hall_pgroup_hall_divisor + not_isHallDivisor_two_eight. Host-verified EXIT 0, axioms=[propext,Classical.choice,Quot.sound] for all new/repaired thms; file still 0-sorry, 2 pre-existing deep axioms (hall_solvable, hall_characterizes_solvability) untouched.",
+    "progressSummary": "SATURATED on the tractable side (triage 2026-07-19): corpus (32 files) has 0 real sorries; the 4 remaining axioms are all Hall-theorem-for-solvable-groups, irreducible against Mathlib v4.31 (only combinatorial Hall + SchurZassenhaus exist, no general solvable Hall existence/conjugacy). Extensions p² (PSquare file) and pq (dichotomy CLOSED) done; p²q/p³ multi-session. Populated the empty knowledge.md with this assessment.",
     "builtItems": [
       "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
       "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy",
@@ -106,7 +112,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.258Z",
-  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-07-19",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
