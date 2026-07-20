@@ -66,7 +66,7 @@
       "weak_bound_k2: Erdős conjecture confirmed for k=2 via strongBound_implies_weakBound"
     ],
     "axiomCount": 1,
-    "lineCount": 436,
+    "lineCount": 430,
     "theoremCount": 16,
     "prerequisites": [
       "Prime factorization and p-adic valuations",
@@ -104,95 +104,95 @@
       "id": "header",
       "title": "Header: Statement and References",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 32,
       "summary": "States Erdős Problem #367 (products of 2-full parts). For $n$, the 2-full part $B_2(n)=n/n'$ (where $n'$ is the squarefree part) $=\\prod_{p^2\\mid n}p^{v_p(n)}$. Question: for each fixed $k\\geq1$, is $\\prod_{n\\leq m<n+k}B_2(m)\\ll n^{2+o(1)}$ (or even $\\ll_k n^2$)? Known: trivial for $k\\leq2$; strong bound fails for $k\\geq3$ (van Doorn). Status OPEN. Imports factorization/squarefree and analysis.",
       "mathContext": "$B_2(n)=\\prod_{p^2\\mid n}p^{v_p(n)}$; study $\\prod_{n\\leq m<n+k}B_2(m)$ vs $n^{2+o(1)}$."
     },
     {
       "id": "part1",
       "title": "Part 1: The 2-Full Part",
-      "startLine": 39,
-      "endLine": 73,
+      "startLine": 33,
+      "endLine": 78,
       "summary": "Defines `squarefreePart n` ($\\prod$ of primes with exponent exactly $1$), `twoFullPart n` ($B_2(n)=n/\\text{squarefreePart}$ when it divides), and `twoFullPartAlt n` ($\\prod_{v_p\\geq2}p^{v_p}$ via a factorization filter).",
       "mathContext": "$B_2(n)=n/n'$ where $n'=\\prod_{v_p(n)=1}p$; equivalently $\\prod_{v_p(n)\\geq2}p^{v_p(n)}$."
     },
     {
       "id": "part2",
       "title": "Part 2: Product over Consecutive Integers",
-      "startLine": 74,
-      "endLine": 88,
+      "startLine": 79,
+      "endLine": 93,
       "summary": "Defines `productTwoFullParts n k` $=\\prod_{m\\in[n,n+k)}B_2(m)$, the main object of study.",
       "mathContext": "$\\prod_{n\\leq m<n+k}B_2(m)$."
     },
     {
       "id": "part3",
       "title": "Part 3: The Bounds",
-      "startLine": 89,
-      "endLine": 112,
+      "startLine": 94,
+      "endLine": 117,
       "summary": "Defines `weakBound k` ($\\forall\\varepsilon>0,\\ \\text{product}\\leq C\\,n^{2+\\varepsilon}$) and `strongBound k` ($\\text{product}\\leq C\\,n^2$) — the two asymptotic regimes.",
       "mathContext": "weak: $\\leq C\\,n^{2+\\varepsilon}$; strong: $\\leq C\\,n^2$."
     },
     {
       "id": "part4",
       "title": "Part 4: The Erdős Conjecture",
-      "startLine": 113,
-      "endLine": 128,
+      "startLine": 118,
+      "endLine": 133,
       "summary": "Defines `erdos_367_conjecture`: `weakBound k` holds for all $k\\geq1$ — the main open question.",
       "mathContext": "Conjecture: $\\forall k\\geq1,\\ \\prod_{n\\leq m<n+k}B_2(m)\\ll n^{2+o(1)}$."
     },
     {
       "id": "part5",
       "title": "Part 5: Known Results — Trivial Cases",
-      "startLine": 129,
-      "endLine": 169,
+      "startLine": 134,
+      "endLine": 175,
       "summary": "PROVES the strong bound for the trivial cases: `strong_bound_k1` ($B_2(n)\\leq n\\leq n^2$) and `strong_bound_k2` ($B_2(n)B_2(n+1)\\leq n(n+1)<2n^2$), both from `twoFullPart_le`.",
       "mathContext": "strongBound(1), strongBound(2) hold (since $B_2(n)\\leq n$)."
     },
     {
       "id": "part5b",
       "title": "Part 5b: Weak Bound for k ≤ 2",
-      "startLine": 170,
-      "endLine": 193,
+      "startLine": 176,
+      "endLine": 199,
       "summary": "PROVES `strongBound_implies_weakBound` ($C\\,n^2\\leq C\\,n^{2+\\varepsilon}$ for $n\\geq1$) and applies it to get `weak_bound_k1` and `weak_bound_k2`, so the Erdős conjecture holds for $k=1,2$.",
       "mathContext": "strongBound $\\Rightarrow$ weakBound; hence conjecture holds for $k=1,2$."
     },
     {
       "id": "part6",
       "title": "Part 6: Known Results — Failure of Strong Bound",
-      "startLine": 194,
-      "endLine": 254,
+      "startLine": 200,
+      "endLine": 260,
       "summary": "PROVES `strong_bound_fails_k3` ($\\neg\\text{strongBound}(3)$): from van Doorn's lower bound, $c\\,n^2\\log n\\leq\\text{product}\\leq C\\,n^2$ forces $C\\geq c\\log n$ for arbitrarily large $n$, a contradiction. The single AXIOM `van_doorn_lower_bound` supplies $\\prod_{n\\leq m<n+3}B_2(m)\\geq c\\,n^2\\log n$ infinitely often.",
       "mathContext": "$\\neg$strongBound(3): $\\prod_{n\\leq m<n+3}B_2(m)\\geq c\\,n^2\\log n$ i.o. (van Doorn, axiom)."
     },
     {
       "id": "part7",
       "title": "Part 7: Properties of the 2-Full Part",
-      "startLine": 255,
-      "endLine": 366,
+      "startLine": 261,
+      "endLine": 360,
       "summary": "Properties of $B_2$, all PROVED (no axioms here). Private helpers `primeFactors_prime_eq`, `primeFactors_prime_sq_eq`, `squarefreePart_prime_eq`, `squarefreePart_prime_sq_eq` feed the theorems `twoFullPart_prime` ($B_2(p)=1$), `twoFullPart_prime_sq` ($B_2(p^2)=p^2$), `twoFullPart_le` ($B_2(n)\\leq n$), and `twoFullPart_dvd` ($B_2(n)\\mid n$). (Notes record that the formerly-stated $B_2=1\\Leftrightarrow$ squarefree and multiplicativity lemmas were removed as unused — they are not axioms.)",
       "mathContext": "$B_2(p)=1$, $B_2(p^2)=p^2$, $B_2(n)\\leq n$, $B_2(n)\\mid n$ (all proved)."
     },
     {
       "id": "part8",
       "title": "Part 8: Generalization to r-Full Parts",
-      "startLine": 367,
-      "endLine": 399,
+      "startLine": 361,
+      "endLine": 393,
       "summary": "Defines `rFullPart r n` ($\\prod_{v_p\\geq r}p^{v_p}$), PROVES `twoFullPart_eq_rFullPart` ($\\text{twoFullPartAlt}=\\text{rFullPart }2$ by `rfl`), and defines `generalizedConjecture r k` ($\\prod_{[n,n+k)}B_r\\ll n^{r+o(1)}$).",
       "mathContext": "$B_r(n)=\\prod_{v_p(n)\\geq r}p^{v_p(n)}$; generalized conjecture $\\prod B_r\\ll n^{r+o(1)}$."
     },
     {
       "id": "part9",
       "title": "Part 9: Heuristic Analysis",
-      "startLine": 400,
-      "endLine": 409,
+      "startLine": 394,
+      "endLine": 403,
       "summary": "A docstring discussing the average behaviour of $B_2(n)$ and why worst-case products exceed the average prediction. No declarations (a note records that the former average-boundedness axiom was removed as unused).",
       "mathContext": "Average $B_2(n)=O(1)$ heuristically, but worst-case products are larger (no formal decl)."
     },
     {
       "id": "part10",
       "title": "Part 10: Summary",
-      "startLine": 410,
-      "endLine": 436,
+      "startLine": 404,
+      "endLine": 430,
       "summary": "PROVES `erdos_367_summary`: strongBound holds for $k=1,2$, the weak bound holds for $k=1,2$, strongBound fails for $k=3$, and the $k\\geq3$ weak-bound conjecture remains open (`True`). Defines `erdos_367_status = \"OPEN\"`.",
       "mathContext": "Summary: strongBound$(1,2)$ $\\wedge$ weakBound$(1,2)$ $\\wedge\\ \\neg$strongBound$(3)$; $k\\geq3$ open."
     }
@@ -255,7 +255,7 @@
       "Finset"
     ],
     "namespace": "Erdos367",
-    "lineCount": 436,
+    "lineCount": 430,
     "axiomCount": 1,
     "theoremCount": 16,
     "definitionCount": 10,
