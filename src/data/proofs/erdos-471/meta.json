@@ -44,7 +44,8 @@
       "nextQ closure operation: Q ∪ {primes that are three-element sums from Q}",
       "QSeq iterative sequence and QLim limit definitions",
       "UlamsQuestion and StrongerQuestion formal problem statements",
-      "vinogradov_three_primes, vinogradov_distinct, vinogradov_smaller_primes axioms",
+      "vinogradov_smaller_primes axiom: every large prime is a sum of three distinct strictly smaller primes (Vinogradov's basic and distinct-prime forms appear only as commentary, not as separate axioms)",
+      "all_primes_in_QLim axiom: every prime lies in Q∞ for the Vinogradov seed vinogradovQ₀",
       "vinogradovQ₀ construction: {primes ≤ N} for Vinogradov's constant",
       "vinogradovQ₀_finite theorem: Q₀ is finite (proved)",
       "stronger_question_positive theorem: Q∞ contains all primes (proved from axioms)",
@@ -53,7 +54,7 @@
       "erdos_471_summary: combines StrongerQuestion, monotonicity, and primality preservation"
     ],
     "axiomCount": 2,
-    "lineCount": 274,
+    "lineCount": 256,
     "assumptions": "2 axioms: vinogradov_smaller_primes (Vinogradov — three primes theorem with smaller primes bound), all_primes_in_QLim (all primes are in Q_lim). 0 sorries.",
     "theoremCount": 7,
     "definitionCount": 8
@@ -96,49 +97,49 @@
       "id": "vinogradov",
       "title": "Vinogradov's Theorem",
       "startLine": 89,
-      "endLine": 122,
-      "summary": "Three axiomatized forms: basic, distinct primes, and smaller primes.",
-      "mathContext": "Axiomatized: Three axiomatized forms: basic, distinct primes, and smaller primes."
+      "endLine": 111,
+      "summary": "The single axiom vinogradov_smaller_primes: every prime > N is a sum of three distinct strictly smaller primes. The basic and distinct-prime forms of Vinogradov's theorem are stated as commentary only.",
+      "mathContext": "Axiomatized: vinogradov_smaller_primes — the key ingredient that lets large primes decompose into smaller ones, enabling the inductive generation argument."
     },
     {
       "id": "solution",
       "title": "The Solution",
-      "startLine": 123,
-      "endLine": 174,
-      "summary": "vinogradovQ₀ construction, finiteness proof, main theorems.",
-      "mathContext": "Verified: vinogradovQ₀ construction, finiteness proof, main theorems."
+      "startLine": 112,
+      "endLine": 158,
+      "summary": "vinogradovQ₀ = {primes ≤ N} construction, the proved vinogradovQ₀_finite, the all_primes_in_QLim axiom, and the proved stronger_question_positive.",
+      "mathContext": "Verified: vinogradovQ₀ construction and finiteness proof; stronger_question_positive derived from the all_primes_in_QLim axiom."
     },
     {
       "id": "special-case",
       "title": "Special Case Q = {3, 5, 7, 11}",
-      "startLine": 175,
-      "endLine": 222,
-      "summary": "Ulam's original example with concrete proofs for Q₁ ∋ 19, 23.",
-      "mathContext": "Verified: Ulam's original example with concrete proofs for Q₁ ∋ 19, 23."
+      "startLine": 159,
+      "endLine": 188,
+      "summary": "Ulam's original example ulamQ₀ with concrete fully-proved membership theorems Q1_contains_19 and Q1_contains_23.",
+      "mathContext": "Verified: Ulam's original example with concrete proofs for Q₁ ∋ 19 (=3+5+11) and 23 (=5+7+11)."
     },
     {
       "id": "properties",
       "title": "Properties of the Sequence",
-      "startLine": 223,
-      "endLine": 250,
+      "startLine": 189,
+      "endLine": 216,
       "summary": "QSeq_monotone and QSeq_primes structural properties (fully proved).",
       "mathContext": "Mathematical content: QSeq_monotone and QSeq_primes structural properties (fully proved)."
     },
     {
       "id": "vinogradov-proof",
       "title": "Why Vinogradov Works",
-      "startLine": 251,
-      "endLine": 271,
-      "summary": "Inductive argument: vinogradov_induction and eventually_all_primes axioms.",
-      "mathContext": "Axiomatized: Inductive argument: vinogradov_induction and eventually_all_primes axioms."
+      "startLine": 217,
+      "endLine": 227,
+      "summary": "Prose exposition of the strong-induction step underlying all_primes_in_QLim — no new declarations, only commentary explaining why iterating from a large enough seed captures every prime.",
+      "mathContext": "Exposition: informal justification of the inductive argument behind the all_primes_in_QLim axiom."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 272,
-      "endLine": 274,
-      "summary": "erdos_471_summary combining StrongerQuestion, monotonicity, and primality.",
-      "mathContext": "Mathematical content: erdos_471_summary combining StrongerQuestion, monotonicity, and primality."
+      "startLine": 228,
+      "endLine": 256,
+      "summary": "erdos_471_summary combining StrongerQuestion, monotonicity, and primality preservation.",
+      "mathContext": "Mathematical content: erdos_471_summary combining StrongerQuestion, monotonicity, and primality preservation."
     }
   ],
   "conclusion": {
@@ -163,7 +164,7 @@
       "Set"
     ],
     "namespace": "Erdos471",
-    "lineCount": 274,
+    "lineCount": 256,
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 8,

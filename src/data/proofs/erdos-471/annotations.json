@@ -73,11 +73,11 @@
     "proofId": "erdos-471",
     "range": {
       "startLine": 89,
-      "endLine": 121
+      "endLine": 111
     },
     "type": "concept",
-    "title": "Vinogradov's Theorem (Three Forms)",
-    "content": "**Three axiomatized forms of Vinogradov's theorem, each strengthening the last:**\n\n1. **vinogradov_three_primes:** Every large odd n = p + q + r for primes p, q, r. This is the classical 1937 result.\n\n2. **vinogradov_distinct:** The primes can be chosen pairwise distinct (p ≠ q ≠ r ≠ p). This follows from the basic version by a counting argument.\n\n3. **vinogradov_smaller_primes:** For large primes p, the summands q₁, q₂, q₃ can all be chosen strictly less than p. This is the crucial form — it means large primes *decompose* into smaller ones.\n\nAll three are axiomatized because Vinogradov's theorem requires deep analytic number theory (exponential sums, circle method) far beyond current Mathlib.",
+    "title": "Vinogradov's Theorem (Key Form)",
+    "content": "**One axiom captures the ingredient the argument actually needs, preceded by commentary on Vinogradov's theorem in increasing strength:**\n\n1. **Basic three-primes form** (stated as commentary): every large odd n = p + q + r for primes p, q, r — the classical 1937 result.\n\n2. **Distinct-primes form** (stated as commentary): the three primes can be chosen pairwise distinct, which follows from the basic version by a counting argument.\n\n3. **vinogradov_smaller_primes** (the sole axiom here): for large primes p, the summands q₁, q₂, q₃ can all be chosen strictly *less* than p and pairwise distinct. This is the crucial form — it means large primes decompose into smaller ones, which is exactly what drives the inductive generation of the Q-sequence.\n\nOnly the third form is axiomatized (the first two are informal motivation), because Vinogradov's theorem requires deep analytic number theory (exponential sums, circle method) far beyond current Mathlib.",
     "mathContext": "Vinogradov's theorem is one of the landmark results of 20th-century number theory. The proof uses the Hardy-Littlewood circle method with exponential sum estimates. Helfgott (2013) proved the theorem for all odd n > 5, removing the 'sufficiently large' qualifier.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,12 +96,12 @@
     "id": "ann-e471-solution",
     "proofId": "erdos-471",
     "range": {
-      "startLine": 123,
-      "endLine": 173
+      "startLine": 112,
+      "endLine": 158
     },
     "type": "concept",
     "title": "The Solution: vinogradovQ₀ Construction",
-    "content": "**The elegant solution constructs Q₀ from Vinogradov's constant:**\n\n**vinogradovQ₀** = {p prime : p ≤ N} where N = Classical.choose vinogradov_smaller_primes.\n\n**vinogradovQ₀_finite** (proved): This set is finite — there are only finitely many primes ≤ N.\n\n**all_primes_in_QLim** (axiom): Every prime appears in Q∞. The argument: by strong induction, any prime p > N decomposes as p = q₁ + q₂ + q₃ with smaller primes, which are in some Qᵢ, so p ∈ Q_{i+1}.\n\n**ulams_question_positive** (axiom): YES, there exists Q₀ making |Qᵢ| → ∞.\n\n**stronger_question_positive** (proved): Q∞ contains ALL primes. This follows directly from vinogradovQ₀_finite and all_primes_in_QLim.",
+    "content": "**The elegant solution constructs Q₀ from Vinogradov's constant:**\n\n**vinogradovQ₀** = {p prime : p ≤ N} where N = Classical.choose vinogradov_smaller_primes.\n\n**vinogradovQ₀_finite** (proved): This set is finite — there are only finitely many primes ≤ N.\n\n**all_primes_in_QLim** (axiom): Every prime appears in Q∞. The argument: by strong induction, any prime p > N decomposes as p = q₁ + q₂ + q₃ with smaller primes, which are in some Qᵢ, so p ∈ Q_{i+1}.\n\n**stronger_question_positive** (proved): Q∞ contains ALL primes. This follows directly from vinogradovQ₀_finite and all_primes_in_QLim.\n\nThe affirmative answer to Ulam's original question (|Qᵢ| → ∞) is discussed in the surrounding commentary but is subsumed by this stronger, formally-proved statement rather than stated as a separate declaration.",
     "mathContext": "The use of Classical.choose extracts the Vinogradov constant N from the existential. The finiteness proof uses Finset.filter on Finset.range to construct a witnessing finite set. The stronger theorem is proved constructively from the axiom.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,13 +119,13 @@
     "id": "ann-e471-examples",
     "proofId": "erdos-471",
     "range": {
-      "startLine": 175,
-      "endLine": 221
+      "startLine": 159,
+      "endLine": 188
     },
     "type": "concept",
     "title": "Concrete Examples: Q₁ from {3, 5, 7, 11}",
-    "content": "**Ulam's original test case Q₀ = {3, 5, 7, 11} is explored concretely:**\n\n**Q1_contains_19** (fully proved): 3 + 5 + 11 = 19 is prime, so 19 ∈ Q₁. The proof uses Nat.prime_def_lt'' with norm_num and interval_cases to verify primality.\n\n**Q1_contains_23** (fully proved): 5 + 7 + 11 = 23 is prime, so 23 ∈ Q₁.\n\n**ulam_example_contains_all_primes** (axiom): Conjectured that Q∞ from {3, 5, 7, 11} contains all primes ≥ 3. This is a computational question — the sequence grows quickly enough that it likely captures everything.\n\nNote that 2 can never appear (it's even, and sums of three odd primes are always odd), which is why the axiom requires p ≥ 3.",
-    "mathContext": "The proofs demonstrate Lean 4 tactics for computational primality: norm_num for arithmetic, interval_cases for exhaustive case analysis on small ranges, and simp for set membership in finite sets like {3, 5, 7, 11}.",
+    "content": "**Ulam's original test case ulamQ₀ = {3, 5, 7, 11} is explored concretely:**\n\n**Q1_contains_19** (fully proved): 3 + 5 + 11 = 19 is prime, so 19 ∈ Q₁. The membership is witnessed by taking the `right` branch of nextQ and discharging primality and the set-membership side conditions with norm_num and simp.\n\n**Q1_contains_23** (fully proved): 5 + 7 + 11 = 23 is prime, so 23 ∈ Q₁, by the same pattern.\n\nWhether Q∞ starting from {3, 5, 7, 11} contains *all* primes ≥ 3 is left as commentary — it is a computational conjecture, not a formalized declaration in this file.\n\nNote that 2 can never appear (it is even, and a sum of three odd primes is always odd), so any such statement is necessarily about primes ≥ 3.",
+    "mathContext": "The proofs demonstrate Lean 4 tactics for computational primality: norm_num for the arithmetic and primality checks, and simp for set membership in finite sets like {3, 5, 7, 11}.",
     "significance": "key",
     "relatedConcepts": [
       "computational verification",
@@ -142,8 +142,8 @@
     "id": "ann-e471-properties",
     "proofId": "erdos-471",
     "range": {
-      "startLine": 223,
-      "endLine": 249
+      "startLine": 189,
+      "endLine": 216
     },
     "type": "concept",
     "title": "Structural Properties (Fully Proved)",
@@ -165,8 +165,8 @@
     "id": "ann-e471-summary",
     "proofId": "erdos-471",
     "range": {
-      "startLine": 272,
-      "endLine": 274
+      "startLine": 228,
+      "endLine": 256
     },
     "type": "concept",
     "title": "Summary Theorem",
