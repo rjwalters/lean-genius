@@ -29,11 +29,11 @@
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "range": {
       "startLine": 53,
-      "endLine": 88
+      "endLine": 59
     },
     "type": "insight",
     "title": "kronecker0 Multiplicativity: (ab/0) = (a/0)(b/0)",
-    "content": "`kronecker0_mul_of_ne_zero` proves that `kronecker0 (a*b) = kronecker0 a * kronecker0 b` for $ab \\neq 0$. `kronecker0 a` is the unit indicator: 1 if $|a| = 1$ (i.e., $a = \\pm 1$), else 0. Multiplicativity says: $|ab| = 1$ iff $|a| = |b| = 1$ \u2014 exactly when both factors are units. The proof uses `by_cases` on whether $a$ and $b$ are $\\pm 1$, with `simp_all` handling the case arithmetic. The `a \u2260 0` and `b \u2260 0` hypotheses prevent the degenerate case where `kronecker0 0 = 1` would break the product rule.",
+    "content": "`kronecker0_mul_of_ne_zero` proves that `kronecker0 (a*b) = kronecker0 a * kronecker0 b` for $ab \\neq 0$. `kronecker0 a` is the unit indicator: 1 if $|a| = 1$ (i.e., $a = \\pm 1$), else 0. Multiplicativity says: $|ab| = 1$ iff $|a| = |b| = 1$ \u2014 exactly when both factors are units. The proof rewrites `kronecker0` via `\u2190 Int.isUnit_iff` and `IsUnit.mul_iff`, then does `by_cases` on `IsUnit a` and `IsUnit b`, discharging each branch with `simp`. The `a \u2260 0` and `b \u2260 0` hypotheses prevent the degenerate case where `kronecker0 0 = 1` would break the product rule.",
     "mathContext": "`kronecker0` is the Kronecker symbol at modulus 0: $\\left(\\frac{a}{0}\\right) = [|a| = 1]$ (1 if $a$ is a unit in $\\mathbb{Z}$, else 0). The units in $\\mathbb{Z}$ are $\\{\\pm 1\\}$, so `kronecker0 a = 1` iff `a = 1 \u2228 a = -1`. Multiplicativity: $[|ab|=1] = [|a|=1] \\cdot [|b|=1]$ since $|ab|=1 \\iff |a|=1 \\wedge |b|=1$ (product of integers can have absolute value 1 only if both factors have absolute value 1).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -53,12 +53,12 @@
     "id": "kronecker-neg1-mul-theorem",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "range": {
-      "startLine": 89,
-      "endLine": 125
+      "startLine": 60,
+      "endLine": 94
     },
     "type": "insight",
     "title": "Sign Character Multiplicativity: sgn(ab) = sgn(a)\u00b7sgn(b)",
-    "content": "`kroneckerNeg1_mul_of_ne_zero` proves $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for $ab \\neq 0$, where `kroneckerNeg1` is the sign character ($-1$ if $a < 0$, $1$ if $a > 0$). The proof uses four cases: (neg \u00d7 neg = pos), (neg \u00d7 pos = neg), (pos \u00d7 neg = neg), (pos \u00d7 pos = pos), with `linarith` and `Int.mul_pos_of_neg_of_neg` handling each. This is the sign homomorphism property of $\\text{sgn}: \\mathbb{Z}^* \\to \\{\\pm 1\\}$.",
+    "content": "`kroneckerNeg1_mul_of_ne_zero` proves $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for $ab \\neq 0$, where `kroneckerNeg1` is the sign character ($-1$ if $a < 0$, $1$ if $a \\ge 0$). The proof uses four cases: (neg \u00d7 neg = pos), (neg \u00d7 pos = neg), (pos \u00d7 neg = neg), (pos \u00d7 pos = pos), with `Int.mul_pos_of_neg_of_neg` / `Int.mul_neg_of_neg_of_pos` deciding the sign of the product and `lt_of_le_of_ne` upgrading `\u00ac(\u00b7 < 0)` to strict positivity before each `ring`. This is the sign homomorphism property of $\\text{sgn}: \\mathbb{Z}^* \\to \\{\\pm 1\\}$.",
     "mathContext": "`kroneckerNeg1` corresponds to the Kronecker symbol at modulus $-1$: $\\left(\\frac{a}{-1}\\right) = \\text{sgn}(a)$. For nonzero $a, b$: $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ since the product of two negatives is positive, one negative and one positive is negative, and two positives is positive. The four-case proof in Lean handles each quadrant: `(ha0 : a < 0)` combined with `(hb0 : b < 0)` gives `Int.mul_pos_of_neg_of_neg ha0 hb0 : 0 < a*b`.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,8 +78,8 @@
     "id": "kronecker-mul-left-proved",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "range": {
-      "startLine": 126,
-      "endLine": 193
+      "startLine": 95,
+      "endLine": 134
     },
     "type": "insight",
     "title": "First-Argument Multiplicativity: (ab/n) = (a/n)(b/n)",
@@ -103,8 +103,8 @@
     "id": "kronecker-mul-right-proved",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "range": {
-      "startLine": 194,
-      "endLine": 267
+      "startLine": 135,
+      "endLine": 258
     },
     "type": "insight",
     "title": "Second-Argument Multiplicativity: (a/mn) = (a/m)(a/n)",

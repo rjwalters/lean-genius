@@ -12,7 +12,7 @@
       "Nat"
     ],
     "namespace": "KroneckerSymbol",
-    "lineCount": 267,
+    "lineCount": 258,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
@@ -77,45 +77,38 @@
       "kronecker_neg_modulus: negating the modulus introduces/removes the sign character",
       "kroneckerNeg1_sq: the sign character is an involution"
     ],
-    "lineCount": 267,
+    "lineCount": 258,
     "theoremCount": 6,
     "definitionCount": 0
   },
   "sections": [
     {
       "id": "kronecker0-mul",
-      "title": "Multiplicativity of kronecker0",
+      "title": "Part 1: Multiplicativity of kronecker0",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Imports, module docstring, and theorem kronecker0_mul_of_ne_zero. The unit character at modulus 0: (ab/0) = (a/0)(b/0) for ab ≠ 0. Proved by case analysis: |a| = 1 and |b| = 1 iff |ab| = 1 (since units in ℤ are ±1)."
-    },
-    {
-      "id": "section-45",
-      "title": "Multiplicativity of kronecker0 (continued)",
-      "startLine": 45,
-      "endLine": 88,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "endLine": 59,
+      "summary": "Imports, module docstring, and theorem kronecker0_mul_of_ne_zero. The unit character at modulus 0: (ab/0) = (a/0)(b/0) for ab ≠ 0. Proved by rewriting kronecker0 as the unit indicator (← Int.isUnit_iff, IsUnit.mul_iff) and case-splitting on IsUnit a, IsUnit b — |a·b| = 1 iff |a| = |b| = 1 (units in ℤ are ±1)."
     },
     {
       "id": "kronecker-neg1-mul",
-      "title": "Multiplicativity of kroneckerNeg1 (Sign Character)",
-      "startLine": 89,
-      "endLine": 125,
-      "summary": "Theorem kroneckerNeg1_mul_of_ne_zero: sgn(ab) = sgn(a)·sgn(b) for ab ≠ 0. Proved by four cases (pos/neg × pos/neg) using linarith and Int.mul_pos_of_neg_of_neg. This is the sign homomorphism property."
+      "title": "Part 2: Multiplicativity of kroneckerNeg1 (Sign Character)",
+      "startLine": 60,
+      "endLine": 94,
+      "summary": "Theorem kroneckerNeg1_mul_of_ne_zero: sgn(ab) = sgn(a)·sgn(b) for ab ≠ 0. Proved by four cases (pos/neg × pos/neg) using Int.mul_pos_of_neg_of_neg / Int.mul_neg_of_neg_of_pos and lt_of_le_of_ne to pin the strict signs. This is the sign homomorphism property."
     },
     {
       "id": "main-theorem-left",
-      "title": "Multiplicativity in the First Argument",
-      "startLine": 126,
-      "endLine": 193,
-      "summary": "Main theorem kronecker_mul_left_proved: kronecker (a*b) n = kronecker a n * kronecker b n for ab ≠ 0. Case split on n: n=0 uses kronecker0_mul_of_ne_zero, n=-1 uses kroneckerNeg1_mul_of_ne_zero, n=1 is trivial, general n reduces to jacobiSym.mul_left + sign factor."
+      "title": "Part 3: Multiplicativity in the First Argument",
+      "startLine": 95,
+      "endLine": 134,
+      "summary": "Main theorem kronecker_mul_left_proved: kronecker (a*b) n = kronecker a n * kronecker b n for ab ≠ 0. split_ifs unifies the shared moduli conditions across the three kronecker unfoldings into 5 leaf goals: n=0 uses kronecker0_mul_of_ne_zero, n=-1 uses kroneckerNeg1_mul_of_ne_zero, n=1 is trivial, and the general n<0 / n≥0 cases reduce to jacobiSym.mul_left plus the sign factor."
     },
     {
       "id": "main-theorem-right",
-      "title": "Multiplicativity in the Second Argument",
-      "startLine": 194,
-      "endLine": 267,
-      "summary": "Main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: requires handling signs of m and n separately, using kronecker_neg_modulus to introduce sign factors, then jacobiSym.mul_right for the Jacobi part."
+      "title": "Part 4: Multiplicativity in the Second Argument",
+      "startLine": 135,
+      "endLine": 258,
+      "summary": "The private lemmas kroneckerNeg1_sq (the sign character is an involution) and kronecker_neg_modulus (negating the modulus introduces/removes the sign character), then main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: special cases m,n = ±1 are peeled off, then the general case combines jacobiSym.mul_right' with a four-quadrant sign analysis (kroneckerNeg1_sq collapsing the m<0, n<0 branch)."
     }
   ],
   "conclusion": {
