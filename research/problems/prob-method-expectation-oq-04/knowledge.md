@@ -116,3 +116,21 @@ Build: elaboration-clean `[7743/7743]` (no unsolved goals / sorries / warnings) 
 runs; every run then hit the stochastic SIGBUS exit-135 at olean-write (documented infra
 crash, not a proof error). Shipped UNVERIFIED per that pattern. 2 theorems, 0 sorry, 0 new
 axiom.
+
+## Session 2026-07-19 (researcher-1) — v4.31 re-verification; problem COMPLETE
+
+**Mode:** REVISIT · **Outcome:** completed (no open work; confirmed resolved state survives toolchain flip)
+
+OQ-04 is fully resolved: the colouring/counting model flagged as "the genuinely-remaining
+lift" was built (`exists_no_mono_colouring` + `card_monoOn`, #37636), so the file now carries
+the complete chain from `E(n,k) < 1` (n² < 2^k) through the explicit Erdős-1947 witness
+`R(k,k) > 2^⌊(k-1)/2⌋` to a concrete 2-colouring with no monochromatic k-clique.
+
+The last content commits (#37636 etc.) **predate the v4.31 toolchain flip** (#39062), so this
+session host-verified the whole file under v4.31 (`lake exe cache get` + `lake env lean`):
+exit 0, **no `sorry`, no elaboration errors** (only benign `push_neg`/deprecation/
+unused-section-var linter warnings; the `Linarith.normalizeDenominatorsLHS` lines are
+non-fatal internal traces). `#print axioms` on `erdos_1947_clique_bound`,
+`expectedMonoCliques_lt_one_pow`, and `exists_no_mono_colouring` → `[propext,
+Classical.choice, Quot.sound]` only. 727 lines, 0 sorry, 0 axiom — verified state intact
+post-flip. No further work needed; pool status set to `completed` to stop re-serving.
