@@ -4,7 +4,7 @@
     "proofId": "ptolemys-complex-proof-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 47
+      "endLine": 45
     },
     "type": "concept",
     "title": "Module Header: Classical Derivation of sine addition via Ptolemy",
@@ -28,8 +28,8 @@
     "id": "ann-ptol-oq02-normSq",
     "proofId": "ptolemys-complex-proof-oq-02",
     "range": {
-      "startLine": 48,
-      "endLine": 69
+      "startLine": 51,
+      "endLine": 64
     },
     "type": "concept",
     "title": "Base Chord-Norm Formula: ‖1 − exp(θI)‖² = 2 − 2cosθ",
@@ -53,8 +53,8 @@
     "id": "ann-ptol-oq02-chord-lemmas",
     "proofId": "ptolemys-complex-proof-oq-02",
     "range": {
-      "startLine": 70,
-      "endLine": 208
+      "startLine": 65,
+      "endLine": 160
     },
     "type": "insight",
     "title": "Five Chord-Length Lemmas: Computing All Distances",
@@ -81,8 +81,8 @@
     "id": "ann-ptol-oq02-ccw",
     "proofId": "ptolemys-complex-proof-oq-02",
     "range": {
-      "startLine": 209,
-      "endLine": 244
+      "startLine": 167,
+      "endLine": 194
     },
     "type": "concept",
     "title": "CCW Order: The Four Points Appear in Counterclockwise Order",
@@ -103,11 +103,35 @@
     ]
   },
   {
+    "id": "ptolemy-oq02-section3-nondegeneracy",
+    "proofId": "ptolemys-complex-proof-oq-02",
+    "range": {
+      "startLine": 199,
+      "endLine": 236
+    },
+    "type": "technique",
+    "title": "Section III: Non-Degeneracy — the Ptolemy Quotient is Well-Defined",
+    "content": "Before the sine addition formula can be extracted from Ptolemy's chord identity, two non-vanishing conditions must be discharged so the algebraic rearrangement is legitimate. `hdenom_ne_zero` proves the product of chord lengths in the denominator is nonzero (each chord 1−exp(θI) has strictly positive length for 0<θ<π), and `hnumer_ne_zero` handles the numerator. Both rely on the angle constraints 0<α,β and α+β<π/2 established earlier, which keep every point distinct on the unit circle. These lemmas are the bridge that turns the geometric chord identity into a valid equation between real quotients — without them the final `field_simp`/division step in Section IV would be unjustified.",
+    "mathContext": "On the unit circle a chord between $e^{i\\theta_1}$ and $e^{i\\theta_2}$ has length $\\lvert e^{i\\theta_1}-e^{i\\theta_2}\\rvert = 2\\lvert\\sin\\tfrac{\\theta_1-\\theta_2}{2}\\rvert$, which is strictly positive iff the two points are distinct. The constraints $0<\\alpha,\\beta$ and $\\alpha+\\beta<\\tfrac{\\pi}{2}$ force the four points into distinct positions, so every chord length is nonzero and Ptolemy's relation may be divided through.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "chord length",
+      "unit circle",
+      "division well-definedness",
+      "Ptolemy's theorem"
+    ],
+    "prerequisites": [
+      "nonzero denominators",
+      "field_simp",
+      "angle range constraints"
+    ]
+  },
+  {
     "id": "ann-ptol-oq02-main",
     "proofId": "ptolemys-complex-proof-oq-02",
     "range": {
-      "startLine": 286,
-      "endLine": 351
+      "startLine": 250,
+      "endLine": 304
     },
     "type": "insight",
     "title": "sin_add_from_ptolemy: The Sine Addition Formula",
