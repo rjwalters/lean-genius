@@ -76,32 +76,39 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation & Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating the open question (centered k-gonal partial sums generalising the parent's centered hexagonal cube identity), the uniform closed form 6·∑ C_{k,i} = k·n³ + (6−k)·n, and the four results the file proves. Imports Mathlib, opens the CenteredHexagonalSumOQ01OQ01 namespace, and opens Finset for the range-sum notation."
+    },
+    {
       "id": "definition",
       "title": "The Centered k-Gonal Number",
-      "startLine": 44,
-      "endLine": 54,
-      "summary": "C_{k,n} = k·n(n−1)/2 + 1, a central dot plus k triangular arms. The lemma cgon_six identifies k=6 with the parent entry's centered hexagonal number 3n(n−1)+1."
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "C_{k,n} = k·n(n−1)/2 + 1, a central dot plus k triangular arms. The lemma cgon_six identifies k=6 with the parent entry's centered hexagonal number 3n(n−1)+1, discharged by unfolding and omega."
     },
     {
       "id": "denominator",
       "title": "Eliminating the /2",
-      "startLine": 56,
-      "endLine": 70,
-      "summary": "six_mul_cgon_succ: because n(n+1) is even, 6·C_{k,n+1} = 3·(k·n(n+1)) + 6 holds in ℕ with no surviving division. The parity 2 ∣ k·n(n+1) lets omega discharge the truncated division."
+      "startLine": 53,
+      "endLine": 64,
+      "summary": "six_mul_cgon_succ: because n(n+1) is even, 6·C_{k,n+1} = 3·(k·n(n+1)) + 6 holds in ℕ with no surviving division. The parity witness 2 ∣ k·n(n+1) (from Nat.even_mul_succ_self) lets omega discharge the truncated division."
     },
     {
       "id": "closed-form",
       "title": "The Uniform Closed Form",
-      "startLine": 72,
-      "endLine": 86,
-      "summary": "six_mul_sum_cgon: 6·∑_{i<n} C_{k,i+1} = k·n³ + (6−k)·n over ℤ, by one-step induction — a single coefficient (6−k) parameterises every centered-polygonal family. Scaling by 6 and adding (6−k)·n avoids all division and ℕ-subtraction."
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "six_mul_sum_cgon: 6·∑_{i<n} C_{k,i+1} = k·n³ + (6−k)·n over ℤ, by one-step induction — a single coefficient (6−k) parameterises every centered-polygonal family. The successor step rewrites via sum_range_succ, casts the ℕ identity six_mul_cgon_succ up to ℤ, and closes with push_cast; ring. Scaling by 6 and adding (6−k)·n avoids all division and ℕ-subtraction."
     },
     {
       "id": "corollary",
       "title": "Parent Cube Identity as the k=6 Corollary",
-      "startLine": 88,
-      "endLine": 95,
-      "summary": "sum_centeredHex_cube: for k=6 the linear coefficient 6−k vanishes, so 6·∑ = 6·n³ and ∑ C_{6,i} = n³, recovering the parent entry's centered hexagonal cube identity."
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "sum_centeredHex_cube: for k=6 the linear coefficient 6−k vanishes, so 6·∑ = 6·n³ and ∑ C_{6,i} = n³ (via linarith over ℤ then exact_mod_cast), recovering the parent entry's centered hexagonal cube identity. Closes the namespace."
     }
   ],
   "overview": {
