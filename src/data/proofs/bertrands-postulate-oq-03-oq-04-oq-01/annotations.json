@@ -27,8 +27,8 @@
     "id": "ann-log-sq-asymptotic",
     "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
     "range": {
-      "startLine": 70,
-      "endLine": 119
+      "startLine": 65,
+      "endLine": 115
     },
     "type": "insight",
     "title": "Proving log²(n) = o(n^ε) via isLittleO Squaring",
@@ -51,8 +51,8 @@
     "id": "ann-bridge-axiom",
     "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
     "range": {
-      "startLine": 121,
-      "endLine": 163
+      "startLine": 117,
+      "endLine": 152
     },
     "type": "concept",
     "title": "The Bridge Axiom: nth-Prime Formulation → Interval Formulation",
@@ -74,31 +74,32 @@
     "id": "ann-main-theorem",
     "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
     "range": {
-      "startLine": 165,
-      "endLine": 230
+      "startLine": 154,
+      "endLine": 201
     },
     "type": "insight",
     "title": "Chaining Bounds: Cramér → Existence in [x, x+x^ε]",
-    "content": "The main proof of `cramer_implies_primeGapConjecture` combines three ingredients:\n\n1. **Cramér bound**: nextPrime$(x) \\leq x + C\\log^2(x)$ (bridge axiom, for $x \\geq 2$)\n2. **Asymptotic**: $C\\log^2(x) < x^\\varepsilon$ for $x \\geq N$ (log-sq lemma)\n3. **BHP base case**: PrimeGapConjecture$(0.525)$ unconditionally (parent entry)\n\nFor $\\varepsilon \\geq 0.525$: `prime_gap_conjecture_monotone` gives the result directly from BHP.\n\nFor $\\varepsilon < 0.525$: `cramer_implies_primeGapConjecture_eventually` gives a threshold $N$ beyond which Cramér works. Below $N$, BHP covers all $x \\geq 2$. The case split on `x ≥ N` joins these two halves.\n\nThe proof of the eventual form is a direct `calc`:\n$$\\text{nextPrime}(x) \\leq x + C\\log^2(x) \\leq x + x^\\varepsilon.$$",
-    "mathContext": "The combination `by_cases h : ε ≥ 0.525` splits into two proofs. For the sub-0.525 case, `Filter.eventually_atTop` extracts threshold $N$; `by_cases hxN : x ≥ N` handles the two regions.",
+    "content": "The main theorem `cramer_implies_primeGapConjecture_eventually` combines two ingredients:\n\n1. **Cramér bound**: nextPrime$(x) \\leq x + C\\log^2(x)$ (bridge axiom, for $x \\geq 2$)\n2. **Asymptotic**: $C\\log^2(x) < x^\\varepsilon$ for $x \\geq N_1$ (log-sq lemma)\n\nAfter `obtain`-ing the constant $C$ from the bridge axiom applied to `cramer_conjecture` and the threshold $N_1$ from the log-sq lemma, it takes $x \\geq \\max(N_1, 2)$ and finishes with a direct `calc`:\n$$\\text{nextPrime}(x) \\leq x + C\\log^2(x) \\leq x + x^\\varepsilon,$$\nwith `nextPrimeFrom x` (prime and $\\geq x$) as the witness.\n\n`cramer_implies_primeGapConjecture` is then **definitionally** this eventual theorem (`:= cramer_implies_primeGapConjecture_eventually ε hε`). There is no case split on $\\varepsilon \\geq 0.525$ and no BHP base case: the file states the honest *eventual* conclusion, because for $\\varepsilon < 0.525$ and small $x$ the interval $[x, x+x^\\varepsilon]$ is narrower than BHP's $[x, x+x^{0.525}]$, so BHP supplies no prime there. BHP is invoked only later, inside `cramer_hierarchy`, as the unconditional $\\varepsilon = 0.525$ anchor.",
+    "mathContext": "Eventual form: extract $C$ (bridge axiom on `cramer_conjecture`) and $N_1$ (log-sq lemma), then for $x \\geq \\max(N_1, 2)$ the `calc` chains nextPrime$(x) \\leq x + C\\log^2 x \\leq x + x^\\varepsilon$, closed by `linarith`.",
     "significance": "key",
     "relatedConcepts": [
-      "prime_gap_conjecture_monotone",
-      "prime_gap_conjecture_bhp",
-      "Filter.eventually_atTop",
-      "by_cases"
+      "cramer_implies_nextPrime_bound",
+      "log_sq_lt_rpow_eventually",
+      "nextPrimeFrom",
+      "Filter.eventually_atTop"
     ],
     "prerequisites": [
       "cramer_conjecture",
-      "BertrandsPostulateOQ03.prime_gap_conjecture_bhp"
+      "cramer_implies_nextPrime_bound",
+      "nextPrimeFrom_prime"
     ]
   },
   {
     "id": "ann-density-gap",
     "proofId": "bertrands-postulate-oq-03-oq-04-oq-01",
     "range": {
-      "startLine": 232,
-      "endLine": 257
+      "startLine": 203,
+      "endLine": 244
     },
     "type": "concept",
     "title": "Existence vs Density: The Gap That Cramér Cannot Close",
