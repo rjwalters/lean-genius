@@ -37,14 +37,20 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Structural facts of the Gaussian *polynomial* `qBinom X n k` over `ℤ[X]`:
       monicity, `natDegree = k(n-k)`, constant term `= 1`, nonnegative coefficients,
       and hence both extreme coefficients pinned to `1`
-- [ ] OPEN: coefficient unimodality (Sylvester/Proctor) — not attempted here
+- [x] A `Unimodal` predicate for integer sequences + API (`noValley` connecting it to
+      the target "no `aᵢ₋₁ > aᵢ < aᵢ₊₁`", `unimodal_of_nonincreasing`, `unimodal_const`)
+- [x] Coefficient unimodality, `k ≤ 1` base cases (`qBinomCoeff_unimodal_{zero,one}`):
+      `[n,0]_q = 1` gives `1,0,0,…` and `[n,1]_q = [n]_q` gives `1,…,1,0,…`, both
+      non-increasing hence unimodal; via the `k = 1` coefficient bridge `qBinom_X_coeff_one_seq`
+- [ ] OPEN: coefficient unimodality for general `k` (Sylvester/Proctor) — the substantive crux
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
-(degree, monicity, coefficient nonnegativity, pinned extreme coefficients). It does
-NOT prove unimodality, which is the substantive content of the open question. Full
-unimodality requires either an sl₂-action argument or an explicit injection between
-coefficient levels and is not formalized here.
+(degree, monicity, coefficient nonnegativity, pinned extreme coefficients) AND the first
+unimodality content: the `Unimodal` predicate/API and the `k ≤ 1` base cases. It does
+NOT prove unimodality for general `k`, which is the substantive content of the open question:
+that requires either an sl₂-action argument or O'Hara's combinatorial decomposition, not
+attempted here.
 
 ## Gaussian polynomial layer (over `ℤ[X]`)
 The palindromy above lives over a field (it uses `q⁻¹`). To reason about the actual
@@ -396,5 +402,91 @@ the root of the `combinations-formula` lineage. -/
 theorem qBinom_X_eval_one (n k : ℕ) :
     (qBinom (X : ℤ[X]) n k).eval 1 = (Nat.choose n k : ℤ) := by
   rw [qBinom_X_eval, qBinom_at_one]
+
+/-! ### Unimodality: the `Unimodal` predicate and the `k ≤ 1` base cases
+
+The palindromy above is the *symmetric* half of Sylvester's theorem; the *unimodal* half —
+that the coefficient array rises weakly to a single peak then falls — is the substantive open
+content.  Mathlib has no `Unimodal` predicate for integer sequences, so we introduce one with a
+small API and settle the base cases `k = 0` and `k = 1` (Approach C: small-`k` closed forms
+first), where the coefficient sequence is explicit.  Both are in fact non-increasing.  The
+general `k` case (O'Hara / `𝔰𝔩₂`) stays open. -/
+
+/-- **Unimodal integer sequence.**  `f : ℕ → ℤ` is unimodal when there is a peak index `p`
+    below which `f` is weakly increasing and from which `f` is weakly decreasing — the
+    standard "rises to a single peak, then falls" shape.  For the finitely-supported
+    coefficient sequence of a polynomial this is exactly Sylvester's claim. -/
+def Unimodal (f : ℕ → ℤ) : Prop :=
+  ∃ p : ℕ, (∀ i, i < p → f i ≤ f (i + 1)) ∧ (∀ i, p ≤ i → f (i + 1) ≤ f i)
+
+/-- **No interior strict valley.**  A unimodal sequence never strictly dips and strictly
+    recovers: there is no `i` with `f (i+1) < f i` *and* `f (i+1) < f (i+2)`.  This is the
+    problem's stated target form — no index at which `aᵢ₋₁ > aᵢ < aᵢ₊₁`. -/
+theorem Unimodal.noValley {f : ℕ → ℤ} (h : Unimodal f) (i : ℕ) :
+    ¬ (f (i + 1) < f i ∧ f (i + 1) < f (i + 2)) := by
+  obtain ⟨p, hup, hdown⟩ := h
+  rintro ⟨h1, h2⟩
+  rcases lt_or_ge i p with hi | hi
+  · exact absurd (hup i hi) (not_le.mpr h1)
+  · exact absurd (hdown (i + 1) (by omega)) (not_le.mpr h2)
+
+/-- A weakly non-increasing sequence is unimodal, with peak at `0`. -/
+theorem unimodal_of_nonincreasing {f : ℕ → ℤ} (h : ∀ i, f (i + 1) ≤ f i) :
+    Unimodal f :=
+  ⟨0, fun _ hi => absurd hi (by omega), fun i _ => h i⟩
+
+/-- A constant sequence is unimodal. -/
+theorem unimodal_const (c : ℤ) : Unimodal (fun _ => c) :=
+  unimodal_of_nonincreasing (fun _ => le_refl c)
+
+/-- **Direct geometric-sum form of the q-number.**  `[n]_q = ∑_{i<n} qⁱ`.  The parent file
+    only provides the `(q-1)`-multiplied identity `qNumber_geometric`; this un-multiplied sum
+    is what lets us read off polynomial coefficients.  Proof by the defining recurrence
+    `[n+1]_q = 1 + q·[n]_q`. -/
+theorem qNumber_eq_sum {S : Type*} [CommRing S] (q : S) :
+    ∀ n : ℕ, qNumber q n = ∑ i ∈ Finset.range n, q ^ i
+  | 0 => by simp
+  | n + 1 => by
+    rw [qNumber_succ, qNumber_eq_sum q n, Finset.mul_sum, Finset.sum_range_succ',
+        pow_zero, add_comm]
+    congr 1
+    exact Finset.sum_congr rfl (fun i _ => by ring)
+
+open Polynomial in
+/-- **Coefficient sequence of `[n choose 1]_q = [n]_q`.**  As `qBinom X n 1 : ℤ[X]` the
+    `j`-th coefficient is `1` for `j < n` and `0` otherwise (the indicator of the length-`n`
+    prefix) — the `k = 1` coefficient-extraction bridge.  Uses the direct geometric-sum form
+    `qNumber_eq_sum` and `coeff_X_pow`. -/
+theorem qBinom_X_coeff_one_seq (n j : ℕ) :
+    (qBinom (X : ℤ[X]) n 1).coeff j = if j < n then 1 else 0 := by
+  rw [qBinom_one_right, qNumber_eq_sum, finsetSum_coeff]
+  simp only [coeff_X_pow]
+  rw [Finset.sum_ite_eq (Finset.range n) j (fun _ => (1 : ℤ))]
+  simp [Finset.mem_range]
+
+open Polynomial in
+/-- **Sylvester unimodality, `k = 0` case.**  The coefficient sequence of
+    `[n choose 0]_q = 1` (namely `1, 0, 0, …`) is unimodal.  Non-increasing: the value at
+    `i+1` is `0` (constant polynomial), dominated by the nonnegative value at `i`
+    (`qBinom_X_coeff_nonneg`). -/
+theorem qBinomCoeff_unimodal_zero (n : ℕ) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n 0).coeff j) := by
+  apply unimodal_of_nonincreasing
+  intro i
+  have h1 : (qBinom (X : ℤ[X]) n 0).coeff (i + 1) = 0 := by
+    rw [qBinom_zero_right, coeff_one]; simp
+  rw [h1]
+  exact qBinom_X_coeff_nonneg n 0 i
+
+open Polynomial in
+/-- **Sylvester unimodality, `k = 1` case.**  The coefficient sequence of
+    `[n choose 1]_q = [n]_q` (namely `n` leading ones then zeros, `1, …, 1, 0, 0, …`) is
+    unimodal — indeed non-increasing, so the peak sits at `0`. -/
+theorem qBinomCoeff_unimodal_one (n : ℕ) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n 1).coeff j) := by
+  apply unimodal_of_nonincreasing
+  intro i
+  rw [qBinom_X_coeff_one_seq n (i + 1), qBinom_X_coeff_one_seq n i]
+  split_ifs <;> omega
 
 end QBinomialCoefficients
