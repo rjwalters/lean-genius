@@ -1,7 +1,7 @@
 {
   "slug": "erdos-70-wip-01",
   "title": "Complete the Erdős #70 Partition-Calculus Formalization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -31,9 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Created Erdos70WIP01.lean — general countable-ordinal closure lemmas (downward-closed, closed under + and *) generalizing the parent scaffold s specific countability facts, plus wiring the open conjecture to its flagship special cases 𝔠→(ω,n) and 𝔠→(ω²,n).",
+    "builtItems": [
+      "Erdos70.IsCountableOrdinal.of_le in Erdos70WIP01.lean",
+      "Erdos70.isCountableOrdinal_add in Erdos70WIP01.lean",
+      "Erdos70.isCountableOrdinal_mul in Erdos70WIP01.lean",
+      "Erdos70.erdos_70_conjecture_imp_omega in Erdos70WIP01.lean",
+      "Erdos70.erdos_70_conjecture_imp_omega_squared in Erdos70WIP01.lean"
+    ],
+    "insights": [
+      "The parent proved specific instances (omega0_plus_n_countable, omega0_squared_countable); these are corollaries of three general closure lemmas: IsCountableOrdinal is downward-closed (Ordinal.card_le_card), and closed under ordinal + (Cardinal.add_le_aleph0) and * (mul_le_mul + Cardinal.aleph0_mul_aleph0).",
+      "The open conjecture erdos_70_conjecture (∀ countable β, 2≤n, PartitionArrow c β n) specializes definitionally to conjecture_omega n and conjecture_omega_squared n by feeding the parent countability witnesses omega0_countable / omega0_squared_countable."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-70-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
