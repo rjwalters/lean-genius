@@ -46,7 +46,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 119,
-    "assumptions": "0 axioms. 0 sorries. The hypotheses are the angle-sum relation A + B + C = π and A, B, C ≥ 0 (the [0, π] upper membership being automatic). The file imports Proofs/CarnotTheoremOQ01OQ03 for family coherence but its forward direction re-derives the two Jensen steps locally and its backward direction evaluates sin(π/3) inline, so it does not call the parent's theorems. Note: local kernel verification was blocked by an unresponsive Docker build host this session (the build hung at start-up), and Aristotle was unavailable; the proof uses only verified Mathlib v4.26.0 lemma signatures (grep-confirmed against the pinned toolchain — strictConcaveOn_sin_Icc, its .2 strict-Jensen field of signature a • f x + b • f y < f (a • x + b • y) for x ≠ y, and Real.sin_pi_div_three), and the linarith arithmetic was hand-checked. It is gated by the deployer build before merge.",
+    "assumptions": "0 axioms. 0 sorries. The hypotheses are the angle-sum relation A + B + C = π and A, B, C ≥ 0 (the [0, π] upper membership being automatic, e.g. A = π − B − C ≤ π). The file imports Proofs/CarnotTheoremOQ01OQ03 for family coherence, but its forward direction re-derives the two Jensen steps locally and its backward direction evaluates sin(π/3) inline, so it does not call the parent's theorems. The proof rests on three Mathlib v4.31.0 lemmas: strictConcaveOn_sin_Icc (its .2 strict-Jensen field, a • sin x + b • sin y < sin (a • x + b • y) for x ≠ y), its non-strict concaveOn specialisation for the two averaging steps, and Real.sin_pi_div_three for the barycentre value.",
     "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 0
