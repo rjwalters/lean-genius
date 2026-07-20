@@ -27,14 +27,24 @@ base cases `k = 0` and `k = 1`.
 * `qBinom_X_coeff_one` — hence the coefficients of `[n,1]_q` are `[j < n]`.
 * `qBinom_X_unimodal_zero`, `qBinom_X_unimodal_one` — the coefficient sequences of
   `[n,0]_q = 1` and `[n,1]_q = 1 + X + ⋯ + X^{n-1}` are unimodal.
+* `isCoeffUnimodal_iff_unimodal_coeff` — **the bridge**: this file's
+  `IsCoeffUnimodal p` (monotone-on-blocks) is equivalent to the companion file's
+  `Unimodal p.coeff` (adjacent-step). The two developments were built independently
+  around these two predicates; the bridge unifies them.
+* `qBinom_X_unimodal_two` — the genuine rise-then-fall case `k = 2`, transported
+  through the bridge from the companion file's `qBinomCoeff_unimodal_two` (no re-proof).
 
 ## Honesty Note
-`k ≤ 1` is exactly the *easy* regime: both sequences are flat/monotone, so unimodality
-reduces to `isCoeffUnimodal_of_antitone`. The mathematically hard cases `k ≥ 2` — where
-the sequence genuinely rises and then falls (e.g. `[4,2]_q = 1,1,2,1,1`,
-`[6,2]_q = 1,1,2,2,3,2,2,1,1`) — are **not** proved here and remain the open crux. This
-contribution is the unimodality *predicate* + reduction lemmas + the two base cases,
-which pin down the target statement and exercise the coefficient-extraction layer.
+`k ≤ 1` is the *easy* regime (flat/monotone sequences, handled by
+`isCoeffUnimodal_of_antitone`). The companion file `CombinationsFormulaOQ03OQ04`
+independently developed a second unimodality predicate `Unimodal (ℕ → ℤ)` and
+proved the first genuine rise-then-fall case `k = 2` (`[4,2]_q = 1,1,2,1,1`,
+`[6,2]_q = 1,1,2,2,3,2,2,1,1`) against it. Rather than re-prove `k = 2` here, this
+file now supplies `isCoeffUnimodal_iff_unimodal_coeff`, proving the two predicates
+equivalent and **transporting** `k = 2` into `IsCoeffUnimodal` form
+(`qBinom_X_unimodal_two`). The mathematically hard cases `k ≥ 3` — needing
+sl₂/hard-Lefschetz (Proctor 1982) or O'Hara's decomposition (1990) — remain the
+open crux and are not proved in either file.
 -/
 
 open Polynomial
@@ -116,5 +126,63 @@ theorem qBinom_X_unimodal_one (n : ℕ) :
   intro i j hij
   simp only [qBinom_X_coeff_one]
   split_ifs <;> omega
+
+/-- **Bridge: the two unimodality predicates coincide.**  `IsCoeffUnimodal p`
+    (this file's *monotone-on-blocks* form: coefficients weakly rise up to a peak
+    `m`, then weakly fall) is equivalent to the companion file's `Unimodal p.coeff`
+    (the *adjacent-step* form `∃ p, (∀ i < p, f i ≤ f (i+1)) ∧ (∀ i ≥ p,
+    f (i+1) ≤ f i)`).
+
+    The two developments of Gaussian-binomial unimodality were built independently
+    around these two predicates; this equivalence unifies them, so every
+    `Unimodal`-based coefficient result transports to `IsCoeffUnimodal` and back.
+    The forward direction specialises the blocks to single steps; the backward
+    direction telescopes the adjacent steps into monotone blocks by induction. -/
+theorem isCoeffUnimodal_iff_unimodal_coeff (p : ℤ[X]) :
+    IsCoeffUnimodal p ↔ _root_.QBinomialCoefficients.Unimodal (fun j => p.coeff j) := by
+  constructor
+  · rintro ⟨m, hrise, hfall⟩
+    exact ⟨m, fun i hi => hrise i (i + 1) (Nat.le_succ i) hi,
+      fun i hi => hfall i (i + 1) hi (Nat.le_succ i)⟩
+  · rintro ⟨q, hup, hdown⟩
+    -- Telescope adjacent steps into monotone blocks on each side of the peak `q`.
+    have rise : ∀ d i, i + d ≤ q → p.coeff i ≤ p.coeff (i + d) := by
+      intro d
+      induction d with
+      | zero => intro i _; simp
+      | succ d ih =>
+          intro i hiq
+          have h1 : p.coeff i ≤ p.coeff (i + d) := ih i (by omega)
+          have h2 : p.coeff (i + d) ≤ p.coeff ((i + d) + 1) := hup (i + d) (by omega)
+          have he : i + (d + 1) = (i + d) + 1 := by omega
+          rw [he]; exact le_trans h1 h2
+    have fall : ∀ d i, q ≤ i → p.coeff (i + d) ≤ p.coeff i := by
+      intro d
+      induction d with
+      | zero => intro i _; simp
+      | succ d ih =>
+          intro i hi
+          have h1 : p.coeff ((i + d) + 1) ≤ p.coeff (i + d) := hdown (i + d) (by omega)
+          have h2 : p.coeff (i + d) ≤ p.coeff i := ih i hi
+          have he : i + (d + 1) = (i + d) + 1 := by omega
+          rw [he]; exact le_trans h1 h2
+    refine ⟨q, ?_, ?_⟩
+    · intro i j hij hjq
+      have hd : i + (j - i) = j := by omega
+      have hr := rise (j - i) i (by omega)
+      rwa [hd] at hr
+    · intro i j hi hij
+      have hd : i + (j - i) = j := by omega
+      have hf := fall (j - i) i hi
+      rwa [hd] at hf
+
+/-- **`k = 2`, transported.**  The genuine rise-then-fall case `[n,2]_q`, proved in
+    the companion file for the `Unimodal` predicate, is now available in this file's
+    `IsCoeffUnimodal` form via the bridge — no re-proof.  This retires the "route to
+    `k = 2`" that the two forked developments were each pursuing separately. -/
+theorem qBinom_X_unimodal_two (n : ℕ) :
+    IsCoeffUnimodal (qBinom (X : ℤ[X]) n 2) :=
+  (isCoeffUnimodal_iff_unimodal_coeff _).mpr
+    (_root_.QBinomialCoefficients.qBinomCoeff_unimodal_two n)
 
 end QBinomialCoefficients.Unimodal
