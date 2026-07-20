@@ -40,7 +40,6 @@
       "criticalProbability definition: p = 1/n",
       "criticalRandomGraph definition: G(n, 1/n)",
       "ComponentSizes, largestComponentSize, secondLargestComponentSize",
-      "subcritical_components, supercritical_giant axioms",
       "critical_giant_size axiom: giant is Θ(n^{2/3})",
       "komlos_sulyok_szemeredi axiom: second largest is O(log n)",
       "second_largest_lower_bound axiom: second largest is Ω(log n)",
@@ -90,10 +89,10 @@
     {
       "id": "phase-transition",
       "title": "Phase Transition",
-      "summary": "subcritical_components, supercritical_giant, critical_regime axioms",
+      "summary": "Subcritical, supercritical, and critical regimes described in prose (no formal declarations)",
       "startLine": 107,
       "endLine": 135,
-      "mathContext": "Axiomatized: subcritical_components, supercritical_giant, critical_regime axioms"
+      "mathContext": "Prose only: subcritical, supercritical, and critical regimes are described in comments; no declarations in this section"
     },
     {
       "id": "giant-component",
@@ -114,18 +113,18 @@
     {
       "id": "component-structure",
       "title": "The Component Structure",
-      "summary": "component_distribution, component_count, componentExponent",
+      "summary": "componentExponent definition (component size distribution and counts described in prose only)",
       "startLine": 208,
       "endLine": 237,
-      "mathContext": "Mathematical content: component_distribution, component_count, componentExponent"
+      "mathContext": "Formal definition: componentExponent; component size distribution and counts are described in comments only"
     },
     {
       "id": "percolation",
       "title": "Connection to Percolation",
-      "summary": "percolation_connection, critical_window axioms",
+      "summary": "Percolation analogy and critical window described in prose (no formal declarations)",
       "startLine": 238,
       "endLine": 267,
-      "mathContext": "Axiomatized: percolation_connection, critical_window axioms"
+      "mathContext": "Prose only: percolation analogy and critical window are described in comments; no declarations in this section"
     },
     {
       "id": "summary",
