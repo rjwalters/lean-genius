@@ -101,7 +101,7 @@
     {
       "id": "cochromatic-number",
       "title": "Cochromatic Number",
-      "summary": "Axiomatizes cochromaticNumber G and proves ζ(G) ≤ χ(G): every chromatic coloring is cochromatic since independent sets are cochromatic-valid.",
+      "summary": "Axiomatizes cochromaticNumber G and chromaticNumber G; states ζ(G) ≤ χ(G) as a property definition (cochromatic_le_chromatic_prop, not an axiom, unused in proofs) — every chromatic coloring is cochromatic since independent sets are cochromatic-valid.",
       "startLine": 59,
       "endLine": 94,
       "mathContext": "$\\zeta(G) = \\min\\{k : V(G) = \\bigcup_{i=1}^k S_i, \\text{ each } S_i \\text{ is a clique or independent set}\\}$. Since independent sets are cochromatic-valid, $\\zeta(G) \\leq \\chi(G)$."
@@ -109,7 +109,7 @@
     {
       "id": "surfaces",
       "title": "Surfaces and Genus",
-      "summary": "Defines OrientableSurface structure with genus, sphere (S_0), torus (S_1), isEmbeddableOn, and axiomatizes Euler's formula V - E + F = 2 - 2n.",
+      "summary": "Defines OrientableSurface structure with genus, sphere (S_0), torus (S_1), and isEmbeddableOn (:= True placeholder); states Euler's formula V - E + F = 2 - 2n as a property definition (euler_formula_genus_prop, not an axiom, unused in proofs).",
       "startLine": 95,
       "endLine": 130,
       "mathContext": "The orientable surface $S_n$ is the connected sum of $n$ tori. Euler's formula $V - E + F = 2 - 2n$ for genus $n$ embeddings implies $|E| \\leq 3|V| + 6(n-1)$, bounding graph density."
