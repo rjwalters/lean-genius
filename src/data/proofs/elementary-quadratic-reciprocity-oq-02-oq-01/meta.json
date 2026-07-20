@@ -21,7 +21,7 @@
     "dateAdded": "2026-05-05",
     "axiomCount": 0,
     "assumptions": "None. This proof uses only Mathlib theorems: gaussSum_sq, quadraticChar_isQuadratic, quadraticChar_ne_one, ZMod.isPrimitive_stdAddChar, legendreSym.at_neg_one, χ₄_eq_neg_one_pow.",
-    "lineCount": 199,
+    "lineCount": 187,
     "theoremCount": 5,
     "definitionCount": 1,
     "originalContributions": [
@@ -35,7 +35,7 @@
   "leanFile": {
     "namespace": "GaussSumQRCyclotomic",
     "path": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
-    "lineCount": 199,
+    "lineCount": 187,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 1,
@@ -64,36 +64,36 @@
     {
       "id": "imports-and-namespace",
       "title": "Imports, Opens, and Variable Declaration",
-      "startLine": 51,
-      "endLine": 63,
+      "startLine": 50,
+      "endLine": 64,
       "summary": "Imports GaussSum, QuadraticChar, LegendreSymbol, and CircleAddChar from Mathlib. Declares variable p : ℕ [Fact p.Prime] for use throughout the noncomputable namespace GaussSumQRCyclotomic."
     },
     {
       "id": "quad-char-c",
       "title": "Setup: The Quadratic Character in ℂ",
       "startLine": 65,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Defines quadCharC : MulChar (ZMod p) ℂ as quadraticChar (ZMod p) composed with Int.castRingHom ℂ. Private lemma char_ZMod_ne_two shows ringChar (ZMod p) = p ≠ 2 for odd prime p."
     },
     {
       "id": "char-properties",
       "title": "Properties: Quadratic and Nontrivial",
       "startLine": 80,
-      "endLine": 116,
+      "endLine": 100,
       "summary": "quadCharC_isQuadratic: character is quadratic (IsQuadratic) by lifting via Int.cast. quadCharC_ne_one: nontrivial for odd prime p, proved by contradiction using Int.cast injectivity to transfer from the ℤ-valued quadraticChar_ne_one."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Gauss Sum Squared Formula",
-      "startLine": 118,
-      "endLine": 176,
+      "startLine": 101,
+      "endLine": 160,
       "summary": "gauss_sum_sq_in_complex: applies gaussSum_sq, simplifies cardinality |ZMod p| = p, and evaluates χ(-1) = (-1)^(p/2) via legendreSym.at_neg_one and χ₄_eq_neg_one_pow."
     },
     {
       "id": "existential-and-examples",
       "title": "Existential Form and Concrete Verifications",
-      "startLine": 178,
-      "endLine": 199,
+      "startLine": 161,
+      "endLine": 187,
       "summary": "gauss_sum_sq_exists wraps the main theorem as ∃ τ:ℂ, τ²=(-1)^(p/2)·p. Three norm_num examples verify the formula for p=3 (τ²=-3), p=5 (τ²=5), and p=7 (τ²=-7)."
     }
   ],
