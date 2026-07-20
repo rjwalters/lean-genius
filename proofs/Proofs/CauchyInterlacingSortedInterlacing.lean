@@ -296,4 +296,56 @@ theorem sortDesc_roots_compress_ge_of_reducing
         rw [Multiset.length_sort]; exact hi) :=
   Multiset.sortDesc_getElem_ge_of_le (roots_charpoly_compress_le_of_reducing H hH hHp) i hi
 
+/-- Over `ℝ` the real-part map is the identity on a multiset of reals, so mapping the
+charpoly roots through `RCLike.re` (as Mathlib's `sort_roots_charpoly_eq_eigenvalues` does)
+leaves them unchanged.  This is the only wiring needed to read the real charpoly-root list as
+the geometric eigenvalue list. -/
+private theorem multiset_map_re_real (s : Multiset ℝ) : s.map RCLike.re = s := by
+  have h : ∀ x ∈ s, RCLike.re x = id x := fun x _ => RCLike.re_to_real
+  rw [Multiset.map_congr rfl h, Multiset.map_id]
+
+/-- **Geometric one-sided Cauchy interlacing on Mathlib's `IsSymmetric.eigenvalues`.**
+The bridge from the algebraic (charpoly-root) track to the genuine spectral eigenvalue
+function.  For a self-adjoint `T` on the `n`-dimensional real inner-product space `V` and a
+*reducing* subspace `H` (both `H` and `Hᗮ` are `T`-invariant) of dimension `m`, the honest
+`H`-compression `compress T H : H →ₗ H` is self-adjoint (`isSymmetric_compress`), and its
+`i`-th largest eigenvalue is bounded by the `i`-th largest eigenvalue of `T`:
+
+  `λ_i(compress T H) ≤ λ_i(T)`,
+
+where `λ_i` is Mathlib's descending-indexed `LinearMap.IsSymmetric.eigenvalues`.
+
+This unifies the two tracks the file family develops.  The algebraic side
+(`sortDesc_roots_compress_le_of_reducing`) proves the termwise bound on the *sorted charpoly-root
+lists*; Mathlib's `sort_roots_charpoly_eq_eigenvalues` identifies, for a self-adjoint operator over
+`ℝ`, that descending-sorted root list with `List.ofFn (eigenvalues)` (the real-part map being the
+identity here, `multiset_map_re_real`).  Reading the algebraic bound off index `i` through that
+identification yields the classical Cauchy interlacing bound stated directly on the spectral
+eigenvalues. -/
+theorem eigenvalues_compress_le_of_reducing
+    {T : V →ₗ[ℝ] V} (hT : T.IsSymmetric) (H : Submodule ℝ V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    {n m : ℕ} (hn : Module.finrank ℝ V = n) (hm : Module.finrank ℝ H = m)
+    (i : ℕ) (hi : i < m) :
+    (isSymmetric_compress hT H).eigenvalues hm ⟨i, hi⟩
+      ≤ hT.eigenvalues hn ⟨i, by have := Submodule.finrank_le H (R := ℝ); omega⟩ := by
+  -- The compression's charpoly splits, so its root multiset has cardinality `m = dim H`.
+  have hcardm : Multiset.card (LinearMap.charpoly (compress T H)).roots = m := by
+    rw [(isSymmetric_compress hT H).roots_charpoly_eq_eigenvalues hm]; simp
+  have hi' : i < Multiset.card (LinearMap.charpoly (compress T H)).roots := hcardm ▸ hi
+  -- Algebraic sorted one-sided interlacing on the charpoly-root lists.
+  have halg := sortDesc_roots_compress_le_of_reducing H hH hHp i hi'
+  -- Identify each descending-sorted real root list with the eigenvalue list.
+  have hbridgeC : (LinearMap.charpoly (compress T H)).roots.sort (· ≥ ·)
+      = List.ofFn ((isSymmetric_compress hT H).eigenvalues hm) := by
+    have h := (isSymmetric_compress hT H).sort_roots_charpoly_eq_eigenvalues hm
+    rwa [multiset_map_re_real] at h
+  have hbridgeT : (LinearMap.charpoly T).roots.sort (· ≥ ·)
+      = List.ofFn (hT.eigenvalues hn) := by
+    have h := hT.sort_roots_charpoly_eq_eigenvalues hn
+    rwa [multiset_map_re_real] at h
+  -- Read the algebraic bound off index `i` through the identifications.
+  simp only [hbridgeC, hbridgeT, List.getElem_ofFn] at halg
+  exact halg
+
 end CauchyInterlacing.SortedInterlacing
