@@ -51,7 +51,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 158,
-    "assumptions": "1 axiom: shorey_tijdeman. See Lean source for the complete statement.",
+    "assumptions": "1 axiom: shorey_tijdeman. Additionally, three auxiliary theorems (makowski_same_primes_base, makowski_same_primes_shift, zero_shift_has_solution) use native_decide, which adds a Lean.ofReduceBool compiled-kernel-trust dependency. See Lean source for the complete statement.",
     "theoremCount": 11,
     "definitionCount": 8
   },
@@ -64,7 +64,7 @@
       "**Two-to-three transition**: The two-shift version ($k=1$) has infinitely many solutions via $x = 2(2^r - 1)$, but the three-shift version ($k=2$) is conjectured impossible — a sharp combinatorial phase transition in the multiplicative structure of consecutive integers",
       "**ABC reduction**: Shorey and Tijdeman (1986) proved that Baker's strong ABC conjecture ($c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$ for coprime $a + b = c$) implies no three-shift solution exists, connecting an elementary question to deep Diophantine geometry",
       "**Radical as invariant**: The radical $\\mathrm{rad}(n) = \\prod_{p \\mid n} p$ is the natural invariant — `SamePrimeFactors` is precisely $\\mathrm{rad}(x) = \\mathrm{rad}(y)$, and the problem asks about simultaneous radical-equivalence under translation",
-      "**Monotonicity structure**: The $k$-shift hierarchy is monotone: unsolvability propagates downward. This is formalized as `kshift_monotone` and proved by a simple restriction argument using `omega`",
+      "**Monotonicity structure**: The $k$-shift hierarchy is monotone: unsolvability propagates upward. This is formalized as `kshift_monotone` ($\\text{KShiftProblem}\\,k \\Rightarrow \\text{KShiftProblem}\\,(k+1)$) and proved by a simple restriction argument using `omega`. An earlier downward direction ($k \\Rightarrow k-1$) was false and repaired (#38611)",
       "**Sporadic vs parametric**: Makowski's example $(75, 1215)$ shows that two-shift solutions are not all explained by the parametric family, suggesting the structure of solutions is richer than initially expected"
     ],
     "prerequisites": [
@@ -108,7 +108,7 @@
       "title": "General k-Shift Version",
       "startLine": 78,
       "endLine": 104,
-      "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k-1$) via `omega`."
+      "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k+1$) via `omega`."
     },
     {
       "id": "structural",
