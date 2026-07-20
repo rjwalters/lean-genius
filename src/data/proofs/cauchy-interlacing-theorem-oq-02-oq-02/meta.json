@@ -71,7 +71,8 @@
       "**The compression↔submatrix identification is a quadratic-form fact, not an operator identity.** The full operator T = toEuclideanLin A does NOT preserve the coordinate subspace H, so there is no intertwining T ∘ ι = ι ∘ Tsub. What DOES hold is the equality of quadratic forms on H: ⟪T (pad x), pad x⟫ = ⟪Tsub x, x⟫ (quad_form_submatrix'). This is exactly the Rayleigh-agreement the abstract theorem needs, and it is the reason the orthogonal compression — not A itself — has the principal submatrix as its matrix.",
       "**Zero-padding is the isometric coordinate embedding.** pad_preserves_inner shows ⟪pad a, pad b⟫ = ⟪a, b⟫; injectivity of e is precisely what makes the off-diagonal terms [e i = e j] vanish for i ≠ j. Transporting the submatrix operator through this isometry gives a compression on H whose spectrum is the submatrix spectrum by construction, so no separate 'eigenvalues are equal' argument is needed.",
       "**Instance-diamond avoidance.** LinearIsometryEquiv.inner_map_map does not apply to an isometry onto a submodule ↥H: the ≃ₗᵢ records Submodule.module while the lemma expects InnerProductSpace.toNormedSpace.toModule, and the elaborator will not unify them (and comparing EuclideanSpace InnerProductSpace instances triggers an expensive norm defeq). The proof routes the H-side numerator through Submodule.coe_inner (definitional) and the dot-product-level pad_preserves_inner instead, keeping every inner product either on EuclideanSpace or reduced to matrix dot products.",
-      "**Only the matrix layer is new.** All spectral content — the bound-form Courant–Fischer max–min characterisation and the codimension-m dimension count — is inherited verbatim from the parent oq-02 and its keystone. This entry adds exactly the Matrix ⇄ EuclideanSpace plumbing (toEuclideanLin, the zero-padding isometry, the quadratic-form collapse), and nothing more."
+      "**Only the matrix layer is new.** All spectral content — the bound-form Courant–Fischer max–min characterisation and the codimension-m dimension count — is inherited verbatim from the parent oq-02 and its keystone. This entry adds exactly the Matrix ⇄ EuclideanSpace plumbing (toEuclideanLin, the zero-padding isometry, the quadratic-form collapse), and nothing more.",
+      "**A principal submatrix IS a coordinate-subspace compression — the spectrum transports for free.** Deleting m rows and columns is not merely analogous to compressing onto a subspace: the retained coordinates span H, and A's quadratic form restricted to H is literally the submatrix's (quad_form_submatrix). So the transported operator TH = L∘Tsub∘L⁻¹ is unitarily equivalent to Tsub and inherits its eigenvalues by construction — no submatrix eigenvalue is ever recomputed. The theorem's ONLY genuine equation is the Rayleigh agreement; everything else is the abstract poincare_separation applied to this compression, which is why the matrix interlacing needs zero new spectral theory."
     ],
     "prerequisites": [
       "The parent entry oq-02 (abstract Poincaré separation): λ(k+m) ≤ μ(k) ≤ λ(k) for a symmetric operator and a codimension-m compression with agreeing Rayleigh quotient",
@@ -81,6 +82,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Overview: from the abstract theorem to the matrix form",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports (parent CauchyInterlacingPoincare) and the module docstring. It recalls the parent's ABSTRACT Poincaré separation (a symmetric operator T on V, a subspace H of dimension n with a compression TH whose Rayleigh quotient agrees with T's, giving lam ⟨k+m⟩ ≤ mu k ≤ lam ⟨k⟩), then states this file's goal — the LITERAL principal-submatrix form: for Hermitian A and an injective coordinate selector e, the eigenvalues of A.submatrix e e interlace those of A. The '## The bridge' outline previews the plan: realise A as toEuclideanLin A on EuclideanSpace, span the retained coordinates as H, transport the submatrix operator through the zero-padding isometry L, and reduce everything to the Rayleigh agreement (a Finset double-sum collapse). Opens and namespace close the setup.",
+      "mathContext": "Abstract $\\lambda_{\\langle k+m\\rangle} \\le \\mu_k \\le \\lambda_{\\langle k\\rangle}$ (parent) ⟶ literal: eigenvalues of a principal submatrix interlace those of the full Hermitian matrix."
+    },
     {
       "id": "pad",
       "title": "The Zero-Padding Embedding",
@@ -106,12 +115,20 @@
       "mathContext": "Converts the matrix dot-product identities into the ⟪T•, •⟫ Rayleigh quotients the abstract Poincaré separation consumes, while sidestepping the ↥H inner_map_map instance diamond."
     },
     {
-      "id": "main",
-      "title": "The Matrix Poincaré Separation Theorem",
-      "startLine": 199,
+      "id": "main-statement",
+      "title": "The Matrix Poincaré Separation Theorem — statement",
+      "startLine": 181,
+      "endLine": 209,
+      "summary": "The '### The matrix Poincaré separation theorem' heading, the raised elaboration budget (maxHeartbeats / synthInstance.maxHeartbeats 4000000, needed because working inside the ↥H induced inner-product instance is elaboration-heavy), the docstring, and the statement of poincare_separation_submatrix: for Hermitian A, injective e, and every k, the (k+m)-th eigenvalue of A is ≤ the k-th of A.submatrix e e ≤ the k-th of A.",
+      "mathContext": "$\\lambda_{\\langle k+m\\rangle}(A) \\le \\mu_k(A_{ee}) \\le \\lambda_{\\langle k\\rangle}(A)$ for every $k : \\mathrm{Fin}\\,n$."
+    },
+    {
+      "id": "main-proof",
+      "title": "The Matrix Poincaré Separation Theorem — construction and reduction",
+      "startLine": 210,
       "endLine": 302,
-      "summary": "poincare_separation_submatrix: builds the orthonormal frame, the coordinate subspace H, the zero-padding isometry L, the transported compression TH; discharges the Rayleigh agreement from the padding lemmas; and feeds everything into poincare_separation to obtain λ(⟨k+m⟩) ≤ μ(k) ≤ λ(⟨k⟩) for the Hermitian matrix A and its principal submatrix.",
-      "mathContext": "The literal matrix statement: eigenvalues of a principal submatrix (delete m rows/columns) interlace those of the full Hermitian matrix."
+      "summary": "The proof: assemble the spectral data for T = toEuclideanLin A and Tsub = toEuclideanLin (A.submatrix e e); build the orthonormal frame f = e j ↦ standard vectors, the coordinate subspace H = span(range f), the zero-padding linear isometry L : EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H (coordinate description hL_ofLp), and the transported compression TH = L.conj Tsub whose eigenbasis bH inherits Tsub's eigenvalues by construction; discharge the Rayleigh agreement hRayleigh (converting the ↥H inner product to the ambient one, transporting TH, and zero-padding, so both sides land at ⟪A.submatrix e e • x, x⟫ via pad_preserves_inner and rayleigh_pad_eq); then close with a single application of the abstract poincare_separation.",
+      "mathContext": "TH = L∘Tsub∘L⁻¹ is unitarily equivalent to Tsub (eigenvalues transported for free); the only computed equation is the Rayleigh agreement, fed into poincare_separation."
     }
   ],
   "conclusion": {
