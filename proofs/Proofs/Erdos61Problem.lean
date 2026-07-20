@@ -134,4 +134,36 @@ def threePathGraph : SimpleGraph (Fin 3) where
 The Erdős-Hajnal conjecture is known to be true for several specific graphs H,
 including paths, cycles, and complete bipartite graphs.
 -/
+
+/-
+## Foundational lemmas (axiom-free)
+
+The main conjecture and the two partial bounds (Erdős–Hajnal 1989, BNSS 2023)
+are deep results documented in the header prose only — they are not formalised.
+What follows are the machine-checkable structural facts about the
+`IsErdosHajnalLowerBound` predicate itself, proved with no axioms and no `sorry`.
+Together they isolate *why* the conjecture is nontrivial: a lower bound of size
+`0` always exists, so the entire content of the conjecture is the *growth rate*
+(the polynomial exponent `c > 0`), not mere existence.
+-/
+
+/-- The constant bound `0` is always an Erdős–Hajnal lower bound: the independence
+    number is a nonnegative integer, so the left disjunct holds for every graph.
+    Hence the conjecture is entirely about the *rate* `n^c`, not existence. -/
+theorem isErdosHajnalLowerBound_zero {α : Type*} [Fintype α] [DecidableEq α]
+    (H : SimpleGraph α) : IsErdosHajnalLowerBound H (fun _ => 0) :=
+  Filter.Eventually.of_forall fun _ _ _ => Or.inl (by simp only [ge_iff_le]; positivity)
+
+/-- Erdős–Hajnal lower bounds are downward closed: weakening the target function
+    pointwise preserves the property. So the difficulty is monotone in the demanded
+    rate — establishing a *larger* bound is what is hard. -/
+theorem IsErdosHajnalLowerBound.mono {α : Type*} [Fintype α] [DecidableEq α]
+    {H : SimpleGraph α} {f g : ℕ → ℝ} (hg : IsErdosHajnalLowerBound H g)
+    (hfg : ∀ n, f n ≤ g n) : IsErdosHajnalLowerBound H f := by
+  filter_upwards [hg] with n hn
+  intro G hG
+  rcases hn G hG with hi | hc
+  · exact Or.inl (le_trans (hfg n) hi)
+  · exact Or.inr (le_trans (hfg n) hc)
+
 end Erdos61

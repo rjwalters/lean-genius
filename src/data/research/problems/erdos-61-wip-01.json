@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: bare stub -> 2 axiom-free structural lemmas clarifying the conjecture is about growth rate not existence; fixed overclaiming meta (theoremCount 0->2). Main conjecture OPEN; partial bounds documented-only.",
+    "builtItems": [
+      "isErdosHajnalLowerBound_zero / IsErdosHajnalLowerBound.mono in proofs/Proofs/Erdos61Problem.lean (2 axiom-free thms; host-verified v4.31)"
+    ],
+    "insights": [
+      "Erdos61Problem.lean (Erdős–Hajnal, OPEN) was a bare stub: defs + ErdosHajnalConjecture Prop, ZERO theorems; meta falsely said the bounds were stated as axioms (axiomCount=0) and All results proved.",
+      "Structural core: the 0 bound is always an EH lower bound (indepNum≥0), and EH lower bounds are downward closed — so the conjecture is about the exponent c>0, not existence."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-61-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
