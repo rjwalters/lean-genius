@@ -96,8 +96,8 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 29,
-      "summary": "Module docstring: invert the OQ-06 Chebyshev upper density at the primes to obtain an n·log n lower bound on the n-th prime."
+      "endLine": 39,
+      "summary": "Module docstring: invert the OQ-06 Chebyshev upper density at the primes to obtain an n·log n lower bound on the n-th prime; then the imports (parent bridge + OQ-06, PrimeCounting, Real.log, ExponentialBounds), the namespace, and `open Nat`."
     },
     {
       "id": "bracket",
@@ -117,8 +117,8 @@
       "id": "nth-prime-bound",
       "title": "The n·log n lower bound on the n-th prime",
       "startLine": 86,
-      "endLine": 153,
-      "summary": "nth_prime_lower_bound: read OQ-06 at m = pₙ, absorb the √pₙ correction, substitute the log bracket and pₙ ≥ n+2, yielding pₙ ≥ (n+1)·(½·log(n+2) − log 2)/(2·log 4)."
+      "endLine": 158,
+      "summary": "nth_prime_lower_bound: read OQ-06 at m = pₙ, absorb the √pₙ correction, substitute the log bracket and pₙ ≥ n+2, yielding pₙ ≥ (n+1)·(½·log(n+2) − log 2)/(2·log 4); closes with the #check sanity lines and the namespace end."
     }
   ],
   "conclusion": {
