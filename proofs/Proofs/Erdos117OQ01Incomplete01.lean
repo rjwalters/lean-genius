@@ -284,4 +284,53 @@ theorem growthRate_subseq_limit_mem_window {φ : ℕ → ℕ} (hφ : StrictMono 
   exact ⟨c₁, c₂, hc1, hc12,
     Set.mem_Icc.mpr ⟨ge_of_tendsto hx hev1, le_of_tendsto hx hev2⟩⟩
 
+/-! ### The extreme cluster values are attained
+
+`growthRate_subseq_limit_mem_window` shows every subsequential limit lies *inside* Pyber's
+window `[log c₁, log c₂]`.  The converse-flavoured completion below shows the two extreme
+cluster values — `growthRateLimInf` and `growthRateLimSup` — are themselves *attained* as
+subsequential limits: there are index sequences diverging to `∞` along which the growth rate
+converges to each.  So the two abstract `liminf`/`limsup` values are genuine accumulation
+points of the growth rate, not merely formal bounds; together with the window confinement
+this pins the cluster set of `growthRate` down as a nonempty compact subset of
+`[log c₁, log c₂]` with minimum `growthRateLimInf` and maximum `growthRateLimSup`. -/
+
+/-- **The limsup is attained as a subsequential limit.**  There is an index sequence
+`x : ℕ → ℕ` diverging to `∞` (`Tendsto x atTop atTop`) along which
+`growthRate (x k) → growthRateLimSup`.  Thus the *largest* cluster value of the growth rate is
+a genuine accumulation point.  The growth rate is eventually confined to Pyber's window
+`[log c₁, log c₂]` (`growthRate_window`), providing the boundedness and coboundedness
+`exists_seq_tendsto_limsup` requires. -/
+theorem exists_subseq_tendsto_growthRateLimSup :
+    ∃ x : ℕ → ℕ, Filter.Tendsto x atTop atTop ∧
+      Filter.Tendsto (fun k => growthRate (x k)) atTop (nhds growthRateLimSup) := by
+  obtain ⟨c₁, c₂, _, _, hwin⟩ := growthRate_window
+  have hle : ∀ᶠ n in atTop, growthRate n ≤ Real.log c₂ :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => (hwin n hn).2⟩
+  have hge : ∀ᶠ n in atTop, Real.log c₁ ≤ growthRate n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => (hwin n hn).1⟩
+  have hb : Filter.IsBoundedUnder (· ≤ ·) atTop growthRate := ⟨Real.log c₂, hle⟩
+  have hc : Filter.IsCoboundedUnder (· ≤ ·) atTop growthRate :=
+    isCoboundedUnder_le_of_eventually_le atTop hge
+  obtain ⟨x, hxlim, hxtop⟩ := exists_seq_tendsto_limsup (u := growthRate) (f := atTop) hc hb
+  exact ⟨x, hxtop, hxlim⟩
+
+/-- **The liminf is attained as a subsequential limit.**  Dual to
+`exists_subseq_tendsto_growthRateLimSup`: an index sequence `x : ℕ → ℕ` diverging to `∞` with
+`growthRate (x k) → growthRateLimInf`, so the *smallest* cluster value of the growth rate is
+also a genuine accumulation point. -/
+theorem exists_subseq_tendsto_growthRateLimInf :
+    ∃ x : ℕ → ℕ, Filter.Tendsto x atTop atTop ∧
+      Filter.Tendsto (fun k => growthRate (x k)) atTop (nhds growthRateLimInf) := by
+  obtain ⟨c₁, c₂, _, _, hwin⟩ := growthRate_window
+  have hle : ∀ᶠ n in atTop, growthRate n ≤ Real.log c₂ :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => (hwin n hn).2⟩
+  have hge : ∀ᶠ n in atTop, Real.log c₁ ≤ growthRate n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => (hwin n hn).1⟩
+  have hb : Filter.IsBoundedUnder (· ≥ ·) atTop growthRate := ⟨Real.log c₁, hge⟩
+  have hc : Filter.IsCoboundedUnder (· ≥ ·) atTop growthRate :=
+    isCoboundedUnder_ge_of_eventually_le atTop hle
+  obtain ⟨x, hxlim, hxtop⟩ := exists_seq_tendsto_liminf (u := growthRate) (f := atTop) hc hb
+  exact ⟨x, hxtop, hxlim⟩
+
 end Erdos117OQ01Incomplete01
