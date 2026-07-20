@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 316,
+    "lineCount": 309,
     "assumptions": "3 axioms: (1) crocker_theorem — infinitely many odd integers not in RepSet 2, a proven 1971 result axiomatized here; (2) gallagher_density_approach — Gallagher 1975, proven via large sieve, axiomatized; (3) erdos_graham_conjecture — the main open conjecture that no finite k covers all large integers.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.31.0",
@@ -101,23 +101,23 @@
       "title": "Part VI: Gallagher's Density Result (Does Not Imply OQ-01)",
       "summary": "Axiom `gallagher_density_approach` (Gallagher 1975: the representable set has density $\\to1$) and `gallagher_does_not_imply_oq01_in_principle`, showing density 1 is consistent with OQ-01 failing — a sparse exceptional set can persist.",
       "startLine": 164,
-      "endLine": 284,
+      "endLine": 277,
       "mathContext": "Gallagher (1975): density $\\to 1$, but density 1 does not give universal coverage for large $n$."
     },
     {
       "id": "part7-erdos-graham",
       "title": "Part VII: The Erdős-Graham Conjecture (Formalized)",
       "summary": "Axiom `erdos_graham_conjecture` (Erdős–Graham predicted OQ-01 is FALSE) and `oq01_false_from_conjecture` deriving the negative answer from it.",
-      "startLine": 285,
-      "endLine": 301,
+      "startLine": 278,
+      "endLine": 294,
       "mathContext": "Erdős–Graham (1980) conjectured OQ-01 is FALSE: no finite $k$ covers all large integers."
     },
     {
       "id": "part8-logical-hierarchy",
       "title": "Part VIII: The Logical Hierarchy Summary",
       "summary": "Summarizes the logical hierarchy: parent conjecture $\\Rightarrow$ OQ-01; G–S $\\Rightarrow$ OQ-01 ($k=4$); Crocker rules out $k=2$; Gallagher's density-1 result does not settle it; Erdős–Graham conjecture OQ-01 false.",
-      "startLine": 302,
-      "endLine": 316,
+      "startLine": 295,
+      "endLine": 309,
       "mathContext": "Hierarchy: Main $\\Rightarrow$ OQ-01 $\\Leftarrow$ G–S; Crocker ($k\\ne2$); Gallagher (density only); Erdős–Graham (conjectured false)."
     }
   ],
@@ -173,7 +173,7 @@
       "Mathlib.Order.Filter.AtTopBot.Basic"
     ],
     "namespace": "Erdos10OQ01",
-    "lineCount": 316,
+    "lineCount": 309,
     "axiomCount": 3,
     "theoremCount": 10,
     "path": "Proofs/Erdos10OQ01.lean",
