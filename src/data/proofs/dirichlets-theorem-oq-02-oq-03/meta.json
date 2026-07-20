@@ -87,39 +87,108 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "overview",
       "title": "File Overview",
+      "summary": "Motivating contrast between an elementary *certified* growth bound for the primes ≡ 3 (mod 4) and their true asymptotic density (Dirichlet). Sets up the certified factorial/primorial towers B and C and the honest gap between the provable lower bound and the truth.",
       "startLine": 1,
-      "endLine": 35,
-      "summary": "Frames the certified-bound question: the Euclid tower B(k) as an upper bound on the k-th prime ≡ 3 (mod 4), versus the true p_k ∼ 2k·ln k; imports and namespace."
+      "endLine": 36,
+      "mathContext": "Header docstring and imports framing OQ-02-OQ-03: proving explicit, kernel-checkable lower bounds on the k-th prime ≡ 3 (mod 4) and its counting function π(x; 4, 3), and quantifying how far these certified towers sit below the real n·log-scale growth."
     },
     {
-      "id": "interval-bound",
+      "id": "step-1",
       "title": "Step 1: The Euclid Interval Bound",
+      "summary": "Euclid-style existence: every n has a prime factor ≡ 3 (mod 4) exceeding a given bound, giving a prime ≡ 3 (mod 4) in a controlled interval and one larger than any N.",
       "startLine": 37,
-      "endLine": 105,
-      "summary": "Re-proves the factor lemma and packages the construction as exists_prime_three_mod_four_in_interval: a prime ≡ 3 (mod 4) always lies in (n, 4·(n+1)! − 1]."
+      "endLine": 106,
+      "mathContext": "exists_prime_factor_three_mod_four, exists_prime_three_mod_four_in_interval and exists_prime_three_mod_four_gt: the classical Euclidean argument (a product +2 style witness) forces a new prime ≡ 3 (mod 4), bounding where the next one must appear."
     },
     {
-      "id": "next-prime-enumeration",
-      "title": "Step 2: The Next Prime and the Increasing Enumeration",
+      "id": "step-2",
+      "title": "Step 2: The Next Prime and the Increasing Enumeration p3",
+      "summary": "Defines nextP3 (the immediate next prime ≡ 3 (mod 4) above n) and the strictly increasing enumeration p3 of all primes ≡ 3 (mod 4), proving it is prime-valued, ≡ 3 (mod 4), strictly monotone, and surjective onto that set.",
       "startLine": 107,
-      "endLine": 168,
-      "summary": "Defines nextP3 (least prime ≡ 3 mod 4 above n) with its spec and minimality, the one-step factorial bound nextP3_le_factorial, and the enumeration p3 with p3_prime/p3_mod/p3_strictMono."
+      "endLine": 211,
+      "mathContext": "nextP3 with nextP3_gt/_prime/_mod/_le_factorial; p3 with p3_prime, p3_mod, p3_strictMono, p3_le_self, p3_surjective and mem_range_p3_iff establishing that p3 enumerates exactly the primes ≡ 3 (mod 4)."
     },
     {
-      "id": "tower-bound",
-      "title": "Step 3: The Certified Iterated-Factorial Tower",
-      "startLine": 170,
-      "endLine": 201,
-      "summary": "Defines B(0)=3, B(k+1)=4·(B(k)+1)!−1, proves monotonicity of the one-step map, and the main bound p3_le_tower: p3 k ≤ B k."
+      "id": "step-3",
+      "title": "Step 3: The Certified Iterated-Factorial Tower Bound",
+      "summary": "Defines the factorial tower B and proves the certified upper bound p3 k ≤ B k, together with the linear lower bound and the two-sided bracket for p3.",
+      "startLine": 212,
+      "endLine": 264,
+      "mathContext": "def B (iterated-factorial tower), step_mono, p3_le_tower (p3 k ≤ B k), p3_ge_linear and p3_bracketed give an explicit, kernel-certified two-sided envelope for the k-th prime ≡ 3 (mod 4)."
     },
     {
-      "id": "sanity-contrast",
+      "id": "step-4",
       "title": "Step 4: Worked Values and the Honest Contrast",
-      "startLine": 203,
-      "endLine": 229,
-      "summary": "p3 1 = 7 and B 1 = 95 (via kernel decide), with tower_loose_at_one quantifying the looseness against the true 2k·ln k asymptotic."
+      "summary": "Sanity checks at small k (p3_one, B_one) and tower_loose_at_one, quantifying how loose the certified factorial-tower bound is against the true value.",
+      "startLine": 265,
+      "endLine": 291,
+      "mathContext": "p3_one, B_one, tower_loose_at_one: worked base cases demonstrating the (large) gap between the certified bound B and the actual primes, motivating the tighter primorial tower next."
+    },
+    {
+      "id": "step-5",
+      "title": "Step 5: The Tighter Primorial Bound",
+      "summary": "Introduces the primorial tower C (via towerProd) and proves the sharper certified bound p3 k ≤ C k, with worked values and the fact that the primorial tower is tighter than the factorial tower.",
+      "startLine": 292,
+      "endLine": 409,
+      "mathContext": "p3_le_primorial; def towerProd, def C, C_eq, towerProd_eq_prod, p3_le_primorialTower; C_zero_eq/C_one_eq/C_two_eq; primorial_tighter_than_factorial and p3_bracketed_primorial sharpen Step 3's envelope using primorials instead of factorials."
+    },
+    {
+      "id": "step-6",
+      "title": "Step 6: The Primorial Tower Never Exceeds the Factorial Tower (C k ≤ B k)",
+      "summary": "Proves the (weak) domination C k ≤ B k of the primorial tower by the factorial tower, via the per-step factorial bound.",
+      "startLine": 410,
+      "endLine": 462,
+      "mathContext": "factorial_ge_mul_pred, towerProd_succ_le_factorial and C_le_B: each primorial step is dominated by the corresponding factorial step, so C k ≤ B k for all k."
+    },
+    {
+      "id": "step-7",
+      "title": "Steps 7–8: Strict Domination and the Closed-form Doubly-exponential Bound",
+      "summary": "Upgrades to strict domination C k < B k for k ≥ 1 (with the equality case), and derives an explicit non-recursive closed-form doubly-exponential bracket for the primorial tower C — showing the doubly-exponential growth is intrinsic.",
+      "startLine": 463,
+      "endLine": 629,
+      "mathContext": "factorial_gt_mul_pred, towerProd_succ_lt_factorial, C_lt_B, C_eq_B_iff (strict domination); four_mul_towerProd_le, C_le_doubly_exp, p3_le_doubly_exp, towerProd_ge, C_ge_doubly_exp and C_doubly_exp_bracket give a matching two-sided doubly-exponential closed form for C."
+    },
+    {
+      "id": "step-9",
+      "title": "Step 9: The Factorial Tower B Is Tower-exponential",
+      "summary": "Shows B grows tower-exponentially: 2^(...) lower bounds on successive B values, and 2^k · C k ≤ B (k+1), widening the gap between B and C.",
+      "startLine": 630,
+      "endLine": 684,
+      "mathContext": "two_pow_le_succ_factorial, B_succ_ge_two_pow and two_pow_C_le_B_succ establish exponential blow-up of B relative to C at each step."
+    },
+    {
+      "id": "step-10",
+      "title": "Step 10: The Ratio B / C Diverges",
+      "summary": "Proves B k ≥ (C k)² and m · C k ≤ B k for every m, so the ratio B/C diverges — the factorial tower outpaces the primorial tower without bound.",
+      "startLine": 685,
+      "endLine": 796,
+      "mathContext": "C_succ_add_one, C_succ_le_sq, C_mono, C_ge_add, quartic_le_two_pow, C_sq_le_B ((C k)² ≤ B k) and B_div_C_diverges: the certified factorial tower dominates every constant multiple of the primorial tower."
+    },
+    {
+      "id": "step-11",
+      "title": "Step 11: The Factorial Tower B Is Tetrational (2 ↑↑ k ≤ B k)",
+      "summary": "Introduces the tetration tower tower2 (2 ↑↑ k) and sandwiches it strictly between the doubly-exponential and factorial growth, giving a growth-class separation.",
+      "startLine": 797,
+      "endLine": 902,
+      "mathContext": "def tower2 (2 ↑↑ k), tower2_le_B (2 ↑↑ k ≤ B k), two_pow_le_tower2, doubly_exp_le_tower2, tower2_lt_doubly_exp_at_four and growth_class_separation separate tetrational B from the doubly-exponential C."
+    },
+    {
+      "id": "step-12",
+      "title": "Step 12: A Certified Lower Bound on the Counting Function π(x; 4, 3)",
+      "summary": "Defines the counting function primesCount3 for primes ≡ 3 (mod 4) up to x, and proves an unbounded certified lower bound driven by the doubly-exponential tower.",
+      "startLine": 903,
+      "endLine": 976,
+      "mathContext": "def primesCount3, card_le_primesCount3, primesCount3_mono, primesCount3_ge_of_doubly_exp, primesCount3_ge and primesCount3_unbounded: transfer the tower bounds to a certified, unbounded lower bound on π(x; 4, 3)."
+    },
+    {
+      "id": "step-13",
+      "title": "Step 13: B Dominates Every Fixed Power of C",
+      "summary": "Strengthens Step 10: for every fixed exponent p, (C k)^p ≤ B k eventually, so B/(C^p) diverges and B/C → ∞ — the factorial tower beats every fixed polynomial power of the primorial tower.",
+      "startLine": 977,
+      "endLine": 1095,
+      "mathContext": "two_pow_two_mul_le_tower2, C_pow_le_B_eventually ((C k)^p ≤ B k eventually), B_div_C_pow_diverges, tendsto_B_div_C_pow_atTop and tendsto_B_div_C_atTop: the domination of B over C holds against every fixed power, an atTop-divergence of the ratio."
     }
   ],
   "conclusion": {
