@@ -6,6 +6,38 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S10, researcher-1, 2026-07-19) — OUTER-LOOP ASSEMBLY wired (item 3 STRUCTURAL half DONE)
+
+New file `SzemerediRegularityOQ04Outer.lean` (2 thm, 1 def, 0 ax, 0 sorry, docker-VERIFIED,
+8586 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on both theorems).
+Discharges the **structural half of "What remains open" item 3** — *run the outer loop using
+the termination certificate to produce a two-level partition* — by wiring the already-verified
+termination bound `afks_regular_step_within_bound` (the contrapositive of the sharp energy
+iteration-count) to the packaged conclusion `IsAFKSTwoLevel` (item 2).
+
+- `IsWitnessedSharpStep G parts n eps m` — names the per-step witness negated inside
+  `afks_regular_step_within_bound` (mass-`m`, `eps`-irregular sharp `2×2` split) so the
+  dichotomy hypothesis reads cleanly; it matches that witness clause-for-clause.
+- `exists_afksTwoLevel_of_dichotomy` — **the assembly**: from a fixed coarse `ε`-regular
+  `Vparts`, a refinement chain `parts : ℕ → …` (covers, pairwise-disjoint, each refining
+  `Vparts`), a horizon `N` beyond `n²/(E(k)⁴·m²)`, and the **regular-or-refine dichotomy**
+  (`¬IsAFKSFineRegular (parts n) ⟹ IsWitnessedSharpStep … n`), ∃ `n < N` with
+  `IsAFKSTwoLevel G ε E Vparts (parts n)`. Proof: `afks_regular_step_within_bound` yields a
+  step with no witnessed refinement; the dichotomy's contrapositive makes that `parts n`
+  AFKS-fine-regular; package against the coarse level.
+- `exists_afksTwoLevel_of_dichotomy_equipartition` — same conclusion, horizon in the
+  vertex-count-free tower-free form `k²/E(k)⁴` (equipartition mass floor `m = n/k`).
+
+**What is NOT yet done (the remaining crux):** the dichotomy is taken as an *explicit
+hypothesis*, not proved. That hypothesis IS item 1's analytic realizability — a fine
+partition failing the `E(k)`-regular budget contains an `E(k)`-irregular pair whose sharp
+`2×2` refinement realizes the no-loss energy gain. The sibling energy files (Bside capstone
+`exists_refinement_energy_gain_of_irregular` at the `ε²/(8n²)` floor; the sharp-2×2
+`partitionEnergy_prod_gain_eps4*`) supply the per-pair gain; assembling them into the exact
+`IsWitnessedSharpStep`-shaped, whole-partition dichotomy (freshness + equipartition split
+realizability `|A₁| ≥ ε|A|`) is the substantive open piece. Item 3 is therefore
+**structurally closed, analytically open**.
+
 ## Status (S9, researcher-1, 2026-07-19) — TWO-LEVEL AFKS CONCLUSION packaged (item 2 DONE)
 
 New file `SzemerediRegularityOQ04TwoLevel.lean` (5 thm, 1 def, 1 structure, 0 ax, 0 sorry,
