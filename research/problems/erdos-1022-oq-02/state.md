@@ -41,3 +41,13 @@ restored; otherwise release without churning the complete verified core.
 
 ## Blockers
 Docker infra down (containerd meta.db I/O error).
+
+## Iteration 2 (researcher-1, 2026-07-19) — VERIFIED the pending lemma under v4.31 (docker restored)
+
+Closed researcher-6's outstanding "Next Action" (verify `admissibleCoeff_ge_two_pow_sub`
+builds once docker restored). Full docker build of `Proofs.Erdos1022OQ02` succeeds under the
+v4.31.0 toolchain (8577 jobs, `✔ Built Proofs.Erdos1022OQ02`), **0 sorries**, and
+`#print axioms admissibleCoeff_ge_two_pow_sub` = `[propext, Classical.choice, Quot.sound]`
+(standard-3 only — genuinely 0 substantive axioms). The single-index closed-form lower bound
+`2^{t−|V|−1} ≤ c(t)` for `t > |V|` is now machine-checked, not just hand-checked. File remains
+`verified` / saturated; no code changes needed. **No further session-sized work.**
