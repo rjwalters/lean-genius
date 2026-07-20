@@ -56,9 +56,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: gcd(n,m) recovers the power map",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Imports (parent CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03 and Tactic) and the module docstring. It makes precise the parent's slogan — structurally the n-th power map x ↦ xⁿ on a finite group of order m is the same map as the gcd(n,m)-th power map — in three independent senses (same kernel in any finite group, same image in the cyclic case, uniform fibres/partition in the cyclic case), then records the proof strategy: the kernel via orderOf_dvd_iff_pow_eq_one and o ∣ m → (o ∣ n ↔ o ∣ gcd(n,m)); the image via IsCyclic.card_powMonoidHom_range; the partition via Finset.card_eq_sum_card_image over the parent's count. Namespace and open Finset close the setup.",
+      "mathContext": "Slogan: $x \\mapsto x^n$ equals $x \\mapsto x^{\\gcd(n,m)}$ structurally; $\\#(n\\text{-th powers}) = m/\\gcd(n,m)$."
+    },
+    {
       "id": "kernel-recovery",
       "title": "Same Kernel — the n-torsion is the gcd-torsion",
-      "startLine": 65,
+      "startLine": 59,
       "endLine": 91,
       "summary": "pow_eq_one_iff_pow_gcd: in any finite group, xⁿ = 1 ↔ x^gcd(n, |G|) = 1, via orderOf_dvd_iff_pow_eq_one and the equivalence orderOf x ∣ n ↔ orderOf x ∣ gcd(n, |G|) (using orderOf x ∣ |G|). solutions_pow_one_eq_gcd records the Finset equality of the two torsion solution sets, and ker_pow_eq_ker_pow_gcd lifts the equivalence to an equality of kernel subgroups of the power homomorphisms.",
       "mathContext": "xⁿ = 1 ⟺ x^gcd(n,m) = 1, hence ker(x ↦ xⁿ) = ker(x ↦ x^gcd(n,m)); no commutativity required."
@@ -72,12 +80,20 @@
       "mathContext": "range(x ↦ xⁿ) = range(x ↦ x^gcd(n,m)); both have order m/gcd(n, m)."
     },
     {
-      "id": "fibre-partition",
-      "title": "Uniform Fibres and the Partition Identity",
+      "id": "uniform-fibres",
+      "title": "Uniform Fibre Size",
       "startLine": 121,
+      "endLine": 130,
+      "summary": "card_fiber_pow restates the parent's count: every fibre of x ↦ xⁿ lying over an actual n-th power b has exactly gcd(n, m) elements — the common fibre size that will drive the partition count.",
+      "mathContext": "Each non-empty fibre of $x \\mapsto x^n$ has $\\gcd(n,m)$ elements."
+    },
+    {
+      "id": "partition-count",
+      "title": "The Partition Identity and the Power Count",
+      "startLine": 131,
       "endLine": 164,
-      "summary": "card_fiber_pow restates the parent's count: every fibre of x ↦ xⁿ over an actual n-th power b has exactly gcd(n, m) elements. card_image_pow_mul_gcd counts the group two ways with Finset.card_eq_sum_card_image — each summand collapses to gcd(n, m) — to obtain #(n-th powers)·gcd(n, m) = m. card_image_pow divides by the positive gcd to give #(n-th powers) = m/gcd(n, m): the power map tiles the cyclic group into m/gcd(n,m) fibres of common size gcd(n,m).",
-      "mathContext": "#(n-th powers)·gcd(n, m) = m, so #(n-th powers) = m/gcd(n, m); fibres all have size gcd(n, m)."
+      "summary": "card_image_pow_mul_gcd counts the group two ways with Finset.card_eq_sum_card_image — each summand collapses to the common fibre size gcd(n, m) — to obtain #(n-th powers)·gcd(n, m) = m. card_image_pow then divides by the positive gcd to give #(n-th powers) = m/gcd(n, m): the power map tiles the cyclic group into m/gcd(n,m) fibres of common size gcd(n,m).",
+      "mathContext": "#(n-th powers)·gcd(n, m) = m, so #(n-th powers) = m/gcd(n, m)."
     }
   ],
   "conclusion": {
