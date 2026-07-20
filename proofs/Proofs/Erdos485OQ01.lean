@@ -151,7 +151,9 @@ theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
     termCount ((1 + X ^ d : Polynomial ℚ) ^ 2) = 3 := by
   unfold termCount
   -- Step 1: Expand (1 + X^d)²
-  have hexpand : (1 + X ^ d : Polynomial ℚ) ^ 2 = 1 + C 2 * X ^ d + X ^ (2 * d) := by ring
+  have hexpand : (1 + X ^ d : Polynomial ℚ) ^ 2 = 1 + C 2 * X ^ d + X ^ (2 * d) := by
+    have hC2 : (C 2 : Polynomial ℚ) = 2 := by simp only [map_ofNat]
+    rw [hC2]; ring
   rw [hexpand]
   -- Step 2: Compute support via coefficient characterization
   suffices hsup : (1 + C 2 * X ^ d + X ^ (2 * d) : Polynomial ℚ).support = {0, d, 2 * d} by
@@ -177,12 +179,11 @@ theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
                Polynomial.coeff_X_pow]
     rcases hm with rfl | rfl | rfl
     · -- m = 0: coeff = 1 + 2·(if 0=d ...) + (if 0=2d ...)
-      simp [show d ≠ 0 from by omega, show 2 * d ≠ 0 from by omega]
-    · -- m = d: coeff = (if d=0 ...) + 2·1 + (if d=2d ...)
-      simp [show d ≠ 0 from by omega, show d ≠ 2 * d from by omega]
-      norm_num
+      simp [show (0 : ℕ) ≠ d from by omega, show (0 : ℕ) ≠ 2 * d from by omega]
+    · -- m = d (position variable; d has been substituted): coeff = 0 + 2 + 0
+      simp [show ¬(m = 0) from by omega, show ¬(m = 2 * m) from by omega]
     · -- m = 2d: coeff = (if 2d=0 ...) + 2·(if 2d=d ...) + 1
-      simp [show 2 * d ≠ 0 from by omega, show 2 * d ≠ d from by omega]
+      simp [show ¬(2 * d = 0) from by omega, show ¬(2 * d = d) from by omega]
 
 /-  **FALSE — REMOVED**: The lacunary lower bound as originally stated is INCORRECT.
     Counterexample: p = 1 - x² - (1/2)x⁴ has support {0,2,4} with all gaps ≥ 2,
@@ -219,9 +220,9 @@ theorem lacunary_positive_lower_bound (p : Polynomial ℚ) (k : ℕ) (hk : k ≥
     intro h_zero
     have h1 : 0 < p.coeff a * p.coeff b := mul_pos (hsome a ha) (hsome b hb)
     have h2 : p.coeff a * p.coeff b ≤
-        ∑ x ∈ Finset.Nat.antidiagonal (a + b), p.coeff x.1 * p.coeff x.2 :=
+        ∑ x ∈ Finset.antidiagonal (a + b), p.coeff x.1 * p.coeff x.2 :=
       Finset.single_le_sum (fun x _ => mul_nonneg (hpos x.1) (hpos x.2))
-        (Finset.Nat.mem_antidiagonal.mpr rfl)
+        (show (a, b) ∈ Finset.antidiagonal (a + b) from Finset.mem_antidiagonal.mpr rfl)
     linarith
   -- T₁ = {a + m | a ∈ support(p)} ⊆ support(p²), |T₁| = k
   have hT₁_sub : p.support.image (· + m) ⊆ (p ^ 2).support := by
@@ -269,11 +270,10 @@ theorem f_one_eq : f 1 = 1 := by
     apply Nat.sInf_le
     refine ⟨X, ?_, ?_⟩
     · simp [Polynomial.support_X]
-    · simp [sq, Polynomial.support_X_pow]
-      rfl
+    · simp [Polynomial.support_X_pow]
   · -- Lower: f(1) ≥ 1, any nonzero polynomial has ≥ 1 term when squared
     apply le_csInf
-    · exact ⟨_, X, by simp [Polynomial.support_X], by simp [sq, Polynomial.support_X_pow]; rfl⟩
+    · exact ⟨1, X, by simp [Polynomial.support_X], by simp [Polynomial.support_X_pow]⟩
     · intro n ⟨p, hp_tc, hp_sq⟩
       by_contra h
       push_neg at h
@@ -282,8 +282,8 @@ theorem f_one_eq : f 1 = 1 := by
       rw [Finset.card_eq_zero, Polynomial.support_eq_empty] at hp_sq
       have : p ≠ 0 := by
         intro hp0
-        rw [hp0, Finset.card_eq_zero, Polynomial.support_eq_empty] at hp_tc
-        exact absurd hp_tc one_ne_zero
+        rw [hp0] at hp_tc
+        simp at hp_tc
       have : p ^ 2 ≠ 0 := pow_ne_zero 2 this
       exact this hp_sq
 
@@ -312,48 +312,48 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
   rcases hm with rfl | rfl | rfl
   · -- Position 2*i: coeff = (p.coeff i)² ≠ 0
     rw [sq, Polynomial.coeff_mul]
-    have := Finset.sum_eq_single (⟨i, i⟩ : ℕ × ℕ)
+    have := Finset.sum_eq_single (f := fun x : ℕ × ℕ => p.coeff x.1 * p.coeff x.2)
+      (⟨i, i⟩ : ℕ × ℕ)
       (fun ⟨a, b⟩ hab hne => by
-        have hab' := Finset.Nat.mem_antidiagonal.mp hab
-        simp only [ne_eq, Prod.mk.injEq, not_and_or] at hne
+        have hab' := Finset.mem_antidiagonal.mp hab  -- a + b = 2 * i
         by_cases ha : a ∈ p.support
-        · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
-          rcases ha with rfl | rfl
-          · -- a = i, b = i (contradiction with hne)
-            have hb : b = i := by omega
-            rcases hne with h | h <;> exact absurd hb h
-          · -- a = j, b = 2i - j. Show b ∉ support
-            have hb : b ∉ p.support := by
-              rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
-              exact ⟨by omega, by omega⟩
-            rw [Polynomial.notMem_support_iff.mp hb]; ring
+        · by_cases hbs : b ∈ p.support
+          · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha hbs
+            exact absurd (by simp only [Prod.mk.injEq]; omega : (⟨a, b⟩ : ℕ × ℕ) = ⟨i, i⟩) hne
+          · rw [Polynomial.notMem_support_iff.mp hbs]; ring
         · rw [Polynomial.notMem_support_iff.mp ha]; ring)
-      (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : i + i = 2 * i)) h)
+      (fun h => absurd (Finset.mem_antidiagonal.mpr (by omega : i + i = 2 * i)) h)
     rw [this]; exact mul_ne_zero hi hi
   · -- Position i+j: coeff = 2 * (p.coeff i) * (p.coeff j) ≠ 0
     rw [sq, Polynomial.coeff_mul]
     -- Extract (i,j) and (j,i) terms, show rest is 0
-    have hij_mem : (i, j) ∈ Finset.Nat.antidiagonal (i + j) :=
-      Finset.Nat.mem_antidiagonal.mpr rfl
+    have hij_mem : (i, j) ∈ Finset.antidiagonal (i + j) :=
+      Finset.mem_antidiagonal.mpr rfl
     have hji_ne : (⟨j, i⟩ : ℕ × ℕ) ≠ ⟨i, j⟩ := by
       simp only [ne_eq, Prod.mk.injEq, not_and_or]; left; exact Ne.symm hij
-    have hji_mem_erase : (j, i) ∈ (Finset.Nat.antidiagonal (i + j)).erase (i, j) :=
-      Finset.mem_erase.mpr ⟨hji_ne, Finset.Nat.mem_antidiagonal.mpr (by omega)⟩
+    have hji_mem_erase : (j, i) ∈ (Finset.antidiagonal (i + j)).erase (i, j) :=
+      Finset.mem_erase.mpr ⟨hji_ne, Finset.mem_antidiagonal.mpr (by omega)⟩
     rw [← Finset.add_sum_erase _ _ hij_mem,
         ← Finset.add_sum_erase _ _ hji_mem_erase]
-    have hrest : ∑ x ∈ ((Finset.Nat.antidiagonal (i + j)).erase (i, j)).erase (j, i),
+    have hrest : ∑ x ∈ ((Finset.antidiagonal (i + j)).erase (i, j)).erase (j, i),
         p.coeff x.1 * p.coeff x.2 = 0 := by
       apply Finset.sum_eq_zero
       intro ⟨a, b⟩ hab
       have hab_ne1 : (⟨a, b⟩ : ℕ × ℕ) ≠ ⟨j, i⟩ := (Finset.mem_erase.mp hab).1
       have hab2 := (Finset.mem_erase.mp hab).2
       have hab_ne2 : (⟨a, b⟩ : ℕ × ℕ) ≠ ⟨i, j⟩ := (Finset.mem_erase.mp hab2).1
-      have hab' := Finset.Nat.mem_antidiagonal.mp (Finset.mem_erase.mp hab2).2
+      have hab' := Finset.mem_antidiagonal.mp (Finset.mem_erase.mp hab2).2
       by_cases ha : a ∈ p.support
-      · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
-        rcases ha with rfl | rfl
-        · exact absurd (Prod.ext rfl (show b = j by omega)) hab_ne2
-        · exact absurd (Prod.ext rfl (show b = i by omega)) hab_ne1
+      · by_cases hbs : b ∈ p.support
+        · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha hbs
+          rcases ha with rfl | rfl
+          · rcases hbs with rfl | rfl
+            · exfalso; omega
+            · exact absurd rfl hab_ne2
+          · rcases hbs with rfl | rfl
+            · exact absurd rfl hab_ne1
+            · exfalso; omega
+        · rw [Polynomial.notMem_support_iff.mp hbs]; ring
       · rw [Polynomial.notMem_support_iff.mp ha]; ring
     rw [hrest, add_zero]
     have : p.coeff i * p.coeff j + p.coeff j * p.coeff i =
@@ -362,21 +362,17 @@ private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2)
     exact mul_ne_zero two_ne_zero (mul_ne_zero hi hj)
   · -- Position 2*j: coeff = (p.coeff j)² ≠ 0 (symmetric to 2*i case)
     rw [sq, Polynomial.coeff_mul]
-    have := Finset.sum_eq_single (⟨j, j⟩ : ℕ × ℕ)
+    have := Finset.sum_eq_single (f := fun x : ℕ × ℕ => p.coeff x.1 * p.coeff x.2)
+      (⟨j, j⟩ : ℕ × ℕ)
       (fun ⟨a, b⟩ hab hne => by
-        have hab' := Finset.Nat.mem_antidiagonal.mp hab
-        simp only [ne_eq, Prod.mk.injEq, not_and_or] at hne
+        have hab' := Finset.mem_antidiagonal.mp hab  -- a + b = 2 * j
         by_cases ha : a ∈ p.support
-        · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
-          rcases ha with rfl | rfl
-          · have hb : b ∉ p.support := by
-              rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
-              exact ⟨by omega, by omega⟩
-            rw [Polynomial.notMem_support_iff.mp hb]; ring
-          · have hb : b = j := by omega
-            rcases hne with h | h <;> exact absurd hb h
+        · by_cases hbs : b ∈ p.support
+          · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha hbs
+            exact absurd (by simp only [Prod.mk.injEq]; omega : (⟨a, b⟩ : ℕ × ℕ) = ⟨j, j⟩) hne
+          · rw [Polynomial.notMem_support_iff.mp hbs]; ring
         · rw [Polynomial.notMem_support_iff.mp ha]; ring)
-      (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : j + j = 2 * j)) h)
+      (fun h => absurd (Finset.mem_antidiagonal.mpr (by omega : j + j = 2 * j)) h)
     rw [this]; exact mul_ne_zero hj hj
 
 /-- f(2) = 3: (a + bx^n)² = a² + 2abx^n + b²x^{2n}. -/
@@ -393,7 +389,7 @@ theorem f_two_eq : f 2 = 3 := by
                   Polynomial.coeff_X, Finset.mem_insert, Finset.mem_singleton]
       constructor
       · intro h; by_contra hall; push_neg at hall
-        obtain ⟨hn0, hn1⟩ := hall; simp [hn0, hn1] at h
+        obtain ⟨hn0, hn1⟩ := hall; simp [hn0, Ne.symm hn1] at h
       · rintro (rfl | rfl) <;> simp,
     binomial_square_three_terms 1 (by omega)⟩
   · -- f(2) ≥ 3
@@ -407,7 +403,7 @@ theorem f_two_eq : f 2 = 3 := by
                     Polynomial.coeff_X, Finset.mem_insert, Finset.mem_singleton]
         constructor
         · intro h; by_contra hall; push_neg at hall
-          obtain ⟨hn0, hn1⟩ := hall; simp [hn0, hn1] at h
+          obtain ⟨hn0, hn1⟩ := hall; simp [hn0, Ne.symm hn1] at h
         · rintro (rfl | rfl) <;> simp,
       binomial_square_three_terms 1 (by omega)⟩
     · intro n ⟨p, hp, hsq⟩

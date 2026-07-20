@@ -48,8 +48,8 @@
     ],
     "dateAdded": "2026-03-28",
     "axiomCount": 3,
-    "lineCount": 451,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `d` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'd'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 3 axioms: Schinzel-Zannier lower bound, Erdős upper bound, f(k)→∞. Lacunary lower bound was REMOVED (found to be false: counterexample p = 1-x²-(1/2)x⁴).",
+    "lineCount": 449,
+    "assumptions": "3 axioms (deep analytic number theory / arithmetic geometry results stated as hypotheses): schinzel_zannier_lower (f(k) ≥ c·log k), erdos_upper (f(k) < k^(1-c)), f_diverges (f(k) → ∞). All supporting lemmas (f_zero, f_one_eq, f_two_eq, binomial_square_three_terms, positive_coeffs_no_cancel, lacunary_positive_lower_bound) are fully machine-checked with 0 sorries. The originally-included naive 'lacunary lower bound' termCount(P²) ≥ 2k-1 was REMOVED as false (counterexample p = 1-x²-(1/2)x⁴, whose square cancels a coefficient). Repaired to compile green on Lean v4.31 under issue #39077: the earlier `autoImplicit true` masking was eliminated by fixing the real underlying errors (Finset.antidiagonal API rename, subst-orientation fixes, C 2 = 2 normalization).",
     "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 2
@@ -117,7 +117,7 @@
       "id": "part-vi-why-hard",
       "title": "Part VI: Why the Problem Is Hard",
       "startLine": 415,
-      "endLine": 451,
+      "endLine": 449,
       "summary": "Discussion of the obstructions to determining the exact growth rate (narrative)",
       "mathContext": "Mathematical content: Discussion of the obstructions to determining the exact growth rate (narrative)"
     }
@@ -153,7 +153,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos485OQ01",
-    "lineCount": 451,
+    "lineCount": 449,
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 2,
