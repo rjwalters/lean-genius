@@ -14,8 +14,8 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 68,
-    "theoremCount": 2,
+    "lineCount": 95,
+    "theoremCount": 3,
     "definitionCount": 0
   },
   "openQuestion": {
@@ -66,33 +66,41 @@
       "id": "header",
       "title": "Module Docstring and Import",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 37,
       "summary": "Docstring framing Erdős #11 (OPEN: is every odd n > 1 a squarefree number plus a power of two?) and this file's three contributions — the DecidablePred instance the parent only promised, the k = 0 sufficient family, and the n = 1 boundary. Imports the parent Erdos11WIP01 (which supplies isSquarefreePlusPow2_iff and squarefreePlusPow2_of_witness); namespace Erdos11WIP01, open Finset.",
       "mathContext": "IsSquarefreePlusPow2 n ⟺ ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k); the parent's bounded characterization this file builds on."
     },
     {
       "id": "decidable",
       "title": "The Decidability Instance",
-      "startLine": 35,
-      "endLine": 41,
+      "startLine": 39,
+      "endLine": 45,
       "summary": "decidableIsSquarefreePlusPow2: the DecidablePred instance via decidable_of_iff and the parent's bounded characterization.",
       "mathContext": "IsSquarefreePlusPow2 n ↔ a finite search; the search is decidable, so the predicate is."
     },
     {
       "id": "family",
       "title": "Sufficient Family (k = 0)",
-      "startLine": 43,
-      "endLine": 51,
+      "startLine": 47,
+      "endLine": 54,
       "summary": "works_of_pred_squarefree: if n ≥ 1 and n − 1 is squarefree then n = (n−1) + 2^0 is representable.",
       "mathContext": "Squarefree (n−1) ⟹ IsSquarefreePlusPow2 n via the power of two 2^0 = 1."
     },
     {
       "id": "boundary",
       "title": "The n = 1 Boundary Fails",
-      "startLine": 53,
-      "endLine": 62,
+      "startLine": 56,
+      "endLine": 66,
       "summary": "one_not_works: 1 is not squarefree + a power of two; only 2^0 = 1 fits, forcing the squarefree summand to be 0 (not squarefree).",
       "mathContext": "No k ∈ {0,1} works: k=0 ⟹ Squarefree 0 (false); k=1 ⟹ 2 ≤ 1 (false)."
+    },
+    {
+      "id": "infinitude",
+      "title": "The Representable Set Is Infinite",
+      "startLine": 68,
+      "endLine": 89,
+      "summary": "infinite_setOf_isSquarefreePlusPow2: {n | IsSquarefreePlusPow2 n} is infinite, via the image of the primes under p ↦ p + 1.",
+      "mathContext": "Every prime p gives a representable p + 1 (p squarefree = (p+1) − 2⁰); injectivity of p ↦ p+1 on the infinite prime set forces an infinite representable set. Unconditional — does not use the open conjecture."
     }
   ],
   "mainTheorems": [
@@ -101,24 +109,32 @@
       "type": "core",
       "description": "**The DecidablePred instance the parent only named.** decidable_of_iff transports decidability across the parent's bounded equivalence isSquarefreePlusPow2_iff, which rewrites IsSquarefreePlusPow2 n to a finite search ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k) whose body is decidable (Squarefree on ℕ). No new computation — decidability is pure transport.",
       "leanType": "DecidablePred IsSquarefreePlusPow2",
-      "startLine": 40,
-      "endLine": 41
+      "startLine": 44,
+      "endLine": 45
     },
     {
       "name": "works_of_pred_squarefree",
       "type": "key",
       "description": "**Sufficient family (k = 0).** If n ≥ 1 and n − 1 is squarefree then n = (n−1) + 2⁰ is representable — an infinite family of representable numbers requiring no search. Instantiates the parent's squarefreePlusPow2_of_witness at the power of two 2⁰ = 1.",
       "leanType": "{n : ℕ} → 1 ≤ n → Squarefree (n - 1) → IsSquarefreePlusPow2 n",
-      "startLine": 46,
-      "endLine": 50
+      "startLine": 50,
+      "endLine": 54
     },
     {
       "name": "one_not_works",
       "type": "key",
       "description": "**The n = 1 boundary fails.** 1 is not squarefree + a power of two: interval_cases leaves only k ∈ {0,1}; k = 0 forces the squarefree summand to be 1 − 1 = 0 (excluded by not_squarefree_zero) and k = 1 needs 2 ≤ 1 (false). Confirms the conjecture's n > 1 hypothesis is necessary.",
       "leanType": "¬ IsSquarefreePlusPow2 1",
-      "startLine": 55,
-      "endLine": 62
+      "startLine": 59,
+      "endLine": 66
+    },
+    {
+      "name": "infinite_setOf_isSquarefreePlusPow2",
+      "type": "key",
+      "description": "**The representable set is infinite.** Unconditional lower bound on {n | IsSquarefreePlusPow2 n}, independent of the open conjecture: every p + 1 with p prime is representable via the k = 0 family (p = (p+1) − 2⁰ is squarefree, as primes are squarefree), and p ↦ p + 1 is injective on the infinite set of primes (Nat.Primes), so the image is an infinite subset. Uses infinite_of_injective_forall_mem with Nat.Primes.coe_nat_injective and Prime.squarefree.",
+      "leanType": "{n | IsSquarefreePlusPow2 n}.Infinite",
+      "startLine": 75,
+      "endLine": 89
     }
   ],
   "conclusion": {
@@ -193,12 +209,13 @@
     "originalContributions": [
       "decidableIsSquarefreePlusPow2: the DecidablePred IsSquarefreePlusPow2 instance, via the parent's bounded characterization",
       "works_of_pred_squarefree: n − 1 squarefree ⟹ n representable (the 2^0 sufficient family)",
-      "one_not_works: 1 is not squarefree + a power of two (the n = 1 boundary case fails)"
+      "one_not_works: 1 is not squarefree + a power of two (the n = 1 boundary case fails)",
+      "infinite_setOf_isSquarefreePlusPow2: {n | IsSquarefreePlusPow2 n} is infinite — every p + 1 (p prime) is representable, unconditionally (independent of the open conjecture)"
     ],
     "axiomCount": 0,
-    "lineCount": 68,
+    "lineCount": 95,
     "assumptions": "0 axioms. Imports the verified parent erdos-11-wip-01 and standard Mathlib decidability/squarefree lemmas.",
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 0
   },
   "sorries": 0

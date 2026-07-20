@@ -20,6 +20,10 @@
     `n > 1` in the conjecture is genuinely needed at the boundary: the only
     candidate `2^0 = 1` would force the squarefree summand to be `0`, which is
     not squarefree.
+  * `infinite_setOf_isSquarefreePlusPow2` — the set `{n | IsSquarefreePlusPow2 n}`
+    is infinite.  Unconditional (independent of the open conjecture): every `p + 1`
+    with `p` prime is representable via the `k = 0` family, since `p` is squarefree,
+    and `p ↦ p + 1` is injective on the infinite set of primes.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -61,8 +65,31 @@ theorem one_not_works : ¬ IsSquarefreePlusPow2 1 := by
     exact not_squarefree_zero hsf
   · exact absurd hle (by norm_num)
 
+/-- **The representable set is infinite.**  Beyond the specific values checked in the parent and
+the `k = 0` sufficient family above, the set of naturals that are squarefree + a power of two is
+genuinely infinite.  Witness: for every prime `p`, the successor `p + 1` is representable, because
+`(p + 1) − 2 ^ 0 = p` is squarefree (primes are squarefree).  The map `p ↦ p + 1` is injective on
+the infinite set of primes, so its image — a subset of the representable set — is infinite.
+This is an unconditional lower bound on the size of `{n | IsSquarefreePlusPow2 n}` that needs no
+appeal to the open conjecture (which would say the complement, among odd `n > 1`, is *empty*). -/
+theorem infinite_setOf_isSquarefreePlusPow2 :
+    {n | IsSquarefreePlusPow2 n}.Infinite := by
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun p : Nat.Primes => (p : ℕ) + 1) ?_ ?_
+  · -- `p ↦ p + 1` is injective (successor of the injective coercion `Nat.Primes ↪ ℕ`)
+    intro a b h
+    exact Nat.Primes.coe_nat_injective (by simpa using h)
+  · -- every `p + 1` lies in the representable set, via the `k = 0` family with witness `p`
+    intro p
+    show IsSquarefreePlusPow2 ((p : ℕ) + 1)
+    refine works_of_pred_squarefree (by omega) ?_
+    have : (p : ℕ) + 1 - 1 = (p : ℕ) := by omega
+    rw [this]
+    exact p.2.prime.squarefree
+
 end Erdos11WIP01
 
 #print axioms Erdos11WIP01.decidableIsSquarefreePlusPow2
 #print axioms Erdos11WIP01.works_of_pred_squarefree
 #print axioms Erdos11WIP01.one_not_works
+#print axioms Erdos11WIP01.infinite_setOf_isSquarefreePlusPow2
