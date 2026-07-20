@@ -74,10 +74,19 @@
       "**Real-part projection is the bridge to the complex case**: Mathlib supplies the *sesquilinear* Parseval identity $\\sum_i \\langle x, b_i\\rangle\\langle b_i, x\\rangle = \\langle x, x\\rangle$ valued in $\\mathbb{K}$. Pushing the continuous $\\mathbb{R}$-linear map $\\operatorname{re}$ through the infinite sum (`HasSum.mapL`) converts it to the real-valued norm-squared identity without re-deriving any analysis.",
       "**$\\overline{z}\\,z = \\|z\\|^2$ collapses the diagonal**: the off-diagonal symmetry that makes the real case a bare square is replaced by the conjugate-product identity `RCLike.conj_mul`, which is exactly what turns each complex term into the squared modulus of a Fourier coefficient.",
       "**The reverse direction is genuinely field-agnostic**: the totality argument (a vector orthogonal to all $v_i$ has vanishing Parseval sum, so zero norm) uses no conjugation and transports verbatim from $\\mathbb{R}$ to $\\mathbb{K}$.",
-      "**`mkOfOrthogonalEqBot` already works over $\\mathbb{K}$**: Mathlib's basis constructor is stated for any `RCLike` field, so only the forward Parseval algebra needed new work — precisely the gap the parent identified."
+      "**`mkOfOrthogonalEqBot` already works over $\\mathbb{K}$**: Mathlib's basis constructor is stated for any `RCLike` field, so only the forward Parseval algebra needed new work — precisely the gap the parent identified.",
+      "**Continuity of the real-part map is load-bearing**: the forward step pushes $\\operatorname{re}$ through an *infinite* sum, and only a *continuous* $\\mathbb{R}$-linear map commutes with a `HasSum` limit — hence the deliberate use of `RCLike.reCLM` (the map packaged as $\\mathbb{K} \\to_{L[\\mathbb{R}]} \\mathbb{R}$) via `HasSum.mapL`, rather than the bare algebraic projection `RCLike.re`. This is why the argument is a two-line real-part projection instead of a term-by-term re-summation, and it is the structural reason the identity transports cleanly to the complex case."
     ]
   },
   "sections": [
+    {
+      "id": "section-header",
+      "title": "Overview, Imports & Setup",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "File docstring situating the entry as the RCLike lift of the parent's real Parseval criterion (parent proves the ⟨vᵢ,x⟩² form; here the complex-valued coefficient forces the squared-norm form ‖⟨vᵢ,x⟩‖²), with both proof directions sketched. Imports InnerProductSpace.l2Space (HilbertBasis machinery) and InnerProductSpace.Orthogonal; opens RCLike; declares the ParsevalCompletenessRCLike namespace, the 𝕜 / E variable block (RCLike field, Hilbert space over 𝕜), and the local ⟪·,·⟫ inner-product notation used throughout.",
+      "mathContext": "Setup: variable {𝕜} [RCLike 𝕜] {E} [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [CompleteSpace E]; local notation ⟪x, y⟫ = inner 𝕜 x y."
+    },
     {
       "id": "section-forward",
       "title": "Forward Direction — Hilbert Basis ⟹ Parseval over 𝕜",
@@ -96,19 +105,27 @@
     },
     {
       "id": "section-main",
-      "title": "Main Characterization",
+      "title": "Main Characterization — Hilbert Basis ⟺ Parseval",
       "startLine": 111,
-      "endLine": 141,
-      "summary": "`hilbertBasis_iff_parseval`: the iff over 𝕜 — an orthonormal family underlies a Hilbert basis iff Parseval holds everywhere. `orthogonalComplement_eq_bot_iff_parseval`: the construction-free totality ⟺ Parseval form.",
+      "endLine": 127,
+      "summary": "`hilbertBasis_iff_parseval`: the headline iff over 𝕜 — an orthonormal family v underlies a Hilbert basis iff Parseval holds everywhere. Forward reuses parseval_of_hilbertBasis; reverse builds the basis with HilbertBasis.mkOfOrthogonalEqBot from the trivial-orthogonal-complement lemma, witnessed by coe_mkOfOrthogonalEqBot.",
       "mathContext": "(∃ b : HilbertBasis ι 𝕜 E, ⇑b = v) ↔ ∀ x, (∑' i, ‖⟪v i, x⟫‖²) = ‖x‖²."
     },
     {
+      "id": "section-construction-free",
+      "title": "Construction-Free Form — Totality ⟺ Parseval",
+      "startLine": 128,
+      "endLine": 141,
+      "summary": "`orthogonalComplement_eq_bot_iff_parseval`: the same equivalence stated without materializing a HilbertBasis object — trivial orthogonal complement of the span ⟺ Parseval saturation. The forward direction still builds a throwaway basis via mkOfOrthogonalEqBot to invoke parseval_of_hilbertBasis; the reverse is the field-agnostic lemma verbatim. Gives a practical completeness test that never exhibits an expansion.",
+      "mathContext": "(Submodule.span 𝕜 (Set.range v))ᗮ = ⊥ ↔ ∀ x, (∑' i, ‖⟪v i, x⟫‖²) = ‖x‖²."
+    },
+    {
       "id": "section-examples",
-      "title": "Examples",
+      "title": "Examples & Axiom Audit",
       "startLine": 143,
-      "endLine": 160,
-      "summary": "A genuine Hilbert basis over 𝕜 (e.g. the standard basis of a complex ℓ² space) satisfies Parseval — the forward direction applied directly.",
-      "mathContext": "(∑' i, ‖inner 𝕜 (b i) x‖²) = ‖x‖² for b : HilbertBasis ι 𝕜 E."
+      "endLine": 162,
+      "summary": "A genuine Hilbert basis over 𝕜 (e.g. the standard basis of a complex ℓ² space) satisfies Parseval — the forward direction applied directly. Closes with a `#print axioms` audit of hilbertBasis_iff_parseval confirming dependence only on the standard foundational axioms (propext, Classical.choice, Quot.sound) — no Lean.ofReduceBool, no sorryAx.",
+      "mathContext": "(∑' i, ‖inner 𝕜 (b i) x‖²) = ‖x‖² for b : HilbertBasis ι 𝕜 E; axiom audit ⟹ 0 non-foundational axioms."
     }
   ],
   "conclusion": {
