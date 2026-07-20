@@ -124,8 +124,8 @@
     "summary": "Converts the parent's integer-form cyclic Burnside total Σ_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n into the standard closed divisor form Σ_{d∣n} φ(n/d)·k^d. The range-form identity (D) groups range n by the value of gcd(n,·) into divisor-indexed fibers (Finset.sum_fiberwise_of_maps_to'), each constant k^d with cardinality φ(n/d) (Nat.totient_div_of_dvd); (E) transports it to ZMod n via the bijection ZMod.val (Finset.sum_bij'); (F) combines (E) with the parent's total to give (#necklaces)·n = Σ_{d∣n} φ(n/d)·k^d. Fully verified with 0 sorries and 0 axioms.",
     "implications": "Answers the parent entry's openQuestions[1] verbatim — the textbook divisor-sum formula for k-colored necklaces, (1/n)·Σ_{d∣n} φ(n/d) k^d, now a totient-reindexing of the parent's single orbit-count rather than a separate computation. It links the gallery's group-theoretic necklace machinery to Gauss's classical divisor-sum identity for Euler's totient through the shared fiber-counting lemma Nat.totient_div_of_dvd.",
     "openQuestions": [
-      "Specialize the divisor form at k = 1 (and combine with the parent chain) to recover Gauss's identity Σ_{d∣n} φ(d) = n as a corollary of the necklace count, closing the loop between Burnside averaging and the totient divisor sum.",
-      "Establish the Möbius-inverse aperiodic-necklace (Lyndon word) count (1/n)·Σ_{d∣n} μ(d) k^{n/d} alongside the totient form, exhibiting both classical closed expressions within the same Burnside framework."
+      "Specialize the divisor form at k = 1 to recover Gauss's identity Σ_{d∣n} φ(d) = n (since Σ_{d∣n} φ(n/d)·1^d = Σ_{d∣n} φ(d)) as a corollary of the necklace count, closing the loop between Burnside averaging and the totient divisor sum. The gallery entry euler-totient-oq-04 proves that same identity directly via the gcd-partition of {0,…,n−1}; deriving it here instead as the k = 1 slice of result (D) would unify the group-theoretic and number-theoretic routes to one fiber count.",
+      "Establish the Möbius-inverse aperiodic-necklace (Lyndon word) count (1/n)·Σ_{d∣n} μ(d) k^{n/d} alongside the totient form, exhibiting both classical closed expressions within the same Burnside framework — now realized in the gallery by burnside-counting-oq-06-oq-02 at prime length, where the μ-companion and the φ-total proved here specialize to the same Fermat congruence; extend the μ-form to arbitrary n."
     ]
   },
   "crossReferences": [
@@ -140,6 +140,36 @@
       "targetId": "burnside-counting-oq-03-oq-02",
       "relationship": "specializes",
       "description": "Grandparent's group-agnostic master formula |Fix(g)| = k^{cyc(g)} drives the whole chain; this entry expresses its cyclic Burnside average in the closed totient-divisor form used in textbooks."
+    },
+    {
+      "id": "xref-burnside-oq06-fermat",
+      "targetId": "burnside-counting-oq-06",
+      "relationship": "extended-by",
+      "description": "Consumes this entry's result (F) by name: specializing the divisor sum (#necklaces)·n = Σ_{d∣n} φ(n/d)·k^d at a prime bead count n = p collapses it to (#necklaces)·p = (p−1)·k + k^p, and integrality of the left side yields Fermat's little theorem p ∣ k^p − k. The prime instance of the identity proved here."
+    },
+    {
+      "id": "xref-burnside-oq0601-totient-congruence",
+      "targetId": "burnside-counting-oq-06-oq-01",
+      "relationship": "extended-by",
+      "description": "Turns this entry's result (F) into a number-theoretic congruence at arbitrary modulus: because (#necklaces)·n = Σ_{d∣n} φ(n/d)·k^d and the necklace count is an integer, n ∣ Σ_{d∣n} φ(n/d)·k^d for every n ≥ 1 and k (a Gauss-type totient congruence), with the necklace count as the explicit quotient. Directly generalizes the Fermat corollary from prime n to all n."
+    },
+    {
+      "id": "xref-burnside-oq0602-mobius-companion",
+      "targetId": "burnside-counting-oq-06-oq-02",
+      "relationship": "companion",
+      "description": "Realizes this entry's openQuestions[1] in the gallery: the Möbius-inverse aperiodic-necklace (Lyndon word) count L(n) = (1/n)·Σ_{d∣n} μ(d)·k^{n/d}, the μ-weighted companion to the φ-weighted total form proved here, with both closed forms specializing at a prime to the same Fermat congruence."
+    },
+    {
+      "id": "xref-euler-totient-oq04-gauss-partition",
+      "targetId": "euler-totient-oq-04",
+      "relationship": "generalizes",
+      "description": "Number-theoretic sibling of the same fiber count. This entry uses Mathlib's Nat.totient_div_of_dvd as a black box for #{r∈range n : gcd(n,r)=d} = φ(n/d); euler-totient-oq-04 proves that very fact from scratch by partitioning {0,…,n−1} into the GCD classes S_d and exhibiting the bijection k ↦ k/d onto the totatives of n/d, thereby establishing Gauss's ∑_{d∣n} φ(d) = n. That identity is exactly the k = 1 specialization of result (D) here (∑_{d∣n} φ(n/d)·1^d = ∑_{d∣n} φ(d) = n), so the necklace divisor sum generalizes it — see openQuestions[0]."
+    },
+    {
+      "id": "xref-burnside-oq030202-dihedral-sibling",
+      "targetId": "burnside-counting-oq-03-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "The dihedral sibling in the same branch (shared grandparent oq-03-oq-02): where this entry closes the cyclic (rotation) side by summing the cycle counts cyc(rotation r) = gcd(n,r) into the totient-divisor form, the sibling handles the reflection side, computing cyc(reflection) = (n + |Fix|)/2 for the dihedral action. Together they supply the two conjugacy-class contributions needed for the full dihedral (bracelet) Burnside average in oq-04."
     }
   ],
   "references": [
