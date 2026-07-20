@@ -62,7 +62,8 @@
       "The adjugate is an anti-homomorphism: adj(A·B) = adj(B)·adj(A) reverses order like transpose and inversion, and this single law drives every other identity in the file",
       "All laws hold over an arbitrary commutative ring — no field or invertibility is required — because they descend from the universal identity A·adj(A) = det(A)·I",
       "Inverse-preservation is immediate from the anti-homomorphism law plus adj(1)=1: no determinant division is needed, so it works even where det A is not invertible",
-      "Because adj preserves both products (with reversal) and inverses, it carries conjugation to conjugation, so similarity of matrices is respected and adj is well-defined on conjugacy classes"
+      "Because adj preserves both products (with reversal) and inverses, it carries conjugation to conjugation, so similarity of matrices is respected and adj is well-defined on conjugacy classes",
+      "On the determinant side adj is *almost* an involution: det(adj A) = (det A)^(n−1) and adj(adj A) = (det A)^(n−2) • A, so applying adj twice returns A up to a scalar power of det. On SLₙ (det A = 1) both factors collapse, making adj a genuine involutive anti-automorphism of the group; over a general commutative ring the determinant powers are the exact obstruction to adj being a strict involution — and the reason the n = 1 case must be excluded (there n − 2 underflows)."
     ],
     "prerequisites": [
       "Adjugate (classical adjoint) and the identity A·adj(A) = det(A)·I",
@@ -116,11 +117,18 @@
       "summary": "Imports Mathlib's adjugate and nonsingular-inverse libraries. Declares universe-polymorphic variables: n (finite decidable index type) and R (commutative ring). Working over a commutative ring means every identity holds without assuming a field or invertibility."
     },
     {
-      "id": "structural-laws",
-      "title": "Part I: The multiplicative / structural laws",
+      "id": "multiplicative-laws",
+      "title": "Part I: Multiplicative and functorial laws",
       "startLine": 41,
-      "endLine": 80,
-      "summary": "Packages Mathlib's adjugate_mul_distrib, adjugate_one, adjugate_pow, adjugate_transpose, det_adjugate, and adjugate_adjugate as the named identities adjugate_anti_mul, adjugate_one', adjugate_pow', adjugate_transpose', det_adjugate', and adjugate_adjugate': the adjugate is an anti-homomorphism, commutes with powers and transpose, scales its determinant by (det A)^(n-1), and is an involution up to a determinant factor."
+      "endLine": 59,
+      "summary": "The laws describing how the adjugate interacts with the monoid/ring operations: adjugate_anti_mul (adj(A·B) = adj(B)·adj(A), order-reversing), adjugate_one' (adj(1) = 1), adjugate_pow' (adj(Aᵏ) = adj(A)ᵏ), and adjugate_transpose' (adj(Aᵀ) = adj(A)ᵀ) — i.e. adj is an anti-homomorphism that commutes with powers and transpose. Each wraps a curated Mathlib lemma."
+    },
+    {
+      "id": "det-involution-laws",
+      "title": "Part I: Determinant and involution laws",
+      "startLine": 61,
+      "endLine": 70,
+      "summary": "The two laws relating the adjugate to the determinant: det_adjugate' (det(adj A) = (det A)^(n−1)) and adjugate_adjugate' (adj(adj A) = (det A)^(n−2) • A for n ≠ 1, the involution-up-to-a-determinant-factor). Together they show the double adjugate returns A scaled by a power of det — an involution exactly when det A = 1."
     },
     {
       "id": "originals",
