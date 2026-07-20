@@ -65,7 +65,7 @@
       "Sums of squares, the SOS cone, and SOS/SDP duality (Gram-matrix method).",
       "Fraction field of a polynomial ring (ℝ(x,y) = FractionRing ℝ[x,y])."
     ],
-    "lineCount": 177,
+    "lineCount": 209,
     "relatedProblems": [
       {
         "id": "hilbert-17",
@@ -86,7 +86,7 @@
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 177,
+    "lineCount": 209,
     "namespace": "Hilbert17MotzkinRationalSOS",
     "opens": [
       "MvPolynomial"
@@ -206,11 +206,18 @@
       "summary": "multiplier_mul_motzkin_eq is the integer-coefficient identity (4+4x²+4y²)·M = 3G0² + G1² + G2² + G3² + G4², closed by ring; motzkin_mul_isSumOfSquares packages it as IsSumOfSquaresMv, and multiplier_isSumOfSquares shows the multiplier is 2²+(2x)²+(2y)²."
     },
     {
-      "id": "rational-corollary",
-      "title": "Artin for Motzkin, constructively",
+      "id": "nonnegativity",
+      "title": "The Certificate Proves Nonnegativity (Positivstellensatz Payoff)",
       "startLine": 126,
-      "endLine": 177,
-      "summary": "multiplier_ne_zero / toRF_multiplier_ne_zero validate division by the multiplier in ℝ(x,y); product_identity is the 21-term polynomial identity Σ(qᵢdⱼ)² = (multiplier·M)·multiplier; motzkin_isSOS_ratFunc divides through and reindexes Fin 7 × Fin 3 ≃ Fin 21 to conclude M = Σ (qᵢdⱼ/multiplier)², a sum of squares of rational functions."
+      "endLine": 157,
+      "summary": "multiplier_eval_pos: the strictly positive multiplier 4 + 4x² + 4y² ≥ 4 > 0 never vanishes at a real point; motzkin_eval_nonneg then evaluates the certificate multiplier·M = Σ Gᵢ² at any v, so multiplier(v)·M(v) = Σ Gᵢ(v)² ≥ 0 with multiplier(v) > 0 forces M(v) ≥ 0. This recovers Motzkin nonnegativity as a corollary of the exhibited SOS Positivstellensatz certificate — the logical payoff of having the certificate, independent of the direct AM–GM route."
+    },
+    {
+      "id": "rational-corollary",
+      "title": "Artin for Motzkin, Constructively (Rational-Function Corollary)",
+      "startLine": 158,
+      "endLine": 209,
+      "summary": "multiplier_ne_zero / toRF_multiplier_ne_zero validate division by the multiplier in ℝ(x,y) = FractionRing ℝ[x,y]; product_identity is the 21-term polynomial identity Σ(qᵢdⱼ)² = (multiplier·M)·multiplier; motzkin_isSOS_ratFunc divides through and reindexes Fin 7 × Fin 3 ≃ Fin 21 to conclude M = Σ (qᵢdⱼ/multiplier)², a sum of squares of rational functions — the constructive Artin representation realising Hilbert's 17th problem for Motzkin."
     }
   ]
 }
