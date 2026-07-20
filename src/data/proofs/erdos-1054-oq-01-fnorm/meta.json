@@ -61,7 +61,7 @@
       "startLine": 116,
       "endLine": 214,
       "summary": "f values for n=3,4,6,8,12,...,32 via native_decide. f_bounded_50: all representable n ≤ 20 have f(n) ≤ 2n. even_representable_small, odd_representable_small. Formal definition of almost_all_little_o encoding the open conjecture.",
-      "mathContext": "$f(3)=2, f(4)=3, f(6)=5, \\ldots, f(32)=31$ verified computationally. Open: $\\forall \\varepsilon > 0$, density of $\\{n : f(n) \\geq \\varepsilon n\\}$ is 0."
+      "mathContext": "$f(3)=2, f(4)=3, f(6)=5, \\ldots, f(32)=21$ verified computationally. Open: $\\forall \\varepsilon > 0$, density of $\\{n : f(n) \\geq \\varepsilon n\\}$ is 0."
     },
     {
       "id": "sigma-infra",
