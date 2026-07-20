@@ -182,6 +182,13 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    # script writes, interleaving stdout progress lines into the JSON and
    # corrupting the reservoir. (Caused 100+ no-op replenish cycles.)
    npx tsx .lean/scripts/extract-problems.ts --json 2>/dev/null
+   # Reconcile finished problems INTO the DB before regenerating the pool.
+   # sync_pool.py treats knowledge.db as the source of truth, but nothing else
+   # propagates completion back into it, so problems marked graduated/blocked in
+   # the git-tracked registry keep their servable DB status and get re-served
+   # forever (140 such rows on 2026-07-19). This one-way reconcile only moves a
+   # servable row to a terminal status; it never resurrects a finished problem.
+   python3 scripts/research/sync-db-status-from-registry.py 2>/dev/null
    # sync_pool.py writes directly to the consumed pool at
    # .lean/state/candidate-pool.json (see #26802). No copy step is needed.
    python3 research/db/sync_pool.py 2>/dev/null
