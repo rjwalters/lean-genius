@@ -80,32 +80,32 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring framing OQ#5: extend the even-only Chebyshev lower bound to all m via monotonicity of π."
+      "endLine": 45,
+      "summary": "Module docstring framing OQ#5: extend the even-only Chebyshev lower bound to all m via monotonicity of π, plus imports (parent bridge, PrimeCounting, Real.log) and the `open Nat` namespace setup."
     },
     {
       "id": "nat-bound",
       "title": "Natural-Number Lower Bound for All m",
-      "startLine": 51,
-      "endLine": 101,
-      "summary": "four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for all m ≥ 2, transferring the parent's even-only bound by collapsing 2⌊m/2⌋ into m on prefactor, base, and exponent.",
-      "mathContext": "n = ⌊m/2⌋ gives 2n ≤ m; Nat.pow_le_pow_left/right and monotone_primeCounting do the three collapses."
+      "startLine": 47,
+      "endLine": 92,
+      "summary": "PART I. The helper primeCounting_mono (monotonicity of π, wrapping Nat.monotone_primeCounting) followed by the main four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for all m ≥ 2, transferring the parent's even-only bound by collapsing 2⌊m/2⌋ into m on prefactor, base, and exponent.",
+      "mathContext": "n = ⌊m/2⌋ gives 2n ≤ m; Nat.pow_le_pow_left/right and primeCounting_mono do the three collapses."
     },
     {
       "id": "log-form",
       "title": "Real-Logarithmic Form",
-      "startLine": 103,
-      "endLine": 145,
-      "summary": "primeCounting_mul_log_lower: ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, obtained by applying Real.log to the cast Nat inequality.",
+      "startLine": 94,
+      "endLine": 132,
+      "summary": "PART II. primeCounting_mul_log_lower: ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, obtained by casting the Nat inequality to ℝ and applying Real.log (monotone, with log_mul and log_pow).",
       "mathContext": "log 4 = 2 log 2 makes the leading term m·log 2, the Chebyshev lower density."
     },
     {
       "id": "quotient",
       "title": "Quotient Form",
-      "startLine": 147,
+      "startLine": 134,
       "endLine": 158,
-      "summary": "primeCounting_ge_div_log: π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m for m ≥ 2.",
-      "mathContext": "Dividing the log-form by log m > 0 (m ≥ 2)."
+      "summary": "PART III. primeCounting_ge_div_log: π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m for m ≥ 2, followed by #check sanity lines and the namespace close.",
+      "mathContext": "Dividing the log-form by log m > 0 (m ≥ 2) via div_le_iff₀."
     }
   ],
   "conclusion": {
