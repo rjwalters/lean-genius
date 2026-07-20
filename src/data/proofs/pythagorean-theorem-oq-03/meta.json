@@ -63,7 +63,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 1431,
+    "lineCount": 1421,
     "assumptions": "0 axioms. Structure fields (HyperbolicRightTriangle.law, SphericalRightTriangle.law, SphericalRightTriangleR.law) define the mathematical objects — users must provide proof to construct instances. All 50+ consequence theorems are fully proved.",
     "mathlib_version": "4.31.0",
     "theoremCount": 105,
@@ -295,7 +295,7 @@
       "id": "four-geometries",
       "title": "The Four Pythagorean-Type Relations",
       "startLine": 1368,
-      "endLine": 1431,
+      "endLine": 1421,
       "mathContext": "Euclidean $c^2=a^2+b^2$, spherical $\\cos c=\\cos a\\cos b$, hyperbolic $\\cosh c=\\cosh a\\cosh b$, Minkowski $\\tau^2=t^2-x^2$.",
       "summary": "PART XXV. The capstone comparison of the four metric forms: `euclideanForm = x²+y²` versus `minkowskiForm = t²−x²`, with `euclideanForm_nonneg`, `minkowski_form_indefinite`, `euclidean_ge_minkowski`, and the difference identity, contrasting definite (curved/flat) against indefinite (Lorentzian) signatures."
     }
@@ -460,7 +460,7 @@
       "Real"
     ],
     "namespace": "PythagoreanNonEuclidean",
-    "lineCount": 1431,
+    "lineCount": 1421,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 21,
