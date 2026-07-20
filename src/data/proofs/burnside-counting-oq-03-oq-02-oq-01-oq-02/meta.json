@@ -162,6 +162,12 @@
       "targetId": "euler-totient-oq-04",
       "relationship": "generalizes",
       "description": "Number-theoretic sibling of the same fiber count. This entry uses Mathlib's Nat.totient_div_of_dvd as a black box for #{r∈range n : gcd(n,r)=d} = φ(n/d); euler-totient-oq-04 proves that very fact from scratch by partitioning {0,…,n−1} into the GCD classes S_d and exhibiting the bijection k ↦ k/d onto the totatives of n/d, thereby establishing Gauss's ∑_{d∣n} φ(d) = n. That identity is exactly the k = 1 specialization of result (D) here (∑_{d∣n} φ(n/d)·1^d = ∑_{d∣n} φ(d) = n), so the necklace divisor sum generalizes it — see openQuestions[0]."
+    },
+    {
+      "id": "xref-burnside-oq030202-dihedral-sibling",
+      "targetId": "burnside-counting-oq-03-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "The dihedral sibling in the same branch (shared grandparent oq-03-oq-02): where this entry closes the cyclic (rotation) side by summing the cycle counts cyc(rotation r) = gcd(n,r) into the totient-divisor form, the sibling handles the reflection side, computing cyc(reflection) = (n + |Fix|)/2 for the dihedral action. Together they supply the two conjugacy-class contributions needed for the full dihedral (bracelet) Burnside average in oq-04."
     }
   ],
   "references": [
