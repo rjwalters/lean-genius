@@ -26,8 +26,8 @@
     "id": "ann-e643-hypergraph",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 312,
-      "endLine": 320
+      "startLine": 111,
+      "endLine": 120
     },
     "type": "definition",
     "title": "Hypergraph Definitions",
@@ -49,8 +49,8 @@
     "id": "ann-e643-crossed",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 333,
-      "endLine": 342
+      "startLine": 132,
+      "endLine": 142
     },
     "type": "definition",
     "title": "Crossed Pair Configuration",
@@ -72,8 +72,8 @@
     "id": "ann-e643-extremal",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 357,
-      "endLine": 370
+      "startLine": 149,
+      "endLine": 175
     },
     "type": "definition",
     "title": "The Extremal Function",
@@ -95,8 +95,8 @@
     "id": "ann-e643-graph-case",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 409,
-      "endLine": 485
+      "startLine": 184,
+      "endLine": 335
     },
     "type": "concept",
     "title": "Case t = 2: Connection to C₄",
@@ -118,8 +118,8 @@
     "id": "ann-e643-pikhurko",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 822,
-      "endLine": 824
+      "startLine": 625,
+      "endLine": 627
     },
     "type": "concept",
     "title": "Pikhurko-Verstraëte Bound",
@@ -141,8 +141,8 @@
     "id": "ann-e643-bounds",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1268,
-      "endLine": 1278
+      "startLine": 1068,
+      "endLine": 1082
     },
     "type": "concept",
     "title": "General Bounds",
@@ -164,8 +164,8 @@
     "id": "ann-e643-conjecture",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1286,
-      "endLine": 1295
+      "startLine": 1084,
+      "endLine": 1100
     },
     "type": "definition",
     "title": "The Main Conjecture",
@@ -187,8 +187,8 @@
     "id": "ann-e643-sunflower",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1304,
-      "endLine": 1308
+      "startLine": 1103,
+      "endLine": 1116
     },
     "type": "definition",
     "title": "Sunflower Construction",
@@ -210,8 +210,8 @@
     "id": "ann-e643-sunflower-proof",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1310,
-      "endLine": 1326
+      "startLine": 1118,
+      "endLine": 1135
     },
     "type": "concept",
     "title": "Sunflowers Have No Crossed Pairs",
@@ -233,12 +233,12 @@
     "id": "ann-e643-small",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1247,
-      "endLine": 1259
+      "startLine": 1050,
+      "endLine": 1064
     },
     "type": "concept",
     "title": "Concrete Lower Bound (t = 3) and Small Cases",
-    "content": "**`f_three_lower_bound`** is the file's strongest fully-proved value-style result: f(n,3) ≥ C(n-1,2) + ⌊(n-1)/3⌋, obtained from the `LowerBoundGraph` (a star through vertex 0 together with a disjoint matching).\n\n**Small cases caveat**: the naive guesses f(4,2)=3 and f(5,2)=5 are *false* — Aristotle negated those statements, and the lower bound already forces f(4,2) ≥ 4 (the true value is 5, since the largest C₄-free graph on 4 vertices has 4 edges). The corresponding `f_four_two`/`f_five_two` blocks survive only as commented-out negations.",
+    "content": "**`f_three_lower_bound`** is the file's strongest fully-proved value-style result: f(n,3) ≥ C(n-1,2) + ⌊(n-1)/3⌋, obtained from the `LowerBoundGraph` (a star through vertex 0 together with a disjoint matching).\n\n**Small cases caveat**: the naive guesses f(4,2)=3 and f(5,2)=5 are *false* — Aristotle negated those statements, and the lower bound already forces f(4,2) ≥ 4 (the true value is 5, since the largest C₄-free graph on 4 vertices has 4 edges). The `f_four_two`/`f_five_two` declarations in the Small Cases section use Harmonic's `negate_state` tactic to formally prove these negations (f(4,2) ≠ 3 and f(5,2) ≠ 5) from `f_lower_bound`.",
     "mathContext": "f(n,3) ≥ C(n-1,2) + ⌊(n-1)/3⌋;  f(4,2) = 5",
     "significance": "supporting",
     "relatedConcepts": [
@@ -256,8 +256,8 @@
     "id": "ann-e643-erdosrado",
     "proofId": "erdos-643",
     "range": {
-      "startLine": 1384,
-      "endLine": 1391
+      "startLine": 1187,
+      "endLine": 1194
     },
     "type": "concept",
     "title": "Erdős-Rado Sunflower Lemma",

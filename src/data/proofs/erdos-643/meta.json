@@ -49,7 +49,7 @@
       "Statement of Erdős-Rado Sunflower Lemma connection"
     ],
     "axiomCount": 3,
-    "lineCount": 1402,
+    "lineCount": 1206,
     "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details.",
     "theoremCount": 42,
     "definitionCount": 16
@@ -78,99 +78,92 @@
       "id": "problem-statement",
       "title": "Problem Statement & Provenance",
       "startLine": 1,
-      "endLine": 89,
-      "summary": "Aristotle provenance header and the Erdős #643 problem statement with known bounds"
-    },
-    {
-      "id": "tactic-prelude",
-      "title": "Harmonic generalize_proofs Prelude",
-      "startLine": 91,
-      "endLine": 298,
-      "summary": "Injected Mathlib import and Harmonic's modified generalize_proofs tactic (build infrastructure, not part of the mathematics)"
+      "endLine": 104,
+      "summary": "Aristotle provenance header, the Erdős #643 problem statement with known bounds, and the `negate_state` / `generalize_proofs` tactic prelude used by Harmonic's environment"
     },
     {
       "id": "hypergraphs",
       "title": "Hypergraph Definitions",
-      "startLine": 300,
-      "endLine": 320,
+      "startLine": 105,
+      "endLine": 121,
       "summary": "Basic definitions for t-uniform hypergraphs (Hypergraph, IsUniform, edgeCount)"
     },
     {
       "id": "crossed-pair",
       "title": "The Crossed Pair Configuration",
-      "startLine": 322,
-      "endLine": 342,
+      "startLine": 122,
+      "endLine": 143,
       "summary": "Definition of crossed pairs (IsCrossedPair) and when hypergraphs contain them (HasCrossedPair)"
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,t)",
-      "startLine": 344,
-      "endLine": 370,
+      "startLine": 144,
+      "endLine": 175,
       "summary": "Definition of f(n,t) via Nat.find as the minimum edge count forcing crossed pairs"
     },
     {
       "id": "graph-case",
       "title": "Case t = 2: Graphs and C₄",
-      "startLine": 372,
-      "endLine": 485,
-      "summary": "Connection to 4-cycles and the Kővári–Sós–Turán bound (common_neighbors_le_one, f_two_upper_bound)"
+      "startLine": 176,
+      "endLine": 335,
+      "summary": "Connection to 4-cycles, the common-neighbour and degree-sum lemmas, and the Kővári–Sós–Turán upper bound (graph_crossed_pair_iff_four_cycle, common_neighbors_le_one, f_two_upper_bound)"
     },
     {
       "id": "t2-bounds",
       "title": "t = 2: Θ(n^{3/2}) Bounds",
-      "startLine": 486,
-      "endLine": 811,
+      "startLine": 336,
+      "endLine": 619,
       "summary": "Affine-plane lower-bound construction, f_two_lower_bound, and the matching asymptotic f_two_asymptotic"
     },
     {
       "id": "pikhurko",
       "title": "t = 3: Pikhurko–Verstraëte Bound",
-      "startLine": 816,
-      "endLine": 824,
-      "summary": "The axiom f(n,3) ≤ (13/9)·C(n,2)"
+      "startLine": 620,
+      "endLine": 634,
+      "summary": "The axiom pikhurko_verstrate_bound: f(n,3) ≤ (13/9)·C(n,2)"
     },
     {
       "id": "t3-lower",
       "title": "t = 3 Lower-Bound Construction",
-      "startLine": 825,
-      "endLine": 1259,
+      "startLine": 635,
+      "endLine": 1065,
       "summary": "Star ∪ Matching (LowerBoundGraph) construction and f_three_lower_bound: f(n,3) ≥ C(n-1,2) + ⌊(n-1)/3⌋"
     },
     {
       "id": "general-bounds",
       "title": "General Bounds",
-      "startLine": 1262,
-      "endLine": 1278,
+      "startLine": 1066,
+      "endLine": 1083,
       "summary": "General lower bound (f_lower_bound, sorry) and upper bound (f_upper_bound, axiom)"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 1280,
-      "endLine": 1295,
+      "startLine": 1084,
+      "endLine": 1100,
       "summary": "Statement of Erdős's asymptotic conjecture (Erdos643Conjecture)"
     },
     {
       "id": "constructions",
       "title": "Sunflower Constructions",
-      "startLine": 1297,
-      "endLine": 1326,
-      "summary": "SunflowerHypergraph and the proof that sunflowers contain no crossed pairs"
+      "startLine": 1101,
+      "endLine": 1135,
+      "summary": "SunflowerHypergraph and the proof that sunflowers contain no crossed pairs (sunflower_no_crossed_pair)"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "startLine": 1328,
-      "endLine": 1370,
-      "summary": "Commented-out negations of the naive guesses f(4,2)=3 and f(5,2)=5, which the lower bound refutes"
+      "startLine": 1136,
+      "endLine": 1178,
+      "summary": "negate_state proofs that the naive guesses f(4,2)=3 and f(5,2)=5 both fail, since the lower bound forces f(4,2)≥4 and f(5,2)≥6"
     },
     {
       "id": "sunflower-lemma",
       "title": "Erdős–Rado Sunflower Lemma & Context",
-      "startLine": 1372,
-      "endLine": 1401,
-      "summary": "The Erdős–Rado sunflower lemma (axiom) and historical context connecting to Füredi's hypergraph Turán work"
+      "startLine": 1179,
+      "endLine": 1206,
+      "summary": "The Erdős–Rado sunflower lemma (axiom sunflower_lemma) and historical context connecting to Füredi's hypergraph Turán work"
     }
   ],
   "conclusion": {
@@ -237,7 +230,7 @@
       "Classical"
     ],
     "namespace": "Harmonic.GeneralizeProofs",
-    "lineCount": 1402,
+    "lineCount": 1206,
     "axiomCount": 3,
     "theoremCount": 42,
     "definitionCount": 16,
