@@ -35,7 +35,7 @@
     "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's (1966) result is stated as an axiom showing the maximum is o(1). Erdős-Sárközi-Szemerédi's (1968) independent proof and Behrend's (1935) stronger bound for primitive sets are mentioned in docstrings for context only.",
     "keyInsights": [
       "The condition spf(t) > a is weaker than primitivity (a ∤ b)",
-      "Primitive sets satisfy this condition automatically",
+      "Primitive sets of positive integers satisfy this condition automatically",
       "The weighted sum (1/log N) Σ 1/n = o(1) for sets satisfying the condition",
       "For primitive sets, Behrend showed the stronger bound O(1/√(log log N))",
       "Example: integers in [√N, N] divisible by primes > √N satisfy the condition"
@@ -73,7 +73,7 @@
       "title": "Part III: Primitive Sets",
       "startLine": 126,
       "endLine": 150,
-      "summary": "Defines `IsPrimitive A` (no element divides another) and proves `primitive_satisfies_condition`: every primitive set satisfies the multiplicative condition, since a ∣ b in a primitive set forces a = b, hence t = 1, contradicting t > 1."
+      "summary": "Defines `IsPrimitive A` (no element divides another) and proves `primitive_satisfies_condition`: every primitive set of positive integers (hypothesis `∀ a ∈ A, 0 < a`) satisfies the multiplicative condition, since a ∣ b in a primitive set forces a = b, hence t = 1, contradicting t > 1."
     },
     {
       "id": "part-4-weighted-reciprocal-sum",
