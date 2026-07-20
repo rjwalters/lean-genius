@@ -95,20 +95,36 @@
       "mathContext": "Bundle the family $\\{L_\\sigma\\}$ into the homomorphism $G\\to\\operatorname{Perm}G$ and the isomorphism $G\\simeq^* \\operatorname{range}$."
     },
     {
-      "id": "bundled-hom",
-      "title": "The Bundled Left-Regular Representation",
+      "id": "regular-rep-hom",
+      "title": "The Bundled Homomorphism and Faithfulness (Cayley)",
       "startLine": 57,
-      "endLine": 110,
-      "summary": "regularRepHom G : G →* Perm G (σ ↦ Equiv.mulLeft σ, via mulLeft_one/mulLeft_mul) with regularRepHom_apply; regularRepHom_injective (faithfulness = Cayley, evaluate at 1); regularRep G : G ≃* range (MulEquiv.ofInjective) with regularRep_coe_apply; mem_regularRepHom_range (image = left translations); cayley (every group embeds in Sym(G)).",
-      "mathContext": "$g\\mapsto L_g$ is an injective hom $G\\to\\operatorname{Perm}G$, so $G\\simeq^*\\operatorname{range}\\le\\operatorname{Sym}(G)$."
+      "endLine": 84,
+      "summary": "regularRepHom G : G →* Perm G, the left-regular representation as a single homomorphism σ ↦ Equiv.mulLeft σ (structure fields discharged by mulLeft_one and mulLeft_mul), with the simp lemma regularRepHom_apply. regularRepHom_injective: the map is injective — this faithfulness IS Cayley's theorem (evaluate the equality of permutations at 1). mem_regularRepHom_range identifies the image with the set of left translations {L_g}.",
+      "mathContext": "$g\\mapsto L_g$ is an injective homomorphism $G\\to\\operatorname{Perm}G$; its range is exactly the left translations $\\{L_g : g\\in G\\}$."
     },
     {
-      "id": "geometric",
-      "title": "Identification with the Parent's Geometric Action",
-      "startLine": 111,
+      "id": "regular-rep-iso",
+      "title": "The Bundled Cayley Isomorphism",
+      "startLine": 86,
+      "endLine": 104,
+      "summary": "regularRep G : G ≃* (regularRepHom G).range, built by MulEquiv.ofInjective from the injective homomorphism, with the simp lemma regularRep_coe_apply (the underlying permutation of regularRep G σ is the left translation L_σ). cayley then packages the classical statement: every group G is isomorphic to a subgroup of Sym(G).",
+      "mathContext": "$G\\simeq^*\\operatorname{range}(\\operatorname{regularRepHom}G)\\le\\operatorname{Sym}(G)$."
+    },
+    {
+      "id": "geometric-transport",
+      "title": "Transition to the Geometric Setting — Transported Action",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "The `/-! ## Back to the geometric setting` bridge, then transportedAction_eq_regularRepHom: for a free transitive H ≤ Sym(α), transporting the parent's geometric action of σ ∈ H across the orbit bijection e = regularEquiv equals regularRepHom H σ, homomorphism-for-homomorphism (rw regularRepHom_apply then the parent's transportedAction_eq_mulLeft). Introduces the α / H variable block.",
+      "mathContext": "$e^{-1}\\!\\cdot\\sigma\\cdot e = \\operatorname{regularRepHom}H\\,\\sigma$ for a free transitive $H\\le\\operatorname{Sym}(\\alpha)$."
+    },
+    {
+      "id": "geometric-bundle",
+      "title": "The Bundled Regular Representation of a Free Transitive Action",
+      "startLine": 125,
       "endLine": 143,
-      "summary": "transportedAction_eq_regularRepHom: for a free transitive H ≤ Sym(α), e.symm.permCongr (σ : Perm α) = regularRepHom H σ (the parent's transport, read through the bundle). isBundledRegularRepresentation: packages the orbit bijection e, the isomorphism φ = regularRep H : H ≃* range, and the per-element identity (φ σ : Perm H) = e.symm.permCongr (σ : Perm α).",
-      "mathContext": "Relabelled by $e$, the geometric action of a free transitive $H$ IS the bundled left-regular representation $\\operatorname{regularRepHom} H$."
+      "summary": "isBundledRegularRepresentation packages the orbit bijection e : H ≃ α, the Cayley isomorphism φ = regularRep H : H ≃* range, and the per-element identity (φ σ : Perm H) = e.symm.permCongr (σ : Perm α), upgrading the parent's isExplicitRegularRepresentation from a pair of pointwise identities to a single group morphism: the free transitive action of H on α is isomorphic, as a bundled group action, to the left-regular action of H on itself. No finiteness is used.",
+      "mathContext": "Free transitive $H$ on $\\alpha$ $\\cong$ (as a bundled action) the left-regular action of $H$ on itself."
     }
   ],
   "mainTheorems": [

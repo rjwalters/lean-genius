@@ -73,7 +73,7 @@
       "startLine": 89,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "regularRep: the Bundled Cayley Isomorphism G ≃* range",
     "content": "regularRep G := MulEquiv.ofInjective regularRepHom_injective is the canonical isomorphism between G and the image of its regular representation, a concrete subgroup of Sym(G); regularRep_coe_apply records that the underlying permutation of regularRep G g is Equiv.mulLeft g. mem_regularRepHom_range characterises the image as exactly the left translations, and cayley packages the classical statement that every group is isomorphic to a subgroup of its own symmetric group. Bundling buys the isomorphism for free: once the representation is an injective homomorphism, MulEquiv.ofInjective supplies the term-level realisation the parent only gestured at.",
     "mathContext": "$\\operatorname{regularRep}: G\\simeq^* \\operatorname{range}(\\operatorname{regularRepHom} G)\\le\\operatorname{Sym}(G)$ — Cayley's theorem, bundled.",
