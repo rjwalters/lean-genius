@@ -66,28 +66,44 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Imports (GroupTheory.OrderOfElement, Perm.Cycle.Type, Nat.Prime.Basic, ZMod.Basic, Tactic) and the module docstring framing the power-map dichotomy x ↦ xⁿ bijective ⟺ gcd(n,|G|)=1, its relation to Cauchy's theorem and the n=2 parent, and the note that concrete witnesses use kernel decide on Nat.gcd (no native_decide, keeping the file genuinely axiom-free); namespace, open Function, and the variable {G : Type*} [Group G] setup.",
+      "mathContext": "$x \\mapsto x^n$ is a bijection on a finite group $G$ iff $\\gcd(n,|G|)=1$."
+    },
+    {
       "id": "directions",
       "title": "The Two Directions of the Dichotomy",
-      "startLine": 76,
-      "endLine": 110,
+      "startLine": 75,
+      "endLine": 108,
       "summary": "pow_left_bijective_of_coprime records the easy half (Mathlib's Nat.Coprime.pow_left_bijective). not_injective_pow_of_not_coprime proves the substantive converse by contrapositive: a prime p = minFac(gcd(n,|G|)) yields, via Cauchy, an element of order p that the map sends to 1 alongside 1, breaking injectivity.",
       "mathContext": "gcd(n,|G|)=1 ⟹ bijection (Bézout inverse); gcd(n,|G|)≠1 ⟹ a Cauchy element of order p∣gcd collides with 1."
     },
     {
       "id": "equivalences",
       "title": "Headline Iff and Injective/Surjective Forms",
-      "startLine": 111,
-      "endLine": 136,
+      "startLine": 110,
+      "endLine": 133,
       "summary": "pow_bijective_iff_coprime is the headline equivalence. pow_injective_iff_coprime and pow_surjective_iff_coprime use Finite.injective_iff_surjective to show that on a finite group injectivity, surjectivity and bijectivity of the power map are all equivalent to coprimality.",
       "mathContext": "On a finite group: Injective(·ⁿ) ⟺ Surjective(·ⁿ) ⟺ Bijective(·ⁿ) ⟺ (|G|).Coprime n."
     },
     {
-      "id": "specializations",
-      "title": "Recovering the Parent and Concrete Witnesses",
-      "startLine": 137,
+      "id": "parent-specialization",
+      "title": "Recovering the Parent (n = 2)",
+      "startLine": 135,
+      "endLine": 141,
+      "summary": "sq_bijective_iff_odd_card is the n = 2 slice: squaring is a bijection iff |G| is odd, via pow_bijective_iff_coprime and Nat.coprime_two_right, recovering the parent CauchyGroupTheoremOQ01OQ01's odd-order squaring boundary as a special case of the uniform threshold.",
+      "mathContext": "n = 2: $x \\mapsto x^2$ bijective $\\iff |G|$ odd (since $\\gcd(2,|G|)=1 \\iff |G|$ odd)."
+    },
+    {
+      "id": "concrete-witnesses",
+      "title": "Concrete S₃ Witnesses",
+      "startLine": 142,
       "endLine": 160,
-      "summary": "sq_bijective_iff_odd_card is the n = 2 slice (squaring is a bijection iff |G| is odd) via Nat.coprime_two_right, recovering CauchyGroupTheoremOQ01OQ01. card_perm_fin3, pow5_bijective_perm_fin3 and pow2_not_bijective_perm_fin3 instantiate on S₃ (order 6): the fifth-power map is a bijection, squaring is not, decided by kernel decide.",
-      "mathContext": "n=2: bijection ⟺ |G| odd. On S₃ (|G|=6): x↦x⁵ bijective (gcd 5,6=1), x↦x² not (gcd 2,6=2)."
+      "summary": "card_perm_fin3 computes |S₃| = 6; pow5_bijective_perm_fin3 and pow2_not_bijective_perm_fin3 instantiate the dichotomy on S₃ — the fifth-power map is a bijection (gcd(5,6)=1) while squaring is not (gcd(2,6)=2) — each discharged by kernel decide on the coprimality, keeping the witnesses axiom-free.",
+      "mathContext": "On S₃ ($|G|=6$): $x\\mapsto x^5$ bijective ($\\gcd(5,6)=1$), $x\\mapsto x^2$ not ($\\gcd(2,6)=2$)."
     }
   ],
   "conclusion": {
