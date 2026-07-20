@@ -48,11 +48,13 @@
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
       "spreadProduct_eq_norm_det_vandermonde: spread = |det Vandermonde|, tying it to the discriminant (Mathlib Matrix.det_vandermonde).",
       "spreadProduct_pos_iff: spread > 0 ↔ roots distinct (Function.Injective); vanishes exactly at a repeated root.",
-      "discreteDiameter_le_two: dₙ(Z) ≤ 2 for n≥2 unit-disc roots — the classical dₙ(K) ≤ diam(K) with diam(unit disc)=2 (axiom-free)."
+      "discreteDiameter_le_two: dₙ(Z) ≤ 2 for n≥2 unit-disc roots — the classical dₙ(K) ≤ diam(K) with diam(unit disc)=2 (axiom-free).",
+      "logSpread + log_spreadProduct + discreteDiameter_eq_exp: the logarithmic-energy bridge dₙ(Z) = exp((2/(n(n-1)))·∑_{i<j}log‖zᵢ-zⱼ‖), the multiplicative/additive dictionary linking the discrete diameter to logarithmic potential theory (the capacity side of OQ-05)."
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
-      "The n-point diameter dₙ is bounded above by the set diameter (2 on the unit disc); the substantive open input is the LOWER direction and the Fekete monotonicity dₙ₊₁ ≤ dₙ giving the transfinite-diameter limit."
+      "The n-point diameter dₙ is bounded above by the set diameter (2 on the unit disc); the substantive open input is the LOWER direction and the Fekete monotonicity dₙ₊₁ ≤ dₙ giving the transfinite-diameter limit.",
+      "The transfinite diameter (multiplicative) and logarithmic energy/capacity (additive) are the same object through log/exp; discreteDiameter_eq_exp makes that precise and axiom-free, giving the first concrete link between the two OQ-05 invariants."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent."
@@ -138,10 +140,10 @@
     {
       "path": "Proofs/Erdos1039TransfiniteDiameter.lean",
       "filename": "Erdos1039TransfiniteDiameter.lean",
-      "lineCount": 187,
-      "theoremCount": 9,
+      "lineCount": 224,
+      "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039TransfiniteDiameter.lean"

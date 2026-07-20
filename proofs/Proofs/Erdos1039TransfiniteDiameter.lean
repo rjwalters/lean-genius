@@ -184,4 +184,41 @@ theorem discreteDiameter_le_two {z : Fin n → ℂ} (hn : 2 ≤ n)
         rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
     _ = 2 := by rw [pairCount_mul_exp hn, Real.rpow_one]
 
+/- ## The logarithmic-energy bridge
+
+The transfinite diameter is a *multiplicative* invariant, while logarithmic
+capacity is governed by the *additive* logarithmic energy `∑_{i<j} log‖zᵢ − zⱼ‖`.
+The two are related by `log`/`exp`; making that dictionary explicit is the first
+concrete link between the discrete diameter of this file and the capacity side of
+OQ-05. -/
+
+/-- **Logarithmic energy sum (log-spread)** `∑_{i<j} log‖zᵢ − zⱼ‖` of the root
+tuple — the additive potential-theoretic form of the spread product. -/
+noncomputable def logSpread (z : Fin n → ℂ) : ℝ :=
+  ∑ i, ∑ j ∈ Finset.Ioi i, Real.log ‖z i - z j‖
+
+/-- For distinct roots, `log` of the spread product is the logarithmic energy sum. -/
+theorem log_spreadProduct (z : Fin n → ℂ) (hz : Function.Injective z) :
+    Real.log (spreadProduct z) = logSpread z := by
+  have hgap : ∀ i j : Fin n, i < j → ‖z i - z j‖ ≠ 0 := fun i j hlt =>
+    norm_ne_zero_iff.mpr (sub_ne_zero.mpr fun h => (ne_of_lt hlt) (hz h))
+  unfold spreadProduct logSpread
+  rw [Real.log_prod (fun i _ =>
+        Finset.prod_ne_zero_iff.mpr fun j hj => hgap i j (Finset.mem_Ioi.mp hj))]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Real.log_prod (fun j hj => hgap i j (Finset.mem_Ioi.mp hj))]
+
+/-- **Energy bridge:** the n-point diameter is the exponential of the normalised
+logarithmic energy of the root set,
+`dₙ(Z) = exp((2/(n(n-1))) · ∑_{i<j} log‖zᵢ − zⱼ‖)`.
+This is the multiplicative/additive dictionary connecting the (transfinite)
+diameter to logarithmic potential theory — the precise sense in which the two
+OQ-05 invariants are the same object viewed through `log`. -/
+theorem discreteDiameter_eq_exp (z : Fin n → ℂ) (hz : Function.Injective z) :
+    discreteDiameter z
+      = Real.exp ((2 / ((n : ℝ) * ((n : ℝ) - 1))) * logSpread z) := by
+  unfold discreteDiameter
+  rw [Real.rpow_def_of_pos ((spreadProduct_pos_iff z).mpr hz), log_spreadProduct z hz,
+    mul_comm]
+
 end Erdos1039TransfiniteDiameter

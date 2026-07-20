@@ -38,6 +38,7 @@ capacity objects precise and machine-checkable (Key Lemma 1 of `problem.md`).
 - `spreadProduct_eq_norm_det_vandermonde` — spread = |det Vandermonde| (discriminant link).
 - `spreadProduct_le_two_pow` + `two_mul_pairCount` (2·#pairs = n(n−1)).
 - `discreteDiameter_nonneg`, `discreteDiameter_le_two` (dₙ ≤ 2 for n≥2 unit-disc roots).
+- `logSpread`, `log_spreadProduct`, `discreteDiameter_eq_exp` — the **logarithmic-energy bridge** dₙ(Z) = exp((2/(n(n−1)))·∑_{i<j}log‖zᵢ−zⱼ‖), linking the (multiplicative) transfinite diameter to the (additive) logarithmic energy / capacity.
 
 All theorems depend only on `propext / Classical.choice / Quot.sound` (axiom-free
 per the axiom-integrity policy).
