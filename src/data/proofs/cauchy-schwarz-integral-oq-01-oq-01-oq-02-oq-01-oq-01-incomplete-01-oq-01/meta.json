@@ -50,7 +50,8 @@
       "The restriction map needs no measurability hypothesis on S: μ.restrict S ≤ μ holds for every set, so MemLp and eLpNorm monotonicity apply unconditionally. Measurability of S enters only in the retraction, where the indicator's support must coincide with the concentration set of μ.restrict S.",
       "eLpNorm is literally preserved by the indicator↔restriction correspondence (eLpNorm (S.indicator f) μ = eLpNorm f (μ.restrict S)), so extension-by-zero is an isometry while restriction is only norm-nonincreasing — the asymmetry that makes the composite a retraction rather than an isomorphism.",
       "The retraction restrictToLpCLM ∘ extByZeroCLM = id means Lᵖ(μ.restrict S) sits inside Lᵖ(μ) as a 1-complemented subspace: an isometric copy that admits a norm-1 projection back onto it. This is the abstract shape underlying the σ-finite localization argument.",
-      "Injectivity of extension-by-zero is immediate once a left inverse is exhibited — a split monomorphism — avoiding any direct kernel computation on Lᵖ classes."
+      "Injectivity of extension-by-zero is immediate once a left inverse is exhibited — a split monomorphism — avoiding any direct kernel computation on Lᵖ classes.",
+      "The operator-norm bound ‖restrictToLpCLM S‖ ≤ 1 is sharp whenever μ(S) > 0: testing on the indicator class of a finite-measure subset of S, where restriction changes nothing, forces equality. So the pair (extByZeroCLM isometric, restrictToLpCLM norm-1) realizes Lᵖ(μ.restrict S) as a genuine 1-complemented subspace of Lᵖ(μ) — the norm-1 projection is restrictToLpCLM ∘ extByZeroCLM's ambient extension, not a mere contraction."
     ]
   },
   "sections": [
@@ -67,9 +68,15 @@
       "endLine": 118
     },
     {
-      "title": "§2. The Restriction Map",
-      "content": "restrictToLpCLM S sends the class of f to the class of the same function under μ.restrict S. Linearity is proved classwise via ae_restrict_of_ae; the norm bound ‖restrictToLpCLM S f‖ ≤ ‖f‖ follows from eLpNorm_restrict_le, giving operator norm ≤ 1 (restrictToLpCLM_opNorm_le_one). restrictToLpCLM_coeFn characterizes the underlying function.",
+      "title": "§2. The Restriction Map (definition)",
+      "content": "restrictToLpCLM S sends the class of f ∈ Lp ℝ p μ to the class of the same function under μ.restrict S. The map is built classwise: because μ.restrict S ≤ μ, μ-a.e. equality implies (μ.restrict S)-a.e. equality (ae_restrict_of_ae), so the assignment descends to the Lᵖ quotient and linearity holds on classes. restrictToLpCLM_coeFn records that the underlying function of restrictToLpCLM S f agrees (μ.restrict S)-a.e. with ⇑f.",
       "startLine": 119,
+      "endLine": 167
+    },
+    {
+      "title": "§2. The Restriction Map (norm bound)",
+      "content": "restrictToLpCLM_norm_apply_le gives the pointwise bound ‖restrictToLpCLM S f‖ ≤ ‖f‖ from eLpNorm_restrict_le (μ.restrict S ≤ μ makes the eLpNorm only shrink), and restrictToLpCLM_opNorm_le_one lifts it to operator norm ≤ 1 via ContinuousLinearMap.opNorm_le_bound. No measurability of S is needed for either bound — the sub-measure inequality μ.restrict S ≤ μ holds for every set. Together with the isometry of extByZeroCLM this fixes the retraction as norm-nonincreasing on one side, isometric on the other.",
+      "startLine": 168,
       "endLine": 183
     },
     {
