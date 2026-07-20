@@ -91,16 +91,16 @@
       "title": "Part I: The Coprime Graph",
       "startLine": 38,
       "endLine": 64,
-      "summary": "Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom.",
-      "mathContext": "Formal definition: Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom."
+      "summary": "Defines coprimeGraph using SimpleGraph and the threshold value floor(n/2) + floor(n/3) - floor(n/6). A prose comment notes (informally, not as an axiom) that this equals the count of integers <= n divisible by 2 or 3 via inclusion-exclusion.",
+      "mathContext": "Formal definition: Defines coprimeGraph using SimpleGraph and the threshold value floor(n/2) + floor(n/3) - floor(n/6). A prose comment notes (informally, not as an axiom) that this equals the count of integers <= n divisible by 2 or 3 via inclusion-exclusion."
     },
     {
       "id": "extremal-example",
       "title": "Part II: The Extremal Example",
       "startLine": 65,
       "endLine": 84,
-      "summary": "Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph.",
-      "mathContext": "Formal definition: Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph."
+      "summary": "Defines extremalSet (multiples of 2 or 3) and isCoprimeCycle. The triangle-free property of the extremal set is described only in a prose comment (not axiomatized).",
+      "mathContext": "Formal definition: Defines extremalSet (multiples of 2 or 3) and isCoprimeCycle. The triangle-free property of the extremal set is described only in a prose comment (not axiomatized)."
     },
     {
       "id": "erdos-sarkozy",
@@ -115,8 +115,8 @@
       "title": "Part IV: Question 1 - All Short Odd Cycles",
       "startLine": 100,
       "endLine": 121,
-      "summary": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open.",
-      "mathContext": "Formal definition: Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open."
+      "summary": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? The openness of this question is noted in a prose comment (no axiom is declared).",
+      "mathContext": "Formal definition: Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? The openness of this question is noted in a prose comment (no axiom is declared)."
     },
     {
       "id": "sarkozy-tripartite",
@@ -139,8 +139,8 @@
       "title": "Part VII: Properties of the Coprime Graph",
       "startLine": 195,
       "endLine": 216,
-      "summary": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom.",
-      "mathContext": "Formal definition: Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom."
+      "summary": "Prose comments on the coprime graph's chromatic number and the existence of small odd cycles above the threshold (no axioms declared here), plus the proved theorem threshold_by_inclusion_exclusion (threshold n = n/2 + n/3 - n/6 by rfl).",
+      "mathContext": "Verified: Prose comments on the coprime graph's chromatic number and small odd cycles above the threshold (no axioms declared here), plus the proved theorem threshold_by_inclusion_exclusion (threshold n = n/2 + n/3 - n/6 by rfl)."
     }
   ],
   "conclusion": {
