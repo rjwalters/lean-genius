@@ -70,12 +70,28 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: continuing the native_decide removal on composite moduli",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "File docstring framing the goal: the sibling oq-05 de-axiomatized the two headline CRT examples and packaged crt_pair_iff; this entry continues the programme on the remaining advertised examples, which use composite (non-prime) coprime moduli — the regime where native_decide is most tempting because decide on Nat.Coprime unfolds a gcd. It also reproves the sibling's x=8 mod 15 native_decide example kernel-checked, and introduces the genuinely new three-modulus certificate crt_triple_iff. #print axioms lists only propext, Classical.choice, Quot.sound throughout.",
+      "mathContext": "Composite coprime moduli (4·5, 11·13, 3·5, 3·4·5); kernel decide/omega only, never native_decide (no Lean.ofReduceBool)."
+    },
+    {
       "id": "pair-examples",
       "title": "Composite-Modulus Examples via crt_pair_iff",
       "startLine": 48,
+      "endLine": 60,
+      "summary": "crt_17_mod_20 (moduli 4·5) and crt_135_mod_143 (11·13): the two headline composite-modulus worked examples, each a single kernel-checked instance of the sibling's two-modulus certificate crt_pair_iff — non-prime coprime moduli where a careless native_decide would inject Lean.ofReduceBool.",
+      "mathContext": "x ≡ 1 (4) ∧ x ≡ 2 (5) ↔ x = 17 over [0,20); x ≡ 3 (11) ∧ x ≡ 5 (13) ↔ x = 135 over [0,143)."
+    },
+    {
+      "id": "sibling-reproof",
+      "title": "Kernel-checked reproof of the sibling's native_decide example",
+      "startLine": 62,
       "endLine": 68,
-      "summary": "crt_17_mod_20 (4·5), crt_135_mod_143 (11·13), and crt_8_mod_15 (3·5) — composite coprime moduli as one-line instances of the sibling's two-modulus certificate, all kernel-checked.",
-      "mathContext": "The remaining worked examples de-axiomatized; crt_8_mod_15 mirrors the native_decide example_8_mod3_mod5 of sibling ...OQ04OQ02."
+      "summary": "crt_8_mod_15: the small x = 8 mod 15 = 3·5 example that the list-based sibling ...OQ04OQ02 discharges with native_decide is here re-established as a one-line kernel-checked instance of crt_pair_iff, removing that example's Lean.ofReduceBool dependency.",
+      "mathContext": "x ≡ 2 (3) ∧ x ≡ 3 (5) ↔ x = 8 over [0,15), axiom-free."
     },
     {
       "id": "triple-certificate",
