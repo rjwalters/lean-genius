@@ -145,14 +145,29 @@
       "targetId": "burnside-counting-oq-04-oq-01",
       "relationship": "extends",
       "description": "Extends the concrete dihedral fixed-point computation toward a symbolic per-element formula by giving the rotation elements a closed fixed-point count 2^gcd(n, i.val) valid for all n."
+    },
+    {
+      "targetId": "burnside-counting-oq-05",
+      "relationship": "complementary",
+      "description": "Supplies the reflection half of this entry's openQuestions[0] for odd n: the reflection-fixed count k^((n+1)/2) (at k = 2, exactly the 2^((n+1)/2) named here). This rotation closed form and that reflection closed form are the two summands of the full dihedral fixed-point total Σ_{g∈D_n} |Fix(g)|."
+    },
+    {
+      "targetId": "burnside-counting-oq-05-oq-01",
+      "relationship": "complementary",
+      "description": "Supplies the even-n reflection half of this entry's openQuestions[0]: for n = 2m the n/2 vertex-axes fix k^(n/2+1) and the n/2 edge-axes fix k^(n/2) colourings (at k = 2, the 2^(n/2+1) and 2^(n/2) named here), completing the reflection contribution to the dihedral fixed-point total."
+    },
+    {
+      "targetId": "burnside-counting-oq-04-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Realizes this entry's openQuestions[1]: assembles the rotation closed form 2^gcd(n,r) with the reflection counts and averages to the explicit closed form for the binary bracelet numbers b(n) = A000029(n), eliminating the parent's per-n kernel decide."
     }
   ],
   "conclusion": {
     "summary": "The binary colourings of the n-cycle fixed by the rotation x ↦ x + i number exactly 2^gcd(n, i.val), proved uniformly in n with no per-length computation: fixed colourings are functions on the coset space ZMod n ⧸ ⟨i⟩, which has gcd(n, i.val) points by Lagrange and the order of i. This settles the rotation summand Σ_r 2^gcd(n,r) of the closed form requested by the parent's second open question, with 0 axioms beyond propext / Classical.choice / Quot.sound.",
     "implications": "Each rotation fixed-point count is now closed-form rather than kernel-decided, so the rotation part of the Burnside / Pólya necklace and bracelet sums needs no enumeration at any length; combined with a reflection fixed-point formula it would give a fully closed form for A000029(n) with no computation. The same coset-space bijection generalises verbatim to k colours (Fin k → 2 ↦ k, giving k^gcd(n,i)).",
     "openQuestions": [
-      "Prove the reflection fixed-point counts in closed form: for n odd each of the n axes fixes 2^((n+1)/2) colourings, and for n even the n/2 vertex-axes fix 2^(n/2+1) and the n/2 edge-axes fix 2^(n/2), completing Σ_{g ∈ D_n} |Fix(g)| = Σ_r 2^gcd(n,r) + (reflection contribution).",
-      "Combine the rotation closed form with the reflection closed form and average to derive the bracelet count b(n) = A000029(n) symbolically, eliminating the parent's per-n kernel decide entirely."
+      "Prove the reflection fixed-point counts in closed form: for n odd each of the n axes fixes 2^((n+1)/2) colourings, and for n even the n/2 vertex-axes fix 2^(n/2+1) and the n/2 edge-axes fix 2^(n/2), completing Σ_{g ∈ D_n} |Fix(g)| = Σ_r 2^gcd(n,r) + (reflection contribution) — now realized in the gallery by burnside-counting-oq-05 (odd) and burnside-counting-oq-05-oq-01 (even).",
+      "Combine the rotation closed form with the reflection closed form and average to derive the bracelet count b(n) = A000029(n) symbolically, eliminating the parent's per-n kernel decide entirely — now realized in the gallery by burnside-counting-oq-04-oq-01-oq-02 (binary bracelet numbers in closed form)."
     ]
   },
   "leanFile": {
