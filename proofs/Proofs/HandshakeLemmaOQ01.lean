@@ -174,4 +174,71 @@ theorem deficiency_floor_attained :
 example : Odd (Fintype.card (Fin 1) * 1) := by decide
 example : ∀ v, (⊥ : SimpleGraph (Fin 1)).degree v ≤ 1 := by decide
 
+/-! ## General (non-constant) degree targets
+
+Open question 3 of this entry: extend the deficiency to a *prescribed*, possibly
+non-constant target degree `d : V → ℕ`. The shortfall `∑_v (d v − deg v)` has the
+same parity as the target sum `∑_v d v`, because it still differs from it only by
+the even degree sum `2|E|`. Hence when `∑_v d v` is odd no graph can realise the
+target degree sequence `d` exactly — the classical "a degree sequence with odd sum
+is not graphical" necessary condition, of which the constant-`d`, `n·d`-odd
+obstruction above (`not_isRegularOfDegree_of_odd_mul`) is the special case. -/
+
+/-- **Deficiency toward a prescribed degree target `d : V → ℕ`.**
+`deficiencyFun G d = ∑_v (d v − deg v)`, the total shortfall of the vertex degrees
+from their individual targets `d v`. Specialises to `deficiency G d` at a constant
+target. -/
+def deficiencyFun (d : V → ℕ) : ℕ := ∑ v, (d v - G.degree v)
+
+/-- The constant target `d v = d` recovers the scalar `deficiency G d`. -/
+theorem deficiencyFun_const (d : ℕ) :
+    deficiencyFun G (fun _ => d) = deficiency G d := rfl
+
+/-- **Deficiency as an ideal shortfall, target-function form.** If every vertex has
+degree at most its target `d v` then
+`deficiencyFun G d = (∑_v d v) − ∑_v deg v = (∑_v d v) − 2|E|`. -/
+theorem deficiencyFun_eq (d : V → ℕ) (hbound : ∀ v, G.degree v ≤ d v) :
+    deficiencyFun G d = (∑ v, d v) - ∑ v, G.degree v := by
+  unfold deficiencyFun
+  rw [Finset.sum_tsub_distrib _ (fun v _ => hbound v)]
+
+/-- The target-function deficiency has the same parity as the target sum `∑_v d v`:
+it differs from it by the even degree sum `∑_v deg v = 2|E|`. -/
+theorem deficiencyFun_parity (d : V → ℕ) (hbound : ∀ v, G.degree v ≤ d v) :
+    deficiencyFun G d % 2 = (∑ v, d v) % 2 := by
+  obtain ⟨m, hm⟩ := even_sum_degrees G
+  have hle : ∑ v, G.degree v ≤ ∑ v, d v := Finset.sum_le_sum (fun v _ => hbound v)
+  rw [deficiencyFun_eq G d hbound]
+  omega
+
+/-- **Odd target sum ⇒ odd deficiency.** If `∑_v d v` is odd then the target-function
+deficiency is odd (the non-constant analogue of `deficiency_odd`). -/
+theorem deficiencyFun_odd (d : V → ℕ) (hbound : ∀ v, G.degree v ≤ d v)
+    (hodd : Odd (∑ v, d v)) : Odd (deficiencyFun G d) := by
+  rw [Nat.odd_iff] at hodd ⊢
+  rw [deficiencyFun_parity G d hbound, hodd]
+
+/-- **Minimal deficiency `≥ 1` for a prescribed target.** When `∑_v d v` is odd,
+every graph with `deg ≤ d` pointwise has target deficiency at least `1`: the degree
+sequence cannot be met. -/
+theorem one_le_deficiencyFun (d : V → ℕ) (hbound : ∀ v, G.degree v ≤ d v)
+    (hodd : Odd (∑ v, d v)) : 1 ≤ deficiencyFun G d := by
+  obtain ⟨k, hk⟩ := deficiencyFun_odd G d hbound hodd
+  omega
+
+/-- **Odd-sum degree sequences are not graphical.** No graph realises a prescribed
+degree target `d : V → ℕ` exactly (`deg v = d v` for every `v`) when the target sum
+`∑_v d v` is odd. This is the classical parity necessary condition for a degree
+sequence to be graphical; it subsumes `not_isRegularOfDegree_of_odd_mul` (the
+constant target `d v = d`, whose sum is `n·d`). Unlike the deficiency bounds it needs
+no `deg ≤ d` hypothesis — exact realisation already forces the sums equal. -/
+theorem not_forall_degree_eq_of_odd_sum (d : V → ℕ) (hodd : Odd (∑ v, d v)) :
+    ¬ (∀ v, G.degree v = d v) := by
+  intro hreg
+  have hsum : ∑ v, G.degree v = ∑ v, d v := Finset.sum_congr rfl (fun v _ => hreg v)
+  have heven : Even (∑ v, d v) := hsum ▸ even_sum_degrees G
+  obtain ⟨a, ha⟩ := hodd
+  obtain ⟨b, hb⟩ := heven
+  omega
+
 end HandshakeLemmaOQ01
