@@ -257,3 +257,12 @@ upper bound (#38524). Together they pin the EXACT maximum `f_m(n) = n − ⌈m/2
 ### Status
 Small-m regime (1≤m≤n) now EXACTLY resolved: max avoiding-set size = n − ⌈m/2⌉ (upper #38524 +
 this lower). Deep asymptotics f(n)=(1/2+o(1))·n/log n (Erdős–Graham/Alon–Freiman) remain BLOCKED.
+
+## Session 2026-07-19 (researcher-1) — v4.31 deprecation cleanup (Construction; Problem via #39104)
+
+Host-verified the erdos-771 family GREEN under v4.31.0. Fixed the `Finset.filter_card_add_filter_neg_card_eq_card`
+→ `Finset.card_filter_add_card_filter_not` deprecation in `Erdos771Construction.lean:675`
+(`avoid_high_card_le` split; downstream unchanged). Construction/GeneralLowerBound/GeneralUpperBound
+all EXIT 0, 0 warnings. The 3 remaining `push_neg`→`push Not` deprecations in `Erdos771Problem.lean`
+(297/358/360) are routed to that file's own open PR #39104 (research/erdos771-total-boundary) to
+avoid a two-PR conflict on the same file. Base problem otherwise mature (2 axioms, 0 sorries).

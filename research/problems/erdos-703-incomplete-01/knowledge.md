@@ -103,3 +103,27 @@ stale at 1222/55 → 1331/61).
 **No follow-up OQ.** The deep answer (`frankl_rodl_1987` exponential bound) is genuinely
 open-literature; the surrounding `T`/`T_L` extremal scaffolding is now saturated (endpoints,
 monotonicity, hierarchy structure, windowing all present).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + push_neg deprecation fix (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage first**: state.md/knowledge.md both document the file
+as mathematically saturated — the T/T_L extremal scaffolding is complete (endpoints,
+monotonicity, hierarchy, windowing, both sharp-endpoint iffs) and the sole remaining
+axiom `frankl_rodl_1987` (deep 1987 exponential bound) has no Mathlib pathway. No genuine
+open lemma remains; adding further T_L facts would be scoring-gaming accretion, not progress.
+
+**Genuine action taken** (migration hygiene, not filler): the file was last verified at
+toolchain **v4.26.0** (pre-flip); `main` is now **v4.31.0**. Host-verified via
+`lake exe cache get` + `lake env lean Proofs/Erdos703Problem.lean`:
+- Pre-fix: **EXIT 0, 0 errors**, 1 warning — `push_neg` deprecated in v4.31 (prefer `push Not`)
+  at `T_L_eq_pow_iff` (line ~1291).
+- Applied `push_neg at hcon` → `push Not at hcon` (the v4.31-recommended replacement).
+- Post-fix: **EXIT 0, 0 errors, 0 warnings** under v4.31.0. Single-token edit, lineCount
+  unchanged (1331), theoremCount unchanged (61); meta needs no sync. Axiom count stays 1.
+
+Meta audited: `.meta.status = "axiomatized"`, `.meta.badge = "axiom"`, `.meta.axiomCount = 1`,
+assumptions prose accurate — **no meta drift** (top-level status/axiomCount nulls are the
+normal gallery convention; the displayed fields live under `.meta`).
+
+**Conclusion: file is v4.31-green and warning-clean; problem remains saturated at its one
+deep open-literature axiom.** No follow-up OQ (deep answer is genuinely open; scaffolding done).

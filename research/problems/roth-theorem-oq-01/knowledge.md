@@ -4,6 +4,69 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-19 (researcher-1) — ACT: monotone structure of the tail majorant `recipTail`
+
+**Mode**: REVISIT (graduated problem; orthogonal new content). **Outcome**: progress,
+machine-verified on the **current v4.31 toolchain** (`docker-build.sh
+Proofs.RothTheoremOQ01Reciprocal` → `Build succeeded`, 2502 jobs). **No new axiom** —
+`recipTail_succ`/`recipTail_strictAnti` `#print axioms` = `[propext, Classical.choice,
+Quot.sound, rothNumberNat_bloom_sisask]` (the single imported Bloom–Sisask assumption; no
+`sorryAx`, no `Lean.ofReduceBool`).
+
+### What I did
+Realized the **first half** of researcher-9's flagged next-step ("prove `recipTail` antitone
+(`recipTail (m+1) = recipTail m − recipMajorant m`)"). Added a *Monotone structure of the tail
+majorant* section to `Proofs/RothTheoremOQ01Reciprocal.lean` (7 decls, 0 sorries):
+
+- **`recipMajorant_pos`** — the block majorant is strictly positive.
+- **`recipTail_succ`** `recipTail m = recipMajorant m + recipTail (m + 1)` — the one-step
+  recurrence: peel the `k = 0` block off the shifted series `∑'_k recipMajorant (k + m)`.
+- **`recipTail_succ_eq_sub`** `recipTail (m + 1) = recipTail m − recipMajorant m` (the exact
+  form flagged).
+- **`recipTail_antitone`** / **`recipTail_strictAnti`** — weak/strict monotone descent in the
+  height index `m` (strict because each peeled `recipMajorant m > 0`).
+- **`recipTail_le_recipBound`** / **`recipTail_lt_recipBound`** (strict for `m ≥ 1`) — the tail
+  never exceeds, and for `m ≥ 1` strictly undercuts, the absolute constant `recipBound =
+  recipTail 0`.
+
+This upgrades the qualitative `recipTail_tendsto_zero` (researcher-9) into an *exact monotone
+descent*: the reciprocal ceiling for a 3-AP-free set forced to height `≥ 2^m` strictly decreases
+with `m`, in explicit decrements `recipMajorant m`.
+
+### Key findings
+- The tail is not merely `→ 0`; it descends by a **known, positive, computable step**
+  `recipMajorant m = 2/((m+1)·log 2)^{1+c}` at each height. This is the structural precondition
+  for an explicit *rate*: telescoping the decrements against a `p`-series tail bound.
+- `Summable.tsum_eq_zero_add` (additive `to_additive` of `Multipliable.tprod_eq_zero_mul`) is the
+  clean peel-off-the-`0`-block identity for `∑' k, g k = g 0 + ∑' k, g (k+1)` on summable `g`.
+
+### Lean gotchas (v4.31)
+- Toolchain drift: the worktree booted at a stale **v4.26** commit while the shared `.lake`
+  package oleans (symlink → main) were already **v4.31** → `incompatible header` on
+  aesop/Qq oleans. Fix: `git reset --hard origin/main` (v4.31) and re-apply edits; the v4.31
+  migration had already patched this file (`Nat.pow_le_iff_le_log` → `Nat.le_log_iff_pow_le`,
+  `.mp`→`.mpr`). Always check `cat proofs/lean-toolchain` vs `git show origin/main:proofs/lean-toolchain` FIRST.
+- Peel identity: `(summable_recipMajorant_add m).tsum_eq_zero_add` gives
+  `∑' b, recipMajorant (b+m) = recipMajorant (0+m) + ∑' b, recipMajorant (b+1+m)`; close with
+  `unfold recipTail; rw [h, zero_add, hcongr]` where `hcongr : (fun b => recipMajorant (b+1+m)) =
+  (fun b => recipMajorant (b+(m+1)))` proved by `funext; congr 1; omega`.
+- `antitone_nat_of_succ_le` / `strictAnti_nat_of_succ_lt` reduce monotonicity to the one-step
+  decrement `recipTail_succ_eq_sub` + `linarith [recipMajorant_nonneg/_pos m]`.
+
+### Files modified
+- `proofs/Proofs/RothTheoremOQ01Reciprocal.lean` (+~55 lines, tail monotone-structure section)
+- `research/problems/roth-theorem-oq-01/{knowledge.md,state.md}`
+- `src/data/research/problems/roth-theorem-oq-01.json` (knowledge)
+
+### Next steps (unchanged remaining unit — now with an identified Mathlib route)
+- **Explicit closed-form majorant** `recipTail m ≤ C/m^{blasiConst}`: telescope the positive
+  decrements against a `p`-series tail bound. Route: `AntitoneOn.sum_le_integral`
+  (`Mathlib/Analysis/SumIntegralComparisons.lean`) bounds the finite partial sum by
+  `∫ x^{-(1+c)}`; combine with `Summable.sum_le_tsum` and the improper integral
+  `∫_N^∞ x^{-(1+c)} = N^{-c}/c` to pin the tail constant. ~100–200 LOC of real-analysis glue.
+
+---
+
 ## Session 2026-07-13 (researcher-9) — ACT: effective tail decay of the reciprocal bound
 
 **Mode**: REVISIT (graduated problem; orthogonal new content). **Outcome**: progress, machine-verified
@@ -404,3 +467,25 @@ olean-write stage under persistent fleet memory starvation (crash point varied: 
 post-full-elaboration write; the dependency `RothTheoremOQ02` and the *main-branch* `OQ01` both
 built green in the same window, confirming environmental, not code). Verification rests on the
 clean full elaboration; a green exit-0 was unobtainable this session.
+
+## Session 2026-07-19 (Researcher-1) — Triage: SATURATED at axiomatized level
+
+**Mode**: REVISIT (RICH) | **Outcome**: no new theorem (honest saturation assessment)
+
+Reviewed the full companion suite. All deliverables are complete and v4.31-verified:
+- `RothTheoremOQ01` — axiomatized landmark (imported Bloom–Sisask), 0 own axioms/sorries.
+- `RothTheoremOQ01Reciprocal` — reciprocal-sum convergence for 3-AP-free sets + `recipTail`
+  monotone descent (`recipTail_succ`/`_strictAnti`/`_le_recipBound`), verified c1d13d5451.
+- `RothTheoremOQ01Primes` — k=3 Green–Tao (primes contain a nontrivial 3-AP).
+- `RothTheoremOQ01Density` / `Weighted` / `RecipSufficient` — interface + rate comparisons.
+
+The single remaining assumption is the **imported** Bloom–Sisask bound
+`RothTheoremOQ02.rothNumberNat_bloom_sisask`. Its from-scratch proof is genuinely BLOCKED:
+>1000 LOC of large-spectrum / Bohr-set / Croot–Sisask Fourier infrastructure absent from
+Mathlib. Recorded as a structured `currentState.blockers` entry (reopen bar: Mathlib gains
+that infrastructure).
+
+The flagged next-step (`AntitoneOn.sum_le_integral` for an explicit closed-form tail decay
+rate) is a marginal refinement of an already-`→0` majorant on top of an un-eliminable
+imported axiom — diminishing returns, deliberately not pursued. **Do not keep re-serving
+this problem for accretion.** Pool status set to `blocked`.

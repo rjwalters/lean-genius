@@ -189,3 +189,53 @@ theory, not the open core.
 - Iterate `next_occurrence_lt_of_modulus` (with `P := previous+1`) to build an
   explicit strictly-increasing enumeration of occurrence positions with
   modulus-controlled gaps.
+
+## Session 2026-07-19 (Researcher-1) — Explicit monotone occurrence enumeration
+
+**Mode**: REVISIT (RICH) | **Outcome**: progress (VERIFIED, 0 sorry, 0 new axiom)
+
+### What I did
+Executed the standing "Next steps" from the 2026-07-11 session: iterated
+`next_occurrence_lt_of_modulus` (with `P := previous + 1`) into an **explicit
+strictly-increasing enumeration** of tuple-occurrence positions. Added PART IV.9.a
+to `ETranscendentalOQ02.lean`:
+
+- `nextOcc` (noncomputable def) — the next occurrence position at/after threshold
+  `P`, extracted from `next_occurrence_lt_of_modulus` via `Classical.choose`; with
+  spec projections `nextOcc_ge` / `nextOcc_lt` / `nextOcc_isMatch`.
+- `occSeq` (noncomputable def) — the enumeration: `occSeq 0 = nextOcc 0`,
+  `occSeq (j+1) = nextOcc (occSeq j + 1)`.
+- `occSeq_isMatch` — every term is a genuine occurrence of `s`.
+- `occSeq_strictMono` — `StrictMono occSeq` (successor taken at threshold
+  `occSeq n + 1 > occSeq n`, so `occSeq n < occSeq (n+1)`).
+- `occSeq_succ_lt` — each successor obeys the effective gap bound
+  `max (max (M k (b^{-k}/2)) 1) (2·bᵏ·(occSeq n + 1) + 1)`.
+- `exists_strictMono_occurrence_enumeration` — headline packaging: a `StrictMono`
+  `f : ℕ → ℕ` all of whose terms are occurrences with modulus-controlled gaps.
+
+### Key findings
+- Upgrades the qualitative `normal_ktuple_infinitely_often` (an infinite occurrence
+  *set*) to a concrete monotone *sequence* — the form a downstream quantitative
+  argument iterates over. All results are corollaries of the already-verified
+  `next_occurrence_lt_of_modulus`; the only tool beyond it is `Classical.choose`,
+  so no new axiom is introduced.
+- Structural recursion in `occSeq` produces the definitional equations by `rfl`,
+  so `occSeq_strictMono` / `occSeq_succ_lt` close by rewriting to `nextOcc` +
+  `omega`.
+
+### Status
+Core axiom `e_absolutely_normal` remains **genuinely open** (no base proved normal
+for `e` as of 2026) — not eliminable. The oq-06 target (`normal_imp_irrational`)
+was long discharged as a theorem. This session sharpens the effective theory into
+a usable enumeration; it does not touch the open core.
+
+### Files modified
+- `proofs/Proofs/ETranscendentalOQ02.lean` (+7 theorems, +2 defs, PART IV.9.a; 2302→2411 lines)
+- `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount→2411, theoremCount→108; corrected prior drift from stale 2160/92)
+- `src/data/research/problems/e-transcendental-oq-02-oq-06.json` (knowledge)
+
+### Next steps
+- The enumeration is now the natural handle for a *lower bound* on the occurrence
+  count in `[0, N)` via `occSeq`-index counting — an explicit inverse to the gap
+  bound. Only pursue if a downstream consumer needs it; otherwise oq-06 is
+  saturated (core discharged, open core not eliminable).

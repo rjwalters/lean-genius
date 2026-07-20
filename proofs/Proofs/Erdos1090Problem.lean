@@ -645,7 +645,7 @@ instance : Infinite Point :=
     have hb : EuclideanSpace.single (0 : Fin 2) a = EuclideanSpace.single (0 : Fin 2) b := h
     have h0 : (EuclideanSpace.single (0 : Fin 2) a) 0
             = (EuclideanSpace.single (0 : Fin 2) b) 0 := by rw [hb]
-    simpa [EuclideanSpace.single_apply] using h0)
+    simpa [PiLp.single_apply] using h0)
 
 /--
 **Every size above `R(k)` is realizable.**

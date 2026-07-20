@@ -422,8 +422,8 @@ theorem containsAP_two_of_lt {A : Set ℕ} {a b : ℕ}
 theorem containsAP_two_of_infinite {A : Set ℕ} (h : A.Infinite) :
     ContainsAP A 2 := by
   obtain ⟨a, ha⟩ := h.nonempty
-  obtain ⟨b, hb⟩ := (h.diff (Set.finite_singleton a)).nonempty
-  rw [Set.mem_diff, Set.mem_singleton_iff] at hb
+  obtain ⟨b, hb⟩ := (h.sdiff (Set.finite_singleton a)).nonempty
+  rw [Set.mem_sdiff, Set.mem_singleton_iff] at hb
   obtain ⟨hbA, hbne⟩ := hb
   rcases lt_trichotomy a b with hlt | heq | hgt
   · exact containsAP_two_of_lt ha hbA hlt

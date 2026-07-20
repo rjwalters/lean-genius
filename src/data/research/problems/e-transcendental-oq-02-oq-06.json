@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0 sorry / axiom unchanged, researcher-2 2026-07-12): added PART IV.11 TRANSLATION INVARIANCE to ETranscendentalOQ02.lean — normality is invariant under integer translation x ↦ x+m. nthDigit_add_int (positive-index digits are unchanged by an integer shift, via ⌊bⁿ(x+m)⌋=⌊bⁿx⌋+bⁿm and b∣bⁿm for n≥1), the difference-of-one squeeze tendsto_div_of_diff_le_one, and isNormalInBase_add_int / _iff / isAbsolutelyNormal_add_int. Only position 0 (integer part) can change, so the two match-counts over range N differ by ≤1 = o(N) and share the limit b^{-k}. Needs NO b≥2. Open axiom e_absolutely_normal remains genuinely open.",
+    "progressSummary": "PROGRESS: oq-06 core (normal_imp_irrational) long discharged as a theorem; the only remaining axiom e_absolutely_normal is genuinely open (no base proved normal for e). This session packaged PART IV.9 effective recurrence into an explicit strictly-monotone occurrence enumeration (PART IV.9.a). VERIFIED green (docker v4.31, 8578 jobs, 0 sorry, 0 new axiom).",
     "builtItems": [
       "normal_ktuple_infinitely_often (Proofs/ETranscendentalOQ02.lean): {n | s occurs at n}.Infinite for x normal in base b. Verified 0 sorry; axioms [propext, Classical.choice, Quot.sound].",
       "normal_imp_disjunctive (same file): every finite digit string appears at least once (corollary via Set.Infinite.nonempty).",
@@ -58,7 +58,8 @@
       "tendsto_div_of_diff_le_one (private, same file): two ℕ-sequences with |A−B|≤1 pointwise share the limit of count/N (squeeze between (B∓1)/N, correction 1/N→0). Reusable transfer lemma.",
       "isNormalInBase_add_int (same file): IsNormalInBase b x → IsNormalInBase b (x+↑m). Only the n=0 window touches digit 0, so match-counts over range N differ by ≤1. No b≥2 hypothesis needed. VERIFIED axiom-free.",
       "isNormalInBase_add_int_iff (same file): two-sided translation invariance (backward via forward map on x+m with shift −m).",
-      "isAbsolutelyNormal_add_int (same file): IsAbsolutelyNormal x → IsAbsolutelyNormal (x+↑m), base by base."
+      "isAbsolutelyNormal_add_int (same file): IsAbsolutelyNormal x → IsAbsolutelyNormal (x+↑m), base by base.",
+      "nextOcc/occSeq + nextOcc_ge/_lt/_isMatch, occSeq_isMatch/_strictMono/_succ_lt, exists_strictMono_occurrence_enumeration in ETranscendentalOQ02.lean PART IV.9.a (7 theorems, 2 defs, 0 sorry, 0 new axiom)"
     ],
     "insights": [
       "The stated target normal_imp_irrational was ALREADY a complete 0-sorry theorem (Session 13); OQ-02-OQ-06 as literally phrased was resolved. Added genuinely new theory instead of reclaiming.",
@@ -76,7 +77,8 @@
       "First-occurrence recipe from a modulus: at tolerance ε=b^{-k}/2, the frequency at N₁=max(M k ε) 1 is within ε of b^{-k} (abs_lt), hence >b^{-k}/2>0 using the identity b^{-k}-δ=δ; so the matching count is positive and exists_match_lt_of_count_pos yields a witness <N₁, an EXPLICIT function of M and k.",
       "VERIFIED (researcher-2, 2026-07-09, GREEN build): absolute-level corollaries of IsAbsolutelyNormal added to ETranscendentalOQ02.lean (Part VIII) — the definition previously had NO consequences drawn as named theorems, only per-base instantiations. absolutely_normal_imp_irrational (IsAbsolutelyNormal x → Irrational x, via normal_imp_irrational at base 2) and absolutely_normal_imp_disjunctive (→ disjunctive in every base b≥2, via normal_imp_disjunctive). One-line base-instantiations packaging the base-uniform consequences. Open axiom e_absolutely_normal untouched (genuinely open, 1 axiom).",
       "STRUCTURAL (researcher-2, 2026-07-12): normality is TRANSLATION INVARIANT under integer shifts — it is a property of the fractional/tail digit expansion, not the integer part. Adding m∈ℤ changes only the position-0 digit (⌊bⁿ(x+m)⌋≡⌊bⁿx⌋ mod b for n≥1 since b∣bⁿm), so at most one starting window (n=0) of any tuple-match count over range N is affected; a ≤1 = o(N) perturbation leaves every empirical frequency limit b^{-k} intact. Places normality alongside irrationality (also translation invariant) and complements the Liouville non-normal sharpness witness.",
-      "The single-position perturbation is handled cleanly by an insert-0 subset bound (filter Qm ⊆ insert 0 (filter Q) and symmetrically), giving card differ ≤1 without Finset symmetric-difference machinery, then a generic 1/N squeeze (tendsto_div_of_diff_le_one). The digit-shift identity needs no b≥2, so the invariance theorems are stated without it — strictly cleaner than the surrounding hb-threaded API."
+      "The single-position perturbation is handled cleanly by an insert-0 subset bound (filter Qm ⊆ insert 0 (filter Q) and symmetrically), giving card differ ≤1 without Finset symmetric-difference machinery, then a generic 1/N squeeze (tendsto_div_of_diff_le_one). The digit-shift identity needs no b≥2, so the invariance theorems are stated without it — strictly cleaner than the surrounding hb-threaded API.",
+      "Explicit monotone occurrence enumeration: iterating next_occurrence_lt_of_modulus with threshold P:=prev+1 (via Classical.choose) yields a StrictMono sequence occSeq : ℕ→ℕ of tuple-occurrence positions, each successor below the effective gap bound max(max(M k (b^{-k}/2)) 1)(2·bᵏ·(occSeq n+1)+1). Upgrades the qualitative normal_ktuple_infinitely_often (an infinite set) to a concrete quantitatively-iterable sequence."
     ],
     "mathlibGaps": [
       "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly.",

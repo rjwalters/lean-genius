@@ -199,7 +199,7 @@ theorem bipartitionNumber_pos_iff {V : Type*} [Fintype V] [LinearOrder V]
   constructor
   · intro h c
     have hc := h c
-    push_neg at hc
+    push Not at hc
     exact hc
   · intro h c hc
     obtain ⟨u, v, hadj, huv⟩ := h c
@@ -292,7 +292,7 @@ theorem monochromaticEdges_add_bichromaticEdges {V : Type*} [Fintype V] [LinearO
           (fun p => ¬ c p.1 = c p.2)).card := by
     rw [bichromaticEdges, Finset.filter_filter]
     congr 1; ext p; simp only [Finset.mem_filter, ne_eq]; tauto
-  rw [hmono, hbi, Finset.filter_card_add_filter_neg_card_eq_card]
+  rw [hmono, hbi, Finset.card_filter_add_card_filter_not]
   rfl
 
 /-- **Max-cut of `G`.** The maximum number of edges separated by a 2-coloring,
@@ -503,7 +503,7 @@ theorem card_colorings_cut {V : Type*} [Fintype V] [LinearOrder V] (u v : V)
   have hpart : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
       + (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card
       = Fintype.card (V → Bool) := by
-    rw [Finset.filter_card_add_filter_neg_card_eq_card]; rfl
+    rw [Finset.card_filter_add_card_filter_not]; rfl
   have hcard : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
       = (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card := by
     apply Finset.card_bij'
@@ -834,7 +834,7 @@ theorem monochromaticEdges_add_complement {V : Type*} [Fintype V] [LinearOrder V
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, complement]
     exact ⟨fun ⟨h1, ⟨_, h3⟩, h4⟩ => ⟨⟨h1, h4⟩, h3⟩,
       fun ⟨⟨h1, h4⟩, h3⟩ => ⟨h1, ⟨ne_of_lt h1, h3⟩, h4⟩⟩
-  rw [hbase, hG, hGc, Finset.filter_card_add_filter_neg_card_eq_card]
+  rw [hbase, hG, hGc, Finset.card_filter_add_card_filter_not]
 
 /-- `edgeCount` is the monochromatic count of the constant `true` coloring: every
 edge is monochromatic when all endpoints share a color. -/
@@ -1022,7 +1022,7 @@ shows f_k(n) never exceeds this bound.
 -/
 theorem erdos_conjecture_false : ¬erdosOriginalConjecture := by
   unfold erdosOriginalConjecture
-  push_neg
+  push Not
   use 4
   constructor
   · norm_num

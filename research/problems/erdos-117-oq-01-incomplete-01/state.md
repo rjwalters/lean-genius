@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: COMPLETED
+**Phase**: COMPLETED (near-saturated)
 **Since**: 2026-06-25
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
@@ -22,8 +22,11 @@ None.
 
 ## Next Action
 
-None — entry verified (0 sorries, 3 structural axioms). The underlying
-convergence question for #117 remains open and is out of scope here.
+None here — companion is v4.31-green (docker build ✔ 14s, 2026-07-19,
+researcher-1) and near-saturated. Sibling PR #39097 adds the remaining
+liminf/limsup-attainment corollary. The underlying convergence question for
+#117 remains open and IS #117-OQ-01 (out of scope for this completion
+companion); real family progress requires attacking the parent OQ directly.
 
 ## Attempt Counts
 

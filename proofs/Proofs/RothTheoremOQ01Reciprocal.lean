@@ -529,6 +529,65 @@ theorem exists_height_recip_small (ε : ℝ) (hε : 0 < ε) :
   exact ⟨m, fun A hA hA0 hAmin =>
     (threeAPFree_tsum_reciprocal_le_of_min_ge hA hA0 m hAmin).trans hm.le⟩
 
+/-!
+### Monotone structure of the tail majorant (`recipTail`)
+
+The tail constant `recipTail m = ∑'_k recipMajorant (k + m)` obeys a clean one-step recurrence
+`recipTail m = recipMajorant m + recipTail (m + 1)`: peeling the `k = 0` block off the shifted
+series leaves the next tail.  Equivalently `recipTail (m + 1) = recipTail m − recipMajorant m`.
+Because every block majorant is *strictly* positive, the tail is strictly decreasing in the
+height index `m`, and never exceeds the full absolute constant `recipBound = recipTail 0`.
+This upgrades the qualitative `recipTail_tendsto_zero` into an exact monotone descent — the
+structural prerequisite for an explicit closed-form decay rate (integral comparison for the
+`p`-series tail via `AntitoneOn.sum_le_integral`; see the next-steps note in `state.md`).
+-/
+
+/-- The block majorant is strictly positive. -/
+theorem recipMajorant_pos (k : ℕ) : 0 < recipMajorant k := by
+  unfold recipMajorant
+  exact div_pos (by norm_num) (recipMajorant_denom_pos k)
+
+/-- **One-step recurrence for the tail majorant.**  Peeling the `k = 0` block off the shifted
+series `∑'_k recipMajorant (k + m)` leaves the next tail:
+`recipTail m = recipMajorant m + recipTail (m + 1)`. -/
+theorem recipTail_succ (m : ℕ) :
+    recipTail m = recipMajorant m + recipTail (m + 1) := by
+  have h := (summable_recipMajorant_add m).tsum_eq_zero_add
+  have hcongr : (fun b : ℕ => recipMajorant (b + 1 + m))
+      = (fun b : ℕ => recipMajorant (b + (m + 1))) := by
+    funext b; congr 1; omega
+  unfold recipTail
+  rw [h, zero_add, hcongr]
+
+/-- **Exact one-step decrement.**  `recipTail (m + 1) = recipTail m − recipMajorant m`. -/
+theorem recipTail_succ_eq_sub (m : ℕ) :
+    recipTail (m + 1) = recipTail m - recipMajorant m := by
+  rw [recipTail_succ m]; ring
+
+/-- **The tail majorant is antitone**: `recipTail` decreases (weakly) as the height index grows. -/
+theorem recipTail_antitone : Antitone recipTail := by
+  refine antitone_nat_of_succ_le (fun m => ?_)
+  rw [recipTail_succ_eq_sub m]
+  linarith [recipMajorant_nonneg m]
+
+/-- **The tail majorant is strictly antitone**: each step strictly decreases the tail, since the
+peeled block majorant `recipMajorant m` is strictly positive. -/
+theorem recipTail_strictAnti : StrictAnti recipTail := by
+  refine strictAnti_nat_of_succ_lt (fun m => ?_)
+  rw [recipTail_succ_eq_sub m]
+  linarith [recipMajorant_pos m]
+
+/-- The tail majorant never exceeds the full absolute constant `recipBound = recipTail 0`. -/
+theorem recipTail_le_recipBound (m : ℕ) : recipTail m ≤ recipBound := by
+  rw [← recipTail_zero]
+  exact recipTail_antitone (Nat.zero_le m)
+
+/-- For `m ≥ 1` the tail bound is *strictly* better than the absolute constant `recipBound`:
+forcing a 3-AP-free set up to height `≥ 2^m` genuinely lowers its reciprocal ceiling. -/
+theorem recipTail_lt_recipBound {m : ℕ} (hm : 0 < m) : recipTail m < recipBound := by
+  rw [← recipTail_zero]
+  exact recipTail_strictAnti hm
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
@@ -539,6 +598,10 @@ theorem exists_height_recip_small (ε : ℝ) (hε : 0 < ε) :
 #check @threeAPFree_tsum_reciprocal_le_of_min_ge
 #check @recipTail_tendsto_zero
 #check @exists_height_recip_small
+#check @recipTail_succ
+#check @recipTail_succ_eq_sub
+#check @recipTail_strictAnti
+#check @recipTail_le_recipBound
 
 -- Axiom audit: the reciprocal-sum theorem rests on exactly the single imported Bloom–Sisask
 -- assumption `RothTheoremOQ02.rothNumberNat_bloom_sisask` — no new axiom, no `sorryAx`.
@@ -551,5 +614,7 @@ theorem exists_height_recip_small (ε : ℝ) (hε : 0 < ε) :
 #print axioms dilate_tsum_reciprocal_le
 #print axioms threeAPFree_tsum_reciprocal_le_of_min_ge
 #print axioms exists_height_recip_small
+#print axioms recipTail_succ
+#print axioms recipTail_strictAnti
 
 end RothTheoremOQ01Reciprocal

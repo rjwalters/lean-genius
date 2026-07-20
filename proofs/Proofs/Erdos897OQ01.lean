@@ -278,7 +278,7 @@ theorem stronglyAdditive_unboundedOnPrimePowers_iff {f : ℕ → ℝ}
       have hdrop : M * Real.log p ≤ M * ((k : ℝ) * Real.log p) := by
         nlinarith [mul_nonneg (mul_nonneg hM (by linarith : (0 : ℝ) ≤ (k : ℝ) - 1)) hlogp]
       linarith
-    · push_neg at hM
+    · push Not at hM
       obtain ⟨p, k, hp, hk, hpk⟩ := h 0
       refine ⟨p, hp, ?_⟩
       have hfp : f (p ^ k) = f p := hf.2 p k hp hk
@@ -314,7 +314,7 @@ completely-additive reduction it would require some prime with `Ω(p) = 1 > M·l
 every `M`; at `M = 1/log 2` this forces `log p < log 2`, impossible for a prime `p ≥ 2`. -/
 theorem not_unboundedOnPrimePowers_bigOmega : ¬ UnboundedOnPrimePowers bigOmega := by
   rw [completelyAdditive_unboundedOnPrimePowers_iff bigOmega bigOmega_completelyAdditive]
-  push_neg
+  push Not
   refine ⟨1 / Real.log 2, ?_⟩
   intro p hp
   rw [bigOmega_prime hp]
@@ -512,7 +512,7 @@ theorem not_unboundedOnPrimePowers_smul {f : ℕ → ℝ}
     (hf : ¬ UnboundedOnPrimePowers f) {c : ℝ} (hc : 0 ≤ c) :
     ¬ UnboundedOnPrimePowers (fun n => c * f n) := by
   unfold UnboundedOnPrimePowers at hf
-  push_neg at hf
+  push Not at hf
   obtain ⟨M, hM⟩ := hf
   apply not_unboundedOnPrimePowers_of_le_const_mul_log (C := c * M)
   intro p k hp hk
@@ -567,7 +567,7 @@ theorem not_unboundedOnPrimePowers_max {f g : ℕ → ℝ}
     (hf : ¬ UnboundedOnPrimePowers f) (hg : ¬ UnboundedOnPrimePowers g) :
     ¬ UnboundedOnPrimePowers (fun n => max (f n) (g n)) := by
   unfold UnboundedOnPrimePowers at hf hg
-  push_neg at hf hg
+  push Not at hf hg
   obtain ⟨Mf, hMf⟩ := hf
   obtain ⟨Mg, hMg⟩ := hg
   refine not_unboundedOnPrimePowers_of_le_const_mul_log
@@ -662,7 +662,7 @@ theorem not_unboundedOnPrimePowers_add {f g : ℕ → ℝ}
     (hf : ¬ UnboundedOnPrimePowers f) (hg : ¬ UnboundedOnPrimePowers g) :
     ¬ UnboundedOnPrimePowers (fun n => f n + g n) := by
   unfold UnboundedOnPrimePowers at hf hg
-  push_neg at hf hg
+  push Not at hf hg
   obtain ⟨Mf, hMf⟩ := hf
   obtain ⟨Mg, hMg⟩ := hg
   refine not_unboundedOnPrimePowers_of_le_const_mul_log
@@ -764,7 +764,7 @@ theorem not_unboundedOnPrimePowers_iff {f : ℕ → ℝ} :
     ¬ UnboundedOnPrimePowers f ↔
       ∃ M : ℝ, ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ M * Real.log (p ^ k) := by
   unfold UnboundedOnPrimePowers
-  push_neg
+  push Not
   rfl
 
 /-- **Explicit witness value on a prime power.** `logSqWeight (p^k) = (log p)²` for prime

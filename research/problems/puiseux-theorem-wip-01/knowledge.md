@@ -448,3 +448,19 @@ header Scope/honesty + What-this-proves updated), src/data/proofs/puiseux-theore
 **Frontier (unchanged)**: the *positive* char-p analogue (Kedlaya's automatic-Hahn algebraic
 closure) and the actual Frobenius root of yᵖ−y=x⁻¹ remain out of scope; the main-file Newton–Puiseux
 algebraic closure (>1000L) is still the deep open remainder.
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + 2× HahnSeries deprecation fixes (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: COMPLETED — `PuiseuxTheorem.lean` (1882 L, pure Mathlib)
+is 0-sorry / 0-axiom; the WIP-01 True-stub-elimination deliverable and Parts VIII–XI structural
+rounding-out are all done.
+
+**Genuine action** (migration hygiene): host-verified GREEN under **v4.31.0** (`lake env lean`,
+EXIT 0, 0 errors). Fixed **2 v4.31 deprecations** → 0 deprecations:
+`HahnSeries.support_mul_subset_add_support` → `HahnSeries.support_mul_subset` (lines 706, 1035;
+both feed `Set.mem_add.mp` — same `support(x*y) ⊆ support x + support y` shape, `obtain` still
+destructures). Post-fix: EXIT 0, 0 errors, 0 deprecations. lineCount unchanged (1882); 0/0 counts
+unchanged. (2 benign lint warnings remain — unreferenced `hq`, `push_cast does nothing` — left as-is.)
+
+**Conclusion**: `PuiseuxTheorem.lean` v4.31-green and deprecation-clean; WIP-01 stays COMPLETED.
+(Sibling `PuiseuxTheoremOQ03.lean` has its own real sorry — distinct OQ slug, not this claim.)

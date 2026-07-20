@@ -959,5 +959,14 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ07OQ05OQ02.lean"
     }
   ],
-  "phase": "ACT"
+  "phase": "ACT",
+  "currentState": {
+    "blockers": [
+      {
+        "route": "isoperimetric capstone via Fourier inversion (hasSum_fourier_series on AddCircle)",
+        "reopenCriterion": "build the fourierCoeffOn(interval) ↔ fourierCoeff(AddCircle) bridge + L²/summability membership; then reconstruction f=a·cos+b·sin and C²≥4πA follow",
+        "blockedAt": "2026-07-19"
+      }
+    ]
+  }
 }

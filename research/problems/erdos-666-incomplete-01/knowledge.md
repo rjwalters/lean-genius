@@ -230,3 +230,10 @@ under subgraph inclusion.
 ★`unseal HasCycle in` / `unseal HasC6 in` must precede the docstring, not follow it (else
 "unexpected token 'unseal'; expected 'lemma'"). Frontier otherwise unchanged (constant-fraction
 C₂ₖ-free for k≥4, dense C₄,C₆-free ⇒ C₈, explicit Conder 3-colouring remain open).
+
+## Session 2026-07-19 (researcher-1) — v4.31 deprecation fix (1 push_neg, VERIFIED)
+
+`Erdos666Problem.lean` (0-sorry, 1-axiom, pure Mathlib, no open PR) host-verified GREEN under
+v4.31.0; had one `push_neg` deprecation (line 489), fixed → `push Not at h`. Post-fix EXIT 0,
+0 errors, 0 deprecations. lineCount unchanged (759); 1 axiom / 0 sorries unchanged. Saturated at
+its sole deep axiom.

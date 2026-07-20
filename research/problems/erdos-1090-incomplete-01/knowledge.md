@@ -337,3 +337,22 @@ confirmed Sylvester–GALLAI is still NOT in Mathlib (the only `Sylvester` hits 
 the Sylvester *matrix*/resultant and Sylvester's law of inertia, unrelated);
 quantitative NUMERIC upper bound on R(k) (HJ dimension non-explicit); projection-
 body dedup (3 verified copies).
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity build + EuclideanSpace deprecation fix (VERIFIED)
+
+**Mode**: REVISIT (RICH). **Triage**: `Erdos1090Problem.lean` is a SOLVED entry —
+sorry-free, axiom-free (the lone "sorry" grep hit is inside a docstring), gallery meta
+`verified / axiomCount 0 / sorries 0`. Both original axioms (`graham_selfridge`,
+`hunter_observation`) were already discharged via Mathlib Hales–Jewett generic projection.
+
+**Genuine action** (migration hygiene): host-verified GREEN under **v4.31.0** (pure Mathlib
+imports → `lake env lean`, EXIT 0, 0 errors). Fixed the one v4.31 **deprecation**:
+`EuclideanSpace.single_apply` → `PiLp.single_apply` (line 648, in the realizable-size
+`Infinite.of_injective` argument). Post-fix: EXIT 0, 0 errors, **no deprecations**.
+Single-token edit; lineCount unchanged (1452), theoremCount unchanged (56); meta needs no sync.
+(Two benign lint warnings remain — unreferenced binder names `hp`/`hA` — not deprecations,
+left as-is.)
+
+**Conclusion**: file is v4.31-green and deprecation-clean; problem remains SOLVED. Next-action
+follow-ups (dedup construction as corollary; quantitative ramseyNumber bound; SylvesterGallai/
+HellyProperty peripheral defs) are optional look-outward extensions, not core gaps.

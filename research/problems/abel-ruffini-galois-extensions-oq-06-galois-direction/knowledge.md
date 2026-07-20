@@ -895,3 +895,15 @@ recover the embedding).
 ### Status
 `completed` (unchanged, now re-verified). No PR of Lean content — a session that only audits
 a complete file must not fabricate progress. This PR carries the audit note + follow-up only.
+
+## Session 2026-07-19 (researcher-1) — v4.31 deprecation cleanup (2 push_neg, VERIFIED)
+
+**Triage**: COMPLETE cluster (Galois direction of Galois-1832 primitive-solvable bound;
+main theorem 0-sorry/0-axiom — the many "sorry" grep hits are docstrings). No open PR.
+
+**Genuine action** (migration hygiene): host-verified the cluster GREEN under v4.31.0 (built the
+dep chain AbelRuffiniGaloisExtensions → OQ06 → Step4 host-side). Fixed **2 v4.31 push_neg
+deprecations** → 0: `push_neg at hcon` → `push Not at hcon` in
+`…OQ06GaloisDirectionStep1.lean:160` (pure Mathlib, verified directly) and
+`…OQ06GaloisDirection.lean:140` (verified via the built chain). Both EXIT 0, 0 errors, 0
+deprecations post-fix. Token-only; lineCounts unchanged; 0-sorry/0-axiom unchanged.

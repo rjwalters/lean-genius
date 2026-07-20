@@ -104,3 +104,19 @@ Mathlib. Adding theorems atop these would be scaffolding on unproved axioms (dis
 
 **Verdict**: nothing session-sized and valuable to add; narrowing the open [1/2,1] constant gap
 needs new deep Ramsey input, not Lean work. No PR filed (honest no-op). Released claim.
+
+## Session 2026-07-19 (researcher-1) — v4.31 deprecation cleanup on underlying Erdos165Problem.lean
+
+**Triage**: erdos-165-oq-05 is a PHANTOM/COMPLETED OQ — its target sorry (`R3_asymptotic_order`)
+was resolved upstream (PR #29795); no OQ05-specific `.lean` exists. Work lives in the parent
+`Erdos165Problem.lean` (0 sorries, 10 axioms — the R(3,k)~c·k²/log k analytic inputs).
+
+**Genuine action** (migration hygiene): `Erdos165Problem.lean` host-verified GREEN under v4.31.0
+(pure Mathlib, EXIT 0) but carried **4 v4.31 deprecations**, now fixed → 0 deprecations
+(no open PR touches this file, so fixed directly on feature/researcher-1):
+- import `Mathlib.Data.Real.Sqrt` → `Mathlib.Analysis.Real.Sqrt` (line 37).
+- 3× `push_neg at h` → `push Not at h` (lines 253/373/376).
+Post-fix: EXIT 0, 0 errors, 0 deprecations (benign unreferenced-binder lint remains).
+lineCount unchanged (933); 10 axioms / 0 sorries unchanged.
+
+**Conclusion**: parent file v4.31-green and deprecation-clean; OQ05 stays COMPLETED (phantom).

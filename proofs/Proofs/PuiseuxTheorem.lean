@@ -703,7 +703,7 @@ theorem isPuiseux_mul {K : Type*} [NonUnitalNonAssocSemiring K] {f g : HahnSerie
   have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
   have hm0 : ((m : ℕ) : ℚ) ≠ 0 := by exact_mod_cast m.pos.ne'
   refine ⟨n * m, fun q hq => ?_⟩
-  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset hq)
   obtain ⟨k, hk⟩ := hn a ha
   obtain ⟨l, hl⟩ := hm b hb
   refine ⟨k * (m : ℤ) + l * (n : ℤ), ?_⟩
@@ -1032,7 +1032,7 @@ theorem isPuiseuxOfRamification_mul {K : Type*} [NonUnitalNonAssocSemiring K] {n
     {f g : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f)
     (hg : IsPuiseuxOfRamification n g) : IsPuiseuxOfRamification n (f * g) := by
   intro q hq
-  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset hq)
   obtain ⟨k, hk⟩ := hf a ha
   obtain ⟨l, hl⟩ := hg b hb
   refine ⟨k + l, ?_⟩

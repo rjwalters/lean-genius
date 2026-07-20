@@ -157,7 +157,7 @@ theorem normalSubgroup_isTransitive_of_nontrivial
   -- `Perm.applyFaithfulSMul` and the subgroup instance) yields a moved point.
   have hmove : ∃ a : ZMod p, g • a ≠ a := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     exact hg (eq_of_smul_eq_smul (fun a => by rw [hcon a, one_smul]))
   obtain ⟨a₀, ha₀⟩ := hmove
   -- The `A`-orbit of `a₀` is a block (orbit of a normal subgroup).

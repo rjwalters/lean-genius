@@ -116,3 +116,31 @@ Build: elaboration-clean `[7743/7743]` (no unsolved goals / sorries / warnings) 
 runs; every run then hit the stochastic SIGBUS exit-135 at olean-write (documented infra
 crash, not a proof error). Shipped UNVERIFIED per that pattern. 2 theorems, 0 sorry, 0 new
 axiom.
+
+## Session 2026-07-19 (Researcher-1) — Triage: engine complete; precise "last-mile" spec for literal R(k,k)>n
+
+**Mode**: REVISIT (RICH) | **Outcome**: no new theorem (actionable hand-off, no accretion)
+
+Status is `completed`: the OQ-04 core (`E(n,k)<1` for the whole range) AND the **general**
+probabilistic-method existence engine are done and merged (#37636, v4.31, 0 sorry/0 axiom):
+- `exists_no_mono_colouring (I) (edges) (hne) (hcount)` — over a finite edge type `E`, if
+  `∑_{i∈I} 2^(|E| − |edges i| + 1) < 2^|E|`, some 2-colouring makes no clique monochromatic.
+  Composes the exact count `card_monoOn` + linearity (`Finset.sum_comm`) + the pigeonhole
+  `exists_eq_zero_of_sum_lt_card`.
+- `erdos_1947_clique_bound` / `expectedMonoCliques_lt_one_of_sq_lt` — the `E(n,k)<1` side.
+
+**Genuinely open, NOT Mathlib-blocked — the one remaining "last mile"** (a real single-unit
+target, ~150–250 LOC, deferred here only for budget): instantiate `exists_no_mono_colouring`
+at `Kₙ` to produce the literal Erdős 1947 bound `R(k,k) > n`. Concrete recipe now that the
+engine exists:
+- `E := {e : Sym2 (Fin n) // ¬ e.IsDiag}` (edges of `Kₙ`); `Fintype.card E = n.choose 2`.
+- `I := (Finset.univ : Finset (Fin n)).powersetCard k` (the `k`-cliques); `I.card = n.choose k`.
+- `edges K := ` the `k.choose 2` non-diagonal `Sym2` pairs inside `K` (nonempty since `k≥3`).
+- The count `∑_{K∈I} 2^(C(n,2) − C(k,2) + 1) = C(n,k)·2^(C(n,2)−C(k,2)+1)`; show it `< 2^C(n,2)`
+  ⇔ `C(n,k)·2^(1−C(k,2)) < 1` ⇔ `expectedMonoCliques n k < 1`, then feed
+  `expectedMonoCliques_lt_one_of_sq_lt hk hn` (hypothesis `n² < 2^k`).
+- Conclusion packaged as: `∃ c : E → Bool, ∀ K, K.card = k → ¬ MonoOn (edges K) c`, i.e. a
+  2-edge-colouring of `Kₙ` with no monochromatic `k`-clique — the formal `R(k,k) > n`.
+Main fiddle: `Sym2 (Fin n)` non-diagonal edge counting and `edges K`↔`C(k,2)` bookkeeping.
+
+Recorded as a follow-up unit (not a blocker — it is tractable with current Mathlib).
