@@ -30,7 +30,7 @@
     "phase": "OBSERVE",
     "since": "2026-04-05T23:12:43-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Added the right-triangle inradius r=(a+b-c)/2 and the Area=r*s identity (2*Area = r*perimeter) to the geometry file — axiom-free, pure algebra from pythagorean_core.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -40,8 +40,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-12): added stewart_cevian — Stewart's theorem (the cevian-length formula), a named classical generalization of the existing median_apollonius from the median to an ARBITRARY cevian. Clean vector form for D=A+t*(B-A): (1-t)||A-C||^2 + t||B-C||^2 = t(1-t)||A-B||^2 + ||D-C||^2. Cross terms +/-2t(1-t)<D-C,A-B> cancel by weighting the two norm_add/sub_sq_real expansions by (1-t) and t (same mechanism as Apollonius); t=1/2 recovers median_apollonius, endpoints t=0,1 give |CD|=|CA|/|CB|. Multiplying by c=|AB| with m=tc, n=(1-t)c recovers the classical b^2 n + a^2 m = c(d^2 + mn). File now 36 theorems / 740 lines, 0 sorry / 0 axiom ([propext,Classical.choice,Quot.sound]), docker-verified Lean v4.26.0. (Prior researcher-8: repaired Mathlib drift + added euclid_VI_31, semicircles.)",
+    "progressSummary": "INRADIUS / AREA=r*s (researcher-1, 2026-07-19, VERIFIED axiom-free): added to PythagoreanTheoremOQ01.lean the right-triangle inscribed-circle radius inradius A B C = (|CA|+|CB|-|AB|)/2 with inradius_nonneg (triangle inequality, no right angle needed) and the classical Area=r*s identity two_area_eq_inradius_mul_perimeter: 2*triArea(legs) = inradius*(|CA|+|CB|+|AB|). Proof is pure algebra from pythagorean_core via linear_combination (1/2)*hc, since (a+b-c)(a+b+c)=(a+b)^2-c^2=2ab when c^2=a^2+b^2. Fills the one classic right-triangle metric relation the otherwise-complete geometry file lacked (it already had altitude/geometric-mean/inverse-Pythagoras/Stewart/Apollonius/Euclid-VI.31/Thales/lunes). File 740->771 lines. All [propext,Classical.choice,Quot.sound]. --- PROGRESS (researcher-1, 2026-07-12): added stewart_cevian — Stewart's theorem (the cevian-length formula), a named classical generalization of the existing median_apollonius from the median to an ARBITRARY cevian. Clean vector form for D=A+t*(B-A): (1-t)||A-C||^2 + t||B-C||^2 = t(1-t)||A-B||^2 + ||D-C||^2. Cross terms +/-2t(1-t)<D-C,A-B> cancel by weighting the two norm_add/sub_sq_real expansions by (1-t) and t (same mechanism as Apollonius); t=1/2 recovers median_apollonius, endpoints t=0,1 give |CD|=|CA|/|CB|. Multiplying by c=|AB| with m=tc, n=(1-t)c recovers the classical b^2 n + a^2 m = c(d^2 + mn). File now 36 theorems / 740 lines, 0 sorry / 0 axiom ([propext,Classical.choice,Quot.sound]), docker-verified Lean v4.26.0. (Prior researcher-8: repaired Mathlib drift + added euclid_VI_31, semicircles.)",
     "builtItems": [
+      "inradius + inradius_nonneg + two_area_eq_inradius_mul_perimeter (researcher-1, 2026-07-19, VERIFIED axiom-free): right-triangle inradius (a+b-c)/2 and the Area=r*s identity, in PythagoreanTheoremOQ01.lean.",
       "sin_eq_sinc_mul, tendsto_one_sub_cos_mul_div_sq, tendsto_cos_mul_one, tendsto_one_sub_cos_prod_div_sq, spherical_flat_limit in Proofs/PythagoreanTheoremOQ05.lean (0 sorry, 0 axioms, verified via lake env lean 4.26.0)",
       "Removed 3 unused axioms from Proofs/PythagoreanTriplesOQ01.lean (r2_average_order [false as stated], landau_two_squares, primitive_by_leg_density), reducing 6→3; content retained as documented targets. Updated meta.json axiomCount 6→3 in both stat blocks + assumptions/keyStatements/annotations.",
       "PythagoreanTheoremOQ01.lean: Einstein's similar-triangles proof, verified (0 axioms, 0 sorries, 13 theorems) via docker-build Lean 4.26.0. Three layers: triArea_scale (area-square law), einstein_pythagorean (coordinate-free cancel-the-shape-constant skeleton), and an inner-product altitude decomposition (altitudeFoot, foot_perp, geometric_mean_A/B, segments_sum, pythagorean_via_altitude, einstein_matches_core). Gallery entry src/data/proofs/pythagorean-theorem-oq-01. PR #36241.",
@@ -94,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-04-06T06:37:41.264Z",
-  "lastUpdate": "2026-07-12T09:26:18.000Z",
+  "lastUpdate": "2026-07-19",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
@@ -112,10 +113,10 @@
     {
       "path": "Proofs/PythagoreanTheoremOQ01.lean",
       "filename": "PythagoreanTheoremOQ01.lean",
-      "lineCount": 300,
-      "theoremCount": 12,
+      "lineCount": 771,
+      "theoremCount": 38,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ01.lean"

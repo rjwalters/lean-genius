@@ -118,3 +118,33 @@ Insights accumulated during research on this problem.
 ### Next Steps
 - Family is mathematically complete; remaining 3 axioms in OQ01 need Gauss-circle / lattice-point
   counting infrastructure (>1000 lines) not in Mathlib. No session-sized axiom elimination remains.
+
+## Session 2026-07-19 (researcher-1) — right-triangle inradius + Area=r·s (VERIFIED axiom-free)
+
+**Mode:** REVISIT (mature, essentially-complete geometry file: 740L / ~36 thm / 0 axiom / 0 sorry).
+**Outcome:** +1 def, +2 theorems, 0 axioms.
+
+`PythagoreanTheoremOQ01.lean` (the Einstein-dissection + inner-product geometry entry) already
+covered altitude foot, both geometric-mean/leg theorems, inverse-Pythagoras (1/h²=1/a²+1/b²),
+Euclid VI.31, semicircles/Hippocrates' lunes, Thales, law of cosines, Apollonius median, Stewart's
+cevian, acute/obtuse characterizations. The one classic right-triangle metric relation missing was
+the **inradius**. Added:
+
+- `inradius (A B C : F) : ℝ := (‖A-C‖ + ‖B-C‖ - ‖A-B‖)/2` — the closed form for a right
+  triangle's inscribed-circle radius (legs' sum minus hypotenuse, halved).
+- `inradius_nonneg` — `0 ≤ inradius` from the triangle inequality `‖A-B‖ ≤ ‖A-C‖+‖B-C‖`
+  (`A-B = (A-C)-(B-C)`, `norm_sub_le`); no right angle needed (`omit [InnerProductSpace ℝ F] in`).
+- `two_area_eq_inradius_mul_perimeter` — the classical **Area = r·s**: `2·triArea(legs) =
+  inradius · (‖A-C‖+‖B-C‖+‖A-B‖)`. Pure algebra from `pythagorean_core` (`c²=a²+b²`):
+  `(a+b−c)(a+b+c) = (a+b)²−c² = 2ab`. One-liner `linear_combination (1/2:ℝ) * pythagorean_core A B C hperp`.
+
+Idiom notes (this file): legs/hyp are `‖A-C‖`,`‖B-C‖`,`‖A-B‖`; `triArea b t = b*t/2`;
+`pythagorean_core A B C hperp : ‖A-B‖²=‖A-C‖²+‖B-C‖²`. Section `Geometric` has
+`variable (A B C : F) (hAB : A ≠ B)` — lemmas not using `hAB` simply don't reference it (no
+`include`); a lemma using only norms should `omit [InnerProductSpace ℝ F] in` to avoid the
+unused-section-var linter.
+
+**Build: VERIFIED** host-elab vs prebuilt Mathlib v4.31.0 oleans (`bin/lake env lean`, EXIT 0, no
+errors/warnings). `#print axioms` on both new theorems = `[propext, Classical.choice, Quot.sound]`.
+File 740→771 lines. NOTE: research-json leanFiles entry for this file was badly stale (300L/12thm);
+reconciled to 771L/38thm/3def alongside the gallery meta.

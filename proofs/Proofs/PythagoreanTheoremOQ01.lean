@@ -405,6 +405,37 @@ theorem inverse_pythagorean (hAC : A ≠ C) (hBC : B ≠ C)
   field_simp
   ring
 
+/-- The **inradius** of the right triangle `A B C` (right angle at `C`):
+`r = (|CA| + |CB| − |AB|)/2`.  For a right triangle the inscribed-circle radius has this
+classical closed form — the legs' sum minus the hypotenuse, halved. -/
+noncomputable def inradius (A B C : F) : ℝ := (‖A - C‖ + ‖B - C‖ - ‖A - B‖) / 2
+
+omit [InnerProductSpace ℝ F] in
+/-- **The inradius is nonnegative.**  Immediate from the triangle inequality
+`|AB| ≤ |CA| + |CB|` (writing `A - B = (A - C) - (B - C)` and applying `norm_sub_le`); no right
+angle is needed. -/
+theorem inradius_nonneg (A B C : F) : 0 ≤ inradius A B C := by
+  unfold inradius
+  have h : ‖A - B‖ ≤ ‖A - C‖ + ‖B - C‖ := by
+    have hrw : A - B = (A - C) - (B - C) := by abel
+    rw [hrw]; exact norm_sub_le _ _
+  linarith
+
+/-- **Area–inradius identity (`Area = r·s`), pinned to the right-triangle inradius.**
+Twice the area of the right triangle (`|CA|·|CB|`) equals the inradius times the perimeter:
+
+  `2 · Area = r · (|CA| + |CB| + |AB|)`,
+
+i.e. `Area = r · s` with `s` the semiperimeter — the general triangle identity, here made
+completely explicit because for a right angle at `C` the inradius takes the closed form
+`r = (a + b − c)/2` (`inradius`).  The proof is pure algebra from `pythagorean_core`:
+`(a + b − c)(a + b + c) = (a + b)² − c² = 2ab` once `c² = a² + b²`. -/
+theorem two_area_eq_inradius_mul_perimeter (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    2 * triArea ‖A - C‖ ‖B - C‖
+      = inradius A B C * (‖A - C‖ + ‖B - C‖ + ‖A - B‖) := by
+  unfold triArea inradius
+  linear_combination (1 / 2 : ℝ) * pythagorean_core A B C hperp
+
 include hAB in
 /-- **The foot divides the hypotenuse in the ratio of the squared legs.**  The altitude foot
 `H` splits the hypotenuse `AB` into segments `|AH|` and `|HB|` whose lengths are proportional
