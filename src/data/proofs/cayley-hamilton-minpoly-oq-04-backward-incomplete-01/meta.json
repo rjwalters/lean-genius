@@ -70,12 +70,28 @@
   },
   "sections": [
     {
-      "id": "defs-gcd",
-      "title": "Definitions and the Bézout/GCD Lemma",
-      "startLine": 57,
+      "id": "overview-setup",
+      "title": "Overview, Imports & Setup",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "File docstring framing the entry: the parent CayleyHamiltonMinpolyOQ04Backward leaves its main backward theorem nonderogatory_has_cyclic_vector_infinite as a sorry, blocked by a normalizedFactors (unique-factorization) import that breaks DecidableEq resolution; this file discharges the irreducible-minimal-polynomial special case, which needs only Bézout/gcd and yields the stronger conclusion that EVERY nonzero vector is cyclic. Lists the three exported results and the gcd/unit proof idea. Imports the Charpoly/Minpoly API; opens Matrix and Polynomial; fixes a field K and dimension n. Fully self-contained because the parent no longer compiles against the current toolchain.",
+      "mathContext": "Setup: variable {K} [Field K] {n : ℕ}; open Matrix Polynomial. Goal: for M with irreducible minpoly of degree n, every v ≠ 0 is a cyclic vector."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions — Cyclic Vector and Nonderogatory",
+      "startLine": 55,
+      "endLine": 62,
+      "summary": "IsCyclicVector M v: no nonzero polynomial of degree < n annihilates v under M (∀ p, p.natDegree < n → (aeval M p).mulVec v = 0 → p = 0). IsNonderogatory M: minpoly K M = M.charpoly. Both notions are reproduced locally so the file needs no import from the non-compiling parent.",
+      "mathContext": "IsCyclicVector M v :≡ (∀ p : K[X], deg p < n → p(M)·v = 0 → p = 0); IsNonderogatory M :≡ (minpoly K M = charpoly M)."
+    },
+    {
+      "id": "gcd-bezout",
+      "title": "The Bézout / GCD Annihilation Lemma",
+      "startLine": 64,
       "endLine": 90,
-      "summary": "IsCyclicVector (no nonzero low-degree polynomial annihilates v) and IsNonderogatory (minpoly = charpoly), plus gcd_aeval_mulVec_eq_zero: from p(M)v=0, gcd(p,μ)(M)v=0 via the Bézout decomposition gcd = a·p + b·μ and μ(M)=0.",
-      "mathContext": "gcd(p,μ)(M)·v = a(M)·(p(M)v) + b(M)·(μ(M)v) = 0 since p(M)v=0 and μ(M)=0."
+      "summary": "gcd_aeval_mulVec_eq_zero: from p(M)v = 0 derive gcd(p,μ)(M)v = 0, where μ = minpoly K M. Writes gcd = a·p + b·μ via EuclideanDomain.gcd_eq_gcd_ab, expands aeval as a ring hom (map_add / map_mul), rewrites matrix products as mulVec composition (Matrix.mulVec_mulVec), and annihilates both terms using the hypothesis p(M)v = 0 and Cayley–Hamilton's μ(M) = 0 (minpoly.aeval).",
+      "mathContext": "gcd(p,μ)(M)·v = a(M)·(p(M)v) + b(M)·(μ(M)v) = 0 since p(M)v = 0 and μ(M) = 0."
     },
     {
       "id": "core",
