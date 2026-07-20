@@ -126,6 +126,14 @@
       "endLine": 143,
       "summary": "exists_lt_mean_of_exists_gt_mean / exists_gt_mean_of_exists_lt_mean: a single element strictly beating the mean forces another strictly below (and dually); variance_pos_of_exists_ne: two disagreeing elements force 0 < ∑ (f a − mean s f)².",
       "mathContext": "By contraposition of rigidity an excess above the mean must be compensated below it; the sum of squared deviations is zero exactly when the data is constant, so disagreement makes it strictly positive."
+    },
+    {
+      "id": "vanishing-spread",
+      "title": "Characterizing Vanishing Spread",
+      "startLine": 144,
+      "endLine": 175,
+      "summary": "Supplies the converse missing from `variance_pos_of_exists_ne`, upgrading the one-way 'non-constant ⟹ positive spread' into full characterizations. `variance_eq_zero_iff_forall_eq_mean`: $\\sum_a (f a-\\mathrm{mean}\\,s\\,f)^2=0\\iff$ every element equals the mean (no nonemptiness needed — the empty set is vacuously both). `variance_eq_zero_iff_const` repackages this with an explicit constant: the squared-deviation sum vanishes exactly when $f$ is constant on $s$ — the finite, empirical form of 'variance zero ⟺ almost surely constant'.",
+      "mathContext": "$\\sum_{a\\in s}(f a-\\mathrm{mean}\\,s\\,f)^2=0\\iff(\\forall a\\in s,\\ f a=\\mathrm{mean}\\,s\\,f)\\iff(\\exists c,\\ \\forall a\\in s,\\ f a=c)$."
     }
   ],
   "conclusion": {
