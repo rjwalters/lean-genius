@@ -44,15 +44,15 @@
       "IsPrimeChain definition: chains p₁ < ... < pₗ with pᵢ₊₁ ≡ 1 (mod pᵢ)",
       "IsDivisorChain definition: same for divisors",
       "h and H definitions as suprema of chain lengths",
-      "logStar definition: iterated logarithm",
-      "ErdosNormalOrderConjecture: h(n) ~ log*(n)",
-      "ErdosRatioConjecture: H(n)/h(n) → ∞",
-      "SophieGermainPrime and Cunningham chain connections",
-      "h_le_omega theorem: trivial upper bound"
+      "logStar: placeholder stub (defined as the constant 0, `fun _ => 0`); the iterated logarithm is described only, not formalized",
+      "ErdosNormalOrderConjecture: Prop stating h(n) ~ log*(n) (relative to the logStar stub; unproved conjecture statement)",
+      "ErdosRatioConjecture: Prop stating H(n)/h(n) → ∞ (unproved conjecture statement)",
+      "SophieGermainPrime and IsCunninghamChain definitions",
+      "prime_chain_is_divisor_chain theorem: every prime chain is a divisor chain"
     ],
     "axiomCount": 2,
-    "lineCount": 310,
-    "assumptions": "2 axioms: h_le_H (h(n) ≤ H(n) for all n), h_tends_to_infinity (h(n) → ∞ almost surely, van Doorn). 0 sorries.",
+    "lineCount": 306,
+    "assumptions": "2 axioms: h_le_H (h(n) ≤ H(n) for all n), h_tends_to_infinity (h(n) → ∞ almost surely, van Doorn). 0 sorries. Note: logStar is a placeholder stub (constant 0), so ErdosNormalOrderConjecture is only a statement relative to that stub, not a formalization of the iterated logarithm. The h(n) ≤ ω(n) upper bound is described in comments only, not formalized as a theorem.",
     "theoremCount": 3,
     "definitionCount": 9
   },
