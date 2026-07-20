@@ -60,28 +60,44 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports (GroupTheory.SpecificGroups.Cyclic, OrderOfElement, Tactic) and the module docstring framing the exact solution count #{x : xⁿ = 1} = gcd(n, |G|) in a finite cyclic group, its relation to Cauchy's theorem, the power-map dichotomy of the parent file, and Frobenius' divisibility theorem; namespace and open Finset Subgroup Submonoid Function.",
+      "mathContext": "In a finite cyclic group $G$, $\\#\\{x \\in G : x^n = 1\\} = \\gcd(n, |G|)$."
+    },
+    {
       "id": "arithmetic-core",
       "title": "The Number-Theoretic Core",
-      "startLine": 60,
-      "endLine": 89,
+      "startLine": 61,
+      "endLine": 84,
       "summary": "div_gcd_dvd_of_dvd_mul: if m ∣ e·n then m/gcd(n,m) ∣ e. Setting d = gcd(n,m), the proof writes m = d·(m/d) and n = d·(n/d), cancels the common d from m ∣ e·n to get (m/d) ∣ e·(n/d), and drops the n/d factor using gcd(m/d, n/d) = 1. This is the arithmetic engine of the exact count, fully decoupled from the group theory.",
       "mathContext": "m ∣ e·n ⟹ (m/gcd(n,m)) ∣ e, via d·k = m, d·n' = n, gcd(k, n') = 1, k ∣ e·n' ⟹ k ∣ e."
     },
     {
       "id": "main-count",
       "title": "The Exact Solution Count",
-      "startLine": 90,
-      "endLine": 143,
-      "summary": "card_pow_eq_one_eq_gcd: #{a : G | aⁿ = 1} = gcd(n, |G|) for every n. After the n = 0 case, a generator g and the subgroup zpowers (g^k) with k = m/gcd(n,m) are introduced; orderOf (g^k) = d is computed; the solution set is shown equal to zpowers (g^k) by two inclusions (forward via div_gcd_dvd_of_dvd_mul, reverse via orderOf_dvd_of_mem_zpowers); and the count is read off as orderOf (g^k) = d.",
+      "startLine": 85,
+      "endLine": 141,
+      "summary": "card_pow_eq_one_eq_gcd: #{a : G | aⁿ = 1} = gcd(n, |G|) for every n (variable {α} [Group α] introduced here). After the n = 0 case, a generator g and the subgroup zpowers (g^k) with k = m/gcd(n,m) are introduced; orderOf (g^k) = d is computed; the solution set is shown equal to zpowers (g^k) by two inclusions (forward via div_gcd_dvd_of_dvd_mul, reverse via orderOf_dvd_of_mem_zpowers); and the count is read off as orderOf (g^k) = d.",
       "mathContext": "{a | aⁿ = 1} = zpowers (g^(m/d)), of cardinality orderOf (g^(m/d)) = m/(m/d) = d = gcd(n, m)."
     },
     {
-      "id": "corollaries",
-      "title": "Frobenius Divisibility and Boundary Cases",
-      "startLine": 144,
+      "id": "frobenius",
+      "title": "Frobenius' Divisibility (Cyclic Case)",
+      "startLine": 143,
+      "endLine": 148,
+      "summary": "frobenius_cyclic: gcd(n, |G|) ∣ #{a : G | aⁿ = 1} — an immediate rewrite by card_pow_eq_one_eq_gcd. This is the cyclic case (here with equality) of Frobenius' theorem, which generalises the divisibility to arbitrary finite groups.",
+      "mathContext": "$\\gcd(n,|G|) \\mid \\#\\{a : a^n = 1\\}$ (with equality in the cyclic case)."
+    },
+    {
+      "id": "boundary-cases",
+      "title": "Coprime and Divisible Boundary Cases",
+      "startLine": 150,
       "endLine": 165,
-      "summary": "frobenius_cyclic records gcd(n, |G|) ∣ count (the statement Frobenius generalises to arbitrary groups, here with equality). card_pow_eq_one_eq_one_iff_coprime reduces count = 1 to coprimality of n and |G| — the cyclic incarnation of the parent's power-map dichotomy. card_pow_eq_one_eq_card_of_card_dvd gives count = |G| when |G| ∣ n.",
-      "mathContext": "gcd(n,|G|) ∣ count; count = 1 ⟺ n.Coprime |G|; |G| ∣ n ⟹ count = |G|."
+      "summary": "card_pow_eq_one_eq_one_iff_coprime reduces count = 1 to coprimality of n and |G| — the cyclic incarnation of the parent's power-map dichotomy (x ↦ xⁿ injective iff 1 is the only n-th root of unity). card_pow_eq_one_eq_card_of_card_dvd gives count = |G| when |G| ∣ n (every element is a solution), via Nat.gcd_eq_right.",
+      "mathContext": "count = 1 ⟺ n.Coprime |G|; and |G| ∣ n ⟹ count = |G| (all elements solve xⁿ = 1)."
     }
   ],
   "conclusion": {
