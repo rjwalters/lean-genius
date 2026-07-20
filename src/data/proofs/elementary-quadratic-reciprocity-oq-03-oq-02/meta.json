@@ -35,7 +35,7 @@
       "The mod-8 pattern for (a/2): the value is 0 if 2|a, equals 1 if a ≡ ±1 (mod 8), and equals -1 if a ≡ ±3 (mod 8). This exactly parallels the second supplement of the Legendre symbol — (2/p) = (-1)^((p²-1)/8) — and the Kronecker extension to all integers uses the same mod-8 classification.",
       "The sign character (a/-1) = kroneckerNeg1 a encodes the real embedding: -1 if a < 0, else 1. It is the unique real-valued character of order 2 on ℝ^×, and its inclusion lets the Kronecker symbol serve as a Hecke character at the archimedean place.",
       "Complete multiplicativity in the first argument — (ab/n) = (a/n)(b/n) for ab ≠ 0 — is the structural property that promotes the Kronecker symbol from a set function to a group homomorphism (ℤ/nℤ)^× → {±1}, i.e., a Dirichlet character. For a fundamental discriminant D, the map n ↦ (D/n) is a primitive Dirichlet character of conductor |D|, establishing the link to Dirichlet L-functions.",
-      "The Kronecker symbol requires two axioms — multiplicativity in the second argument and generalized quadratic reciprocity — because both demand case analysis over the 2-adic valuation of n combined with Gauss sum arguments or induction over prime factorizations. The generalized QR is equivalent to Artin reciprocity for quadratic extensions restricted to ℚ.",
+      "Multiplicativity in the second argument (kronecker_mul_right) and odd-modulus quadratic reciprocity (kronecker_quadratic_reciprocity) are both fully proven here, with 0 axioms and 0 sorries — the second-argument proof reduces every nonzero modulus to the normal form sign(n)·J(a|‖n‖) and applies jacobiSym.mul_right'. What remains genuinely open (documented, not axiomatized) is generalized quadratic reciprocity for arbitrary fundamental discriminants — equivalent to Artin reciprocity for quadratic extensions of ℚ — which demands Gauss-sum arguments over the 2-adic valuation of n.",
       "The definition is `noncomputable` in Lean 4 because it builds on `jacobiSym`, which uses integer division in ways Lean's kernel cannot definitionally reduce. This is a type-theoretic artifact, not a mathematical obstruction: the Kronecker symbol is entirely explicit and could be computed on any input by a straightforward algorithm."
     ]
   },
@@ -44,52 +44,150 @@
       "id": "header-imports",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 32,
-      "summary": "Docstring block defining the Kronecker symbol conceptually: four cases (a/0), (a/-1), (a/2), (a/p); the multiplicative extension; and four areas of application (L-functions, class field theory, quadratic forms, modular forms). Imports JacobiSymbol and Tactic."
+      "endLine": 36,
+      "summary": "Docstring block defining the Kronecker symbol conceptually: four cases (a/0), (a/-1), (a/2), (a/p); the multiplicative extension; and four areas of application (L-functions, class field theory, quadratic forms, modular forms). Imports JacobiSymbol and Tactic, opens the KroneckerSymbol namespace with Nat and Int."
     },
     {
       "id": "special-moduli-defs",
-      "title": "Section 1: Definitions at Special Moduli",
-      "startLine": 33,
+      "title": "Definitions at Special Moduli",
+      "startLine": 37,
       "endLine": 52,
-      "summary": "Three core definitions: kronecker2 (the symbol at n=2, a 3-way if-else on a mod 2 and a mod 8), kroneckerNeg1 (the sign character), and kronecker0 (the unit indicator). These three definitions encode all the non-Jacobi data of the Kronecker symbol."
+      "summary": "Three core definitions handling the moduli the Jacobi symbol cannot: kronecker2 (the symbol at n=2, a 3-way if-else on a mod 2 and a mod 8), kroneckerNeg1 (the sign character for n=-1), and kronecker0 (the unit indicator for n=0). These encode all the non-Jacobi data of the Kronecker symbol."
     },
     {
-      "id": "basic-properties",
-      "title": "Section 2: Basic Properties at Special Moduli",
-      "startLine": 54,
-      "endLine": 97,
-      "summary": "Ten concrete-value theorems proved by decide or omega: kronecker2 at 1, -1, 3, 5, 7, 0; kroneckerNeg1 for nonneg and negative inputs; kronecker0 at 1, -1, 2. Verifies the mod-8 pattern and sign character behavior."
+      "id": "special-moduli-evals",
+      "title": "Concrete Evaluations at Special Moduli",
+      "startLine": 53,
+      "endLine": 99,
+      "summary": "Ten concrete-value theorems proved by decide or omega: kronecker2 at 1, -1, 3, 5, 7, 0 (verifying the mod-8 pattern ±1↦1, ±3↦-1, even↦0); kroneckerNeg1 for nonneg and negative inputs; kronecker0 at 1, -1, 2."
     },
     {
       "id": "full-kronecker-def",
-      "title": "Section 3: The Full Kronecker Symbol",
-      "startLine": 99,
-      "endLine": 114,
-      "summary": "Defines noncomputable kronecker via a 4-way case split: n=0 to kronecker0, n=-1 to kroneckerNeg1, n=1 returns 1, general case computes sign * jacobiSym a n.natAbs."
+      "title": "The Full Kronecker Symbol and Jacobi Agreement",
+      "startLine": 100,
+      "endLine": 137,
+      "summary": "Defines the noncomputable kronecker symbol via a 4-way case split (n=0↦kronecker0, n=-1↦kroneckerNeg1, n=1↦1, general↦sign·jacobiSym a n.natAbs), then proves kronecker_eq_jacobi: for odd positive n the Kronecker symbol agrees with Mathlib's Jacobi symbol."
     },
     {
-      "id": "jacobi-agreement-discriminants",
-      "title": "Sections 4 & 5: Jacobi Agreement and Discriminant Values",
-      "startLine": 116,
-      "endLine": 142,
-      "summary": "Proves kronecker_eq_jacobi (for odd positive n, Kronecker equals Jacobi) and kronecker_neg4_values (the character of Z[i] at discriminant -4: both (−4/1) and (−4/3) equal 1)."
+      "id": "discriminant-values",
+      "title": "Discriminant Character Values",
+      "startLine": 138,
+      "endLine": 159,
+      "summary": "Proves kronecker_neg4_values, computing the quadratic character of ℤ[i] at the fundamental discriminant -4: (-4/1) = 1 and (-4/3) = -1, matching χ₋₄(n) = (-1)^((n-1)/2). A docstring corrects an earlier false claim that (-4/3) = 1."
     },
     {
-      "id": "multiplicativity",
-      "title": "Section 6: Multiplicativity and Axioms",
-      "startLine": 143,
-      "endLine": 222,
-      "summary": "Proves kroneckerNeg1_mul (sign character multiplicativity, 4-way case split), kronecker0_mul (unit character multiplicativity), kronecker_mul_left (full symbol multiplicativity in first argument via split_ifs + jacobiSym.mul_left). Ends with docstring-style statements of the two axiomatized results: kronecker_mul_right and kronecker_reciprocity."
+      "id": "local-char-multiplicativity",
+      "title": "Structure of the Local (·/2), (·/-1), (·/0) Characters",
+      "startLine": 160,
+      "endLine": 289,
+      "summary": "Establishes multiplicativity and structure of the special-modulus characters: kroneckerNeg1_mul and kronecker0_mul (multiplicativity of the sign and unit characters), kronecker2_mul (complete multiplicativity of (·/2)), plus its period-8 periodicity, evenness, {-1,0,1}-valuedness, square laws, and the identification kronecker2_eq_χ₈ with Mathlib's canonical mod-8 character χ₈."
+    },
+    {
+      "id": "general-multiplicativity",
+      "title": "General Multiplicativity and Power Laws",
+      "startLine": 290,
+      "endLine": 410,
+      "summary": "Proves complete multiplicativity of the full symbol: kronecker_mul_left (first argument), the normal form kronecker_eq_sign_jacobi collapsing every nonzero modulus to sign(n)·J(a|‖n‖), then kronecker_mul_right (second argument, general case) and its odd-positive specialization, the prime-power law kronecker_pow_right, and non-negativity at even-power moduli."
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "title": "Quadratic Reciprocity (Odd Moduli)",
+      "startLine": 411,
+      "endLine": 463,
+      "summary": "Transports Mathlib's Jacobi reciprocity to the Kronecker symbol at odd positive moduli: kronecker_quadratic_reciprocity (the flip law with the (-1)^(((m-1)/2)((n-1)/2)) sign) together with its congruence forms for m,n ≡ 1 (mod 4) and both ≡ 3 (mod 4)."
+    },
+    {
+      "id": "supplementary-laws",
+      "title": "Supplementary Laws and Numerator Periodicity",
+      "startLine": 464,
+      "endLine": 625,
+      "summary": "The first, second, and combined supplementary laws at odd moduli as explicit residue tables: kronecker_neg_one_odd ((-1/n)), kronecker_two_odd ((2/n)), kronecker_neg_two_odd ((-2/n)), their periodicities (mod 4, mod 8), the self-reciprocity kronecker2_eq_kronecker_two, and the numerator character's dependence only on a mod n (kronecker_mod_numerator and translation invariance)."
+    },
+    {
+      "id": "canonical-characters",
+      "title": "Supplementary Laws as Canonical Mathlib Characters",
+      "startLine": 626,
+      "endLine": 685,
+      "summary": "Section 9: recasts the supplementary laws as Mathlib's canonical Dirichlet characters — kronecker_neg_one_eq_χ₄, kronecker_two_eq_χ₈, kronecker_neg_two_eq_χ₈' — plus the factorization (-2/n) = (-1/n)·(2/n) and the character identity χ₈' = χ₄·χ₈ on odd residues, providing Gauss-sum-route inputs toward generalized reciprocity."
+    },
+    {
+      "id": "value-range-support",
+      "title": "Value Range, Normalization and Support",
+      "startLine": 686,
+      "endLine": 779,
+      "summary": "The character's global structure: kronecker_trichotomy (values in {-1,0,1}), the absolute bound |(a/n)| ≤ 1, the order-two square law, normalizations (1/n) = 1 and (a/1) = 1, and the support law kronecker_eq_zero_iff — the symbol vanishes exactly on non-coprime pairs, so it is ±1-valued precisely on the units."
+    },
+    {
+      "id": "numerator-sign-law",
+      "title": "Numerator Sign Law (χ₄ Twist)",
+      "startLine": 780,
+      "endLine": 830,
+      "summary": "How negating the numerator twists the symbol: kronecker_neg_numerator (general), its χ₄ form at odd moduli, and the residue-table split into the even case (n ≡ 1 mod 4, (-a/n) = (a/n)) and odd case (n ≡ 3 mod 4, (-a/n) = -(a/n))."
+    },
+    {
+      "id": "dirichlet-axioms",
+      "title": "Dirichlet-Character Axioms: Vanishing and Order Two",
+      "startLine": 831,
+      "endLine": 902,
+      "summary": "Completes the Dirichlet-character axiom set for (·/n): kronecker_zero_left (vanishing at the non-unit 0), kronecker_sq_eq_one_of_coprime (exact order two on units), and two sanity checks — the file's symbol is the trivial character at the even modulus 2 (kronecker_at_two) and genuinely differs from the classical (·/2) character kronecker2."
+    },
+    {
+      "id": "square-numerator-laws",
+      "title": "Square Numerators are Quadratic Residues",
+      "startLine": 903,
+      "endLine": 931,
+      "summary": "First-argument multiplicativity applied to a·a: kronecker_sq_left ((a²/n) = (a/n)²), its non-negativity, and kronecker_sq_left_eq_one_of_coprime — square numerators coprime to an odd modulus are residues. The numerator-side statement that squares are quadratic residues."
+    },
+    {
+      "id": "square-modulus-laws",
+      "title": "Square Moduli and Square-Numerator Trichotomy",
+      "startLine": 932,
+      "endLine": 998,
+      "summary": "Denominator-side duals: kronecker_sq_right ((a/n²) = (a/n)²), non-negativity, and residue value on coprime pairs; plus the refined square-numerator trichotomy kronecker_sq_left_eq_zero_or_one / _eq_zero_iff / _eq_one_iff pinning (a²/n) to {0,1} by coprimality."
+    },
+    {
+      "id": "square-trichotomy-duals",
+      "title": "Square-Modulus Trichotomy Duals",
+      "startLine": 999,
+      "endLine": 1044,
+      "summary": "The square-modulus duals of the preceding refinements: kronecker_sq_right_eq_zero_or_one / _eq_zero_iff / _eq_one_iff, closing the {0,1} picture in the second argument and completing the symmetry between (a²/n) and (a/n²)."
+    },
+    {
+      "id": "power-laws",
+      "title": "General Power Laws in Each Argument",
+      "startLine": 1045,
+      "endLine": 1101,
+      "summary": "Generalizes the k=2 square laws to arbitrary exponents: kronecker_pow_left ((aᵏ/n) = (a/n)ᵏ) with even-power non-negativity, and the corresponding even-power residue values coprime to an odd modulus in each argument."
+    },
+    {
+      "id": "denominator-sign-law",
+      "title": "Denominator Sign Law",
+      "startLine": 1102,
+      "endLine": 1145,
+      "summary": "The denominator-side dual of the numerator sign law: kronecker_neg_denominator ((a/-n) via kronecker_mul_right on -n = (-1)·n), the identification of (a/-1) with the sign character, and the residue-table split by the sign of the numerator."
+    },
+    {
+      "id": "module-note",
+      "title": "Module Note: What Remains Open",
+      "startLine": 1146,
+      "endLine": 1192,
+      "summary": "A prose module note recording what the file has established (complete multiplicativity in both arguments over all nonzero moduli, odd-modulus reciprocity) and what remains as documented, non-axiomatized open work: routing the 2-adic part through kronecker2 for the classical even-modulus symbol, and generalized reciprocity for arbitrary fundamental discriminants."
+    },
+    {
+      "id": "boundary-cases-hom",
+      "title": "Boundary Cases at n = -1 and the Numerator Homomorphism",
+      "startLine": 1193,
+      "endLine": 1254,
+      "summary": "Named boundary results and structural packaging: the value at n = -1 as the sign character, complete numerator multiplicativity at odd moduli (kronecker_mul_left_odd), the numerator character as a monoid homomorphism kroneckerNumeratorHom : ℤ →* ℤ, and the numerator power law (aᵏ/n) = (a/n)ᵏ."
     }
   ],
   "conclusion": {
-    "summary": "The Kronecker symbol formalization provides 4 definitions and 13 proved theorems, establishing the symbol's concrete values, agreement with the Jacobi symbol for odd positive moduli, the character structure of Z[i] at discriminant -4, and complete multiplicativity in the first argument. Two deep results — multiplicativity in the second argument and generalized quadratic reciprocity for fundamental discriminants — are axiomatized.",
-    "implications": "The Kronecker symbol sits at the interface of three major branches of algebraic number theory. In Dirichlet's theory, for each fundamental discriminant D the map χ_D(n) = (D/n) is a primitive Dirichlet character of conductor |D|, whose L-function L(s, χ_D) appears in the analytic class number formula. In class field theory, the Kronecker symbol encodes the Artin map for ℚ(√D)/ℚ: a prime p splits, ramifies, or is inert according to whether (D/p) is 1, 0, or -1. In modular forms, theta series ∑(D/n)q^(n²) are Hecke eigenforms with nebentypus character (D/·). The formalization of multiplicativity in the first argument already establishes the homomorphism property needed to connect the Kronecker symbol to these structures, with the two axioms precisely delineating the frontier of what remains to be formalized.",
+    "summary": "The Kronecker symbol formalization provides 6 definitions and over 80 proved theorems (0 axioms, 0 sorries), establishing the symbol's concrete values, agreement with the Jacobi symbol for odd positive moduli, the character structure of Z[i] at discriminant -4, complete multiplicativity in BOTH arguments over all nonzero moduli (kronecker_mul_left and kronecker_mul_right), quadratic reciprocity at odd moduli with its congruence forms, the three supplementary laws recast as Mathlib's canonical characters χ₄/χ₈/χ₈', the full square- and power-law family in each argument, and the numerator character as a monoid homomorphism. What remains open is documented, not axiomatized: routing the 2-adic part of the modulus through the classical mod-8 character kronecker2, and generalized reciprocity for arbitrary fundamental discriminants.",
+    "implications": "The Kronecker symbol sits at the interface of three major branches of algebraic number theory. In Dirichlet's theory, for each fundamental discriminant D the map χ_D(n) = (D/n) is a primitive Dirichlet character of conductor |D|, whose L-function L(s, χ_D) appears in the analytic class number formula. In class field theory, the Kronecker symbol encodes the Artin map for ℚ(√D)/ℚ: a prime p splits, ramifies, or is inert according to whether (D/p) is 1, 0, or -1. In modular forms, theta series ∑(D/n)q^(n²) are Hecke eigenforms with nebentypus character (D/·). Having proven complete multiplicativity in both arguments plus the order-two-on-units support law, the formalization already establishes the primitive-Dirichlet-character property (a homomorphism (ℤ/nℤ)^× → {±1}) needed to connect the symbol to these structures; the remaining open work delineates the frontier between the symbol-as-defined and the fully classical Kronecker symbol.",
     "openQuestions": [
-      "Prove multiplicativity in the second argument (kronecker_mul_right): the key difficulty is handling the interaction between the 2-adic valuation of n and the mod-8 classification of (a/2), requiring a case split on v₂(m) + v₂(n) vs v₂(mn).",
+      "Refine the definition to route the 2-adic part of the modulus through the classical mod-8 character kronecker2 (rather than jacobiSym ‖n‖), and re-prove complete multiplicativity for that classical symbol: the difficulty is handling the interaction between the 2-adic valuation of n and the mod-8 classification of (a/2).",
       "Formalize the connection to Dirichlet characters: define the map D ↦ χ_D = (D/·) from fundamental discriminants to primitive Dirichlet characters, and prove every real primitive Dirichlet character is a Kronecker character.",
-      "Formalize generalized quadratic reciprocity for fundamental discriminants (kronecker_reciprocity): the statement (d₁/|d₂|)(d₂/|d₁|) = (-1)^((d₁-1)/2·(d₂-1)/2) is equivalent to Artin reciprocity for quadratic extensions and may be within reach via Mathlib's quadratic reciprocity infrastructure."
+      "Extend the proven odd-modulus reciprocity to generalized quadratic reciprocity for arbitrary fundamental discriminants: the statement (d₁/|d₂|)(d₂/|d₁|) = (-1)^((d₁-1)/2·(d₂-1)/2) is equivalent to Artin reciprocity for quadratic extensions; the canonical-character identities (χ₈' = χ₄·χ₈) and the mod-4/mod-8 periodicity results proved here are the Gauss-sum-route inputs toward it."
     ]
   },
   "leanFile": {
