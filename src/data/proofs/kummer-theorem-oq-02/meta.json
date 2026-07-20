@@ -7,7 +7,7 @@
     "author": "Gauss (q-binomials, 1808), Kummer (carries, 1852), Konvalinka-Pak (q-analog, 2007)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
     "date": "2007",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/KummerTheoremOQ02.lean",
     "tags": [
       "number-theory",
@@ -19,7 +19,7 @@
       "extension",
       "research"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-29",
     "axiomCount": 0,
-    "lineCount": 412,
+    "lineCount": 408,
     "prerequisites": [
       "Cyclotomic polynomials and their basic properties",
       "Polynomial rings over Z (integral domain structure)",
@@ -52,7 +52,7 @@
       "q-analogs: q-numbers as geometric sums 1 + q + ... + q^(n-1)",
       "Finset product manipulations and induction"
     ],
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 0 axioms, 0 sorries. All q-analog definitions built from scratch. Cyclotomic factorization of q-numbers from Mathlib; all else original.",
+    "assumptions": "None. Machine-checked under Lean v4.31.0 with `set_option autoImplicit false`: 0 sorries, 0 `axiom` declarations, 0 structure-encoded assumptions, no `native_decide`. Repaired under #39077 (the #39061 audit had flagged this as autoImplicit-masked; the genuine defects were Mathlib API drift plus one autoImplicit-masked `subst` binding — all fixed, not assumed away). All q-analog definitions (qNumber, qFactorial, qBinomial) are built from scratch; the cyclotomic factorization of q-numbers uses Mathlib's `prod_cyclotomic_eq_geom_sum`, everything else is original.",
     "mathlib_version": "4.31.0",
     "theoremCount": 21,
     "definitionCount": 4
@@ -181,7 +181,7 @@
       "Nat"
     ],
     "namespace": "KummerTheoremOQ02",
-    "lineCount": 412,
+    "lineCount": 408,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 4,
