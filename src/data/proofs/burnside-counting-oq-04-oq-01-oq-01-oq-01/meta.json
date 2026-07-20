@@ -73,7 +73,8 @@
       "Fixed colourings of a rotation are exactly the functions constant on its orbits, and the orbits of x ↦ x + i are the cosets of the cyclic subgroup ⟨i⟩ — so the count is 2 raised to the number of cosets, with no enumeration over colourings",
       "The number of orbits is |ZMod n ⧸ ⟨i⟩| = gcd(n, i.val), obtained purely structurally from Lagrange and the order of i (addOrderOf i = n / gcd(n, i.val)) — the gcd appears as the index of a cyclic subgroup, not by a counting argument",
       "Extending single-shift invariance to k·i invariance for all integers k is the technical core (invariant_zsmul); a two-sided integer induction with an explicit subtract-i lemma covers the negative multiples that a one-sided Nat induction misses",
-      "The closed form is honest about scope: it settles the rotation summand Σ_r 2^gcd(n,r); the reflection contribution (parity-dependent in n and i) is left to future work, and the parent still settles the full bracelet counts computationally"
+      "The closed form is honest about scope: it settles the rotation summand Σ_r 2^gcd(n,r); the reflection contribution (parity-dependent in n and i) is left to future work, and the parent still settles the full bracelet counts computationally",
+      "The two extremes bracket the whole range and explain the clean prime case: the identity (i = 0, gcd = n) fixes all 2^n colourings, while any generator (gcd(n, i.val) = 1) fixes only the 2 constant colourings. For prime n every nonzero rotation is a generator, so the rotation sum collapses to 2^n + (n−1)·2 with no gcd bookkeeping — e.g. n = 5 gives 32 + 8 = 40, matching rotation_sum_five"
     ],
     "prerequisites": [
       "Group actions, orbits, and fixed points; the orbit-counting (Burnside) lemma as background",
@@ -102,9 +103,17 @@
       "id": "bijection",
       "title": "Fixed Colourings as Functions on the Coset Space",
       "startLine": 92,
+      "endLine": 119,
+      "summary": "rotFixedEquiv is the bijection RotFixed n i ≃ (ZMod n ⧸ zmultiples i → Fin 2). The forward map sends an invariant colouring to its factorisation through the quotient (well-defined by invariant_zsmul: coset-equal points share a colour); the inverse pulls a function on the quotient back along QuotientAddGroup.mk, invariance holding because p + i and p differ by i ∈ ⟨i⟩. The round-trips are rfl / Quotient.inductionOn'.",
+      "mathContext": "$\\{c \\mid \\text{Inv}_i\\} \\simeq (\\mathbb{Z}/n \\,/\\, \\langle i\\rangle \\to \\mathrm{Fin}\\,2).$"
+    },
+    {
+      "id": "orbit-count",
+      "title": "Counting the Orbits: |ZMod n ⧸ ⟨i⟩| = gcd(n, i.val) via Lagrange",
+      "startLine": 121,
       "endLine": 145,
-      "summary": "rotFixedEquiv is the bijection RotFixed n i ≃ (ZMod n ⧸ zmultiples i → Fin 2); card_quotient_zmultiples computes |ZMod n ⧸ ⟨i⟩| = gcd(n, i.val) via Lagrange, Nat.card_zmultiples and ZMod.addOrderOf_coe.",
-      "mathContext": "$\\{c \\mid \\text{Inv}_i\\} \\simeq (\\mathbb{Z}/n \\,/\\, \\langle i\\rangle \\to \\mathrm{Fin}\\,2),\\quad |\\mathbb{Z}/n \\,/\\, \\langle i\\rangle| = \\gcd(n, i).$"
+      "summary": "card_quotient_zmultiples evaluates the coset space |ZMod n ⧸ ⟨i⟩| = gcd(n, i.val). The subgroup order is Nat.card ⟨i⟩ = addOrderOf i = n / gcd(n, i.val) (Nat.card_zmultiples, ZMod.addOrderOf_coe); Lagrange (index_mul_card) gives index · (n/g) = n, and cancelling the positive factor n/g against g · (n/g) = n leaves index = g. This is the orbit count that powers the closed form.",
+      "mathContext": "$|\\mathbb{Z}/n \\,/\\, \\langle i\\rangle| = \\frac{n}{\\,n/\\gcd(n,i)\\,} = \\gcd(n, i).$"
     },
     {
       "id": "closed-form",
