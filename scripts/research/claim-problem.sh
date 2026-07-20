@@ -53,6 +53,22 @@ PROBLEMS_DIR="$REPO_ROOT/src/data/research/problems"
 LOCKS_DIR="$REPO_ROOT/.loom/locks"
 POOL_LOCK_FILE="$LOCKS_DIR/candidate-pool.lock"
 
+# Shared OQ-recursion-depth policy (issue #39827): provides oq_depth,
+# oq_max_depth, oq_over_cap, oq_at_or_over_cap. Sourcing is best-effort so this
+# script still runs if the lib is missing on an older checkout.
+# shellcheck source=../lib/oq-policy.sh
+if [[ -f "$REPO_ROOT/scripts/lib/oq-policy.sh" ]]; then
+    source "$REPO_ROOT/scripts/lib/oq-policy.sh"
+fi
+# Fallbacks so an older checkout without the lib still selects problems (it just
+# won't apply the depth cap).
+if ! declare -f oq_depth >/dev/null 2>&1; then
+    oq_depth() { echo 0; }
+    oq_max_depth() { echo "${MAX_OQ_DEPTH:-3}"; }
+    oq_over_cap() { return 1; }
+    oq_at_or_over_cap() { return 1; }
+fi
+
 # Defaults
 # TTL raised 90 -> 180 (fix C): research sessions with Docker builds + Mathlib-drift
 # repair routinely exceed 90 min. When a claim expired mid-session, the Seeker
@@ -358,6 +374,14 @@ claim_random_problem() {
     local available=()
     local scores=()
 
+    # OQ-recursion-depth policy (issue #39827): never re-serve chains that are
+    # already deeper than the cap (they should never have been spawned), and
+    # deprioritize chains that have reached the cap in favor of breadth.
+    local oq_cap
+    oq_cap="$(oq_max_depth)"
+    local over_cap_skipped=0
+    local at_cap_deferred=()  # candidate ids at exactly the cap (deprioritized)
+
     while IFS= read -r problem_id; do
         [[ -z "$problem_id" ]] && continue
 
@@ -368,11 +392,42 @@ claim_random_problem() {
             continue
         fi
 
+        # Never re-serve a saturated (over-cap) chain.
+        if oq_over_cap "$problem_id"; then
+            over_cap_skipped=$((over_cap_skipped + 1))
+            continue
+        fi
+
+        # Defer at-cap chains: they are eligible only if nothing shallower is
+        # available, so selection favors breadth (issue #39827).
+        if oq_at_or_over_cap "$problem_id"; then
+            at_cap_deferred+=("$problem_id")
+            continue
+        fi
+
         local score
         score=$(get_knowledge_score "$problem_id")
         available+=("$problem_id")
         scores+=("$score")
     done < <(jq -r '.candidates[] | select(.status != "completed" and .status != "blocked" and .status != "graduated" and .status != "skipped") | .id' "$POOL_FILE" 2>/dev/null)
+
+    if [[ $over_cap_skipped -gt 0 ]]; then
+        echo "OQ-cap: excluded $over_cap_skipped saturated chain(s) deeper than cap=$oq_cap (not re-served)" >&2
+    fi
+
+    # Breadth preference: fall back to at-cap chains only when no shallower
+    # problem is available.
+    if [[ ${#available[@]} -eq 0 && ${#at_cap_deferred[@]} -gt 0 ]]; then
+        echo "OQ-cap: no problems below depth cap=$oq_cap; falling back to ${#at_cap_deferred[@]} at-cap chain(s)" >&2
+        for problem_id in "${at_cap_deferred[@]}"; do
+            local score
+            score=$(get_knowledge_score "$problem_id")
+            available+=("$problem_id")
+            scores+=("$score")
+        done
+    elif [[ ${#at_cap_deferred[@]} -gt 0 ]]; then
+        echo "OQ-cap: deprioritized ${#at_cap_deferred[@]} at-cap chain(s) (depth=$oq_cap) in favor of breadth" >&2
+    fi
 
     if [[ ${#available[@]} -eq 0 ]]; then
         echo "No available problems to claim" >&2
@@ -659,6 +714,9 @@ Environment Variables:
   RESEARCHER_ID    Agent identifier (default: researcher-PID)
   CLAIM_TTL        Claim time-to-live in minutes (default: 180)
   FORCE_COMPLETE   Set to 1 to bypass graduation quality gate
+  MAX_OQ_DEPTH     Max -oq- segments in a servable chain (default: 3, or
+                   .lean/config/oq-policy.json). Chains deeper than the cap are
+                   never re-served; at-cap chains are deprioritized (breadth).
 
 Knowledge Tiers (DEPTH OVER BREADTH - higher = higher priority):
   MODERATE (6-15) - Highest priority: advance toward proof

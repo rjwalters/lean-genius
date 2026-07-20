@@ -273,13 +273,18 @@ entries via the Seeker (`<parent>-oq-NN`), which can recurse without bound. Befo
 proposing any follow-up:
 
 ```bash
-# Count -oq- segments already in the current problem's slug.
+# Count -oq- segments already in the current problem's slug, and read the cap
+# (env override > .lean/config/oq-policy.json > default 3). Mirrors
+# scripts/lib/oq-policy.sh (source it to reuse oq_depth/oq_max_depth).
 OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
+OQ_CAP="${MAX_OQ_DEPTH:-$(jq -r '.maxOqDepth // 3' .lean/config/oq-policy.json 2>/dev/null || echo 3)}"
 ```
 
-- **If the current problem is already at depth ≥ 3** (its slug already contains 3 or
-  more `-oq-` segments), generate **0** follow-up questions. A depth-4 child would
-  exceed the cap and the Seeker will refuse to spawn it anyway.
+- **If the current problem is already at depth ≥ the cap** (`maxOqDepth`, default
+  3), generate **0** follow-up questions. This is now enforced in code: the
+  extractor drops the OQ children of at/over-cap proofs and the selector never
+  re-serves over-cap chains (issue #39827), so a deeper child is neither created
+  nor served — don't rely on the guard alone.
 - **Never** propose a follow-up that merely re-asks the same question the current
   problem answers (this is what produces degenerate `-oq-01-oq-01-oq-01…` loops).
   A follow-up must open a genuinely new direction, not recurse on the same index.
