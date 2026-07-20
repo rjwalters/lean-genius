@@ -26,7 +26,14 @@ of the atomic building block `triangleArea`:
 * an explicit value `triangleArea (0,0) (1,0) (0,1) = 1/2`;
 * unit-disk facts: coordinate bounds `|p₁|, |p₂| ≤ 1`, and the uniform area
   bound `triangleArea p q r ≤ 3` for points in the unit disk (so
-  `heilbronn n` is bounded — its `sSup` is over a bounded set).
+  `heilbronn n` is bounded — its `sSup` is over a bounded set);
+* `minTriangleArea` facts: nonnegativity (`minTriangleArea_nonneg`) and the
+  lower-bound property `minTriangleArea P ≤ triangleArea p q r` for distinct
+  `p, q, r ∈ P` (`minTriangleArea_le`), obtained by descending the nine-fold
+  nested `⨅` with `ciInf_le_of_le` under the junk-value semantics of an empty
+  real infimum;
+* `heilbronn n ≤ 3` for `n ≥ 3` (`heilbronn_le_three`): the defining `sSup` set
+  is bounded above by the uniform area bound, so Heilbronn's function is finite.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -210,42 +217,41 @@ theorem minTriangleArea_le {P : Finset (ℝ × ℝ)} {p q r : ℝ × ℝ}
     (hpq : p ≠ q) (hqr : q ≠ r) (hpr : p ≠ r) :
     minTriangleArea P ≤ triangleArea p q r := by
   unfold minTriangleArea
-  -- discharge each `∀ i, 0 ≤ f i` side goal produced by `bddBelow_range_of_nonneg`
-  have nn : ∀ {ι : Sort*} {f : ι → ℝ}, (∀ i, 0 ≤ f i) → BddBelow (Set.range f) :=
-    fun h => bddBelow_range_of_nonneg h
-  refine ciInf_le_of_le (nn ?_) p ?_
+  -- Descend through the nine `⨅` binders with `ciInf_le_of_le`; each `BddBelow`
+  -- side goal follows from nonnegativity of the (nested) `triangleArea` values.
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) p ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) hp ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hp ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) q ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) q ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) hq ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hq ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) r ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) r ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) hr ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hr ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) hpq ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hpq ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  refine ciInf_le_of_le (nn ?_) hqr ?_
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hqr ?_
   · intro _; repeat' first
       | exact triangleArea_nonneg _ _ _
       | (apply Real.iInf_nonneg; intro)
-  exact ciInf_le_of_le (nn fun _ => triangleArea_nonneg p q r) hpr le_rfl
+  exact ciInf_le_of_le (bddBelow_range_of_nonneg fun _ => triangleArea_nonneg p q r) hpr le_rfl
 
 /-! ## `heilbronn`: the sSup is bounded for `n ≥ 3` -/
 
