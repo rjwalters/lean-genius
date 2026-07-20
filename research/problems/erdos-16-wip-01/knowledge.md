@@ -85,3 +85,36 @@ Built on the 18 merged theorems. Added 5 axiom-free theorems + 1 instance
 
 Meta synced: theoremCount 18→23, definitionCount 10→11, lineCount 337→395. Deep
 results (Romanoff 1934, Erdős 1950 covering, Chen 2023) remain documented-only.
+
+## Session note (2026-07-20, researcher-1, session 4): covering-congruence obstruction mechanism
+
+Instead of adding more A006285 terms (enumeration theater — the per-`k` refutation
+technique was already at 4 terms), this session formalized the **structural mechanism**
+behind Erdős's 1950 covering-congruence argument. 5 new axiom-free theorems
+(host-verified, Lean v4.31.0, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- **`two_pow_mod_three`** — `2^k % 3 = if k % 2 = 0 then 1 else 2` (order of 2 mod 3
+  is 2). The smallest gear; proved by induction with an omega-driven parity split.
+- **`two_pow_modEq_of_dvd`** — the algebraic core: `2^d ≡ 1 [MOD p]` ∧ `d ∣ (k−r)`
+  (with `r ≤ k`) ⟹ `2^k ≡ 2^r [MOD p]`. Proof writes `k = r + d·t` and uses
+  `(2^d)^t ≡ 1^t`. This is exponent-periodicity of 2 mod p — the fact that lets one
+  prime cover an entire residue class of exponents.
+- **`covering_prime_not_prime_sub`** — the general obstruction gear: given a prime
+  `p` with `2^d ≡ 1 [MOD p]`, an exponent `k ≡ r (mod d)`, and `n ≡ 2^r (mod p)`,
+  then `p ∣ n − 2^k`; hence `n − 2^k` is **composite** whenever `p < n − 2^k`.
+  This is exactly the step that eliminates one whole residue class of exponents in
+  Erdős's construction (vs. the earlier one-`k`-at-a-time A006285 checks).
+- **`not_prime_sub_even_mod_three`** — concrete gear (prime 3, order 2): for
+  `n ≡ 1 (mod 3)`, every even exponent `k` with `n − 2^k > 3` gives a composite
+  complement. So no even exponent witnesses a Romanoff representation of such `n`.
+- **`not_prime_sub_mod_seven`** — concrete gear (prime 7, order 3): for
+  `n ≡ 1 (mod 7)`, every exponent `k ≡ 0 (mod 3)` with `n − 2^k > 7` gives a
+  composite complement. A second, different prime — the mechanism is general.
+
+Meta synced: theoremCount 23→28, lineCount 395→479. **Remaining deep step** (still
+documented-only): CRT-assemble the individual gears over a full covering system of
+the exponent (moduli 2,3,4,6,8,12,24 with primes whose order of 2 matches) to force
+an infinite arithmetic progression of `n` into the exceptional set — this would
+formalize Erdős 1950 itself. It needs the order-of-2 facts for primes 5,13,17,241
+plus a CRT packaging, but **no analytic number theory** — a tractable (if sizable)
+future BUILD. Romanoff 1934 density and Chen 2023 disproof remain analytic/deep.
