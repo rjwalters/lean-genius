@@ -294,7 +294,7 @@ theorem exists_subset_sum_eq :
     by_cases hcase : k ≤ ∑ a ∈ Icc_n n, a
     · obtain ⟨A, hAsub, hAsum⟩ := ih k hcase
       exact ⟨A, hAsub.trans (by rw [hins]; exact Finset.subset_insert _ _), hAsum⟩
-    · push_neg at hcase
+    · push Not at hcase
       have hnle : n ≤ ∑ a ∈ Icc_n n, a := by
         rcases Nat.eq_zero_or_pos n with h0 | hpos
         · simp [h0]
@@ -355,9 +355,9 @@ theorem maxAvoidingSize_eq_n_iff (n m : ℕ) :
   constructor
   · intro heq
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hnotavoid : ¬ AvoidSum (Icc_n n) m := by
-      rw [avoid_full_iff]; push_neg; exact hcon
+      rw [avoid_full_iff]; push Not; exact hcon
     obtain ⟨S, hSsub, hScard, hSavoid⟩ :=
       (maxAvoidingSize_ge_iff n m n).mpr (le_of_eq heq.symm)
     have hcardn : (Icc_n n).card = n := by rw [Icc_n, Nat.card_Icc]; omega
@@ -370,6 +370,47 @@ theorem maxAvoidingSize_eq_n_iff (n m : ℕ) :
     refine le_antisymm (maxAvoidingSize_le n m) ?_
     exact (maxAvoidingSize_ge_iff n m n).mp
       ⟨Icc_n n, Finset.Subset.refl _, by rw [Icc_n, Nat.card_Icc]; omega, havoid⟩
+
+/-- **Exact value at the total-sum boundary:** `maxAvoidingSize n (∑_{a=1}^n a) = n − 1`
+    for `n ≥ 1`.  This is the first point of the intermediate regime `n < m ≤ n(n+1)/2`, sitting
+    just below the trivial ceiling: at the target `m = T := ∑_{a=1}^n a` the full box `{1,…,n}`
+    is the *unique* subset summing to `T`, so no size-`n` avoiding set exists
+    (`maxAvoidingSize_eq_n_iff` fails since `¬(T < T)`), forcing `maxAvoidingSize ≤ n − 1`; and
+    dropping the single element `1` leaves `{2,…,n}` — of size `n − 1` and total `T − 1 < T`,
+    hence `T`-avoiding — so the bound is attained.  The exact companion of
+    `maxAvoidingSize_eq_n_iff` at the boundary itself. -/
+theorem maxAvoidingSize_total_boundary (n : ℕ) (hn : 1 ≤ n) :
+    maxAvoidingSize n (∑ a ∈ Icc_n n, a) = n - 1 := by
+  classical
+  have h1mem : (1 : ℕ) ∈ Icc_n n := by unfold Icc_n; simp only [Finset.mem_Icc]; omega
+  have hTpos : 1 ≤ ∑ a ∈ Icc_n n, a :=
+    Finset.single_le_sum (f := fun a => a) (fun i _ => Nat.zero_le i) h1mem
+  -- Upper bound: the value is not `n`, so it is `≤ n - 1`.
+  have hne : maxAvoidingSize n (∑ a ∈ Icc_n n, a) ≠ n := by
+    rw [Ne, maxAvoidingSize_eq_n_iff]
+    omega
+  have hle : maxAvoidingSize n (∑ a ∈ Icc_n n, a) ≤ n := maxAvoidingSize_le _ _
+  -- Lower bound: `{2,…,n} = (Icc_n n).erase 1` is a size-`n-1` avoiding witness.
+  have hSsub : (Icc_n n).erase 1 ⊆ Icc_n n := Finset.erase_subset _ _
+  have hScard : ((Icc_n n).erase 1).card = n - 1 := by
+    rw [Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]; omega
+  have hSsum : ∑ a ∈ (Icc_n n).erase 1, a = (∑ a ∈ Icc_n n, a) - 1 := by
+    have hadd := Finset.add_sum_erase (Icc_n n) (fun a => a) h1mem
+    omega
+  have hSavoid : AvoidSum ((Icc_n n).erase 1) (∑ a ∈ Icc_n n, a) := by
+    intro hmem
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+    rw [Finset.mem_powerset] at hA
+    have hbound : ∑ a ∈ A, a ≤ ∑ a ∈ (Icc_n n).erase 1, a :=
+      Finset.sum_le_sum_of_subset hA
+    rw [hAsum, hSsum] at hbound
+    omega
+  have hge : n - 1 ≤ maxAvoidingSize n (∑ a ∈ Icc_n n, a) := by
+    rw [← hScard]
+    exact (maxAvoidingSize_ge_iff n (∑ a ∈ Icc_n n, a) _).mp
+      ⟨(Icc_n n).erase 1, hSsub, le_rfl, hSavoid⟩
+  omega
 
 /-- **Avoiding the target `1` means omitting `1`.**  For `S ⊆ {1,…,n}`, `AvoidSum S 1`
     holds iff `1 ∉ S`: every element is a positive integer, so the only nonempty subset
