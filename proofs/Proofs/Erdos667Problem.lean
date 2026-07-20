@@ -381,7 +381,7 @@ theorem p3_max : cpq 3 (Nat.choose 2 2 + 1) = 1 := cpq_at_max 3 (by omega)
 /-- For p = 3: the conjecture reduces to c(3,1) < c(3,2) = 1. -/
 theorem p3_strict : cpq 3 1 < cpq 3 2 := by
   have h2 : cpq 3 2 = 1 := by
-    have : Nat.choose 2 2 + 1 = 2 := by native_decide
+    have : Nat.choose 2 2 + 1 = 2 := by decide
     rw [← this]; exact cpq_at_max 3 (by omega)
   rw [h2]
   have := cpq_upper_ramsey 3 (by omega)
@@ -439,7 +439,7 @@ theorem erdos667_holds_for_p3 :
     ∀ q, 1 ≤ q → q < Nat.choose 2 2 + 1 → cpq 3 q < cpq 3 (q + 1) := by
   intro q hq1 hq_lt
   have hq_eq : q = 1 := by
-    have : Nat.choose 2 2 + 1 = 2 := by native_decide
+    have : Nat.choose 2 2 + 1 = 2 := by decide
     omega
   subst hq_eq
   exact p3_strict
