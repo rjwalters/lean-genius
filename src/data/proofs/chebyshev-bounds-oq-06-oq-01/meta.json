@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Open Question & Method",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "The module docstring quotes the parent chebyshev-bounds-oq-06 open question (sharpen the polynomial-factor sandwich to the Stirling asymptotic C(2n,n) ~ 4ⁿ/√(πn)), states the target equivalence (2n).choose n ~[atTop] 4ⁿ/√(πn), and sketches the method: write C(2n,n) = (2n)!/(n!)², apply Stirling to numerator (at index 2n) and denominator, and collapse the Stirling factors √(4πn)·(2n/e)^{2n}/((2πn)·(n/e)^{2n}) = 4ⁿ/√(πn). It flags that the one-sided effective inequality C(2n,n) ≤ 4ⁿ/√(πn) needs Robbins' bounds (not yet in Mathlib), so only the equivalence is reachable. Imports Stirling and Nat.Choose.Central, opens Real/Filter/Asymptotics and the Nat scope, enters namespace ChebyshevBoundsOQ0601.",
+      "mathContext": "$\\binom{2n}{n} \\sim \\dfrac{4^n}{\\sqrt{\\pi n}}$ — the sharp square-root refinement of the parent's $4^n/(2n+1) \\le \\binom{2n}{n} \\le 4^n$ sandwich."
+    },
+    {
       "id": "statement",
       "title": "The asymptotic equivalence",
       "startLine": 45,
@@ -123,7 +131,8 @@
       "**The transcendental $\\pi$ is inherited from Stirling.** The $\\sqrt{\\pi n}$ denominator does not come from the combinatorics directly; it is the residue of the $\\sqrt{2\\pi n}$ factor in $n!$ after the numerator's $\\sqrt{4\\pi n}=2\\sqrt{\\pi n}$ is divided by the denominator's $(\\sqrt{2\\pi n})^2=2\\pi n$.",
       "**The exponential factor cancels identically.** Both $(2n)!$ and $(n!)^2$ carry the factor $(n/e)^{2n}$ (via $(2n/e)^{2n}=2^{2n}(n/e)^{2n}=4^n(n/e)^{2n}$), so it drops out exactly, leaving only the algebraic $4^n$ and the square-root correction.",
       "**Transport, don't re-prove.** The numerator is handled by transporting the *same* Stirling equivalence from index $n$ to index $2n$ with `comp_tendsto`, rather than proving a separate asymptotic for $(2n)!$.",
-      "**Effective vs. asymptotic.** The matching *inequality* $\\binom{2n}{n}\\le 4^n/\\sqrt{\\pi n}$ for all $n$ would need an effective upper bound on $n!$ (Robbins), absent from Mathlib; the equivalence proved here is the part reachable from current Mathlib."
+      "**Effective vs. asymptotic.** The matching *inequality* $\\binom{2n}{n}\\le 4^n/\\sqrt{\\pi n}$ for all $n$ would need an effective upper bound on $n!$ (Robbins), absent from Mathlib; the equivalence proved here is the part reachable from current Mathlib.",
+      "**Squaring the denominator squares the √-factor.** The asymmetry that produces the lone $\\sqrt{\\pi n}$ is structural: the numerator $(2n)!$ contributes one Stirling root $\\sqrt{4\\pi n}=2\\sqrt{\\pi n}$, while the denominator $(n!)^2$ contributes $(\\sqrt{2\\pi n})^2=2\\pi n$ — a *squared* root, i.e. no root at all. Dividing a single root by a rootless term is exactly what leaves the half-power $n^{-1/2}$ in the answer; a product of two factorials (rather than a squared one) would not collapse so cleanly."
     ],
     "prerequisites": [
       "Asymptotic equivalence (Landau ~, Mathlib's Asymptotics.IsEquivalent)",
