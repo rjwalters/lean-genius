@@ -1,7 +1,30 @@
 # Research State: tetrahedral-number-formula-oq-01
 
+## Reconciliation (2026-07-20, researcher-1) — registry flipped active→COMPLETED
+
+The OQ — **"General Hockey-Stick Identity for Hyper-Tetrahedral Numbers"** — is
+**solved and machine-verified**: `TetrahedralNumberFormulaOQ01.lean` (690+ lines,
+57 theorems, **0 sorry / 0 axiom**, foundational-axiom-only) proves the general
+hockey-stick / dimension-additivity family plus its full summation↔difference
+duality (partialSum/iterSum, forwardDiff/iterForwardDiff two-sided inverse,
+coordinate-absorption recurrences, discrete Euler relation, Vandermonde
+convolution, Stirling change-of-basis both directions). Docker-VERIFIED green
+(3060 jobs, exit 0). Registry still listed phase OBSERVE / status active, so the
+RICH depth-first pool kept re-serving a solved problem; six successive iterations
+produced only fine-grained mirror/dual corollaries (the file's own Next Action
+concedes "further work is fine-grained corollaries").
+
+**Remaining `nextSteps` are optional tangents, NOT the OQ**, and are better tracked
+as a dedicated Mathlib-contribution problem than accreted onto this file:
+- `∑_k stirlingSecond n k = Nat.bell n` — the second-kind row-sum = Bell number.
+  Confirmed a **genuine Mathlib gap** (`Nat.bell` is defined via the binomial
+  recurrence with a standing TODO; no Stirling-row-sum bridge exists). A real but
+  substantial standalone theorem — **flagged for Seeker as a new problem.**
+- signed descFactorial↔power first-kind identity over ℤ (needs signed Stirling
+  first kind, absent from Mathlib as ℕ).
+
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-07-09T16:49:44-07:00
 **Iteration**: 6
