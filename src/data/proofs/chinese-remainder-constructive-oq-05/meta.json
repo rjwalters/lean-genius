@@ -62,12 +62,28 @@
   },
   "sections": [
     {
-      "id": "sunzi",
-      "title": "The Sunzi Problem, Axiom-Free",
+      "id": "overview",
+      "title": "Overview: removing the parent's native_decide",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "File docstring framing the goal: the parent constructive-CRT entry proves the structural theorem axiom-free but discharges its worked examples (Sunzi 23 mod 105, four-moduli 53 mod 210) with native_decide, which pulls in Lean.ofReduceBool and makes the parent 'axiomatized'. This file re-establishes each example without native_decide via a short CRT argument (residues ⇒ x ≡ N modulo each coprime modulus ⇒ combine to x ≡ N mod the product ⇒ range bound forces x = N), stated as iffs so existence and uniqueness are certified together. Imports Mathlib and enters the namespace.",
+      "mathContext": "native_decide ⇒ Lean.ofReduceBool (axiomatized); kernel decide/omega ⇒ only propext, Classical.choice, Quot.sound."
+    },
+    {
+      "id": "sunzi-theorem",
+      "title": "The Sunzi Problem: the axiom-free iff",
       "startLine": 31,
+      "endLine": 49,
+      "summary": "sunzi_crt: over 0 ≤ x < 105 = 3·5·7, the three congruences (x%3=2 ∧ x%5=3 ∧ x%7=2) hold iff x = 23 — existence and uniqueness in one statement, proved without native_decide. The forward direction lifts each residue to x ≡ 23 [MOD mᵢ] via omega, combines the coprime moduli left to right with Nat.modEq_and_modEq_iff_modEq_mul (coprimality by kernel decide), then omega collapses x % 105 = 23 % 105 to x = 23.",
+      "mathContext": "$(x\\bmod 3,5,7)=(2,3,2)\\iff x=23$ over $0\\le x<105$, via $x\\equiv 23\\ (\\mathrm{mod}\\ 3{\\cdot}5{\\cdot}7)$."
+    },
+    {
+      "id": "sunzi-illustrations",
+      "title": "Sunzi: witness value and the range-bound illustration",
+      "startLine": 50,
       "endLine": 58,
-      "summary": "sunzi_crt (iff ↔ 23 over x < 105), sunzi_value (the residues of 23), sunzi_shift (128 = 23+105 also fits, showing the range bound matters).",
-      "mathContext": "The classic example, de-axiomatized via the CRT combination lemma."
+      "summary": "sunzi_value records the residues of the witness 23 (each by kernel decide); sunzi_shift exhibits 128 = 23 + 105, which satisfies the same three congruences but lies outside the range — a concrete demonstration that uniqueness holds only modulo 105 and that the range bound in sunzi_crt is essential, not cosmetic.",
+      "mathContext": "$128 = 23 + 105$ satisfies the same residues: uniqueness is only modulo $105$."
     },
     {
       "id": "four-moduli",
