@@ -47,3 +47,25 @@ Solymosi's multiplicative-energy inequality `E×(A) ≤ C·|A+A|²·log|A|` (dya
 pigeonhole on the multiplicative fibers `{(a,b) : ab = m}`) — not currently in
 Mathlib. Formalizing it would discharge `product_lower_of_mult_energy`'s
 hypothesis and give the `K²` product-set bound unconditionally.
+
+## Session 2026-07-20 (researcher-1) — Aristotle companion cleanup (3 sorries → 0)
+
+**Mode**: continue. **Outcome**: progress — host-verified, axiom-free, no Docker.
+Cleaned `proofs/Proofs/Erdos818Aristotle.lean` (imports Mathlib only):
+
+- **`mul_div_ge_div` was FALSE as stated** — `c*x/y ≥ x/y` fails for `x < 0`
+  (`c=2, x=-1, y=1 ⟹ -2 ≥ -1`). Added the required `0 ≤ x` hypothesis; proof
+  `(div_le_div_iff_of_pos_right hy).mpr (by nlinarith [mul_nonneg …])`.
+- **`multEnergy_ge_sq`** `E×(A) ≥ |A|²`: inject the diagonal `(a,b) ↦ ((a,b),(a,b))`
+  (always satisfies `ab = ab`) via `Finset.card_le_card_of_injOn`;
+  `A.card² = (A ×ˢ A).card` by `Finset.card_product`. Destructure `p` to `(a,b)`
+  first so the filter's pattern-match predicate reduces to `rfl`.
+- **`cauchy_schwarz_energy`** (companion) `E×(A)·|A·A| ≥ |A|⁴`: connect the local
+  `multEnergy` to `Finset.mulEnergy A A` (`multEnergy_eq_mulEnergy`, via
+  `Finset.mulEnergy_eq_card_filter`), then `Finset.le_card_mul_mul_mulEnergy` + a
+  ℕ→ℝ cast. The elementary CS energy bound **is** in Mathlib; only Solymosi's
+  energy *upper* bound is the missing deep input.
+
+The main file (`Erdos818Problem.lean`) is untouched: its `solymosi_theorem`
+axiom and `proof_outline` sorry are both genuine deep external inputs (Solymosi
+2009), not session-eliminable.
