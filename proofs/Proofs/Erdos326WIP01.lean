@@ -144,4 +144,28 @@ theorem hasNoGrowthLimit_iff (b : ℕ → ℕ) :
   unfold HasNoGrowthLimit
   rw [not_exists]
 
+/-! ## Bounded-order bases are infinite -/
+
+/-- **A basis of bounded order is infinite.**  Unlike `IsAddBasis` (which allows
+arbitrarily many summands — so e.g. the singleton `{1}` qualifies, representing
+`n` as `1 + ⋯ + 1`), a basis of a *fixed* order `k` must be infinite: a finite
+set `A` is bounded by some `M`, so every sum of at most `k` of its elements is
+`≤ k · M`, and finitely many such values cannot cover all sufficiently large `n`. -/
+theorem IsAddBasisOfOrder.infinite {A : Set ℕ} {k : ℕ}
+    (h : IsAddBasisOfOrder A k) : A.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  obtain ⟨N, hN⟩ := h
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  -- the target `n` is chosen `≥ N` and strictly above the reachable ceiling `k · M`
+  obtain ⟨m, hmk, f, hf, hsum⟩ := hN (max N (k * M + 1)) (le_max_left _ _)
+  have hbound : ∑ i, f i ≤ k * M :=
+    calc ∑ i, f i ≤ ∑ _i : Fin m, M := Finset.sum_le_sum (fun i _ => hM (hf i))
+      _ = m * M := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+      _ ≤ k * M := by gcongr
+  rw [hsum] at hbound
+  have hge : k * M + 1 ≤ max N (k * M + 1) := le_max_right _ _
+  omega
+
 end Erdos326
