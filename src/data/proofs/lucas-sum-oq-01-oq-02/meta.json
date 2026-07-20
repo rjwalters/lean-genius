@@ -24,6 +24,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Open Question & Imports",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports Mathlib; file docstring stating OQ-01-OQ-02 (from lucas-sum-oq-01), the Fibonacci comparison/bridge, the telescoped closed-form constants, references, and the axiom/sorry ledger (0 axioms, 0 sorries). Opens namespace LucasSumOQ01OQ02 with Finset.",
+      "mathContext": "Lucas numbers $L_n$: $2,1,3,4,7,11,\\dots$ satisfy the Fibonacci recurrence with $L_0=2,\\,L_1=1$; the file telescopes weighted and squared Lucas partial sums into closed form via the Fibonacci companion identities."
+    },
+    {
       "id": "lucas-def",
       "title": "Section I: The Lucas Numbers and Their Recurrence",
       "startLine": 60,

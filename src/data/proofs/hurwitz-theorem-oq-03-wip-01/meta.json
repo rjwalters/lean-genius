@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports & the Obstruction",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Imports Mathlib; file docstring describing the anticommuting–determinant obstruction that drives Hurwitz OQ-03, and why it advances the open question. Opens namespace HurwitzOQ03WIP01 with Matrix.",
+      "mathContext": "If $A,B$ anticommute ($AB=-BA$) then $\\det(A)\\det(B)=\\det(AB)=\\det(-BA)=(-1)^n\\det(B)\\det(A)$, forcing $\\det(A)\\det(B)=0$ in odd dimension $n$ — the parity obstruction underlying Hurwitz-type sum-of-squares composition constraints."
+    },
+    {
       "id": "obstruction",
       "title": "The Anticommuting-Determinant Obstruction",
       "summary": "anticommuting_invertible_forces_even: over a field with 2≠0, two anticommuting invertible matrices force Even m",
