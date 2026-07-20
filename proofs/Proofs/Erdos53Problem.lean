@@ -320,4 +320,86 @@ theorem subsetProducts_card_of_prime {A : Finset ℤ}
     tauto
   rw [hfe, Finset.card_erase_of_mem (Finset.empty_mem_powerset A), Finset.card_powerset]
 
+/-- **Superincreasing ⇒ injective subset sums.** If every element of `A` is
+positive and strictly exceeds the sum of the strictly smaller elements of `A`
+(the *superincreasing* condition, e.g. `{1, 2, 4, …, 2^{k−1}}`), then distinct
+subsets have distinct sums.  This is the additive analogue of
+`subsetProd_injOn_of_prime`.
+
+Proof: if `S ≠ T` had equal sums, let `m` be the largest element in their
+symmetric difference, say `m ∈ S \ T`.  Cancelling the common part gives
+`(S\T).sum = (T\S).sum`; but `m ≤ (S\T).sum` while every element of `T\S` is
+`< m`, so `(T\S).sum ≤ (Σ elements < m) < m` by superincreasingness — a
+contradiction. -/
+theorem subsetSum_injOn_of_superincreasing {A : Finset ℤ}
+    (hpos : ∀ a ∈ A, 0 < a)
+    (hsi : ∀ a ∈ A, (A.filter (· < a)).sum id < a) :
+    Set.InjOn (fun S => S.sum id) (A.powerset : Set (Finset ℤ)) := by
+  -- one-sided contradiction, applied with the two subsets in the order that puts
+  -- the max element of the symmetric difference on the left
+  have key : ∀ S T : Finset ℤ, S ⊆ A → T ⊆ A → S.sum id = T.sum id →
+      ∀ m, m ∈ S \ T → (∀ x ∈ T \ S, x < m) → False := by
+    intro S T hS hT hsum m hm hmax
+    have hmA : m ∈ A := hS (Finset.mem_sdiff.mp hm).1
+    -- the two half-differences have equal sum
+    have hu1 : (S ∪ T).sum id = S.sum id + (T \ S).sum id := by
+      rw [← Finset.union_sdiff_self_eq_union, Finset.sum_union Finset.disjoint_sdiff_self_right]
+    have hu2 : (S ∪ T).sum id = T.sum id + (S \ T).sum id := by
+      rw [Finset.union_comm, ← Finset.union_sdiff_self_eq_union,
+        Finset.sum_union Finset.disjoint_sdiff_self_right]
+    have hsplit : (S \ T).sum id = (T \ S).sum id := by
+      have : S.sum id + (T \ S).sum id = T.sum id + (S \ T).sum id := by rw [← hu1, hu2]
+      linarith
+    -- m ≤ (S \ T).sum, since m ∈ S \ T and all elements are positive
+    have hge : m ≤ (S \ T).sum id :=
+      Finset.single_le_sum
+        (fun x hx => le_of_lt (hpos x (hS (Finset.mem_sdiff.mp hx).1))) hm
+    -- (T \ S).sum < m, since T \ S ⊆ {elements of A below m}
+    have hTsub : T \ S ⊆ A.filter (· < m) := fun x hx =>
+      Finset.mem_filter.mpr ⟨hT (Finset.mem_sdiff.mp hx).1, hmax x hx⟩
+    have hle : (T \ S).sum id ≤ (A.filter (· < m)).sum id :=
+      Finset.sum_le_sum_of_subset_of_nonneg hTsub
+        (fun x hx _ => le_of_lt (hpos x (Finset.mem_filter.mp hx).1))
+    have hfilt : (A.filter (· < m)).sum id < m := hsi m hmA
+    linarith
+  intro S hS T hT hST
+  rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+  by_contra hne
+  -- the symmetric difference is nonempty
+  have hD : (S \ T ∪ T \ S).Nonempty := by
+    by_contra h
+    rw [Finset.not_nonempty_iff_eq_empty] at h
+    apply hne
+    have h1 : S \ T = ∅ := Finset.subset_empty.mp (h ▸ Finset.subset_union_left)
+    have h2 : T \ S = ∅ := Finset.subset_empty.mp (h ▸ Finset.subset_union_right)
+    exact Finset.Subset.antisymm (Finset.sdiff_eq_empty_iff_subset.mp h1)
+      (Finset.sdiff_eq_empty_iff_subset.mp h2)
+  -- its maximum lies in one side; the other side is strictly below it
+  set m := (S \ T ∪ T \ S).max' hD with hm_def
+  have hm_mem : m ∈ S \ T ∪ T \ S := Finset.max'_mem _ hD
+  have hmax : ∀ x ∈ S \ T ∪ T \ S, x ≤ m := fun x hx => Finset.le_max' _ x hx
+  rcases Finset.mem_union.mp hm_mem with hmL | hmR
+  · refine key S T hS hT hST m hmL (fun x hx => ?_)
+    rcases lt_or_eq_of_le (hmax x (Finset.mem_union.mpr (Or.inr hx))) with h | h
+    · exact h
+    · exact absurd ((h ▸ hx : m ∈ T \ S)) (fun hmTS =>
+        (Finset.mem_sdiff.mp hmL).2 (Finset.mem_sdiff.mp hmTS).1)
+  · refine key T S hT hS hST.symm m hmR (fun x hx => ?_)
+    rcases lt_or_eq_of_le (hmax x (Finset.mem_union.mpr (Or.inl hx))) with h | h
+    · exact h
+    · exact absurd ((h ▸ hx : m ∈ S \ T)) (fun hmST =>
+        (Finset.mem_sdiff.mp hmR).2 (Finset.mem_sdiff.mp hmST).1)
+
+/-- **Additive richness (dual of `subsetProducts_card_of_prime`).** For a
+superincreasing set `A`, the number of distinct subset sums is exactly `2^{|A|}`
+— every subset gives a different sum.  This exhibits sets attaining the trivial
+upper bound `subsetSums_card_le` on the additive side, so that bound is sharp. -/
+theorem subsetSums_card_of_superincreasing {A : Finset ℤ}
+    (hpos : ∀ a ∈ A, 0 < a)
+    (hsi : ∀ a ∈ A, (A.filter (· < a)).sum id < a) :
+    (subsetSums A).card = 2 ^ A.card := by
+  rw [subsetSums,
+    Finset.card_image_of_injOn (subsetSum_injOn_of_superincreasing hpos hsi),
+    Finset.card_powerset]
+
 end Erdos53
