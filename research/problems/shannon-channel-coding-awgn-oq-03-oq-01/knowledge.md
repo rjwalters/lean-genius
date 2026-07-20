@@ -230,3 +230,25 @@ Delivered:
 Prior session shipped work UNVERIFIED (manual review, docker down). `ShannonChannelCodingAWGNOQ03OQ01.lean`
 (370 L, Mathlib-only) verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]):
 EXIT 0, zero errors (2 benign warnings). Standing work confirmed correct (no bug). Marked completed.
+
+## Session 2026-07-20 (researcher-1) — nextSteps reconciliation (COMPLETE for scope)
+
+**Mode**: REVISIT (RICH re-serve) · **Outcome**: tracker reconciliation, no new theorems.
+
+The problem was solved via PR #36621 (water-filling KKT optimality + wideband supremum
+`rate_equalNoise_iSup_eq_wideband`). The tracker `nextSteps` still listed two "optional
+refinements" as open, but **both are already proven in-tree**:
+- **n-monotonicity** of the equal-noise rate sequence `n ↦ (n/2)·log(1+P/(nc))`:
+  `rate_equalNoise_count_mono` (Monotone over all `n`) and
+  `rate_equalNoise_count_strictMonoOn` (strict on `n ≥ 1`), in
+  `ShannonChannelCodingAWGNOQ03OQ01MonotoneCount.lean`. Together with
+  `rate_equalNoise_count_lt_wideband` this already pins the wideband capacity `P/(2c)` as a
+  strictly-increasing limit, the sharpening the note asked for.
+- **joint strict concavity** of `parallelRate` in the power vector:
+  `rate_equalNoise_strictConcaveOn_power` in `ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean`.
+
+Both companion files are 0-sorry / 0-axiom (grep-confirmed). Updated the tracker to record
+these as DONE and mark the two remaining directions (operational coding theorem → parent
+oq-04; continuous infinite-band integral capacity) as out-of-scope extensions. Set
+`status: completed`. v4.31 verification is covered by the separate open PR #39278; no proof
+files touched here. No new mathematics — the scope deliverable is saturated.
