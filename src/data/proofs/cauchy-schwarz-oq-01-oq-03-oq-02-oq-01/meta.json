@@ -34,17 +34,26 @@
       "Shannon entropy is always at least the min-entropy: H(p) ≥ -log(max_i p_i). This single inequality is the elementary half of every entropic uncertainty relation and needs no interpolation theory.",
       "The eigenstate case of Maassen–Uffink is genuinely provable now: when the state is a basis vector, H(p) = 0 and the conjugate distribution is spread out (q_k ≤ c²), so H(q) ≥ -2 log c carries the whole bound. The hard, interpolation-gated content is precisely the trade-off for non-eigenstates.",
       "The overlap c enters only through the bound q_k ≤ c² on the conjugate outcome probabilities; squaring corresponds to Born-rule probabilities |⟨b_k | a_j⟩|², and Real.log_pow converts -log(c²) into the textbook constant -2 log c.",
-      "The pointwise lemma x·(-log M) ≤ negMulLog x is the reusable atom: summed against any sub-probability vector it yields min-entropy-type bounds, independent of the uncertainty-principle application."
+      "The pointwise lemma x·(-log M) ≤ negMulLog x is the reusable atom: summed against any sub-probability vector it yields min-entropy-type bounds, independent of the uncertainty-principle application.",
+      "The min-entropy bound is tight exactly at the uniform-on-support distributions: equality H(p) = -log M holds when every non-zero pᵢ equals the common maximum M, because the pointwise inequality x·(-log M) ≤ negMulLog x is an equality precisely at x = 0 and x = M. So -log M is not merely a lower bound but the entropy of the flattest distribution compatible with the constraint pᵢ ≤ M — which is why the eigenstate case, where the conjugate distribution saturates q_k ≤ c², extracts the full Maassen–Uffink constant with no slack."
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Overview, Imports, and the Entropy Definition",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring, imports/namespace setup, and the Shannon-entropy definition. The docstring frames the question: the parent cauchy-schwarz-oq-01-oq-03-oq-02 builds the finite Shannon-entropy infrastructure for the Maassen–Uffink (1988) entropic uncertainty principle H(p) + H(q) ≥ -2 ln c, proves the entropy ceiling H ≤ log n, but leaves the LOWER bound gated on Riesz–Thorin / Hausdorff–Young interpolation absent from Mathlib. This file supplies what is elementarily provable: the min-entropy lower bound H(p) ≥ -log M (when every pᵢ ≤ M) and the resulting EIGENSTATE case of Maassen–Uffink, with 0 axioms / 0 sorries. After import Mathlib, open Finset, namespace CauchySchwarzOQ01OQ03OQ02OQ01, and variable {ι : Type*} [Fintype ι], it defines shannonEntropy p = ∑ᵢ Real.negMulLog (p i) (entropy in nats).",
+      "mathContext": "$H(p) = \\sum_i \\operatorname{negMulLog}(p_i) = -\\sum_i p_i \\log p_i$ via Mathlib's `Real.negMulLog`. Target: the elementary half $H(p) \\ge -\\log(\\max_i p_i)$ of the entropic uncertainty principle and the eigenstate case $H(p) + H(q) \\ge -2\\log c$."
+    },
     {
       "id": "pointwise",
       "title": "The Pointwise Min-Entropy Inequality",
       "startLine": 50,
       "endLine": 63,
-      "summary": "negMulLog_ge_mul_neg_log: for 0 ≤ x ≤ M (M > 0), x·(-log M) ≤ negMulLog x. The x = 0 case is trivial; x > 0 uses monotonicity of log and nlinarith.",
-      "mathContext": "For $0 \\le x \\le M$ ($M > 0$): $x\\cdot(-\\log M) \\le \\operatorname{negMulLog} x = -x\\log x$."
+      "summary": "negMulLog_ge_mul_neg_log: for 0 ≤ x ≤ M (M > 0), x·(-log M) ≤ negMulLog x. The x = 0 case is trivial; x > 0 uses monotonicity of log and nlinarith. This pointwise atom, summed against a probability vector, produces the min-entropy bound in the next section.",
+      "mathContext": "For $0 \\le x \\le M$ ($M > 0$): $x\\cdot(-\\log M) \\le \\operatorname{negMulLog} x = -x\\log x$, with equality exactly at $x = 0$ and $x = M$."
     },
     {
       "id": "min-entropy",
