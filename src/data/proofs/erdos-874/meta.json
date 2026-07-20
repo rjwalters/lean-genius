@@ -52,9 +52,9 @@
       "BoundedAdmissible for sets in {1,...,N}",
       "k(N) function as maximum admissible set size",
       "strausSet construction for lower bound",
-      "Straus lower/upper bound axioms (1966)",
-      "ENS improved upper bound axiom (1991)",
-      "Deshouillers-Freiman main theorem axiom (1999)",
+      "strausConstant (4/√3) definition; Straus (1966) bounds documented as prose, not axiomatized",
+      "ensConstant (√(143/27)) definition; ENS (1991) improved bound documented as prose, not axiomatized",
+      "Deshouillers-Freiman main theorem axiom (1999): deshouillers_freiman_main",
       "k_limit_is_two: the limit equals 2",
       "erdos_874 and erdos_874_answer main theorems"
     ],
@@ -68,7 +68,7 @@
     "historicalContext": "This problem asks about admissible sets A ⊆ {1,...,N} where sums of r distinct elements form disjoint sets for each r. Straus (1966) introduced the term and established that 2 ≤ liminf k(N)/√N ≤ limsup k(N)/√N ≤ 4/√3. Erdős-Nicolas-Sárközy (1991) improved the upper bound to √(143/27). Finally, Deshouillers-Freiman (1999) proved the conjecture: k(N) ~ 2√N. Admissible sets generalize Sidon sets (B_2 sets, where only pairwise sums must be distinct) to all r-fold sums, placing them in the broader B_h set theory initiated by Sidon in 1932 and developed by Erdős and Turán. The precise √N asymptotics reflect a fundamental density constraint: packing many elements while keeping all r-fold sum sets disjoint requires near-optimal spread within {1,...,N}.",
     "problemStatement": "**Question:** Let k(N) denote the size of the largest subset A ⊆ {1,...,N} such that the sets S_r = { a₁ + ⋯ + a_r : a₁ < ⋯ < a_r ∈ A } are disjoint for distinct r ≥ 1. Is k(N) ~ 2√N?\n\n**Answer: YES** (Deshouillers-Freiman, 1999)\n\nThe limit lim_{N→∞} k(N)/√N = 2 exists.",
     "text": "Is k(N) ~ 2√N where k(N) is the max size of A ⊆ {1,...,N} with disjoint subset sums S_r? PROVED by Deshouillers-Freiman (1999).",
-    "proofStrategy": "The formalization defines:\n\n1. **sumSet(A, r):** Set of all r-element subset sums from A\n2. **Admissible(A):** S_r are pairwise disjoint for r ≥ 1\n3. **k(N):** Maximum |A| for admissible A ⊆ {1,...,N}\n\nWe axiomatize:\n- Straus (1966): Lower bound via interval construction, upper bound 4/√3\n- ENS (1991): Improved upper bound √(143/27)\n- Deshouillers-Freiman (1999): k(N)/√N → 2",
+    "proofStrategy": "The formalization defines:\n\n1. **sumSet(A, r):** Set of all r-element subset sums from A\n2. **Admissible(A):** S_r are pairwise disjoint for r ≥ 1\n3. **k(N):** Maximum |A| for admissible A ⊆ {1,...,N}\n\nWe axiomatize only the Deshouillers-Freiman (1999) resolution — k(N)/√N → 2 — via the axioms `deshouillers_freiman_main` and `k_limit_is_two`. The earlier Straus (1966) bounds (lower bound via interval construction, upper bound 4/√3) and the ENS (1991) improvement (√(143/27)) are documented as prose commentary with only their constants defined (`strausConstant`, `ensConstant`); they are not axiomatized.",
     "keyInsights": [
       "**Admissible = Disjoint Sums:** The key property is that you can determine r from the sum alone.",
       "**Intervals are often optimal:** Sets of the form (N-k, N] ∩ ℕ achieve the lower bound.",
