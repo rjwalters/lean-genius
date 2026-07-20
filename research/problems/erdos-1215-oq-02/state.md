@@ -4,12 +4,15 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
-The sharp **inner** radius `C^{1/φ(n)}-1` and origin interiority: closing the
-two-sided *sharp radius* sandwich `ball(0, C^{1/φ(n)}-1) ⊆ {|Φ_n|<C} ⊆
-closedBall(0, 1+C^{1/φ(n)})` to mirror the two-sided *area* sandwich of OQ02OQ03.
+The literal OQ-02 target — an admissible bounded-length PATH from 0 to the
+boundary of `{|Φ_n|<C}` — for the cases where that set is convex, i.e. the
+degree-one cyclotomics `Φ_1 = X-1`, `Φ_2 = X+1`. All six prior iterations proved
+only *containment/area/radius/symmetry* facts and never constructed a path;
+iteration 7 constructs one. `n ≥ 3` (non-convex lemniscates) remains the open
+driver.
 
 ## Active Approach
 Approach A/B hybrid: elementary two-sided factor bounds `‖z‖-1 ≤ ‖z-μ‖ ≤ ‖z‖+1`
@@ -61,10 +64,25 @@ rectifiable-path arc length not yet in Mathlib.
   OQ02OQ02 upper bound. Also confirmed OQ02OQ06 (iter 5, was UNVERIFIED) rebuilds
   clean via the same direct-lean path.
 
+- Iter 7 (researcher-1): **first admissible-PATH construction**
+  (`CyclotomicPolynomialsOQ02OQ08.lean`, VERIFIED axiom-free
+  `[propext,Classical.choice,Quot.sound]`, host lean v4.31 vs prebuilt mathlib
+  oleans). Defined `HasStraightEscape P c L` (a ray `γ t = t•v` from 0 that reaches
+  the boundary `|P|=c`, stays in the closed sublevel set, and has segment length
+  `≤ L`), sidestepping the missing rectifiable-arc-length infra by using the
+  straight-segment length. Proved `hasStraightEscape_linear_unitRoot`: every linear
+  `X-a` with `‖a‖=1` and `c>1` has such a path of length `c-1` (ray `t•(-a)`).
+  Specialised to `Φ_1` (`a=1`) and `Φ_2` (`a=-1`) via `cyclotomic_one/two`, then
+  `cyclotomic_deg_one_hasStraightEscape_linear_bound` gives the OQ-02 target form
+  `length ≤ c·n` for `n∈{1,2}`. This is the FIRST iteration to build a path rather
+  than a containment; the length `c-1` is `O(1)`, far under the linear `c·n` target.
+
 ## Next Action
-Small-n (n=3,4,6) explicit lemniscate geometry / component count (the genuinely open
-driver, needs polynomial-lemniscate topology Mathlib currently lacks). Both radius and
-area are now pinned on BOTH sides (sharp inner `C^{1/φ(n)}-1` / outer `1+C^{1/φ(n)}`);
-note the inner radius `→ 0` while the outer `→ 2` as `φ(n)→∞`, so the two-sided disc
-squeeze is not asymptotically tight — pinning the true interior area needs the exact
-lemniscate boundary, not ball containment.
+`n ≥ 3` (`Φ_3,Φ_4,Φ_6`): here the sublevel set stops being convex (quadratic
+lemniscate, can split into components), so the straight-ray trick of iter 7 no
+longer works and a genuine path through a possibly-disconnected region is needed.
+This is the genuinely open driver — needs polynomial-lemniscate topology / component
+count and a rectifiable arc-length functional Mathlib still lacks. The elementary
+*containment/area/radius/symmetry* surface (iters 2–6) plus the *convex-case path*
+(iter 7) are now saturated; further progress requires new Mathlib infrastructure, not
+another elementary bound.

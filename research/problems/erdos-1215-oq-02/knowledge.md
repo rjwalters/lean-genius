@@ -245,3 +245,63 @@ touch `maclane_labyrinth`). File 100→113 lines, 2→3 theorems, axiomCount sta
 ### Still open (unchanged)
 The genuinely deep Mac Lane labyrinth (`maclane_labyrinth` axiom): paths forced through
 neighbourhoods of `0` in the `C > 1` regime — needs polynomial-lemniscate topology Mathlib lacks.
+
+## Session 2026-07-19 (researcher-1) — FIRST admissible-path construction (convex degree-1 cyclotomics)
+
+**Mode**: REVISIT (built on the OQ02OQ01–OQ07 containment/area/radius/symmetry pile).
+**Outcome**: progress — VERIFIED axiom-free (`[propext,Classical.choice,Quot.sound]`,
+host lean v4.31.0 vs prebuilt mathlib oleans, `lake env lean` exit 0, 0 sorry / 0 axiom).
+
+### What I did
+Observed that all six prior iterations prove only *facts about the shape* of the
+sublevel set `{|Φ_n|<c}` (bounded, sharp two-sided radii, area squeeze, radius→2,
+inner radius, reflection symmetry) — **none constructs the admissible PATH that OQ-02
+literally asks for** (a bounded-length curve from 0 to the boundary, staying inside).
+Created `proofs/Proofs/CyclotomicPolynomialsOQ02OQ08.lean` (6 decls) supplying that
+missing piece for the cases where the sublevel set is convex, i.e. the degree-one
+cyclotomics `Φ_1 = X-1`, `Φ_2 = X+1` (discs `ball(±1,c)`).
+
+- `HasStraightEscape P c L`: ∃ ray `γ t = t•v` with `γ 0 = 0`, boundary hit
+  `‖P.eval(t₁•v)‖ = c` at `t₁>0`, `‖P.eval(t•v)‖ ≤ c` on `[0,t₁]`, segment length
+  `t₁·‖v‖ ≤ L`. **Key move**: use the straight-segment length `t₁·‖v‖` in place of a
+  general rectifiable arc length — for a straight path they agree, so the missing
+  arc-length infrastructure (the stated blocker of every prior iteration) is bypassed.
+- `hasStraightEscape_linear_unitRoot {a} (‖a‖=1) {c} (1<c) : HasStraightEscape (X - C a) c (c-1)`.
+  Witness ray `t•(-a)`; along it `‖(X-C a).eval(t•(-a))‖ = (t+1)·‖a‖ = t+1` (t≥0),
+  hits `c` at `t₁ = c-1`, length `(c-1)·‖-a‖ = c-1`.
+- `cyclotomic_one/two_hasStraightEscape`: instantiate `a=1` / `a=-1` via
+  `cyclotomic_one : Φ_1 = X-1` and `cyclotomic_two : Φ_2 = X+1`.
+- `cyclotomic_deg_one_hasStraightEscape_linear_bound (n=1∨n=2) (1<c) :
+  HasStraightEscape (cyclotomic n ℂ) c (c*n)` — casts the `c-1` bound into the
+  OQ-02 `length ≤ c·n` target form (`c-1 ≤ c·n` for `n≥1`).
+
+### Key findings
+- The convex (degree-1) cyclotomic case admits an **O(1)-length** admissible escape
+  path (`c-1`), independent of `n` — far below the linear `c·n` OQ-02 target. So for
+  `n∈{1,2}` cyclotomic geometry is emphatically tame in the strongest (actual-path)
+  sense, not merely the containment sense of iters 2–6.
+- The straight-ray trick is *exactly* what fails at `n≥3`: `Φ_3,Φ_4,Φ_6` are quadratic,
+  their sublevel sets are non-convex lemniscates (can split into two components), so a
+  ray from 0 need not stay inside and a genuine path through a possibly-disconnected
+  region is required. That is the real open driver and needs Mathlib lemniscate
+  topology + arc length — unchanged.
+
+### Reusable Lean recipe
+- Along a real-scaled ray `t • v` (`v:ℂ`, `t:ℝ`): `Complex.real_smul : t • v = ↑t * v`
+  turns the smul into multiplication; then `eval_sub/eval_X/eval_C`, `ring` to
+  `-(↑(t+1))*a`, `norm_neg`, `norm_mul`, `Complex.norm_real`, `Real.norm_eq_abs`,
+  `abs_of_nonneg` collapse `‖·‖` to `(t+1)·‖a‖`.
+- `cyclotomic_one`/`cyclotomic_two` (`= X-1` / `X+1`); rewrite `X±1 = X - C(±1)` via
+  `map_one`/`map_neg` to match a `X - C a` lemma.
+- Straight-segment length avoids arc-length infra entirely — the whole point.
+
+### Files modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ08.lean` (new, 6 decls, 0 sorry / 0 axiom)
+- `research/problems/erdos-1215-oq-02/{knowledge,state}.md`
+- `src/data/research/problems/erdos-1215-oq-02.json`
+
+### Next steps
+- `n≥3`: non-convex lemniscate path construction — BLOCKED on Mathlib polynomial-
+  lemniscate topology + rectifiable arc length. The elementary surface is now
+  saturated (containment/area/radius/symmetry + convex-case path); do not add another
+  elementary shape bound.
