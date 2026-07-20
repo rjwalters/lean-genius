@@ -20,7 +20,13 @@
     "since": "2026-03-30T16:34:54.971Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "symmetric / horizontal quadruple family ({a,−a,b,−b} with a²+b²=5; equivalently the constant-height four-point lines of the quartic y=x⁴−5x²)",
+        "reopenCriterion": "materially new mechanism required — this route is provably LINEAR-CAPPED and cannot yield super-linear L₄(n): symmetric sum-zero sum-sq-10 quadruples ↔ pairs {a,b} with a²+b²=5 ↔ (via u=a²) pairs {u,5−u} summing to the fixed constant 5, which form a MATCHING under the involution u↦5−u, so an m-element symmetric abscissa set gives ≤⌊m/2⌋ such lines. Super-linear growth REQUIRES oblique (non-symmetric) quadruples. Reopen only for a genuinely oblique super-linear construction.",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -29,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (PR #38258, VERIFIED axiom-free trio): companion proves INFINITELY MANY distinct four-point lines on the quartic (qualitative k->infinity backbone under OPEN super-linear count). No growth-rate claim. Two OPEN sorries (grunbaum n^3/2, solymosi_stojakovic n^2-o(1)) untouched.",
+    "progressSummary": "REDUCTION COMPLETE, super-linear frontier is a multi-session additive construction. The engine quartic_fourPointLineCount_from_quadruples + free no-5-collinear on the quartic reduce OQ-04 entirely to: choose n reals with super-linearly many 4-subsets solving Σx=0 ∧ Σx²=10. The unconditional linear floor L₄(n)≥n/4 is done. The symmetric/horizontal family (current construction) is PROVABLY linear-capped (matching bound ⌊m/2⌋) and now registered as a blocked route; super-linear growth requires oblique quadruples (additive-energy / popular-(sum,sum-sq) construction, Grünbaum/Solymosi–Stojaković mechanism). Single remaining sorry unchanged: solymosi_stojakovic_lower_bound.",
     "builtItems": [
       "Erdos101OQ04.witnessPoints/witnessSet: explicit 5-point ppset {(0,0),(1,0),(2,0),(3,0),(0,1)} (VERIFIED)",
       "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (VERIFIED)",
@@ -50,7 +56,10 @@
       "The solution surface Σx=0∧Σx²=10 for four-point lines on y=x⁴−5x² is the fixed ternary conic Q=5; its named special cases are exactly (a) the q=−p slice = circle p²+r²=5 (symmetric family) and (b) surface points like (−8/3,1/3,1) (oblique). Both are pure ring/norm_num identities once the conic form is fixed — the OPEN content is purely SELECTING super-linearly many with pairwise-distinct abscissa sets, never existence.",
       "GAP FILLED: mother file proved boundedness/sharpness of FIXED surface Q=5 + 2 witnesses but never infinitude of distinct lines (only prose continuum). Formalized cleanly on symmetric circular slice; injectivity on (0,1) is 4-way Finset-mem split closed by nlinarith using 2<sqrt(5-p^2) and sqrt_nonneg.",
       "Lean gotchas: nlinarith CANNOT prove != goal — use show A<B then .ne/.ne, or exfalso;nlinarith[eq]. Avoid set s:=sqrt.. when later using Real.sq_sqrt (abstraction wont fold new occurrences); write sqrt literally.",
-      "New companion Erdos101OQ04PolyDegree.lean removes BOTH caps in noFiveCollinear_of_onPolyGraph (fixed count five + degree<=4): card_collinear_on_polyGraph_le proves the EXACT bound — any collinear subset of a degree-d polynomial-graph point set (d>=2, non-vertical line) has card <= d. A quartic is no-five-collinear, a quintic no-six-collinear, generally a degree-d graph is no-(d+1)-collinear. Proof: line a-b meets y=Poly(x) at roots of q = C(dx)*Poly - C(dy)*X - C(const) with deg q = deg Poly (deg>=2 keeps the linear correction from cancelling the top coeff (dx)*leadingCoeff != 0); first-coordinate map injects the subset into q.roots. Includes noFiveCollinear_of_onPolyGraph_via_card re-deriving the mother lemma at d<=4, confirming subsumption."
+      "New companion Erdos101OQ04PolyDegree.lean removes BOTH caps in noFiveCollinear_of_onPolyGraph (fixed count five + degree<=4): card_collinear_on_polyGraph_le proves the EXACT bound — any collinear subset of a degree-d polynomial-graph point set (d>=2, non-vertical line) has card <= d. A quartic is no-five-collinear, a quintic no-six-collinear, generally a degree-d graph is no-(d+1)-collinear. Proof: line a-b meets y=Poly(x) at roots of q = C(dx)*Poly - C(dy)*X - C(const) with deg q = deg Poly (deg>=2 keeps the linear correction from cancelling the top coeff (dx)*leadingCoeff != 0); first-coordinate map injects the subset into q.roots. Includes noFiveCollinear_of_onPolyGraph_via_card re-deriving the mother lemma at d<=4, confirming subsumption.",
+      "FRONTIER (researcher-1, 2026-07-19): the file's reduction is COMPLETE — quartic_fourPointLineCount_from_quadruples already turns ANY injective family of k quadruples (distinct entries, Σx=0, Σx²=10, pairwise-distinct abscissa-sets) into a no-5-collinear point set with ≤4k points and ≥k four-point lines, and no-five-collinear is FREE on the quartic y=x⁴−5x² (degree-4 graph ⇒ ≤4 collinear, noFiveCollinear_of_onQuartic). So the ENTIRE remaining open content (the single sorry solymosi_stojakovic_lower_bound and the derived grunbaum Ω(n^{3/2})) is exactly one additive-combinatorics construction: exhibit n reals with SUPER-LINEARLY many 4-subsets satisfying Σx=0 ∧ Σx²=10.",
+      "LIMITATIVE (researcher-1, 2026-07-19): the natural symmetric/horizontal family is provably LINEAR-CAPPED. Symmetric quadruples {a,−a,b,−b} need a²+b²=5; setting u=a² these are pairs {u,5−u} summing to the fixed constant 5, a MATCHING under u↦5−u, so an m-point symmetric abscissa set yields ≤⌊m/2⌋ four-point lines. The current quartic_linear_lower_bound (horizontal lines y=h(i), one per level) is exactly this capped family. Hence super-linear L₄(n) NECESSARILY uses oblique (non-symmetric) quadruples — recorded as a structured blocked-route.",
+      "DIRECTION (researcher-1, 2026-07-19): the oblique super-linear construction is the additive-energy question — max # of 4-subsets of an n-set with BOTH Σ and Σsq at prescribed (popular) values. For A a long integer AP/GAP the number of 4-subsets with fixed sum is ~n³ at the central sum; pinning Σsq to its popular value (Θ(n²) values ⇒ ~n on average, but the popular value is super-linear) is the mechanism behind Grünbaum n^{3/2} / Solymosi–Stojaković n^{2−o(1)}. A scaled GAP normalized so popular quadruples hit Σ=0, Σsq=10 is the concrete next construction to formalize (still ~600–1000 LOC, multi-session)."
     ],
     "mathlibGaps": [
       "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."
@@ -126,7 +135,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.971Z",
-  "lastUpdate": "2026-07-13",
+  "lastUpdate": "2026-07-19",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
