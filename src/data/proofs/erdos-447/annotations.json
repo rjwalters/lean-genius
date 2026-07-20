@@ -151,7 +151,7 @@
     },
     "title": "Asymptotic Notation and maxUnionFreeSize",
     "content": "**IsLittleO f g** captures $f(n) = o(g(n))$: for every $\\varepsilon > 0$, eventually $f(n) \\leq \\varepsilon \\cdot g(n)$. **AsymptoticUpperBound f g** captures $f(n) \\leq (1+o(1)) \\cdot g(n)$: for every $\\varepsilon > 0$, eventually $f(n) \\leq (1+\\varepsilon) \\cdot g(n)$.\n\n**maxUnionFreeSize n** is the maximum $|\\mathcal{F}|$ over all union-free $\\mathcal{F} \\subseteq 2^{[n]}$, defined as the supremum of cardinalities over the filtered power set.",
-    "mathContext": "`IsLittleO` uses $\\varepsilon$-$N$ definitions with $\\mathbb{R}$-valued bounds. `maxUnionFreeSize` uses `Finset.sup Finset.card` over `(powerSet n).filter IsUnionFree`, which is well-defined since `Finset` operations are decidable. `AsymptoticUpperBound` is equivalent to $\\limsup f(n)/g(n) \\leq 1$.",
+    "mathContext": "`IsLittleO` uses $\\varepsilon$-$N$ definitions with $\\mathbb{R}$-valued bounds. `maxUnionFreeSize` uses `Finset.sup Finset.card` over `(powerSet n).powerset.filter IsUnionFree` — the filter ranges over *families* of subsets (elements of $2^{2^{[n]}}$), since `IsUnionFree` is a predicate on families, not on individual subsets. This is well-defined since `Finset` operations are decidable. `AsymptoticUpperBound` is equivalent to $\\limsup f(n)/g(n) \\leq 1$.",
     "significance": "key",
     "relatedConcepts": [
       "little-o notation",
