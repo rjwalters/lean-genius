@@ -49,15 +49,13 @@
       "SumFreeFinset definition: finite set version",
       "IsSumFreeSubset predicate: sum-free subset relation",
       "maxSumFreeSize: maximum sum-free subset cardinality",
-      "f axiom with spec and tightness properties",
-      "erdos_lower_bound: f(n) >= n/3",
-      "alon_kleitman_bound: f(n) >= (n+1)/3",
-      "bourgain_bound: f(n) >= (n+2)/3",
-      "bedert_bound: f(n) >= n/3 + c*log log n",
-      "egm_upper_bound: f(n) <= n/3 + o(n)",
-      "f_asymptotic: f(n)/n -> 1/3",
-      "interval_sum_free: [n, 2n-1] is sum-free",
-      "middle_third_construction: achieving n/3",
+      "f axiom: minimum guaranteed sum-free subset size (ℕ → ℕ)",
+      "erdos_lower_bound (theorem): f(n) >= n/3, derived from bourgain_bound",
+      "alon_kleitman_bound (theorem): f(n) >= (n+1)/3, derived from bourgain_bound",
+      "bourgain_bound (axiom): f(n) >= (n+2)/3",
+      "bedert_bound (axiom): f(n) >= n/3 + c*log log n",
+      "egm_upper_bound (axiom): f(n) <= n/3 + o(n)",
+      "interval_sum_free (theorem): [n, 2n-1] is sum-free",
       "erdos_792_bounds: summary combining bounds",
       "erdos_792_lower_bound_chain: chain of lower bounds"
     ],
@@ -72,7 +70,7 @@
     "historicalContext": "**Erdős Problem #792: Sum-Free Subsets**\n\nThis fundamental problem in additive combinatorics asks about guaranteed sum-free subsets. A set is sum-free if no element equals the sum of two others.\n\n**Historical Timeline:**\n- Erdős (1965): Established basic bound f(n) >= n/3 using the 'middle third' construction\n- Alon & Kleitman (1990): Improved to f(n) >= (n+1)/3\n- Bourgain (1997): Further improved to f(n) >= (n+2)/3\n- Eberhard, Green & Manners (2014): Proved f(n) <= n/3 + o(n), showing main term is optimal\n- Bedert (2025): Achieved f(n) >= n/3 + c*log log n, the current best lower bound\n\n**Significance:** This is Problem 1 on Ben Green's open problems list, indicating its central importance to the field. The exact second-order term remains unknown.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be the maximum value such that every $n$-element subset $A \\subseteq \\mathbb{Z}$ contains a sum-free subset $B \\subseteq A$ with $|B| \\geq f(n)$.\n\n**Estimate $f(n)$.**\n\n**Current Knowledge:**\n- Lower bound: $f(n) \\geq n/3 + c \\cdot \\log\\log n$ (Bedert 2025)\n- Upper bound: $f(n) \\leq n/3 + o(n)$ (Eberhard-Green-Manners 2014)\n- Asymptotic: $\\lim_{n \\to \\infty} f(n)/n = 1/3$\n\n**Main Open Question:** What is the exact growth rate of $f(n) - n/3$?",
     "text": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
-    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we axiomatize f(n) and formalize the known results:\n\n1. **Core Definitions:** SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize\n\n2. **Axiomatized f(n):** With specification (every set has large sum-free subset) and tightness (extremal sets exist)\n\n3. **Lower Bounds:** Erdős, Alon-Kleitman, Bourgain, Bedert as axioms\n\n4. **Upper Bounds:** Eberhard-Green-Manners and asymptotic limit as axioms\n\n5. **Constructions:** Interval sum-free and middle-third as axioms\n\n6. **Summary Theorems:** Proved from axioms combining the bounds",
+    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we axiomatize f(n) and formalize the known results:\n\n1. **Core Definitions:** SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize\n\n2. **Axiomatized f(n):** With specification (every set has large sum-free subset) and tightness (extremal sets exist)\n\n3. **Lower Bounds:** Bourgain and Bedert axiomatized; Erdős and Alon-Kleitman proved as theorems derived from Bourgain's stronger bound\n\n4. **Upper Bounds:** Eberhard-Green-Manners axiomatized (the f(n)/n -> 1/3 asymptotic noted only as a comment, not formalized)\n\n5. **Constructions:** Interval sum-free proved as a theorem (middle-third discussed in comments, not formalized)\n\n6. **Summary Theorems:** Proved from axioms combining the bounds",
     "keyInsights": [
       "**Sum-Free Definition:** B is sum-free if for all a, b, c in B, we have a + b != c",
       "**Middle Third Construction:** Taking elements in (n/3, 2n/3] avoids sums, achieving f(n) >= n/3",
@@ -122,26 +120,26 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms",
+      "summary": "Bourgain and Bedert bounds as axioms; Erdős and Alon-Kleitman derived as theorems",
       "startLine": 66,
       "endLine": 80,
-      "mathContext": "Axiomatized: Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms"
+      "mathContext": "Bourgain and Bedert axiomatized; Erdős and Alon-Kleitman proved from Bourgain"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Eberhard-Green-Manners bound and asymptotic limit",
+      "summary": "Eberhard-Green-Manners bound as axiom (asymptotic limit noted in comment only)",
       "startLine": 81,
       "endLine": 89,
-      "mathContext": "Bound: Eberhard-Green-Manners bound and asymptotic limit"
+      "mathContext": "Bound: Eberhard-Green-Manners axiom; f(n)/n -> 1/3 corollary is a comment"
     },
     {
       "id": "constructions",
       "title": "Examples and Constructions",
-      "summary": "Interval sum-free and middle-third construction axioms",
+      "summary": "interval_sum_free proved as a theorem (middle-third in comments only)",
       "startLine": 90,
       "endLine": 99,
-      "mathContext": "Axiomatized: Interval sum-free and middle-third construction axioms"
+      "mathContext": "Verified: interval_sum_free theorem; middle-third construction discussed in comments"
     },
     {
       "id": "summary",
