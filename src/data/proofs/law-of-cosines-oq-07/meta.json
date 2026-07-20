@@ -82,8 +82,9 @@
   "conclusion": {
     "summary": "Apollonius's theorem is proved coordinate-free in an arbitrary real inner-product affine space, the explicit median length is extracted, and the parallelogram law is recovered as the vector-space special case where the median to [−y, y] passes through the origin. Verified, 0 axioms, 0 sorries, no decision procedures.",
     "openQuestions": [
-      "The parallelogram law characterises inner-product norms among all norms (Jordan–von Neumann theorem). Can the converse — a normed space satisfying the parallelogram law admits a compatible inner product — be formalised on top of this entry using Mathlib's InnerProductSpace.ofNorm?",
-      "Apollonius generalises to the sum over all three medians: 4(mₐ² + m_b² + m_c²) = 3(a² + b² + c²). Can this 'sum of squares of medians' identity be derived from three applications of the median length formula?"
+      "The parallelogram law characterises inner-product norms among all norms (Jordan–von Neumann theorem). Can the converse — a normed space satisfying the parallelogram law admits a compatible inner product — be formalised on top of this entry using Mathlib's InnerProductSpace.ofNorm? RESOLVED by the child entry law-of-cosines-oq-07-oq-01: it packages the full biconditional Nonempty (InnerProductSpace 𝕜 E) ↔ (parallelogram law) over any RCLike field and exposes the converse as an explicit noncomputable InnerProductSpace structure (innerProductSpaceOfParallelogram) built via InnerProductSpace.ofNorm.",
+      "Apollonius generalises to the sum over all three medians: 4(mₐ² + m_b² + m_c²) = 3(a² + b² + c²). Can this 'sum of squares of medians' identity be derived from three applications of the median length formula? RESOLVED by the child entry law-of-cosines-oq-07-oq-02: it proves 4·(mₐ² + m_b² + m_c²) = 3·(a² + b² + c²) coordinate-free in an arbitrary real inner-product affine space by summing this entry's median-length identity over all three vertices (one linear_combination), plus the ¾-ratio rescaling.",
+      "Extend the sum-of-squared-medians identity beyond the triangle to the medians of a d-simplex (Commandino/centroid form): does an analogous coordinate-free relation between the sum of squared medians and the sum of squared edges hold in an arbitrary real inner-product affine space for n ≥ 4 vertices, again as a single linear_combination of the two-point median identity?"
     ],
     "implications": "Casting Apollonius's theorem in coordinate-free metric form shows that a classical triangle identity lives naturally at the level of inner-product affine spaces, and that the parallelogram law — the cornerstone of the inner-product characterisation of norms — is a direct corollary. The proof avoids any explicit coordinatisation or decision procedure."
   },
@@ -102,6 +103,16 @@
       "targetId": "pythagorean-theorem",
       "relationship": "related",
       "description": "When the median is to the hypotenuse of a right triangle, Apollonius collapses to the Pythagorean relation; the parallelogram law generalises Pythagoras from the right-angle case to arbitrary x, y."
+    },
+    {
+      "targetId": "law-of-cosines-oq-07-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[0] (the Jordan–von Neumann converse). It proves the parallelogram law — which this entry shows is necessary — is also sufficient, packaging the two-sided Fréchet–von Neumann–Jordan characterisation Nonempty (InnerProductSpace 𝕜 E) ↔ (∀ x y, ‖x+y‖²+‖x−y‖² = 2(‖x‖²+‖y‖²)) over any RCLike field and exposing the converse as an explicit InnerProductSpace structure built on Mathlib's polarisation construction InnerProductSpace.ofNorm."
+    },
+    {
+      "targetId": "law-of-cosines-oq-07-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[1] (sum of the three squared medians). It derives 4·(mₐ² + m_b² + m_c²) = 3·(a² + b² + c²) — and the ¾-ratio form — coordinate-free in an arbitrary NormedAddTorsor over a real inner product space by summing this entry's median-length identity cyclically over the three vertices, closed by a single linear_combination."
     }
   ],
   "references": [
