@@ -91,7 +91,8 @@
       "**Countable power, not just finite product.** OQ-07 shows 𝔠 · 𝔠 = 𝔠 (the plane is the size of the line). This entry shows the far stronger 𝔠 ^ ℵ₀ = 𝔠 (the whole space of real sequences is the size of the line). Finite products are a trivial corollary of the countable power.",
       "**Everything between 2 and 𝔠 has the same countable power.** mk_seq_eq_continuum captures the sandwich: 2 ≤ #α ≤ 𝔠 forces #(ℕ → α) = 𝔠. So ℕ → ℕ (Baire space), ℕ → ℝ, ℕ → ℂ, and ℕ → 𝒫(ℕ) are all equinumerous with ℝ.",
       "**Only the power set escapes.** The continuum absorbs countable powers (𝔠 ^ ℵ₀ = 𝔠) but not its own power set (2 ^ 𝔠 > 𝔠 by Cantor). Stability under sequences, strict growth under power sets — the two faces of the family.",
-      "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℕ → ℝ) = #ℝ literally Nonempty ((ℕ → ℝ) ≃ ℝ): a single real number can encode an entire sequence of reals."
+      "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℕ → ℝ) = #ℝ literally Nonempty ((ℕ → ℝ) ≃ ℝ): a single real number can encode an entire sequence of reals.",
+      "**The collapse is Cantor pairing in the exponents.** 𝔠 ^ ℵ₀ = 𝔠 is not magic: writing 𝔠 = 2^ℵ₀ turns it into (2^ℵ₀)^ℵ₀ = 2^(ℵ₀·ℵ₀) = 2^ℵ₀ by the power law, so the entire result rests on ℵ₀·ℵ₀ = ℵ₀ — the countability of ℕ × ℕ, i.e. Cantor's pairing function. Coding a real sequence into one real is exactly interleaving countably many countable digit-streams along a diagonal enumeration, the same device behind the parent's diagonalization theme."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (Cardinal.mk, ℵ₀, 𝔠, exponentiation)",
@@ -126,11 +127,19 @@
     },
     {
       "id": "general",
-      "title": "Baire Space, the Sandwich, and OQ-07",
+      "title": "Baire Space and the 2 ≤ #α ≤ 𝔠 Sandwich Law",
       "startLine": 60,
+      "endLine": 73,
+      "summary": "mk_seq_nat_eq_continuum shows even the smallest infinite base already reaches the continuum — Baire space #(ℕ → ℕ) = ℵ₀^ℵ₀ = 𝔠 (aleph0_power_aleph0). mk_seq_eq_continuum abstracts this to the unified principle: any base sandwiched 2 ≤ #α ≤ 𝔠 gives #(ℕ → α) = 𝔠 (power_aleph0_of_le_continuum across mk_arrow), with ℕ (base ℵ₀) and ℝ (base 𝔠) as the two extremes.",
+      "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{N}) = \\mathfrak{c};\\quad 2 \\le \\#\\alpha \\le \\mathfrak{c} \\Rightarrow \\#(\\mathbb{N} \\to \\alpha) = \\mathfrak{c}.$"
+    },
+    {
+      "id": "subsumes-oq07",
+      "title": "Subsuming OQ-07: Real Sequences vs. the Plane",
+      "startLine": 75,
       "endLine": 81,
-      "summary": "mk_seq_nat_eq_continuum (Baire space #(ℕ → ℕ) = 𝔠), mk_seq_eq_continuum (the unified principle #(ℕ → α) = 𝔠 for 2 ≤ #α ≤ 𝔠), and mk_seq_real_eq_mk_prod_real (#(ℕ → ℝ) = #(ℝ × ℝ), subsuming OQ-07).",
-      "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{N}) = \\mathfrak{c}$ and $\\#(\\mathbb{N} \\to \\mathbb{R}) = \\#(\\mathbb{R} \\times \\mathbb{R})$."
+      "summary": "mk_seq_real_eq_mk_prod_real closes the loop with the finite-product entry OQ-07: since a countable power dominates any finite product, the real-sequence space and the plane are equinumerous, #(ℕ → ℝ) = #(ℝ × ℝ), both equal to 𝔠 (via mk_prod and continuum_mul_self, exactly OQ-07's engine).",
+      "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{R}) = \\#(\\mathbb{R} \\times \\mathbb{R}) = \\mathfrak{c}.$"
     }
   ],
   "crossReferences": [
