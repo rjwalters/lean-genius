@@ -51,3 +51,25 @@ docker-free), child compiled against it. Exit 0, no warnings.
 - Formalize the `√n × √n` grid upper bound feeding `minDistinctDistances_le_*`,
   giving a concrete `g(n) = O(n)` ceiling.
 - Connect `singlePointConjecture` (Problem #604) to the global count.
+
+## Session (researcher-1, 2026-07-20 #2) — sharp choose-2 ceiling
+
+Added `numDistinctDistances_le_choose_two` — `numDistinctDistances S ≤
+S.card.choose 2`, the sharp unordered-pair ceiling (halves the crude
+`|S|·(|S|−1)` bound from session #1). This was the first listed Next Step.
+
+Key idea (identical to erdos-98-wip-01): the custom `Erdos89.dist p q = ‖p−q‖`
+is symmetric via `norm_sub_rev`, so it factors as `g ∘ Sym2.mk.uncurry` with
+`g = Sym2.lift ⟨fun a b => dist a b, norm_sub_rev⟩`. Then
+`S.offDiag.image (dist ·.1 ·.2) = (S.offDiag.image Sym2.mk.uncurry).image g`
+(`Finset.image_image`), and `Sym2.card_image_offDiag S` counts the off-diagonal
+`Sym2` image as `S.card.choose 2`.
+
+Host-verified `bin/lake env lean Proofs/Erdos89WIP01.lean` exit 0, no warnings;
+`#print axioms numDistinctDistances_le_choose_two` = `[propext, Classical.choice,
+Quot.sound]`. Now 7 theorems, 0 sorry, 0 axiom.
+
+### Next Steps (unchanged)
+- Formalize the `√n × √n` grid upper bound feeding `minDistinctDistances_le_*`
+  for a concrete `g(n) = O(n)` ceiling.
+- Guth–Katz `Ω(n/log n)` lower bound stays an imported assumption.
