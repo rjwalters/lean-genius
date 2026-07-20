@@ -4,7 +4,7 @@
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
       "startLine": 1,
-      "endLine": 63
+      "endLine": 64
     },
     "type": "concept",
     "title": "Module Overview: Octonions and the Exceptional Lie Algebras",
@@ -28,8 +28,8 @@
     "id": "ann-hurwitz-oq04-unit",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 64,
-      "endLine": 113
+      "startLine": 78,
+      "endLine": 107
     },
     "type": "definition",
     "title": "The Octonion Unit Element e₀",
@@ -52,8 +52,8 @@
     "id": "ann-hurwitz-oq04-algHom",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 127,
-      "endLine": 165
+      "startLine": 117,
+      "endLine": 181
     },
     "type": "definition",
     "title": "Octonion Algebra Homomorphisms and Automorphisms",
@@ -76,8 +76,8 @@
     "id": "ann-hurwitz-oq04-helper-lemmas",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 172,
-      "endLine": 200
+      "startLine": 182,
+      "endLine": 197
     },
     "type": "concept",
     "title": "phi_unit_eq_unit: Any Automorphism Fixes e₀",
@@ -101,8 +101,8 @@
     "id": "ann-hurwitz-oq04-imag-sq",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 201,
-      "endLine": 217
+      "startLine": 198,
+      "endLine": 210
     },
     "type": "concept",
     "title": "imag_sq_eq_neg_norm: Pure Imaginary Elements Square to Negative Norm",
@@ -125,8 +125,8 @@
     "id": "ann-hurwitz-oq04-phi-imag-props",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 218,
-      "endLine": 254
+      "startLine": 211,
+      "endLine": 250
     },
     "type": "concept",
     "title": "phi_imag_props: Automorphisms Map Im(𝕆) → Im(𝕆) Isometrically",
@@ -150,8 +150,8 @@
     "id": "ann-hurwitz-oq04-norm-preservation",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 256,
-      "endLine": 291
+      "startLine": 251,
+      "endLine": 278
     },
     "type": "insight",
     "title": "alg_aut_preserves_norm: The Core Isometry Result",
@@ -175,8 +175,8 @@
     "id": "ann-hurwitz-oq04-real-part-inner",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 293,
-      "endLine": 357
+      "startLine": 284,
+      "endLine": 343
     },
     "type": "concept",
     "title": "Real Part Preservation and Aut(𝕆) ⊆ O(7)",
@@ -199,8 +199,8 @@
     "id": "ann-hurwitz-oq04-exceptional-type",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 395,
-      "endLine": 421
+      "startLine": 377,
+      "endLine": 403
     },
     "type": "insight",
     "title": "ExceptionalType: Formalizing the Five Exceptional Lie Algebras",
@@ -220,11 +220,36 @@
     ]
   },
   {
+    "id": "hurwitz-oq04-partivb-derivation-algebra",
+    "proofId": "hurwitz-theorem-oq-04",
+    "range": {
+      "startLine": 445,
+      "endLine": 544
+    },
+    "type": "definition",
+    "title": "PART IV-b: OctonionDer and the Vector-Space / Lie-Bracket Structure of Der(𝕆)",
+    "content": "Before Der(𝕆) is realised as a `Submodule` (PART IV-c), it is built up concretely as a bundled `OctonionDer` structure: a linear map `map : (Fin 8 → ℝ) → (Fin 8 → ℝ)` together with a proof of the Leibniz rule `D(a·b) = D(a)·b + a·D(b)` for octonion multiplication. The ℝ-vector-space operations are then given explicitly — `zeroDer`, `addDer`, `smulDer` — witnessing that derivations are closed under linear combination. The commutator `commDer D₁ D₂ := D₁∘D₂ − D₂∘D₁` equips this space with a Lie bracket: `commDer_self_eq_zero` (alternation), `commDer_antisymm` (antisymmetry), and `commDer_jacobi` (the Jacobi identity) verify the three Lie-algebra axioms directly on octonion derivations. This concrete layer is what makes the dimension count in PART IV-c.3 (finrank = 14 = dim G₂) meaningful as a statement about a genuine Lie algebra.",
+    "mathContext": "A derivation $D$ of an algebra $A$ satisfies the Leibniz rule $D(ab)=D(a)b+aD(b)$. The derivations form a Lie algebra $\\mathrm{Der}(A)$ under the commutator bracket $[D_1,D_2]=D_1D_2-D_2D_1$, which automatically satisfies antisymmetry $[D_1,D_2]=-[D_2,D_1]$ and the Jacobi identity $[[D_1,D_2],D_3]+[[D_2,D_3],D_1]+[[D_3,D_1],D_2]=0$. For the octonions, $\\mathrm{Der}(\\mathbb{O})\\cong\\mathfrak{g}_2$, the compact exceptional Lie algebra of dimension $14$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lie algebra",
+      "derivation",
+      "commutator bracket",
+      "Jacobi identity",
+      "G₂"
+    ],
+    "prerequisites": [
+      "Leibniz rule",
+      "linear maps",
+      "commutator"
+    ]
+  },
+  {
     "id": "ann-hurwitz-oq04-der-submodule",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 579,
-      "endLine": 586
+      "startLine": 565,
+      "endLine": 572
     },
     "type": "definition",
     "title": "OctonionDerSubmodule: Der(𝕆) as Vector Subspace + G₂ Dimension Theorem",
@@ -249,8 +274,8 @@
     "id": "ann-hurwitz-oq04-baez-derivations",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 603,
-      "endLine": 718
+      "startLine": 589,
+      "endLine": 703
     },
     "type": "insight",
     "title": "PART IV-c.2: 14 explicit Baez derivations as a basis for Der(𝕆)",
@@ -274,8 +299,8 @@
     "id": "ann-hurwitz-oq04-dim14-proof",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1024,
-      "endLine": 1416
+      "startLine": 726,
+      "endLine": 1356
     },
     "type": "insight",
     "title": "PART IV-c.3: Der(𝕆) has dimension 14 — the machine-checked G₂ dimension",
@@ -299,8 +324,8 @@
     "id": "ann-hurwitz-oq04-der-structural",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1436,
-      "endLine": 1463
+      "startLine": 1376,
+      "endLine": 1406
     },
     "type": "insight",
     "title": "PART IV-d: structural properties of octonion derivations",
@@ -321,8 +346,8 @@
     "id": "ann-hurwitz-oq04-tits-axioms",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1470,
-      "endLine": 1490
+      "startLine": 1411,
+      "endLine": 1436
     },
     "type": "insight",
     "title": "Freudenthal-Tits Magic Square Dimensions: F₄=52, E₆=78, E₇=133, E₈=248",
@@ -347,8 +372,8 @@
     "id": "ann-hurwitz-oq04-magic-square",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1496,
-      "endLine": 1517
+      "startLine": 1437,
+      "endLine": 1458
     },
     "type": "concept",
     "title": "The Freudenthal-Tits Magic Square Dimensions (Proved by rfl)",
@@ -373,8 +398,8 @@
     "id": "ann-hurwitz-oq04-structural",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1524,
-      "endLine": 1565
+      "startLine": 1465,
+      "endLine": 1507
     },
     "type": "concept",
     "title": "Structural Consequences: Ordering and Uniqueness Properties",
@@ -396,8 +421,8 @@
     "id": "ann-hurwitz-oq04-correspondence",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1571,
-      "endLine": 1588
+      "startLine": 1512,
+      "endLine": 1553
     },
     "type": "insight",
     "title": "The Hurwitz-Exceptional Correspondence: Why Exactly Five",
@@ -422,8 +447,8 @@
     "id": "ann-hurwitz-oq04-physics-summary",
     "proofId": "hurwitz-theorem-oq-04",
     "range": {
-      "startLine": 1589,
-      "endLine": 1612
+      "startLine": 1518,
+      "endLine": 1524
     },
     "type": "concept",
     "title": "Hurwitz-Exceptional Correspondence: Why 4 Algebras Give 5 Exceptional Types",
