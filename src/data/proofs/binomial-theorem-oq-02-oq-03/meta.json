@@ -85,40 +85,40 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports",
+      "title": "Imports and Module Overview",
       "startLine": 1,
-      "endLine": 5,
-      "summary": "Imports Mathlib and Proofs.CombinationsFormulaOQ03 (q-binomial coefficients, q-factorials, and their key identities including qBinom_at_one and qBinom_product).",
-      "mathContext": "Depends on CombinationsFormulaOQ03's qBinom, qFactorial, and associated lemmas."
+      "endLine": 42,
+      "summary": "Imports Mathlib and Proofs.CombinationsFormulaOQ03 (q-binomial coefficients, q-factorials, and their key identities including qBinom_at_one and qBinom_product), plus the module docstring stating the OQ-02-OQ-03 goal (formalize the q-multinomial theorem), the recursive definition of qMultinom, the key results, and the finite-field/quantum-group context. Opens QBinomialCoefficients/Finset/BigOperators and works over a variable CommRing R.",
+      "mathContext": "Depends on CombinationsFormulaOQ03's qBinom, qFactorial, and associated lemmas; qMultinom q k = ∏ᵢ qBinom q (∑_{j≥i} kⱼ) (kᵢ)."
     },
     {
       "id": "definition",
       "title": "Definition of q-Multinomial Coefficient",
-      "startLine": 55,
-      "endLine": 64,
+      "startLine": 43,
+      "endLine": 58,
       "summary": "qMultinom q k defined recursively: base case (m=0) is 1; recursive case is qBinom q (∑kᵢ) (k 0) * qMultinom q (k∘Fin.succ). Works over arbitrary CommRing R.",
       "mathContext": "qMultinom q k = ∏ᵢ qBinom q (∑_{j≥i} kⱼ) (kᵢ)"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 65,
-      "endLine": 88,
+      "startLine": 59,
+      "endLine": 82,
       "summary": "Four boundary cases: nil (returns 1), single variable (returns 1), cons recursion, and two-variable formula qMultinom q k = qBinom q (k₀+k₁) k₀.",
       "mathContext": "These mirror classical multinomial boundary cases."
     },
     {
       "id": "reduction-at-one",
       "title": "Reduction at q=1",
-      "startLine": 89,
-      "endLine": 127,
+      "startLine": 83,
+      "endLine": 123,
       "summary": "qMultinom_at_one: at q=1, the q-multinomial equals Nat.multinomial. Proved by induction using qBinom_at_one and Nat.multinomial_insert. Key: Finset.univ (Fin (m+1)) = insert 0 (image Fin.succ univ).",
       "mathContext": "qMultinom (1:R) k = (Nat.multinomial Finset.univ k : R)"
     },
     {
       "id": "zero-cases",
       "title": "Zero Cases",
-      "startLine": 128,
+      "startLine": 124,
       "endLine": 154,
       "summary": "qMultinom_eq_zero_of_lt: zero when any kᵢ exceeds the total sum. qMultinom_eq_zero_when_head_exceeds_sum: special case when k₀ > ∑kᵢ.",
       "mathContext": "Mirrors the fact C(n,k) = 0 when k > n."
@@ -126,30 +126,30 @@
     {
       "id": "product-identity",
       "title": "Product Identity with q-Factorials",
-      "startLine": 161,
-      "endLine": 191,
+      "startLine": 155,
+      "endLine": 181,
       "summary": "qMultinom_product_qFactorial: qMultinom q k * ∏ qFactorial q (kᵢ) = qFactorial q (∑kᵢ). The q-analog of multinomial(k) * ∏kᵢ! = n!. Proved by induction using qBinom_product.",
       "mathContext": "This is the fundamental identity characterizing q-multinomials."
     },
     {
       "id": "unit-partition",
       "title": "Unit and All-Ones Partitions",
-      "startLine": 192,
-      "endLine": 247,
+      "startLine": 182,
+      "endLine": 231,
       "summary": "qMultinom_unit_partition: for k = eⱼ (unit vector), result is 1. qMultinom_all_ones: k = (1,1,...,1) gives qFactorial q m.",
       "mathContext": "Unit partitions correspond to C(1,1)=1; all-ones to m!_q = [m]_q!."
     },
     {
       "id": "three-variable",
       "title": "Three-Variable Formula",
-      "startLine": 249,
-      "endLine": 269,
+      "startLine": 232,
+      "endLine": 256,
       "summary": "qMultinom_three: qMultinom q k = qBinom q (k₀+k₁+k₂) k₀ * qBinom q (k₁+k₂) k₁. qMultinom_two_row_sum: row sum identity over j ∈ range(n+1).",
       "mathContext": "Three-variable formula via two successive q-binomial choices."
     }
   ],
   "conclusion": {
-    "summary": "This 269-line formalization confirms: YES, the q-multinomial theorem can be formalized in Lean 4. The q-multinomial coefficient is defined over arbitrary CommRings, reduces to the classical multinomial at q=1, satisfies the fundamental product identity with q-factorials, and admits explicit formulas for 2- and 3-variable cases. The proof achieves 0 sorries and 0 axioms.",
+    "summary": "This 256-line formalization confirms: YES, the q-multinomial theorem can be formalized in Lean 4. The q-multinomial coefficient is defined over arbitrary CommRings, reduces to the classical multinomial at q=1, satisfies the fundamental product identity with q-factorials, and admits explicit formulas for 2- and 3-variable cases. The proof achieves 0 sorries and 0 axioms.",
     "implications": "The q-multinomial coefficient formalization provides the foundation for:\n1. **q-Multinomial theorem in quantum groups**: In algebras where yx = qxy, the expansion of (x₁+···+xₘ)^n uses exactly these q-multinomial coefficients.\n2. **Counting subspace flags in finite geometry**: qMultinom q (k₁,...,kₘ) counts the number of chains of subspaces V₁ ⊂ V₂ ⊂ ··· in F_q^n with consecutive dimensions k₁, k₂, ...\n3. **q-Analog identity chains**: Combined with q-Pascal's rule and q-binomial theorem, these form a complete q-analog toolkit for formal combinatorics.",
     "openQuestions": [
       "Can the full q-multinomial theorem (expansion of (x₁+···+xₘ)^n in a q-commutative algebra) be formalized? This requires setting up q-commutative algebras as a typeclass.",
