@@ -27,19 +27,19 @@
     "id": "ann-oq05-02",
     "proofId": "erdos-1007-oq-05",
     "range": {
-      "startLine": 52,
-      "endLine": 93
+      "startLine": 54,
+      "endLine": 78
     },
     "type": "concept",
     "title": "Key Calculation: Scaled Basis Vectors Have Unit Pairwise Distance",
-    "content": "The private lemma scaled_basis_sq_dist is the heart of the construction. Given two distinct indices i ≠ j in Fin n, the sum Σ_k ((δ_{ik}/√2) − (δ_{jk}/√2))² = 1. The proof proceeds in three steps: (1) all terms except k=i and k=j are zero; (2) the terms at k=i and k=j each contribute (1/√2)² = 1/2; (3) the total is 1/2 + 1/2 = 1. The proof uses Finset.add_sum_erase to extract the two non-zero terms, then simplification with simp and linarith for the arithmetic. The positivity of √2 is established via Real.sqrt_pos_of_pos.",
+    "content": "The private lemma scaled_basis_sq_dist is the heart of the construction. Given two distinct indices i ≠ j in Fin n, the sum Σ_k ((δ_{ik}/√2) − (δ_{jk}/√2))² = 1. The proof proceeds in three steps: (1) a pointwise rewrite (by_cases on whether k = i and k = j) turns each squared difference into the indicator sum (if i=k then 1/2) + (if j=k then 1/2), using (1/√2)² = 1/2; (2) Finset.sum_add_distrib splits the sum and two Finset.sum_ite_eq rewrites collapse each indicator sum to its single 1/2 term; (3) norm_num finishes 1/2 + 1/2 = 1. The positivity of √2 (used for the squaring step) is established via Real.sqrt_pos_of_pos.",
     "mathContext": "$\\sum_{k=0}^{n-1} \\left(\\frac{\\delta_{ik}}{\\sqrt{2}} - \\frac{\\delta_{jk}}{\\sqrt{2}}\\right)^2 = \\frac{1}{2} + \\frac{1}{2} = 1 \\text{ for } i \\neq j$",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean distance",
       "standard basis vectors",
-      "Finset.add_sum_erase",
-      "linarith tactic"
+      "Finset.sum_ite_eq",
+      "norm_num tactic"
     ],
     "prerequisites": [
       "Finset.sum",
@@ -53,8 +53,8 @@
     "id": "ann-oq05-03",
     "proofId": "erdos-1007-oq-05",
     "range": {
-      "startLine": 94,
-      "endLine": 110
+      "startLine": 80,
+      "endLine": 96
     },
     "type": "insight",
     "title": "Main Theorem: Scaled Basis Construction Proves Unit Embedding Existence",
@@ -78,8 +78,8 @@
     "id": "ann-oq05-04",
     "proofId": "erdos-1007-oq-05",
     "range": {
-      "startLine": 112,
-      "endLine": 120
+      "startLine": 98,
+      "endLine": 106
     },
     "type": "concept",
     "title": "Corollary: Complete Bipartite Graphs Always Embed as Unit Distances",
@@ -103,8 +103,8 @@
     "id": "ann-oq05-05",
     "proofId": "erdos-1007-oq-05",
     "range": {
-      "startLine": 122,
-      "endLine": 141
+      "startLine": 108,
+      "endLine": 125
     },
     "type": "concept",
     "title": "Deep Remaining Axioms: Literature Classification",
