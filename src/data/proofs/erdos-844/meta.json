@@ -52,12 +52,12 @@
       "even_product_not_squarefree lemma: 2|a ∧ 2|b ⟹ ¬Squarefree(ab)",
       "nonsquarefree_product lemma: ¬Squarefree(a) ⟹ ¬Squarefree(ab)",
       "IsIntersectingFamily: squarefree subsets where pairs share primes",
-      "chvatal_intersecting_families: maximum is even squarefree",
+      "evenSquarefreeNumbers: the family achieving Chvátal's maximum (cited in prose, not formalized as a theorem)",
       "weisenberg_proof axiom: optimal set achieves maximum",
       "erdos_844_characterization theorem: complete characterization"
     ],
     "axiomCount": 2,
-    "lineCount": 175,
+    "lineCount": 168,
     "assumptions": "2 axioms: optimal_set_has_property (optimal set has non-squarefree products for all N≥1), weisenberg_proof (Weisenberg's bound: optimal set is maximum among sets with non-squarefree products). 0 sorries.",
     "theoremCount": 4,
     "definitionCount": 9
@@ -185,7 +185,7 @@
       "Finset"
     ],
     "namespace": "Erdos844",
-    "lineCount": 175,
+    "lineCount": 168,
     "axiomCount": 2,
     "theoremCount": 4,
     "definitionCount": 9,
