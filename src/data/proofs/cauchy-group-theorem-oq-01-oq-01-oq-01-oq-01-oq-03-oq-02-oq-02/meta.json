@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Docstring, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports Mathlib.Tactic and the parent CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02 (source of the cyclic-case fibre count card_fiber_pow and gcd(n, m)). The module docstring frames the research step: the parent analysed the power map x ↦ xⁿ on a finite cyclic group (every non-empty fibre has gcd(n, m) elements), and the open question asked whether the fibre-size multiset becomes strictly more informative on a product of cyclic groups. This file shows that premise is false — because x ↦ xⁿ is an endomorphism of an abelian group, every non-empty fibre is a coset of the n-torsion subgroup and so all fibres share one size — and states the answer: the multiset collapses to the single constant ∏ᵢ gcd(n, |Gᵢ|), which pins down no residue of n modulo any invariant factor. Enters the namespace and opens Finset.",
+      "mathContext": "Parent: on a cyclic group of order $m$, every non-empty fibre of $x \\mapsto x^n$ has $\\gcd(n,m)$ elements. Here $G$ is an arbitrary finite abelian group and $x \\mapsto x^n$ an endomorphism, so fibres are cosets of the $n$-torsion subgroup."
+    },
+    {
       "id": "constant-fibres",
       "title": "Constant Fibres on Any Finite Abelian Group",
       "startLine": 66,
