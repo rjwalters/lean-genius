@@ -114,92 +114,137 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Docstring introducing Euler's pentagonal number theorem — the product ∏(1-xⁿ) equals ∑(-1)ᵏ x^(k(3k-1)/2) over generalized pentagonal indices — and this file's angle (OQ-01): the square-discriminant characterization of pentagonal numbers plus a Lean development of Franklin's sign-reversing involution. Imports Mathlib and opens the namespace."
+    },
+    {
       "id": "setup",
-      "title": "Part 1 — Setup: Generalized Pentagonal Numbers",
-      "startLine": 51,
-      "endLine": 79,
-      "summary": "The value genPent and the division-free membership predicate IsGenPent, evenness of k(3k-1) (two_dvd_index_mul), the exact doubling relation two_mul_genPent, and genPent_isGenPent.",
-      "mathContext": "g(k) = k(3k-1)/2 with 2·g(k) = k(3k-1). Since one of k, 3k-1 is even, the half is exact; membership is carried by the relation 2m = k(3k-1) to keep proofs over ℤ without integer division."
+      "title": "Part 1: Generalized Pentagonal Numbers",
+      "startLine": 56,
+      "endLine": 84,
+      "summary": "Defines genPent k = k(3k-1)/2 and the predicate IsGenPent, proving the divisibility 2 ∣ k(3k-1), the exact form two_mul_genPent, and genPent_isGenPent.",
+      "mathContext": "$g(k) = \\tfrac{k(3k-1)}2$ ranges over the generalized pentagonal numbers as $k$ runs over $\\mathbb{Z}$."
     },
     {
       "id": "criterion",
-      "title": "Part 2 — The Square-Discriminant Criterion (Headline)",
-      "startLine": 80,
-      "endLine": 129,
-      "summary": "isGenPent_iff_isSquare: m is a generalized pentagonal number iff 24m+1 is a perfect square. Forward via 24·g(k)+1 = (6k-1)²; converse via a ZMod-6 residue argument recovering the index.",
-      "mathContext": "Forward: linear_combination on 2m=k(3k-1). Converse: s²=24m+1 ⟹ (s mod 6)²=1 ⟹ s≡±1 (mod 6); 6∣(s∓1) gives s=6k±1, and cancelling 12 yields 2m=k'(3k'-1)."
+      "title": "Part 2 & 2b: The Square-Discriminant Criterion (Headline)",
+      "startLine": 85,
+      "endLine": 168,
+      "summary": "The headline characterization isGenPent_iff_isSquare (m is generalized pentagonal iff 24m+1 is a perfect square), with the explicit discriminant roots disc_genPent / disc_genPent_neg (24·genPent(±k)+1 = (6k∓1)²), the pairing genPent k + genPent(-k) = 3k², and the sample disc_genPent_three.",
+      "mathContext": "$m$ is generalized pentagonal $\\iff 24m+1 = \\square$; here $24\\,g(k)+1 = (6k-1)^2$."
     },
     {
       "id": "structural",
-      "title": "Part 3 — Structural Facts: Nonnegativity, Injectivity, ±k Pairing",
-      "startLine": 130,
-      "endLine": 163,
-      "summary": "isGenPent_nonneg (k(3k-1) ≥ 0), genPent_injective (distinct indices give distinct pentagonal numbers), and genPent_neg (g(-k) = g(k)+k, the ±k pairing of Euler's recurrence).",
-      "mathContext": "Injectivity reduces to (a-b)(3(a+b)-1)=0; since 3(a+b)=1 has no integer solution, a=b. Nonnegativity is a sign analysis of the two factors of k(3k-1)."
-    },
-    {
-      "id": "index-bounds",
-      "title": "Part 3b — Index Bounds: Euler's Recurrence is a Finite Sum",
-      "startLine": 164,
-      "endLine": 221,
-      "summary": "Quadratic growth k² ≤ g(k) (genPent_sq_le_self), the resulting index bound |k| ≤ g(k) (abs_index_le_genPent), and indexSet_finite: {k | g(k) ≤ n} ⊆ [-n, n] is finite, so the pentagonal sum in Euler's partition recurrence at level n ranges over a finite set.",
-      "mathContext": "From the doubling relation, 2g(k) − 2k² = k(k−1) ≥ 0 gives k² ≤ g(k); combining k ≤ g(k) and −k ≤ g(k) yields |k| ≤ g(k). Hence g(k) ≤ n forces |k| ≤ n, bounding the recurrence's support inside [-n, n]."
-    },
-    {
-      "id": "enumerator",
-      "title": "Part 3c — A Computable Enumerator of Contributing Indices",
-      "startLine": 222,
-      "endLine": 254,
-      "summary": "pentIndices n: the explicit Finset of indices k with g(k) ≤ n, filtered from [-n, n], with mem_pentIndices (membership iff g(k) ≤ n) and coe_pentIndices realizing the abstract set {k | g(k) ≤ n}.",
-      "mathContext": "Made finite by the |k| ≤ g(k) bound: every contributing index lies in [-n, n], so the finite sum in Euler's recurrence can be evaluated by filtering that interval."
+      "title": "Part 3, 3b & 3c: Structural Facts, Index Bounds, Enumerator",
+      "startLine": 169,
+      "endLine": 293,
+      "summary": "Structural theory of genPent: nonnegativity (isGenPent_nonneg), injectivity (genPent_injective), the reflection genPent_neg, the bounds |k| ≤ genPent k giving finiteness of the index set {k : genPent k ≤ n} (indexSet_finite), and the computable enumerator pentIndices n of contributing indices with its correctness lemma coe_pentIndices — so Euler's recurrence is a genuinely finite sum.",
+      "mathContext": "$|k| \\le g(k)$ forces $\\{k : g(k) \\le n\\}$ finite, making the pentagonal recurrence a finite convolution."
     },
     {
       "id": "values",
-      "title": "Part 4 — Concrete Values (OEIS A001318)",
-      "startLine": 255,
-      "endLine": 273,
-      "summary": "The first generalized pentagonal numbers g(0..±4) = 0,1,2,5,7,12,15,22,26, and a sanity check that 12 = g(3) is recognized via 24·12+1 = 289 = 17².",
-      "mathContext": "Indexing k = 0,1,-1,2,-2,… enumerates the pentagonal numbers in increasing order, matching OEIS A001318."
+      "title": "Part 4: Concrete Values (OEIS A001318)",
+      "startLine": 294,
+      "endLine": 312,
+      "summary": "The concrete generalized pentagonal numbers 0, 1, 2, 5, 7, 12, 15, 22, 26 (OEIS A001318) as genPent evaluations at k = 0, ±1, ±2, ±3, ±4, plus twelve_isGenPent."
     },
     {
       "id": "series-coefficient",
-      "title": "Part 5 — The Series-Side Coefficient (RHS of Euler's Identity)",
-      "startLine": 274,
-      "endLine": 369,
-      "summary": "pentSign k = (-1)^|k| (±1-valued, nonvanishing, pairing-invariant) and pentSeriesCoeff: the coefficient [Xⁿ] of ∑_{k∈ℤ}(-1)ᵏX^{g(k)}, well-defined by genPent_injective. pentSeriesCoeff_genPent gives (-1)ᵏ at g(k); pentSeriesCoeff_ne_zero_iff fixes the support as the pentagonal numbers; pentSeriesCoeff_eq_zero_or bounds every coefficient to 0/±1; [X⁰]=+1, [X¹]=-1.",
-      "mathContext": "This is the explicit right-hand side of Euler's identity; pentSeriesCoeff is the target of the remaining Franklin-involution identity."
+      "title": "Part 5: The Series-Side Coefficient (RHS of Euler's Identity)",
+      "startLine": 313,
+      "endLine": 438,
+      "summary": "Defines the sign pentSign k = (-1)^|k| and the RHS coefficient pentSeriesCoeff n (the coefficient of xⁿ in ∑(-1)ᵏx^(g(k))), proving it is ±1 on pentagonal indices and 0 elsewhere (pentSeriesCoeff_ne_zero_iff), its values at 0 and 1, and the finite-sum form pentSeriesCoeff_eq_sum_pentIndices.",
+      "mathContext": "$[x^n]\\sum_k (-1)^k x^{g(k)} = \\begin{cases}(-1)^k & n = g(k)\\\\ 0 & \\text{else}\\end{cases}$."
     },
     {
       "id": "bridges",
-      "title": "Part 6 — Mathlib Power-Series Bridges (Both Ends of Euler's Identity)",
-      "startLine": 370,
-      "endLine": 479,
-      "summary": "Instantiating Mathlib's 2025 Partition.genFun at the Euler character pentChar i c = (if c = 1 then -1 else 0): genFun_pent_eq_tprod proves the PRODUCT side genFun pentChar = ∏_i(1 - X^{i+1}), and coeff_genFun_pent proves the COEFFICIENT side [Xⁿ] genFun pentChar = ∑_{p ∈ distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n). coeff_tprod_pent then composes the two into the directly-citable headline [Xⁿ] ∏'(1 - X^{i+1}) = ∑_{p ∈ distincts n}(-1)^{p.parts.card} (no genFun intermediary visible), and coeff_tprod_pent_eq_evenOdd_diff splits that sum by parity of the number of parts to read it as the literal p_even(n) - p_odd(n). All #print axioms to only [propext, Classical.choice, Quot.sound].",
-      "mathContext": "Product side: each inner tsum collapses to -(X^{i+1}) via tsum_eq_single (the character is supported on multiplicity 1). Coefficient side: a Nodup/¬Nodup split over n.Partition — repeated-part partitions carry a 0 factor and drop out, distinct-part partitions contribute (-1)^{#parts}. Joining side: rewriting ← genFun_pent_eq_tprod then coeff_genFun_pent puts the identity on Mathlib's tprod product directly; the parity split uses Finset.sum_filter_add_sum_filter_not with Even.neg_one_pow / Odd.neg_one_pow on each block. With both ends verified and joined, the open core reduces to the single Franklin-involution identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n)."
-    },
-    {
-      "id": "open-core",
-      "title": "Open Core: Franklin's Involution (Not Formalized)",
-      "startLine": 450,
-      "endLine": 497,
-      "summary": "Documents the single remaining identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n) (Franklin's sign-reversing involution on partitions into distinct parts), now that both ends of Euler's identity are machine-checked in Part 6. Mathlib supplies the generating function and distincts/odds but not Franklin's involution itself.",
-      "mathContext": "Equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ, where p_even/p_odd count partitions into an even/odd number of distinct parts; Franklin's involution's only fixed points are the staircase partitions of the generalized pentagonal numbers g(k)."
+      "title": "Part 6: The Mathlib Power-Series Bridges",
+      "startLine": 439,
+      "endLine": 552,
+      "summary": "Connects both ends of Euler's identity to Mathlib's power-series API: genFun_pent_eq_tprod expresses the generating function as an infinite product, coeff_genFun_pent and coeff_tprod_pent extract coefficients, and coeff_tprod_pent_eq_evenOdd_diff identifies the product coefficient with (#even-part-distinct-partitions − #odd) — the combinatorial side of the identity.",
+      "mathContext": "$\\prod_{n\\ge1}(1-x^n) = \\sum_k (-1)^k x^{g(k)}$ as formal power series."
     },
     {
       "id": "franklin-fixed-points",
       "title": "Part 7: Franklin's Fixed Points — the Pentagonal Staircases",
-      "startLine": 552,
-      "endLine": 647,
-      "summary": "franklin_fixed_point (and _neg): for k≥1 the staircases {k,…,2k-1} and {k+1,…,2k} are partitions of g(k) resp. g(-k) into exactly k distinct positive parts, with part-count parity (-1)^k = pentSign. Built from staircase_sum_eq_genPent(_neg) (the consecutive-integer sums equal the pentagonal numbers, via a division-free Gauss sum and the parent's two_mul_genPent) and the reindexing staircase_ico_eq_range(_neg). These are exactly the fixed points of Franklin's involution — the residual terms its cancellation leaves behind.",
-      "mathContext": "∑_{i=k}^{2k-1} i = g(k) and ∑_{i=k+1}^{2k} i = g(-k); each is a set of k distinct positive integers, sign (-1)^k."
+      "startLine": 553,
+      "endLine": 649,
+      "summary": "Identifies the fixed points of Franklin's involution as the staircase index sets: staircase_ico_eq_range and staircase_sum_eq_genPent show the interval [k, 2k) sums to genPent k, and franklin_fixed_point / franklin_fixed_point_neg exhibit the two staircase families as the exceptional partitions surviving the sign-reversing map.",
+      "mathContext": "The staircase $\\{k, k+1, \\dots, 2k-1\\}$ sums to $g(k)$ and is Franklin-fixed."
     },
     {
-      "id": "franklin-fixed-point-invariant",
-      "title": "Part 9: Franklin's Fixed-Point Invariant — Smallest Part vs. Number of Parts",
-      "startLine": 809,
+      "id": "open-core",
+      "title": "Open Core: Franklin's Involution (Reduced, Not Fully Formalized)",
+      "startLine": 650,
+      "endLine": 705,
+      "summary": "A prose banner scoping the open core: the full bijective proof of Euler's identity via Franklin's involution is not formalized here, but is sharply reduced by Mathlib's Partition.genFun — the remaining gap is the involution's well-definedness on general distinct-part partitions, which Parts 8–16 build toward concretely."
+    },
+    {
+      "id": "partition-members",
+      "title": "Part 8: Staircase Fixed Points as Nat.Partition / distincts Members",
+      "startLine": 706,
+      "endLine": 809,
+      "summary": "Realizes the staircases as genuine Mathlib objects: genPentNat / genPentNatNeg and the bundled staircasePartition / staircasePartitionNeg into Nat.Partition, proving membership in the distinct-part partitions (…_mem_distincts), their signs, and that Franklin's fixed points are honest partitions (franklin_fixed_point_isPartition)."
+    },
+    {
+      "id": "invariant",
+      "title": "Part 9: Franklin's Fixed-Point Invariant — Smallest Part vs Number of Parts",
+      "startLine": 810,
       "endLine": 904,
-      "summary": "franklin_fixed_point_invariant: the two Franklin fixed-point families are exactly the contiguous blocks of distinct parts on which the smallest part s and the number of parts ℓ are tied — s=ℓ on the positive staircase {k,…,2k-1}, s=ℓ+1 on the negative staircase {k+1,…,2k}. Pins the invariants arithmetically via min'_Ico (the smallest element of Ico a b is its left endpoint a) and Nat.card_Ico, and proves the converses: a block Ico a b with s=ℓ is forced to b=2a (positive arm), with s=ℓ+1 forced to b=2a-1 (negative arm). interval_fixed_point_sum then sends any s=ℓ block to its generalized pentagonal number g(a) via Part 7's staircase_sum_eq_genPent. This isolates the precise arithmetic condition under which both of Franklin's moves fail — the residual its open-core involution leaves behind.",
-      "mathContext": "On a distinct-part partition Franklin's involution pairs the smallest part s(λ) with the maximal descending top run of length ℓ(λ); both moves fail exactly when s=ℓ (positive) or s=ℓ+1 (negative), the staircases. For a contiguous block, min'(Ico a b)=a and card(Ico a b)=b-a, so s=ℓ ⇔ a=b-a ⇔ b=2a and s=ℓ+1 ⇔ a=b-a+1 ⇔ b=2a-1."
+      "summary": "The Franklin invariant relating a staircase's smallest part to its number of parts: min'_Ico, staircase_smallest_eq_card and the interval lemmas, culminating in franklin_fixed_point_invariant — the numerical coincidence that makes exactly the staircases immovable under both Franklin moves."
+    },
+    {
+      "id": "partition-shape",
+      "title": "Part 10: The Single-Staircase Shape at the Nat.Partition Level",
+      "startLine": 905,
+      "endLine": 1012,
+      "summary": "Characterizes the staircase shape intrinsically: finset_eq_Ico_iff and parts_saturating_gap_is_interval detect a contiguous block, the toFinset computations, isLeast_part, and franklin_fixed_point_partition_shape — a partition is Franklin-fixed iff its parts form a saturating interval (the staircase)."
+    },
+    {
+      "id": "move-a",
+      "title": "Part 11: Franklin's Involution — 'Move A'",
+      "startLine": 1013,
+      "endLine": 1160,
+      "summary": "Defines franklinMoveA (remove the smallest part, distribute it along the top diagonal) and proves it preserves the sum (franklinMoveA_sum), changes the part count by one (franklinMoveA_card), reverses the sign (franklinMoveA_sign), stays positive, and its headline correctness franklinMoveA_headline.",
+      "mathContext": "Move A: transfer the smallest part $s$ onto the largest $m$ parts, sending a distinct-part partition to another of opposite parity."
+    },
+    {
+      "id": "move-b",
+      "title": "Part 12: Franklin's Involution — 'Move B' and the Two Moves",
+      "startLine": 1161,
+      "endLine": 1313,
+      "summary": "Defines the companion franklinMoveB (peel the top diagonal into a new smallest part) with its sum/card/sign/positivity lemmas, the set identity insert_pair_erase_pair, and the mutual-inverse pair franklinMoveB_franklinMoveA / franklinMoveA_franklinMoveB establishing that A and B invert each other where both apply."
+    },
+    {
+      "id": "unified-step",
+      "title": "Part 13: The Unified Franklin Step",
+      "startLine": 1314,
+      "endLine": 1415,
+      "summary": "franklinStep combines Moves A and B into one sign-reversing, weight-preserving map, with franklinStep_sum, franklinStep_sign, franklinStep_pos and franklinStep_headline — the single involution driving the cancellation in Euler's identity away from the staircase fixed points."
+    },
+    {
+      "id": "recompute-top",
+      "title": "Part 14: Recomputing the Top Part on Move Images",
+      "startLine": 1416,
+      "endLine": 1489,
+      "summary": "Toward proving franklinStep is a genuine involution: franklinMoveA_max' and franklinMoveB_max' recompute the largest part of each move's image, the parameter needed to re-apply the opposite move canonically."
+    },
+    {
+      "id": "recompute-smallest",
+      "title": "Part 15: Recomputing the Smallest Part on Move Images",
+      "startLine": 1490,
+      "endLine": 1559,
+      "summary": "The dual bookkeeping: franklinMoveB_min' and franklinMoveA_min' recompute the smallest part of each move's image, completing the parameter recomputation for canonical re-application."
+    },
+    {
+      "id": "move-b-selfinverse",
+      "title": "Part 16: The Move B Branch is Self-Inverse with Recomputed Parameters",
+      "startLine": 1560,
+      "endLine": 1590,
+      "summary": "franklinMoveA_franklinMoveB_canonical closes the file by showing the Move B branch, with its parameters canonically recomputed from Parts 14–15, is self-inverse — the local involution property at the heart of Franklin's bijection."
     }
   ],
   "mainTheorems": [
