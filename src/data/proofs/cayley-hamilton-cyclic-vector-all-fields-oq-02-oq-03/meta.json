@@ -44,7 +44,7 @@
   },
   "overview": {
     "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields-oq-02 (recorded on oq-02-oq-01)**: The matrix entry oq-02 shows a cyclic vector forces the centralizer of $M \\in K^{n\\times n}$ to equal $K[M]$. Lift this to the coordinate-free endomorphism setting.\n\nFormally: for a finite-dimensional $K$-vector space $V$ and $T : \\mathrm{End}_K V$ with a cyclic vector $v$, show that any $A$ commuting with $T$ satisfies $A = p(T)$ for some $p \\in K[X]$; hence the centralizer of $T$ inside $\\mathrm{End}_K V$ equals $K[T]$ and is commutative.",
-    "historicalContext": "For a nonderogatory operator on a finite-dimensional space the centralizer is exactly the algebra $K[T]$ of polynomials in $T$ (Hoffman–Kunze §7.5). The matrix form of this commutant edge is settled by the parent gallery entry; the endomorphism form is the reusable, basis-free statement the gallery's linear-algebra entries can build on, and was flagged as an explicit open direction by the sibling converse entry.",
+    "historicalContext": "The centralizer of a single linear operator is a classical object. In his work on linear substitutions and bilinear forms Frobenius studied the algebra of matrices commuting with a fixed matrix and computed its dimension in terms of the invariant factors; for a **nonderogatory** operator — one whose minimal and characteristic polynomials coincide, equivalently one admitting a cyclic vector — that centralizer collapses to the algebra $K[T]$ of polynomials in $T$ (Hoffman–Kunze §7.5, Roman §10.4). This is the commutant edge of the triple equivalence nonderogatory $\\iff$ cyclic vector $\\iff$ centralizer $= K[T]$ that the rational (Frobenius) canonical form organises. The matrix form of this edge is settled by the parent gallery entry over concrete $K^{n\\times n}$; the endomorphism form proved here is the reusable, basis-free statement the gallery's linear-algebra entries can build on, and was flagged as an explicit open direction by the sibling converse entry.",
     "keyInsights": [
       "The cyclic-vector predicate transfers verbatim to endomorphisms: v is cyclic for T iff no nonzero polynomial of degree < finrank K V annihilates v. This is all that is needed to make the Krylov vectors a basis.",
       "Linear independence of the Krylov vectors {Tᵏ·v} is exactly cyclicity: a dependence ∑ cₖ Tᵏ·v = 0 is a nonzero low-degree annihilating polynomial, so cyclicity forbids it.",
@@ -68,10 +68,17 @@
   "sections": [
     {
       "id": "chcv-oq02oq03-sec-cyclic",
-      "title": "Cyclic vectors for an endomorphism and Krylov independence",
+      "title": "The cyclic-vector predicate for an endomorphism",
       "startLine": 54,
+      "endLine": 63,
+      "summary": "Defines IsEndCyclicVector T v: v is cyclic for T : Module.End K V when no nonzero polynomial of degree < finrank K V annihilates v ((aeval T p) v = 0 → p = 0). This is the coordinate-free analogue of the matrix predicate GeneralCyclicVector.IsCyclicVector, and — since it is a statement purely about aeval and finrank — needs no FiniteDimensional hypothesis to state."
+    },
+    {
+      "id": "chcv-oq02oq03-sec-krylov",
+      "title": "Krylov independence of a cyclic vector",
+      "startLine": 64,
       "endLine": 92,
-      "summary": "Defines IsEndCyclicVector T v (no nonzero polynomial of degree < finrank K V annihilates v) and proves endKrylov_linearIndependent: the Krylov vectors {Tᵏ·v}_{k<finrank K V} of a cyclic vector are linearly independent. A dependence is repackaged as a nonzero annihilating polynomial of degree < finrank, contradicting cyclicity; coefficient extraction uses Fintype.linearIndependent_iff and Polynomial.coeff of a monomial sum."
+      "summary": "endKrylov_linearIndependent: the Krylov vectors {Tᵏ·v}_{k<finrank K V} of a cyclic vector are linearly independent. A dependence ∑ cₖ (Tᵏ·v) = 0 is repackaged (via Fintype.linearIndependent_iff) as a nonzero annihilating polynomial p = ∑ cₖ Xᵏ of natDegree < finrank K V, contradicting cyclicity; the coefficients are then recovered from p = 0 through Polynomial.coeff of a monomial sum. The endomorphism analogue of CyclicCommutant.krylov_linearIndependent."
     },
     {
       "id": "chcv-oq02oq03-sec-commute",
