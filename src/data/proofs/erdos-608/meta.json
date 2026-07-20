@@ -61,7 +61,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 270,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never compiled: a parse error (`unexpected token '('`, ~line 136) together with unproved `omega` goals predate the v4.31 migration (Class B). ORIGINAL METADATA: No axioms. 13 sorry(s) remain in the formalization.",
+    "assumptions": "Compiles on Lean v4.31 (host-verified via `lake env lean`, exit 0) with 13 `sorry` placeholders remaining — status `formalized`/`wip`. No `axiom` declarations. The parse error (`unexpected token '('`, ~line 136) and unproved `omega` goals cited in the earlier #39061 audit note no longer apply on v4.31: the file parses and elaborates cleanly, emitting only the 13 `sorry` warnings plus an `Mathlib.Data.Real.Sqrt` import-deprecation warning. The 13 sorries are the remaining formalization gaps.",
     "theoremCount": 14,
     "definitionCount": 15,
     "additionalFiles": [
