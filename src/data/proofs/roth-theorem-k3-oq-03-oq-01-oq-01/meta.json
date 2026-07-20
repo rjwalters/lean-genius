@@ -46,9 +46,9 @@
       "gowersNorm_nonneg: the Gowers Uˢ norm is ≥ 0 (it is a genuine modulus ‖·‖)"
     ],
     "axiomCount": 0,
-    "lineCount": 88,
+    "lineCount": 76,
     "assumptions": "0 axioms, 0 sorries. Only foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide. Imports the parent operator Proofs.RothTheoremOQ03OQ01.",
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 0
   },
   "overview": {
@@ -79,25 +79,25 @@
     {
       "id": "engine",
       "title": "The Factorization Engine",
-      "summary": "prod_update_factor: replacing slot j by v pulls v(x+j·d) out of the k-AP product, leaving the untouched factors over univ.erase j.",
+      "summary": "prod_update_factor (imported from the parent Proofs.RothTheoremOQ03OQ01, referenced by the comment at line 39): replacing slot j by v pulls v(x+j·d) out of the k-AP product, leaving the untouched factors over univ.erase j. It is the single lemma the multilinearity proofs below run off of.",
       "startLine": 39,
-      "endLine": 53,
+      "endLine": 40,
       "mathContext": "Finset.mul_prod_erase + Function.update_self/update_of_ne isolate the j-th factor."
     },
     {
       "id": "multilinear",
       "title": "Multilinearity of Λ_k",
       "summary": "kAPCount_add_slot (additive in slot j) and kAPCount_smul_slot (homogeneous in slot j).",
-      "startLine": 55,
-      "endLine": 81,
+      "startLine": 41,
+      "endLine": 68,
       "mathContext": "Distribute the double average E_{x,d} over the split/scaled j-th factor (sum_add_distrib, mul_sum)."
     },
     {
       "id": "norm",
       "title": "Gowers Norm Nonnegativity",
       "summary": "gowersNorm_nonneg: the Gowers Uˢ norm is ≥ 0, being a modulus ‖·‖.",
-      "startLine": 82,
-      "endLine": 88,
+      "startLine": 70,
+      "endLine": 76,
       "mathContext": "Immediate from norm_nonneg."
     }
   ],
@@ -183,9 +183,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 88,
+    "lineCount": 76,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 0,
     "path": "Proofs/RothTheoremOQ03OQ01OQ01.lean",
     "sorries": 0
