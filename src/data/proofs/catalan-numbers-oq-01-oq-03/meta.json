@@ -65,6 +65,7 @@
       "**Positivity is a genuine gap.** Mathlib records evenness of the large Schröder numbers (Nat.even_largeSchroder) but not positivity; positivity is what licenses cancelling Schröder factors and is the base for every quantitative estimate.",
       "**Two boundary terms already force factor-3 growth.** The convolution sum ∑ i ≤ n+1, L i · L(n+1−i) contains the summands at i = 0 and i = n+1, each equal to L(n+1); together with the leading +L(n+1) in the convolution recurrence this gives L(n+2) ≥ 3·L(n+1) with no analysis of the interior terms.",
       "**The factor 3 is sharp as an integer ratio but loose asymptotically.** The true ratio L(n+1)/L n increases to 3 + 2√2 ≈ 5.83 (the dominant root of x² − 6x + 1, the discriminant of the Schröder generating-function equation); 3 is the best constant available from the two boundary terms alone.",
+      "**The geometric closed form bootstraps from a single step inequality.** The exponential bound 2·3ⁿ ≤ L(n+1) is not proved by re-examining the convolution sum at each n: once the *one* multiplicative step 3·L(n+1) ≤ L(n+2) is in hand, a bare induction compounds it — 2·3^(n+1) = 3·(2·3ⁿ) ≤ 3·L(n+1) ≤ L(n+2) — with the base L 1 = 2 supplying the leading constant. So the four results form a bootstrapping ladder (positivity → boundary convolution bound → one-step growth → geometric closed form), each the hypothesis of the next, and no new combinatorics enters after the step inequality.",
       "**The deeper holonomic recurrence needs generating functions, but is buildable in Mathlib.** The order-two recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) follows from the linear ODE x(x²−6x+1) f' = (3x−1) f + (x+1) satisfied by f = ∑ L n xⁿ. Unlike the Catalan first-order recurrence (inherited from central binomials) it has no central-coefficient shortcut, but it is not blocked: the formal-power-series route is fully supported by Mathlib (estimated ~150–250 lines). The GF quadratic X·f² + (x−1)·f + 1 = 0 is a direct mirror of PowerSeries.catalanSeries_sq_mul_X_add_one (Mathlib/RingTheory/PowerSeries/Catalan.lean), and the differentiation/coefficient-extraction step uses PowerSeries.derivative (a Derivation, d⁄dX) together with PowerSeries.coeff_derivative (Mathlib/RingTheory/PowerSeries/Derivative.lean). A concrete five-step lemma plan is recorded in the companion file's docstring; the single remaining sorry awaits automated proof search or a manual session with a working verifier."
     ],
     "prerequisites": [
@@ -76,11 +77,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Setup",
+      "title": "Module Header: the Mathlib gap and results roadmap",
       "startLine": 1,
+      "endLine": 30,
+      "summary": "Imports (Mathlib's Schröder file and Tactic) and the docstring framing: Mathlib defines largeSchroder only via the quadratic convolution recurrence and records only evenness, leaving positivity and the growth rate unrecorded. The '## Main results' roadmap lists the four facts supplied — largeSchroder_pos, two_mul_largeSchroder_le_conv, largeSchroder_ge_three_mul, and the closed exponential bound largeSchroder_ge_two_mul_three_pow.",
+      "mathContext": "$L(n+1) = L(n) + \\sum_{i\\le n} L(i)\\,L(n-i)$; the ratio $L(n+1)/L(n) \\ge 3$ and $\\to 3 + 2\\sqrt2 \\approx 5.83$."
+    },
+    {
+      "id": "deeper-open-question",
+      "title": "The Deeper Open Question (holonomic recurrence)",
+      "startLine": 31,
       "endLine": 49,
-      "summary": "Module docstring describing the Mathlib gap (only the convolution recurrence and evenness are recorded), the four results supplied here, and the deeper holonomic recurrence deferred to the companion file; imports of Mathlib's Schröder file and Tactic.",
-      "mathContext": "$L(n+1) = L(n) + \\sum_{i\\le n} L(i)\\,L(n-i)$; growth ratio $\\to 3 + 2\\sqrt2$."
+      "summary": "The '## The deeper open question' block: the order-two holonomic (P-recursive) recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1) — the large-Schröder analogue of the Catalan first-order recurrence — is stated but deferred to the companion SchroderLinearRecurrenceAristotle.lean, since its proof needs generating-function machinery (the GF f = ∑ L n xⁿ satisfies x·f² + (x−1)·f + 1 = 0, giving the ODE x(x²−6x+1)·f' = (3x−1)·f + (x+1)). Followed by namespace Nat and open Finset.",
+      "mathContext": "$(n+3)L(n+2) + nL(n) = 3(2n+3)L(n+1)$; GF ODE $x(x^2-6x+1)f' = (3x-1)f + (x+1)$."
     },
     {
       "id": "positivity",
