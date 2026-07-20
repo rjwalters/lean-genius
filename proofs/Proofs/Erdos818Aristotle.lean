@@ -100,14 +100,14 @@ lemma multEnergy_ge_sq (A : Finset ℤ) : multEnergy A ≥ A.card ^ 2 := by
   rw [hcard]
   refine Finset.card_le_card_of_injOn (fun p => (p, p)) ?_ ?_
   · intro p hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp ⊢
-    exact ⟨⟨hp, hp⟩, rfl⟩
+    obtain ⟨a, b⟩ := p
+    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hp, hp⟩, rfl⟩
   · intro a _ b _ hab
     exact (Prod.ext_iff.mp hab).1
 
 /-- Cauchy–Schwarz: `E×(A) · |A·A| ≥ |A|⁴`, from Mathlib's
     `Finset.le_card_mul_mul_mulEnergy`. -/
-lemma cauchy_schwarz_energy (A : Finset ℤ) (hA : A.card ≥ 2) :
+lemma cauchy_schwarz_energy (A : Finset ℤ) (_hA : A.card ≥ 2) :
     (multEnergy A : ℝ) * (A * A : Finset ℤ).card ≥ (A.card : ℝ) ^ 4 := by
   have hnat : A.card ^ 4 ≤ multEnergy A * (A * A : Finset ℤ).card := by
     rw [multEnergy_eq_mulEnergy]
