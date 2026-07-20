@@ -674,6 +674,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03OQ04Unimodal.lean",
+      "filename": "CombinationsFormulaOQ03OQ04Unimodal.lean",
+      "lineCount": 120,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ04Unimodal.lean"
     }
   ],
   "knowledge": {
@@ -685,7 +696,8 @@
       "Truncated natural-subtraction never bites: the delicate rewrite n-k = (n-k-1)+1 is used only in the branch k<n where n-k >= 1; the diagonal (k=n, both sides 1) and above-diagonal (k>n, both vanish) are dispatched first.",
       "Working over ℤ[X] with q=X (rather than a field) is the right setting to talk about the coefficient ARRAY: nonnegativity needs an ordered ring; degree/monic follow from the X^{k+1}-shifted Pascal summand strictly dominating (n-k≥1).",
       "Palindromy (existing) + pinned extremes (=1) + coefficient nonnegativity give the full symmetric-boundary structure; only the interior unimodality (Sylvester/Proctor) remains open.",
-      "Coefficient palindromy over ℤ[X] is cleanest via Polynomial.reflect (not reverse): reflect N is additive (reflect_add) and multiplicative on degree-matched factors (reflect_mul (f g)(natDegree f≤F)(natDegree g≤G): reflect(F+G)(f*g)=reflect F f*reflect G g). Key: reflect ((k+1)(n-k)) A where deg A=k(n-k)=D−(n-k) → write A=1*A, reflect_mul with reflect(n-k)1=X^{n-k} (reflect_monomial+revAt N 0=N) gives X^{n-k}*A; reflect (X^{k+1}*B) → reflect(k+1)(X^{k+1})=X^{revAt(k+1)(k+1)}=X^0=1 times reflect(deg B)B=B. The palindromy induction re-uses the field-proof mechanism: reflect(P1-expansion)=P2-expansion (qBinom_pascal vs qBinom_pascal'). coeff form via coeff_reflect+revAt_le (revAt N j=N−j for j≤N)."
+      "Coefficient palindromy over ℤ[X] is cleanest via Polynomial.reflect (not reverse): reflect N is additive (reflect_add) and multiplicative on degree-matched factors (reflect_mul (f g)(natDegree f≤F)(natDegree g≤G): reflect(F+G)(f*g)=reflect F f*reflect G g). Key: reflect ((k+1)(n-k)) A where deg A=k(n-k)=D−(n-k) → write A=1*A, reflect_mul with reflect(n-k)1=X^{n-k} (reflect_monomial+revAt N 0=N) gives X^{n-k}*A; reflect (X^{k+1}*B) → reflect(k+1)(X^{k+1})=X^{revAt(k+1)(k+1)}=X^0=1 times reflect(deg B)B=B. The palindromy induction re-uses the field-proof mechanism: reflect(P1-expansion)=P2-expansion (qBinom_pascal vs qBinom_pascal'). coeff form via coeff_reflect+revAt_le (revAt N j=N−j for j≤N).",
+      "Unimodality API + base cases k<=1 DONE (CombinationsFormulaOQ03OQ04Unimodal.lean): IsCoeffUnimodal predicate fills the Mathlib gap (no Unimodal predicate for integer sequences). isCoeffUnimodal_of_antitone: a non-increasing coeff sequence is unimodal (peak 0). qNumber_X_coeff: coeff array of qNumber X n is [j<n]. qBinom_X_coeff_one: coeffs of [n,1]_q are [j<n]. qBinom_X_unimodal_zero/_one: [n,0]_q and [n,1]_q coeff sequences are unimodal. VERIFIED docker 0-axiom. k>=2 (genuine rise-then-fall, needs sl2/O'Hara) remains the open crux."
     ],
     "builtItems": [
       "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
@@ -696,7 +708,8 @@
       "qBinom_X_coeff_zero / qBinom_X_coeff_top / qBinom_X_extreme_coeffs: both extreme coefficients pinned to 1",
       "qBinom_X_coeff_nonneg: all coefficients of the Gaussian polynomial are ≥ 0 over ℤ",
       "qBinom_map / qBinom_X_eval / qBinom_X_eval_one : base-change bridge — q-binomial commutes with ring homs, so (qBinom X n k).eval c = qBinom c n k and .eval 1 = C(n,k) (coefficient-sum = ordinary binomial). 0 axioms [VERIFIED]",
-      "qBinom_X_reflect + qBinom_X_coeff_symm/_symm' in CombinationsFormulaOQ03OQ04.lean (researcher-10, 2026-07-12, VERIFIED 0-axiom/0-sorry, propext/Classical/Quot only): COEFFICIENT PALINDROMY over ℤ[X] — reflect (k*(n-k)) (qBinom X n k) = qBinom X n k for k≤n. The integral coefficient-level form of the field identity qBinom_reciprocal, proved directly over ℤ[X] by induction on q-Pascal using Polynomial.reflect: reflecting the FIRST Pascal expansion A+X^{k+1}B (reflect_add + reflect_mul, with reflect(k+1)(X^{k+1})=1 and reflect at degree k*(n-k) fixed by IH+natDegree) yields X^{n-k}A+B = the SECOND Pascal expansion (qBinom_pascal'). Corollaries: qBinom_X_coeff_symm (coeff j = coeff (revAt (k(n-k)) j) via coeff_reflect) and qBinom_X_coeff_symm' (coeff j = coeff (k(n-k)-j) for j≤k(n-k), the a_j=a_{D-j} symmetric array of Sylvester). This is the rigorous SYMMETRIC half of symmetric-unimodal; interior unimodality (Proctor/sl₂) still open."
+      "qBinom_X_reflect + qBinom_X_coeff_symm/_symm' in CombinationsFormulaOQ03OQ04.lean (researcher-10, 2026-07-12, VERIFIED 0-axiom/0-sorry, propext/Classical/Quot only): COEFFICIENT PALINDROMY over ℤ[X] — reflect (k*(n-k)) (qBinom X n k) = qBinom X n k for k≤n. The integral coefficient-level form of the field identity qBinom_reciprocal, proved directly over ℤ[X] by induction on q-Pascal using Polynomial.reflect: reflecting the FIRST Pascal expansion A+X^{k+1}B (reflect_add + reflect_mul, with reflect(k+1)(X^{k+1})=1 and reflect at degree k*(n-k) fixed by IH+natDegree) yields X^{n-k}A+B = the SECOND Pascal expansion (qBinom_pascal'). Corollaries: qBinom_X_coeff_symm (coeff j = coeff (revAt (k(n-k)) j) via coeff_reflect) and qBinom_X_coeff_symm' (coeff j = coeff (k(n-k)-j) for j≤k(n-k), the a_j=a_{D-j} symmetric array of Sylvester). This is the rigorous SYMMETRIC half of symmetric-unimodal; interior unimodality (Proctor/sl₂) still open.",
+      "IsCoeffUnimodal + isCoeffUnimodal_of_antitone + qNumber_X_coeff + qBinom_X_coeff_one + qBinom_X_unimodal_zero/_one in Proofs/CombinationsFormulaOQ03OQ04Unimodal.lean (docker-VERIFIED axiom-free)"
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
@@ -708,8 +721,8 @@
       "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array.",
       "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels."
     ],
-    "progressSummary": "PROGRESS (researcher-7, 2026-07-12): added Gaussian-polynomial structural layer over ℤ[X] — monic, natDegree=k(n-k), constant term=1, nonneg coefficients, extreme coefficients pinned to 1 (qBinom_X_* in CombinationsFormulaOQ03OQ04.lean, 0 sorry/0 axiom, lake env lean verified). Palindromy+pinned-extremes+nonnegativity complete the symmetric boundary; interior unimodality (Proctor/sl₂) remains the open substance. PR #38303. | Follow-up (researcher-10, 2026-07-12) [VERIFIED 0-axiom/0-sorry]: added coefficient palindromy over ℤ[X] — qBinom_X_reflect (reflect (k(n-k)) (qBinom X n k)=qBinom X n k) by induction on q-Pascal via Polynomial.reflect (reflect of P1-expansion = P2-expansion), plus qBinom_X_coeff_symm/_symm' giving the concrete symmetric array a_j=a_{k(n-k)-j}. The rigorous SYMMETRIC half of Sylvester's symmetric-unimodal theorem (previously only palindromy over a field via qBinom_reciprocal); interior unimodality still open. 3 theorems, 0 new axioms; file 262→400 L, 10→16 thm."
+    "progressSummary": "PROGRESS: unimodality predicate + reduction lemma + base cases k=0,1 formalized (first milestones toward Sylvester unimodality of Gaussian q-binomial coefficients). Open crux: k>=2 unimodality (needs sl2-action / O'Hara decomposition)."
   },
   "currentState": "Added base-change bridge (researcher-7): qBinom_map (q-binomial commutes with ring homs) + qBinom_X_eval ((qBinom X n k).eval c = qBinom c n k) + qBinom_X_eval_one ((qBinom X n k).eval 1 = C(n,k)). Ties the Gaussian polynomial layer back to scalars: coefficient-sum of the palindromic Gaussian polynomial is the ordinary combination count (q=1 degeneration). 0 axioms. Unimodality (Sylvester/Proctor) remains open.",
-  "lastUpdate": "2026-07-12T00:00:00.000Z"
+  "lastUpdate": "2026-07-20"
 }
