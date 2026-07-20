@@ -106,3 +106,18 @@ transfinite-diameter limit require Mathlib API that does not yet exist.
 1. ✅ DONE (iter 4, pointwise form `exists_deleteAt_discreteDiameter_ge`). Remaining: upgrade to sup-over-configurations dₙ₊₁ ≤ dₙ (needs compactness/sSup API) and d(Z) = infₙ dₙ.
 2. Logarithmic capacity of {|f|≥1}∩B(0,R) + cap=1 normalization (axiomatize, cite Fekete–Szegő).
 3. State ρ(f) ≳ g(d(Z), cap) (theorems where provable / axioms citing Pommerenke/KLR).
+
+## Built (iteration 5 — strict positivity of the discrete diameter, axiom-free)
+
+- `discreteDiameter_pos (z) (hz : Injective z) : 0 < discreteDiameter z`.
+  `dₙ z = spreadProduct z ^ (2/(n(n−1)))`; injectivity ⇒ `0 < spreadProduct z`
+  (`spreadProduct_pos_iff`), and `Real.rpow_pos_of_pos` keeps it positive.
+- `discreteDiameter_pos_iff (hn : 2 ≤ n) : 0 < discreteDiameter z ↔ Injective z`.
+  Backward = `discreteDiameter_pos`; forward uses that the exponent `2/(n(n−1))`
+  is nonzero for `n ≥ 2`, so a vanishing spread product forces `dₙ = 0`
+  (`Real.zero_rpow`).
+
+These sharpen `discreteDiameter_nonneg` and supply the strict positivity that
+`Real.log (discreteDiameter z)` and `discreteDiameter_eq_exp` silently rely on.
+Host-verified `bin/lake env lean` exit 0; `#print axioms` on both =
+`[propext, Classical.choice, Quot.sound]`.
