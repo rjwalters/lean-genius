@@ -174,6 +174,93 @@ Possible implications:
 -/
 
 /-
+## Foundational lemmas (axiom-free)
+
+The deep results (Romanoff's theorem, Erdős's covering construction, Chen's
+disproof) require analytic number theory beyond current Mathlib and are documented
+in the prose above only.  What *is* fully machine-checkable are the elementary
+structural facts about the definitions in this file: the exponential lower bound
+forcing small odd numbers into the exceptional set, concrete Romanoff witnesses,
+the basic range of the density functional, and the covering property of the
+explicit Erdős covering system.  All lemmas below are axiom-free
+(`propext / Classical.choice / Quot.sound` only). -/
+
+/-- Membership in the exceptional set unfolds to its defining predicate. -/
+theorem mem_exceptionalSet_iff {n : ℕ} :
+    n ∈ ExceptionalSet ↔ Odd n ∧ ¬ IsRomanoff n := Iff.rfl
+
+/-- **Structural lower bound:** every Romanoff number is at least `4`, since
+`2^k ≥ 2` (as `k ≥ 1`) and `p ≥ 2` (as `p` is prime). -/
+theorem isRomanoff_four_le {n : ℕ} (h : IsRomanoff n) : 4 ≤ n := by
+  obtain ⟨k, p, hk, hp, rfl⟩ := h
+  have h2k : 2 ≤ 2 ^ k := by
+    calc (2 : ℕ) = 2 ^ 1 := (pow_one 2).symm
+      _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+  have hp2 : 2 ≤ p := hp.two_le
+  omega
+
+/-- `1` is not Romanoff (it is below the Romanoff floor `4`). -/
+theorem not_isRomanoff_one : ¬ IsRomanoff 1 := fun h => by
+  have := isRomanoff_four_le h; omega
+
+/-- `3` is not Romanoff (it is below the Romanoff floor `4`). -/
+theorem not_isRomanoff_three : ¬ IsRomanoff 3 := fun h => by
+  have := isRomanoff_four_le h; omega
+
+/-- `1` is an exceptional odd integer. -/
+theorem one_mem_exceptionalSet : (1 : ℕ) ∈ ExceptionalSet :=
+  ⟨odd_one, not_isRomanoff_one⟩
+
+/-- `3` is an exceptional odd integer. -/
+theorem three_mem_exceptionalSet : (3 : ℕ) ∈ ExceptionalSet :=
+  ⟨by decide, not_isRomanoff_three⟩
+
+/-- Concrete Romanoff witness: `5 = 2^1 + 3`. -/
+theorem isRomanoff_five : IsRomanoff 5 := ⟨1, 3, by norm_num, by norm_num, by norm_num⟩
+
+/-- Concrete Romanoff witness: `7 = 2^2 + 3`. -/
+theorem isRomanoff_seven : IsRomanoff 7 := ⟨2, 3, by norm_num, by norm_num, by norm_num⟩
+
+/-- Since `5` is Romanoff, it is *not* in the exceptional set. -/
+theorem five_not_mem_exceptionalSet : (5 : ℕ) ∉ ExceptionalSet := fun h => h.2 isRomanoff_five
+
+/-- The density functional is nonnegative. -/
+theorem density_nonneg (A : Set ℕ) (N : ℕ) : 0 ≤ density A N := by
+  unfold density; positivity
+
+/-- The density functional never exceeds `1` (the filtered set sits inside
+`range (N+1)`, which has `N+1` elements). -/
+theorem density_le_one (A : Set ℕ) (N : ℕ) : density A N ≤ 1 := by
+  unfold density
+  rw [div_le_one (by positivity)]
+  have hcard : (Finset.filter (fun x => @Decidable.decide (x ∈ A) (Classical.dec _))
+      (Finset.range (N + 1))).card ≤ (Finset.range (N + 1)).card :=
+    Finset.card_filter_le _ _
+  rw [Finset.card_range] at hcard
+  exact_mod_cast hcard
+
+/-- Every modulus in the explicit Erdős covering system is positive. -/
+theorem erdosCovering_moduli_pos : ∀ rm ∈ erdosCovering, 0 < rm.2 := by decide
+
+/-- **The Erdős covering system genuinely covers `ℤ`.** Every integer lies in one
+of the residue classes `{0 mod 2, 0 mod 3, 1 mod 4, 1 mod 6, 3 mod 8, 7 mod 12,
+23 mod 24}`.  This is the covering-congruence engine behind Erdős's 1950 proof
+that the exceptional set contains an infinite arithmetic progression.  Since every
+modulus divides `24`, membership depends only on `n % 24`, giving a finite check. -/
+theorem erdosCovering_isCoveringSystem : IsCoveringSystem erdosCovering := by
+  intro n
+  have hcov : n % 2 = 0 ∨ n % 3 = 0 ∨ n % 4 = 1 ∨ n % 6 = 1 ∨ n % 8 = 3 ∨
+      n % 12 = 7 ∨ n % 24 = 23 := by omega
+  rcases hcov with h | h | h | h | h | h | h
+  · exact ⟨(0, 2), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(0, 3), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(1, 4), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(1, 6), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(3, 8), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(7, 12), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+  · exact ⟨(23, 24), by simp [erdosCovering], by norm_num, by exact_mod_cast h⟩
+
+/-
 ## Summary
 
 **Problem Status: SOLVED (Disproved)**

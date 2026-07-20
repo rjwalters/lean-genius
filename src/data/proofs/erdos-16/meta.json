@@ -45,17 +45,17 @@
         "relationship": "Both are solved Erdős problems in analytic number theory with density/measure-theoretic conclusions"
       }
     ],
-    "lineCount": 203,
-    "assumptions": "This file formalizes definitions only (IsRomanoff, ExceptionalSet, density, lowerDensity, IsCoveringSystem, ErdosConjecture16, erdosCovering, and the related Props Erdos9/10/11Question). It contains 0 axioms, 0 theorems, and 0 sorries. Romanoff's theorem, Erdős's covering result, Chen's 2023 disproof, the specific exceptional numbers, and the density bounds are described in doc-comments only — none is formalized as a theorem or an axiom (there is no `chen_disproof` declaration in the source).",
+    "lineCount": 290,
+    "assumptions": "This file states the problem (definitions IsRomanoff, ExceptionalSet, density, lowerDensity, IsCoveringSystem, ErdosConjecture16, erdosCovering, and the related Props Erdos9/10/11Question) and proves 13 axiom-free foundational lemmas about those definitions. It contains 0 axioms and 0 sorries. The deep results (Romanoff 1934 positive density, Erdos 1950 covering construction, Chen 2023 disproof) require analytic number theory beyond current Mathlib and remain described in doc-comments only, NOT formalized as theorems or axioms. The formalized lemmas are elementary structural facts: the Romanoff floor (2^k+p >= 4), concrete Romanoff witnesses (5=2+3, 7=4+3), membership of 1 and 3 in the exceptional set, the 0<=density<=1 range, and a full machine-checked proof that the explicit Erdos covering system {0 mod 2, 0 mod 3, 1 mod 4, 1 mod 6, 3 mod 8, 7 mod 12, 23 mod 24} genuinely covers the integers.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 0,
+    "theoremCount": 13,
     "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Romanoff (1934) proved that the set $\\{n : n = 2^k + p\\}$ has positive lower density among odd integers, using sieve methods and the prime number theorem to show that the 'expected count' of representations diverges. Erdős (1950) turned to the complementary question: what does the exceptional set $E$ look like? His key tool was covering congruences — systems of residue classes $\\{a_i \\pmod{m_i}\\}$ that tile $\\mathbb{Z}$. By choosing moduli $\\{2, 3, 4, 6, 8, 12, 24\\}$ (whose reciprocals sum to 1), Erdős arranged that for any $n$ in a particular residue class mod $\\text{lcm} = 24$, each $n - 2^k$ is divisible by a small prime. This forced an infinite AP into $E$. Erdős then conjectured — self-deprecatingly calling it 'rather silly' — that $E$ is essentially just this AP plus density-0 noise. After 73 years, Chen (2023) disproved this by showing $E$ contains infinitely many essentially independent APs, each contributing positive density. The exceptional set's structure is far richer than a single covering congruence produces.",
     "problemStatement": "Define the exceptional set E = {odd n : n ≠ 2^k + p for all k ≥ 1 and primes p}. Erdős asked: is E = (arithmetic progression) ∪ (density-0 set)? Chen proved NO: E has more complex structure.",
     "text": "Is the set of odd integers not of the form 2^k + p the union of an arithmetic progression and a density-0 set? DISPROVED by Chen (2023).",
-    "proofStrategy": "The file defines Romanoff numbers (n = 2^k + p), the exceptional set, covering congruence systems, density / lowerDensity, the Prop ErdosConjecture16, and the related Props for Problems #9–#11. Romanoff's theorem, Erdős's covering result, Chen's disproof, and the density bounds appear in documentation only — none is formalized as a theorem or an axiom.",
+    "proofStrategy": "Defines Romanoff numbers (n = 2^k + p, k>=1, p prime), the exceptional set, covering congruence systems, density/lowerDensity, ErdosConjecture16, and the related Props for Problems #9-#11. Adds 13 axiom-free foundational lemmas: isRomanoff_four_le (structural lower bound via 2^k>=2 and p>=2), not_isRomanoff_one/three and one/three_mem_exceptionalSet (small odd numbers are exceptional), isRomanoff_five/seven (concrete witnesses), density_nonneg/density_le_one (range of the density functional), erdosCovering_moduli_pos, and erdosCovering_isCoveringSystem (the explicit covering system covers Z, proved by reducing mod 24 via omega and exhibiting the residue-class witness). Romanoff's theorem, Erdos's covering-progression result, and Chen's disproof appear in documentation only and are not formalized.",
     "keyInsights": [
       "Exceptional set E = {1, 127, 149, 251, 331, ...} (OEIS A006285)",
       "127 is exceptional: 127 - 2^k is composite for all valid k",
@@ -189,9 +189,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos16",
-    "lineCount": 203,
+    "lineCount": 290,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 13,
     "definitionCount": 10,
     "path": "Proofs/Erdos16Problem.lean",
     "sorries": 0
