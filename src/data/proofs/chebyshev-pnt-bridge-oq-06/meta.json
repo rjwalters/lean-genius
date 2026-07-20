@@ -57,14 +57,14 @@
       "id": "header",
       "title": "Open Question, Imports & Setup",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 49,
       "summary": "File docstring situating OQ-06: the parent ChebyshevPNTBridge proves the upper bound only in ℕ-power form ((Nat.sqrt n)^(π(n)−π(√n)) ≤ 4^n), leaving the real-log consequence as a header comment, while sibling OQ-05 carried the lower bound to real-log form. Lists the three deliverable theorems and the resulting limsup π(x)·log x/x ≤ 2 log 4; then the imports (Mathlib.NumberTheory.PrimeCounting, Analysis.SpecialFunctions.Log.Basic, Tactic, Proofs.ChebyshevPNTBridge), the namespace, and `open Nat`.",
       "mathContext": "Goal: package $(\\sqrt n)^{\\pi(n)-\\pi(\\sqrt n)} \\le 4^n$ into real-log/density form, the upper mirror of OQ-05."
     },
     {
       "id": "real-log-difference",
       "title": "Real-Logarithmic Difference Form",
-      "startLine": 44,
+      "startLine": 51,
       "endLine": 88,
       "summary": "primeCounting_diff_mul_log_sqrt_le takes Real.log of the parent's (Nat.sqrt n)^(π(n)−π(√n)) ≤ 4^n: cast to ℝ, apply Real.log_le_log (monotone on positives) and Real.log_pow on both sides, yielding (π(n)−π(√n))·log(√n) ≤ n·log 4 for n ≥ 4.",
       "mathContext": "$(\\pi(n)-\\pi(\\sqrt n))\\log\\sqrt n \\le n\\log 4$, from $(\\sqrt n)^{\\pi(n)-\\pi(\\sqrt n)} \\le 4^n$."
@@ -72,15 +72,15 @@
     {
       "id": "clean-upper",
       "title": "Clean Upper Bound on π(n)",
-      "startLine": 89,
-      "endLine": 130,
+      "startLine": 90,
+      "endLine": 122,
       "summary": "primeCounting_mul_log_sqrt_le splits π(n) = (π(n)−π(√n)) + π(√n) via Nat.cast_sub (using Nat.monotone_primeCounting) and absorbs the correction with π(√n) ≤ √n (parent's primeCounting_le) and log(√n) ≥ 0, giving π(n)·log(√n) ≤ n·log 4 + √n·log(√n).",
       "mathContext": "$\\pi(n)\\log\\sqrt n \\le n\\log 4 + \\sqrt n\\,\\log\\sqrt n$."
     },
     {
       "id": "upper-density",
       "title": "Chebyshev Upper Density (Quotient Form)",
-      "startLine": 131,
+      "startLine": 124,
       "endLine": 160,
       "summary": "primeCounting_le_div_log_sqrt divides by log(√n) > 0 (positive since √n ≥ 2 for n ≥ 4) via le_of_mul_le_mul_right and a field_simp identity, giving π(n) ≤ n·log 4/log(√n) + √n. As log(√n) ≈ ½ log n, this yields limsup π(x)·log x/x ≤ 2 log 4.",
       "mathContext": "$\\pi(n) \\le \\dfrac{n\\log 4}{\\log\\sqrt n} + \\sqrt n$, hence $\\limsup \\dfrac{\\pi(x)\\log x}{x} \\le 2\\log 4$."
