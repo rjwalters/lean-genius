@@ -153,7 +153,10 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.GroupTheory.SpecificGroups.Dihedral",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "Finset",
