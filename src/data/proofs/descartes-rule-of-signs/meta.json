@@ -77,68 +77,108 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Descartes' Rule of Signs (Wiedijk #100)",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Imports, module docstring, and namespace setup. The docstring states the rule (positive roots vs. coefficient sign changes with even defect), its 1637 origin in Descartes's La Géométrie, the intended Rolle's-theorem proof strategy, and the Mathlib dependencies used.",
+      "mathContext": "Imports pull in `Polynomial` algebra plus `Mathlib.Analysis.Calculus.LocalExtr.Rolle` and `Mathlib.Algebra.Polynomial.RuleOfSigns`, signalling that the analytic (Rolle-based) route and Mathlib's own `Polynomial.RuleOfSigns` API are both in scope. This is Wiedijk's 100 Theorems entry #100."
+    },
+    {
       "id": "sign-change-definitions",
       "title": "Sign Change Definitions",
-      "startLine": 61,
-      "endLine": 87,
-      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements.",
+      "startLine": 62,
+      "endLine": 94,
+      "summary": "Formal definitions of `realSign`, `oppositeSign`, `SignChangeBetween`, and `countSignChanges` for a finite real sequence.",
       "mathContext": "A sign change between consecutive nonzero coefficients $a_i, a_j$ occurs when $a_i \\cdot a_j < 0$. Zero coefficients are skipped: in $(1, 0, -1)$, there is one sign change between $1$ and $-1$."
     },
     {
       "id": "coefficient-sign-changes",
-      "title": "Coefficient Sign Changes",
-      "startLine": 88,
-      "endLine": 103,
-      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes.",
+      "title": "Coefficient Sign Changes for Polynomials",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "`coeffSequence` extracts a polynomial's coefficient vector and `signChangesInCoeffs` counts its sign changes — the left-hand side of Descartes's bound.",
       "mathContext": "The coefficient sequence $\\text{coeffSeq}(p)$ extracts $(a_n, a_{n-1}, \\ldots, a_0)$ from $p(x) = \\sum a_k x^k$. Sign changes in this sequence bound the number of positive roots."
     },
     {
       "id": "positive-roots",
       "title": "Positive Roots",
-      "startLine": 104,
-      "endLine": 125,
-      "summary": "Definitions for positive roots and root multiplicity counting.",
-      "mathContext": "`countPositiveRoots p` counts positive real roots of $p$ with multiplicity. By Descartes' rule, this is bounded by `signChanges (coeffSeq p)` with even difference."
+      "startLine": 110,
+      "endLine": 127,
+      "summary": "Definitions of `IsPositiveRoot`, the `positiveRoots` set, and `rootMultiplicity'` — the multiplicity-aware right-hand side of the bound.",
+      "mathContext": "`countPositiveRoots p` counts positive real roots of $p$ with multiplicity. By Descartes' rule, this is bounded by `signChangesInCoeffs p` with even difference."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 126,
-      "endLine": 166,
-      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form.",
-      "mathContext": "Main results: `descartes_upper_bound` ($\\text{posRoots}(p) \\leq \\text{signChanges}(p)$) and `descartes_parity` ($\\text{signChanges}(p) - \\text{posRoots}(p) \\equiv 0 \\pmod{2}$). The combined form `descartes_rule` states both simultaneously."
+      "title": "The Main Theorem",
+      "startLine": 128,
+      "endLine": 189,
+      "summary": "The core results: `countPositiveRoots`, then `descartes_upper_bound`, `descartes_parity`, and the combined `descartes_rule_of_signs`. The bound and parity facts are recorded as axioms (`descartes_upper_bound_axiom`, `descartes_parity_axiom`).",
+      "mathContext": "Main results: `descartes_upper_bound` ($\\text{posRoots}(p) \\leq \\text{signChanges}(p)$) and `descartes_parity` ($\\text{signChanges}(p) - \\text{posRoots}(p) \\equiv 0 \\pmod{2}$). The combined `descartes_rule_of_signs` states both simultaneously; two of the file's five axioms live here."
     },
     {
       "id": "negative-roots",
-      "title": "Negative Roots",
-      "startLine": 167,
-      "endLine": 199,
-      "summary": "Extension to negative roots via p(-x) substitution.",
-      "mathContext": "Negative roots of $p(x)$ are positive roots of $p(-x)$. The substitution $x \\mapsto -x$ transforms $a_k x^k \\mapsto a_k (-1)^k x^k$, so sign changes in the modified sequence count negative roots."
+      "title": "Negative Roots via Substitution",
+      "startLine": 190,
+      "endLine": 245,
+      "summary": "`negSubst` realises $p(-x)$; the lemmas `negative_root_iff_positive_of_negSubst`, `negSubst_ne_zero`, and `neg_root_map_to_pos` are genuinely proved, and `descartes_negative_roots` transports the positive-root bound to negatives.",
+      "mathContext": "Negative roots of $p(x)$ are positive roots of $p(-x)$. The substitution $x \\mapsto -x$ transforms $a_k x^k \\mapsto a_k (-1)^k x^k$, so sign changes in the modified sequence count negative roots. `descartes_negative_roots_axiom` supplies the transported bound."
     },
     {
       "id": "examples",
       "title": "Sign Change Examples",
-      "startLine": 200,
-      "endLine": 221,
-      "summary": "Concrete examples demonstrating sign change counting on specific polynomials.",
-      "mathContext": "Concrete verifications: e.g., $x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3)$ has 3 sign changes and 3 positive roots (the bound is tight)."
+      "startLine": 246,
+      "endLine": 375,
+      "summary": "Fully proved worked examples: sign-change counts for `Fin 3` sequences with a zero middle term, and the concrete polynomials $x^2-1$, $x^2+1$, and $x^3-x$. Formerly axiomatized, these are now theorems verifying the definitions on named instances.",
+      "mathContext": "Concrete verifications, e.g. $x^2-1$ has one sign change and one positive root (tight), while $x^2+1$ has none. The theorems named `..._axiom` here are historical labels — they are now proved by `decide`/computation, not assumed."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 222,
-      "endLine": 246,
-      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots).",
-      "mathContext": "If all coefficients are positive ($a_k > 0$ for all $k$), there are 0 sign changes and hence 0 positive roots. If signs alternate ($a_k > 0$ for even $k$, $a_k < 0$ for odd $k$), sign changes equal the degree and all roots are positive."
+      "startLine": 376,
+      "endLine": 433,
+      "summary": "`eval_pos_of_nonneg_coeffs` and `no_positive_roots_if_positive_coeffs` prove the all-positive-coefficient case directly; `alternating_signs_max_roots` records the opposite extreme.",
+      "mathContext": "If all coefficients are positive ($a_k > 0$ for all $k$), there are 0 sign changes and hence 0 positive roots — proved here from positivity of $p$ on $(0,\\infty)$. If signs alternate, sign changes equal the degree and the maximum is attained (`alternating_signs_max_roots_axiom`)."
     },
     {
       "id": "rolle-connection",
       "title": "Connection to Rolle's Theorem",
-      "startLine": 247,
+      "startLine": 434,
+      "endLine": 497,
+      "summary": "`rolle_polynomial` specialises Mathlib's Rolle to polynomials, and `derivative_reduces_sign_changes` records the inductive engine (differentiation drops the sign-change count by at most one). Closes with prose on why this connection matters.",
+      "mathContext": "Rolle's theorem: if $p(a) = p(b) = 0$ with $a < b$, then $p'(c) = 0$ for some $c \\in (a,b)$. Each pair of consecutive positive roots produces a root of $p'$, and differentiating reduces sign changes by at most 1, giving the inductive step. `derivative_reduces_sign_changes_axiom` abstracts the delicate counting."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "Additional Structural Theorems",
+      "startLine": 498,
       "endLine": 576,
-      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes.",
-      "mathContext": "Rolle's theorem: if $p(a) = p(b) = 0$ with $a < b$, then $p'(c) = 0$ for some $c \\in (a,b)$. Each pair of consecutive positive roots produces a root of $p'$, and differentiating reduces sign changes by at most 1, giving the inductive step."
+      "summary": "A battery of fully proved sanity lemmas about the definitions: `realSign` on positive/negative/zero inputs, `oppositeSign` symmetry, vanishing counts at $0$, the `negSubst` involution and evaluation law, and `countPositiveRoots` on constants and monomials $X^n$.",
+      "mathContext": "These lemmas anchor the axiomatized bounds to concrete computation: e.g. `negSubst_negSubst` shows $p(-(-x)) = p(x)$ (involution), `countPositiveRoots_C` gives $0$ for nonzero constants, and `countPositiveRoots_X_pow` gives $0$ for $X^n$ ($n \\ge 1$), whose only root is $0$ (not positive)."
+    },
+    {
+      "id": "mathlib-bridge",
+      "title": "Bridge to Mathlib's Polynomial.RuleOfSigns API",
+      "startLine": 577,
+      "endLine": 600,
+      "summary": "`countPositiveRoots_eq_roots_countP` and `descartes_upper_bound_via_signVariations` connect the file's bespoke `countPositiveRoots`/`signChangesInCoeffs` to Mathlib's native `Polynomial.RuleOfSigns` sign-variation machinery.",
+      "mathContext": "Mathlib carries its own `signVariations` and rule-of-signs statement; this section reconciles the local combinatorial definitions with that API so the axiomatized bound can, in principle, be discharged against Mathlib's version rather than assumed."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of Descartes' Bound",
+      "startLine": 601,
+      "endLine": 620,
+      "summary": "Immediate corollaries of the bound: zero sign changes force no positive roots, a single sign change allows at most one, and fewer than $k$ sign changes cap the positive-root count below $k$.",
+      "mathContext": "From $\\text{posRoots}(p) \\le \\text{signChanges}(p)$ these follow monotonically: `zero_sign_changes_no_positive_roots`, `one_sign_change_at_most_one_root`, and `sign_changes_lt_k_fewer_roots` are the qualitative decision-procedure readings of the quantitative bound."
+    },
+    {
+      "id": "applications",
+      "title": "Applications of Rolle's Theorem",
+      "startLine": 621,
+      "endLine": 676,
+      "summary": "Degree bounds obtained through the derivative: three roots force two derivative roots, $n$ roots force $n-1$, and the positive/negative/total root counts are each bounded by the (natural) degree.",
+      "mathContext": "Applying Rolle repeatedly gives `n_roots_implies_derivative_roots` ($n$ roots of $p$ ⟹ $n-1$ roots of $p'$) and hence `countPositiveRoots_le_natDegree`, `nonzero_root_count_le_degree`, and `negative_root_count_le_natDegree` — Descartes's bound composed with the elementary $\\deg$ bound, closing the file at `end DescartesRuleOfSigns`."
     }
   ],
   "conclusion": {
