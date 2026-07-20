@@ -78,20 +78,36 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Preamble: the reindexing obstruction and setup",
+      "id": "overview",
+      "title": "Imports and Overview",
       "startLine": 1,
+      "endLine": 17,
+      "summary": "Imports (Mathlib + the parent CauchyInterlacingPoincareSubmatrix) and the opening of the module docstring. It states the goal: the parent proves poincare_separation_submatrix but phrases eigenvalues through the operator layer ((isHermitian_iff_isSymmetric.1 hA).eigenvalues of toEuclideanLin A, via finrank_euclideanSpace_fin); the parent's first open question asks to restate the conclusion using Mathlib's native matrix eigenvalues Matrix.IsHermitian.eigenvalues₀, threading the Fintype.card (Fin (n+m)) = n+m reindexing so the signature is fully matrix-facing. This file supplies that restatement.",
+      "mathContext": "Target: restate Poincaré separation with $\\lambda := $ `hA.eigenvalues₀` and $\\mu := $ `(hA.submatrix e).eigenvalues₀`, Mathlib's native descending matrix eigenvalues, rather than the operator-layer `LinearMap.IsSymmetric.eigenvalues`."
+    },
+    {
+      "id": "reindexing-obstruction",
+      "title": "The Reindexing Obstruction and Setup",
+      "startLine": 18,
       "endLine": 46,
-      "summary": "Imports (Mathlib + the parent CauchyInterlacingPoincareSubmatrix), the module docstring diagnosing why eigenvalues₀ (built from finrank_euclideanSpace, right-hand side Fintype.card (Fin (n+m))) does not agree on the nose with the parent's operator eigenvalues (built from finrank_euclideanSpace_fin, right-hand side n+m), the note that this is a research file intentionally NOT registered in Proofs.lean, and the ambient context: an arbitrary RCLike field 𝕜 and arbitrary n m : ℕ.",
-      "mathContext": "eigenvalues₀ = eigenvalues finrank_euclideanSpace; the parent uses eigenvalues finrank_euclideanSpace_fin; the two differ only by the non-definitional Fintype.card (Fin (n+m)) = n+m, i.e. a Fin.cast."
+      "summary": "The docstring's `## The reindexing obstruction` diagnosis followed by the ambient setup. eigenvalues₀ is *defined* as the operator eigenvalues built from finrank_euclideanSpace (right-hand side Fintype.card (Fin (n+m))), whereas the parent uses finrank_euclideanSpace_fin (right-hand side n+m); since Fintype.card (Fin (n+m)) = n+m is NOT definitional (it unfolds through List.length_finRange), a Fin.cast sits between eigenvalues₀ and the parent's lam/mu. The docstring previews the bridge (eigenvalues_cast + proof irrelevance) and notes the file is research-only, intentionally NOT registered in Proofs.lean. Closes with open scoped InnerProductSpace Matrix, open Matrix WithLp, namespace CauchyInterlacing.PoincareSubmatrix, and variable {𝕜 : Type*} [RCLike 𝕜] {n m : ℕ}.",
+      "mathContext": "eigenvalues₀ $=$ eigenvalues finrank_euclideanSpace; the parent uses eigenvalues finrank_euclideanSpace_fin; the two witnesses differ only in their right-hand side, and $\\text{Fintype.card}(\\text{Fin}(n+m)) = n+m$ is propositional, not definitional, forcing a Fin.cast."
     },
     {
       "id": "eigenvalues-cast",
-      "title": "The finrank-witness bridge",
+      "title": "The finrank-Witness Bridge (eigenvalues_cast)",
       "startLine": 47,
+      "endLine": 63,
+      "summary": "The `/-! ### The finrank-witness bridge` section header and the theorem LinearMap.IsSymmetric.eigenvalues_cast: the sorted symmetric-operator eigenvalues are independent of which proof finrank 𝕜 E = N is supplied, beyond the canonical Fin.cast between the two index bounds. The proof substitutes N₁ = N₂ (obtain rfl from h₁.symm.trans h₂), shows the Fin.cast is the identity (Fin.ext rfl), and rewrites — the two finrank witnesses then agree by proof irrelevance.",
+      "mathContext": "$\\text{hT.eigenvalues } h_1\\, i = \\text{hT.eigenvalues } h_2\\,(\\text{Fin.cast}\\,(h_1^{-1}\\cdot h_2)\\, i)$; once $N_1 = N_2$ is substituted, $h_1$ and $h_2$ are defeq by proof irrelevance and the cast collapses to the identity."
+    },
+    {
+      "id": "eigenvalues0-eq-op",
+      "title": "eigenvalues₀ as Operator Eigenvalues (eigenvalues₀_eq_op)",
+      "startLine": 64,
       "endLine": 78,
-      "summary": "eigenvalues_cast: the sorted symmetric-operator eigenvalues are independent of which proof finrank 𝕜 E = N is supplied, up to the canonical Fin.cast between index bounds. eigenvalues₀_eq_op specialises it to identify Matrix.IsHermitian.eigenvalues₀ with the operator eigenvalues at the reindexed coordinate.",
-      "mathContext": "hT.eigenvalues h₁ i = hT.eigenvalues h₂ (Fin.cast (h₁.symm.trans h₂) i); proof irrelevance makes h₁ and h₂ defeq once N₁ = N₂ is substituted."
+      "summary": "eigenvalues₀_eq_op specialises the bridge: it identifies Matrix.IsHermitian.eigenvalues₀ hB i with the operator eigenvalues (isHermitian_iff_isSymmetric.1 hB).eigenvalues finrank_euclideanSpace_fin at the coordinate reindexed by the canonical Fintype.card (Fin N) = N cast. The proof unfolds eigenvalues₀ to the operator eigenvalues at finrank_euclideanSpace (by rfl) and applies eigenvalues_cast to swap the finrank witness for finrank_euclideanSpace_fin. This is the lemma the main theorem rewrites with.",
+      "mathContext": "`hB.eigenvalues₀ i` $=$ `hB.toSymmetric.eigenvalues finrank_euclideanSpace_fin (Fin.cast (Fintype.card_fin N) i)` — reconciling Mathlib's native matrix spectrum with the parent's operator spectrum at the reindexed coordinate."
     },
     {
       "id": "matrix-interlacing",
