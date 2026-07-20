@@ -177,9 +177,41 @@
       "id": "girth-lifting",
       "title": "Girth lifting under forbidden even cycles",
       "startLine": 208,
-      "endLine": 262,
+      "endLine": 282,
       "summary": "bipartite_girth_ge_of_forbidden: if a bipartite graph has no cycle of length 2m for every m with 2 ≤ m ≤ t, then every cycle has length ≥ 2t + 2. Proof: a cycle length is even (=2s) and ≥ 4 (so s ≥ 2); were it < 2t + 2 then 2 ≤ s ≤ t, contradicting the hypothesis at m = s. Concrete corollaries bipartite_C4_free_girth_ge_six (C₄-free ⇒ girth ≥ 6) and bipartite_C4C6_free_girth_ge_eight (C₄,C₆-free ⇒ girth ≥ 8) discharge the hypothesis by case analysis on the forbidden m.",
       "mathContext": "Even lengths are {4, 6, 8, …}; excluding 2·2,…,2·t leaves 2t+2 as the least admissible. C₄,C₆-free ⇒ girth ≥ 8, so the smallest cycle Erdős's extremal problem can force is a C₈."
+    },
+    {
+      "id": "colorable-bridge",
+      "title": "Bridge to Mathlib's Two-Colourability",
+      "startLine": 283,
+      "endLine": 328,
+      "summary": "isBipartite_iff_colorable_two identifies this file's ad-hoc IsBipartite predicate with Mathlib's SimpleGraph.Colorable 2: a bipartition (X, Y) is exactly a proper 2-colouring (colour X with 0, Y with 1; conversely the two colour classes of a 2-colouring form a bipartition, since every edge is bichromatic and hence crosses). The equivalence lets the even-cycle and girth results transport to any graph the wider gallery presents as 2-colourable, and lets Mathlib's colouring API act on graphs built here.",
+      "mathContext": "$\\text{IsBipartite } G \\iff G.\\text{Colorable } 2$: a bipartition is a proper 2-colouring and vice versa."
+    },
+    {
+      "id": "c4-k22",
+      "title": "C₄-freeness ⇔ K₂,₂-freeness",
+      "startLine": 329,
+      "endLine": 450,
+      "summary": "The Kővári–Sós–Turán dictionary in bipartite form. hasCycleOfLength_four_of_K22 is the hard direction: two distinct left vertices a₁, a₂ ∈ X each adjacent to two distinct right vertices b₁, b₂ ∈ Y assemble into the explicit 4-cycle a₁-b₁-a₂-b₂-a₁, with the four vertices verified distinct because the bipartition forces cycle vertices to alternate sides. c4Free_iff_no_K22 packages the equivalence — the companion form of the parent Erdos1080Problem.lean's c4_free_iff_no_K22 (formerly a sorry placeholder, now discharged).",
+      "mathContext": "In a bipartition, a 4-cycle is exactly a $K_{2,2}$: $a_1\\!-\\!b_1\\!-\\!a_2\\!-\\!b_2\\!-\\!a_1$ closes up two left and two right vertices with all four cross edges."
+    },
+    {
+      "id": "realizability",
+      "title": "Realizability: Every Even Length ≥ 4 Occurs",
+      "startLine": 451,
+      "endLine": 641,
+      "summary": "The sufficiency side that closes the cycle-length characterization into an iff: every even k ≥ 4 is realised as a cycle length in some bipartite graph. The witness is Mathlib's cycleGraph k on Fin k. descPath builds the Hamiltonian descending path 0→(k-1)→…→1, with its length, support bound, injectivity (descPath_isPath) and edge structure verified; closingEdge_not_mem and cycleGraph_hasCycleOfLength close it into a genuine k-cycle. cycleGraph_isBipartite_iff_even (via the 2-colouring bridge and the odd-cycle obstruction) pins bipartiteness to even k, and bipartite_realizes_even_ge_four / bipartite_cycle_spectrum deliver the spectrum {even k ≥ 4}. Mathlib has cycleGraph and its bicolouring but no Hamiltonicity lemma, so the explicit cycle is built from scratch.",
+      "mathContext": "For even $k \\ge 4$, $\\text{cycleGraph } k$ is bipartite and contains a Hamiltonian $k$-cycle, so the bipartite cycle spectrum is exactly $\\{4, 6, 8, \\dots\\}$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of the Girth-Lifting Bound",
+      "startLine": 642,
+      "endLine": 806,
+      "summary": "Proves the lower bound bipartite_girth_ge_of_forbidden is sharp: for every t ≥ 1 the graph cycleGraph (2t+2) is bipartite, avoids every shorter even cycle, and realises a (2t+2)-cycle, so 2t+2 is exactly the girth. The engine is 2-regularity: cycleGraph_isCycles shows cycleGraph N is 2-regular (SimpleGraph.IsCycles); via IsCycle.adj_toSubgraph_iff_of_isCycles a cycle's support is closed under the successor map ·+1 (eq_univ_of_succ_closed), forcing any cycle to span all of Fin N — hence Hamiltonian of length N (cycleGraph_hasCycleOfLength_iff, cycleGraph_egirth, cycleGraph_girth: girth = N). bipartite_girth_lifting_sharp is the general sharpness statement and bipartite_C4C6_free_girth_eight_sharp (the t = 3 instance) exhibits an explicit bipartite C₄,C₆-free graph of girth exactly 8, showing Erdős's 'next target is C₈' heuristic is optimal.",
+      "mathContext": "$\\text{cycleGraph } N$ is 2-regular, so every cycle is spanning: $\\text{girth} = N$. At $t=3$ this gives a bipartite $C_4,C_6$-free graph of girth exactly $8$ — the bound $2t+2$ is sharp."
     }
   ]
 }
