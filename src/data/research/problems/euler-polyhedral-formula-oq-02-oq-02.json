@@ -29,8 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XIX abstracts Part XVIII's one Künneth table into the algebraic laws of the kunnethBetti convolution — commutativity + point-as-unit (two-sided), yielding prodSurfaceBetti symmetry. Core still BLOCKED on Mathlib v4.26 (no Pfaffian). Elementary/homological calculus now includes the convolution monoid structure. 0-axiom, host-lean elab EXIT 0.",
+    "progressSummary": "KUNNETH CONVOLUTION ASSOCIATIVITY (researcher-1, 2026-07-19, VERIFIED axiom-free): added kunnethBetti_assoc to EulerPolyhedralOQ02OQ02.lean — the Kunneth/Cauchy convolution (b*c)(k)=sum_{i+j=k} b_i c_j on Betti sequences is associative, (a*b)*c = a*(b*c). This was the explicit named frontier: combined with the existing kunnethBetti_comm and two-sided unit pointBetti (kunnethBetti_pointBetti_left/_right), it makes * a commutative-MONOID operation on Betti sequences (homological shadow of associativity of the Cartesian product). Proof: distribute (Finset.sum_mul/mul_sum), flatten both double sums with Finset.sum_sigma', and match the triangular index sets {(m,i):i<=m<=k} and {(i,j):i+j<=k} by the reindexing bijection (m,i)->(i,m-i) / inverse (i,j)->(i+j,i) via Finset.sum_bij' (membership+inverse+term goals all by omega/ring after simp only [mem_sigma,mem_range]). Axiom-free. File 1302->1340 lines. --- PROGRESS: Part XIX abstracts Part XVIII's one Künneth table into the algebraic laws of the kunnethBetti convolution — commutativity + point-as-unit (two-sided), yielding prodSurfaceBetti symmetry. Core still BLOCKED on Mathlib v4.26 (no Pfaffian). Elementary/homological calculus now includes the convolution monoid structure. 0-axiom, host-lean elab EXIT 0.",
     "builtItems": [
+      "kunnethBetti_assoc (researcher-1, 2026-07-19, VERIFIED axiom-free): associativity of the Kunneth/Cauchy convolution on Betti sequences; with comm + unit completes the commutative-monoid structure. In EulerPolyhedralOQ02OQ02.lean.",
       "CGBManifold structure encoding the Chern-Gauss-Bonnet identity ∫_M Pf(Ω)=(2π)^n·χ(M) with derived even-dimensionality, normalized integral, χ=0⇒∫Pf=0, sign matching, and Euler-number integrality.",
       "Verified sphere Euler characteristics (sphereEulerChar), (2π)^n normalization lemmas (cgbConst), and the 2×2 Pfaffian/determinant identity (pf2_sq_eq_det2).",
       "Functorial constructions sphereCGB / prodCGB / torusCGB and ClosedOddManifold, plus two_dim_gauss_bonnet recovering the n=1 classical case.",
@@ -55,7 +56,9 @@
       "No integration of characteristic forms over manifolds",
       "No manifold Euler characteristic"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "DONE (2026-07-19): kunnethBetti_assoc — convolution associativity, completing the commutative-monoid structure on Betti sequences."
+    ],
     "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -71,8 +74,19 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-07-11T00:00:00.000Z",
+  "lastUpdate": "2026-07-19",
   "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralOQ02OQ02.lean",
+      "filename": "EulerPolyhedralOQ02OQ02.lean",
+      "lineCount": 1340,
+      "theoremCount": 132,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ02OQ02.lean"
+    },
     {
       "path": "Proofs/EulerPolyhedralFormula.lean",
       "filename": "EulerPolyhedralFormula.lean",

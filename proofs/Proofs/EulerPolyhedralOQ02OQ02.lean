@@ -1187,6 +1187,44 @@ theorem kunnethBetti_pointBetti_right (b : ℕ → ℕ) (k : ℕ) :
     kunnethBetti b pointBetti k = b k := by
   rw [kunnethBetti_comm, kunnethBetti_pointBetti_left]
 
+/-- **The Künneth convolution is associative: `(a ⋆ b) ⋆ c = a ⋆ (b ⋆ c)`.**  The Cauchy
+    product `(b ⋆ c)(k) = ∑_{i+j=k} bᵢcⱼ` over `ℕ` is associative — both sides expand to the
+    triple sum `∑_{i+j+l=k} aᵢbⱼcₗ`.  Formally, after distributing the outer factor into each
+    convolution (`Finset.sum_mul` / `Finset.mul_sum`) both sides become double sums over the
+    triangular index sets `{(m,i) : i ≤ m ≤ k}` and `{(i,j) : i+j ≤ k}`, matched by the
+    reindexing bijection `(m,i) ↦ (i, m−i)` with inverse `(i,j) ↦ (i+j, i)` (`Finset.sum_bij'`).
+    Together with `kunnethBetti_comm` and the two-sided unit `pointBetti`
+    (`kunnethBetti_pointBetti_left`/`_right`), this makes `⋆` a commutative-monoid operation on
+    Betti sequences — the homological shadow of the associativity of the Cartesian product
+    `(M × N) × P ≅ M × (N × P)`. -/
+theorem kunnethBetti_assoc (a b c : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti (kunnethBetti a b) c k = kunnethBetti a (kunnethBetti b c) k := by
+  unfold kunnethBetti
+  simp_rw [Finset.sum_mul, Finset.mul_sum]
+  rw [Finset.sum_sigma', Finset.sum_sigma']
+  refine Finset.sum_bij'
+    (fun x _ => (⟨x.2, x.1 - x.2⟩ : (_ : ℕ) × ℕ))
+    (fun y _ => (⟨y.1 + y.2, y.1⟩ : (_ : ℕ) × ℕ)) ?_ ?_ ?_ ?_ ?_
+  · rintro ⟨m, i⟩ hx
+    simp only [Finset.mem_sigma, Finset.mem_range] at hx ⊢
+    omega
+  · rintro ⟨i, j⟩ hy
+    simp only [Finset.mem_sigma, Finset.mem_range] at hy ⊢
+    omega
+  · rintro ⟨m, i⟩ hx
+    simp only [Finset.mem_sigma, Finset.mem_range] at hx
+    have hm : i + (m - i) = m := by omega
+    simp only [hm]
+  · rintro ⟨i, j⟩ hy
+    simp only [Finset.mem_sigma, Finset.mem_range] at hy
+    have hj : i + j - i = j := by omega
+    simp only [hj]
+  · rintro ⟨m, i⟩ hx
+    simp only [Finset.mem_sigma, Finset.mem_range] at hx
+    have hc : k - i - (m - i) = k - m := by omega
+    simp only [hc]
+    ring
+
 /-- **The product-surface Betti table is symmetric in its genera: `bₖ(Σ_g × Σ_h) =
     bₖ(Σ_h × Σ_g)` for `k ≤ 4`.**  A concrete consequence of the commutativity of the Künneth
     convolution (`kunnethBetti_comm`) applied to `prodSurfaceBetti_kunneth`: the palindrome
