@@ -17,6 +17,13 @@
       `LinearIndependent ℚ ![ζ(2m), ζ(2n)]`.
     * `zeta_two_zeta_four_linearIndependent` — the concrete Basel instance
       `LinearIndependent ℚ ![ζ(2), ζ(4)]`.
+    * `pi_sq_pow_linearIndependent` — the powers `{(π²)ⁱ}ᵢ` are `ℚ`-linearly independent
+      (transcendence of `π²` ⟹ `aeval (π²)` injective ⟹ the monomial basis maps to an
+      independent family).
+    * `zeta_even_family_linearIndependent` — the `N`-family generalization
+      `LinearIndependent ℚ (fun k : Fin N => ζ(2(k+1)))`: *all* the even zeta values
+      `ζ(2), ζ(4), …, ζ(2N)` are jointly `ℚ`-linearly independent, not merely pairwise.
+    * `zeta_two_four_six_linearIndependent` — the concrete triple `ζ(2), ζ(4), ζ(6)`.
 
   Mathematically: `ζ(2m) = qₘ·π^(2m)` and `ζ(2n) = qₙ·π^(2n)` with `qₘ, qₙ ∈ ℚ∖{0}`;
   a rational relation forces `a·qₘ + b·qₙ·π^(2(n-m)) = 0` after dividing by `π^(2m)`, and
@@ -30,7 +37,7 @@
 import Mathlib
 import Proofs.BaselProblemOQ01OQ02
 
-open Real
+open Real Polynomial
 
 namespace BaselProblemOQ01OQ02LinIndep
 
@@ -111,5 +118,87 @@ theorem zeta_two_zeta_four_linearIndependent :
     LinearIndependent ℚ
       ![(∑' k : ℕ, 1 / (k : ℝ) ^ 2), (∑' k : ℕ, 1 / (k : ℝ) ^ 4)] := by
   exact zeta_even_linearIndependent_pair 2 1 one_pos (by norm_num)
+
+/-! ### The `N`-family generalization
+
+    The pair result above shows any two distinct even zeta values are `ℚ`-independent.  The
+    real structural statement is that *all* of them are jointly independent: `{ζ(2k)}_{k≥1}`
+    is a `ℚ`-linearly independent family.  The mechanism is the transcendence of `π²`.  Since
+    `ζ(2(k+1)) = q_{k+1} · (π²)^(k+1)` with `q_{k+1} ∈ ℚ∖{0}` (Euler), the family is a nonzero
+    rational rescaling of the powers `{(π²)^(k+1)}`, and powers of a transcendental element are
+    linearly independent (the polynomial-evaluation map `ℚ[X] → ℝ` at `π²` is injective, so it
+    carries the monomial basis to an independent family).  -/
+
+/-- **Powers of `π²` are `ℚ`-linearly independent.**  `π²` is transcendental over `ℚ` (from
+    transcendence of `π`), so `aeval (π²) : ℚ[X] → ℝ` is injective; it sends the monomial basis
+    `{Xⁱ}` of `ℚ[X]` to the family `{(π²)ⁱ}`, which is therefore `ℚ`-linearly independent. -/
+theorem pi_sq_pow_linearIndependent :
+    LinearIndependent ℚ (fun i : ℕ => ((π : ℝ) ^ 2) ^ i) := by
+  have htr : Transcendental ℚ ((π : ℝ) ^ 2) :=
+    pi_transcendental_over_rationals.pow (by norm_num)
+  have hinj : Function.Injective (Polynomial.aeval ((π : ℝ) ^ 2) : ℚ[X] →ₐ[ℚ] ℝ) :=
+    transcendental_iff_injective.1 htr
+  have hker :
+      LinearMap.ker (Polynomial.aeval ((π : ℝ) ^ 2) : ℚ[X] →ₐ[ℚ] ℝ).toLinearMap = ⊥ :=
+    LinearMap.ker_eq_bot.2 hinj
+  have hb := (Polynomial.basisMonomials ℚ).linearIndependent.map'
+      (Polynomial.aeval ((π : ℝ) ^ 2) : ℚ[X] →ₐ[ℚ] ℝ).toLinearMap hker
+  have hfun :
+      (Polynomial.aeval ((π : ℝ) ^ 2) : ℚ[X] →ₐ[ℚ] ℝ).toLinearMap ∘ ⇑(Polynomial.basisMonomials ℚ)
+        = fun i : ℕ => ((π : ℝ) ^ 2) ^ i := by
+    funext i
+    simp [Polynomial.coe_basisMonomials, Polynomial.aeval_monomial]
+  rwa [hfun] at hb
+
+/-- **The `N`-family `ζ(2), ζ(4), …, ζ(2N)` is `ℚ`-linearly independent.**  For every `N`,
+
+      `LinearIndependent ℚ (fun k : Fin N => ζ(2(k+1)))`.
+
+    Strictly generalizes `zeta_even_linearIndependent_pair` (the `N = 2` slice with a
+    reindexing).  Each `ζ(2(k+1)) = q_{k+1}·(π²)^(k+1)` with `q_{k+1} ∈ ℚ∖{0}` (Euler,
+    `zeta_even_eq_rat_mul_pi_pow`), so the family is a nonzero-rational (unit) rescaling of the
+    linearly independent powers `{(π²)^(k+1)}` (`pi_sq_pow_linearIndependent`, restricted to the
+    shifted index `k ↦ k+1`, then `LinearIndependent.units_smul`).
+
+    Uses `hermite_lindemann` only through the transcendence of `π` — no new assumption beyond the
+    parent node. -/
+theorem zeta_even_family_linearIndependent (N : ℕ) :
+    LinearIndependent ℚ
+      (fun k : Fin N => (∑' j : ℕ, 1 / (j : ℝ) ^ (2 * (k.val + 1)))) := by
+  -- Shifted powers of π² are linearly independent (restrict the full ℕ-indexed family).
+  have hshift : Function.Injective (fun k : Fin N => k.val + 1) :=
+    Nat.succ_injective.comp Fin.val_injective
+  have hbase : LinearIndependent ℚ (fun k : Fin N => ((π : ℝ) ^ 2) ^ (k.val + 1)) :=
+    pi_sq_pow_linearIndependent.comp _ hshift
+  -- Euler's closed form supplies, for each k, a nonzero rational qₖ with ζ(2(k+1)) = qₖ·π^(2(k+1)).
+  choose q hqne hqeq using fun k : Fin N =>
+    BaselProblemOQ01OQ02.zeta_even_eq_rat_mul_pi_pow (k.val + 1) (Nat.succ_pos _)
+  -- Rescale the base family by the units qₖ; linear independence is preserved.
+  have hscaled := hbase.units_smul (fun k : Fin N => Units.mk0 (q k) (hqne k))
+  -- Identify the rescaled family with the zeta family.
+  have hfun :
+      (fun k : Fin N => (∑' j : ℕ, 1 / (j : ℝ) ^ (2 * (k.val + 1))))
+        = (fun k : Fin N => Units.mk0 (q k) (hqne k))
+            • (fun k : Fin N => ((π : ℝ) ^ 2) ^ (k.val + 1)) := by
+    funext k
+    simp only [Pi.smul_apply', Units.smul_def, Units.val_mk0, Rat.smul_def]
+    rw [hqeq k, pow_mul]
+  rw [hfun]
+  exact hscaled
+
+/-- **The concrete Basel triple `ζ(2), ζ(4), ζ(6)` is `ℚ`-linearly independent.**  The `N = 3`
+    instance of `zeta_even_family_linearIndependent`. -/
+theorem zeta_two_four_six_linearIndependent :
+    LinearIndependent ℚ
+      ![(∑' k : ℕ, 1 / (k : ℝ) ^ 2), (∑' k : ℕ, 1 / (k : ℝ) ^ 4),
+        (∑' k : ℕ, 1 / (k : ℝ) ^ 6)] := by
+  have h := zeta_even_family_linearIndependent 3
+  have heq :
+      (fun k : Fin 3 => (∑' j : ℕ, 1 / (j : ℝ) ^ (2 * (k.val + 1))))
+        = ![(∑' k : ℕ, 1 / (k : ℝ) ^ 2), (∑' k : ℕ, 1 / (k : ℝ) ^ 4),
+            (∑' k : ℕ, 1 / (k : ℝ) ^ 6)] := by
+    funext k
+    fin_cases k <;> rfl
+  rwa [heq] at h
 
 end BaselProblemOQ01OQ02LinIndep
