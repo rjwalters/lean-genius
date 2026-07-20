@@ -52,22 +52,22 @@
       "Concrete example graphs (triangle, 3-path)"
     ],
     "axiomCount": 0,
-    "lineCount": 137,
+    "lineCount": 169,
     "prerequisites": [
       "Ramsey theory and Ramsey numbers",
       "Hereditary graph properties",
       "Regularity method and blow-up lemma",
       "Probabilistic combinatorics"
     ],
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Two axiom-free structural lemmas about the IsErdosHajnalLowerBound predicate are proved (the zero bound always holds; lower bounds are downward closed), each depending only on propext/Classical.choice/Quot.sound. The main Erdős–Hajnal conjecture is OPEN, and the two partial bounds (1989, BNSS 2023) are NOT formalized — they are documented only in the header prose. Status \"axiomatized\"/\"wip\" reflects an open problem with no machine-checked bound.",
+    "theoremCount": 2,
     "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The Erdős–Hajnal conjecture, proposed in 1989, is one of the most important open problems in graph theory. It connects two fundamental concepts: induced subgraphs and Ramsey-type bounds.\n\nClassical Ramsey theory tells us that every graph on n vertices contains either a clique or independent set of size at least c·log(n). This logarithmic bound is tight for general graphs. However, Erdős and Hajnal conjectured that FORBIDDING a specific induced subgraph H should dramatically improve this bound to a polynomial n^c.\n\nDespite intensive study for over 35 years, the conjecture remains open. The best known general bound, due to Bucić, Nguyen, Scott, and Seymour (2023), is exp(c√(log n · log log n))—still far from the conjectured polynomial.",
     "problemStatement": "**The Erdős–Hajnal Conjecture (OPEN)**\n\nFor any graph $H$, there exists a constant $c = c(H) > 0$ such that every graph $G$ on $n$ vertices that does NOT contain $H$ as an induced subgraph has either:\n- A clique of size $\\geq n^c$, OR\n- An independent set of size $\\geq n^c$\n\n**Status**: OPEN\n\n**Best known bounds**:\n- Erdős-Hajnal (1989): $\\exp(c_H \\sqrt{\\log n})$\n- BNSS (2023): $\\exp(c_H \\sqrt{\\log n \\cdot \\log\\log n})$",
     "text": "For any graph H, does there exist c > 0 such that every H-free graph on n vertices has a clique or independent set of size at least n^c?",
-    "proofStrategy": "We formalize the conjecture and its partial results:\n\n1. **IsErdosHajnalLowerBound**: A predicate capturing when function f is a valid lower bound for graph H\n\n2. **ErdosHajnalConjecture**: The statement that polynomial bounds always exist\n\n3. **Axioms for partial results**: We state the 1989 and 2023 bounds as axioms, since their proofs require probabilistic combinatorics beyond current Mathlib\n\n4. **Example graphs**: We define concrete small graphs (triangle, 3-path) to make the definitions testable",
+    "proofStrategy": "We formalize the Erdős–Hajnal conjecture and record the state of the art. The Lean file defines `IsErdosHajnalLowerBound H f` (eventually, every H-free graph on n vertices has an independent set or clique of size ≥ f(n)) and `ErdosHajnalConjecture` (a polynomial bound n^c exists for every H), plus concrete example graphs. On top of the definitions it proves two axiom-free structural lemmas: `isErdosHajnalLowerBound_zero` (the constant bound 0 is always a lower bound, since the independence number is nonnegative) and `IsErdosHajnalLowerBound.mono` (lower bounds are downward closed). Together they isolate that the conjecture is entirely about the growth rate (the exponent c>0), not existence. The main conjecture is OPEN; the two partial bounds (Erdős–Hajnal 1989 exp(c√log n), BNSS 2023 exp(c√(log n·log log n))) are documented in the header prose but NOT formalized.",
     "keyInsights": [
       "**Induced subgraph**: H is induced in G if we find H by selecting vertices and keeping EXACTLY their edges—no extra edges, no missing edges. This is stronger than just being a subgraph.",
       "**Why Ramsey bounds are weak**: Random graphs show that log(n) is the best general bound. The conjecture says structure (forbidding H) should help.",
@@ -146,9 +146,9 @@
       "Real"
     ],
     "namespace": "Erdos61",
-    "lineCount": 137,
+    "lineCount": 169,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 2,
     "definitionCount": 4,
     "path": "Proofs/Erdos61Problem.lean",
     "sorries": 0
