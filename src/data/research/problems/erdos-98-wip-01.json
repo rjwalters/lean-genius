@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos98WIP01.lean extended — sharp n.choose 2 ceiling (Sym2 factoring) plus all four comment-only bounds/conjectures converted to typed Lean Props (Pach/EFP/Guth-Katz assumptions + weak/strong conjectures), with two machine-checked relations strong_imp_weak and weak_imp_tendsto. 13 theorems/defs, 0 sorry, 0 axiom; #print axioms = [propext, Classical.choice, Quot.sound].",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): proved h(n)→∞ is UNCONDITIONAL (guthKatz_imp_tendsto): the imported Ω(n/log n) Guth–Katz baseline already forces divergence via c·n/log n→∞ (tendsto_const_mul_div_log_atTop). Sharpens weak_imp_tendsto (which assumed the open weak conjecture). Only the rate h(n)/n→∞ and h(n)≥n stay open. 15 theorems, 0 axiom.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -41,7 +41,8 @@
       "numDistinctDistances_le_choose_two (≤ n.choose 2, sharp unordered-pair ceiling) in Erdos98WIP01.lean",
       "PachUpperBound / EFPUpperBound / GuthKatzBaseline / Erdos98WeakConjecture / Erdos98StrongConjecture as typed Props in Erdos98WIP01.lean",
       "strong_imp_weak (h(n)/n→∞ ⟹ h(n)≥n eventually) in Erdos98WIP01.lean",
-      "weak_imp_tendsto (weak conj ⟹ h(n)→∞, non-vacuity check) in Erdos98WIP01.lean"
+      "weak_imp_tendsto (weak conj ⟹ h(n)→∞, non-vacuity check) in Erdos98WIP01.lean",
+      "tendsto_const_mul_div_log_atTop (c·n/log n → ∞ via Real.isLittleO_log_id_atTop + reciprocal), guthKatz_imp_tendsto (GuthKatzBaseline ⟹ Tendsto h atTop atTop) in Erdos98WIP01.lean (0 axioms, 0 sorries; host-verified v4.31.0 fresh-parent-olean)"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -50,10 +51,14 @@
       "The distance map is symmetric, so it factors through Sym2 (Fin n); routing the off-diagonal image through Sym2.mk.uncurry and applying Sym2.card_image_offDiag gives the sharp ceiling numDistinctDistances P ≤ n.choose 2 (halving the crude n·(n−1)).",
       "The strong conjecture h(n)/n→∞ is stated as Filter.Tendsto (fun n => (h n:ℝ)/n) atTop atTop; the weak conjecture as ∀ᶠ n, n ≤ h n. strong_imp_weak proves the former entails the latter (one_le_div + eventually_ge_atTop 1), so the two typed statements are correctly related, not independent guesses.",
       "weak_imp_tendsto shows the weak statement already forces h(n)→∞ (tendsto_atTop_mono with id), confirming the Prop is non-vacuous.",
-      "Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n), and Guth–Katz Ω(n/log n) are now typed Props (PachUpperBound/EFPUpperBound/GuthKatzBaseline) flagged as imported assumptions — the comment-only bounds of the scaffold are now checkable Lean statements."
+      "Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n), and Guth–Katz Ω(n/log n) are now typed Props (PachUpperBound/EFPUpperBound/GuthKatzBaseline) flagged as imported assumptions — the comment-only bounds of the scaffold are now checkable Lean statements.",
+      "The DIVERGENCE h(n)→∞ is unconditionally provable (a theorem), not open: the imported Guth–Katz Ω(n/log n) baseline already forces it, since c·n/log n → ∞. Only the RATE h(n)/n→∞ (strong conjecture) and h(n)≥n (weak) remain open. This sharpens weak_imp_tendsto, which derived the same divergence from the OPEN weak conjecture."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Combine the envelope into h n ≤ n.choose 2 given a general-position witness (existence of GP configs for all n is the missing constructive piece).",
+      "State the compatibility of PachUpperBound with the weak conjecture (n ≤ h < n^{log₂3}) as a consistency lemma."
+    ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
