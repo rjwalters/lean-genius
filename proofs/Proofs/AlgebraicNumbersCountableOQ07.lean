@@ -269,4 +269,102 @@ theorem transcendental_isGδ_and_algebraic_not_isGδ :
     IsGδ {x : ℝ | Transcendental ℤ x} ∧ ¬ IsGδ {x : ℝ | IsAlgebraic ℤ x} :=
   ⟨isGδ_setOf_transcendental, not_isGδ_setOf_isAlgebraic⟩
 
+/-! ### Complex analogue: the `Gδ` / not-`Gδ` dichotomy in `ℂ`
+
+The category results already crossed to `ℂ` (`isMeagre_setOf_isAlgebraic_complex`,
+`dense_setOf_transcendental_complex`).  The finer **Borel-hierarchy** dichotomy transfers too:
+the transcendental complex numbers are a `Gδ` set, while the algebraic ones — though `Fσ`
+(countable) — are **not** `Gδ`, exactly as in `ℝ`.  The `Gδ` half is identical bookkeeping
+(`Algebraic.countable ℤ ℂ` ⟹ `Fσ` ⟹ complement `Gδ`).  The not-`Gδ` half needs *density of the
+algebraic numbers in `ℂ`*, which — unlike `ℝ`, where `ℚ` alone suffices — has no analogue in the
+parent chain and is not in Mathlib.  We supply it via the **Gaussian rationals** `ℚ + ℚ·i`: each
+`a + b·i` with `a, b ∈ ℚ` is algebraic over `ℤ` (`IsAlgebraic.add`/`.mul` applied to
+`isAlgebraic_ratCast_complex` and `isAlgebraic_I`), and they are dense because `ℚ` is dense along
+both the real and imaginary axes.  All axiom-free. -/
+
+/-- **`i` is algebraic over `ℤ`.**  It is a root of `X² + 1` (`Complex.I_sq : I² = -1`); the
+    polynomial is nonzero since its degree-`2` coefficient is `1`. -/
+theorem isAlgebraic_I : IsAlgebraic ℤ Complex.I := by
+  refine ⟨Polynomial.X ^ 2 + 1, ?_, ?_⟩
+  · intro h
+    have hc := congrArg (fun p => Polynomial.coeff p 2) h
+    simp [Polynomial.coeff_one] at hc
+  · simp [Complex.I_sq]
+
+/-- **Every rational, cast into `ℂ`, is algebraic over `ℤ`.**  `q = q.num / q.den` is a root of
+    the nonzero integer polynomial `C q.den · X − C q.num`.  The `ℂ`-valued companion of
+    `isAlgebraic_ratCast`, supplying the real parts of the Gaussian rationals. -/
+theorem isAlgebraic_ratCast_complex (q : ℚ) : IsAlgebraic ℤ ((q : ℂ)) := by
+  refine ⟨Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num, ?_, ?_⟩
+  · intro hp
+    have h1 : (Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num).coeff 1
+        = (q.den : ℤ) := by
+      simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
+        mul_one, Polynomial.coeff_C, if_neg (one_ne_zero), sub_zero]
+    rw [hp, Polynomial.coeff_zero] at h1
+    exact q.den_nz (by exact_mod_cast h1.symm)
+  · have hden : (q.den : ℂ) ≠ 0 := by exact_mod_cast q.den_nz
+    have he : (Polynomial.aeval (q : ℂ))
+        (Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num)
+        = (q.den : ℂ) * (q : ℂ) - (q.num : ℂ) := by simp
+    rw [he, Rat.cast_def]
+    field_simp
+    ring
+
+/-- **The complex algebraic numbers are dense.**  The Gaussian rationals `a + b·i`
+    (`a, b ∈ ℚ`) are algebraic over `ℤ` (`isAlgebraic_ratCast_complex`, `isAlgebraic_I`,
+    `IsAlgebraic.add`/`.mul`) and dense in `ℂ`: given `z` and `r > 0`, pick `a, b ∈ ℚ` with
+    `|z.re − a|, |z.im − b| < r/2` (`Rat.denseRange_cast`), so
+    `‖z − (a + b·i)‖ ≤ |z.re − a| + |z.im − b| < r` (`Complex.norm_le_abs_re_add_abs_im`). -/
+theorem dense_setOf_isAlgebraic_complex : Dense {z : ℂ | IsAlgebraic ℤ z} := by
+  rw [Metric.dense_iff]
+  intro z r hr
+  have hr2 : (0 : ℝ) < r / 2 := by positivity
+  obtain ⟨a, ha⟩ := Metric.denseRange_iff.mp Rat.denseRange_cast z.re (r / 2) hr2
+  obtain ⟨b, hb⟩ := Metric.denseRange_iff.mp Rat.denseRange_cast z.im (r / 2) hr2
+  rw [Real.dist_eq] at ha hb
+  refine ⟨(a : ℂ) + (b : ℂ) * Complex.I, ?_, ?_⟩
+  · rw [Metric.mem_ball, Complex.dist_eq]
+    have hre : ((a : ℂ) + (b : ℂ) * Complex.I - z).re = (a : ℝ) - z.re := by simp
+    have him : ((a : ℂ) + (b : ℂ) * Complex.I - z).im = (b : ℝ) - z.im := by simp
+    calc ‖(a : ℂ) + (b : ℂ) * Complex.I - z‖
+        ≤ |((a : ℂ) + (b : ℂ) * Complex.I - z).re|
+            + |((a : ℂ) + (b : ℂ) * Complex.I - z).im| :=
+          Complex.norm_le_abs_re_add_abs_im _
+      _ = |(a : ℝ) - z.re| + |(b : ℝ) - z.im| := by rw [hre, him]
+      _ = |z.re - (a : ℝ)| + |z.im - (b : ℝ)| := by rw [abs_sub_comm (a : ℝ), abs_sub_comm (b : ℝ)]
+      _ < r / 2 + r / 2 := by gcongr
+      _ = r := by ring
+  · exact (isAlgebraic_ratCast_complex a).add ((isAlgebraic_ratCast_complex b).mul isAlgebraic_I)
+
+/-- **The complex algebraic numbers are not `Gδ`.**  A dense `Gδ` set is residual
+    (`residual_of_dense_Gδ`, with `dense_setOf_isAlgebraic_complex`), but the algebraic complex
+    numbers are meagre (`isMeagre_setOf_isAlgebraic_complex`), and a nonempty Baire space has no
+    set that is both residual and meagre (`not_isMeagre_of_mem_residual`).  The `ℂ`-analogue of
+    `not_isGδ_setOf_isAlgebraic`. -/
+theorem not_isGδ_setOf_isAlgebraic_complex : ¬ IsGδ {z : ℂ | IsAlgebraic ℤ z} := by
+  intro hGδ
+  have hres : {z : ℂ | IsAlgebraic ℤ z} ∈ residual ℂ :=
+    residual_of_dense_Gδ hGδ dense_setOf_isAlgebraic_complex
+  exact not_isMeagre_of_mem_residual hres isMeagre_setOf_isAlgebraic_complex
+
+/-- **The complex transcendentals are a dense `Gδ`.**  The algebraic complex numbers are
+    countable (`Algebraic.countable ℤ ℂ`), hence `Fσ`, so their complement — the
+    transcendentals — is `Gδ` (`Set.Countable.isGδ_compl`).  Upgrades the mere comeagreness
+    behind `dense_setOf_transcendental_complex` to the transcendentals *being* a dense `Gδ`. -/
+theorem isGδ_setOf_transcendental_complex : IsGδ {z : ℂ | Transcendental ℤ z} := by
+  have hcompl : {z : ℂ | Transcendental ℤ z} = {z : ℂ | IsAlgebraic ℤ z}ᶜ := by
+    ext z; simp [Transcendental, Set.mem_compl_iff, Set.mem_setOf_eq]
+  rw [hcompl]
+  exact (Algebraic.countable ℤ ℂ).isGδ_compl
+
+/-- **Complex capstone.**  The algebraic/transcendental split of `ℂ` reproduces the same
+    Borel-hierarchy separation as `ℝ` (`transcendental_isGδ_and_algebraic_not_isGδ`): the
+    transcendentals are a dense `Gδ` while the algebraic numbers, though `Fσ`, are not `Gδ`.
+    Completes the `ℂ`-transfer of the entry's descriptive-set dichotomy, resting on the new
+    density of the algebraic numbers in `ℂ` via the Gaussian rationals. -/
+theorem transcendental_isGδ_and_algebraic_not_isGδ_complex :
+    IsGδ {z : ℂ | Transcendental ℤ z} ∧ ¬ IsGδ {z : ℂ | IsAlgebraic ℤ z} :=
+  ⟨isGδ_setOf_transcendental_complex, not_isGδ_setOf_isAlgebraic_complex⟩
+
 end AlgebraicNumbersCountableOQ07
