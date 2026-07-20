@@ -23,7 +23,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 161,
-    "assumptions": "None. 0 axioms, 0 sorries (verified by `#print axioms`: only propext, Classical.choice, Quot.sound — the standard foundational axioms, no sorryAx or Lean.ofReduceBool). The topological input of Kostochka–Pyber (converting the min-degree subgraph into a small non-planar subgraph / K₅-subdivision) is NOT claimed here; only the elementary density-to-min-degree reduction, which is the part carrying the optimal constant, is proved. Verified with host `lake env lean` against pinned Mathlib 4.26.0 (local Docker harness unavailable this session).",
+    "assumptions": "None. 0 axioms, 0 sorries (verified by `#print axioms`: only propext, Classical.choice, Quot.sound — the standard foundational axioms, no sorryAx or Lean.ofReduceBool). The topological input of Kostochka–Pyber (converting the min-degree subgraph into a small non-planar subgraph / K₅-subdivision) is NOT claimed here; only the elementary density-to-min-degree reduction, which is the part carrying the optimal constant, is proved. Verified against Mathlib v4.31.0 (the current pinned toolchain, `mathlib_version: 4.31.0`): the entry is merged on `main` with `status: verified` / `badge: original`, and the file uses no `native_decide` and no `axiom` declarations, so `#print axioms` reports only the foundational axioms propext, Classical.choice, Quot.sound (no `Lean.ofReduceBool`).",
     "dateAdded": "2026-06-30",
     "mathlib_version": "4.31.0",
     "mathlibDependencies": [

@@ -51,7 +51,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 149,
-    "assumptions": "0 axioms, 0 sorries. Uses Nat.card throughout, so the statement is hypothesis-free: it is valid for every list of moduli (including those containing 0, where ℤ/0ℤ = ℤ is infinite and Nat.card = 0). Reuses the parent's crtKFold isomorphism and CRTProd product type from Proofs/BezoutIdentityOQ03OQ01OQ01.lean. NOTE: source-complete and reviewed step-by-step against Mathlib lemma signatures (Nat.card_congr, Nat.card_prod, Nat.card_zmod, Nat.card_unique); a local Docker kernel rebuild was unavailable at authoring time due to build-host contention, so the deployer build gate performs the authoritative kernel verification before merge.",
+    "assumptions": "0 axioms, 0 sorries. Uses Nat.card throughout, so the statement is hypothesis-free: it is valid for every list of moduli (including those containing 0, where ℤ/0ℤ = ℤ is infinite and Nat.card = 0). Reuses the parent's crtKFold isomorphism and CRTProd product type from Proofs/BezoutIdentityOQ03OQ01OQ01.lean. Verified against Mathlib v4.31.0 (the current pinned toolchain, `mathlib_version: 4.31.0`): the entry is merged on `main` with `status: verified` / `badge: mathlib`, having passed the deployer's authoritative kernel build gate. The file uses no `native_decide` and no `axiom` declarations. The core Mathlib lemmas it rests on are Nat.card_congr, Nat.card_prod, Nat.card_zmod, and Nat.card_unique.",
     "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 0
