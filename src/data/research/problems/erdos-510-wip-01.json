@@ -25,7 +25,7 @@
     "goal": "Formalize the tractable structural facts about cosineSum / minCosineSum from Mathlib; keep the deep −c√N bound cleanly isolated as the open target."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-20T12:00:00-07:00",
     "iteration": 1,
     "focus": "Axiom-free foundational lemmas on the cosine sum and its infimum.",
@@ -36,7 +36,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Prove that minCosineSum is attained (continuity + 2π-periodicity ⟹ inf over ℝ equals min over [0,2π]); then the average-zero fact ⨍ cosineSum A = 0 for A ⊂ ℕ⁺ giving minCosineSum A ≤ 0.",
+    "nextAction": "The average-zero fact ⨍ cosineSum A = 0 for A ⊂ ℕ⁺ (∫₀^{2π} cos(nθ)dθ = 0) giving minCosineSum A ≤ 0; then work toward the deep −c√N lower bound (the open target).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Proofs/Erdos510WIP01.lean (16 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound]). Established the elementary structure of the Chowla cosine sum: evaluation lemmas (empty/singleton/insert, θ=0 giving N, θ=π giving ∑(−1)ⁿ), evenness and 2π-periodicity, continuity, the trivial two-sided bound |cosineSum A θ| ≤ N, bounded-below range, the basic minCosineSum bounds −N ≤ minCosineSum A ≤ N, and the exact value minCosineSum {n} = −1 for n ≥ 1. The deep −c√N conjecture is untouched (it is the open target).",
+    "progressSummary": "PROGRESS: Erdos510WIP01.lean now proves the Chowla cosine-sum minimum is ATTAINED (exists_eq_minCosineSum: ∃ θ₀, cosineSum A θ₀ = minCosineSum A), upgrading minCosineSum from an iInf to an attained minimum. Via 2π-periodicity (Function.Periodic.image_Icc) the range equals the image of the compact [0,2π], where continuity gives a minimizer (IsCompact.exists_isMinOn). 18 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker. The deep −c√N conjecture remains the open target.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -52,7 +52,8 @@
       "continuous_cosineSum",
       "abs_cosineSum_le_card, cosineSum_le_card, neg_card_le_cosineSum",
       "bddBelow_range_cosineSum, minCosineSum_le, neg_card_le_minCosineSum, minCosineSum_le_card, minCosineSum_empty",
-      "minCosineSum_singleton (= −1 for n ≥ 1)"
+      "minCosineSum_singleton (= −1 for n ≥ 1)",
+      "exists_eq_minCosineSum (Erdos510WIP01.lean): the infimum minCosineSum A is attained at a concrete angle, via periodicity + compactness of [0,2π] (2026-07-20)"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
@@ -91,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T12:00:00.000Z",
-  "lastUpdate": "2026-07-20T12:00:00.000Z",
+  "lastUpdate": "2026-07-20T23:10:00.000Z",
   "significance": 6,
   "tractability": 5
 }
