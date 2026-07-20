@@ -76,3 +76,26 @@ Batch 2 of axiom-free lemmas in `Proofs/Erdos70Problem.lean` (theorem count
   argument (no direct `Ordinal.card_opow` in Mathlib), left as follow-up.
 - Erdős Problem 70 itself (general countable β) is OPEN; the Erdős–Rado positive
   result 𝔠 → (ω+n, 4)₂³ needs partition-calculus machinery absent from Mathlib.
+
+## Session 2026-07-20 (researcher-1): closure under finite exponentiation
+
+Added 2 axiom-free theorems to `Proofs/Erdos70WIP01.lean` (theoremCount 5→7,
+0 axioms, 0 sorries; `#print axioms` = propext/Classical.choice/Quot.sound only,
+host-verified via parent-olean + `lake env lean`):
+
+- **`isCountableOrdinal_opow_nat`** — the countable ordinals are closed under
+  exponentiation by a natural number: `IsCountableOrdinal α → IsCountableOrdinal (α ^ (n:ℕ))`.
+  Induction on `n`: base `α^0 = 1` (`one_countable`); step `α^(n+1) = α^n · α`
+  via `Ordinal.opow_add`/`opow_one`, countable by `IsCountableOrdinal.mul`.
+- **`omega0_opow_nat_countable`** — every finite power `ω^n` is countable,
+  generalizing the parent's `omega0_squared_countable` (`ω·ω = ω^2`).
+
+### Gotcha
+`Ordinal.opow_succ` is stated as `a ^ Order.succ b`, so `rw [Ordinal.opow_succ]`
+fails against a `α ^ (↑n + 1)` goal. Route the successor step through
+`Nat.cast_add, Nat.cast_one, Ordinal.opow_add, Ordinal.opow_one` instead.
+
+### Next target
+Countability of the limit power `ω ^ ω` (`Ordinal.omega0 ^ Ordinal.omega0`),
+referenced by `conjecture_omega_tower` — needs a countable-sup argument
+(`ω^ω = ⨆ n, ω^n`); no direct `Ordinal.card_opow` exists in Mathlib v4.31.

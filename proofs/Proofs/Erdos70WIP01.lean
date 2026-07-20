@@ -60,6 +60,26 @@ theorem isCountableOrdinal_mul {α β : Ordinal}
         mul_le_mul' hα hβ
     _ = Cardinal.aleph0 := Cardinal.aleph0_mul_aleph0
 
+/-- **Closure under natural-number exponentiation.**  If `α` is a countable
+ordinal then so is `α ^ n` for every `n : ℕ`.  Proof by induction on `n`:
+`α ^ 0 = 1` is countable, and `α ^ (n+1) = α ^ n * α` is countable by
+`IsCountableOrdinal.mul`.  This generalises the parent's `omega0_squared_countable`
+(`ω * ω = ω ^ 2`) to all finite powers. -/
+theorem isCountableOrdinal_opow_nat {α : Ordinal} (hα : IsCountableOrdinal α) :
+    ∀ n : ℕ, IsCountableOrdinal (α ^ (n : Ordinal))
+  | 0 => by simpa using one_countable
+  | (n + 1) => by
+      have hstep : α ^ ((n + 1 : ℕ) : Ordinal) = α ^ (n : Ordinal) * α := by
+        rw [Nat.cast_add, Nat.cast_one, Ordinal.opow_add, Ordinal.opow_one]
+      rw [hstep]
+      exact (isCountableOrdinal_opow_nat hα n).mul hα
+
+/-- Every finite power of `ω` is a countable ordinal: `ω ^ n` is countable for all
+`n : ℕ`.  (`ω ^ 2 = ω · ω` recovers the parent's `omega0_squared_countable`.) -/
+theorem omega0_opow_nat_countable (n : ℕ) :
+    IsCountableOrdinal (Ordinal.omega0 ^ (n : Ordinal)) :=
+  isCountableOrdinal_opow_nat omega0_countable n
+
 /-- The open conjecture specializes to the flagship case `𝔠 → (ω, n)₂³`. -/
 theorem erdos_70_conjecture_imp_omega (h : erdos_70_conjecture) (n : ℕ)
     (hn : 2 ≤ n) : conjecture_omega n :=
