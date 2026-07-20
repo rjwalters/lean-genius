@@ -80,8 +80,8 @@
       "endLine": 70
     },
     "title": "The Erdős-Faudree-Schelp Conjecture",
-    "content": "**ErdosFaudreeSchelpConjecture:**\n\nThere exists c > 0 such that for all graphs G with minimum degree ≥ k and girth > 2s:\n\n|{cycle lengths in G}| ≥ c · k^s\n\nThis quantifies how many distinct cycle lengths are forced by the degree and girth conditions.",
-    "mathContext": "The ≫ notation in the original statement means 'grows at least as fast as' up to constants. The formal statement makes the constant c explicit.",
+    "content": "**ErdosFaudreeSchelpConjecture:**\n\nThere exists c > 0 such that for all graphs G with minimum degree ≥ k and girth > 2s:\n\n|{cycle lengths in G}| ≥ ⌊c · k^s⌋₊\n\nThis quantifies how many distinct cycle lengths are forced by the degree and girth conditions. The bound is stated in floor form (the discrete reading of \"≫ k^s\"): when c · k^s < 1 the bound is trivially 0, the correct degenerate behavior (e.g. a perfect matching has min degree 1 and arbitrarily high girth but no cycles at all).",
+    "mathContext": "The ≫ notation in the original statement means 'grows at least as fast as' up to constants. The formal statement makes the constant c explicit and uses the natural-number floor ⌊·⌋₊ so the count is a genuine cardinality; the bare real bound ≥ c · k^s is false at small k·s where c · k^s ∈ (0,1) yet no cycle length is forced.",
     "significance": "key",
     "relatedConcepts": [
       "Extremal bounds",
