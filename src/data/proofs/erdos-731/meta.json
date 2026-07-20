@@ -110,15 +110,15 @@
       "id": "key-structural",
       "title": "Key Structural Results",
       "startLine": 291,
-      "endLine": 385,
+      "endLine": 384,
       "summary": "Develops the algebraic identities behind divisibility of $\\binom{2n}{n}$ by $2n+1$. Proves the absorption identity `central_binom_succ_identity` ($(n+1)\\binom{2n+1}{n} = (2n+1)\\binom{2n}{n}$), `coprime_two_n_succ_n_succ` ($\\gcd(2n+1,n+1)=1$), and `dvd_central_implies_sq_dvd` (if $(2n+1)\\mid\\binom{2n}{n}$ then $(2n+1)^2 \\mid \\binom{2n+1}{n}$). Combined with `prime_sq_not_dvd_choose` ($p^2 \\nmid \\binom{p}{k}$ for $0<k<p$), this yields two proofs that a prime $2n+1$ never divides $\\binom{2n}{n}$ (`not_dvd_central_prime`, `not_dvd_central_prime_alt`). Closes with `choose_succ_gt_central` ($\\binom{2n+1}{n} > \\binom{2n}{n}$), the strict inequality powering `upper_bound_trivial`.",
       "mathContext": "$(n+1)\\binom{2n+1}{n} = (2n+1)\\binom{2n}{n}$ with $\\gcd(2n+1,n+1)=1$. Prime $2n+1 \\nmid \\binom{2n}{n}$ since $v_p\\!\\binom{p}{k}=1$ rules out $(2n+1)^2 \\mid \\binom{2n+1}{n}$."
     },
     {
       "id": "sharp-bound",
       "title": "Sharp Bound: Value Exactly 3 when 3 ∤ C(2n,n)",
-      "startLine": 386,
-      "endLine": 439,
+      "startLine": 385,
+      "endLine": 425,
       "summary": "Extracts a sharp small-value case of the EGRS conjecture. Proves `leastNonDivisor_ge_three` (if $2 \\mid m$ then the least non-divisor is $\\ge 3$) and `leastNonDivCentral_le_three_of_ndvd` (if $3 \\nmid \\binom{2n}{n}$ then $\\le 3$), combining to `leastNonDivCentral_eq_three_of_ndvd`: for every $n \\ge 1$ with $3 \\nmid \\binom{2n}{n}$, the least non-divisor is *exactly* 3 (since $1 \\mid$ and $2 \\mid \\binom{2n}{n}$ by `two_divides_central`). By Kummer this holds for the infinite family of $n$ whose base-3 digits are all $\\le 1$ ($1,3,4,9,10,12,13,27,\\dots$). Concrete witnesses `leastNonDivCentral_three_eq_three` ($C(6,3)=20$) and `leastNonDivCentral_four_eq_three` ($C(8,4)=70$).",
       "mathContext": "For $n \\ge 1$ with $3 \\nmid \\binom{2n}{n}$: $\\text{leastNonDivCentral}\\,n = 3$. The hypothesis holds iff every base-3 digit of $n$ is $\\le 1$ (Kummer) — an infinite family, sharply refining the $\\le 2n+1$ bound."
     }
