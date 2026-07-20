@@ -91,7 +91,8 @@
       "**Fermat's prime collapse is one point of a modulus-n congruence.** The parent evaluated (#necklaces)·n = ∑_{d∣n} φ(n/d) k^d only at n = p; the divisor sum is congruent to 0 modulo n for every n, and Fermat is the two-term n = p case.",
       "**Integrality of an orbit count is the whole content.** The congruence n ∣ ∑_{d∣n} φ(n/d) k^d says nothing more than that the number of necklaces — the quotient of the divisor sum by n — is a whole number; the necklace count is the explicit witness.",
       "**A prime power gives a clean single sum.** Over p^a the divisor lattice is a chain, so the sum reindexes to ∑_{i=0}^{a} φ(p^{a−i}) k^{p^i}; the top exponent contributes the bare k^{p^a}, making the Fermat shape p^a ∣ (lower terms) + k^{p^a} explicit.",
-      "**It is the Gauss/totient congruence, not Euler.** What the rotation orbit count yields at arbitrary modulus is the totient-weighted divisor congruence, a genuine Fermat generalization that is distinct from Euler's k^{φ(n)} ≡ 1 (which needs gcd(k,n) = 1 and a different argument). Stating the congruence the count actually produces keeps the entry honest."
+      "**It is the Gauss/totient congruence, not Euler.** What the rotation orbit count yields at arbitrary modulus is the totient-weighted divisor congruence, a genuine Fermat generalization that is distinct from Euler's k^{φ(n)} ≡ 1 (which needs gcd(k,n) = 1 and a different argument). Stating the congruence the count actually produces keeps the entry honest.",
+      "**Higher prime-power moduli are Fermat plus an explicit correction.** Isolating the top divisor d = p^a (where φ(p^0) = 1) rewrites the prime-power congruence as p^a ∣ (∑_{i<a} φ(p^{a−i}) k^{p^i}) + k^{p^a}: the bare Fermat shape k^{p^a} corrected by a totient-weighted tail over the strictly-lower p-power exponents k^{p^i}, i < a. At a = 1 the tail collapses to the single term φ(p)·k, recovering Fermat's (p−1)k; for a ≥ 2 the tail is genuinely present, so the necklace count already encodes more than a bare exponent congruence."
     ],
     "prerequisites": [
       "The parent's prime specialization burnside-counting-oq-06 (Fermat via necklaces) and the gallery's divisor-form count card_necklaces_mul_eq_sum_divisors (burnside-counting-oq-03-oq-02-oq-01-oq-02)",
@@ -155,11 +156,19 @@
       "mathContext": "$\\sum_{d\\mid n}\\varphi(n/d)\\,k^{d}\\equiv 0 \\pmod n$"
     },
     {
-      "id": "prime-power",
-      "title": "Prime-power reindexing and congruence",
+      "id": "prime-power-reindex",
+      "title": "Prime-power reindexing of the divisor sum",
       "startLine": 73,
+      "endLine": 80,
+      "summary": "sum_divisors_prime_pow_eq reindexes the totient divisor sum over the chain divisor lattice of p^a into a single sum over exponents: ∑_{d∣p^a} φ(p^a/d) k^d = ∑_{i=0}^{a} φ(p^{a−i}) k^{p^i}. Nat.sum_divisors_prime_pow rewrites the index set to {p^i}_{i≤a} and a termwise Nat.pow_div supplies φ(p^a / p^i) = φ(p^{a−i}). This is a pure combinatorial identity — no divisibility yet.",
+      "mathContext": "$\\sum_{d\\mid p^{a}}\\varphi(p^{a}/d)\\,k^{d}=\\sum_{i=0}^{a}\\varphi(p^{a-i})\\,k^{p^{i}}$"
+    },
+    {
+      "id": "prime-power-congruence",
+      "title": "Prime-power modulus congruence",
+      "startLine": 81,
       "endLine": 100,
-      "summary": "sum_divisors_prime_pow_eq reindexes ∑_{d∣p^a} φ(p^a/d) k^d = ∑_{i=0}^{a} φ(p^{a−i}) k^{p^i} (Nat.sum_divisors_prime_pow + termwise Nat.pow_div); totient_prime_pow_sum_dvd and totient_prime_pow_sum_modEq give p^a ∣ ∑_{i=0}^{a} φ(p^{a−i}) k^{p^i}.",
+      "summary": "totient_prime_pow_sum_dvd specializes the general divisibility to a prime-power modulus, p^a ∣ ∑_{i=0}^{a} φ(p^{a−i}) k^{p^i}, by transporting totient_divisor_sum_dvd across the reindexing identity; totient_prime_pow_sum_modEq restates it in Nat.ModEq form (≡ 0 [MOD p^a]).",
       "mathContext": "$p^{a}\\mid \\sum_{i=0}^{a}\\varphi(p^{a-i})\\,k^{p^{i}}$"
     },
     {
