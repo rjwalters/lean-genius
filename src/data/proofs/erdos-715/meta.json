@@ -73,7 +73,7 @@
       "tashkinov_theorem: 4-regular → 3-regular subgraph (sorry)",
       "regular_has_3_regular: r ≥ 4 → 3-regular subgraph (sorry)",
       "alon_friedland_kalai: 4-regular + edge → 3-regular subgraph (sorry)",
-      "K4: complete graph on Fin 4, proved 3-regular",
+      "K4: complete graph on Fin 4; K4_is_3_regular stated (sorry)",
       "K4_minimal_3_regular: K₄ has no proper 3-regular subgraph (sorry)",
       "berge_sauer_answer: proved from tashkinov_theorem with witness r = 4",
       "RegularSubgraphThreshold: general threshold function for k-regular subgraphs",
@@ -147,10 +147,10 @@
     {
       "id": "counterexamples",
       "title": "Counterexamples for r < 4",
-      "summary": "K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness.",
+      "summary": "K₄ (Fin 4, complete graph) is stated to be 3-regular with no proper 3-regular subgraph; both theorems (`K4_is_3_regular`, `K4_minimal_3_regular`) are `sorry`. Intended as the sharpness witness that the threshold is exactly 4.",
       "startLine": 98,
       "endLine": 122,
-      "mathContext": "Verified: K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness."
+      "mathContext": "Formal statements (unproved): K₄ (Fin 4, complete graph) stated 3-regular with no proper 3-regular subgraph; both theorems are `sorry`. Intended sharpness witness that the threshold is exactly 4."
     },
     {
       "id": "berge-sauer",
