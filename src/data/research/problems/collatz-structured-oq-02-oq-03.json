@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1 2026-07-13, axiom-free, offline EXIT 0 [propext/Classical.choice/Quot.sound only]): Part XII (cont.) in CertUnique.lean quantifies the no-two-consecutive-odd shape law into a sharp count bound 2*(count true) <= length+1, i.e. triplings <= halvings+1 over every certified window (affValid_count_true_le_count_false_succ). This is the exact combinatorial content of odd/even adjacency but stays strictly weaker than the drop criterion 3^a<2^b. tao_2019 stays BLOCKED.",
+    "progressSummary": "PROGRESS (2026-07-19): proved the intrinsic length budget affValid_length_le_of_pow (v.length ≤ 2b+1) via the 2-adic-valuation divisibility invariant affValid_two_pow_count_false_dvd, unconditionalizing affValid_prefix_deriveVec_pow (new affValid_prefix_deriveVec_pow_of_pow — every certificate is a prefix of deriveVec (2b+1), no length hypothesis). 4 axiom-free theorems in CertUnique, docker green. tao_2019 still BLOCKED (infra, not a density push).",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -73,7 +73,11 @@
       "count_true_le_of_noTwoTrue / two_mul_count_true_le_of_isChain in CollatzStructuredOQ02OQ03CertUnique.lean (general: IsChain no-true-true => 2*count true <= length+1)",
       "count_true_add_count_false (Bool partition identity count true + count false = length)",
       "affValid_two_mul_count_true_le : AffValid v c d => 2*(v.count true) <= v.length+1",
-      "affValid_count_true_le_count_false_succ : AffValid v c d => v.count true <= v.count false + 1"
+      "affValid_count_true_le_count_false_succ : AffValid v c d => v.count true <= v.count false + 1",
+      "affValid_two_pow_count_false_dvd: AffValid v c d → 2^(v.count false) ∣ c (2-adic valuation invariant; odd steps preserve v₂, even steps drop it). CertUnique. Axioms: propext/Quot.sound only.",
+      "affValid_count_false_le_of_pow: AffValid v (2^b) r → v.count false ≤ b (≤ b halvings for the dyadic class).",
+      "affValid_length_le_of_pow: AffValid v (2^b) r → v.length ≤ 2*b+1 (intrinsic length budget).",
+      "affValid_prefix_deriveVec_pow_of_pow: fully-unconditional prefix maximality (deriveVec (2b+1) contains every certificate for the class; no length hypothesis)."
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -95,7 +99,9 @@
       "Constant-term bound (Part XIII, ConstBound.lean): D+1 <= 3^(#odd)*(d+1) for the certified affine window. The mother module never bounded the constant D=(affOrbit v (c,d)).2. Odd fold d->3d+1 multiplies by 3 (the +1 absorbed by the (d+1) slack), even fold d->floor(d/2) shrinks; short structural induction generalized over both coordinates.",
       "This closes the gap that forced affine_residue_attainsBelow / parityVector_attainsBelow to carry a hand-checked D<r side condition, which only forces the drop at the boundary member m=0. With the constant bound, the leading criterion A<c ALONE gives a closed-form threshold 3^(#odd)*(d+1) <= (c-A)*m past which every class member drops (affValid_attainsBelow_of_large). So 3^a<2^b implies the class drops for cofinitely many members, no boundary caveat (affValid_attainsBelow_of_large_pow, classical 3^a<2^b headline).",
       "Part XIV (ExceptionalSet.lean): the non-dropping set of a determined-drop class (A<c) is EXPLICITLY FINITE, bounded by B=3^(#odd)·(d+1). Packaged Part XIII's division threshold B≤(c−A)·m into division-free m≥B (since A<c ⟹ c−A≥1 ⟹ (c−A)m≥m), then contrapositive: ¬AttainsBelow(c·m+d) ⟹ m<B, so the exceptional set ⊆ range B, card ≤ B uniformly in N. Answers the standing nextStep 'pin the exact finite set of non-dropping members per class' — it's a subset of [0,3^a(d+1)) of size ≤3^a(d+1). ★Built by IMPORTING the light companion ConstBound (NOT re-declaring): its olean builds green via targeted `LAKE_UNSAFE=1 ./bin/lake build Proofs.CollatzStructuredOQ02OQ03ConstBound` (64s, Mathlib cached) — the mother module is the only one at the SIGBUS ceiling. ★Finset.filter over a Prop pred needs `open scoped Classical`.",
-      "Part XII (cont.): the \"no two consecutive odd steps\" shape constraint quantifies to a sharp count bound 2*(v.count true) <= v.length + 1 for any valid certificate (general list lemma: any IsChain for \"true forces next false\" has at most ceil(len/2) trues, two-step budget induction). Corollary affValid_count_true_le_count_false_succ: #odd(triplings) <= #even(halvings) + 1 over every certified window. HONEST REACH: a <= b+1 is strictly weaker than the drop criterion 3^a < 2^b, so adjacency alone does NOT force a drop; this is the exact combinatorial content of odd/even adjacency, no more."
+      "Part XII (cont.): the \"no two consecutive odd steps\" shape constraint quantifies to a sharp count bound 2*(v.count true) <= v.length + 1 for any valid certificate (general list lemma: any IsChain for \"true forces next false\" has at most ceil(len/2) trues, two-step budget induction). Corollary affValid_count_true_le_count_false_succ: #odd(triplings) <= #even(halvings) + 1 over every certified window. HONEST REACH: a <= b+1 is strictly weaker than the drop criterion 3^a < 2^b, so adjacency alone does NOT force a drop; this is the exact combinatorial content of odd/even adjacency, no more.",
+      "The length budget v.length ≤ 2b+1 (flagged open since Part XII) is DONE via the 2-adic valuation of the lead coefficient c: every AffValid step needs c even; odd (c↦3c) preserves v₂(c), even (c↦c/2) drops it by 1, giving 2^(count false) ∣ c. For c=2^b this forces count false ≤ b, and with count true ≤ count false+1 gives length ≤ 2·count false+1 ≤ 2b+1.",
+      "Lemma-name gotcha (v4.31): for 2^a ∣ 2^b → a ≤ b use pow_dvd_pow_iff (divisibility/NoZeroDivisors, works on ℕ); pow_le_pow_iff_right! fails instance synth on ℕ and pow_dvd_pow_iff_le_right is not a resolvable identifier."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -123,7 +129,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-07-13",
+  "lastUpdate": "2026-07-19",
   "leanFiles": [
     {
       "path": "Proofs/CollatzStructured.lean",

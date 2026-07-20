@@ -440,4 +440,74 @@ theorem affValid_count_true_le_count_false_succ {v : List Bool} {c d : ℕ}
   have h2 := count_true_add_count_false v
   omega
 
+/-! ## Part XII (cont.) — the intrinsic length budget `v.length ≤ 2b+1`
+
+The count bound above (`affValid_count_true_le_count_false_succ`) controls the *odd* steps in
+terms of the *even* steps but says nothing about the total length: it leaves
+`v.length ≤ 2·(count false) + 1` still hostage to how large `count false` can be.  This section
+supplies the missing half — a bound on the *even* steps `count false ≤ b` for the dyadic engine
+`AffValid v (2^b) r` — and combines the two into the intrinsic budget `v.length ≤ 2b+1`.
+
+The mechanism is the 2-adic valuation of the leading coefficient `c`.  Every `AffValid` step
+requires `c` even, and:
+  * an **odd** step (`true`) sends `c ↦ 3c`, which *preserves* `v₂(c)` (3 is odd);
+  * an **even** step (`false`) sends `c ↦ c/2`, which *drops* `v₂(c)` by one.
+So each halving consumes one factor of 2 from `c`, giving the divisibility invariant
+`2^(count false) ∣ c`.  For the dyadic class `c = 2^b` this reads `2^(count false) ∣ 2^b`, i.e.
+`count false ≤ b`: there can be at most `b` halvings before the leading coefficient runs out of
+2s.  This makes `affValid_prefix_deriveVec_pow` unconditional — the fuel budget `2b+1` is a
+theorem about the certificate, not a hypothesis. -/
+
+/-- **Halvings consume factors of 2 from the leading coefficient.**  Every valid certificate `v`
+for the affine class `c·m + d` satisfies `2^(v.count false) ∣ c`: each even (halving) step peels
+one factor of 2 off `c`, while odd (tripling) steps `c ↦ 3c` preserve its 2-adic valuation. -/
+theorem affValid_two_pow_count_false_dvd {v : List Bool} {c d : ℕ}
+    (hv : AffValid v c d) : 2 ^ (v.count false) ∣ c := by
+  induction hv with
+  | nil => simp
+  | @odd v c d hc hd hrec ih =>
+    have hcount : (true :: v).count false = v.count false := by simp
+    rw [hcount]
+    -- `2^k ∣ 3 * c` and `Coprime (2^k) 3` give `2^k ∣ c`
+    have hcop : Nat.Coprime (2 ^ (v.count false)) 3 :=
+      Nat.Coprime.pow_left _ (by decide)
+    exact hcop.dvd_of_dvd_mul_left ih
+  | @even v c d hc hd hrec ih =>
+    have hcount : (false :: v).count false = v.count false + 1 := by simp
+    rw [hcount, pow_succ, mul_comm (2 ^ v.count false) 2]
+    -- goal: `2 * 2^k ∣ c`; rewrite `c = 2 * (c / 2)` and use `ih : 2^k ∣ c/2`
+    have hc2 : c = 2 * (c / 2) := by omega
+    rw [hc2]
+    exact mul_dvd_mul_left 2 ih
+
+/-- **At most `b` halvings for the dyadic class.**  For the residue class `r (mod 2^b)`, any
+valid certificate `v` has `v.count false ≤ b`: the divisibility invariant
+`2^(count false) ∣ 2^b` forces the number of even steps below `b`. -/
+theorem affValid_count_false_le_of_pow {v : List Bool} {b r : ℕ}
+    (hv : AffValid v (2 ^ b) r) : v.count false ≤ b := by
+  have hdvd : 2 ^ (v.count false) ∣ 2 ^ b := affValid_two_pow_count_false_dvd hv
+  exact (pow_dvd_pow_iff (by norm_num) (by simp)).mp hdvd
+
+/-- **Intrinsic length budget for the dyadic engine.**  Every valid certificate `v` for the
+residue class `r (mod 2^b)` has `v.length ≤ 2b+1`.  Combines `count false ≤ b`
+(`affValid_count_false_le_of_pow`) with `count true ≤ count false + 1`
+(`affValid_count_true_le_count_false_succ`): `length = count true + count false ≤ 2·count false + 1
+≤ 2b+1`.  This is the bound that `affValid_prefix_deriveVec_pow` previously had to *assume*. -/
+theorem affValid_length_le_of_pow {v : List Bool} {b r : ℕ}
+    (hv : AffValid v (2 ^ b) r) : v.length ≤ 2 * b + 1 := by
+  have hf := affValid_count_false_le_of_pow hv
+  have ht := affValid_count_true_le_count_false_succ hv
+  have hsum := count_true_add_count_false v
+  omega
+
+/-- **Prefix maximality for the dyadic engine — fully unconditional.**  For the residue class
+`r (mod 2^b)`, *every* valid certificate `v` (no length hypothesis) is a prefix of the canonical
+window `deriveVec (2b+1) (2^b) r`.  This is `affValid_prefix_deriveVec_pow` with its input budget
+`v.length ≤ 2b+1` now discharged intrinsically by `affValid_length_le_of_pow`, so the canonical
+window `deriveVec (2b+1) …` provably contains every certificate for the class. -/
+theorem affValid_prefix_deriveVec_pow_of_pow {b r : ℕ} {v : List Bool}
+    (hv : AffValid v (2 ^ b) r) :
+    v <+: deriveVec (2 * b + 1) (2 ^ b) r :=
+  affValid_prefix_deriveVec_pow hv (affValid_length_le_of_pow hv)
+
 end CollatzStructuredOQ02OQ03
