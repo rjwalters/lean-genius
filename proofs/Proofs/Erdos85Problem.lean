@@ -181,4 +181,50 @@ The monotonicity question is subtle because adding vertices might create
 The Kővári-Sós-Turán theorem gives bounds on C₄-free graphs:
 A C₄-free graph on n vertices has at most (1/2)n^{3/2} + n/2 edges.
 -/
+
+/-
+## Foundational lemmas (axiom-free)
+
+The asymptotics `f(n) = (1+o(1))√n`, the base case `f(4) = 2`, the Ramsey
+reformulation and the monotonicity question itself require substantial extremal
+graph theory beyond current Mathlib and stay documented above only.  The
+structural facts about `C4`, `containsC4`, and `starGraph` are, however, fully
+machine-checkable.  All lemmas below are axiom-free
+(`propext / Classical.choice / Quot.sound` only). -/
+
+/-- The four defining edges of the 4-cycle `C₄`: `0–1–2–3–0`. -/
+theorem C4_adj_zero_one : C4.Adj 0 1 := by simp [C4]
+theorem C4_adj_one_two : C4.Adj 1 2 := by simp [C4]
+theorem C4_adj_two_three : C4.Adj 2 3 := by simp [C4]
+theorem C4_adj_three_zero : C4.Adj 3 0 := by simp [C4]
+
+/-- The "diagonals" of `C₄` are non-edges: `0` and `2` are not adjacent. -/
+theorem C4_not_adj_zero_two : ¬ C4.Adj 0 2 := by simp [C4]
+
+/-- Containing a `C₄` is preserved under passing to a larger graph on the same
+vertex set (adding edges cannot destroy a copy of `C₄`). -/
+theorem containsC4_mono {V : Type*} {G G' : SimpleGraph V} (h : G ≤ G')
+    (hG : containsC4 V G) : containsC4 V G' := by
+  obtain ⟨f, hf, hadj⟩ := hG
+  exact ⟨f, hf, fun i j hij => h (hadj i j hij)⟩
+
+/-- **Stars are `C₄`-free.** The star graph `K_{1,n}` contains no 4-cycle: every
+edge of a star meets the centre `0`, but a `C₄` has two disjoint edges (`0–1` and
+`2–3`), which would force two distinct cycle-vertices onto the centre — impossible
+by injectivity.  This is the extremal reason stars appear in the Ramsey
+reformulation of `f(n)`. -/
+theorem starGraph_not_containsC4 (n : ℕ) :
+    ¬ containsC4 (Fin (n + 1)) (starGraph n) := by
+  rintro ⟨f, hinj, hadj⟩
+  have e01 := hadj 0 1 C4_adj_zero_one
+  have e23 := hadj 2 3 C4_adj_two_three
+  simp only [starGraph] at e01 e23
+  have h01 : f 0 = 0 ∨ f 1 = 0 := e01.imp And.left And.left
+  have h23 : f 2 = 0 ∨ f 3 = 0 := e23.imp And.left And.left
+  rcases h01 with h0 | h1 <;> rcases h23 with h2 | h3
+  · exact absurd (hinj (h0.trans h2.symm)) (by decide)
+  · exact absurd (hinj (h0.trans h3.symm)) (by decide)
+  · exact absurd (hinj (h1.trans h2.symm)) (by decide)
+  · exact absurd (hinj (h1.trans h3.symm)) (by decide)
+
 end Erdos85

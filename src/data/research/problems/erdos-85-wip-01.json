@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: added 7 axiom-free foundational lemmas to the previously definitions-only Erdos85Problem.lean (the four C4 edges + a diagonal non-edge, containsC4 monotonicity, and starGraph_not_containsC4 = stars are C4-free, the extremal fact behind the Ramsey reformulation). Deep results (asymptotics, f(4)=2, Ramsey connection, monotonicity) remain documented-only. Meta synced (theoremCount 0 -> 7).",
+    "builtItems": [
+      "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
+      "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
+      "containsC4_mono (C4 copy survives adding edges) in Erdos85Problem.lean",
+      "starGraph_not_containsC4 (stars are C4-free) in Erdos85Problem.lean"
+    ],
+    "insights": [
+      "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
+      "Stars are C4-free: a C4 has two DISJOINT edges (0-1 and 2-3); in a star every edge meets the centre 0, so both disjoint edges would put two distinct cycle-vertices at 0, contradicting injectivity of the embedding. Only the two disjoint edges are needed for the proof.",
+      "SimpleGraph structure-literal Adj fields have no Decidable instance, so `decide` fails on C4.Adj 0 1; `by simp [C4]` unfolds the field and evaluates the arithmetic disjunction instead."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
