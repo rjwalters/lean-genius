@@ -166,7 +166,7 @@
     },
     "type": "concept",
     "title": "Trivial Upper Bound",
-    "content": "**L_le_x:**\n\nL(x) ≤ x:\n```lean\naxiom L_le_x : ∀ x : ℕ, x ≥ 2 → L x ≤ x\n```\n\n**Reason:** A sequence has at most x elements (since each aᵢ ≤ x and they're distinct), so at most x partial products exist.",
+    "content": "**Trivial Upper Bound:**\n\nFor x ≥ 2, L(x) ≤ x. This bound is noted informally in the source (Part V, \"Trivial Bounds\") as motivating context; it is not a formal axiom of the file.\n\n**Reason:** A sequence has at most x elements (since each aᵢ ≤ x and they're distinct), so at most x partial products exist.",
     "significance": "supporting",
     "mathContext": "$L(x) \\leq x$ since a sequence in $\\{1, \\ldots, x\\}$ has at most $x$ distinct elements, hence at most $x$ partial products. This is the trivial bound; the interesting question is how close to $x$ the count $L(x)$ can get.",
     "relatedConcepts": [
@@ -303,7 +303,7 @@
     },
     "type": "concept",
     "title": "Siegel's Theorem Consequence",
-    "content": "**siegel_theorem_consequence:**\n\nFrom Siegel's theorem, L(x) < x for all x:\n```lean\naxiom siegel_theorem_consequence :\n  ∀ x : ℕ, x ≥ 2 → ∃ C : ℝ, C < x ∧ (L x : ℝ) ≤ C\n```\n\n**Siegel's Theorem (1929):** An elliptic curve E/ℚ has only finitely many integral points. This constrains how partial products can simultaneously be squares.",
+    "content": "**Siegel's Theorem Consequence:**\n\nFrom Siegel's theorem, for x ≥ 2 there is a bound C < x with L(x) ≤ C, so L(x) < x. This consequence is discussed informally in the source (Part V); it is not a formal axiom of the file — the formalized statement is the o(x) bound `L_little_o_x`.\n\n**Siegel's Theorem (1929):** An elliptic curve E/ℚ has only finitely many integral points. This constrains how partial products can simultaneously be squares.",
     "mathContext": "A fundamental theorem in Diophantine geometry.",
     "significance": "key",
     "relatedConcepts": [
@@ -326,7 +326,7 @@
     },
     "type": "concept",
     "title": "Hyperelliptic Curves Connection",
-    "content": "**hyperelliptic_connection:**\n\nThe problem reduces to counting integral points on hyperelliptic curves:\n```lean\naxiom hyperelliptic_connection :\n  ∀ a, IsStrictlyIncreasing a →\n  ∃ curve_degree ≥ 3, squareCount a ≤ a.length\n```\n\n**Key insight:** If a₁·a₂·...·aⱼ = y² and a₁·...·aₖ = z² (j < k), then we get a relation on a hyperelliptic curve y² = f(x). Bui-Pratt-Zaharescu analyze these systematically.",
+    "content": "**Hyperelliptic Curves Connection:**\n\nThe problem reduces to counting integral points on hyperelliptic curves. This connection is described informally in the source (Part V); it is not a formal axiom of the file.\n\n**Key insight:** If a₁·a₂·...·aⱼ = y² and a₁·...·aₖ = z² (j < k), then we get a relation on a hyperelliptic curve y² = f(x). Bui-Pratt-Zaharescu analyze these systematically.",
     "significance": "key",
     "relatedConcepts": [
       "Algebraic curves",
