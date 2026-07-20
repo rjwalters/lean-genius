@@ -57,7 +57,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 220,
-    "assumptions": "1 axiom: roney_dougal_tracey. 0 sorries.",
+    "assumptions": "1 axiom: roney_dougal_tracey. BUILD-BLOCKED (issue #39058): the file does not currently compile. The small-case theorems f3/f4 (numSubgroups 3 = 6, numSubgroups 4 = 30) are discharged by native_decide computing Nat.card (Subgroup (Equiv.Perm (Fin n))) — a brute-force enumeration of the entire subgroup lattice of S₄ (~2^24 subsets with closure checks per candidate). This is compile-infeasible: two independent verification attempts pegged one core at 100% CPU for 3h41m and >22min with zero progress (not an OOM — pure compute pathology). Consequently these small-case values are NOT machine-checked in the current source, and the entry has not been verified end-to-end. A feasible reproof of the S₄ subgroup count (explicit subgroups + Lagrange, as in SylowTheoremOQ04) is deep formalization work tracked under #39058 / epic #37508.",
     "theoremCount": 9,
     "definitionCount": 5
   },
@@ -71,7 +71,7 @@
       "**Most subgroups are 2-groups**: The overwhelming majority of subgroups of S_n have order a power of 2.",
       "**Wreath product structure**: The key construction is (Z/2Z) ≀ S_{⌊n/4⌋} — wreath products of 2-groups with symmetric groups on a quarter of the points.",
       "**Gaussian binomial coefficients**: The count of subgroups of (Z/2Z)^k involves Gaussian binomials over GF(2), contributing the k²/4 term.",
-      "**Axiom reduction to 1**: The original 6-axiom formalization was reduced to 1 through Lean proofs: f1 via Subsingleton→Unique chain, f2-f4 via native_decide, leaving only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption."
+      "**Axiom reduction to 1 (build-blocked)**: The formalization was restructured to leave only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption, with f1 proved via a Subsingleton→Unique chain. The intended discharge of f2-f4 by native_decide does not compile, however: the S₄ subgroup-lattice enumeration is compile-infeasible (see assumptions / issue #39058), so those small cases remain unverified in the current source."
     ],
     "prerequisites": [
       "Symmetric groups $S_n$ and their subgroup structure",
