@@ -73,6 +73,14 @@
       "startLine": 159,
       "endLine": 204,
       "summary": "maxLines n = C(n,2); DeficitAchievable n c ⇔ maxLines n − c representable. not_deficitAchievable_iff and forbidden_line_counts: for n ≥ 4 exactly C(n,2)−1 and C(n,2)−3 are unreachable; exactly_two_gaps: the gap set has cardinality 2."
+    },
+    {
+      "id": "part-iv-robustness",
+      "title": "Part IV: Robustness — Larger Collinear Groups Don't Change the Gap Set",
+      "startLine": 205,
+      "endLine": 255,
+      "summary": "Confirms the two generators $2,5$ are *canonical*, not merely sufficient: richer collinear groups add no new achievable deficits. `representable_add` shows the representable deficits form a numerical semigroup (closed under addition); `lineDeficit_representable` proves every group deficit $\\mathrm{lineDeficit}\\,k=\\binom{k}{2}-1$ ($k\\ge 3$) already lies in $\\langle 2,5\\rangle$ (the $k=3$ case gives the generator $2$; every $k\\ge 4$ has $\\binom{k}{2}\\ge 6$, hence deficit $\\ge 5$); and `deficit_closed_under_group` combines these so augmenting any achievable configuration by a group of size $k\\ge 3$ preserves representability. The forbidden line counts (gaps $1$ and $3$) are therefore unchanged by allowing collinear groups of any size.",
+      "mathContext": "For all $k\\ge 3$, $\\mathrm{lineDeficit}\\,k=\\binom{k}{2}-1\\in\\langle 2,5\\rangle$, and $\\{$representable deficits$\\}$ is closed under $+$; the gap set $\\{1,3\\}$ is invariant."
     }
   ],
   "conclusion": {
