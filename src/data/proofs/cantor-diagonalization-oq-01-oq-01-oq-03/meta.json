@@ -117,14 +117,21 @@
     },
     {
       "title": "Cantor and König constraints",
+      "startLine": 50,
+      "endLine": 59,
+      "summary": "aleph_lt_contFn (Cantor's ℵ_α < 2^{ℵ_α}, from Cardinal.cantor) and aleph_lt_cof_contFn (König's generalized cf(2^{ℵ_α}) > ℵ_α, one line from lt_cof_power with base 2 > 1 and ℵ₀ ≤ ℵ_α) — the two strict constraints, discharging the parent's stated-only König.",
+      "mathContext": "Cantor: $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$. König: $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$."
+    },
+    {
+      "title": "Classical case and no fixed point",
       "startLine": 61,
-      "endLine": 73,
-      "summary": "aleph_lt_contFn (Cantor), aleph_lt_cof_contFn (König, generalized, from lt_cof_power), and the classical aleph0_lt_cof_continuum; plus contFn_ne_aleph (no fixed point).",
-      "mathContext": "Cantor: $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$. König: $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$ (so $2^{\\aleph_0} \\ne \\aleph_\\omega$). Together they give $2^{\\aleph_\\alpha} \\ne \\aleph_\\alpha$ (no fixed point)."
+      "endLine": 69,
+      "summary": "aleph0_lt_cof_continuum — the classical instance cf(2^{ℵ₀}) > ℵ₀ (specializing α = 0 and rewriting ℵ_0 = ℵ₀), which forbids 2^{ℵ₀} = ℵ_ω since ℵ_ω has countable cofinality; and contFn_ne_aleph, the corollary of Cantor that the continuum function has no fixed point.",
+      "mathContext": "$\\operatorname{cf}(2^{\\aleph_0}) > \\aleph_0$, so $2^{\\aleph_0} \\ne \\aleph_\\omega$; and $2^{\\aleph_\\alpha} \\ne \\aleph_\\alpha$ (no fixed point)."
     },
     {
       "title": "Packaged admissibility constraints",
-      "startLine": 75,
+      "startLine": 71,
       "endLine": 79,
       "summary": "contFn_constraints: the three Easton constraints (Cantor, König, monotonicity) bundled as the necessary conditions on any consistent continuum pattern.",
       "mathContext": "The conjunction $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$, $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$, and $\\alpha\\le\\beta \\Rightarrow 2^{\\aleph_\\alpha}\\le 2^{\\aleph_\\beta}$ — by Easton's theorem, the complete list of ZFC constraints on the continuum function."
