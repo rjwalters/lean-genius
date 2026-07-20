@@ -151,6 +151,80 @@ def knownPracticalNumbers : List ℕ :=
 
 /- ## Why This Problem is Hard -/
 
+/- ## Foundational lemmas (axiom-free)
+
+Elementary structural facts developing the def-only stub: basic representability
+witnesses and bounds, decidability of representability and practicality (a single
+finite powerset search subsuming all future example checks), and small
+worked (non-)examples discharged by that decision procedure. -/
+
+/-- `0` is representable by the empty subset of divisors. -/
+theorem zero_isRepresentable (m : ℕ) : IsRepresentable 0 m :=
+  ⟨∅, Finset.empty_subset _, rfl⟩
+
+/-- Any representable value is at most the sum of all divisors of `m`. -/
+theorem isRepresentable_le_sigma {k m : ℕ} (h : IsRepresentable k m) :
+    k ≤ (divisors m).sum id := by
+  obtain ⟨S, hS, rfl⟩ := h
+  exact Finset.sum_le_sum_of_subset hS
+
+/-- Every divisor of `m` is at most `m`. -/
+theorem mem_divisors_le {m d : ℕ} (h : d ∈ divisors m) : d ≤ m :=
+  Nat.divisor_le h
+
+/-- For `m ≥ 1`, the value `1` is representable (via the divisor `1`). -/
+theorem one_isRepresentable {m : ℕ} (hm : 1 ≤ m) : IsRepresentable 1 m := by
+  refine ⟨{1}, ?_, by simp⟩
+  simp only [divisors, Finset.singleton_subset_iff]
+  exact Nat.one_mem_divisors.mpr (by omega)
+
+/-- For `m ≥ 1`, `m` itself is representable (via the divisor `m`). -/
+theorem isRepresentable_self {m : ℕ} (hm : 1 ≤ m) : IsRepresentable m m := by
+  refine ⟨{m}, ?_, by simp⟩
+  simp only [divisors, Finset.singleton_subset_iff, Nat.mem_divisors]
+  exact ⟨dvd_refl m, by omega⟩
+
+/-- A practical number is positive. -/
+theorem isPractical_pos {m : ℕ} (h : IsPractical m) : 1 ≤ m := h.1
+
+/-- `0` is not practical. -/
+theorem not_isPractical_zero : ¬IsPractical 0 := fun h => by have := h.1; omega
+
+/-- Membership in `PracticalNumbers` unfolds to `IsPractical`. -/
+theorem mem_practicalNumbers_iff {m : ℕ} : m ∈ PracticalNumbers ↔ IsPractical m :=
+  Iff.rfl
+
+/-- Representability is decidable: search the powerset of the divisor set. -/
+instance decidableIsRepresentable (k m : ℕ) : Decidable (IsRepresentable k m) :=
+  decidable_of_iff (∃ S ∈ (divisors m).powerset, S.sum id = k)
+    (by simp only [Finset.mem_powerset, IsRepresentable])
+
+/-- Practicality is decidable (bounded search over `k < m`, each a finite
+powerset search). This subsumes all future example verification. -/
+instance decidableIsPractical (m : ℕ) : Decidable (IsPractical m) :=
+  decidable_of_iff (1 ≤ m ∧ ∀ k, k < m → 1 ≤ k → IsRepresentable k m)
+    (by
+      unfold IsPractical
+      refine and_congr_right (fun _ => ?_)
+      exact ⟨fun h k hk1 hkm => h k hkm hk1, fun h k hkm hk1 => h k hk1 hkm⟩)
+
+/- ## Small worked examples (via the decision procedure) -/
+
+/-- `4` is practical: divisors `{1,2,4}` represent `1,2,3`. -/
+theorem four_practical : IsPractical 4 := by decide
+
+/-- `6` is practical: divisors `{1,2,3,6}` represent `1,…,5`. -/
+theorem six_practical : IsPractical 6 := by decide
+
+/-- `8` is practical. -/
+theorem eight_practical : IsPractical 8 := by decide
+
+/-- `3` is **not** practical: `2` is not a sum of distinct divisors of `3`. -/
+theorem not_practical_three : ¬IsPractical 3 := by decide
+
+/-- `5` is **not** practical: `2` is not a sum of distinct divisors of `5`. -/
+theorem not_practical_five : ¬IsPractical 5 := by decide
+
 end Erdos18
 
 /-
