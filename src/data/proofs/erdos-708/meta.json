@@ -57,7 +57,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 184,
-    "assumptions": "5 axioms: g_exists, g_two, g_three, erdos_suranyi_lower, c. 0 sorries.",
+    "assumptions": "5 axioms: g_exists, g_two, g_three, erdos_suranyi_lower, c. 0 sorries. One illustrative example (line 141, setProduct {6,10} = 60) uses native_decide, adding a Lean.ofReduceBool trust dependency; no claimed result (erdos_708, erdos_708_summary) depends on it.",
     "theoremCount": 3,
     "definitionCount": 7
   },
