@@ -93,7 +93,7 @@ theorem asymptotic_equiv : Tendsto (fun l => v l / u l) atTop (𝓝 1) := by
   have h0 : Tendsto (fun l : ℕ => (-1 : ℝ) ^ l / (l : ℝ)) atTop (𝓝 0) := by
     have hbound : ∀ l : ℕ, ‖(-1 : ℝ) ^ l / (l : ℝ)‖ ≤ 1 / (l : ℝ) := by
       intro l
-      simp [norm_div, norm_pow, Real.norm_natCast]
+      simp [norm_div, norm_pow]
     exact squeeze_zero_norm hbound tendsto_one_div_atTop_nhds_zero_nat
   simpa using (tendsto_const_nhds.add h0)
 
@@ -166,7 +166,10 @@ theorem v_normalizedIncrement_tendsto_zero :
   -- `|(−1)^l| = 1`, hence `(−1)^l = 1 ∨ (−1)^l = −1`.
   have habs : |a| = 1 := by rw [ha_def, abs_pow]; simp
   have hacase : a = 1 ∨ a = -1 := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp habs
-  have hb : (-1 : ℝ) ≤ a := by rcases hacase with h | h <;> rw [h] <;> norm_num
+  have hb : (-1 : ℝ) ≤ a := by
+    rcases hacase with h | h
+    · norm_num [h]
+    · norm_num [h]
   -- Numerator bound `|v(l+1) − v l| ≤ 3` (it equals `−1` or `3`).
   have hnum : |v (l + 1) - v l| ≤ 3 := by
     rw [v_increment, ← ha_def, abs_le]

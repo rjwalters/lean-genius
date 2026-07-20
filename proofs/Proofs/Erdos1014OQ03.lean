@@ -351,7 +351,7 @@ theorem prod_consecutive_ratios_tendsto_one (R : ℕ → ℝ) (m : ℕ)
     Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop (𝓝 1) := by
   have h : Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop
       (𝓝 (∏ _i ∈ Finset.range m, (1 : ℝ))) := by
-    refine tendsto_finset_prod _ (fun i _ => ?_)
+    refine tendsto_finsetProd _ (fun i _ => ?_)
     have hi := hratio.comp (tendsto_add_atTop_nat i)
     simpa [Function.comp_def] using hi
   simpa using h

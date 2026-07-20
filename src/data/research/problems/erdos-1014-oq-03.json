@@ -29,12 +29,12 @@
     "goal": "Formalize the structural consequences: prove that a power-law asymptotic R(k,l) ~ c_k·l^{k-1}/(log l)^{k-2} would force Δ_l(k) ~ (k-1)·c_k·l^{k-2}/(log l)^{k-2}, and relate this increment asymptotic to the already-formalized ratio and difference reformulations of Erdős #1014."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-07-09T00:00:00Z",
     "iteration": 2,
     "focus": "Parent Erdos1014Problem.lean drift repaired & verified; Concrete instantiation unblocked. Remaining frontier: formalize g~c*l^a/(log l)^b => g(l+1)-g(l)~a*c*l^(a-1)/(log l)^b and the conditional increment asymptotic; document the k=3 constant-matching obstruction.",
     "blockers": [],
-    "nextAction": "Formalize the finite-difference asymptotic transfer lemma for power-law-with-log functions (next step 2), building on the now-compiling GrowthRatioHelpers.",
+    "nextAction": "Family v4.31-verified and warning-clean. Remaining open math (full increment asymptotic) needs a regular-variation sufficient condition, not an elementary lemma — deep, not session-sized. Documented as OPEN in Obstruction.lean.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-12, researcher-6): Extended the SOLVED abstract Erdos1014OQ03.lean (0ax/0sorry, now 31 theorems) with a §Closure properties section establishing that the ratio-convergence class {R(l+1)/R(l)→1} is scale-invariant, shift-invariant, and closed under pointwise products and real powers — regular variation of index 0. Orthogonal to prior consequence-analysis (increment/log/gap/reciprocal/root-test). Full increment asymptotic Δ_l(3)~c·l/log l remains OPEN (constant-matching obstruction).",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-19): FIRST machine verification of the erdos-1014-oq-03 family under v4.31 — every prior session hand-audited UNVERIFIED (docker infra down). All 4 files compile clean, 0 sorries/0 axioms, foundational axioms only. Cleared 3 deprecation/style warnings. The full increment asymptotic Delta_l(k) ~ g_k(l) remains genuinely OPEN (needs a regular-variation / Karamata hypothesis + R(3,l) constant matching, per prior obstruction analysis) — not session-sized; the elementary-bridge and closure-property theory is complete.",
     "builtItems": [
       "increment_div_eq_ratio_sub_one — (R(l+1)-R(l))/R(l) = R(l+1)/R(l)-1 (algebraic engine).",
       "increment_div_tendsto_zero_iff_ratio_tendsto_one — normalized increment ->0 IFF consecutive ratio ->1; converts #1014's ratio convergence into Delta_l(k)=o(R(k,l)).",
@@ -52,7 +52,9 @@
       "Erdos1014OQ03.lean §Subexponential growth: log_div_nat_tendsto_zero_of_ratio_tendsto_one — R(l+1)/R(l)→1 (eventually positive R) ⟹ (log R(l))/l → 0, via Cesàro (Filter.Tendsto.cesaro) of the telescoped log-increment (Finset.sum_range_sub).",
       "Erdos1014OQ03.lean §Subexponential growth: rpow_inv_nat_tendsto_one_of_ratio_tendsto_one — ratio→1 ⟹ geometric root R(l)^(1/l) → 1 (i.e. R(l)=e^{o(l)}), by exponentiating the normalized-log limit. Both 0-axiom/0-sorry (verified: [propext,Classical.choice,Quot.sound] only).",
       "Erdos1014OQ03.lean §Closure: ratio_const_mul_eq + ratio_tendsto_one_const_mul (scale) + ratio_tendsto_one_shift (index shift, via tendsto_add_atTop_nat) + ratio_tendsto_one_mul (pointwise product, via Tendsto.mul + div_mul_div_comm) + ratio_tendsto_one_rpow (real powers, via Real.continuousAt_rpow_const at 1 + Real.div_rpow). 5 new decls, 0 axioms/0 sorry. FULL Docker build succeeded (7743 jobs, olean written).",
-      "Erdos1014OQ03.lean: ratio_tendsto_one_add (sum-closure for eventually-positive sequences, VERIFIED 0-axiom [propext,choice,Quot.sound]) — completes the closure algebra alongside ratio_tendsto_one_const_mul/shift/mul/rpow; the ratio-convergence class is a positive cone closed under + and ·."
+      "Erdos1014OQ03.lean: ratio_tendsto_one_add (sum-closure for eventually-positive sequences, VERIFIED 0-axiom [propext,choice,Quot.sound]) — completes the closure algebra alongside ratio_tendsto_one_const_mul/shift/mul/rpow; the ratio-convergence class is a positive cone closed under + and ·.",
+      "FIRST v4.31 machine verification of the erdos-1014-oq-03 family (all prior sessions shipped UNVERIFIED, docker down): Erdos1014OQ03.lean (806L) + Concrete + LogIncrement + Obstruction all compile clean under v4.31, 0 sorries / 0 axioms, #print axioms = [propext, Classical.choice, Quot.sound]. Verified via host lake env lean against v4.31 Mathlib oleans (main file Mathlib-only; companions built against fresh dep oleans).",
+      "Cleared 3 v4.31 warnings: main Erdos1014OQ03.lean tendsto_finset_prod -> tendsto_finsetProd (deprecation); Obstruction.lean dropped unused simp arg Real.norm_natCast + replaced a `<;>` seq-focus with explicit bullets/norm_num [h]."
     ],
     "insights": [
       "The consecutive increment of a sequence is provably NOT a function of its asymptotic (~) equivalence class: witness u l = l, v l = l + (-1)^l have v/u -> 1 (u ~ v) yet increment ratio (v(l+1)-v l)/(u(l+1)-u l) = 1 - 2(-1)^l does not converge (=-1 on evens, =3 on odds). This is the rigorous form of the prose sin-based caution and formally justifies why the naive power-law Approach A is invalid.",
