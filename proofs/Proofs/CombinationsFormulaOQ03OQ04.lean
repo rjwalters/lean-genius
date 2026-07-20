@@ -443,38 +443,61 @@ theorem unimodal_of_nonincreasing {f : ℕ → ℤ} (h : ∀ i, f (i + 1) ≤ f 
 theorem unimodal_const (c : ℤ) : Unimodal (fun _ => c) :=
   unimodal_of_nonincreasing (fun _ => le_refl c)
 
+/-- **Palindromic sequences that rise to the midpoint are unimodal (any degree).**
+A nonnegative sequence `f` supported on `[0, d]`, palindromic there (`f j = f (d - j)`
+for `j ≤ d`), and weakly increasing across the first half (`f j ≤ f (j+1)` whenever
+`2j + 2 ≤ d`), is unimodal with peak at `⌊d/2⌋`.  The falling half is recovered from the
+rising half by reflecting each interior descending step through the palindrome symmetry;
+the single central step of an **odd**-degree array (`d = 2i+1`, where the two middle
+coefficients `f i, f (i+1)` are forced equal by palindromy) is discharged directly, and
+nonnegativity closes the boundary step past the support (`f (d+1) = 0 ≤ f d`).  This
+generalises `unimodal_of_even_palindrome_first_half_mono` to **odd** degrees, and is the
+reusable reduction lemma for Sylvester's theorem: for any symmetric coefficient array,
+unimodality follows from weak monotonicity of its first half alone. -/
+theorem unimodal_of_palindrome_first_half_mono {f : ℕ → ℤ} (d : ℕ)
+    (hnonneg : ∀ j, 0 ≤ f j)
+    (hsupp : ∀ j, d < j → f j = 0)
+    (hpal : ∀ j, j ≤ d → f j = f (d - j))
+    (hmono : ∀ j, 2 * j + 2 ≤ d → f j ≤ f (j + 1)) :
+    Unimodal f := by
+  refine ⟨d / 2, fun i hi => hmono i (by omega), ?_⟩
+  intro i hi
+  rcases lt_or_ge i d with hlt | hge
+  · -- `⌊d/2⌋ ≤ i < d`: reflect the descending step into the rising half
+    have h1 : f (i + 1) = f (d - (i + 1)) := hpal (i + 1) (by omega)
+    have h2 : f i = f (d - i) := hpal i (by omega)
+    rw [h1, h2]
+    rcases lt_or_ge d (2 * (d - i - 1) + 2) with hc | hc
+    · -- exact centre of an odd array (`d = 2i+1`): the two middle coeffs are equal
+      have heq : f i = f (i + 1) := by
+        have hp := hpal i (by omega)
+        rwa [show d - i = i + 1 from by omega] at hp
+      rw [show d - (i + 1) = i from by omega, show d - i = i + 1 from by omega]
+      exact le_of_eq heq
+    · -- interior descending step ↦ ascending step `f (d-i-1) ≤ f (d-i)`
+      have hstep := hmono (d - i - 1) (by omega)
+      rw [show d - i - 1 + 1 = d - i from by omega] at hstep
+      rw [show d - (i + 1) = d - i - 1 from by omega]
+      exact hstep
+  · -- `i ≥ d`: past the support, `f (i+1) = 0 ≤ f i`
+    have hs1 : f (i + 1) = 0 := hsupp (i + 1) (by omega)
+    rw [hs1]; exact hnonneg i
+
 /-- **Even-degree palindromic sequences that rise to the midpoint are unimodal.**
 A nonnegative sequence `f` supported on `[0, 2m]`, palindromic there
 (`f j = f (2m - j)`), and weakly increasing on the first half (`f j ≤ f (j+1)` for
-`j < m`), is unimodal with peak at `m`.  The falling half is recovered from the
-rising half through the palindrome symmetry — reflecting an interior descending step
-`f (i+1) ≤ f i` (with `m ≤ i < 2m`) to the ascending step `f (2m-i-1) ≤ f (2m-i)` —
-and nonnegativity discharges the single boundary step `f (2m+1) = 0 ≤ f (2m)`.  This
-is the clean route to unimodality for a symmetric coefficient array whose left half is
-understood: it is used below for `k = 2`, where the degree `2(n-2)` is even and the
-first half is the explicit ramp `⌊j/2⌋+1`. -/
+`j < m`), is unimodal with peak at `m`.  The even-degree specialisation of
+`unimodal_of_palindrome_first_half_mono` (`d = 2m`, where `2j+2 ≤ 2m ⇔ j < m`); it is
+used below for `k = 2`, where the degree `2(n-2)` is even and the first half is the
+explicit ramp `⌊j/2⌋+1`. -/
 theorem unimodal_of_even_palindrome_first_half_mono {f : ℕ → ℤ} (m : ℕ)
     (hnonneg : ∀ j, 0 ≤ f j)
     (hsupp : ∀ j, 2 * m < j → f j = 0)
     (hpal : ∀ j, j ≤ 2 * m → f j = f (2 * m - j))
     (hmono : ∀ j, j < m → f j ≤ f (j + 1)) :
-    Unimodal f := by
-  refine ⟨m, fun i hi => hmono i hi, ?_⟩
-  intro i hi
-  rcases lt_or_ge i (2 * m) with hlt | hge
-  · -- `m ≤ i < 2m`: reflect into the rising half via palindromy
-    have h1 : f (i + 1) = f (2 * m - (i + 1)) := hpal (i + 1) (by omega)
-    have h2 : f i = f (2 * m - i) := hpal i (by omega)
-    have hstep := hmono (2 * m - (i + 1)) (by omega)
-    rw [show 2 * m - (i + 1) + 1 = 2 * m - i from by omega] at hstep
-    rw [h1, h2]; exact hstep
-  · -- `i ≥ 2m`: past (or at) the top of the support
-    have hs1 : f (i + 1) = 0 := hsupp (i + 1) (by omega)
-    rcases eq_or_lt_of_le hge with heq | hgt
-    · -- `i = 2m`: `f (2m+1) = 0 ≤ f (2m)`
-      have := hnonneg i; omega
-    · -- `i > 2m`: both endpoints vanish
-      have hs2 : f i = 0 := hsupp i (by omega); omega
+    Unimodal f :=
+  unimodal_of_palindrome_first_half_mono (2 * m) hnonneg hsupp hpal
+    (fun j hj => hmono j (by omega))
 
 /-- **Direct geometric-sum form of the q-number.**  `[n]_q = ∑_{i<n} qⁱ`.  The parent file
     only provides the `(q-1)`-multiplied identity `qNumber_geometric`; this un-multiplied sum
@@ -627,6 +650,39 @@ theorem qBinomCoeff_unimodal_two (n : ℕ) :
       have hdiv : (j / 2 : ℕ) ≤ (j + 1) / 2 := Nat.div_le_div_right (Nat.le_succ j)
       have : ((j / 2 : ℕ) : ℤ) ≤ (((j + 1) / 2 : ℕ) : ℤ) := by exact_mod_cast hdiv
       linarith
+
+/-! ### The general reduction: unimodality ⇐ first-half monotonicity (all `n, k`)
+
+Sylvester's theorem for a *fixed* `k` now reduces to a single inequality: the coefficient
+array of `[n choose k]_q` is symmetric (`qBinom_X_coeff_symm'`), nonnegative
+(`qBinom_X_coeff_nonneg`), and supported on `[0, k(n-k)]` (`qBinom_X_natDegree`), so its
+unimodality follows from the general palindrome criterion the *moment* one knows the array
+is weakly increasing across its first half.  The lemma below packages the three structural
+facts, leaving future `k`-cases to supply only `coeff j ≤ coeff (j+1)` for `2j+2 ≤ k(n-k)`.
+This is exactly the shape in which `k = 2` (`qBinomCoeff_unimodal_two`) was proved, and the
+`k = 0, 1` cases (non-increasing arrays) are the degenerate instance with an empty first
+half. -/
+
+open Polynomial in
+/-- **Sylvester's theorem reduces to first-half monotonicity.**  For `k ≤ n`, if the
+coefficient sequence of `[n choose k]_q` is weakly increasing across its first half —
+`(qBinom X n k).coeff j ≤ (qBinom X n k).coeff (j+1)` whenever `2j + 2 ≤ k(n-k)` — then the
+whole sequence is unimodal.  The falling half, the central step, and the tail past the
+degree are all supplied by `unimodal_of_palindrome_first_half_mono` from the already-proved
+nonnegativity, degree, and palindromy of the Gaussian polynomial.  This is the reusable
+reduction: any future proof of Sylvester unimodality for a given `k` need only establish the
+first-half inequality. -/
+theorem qBinomCoeff_unimodal_of_first_half_mono {n k : ℕ} (h : k ≤ n)
+    (hmono : ∀ j, 2 * j + 2 ≤ k * (n - k) →
+      (qBinom (X : ℤ[X]) n k).coeff j ≤ (qBinom (X : ℤ[X]) n k).coeff (j + 1)) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n k).coeff j) := by
+  apply unimodal_of_palindrome_first_half_mono (k * (n - k))
+  · intro j; exact qBinom_X_coeff_nonneg n k j
+  · intro j hj
+    apply coeff_eq_zero_of_natDegree_lt
+    rw [qBinom_X_natDegree h]; omega
+  · intro j hj; exact qBinom_X_coeff_symm' h hj
+  · exact hmono
 
 end QBinomialCoefficients
 

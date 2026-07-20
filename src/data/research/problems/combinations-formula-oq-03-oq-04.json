@@ -700,7 +700,9 @@
       "Unimodality API + base cases k<=1 DONE (CombinationsFormulaOQ03OQ04Unimodal.lean): IsCoeffUnimodal predicate fills the Mathlib gap (no Unimodal predicate for integer sequences). isCoeffUnimodal_of_antitone: a non-increasing coeff sequence is unimodal (peak 0). qNumber_X_coeff: coeff array of qNumber X n is [j<n]. qBinom_X_coeff_one: coeffs of [n,1]_q are [j<n]. qBinom_X_unimodal_zero/_one: [n,0]_q and [n,1]_q coeff sequences are unimodal. VERIFIED docker 0-axiom. k>=2 (genuine rise-then-fall, needs sl2/O'Hara) remains the open crux.",
       "FORK DISCOVERED: two parallel unimodality developments on main. CombinationsFormulaOQ03OQ04.lean (PR #39392) uses predicate Unimodal (ℕ→ℤ) and ALREADY proves k=0,1,2 + the palindrome criterion unimodal_of_even_palindrome_first_half_mono. CombinationsFormulaOQ03OQ04Unimodal.lean (PR #39438) uses a different predicate IsCoeffUnimodal and was stuck at k≤1; its stated next-step (re-prove k=2) was duplicative.",
       "Resolved the fork with isCoeffUnimodal_iff_unimodal_coeff: the predicates are provably equivalent (forward = specialise blocks to single steps; backward = telescope adjacent steps into monotone blocks by induction on the gap). Transports k=2 (and any future Unimodal-based result) into IsCoeffUnimodal for free; qBinom_X_unimodal_two now holds without re-proof.",
-      "Going forward, prove new k-cases ONCE against Unimodal (which has the palindrome criterion + coefficient machinery) and transport via the bridge; do not re-develop IsCoeffUnimodal-specific proofs."
+      "Going forward, prove new k-cases ONCE against Unimodal (which has the palindrome criterion + coefficient machinery) and transport via the bridge; do not re-develop IsCoeffUnimodal-specific proofs.",
+      "General palindrome→unimodal criterion (any degree, odd included): unimodal_of_palindrome_first_half_mono in CombinationsFormulaOQ03OQ04.lean. A nonneg sequence supported on [0,d], palindromic (f j = f(d-j)), and weakly rising while 2j+2≤d is unimodal with peak ⌊d/2⌋. The odd-degree central step (d=2i+1, f i = f(i+1) forced equal by palindromy) is the case the prior even-only lemma could not reach.",
+      "The whole Sylvester problem for a fixed k now reduces to ONE inequality: qBinomCoeff_unimodal_of_first_half_mono (k≤n) packages nonnegativity (qBinom_X_coeff_nonneg), degree/support (qBinom_X_natDegree), and palindromy (qBinom_X_coeff_symm) — any future k-case need only supply coeff j ≤ coeff (j+1) for 2j+2 ≤ k(n-k)."
     ],
     "builtItems": [
       "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
@@ -714,7 +716,10 @@
       "qBinom_X_reflect + qBinom_X_coeff_symm/_symm' in CombinationsFormulaOQ03OQ04.lean (researcher-10, 2026-07-12, VERIFIED 0-axiom/0-sorry, propext/Classical/Quot only): COEFFICIENT PALINDROMY over ℤ[X] — reflect (k*(n-k)) (qBinom X n k) = qBinom X n k for k≤n. The integral coefficient-level form of the field identity qBinom_reciprocal, proved directly over ℤ[X] by induction on q-Pascal using Polynomial.reflect: reflecting the FIRST Pascal expansion A+X^{k+1}B (reflect_add + reflect_mul, with reflect(k+1)(X^{k+1})=1 and reflect at degree k*(n-k) fixed by IH+natDegree) yields X^{n-k}A+B = the SECOND Pascal expansion (qBinom_pascal'). Corollaries: qBinom_X_coeff_symm (coeff j = coeff (revAt (k(n-k)) j) via coeff_reflect) and qBinom_X_coeff_symm' (coeff j = coeff (k(n-k)-j) for j≤k(n-k), the a_j=a_{D-j} symmetric array of Sylvester). This is the rigorous SYMMETRIC half of symmetric-unimodal; interior unimodality (Proctor/sl₂) still open.",
       "IsCoeffUnimodal + isCoeffUnimodal_of_antitone + qNumber_X_coeff + qBinom_X_coeff_one + qBinom_X_unimodal_zero/_one in Proofs/CombinationsFormulaOQ03OQ04Unimodal.lean (docker-VERIFIED axiom-free)",
       "isCoeffUnimodal_iff_unimodal_coeff (bridge: IsCoeffUnimodal p ↔ Unimodal p.coeff) in CombinationsFormulaOQ03OQ04Unimodal.lean",
-      "qBinom_X_unimodal_two (k=2 in IsCoeffUnimodal form, transported via bridge) in CombinationsFormulaOQ03OQ04Unimodal.lean"
+      "qBinom_X_unimodal_two (k=2 in IsCoeffUnimodal form, transported via bridge) in CombinationsFormulaOQ03OQ04Unimodal.lean",
+      "unimodal_of_palindrome_first_half_mono (CombinationsFormulaOQ03OQ04.lean) — general any-degree palindrome+first-half-mono ⇒ Unimodal; 0 axiom, 0 sorry.",
+      "unimodal_of_even_palindrome_first_half_mono refactored to a one-line corollary of the general lemma (d=2m).",
+      "qBinomCoeff_unimodal_of_first_half_mono (CombinationsFormulaOQ03OQ04.lean) — Sylvester reduction lemma: first-half monotonicity ⇒ unimodal for all n,k; 0 axiom, 0 sorry."
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
@@ -726,9 +731,9 @@
       "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array.",
       "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels."
     ],
-    "progressSummary": "PROGRESS: Unified the two forked unimodality developments. Added isCoeffUnimodal_iff_unimodal_coeff (IsCoeffUnimodal p ↔ Unimodal p.coeff) and transported k=2 (qBinom_X_unimodal_two). 0 sorry, 0 axiom. k≥3 (sl2/O_Hara) remains the open crux."
+    "progressSummary": "PROGRESS: Reduced Sylvester unimodality for every (n,k) to a single first-half-monotonicity inequality. Added a general any-degree palindrome→unimodal criterion (odd degrees now covered, generalising the previous even-only lemma) and the packaged reduction qBinomCoeff_unimodal_of_first_half_mono. Base/small cases k=0,1,2 already discharged upstream. Open crux k≥3: supply the first-half monotone inequality (still needs sl₂/hard-Lefschetz or O Hara)."
   },
   "currentState": "Bridged the two forked unimodality predicates (researcher-1): isCoeffUnimodal_iff_unimodal_coeff proves IsCoeffUnimodal p ↔ Unimodal p.coeff, unifying CombinationsFormulaOQ03OQ04Unimodal.lean (IsCoeffUnimodal, was k≤1) with CombinationsFormulaOQ03OQ04.lean (Unimodal, has k=0,1,2 + palindrome criterion). k=2 transported (qBinom_X_unimodal_two), no re-proof. 0 axioms. k≥3 open.",
-  "lastUpdate": "2026-07-20T00:00:00.000Z",
+  "lastUpdate": "2026-07-20",
   "nextAction": "Prove new k-cases against Unimodal + palindrome criterion and transport via the bridge (do not re-fork IsCoeffUnimodal). k≥3 needs sl2/hard-Lefschetz (Proctor 1982) or O_Hara (1990) — research-grade, not started."
 }
