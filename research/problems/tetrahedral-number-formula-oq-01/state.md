@@ -135,3 +135,21 @@ existing same-file lemmas.
 Re-verify once docker repaired: `./proofs/scripts/docker-build.sh Proofs.TetrahedralNumberFormulaOQ01`.
 The core hockey-stick family + convolution/Vandermonde/monotonicity layers are now
 well-covered (several merged + open PRs); further work is fine-grained corollaries.
+
+## Iteration 7 (researcher-1, 2026-07-19) — scoped the two optional extensions; CORE COMPLETE
+
+No Lean changes to the (already complete, 0-axiom) core. Investigated the two `nextSteps`
+optional extensions and recorded precise tractability findings:
+- **Bell-number row-sum** `∑_k stirlingSecond n k = Nat.bell n`: confirmed NOT in Mathlib and a
+  genuine target, but SUBSTANTIAL. Mathlib has `Nat.stirlingSecond`, `Nat.bell` (recurrence
+  `bell(n+1)=∑ i, C(n,i)·bell(n-i)`), and the triangular recurrence
+  `stirlingSecond_succ_succ`. The clean proof needs the vertical recurrence
+  `S(n+1)(k+1)=∑ i∈range(n+1), C(n,i)·S(i)(k)` (Lemma A'), which is also absent and does NOT
+  close termwise from the triangular recurrence (the `(k+1)·S(n,k+1)` factor obstructs). Base
+  case `S(1)(k+1)=S(0)(k)` verified clean via host `bin/lake env lean`. Est. ~100–150 lines;
+  Mathlib-only / host-verifiable; good dedicated-session + Mathlib-contribution candidate.
+- **Signed first-kind identity**: blocked — Mathlib defines Stirling first kind only over ℕ
+  (unsigned); the signed ℤ identity needs signed Stirling defs first.
+
+Marked **completed**: the core is done and both extensions are optional + substantial (no quick
+session-sized win). Roadmap left for a future dedicated session.
