@@ -20,7 +20,7 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. Core Sylow theorems derived from Mathlib.GroupTheory.Sylow.",
-    "lineCount": 246,
+    "lineCount": 240,
     "theoremCount": 10,
     "definitionCount": 1,
     "originalContributions": [
@@ -54,56 +54,56 @@
       "id": "imports-header",
       "title": "Imports and Historical Documentation",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 67,
       "summary": "Imports Mathlib's Sylow theory modules and provides an extensive docstring covering the three Sylow theorems, their historical context (Sylow 1872, Cauchy 1845), the Wiedijk #72 classification, and a worked example: classifying groups of order 15 as cyclic using Sylow counting."
     },
     {
       "id": "sylow-structure",
       "title": "Sylow Structure Background",
-      "startLine": 67,
-      "endLine": 78,
+      "startLine": 68,
+      "endLine": 74,
       "summary": "Opens the SylowTheorems namespace and explains Mathlib's Sylow p G type: an element P : Sylow p G represents a Sylow p-subgroup, with the underlying Subgroup G accessed via coercion ↑P."
     },
     {
       "id": "sylow-i",
       "title": "First Sylow Theorem: Existence and Order",
-      "startLine": 80,
-      "endLine": 103,
+      "startLine": 75,
+      "endLine": 99,
       "summary": "Two theorems: sylow_existence (Nonempty (Sylow p G) for any prime p) and sylow_card (the Sylow p-subgroup order equals p^{v_p(|G|)}, the maximal p-power divisor of |G|). Both delegate to Mathlib."
     },
     {
       "id": "sylow-ii",
       "title": "Second Sylow Theorem: Conjugacy and Isomorphism",
-      "startLine": 105,
-      "endLine": 128,
+      "startLine": 100,
+      "endLine": 124,
       "summary": "sylow_conjugacy: any two Sylow p-subgroups P, Q satisfy ∃ g, g • P = Q (transitive group action). sylow_isomorphic: they are MulEquiv-isomorphic via Sylow.equiv. Together these show all Sylow p-subgroups are structurally identical."
     },
     {
       "id": "sylow-iii",
       "title": "Third Sylow Theorem: Counting Constraints",
-      "startLine": 130,
-      "endLine": 148,
+      "startLine": 125,
+      "endLine": 144,
       "summary": "sylow_count_mod_p: Nat.card (Sylow p G) ≡ 1 [MOD p], proved via card_sylow_modEq_one. sylow_count_dvd_index: the count divides the index of any Sylow subgroup, proved via card_sylow_dvd_index."
     },
     {
       "id": "normality",
       "title": "Uniqueness, Normality, and the Equivalence",
-      "startLine": 150,
-      "endLine": 180,
+      "startLine": 145,
+      "endLine": 175,
       "summary": "Three results: sylow_normal_of_eq (if all conjugates of P equal P, P is normal — proved via normalizer_eq_top and Sylow.smul_eq_iff_mem_normalizer); sylow_normal_of_unique (Subsingleton implies normal, since all conjugates are equal by subsingleton); sylow_unique_of_normal (normal implies Unique, via Sylow.unique_of_normal)."
     },
     {
       "id": "cauchy-applications",
       "title": "Cauchy's Theorem and Prime Order Groups",
-      "startLine": 182,
-      "endLine": 203,
+      "startLine": 176,
+      "endLine": 198,
       "summary": "cauchy_from_sylow: p | |G| implies an element of order p (via exists_prime_orderOf_dvd_card). group_of_prime_order_cyclic: groups of prime order are cyclic (via isCyclic_of_prime_card). Both are one-liners using Mathlib."
     },
     {
       "id": "summary-applications",
       "title": "Summary Table and Classification Applications",
-      "startLine": 205,
-      "endLine": 246,
+      "startLine": 199,
+      "endLine": 240,
       "summary": "Summary table of all 10 results. Classification examples: groups of order pq (n_q = 1 since n_q ≡ 1 mod q and n_q | p), groups of order p² (abelian), simple group tests. Ends with #check verification of all theorems."
     }
   ],
@@ -206,7 +206,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 246,
+    "lineCount": 240,
     "path": "Proofs/SylowTheorem.lean",
     "axiomCount": 0,
     "sorries": 0,
