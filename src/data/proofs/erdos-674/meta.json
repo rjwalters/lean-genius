@@ -81,7 +81,7 @@
       "title": "Part III: The Coprime Case",
       "startLine": 88,
       "endLine": 97,
-      "summary": "Proves $\\gcd(x,y) \\ne 1$ for any solution, equivalently $\\gcd(x,y) > 1$. Uses the fact that coprime $x,y$ force contradictory $p$-adic valuations in $x^x y^y = z^z$.",
+      "summary": "States (proof deferred, `sorry`) that $\\gcd(x,y) \\ne 1$ for any solution, equivalently $\\gcd(x,y) > 1$. The intended argument: coprime $x,y$ force contradictory $p$-adic valuations in $x^x y^y = z^z$.",
       "mathContext": "$\\\\gcd(x,y) > 1$ for every solution. If $\\\\gcd(x,y)=1$ and $p|x$, then $p^x | z^z$ forces contradictions."
     },
     {
@@ -105,7 +105,7 @@
       "title": "Part VI: Mills' Constraint",
       "startLine": 122,
       "endLine": 144,
-      "summary": "Defines $Q = xy/z^2$ and proves no solutions satisfy $4xy > z^2$ with $x \\ne y$. Shows Ko's example achieves $4xy = z^2$, and defines `MillsTheorem` characterizing the equality case.",
+      "summary": "Defines $Q = xy/z^2$ and states (proof deferred, `sorry`) that no solutions satisfy $4xy > z^2$ with $x \\ne y$, and that Ko's example achieves $4xy = z^2$. Also defines `MillsTheorem` characterizing the equality case.",
       "mathContext": "Mills: $Q = xy/z^2$. No solutions with $4xy > z^2$ and $x \\\\neq y$."
     },
     {
@@ -113,7 +113,7 @@
       "title": "Part VII: Uchiyama's Finiteness",
       "startLine": 145,
       "endLine": 156,
-      "summary": "Uchiyama (1984): for fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite. Also proves no solutions for $Q = (1 - k^2)/4$ with rational $k \\in (0,1)$.",
+      "summary": "States (proof deferred, `sorry`) Uchiyama's 1984 finiteness result: for fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite; and that no solutions exist for $Q = (1 - k^2)/4$ with rational $k \\in (0,1)$.",
       "mathContext": "Uchiyama (1984): for fixed $Q \\\\in (0,1/4)$, finitely many solutions with bounded ratio $x/y$."
     },
     {
@@ -121,7 +121,7 @@
       "title": "Part VIII: Ko's General Family",
       "startLine": 157,
       "endLine": 176,
-      "summary": "Defines `koFamily(n)` producing solutions for $n \\ge 2$ using $a = 2^{n+1}$ and $b = 2^n - 1$. Proves the family yields valid solutions and that infinitely many exist.",
+      "summary": "Defines `koFamily(n)` for $n \\ge 2$ using $a = 2^{n+1}$ and $b = 2^n - 1$. States (proof deferred, `sorry`) that the family yields valid solutions and that infinitely many exist.",
       "mathContext": "Infinite family: koFamily$(n)$ for $n \\\\geq 2$ using $a = 2^{n+1}$, $b = 2^n-1$. All known solutions are Ko type."
     },
     {
@@ -137,7 +137,7 @@
       "title": "Part X: Structure of Solutions",
       "startLine": 190,
       "endLine": 211,
-      "summary": "Defines `IsKoType` and the conjecture that all solutions come from Ko's family. Proves the universal ratio constraint $Q \\le 1/4$ and characterizes equality.",
+      "summary": "Defines `IsKoType` and the conjecture that all solutions come from Ko's family. States (proof deferred, `sorry`) the universal ratio constraint $Q \\le 1/4$ and its equality characterization.",
       "mathContext": "Conjecture: ALL solutions come from Ko parametric family."
     },
     {
@@ -145,7 +145,7 @@
       "title": "Part XI: Small Cases",
       "startLine": 212,
       "endLine": 233,
-      "summary": "No solutions with $x = 2$, $x = 3$, or $x = y$ (equivalently $x^{2x} \\ne z^z$). These follow from divisibility and parity arguments.",
+      "summary": "States (proof deferred, `sorry`) that there are no solutions with $x = 2$, $x = 3$, or $x = y$ (equivalently $x^{2x} \\ne z^z$). The intended arguments use divisibility and parity.",
       "mathContext": "No solutions with $x=2$, $x=3$, or $x=y$. When $x=y$: $x^{2x}=z^z$ has no solutions."
     },
     {
@@ -153,7 +153,7 @@
       "title": "Part XII: Ordering",
       "startLine": 234,
       "endLine": 283,
-      "summary": "WLOG $x \\le y$ by symmetry ($x^x y^y = y^y x^x$). In any solution with $x \\le y$, the ordering is $x < z < y$, following from the convexity of $t \\mapsto t \\log t$.",
+      "summary": "States (proof deferred, `sorry`) the WLOG reduction $x \\le y$ by symmetry ($x^x y^y = y^y x^x$) and, in any solution with $x \\le y$, the ordering $x < z < y$ (intended: convexity of $t \\mapsto t \\log t$).",
       "mathContext": "WLOG $x \\\\leq y$. Then $x < z < y$ (from the log equation)."
     }
   ],
