@@ -89,20 +89,36 @@
       "mathContext": "$a < 2^a$ for every cardinal $a$, hence no greatest cardinal."
     },
     {
+      "id": "engine",
+      "title": "Cantor's Inequality, Re-Exported as the Engine",
+      "startLine": 32,
+      "endLine": 35,
+      "summary": "cantor_lt: the powerset is strictly larger than the type, a < 2^a (Cardinal.cantor), re-exported under a local name. Every result in the file is a corollary of this single inequality applied at one or more cardinals.",
+      "mathContext": "$a < 2^a$ for every cardinal $a$."
+    },
+    {
       "id": "nomax",
       "title": "No Greatest Cardinal",
-      "startLine": 32,
+      "startLine": 37,
       "endLine": 46,
-      "summary": "cantor_lt (a < 2^a), exists_gt (every cardinal exceeded), not_isMax (no maximum cardinal).",
+      "summary": "exists_gt (every cardinal is exceeded, witness 2^a) and not_isMax (no cardinal is a maximum: maximality of a would force 2^a ≤ a against a < 2^a). These read the shape of the cardinal order directly off cantor_lt.",
       "mathContext": "$\\forall a,\\ \\exists b,\\ a < b$ and $\\neg\\,\\mathrm{IsMax}\\,a$."
     },
     {
-      "id": "tower",
-      "title": "The Iterated-Powerset Tower",
-      "startLine": 48,
+      "id": "tower-def",
+      "title": "The Iterated-Powerset Tower: Definition and Recursion",
+      "startLine": 47,
+      "endLine": 57,
+      "summary": "powTower a n := (2 ^ ·)^[n] a, the tower a, 2^a, 2^(2^a), …, with base case powTower_zero (rung 0 = a) and the one-step recursion powTower_succ (rung n+1 = 2 ^ rung n) via Function.iterate_succ_apply'.",
+      "mathContext": "$\\mathrm{powTower}\\,a\\,n = (2^{\\,\\cdot})^{[n]}\\,a,\\quad \\mathrm{powTower}\\,a\\,(n{+}1) = 2^{\\mathrm{powTower}\\,a\\,n}.$"
+    },
+    {
+      "id": "tower-props",
+      "title": "The Tower Strictly Increases and Escapes a",
+      "startLine": 59,
       "endLine": 77,
-      "summary": "powTower (and powTower_zero/powTower_succ), powTower_strictMono (per-rung Cantor, not exponent monotonicity), powTower_injective, lt_powTower_succ.",
-      "mathContext": "$a < 2^a < 2^{2^a} < \\cdots$, a strictly increasing injective $\\mathbb{N}$-tower."
+      "summary": "powTower_strictMono establishes strict monotonicity — crucially by a fresh application of Cantor at each rung (strictMono_nat_of_lt_succ), not by monotonicity of c ↦ 2^c, which is independent of ZFC (the GCH question). powTower_injective then gives pairwise-distinct rungs, and lt_powTower_succ shows every rung past the base exceeds a.",
+      "mathContext": "$a < 2^a < 2^{2^a} < \\cdots$, a strictly increasing injective $\\mathbb{N}$-tower above $a$."
     }
   ],
   "crossReferences": [
