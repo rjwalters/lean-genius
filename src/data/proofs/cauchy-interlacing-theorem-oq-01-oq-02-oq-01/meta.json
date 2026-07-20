@@ -79,7 +79,8 @@
       "Stating the Ky Fan bounds over an arbitrary index set s : Finset (Fin n) — rather than only over Finset.univ — lets a single pair of theorems subsume both the trace estimate and every top-j partial sum, so the weak-majorization statement is a one-line specialisation with no Fin-interval bookkeeping",
       "The full mathematical weight sits in the parent Poincaré separation theorem; the Ky Fan content is exactly the monotonicity of finite sums, which is honest to record as a Finset.sum_le_sum wrapper rather than dressed up as new spectral theory",
       "Because the eigenvalues are carried as the free functions λ and μ with the index map k ↦ ⟨k+m⟩ / k ↦ ⟨k⟩, the lower bound automatically references the n SMALLEST eigenvalues of T (indices m … n+m-1) and the upper bound the n LARGEST (indices 0 … n-1), making the trace trapping read off directly",
-      "The whole development is operator-theoretic over an arbitrary RCLike field (real or complex), never touching matrices: the compression is characterised purely by the Rayleigh-quotient agreement hypothesis hRayleigh, so the Ky Fan trace and majorization bounds hold for compressions of Hermitian operators on any finite-dimensional inner product space, not just symmetric real matrices"
+      "The whole development is operator-theoretic over an arbitrary RCLike field (real or complex), never touching matrices: the compression is characterised purely by the Rayleigh-quotient agreement hypothesis hRayleigh, so the Ky Fan trace and majorization bounds hold for compressions of Hermitian operators on any finite-dimensional inner product space, not just symmetric real matrices",
+      "The result is WEAK majorization μ ≺_w λ, not full majorization, and the compression's loss of m dimensions is exactly why: because TH lives on a codimension-m subspace, its trace ∑_k μ_k need not equal ∑ λ, so only the top-j partial sums are dominated. This is precisely what makes the trace TRAPPED between the sums of the n smallest and n largest eigenvalues (rather than pinned to one value) — the m discarded eigenvalues can lie anywhere in the spectrum, so the compression trace ranges over that whole band. Full majorization μ ≺ λ would require accounting for the discarded eigenvalue mass, which the one-sided Poincaré sum does not supply"
     ],
     "prerequisites": [
       "The Poincaré separation theorem (cauchy-interlacing-theorem-oq-01-oq-02 / CauchyInterlacingPoincare): termwise interlacing of compression eigenvalues",
@@ -91,10 +92,17 @@
   "sections": [
     {
       "id": "header",
-      "title": "Overview and Compression Setup",
+      "title": "Overview: the three readings of the summed bounds",
       "startLine": 1,
+      "endLine": 41,
+      "summary": "The module docstring frames the Ky Fan package built on the parent Poincaré separation theorem (lam ⟨k+m⟩ ≤ mu k ≤ lam ⟨k⟩), and lays out the three readings of summing those termwise bounds over an index set s ⊆ Fin n: the general monotone-sum bound, the weak-majorization partial sums (s an initial segment), and the trace trapping (s = univ). Emphasises that no new spectral theory is used — the content is monotonicity of finite sums."
+    },
+    {
+      "id": "compression-setup",
+      "title": "Formal Setup: the compression hypotheses",
+      "startLine": 42,
       "endLine": 62,
-      "summary": "The module docstring states the Ky Fan interlacing package built on the parent Poincaré separation theorem: for a symmetric operator T on an (n+m)-dimensional space and its compression TH to an n-dimensional subspace H, the compression eigenvalues μ are trapped between the top and bottom n eigenvalues λ of T. The setup fixes the operators, eigenbases, eigenvalue lists (hlam/hmu antitone), the dimension hypotheses, and the Rayleigh-agreement hypothesis, then `include`s them into every theorem below."
+      "summary": "Opens (InnerProductSpace, BigOperators, CauchyInterlacing.Poincare), namespace CauchyInterlacing.KyFan, and the variable block fixing the abstract compression data over an arbitrary RCLike field 𝕜: the symmetric operator T with orthonormal eigenbasis b and antitone eigenvalues lam, the codimension-m subspace H with Module.finrank = n, its operator TH with eigenbasis bH and antitone eigenvalues mu, and the Rayleigh-quotient agreement hypothesis hRayleigh that characterises TH as the orthogonal compression. An `include` directive threads all hypotheses into every theorem, since they appear only in proof bodies."
     },
     {
       "id": "ky-fan-sum-bounds",
