@@ -57,28 +57,28 @@
       "id": "padic-valuation",
       "title": "p-adic Valuation Infrastructure",
       "startLine": 26,
-      "endLine": 68,
-      "summary": "Establishes the carry-counting framework: Legendre's formula for $v_p(n!)$ (proved via `Nat.Prime.multiplicity_factorial`), the carry bound $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ (proved), vanishing of carries for $p^i > 2n$ (proved), and existence of a truncation point $k \\leq 2n$ with $p^k > 2n$ (proved by induction on $2^{2n} > 2n$)."
+      "endLine": 61,
+      "summary": "Establishes the carry-counting framework (Part I): Legendre's formula for $v_p(n!)$ (proved via `padicValNat_factorial`), the carry bound $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ (proved), vanishing of carries for $p^i > 2n$ (proved), and existence of a truncation point $k \\leq 2n$ with $p^k > 2n$ (proved by induction on $2^{2n} > 2n$)."
     },
     {
       "id": "main-bound",
       "title": "Main Factorization Bound",
-      "startLine": 70,
-      "endLine": 86,
+      "startLine": 63,
+      "endLine": 124,
       "summary": "Proves the main theorem $p^{v_p\\binom{2n}{n}} \\leq 2n$ via Mathlib's `Nat.pow_factorization_choose_le`. Proves the corollary $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ by reconstructing the central binomial from its prime factorization via `Nat.factorization_prod_pow_eq_self`."
     },
     {
       "id": "chebyshev-connection",
       "title": "Chebyshev's Lower Bound on $\\pi(x)$",
-      "startLine": 88,
-      "endLine": 122,
+      "startLine": 126,
+      "endLine": 160,
       "summary": "Proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ using `Nat.sum_range_choose` and `Nat.choose_le_middle`. Combines with the product bound to obtain Chebyshev's inequality $4^n \\leq (2n+1)(2n)^{\\pi(2n)}$."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Computations",
-      "startLine": 124,
-      "endLine": 138,
+      "startLine": 162,
+      "endLine": 176,
       "summary": "Verifies $\\binom{6}{3} = 20$, $\\binom{10}{5} = 252$, $\\binom{20}{10} = 184756$ via `native_decide`, confirming the factorization bound holds at concrete values."
     }
   ],
@@ -132,7 +132,7 @@
     },
     {
       "name": "chebyshev_lower_via_kummer",
-      "statement": "4 ^ n ≤ (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting'",
+      "statement": "4 ^ n ≤ (2 * n + 1) * (2 * n) ^ Nat.primeCounting (2 * n)",
       "description": "Chebyshev's combined inequality for the prime counting function"
     }
   ],

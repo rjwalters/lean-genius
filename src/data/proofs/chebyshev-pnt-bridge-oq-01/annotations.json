@@ -31,11 +31,11 @@
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
       "startLine": 30,
-      "endLine": 61
+      "endLine": 36
     },
     "type": "insight",
     "title": "Legendre's Formula for v_p(n!)",
-    "content": "States Legendre's formula: the $p$-adic valuation of $n!$ is $v_p(n!) = \\sum_{i=1}^{n} \\lfloor n/p^i \\rfloor$. This is currently a `sorry` -- the connection between Mathlib's `Nat.factorization` API and the summation formula needs to be established.",
+    "content": "Proves Legendre's formula: the $p$-adic valuation of $n!$ is $v_p(n!) = \\sum_{i=1}^{n} \\lfloor n/p^i \\rfloor$. The Lean proof supplies the `Fact p.Prime` instance, rewrites the factorization via `Nat.factorization_def`, and closes the goal with Mathlib's `padicValNat_factorial` (bounding the summation range using `Nat.log_le_self`).",
     "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_{i=1}^{\\lfloor \\log_p n \\rfloor} \\lfloor n/p^i \\rfloor$. In Lean: `(n !).factorization p = ∑ i ∈ Finset.Ico 1 (n + 1), n / p ^ i`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$.",
     "significance": "key",
     "prerequisites": [
@@ -54,8 +54,8 @@
     "id": "ann-carry-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 63,
-      "endLine": 72
+      "startLine": 38,
+      "endLine": 48
     },
     "type": "insight",
     "title": "Carry Term Bound: Each Digit Contributes 0 or 1",
@@ -78,8 +78,8 @@
     "id": "ann-carry-vanishing",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 74,
-      "endLine": 79
+      "startLine": 50,
+      "endLine": 54
     },
     "type": "insight",
     "title": "Carry Terms Vanish for Large Powers",
@@ -100,8 +100,8 @@
     "id": "ann-digits-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 81,
-      "endLine": 95
+      "startLine": 56,
+      "endLine": 61
     },
     "type": "insight",
     "title": "Existence of a Large Power of p",
@@ -124,12 +124,12 @@
     "id": "ann-main-theorem",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 101,
-      "endLine": 107
+      "startLine": 67,
+      "endLine": 73
     },
     "type": "insight",
     "title": "Main Bound: p^{v_p(C(2n,n))} ≤ 2n",
-    "content": "The **main theorem**: for any prime $p$ and $n \\geq 1$, $p^{v_p\\binom{2n}{n}} \\leq 2n$. Currently `sorry` -- requires connecting the carry infrastructure (proved) to Mathlib's `Nat.factorization` API. The proof sketch: $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq p^{\\log_p(2n)} = 2n$.",
+    "content": "The **main theorem**: for any prime $p$ and $n \\geq 1$, $p^{v_p\\binom{2n}{n}} \\leq 2n$. Proved in one line via Mathlib's `Nat.pow_factorization_choose_le`, which packages exactly the carry-counting argument developed above: $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq p^{\\log_p(2n)} \\leq 2n$.",
     "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Equivalently: $v_p\\binom{2n}{n} \\leq \\log_p(2n)$. In Lean: `p ^ ((2 * n).choose n).factorization p ≤ 2 * n`.",
     "significance": "key",
     "prerequisites": [
@@ -149,18 +149,18 @@
     "id": "ann-product-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 109,
-      "endLine": 158
+      "startLine": 75,
+      "endLine": 124
     },
     "type": "insight",
     "title": "Product Bound via Prime Counting",
-    "content": "Corollary: $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$. Since $\\binom{2n}{n} = \\prod_{p \\text{ prime}} p^{v_p\\binom{2n}{n}}$ and each factor is $\\leq 2n$, and there are $\\pi(2n)$ primes $\\leq 2n$, the product is bounded by $(2n)^{\\pi(2n)}$. Currently `sorry`.",
-    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n ≤ (2 * n) ^ (2 * n).primeCounting'`.",
+    "content": "Corollary: $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$. Since $\\binom{2n}{n} = \\prod_{p \\text{ prime}} p^{v_p\\binom{2n}{n}}$ and each factor is $\\leq 2n$, and there are $\\pi(2n)$ primes $\\leq 2n$, the product is bounded by $(2n)^{\\pi(2n)}$. The Lean proof reconstructs $\\binom{2n}{n}$ from its factorization (`Nat.prod_factorization_pow_eq_self`), bounds each factor via the main theorem, and shows the support of the factorization injects into the primes $\\leq 2n$ so its cardinality is $\\leq \\pi(2n)$.",
+    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n ≤ (2 * n) ^ Nat.primeCounting (2 * n)`.",
     "significance": "key",
     "prerequisites": [
       "prime_pow_val_central_binom_le theorem",
       "fundamental theorem of arithmetic",
-      "Nat.primeCounting'"
+      "Nat.primeCounting"
     ],
     "relatedConcepts": [
       "prime counting function",
@@ -173,12 +173,12 @@
     "id": "ann-binomial-lower",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 164,
-      "endLine": 184
+      "startLine": 130,
+      "endLine": 150
     },
     "type": "insight",
     "title": "Central Binomial Lower Bound",
-    "content": "States $(2n+1) \\cdot \\binom{2n}{n} \\geq 4^n$. This follows from the binomial theorem: $4^n = (1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\binom{2n}{n}$ since $\\binom{2n}{n}$ is the maximum binomial coefficient. Currently `sorry`.",
+    "content": "Proves $(2n+1) \\cdot \\binom{2n}{n} \\geq 4^n$. This follows from the binomial theorem: $4^n = (1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\binom{2n}{n}$ since $\\binom{2n}{n}$ is the maximum binomial coefficient. The Lean proof combines `Nat.sum_range_choose`, the maximality lemma `Nat.choose_le_middle`, and `Finset.sum_le_card_nsmul`, closing with `linarith`.",
     "mathContext": "$4^n = 2^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\cdot \\max_k \\binom{2n}{k} = (2n+1) \\cdot \\binom{2n}{n}$. Equivalently: $\\binom{2n}{n} \\geq 4^n/(2n+1)$.",
     "significance": "key",
     "prerequisites": [
@@ -197,12 +197,12 @@
     "id": "ann-chebyshev-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 186,
-      "endLine": 194
+      "startLine": 152,
+      "endLine": 160
     },
     "type": "insight",
     "title": "Chebyshev's Combined Inequality",
-    "content": "The final synthesis: $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. This combines the binomial lower bound with the product upper bound and yields, after taking logarithms: $\\pi(2n) \\geq (n \\ln 4 - \\ln(2n+1)) / \\ln(2n) \\sim n \\ln 4 / \\ln(2n)$. Currently `sorry`.",
+    "content": "The final synthesis: $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. Proved by chaining the central-binomial lower bound with the prime-counting product bound. Taking logarithms yields $\\pi(2n) \\geq (n \\ln 4 - \\ln(2n+1)) / \\ln(2n) \\sim n \\ln 4 / \\ln(2n)$ — Chebyshev's elementary lower bound on the prime-counting function.",
     "mathContext": "$4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$ implies $\\pi(2n) \\geq \\frac{n \\ln 4 - \\ln(2n+1)}{\\ln(2n)} \\sim \\frac{\\ln 4}{2} \\cdot \\frac{2n}{\\ln(2n)} \\approx 0.693 \\cdot \\frac{2n}{\\ln(2n)}$.",
     "significance": "key",
     "prerequisites": [
@@ -221,8 +221,8 @@
     "id": "ann-concrete-examples",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 200,
-      "endLine": 208
+      "startLine": 166,
+      "endLine": 174
     },
     "type": "concept",
     "title": "Concrete Computations via native_decide",
