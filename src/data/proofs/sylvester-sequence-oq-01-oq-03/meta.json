@@ -2,7 +2,7 @@
   "id": "sylvester-sequence-oq-01-oq-03",
   "slug": "sylvester-sequence-oq-01-oq-03",
   "title": "Sylvester's Sequence: Residue and Coprimality Structure (the Arithmetic Skeleton)",
-  "description": "Sylvester's sequence a₀=2, a_{n+1}=aₙ²-aₙ+1 (2, 3, 7, 43, 1807, …) has a rigid arithmetic skeleton, all of it forced by the single factorization a_{n+1}-1 = aₙ(aₙ-1). This entry formalizes that skeleton: (1) the multiplicative engine a_{n+1}-1 = aₙ(aₙ-1); (2) the Euclid product identity a_{n+1}-1 = ∏_{k≤n} aₖ; (3) residue mod earlier terms, aₙ ≡ 1 (mod aᵢ) for i<n; (4) pairwise coprimality of distinct terms; (5) parity — every term past the first is odd; (6) residue mod 6 — from 7 on, every term is ≡ 1 (mod 6). Parts (1)–(2) and coprimality overlap the companion entry sylvester-sequence-oq-01; the parity, mod-6, and 'residue mod each earlier term' phrasing are the new content. Written with 0 sorries and 0 axioms; build machine-check is pending (see assumptions).",
+  "description": "Sylvester's sequence a₀=2, a_{n+1}=aₙ²-aₙ+1 (2, 3, 7, 43, 1807, …) has a rigid arithmetic skeleton, all of it forced by the single factorization a_{n+1}-1 = aₙ(aₙ-1). This entry formalizes that skeleton: (1) the multiplicative engine a_{n+1}-1 = aₙ(aₙ-1); (2) the Euclid product identity a_{n+1}-1 = ∏_{k≤n} aₖ; (3) residue mod earlier terms, aₙ ≡ 1 (mod aᵢ) for i<n; (4) pairwise coprimality of distinct terms; (5) parity — every term past the first is odd; (6) residue mod 6 — from 7 on, every term is ≡ 1 (mod 6). Parts (1)–(2) and coprimality overlap the companion entry sylvester-sequence-oq-01; the parity, mod-6, and 'residue mod each earlier term' phrasing are the new content. Written with 0 sorries and 0 axioms; machine-verified against Mathlib v4.31.0 (see assumptions).",
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -22,7 +22,7 @@
     "author": "James Joseph Sylvester (1880)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
     "date": "1880",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/SylvesterSequenceOQ01OQ03.lean",
     "tags": [
       "number-theory",
@@ -32,10 +32,10 @@
       "parity",
       "sylvester"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries (textually), but BUILD-PENDING — not yet machine-checked. The proof is fully written and self-reviewed, but no successful compilation exists yet: the Docker build toolchain was unavailable this session (Docker Desktop's containerd content store returned filesystem-level I/O errors reading its own blobs, so no image could be built or run). Needs `./proofs/scripts/docker-build.sh Proofs.SylvesterSequenceOQ01OQ03` to confirm before any 'verified' claim; on a green build, promote status to 'verified' and badge to 'original'. All lemmas used are elementary and standard-API: Finset.prod_range_succ/prod_range_one/mem_range/dvd_prod_of_mem, Nat.exists_eq_succ_of_ne_zero, Nat.modEq_iff_dvd', Nat.mod_eq_of_lt, Nat.Odd.sub_odd, Even.mul_left/mul_right, odd_one, Nat.le_induction, Nat.dvd_sub, Nat.sub_sub_self, Nat.dvd_one, Nat.gcd_dvd_left/right, Dvd.Dvd.mul_left, plus omega/ring/decide. The recurrence's ℕ truncated subtraction is handled by rewriting aₙ = p + 2 before any cancellation.",
+    "assumptions": "0 axioms, 0 sorries. Machine-verified against Mathlib v4.31.0: `lake env lean Proofs/SylvesterSequenceOQ01OQ03.lean` compiles cleanly, and `#print axioms` on syl_coprime, syl_mod_six, and six_dvd_syl_sub_one reports dependence on only propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool). An earlier flip-to-verified attempt had been blocked because the Docker build toolchain was unavailable that session; the file is host-verifiable without Docker since it imports only Mathlib. All lemmas used are elementary and standard-API: Finset.prod_range_succ/prod_range_one/mem_range/dvd_prod_of_mem, Nat.exists_eq_succ_of_ne_zero, Nat.modEq_iff_dvd', Nat.mod_eq_of_lt, Nat.Odd.sub_odd, Even.mul_left/mul_right, odd_one, Nat.le_induction, Nat.dvd_sub, Nat.sub_sub_self, Nat.dvd_one, Nat.gcd_dvd_left/right, Dvd.Dvd.mul_left, plus omega/ring/decide. The recurrence's ℕ truncated subtraction is handled by rewriting aₙ = p + 2 before any cancellation.",
     "dateAdded": "2026-07-04",
     "mathlibDependencies": [],
     "originalContributions": [
@@ -143,13 +143,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The full arithmetic skeleton of Sylvester's sequence $a_0=2,\\ a_{n+1}=a_n^2-a_n+1$ is formalised as consequences of a single factorisation $a_{n+1}-1 = a_n(a_n-1)$: the Euclid product identity $a_{n+1}-1=\\prod_{k\\le n}a_k$, the residue structure $a_n\\equiv 1\\pmod{a_i}$ for $i<n$, pairwise coprimality of distinct terms, oddness of every term past the first, and the mod-6 invariant $a_n\\equiv 1\\pmod 6$ from $a_2=7$ on. Six theorems, written with 0 sorries and 0 axioms. NOTE: this entry is BUILD-PENDING (status 'pending', badge 'wip') — the proof is complete and self-reviewed but was not machine-checked this session (the Docker toolchain was unavailable). It must compile via `docker-build.sh Proofs.SylvesterSequenceOQ01OQ03` before being promoted to 'verified'.",
+    "summary": "The full arithmetic skeleton of Sylvester's sequence $a_0=2,\\ a_{n+1}=a_n^2-a_n+1$ is formalised as consequences of a single factorisation $a_{n+1}-1 = a_n(a_n-1)$: the Euclid product identity $a_{n+1}-1=\\prod_{k\\le n}a_k$, the residue structure $a_n\\equiv 1\\pmod{a_i}$ for $i<n$, pairwise coprimality of distinct terms, oddness of every term past the first, and the mod-6 invariant $a_n\\equiv 1\\pmod 6$ from $a_2=7$ on. Six theorems, written with 0 sorries and 0 axioms and machine-verified against Mathlib v4.31.0 (`lake env lean` compiles cleanly; `#print axioms` reports only the foundational propext/Classical.choice/Quot.sound).",
     "implications": "The recurrence's whole modular behaviour reduces to one algebraic identity read from several angles, which is the value of the formalisation: parity, mod-6, coprimality, and the Euclid product are not independent facts but a single self-propagating divisibility ($6\\mid a_n-1$ is inherited because $a_n-1$ is literally a factor of $a_{n+1}-1$). The coprimality and Euclid-product parts reprove, inside Lean, the classical mechanism behind Sylvester's proof that there are infinitely many primes and the sequence's role in Egyptian-fraction (Curtiss / Znám) constructions. Methodologically, the entry demonstrates a clean way to handle ℕ truncated subtraction in quadratic recurrences: the one-off substitution $a_n = p+2$ turns every truncated subtraction into a genuine one, after which `ring` and `omega` discharge the arithmetic without lifting to ℤ.",
     "openQuestions": [
       "Whether every Sylvester number is squarefree is a genuine open problem — no term is known to be divisible by a square, but no proof exists. The modular skeleton formalised here (residues mod earlier terms, coprimality) is the natural starting point for any attack.",
       "Characterise $a_n \\bmod m$ for a general modulus $m$, generalising the mod-6 invariant: for which $m$ does the sequence become eventually constant mod $m$, and from which index, purely from the factorisation $a_{n+1}-1=a_n(a_n-1)$?",
-      "Formalise the doubly-exponential closed form $a_n = \\lfloor E^{2^{n+1}} + 1/2\\rfloor$ (Aho–Sloane) and the resulting reciprocal-sum identity $\\sum_k 1/a_k = 1$, connecting this modular skeleton to the sequence's growth and its Egyptian-fraction / Znám's-problem applications.",
-      "Machine-check this file with `docker-build.sh` and, on a green build, promote status to 'verified' / badge to 'original'."
+      "Formalise the doubly-exponential closed form $a_n = \\lfloor E^{2^{n+1}} + 1/2\\rfloor$ (Aho–Sloane) and the resulting reciprocal-sum identity $\\sum_k 1/a_k = 1$, connecting this modular skeleton to the sequence's growth and its Egyptian-fraction / Znám's-problem applications."
     ]
   },
   "crossReferences": [
