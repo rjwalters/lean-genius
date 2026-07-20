@@ -1395,6 +1395,70 @@ theorem kst_leading_order_ratio_tendsto (t : ℕ) :
   simp only [kstLeadingBound]
   field_simp
 
+/-! ### Leading-order asymptotic constant (general `K_{s,t}`, `s ≥ 2`)
+
+The `s = 2` result `kst_leading_order_ratio_tendsto` extends to every `s ≥ 2`.  The
+finite-`n` closed form `kst_general_edge_card_bound`
+(`m ≤ ½(t-1)^{1/s}·n^{2-1/s} + ½(s-1)·n`), divided by `n^{2-1/s}`, converges to
+`½(t-1)^{1/s}`: the correction term `½(s-1)·n` contributes `½(s-1)·n^{1/s-1} → 0`, since
+the exponent `1/s - 1 < 0` for `s ≥ 2`.  This discharges the analytic content of the
+textbook `ex(n; K_{s,t}) ≤ (½(t-1)^{1/s} + o(1))·n^{2-1/s}` for all `s ≥ 2`, generalizing
+the `s = 2` Reiman/Kővári–Sós–Turán case already recorded above. -/
+
+/-- **Closed-form general-`s` KST bound as a function of `n`.**  The right-hand side of
+`kst_general_edge_card_bound`: `½(t-1)^{1/s}·n^{2-1/s} + ½(s-1)·n`.  Packaging it as a
+function of `n` lets us state the general-`s` asymptotic leading constant
+(`kst_general_leading_order_ratio_tendsto`). -/
+noncomputable def kstGeneralLeadingBound (s t : ℕ) (n : ℝ) : ℝ :=
+  ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * n ^ (2 - (s : ℝ)⁻¹) / 2 + ((s : ℝ) - 1) * n / 2
+
+/-- The general-`s` KST edge bound restated with `kstGeneralLeadingBound`: a
+`K_{s,t}`-free graph (`s, t ≥ 1`) satisfies `m ≤ kstGeneralLeadingBound s t n`. -/
+theorem kst_general_edge_card_bound_def (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    (G.edgeFinset.card : ℝ) ≤ kstGeneralLeadingBound s t (Fintype.card V) := by
+  simpa [kstGeneralLeadingBound] using kst_general_edge_card_bound G s t hs ht hfree
+
+/-- **Leading-order asymptotic constant for `ex(n; K_{s,t})`, `s ≥ 2`.**  The closed-form
+general-`s` Kővári–Sós–Turán bound `kstGeneralLeadingBound s t n`, divided by `n^{2-1/s}`,
+tends to `½(t-1)^{1/s}` as `n → ∞`:
+
+      kstGeneralLeadingBound s t n / n^{2-1/s}  →  ½·(t-1)^{1/s}.
+
+Combined with `kst_general_edge_card_bound_def` (`m ≤ kstGeneralLeadingBound s t n`), this
+makes rigorous the textbook `ex(n; K_{s,t}) ≤ (½(t-1)^{1/s} + o(1))·n^{2-1/s}` for every
+`s ≥ 2`.  The `+½(s-1)·n` correction contributes `½(s-1)·n^{1/s-1} → 0` because the exponent
+`1/s - 1` is negative for `s ≥ 2`.  The `s = 2` instance recovers
+`kst_leading_order_ratio_tendsto` (with `(t-1)^{1/2} = √(t-1)`). -/
+theorem kst_general_leading_order_ratio_tendsto (s t : ℕ) (hs : 2 ≤ s) :
+    Filter.Tendsto (fun n : ℝ => kstGeneralLeadingBound s t n / n ^ (2 - (s : ℝ)⁻¹))
+      Filter.atTop (nhds (((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) / 2)) := by
+  -- `1 - 1/s > 0` for `s ≥ 2`, so `n^{-(1-1/s)} → 0`.
+  have hy : (0 : ℝ) < 1 - (s : ℝ)⁻¹ := by
+    have h1s : (1 : ℝ) < (s : ℝ) := by exact_mod_cast (show 1 < s by omega)
+    have hspos : (0 : ℝ) < (s : ℝ) := by linarith
+    have hinv1 : (s : ℝ)⁻¹ < 1 := by rw [inv_lt_one₀ hspos]; exact h1s
+    linarith
+  have hpow : Filter.Tendsto (fun n : ℝ => n ^ (-(1 - (s : ℝ)⁻¹))) Filter.atTop (nhds 0) :=
+    tendsto_rpow_neg_atTop hy
+  have hterm : Filter.Tendsto
+      (fun n : ℝ => ((s : ℝ) - 1) / 2 * n ^ (-(1 - (s : ℝ)⁻¹))) Filter.atTop (nhds 0) := by
+    simpa using hpow.const_mul (((s : ℝ) - 1) / 2)
+  have hconst : Filter.Tendsto (fun _ : ℝ => ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) / 2) Filter.atTop
+      (nhds (((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) / 2)) := tendsto_const_nhds
+  have hsum := hconst.add hterm
+  rw [add_zero] at hsum
+  refine hsum.congr' ?_
+  filter_upwards [Filter.eventually_gt_atTop (0 : ℝ)] with n hn
+  have hRne : n ^ (2 - (s : ℝ)⁻¹) ≠ 0 := (Real.rpow_pos_of_pos hn _).ne'
+  have hnR : n / n ^ (2 - (s : ℝ)⁻¹) = n ^ (-(1 - (s : ℝ)⁻¹)) := by
+    have h := Real.rpow_sub hn 1 (2 - (s : ℝ)⁻¹)
+    rw [Real.rpow_one] at h
+    rw [← h]; congr 1; ring
+  simp only [kstGeneralLeadingBound]
+  rw [← hnR]
+  field_simp
+
 end GraphLevel
 
 end Erdos1008

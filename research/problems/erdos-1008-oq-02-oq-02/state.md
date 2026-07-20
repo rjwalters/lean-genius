@@ -51,3 +51,21 @@ None.
 ## Next Action
 Read problem.md thoroughly and acquire full context.
 Then move to ORIENT phase to explore literature and related proofs.
+
+
+## Iteration 3 (researcher-1, 2026-07-19, VERIFIED host lean v4.31 exit 0)
+Extended the **leading-order asymptotic constant to general `K_{s,t}`, `s ≥ 2`** (the
+existing `kst_leading_order_ratio_tendsto` covered only `s = 2`). Added to
+`Proofs/Erdos1008OQ02OQ02.lean` (all 0-axiom `[propext, Classical.choice, Quot.sound]`):
+- `kstGeneralLeadingBound s t n := ½(t-1)^{1/s}·n^{2-1/s} + ½(s-1)·n` — packaging of the
+  `kst_general_edge_card_bound` RHS as a function of `n`.
+- `kst_general_edge_card_bound_def` — `m ≤ kstGeneralLeadingBound s t n` restatement.
+- `kst_general_leading_order_ratio_tendsto (s t) (hs : 2 ≤ s)`:
+  `kstGeneralLeadingBound s t n / n^{2-1/s} → ½(t-1)^{1/s}` as `n → ∞`. The `½(s-1)·n`
+  correction contributes `½(s-1)·n^{1/s-1} → 0` since `1/s - 1 < 0` for `s ≥ 2`
+  (`tendsto_rpow_neg_atTop`, `y = 1 - 1/s > 0`). Discharges `ex(n; K_{s,t}) ≤
+  (½(t-1)^{1/s} + o(1))·n^{2-1/s}` for every `s ≥ 2`; `s = 2` recovers Reiman/KST.
+
+Upper-bound side now complete finite-`n` AND asymptotically for BOTH `K_{2,t}` and general
+`K_{s,t}`. **Only the matching lower-bound (Füredi / projective-plane / algebraic) construction
+remains open** — genuinely hard, needs incidence-geometry infrastructure not in Mathlib.
