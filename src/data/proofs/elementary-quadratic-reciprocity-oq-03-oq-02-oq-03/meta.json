@@ -14,7 +14,7 @@
       "jacobiSym"
     ],
     "namespace": "KroneckerSymbol",
-    "lineCount": 404,
+    "lineCount": 427,
     "axiomCount": 1,
     "sorries": 0,
     "definitionCount": 1,
@@ -101,7 +101,7 @@
       "Does the Kronecker QR generalize to the Hilbert symbol over global fields via the product formula? Mathlib formalization of the Hilbert symbol over ℚ would unify all Eisenstein-style supplementary laws.",
       "What is the minimal set of additional axioms — beyond Mathlib's Jacobi QR — sufficient to discharge `kronecker_qr_even_fundamental` constructively?"
     ],
-    "lineCount": 404,
+    "lineCount": 427,
     "theoremCount": 25,
     "definitionCount": 1
   },
@@ -159,14 +159,14 @@
       "id": "numerical-verifications",
       "title": "Part IV — Numerical Verifications",
       "startLine": 322,
-      "endLine": 371,
+      "endLine": 395,
       "summary": "Eleven numerical checks via `native_decide` and direct application of the proved cases: confirmations of (5/3)=(3/5)=-1, (5/7)=(7/5), (5/11)=(11/5), (5/13)=(13/5), (13/17)=(17/13) [all symmetry cases], (3/7)=-(7/3) [sign flip], and the headline `kronecker_neg7_neg3_vals` showing (-7/3)=-1 ≠ 1=(-3/7), which numerically refutes the historically common naïve statement of unconditional equality."
     },
     {
       "id": "summary-theorem",
       "title": "Part V — Complete Summary (kronecker_qr_all_cases)",
-      "startLine": 372,
-      "endLine": 403,
+      "startLine": 396,
+      "endLine": 427,
       "summary": "`kronecker_qr_all_cases` bundles the three QR statements (symmetry for ≡1(4), sign flip for ≡3(4), general fundamental-discriminant law) into a single conjunction. Closing docstring records the Dirichlet-character / Artin-reciprocity interpretation: (D/·)_K is the unique real primitive character of conductor |D|, odd iff D < 0, and quadratic Artin reciprocity asserts χ_D₁(D₂) = χ_D₂(D₁)."
     }
   ],
