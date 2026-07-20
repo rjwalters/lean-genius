@@ -1,7 +1,7 @@
 {
   "slug": "erdos-531-incomplete-01",
   "title": "Complete proof of Erdős Problem #531: Folkman's Theorem - Monochromatic Subset Sums (2 sorries)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Created Erdos531Incomplete01.lean — axiom-free k=2 subset-sum machinery toward the deferred F 2 = 8 finite-coloring reduction. Establishes SubsetSums {a,b} membership of a,b,a+b and the forward monochromatic characterization (c a = c b = c(a+b)).",
+    "builtItems": [
+      "Erdos531.mem_subsetSums_pair_left / _right / _add in Erdos531Incomplete01.lean",
+      "Erdos531.monochromaticSubsetSums_pair_forward in Erdos531Incomplete01.lean"
+    ],
+    "insights": [
+      "For a distinct pair {a,b} the non-empty subset sums are exactly a, b, a+b (witnessed by {a},{b},{a,b}; the a+b witness needs a≠b via Finset.sum_pair). This is the concrete SubsetSums the abstract F_2 reduction must range over.",
+      "monochromaticSubsetSums_pair_forward gives the necessary condition c a = c b = c(a+b): the forward direction the F 2 ≥ 8 counterexample checks pair-by-pair against the witness colouring 1,2,4↦B / 3,5,6,7↦R. The backward direction (constructing a mono set) additionally needs SubsetSums {a,b} ⊆ {a,b,a+b}, left for follow-up.",
+      "The F 2 = 8 sorry in the parent needs (a) reduce ∀ c:ℕ→Bool to c|[1,15] finite search, (b) 8∈ValidN 2 via backward char, (c) ∀ m<8, m∉ValidN 2 via the explicit witness colouring + forward char. This session supplies the pair machinery for steps (b)/(c)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
