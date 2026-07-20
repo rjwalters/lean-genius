@@ -1,0 +1,97 @@
+{
+  "slug": "erdos-510-wip-01",
+  "title": "Complete the Lean Formalization of Erdős Problem #510 (Chowla's Cosine Problem)",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists c > 0,\\ \\forall A \\subset \\mathbb{N}^{+} \\text{ finite of size } N,\\ \\exists \\theta,\\ \\sum_{n \\in A} \\cos(n\\theta) < -c\\sqrt{N}.",
+    "plain": "Chowla's cosine problem asks whether there is an absolute constant c>0 such that every finite set A of positive integers of size N admits an angle θ with ∑_{n∈A} cos(nθ) < −c√N. The example A = B−B for a Sidon set B of size ≈√N shows √N is best possible. Bourgain (1986) gave the first nontrivial bound, improved by Ruzsa (2004) to −exp(O(√log N)); Bedert (2025) and Jin–Milojević–Tomon–Zhang independently obtained polynomial bounds −cN^{1/7}. The gap between N^{1/7} and N^{1/2} remains open. The Lean file Erdos510Problem.lean defines cosineSum and minCosineSum but proves no nontrivial fact; this WIP node formalizes the elementary structural scaffolding.",
+    "whyMatters": [
+      "The cosine problem is a central open question in additive combinatorics (Green's Problem 81), tying difference-set structure to exponential-sum cancellation."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Elementary two-sided bound |cosineSum A θ| ≤ N (this session).",
+      "cosineSum is even, 2π-periodic, continuous; minCosineSum ∈ [−N, N] (this session).",
+      "Exact value minCosineSum {n} = −1 for n ≥ 1 (this session)."
+    ],
+    "open": [
+      "The −c√N lower bound (the conjecture itself) — deep, untouched.",
+      "The gap between the proven N^{1/7} (Bedert 2025) and conjectured N^{1/2}."
+    ],
+    "goal": "Formalize the tractable structural facts about cosineSum / minCosineSum from Mathlib; keep the deep −c√N bound cleanly isolated as the open target."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-20T12:00:00-07:00",
+    "iteration": 1,
+    "focus": "Axiom-free foundational lemmas on the cosine sum and its infimum.",
+    "blockers": [
+      {
+        "route": "the −c√N lower bound via elementary trigonometric identities",
+        "reopenCriterion": "materially new mechanism required",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Prove that minCosineSum is attained (continuity + 2π-periodicity ⟹ inf over ℝ equals min over [0,2π]); then the average-zero fact ⨍ cosineSum A = 0 for A ⊂ ℕ⁺ giving minCosineSum A ≤ 0.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Proofs/Erdos510WIP01.lean (16 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound]). Established the elementary structure of the Chowla cosine sum: evaluation lemmas (empty/singleton/insert, θ=0 giving N, θ=π giving ∑(−1)ⁿ), evenness and 2π-periodicity, continuity, the trivial two-sided bound |cosineSum A θ| ≤ N, bounded-below range, the basic minCosineSum bounds −N ≤ minCosineSum A ≤ N, and the exact value minCosineSum {n} = −1 for n ≥ 1. The deep −c√N conjecture is untouched (it is the open target).",
+    "builtItems": [
+      "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
+      "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
+      "cosineSum_neg (evenness), cosineSum_add_two_pi (2π-periodicity)",
+      "continuous_cosineSum",
+      "abs_cosineSum_le_card, cosineSum_le_card, neg_card_le_cosineSum",
+      "bddBelow_range_cosineSum, minCosineSum_le, neg_card_le_minCosineSum, minCosineSum_le_card, minCosineSum_empty",
+      "minCosineSum_singleton (= −1 for n ≥ 1)"
+    ],
+    "insights": [
+      "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
+      "minCosineSum {n} = −1 exactly (attained at θ = π/n), showing single-frequency sets are the most negative possible relative to size — the difficulty is genuinely a many-frequency cancellation phenomenon.",
+      "Continuity + 2π-periodicity make minCosineSum an attained minimum, not merely an infimum; formalizing attainment is the natural next structural step.",
+      "The θ=0 value N and θ=π value ∑(−1)ⁿ give cheap explicit witnesses bracketing the infimum."
+    ],
+    "mathlibGaps": [
+      "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
+    ],
+    "nextSteps": [
+      "Formalize attainment: ∃ θ, cosineSum A θ = minCosineSum A via continuity on [0,2π] + periodicity.",
+      "For A ⊂ ℕ⁺, prove minCosineSum A ≤ 0 via ∫_0^{2π} cosineSum A = 0 (each ∫cos(nθ)=0 for n≥1).",
+      "Formalize the Sidon-set difference-set example showing √N optimality (harder)."
+    ],
+    "markdown": "# Knowledge Base: erdos-510-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational cosine-sum scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos510Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos510WIP01.lean` (16 theorems) establishing the elementary structure of the Chowla cosine sum `cosineSum A θ = ∑_{n∈A} cos(nθ)` and its infimum `minCosineSum A = ⨅_θ cosineSum A θ`:\n- **Evaluation**: `cosineSum_empty`, `cosineSum_singleton`, `cosineSum_insert`, `cosineSum_zero_angle` (`= N`), `cosineSum_pi` (`= ∑(−1)ⁿ`).\n- **Symmetry / periodicity**: `cosineSum_neg` (even), `cosineSum_add_two_pi` (2π-periodic).\n- **Continuity**: `continuous_cosineSum`.\n- **Two-sided bound**: `abs_cosineSum_le_card` (`|·| ≤ N`), `cosineSum_le_card`, `neg_card_le_cosineSum`.\n- **Infimum**: `bddBelow_range_cosineSum`, `minCosineSum_le`, `neg_card_le_minCosineSum`, `minCosineSum_le_card`, `minCosineSum_empty`, and the exact value `minCosineSum_singleton` (`= −1` for `n ≥ 1`).\n\n### Key findings\n- The cosine sum lives in `[−N, N]`; the conjectured extremum `−c√N` is strictly interior, so every elementary bound is far from the truth — the mathematics is entirely in the cancellation.\n- `minCosineSum {n} = −1` exactly (attained at `θ = π/n`): single-frequency sets are maximally negative per size, so the `−c√N` difficulty is a genuine many-frequency phenomenon.\n\n### Reusable Lean recipe\n- Periodicity per term: `Real.cos_add_nat_mul_two_pi (n*θ) n` after `ring`-rewriting `n·(θ+2π) = n·θ + n·(2π)`.\n- `θ=π` collapse: `Real.cos_nat_mul_pi n : cos(n·π) = (−1)ⁿ`.\n- Infimum bounds in ℝ: `ciInf_le (bddBelow …) θ` and `le_ciInf (fun θ => …)` (index `ℝ` is `Nonempty`); bound the range below by `−N` via `neg_card_le_cosineSum`.\n- `|cos| ≤ 1` without `Analysis.Complex.Trigonometric`: `abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩`.\n- Continuity of a partially-applied `def`: `show Continuous (fun θ => …)` (not `simp only [def]`, which makes no progress under `Continuous`), then `continuous_finsetSum`.\n\n### Next steps\n- Attainment: `∃ θ, cosineSum A θ = minCosineSum A` (continuity on `[0,2π]` + periodicity).\n- `minCosineSum A ≤ 0` for `A ⊂ ℕ⁺` via `∫_0^{2π} cosineSum A = 0`.\n\n### Still open (unchanged)\nThe `−c√N` lower bound (Chowla's conjecture) — deep; Bedert (2025) reached `−cN^{1/7}`, the `N^{1/7}`↔`N^{1/2}` gap is open.\n"
+  },
+  "tags": [
+    "erdos",
+    "harmonic-analysis",
+    "additive-combinatorics",
+    "exponential-sums",
+    "sidon-sets",
+    "trigonometric-polynomials",
+    "open",
+    "wip"
+  ],
+  "relatedProofs": [
+    "erdos-510"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/510"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-07-20T12:00:00.000Z",
+  "lastUpdate": "2026-07-20T12:00:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
