@@ -78,7 +78,8 @@
       "**Stability vs. strict growth.** Diagonalization (oq-06) shows ℝ is strictly larger than ℕ (ℵ₀ < 𝔠); cardinal multiplication shows the continuum is *stable* under products (𝔠 · 𝔠 = 𝔠). Products do not grow an infinite cardinal; power sets do.",
       "**A choice-dependent absorption law.** κ · κ = κ for every infinite κ is equivalent to the axiom of choice (Tarski). Mathlib's `Cardinal.mul_eq_self` supplies it; everything here is a one-line specialization at κ = 𝔠.",
       "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℝ × ℝ) = #ℝ literally the statement Nonempty (ℝ × ℝ ≃ ℝ) — Cantor's 1878 'line ≅ plane' bijection, recovered from the cardinal computation.",
-      "**The complex plane is no bigger than the line.** #ℂ = #ℝ falls out immediately, since ℂ ≃ ℝ × ℝ."
+      "**The complex plane is no bigger than the line.** #ℂ = #ℝ falls out immediately, since ℂ ≃ ℝ × ℝ.",
+      "**A ZFC theorem, independent of the Continuum Hypothesis.** Unlike the *value* of 𝔠 (whether 𝔠 = ℵ₁ is undecidable in ZFC — Gödel/Cohen), the *identity* 𝔠 · 𝔠 = 𝔠 is a plain ZFC theorem, needing only ℵ₀ ≤ 𝔠 and the absorption law. It holds no matter how large 𝔠 is or where it sits in the ℵ hierarchy: cardinal arithmetic of the form κ · κ = κ is settled outright, while questions about 𝔠's *position* are CH-sensitive. This entry lives entirely on the decidable side of that line."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (Cardinal.mk, ℵ₀, 𝔠, multiplication)",
