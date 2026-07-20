@@ -52,7 +52,7 @@
       "erdos759Question: formal problem statement",
       "gimbel_lower_bound axiom: z ≥ c · √n / log n",
       "gimbel_thomassen_theorem axiom: z ≍ √n / log n",
-      "heawood_number, ringel_youngs axioms",
+      "heawood_number axiom; ringel_youngs_prop property statement (def, not axiom)",
       "erdos_759 theorem: main result"
     ],
     "axiomCount": 6,
@@ -133,7 +133,7 @@
     {
       "id": "gimbel-bounds",
       "title": "Gimbel's Initial Bounds (1986)",
-      "summary": "Axiomatizes gimbel_lower_bound (z ≥ c·√n/log n, via high-girth constructions) and gimbel_upper_bound (z ≤ C·√n, via Euler density constraints).",
+      "summary": "Axiomatizes gimbel_lower_bound (z ≥ c·√n/log n, via high-girth constructions); states gimbel_upper_bound_prop (z ≤ C·√n, via Euler density constraints) as a definition — superseded by Gimbel-Thomassen and unused in proofs.",
       "startLine": 178,
       "endLine": 202,
       "mathContext": "Gimbel 1986: $c \\frac{\\sqrt{n}}{\\log n} \\leq z(S_n) \\leq C \\sqrt{n}$. The $\\log n$ gap between bounds was the key open question for 11 years."
@@ -149,7 +149,7 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Axiomatizes heawood_number H(n) = ⌊(7+√(1+48n))/2⌋ (max chromatic on S_n), ringel_youngs (H(n) achieved by K_{H(n)}), and high_girth_cochromatic (girth affects cochromatic number).",
+      "summary": "Axiomatizes heawood_number (max chromatic on S_n, abstract function); states heawood_bound_prop (χ ≤ H(n)) and ringel_youngs_prop (H(n) achieved by K_{H(n)}) as definitions (not axioms, unused in proofs). Girth's effect on cochromatic number appears only as an explanatory comment, not a declaration.",
       "startLine": 226,
       "endLine": 261,
       "mathContext": "The Heawood number $H(n) = \\Theta(\\sqrt{n})$ gives max $\\chi$ on $S_n$. The $\\log n$ gap between $\\chi_{\\max} = \\Theta(\\sqrt{n})$ and $\\zeta_{\\max} = \\Theta(\\sqrt{n}/\\log n)$ quantifies how much more flexible cochromatic partitions are."
@@ -157,7 +157,7 @@
     {
       "id": "structure",
       "title": "Connection to Graph Structure",
-      "summary": "Axiomatizes growth_rate_intuition (why √n/log n: √n from Euler density, log n from girth) and planar_cochromatic_bounded (z(S_0) bounded by four-color theorem).",
+      "summary": "The intuition for √n/log n (√n from Euler density, log n from girth) is given as an explanatory comment, not a declaration. States planar_cochromatic_bounded_prop (z(S_0) bounded) as a definition (not an axiom, unused in proofs).",
       "startLine": 262,
       "endLine": 283,
       "mathContext": "The $\\sqrt{n}$ comes from Euler's formula bounding density on $S_n$. The $\\log n$ comes from the girth of extremal graphs: high-girth graphs on $S_n$ achieve the lower bound."
@@ -168,7 +168,7 @@
       "summary": "erdos_759_summary packages all key results. erdos_759 theorem states the formal answer: z(S_n) = Θ(√n/log n). Problem is SOLVED.",
       "startLine": 284,
       "endLine": 295,
-      "mathContext": "The complete resolution: $z(S_n) \\asymp \\frac{\\sqrt{n}}{\\log n}$ (Gimbel 1986 lower bound + Gimbel-Thomassen 1997 upper bound). Formalized with 17 axioms encoding deep results from topological graph theory."
+      "mathContext": "The complete resolution: $z(S_n) \\asymp \\frac{\\sqrt{n}}{\\log n}$ (Gimbel 1986 lower bound + Gimbel-Thomassen 1997 upper bound). Formalized with 6 axioms encoding deep results from topological graph theory."
     }
   ],
   "conclusion": {
