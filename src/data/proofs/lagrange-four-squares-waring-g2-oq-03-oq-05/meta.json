@@ -35,28 +35,52 @@
   },
   "sections": [
     {
-      "id": "structure",
-      "title": "2-Adic Structure and the Counting Function",
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring framing the result: the integers *not* representable as a sum of three squares are exactly Legendre's excluded family $\\{4^a(8b+7)\\}$, and this file computes that family's natural density to be exactly $1/6$. Imports Mathlib and opens the namespace `LagrangeFourSquaresWaringG2OQ03OQ05`.",
+      "mathContext": "The excluded set is $E=\\{n : n=4^a(8b+7)\\}$; the goal is $\\#(E\\cap[0,N))/N\\to 1/6$."
+    },
+    {
+      "id": "two-adic",
+      "title": "Elementary 2-Adic Structure of the Excluded Family",
       "startLine": 51,
-      "endLine": 152,
-      "summary": "Records the descent facts (n ≡ 7 mod 8 ⟹ excluded; 4k excluded ⟺ k excluded), defines excludedCount, counts the residue class (card_mod8_seven = ⌊N/8⌋), and exhibits the divisible-by-4 part as a bijective scaled copy of E (excludedCount_dvd_part via Finset.card_bij').",
-      "mathContext": "E ∩ [0,N) splits as {n ≡ 7 mod 8} ⊔ 4·(E ∩ [0,⌈N/4⌉))."
+      "endLine": 84,
+      "summary": "The descent facts underpinning everything. `mod8_seven_excluded`: $n\\equiv 7\\pmod 8\\Rightarrow n\\in E$ (take $a=0$). `four_mul_excluded_iff`: $4k\\in E\\iff k\\in E$ — the factor $4$ only shifts the $2$-adic valuation. `excluded_not_dvd_four_iff`: for $4\\nmid n$, membership in $E$ collapses to the single residue $n\\equiv 7\\pmod 8$.",
+      "mathContext": "$E$ is generated from the residue class $7\\bmod 8$ by repeated multiplication by $4$: $n\\in E\\iff n\\equiv 7\\ (8)$ or ($4\\mid n$ and $n/4\\in E$)."
     },
     {
-      "id": "recursion-bound",
-      "title": "The Recursion and Logarithmic Error Bound",
-      "startLine": 154,
-      "endLine": 206,
-      "summary": "Assembles the 4-descent recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉ (excludedCount_rec), then proves the explicit bound |6·excludedCount N − N| ≤ 6(log₂ N + 1) by strong induction (excludedCount_error_bound), pinning the constant 1/6.",
-      "mathContext": "excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉; |6·excludedCount N − N| ≤ 6(log₂ N + 1)."
+      "id": "counting-recursion",
+      "title": "The Counting Function and its 4-Descent Recursion",
+      "startLine": 85,
+      "endLine": 165,
+      "summary": "Defines `excludedCount N = #(E ∩ [0,N))` and assembles its self-similar recursion. `card_mod8_seven`: exactly $\\lfloor N/8\\rfloor$ integers below $N$ are $\\equiv 7\\pmod 8$. `filter_notdvd_eq_mod8` and `excludedCount_dvd_part` split $E\\cap[0,N)$ into the residue part and a bijective scaled copy $4\\cdot(E\\cap[0,\\lceil N/4\\rceil))$ (via `Finset.card_bij'`), giving the 4-descent recursion `excludedCount_rec`.",
+      "mathContext": "$\\text{excludedCount}\\,N=\\lfloor N/8\\rfloor+\\text{excludedCount}\\,\\lceil N/4\\rceil$."
     },
     {
-      "id": "density-section",
-      "title": "The Density Theorem and Sanity Checks",
+      "id": "error-bound",
+      "title": "The Logarithmic Error Bound",
+      "startLine": 166,
+      "endLine": 207,
+      "summary": "`excludedCount_error_bound`: the explicit deviation bound $|6\\cdot\\text{excludedCount}\\,N-N|\\le 6(\\log_2 N+1)$, proved by strong induction on the 4-descent recursion. Each descent step contributes an $O(1)$ error and the recursion has depth $\\log_2 N$, pinning the leading constant at exactly $1/6$.",
+      "mathContext": "$|6\\cdot\\text{excludedCount}\\,N-N|\\le 6(\\log_2 N+1)$, so $\\text{excludedCount}\\,N=\\tfrac{N}{6}+O(\\log N)$."
+    },
+    {
+      "id": "density",
+      "title": "The Density Theorem",
       "startLine": 208,
-      "endLine": 303,
-      "summary": "Squeezes the deviation |excludedCount N / N − 1/6| ≤ (log₂ N + 1)/N to 0 via the standard log N / N → 0, proving excludedCount N / N → 1/6 (excludedCount_density). Sanity checks confirm excludedCount 8 = 1, 16 = 2, 32 = 5.",
-      "mathContext": "excludedCount N / N → 1/6 — the non-three-square integers have natural density exactly one in six."
+      "endLine": 285,
+      "summary": "Converts the error bound into a limit. A real-analytic lemma gives $(\\log_2 N+1)/N\\to 0$ (from the standard $\\log N/N\\to 0$), and squeezing $|\\text{excludedCount}\\,N/N-1/6|\\le(\\log_2 N+1)/N$ yields the main theorem `excludedCount_density`: the natural density of the non-three-square integers is exactly $1/6$.",
+      "mathContext": "$\\text{excludedCount}\\,N/N\\to 1/6$ — one integer in six fails to be a sum of three squares."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 286,
+      "endLine": 305,
+      "summary": "Small-case verifications of the counting function against the recursion: `excludedCount 8 = 1` (only $7$), `excludedCount 16 = 2` ($7,15$), `excludedCount 32 = 5` ($7,15,23,28,31$), and a check that the recursion reproduces the $N=32$ value ($5=32/8+\\text{excludedCount}\\,8=4+1$).",
+      "mathContext": "$\\text{excludedCount}\\,32=\\lfloor 32/8\\rfloor+\\text{excludedCount}\\,8=4+1=5$."
     }
   ],
   "meta": {
