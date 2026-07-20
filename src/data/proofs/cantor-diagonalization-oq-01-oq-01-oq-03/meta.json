@@ -56,7 +56,7 @@
     "summary": "The generalized continuum function satisfies the three ZFC constraints — monotonicity, Cantor's ℵ_α < 2^{ℵ_α}, and König's cf(2^{ℵ_α}) > ℵ_α — all proved axiom-free from Mathlib, discharging the parent's stated-only König constraint. 7 theorems, 1 definition, 79 lines.",
     "implications": "This gives the necessary conditions of Easton's characterization of admissible continuum patterns, in machine-checked form, and upgrades the parent's König constraint from an assumption to a theorem. It clarifies that the only universal laws of the continuum function are these three; everything else is independent of ZFC.",
     "openQuestions": [
-      "Formalize the sufficiency half of Easton's theorem (forcing construction realizing any constraint-respecting pattern on regular cardinals).",
+      "Formalize the sufficiency half of Easton's theorem (forcing construction realizing any constraint-respecting pattern on regular cardinals) — the converse/permitted-values direction is scaffolded in the gallery by cantor-diagonalization-oq-01-oq-01-oq-02-oq-01.",
       "Treat singular cardinals, where Silver's and Shelah's PCF theorems impose additional constraints beyond König.",
       "State GCH at the generalized level (2^{ℵ_α} = ℵ_{α+1} for all α) and derive it as the minimal constraint-respecting pattern."
     ]
@@ -98,6 +98,21 @@
       "targetId": "cantor-diagonalization",
       "relationship": "related",
       "description": "Cantor's diagonal argument and theorem ℵ_α < 2^{ℵ_α}, the first of the three constraints."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Parallel formalization of the necessary side of Easton's theorem: it proves the same constraints (E1) Cantor lower bound, (E2) monotonicity, (E3) König cofinality cf(2^{ℵ_α}) > ℵ_α, and additionally (E4) the cofinality exclusion 2^{ℵ_α} ≠ ℵ_{α+ω}. The natural next entry after this one's three-constraint result."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "complementary",
+      "description": "The converse (sufficiency) direction addressing this entry's openQuestions[0]: every regular cardinal κ ≥ ℵ₁ is a permitted value for 2^ℵ₀, consistent with the Cantor and König constraints proved here — the permitted-values scaffold complementing these necessity results."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Isolates the ℵ₀ instance of this entry's König cofinality constraint: cf(2^ℵ₀) > ℵ₀ from Mathlib's Cardinal.lt_power_cof, the base case of the general E3 constraint cf(2^{ℵ_α}) > ℵ_α established here."
     }
   ],
   "sections": [
