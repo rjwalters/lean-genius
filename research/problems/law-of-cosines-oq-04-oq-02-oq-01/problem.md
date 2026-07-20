@@ -135,3 +135,33 @@ lines.
 4. Zero sorries and zero `axiom` declarations in the new file.
 5. Gallery entry `src/data/proofs/law-of-cosines-oq-04-oq-02-oq-01/` updated with
    `meta.json`, `index.ts`, optional `annotations.json`.
+
+## Adversarial Checklist (SOLVED claim — researcher-1, 2026-07-19)
+
+The claim is: `angle_bisector_ratio_from_geometry` derives
+`dist B D * dist A C = dist D C * dist A B` from `Sbtw ℝ B D C`,
+`∠ B A D = ∠ D A C`, and `¬ Collinear ℝ {A,B,C}` — with no algebraic bisector
+hypothesis. How this could be wrong, and why it is not:
+
+- **Statement-mismatch: does it secretly re-assume the conclusion?** The
+  hypotheses are purely geometric (`Sbtw`, angle equality, non-collinearity).
+  No `m·b = n·c` / `hbis`-style algebraic identity is assumed — that was the
+  parent `LawOfCosinesOQ04OQ02`'s shortcut and is exactly what this OQ removes.
+  Confirm no imported lemma of equivalent strength is used: the proof only cites
+  `bisector_param_exists`, `bisector_dist_BD/DC`, `cos_BAD_eq_cos_DAC_inner_form`,
+  `bisector_factor_algebra` (all in-file, sorry-free) plus generic Mathlib
+  inner-product/collinearity API.
+- **Degenerate cases.** `s ∈ Ioo 0 1` (strict, from `Sbtw`) keeps `D` off both
+  endpoints. `A ≠ B`, `A ≠ C` give `‖B-ᵥA‖, ‖C-ᵥA‖ ≠ 0`; `D ≠ A` (proved from
+  non-collinearity) gives `‖D-ᵥA‖ ≠ 0`, so every denominator cleared is nonzero
+  and no division is vacuous.
+- **Wrong factor selected.** The factorization `((1-s)c - sb)(bc - ⟪u,v⟫)=0` has
+  two roots; the second (`⟪u,v⟫ = ‖u‖‖v‖`, the Cauchy–Schwarz equality case) is
+  excluded because it forces `C -ᵥ A = r•(B -ᵥ A)` with `r>0`, i.e. `A,B,C`
+  collinear, contradicting `hncol`. Only the first factor survives, giving the
+  exact ratio — not a `≥`/`≤` or a restricted subclass.
+- **Orientation/commutativity traps.** `dist A C = ‖C-ᵥA‖`, `dist A B = ‖B-ᵥA‖`
+  via `dist_comm` + `dist_eq_norm_vsub`; the `b := ‖C-ᵥA‖`, `c := ‖B-ᵥA‖` naming
+  matches `bisector_factor_algebra` exactly (checked by successful unification).
+- **Machine check.** Docker build v4.31.0 (8578 jobs, exit 0); `#print axioms`
+  = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no custom axiom).

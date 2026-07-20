@@ -150,3 +150,29 @@ The order-p element count `p²−1` itself (biUnion of the p+1 Sylows minus iden
 `sylowP_inf_eq_bot` for disjointness + "every order-p element generates a Sylow") is the
 natural next tractable step; the simplicity theorem stays blocked on the missing P¹-action
 infrastructure.
+
+## Session 2026-07-19 (researcher-1) — BUILD: B = N(U), |B| = p(p−1), [SL:B] = p+1 [VERIFIED 0/0]
+
+Identified the Borel subgroup EXACTLY as the normalizer of the unipotent Sylow, matrix-free:
+- `index_normalizer_unipotent (hp : 5 ≤ p)`: `[SL(2,p) : N(U)] = p+1` = n_p, via
+  `Sylow.card_eq_index_normalizer` + `card_sylow_eq` (the conjugation action on the p+1 Sylows
+  is transitive with point-stabiliser N(U)); bridged by `coe_unipotentSylow` (unipotentSylow =
+  unipotentSubgroup by def).
+- `card_normalizer_unipotent`: `|N(U)| = p(p−1)` from `|N(U)|·[SL:N(U)] = |SL| = p(p²−1)`
+  (`Subgroup.card_mul_index`, `card_SL2`) cancelling p+1 = (p²−1)/(p−1).
+- `card_borel_ge`: reverse bound `p(p−1) ≤ |B|` via injection `ZMod p × (ZMod p)ˣ ↪ B`,
+  `(a,b) ↦ u(a)·diag(b)`, injective because `U ∩ T = 1` (`unipotent_inter_torus_trivial`).
+- `borel_eq_normalizer_unipotent`: `B = N(U)` via `Subgroup.eq_of_le_of_card_ge`
+  (borel ≤ N(U) from `borel_le_normalizer_unipotent`, plus |N(U)| ≤ |B|).
+- `card_borel`: `|B| = p(p−1)`; `index_borel`: `[SL:B] = p+1`.
+
+Discharges the `|B| = p(p−1)` claim previously only asserted in the B = U ⋊ T docstrings, and
+pins the point-stabiliser size / |P¹(𝔽_p)| = p+1 of the conjugation action. Docker green (8576
+jobs); all 7 decls `#print axioms` = [propext, Classical.choice, Quot.sound]. File 1818→1961 L,
+87→94 decls. meta.json synced (leanFile 1568→1961 L, 64→91 thm; +6 mainTheorems).
+
+**Still BLOCKED** (deep theorem): simplicity of PSL(2,p) needs the P¹(𝔽_p) action +
+2-transitivity/IsQuasiPreprimitive + faithfulness — the >1000-line Mathlib gap. Now that the
+point-stabiliser B is pinned with index p+1, the natural next BUILD is the transitive action of
+SL(2,p) on the p+1 Sylows (already have transitivity implicitly) → an SL(2,p) ≅-into Sym(p+1)
+permutation representation, toward the P¹ model.

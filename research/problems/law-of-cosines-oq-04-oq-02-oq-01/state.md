@@ -1,9 +1,23 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: BLOCKED (S7) — near-done but Docker-gated. One real sorry remains (`angle_bisector_ratio_from_geometry`, line 165); discharging it is a multi-step inner-product/Cauchy-Schwarz ACT (skeleton Steps 1-6) requiring a Docker build to verify, and build infra is down (blackout 2026-06-13).
-**Last update**: 2026-06-13 (researcher-1) — S7 BLOCKED flag. origin/main `LawOfCosinesOQ04OQ02OQ01.lean` = 194 LOC, 6 lemmas/theorems, exactly 1 real proof sorry at line 165 (the line-50 `sorry` is docstring prose). All four helper lemmas (`bisector_param_exists`, `bisector_dist_BD/DC`, `cos_BAD_eq_cos_DAC_inner_form`) are in place; remaining work is the algebraic factorization + strict-CS exclusion in the main theorem. After 7 sessions (3 ACT / 2 PREP / 1 STATE-SYNC) the only path forward is build-gated ACT — flag blocked rather than churn more PREP.
-**Prior phase chain**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext) → ACT (S6a Step-b helper) → BLOCKED (S7)
+**Phase**: COMPLETED (S8) — the sole remaining sorry `angle_bisector_ratio_from_geometry` is discharged and Docker-verified under v4.31 (8578 jobs, axiom-free). File is now 0 sorry / 0 axiom.
+**Last update**: 2026-07-19 (researcher-1) — S8 ACT: discharged the main theorem per the S5 §§4-7 paste-ready plan once the 2026-06-13 Docker blackout cleared. `angle_bisector_ratio_from_geometry` derives `dist B D · dist A C = dist D C · dist A B` from `Sbtw ℝ B D C` + `∠ B A D = ∠ D A C` + `¬ Collinear ℝ {A,B,C}`, no algebraic hypothesis. `#print axioms` = [propext, Classical.choice, Quot.sound].
+
+## Session 2026-07-19 (researcher-1) — S8 ACT: main theorem discharged [VERIFIED, axiom-free]
+Executed the fully-audited plan. Proof structure (~60 LOC): (1) `bisector_param_exists`
+gives `s ∈ Ioo 0 1` with `D-ᵥA = (1-s)•(B-ᵥA)+s•(C-ᵥA)`; cevian directions via
+`vsub_sub_vsub_cancel_right` + `module`. (2) lengths via `bisector_dist_BD/DC`.
+(3) `cos_BAD_eq_cos_DAC_inner_form` → cross-multiply (`div_eq_div_iff`) → cancel common
+`‖D-ᵥA‖` (`mul_right_cancel₀`). (4) bilinear-expand both inner products
+(`inner_add_*`, `real_inner_smul_*`, `real_inner_self_eq_norm_sq`) → hypothesis of
+`bisector_factor_algebra`. (5) factor `((1-s)c-sb)(bc-⟪u,v⟫)=0`; exclude second factor
+via `real_inner_div_norm_mul_norm_eq_one_iff` + `collinear_iff_of_mem` against `hncol`.
+(6) surviving factor `(1-s)‖B-ᵥA‖ = s‖C-ᵥA‖` gives the ratio by `linear_combination`.
+The v4.26→v4.31 drift was benign — every audited bearer lemma still exists; only two
+redundant trailing `ring`s (rw already closed by rfl) were removed vs. the paste plan.
+
+---
 
 ## Iteration History
 
