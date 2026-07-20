@@ -46,10 +46,10 @@
     "originalContributions": [
       "chromaticNumber: Cardinal-valued chromatic number for infinite graphs (noncomputable via iInf)",
       "isColorable: predicate checking if a graph is k-colorable via a proper coloring function",
-      "hasCycle / hasOddCycle: predicates for the presence of cycles and odd cycles of length ≤ r",
-      "avoidsOddCyclesOf: predicate for a subgraph avoiding all odd cycles of length ≤ r",
-      "erdosHajnal_conjecture: formal statement of the Erdős-Hajnal conjecture for all infinite cardinals",
-      "girth_implies_odd_avoidance: girth > 2r implies avoidance of all odd cycles of length ≤ r"
+      "isOddCycle / containsOddCycleLeq: predicates for a cycle being odd and for the presence of an odd cycle of length ≤ r",
+      "noOddCyclesLeq: predicate for a subgraph avoiding all odd cycles of length ≤ r",
+      "erdosHajnalConjecture: formal statement of the Erdős-Hajnal conjecture for all infinite cardinals",
+      "girth_implies_odd: girth conjecture (avoiding all cycles ≤ r) implies avoidance of all odd cycles of length ≤ r"
     ],
     "theoremCount": 5,
     "definitionCount": 22
