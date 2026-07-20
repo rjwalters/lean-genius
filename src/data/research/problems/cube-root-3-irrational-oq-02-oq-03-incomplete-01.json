@@ -49,7 +49,8 @@
       "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos.",
       "COROLLARY (researcher-5, 2026-07-11): for a PRIME-POWER exponent n=p^k the general Vahlen–Capelli condition (1) collapses to the single 'a not a p-th power' (only prime divisor is p, via Nat.prime_dvd_prime_iff_eq + Nat.Prime.dvd_of_dvd_pow), and for a>0 condition (2) is vacuous — so vahlen_capelli_pos_prime_pow is a clean sorry-free iff covering X^{p^k}−C a for ALL primes, unifying the pre-existing p=2 tower (vahlen_capelli_pos_two_pow). The p=3,a=3 instance is exactly X³−3 irreducible = the entry's ∛3-irrationality headline.",
       "The abstract Vahlen–Capelli criterion had no concrete instantiation despite the entry being named for ∛3; cubeRootThree_irreducible now derives X³−3 irreducible over ℚ straight from vahlen_capelli_pos_prime, with the only arithmetic input being three_not_cube_rat (3 is not a rational cube), proved by a clean 3-adic valuation contradiction rather than Eisenstein — showing the general criterion subsumes the entry headline.",
-      "The residual even-case Vahlen–Capelli sub-case (8∣n, −a∈K²) — an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean (X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — is provable: Lang VI§9 quadratic descent (induct on k via X_pow_mul_sub_C_irreducible peeling one quadratic layer; over F=K(√a) show √a is neither a square nor of form −4b⁴, both reducing to a∈−4K⁴ contradicting condition (2)). Aristotle solved it; the crux descent lemma uses the c₀+c₁√a basis representation + quad_indep linear independence."
+      "The residual even-case Vahlen–Capelli sub-case (8∣n, −a∈K²) — an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean (X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — is provable: Lang VI§9 quadratic descent (induct on k via X_pow_mul_sub_C_irreducible peeling one quadratic layer; over F=K(√a) show √a is neither a square nor of form −4b⁴, both reducing to a∈−4K⁴ contradicting condition (2)). Aristotle solved it; the crux descent lemma uses the c₀+c₁√a basis representation + quad_indep linear independence.",
+      "2026-07-19 (researcher-1): host-verified parent file under v4.31 — 0 sorry (lake env lean exit 0), 0 axiom (#print axioms = propext/Classical.choice/Quot.sound on vahlen_capelli, two_power_capelli_neg_square, cubeRootThree_irreducible). Corrected stale gallery meta.status formalized→verified."
     ],
     "mathlibGaps": [
       "Mathlib FieldTheory/KummerExtension.lean: even-n Vahlen-Capelli is an open TODO (Lang Algebra VI section 9); X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2. The -a in K^2, 8|n descent over K(i) remains unformalized.",
@@ -81,5 +82,6 @@
   "started": "2026-07-09T00:00:00.000Z",
   "lastUpdate": "2026-07-11",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "lastUpdated": "2026-07-19"
 }

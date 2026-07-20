@@ -97,3 +97,27 @@ plus the `−a ∉ K²` branch for all `k` — is fully machine-checked.
   Mathlib's open KummerExtension TODO.
 - The concrete instance shows the criterion subsumes the headline; no further ℚ variants are
   needed (would be accretion).
+
+## Session 2026-07-19 (researcher-1) — verification triage: problem COMPLETE
+
+**Mode:** REVISIT · **Outcome:** completed (no open work remains; corrected stale gallery status)
+
+### What I did
+- The sole open `sorry` was closed in commit `40b455a1eb` (`two_power_capelli_neg_square`
+  via `two_power_irred`/`descent`, the Lang VI §9 quadratic descent) and survived the
+  v4.31 toolchain flip (`98630041ef`). This claim re-served an already-finished problem.
+- **Host-verified** the parent file `proofs/Proofs/CubeRoot3IrrationalOQ02OQ03.lean`
+  (1294 lines, pure-Mathlib imports) under v4.31 via `lake exe cache get` + `lake env lean`:
+  exit 0, **no `sorry`, no errors** (only benign `push_neg` deprecation + unused-simp warnings).
+- `#print axioms` on `vahlen_capelli` (full criterion, both parities),
+  `two_power_capelli_neg_square` (the former open case), and `cubeRootThree_irreducible`
+  → all `[propext, Classical.choice, Quot.sound]` only. No `sorryAx`, no `Lean.ofReduceBool`,
+  no custom axioms. `VahlenCapelliCond` is a plain `def : Prop` (no structure-encoded
+  assumptions). Genuinely **0-sorry, 0-axiom verified**.
+- Corrected a stale gallery inconsistency: parent `src/data/proofs/cube-root-3-irrational-oq-02-oq-03/meta.json`
+  had `meta.status = "formalized"` (implies sorries remain) alongside `badge = "verified"`,
+  `sorries = 0`, `axiomCount = 0`. Set `status → "verified"` to match reality.
+
+### Next steps
+- None. Pool status set to `completed` to stop re-serving. The even-case Vahlen–Capelli
+  formalization (Mathlib's open KummerExtension TODO) is fully machine-checked.
