@@ -71,7 +71,8 @@
       "**Two offsets, no subtraction.** Vajda's two independent offsets $i, j$ enter the statement purely additively ($n+i$, $n+j$, $n+i+j$), so unlike the classical signed Catalan/d'Ocagne forms the formal statement never needs truncated natural-number subtraction — the whole proof stays friction-free over $\\mathbb{N}$.",
       "**Bilinear, not quadratic.** Where Catalan is a one-parameter (diagonal) identity, Vajda is genuinely bilinear in $(F_s, F_{s+1})$ and $(F_t, F_{t+1})$. The single Cassini scalar $(-1)^n$ factors out of the whole expansion, multiplied by $F_i F_j$.",
       "**Master identity = Cassini × F_i F_j.** Every dependence on $n$ collapses to the Cassini core $(-1)^n$; the offsets contribute only the multiplicative factor $F_i F_j$. Cassini, Catalan, and d'Ocagne are then the choices $(i,j) = (1,1)$, $(r,r)$, $(i,1)$.",
-      "**One induction, reused.** The only induction in the development is Cassini itself (`cassini_sub`), imported from the parent entry. Vajda adds no further induction: it is pure addition-formula algebra plus one `linear_combination`."
+      "**One induction, reused.** The only induction in the development is Cassini itself (`cassini_sub`), imported from the parent entry. Vajda adds no further induction: it is pure addition-formula algebra plus one `linear_combination`.",
+      "**Two lineages meet at one master identity.** Vajda is a genuine confluence point of the gallery: this file derives it *non-inductively* from the Cassini core (one `Nat.fib_add` expansion + a `linear_combination` against the $(-1)^n$ scalar), whereas the Fibonacci-identities lineage (`FibonacciIdentitiesOQ01OQ02OQ01.fib_vajda_gap`) reaches the very same identity by a two-step induction on $j$ off d'Ocagne. The Cassini route trades induction-on-index for a single bilinear expansion."
     ],
     "prerequisites": [
       "Fibonacci numbers and the recurrence F_{n+2} = F_n + F_{n+1}",
@@ -96,11 +97,18 @@
       "summary": "vajda proves F_{n+i}·F_{n+j} − F_n·F_{n+i+j} = (−1)^n·F_i·F_j. After the i=0 and j=0 vanishing cases, the i=s+1, j=t+1 case expands all three compound Fibonacci values (and the inner F_{s+t+1}, F_{s+t+2}) with Nat.fib_add, then a single linear_combination against the Cassini core cassini_sub collapses every cross term."
     },
     {
-      "id": "vajda-specializations",
-      "title": "Specializations: Cassini, Catalan, d'Ocagne",
+      "id": "vajda-diagonal",
+      "title": "Diagonal specializations: Cassini and Catalan (i = j)",
       "startLine": 108,
+      "endLine": 128,
+      "summary": "The one-parameter diagonal instances i = j: vajda_cassini (i=j=1) gives F_{n+1}² − F_n·F_{n+2} = (−1)^n, and vajda_catalan (i=j=r) recovers the parent file's catalan_aux F_{n+r}² − F_n·F_{n+2r} = (−1)^n·F_r². Each is a one-line linear_combination off vajda, with the two offsets collapsed onto a single squared Fibonacci factor F_r²."
+    },
+    {
+      "id": "vajda-docagne",
+      "title": "The d'Ocagne shift specialization (j = 1)",
+      "startLine": 130,
       "endLine": 137,
-      "summary": "vajda_cassini (i=j=1), vajda_catalan (i=j=r, recovering the parent's catalan_aux), and vajda_docagne (j=1) each follow from vajda by a one-line linear_combination, exhibiting the three classical bilinear identities as instances of the master identity."
+      "summary": "The off-diagonal shift instance j = 1: vajda_docagne gives F_{n+i}·F_{n+1} − F_n·F_{n+i+1} = (−1)^n·F_i, the genuinely two-index (non-square) member of the family. Fixing one offset to 1 leaves a single free offset i and a linear F_i factor rather than a square."
     },
     {
       "id": "vajda-sanity",
