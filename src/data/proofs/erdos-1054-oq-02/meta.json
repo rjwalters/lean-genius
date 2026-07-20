@@ -18,9 +18,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 307,
+    "lineCount": 311,
     "theoremCount": 17,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `q` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'q'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: Lean.ofReduceBool. The concrete witness deliverables — goldbach_witness_6..19 and the witnesses_6_to_20 table (advertised as 'concrete witnesses for n ∈ [6,20]') — are discharged by native_decide, which trusts compiler kernel reduction and so depends on the Lean.ofReduceBool axiom (#print axioms lists it). No literal `axiom` declarations exist, so leanFile.axiomCount stays 0; the abstract results (divisor classification, goldbach_implies_representable) are native_decide-free. The conditional Goldbach result itself is proved (modulo Goldbach's conjecture as a hypothesis, not an axiom).",
+    "assumptions": "REPAIRED (issue #39077): the Lean source now compiles cleanly under v4.31 (host-verified via `lake env lean`, EXIT=0, 0 errors, 0 sorries). The #39061 audit had retracted this as a never-compiled Class A entry; the file has no `set_option autoImplicit true` and its `unknownIdentifier 'q'` came from genuine v4.31 proof breakage, now fixed — divisors_prime_product: an over-eager `simp`/`omega`/`subst` chain replaced by `Nat.eq_zero_of_zero_dvd`, `Nat.mul_ne_zero`, and `rw [h]`; card_divisors_prime_product: supplied the `4 ≤ q*p` / `q < q*p` / `p < q*p` bounds omega could not derive. ASSUMPTIONS: the concrete witness deliverables — goldbach_witness_6..19 and the witnesses_6_to_20 table (concrete witnesses for n ∈ [6,20]) — are discharged by native_decide, which trusts compiler kernel reduction and so depends on the Lean.ofReduceBool axiom (#print axioms lists it); hence axiomCount=1 / status=axiomatized / badge=axiom. No literal `axiom` declarations exist, so leanFile.axiomCount stays 0; the abstract results (divisor classification, goldbach_implies_representable) are native_decide-free, and the conditional Goldbach result is proved modulo Goldbach's conjecture as a hypothesis (not an axiom).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -106,7 +106,7 @@
       "Finset"
     ],
     "namespace": "Erdos1054OQ02",
-    "lineCount": 307,
+    "lineCount": 311,
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 3,
