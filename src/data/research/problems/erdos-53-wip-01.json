@@ -23,7 +23,7 @@
     "iteration": 2,
     "focus": "Batch 2 axiom-free lemmas landed (Section 8): k=1 base case (erdosProblem53_exponent_one), distinct-prime richness |subsetProducts A|=2^|A|-1, trivial upper bracket 2^(|A|+1). Theorem count 12->24, 0 axioms, host-verified.",
     "blockers": [],
-    "nextAction": "Optional: small decide computations of |sumsOrProducts A| for tiny explicit A (problem.md item iii). Chang theorem + Erdős–Szemerédi upper bound stay documented (out of Mathlib scope).",
+    "nextAction": "Additive/multiplicative sides now both shown sharp. Optional: an explicit superincreasing witness (e.g. {1,2,4,…}) instantiating subsetSums_card_of_superincreasing; small decide computations of |sumsOrProducts A|. Chang theorem + Erdős–Szemerédi upper bound stay documented (out of Mathlib scope).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,12 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added 12 axiom-free foundational lemmas to the previously definitions-only Erdos53Problem.lean (subset-sum/product membership + inclusions, 2^|A| bound on subset sums, monotonicity, |A|^2 bounds on sumset/productset, subsetSums(empty)={0}). Deep results (Chang 2003, Erdos-Szemeredi upper bound) remain documented-only, needing additive combinatorics beyond Mathlib. Meta synced (theoremCount 0 -> 12).",
+    "progressSummary": "PROGRESS: added the additive-side sharpness dual to Erdos53Problem.lean (theoremCount 24→26, 0 sorry / 0 axiom, host-verified). subsetSum_injOn_of_superincreasing: a superincreasing set (each element exceeds the sum of the strictly smaller ones) has injective subset sums; subsetSums_card_of_superincreasing: hence exactly 2^|A| distinct subset sums, so the trivial bound subsetSums_card_le is SHARP. This is the additive analogue of the existing subsetProducts_card_of_prime (=2^|A|-1). Deep results (Chang 2003, Erdős–Szemerédi upper bound) remain documented-only.",
     "builtItems": [
       "zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem in Erdos53Problem.lean",
       "subsetSums/Products_subset_sumsOrProducts, subsetSumCount/subsetProductCount_le_card in Erdos53Problem.lean",
       "subsetSums_card_le (<=2^|A|), subsetSums_mono, subsetSums_empty in Erdos53Problem.lean",
-      "sumset_card_le, productset_card_le (<=|A|^2) in Erdos53Problem.lean"
+      "sumset_card_le, productset_card_le (<=|A|^2) in Erdos53Problem.lean",
+      "subsetSum_injOn_of_superincreasing (Erdos53Problem.lean): superincreasing ⇒ injective subset sums, via max-element-of-symmetric-difference argument (2026-07-20)",
+      "subsetSums_card_of_superincreasing: |subsetSums A| = 2^|A| for superincreasing A — additive sharpness, dual of subsetProducts_card_of_prime (2026-07-20)"
     ],
     "insights": [
       "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
@@ -65,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-20T23:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
