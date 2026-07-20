@@ -55,7 +55,7 @@
       "Cliques and independent sets in graphs",
       "Induction on graph size and neighborhood structure"
     ],
-    "assumptions": "1 axiom: multicolor_ramsey_exists. See Lean source for the complete statement.",
+    "assumptions": "1 explicit `axiom` declaration: multicolor_ramsey_exists (the finite multicolor Ramsey existence statement; see the Lean source for the complete statement). Trust caveat: the small-Ramsey-bound theorems ramsey_3_3_bound (ramseyBound 3 3 = 6), ramsey_3_4_bound (ramseyBound 3 4 = 10), and ramsey_4_4_bound (ramseyBound 4 4 = 20) close their numeric goals with `native_decide`, so each additionally depends on the `Lean.ofReduceBool` axiom (`#print axioms` shows a `native_decide.ax` beyond propext/Classical.choice/Quot.sound); the supporting pentagon-coloring and Nat.choose examples do likewise. These computations shift trust from the kernel to the compiler; the structural clique/pigeonhole lemmas are kernel-verified without native_decide.",
     "mathlib_version": "4.31.0",
     "theoremCount": 24,
     "definitionCount": 14,
