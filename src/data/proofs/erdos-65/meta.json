@@ -88,26 +88,26 @@
     {
       "id": "bipartite-structure",
       "title": "Complete Bipartite Cycle Structure",
-      "summary": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq",
+      "summary": "bipartiteCycleSum definition (reciprocal sum for K_{r,s}); explanatory prose on complete bipartite cycle structure",
       "startLine": 132,
       "endLine": 160,
-      "mathContext": "Mathematical content: complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq"
+      "mathContext": "Mathematical content: bipartiteCycleSum definition; prose on K_{r,s} cycle structure (no theorems proved here)"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Cycle Variety",
-      "summary": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection",
+      "summary": "Explanatory prose: Zarankiewicz / Kővári-Sós-Turán connection and remarks on why complete bipartite graphs might minimize the sum (no formal theorems)",
       "startLine": 161,
       "endLine": 202,
-      "mathContext": "Mathematical content: min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection"
+      "mathContext": "Expository comments on the Zarankiewicz connection and the open minimization question; no theorems are proved in this range"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity",
+      "summary": "odd_cycle_positive_contribution (proves 1/k > 0 for an odd cycle length k ≥ 3); prose on density-one cycle existence and bipartite parity",
       "startLine": 203,
       "endLine": 217,
-      "mathContext": "Mathematical content: density_one_has_cycle, triangle_free_larger_sum, bipartite parity"
+      "mathContext": "Mathematical content: odd_cycle_positive_contribution theorem; expository notes on density-one cycles and bipartite parity"
     }
   ],
   "conclusion": {
@@ -163,7 +163,7 @@
       "year": "1984",
       "volume": "44",
       "pages": "283–293",
-      "note": "Proves Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges; the GKS theorem axiomatized in this formalization."
+      "note": "Proves Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges; the GKS theorem is referenced as background context in this formalization, not axiomatized or formalized (the file is axiom-free)."
     },
     {
       "authors": [
