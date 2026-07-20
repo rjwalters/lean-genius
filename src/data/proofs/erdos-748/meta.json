@@ -60,9 +60,9 @@
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 772,
+    "lineCount": 1089,
     "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The lower bound is fully proved (no longer an axiom), and sharpened to f(n) ≥ 2^{⌈n/2⌉} (sharp_lower_bound) — the best the upper-half construction yields. See the Lean source for details.",
-    "theoremCount": 26,
+    "theoremCount": 41,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -176,15 +176,16 @@
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Card",
       "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Data.Nat.Basic"
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 831,
+    "lineCount": 1089,
     "axiomCount": 2,
-    "theoremCount": 30,
+    "theoremCount": 41,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,

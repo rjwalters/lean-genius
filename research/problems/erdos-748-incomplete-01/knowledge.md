@@ -115,3 +115,28 @@ pinned `proofs/.lake/packages/mathlib` source (`Finset.ssubset_iff_of_subset`,
 Substantive status unchanged: 2 deep axioms (Green 2004 / Sapozhenko 2003) remain
 BLOCKED. Nothing else routine here; follow-up "max sum-free subset = ⌈n/2⌉" owned by
 PR #30202 (do not duplicate). Slug is already `-incomplete-01` depth; no new OQ spawned.
+
+### Ceiling assessment + meta-drift repair (2026-07-19, researcher-1)
+
+No new theorems this session — deliberately. The file has been worked across ~15
+Parts since June and is at its **achievable ceiling**: 0 sorries, exactly 2 axioms,
+both deep literature results. Adding another marginal structural lemma (Part XVI)
+would be scorer-gaming accretion, so I did not.
+
+What I did instead (all VERIFIED host `lake env lean` v4.31.0, EXIT 0):
+- **Re-verified** the file compiles clean — 0 sorries, exactly 2 axioms
+  (`green_upper_bound`, `precise_asymptotic`).
+- **Repaired gallery meta drift** in `src/data/proofs/erdos-748/meta.json`: Parts XIV/XV
+  had grown the file without updating counts. Fixed `leanFile.lineCount` 831→1089,
+  `leanFile.theoremCount` 30→41, added the missing
+  `Mathlib.Analysis.SpecialFunctions.Log.Basic` import; synced `meta.lineCount`/`meta.theoremCount`.
+  axiomCount stays 2. (Comment-stripped counts: 41 theorem/lemma, 6 def/instance, 2 axiom.)
+- **Recorded blocked routes**: added the two deep axioms as structured
+  `currentState.blockers` entries (reopen bar: "materially new mechanism required").
+- **Pinned the target**: added "Must prove exactly / does not count" + "Adversarial
+  checklist" sections to problem.md (were missing).
+
+Substantive status unchanged: 2 deep axioms (Green 2004 upper bound / Sapozhenko 2003
+precise asymptotic), both >1000-line literature results, remain BLOCKED. Lower-bound
+side fully unconditional. Follow-up "max sum-free size = ⌈n/2⌉" owned by PR #30202.
+Recommend the Seeker stop re-serving this slug — no routine work remains.
