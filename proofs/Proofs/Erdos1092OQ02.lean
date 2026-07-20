@@ -208,6 +208,32 @@ theorem mem_fThresholdSet_iff {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) (k :
   · intro hk
     exact fThresholdSet_downClosed hk (fThreshold_mem hr hn)
 
+/-- **The non-degenerate defining set as an interval.** Packaging
+`mem_fThresholdSet_iff` as a `Set` equality: for `1 ≤ r`, `r + 2 ≤ n`, the defining set is
+exactly `Set.Iic (fThreshold r n) = {0, 1, …, fThreshold r n}`. -/
+theorem fThresholdSet_eq_Iic {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
+    fThresholdSet r n = Set.Iic (fThreshold r n) := by
+  ext k
+  rw [Set.mem_Iic]
+  exact mem_fThresholdSet_iff hr hn k
+
+/-- Every graph on at most `r + 1` vertices is `(r+1)`-colorable: colour each vertex with
+its own index (`hasColoring_self`) and embed into `r + 1` colours (`hasColoring_mono`). -/
+theorem hasColoring_of_card_le {r n : ℕ} (hn : n ≤ r + 1) (G : SGraph n) :
+    G.hasColoring (r + 1) :=
+  SGraph.hasColoring_mono G hn (SGraph.hasColoring_self G)
+
+/-- **The degenerate (upper) regime `n ≤ r + 1`.** Every graph on `n ≤ r + 1` vertices is
+already `(r+1)`-colorable, so *every* budget forces the conclusion and the defining set is all
+of `ℕ`: `fThresholdSet r n = Set.univ`. This is the `sSup`-pathology the parent file documents
+in prose — the degenerate counterpart of the non-degenerate interval characterization
+`fThresholdSet_eq_Iic`. (Here `fThreshold r n = sSup Set.univ`, the artifact value.) -/
+theorem fThresholdSet_eq_univ_of_card_le {r n : ℕ} (hn : n ≤ r + 1) :
+    fThresholdSet r n = Set.univ := by
+  rw [Set.eq_univ_iff_forall]
+  intro k G _
+  exact hasColoring_of_card_le hn G
+
 #check @completeGraph_not_hasColoring
 #check @canReduce_removeAll
 #check @fThresholdSet_downClosed
@@ -216,5 +242,8 @@ theorem mem_fThresholdSet_iff {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) (k :
 #check @fThresholdSet_zero_mem
 #check @fThreshold_mem
 #check @mem_fThresholdSet_iff
+#check @fThresholdSet_eq_Iic
+#check @hasColoring_of_card_le
+#check @fThresholdSet_eq_univ_of_card_le
 
 end Erdos1092OQ02
