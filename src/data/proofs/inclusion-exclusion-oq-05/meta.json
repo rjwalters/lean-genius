@@ -87,7 +87,7 @@
     "summary": "Proves 11 theorems (0 axioms, 0 sorries) establishing the Bonferroni inequalities for the cardinality of a finite union: odd-length truncation of the inclusion–exclusion series overestimates |⋃ Sᵢ|, even-length truncation underestimates it. The combinatorial engine is a partial alternating binomial identity ∑_{k=0}^{m}(-1)^k C(n+1,k) = (-1)^m C(n,m) absent from Mathlib, aggregated over union elements via Finset.card_powersetCard.",
     "implications": "Supplies the truncation bounds requested by the TODO in Mathlib's InclusionExclusion.lean and answers the higher-Bonferroni open question posed by the sibling entry inclusion-exclusion-oq-04 (sieve form). The m = 1 case is Boole's union bound |⋃ Aᵢ| ≤ ∑|Aᵢ|; the m = 2 case is the second-order lower bound. The partial binomial identity is independently reusable wherever a truncated alternating binomial sum appears.",
     "openQuestions": [
-      "Package the m = 1 and m = 2 cases as named corollaries (Boole's inequality and the second-order Bonferroni bound) with the powerset sums expanded to ∑_i |Sᵢ| and ∑_i|Sᵢ| - ∑_{i<j}|Sᵢ∩Sⱼ|.",
+      "Package the m = 1 and m = 2 cases as named corollaries (Boole's inequality and the second-order Bonferroni bound) with the powerset sums expanded to ∑_i |Sᵢ| and ∑_i|Sᵢ| - ∑_{i<j}|Sᵢ∩Sⱼ|. RESOLVED by the child entry inclusion-exclusion-oq-05-oq-01: it packages Boole's inequality #(⋃ᵢ Sᵢ) ≤ ∑ᵢ|Sᵢ| (m = 1) and the second-order Bonferroni bound ∑ᵢ|Sᵢ| − ∑_{i<j}|Sᵢ∩Sⱼ| ≤ #(⋃ᵢ Sᵢ) (m = 2) as named corollaries, expanding the abstract powerset-indexed truncation sums into the concrete indexed forms.",
       "Transport the inequalities to the dual sieve form #(none of Sᵢ) via the bridge identity #(none) = |α| - |⋃ Sᵢ| of inclusion-exclusion-oq-04.",
       "State the measure-theoretic Bonferroni inequalities for a finite measure (probabilities of unions of events) by replacing cardinality with measure and reusing the same pointwise argument."
     ]
@@ -121,6 +121,11 @@
       "targetId": "inclusion-exclusion-oq-01",
       "relationship": "sibling",
       "description": "OQ-01 proves the general n-set union form Σ (-1)^{|t|+1}|⋂|. Bonferroni's inequalities bound the partial sums of exactly that series."
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-05-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[0]: it packages the m = 1 and m = 2 truncations as named corollaries — Boole's inequality #(⋃ᵢ Sᵢ) ≤ ∑ᵢ|Sᵢ| and the second-order Bonferroni bound ∑ᵢ|Sᵢ| − ∑_{i<j}|Sᵢ∩Sⱼ| ≤ #(⋃ᵢ Sᵢ) — expanding the abstract powerset-indexed truncated inclusion–exclusion sums of this entry into the concrete indexed forms (0 axioms, 0 sorries)."
     }
   ],
   "leanFile": {
