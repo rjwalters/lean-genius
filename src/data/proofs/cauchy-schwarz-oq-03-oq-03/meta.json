@@ -89,20 +89,36 @@
   },
   "sections": [
     {
-      "id": "header-setup",
-      "title": "Module Header and Proof Outline",
+      "id": "overview",
+      "title": "Module Docstring and Proof Outline",
       "startLine": 1,
-      "endLine": 41,
-      "summary": "The module docstring frames the L^p interpolation (log-convexity) inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1), as the step beyond the parent's Hölder inequality (cauchy-schwarz-oq-03), and explains the single-Hölder proof: build the conjugate pair a = p/(rθ), b = q/(r(1-θ)) (so 1/a + 1/b = 1) from Real.HolderConjugate, apply NNReal.inner_le_Lp_mul_Lq to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)), then raise to 1/r. Imports Mathlib, opens Finset/NNReal, and enters the CauchySchwarzOQ03OQ03 namespace.",
-      "mathContext": "Cauchy–Schwarz/Hölder is the θ = 1/2 midpoint face of the log-convexity of $t \\mapsto \\log\\|f\\|_{1/t}$."
+      "endLine": 25,
+      "summary": "The module docstring frames the L^p interpolation (log-convexity) inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1), as the step beyond the parent's Hölder inequality (cauchy-schwarz-oq-03). It explains the single-Hölder proof strategy: build the conjugate pair a = p/(rθ), b = q/(r(1-θ)) (so 1/a + 1/b = 1), apply NNReal.inner_le_Lp_mul_Lq to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)), then raise to the power 1/r.",
+      "mathContext": "The reciprocal-exponent map $t \\mapsto \\log\\|f\\|_{1/t}$ is convex; Cauchy–Schwarz/Hölder is the $\\theta = 1/2$ midpoint face of that log-convexity."
     },
     {
-      "id": "lp-interpolation",
-      "title": "L^p Interpolation Inequality",
-      "summary": "The main result: ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1). Built from Hölder with the conjugate pair a = p/(rθ), b = q/(r(1-θ)) applied to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)).",
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Statement Docstring",
+      "startLine": 27,
+      "endLine": 41,
+      "summary": "import Mathlib, open Finset NNReal (bringing the NNReal Hölder API NNReal.inner_le_Lp_mul_Lq and the ℝ≥0 rpow lemmas into scope), and namespace CauchySchwarzOQ03OQ03. Followed by the doc comment for lp_interpolation_nnreal, restating the target inequality and its ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^{1-θ} / log-convexity reading.",
+      "mathContext": "Works with $\\mathbb{R}_{\\ge 0}$-valued $f$ on a Finset; the ℝ≥0 rpow and Hölder lemmas avoid the finiteness side-conditions of the ENNReal/eLpNorm formulation."
+    },
+    {
+      "id": "lp-interpolation-holder-setup",
+      "title": "L^p Interpolation: Statement and the Hölder Conjugate Pair",
       "startLine": 42,
+      "endLine": 66,
+      "summary": "The statement of lp_interpolation_nnreal and the construction of the Hölder conjugate exponents. Sets a = p/(rθ), b = q/(r(1-θ)); the key algebraic identity r·θ/p + r·(1-θ)/q = 1 (hsum, from the hypothesis 1/r = θ/p + (1-θ)/q via field_simp + nlinarith) is exactly what makes a.HolderConjugate b: a⁻¹ + b⁻¹ = 1 with a, b > 0 (div_pos).",
+      "mathContext": "Conjugate pair $a = p/(r\\theta)$, $b = q/(r(1-\\theta))$ with $a^{-1} + b^{-1} = 1$, equivalent to $\\tfrac{r\\theta}{p} + \\tfrac{r(1-\\theta)}{q} = 1$ — the reciprocal of the exponent hypothesis."
+    },
+    {
+      "id": "lp-interpolation-holder-apply",
+      "title": "L^p Interpolation: Applying Hölder and Finishing",
+      "startLine": 67,
       "endLine": 90,
-      "mathContext": "$\\left(\\sum_i f_i^r\\right)^{1/r} \\leq \\left(\\sum_i f_i^p\\right)^{\\theta/p}\\left(\\sum_i f_i^q\\right)^{(1-\\theta)/q}$ where $\\tfrac1r = \\tfrac{\\theta}{p} + \\tfrac{1-\\theta}{q}$. Equivalently $t \\mapsto \\log\\|f\\|_{1/t}$ is convex."
+      "summary": "Applies NNReal.inner_le_Lp_mul_Lq to F_i = f_i^{rθ}, G_i = f_i^{r(1-θ)}. Three pointwise simplifications: the product F_i·G_i = f_i^r (rpow_add' with rθ + r(1-θ) = r), and the powers F_i^a = f_i^p, G_i^b = f_i^q (rpow_mul with rθ·a = p, r(1-θ)·b = q). Raising both sides to 1/r (rpow_le_rpow) and simplifying the exponents 1/a·1/r = θ/p, 1/b·1/r = (1-θ)/q (mul_rpow + rpow_mul) yields the target.",
+      "mathContext": "$\\left(\\sum_i f_i^r\\right)^{1/r} \\leq \\left(\\sum_i f_i^p\\right)^{\\theta/p}\\left(\\sum_i f_i^q\\right)^{(1-\\theta)/q}$ where $\\tfrac1r = \\tfrac{\\theta}{p} + \\tfrac{1-\\theta}{q}$ — a single application of Hölder on the multiplicative split of $f_i^r$."
     },
     {
       "id": "lp-interpolation-midpoint",
