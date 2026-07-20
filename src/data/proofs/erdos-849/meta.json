@@ -57,7 +57,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 193,
-    "assumptions": "3 axioms: two_multiplicity, multiplicity_120, multiplicity_3003. 0 sorries.",
+    "assumptions": "3 literal axioms: two_multiplicity, multiplicity_120, multiplicity_3003 (the known multiplicity values of 2, 120, 3003). 0 sorries. The headline case theorems t_equals_1/3/4 depend only on these 3 axioms plus the standard propext/Classical.choice/Quot.sound. Additionally, the 11 binomial-coefficient verification lemmas (choose_10_3, choose_16_2, choose_120_1, choose_14_6, choose_15_5, choose_78_2, choose_3003_1, choose_5_2, choose_10_1, choose_15_7, choose_6435_1) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so introduces a `native_decide`-generated (`Lean.ofReduceBool`-family) axiom under `#print axioms` (not among the 3 literal axioms).",
     "theoremCount": 15,
     "definitionCount": 4
   },
