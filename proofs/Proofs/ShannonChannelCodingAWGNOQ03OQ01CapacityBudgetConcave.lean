@@ -123,7 +123,8 @@ theorem capacity_midpoint_concave_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
     (h3 : waterBudget N μ₃ = (waterBudget N μ₁ + waterBudget N μ₂) / 2) :
     (parallelRate N (waterAlloc μ₁ N) + parallelRate N (waterAlloc μ₂ N)) / 2
       ≤ parallelRate N (waterAlloc μ₃ N) := by
-  have hmain := capacity_concave_budget N hN hμ₃ (a := 1 / 2) (b := 1 / 2)
+  have hmain := capacity_concave_budget N hN hμ₃ (μ₁ := μ₁) (μ₂ := μ₂)
+    (a := 1 / 2) (b := 1 / 2)
     (by norm_num) (by norm_num) (by norm_num) (by rw [h3]; ring)
   linarith [hmain]
 

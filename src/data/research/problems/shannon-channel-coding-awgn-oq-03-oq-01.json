@@ -71,7 +71,8 @@
       "Wideband rate g(t)=(t/2)log(1+a/t) is STRICTLY CONCAVE in the bandwidth/channel-count variable t>0: second derivative g''(t) = -a^2/(2 t (t+a)^2) < 0. Complements the existing strict-monotonicity (rate_equalNoise_count_strictMonoOn); together they pin the wideband capacity curve as strictly increasing + strictly concave + asymptotic to P/(2c) from below. Distinct from the power-concavity in Concave.lean (parallelRate_concaveOn_power).",
       "Lean gotcha: HasDerivAt.div/HasDerivAt.sub emit Pi.div/Pi.sub function forms ((fun _=>a)/(fun s=>s+a)); 'convert ... using 1' then spawns a spurious AddCommGroup instance-equality goal. Fix: annotate intermediate HasDerivAt with the pointwise lambda type (forces defeq) and close by rewriting the target derivative value then 'exact hhalf' instead of convert.",
       "Lean gotcha: field_simp makes NO progress when a denominator is a bare SUM like (1 + a/t) (cannot prove a sum != 0 structurally). Rewrite 1 + a/t = (t+a)/t (add_div + div_self) first so only atomic denominators t, t+a remain.",
-      "parallelRate is jointly STRICTLY concave in the power vector on the nonnegative orthant, not merely weakly concave: distinct allocations differ in some coordinate whose per-channel term is strictly concave, the rest weakly concave, so Finset.sum_lt_sum gives a strict sum inequality. This upgrades water-filling from a global optimum to THE unique global optimum."
+      "parallelRate is jointly STRICTLY concave in the power vector on the nonnegative orthant, not merely weakly concave: distinct allocations differ in some coordinate whose per-channel term is strictly concave, the rest weakly concave, so Finset.sum_lt_sum gives a strict sum inequality. This upgrades water-filling from a global optimum to THE unique global optimum.",
+      "The water-filling capacity value function C(P) is CONCAVE in the scalar total power budget for a general (non-equal) noise profile — proved via feasibility of the convex-combination allocation (waterfilling_optimal) + joint vector concavity (parallelRate_concaveOn_power), no envelope theorem. Previously only the equal-noise special case and vector/bandwidth concavity existed."
     ],
     "builtItems": [
       "waterfilling_optimal (KKT optimality of P_i*=(mu-N_i)_+) in ShannonChannelCodingAWGNOQ03OQ01.lean",
@@ -89,7 +90,8 @@
       "parallelRate_concaveOn_power (…Concave.lean): HEADLINE — total parallel rate ∑ᵢ½log(1+Pᵢ/Nᵢ) JOINTLY concave in the power vector on {P|∀i,0≤Pᵢ}, via ConcaveOn.comp_linearMap (LinearMap.proj i) + ConcaveOn.subset onto the orthant + concaveOn_finset_sum; 0 axioms. The concavity making water-filling a convex program",
       "ShannonChannelCodingAWGNOQ03OQ01Supremum.lean (NEW): rate_equalNoise_seq_le_wideband (sequence-form ceiling (n/2)·log(1+P/(nc))≤P/(2c) for ALL n:ℕ incl n=0) + rate_equalNoise_iSup_eq_wideband (HEADLINE: ⨆ n:ℕ, (n/2)·log(1+P/(nc)) = P/(2c) — the wideband ceiling is the exact LUB of the equal-noise rates, upgrading the tendsto+ceiling pair to an explicit supremum via ciSup_le + le_of_tendsto/le_ciSup). VERIFIED 0-axiom [propext,Classical.choice,Quot.sound], builds green via lake env lean against Mathlib v4.26 oleans.",
       "hasDerivAt_wideRate_deriv, wideRate_strictConcaveOn, rate_equalNoise_count_diminishing in ShannonChannelCodingAWGNOQ03OQ01WidebandConcave.lean (VERIFIED docker, axioms [propext,Classical.choice,Quot.sound])",
-      "parallelRate_strictConcaveOn_power + parallelRate_unique_maximizer in new file ShannonChannelCodingAWGNOQ03OQ01StrictConcave.lean (axiom-free [propext, Classical.choice, Quot.sound]; uses perUseCapacity_strictConcaveOn/concaveOn + Finset.sum_lt_sum + StrictConcaveOn.eq_of_isMaxOn)"
+      "parallelRate_strictConcaveOn_power + parallelRate_unique_maximizer in new file ShannonChannelCodingAWGNOQ03OQ01StrictConcave.lean (axiom-free [propext, Classical.choice, Quot.sound]; uses perUseCapacity_strictConcaveOn/concaveOn + Finset.sum_lt_sum + StrictConcaveOn.eq_of_isMaxOn)",
+      "capacity_concave_budget + capacity_midpoint_concave_budget in ShannonChannelCodingAWGNOQ03OQ01CapacityBudgetConcave.lean (0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound])"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -98,7 +100,7 @@
       "Extend the finite water-filling optimum to a genuine continuous infinite-band (integral over frequency) capacity, beyond the equal-noise wideband scalar limit.",
       "Optional: joint STRICT concavity of parallelRate in the power vector (distinct vectors differ in some coordinate i₀ whose term is strictly concave, others weakly ⇒ strict overall via Finset.sum_lt_sum). Would pin the water-filling optimum as the UNIQUE global maximizer."
     ],
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom): proved the water-filling optimum is UNIQUE. New file ShannonChannelCodingAWGNOQ03OQ01StrictConcave.lean: parallelRate_strictConcaveOn_power (strict joint concavity of the total rate in the power vector, sharpening the existing weak parallelRate_concaveOn_power via one-strict-rest-weak Finset.sum_lt_sum) and parallelRate_unique_maximizer (StrictConcaveOn.eq_of_isMaxOn ⟹ at most one maximizer over the convex orthant). Pins the KKT/water-filling allocation as THE global optimum. All [propext,Classical.choice,Quot.sound]."
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom Docker): general-noise scalar capacity-power concavity C(P) via value-function argument (capacity_concave_budget), the classical diminishing-returns-in-total-power law absent from the equal-noise/vector/bandwidth concavity files."
   },
   "currentState": {
     "iteration": 2
