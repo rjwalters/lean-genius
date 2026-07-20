@@ -21,10 +21,10 @@
     "erdosUrl": "https://erdosproblems.com/506",
     "erdosProblemStatus": "partially solved",
     "axiomCount": 0,
-    "lineCount": 97,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "lineCount": 152,
+    "assumptions": "0 axioms, 0 sorries. Adds 9 axiom-free foundational lemmas (host-verified Lean v4.31.0; #print axioms = propext/Classical.choice/Quot.sound): AreCollinear degenerate/symmetry facts, small-n triviality of AllCollinear/AllConcyclic/numCircles, and a DEGENERACY THEOREM minCircles_eq_zero — the current minCircles definition ignores n and is identically 0, so it is a placeholder, not the intended minimum-number-of-circles quantity. The Elliott/Segre results and the true minimum for small n remain documented-only and require a faithful minCircles definition ranging over non-degenerate point configurations.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 0,
+    "theoremCount": 9,
     "definitionCount": 9
   },
   "overview": {
@@ -122,9 +122,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 97,
+    "lineCount": 152,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 9,
     "definitionCount": 9,
     "path": "Proofs/Erdos506Problem.lean",
     "sorries": 0

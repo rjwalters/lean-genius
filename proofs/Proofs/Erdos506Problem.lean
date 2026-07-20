@@ -95,3 +95,58 @@ noncomputable def minCircles (n : ℕ) : ℕ :=
     for lines: n non-collinear points determine at least n lines.
     The circle analogue asks for the minimum number of circles from
     non-concyclic points. -/
+
+/- ## Foundational Lemmas (axiom-free)
+
+Basic API for `AreCollinear`, `AllCollinear`, `AllConcyclic`, `numCircles`, and
+`minCircles`.  All lemmas are machine-checked, no `sorry`, no `axiom`
+(host-verified on Lean v4.31.0).
+
+**Degeneracy note.** `minCircles` as currently defined does not depend on its
+argument `n` at all — it is `Finset.inf'` of the constant image `{0}`, hence
+identically `0` (`minCircles_eq_zero` below).  It is therefore a *placeholder*
+that does not yet model "the minimum number of circles over non-degenerate
+`n`-point configurations"; a faithful definition would range over actual
+`PointConfig n` values excluding the concyclic/collinear cases.  We record the
+degeneracy as an explicit theorem so the gallery cannot silently present it as
+the intended quantity. -/
+
+/-- Degenerate triple with the first two points equal is collinear. -/
+theorem areCollinear_left_eq (p r : Point2) : AreCollinear p p r := by
+  unfold AreCollinear; ring
+
+/-- Degenerate triple with the last two points equal is collinear. -/
+theorem areCollinear_right_eq (p q : Point2) : AreCollinear p q q := by
+  unfold AreCollinear; ring
+
+/-- Degenerate triple with the outer two points equal is collinear. -/
+theorem areCollinear_outer_eq (p q : Point2) : AreCollinear p q p := by
+  unfold AreCollinear; ring
+
+/-- Collinearity is symmetric in the last two points. -/
+theorem areCollinear_swap {p q r : Point2} :
+    AreCollinear p q r ↔ AreCollinear p r q := by
+  unfold AreCollinear; exact eq_comm
+
+/-- Any `0`-point configuration is (vacuously) all-collinear. -/
+theorem allCollinear_fin_zero (config : PointConfig 0) : AllCollinear config := by
+  intro i; exact Fin.elim0 i
+
+/-- Any `1`-point configuration is all-collinear. -/
+theorem allCollinear_fin_one (config : PointConfig 1) : AllCollinear config := by
+  intro i j k
+  fin_cases i; fin_cases j; fin_cases k
+  unfold AreCollinear; ring
+
+/-- Any `0`-point configuration is (vacuously) all-concyclic. -/
+theorem allConcyclic_fin_zero (config : PointConfig 0) : AllConcyclic config :=
+  ⟨![0, 0], 0, fun i => Fin.elim0 i⟩
+
+/-- A `0`-point configuration determines no circles. -/
+theorem numCircles_fin_zero (config : PointConfig 0) : numCircles config = 0 := by
+  simp [numCircles]
+
+/-- **Degeneracy of `minCircles`.** The current definition ignores `n` and equals
+`0` for every `n`; it is a placeholder, not the intended minimum. -/
+theorem minCircles_eq_zero (n : ℕ) : minCircles n = 0 := by
+  simp [minCircles]
