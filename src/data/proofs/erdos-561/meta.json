@@ -146,7 +146,7 @@
       "startLine": 196,
       "endLine": 211,
       "summary": "Relates size Ramsey numbers to classical Ramsey numbers, noting that stars are particularly efficient.",
-      "mathContext": "Axiomatized `classicalRamseyNumber` and `size_vs_classical`: $\\hat{R}(F_1, F_2) \\leq R(F_1,F_2) \\cdot (R(F_1,F_2) - 1)/2$. Beck's theorem shows this bound is far from tight for bounded-degree graphs."
+      "mathContext": "Axiomatizes `classicalRamseyNumber`. The relationship $\\hat{R}(F_1, F_2) \\leq R(F_1,F_2) \\cdot (R(F_1,F_2) - 1)/2$ is noted only in a source comment (no declaration). Beck's theorem shows this bound is far from tight for bounded-degree graphs."
     },
     {
       "id": "summary-main",
