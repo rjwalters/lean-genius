@@ -31,7 +31,18 @@ This file answers it **yes**, rigorously and axiom-free:
 * `fThreshold_le_sq` — consequently `fThreshold r n ≤ n * n` in the good regime: the
   `sSup` is a genuine, finite maximum, not the `sSup ℕ = 0` junk value.
 
-No new axioms; the two `axiom`s in the parent file are untouched (and unused here).
+It then goes further and pins down the set completely:
+
+* `fThresholdSet_zero_mem` — `0 ∈ fThresholdSet r n` **unconditionally**, so the set is
+  never empty (the zero-budget hypothesis already forces `(r+1)`-colorability, via `S = univ`).
+* `fThreshold_mem` — in the good regime `fThreshold r n` is *itself* a member of its
+  defining set (`Nat.sSup_mem` on a nonempty bounded set): the threshold is an **attained**
+  maximum, so the budget `fThreshold r n` genuinely forces `(r+1)`-colorability.
+* `mem_fThresholdSet_iff` — the full characterization: in the good regime a budget `k`
+  forces the conclusion **iff** `k ≤ fThreshold r n`, i.e. the defining set is exactly the
+  interval `{0, …, fThreshold r n}`.
+
+No new axioms; the parent file has 0 axioms and they are untouched (and unused here).
 -/
 
 import Mathlib
@@ -151,10 +162,59 @@ theorem fThreshold_le_sq {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
     exact completeGraph_not_hasColoring (by omega) (hmem (SGraph.completeGraph n) hP)
   exact hnotmem (fThresholdSet_downClosed (le_of_lt hlt) hk)
 
+/-- **The defining set is nonempty: `0 ∈ fThresholdSet r n` unconditionally.**
+The zero-budget hypothesis says every induced subgraph is `r`-colorable with *no* edge
+deletions. Applied to `S = univ`, this makes `G` itself `r`-colorable (the induced graph on
+`univ` has the same adjacency as `G`), hence `(r+1)`-colorable. Needs no regime hypothesis. -/
+theorem fThresholdSet_zero_mem (r n : ℕ) : 0 ∈ fThresholdSet r n := by
+  intro G hP
+  -- Instantiate the hypothesis at `S = univ`.
+  obtain ⟨removed, hcard, c, hc⟩ := hP Finset.univ
+  -- A zero budget forces `removed = ∅`.
+  rw [Nat.le_zero, Finset.card_eq_zero] at hcard
+  subst hcard
+  -- `c` is then a proper `r`-coloring of `G`: every `G`-edge is an edge of the reduced
+  -- induced-on-`univ` graph, so its endpoints get different colors.
+  refine SGraph.hasColoring_mono G (Nat.le_succ r) ⟨c, fun u v hadj heq => ?_⟩
+  exact hc u v
+    ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩,
+      Finset.notMem_empty _, Finset.notMem_empty _⟩ heq
+
+/-- The defining set is nonempty. -/
+theorem fThresholdSet_nonempty (r n : ℕ) : (fThresholdSet r n).Nonempty :=
+  ⟨0, fThresholdSet_zero_mem r n⟩
+
+/-- **The threshold is an attained maximum in the non-degenerate regime.** For `1 ≤ r` and
+`r + 2 ≤ n`, `fThreshold r n` is itself a member of its defining set: the `sSup` of a
+nonempty (`fThresholdSet_nonempty`), bounded-above (`fThresholdSet_bddAbove`) set of naturals
+is attained (`Nat.sSup_mem`). So the budget `fThreshold r n` genuinely forces
+`(r+1)`-colorability — the threshold is a real maximum, not merely an upper-bounded `sSup`. -/
+theorem fThreshold_mem {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
+    fThreshold r n ∈ fThresholdSet r n := by
+  rw [fThreshold_eq_sSup]
+  exact Nat.sSup_mem (fThresholdSet_nonempty r n) (fThresholdSet_bddAbove hr hn)
+
+/-- **Full structural characterization: the defining set is exactly the interval
+`{0, 1, …, fThreshold r n}`.** In the non-degenerate regime a budget `k` forces the
+conclusion iff it does not exceed the threshold. Forward: `k ≤ sSup` by `le_csSup` with the
+boundedness witness. Backward: `fThreshold r n` itself lies in the set (`fThreshold_mem`) and
+the set is downward closed (`fThresholdSet_downClosed`). -/
+theorem mem_fThresholdSet_iff {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) (k : ℕ) :
+    k ∈ fThresholdSet r n ↔ k ≤ fThreshold r n := by
+  constructor
+  · intro hk
+    rw [fThreshold_eq_sSup]
+    exact le_csSup (fThresholdSet_bddAbove hr hn) hk
+  · intro hk
+    exact fThresholdSet_downClosed hk (fThreshold_mem hr hn)
+
 #check @completeGraph_not_hasColoring
 #check @canReduce_removeAll
 #check @fThresholdSet_downClosed
 #check @fThresholdSet_bddAbove
 #check @fThreshold_le_sq
+#check @fThresholdSet_zero_mem
+#check @fThreshold_mem
+#check @mem_fThresholdSet_iff
 
 end Erdos1092OQ02
