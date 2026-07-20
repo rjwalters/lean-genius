@@ -23,8 +23,8 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.31.0",
     "axiomCount": 3,
-    "lineCount": 185,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `hp` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'hp'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 3 axioms: nk, nk_gt_2k, nk_minimal. 0 sorries.",
+    "lineCount": 187,
+    "assumptions": "REPAIRED (issue #39077, Class A): the file now compiles green on Lean v4.31 with `set_option autoImplicit false`. The genuine defect was in `avoids_when_divisible_by_all`: `obtain ⟨hpk, _, hprime⟩ := hp` destructured and cleared the hypothesis `hp`, which was still needed later as `hdiv p hp` — under v4.31 this surfaced as `unknownIdentifier 'hp'`. Fixed by destructuring a copy (`:= id hp`) so `hp` remains in scope; the unused primality binder in `at_most_one_div` was renamed `_hp` to silence the linter. The supporting CRT lemmas (at_most_one_div, prime_dvd_descendingProduct, card_safeResidues, avoids_when_divisible_by_all, avoidsBertrand_iff_finset, …) are fully proved. Status remains axiomatized: the n_k function and its defining bounds rest on 3 axioms (nk, nk_gt_2k, nk_minimal), and the two main statements ErdosProblem451_superpolynomial / _subexponential are stated as open-conjecture `Prop` definitions, not proved. 0 sorries.",
     "theoremCount": 8,
     "definitionCount": 8
   },
@@ -124,7 +124,7 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 185,
+    "lineCount": 187,
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 8,
