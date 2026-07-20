@@ -672,3 +672,45 @@ from any worktree w/ prebuilt mathlib oleans, exit 0. External worktree /Users/r
 
 REMAINING (unchanged): elementary/structural side COMPLETE. Sole open direction = analytic
 density-1 forward ψ(x,y) smooth-number statement (genuine Mathlib gap, not session-sized).
+
+## Session 2026-07-20 (researcher-1) — CLOSED the elementary prime obstruction (seedE p ≥ 2)
+
+**Mode**: REVISIT (RICH tier) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom,
+host-lean v4.31.0 `[propext, Classical.choice, Quot.sound]`, no native_decide).
+
+### What I did
+The engine `classifySeed_prime_three_mod_four_gt_of_seedE` (added 2026-07-12) had
+reduced "every excluded prime `p ≡ 3 mod4`, `p ≥ 7` is strictly forward (`.gt`)"
+to the SINGLE arithmetic fact `2 ≤ seedE p`, flagged in that theorem's docstring
+as the exact remaining elementary obstruction. **Proved it outright**, so the
+prime-seed forward regime is now fully closed and sharp.
+
+### Mechanism (elementary — no analytic input)
+Write `p + 1 = w·2^S` (`w` odd, `S = v₂(p+1) ≥ 2`). Then `seedS p = S`,
+`seedB p = w`, and with `d = 2^{S−2}`, `A = w·d`, `B = φ(w)·d`:
+- `p + 1 = 4A`, so `seedC p = 2p − φ(w)·2^{S−1} = 2p − 2B = 2·(4A − B − 1)`.
+- The bracket `e = 4A − B − 1` is **odd** (an `even − 1`): `2 ∣ B` because
+  `S ≥ 3 ⇒ 2 ∣ 2^{S−2} = d ∣ B`, and `S = 2 ⇒ w ≥ 3` (else `p+1 = 4`, i.e.
+  `p = 3 < 7`) so `2 ∣ φ(w) = B`. And `e ≥ 3A − 1 ≥ 2`.
+- Hence `seedC p = e·2^1` with `e` odd ⟹ `seedT p = 1`, `seedE p = e ≥ 2`.
+The single degenerate exclusion `S = 2 ∧ w = 1` is exactly `p = 3` (`seedE 3 = 1`,
+the `.eq` case).
+
+### New declarations (all VERIFIED 0/0)
+- `seedE_prime_three_mod_four_ge_two` — `2 ≤ seedE p` for prime `p≡3 mod4`, `p≥7`.
+- `classifySeed_prime_three_mod_four_gt` — such `p` is strictly `.gt`.
+- `classifySeed_prime_three_mod_four_eq_or_gt` — exact prime trichotomy:
+  `p = 3 ⟹ .eq`, `p ≥ 7 ⟹ .gt` (never `.lt`).
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+3 theorems, ~95 lines, after
+  `prime_three_mod_four_family_not_reversal`)
+- `research/problems/erdos-1064-oq-03/knowledge.md`, tracker json
+
+### Honesty / remaining
+Genuine sharpening of the structural side: upgrades `_ne_lt` (rules out `.lt`) to
+the exact regime for every excluded prime. Does NOT touch the sole open terminus
+— the analytic density-1 forward `ψ(x,y)` smooth-number statement (Luca–Pomerance;
+genuine Mathlib gap, not session-sized). Optional elementary follow-up: extend
+`seedE ≥ 2` from prime seeds `p` to prime powers `p^k` (would strengthen
+`classifySeed_prime_pow_three_mod_four_ne_lt` to strict `.gt`).

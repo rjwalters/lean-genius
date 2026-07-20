@@ -2185,6 +2185,126 @@ theorem prime_three_mod_four_family_not_reversal
   exact classifySeed_prime_three_mod_four_ne_lt hp hp3
 
 -- ---------------------------------------------------------------------------
+-- CLOSING THE PRIME OBSTRUCTION:  seedE p ≥ 2  ⟹  classifySeed p = .gt
+-- ---------------------------------------------------------------------------
+-- `classifySeed_prime_three_mod_four_gt_of_seedE` reduced the excluded-prime
+-- forward regime to the single arithmetic fact `2 ≤ seedE p` (the odd part of
+-- the second landing constant `C = seedC p`).  We now prove that fact outright
+-- for every prime `p ≡ 3 (mod 4)`, `p ≥ 7`, discharging the obstruction the
+-- engine's docstring flagged as the last open elementary step.
+--
+-- Arithmetic.  Write `p + 1 = w·2^S` (`w` odd, `S = v₂(p+1) ≥ 2`).  Then
+-- `seedS p = S`, `seedB p = w`, and with `d = 2^{S−2}`, `A = w·d`, `B = φ(w)·d`,
+--   `p + 1 = 4A`,   `seedC p = 2p − 2B = 2·(4A − B − 1)`.
+-- The bracket `e = 4A − B − 1` is ODD — it is `even − 1`, because `2 ∣ B`:
+--   `S ≥ 3`  gives `2 ∣ 2^{S−2} = d ∣ B`;  `S = 2` forces `w ≥ 3` (else
+--   `p + 1 = 4`, i.e. `p = 3 < 7`), so `2 ∣ φ(w) = B`.  And `e ≥ 3A − 1 ≥ 2`.
+-- Hence `seedC p = e·2^1` with `e` odd, so `seedT p = 1` and `seedE p = e ≥ 2`.
+-- ---------------------------------------------------------------------------
+
+/-- **The odd part of the second landing constant is nontrivial for `p ≥ 7`.**
+    For a prime `p ≡ 3 (mod 4)` with `p ≥ 7`, `2 ≤ seedE p`.  Writing
+    `p + 1 = w·2^S` (`w` odd, `S = v₂(p+1) ≥ 2`) and `d = 2^{S−2}`, the landing
+    constant factors as `seedC p = 2·((4w − φ(w))·d − 1)` whose bracket is odd
+    (an `even − 1`, using `2 ∣ φ(w)` when `w ≥ 3` and `2 ∣ 2^{S−2}` when
+    `S ≥ 3`) and `≥ 2`; hence `seedT p = 1` and `seedE p = (4w − φ(w))·d − 1`.
+    The single degenerate exclusion `S = 2 ∧ w = 1` is exactly `p = 3`, ruled
+    out by `p ≥ 7`.  This discharges the sole arithmetic obstruction isolated by
+    `classifySeed_prime_three_mod_four_gt_of_seedE`. -/
+theorem seedE_prime_three_mod_four_ge_two
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) (hp7 : 7 ≤ p) :
+    2 ≤ seedE p := by
+  have hp3' : 3 ≤ p := by omega
+  have hφp : Nat.totient p = p - 1 := Nat.totient_prime hp
+  -- 2-adic decomposition of `p + 1`:  `p + 1 = w·2^S`, `w` odd, `S ≥ 2`
+  obtain ⟨S, w, hwodd, hS2, hpw⟩ :
+      ∃ S w, Odd w ∧ 2 ≤ S ∧ p + 1 = w * 2 ^ S := by
+    have hp1ne : p + 1 ≠ 0 := by omega
+    refine ⟨(p + 1).factorization 2, (p + 1) / 2 ^ ((p + 1).factorization 2), ?_, ?_, ?_⟩
+    · have hnd : ¬ (2 : ℕ) ∣ (p + 1) / 2 ^ ((p + 1).factorization 2) :=
+        Nat.not_dvd_ordCompl Nat.prime_two hp1ne
+      exact Nat.odd_iff.mpr (by omega)
+    · have h4 : (2 : ℕ) ^ 2 ∣ p + 1 := by
+        rw [show (2 : ℕ) ^ 2 = 4 from by norm_num]; omega
+      exact (Nat.Prime.pow_dvd_iff_le_factorization Nat.prime_two hp1ne).mp h4
+    · rw [mul_comm]; exact (Nat.ordProj_mul_ordCompl_eq_self (p + 1) 2).symm
+  -- `seedS p = S`, `seedB p = w`
+  have hEq : 2 * p - Nat.totient p = w * 2 ^ S := by rw [hφp]; omega
+  have hSval : seedS p = S := by unfold seedS; exact (factor_two_split hwodd hEq).1
+  have hBval : seedB p = w := by unfold seedB seedS; exact (factor_two_split hwodd hEq).2
+  -- power identities in terms of `d = 2^(S-2)`
+  have h2S : (2 : ℕ) ^ S = 4 * 2 ^ (S - 2) := by
+    conv_lhs => rw [show S = (S - 2) + 2 from by omega, pow_add]
+    ring
+  have h2S1 : (2 : ℕ) ^ (S - 1) = 2 * 2 ^ (S - 2) := by
+    conv_lhs => rw [show S - 1 = (S - 2) + 1 from by omega, pow_succ]
+    ring
+  set d := (2 : ℕ) ^ (S - 2) with hd
+  have hdpos : 0 < d := by rw [hd]; exact pow_pos (by norm_num) _
+  have hwpos : 0 < w := by rcases hwodd with ⟨i, hi⟩; omega
+  set A := w * d with hAdef
+  set B := Nat.totient w * d with hBdef
+  have hA1 : 1 ≤ A := by
+    rw [hAdef]; exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hwpos.ne' hdpos.ne')
+  have hBle : B ≤ A := by
+    rw [hBdef, hAdef]; exact Nat.mul_le_mul (Nat.totient_le w) (le_refl d)
+  -- `p + 1 = 4A`  and  `seedC p = 2p − 2B`
+  have hA : p + 1 = 4 * A := by rw [hAdef, hpw, h2S]; ring
+  have hφB : Nat.totient w * 2 ^ (S - 1) = 2 * B := by rw [hBdef, h2S1]; ring
+  have hCdef2 : seedC p = 2 * p - 2 * B := by unfold seedC; rw [hBval, hSval, hφB]
+  -- factorisation `seedC p = e · 2^1` with odd part `e = 4A − B − 1`
+  have hSC : seedC p = (4 * A - B - 1) * 2 ^ 1 := by rw [hCdef2, pow_one]; omega
+  -- `2 ∣ B` in both regimes (`S = 2` forces `w ≥ 3 ⇒ 2∣φ(w)`; `S ≥ 3 ⇒ 2∣2^{S-2}`)
+  have hBeven : 2 ∣ B := by
+    rcases Nat.lt_or_ge S 3 with hS3 | hS3
+    · have hSeq : S = 2 := by omega
+      have hw3 : 3 ≤ w := by
+        have h4w : p + 1 = w * 4 := by rw [hpw, hSeq]; norm_num
+        rcases hwodd with ⟨i, hi⟩; omega
+      have hev : Even (Nat.totient w) := Nat.totient_even (by omega)
+      have hBeq : B = Nat.totient w := by rw [hBdef, hd, hSeq]; norm_num
+      rw [hBeq]; exact hev.two_dvd
+    · have hdd : (2 : ℕ) ∣ d := by rw [hd]; exact dvd_pow_self 2 (by omega)
+      rw [hBdef]; exact hdd.mul_left _
+  have hodd_e : Odd (4 * A - B - 1) := by rw [Nat.odd_iff]; omega
+  have hEval : seedE p = 4 * A - B - 1 := by
+    unfold seedE seedT; exact (factor_two_split hodd_e hSC).2
+  rw [hEval]; omega
+
+/-- **Every prime `p ≡ 3 (mod 4)` with `p ≥ 7` is strictly forward.**  Combining
+    the reduction `classifySeed_prime_three_mod_four_gt_of_seedE` (which needs
+    only `2 ≤ seedE p`) with the arithmetic core
+    `seedE_prime_three_mod_four_ge_two`, the classifier is exactly `.gt`: the
+    whole family `p·2^{k+1}` lies in the forward regime `φ(n) > φ(D(n))`. -/
+theorem classifySeed_prime_three_mod_four_gt
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) (hp7 : 7 ≤ p) :
+    classifySeed p = Ordering.gt :=
+  classifySeed_prime_three_mod_four_gt_of_seedE hp hp3
+    (seedE_prime_three_mod_four_ge_two hp hp3 hp7)
+
+/-- **Exact prime-seed trichotomy in the excluded regime.**  For every prime
+    `p ≡ 3 (mod 4)` the family `p·2^{k+1}` is `.eq` exactly when `p = 3` (there
+    `seedE 3 = 1`, cf. `classifySeed_3`) and `.gt` for every `p ≥ 7` (there
+    `seedE p ≥ 2`); it is never `.lt`.  This sharpens the non-reversal statement
+    `classifySeed_prime_three_mod_four_ne_lt` (which only excluded `.lt`) to the
+    precise regime of each excluded prime, closing the elementary obstruction
+    that theorem's docstring isolated. -/
+theorem classifySeed_prime_three_mod_four_eq_or_gt
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) :
+    (p = 3 ∧ classifySeed p = Ordering.eq) ∨
+    (7 ≤ p ∧ classifySeed p = Ordering.gt) := by
+  by_cases h3 : p = 3
+  · exact Or.inl ⟨h3, by subst h3; exact classifySeed_3⟩
+  · have hp7 : 7 ≤ p := by
+      have h2 := hp.two_le
+      by_contra h7
+      push_neg at h7
+      interval_cases p <;> first
+        | exact absurd hp (by decide)
+        | omega
+    exact Or.inr ⟨hp7, classifySeed_prime_three_mod_four_gt hp hp3 hp7⟩
+
+-- ---------------------------------------------------------------------------
 -- THE FULL EXCLUDED PRIME-POWER FAMILY:  a = p^k,  p ≡ 3 (mod 4)
 -- ---------------------------------------------------------------------------
 -- The engine `classifySeed_ne_lt_of_excess_bound` reduced non-reversal of an
