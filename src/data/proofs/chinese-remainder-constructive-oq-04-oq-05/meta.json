@@ -80,10 +80,19 @@
       "The whole construction is a thin, certified wrapper: Mathlib's `chineseRemainderOfList` already returns the bounded representative, so `crtCanonical` inherits computability for free — directly answering the OQ-04-OQ-04 open question about extracting the constructive witness.",
       "`List.pairwise_map` is the exact glue between the project's moduli-list phrasing `(moduli sys).Pairwise Coprime` and Mathlib's index-list phrasing `sys.Pairwise (Coprime on Prod.snd)`; providing `R` and `f` explicitly avoids the unifier defaulting `f` to the identity.",
       "The order characterisation is sharper than uniqueness-in-[0,M): since any solution $y$ obeys $y \\equiv \\text{crtCanonical} \\pmod M$ and $\\text{crtCanonical} < M$, reduction gives $\\text{crtCanonical} = y \\bmod M \\le y$, so `crtCanonical` is literally the minimum of the solution set, expressed via `IsLeast`.",
-      "Choosing `decide` over `native_decide` for the Sunzi example keeps the entry axiom-free: `#print axioms` lists only `propext`, `Classical.choice`, `Quot.sound`, in contrast to the `Lean.ofReduceBool` dependency of the sibling OQ-04-OQ-04."
+      "Choosing `decide` over `native_decide` for the Sunzi example keeps the entry axiom-free: `#print axioms` lists only `propext`, `Classical.choice`, `Quot.sound`, in contrast to the `Lean.ofReduceBool` dependency of the sibling OQ-04-OQ-04.",
+      "The contribution is *reifying an existential*: OQ-04-OQ-04 only asserts a unique witness exists (obtained abstractly by reducing some solution mod M), whereas `crtCanonical` names a specific algorithm and `crtCanonical_eq_min` proves the algorithm's output equals that abstract witness. This is the general pattern for constructivising a non-constructive existence proof — build a concrete function, then certify it coincides with the previously-only-postulated object — so the two frameworks are provably the same normal form, not merely both correct."
     ]
   },
   "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: existence upgraded to an effective solver",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "File docstring framing the goal: OQ-04-OQ-04 proves non-constructively that every pairwise-coprime system has a unique solution in [0, M) (reduce an arbitrary solution mod M); this file exhibits that witness as an explicit computable function crtCanonical by wrapping Mathlib's verified Nat.chineseRemainderOfList, and bridges the project's list-CRT (over List (ℕ × ℕ)) with Mathlib's index-list CRT. Lists the main results (satisfies, lt, eq_min, isLeast, Sunzi = 23) and notes no axiom/sorry/native_decide.",
+      "mathContext": "crtCanonical : List (ℕ × ℕ) → ℕ, the computable canonical representative in [0, M), M = moduliProd sys."
+    },
     {
       "id": "bridge",
       "title": "Bridge to Mathlib's Index-List CRT",
