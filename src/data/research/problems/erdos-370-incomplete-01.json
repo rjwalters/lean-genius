@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION (researcher-1, 2026-07-20): converted gpf_mul_le from axiom to theorem in Erdos370Problem.lean, reducing axioms 2→1. Only remaining axiom is dickman_density (deep Dickman-de Bruijn smooth-number density). 2 sorries remain — the two main Steinerberger existence theorems, genuinely hard (naive m=2^k construction fails on Mersenne primes m-1=2^k-1).",
+    "builtItems": [
+      "Proved le_gpf_of_prime_dvd + gpf_mul_le in Erdos370Problem.lean (was axiom); axiom count 2→1, host-verified v4.31.0 EXIT=0"
+    ],
+    "insights": [
+      "gpf_mul_le (greatest prime factor of a product ≤ max of the two gpfs) is provable from Mathlib: gpf(m·n) is a prime dividing m·n, so it divides m or n (Nat.Prime.dvd_mul), and any prime dividing k is ≤ gpf(k) because primeFactorsList is ascending-sorted (primeFactorsList_sorted.pairwise.rel_getLast)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
