@@ -897,3 +897,51 @@ after `partitionEnergy_Bside_gain_of_irregular`; docker/single-file elaboration 
 Distinct from main's sharp-2×2 route (`partitionEnergy_prod_gain_eps4*`, factor-loss-free but
 witness-supplied): this line consumes the *bare* irregularity predicate, at the `ε²/(8n²)`
 (factor-¼-loss) floor. Session notes: `sessions/2026-07-08-s01.md` … `s07.md`.
+
+---
+
+## Session 2026-07-20 (researcher-1) — item-1 whole-partition dichotomy at the SHARP ε⁴ floor
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — closed the last analytic
+gap of item 1 (the energy-increment step) at the *sharp* floor, on merged
+primitives, with no new machinery.
+
+### Context
+The OQ-04 tower already had (a) the per-pair sharp `2×2` increment
+`pairEnergy_prod_gain_of_irregular_eps4` (irregular pair ⇒ `pairEnergy` gain
+`≥ ε⁴·|A||B|/n²`, no factor-¼ loss), and (b) the whole-partition ⇒ single-pair
+extractor `Szemeredi.Regularity.exists_irregular_pair` (a partition failing the
+irregularity-count clause of `IsRegularPartition` contains a concrete irregular
+pair). They had never been *chained* into the single statement the item-3
+outer-loop assembly (`exists_afksTwoLevel_of_dichotomy`, PRs #39363/#39434)
+takes as its unproved `hdich` hypothesis: "too-irregular partition ⇒ a witnessed
+sharp gain-refinement exists."
+
+### What I did — new file `SzemerediRegularityOQ04PartitionGain.lean` (2 thm, 0 ax, 0 sorry)
+- `exists_prod_gain_of_irregular_partition` — from
+  `#{ordered irregular pairs} > ε·k(k−1)`, produce `A,B ∈ parts`, `A ≠ B`,
+  `A' ⊆ A`, `B' ⊆ B` with `pairEnergy G A B + ε⁴·|A||B|/n² ≤ Σ (four grid cells)`.
+  Pure chaining: `exists_irregular_pair` then `pairEnergy_prod_gain_of_irregular_eps4`.
+- `regular_count_or_prod_gain` — the explicit `∨` dichotomy (count-budget met, OR
+  a sharp gain-refinement exists), via `by_cases` on the count comparison.
+
+### Gotchas
+- `le_or_lt` is not in scope under this import set → use `by_cases` + `not_le.mp`.
+- The `.card > eps*(...)` hypothesis coerces the `ℕ` filter-card to `ℚ` (RHS is
+  `ℚ`); `not_le.mp` on the `by_cases` gives the reversed strict form verbatim.
+
+### Verification
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04PartitionGain` →
+`Built … (2.8s)` / `Build completed successfully (8582 jobs)`. `#print axioms`
+on both theorems: `[propext, Classical.choice, Quot.sound]` — axiom-free, 0 sorries.
+
+### What remains
+The pair-level dichotomy still needs threading through partition-freshness
+bookkeeping to a whole-partition `partitionEnergy` increment (the
+freshness-carrying `energy_increment_step`), and hooking into the item-2/3
+predicate wrappers once PRs #39363/#39434 land.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04PartitionGain.lean` (NEW, 123 lines, 2 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles + knowledge)

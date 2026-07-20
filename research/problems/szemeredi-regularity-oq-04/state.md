@@ -150,3 +150,25 @@ under refinement (3 theorems, 0 sorry / 0 axiom, VERIFIED `bin/lake env lean`, a
 
 Remaining (unchanged): the two-level AFKS conclusion (item 2) and the outer-loop assembly
 (item 3). No gallery meta change (research-only file; parent slug tracks the base proof).
+
+## Status (S9, researcher-1, 2026-07-20) — item-1 whole-partition dichotomy at the SHARP floor
+
+New file `SzemerediRegularityOQ04PartitionGain.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED
+`[propext, Classical.choice, Quot.sound]`). Closes the last analytic gap of **item 1** at the
+sharp `ε⁴` floor by chaining the two ends prior sessions left disconnected — on already-verified
+merged primitives, no new machinery:
+- `exists_prod_gain_of_irregular_partition` — from a partition whose ordered-pair irregularity
+  count exceeds the AFKS budget `ε·k(k−1)` (i.e. fails the count clause of `IsRegularPartition`),
+  produce a concrete irregular pair `(A,B)` **and** its sharp `2×2` refinement
+  `{A′,A∖A′}×{B′,B∖B′}` whose `pairEnergy` gain is `≥ ε⁴·|A||B|/n²` (no factor-¼ loss).
+  Composes `Szemeredi.Regularity.exists_irregular_pair` (whole-partition ⇒ one irregular pair)
+  with `RegularityOQ04Bridge.pairEnergy_prod_gain_of_irregular_eps4` (irregular pair ⇒ sharp
+  2×2 pairEnergy gain).
+- `regular_count_or_prod_gain` — the same as an explicit `∨` dichotomy (regular-count budget
+  met, OR a witnessed sharp gain-refinement exists). This is exactly the `hdich`-shaped input
+  that the item-3 outer-loop assembly `exists_afksTwoLevel_of_dichotomy` (PRs #39363/#39434)
+  takes as an unproved hypothesis — now discharged from first principles on `Szemeredi.Core`.
+
+Remaining: threading this pair-level dichotomy through the partition-freshness bookkeeping to a
+whole-partition `partitionEnergy` increment (the freshness-carrying `energy_increment_step`),
+and connecting to the item-2/3 predicate wrappers once PRs #39363/#39434 land.
