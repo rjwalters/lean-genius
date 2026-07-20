@@ -26,7 +26,7 @@
     "proofId": "birthday-problem",
     "range": {
       "startLine": 140,
-      "endLine": 149
+      "endLine": 144
     },
     "type": "insight",
     "title": "The Birthday Formula",
@@ -46,8 +46,8 @@
     "id": "ann-counting",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 112,
-      "endLine": 117
+      "startLine": 99,
+      "endLine": 111
     },
     "type": "concept",
     "title": "Counting Injective Functions",
@@ -68,8 +68,8 @@
     "id": "ann-pigeonhole",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 179,
-      "endLine": 182
+      "startLine": 167,
+      "endLine": 176
     },
     "type": "insight",
     "title": "The Pigeonhole Case",
@@ -94,7 +94,7 @@
     },
     "type": "insight",
     "title": "The 23-Person Threshold",
-    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
+    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: In Lean this is *proved*, not assumed. The claim reduces to the integer inequality $365^{23} > 2 \\cdot 365^{\\underline{23}}$ (and the reverse for 22), which `native_decide` discharges by evaluating the ~59-digit numbers at compile time. Because `native_decide` trusts the compiler's kernel reduction, it depends on the `Lean.ofReduceBool` axiom — so the entry is marked `axiomatized` (axiomCount 1) rather than fully axiom-free, even though there are no literal `axiom` declarations.",
     "mathContext": "$P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073 > 0.5$. The exact computation involves $365^{23} \\approx 8.6 \\times 10^{58}$.",
     "significance": "key",
     "prerequisites": [
@@ -111,7 +111,7 @@
     "proofId": "birthday-problem",
     "range": {
       "startLine": 9,
-      "endLine": 63
+      "endLine": 57
     },
     "type": "insight",
     "title": "The Birthday Attack",

@@ -71,7 +71,7 @@
         "relationship": "The binomial theorem underlies many counting arguments in probability; the birthday problem's complement probability uses falling factorial counting"
       }
     ],
-    "lineCount": 402,
+    "lineCount": 396,
     "mathlib_version": "4.31.0",
     "theoremCount": 24,
     "definitionCount": 5
@@ -100,71 +100,71 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 60,
       "summary": "Overview of the birthday problem and the probability formula.",
       "mathContext": "The module docstring establishes the sample space model: birthdays are uniform over $\\{0,\\ldots,364\\}$, people are labeled $\\{0,\\ldots,n-1\\}$, and the probability is computed as a ratio of cardinalities over a finite sample space. This discrete-probability setup avoids measure theory entirely — the formalization works with `Nat` arithmetic and `Rat` or `Real` division, leveraging Mathlib's `Fintype.card` and `Nat.descFactorial`."
     },
     {
       "id": "setting",
       "title": "The Setting",
-      "startLine": 65,
-      "endLine": 87,
+      "startLine": 61,
+      "endLine": 81,
       "summary": "Modeling birthdays as functions from people to days.",
       "mathContext": "Birthdays are modeled as functions $f : \\text{Fin}(n) \\to \\text{Fin}(365)$. The total number of assignments is $|\\text{Fin}(365)|^{|\\text{Fin}(n)|} = 365^n$, computed by `Fintype.card_fun`. A collision-free assignment is an injective function; the number of such functions is $365 \\cdot 364 \\cdots (365-n+1)$, computed by `Fintype.card_embedding_eq` (= $\\text{descFactorial}(365, n)$). This reduction of probability to a cardinality ratio is the foundational modeling step."
     },
     {
       "id": "counting",
       "title": "Counting Distinct Assignments",
-      "startLine": 88,
-      "endLine": 118,
+      "startLine": 82,
+      "endLine": 112,
       "summary": "Using falling factorials to count injective functions.",
       "mathContext": "The falling factorial $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1)$ counts injective functions $\\text{Fin}(k) \\hookrightarrow \\text{Fin}(n)$, since the first person has $n$ choices, the second has $n-1$, and so on. In Mathlib, `Nat.descFactorial n k` computes this value, and `Fintype.card_embedding_eq` states $|\\text{Fin}(k) \\hookrightarrow \\text{Fin}(n)| = \\text{descFactorial}(n, k)$. For $n=365$ and $k$ people, the count of all-distinct birthday assignments is $\\text{descFactorial}(365, k)$."
     },
     {
       "id": "formula",
       "title": "The Probability Formula",
-      "startLine": 119,
-      "endLine": 150,
+      "startLine": 113,
+      "endLine": 144,
       "summary": "The complete probability calculation.",
       "mathContext": "The collision probability is $P(n) = 1 - \\frac{\\text{descFactorial}(365, n)}{365^n}$. In Lean this is stated with `Real` division so that the ratio lies in $[0,1]$. The main lemma equates the numerator of the complement probability to `descFactorial 365 n` and the denominator to `365^n`, then uses `sub_div` to express $P(n) = 1 - \\text{(complement)}$. Monotonicity in $n$ follows because each new person strictly reduces the complement probability."
     },
     {
       "id": "specific-values",
       "title": "Specific Values",
-      "startLine": 151,
-      "endLine": 183,
+      "startLine": 145,
+      "endLine": 177,
       "summary": "Concrete probabilities for n=0, 1, 2, and n>365.",
       "mathContext": "Boundary cases anchor the formula: $P(0) = 0$ (vacuously no collision), $P(1) = 0$ (one person cannot collide with themselves), $P(2) = 1/365$ (first non-trivial case: two people share a birthday with probability $1/365$). For $n > 365$, $P(n) = 1$ by the pigeonhole principle — more people than days forces a collision. The case $n > 365$ uses `descFactorial 365 n = 0` (since the falling factorial reaches a factor of 0 when $n > 365$)."
     },
     {
       "id": "threshold",
       "title": "The 23-Person Threshold",
-      "startLine": 184,
-      "endLine": 248,
+      "startLine": 178,
+      "endLine": 242,
       "summary": "The famous result that P(23) > 1/2 and P(22) < 1/2.",
       "mathContext": "The 23-person threshold is a numerical fact: $\\text{descFactorial}(365,23) / 365^{23} < 1/2$ while $\\text{descFactorial}(365,22) / 365^{22} \\geq 1/2$. Since these are exact integer/integer comparisons (no floating point), Lean's `native_decide` tactic can verify them by evaluating the 146-digit integers at compile time. The psychological surprise is that $\\binom{23}{2} = 253$ pairs — exceeding the 365-day year — so a match is more likely than not."
     },
     {
       "id": "combinatorics",
       "title": "Relationship to Combinatorics",
-      "startLine": 249,
-      "endLine": 303,
+      "startLine": 243,
+      "endLine": 297,
       "summary": "Connection to counting principles and verification examples.",
       "mathContext": "This section makes the combinatorial underpinning explicit: the count of collision-free assignments equals the number of injective functions, which equals the falling factorial by `Fintype.card_embedding_eq`. Verification examples (small $n$ with computed values) serve both as unit tests and as illustrations of the formula. The section also connects `descFactorial` to the standard combinatorial notation $P(n,k) = n!/(n-k)!$ (permutations), showing the birthday count is a permutation count."
     },
     {
       "id": "expected-pairs",
       "title": "Expected Number of Shared Birthday Pairs",
-      "startLine": 304,
-      "endLine": 356,
+      "startLine": 298,
+      "endLine": 350,
       "summary": "By linearity of expectation, E[pairs] = C(n,2)/365. The 28-person threshold for expecting more than 1 pair.",
       "mathContext": "Linearity of expectation gives $\\mathbb{E}[\\text{# shared pairs}] = \\binom{n}{2} \\cdot \\frac{1}{365}$: each of the $\\binom{n}{2}$ pairs contributes an indicator variable with expectation $1/365$ (probability both people share a birthday). This is a different quantity from $P(n)$ — it measures the expected count of matching pairs rather than the probability of at least one match. The 28-person threshold for $\\mathbb{E} > 1$ is: $\\binom{28}{2}/365 = 378/365 > 1$."
     },
     {
       "id": "99-percent-threshold",
       "title": "The 99% Threshold",
-      "startLine": 357,
-      "endLine": 402,
+      "startLine": 351,
+      "endLine": 396,
       "summary": "With 57 people, probability exceeds 99%. Tight bound: P(56) < 0.99 < P(57).",
       "mathContext": "The 99% threshold at 57 people is again a numerical verification: $\\text{descFactorial}(365,57)/365^{57} < 1/100$ (complement probability below 1%) while $\\text{descFactorial}(365,56)/365^{56} \\geq 1/100$. Both inequalities are discharged by `native_decide` on integers with over 140 digits. The tight lower bound $P(56) < 0.99$ ensures 57 is the minimum, not just a sufficient condition — making this a precise threshold proof rather than a one-sided bound."
     }
@@ -252,7 +252,7 @@
     ],
     "opens": [],
     "namespace": "BirthdayProblem",
-    "lineCount": 402,
+    "lineCount": 396,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 24,
