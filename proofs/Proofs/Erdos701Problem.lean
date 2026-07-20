@@ -94,8 +94,8 @@ theorem singleton_intersecting {α : Type*} (A : Set α) (hA : A.Nonempty) :
     IsIntersecting ({A} : Set (Set α)) := by
   intro B hB C hC
   simp only [Set.mem_singleton_iff] at hB hC
-  subst hB hC
-  exact ⟨A, Set.inter_self A ▸ hA⟩
+  rw [hB, hC, Set.inter_self]
+  exact hA
 
 /-
 ## Part III: Stars
@@ -226,18 +226,19 @@ theorem uniform_not_hereditary {α : Type*} [Fintype α] [DecidableEq α]
     ¬IsHereditary (UniformFamily (α := α) k) := by
   intro hhered
   -- Take any proper non-empty subset of X
-  obtain ⟨x, hx⟩ := Set.ncard_pos.mp (by omega : X.ncard > 0)
+  obtain ⟨x, hx⟩ := Set.nonempty_of_ncard_ne_zero (s := X) (by omega)
   let B := X \ {x}
   have hBX : B ⊂ X := by
     constructor
-    · exact Set.diff_subset
+    · exact Set.sdiff_subset
     · intro heq
-      simp [B] at heq
-      exact heq hx
+      have hxB : x ∈ B := heq hx
+      simp [B] at hxB
   have hBcard : B.ncard = k - 1 := by
-    rw [Set.ncard_diff_singleton_of_mem hx hXfin, hX]
-  have hBF : B ∈ UniformFamily k := hhered X ⟨hXfin, hX⟩ B (Set.diff_subset)
-  simp [UniformFamily] at hBF
+    show (X \ {x}).ncard = k - 1
+    rw [Set.ncard_sdiff_singleton_of_mem hx, hX]
+  have hBF : B ∈ UniformFamily k := hhered X ⟨hXfin, hX⟩ B Set.sdiff_subset
+  simp only [UniformFamily, Set.mem_setOf_eq] at hBF
   omega
 
 /-
