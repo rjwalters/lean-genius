@@ -138,15 +138,15 @@
       "id": "infinite-ramsey",
       "title": "Section 4 — The Infinite Ramsey Theorem (Proved)",
       "startLine": 232,
-      "endLine": 549,
+      "endLine": 541,
       "summary": "Fully proves (0 sorries) the infinite Ramsey theorem ℵ₀ → (ℵ₀)^r_k for all finite r, k, eliminating the former axiom. Base cases: infinite_ramsey_zero (r=0, unique empty subset) and infinite_ramsey_one (r=1, infinite pigeonhole via Finite.exists_infinite_fiber). The private lemma ramsey_step performs one diagonal extraction: fix a vertex v of the infinite set, build the reduced r-coloring g(T)=f({v}∪T) on a subtype of S∖{v}, apply the IH, and transfer the monochromatic subset back to the ambient type (the delicate subtype-lifting argument). The main theorem infinite_ramsey then iterates ramsey_step via Nat.rec to build a sequence of (vertex, color) pairs, proves the vertex map injective, applies pigeonhole on the finitely many colors to get an infinite fiber, and assembles the monochromatic set H = vertex '' {n | color n = c*}.",
       "mathContext": "$\\aleph_0 \\to (\\aleph_0)^r_k$ by induction on $r$: the diagonal argument reduces an $(r{+}1)$-coloring on an infinite set to an $r$-coloring on a subtype, iterating to a vertex/color sequence, then pigeonholes the colors into an infinite monochromatic subsequence."
     },
     {
       "id": "consequences",
       "title": "Section 5 — Consequences and Consistency Checks",
-      "startLine": 550,
-      "endLine": 594,
+      "startLine": 542,
+      "endLine": 586,
       "summary": "Derives corollaries of the conjecture and Ramsey theorem: erdos_1167_r2_case (the r=2 instantiation), erdos_1167_general_case (any r≥2), conjecture_consistent_aleph0 and ramsey_pairs/ramsey_triples_two_colors (consistency: ℵ₀ → (ℵ₀)²_k and ℵ₀ → (ℵ₀)³_2 hold by the proved infinite Ramsey theorem), and erdos_rado_weakened (weakening the Erdős-Rado target via partition_monotone_target). Closes the namespace.",
       "mathContext": "Concrete instances: $\\aleph_0 \\to (\\aleph_0)^2_k$ and $\\aleph_0 \\to (\\aleph_0)^3_2$ from infinite Ramsey; $(2^\\kappa)^+ \\to (\\kappa)^2_\\kappa$ by target monotonicity from Erdős–Rado."
     }
