@@ -40,6 +40,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Combinatorics.Additive.Energy
+import Mathlib.Combinatorics.Additive.CauchyDavenport
 
 open Finset Real
 open scoped Pointwise
@@ -104,6 +105,23 @@ theorem productSet_upper_bound (A : Finset ℤ) :
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
     _ = A.card ^ 2 := by ring
+
+/-- `sumset A` is the pointwise sum `A + A`. -/
+theorem sumset_eq_add (A : Finset ℤ) : sumset A = A + A := by
+  rw [sumset, Finset.add_def]
+
+/--
+**Sumset lower bound (proved):** `2|A| - 1 ≤ |A + A|` for nonempty `A ⊆ ℤ`.
+
+This is the elementary lower bound quoted in Part II. It is the additive
+Cauchy–Davenport bound for linearly ordered cancellative additive monoids
+(`|A + B| ≥ |A| + |B| - 1`), specialized to `B = A` on `ℤ`, via Mathlib's
+`cauchy_davenport_add_of_linearOrder_isCancelAdd`. Axiom-free.
+-/
+theorem sumset_lower_bound (A : Finset ℤ) (hne : A.Nonempty) :
+    2 * A.card - 1 ≤ (sumset A).card := by
+  rw [sumset_eq_add, two_mul]
+  exact cauchy_davenport_add_of_linearOrder_isCancelAdd hne hne
 
 /-
 ## Part III: The Original Conjecture
@@ -221,6 +239,66 @@ theorem cauchy_schwarz_energy (A : Finset ℤ) :
   calc A.card ^ 4 = A.card ^ 2 * A.card ^ 2 := by ring
     _ ≤ (A * A).card * Finset.mulEnergy A A := Finset.le_card_mul_mul_mulEnergy A A
 
+/--
+**Solymosi reduction (proved, axiom-free modulo the stated energy hypothesis).**
+
+Solymosi's strategy combines two ingredients:
+* the Cauchy–Schwarz lower bound `|A|⁴ ≤ |A·A| · E×(A)` (proved above as
+  `cauchy_schwarz_energy`, axiom-free), and
+* the multiplicative-energy *upper* bound `E×(A) ≤ C · |A + A|² · log|A|`
+  (Solymosi's core inequality, not yet in Mathlib).
+
+Taking the second as an explicit hypothesis `hEnergy`, this lemma machine-checks
+the full reduction to the product-set bound
+`|A·A| ≥ |A|² / (C · K² · log|A|)` for any set with `|A + A| ≤ K·|A|`. It thereby
+isolates the genuine external input (`hEnergy`) *without* introducing a new
+axiom.
+
+**Honest constant note.** The standard argument delivers the denominator
+`C · K² · log|A|`, i.e. a `K²` dependence, not the `K` recorded in
+`proof_outline` below (see that theorem's docstring): substituting the sumset
+bound `|A + A| ≤ K·|A|` into `E×(A) ≤ C·|A+A|²·log|A|` costs the square. So this
+lemma is the faithful consequence of the energy inequality; `proof_outline`'s
+sharper `1/(K·log|A|)` form is a strictly stronger, still-open target. -/
+theorem product_lower_of_mult_energy
+    (A : Finset ℤ) (hA : A.card ≥ 2)
+    (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K)
+    (C : ℝ) (hC : C > 0)
+    (hEnergy : (multiplicativeEnergy A : ℝ)
+        ≤ C * ((sumset A).card : ℝ) ^ 2 * log A.card) :
+    ((productSet A).card : ℝ)
+        ≥ (A.card : ℝ) ^ 2 / (C * K ^ 2 * log A.card) := by
+  -- Positivity facts.
+  have hn2 : (2 : ℝ) ≤ (A.card : ℝ) := by exact_mod_cast hA
+  have hnpos : (0 : ℝ) < (A.card : ℝ) := by linarith
+  have hn2pos : (0 : ℝ) < (A.card : ℝ) ^ 2 := by positivity
+  have hLpos : (0 : ℝ) < log (A.card : ℝ) := Real.log_pos (by linarith)
+  have hSnn : (0 : ℝ) ≤ ((sumset A).card : ℝ) := by positivity
+  have hPnn : (0 : ℝ) ≤ ((productSet A).card : ℝ) := by positivity
+  have hM : (0 : ℝ) < C * K ^ 2 * log (A.card : ℝ) :=
+    mul_pos (mul_pos hC (by positivity)) hLpos
+  -- Square the small-sumset hypothesis: |A+A|² ≤ K²·|A|².
+  have hS2 : ((sumset A).card : ℝ) ^ 2 ≤ K ^ 2 * (A.card : ℝ) ^ 2 := by
+    nlinarith [mul_le_mul hsmall hsmall hSnn (mul_nonneg hK.le hnpos.le)]
+  -- Energy is controlled by K²·|A|²·log|A|.
+  have hE2 : (multiplicativeEnergy A : ℝ)
+      ≤ C * (K ^ 2 * (A.card : ℝ) ^ 2) * log (A.card : ℝ) := by
+    refine hEnergy.trans ?_
+    apply mul_le_mul_of_nonneg_right _ hLpos.le
+    exact mul_le_mul_of_nonneg_left hS2 hC.le
+  -- Cauchy–Schwarz lower bound, transported to ℝ.
+  have hcs : (A.card : ℝ) ^ 4
+      ≤ ((productSet A).card : ℝ) * (multiplicativeEnergy A : ℝ) := by
+    exact_mod_cast cauchy_schwarz_energy A
+  -- Combine: |A|⁴ ≤ |A·A| · C·K²·|A|²·log|A|.
+  have hchain : (A.card : ℝ) ^ 4
+      ≤ ((productSet A).card : ℝ)
+          * (C * (K ^ 2 * (A.card : ℝ) ^ 2) * log (A.card : ℝ)) :=
+    hcs.trans (mul_le_mul_of_nonneg_left hE2 hPnn)
+  -- Clear the denominator and cancel |A|².
+  rw [ge_iff_le, div_le_iff₀ hM]
+  nlinarith [hchain, hn2pos]
+
 /-
 **Solymosi's key lemma:**
 Bounds multiplicative energy in terms of sumset size.
@@ -252,7 +330,13 @@ Bounds multiplicative energy in terms of sumset size.
     `|A|⁴ ≤ |A·A|·E×(A)` — is now PROVED (`cauchy_schwarz_energy`, axiom-free,
     via Mathlib's `Finset.le_card_mul_mul_mulEnergy`). The remaining gap is
     therefore *exactly* Solymosi's multiplicative-energy upper bound
-    `E×(A) ≤ C·|A|²·|A+A|·log|A|`, which is not yet formalized in Mathlib. -/
+    `E×(A) ≤ C·|A+A|²·log|A|`, which is not yet formalized in Mathlib.
+
+    The reduction from that energy inequality to a product-set bound is now
+    machine-checked, axiom-free, as `product_lower_of_mult_energy` — but it
+    delivers the `1/(C·K²·log|A|)` form, since substituting `|A+A| ≤ K·|A|`
+    into the energy bound costs a factor of `K`. This theorem's sharper
+    `1/(K·log|A|)` denominator is a strictly stronger, still-open target. -/
 theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
     ((productSet A).card : ℝ) ≥

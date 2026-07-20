@@ -1,7 +1,7 @@
 {
   "slug": "erdos-818-incomplete-01",
   "title": "Complete proof of Product Set Lower Bound for Small Sumsets (1 sorries)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,18 @@
     "goal": "Eliminate the 1 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00.000Z",
-    "iteration": 0,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 1,
+    "focus": "Reduce the open product-set bound to a single named, non-Mathlib energy inequality.",
+    "blockers": [
+      {
+        "route": "proof_outline sharp 1/(K·log|A|) product-set bound via multiplicative energy",
+        "reopenCriterion": "materially new mechanism required (Solymosi's energy inequality gives only 1/(C·K²·log|A|); the sharper K-linear form needs a different argument or the energy inequality formalized in Mathlib)",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Formalize Solymosi's energy inequality E×(A) ≤ C·|A+A|²·log|A| (dyadic pigeonhole on multiplicative fibers) — the remaining external input — or prove the sharper 1/(K·log|A|) form if a distinct argument exists.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +35,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 1 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (still 1 open sorry): Added the axiom-free sumset lower bound 2|A|-1 ≤ |A+A| (Mathlib Cauchy–Davenport) and the axiom-free Solymosi reduction product_lower_of_mult_energy, which machine-checks energy-upper-bound + Cauchy–Schwarz ⇒ |A·A| ≥ |A|²/(C·K²·log|A|), isolating Solymosi's multiplicative-energy inequality E×(A) ≤ C·|A+A|²·log|A| as the single genuine external input (not in Mathlib). Documented that the file's remaining proof_outline sorry, with denominator K·log|A| (vs K²·log|A|), is a strictly stronger still-open target. Host-verified under Mathlib v4.31, 0 new axioms. leanFile theoremCount 8→11, lineCount 353→437.",
+    "builtItems": [
+      "sumset_eq_add (Erdos818Problem.lean): sumset A = A + A (pointwise), axiom-free.",
+      "sumset_lower_bound (Erdos818Problem.lean): 2|A|-1 ≤ |A+A| for nonempty A⊆ℤ, via Mathlib cauchy_davenport_add_of_linearOrder_isCancelAdd; fills the previously comment-only Part II. Axiom-free.",
+      "product_lower_of_mult_energy (Erdos818Problem.lean): from cauchy_schwarz_energy + hypothesis E×(A) ≤ C·|A+A|²·log|A|, proves |A·A| ≥ |A|²/(C·K²·log|A|) for |A+A| ≤ K·|A|. Axiom-free (propext/Choice/Quot only)."
+    ],
+    "insights": [
+      "The lone remaining sorry (proof_outline in Erdos818Problem.lean) is genuinely OPEN: its bound |A·A| ≥ |A|²/(K·log|A|) requires Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, which is not in Mathlib. It is NOT derivable from the file's solymosi_theorem axiom (absolute-constant form c·|A|²/log|A|), which would need c·K ≥ 1.",
+      "Honest constant mismatch: substituting |A+A| ≤ K·|A| into Solymosi's energy bound E×(A) ≤ C·|A+A|²·log|A| yields |A·A| ≥ |A|²/(C·K²·log|A|) — a K² dependence — NOT the sharper K in proof_outline's stated 1/(K·log|A|). So proof_outline as stated is strictly stronger than the standard argument delivers and remains open.",
+      "The full Solymosi reduction (energy upper bound + Cauchy–Schwarz ⇒ product-set lower bound) is now machine-checked axiom-free, with the energy inequality passed as an explicit hypothesis rather than a new axiom — isolating the single genuine external input."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -54,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T00:00:00.000Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-07-20",
   "significance": 6,
   "tractability": 7
 }
