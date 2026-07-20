@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: added 13 axiom-free foundational lemmas to the previously definitions-only Erdos16Problem.lean (Romanoff floor + concrete witnesses, exceptional-set membership of 1/3, density range 0..1, and a machine-checked proof that the explicit Erdos covering system covers Z). Deep results (Romanoff 1934, Erdos 1950, Chen 2023 disproof) remain documented-only, needing Mathlib analytic NT. Meta counts synced (theoremCount 0 -> 13).",
+    "builtItems": [
+      "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
+      "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
+      "density_nonneg, density_le_one, mem_exceptionalSet_iff in Erdos16Problem.lean",
+      "erdosCovering_moduli_pos, erdosCovering_isCoveringSystem (covering system covers Z) in Erdos16Problem.lean"
+    ],
+    "insights": [
+      "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
+      "The explicit Erdos covering system [(0,2),(0,3),(1,4),(1,6),(3,8),(7,12),(23,24)] genuinely covers Z: every modulus divides 24, so the disjunction n%2=0 or n%3=0 or n%4=1 or n%6=1 or n%8=3 or n%12=7 or n%24=23 is provable directly by omega, then the residue-class witness is exhibited per case.",
+      "Romanoff floor: 2^k+p >= 4 for k>=1, p prime, so 1 and 3 are exceptional; 5=2+3 and 7=4+3 are concrete Romanoff (non-exceptional) witnesses."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-16-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
