@@ -111,8 +111,16 @@
       "title": "Real embedding, midpoint-freeness, and the bound",
       "summary": "embR (ℝ-valued encoding), toNat_lt_pow (S_k ⊆ [0,3ᵏ)), midpointFree/isoscelesFree of S_k, |S_k| = 2ᵏ, and the packaged lower bound.",
       "startLine": 119,
-      "endLine": 188,
+      "endLine": 186,
       "mathContext": "midpointFree_range_embR pushes the real average equation to ℕ and applies the core lemma; isoscelesFree_range_embR composes with the parent bridge; ncard_range_embR = 2ᵏ via Set.ncard_range_of_injective and Nat.card_fun; exists_isoscelesFree_pow packages an isosceles-free S ⊆ [0,3ᵏ) of size 2ᵏ."
+    },
+    {
+      "id": "general-N",
+      "title": "From Powers of 3 to Every N: the General-N Lower Bound",
+      "startLine": 187,
+      "endLine": 217,
+      "summary": "Monotonizing the sparse n = 3^k bound to every N. exists_isoscelesFree_Ico: for every N ≥ 1, taking k = ⌊log₃ N⌋ (so 3^k ≤ N) yields an isosceles-free set S ⊆ [0, N) of exactly 2^{⌊log₃ N⌋} real numbers — the classical bound P₁(N) ≥ 2^{⌊log₃ N⌋}, valid for all N, growing like N^{log₃ 2}. exists_isoscelesFree_Ico_pos records that this bound is never vacuous (2^{⌊log₃ N⌋} ≥ 1).",
+      "mathContext": "$P_1(N) \\ge 2^{\\lfloor \\log_3 N\\rfloor} \\gtrsim N^{\\log_3 2}$ for every $N \\ge 1$, via $3^{\\lfloor \\log_3 N\\rfloor} \\le N$."
     }
   ],
   "conclusion": {
