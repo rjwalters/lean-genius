@@ -154,8 +154,8 @@ theorem erdos_409_density :
 theorem totientPlusOne_eq_self_iff_prime (n : ℕ) (hn : n > 1) :
     totientPlusOne n = n ↔ n.Prime := by
   constructor
-  · intro h; by_contra hnp; exact absurd h (ne_of_gt (iterate_decreasing n hn hnp))
-  · intro hp; unfold totientPlusOne; rw [hp.totient]; omega
+  · intro h; by_contra hnp; exact absurd h (ne_of_lt (iterate_decreasing n hn hnp))
+  · intro hp; unfold totientPlusOne; rw [Nat.totient_prime hp]; omega
 
 /-- Helper: totientIterate n 0 = n (zero iterations is identity). -/
 theorem totientIterate_zero (n : ℕ) : totientIterate n 0 = n := rfl
@@ -265,14 +265,9 @@ theorem sigma_growing :
 theorem sigma_prime_fixed (p : ℕ) (hp : p.Prime) :
     p.divisors.sum id - 1 = p := by
   suffices h : p.divisors.sum id = 1 + p by omega
-  have h_div : p.divisors = {1, p} := by
-    ext d; simp only [Nat.mem_divisors, Finset.mem_insert, Finset.mem_singleton]
-    constructor
-    · rintro ⟨hd, _⟩; exact hp.eq_one_or_self_of_dvd d hd
-    · rintro (rfl | rfl)
-      · exact ⟨one_dvd p, hp.ne_zero⟩
-      · exact ⟨dvd_refl p, hp.ne_zero⟩
-  rw [h_div, Finset.sum_insert (by simp; omega), Finset.sum_singleton]
+  have h_div : p.divisors = {1, p} := Nat.Prime.divisors hp
+  rw [h_div, Finset.sum_insert (by rw [Finset.mem_singleton]; exact hp.one_lt.ne),
+      Finset.sum_singleton]
   simp [id]
 
 /-- Composites strictly grow under σ-iteration: σ(n) − 1 ≥ n + 1 for composite n > 1.
@@ -304,7 +299,7 @@ theorem sigma_composite_growth (n : ℕ) (hn : n > 1) (hnp : ¬n.Prime) :
     rw [Finset.sum_insert (by simp; omega),
         Finset.sum_insert (by rw [Finset.mem_singleton]; omega),
         Finset.sum_singleton]
-    simp [id]
+    simp only [id_eq]; ring
   have hge : n.divisors.sum id ≥ 1 + n.minFac + n := by
     calc n.divisors.sum id
         ≥ ({1, n.minFac, n} : Finset ℕ).sum id :=
@@ -317,7 +312,7 @@ theorem sigma_composite_growth (n : ℕ) (hn : n > 1) (hnp : ¬n.Prime) :
 /-- φ(n) ≥ 2 for n ≥ 3: φ(n) is even (Nat.totient_even) and positive
     (Nat.totient_pos), hence ≥ 2. -/
 theorem totient_ge_two (n : ℕ) (hn : n ≥ 3) : n.totient ≥ 2 := by
-  have hpos : 0 < n.totient := Nat.totient_pos (by omega)
+  have hpos : 0 < n.totient := Nat.totient_pos.mpr (by omega)
   have heven : Even n.totient := Nat.totient_even (by omega : 2 < n)
   obtain ⟨k, hk⟩ := heven
   omega
@@ -339,7 +334,7 @@ theorem iteration_reaches_prime_in :
     · -- n > 1 and not prime, so n ≥ 4
       have hn4 : n ≥ 4 := by
         by_contra h; push_neg at h
-        interval_cases n <;> simp_all [Nat.Prime]
+        interval_cases n <;> exact hp (show Nat.Prime _ by norm_num)
       have hdec := iterate_decreasing n (by omega) hp
       -- totientPlusOne n > 1: φ(n) ≥ 2 for n ≥ 3, so φ(n)+1 ≥ 3
       have hm_gt1 : totientPlusOne n > 1 := by
@@ -371,7 +366,7 @@ theorem iteration_reaches_prime_half :
     · exact ⟨0, Nat.zero_le _, hp⟩
     · have hn4 : n ≥ 4 := by
         by_contra h; push_neg at h
-        interval_cases n <;> simp_all [Nat.Prime]
+        interval_cases n <;> exact hp (show Nat.Prime _ by norm_num)
       have hdec := iterate_decreasing n (by omega) hp
       have hm_gt1 : totientPlusOne n > 1 := by
         unfold totientPlusOne; have := totient_ge_two n (by omega); omega
@@ -407,18 +402,20 @@ theorem one_iteration_infinite :
     {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite := by
   -- The set of odd primes {p prime | p ≠ 2} is infinite
   have h_odd_inf : (setOf Nat.Prime \ {2}).Infinite :=
-    Nat.infinite_setOf_prime.diff (Set.finite_singleton 2)
+    Nat.infinite_setOf_prime.sdiff (Set.finite_singleton 2)
   -- Map odd primes to our target set via p ↦ 2p (injective on ℕ)
-  apply Set.Infinite.mono _
-    (Set.Infinite.image (2 * ·) h_odd_inf (fun a _ b _ h => by omega))
+  have hinj : Set.InjOn (2 * ·) (setOf Nat.Prime \ {2}) :=
+    fun a _ b _ h => by dsimp only at h; omega
+  apply Set.Infinite.mono _ (Set.Infinite.image hinj h_odd_inf)
   -- Show {2p | p odd prime} ⊆ {n > 1 | (totientPlusOne n).Prime}
   rintro n ⟨p, hp_mem, rfl⟩
-  have hp : p.Prime := (Set.mem_diff _).mp hp_mem |>.1
-  have hp2 : p ≠ 2 := fun h =>
-    (Set.mem_diff _).mp hp_mem |>.2 (Set.mem_singleton_iff.mpr h)
+  simp only [Set.mem_setOf_eq]
+  have hp : p.Prime := hp_mem.1
+  have hp2 : p ≠ 2 := hp_mem.2
+  have hp2le := hp.two_le
   refine ⟨by omega, ?_⟩
   -- Key computation: totientPlusOne (2*p) = p
-  suffices h : totientPlusOne (2 * p) = p from h ▸ hp
+  suffices h : totientPlusOne (2 * p) = p by rw [h]; exact hp
   unfold totientPlusOne
   have hcop : Nat.Coprime 2 p :=
     Nat.coprime_two_left.mpr (hp.odd_of_ne_two hp2)
