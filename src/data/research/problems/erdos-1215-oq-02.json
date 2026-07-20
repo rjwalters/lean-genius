@@ -31,7 +31,13 @@
     "since": "2026-07-09T00:00:00Z",
     "iteration": 1,
     "focus": "Understand the sublevel-set geometry of cyclotomic polynomials Φ_n and whether cyclotomic root rigidity rules out Mac Lane labyrinths.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "prove maclane_labyrinth axiom (C>1 regime: paths forced through neighbourhoods of 0 / polynomial-lemniscate topology)",
+        "reopenCriterion": "polynomial-lemniscate / sublevel-set topology infrastructure lands in Mathlib (connected-component structure of {|P|<C} across the critical-value threshold); materially new mechanism required",
+        "blockedAt": "2026-07-20"
+      }
+    ],
     "nextAction": "Survey Mathlib cyclotomic-polynomial, complex-modulus, and interval-integral (arc-length) infrastructure and draft a precise formal statement of the restricted path-length bound.",
     "attemptCounts": {
       "total": 0,
@@ -40,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "REFLECTION SYMMETRY (researcher-2, 2026-07-12, VERIFIED 0-axiom): new file Erdos1215UnitCircleConjugation.lean adds the conjugation/real-axis-reflection symmetry of the sublevel set, orthogonal to prior radius/area/monotonicity work. For any real-coefficient P (P.map (starRingEnd ℂ)=P), P(z̄)=conj P(z) hence |P(z̄)|=|P(z)|, so both closedLevelSet and open levelSet equal their own image under conjugation. Specialized to cyclotomic Φ_n via Polynomial.map_cyclotomic: every Φ_n sublevel set is mirror-symmetric across ℝ — a concrete cyclotomic-rigidity constraint absent from general Mac Lane labyrinths. 9 theorems + 1 def, all [propext,Classical.choice,Quot.sound]. Deep maclane_labyrinth axiom (base #1215) unchanged.",
+    "progressSummary": "BLOCKED on deep maclane_labyrinth axiom (C>1 lemniscate topology, absent from Mathlib); registered as structured blocker 2026-07-20 (researcher-1). Axiom-free structural periphery actively extended by concurrent PRs #39256/#39332/#39350 (path/escape/symmetry corollaries) — orbiting the axiom, not reducing it. No session-sized axiom-elimination available until polynomial-lemniscate sublevel-set topology lands in Mathlib.",
     "builtItems": [
       "Erdos1215UnitCircleMonotone.lean (researcher-5, 2026-07-12, 0-axiom VERIFIED): monotone/membership block for the sublevel set as a function of the level C — closedLevelSet_mono (C1<=C2 => closedLevelSet P C1 subset closedLevelSet P C2), volume_closedLevelSet_mono (measure nondecreasing in C via measure_mono), isRoot_mem_closedLevelSet (roots in set for C>=0), zero_mem_closedLevelSet (0 in set for C>=1 via P(0)=1), closedLevelSet_nonempty (C>=1), levelSet_subset_closedLevelSet (open {|P|<C} subset closed {|P|<=C}). 6 thm [propext,Classical.choice,Quot.sound].",
       "eventually_levelSet_subset_closedBall (Erdos1215UnitCircleRadiusLimit.lean): for C>=1, eps>0, one degree threshold K confines the level set of EVERY unit-circle polynomial of degree>=K to closedBall 0 (2+eps) -- uniform confinement of the whole high-degree Mac Lane class (VERIFIED 0/0)",
@@ -62,7 +68,8 @@
       "n=1,2 level-1 sets are exact open unit disks: {|Phi_1|<1}=ball(1,1), {|Phi_2|<1}=ball(-1,1), from Phi_1=X-1, Phi_2=X+1.",
       "The confinement radius argument is stable under passing from the open level set {|P|<C} to the closed sublevel set {|P|≤C}: the same pow_sub_one_le_norm_eval lower bound gives the ≤-variant of the sharp radius by monotone rpow, and continuity of z↦|P(z)| (P.continuous.norm) makes the sublevel set closed. Closed+bounded in the proper space ℂ ⟹ compact — supplying the compactness the path-geometry programme needs with no new analytic input.",
       "AREA SANDWICH (researcher-11, 2026-07-12): the outer/inner radius sandwich on the closed sublevel set {|P|≤C} of an IsUnitCirclePolynomial converts, via monotonicity of 2D Lebesgue volume on ℂ + Mathlib's Complex.volume_closedBall (= ENNReal.ofReal r^2 · π), into an EXPLICIT PLANAR-AREA sandwich: π·(C^{1/deg}−1)² ≤ area({|P|≤C}) ≤ π·(1+C^{1/deg})² for C≥1. Depends only on C and deg P, not the individual roots — a uniform quantitative bound on the Mac Lane labyrinth region.",
-      "Cyclotomic rigidity has a clean geometric shadow: Φ_n has real (integer) coefficients, so its sublevel sets {|Φ_n(z)|≤C} and {|Φ_n(z)|<C} are exactly symmetric under reflection across the real axis (roots come in conjugate pairs). A general Mac Lane labyrinth need not respect this mirror symmetry — an orthogonal constraint to the radius/area/monotonicity sandwiches."
+      "Cyclotomic rigidity has a clean geometric shadow: Φ_n has real (integer) coefficients, so its sublevel sets {|Φ_n(z)|≤C} and {|Φ_n(z)|<C} are exactly symmetric under reflection across the real axis (roots come in conjugate pairs). A general Mac Lane labyrinth need not respect this mirror symmetry — an orthogonal constraint to the radius/area/monotonicity sandwiches.",
+      "Deep frontier is the single maclane_labyrinth axiom (C>1 regime): needs polynomial-lemniscate / sublevel-set connected-component topology absent from Mathlib — a BUILD >1000 lines, correctly axiomatized. The axiom-free structural periphery (reflection/conjugation symmetry, radius/area/monotonicity, escape-to-infinity, radial-exit & escape-region path-connectivity) is being actively extended by concurrent PRs (#39256/#39332/#39350); adding further peripheral corollaries orbits the deep axiom without reducing it. Registered the deep route as a structured blocker (reopen: lemniscate topology in Mathlib)."
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
