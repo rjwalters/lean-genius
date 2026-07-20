@@ -53,7 +53,7 @@
       "Weierstrass product theorem and interpolation",
       "Algebraic number theory (rationality of polynomial values)"
     ],
-    "lineCount": 268,
+    "lineCount": 258,
     "assumptions": "1 axiom: barth_schneider_1970. 0 sorries.",
     "mathlib_version": "4.31.0",
     "theoremCount": 6,
@@ -82,80 +82,80 @@
     {
       "id": "entire-functions",
       "title": "Part 1: Entire Functions",
-      "startLine": 45,
-      "endLine": 68,
+      "startLine": 41,
+      "endLine": 64,
       "summary": "IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions.",
       "mathContext": "Formal definition: IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions."
     },
     {
       "id": "countable-dense",
       "title": "Part 2: Countable Dense Sets",
-      "startLine": 69,
-      "endLine": 86,
+      "startLine": 65,
+      "endLine": 82,
       "summary": "IsCountableDense definition. rationals_countable_dense: proved ℚ is countable dense in ℝ using Set.countable_range and Rat.denseRange_ratCast.",
       "mathContext": "IsCountableDense definition. rationals_countable_dense: proved $\\mathbb{Q}$ is countable dense in $\\mathbb{R}$ using Set.countable_range and Rat.denseRange_ratCast."
     },
     {
       "id": "rationality-preservation",
       "title": "Part 3: Rationality Preservation",
-      "startLine": 87,
-      "endLine": 102,
+      "startLine": 83,
+      "endLine": 98,
       "summary": "PreservesRationality (f(x) ∈ ℚ ↔ x ∈ ℚ) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions.",
       "mathContext": "PreservesRationality (f(x) ∈ $\\mathbb{Q}$ ↔ x ∈ $\\mathbb{Q}$) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions."
     },
     {
       "id": "original-question",
       "title": "Part 4: The Original Question",
-      "startLine": 103,
-      "endLine": 115,
+      "startLine": 99,
+      "endLine": 111,
       "summary": "ErdosQuestion: ∃ entire non-linear f with x ∈ ℚ ↔ f(x) ∈ ℚ.",
       "mathContext": "ErdosQuestion: ∃ entire non-linear f with x ∈ $\\mathbb{Q}$ ↔ f(x) ∈ $\\mathbb{Q}$."
     },
     {
       "id": "general-question",
       "title": "Part 5: The General Question",
-      "startLine": 116,
-      "endLine": 129,
+      "startLine": 112,
+      "endLine": 125,
       "summary": "GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B.",
       "mathContext": "Mathematical content: GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B."
     },
     {
       "id": "barth-schneider",
       "title": "Part 6: Barth-Schneider Theorem",
-      "startLine": 130,
-      "endLine": 152,
+      "startLine": 126,
+      "endLine": 148,
       "summary": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B). The monotonicity result is described in a docstring but not declared as an axiom.",
-      "mathContext": "Axiomatized: barth_schneider_1970 axiom (transcendental entire f with f(A) = B). The monotonicity commentary at lines 153-155 is a docstring only; no barth_schneider_monotone axiom is declared."
+      "mathContext": "Axiomatized: barth_schneider_1970 axiom (transcendental entire f with f(A) = B). The monotonicity commentary at lines 144-148 is a docstring only; no barth_schneider_monotone axiom is declared."
     },
     {
       "id": "main-answer",
       "title": "Part 7: The Answer",
-      "startLine": 153,
-      "endLine": 198,
+      "startLine": 149,
+      "endLine": 188,
       "summary": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=ℚ) and general_question_affirmative (proved directly).",
       "mathContext": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=$\\mathbb{Q}$) and general_question_affirmative (proved directly)."
     },
     {
       "id": "extensions",
       "title": "Part 8: Extensions",
-      "startLine": 199,
-      "endLine": 206,
+      "startLine": 189,
+      "endLine": 196,
       "summary": "Docstring discussion of the 1971 ℂ extension (Barth-Schneider 1971); no axiom is declared.",
-      "mathContext": "Commentary on the 1971 extension to countable dense subsets of ℂ. No barth_schneider_complex axiom is declared; lines 199-206 are a docstring only."
+      "mathContext": "Commentary on the 1971 extension to countable dense subsets of ℂ. No barth_schneider_complex axiom is declared; lines 191-196 are a docstring only."
     },
     {
       "id": "insights",
       "title": "Part 9: Why This Works",
-      "startLine": 207,
-      "endLine": 220,
+      "startLine": 197,
+      "endLine": 210,
       "summary": "Docstring discussion of why transcendence is necessary: no polynomial of degree > 1 can preserve rationality. Not axiomatized.",
-      "mathContext": "Commentary on the transcendence argument. Lines 207-220 are a docstring discussing why no polynomial works; no no_polynomial_works axiom is declared."
+      "mathContext": "Commentary on the transcendence argument. Lines 199-209 are a docstring discussing why no polynomial works; no no_polynomial_works axiom is declared."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
-      "startLine": 221,
-      "endLine": 268,
+      "startLine": 211,
+      "endLine": 258,
       "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED.",
       "mathContext": "Verified: erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
     }
@@ -195,7 +195,7 @@
       "Set"
     ],
     "namespace": "Erdos226",
-    "lineCount": 268,
+    "lineCount": 258,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 8,
