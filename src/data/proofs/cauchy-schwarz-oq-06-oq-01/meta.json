@@ -83,7 +83,8 @@
       "**The Gram determinant is the right scalar invariant.** Replacing the Cauchy-Schwarz gap $\\|x\\|\\|y\\| - \\|\\langle x,y\\rangle\\|$ by $\\det(\\mathrm{Gram}\\,v)$ promotes the pairwise dichotomy to families of any finite size, with linear dependence as the unifying condition.",
       "**Positive definiteness carries the analysis; the determinant carries the algebra.** Mathlib already proves $\\mathrm{PosDef}(\\mathrm{Gram}\\,v) \\iff \\mathrm{LinearIndependent}\\ v$. The only new work is translating definiteness into determinant non-vanishing — one direction via `PosDef.isUnit`, the other via an explicit kernel vector.",
       "**A vanishing combination is literally a kernel vector.** The identity $(\\mathrm{Gram}\\,v \\cdot c)_j = \\langle v_j, \\sum_k c_k v_k\\rangle$ makes the equivalence transparent: the coefficient vector witnessing dependence is exactly the null vector witnessing singularity.",
-      "**The 2×2 case recovers the parent.** For $n=2$, $\\det(\\mathrm{Gram})= \\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2$, so 'Gram determinant vanishes' is 'Cauchy-Schwarz equality', tying this entry to cauchy-schwarz-oq-06 as a strict generalization."
+      "**The 2×2 case recovers the parent.** For $n=2$, $\\det(\\mathrm{Gram})= \\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2$, so 'Gram determinant vanishes' is 'Cauchy-Schwarz equality', tying this entry to cauchy-schwarz-oq-06 as a strict generalization.",
+      "**The Gram determinant is a squared volume.** Because the Gram matrix is Hermitian positive semidefinite, $\\det(\\mathrm{Gram}\\,v) \\ge 0$ always, and it equals the squared $n$-dimensional volume of the parallelepiped spanned by $v$. The dichotomy is therefore geometric: the volume degenerates to $0$ exactly when the vectors fail to be linearly independent. This is why the two provided forms — nonvanishing $\\iff$ independent and vanishing $\\iff$ dependent — are genuine contrapositives packaged separately for downstream ergonomics rather than distinct facts, and why Cauchy-Schwarz equality ($n=2$) reads as 'a degenerate parallelogram has zero area'."
     ],
     "prerequisites": [
       "Inner product spaces over ℝ or ℂ (RCLike 𝕜, InnerProductSpace 𝕜 E in Mathlib)",
@@ -94,11 +95,20 @@
   },
   "sections": [
     {
-      "id": "sec-header",
-      "title": "Statement and Setup",
+      "id": "sec-overview",
+      "title": "Overview: the Gram Determinant Criterion",
       "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring framing the Gram determinant det(Gram v) as the finite-family generalization of the Cauchy-Schwarz gap ‖x‖‖y‖ − ‖⟪x,y⟫‖. It records the target dichotomy — det(Gram v) ≠ 0 ⟺ v linearly independent, and its vanishing form — and the n=2 identity det(Gram(x,y)) = ‖x‖²‖y‖² − ‖⟪x,y⟫‖², which ties the entry back to the parent cauchy-schwarz-oq-06 as a strict generalization (Cauchy-Schwarz equality is the 2×2 vanishing case).",
+      "mathContext": "$\\det(\\mathrm{Gram}\\,v) \\ne 0 \\iff v$ linearly independent; for $n=2$, $\\det = \\|x\\|^2\\|y\\|^2 - |\\langle x,y\\rangle|^2$, the Cauchy–Schwarz gap."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports, Namespace, and Variables",
+      "startLine": 43,
       "endLine": 52,
-      "summary": "Docstring framing the Gram determinant as the finite-family generalization of the Cauchy-Schwarz gap, with the n=2 identity ‖x‖²‖y‖² − ‖⟪x,y⟫‖² linking back to the parent. Imports Mathlib, opens InnerProductSpace and ComplexOrder notation (the latter supplying the RCLike partial order), and fixes 𝕜 (RCLike), E (inner-product space), and the finite index type n."
+      "summary": "import Mathlib, namespace CauchySchwarzOQ06OQ01, open scoped InnerProductSpace ComplexOrder (the latter supplying the RCLike partial order needed to speak of positive-definiteness) and open Matrix. Fixes the ambient data: 𝕜 an RCLike field, E a 𝕜-inner-product space (NormedAddCommGroup + InnerProductSpace), and n a Fintype with DecidableEq indexing the family and the Gram matrix.",
+      "mathContext": "Gram matrix of $v : n \\to E$ is $(\\mathrm{Gram}\\,v)_{jk} = \\langle v_j, v_k\\rangle \\in \\Bbbk$; DecidableEq n and Fintype n make it a concrete $n \\times n$ matrix with a determinant."
     },
     {
       "id": "sec-independence",
