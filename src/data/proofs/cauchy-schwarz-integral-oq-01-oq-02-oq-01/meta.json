@@ -77,6 +77,22 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Discharging the Hadamard Three-Lines Axiom",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring. The parent entry cauchy-schwarz-integral-oq-01-oq-02 (Riesz–Thorin interpolation from Hölder's inequality) states two ingredients as axioms: hadamard_three_lines (the analytic heart) and riesz_thorin (the interpolation theorem, which follows from it). This file discharges the FIRST axiom, proving hadamard_three_lines as a genuine theorem derived from Mathlib's complete formalization Complex.HadamardThreeLines.norm_le_interp_of_mem_verticalClosedStrip₀₁'. The statement reproduced here is identical to the parent's axiom (same strip/boundary definitions, same interpNorm), so it replaces that axiom verbatim; the work is purely translating hypotheses (continuity + holomorphy ⇒ DiffContOnCl; uniform bound ⇒ BddAbove; the two boundary bounds ⇒ the re⁻¹'{0}/re⁻¹'{1} bounds) to Mathlib's verticalStrip API. No new axioms (standard Mathlib triple). References Stein & Shakarchi, Complex Analysis, Ch. 4.",
+      "mathContext": "Three-lines lemma: a function bounded by $M_0$ on $\\operatorname{Re} z = 0$ and by $M_1$ on $\\operatorname{Re} z = 1$, holomorphic in between, is bounded by $M_0^{1-t} M_1^{t}$ on $\\operatorname{Re} z = t$. Here it is derived from Mathlib rather than assumed — the parent's open question answered affirmatively."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace",
+      "startLine": 45,
+      "endLine": 51,
+      "summary": "import Mathlib (the whole library, so the file verifies against Mathlib alone with no dependence on the drift-prone parent chain), open Set Complex Complex.HadamardThreeLines (bringing the verticalStrip/verticalClosedStrip API and re-coercions into scope), and namespace CauchySchwarzIntegralOQ01OQ02OQ01. Opening Complex.HadamardThreeLines is what makes norm_le_interp_of_mem_verticalClosedStrip₀₁' directly accessible without qualification.",
+      "mathContext": "Setup only. The single project-external import is Mathlib itself; the strip and interpolation API live in Mathlib.Analysis.Complex.Hadamard."
+    },
+    {
       "id": "strip-geometry",
       "title": "Strip Geometry and the Interpolated Bound",
       "startLine": 52,
