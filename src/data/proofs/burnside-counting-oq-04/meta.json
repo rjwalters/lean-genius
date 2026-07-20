@@ -128,6 +128,16 @@
   ],
   "crossReferences": [
     {
+      "targetId": "burnside-counting-oq-04-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[0]: builds a concrete faithful dihedral action ρ : DihedralGroup 4 → Perm (ZMod 4) on the binary colourings and discharges the necklace-count and reflection-total hypotheses of the folding theorem by kernel computation, giving the unconditional |bracelets(4,2)| = 6 without native_decide."
+    },
+    {
+      "targetId": "burnside-counting-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[1]: generalises the concrete construction from D₄ to D_n for every n (reflection form sr i : x ↦ -i-x), specialising the index-2 folding to the general-n dihedral bracelet Burnside identity b(n) = (necklaces(n) + reflection-total(n))/(2n)."
+    },
+    {
       "targetId": "burnside-counting",
       "relationship": "extends",
       "description": "Extends the base cyclic necklace count to the dihedral group by giving the abstract index-2 folding that relates bracelet counts to necklace counts."
@@ -147,8 +157,8 @@
     "summary": "Adding reflections to Burnside necklace counting is captured abstractly by index-2 orbit folding: for any finite G acting on finite X and any subgroup H ≤ G, |X/G|·|G| = |X/H|·|H| + Σ_{g ∉ H} |Fix(g)|. With G = D_n and H = ℤ/nℤ this is the classical bracelets-from-necklaces formula; the file proves it with 0 axioms and no native_decide, adds the |G| = 2|H| doubling form, and verifies the length-4 binary instance (6 bracelets).",
     "implications": "Provides the reusable assembly step that turns per-symmetry fixed-point counts (rotation counts of oq-03, reflection counts of oq-05) into dihedral orbit counts, stated in full generality for any subgroup rather than only the dihedral case.",
     "openQuestions": [
-      "Build a concrete dihedral action on Coloring n k and discharge the necklace and reflection-total hypotheses of binary_four_bracelet_count by kernel computation, yielding an unconditional |bracelets| = 6 (the parent closes the analogous cyclic count only with native_decide).",
-      "Specialise the folding theorem to a fully formalized closed form for the binary bracelet numbers b(n) = (necklaces(n) + reflection-total(n))/(2n) for general n."
+      "Build a concrete dihedral action on Coloring n k and discharge the necklace and reflection-total hypotheses of binary_four_bracelet_count by kernel computation, yielding an unconditional |bracelets| = 6 (the parent closes the analogous cyclic count only with native_decide) — now realized in the gallery by burnside-counting-oq-04-oq-01.",
+      "Specialise the folding theorem to a fully formalized closed form for the binary bracelet numbers b(n) = (necklaces(n) + reflection-total(n))/(2n) for general n — now realized in the gallery by burnside-counting-oq-04-oq-02 (the general-n dihedral construction and its Burnside identity)."
     ]
   },
   "leanFile": {
