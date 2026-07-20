@@ -151,15 +151,15 @@
     {
       "id": "main-theorem",
       "title": "Main Result: DKM 2025",
-      "summary": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` and `bound_tight` (tightness via `Filter.Frequently`).",
+      "summary": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` (the DKM 2025 result).",
       "startLine": 60,
       "endLine": 80,
-      "mathContext": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` and `bound_tight` (tightness via `Filter.Frequently`)."
+      "mathContext": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` (the DKM 2025 result)."
     },
     {
       "id": "erdos-observation",
       "title": "Erdős's Observation and Half-Half Symmetry",
-      "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined).",
+      "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes `erdos_observation` ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$); the half-half symmetry is documented in prose, not a separate declaration.",
       "startLine": 81,
       "endLine": 103,
       "mathContext": "$\\text{nonCycleCount}(G) = 2^{2n} - \\text{cycleSpannedCount}(G)$. Erdős's observation: $\\text{nonCycleCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Combined: $(1/2-\\varepsilon) \\cdot 2^{2n} \\leq \\text{cycleSpannedCount}(G) \\leq (1/2+\\varepsilon) \\cdot 2^{2n}$."
@@ -167,10 +167,10 @@
     {
       "id": "regularity",
       "title": "Regularity is Essential: Counterexamples",
-      "summary": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n`. Proves $K_{n,n}$ has $2n$ vertices, degree $n$, and $O((n!)^2)$ cycle-spanned sets. Defines `knn_with_stars` ($\\delta = n+1$ but non-regular) with $o(2^n)$ cycle sets.",
+      "summary": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n` and axiomatizes `knn_few_cycles`: $K_{n,n}$ has $O((n!)^2)$ cycle-spanned sets (the regularity-is-essential counterexample). Defines `knn_with_stars` ($\\delta = n+1$ but non-regular). No theorems are proved in this file; the counterexample bound is an axiom.",
       "startLine": 104,
       "endLine": 147,
-      "mathContext": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n`. Proves $K_{n,n}$ has $2n$ vertices, degree $n$, and $O((n!)^2)$ cycle-spanned sets. Defines `knn_with_stars` ($\\delta = n+1$ but non-regular) with $o(2^n)$ cycle sets."
+      "mathContext": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n` and axiomatizes `knn_few_cycles`: $K_{n,n}$ has $O((n!)^2)$ cycle-spanned sets (the regularity-is-essential counterexample). Defines `knn_with_stars` ($\\delta = n+1$ but non-regular). No theorems are proved in this file; the counterexample bound is an axiom."
     },
     {
       "id": "examples",
