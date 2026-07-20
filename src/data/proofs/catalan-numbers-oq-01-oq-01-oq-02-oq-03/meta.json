@@ -60,7 +60,8 @@
       "**The recurrence is Pascal's rule, reflected.** ballot p q = C(p+q,q) − C(p+q,p+1) is a difference of two binomials; applying Pascal's rule to each and regrouping yields exactly ballot (p−1) q + ballot p (q−1). The Catalan-triangle recurrence is the difference of two copies of Pascal's recurrence.",
       "**Clearing predecessors removes all truncated subtraction from the indices.** Writing p = a+1, q = b+1 turns p−1, q−1, p+1 into honest sums a, b, a+2, so Pascal's rule and the genuineness lemma apply on the nose and omega never has to reason about index truncation — only about the value-level subtractions, which the genuineness bounds make exact.",
       "**The diagonal edge is the recurrence with a vanishing neighbour.** On the diagonal the left neighbour ballot (n−1) n sits strictly above the diagonal of its own row and is 0, so B(n,n) = B(n,n−1): the rule that propagates catalan n = B(n,n) up the triangle's edge is a special case of the two-term recurrence, not a separate fact.",
-      "**Genuineness covers the diagonal as an equality.** The one bound not directly furnished by ballot_genuine (the q = p case of the left neighbour) holds because the two binomial indices coincide there — the proof splits b < a (Pascal genuineness) from b = a (reflexivity), so the single omega works uniformly across the closed regime 1 ≤ q ≤ p."
+      "**Genuineness covers the diagonal as an equality.** The one bound not directly furnished by ballot_genuine (the q = p case of the left neighbour) holds because the two binomial indices coincide there — the proof splits b < a (Pascal genuineness) from b = a (reflexivity), so the single omega works uniformly across the closed regime 1 ≤ q ≤ p.",
+      "**The closing step is a ℤ-linear identity certified faithful over ℕ.** Once Pascal splits the binomials and the three genuineness bounds certify each subtrahend ≤ its minuend, the recurrence is the integer identity X − Y = (B − C) + (A − D) among the six coefficient atoms — a fact of pure linear arithmetic, not of binomial combinatorics. The genuineness bounds are precisely what make ℕ-truncated subtraction agree with the ℤ computation, so no further binomial identity beyond Pascal is needed and omega, which reasons over ℕ with the ordering hypotheses in scope, discharges the whole goal at once."
     ],
     "exampleSections": [
       {
@@ -78,11 +79,18 @@
       "summary": "Module docstring framing the entry as the parent's lead open question. States the target recurrence ballot p q = ballot (p−1) q + ballot p (q−1) (1 ≤ q ≤ p), and outlines the pure-binomial proof: substitute p = a+1, q = b+1, split each binomial by Pascal's rule, recombine the truncated subtractions via the parent's genuineness bounds, and close with omega."
     },
     {
-      "id": "recurrence",
-      "title": "The two-term Catalan-triangle recurrence",
+      "id": "recurrence-setup",
+      "title": "Setup: clearing predecessors and Pascal's rule",
       "startLine": 36,
+      "endLine": 57,
+      "summary": "ballot_recurrence, opening moves. Substitute p = a+1, q = b+1 (obtain ⟨a, rfl⟩) so 1 ≤ q ≤ p becomes b ≤ a and every index is a polynomial after Nat.add_sub_cancel. Pascal's rule Nat.choose_succ_succ' (key1, key2) then splits the two degree-(a+b+2) binomials of ballot (a+1)(b+1) into the four degree-(a+b+1) coefficients of the reduced row — the same coefficients that appear in the neighbour entries."
+    },
+    {
+      "id": "recurrence-close",
+      "title": "Genuineness bounds and the omega closure",
+      "startLine": 58,
       "endLine": 83,
-      "summary": "ballot_recurrence: for 1 ≤ q ≤ p, ballot p q = ballot (p−1) q + ballot p (q−1). After clearing predecessors with p = a+1, q = b+1, Pascal's rule (Nat.choose_succ_succ') splits the two binomials of ballot p q, three genuineness bounds from the parent's ballot_genuine (the diagonal case b = a held by reflexivity) keep all ℕ-subtractions exact, and omega closes the six-atom linear identity."
+      "summary": "The crux. Three ballot_genuine instances supply the inequalities that keep every ℕ-subtraction exact — hg1 for ballot p q, hg3 for the lower neighbour, hg2 for the left neighbour (splitting b < a via Pascal genuineness from b = a by le_refl). With Pascal's key1/key2 rewriting the binomials and the indices normalised (defeq), the goal becomes the six-atom linear identity X − Y = (B − C) + (A − D), which a single omega discharges."
     },
     {
       "id": "diagonal",
