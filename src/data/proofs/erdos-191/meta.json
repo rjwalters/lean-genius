@@ -68,9 +68,9 @@
         "relationship": "Related additive combinatorics: squarefree sumsets use similar sieve techniques"
       }
     ],
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 414,
-    "assumptions": "4 axioms: erdos_191, rodl_upper_construction, conlon_fox_sudakov_bound, tripleLog_unbounded. 0 sorries.",
+    "assumptions": "3 axioms: erdos_191, rodl_upper_construction, conlon_fox_sudakov_bound (the deep results of Erdős, Rödl, and Conlon–Fox–Sudakov). 0 sorries. The former fourth axiom tripleLog_unbounded (log log log n → ∞) is now proved axiom-free via tripleLog_tendsto_atTop.",
     "theoremCount": 10,
     "definitionCount": 13
   },
@@ -218,8 +218,8 @@
     ],
     "namespace": "Erdos191",
     "lineCount": 414,
-    "axiomCount": 4,
-    "theoremCount": 10,
+    "axiomCount": 3,
+    "theoremCount": 12,
     "definitionCount": 13,
     "path": "Proofs/Erdos191Problem.lean",
     "sorries": 0
