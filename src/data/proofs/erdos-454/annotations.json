@@ -5,7 +5,7 @@
     "type": "concept",
     "range": {
       "startLine": 25,
-      "endLine": 33
+      "endLine": 30
     },
     "title": "Imports and Namespace",
     "content": "Imports `PrimeCounting` for `Nat.nth Prime` (the $k$-th prime function), `Filter.Basic` for `Filter.atTop` used in $\\limsup$ statements, `LiminfLimsup` for the $\\limsup$ operator, `ENat` for extended naturals $\\mathbb{N}_\\infty$ (allowing $\\limsup = \\infty$), and `Tactic` for proof automation. Opens `Nat` and `Filter` namespaces.",
@@ -28,8 +28,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 38
+      "startLine": 34,
+      "endLine": 35
     },
     "title": "The $n$th Prime Function",
     "content": "`nthPrime k` $:= $ `k.nth Prime` returns the $k$-th prime number ($0$-indexed): $p_0 = 2$, $p_1 = 3$, $p_2 = 5$, etc. This uses Mathlib's `Nat.nth` which extracts the $k$-th element satisfying a decidable predicate — here `Nat.Prime`.",
@@ -52,15 +52,15 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 40,
-      "endLine": 57
+      "startLine": 37,
+      "endLine": 54
     },
     "title": "Prime Sequence Properties",
-    "content": "Proves $p_0 = 2$ and $p_1 = 3$ via `simp` with Mathlib's `nth_prime_zero/one`. Proves $p_2 = 5$ using `native_decide`. Establishes `nthPrime_prime`: every $p_k$ is prime (from `Nat.prime_nth_prime`). Establishes `nthPrime_strictMono`: $k < l \\Rightarrow p_k < p_l$ (from `Nat.nth_prime_strictMono`).",
+    "content": "Proves $p_0 = 2$, $p_1 = 3$, and $p_2 = 5$ via `simp` with Mathlib's named prime lemmas `Nat.nth_prime_zero_eq_two`, `Nat.nth_prime_one_eq_three`, and `Nat.nth_prime_two_eq_five` — no `native_decide`, so these facts stay kernel-checked and add no compiler-trust axiom. Establishes `nthPrime_prime`: every $p_k$ is prime (from `Nat.prime_nth_prime`). Establishes `nthPrime_strictMono`: $k < l \\Rightarrow p_k < p_l$ (from `Nat.nth_strictMono` on the infinite set of primes).",
     "significance": "supporting",
-    "mathContext": "The `native_decide` for $p_2 = 5$ performs kernel-level computation: it enumerates naturals until finding the third prime. This is feasible for small values but would not scale to large indices. The strict monotonicity `StrictMono nthPrime` is the key structural property enabling the asymmetric behavior analysis: for $i > 0$, we get $p_{n+i} > p_n > p_{n-i}$ immediately.",
+    "mathContext": "The small-value primes $p_0, p_1, p_2$ are discharged by rewriting with Mathlib's precomputed lemmas rather than by a decision procedure, keeping the file free of `Lean.ofReduceBool`. The strict monotonicity `StrictMono nthPrime` is the key structural property enabling the asymmetric behavior analysis: for $i > 0$, we get $p_{n+i} > p_n > p_{n-i}$ immediately.",
     "relatedConcepts": [
-      "native_decide",
+      "Nat.nth_prime_two_eq_five",
       "StrictMono",
       "Nat.prime_nth_prime",
       "simp"
@@ -76,8 +76,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 61,
-      "endLine": 66
+      "startLine": 58,
+      "endLine": 63
     },
     "title": "Symmetric Prime Sum",
     "content": "`symmetricPrimeSum n i hi` $= p_{n+i} + p_{n-i}$ for $i < n$. This measures the sum of primes at equal index-distance from position $n$. For evenly spaced sequences $a_k = a + kd$, we have $a_{n+i} + a_{n-i} = 2a_n$ exactly — so deviation from $2p_n$ reflects the irregularity of prime spacing.",
@@ -100,8 +100,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 68,
-      "endLine": 83
+      "startLine": 65,
+      "endLine": 95
     },
     "title": "The Function $f(n)$",
     "content": "$f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$. This is the MINIMUM symmetric sum. The alternative `f'` uses `Finset.inf'` for computability intuition. `f_eq_f'` (sorry) states their equivalence. Since $i = 0$ gives $2p_n$, we always have $f(n) \\le 2p_n$.",
@@ -125,8 +125,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 102,
-      "endLine": 108
+      "startLine": 99,
+      "endLine": 105
     },
     "title": "The Deviation",
     "content": "`deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$. This measures the signed distance between the minimum symmetric sum and twice the central prime. Positive deviation means ALL symmetric sums exceed $2p_n$; negative means some fall below.",
@@ -148,8 +148,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 110,
-      "endLine": 114
+      "startLine": 107,
+      "endLine": 111
     },
     "title": "Extended Natural Deviation",
     "content": "`deviationENat n` casts non-negative deviations to $\\mathbb{N}_\\infty$ and maps negative deviations to $0$. This allows the $\\limsup$ to take values in $\\mathbb{N}_\\infty = \\mathbb{N} \\cup \\{\\infty\\}$, where the conjecture asks whether $\\limsup = \\infty = \\top$.",
@@ -174,8 +174,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 118,
-      "endLine": 121
+      "startLine": 115,
+      "endLine": 118
     },
     "title": "The $i = 0$ Case",
     "content": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$ by `simp [mul_comm]`. This is the anchor point — the $i = 0$ term always contributes exactly $2p_n$ to the infimum, establishing $f(n) \\le 2p_n$.",
@@ -197,8 +197,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 135,
-      "endLine": 141
+      "startLine": 132,
+      "endLine": 138
     },
     "title": "Asymmetric Behavior",
     "content": "Proves `asymmetric_behavior`: for $i > 0$ and $i < n$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$. Both follow from `nthPrime_strictMono` applied to $n + i > n$ and $n - i < n$. Whether $p_{n+i} + p_{n-i}$ exceeds or falls below $2p_n$ depends on which gap is larger.",
@@ -221,8 +221,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 145,
-      "endLine": 149
+      "startLine": 142,
+      "endLine": 146
     },
     "title": "Pomerance's Lower Bound (1979)",
     "content": "`pomerance_1979` (axiom): $2 \\le \\limsup$ `deviationENat atTop`. Infinitely many $n$ have $f(n) - 2p_n \\ge 2$, meaning ALL symmetric sums at those positions exceed $2p_n + 2$. The proof uses the chromatic number of Pomerance's Prime Number Graph.",
@@ -245,8 +245,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 183,
-      "endLine": 190
+      "startLine": 180,
+      "endLine": 191
     },
     "title": "Main Conjecture: $\\limsup = \\infty$",
     "content": "`Erdos454Conjecture` $:=$ $\\limsup$ `deviationENat atTop` $= \\top$. In $\\mathbb{N}_\\infty$, $\\top = \\infty$, so this asks: for every $M$, there exists $n$ with `deviationENat n` $\\ge M$. Equivalently, deviations are unbounded.",
@@ -269,8 +269,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 227,
-      "endLine": 229
+      "startLine": 220,
+      "endLine": 222
     },
     "title": "Large Prime Gaps Exist",
     "content": "`large_prime_gaps_exist` (axiom): $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. Arbitrarily large prime gaps exist — classically proved via the construction $n! + 2, n! + 3, \\ldots, n! + n$ (all composite). Large gaps are necessary but not sufficient for large deviations.",
@@ -292,8 +292,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 284,
-      "endLine": 295
+      "startLine": 276,
+      "endLine": 289
     },
     "title": "The Prime Number Graph",
     "content": "`primeNumberGraph` is a `SimpleGraph ℕ` where $n \\sim m$ iff $n \\ne m$ and $p_n + p_m = p_k$ for some $k$. Symmetry is proved by commutativity of addition ($p_n + p_m = p_m + p_n$). Looplessness follows from $n \\ne n$ being false. This is Pomerance's central construction.",
@@ -318,8 +318,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 297,
-      "endLine": 301
+      "startLine": 291,
+      "endLine": 295
     },
     "title": "Symmetric Goldbach Property",
     "content": "`goldbachSymmetric`: every even $m > 4$ can be written as $p_{n+i} + p_{n-i}$ for some $n, i$ with $i < n$. This strengthens Goldbach's conjecture by requiring the two primes to be at symmetric positions in the prime sequence.",
