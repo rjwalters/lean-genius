@@ -125,14 +125,14 @@
       "id": "pi-doubling",
       "title": "π Grows Across Each Doubling",
       "startLine": 42,
-      "endLine": 79,
+      "endLine": 74,
       "summary": "Main consequences: π(2n) ≥ π(n) + 1 (the Bertrand prime is new), π(2^k) ≥ k by induction, and a prime in (2^k, 2^(k+1)].",
       "mathContext": "π'(n+1) ≤ π'(p) < π'(p+1) ≤ π'(2n+1) via monotonicity and the count_succ jump at the prime p."
     },
     {
       "id": "examples",
       "title": "Strictness and Explicit Cases",
-      "startLine": 76,
+      "startLine": 75,
       "endLine": 89,
       "summary": "π(n) < π(2n) strictly, and explicit primes in (1,2] and (5,10].",
       "mathContext": "Bertrand at n = 1 gives 2; at n = 5 gives 7."
