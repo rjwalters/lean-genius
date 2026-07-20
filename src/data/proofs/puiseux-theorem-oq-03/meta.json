@@ -64,7 +64,7 @@
       "Support-list layer for the general single edge Yⁿ−xᵐ (recovered from PR #31627) — YnMinusXm n m = [(0,m),(n,0)], ynMinusXm_isLowerEdge (the arbitrary two-term Newton polygon is a genuine lower edge), ynMinusXm_edge_slope (slope −m/n, an arbitrary non-positive rational vs the unit fractions of Yⁿ−x), ynMinusXm_leading_exponent (−slope = leadingExponentFromSlope m n), nthRoot_xm ((x^{m/n})ⁿ = (x¹)ᵐ — xᵐ as an honest m-th power), capstone ynMinusXm_slope_eq_root_valuation (edgeSlope = −v(root) with the slope read off the support-list edge), specialization chain ynMinusXm_one / ynMinusXm_two_one down to Y²−x, and worked witness y3MinusX2_root_valuation (v = 2/3, unreachable by the Yⁿ−x family)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 1626,
+    "lineCount": 1692,
     "theoremCount": 94,
     "definitionCount": 14,
     "mathlib_version": "4.31.0"
@@ -93,10 +93,18 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Puiseux OQ-03 — A Combinatorial Newton Polygon",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Module docstring framing OQ-03 (making the Newton–Puiseux algorithm efficient for computational algebraic geometry), summarizing the literature surveyed in earlier OBSERVE sessions (Chudnovsky–Chudnovsky 1986, Duval 1989, Walsh 2000, Poteaux–Rybowicz, Poteaux–Weimann) and the Mathlib state, and stating the file's deliverable: a verified combinatorial Newton polygon (lower hull of the support) with edge slopes = negated root valuations. Includes imports and namespace.",
+      "mathContext": "The Newton polygon of $P=\\sum a_i Y^i$ is the lower convex hull of $\\{(i, v(a_i))\\}$; each edge of slope $-\\mu$ predicts a root of valuation $\\mu$."
+    },
+    {
       "id": "support-points",
       "title": "Support Points and Edge Slope",
       "startLine": 70,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "SupportPoint := ℕ × ℚ pairs an exponent i with the valuation v(aᵢ) of the coefficient; zero coefficients (valuation +∞) are omitted. edgeSlope p q is the slope (q.2 − p.2)/(q.1 − p.1) of the segment joining two support points.",
       "mathContext": "$\\text{support}(P)=\\{(i,v(a_i)):a_i\\neq0\\}$; $\\text{edgeSlope}(p,q)=\\frac{v_q-v_p}{i_q-i_p}$."
     },
@@ -104,7 +112,7 @@
       "id": "lower-vertex-predicate",
       "title": "The Supporting-Line Vertex Predicate",
       "startLine": 79,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "IsLowerVertex pts p: p ∈ pts and some line y = m·i + b passes through p and lies weakly below every support point — the supporting-line characterization of a lower-hull vertex, stated as a Prop to stay algorithm-independent. IsLowerVertex.mem records that a vertex is a genuine support point.",
       "mathContext": "$\\exists m,b:\\ v_p=m\\,i_p+b\\ \\wedge\\ \\forall q\\in\\text{pts},\\ m\\,i_q+b\\le v_q.$"
     },
@@ -112,25 +120,193 @@
       "id": "structure-theory",
       "title": "Seed Vertex and Existence",
       "startLine": 91,
-      "endLine": 107,
+      "endLine": 111,
       "summary": "isLowerVertex_of_minimal: the minimum-valuation point is a vertex via the horizontal line y = v(p) (m = 0). exists_lowerVertex: every nonempty support list has a vertex, extracted as the List.argmin of the valuations using argmin_mem and le_of_mem_argmin.",
       "mathContext": "Horizontal supporting line $y=v_p$ when $v_p=\\min_q v_q$; existence via $p=\\arg\\min_q v_q$."
     },
     {
       "id": "worked-example",
       "title": "Worked Example: Y²−x",
-      "startLine": 109,
-      "endLine": 145,
+      "startLine": 112,
+      "endLine": 147,
       "summary": "Support of Y²−x is {(0,1),(2,0)}; both endpoints are lower vertices via the shared edge line y = −½i + 1 (ysqMinusX_vertex_const / _lead, fin_cases + norm_num). edgeSlope = −1/2, and its negation 1/2 = leadingExponentFromSlope 1 2 recovers the parent's leading exponent of the root x^{1/2}.",
       "mathContext": "$-\\text{edgeSlope}((0,1),(2,0))=\\tfrac12=\\text{leadingExponentFromSlope}(1,2)$, the exponent of $x^{1/2}$."
     },
     {
+      "id": "edges-convexity",
+      "title": "Edges and Convexity of the Lower Hull",
+      "startLine": 148,
+      "endLine": 226,
+      "summary": "Defines a lower edge of the Newton polygon (an adjacent vertex pair whose connecting line supports the whole support from below) and establishes the basic convexity relations of the hull: consecutive edges turn upward, so their slopes increase left to right.",
+      "mathContext": "An edge $(v_{i},v_{i+1})$ is lower when its line lies weakly below all support points; convexity means adjacent edge slopes satisfy $\\text{edgeSlope}(v_{i-1},v_i)\\le\\text{edgeSlope}(v_i,v_{i+1})$."
+    },
+    {
+      "id": "supporting-slope-bounds",
+      "title": "Supporting-Slope Bounds and Convexity from Below",
+      "startLine": 227,
+      "endLine": 279,
+      "summary": "Bounds the edge slopes by the supporting-line inequalities: any point lying below a candidate line contradicts the supporting property, giving the lower-convexity of the hull as a consequence of the vertex predicate rather than an assumed ordering.",
+      "mathContext": "If the line through $(v_p,v_q)$ dips above some support point, that point forces the true supporting slope to be smaller — pinning convexity from below."
+    },
+    {
+      "id": "edge-slope-uniqueness",
+      "title": "Well-Definedness of Edge Slopes (Uniqueness)",
+      "startLine": 280,
+      "endLine": 341,
+      "summary": "Proves that the slope of a lower edge is well-defined: two vertices determining the same edge give the same edgeSlope, and the supporting line is unique, so the edge-slope sequence read off the hull is unambiguous.",
+      "mathContext": "For a fixed lower edge the supporting line $y=m i+b$ is unique, so $m=\\text{edgeSlope}$ does not depend on the representation."
+    },
+    {
+      "id": "newton-polygon-endpoints",
+      "title": "Endpoints of the Newton Polygon",
+      "startLine": 342,
+      "endLine": 425,
+      "summary": "Identifies the two extreme vertices of the lower hull — the leftmost (minimal exponent, the constant/trailing term) and rightmost (maximal exponent, the leading term Yⁿ) — and shows they are always lower vertices, bracketing the edge chain.",
+      "mathContext": "The hull spans exponents $0\\le i\\le n=\\deg P$; the endpoints $(0,v(a_0))$ and $(n,v(a_n))$ anchor the edge chain."
+    },
+    {
+      "id": "first-edge-existence",
+      "title": "Existence of the First Edge",
+      "startLine": 426,
+      "endLine": 485,
+      "summary": "Constructs the first (leftmost, most negative slope) lower edge of the polygon, the edge whose slope predicts the root of smallest valuation — the starting point of the Newton–Puiseux peel-down.",
+      "mathContext": "The initial edge from the left endpoint has the least slope, corresponding to the Puiseux root of smallest valuation $\\mu=-\\text{edgeSlope}$."
+    },
+    {
       "id": "global-convexity",
       "title": "Global Convexity: the Whole Edge-Slope Sequence is Sorted",
-      "startLine": 423,
-      "endLine": 509,
-      "summary": "edgeSlopes reads the edge-slope list off a List.IsChain of lower edges. chain_edgeSlopes proves it IsChain (· ≤ ·) by two-step structural induction (head = edgeSlope_mono, tail = IH); edgeSlopes_pairwise_le upgrades to Pairwise (· ≤ ·) via transitivity, and rootValuations_pairwise_ge negates to Pairwise (· ≥ ·) for the root valuations. A genuine three-vertex convex chain (0,2)→(1,0)→(3,1) with edge slopes [-2, 1/2] exercises the theorems.",
-      "mathContext": "$\\text{IsChain}(\\text{IsLowerEdge})\\,vs \\Rightarrow (\\text{edgeSlopes}\\,vs)\\ \\text{sorted } \\le$; lifting adjacent-pair convexity $\\text{edgeSlope}(v_{i-1},v_i)\\le\\text{edgeSlope}(v_i,v_{i+1})$ to all pairs."
+      "startLine": 486,
+      "endLine": 543,
+      "summary": "edgeSlopes reads the edge-slope list off a List.IsChain of lower edges. chain_edgeSlopes proves it IsChain (· ≤ ·) by two-step structural induction (head = edgeSlope_mono, tail = IH); edgeSlopes_pairwise_le upgrades to Pairwise (· ≤ ·) via transitivity, and rootValuations_pairwise_ge negates to Pairwise (· ≥ ·) for the root valuations.",
+      "mathContext": "$\\text{IsChain}(\\text{IsLowerEdge})\\,vs \\Rightarrow (\\text{edgeSlopes}\\,vs)$ sorted $\\le$; lifting adjacent-pair convexity to all pairs."
+    },
+    {
+      "id": "three-vertex-example",
+      "title": "Worked Three-Vertex Example",
+      "startLine": 544,
+      "endLine": 571,
+      "summary": "A genuine three-vertex convex chain (0,2)→(1,0)→(3,1) with edge slopes [−2, 1/2] exercises the global-convexity theorems: the slopes are sorted and the corresponding root valuations [2, −1/2] are antitone.",
+      "mathContext": "Chain $(0,2)\\to(1,0)\\to(3,1)$ has slopes $[-2,\\tfrac12]$ (sorted) and root valuations $[2,-\\tfrac12]$ (antitone)."
+    },
+    {
+      "id": "degree-counting",
+      "title": "Degree Counting: Edge Widths Sum to the Index Span",
+      "startLine": 572,
+      "endLine": 651,
+      "summary": "Proves the horizontal-width accounting: the widths (exponent spans) of the successive lower edges telescope to the full index span n = deg P, so the multiplicities predicted by the polygon add up to the degree — the count-with-multiplicity half of Puiseux's theorem.",
+      "mathContext": "$\\sum_{\\text{edges}} (i_{k+1}-i_k) = n = \\deg P$: edge widths partition the exponent axis, counting roots with multiplicity."
+    },
+    {
+      "id": "slope-width-drop",
+      "title": "Slope × Width = Vertical Drop (the Product-of-Roots Bookkeeping)",
+      "startLine": 652,
+      "endLine": 746,
+      "summary": "Establishes that for each edge, slope × width equals the vertical drop in valuation, so summing over edges recovers the total valuation drop from the leading to the trailing coefficient — the Newton-polygon form of the valuation of the product of all roots (Vieta / v(a₀/aₙ)).",
+      "mathContext": "$\\text{slope}\\times\\text{width}=\\Delta v$ per edge; $\\sum \\mu_k m_k = v(a_0)-v(a_n)=v\\!\\left(\\prod \\text{roots}\\right)$."
+    },
+    {
+      "id": "hull-splicing",
+      "title": "Hull Construction: Splicing a Dominant Edge onto the Right Sub-Hull",
+      "startLine": 747,
+      "endLine": 862,
+      "summary": "The constructive step of building the lower hull: given the dominant (leftmost) edge and the recursively-constructed hull of the remaining right-hand support, splice them into a single convex chain, verifying the join preserves the lower-edge and convexity properties.",
+      "mathContext": "$\\text{hull}(\\text{pts}) = \\text{firstEdge} \\mathbin{::} \\text{hull}(\\text{pts}_{\\ge})$, with the splice preserving IsChain and the supporting-line property."
+    },
+    {
+      "id": "two-edge-splice-example",
+      "title": "Worked Example: Building the Two-Edge Polygon by Splicing",
+      "startLine": 863,
+      "endLine": 896,
+      "summary": "A concrete run of the splicing construction producing a two-edge Newton polygon, checking that the recursive peel-down yields the expected sorted edge-slope list on an explicit support set.",
+      "mathContext": "Explicit witness that the recursive hull construction reproduces the sorted two-edge chain."
+    },
+    {
+      "id": "complete-lower-hull",
+      "title": "The Complete Lower Hull: a Verified Newton–Puiseux Peel-Down",
+      "startLine": 897,
+      "endLine": 1011,
+      "summary": "Assembles the full lower-hull construction into a verified Newton–Puiseux peel-down: iterating the dominant-edge splice from left to right produces the complete convex chain of lower edges of any nonempty support, with all edges verified lower and globally convex.",
+      "mathContext": "The peel-down terminates with the entire lower hull as a sorted IsChain of lower edges, the combinatorial skeleton of the Puiseux factorization."
+    },
+    {
+      "id": "capstone-polygon",
+      "title": "Capstone: the Complete Newton Polygon, Sorted and Counted",
+      "startLine": 1012,
+      "endLine": 1095,
+      "summary": "The capstone theorem packaging the two invariants together: the constructed Newton polygon of a support has edge slopes sorted (global convexity) and edge widths summing to the degree (degree counting) — a fully verified combinatorial Newton polygon.",
+      "mathContext": "For any nonempty support: $\\text{edgeSlopes}$ sorted $\\le$ AND $\\sum \\text{widths}=n$ — the two structural invariants at once."
+    },
+    {
+      "id": "root-product-valuation",
+      "title": "The Third Invariant: Valuation of the Root Product on the Concrete Hull",
+      "startLine": 1096,
+      "endLine": 1143,
+      "summary": "Adds the third invariant on the concrete hull: the total slope-weighted drop equals the valuation of the product of the roots, verified on the explicit worked polygon — tying the combinatorial edges back to the analytic valuations of the roots.",
+      "mathContext": "$\\sum_k \\mu_k m_k = v(\\prod \\text{roots})$ checked on the concrete hull, the valuation-of-resultant bookkeeping."
+    },
+    {
+      "id": "analytic-bridge-brick",
+      "title": "The Analytic-Bridge Brick: a ℚ-Valued Puiseux Valuation Realizing the Slopes",
+      "startLine": 1144,
+      "endLine": 1206,
+      "summary": "Introduces the analytic bridge: a ℚ-valued valuation on Puiseux series realizing the negated edge slopes as actual root valuations, connecting the purely combinatorial polygon to the ℚ-graded valuation of the Puiseux series field.",
+      "mathContext": "A valuation $v:\\text{PuiseuxSeries}\\,K\\to\\mathbb{Q}\\cup\\{\\infty\\}$ with $v(\\text{root})=-\\text{edgeSlope}$, realizing the polygon slopes analytically."
+    },
+    {
+      "id": "ramified-root-family",
+      "title": "The Full Ramified-Root Family and the ℚ Value Group",
+      "startLine": 1207,
+      "endLine": 1256,
+      "summary": "Constructs the family of ramified roots x^{m/n} and identifies the ℚ value group they generate, exhibiting the fractional exponents predicted by the polygon slopes as genuine elements of the Puiseux value group ℚ.",
+      "mathContext": "The roots $x^{m/n}$ have valuations $m/n\\in\\mathbb{Q}$; the value group of $\\text{PuiseuxSeries}\\,K$ is $\\mathbb{Q}$."
+    },
+    {
+      "id": "unramified-base-inclusion",
+      "title": "The Unramified Base Inclusion K⸨x⸩ ↪ PuiseuxSeries K",
+      "startLine": 1257,
+      "endLine": 1322,
+      "summary": "Records the unramified base inclusion of the Laurent series field K⸨x⸩ into PuiseuxSeries K, whose value group is ℤ, providing the ambient field in which unramified (integer-valuation) roots live — the contrast class against the ramified fractional-exponent roots.",
+      "mathContext": "$K(\\!(x)\\!)\\hookrightarrow \\text{PuiseuxSeries}\\,K$ with value group $\\mathbb{Z}\\subset\\mathbb{Q}$: unramified means valuation in ℤ."
+    },
+    {
+      "id": "binomial-bridge",
+      "title": "The Single-Edge (Binomial) Bridge: edgeSlope = −v(root) as a Family",
+      "startLine": 1323,
+      "endLine": 1376,
+      "summary": "Proves the single-edge (binomial) bridge as a family: for binomials, each edge slope equals the negated valuation of the corresponding root, establishing edgeSlope = −v(root) uniformly across the binomial family and closing the combinatorial-to-analytic loop in the one-edge case.",
+      "mathContext": "For $Y^n-x^m$: $\\text{edgeSlope}=-\\tfrac{m}{n}=-v(\\text{root})$, the slope-valuation duality in the single-edge case."
+    },
+    {
+      "id": "ramification-synthesis",
+      "title": "Synthesis: Which Binomial Roots Ramify — the Two Bridges Meet",
+      "startLine": 1377,
+      "endLine": 1428,
+      "summary": "Synthesizes the combinatorial bridge (edge slope) and the analytic bridge (root valuation) to determine exactly which binomial roots ramify — where the two constructions meet, characterizing ramification via the slope's denominator.",
+      "mathContext": "A root ramifies iff its valuation $m/n$ is non-integral, i.e. iff the reduced slope has denominator $>1$."
+    },
+    {
+      "id": "yn-minus-x-family",
+      "title": "The Yⁿ−x Family as Honest Support Lists",
+      "startLine": 1429,
+      "endLine": 1502,
+      "summary": "Realizes the Yⁿ−x family as honest support lists, computes their IsLowerEdge structure and the leading exponent 1/n from the single edge, generalizing the Y²−x worked example to all n.",
+      "mathContext": "$Y^n-x$ has the single lower edge from $(0,1)$ to $(n,0)$, slope $-1/n$, leading root exponent $1/n$."
+    },
+    {
+      "id": "yn-minus-xm-family",
+      "title": "The Yⁿ−xᵐ Family: the General Single Lower Edge",
+      "startLine": 1503,
+      "endLine": 1625,
+      "summary": "Extends to the general two-term family Yⁿ−xᵐ as support lists, verifying their single lower edge of slope −m/n and the corresponding root valuation m/n across all (n, m).",
+      "mathContext": "$Y^n-x^m$ has the single lower edge of slope $-m/n$; its root has valuation $m/n$."
+    },
+    {
+      "id": "ramification-criterion",
+      "title": "The Exact Ramification Criterion for Yⁿ−xᵐ: Unramified ⟺ n ∣ m",
+      "startLine": 1626,
+      "endLine": 1692,
+      "summary": "The final classification: for the binomial Yⁿ−xᵐ the root is unramified (integer valuation, living in K⸨x⸩) if and only if n ∣ m — the exact ramification criterion, closing the entry's combinatorial-analytic bridge with a clean divisibility condition.",
+      "mathContext": "$Y^n-x^m$ is unramified $\\iff n\\mid m$ (then $m/n\\in\\mathbb{Z}$); otherwise the root has genuine fractional valuation."
     }
   ],
   "mainTheorems": [
@@ -255,7 +431,7 @@
       "Mathlib.Data.List.Sort"
     ],
     "namespace": "PuiseuxTheoremOQ03",
-    "lineCount": 1626,
+    "lineCount": 1692,
     "axiomCount": 0,
     "theoremCount": 94,
     "definitionCount": 14,
