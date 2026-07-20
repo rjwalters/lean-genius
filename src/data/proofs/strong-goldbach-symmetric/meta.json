@@ -20,7 +20,7 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. The file is axiom-free (only the ordinary foundational axioms of Lean/Mathlib are used; `#print axioms` shows no `sorryAx`, no `Lean.ofReduceBool`). All examples use kernel `decide`, not `native_decide`. Note: this file does NOT prove the Strong Goldbach Conjecture, which remains open; it proves only that the conjecture is equivalent to its symmetric-prime-pair form.",
-    "lineCount": 997,
+    "lineCount": 1267,
     "theoremCount": 34,
     "definitionCount": 5,
     "originalContributions": [
@@ -61,51 +61,156 @@
     {
       "id": "sec-header",
       "title": "Module Header and Imports",
+      "summary": "Docstring explaining the Goldbach-comet / midpoint-symmetry viewpoint, an explicit statement that the conjecture itself is NOT proved (only the equivalence), Mathlib imports (Nat.Prime.Basic, Tactic), and the StrongGoldbach namespace.",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Docstring explaining the Goldbach-comet / midpoint-symmetry viewpoint, an explicit statement that the conjecture itself is NOT proved (only the equivalence), Mathlib imports (Nat.Prime.Basic, Tactic), and the StrongGoldbach namespace."
+      "endLine": 40
     },
     {
       "id": "sec-definitions",
       "title": "Core Definitions",
-      "startLine": 40,
-      "endLine": 58,
-      "summary": "Four predicates: IsSumOfTwoPrimes n; HasSymmetricPrimePair m (∃ k < m, Prime (m−k) ∧ Prime (m+k)); StrongGoldbachConjecture (∀ even n > 2, sum of two primes); SymmetricGoldbachConjecture (∀ m ≥ 2, has a symmetric prime pair)."
+      "summary": "Four predicates: IsSumOfTwoPrimes n; HasSymmetricPrimePair m (∃ k < m, Prime (m−k) ∧ Prime (m+k)); StrongGoldbachConjecture (∀ even n > 2, sum of two primes); SymmetricGoldbachConjecture (∀ m ≥ 2, has a symmetric prime pair).",
+      "startLine": 41,
+      "endLine": 60
     },
     {
       "id": "sec-per-n-equivalence",
       "title": "The Per-n Equivalence",
-      "startLine": 60,
-      "endLine": 92,
-      "summary": "sumTwoPrimes_iff_symmetric: IsSumOfTwoPrimes (2m) ↔ HasSymmetricPrimePair m for all m. Forward direction orders the two primes and reads off the midpoint offset; reverse direction reconstructs the partition p = m−k, q = m+k. ℕ-arithmetic discharged by omega."
+      "summary": "sumTwoPrimes_iff_symmetric: IsSumOfTwoPrimes (2m) ↔ HasSymmetricPrimePair m for all m. Forward direction orders the two primes and reads off the midpoint offset; reverse direction reconstructs the partition p = m−k, q = m+k. ℕ-arithmetic discharged by omega.",
+      "startLine": 61,
+      "endLine": 94
     },
     {
       "id": "sec-conjecture-equivalence",
       "title": "The Conjecture-Level Equivalence",
-      "startLine": 94,
-      "endLine": 110,
-      "summary": "strong_iff_symmetric: StrongGoldbachConjecture ↔ SymmetricGoldbachConjecture, transporting each direction through the per-n equivalence and converting between 'even n > 2' and 'm ≥ 2'."
+      "summary": "strong_iff_symmetric: StrongGoldbachConjecture ↔ SymmetricGoldbachConjecture, transporting each direction through the per-n equivalence and converting between 'even n > 2' and 'm ≥ 2'.",
+      "startLine": 95,
+      "endLine": 112
     },
     {
       "id": "sec-decidability-examples",
       "title": "Decidability and Verified Examples",
-      "startLine": 112,
-      "endLine": 138,
-      "summary": "decidableHasSymmetricPrimePair via a bounded existential over Finset.range, then `decide`-verified symmetric partitions (m = 5, 6, 9), the negative case ¬HasSymmetricPrimePair 1 (matching the exclusion n > 2), and a sanity check transporting the partition 10 = 3 + 7 through the equivalence."
+      "summary": "decidableHasSymmetricPrimePair via a bounded existential over Finset.range, then `decide`-verified symmetric partitions (m = 5, 6, 9), the negative case ¬HasSymmetricPrimePair 1 (matching the exclusion n > 2), and a sanity check transporting the partition 10 = 3 + 7 through the equivalence.",
+      "startLine": 113,
+      "endLine": 139
     },
     {
       "id": "sec-comet-count",
       "title": "The Goldbach Comet Counting Function",
-      "startLine": 139,
-      "endLine": 173,
-      "summary": "symmetricPairCount m := card of the offsets k < m in Finset.range with both m−k and m+k prime — the height of the Goldbach comet at 2m. hasSymmetricPrimePair_iff_count_pos turns the existential predicate into positivity of this count (via Finset.card_pos), and symmetricGoldbach_iff_count recasts the whole conjecture as: the comet count is positive for every m ≥ 2. Exact comet heights symmetricPairCount 5 = 2 and 6 = 1 are certified by kernel `decide`."
+      "summary": "symmetricPairCount m := card of the offsets k < m in Finset.range with both m−k and m+k prime — the height of the Goldbach comet at 2m. hasSymmetricPrimePair_iff_count_pos turns the existential predicate into positivity of this count (via Finset.card_pos), and symmetricGoldbach_iff_count recasts the whole conjecture as: the comet count is positive for every m ≥ 2. Exact comet heights symmetricPairCount 5 = 2 and 6 = 1 are certified by kernel `decide`.",
+      "startLine": 140,
+      "endLine": 174
     },
     {
       "id": "sec-parity-constraint",
       "title": "Structural Constraint: Both Summands Are Odd for 2m > 4",
-      "startLine": 174,
-      "endLine": 212,
-      "summary": "symmetric_pair_odd: for m > 2, the smaller prime m−k of a symmetric pair is odd — if it were 2 then m+k = 2(m−1) would be an even prime > 2, impossible (proved via Nat.Prime.even_iff and omega). symmetric_pair_both_odd extends this to both summands. This is the formal statement that the prime 2 never participates in a Goldbach partition of an even number greater than 4."
+      "summary": "symmetric_pair_odd: for m > 2, the smaller prime m−k of a symmetric pair is odd — if it were 2 then m+k = 2(m−1) would be an even prime > 2, impossible (proved via Nat.Prime.even_iff and omega). symmetric_pair_both_odd extends this to both summands. This is the formal statement that the prime 2 never participates in a Goldbach partition of an even number greater than 4.",
+      "startLine": 175,
+      "endLine": 212
+    },
+    {
+      "id": "sec-prime-midpoints",
+      "title": "Sufficient Condition: Prime Midpoints",
+      "summary": "hasSymmetricPrimePair_of_prime and symmetricPairCount_pos_of_prime: when the midpoint m is itself prime, the offset k = 0 gives the trivial symmetric pair (m, m), so the comet height is positive at every prime midpoint.",
+      "startLine": 213,
+      "endLine": 237
+    },
+    {
+      "id": "sec-diagonal-decomp",
+      "title": "Diagonal / Off-Diagonal Decomposition of the Comet Height",
+      "summary": "symmetricPairCount_eq_diagonal_add_offDiagonal splits the count into the diagonal term (the k = 0 pair, present iff m is prime) plus off-diagonal pairs; symmetricPairCount_eq_offDiagonal_of_not_prime specialises to composite midpoints where the diagonal is absent.",
+      "startLine": 238,
+      "endLine": 302
+    },
+    {
+      "id": "sec-upper-bound",
+      "title": "Upper Bound: Comet Height ≤ Primes in the Upper Arm",
+      "summary": "symmetricPairCount_le_primesInUpperArm: each symmetric pair injects into the primes m ≤ q < 2m (the upper arm), bounding the comet height by the number of primes there.",
+      "startLine": 303,
+      "endLine": 327
+    },
+    {
+      "id": "sec-exact-identity",
+      "title": "Exact Identity: Comet Height = Goldbach Partition Count of 2m",
+      "summary": "symmetricPairCount_eq_upperArm_partitions: the comet height equals the number of prime partitions of 2m recorded on the upper arm — an exact identity, not just a bound.",
+      "startLine": 328,
+      "endLine": 373
+    },
+    {
+      "id": "sec-dual-identity",
+      "title": "Dual Identity: Comet Height = Textbook Goldbach Partition Function g(2m)",
+      "summary": "symmetricPairCount_eq_lowerArm_partitions and upperArm_partitions_eq_lowerArm_partitions establish the symmetric lower-arm count and its equality with the upper-arm count, identifying the comet height with the standard Goldbach partition function g(2m).",
+      "startLine": 374,
+      "endLine": 440
+    },
+    {
+      "id": "sec-prime-side-ceiling",
+      "title": "Prime-Side Ceiling on the Lower Arm and the Two-Arm Minimum",
+      "summary": "symmetricPairCount_le_primesInLowerArm bounds the height by primes in the lower arm (0 < p ≤ m); symmetricPairCount_le_min_primesInArms takes the sharper minimum over the two arms.",
+      "startLine": 441,
+      "endLine": 480
+    },
+    {
+      "id": "sec-offset-ceiling",
+      "title": "Offset-Side Ceiling: the Comet is Bounded by Opposite-Parity Offsets",
+      "summary": "symmetric_pair_offset_parity fixes the parity an admissible offset must have; symmetricPairCount_le_oppositeParityOffsets bounds the height by the number of offsets of that parity below m.",
+      "startLine": 481,
+      "endLine": 523
+    },
+    {
+      "id": "sec-half-offset-ceiling",
+      "title": "Closing the Offset Ceiling: an Explicit ⌈m/2⌉ Bound",
+      "summary": "card_filter_mod2_range and oppositeParityOffsets_card count the admissible-parity offsets exactly, yielding symmetricPairCount_le_half: the comet height is at most ⌈m/2⌉.",
+      "startLine": 524,
+      "endLine": 581
+    },
+    {
+      "id": "sec-divisibility-sieve",
+      "title": "Divisibility Sieve: Every Prime Factor of m Thins the Offsets",
+      "summary": "not_symmetric_pair_of_prime_dvd shows an offset sharing a prime factor with m cannot give a symmetric prime pair; symmetricPairCount_le_notDvd bounds the height by offsets coprime to that factor.",
+      "startLine": 582,
+      "endLine": 637
+    },
+    {
+      "id": "sec-explicit-sieve",
+      "title": "Closing the Sieve Bound: an Explicit m − m/p Ceiling",
+      "summary": "card_range_filter_dvd counts offsets divisible by p, giving symmetricPairCount_le_sub_div: the comet height is at most m − m/p for any prime p ∣ m.",
+      "startLine": 638,
+      "endLine": 700
+    },
+    {
+      "id": "sec-totient-ceiling",
+      "title": "The Euler-Totient Ceiling: symmetricPairCount m ≤ φ(m)",
+      "summary": "symmetric_pair_offset_coprime shows admissible offsets are coprime to m; symmetricPairCount_le_totient_succ / _le_totient_of_not_prime give the ceiling by Euler's totient φ(m), with totient_le_sub_div relating φ(m) to the sieve bound.",
+      "startLine": 701,
+      "endLine": 822
+    },
+    {
+      "id": "sec-half-totient-odd",
+      "title": "Sharper Ceiling at Odd Midpoints: Half the Totient",
+      "summary": "card_even_totatives_eq_card_odd_totatives and card_even_totatives_eq_totient_div_two split the totatives of an odd m evenly by parity, giving symmetricPairCount_le_half_totient_of_odd_not_prime: at odd composite midpoints the height is at most φ(m)/2.",
+      "startLine": 823,
+      "endLine": 929
+    },
+    {
+      "id": "sec-unified-half-totient",
+      "title": "Unified Half-Totient Ceiling at Every Odd Midpoint",
+      "summary": "symmetricPairCount_le_half_totient_succ_of_odd and half_totient_succ_le_half_of_odd unify the half-totient ceiling across all odd midpoints (prime and composite alike).",
+      "startLine": 930,
+      "endLine": 996
+    },
+    {
+      "id": "sec-mod3-hexagonal",
+      "title": "Mod-3 Offset Constraint and the Hexagonal Fine Structure of the Comet",
+      "summary": "symmetric_pair_offset_mod3 and symmetric_pair_offset_dvd_six constrain admissible offsets modulo 6; symmetricPairCount_le_card_dvd_six_succ, card_range_filter_dvd_six and symmetricPairCount_le_div_six turn this into the ~m/6 hexagonal-banding ceiling underlying the comet's visible fine structure.",
+      "startLine": 997,
+      "endLine": 1153
+    },
+    {
+      "id": "sec-period30-sieve",
+      "title": "Period-30 Sieve: Adding the Prime 5 to the Hexagonal Banding",
+      "summary": "symmetric_pair_summand_not_dvd_of_lt and symmetricPairCount_le_card_dvd_six_notDvd_five_succ extend the mod-6 sieve by excluding multiples of 5, sharpening the ceiling to the period-30 (2·3·5) banding of the comet.",
+      "startLine": 1154,
+      "endLine": 1267
     }
   ],
   "conclusion": {
@@ -119,7 +224,7 @@
   },
   "leanFile": {
     "namespace": "StrongGoldbach",
-    "lineCount": 1154,
+    "lineCount": 1267,
     "axiomCount": 0,
     "theoremCount": 39,
     "definitionCount": 5,
