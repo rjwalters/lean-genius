@@ -47,7 +47,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 317,
+    "lineCount": 296,
     "prerequisites": [
       "Descartes' Rule of Signs (upper bound from Mathlib)",
       "Complex conjugate root theorem",
@@ -81,56 +81,56 @@
     {
       "id": "parity-arithmetic",
       "title": "Parity Arithmetic Framework",
-      "startLine": 50,
-      "endLine": 80,
+      "startLine": 46,
+      "endLine": 68,
       "summary": "Lemmas about even/odd arithmetic: even + even, parity additivity, same parity from even difference.",
       "mathContext": "$(a + b) \\text{ even} \\iff a,b \\text{ same parity}$"
     },
     {
       "id": "root-decomposition",
       "title": "Root Count Decomposition",
-      "startLine": 82,
-      "endLine": 104,
+      "startLine": 70,
+      "endLine": 90,
       "summary": "Decomposes total root count into positive + negative + non-real, proving parity preservation from conjugate pairing.",
       "mathContext": "$\\deg p = |\\text{pos}| + |\\text{neg}| + |\\text{nonreal}|$, $|\\text{nonreal}|$ even"
     },
     {
       "id": "gap-analysis",
       "title": "Why Conjugate Pairing is Insufficient",
-      "startLine": 106,
-      "endLine": 148,
+      "startLine": 92,
+      "endLine": 133,
       "summary": "Identifies the gap: conjugate pairing gives degree ≡ real_roots (mod 2), but parity needs signVariations ≡ positive_roots (mod 2). The parity_chain theorem shows what additional ingredients close the gap.",
       "mathContext": "Need: $\\text{sv}(p) \\equiv |\\text{pos roots}| \\pmod{2}$"
     },
     {
       "id": "key-axiom",
       "title": "Sign Variation Under Root Extraction",
-      "startLine": 150,
-      "endLine": 175,
+      "startLine": 135,
+      "endLine": 153,
       "summary": "The axiomatized hard lemma: when p = (x-r)q with r > 0, sign variations of p and q have different parity. This is the irreducible difficulty.",
       "mathContext": "$p = (x-r)q,\\, r > 0 \\Rightarrow \\text{sv}(p) + \\text{sv}(q) \\text{ odd}$"
     },
     {
       "id": "small-cases",
       "title": "Linear and Quadratic Cases",
-      "startLine": 177,
-      "endLine": 223,
+      "startLine": 155,
+      "endLine": 200,
       "summary": "Complete parity proofs for degree 1 and 2 polynomials by case analysis.",
       "mathContext": "Parity holds trivially for $\\deg \\le 2$"
     },
     {
       "id": "parity-bookkeeping",
       "title": "General Parity Bookkeeping",
-      "startLine": 225,
-      "endLine": 269,
+      "startLine": 204,
+      "endLine": 248,
       "summary": "Degree-uniform arithmetic core: parity_witness (pos ≤ sv ∧ Even(sv+pos) ⇒ ∃ k, pos+2k=sv) plus the cubic/quartic corollaries and the composite descartes_parity_witness that bundles parity_chain with parity_witness.",
       "mathContext": "$\\text{pos} \\le \\text{sv} \\land 2 \\mid (\\text{sv}+\\text{pos}) \\;\\Rightarrow\\; \\exists k,\\ \\text{pos} + 2k = \\text{sv}$"
     },
     {
       "id": "assessment",
       "title": "Summary Assessment",
-      "startLine": 271,
-      "endLine": 317,
+      "startLine": 250,
+      "endLine": 296,
       "summary": "Final assessment: minimal infrastructure = conjugate pairing + sign variation parity under root extraction. Neither alone suffices.",
       "mathContext": "Minimal: conjugate pairs + sv parity under root factoring"
     }
@@ -170,7 +170,7 @@
     ],
     "opens": [],
     "namespace": "DescartesRuleOfSignsOQ01OQ02",
-    "lineCount": 317,
+    "lineCount": 296,
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 0,
