@@ -25,12 +25,13 @@ References:
 - https://erdosproblems.com/832
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Topology.Instances.Real.Lemmas
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 namespace Erdos832
 
@@ -42,16 +43,16 @@ structure Hypergraph (V : Type*) where
   edges : Set (Finset V)
 
 /-- **r-Uniformity:** All edges have exactly r vertices. -/
-def IsUniform (H : Hypergraph V) (r : ℕ) : Prop :=
+def IsUniform {V : Type*} (H : Hypergraph V) (r : ℕ) : Prop :=
   ∀ e ∈ H.edges, e.card = r
 
 /-- **Proper k-colouring of a hypergraph:**
 An assignment of colours to vertices such that no edge is monochromatic. -/
-def IsProperColouring {V : Type*} (H : Hypergraph V) (c : V → Fin k) : Prop :=
+def IsProperColouring {V : Type*} {k : ℕ} (H : Hypergraph V) (c : V → Fin k) : Prop :=
   ∀ e ∈ H.edges, ∃ u v, u ∈ e ∧ v ∈ e ∧ c u ≠ c v
 
 /-- **Chromatic number at least k:** No proper (k-1)-colouring exists. -/
-def hasChromaticNumberAtLeast (H : Hypergraph V) (k : ℕ) : Prop :=
+def hasChromaticNumberAtLeast {V : Type*} (H : Hypergraph V) (k : ℕ) : Prop :=
   ¬∃ c : V → Fin (k - 1), IsProperColouring H c
 
 /- ## Part II: The Classical Graph Case (r = 2) -/
@@ -66,7 +67,7 @@ For r ≥ 3 and k sufficiently large, every r-uniform hypergraph with
 chromatic number k has at least C((r-1)(k-1)+1, r) edges. -/
 def erdosConjecture (r k : ℕ) : Prop :=
   r ≥ 3 →
-    ∀ H : Hypergraph V, IsUniform H r → hasChromaticNumberAtLeast H k →
+    ∀ (V : Type) (H : Hypergraph V), IsUniform H r → hasChromaticNumberAtLeast H k →
       ∃ n : ℕ, n ≥ Nat.choose ((r - 1) * (k - 1) + 1) r
 
 /- ## Part IV: Counterexamples -/
@@ -82,7 +83,7 @@ axiom alon_disproof :
     ∃ C : ℕ, C > 0 ∧
       ∀ r : ℕ, r ≥ C →
         ∀ k : ℕ, k ≥ C * r →
-          ∃ H : Hypergraph V,
+          ∃ (V : Type) (H : Hypergraph V),
             IsUniform H r ∧
             hasChromaticNumberAtLeast H k
 
@@ -111,10 +112,10 @@ def r3_open_question : Prop :=
 /- ## Part VII: Concrete Examples -/
 
 /-- The Fano plane bound: C(5,3) = 10, so 7 edges < 10. -/
-example : 7 < Nat.choose 5 3 := by norm_num
+example : 7 < Nat.choose 5 3 := by decide
 
-/-- Alon's factor for r = 4: (7/8)^4 ≈ 0.586. -/
-example : (7/8 : ℝ)^4 < 0.6 := by norm_num
+/-- Alon's factor for r = 4: (7/8)^4 ≈ 0.586 < 3/5. -/
+example : (7 / 8 : ℝ) ^ 4 < 3 / 5 := by norm_num
 
 /- ## Part VIII: Summary -/
 
@@ -132,7 +133,7 @@ theorem erdos_832 :
     (∃ C : ℕ, C > 0 ∧
       ∀ r : ℕ, r ≥ C →
         ∀ k : ℕ, k ≥ C * r →
-          ∃ H : Hypergraph V,
+          ∃ (V : Type) (H : Hypergraph V),
             IsUniform H r ∧ hasChromaticNumberAtLeast H k) ∧
     (∀ r : ℕ, r ≥ 3 →
       ∃ c_r : ℝ, c_r > 0 ∧
