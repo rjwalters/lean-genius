@@ -2,7 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 /-
 # Erdős Problem #1153 - Lebesgue Constants of Lagrange Interpolation
@@ -94,7 +94,7 @@ theorem lagrangeBasis_self {n : ℕ} (nodes : Fin n → ℝ) (k : Fin n)
   apply Finset.prod_eq_one
   intro i hi
   rw [Finset.mem_erase] at hi
-  have hne : nodes k ≠ nodes i := fun h => hi.1 (hdist h)
+  have hne : nodes k ≠ nodes i := fun h => hi.1 (hdist h.symm)
   exact div_self (sub_ne_zero.mpr hne)
 
 /-
@@ -115,7 +115,8 @@ theorem lebesgueFunction_at_node {n : ℕ} (nodes : Fin n → ℝ)
   unfold lebesgueFunction
   calc ∑ i : Fin n, |lagrangeBasis n nodes i (nodes k)|
       ≥ |lagrangeBasis n nodes k (nodes k)| :=
-        Finset.single_le_sum (fun i _ => abs_nonneg _) (Finset.mem_univ k)
+        Finset.single_le_sum (f := fun i => |lagrangeBasis n nodes i (nodes k)|)
+          (fun i _ => abs_nonneg _) (Finset.mem_univ k)
     _ = |(1 : ℝ)| := by rw [lagrangeBasis_self nodes k hdist]
     _ = 1 := abs_one
 
@@ -129,8 +130,8 @@ theorem lebesgueFunction_at_node_eq {n : ℕ} (nodes : Fin n → ℝ)
       if i = k then 1 else 0 := by
     intro i
     by_cases h : i = k
-    · subst h; rw [lagrangeBasis_self nodes k hdist, abs_one]
-    · rw [lagrangeBasis_other nodes i k (Ne.symm h), abs_zero]
+    · rw [if_pos h, h, lagrangeBasis_self nodes k hdist, abs_one]
+    · rw [if_neg h, lagrangeBasis_other nodes i k (Ne.symm h), abs_zero]
   simp_rw [this]
   simp
 
