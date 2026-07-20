@@ -77,7 +77,8 @@
       "**Divisibility is one re-export, the existence corollary is the work**: Mathlib supplies only the count-mod-p statements and uses them solely for Erdős–Ginzburg–Ziv; the nontrivial-zero existence — the form actually used in applications — is the genuine contribution here.",
       "**Counting forces a second solution**: 'the origin is a solution' gives #solutions ≥ 1, and 'p divides #solutions' with p ≥ 2 prime upgrades this to #solutions ≥ p ≥ 2, so a solution distinct from the origin must exist — a pure cardinality argument, no algebraic geometry.",
       "**Why primality of p is essential**: the jump from ≥ 1 to ≥ 2 needs p ≥ 2; over a finite field the characteristic is automatically prime, recorded here as the hypothesis Fact p.Prime.",
-      "**Vanishing at the origin = zero constant term**: the hypothesis eval 0 (f i) = 0 says exactly that the origin is a common zero (each f i has no constant term), the standard setup of the Chevalley corollary."
+      "**Vanishing at the origin = zero constant term**: the hypothesis eval 0 (f i) = 0 says exactly that the origin is a common zero (each f i has no constant term), the standard setup of the Chevalley corollary.",
+      "**The corollary is a reusable counting template, not a Chevalley–Warning-specific trick**: both proved forms share one five-step skeleton — card_pos_iff from the known point, Nat.le_of_dvd against p ∣ #S, hp.one_lt, then Fintype.exists_ne_of_one_lt_card. Nothing in it mentions polynomials; it is the generic lemma 'a finite set S with p ∣ #S (p ≥ 2) and a distinguished element has a second element', instantiated at the solution set. The same skeleton upgrades any mod-p counting theorem with one visible solution into an existence-of-another result — the very mechanism behind the standard Erdős–Ginzburg–Ziv deduction, and a finite-set cousin of Cauchy's 'p ∣ |G| ⟹ an element of order p'."
     ],
     "prerequisites": [
       "Finite fields and their characteristic (CharP, the characteristic of a finite field is prime)",
@@ -96,12 +97,20 @@
       "mathContext": "The Chevalley–Warning theorem and the nontrivial-zero corollary over a finite field."
     },
     {
-      "id": "divisibility",
-      "title": "Divisibility: the Mathlib Headlines Restated",
+      "id": "divisibility-general",
+      "title": "Divisibility: general index-family forms",
       "startLine": 58,
+      "endLine": 79,
+      "summary": "chevalley_warning_dvd and chevalley_warning_dvd_univ restate the two general Chevalley–Warning divisibility statements for a system indexed by an arbitrary family: the Finset-indexed form (re-export of char_dvd_card_solutions_of_sum_lt) and the full-Fintype-indexed form (char_dvd_card_solutions_of_fintype_sum_lt). Here the degree condition is on the sum Σ (f i).totalDegree over the whole index set.",
+      "mathContext": "If Σᵢ deg(fᵢ) < #variables then p ∣ #{x : σ → K // ∀ i, eval x (fᵢ) = 0}."
+    },
+    {
+      "id": "divisibility-arity",
+      "title": "Divisibility: single- and two-polynomial forms",
+      "startLine": 81,
       "endLine": 99,
-      "summary": "chevalley_warning_dvd, _univ, _single, _pair restate the four Chevalley–Warning divisibility statements (Finset-indexed, full-Fintype-indexed, single-polynomial, two-polynomial). All are direct re-exports of the Mathlib lemmas.",
-      "mathContext": "The number of common zeros of a low-degree polynomial system over a finite field is divisible by the characteristic p."
+      "summary": "chevalley_warning_dvd_single and chevalley_warning_dvd_pair restate the low-arity special cases most often cited in applications: one polynomial with totalDegree < #variables (re-export of char_dvd_card_solutions), and a pair whose degrees sum below #variables (char_dvd_card_solutions_of_add_lt). These are the shapes the nontrivial-solution corollary and the Erdős–Ginzburg–Ziv deduction actually use.",
+      "mathContext": "deg(f) < #variables ⟹ p ∣ #{x // eval x f = 0}; and deg(f₁)+deg(f₂) < #variables ⟹ p ∣ #{x // eval x f₁ = 0 ∧ eval x f₂ = 0}."
     },
     {
       "id": "nontrivial-corollary",
