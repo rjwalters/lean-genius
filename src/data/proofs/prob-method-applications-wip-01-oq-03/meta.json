@@ -5,28 +5,52 @@
   "description": "A genuine, non-vacuous instantiation of the first-moment / union-bound engine: if C(n,k)·(2^k−1)^{n−k} < 2^{k(n−k)} (equivalently the classical C(n,k)(1−2^{−k})^{n−k} < 1) then there is a tournament on n vertices in which no k-set dominates — a tournament whose domination number exceeds k. The crux is a pure finite count of the orientations in which a fixed k-set dominates.",
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring framing the probabilistic-method application: for suitable $n,k$ there is a tournament on $n$ vertices in which no $k$-set dominates, obtained by a first-moment count. Imports Mathlib and the shared `ProbMethod.Core` first-moment engine, and opens the namespace `ProbMethod.Tournament`.",
+      "mathContext": "Goal: exhibit $T$ with $\\forall K,\\ |K|=k\\Rightarrow\\neg\\,K\\text{ dominates }T$, whenever $\\binom{n}{k}(2^k-1)^{n-k}<2^{k(n-k)}$."
+    },
+    {
       "id": "tournament-model",
       "title": "Tournaments as Edge Orientations and the Domination Predicate",
       "startLine": 54,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "A tournament on a finite linearly ordered vertex set V is an orientation T : Edge V → Bool of the C(|V|,2) unordered pairs Edge V = {p : V × V // p.1 < p.2}; beats T u v reads off which endpoint of an edge wins. A vertex set K Dominates T when every vertex outside K is beaten by some member of K. The sample space is Edge V → Bool of size 2^{C(|V|,2)}.",
       "mathContext": "$\\Omega = \\mathrm{Edge}\\,V \\to \\mathrm{Bool},\\quad |\\Omega| = 2^{\\binom{|V|}{2}}$"
     },
     {
-      "id": "counting-lemma",
-      "title": "Counting the Tournaments in Which a Fixed k-Set Dominates",
+      "id": "cross-edge-bijection",
+      "title": "The Cross-Edge Bijection and Exact Count",
       "startLine": 83,
+      "endLine": 196,
+      "summary": "The combinatorial core. `card_block` counts the $2^k-1$ winning boolean configurations at one outside vertex (all but the all-lose configuration). `crossEdge` is exhibited as a bijection from $K\\times K^{c}$ onto the *cross* edges (exactly one endpoint in $K$): `crossEdge_injective` and `crossEdge_surjective` give the exact count `card_cross_eq` — precisely $k(n-k)$ cross edges — with `card_cross_ge` an immediate corollary.",
+      "mathContext": "$\\#\\{\\text{cross edges of }K\\}=k(n-k)$ via the bijection $K\\times K^{c}\\xrightarrow{\\sim}\\{\\text{cross edges}\\}$."
+    },
+    {
+      "id": "dominating-count",
+      "title": "Counting the Tournaments in Which a Fixed k-Set Dominates",
+      "startLine": 197,
       "endLine": 274,
-      "summary": "card_block counts the 2^k − 1 winning boolean configurations at one outside vertex (all but the all-lose configuration). crossEdge is a bijection from K × Kᶜ onto the cross edges: crossEdge_injective and the new crossEdge_surjective give the exact count card_cross_eq (there are precisely k(n−k) cross edges), with card_cross_ge (≥ k(n−k)) now an immediate corollary. card_dominates_le then bounds |{T : K dominates T}| ≤ (2^k − 1)^{n−k} · 2^{|Edge V| − k(n−k)} via an injection of the dominating tournaments into (outside vertices → winning blocks) × (non-cross edges → Bool).",
+      "summary": "`card_dominates_le` bounds the number of tournaments dominated by a fixed $k$-set: $|\\{T : K\\text{ dominates }T\\}|\\le(2^k-1)^{n-k}\\cdot 2^{\\binom{n}{2}-k(n-k)}$. The proof injects the dominating tournaments into (outside vertices → winning blocks) $\\times$ (non-cross edges → Bool), using the $2^k-1$ block count per outside vertex and the exact $k(n-k)$ cross-edge count from the previous part.",
       "mathContext": "$|\\{T : K \\text{ dominates } T\\}| \\le (2^k-1)^{\\,n-k}\\cdot 2^{\\,\\binom{n}{2}-k(n-k)}$"
     },
     {
       "id": "first-moment-instantiation",
-      "title": "First-Moment Instantiation and the Cyclic-Triangle Witness",
+      "title": "First-Moment Instantiation",
       "startLine": 275,
-      "endLine": 338,
-      "summary": "exists_no_dominating_kset feeds card_dominates_le as the uniform per-event bound B and the classical inequality C(n,k)·(2^k−1)^{n−k} < 2^{k(n−k)} into ProbMethod.Core.exists_good_of_card_bound over the sample space Edge V → Bool, producing a tournament in which no k-set dominates. exists_no_dominating_vertex_Fin3 is the smallest instance (k=1, n=3, 3·1 < 4): the cyclic triangle, a 3-tournament with no dominating vertex.",
+      "endLine": 325,
+      "summary": "`exists_no_dominating_kset` feeds `card_dominates_le` as the uniform per-event bound and the classical inequality $\\binom{n}{k}(2^k-1)^{n-k}<2^{k(n-k)}$ into `ProbMethod.Core.exists_good_of_card_bound` over the sample space Edge V → Bool, producing a tournament in which no $k$-set dominates. This is the first-moment (union-bound) step: the total measure of the bad events is below $1$.",
       "mathContext": "$\\binom{n}{k}(2^k-1)^{n-k} < 2^{k(n-k)} \\implies \\exists T,\\ \\forall K,\\ |K|=k \\to \\neg\\,K \\text{ dominates } T$"
+    },
+    {
+      "id": "cyclic-triangle-witness",
+      "title": "Concrete Witness: the Cyclic Triangle",
+      "startLine": 326,
+      "endLine": 338,
+      "summary": "`exists_no_dominating_vertex_Fin3` is the smallest instance ($k=1$, $n=3$, with $3\\cdot 1<4$): the cyclic triangle $1\\to 2\\to 3\\to 1$, a 3-tournament with no dominating vertex, verifying the abstract criterion on an explicit example.",
+      "mathContext": "$k=1,\\ n=3$: $\\binom{3}{1}(2^1-1)^{2}=3<4=2^{1\\cdot 2}$, witnessed by the cyclic triangle."
     }
   ],
   "meta": {
