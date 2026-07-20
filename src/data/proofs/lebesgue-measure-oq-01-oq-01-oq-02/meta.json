@@ -25,7 +25,7 @@
         "dateAdded": "2026-05-03",
         "mathlib_version": "4.31.0",
         "axiomCount": 0,
-        "lineCount": 240,
+        "lineCount": 230,
         "assumptions": "0 axioms, 0 sorries. Fully verified.",
         "theoremCount": 11,
         "originalContributions": [
@@ -48,7 +48,7 @@
             "Filter"
         ],
         "namespace": "LebesgueMeasureOQ01OQ01OQ02",
-        "lineCount": 240,
+        "lineCount": 230,
         "axiomCount": 0,
         "theoremCount": 11,
         "definitionCount": 1,
@@ -127,7 +127,7 @@
             "id": "iff",
             "title": "Part V: Characterization",
             "startLine": 224,
-            "endLine": 239,
+            "endLine": 230,
             "summary": "The biconditional thomae_continuous_iff: ContinuousAt thomae x ↔ Irrational x. Combines discontinuity (→ direction by contraposition) and continuity (← direction) into the complete characterization.",
             "mathContext": "$$\\text{ContinuousAt}\\, f\\, x \\iff x \\notin \\mathbb{Q}$$\nThe irrationals form a dense $G_\\delta$ set in $\\mathbb{R}$; Thomae's function witnesses that a function can be continuous on a dense set yet nowhere coincide with a continuous function."
         }
