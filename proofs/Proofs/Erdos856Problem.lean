@@ -38,6 +38,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
 set_option autoImplicit true
@@ -105,7 +106,7 @@ noncomputable def harmonicSum (A : Finset ℕ) : ℝ :=
 The maximum harmonic sum over all k-LCM-free subsets of {1,...,N}.
 -/
 noncomputable def f_k (k N : ℕ) : ℝ :=
-  sSup { harmonicSum A | A : Finset ℕ ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k }
+  sSup { x : ℝ | ∃ A : Finset ℕ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k ∧ harmonicSum A = x }
 
 /-
 ## Part IV: Erdős's Upper Bound
@@ -148,7 +149,7 @@ There exist constants 0 < b_k ≤ c_k ≤ 1 such that
 A k-sunflower is a collection of k sets where any two have the same
 intersection (the "core").
 -/
-def IsSunflower {α : Type*} (sets : Finset (Finset α)) (k : ℕ) : Prop :=
+def IsSunflower {α : Type*} [DecidableEq α] (sets : Finset (Finset α)) (k : ℕ) : Prop :=
   sets.card = k ∧
   ∃ core : Finset α, ∀ S ∈ sets, ∀ T ∈ sets, S ≠ T → S ∩ T = core
 
@@ -179,7 +180,7 @@ c_k < 1 (non-trivial upper bound) iff sunflower conjecture holds for k.
 Instead of maximizing Σ 1/n, we maximize |A|.
 -/
 noncomputable def g_k (k N : ℕ) : ℕ :=
-  sSup { A.card | A : Finset ℕ ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k }
+  sSup { x : ℕ | ∃ A : Finset ℕ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k ∧ A.card = x }
 
 /- 
 **Erdős's Construction (1970):**
