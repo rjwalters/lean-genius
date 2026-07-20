@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/852",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 247,
+    "lineCount": 240,
     "assumptions": "3 axioms: brun_sieve_divergence (Brun's sieve result), erdos852_lower_bound (OPEN conjecture), erdos852_upper_bound (OPEN conjecture). The function h(x) = maxDistinctRun and its properties (witness, optimality, bound) are now fully defined and proved.",
     "mathlib_version": "4.31.0",
     "dateUpdated": "2026-03-28",
@@ -106,7 +106,7 @@
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 211,
-      "endLine": 247,
+      "endLine": 240,
       "summary": "PROVES `maxDistinctRun_le_x` ($h(x)\\leq x$, from the definition) and `distinct_run_bounded_by_max_gap` (a distinct run of length $k$ with all gaps $\\leq M$ has $k\\leq M$, by pigeonhole via `Finset.card_image_of_injOn`).",
       "mathContext": "$h(x)\\leq x$; a distinct run with gaps $\\leq M$ has length $\\leq M$ (pigeonhole)."
     }
@@ -137,7 +137,7 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 247,
+    "lineCount": 240,
     "axiomCount": 3,
     "theoremCount": 25,
     "definitionCount": 5,
