@@ -83,7 +83,7 @@
     },
     "type": "concept",
     "title": "ArchimedeanData: V, E, F Counts with Euler Formula Verification",
-    "content": "`ArchimedeanData` stores the name, vertex type, and (V, E, F) with a field `euler : vertices - edges + faces = 2` proved by `omega`. The 13 specific instances range from the truncated tetrahedron (12V, 18E, 8F) to the truncated icosidodecahedron (120V, 180E, 62F). Notable: the snub cube (24V, 60E, 38F) and snub dodecahedron (60V, 150E, 92F) have many more edges than faces \u2014 due to the four-triangle vertex type requiring many adjacencies. The `omega` tactic trivially verifies V-E+F=2 from the numerics.",
+    "content": "`ArchimedeanData` stores the name, vertex type, and (V, E, F) with a field `euler : vertices + faces = edges + 2` proved by `omega` — the subtraction-free form of Euler's formula V−E+F=2 (stated this way because E>V for every Archimedean solid, so a naive `vertices - edges + faces = 2` would silently truncate in ℕ and become false). The 13 specific instances range from the truncated tetrahedron (12V, 18E, 8F) to the truncated icosidodecahedron (120V, 180E, 62F). Notable: the snub cube (24V, 60E, 38F) and snub dodecahedron (60V, 150E, 92F) have many more edges than faces \u2014 due to the four-triangle vertex type requiring many adjacencies. The `omega` tactic trivially verifies V-E+F=2 from the numerics.",
     "significance": "supporting",
     "relatedConcepts": [
       "ArchimedeanData structure",
