@@ -48,17 +48,19 @@
     "originalContributions": [
       "consecutiveSums definition: all consecutive subsequence sums",
       "isConsecutiveSumFree predicate: no consecutive sum lies in the set",
-      "upperHalf construction: (N/2, N] achieves density 1/2",
-      "adenwalla_upper_bound: density <= 2/3 + o(1)",
-      "freud_construction: density >= 19/36 is achievable",
-      "coppersmith_phillips_lower axiom: density >= 13/24",
-      "coppersmith_phillips_upper: density <= 2/3 - 1/512",
-      "nineteen_thirty_sixth_gt_half theorem: 19/36 > 1/2 (proves conjecture false)",
-      "erdos_867 theorem: main result with best known bounds",
+      "maxDensity definition: sup of |A|/N over consecutive sum-free sets",
+      "upperHalf construction (upperHalf) with upperHalf_card theorem: (N/2, N] has card N - N/2, achieving density ~1/2",
+      "coppersmith_phillips_lower axiom: a construction of density >= 13/24 exists (Coppersmith-Phillips 1996 lower bound)",
+      "nineteen_thirty_sixth_gt_half theorem: 19/36 > 1/2 (numeric fact underlying Freud's disproof)",
+      "best_bounds_fractions theorem: 13/24 < 2/3 - 1/512 (the known lower and upper bound values are consistent)",
+      "isInfiniteConsecutiveSumFree definition: infinite (Problem 839) analog",
+      "erdos_867 theorem: numeric bookkeeping of the literature bounds (exists lb=13/24, ub=2/3-1/512 with 1/2 < lb < ub)",
+      "erdos_867_answer theorem: density > 1/2 is achievable (the disproof), reduced to the coppersmith_phillips_lower axiom",
+      "The Adenwalla upper bound, Freud's construction, and the Coppersmith-Phillips upper bound appear only as prose/comment documentation, not as formalized declarations",
       "Connection to Problem 839 (infinite version)"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom declaration: coppersmith_phillips_lower (Coppersmith-Phillips 1996: maximum sum-free density >= 13/24). Former axioms upperHalf_density, upperHalf_sumFree, adenwalla_dyadic_bound, adenwalla_upper_bound, freud_construction, coppersmith_phillips_upper, problem_839_connection, erdos_867_conjecture_false now proved as theorems or definitions.",
+    "assumptions": "1 axiom declaration: coppersmith_phillips_lower (Coppersmith-Phillips 1996 lower bound: for N >= 24 there is a consecutive sum-free A with A.card * 24 >= 13*N - 24, i.e. density >= 13/24). The disproof of Erdos's conjecture (max density > 1/2, via erdos_867_answer) rests on this single axiom. The matching upper bound (2/3 - 1/512) is stated only numerically (best_bounds_fractions, erdos_867) and is NOT formalized as a bound on maxDensity. The Adenwalla dyadic bound and Freud's construction are documented in prose comments only. One illustrative example (line 226) uses native_decide (introducing Lean.ofReduceBool); it is not part of the main theorem chain.",
     "lineCount": 288,
     "theoremCount": 5,
     "definitionCount": 5
@@ -67,7 +69,7 @@
     "historicalContext": "Erdős posed Problem #867 in 1992 [Er92c, p.43] as a finitary companion to Problem #839, asking whether a set $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ with no consecutive subsequence sum $a_i + a_{i+1} + \\cdots + a_j$ lying in $A$ must satisfy $|A| \\leq N/2 + O(1)$. The upper half construction $A = (N/2, N]$ achieves density $1/2$ and is sum-free since any pair sum exceeds $N$, so the conjecture would be tight if true. Adenwalla gave the first non-trivial upper bound $|A| \\leq (2/3 + o(1))N$ using a dyadic interval argument: in each interval $[x, 2x]$, consecutive pair sums land in $(2x, 4x]$ and are forbidden, limiting density to $2/3$. Freud (1993) disproved the conjecture by explicitly constructing consecutive sum-free sets with density $19/36 \\approx 0.5278 > 1/2$, published in the James Cook Mathematical Notes. Coppersmith and Phillips (1996) in SIAM J. Discrete Math. sharpened both sides: their improved construction achieved density $13/24 \\approx 0.5417$ and their refined analysis of the dyadic argument lowered the upper bound to $2/3 - 1/512 \\approx 0.6647$. The exact maximum density remains unknown, and the gap between $13/24$ and $2/3 - 1/512$ is one of the open problems in additive combinatorics related to the Erdős legacy.",
     "problemStatement": "Let $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ be a set with no solutions to $a_i + a_{i+1} + \\cdots + a_j \\in A$ (where $j > i$, so only genuine sums of two or more consecutive elements are forbidden). Is it true that $|A| \\leq \\frac{N}{2} + O(1)$? The answer is **NO**: the maximum density satisfies $\\frac{13}{24} \\leq \\sup \\frac{|A|}{N} \\leq \\frac{2}{3} - \\frac{1}{512}$.",
     "text": "Is it true that a set A with no consecutive subsequence sums in A has size at most N/2 + O(1)? NO - disproved by Freud (1993) and Coppersmith-Phillips (1996).",
-    "proofStrategy": "The formalization defines `consecutiveSums` via list operations and `isConsecutiveSumFree` as the property that no sum of $\\geq 2$ consecutive elements lies in $A$. The `upperHalf` construction $A = (N/2, N]$ is defined using `Finset.Ioc` and its cardinality $N - \\lfloor N/2 \\rfloor$ is proved. Adenwalla's dyadic bound, Freud's construction, and Coppersmith-Phillips bounds are axiomatized. The key proved results are `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q}) / 36 > 1/2` via `norm_num`, `best_bounds_fractions : 13/24 < 2/3 - 1/512`, and the main `erdos_867` theorem packaging both bounds. Three concrete examples verify the definitions computationally.",
+    "proofStrategy": "The formalization defines `consecutiveSums` via list operations and `isConsecutiveSumFree` as the property that no sum of $\\geq 2$ consecutive elements lies in $A$. The `upperHalf` construction $A = (N/2, N]$ is defined using `Finset.Ioc` and its cardinality $N - \\lfloor N/2 \\rfloor$ is proved. A single axiom `coppersmith_phillips_lower` asserts the Coppersmith-Phillips 1996 lower-bound construction (density $\\geq 13/24$); Adenwalla's dyadic bound, Freud's construction, and the Coppersmith-Phillips upper bound are described in prose comments only, not axiomatized. The key proved results are `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q}) / 36 > 1/2` via `norm_num`, `best_bounds_fractions : 13/24 < 2/3 - 1/512`, `erdos_867` packaging the two bound values numerically, and `erdos_867_answer` deriving that density $> 1/2$ is achievable from the single axiom. Three concrete examples verify the definitions computationally.",
     "keyInsights": [
       "**Upper half trick**: Taking $A = (N/2, N] \\cap \\mathbb{N}$ gives $|A| \\approx N/2$ and is consecutive sum-free since any $a + b > N$ for $a, b > N/2$. This shows density $1/2$ is achievable and Erdős's bound would be essentially tight if true.",
       "**Dyadic decomposition**: Adenwalla partitions $\\{1, \\ldots, N\\}$ into intervals $[2^k, 2^{k+1})$. If $t$ elements lie in $[x, 2x]$, their $t-1$ consecutive pair sums land in $(2x, 4x]$ and are forbidden, giving $|A \\cap [x, 4x]| \\leq 2x + 1$ and density $\\leq 2/3$.",
@@ -102,40 +104,40 @@
       "title": "The Upper Half Example",
       "startLine": 82,
       "endLine": 116,
-      "summary": "Defines `upperHalf N = Finset.Ioc (N/2) N`. Proves `upperHalf_card : (upperHalf N).card = N - N/2` by `simp [Finset.card_Ioc]`. Axiomatizes density bound $|\\text{upperHalf}(N)| \\geq N/2 - 1$ and the sum-free property $a + b > N$ for distinct $a, b \\in (N/2, N]$.",
-      "mathContext": "Defines `upperHalf N = Finset.Ioc (N/2) N`. Proves `upperHalf_card : (upperHalf N).card = N - N/2` by `simp [Finset.card_Ioc]`. Axiomatizes density bound $|\\text{upperHalf}(N)| \\geq N/2 - 1$ and the sum-free property $a + b > N$ for distinct $a, b \\in (N/2, N]$."
+      "summary": "Defines `upperHalf N = Finset.Ioc (N/2) N`. Proves `upperHalf_card : (upperHalf N).card = N - N/2` by `simp [Finset.card_Ioc]`. Documents in prose comments the density bound $|\\text{upperHalf}(N)| \\geq N/2 - 1$ and the sum-free property $a + b > N$ for distinct $a, b \\in (N/2, N]$ (neither is a Lean declaration).",
+      "mathContext": "Defines `upperHalf N = Finset.Ioc (N/2) N`. Proves `upperHalf_card : (upperHalf N).card = N - N/2` by `simp [Finset.card_Ioc]`. Documents in prose comments the density bound $|\\text{upperHalf}(N)| \\geq N/2 - 1$ and the sum-free property $a + b > N$ for distinct $a, b \\in (N/2, N]$ (neither is a Lean declaration)."
     },
     {
       "id": "adenwalla-bound",
       "title": "Adenwalla's Upper Bound",
       "startLine": 117,
       "endLine": 144,
-      "summary": "Axiomatizes Adenwalla's dyadic lemma: if $|A \\cap [x, 2x]| = t$, then $|A \\cap [x, 4x]| \\leq t + 2x - t + 1$. Axiomatizes the global bound $|A| \\leq \\frac{2N}{3} + \\log_2 N + 1$ for any consecutive sum-free $A \\subseteq \\{1, \\ldots, N\\}$.",
-      "mathContext": "Axiomatizes Adenwalla's dyadic lemma: if $|A \\cap [x, 2x]| = t$, then $|A \\cap [x, 4x]| \\leq t + 2x - t + 1$. Axiomatizes the global bound $|A| \\leq \\frac{2N}{3} + \\log_2 N + 1$ for any consecutive sum-free $A \\subseteq \\{1, \\ldots, N\\}$."
+      "summary": "Documents in prose comments Adenwalla's dyadic lemma (if $|A \\cap [x, 2x]| = t$, then $|A \\cap [x, 4x]| \\leq 2x + 1$) and the global bound $|A| \\leq \\frac{2N}{3} + \\log_2 N + 1$ for any consecutive sum-free $A \\subseteq \\{1, \\ldots, N\\}$. Neither is a Lean declaration.",
+      "mathContext": "Documents in prose comments Adenwalla's dyadic lemma (if $|A \\cap [x, 2x]| = t$, then $|A \\cap [x, 4x]| \\leq 2x + 1$) and the global bound $|A| \\leq \\frac{2N}{3} + \\log_2 N + 1$ for any consecutive sum-free $A \\subseteq \\{1, \\ldots, N\\}$. Neither is a Lean declaration."
     },
     {
       "id": "freud-construction",
       "title": "Freud's Lower Bound (Disproof)",
       "startLine": 145,
       "endLine": 173,
-      "summary": "Axiomatizes Freud's 1993 construction: $\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, achieving density $\\geq 19/36$. Proves `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, formally disproving Erdős's conjecture.",
-      "mathContext": "Axiomatizes Freud's 1993 construction: $\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, achieving density $\\geq 19/36$. Proves `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, formally disproving Erdős's conjecture."
+      "summary": "Documents in prose comments Freud's 1993 construction ($\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, density $\\geq 19/36$) — not a Lean declaration. Proves the numeric fact `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, the arithmetic underlying Freud's disproof of Erdős's conjecture.",
+      "mathContext": "Documents in prose comments Freud's 1993 construction ($\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, density $\\geq 19/36$) — not a Lean declaration. Proves the numeric fact `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, the arithmetic underlying Freud's disproof of Erdős's conjecture."
     },
     {
       "id": "coppersmith-phillips",
       "title": "Coppersmith-Phillips Bounds",
       "startLine": 174,
       "endLine": 211,
-      "summary": "Axiomatizes the 1996 SIAM bounds: lower $|A| \\cdot 24 \\geq 13N - 24$ for $N \\geq 24$, and upper $|A| \\cdot 1536 \\leq (1024 - 3)N + 1536 \\log_2 N$. Proves `best_bounds_fractions : (13 : \\mathbb{Q})/24 < 2/3 - 1/512$ confirming the gap is consistent.",
-      "mathContext": "Axiomatizes the 1996 SIAM bounds: lower $|A| \\cdot 24 \\geq 13N - 24$ for $N \\geq 24$, and upper $|A| \\cdot 1536 \\leq (1024 - 3)N + 1536 \\log_2 N$. Proves `best_bounds_fractions : (13 : \\mathbb{Q})/24 < 2/3 - 1/512$ confirming the gap is consistent."
+      "summary": "Declares one axiom `coppersmith_phillips_lower`: for $N \\geq 24$ there is a consecutive sum-free $A$ with $A.\\text{card} \\cdot 24 \\geq 13N - 24$ (density $\\geq 13/24$). The matching upper bound $|A| \\cdot 1536 \\leq (1024 - 3)N + 1536 \\log_2 N$ appears only as a prose comment, not a declaration. Proves `best_bounds_fractions : (13 : \\mathbb{Q})/24 < 2/3 - 1/512$ confirming the two bound values are consistent.",
+      "mathContext": "Declares one axiom `coppersmith_phillips_lower`: for $N \\geq 24$ there is a consecutive sum-free $A$ with $A.\\text{card} \\cdot 24 \\geq 13N - 24$ (density $\\geq 13/24$). The matching upper bound $|A| \\cdot 1536 \\leq (1024 - 3)N + 1536 \\log_2 N$ appears only as a prose comment, not a declaration. Proves `best_bounds_fractions : (13 : \\mathbb{Q})/24 < 2/3 - 1/512$ confirming the two bound values are consistent."
     },
     {
       "id": "problem-839",
       "title": "Connection to Problem 839",
       "startLine": 212,
       "endLine": 237,
-      "summary": "Defines `isInfiniteConsecutiveSumFree` for sets $A \\subseteq \\mathbb{N}$: for every increasing subsequence of length $\\geq 2$ with all terms in $A$, the sum is not in $A$. Axiomatizes that the asymptotic density of such sets is at most $2/3$.",
-      "mathContext": "Defines `isInfiniteConsecutiveSumFree` for sets $A \\subseteq \\mathbb{N}$: for every increasing subsequence of length $\\geq 2$ with all terms in $A$, the sum is not in $A$. Axiomatizes that the asymptotic density of such sets is at most $2/3$."
+      "summary": "Defines `isInfiniteConsecutiveSumFree` for sets $A \\subseteq \\mathbb{N}$: for every increasing subsequence of length $\\geq 2$ with all terms in $A$, the sum is not in $A$. Documents in a prose comment that the asymptotic density of such sets is conjectured to be at most $2/3$ (no Lean declaration).",
+      "mathContext": "Defines `isInfiniteConsecutiveSumFree` for sets $A \\subseteq \\mathbb{N}$: for every increasing subsequence of length $\\geq 2$ with all terms in $A$, the sum is not in $A$. Documents in a prose comment that the asymptotic density of such sets is conjectured to be at most $2/3$ (no Lean declaration)."
     },
     {
       "id": "examples",
@@ -155,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #867 asked whether consecutive sum-free subsets of $\\{1, \\ldots, N\\}$ have size at most $N/2 + O(1)$. The answer is NO. The Lean formalization includes genuine proofs of `upperHalf_card` (cardinality via `Finset.card_Ioc`), `nineteen_thirty_sixth_gt_half` ($19/36 > 1/2$ via `norm_num`), `best_bounds_fractions` ($13/24 < 2/3 - 1/512$), the main `erdos_867` theorem packaging the bounds, `erdos_867_answer` witnessing $c = 13/24 > 1/2$, and three computational examples. Deep results (Freud's construction, Coppersmith-Phillips bounds, Adenwalla's dyadic argument) are axiomatized.",
+    "summary": "Erdős Problem #867 asked whether consecutive sum-free subsets of $\\{1, \\ldots, N\\}$ have size at most $N/2 + O(1)$. The answer is NO. The Lean formalization includes genuine proofs of `upperHalf_card` (cardinality via `Finset.card_Ioc`), `nineteen_thirty_sixth_gt_half` ($19/36 > 1/2$ via `norm_num`), `best_bounds_fractions` ($13/24 < 2/3 - 1/512$), the main `erdos_867` theorem packaging the bounds, `erdos_867_answer` witnessing $c = 13/24 > 1/2$, and three computational examples. The disproof (density $> 1/2$ achievable) rests on a single axiom `coppersmith_phillips_lower` (Coppersmith-Phillips 1996 lower bound); Freud's construction, the Coppersmith-Phillips upper bound, and Adenwalla's dyadic argument are documented in prose comments only, not formalized. The matching upper bound $2/3 - 1/512$ is stated numerically but is not proved as a bound on `maxDensity`.",
     "implications": "**Theoretical Significance**: Resolution of the exact maximum density would advance the theory of additive combinatorics and sum-free sets.\n\nAdenwalla's dyadic technique connects to harmonic analysis methods, while Freud's and Coppersmith-Phillips' explicit constructions demonstrate that probabilistic methods alone do not suffice for tight bounds. The finitary-infinite correspondence with Problem #839 links density questions in $\\{1, \\ldots, N\\}$ to asymptotic density theory for infinite subsets of $\\mathbb{N}$.",
     "openQuestions": [
       "What is the exact maximum density of consecutive sum-free sets in $\\{1, \\ldots, N\\}$?",
