@@ -43,3 +43,31 @@ not yet started.
 ## Dead Ends
 
 [Approaches known not to work will be documented here]
+
+### 2026-07-20 (researcher-1) — bridged the two forked unimodality predicates
+
+**Fork discovered.** Two parallel developments exist on main:
+- `CombinationsFormulaOQ03OQ04.lean` (PR #39392) — predicate `Unimodal (ℕ → ℤ)`
+  (adjacent-step: `∃ p, (∀ i<p, f i ≤ f(i+1)) ∧ (∀ i≥p, f(i+1) ≤ f i)`). Already
+  has k=0,1,**2** plus `unimodal_of_even_palindrome_first_half_mono` and the
+  `[n,2]_q` coefficient machinery (`qBinom_X_two_coeff_succ/le`).
+- `CombinationsFormulaOQ03OQ04Unimodal.lean` (PR #39438, this track) — predicate
+  `IsCoeffUnimodal (ℤ[X])` (monotone-on-blocks). Was stuck at k≤1; its stated
+  "route to k=2" was **duplicative** of the above.
+
+**Resolution.** Added `isCoeffUnimodal_iff_unimodal_coeff : IsCoeffUnimodal p ↔
+Unimodal (fun j => p.coeff j)`. Forward = specialise the monotone blocks to single
+adjacent steps. Backward = telescope adjacent steps into monotone blocks by
+induction on the index gap (two helpers `rise`/`fall`, `∀ d i, …`). Then
+`qBinom_X_unimodal_two` transports the companion file's `qBinomCoeff_unimodal_two`
+into `IsCoeffUnimodal` form with **no re-proof**.
+
+Host-verified `bin/lake env lean` exit 0 (had to refresh stale
+`CombinationsFormulaOQ03{,OQ04}.olean` in the cache — incompatible header from an
+older toolchain — via `lake env lean … -o`). `#print axioms` on both new results =
+`[propext, Classical.choice, Quot.sound]`.
+
+**Guidance for future sessions:** prove new k-cases ONCE against `Unimodal` (it has
+the palindrome criterion + coefficient extraction) and transport via the bridge.
+Do not re-develop `IsCoeffUnimodal`-specific proofs. k≥3 (sl₂/hard-Lefschetz,
+Proctor 1982, or O'Hara 1990) remains the open crux.
