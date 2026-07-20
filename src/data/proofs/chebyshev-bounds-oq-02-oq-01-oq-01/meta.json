@@ -63,7 +63,8 @@
       "θ and ψ share the same main term: ψ(m) − θ(m) counts only prime powers p^k with k ≥ 2 and is O(√m·log m), so any linear bound on one transfers to the other up to a √m·log m correction.",
       "The substantive estimate is the ψ lower bound (log 2 / 3)·m ≤ ψ(m), an elementary consequence of the prime factorization of C(2m, m); the θ lower bound is then almost free.",
       "The √m·log m correction is genuinely lower order, so for large m the bound is effectively (log 2 / 3)·m — the same linear order as the (log 4)·m upper bound, establishing θ(m) = Θ(m).",
-      "Chebyshev's 1852 constants (here log 2 / 3 ≈ 0.231 below, log 4 ≈ 1.386 above) bracket the true asymptotic density θ(m) ∼ m without any complex analysis — the elementary precursor to the prime number theorem."
+      "Chebyshev's 1852 constants (here log 2 / 3 ≈ 0.231 below, log 4 ≈ 1.386 above) bracket the true asymptotic density θ(m) ∼ m without any complex analysis — the elementary precursor to the prime number theorem.",
+      "The lower bound is a modular two-input assembly: the algebraic identity θ(m) = ψ(m) − (ψ(m) − θ(m)) turns any linear lower bound L(m) ≤ ψ(m) together with any upper bound E(m) ≥ ψ(m) − θ(m) on the excess into L(m) − E(m) ≤ θ(m) by a single linarith. The Lean proof is exactly this — plug in L = (log 2/3)·m (chebyshevPsi_lower_linear) and E = 2·√m·log m (abs_psi_sub_theta_le, via ψ−θ ≤ |ψ−θ|) — so sharpening either input immediately sharpens θ without touching the argument."
     ],
     "prerequisites": [
       "The Chebyshev functions θ(n) = ∑_{p ≤ n} log p and ψ(n) = ∑_{p^k ≤ n} log p",
@@ -74,33 +75,40 @@
   },
   "sections": [
     {
-      "id": "header-setup",
-      "title": "Module Header and Setup",
+      "id": "module-header",
+      "title": "Module Header: the θ = Θ(m) Programme",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "The module docstring explains the goal: pin θ(n) = ∑_{p≤n} log p to linear order Θ(n) with explicit constants. Mathlib supplies only the upper bound Chebyshev.theta_le_log4_mul_x (θ(x) ≤ log 4·x) and no lower bound; the project's chebyshevPsi_lower_linear ((log 2/3)·m ≤ ψ(m), from the central binomial coefficient) is transferred from ψ to θ using the closeness estimate abs_psi_sub_theta_le (|ψ(n)−θ(n)| ≤ 2√n·log n), giving (log 2/3)·m − 2√m·log m ≤ θ(m) ≤ log 4·m for m ≥ 2. Imports Mathlib and the two parent files, and enters the ChebyshevBoundsOQ02OQ01OQ01 namespace opening ChebyshevBoundsOQ02 / OQ02OQ02.",
+      "endLine": 28,
+      "summary": "The imports (Mathlib plus the two parent files ChebyshevBoundsOQ02OQ01 and ChebyshevBoundsOQ02OQ02) and the module docstring framing the goal: pin θ(m) = ∑_{p≤m} log p to linear order Θ(m) with explicit constants. Mathlib supplies only the upper bound Chebyshev.theta_le_log4_mul_x (θ(x) ≤ log 4·x) and no lower bound for θ or ψ; the plan is to transfer the project's ψ lower bound (log 2/3)·m ≤ ψ(m) across to θ via the closeness estimate |ψ−θ| ≤ 2√m·log m, yielding (log 2/3)·m − 2√m·log m ≤ θ(m) ≤ log 4·m for m ≥ 2 — a two-sided statement stated nowhere in Mathlib and not previously assembled in this project.",
       "mathContext": "θ(m) = ψ(m) − (ψ(m) − θ(m)): a linear lower bound on ψ minus an O(√m·log m) correction descends to θ, pinning θ(m) = Θ(m)."
+    },
+    {
+      "id": "namespace-ingredients",
+      "title": "Namespace and Imported Ingredients",
+      "startLine": 30,
+      "endLine": 32,
+      "summary": "Enters namespace ChebyshevBoundsOQ02OQ01OQ01 and opens ChebyshevBoundsOQ02 and ChebyshevBoundsOQ02OQ02, bringing into scope exactly the three imported estimates the file consumes: chebyshevPsi_lower_linear ((log 2/3)·m ≤ ψ(m), the substantive ψ lower bound from the central binomial coefficient), abs_psi_sub_theta_le (|ψ(m)−θ(m)| ≤ 2√m·log m, the ψ↔θ closeness bridge), and chebyshevTheta_eq_mathlib (identifying the project's chebyshevTheta with Mathlib's Chebyshev.theta so theta_le_log4_mul_x applies). The file itself adds no new definitions — it is pure assembly of these ingredients."
     },
     {
       "id": "lower-bound",
       "title": "The θ Lower Bound",
-      "startLine": 46,
-      "endLine": 60,
-      "summary": "chebyshevTheta_lower: (log 2 / 3)·m − 2·√m·log m ≤ θ(m) for m ≥ 2. Writes θ(m) = ψ(m) − (ψ(m) − θ(m)); the ψ lower bound chebyshevPsi_lower_linear and the closeness bound abs_psi_sub_theta_le (via ψ−θ ≤ |ψ−θ|) combine by linarith. The √m·log m correction is lower order, so the bound is ≈ (log 2 / 3)·m for large m."
+      "startLine": 34,
+      "endLine": 54,
+      "summary": "chebyshevTheta_lower: (log 2 / 3)·m − 2·√m·log m ≤ θ(m) for m ≥ 2 — the genuinely new estimate. Writes θ(m) = ψ(m) − (ψ(m) − θ(m)); the ψ lower bound chebyshevPsi_lower_linear (hpsi) and the closeness bound abs_psi_sub_theta_le, weakened to the one-sided ψ−θ ≤ |ψ−θ| (h1 via le_abs_self), combine by a single linarith. The √m·log m correction is lower order, so the bound is ≈ (log 2 / 3)·m for large m, confirming θ(m) = Θ(m)."
     },
     {
       "id": "upper-bound",
       "title": "The θ Upper Bound",
-      "startLine": 62,
-      "endLine": 75,
-      "summary": "chebyshevTheta_upper: θ(n) ≤ log 4 · n, Mathlib's Chebyshev.theta_le_log4_mul_x transported through the chebyshevTheta_eq_mathlib bridge."
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "chebyshevTheta_upper: θ(n) ≤ log 4 · n for every n. A two-line transport of Mathlib's Chebyshev.theta_le_log4_mul_x: rewrite chebyshevTheta n to Mathlib's Chebyshev.theta n via the chebyshevTheta_eq_mathlib bridge, then apply the Mathlib bound (whose hypothesis 0 ≤ n is discharged by positivity)."
     },
     {
       "id": "two-sided",
       "title": "Two-Sided θ Bounds",
-      "startLine": 77,
-      "endLine": 81,
-      "summary": "chebyshevTheta_bounds: pairs the new lower bound with Mathlib's upper bound to give (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2 — the explicit θ(m) = Θ(m)."
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "chebyshevTheta_bounds: pairs the new lower bound with Mathlib's upper bound as the anonymous constructor ⟨chebyshevTheta_lower hm, chebyshevTheta_upper m⟩ to give (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2 — the explicit θ(m) = Θ(m) with both endpoints pinned."
     }
   ],
   "mainTheorems": [
