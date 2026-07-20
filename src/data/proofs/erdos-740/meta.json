@@ -44,7 +44,7 @@
       }
     ],
     "originalContributions": [
-      "chromaticNumber: Cardinal-valued chromatic number for infinite graphs (noncomputable via iInf)",
+      "chromaticNumber: Cardinal-valued placeholder definition for the infinite chromatic number",
       "isColorable: predicate checking if a graph is k-colorable via a proper coloring function",
       "isOddCycle / containsOddCycleLeq: predicates for a cycle being odd and for the presence of an odd cycle of length ≤ r",
       "noOddCyclesLeq: predicate for a subgraph avoiding all odd cycles of length ≤ r",
@@ -58,7 +58,7 @@
     "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",
     "problemStatement": "Let 𝔪 be an infinite cardinal and G be a graph with chromatic number 𝔪. Let r ≥ 1. Must G contain a subgraph of chromatic number 𝔪 which does not contain any odd cycle of length ≤ r?",
     "text": "Must every graph with infinite chromatic number 𝔪 contain a subgraph with χ = 𝔪 that avoids all odd cycles of length ≤ r?",
-    "proofStrategy": "We formalize chromatic numbers for infinite graphs using Mathlib's Cardinal type, define cycles and odd cycle avoidance as Lean structures, and state the Erdős-Hajnal conjecture in full generality. Rödl's theorem for the countable triangle-free case is declared as an axiom. We prove that the girth variant (avoiding ALL short cycles) implies the odd cycle variant, and show the bipartite limitation: no bipartite subgraph can have χ > 2, so the parameter r must be finite. The formalization also addresses the threshold function question and finite analogs.",
+    "proofStrategy": "We scaffold chromatic numbers for infinite graphs over Mathlib's Cardinal type (chromaticNumber/girth are placeholder defs), define cycles and odd cycle avoidance as Lean structures, and state the Erdős-Hajnal conjecture in full generality. Rödl's theorem for the countable triangle-free case is declared as an axiom. We prove that the girth variant (avoiding ALL short cycles) implies the odd cycle variant, and state the bipartite limitation (proof sorry'd): no bipartite subgraph can have χ > 2, motivating why the parameter r must be finite. The formalization also addresses the threshold function question and finite analogs.",
     "keyInsights": [
       "Rödl proved (1977): every ℵ₀-chromatic graph has a triangle-free subgraph with χ = ℵ₀, using probabilistic methods in infinite combinatorics",
       "The general case for arbitrary infinite cardinals (ℵ₁, ℵ₂, ...) remains open, and may depend on set-theoretic axioms beyond ZFC",
@@ -142,10 +142,10 @@
     {
       "id": "bipartite",
       "title": "Part IX: Bipartite Subgraphs",
-      "summary": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite.",
+      "summary": "Defines bipartite graphs (no odd cycles of any length) and states no_infinite_bipartite (proof sorry'd): for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This is the file's one scaffold gap, motivating why the parameter r in the conjecture must be finite.",
       "startLine": 270,
       "endLine": 297,
-      "mathContext": "Formal definition: Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite."
+      "mathContext": "Formal definition: Defines bipartite graphs (no odd cycles of any length) and states no_infinite_bipartite (proof sorry'd): for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This is the file's one scaffold gap, motivating why the parameter r in the conjecture must be finite."
     },
     {
       "id": "summary",
