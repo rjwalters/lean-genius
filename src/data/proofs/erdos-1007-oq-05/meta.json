@@ -67,38 +67,38 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 51,
-      "summary": "Module header with imports, docstring, and namespace setup."
+      "endLine": 53,
+      "summary": "Module header with imports, the axiom-audit docstring, namespace setup, and the section banner for proving hasUnitEmbedding_exists."
     },
     {
       "id": "helper-lemma",
       "title": "Helper Lemma: Squared Distance Calculation",
-      "startLine": 52,
-      "endLine": 93,
-      "summary": "Private lemma scaled_basis_sq_dist proves that scaled standard basis vectors at distinct indices i ≠ j in Fin n are at squared Euclidean distance exactly 1. Uses Finset.add_sum_erase to extract the two non-zero summands.",
+      "startLine": 54,
+      "endLine": 78,
+      "summary": "Private lemma scaled_basis_sq_dist proves that scaled standard basis vectors at distinct indices i ≠ j in Fin n are at squared Euclidean distance exactly 1. Rewrites each summand pointwise (by_cases on the two Kronecker deltas) into 1/2 indicators, then collapses the sum via Finset.sum_add_distrib and Finset.sum_ite_eq, closing with norm_num.",
       "mathContext": "$\\sum_{k} \\left(\\frac{\\delta_{ik}}{\\sqrt{2}} - \\frac{\\delta_{jk}}{\\sqrt{2}}\\right)^2 = \\frac{1}{2} + \\frac{1}{2} = 1$ for $i \\neq j$"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Unit Embedding via Scaled Basis Vectors",
-      "startLine": 94,
-      "endLine": 110,
+      "startLine": 80,
+      "endLine": 96,
       "summary": "Theorem hasUnitEmbedding_exists_irr: every finite graph with irreflexive adjacency admits a unit distance embedding in ℝ^|V|. Constructs the embedding using Fintype.equivFin and the scaled basis, applying the helper lemma and Real.sqrt_one.",
       "mathContext": "$f(v)_k = \\delta_{\\varphi(v),k} / \\sqrt{2}$; irreflexivity ensures $u \\neq v$, so $\\varphi(u) \\neq \\varphi(v)$ and the helper applies"
     },
     {
       "id": "bipartite-corollary",
       "title": "Corollary: Complete Bipartite Graphs Have Unit Embeddings",
-      "startLine": 112,
-      "endLine": 120,
+      "startLine": 98,
+      "endLine": 106,
       "summary": "Proves completeBipartiteAdj is irreflexive (by cases on Fin m ⊕ Fin n), then applies the main theorem to conclude K_{m,n} always has a unit distance embedding of some dimension.",
       "mathContext": "$\\neg\\,\\text{completeBipartiteAdj}\\, v\\, v$ for all $v \\in \\text{Fin}\\, m \\oplus \\text{Fin}\\, n \\Rightarrow \\exists d,\\; \\text{hasUnitEmbedding}(K_{m,n}, d)$"
     },
     {
       "id": "axiom-summary",
       "title": "Remaining Deep Axioms: Literature Classification",
-      "startLine": 122,
-      "endLine": 141,
+      "startLine": 108,
+      "endLine": 127,
       "summary": "Documents the three remaining axioms: min_edges_dimension_4 (House 2013: dim-4 graphs need ≥9 edges), k33_unique_minimum (K_{3,3} is the unique minimizer), and min_edges_dimension_5 (Chaffee-Noble 2016: dim-5 graphs need ≥15 edges). Each requires geometric rigidity analysis beyond current Lean formalization infrastructure.",
       "mathContext": "$\\min\\{|E(G)| : \\dim(G) = 4\\} = 9$, uniquely $K_{3,3}$; $\\min\\{|E(G)| : \\dim(G) = 5\\} = 15$"
     }
