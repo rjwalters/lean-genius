@@ -57,7 +57,7 @@
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 3,
-    "lineCount": 288,
+    "lineCount": 280,
     "prerequisites": [
       "Prime Number Theorem (axiomatized)",
       "Properties of the natural logarithm",
@@ -141,7 +141,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 254,
-      "endLine": 288,
+      "endLine": 280,
       "summary": "Documentation footer (## Summary): lists the 3 axioms (nth_prime_asymptotic, dusart_upper_bound, dusart_lower_bound), the 7 proved theorems, the improvement chain Bertrand -> PNT -> Dusart, and confirms the axiom count of 3.",
       "mathContext": "No new declarations; a prose recap of the axiom/theorem inventory and the bound-improvement chain $p_n \\le 2^{n+1}$ (Bertrand) $\\to p_n \\sim n\\ln n$ (PNT) $\\to$ explicit Dusart sandwich."
     }
@@ -194,7 +194,7 @@
       "Nat"
     ],
     "namespace": "DusartBounds",
-    "lineCount": 288,
+    "lineCount": 280,
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 0,
