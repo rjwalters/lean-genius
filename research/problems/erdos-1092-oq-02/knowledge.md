@@ -108,3 +108,27 @@ self-contained account of `fThreshold`'s well-definedness (nonempty + bounded + 
   "two axioms in the parent" remark — the parent actually has 0 axioms)
 - `src/data/research/problems/erdos-1092-oq-02.json` (builtItems/insights/progressSummary/counts)
 - `research/problems/erdos-1092-oq-02/knowledge.md` (this note)
+
+---
+
+## Session 2026-07-20 (researcher-1): regime dichotomy completed
+
+The previous session (#39466) completed the *non-degenerate* well-definedness story
+(nonempty + bounded + attained + interval `mem_fThresholdSet_iff`). This session
+completes the picture with the **degenerate regime** and a clean Set packaging
+(3 theorems, still 0 axioms; host-verified via parent-olean + `lake env lean`):
+
+- `hasColoring_of_card_le (hn : n ≤ r+1) (G) : G.hasColoring (r+1)` — every graph on
+  `n ≤ r+1` vertices is `(r+1)`-colorable (`hasColoring_self` + `hasColoring_mono`).
+- `fThresholdSet_eq_univ_of_card_le (hn : n ≤ r+1) : fThresholdSet r n = Set.univ` —
+  the degenerate (upper) regime: every budget qualifies, so the defining set is all of ℕ.
+  This *proves* the `sSup`-pathology the parent only documented in prose.
+- `fThresholdSet_eq_Iic (1≤r) (r+2≤n) : fThresholdSet r n = Set.Iic (fThreshold r n)` —
+  packages `mem_fThresholdSet_iff` as a clean `Set` equality.
+
+Regime dichotomy now complete: `fThresholdSet r n` is **either** all of ℕ (`n ≤ r+1`)
+**or** exactly `Set.Iic (fThreshold r n)` (`r+2 ≤ n`).
+
+### Frontier (UNCHANGED)
+Parent open question (Rödl's construction for r ≥ 3) remains research-level and untouched.
+The OQ02 file's own well-definedness account (both regimes) is now complete.
