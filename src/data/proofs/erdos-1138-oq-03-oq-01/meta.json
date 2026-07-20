@@ -79,34 +79,106 @@
     {
       "id": "header",
       "title": "Module Header and Imports",
-      "summary": "Module docstring explaining the follow-up: derive unconditional sublinearity of the normalised maximal prime gap from the parent's Baker-Harman-Pintz axiom. Imports Mathlib and the parent Proofs.Erdos1138OQ03, reopens namespace Erdos1138OQ03, opens Filter and Topology.",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 36,
+      "summary": "Module docstring explaining the follow-up: derive unconditional sublinearity of the normalised maximal prime gap from the parent's Baker-Harman-Pintz axiom. Imports Mathlib and the parent Proofs.Erdos1138OQ03, reopens namespace Erdos1138OQ03, opens Filter and Topology.",
       "mathContext": "Continues in namespace Erdos1138OQ03 so that maxPrimeGap and baker_harman_pintz are in scope."
     },
     {
       "id": "envelope",
       "title": "Pointwise Upper Envelope",
-      "summary": "`gap_div_le_rpow_neg`: for $x \\geq 25$, $G(x)/x \\leq x^{-0.475}$. Divides the BHP bound by $x$ and uses the identity $x^{0.525}/x = x^{0.525 - 1} = x^{-0.475}$ via `Real.rpow_sub` and `Real.rpow_one`; `gcongr` handles the division monotonicity.",
       "startLine": 37,
-      "endLine": 55,
+      "endLine": 56,
+      "summary": "`gap_div_le_rpow_neg`: for $x \\geq 25$, $G(x)/x \\leq x^{-0.475}$. Divides the BHP bound by $x$ and uses the identity $x^{0.525}/x = x^{0.525 - 1} = x^{-0.475}$ via `Real.rpow_sub` and `Real.rpow_one`; `gcongr` handles the division monotonicity.",
       "mathContext": "$G(x)/x \\leq x^{0.525}/x = x^{-0.475}$ for $x \\geq 25 > 0$."
     },
     {
       "id": "limit",
       "title": "Unconditional Sublinearity Limit",
-      "summary": "`bhp_implies_gap_littleo`: $G(x)/x \\to 0$. Squeezes with `squeeze_zero'` between the constant $0$ (always) and the envelope $x^{-0.475}$ (eventually, for $x \\geq 25$), where the envelope tends to $0$ by `tendsto_rpow_neg_atTop` composed with `tendsto_natCast_atTop_atTop`.",
       "startLine": 57,
-      "endLine": 72,
+      "endLine": 73,
+      "summary": "`bhp_implies_gap_littleo`: $G(x)/x \\to 0$. Squeezes with `squeeze_zero'` between the constant $0$ (always) and the envelope $x^{-0.475}$ (eventually, for $x \\geq 25$), where the envelope tends to $0$ by `tendsto_rpow_neg_atTop` composed with `tendsto_natCast_atTop_atTop`.",
       "mathContext": "$0 \\leq G(x)/x \\leq x^{-0.475} \\to 0 \\Rightarrow G(x)/x \\to 0$."
     },
     {
       "id": "eps-form",
       "title": "Epsilon Form",
-      "summary": "`bhp_gap_eventually_le_eps`: for every $\\varepsilon > 0$, eventually $G(x) \\leq \\varepsilon x$. Derived from the limit via `Tendsto.eventually (eventually_lt_nhds hε)` and clearing the denominator with `div_lt_iff₀` for $x \\geq 1$.",
       "startLine": 74,
-      "endLine": 84,
+      "endLine": 83,
+      "summary": "`bhp_gap_eventually_le_eps`: for every $\\varepsilon > 0$, eventually $G(x) \\leq \\varepsilon x$. Derived from the limit via `Tendsto.eventually (eventually_lt_nhds hε)` and clearing the denominator with `div_lt_iff₀` for $x \\geq 1$.",
       "mathContext": "$G(x)/x \\to 0 \\Rightarrow \\forall \\varepsilon > 0,\\ \\text{eventually } G(x) \\leq \\varepsilon x$."
+    },
+    {
+      "id": "bigO-decay-general",
+      "title": "Big-O, Explicit Decay Rate, and Generalised Sublinearity",
+      "startLine": 84,
+      "endLine": 148,
+      "summary": "Reformulates the core result in Mathlib's asymptotics vocabulary and generalises the exponent. `gap_isBigO_rpow`: $G(x)=O(x^{0.525})$. `gap_div_isBigO_rpow_neg`: the normalised gap $G(x)/x=O(x^{-0.475})$, an explicit decay *rate* strictly sharper than mere $o(1)$. `bhp_gap_div_rpow_littleo`: for every $a>0.525$, $G(x)/x^{\\,a-1}\\to 0$, i.e. the normalised gap decays faster than any $x^{a-1}$.",
+      "mathContext": "$G(x)=O(x^{0.525})$, $G(x)/x=O(x^{-0.475})$, and $G(x)/x^{a-1}=o(1)$ for all $a>0.525$."
+    },
+    {
+      "id": "littleo-effective",
+      "title": "Little-o Idioms and the Effective Bound",
+      "startLine": 149,
+      "endLine": 203,
+      "summary": "Restates sublinearity in `Asymptotics.IsLittleO` form and supplies a computable witness. `bhp_gap_isLittleO_id`: $G=o(\\mathrm{id})$, the idiomatic statement of sublinearity. `bhp_gap_isLittleO_rpow`: $G=o(x^a)$ for every $a>0.525$. `bhp_gap_le_eps_effective`: a concrete, quantified sufficient condition ($x\\ge$ an explicit threshold) replacing the non-constructive eventually-filter statement.",
+      "mathContext": "$G=o[\\mathrm{atTop}]\\,\\mathrm{id}$ and $G=o(x^{a})$ for $a>0.525$; plus an effective threshold form."
+    },
+    {
+      "id": "abstract-engine",
+      "title": "Abstract Sublinearity Engines (Exponent-Parametric)",
+      "startLine": 204,
+      "endLine": 352,
+      "summary": "Decouples the argument from the specific BHP exponent $0.525$: the squeeze works for *any* eventual power envelope $G(x)\\le x^{\\theta}$ with $\\theta<1$. `gap_littleo_of_rpow_bound` (one-parameter) and `gap_div_rpow_littleo_of_rpow_bound` (two free exponents $\\theta<a$) are the master engines, restated across every idiom — little-o, big-O, normalised decay, $o(\\mathrm{id})$, and $\\varepsilon$-form (`gap_isLittleO_rpow_of_rpow_bound`, `gap_isBigO_rpow_of_rpow_bound`, `gap_div_isBigO_rpow_sub_one_of_rpow_bound`, `gap_isLittleO_id_of_rpow_bound`, `gap_eventually_le_eps_of_rpow_bound`). Any future improvement to the BHP exponent flows through unchanged.",
+      "mathContext": "From $G(x)\\le x^{\\theta}$ eventually with $\\theta<1$: $G(x)/x\\to 0$; more generally $G(x)/x^{a-1}\\to 0$ whenever $\\theta<a$."
+    },
+    {
+      "id": "general-envelope-engine",
+      "title": "The Fully General Envelope Engine",
+      "startLine": 353,
+      "endLine": 412,
+      "summary": "Pushes the abstraction to its limit: the *power* form of the envelope is inessential. `gap_littleo_of_littleo_envelope` derives sublinearity from *any* nonnegative envelope $f$ with $G\\le f$ eventually and $f=o(\\mathrm{id})$; `gap_isLittleO_id_of_littleo_envelope` is its $o(\\mathrm{id})$ restatement. `gap_littleo_of_rpow_bound_via_envelope` re-derives the power engine as a mere instance, confirming the general statement subsumes it.",
+      "mathContext": "If $0\\le G(x)\\le f(x)$ eventually and $f=o(\\mathrm{id})$, then $G=o(\\mathrm{id})$; the $x^{\\theta}$ envelope is one instance with $f(x)=x^{\\theta}$."
+    },
+    {
+      "id": "individual-gaps",
+      "title": "Individual Consecutive-Prime Gap Bounds",
+      "startLine": 413,
+      "endLine": 535,
+      "summary": "Transfers the supremum-level (`maxPrimeGap`) bounds down to a *single* consecutive-prime gap. `consecutive_gap_le_maxPrimeGap` is the bridge ($q-p\\le G(x)$ for consecutive primes $p<q\\le x$); `consecutive_gap_le_rpow`, `consecutive_gap_div_le_rpow_neg`, and `consecutive_gap_le_eps_effective` are the gap-level counterparts of the sup-level BHP results, and the `_of_bound` family (`consecutive_gap_le_rpow_of_bound`, `consecutive_gap_div_le_rpow_sub_one_of_bound`, `consecutive_gap_le_eps_of_bound`) restate them exponent-generically.",
+      "mathContext": "For consecutive primes $p<q\\le x$ with $x\\ge 25$: $q-p\\le G(x)\\le x^{0.525}$, hence $(q-p)/x\\le x^{-0.475}$."
+    },
+    {
+      "id": "ratio-to-one",
+      "title": "Multiplicative Closeness: Consecutive-Prime Ratios Tend to 1",
+      "startLine": 536,
+      "endLine": 627,
+      "summary": "Recasts additive gap smallness as multiplicative closeness. `consecutive_ratio_ge` and `consecutive_ratio_le` bound $q/p$ from below and above using the BHP gap bound, and `consecutive_ratio_ge_of_bound` gives the exponent-parametric lower bound. Together they express that the ratio $q/p$ of consecutive primes tends to $1$ — the multiplicative face of sublinearity.",
+      "mathContext": "$1\\le q/p\\le 1+G(p)/p\\to 1$, so consecutive primes are asymptotically multiplicatively adjacent."
+    },
+    {
+      "id": "large-gaps",
+      "title": "Arbitrarily Large Prime Gaps (Axiom-Free)",
+      "startLine": 628,
+      "endLine": 691,
+      "summary": "The elementary lower-bound direction, needing **no** BHP input. `factorial_succ_add_not_prime`: each of $(N+1)!+2,\\dots,(N+1)!+(N+1)$ is composite (since $k\\mid(N+1)!$ for $2\\le k\\le N+1$), giving a composite run of length $N$. `exists_consecutive_prime_gap_ge` packages this into consecutive primes $p<q$ with $q-p\\ge N$, taking $p$ the greatest prime $\\le M{+}1$ and $q$ the least prime $>M{+}1$ for $M=(N+1)!$ (Euclid's theorem supplies $q$).",
+      "mathContext": "For $M=(N+1)!$, the run $M{+}2,\\dots,M{+}(N{+}1)$ is prime-free, so some consecutive-prime gap is $\\ge N$; uses only `Nat.dvd_factorial` and `Nat.exists_infinite_primes`."
+    },
+    {
+      "id": "unbounded",
+      "title": "Unboundedness of the Maximal Gap",
+      "startLine": 692,
+      "endLine": 731,
+      "summary": "Lifts arbitrarily large gaps to divergence of `maxPrimeGap`. `exists_maxPrimeGap_ge` places the gap $q-p$ into `primeGapSet q`, so $G(q)\\ge N$; monotonicity (`maxPrimeGap_mono`) then yields `maxPrimeGap_tendsto_atTop` and its real-cast form `maxPrimeGap_cast_tendsto_atTop`. `maxPrimeGap_unbounded_and_sublinear` packages the two orthogonal halves of the entry: $G(x)\\to\\infty$ (elementary) yet $G(x)/x\\to 0$ (from BHP) — neither implies the other.",
+      "mathContext": "$G(x)\\to\\infty$ (monotone + unbounded) while $G(x)/x\\to 0$; an unbounded lower bound coexisting with a sublinear upper bound."
+    },
+    {
+      "id": "short-intervals",
+      "title": "Primes in Short Intervals from BHP",
+      "startLine": 732,
+      "endLine": 795,
+      "summary": "A genuinely new *localisation* consequence, not a repackaging of the gap asymptotics. `bhp_prime_in_short_interval`: for every $\\varepsilon>0$, every sufficiently large $x$ has a prime in $(x,(1+\\varepsilon)x]$. Pairs the largest prime $p\\le x$ with the next prime $q$; Bertrand's postulate caps $q\\le 2x$, so $q-p\\le G(2x)$, and BHP-sublinearity at scale $2x$ (the $\\varepsilon/2$ envelope pulled back along $x\\mapsto 2x$) forces $q\\le(1+\\varepsilon)x$.",
+      "mathContext": "$\\exists\\,q$ prime with $x<q\\le(1+\\varepsilon)x$: from $q-p\\le G(2x)\\le \\tfrac{\\varepsilon}{2}\\cdot 2x=\\varepsilon x$ eventually."
     }
   ],
   "conclusion": {
