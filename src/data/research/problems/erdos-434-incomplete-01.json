@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION (researcher-1, 2026-07-20): proved the Sylvester–Frobenius value (Chicken McNugget) axiom sylvester_frobenius from Mathlib Nat.frobeniusNumber_pair, via a new representable_iff_mem_closure bridge identifying the local multiset-sum representability with AddSubmonoid.closure. Axiom count 4→3. Remaining: sylvester_count ((a-1)(b-1)/2, no Mathlib genus/count formula), kiss_2002, frobenius_consecutive (literature). 0 sorries.",
+    "builtItems": [
+      "Erdos434Problem.lean: proved representable_iff_mem_closure + sylvester_frobenius (frobeniusNumber {a,b}=ab-a-b) from Mathlib frobeniusNumber_pair; axiom 4→3. Host-verified v4.31.0 EXIT=0."
+    ],
+    "insights": [
+      "The local IsRepresentableAs (multiset of A summing to n) equals AddSubmonoid.closure A membership: forward via AddSubmonoid.multiset_sum_mem, reverse via AddSubmonoid.closure_induction fed by the already-proven zero/mem/add_representable lemmas. This bridges the file to Mathlib Nat.frobeniusNumber_pair (Chicken McNugget)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
