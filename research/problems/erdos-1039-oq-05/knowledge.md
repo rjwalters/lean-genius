@@ -6,16 +6,80 @@ Insights accumulated during research on this problem.
 
 ## Problem Understanding
 
-[Initial observations about the problem will be recorded here]
+Relate ρ(f) (largest inscribed disc of the lemniscate interior {|f|<1}) to two
+potential-theoretic invariants of the root set Z = {z₁,…,zₙ}:
+- the **transfinite diameter** d(Z), and
+- the **logarithmic capacity** of the lemniscate complement {|f|≥1}.
+
+Parent conjecture ρ(f) ≫ 1/n is OPEN. Scope here: make the transfinite-diameter /
+capacity objects precise and machine-checkable (Key Lemma 1 of `problem.md`).
 
 ---
 
 ## Insights
 
-[Insights from research attempts will be accumulated here]
+- **The finite discrete spread is entirely elementary.** The finite-n truncation
+  of the transfinite diameter, dₙ(Z) = (∏_{i<j}‖zᵢ−zⱼ‖)^{2/(n(n-1))}, needs NO
+  capacity infrastructure. The spread product ∏_{i<j}‖zᵢ−zⱼ‖ equals the modulus of
+  the **Vandermonde determinant** (Mathlib `Matrix.det_vandermonde`), so the whole
+  Key Lemma 1 is host-verifiable Mathlib-only (no Docker).
+- **dₙ(K) ≤ diam(K).** For roots in the closed unit disc every gap ‖zᵢ−zⱼ‖ ≤ 2, and
+  the Gauss count 2·#{i<j} = n(n−1) makes the exponent cancel exactly, giving the
+  clean axiom-free bound dₙ(Z) ≤ 2. The substantive open content is the LOWER
+  direction and the Fekete monotonicity dₙ₊₁ ≤ dₙ (which defines the limit d(Z)).
+
+---
+
+## Built (this session — axiom-free, `Proofs/Erdos1039TransfiniteDiameter.lean`)
+
+- `spreadProduct z = ∏_{i<j} ‖zᵢ − zⱼ‖` — the Vandermonde spread.
+- `discreteDiameter z = spreadProduct z ^ (2/(n(n−1)))` — the n-point diameter.
+- `spreadProduct_nonneg`, `spreadProduct_pos_iff` (>0 ⇔ `Function.Injective z`).
+- `spreadProduct_eq_norm_det_vandermonde` — spread = |det Vandermonde| (discriminant link).
+- `spreadProduct_le_two_pow` + `two_mul_pairCount` (2·#pairs = n(n−1)).
+- `discreteDiameter_nonneg`, `discreteDiameter_le_two` (dₙ ≤ 2 for n≥2 unit-disc roots).
+- `logSpread`, `log_spreadProduct`, `discreteDiameter_eq_exp` — the **logarithmic-energy bridge** dₙ(Z) = exp((2/(n(n−1)))·∑_{i<j}log‖zᵢ−zⱼ‖), linking the (multiplicative) transfinite diameter to the (additive) logarithmic energy / capacity.
+
+All theorems depend only on `propext / Classical.choice / Quot.sound` (axiom-free
+per the axiom-integrity policy).
+
+## Built (iteration 3 — Fekete deletion identity, axiom-free)
+
+- `deleteAt z k = z ∘ (Fin.succAbove k)` — remove the `k`-th point of an `(n+1)`-tuple.
+- `deleteAt_injective` — deleting preserves distinctness of roots.
+- `spreadProduct_deleteAt` — **reindexing lemma**: `V(delete k Z)` equals the product
+  of `‖zₐ−z_b‖` over exactly the pairs `a<b` avoiding index `k` (double `Finset.prod_bij`
+  along the order-embedding `succAbove`, using `succAbove_lt_succAbove_iff` /
+  `exists_succAbove_eq`).
+- `card_filter_avoid` — `#{k : a≠k ∧ b≠k} = n−1` for distinct `a,b` in `Fin (n+1)`.
+- `prod_spreadProduct_deleteAt` — **Fekete deletion identity** `∏ₖ V(delete k Z) = V(Z)^{n−1}`,
+  the combinatorial heart of Fekete monotonicity. Each pair survives exactly the `n−1`
+  deletions removing neither endpoint; proof: reindex → convert `erase` guards to `if` →
+  `prod_comm` to pull `∏ₖ` inside → per-pair `∏ₖ (if … then c else 1) = c^{#avoid} = c^{n−1}`
+  → `prod_pow`. Holds for **every** tuple (distinct roots or not).
+- `sum_logSpread_deleteAt` — additive/energy form: `∑ₖ logSpread(delete k Z) = (n−1)·logSpread Z`
+  for injective `z`, the `log`-shadow of the product identity (bridges to the energy section).
+
+★RECIPE: order-preserving pair reindexing under `Fin.succAbove` = nested `Finset.prod_bij`
+with forward map `fun i _ => k.succAbove i`; membership via `succAbove_ne` (≠k) +
+`succAbove_lt_succAbove_iff` (order), surjectivity via `Fin.exists_succAbove_eq`. To pull an
+index-independent `∏ₖ` through a `k`-dependent `erase` set, first rewrite `s.erase k =
+s.filter (·≠k)` (`Finset.filter_ne'`) + `Finset.prod_filter` into an `if`-guard, THEN `prod_comm`.
+
+All iteration-3 theorems: axioms `[propext, Classical.choice, Quot.sound]` (verified via
+`#print axioms`) — axiom-free.
 
 ---
 
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+None recorded yet. The capacity/Green's-function route (Approach A) and the
+transfinite-diameter limit require Mathlib API that does not yet exist.
+
+---
+
+## Next
+
+1. Fekete monotonicity dₙ₊₁(Z) ≤ dₙ(Z) → transfinite diameter d(Z) = infₙ dₙ.
+2. Logarithmic capacity of {|f|≥1}∩B(0,R) + cap=1 normalization (axiomatize, cite Fekete–Szegő).
+3. State ρ(f) ≳ g(d(Z), cap) (theorems where provable / axioms citing Pommerenke/KLR).
