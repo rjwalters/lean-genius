@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 521,
-    "theoremCount": 49,
+    "lineCount": 539,
+    "theoremCount": 50,
     "assumptions": "Lean.ofReduceBool — the computational verification theorems (f_3_eq … f_32_eq, sigma_6 … sigma_120, f_ratio_sigma_*, sigma_values_representable, even/odd_representable_small, etc.) are discharged by native_decide, which trusts the Lean compiler's kernel reduction. No literal axiom declarations and no sorries; the sigma bound and structural results are otherwise proved. Partial progress on an open problem.",
     "mathlibDependencies": [
       {
@@ -110,9 +110,9 @@
       "Finset"
     ],
     "namespace": "Erdos1054OQ01",
-    "lineCount": 521,
+    "lineCount": 539,
     "axiomCount": 0,
-    "theoremCount": 49,
+    "theoremCount": 50,
     "definitionCount": 5,
     "path": "Proofs/Erdos1054OQ01.lean",
     "sorries": 0
