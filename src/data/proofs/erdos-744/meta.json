@@ -66,7 +66,7 @@
       "bipartitionNumber_add_edge_sandwich / maxCut_add_edge_sandwich: both extremal invariants are 1-Lipschitz under a single-edge edit — if H = G + {a,b} then the invariant lands in {value(G), value(G)+1}. Sharpens the earlier monotonicity (which only gave the lower bound ≥) with a matching +1 upper bound; the exact modulus of continuity for the edge-edit metric. Axiom-free."
     ],
     "axiomCount": 1,
-    "lineCount": 1114,
+    "lineCount": 1143,
     "assumptions": "1 axiom: rodl_tuza_theorem (the deep Rödl–Tuza 1985 result, stated as an assumption since a full formalization of the extremal argument is out of scope). The chromatic number is now defined intrinsically (least number of colors admitting a proper coloring) rather than axiomatized, and is proved well-defined by chromaticNumber_le_card. 0 sorries.",
     "theoremCount": 39,
     "definitionCount": 13
@@ -75,7 +75,7 @@
     "historicalContext": "Erdős Problem #744 originates from a question posed by Erdős, Hajnal, and Szemerédi in the early 1980s (references [Er81] and [EHS82]). The problem concerns a fundamental question about the structure of k-chromatic critical graphs: how many edges must be removed to make such a graph bipartite? The function f_k(n) measures the minimum number of edge deletions needed across all k-critical graphs on n vertices.\n\nThe case k = 3 is trivial: the only 3-critical graphs are odd cycles, and removing any single edge yields a path (which is bipartite), so f_3(n) = 1. For k ≥ 4, early results were encouraging for the conjecture. Gallai (1968) established that f_4(n) ≤ O(√n), and Lovász extended this to f_k(n) ≤ O(n^{1-1/(k-2)}) for general k. Erdős and collaborators conjectured that f_k(n) → ∞ as n → ∞, and specifically asked whether f_4(n) grows at least as fast as log(n).\n\nIn a surprising turn, Rödl and Tuza disproved the conjecture entirely in 1985. They showed that for every fixed k ≥ 3, the function f_k(n) is eventually constant: f_k(n) = C(k-1, 2) = (k-1)(k-2)/2 for all sufficiently large n. This means the non-bipartiteness of large k-critical graphs is concentrated in a bounded substructure, regardless of the total graph size.",
     "problemStatement": "Let $f_k(n)$ be the minimum number of edges whose deletion makes a $k$-chromatic critical graph on $n$ vertices bipartite.\n\nDoes $f_k(n) \\to \\infty$ as $n \\to \\infty$?\n\n**Answer:** NO.\n\n**Rödl-Tuza Theorem (1985):** For all $k \\geq 3$ and sufficiently large $n$:\n$$f_k(n) = \\binom{k-1}{2} = \\frac{(k-1)(k-2)}{2}$$\n\nThe function is eventually constant, not unbounded.",
     "text": "Does f_k(n) tend to infinity, where f_k(n) is the minimum edges to delete from a k-chromatic critical graph on n vertices to make it bipartite? Disproved by Rödl and Tuza (1985): f_k(n) = C(k-1,2) for large n.",
-    "proofStrategy": "The formalization proceeds in ten parts:\n\n1. **Graph foundations:** We define SimpleGraph' with an adjacency predicate and define the chromatic number intrinsically as the least number of colors admitting a proper coloring (chromaticNumber_le_card proves it is attained, so no axiom is needed).\n\n2. **Critical graphs:** A graph is k-critical if χ(G) = k and removing any edge reduces the chromatic number. This captures the notion of \"minimal\" k-colorable graphs.\n\n3. **Bipartite characterization:** Bipartite graphs are defined as those with χ(G) ≤ 2, with an axiom connecting this to the absence of odd cycles.\n\n4. **The f_k function:** We define f_k(n) using the known values from Rödl-Tuza, which gives f_k(n) = (k-1)(k-2)/2 for k ≥ 4.\n\n5. **Disproof:** We state the original conjecture formally, take the Rödl-Tuza theorem as the single remaining axiom, and derive that the conjecture is false. We also show specific instances like f_4 = 3 and f_5 = 6.",
+    "proofStrategy": "The formalization proceeds in several parts, summarized here in five conceptual steps (the Lean file expands these into Parts 1–10 plus an axiom-free max-cut / min-uncut development in Parts 3b–3e):\n\n1. **Graph foundations:** We define SimpleGraph' with an adjacency predicate and define the chromatic number intrinsically as the least number of colors admitting a proper coloring (chromaticNumber_le_card proves it is attained, so no axiom is needed).\n\n2. **Critical graphs:** A graph is k-critical if χ(G) = k and removing any edge reduces the chromatic number. This captures the notion of \"minimal\" k-colorable graphs.\n\n3. **Bipartite characterization:** Bipartite graphs are defined as those with χ(G) ≤ 2; König's equivalence with the absence of odd cycles is discussed in the narrative but not formalized as an axiom.\n\n4. **The f_k function:** We define f_k(n) using the known values from Rödl-Tuza, which gives f_k(n) = (k-1)(k-2)/2 for k ≥ 4.\n\n5. **Disproof:** We state the original conjecture formally, take the Rödl-Tuza theorem as the single remaining axiom, and derive that the conjecture is false. We also show specific instances like f_4 = 3 and f_5 = 6.",
     "keyInsights": [
       "**Critical Graph Structure:** A k-critical graph is one requiring exactly k colors, where every proper subgraph needs fewer. These are the 'minimal' examples of k-colorability.",
       "**Odd Cycle Case (k=3):** The only 3-critical graphs are odd cycles. Removing one edge gives a path (bipartite), so f_3(n) = 1 — trivially bounded.",
@@ -92,82 +92,130 @@
     {
       "id": "graph-definitions",
       "title": "Basic Graph Definitions",
-      "summary": "SimpleGraph', chromaticNumber, isKChromatic, isCritical, isKCritical",
-      "startLine": 30,
-      "endLine": 70,
-      "mathContext": "Mathematical content: SimpleGraph', chromaticNumber, isKChromatic, isCritical, isKCritical"
+      "summary": "The SimpleGraph' structure (vertex type plus a symmetric, irreflexive adjacency predicate), the intrinsic chromaticNumber (least k admitting a proper coloring c : V → Fin k) shown to be attained by chromaticNumber_le_card, and the isKChromatic / isCritical / isKCritical predicates defining k-critical graphs.",
+      "startLine": 1,
+      "endLine": 85,
+      "mathContext": "$\\chi(G)$ is defined intrinsically as $\\min\\{k : \\exists\\text{ proper } c : V \\to \\mathrm{Fin}\\,k\\}$; chromaticNumber_le_card ($\\chi(G) \\le |V|$ via Fintype.equivFin) proves the minimum is attained, so no axiom is needed. A graph is $k$-critical when $\\chi(G) = k$ and deleting any edge drops the chromatic number."
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs",
-      "summary": "isBipartite definition (χ(G) ≤ 2); bipartite_iff_no_odd_cycle discussed in docstring but not formalized as axiom.",
-      "startLine": 71,
-      "endLine": 84,
-      "mathContext": "Formal definition: isBipartite via chromatic number. König odd-cycle characterization mentioned in narrative only."
+      "summary": "isBipartite G := χ(G) ≤ 2. König's odd-cycle characterization (bipartite ⟺ no odd cycle) is discussed in the docstring narrative but deliberately not formalized as an axiom.",
+      "startLine": 86,
+      "endLine": 100,
+      "mathContext": "$G$ is bipartite iff $\\chi(G) \\le 2$, equivalently iff $V$ splits into two independent sets. The classical equivalence with the absence of odd cycles (König) is stated in prose only, keeping the axiom budget minimal."
     },
     {
       "id": "edge-deletion",
-      "title": "Edge Deletion and f_k(n)",
-      "summary": "bipartitionNumber, f — the central function of the problem",
-      "startLine": 85,
-      "endLine": 114,
-      "mathContext": "Mathematical content: bipartitionNumber, f — the central function of the problem"
+      "title": "Edge Deletion and the Bipartition Number",
+      "summary": "monochromaticEdges G c (edges left monochromatic by a 2-coloring c) and bipartitionNumber G = min over colorings of monochromaticEdges — the odd-cycle edge-transversal number, i.e. the f_k quantity — together with its basic characterizations: monochromaticEdges_eq_zero_iff, bipartitionNumber_eq_zero_iff (=0 ⟺ bipartite), bipartitionNumber_le, exists_coloring_eq_bipartitionNumber (the minimum is attained), bipartitionNumber_pos_iff.",
+      "startLine": 101,
+      "endLine": 206,
+      "mathContext": "$\\mathrm{bip}(G) = \\min_{c : V \\to \\mathrm{Bool}} |\\{e \\text{ monochromatic under } c\\}|$ is the minimum number of edges to delete to make $G$ bipartite (the odd-cycle transversal number in edge terms). It vanishes iff $G$ is bipartite and the minimum is realized by an explicit optimal coloring."
+    },
+    {
+      "id": "bipartition-structural",
+      "title": "Structural Properties of the Bipartition Number",
+      "summary": "Axiom-free combinatorics of the extremal cut invariants: monotonicity under edge addition (monochromaticEdges_mono, bipartitionNumber_mono); the dual quantities edgeCount, bichromaticEdges, maxCut with the exact complementarities monochromaticEdges + bichromaticEdges = edgeCount and bipartitionNumber + maxCut = edgeCount; and equality/positivity characterizations (maxCut_eq_edgeCount_iff, maxCut_le_edgeCount, maxCut_eq_zero_iff, bipartitionNumber_eq_edgeCount_iff, maxCut_pos_iff, bipartitionNumber_eq_maxCut_iff).",
+      "startLine": 207,
+      "endLine": 418,
+      "mathContext": "For a fixed coloring, monochromatic and bichromatic edges partition all $m = \\mathrm{edgeCount}(G)$ edges; taking extrema gives $\\mathrm{bip}(G) + \\mathrm{maxCut}(G) = m$. The max-cut is $0$ iff $G$ is edgeless and equals $m$ iff $G$ is bipartite — the two boundary cases of the min-uncut / max-cut duality."
+    },
+    {
+      "id": "cut-monotonicity",
+      "title": "Monotonicity of the Cut Quantities",
+      "summary": "The dual of bipartitionNumber_mono: edgeCount_mono, bichromaticEdges_mono, maxCut_mono. Adding an edge can only raise a coloring's monochromatic and bichromatic counts, so both extremal invariants grow with the graph — precisely the phenomenon Erdős's original intuition was tracking.",
+      "startLine": 419,
+      "endLine": 477,
+      "mathContext": "If every edge of $G$ is an edge of $H$ then $\\mathrm{maxCut}(G) \\le \\mathrm{maxCut}(H)$ and $\\mathrm{bip}(G) \\le \\mathrm{bip}(H)$. Both invariants are monotone (order-preserving) for the subgraph order — the lower half of the 1-Lipschitz sandwich proved in Part 3d."
+    },
+    {
+      "id": "max-cut-bound",
+      "title": "The Erdős Max-Cut Bound",
+      "summary": "Erdős's most famous cut fact via the averaging (probabilistic) method: card_colorings_cut (exactly half of the 2^|V| colorings separate a fixed edge, by the flip-one-vertex involution), two_mul_sum_bichromaticEdges (the Fubini identity 2·∑_c bichromaticEdges = m·2^|V|), then edgeCount_le_two_mul_maxCut (some coloring cuts at least half the edges). Duals and normal forms: bipartitionNumber_le_maxCut, edgeCount_add_one_div_two_le_maxCut, bipartitionNumber_le_edgeCount_div_two, half_edge_sandwich.",
+      "startLine": 478,
+      "endLine": 654,
+      "mathContext": "Some 2-coloring separates at least half the edges: $m \\le 2\\,\\mathrm{maxCut}(G)$, i.e. $\\mathrm{maxCut}(G) \\ge \\lceil m/2 \\rceil$. Dually at most $\\lfloor m/2 \\rfloor$ edges must be deleted to reach bipartiteness ($\\mathrm{bip}(G) \\le \\mathrm{maxCut}(G)$). Proved by max $\\ge$ average over all $2^{|V|}$ colorings, with denominators cleared to stay $\\mathbb{N}$-valued and axiom-free."
+    },
+    {
+      "id": "edge-lipschitz",
+      "title": "Single-Edge Lipschitz Continuity",
+      "summary": "Both extremal invariants are 1-Lipschitz under a single-edge edit. Per-coloring step bounds (monochromaticEdges_add_edge_le, bichromaticEdges_add_edge_le) — the newly added ordered pair is the only one that can change — lift to bipartitionNumber_add_edge_le / maxCut_add_edge_le and the sandwiches bipartitionNumber_add_edge_sandwich / maxCut_add_edge_sandwich: adding one edge changes each invariant by 0 or 1.",
+      "startLine": 655,
+      "endLine": 774,
+      "mathContext": "For $H = G + \\{a,b\\}$, $\\mathrm{bip}(H) \\in \\{\\mathrm{bip}(G), \\mathrm{bip}(G)+1\\}$ and likewise for $\\mathrm{maxCut}$. This is the exact modulus of continuity for the edge-edit metric: it sharpens the Part-3c monotonicity lower bound with a matching $+1$ upper bound. Axiom-free."
+    },
+    {
+      "id": "complement-complete",
+      "title": "Complement and the Complete Graph",
+      "summary": "The completeGraph' and complement (Gᶜ) constructions with their DecidableRel instances, and the outer partition they carry: for any fixed coloring an edge of Kₙ is monochromatic exactly when its same-colored endpoints are joined in G or in Gᶜ (never both). monochromaticEdges_add_complement and edge-count complementarity (monochromaticEdges_const_true and the G/Gᶜ partition of the edges of Kₙ).",
+      "startLine": 775,
+      "endLine": 911,
+      "mathContext": "The complement $G^c$ joins distinct vertices exactly when $G$ does not. Fixing a coloring $c$, the monochromatic counts of $G$ and $G^c$ partition those of the complete graph $K_n$, giving a clean outer accounting of the same-colored vertex pairs that the single-graph cut engine leaves implicit."
     },
     {
       "id": "known-results",
       "title": "Known Results and Historical Bounds",
-      "summary": "f_3_equals_1 theorem: odd cycles need 1 edge removed; Gallai O(√n) bound and Lovász generalized bound discussed in docstrings, not formalized as axioms.",
-      "startLine": 115,
-      "endLine": 146,
-      "mathContext": "Verified: f_3_equals_1. Gallai/Lovász bounds mentioned in narrative but not formalized as axioms."
+      "summary": "f_3(n) = 1 (odd cycles need one edge removed). Gallai's O(√n) and Lovász's O(n^{1−1/(k−2)}) upper bounds on f_k are recorded in the narrative but not formalized as axioms.",
+      "startLine": 912,
+      "endLine": 942,
+      "mathContext": "$f_3(n) = 1$: the only $3$-critical graphs are odd cycles, and deleting one edge yields a path. The pre-1985 upper bounds $f_4(n) \\le O(\\sqrt{n})$ (Gallai) and $f_k(n) \\le O(n^{1-1/(k-2)})$ (Lovász) are cited in prose only."
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
-      "summary": "erdosOriginalConjecture, erdosLogConjecture — what Erdős expected",
-      "startLine": 147,
-      "endLine": 170,
-      "mathContext": "Mathematical content: erdosOriginalConjecture, erdosLogConjecture — what Erdős expected"
+      "summary": "erdosOriginalConjecture (f_k(n) → ∞) and erdosLogConjecture (f_4(n) ≳ log n) — the growth statements Erdős, Hajnal, and Szemerédi expected.",
+      "startLine": 943,
+      "endLine": 966,
+      "mathContext": "The 1982 conjecture predicted $f_k(n) \\to \\infty$ and, more strongly, that $f_4(n)$ grows at least logarithmically. Both are disproved by the Rödl–Tuza constant."
     },
     {
       "id": "rodl-tuza",
-      "title": "Rödl-Tuza Theorem (1985)",
-      "summary": "rodl_tuza_theorem axiom, f_4_eventually_3, f_5_eventually_6",
-      "startLine": 171,
-      "endLine": 213,
-      "mathContext": "Verified: rodl_tuza_theorem axiom, f_4_eventually_3, f_5_eventually_6"
+      "title": "The Rödl–Tuza Theorem (1985)",
+      "summary": "The single remaining axiom rodl_tuza_theorem: for every k ≥ 3, f_k(n) = C(k-1,2) for all sufficiently large n. Instantiations f_4_eventually_3 and f_5_eventually_6.",
+      "startLine": 967,
+      "endLine": 1011,
+      "mathContext": "$f_k(n) = \\binom{k-1}{2} = \\tfrac{(k-1)(k-2)}{2}$ eventually — the one deep result taken as an assumption since a full formalization of the extremal argument is out of scope. Gives $f_4 = 3$, $f_5 = 6$."
     },
     {
       "id": "counterexample-structure",
       "title": "Why the Conjecture Was False",
-      "summary": "complete_graph_edges theorem relating to binomial coefficients; structural insight into why the conjecture was false.",
-      "startLine": 214,
-      "endLine": 237,
-      "mathContext": "Verified: complete_graph_edges theorem. Structural insight: non-bipartiteness concentrated in K_{k-1}."
+      "summary": "The structural insight behind the disproof: the non-bipartiteness of a large critical graph concentrates in a bounded K_{k-1}, so a fixed C(k-1,2) edge deletions always suffice (complete_graph_edges relating the count to binomial coefficients).",
+      "startLine": 1012,
+      "endLine": 1037,
+      "mathContext": "$K_{k-1}$ has exactly $\\binom{k-1}{2}$ edges. Rödl–Tuza show the coloring obstruction of a large $k$-critical graph can be localized to such a clique, so its non-bipartiteness never spreads — defeating the intuition that larger graphs have more diffuse obstructions."
     },
     {
       "id": "consequences",
       "title": "Consequences of the Disproof",
-      "summary": "erdos_conjecture_false, log_conjecture_false",
-      "startLine": 238,
-      "endLine": 283,
-      "mathContext": "Mathematical content: erdos_conjecture_false, log_conjecture_false"
+      "summary": "erdos_conjecture_false and log_conjecture_false — the formal negations of the two conjectures derived from the Rödl-Tuza axiom.",
+      "startLine": 1038,
+      "endLine": 1082,
+      "mathContext": "Since $f_k(n)$ is eventually the constant $\\binom{k-1}{2}$, it is bounded; in particular it neither tends to infinity nor grows like $\\log n$, formally negating both erdosOriginalConjecture and erdosLogConjecture."
     },
     {
       "id": "complete-picture",
       "title": "The Complete Picture",
-      "summary": "f_k_table, f_k_formula — table and general formula",
-      "startLine": 284,
-      "endLine": 304,
-      "mathContext": "Mathematical content: f_k_table, f_k_formula — table and general formula"
+      "summary": "f_k_table (small-k values 1, 3, 6, 10, 15, …) and f_k_formula (f_k = C(k-1,2)) — the triangular-number pattern of eventual bipartition numbers.",
+      "startLine": 1083,
+      "endLine": 1101,
+      "mathContext": "The eventual values follow the triangular numbers $\\binom{k-1}{2}$: $f_3 = 1$, $f_4 = 3$, $f_5 = 6$, $f_6 = 10$, $f_7 = 15$, …"
     },
     {
       "id": "status",
       "title": "Problem Status and Main Statement",
-      "summary": "erdos_744_status, erdos_744_statement — summary theorem",
-      "startLine": 305,
-      "endLine": 344,
-      "mathContext": "Verified: erdos_744_status, erdos_744_statement — summary theorem"
+      "summary": "erdos_744_status (\"DISPROVED\") and erdos_744_statement — the combined main result packaging the disproof.",
+      "startLine": 1102,
+      "endLine": 1123,
+      "mathContext": "The formal status record and a single statement bundling the answer: $f_k(n) \\not\\to \\infty$; instead $f_k(n) = \\binom{k-1}{2}$ eventually."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Closing narrative recap: the problem, its 1985 disproof, the answer f_k(n) = C(k-1,2), and the axiom-free cut-theory scaffolding (max-cut duality, monotonicity, single-edge Lipschitz bounds, complement accounting) surrounding the one Rödl-Tuza assumption.",
+      "startLine": 1124,
+      "endLine": 1143,
+      "mathContext": "Problem: does $f_k(n) \\to \\infty$? Answer: no — $f_k(n) = \\binom{k-1}{2}$ for large $n$ (Rödl–Tuza 1985). The formalization surrounds that single assumption with a self-contained, axiom-free development of the max-cut / min-uncut theory."
     }
   ],
   "conclusion": {
@@ -192,7 +240,7 @@
       "Finset"
     ],
     "namespace": "Erdos744",
-    "lineCount": 1114,
+    "lineCount": 1143,
     "axiomCount": 1,
     "theoremCount": 47,
     "definitionCount": 17,
