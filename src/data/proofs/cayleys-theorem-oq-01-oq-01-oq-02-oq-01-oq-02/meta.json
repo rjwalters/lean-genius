@@ -64,7 +64,8 @@
       "**Nat.card hides the infinite content.** The parent's order statement Nat.card H = Nat.card α is the vacuous 0 = 0 for infinite α, because Nat.card returns 0 on infinite types. The cardinal equality #H = #α is the same fact stated with the invariant that survives — and it specialises back to the finite count.",
       "**The bijection was always finiteness-free.** The parent's regularEquiv : H ≃ α uses only rigidity (freeness) and transitivity, never that α is finite. So the entire infinite converse is just the correct cardinal transport of an equivalence the parent already built — no new construction.",
       "**Regularity forces cardinality, even infinitely.** A free transitive subgroup of Sym(α) has exactly #α elements: order equals degree as cardinals. This is why the regular action of an infinite group G on its underlying set is the universal transitive G-set.",
-      "**Infinitude is an invariant of regularity.** H and α are infinite together; a free transitive permutation group on an infinite set is necessarily an infinite group of the same cardinality."
+      "**Infinitude is an invariant of regularity.** H and α are infinite together; a free transitive permutation group on an infinite set is necessarily an infinite group of the same cardinality.",
+      "**The generalisation is a change of invariant, not of mathematics — and it is a strict refinement.** No new construction is introduced: the whole entry transports `Cardinal.mk` (in place of the parent's `Nat.card`) across the identical bijection `regularEquiv`. Choosing the right invariant is what makes the infinite case free — the finite parent under-stated its own content by using `Nat.card`. And `natCard_eq_of_cardinalMk` proves the cardinal statement specialises back to the parent's exact order count, so the infinite version refines rather than competes with the finite one."
     ],
     "prerequisites": [
       "The parent entry's orbit bijection regularEquiv : H ≃ α and its predicates ActsTransitively, ActsFreely, IsRegular (cayleys-theorem-oq-01-oq-01-oq-02-oq-01)",
@@ -98,12 +99,20 @@
       "mathContext": "$\\mathrm{Infinite}\\,H \\iff \\mathrm{Infinite}\\,\\alpha$."
     },
     {
-      "id": "conclusion",
-      "title": "Packaged Converse and Consistency",
+      "id": "packaged-converse",
+      "title": "The Packaged Infinite Converse",
       "startLine": 71,
+      "endLine": 80,
+      "summary": "regular_iff_cardinalMk_and_sharp: from IsRegular H over an arbitrary nonempty α, the full converse holds — #H = #α (via cardinalMk_eq_of_free_transitive) together with sharp transitivity (the parent's existsUnique_of_free_transitive, already proved for arbitrary α). This is the parent's regular_iff_card_and_sharp with the finite order count replaced by the cardinal equality, the sharp-transitivity half reused verbatim.",
+      "mathContext": "Regular $H \\Rightarrow \\#H = \\#\\alpha \\ \\wedge\\ \\forall i\\,j,\\ \\exists!\\,\\sigma\\in H,\\ \\sigma i = j$, for arbitrary nonempty $\\alpha$."
+    },
+    {
+      "id": "finite-consistency",
+      "title": "Consistency with the Finite Parent",
+      "startLine": 82,
       "endLine": 90,
-      "summary": "regular_iff_cardinalMk_and_sharp: from IsRegular H over arbitrary nonempty α, both #H = #α and sharp transitivity (parent's existsUnique_of_free_transitive). natCard_eq_of_cardinalMk: for finite α the result refines to the parent's Nat.card H = Fintype.card α, confirming the infinite statement extends the finite one.",
-      "mathContext": "Regular $H \\Rightarrow \\#H = \\#\\alpha \\wedge$ sharply transitive; refines to $|H| = n$ when finite."
+      "summary": "natCard_eq_of_cardinalMk: for finite nonempty α the cardinal equality #H = #α refines to the parent's Nat.card H = Fintype.card α (via fintypeCard_eq_of_free_transitive). This certifies the infinite statement genuinely EXTENDS the finite one — specialising back to the exact order count — rather than replacing it with a competing invariant.",
+      "mathContext": "For finite $\\alpha$: $\\#H = \\#\\alpha$ specialises to $|H| = |\\alpha| = n$, recovering the parent's order count."
     }
   ],
   "crossReferences": [
