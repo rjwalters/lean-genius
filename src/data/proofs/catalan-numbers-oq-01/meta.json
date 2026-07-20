@@ -89,19 +89,35 @@
     },
     {
       "id": "linear-recurrence",
-      "title": "The Linear Recurrence",
+      "title": "The Linear Recurrence: Statement and Central-Binomial Bridge",
       "startLine": 26,
+      "endLine": 39,
+      "summary": "catalan_linear_recurrence: states (n+2)·C(n+1) = 2(2n+1)·C(n) and sets up the three Mathlib bridge identities to central binomial coefficients — h1 = succ_mul_catalan_eq_centralBinom (n+1), h2 = Nat.succ_mul_centralBinom_succ n, h3 = succ_mul_catalan_eq_centralBinom n — which convert the Catalan recurrence into an identity purely in the central binomials.",
+      "mathContext": "$(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, with bridge $(n+1)C_n = B_n$ and $(n+1)B_{n+1} = 2(2n+1)B_n$ where $B_n = \\binom{2n}{n}$."
+    },
+    {
+      "id": "cancellation",
+      "title": "Multiply-and-Cancel Closing the Recurrence",
+      "startLine": 40,
       "endLine": 48,
-      "summary": "catalan_linear_recurrence: instantiates succ_mul_catalan_eq_centralBinom at n and n+1 and Nat.succ_mul_centralBinom_succ at n, multiplies the goal by n+1, runs the calc chain through the central binomials, and cancels n+1 with Nat.eq_of_mul_eq_mul_left.",
-      "mathContext": "$(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$."
+      "summary": "Multiplies the goal by the positive factor n+1 (Nat.eq_of_mul_eq_mul_left with 0 < n+1) and runs a calc chain through the central binomials — rewrite by h1, apply h2, rewrite back by h3, close by ring — reducing the target to a ℕ ring identity, after which the n+1 factor cancels to give the recurrence.",
+      "mathContext": "$(n+1)(n+2)C_{n+1} = (n+1)B_{n+1} = 2(2n+1)B_n = (n+1)\\,2(2n+1)C_n$, then cancel the positive factor $n+1$."
     },
     {
       "id": "division-form",
-      "title": "Exact-Division Corollary and Numeric Check",
+      "title": "Exact-Division Corollary",
       "startLine": 50,
+      "endLine": 56,
+      "summary": "catalan_succ_eq_div: the recurrence solved for catalan (n+1) as an exact ℕ division C(n+1) = 2(2n+1)·C(n) / (n+2) via Nat.mul_div_cancel_left — the division is exact because n+2 divides the left-hand side — exhibiting the O(1) forward computational step.",
+      "mathContext": "$C_{n+1} = 2(2n+1)\\,C_n / (n+2)$ (exact division over $\\mathbb{N}$)."
+    },
+    {
+      "id": "sanity-check",
+      "title": "Numeric Sanity Check",
+      "startLine": 58,
       "endLine": 63,
-      "summary": "catalan_succ_eq_div: the recurrence solved for catalan (n+1) as an exact ℕ division via Nat.mul_div_cancel_left; followed by a worked example deriving catalan 4 = 14 from catalan 3 = 5 through the recurrence (axiom-free, no native_decide).",
-      "mathContext": "$C_{n+1} = 2(2n+1)\\,C_n / (n+2)$."
+      "summary": "A worked example deriving catalan 4 = 14 from catalan 3 = 5 in a single application of the linear recurrence (instantiate at n = 3, unfold catalan_three with norm_num, close with omega); axiom-free, no native_decide.",
+      "mathContext": "At $n=3$: $(3+2)\\,C_4 = 2(2\\cdot3+1)\\,C_3 = 14\\cdot 5 = 70$, so $C_4 = 70/5 = 14$."
     }
   ],
   "mainTheorems": [
