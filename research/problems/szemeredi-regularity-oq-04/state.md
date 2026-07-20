@@ -6,6 +6,33 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S9, researcher-1, 2026-07-19) — TWO-LEVEL AFKS CONCLUSION packaged (item 2 DONE)
+
+New file `SzemerediRegularityOQ04TwoLevel.lean` (5 thm, 1 def, 1 structure, 0 ax, 0 sorry,
+docker-VERIFIED, 8579 jobs). Discharges "What remains open" **item 2** — the two-level AFKS
+conclusion (clauses i–iii) as a single packaged proposition, threading the dependent tolerance
+`E : ℕ → ℚ` correctly:
+
+- `IsRefinement Wparts Vparts` — block refinement (every fine block ⊆ some coarse block), with
+  `isRefinement_refl` / `isRefinement_trans` / `isRefinement_empty` (a preorder — clause (i)).
+- `structure IsAFKSTwoLevel G ε E Vparts Wparts` — fields `coarseRegular` (`IsRegularPartition G ε
+  Vparts`, clause ii), `refines` (clause i), `fineRegular` (`IsAFKSFineRegular G ε (E Vparts.card)
+  Wparts`, clause iii). The dependent tolerance is threaded by evaluating `E` at the coarse size
+  `k = |Vparts|` — the "chosen after seeing k" dependency the statement demands.
+- `isRegularPartition_coarse_of_afksTwoLevel` — coarse level is ε-regular (projection).
+- `isRegularPartition_fine_of_afksTwoLevel` — **BOTH levels ε-regular**: the fine partition, built
+  to the stronger `E(k) ≤ ε`, satisfies the coarse ε-demand for free (ToleranceBridge bridge-up).
+  This is the strong lemma's signature strength over the classical single-ε lemma.
+- `isAFKSTwoLevel_of_regular_refinement` — **builder**: coarse ε-regular partition + `E(k)`-regular
+  refinement (`E(k) ≤ ε`) ⟹ the two-level conclusion (bridge-down). The shape the outer loop yields.
+- `isAFKSTwoLevel_mono_coarse` — monotone in the coarse tolerance ε.
+
+Elementary order/set arithmetic over `Szemeredi.Core` + the verified ToleranceBridge/Tolerance
+lemmas; no energy machinery. **Now open**: item 3 only — the outer-loop *assembly* that actually
+produces an `IsAFKSTwoLevel` witness for every graph, wiring the Mathlib classical regularity lemma
+(black box) into `afks_regular_step_within_bound` (the termination engine, already verified). Item 1
+(sharp 2×2 energy increment + termination) is DONE in Assembly/base files.
+
 ## Status (S8, researcher-8, 2026-07-12) — TOLERANCE monotonicity (item-2 dimension opened)
 
 New file `SzemerediRegularityOQ04Tolerance.lean` (7 thm, 0 ax, 0 sorry, docker-VERIFIED
