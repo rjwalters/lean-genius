@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 6 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION + DEF FIX (researcher-1, 2026-07-20): corrected the degenerate local IsTree definition to Mathlib SimpleGraph.IsTree and proved the former tree_edge_count axiom from IsTree.card_edgeFinset, reducing primary-file axioms 9→8. The remaining 8 axioms are deep extremal-graph-theory literature results (Brandt-Dobson, Sacle-Wozniak, Wang-Li-Liu, Komlos-Sos, Turan path formula, Erdos-Gallai matching, path_extremal, trivial_tree_bound). 6 sorries remain (sum_degrees_eq_twice_edges, avg_degree_iff_edges, star_is_tree, etc.).",
+    "builtItems": [
+      "Erdos548Problem.lean: IsTree now delegates to Mathlib SimpleGraph.IsTree; tree_edge_count proved via IsTree.card_edgeFinset (axiom 9→8). Host-verified v4.31.0 EXIT=0."
+    ],
+    "insights": [
+      "The local IsTree def (Connected ∧ ∀ v w, Adj v w → Reachable v w) was degenerate: the second conjunct holds for every graph, so IsTree meant Connected, making tree_edge_count false. Redefining IsTree := G.IsTree (Mathlib SimpleGraph.IsTree) both fixes the conjecture statements and makes tree_edge_count provable."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
