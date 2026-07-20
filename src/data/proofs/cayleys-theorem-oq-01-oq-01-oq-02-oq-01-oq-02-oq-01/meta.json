@@ -105,12 +105,20 @@
       "mathContext": "$e^{-1}\\sigma e = L_\\sigma$ on $H$: the action IS the left-regular representation."
     },
     {
-      "id": "abelian-sufficient",
-      "title": "Abelian Transitive Actions Are Free",
+      "id": "abelian-free",
+      "title": "A Checkable Sufficient Condition: Abelian Transitive ⇒ Free",
       "startLine": 121,
+      "endLine": 161,
+      "summary": "The section banner motivates freeness as the delicate hypothesis of the whole chain, then supplies a purely algebraic sufficient condition. actsFreely_of_abelian_transitive is the substantive result: if H is transitive and pairwise-commuting, any point-fixing σ is the identity, via the commutation chain σb = σ(τa) = (στ)a = (τσ)a = τ(σa) = τa = b (transitivity picks τ with τ·a = b; commutativity swaps στ = τσ). isRegular_of_abelian_transitive is the immediate corollary — transitivity is assumed, freeness now supplied — so a transitive abelian subgroup is regular.",
+      "mathContext": "$\\sigma a = a \\Rightarrow \\sigma b = \\sigma(\\tau a) = (\\sigma\\tau)a = (\\tau\\sigma)a = \\tau(\\sigma a) = \\tau a = b$: commutativity forces the point-stabiliser to be trivial."
+    },
+    {
+      "id": "abelian-consequences",
+      "title": "Cardinality and the Explicit Representation for Abelian Subgroups",
+      "startLine": 162,
       "endLine": 202,
-      "summary": "actsFreely_of_abelian_transitive (transitive + pairwise-commuting ⇒ free, via σb = σ(τa) = (στ)a = (τσ)a = τ(σa) = τa = b), then isRegular_of_abelian_transitive, cardinalMk_eq_of_abelian_transitive, natCard_eq_of_abelian_transitive, isExplicitRegularRepresentation_of_abelian_transitive, and actsFreely_of_isMulCommutative_transitive (the IsMulCommutative typeclass restatement).",
-      "mathContext": "Transitive abelian permutation groups are regular; commutativity supplies freeness for free."
+      "summary": "The consequences of freeness-from-commutativity, obtained by feeding actsFreely_of_abelian_transitive into the parent's converse and this entry's representation theorem. cardinalMk_eq_of_abelian_transitive gives #H = #α for arbitrary nonempty α; natCard_eq_of_abelian_transitive is its finite specialisation Nat.card H = Fintype.card α. The capstone isExplicitRegularRepresentation_of_abelian_transitive: a transitive abelian H ≤ Sym(α) carries the explicit regular representation, with no finiteness or freeness hypothesis. Finally actsFreely_of_isMulCommutative_transitive restates the freeness condition through Mathlib's IsMulCommutative typeclass (Subgroup.mul_comm_of_mem_isMulCommutative).",
+      "mathContext": "$\\#H = \\#\\alpha$ and $e^{-1}\\sigma e = L_\\sigma$ for transitive abelian $H$ — commutativity alone unlocks the entire regular-representation picture, finiteness-free."
     }
   ],
   "crossReferences": [
