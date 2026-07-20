@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Batch 2 axiom-free lemmas landed (Section 8): k=1 base case (erdosProblem53_exponent_one), distinct-prime richness |subsetProducts A|=2^|A|-1, trivial upper bracket 2^(|A|+1). Theorem count 12->24, 0 axioms, host-verified.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional: small decide computations of |sumsOrProducts A| for tiny explicit A (problem.md item iii). Chang theorem + Erdős–Szemerédi upper bound stay documented (out of Mathlib scope).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,8 @@
     ],
     "insights": [
       "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
-      "Clean generic Finset targets that generalize across these stubs: image-of-powerset card bound (card_image_le + card_powerset gives <= 2^|A|), image-of-product card bound (card_image_le + card_product gives <= |A|^2), monotonicity via powerset_mono + image_subset_image, membership via singleton subset."
+      "Clean generic Finset targets that generalize across these stubs: image-of-powerset card bound (card_image_le + card_powerset gives <= 2^|A|), image-of-product card bound (card_image_le + card_product gives <= |A|^2), monotonicity via powerset_mono + image_subset_image, membership via singleton subset.",
+      "k=1 slice of Problem 53 is elementary: A ⊆ subsetSums A ⊆ sumsOrProducts A gives |A| ≤ |sumsOrProducts A| (erdosProblem53_exponent_one, N₀=0). Distinct-prime richness |subsetProducts A|=2^|A|-1 requires 0<p (Prime over ℤ is closed under negation; positivity kills the p↔-p product collision). Proved axiom-free via Prime.dvd_finsetProd_iff + Prime.associated_of_dvd + Int.associated_iff_natAbs."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -64,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-10T00:41:25.928Z",
+  "lastUpdate": "2026-07-20",
   "significance": 7,
   "tractability": 6
 }

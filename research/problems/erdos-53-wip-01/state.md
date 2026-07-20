@@ -4,13 +4,13 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-07-09T17:33:19-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Batch 2 of axiom-free lemmas landed (Section 8): k=1 base case, distinct-prime richness 2^|A|-1, trivial upper bracket. Theorem count 12 -> 24, still 0 axioms.
 
 ## Active Approach
-None yet.
+Elementary structural formalization of subset-sum/product sets; Chang deep theorem stays documented.
 
 ## Attempt Count
 - Total attempts: 0
@@ -21,5 +21,4 @@ None yet.
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Optional: small decide computations of |sumsOrProducts A| for tiny explicit A (problem.md item iii). Chang/Erdős–Szemerédi upper bound out of Mathlib scope.

@@ -194,4 +194,130 @@ theorem productset_card_le (A : Finset ℤ) : (productset A).card ≤ A.card ^ 2
 theorem subsetSums_empty : subsetSums (∅ : Finset ℤ) = {0} := by
   rw [subsetSums, Finset.powerset_empty, Finset.image_singleton, Finset.sum_empty]
 
+/-
+## Section 8: The `k = 1` base case, the trivial upper bracket, and
+distinct-prime richness (all axiom-free)
+
+Section 7 recorded structural facts about `subsetSums`.  Here we (i) prove the
+`k = 1` slice of the Erdős–Szemerédi lower bound — the one instance of Problem 53
+that is elementary — (ii) supply the matching trivial *upper* bracket
+`|sumsOrProducts A| ≤ 2^{|A|+1}`, (iii) fill in the missing `subsetProducts`
+analogues of the Section-7 `subsetSums` lemmas, and (iv) prove the distinct-prime
+richness fact `|subsetProducts A| = 2^{|A|} - 1` (Chang's problem.md "Key lemma 2"),
+which shows the trivial upper bound is *attained* for sets of distinct primes.  All
+lemmas remain axiom-free (`propext / Classical.choice / Quot.sound` only). -/
+
+/-- Every element of `A` is a subset sum, so `A ⊆ subsetSums A`. -/
+theorem subset_subsetSums (A : Finset ℤ) : A ⊆ subsetSums A :=
+  fun _ ha => mem_subsetSums_of_mem ha
+
+/-- The representable count is at least `|A|`: the ground set embeds into the
+    subset sums, which in turn sit inside `sumsOrProducts A`. -/
+theorem card_le_sumsOrProducts (A : Finset ℤ) : A.card ≤ (sumsOrProducts A).card :=
+  Finset.card_le_card ((subset_subsetSums A).trans (subsetSums_subset_sumsOrProducts A))
+
+/-- **Erdős Problem 53 holds for the exponent `k = 1`.** Taking `N₀ = 0`, every
+    finite `A` already satisfies `|sumsOrProducts A| ≥ |A|^1`.  This is the
+    elementary base case of the Erdős–Szemerédi lower bound; the deep content of
+    Chang's theorem is the growth to `|A|^k` for every `k`, which stays
+    documented (not axiomatized) above. -/
+theorem erdosProblem53_exponent_one :
+    ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ → (sumsOrProducts A).card ≥ A.card ^ 1 := by
+  refine ⟨0, fun A _ => ?_⟩
+  simpa using card_le_sumsOrProducts A
+
+/-- `subsetProducts` of the empty set is empty: there are no nonempty subsets. -/
+theorem subsetProducts_empty : subsetProducts (∅ : Finset ℤ) = ∅ := by
+  rw [subsetProducts, Finset.powerset_empty]
+  simp
+
+/-- There are at most `2^{|A|}` subset products (image of a subfamily of the
+    powerset). -/
+theorem subsetProducts_card_le (A : Finset ℤ) : (subsetProducts A).card ≤ 2 ^ A.card := by
+  rw [subsetProducts]
+  calc ((A.powerset.filter (fun S => S.Nonempty)).image (fun S => S.prod id)).card
+      ≤ (A.powerset.filter (fun S => S.Nonempty)).card := Finset.card_image_le
+    _ ≤ A.powerset.card := Finset.card_filter_le _ _
+    _ = 2 ^ A.card := Finset.card_powerset A
+
+/-- Subset products are monotone in the ground set. -/
+theorem subsetProducts_mono {A B : Finset ℤ} (h : A ⊆ B) :
+    subsetProducts A ⊆ subsetProducts B := by
+  rw [subsetProducts, subsetProducts]
+  exact Finset.image_subset_image (Finset.filter_subset_filter _ (Finset.powerset_mono.mpr h))
+
+/-- The sum-or-product representable set is monotone in the ground set. -/
+theorem sumsOrProducts_mono {A B : Finset ℤ} (h : A ⊆ B) :
+    sumsOrProducts A ⊆ sumsOrProducts B := by
+  rw [sumsOrProducts, sumsOrProducts]
+  exact Finset.union_subset_union (subsetSums_mono h) (subsetProducts_mono h)
+
+/-- `0` is always representable (as the empty subset sum). -/
+theorem zero_mem_sumsOrProducts (A : Finset ℤ) : (0 : ℤ) ∈ sumsOrProducts A :=
+  subsetSums_subset_sumsOrProducts A (zero_mem_subsetSums A)
+
+/-- The representable set is always nonempty. -/
+theorem sumsOrProducts_nonempty (A : Finset ℤ) : (sumsOrProducts A).Nonempty :=
+  ⟨0, zero_mem_sumsOrProducts A⟩
+
+/-- Trivial upper bracket: the representable count is at most `2^{|A|+1}`.
+    Together with `card_le_sumsOrProducts` this pins `|sumsOrProducts A|` between
+    `|A|` and `2^{|A|+1}`; Chang's theorem sharpens the *lower* end to `|A|^k`. -/
+theorem sumsOrProducts_card_le (A : Finset ℤ) :
+    (sumsOrProducts A).card ≤ 2 ^ (A.card + 1) := by
+  rw [sumsOrProducts]
+  calc (subsetSums A ∪ subsetProducts A).card
+      ≤ (subsetSums A).card + (subsetProducts A).card := Finset.card_union_le _ _
+    _ ≤ 2 ^ A.card + 2 ^ A.card :=
+        Nat.add_le_add (subsetSums_card_le A) (subsetProducts_card_le A)
+    _ = 2 ^ (A.card + 1) := by rw [pow_succ]; ring
+
+/-- For a set `A` of **distinct positive primes**, subset products are pairwise
+    distinct: a positive prime `p ∈ A` divides `∏ S` iff `p ∈ S`, so the subset
+    is recovered from its product.  (Positivity rules out the `p ↔ -p` collision
+    that `Prime` alone permits over `ℤ`.) -/
+theorem subsetProd_injOn_of_prime {A : Finset ℤ}
+    (hA : ∀ p ∈ A, Prime p) (hpos : ∀ p ∈ A, 0 < p) :
+    Set.InjOn (fun S => S.prod id) (A.powerset : Set (Finset ℤ)) := by
+  have key : ∀ U : Finset ℤ, U ⊆ A → ∀ p, p ∈ A → (p ∈ U ↔ p ∣ U.prod id) := by
+    intro U hU p hp
+    refine ⟨fun hpU => Finset.dvd_prod_of_mem id hpU, fun hdvd => ?_⟩
+    rcases (Prime.dvd_finsetProd_iff (hA p hp) id).mp hdvd with ⟨x, hxU, hpx⟩
+    have hxA : x ∈ A := hU hxU
+    have hnat : p.natAbs = x.natAbs :=
+      Int.associated_iff_natAbs.mp ((hA p hp).associated_of_dvd (hA x hxA) hpx)
+    have hp' : (p.natAbs : ℤ) = p := Int.natAbs_of_nonneg (le_of_lt (hpos p hp))
+    have hx' : (x.natAbs : ℤ) = x := Int.natAbs_of_nonneg (le_of_lt (hpos x hxA))
+    have hpx' : p = x := by rw [← hp', ← hx', hnat]
+    rw [hpx']; exact hxU
+  intro S hS T hT hST
+  rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+  have hST : S.prod id = T.prod id := hST
+  apply Finset.ext
+  intro p
+  by_cases hp : p ∈ A
+  · rw [key S hS p hp, key T hT p hp, hST]
+  · exact ⟨fun h => absurd (hS h) hp, fun h => absurd (hT h) hp⟩
+
+/-- **Distinct-prime richness (problem.md "Key lemma 2").** For a set `A` of
+    distinct positive primes, the number of distinct nonempty subset products is
+    exactly `2^{|A|} - 1` — unique factorization makes every nonempty subset
+    yield a different product.  This exhibits sets attaining the trivial upper
+    bound `sumsOrProducts_card_le` on the multiplicative side. -/
+theorem subsetProducts_card_of_prime {A : Finset ℤ}
+    (hA : ∀ p ∈ A, Prime p) (hpos : ∀ p ∈ A, 0 < p) :
+    (subsetProducts A).card = 2 ^ A.card - 1 := by
+  have hsub : (↑(A.powerset.filter (fun S => S.Nonempty)) : Set (Finset ℤ)) ⊆ ↑A.powerset :=
+    Finset.coe_subset.mpr (Finset.filter_subset _ _)
+  have hinj : Set.InjOn (fun S => S.prod id)
+      (↑(A.powerset.filter (fun S => S.Nonempty)) : Set (Finset ℤ)) :=
+    Set.InjOn.mono hsub (subsetProd_injOn_of_prime hA hpos)
+  rw [subsetProducts, Finset.card_image_of_injOn hinj]
+  have hfe : A.powerset.filter (fun S => S.Nonempty) = A.powerset.erase ∅ := by
+    ext S
+    simp only [Finset.mem_filter, Finset.mem_erase, Finset.mem_powerset,
+      Finset.nonempty_iff_ne_empty]
+    tauto
+  rw [hfe, Finset.card_erase_of_mem (Finset.empty_mem_powerset A), Finset.card_powerset]
+
 end Erdos53

@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/53",
     "erdosProblemStatus": "proved",
     "axiomCount": 0,
-    "lineCount": 197,
+    "lineCount": 323,
     "prerequisites": [
       "Sumsets and product sets",
       "Additive vs multiplicative structure",
@@ -29,7 +29,7 @@
     ],
     "assumptions": "0 axioms, 0 sorries. The file states the problem (defs subsetSums, subsetProducts, sumsOrProducts, ErdosProblem53, sumset, productset, SumProductConjecture, subsetSumCount, subsetProductCount) and proves 12 axiom-free foundational lemmas about those definitions. The Erdos-Szemeredi conjecture (Chang 2003) and the exp((log|A|)^2 loglog|A|) upper bound require deep additive combinatorics beyond current Mathlib and remain described in doc-comments only, NOT formalized. The formalized lemmas are elementary: subset-sum/product membership (0 and each element), inclusion of subset sums/products into sumsOrProducts, the 2^|A| bound on subset sums, monotonicity, the |A|^2 bounds on the sumset/product set, and subsetSums(emptyset)={0}.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 12,
+    "theoremCount": 24,
     "definitionCount": 9
   },
   "overview": {
@@ -124,9 +124,9 @@
       "Finset"
     ],
     "namespace": "Erdos53",
-    "lineCount": 197,
+    "lineCount": 323,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 24,
     "definitionCount": 9,
     "path": "Proofs/Erdos53Problem.lean",
     "sorries": 0
