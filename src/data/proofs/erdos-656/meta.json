@@ -40,13 +40,11 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of upper density and positive upper density",
+      "Positive/natural upper density predicates (upperDensity and lowerDensity themselves are axiomatized)",
       "Definition of sumsets B + B and shifted sumsets B + B + t",
-      "Statement of Hindman's theorem with finite sums FS(B)",
-      "Statement of the Erdős conjecture (1975)",
-      "Axiomatization of the Kra-Moreira-Richter-Robertson theorem (2024)",
-      "Related results: Sárközy's theorem, Furstenberg correspondence",
-      "High density case where shift t = 0 suffices"
+      "Definitions supporting Hindman's theorem: finite sums FS(B), colorings, monochromatic sets (Hindman's theorem itself is stated as background prose, not a declaration)",
+      "Statement of the Erdős conjecture (1975) as ErdosConjecture656",
+      "Axiomatization of the Kra-Moreira-Richter-Robertson theorem (2024) and the derived erdos_656"
     ],
     "axiomCount": 4,
     "lineCount": 185,
@@ -96,10 +94,10 @@
     {
       "id": "hindman",
       "title": "Hindman's Theorem (Background)",
-      "summary": "Finite sums FS(B), colorings, IsMonochromatic, and Hindman's theorem",
+      "summary": "Definitions of finite sums FS(B), colorings, IsMonochromatic; Hindman's theorem stated as background prose",
       "startLine": 96,
       "endLine": 127,
-      "mathContext": "Verified: Finite sums FS(B), colorings, IsMonochromatic, and Hindman's theorem"
+      "mathContext": "Definitions: finiteSums (FS(B)), Coloring, IsMonochromatic. Hindman's theorem itself is a background comment, not a Lean declaration."
     },
     {
       "id": "conjecture",
@@ -112,18 +110,18 @@
     {
       "id": "solution",
       "title": "The Solution (2024)",
-      "summary": "Kra-Moreira-Richter-Robertson theorem and high density case",
+      "summary": "Kra-Moreira-Richter-Robertson theorem (axiomatized) and the derived erdos_656",
       "startLine": 156,
       "endLine": 178,
-      "mathContext": "Verified: Kra-Moreira-Richter-Robertson theorem and high density case"
+      "mathContext": "Axiomatized: axiom kra_moreira_richter_robertson : ErdosConjecture656; erdos_656 is derived from it. No high-density-case result is formalized (mentioned only as a key insight)."
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy",
+      "summary": "Related-results and Furstenberg-correspondence background comments; only the abstract MeasurePreservingSystem type is axiomatized here",
       "startLine": 179,
       "endLine": 185,
-      "mathContext": "Verified: Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy"
+      "mathContext": "Background comments referencing Sárközy's theorem and the Furstenberg correspondence; the only declaration in this range is axiom MeasurePreservingSystem : Type. None of these related results are formalized."
     }
   ],
   "conclusion": {
@@ -134,7 +132,7 @@
       "Can the shift t be bounded in terms of the density d̄(A)?",
       "Does the theorem extend to B + B + B + t or higher sumsets?",
       "What is the structure of the set B produced by the theorem?",
-      "Complete proofs of the 22 axiomatized results"
+      "Complete proofs of the 4 axiomatized results (upperDensity, lowerDensity, kra_moreira_richter_robertson, MeasurePreservingSystem)"
     ]
   },
   "leanFile": {
