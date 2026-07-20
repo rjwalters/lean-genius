@@ -1,8 +1,8 @@
 {
   "slug": "erdos-744-incomplete-01",
   "title": "Erdős #744: Critical Graphs — Complete `bipartitionNumber` definition",
-  "phase": "OBSERVE",
-  "status": "completed",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -20,8 +20,14 @@
     "since": "2026-04-03T08:17:23-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "blockers": [
+      {
+        "route": "genuine formalization of Erdős #744 (faithful f_k(n) + real Rödl–Tuza bound)",
+        "reopenCriterion": "materially new mechanism required — needs (a) redefining f k n = sInf over k-critical graphs on Fin n of bipartitionNumber (definable, ~session-sized) AND (b) the deep Rödl–Tuza 1985 bound, which is not in Mathlib. Only attempt (a)+(b) together; adding (a) alone would turn every downstream theorem into a sorry and regress the file.",
+        "blockedAt": "2026-07-19"
+      }
+    ],
+    "nextAction": "Do NOT discharge rodl_tuza_theorem to claim verification (would launder the stub). Genuine progress requires a faithful minimisation definition of f_k(n) plus the deep Rödl–Tuza bound (not in Mathlib) — see currentState.blockers. Pool set to blocked.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + extended (Part 3e added): complement Gc and complete graph Kn introduced (both absent before); per-coloring partition monochromaticEdges G + Gc = Kn, its edgeCount specialization edgeCount G + Gc = Kn, and both cut-invariant sums bounded by edgeCount Kn. All 0-axiom (tautological Rodl-Tuza axiom untouched). File: 0 sorries, 1 axiom, 47 theorems, 1114 lines.",
+    "progressSummary": "AXIOMATIZED / DEFINITIONAL-THEATER (corrected from prior COMPLETE overclaim): the file compiles 0-sorry with 1 axiom, but `f` is a placeholder that hardcodes the Rödl–Tuza answer, so the axiom is tautological and the disproof vacuous w.r.t. the real f_k(n). Added in-file integrity warnings against laundering. v4.31 re-verified clean (deprecations cleared). Genuine formalization is deep-blocked on the real Rödl–Tuza bound.",
     "builtItems": [
       "monochromaticEdges G c : ℕ — count of same-colored adjacent pairs u<v (Erdos744Problem.lean:99)",
       "bipartitionNumber G := inf over c:V→Bool of monochromaticEdges G c — total, sorry-free, no chromaticNumber axiom (Erdos744Problem.lean:115)",
@@ -53,7 +59,10 @@
       "Both extremal invariants grow with the graph: bipartitionNumber_mono (min-uncut side) and maxCut_mono (max-cut side) are duals, each reducing to per-colouring monotonicity of monochromatic/bichromatic edge counts. This is the formal content of Erdős's original growth intuition for f_k, cleanly separated from the (false) asymptotic-divergence claim.",
       "Single-edge Lipschitz continuity: adding one edge {a,b} raises both bipartitionNumber and maxCut by AT MOST 1 (they land in {v(G), v(G)+1}). This sharpens the earlier monotonicity (which only gave ≥) with a matching +1 upper bound — the exact modulus of continuity for the edge-edit metric. Proof: for a fixed coloring the monochromatic/bichromatic edge set of H is contained in that of G together with the single added ordered pair (a,b), so its card rises by ≤1 (Finset.card_insert_le); transfer through the optimal coloring.",
       "Complement/complete-graph give a genuinely new direction orthogonal to the saturated single-graph max-cut/min-uncut square: G join Gc = Kn at the coloring level partitions monochromatic counts.",
-      "ne_of_lt discharges the p.1 != p.2 conjunct of complement/completeGraph adjacency; tauto cannot derive != from <, so filter-equality steps need explicit iff witnesses."
+      "ne_of_lt discharges the p.1 != p.2 conjunct of complement/completeGraph adjacency; tauto cannot derive != from <, so filter-equality steps need explicit iff witnesses.",
+      "INTEGRITY FINDING (2026-07-19, researcher-1): the central function `f k n` is a PLACEHOLDER — it hardcodes the Rödl–Tuza answer (k-1)(k-2)/2 and is CONSTANT in n, not the intended min over k-critical graphs on n vertices. Consequence: the sole axiom `rodl_tuza_theorem` is TAUTOLOGICAL (provable by `unfold f`, N₀=0), and `erdos_conjecture_false`/`erdos_744_statement` are VACUOUS w.r.t. the real f_k(n). The file is definitional theater, not a genuine formalization of #744. Gallery meta correctly labels it axiomatized/badge:axiom.",
+      "Added prominent in-file INTEGRITY WARNINGs on `def f` and `axiom rodl_tuza_theorem` explicitly forbidding laundering: do NOT discharge the axiom via `unfold f` to claim 0-axiom verification — that would present a stub as verified.",
+      "v4.31 re-verify + clean (host, lake env lean, EXIT 0, now zero warnings): cleared 5 deprecations (2× push_neg→push Not, 3× Finset.filter_card_add_filter_neg_card_eq_card→Finset.card_filter_add_card_filter_not) and 2 unused-variable lints. File last built under v4.26."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -199,7 +199,7 @@ theorem bipartitionNumber_pos_iff {V : Type*} [Fintype V] [LinearOrder V]
   constructor
   · intro h c
     have hc := h c
-    push_neg at hc
+    push Not at hc
     exact hc
   · intro h c hc
     obtain ⟨u, v, hadj, huv⟩ := h c
@@ -292,7 +292,7 @@ theorem monochromaticEdges_add_bichromaticEdges {V : Type*} [Fintype V] [LinearO
           (fun p => ¬ c p.1 = c p.2)).card := by
     rw [bichromaticEdges, Finset.filter_filter]
     congr 1; ext p; simp only [Finset.mem_filter, ne_eq]; tauto
-  rw [hmono, hbi, Finset.filter_card_add_filter_neg_card_eq_card]
+  rw [hmono, hbi, Finset.card_filter_add_card_filter_not]
   rfl
 
 /-- **Max-cut of `G`.** The maximum number of edges separated by a 2-coloring,
@@ -503,7 +503,7 @@ theorem card_colorings_cut {V : Type*} [Fintype V] [LinearOrder V] (u v : V)
   have hpart : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
       + (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card
       = Fintype.card (V → Bool) := by
-    rw [Finset.filter_card_add_filter_neg_card_eq_card]; rfl
+    rw [Finset.card_filter_add_card_filter_not]; rfl
   have hcard : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
       = (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card := by
     apply Finset.card_bij'
@@ -834,7 +834,7 @@ theorem monochromaticEdges_add_complement {V : Type*} [Fintype V] [LinearOrder V
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, complement]
     exact ⟨fun ⟨h1, ⟨_, h3⟩, h4⟩ => ⟨⟨h1, h4⟩, h3⟩,
       fun ⟨⟨h1, h4⟩, h3⟩ => ⟨h1, ⟨ne_of_lt h1, h3⟩, h4⟩⟩
-  rw [hbase, hG, hGc, Finset.filter_card_add_filter_neg_card_eq_card]
+  rw [hbase, hG, hGc, Finset.card_filter_add_card_filter_not]
 
 /-- `edgeCount` is the monochromatic count of the constant `true` coloring: every
 edge is monochromatic when all endpoints share a color. -/
@@ -882,9 +882,30 @@ theorem bipartitionNumber_add_bipartitionNumber_complement_le {V : Type*} [Finty
 f_k(n) = min { bipartitionNumber(G) : G is k-critical on n vertices }
 
 This is the central function studied in Erdős Problem #744.
+
+⚠️ **INTEGRITY WARNING — this `f` is a PLACEHOLDER, not a faithful model of f_k(n).**
+The intended `f_k(n)` is a genuine minimisation over all k-critical graphs on `n`
+vertices, and the whole content of #744 is whether that quantity grows with `n`.
+The definition below instead **hardcodes the Rödl–Tuza answer** `(k-1)(k-2)/2`,
+making `f` a constant in `n`. Consequences:
+
+* `rodl_tuza_theorem` (below) is **tautological** under this definition — it is
+  provable by `unfold f` (take `N₀ = 0`), so it carries no real mathematical
+  content. **Do NOT convert it to a `theorem` to claim the file is "verified"** —
+  that would launder a stub into a false 0-axiom claim. The axiom is kept
+  deliberately to flag that the deep Rödl–Tuza result is *assumed*, not formalised.
+* `erdos_conjecture_false` / `erdos_744_statement` are therefore **vacuous** with
+  respect to the real `f_k(n)`: they say nothing about the genuine minimisation.
+
+A faithful formalisation would define `f k n` as
+`sInf { bipartitionNumber G | G : SimpleGraph (Fin n), IsKCritical k G }` (a finite
+min, hence definable) and would then require the actual Rödl–Tuza bound — a deep
+1985 combinatorics result absent from Mathlib — to prove any of the statements
+below. See the problem tracker's `currentState.blockers` for the reopen criterion.
 -/
-noncomputable def f (k n : ℕ) : ℕ :=
-  -- We axiomatize the known values from Rödl-Tuza
+noncomputable def f (k _n : ℕ) : ℕ :=
+  -- PLACEHOLDER: hardcodes the Rödl–Tuza answer (see integrity warning above);
+  -- this is NOT the real min over k-critical graphs. `_n` is intentionally unused.
   if k < 3 then 0
   else if k = 3 then 1  -- Odd cycles: remove 1 edge
   else (k - 1) * (k - 2) / 2  -- Rödl-Tuza result for large n
@@ -902,7 +923,7 @@ For 3-chromatic critical graphs (odd cycles), removing any single edge
 makes the graph bipartite (gives a path). This is because the only
 3-critical graphs are odd cycles.
 -/
-theorem f_3_equals_1 (n : ℕ) (hn : n ≥ 3 ∧ n % 2 = 1) : f 3 n = 1 := by
+theorem f_3_equals_1 (n : ℕ) (_hn : n ≥ 3 ∧ n % 2 = 1) : f 3 n = 1 := by
   unfold f
   simp
 
@@ -961,6 +982,14 @@ tend to infinity — it stabilizes at a binomial coefficient.
 
 The key insight: in large k-critical graphs, the non-bipartiteness
 is concentrated in a small substructure of bounded size.
+
+⚠️ **TAUTOLOGICAL under the current placeholder `f`** (see the integrity warning
+on `def f`): because `f` is hardcoded to `(k-1)(k-2)/2`, this statement is provable
+by `unfold f` with `N₀ = 0` and encodes none of the real Rödl–Tuza content. It is
+kept as an `axiom` — rather than being discharged — precisely to signal that the
+deep 1985 result is *assumed*. Discharging it would falsely present a stubbed
+formalisation as verified. A genuine proof requires the faithful minimisation
+definition of `f` plus the actual Rödl–Tuza theorem.
 -/
 axiom rodl_tuza_theorem (k : ℕ) (hk : k ≥ 3) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, f k n = (k - 1) * (k - 2) / 2
@@ -1022,7 +1051,7 @@ shows f_k(n) never exceeds this bound.
 -/
 theorem erdos_conjecture_false : ¬erdosOriginalConjecture := by
   unfold erdosOriginalConjecture
-  push_neg
+  push Not
   use 4
   constructor
   · norm_num
