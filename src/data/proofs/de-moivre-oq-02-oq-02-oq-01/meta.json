@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials#Products_of_Chebyshev_polynomials",
     "date": "2026",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/DeMoivreOQ02OQ02OQ01.lean",
     "tags": [
       "chebyshev-polynomials",
@@ -20,13 +20,13 @@
       "finset-sum",
       "research"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 146,
-    "assumptions": "0 axioms, 0 sorries, but BUILD-PENDING — not yet machine-checked. The proof is fully written, but the flip-to-verified build (#24866) was terminated during the Mathlib cache download before this file was ever elaborated, so no successful compilation exists. Needs `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01` to confirm before any verified claim. Polynomial identity over any commutative ring R, for m : ℤ and n : ℕ.",
+    "assumptions": "0 axioms, 0 sorries. Machine-verified against Mathlib v4.31.0: `lake env lean Proofs/DeMoivreOQ02OQ02OQ01.lean` compiles cleanly, and `#print axioms U_mul_U` / `Ssum_rec` report dependence on only propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool). The earlier flip-to-verified build (#24866) had been aborted during the Mathlib cache download before the file was ever elaborated; that infrastructure gap is now resolved. Polynomial identity over any commutative ring R, for m : ℤ and n : ℕ.",
     "theoremCount": 6,
     "definitionCount": 1,
     "originalContributions": [
@@ -94,7 +94,7 @@
       "title": "Open Question, Answer, and Strategy",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Imports, module docstring, and setup. States the open question left by the parent T·U entry — can U_m·U_n be written purely as second-kind polynomials, with no T and no (1−x²) factor? — and answers YES with the linearization U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k}. Records the proof plan (sum recurrence + two-step induction), the build-pending status, and fixes the ambient commutative ring R.",
+      "summary": "Imports, module docstring, and setup. States the open question left by the parent T·U entry — can U_m·U_n be written purely as second-kind polynomials, with no T and no (1−x²) factor? — and answers YES with the linearization U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k}. Records the proof plan (sum recurrence + two-step induction) and fixes the ambient commutative ring R.",
       "mathContext": "$U_m \\cdot U_n = \\sum_{k=0}^{n} U_{m+n-2k} = U_{m+n} + U_{m+n-2} + \\cdots + U_{m-n}$ in $R[X]$."
     },
     {
