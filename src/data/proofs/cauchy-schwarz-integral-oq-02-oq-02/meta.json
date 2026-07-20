@@ -120,55 +120,55 @@
       "id": "header",
       "title": "Module Header, Imports, and Setup",
       "startLine": 1,
-      "endLine": 67,
+      "endLine": 57,
       "summary": "Imports Mathlib’s L2Space, Bochner integral, MeanInequalities, and InnerProductSpace modules. Docstring frames the question: can Minkowski be proved via the explicit Hölder chain without the black-box NormedAddCommGroup instance? Variable declarations for the measure space, measurable functions, and conjugate exponents.",
       "mathContext": "The Young-Hölder-Minkowski chain: $ab \\leq a^p/p + b^q/q$ $\\Rightarrow$ $\\int|fg| \\leq \\|f\\|_p\\|g\\|_q$ $\\Rightarrow$ $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, where $1/p + 1/q = 1$."
     },
     {
       "id": "young",
       "title": "Young’s Inequality",
-      "startLine": 68,
-      "endLine": 89,
+      "startLine": 58,
+      "endLine": 83,
       "summary": "Wraps Mathlib’s NNReal.young_inequality: ab ≤ a^p/p + b^q/q for conjugate exponents. The foundation of the chain; CS is the p=q=2 case.",
       "mathContext": "Young’s inequality: for $p, q > 1$ with $1/p + 1/q = 1$: $ab \\leq a^p/p + b^q/q$. Proof from convexity of exp (Jensen’s inequality)."
     },
     {
       "id": "holder",
       "title": "Hölder’s Inequality",
-      "startLine": 90,
-      "endLine": 122,
-      "summary": "Part II header and proof sketch (lines 90–104), then two Mathlib wrappers: holder_lintegral (lintegral form, lines 106–113) and holder_eLpNorm (eLpNorm form, lines 117–121). Hölder follows from Young by normalizing, applying Young pointwise, and integrating.",
+      "startLine": 84,
+      "endLine": 121,
+      "summary": "Part II header and proof sketch (lines 84–99), then two Mathlib wrappers: holder_lintegral (lintegral form, lines 100–108) and holder_eLpNorm (eLpNorm form, lines 109–121). Hölder follows from Young by normalizing, applying Young pointwise, and integrating.",
       "mathContext": "Hölder: $\\int|fg| \\leq (\\int|f|^p)^{1/p} (\\int|g|^q)^{1/q}$. Proof: WLOG $\\|f\\|_p = \\|g\\|_q = 1$, apply Young pointwise, integrate: $\\int|fg| \\leq 1/p + 1/q = 1$."
     },
     {
       "id": "factoring-trick",
       "title": "The Factoring Trick (Hölder → Minkowski)",
-      "startLine": 123,
-      "endLine": 293,
+      "startLine": 122,
+      "endLine": 273,
       "summary": "Part III: the core mathematical contribution. Includes conjugate_exponent_identity ((p-1)q = p), abs_add_pow_le_pow_add (pointwise bound), lintegral_rpow_le_split (integral splitting), holder_applied_to_split (Hölder applied to each split term), and minkowski_from_holder_explicit (full Minkowski via ENNReal.lintegral_Lp_add_le).",
       "mathContext": "The factoring trick: $\\|f+g\\|_p^p \\leq \\int(|f|+|g|)|f+g|^{p-1}$. Apply Hölder to each term: $\\int|f||f+g|^{p-1} \\leq \\|f\\|_p \\|f+g\\|_p^{p-1}$. Combine and divide."
     },
     {
       "id": "chain-verification",
       "title": "Complete Chain Verification",
-      "startLine": 294,
-      "endLine": 352,
-      "summary": "Part V summary with dependency chain diagram (AM-GM → Young → Hölder → Minkowski → Lp normed space) and p=2 special chain (inner product → CS → Minkowski for L²). The chain_verification theorem (lines 336–352) witnesses all three steps as a single conjunction.",
+      "startLine": 274,
+      "endLine": 332,
+      "summary": "Part V summary with dependency chain diagram (AM-GM → Young → Hölder → Minkowski → Lp normed space) and p=2 special chain (inner product → CS → Minkowski for L²). The chain_verification theorem (lines 315–332) witnesses all three steps as a single conjunction.",
       "mathContext": "Verification that the full logical chain from AM-GM to Lp triangle inequality exists in Lean 4/Mathlib as formalized theorems."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: p = 1, 2, ∞",
-      "startLine": 354,
-      "endLine": 384,
+      "startLine": 333,
+      "endLine": 364,
       "summary": "Proves Minkowski for p=1 (triangle inequality integrated, no Hölder), p=2 (from Cauchy-Schwarz via norm-squared identity), and p=∞ (essSup subadditivity). Shows the general Hölder-based proof is needed only for 1 < p < ∞.",
       "mathContext": "$p=1$: $\\int|f+g| \\leq \\int|f| + \\int|g|$. $p=2$: $\\|f+g\\|^2 \\leq (\\|f\\|+\\|g\\|)^2$ (CS). $p=\\infty$: $\\text{essSup}|f+g| \\leq \\text{essSup}|f| + \\text{essSup}|g|$."
     },
     {
       "id": "verification",
       "title": "Type Verification",
-      "startLine": 386,
-      "endLine": 406,
+      "startLine": 365,
+      "endLine": 385,
       "summary": "#check commands verify types of all 12 theorems/lemmas. Closes ExplicitMinkowski namespace.",
       "mathContext": "Lean 4 #check confirms each theorem’s type matches the intended mathematical statement."
     }
