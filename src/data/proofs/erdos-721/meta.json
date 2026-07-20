@@ -43,18 +43,14 @@
     ],
     "originalContributions": [
       "W axiom: off-diagonal van der Waerden number W(3,k)",
-      "W_ge, W_increasing: basic properties of W(3,k)",
-      "W_known_values: exact values W(3,3)=9 through W(3,7)=46",
       "graham_conjecture definition and graham_conjecture_false axiom",
       "green_lower_bound: exp(c(log k)^{4/3}/(log log k)^{1/3})",
       "hunter_lower_bound: exp(c(log k)²/log log k)",
-      "W_superpolynomial: W(3,k) grows faster than any polynomial",
       "schoen_upper_bound: exp(k^c) for c < 1",
       "bloom_sisask_upper_bound: exp(C(log k)^9)",
-      "roth_density_connection, behrend_construction, kelley_meka_density: 3-AP free set connections",
       "exact_growth_conjecture: open question on exp((log k)^{2+o(1)})",
-      "szemeredi_theorem: formal statement with quantitative bound",
-      "erdos_721_status, W_bounds_summary, erdos_721: main result theorems"
+      "erdos_721_status, W_bounds_summary, erdos_721: main result theorems",
+      "Known small values (W(3,3)=9..W(3,7)=46), superpolynomial growth, 3-AP connections (Roth/Behrend/Kelley-Meka), and Szemerédi's theorem: discussed in prose comments only (not formalized declarations)"
     ],
     "axiomCount": 6,
     "lineCount": 240,
@@ -66,7 +62,7 @@
     "historicalContext": "Erdős Problem #721 asks for bounds on the off-diagonal van der Waerden number W(3,k) — the minimum n such that any 2-coloring of {1,...,n} contains either a red 3-term arithmetic progression or a blue k-term AP. Van der Waerden proved these numbers exist in 1927, but his original bounds were astronomically large (Ackermann-type). Erdős posed the challenge in 1980-81 to find reasonable bounds.\n\nGraham famously conjectured W(3,k) ≪ k², suggesting polynomial growth. This was spectacularly disproved by Green in 2022, who established the first superpolynomial lower bound: W(3,k) ≥ exp(c(log k)^{4/3}/(log log k)^{1/3}). Hunter improved this in the same year to exp(c(log k)²/log log k), raising the logarithmic exponent from 4/3 to 2.\n\nOn the upper bound side, Schoen (2021) first proved W(3,k) < exp(k^c) for c < 1, answering Erdős's second challenge. The Kelley-Meka breakthrough (2023) on sets without 3-term APs led to dramatic further improvements, culminating in Bloom-Sisask's bound W(3,k) ≤ exp(C(log k)^9). The exact growth rate, believed to be exp((log k)^{2+o(1)}), remains an open question.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $W(3,k)$ be the minimum $n$ such that any red/blue coloring of $\\{1,\\ldots,n\\}$ contains either a red 3-term AP or a blue $k$-term AP.\n\n**Challenges:**\n1. Give any non-trivial lower bounds for $W(3,k)$\n2. Prove $W(3,k) < \\exp(k^c)$ for some $c < 1$\n\n**Resolution:** Both met. Current best bounds:\n$$\\exp\\left(c \\cdot \\frac{(\\log k)^2}{\\log\\log k}\\right) \\leq W(3,k) \\leq \\exp\\left(C \\cdot (\\log k)^9\\right)$$",
     "text": "Give reasonable bounds for W(3,k), the off-diagonal van der Waerden number. SOLVED: Superpolynomial lower bounds (Green 2022, Hunter 2022) and subexponential upper bounds (Schoen 2021, Bloom-Sisask 2023).",
-    "proofStrategy": "The formalization axiomatizes W(3,k) as a function ℕ → ℕ with basic properties (existence, monotonicity, known values). Graham's polynomial conjecture is defined and stated to be false. The four key results are axiomatized: Green's and Hunter's lower bounds, Schoen's and Bloom-Sisask's upper bounds. The deep connection to 3-AP-free sets is formalized through Roth density bounds, Behrend's construction, and the Kelley-Meka density result. Three summary theorems combine the axioms into the main conclusions.",
+    "proofStrategy": "The formalization axiomatizes W(3,k) as a function ℕ → ℕ. Graham's polynomial conjecture is defined and stated to be false. The four key results are axiomatized: Green's and Hunter's lower bounds, Schoen's and Bloom-Sisask's upper bounds. The deep connection to 3-AP-free sets (Roth density bounds, Behrend's construction, Kelley-Meka density) and Szemerédi's theorem are discussed in prose comments, not formalized as declarations. Three summary theorems combine the axioms into the main conclusions.",
     "keyInsights": [
       "**Superpolynomial Growth**: W(3,k) grows faster than any polynomial, disproving Graham's conjecture W(3,k) ≪ k²",
       "**Subexponential Growth**: W(3,k) < exp(k^c) for c < 1, answering Erdős's second challenge",
@@ -87,8 +83,8 @@
       "title": "Part I: Van der Waerden Numbers",
       "startLine": 44,
       "endLine": 61,
-      "summary": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity.",
-      "mathContext": "Axiomatized: W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity."
+      "summary": "W(3,k) axiom (the off-diagonal van der Waerden number).",
+      "mathContext": "Axiomatized: W(3,k) as a function ℕ → ℕ."
     },
     {
       "id": "known-values",
@@ -111,8 +107,8 @@
       "title": "Part IV: Lower Bounds",
       "startLine": 92,
       "endLine": 121,
-      "summary": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms.",
-      "mathContext": "Axiomatized: green_lower_bound, hunter_lower_bound, W_superpolynomial axioms."
+      "summary": "green_lower_bound and hunter_lower_bound axioms (superpolynomial growth discussed in prose).",
+      "mathContext": "Axiomatized: green_lower_bound and hunter_lower_bound (superpolynomial growth noted in prose)."
     },
     {
       "id": "upper-bounds",
@@ -127,24 +123,24 @@
       "title": "Part VI: Connection to 3-AP Free Sets",
       "startLine": 144,
       "endLine": 184,
-      "summary": "roth_density_connection, behrend_construction, kelley_meka_density axioms.",
-      "mathContext": "Axiomatized: roth_density_connection, behrend_construction, kelley_meka_density axioms."
+      "summary": "Roth density, Behrend construction, and Kelley-Meka density connections (prose comments only, no declarations).",
+      "mathContext": "Prose only: Roth density, Behrend construction, and Kelley-Meka density connections (no declarations)."
     },
     {
       "id": "growth-rate",
       "title": "Part VII: The Growth Rate Question",
       "startLine": 185,
       "endLine": 210,
-      "summary": "exact_growth_conjecture definition, bounds_gap_width axiom.",
-      "mathContext": "Formal definition: exact_growth_conjecture definition, bounds_gap_width axiom."
+      "summary": "exact_growth_conjecture definition (gap width discussed in prose).",
+      "mathContext": "Formal definition: exact_growth_conjecture (gap width noted in prose)."
     },
     {
       "id": "related",
       "title": "Part VIII: Related Problems",
       "startLine": 211,
       "endLine": 232,
-      "summary": "szemeredi_theorem axiom, diagonal_growth axiom.",
-      "mathContext": "Verified: szemeredi_theorem axiom, diagonal_growth axiom."
+      "summary": "Szemerédi's theorem and diagonal van der Waerden growth (prose comments only, no declarations).",
+      "mathContext": "Prose only: Szemerédi's theorem and diagonal growth (no declarations)."
     },
     {
       "id": "summary",
