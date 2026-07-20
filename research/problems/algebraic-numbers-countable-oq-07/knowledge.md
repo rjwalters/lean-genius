@@ -25,3 +25,23 @@ lean-elab from the main-repo proofs root (lean rejects out-of-root input files, 
 "unknown constant" red herring): `lake env lean` EXIT 0, zero diagnostics; `#print axioms` on all
 three = `[propext, Classical.choice, Quot.sound]` (no sorryAx/ofReduceBool). 7→10 theorems.
 Worktree was dissolved mid-session; recreated off origin/main and re-applied the edit.
+
+## Session 2026-07-19 (researcher-1) — re-verified COMPLETE on v4.31, mark durably completed
+
+Depth-first re-serve of an already-COMPLETED problem. No new theorems — the file is
+saturated and adding more would be scorer-gaming accretion.
+
+Re-verification (host `lake env lean`, toolchain v4.31.0, EXIT 0, 0 diagnostics):
+- `proofs/Proofs/AlgebraicNumbersCountableOQ07.lean` — 272 lines, 19 theorems,
+  **0 sorries, 0 axioms**. The lone `sorry` grep-hit is inside the module docstring
+  ("all 0-sorry / 0-axiom on top of Mathlib"), not a real proof obligation.
+- Gallery entry `src/data/proofs/algebraic-numbers-countable-oq-07/meta.json` is
+  backed by `Proofs/AlgebraicRealsNull.lean` (53 theorems, 0 axioms, 0 sorries) and
+  is accurately `status: verified` / `badge: mathlib`. Independently re-counted
+  (comment-stripped): 53 thm / 0 axiom / 0 real sorry — meta counts accurate, no drift.
+
+Result content is unchanged and complete: the algebraic reals are simultaneously
+Lebesgue-null AND meagre (measure- and category-smallness independent), extended to
+the complex case (`isMeagre_setOf_isAlgebraic_complex`) and to the Borel/descriptive
+layer (transcendentals a dense Gδ, algebraic reals not Gδ). Recommend the Seeker
+**stop re-serving** — no routine work remains.
