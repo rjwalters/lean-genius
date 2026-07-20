@@ -151,6 +151,16 @@
       "targetId": "burnside-counting-oq-05",
       "relationship": "related",
       "description": "oq-05 supplies the reflection-fixed counts k^((n+1)/2) for odd cycles and lists 'assemble into a closed dihedral count via Burnside' as an open question; this folding theorem is exactly that assembly mechanism."
+    },
+    {
+      "targetId": "burnside-counting-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Answers this entry's first open question: oq-04-oq-01 realizes the abstract index-2 folding concretely, building a self-contained D₄ action on the 2-colourings of the 4-cycle that recovers |bracelets(4,2)| = 6 without assuming the necklace or reflection totals as hypotheses and without native_decide."
+    },
+    {
+      "targetId": "burnside-counting-oq-04-oq-02",
+      "relationship": "related",
+      "description": "Answers this entry's general-n open question: oq-04-oq-02 promotes the concrete D₄ construction to an explicit faithful representation ρ : DihedralGroup n →* Equiv.Perm (ZMod n) for every n (NeZero n), giving the full D_n dihedral bracelet Burnside identity of which this folding theorem is the abstract skeleton."
     }
   ],
   "conclusion": {
