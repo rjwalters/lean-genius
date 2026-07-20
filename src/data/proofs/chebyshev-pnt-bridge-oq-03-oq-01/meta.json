@@ -83,8 +83,8 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Module docstring: isolate the elementary half of the θ ↔ π equivalence — the two-sided sandwich transferring the asymptotic between θ and π·log — while the deep PNT limit stays blocked."
+      "endLine": 53,
+      "summary": "Module docstring: isolate the elementary half of the θ ↔ π equivalence — the two-sided sandwich transferring the asymptotic between θ and π·log — while the deep PNT limit stays blocked; then the imports (Primorial, PrimeCounting, Real.log, the θ-bound and sibling bridge files) and the `open Finset` / `open ChebyshevThetaBound` setup."
     },
     {
       "id": "card",
@@ -118,8 +118,16 @@
       "id": "sandwich",
       "title": "The packaged sandwich",
       "startLine": 148,
-      "endLine": 155,
+      "endLine": 153,
       "summary": "chebyshev_theta_primeCounting_sandwich: the two halves conjoined — the analysis-free reduction underlying θ(x) ~ x ⟺ π(x) ~ x/log x."
+    },
+    {
+      "id": "ratio-form",
+      "title": "Limit-ready ratio form",
+      "startLine": 155,
+      "endLine": 189,
+      "summary": "primeCounting_mul_log_div_sandwich: dividing both halves of the sandwich by n puts the normalized count π(n)·log n / n between θ(n)/n and θ(n)/n·(log n/log y) + y·log n/n — exactly the shape the PNT limit consumes, so that choosing y ≈ n/(log n)² (with y/n → 0, log n/log y → 1) forces π(n)·log n / n → 1 ⟺ θ(n)/n → 1, leaving only elementary o(1) bookkeeping (the deep θ(n)/n → 1 being Wiener–Ikehara-level, blocked in the pinned Mathlib). Closes the namespace.",
+      "mathContext": "$\\frac{\\theta(n)}{n} \\le \\frac{\\pi(n)\\log n}{n} \\le \\frac{\\theta(n)}{n}\\cdot\\frac{\\log n}{\\log y} + \\frac{y\\log n}{n}$."
     }
   ],
   "conclusion": {
