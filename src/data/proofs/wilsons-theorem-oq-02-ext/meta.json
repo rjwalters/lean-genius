@@ -10,7 +10,7 @@
     "axiomCount": 0,
     "theoremCount": 22,
     "definitionCount": 1,
-    "lineCount": 539,
+    "lineCount": 461,
     "imports": [
       "Mathlib.NumberTheory.Wilson",
       "Mathlib.Data.Nat.Factorial.Basic",
@@ -40,35 +40,35 @@
       "id": "module-setup",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Imports Mathlib's Wilson theorem infrastructure and the GaussWilsonNonCyclic module. Opens WilsonsTheoremOQ02Ext namespace. Module documentation explains the Gauss-Wilson theorem and the two-involution strategy."
     },
     {
       "id": "group-lemmas",
       "title": "Group-Theoretic Foundation: FPF Involutions and Products",
       "startLine": 59,
-      "endLine": 150,
+      "endLine": 213,
       "summary": "Two public theorems. even_card_of_fpf_involution: a fixed-point-free involution on a finite set forces even cardinality (proved by explicit pairing). prod_involution_const: in a finite commutative group with FPF involution σ satisfying x·σ(x) = c for all x, the product ∏G = c^(|G|/2). These are the abstract engines: each FPF involution gives a way to compute a product by pairing."
     },
     {
       "id": "non-cyclic-structure",
       "title": "Non-Cyclic Structure Lemmas (Third Square Roots)",
-      "startLine": 151,
-      "endLine": 301,
+      "startLine": 214,
+      "endLine": 250,
       "summary": "Private lemmas proving the 2-torsion lower bound for non-cyclic ZMod. Includes third square root constructions (CRT and power-of-2 cases, same as GaussWilsonNonCyclic), and the public card_sq_eq_one_ge_three_of_not_cyclic_zmod which extracts the bound from the import. These provide the ≥ 3 cardinality needed to pick distinct c, d in the two-involution trick."
     },
     {
       "id": "product-reduction",
       "title": "Product Reduction and Non-Cyclic Product Theorem",
-      "startLine": 303,
-      "endLine": 437,
+      "startLine": 251,
+      "endLine": 376,
       "summary": "prod_eq_prod_sq_eq_one: reduces ∏(ZMod n)× to ∏S (the 2-torsion) via pairing non-square-root units with their inverses. prod_units_one_of_not_cyclic_ext: the two-involution trick — pick distinct c, d ∈ S\\{1}; involution x↦cx gives ∏S = c^(|S|/2); involution x↦cdx gives (cd)^(|S|/2); combining forces d^(|S|/2) = 1, then c^(|S|/2) = 1, so ∏S = 1. Hence ∏(ZMod n)× = 1."
     },
     {
       "id": "main-theorem",
       "title": "Gauss-Wilson Complete Characterization",
-      "startLine": 438,
-      "endLine": 539,
+      "startLine": 377,
+      "endLine": 461,
       "summary": "gaussWilson_abstract_ext: for n ≥ 3, ∏(ZMod n)× = -1 ↔ IsCyclic (ZMod n)×. The two directions: (←) cyclic case uses Mathlib's Wilson theorem infrastructure (prod_units_neg_one_of_cyclic'); (→) non-cyclic case uses prod_units_one_of_not_cyclic_ext and the fact that 1 ≠ -1 for n ≥ 3. This gives the complete group-theoretic characterization of the Gauss-Wilson product."
     }
   ],
@@ -107,7 +107,7 @@
   ],
   "leanFile": {
     "path": "Proofs/WilsonsTheoremOQ02Ext.lean",
-    "lineCount": 539,
+    "lineCount": 461,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 22,
