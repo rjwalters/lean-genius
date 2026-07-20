@@ -80,17 +80,18 @@ theorem divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
   · intro ⟨hd, hne⟩
     have hd_pos : d ≥ 1 := by
       by_contra h; push_neg at h
-      interval_cases d; simp [Nat.zero_dvd] at hd; exact hne hd
+      interval_cases d
+      exact absurd (Nat.eq_zero_of_zero_dvd hd) hne
     exact divisor_of_prime_product q p hq hp hlt d hd hd_pos
   · intro h
     have hqpos : q ≥ 1 := hq.pos
     have hppos : p ≥ 1 := hp.pos
-    have hne : q * p ≠ 0 := by omega
-    rcases h with h | h | h | h <;> subst h
-    · exact ⟨one_dvd _, hne⟩
-    · exact ⟨dvd_mul_right q p, hne⟩
-    · exact ⟨dvd_mul_left p q, hne⟩
-    · exact ⟨dvd_refl _, hne⟩
+    have hne : q * p ≠ 0 := Nat.mul_ne_zero (by omega) (by omega)
+    rcases h with h | h | h | h
+    · rw [h]; exact ⟨one_dvd _, hne⟩
+    · rw [h]; exact ⟨dvd_mul_right q p, hne⟩
+    · rw [h]; exact ⟨dvd_mul_left p q, hne⟩
+    · rw [h]; exact ⟨dvd_refl _, hne⟩
 
 /-- The divisor count of q*p for distinct primes is exactly 4. -/
 theorem card_divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
@@ -99,8 +100,11 @@ theorem card_divisors_prime_product (q p : ℕ) (hq : q.Prime) (hp : p.Prime)
   rw [divisors_prime_product q p hq hp hlt]
   have hq2 := hq.two_le
   have hp2 := hp.two_le
-  rw [Finset.card_insert_of_notMem (by simp; omega)]
-  rw [Finset.card_insert_of_notMem (by simp; omega)]
+  have hqp4 : 4 ≤ q * p := Nat.mul_le_mul hq2 hp2
+  have hq_qp : q < q * p := by nlinarith [hq.pos, hp.pos, hq2, hp2]
+  have hp_qp : p < q * p := by nlinarith [hq.pos, hp.pos, hq2, hp2]
+  rw [Finset.card_insert_of_notMem (by simp only [mem_insert, mem_singleton]; omega)]
+  rw [Finset.card_insert_of_notMem (by simp only [mem_insert, mem_singleton]; omega)]
   rw [Finset.card_pair (by omega)]
 
 -- ============================================================
