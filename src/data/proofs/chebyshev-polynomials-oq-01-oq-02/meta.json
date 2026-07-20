@@ -150,7 +150,8 @@
       "**Which laws survive is decided by conjugacy, not by kind alone.** The first-kind Dickson polynomials survive precisely because Dₙ = Cₙ is the x ↦ 2x conjugate of Tₙ, and conjugation preserves the compositional monoid. The composition law is a property of the *first-kind* structure, transported intact to any affine reparametrisation of it.",
       "**The obstruction for Uₙ is the identity, not the degree.** The cleanest reason U_{m·n} = U_m ∘ U_n fails is that U₁ = 2X is not the compositional identity X. A homomorphism into (R[X], ∘, X) must send the multiplicative unit 1 to X; Uₙ cannot, so the law breaks at the most trivial case m = n = 1, before any question of degree arises.",
       "**Evaluation at 1 is a clean certificate of failure.** Since Uₙ(1) = n + 1, the ring homomorphism p ↦ p(1) turns the putative composition law into an arithmetic identity mn + 1 = U_m(n+1). At m = n = 2 this reads 5 = 35, an unconditional numerical refutation of U₄ = U₂ ∘ U₂.",
-      "**The second-kind failure is uniform.** The same obstruction applies to the second-kind Dickson polynomials dickson 2 1 n = Sₙ (with Uₙ = Sₙ(2x)); the compositional monoid is a phenomenon of the first-kind family, and both second-kind normalisations lie outside it."
+      "**The second-kind failure is uniform.** The same obstruction applies to the second-kind Dickson polynomials dickson 2 1 n = Sₙ (with Uₙ = Sₙ(2x)); the compositional monoid is a phenomenon of the first-kind family, and both second-kind normalisations lie outside it.",
+      "**Every surviving law is the pullback of an arithmetic identity.** The map n ↦ Dₙ is a monoid homomorphism (ℕ, ·, 1) → (R[X], ∘, X), and each structural law is exactly the image of a fact about ℕ-multiplication: the composition law D_{m·n} = D_m ∘ D_n is multiplicativity, D₁ = X is unit-preservation, commutation D_m ∘ D_n = D_n ∘ D_m is the commutativity mn = nm, and associativity is (l·m)·n = l·(m·n). This is why dickson_comp_assoc needs no separate monoid argument — it just iterates the composition law across mul_assoc on ℕ; nothing is proved beyond that this indexing map is a homomorphism."
     ],
     "prerequisites": [
       "Chebyshev polynomials of the first and second kind",
@@ -169,12 +170,20 @@
       "mathContext": "$D_{mn} = D_m \\circ D_n$ but $U_{mn} \\neq U_m \\circ U_n$."
     },
     {
-      "id": "dickson-survives",
-      "title": "First-kind Dickson polynomials: the compositional monoid survives",
+      "id": "dickson-law-identity",
+      "title": "First-kind Dickson polynomials: composition law and compositional identity",
       "startLine": 61,
+      "endLine": 85,
+      "summary": "dickson_comp / dickson_one_eq_X / dickson_comp_one / dickson_one_comp: the surviving composition law D_{m·n} = D_m ∘ D_n (Mathlib's dickson_one_one_mul) together with D₁ = X (dickson_one) as a two-sided compositional identity — the right identity D_m ∘ D₁ = D_m via comp_X and the left identity D₁ ∘ p = p via X_comp.",
+      "mathContext": "$D_{m\\cdot n} = D_m \\circ D_n$ and $D_1 = X$ (two-sided identity)."
+    },
+    {
+      "id": "dickson-comm-assoc",
+      "title": "First-kind Dickson polynomials: commutation and associativity",
+      "startLine": 87,
       "endLine": 99,
-      "summary": "dickson_comp / dickson_one_eq_X / dickson_comp_one / dickson_one_comp / dickson_comp_comm / dickson_comp_assoc: the Dickson polynomials Dₙ = dickson 1 1 n form a commutative compositional monoid — composition law, X = D₁ as two-sided identity, commutation, and associativity — the exact analogue of the parent's first-kind picture.",
-      "mathContext": "$D_{m\\cdot n} = D_m \\circ D_n$, $D_1 = X$, $D_m \\circ D_n = D_n \\circ D_m$."
+      "summary": "dickson_comp_comm / dickson_comp_assoc: the Dickson polynomials commute under composition (dickson_one_one_comp_comm) and composition is associative — D_{l·m·n} is the triple composite (D_l ∘ D_m) ∘ D_n, obtained by iterating the composition law. Together with the law-and-identity section this completes the commutative compositional monoid, the exact analogue of the parent's first-kind picture.",
+      "mathContext": "$D_m \\circ D_n = D_n \\circ D_m$ and $(D_l \\circ D_m) \\circ D_n = D_{l\\cdot m\\cdot n}$."
     },
     {
       "id": "dickson-bridge",
