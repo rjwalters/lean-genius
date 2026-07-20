@@ -19,7 +19,7 @@
       "Nat"
     ],
     "namespace": "BaselProblemOQ01OQ01OQ02OQ03",
-    "lineCount": 1802,
+    "lineCount": 1794,
     "axiomCount": 1,
     "theoremCount": 77,
     "definitionCount": 1,
@@ -42,7 +42,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1802,
+    "lineCount": 1794,
     "theoremCount": 77,
     "definitionCount": 1,
     "assumptions": "Axiomatized: hanson_bound — for all n, lcm(1,...,n) ≤ 3^n. Numerically verified for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Hanson's original 1972 proof uses Beta-integral identities and Chebyshev-style prime-power bounds; neither is in Mathlib. Provable easier bounds (lcm | n!, lcm ≤ n!, lcm ≤ n^n) are included with no axioms.",
@@ -195,7 +195,7 @@
       "id": "hanson-axiom",
       "title": "Part 5: Hanson's Bound (Axiom + Sharpness Check)",
       "startLine": 1772,
-      "endLine": 1802,
+      "endLine": 1794,
       "summary": "`axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` is the precise open Lean target — Hanson's classical 1972 theorem. The docstring documents the two known strategies: Hanson's original integral identity (Beta integrals + Chebyshev-style prime-power bounds) and Erdős's / Nair's combinatorial identities. `hanson_strictly_stronger_than_factorial` (3^n < n^n for n ≥ 4) is the sharpness check: the axiomatized constant 3 is genuinely tighter than the trivial Part 3 bound n^n, justifying why the axiom is non-redundant.",
       "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\le 3^n$. Original proof (Hanson, *Canad. Math. Bull.* 15) uses the integer-valued integral identity $\\operatorname{lcm}(1, \\ldots, n) \\cdot \\int_0^1 x^k (1-x)^{n-k}\\,\\mathrm{d}x = \\frac{\\operatorname{lcm}(1, \\ldots, n)}{(n+1)\\binom{n}{k}} \\in \\mathbb{Z}$ combined with Chebyshev-style upper bounds on prime-power contributions. The constant $3$ sits between the asymptotic $e \\approx 2.718$ (PNT-implied) and Apéry's irrationality threshold $\\approx 3.245$ — hence 'smallest constant with an elementary proof'."
     }
