@@ -26,7 +26,14 @@ of the atomic building block `triangleArea`:
 * an explicit value `triangleArea (0,0) (1,0) (0,1) = 1/2`;
 * unit-disk facts: coordinate bounds `|p₁|, |p₂| ≤ 1`, and the uniform area
   bound `triangleArea p q r ≤ 3` for points in the unit disk (so
-  `heilbronn n` is bounded — its `sSup` is over a bounded set).
+  `heilbronn n` is bounded — its `sSup` is over a bounded set);
+* `minTriangleArea` facts: nonnegativity (`minTriangleArea_nonneg`) and the
+  lower-bound property `minTriangleArea P ≤ triangleArea p q r` for distinct
+  `p, q, r ∈ P` (`minTriangleArea_le`), obtained by descending the nine-fold
+  nested `⨅` with `ciInf_le_of_le` under the junk-value semantics of an empty
+  real infimum;
+* `heilbronn n ≤ 3` for `n ≥ 3` (`heilbronn_le_three`): the defining `sSup` set
+  is bounded above by the uniform area bound, so Heilbronn's function is finite.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -175,5 +182,92 @@ theorem triangleArea_le_three {P : Finset (ℝ × ℝ)} (h : IsInUnitDisk P)
           gcongr; exact abs_add_le _ _
       _ ≤ 6 := by linarith [t1, t2, t3]
   linarith [hE]
+
+/-! ## `minTriangleArea`: the nested infimum over triples
+
+`minTriangleArea P` is the infimum of `triangleArea p q r` over all ordered
+triples of *distinct* points `p, q, r ∈ P`, encoded as a nine-fold nested
+`⨅` (three membership binders and three distinctness binders around the value).
+In a conditionally complete lattice such an `⨅` carries junk-value semantics on
+empty index types, but over `ℝ` the junk value of an empty infimum is `0`
+(`Real.sInf_empty`), so the two basic facts below hold unconditionally. -/
+
+/-- A real-valued family that is everywhere nonnegative is bounded below (by
+`0`).  This is the recurring side condition for `ciInf_le` on the nested
+infimum of `minTriangleArea`. -/
+private theorem bddBelow_range_of_nonneg {ι : Sort*} {f : ι → ℝ}
+    (h : ∀ i, 0 ≤ f i) : BddBelow (Set.range f) :=
+  ⟨0, by rintro _ ⟨i, rfl⟩; exact h i⟩
+
+/-- **Nonnegativity of the minimum triangle area.**  Every value in the nested
+infimum is a nonnegative `triangleArea`, and the empty-index junk value is `0`,
+so `minTriangleArea P ≥ 0` for every configuration `P`. -/
+theorem minTriangleArea_nonneg (P : Finset (ℝ × ℝ)) : 0 ≤ minTriangleArea P := by
+  unfold minTriangleArea
+  repeat' first
+    | exact triangleArea_nonneg _ _ _
+    | (apply Real.iInf_nonneg; intro)
+
+/-- **The minimum triangle area is a lower bound.**  For any three *distinct*
+points `p, q, r ∈ P`, the nested infimum defining `minTriangleArea P` is at most
+`triangleArea p q r`.  Proof: descend through the nine `⨅` binders with
+`ciInf_le_of_le`, using nonnegativity to supply the `BddBelow` side conditions. -/
+theorem minTriangleArea_le {P : Finset (ℝ × ℝ)} {p q r : ℝ × ℝ}
+    (hp : p ∈ P) (hq : q ∈ P) (hr : r ∈ P)
+    (hpq : p ≠ q) (hqr : q ≠ r) (hpr : p ≠ r) :
+    minTriangleArea P ≤ triangleArea p q r := by
+  unfold minTriangleArea
+  -- Descend through the nine `⨅` binders with `ciInf_le_of_le`; each `BddBelow`
+  -- side goal follows from nonnegativity of the (nested) `triangleArea` values.
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) p ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hp ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) q ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hq ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) r ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hr ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hpq ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  refine ciInf_le_of_le (bddBelow_range_of_nonneg ?_) hqr ?_
+  · intro _; repeat' first
+      | exact triangleArea_nonneg _ _ _
+      | (apply Real.iInf_nonneg; intro)
+  exact ciInf_le_of_le (bddBelow_range_of_nonneg fun _ => triangleArea_nonneg p q r) hpr le_rfl
+
+/-! ## `heilbronn`: the sSup is bounded for `n ≥ 3` -/
+
+/-- **`heilbronn n ≤ 3` for `n ≥ 3`.**  The defining set of `heilbronn n` is
+bounded above by `3`: any admissible bound `α` is `≤ triangleArea p q r` for some
+distinct triple in the witness configuration (which exists since `card = n ≥ 3`),
+and every unit-disk triangle has area `≤ 3` (`triangleArea_le_three`). -/
+theorem heilbronn_le_three (n : ℕ) (hn : 3 ≤ n) : heilbronn n ≤ 3 := by
+  unfold heilbronn
+  apply Real.sSup_le
+  · rintro α ⟨P, hcard, hdisk, hbound⟩
+    have hcard3 : 2 < P.card := by omega
+    obtain ⟨p, q, r, hp, hq, hr, hpq, hpr, hqr⟩ := Finset.two_lt_card_iff.mp hcard3
+    have h1 : α ≤ triangleArea p q r := hbound p hp q hq r hr hpq hqr hpr
+    have h2 : triangleArea p q r ≤ 3 := triangleArea_le_three hdisk hp hq hr
+    linarith
+  · norm_num
 
 end Erdos507WIP01
