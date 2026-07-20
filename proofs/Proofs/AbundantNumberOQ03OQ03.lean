@@ -34,6 +34,18 @@
                                        abundant proper divisor destroys primitivity
                                        (abundance and deficiency are exclusive).
 
+  Toward the (open) infinitude, this file also builds the **σ-arithmetic engine**
+  for the Route-1 family `m·p`:
+
+  * `sum_divisors_prime`             — `σ(p) = p + 1` for prime `p`.
+  * `sum_divisors_mul_prime`         — `σ(m·p) = σ(m)·(p+1)` when `p` is prime and
+                                       `p ∤ m` (multiplicativity of `σ` on coprime
+                                       factors).
+  * `abundant_mul_prime_iff`         — reduces abundance of `m·p` to the single
+                                       linear-in-`p` inequality `2mp < σ(m)(p+1)`.
+  * `deficient_left_of_primitive_mul_prime` — any Route-1 base `m` must itself be
+                                       deficient (it is a proper divisor of `m·p`).
+
   ## Verification status: verified (axiom-free)
 
   Unlike the sibling `abundant-number-oq-02` entry, which discharges the 945-range
@@ -108,5 +120,56 @@ theorem primitive_945 : IsPrimitiveAbundant 945 := by
 (OEIS A006038), and the base witness that any infinitude construction must extend. -/
 theorem mem_oddPrimitiveAbundant_945 : 945 ∈ OddPrimitiveAbundant :=
   ⟨odd_945, primitive_945⟩
+
+-- ============================================================
+-- Toward infinitude: the σ-arithmetic engine for `m · p`
+-- ============================================================
+
+/-
+  Route 1 (odd `m · p` with `p` an odd prime outside a Bertrand-type window)
+  needs the sum-of-divisors of `m · p` in closed form.  Since `p ∤ m` makes
+  `m` and `p` coprime and `σ` (the sum-of-divisors) is multiplicative, we get
+  the workhorse identity `σ(m·p) = σ(m)·(p+1)`, which turns the abundance test
+  `2·(m·p) < σ(m·p)` into a *linear-in-`p`* inequality `2mp < σ(m)(p+1)`.  That
+  is the lever any explicit odd-family construction pulls: fix `m`, then choose
+  `p` in the range that keeps `m·p` abundant.
+
+  These lemmas are stated for the raw Mathlib sum `∑ d ∈ n.divisors, d`
+  (`= Nat.ArithmeticFunction.σ 1 n`) so they compose with
+  `Nat.abundant_iff_sum_divisors`.
+-/
+
+/-- The sum of the divisors of a prime `p` is `p + 1` (its only divisors are
+`1` and `p`).  The base case of the σ-arithmetic engine. -/
+theorem sum_divisors_prime {p : ℕ} (hp : p.Prime) :
+    ∑ d ∈ p.divisors, d = p + 1 := by
+  rw [hp.divisors, Finset.sum_pair hp.one_lt.ne]
+  omega
+
+/-- **σ closed form for `m · p`** (`p` prime, `p ∤ m`): the sum of divisors is
+multiplicative on the coprime factors `m` and `p`, so
+`σ(m·p) = σ(m) · (p + 1)`.  The reusable lever for Route-1 witness search. -/
+theorem sum_divisors_mul_prime {m p : ℕ} (hp : p.Prime) (hpm : ¬ p ∣ m) :
+    ∑ d ∈ (m * p).divisors, d = (∑ d ∈ m.divisors, d) * (p + 1) := by
+  have hcop : m.Coprime p := (hp.coprime_iff_not_dvd.mpr hpm).symm
+  rw [hcop.sum_divisors_mul, sum_divisors_prime hp]
+
+/-- **Abundance criterion for `m · p`** (`p` prime, `p ∤ m`): reduces the
+abundance of `m·p` to the single linear-in-`p` inequality
+`2·(m·p) < σ(m)·(p+1)`.  Directly usable to search for a prime `p` making a
+fixed odd base `m` abundant at `m·p`. -/
+theorem abundant_mul_prime_iff {m p : ℕ} (hp : p.Prime) (hpm : ¬ p ∣ m) :
+    (m * p).Abundant ↔ 2 * (m * p) < (∑ d ∈ m.divisors, d) * (p + 1) := by
+  rw [Nat.abundant_iff_sum_divisors, sum_divisors_mul_prime hp hpm]
+
+/-- **Necessary condition for primitivity of `m · p`**: if `m · p` is primitive
+abundant with `p` prime and `0 < m`, then the cofactor `m` is deficient — `m`
+is a proper divisor of `m·p` (as `p ≥ 2`), so primitivity forces it deficient.
+Every Route-1 base `m` must therefore itself be deficient. -/
+theorem deficient_left_of_primitive_mul_prime {m p : ℕ} (hp : p.Prime)
+    (hm : 0 < m) (hprim : IsPrimitiveAbundant (m * p)) : m.Deficient := by
+  refine hprim.2 m (Nat.mem_properDivisors.mpr ⟨dvd_mul_right m p, ?_⟩)
+  have hle : m * 2 ≤ m * p := by gcongr; exact hp.two_le
+  omega
 
 end AbundantNumberOQ03OQ03

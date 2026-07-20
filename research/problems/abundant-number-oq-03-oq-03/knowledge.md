@@ -57,3 +57,26 @@ Created `proofs/Proofs/AbundantNumberOQ03OQ03.lean` (self-contained, imports onl
   unbounded (pigeonhole).
 - Intermediate lemma: `σ(m·p) = σ(m)(p+1)` for odd prime `p ∤ m`, and a reusable
   proper-divisor-deficiency criterion for `m·p`.
+
+## Iteration 2 (2026-07-20) — Route-1 σ-arithmetic engine (axiom-free)
+
+Built the reusable σ-engine for the `m·p` family, all host-verified via
+`lake env lean` (`propext/Classical.choice/Quot.sound` only, no `native_decide`):
+
+- `sum_divisors_prime`: `σ(p) = p+1` (prime `p`; divisors `{1,p}`).
+- `sum_divisors_mul_prime`: `σ(m·p) = σ(m)·(p+1)` for `p` prime, `p ∤ m` — via
+  Mathlib `Nat.Coprime.sum_divisors_mul` (multiplicativity of `σ` on coprimes,
+  `isMultiplicative_sigma`) + `Nat.Prime.coprime_iff_not_dvd`.
+- `abundant_mul_prime_iff`: `(m·p).Abundant ↔ 2mp < σ(m)(p+1)` — via
+  `Nat.abundant_iff_sum_divisors`. Abundance of the Route-1 family is now a
+  single **linear-in-`p`** inequality.
+- `deficient_left_of_primitive_mul_prime`: any Route-1 base `m` (with `0<m`) is
+  deficient, since `m` is a proper divisor of `m·p`.
+
+### Remaining Route-1 gap (primitivity, not abundance)
+Full primitivity of `m·p` requires every proper divisor
+`{d, p·d : d ∣ m}` deficient. Mathlib v4.31 has `Nat.Coprime.sum_divisors_mul`
+and `card_divisors_mul` but **no** `Nat.Coprime.divisors_mul` Finset equality, so
+the decomposition `(m·p).properDivisors = m.divisors ∪ (p·) '' m.properDivisors`
+must be built from `filter_dvd_eq_divisors` before `abundant_mul_prime_iff`
+upgrades to a full `IsPrimitiveAbundant (m·p)` criterion.
