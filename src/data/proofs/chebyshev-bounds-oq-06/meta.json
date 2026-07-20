@@ -80,11 +80,19 @@
       "summary": "four_pow_le_succ_two_mul_mul_centralBinom. This is Mathlib's Nat.four_pow_le_two_mul_add_one_mul_central_binom restated with centralBinom n in place of (2n).choose n (definitionally equal). Mathlib proves it from (1+1)^(2n) = Σ_m C(2n,m), bounding every term by the central one."
     },
     {
-      "id": "quotient-and-sandwich",
-      "title": "Quotient form and unified sandwiches",
+      "id": "quotient-form",
+      "title": "Quotient form 4ⁿ/(2n+1) ≤ C(2n,n)",
       "startLine": 56,
+      "endLine": 61,
+      "summary": "four_pow_div_succ_two_mul_le_centralBinom: the literal textbook statement 4ⁿ/(2n+1) ≤ C(2n,n) with truncated ℕ-division, obtained from the multiplicative lower bound in one step via Nat.div_le_of_le_mul (from a ≤ b·c infer a/b ≤ c)."
+    },
+    {
+      "id": "sandwiches",
+      "title": "Unified two-sided sandwiches (ℕ and ℝ)",
+      "startLine": 63,
       "endLine": 87,
-      "summary": "four_pow_div_succ_two_mul_le_centralBinom gives the textbook 4ⁿ/(2n+1) ≤ C(2n,n) over ℕ via Nat.div_le_of_le_mul. centralBinom_sandwich bundles both bounds. centralBinom_real_sandwich lifts to ℝ so the division is genuine: cast both ℕ-inequalities with Nat.cast_le, push_cast, and close by linarith / div_le_iff₀."
+      "summary": "centralBinom_sandwich bundles both bounds as one product-form lemma 4ⁿ ≤ (2n+1)·C(2n,n) ∧ C(2n,n) ≤ 4ⁿ (an anonymous constructor pairing the upper and lower lemmas). centralBinom_real_sandwich lifts the sandwich to ℝ so the division is the genuine quotient rather than its ℕ-truncation: each side casts its ℕ-inequality with Nat.cast_le, clears the denominator with div_le_iff₀ (positivity), and closes by push_cast + linarith.",
+      "mathContext": "$\\frac{4^n}{2n+1} \\le \\binom{2n}{n} \\le 4^n$ over ℝ, with genuine (non-truncated) division — the downstream-friendly form."
     }
   ],
   "mainTheorems": [
@@ -132,7 +140,8 @@
       "**The upper bound is free.** $\\binom{2n}{n}$ is a single term of $\\sum_k\\binom{2n}{k}=4^n$, so it cannot exceed $4^n$ — formalised here as the row bound $\\binom{2n}{n}\\le 2^{2n}$.",
       "**The lower bound is the central-term-is-largest principle.** Among the $2n+1$ entries of row $2n$, the central one is maximal, so it is at least the average $4^n/(2n+1)$ — exactly Mathlib's `four_pow_le_two_mul_add_one_mul_central_binom`.",
       "**Multiplicative phrasing avoids ℕ-division artifacts.** Stating the lower bound as $4^n\\le(2n+1)\\binom{2n}{n}$ keeps the development inside ℕ with no truncation; the quotient and real forms are derived on top.",
-      "**Honest provenance.** Neither inequality is new to Mathlib; the contribution is the even-row upper bound as a named lemma plus the unified sandwich and real-valued form for downstream reuse."
+      "**Honest provenance.** Neither inequality is new to Mathlib; the contribution is the even-row upper bound as a named lemma plus the unified sandwich and real-valued form for downstream reuse.",
+      "**Three division semantics, one estimate.** The same sandwich is exposed in three forms — multiplicative ℕ ($4^n \\le (2n+1)\\binom{2n}{n}$, truncation-free), truncated ℕ-quotient ($4^n/(2n+1) \\le \\binom{2n}{n}$, the literal textbook line), and real-valued genuine division — so a downstream consumer picks the form matching its goal without re-deriving the cast; this multi-form packaging, not the bounds themselves, is the reusability payoff."
     ],
     "prerequisites": [
       "Binomial coefficients and the central binomial coefficient",
