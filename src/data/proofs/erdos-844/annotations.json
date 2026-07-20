@@ -119,7 +119,7 @@
     },
     "type": "concept",
     "title": "Maximal Sets Contain Non-Squarefree",
-    "content": "**maximal_contains_nonsquarefree:**\n\nAny maximal A with the property contains all non-squarefree numbers.\n\nReason: Non-squarefree n can always be added - n×m is not squarefree for any m.",
+    "content": "**Maximal sets contain all non-squarefree numbers:**\n\nAny maximal A with the property contains all non-squarefree numbers.\n\nReason: Non-squarefree n can always be added - n×m is not squarefree for any m.\n\n(Informal observation — not separately formalized as a lemma in this file.)",
     "significance": "key",
     "mathContext": "See annotation content for formal details of maximal sets contain non-squarefree",
     "relatedConcepts": [
@@ -141,7 +141,7 @@
     },
     "type": "concept",
     "title": "Squarefree Product Criterion",
-    "content": "**squarefree_product_criterion:**\n\nFor squarefree a, b:\n¬Squarefree(ab) ↔ ∃ prime p, p|a ∧ p|b\n\nTwo squarefree numbers have non-squarefree product iff they share a prime.",
+    "content": "**Squarefree product criterion:**\n\nFor squarefree a, b:\n¬Squarefree(ab) ↔ ∃ prime p, p|a ∧ p|b\n\nTwo squarefree numbers have non-squarefree product iff they share a prime.\n\n(Informal observation — not separately formalized as a lemma in this file.)",
     "mathContext": "This reduces the problem to finding 'intersecting families' of squarefree numbers.",
     "significance": "key",
     "relatedConcepts": [
@@ -185,7 +185,7 @@
     },
     "type": "concept",
     "title": "Chvátal's Intersecting Family Result",
-    "content": "**chvatal_intersecting_families:**\n\nThe maximum intersecting family of squarefree numbers in {1,...,N} is the set of all even squarefree numbers.\n\nChvátal (1974): Maximum intersecting family = all multiples of a fixed prime. The optimal choice is 2 (maximizes density).",
+    "content": "**Chvátal's intersecting-family theorem (external result):**\n\nThe maximum intersecting family of squarefree numbers in {1,...,N} is the set of all even squarefree numbers.\n\nChvátal (1974): Maximum intersecting family = all multiples of a fixed prime. The optimal choice is 2 (maximizes density).",
     "mathContext": "This is the key external result that solves the problem. It comes from hypergraph theory.",
     "significance": "key",
     "relatedConcepts": [
@@ -229,7 +229,7 @@
     },
     "type": "concept",
     "title": "Alexeev-Mixon-Sawin Alternative",
-    "content": "**alexeev_mixon_sawin_proof:**\n\nIndependent alternative proof of the same result.\n\nPublished in arXiv:2507.01928 (2025).",
+    "content": "**Alexeev–Mixon–Sawin proof (external result):**\n\nIndependent alternative proof of the same result.\n\nPublished in arXiv:2507.01928 (2025).",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of alexeev-mixon-sawin alternative",
     "relatedConcepts": [
