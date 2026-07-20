@@ -53,7 +53,10 @@
       "one_le_deficiency: when n·d is odd, every graph with deg ≤ d has deficiency ≥ 1 — the sharp lower bound on how far any realisable graph must fall short of the d-regular ideal.",
       "edge_upper_bound: the minimal EDGE deficiency 2|E| ≤ n·d − 1 when n·d is odd — the edge count cannot reach the regular ideal n·d/2.",
       "not_isRegularOfDegree_of_odd_mul / not_isRegularOfDegree_of_odd_odd: no d-regular graph on n vertices exists once n·d is odd (in particular when both n and d are odd), the impossibility corollary that motivated the deficiency quantification.",
-      "deficiency_floor_attained: sharpness — the empty graph on one vertex with d = 1 has n·d = 1 odd and deficiency exactly 1, so the lower bound one_le_deficiency is attained and cannot be improved."
+      "deficiency_floor_attained: sharpness — the empty graph on one vertex with d = 1 has n·d = 1 odd and deficiency exactly 1, so the lower bound one_le_deficiency is attained and cannot be improved.",
+      "deficiencyFun / deficiencyFun_eq: the deficiency toward a PRESCRIBED, possibly non-constant target degree d : V → ℕ, deficiencyFun G d = ∑_v (d v − deg v); under deg ≤ d pointwise it equals (∑_v d v) − 2|E|, generalising deficiency_eq (deficiencyFun_const recovers the scalar case).",
+      "deficiencyFun_parity / one_le_deficiencyFun: the target-function deficiency shares the parity of the target sum ∑_v d v, so when that sum is odd every graph with deg ≤ d has deficiency ≥ 1 — the non-constant analogue of one_le_deficiency.",
+      "not_forall_degree_eq_of_odd_sum: no graph realises a prescribed degree target d : V → ℕ exactly when ∑_v d v is odd — the classical odd-sum degree sequence is not graphical necessary condition, subsuming not_isRegularOfDegree_of_odd_mul (constant target, sum n·d) and needing no deg ≤ d hypothesis."
     ],
     "dateAdded": "2026-07-09",
     "relatedProblems": [
@@ -67,11 +70,11 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 177,
+    "lineCount": 244,
     "assumptions": "0 axioms, 0 sorries. The sharpness witness deficiency_floor_attained and the two accompanying examples use kernel `decide` (not `native_decide`), so no Lean.ofReduceBool and no extra trust assumptions are introduced; #print axioms on the main results reports only the foundational propext / Classical.choice / Quot.sound. Scope: this quantifies the parity obstruction and proves the deficiency lower bound is attained by an explicit witness. It does NOT prove general realisability — that for every odd n·d there is a graph with deg ≤ d and deficiency exactly 1 — which is a degree-sequence construction (Erdős–Gallai / Havel–Hakimi territory, handshake-lemma-oq-02).",
     "mathlib_version": "4.31.0",
-    "theoremCount": 9,
-    "definitionCount": 1
+    "theoremCount": 18,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The handshake lemma states the one easy necessary condition for d-regularity: since ∑_v deg v = 2|E| is even, a d-regular graph on n vertices needs n·d even. When n·d is odd no such graph exists — the classic parity obstruction (e.g. no 3-regular graph on 5 vertices). The natural follow-up, and the parent entry's first open question, is to make the obstruction quantitative: not merely 'impossible', but 'how far off must you be, and is that minimum achievable?'. This entry answers it with a degree-deficiency functional whose parity is forced by the handshake lemma.",
@@ -132,6 +135,14 @@
       "endLine": 135,
       "mathContext": "Empty graph on $\\mathrm{Fin}\\,1$ with $d=1$: $n\\cdot d = 1$ odd, deficiency $=1$.",
       "summary": "deficiency_floor_attained certifies (by kernel decide) that the one-vertex empty graph with d = 1 attains deficiency exactly 1, so the lower bound cannot be improved; two examples confirm n·d = 1 is odd and all degrees are ≤ 1."
+    },
+    {
+      "id": "sec-nonconstant-targets",
+      "title": "General (Non-Constant) Degree Targets",
+      "startLine": 178,
+      "endLine": 244,
+      "mathContext": "$\\mathrm{deficiencyFun}\\,G\\,d = \\sum_v (d\\,v - \\deg v)$ for $d : V \\to \\mathbb{N}$; parity $\\equiv \\sum_v d\\,v \\ (\\mathrm{mod}\\ 2)$.",
+      "summary": "Answers open question 3: the deficiency toward a prescribed non-constant target d : V → ℕ. deficiencyFun_const recovers the scalar case; deficiencyFun_eq/_parity/_odd and one_le_deficiencyFun lift the parity obstruction verbatim; not_forall_degree_eq_of_odd_sum gives the classical 'odd-sum degree sequence is not graphical' condition, subsuming the constant-d impossibility."
     }
   ],
   "crossReferences": [
@@ -147,12 +158,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The handshake parity obstruction is made quantitative via a degree-deficiency functional ∑_v (d − deg v) = n·d − 2|E|. Because the degree sum is even, the deficiency shares the parity of n·d, so when n·d is odd it is odd and hence ≥ 1: no d-regular graph exists, the edge count is capped at (n·d − 1)/2, and the floor 1 is attained by an explicit one-vertex witness. Verified, 0 axioms, 0 sorries.",
+    "summary": "The handshake parity obstruction is made quantitative via a degree-deficiency functional ∑_v (d − deg v) = n·d − 2|E|. Because the degree sum is even, the deficiency shares the parity of n·d, so when n·d is odd it is odd and hence ≥ 1: no d-regular graph exists, the edge count is capped at (n·d − 1)/2, and the floor 1 is attained by an explicit one-vertex witness. Verified, 0 axioms, 0 sorries. The formulation extends verbatim to a prescribed non-constant target d : V → ℕ: deficiencyFun G d = ∑_v (d v − deg v) shares the parity of ∑_v d v, so an odd target sum forces deficiency ≥ 1 and, with no degree bound, no exact realisation — the classical odd-sum degree sequence is not graphical, subsuming the constant-d obstruction.",
     "implications": "Upgrades the classical 'impossible when n·d is odd' to a sharp numeric bound with an attained minimum, and packages the impossibility as a reusable corollary (not_isRegularOfDegree_of_odd_mul). The deficiency-parity pattern — measure the shortfall against an ideal and let an even invariant fix its parity — applies to other regularity/realisability obstructions.",
     "openQuestions": [
       "General realisability of the floor: prove that for every odd n·d there EXISTS a simple graph on n vertices with all degrees ≤ d and deficiency exactly 1 (a near-regular graph), turning the sharpness witness into a theorem for all n, d — a degree-sequence construction in the spirit of Havel–Hakimi.",
-      "Relate the deficiency to the number of odd-degree vertices: bound deficiency below by (number of vertices whose degree has the wrong parity relative to d)/2, connecting to the even-odd-degree corollary of the handshake lemma.",
-      "Extend to prescribed non-constant degree targets d : V → ℕ, quantifying the shortfall ∑_v (d v − deg v) and its parity against ∑_v d v."
+      "Relate the deficiency to the number of odd-degree vertices: bound deficiency below by (number of vertices whose degree has the wrong parity relative to d)/2, connecting to the even-odd-degree corollary of the handshake lemma."
     ]
   },
   "leanFile": {
@@ -165,11 +175,11 @@
       "SimpleGraph"
     ],
     "namespace": "HandshakeLemmaOQ01",
-    "lineCount": 177,
+    "lineCount": 244,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 1,
-    "theoremCount": 9
+    "definitionCount": 2,
+    "theoremCount": 18
   },
   "references": [
     {
@@ -217,6 +227,12 @@
       "type": "supporting",
       "description": "Sharpness: the empty graph on one vertex with d = 1 (n·d = 1 odd) has deficiency exactly 1, so one_le_deficiency is attained.",
       "leanType": "deficiency (⊥ : SimpleGraph (Fin 1)) 1 = 1"
+    },
+    {
+      "name": "not_forall_degree_eq_of_odd_sum",
+      "type": "supporting",
+      "description": "No graph realises a prescribed degree target d : V → ℕ exactly when the target sum ∑_v d v is odd — the classical parity necessary condition for a degree sequence to be graphical; subsumes not_isRegularOfDegree_of_odd_mul.",
+      "leanType": "(d : V → ℕ) → Odd (∑ v, d v) → ¬ (∀ v, G.degree v = d v)"
     }
   ],
   "sorries": 0
