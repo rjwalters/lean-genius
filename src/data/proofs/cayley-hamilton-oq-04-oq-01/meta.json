@@ -96,24 +96,31 @@
   "sections": [
     {
       "id": "module-doc",
-      "title": "Module Documentation",
+      "title": "Module Documentation & Setup",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Header stating the explicit 3×3 Cayley–Hamilton identity and the cube reduction, the definition of the middle coefficient c₂ as the sum of the three 2×2 principal minors, the entrywise from-scratch proof strategy, and why it is not a re-export of Mathlib's charpoly Cayley–Hamilton."
+      "endLine": 57,
+      "summary": "Imports (`Matrix.Adjugate`, `NonsingularInverse`, `Trace`, `Tactic`) and the module docstring stating the explicit 3×3 Cayley–Hamilton identity and the cube reduction, the definition of the middle coefficient c₂ as the sum of the three 2×2 principal minors, the entrywise from-scratch proof strategy, and why it is not a re-export of Mathlib's charpoly Cayley–Hamilton. Opens the `CayleyHamiltonOQ04OQ01` namespace, `open Matrix`, and fixes the ambient `variable {R : Type*} [CommRing R]` over which everything is stated."
     },
     {
       "id": "c2",
       "title": "The Middle Characteristic Coefficient c₂",
-      "startLine": 56,
-      "endLine": 64,
-      "summary": "Defines `c2 A` as the sum of the three 2×2 principal minors (a₀₀a₁₁ − a₀₁a₁₀) + (a₀₀a₂₂ − a₀₂a₂₀) + (a₁₁a₂₂ − a₁₂a₂₁), the second elementary symmetric function of the eigenvalues."
+      "startLine": 58,
+      "endLine": 67,
+      "summary": "Defines `c2 A` as the sum of the three 2×2 principal minors (a₀₀a₁₁ − a₀₁a₁₀) + (a₀₀a₂₂ − a₀₂a₂₀) + (a₁₁a₂₂ − a₁₂a₂₁), the second elementary symmetric function of the eigenvalues, i.e. the coefficient of X in the characteristic polynomial X³ − (tr A)X² + c₂X − det A."
     },
     {
       "id": "cayley-hamilton",
       "title": "Explicit 3×3 Cayley–Hamilton",
-      "startLine": 66,
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "`cube_sub_trace_smul_sq_add_c2_smul_sub_det_smul`: every 3×3 matrix satisfies A³ − (tr A)·A² + c₂·A − (det A)·1 = 0, proved by rewriting A³ = A·A·A, `ext i j`, and closing all nine entries with `fin_cases i <;> fin_cases j` followed by `simp [Matrix.mul_apply, Fin.sum_univ_three, …]` and `ring`."
+    },
+    {
+      "id": "cube-reduction",
+      "title": "Cube Reduction: A³ as a Linear Combination of A², A, 1",
+      "startLine": 82,
       "endLine": 90,
-      "summary": "`cube_sub_trace_smul_sq_add_c2_smul_sub_det_smul`: A³ − (tr A)·A² + c₂·A − (det A)·1 = 0 by entrywise `fin_cases`/`ring` over Fin 3. `cube_eq`: the rearrangement A³ = (tr A)·A² − c₂·A + (det A)·1 via `linear_combination`."
+      "summary": "`cube_eq`: the rearrangement A³ = (tr A)·A² − c₂·A + (det A)·1, expressing the cube of any 3×3 matrix as a linear combination of A², A, and the identity, derived from the main identity via `linear_combination (norm := module)`. Closes the namespace."
     }
   ],
   "sorries": 0
