@@ -34,7 +34,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
     "lineCount": 318,
-    "assumptions": "1 axiom: eta-zeta relation η(s) = (1-2^{1-s})ζ(s). 9 sorries for series convergence results requiring analytic tools (alternating series test, Fourier analysis, Abel summation).",
+    "assumptions": "1 axiom: eta-zeta relation η(s) = (1-2^{1-s})ζ(s). 4 sorries remain for the deepest series identities (alternating harmonic series = ln 2 via Abel summation; β(3) = π³/32 and η(2) = π²/12 via Fourier/zeta values). β(1) = π/4, Catalan-constant convergence/positivity/numeric bounds, and the Leibniz error estimate are now fully proved.",
     "originalContributions": [
       "Unified framework: Dirichlet beta (β) and eta (η) functions as Leibniz-type series",
       "Definitions of Catalan's constant G = β(2) and Dirichlet character mod 4",
@@ -201,7 +201,7 @@
     "duplicateTheorems": 0,
     "definitionCount": 5,
     "path": "Proofs/LeibnizPiOQ02.lean",
-    "sorries": 9,
+    "sorries": 4,
     "additionalFiles": [
       "Proofs/LeibnizPiOQ02Aristotle.lean"
     ]
@@ -232,5 +232,5 @@
       "leanType": "(s : ℝ) → s > 1 → tsum η = (1-2^{1-s}) * tsum ζ"
     }
   ],
-  "sorries": 9
+  "sorries": 4
 }
