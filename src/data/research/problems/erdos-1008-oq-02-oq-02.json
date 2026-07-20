@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added the leading-order asymptotic constant — the proven closed-form KST upper bound for K_{2,t}, normalized by n^{3/2}, converges to ½√(t-1) (kst_leading_order_ratio_tendsto), making rigorous ex(n;K_{2,t}) ≤ (½√(t-1)+o(1))n^{3/2}. Upper-bound side of the closed form now complete finite-n AND asymptotically; only the (hard) matching lower-bound construction remains open.",
+    "progressSummary": "GENERAL-s ASYMPTOTIC CONSTANT (researcher-1, 2026-07-19, VERIFIED 0-axiom): extended the s=2 leading-order constant to all s≥2 — kst_general_leading_order_ratio_tendsto shows the general K_{s,t} KST upper bound kstGeneralLeadingBound/n^{2-1/s} → ½(t-1)^{1/s}, making rigorous ex(n;K_{s,t}) ≤ (½(t-1)^{1/s}+o(1))·n^{2-1/s} for every s≥2. Upper bound now complete finite-n AND asymptotically for both K_{2,t} and general K_{s,t}; only the matching lower-bound (Füredi/projective-plane) construction remains open.",
     "builtItems": [
       "kst_quadratic_solve (Erdos1008OQ02OQ02.lean): solves the general K_{2,t} KST quadratic 4m^2 <= (t-1)n^2(n-1)+2nm for the upper root 4m <= n(1+s), s=sqrt(1+4(t-1)(n-1))",
       "reiman_quadratic_solve_of_kst: t=2 specialisation recovering the sibling C4 lemma verbatim (1+4(t-1)(n-1)=4n-3)",
@@ -62,7 +62,8 @@
       "Erdos1008OQ02OQ02.lean: not_hasKst_mono — K_{s,t}-free classes nest (Free(s,t) ⊆ Free(s,t)).",
       "Erdos1008OQ02OQ02.lean: hasKst_comm — symmetry HasKst G s t ↔ HasKst G t s (K_{s,t}≅K_{t,s}).",
       "kstLeadingBound + kst_leading_order_ratio_tendsto (Erdos1008OQ02OQ02.lean): the closed-form KST bound ½(√(t-1)·n^{3/2}+n) divided by n^{3/2} tends to ½√(t-1) — rigorous leading-order asymptotic constant, axiom-free",
-      "kst_edge_bound_leading_order_def: graph-level restatement m ≤ kstLeadingBound t n tying the asymptotic function to the proven edge bound"
+      "kst_edge_bound_leading_order_def: graph-level restatement m ≤ kstLeadingBound t n tying the asymptotic function to the proven edge bound",
+      "Erdos1008OQ02OQ02.lean: kstGeneralLeadingBound def + kst_general_edge_card_bound_def + kst_general_leading_order_ratio_tendsto (general-s asymptotic constant ½(t-1)^{1/s}). 0-axiom, host lean v4.31 verified."
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
@@ -74,7 +75,8 @@
       "Convexity/Jensen step for the general K_{s,t} bound is realized elementarily WITHOUT proving convexity of the descending factorial: route through C(d,s) ≥ (d-s+1)^s/s! (each of s descending factors ≥ d-s+1, Nat.pow_sub_le_descFactorial) then Mathlib power-mean pow_sum_le_card_mul_sum_pow (Jensen for x↦x^s).",
       "Sharp KST power form (2m-(s-1)n)^s ≤ (t-1)·n^(2s-1) is the general-s analogue of the s=2 quadratic 4m² ≤ (t-1)n²(n-1)+2nm; s-th root gives the classical 2m ≤ (t-1)^(1/s) n^(2-1/s) + (s-1)n unconditionally (sparse regime 2m<(s-1)n handled by nonnegativity).",
       "General K_{s,t} containment HasKst G s t is symmetric (K_{s,t} ≅ K_{t,s}, hasKst_comm) and monotone in both indices; symmetry gives ex(n;K_{s,t})=ex(n;K_{t,s}). Proved via Finset.exists_subset_card_eq (the correct Mathlib name; exists_smaller_set does not exist here).",
-      "Asymptotic wrapper needs no relation n=√n²: the ratio identity ½√(t-1)+(2√n)⁻¹ = (√(t-1)·n√n+n)/2/(n√n) is a pure field identity (cancel n√n and n), closed by field_simp alone; only n≠0,√n≠0 required. √n→∞ via Real.sqrt_eq_rpow + tendsto_rpow_atTop(1/2); (2√n)⁻¹→0 via const_mul_atTop.inv_tendsto_atTop."
+      "Asymptotic wrapper needs no relation n=√n²: the ratio identity ½√(t-1)+(2√n)⁻¹ = (√(t-1)·n√n+n)/2/(n√n) is a pure field identity (cancel n√n and n), closed by field_simp alone; only n≠0,√n≠0 required. √n→∞ via Real.sqrt_eq_rpow + tendsto_rpow_atTop(1/2); (2√n)⁻¹→0 via const_mul_atTop.inv_tendsto_atTop.",
+      "GENERAL-s ASYMPTOTIC CONSTANT (researcher-1, 2026-07-19, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound], host lean v4.31 exit 0): extended the s=2 leading-order result kst_leading_order_ratio_tendsto to ALL s>=2. New in Erdos1008OQ02OQ02.lean: kstGeneralLeadingBound s t n = ½(t-1)^{1/s}·n^{2-1/s} + ½(s-1)·n (packaging of kst_general_edge_card_bound RHS); kst_general_edge_card_bound_def (m ≤ kstGeneralLeadingBound); kst_general_leading_order_ratio_tendsto (s t) (hs:2≤s): kstGeneralLeadingBound s t n / n^{2-1/s} → ½(t-1)^{1/s} as n→∞. The ½(s-1)·n correction contributes ½(s-1)·n^{1/s-1}→0 since 1/s-1<0 for s≥2 (tendsto_rpow_neg_atTop with y=1-1/s>0). Discharges the analytic content of ex(n;K_{s,t}) ≤ (½(t-1)^{1/s}+o(1))·n^{2-1/s} for every s≥2; s=2 recovers the existing Reiman/KST constant. Upper-bound side now complete finite-n AND asymptotically for general s; only the matching lower-bound (projective-plane/Füredi) construction remains open."
     ],
     "mathlibGaps": [
       "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan.",
