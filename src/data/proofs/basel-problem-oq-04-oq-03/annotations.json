@@ -289,7 +289,7 @@
     "type": "concept",
     "title": "Computational Verification for Small N",
     "content": "Six theorems verify countCoprimePairs at N=1,2,3,4,5,10 using `native_decide`, which compiles the decision procedure to native code for efficient evaluation. The densities start at 1.0 (N=1), dip to ~0.63 at N=10, and converge toward 6/π² ≈ 0.608. These verified values serve as a sanity check and illustrate the slow monotone convergence of the density. Notice the density at N=2 is 3/4=0.75 (pairs (1,1),(1,2),(2,1)) — the non-coprime pair (2,2) with gcd=2 is the only exclusion.",
-    "mathContext": "Densities: $N=1: 1.0$, $N=2: 0.75$, $N=3: 7/9\\approx0.778$, $N=4: 13/16=0.813$, $N=5: 21/25=0.84$, $N=10: 0.63$. All exceed $6/\\pi^2\\approx0.608$ (density approaches from above).",
+    "mathContext": "Densities: $N=1: 1.0$, $N=2: 0.75$, $N=3: 7/9\\approx0.778$, $N=4: 11/16\\approx0.688$, $N=5: 19/25=0.76$, $N=10: 0.63$. All exceed $6/\\pi^2\\approx0.608$ (density approaches from above).",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide",
