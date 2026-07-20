@@ -171,32 +171,121 @@
     {
       "id": "hexagon-relabeling",
       "startLine": 558,
-      "endLine": 618,
-      "title": "§4b: Hexagon Relabeling Action (S4b ACT — toolkit for OQ-03-OQ-02)"
+      "endLine": 626,
+      "title": "§4b: Hexagon Relabeling Action (S4b ACT — toolkit for OQ-03-OQ-02)",
+      "summary": "The hexagon-relabeling toolkit: hexVertex indexes the six vertices via a Fin 6 pattern match, hexVertex_onConic / hexVertex_valid bundle the six conic-membership and projective-validity proofs, and permuteHexagon (hex) (π : Equiv.Perm (Fin 6)) constructs the relabeled inscribed hexagon by applying π to each vertex index. Sorry-free; sets up the well-definedness descent of OQ-03-OQ-02."
+    },
+    {
+      "id": "pascal-triple-action",
+      "startLine": 627,
+      "endLine": 734,
+      "title": "§4c: Action of the Dihedral Generators on the Pascal Triple",
+      "summary": "How the two dihedral generators permute the three Pascal points (P, Q, R) in homogeneous coordinates: pascalP/Q/R_permuteHexagon_hexRot and _hexRev give the exact signed images hexRot : (P,Q,R) ↦ (Q,R,−P) and hexRev : (P,Q,R) ↦ (−Q,−P,R), read off from antisymmetry of the cross product (cross_anticomm). Signs are invisible projectively, so each generator fixes the set {[P],[Q],[R]} — the geometric backbone of the OQ-03-OQ-02 descent.",
+      "mathContext": "With $\\text{lineThrough} = \\text{crossProduct}$, the Pascal points transform as $\\text{hexRot} : (P,Q,R) \\mapsto (Q, R, -P)$ and $\\text{hexRev} : (P,Q,R) \\mapsto (-Q, -P, R)$. Because projective points ignore nonzero scalars, both generators — hence all of $\\text{hexagonalGroup} \\cong D_6$ — permute the projective Pascal triple."
+    },
+    {
+      "id": "pascal-line-generator-equality",
+      "startLine": 735,
+      "endLine": 863,
+      "title": "§4d: Projective Line Equality of the Pascal Line under the Generators (OQ-03-OQ-02)",
+      "summary": "Promotes set-invariance of the projective Pascal points to genuine ProjLine equality. The BAC–CAB triple-product specialisation and a collinearity crux give pascalLine_hexRot_sameProjLine and pascalLine_hexRev_sameProjLine — each generator sends the Pascal line to a scalar multiple of itself — packaged as pascalLine_generators_sameProjLine, the projective-level statement of OQ-03-OQ-02.",
+      "mathContext": "Line-equality is taken up to nonzero scalar via sameProjLine ($l \\parallel m \\iff l \\times_3 m = 0$). The rotation crux uses that when $P, Q, R$ are collinear the two candidate Pascal lines coincide projectively, so $\\text{hexRot}$ and $\\text{hexRev}$ each fix $[\\,P \\times_3 Q\\,]$."
+    },
+    {
+      "id": "sameprojline-per",
+      "startLine": 864,
+      "endLine": 1036,
+      "title": "§4e: sameProjLine Is a Partial Equivalence Relation",
+      "summary": "The algebraic engine for the quotient descent: sameProjLine_symm (cross-product antisymmetry), sameProjLine_trans (transitivity along a nonzero middle vector, via the triple-product identity), and sameProjLine_isPER bundling reflexivity/symmetry/transitivity into a PER on nonzero line-vectors. pascalLine_hexRot_hexRev_sameProjLine shows both generators agree on a single common projective line.",
+      "mathContext": "Parallelism of line-vectors is reflexive and symmetric on all of $\\mathbb{R}^3$ but transitive only through a nonzero middle vector, so it is a *partial* equivalence relation. This PER is exactly what lets the group-level invariance descend to the coset quotient $\\text{Sym}(6)/D_6$."
+    },
+    {
+      "id": "permutehexagon-action",
+      "startLine": 1037,
+      "endLine": 1093,
+      "title": "§4f: permuteHexagon Is a Right Group Action (OQ-03-OQ-02)",
+      "summary": "The composition law the closure induction consumes: permuteHexagon_one (relabeling by the identity is the original hexagon) and permuteHexagon_mul (relabeling by g then h equals relabeling by g·h), together with InscribedHexagon.ext and hexVertex_permuteHexagon. Establishes that permuteHexagon is a right action of Equiv.Perm (Fin 6).",
+      "mathContext": "$\\text{permuteHexagon}$ is a right action: $\\text{hex} \\cdot 1 = \\text{hex}$ and $\\text{hex} \\cdot (gh) = (\\text{hex} \\cdot g) \\cdot h$. Chaining the two dihedral generators through this law is what powers the quotient-descent induction of OQ-03-OQ-02."
+    },
+    {
+      "id": "quotient-descent",
+      "startLine": 1094,
+      "endLine": 1180,
+      "title": "§4g: Quotient Descent — D₆-Invariance of the Pascal Line (OQ-03-OQ-02)",
+      "summary": "The full closure induction: pascalProjLine_sameProjLine_of_mem proves that relabeling hex by any element of hexagonalGroup leaves its Pascal line projectively unchanged, and pascalProjLine_sameProjLine_of_mem_mem is the well-definedness corollary under general position. Lifts the generator-level invariance to the entire dihedral group.",
+      "mathContext": "By induction over $\\langle \\text{hexRot}, \\text{hexRev}\\rangle = D_6$ using the generator equalities (§4d) and the action law (§4f), $\\text{pascalProjLine}(\\text{hex} \\cdot g) \\parallel \\text{pascalProjLine}(\\text{hex})$ for every $g \\in D_6$ — the group-level heart of OQ-03-OQ-02."
+    },
+    {
+      "id": "pascal-incidence",
+      "startLine": 1181,
+      "endLine": 1259,
+      "title": "§4h: Incidence — the Three Pascal Points Lie on pascalProjLine",
+      "summary": "The geometric meaning of the line descended to the quotient: pointOnLine_cross_left/right and pointOnLine_cross_of_collinear give pascalP/Q/R_on_pascalProjLine, collected in pascal_points_on_pascalProjLine — all three Pascal points lie on pascalProjLine = lineThrough (pascalP) (pascalQ).",
+      "mathContext": "A point $r$ lies on the join $p \\times_3 q$ iff $r \\cdot (p \\times_3 q) = 0$; for the collinear Pascal points this holds by $\\text{pointOnLine\\_cross\\_of\\_collinear}$, so $P, Q, R \\in \\text{pascalProjLine}$."
+    },
+    {
+      "id": "pascalprojline-uniqueness",
+      "startLine": 1260,
+      "endLine": 1324,
+      "title": "§4i: Uniqueness — Two Points Determine the Projective Line",
+      "summary": "The converse of §4h: sameProjLine_of_pointOnLine_pointOnLine and sameProjLine_pascalProjLine_of_pointOnLine show any projective line through two given points equals the line they span (lineThrough p q = p ×₃ q), pinning down THE Pascal line. pascalProjLine_unique packages the result. No nondegeneracy needed.",
+      "mathContext": "By the BAC–CAB identity $l \\times_3 (p \\times_3 q) = (l\\cdot q)\\,p - (l\\cdot p)\\,q$, the right side vanishes when $p, q \\in l$ (i.e. $l\\cdot p = l\\cdot q = 0$), so every line through $p, q$ is projectively their span $p \\times_3 q$."
+    },
+    {
+      "id": "nondegeneracy-meaning",
+      "startLine": 1325,
+      "endLine": 1404,
+      "title": "§4j: Geometric Meaning of the Non-Degeneracy Hypothesis hnd",
+      "summary": "Unpacks the general-position hypothesis hnd carried by the descent theorems. crossProduct_eq_zero_iff and pascalProjLine_eq_zero_iff show a cross product vanishes exactly when all three 2×2 minors vanish (the two points are projectively equal); pascalProjLine_ne_zero_of_minor gives the concrete criterion. So hnd says precisely that the two spanning Pascal points P = AB∩DE and Q = BC∩EF are projectively distinct for every relabeling.",
+      "mathContext": "$P \\times_3 Q = 0$ iff all three $2\\times2$ minors of $(P, Q)$ vanish iff $[P] = [Q]$ projectively. Thus $\\text{hnd} : \\forall k,\\ \\text{pascalProjLine}(\\text{hex}\\cdot k) \\neq 0$ means exactly that the two opposite-side intersection points spanning the line never coincide."
+    },
+    {
+      "id": "full-incidence",
+      "startLine": 1405,
+      "endLine": 1462,
+      "title": "§4k: Full Incidence Characterization of the Pascal Line",
+      "summary": "The converse to §4h packaged as an iff: collinear_of_pointOnLine_cross, pointOnLine_cross_iff_collinear, and pointOnLine_pascalProjLine_iff_collinear prove a point r lies on the join p ×₃ q exactly when p, q, r are collinear. Both directions are the single identity r · (p ×₃ q) = det(p,q,r), giving the complete point-locus description of the Pascal line.",
+      "mathContext": "The scalar triple product equals the determinant, $r \\cdot (p \\times_3 q) = \\det(p, q, r)$ (cyclic symmetry of $\\det$), so $r \\in [p \\times_3 q] \\iff \\det(p,q,r) = 0 \\iff p, q, r$ collinear — one $\\text{linear\\_combination}$ certificate read both ways, no nondegeneracy required."
     },
     {
       "id": "pascal-line-map",
-      "startLine": 619,
-      "endLine": 647,
-      "title": "§5: Pascal-Line Map and Hexagrammum Mysticum Statement"
+      "startLine": 1463,
+      "endLine": 1500,
+      "title": "§5: Pascal-Line Map and Hexagrammum Mysticum Statement",
+      "summary": "The total Pascal-line map pascalLine C hex lbl: a representative permutation of the labeling lbl reorders the six vertices, whose opposite-side intersections P, Q, R are collinear (Pascal's theorem), and pascalLine is the line through two of them, made total by evaluating at the canonical coset representative lbl.out. hexagrammum_mysticum_pascal_lines assembles the 60-line configuration statement.",
+      "mathContext": "$\\text{pascalLine}\\,C\\,\\text{hex}\\,\\text{lbl} := \\text{lineThrough}(\\text{pascalP}, \\text{pascalQ})$ evaluated at $\\text{lbl.out} \\in \\text{Equiv.Perm}(\\text{Fin}\\,6)$. Independence from the chosen representative is the genuine well-definedness content of OQ-03-OQ-02 (proved in §5b)."
+    },
+    {
+      "id": "quotient-well-def",
+      "startLine": 1501,
+      "endLine": 1547,
+      "title": "§5b: Quotient-Level Well-Definedness of the Pascal Line (OQ-03-OQ-02)",
+      "summary": "Closes the descent: pascalProjLine_sameProjLine_of_quotient_eq and pascalLine_sameProjLine_rep prove that two permutations representing the same HexagonLabeling coset relabel hex to the same projective Pascal line (under hnd), lifting the group-level invariance of §4g to the quotient — the full OQ-03-OQ-02 well-definedness.",
+      "mathContext": "If $\\text{lbl}_1 = \\text{lbl}_2$ in $\\text{Sym}(6)/D_6$ then their representatives differ by a $D_6$ element, so §4g gives $\\text{pascalLine}(\\text{lbl}_1) \\parallel \\text{pascalLine}(\\text{lbl}_2)$: the map on the quotient is well-defined up to projective equality."
     },
     {
       "id": "steiner-points",
-      "startLine": 648,
-      "endLine": 675,
-      "title": "§6: Steiner Points (OQ-03-OQ-03)"
+      "startLine": 1548,
+      "endLine": 1575,
+      "title": "§6: Steiner Points (OQ-03-OQ-03)",
+      "summary": "The SteinerPoint structure: a concurrency of 3 Pascal lines forming a Steiner triple, each Steiner point lying on exactly 3 of the 60 Pascal lines. The 20 Steiner triples are characterized via the outer automorphism of S₆ (Conway–Ryba 2012). steiner_count_eq_20 states the count (still a sorry — OQ-03-OQ-03).",
+      "mathContext": "There are exactly $20$ Steiner points, each the common intersection of a triple of Pascal lines, indexed by the exotic outer automorphism of $S_6$. The enumeration $\\text{steiner\\_count\\_eq\\_20}$ remains an open target (sorry)."
     },
     {
       "id": "kirkman-points",
-      "startLine": 676,
-      "endLine": 700,
-      "title": "§7: Kirkman Points (OQ-03-OQ-04)"
+      "startLine": 1576,
+      "endLine": 1600,
+      "title": "§7: Kirkman Points (OQ-03-OQ-04)",
+      "summary": "The KirkmanPoint structure: a concurrency of 3 Pascal lines forming a Kirkman triple, combinatorially distinct from the Steiner triples, with card_triple = 3 and on_lines incidence. kirkman_count_eq_60 states the 60-point count (still a sorry — OQ-03-OQ-04).",
+      "mathContext": "There are exactly $60$ Kirkman points, each on $3$ of the $60$ Pascal lines but combinatorially distinct from the $20$ Steiner points. The enumeration $\\text{kirkman\\_count\\_eq\\_60}$ remains an open target (sorry)."
     },
     {
       "id": "sanity-lemmas",
-      "startLine": 701,
-      "endLine": 718,
-      "title": "§8: Sanity Lemmas (hexRot_ne_one, hexRev_ne_one)"
+      "startLine": 1601,
+      "endLine": 1611,
+      "title": "§8: Sanity Lemmas (Unconditional)",
+      "summary": "Unconditional sanity checks closing the file: hexRot_ne_one (cyclic rotation by 1 moves 0 ↦ 1, so it is not the identity) and companion lemmas confirming the dihedral generators are nontrivial.",
+      "mathContext": "$\\text{hexRot} \\neq 1$ since $\\text{hexRot}(0) = 1 \\neq 0$ (via finRotate_succ_apply); a minimal unconditional check that the generators of $\\text{hexagonalGroup}$ act nontrivially."
     }
   ],
   "conclusion": {
