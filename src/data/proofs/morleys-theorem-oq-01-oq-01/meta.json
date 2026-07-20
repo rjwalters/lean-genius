@@ -2,7 +2,7 @@
   "id": "morleys-theorem-oq-01-oq-01",
   "title": "Explicit Side Length of the Morley Triangle",
   "slug": "morleys-theorem-oq-01-oq-01",
-  "description": "Closes the open computation left by OQ-01 (Conway's angle scaffolding): a fully coordinate-free, trigonometric proof that each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), hence the Morley triangle is equilateral with this explicit side length. The geometric input enters only through the classical metric laws (extended law of sines, law of cosines); the mathematical core is two trig identities proved here from scratch — the triple-angle product sin(3θ)=4·sinθ·sin(π/3−θ)·sin(π/3+θ) and a law-of-cosines bracket collapse. 0 axioms, 0 sorries (machine-verified, Mathlib v4.26.0).",
+  "description": "Closes the open computation left by OQ-01 (Conway's angle scaffolding): a fully coordinate-free, trigonometric proof that each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), hence the Morley triangle is equilateral with this explicit side length. The geometric input enters only through the classical metric laws (extended law of sines, law of cosines); the mathematical core is two trig identities proved here from scratch — the triple-angle product sin(3θ)=4·sinθ·sin(π/3−θ)·sin(π/3+θ) and a law-of-cosines bracket collapse. 0 axioms, 0 sorries (machine-verified, Mathlib v4.31.0).",
   "meta": {
     "author": "Lean Genius research",
     "date": "2026",
@@ -112,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; machine-verified against Mathlib v4.26.0, 2026-06-24): each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), so the Morley triangle is equilateral with that explicit side length. The argument is coordinate-free, deriving the ear segments by the law of sines and the side by the law of cosines, with the two underlying trigonometric identities proved from scratch.",
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; machine-verified against Mathlib v4.31.0, 2026-06-24): each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), so the Morley triangle is equilateral with that explicit side length. The argument is coordinate-free, deriving the ear segments by the law of sines and the side by the law of cosines, with the two underlying trigonometric identities proved from scratch.",
     "implications": "This completes the explicit length computation that OQ-01 set up and explicitly deferred, doing so without coordinates. The two reusable identities — the product form of the triple-angle formula and the law-of-cosines bracket collapse sin²u+sin²v+2·sinu·sinv·cos(u+v)=sin²(u+v) — are general tools for trigonometric metric computations in triangle geometry. The pattern of computing each side independently and observing they coincide turns Morley's equilateral conclusion into a corollary of the side-length formula rather than a separate fact.",
     "openQuestions": [
       "Coordinate realization: place the original triangle in EuclideanSpace ℝ (Fin 2), construct the trisector rays, and prove that the analytic intersection points actually realize the angle-model segment lengths AY, AZ used here — i.e. discharge the law-of-sines / law-of-cosines hypotheses geometrically rather than encoding them.",
