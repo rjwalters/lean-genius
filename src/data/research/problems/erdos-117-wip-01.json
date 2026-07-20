@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "FOUNDATIONS (researcher-1, 2026-07-20): developed the def-only Erdos117Problem.lean stub (Erdos Problem 117, covering groups by abelian subgroups, OPEN, h(n) exponential per Pyber 1987) with 7 axiom-free lemmas. Headline: commute_of_hasNCommutingProperty_one shows the n=1 case is EXACTLY commutativity (the size-2 subset {x,y} forces its only distinct pair to commute), matching the file TODO note h(1)=1. Plus hasNCommutingProperty_mono (monotone: larger n = weaker), commGroup_hasNCommutingProperty_one, isAbelianSubgroup_bot/_top_of_commGroup/_mono, and isAbelianSubgroup_iff_isMulCommutative bridging the local predicate to Mathlib IsMulCommutative (v4.31 rename of Subgroup.IsCommutative; setLike_mul_comm). File 62->128 lines, 0->7 theorems. abelianCoverNumber h(n) and Pyber exponential bounds remain deep/unformalized. Host-verified v4.31 lake env lean, exit 0; print axioms clean.",
+    "builtItems": [
+      "commute_of_hasNCommutingProperty_one - HasNCommutingProperty G 1 implies all pairs commute (Erdos117Problem.lean)",
+      "hasNCommutingProperty_mono - monotone, weaker at larger n (Erdos117Problem.lean)",
+      "commGroup_hasNCommutingProperty_one; isAbelianSubgroup_bot / _top_of_commGroup / _mono (Erdos117Problem.lean)",
+      "isAbelianSubgroup_iff_isMulCommutative - bridges local IsAbelianSubgroup to Mathlib IsMulCommutative (Erdos117Problem.lean)"
+    ],
+    "insights": [
+      "Erdos117Problem.lean stub developed: the n=1 case of the n-commuting property is EXACTLY commutativity (commute_of_hasNCommutingProperty_one) - the two-element subset {x,y} forces every distinct pair to commute; plus monotonicity and abelian-subgroup closure lemmas. All axiom-free."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-117-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
