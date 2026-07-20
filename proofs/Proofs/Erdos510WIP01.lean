@@ -143,4 +143,29 @@ theorem minCosineSum_singleton {n : ℕ} (hn : 1 ≤ n) : minCosineSum {n} = -1 
   · exact (minCosineSum_le {n} (π / n)).trans_eq hval
   · exact le_ciInf (fun θ => by rw [cosineSum_singleton]; exact Real.neg_one_le_cos _)
 
+/-! ## The infimum is attained -/
+
+/-- **The minimum cosine sum is attained.**  `cosineSum A` is continuous and
+`2π`-periodic, so its infimum over all of `ℝ` equals its minimum over the compact
+interval `[0, 2π]`, and is realised at some concrete angle `θ₀`.  This upgrades
+`minCosineSum` from an `iInf` to an attained minimum — the structural
+prerequisite for locating the extremal angle in the Chowla problem. -/
+theorem exists_eq_minCosineSum (A : Finset ℕ) :
+    ∃ θ₀ : ℝ, cosineSum A θ₀ = minCosineSum A := by
+  have hper : Function.Periodic (cosineSum A) (2 * π) := fun θ => cosineSum_add_two_pi A θ
+  have himg : cosineSum A '' Set.Icc 0 (0 + 2 * π) = Set.range (cosineSum A) :=
+    hper.image_Icc Real.two_pi_pos 0
+  have hne : (Set.Icc (0 : ℝ) (0 + 2 * π)).Nonempty :=
+    ⟨0, Set.left_mem_Icc.mpr (by have := Real.two_pi_pos; linarith)⟩
+  obtain ⟨θ₀, _, hmin⟩ :=
+    isCompact_Icc.exists_isMinOn hne (continuous_cosineSum A).continuousOn
+  refine ⟨θ₀, le_antisymm ?_ (minCosineSum_le A θ₀)⟩
+  -- `cosineSum A θ₀` is a lower bound of the whole range, hence `≤` the infimum
+  refine le_ciInf (fun θ => ?_)
+  have hmem : cosineSum A θ ∈ Set.range (cosineSum A) := ⟨θ, rfl⟩
+  rw [← himg] at hmem
+  obtain ⟨y, hy, hyeq⟩ := hmem
+  rw [← hyeq]
+  exact isMinOn_iff.mp hmin y hy
+
 end Erdos510WIP01
