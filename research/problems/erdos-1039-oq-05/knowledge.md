@@ -71,6 +71,29 @@ All iteration-3 theorems: axioms `[propext, Classical.choice, Quot.sound]` (veri
 
 ---
 
+## Built (iteration 4 — pointwise Fekete monotonicity, axiom-free)
+
+- `exists_deleteAt_discreteDiameter_ge (hn : 2 ≤ n) (z : Fin (n+1) → ℂ)
+  (hz : Injective z) : ∃ k, discreteDiameter z ≤ discreteDiameter (deleteAt z k)`.
+  For every injective (n+1)-tuple of roots (n ≥ 2), some n-point deletion has
+  n-point diameter ≥ the (n+1)-point diameter of the whole tuple — i.e.
+  d_{n+1}(Z) ≤ dₙ(delete k Z), the **finite heart of Fekete monotonicity**.
+  Proof: additive deletion identity `sum_logSpread_deleteAt`
+  (∑ₖ logSpread(delete k Z) = (n−1)·logSpread Z over n+1 terms) ⇒ some term meets
+  the mean (`Finset.exists_le_of_sum_le` against the constant (n−1)E/(n+1)) ⇒
+  exponent bookkeeping 2/(n(n−1)) · (n−1)/(n+1) = 2/((n+1)n) ⇒ compare via
+  `discreteDiameter_eq_exp` + `Real.exp_le_exp`. Axiom-free
+  (`#print axioms` = [propext, Classical.choice, Quot.sound]).
+
+★RECIPE: "some sample beats the mean" over a Finset — build the constant function
+`fun _ => (∑ f)/card`, show its sum equals ∑ f (`Finset.sum_const` +
+`card_univ`/`Fintype.card_fin` + `nsmul_eq_mul` + `field_simp`), then
+`Finset.exists_le_of_sum_le univ_nonempty (le_of_eq ...)`. Cast bridge for the
+(n+1)-point exponent: `((n+1:ℕ):ℝ) = (n:ℝ)+1` by `push_cast; ring`, then
+`add_sub_cancel_right` clears the `((n:ℝ)+1)-1`.
+
+---
+
 ## Dead Ends
 
 None recorded yet. The capacity/Green's-function route (Approach A) and the
@@ -80,6 +103,6 @@ transfinite-diameter limit require Mathlib API that does not yet exist.
 
 ## Next
 
-1. Fekete monotonicity dₙ₊₁(Z) ≤ dₙ(Z) → transfinite diameter d(Z) = infₙ dₙ.
+1. ✅ DONE (iter 4, pointwise form `exists_deleteAt_discreteDiameter_ge`). Remaining: upgrade to sup-over-configurations dₙ₊₁ ≤ dₙ (needs compactness/sSup API) and d(Z) = infₙ dₙ.
 2. Logarithmic capacity of {|f|≥1}∩B(0,R) + cap=1 normalization (axiomatize, cite Fekete–Szegő).
 3. State ρ(f) ≳ g(d(Z), cap) (theorems where provable / axioms citing Pommerenke/KLR).

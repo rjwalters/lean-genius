@@ -390,7 +390,7 @@ theorem exists_deleteAt_discreteDiameter_ge (hn : 2 ≤ n)
   calc 2 / (((n : ℝ) + 1) * (n : ℝ)) * logSpread z
       = 2 / ((n : ℝ) * ((n : ℝ) - 1))
           * (((n : ℝ) - 1) * logSpread z / ((n : ℝ) + 1)) := by
-        field_simp; ring
+        field_simp
     _ ≤ 2 / ((n : ℝ) * ((n : ℝ) - 1)) * logSpread (deleteAt z k) := hstep
 
 end Erdos1039TransfiniteDiameter

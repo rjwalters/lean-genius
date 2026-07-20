@@ -31,10 +31,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 3,
-    "focus": "Finite discrete transfinite diameter (n-point spread) now formalized axiom-free in Erdos1039TransfiniteDiameter.lean. Next: the limit d(Z) = limₙ dₙ and the logarithmic-capacity side (cap of {|f|≥1}), plus the ρ(f) ≳ g(d,cap) links.",
+    "iteration": 4,
+    "focus": "Iteration 4: pointwise Fekete monotonicity exists_deleteAt_discreteDiameter_ge (d_{n+1}(Z) <= d_n(delete k Z)) proved axiom-free from the deletion identity via some-term-meets-mean. Erdos1039TransfiniteDiameter.lean now 16 theorems, 0 axioms/sorries.",
     "blockers": [],
-    "nextAction": "Formalize the transfinite diameter as the limit/inf of the n-point diameters dₙ(Z) (Fekete monotonicity dₙ₊₁ ≤ dₙ is the key missing lemma), then define logarithmic capacity of the lemniscate complement and axiomatize the cap=1 normalization (mirroring pommerenke_lower/klr_area_bound).",
+    "nextAction": "Upgrade pointwise monotonicity to sup-over-configurations d_{n+1} <= d_n (needs compactness/sSup API); then d(Z)=inf_n d_n; capacity normalization (axiomatize, cite Fekete–Szego).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -156,5 +156,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039TransfiniteDiameter.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-20"
 }
