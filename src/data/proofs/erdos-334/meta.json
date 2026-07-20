@@ -52,7 +52,7 @@
       "Real analysis (rpow, exp, sqrt, log in Lean/Mathlib)",
       "Asymptotic notation (o(1), big-O)"
     ],
-    "lineCount": 294,
+    "lineCount": 282,
     "assumptions": "2 axioms: erdos_cube_root_bound, balog_bound. 3 sorries.",
     "mathlib_version": "4.31.0",
     "theoremCount": 10,
@@ -87,64 +87,64 @@
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
       "summary": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul",
-      "startLine": 36,
-      "endLine": 74,
+      "startLine": 32,
+      "endLine": 68,
       "mathContext": "Formal definition: isSmooth definition, one_smooth, prime_power_smooth, smooth_mul"
     },
     {
       "id": "additive-representation",
       "title": "Part II: Additive Representation by Smooth Numbers",
       "summary": "hasSmootPairRepr definition, small_has_repr for n ≤ 3",
-      "startLine": 75,
-      "endLine": 92,
+      "startLine": 69,
+      "endLine": 86,
       "mathContext": "hasSmootPairRepr definition, small_has_repr for n $\\leq$ 3"
     },
     {
       "id": "minimal-smoothness",
       "title": "Part III: The Minimal Smoothness Function",
       "summary": "minSmoothness definition (placeholder returning 0); existence of f(n) is described in a docstring comment only — no `minSmoothness_exists` axiom or theorem is declared",
-      "startLine": 93,
-      "endLine": 109,
+      "startLine": 87,
+      "endLine": 103,
       "mathContext": "Formal definition: minSmoothness noncomputable def (placeholder). The docstring at lines 105–109 notes that every n has a smooth pair representation, but no Lean axiom or theorem formalizes this claim in this section."
     },
     {
       "id": "known-bounds",
       "title": "Part IV: Known Bounds",
       "summary": "erdos_cube_root_bound, balogExponent, balog_bound axiom",
-      "startLine": 110,
-      "endLine": 138,
+      "startLine": 104,
+      "endLine": 132,
       "mathContext": "Axiomatized: erdos_cube_root_bound, balogExponent, balog_bound axiom"
     },
     {
       "id": "conjectures",
       "title": "Part V: Conjectured Bounds",
       "summary": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}",
-      "startLine": 142,
-      "endLine": 167,
+      "startLine": 133,
+      "endLine": 159,
       "mathContext": "weakConjecture f(n) $\\leq$ n^{o(1)}, strongConjecture f(n) $\\leq$ e^{$O(√$\\log n$)$}"
     },
     {
       "id": "examples",
       "title": "Part VI: Examples",
       "summary": "example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)",
-      "startLine": 168,
-      "endLine": 222,
+      "startLine": 160,
+      "endLine": 208,
       "mathContext": "Mathematical content: example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)"
     },
     {
       "id": "connections",
       "title": "Part VII: Connection to Other Problems",
       "summary": "smoothCount ψ(x,y) placeholder def; de Bruijn asymptotic described in docstring only (no `de_bruijn_asymptotic` theorem/axiom declared); goldbachTypeProperty def",
-      "startLine": 223,
-      "endLine": 246,
+      "startLine": 209,
+      "endLine": 234,
       "mathContext": "smoothCount ψ(x,y) placeholder def; de Bruijn asymptotic $\\psi(x,y) \\sim x\\rho(u)$ mentioned in docstring only — no theorem or axiom in the file; goldbachTypeProperty def (simplified to True)"
     },
     {
       "id": "summary",
       "title": "Part VIII: Main Results Summary",
       "summary": "erdos_334_summary, erdos_334 main theorem, openQuestion",
-      "startLine": 253,
-      "endLine": 294,
+      "startLine": 235,
+      "endLine": 282,
       "mathContext": "erdos_334_summary is proved modulo the axioms erdos_cube_root_bound and balog_bound; erdos_334 (main theorem) is reduced to a single remaining sorry closing the 0.27 vs balogExponent ≈ 0.2695 gap; openQuestion is stated as a definition (Prop), not proved."
     }
   ],
@@ -188,7 +188,7 @@
       "Real"
     ],
     "namespace": "Erdos334",
-    "lineCount": 294,
+    "lineCount": 282,
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 9,
