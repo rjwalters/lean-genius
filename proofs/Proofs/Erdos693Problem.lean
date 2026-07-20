@@ -420,11 +420,14 @@ theorem polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolyno
 - polylogBoundedGap → subpolynomialGap (proved via isLittleO_log_rpow_atTop)
 - orderedA: sorted, membership, bounds, length, nonempty, nodup
 
-**AXIOMATIZED (1 axiom):**
-- Ford density theorem (deep analytic number theory, Ford 2008)
+**NOT FORMALIZED (0 axioms):**
+- Ford density theorem (deep analytic number theory, Ford 2008) is referenced
+  in comments only — it is not declared as an axiom. This file has 0 axioms.
+- polylogBoundedGap (the #693 conjecture itself) is stated, not proved.
 
 **REMOVED:**
 - maxGap_pigeonhole (incorrect bound — see comment at Part VIII)
+- divisor_density_ford (planned axiom; never declared, comment-only)
 -/
 theorem erdos_693_summary :
     erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k :=
