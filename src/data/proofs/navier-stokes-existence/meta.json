@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 5,
-    "assumptions": "NSAxioms structure with 5 fields: Type II exponent bound, spectral gap on dissipation scale, theta dynamics bound, blowup rate estimate, BKM criterion. These encode the physical hypotheses needed for conditional 3D regularity.",
+    "assumptions": "NSAxioms structure with 5 fields: Type II exponent bound, spectral gap on dissipation scale, theta dynamics bound, blowup rate estimate, BKM criterion. These encode the physical hypotheses needed for conditional 3D regularity. Additional trust caveat: the critical-exponent theorems lions_2d (lionsThreshold 2 = 1), lions_3d (lionsThreshold 3 = 5/4), critical_at_lions_is_zero, standard_2d_gap, and standard_ns_gap close their numeric goals with `native_decide`, so each additionally depends on the `Lean.ofReduceBool` axiom (`#print axioms` shows a `native_decide.ax` beyond propext/Classical.choice/Quot.sound), shifting trust to the compiler for those computations.",
     "mathlibDependencies": [
       {
         "theorem": "Real.tendsto_exp_div_pow_atTop",
