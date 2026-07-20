@@ -29,13 +29,26 @@ i.e. we compare  φ(n)  against  φ(D(n)) = φ(n − φ(n − φ(n))).
    so the "expected" direction  φ(n) > φ(D(n))  holds on an infinite family.
    The single exceptional prime is p = 2, where equality holds (D(2) = 1).
 
-3. **The reverse inequality genuinely occurs.**  The smallest witness is
-   n = 39: there D(39) = 31 is prime, φ(39) = 24 < 30 = φ(31) = φ(D(39)).
-   So  φ(n) < φ(D(n))  for infinitely-often-observed n; concretely at n = 39.
+3. **The reverse inequality holds infinitely often.**  The smallest witness is
+   n = 39 (D(39) = 31 prime, φ(39) = 24 < 30 = φ(31) = φ(D(39))).  This is *not*
+   isolated: the explicit injective family `n = 21·2^(k+1)` all lie in the
+   reversal set, so `{n | φ(n) < φ(D(n))}` is infinite
+   (`reversal_infinitely_many`).  Symmetrically the forward locus is infinite on
+   `n = 2^(k+3)` (`forward_infinitely_many`) and the equality locus is infinite
+   too, giving the full three-way trichotomy `oq03_three_way_infinite` — each of
+   `>`, `=`, `<` realised on an explicit infinite family, no density machinery.
 
 The reverse cases empirically cluster where D(n) lands on a prime (31, 47, 73,
-97, 113, …), making φ(D(n)) = D(n) − 1 large; a full "infinitely often"
-statement remains the OPEN part of this question.
+97, 113, …), making φ(D(n)) = D(n) − 1 large.
+
+**What remains genuinely OPEN** is the *density* refinement, mirroring the parent
+Erdős 1064 / Luca–Pomerance result: whether the forward inequality
+`φ(n) > φ(D(n))` holds for **almost all** n (natural density 1).  That needs the
+analytic smooth-number-density input `ψ(x,y)` (Luca–Pomerance-style), which is a
+genuine Mathlib gap and not session-sized — see the tracker `currentState.blockers`
+for this problem.  The elementary/structural content (the three infinite families,
+the excluded-regime characterisation, the seed-transport engine) is complete and
+axiom-free.
 -/
 
 open Nat
