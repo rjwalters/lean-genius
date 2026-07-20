@@ -56,7 +56,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 219,
-    "assumptions": "1 axiom(s). No sorries.",
+    "assumptions": "1 axiom (sylvester_schur). 0 sorries. The concrete computations and the (28,5,14) counterexample are proved by native_decide (choose_*, gcd_choose_*, factor_1080, the divisibility steps of example_6_2_3 / example_10_2_5 / example_28_5_14_weak, and the h_gcd step of counterexample_28_5_14_strong), adding a Lean.ofReduceBool compiled-code trust dependency beyond the stated axiom; the abstract results max_prime_1080_is_5 and choose_formula are kernel-checked.",
     "theoremCount": 17,
     "definitionCount": 4
   },
