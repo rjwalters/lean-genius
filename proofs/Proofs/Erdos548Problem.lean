@@ -33,6 +33,7 @@
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Maps
+import Mathlib.Combinatorics.SimpleGraph.Acyclic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
@@ -46,13 +47,23 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /- ## Part I: Trees -/
 
-/-- A tree is a connected acyclic graph. -/
-def IsTree (G : SimpleGraph V) : Prop :=
-  G.Connected ∧ ∀ v w : V, G.Adj v w → G.Reachable v w
+/-- A tree is a connected acyclic graph.  Delegates to Mathlib's
+    `SimpleGraph.IsTree` (`Connected ∧ IsAcyclic`).
 
-/-- A tree on k+1 vertices has exactly k edges. -/
-axiom tree_edge_count {T : SimpleGraph V} (hT : IsTree T) (hn : Fintype.card V = k + 1) :
-    T.edgeFinset.card = k
+    (The former local definition `Connected ∧ ∀ v w, Adj v w → Reachable v w`
+    was degenerate: the second conjunct holds for *every* graph, so it defined
+    "connected", not "tree" — which made `tree_edge_count` a false statement.) -/
+def IsTree (G : SimpleGraph V) : Prop := G.IsTree
+
+/-- A tree on k+1 vertices has exactly k edges.  (Formerly an axiom; provable
+    from Mathlib's `SimpleGraph.IsTree.card_edgeFinset` once `IsTree` denotes a
+    genuine tree.) -/
+theorem tree_edge_count {T : SimpleGraph V} (hT : IsTree T) (hn : Fintype.card V = k + 1) :
+    T.edgeFinset.card = k := by
+  classical
+  have hT' : T.IsTree := hT
+  have h := hT'.card_edgeFinset
+  omega
 
 /-- The path graph P_n on n vertices. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
