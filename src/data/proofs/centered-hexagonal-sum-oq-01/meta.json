@@ -49,12 +49,28 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Hexagonal Shells, Cubes, and Novelty",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "The file docstring frames the classical figurate identity ∑_{k=1}^{n} Hₖ = n³ for centered hexagonal numbers Hₖ = 3k(k−1)+1 (1, 7, 19, 37, 61, …), states the result in its two equivalent forms (`sum_centeredHex_range`, the reindexed ℕ statement, and `sum_centeredHex_Icc`, the classical 1-indexed interval statement), records the cube-shell intuition `centeredHex_eq_cube_diff`, and flags the novelty: Mathlib has the Gauss triangular and Nicomachus cube-sum identities but no named centered-hexagonal partial-sum lemma. The headline result lives entirely in ℕ; casts appear only in the optional cube-difference identity. 0 sorries, 0 axioms.",
+      "mathContext": "$\\sum_{k=1}^{n}(3k(k-1)+1) = n^3$, e.g. $1+7+19 = 27 = 3^3$; stated in a reindexed ℕ form and the classical $[1,n]$ interval form, with cube-shell identity $H_k = k^3-(k-1)^3$."
+    },
+    {
       "id": "definition",
       "title": "The Centered Hexagonal Number",
       "startLine": 46,
+      "endLine": 48,
+      "summary": "Defines Hₖ = 3k(k−1)+1 over ℕ — the count of dots in k nested hexagonal rings (a central dot, then rings of 6, 12, 18, … dots), giving the sequence 1, 7, 19, 37, 61, … (OEIS A003215). Because the summand is already a natural number, the headline identity needs no escape to ℤ.",
+      "mathContext": "$H_k = 3k(k-1)+1 \\in \\mathbb{N}$ (giving $1, 7, 19, 37, 61, \\dots$), the count of dots in $k$ nested hexagonal rings."
+    },
+    {
+      "id": "reindex",
+      "title": "Reindexing Lemma: Killing the Truncated Subtraction",
+      "startLine": 50,
       "endLine": 54,
-      "summary": "Defines Hₖ = 3k(k−1)+1 (the sequence 1, 7, 19, 37, 61, …, OEIS A003215) and the reindexing lemma H_{k+1} = 3(k+1)k + 1, which turns the truncated ℕ subtraction (k+1)−1 into the honest k so the summand becomes a plain polynomial.",
-      "mathContext": "$H_k = 3k(k-1)+1$ (giving $1, 7, 19, 37, 61, \\dots$); reindexed, $H_{k+1} = 3(k+1)k + 1$ is a plain ℕ-polynomial."
+      "summary": "The lemma H_{k+1} = 3(k+1)k + 1 shifts the index by one so the truncated ℕ subtraction (k+1)−1 becomes the honest k, turning the summand into a plain polynomial `ring` can manipulate. This one rewrite is what keeps the entire main proof inside ℕ with no integer casts; it is the substitution applied in the inductive step of both summation theorems.",
+      "mathContext": "$H_{k+1} = 3(k+1)k + 1$: shifting the index turns $(k+1)-1$ (truncated ℕ subtraction) into the honest $k$, making the term a plain ℕ-polynomial."
     },
     {
       "id": "cube-shell",
@@ -89,7 +105,8 @@
       "**Reindex to kill the subtraction.** Writing the summand as $H_{k+1} = 3(k+1)k+1$ replaces the truncated ℕ subtraction $(k+1)-1$ by the honest $k$, so the inductive step is a pure polynomial identity and the headline result never leaves $\\mathbb{N}$.",
       "**The whole step is one scalar identity.** After peeling the top term, the goal is $m^3 + (3(m+1)m+1) = (m+1)^3$ — a fact about a single number $m$, independent of the sum, dispatched by `ring`.",
       "**Hexagonal shell = cubic shell.** The cube-difference identity $H_k = k^3-(k-1)^3$ shows each centered hexagonal number is the layer between consecutive cubes; summing telescopes directly to $n^3$. This is stated over $\\mathbb{Z}$ because the subtraction is real (e.g. $H_0 = 0^3-(-1)^3 = 1$).",
-      "**Two phrasings, one proof.** Both the $0$-indexed `range` form and the classical $1$-indexed `Icc` form follow from the identical peel-then-`ring` induction, using `sum_range_succ` and `sum_Icc_succ_top` respectively."
+      "**Two phrasings, one proof.** Both the $0$-indexed `range` form and the classical $1$-indexed `Icc` form follow from the identical peel-then-`ring` induction, using `sum_range_succ` and `sum_Icc_succ_top` respectively.",
+      "**Telescoping and induction are the same proof.** The cube-shell identity $H_k = k^3-(k-1)^3$ turns $\\sum_{k=1}^n H_k$ into a telescoping sum that collapses to $n^3 - 0^3 = n^3$; the inductive proof is just that telescope unrolled one term at a time. The formalization prefers induction because `ring` discharges each successor step outright, while `centeredHex_eq_cube_diff` preserves the telescoping content as a first-class lemma — the two theorems in the file are the same fact seen from the summation and the closed-form sides."
     ],
     "prerequisites": [
       "Mathematical induction",
