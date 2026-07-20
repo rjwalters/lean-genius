@@ -134,8 +134,8 @@
       "title": "Admissible Constants",
       "startLine": 171,
       "endLine": 207,
-      "summary": "Properties of the set of admissible constants: bounded above, nonempty.",
-      "mathContext": "Bound: Properties of the set of admissible constants: bounded above, nonempty."
+      "summary": "The set of admissible constants is nonempty: zero_admissible and neg_admissible prove every c ≤ 0 is admissible (take S = ∅), and admissible_nonempty packages this. The nontrivial upper bound (c < 3/5, Gyárfás-Lehel) is discussed in comments only, not formalized.",
+      "mathContext": "Nonempty: {c | IsAdmissible c} contains 0 and all negatives (proved). Upper boundedness (c < 3/5) is comment-only, not a formalized theorem."
     },
     {
       "id": "extremal",
