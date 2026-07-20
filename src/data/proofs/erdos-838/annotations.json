@@ -65,7 +65,7 @@
     },
     "type": "definition",
     "title": "The Function f(n)",
-    "content": "**f(n)** is axiomatized as the minimum number of convex subsets over all n-point configurations in general position.\n\n**f_lower_bound:** ANY n-point general position set has >= f(n) convex subsets.\n\n**f_achieved:** For n >= 4, some configuration achieves exactly f(n), so f is tight.\n\nThese two properties characterize f(n) as an infimum that is attained.",
+    "content": "**f(n)** is axiomatized (a bare `axiom f : ℕ → ℕ`) as the minimum number of convex subsets over all n-point configurations in general position.\n\nInformally, f(n) is characterized by two defining properties (described here for intuition, not separately formalized as declarations): any n-point general position set has at least f(n) convex subsets, and for n >= 4 some configuration attains exactly f(n), making f a tight minimum.\n\nThe file does not encode these minimality/tightness properties; f is left abstract and its behaviour is pinned down only by the axiomatized Erdős bounds.",
     "mathContext": "f(n) captures the worst-case scenario: the point configuration that minimizes convex subset count. Finding this minimum is the central difficulty.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,7 +103,7 @@
     },
     "type": "concept",
     "title": "The Main Open Question",
-    "content": "**normalizedLogF(n)** = log(f(n))/(log n)^2 captures the precise growth exponent.\n\n**limitExists** formalizes the central question: does normalizedLogF(n) converge to a constant c as n -> infinity?\n\n**limit_bounded_if_exists:** If the limit c exists, it must satisfy c_1 <= c <= c_2 from the Erdos bounds.\n\nThe existence of such a limit would show f(n) has a 'clean' asymptotic form f(n) ~ n^{c log n}.",
+    "content": "**normalizedLogF(n)** = log(f(n))/(log n)^2 captures the precise growth exponent.\n\n**limitExists** formalizes the central question: does normalizedLogF(n) converge to a constant c as n -> infinity?\n\nInformally, if such a limit c exists it must lie between the constants c_1 and c_2 from the Erdős bounds — this observation is noted for context but is not formalized as a declaration in the file.\n\nThe existence of such a limit would show f(n) has a 'clean' asymptotic form f(n) ~ n^{c log n}.",
     "mathContext": "This is a question about regularity of asymptotic growth. Many natural combinatorial functions have such clean asymptotics, but proving convergence can be very difficult.",
     "significance": "key",
     "relatedConcepts": [
@@ -122,7 +122,7 @@
     },
     "type": "concept",
     "title": "Erdos-Szekeres and Triangle Bounds",
-    "content": "**erdos_szekeres_convex_subset:** Any n points in general position contain a convex subset of size >= log_2(n). This follows from the Erdos-Szekeres theorem.\n\n**triangles_are_convex:** Every 3-element subset in general position forms a triangle, hence a convex subset.\n\n**triangle_count_lower_bound:** Any n-point set has >= C(n,3) convex triangles. This gives a crude lower bound on f(n) of order n^3.",
+    "content": "The `erdos_838_summary` theorem (PROVED) bundles the axiomatized Erdős bounds together with the superpolynomial-growth axiom into a single statement.\n\nFor mathematical context (none of the following is formalized as a declaration in this file):\n\n- *Erdős–Szekeres (external result):* any n points in general position contain a convex subset of size >= log_2(n).\n- *Triangles as convex subsets:* every 3-element subset in general position forms a triangle, hence a convex subset.\n- *Crude triangle lower bound:* any n-point set has C(n,3) convex triangles, giving a lower bound on f(n) of order n^3.\n\nThese are informal observations motivating the bounds; the file itself only axiomatizes f and the Erdős bounds and proves the two combining theorems.",
     "mathContext": "These provide structural understanding: triangles are the most abundant convex subsets, and the Erdos-Szekeres theorem guarantees large convex subsets exist.",
     "significance": "key",
     "relatedConcepts": [
