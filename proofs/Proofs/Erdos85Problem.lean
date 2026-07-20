@@ -201,6 +201,35 @@ theorem C4_adj_three_zero : C4.Adj 3 0 := by simp [C4]
 /-- The "diagonals" of `C₄` are non-edges: `0` and `2` are not adjacent. -/
 theorem C4_not_adj_zero_two : ¬ C4.Adj 0 2 := by simp [C4]
 
+/-- The other diagonal of `C₄` is also a non-edge: `1` and `3` are not adjacent.
+Together with `C4_not_adj_zero_two` this pins down `C₄` exactly: the only edges are
+the four cycle edges. -/
+theorem C4_not_adj_one_three : ¬ C4.Adj 1 3 := by simp [C4]
+
+/-- `C₄` contains a copy of itself (the identity embedding), so `containsC4` is a
+non-vacuous predicate. -/
+theorem containsC4_C4 : containsC4 (Fin 4) C4 :=
+  ⟨id, Function.injective_id, fun _ _ h => h⟩
+
+/-- **A copy of `C₄` needs at least four vertices.** Since `containsC4` supplies an
+injection `Fin 4 ↪ V`, any host graph carrying a `C₄` has `4 ≤ |V|`.  This is the
+necessary size condition behind the degree-threshold question. -/
+theorem containsC4_four_le_card {V : Type*} [Fintype V] {G : SimpleGraph V}
+    (h : containsC4 V G) : 4 ≤ Fintype.card V := by
+  obtain ⟨f, hinj, _⟩ := h
+  simpa using Fintype.card_le_of_injective f hinj
+
+/-- **Complete graphs on `≥ 4` vertices contain a `C₄`.**  Embed `Fin 4 ↪ Fin n`
+by `Fin.castLE`; every cycle edge joins two *distinct* vertices, and in `⊤` all
+distinct vertices are adjacent.  This is the extremal counterpart to
+`starGraph_not_containsC4`: complete graphs are the densest hosts and always carry
+a `C₄`, whereas stars are the sparse `C₄`-free extreme. -/
+theorem completeGraph_containsC4 {n : ℕ} (hn : 4 ≤ n) :
+    containsC4 (Fin n) (⊤ : SimpleGraph (Fin n)) := by
+  refine ⟨Fin.castLE hn, Fin.castLE_injective hn, fun i j hij => ?_⟩
+  rw [top_adj]
+  exact fun heq => hij.ne (Fin.castLE_injective hn heq)
+
 /-- Containing a `C₄` is preserved under passing to a larger graph on the same
 vertex set (adding edges cannot destroy a copy of `C₄`). -/
 theorem containsC4_mono {V : Type*} {G G' : SimpleGraph V} (h : G ≤ G')
