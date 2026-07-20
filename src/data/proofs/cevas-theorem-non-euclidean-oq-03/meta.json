@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Docstring, imports, and the GeneralizedCevianConfig framework",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "The module docstring frames the research goal (approach non-Euclidean Pappus–Brianchon via the parent's abstract configuration) and states the honest scope: this file formalizes the geometry-independent hexagon ratio invariant, not the full projective incidence theorem. It recalls the parent CevasTheoremNonEuclidean, whose GeneralizedCevianConfig packages six positive 'measures' bd,dc,ce,ea,af,fb with the geometry-independent Ceva product P(cfg) = (bd/dc)(ce/ea)(af/fb), and observes that those six measures are exactly the six sides of the Pappus hexagon (vertices alternating on two geodesics — a degenerate conic). Imports the parent (source of GeneralizedCevianConfig, generalizedCevaProduct, and the spherical/hyperbolic measure builders) and Mathlib.Tactic (field_simp, positivity, ring), then opens the CevaNonEuclideanOQ03 namespace.",
+      "mathContext": "Parent: $P(\\mathrm{cfg}) = \\frac{bd}{dc}\\cdot\\frac{ce}{ea}\\cdot\\frac{af}{fb}$ over six positive measures; $P = 1$ is the geometry-independent concurrence condition, the measures being the six sides of the Pappus hexagon."
+    },
+    {
       "id": "dual-product",
       "title": "The dual product and the hexagon closure relation",
       "startLine": 61,
