@@ -49,50 +49,113 @@
       "id": "header",
       "title": "Module Header and Scope",
       "startLine": 1,
-      "endLine": 63,
-      "summary": "Imports `Mathlib`, opens Filter/Set/Topology and ENNReal scope, declares namespace `LiouvilleTheoremOQ03`. The docstring states the Jarník–Besicovitch theorem, identifies the well-approximable set with Mathlib's `LiouvilleWith`, and explains which parts are machine-checked versus the single axiomatized dimension formula."
+      "endLine": 69,
+      "summary": "Imports Mathlib, opens Filter/Set/Topology and ENNReal, and opens the LiouvilleTheoremOQ03 namespace. The docstring frames OQ-03: the Jarník–Besicovitch dimension of the τ-well-approximable sets, and the many faces (dimension, measure, cardinality, topology, Baire category) of the Liouville set."
     },
     {
       "id": "sec-sets",
-      "title": "The Well-Approximable Sets W τ",
-      "startLine": 64,
-      "endLine": 92,
-      "summary": "Defines `wellApprox τ := {x | LiouvilleWith τ x}` and proves the genuine (0-axiom) structural facts: `wellApprox_antitone` (σ ≤ τ → W τ ⊆ W σ via LiouvilleWith.mono), `wellApprox_le_one`/`wellApprox_one` (W τ = univ for τ ≤ 1), and `liouville_subset_wellApprox` ({Liouville} ⊆ W τ via Liouville.liouvilleWith)."
+      "title": "Part I: The Well-Approximable Sets W τ",
+      "startLine": 70,
+      "endLine": 96,
+      "summary": "Defines wellApprox τ = {x | LiouvilleWith τ x} and its basic order structure: wellApprox_antitone (larger τ ⇒ smaller set), wellApprox_le_one / wellApprox_one (the set is all of ℝ for τ ≤ 1), and liouville_subset_wellApprox (the Liouville numbers lie in every W τ).",
+      "mathContext": "$W_\\tau = \\{x \\in \\mathbb{R} : |x - p/q| < q^{-\\tau} \\text{ infinitely often}\\}$; $\\tau \\le 1 \\Rightarrow W_\\tau = \\mathbb{R}$."
     },
     {
       "id": "sec-dim-mono",
-      "title": "Monotonicity of the Hausdorff Dimension",
-      "startLine": 93,
-      "endLine": 106,
-      "summary": "`dimH_wellApprox_antitone` (σ ≤ τ → dimH(W τ) ≤ dimH(W σ)) and `dimH_liouville_le_wellApprox` (dimH{Liouville} ≤ dimH(W τ)), both transported through Mathlib's `dimH_mono`. Zero-axiom."
+      "title": "Part II: Monotonicity of the Hausdorff Dimension",
+      "startLine": 97,
+      "endLine": 109,
+      "summary": "dimH_wellApprox_antitone (the Hausdorff dimension τ ↦ dimH (W τ) is antitone) and dimH_liouville_le_wellApprox (the Liouville set's dimension is bounded by that of every W τ)."
     },
     {
       "id": "sec-exponent",
-      "title": "The Dimension Exponent 2/τ",
-      "startLine": 107,
-      "endLine": 136,
-      "summary": "`jbDim τ := 2/τ` with verified analytic properties: `jbDim_two` (d(2)=1), `jbDim_pos`, `jbDim_le_one` (τ ≥ 2), `jbDim_lt_one` (τ > 2), and `jbDim_antitone`. Elementary real inequalities, zero-axiom."
+      "title": "Part III: The Dimension Exponent τ ↦ 2/τ",
+      "startLine": 110,
+      "endLine": 140,
+      "summary": "Introduces the Jarník–Besicovitch exponent jbDim τ = 2/τ and its elementary calculus: positivity, jbDim_le_one and jbDim_lt_one for τ ≥ 2 (resp. τ > 2), and jbDim_antitone.",
+      "mathContext": "$\\dim_H W_\\tau = 2/\\tau$ for $\\tau \\ge 2$ — the Jarník–Besicovitch theorem."
     },
     {
       "id": "sec-jb-axiom",
-      "title": "The Jarník–Besicovitch Theorem (axiomatized)",
-      "startLine": 137,
-      "endLine": 160,
-      "summary": "The single axiom `dimH_wellApprox τ (hτ : 2 ≤ τ) : dimH(W τ) = ENNReal.ofReal(2/τ)`, with `dimH_wellApprox_two` (dimH(W 2) = 1) and `dimH_wellApprox_eq_jbDim` derived from it."
+      "title": "Part IV: The Jarník–Besicovitch Theorem and the Dimension Family",
+      "startLine": 141,
+      "endLine": 277,
+      "summary": "States the single axiom dimH_wellApprox (dimH (W τ) = 2/τ for τ ≥ 2, the sole assumption of the entry) and develops the full dimension family from it: dimH_wellApprox_two = 1, eq_jbDim, the sub-threshold closure dimH_wellApprox_eq_one_of_le_two and dimH_wellApprox_eq_min, and the quantitative shape — positivity, < 1 for τ > 2, strict antitonicity, tendsto_zero as τ → ∞, and surjectivity onto (0,1].",
+      "mathContext": "$\\dim_H W_\\tau = \\min(1, 2/\\tau)$ for $\\tau \\ge 1$; the map $\\tau \\mapsto \\dim_H W_\\tau$ surjects onto $(0,1]$."
     },
     {
       "id": "sec-liouville-zero",
-      "title": "Liouville Numbers Have Hausdorff Dimension Zero",
-      "startLine": 161,
-      "endLine": 196,
-      "summary": "`dimH_liouville_le` (dimH{Liouville} ≤ 2/τ for τ ≥ 2) and the capstone `dimH_liouville_eq_zero`, squeezed from the bound dimH ≤ 2/n along n → ∞ via `ge_of_tendsto`, `ENNReal.continuous_ofReal`, and `tendsto_const_div_atTop_nhds_zero_nat`."
+      "title": "Part V: Liouville Numbers Have Hausdorff Dimension Zero",
+      "startLine": 278,
+      "endLine": 309,
+      "summary": "Deduces dimH_liouville_le (the Liouville set's dimension is ≤ 2/τ for every τ ≥ 2) and hence dimH_liouville_eq_zero: the Liouville numbers form a set of Hausdorff dimension exactly zero, the sharpest possible smallness in the dimension hierarchy.",
+      "mathContext": "$\\dim_H \\{x : \\text{Liouville } x\\} = \\inf_{\\tau \\ge 2} 2/\\tau = 0$."
     },
     {
       "id": "sec-summary",
-      "title": "jarnik_besicovitch_summary",
-      "startLine": 197,
-      "endLine": 210,
-      "summary": "Bundles the set antitonicity, the Liouville-subset relation, the threshold dimension dimH(W 2)=1, and the dimension-zero result for the Liouville set."
+      "title": "Part VI: Summary",
+      "startLine": 310,
+      "endLine": 325,
+      "summary": "jarnik_besicovitch_summary bundles the dimension-side conclusions into one statement: the value 1 at τ = 2, the 2/τ law for τ ≥ 2, strict antitonicity, the limit 0, and the dimension-zero Liouville set."
+    },
+    {
+      "id": "sec-measure",
+      "title": "Part VII: The Measure Side — Khintchine Null Sets",
+      "startLine": 326,
+      "endLine": 429,
+      "summary": "The measure-theoretic face: hausdorffMeasure_one_wellApprox_eq_zero and volume_wellApprox_eq_zero (W τ is Lebesgue-null for τ > 2), volume_liouville_eq_zero, and the pointwise-a.e. statement volume_setOf_exists_liouvilleWith_gt_two_eq_zero — yet dimH_setOf_exists_liouvilleWith_gt_two_eq_one shows that same null set still has full dimension 1.",
+      "mathContext": "For $\\tau > 2$, $\\lambda(W_\\tau) = 0$ (Khintchine) while $\\dim_H = 2/\\tau > 0$: null but positive-dimensional."
+    },
+    {
+      "id": "sec-cardinality",
+      "title": "Part VIII: Cardinality — the Fractals are Uncountable",
+      "startLine": 430,
+      "endLine": 462,
+      "summary": "not_countable_wellApprox and not_countable_setOf_exists_liouvilleWith_gt_two: the well-approximable sets are uncountable, so their smallness in measure and dimension is not a cardinality phenomenon."
+    },
+    {
+      "id": "sec-topological",
+      "title": "Part IX: The Topological and Structural Face (Axiom-Free)",
+      "startLine": 463,
+      "endLine": 513,
+      "summary": "Axiom-free structural results: iInter_wellApprox_eq_liouville (the Liouville set is exactly ⋂_τ W τ), wellApprox_nonempty and wellApprox_dense, and the unconditional dimension bounds dimH_wellApprox_le_one_univ and eq_one_of_le_one."
+    },
+    {
+      "id": "sec-category",
+      "title": "Part X: The Category (Baire) Face — Comeagre Yet Null",
+      "startLine": 514,
+      "endLine": 589,
+      "summary": "The Baire-category face: wellApprox_residual and eventually_residual_wellApprox (each W τ is residual/comeagre), meagre_compl_wellApprox, liouville_residual and meagre_compl_liouville, culminating in liouville_dimzero_null_yet_residual — the Liouville set is simultaneously dimension-zero, Lebesgue-null, and topologically generic.",
+      "mathContext": "The Liouville set is comeagre (topologically large) yet Lebesgue-null and $\\dim_H = 0$ (metrically tiny)."
+    },
+    {
+      "id": "sec-complement-affine",
+      "title": "The Dense Full-Measure Complement and ℚ-Affine Invariance",
+      "startLine": 590,
+      "endLine": 687,
+      "summary": "dense_compl_wellApprox and wellApprox_dense_and_dense_compl (both W τ and its complement are dense for τ > 2), dense_compl_liouville, and the ℚ-affine invariance family: wellApprox is unchanged under adding rationals/integers, negation, and nonzero rational scaling (wellApprox_add_rat_iff, …, image_add_rat_wellApprox)."
+    },
+    {
+      "id": "sec-borel",
+      "title": "Borel Measurability of the Well-Approximable Sets",
+      "startLine": 688,
+      "endLine": 772,
+      "summary": "Axiom-free Borel measurability: measurableSet_wellApprox (each W τ is a measurable set, built from the limsup structure of the approximation condition) and measurableSet_liouville."
+    },
+    {
+      "id": "sec-nesting",
+      "title": "Strict Nesting of the Approximation Hierarchy",
+      "startLine": 773,
+      "endLine": 786,
+      "summary": "wellApprox_ssubset: for 2 ≤ σ < τ the inclusion W τ ⊊ W σ is strict, so the approximation hierarchy is genuinely infinite and never stabilises above the critical exponent."
+    },
+    {
+      "id": "sec-uncountability",
+      "title": "Part XI: Uncountability of the Liouville Set via Category",
+      "startLine": 787,
+      "endLine": 837,
+      "summary": "A second, category-based proof that the Liouville set is uncountable: isNowhereDense_singleton_real, isMeagre_of_countable, not_countable_liouville (a comeagre set in a Baire space cannot be countable), and the capstone liouville_uncountable_yet_null_dimzero collecting the paradoxical size profile.",
+      "mathContext": "A residual set in the Baire space $\\mathbb{R}$ is uncountable, independent of the dimension/measure arguments."
     }
   ],
   "overview": {
