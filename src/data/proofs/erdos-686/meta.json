@@ -34,7 +34,7 @@
       "native_decide"
     ],
     "lineCount": 293,
-    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The open conjecture (Erdos686Conjecture) is stated as a Prop definition, not axiomatized. All supporting infrastructure is proved. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "0 explicit `axiom` declarations, 0 sorries. The open conjecture (Erdos686Conjecture) is stated as a Prop definition, not axiomatized, and all supporting infrastructure is proved. Trust caveat: the three verified examples `example_N6`, `example_N3`, and `example_N10` close numeric goals with `native_decide`, so each depends on the `Lean.ofReduceBool` axiom (`#print axioms` shows a `native_decide.ax` beyond propext/Classical.choice/Quot.sound). These results shift trust from the kernel to the compiler for those computations; the structural lemmas are kernel-verified without native_decide.",
     "mathlib_version": "4.31.0",
     "theoremCount": 23,
     "definitionCount": 9
