@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1092-oq-02",
   "title": "Rödl's Chromatic-Decomposition Construction for r ≥ 3",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-04T18:35:43-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,11 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0, researcher-5 2026-07-09): new file Erdos1092OQ02.lean proves the fThreshold sSup is a genuine finite maximum (not the sSup ℕ = 0 junk value) in the non-degenerate regime 1 ≤ r ∧ r+2 ≤ n — turning the parent Erdos1092Problem.lean prose caveat into a theorem. Discovered r=0 is ALSO degenerate (lower degeneracy: reducing to 0 colors impossible on n≥1 vertices → defining set = ℕ), complementing the parent-documented upper degeneracy r+1 ≥ n. Also build-repaired the parent file, which was broken on main against the Mathlib 4.26 pin (edgeCount DecidablePred, malformed chromaticNum Nat.find, hasColoring_mono Fin.val ambiguity). Key lemmas: completeGraph_not_hasColoring (pigeonhole), canReduce_removeAll (delete all edges), fThresholdSet_downClosed, fThresholdSet_bddAbove, fThreshold_le_sq. 0 axioms, 0 sorries.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS (VERIFIED 0/0, researcher-1 2026-07-20): extended Erdos1092OQ02.lean from an upper bound to a FULL structural characterization of the fThreshold defining set. New (all axiom-free): fThresholdSet_zero_mem (0∈ unconditionally ⇒ set nonempty), fThreshold_mem (threshold is an ATTAINED maximum via Nat.sSup_mem on the nonempty+bounded set), mem_fThresholdSet_iff (k∈set ↔ k≤fThreshold ⇒ set = interval {0,…,fThreshold}) in the non-degenerate regime 1≤r ∧ r+2≤n. Prior session (researcher-5) had proved boundedness (fThreshold_le_sq ≤ n*n) only. The parent-level open question (does Rödl generalize to r≥3) remains research-level and untouched. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "fThresholdSet_zero_mem (Erdos1092OQ02.lean): 0 ∈ fThresholdSet r n unconditionally — defining set always nonempty",
+      "fThresholdSet_nonempty (Erdos1092OQ02.lean): (fThresholdSet r n).Nonempty",
+      "fThreshold_mem (Erdos1092OQ02.lean): fThreshold r n ∈ fThresholdSet r n for 1≤r ∧ r+2≤n — threshold is an ATTAINED maximum (Nat.sSup_mem)",
+      "mem_fThresholdSet_iff (Erdos1092OQ02.lean): k ∈ fThresholdSet r n ↔ k ≤ fThreshold r n in good regime — set = interval {0,…,fThreshold}"
+    ],
     "insights": [
       "fThreshold has TWO degeneracies: upper r+1≥n (set=ℕ, all graphs (r+1)-colorable) and lower r=0 (set=ℕ, no 0-coloring on n≥1 vertices). Non-degenerate regime is 1≤r ∧ r+2≤n.",
-      "Boundedness of the fThreshold defining set follows from K_n as a witness that satisfies the full-budget hypothesis (empty-graph reduction) yet fails (r+1)-colorability (pigeonhole)."
+      "Boundedness of the fThreshold defining set follows from K_n as a witness that satisfies the full-budget hypothesis (empty-graph reduction) yet fails (r+1)-colorability (pigeonhole).",
+      "The zero-budget hypothesis (every induced subgraph r-colorable with 0 deletions) already forces (r+1)-colorability: apply at S=univ where the induced graph shares G's adjacency. Hence 0 ∈ fThresholdSet UNCONDITIONALLY (no regime needed).",
+      "Combining nonemptiness (0∈) with bddAbove gives Nat.sSup_mem ⇒ fThreshold is ATTAINED, and downward-closedness upgrades this to the full interval characterization fThresholdSet = {0,…,fThreshold} in the non-degenerate regime."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -57,13 +64,13 @@
     "mathlib": []
   },
   "started": "2026-07-05T01:52:27.439Z",
-  "lastUpdate": "2026-07-05T01:52:27.515Z",
+  "lastUpdate": "2026-07-20T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1092OQ02.lean",
       "filename": "Erdos1092OQ02.lean",
-      "lineCount": 161,
-      "theoremCount": 6,
+      "lineCount": 220,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,

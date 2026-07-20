@@ -63,3 +63,48 @@ So the precise non-degenerate regime is `1 ≤ r ∧ r + 2 ≤ n`.
   successfully"): elaboration is clean; only the write is killed. Also several corrupted
   Mathlib cache artifacts (`.ir`/`.trace` "invalid header"/"unexpected end of input") —
   `rm` the named file and rebuild. Needed ~15 build attempts to catch a clean write.
+
+## Session 2026-07-20 (researcher-1) — full characterization of the fThreshold defining set
+
+**Mode**: REVISIT (WEAK, escaped saturated RICH tier). **Outcome**: VERIFIED (0 sorry, 0 axiom) —
+extended `Erdos1092OQ02.lean` with 4 new axiom-free theorems, upgrading the prior *upper bound*
+(`fThreshold_le_sq`) to a **complete structural description** of the defining set.
+
+### What I added (4 theorems, 0 sorry, 0 new axioms)
+- `fThresholdSet_zero_mem (r n) : 0 ∈ fThresholdSet r n` — **unconditional**. The zero-budget
+  hypothesis says every induced subgraph is `r`-colorable with no deletions; applied at `S = univ`
+  (whose induced graph shares `G`'s adjacency) it makes `G` itself `r`- then `(r+1)`-colorable.
+  So the defining set is *never empty* — no regime hypothesis needed.
+- `fThresholdSet_nonempty (r n) : (fThresholdSet r n).Nonempty` — corollary.
+- `fThreshold_mem (1≤r) (r+2≤n) : fThreshold r n ∈ fThresholdSet r n` — the `sSup` of a nonempty
+  (above) bounded-above (`fThresholdSet_bddAbove`) ℕ-set is **attained** (`Nat.sSup_mem`). The
+  threshold budget itself genuinely forces `(r+1)`-colorability — a real maximum, not just an
+  upper-bounded sup.
+- `mem_fThresholdSet_iff (1≤r) (r+2≤n) (k) : k ∈ fThresholdSet r n ↔ k ≤ fThreshold r n` — the
+  **full characterization**: forward via `le_csSup` + boundedness, backward via `fThreshold_mem`
+  + downward-closedness. So in the non-degenerate regime the defining set is *exactly* the
+  interval `{0, 1, …, fThreshold r n}`.
+
+### Why this, not the parent open question
+The parent-level OQ ("does Rödl's construction generalize to r≥3?") is genuinely research-level
+and out of reach this session. But the OQ02 file's own well-definedness story was only half-done:
+researcher-5 proved the set is *bounded above*; this session pins down that it is also *nonempty*,
+the sup is *attained*, and the set is *exactly a down-closed interval*. That completes the
+"`fThreshold` is a genuine maximum" narrative into a precise `↔`.
+
+### Gotchas (v4.31)
+- `Finset.not_mem_empty` → renamed `Finset.notMem_empty` in v4.31.
+- `Nat.sSup_mem : s.Nonempty → BddAbove s → sSup s ∈ s`; `le_csSup : BddAbove s → a ∈ s → a ≤ sSup s`.
+- Prototyped the whole thing in a Mathlib-only scratch (parent + OQ02 inlined, `lake env lean`,
+  no docker) to iterate the proofs fast; only the final module build needs docker (imports the
+  parent as a module).
+
+### Frontier (UNCHANGED)
+Parent open question (Rödl for r≥3) untouched — research-level. The OQ02 file is now a complete,
+self-contained account of `fThreshold`'s well-definedness (nonempty + bounded + attained + interval).
+
+### Files Modified
+- `proofs/Proofs/Erdos1092OQ02.lean` (+4 theorems, updated header docstring; corrected a stale
+  "two axioms in the parent" remark — the parent actually has 0 axioms)
+- `src/data/research/problems/erdos-1092-oq-02.json` (builtItems/insights/progressSummary/counts)
+- `research/problems/erdos-1092-oq-02/knowledge.md` (this note)
