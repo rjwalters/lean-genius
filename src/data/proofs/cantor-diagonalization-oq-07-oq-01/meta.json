@@ -86,7 +86,8 @@
       "**Finite and countable powers both absorb.** The parent's 𝔠 · 𝔠 = 𝔠 is the n = 2 case of 𝔠 ^ n = 𝔠; the same stability persists at the countable power 𝔠 ^ ℵ₀ = 𝔠. Products and countable products do not grow the continuum — only power sets (2 ^ 𝔠 > 𝔠) do.",
       "**Where it stops.** Stability is exactly at exponents ≤ 𝔠: 𝔠 ^ ℵ₀ = 𝔠 but 𝔠 ^ 𝔠 = 2 ^ 𝔠 > 𝔠. The countable result is the last 'free' power; the next jump up is a strict increase, the diagonal phenomenon of Cantor's theorem.",
       "**ℝⁿ as a function type.** Modeling ℝⁿ as Fin n → ℝ makes mk_arrow + power_nat_eq do all the work uniformly in n, with the n = 2 case (mk_pi_two_real) matching the parent's product form #(ℝ × ℝ).",
-      "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = #ℝ literally the existence of bijections ℝⁿ ≃ ℝ and (ℕ → ℝ) ≃ ℝ — Cantor's 'space ≅ line' maps, recovered from the cardinal computation."
+      "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = #ℝ literally the existence of bijections ℝⁿ ≃ ℝ and (ℕ → ℝ) ≃ ℝ — Cantor's 'space ≅ line' maps, recovered from the cardinal computation.",
+      "**The two collapses have different strength.** #(ℝⁿ) = #ℝ is soft: power_nat_eq absorbs a finite power into *any* infinite base (the proof uses only ℵ₀ ≤ 𝔠), so it is not special to the continuum. The countable collapse 𝔠 ^ ℵ₀ = 𝔠 is genuinely arithmetic — it uses 𝔠 = 2^ℵ₀ (so (2^ℵ₀)^ℵ₀ = 2^(ℵ₀·ℵ₀) = 2^ℵ₀) and fails for a general infinite base of countable cofinality (König's theorem: ℵ_ω^ℵ₀ > ℵ_ω). The sequence-space result therefore rests on a real feature of 𝔠, not on infinitude alone."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (Cardinal.mk, ℵ₀, 𝔠, exponentiation)",
@@ -99,30 +100,38 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 34,
       "summary": "Module docstring stating the open question (n-fold and countable continuum powers), the approach via mk_arrow + power_nat_eq + continuum_power_aleph0, the Mathlib import, namespace, and Cardinal open.",
       "mathContext": "$\\#(\\mathbb{R}^n) = \\#\\mathbb{R}$ for $n \\ge 1$ and $\\#(\\mathbb{N} \\to \\mathbb{R}) = \\mathfrak{c}$."
     },
     {
+      "id": "finite-lever",
+      "title": "The Finite-Power Lever: 𝔠ⁿ = 𝔠",
+      "startLine": 36,
+      "endLine": 40,
+      "summary": "continuum_pow_eq: an infinite cardinal absorbs any positive finite power, 𝔠 ^ n = 𝔠 for n ≥ 1 (Cardinal.power_nat_eq at base 𝔠, using aleph0_le_continuum). This is the pure cardinal-arithmetic engine — special to nothing but infinitude — that drives every finite ℝⁿ result below.",
+      "mathContext": "$\\mathfrak{c}^{\\,n} = \\mathfrak{c}\\quad (n \\ge 1),\\ \\text{from } \\aleph_0 \\le \\mathfrak{c}.$"
+    },
+    {
       "id": "finite",
-      "title": "Finite Powers: #(ℝⁿ) = #ℝ",
-      "startLine": 39,
-      "endLine": 61,
-      "summary": "continuum_pow_eq (𝔠 ^ n = 𝔠 for n ≥ 1), mk_pi_real_eq_continuum (#(ℝⁿ) = 𝔠), mk_pi_real (#(ℝⁿ) = #ℝ, main finite result), and nonempty_equiv_pi_real (the bijection ℝⁿ ≃ ℝ).",
-      "mathContext": "$\\#(\\mathbb{R}^n) = \\mathfrak{c}^n = \\mathfrak{c} = \\#\\mathbb{R}$ for $n \\ge 1$."
+      "title": "Euclidean n-Space: #(ℝⁿ) = #ℝ",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "Applies the lever to real n-space (modeled as Fin n → ℝ): mk_pi_real_eq_continuum (#(ℝⁿ) = 𝔠 via mk_arrow, mk_real, mk_fin, continuum_pow_eq), mk_pi_real (#(ℝⁿ) = #ℝ, the main finite-dimensional result), and nonempty_equiv_pi_real (the resulting bijection ℝⁿ ≃ ℝ for n ≥ 1).",
+      "mathContext": "$\\#(\\mathbb{R}^n) = \\mathfrak{c}^n = \\mathfrak{c} = \\#\\mathbb{R}\\quad (n \\ge 1).$"
     },
     {
       "id": "countable",
       "title": "Countable Power: #(ℕ → ℝ) = 𝔠",
-      "startLine": 63,
+      "startLine": 60,
       "endLine": 77,
-      "summary": "mk_nat_arrow_real_eq_continuum (#(ℕ → ℝ) = 𝔠 via continuum_power_aleph0), mk_nat_arrow_real (#(ℕ → ℝ) = #ℝ), and nonempty_equiv_nat_arrow_real (the bijection (ℕ → ℝ) ≃ ℝ).",
+      "summary": "mk_nat_arrow_real_eq_continuum (#(ℕ → ℝ) = 𝔠 via continuum_power_aleph0), mk_nat_arrow_real (#(ℕ → ℝ) = #ℝ), and nonempty_equiv_nat_arrow_real (the bijection (ℕ → ℝ) ≃ ℝ). Unlike the finite lever, the exponent ℵ₀ makes this collapse depend on the specific value 𝔠 = 2^ℵ₀.",
       "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{R}) = \\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}$."
     },
     {
       "id": "sanity",
       "title": "Sanity Check Against the Parent",
-      "startLine": 79,
+      "startLine": 78,
       "endLine": 83,
       "summary": "mk_pi_two_real: the n = 2 instance #(Fin 2 → ℝ) = #ℝ, the Fin-indexed form of the parent's #(ℝ × ℝ) = #ℝ.",
       "mathContext": "$\\#(\\mathrm{Fin}\\,2 \\to \\mathbb{R}) = \\#\\mathbb{R}$, recovering $\\#(\\mathbb{R} \\times \\mathbb{R}) = \\#\\mathbb{R}$."
