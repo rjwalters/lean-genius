@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos326WIP01.lean — proved IsAddBasisOfOrder.infinite: a basis of FIXED order k must be infinite (a finite set is bounded by M, so sums of ≤ k elements are ≤ k·M and cannot cover all large n). This distinguishes bounded-order bases from IsAddBasis, which permits arbitrarily many summands so e.g. {1} qualifies. 15 theorems + 1 def, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker. Deep growth content (bₖ=O(k²) upper bound, order-2 sub-basis question) untouched.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): pinned the additive-basis order of the squares to EXACTLY 4. not_isAddBasisOfOrder_squares_three (8N+7 obstruction, mod-8 decide) + not_isAddBasisOfOrder_squares_of_le_three + mem_squares_mod_eight. Sharpens isAddBasisOfOrder_squares_four (order 4 is tight, not just an upper bound). 18 axiom-free theorems. Deep growth content (b_k=O(k^2), oscillation) untouched.",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -53,21 +53,23 @@
       "growthRatio_nonneg, growthRatio_zero",
       "HasGrowthLimit.unique, HasGrowthLimit.not_hasNoGrowthLimit, hasNoGrowthLimit_iff",
       "Squares (the set {m^2}), isAddBasisOfOrder_squares_four, isAddBasis_squares in Erdos326WIP01.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])",
-      "IsAddBasisOfOrder.infinite (Erdos326WIP01.lean): a bounded-order additive basis is infinite, via Set.Finite.bddAbove + sum ≤ k·M ceiling (2026-07-20)"
+      "IsAddBasisOfOrder.infinite (Erdos326WIP01.lean): a bounded-order additive basis is infinite, via Set.Finite.bddAbove + sum ≤ k·M ceiling (2026-07-20)",
+      "mem_squares_mod_eight, not_isAddBasisOfOrder_squares_three, not_isAddBasisOfOrder_squares_of_le_three in Erdos326WIP01.lean (0 axioms, 0 sorries; host-verified v4.31.0 via fresh-parent-olean; #print axioms clean)"
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
       "Order 0 and the empty set are degenerate non-bases (only 0 is representable), so all substantive work happens at order ≥ 1 with an infinite set.",
       "growthRatio b 0 = 0 by the ℝ junk convention x/0 = 0 — worth pinning so downstream limit arguments can ignore the k=0 term.",
-      "The perfect squares are a concrete additive basis of order 4 (Lagrange four-square theorem, Nat.sum_four_squares) — the canonical non-vacuous witness for IsAddBasisOfOrder. Order 4 is the correct order: numbers of the form 4^a(8b+7) (e.g. 7,15,23,28) are never sums of three squares, so squares are not an order-3 basis (that stronger negative needs Legendre three-square, deeper)."
+      "The perfect squares are a concrete additive basis of order 4 (Lagrange four-square theorem, Nat.sum_four_squares) — the canonical non-vacuous witness for IsAddBasisOfOrder. Order 4 is the correct order: numbers of the form 4^a(8b+7) (e.g. 7,15,23,28) are never sums of three squares, so squares are not an order-3 basis (that stronger negative needs Legendre three-square, deeper).",
+      "The additive-basis order of the perfect squares is EXACTLY 4: Lagrange gives order 4, and order 3 fails because 8N+7 ≡ 7 mod 8 is never a sum of ≤3 squares. This is the EASY (necessary) direction of Legendre three-square — no full Legendre needed, just squares ≡ 0/1/4 mod 8 and no three summing to 7 mod 8, a decide over ZMod 8."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."
     ],
     "nextSteps": [
-      "The b_k = O(k^2) upper bound for order-2 bases (relate the increasing enumeration to a counting/pigeonhole argument).",
-      "Show squares are NOT an order-3 basis via the infinitude of 4^a(8b+7) (needs Legendre three-square theorem — check Mathlib availability).",
-      "Relate HasGrowthLimit to boundedness/monotone behaviour of the enumeration b."
+      "The b_k = O(k^2) upper bound for order-2 bases (increasing enumeration ↔ counting/pigeonhole).",
+      "Relate HasGrowthLimit to boundedness/monotone behaviour of the enumeration b.",
+      "Full Legendre three-square (n is sum of 3 squares iff n ≠ 4^a(8b+7)) — the converse direction, deep; check Mathlib."
     ],
     "markdown": "# Knowledge Base: erdos-326-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational additive-basis / growth-ratio scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos326Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos326WIP01.lean` (12 theorems) on the additive-basis predicates and the growth ratio:\n- **Monotonicity**: `IsAddBasisOfOrder.mono_order` (raise the order), `IsAddBasisOfOrder.mono_set` and `IsAddBasis.mono` (enlarge the set).\n- **Extremal cases**: `isAddBasisOfOrder_univ_one` / `isAddBasis_univ` (`ℕ` is an order-1 basis); `not_isAddBasis_empty`, `not_isAddBasisOfOrder_zero`.\n- **Growth ratio**: `growthRatio_nonneg`, `growthRatio_zero`, `HasGrowthLimit.unique`, `HasGrowthLimit.not_hasNoGrowthLimit`, `hasNoGrowthLimit_iff`.\n\n### Key findings\n- The basis predicates form a monotone lattice in (order, set) — the atomic order theory for any basis-comparison argument.\n- Order 0 / the empty set are degenerate non-bases; substantive work is at order ≥ 1.\n\n### Reusable Lean recipe\n- Destructure the order predicate: `obtain ⟨N, hN⟩ := h; obtain ⟨m, hm, f, hf, hsum⟩ := hN n hn` (the `(_ : m ≤ k)` binder appears as `hm`).\n- Degenerate non-basis: pick `n = N+1`, split `Nat.eq_zero_or_pos k`; the `k=0` branch closes via `simp only [Fin.sum_univ_zero] at hsum; omega`, the `k>0` branch via `(Set.mem_empty_iff_false _).mp (hf ⟨0, hk⟩)`.\n- `growthRatio b 0 = 0`: `unfold growthRatio; simp` (`x/0 = 0`).\n- Limit uniqueness: `tendsto_nhds_unique` (atTop on ℕ is `NeBot`).\n\n### Next steps\n- Perfect squares as an order-4 basis (`Nat.sum_four_squares`).\n- The `bₖ = O(k²)` bound for order-2 bases.\n\n### Still open (unchanged)\nThe subset-basis oscillation question (Erdős #326) — deep; Cassels (1957) disproved only the `A = B` variant.\n"
   },
