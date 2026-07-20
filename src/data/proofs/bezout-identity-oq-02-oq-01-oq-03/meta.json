@@ -71,8 +71,36 @@
       "id": "examples",
       "title": "Concrete Worked Instances (3, 5)",
       "startLine": 100,
-      "endLine": 122,
+      "endLine": 116,
       "summary": "Two Bézout pairs for (3,5): (2,−1) and (−3,2), differing by the single lattice step k = −1; and the full one-parameter family 3·(2 + k·5) + 5·(−1 − k·3) = 1, all closed by norm_num / ring."
+    },
+    {
+      "id": "general-classification",
+      "title": "Section VI: General (Non-Coprime) Classification",
+      "startLine": 117,
+      "endLine": 179,
+      "summary": "Discharges the file's headline claim beyond the coprime case: for general a, b the solution set of a·x + b·y = c is one coset of the lattice ℤ·(b/g, −a/g). Parametrizing by the reduced pair a = g·a', b = g·b' with a', b' coprime and g ≠ 0 (canonically g = gcd a b, but any common-factor decomposition works), each general theorem reduces to its coprime counterpart by cancelling g: general_homogeneous (homogeneous solutions are lattice multiples of (b', −a')), general_bezout_unique (uniqueness of the lattice parameter), general_bezout_param (the converse — every lattice step is a solution), and general_solvable (existence when g ∣ c). Closed with the worked non-coprime instance 6x + 9y = 3 (gcd 3): ex69_a a base solution, ex69_step one lattice step, ex69_family the full one-parameter family, by norm_num / ring.",
+      "mathContext": "With a = g·a', b = g·b', gcd(a',b') = 1, g ≠ 0: solutions of a·u + b·v = 0 are exactly ℤ·(b', −a') = ℤ·(b/g, −a/g); a·x + b·y = c is solvable iff g ∣ c, and its solution set is a single coset of that lattice.",
+      "relatedConcepts": [
+        "coset of a lattice",
+        "gcd / common-factor cancellation",
+        "linear Diophantine equation",
+        "reduced coprime pair"
+      ]
+    },
+    {
+      "id": "canonical-representative",
+      "title": "Section VII: The Canonical (Reduced) Bézout Representative",
+      "startLine": 180,
+      "endLine": 226,
+      "summary": "Selects a distinguished member of the solution coset. coprime_bezout_canonical: for coprime a, b with b > 0, the coset of solutions of a·x + b·y = c contains a UNIQUE member whose x-coordinate is reduced modulo b (0 ≤ x < b) — the canonical representative (for c = 1 this x is the modular inverse data c·a⁻¹ mod b). Existence reduces any x₀ to x₀ % b; uniqueness follows because two reduced x-coordinates differ by a multiple of b (coprime_bezout_unique) yet both lie in [0, b). This answers the entry's second open question (the lattice coset has a distinguished minimal representative). Closed with the worked instance ex35_canonical: x = 2 is the canonical x-coordinate for (3, 5) with c = 1.",
+      "mathContext": "The coset { (x, y) : a·x + b·y = c } meets the strip 0 ≤ x < b in exactly one point; its x is c·a⁻¹ mod b when c = 1. Existence via x₀ % b, uniqueness via [0,b) ∩ (x₀ + bℤ) being a singleton.",
+      "relatedConcepts": [
+        "canonical representative modulo b",
+        "modular inverse",
+        "unique reduction into [0, b)",
+        "coset representative"
+      ]
     }
   ],
   "mainTheorems": [
