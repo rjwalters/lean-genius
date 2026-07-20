@@ -56,12 +56,28 @@
   },
   "sections": [
     {
-      "id": "constant-fibres",
-      "title": "Constant Fibres on Any Finite Abelian Group",
+      "id": "header",
+      "title": "Imports, Overview, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module imports (Mathlib.Tactic plus the parent file CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02, whose cyclic count card_fiber_pow this file reuses) and the module docstring. The docstring frames the open question the parent left: does the fibre-size multiset of x ↦ xⁿ become strictly more informative over a *product* of cyclic groups? It then states this file's answer — no — organised into three results (constant fibres, the partition identity, the product formula) and sketches the proof strategy (translation bijection + card_eq_sum_card_image + Equiv.subtypePiEquivPi). Closes by opening namespace CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02OQ02 and open Finset.",
+      "mathContext": "Setup for: on any finite abelian $G$, every non-empty fibre of $x \\mapsto x^n$ has size $\\#\\{x : x^n = 1\\}$; on $G = \\prod_i G_i$ with $G_i$ cyclic of order $m_i$ this common value is $\\prod_i \\gcd(n, m_i)$. The bare fibre size collapses the informative tuple $(\\gcd(n, m_i))_i$ into a single product, so it pins down no residue of $n$ modulo any invariant factor."
+    },
+    {
+      "id": "uniform-fibres",
+      "title": "Uniform Fibres on Any Finite Abelian Group",
       "startLine": 66,
+      "endLine": 93,
+      "summary": "card_fiber_pow_eq_card_torsion: every non-empty fibre {x | xⁿ = b} of the power map has the same cardinality as the torsion set {x | xⁿ = 1}. With aⁿ = b, the map x ↦ a⁻¹·x is a bijection fibre → torsion because (a⁻¹x)ⁿ = (aⁿ)⁻¹·xⁿ, packaged by Finset.card_bij' with explicit inverse y ↦ a·y; only mul_pow / inv_pow are used, so no cyclicity is required — just that x ↦ xⁿ is an endomorphism of the abelian group and its fibres are the cosets of the n-torsion subgroup.",
+      "mathContext": "Fibres of the endomorphism $x \\mapsto x^n$ are cosets of the $n$-torsion subgroup, hence all non-empty fibres have the same size $\\#\\{x : x^n = 1\\}$. Coset translation $x \\mapsto a^{-1}x$ (for any preimage $a$ of $b$) realises the bijection explicitly."
+    },
+    {
+      "id": "kernel-cardinality",
+      "title": "The Fibre Value as a Kernel Cardinality",
+      "startLine": 95,
       "endLine": 106,
-      "summary": "card_fiber_pow_eq_card_torsion: every non-empty fibre {x | xⁿ = b} of the power map has the same cardinality as the torsion set {x | xⁿ = 1}. With aⁿ = b, the map x ↦ a⁻¹·x is a bijection fibre → torsion because (a⁻¹x)ⁿ = (aⁿ)⁻¹·xⁿ, packaged by Finset.card_bij'; only mul_pow is used, so no cyclicity is needed. card_torsion_eq_card_ker identifies that common value with the order of the kernel of powMonoidHom n via Fintype.card_subtype and MonoidHom.mem_ker.",
-      "mathContext": "Fibres of the endomorphism x ↦ xⁿ are cosets of the n-torsion subgroup, hence all of size #{x | xⁿ = 1} = |ker(powMonoidHom n)|."
+      "summary": "card_torsion_eq_card_ker: identifies the common fibre value #{x | xⁿ = 1} with the order of the kernel of the power homomorphism powMonoidHom n, i.e. the n-torsion subgroup. The proof rewrites via Fintype.card_subtype and matches the filter predicate to MonoidHom.mem_ker (powMonoidHom_apply) with Finset.filter_congr. This reframes the counting statement in the language of the first isomorphism theorem, setting up the partition identity that follows.",
+      "mathContext": "$\\#\\{x : x^n = 1\\} = |\\ker(\\text{powMonoidHom } n)|$: the torsion count is the order of the kernel of $x \\mapsto x^n$, the group-theoretic object whose image is the set of $n$-th powers."
     },
     {
       "id": "partition-identity",
