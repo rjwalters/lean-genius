@@ -367,6 +367,24 @@ export interface ProofMeta {
   /** Path to verified Lean source in proofs/ directory (e.g., "Proofs/Sqrt2Irrational.lean") */
   proofRepoPath?: string
 
+  // OQ lineage fields (issue #39825, epic #39821)
+  /**
+   * Slug of this entry's immediate parent in the open-question exploration
+   * tree, or absent/null for a root entry. Decouples lineage from the slug so
+   * the directory/URL no longer has to encode the full ancestry path.
+   *
+   * Computable from a legacy ancestry slug via `parentSlug()` in
+   * `src/lib/oq-slug.ts`; backfilling existing entries is deferred to #39828.
+   */
+  parentSlug?: string | null
+  /**
+   * Slug of the root problem this entry ultimately descends from (an entry with
+   * no OQ ancestry is its own root). Lets the gallery group descendants under
+   * their root without parsing the slug. See `rootSlug()` in
+   * `src/lib/oq-slug.ts`.
+   */
+  rootSlug?: string
+
   // Badge system fields
   /** The proof's category badge - see BADGE_TAXONOMY.md */
   badge?: ProofBadge
