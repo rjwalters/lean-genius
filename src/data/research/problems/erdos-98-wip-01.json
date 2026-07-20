@@ -1,7 +1,7 @@
 {
   "slug": "erdos-98-wip-01",
   "title": "Complete the Erdős #98 General-Position Distances Formalization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -31,9 +31,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Created Erdos98WIP01.lean — first machine-checked theorems for the #98 general-position distinct-distances scaffold. Axiom-free counting envelope (0 ≤ numDistinctDistances ≤ n·(n−1)) plus the h(n) sInf-membership upper-bound fact.",
+    "builtItems": [
+      "InGeneralPosition.injective in Erdos98WIP01.lean",
+      "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
+      "numDistinctDistances_eq_zero_of_le_one in Erdos98WIP01.lean",
+      "one_le_numDistinctDistances_of_injective (n≥2 ⟹ ≥1) in Erdos98WIP01.lean",
+      "h_le_of_inGeneralPosition (h n ≤ numDistinctDistances P) in Erdos98WIP01.lean"
+    ],
+    "insights": [
+      "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
+      "The degenerate floor: n ≤ 1 forces numDistinctDistances = 0 (no off-diagonal pair); and any injective config with n ≥ 2 realizes at least one positive distance, so 1 ≤ numDistinctDistances there.",
+      "h(n) = sInf over general-position configs is bounded above by any single witness config (Nat.sInf_le with ⟨P, hgp, rfl⟩) — the membership fact that every known upper-bound construction (Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n)) feeds into."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
