@@ -89,8 +89,8 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 61,
-      "summary": "Module docstring framing OQ#4: Mertens' first theorem via the von Mangoldt floor identity, listing the three verified steps, the two analytic inputs, and the prime-power strip to the honest prime sum."
+      "endLine": 67,
+      "summary": "Module docstring framing OQ#4: Mertens' first theorem via the von Mangoldt floor identity, listing the three verified steps, the two analytic inputs, and the prime-power strip to the honest prime sum; then the import, the `open Finset` / `open scoped BigOperators ArithmeticFunction` setup, and the namespace."
     },
     {
       "id": "floor-identity",
@@ -128,7 +128,7 @@
       "id": "prime-power-strip",
       "title": "Prime-Power Strip — Upper Bound for the Honest Prime Sum",
       "startLine": 261,
-      "endLine": 322,
+      "endLine": 323,
       "summary": "primeLogRecip (Σ_{p≤N} (log p)/p) and primePowerTail (R(N) = Σ_{d≤N, ¬prime} Λ(d)/d) are defined; lambdaRecip_prime_split proves the exact decomposition Σ Λ(d)/d = Σ_{p≤N}(log p)/p + R(N) via Finset.sum_filter_add_sum_filter_not and vonMangoldt_apply_prime; primePowerTail_nonneg gives R(N) ≥ 0; primeLogRecip_le transfers the upper half Σ_{p≤N}(log p)/p ≤ log N + (1+c_S+c_ψ) with no new assumptions.",
       "mathContext": "Σ_{p≤N} (log p)/p ≤ log N + (1 + c_S + c_ψ) for N ≥ 2 — the upper half of Mertens' first theorem for the genuine prime sum."
     }
