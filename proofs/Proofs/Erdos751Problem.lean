@@ -26,6 +26,8 @@ References:
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
+import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
+import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 
@@ -59,23 +61,29 @@ noncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
 **Chromatic Number:**
 The chromatic number χ(G) is the minimum number of colors needed to properly
 color the vertices of G (no two adjacent vertices have the same color).
--/
-axiom chromaticNumber (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
+
+Defined from Mathlib's `SimpleGraph.chromaticNumber : ℕ∞` via `.toNat`.
+(Formerly an axiom.) -/
+noncomputable def chromaticNumber (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  (SimpleGraph.chromaticNumber G).toNat
 
 /--
 **Girth:**
 The girth of G is the length of the shortest cycle in G.
-If G is acyclic (a forest), the girth is defined as ∞ (we use 0).
-Axiomatized since cycle enumeration infrastructure is required.
--/
-axiom girth (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
+If G is acyclic (a forest), the girth is 0 (Mathlib's `girth = egirth.toNat`,
+and `egirth` of an acyclic graph is `⊤`, whose `toNat` is `0`).
+
+Defined from Mathlib's `SimpleGraph.girth`. (Formerly an axiom.) -/
+noncomputable def girth (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  SimpleGraph.girth G
 
 /--
 **Cycle Lengths:**
-The set of all cycle lengths present in G.
-Axiomatized since walk/cycle infrastructure is required.
--/
-axiom cycleLengths (G : SimpleGraph V) [DecidableRel G.Adj] : Set ℕ
+The set of all cycle lengths present in G: lengths of closed cycle walks.
+
+Defined directly from Mathlib's `Walk`/`IsCycle`. (Formerly an axiom.) -/
+def cycleLengths (G : SimpleGraph V) [DecidableRel G.Adj] : Set ℕ :=
+  {n | ∃ (v : V) (c : G.Walk v v), c.IsCycle ∧ c.length = n}
 
 /--
 **Cycle Length Gap:**

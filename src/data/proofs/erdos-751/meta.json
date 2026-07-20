@@ -51,9 +51,9 @@
       "erdos_751_with_girth: girth doesn't help",
       "erdos_751_summary: combined results"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "lineCount": 235,
-    "assumptions": "5 axioms: chromaticNumber, girth, cycleLengths, four_chromatic_minDeg, bondy_vince_theorem. 2 sorries.",
+    "assumptions": "2 axioms: four_chromatic_minDeg (χ(G)=4 ⟹ minDegree ≥ 3) and bondy_vince_theorem (Bondy–Vince 1998: minDegree ≥ 3 ⟹ two cycle lengths differ by ≤ 2) — both deep graph-theory results. 2 sorries (minCycleLengthGap definition and its ≤2 bound). The chromaticNumber, girth, and cycleLengths definitions were previously axiomatized; they are now defined from Mathlib (SimpleGraph.chromaticNumber.toNat, SimpleGraph.girth, and the set of cycle-walk lengths respectively).",
     "theoremCount": 6,
     "definitionCount": 3
   },
@@ -142,7 +142,7 @@
     ],
     "namespace": "Erdos751",
     "lineCount": 235,
-    "axiomCount": 5,
+    "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 3,
     "path": "Proofs/Erdos751Problem.lean",
