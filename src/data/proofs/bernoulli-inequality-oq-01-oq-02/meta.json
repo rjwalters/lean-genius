@@ -58,7 +58,7 @@
     "dateAdded": "2026-06-23",
     "axioms": 0,
     "axiomCount": 0,
-    "lineCount": 170,
+    "lineCount": 163,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound).",
     "mathlib_version": "4.31.0",
     "theoremCount": 6,
@@ -128,15 +128,15 @@
       "id": "choose-and-first-order",
       "title": "Binomial-Coefficient Form and First-Order Corollary",
       "startLine": 136,
-      "endLine": 153,
+      "endLine": 147,
       "summary": "sq_bernoulli_choose restates the bound with the literal C(n,2) = n.choose 2 via Nat.choose_two_right; one_add_mul_eq_pow_iff_ge records the slug's first-order equality case (a = 0 ∨ n ≤ 1 on a ≥ −1) as a corollary of the sibling.",
       "mathContext": "$1 + na + \\binom{n}{2}a^2 \\le (1+a)^n$; first-order equality iff $a = 0 \\vee n \\le 1$."
     },
     {
       "id": "witnesses",
       "title": "Exactness and Sharpness Witnesses",
-      "startLine": 155,
-      "endLine": 170,
+      "startLine": 148,
+      "endLine": 163,
       "summary": "The n = 2 identity (truncation = full expansion), a concrete strict instance (a = 1, n = 4: 11 < 16), and the sharpness witness showing the bound fails for −1 < a < 0 (a = −1/2, n = 3).",
       "mathContext": "Exact at $n=2$; strict at $(a,n)=(1,4)$; fails at $(a,n)=(-1/2,3)$."
     }
@@ -174,7 +174,7 @@
     ],
     "opens": [],
     "namespace": "BernoulliInequalityOQ01OQ02",
-    "lineCount": 170,
+    "lineCount": 163,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0,
