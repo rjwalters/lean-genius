@@ -86,79 +86,79 @@
       "title": "Module Header and Imports",
       "summary": "Module docstring stating Erdős Problem #844 (largest $A\\subseteq\\{1,\\dots,N\\}$ with $ab$ non-squarefree for all $a,b\\in A$) and its status SOLVED (Weisenberg; Alexeev-Mixon-Sawin), answer YES — the optimum is the even numbers together with the odd non-squarefree numbers. Imports Nat squarefree/prime/factorization and Finset basics; `open Nat Finset`; `namespace Erdos844`.",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 35,
       "mathContext": "Key insight recorded in the header: any maximal $A$ must contain all non-squarefree numbers, reducing the problem to the largest intersecting family of squarefree numbers, which by Chvátal's result is the even squarefree numbers."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines `interval N` $=\\{1,\\dots,N\\}$, the property `HasNonSquarefreeProducts A` ($\\forall a,b\\in A,\\ \\neg\\,\\mathrm{Squarefree}(ab)$), the families `evenNumbers`, `nonSquarefreeNumbers`, `oddNonSquarefreeNumbers`, and the conjectured `optimalSet N` $=$ even $\\cup$ odd-non-squarefree.",
-      "startLine": 40,
-      "endLine": 66,
+      "startLine": 36,
+      "endLine": 62,
       "mathContext": "Six definitions; no theorems or axioms in this part."
     },
     {
       "id": "optimal-has-property",
       "title": "The Optimal Set Has the Property",
       "summary": "Proves `even_product_not_squarefree` (a product of two even numbers is divisible by 4, hence non-squarefree) and `nonsquarefree_product` (if $a$ is non-squarefree then so is $ab$), then axiomatizes `optimal_set_has_property`: the optimal set satisfies `HasNonSquarefreeProducts` for all $N\\ge1$.",
-      "startLine": 67,
-      "endLine": 98,
+      "startLine": 63,
+      "endLine": 90,
       "mathContext": "Two proved lemmas plus one `axiom` (`optimal_set_has_property`)."
     },
     {
       "id": "maximal-contains",
       "title": "Any Maximal Set Must Contain All Non-Squarefree Numbers",
       "summary": "Section banner for the structural step: any maximal $A$ must contain every non-squarefree number (otherwise it could be enlarged). Exposition placeholder; declares no Lean content.",
-      "startLine": 99,
-      "endLine": 102,
+      "startLine": 91,
+      "endLine": 95,
       "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
     },
     {
       "id": "reduction",
       "title": "Reduction to Squarefree Numbers",
       "summary": "Defines `squarefreeNumbers N` and `IsIntersectingFamily A` — a set of squarefree numbers in which every pair shares a common prime factor — capturing the reduced problem after removing the forced non-squarefree numbers.",
-      "startLine": 103,
-      "endLine": 115,
+      "startLine": 96,
+      "endLine": 108,
       "mathContext": "Two definitions; the reduction to an intersecting-family problem on squarefree numbers."
     },
     {
       "id": "chvatal",
       "title": "Chvátal's Result on Intersecting Families",
       "summary": "Defines `evenSquarefreeNumbers N`, the family achieving the maximum among intersecting families of squarefree numbers (all divisible by 2), per Chvátal's theorem on intersecting set systems.",
-      "startLine": 116,
-      "endLine": 123,
+      "startLine": 109,
+      "endLine": 116,
       "mathContext": "One definition; Chvátal's bound itself is cited in prose, not formalized here."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "Axiomatizes `weisenberg_proof`: for $N\\ge1$, any $A\\subseteq\\{1,\\dots,N\\}$ with the non-squarefree-product property satisfies $|A|\\le|\\text{optimalSet }N|$ — the extremal upper bound completing the solution.",
-      "startLine": 124,
-      "endLine": 133,
+      "startLine": 117,
+      "endLine": 126,
       "mathContext": "One `axiom` (`weisenberg_proof`), the maximality half of the result."
     },
     {
       "id": "characterization",
       "title": "Characterization of the Optimal Set",
       "summary": "Section banner for the explicit characterization of the optimal set as even $\\cup$ odd-non-squarefree. Exposition placeholder; declares no Lean content.",
-      "startLine": 134,
-      "endLine": 137,
+      "startLine": 127,
+      "endLine": 130,
       "mathContext": "Empty docstring banner."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Section banner for worked examples of the optimal set at small $N$. Exposition placeholder; declares no Lean content.",
-      "startLine": 138,
-      "endLine": 141,
+      "startLine": 131,
+      "endLine": 134,
       "mathContext": "Empty docstring banner."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Concluding part: `erdos_844_characterization` bundles the three facts (optimal set has the property; no larger set does; the optimal set equals even $\\cup$ odd-non-squarefree, closed by `rfl`), and `erdos_844` packages the existence + maximality conclusion, each assembled from the two axioms.",
-      "startLine": 142,
-      "endLine": 175,
+      "startLine": 135,
+      "endLine": 168,
       "mathContext": "Two theorems built from `optimal_set_has_property` and `weisenberg_proof`. Net file axioms: `optimal_set_has_property`, `weisenberg_proof`."
     }
   ],
