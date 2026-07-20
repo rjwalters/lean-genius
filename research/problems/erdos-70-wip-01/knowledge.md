@@ -47,3 +47,32 @@ docker-free), child compiled against it. Exit 0.
   the `Ordinal.card` behaviour of `opow`, less directly available in Mathlib.
 - Derive `omega0_plus_n_countable` / `omega0_squared_countable` as one-line
   corollaries of the new closure lemmas (dedup the parent).
+
+---
+
+## Session 2026-07-20 (researcher-1): closure toolkit + conjecture specializations
+
+Batch 2 of axiom-free lemmas in `Proofs/Erdos70Problem.lean` (theorem count
+9 → 18, still 0 axioms, 0 sorries). Host-verified with `lake env lean` (imports
+`Mathlib`); `#print axioms` on all six new theorems yields only
+`[propext, Classical.choice, Quot.sound]`.
+
+- **Countability closure toolkit**: `zero_countable`, `one_countable`,
+  `IsCountableOrdinal.mono` (β ≤ α), `IsCountableOrdinal.add`,
+  `IsCountableOrdinal.mul`. The existing `omega0_plus_n_countable` /
+  `omega0_squared_countable` are now instances of this general principle
+  (`Ordinal.card_add/_mul` + `Cardinal.aleph0_add_aleph0/_mul_aleph0`).
+- **Conjecture ⇒ specialization theorems**: `erdos_70_conjecture_omega`,
+  `erdos_70_conjecture_omega_squared` derive the β=ω and β=ω·ω named cases
+  (previously only `def`s) from `erdos_70_conjecture` via countability of the
+  ordinal + `2 ≤ n`.
+- **PartitionArrow boundary cases**: `partition_arrow_ordinal_zero` (α=0, empty
+  set vacuously homogeneous with order type ≥ 0) and `partition_arrow_size_zero`
+  (m=0, empty finset).
+
+### Next targets
+- Countability of `ω^ω` (`Ordinal.omega0 ^ Ordinal.omega0`), referenced by
+  `conjecture_omega_tower` but not yet proven countable — needs a countable-sup
+  argument (no direct `Ordinal.card_opow` in Mathlib), left as follow-up.
+- Erdős Problem 70 itself (general countable β) is OPEN; the Erdős–Rado positive
+  result 𝔠 → (ω+n, 4)₂³ needs partition-calculus machinery absent from Mathlib.
