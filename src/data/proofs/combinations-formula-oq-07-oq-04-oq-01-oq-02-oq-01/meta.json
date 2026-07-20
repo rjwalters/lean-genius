@@ -13,7 +13,7 @@
     "lineCount": 199,
     "theoremCount": 5,
     "definitionCount": 0,
-    "assumptions": "None. The one-sided cross moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r) (r ≤ n) and the general asymmetric power moment ∑ k^p·C(m,k)·C(n,k) = ∑_r S(p,r)·(m)_r·C(m+n−r,n−r) (p ≤ n) are fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). NOTE: not kernel-rebuilt in this session (the Docker build host was hung, exit 124); the proof is a strict recombination of merged, CI-built siblings — its split/absorb/Vandermonde skeleton mirrors the verified CombinationsFormulaOQ07OQ04OQ01OQ03 and its Stirling expand-swap-close mirrors the verified CombinationsFormulaOQ07OQ04OQ01OQ02, with every Mathlib and sibling lemma name and signature checked against origin/main and the installed toolchain. The deployer build-gate verifies before merge.",
+    "assumptions": "None. The one-sided cross moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r) (r ≤ n) and the general asymmetric power moment ∑ k^p·C(m,k)·C(n,k) = ∑_r S(p,r)·(m)_r·C(m+n−r,n−r) (p ≤ n) are fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the three numeric sanity checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx). Machine-checked under the pinned Lean/Mathlib toolchain v4.31.0: the full parent chain and this file elaborate with no errors, and #print axioms confirms every top-level theorem carries exactly the axiom set stated above.",
     "tags": [
       "combinatorics",
       "binomial-coefficients",
