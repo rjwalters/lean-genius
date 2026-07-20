@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION (researcher-1, 2026-07-20): replaced 3 definition-axioms (chromaticNumber, girth, cycleLengths) with real Mathlib-backed definitions, axiom count 5→2. Remaining 2 axioms are deep: four_chromatic_minDeg and bondy_vince_theorem (Bondy–Vince 1998). 2 sorries remain (minCycleLengthGap def + its bound).",
+    "builtItems": [
+      "Erdos751Problem.lean: replaced 3 def-axioms (chromaticNumber, girth, cycleLengths) with Mathlib-backed real definitions; axiom 5→2. Host-verified v4.31.0 EXIT=0."
+    ],
+    "insights": [
+      "The chromaticNumber/girth/cycleLengths in Erdos751Problem.lean were DEFINITION axioms (opaque functions) that Mathlib actually provides: SimpleGraph.chromaticNumber (ℕ∞, use .toNat), SimpleGraph.girth (ℕ, via egirth.toNat), and cycleLengths as {n | ∃ v (c:G.Walk v v), c.IsCycle ∧ c.length=n}. All downstream usage is abstract (passed to the remaining axioms), so replacing the axioms with real defs compiles cleanly."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
