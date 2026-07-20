@@ -62,7 +62,7 @@
       "erdos_936_summary: complete status of the problem"
     ],
     "axiomCount": 3,
-    "lineCount": 327,
+    "lineCount": 321,
     "assumptions": "3 axioms: abc_conjecture_holds (the unproven ABC conjecture as a Prop), cushing_pascoe_theorem (2016: ABC → n!±1 eventually not powerful), crowdmath_theorem (2020: ABC → 2^n±1 eventually not powerful). The four variant axioms have been PROVED from these two conditional theorems.",
     "theoremCount": 27,
     "definitionCount": 3
@@ -90,50 +90,50 @@
       "id": "powerful-numbers",
       "title": "Powerful Numbers",
       "summary": "Definition of powerful numbers and basic examples",
-      "startLine": 45,
-      "endLine": 107
+      "startLine": 41,
+      "endLine": 101
     },
     {
       "id": "sequences",
       "title": "The Sequences in Question",
       "summary": "Definition of EventuallyNotPowerful and the four target sequences",
-      "startLine": 108,
-      "endLine": 130
+      "startLine": 102,
+      "endLine": 124
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples",
       "summary": "Verified computations for small values of n",
-      "startLine": 131,
-      "endLine": 191
+      "startLine": 125,
+      "endLine": 185
     },
     {
       "id": "abc-connection",
       "title": "ABC Conjecture Connection",
       "summary": "The Cushing-Pascoe and CrowdMath theorems",
-      "startLine": 192,
-      "endLine": 229
+      "startLine": 186,
+      "endLine": 223
     },
     {
       "id": "four-variants",
       "title": "The Four Variants",
       "summary": "Four variant theorems proved from the two conditional axioms: 2^n±1 and n!±1 eventually not powerful, each conditional on abc_conjecture_holds.",
-      "startLine": 230,
-      "endLine": 285
+      "startLine": 224,
+      "endLine": 263
     },
     {
       "id": "squarefree",
       "title": "Squarefree Observations",
       "summary": "Relationship between squarefree and powerful numbers",
-      "startLine": 286,
-      "endLine": 308
+      "startLine": 264,
+      "endLine": 286
     },
     {
       "id": "summary",
       "title": "Summary and Status",
       "summary": "Complete formalization status and main results",
-      "startLine": 309,
-      "endLine": 327
+      "startLine": 287,
+      "endLine": 321
     }
   ],
   "conclusion": {
@@ -162,7 +162,7 @@
       "Finset"
     ],
     "namespace": "Erdos936",
-    "lineCount": 327,
+    "lineCount": 321,
     "axiomCount": 3,
     "theoremCount": 27,
     "definitionCount": 3,
