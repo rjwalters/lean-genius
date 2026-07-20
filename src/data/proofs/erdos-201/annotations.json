@@ -189,8 +189,8 @@
       "endLine": 149
     },
     "title": "Monotonicity Properties of $R_k$",
-    "content": "$R_k$ is monotone in $N$ ($M \\leq N \\implies R_k(M) \\leq R_k(N)$) and anti-monotone in $k$ ($k \\leq l \\implies R_l(N) \\leq R_k(N)$). Both proved structurally in Lean using subset inclusion and AP transfer.",
-    "mathContext": "rk_mono: $M \\leq N \\implies$ Icc$\\,1\\,M \\subseteq$ Icc$\\,1\\,N$, so every AP-free subset of Icc$\\,1\\,M$ is also a subset of Icc$\\,1\\,N$. rk_anti_k: $k \\leq l \\implies$ every $l$-AP-free set is $k$-AP-free, so $R_l(N) \\leq R_k(N)$.",
+    "content": "$R_k$ is monotone in $N$ ($M \\leq N \\implies R_k(M) \\leq R_k(N)$) and monotone in $k$ ($k \\leq l \\implies R_k(N) \\leq R_l(N)$). Both proved structurally in Lean using subset inclusion and AP transfer.",
+    "mathContext": "rk_mono: $M \\leq N \\implies$ Icc$\\,1\\,M \\subseteq$ Icc$\\,1\\,N$, so every AP-free subset of Icc$\\,1\\,M$ is also a subset of Icc$\\,1\\,N$. rk_anti_k: $k \\leq l \\implies$ every $k$-AP-free set is $l$-AP-free, so $R_k(N) \\leq R_l(N)$.",
     "significance": "key",
     "relatedConcepts": [
       "monotone functions",

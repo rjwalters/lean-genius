@@ -35,7 +35,7 @@
       "**Trivial bound with strict gap**: $G_k(N) \\leq R_k(N)$ always, but $G_3(5) = 3 < 4 = R_3(5)$ shows $\\{1, \\ldots, N\\}$ is not the worst case for 3-AP avoidance",
       "**Komlós–Sulyok–Szemerédi (1975)**: $R_k(N) \\leq C(k) \\cdot G_k(N)$, establishing order-of-magnitude equivalence. The conjecture asks whether $C(3) \\to 1$",
       "**Connection to Roth/Szemerédi bounds**: $R_3(N) = o(N)$ (Roth 1953) and recent Kelley–Meka improvements give $R_3(N) \\leq N/\\exp(c(\\log N)^{1/12})$, but these bounds on $R_3$ don't directly determine the ratio $R_3/G_3$",
-      "**Proved monotonicity**: $R_k(N)$ is monotone in $N$ (larger interval has more AP-free subsets) and anti-monotone in $k$ ($l$-AP-free implies $k$-AP-free for $k \\leq l$), both verified in Lean",
+      "**Proved monotonicity**: $R_k(N)$ is monotone in $N$ (larger interval has more AP-free subsets) and monotone in $k$ ($k$-AP-free implies $l$-AP-free for $k \\leq l$), both verified in Lean",
       "**$\\varepsilon$-$N_0$ formalization**: The conjecture uses $\\mathbb{Q}$ for the $(1 + \\varepsilon)$ bound, avoiding real analysis while precisely capturing the asymptotic ratio"
     ],
     "prerequisites": [
@@ -113,8 +113,8 @@
       "title": "Monotonicity Properties (Proved)",
       "startLine": 227,
       "endLine": 252,
-      "summary": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer.",
-      "mathContext": "Mathematical content: $R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer."
+      "summary": "$R_k$ monotone in $N$ and monotone in $k$, both proved structurally using Icc nesting and AP transfer.",
+      "mathContext": "Mathematical content: $R_k$ monotone in $N$ and monotone in $k$, both proved structurally using Icc nesting and AP transfer."
     },
     {
       "id": "consequences",

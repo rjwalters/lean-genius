@@ -13,7 +13,7 @@ Known: G_k(N) ≤ R_k(N) (trivial), R_k(N) ≪_k G_k(N) (KSS 1975).
 
 Key Results (proved here):
 1. R_k monotone in N (proved structurally)
-2. R_k anti-monotone in k (proved structurally)
+2. R_k monotone in k (proved structurally)
 3. AP containment transfer between k and l when k ≤ l (proved)
 4. gk ≤ rk bound (proved from definitions)
 
@@ -316,7 +316,7 @@ theorem gk_zero (k : ℕ) : gk k 0 = 0 := by
     omega
   · exact Nat.zero_le _
 
-/-- gk_prop is anti-monotone in k: if every N-set has a k-AP-free subset of size m,
+/-- gk_prop is monotone in k: if every N-set has a k-AP-free subset of size m,
     then every N-set has an l-AP-free subset of size m (for l ≥ k). -/
 theorem gk_prop_anti_k {k l N m : ℕ} (hkl : k ≤ l) (hk1 : k ≥ 1)
     (h : gk_prop k N m) : gk_prop l N m := by
