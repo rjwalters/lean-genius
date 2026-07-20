@@ -11,7 +11,7 @@
   "status": "in-progress",
   "knowledge": {
     "score": 17,
-    "progressSummary": "PROGRESS: exact Lᵖ moment hierarchy machine-checked; sharp single-modulus density |A| ≤ #{n²=0} + N/√minFac(N) at odd N; NEW sqDiffFree_card_le_of_prime specializes it to primes: any square-difference-free A ⊆ ℤ/pℤ (p odd prime) has |A| ≤ 1+√p — a fully machine-checked o(N) Sárközy bound along prime moduli (minFac=p ⟹ √p, and #{n²=0}=1 in a field), with NO bounded-minFac obstruction. Remaining o(N²) for composite N still needs τ(N)=o(√N) (Wigert; Mathlib gap).",
+    "progressSummary": "PROGRESS: NEW structural companion RothTheoremOQ04Multiplicative.lean (0 sorries/0 axioms, Mathlib-only, host-verified) — the first-moment divisor sum S(N)=∑_{d|N}φ(N/d)√d is the Dirichlet convolution φ⋆(√·), hence MULTIPLICATIVE (S(mn)=S(m)S(n) at coprime m,n), with closed forms S(p^k)=∑_{j≤k}φ(p^{k-j})p^{j/2} and S(p)=(p-1)+√p. This makes ∑_r‖G(r)‖=√N·S(N) a √N-multiple of a multiplicative function and pins the first moment ~N^{3/2} at all odd N. Prior: exact Lᵖ moment hierarchy; sharp single-modulus density |A|≤#{n²=0}+N/√minFac(N); Sárközy √p bound at prime moduli. Still-open o(N²) for composite N remains blocked on τ(N)=o(√N) (Wigert; Mathlib gap) and the coset-descent barrier (Part LVII).",
     "insights": [
       "The existing Roth Fourier infrastructure is genuine and 0-axiom: RothTheorem.lean defines fourierCoeff A r = ∑_{x∈A} ψ(r·x) on ZMod N, proves Parseval (∑_r ‖Â(r)‖² = |A|·N), and the key linearization triple_count_fourier: tripleCount(A) + |A| = N⁻¹·∑_r Â(r)²·conj(Â(2r)). The 3-AP count linearizes ONLY because the pattern (x, x+d, x+2d) is a linear form: character orthogonality in x forces the frequency relation and collapses two of the three Fourier factors into Â(r) and Â(2r).",
       "Structural answer to the OQ, part (a) — Sárközy/single square difference IS an accessible extension. For A ⊆ ZMod N the square-difference count SD(A) = ∑_{x,n} 1_A(x)·1_A(x+n²) Fourier-expands (identical orthogonality bookkeeping to triple_count_fourier) to SD(A) = N⁻¹·∑_r |Â(r)|²·G(r), where G(r) = ∑_{n∈ZMod N} ψ(r·n²) is a quadratic GAUSS sum. Principal term r=0: G(0)=N, Â(0)=|A| ⇒ |A|². The new ingredient vs 3-APs is that the non-principal terms are weighted by G(r) (size ≈ √N for r≠0 by classical Gauss-sum bounds) instead of a second coefficient Â(2r). So the LINEAR transform + Weyl/Gauss-sum estimates suffice — this is exactly the circle-method route to Sárközy's theorem.",
@@ -98,7 +98,9 @@
       "Part LVIII: for a square-difference-free A, sqDiffCount A = |A|·κ EXACTLY (κ=#{n:n²=0}), not merely ≤ — every trivial pair (x,n) with n²=0 is counted since x+n²=x∈A, and freeness kills n²≠0; the filtered set is exactly A×ˢ{n:n²=0}.",
       "Part LVIII exact deficit identity: substituting the exact free count into sqDiffCount_fourier_main pins the nonzero-frequency Gauss-weighted Fourier energy EXACTLY: Σ_{r≠0}‖Â(r)‖²·G(r) = N·(|A|·κ−|A|²) = N·|A|·(κ−|A|). The bad mass is not just bounded — it is DETERMINED by |A|. For |A|>κ this is a nonzero multiple of N, an exact lower bound on Gauss-weighted structure the circle method cannot avoid.",
       "Part LVIII is the honest exact form of the density-increment engine: sqDiff_error_le bounds the bad mass from ABOVE (circle method); sqDiffFree_badMass_norm pins it from BELOW at exactly N·|A|·||A|−κ|. The two together force |A|−κ ≤ max_{r≠0}‖G(r)‖, recovering every Parts VI–LII density bound and making explicit that the SDF hypothesis is CONSUMED as this exact energy lower bound.",
-      "The Part-LVIII aggregate deficit ‖Σ_{r≠0}‖Â(r)‖²·G(r)‖=N·|A|·||A|−κ| becomes a POINTWISE large-coefficient statement by a pure N−1-term pigeonhole (norm_sum_le + ‖G‖≤M upper bound vs summing N−1 strict inequalities). This is the honest single-scale density-increment INPUT; it does NOT close o(N) — still blocked by the Part-LVII coset-descent obstruction and the Part-XLVII no-fixed-M barrier."
+      "The Part-LVIII aggregate deficit ‖Σ_{r≠0}‖Â(r)‖²·G(r)‖=N·|A|·||A|−κ| becomes a POINTWISE large-coefficient statement by a pure N−1-term pigeonhole (norm_sum_le + ‖G‖≤M upper bound vs summing N−1 strict inequalities). This is the honest single-scale density-increment INPUT; it does NOT close o(N) — still blocked by the Part-LVII coset-descent obstruction and the Part-XLVII no-fixed-M barrier.",
+      "Part LIX (structural): the first-moment divisor sum S(N)=∑_{d|N}φ(N/d)√d is exactly the Dirichlet convolution φ⋆(√·) of the multiplicative Euler totient and the completely-multiplicative real square root, hence S is a MULTIPLICATIVE arithmetic function (ArithmeticFunction.IsMultiplicative.mul): gcd(m,n)=1 ⟹ S(mn)=S(m)S(n). So ∑_r‖G(r)‖=√N·S(N) is √N times a multiplicative function of N — the ad-hoc N=9 and prime evaluations are now special cases.",
+      "Part LIX closed form: S(p^k)=∑_{j=0}^{k} φ(p^{k-j})·p^{j/2} (firstMomentDivisorSum_prime_pow), and S(p)=(p-1)+√p (firstMomentDivisorSum_prime); ×√p gives p+(p-1)√p, recovering sum_norm_sqGaussSum_eq_of_prime. Multiplicativity reduces the first moment at EVERY odd N to these prime-power values — the leading term is φ(N)~N (from d=1), confirming first moment ~ N^{3/2}, not the trivial N², independent of the still-open τ(N)=o(√N) Wigert gap."
     ],
     "builtItems": [
       "RothTheorem.lean Part VI (researcher-5, 2026-07-05, VERIFIED 0-axiom): sqGaussSum r = ∑_{n∈ZMod N} ψ(r·n²) (quadratic Gauss sum); sqDiffCount A = #{(x,n) : x∈A, x+n²∈A} (square-difference count); sqGaussSum_zero: G(0)=N; sqDiffCount_fourier_complex: SD(A)·N = ∑_r Â(r)·conj(Â(r))·G(r); sqDiffCount_fourier: SD(A) = N⁻¹·∑_r ‖Â(r)‖²·G(r). Proof mirrors triple_count_fourier: expand each term as a triple ψ-sum, bring the r-sum innermost, apply char_orthogonality (∑_r ψ(r·c)=N·[c=0]), collapse the y-sum via y=x+n². #print axioms → [propext, Classical.choice, Quot.sound].",
@@ -251,7 +253,12 @@
       "sqDiffCount_eq_of_free (RothTheorem.lean ~7060): exact sqDiffCount A = |A|·#{n:n²=0} for SDF A [0-axiom]",
       "sqDiffFree_badMass_eq (RothTheorem.lean ~7095): exact complex deficit Σ_{r≠0}‖Â(r)‖²·G(r)=N·(|A|·κ−|A|²) [0-axiom]",
       "sqDiffFree_badMass_norm (RothTheorem.lean ~7130): exact magnitude ‖Σ_{r≠0}‖Â(r)‖²·G(r)‖=N·|A|·||A|−κ| [0-axiom]",
-      "Part LX sqDiffFree_exists_large_fourier_coeff (RothTheorem.lean): L∞ pigeonhole extracts a SINGLE large Fourier coefficient from the Part-LVIII exact deficit — for SDF A with |A|>κ and uniform ‖G(r)‖≤M over r≠0, ∃ r≠0 with N·|A|·(|A|−κ) ≤ (N−1)·M·‖Â(r)‖², i.e. ‖Â(r)‖²≥N·|A|·(|A|−κ)/((N−1)M). With M=√N,|A|=δN gives ‖Â(r)‖≳δN^{3/4}, relative increment ≳N^{−1/4}. VERIFIED 0-axiom"
+      "Part LX sqDiffFree_exists_large_fourier_coeff (RothTheorem.lean): L∞ pigeonhole extracts a SINGLE large Fourier coefficient from the Part-LVIII exact deficit — for SDF A with |A|>κ and uniform ‖G(r)‖≤M over r≠0, ∃ r≠0 with N·|A|·(|A|−κ) ≤ (N−1)·M·‖Â(r)‖², i.e. ‖Â(r)‖²≥N·|A|·(|A|−κ)/((N−1)M). With M=√N,|A|=δN gives ‖Â(r)‖≳δN^{3/4}, relative increment ≳N^{−1/4}. VERIFIED 0-axiom",
+      "firstMomentAF := totientAF * sqrtAF (Dirichlet convolution) in RothTheoremOQ04Multiplicative.lean",
+      "isMultiplicative_firstMomentAF: S is multiplicative, in RothTheoremOQ04Multiplicative.lean",
+      "firstMomentAF_apply: S N = ∑_{d|N} φ(N/d)·√d (bridge to sum_norm_sqGaussSum_eq_of_odd), RothTheoremOQ04Multiplicative.lean",
+      "firstMomentDivisorSum_prime_pow: S(p^k)=∑_{j≤k}φ(p^{k-j})p^{j/2}, RothTheoremOQ04Multiplicative.lean",
+      "firstMomentDivisorSum_prime: S(p)=(p-1)+√p, RothTheoremOQ04Multiplicative.lean"
     ],
     "nextSteps": [
       "DONE (researcher-11): two-torsion DICHOTOMY G(r)∈{0,N} at 2r=0 (sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero) — the exact characterization at the frequencies the gcd/kernel-count bounds leave vacuous (‖G(r)‖≤N trivially); rules out all intermediate magnitudes 0<‖G(r)‖<N.",
@@ -320,6 +327,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheorem.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ04Multiplicative.lean",
+      "filename": "RothTheoremOQ04Multiplicative.lean",
+      "lineCount": 117,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ04Multiplicative.lean"
     }
   ]
 }
