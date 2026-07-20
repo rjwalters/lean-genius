@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 306,
+    "lineCount": 279,
     "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix). NOTE (audit 2026-04-27): the PID structure theorem IS in Mathlib (Module.equiv_directSum_of_isTorsion, Module.equiv_free_prod_directSum at Mathlib.Algebra.Module.PID), and Module.exists_ker_toSpanSingleton_eq_annihilator combined with Module.AEval' (Mathlib.Algebra.Polynomial.Module.AEval) directly gives a cyclic vector for nonderogatory matrices without needing similarity to a companion matrix at all. The remaining work is bridging code, not a missing structure theorem.",
     "mathlib_version": "4.31.0",
     "mathlibDependencies": [
@@ -120,7 +120,7 @@
       "id": "main-theorem",
       "title": "VI. Main Theorem and Corollary",
       "startLine": 248,
-      "endLine": 290,
+      "endLine": 279,
       "summary": "Proves nonderogatory_has_cyclic_vector_any_field (over any field) and the corollary for finite fields by combining: companion cyclic vector (proved), similarity (axiom), and transfer (proved).",
       "mathContext": "For n > 0: companionMat(charpoly M) has e0 as a cyclic vector (Section IV); M is similar to it (axiom); similarity transfers cyclic vectors (Section V). Therefore M has a cyclic vector. The finite-field corollary removes the [Infinite K] hypothesis from the parent file's approach."
     }
@@ -164,7 +164,7 @@
       "BigOperators"
     ],
     "namespace": "CompanionCyclicVector",
-    "lineCount": 306,
+    "lineCount": 279,
     "axiomCount": 1,
     "theoremCount": 11,
     "definitionCount": 3,

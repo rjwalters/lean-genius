@@ -60,7 +60,7 @@
       "Theorem total_dissipation_bound: ∫₀ᵀ 2νP(t) dt ≤ E(0), total dissipation bounded by initial enstrophy"
     ],
     "dateAdded": "2026-02-26",
-    "lineCount": 21110,
+    "lineCount": 21090,
     "assumptions": "Relies on `Lean.ofReduceBool`. The analytic core — the quantitative enstrophy decay bound E(t) ≤ E(s)·exp(-2νμ₁(t-s)) and the integrated energy identity (FTC applied to the enstrophy ODE) — is kernel-checked and axiom-free. However, the Sobolev/Lions-threshold classification theorems `lions_3d`, `lions_2d`, `critical_at_lions_is_zero`, `standard_ns_gap`, and `standard_2d_gap` are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (it appears under `#print axioms` for those theorems; these are rational-arithmetic facts that could alternatively be closed by kernel `decide`/`norm_num`). `leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.",
     "relatedProblems": [
       {
@@ -132,7 +132,7 @@
       "id": "dissipation-formula",
       "title": "Enstrophy Dissipation Formula and Total Bound",
       "startLine": 2639,
-      "endLine": 21110,
+      "endLine": 21090,
       "summary": "enstrophy_dissipation_formula: E(0) - E(T) = ∫₀ᵀ 2νP dt (enstrophy decrease = integrated dissipation). total_dissipation_bound: ∫₀ᵀ 2νP ≤ E(0) (cumulative dissipation bounded by initial enstrophy)."
     }
   ],
@@ -183,7 +183,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21110,
+    "lineCount": 21090,
     "axiomCount": 0,
     "theoremCount": 845,
     "definitionCount": 366,
