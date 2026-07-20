@@ -42,15 +42,19 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Coefficient unimodality, `k ≤ 1` base cases (`qBinomCoeff_unimodal_{zero,one}`):
       `[n,0]_q = 1` gives `1,0,0,…` and `[n,1]_q = [n]_q` gives `1,…,1,0,…`, both
       non-increasing hence unimodal; via the `k = 1` coefficient bridge `qBinom_X_coeff_one_seq`
-- [ ] OPEN: coefficient unimodality for general `k` (Sylvester/Proctor) — the substantive crux
+- [x] Coefficient unimodality, `k = 2` case (`qBinomCoeff_unimodal_two`) — the first genuine
+      rise-then-fall bump: degree `2(n-2)` is even, first half is the ramp `⌊j/2⌋+1`
+      (`qBinom_X_two_coeff_le`, from the recurrence `qBinom_X_two_coeff_succ`), and unimodality
+      follows from the reusable criterion `unimodal_of_even_palindrome_first_half_mono`
+- [ ] OPEN: coefficient unimodality for general `k ≥ 3` (Sylvester/Proctor) — the substantive crux
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
 (degree, monicity, coefficient nonnegativity, pinned extreme coefficients) AND the first
-unimodality content: the `Unimodal` predicate/API and the `k ≤ 1` base cases. It does
-NOT prove unimodality for general `k`, which is the substantive content of the open question:
-that requires either an sl₂-action argument or O'Hara's combinatorial decomposition, not
-attempted here.
+unimodality content: the `Unimodal` predicate/API, the `k ≤ 1` base cases, and the `k = 2`
+case (the first genuinely rise-then-fall coefficient array). It does NOT prove unimodality
+for general `k ≥ 3`, which is the substantive content of the open question: that requires
+either an sl₂-action argument or O'Hara's combinatorial decomposition, not attempted here.
 
 ## Gaussian polynomial layer (over `ℤ[X]`)
 The palindromy above lives over a field (it uses `q⁻¹`). To reason about the actual
@@ -439,6 +443,39 @@ theorem unimodal_of_nonincreasing {f : ℕ → ℤ} (h : ∀ i, f (i + 1) ≤ f 
 theorem unimodal_const (c : ℤ) : Unimodal (fun _ => c) :=
   unimodal_of_nonincreasing (fun _ => le_refl c)
 
+/-- **Even-degree palindromic sequences that rise to the midpoint are unimodal.**
+A nonnegative sequence `f` supported on `[0, 2m]`, palindromic there
+(`f j = f (2m - j)`), and weakly increasing on the first half (`f j ≤ f (j+1)` for
+`j < m`), is unimodal with peak at `m`.  The falling half is recovered from the
+rising half through the palindrome symmetry — reflecting an interior descending step
+`f (i+1) ≤ f i` (with `m ≤ i < 2m`) to the ascending step `f (2m-i-1) ≤ f (2m-i)` —
+and nonnegativity discharges the single boundary step `f (2m+1) = 0 ≤ f (2m)`.  This
+is the clean route to unimodality for a symmetric coefficient array whose left half is
+understood: it is used below for `k = 2`, where the degree `2(n-2)` is even and the
+first half is the explicit ramp `⌊j/2⌋+1`. -/
+theorem unimodal_of_even_palindrome_first_half_mono {f : ℕ → ℤ} (m : ℕ)
+    (hnonneg : ∀ j, 0 ≤ f j)
+    (hsupp : ∀ j, 2 * m < j → f j = 0)
+    (hpal : ∀ j, j ≤ 2 * m → f j = f (2 * m - j))
+    (hmono : ∀ j, j < m → f j ≤ f (j + 1)) :
+    Unimodal f := by
+  refine ⟨m, fun i hi => hmono i hi, ?_⟩
+  intro i hi
+  rcases lt_or_ge i (2 * m) with hlt | hge
+  · -- `m ≤ i < 2m`: reflect into the rising half via palindromy
+    have h1 : f (i + 1) = f (2 * m - (i + 1)) := hpal (i + 1) (by omega)
+    have h2 : f i = f (2 * m - i) := hpal i (by omega)
+    have hstep := hmono (2 * m - (i + 1)) (by omega)
+    rw [show 2 * m - (i + 1) + 1 = 2 * m - i from by omega] at hstep
+    rw [h1, h2]; exact hstep
+  · -- `i ≥ 2m`: past (or at) the top of the support
+    have hs1 : f (i + 1) = 0 := hsupp (i + 1) (by omega)
+    rcases eq_or_lt_of_le hge with heq | hgt
+    · -- `i = 2m`: `f (2m+1) = 0 ≤ f (2m)`
+      have := hnonneg i; omega
+    · -- `i > 2m`: both endpoints vanish
+      have hs2 : f i = 0 := hsupp i (by omega); omega
+
 /-- **Direct geometric-sum form of the q-number.**  `[n]_q = ∑_{i<n} qⁱ`.  The parent file
     only provides the `(q-1)`-multiplied identity `qNumber_geometric`; this un-multiplied sum
     is what lets us read off polynomial coefficients.  Proof by the defining recurrence
@@ -489,4 +526,107 @@ theorem qBinomCoeff_unimodal_one (n : ℕ) :
   rw [qBinom_X_coeff_one_seq n (i + 1), qBinom_X_coeff_one_seq n i]
   split_ifs <;> omega
 
+/-! ### Unimodality: the `k = 2` case (first genuine rise-then-fall bump)
+
+For `k = 2` the coefficient array of `[n choose 2]_q` is the first that genuinely rises
+*and* falls (`k ≤ 1` was non-increasing).  With `n = m + 2` the degree is the even number
+`2m`, and the *first half* of the array is the explicit arithmetic ramp
+
+  `(qBinom X (m+2) 2).coeff j = ⌊j/2⌋ + 1`   for `0 ≤ j ≤ m`,
+
+which is manifestly non-decreasing.  Feeding that ramp plus the already-established
+coefficient palindromy (`qBinom_X_coeff_symm'`) and nonnegativity (`qBinom_X_coeff_nonneg`)
+into `unimodal_of_even_palindrome_first_half_mono` yields unimodality for all `n`.  This
+settles Sylvester's theorem for `k = 2` (Approach C: small-`k` closed forms first); the
+general `k` case (O'Hara / `𝔰𝔩₂`) stays open. -/
+
+open Polynomial in
+/-- **The `k = 2` coefficient recurrence.**  From the `q`-Pascal identity
+`[n+1,2]_q = [n,1]_q + q²·[n,2]_q` (`qBinom_pascal` at `k = 1`, with `[n,1]_q = [n]_q`) the
+coefficient array of `[n+1 choose 2]_q` is the length-`n` indicator prefix shifted onto the
+`q²`-scaled previous array:
+
+  `(qBinom X (n+1) 2).coeff j = [j < n] + [2 ≤ j] · (qBinom X n 2).coeff (j-2)`. -/
+theorem qBinom_X_two_coeff_succ (n j : ℕ) :
+    (qBinom (X : ℤ[X]) (n + 1) 2).coeff j
+      = (if j < n then (1 : ℤ) else 0)
+        + (if 2 ≤ j then (qBinom (X : ℤ[X]) n 2).coeff (j - 2) else 0) := by
+  have hp : qBinom (X : ℤ[X]) (n + 1) 2
+      = qBinom (X : ℤ[X]) n 1 + X ^ 2 * qBinom (X : ℤ[X]) n 2 :=
+    qBinom_pascal (X : ℤ[X]) n 1
+  rw [hp, coeff_add, mul_comm, coeff_mul_X_pow', qBinom_X_coeff_one_seq]
+
+open Polynomial in
+/-- **First-half closed form for `k = 2`: the ramp `⌊j/2⌋+1`.**  For `n = m + 2` and every
+`j ≤ m` (the left half of the symmetric array, up to and including the peak),
+
+  `(qBinom X (m+2) 2).coeff j = ⌊j/2⌋ + 1`.
+
+Proof by induction on `m` via the recurrence `qBinom_X_two_coeff_succ`: at `j`, the indicator
+`[j < m+2]` fires (since `j ≤ m+1 < m+2`) contributing `1`, and for `j ≥ 2` the shifted term is
+the inductive value `⌊(j-2)/2⌋ + 1` at `j-2 ≤ m`; `⌊(j-2)/2⌋ + 1 = ⌊j/2⌋` closes it. -/
+theorem qBinom_X_two_coeff_le :
+    ∀ (m j : ℕ), j ≤ m →
+      (qBinom (X : ℤ[X]) (m + 2) 2).coeff j = ((j / 2 : ℕ) : ℤ) + 1
+  | 0, j, hj => by
+      have hj0 : j = 0 := by omega
+      subst hj0
+      have h22 : qBinom (X : ℤ[X]) 2 2 = 1 := qBinom_self (X : ℤ[X]) 2
+      rw [show (0 : ℕ) + 2 = 2 from rfl, h22]
+      simp
+  | m + 1, j, hj => by
+      rw [show m + 1 + 2 = (m + 2) + 1 from by omega, qBinom_X_two_coeff_succ,
+          if_pos (show j < m + 2 from by omega)]
+      rcases lt_or_ge j 2 with hj2 | hj2
+      · rw [if_neg (show ¬ 2 ≤ j from by omega)]
+        have hd : (j / 2 : ℕ) = 0 := by omega
+        rw [hd]; simp
+      · rw [if_pos (show 2 ≤ j from by omega),
+            qBinom_X_two_coeff_le m (j - 2) (by omega)]
+        have hd : (j - 2) / 2 + 1 = j / 2 := by omega
+        have hdz : ((j - 2) / 2 : ℤ) + 1 = ((j / 2 : ℕ) : ℤ) := by exact_mod_cast hd
+        push_cast at hdz ⊢
+        linarith
+
+open Polynomial in
+/-- **Sylvester unimodality, `k = 2` case.**  The coefficient sequence of `[n choose 2]_q`
+is unimodal for every `n` — the first genuinely rise-then-fall instance of Sylvester's
+theorem.  For `n < 2` the polynomial is `0` (a constant sequence); for `n = m + 2` the
+degree `2m` is even, the first half is the non-decreasing ramp `⌊j/2⌋+1`
+(`qBinom_X_two_coeff_le`), and unimodality follows from the palindrome-plus-rising-half
+criterion `unimodal_of_even_palindrome_first_half_mono` together with coefficient
+palindromy and nonnegativity. -/
+theorem qBinomCoeff_unimodal_two (n : ℕ) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n 2).coeff j) := by
+  rcases lt_or_ge n 2 with hn | hn
+  · -- `n < 2`: `[n,2]_q = 0`, a constant (hence unimodal) sequence
+    have hz : qBinom (X : ℤ[X]) n 2 = 0 := qBinom_eq_zero_of_lt (X : ℤ[X]) n 2 (by omega)
+    simpa [hz] using unimodal_const (0 : ℤ)
+  · -- `n = m + 2`: even palindrome with non-decreasing first-half ramp
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
+    apply unimodal_of_even_palindrome_first_half_mono m
+    · -- nonnegativity
+      intro j; exact qBinom_X_coeff_nonneg (m + 2) 2 j
+    · -- support: `coeff` vanishes past the degree `2m`
+      intro j hj
+      apply coeff_eq_zero_of_natDegree_lt
+      rw [qBinom_X_natDegree (show 2 ≤ m + 2 from by omega)]
+      omega
+    · -- palindromy `coeff j = coeff (2m - j)`
+      intro j hj
+      have hsymm := qBinom_X_coeff_symm' (n := m + 2) (k := 2)
+        (show (2 : ℕ) ≤ m + 2 from by omega) (j := j) (by omega)
+      rw [show 2 * m = 2 * (m + 2 - 2) from by omega]
+      exact hsymm
+    · -- first half non-decreasing, via the ramp `⌊j/2⌋+1`
+      intro j hj
+      show (qBinom (X : ℤ[X]) (m + 2) 2).coeff j
+        ≤ (qBinom (X : ℤ[X]) (m + 2) 2).coeff (j + 1)
+      rw [qBinom_X_two_coeff_le m j (by omega),
+          qBinom_X_two_coeff_le m (j + 1) (by omega)]
+      have hdiv : (j / 2 : ℕ) ≤ (j + 1) / 2 := Nat.div_le_div_right (Nat.le_succ j)
+      have : ((j / 2 : ℕ) : ℤ) ≤ (((j + 1) / 2 : ℕ) : ℤ) := by exact_mod_cast hdiv
+      linarith
+
 end QBinomialCoefficients
+
