@@ -107,8 +107,8 @@ theorem finrank_centralizer_le_of_cyclic [FiniteDimensional K V]
   -- `A ↦ A·v` is injective on the centralizer
   have hinj : Function.Injective L := by
     intro A B hAB
-    have hAmem : (A : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule).mp A.2
-    have hBmem : (B : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule).mp B.2
+    have hAmem : (A : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule S).mp A.2
+    have hBmem : (B : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule S).mp B.2
     have hAcomm : (A : Module.End K V) * T = T * (A : Module.End K V) := by
       have := (Subalgebra.mem_centralizer_iff K).mp hAmem T (Set.mem_singleton _)
       exact this.symm
