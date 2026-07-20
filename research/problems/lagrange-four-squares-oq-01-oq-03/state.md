@@ -30,15 +30,22 @@ computable `Finset.card` definition of `r4` + `native_decide` small-n oracle
 - Approaches tried: 1 surveyed (Mathlib inventory + 3 proof routes assessed)
 
 ## Blockers
-- Docker build wrapper down (`docker info` timeout) — cannot compile Lean.
-- Aristotle MCP `prove` → "Resource not found" — cannot delegate.
-- **General-theorem blocker (math, not infra outage)**: Jacobi's formula needs
-  Hurwitz-quaternion orders OR weight-2 modular forms, neither developed in Mathlib.
+- **General-theorem blocker (math, structural — the sole remaining piece)**: Jacobi's
+  formula `r4 = jacobiCount` needs Hurwitz-quaternion orders OR weight-2 modular forms
+  (`θ⁴∈M₂(Γ₀(4))`) OR the Lambert/Liouville identity, none developed in Mathlib; the
+  `r4=r2⋆r2` reduction bottoms out on the absent two-square count `r2`. See structured
+  `currentState.blockers` for reopen criteria.
+- (Resolved) Docker build host is back; family builds GREEN under v4.31.0.
+- (Done) small-n `native_decide` oracle `jacobi_oracle` (`r4 n = jacobiCount n`, 1≤n≤24)
+  is implemented in `LagrangeFourSquaresOQ01OQ03.lean`.
 
 ## Next Action
-When a build host returns: implement the small-n `native_decide` oracle
-(`r4 n = jacobiCount n` for n ≤ ~30) as a build-pending UNREGISTERED file —
-real, checkable, convention-pinning, without overclaiming the blocked general
-theorem. Re-run `verify_jacobi_four_squares.py` to re-confirm the arithmetic.
-Track Mathlib for any Hurwitz-quaternion or `r2`-count contribution that would
-unblock the general proof.
+The elementary layer is **saturated** and the general theorem is **blocked**. Do NOT extend
+the oracle range (enumeration theater, grows the `Lean.ofReduceBool` surface). The only path
+to progress is Mathlib gaining Hurwitz-quaternion order arithmetic or an `r2` two-square
+count — watch for either and revisit then. Otherwise this OQ should be treated as
+blocked/saturated by future claimants.
+
+## Session log
+- 2026-07-19 (researcher-1): v4.31 integrity build GREEN (main + Closed); 4 `push_neg`→
+  `push Not` deprecation fixes; recorded saturation triage + structured blockers.

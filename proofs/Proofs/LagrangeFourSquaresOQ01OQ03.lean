@@ -128,7 +128,7 @@ theorem jacobiCount_two_pow {k : ℕ} (hk : 1 ≤ k) : jacobiCount (2 ^ k) = 24 
       obtain ⟨i, _hik, rfl⟩ := hdvd
       have hi2 : i < 2 := by
         by_contra h
-        push_neg at h
+        push Not at h
         exact h4 (by
           have h4eq : (4 : ℕ) = 2 ^ 2 := rfl
           rw [h4eq]; exact pow_dvd_pow 2 h)
@@ -234,7 +234,7 @@ theorem sum_divisors_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : n ≠ 0) :
     ∑ d ∈ n.divisors.filter (fun d => 4 ∣ d), d = 4 * ∑ e ∈ (n / 4).divisors, e := by
   rw [Finset.mul_sum]
   have hn4 : n / 4 ≠ 0 := by
-    rw [Ne, Nat.div_eq_zero_iff]; push_neg
+    rw [Ne, Nat.div_eq_zero_iff]; push Not
     exact ⟨by norm_num, Nat.le_of_dvd (Nat.pos_of_ne_zero hn) h4⟩
   apply Finset.sum_nbij' (i := fun d => d / 4) (j := fun e => 4 * e)
   · intro d hd
@@ -351,7 +351,7 @@ theorem jacobiCount_lt_of_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : n ≠ 0) :
     jacobiCount n < 8 * ∑ d ∈ n.divisors, d := by
   have H := jacobiCount_four_dvd h4 hn
   have hn4 : n / 4 ≠ 0 := by
-    rw [Ne, Nat.div_eq_zero_iff]; push_neg
+    rw [Ne, Nat.div_eq_zero_iff]; push Not
     exact ⟨by norm_num, Nat.le_of_dvd (Nat.pos_of_ne_zero hn) h4⟩
   have hpos : 1 ≤ ∑ e ∈ (n / 4).divisors, e :=
     Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
