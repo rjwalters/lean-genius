@@ -21,7 +21,8 @@
       "The documented Parseval gap is CLOSED: Mathlib ships hasSum_sq_fourierCoeffOn (Parseval directly for fourierCoeffOn on an interval — no AddCircle Lp coercion needed at the call site); total is (b-a)⁻¹•∫ₐᵇ‖f‖². Only requirement is MemLp f 2 (volume.restrict (Ioc a b)), immediate for continuous real functions via MemLp.mono' against a constant sup bound.",
       "Consequence: the whole equality-case tower is now integral-native — ∫f²=∫(f⁽ᵏ⁾)² ⟹ f is a first harmonic — with zero abstract HasSum/Parseval hypotheses, matching the classical Hurwitz statement.",
       "The Wirtinger inequality itself (not just its equality case) drops out for FREE from the same Parseval-total + termwise-domination machinery: hasSum_le on the coefficient-square families + positive-prefactor cancellation. The inequality needs no k≥1 (holds ∀k; k=0 is trivial); only the equality-case iff needs k≥1.",
-      "SECTION VIII closes the analytic core at the integral level: the general-order Wirtinger/Poincaré inequality ∫f²≤∫(f⁽ᵏ⁾)² is now an integral IFF with equality exactly on the pure first harmonic (the circle). Remaining gap to C²≥4πA is purely the geometric assembly (Greens-theorem area A=½∮(x dy−y dx) in Fourier form + arc-length normalisation)."
+      "SECTION VIII closes the analytic core at the integral level: the general-order Wirtinger/Poincaré inequality ∫f²≤∫(f⁽ᵏ⁾)² is now an integral IFF with equality exactly on the pure first harmonic (the circle). Remaining gap to C²≥4πA is purely the geometric assembly (Greens-theorem area A=½∮(x dy−y dx) in Fourier form + arc-length normalisation).",
+      "Mathlib provides Parseval for fourierCoeffOn directly: hasSum_sq_fourierCoeffOn / tsum_sq_fourierCoeffOn (Analysis/Fourier/AddCircle.lean) — the bridge from per-mode ‖ĉₙ‖² to (b-a)⁻¹∫‖f‖². This is what turns the mode-wise Wirtinger ladder into the integral inequality."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 2 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity.",
@@ -41,9 +42,11 @@
       "fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): SELF-CONTAINED integral equality case — ∫₀^2π f²=∫₀^2π(f⁽ᵏ⁾)² + zero mean ⟹ ĉₙ(f)=0 ∀|n|≠1 (only first harmonic = the circle), Parseval HasSum hypotheses now DISCHARGED via Mathlib (VERIFIED 0-axiom [propext,Classical.choice,Quot.sound])",
       "integral_sq_le_integral_sq_iteratedDeriv_of_mean_zero (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): the integral-form general-order Wirtinger inequality ∫₀^{2π}f² ≤ ∫₀^{2π}(f⁽ᵏ⁾)² for zero-mean smooth periodic f, any k (0-axiom)",
       "integral_sq_iteratedDeriv_eq_of_first_harmonic (same file): reverse direction — pure first harmonic saturates the energy, ∫f²=∫(f⁽ᵏ⁾)² when ĉₙ(f)=0 ∀|n|≠1 (0-axiom)",
-      "integral_sq_iteratedDeriv_eq_iff_first_harmonic (same file): the full integral IFF — ∫f²=∫(f⁽ᵏ⁾)² ⟺ only first harmonic survives (circle), packaging forward equality-case + reverse (0-axiom)"
+      "integral_sq_iteratedDeriv_eq_iff_first_harmonic (same file): the full integral IFF — ∫f²=∫(f⁽ᵏ⁾)² ⟺ only first harmonic survives (circle), packaging forward equality-case + reverse (0-axiom)",
+      "integral_sq_le_integral_sq_deriv in AreaOfCircleOQ01OQ02OQ02OQ02.lean:SECTION V (Wirtinger integral form ∫f²≤∫(f)², 0-axiom, VERIFIED v4.31)",
+      "memLp_two_ofReal_comp_continuous in AreaOfCircleOQ01OQ02OQ02OQ02.lean (continuous⇒L² on (0,2π], the Parseval hypothesis)"
     ],
-    "progressSummary": "PROGRESS: SECTION VIII adds the integral-form general-order Wirtinger inequality ∫f²≤∫(f⁽ᵏ⁾)² (0-axiom, holds ∀k) + reverse direction + the full integral IFF (equality ⟺ pure first harmonic = circle). The analytic heart of Hurwitz is now self-contained at the integral level; remaining work is the geometric assembly into C²≥4πA.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-19, VERIFIED Docker v4.31, 0-axiom): added SECTION V, Wirtinger inequality in INTEGRAL form. New theorem integral_sq_le_integral_sq_deriv: for a C1 periodic mean-zero f, the integral of f squared is at most the integral of (deriv f) squared over [0,2pi]. This is the analytic core the file had been circling with 34 per-mode lemmas. Proof sums the per-mode Wirtinger bound (norm_fourierCoeffOn_le_deriv) against Mathlib Parseval (hasSum_sq_fourierCoeffOn); mean-zero kills the zero mode. print axioms = [propext, Classical.choice, Quot.sound]. File 786 to 850 lines, 34 to 36 theorems, 0 sorry / 0 axiom. Remaining work is now GEOMETRIC (area formula via Green theorem), not analytic.",
     "nextSteps": [
       "Reconstruct f from its surviving n=±1 coefficients: state f(t)=a·cos t+b·sin t explicitly from (∀|n|≠1, ĉₙ(f)=0) via Fourier inversion/uniqueness (needs summability + hasSum_fourier_series on AddCircle) — the final 'is exactly a circle' packaging.",
       "Assemble the full isoperimetric inequality C²≥4πA in Fourier form (Greens-theorem area A=½∮(x dy−y dx)) and read the equality case off fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq at k=1.",
@@ -959,5 +962,14 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ07OQ05OQ02.lean"
     }
   ],
-  "phase": "ACT"
+  "phase": "ACT",
+  "currentState": {
+    "blockers": [
+      {
+        "route": "geometric assembly of C²≥4πA — requires the area formula A=(1/2)∮(x dy − y dx) expressed in Fourier coefficients via Greens theorem, plus perimeter constraint",
+        "reopenCriterion": "Green/area-formula Fourier bridge available or built",
+        "blockedAt": "2026-07-19"
+      }
+    ]
+  }
 }

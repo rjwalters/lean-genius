@@ -783,4 +783,68 @@ theorem fourierCoeffOn_deriv_eq_zero_iff (f : ℝ → ℝ) (hf : ContDiff ℝ 1 
   rw [mul_eq_zero]
   simp [hIn]
 
+-- ============================================================
+-- SECTION V: Wirtinger's inequality in INTEGRAL form (the analytic core)
+-- ============================================================
+
+/-- A continuous real function, precomposed with the coercion `ℝ → ℂ`, is `L²` on the
+    finite-measure interval `(0, 2π]`.  This is exactly the square-integrability hypothesis
+    that Parseval's identity `tsum_sq_fourierCoeffOn` (equivalently `hasSum_sq_fourierCoeffOn`)
+    demands.  Proof: a continuous function is bounded on the compact `[0, 2π] ⊇ (0, 2π]`, and a
+    bounded function on a finite measure is in every `Lᵖ`. -/
+theorem memLp_two_ofReal_comp_continuous (g : ℝ → ℝ) (hg : Continuous g) :
+    MemLp (ofReal ∘ g) 2 (volume.restrict (Set.Ioc (0 : ℝ) (2 * π))) := by
+  obtain ⟨C, hC⟩ :=
+    (isCompact_Icc (a := (0 : ℝ)) (b := 2 * π)).exists_bound_of_continuousOn
+      (Complex.continuous_ofReal.comp hg).continuousOn
+  refine MemLp.of_bound (Complex.continuous_ofReal.comp hg).aestronglyMeasurable C ?_
+  refine (ae_restrict_iff' measurableSet_Ioc).mpr (Filter.Eventually.of_forall fun x hx => ?_)
+  exact hC x (Set.Ioc_subset_Icc_self hx)
+
+/-- **Wirtinger's inequality, integral form.**  For a `C¹` periodic function `f` with mean
+    zero over one period,
+
+        ∫₀^{2π} f²  ≤  ∫₀^{2π} (f')² .
+
+    This is the genuine analytic heart of the Hurwitz–Fourier proof of the isoperimetric
+    inequality `C² ≥ 4πA`, obtained by summing the mode-wise estimate
+    `norm_fourierCoeffOn_le_deriv` (`‖ĉₙ(f)‖ ≤ ‖ĉₙ(f')‖`, `|n| ≥ 1`) against Parseval's
+    identity, with the zero mode removed by the mean-zero normalization
+    (`ĉ₀(f) = (2π)⁻¹∫f = 0`).  Unlike the per-mode ladder above, this is the integral
+    (`∫`) statement that the geometric assembly consumes directly. -/
+theorem integral_sq_le_integral_sq_deriv (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hmean : ∫ x in (0 : ℝ)..(2 * π), f x = 0) :
+    ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2 ≤ ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 := by
+  have hab : (0 : ℝ) < 2 * π := by positivity
+  have hcontf : Continuous f := hf.continuous
+  have hcontdf : Continuous (deriv f) := hf.continuous_deriv_one
+  have hL2f := memLp_two_ofReal_comp_continuous f hcontf
+  have hL2df := memLp_two_ofReal_comp_continuous (deriv f) hcontdf
+  -- the zero mode of `f` vanishes: `ĉ₀(f) = (2π)⁻¹ ∫ f = 0`
+  have hz : fourierCoeffOn hab (ofReal ∘ f) 0 = 0 := by
+    rw [fourierCoeffOn_eq_integral]
+    simp only [neg_zero, fourier_zero, one_smul, Function.comp_apply]
+    rw [intervalIntegral.integral_ofReal, hmean, Complex.ofReal_zero, smul_zero]
+  -- mode-by-mode: `‖ĉₙ(f)‖² ≤ ‖ĉₙ(f')‖²` (equality-or-larger on every mode, `0` on `n = 0`)
+  have hterm : ∀ i : ℤ,
+      ‖fourierCoeffOn hab (ofReal ∘ f) i‖ ^ 2
+        ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv f) i‖ ^ 2 := by
+    intro i
+    rcases eq_or_ne i 0 with hi | hi
+    · subst hi
+      calc ‖fourierCoeffOn hab (ofReal ∘ f) 0‖ ^ 2
+          = 0 := by rw [hz, norm_zero]; norm_num
+        _ ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv f) 0‖ ^ 2 := sq_nonneg _
+    · exact pow_le_pow_left₀ (norm_nonneg _)
+        (norm_fourierCoeffOn_le_deriv f hf hperiod hab i hi) 2
+  -- sum both Parseval identities and compare term-by-term
+  have key := hasSum_le hterm (hasSum_sq_fourierCoeffOn hab hL2f)
+    (hasSum_sq_fourierCoeffOn hab hL2df)
+  simp only [Function.comp_apply, Complex.norm_real, Real.norm_eq_abs, sq_abs, sub_zero,
+    smul_eq_mul] at key
+  -- `key : (2π)⁻¹ * ∫ f² ≤ (2π)⁻¹ * ∫ (f')²`; cancel the positive scalar
+  have hpos : (0 : ℝ) < (2 * π)⁻¹ := by positivity
+  exact le_of_mul_le_mul_left key hpos
+
 end IsoperimetricFourier

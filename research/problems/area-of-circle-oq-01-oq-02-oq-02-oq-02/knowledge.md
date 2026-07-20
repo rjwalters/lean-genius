@@ -43,3 +43,36 @@ Complex.norm_I, Complex.norm_intCast, one_mul]` collapses ‖i·n·ĉ‖→|n|·
 - **docker-build.sh SIGBUS (exit 135)** on corrupt cache blob `Mathlib/Algebra/Group/Hom/
   Instances.trace` — infra, reproducible 3x. Verified via direct single-file `lean` elaboration
   (LEAN_PATH=main-repo packages+Proofs oleans, `#print axioms` on /tmp copy of WORKTREE file).
+
+## Session 2026-07-19 (researcher-1) — Wirtinger's inequality in INTEGRAL form (VERIFIED, 0-axiom)
+
+The file had 34 per-mode `fourierCoeffOn` inequalities but no INTEGRAL statement — every prior
+session added another mode-wise variant while the actual analytic core of Hurwitz (the `∫`-level
+inequality the geometric assembly consumes) was still missing. Closed that gap with SECTION V
+(2 new theorems, 0 axioms):
+
+- `memLp_two_ofReal_comp_continuous (g) (hg : Continuous g) : MemLp (ofReal ∘ g) 2
+  (volume.restrict (Ioc 0 (2π)))` — the square-integrability hypothesis Parseval's identity needs.
+  Continuous ⟹ bounded on compact `[0,2π]` (`IsCompact.exists_bound_of_continuousOn`) ⟹ `MemLp`
+  on the finite measure (`MemLp.of_bound`, instance `isFiniteMeasure_restrict_Ioc`).
+- `integral_sq_le_integral_sq_deriv (f) (hf : ContDiff ℝ 1 f) (hperiod) (hmean : ∫₀^{2π} f = 0)
+  : ∫₀^{2π} f² ≤ ∫₀^{2π} (f')²` — **Wirtinger's inequality, integral form.** Proof: sum the
+  existing per-mode `norm_fourierCoeffOn_le_deriv` (‖ĉₙ(f)‖ ≤ ‖ĉₙ(f')‖) against Mathlib's Parseval
+  `hasSum_sq_fourierCoeffOn` via `hasSum_le`; the zero mode is killed by `hmean`
+  (`ĉ₀(f) = (2π)⁻¹∫f = 0`, computed from `fourierCoeffOn_eq_integral` + `fourier_zero` +
+  `intervalIntegral.integral_ofReal`); cancel the positive `(2π)⁻¹` scalar (`le_of_mul_le_mul_left`).
+
+Key Mathlib API: `hasSum_sq_fourierCoeffOn` / `tsum_sq_fourierCoeffOn` (Parseval for `fourierCoeffOn`,
+`Analysis/Fourier/AddCircle.lean`), `MemLp.of_bound`, `IsCompact.exists_bound_of_continuousOn`,
+`pow_le_pow_left₀`, `Complex.norm_real`, `sq_abs`.
+
+VERIFICATION: Docker `docker-build.sh Proofs.AreaOfCircleOQ01OQ02OQ02OQ02` — Build completed
+successfully (8577 jobs), v4.31.0. `#print axioms` on BOTH new theorems =
+`[propext, Classical.choice, Quot.sound]` (0 extra axioms, no sorryAx/ofReduceBool). File 786→850
+lines, 34→36 theorems, still 0 sorries / 0 axioms.
+
+REMAINING WORK (genuine, not filler): the geometric assembly into `C² ≥ 4πA` still needs (a) the
+AREA formula `A = (1/2)∮(x dy − y dx)` expressed in Fourier coefficients (needs Green's theorem
+glue) and (b) matching the perimeter constraint. The integral-form Wirtinger inequality is the
+analytic input those steps consume; the missing piece is now GEOMETRIC, not analytic. Depth-4
+slug → 0 follow-ups per OQ-chain depth guard.
