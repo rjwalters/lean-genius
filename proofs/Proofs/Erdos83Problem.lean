@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Combinatorics.SetFamily.Intersecting
+import Mathlib.Combinatorics.SetFamily.KruskalKatona
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
@@ -76,11 +77,28 @@ def isIntersecting {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop
 /--
 **Maximum Intersecting Family Size:**
 For k-subsets of [n] with n ≥ 2k, the maximum 1-intersecting family has size C(n-1, k-1).
--/
-axiom erdos_ko_rado_bound (n k : ℕ) (hn : n ≥ 2 * k) :
+
+Proved from Mathlib's `Finset.erdos_ko_rado`: the local `isIntersecting`
+(every pair meets in ≥ 1 element) is exactly `Set.Intersecting` (no two members
+are disjoint), `isKUniform F k` is `Set.Sized k`, and `n ≥ 2k` gives `k ≤ n/2`.
+(Formerly an axiom.) -/
+theorem erdos_ko_rado_bound (n k : ℕ) (hn : n ≥ 2 * k) :
   ∀ (F : Finset (Finset (Fin n))),
     isKUniform F k → isIntersecting F →
-    F.card ≤ Nat.choose (n - 1) (k - 1)
+    F.card ≤ Nat.choose (n - 1) (k - 1) := by
+  intro F hUnif hInt
+  have hI : ∀ A ∈ F, ∀ B ∈ F, (A ∩ B).card ≥ 1 := hInt
+  have hInt' : (↑F : Set (Finset (Fin n))).Intersecting := by
+    intro A hA B hB hdisj
+    have hcard := hI A (Finset.mem_coe.mp hA) B (Finset.mem_coe.mp hB)
+    rw [Finset.disjoint_iff_inter_eq_empty] at hdisj
+    rw [hdisj] at hcard
+    simp at hcard
+  have hSized : (↑F : Set (Finset (Fin n))).Sized k := by
+    intro A hA
+    exact hUnif A (Finset.mem_coe.mp hA)
+  have hk : k ≤ n / 2 := by omega
+  exact Finset.erdos_ko_rado hInt' hSized hk
 
 /--
 **EKR Extremal Family:**
