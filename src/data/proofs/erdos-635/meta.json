@@ -66,7 +66,7 @@
       "erdos_635_t1_solved theorem: the t = 1 case from axioms (proved)"
     ],
     "axiomCount": 1,
-    "lineCount": 369,
+    "lineCount": 363,
     "assumptions": "1 axiom: erdos_635 (OPEN conjecture). f_t2_lower, erdos_construction_t2 removed (unused). f_t1_density proved.",
     "theoremCount": 15,
     "definitionCount": 5
@@ -93,64 +93,64 @@
     {
       "id": "non-divisibility",
       "title": "Part I: The Non-Divisibility Condition",
-      "startLine": 36,
-      "endLine": 55,
+      "startLine": 29,
+      "endLine": 48,
       "summary": "Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility).",
       "mathContext": "Formal definition: Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility)."
     },
     {
       "id": "extremal-function",
       "title": "Part II: The Extremal Function",
-      "startLine": 56,
-      "endLine": 66,
+      "startLine": 49,
+      "endLine": 59,
       "summary": "Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets.",
       "mathContext": "Formal definition: Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets."
     },
     {
       "id": "case-t1",
       "title": "Part III: The Case t = 1 — Odd Numbers",
-      "startLine": 67,
-      "endLine": 195,
+      "startLine": 60,
+      "endLine": 201,
       "summary": "Defines oddSet; proves oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality.",
       "mathContext": "Proved: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 = (N+1)/2 for N ≥ 1."
     },
     {
       "id": "case-t2",
       "title": "Part IV: The Case t = 2 — Beating the N/2 Barrier",
-      "startLine": 196,
-      "endLine": 202,
+      "startLine": 202,
+      "endLine": 208,
       "summary": "Comment section only — t=2 lower bound construction (f_t2_lower, erdos_construction_t2) removed as unused.",
       "mathContext": "No code in this section; f_t2_lower and erdos_construction_t2 were removed."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture (OPEN)",
-      "startLine": 203,
-      "endLine": 226,
+      "startLine": 209,
+      "endLine": 232,
       "summary": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635.",
       "mathContext": "Formal definition: ErdosConjecture635. Axiom: erdos_635 : ErdosConjecture635 (the open conjecture)."
     },
     {
       "id": "bounds",
       "title": "Part VI: Upper and Lower Bounds",
-      "startLine": 227,
-      "endLine": 312,
+      "startLine": 233,
+      "endLine": 306,
       "summary": "Proves: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2).",
       "mathContext": "Proved: f_upper_trivial (f $\\leq$ N), f_monotone_t, f_lower_half ($\\geq$ (N+1)/2), f_t1_density ($\\to$ 1/2)."
     },
     {
       "id": "structural",
       "title": "Part VII: Structural Observations",
-      "startLine": 313,
-      "endLine": 340,
+      "startLine": 307,
+      "endLine": 334,
       "summary": "Proves no_far_doubles: admissible sets exclude pairs where the smaller divides the larger at distance ≥ t.",
       "mathContext": "Proved: no_far_doubles (was formerly axiomatized as no_far_multiples)."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 341,
-      "endLine": 369,
+      "startLine": 335,
+      "endLine": 363,
       "summary": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t.",
       "mathContext": "Verified: erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
     }
@@ -182,7 +182,7 @@
       "Finset"
     ],
     "namespace": "Erdos635",
-    "lineCount": 369,
+    "lineCount": 363,
     "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 5,
