@@ -55,7 +55,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 163,
-    "assumptions": "0 axioms. 0 sorries. The only hypotheses are the triangle conditions A, B, C > 0 and the angle-sum relation A + B + C = π. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Note: local kernel verification was blocked by an unresponsive Docker build host this session; the proof uses only verified Mathlib v4.26.0 lemma signatures (grep-confirmed against the pinned toolchain) and is gated by the deployer build before merge.",
+    "assumptions": "0 axioms. 0 sorries. The only hypotheses are the triangle conditions A, B, C > 0 and the angle-sum relation A + B + C = π. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Machine-checked under the pinned Lean/Mathlib toolchain v4.31.0: all six results (cos_pos_of_lt, cos_sq_sum, cos_sq_sum_eq_one_of_right, cos_sq_sum_lt_one_of_acute, cos_sq_sum_gt_one_of_obtuse, cos_sq_sum_lt_one_iff_acute) elaborate with no errors, and #print axioms reports each capstone theorem depends only on the foundational axioms propext, Classical.choice, Quot.sound — no native_decide, no Lean.ofReduceBool, no sorryAx.",
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
