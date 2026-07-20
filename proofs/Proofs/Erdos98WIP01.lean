@@ -39,6 +39,30 @@ concrete configuration and the extremal quantity `h`.
    `Nat.sInf`-membership fact that any upper-bound construction (Pach's
    `n^{log₂ 3}`, Erdős–Füredi–Pach's `n·exp(c√log n)`) ultimately feeds.
 
+6. `numDistinctDistances_le_choose_two` — the sharp (unordered-pair) ceiling of
+   the envelope: distances are symmetric, so the count is at most `n.choose 2`,
+   not merely `n·(n−1)`. Proved by factoring the symmetric distance function
+   through `Sym2 (Fin n)` and invoking `Sym2.card_image_offDiag`.
+
+## From source comments to typed statements
+
+The scaffold left Pach's bound, the Erdős–Füredi–Pach bound, the Guth–Katz
+baseline, and both forms of the conjecture as *prose comments only*. This file
+turns each into an explicit Lean `Prop` over the gallery definitions
+(`PachUpperBound`, `EFPUpperBound`, `GuthKatzBaseline`, `Erdos98WeakConjecture`,
+`Erdos98StrongConjecture`), and proves the two relations that hold unconditionally
+between them:
+
+7. `strong_imp_weak` — `h(n)/n → ∞` implies `h(n) ≥ n` eventually (the strong
+   conjecture entails the weak one). Machine-checked.
+
+8. `weak_imp_tendsto` — even the weak conjecture already forces `h(n) → ∞`
+   (a non-vacuity sanity check on the statements). Machine-checked.
+
+The `Prop` definitions are faithful transcriptions only — Pach/EFP/Guth–Katz are
+imported as *assumptions* (deep results, not reproved here) and the two
+conjectures are *open* in mathematics; nothing below claims to resolve them.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -120,5 +144,102 @@ minimum distinct-distance count `h n` from above. -/
 theorem h_le_of_inGeneralPosition {P : PointConfig n}
     (hgp : InGeneralPosition P) : h n ≤ numDistinctDistances P :=
   Nat.sInf_le ⟨P, hgp, rfl⟩
+
+/-- **Sharp upper envelope.** Because `dist` is symmetric, a distinct distance is
+determined by an *unordered* pair, so the count is at most `n.choose 2` — the
+correct ceiling, halving the crude `n·(n−1)` bound. Proved by factoring the
+symmetric distance map through `Sym2 (Fin n)`. -/
+theorem numDistinctDistances_le_choose_two (P : PointConfig n) :
+    numDistinctDistances P ≤ n.choose 2 := by
+  unfold numDistinctDistances
+  set f : Fin n × Fin n → ℝ := fun p => dist (P p.1) (P p.2) with hf
+  -- The symmetric distance function factors through `Sym2 (Fin n)`.
+  set g : Sym2 (Fin n) → ℝ :=
+    Sym2.lift ⟨fun a b => dist (P a) (P b), fun a b => dist_comm _ _⟩ with hg
+  have hfac : f = g ∘ Sym2.mk.uncurry := by
+    funext p
+    obtain ⟨a, b⟩ := p
+    simp only [hf, hg, Function.comp_apply, Function.uncurry_apply_pair, Sym2.lift_mk]
+  -- A positive distance still comes from an off-diagonal pair.
+  have hsub :
+      ((univ.product univ).image f).filter (· > 0) ⊆ (univ.offDiag).image f := by
+    intro d hd
+    rw [mem_filter, mem_image] at hd
+    obtain ⟨⟨p, _, hpd⟩, hpos⟩ := hd
+    rw [mem_image]
+    refine ⟨p, ?_, hpd⟩
+    rw [mem_offDiag]
+    have hposp : (0 : ℝ) < f p := by rw [hpd]; exact hpos
+    have hne : P p.1 ≠ P p.2 := by
+      have := dist_pos.mp hposp; simpa [hf] using this
+    exact ⟨mem_univ _, mem_univ _, fun hpp => hne (by rw [hpp])⟩
+  -- Reroute the off-diagonal image through `Sym2` and count unordered pairs.
+  calc (((univ.product univ).image f).filter (· > 0)).card
+      ≤ ((univ.offDiag).image f).card := card_le_card hsub
+    _ = (((univ.offDiag).image Sym2.mk.uncurry).image g).card := by
+          rw [hfac, ← Finset.image_image]
+    _ ≤ ((univ.offDiag).image Sym2.mk.uncurry).card := card_image_le
+    _ = n.choose 2 := by
+          rw [Sym2.card_image_offDiag]; simp
+
+/-! ## The bounds and conjectures as typed Lean propositions
+
+Everything below converts the source comments of `Erdos98Problem.lean` into
+explicit `Prop`s over the gallery definitions. Each is annotated as an imported
+assumption (a documented deep result we do not reprove) or as open. -/
+
+open scoped Filter Topology in
+/-- **Pach's upper bound** (documented result — imported as an assumption).
+General-position sets exist with fewer than `n^{log₂ 3} ≈ n^{1.585}` distinct
+distances, so for large `n`, `h(n) < n^{log₂ 3}`. -/
+def PachUpperBound : Prop :=
+  ∀ᶠ n : ℕ in Filter.atTop, (h n : ℝ) < (n : ℝ) ^ Real.logb 2 3
+
+open scoped Filter Topology in
+/-- **Erdős–Füredi–Pach upper bound** (documented result — imported as an
+assumption). `h(n) < n · exp(c·√(log n))` for some `c > 0`, near-linear since the
+exponential factor is `n^{o(1)}`. -/
+def EFPUpperBound : Prop :=
+  ∃ c : ℝ, 0 < c ∧
+    ∀ᶠ n : ℕ in Filter.atTop, (h n : ℝ) < n * Real.exp (c * Real.sqrt (Real.log n))
+
+open scoped Filter Topology in
+/-- **Guth–Katz baseline** (documented result — imported as an assumption). Any
+`n` planar points (in particular any general-position configuration) determine
+`Ω(n / log n)` distinct distances, giving the unconditional lower bound
+`c·n/log n ≤ h(n)` for some `c > 0`. -/
+def GuthKatzBaseline : Prop :=
+  ∃ c : ℝ, 0 < c ∧
+    ∀ᶠ n : ℕ in Filter.atTop, c * n / Real.log n ≤ (h n : ℝ)
+
+open scoped Filter Topology in
+/-- **Weak Erdős conjecture** (OPEN). Even `h(n) ≥ n` for all large `n` is
+unknown; Erdős could not prove it. -/
+def Erdos98WeakConjecture : Prop :=
+  ∀ᶠ n : ℕ in Filter.atTop, n ≤ h n
+
+open scoped Filter Topology in
+/-- **Strong Erdős conjecture** (OPEN). `h(n)/n → ∞`: general position forces
+superlinearly many distinct distances. This is Erdős Problem #98 itself. -/
+def Erdos98StrongConjecture : Prop :=
+  Filter.Tendsto (fun n : ℕ => (h n : ℝ) / (n : ℝ)) Filter.atTop Filter.atTop
+
+/-! ## Provable relations among the typed statements -/
+
+/-- The strong conjecture entails the weak one: if `h(n)/n → ∞` then eventually
+`h(n)/n ≥ 1`, i.e. `h(n) ≥ n`. -/
+theorem strong_imp_weak (H : Erdos98StrongConjecture) : Erdos98WeakConjecture := by
+  have h1 : ∀ᶠ n : ℕ in Filter.atTop, (1 : ℝ) ≤ (h n : ℝ) / (n : ℝ) :=
+    H.eventually_ge_atTop 1
+  filter_upwards [h1, Filter.eventually_ge_atTop 1] with n hn1 hn2
+  have hnp : 0 < n := hn2
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hnp
+  rw [one_le_div hnpos] at hn1
+  exact_mod_cast hn1
+
+/-- Non-vacuity check: the weak conjecture already forces `h(n) → ∞`. -/
+theorem weak_imp_tendsto (H : Erdos98WeakConjecture) :
+    Filter.Tendsto h Filter.atTop Filter.atTop :=
+  Filter.tendsto_atTop_mono' Filter.atTop H Filter.tendsto_id
 
 end Erdos98WIP01

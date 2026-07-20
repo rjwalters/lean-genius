@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Elementary superconstant lower bound (Erdős pigeonhole ≥ √(n−3/4)−1/2 via max multiplicity of a single distance) would be the first genuinely nontrivial floor; needs the max-degree-of-a-distance counting argument.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,18 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Erdos98WIP01.lean — first machine-checked theorems for the #98 general-position distinct-distances scaffold. Axiom-free counting envelope (0 ≤ numDistinctDistances ≤ n·(n−1)) plus the h(n) sInf-membership upper-bound fact.",
+    "progressSummary": "PROGRESS: Erdos98WIP01.lean extended — sharp n.choose 2 ceiling (Sym2 factoring) plus all four comment-only bounds/conjectures converted to typed Lean Props (Pach/EFP/Guth-Katz assumptions + weak/strong conjectures), with two machine-checked relations strong_imp_weak and weak_imp_tendsto. 13 theorems/defs, 0 sorry, 0 axiom; #print axioms = [propext, Classical.choice, Quot.sound].",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
       "numDistinctDistances_eq_zero_of_le_one in Erdos98WIP01.lean",
       "one_le_numDistinctDistances_of_injective (n≥2 ⟹ ≥1) in Erdos98WIP01.lean",
-      "h_le_of_inGeneralPosition (h n ≤ numDistinctDistances P) in Erdos98WIP01.lean"
+      "h_le_of_inGeneralPosition (h n ≤ numDistinctDistances P) in Erdos98WIP01.lean",
+      "numDistinctDistances_le_choose_two (≤ n.choose 2, sharp unordered-pair ceiling) in Erdos98WIP01.lean",
+      "PachUpperBound / EFPUpperBound / GuthKatzBaseline / Erdos98WeakConjecture / Erdos98StrongConjecture as typed Props in Erdos98WIP01.lean",
+      "strong_imp_weak (h(n)/n→∞ ⟹ h(n)≥n eventually) in Erdos98WIP01.lean",
+      "weak_imp_tendsto (weak conj ⟹ h(n)→∞, non-vacuity check) in Erdos98WIP01.lean"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
       "The degenerate floor: n ≤ 1 forces numDistinctDistances = 0 (no off-diagonal pair); and any injective config with n ≥ 2 realizes at least one positive distance, so 1 ≤ numDistinctDistances there.",
-      "h(n) = sInf over general-position configs is bounded above by any single witness config (Nat.sInf_le with ⟨P, hgp, rfl⟩) — the membership fact that every known upper-bound construction (Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n)) feeds into."
+      "h(n) = sInf over general-position configs is bounded above by any single witness config (Nat.sInf_le with ⟨P, hgp, rfl⟩) — the membership fact that every known upper-bound construction (Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n)) feeds into.",
+      "The distance map is symmetric, so it factors through Sym2 (Fin n); routing the off-diagonal image through Sym2.mk.uncurry and applying Sym2.card_image_offDiag gives the sharp ceiling numDistinctDistances P ≤ n.choose 2 (halving the crude n·(n−1)).",
+      "The strong conjecture h(n)/n→∞ is stated as Filter.Tendsto (fun n => (h n:ℝ)/n) atTop atTop; the weak conjecture as ∀ᶠ n, n ≤ h n. strong_imp_weak proves the former entails the latter (one_le_div + eventually_ge_atTop 1), so the two typed statements are correctly related, not independent guesses.",
+      "weak_imp_tendsto shows the weak statement already forces h(n)→∞ (tendsto_atTop_mono with id), confirming the Prop is non-vacuous.",
+      "Pach n^{log₂3}, Erdős–Füredi–Pach n·exp(c√log n), and Guth–Katz Ω(n/log n) are now typed Props (PachUpperBound/EFPUpperBound/GuthKatzBaseline) flagged as imported assumptions — the comment-only bounds of the scaffold are now checkable Lean statements."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.785Z",
-  "lastUpdate": "2026-07-10T00:41:25.930Z",
+  "lastUpdate": "2026-07-20T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
