@@ -72,16 +72,27 @@ entry's open question; the child exposes its own open questions, recursively.
 Unbounded, this produces degenerate chains like
 `abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01`.
 
+The depth cap is now **enforced in code** (issue #39827): the extractor
+(`.lean/scripts/extract-problems.ts`) drops open-question children of any proof
+already at/over the cap, and the selector (`scripts/research/claim-problem.sh
+claim-random`) never re-serves over-cap chains and deprioritizes at-cap ones in
+favor of breadth. The cap lives in `.lean/config/oq-policy.json` (`maxOqDepth`,
+default 3) and is overridable with the `MAX_OQ_DEPTH` env var. Keep applying the
+guards below as a second line of defense when you hand-pick or hand-initialize a
+problem.
+
 **Before selecting or initializing ANY problem whose slug contains `-oq-`, apply
 all three guards. REJECT the candidate if it fails any of them.**
 
 ```bash
 SLUG="$PROBLEM_ID"
 
-# Guard 1 — Recursion-depth cap: at most 3 -oq- segments in a chain.
+# Guard 1 — Recursion-depth cap: at most maxOqDepth (default 3) -oq- segments.
+# Mirrors scripts/lib/oq-policy.sh (source it to reuse oq_depth/oq_max_depth).
+CAP="${MAX_OQ_DEPTH:-$(jq -r '.maxOqDepth // 3' .lean/config/oq-policy.json 2>/dev/null || echo 3)}"
 DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
-if [ "$DEPTH" -gt 3 ]; then
-  echo "REJECT $SLUG: OQ chain depth $DEPTH exceeds cap of 3"
+if [ "$DEPTH" -gt "$CAP" ]; then
+  echo "REJECT $SLUG: OQ chain depth $DEPTH exceeds cap of $CAP"
 fi
 
 # Guard 2 — Same-index repetition: refuse a slug whose tail repeats one OQ index
@@ -99,8 +110,9 @@ ls -d src/data/proofs/"$PARENT"-oq-* 2>/dev/null   # inspect existing siblings
 ```
 
 **Rules:**
-- **Depth cap**: never spawn a child at depth > 3. Past depth 3 the marginal
-  mathematical value is essentially zero and the page tree becomes unreadable.
+- **Depth cap**: never spawn a child past the cap (`maxOqDepth`, default 3).
+  Past the cap the marginal mathematical value is essentially zero and the page
+  tree becomes unreadable.
 - **No same-index loops**: a genuinely new question gets a new index; a repeated
   index signals the loop is re-asking the same question.
 - **Dedupe siblings**: never spawn a child whose mathematical content duplicates
@@ -157,7 +169,8 @@ hand the problem to a Researcher.
 
 REJECT a candidate if any of:
 
-- OQ chain depth > 3, same-index loop, or sibling duplicate (guards above)
+- OQ chain depth over the cap (`maxOqDepth`, default 3), same-index loop, or
+  sibling duplicate (guards above)
 - Near-duplicate of a problem completed in the last 30 days
   (check `research/problems/*/knowledge.md`)
 - Shallow specialization or notation variant of an existing gallery proof

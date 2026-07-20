@@ -17,6 +17,46 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
+// ---------------------------------------------------------------------------
+// OQ-recursion-depth policy (issue #39827 / #39821)
+//
+// Open-question children are named `<parent>-oq-NN`. The depth-first tier
+// recurses into a result's open questions indefinitely, producing degenerate
+// chains up to 11 levels deep. Cap it AT THE SOURCE: a proof whose id already
+// has `maxOqDepth` `-oq-` segments does not contribute further OQ children, so
+// no problem beyond the cap is ever extracted into the pool.
+//
+// Configuration precedence: MAX_OQ_DEPTH env var > .lean/config/oq-policy.json
+// > built-in default (3).
+// ---------------------------------------------------------------------------
+const OQ_POLICY_DEFAULT_DEPTH = 3;
+
+function resolveMaxOqDepth(): number {
+  const fromEnv = process.env.MAX_OQ_DEPTH;
+  if (fromEnv !== undefined && /^\d+$/.test(fromEnv.trim())) {
+    return parseInt(fromEnv.trim(), 10);
+  }
+  try {
+    const configPath = join(process.cwd(), '.lean/config/oq-policy.json');
+    if (existsSync(configPath)) {
+      const cfg = JSON.parse(readFileSync(configPath, 'utf-8'));
+      if (typeof cfg.maxOqDepth === 'number' && Number.isFinite(cfg.maxOqDepth)) {
+        return cfg.maxOqDepth;
+      }
+    }
+  } catch {
+    // Fall through to default on any parse/read error.
+  }
+  return OQ_POLICY_DEFAULT_DEPTH;
+}
+
+// Number of `-oq-NN` segments in a slug/id (its OQ-recursion depth).
+function oqDepth(id: string): number {
+  return (id.match(/-oq-\d+/g) || []).length;
+}
+
+const MAX_OQ_DEPTH = resolveMaxOqDepth();
+
 // Types
 interface ProofMeta {
   id: string;
@@ -124,6 +164,7 @@ function extractTitle(question: string): string {
 // Main extraction function
 function extractProblems(proofsDir: string): ExtractedProblem[] {
   const problems: ExtractedProblem[] = [];
+  let cappedChains = 0; // proofs whose OQ children were suppressed by the cap
 
   // Get all proof directories
   const proofDirs = readdirSync(proofsDir, { withFileTypes: true })
@@ -138,8 +179,14 @@ function extractProblems(proofsDir: string): ExtractedProblem[] {
     try {
       const meta: ProofMeta = JSON.parse(readFileSync(metaPath, 'utf-8'));
 
-      // 1. Extract from openQuestions
-      if (meta.conclusion?.openQuestions) {
+      // OQ depth cap (issue #39827): a proof already at/over the cap must not
+      // spawn a deeper `-oq-` child. Its own open questions are dropped so the
+      // chain stops descending; the parent entry itself is untouched.
+      const parentDepth = oqDepth(meta.id);
+      const oqChildrenAllowed = parentDepth < MAX_OQ_DEPTH;
+
+      // 1. Extract from openQuestions (only when below the depth cap)
+      if (oqChildrenAllowed && meta.conclusion?.openQuestions) {
         meta.conclusion.openQuestions.forEach((rawQuestion, index) => {
           // openQuestions entries may be plain strings (legacy) or
           // {id, question, significance} objects (enriched). Normalize to a string.
@@ -162,6 +209,14 @@ function extractProblems(proofsDir: string): ExtractedProblem[] {
             relatedProofs: [meta.id]
           });
         });
+      } else if (!oqChildrenAllowed && (meta.conclusion?.openQuestions?.length ?? 0) > 0) {
+        // Chain has reached the depth cap: suppress its OQ children so it stops
+        // descending, and record it for the summary telemetry line below.
+        cappedChains += 1;
+        console.error(
+          `OQ-cap: suppressing ${meta.conclusion!.openQuestions!.length} open-question child(ren) of ${meta.id} ` +
+          `(depth ${parentDepth} >= cap ${MAX_OQ_DEPTH})`
+        );
       }
 
       // 2. Incomplete proofs (sorries > 0, but not fallacy/pedagogical)
@@ -243,6 +298,13 @@ function extractProblems(proofsDir: string): ExtractedProblem[] {
     }
   }
 
+  if (cappedChains > 0) {
+    console.error(
+      `OQ-cap: capped OQ recursion for ${cappedChains} chain(s) at depth >= ${MAX_OQ_DEPTH} ` +
+      `(set MAX_OQ_DEPTH or .lean/config/oq-policy.json to adjust)`
+    );
+  }
+
   return problems;
 }
 
@@ -307,7 +369,8 @@ const tractabilityFilter = args.find(a => a.startsWith('--tractability='))?.spli
 const proofsDir = join(process.cwd(), 'src/data/proofs');
 const outputPath = join(process.cwd(), '.lean/research/problems.json');
 
-console.log('Extracting problems from proof gallery...\n');
+console.log('Extracting problems from proof gallery...');
+console.log(`OQ-recursion cap: maxOqDepth=${MAX_OQ_DEPTH} (override with MAX_OQ_DEPTH env)\n`);
 
 let problems = extractProblems(proofsDir);
 

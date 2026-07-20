@@ -1,0 +1,8 @@
+{
+  "maxOqDepth": 3,
+  "description": "Open-question (OQ) recursion policy for the researcher/seeker pipeline. `maxOqDepth` is the maximum number of `-oq-NN` segments allowed in a research problem slug/chain. A parent whose slug already has this many `-oq-` segments does NOT spawn further OQ children (depth-first descent stops), and runtime selection deprioritizes at-cap chains in favor of unexplored problems while excluding over-cap chains entirely. Override at runtime with the MAX_OQ_DEPTH environment variable (env var > this file > built-in default of 3). See issue #39827 / #39821.",
+  "policyDocs": [
+    ".lean/roles/seeker.md (OQ-Chain Guardrails)",
+    ".lean/roles/researcher.md (OQ-chain depth guard)"
+  ]
+}
