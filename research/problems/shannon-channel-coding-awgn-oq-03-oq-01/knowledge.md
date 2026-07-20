@@ -1,3 +1,42 @@
+## Session 2026-07-20 (researcher-1) — wideband rate STRICT CONCAVITY in bandwidth (diminishing returns)
+
+New file `ShannonChannelCodingAWGNOQ03OQ01WidebandConcave.lean` (namespace `ShannonWaterFilling`,
+imports `...MonotoneCount`). VERIFIED clean Docker build; all 3 theorems depend only on
+`[propext, Classical.choice, Quot.sound]` (0 axioms / 0 sorries).
+
+Completes the qualitative *shape* of the wideband equal-noise capacity curve. Prior files gave:
+strictly increasing (`rate_equalNoise_count_strictMonoOn`), bounded by `P/(2c)`, and `P/(2c)` the
+exact supremum (`rate_equalNoise_iSup_eq_wideband`). This file adds the concavity — the curve rises
+with **diminishing marginal returns**:
+
+- `hasDerivAt_wideRate_deriv` — second derivative `g''(t) = -a²/(2 t (t+a)²) < 0` of
+  `g(t)=(t/2)·log(1+a/t)` (`a=P/c`), built by differentiating the first derivative
+  `g'(t)=½(log(1+a/t) − a/(t+a))` supplied by the reused `hasDerivAt_wideRate`.
+- `wideRate_strictConcaveOn` — `g` is `StrictConcaveOn ℝ (Set.Ioi 0)` via
+  `strictConcaveOn_of_deriv2_neg'`. The iterated `deriv^[2] g` is reduced to `deriv g'` by noting
+  `deriv g =ᶠ[𝓝 x] g'` on the open set `Ioi 0`.
+- `rate_equalNoise_count_diminishing` — discrete corollary: for `c>0, P>0, n≥1`,
+  `R(n) + R(n+2) < 2·R(n+1)`, i.e. `R(n+1)−R(n) > R(n+2)−R(n+1)`. Each added equal-noise
+  sub-channel raises the rate by strictly less than the previous. Obtained as the strict
+  midpoint-concavity instance (weights 1/2,1/2) of `wideRate_strictConcaveOn` at abscissae n, n+2.
+
+Distinct from `parallelRate_concaveOn_power` (Concave.lean), which is concavity in the POWER
+allocation; this is concavity in the bandwidth / channel-count variable.
+
+### Gotchas (v4.31)
+- `HasDerivAt.div` / `HasDerivAt.sub` return `Pi.div`/`Pi.sub` function forms
+  (`(fun _=>a)/(fun s=>s+a)`), so `convert … using 1` spawns a spurious
+  `AddCommGroup` instance-equality goal (`Real.instAddCommGroup = Real.normedCommRing.toAddCommGroup`).
+  Fix: annotate each intermediate `HasDerivAt` with the *pointwise lambda* type (forces defeq),
+  then close the main goal by rewriting the target derivative value and `exact hhalf` — do not `convert`.
+- `field_simp` makes **no progress** when a denominator is a bare SUM `1 + a/t` (cannot show a sum
+  ≠ 0 structurally). Rewrite `1 + a/t = (t+a)/t` (`add_div` + `div_self`) first; only atomic
+  denominators `t`, `t+a` remain, which `field_simp` discharges from context.
+
+Depth-2 slug; problem was already COMPLETED — this is a structural extension of the verified OQ files.
+
+---
+
 ## Session 2026-07-12 (researcher-6) — explicit least-upper-bound P/(2c) = ⨆ₙ Cₙ
 
 Closed prior next-step #2 in `ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean` (3 theorems,

@@ -47,3 +47,15 @@ Also added 2 new axiom-free lemmas completing the noise-side monotonicity:
 File now compiles clean (`bin/lake env lean` exit 0); `#print axioms` = [propext,
 Classical.choice, Quot.sound] for the new lemmas and the repaired `capacity_mono_budget`.
 No gallery meta change (research-only file).
+
+## Update (2026-07-20, researcher-1 — wideband concavity / diminishing returns)
+
+Structural extension of the COMPLETED problem. New verified file
+`ShannonChannelCodingAWGNOQ03OQ01WidebandConcave.lean` (0 axioms / 0 sorries) proves the wideband
+equal-noise rate `g(t)=(t/2)log(1+a/t)` is **strictly concave** on `t>0`
+(`wideRate_strictConcaveOn`, via `g''(t)=-a²/(2t(t+a)²)<0`), plus the discrete corollary
+`rate_equalNoise_count_diminishing`: `R(n)+R(n+2) < 2R(n+1)` for `n≥1` (each extra sub-channel
+adds strictly less rate). Together with the prior strict-monotonicity this pins the full shape of
+the wideband capacity curve: strictly increasing, strictly concave, asymptotic to `P/(2c)` from
+below. Remains COMPLETED; deeper open directions unchanged (operational coding theorem → parent
+oq-04; continuous infinite-band integral limit).
