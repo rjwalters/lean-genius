@@ -29,9 +29,9 @@
     "goal": "Formalize transfinite diameter of the root multiset and logarithmic capacity of the lemniscate complement in the Erdos1039 framework, and state the quantitative links ρ(f) ≳ g(d, cap) as theorems where provable and axioms where they cite the literature."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Finite discrete transfinite diameter (n-point spread) now formalized axiom-free in Erdos1039TransfiniteDiameter.lean. Next: the limit d(Z) = limₙ dₙ and the logarithmic-capacity side (cap of {|f|≥1}), plus the ρ(f) ≳ g(d,cap) links.",
     "blockers": [],
     "nextAction": "Formalize the transfinite diameter as the limit/inf of the n-point diameters dₙ(Z) (Fekete monotonicity dₙ₊₁ ≤ dₙ is the key missing lemma), then define logarithmic capacity of the lemniscate complement and axiomatize the cap=1 normalization (mirroring pommerenke_lower/klr_area_bound).",
@@ -42,19 +42,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Key Lemma 1 delivered: the finite discrete transfinite diameter (n-point spread) is formalized axiom-free in Erdos1039TransfiniteDiameter.lean — definition, Vandermonde-determinant identity, nondegeneracy (distinct-roots ⇔ positive), and the classical dₙ(K) ≤ diam(K) bound. Parent conjecture ρ(f) ≫ 1/n remains OPEN; capacity side and the transfinite-diameter limit are the next targets.",
+    "progressSummary": "PROGRESS (iter 3): the combinatorial core of Fekete monotonicity is formalized axiom-free. prod_spreadProduct_deleteAt proves prod_k V(delete k Z) = V(Z)^(n-1) directly, with a succAbove reindexing lemma, the cardinality count, and the additive log-energy form. Builds on Key Lemma 1 (n-point spread) in Erdos1039TransfiniteDiameter.lean. Remaining: lift to supremum-level d_(n+1) <= d_n (needs sup over configurations); logarithmic capacity + cap=1 (axiomatize). Parent rho(f) >> 1/n remains OPEN.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
       "spreadProduct_eq_norm_det_vandermonde: spread = |det Vandermonde|, tying it to the discriminant (Mathlib Matrix.det_vandermonde).",
       "spreadProduct_pos_iff: spread > 0 ↔ roots distinct (Function.Injective); vanishes exactly at a repeated root.",
       "discreteDiameter_le_two: dₙ(Z) ≤ 2 for n≥2 unit-disc roots — the classical dₙ(K) ≤ diam(K) with diam(unit disc)=2 (axiom-free).",
-      "logSpread + log_spreadProduct + discreteDiameter_eq_exp: the logarithmic-energy bridge dₙ(Z) = exp((2/(n(n-1)))·∑_{i<j}log‖zᵢ-zⱼ‖), the multiplicative/additive dictionary linking the discrete diameter to logarithmic potential theory (the capacity side of OQ-05)."
+      "logSpread + log_spreadProduct + discreteDiameter_eq_exp: the logarithmic-energy bridge dₙ(Z) = exp((2/(n(n-1)))·∑_{i<j}log‖zᵢ-zⱼ‖), the multiplicative/additive dictionary linking the discrete diameter to logarithmic potential theory (the capacity side of OQ-05).",
+      "deleteAt / deleteAt_injective in Erdos1039TransfiniteDiameter.lean",
+      "spreadProduct_deleteAt (reindexing lemma) in Erdos1039TransfiniteDiameter.lean",
+      "card_filter_avoid (count of indices avoiding two points = n-1) in Erdos1039TransfiniteDiameter.lean",
+      "prod_spreadProduct_deleteAt (Fekete deletion identity) in Erdos1039TransfiniteDiameter.lean",
+      "sum_logSpread_deleteAt (additive energy form) in Erdos1039TransfiniteDiameter.lean"
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
       "The n-point diameter dₙ is bounded above by the set diameter (2 on the unit disc); the substantive open input is the LOWER direction and the Fekete monotonicity dₙ₊₁ ≤ dₙ giving the transfinite-diameter limit.",
-      "The transfinite diameter (multiplicative) and logarithmic energy/capacity (additive) are the same object through log/exp; discreteDiameter_eq_exp makes that precise and axiom-free, giving the first concrete link between the two OQ-05 invariants."
+      "The transfinite diameter (multiplicative) and logarithmic energy/capacity (additive) are the same object through log/exp; discreteDiameter_eq_exp makes that precise and axiom-free, giving the first concrete link between the two OQ-05 invariants.",
+      "Fekete deletion identity prod_k V(delete k Z) = V(Z)^(n-1) is provable axiom-free and unconditionally (any tuple): each pair a<b survives exactly n-1 of the n+1 deletions (those removing neither endpoint).",
+      "Order-preserving pair reindexing under Fin.succAbove is a nested Finset.prod_bij; the k-dependent erase-guard is pulled through prod_k by rewriting erase -> filter(.neq.k) -> if via Finset.filter_ne'/prod_filter, then prod_comm.",
+      "Additive shadow: sum_k logSpread(delete k Z) = (n-1)*logSpread Z for distinct roots, connecting the deletion identity to the logarithmic-energy/capacity bridge already in the file."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent."

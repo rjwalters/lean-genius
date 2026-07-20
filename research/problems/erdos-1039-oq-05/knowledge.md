@@ -43,6 +43,32 @@ capacity objects precise and machine-checkable (Key Lemma 1 of `problem.md`).
 All theorems depend only on `propext / Classical.choice / Quot.sound` (axiom-free
 per the axiom-integrity policy).
 
+## Built (iteration 3 — Fekete deletion identity, axiom-free)
+
+- `deleteAt z k = z ∘ (Fin.succAbove k)` — remove the `k`-th point of an `(n+1)`-tuple.
+- `deleteAt_injective` — deleting preserves distinctness of roots.
+- `spreadProduct_deleteAt` — **reindexing lemma**: `V(delete k Z)` equals the product
+  of `‖zₐ−z_b‖` over exactly the pairs `a<b` avoiding index `k` (double `Finset.prod_bij`
+  along the order-embedding `succAbove`, using `succAbove_lt_succAbove_iff` /
+  `exists_succAbove_eq`).
+- `card_filter_avoid` — `#{k : a≠k ∧ b≠k} = n−1` for distinct `a,b` in `Fin (n+1)`.
+- `prod_spreadProduct_deleteAt` — **Fekete deletion identity** `∏ₖ V(delete k Z) = V(Z)^{n−1}`,
+  the combinatorial heart of Fekete monotonicity. Each pair survives exactly the `n−1`
+  deletions removing neither endpoint; proof: reindex → convert `erase` guards to `if` →
+  `prod_comm` to pull `∏ₖ` inside → per-pair `∏ₖ (if … then c else 1) = c^{#avoid} = c^{n−1}`
+  → `prod_pow`. Holds for **every** tuple (distinct roots or not).
+- `sum_logSpread_deleteAt` — additive/energy form: `∑ₖ logSpread(delete k Z) = (n−1)·logSpread Z`
+  for injective `z`, the `log`-shadow of the product identity (bridges to the energy section).
+
+★RECIPE: order-preserving pair reindexing under `Fin.succAbove` = nested `Finset.prod_bij`
+with forward map `fun i _ => k.succAbove i`; membership via `succAbove_ne` (≠k) +
+`succAbove_lt_succAbove_iff` (order), surjectivity via `Fin.exists_succAbove_eq`. To pull an
+index-independent `∏ₖ` through a `k`-dependent `erase` set, first rewrite `s.erase k =
+s.filter (·≠k)` (`Finset.filter_ne'`) + `Finset.prod_filter` into an `if`-guard, THEN `prod_comm`.
+
+All iteration-3 theorems: axioms `[propext, Classical.choice, Quot.sound]` (verified via
+`#print axioms`) — axiom-free.
+
 ---
 
 ## Dead Ends

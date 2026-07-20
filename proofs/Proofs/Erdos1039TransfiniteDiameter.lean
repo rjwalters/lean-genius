@@ -221,4 +221,123 @@ theorem discreteDiameter_eq_exp (z : Fin n → ℂ) (hz : Function.Injective z) 
   rw [Real.rpow_def_of_pos ((spreadProduct_pos_iff z).mpr hz), log_spreadProduct z hz,
     mul_comm]
 
+/- ## Fekete monotonicity: the deletion identity
+
+Fekete's theorem states that the `n`-point diameter `dₙ(K)` decreases in `n`.  Its
+algebraic heart is a *deletion identity*: given an `(n+1)`-tuple, delete each point
+in turn and multiply the `n+1` resulting spreads; the result is exactly
+`spreadProduct z ^ (n-1)`, because each pair `zₐ, z_b` survives in precisely the
+`n-1` deletions that remove neither `a` nor `b`.  Once one takes suprema over
+configurations in a compact set this identity forces `d_{n+1} ≤ dₙ`.  Here we
+formalize the identity itself (axiom-free); it holds for *every* tuple, distinct
+roots or not. -/
+
+/-- **Delete the `k`-th point** of an `(n+1)`-tuple, yielding an `n`-tuple by
+composing with the order-embedding `Fin.succAbove k : Fin n ↪ Fin (n+1)`. -/
+noncomputable def deleteAt (z : Fin (n + 1) → ℂ) (k : Fin (n + 1)) : Fin n → ℂ :=
+  fun i => z (k.succAbove i)
+
+/-- Deleting a point from a tuple with distinct entries keeps the entries distinct. -/
+theorem deleteAt_injective {z : Fin (n + 1) → ℂ} (hz : Function.Injective z)
+    (k : Fin (n + 1)) : Function.Injective (deleteAt z k) :=
+  hz.comp (Fin.succAbove_right_injective)
+
+/-- **Deletion reindexing:** the spread of the tuple with point `k` removed is the
+product of `‖zₐ − z_b‖` over exactly those pairs `a < b` avoiding index `k`. -/
+theorem spreadProduct_deleteAt (z : Fin (n + 1) → ℂ) (k : Fin (n + 1)) :
+    spreadProduct (deleteAt z k)
+      = ∏ a ∈ Finset.univ.erase k, ∏ b ∈ (Finset.Ioi a).erase k, ‖z a - z b‖ := by
+  unfold spreadProduct deleteAt
+  refine Finset.prod_bij (fun i _ => k.succAbove i) ?_ ?_ ?_ ?_
+  · intro i _
+    exact Finset.mem_erase.mpr ⟨Fin.succAbove_ne k i, Finset.mem_univ _⟩
+  · intro a _ b _ hab
+    exact Fin.succAbove_right_injective hab
+  · intro a ha
+    obtain ⟨i, hi⟩ := Fin.exists_succAbove_eq (Finset.mem_erase.mp ha).1
+    exact ⟨i, Finset.mem_univ _, hi⟩
+  · intro i _
+    refine Finset.prod_bij (fun j _ => k.succAbove j) ?_ ?_ ?_ ?_
+    · intro j hj
+      have hlt : i < j := Finset.mem_Ioi.mp hj
+      exact Finset.mem_erase.mpr
+        ⟨Fin.succAbove_ne k j, Finset.mem_Ioi.mpr ((Fin.succAbove_lt_succAbove_iff).mpr hlt)⟩
+    · intro a _ b _ hab
+      exact Fin.succAbove_right_injective hab
+    · intro b hb
+      obtain ⟨hbk, hblt⟩ := Finset.mem_erase.mp hb
+      obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hbk
+      refine ⟨j, ?_, hj⟩
+      apply Finset.mem_Ioi.mpr
+      have : k.succAbove i < k.succAbove j := by rw [hj]; exact Finset.mem_Ioi.mp hblt
+      exact (Fin.succAbove_lt_succAbove_iff).mp this
+    · intro j _; rfl
+
+/-- The number of indices avoiding two distinct points of `Fin (n+1)` is `n-1`. -/
+theorem card_filter_avoid {a b : Fin (n + 1)} (hab : a ≠ b) :
+    (Finset.univ.filter (fun k => a ≠ k ∧ b ≠ k)).card = n - 1 := by
+  have hset : (Finset.univ.filter (fun k => a ≠ k ∧ b ≠ k))
+      = (Finset.univ.erase a).erase b := by
+    ext k
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase, and_true]
+    exact ⟨fun ⟨h1, h2⟩ => ⟨Ne.symm h2, Ne.symm h1⟩,
+           fun ⟨h1, h2⟩ => ⟨Ne.symm h2, Ne.symm h1⟩⟩
+  rw [hset]
+  have hb_mem : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨fun h => hab h.symm, Finset.mem_univ _⟩
+  rw [Finset.card_erase_of_mem hb_mem, Finset.card_erase_of_mem (Finset.mem_univ a)]
+  simp [Finset.card_univ]
+
+/-- **Fekete deletion identity** (combinatorial core of Fekete monotonicity):
+`∏ₖ V(delete k Z) = V(Z)^{n-1}`.  Deleting each of the `n+1` points and multiplying
+the resulting spreads recovers `spreadProduct z ^ (n-1)`, since each pair survives
+exactly the `n-1` deletions removing neither endpoint.  Holds for every tuple. -/
+theorem prod_spreadProduct_deleteAt (z : Fin (n + 1) → ℂ) :
+    ∏ k, spreadProduct (deleteAt z k) = spreadProduct z ^ (n - 1) := by
+  have hfactor : ∀ k : Fin (n + 1),
+      spreadProduct (deleteAt z k)
+        = ∏ a, ∏ b ∈ Finset.Ioi a, (if a ≠ k ∧ b ≠ k then ‖z a - z b‖ else 1) := by
+    intro k
+    rw [spreadProduct_deleteAt z k]
+    rw [← Finset.filter_ne' Finset.univ k, Finset.prod_filter]
+    refine Finset.prod_congr rfl (fun a _ => ?_)
+    by_cases hak : a = k
+    · simp [hak]
+    · rw [if_pos hak, ← Finset.filter_ne' (Finset.Ioi a) k, Finset.prod_filter]
+      refine Finset.prod_congr rfl (fun b _ => ?_)
+      by_cases hbk : b = k
+      · simp [hbk]
+      · rw [if_pos hbk, if_pos ⟨hak, hbk⟩]
+  calc ∏ k, spreadProduct (deleteAt z k)
+      = ∏ k, ∏ a, ∏ b ∈ Finset.Ioi a, (if a ≠ k ∧ b ≠ k then ‖z a - z b‖ else 1) :=
+        Finset.prod_congr rfl (fun k _ => hfactor k)
+    _ = ∏ a, ∏ b ∈ Finset.Ioi a, ∏ k, (if a ≠ k ∧ b ≠ k then ‖z a - z b‖ else 1) := by
+        rw [Finset.prod_comm]
+        refine Finset.prod_congr rfl (fun a _ => ?_)
+        rw [Finset.prod_comm]
+    _ = ∏ a, ∏ b ∈ Finset.Ioi a, ‖z a - z b‖ ^ (n - 1) := by
+        refine Finset.prod_congr rfl (fun a _ => Finset.prod_congr rfl (fun b hb => ?_))
+        have hab : a ≠ b := ne_of_lt (Finset.mem_Ioi.mp hb)
+        rw [← Finset.prod_filter, Finset.prod_const, card_filter_avoid hab]
+    _ = (∏ a, ∏ b ∈ Finset.Ioi a, ‖z a - z b‖) ^ (n - 1) := by
+        rw [Finset.prod_congr rfl (fun a _ => Finset.prod_pow (Finset.Ioi a) (n - 1) _)]
+        rw [Finset.prod_pow]
+    _ = spreadProduct z ^ (n - 1) := by rw [spreadProduct]
+
+/-- **Additive (energy) form of the deletion identity.** For distinct roots the
+logarithmic energies of the `n+1` deletions sum to `(n-1)` copies of the full
+energy — the potential-theoretic shadow of `prod_spreadProduct_deleteAt` under
+`log`, matching the energy bridge above. -/
+theorem sum_logSpread_deleteAt (z : Fin (n + 1) → ℂ) (hz : Function.Injective z) :
+    ∑ k, logSpread (deleteAt z k) = ((n - 1 : ℕ) : ℝ) * logSpread z := by
+  have hpos : ∀ k : Fin (n + 1), 0 < spreadProduct (deleteAt z k) := fun k =>
+    (spreadProduct_pos_iff _).mpr (deleteAt_injective hz k)
+  have hposz : 0 < spreadProduct z := (spreadProduct_pos_iff z).mpr hz
+  have key := congrArg Real.log (prod_spreadProduct_deleteAt z)
+  rw [Real.log_prod (fun k _ => (hpos k).ne'), Real.log_pow] at key
+  rw [← log_spreadProduct z hz]
+  rw [← key]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  rw [log_spreadProduct _ (deleteAt_injective hz k)]
+
 end Erdos1039TransfiniteDiameter
