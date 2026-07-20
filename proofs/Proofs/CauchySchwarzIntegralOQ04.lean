@@ -1259,6 +1259,65 @@ theorem maccone_pati_stronger_than_robertson_sum {A B : E →ₗ[𝕜] E} (hA : 
   · rw [habs]; linarith [hpos, hmin_pos]
   · rw [habs]; linarith [hneg, hmin_neg]
 
+/-- **Maccone–Pati saturation — the perpendicular vector `Γ` collinear with `ψ⊥`.**
+Over a field with a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`), the stronger
+Maccone–Pati bound `maccone_pati_uncertainty` (the `+i` orientation) holds with
+**equality**
+
+    `2·Im⟪(A−a)ψ,(B−b)ψ⟫ + ‖⟪w, Aψ + i·Bψ⟫‖² = ‖(A−a)ψ‖² + ‖(B−b)ψ‖²`
+
+**iff** the combined vector `Γ = (A−a)ψ + i·(B−b)ψ` (assumed nonzero) is parallel to
+the unit `ψ⊥` witness `w`, i.e. `Γ = r • w` for some `r ≠ 0`.
+
+This is the equality companion of `maccone_pati_uncertainty`, completing its saturation
+story exactly as `gram_eq_iff_parallel` / `im_inner_sq_eq_iff_robertson_saturated`
+complete Cauchy–Schwarz and Robertson, and `schrodinger_saturated_iff` completes
+Schrödinger.  The MP bound's *only* inequality step is Cauchy–Schwarz against the unit
+vector `w` (`‖⟪w,Γ⟫‖² ≤ ‖w‖²·‖Γ‖² = ‖Γ‖²`); the shift-collapse `⟪w,Γ⟫ = ⟪w,(A+iB)ψ⟫`
+and the polarization `‖Γ‖² = ‖u‖²+‖v‖²−2·Im⟪u,v⟫` are both equalities.  So the bound is
+saturated **exactly** when Cauchy–Schwarz is — when the perpendicular projection onto
+`w` captures *all* of `Γ`, i.e. `Γ ∈ span{w}`.  Physically: the Maccone–Pati projection
+term reaches its maximal value `‖Γ‖²` precisely when the "amplitude" vector
+`(A+iB−⟨A+iB⟩)ψ` points entirely along the chosen orthogonal direction `ψ⊥`.
+
+Proof: substitute `⟪w,(A+iB)ψ⟫ = ⟪w,Γ⟫` (shift terms vanish by `⟪w,ψ⟫ = 0`) and the
+polarization identity `normSq_add_I_smul`, reducing the equality to
+`‖⟪w,Γ⟫‖² = ‖w‖²·‖Γ‖²` (using `‖w‖ = 1`), then close by the Cauchy–Schwarz equality
+case `gram_eq_iff_parallel` applied to the pair `(w, Γ)`. -/
+theorem maccone_pati_saturated_iff {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) (hI : (RCLike.I : 𝕜) ≠ 0)
+    {w : E} (hw : inner 𝕜 w ψ = 0) (hwn : ‖w‖ = 1)
+    (hΓ0 : A ψ - (a : 𝕜) • ψ + (RCLike.I : 𝕜) • (B ψ - (b : 𝕜) • ψ) ≠ 0) :
+    2 * RCLike.im (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ))
+        + ‖inner 𝕜 w (A ψ + (RCLike.I : 𝕜) • B ψ)‖ ^ 2
+      = ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + ‖B ψ - (b : 𝕜) • ψ‖ ^ 2
+    ↔ ∃ r : 𝕜, r ≠ 0 ∧
+        A ψ - (a : 𝕜) • ψ + (RCLike.I : 𝕜) • (B ψ - (b : 𝕜) • ψ) = r • w := by
+  set u := A ψ - (a : 𝕜) • ψ with hu
+  set v := B ψ - (b : 𝕜) • ψ with hv
+  have hw0 : w ≠ 0 := by
+    intro h; rw [h, norm_zero] at hwn; exact one_ne_zero hwn.symm
+  -- The projection onto `w` sees only the uncentred part, since `w ⊥ ψ`.
+  have hΓeq : inner 𝕜 w (u + (RCLike.I : 𝕜) • v)
+      = inner 𝕜 w (A ψ + (RCLike.I : 𝕜) • B ψ) := by
+    simp only [hu, hv, inner_add_right, inner_sub_right, inner_smul_right, hw,
+      mul_zero, sub_zero]
+  have hid := normSq_add_I_smul (𝕜 := 𝕜) hI u v
+  have hnormsq : (RCLike.re (inner 𝕜 w (u + (RCLike.I : 𝕜) • v))) ^ 2
+        + (RCLike.im (inner 𝕜 w (u + (RCLike.I : 𝕜) • v))) ^ 2
+      = ‖inner 𝕜 w (u + (RCLike.I : 𝕜) • v)‖ ^ 2 := by
+    rw [RCLike.norm_sq_eq_def]; ring
+  rw [← hΓeq]
+  rw [show (2 * RCLike.im (inner 𝕜 u v)
+          + ‖inner 𝕜 w (u + (RCLike.I : 𝕜) • v)‖ ^ 2
+          = ‖u‖ ^ 2 + ‖v‖ ^ 2)
+        ↔ ((RCLike.re (inner 𝕜 w (u + (RCLike.I : 𝕜) • v))) ^ 2
+            + (RCLike.im (inner 𝕜 w (u + (RCLike.I : 𝕜) • v))) ^ 2
+            = ‖w‖ ^ 2 * ‖u + (RCLike.I : 𝕜) • v‖ ^ 2) from by
+      rw [hnormsq, hwn, one_pow, one_mul, hid]
+      constructor <;> intro h <;> linarith]
+  exact gram_eq_iff_parallel (𝕜 := 𝕜) hw0 hΓ0
+
 /-- **Schrödinger saturation — the full minimum-uncertainty family.**  Over a field with
 a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`), for symmetric `A, B`, a state `ψ`
 and real shifts `a, b` with both centred vectors `u = (A−a)ψ`, `v = (B−b)ψ` nonzero, the

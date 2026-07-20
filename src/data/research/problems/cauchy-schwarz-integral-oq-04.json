@@ -24,7 +24,7 @@
     "iteration": 2,
     "focus": "Formalized the full Robertson uncertainty relation robertson_uncertainty AND its variance-form heisenberg_variance_form, THEN (researcher-1) strengthened Robertson to the SCHRÖDINGER relation schrodinger_uncertainty keeping the covariance term, with inner_normSq_le (full Gram split) and robertson_of_schrodinger. All verified, 0 axioms/sorries, 8 theorems.",
     "blockers": [],
-    "nextAction": "Maccone-Pati sum relation now formalized (researcher-8). Remaining optional directions: (a) the SECOND Maccone-Pati relation (amplitude/perpendicular form with |⟨ψ⊥|(A+B)|ψ⟩|² over an orthonormal completion); (b) saturation/equality characterization of the MP bound (attained iff Γ=u±i·v is parallel to ψ⊥, i.e. the projection captures all of Γ). Core operator content is complete.",
+    "nextAction": "Saturation stories now complete for Gram/Robertson/Schrödinger/Maccone-Pati. Remaining optional: (a) the SECOND Maccone-Pati relation (amplitude form over an orthonormal completion, |⟨ψ⊥ᵢ|(A+B)|ψ⟩|² summed); (b) -i orientation saturation companion (mirror of the +i just added). Core operator content is complete; file is at TERMINUS.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-8, 2026-07-12, VERIFIED axiom-free): added the Maccone-Pati STRONGER sum uncertainty relation (5 theorems), the direction flagged by nextAction. Unlike the pre-existing AM-GM sum forms (robertson/heisenberg_sum_form) whose lower bound vanishes when ⟪ψ,[A,B]ψ⟫=0, the MP relation adds a nonneg state-dependent projection term ‖⟪ψ⊥,(A±iB)ψ⟫‖² (ψ⊥⊥ψ) that stays informative for incompatible observables in commutator-null states. Host-lean verified [propext,Classical.choice,Quot.sound] only, 0 sorries. File 1134→~1230 lines, still 0 axioms.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-19, VERIFIED axiom-free): added maccone_pati_saturated_iff — the equality/saturation characterization of the Maccone-Pati (+i) stronger uncertainty bound, the one direction (b) flagged in prior nextAction. MP bound saturates iff amplitude vector Γ=u+i•v ∥ ψ⊥ witness w. Completes saturation story (Robertson/Schrödinger/Gram already had iff-characterizations; MP did not). File 1441→~1508 lines, 26 theorems, still 0 axioms / 0 sorries. Host-lean v4.31 verified foundational-axioms-only.",
     "builtItems": [
       "CauchySchwarzIntegralOQ04.lean: 5 theorems over a general RCLike inner product space, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "abs_im_inner_le_norm_mul_norm: |RCLike.im (inner 𝕜 u v)| ≤ ‖u‖·‖v‖ (RCLike.abs_im_le_norm |im z| ≤ ‖z‖, then norm_inner_le_norm).",
@@ -56,7 +56,8 @@
       "maccone_pati_variance_form: MP bound at expectation values (Var(A)+Var(B) form)",
       "maccone_pati_stronger_than_robertson_sum: ‖⟪ψ,[A,B]ψ⟫‖ + min(both projection terms) ≤ Var sum — makes the strengthening over robertson_sum_form explicit",
       "schrodinger_saturated_iff (CauchySchwarzIntegralOQ04.lean, researcher-7, PR #38152): operator-level Schrödinger saturation over ℂ (RCLike.I≠0) — ¼‖⟪ψ,[A,B]ψ⟫‖²+(Re⟪u,v⟫)²=‖u‖²‖v‖² ↔ ∃r≠0, v=r•u, the FULL minimum-uncertainty family (coherent+squeezed), not just the Robertson subclass (Re r=0 slice). Proof: ‖comm‖=2|Im⟪u,v⟫| exactly (‖I‖=1) → ¼‖comm‖²=(Im)² → Gram equality → gram_eq_iff_parallel. 0 axioms.",
-      "schrodinger_variance_saturated_iff (CauchySchwarzIntegralOQ04.lean, researcher-7, PR #38152): variance-form capstone at a=⟨A⟩, b=⟨B⟩ under hcomm: ⟪ψ,[A,B]ψ⟫≠0 — the nonzero commutator discharges the nonvanishing-fluctuation hypotheses via centred_ne_zero_of_commutator_ne_zero. Var(A)·Var(B)=¼‖comm‖²+Cov² ↔ (B−⟨B⟩)ψ=r(A−⟨A⟩)ψ. 0 axioms."
+      "schrodinger_variance_saturated_iff (CauchySchwarzIntegralOQ04.lean, researcher-7, PR #38152): variance-form capstone at a=⟨A⟩, b=⟨B⟩ under hcomm: ⟪ψ,[A,B]ψ⟫≠0 — the nonzero commutator discharges the nonvanishing-fluctuation hypotheses via centred_ne_zero_of_commutator_ne_zero. Var(A)·Var(B)=¼‖comm‖²+Cov² ↔ (B−⟨B⟩)ψ=r(A−⟨A⟩)ψ. 0 axioms.",
+      "maccone_pati_saturated_iff in CauchySchwarzIntegralOQ04.lean (~line 1262): 2·Im⟪u,v⟫+‖⟪w,(A+iB)ψ⟫‖²=‖u‖²+‖v‖² ↔ ∃r≠0, u+i•v=r•w. Proof: shift-collapse ⟪w,Γ⟫=⟪w,(A+iB)ψ⟫ (w⊥ψ) + normSq_add_I_smul polarization reduce to ‖⟪w,Γ⟫‖²=‖w‖²‖Γ‖², close by gram_eq_iff_parallel. Host-verified axiom-free [propext,Classical.choice,Quot.sound]."
     ],
     "insights": [
       "The Heisenberg/Robertson uncertainty inequality's analytic core is Cauchy-Schwarz on the imaginary part: |Im⟪u,v⟫| ≤ |⟪u,v⟫| ≤ ‖u‖‖v‖. For real fields Im = 0 (trivial); the content is the ℂ case.",
@@ -70,7 +71,8 @@
       "The abstract inner-product-space uncertainty core specializes to the literal integral Cauchy–Schwarz with NO extra work: MeasureTheory.L2.inner_def makes ⟪f,g⟫ on α→₂[μ]ℂ DEFINITIONALLY ∫ a, ⟪f a, g a⟫ ∂μ, and RCLike.inner_apply' rewrites the pointwise inner to conj(f a)·g a, so a single rw [← L2_inner_eq_integral] transports every abstract bound (abs_im/im_sq/abs_re/re_sq/gram/norm) onto ∫ conj(f)·g. The operator-level Robertson/Schrödinger statements do NOT specialize cleanly — position/momentum are unbounded operators on L², needing domains — so the tractable L² payload is exactly the Cauchy–Schwarz CORE, which is what OQ-04 literally asks for.",
       "Maccone-Pati (PRL 113 260401, 2014) STRONGER sum uncertainty relation: Var(A)+Var(B) ≥ 2·Im⟪(A−a)ψ,(B−b)ψ⟫ + ‖⟪ψ⊥,(A±iB)ψ⟫‖² for any unit ψ⊥⊥ψ. The extra projection term ‖⟪ψ⊥,(A±iB)ψ⟫‖² is nonneg and can be POSITIVE even when the commutator expectation ⟪ψ,[A,B]ψ⟫=0 — removing the defect of all AM-GM sum forms (robertson_sum_form etc.) whose bound vanishes there. Genuinely stronger than robertson_sum_form.",
       "Mechanism is one line of Hilbert-space geometry: for Γ=u±i·v the polarization identity ‖u±i·v‖²=‖u‖²+‖v‖²∓2·Im⟪u,v⟫ (normSq_add_I_smul via Mathlib norm_add_sq + RCLike.I_mul_re), and Cauchy-Schwarz ‖⟪w,Γ⟫‖²≤‖w‖²‖Γ‖²=‖Γ‖² for unit w; shifts a,b drop from the projection because ⟪w,ψ⟫=0. Im⟪u,v⟫ is shift-independent.",
-      "Over ℂ the commutator norm is EXACT: ‖⟪ψ,[A,B]ψ⟫‖=2|Im⟪u,v⟫| (the Robertson estimate is tight because ‖RCLike.I‖=1), so ¼‖comm‖²=(Im⟪u,v⟫)² and the Schrödinger inequality collapses to the Gram equality — this bridges the physical (commutator-expectation) statement to the inner-product gram_eq_iff_parallel."
+      "Over ℂ the commutator norm is EXACT: ‖⟪ψ,[A,B]ψ⟫‖=2|Im⟪u,v⟫| (the Robertson estimate is tight because ‖RCLike.I‖=1), so ¼‖comm‖²=(Im⟪u,v⟫)² and the Schrödinger inequality collapses to the Gram equality — this bridges the physical (commutator-expectation) statement to the inner-product gram_eq_iff_parallel.",
+      "Maccone-Pati (+i) bound saturates EXACTLY when the amplitude vector Γ=(A−a)ψ+i(B−b)ψ is parallel to the ψ⊥ witness w (Γ=r•w, r≠0): the MP bound has only ONE inequality step (Cauchy-Schwarz vs unit w), so its equality case is precisely the CS equality case gram_eq_iff_parallel(w,Γ). Completes the file saturation story — MP was the only bound family without an iff characterization (Robertson, Schrödinger, and raw Gram all had one)."
     ],
     "mathlibGaps": [
       "The full operator-theoretic uncertainty principle (self-adjoint operators, variance of an observable in a state, the commutator [A,B]) is not packaged in Mathlib; only the underlying Cauchy-Schwarz inequality is in reach here."

@@ -237,3 +237,33 @@ no build/verify possible), so even a marginal addition could not be verified. Pe
 standards, made NO change and released the claim rather than churn a complete file. Next
 claimant: this is a terminus — skip unless a genuinely new direction (e.g. mixed-state /
 density-operator uncertainty, or a tightness/attainability existence result) is proposed.
+
+## Session 2026-07-19 (researcher-1) — Maccone–Pati saturation/equality characterization (VERIFIED axiom-free)
+
+Prior sessions completed the MP *inequalities* (`maccone_pati_uncertainty` ±i,
+variance form, stronger-than-Robertson) but never characterized their **equality case**.
+The tracker `nextAction` explicitly flagged this as open direction (b). MP was the only
+bound family in the file lacking a saturation `iff` — Gram (`gram_eq_iff_parallel`),
+Robertson (`im_inner_sq_eq_iff_robertson_saturated`) and Schrödinger
+(`schrodinger_saturated_iff`) all had one. Added `maccone_pati_saturated_iff` (1 theorem,
+1441→~1508 lines, still 0 axioms / 0 sorries):
+
+- `maccone_pati_saturated_iff`: for symmetric A,B, state ψ, shifts a,b, unit `w ⊥ ψ`,
+  and nonzero amplitude vector `Γ = u + i·v` (u=(A−a)ψ, v=(B−b)ψ), the MP (+i) bound
+  `2·Im⟪u,v⟫ + ‖⟪w,(A+iB)ψ⟫‖² = ‖u‖²+‖v‖²` holds **iff** `∃ r≠0, Γ = r•w` (Γ ∥ ψ⊥).
+  KEY OBSERVATION: `maccone_pati_uncertainty`'s proof has exactly ONE inequality step —
+  Cauchy–Schwarz `‖⟪w,Γ⟫‖² ≤ ‖w‖²‖Γ‖²` against the unit w. The shift-collapse
+  `⟪w,Γ⟫=⟪w,(A+iB)ψ⟫` (from `⟪w,ψ⟫=0`) and the polarization `‖Γ‖²=‖u‖²+‖v‖²−2Im⟪u,v⟫`
+  (`normSq_add_I_smul`) are both EQUALITIES. So the MP bound saturates ⟺ Cauchy–Schwarz
+  saturates ⟺ (by `gram_eq_iff_parallel` on the pair (w,Γ), both nonzero) Γ ∥ w.
+  Proof mechanics: `rw [← hΓeq]`, then an inline `show … ↔ …` rewrite folding the
+  polarization + ‖w‖=1 to turn the goal into the raw Gram equality `(Re)²+(Im)²=‖w‖²‖Γ‖²`,
+  closed by `gram_eq_iff_parallel hw0 hΓ0`. Physically: the MP projection term reaches its
+  max ‖Γ‖² precisely when the amplitude vector (A+iB−⟨·⟩)ψ points entirely along ψ⊥.
+
+BUILD: **VERIFIED axiom-free** via host path (main v4.31 Mathlib oleans, Docker-free):
+`cd /Users/rwalters/GitHub/lean-genius/proofs && LAKE_UNSAFE=1 ./bin/lake env lean <worktree-abs-file>`,
+exit 0, no errors/sorries. `#print axioms maccone_pati_saturated_iff` = `[propext,
+Classical.choice, Quot.sound]` (no sorryAx, no ofReduceBool). ★Toolchain note: the file is
+now v4.31 (epic #37508 migration landed) — prior sessions' "v4.26 oleans" note is stale;
+host-verify still works because the file is `import Mathlib`-only (no `import Proofs.*`).
