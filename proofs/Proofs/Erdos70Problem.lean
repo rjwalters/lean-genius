@@ -211,6 +211,92 @@ theorem omega0_squared_countable : IsCountableOrdinal (Ordinal.omega0 * Ordinal.
   unfold IsCountableOrdinal
   rw [Ordinal.card_mul, Ordinal.card_omega0, Cardinal.aleph0_mul_aleph0]
 
+/- ## Countability closure toolkit
+
+The two facts above (`omega0_plus_n_countable`, `omega0_squared_countable`) are
+instances of a general principle: the countable ordinals are closed under `≤`,
+`+`, and `*`.  We record that toolkit here (all axiom-free); the two specific
+lemmas become one-line corollaries of it. -/
+
+/-- `0` is a countable ordinal. -/
+theorem zero_countable : IsCountableOrdinal 0 := by
+  unfold IsCountableOrdinal
+  simp
+
+/-- `1` is a countable ordinal. -/
+theorem one_countable : IsCountableOrdinal 1 := by
+  unfold IsCountableOrdinal
+  simp
+
+/-- Countability is downward closed: a suborder of a countable ordinal is
+    countable. -/
+theorem IsCountableOrdinal.mono {α β : Ordinal} (h : β ≤ α)
+    (hα : IsCountableOrdinal α) : IsCountableOrdinal β :=
+  le_trans (Ordinal.card_le_card h) hα
+
+/-- The countable ordinals are closed under addition. -/
+theorem IsCountableOrdinal.add {α β : Ordinal} (hα : IsCountableOrdinal α)
+    (hβ : IsCountableOrdinal β) : IsCountableOrdinal (α + β) := by
+  unfold IsCountableOrdinal at *
+  rw [Ordinal.card_add]
+  calc α.card + β.card ≤ Cardinal.aleph0 + Cardinal.aleph0 := add_le_add hα hβ
+    _ = Cardinal.aleph0 := Cardinal.aleph0_add_aleph0
+
+/-- The countable ordinals are closed under multiplication. -/
+theorem IsCountableOrdinal.mul {α β : Ordinal} (hα : IsCountableOrdinal α)
+    (hβ : IsCountableOrdinal β) : IsCountableOrdinal (α * β) := by
+  unfold IsCountableOrdinal at *
+  rw [Ordinal.card_mul]
+  calc α.card * β.card ≤ Cardinal.aleph0 * Cardinal.aleph0 := mul_le_mul' hα hβ
+    _ = Cardinal.aleph0 := Cardinal.aleph0_mul_aleph0
+
+/- ## The conjecture implies its named specializations
+
+The `conjecture_omega`/`conjecture_omega_squared` definitions above are the
+`β = ω` and `β = ω·ω` instances of `erdos_70_conjecture`.  Since `ω` and `ω·ω`
+are countable, the general conjecture entails each of them. -/
+
+/-- If Erdős Problem 70 holds in general, it holds for `β = ω` (any `n ≥ 2`). -/
+theorem erdos_70_conjecture_omega (n : ℕ) (hn : 2 ≤ n)
+    (h : erdos_70_conjecture) : conjecture_omega n :=
+  h Ordinal.omega0 n omega0_countable hn
+
+/-- If Erdős Problem 70 holds in general, it holds for `β = ω·ω` (any `n ≥ 2`). -/
+theorem erdos_70_conjecture_omega_squared (n : ℕ) (hn : 2 ≤ n)
+    (h : erdos_70_conjecture) : conjecture_omega_squared n :=
+  h (Ordinal.omega0 * Ordinal.omega0) n omega0_squared_countable hn
+
+/- ## Boundary cases of the partition arrow
+
+The two degenerate parameters make `PartitionArrow` trivially true: order type
+`0` is met by the empty homogeneous set (vacuously homogeneous, and every set
+has order type at least `0`), and required size `0` is met by the empty finset. -/
+
+/-- `κ → (0, m)₂³` holds trivially: the empty set is homogeneous for color `0`
+    and has order type at least `0`. -/
+theorem partition_arrow_ordinal_zero (κ : Cardinal) (m : ℕ) :
+    PartitionArrow κ 0 m := by
+  intro S _ hS c
+  refine Or.inl ⟨(∅ : Set S), ?_, ?_⟩
+  · show (0 : Ordinal).card ≤ Cardinal.mk (∅ : Set S)
+    simp
+  · intro t ht hsub
+    rw [Set.subset_empty_iff, Finset.coe_eq_empty] at hsub
+    subst hsub
+    simp at ht
+
+/-- `κ → (α, 0)₂³` holds trivially: the empty finset has size at least `0` and
+    is vacuously homogeneous for color `1`. -/
+theorem partition_arrow_size_zero (κ : Cardinal) (α : Ordinal) :
+    PartitionArrow κ α 0 := by
+  intro S _ hS c
+  refine Or.inr ⟨(∅ : Finset S), ?_, ?_⟩
+  · simp
+  · intro t ht hsub
+    rw [Finset.subset_empty] at hsub
+    subst hsub
+    simp at ht
+
 /- ## Summary
 
 **Problem Status: OPEN**
