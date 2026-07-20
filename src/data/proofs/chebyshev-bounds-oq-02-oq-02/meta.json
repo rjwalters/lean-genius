@@ -62,7 +62,8 @@
       "ψ − θ is supported precisely on the proper prime powers: writing both functions in von Mangoldt form, ψ = ∑ Λ and θ = ∑ [prime]·Λ, so the difference is ∑ [¬prime]·Λ, and Λ(m) ≠ 0 forces m to be a prime power — hence m = p^k with k ≥ 2.",
       "Grouping prime powers by exponent gives ψ(x) = ∑_{k≥1} θ(x^{1/k}); the k = 1 term is θ(x), so ψ − θ = ∑_{k≥2} θ(x^{1/k}), a sum of only ⌊log₂ x⌋ − 1 terms.",
       "Each tail term θ(x^{1/k}) ≤ θ(√x) for k ≥ 2, so the whole tail is O(√x·log x): ψ and θ are interchangeable as the main term in elementary prime-counting estimates.",
-      "The parent's self-contained ℕ-indexed ψ (∑ over [1,n]) and Mathlib's ℝ-argument Chebyshev.psi (∑ over (0,⌊x⌋]) coincide at integer x once [1,n] is identified with (0,n]; this one-line bridge imports Mathlib's full Chebyshev development into the gallery's thread."
+      "The parent's self-contained ℕ-indexed ψ (∑ over [1,n]) and Mathlib's ℝ-argument Chebyshev.psi (∑ over (0,⌊x⌋]) coincide at integer x once [1,n] is identified with (0,n]; this one-line bridge imports Mathlib's full Chebyshev development into the gallery's thread.",
+      "The comparison is a one-sided squeeze, not just a two-sided bound: because every term of ψ − θ = ∑_{¬prime} Λ is nonnegative (Λ ≥ 0), one has ψ(n) ≥ θ(n) for all n (theta_le_psi), so ψ(n) − θ(n) = |ψ(n) − θ(n)| and the sharp estimate is really 0 ≤ ψ(n) − θ(n) ≤ 2·√n·log n. The absolute value in abs_psi_sub_theta_le is thus redundant given psi_sub_theta_nonneg — ψ always overshoots θ, never the reverse, and only by the O(√n·log n) prime-power tail."
     ],
     "prerequisites": [
       "The von Mangoldt function Λ (Λ(p^k) = log p, else 0) and its support being the prime powers",
@@ -98,10 +99,18 @@
     },
     {
       "id": "bridge",
-      "title": "Bridge to Mathlib and the Quantitative Bound",
+      "title": "Bridge to Mathlib's Chebyshev",
       "startLine": 113,
+      "endLine": 124,
+      "summary": "Part III header, then the two identifications chebyshevPsi_eq_mathlib (chebyshevPsi n = Chebyshev.psi (n:ℝ)) and chebyshevTheta_eq_mathlib (chebyshevTheta n = Chebyshev.theta (n:ℝ)). Each is a one-line proof: unfold both sides and apply Finset.sum_congr along Icc_one_eq_Ioc_zero (after Nat.floor_natCast rewrites ⌊(n:ℝ)⌋₊ to n), so the parent's ℕ-indexed sum over [1,n] lines up with Mathlib's sum over (0,⌊x⌋]. This single lemma imports Mathlib's entire Chebyshev development into the gallery's self-contained thread.",
+      "mathContext": "chebyshevPsi n = Chebyshev.psi (n:ℝ) and chebyshevTheta n = Chebyshev.theta (n:ℝ): the ℕ-indexed [1,n] sum equals the ℝ-argument (0,⌊x⌋] sum at integer x."
+    },
+    {
+      "id": "quantitative",
+      "title": "Transported Quantitative Results",
+      "startLine": 126,
       "endLine": 145,
-      "summary": "chebyshevPsi_eq_mathlib / chebyshevTheta_eq_mathlib identify the gallery functions with Mathlib's Chebyshev.psi/theta; psi_sub_theta_eq_sum_theta and abs_psi_sub_theta_le transport Mathlib's ψ = ∑θ(x^{1/k}) identity and |ψ − θ| ≤ 2√x·log x bound.",
+      "summary": "With the bridges in hand, two `rw`-of-bridge-then-Mathlib arguments: psi_sub_theta_eq_sum_theta transports Chebyshev.psi_eq_theta_add_sum_theta (with add_sub_cancel_left) to give ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}) for n ≥ 2; abs_psi_sub_theta_le transports Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log to give |ψ(n) − θ(n)| ≤ 2·√n·log n for n ≥ 1, with the real hypotheses discharged by exact_mod_cast. These are the sharp same-main-term identity and bound in the gallery's own functions.",
       "mathContext": "ψ(n) − θ(n) = ∑_{k≥2} θ(n^{1/k}) and |ψ(n) − θ(n)| ≤ 2√n·log n = O(√n log n)."
     }
   ],
