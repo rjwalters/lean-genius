@@ -247,3 +247,39 @@ drop it and rely on `2*1`/`2*2` defeq reduction instead.
   `transcendental_iff_injective` on `aeval (π²)`) — the N-family generalization.
 - Odd-zeta irrationality past ζ(3) remains the genuine open frontier (Apéry/Ball–Rivoal), not
   session-sized.
+
+## Session 2026-07-19 (researcher-1) — N-family ℚ-linear independence (the generalization from Next Steps)
+
+**Mode**: ACT (executed the "Next Steps" item logged 2026-07-12: general
+`LinearIndependent ℚ (fun k : Fin N => ζ(2(k+1)))`). **Outcome**: progress, no new axioms.
+
+The pair result (`zeta_even_linearIndependent_pair`) only gives *pairwise* independence. The
+structural statement is that the whole family is jointly independent. Added to
+`BaselProblemOQ01OQ02LinIndep.lean`:
+
+- `pi_sq_pow_linearIndependent` : `LinearIndependent ℚ (fun i : ℕ => (π²)^i)`. ★key move:
+  `π²` transcendental over ℚ ⟹ `transcendental_iff_injective.1` gives `aeval (π²)` injective
+  ⟹ `(Polynomial.basisMonomials ℚ).linearIndependent.map' _ (LinearMap.ker_eq_bot.2 hinj)`
+  carries the monomial basis `{Xⁱ}` to `{(π²)ⁱ}`; the composed family simplifies via
+  `[Polynomial.coe_basisMonomials, Polynomial.aeval_monomial]`. (Needs `open Polynomial` for the
+  `ℚ[X]` and `X` notation — omitting it gives "Unknown identifier `X`".)
+- `zeta_even_family_linearIndependent (N)` : `LinearIndependent ℚ (fun k : Fin N => ζ(2(k+1)))`.
+  Restrict `pi_sq_pow_linearIndependent` along the injective shift `k ↦ k+1`
+  (`.comp _ (Nat.succ_injective.comp Fin.val_injective)`), then rescale by the nonzero rationals
+  `qₖ` from Euler's `zeta_even_eq_rat_mul_pi_pow` using `LinearIndependent.units_smul` with
+  `Units.mk0 (q k) (hqne k)`. Identify the rescaled family with the zeta family via
+  `simp only [Pi.smul_apply', Units.smul_def, Units.val_mk0, Rat.smul_def]` + `rw [hqeq k, pow_mul]`
+  (`pow_mul π 2 (k+1) : π^(2*(k+1)) = (π²)^(k+1)`). `choose q hqne hqeq using …` builds the
+  scalar family over `Fin N`.
+- `zeta_two_four_six_linearIndependent` : concrete `![ζ(2),ζ(4),ζ(6)]` (N=3 via `fin_cases k <;> rfl`).
+
+Axioms on all three: `[propext, Classical.choice, HermiteLindemann.hermite_lindemann, Quot.sound]`
+— SAME as parent (via `pi_transcendental_over_rationals`), NO new assumption; `Classical.choice`
+is from `choose`, harmless. VERIFIED via Docker build + `#print axioms` EXIT 0.
+
+### Next Steps
+- The even-zeta closure algebra now has: individual transcendence, products/powers/ratios,
+  cross-power dependence, pairwise AND N-family ℚ-linear independence. This side is saturated.
+- The genuine open frontier remains odd-zeta irrationality (ζ(5), ζ(7), ζ(2n+1)) —
+  Apéry/Ball–Rivoal, not in Mathlib, not session-sized. **0 follow-ups** (depth-2 OQ; the
+  provable ℚ(π)-structure is exhausted).
