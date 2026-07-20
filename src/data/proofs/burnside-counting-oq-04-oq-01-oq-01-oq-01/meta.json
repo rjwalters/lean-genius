@@ -87,7 +87,7 @@
       "title": "Overview and Scope: the rotation half of the closed form",
       "startLine": 3,
       "endLine": 52,
-      "summary": "Module docstring: the parent computed bracelet counts via per-n kernel decide and asked for a closed form. This file proves the generic rotation term 2^gcd(n, i.val) uniformly in n (no computation), plus the namespace, the Coloring/IsRotInvariant/RotFixed definitions and their Fintype instances. Honest scope: only the rotation half; the reflection contribution is left to future work; everything is axiom-free (kernel decide, no native_decide).",
+      "summary": "Module docstring (lines 1–49) plus the `namespace BurnsideRotationFix` / `open AddSubgroup` header: the parent computed bracelet counts via per-n kernel decide and asked for a closed form, and this file proves the generic rotation term 2^gcd(n, i.val) uniformly in n (no computation). Honest scope: only the rotation half; the reflection contribution is left to future work; everything is axiom-free (kernel decide, no native_decide). The Coloring/IsRotInvariant/RotFixed definitions and their Fintype instances open the next section (line 55 onward).",
       "mathContext": "$\\#\\{c:\\mathbb{Z}/n\\to\\mathbb{F}_2 \\mid c(p+i)=c(p)\\} = 2^{\\gcd(n,\\,i)}.$"
     },
     {
@@ -95,7 +95,7 @@
       "title": "Rotation Invariance Extends to the Whole Cyclic Subgroup",
       "startLine": 54,
       "endLine": 90,
-      "summary": "IsRotInvariant i c is c (p + i) = c p for all p; invariant_zsmul upgrades it to c (p + k·i) = c p for every integer k by two-sided Int.induction_on, the statement that an invariant colouring is constant on each coset of ⟨i⟩.",
+      "summary": "Opens with the core definitions (lines 55–71): Coloring n := ZMod n → Fin 2, IsRotInvariant i c := ∀ p, c (p + i) = c p, RotFixed n i as the invariant-colouring subtype, and their DecidablePred / Fintype instances. Then invariant_zsmul (line 73) upgrades single-shift invariance c (p + i) = c p to c (p + k·i) = c p for every integer k by two-sided Int.induction_on (using the subtract-i form c (p - i) = c p for the negative branch), the statement that an invariant colouring is constant on each coset of ⟨i⟩.",
       "mathContext": "$c(p + i) = c(p)\\ \\forall p\\ \\Longrightarrow\\ c(p + k\\cdot i) = c(p)\\ \\forall k \\in \\mathbb{Z}.$"
     },
     {
