@@ -121,3 +121,108 @@ Note: The previously claimed {1,2,4,8} is NOT B₃ since 1+1+4 = 2+2+2 = 6. -/
 
 /- The trivial upper bound: a B₃ set in {1,...,N} has at most
 O(N^{1/3}) elements since distinct sums lie in {3,...,3N}. -/
+
+/-
+## Section VIII: Foundational Lemmas (axiom-free)
+
+Basic API for `threeSums`, `IsB3`, `maxB3Size`, `IsBh`, and `maxBhSize`.  All
+lemmas below are fully machine-checked with no `sorry` and no `axiom`
+(host-verified on Lean v4.31.0; `#print axioms` = propext/Classical.choice/Quot.sound
+only — `Classical.choice` enters only through the `DecidablePred` instances above).
+The deep content of Erdős #241 (the `f(N) ~ N^{1/3}` asymptotics of Bose–Chowla
+and Green) remains documented-only; it needs finite-field / analytic machinery
+beyond Mathlib. -/
+
+/-- Membership characterisation of `threeSums`: `x` is an ordered triple sum. -/
+theorem mem_threeSums {A : Finset ℕ} {x : ℕ} :
+    x ∈ threeSums A ↔ ∃ a ∈ A, ∃ b ∈ A, ∃ c ∈ A, a ≤ b ∧ b ≤ c ∧ a + b + c = x := by
+  simp only [threeSums, Finset.mem_image, Finset.mem_filter, Finset.mem_product]
+  constructor
+  · rintro ⟨⟨a, b, c⟩, ⟨⟨ha, hb, hc⟩, hab, hbc⟩, rfl⟩
+    exact ⟨a, ha, b, hb, c, hc, hab, hbc, rfl⟩
+  · rintro ⟨a, ha, b, hb, c, hc, hab, hbc, rfl⟩
+    exact ⟨⟨a, b, c⟩, ⟨⟨ha, hb, hc⟩, hab, hbc⟩, rfl⟩
+
+/-- The empty set has no three-element sums. -/
+theorem threeSums_empty : threeSums (∅ : Finset ℕ) = ∅ := by
+  simp [threeSums]
+
+/-- `threeSums` is monotone: enlarging `A` can only add sums. -/
+theorem threeSums_mono {A B : Finset ℕ} (hAB : A ⊆ B) :
+    threeSums A ⊆ threeSums B := by
+  intro x hx
+  rw [mem_threeSums] at hx ⊢
+  obtain ⟨a, ha, b, hb, c, hc, hab, hbc, hsum⟩ := hx
+  exact ⟨a, hAB ha, b, hAB hb, c, hAB hc, hab, hbc, hsum⟩
+
+/-- The empty set is (vacuously) a B₃ set. -/
+theorem isB3_empty : IsB3 (∅ : Finset ℕ) := by
+  intro a₁ ha₁
+  exact absurd ha₁ (by simp)
+
+/-- Every singleton is a B₃ set (its only ordered triple is `(a,a,a)`). -/
+theorem isB3_singleton (a : ℕ) : IsB3 ({a} : Finset ℕ) := by
+  intro a₁ ha₁ b₁ hb₁ c₁ hc₁ a₂ ha₂ b₂ hb₂ c₂ hc₂ _ _ _ _ _
+  rw [Finset.mem_singleton] at ha₁ hb₁ hc₁ ha₂ hb₂ hc₂
+  subst ha₁ hb₁ hc₁ ha₂ hb₂ hc₂
+  exact ⟨rfl, rfl, rfl⟩
+
+/-- The B₃ property is inherited by subsets. -/
+theorem IsB3.subset {A B : Finset ℕ} (hAB : A ⊆ B) (hB : IsB3 B) : IsB3 A := by
+  intro a₁ ha₁ b₁ hb₁ c₁ hc₁ a₂ ha₂ b₂ hb₂ c₂ hc₂ h1 h2 h3 h4 hsum
+  exact hB a₁ (hAB ha₁) b₁ (hAB hb₁) c₁ (hAB hc₁)
+    a₂ (hAB ha₂) b₂ (hAB hb₂) c₂ (hAB hc₂) h1 h2 h3 h4 hsum
+
+/-- `f(N) = maxB3Size N` never exceeds the window size `N`. -/
+theorem maxB3Size_le (N : ℕ) : maxB3Size N ≤ N := by
+  unfold maxB3Size
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  exact (Finset.card_le_card hS.1).trans_eq (Finset.card_range N)
+
+/-- `maxB3Size` is monotone in the window size. -/
+theorem maxB3Size_mono {N M : ℕ} (h : N ≤ M) : maxB3Size N ≤ maxB3Size M := by
+  unfold maxB3Size
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  refine ⟨hS.1.trans ?_, hS.2⟩
+  intro x hx
+  exact Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) h)
+
+/-- `f(0) = 0`. -/
+theorem maxB3Size_zero : maxB3Size 0 = 0 := Nat.le_zero.mp (maxB3Size_le 0)
+
+/-- The Bₕ property is inherited by subsets. -/
+theorem IsBh.subset {h : ℕ} {A B : Finset ℕ} (hAB : A ⊆ B) (hB : IsBh h B) :
+    IsBh h A := by
+  obtain ⟨hh, hdist⟩ := hB
+  refine ⟨hh, fun S₁ S₂ h1 h2 c1 c2 hsum => ?_⟩
+  exact hdist S₁ S₂ (h1.trans hAB) (h2.trans hAB) c1 c2 hsum
+
+/-- The empty set is a Bₕ set for every `h ≥ 2` (no `h`-subset exists to clash). -/
+theorem isBh_empty {h : ℕ} (hh : 2 ≤ h) : IsBh h (∅ : Finset ℕ) := by
+  refine ⟨hh, fun S₁ S₂ h1 _ c1 _ _ => ?_⟩
+  rw [Finset.subset_empty] at h1
+  subst h1
+  rw [Finset.card_empty] at c1
+  omega
+
+/-- The maximum Bₕ subset size never exceeds the window size `N`. -/
+theorem maxBhSize_le (h N : ℕ) : maxBhSize h N ≤ N := by
+  unfold maxBhSize
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  exact (Finset.card_le_card hS.1).trans_eq (Finset.card_range N)
+
+/-- `maxBhSize` is monotone in the window size. -/
+theorem maxBhSize_mono {h N M : ℕ} (hNM : N ≤ M) : maxBhSize h N ≤ maxBhSize h M := by
+  unfold maxBhSize
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  refine ⟨hS.1.trans ?_, hS.2⟩
+  intro x hx
+  exact Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) hNM)
