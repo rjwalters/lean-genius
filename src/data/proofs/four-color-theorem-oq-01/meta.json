@@ -141,7 +141,7 @@
     {
       "id": "heawood",
       "title": "Part 8: Heawood's Counterexample Structure",
-      "summary": "heawood_crossing_forced — both chains connected force a crossing (Jordan-curve argument).",
+      "summary": "heawood_crossing_forced — under a placeholder `paths_in_plane : True` hypothesis, restates that both chains are connected; the Jordan-curve crossing argument itself is described in prose, not formalized.",
       "startLine": 253,
       "endLine": 287,
       "mathContext": "Heawood's 1890 configuration where Kempe's 4-color strategy (not 4-colorability itself) fails."
@@ -149,7 +149,7 @@
     {
       "id": "human-readable-needs",
       "title": "Part 9: What a Human-Readable 4CT Proof Would Need",
-      "summary": "flow_coloring_equivalence — Tutte's k-colorability ↔ k-flow duality (a reformulation, not a simplification).",
+      "summary": "flow_coloring_equivalence — describes Tutte's k-colorability ↔ k-flow duality in prose; the Lean theorem only records the k ≥ 2 side condition, the duality itself is not formalized.",
       "startLine": 288,
       "endLine": 324,
       "mathContext": "Survey of candidate routes (algebraic, structural, flow-based) to a human-readable proof; all currently circular or open."
