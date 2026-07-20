@@ -23,7 +23,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 210,
+    "lineCount": 204,
     "assumptions": "No axioms, no sorries. All 9 theorems fully proved. Key techniques: modByMonic_add_div for reduction; minpoly.dvd + Polynomial.natDegree_le_of_dvd for divisibility; Matrix.charpoly_of_upperTriangular for the triangular case.",
     "mathlib_version": "4.31.0",
     "theoremCount": 9,
@@ -52,7 +52,7 @@
       "id": "preamble",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Module docstring answers the efficiency question for sparse matrices: yes, with three mechanisms (nilpotent X^k bypass, upper triangular diagonal product, general reduction). Imports Mathlib for charpoly, minpoly, block matrices, polynomial division, and nilpotency. Namespace MinpolyReductionOQ02."
     },
     {
@@ -65,29 +65,29 @@
     {
       "id": "nilpotent-reduction",
       "title": "Part II: Efficient Polynomial Reduction via Nilpotency Index",
-      "startLine": 69,
-      "endLine": 111,
+      "startLine": 68,
+      "endLine": 108,
       "summary": "nilpotent_poly_reduction: aeval M p = aeval M (p %ₘ X^k) — the key efficiency theorem. nilpotent_power_eq_zero: M^j = 0 for all j ≥ k (Krylov termination certificate). nilpotent_reduction_equiv: X^k and minpoly K M are interchangeable reduction moduli. Proves the nilpotent bypass is both correct and complete."
     },
     {
       "id": "upper-triangular",
       "title": "Part III: Upper Triangular Minpoly Bound",
-      "startLine": 113,
-      "endLine": 143,
+      "startLine": 109,
+      "endLine": 140,
       "summary": "upper_tri_minpoly_dvd_prod: minpoly K M | ∏ᵢ(X - M i i) for block-triangular M (using charpoly_of_upperTriangular + minpoly.dvd). upper_tri_minpoly_natDegree_le: degree ≤ n. Reduces minpoly computation to reading the diagonal — O(n) vs O(n³) for general charpoly."
     },
     {
       "id": "general-reduction",
       "title": "Part IV: General Efficient Reduction",
-      "startLine": 145,
-      "endLine": 172,
+      "startLine": 141,
+      "endLine": 168,
       "summary": "minpoly_poly_reduction: the foundational reduction theorem aeval M p = aeval M (p %ₘ minpoly K M), valid for any matrix M. nilpotent_reduction_degree_lt: confirms that p %ₘ X^k has natDegree < k (the reduction genuinely compresses the polynomial). These theorems complete the efficiency framework."
     },
     {
       "id": "summary",
       "title": "Proof Summary and Algorithmic Impact",
-      "startLine": 175,
-      "endLine": 210,
+      "startLine": 169,
+      "endLine": 204,
       "summary": "Documentation block listing all 9 proved theorems under the three mechanisms. Emphasizes the nilpotent case as the most dramatic efficiency gain: polynomial evaluation in nilpotent matrices is pure coefficient truncation — no matrix multiplications for the modulus, O(deg p) total work. For strictly upper triangular n×n matrices, the nilpotency index k = n, recovering the general bound with an explicit formula for the modulus."
     }
   ],
@@ -109,7 +109,7 @@
       "Mathlib.RingTheory.Nilpotent.Basic"
     ],
     "namespace": "MinpolyReductionOQ02",
-    "lineCount": 210,
+    "lineCount": 204,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0,
