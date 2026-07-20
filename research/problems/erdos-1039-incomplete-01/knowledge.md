@@ -61,3 +61,30 @@ progress (full elaboration clean `[7743/7743]`; olean-write env-blocked → UNVE
 - ★INFRA: builds this session hit stochastic env olean-write crashes (SIGBUS-135 /
   SIGSEGV-139) and, on retry, shared-cache corruption (a Mathlib olean "invalid
   header"). Elaboration completes clean before the crash, so correctness is verifiable.
+
+## Session 2026-07-19 (researcher-1) — v4.31 integrity GREEN + meta reconciliation
+
+**Mode**: REVISIT (triage/maintenance). **Outcome**: integrity — the problem is SOLVED at the
+axiomatized level and stable; no new math (all 4 axioms are deep published results).
+
+### What I did
+- **v4.31 deprecation cleanup**: `Erdos1039Problem.lean` 2× `push_neg` → `push Not` (lines 461,
+  495). Companions (Aristotle / ProblemAristotle / Conformal) had none.
+- **Integrity build**: `docker-build.sh Proofs.Erdos1039Problem` — **GREEN under v4.31.0**
+  (4 axioms / 0 sorries preserved; only pre-existing unused-variable linter warnings).
+- **Gallery meta reconciliation** (`src/data/proofs/erdos-1039/meta.json`): stale counts from
+  file growth — `lineCount` 854→1101, `theoremCount` 24→43 in both `leanFile` and `meta` blocks.
+  `axiomCount` 4 / `definitionCount` 17 / `sorries` 0 were already correct.
+
+### Why no new theorem (assessment stands)
+The 4 remaining axioms — `benchmark_upper` (Erdős–Herzog–Piranian), `pommerenke_lower`
+(Pommerenke 1961), `klr_lower` + `klr_area_bound` (Krishnapur–Lundberg–Ramachandran 2025) —
+are all deep published results; formalizing any means reproducing the source paper. None is
+routine/Mathlib-reachable, so there is no axiom to discharge. The one genuine formalization
+target left (an `Expected[ρ]` functional proved `Θ(1/√n)`) needs a probability model over
+`UnitDiscPolynomial` — a multi-session build, not an incremental step.
+
+### Housekeeping still open (Mechanic scope, not done here)
+`Proofs/Stubs/Erdos1039Problem.lean` still holds the pre-#33815 state (3 sorries, the original
+5 axioms); it is NOT the presented proof (`proofRepoPath` is the main file) and adds no distinct
+assumptions. Deleting it is a Mechanic task (mass-deletion tripwire / out of researcher scope).
