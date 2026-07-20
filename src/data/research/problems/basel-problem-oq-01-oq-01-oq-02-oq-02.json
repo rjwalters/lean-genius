@@ -46,7 +46,7 @@
     "lastUpdate": "2026-06-13T15:43:33Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S24): general mul_choose_dvd_lcmRange (S21) now cubed to clear m³·C(n,m)³ from the alternating denominator; alternating-half integrality reduced to a pure-binomial cross-factor divisibility (no lcm). lcm side of both halves now complete.",
+    "progressSummary": "PROGRESS (S25): per-term denominator divisibility of the vdP alternating half fully closed: 2 m^3 C(n,m) C(n+m,m) | (lcmRange n)^3 C(n,k)^2 C(n+k,k)^2 for 1<=m<=k<=n (Part 15 capstone, machine-verified, 0 sorries / foundational axioms only), plus its Q-level cast alt_term_lcm_clear. Remaining for denominator_control: summation-level assembly only (sum over m, combine with H^(3) half, sum over k against the closed form).",
     "builtItems": [
       "S21 DOCTOR-FIX + BUILD-VERIFY (researcher-1 PR, 2026-06-01, build-verified, 1-token Lean edit): Fixed `Nat.pow_pos hp.pos i` → `Nat.pow_pos hp.pos` at line 959 of `pow_factorization_mul_choose_le` (S20's pasted bearer). Mathlib v4.26.0 has `Nat.pow_pos` with implicit `n`; positional exponent fails type check. Re-build via `./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ02` CLEAN 3058/3058 jobs, exit 0. Bearer now FORMALLY VERIFIED — S22 ACT (`mul_choose_dvd_lcmRange` framework clone) actionable. Adds Mathlib v4.26.0 API-drift cheat-sheet entry: `Nat.pow_pos hp.pos` (NOT `Nat.pow_pos hp.pos n`) — exponent is implicit, inferred from expected return type `0 < (base)^(implicit n)`. 5th-slug confirmation of MEMORY `[Lake self-loop in main repo (G9-inert, 2026-05-31)]` and strong re-confirmation of `[G9 qualifier masks real bugs — ALWAYS Docker-verify]`.",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_lcmRange (k>0, k≤n → k∣lcmRange n) — basic membership divisibility",
@@ -83,7 +83,14 @@
       "mul_choose_dvd_lcmRange (BaselProblemOQ01OQ01OQ02OQ02.lean Part 13): general m·C(n,m) ∣ lcmRange n for 0<m≤n, VERIFIED 0/0. Closes the m≥4 gap via prime-power decomposition (factorization_prod_pow_eq_self + Finset.prod_dvd_of_isRelPrime + Part-12 pow_factorization_mul_choose_le), subsuming Parts 6-11 piecemeal m=1,2,3.",
       "choose_mul_choose_reindex (Part 14, ~line 1075): C(n,m)·C(n+m,m)=C(n+m,2m)·C(2m,m), unconditional, via Nat.choose_mul + omega rewrites + ring",
       "mul_choose_cube_dvd_lcmRange_cube (Part 14): (m·C(n,m))^3 ∣ (lcmRange n)^3 via pow_dvd_pow_of_dvd",
-      "cube_mul_cube_choose_dvd_lcmRange_cube (Part 14): m^3·C(n,m)^3 ∣ (lcmRange n)^3 via mul_pow"
+      "cube_mul_cube_choose_dvd_lcmRange_cube (Part 14): m^3·C(n,m)^3 ∣ (lcmRange n)^3 via mul_pow",
+      "choose_add_mul_choose (upper subset identity) in BaselProblemOQ01OQ01OQ02OQ02.lean:1154",
+      "choose_cross_product_eq (vdP §6 cross-product identity) at :1176",
+      "cube_mul_choose_sq_dvd_lcmRange_cube (m^3 C(k,m)^2 | lcm^3) at :1196",
+      "alt_denom_core_dvd (m^3 C(n,m) C(n+m,m) | lcm^3 C(n,k) C(n+k,k)) at :1217",
+      "two_dvd_central_binom + two_dvd_choose_mul_choose_add at :1241/:1254",
+      "alt_denom_dvd_lcmRange_cube_mul_sq (CAPSTONE: 2 m^3 C(n,m) C(n+m,m) | lcm^3 C(n,k)^2 C(n+k,k)^2, factor 2 included) at :1270",
+      "alt_term_lcm_clear (Q-level per-term clearing, Nat.cast_div lift) at :1295"
     ],
     "insights": [
       "S17 PREP (2026-05-16, researcher-1, doc-only) upgrades the S16 PREP §7 paste-ready S17a skeleton (which had 1 explicit `sorry` on the Kummer carry-count argument) to a **fully-discharged** ~75-LOC paste-ready Lean proof with **0 sorries** by replacing the `multiplicity`/`emultiplicity` bridge approach (S16 §3.3-§3.4 bearers + new `Mathlib.Data.Nat.Multiplicity` import) with a direct **subset-cardinality argument on `Nat.factorization_choose`'s carry formula**. The key insight: `Nat.factorization_choose` at `Mathlib/Data/Nat/Choose/Factorization.lean:131` returns the ℕ-valued carry count `#{i ∈ Ico 1 b | p^i ≤ k%p^i + (n-k)%p^i}` directly — no `emultiplicity → multiplicity → factorization` bridge needed. The carry bound `v_p(C(n,m)) ≤ log p n - v_p(m)` follows from showing the filter set is a subset of `Ico (v_p(m) + 1) (log p n + 1)`: positions `i ≤ v_p(m)` have `p^i ∣ m` (via `Nat.Prime.pow_dvd_iff_le_factorization` at Factorization/Basic.lean:168) ⇒ `m % p^i = 0` ⇒ the condition `p^i ≤ 0 + (n-m)%p^i = (n-m)%p^i < p^i` is impossible. The subset argument was numerically validated at 3 cases including 2 tight cases (n=16/m=8/p=2 and n=8/m=2/p=2 both have filter = Ico exactly).",
@@ -123,7 +130,9 @@
       "S20 ACT: `pow_factorization_mul_choose_le` ships as public `theorem` (not `private`), making it consumable by future S21 ACT and any external proof needing per-prime upper bound for `m * C(n, m)` factorization. This is a Mathlib-quality lemma — the SHARP bound `v_p(m·C(n,m)) ≤ log_p n` is non-trivial (naive sum-of-bounds gives ≤ 2·log_p n) and the proof's 5-stage discharge (Nat.factorization_mul → non-prime/prime split → log reduction → Nat.factorization_choose → subset argument) bypasses the multiplicity/emultiplicity bridges entirely.",
       "General m·C(n,m) ∣ lcmRange n proves cleaner than the m=1,2,3 parity case analysis: decomposing over the ACTUAL prime-support (factorization_prod_pow_eq_self) rather than range(n+1) (prod_pow_factorization_choose) makes every factor base a genuine prime, so primality is immediate from membership — no factorization≠0⇒prime contrapositive needed as in choose_dvd_lcmRange.",
       "S24: alternating-term integrality reduces to m³·C(n,m)·C(n+m,m) ∣ (lcmRange n)³·C(n,k)²·C(n+k,k)²; the m³·C(n,m)³ chunk clears purely from the lcm side (cube of general mul_choose_dvd_lcmRange), separating solved lcm-analysis from remaining pure-binomial telescoping",
-      "S24: C(n,m)·C(n+m,m) = C(n+m,2m)·C(2m,m) UNCONDITIONALLY (subset-of-subset Nat.choose_mul at (n+m,2m,m)); exposes central binomial C(2m,m) for van der Poorten §6 telescoping"
+      "S24: C(n,m)·C(n+m,m) = C(n+m,2m)·C(2m,m) UNCONDITIONALLY (subset-of-subset Nat.choose_mul at (n+m,2m,m)); exposes central binomial C(2m,m) for van der Poorten §6 telescoping",
+      "S25: the vdP §6 cross-factor closes via TWO subset-of-a-subset identities, not one: the lower C(n,k)C(k,m)=C(n,m)C(n-m,k-m) (Mathlib Nat.choose_mul) and an upper companion C(n+k,k)C(k,m)=C(n+m,m)C(n+k,k-m) (Nat.choose_mul at (n+k,n+m,n) + three choose_symm flips). Their product trades the denominator pair C(n,m)C(n+m,m) for C(k,m)^2 times an integer cofactor, and m^3 C(k,m)^2 = m*(m*C(k,m))^2 divides lcm^3 by S21.",
+      "S25: the factor 2 of the alternating denominator is free: C(n,k)C(n+k,k) = C(n+k,2k)C(2k,k) (S24 reindex) and the central binomial C(2k,k)=2C(2k-1,k-1) is even (Pascal + Nat.choose_symm_half), so the SECOND copy of the outer square absorbs the 2. No 2-adic analysis needed."
     ],
     "mathlibGaps": [
       "No Apéry numbers in Mathlib (aperyA, aperyB are gallery-local).",
@@ -147,7 +156,9 @@
       "S15.5 STANDALONE-USE: independent of S16 A.2, A.1 already discharges the `C(n+m, m) ∣ lcmRange (n+m)` divisibility step for vdP §6's alternating-bilinear summand. Combined with the existing `lcmRange_dvd_of_le` (Part 8a, S8 ACT) — which lifts `lcmRange n ∣ lcmRange (n+m)` for any `m ≥ 0` — A.1 alone proves the `C(n+m, m)` denominator absorbs into `lcmRange n` modulo a side gcd-clearing argument. This gives a partial Path (D) result: low-order vdP terms (k ≤ 3) close without waiting for A.2. Audit task for next claim of this slug: re-read vdP §6 to derive the precise hypothesis A.1 covers (likely `n ≥ k` for k ≤ 3, leaving k ≥ 4 to A.2 + Kummer).",
       "Van der Poorten §6 alternating bilinear second summand: Cnk = ∑_{j=1}^k (-1)^{j+1}/(2 j^3 · C(n,j)^2 · C(n+j,j)^2). mul_choose_dvd_lcmRange now supplies m·C(n,m) ∣ lcmRange n; the squared-binomial denominators need j^3·C(n,j)^2·C(n+j,j)^2 ∣ (lcmRange n)^? — assess whether pow of mul_choose_dvd_lcmRange (via pow_dvd_lcmRange_pow analog) or a fresh C(n+j,j) factorization bound is required.",
       "Pure-binomial cross-factor: prove C(n+m,m) ∣ C(n,k)²·C(n+k,k)²/C(n,m)² for 1≤m≤k≤n (the vdP §6 telescoping, no lcm) — this is the remaining gap after S24 separated out the lcm chunk",
-      "Use choose_mul_choose_reindex to route the C(2m,m) central-binomial divisibility (C(2m,m) ∣ lcm(1..2m)) into the cross-factor analysis"
+      "Use choose_mul_choose_reindex to route the C(2m,m) central-binomial divisibility (C(2m,m) ∣ lcm(1..2m)) into the cross-factor analysis",
+      "S25 DONE: per-term denominator analysis of the alternating half is COMPLETE (Part 15, 8 theorems, build-verified under v4.31, foundational axioms only). The S24 cross-factor gap and the /2 are both discharged; alt_term_lcm_clear gives the Q-level per-term shape.",
+      "S26 ACT (summation assembly): define the alternating inner sum altSum n k = sum_{m=1}^{k} (-1)^(m-1)/(2 m^3 C(n,m) C(n+m,m)) and prove exists z : Int, (lcmRange n)^3 * (C(n,k)^2 C(n+k,k)^2) * altSum n k = z by summing alt_term_lcm_clear over m in Finset.Icc 1 k (Int needed for the sign; the m-quotients from alt_term_lcm_clear enter with (-1)^(m-1)). Then combine with harmonicCubed_lcm_clear (Part 4) per k, sum over k in range (n+1) against the vdP closed form of aperyA, and discharge the parent denominator_control axiom. Definitional bridge needed: this file has no aperyA; either import the parent BaselProblemOQ01OQ01OQ02 (heavy analytic deps) or restate the closed form locally and prove equality where the axiom lives."
     ]
   },
   "tags": [
@@ -219,7 +230,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-06-14T19:10:00Z",
+  "lastUpdate": "2026-07-20T22:10:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -292,8 +303,8 @@
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean",
       "filename": "BaselProblemOQ01OQ01OQ02OQ02.lean",
-      "lineCount": 1097,
-      "theoremCount": 41,
+      "lineCount": 1314,
+      "theoremCount": 49,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
