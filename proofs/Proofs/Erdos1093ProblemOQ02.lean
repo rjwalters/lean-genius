@@ -244,11 +244,28 @@ def MaximalDeficiencyIs (D : ℕ) : Prop :=
 theorem record_valid : ValidDeficiencyExample 284 28 :=
   ⟨by norm_num, noSmallPrimeFactors_284_28⟩
 
+/-- **The record deficiency count `= 9`, `ofReduceBool`-free.**  The parent file's
+`deficiency_284_28` obtains this equality by `native_decide` (it evaluates the bignum
+binomial `C(284,28)` by Pascal recursion, so it depends on `Lean.ofReduceBool`).  Here
+we recover it from the hand-verified certificate `smooth_indices_284_28`: since
+`deficiency 284 28` is *by definition* the cardinality of the set of `28`-smooth window
+indices, and that set was pinned down to the explicit nine-element finset
+`{4, 8, 9, 11, 12, 14, 18, 20, 24}` without any `native_decide`, the count `= 9` follows
+by a kernel `decide` on a nine-element literal.  This removes `Lean.ofReduceBool` from the
+OQ-02 existence half below. -/
+theorem deficiency_284_28_certified : deficiency 284 28 = 9 := by
+  unfold deficiency
+  rw [smooth_indices_284_28]
+  decide
+
 /-- **Existence half of OQ-02.**  There is an admissible deficiency example
-attaining `9` — so if `9` is maximal, it is genuinely attained. -/
+attaining `9` — so if `9` is maximal, it is genuinely attained.  Uses the
+`ofReduceBool`-free `deficiency_284_28_certified` rather than the parent's
+`native_decide` record fact, so this existence half no longer depends on
+`Lean.ofReduceBool`. -/
 theorem exists_deficiency_nine :
     ∃ n k, ValidDeficiencyExample n k ∧ deficiency n k = 9 :=
-  ⟨284, 28, record_valid, deficiency_284_28⟩
+  ⟨284, 28, record_valid, deficiency_284_28_certified⟩
 
 /-- **Well-definedness of the maximal deficiency.**  The value `D` in
 `MaximalDeficiencyIs D` is unique: if two constants `D₁, D₂` are both maximal
