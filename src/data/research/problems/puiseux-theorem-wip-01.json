@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (verified fragment) + ramification criterion (researcher-5 2026-07-12): sharpened the binomial ramification result to a biconditional — root x^{m/n} of Yⁿ−xᵐ is unramified (in Laurent base K⸨x⸩) ⟺ n∣m, plus the ℚ-arithmetic core ynMinusXm_exponent_isInt_iff and the first in-range (unramified) worked example Y²−x⁴. 3 new theorems, 0 domain axioms. Full Newton–Puiseux (arbitrary polynomials + char-0 convergence) remains the genuine open remainder (>1000L).",
+    "progressSummary": "SATURATED TERMINUS (elementary/structural side COMPLETE): PuiseuxTheorem.lean = 1648L, 0 sorry / 0 axiom, RE-VERIFIED clean under v4.31.0 (host, exit 0) and warning-clean (2026-07-19). Verified fragment + ramification biconditional + subring/subalgebra/subfield edifice (proper, Part XV) + value-group lattice tower (inf to gcd / sup to lcm, directed, iSup) + orderTop AddValuation (Part XVI). Sole remaining open direction: full Newton–Puiseux for arbitrary polynomials (Newton polygon + char-0 convergence, >1000L, machinery absent from Mathlib) — not session-sized.",
     "builtItems": [
       "puiseux_binomial_isRoot in proofs/Proofs/PuiseuxTheorem.lean (binomial Puiseux root as Polynomial.IsRoot of Xⁿ-C(single m c); verified, 0 substantive axioms)",
       "puiseuxSubalgebra (K:CommRing): the Puiseux series form a K-subalgebra of HahnSeries Q K, upgrading the Subring; algebraMap_mem via isPuiseux_algebraMap (algebraMap = C = single 0) [VERIFIED]",
@@ -68,12 +68,13 @@
       "STRUCTURE (researcher-5, 2026-07-11): the level-n value group, previously only a raw Set (WithTop ℚ) of attained orderTop values, is literally the cyclic AddSubgroup.zmultiples ((n:ℚ)⁻¹) of ℚ. mem via AddSubgroup.mem_zmultiples_iff + zsmul_eq_mul (k • n⁻¹ = k/n); mono reuses the k/n=(k·d)/n' cast juggling (push_cast + div_eq_div_iff) from IsPuiseuxOfRamification.mono; iSup=⊤ realizes each q at level q.den via Rat.num_div_den. Gives the AddSubgroup-tower analogue of the subring tower iSup_puiseuxRamificationSubring.",
       "Session 2026-07-12 (researcher-8): the value-subgroup side had mono/directed/iSup but only a ONE-DIRECTIONAL inclusion. Added the order-embedding characterization ramificationValueSubgroup_le_iff ((1/n)ℤ ≤ (1/n′)ℤ ↔ n∣n′, converse of mono) + ramificationValueSubgroup_injective (distinct levels ⟹ distinct subgroups). So n↦(1/n)ℤ is an order embedding of (ℕ⁺,∣) into AddSubgroup ℚ and the iSup=⊤ filtration is faithful. 0-axiom, docker-verified [3070]. Forward proof: generator 1/n∈level n′ ⟹ 1/n=k/n′ ⟹ n′=k·n ⟹ n∣n′ (div_eq_div_iff + linear_combination + PNat.dvd_iff).",
       "The binomial root x^{m/n} of Yⁿ−xᵐ is unramified (integer valuation, lies in K⸨x⸩) exactly when n∣m, i.e. reduced ramification index n/gcd(n,m)=1. Prior file had only the one-directional not-isInt⟹ramified; the biconditional pins the exact ramification criterion.",
-      "OQ-01 (Artin–Schreier obstruction, gallery entry puiseux-theorem-oq-01): the obstruction is now NON-VACUOUS. artinSchreierExp_range_isPWO proves the exponent set {−1/p^{k+1}} is IsPWO (strictly monotone image of ℕ via Set.isPWO_of_wellQuasiOrderedLE + image_of_monotone), so artinSchreierSeries builds an explicit HahnSeries over any field with that support, and exists_hahnSeries_not_puiseux realises the obstruction by a genuine Hahn-field element."
+      "OQ-01 (Artin–Schreier obstruction, gallery entry puiseux-theorem-oq-01): the obstruction is now NON-VACUOUS. artinSchreierExp_range_isPWO proves the exponent set {−1/p^{k+1}} is IsPWO (strictly monotone image of ℕ via Set.isPWO_of_wellQuasiOrderedLE + image_of_monotone), so artinSchreierSeries builds an explicit HahnSeries over any field with that support, and exists_hahnSeries_not_puiseux realises the obstruction by a genuine Hahn-field element.",
+      "Session 2026-07-19 (researcher-1): PuiseuxTheorem.lean re-verifies clean under v4.31.0 (host bin/lake env lean, exit 0) — migration flip #39062 did NOT break it. Still 0 sorry / 0 axiom. Cleared all 4 residual warnings (HahnSeries.support_mul_subset_add_support to support_mul_subset x2, no-op push_cast removed, unused binder hq to _hq); file now warning-clean. Confirmed the prior nextStep 'directedness lattice increment P n ⊔ P m ⊆ P of n·m' is STALE — already done: ramificationValueSubgroup_sup (sup to lcm), _gcd_bezout (inf to gcd), directed_ramificationValueSubgroup, directed_puiseuxRamificationSubfield etc. all present and verified."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Value-group side of the colimit is now COMPLETE (mono + union, Part XIV). Remaining genuine open: full Newton–Puiseux for arbitrary polynomials (Newton polygon + char-0 convergence, >1000L, not in Mathlib) — the documented open remainder.",
-      "Possible next increment: directedness of the value-group tower as an explicit lattice/order statement (P n ⊔ P m ⊆ P (n*m)), mirroring exists_common_ramification at the valuation level."
+      "BLOCKED (sole open direction): full Newton–Puiseux for arbitrary polynomials — Newton polygon + char-0 convergence giving IsAlgClosed (PuiseuxField K). >1000L of machinery absent from Mathlib; not session-sized, not Aristotle-suitable. Reopen bar: Mathlib gains Newton-polygon / Puiseux-convergence infrastructure.",
+      "NOTE: the earlier nextStep suggesting the value-group lattice directedness increment is STALE — that work is DONE (ramificationValueSubgroup_sup / _gcd_bezout / directed_ramificationValueSubgroup, verified)."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -95,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-04-21T16:44:08+02:00",
-  "lastUpdate": "2026-07-12",
+  "lastUpdate": "2026-07-19",
   "leanFiles": [
     {
       "path": "Proofs/PuiseuxTheorem.lean",
