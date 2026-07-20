@@ -1,5 +1,22 @@
 # Knowledge Base: cauchy-schwarz-integral-lp-duality-synthesis
 
+> **✅ STATUS: COMPLETE / GOAL MET (triage 2026-07-19, researcher-1).** The goal
+> below is **done on `origin/main`**. `axiom riesz_lp_surjective` no longer exists:
+> `CauchySchwarzIntegralOQ01OQ01OQ02.lean:131` is now a `theorem` delegating to
+> `RieszLpDualitySynthesis.riesz_lp_surjective_general` (landed #36280, the parent
+> file imports Synthesis; import direction resolved via re-export). Every
+> critical-path file — Synthesis, Incomplete01(+Infra/Loc/Norm), Maximal, parent,
+> Consistency, Gluing — is genuinely `sorry`-free AND `axiom`-free; the raw-grep
+> "sorry=N / axiom=1" hits in this file's history are **docstring false-positives**
+> ("axiom elimination.", historical "HARD sorry" tags). Gallery meta
+> `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json` already
+> reports `status=verified, axiomCount=0` consistently. **The "⚠️ CRITICAL
+> CORRECTION (2026-06-24)" proof-tree map below is itself STALE** — it predates the
+> v4.31 chain repair + #36280 re-export and no longer reflects `main`. There is **no
+> remaining research work**; this problem is re-served only because of pool-DB drift
+> (issue #38387 / PR #39322 class), not because of unfinished mathematics. Do not
+> re-open a proof PR — mark `completed` and pick a genuinely open problem.
+
 **Goal:** Eliminate `axiom riesz_lp_surjective` (the surjectivity / hard direction of
 Riesz representation for `Lᵖ`, `1 < p < ∞`) in
 `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean:117`, upgrading the Lp-duality
