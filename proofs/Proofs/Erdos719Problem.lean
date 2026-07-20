@@ -492,10 +492,12 @@ theorem turanHypergraph_graph_le (n : ℕ) :
   · -- For each clique-free H, show H.edges.card ≤ n²/4
     rintro m ⟨H, hcf, rfl⟩
     -- Bridge: build a SimpleGraph with the same edge structure
-    let G : SimpleGraph (Fin n) where
-      Adj v w := ({v, w} : Finset (Fin n)) ∈ H.edges
-      symm := fun h => by rwa [Finset.pair_comm]
-      loopless v h := by have := H.uniform _ h; simp at this
+    let G : SimpleGraph (Fin n) := SimpleGraph.mk
+      (fun v w => ({v, w} : Finset (Fin n)) ∈ H.edges)
+      ⟨fun v w (h : ({v, w} : Finset (Fin n)) ∈ H.edges) =>
+        (Finset.pair_comm v w ▸ h : ({w, v} : Finset (Fin n)) ∈ H.edges)⟩
+      ⟨fun v (h : ({v, v} : Finset (Fin n)) ∈ H.edges) => by
+        have := H.uniform _ h; simp at this⟩
     haveI : DecidableRel G.Adj := fun v w => Finset.decidableMem _ _
     -- G is triangle-free (CliqueFree 3)
     have hcf3 : G.CliqueFree 3 := by
@@ -511,9 +513,9 @@ theorem turanHypergraph_graph_le (n : ℕ) :
     have h_sub : H.edges ⊆ G.edgeFinset.image Sym2.toFinset := by
       intro e he
       obtain ⟨v, w, _, rfl⟩ := Finset.card_eq_two.mp (H.uniform e he)
-      exact Finset.mem_image.mpr ⟨s(v, w),
-        SimpleGraph.mem_edgeFinset.mpr (SimpleGraph.mem_edgeSet.mpr he),
-        Sym2.toFinset_mk_eq⟩
+      refine Finset.mem_image.mpr ⟨s(v, w), ?_, Sym2.toFinset_mk_eq⟩
+      rw [SimpleGraph.mem_edgeFinset]
+      exact he
     -- Chain: |H.edges| ≤ |image| ≤ |G.edgeFinset| ≤ n²/4
     calc H.edges.card
         ≤ (G.edgeFinset.image Sym2.toFinset).card := Finset.card_le_card h_sub
