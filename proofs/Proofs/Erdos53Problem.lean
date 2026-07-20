@@ -343,10 +343,10 @@ theorem subsetSum_injOn_of_superincreasing {A : Finset ℤ}
     have hmA : m ∈ A := hS (Finset.mem_sdiff.mp hm).1
     -- the two half-differences have equal sum
     have hu1 : (S ∪ T).sum id = S.sum id + (T \ S).sum id := by
-      rw [← Finset.union_sdiff_self_eq_union, Finset.sum_union Finset.disjoint_sdiff_self_right]
+      rw [← Finset.union_sdiff_self_eq_union, Finset.sum_union disjoint_sdiff_self_right]
     have hu2 : (S ∪ T).sum id = T.sum id + (S \ T).sum id := by
       rw [Finset.union_comm, ← Finset.union_sdiff_self_eq_union,
-        Finset.sum_union Finset.disjoint_sdiff_self_right]
+        Finset.sum_union disjoint_sdiff_self_right]
     have hsplit : (S \ T).sum id = (T \ S).sum id := by
       have : S.sum id + (T \ S).sum id = T.sum id + (S \ T).sum id := by rw [← hu1, hu2]
       linarith
