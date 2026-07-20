@@ -71,7 +71,8 @@
       "**Superadditivity is subadditivity in a mirror.** The lower Weyl bracket needs no fresh variational argument: the reflection T ↦ −T sends the descending eigenvalue list μ to −μ read backwards, so the parent's single subadditive inequality already contains its own dual. Both halves of the two-sided Weyl bound rest on one Grassmann count.",
       "**Negation reverses the eigenvalue order, hence reindex by Fin.rev.** −T has eigenvalues −μ, but to keep them DESCENDING they must be read in reverse: the k-th largest eigenvalue of −T is minus the k-th smallest of T, i.e. −μ(n−1−k). Formalising this is exactly reindexing the eigenbasis by the order-reversing involution Fin.revPerm and negating; the antitone hypothesis survives because two order reversals compose to a monotone one, then negation flips once more.",
       "**The index arithmetic is the whole content of the dual bound.** Under index reversal the clean hypothesis i + j ≤ k of weyl_add_le becomes k + (n−1) ≤ i + j — the characteristic 'n−1 defect' of the lower Weyl inequality appears precisely because reversing three indices in [0, n) injects three copies of (n−1) that omega rearranges into a single one. No spectral input is touched.",
-      "**A negated sum stays a sum of negations.** (−T) + (−U) = −(T + U) lets the negated presentation of the sum operator be obtained from that of T + U directly, so the same neg_reindex_eigen lemma serves all three operators and the call to weyl_add_le sees genuinely the sum of the two negated operators it is fed."
+      "**A negated sum stays a sum of negations.** (−T) + (−U) = −(T + U) lets the negated presentation of the sum operator be obtained from that of T + U directly, so the same neg_reindex_eigen lemma serves all three operators and the call to weyl_add_le sees genuinely the sum of the two negated operators it is fed.",
+    "**The reflection is a duality on the whole keystone, not a trick for this one bound.** T ↦ −T with basis reindexing by Fin.rev acts only on the order/linear structure — reverse the enumeration, negate the eigenvalues — and never touches the variational content (Grassmann counts, Rayleigh quotients). So the same substitution dualizes ANY one-sided bound in the keystone family (interlacing's λ_{k+m} ≤ μ_k, Weyl monotonicity, the additive bound) into its mirror lower companion; weyl_add_ge is merely the first instance applied, and the two-sided Weyl bracket therefore costs exactly one genuine variational proof."
     ],
     "prerequisites": [
       "The parent entry's subadditive Weyl inequality (cauchy-interlacing-theorem-oq-03, weyl_add_le): for i + j ≤ k, ρ(k) ≤ μ(i) + ν(j)",
@@ -106,12 +107,20 @@
       "mathContext": "The descending order of −T's eigenvalues: −μ(Fin.rev ·) is antitone because Fin.rev reverses order once and negation reverses it again."
     },
     {
-      "id": "dual-weyl",
-      "title": "The Dual Weyl Inequality",
+      "id": "dual-weyl-setup",
+      "title": "The Dual Weyl Inequality — building the reflected data",
       "startLine": 75,
+      "endLine": 116,
+      "summary": "weyl_add_ge (statement + first phase): μ(i) + ν(j) ≤ ρ(k) for k + (n−1) ≤ i + j. Assembles the reflected presentations the primal inequality will consume — the three negated/reversed eigen-presentations via neg_reindex_eigen (the sum handled through (−T)+(−U) = −(T+U)), the three antitone facts via antitone_neg_rev, and the reversed-index hypothesis Fin.rev i + Fin.rev j ≤ Fin.rev k (Fin.val_rev + omega, where the n−1 defect is absorbed).",
+      "mathContext": "Reflect the data: eigenvalues μ ↦ −μ∘Fin.rev, indices i ↦ Fin.rev i; the hypothesis k + (n−1) ≤ i + j becomes the primal's Fin.rev i + Fin.rev j ≤ Fin.rev k."
+    },
+    {
+      "id": "dual-weyl-reduction",
+      "title": "The Dual Weyl Inequality — reduction to the primal bound",
+      "startLine": 117,
       "endLine": 126,
-      "summary": "weyl_add_ge: μ(i) + ν(j) ≤ ρ(k) for k + (n−1) ≤ i + j. Builds the three negated/reversed presentations (the sum via (−T)+(−U) = −(T+U)), the three antitone facts, and the reversed-index hypothesis (Fin.val_rev + omega), then applies the parent's weyl_add_le to −T, −U at indices Fin.rev i, Fin.rev j, Fin.rev k; Fin.rev_rev and linarith finish.",
-      "mathContext": "The superadditive lower bracket of the two-sided Weyl bound, λ_i(A) + λ_j(B) ≤ λ_{i+j−n}(A+B), obtained purely by reflection from the subadditive upper bound."
+      "summary": "weyl_add_ge (second phase): apply the parent's weyl_add_le to −T, −U, −(T+U) in the reversed eigenbases at indices Fin.rev i, Fin.rev j, Fin.rev k, obtaining −ρ(k) ≤ −μ(i) − ν(j); Fin.rev_rev collapses the double reversal and linarith rearranges to μ(i) + ν(j) ≤ ρ(k). No variational machinery is re-entered.",
+      "mathContext": "The superadditive lower bracket λ_i(A) + λ_j(B) ≤ λ_{i+j−n}(A+B), obtained purely by reflection from the subadditive upper bound."
     }
   ],
   "mainTheorems": [
