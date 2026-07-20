@@ -40,9 +40,9 @@
       "criticalProbability definition: p = 1/n",
       "criticalRandomGraph definition: G(n, 1/n)",
       "ComponentSizes, largestComponentSize, secondLargestComponentSize",
-      "critical_giant_size axiom: giant is Θ(n^{2/3})",
-      "komlos_sulyok_szemeredi axiom: second largest is O(log n)",
-      "second_largest_lower_bound axiom: second largest is Ω(log n)",
+      "critical_giant_size: placeholder stub theorem (∃ c₁ c₂, 0 < c₁ < c₂); does not formalize the giant's Θ(n^{2/3}) size",
+      "komlos_sulyok_szemeredi: placeholder stub theorem (∃ c, c > 0); does not formalize the O(log n) bound",
+      "second_largest_lower_bound: placeholder stub theorem (∃ c, c > 0); does not formalize the Ω(log n) bound",
       "erdos_745 theorem: combining upper and lower bounds"
     ],
     "axiomCount": 0,
@@ -55,7 +55,7 @@
     "historicalContext": "**Erdős Problem #745: Random Graph Components**\n\nThis problem concerns the Erdős-Rényi random graph model G(n, p), one of the foundational models in probabilistic combinatorics.\n\n**Historical Timeline:**\n- 1959-1960: Erdős and Rényi introduce the random graph model G(n, p)\n- 1960: They discover the phase transition at p = 1/n\n- 1960s-70s: The structure of the giant component is studied\n- 1980: Komlós, Sulyok, and Szemerédi prove Erdős's conjecture about the second largest component\n- 1980s-90s: Łuczak and others refine understanding of the critical window\n\n**The Phase Transition:**\nAt p = 1/n, the random graph undergoes a dramatic change:\n- p < 1/n: All components small (size O(log n))\n- p = 1/n: Giant emerges with size Θ(n^{2/3})\n- p > 1/n: Unique giant of size Θ(n)",
     "problemStatement": "**Problem Statement (Solved)**\n\nDescribe the size of the second largest component of the random graph $G(n, 1/n)$, where each edge is included independently with probability $1/n$.\n\n**Answer:**\nAlmost surely, the second largest component has size $\\Theta(\\log n)$.\n\nMore precisely:\n- Upper bound: second largest $\\leq c \\log n$ w.h.p.\n- Lower bound: second largest $\\geq c' \\log n$ w.h.p.\n\nThis was conjectured by Erdős and proved by Komlós, Sulyok, and Szemerédi in 1980.\n\n**The contrast is striking:**\n- Giant (largest): $\\Theta(n^{2/3})$\n- Second largest: $\\Theta(\\log n)$\n\nThe gap is polynomial!",
     "text": "Describe the second largest component of G(n, 1/n). Answer: It has size Θ(log n) almost surely. Proved by Komlós-Sulyok-Szemerédi (1980).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Random Graph Model:** Define G(n, p) structure with edge probability\n\n2. **Critical Threshold:** Define p = 1/n as the critical probability\n\n3. **Phase Transition:** Axiomatize subcritical, critical, and supercritical regimes\n\n4. **Giant Component:** Axiomatize that the giant has size Θ(n^{2/3})\n\n5. **KSS Theorem:** Axiomatize Komlós-Sulyok-Szemerédi result\n\n6. **Main Theorem:** Combine upper and lower bounds\n\n**Why Axioms?** Probability theory and concentration inequalities required for the proof are not fully developed in Mathlib.",
+    "proofStrategy": "**Formalization Approach (work in progress)**\n\n1. **Random Graph Model:** Define G(n, p) structure with edge probability\n\n2. **Critical Threshold:** Define p = 1/n as the critical probability\n\n3. **Phase Transition:** Represent subcritical, critical, and supercritical regimes\n\n4. **Giant Component:** Placeholder stub for the giant's Θ(n^{2/3}) size\n\n5. **KSS Theorem:** Placeholder stub for the Komlós-Sulyok-Szemerédi result\n\n6. **Main Theorem:** Combine upper and lower bounds\n\n**Why stubs?** The quantitative results (steps 4-5) are currently placeholder statements asserting only ∃ c > 0, not formalizations of the bounds. Probability theory and concentration inequalities required for a genuine proof are not fully developed in Mathlib. These are theorem declarations with True-stub proofs, not axioms (axiomCount is 0).",
     "keyInsights": [
       "**Critical Threshold:** At p = 1/n, the random graph is 'on the edge' of containing a giant",
       "**Giant Size:** At criticality, giant has size Θ(n^{2/3}), not Θ(n) as in supercritical case",
@@ -97,10 +97,10 @@
     {
       "id": "giant-component",
       "title": "The Giant Component at Criticality",
-      "summary": "critical_giant_size axiom, criticalExponent definition",
+      "summary": "critical_giant_size placeholder stub theorem, criticalExponent definition",
       "startLine": 136,
       "endLine": 157,
-      "mathContext": "Formal definition: critical_giant_size axiom, criticalExponent definition"
+      "mathContext": "critical_giant_size is a placeholder stub theorem (∃ c₁ c₂, 0 < c₁ < c₂), not a formalization of the Θ(n^{2/3}) bound; criticalExponent definition"
     },
     {
       "id": "kss-theorem",
