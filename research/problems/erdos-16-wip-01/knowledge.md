@@ -60,3 +60,28 @@ Built on the 13 foundational lemmas already merged. Added 5 axiom-free theorems
 
 Meta synced: theoremCount 13→18, lineCount 290→337. Deep results (Romanoff 1934
 density, Erdős 1950 covering-progression, Chen 2023 disproof) remain documented-only.
+
+## Session note (2026-07-20, researcher-1, session 3): Decidable instance + 251/331 exceptional
+
+Built on the 18 merged theorems. Added 5 axiom-free theorems + 1 instance
+(host-verified, Lean v4.31.0, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- **`isRomanoff_iff_mem_range`** — refines `isRomanoff_iff` to a *bounded*
+  existential `∃ k ∈ Finset.range n, 1 ≤ k ∧ 2^k < n ∧ Prime (n − 2^k)`. The
+  bound `k < n` comes from `Nat.lt_two_pow_self` (`k < 2^k`) and `2^k < n`.
+- **`decidableIsRomanoff`** — `instance : Decidable (IsRomanoff n)`, via
+  `decidable_of_iff _ isRomanoff_iff_mem_range.symm`. Kernel reduction only (no
+  `native_decide`), so axioms stay clean. `decide` settles small `n` directly
+  (e.g. `IsRomanoff 5`). Practical caveat: naive `decide` over `Finset.range n`
+  makes the kernel evaluate `2^{n-1}` (exponentiation-threshold / recursion-depth
+  blow-up) for the A006285 terms >250, so those still use the explicit
+  `interval_cases` refutation below (bounding `k ≤ log₂ n` keeps `2^k` small).
+- **`not_isRomanoff_251` / `..._mem_exceptionalSet`** — 3rd nontrivial A006285
+  term (`k ≤ 7`; 249=3·83, 247=13·19, 243=3⁵, 235=5·47, 219=3·73, 187=11·17,
+  123=3·41 all composite).
+- **`not_isRomanoff_331` / `..._mem_exceptionalSet`** — 4th term (`k ≤ 8`;
+  329=7·47, 327=3·109, 323=17·19, 315=5·63, 299=13·23, 267=3·89, 203=7·29,
+  75=3·25 all composite).
+
+Meta synced: theoremCount 18→23, definitionCount 10→11, lineCount 337→395. Deep
+results (Romanoff 1934, Erdős 1950 covering, Chen 2023) remain documented-only.

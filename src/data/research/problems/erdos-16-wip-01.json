@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Deep results (Romanoff 1934 density, Erdős 1950 covering-progression, Chen 2023 disproof) need analytic number theory absent from Mathlib; remaining tractable work is further A006285 verification (via decide for small n or interval_cases) and possibly a lowerDensity monotonicity/containment lemma.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 2): added isRomanoff_iff (bounded characterisation eliminating the prime variable) and machine-checked proofs that 127 and 149 — the first two nontrivial OEIS A006285 exceptional numbers cited in the file prose — are genuinely exceptional (previously only claimed in a comment). All 5 new lemmas axiom-free (propext/Classical.choice/Quot.sound), host-verified Lean v4.31.0. theoremCount 13→18, lineCount 290→337. Deep results (Romanoff 1934, Erdos 1950, Chen 2023) still documented-only.",
+    "progressSummary": "PROGRESS: Erdos16Problem.lean — added finite-range characterization isRomanoff_iff_mem_range + Decidable (IsRomanoff n) instance (kernel-only, axiom-clean infrastructure), and proved A006285 terms 251 and 331 exceptional. 23 theorems + 11 defs/instances, 0 sorry, 0 axiom; #print axioms clean on all new results.",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
@@ -39,14 +39,21 @@
       "erdosCovering_moduli_pos, erdosCovering_isCoveringSystem (covering system covers Z) in Erdos16Problem.lean",
       "isRomanoff_iff — bounded characterisation: IsRomanoff n ↔ ∃ k≥1, 2^k<n ∧ Prime(n−2^k), eliminating the prime variable p (Erdos16Problem.lean)",
       "not_isRomanoff_127 + oneHundredTwentySeven_mem_exceptionalSet — first nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
-      "not_isRomanoff_149 + oneHundredFortyNine_mem_exceptionalSet — second nontrivial A006285 term proved exceptional (Erdos16Problem.lean)"
+      "not_isRomanoff_149 + oneHundredFortyNine_mem_exceptionalSet — second nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
+      "isRomanoff_iff_mem_range (bounded existential over Finset.range n) in Erdos16Problem.lean",
+      "decidableIsRomanoff : Decidable (IsRomanoff n) instance in Erdos16Problem.lean",
+      "not_isRomanoff_251 / twoHundredFiftyOne_mem_exceptionalSet in Erdos16Problem.lean",
+      "not_isRomanoff_331 / threeHundredThirtyOne_mem_exceptionalSet in Erdos16Problem.lean"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
       "The explicit Erdos covering system [(0,2),(0,3),(1,4),(1,6),(3,8),(7,12),(23,24)] genuinely covers Z: every modulus divides 24, so the disjunction n%2=0 or n%3=0 or n%4=1 or n%6=1 or n%8=3 or n%12=7 or n%24=23 is provable directly by omega, then the residue-class witness is exhibited per case.",
       "Romanoff floor: 2^k+p >= 4 for k>=1, p prime, so 1 and 3 are exceptional; 5=2+3 and 7=4+3 are concrete Romanoff (non-exceptional) witnesses.",
       "The unbounded ∃ k p in IsRomanoff collapses to a finite search: p is forced to be n−2^k, and 2^k<n bounds k≤log2 n. isRomanoff_iff makes non-membership a per-exponent compositeness check dischargeable by interval_cases + norm_num prime extension.",
-      "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n−2^k) for each residue."
+      "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n−2^k) for each residue.",
+      "isRomanoff_iff can be refined to a bounded search: 2^k<n forces k<2^k<n, so the witness exponent lies in Finset.range n. This makes IsRomanoff decidable (decidableIsRomanoff instance) by kernel reduction only — no native_decide, axioms stay [propext, Classical.choice, Quot.sound].",
+      "decide over Finset.range n is impractical for the A006285 exceptional terms (>250) because the kernel would evaluate 2^{n-1} and hit the exponentiation threshold / recursion depth; the explicit interval_cases refutations (bounding k≤log2 n) keep 2^k small and are the robust route for specific numbers.",
+      "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n−2^k composite)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
