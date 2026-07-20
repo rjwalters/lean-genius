@@ -81,8 +81,8 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 39,
-      "summary": "Module docstring framing OQ-06·OQ-01: pin the integer-square-root logarithm bracket and use it to consolidate the two Chebyshev halves onto a common scale."
+      "endLine": 50,
+      "summary": "Module docstring framing OQ-06·OQ-01: pin the integer-square-root logarithm bracket and use it to consolidate the two Chebyshev halves onto a common scale; then the imports (parent bridge plus siblings OQ-05 and OQ-06, PrimeCounting, Real.log), the namespace, and `open Nat`."
     },
     {
       "id": "bracket",
@@ -102,8 +102,8 @@
       "id": "common-scale",
       "title": "Upper bound on the common π(m)·log m scale",
       "startLine": 124,
-      "endLine": 156,
-      "summary": "primeCounting_mul_log_upper: substituting the bracket lower bound for log(√m) renormalises the OQ-06 upper bound onto the π(m)·log m scale of OQ-05, with only a lower-order 2 log 2·π(m) residual."
+      "endLine": 162,
+      "summary": "primeCounting_mul_log_upper: substituting the bracket lower bound for log(√m) renormalises the OQ-06 upper bound onto the π(m)·log m scale of OQ-05, with only a lower-order 2 log 2·π(m) residual; closes with the #check sanity lines and the namespace end."
     }
   ],
   "conclusion": {
