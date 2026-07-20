@@ -23,7 +23,7 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "Builds cleanly and is now FULLY sorry-free and axiom-free (host-verified via lake env lean, 2026-07-12: no errors, 0 axioms, 0 sorries). The last open sub-case — the pure 2-power regime 8 ∣ n WITH −a ∈ K² (a = −c²), precisely the residual open content of Mathlib/FieldTheory/KummerExtension.lean's TODO (Lang, Algebra, VI §9, X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — was closed by the Aristotle prover (project 958405df) via a Lang VI §9 quadratic descent across K(√a) and inlined as two_power_capelli_neg_square (helpers quad_repr/quad_indep/descent/two_power_irred); two v4.28→v4.31 toolchain-drift grind steps were reproved by hand (a Fin-cardinality vacuous goal and a linear_combination field identity). The whole Vahlen–Capelli criterion vahlen_capelli (both parities, necessity + sufficiency), two_power_capelli, and the ∛3 corollaries (cubeRootThree_irreducible/_irrational) now depend only on [propext, Classical.choice, Quot.sound].",
-    "lineCount": 1293,
+    "lineCount": 1294,
     "theoremCount": 39,
     "definitionCount": 1,
     "originalContributions": [
@@ -47,7 +47,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 1293,
+    "lineCount": 1294,
     "path": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
@@ -69,53 +69,108 @@
   },
   "sections": [
     {
-      "id": "imports-setup",
-      "title": "Imports and namespace",
-      "startLine": 65,
-      "endLine": 75,
-      "summary": "Pulls in KummerExtension (the odd-case theorem and the file whose even-case TODO this targets) and GeomSum (the x−y ∣ xⁿ−yⁿ divisibility), opens the Polynomial namespace for X and C."
+      "id": "module-header",
+      "title": "Module Header: The Vahlen–Capelli Criterion and OQ-03",
+      "startLine": 1,
+      "endLine": 134,
+      "summary": "Module docstring stating OQ-03: prove the classical Vahlen–Capelli criterion that X^n − C a is irreducible over K iff (1) a is not a p-th power for every prime p ∣ n and (2) a ∉ −4·K⁴ whenever 4 ∣ n. Positions the file against Mathlib's odd-only X_pow_sub_C_irreducible_iff_forall_prime_of_odd and the explicit even-case TODO (Lang, Algebra VI §9), gives a results table and a roadmap, and records that the file is now fully sorry-free and depends only on propext / Classical.choice / Quot.sound. Includes imports (KummerExtension, GeomSum) and the namespace.",
+      "mathContext": "Condition (2), the −4·K⁴ obstruction, has no odd-exponent counterpart; it appears exactly when 4 ∣ n and is the extra content Mathlib leaves open."
     },
     {
       "id": "predicate",
-      "title": "Part 0 — The Vahlen–Capelli criterion as a predicate",
-      "startLine": 77,
-      "endLine": 85,
-      "summary": "Defines VahlenCapelliCond bundling condition (1) (no p-th power for prime p ∣ n) and condition (2) (a ∉ −4K⁴ when 4 ∣ n) into one reusable Prop shared by the odd and full theorems."
-    },
-    {
-      "id": "sophie-germain",
-      "title": "Part 1 — The Sophie Germain / Capelli identity",
-      "startLine": 87,
-      "endLine": 99,
-      "summary": "Proves u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²) over any commutative ring by ring. This is the algebraic source of condition (2) and the mathematical heart of the file."
-    },
-    {
-      "id": "necessity-two",
-      "title": "Part 2 — Necessity of condition (2): the −4·K⁴ obstruction",
-      "startLine": 101,
-      "endLine": 133,
-      "summary": "Lifts Sophie Germain to X^{4m}+4(Cb)⁴ (factor_capelli), handles the C-bookkeeping (C_neg_four_mul_pow), and packages the first quadratic as an explicit proper divisor of X^{4m} − C(−4b⁴) (capelli_factor_dvd)."
-    },
-    {
-      "id": "necessity-one",
-      "title": "Part 3 — Necessity of condition (1): the p-th power obstruction",
+      "title": "The Criterion as a Predicate (VahlenCapelliCond)",
       "startLine": 135,
-      "endLine": 151,
-      "summary": "Shows X^m − Cc divides X^{pm} − C(cᵖ) via sub_dvd_pow_sub_pow, so a perfect p-th power radicand (p ∣ n) forces a proper degree-m divisor."
+      "endLine": 153,
+      "summary": "Defines VahlenCapelliCond bundling condition (1) (no p-th power for prime p ∣ n) and condition (2) (a ∉ −4K⁴ when 4 ∣ n) into one reusable Prop shared by the odd and full theorems. For odd n condition (2) is vacuous.",
+      "mathContext": "The predicate is stated over an arbitrary field K, so every downstream theorem — necessity, the odd case, the even sufficiency, and the concrete ℚ instances — reads against the same criterion."
     },
     {
-      "id": "odd-case",
-      "title": "Part 4 — The odd case: full iff via Mathlib",
-      "startLine": 153,
-      "endLine": 170,
-      "summary": "For odd n condition (2) is vacuous, so vahlen_capelli_odd reduces the criterion to X_pow_sub_C_irreducible_iff_forall_prime_of_odd — a complete, sorry-free biconditional."
+      "id": "sophie-germain-identities",
+      "title": "The Sophie Germain / Capelli Factorisation Identities",
+      "startLine": 154,
+      "endLine": 186,
+      "summary": "sophie_germain: u⁴ + 4v⁴ = (u² − 2uv + 2v²)(u² + 2uv + 2v²) over any commutative ring (by ring). factor_capelli lifts it to X^{4m} + 4(C b)⁴, and C_neg_four_mul_pow handles the C(−4b⁴) = −4(C b)⁴ bookkeeping. The algebraic source of condition (2).",
+      "mathContext": "The Sophie Germain identity is the classical reason a = −4b⁴ makes X⁴ − C a factor; it is a standalone ring identity of independent use (Aurifeuillian factorisations)."
     },
     {
-      "id": "full-criterion",
-      "title": "Part 5 — The full criterion and the open even-sufficiency gap",
-      "startLine": 172,
-      "endLine": 202,
-      "summary": "Assembles vahlen_capelli by parity: odd branch closed via Part 4, even branch closed via the n = 2ᵏt reduction down to two_power_irred / two_power_capelli_neg_square — the even-sufficiency TODO from Mathlib's KummerExtension, now discharged."
+      "id": "necessity-obstructions",
+      "title": "Necessity: The Two Obstruction Divisors and the Odd Case",
+      "startLine": 187,
+      "endLine": 263,
+      "summary": "capelli_factor_dvd packages the Sophie Germain quadratic as an explicit proper divisor of X^{4m} − C(−4b⁴) (necessity of (2)); obstruction_pow_dvd shows X^m − C c ∣ X^{pm} − C(cᵖ) so a p-th power radicand forces a proper divisor (necessity of (1)). vahlen_capelli_odd gives the full odd-n biconditional by wrapping Mathlib, and not_irreducible_of_proper_dvd records that a proper divisor over a field means reducible.",
+      "mathContext": "Both conditions are necessary because their failure exhibits an explicit factorisation; over a field, a proper (nonunit, non-associate) divisor of positive degree contradicts irreducibility."
+    },
+    {
+      "id": "general-necessity",
+      "title": "General Necessity of the Criterion",
+      "startLine": 264,
+      "endLine": 335,
+      "summary": "vahlen_capelli_necessity assembles the obstruction lemmas: if X^n − C a is irreducible (n ≥ 1) then both Vahlen–Capelli conditions hold, by contraposition against the p-th-power and −4·K⁴ proper divisors.",
+      "mathContext": "The irreducible ⟹ conditions direction is uniform in n and needs no parity split — each condition's failure is turned directly into a proper divisor."
+    },
+    {
+      "id": "even-quartic-core",
+      "title": "Even Sufficiency Core: No Roots and No Quadratic Factor (n = 4)",
+      "startLine": 336,
+      "endLine": 505,
+      "summary": "The heart of the 4 ∣ n sufficiency. no_root_of_not_square_even rules out linear factors when a is not a square; capelli_four_coeff_contra and quartic_two_two_coeffs analyse a putative degree-2 × degree-2 split of X⁴ − C a via its coefficients; natDegree_pos_of_ne_zero_of_not_isUnit, no_linear_factor, monic_natDegree_two_eq, and leadingCoeff_inv_mul_monic provide the degree/monic bookkeeping for the factor analysis.",
+      "mathContext": "For the base case n = 4 the only way X⁴ − C a can reduce (given no root) is a 2+2 split; the Sophie Germain coefficient constraints show this forces a ∈ −4·K⁴, i.e. condition (2) fails."
+    },
+    {
+      "id": "even-sufficiency-transfer",
+      "title": "Even Sufficiency: Quartic Base Case and Odd-Multiplicativity Transfer",
+      "startLine": 506,
+      "endLine": 687,
+      "summary": "vahlen_capelli_four_suff proves the full sufficiency for n = 4 from the quartic factor analysis. vahlen_capelli_even_mul_odd transfers irreducibility across an odd factor of n (reducing n = 2ᵏt to the pure 2-power base). two_power_capelli_of_neg_not_square discharges, for every k, the branch where −a is not a square using only condition (1); neg_one_not_square_of_not_square_of_neg_square is a supporting square-descent lemma.",
+      "mathContext": "The even case reduces to the pure 2-power exponents 2ᵏ; within those, the sub-case −a ∉ K² is handled by a norm/descent argument needing only condition (1)."
+    },
+    {
+      "id": "vahlen-capelli-descent",
+      "title": "The Residual Even Case: Lang VI §9 Quadratic Descent (−a ∈ K²)",
+      "startLine": 688,
+      "endLine": 849,
+      "summary": "section VahlenCapelliDescent closes the last open sub-case — the pure 2-power regime 8 ∣ n (k ≥ 3) with −a ∈ K² (a = −c²), the one place the −4·K⁴ obstruction is genuinely needed and where Mathlib's odd-prime-power criterion has no analogue. two_power_capelli_neg_square carries out Lang VI §9's quadratic descent across K(√a). Produced by the Aristotle prover and inlined here, making the file sorry-free.",
+      "mathContext": "When −a is a square, irreducibility of X^{2ᵏ} − C a is descended through the quadratic extension K(√a); condition (2) is exactly what survives the descent to block a 2+2 split."
+    },
+    {
+      "id": "two-power-and-full-criterion",
+      "title": "The Pure 2-Power Base and the Full Criterion",
+      "startLine": 850,
+      "endLine": 998,
+      "summary": "two_power_capelli combines the two even sub-cases (−a a square vs not) into complete sufficiency for every 2-power exponent. vahlen_capelli then assembles the full biconditional for all n ≥ 1 by parity: odd via vahlen_capelli_odd, even via the 2ᵏt reduction down to two_power_capelli — the classical Vahlen–Capelli criterion in full generality, sorry-free.",
+      "mathContext": "Irreducible(X^n − C a) ⟺ VahlenCapelliCond K n a for every field K and n ≥ 1, upgrading Mathlib's odd-only result to the complete criterion."
+    },
+    {
+      "id": "positive-field-specializations",
+      "title": "Specializations to Ordered Fields (a > 0)",
+      "startLine": 999,
+      "endLine": 1152,
+      "summary": "For a linearly ordered field with a > 0: neg_not_square_of_pos and capelli_cond_two_of_pos show condition (2) is automatic (−a < 0 is not a square), so two_power_capelli_pos, vahlen_capelli_pos, vahlen_capelli_pos_two_pow, vahlen_capelli_pos_prime_pow, and vahlen_capelli_pos_prime reduce the criterion for positive radicands to condition (1) alone.",
+      "mathContext": "Over ℝ or ℚ a positive radicand can never be −4b⁴, so the −4·K⁴ obstruction is vacuous and irreducibility of X^n − C a is governed purely by the no-p-th-power condition."
+    },
+    {
+      "id": "cube-root-three-application",
+      "title": "The Motivating Application: ∛3 is Irrational",
+      "startLine": 1153,
+      "endLine": 1179,
+      "summary": "three_not_cube_rat shows b³ ≠ 3 for every rational b; cubeRootThree_irreducible instantiates vahlen_capelli_pos_prime (prime exponent 3) to prove X³ − C 3 is irreducible over ℚ; cubeRootThree_irrational concludes that any real x with x³ = 3 is irrational.",
+      "mathContext": "The parent entry's n = 3 Eisenstein argument is recovered as a single prime-exponent instance of the general criterion — the concrete pay-off motivating OQ-03."
+    },
+    {
+      "id": "concrete-rational-instances",
+      "title": "Concrete ℚ Instances of the Criterion",
+      "startLine": 1180,
+      "endLine": 1237,
+      "summary": "three_not_pth_power_rat (3 is no rational p-th power for p ≥ 2), X_pow_sub_C_three_irreducible (X^n − C 3 irreducible over ℚ for all n ≥ 1), and X_pow_two_pow_sub_C_three_irreducible (the 2-power exponents X^{2ᵏ} − C 3) — worked instances exercising the full criterion for a concrete positive radicand.",
+      "mathContext": "Because 3 > 0 the criterion collapses to condition (1); these show X^n − 3 is irreducible over ℚ for every exponent, generalising the ∛3 case to all n."
+    },
+    {
+      "id": "neg-one-square-instances",
+      "title": "Residual Instances When −1 is a Square",
+      "startLine": 1238,
+      "endLine": 1294,
+      "summary": "neg_not_square_of_neg_one_square, capelli_cond_two_of_neg_one_square, two_power_capelli_of_neg_one_square, and vahlen_capelli_of_neg_one_square specialise the descent to fields where −1 is a square (so −a is a square iff a is), giving a clean form of the 2-power criterion in that setting.",
+      "mathContext": "When −1 ∈ K², squareness of −a and of a coincide, streamlining the residual even case and the condition-(2) check for such fields."
     }
   ],
   "conclusion": {
