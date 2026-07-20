@@ -4,7 +4,7 @@
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
       "startLine": 1,
-      "endLine": 60
+      "endLine": 21
     },
     "type": "concept",
     "title": "Module Overview: Sigma-Finite Lp Riesz (All Three Steps Proved)",
@@ -27,8 +27,8 @@
     "id": "ann-cs-riesz-holder-infra",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 61,
-      "endLine": 99
+      "startLine": 40,
+      "endLine": 43
     },
     "type": "concept",
     "title": "Hölder Infrastructure Without IsFiniteMeasure: lintegral_mul_le_sf",
@@ -51,8 +51,8 @@
     "id": "ann-cs-riesz-integration-clm",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 100,
-      "endLine": 140
+      "startLine": 31,
+      "endLine": 34
     },
     "type": "insight",
     "title": "integrationCLM_sf: IsFiniteMeasure Was Always Superfluous for the CLM",
@@ -75,8 +75,8 @@
     "id": "ann-cs-riesz-density-extension",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 141,
-      "endLine": 215
+      "startLine": 38,
+      "endLine": 39
     },
     "type": "insight",
     "title": "integral_representation_sf: Step C Proved — Lp.induction is Valid for SigmaFinite",
@@ -99,8 +99,8 @@
     "id": "ann-cs-riesz-spanning-lemmas",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 216,
-      "endLine": 240
+      "startLine": 28,
+      "endLine": 30
     },
     "type": "concept",
     "title": "Spanning Set Infrastructure: Sigma-Finite Exhaustion Lemmas",
@@ -123,8 +123,8 @@
     "id": "ann-cs-riesz-step-b-vitali",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 241,
-      "endLine": 300
+      "startLine": 35,
+      "endLine": 37
     },
     "type": "concept",
     "title": "Step B (PROVED in Session 2): Lp Truncation via Dominated Convergence",
@@ -147,8 +147,8 @@
     "id": "ann-cs-riesz-step-a-localization",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 271,
-      "endLine": 305
+      "startLine": 36,
+      "endLine": 37
     },
     "type": "concept",
     "title": "Step A (Proved): Localization — Constructing g ∈ Lq via Spanning Sets",
@@ -171,8 +171,8 @@
     "id": "ann-cs-riesz-main-theorem",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 306,
-      "endLine": 345
+      "startLine": 27,
+      "endLine": 44
     },
     "type": "insight",
     "title": "riesz_lp_surjective_sigma_finite: Full Assembly — All Steps Proved",
@@ -195,12 +195,12 @@
     "id": "ann-cs-riesz-closing-summary",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": {
-      "startLine": 346,
-      "endLine": 386
+      "startLine": 44,
+      "endLine": 47
     },
     "type": "concept",
     "title": "Final State: All Sorries Closed — Sigma-Finite Riesz Complete",
-    "content": "Development of this module proceeded in stages: Step C was proved first (Session 1), then Step B (lp_truncation_tendsto_zero via `tendsto_lintegral_of_dominated_convergence`, Session 2), and finally Step A (localization_existence) in PR #15581. The current source header records 'Sorries Remaining (0)', and the main theorem riesz_lp_surjective_sigma_finite is assembled entirely from proved lemmas. A `#check @riesz_lp_surjective_sigma_finite` shows no sorryAx, matching meta.json's `sorries: 0` field. The oq-02 answer field in meta.json correctly notes that Step B was answered YES.",
+    "content": "Development of this module proceeded in stages: Step C was proved first (Session 1), then Step B (lp_truncation_tendsto_zero via `tendsto_lintegral_of_dominated_convergence`, Session 2), and finally Step A (localization_existence) in PR #15581. After the S20 split (#35122) the main theorem riesz_lp_surjective_sigma_finite lives in this 47-line assembling file, built entirely from proved lemmas in the Loc/Norm/Infra companions (0 sorries across all four files). A `#check @riesz_lp_surjective_sigma_finite` shows no sorryAx, matching meta.json's `sorries: 0` field. The oq-02 answer field in meta.json correctly notes that Step B was answered YES.",
     "mathContext": "Final state: $0$ sorries remaining — Steps A, B, and C are all fully proved, establishing the sigma-finite Riesz representation theorem $L^p(\\mu)^* \\cong L^q(\\mu)$ for $1 < p < \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
