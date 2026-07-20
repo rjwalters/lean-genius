@@ -1,0 +1,94 @@
+{
+  "slug": "erdos-326-wip-01",
+  "title": "Complete the Lean Formalization of Erdős Problem #326 (Additive Bases and Non-Convergent Subsequences)",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall A \\subseteq \\mathbb{N} \\text{ an additive basis of order } 2,\\ \\exists B \\subseteq A \\text{ a basis with increasing enumeration } b,\\ \\lim_{k\\to\\infty} b_k/k^2 \\text{ does not exist.}",
+    "plain": "Let A ⊆ ℕ be an additive basis of order 2 (every sufficiently large n is a sum of two elements of A). Erdős #326 asks: must there always exist a sub-basis B ⊆ A, enumerated increasingly as b₁<b₂<…, whose growth ratio bₖ/k² fails to converge? Erdős's original A=B version was disproved by Cassels (1957), who built an order-2 basis whose ratio aₖ/k² converges. The subset form remains OPEN. The Lean file Erdos326Problem.lean defines IsAddBasis, IsAddBasisOfOrder, growthRatio, HasGrowthLimit/HasNoGrowthLimit but proves only that an order-k basis is a basis; this WIP node formalizes the elementary order theory and growth-ratio behaviour.",
+    "whyMatters": [
+      "Additive bases and their growth are core additive-number-theory objects; a clean Lean treatment of the basis-order lattice seeds reusable infrastructure for sumset/basis problems."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "IsAddBasisOfOrder is monotone in the order and under set inclusion; IsAddBasis is monotone under inclusion (this session).",
+      "ℕ is an order-1 basis; ∅ and order 0 are never bases (this session).",
+      "growthRatio nonneg, growthRatio b 0 = 0, growth limit uniqueness (this session)."
+    ],
+    "open": [
+      "The subset-basis oscillation question (Erdős #326 itself).",
+      "Whether the deep bₖ = O(k²) growth bound and Cassels' construction can be formalized."
+    ],
+    "goal": "Formalize the elementary order theory of the basis predicates and the basic growth-ratio/limit facts from Mathlib; keep the deep oscillation content cleanly isolated as the open target."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-20T13:00:00-07:00",
+    "iteration": 1,
+    "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio.",
+    "blockers": [
+      {
+        "route": "the subset-basis oscillation dichotomy via elementary density",
+        "reopenCriterion": "materially new mechanism required",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Formalize the standard bₖ = O(k²) upper bound for order-2 bases (density ≥ c√n ⟹ k-th element ≤ Ck²); and the perfect squares as a concrete order-4 basis via Lagrange four-square (Mathlib: Nat.sum_four_squares).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Proofs/Erdos326WIP01.lean (12 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound]). Established the elementary order theory and growth-ratio facts for the additive-basis predicates: order/set monotonicity of IsAddBasisOfOrder and set monotonicity of IsAddBasis, ℕ as an order-1 basis, ∅ and order-0 never bases, growthRatio nonneg / =0 at k=0, growth-limit uniqueness, and the HasNoGrowthLimit unfolding. The deep oscillation content is untouched.",
+    "builtItems": [
+      "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
+      "IsAddBasis.mono",
+      "isAddBasisOfOrder_univ_one, isAddBasis_univ",
+      "not_isAddBasis_empty, not_isAddBasisOfOrder_zero",
+      "growthRatio_nonneg, growthRatio_zero",
+      "HasGrowthLimit.unique, HasGrowthLimit.not_hasNoGrowthLimit, hasNoGrowthLimit_iff"
+    ],
+    "insights": [
+      "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
+      "Order 0 and the empty set are degenerate non-bases (only 0 is representable), so all substantive work happens at order ≥ 1 with an infinite set.",
+      "growthRatio b 0 = 0 by the ℝ junk convention x/0 = 0 — worth pinning so downstream limit arguments can ignore the k=0 term."
+    ],
+    "mathlibGaps": [
+      "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."
+    ],
+    "nextSteps": [
+      "Perfect squares as a concrete order-4 basis via Nat.sum_four_squares (Lagrange).",
+      "The bₖ = O(k²) upper bound for order-2 bases.",
+      "Relate HasGrowthLimit to boundedness of the enumeration."
+    ],
+    "markdown": "# Knowledge Base: erdos-326-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational additive-basis / growth-ratio scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos326Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos326WIP01.lean` (12 theorems) on the additive-basis predicates and the growth ratio:\n- **Monotonicity**: `IsAddBasisOfOrder.mono_order` (raise the order), `IsAddBasisOfOrder.mono_set` and `IsAddBasis.mono` (enlarge the set).\n- **Extremal cases**: `isAddBasisOfOrder_univ_one` / `isAddBasis_univ` (`ℕ` is an order-1 basis); `not_isAddBasis_empty`, `not_isAddBasisOfOrder_zero`.\n- **Growth ratio**: `growthRatio_nonneg`, `growthRatio_zero`, `HasGrowthLimit.unique`, `HasGrowthLimit.not_hasNoGrowthLimit`, `hasNoGrowthLimit_iff`.\n\n### Key findings\n- The basis predicates form a monotone lattice in (order, set) — the atomic order theory for any basis-comparison argument.\n- Order 0 / the empty set are degenerate non-bases; substantive work is at order ≥ 1.\n\n### Reusable Lean recipe\n- Destructure the order predicate: `obtain ⟨N, hN⟩ := h; obtain ⟨m, hm, f, hf, hsum⟩ := hN n hn` (the `(_ : m ≤ k)` binder appears as `hm`).\n- Degenerate non-basis: pick `n = N+1`, split `Nat.eq_zero_or_pos k`; the `k=0` branch closes via `simp only [Fin.sum_univ_zero] at hsum; omega`, the `k>0` branch via `(Set.mem_empty_iff_false _).mp (hf ⟨0, hk⟩)`.\n- `growthRatio b 0 = 0`: `unfold growthRatio; simp` (`x/0 = 0`).\n- Limit uniqueness: `tendsto_nhds_unique` (atTop on ℕ is `NeBot`).\n\n### Next steps\n- Perfect squares as an order-4 basis (`Nat.sum_four_squares`).\n- The `bₖ = O(k²)` bound for order-2 bases.\n\n### Still open (unchanged)\nThe subset-basis oscillation question (Erdős #326) — deep; Cassels (1957) disproved only the `A = B` variant.\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "additive-combinatorics",
+    "additive-bases",
+    "sumsets",
+    "open",
+    "wip"
+  ],
+  "relatedProofs": [
+    "erdos-326"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/326"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-07-20T13:00:00.000Z",
+  "lastUpdate": "2026-07-20T13:00:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
