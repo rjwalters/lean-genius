@@ -140,6 +140,35 @@ noncomputable def discreteDiameter (z : Fin n → ℂ) : ℝ :=
 theorem discreteDiameter_nonneg (z : Fin n → ℂ) : 0 ≤ discreteDiameter z :=
   Real.rpow_nonneg (spreadProduct_nonneg z) _
 
+/-- **Strict positivity for distinct roots.**  If the tuple `z` is injective, its
+`n`-point diameter is strictly positive — the spread product is then positive and a
+positive base raised to any real power stays positive.  This sharpens
+`discreteDiameter_nonneg` and is what makes `Real.log (discreteDiameter z)` and the
+energy-bridge identity meaningful. -/
+theorem discreteDiameter_pos (z : Fin n → ℂ) (hz : Function.Injective z) :
+    0 < discreteDiameter z :=
+  Real.rpow_pos_of_pos ((spreadProduct_pos_iff z).mpr hz) _
+
+/-- **Positivity characterises distinctness** (for `n ≥ 2`): the `n`-point diameter is
+strictly positive iff the roots are pairwise distinct.  The forward direction uses that
+the normalising exponent `2/(n(n−1))` is nonzero for `n ≥ 2`, so a vanishing spread
+product would force `dₙ = 0`. -/
+theorem discreteDiameter_pos_iff {z : Fin n → ℂ} (hn : 2 ≤ n) :
+    0 < discreteDiameter z ↔ Function.Injective z := by
+  rw [← spreadProduct_pos_iff]
+  unfold discreteDiameter
+  have hepos : 0 < 2 / ((n : ℝ) * ((n : ℝ) - 1)) := by
+    have h2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    exact div_pos (by norm_num) (mul_pos (by linarith) (by linarith))
+  constructor
+  · intro h
+    rcases (spreadProduct_nonneg z).lt_or_eq with hpos | hz0
+    · exact hpos
+    · rw [← hz0, Real.zero_rpow (ne_of_gt hepos)] at h
+      exact absurd h (lt_irrefl 0)
+  · intro h
+    exact Real.rpow_pos_of_pos h _
+
 /-- The normalising exponent times the pair count is `1` (for `n ≥ 2`). -/
 private theorem pairCount_mul_exp {n : ℕ} (hn : 2 ≤ n) :
     (pairCount n : ℝ) * (2 / ((n : ℝ) * ((n : ℝ) - 1))) = 1 := by
