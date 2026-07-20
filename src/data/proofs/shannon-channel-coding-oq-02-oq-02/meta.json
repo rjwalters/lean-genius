@@ -7,7 +7,7 @@
     "author": "Thomas M. Cover & Joy A. Thomas (Thm 7.6.1), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Asymptotic_equipartition_property",
     "date": "2006",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ02.lean",
     "tags": [
       "information-theory",
@@ -43,7 +43,7 @@
       "jointlyTypicalSet_card_le: Property (2), the typical-set size bound |A_ε| ≤ 2^{n(H(X,Y)+ε)}.",
       "joint_typicality_independence_bound: Property (3), the product-law independence bound ∑_{A} q ≤ 2^{-n(I−3ε)} with I = H(X)+H(Y)−H(X,Y), assembled from (2) and the marginal typicality upper bound via a single rpow_add step."
     ],
-    "assumptions": "0 axioms and 0 sorries in this file. The two properties are proved by taking the per-sequence probability bounds that DEFINE membership in the jointly ε-typical set as hypotheses (definitional): p ω ≥ 2^{-n(H(X,Y)+ε)} for the size bound, and q ω ≤ 2^{-n(H(X)+H(Y)−2ε)} for the independence bound. Property (1) — P((Xⁿ,Yⁿ) ∈ A_ε) → 1, the weak law of large numbers applied to the empirical information density — is the genuinely analytic part and is deliberately NOT axiomatized (no axiom is introduced; the count stays at 0). NOTE ON VERIFICATION: this file was merged (PR #30752) while the Docker build host was unavailable, and has not yet been independently machine-checked in a clean build; it is therefore recorded as status \"formalized\" rather than \"verified\". The file imports only Mathlib and uses standard finite-sum / rpow lemmas; all cited lemma names were confirmed present in the pinned Mathlib v4.26.0.",
+    "assumptions": "0 axioms and 0 sorries in this file. The two properties are proved by taking the per-sequence probability bounds that DEFINE membership in the jointly ε-typical set as hypotheses (definitional): p ω ≥ 2^{-n(H(X,Y)+ε)} for the size bound, and q ω ≤ 2^{-n(H(X)+H(Y)−2ε)} for the independence bound. Property (1) — P((Xⁿ,Yⁿ) ∈ A_ε) → 1, the weak law of large numbers applied to the empirical information density — is the genuinely analytic part and is deliberately NOT axiomatized (no axiom is introduced; the count stays at 0); it is a deferred extension, not an assumption of the results stated here. VERIFICATION: machine-checked in a clean Lean/Mathlib v4.31.0 build (`lake env lean Proofs/ShannonChannelCodingOQ02OQ02.lean` compiles with only a benign unused-section-variable linter note); `#print axioms` on all four theorems reports dependence on only the foundational axioms propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool / native_decide), so the file is genuinely verified and axiom-free.",
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
     "lineCount": 146,
@@ -120,7 +120,6 @@
     "implications": "Properties (2) and (3) are exactly what the random-coding achievability proof consumes: union-bounding the independence bound over 2^{nR} codewords drives the decoding-error probability to 0 for every rate R below capacity C = I(X;Y). By isolating the combinatorial core, the formalization pins the remaining work down to a single, well-scoped analytic obligation (Property (1)), so the joint AEP can be completed without re-deriving the counting arguments.",
     "openQuestions": [
       "Formalize Property (1): P((Xⁿ,Yⁿ) ∈ A_ε) → 1, the weak law of large numbers applied to the empirical information density −(1/n)·log p(Xⁿ,Yⁿ), building on Mathlib's ProbabilityTheory LLN infrastructure.",
-      "Machine-verify this file in a clean Docker/Lake build and, once confirmed, promote its status from \"formalized\" to \"verified\".",
       "Assemble the full random-coding achievability argument by union-bounding Property (3) over a random codebook of 2^{nR} sequences."
     ]
   },
