@@ -29,6 +29,11 @@ first structural theorems.
 3. `numDistinctDistances_le_offDiag` — the trivial ceiling
    `numDistinctDistances S ≤ |S|·(|S|−1)`.
 
+3b. `numDistinctDistances_le_choose_two` — the sharp (unordered-pair) ceiling
+   `numDistinctDistances S ≤ S.card.choose 2`, halving the trivial bound. Proved
+   by factoring the symmetric distance map through `Sym2` and invoking
+   `Sym2.card_image_offDiag`.
+
 4. `numDistinctDistances_eq_zero_of_card_le_one` — the degenerate floor
    (`|S| ≤ 1 ⟹ 0`).
 
@@ -73,6 +78,31 @@ theorem numDistinctDistances_le_offDiag (S : Finset (EuclideanSpace ℝ (Fin 2))
   calc (S.offDiag.image (fun pq => dist pq.1 pq.2)).card
       ≤ S.offDiag.card := card_image_le
     _ = S.card * (S.card - 1) := by rw [Finset.offDiag_card, Nat.mul_sub_one]
+
+/-- **Sharp upper envelope.** Because the distance is symmetric, a distinct
+distance is determined by an *unordered* pair, so the count is at most
+`S.card.choose 2` — the correct ceiling, halving the crude `|S|·(|S|−1)` bound.
+Proved by factoring the symmetric distance map through `Sym2`. -/
+theorem numDistinctDistances_le_choose_two
+    (S : Finset (EuclideanSpace ℝ (Fin 2))) :
+    numDistinctDistances S ≤ S.card.choose 2 := by
+  unfold numDistinctDistances
+  rw [distinctDistances_eq_image]
+  -- The (custom) distance is symmetric, so it factors through `Sym2`.
+  set g : Sym2 (EuclideanSpace ℝ (Fin 2)) → ℝ :=
+    Sym2.lift ⟨fun a b => dist a b, fun a b => by
+      show ‖a - b‖ = ‖b - a‖; exact norm_sub_rev a b⟩ with hg
+  have hfac :
+      (fun pq : EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 2) => dist pq.1 pq.2)
+        = g ∘ Sym2.mk.uncurry := by
+    funext pq
+    obtain ⟨a, b⟩ := pq
+    simp only [hg, Function.comp_apply, Function.uncurry_apply_pair, Sym2.lift_mk]
+  calc (S.offDiag.image (fun pq => dist pq.1 pq.2)).card
+      = ((S.offDiag.image Sym2.mk.uncurry).image g).card := by
+          rw [hfac, ← Finset.image_image]
+    _ ≤ (S.offDiag.image Sym2.mk.uncurry).card := card_image_le
+    _ = S.card.choose 2 := Sym2.card_image_offDiag S
 
 /-- Fewer than two points determine no distance. -/
 theorem numDistinctDistances_eq_zero_of_card_le_one

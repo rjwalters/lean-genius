@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Formalize the √n×√n grid upper bound feeding minDistinctDistances_le_of_card_eq to get a concrete g(n)=O(n) ceiling; connect singlePointConjecture (#604) to the global count. Guth–Katz lower bound stays an imported assumption.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,19 +31,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Erdos89WIP01.lean — first machine-checked theorems for the #89 distinct-distances (Finset) scaffold. Positive-distance structure, redundant-filter characterization, counting envelope 0 ≤ numDistinctDistances ≤ |S|·(|S|−1), and the minDistinctDistances sInf-membership witness fact.",
+    "progressSummary": "PROGRESS: Erdos89WIP01.lean — added the sharp unordered-pair ceiling numDistinctDistances S ≤ S.card.choose 2 (Sym2 factoring of the symmetric custom distance), completing the counting envelope. 7 theorems, 0 sorry, 0 axiom; #print axioms = [propext, Classical.choice, Quot.sound].",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
       "Erdos89.numDistinctDistances_le_offDiag (≤ |S|·(|S|−1)) in Erdos89WIP01.lean",
       "Erdos89.numDistinctDistances_eq_zero_of_card_le_one in Erdos89WIP01.lean",
       "Erdos89.one_le_numDistinctDistances_of_two_le_card in Erdos89WIP01.lean",
-      "Erdos89.minDistinctDistances_le_of_card_eq in Erdos89WIP01.lean"
+      "Erdos89.minDistinctDistances_le_of_card_eq in Erdos89WIP01.lean",
+      "numDistinctDistances_le_choose_two (≤ S.card.choose 2, sharp unordered-pair ceiling) in Erdos89WIP01.lean"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
       "Counting envelope: numDistinctDistances S ≤ |S|·(|S|−1) via card_image_le + Finset.offDiag_card; and it vanishes iff too few points (|S|≤1 ⟹ 0, |S|≥2 ⟹ ≥1 via one_lt_card giving a distinct pair).",
-      "minDistinctDistances n = sInf over n-point sets is bounded above by any single n-point witness (Nat.sInf_le ⟨S, hcard, rfl⟩) — the membership hook the √n×√n grid upper-bound construction ultimately supplies."
+      "minDistinctDistances n = sInf over n-point sets is bounded above by any single n-point witness (Nat.sInf_le ⟨S, hcard, rfl⟩) — the membership hook the √n×√n grid upper-bound construction ultimately supplies.",
+      "The custom Erdos89.dist (‖p−q‖) is symmetric via norm_sub_rev, so it factors through Sym2; routing S.offDiag.image through Sym2.mk.uncurry and applying Sym2.card_image_offDiag gives the sharp ceiling numDistinctDistances S ≤ S.card.choose 2 (halving |S|·(|S|−1)). Same technique as erdos-98-wip-01."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
