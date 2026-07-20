@@ -23,7 +23,6 @@
     "axiomCount": 0,
     "lineCount": 201,
     "dateAdded": "06/26/26",
-    "buildStatus": "pending — committed during a Mathlib-cache permission outage (docker leantar could not unpack `/root/.cache/mathlib/*.ltar`, error 13) that blocked all local docker builds. Every cited Mathlib declaration was confirmed present in the pinned Mathlib v4.26 source; local `docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ02` verification is pending infra recovery. Opened as a draft PR so it is not auto-merged before the build passes.",
     "mathlibDependencies": [
       {
         "theorem": "IsGalois.intermediateFieldEquivSubgroup",
@@ -99,7 +98,7 @@
       "normalQuotientEquiv: the named quotient isomorphism `Gal(E/F) ⧸ H ≃* Gal(fixedField H / F)` for normal H, together with isGalois_fixedField_of_normal.",
       "quintic_card_intermediateField_eq_card_subgroup: the concrete instantiation linking the abstract correspondence to OQ-01's Abel–Ruffini witness X⁵ − 4X + 2 (splitting field Galois over ℚ with group S₅)."
     ],
-    "assumptions": "None mathematically: the file has 0 `sorry` and 0 `axiom` declarations and uses no `native_decide`; the content is a faithful packaging of Mathlib's already-machine-checked Fundamental Theorem of Galois Theory plus elementary corollaries, so the only foundational axioms involved are the standard `propext`, `Classical.choice`, `Quot.sound`. Caveat: local docker build verification is pending due to a Mathlib-cache permission infra outage at commit time (see `buildStatus`); the PR is opened as a draft so it is not auto-merged before the build is confirmed.",
+    "assumptions": "None. The file has 0 `sorry` and 0 `axiom` declarations and uses no `native_decide`; the content is a faithful packaging of Mathlib's already-machine-checked Fundamental Theorem of Galois Theory plus elementary corollaries, so the only foundational axioms involved are the standard `propext`, `Classical.choice`, `Quot.sound`. Verified under the current toolchain as part of the completed v4.31 migration and served on `main` with `status: verified`.",
     "theoremCount": 12,
     "definitionCount": 3
   },
@@ -230,7 +229,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A single self-contained Lean file packaging the Fundamental Theorem of Galois Theory for a finite Galois extension E/F — the order-reversing bijection between intermediate fields and subgroups — together with its order-reversal, endpoint, counting, degree/index, and normal-subgroup consequences, and a concrete instantiation on the Abel–Ruffini quintic X⁵ − 4X + 2 (0 sorries, 0 axioms; build verification pending a cache-infra outage).",
+    "summary": "A single self-contained Lean file packaging the Fundamental Theorem of Galois Theory for a finite Galois extension E/F — the order-reversing bijection between intermediate fields and subgroups — together with its order-reversal, endpoint, counting, degree/index, and normal-subgroup consequences, and a concrete instantiation on the Abel–Ruffini quintic X⁵ − 4X + 2 (0 sorries, 0 axioms; machine-checked).",
     "implications": "The Galois correspondence is the structural hinge of the entire Abel–Ruffini story: it is what lets a tower of radical subextensions be read as a subnormal series of the Galois group with abelian quotients. Consolidating it as a gallery dictionary — with the order-reversal, counting, degree/index, and normal-quotient pieces all named — makes the bridge between the field side and the group side explicit, and the final section ties it concretely to a quintic whose unsolvability OQ-01 already established.",
     "openQuestions": [
       "Compute the actual lattice of intermediate fields for a small concrete Galois extension (e.g. ℚ(√2, √3)/ℚ, Klein four group) by exhibiting the finite subgroup lattice and transporting it across the correspondence — turning `card_intermediateField_eq_card_subgroup` into an explicit enumeration.",
