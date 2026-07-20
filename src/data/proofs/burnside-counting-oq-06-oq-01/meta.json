@@ -189,6 +189,12 @@
       "targetId": "burnside-counting",
       "relationship": "extends",
       "description": "Delivers the number-theoretic payoff of the root Burnside/necklace framework at general modulus: the totient (Gauss-type) congruence n ∣ ∑_{d∣n} φ(n/d) k^d generalizing the prime-length Fermat case."
+    },
+    {
+      "id": "xref-burnside-oq0602-mobius-sibling",
+      "targetId": "burnside-counting-oq-06-oq-02",
+      "relationship": "sibling",
+      "description": "The Möbius companion under the same parent (oq-06): this entry generalizes Fermat via the φ-weighted total count ∑_{d∣n} φ(n/d)·k^d (all necklaces), while the sibling handles the μ-weighted aperiodic (Lyndon-word) count (1/n)·∑_{d∣n} μ(d)·k^{n/d}. Both closed forms collapse at a prime to the same Fermat congruence k^p ≡ k (mod p) — the φ-form and μ-form being the two classical divisor-sum expressions the Burnside necklace count admits."
     }
   ]
 }
