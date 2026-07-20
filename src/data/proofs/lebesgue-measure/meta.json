@@ -55,7 +55,7 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 417,
+    "lineCount": 408,
     "assumptions": "0 axioms, 0 sorries. All 20 theorems have complete proofs; most delegate to Mathlib's measure theory library as pedagogical wrappers.",
     "mathlib_version": "4.31.0",
     "theoremCount": 20,
@@ -155,7 +155,7 @@
       "id": "applications",
       "title": "Applications and $L^p$ Spaces",
       "startLine": 385,
-      "endLine": 417,
+      "endLine": 408,
       "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed.",
       "mathContext": "Verified: Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
@@ -272,7 +272,7 @@
       "Topology"
     ],
     "namespace": "LebesgueMeasure",
-    "lineCount": 417,
+    "lineCount": 408,
     "axiomCount": 0,
     "theoremCount": 20,
     "definitionCount": 0,
