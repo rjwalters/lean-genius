@@ -158,65 +158,76 @@
       "id": "header",
       "title": "Header: Conjecture, Answer, and Imports",
       "startLine": 1,
-      "endLine": 121,
-      "summary": "Module docstring stating the Ibragimov CLT question, the sharp threshold r > (2+δ)/δ, the long-run variance σ², and the per-session progress log (S2 scaffold through S16). Imports the parent CentralLimitTheoremOQ02.lean α-mixing infrastructure plus Mathlib's LpSpace, Bochner integral, IdentDistrib, rpow, and PSeries APIs; opens MeasureTheory/ProbabilityTheory/Filter/Real/Topology.",
-      "mathContext": "Setup: stationary $\\{X_n\\}$, $E[X_1]=0$, $E[|X_1|^{2+\\delta}]<\\infty$, $\\alpha(n)\\le C n^{-r}$; sharp threshold $r>(2+\\delta)/\\delta$ gives $\\sum_n \\alpha(n)^{\\delta/(2+\\delta)}<\\infty$ and finite $\\sigma^2$."
+      "endLine": 194,
+      "summary": "Docstring stating OQ-04 (formalize Ibragimov's central limit theorem for stationary α-mixing sequences), the honest per-session status, and the two remaining sorries (Davydov's inequality and the final CLT). Imports Mathlib probability/measure theory."
     },
     {
       "id": "predicates",
       "title": "Part I: Stationarity, Mixing, and Moment Predicates",
-      "startLine": 122,
-      "endLine": 168,
-      "summary": "Defines Stationary (marginal IdentDistrib slice X k =ᵈ X 0), PolynomialMixingRate (α(n) ≤ C·n^{-r}), and MomentBound2δ (MemLp at exponent 2+δ). The Stationary predicate uses the pairwise-marginal form sufficient for the long-run variance computation; full joint stationarity is noted as a deferred S6+ strengthening.",
-      "mathContext": "$\\mathrm{Stationary}: \\forall k,\\ X_k =_d X_0$. $\\mathrm{PolynomialMixingRate}: \\alpha(n)\\le C n^{-r}$. $\\mathrm{MomentBound2\\delta}: \\forall k,\\ X_k\\in L^{2+\\delta}$."
-    },
-    {
-      "id": "ibragimov-hypotheses",
-      "title": "Part I: IbragimovHypotheses Structure",
-      "startLine": 169,
-      "endLine": 214,
-      "summary": "The bundled hypothesis structure with 16 fields: stationary, integrable, mean_zero, delta_pos, moment_bound, the numerical bound alpha with alpha_nonneg, the pastSigma/futureSigma σ-algebra families with past_measurable/future_measurable and the sub-σ inclusions past_le/future_le, alpha_bound (abstract α-mixing coefficient ≤ numerical), poly_rate, and rate_admissible (r > (2+δ)/δ).",
-      "mathContext": "The structure formalizes all Ibragimov hypotheses in one place; the main theorem (S6+) opens it and extracts each field. past_le/future_le supply both sub-σ measurability and ambient MeasurableSet at the Davydov call sites."
+      "startLine": 195,
+      "endLine": 287,
+      "summary": "The hypothesis vocabulary: Stationary, PolynomialMixingRate (α_n ≤ C·n^{-r}), MomentBound2δ (uniform L^{2+δ} bound), and the bundled IbragimovHypotheses structure gathering the stationarity, mixing-rate, and moment assumptions of the theorem.",
+      "mathContext": "Ibragimov: stationary + $\\alpha_n = O(n^{-r})$ with $r > 1+2/\\delta$ + $\\sup_n \\|X_n\\|_{2+\\delta} < \\infty \\Rightarrow$ CLT."
     },
     {
       "id": "summability-helpers",
-      "title": "Part II: Elementary Summability Helpers (proven)",
-      "startLine": 215,
-      "endLine": 237,
-      "summary": "Proves polynomial_summable_of_exponent_gt_one (Summable (n^{-s}) for s > 1) from Mathlib's Real.summable_nat_rpow, then derives ibragimov_threshold_summable: under r > (2+δ)/δ the Ibragimov covariance series ∑ n^{-rδ/(2+δ)} is summable, via the sharp-threshold algebra.",
-      "mathContext": "$\\sum_n n^{-s}<\\infty \\iff s>1$. Corollary: $r>(2+\\delta)/\\delta \\implies r\\delta/(2+\\delta)>1 \\implies \\sum_n n^{-r\\delta/(2+\\delta)}<\\infty$."
+      "title": "Part II: Elementary Summability Helpers",
+      "startLine": 288,
+      "endLine": 310,
+      "summary": "Proven summability lemmas: polynomial_summable_of_exponent_gt_one (∑ n^{-s} converges for s>1) and ibragimov_threshold_summable, verifying the mixing exponent under Ibragimov's threshold gives a summable series."
+    },
+    {
+      "id": "truncation-tail",
+      "title": "Part II-bis: Truncation Tail Second-Moment Bound",
+      "startLine": 311,
+      "endLine": 399,
+      "summary": "The truncation second-moment control (S18): sq_le_rpow_of_large and truncation_tail_sq_le bound the L² tail of a truncated variable by its (2+δ)-moment, the standard truncation input to α-mixing CLTs."
     },
     {
       "id": "alpha-mixing-facts",
-      "title": "Part III: α-Mixing Coefficient Basic Facts (S4)",
-      "startLine": 238,
-      "endLine": 403,
-      "summary": "Three proven facts about the parent's 4-fold nested supremum alphaMixingCoeff: indicator_cov_le_one (per-term [0,1] envelope and BddAbove witness), alphaMixingCoeff_nonneg, alphaMixingCoeff_le_one, and davydov_indicator_bound (indicator base case |μ(A∩B)−μ(A)μ(B)| ≤ α, peeling the nested ⨆ via le_ciSup_of_le and ciSup_pos).",
-      "mathContext": "$0 \\le \\alpha(\\mathcal F,\\mathcal G) \\le 1$; for indicators $A\\in\\mathcal F$, $B\\in\\mathcal G$: $|\\mu(A\\cap B)-\\mu(A)\\mu(B)| \\le \\alpha(\\mathcal F,\\mathcal G)$."
+      "title": "Part III: α-Mixing Coefficient Basic Facts",
+      "startLine": 400,
+      "endLine": 565,
+      "summary": "Foundational facts about the strong-mixing coefficient: indicator_cov_le_one, alphaMixingCoeff_nonneg and alphaMixingCoeff_le_one (0 ≤ α ≤ 1), and davydov_indicator_bound — the indicator-level covariance bound underlying Davydov's inequality.",
+      "mathContext": "$\\alpha(\\mathcal{A},\\mathcal{B}) = \\sup|P(A\\cap B)-P(A)P(B)| \\in [0,1]$."
     },
     {
       "id": "davydov-inequality",
-      "title": "Part IV: Davydov's Covariance Inequality (S4 target, sorry)",
-      "startLine": 404,
-      "endLine": 614,
-      "summary": "Builds toward Davydov's covariance inequality: indicator_pair_covariance_eq, indicator_covariance_le_alpha (unit case), and scaled_indicator_covariance_le_alpha (|Cov(a·1_A, b·1_B)| ≤ |a||b|α, the single-cell building block of the simple-function step) are proven. The full L^p version davydov_covariance_inequality is stated and left as a sorry (S5c: truncation + Hölder density step).",
-      "mathContext": "Target: $|\\mathrm{Cov}(X,Y)| \\le 12\\,\\alpha^{(p-2)/p}\\,\\|X\\|_p\\,\\|Y\\|_p$. Reduces to the proven indicator/scaled-indicator cell bounds plus an $L^p$ density step."
+      "title": "Part IV: Davydov's Covariance Inequality — Indicator and Finite-Sum Levels",
+      "startLine": 566,
+      "endLine": 942,
+      "summary": "Builds Davydov's inequality bottom-up: indicator_pair_covariance_eq, indicator_covariance_le_alpha and its scaled/finite-sum refinements (scaled_indicator_covariance_le_alpha, finset_indicator_covariance_le_alpha), and the telescoping_layer_covariance_le_alpha bound — covariances of indicator combinations controlled by the mixing coefficient."
+    },
+    {
+      "id": "covariance-translation",
+      "title": "Covariance Translation-Invariance",
+      "startLine": 943,
+      "endLine": 1008,
+      "summary": "Algebraic reduction (S19): covariance_add_const_left / covariance_add_const_right show covariance is invariant under adding constants, reducing the general Davydov bound to the centered case."
+    },
+    {
+      "id": "layer-cake",
+      "title": "Layer-Cake Primitives and the L^p Density Step",
+      "startLine": 1009,
+      "endLine": 1791,
+      "summary": "The analytic core (S21): the layer-cake representation (layer_cake_pointwise / _repr / _prod, mean_eq_survival_lt_Ioc, mean_mul_eq_double_joint_survival) rewrites covariances as double survival-function integrals (covariance_eq_double_survival_covariance), which are then bounded by the mixing coefficient over rectangles (bounded_covariance_le_alpha_mul_rectangle, linfty_covariance_le_four_alpha, truncated_covariance_le_four_alpha_sq), culminating in the statement davydov_covariance_inequality (the general L^p bound, its proof left as the one substantive sorry).",
+      "mathContext": "Davydov: $|\\mathrm{Cov}(X,Y)| \\le 8\\,\\alpha^{1-1/p-1/q}\\|X\\|_p\\|Y\\|_q$ via layer-cake on survival functions."
     },
     {
       "id": "longrun-variance",
-      "title": "Part V: Long-Run Variance Absolute Convergence (S3)",
-      "startLine": 615,
-      "endLine": 765,
-      "summary": "Proves stationary_eLpNorm_eq (stationarity collapses the per-lag L^p norms), polynomial_mixing_summable (the covariance series converges absolutely from the threshold summability), and longrun_variance_absolutely_convergent (σ² = Var(X₁) + 2∑ Cov(X₁, X_{k+1}) exists and is finite) — the last proven modulo the davydov_covariance_inequality sorry.",
-      "mathContext": "$\\sigma^2 = \\mathrm{Var}(X_1) + 2\\sum_{k\\ge 1}\\mathrm{Cov}(X_1, X_{k+1})$ converges absolutely under the Ibragimov threshold."
+      "title": "Part V: Long-Run Variance Absolute Convergence",
+      "startLine": 1792,
+      "endLine": 1942,
+      "summary": "The S3 deliverable: stationary_eLpNorm_eq (stationarity makes L^p norms shift-invariant), polynomial_mixing_summable, and longrun_variance_absolutely_convergent — the series σ² = Var(X₀) + 2∑Cov(X₀,Xₖ) converges absolutely, proven modulo the Davydov sorry.",
+      "mathContext": "$\\sigma^2 = \\mathrm{Var}(X_0) + 2\\sum_{k\\ge1}\\mathrm{Cov}(X_0,X_k)$ converges absolutely under summable mixing."
     },
     {
       "id": "main-theorem",
-      "title": "Part VI: Ibragimov's CLT Main Theorem (S6+ target, sorry)",
-      "startLine": 766,
-      "endLine": 807,
-      "summary": "States the main result mixing_clt_ibragimov via characteristic-function (Lévy continuity) convergence, with the long-run variance σ² supplied as an external parameter. Left as a sorry (S6+ target). This and davydov_covariance_inequality are the file's two remaining sorries.",
-      "mathContext": "Statement: $\\phi_{S_n/\\sqrt n}(t) \\to \\exp(-\\sigma^2 t^2/2)$ for every $t\\in\\mathbb R$, under IbragimovHypotheses with $\\sigma^2>0$."
+      "title": "Part VI: Ibragimov's CLT (Main Theorem Statement)",
+      "startLine": 1943,
+      "endLine": 1984,
+      "summary": "The S6+ target: mixing_clt_ibragimov states that under IbragimovHypotheses the normalized partial sums converge in distribution to a Gaussian with variance the long-run variance. The full proof is the second sorry; the long-run-variance lemma above is the reduction achieved this session.",
+      "mathContext": "$S_n/\\sqrt{n} \\xrightarrow{d} \\mathcal{N}(0,\\sigma^2)$ for stationary $\\alpha$-mixing $(X_n)$."
     }
   ],
   "crossReferences": [
