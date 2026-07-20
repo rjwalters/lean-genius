@@ -168,4 +168,56 @@ theorem IsAddBasisOfOrder.infinite {A : Set ℕ} {k : ℕ}
   have hge : k * M + 1 ≤ max N (k * M + 1) := le_max_right _ _
   omega
 
+/-! ## The squares are a basis of order 4 but NOT of order 3 (mod-8 obstruction)
+
+Lagrange's four-square theorem makes the squares an order-`4` basis
+(`isAddBasisOfOrder_squares_four`).  Order `3` does **not** suffice: infinitely
+many integers — those `≡ 7 (mod 8)` — are not sums of three squares.  This is the
+*easy* (necessary) direction of Legendre's three-square theorem, needing only the
+finite fact that squares are `0, 1, 4 (mod 8)` and no three of those sum to `7`
+modulo `8` (a `decide` over `ZMod 8`); the full Legendre theorem is not required.
+Consequently the four-square order is sharp. -/
+
+/-- Every perfect square is `0`, `1`, or `4` modulo `8`. -/
+theorem mem_squares_mod_eight {s : ℕ} (hs : s ∈ Squares) :
+    (s : ZMod 8) = 0 ∨ (s : ZMod 8) = 1 ∨ (s : ZMod 8) = 4 := by
+  obtain ⟨r, rfl⟩ := hs
+  have hx : ∀ x : ZMod 8, x ^ 2 = 0 ∨ x ^ 2 = 1 ∨ x ^ 2 = 4 := by decide
+  have hcast : ((r ^ 2 : ℕ) : ZMod 8) = (r : ZMod 8) ^ 2 := by push_cast; ring
+  rw [hcast]; exact hx _
+
+/-- **The perfect squares are not an additive basis of order `3`.**  If they were,
+every sufficiently large `n` — in particular `n = 8N + 7` — would be a sum of at
+most three squares.  But modulo `8` each square is `0, 1` or `4`, and no sum of at
+most three of these equals `7 (mod 8)`, while `8N + 7 ≡ 7 (mod 8)`.  Contradiction.
+Together with `isAddBasisOfOrder_squares_four` this shows the order of the squares
+as an additive basis is exactly `4`. -/
+theorem not_isAddBasisOfOrder_squares_three : ¬ IsAddBasisOfOrder Squares 3 := by
+  rintro ⟨N, hN⟩
+  obtain ⟨m, hm, f, hf, hsum⟩ := hN (8 * N + 7) (by omega)
+  -- reduce the representation modulo 8
+  have hcast : (∑ i, (f i : ZMod 8)) = 7 := by
+    have h : ((∑ i, f i : ℕ) : ZMod 8) = 7 := by
+      rw [hsum]; push_cast; rw [show (8 : ZMod 8) = 0 from by decide]; ring
+    rwa [Nat.cast_sum] at h
+  have hmod : ∀ i, (f i : ZMod 8) = 0 ∨ (f i : ZMod 8) = 1 ∨ (f i : ZMod 8) = 4 :=
+    fun i => mem_squares_mod_eight (hf i)
+  interval_cases m
+  · rw [Fin.sum_univ_zero] at hcast; exact absurd hcast (by decide)
+  · rw [Fin.sum_univ_one] at hcast
+    rcases hmod 0 with h | h | h <;> rw [h] at hcast <;> revert hcast <;> decide
+  · rw [Fin.sum_univ_two] at hcast
+    rcases hmod 0 with h0 | h0 | h0 <;> rcases hmod 1 with h1 | h1 | h1 <;>
+      rw [h0, h1] at hcast <;> revert hcast <;> decide
+  · rw [Fin.sum_univ_three] at hcast
+    rcases hmod 0 with h0 | h0 | h0 <;> rcases hmod 1 with h1 | h1 | h1 <;>
+      rcases hmod 2 with h2 | h2 | h2 <;> rw [h0, h1, h2] at hcast <;> revert hcast <;> decide
+
+/-- **The additive-basis order of the perfect squares is exactly `4`:** they form a
+basis of order `4` (Lagrange) but of no smaller order (the `≡ 7 (mod 8)` obstruction
+rules out order `3`, and `mono_order` propagates non-representability downward). -/
+theorem not_isAddBasisOfOrder_squares_of_le_three {k : ℕ} (hk : k ≤ 3) :
+    ¬ IsAddBasisOfOrder Squares k :=
+  fun h => not_isAddBasisOfOrder_squares_three (h.mono_order hk)
+
 end Erdos326
