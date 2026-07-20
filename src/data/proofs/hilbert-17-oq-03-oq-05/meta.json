@@ -48,7 +48,7 @@
       "The arithmetic–geometric mean (AM–GM) inequality and sum-of-squares certificates for non-negativity.",
       "Evaluation of multivariate polynomials and the PSD predicate ∀ v, 0 ≤ eval v p."
     ],
-    "lineCount": 619,
+    "lineCount": 646,
     "relatedProblems": [
       {
         "id": "hilbert-17-oq-03-oq-02",
@@ -214,22 +214,50 @@
       "id": "real-family",
       "title": "The Motzkin Family as a Real Function and Its AM–GM Core",
       "startLine": 43,
-      "endLine": 57,
+      "endLine": 74,
       "summary": "Defines motzkinFun c x y = x⁴y² + x²y⁴ + 1 − c·x²y² and proves motzkin_amgm: x⁴y² + x²y⁴ + 1 ≥ 3x²y² for all real x, y — a genuine sum-of-squares certificate (nlinarith from squares (xy−1)², (x²y−y)², (xy²−x)², (x²y²−1)²) that drives the sufficient direction of the threshold."
     },
     {
       "id": "threshold-real",
       "title": "Sharp PSD Threshold (Real Form)",
-      "startLine": 59,
-      "endLine": 99,
+      "startLine": 75,
+      "endLine": 117,
       "summary": "motzkinFun_nonneg (c ≤ 3 ⟹ PSD, the AM–GM certificate dominating the deficit (3 − c)·x²y² ≥ 0), motzkinFun_neg_of_gt (c > 3 ⟹ value 3 − c < 0 at (1,1)), and the equivalence motzkinFun_psd_iff: PSD on ℝ² ⟺ c ≤ 3. Corollaries motzkin_nonneg (the boundary c = 3 case) and three_is_sharp (3 is the largest PSD coefficient)."
     },
     {
       "id": "threshold-poly",
       "title": "Sharp PSD Threshold (MvPolynomial Form)",
-      "startLine": 101,
-      "endLine": 142,
+      "startLine": 118,
+      "endLine": 159,
       "summary": "Defines motzkinPoly c : MvPolynomial (Fin 2) ℝ and the PSD predicate IsPSDMv (matching the parent's IsPositiveSemidefiniteMv), proves eval_motzkinPoly bridging the polynomial to motzkinFun, and transports the threshold: motzkinPoly_psd_iff (IsPSDMv (motzkinPoly c) ⟺ c ≤ 3) and motzkinPoly_three_psd (the Motzkin polynomial is PSD)."
+    },
+    {
+      "id": "sos-failure",
+      "title": "The SOS Failure Across the Whole Family",
+      "startLine": 160,
+      "endLine": 385,
+      "summary": "motzkinPoly_eq expands the polynomial in the monomial basis and the coeff_mP_* lemmas extract each degree-6 coefficient (the x²y² coefficient is −c; every pure-axis coefficient vanishes). totalDegree_motzkinPoly and degree_bound_gen bound the monomials available to any SOS decomposition, and motzkinPoly_not_sos shows that for every c > 0 the polynomial is not a sum of squares — the [x²y²] coefficient of an SOS is a sum of real squares (≥ 0) yet equals −c < 0. Combined with the PSD threshold this yields motzkinPoly_psd_not_sos (PSD-but-not-SOS for 0 < c ≤ 3), the classical instance motzkin_classical_psd_not_sos, and the sharp SOS threshold motzkinPoly_sos_iff: motzkinPoly c is SOS ⟺ c ≤ 0."
+    },
+    {
+      "id": "family-structure",
+      "title": "Structure of the Family: Diagonal Value, Boundary Zero, and Symmetries",
+      "startLine": 386,
+      "endLine": 499,
+      "summary": "The diagonal evaluation motzkinFun_at_one_one (Mₐ(1,1) = 3 − c) drives the threshold, with the boundary zero motzkinFun_three_zero_at_one_one and strict positivity motzkinFun_pos_at_one_one_of_lt_three. Monotonicity (motzkinFun_antitone_in_coeff), the reflection and evenness symmetries (motzkinFun_symm, motzkinFun_even_left/right/both), the constant axis values (motzkinFun_on_axis_left/right = 1), motzkinFun_ne_zero_on_axes (the real variety avoids the coordinate axes), and motzkinFun_three_zero_at_sign_ones (the boundary member vanishes at all four sign variants of (1,1)) map out the geometry of the family."
+    },
+    {
+      "id": "posdef-threshold",
+      "title": "The Sharp Positive-Definite Threshold (c < 3)",
+      "startLine": 500,
+      "endLine": 556,
+      "summary": "motzkinFun_pos_of_lt_three upgrades non-negativity to strict positivity everywhere for c < 3, and motzkinFun_posDef_iff records the companion sharp threshold: the family is positive definite (0 < Mₐ everywhere) ⟺ c < 3 — one notch below the PSD threshold c ≤ 3, since the boundary member c = 3 has real zeros at the four sign variants of (1,1)."
+    },
+    {
+      "id": "artin-certificate",
+      "title": "Constructive Artin Certificate: a Rational-SOS Positivstellensatz",
+      "startLine": 557,
+      "endLine": 646,
+      "summary": "For every PSD member (c ≤ 3) a concrete Positivstellensatz certificate is exhibited: the SOS multiplier motzkinMultiplier (motzkinMultiplier_isSOS, and pointwise positive motzkinMultiplier_pos) satisfies motzkinPoly_mul_multiplier_isSOS — multiplying motzkinPoly c by the multiplier yields a sum of squares — giving the constructive Artin representation motzkinPoly_artin_certificate that realises Hilbert's 17th problem (SOS of rational functions) for the whole PSD Motzkin family."
     }
   ]
 }
