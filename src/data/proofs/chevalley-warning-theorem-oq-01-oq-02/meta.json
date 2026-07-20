@@ -79,7 +79,8 @@
       "**Two forms, one engine**: EGZ is not a new counting principle but a *single application* of Chevalley–Warning to a cleverly chosen pair of forms. The degree bookkeeping is the whole trick — 2(p−1) = 2p−2 is exactly one less than the 2p−1 variables, so Chevalley–Warning fires and no slack is wasted.",
       "**Fermat turns algebra into combinatorics**: raising to the (p−1) power is the indicator of 'nonzero' over 𝔽_p. This single fact converts the first form into a *cardinality* (the support size) and the second into a *subset sum*, so the polynomial identity f₁(x) = f₂(x) = 0 reads directly as '|I| ≡ 0 and ∑_I a = 0'.",
       "**The support size is pinned, not just bounded**: p ∣ |I| only says |I| ∈ {0, p, 2p, …}, but the nonzero Chevalley solution forces |I| ≥ 1 and the 2p−1 variables force |I| ≤ 2p−1 < 2p, leaving p as the *unique* possibility — which is exactly the 'exactly n' in the EGZ conclusion.",
-      "**Rebuilt, not re-imported**: the point is provenance. Mathlib already has ZMod.erdos_ginzburg_ziv, but here EGZ is proved through the gallery's own chevalley_warning_nontrivial, making the dependency Chevalley–Warning ⟹ EGZ explicit and machine-checked rather than folklore."
+      "**Rebuilt, not re-imported**: the point is provenance. Mathlib already has ZMod.erdos_ginzburg_ziv, but here EGZ is proved through the gallery's own chevalley_warning_nontrivial, making the dependency Chevalley–Warning ⟹ EGZ explicit and machine-checked rather than folklore.",
+      "**The degree budget dictates EGZ's constant 2p−1**: the two forms have total degrees summing to 2(p−1) = 2p−2, and Chevalley–Warning needs strictly more variables than that — i.e. at least 2p−1. So 2p−1 is not incidental but the smallest count for which this argument runs, matching EGZ's sharp threshold: with only 2p−2 elements the theorem fails (take p−1 zeros and p−1 ones — no p of them sum to 0 mod p). The proof's tight inequality is exactly the theorem's optimality."
     ],
     "prerequisites": [
       "Finite fields and their prime characteristic (CharP, Fact p.Prime, ZMod p as a field)",
@@ -115,12 +116,20 @@
       "mathContext": "deg f₁ + deg f₂ ≤ 2(p−1) = 2p−2 < 2p−1, the Chevalley–Warning low-degree hypothesis."
     },
     {
-      "id": "egz",
-      "title": "Erdős–Ginzburg–Ziv, Prime Case",
+      "id": "egz-zmod",
+      "title": "Erdős–Ginzburg–Ziv over ZMod p",
       "startLine": 84,
+      "endLine": 167,
+      "summary": "egz_zmod: the main theorem. Package the two power-sum forms as ![f₁, f₂], verify the degree budget (Σdeg ≤ 2p−2 < 2p−1 variables) and that the origin is a common zero, then apply chevalley_warning_nontrivial to obtain a nonzero common zero x. Fermat's indicator (pow_sub_one) turns f₁(x) = 0 into p ∣ |I| for the support I = {i : x i ≠ 0} and f₂(x) = 0 into ∑_{i∈I} a i = 0; the bounds 1 ≤ |I| ≤ 2p−1 < 2p pin |I| = p.",
+      "mathContext": "Among any 2p−1 elements of ZMod p, some exactly p of them sum to 0."
+    },
+    {
+      "id": "egz-int",
+      "title": "Erdős–Ginzburg–Ziv over ℤ",
+      "startLine": 169,
       "endLine": 175,
-      "summary": "egz_zmod applies chevalley_warning_nontrivial to ![f₁, f₂] to get a nonzero common zero x, then reads off from Fermat's indicator that the support I = {i : x i ≠ 0} has p ∣ |I|, pins |I| = p using 1 ≤ |I| ≤ 2p−1 < 2p, and extracts ∑_{i∈I} a i = 0. egz_int lifts this to integers by reduction mod p.",
-      "mathContext": "Among any 2p−1 elements of ZMod p (resp. integers), some p sum to 0 (resp. to a multiple of p)."
+      "summary": "egz_int: the integer corollary. Reduce the given integers mod p, apply egz_zmod to get a size-p subset summing to 0 in ZMod p, and lift back via ZMod.intCast_zmod_eq_zero_iff_dvd to conclude p ∣ ∑_{i∈I} aᵢ over ℤ.",
+      "mathContext": "Among any 2p−1 integers, some p of them sum to a multiple of p."
     }
   ],
   "references": [
