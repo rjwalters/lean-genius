@@ -95,17 +95,25 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation & Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports the parent entry Proofs.CevasTheoremNonEuclideanOQ01, Mathlib's hyperbolic-derivative special functions, and Tactic. The module docstring states the missing analytic fact — the flat (zero-curvature) limit sin_κ(x) → x as κ → 0 — that makes the curved Ceva theorem a continuous deformation of the Euclidean one, and lists the seven main results. Opens the CevasNonEuclideanOQ01OQ01 namespace with `open Real Filter Topology` and `open CevasNonEuclideanOQ01` (for sinKappa and sinKappa_zero from the parent).",
+      "mathContext": "Sets up the curvature sine sin_κ(x) = sin(√κ·x)/√κ (κ>0), x (κ=0), sinh(√(−κ)·x)/√(−κ) (κ<0) whose κ → 0 limit is the file's goal."
+    },
+    {
       "id": "kernels",
       "title": "Difference-quotient kernels for sin and sinh",
       "startLine": 47,
-      "endLine": 73,
+      "endLine": 72,
       "summary": "tendsto_sin_mul_div and tendsto_sinh_mul_div: the slopes sin(x·t)/t and sinh(x·t)/t tend to x as t → 0, obtained from hasDerivAt_iff_tendsto_slope applied to t ↦ sin(x·t) and t ↦ sinh(x·t) (derivative x at 0, since cos 0 = cosh 0 = 1).",
       "mathContext": "These are the analytic cores; everything else is change of variables and gluing."
     },
     {
       "id": "sqrt-change-of-variables",
       "title": "The square-root change of variables",
-      "startLine": 75,
+      "startLine": 73,
       "endLine": 100,
       "summary": "sqrt_tendsto_nhdsGT and sqrt_neg_tendsto_nhdsLT: √κ → 0⁺ as κ → 0⁺ and √(−κ) → 0⁺ as κ → 0⁻, via continuity and positivity of √; nhdsGT_le_nhdsNE relates the right-punctured filter to the punctured one for composition with the kernels.",
       "mathContext": "Transports the kernel limits (in the increment t) to limits in the curvature κ."
@@ -113,8 +121,8 @@
     {
       "id": "flat-limit",
       "title": "One-sided, punctured, and full flat limits, and the Ceva ratio",
-      "startLine": 102,
-      "endLine": 149,
+      "startLine": 101,
+      "endLine": 151,
       "summary": "tendsto_sinKappa_nhdsGT/nhdsLT (one-sided), tendsto_sinKappa_punctured (glue via 𝓝[<] ⊔ 𝓝[>] = 𝓝[≠]), tendsto_sinKappa_flat (full 𝓝 0 limit, adjoining sin_0(x) = x via 𝓝[≠] ⊔ pure = 𝓝), and sinKappa_ceva_ratio_tendsto (sin_κ(p)/sin_κ(q) → p/q).",
       "mathContext": "Assembles the answer to the parent's OQ-01 and its Ceva-degeneration consequence."
     }
