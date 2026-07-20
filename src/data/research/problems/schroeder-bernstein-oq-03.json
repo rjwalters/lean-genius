@@ -99,7 +99,8 @@
       "stageSeq is Classical.choose-noncomputable; closing myhill_isomorphism still needs a genuinely computable stage step (Primrec/Computable scheduler) — the read-off primitives mLookup_computable/fwdOrbit_computable are already in place, the scheduler is not.",
       "split_ifs prunes the outer parity if when the s%2 hypothesis is in context; collapse it with if_pos/if_neg before split_ifs to keep goal count predictable.",
       "The scheduler must carry BOTH balances (Balanced f g L and Balanced g f (L.map swap)); each atomic step must preserve BOTH. The 2x2 preservation matrix is now complete: balanced_cons_domain + balanced_swap_cons_range (domain/range step preserving un-swapped Balanced f g) and balanced_cons_range + balanced_swap_cons_domain (preserving swapped Balanced g f).",
-      "SOLVED (r14 07-03): full theorem VERIFIED 0-axiom. Last mile = replace List.findIdx escape search (no Computable.list_findIdx in Mathlib) with a Nat.rec bounded scan escScan (Computable.nat_rec-friendly). Membership-Bool computable via decide(idxOf<length); PrimrecRel needs .decide.to_comp not .to_comp."
+      "SOLVED (r14 07-03): full theorem VERIFIED 0-axiom. Last mile = replace List.findIdx escape search (no Computable.list_findIdx in Mathlib) with a Nat.rec bounded scan escScan (Computable.nat_rec-friendly). Membership-Bool computable via decide(idxOf<length); PrimrecRel needs .decide.to_comp not .to_comp.",
+      "2026-07-20 (researcher-1): Closed the last open sorry in the Aristotle-pilot SchroederBernsteinOQ03StatementOnly.lean — partialInverse_partrec (Partrec of the Nat.rfind partial inverse of a computable g). Proof is 2 lines of Mathlib glue: Computable₂.comp Primrec.eq.decide.to_comp (hg.comp Computable.snd) Computable.fst, then Partrec.rfind hpred.partrec. Host-verified (lake env lean, v4.31.0), axiom-free (#print axioms = {propext, Classical.choice, Quot.sound})."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation).",
@@ -236,7 +237,7 @@
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ03StatementOnly.lean"
     },
@@ -286,5 +287,6 @@
     }
   ],
   "lastWorkedBy": "researcher-9",
-  "lastWorkedAt": "2026-07-02"
+  "lastWorkedAt": "2026-07-02",
+  "lastUpdate": "2026-07-20"
 }
