@@ -9,7 +9,7 @@
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
   "currentState": "Exact value pinned at both ends of the range of m: small m (1≤m≤n) f_m(n)=n−⌈m/2⌉; high m (T(n−1)<m≤T(n)) f_m(n)=n−1. New this session: intermediate-regime pair-only upper bound f_m(n)≤⌊m/2⌋ for n<m≤2n (Erdos771IntermediateUpper.lean, 0-sorry/0-axiom, v4.31 GREEN), a strict improvement over n−1 for m≤2n−3; tight at the bottom of the regime, loose near m=2n where triples add disjoint reps. Open: exact value throughout n<m≤T(n−1) (matching-number core); deep asymptotics f(n)=(1/2+o(1))·n/log n remain external.",
   "knowledge": {
-    "progressSummary": "PROGRESS: EXACT maximum for Erdős #771 small-m regime pinned — f_m(n)=n−⌈m/2⌉ for 1≤m≤n, via general upper bound (disjoint m-representation blocks) + matching tight construction avoider=(Icc ⌈m/2⌉ n).erase m. Both 0-sorry/0-axiom. Deep asymptotics f(n)=(1/2+o(1))n/log n remain blocked.",
+    "progressSummary": "PROGRESS: high-m plateau resolved — max m-avoiding subset of {1,…,n} = n-1 EXACTLY for T(n-1) < m ≤ T(n) (Erdos771HighRegime.lean, 0-sorry/0-axiom), subsuming PR #39104 boundary point over a full interval. Small-m regime already n-⌈m/2⌉. Genuine open core narrowed to n < m ≤ T(n-1) (matching-number regime). Deep asymptotics remain blocked.",
     "builtItems": [
       "prime_multiples_size in Erdos771Construction.lean:64",
       "prime_multiples_avoid in Erdos771Construction.lean:78",
@@ -28,7 +28,8 @@
       "avoid_full_iff (Erdos771Problem.lean): AvoidSum {1,…,n} m ↔ m=0 ∨ n(n+1)/2 < m (sharp)",
       "maxAvoidingSize_eq_n_iff (Erdos771Problem.lean): maxAvoidingSize n m = n ↔ m=0 ∨ n(n+1)/2 < m",
       "avoid_card_le_general + supporting blk/blk_sum/blk_subset/blk_disjoint/sum_mem_subsetSums + avoid_card_le_general_matches_ladder in Erdos771GeneralUpperBound.lean (7 decls, 0-sorry/0-axiom)",
-      "avoider + avoider_subset/avoider_card/avoider_avoids + exists_avoiding_card_eq in Erdos771GeneralLowerBound.lean (5 decls, 0-sorry/0-axiom)"
+      "avoider + avoider_subset/avoider_card/avoider_avoids + exists_avoiding_card_eq in Erdos771GeneralLowerBound.lean (5 decls, 0-sorry/0-axiom)",
+      "Erdos771HighRegime.lean: high_regime_exact, exists_avoid_high_card, avoid_high_card_le, exists_subset_sum_Icc (4 decls, 0-sorry/0-axiom, GREEN v4.31.0)"
     ],
     "insights": [
       "If every element of S is a multiple of p, so is every subset sum, so S avoids any m with p ∤ m — the engine of the Erdős–Graham lower bound. Primality is not even needed for avoidance.",
@@ -39,12 +40,15 @@
       "EXACT closed form maxAvoidingSize n m = n - ceil(m/2) (= n - (m+1)/2) for 1<=m<=n, upgrading the previously one-sided lower bound to equality. Upper bound: any m-avoiding S in {1..n} keeps at most floor(m/2) elements of {1..m}, since x |-> min x (m-x) injects S cap {1..m} into {1..floor(m/2)} (a collision forces two distinct elements summing to m, a forbidden subset sum), plus at most n-m elements above m. Recovers the tabulated small-m values n-1,n-1,n-2,n-2 for m=1..4 uniformly. Axiom-free (Erdos771Problem.lean: maxAvoidingSize_le_sub_ceil_half, maxAvoidingSize_eq_sub_ceil_half).",
       "Sharp avoidance threshold: {1,…,n} is a COMPLETE sequence — its subset sums realise EVERY value in [1, n(n+1)/2]. Hence the full box avoids m iff m=0 or m > n(n+1)/2, and maxAvoidingSize n m = n exactly on that boundary. Sharpens the crude n²<m threshold of avoid_full/maxAvoidingSize_eq_of_lt to the exact total n(n+1)/2.",
       "GENERAL upper bound (small-m regime): any m-avoiding S⊆{1,…,n} with 1≤m≤n has |S| ≤ n − ⌈m/2⌉. Mechanism: the ⌈m/2⌉ representations {m},{1,m−1},…,{i,m−i} are pairwise-disjoint m-summing subsets of {1,…,n}; an avoiding set omits ≥1 element from each, forcing ⌈m/2⌉ distinct deletions. Subsumes the m=1..4 ladder uniformly.",
-      "EXACT maximum (small-m regime): the largest m-avoiding S⊆{1,…,n} for 1≤m≤n has size EXACTLY n−⌈m/2⌉. Upper bound = avoid_card_le_general (disjoint blocks); matching lower = tight witness avoider n m = (Icc ⌈m/2⌉ n).erase m (any subset summing to m needs ≥2 elements ≥⌈m/2⌉, summing >m)."
+      "EXACT maximum (small-m regime): the largest m-avoiding S⊆{1,…,n} for 1≤m≤n has size EXACTLY n−⌈m/2⌉. Upper bound = avoid_card_le_general (disjoint blocks); matching lower = tight witness avoider n m = (Icc ⌈m/2⌉ n).erase m (any subset summing to m needs ≥2 elements ≥⌈m/2⌉, summing >m).",
+      "High-m plateau (2026-07-19): for T(n-1) < m ≤ T(n) the max m-avoiding subset of {1,…,n} has size EXACTLY n-1 — witness {1,…,n-1} (total T(n-1) < m) for attainment; optimality since subset sums of {1,…,n} cover [0,T(n)]. Extends PR #39104 single point m=T(n) to the whole top interval.",
+      "Arithmetic core exists_subset_sum_Icc: every m ≤ ∑_{a=1}^n a is a subset sum of {1,…,n} (greedy induction, include n iff m > T(n-1)). Reusable coverage-of-[0,T] lemma.",
+      "Residual open core: the genuine intermediate regime is n < m ≤ T(n-1), where the value depends on the max number of pairwise-disjoint m-representations (m=5,n=4 gives n-2 via disjoint {1,4},{2,3}); no clean closed form."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Keep the deep bounds as axioms (external Erdős–Graham/Alon–Freiman results); do not attempt to prove them.",
-      "Possible follow-up: determine maxAvoidingSize n m in the intermediate regime n < m ≤ n(n+1)/2 (between the sharp small-m formula n-⌈m/2⌉ and the boundary)."
+      "Attack the genuine intermediate core n < m ≤ T(n-1): bound f_m(n) via a disjoint-m-representation / matching argument (generalize the n-⌈m/2⌉ pairing bound past m=n).",
+      "Keep the deep asymptotics f(n)=(1/2+o(1))n/log n as external axioms (Erdős–Graham / Alon–Freiman); do not attempt."
     ]
   },
   "tags": [
