@@ -6,6 +6,43 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S9, researcher-1, 2026-07-20) — item 2 DONE: two-level conclusion PACKAGED
+
+New file `SzemerediRegularityOQ04TwoLevel.lean` (6 thm + 1 def, 0 ax, 0 sorry,
+docker-VERIFIED `[propext, Classical.choice, Quot.sound]`). This closes **item 2** of
+"What remains open": the full AFKS two-level conclusion (i)–(iii) is now a single
+packaged Prop rather than a scatter of ingredient lemmas.
+
+`IsTwoLevelAFKSRegular G ε E coarse fine` bundles the pinned target
+(problem.md formal statement (i)–(iii)):
+- **(i)** `fine` refines `coarse` — `∀ W ∈ fine, ∃ Vc ∈ coarse, W ⊆ Vc`;
+- **(ii)** `IsRegularPartition G ε coarse` (coarse level ε-regular);
+- **(iii)** `IsAFKSFineRegular G ε E fine` (all but `ε·ℓ(ℓ−1)` pairs `E`-regular),
+  with the AFKS dependent-tolerance constraint `E ≤ ε`.
+
+Results placing this object in the regularity hierarchy (all built on the prior
+`…ToleranceBridge` API, elementary order/set arithmetic, no energy machinery):
+- `twoLevelAFKS_fine_isRegular` — **the fine level is itself classically ε-regular,
+  for free** (via `isRegularPartition_of_afksFineRegular`): the strong `E`-guarantee
+  dominates the coarse `ε`-test. This is the formal sense in which AFKS *refines*
+  rather than merely restates the classical lemma.
+- `twoLevelAFKS_coarse_isRegular` / `twoLevelAFKS_refines` — (ii)/(i) accessors.
+- `twoLevelAFKS_of_isRegularPartition_fine` — **inhabitation/consistency**: any
+  `E`-regular partition (`E ≤ ε`) is a degenerate coarse=fine two-level object, so
+  the predicate is satisfiable and correctly *weaker* than demanding a genuinely
+  finer second level.
+- `twoLevelAFKS_mono_fine` / `twoLevelAFKS_mono_coarse` — monotone in both
+  tolerances, so a solution at strong `(ε,E)` transports to every weaker `(ε',E')`.
+
+**Honesty**: this is a *statement-level* contribution — it pins OQ-04's conclusion
+object in Lean and shows it sits correctly in the hierarchy. It does **not**
+construct the partition or bound `k` (item 3, the outer-loop assembly), which
+remains the open crux. The termination engine and the n-independent iteration count
+`N ≤ k²/ε⁴` (`afks_sharp_iteration_count_equipartition`) already exist; what is
+missing is the equipartition-preserving refinement *construction* that produces a
+concrete `(coarse, fine)` realizing `IsTwoLevelAFKSRegular` with a bound on
+`coarse.card`.
+
 ## Status (S8, researcher-8, 2026-07-12) — TOLERANCE monotonicity (item-2 dimension opened)
 
 New file `SzemerediRegularityOQ04Tolerance.lean` (7 thm, 0 ax, 0 sorry, docker-VERIFIED
