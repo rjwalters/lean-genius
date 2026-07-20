@@ -134,103 +134,103 @@
       "id": "header",
       "title": "File Header and Setup",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 31,
       "summary": "Docstring statement of Erdős Problem #454: with p_k the k-th prime and f(n) = min_{i<n}(p_{n+i}+p_{n−i}), is limsup_{n→∞}(f(n)−2p_n) = ∞? Notes the OPEN status, Pomerance's (1979) limsup ≥ 2 lower bound, the even-spacing intuition (f(n) ≈ 2p_n if primes were regular), and references; followed by Mathlib imports (`PrimeCounting`, `LiminfLimsup`, `Instances.ENat`), `namespace Erdos454`, and `open Nat Filter`.",
       "mathContext": "Problem statement, known partial result, and the Lean preamble."
     },
     {
       "id": "nth-prime",
       "title": "Part I — The nth Prime Function",
-      "startLine": 35,
-      "endLine": 58,
+      "startLine": 32,
+      "endLine": 55,
       "summary": "Definition `nthPrime k = k.nth Prime` (0-indexed: p₀=2, p₁=3, p₂=5, …) with proved facts: the first three values (`nthPrime_zero/one/two`), primality (`nthPrime_prime` via `Nat.prime_nth_prime`), and strict monotonicity (`nthPrime_strictMono`).",
       "mathContext": "Definition of the indexed prime sequence via `Nat.nth Prime`, plus basic value and monotonicity lemmas."
     },
     {
       "id": "function-f",
       "title": "Part II — The Function f(n)",
-      "startLine": 59,
-      "endLine": 99,
+      "startLine": 56,
+      "endLine": 96,
       "summary": "Definitions of the symmetric prime sum `symmetricPrimeSum n i = p_{n+i}+p_{n−i}`, the central quantity `f n` (the ⨅ over `Fin n` of these sums, with f 0 = 0), the alternative `f'` using `Finset.inf'`, and the equivalence theorem `f_eq_f'` (proved via `ciInf_le`/`le_ciInf` and `Finset.le_inf'`).",
       "mathContext": "Definitions of f(n) as an indexed infimum, an equivalent `Finset.inf'` form, and their equality over a `BddBelow` range."
     },
     {
       "id": "deviation",
       "title": "Part III — The Deviation from 2p_n",
-      "startLine": 100,
-      "endLine": 115,
+      "startLine": 97,
+      "endLine": 112,
       "summary": "Definitions of the key quantity `deviation n = f n − 2·p_n` (over ℤ) and its extended-natural truncation `deviationENat n` (the ℕ∞ value used for the limsup, set to 0 when f n < 2p_n).",
       "mathContext": "Definitions of the signed deviation and its `ℕ∞`-valued truncation for limsup computation."
     },
     {
       "id": "symmetric-analysis",
       "title": "Part IV — Understanding Symmetric Prime Sums",
-      "startLine": 116,
-      "endLine": 142,
+      "startLine": 113,
+      "endLine": 139,
       "summary": "Proved structural facts: at i=0 the symmetric sum equals 2p_n (`symmetric_sum_at_zero`); hence f(n) ≤ 2p_n (`f_le_twice_nthPrime`, the minimum is attained at i=0); and for i>0 strict monotonicity gives p_{n+i} > p_n and p_{n−i} < p_n (`asymmetric_behavior`).",
       "mathContext": "Theorems establishing the i=0 baseline, the upper bound f(n) ≤ 2p_n, and the asymmetry for i>0 via `nthPrime_strictMono`."
     },
     {
       "id": "pomerance",
       "title": "Part V — Pomerance's Lower Bound",
-      "startLine": 143,
-      "endLine": 180,
+      "startLine": 140,
+      "endLine": 177,
       "summary": "Pomerance's (1979) result `pomerance_1979 : 2 ≤ limsup deviationENat atTop` (axiom) and its proved corollaries: `limsup_pos` (the limsup is positive) and `infinitely_many_deviation_ge_2` (the set {n : deviationENat n ≥ 2} is infinite, by a contradiction with the eventual bound forcing limsup ≤ 1).",
       "mathContext": "Axiom for the limsup ≥ 2 lower bound plus corollaries derived via `limsup_le_of_le` and eventual-bound reasoning."
     },
     {
       "id": "conjecture",
       "title": "Part VI — The Main Conjecture",
-      "startLine": 181,
-      "endLine": 218,
+      "startLine": 178,
+      "endLine": 211,
       "summary": "The conjecture `Erdos454Conjecture : limsup deviationENat atTop = ⊤`, its negation `Erdos454Negation` (a finite bound M exists), and the equivalence `conjecture_iff_not_negation` proving the two are complementary (⊤ is not ≤ any finite value; a non-⊤ limsup is some finite m).",
       "mathContext": "Definitions of the conjecture and its negation in `ℕ∞`, with a proved iff via case analysis on `WithTop`."
     },
     {
       "id": "heuristics",
       "title": "Part VII — Heuristic Analysis",
-      "startLine": 219,
-      "endLine": 235,
+      "startLine": 212,
+      "endLine": 228,
       "summary": "Heuristic material: the predicate `primeGapHeuristic` (prime gaps stay within C of log p), the axiom `large_prime_gaps_exist` (arbitrarily large gaps occur), and `gap_deviation_connection` relating non-positive deviations to bounded gaps (currently a `sorry`).",
       "mathContext": "A heuristic predicate, an axiom on large prime gaps, and a connecting theorem (one open `sorry`)."
     },
     {
       "id": "examples",
       "title": "Part VIII — Examples",
-      "startLine": 236,
-      "endLine": 253,
+      "startLine": 229,
+      "endLine": 245,
       "summary": "Worked numerical examples around n=3 (0-indexed primes p₀..p₅): `example_f_3 : f 3 = 14` (sorry), `example_twice_p3 : 2·p₃ = 14` (proved by `native_decide`), and `example_deviation_3 : deviation 3 = 0` (sorry).",
       "mathContext": "Concrete evaluations of f, 2p_n, and the deviation at n=3 (two `sorry`s, one `native_decide` computation)."
     },
     {
       "id": "related",
       "title": "Part IX — Related Problems",
-      "startLine": 254,
-      "endLine": 265,
+      "startLine": 246,
+      "endLine": 257,
       "summary": "Connections to neighboring problems: `relatedToErdos458` (a documentation placeholder, `True`) and the axiom `prime_number_theorem_asymptotic` (p_n ~ n log n, recorded as a `Tendsto` statement).",
       "mathContext": "A placeholder relation to Problem #458 and the PNT asymptotic recorded as an axiom."
     },
     {
       "id": "resolution",
       "title": "Part X — What Would Resolve the Conjecture",
-      "startLine": 266,
-      "endLine": 281,
+      "startLine": 258,
+      "endLine": 273,
       "summary": "Predicates capturing what a proof or disproof would require: `witnessForConjecture M` (some n with every symmetric sum exceeding 2p_n + M) and `witnessForNegation M` (eventually f n ≤ 2p_n + M).",
       "mathContext": "Definitions formalizing the witness conditions for proving (limsup = ∞) or disproving (limsup ≤ M) the conjecture."
     },
     {
       "id": "prime-graph",
       "title": "Part XI — The Prime Number Graph",
-      "startLine": 282,
-      "endLine": 304,
+      "startLine": 274,
+      "endLine": 296,
       "summary": "Definition of Pomerance's `primeNumberGraph` (a `SimpleGraph ℕ` with n adjacent to m iff n≠m and p_n+p_m = p_k for some k, with `symm`/`loopless` proved) and the related `goldbachSymmetric` predicate (every even m>4 is a symmetric prime sum), closing the namespace.",
       "mathContext": "A `SimpleGraph` encoding Pomerance's prime number graph and a Goldbach-style symmetric-sum predicate."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 305,
-      "endLine": 335,
+      "startLine": 297,
+      "endLine": 329,
       "summary": "Closing docstring recap: the problem (f(n) = min symmetric prime sum; is limsup(f(n)−2p_n)=∞?), OPEN status with Pomerance's limsup ≥ 2, the seven formalized components, the three key axioms (`pomerance_1979`, `large_prime_gaps_exist`, `prime_number_theorem_asymptotic`), and the even-spacing intuition.",
       "mathContext": "Narrative summary of the formalization, its axiom budget, and the underlying intuition."
     }
