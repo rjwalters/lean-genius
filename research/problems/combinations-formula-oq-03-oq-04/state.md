@@ -33,12 +33,27 @@ the sequence genuinely rises then falls (e.g. `[6,2]_q = 1,1,2,2,3,2,2,1,1`), ar
 open crux and need the sl₂-action / hard-Lefschetz argument (Proctor 1982) or O'Hara's
 combinatorial decomposition (1990). Not attempted here.
 
-## Next Action (item toward k = 2)
-Derive the explicit coefficient formula for `[n,2]_q` (partitions into ≤ 2 parts each
-≤ n−2; `a_i = ⌊i/2⌋+1` capped and mirrored), then prove `IsCoeffUnimodal (qBinom X n 2)`
-by direct inequality on that formula — the named "tractable first milestone" in
-problem.md. This is the first case where the peak is interior and `_of_antitone` no
-longer applies, so it exercises the rising-then-falling reasoning.
+## Status (S3, researcher-1, 2026-07-20) — general reduction: Sylvester ⇐ first-half monotonicity
+
+k=0,1,2 are already discharged (`qBinomCoeff_unimodal_{zero,one,two}`). This session
+removed the last *structural* obstacle for all remaining k:
+
+- `unimodal_of_palindrome_first_half_mono d` — general any-degree palindrome→unimodal
+  criterion (odd degrees now covered; the previous lemma handled only even `2m`). The even
+  lemma is refactored to a one-line corollary, statement unchanged.
+- `qBinomCoeff_unimodal_of_first_half_mono (h : k ≤ n)` — the packaged reduction: supplies
+  nonnegativity + support + palindromy, so proving Sylvester for a given `k` now needs ONLY
+  the first-half inequality `coeff j ≤ coeff (j+1)` for `2j+2 ≤ k(n-k)`.
+
+Both 0-axiom / 0-sorry, host-verified (`lake env lean` exit 0, axioms
+`[propext, Classical.choice, Quot.sound]`).
+
+## Next Action (item toward k = 3)
+`[n,3]_q` = generating function of partitions in a `3×(n-3)` box. Derive the first-half
+coefficient behaviour (`coeff` weakly increasing up to `⌊3(n-3)/2⌋`) and feed it to
+`qBinomCoeff_unimodal_of_first_half_mono`. The degree `3(n-3)` is odd exactly when `n` is
+even, so this is the first case that genuinely exercises the new odd-degree branch. The
+first-half monotonicity itself remains the open crux (sl₂ / O'Hara).
 
 ## --- S1 template (never filled) below ---
 
