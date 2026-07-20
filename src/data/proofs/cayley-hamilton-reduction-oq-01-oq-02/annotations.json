@@ -4,7 +4,7 @@
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 35
+      "endLine": 40
     },
     "type": "concept",
     "title": "Efficient Minimal Polynomial Reduction: The Open Question",
@@ -27,8 +27,8 @@
     "id": "ann-ch-red-oq01-oq02-02-nilpotent-dvd",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 46,
-      "endLine": 57
+      "startLine": 45,
+      "endLine": 54
     },
     "type": "insight",
     "title": "Nilpotent Minpoly Divides X^k",
@@ -50,8 +50,8 @@
     "id": "ann-ch-red-oq01-oq02-03-reduction",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 74,
-      "endLine": 92
+      "startLine": 72,
+      "endLine": 89
     },
     "type": "insight",
     "title": "Nilpotent Polynomial Reduction (Key Efficiency Theorem)",
@@ -74,7 +74,7 @@
     "id": "ann-ch-red-oq01-oq02-03b-degree-bound",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 57,
+      "startLine": 56,
       "endLine": 67
     },
     "type": "insight",
@@ -97,12 +97,12 @@
     "id": "ann-ch-red-oq01-oq02-03c-power-vanish",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 93,
-      "endLine": 111
+      "startLine": 91,
+      "endLine": 108
     },
     "type": "insight",
     "title": "Power Vanishing and Reduction Equivalence",
-    "content": "Two supporting results. `nilpotent_power_eq_zero` (lines 96-100): if M^k = 0, then M^j = 0 for all j \u2265 k. This is the Krylov termination certificate: the Krylov sequence {v, Mv, ..., M^{k-1}v} generates the same subspace as {v, Mv, ..., M^{j}v} for all j \u2265 k, since M^k v = 0. The proof uses Nat.exists_eq_add_of_le + pow_add.\n\n`nilpotent_reduction_equiv` (lines 104-111): for nilpotent M, reducing mod X^k gives the same result as reducing mod minpoly K M. This confirms that either modulus can be used equivalently in practice, with X^k being the computationally cheaper choice.",
+    "content": "Two supporting results. `nilpotent_power_eq_zero` (lines 94-98): if M^k = 0, then M^j = 0 for all j \u2265 k. This is the Krylov termination certificate: the Krylov sequence {v, Mv, ..., M^{k-1}v} generates the same subspace as {v, Mv, ..., M^{j}v} for all j \u2265 k, since M^k v = 0. The proof uses Nat.exists_eq_add_of_le + pow_add.\n\n`nilpotent_reduction_equiv` (lines 100-108): for nilpotent M, reducing mod X^k gives the same result as reducing mod minpoly K M. This confirms that either modulus can be used equivalently in practice, with X^k being the computationally cheaper choice.",
     "mathContext": "$M^j = M^{j-k} \\cdot M^k = 0$ for $j \\geq k$. The Krylov sequence $v, Mv, \\ldots, M^{k-1}v$ is a complete basis for the Krylov subspace $\\mathcal{K}_k(M,v) = \\text{span}\\{v, Mv, \\ldots, M^{k-1}v\\}$, since all higher powers vanish. The equivalence $(p \\bmod X^k)(M) = (p \\bmod \\mu_M)(M)$ holds because $\\mu_M \\mid X^k$ implies the two reduction residues agree in evaluation at $M$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -121,8 +121,8 @@
     "id": "ann-ch-red-oq01-oq02-04-upper-tri",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 117,
-      "endLine": 143
+      "startLine": 113,
+      "endLine": 140
     },
     "type": "insight",
     "title": "Upper Triangular Minpoly Divides Diagonal Product",
@@ -146,11 +146,11 @@
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
       "startLine": 145,
-      "endLine": 172
+      "endLine": 166
     },
     "type": "insight",
     "title": "General Minimal Polynomial Reduction and Degree Truncation",
-    "content": "`minpoly_poly_reduction` (lines 153-158): the general reduction theorem \u2014 for any matrix M and polynomial p, aeval M p = aeval M (p %\u2098 minpoly K M). This is the same pattern as the nilpotent case but applies universally. The proof is clean: Euclidean division + aeval M (minpoly K M) = 0 (from Mathlib's minpoly.aeval).\n\n`nilpotent_reduction_degree_lt` (lines 163-171): the reduced polynomial p %\u2098 X^k has natDegree < k. This confirms that the nilpotent reduction really does compress the polynomial: any polynomial of degree \u2265 k in a nilpotent matrix reduces to one of degree < k.",
+    "content": "`minpoly_poly_reduction` (lines 145-153): the general reduction theorem \u2014 for any matrix M and polynomial p, aeval M p = aeval M (p %\u2098 minpoly K M). This is the same pattern as the nilpotent case but applies universally. The proof is clean: Euclidean division + aeval M (minpoly K M) = 0 (from Mathlib's minpoly.aeval).\n\n`nilpotent_reduction_degree_lt` (lines 154-166): the reduced polynomial p %\u2098 X^k has natDegree < k. This confirms that the nilpotent reduction really does compress the polynomial: any polynomial of degree \u2265 k in a nilpotent matrix reduces to one of degree < k.",
     "mathContext": "The general reduction: $p(M) = (p \\bmod \\mu_M)(M)$ holds for any $M$ because $p = (p \\bmod \\mu_M) + \\mu_M \\cdot q$ gives $p(M) = (p \\bmod \\mu_M)(M) + \\mu_M(M) \\cdot q(M) = (p \\bmod \\mu_M)(M) + 0$. The degree bound: $\\deg(p \\bmod X^k) < k$ by the division algorithm.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -169,8 +169,8 @@
     "id": "ann-ch-red-oq01-oq02-06-summary",
     "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
     "range": {
-      "startLine": 175,
-      "endLine": 210
+      "startLine": 169,
+      "endLine": 204
     },
     "type": "concept",
     "title": "Summary: Three Efficiency Mechanisms and Algorithmic Impact",
