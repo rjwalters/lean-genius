@@ -274,6 +274,31 @@ theorem isRomanoff_iff {n : ℕ} :
   · rintro ⟨k, hk, hlt, hp⟩
     exact ⟨k, n - 2 ^ k, hk, hp, by omega⟩
 
+/-- Finite-range refinement of `isRomanoff_iff`: the witness exponent lies in
+`Finset.range n`, because `2^k < n` forces `k < 2^k < n`.  This packages
+membership as a *bounded* existential, which is the step that makes `IsRomanoff`
+decidable. -/
+theorem isRomanoff_iff_mem_range {n : ℕ} :
+    IsRomanoff n ↔
+      ∃ k ∈ Finset.range n, 1 ≤ k ∧ 2 ^ k < n ∧ Nat.Prime (n - 2 ^ k) := by
+  rw [isRomanoff_iff]
+  constructor
+  · rintro ⟨k, hk, hlt, hp⟩
+    exact ⟨k, Finset.mem_range.mpr (Nat.lt_two_pow_self.trans hlt), hk, hlt, hp⟩
+  · rintro ⟨k, _, hk, hlt, hp⟩
+    exact ⟨k, hk, hlt, hp⟩
+
+/-- **`IsRomanoff` is decidable.**  Via `isRomanoff_iff_mem_range` it reduces to a
+bounded existential over `Finset.range n` with decidable primality — no
+`native_decide`, so the axioms stay clean.  In principle this settles every "`n`
+is / is not Romanoff" and hence "`n ∈ ExceptionalSet`" question; `decide`
+discharges small `n` directly (e.g. `IsRomanoff 5`).  For the larger A006285
+terms below we keep the explicit `interval_cases` refutations, which give the
+kernel a short, `2^k`-small reduction (the naive `decide` over `Finset.range n`
+would force it to evaluate `2^{n-1}`). -/
+instance decidableIsRomanoff (n : ℕ) : Decidable (IsRomanoff n) :=
+  decidable_of_iff _ isRomanoff_iff_mem_range.symm
+
 /-- **`127` is exceptional.**  It is the first nontrivial odd integer of OEIS
 A006285: for every `k` with `1 ≤ k` and `2^k < 127`, the complement `127 - 2^k`
 is composite (`125 = 5³`, `123 = 3·41`, `119 = 7·17`, `111 = 3·37`, `95 = 5·19`,
@@ -306,6 +331,39 @@ theorem not_isRomanoff_149 : ¬ IsRomanoff 149 := by
 /-- `149` is an exceptional odd integer (`149 ∈ ExceptionalSet`). -/
 theorem oneHundredFortyNine_mem_exceptionalSet : (149 : ℕ) ∈ ExceptionalSet :=
   ⟨⟨74, by norm_num⟩, not_isRomanoff_149⟩
+
+/-- **`251` is exceptional** (the third nontrivial term of A006285).  For every
+`k` with `2^k < 251` the complement is composite (`249 = 3·83`, `247 = 13·19`,
+`243 = 3⁵`, `235 = 5·47`, `219 = 3·73`, `187 = 11·17`, `123 = 3·41`). -/
+theorem not_isRomanoff_251 : ¬ IsRomanoff 251 := by
+  rw [isRomanoff_iff]
+  rintro ⟨k, hk, hlt, hp⟩
+  have hk7 : k ≤ 7 := by
+    by_contra h
+    have h8 : (2 : ℕ) ^ 8 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+    norm_num at h8; omega
+  interval_cases k <;> norm_num at hp
+
+/-- `251` is an exceptional odd integer (`251 ∈ ExceptionalSet`). -/
+theorem twoHundredFiftyOne_mem_exceptionalSet : (251 : ℕ) ∈ ExceptionalSet :=
+  ⟨⟨125, by norm_num⟩, not_isRomanoff_251⟩
+
+/-- **`331` is exceptional** (the fourth nontrivial term of A006285).  For every
+`k` with `2^k < 331` the complement is composite (`329 = 7·47`, `327 = 3·109`,
+`323 = 17·19`, `315 = 5·63`, `299 = 13·23`, `267 = 3·89`, `203 = 7·29`,
+`75 = 3·25`). -/
+theorem not_isRomanoff_331 : ¬ IsRomanoff 331 := by
+  rw [isRomanoff_iff]
+  rintro ⟨k, hk, hlt, hp⟩
+  have hk8 : k ≤ 8 := by
+    by_contra h
+    have h9 : (2 : ℕ) ^ 9 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+    norm_num at h9; omega
+  interval_cases k <;> norm_num at hp
+
+/-- `331` is an exceptional odd integer (`331 ∈ ExceptionalSet`). -/
+theorem threeHundredThirtyOne_mem_exceptionalSet : (331 : ℕ) ∈ ExceptionalSet :=
+  ⟨⟨165, by norm_num⟩, not_isRomanoff_331⟩
 
 /-
 ## Summary
