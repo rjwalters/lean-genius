@@ -46,17 +46,12 @@
       "isConvexSubset axiom: convex polygon with empty interior (axiomatized)",
       "numConvexSubsets definition: count of convex subsets in a point set",
       "f axiom: minimum convex subsets over all n-point configurations",
-      "f_lower_bound: f(n) is a lower bound for any n-point set",
-      "f_achieved: f(n) is tight for some configuration",
       "erdos_lower_bound axiom: f(n) > n^{c₁ log n}",
       "erdos_upper_bound axiom: f(n) < n^{c₂ log n}",
       "erdos_bounds theorem: combines lower and upper bounds (proved)",
       "normalizedLogF definition: (log f(n))/(log n)²",
       "limitExists definition: formal statement of limit existence",
-      "erdos_szekeres_convex_subset: convex subset from Erdős-Szekeres",
-      "triangles_are_convex: 3-element subsets are convex",
       "f_superpolynomial axiom: f grows faster than any polynomial",
-      "f_subexponential: f grows slower than any exponential",
       "erdos_838_summary theorem: combines bounds with superpolynomial growth (proved)"
     ],
     "axiomCount": 5,
@@ -106,8 +101,8 @@
       "title": "The Function f(n)",
       "startLine": 73,
       "endLine": 92,
-      "summary": "Axiomatizes f(n) with lower bound and tightness properties.",
-      "mathContext": "Axiomatized: Axiomatizes f(n) with lower bound and tightness properties."
+      "summary": "Axiomatizes f(n) as the minimum convex-subset count over n-point configurations.",
+      "mathContext": "Axiomatized: Axiomatizes f(n) as the minimum convex-subset count over n-point configurations."
     },
     {
       "id": "erdos-bounds",
@@ -130,8 +125,8 @@
       "title": "Erdős-Szekeres Connection",
       "startLine": 135,
       "endLine": 142,
-      "summary": "Erdős-Szekeres theorem, triangles are convex, triangle count bound.",
-      "mathContext": "Verified: Erdős-Szekeres theorem, triangles are convex, triangle count bound."
+      "summary": "Placeholder section noting the connection to Erdős-Szekeres; no declarations are formalized here.",
+      "mathContext": "Placeholder: the connection to the Erdős-Szekeres theorem is noted in comments but not formalized."
     }
   ],
   "conclusion": {
