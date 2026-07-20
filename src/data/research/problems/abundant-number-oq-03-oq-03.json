@@ -41,11 +41,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (base witness, infinitude still OPEN): verified axiom-free that 945 is odd PRIMITIVE abundant (least element of OEIS A006038), plus the IsPrimitiveAbundant predicate, the OddPrimitiveAbundant target set, and the abundant-proper-divisor obstruction lemma. New file AbundantNumberOQ03OQ03.lean (kernel decide, maxRecDepth 4000, no native_decide). The infinitude of odd primitive abundant numbers remains open; two candidate routes recorded.",
+    "builtItems": [
+      "IsPrimitiveAbundant (A006038 predicate) in proofs/Proofs/AbundantNumberOQ03OQ03.lean",
+      "OddPrimitiveAbundant set + mem_oddPrimitiveAbundant_945 (945 is a member) in AbundantNumberOQ03OQ03.lean",
+      "abundant_945 / odd_945 / primitive_945 (axiom-free base witness) in AbundantNumberOQ03OQ03.lean",
+      "not_primitive_of_abundant_properDivisor + not_deficient_of_abundant (structural obstruction) in AbundantNumberOQ03OQ03.lean"
+    ],
+    "insights": [
+      "945 = 3³·5·7 is not just the smallest odd abundant number but is odd PRIMITIVE abundant (OEIS A006038): all 15 proper divisors 1,3,5,7,9,15,21,27,35,45,63,105,135,189,315 are deficient — verified axiom-free.",
+      "The base-witness finite checks (single n=945 + 15 divisors, each ≤315) fit in the Lean KERNEL via decide with set_option maxRecDepth 4000 — no native_decide needed, so this entry is verified (propext/Classical.choice/Quot.sound only), unlike sibling abundant-number-oq-02 which uses native_decide (Lean.ofReduceBool).",
+      "Structural obstruction lemma not_primitive_of_abundant_properDivisor: any abundant proper divisor destroys primitivity (abundance and deficiency are mutually exclusive via not_deficient_of_abundant). This is the divisibility-minimality content of the A006038 predicate.",
+      "Mathlib already contains the PARENT result Nat.infinite_odd_abundant (infinitely many odd abundant) in NumberTheory.FactorisationProperties, plus Prime.deficient / IsPrimePow.deficient (explaining why only the composite proper divisors 15,21,...,315 need a genuine check)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Infinitude (OPEN): exhibit an infinite odd family provably primitive abundant. Route 1 = odd analogue of even 2^k·p (odd base m with σ(m)/m just below 2, times Bertrand-window odd prime p). Route 2 = primitive-part extraction from Nat.infinite_odd_abundant (control oddness+unboundedness of the primitive divisor).",
+      "Intermediate: prove σ-multiplicativity closed form σ(m·p)=σ(m)(p+1) for odd prime p coprime to odd base m, and a reusable proper-divisor-deficiency criterion for m·p."
+    ]
   },
   "tags": [
     "number-theory",

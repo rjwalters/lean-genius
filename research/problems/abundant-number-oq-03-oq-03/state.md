@@ -1,25 +1,26 @@
 # Research State: abundant-number-oq-03-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT (base witness done; infinitude open)
 **Path**: full
-**Since**: 2026-07-09T16:43:19-07:00
+**Since**: 2026-07-20
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Infinitude of odd primitive abundant numbers (OEIS A006038).
 
-## Active Approach
-None yet.
-
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+## Progress
+Base witness VERIFIED axiom-free: `AbundantNumberOQ03OQ03.lean` establishes the
+`IsPrimitiveAbundant` predicate, the `OddPrimitiveAbundant` target set, and that
+945 = 3³·5·7 (the smallest odd abundant number) is odd primitive abundant — all 15
+proper divisors deficient, kernel `decide` (maxRecDepth 4000), no native_decide.
+Plus the obstruction lemma `not_primitive_of_abundant_properDivisor`.
 
 ## Blockers
-None.
+None yet — infinitude is genuinely open (no explicit odd family known to be
+provably primitive abundant infinitely often).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Attack infinitude via Route 1 (odd `m·p`, Bertrand window) or Route 2 (primitive-
+part extraction from `Nat.infinite_odd_abundant`). First build the reusable
+`σ(m·p)=σ(m)(p+1)` closed form and a proper-divisor-deficiency criterion.
