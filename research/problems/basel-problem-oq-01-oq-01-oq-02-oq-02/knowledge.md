@@ -306,3 +306,65 @@ real error; retried. All three additions use only already-imported
 Mathlib lemmas (`Nat.choose_mul`, `pow_dvd_pow_of_dvd`, `mul_pow`) plus
 `omega`/`ring`; the only new external dependency is `Nat.choose_mul`
 (Mathlib/Data/Nat/Choose/Basic.lean), signature verified against source.
+
+### Session 25 (ACT, 2026-07-20, remote researcher)
+
+**Mode**: REVISIT (depth-first on RICH problem)
+**Outcome**: progress — alternating-half per-term denominator analysis
+COMPLETE (Part 15, +8 theorems, build-verified, foundational axioms only)
+
+#### What I Did
+
+Closed the "pure-binomial cross-factor" gap left by S24, **including the
+factor 2**. Added Part 15 to `BaselProblemOQ01OQ01OQ02OQ02.lean`
+(1097 → 1314 lines, 41 → 49 theorems, 0 sorries, 0 axioms):
+
+1. `choose_add_mul_choose` (:1154) — upper subset-of-a-subset identity
+   `C(n+k,k)·C(k,m) = C(n+m,m)·C(n+k,k-m)`, from `Nat.choose_mul` at
+   `(n+k, n+m, n)` plus three symmetry flips.
+2. `choose_cross_product_eq` (:1176) — product with the lower identity:
+   `C(n,m)C(n+m,m)·(C(n-m,k-m)C(n+k,k-m)) = C(n,k)C(n+k,k)·C(k,m)²`.
+3. `cube_mul_choose_sq_dvd_lcmRange_cube` (:1196) —
+   `m³C(k,m)² = m·(m·C(k,m))² ∣ (lcmRange n)³` (S21 lemma squared,
+   plus `m ∣ lcmRange n`).
+4. `alt_denom_core_dvd` (:1217) —
+   `m³·C(n,m)·C(n+m,m) ∣ (lcmRange n)³·C(n,k)·C(n+k,k)`.
+5. `two_dvd_central_binom` (:1241) — `C(2m,m) = 2·C(2m-1,m-1)` via
+   Pascal + `Nat.choose_symm_half`.
+6. `two_dvd_choose_mul_choose_add` (:1254) — `2 ∣ C(n,k)·C(n+k,k)`
+   via the S24 reindexing; this absorbs the alternating term's `/2`
+   into the *second* copy of the outer square.
+7. `alt_denom_dvd_lcmRange_cube_mul_sq` (:1270) — **capstone**:
+   `2·m³·C(n,m)·C(n+m,m) ∣ (lcmRange n)³·C(n,k)²·C(n+k,k)²`
+   for `1 ≤ m ≤ k ≤ n`.
+8. `alt_term_lcm_clear` (:1295) — ℚ-level cast of the capstone via
+   `Nat.cast_div`: the per-term quotient is a natural number. This is
+   the exact shape the summation assembly consumes.
+
+#### Verification
+
+- `lake build Proofs.BaselProblemOQ01OQ01OQ02OQ02` — clean (2969 jobs;
+  only pre-existing warnings in Parts 4/12/13). Built in a remote
+  isolated container with Lean v4.31.0 + pinned Mathlib cache (Docker
+  wrapper unavailable there; container itself provides the memory
+  isolation the wrapper exists for).
+- `#print axioms` on all 8 new theorems: `[propext, Classical.choice,
+  Quot.sound]` only.
+
+#### Key Findings
+
+- The cross-factor needs **two** subset-of-a-subset identities (lower =
+  Mathlib's `Nat.choose_mul`, upper = its `(n+k, n+m, n)` instance);
+  their product eliminates `C(n,m)C(n+m,m)` in favor of `C(k,m)²`,
+  which the S21 lemma squares away into `(lcmRange n)³`.
+- The `/2` is free: the outer pair `C(n,k)C(n+k,k)` is always even for
+  `k ≥ 1` (S24 reindex + even central binomial) — no 2-adic valuation
+  analysis needed, contrary to what S9's m=3 experience suggested.
+
+#### Next Steps
+
+Summation-level assembly ONLY (see tracker `nextSteps` S26 entry):
+sum `alt_term_lcm_clear` over `m ∈ Icc 1 k` in ℤ (signs), combine with
+`harmonicCubed_lcm_clear`, sum over `k ≤ n` against the vdP closed
+form, then discharge the parent `denominator_control` axiom (needs the
+definitional bridge to the parent file's `aperyA`).

@@ -1093,4 +1093,221 @@ theorem cube_mul_cube_choose_dvd_lcmRange_cube {n m : ℕ} (hm : 0 < m) (hmn : m
 
 end Part14
 
+section Part15
+
+/-! ## Part 15 (Session 25 ACT) — van der Poorten §6 per-term divisibility
+
+This part completes the **per-term denominator analysis** of the
+alternating-bilinear half of the van der Poorten closed form. The
+alternating summand for `1 ≤ m ≤ k ≤ n` carries the denominator
+`2 · m³ · C(n, m) · C(n+m, m)`; the capstone
+`alt_denom_dvd_lcmRange_cube_mul_sq` proves that this denominator
+divides `(lcmRange n)³ · C(n,k)² · C(n+k,k)²` — the exact reduction
+target stated in Part 14's header, *including* the factor 2.
+
+The chain (all pure `Nat`, no casts):
+
+1. `choose_add_mul_choose` — the "upper" subset-of-a-subset identity
+   `C(n+k, k) · C(k, m) = C(n+m, m) · C(n+k, k-m)`, the companion of
+   Mathlib's `Nat.choose_mul` (the "lower" identity
+   `C(n, k) · C(k, m) = C(n, m) · C(n-m, k-m)`).
+
+2. `choose_cross_product_eq` — multiplying the two subset identities:
+   `C(n,m)·C(n+m,m) · (C(n-m,k-m)·C(n+k,k-m)) = C(n,k)·C(n+k,k)·C(k,m)²`.
+   This trades the *denominator* binomials `C(n,m)·C(n+m,m)` for the
+   *inner* binomial `C(k,m)²` (times an integer cofactor).
+
+3. `cube_mul_choose_sq_dvd_lcmRange_cube` —
+   `m³ · C(k,m)² = m · (m·C(k,m))² ∣ (lcmRange n)³`, splitting the cube
+   as `m ∣ lcmRange n` (Part 1) times the square of
+   `m·C(k,m) ∣ lcmRange k ∣ lcmRange n` (Parts 13 + 9).
+
+4. `alt_denom_core_dvd` — combining 2 and 3:
+   `m³ · C(n,m) · C(n+m,m) ∣ (lcmRange n)³ · C(n,k) · C(n+k,k)`.
+
+5. `two_dvd_central_binom` / `two_dvd_choose_mul_choose_add` — the
+   central binomial `C(2m, m) = 2·C(2m-1, m-1)` is even (Pascal +
+   `Nat.choose_symm_half`), hence by the Part 14 reindexing
+   `C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k)` the outer pair is even for
+   `k ≥ 1`. This absorbs the `/2` of the alternating term into the
+   *second* copy of the outer square — vdP's observation that the
+   factor 2 "comes for free" from the central binomial.
+
+6. `alt_denom_dvd_lcmRange_cube_mul_sq` (capstone) —
+   `2 · m³ · C(n,m) · C(n+m,m) ∣ (lcmRange n)³ · C(n,k)² · C(n+k,k)²`.
+
+With this, every summand of the alternating-bilinear half clears
+against `(lcmRange n)³` times the outer Apéry square. What remains for
+`denominator_control` is *summation-level assembly only*: cast the
+per-term divisibility to `ℚ` (the `Nat.cast_div` pattern of
+`harmonicCubed_lcm_clear_nat`, Part 4), sum over `1 ≤ m ≤ k`, and
+combine with the already-closed `H_n^{(3)}` half.
+-/
+
+/-- **(Part 15a) Upper subset-of-a-subset identity**:
+    `C(n+k, k) · C(k, m) = C(n+m, m) · C(n+k, k-m)` for `m ≤ k`.
+
+    Companion of Mathlib's `Nat.choose_mul`; obtained from it at
+    `(n+k, n+m, n)` followed by three symmetry flips
+    (`Nat.choose_symm_add` / `Nat.choose_symm_of_eq_add`).
+    Unconditional in `n`. -/
+theorem choose_add_mul_choose {n k m : ℕ} (hmk : m ≤ k) :
+    Nat.choose (n + k) k * Nat.choose k m
+      = Nat.choose (n + m) m * Nat.choose (n + k) (k - m) := by
+  have h := Nat.choose_mul (n := n + k) (k := n + m) (s := n) (Nat.le_add_right n m)
+  have e1 : n + k - n = k := by omega
+  have e2 : n + m - n = m := by omega
+  rw [e1, e2] at h
+  have s1 : Nat.choose (n + k) (n + m) = Nat.choose (n + k) (k - m) :=
+    Nat.choose_symm_of_eq_add (by omega)
+  have s2 : Nat.choose (n + m) n = Nat.choose (n + m) m := Nat.choose_symm_add
+  have s3 : Nat.choose (n + k) n = Nat.choose (n + k) k := Nat.choose_symm_add
+  rw [s1, s2, s3] at h
+  rw [← h]
+  exact Nat.mul_comm _ _
+
+/-- **(Part 15b) Cross-product identity** (van der Poorten §6): for `m ≤ k`,
+    `C(n,m)·C(n+m,m) · (C(n-m,k-m)·C(n+k,k-m)) = C(n,k)·C(n+k,k) · C(k,m)²`.
+
+    Product of the lower (`Nat.choose_mul`) and upper
+    (`choose_add_mul_choose`) subset identities. Trades the
+    alternating-denominator binomials `C(n,m)·C(n+m,m)` for the inner
+    binomial square `C(k,m)²` times an integer cofactor. -/
+theorem choose_cross_product_eq {n k m : ℕ} (hmk : m ≤ k) :
+    Nat.choose n m * Nat.choose (n + m) m
+        * (Nat.choose (n - m) (k - m) * Nat.choose (n + k) (k - m))
+      = Nat.choose n k * Nat.choose (n + k) k * Nat.choose k m ^ 2 := by
+  have h1 := Nat.choose_mul (n := n) (k := k) (s := m) hmk
+  have h2 := choose_add_mul_choose (n := n) hmk
+  calc Nat.choose n m * Nat.choose (n + m) m
+        * (Nat.choose (n - m) (k - m) * Nat.choose (n + k) (k - m))
+      = Nat.choose n m * Nat.choose (n - m) (k - m)
+          * (Nat.choose (n + m) m * Nat.choose (n + k) (k - m)) := by ring
+    _ = Nat.choose n k * Nat.choose k m
+          * (Nat.choose (n + k) k * Nat.choose k m) := by rw [← h1, ← h2]
+    _ = Nat.choose n k * Nat.choose (n + k) k * Nat.choose k m ^ 2 := by ring
+
+/-- **(Part 15c) The `m³·C(k,m)²` block divides `(lcmRange n)³`**:
+    for `0 < m ≤ k ≤ n`,  `m³ · C(k,m)² ∣ (lcmRange n)³`.
+
+    Split as `m · (m·C(k,m))²`: the factor `m` divides `lcmRange n`
+    (Part 1) and `m·C(k,m)` divides `lcmRange k ∣ lcmRange n`
+    (Part 13 + Part 9). -/
+theorem cube_mul_choose_sq_dvd_lcmRange_cube {n k m : ℕ} (hm : 0 < m) (hmk : m ≤ k)
+    (hkn : k ≤ n) :
+    m ^ 3 * Nat.choose k m ^ 2 ∣ (lcmRange n) ^ 3 := by
+  have hmn : m ≤ n := hmk.trans hkn
+  have h1 : m ∣ lcmRange n := dvd_lcmRange hm hmn
+  have h2 : m * Nat.choose k m ∣ lcmRange n :=
+    (mul_choose_dvd_lcmRange hm hmk).trans (lcmRange_dvd_of_le hkn)
+  have h4 : m * (m * Nat.choose k m) ^ 2 ∣ lcmRange n * (lcmRange n) ^ 2 :=
+    mul_dvd_mul h1 (pow_dvd_pow_of_dvd h2 2)
+  have e1 : m * (m * Nat.choose k m) ^ 2 = m ^ 3 * Nat.choose k m ^ 2 := by ring
+  have e2 : lcmRange n * (lcmRange n) ^ 2 = (lcmRange n) ^ 3 := by ring
+  rwa [e1, e2] at h4
+
+/-- **(Part 15d) Alternating-denominator core divisibility**: for
+    `0 < m ≤ k ≤ n`,
+    `m³ · C(n,m) · C(n+m,m) ∣ (lcmRange n)³ · C(n,k) · C(n+k,k)`.
+
+    The cross-product identity (15b) exhibits the left side times the
+    integer cofactor `C(n-m,k-m)·C(n+k,k-m)` as
+    `m³·C(k,m)² · (C(n,k)·C(n+k,k))`, and `m³·C(k,m)²` divides
+    `(lcmRange n)³` by 15c. -/
+theorem alt_denom_core_dvd {n k m : ℕ} (hm : 0 < m) (hmk : m ≤ k) (hkn : k ≤ n) :
+    m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m)
+      ∣ (lcmRange n) ^ 3 * (Nat.choose n k * Nat.choose (n + k) k) := by
+  have hcross := choose_cross_product_eq (n := n) hmk
+  have step1 : m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m)
+      ∣ m ^ 3 * Nat.choose k m ^ 2 * (Nat.choose n k * Nat.choose (n + k) k) :=
+    ⟨Nat.choose (n - m) (k - m) * Nat.choose (n + k) (k - m), by
+      calc m ^ 3 * Nat.choose k m ^ 2 * (Nat.choose n k * Nat.choose (n + k) k)
+          = m ^ 3 * (Nat.choose n k * Nat.choose (n + k) k * Nat.choose k m ^ 2) := by
+            ring
+        _ = m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m
+              * (Nat.choose (n - m) (k - m) * Nat.choose (n + k) (k - m))) := by
+            rw [← hcross]
+        _ = m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m)
+              * (Nat.choose (n - m) (k - m) * Nat.choose (n + k) (k - m)) := by
+            ring⟩
+  exact step1.trans
+    (mul_dvd_mul_right (cube_mul_choose_sq_dvd_lcmRange_cube hm hmk hkn) _)
+
+/-- **(Part 15e) The central binomial is even**: `2 ∣ C(2m, m)` for `0 < m`.
+
+    Pascal splits `C(2m, m) = C(2m-1, m-1) + C(2m-1, m)` and the two
+    halves are equal by `Nat.choose_symm_half`, so
+    `C(2m, m) = 2·C(2m-1, m-1)`. -/
+theorem two_dvd_central_binom {m : ℕ} (hm : 0 < m) :
+    2 ∣ Nat.choose (2 * m) m := by
+  obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
+  have e : 2 * (m' + 1) = 2 * m' + 1 + 1 := by ring
+  rw [e, Nat.choose_succ_succ, Nat.choose_symm_half]
+  omega
+
+/-- **(Part 15f) Evenness of the outer binomial pair**:
+    `2 ∣ C(n,k) · C(n+k,k)` for `0 < k`.
+
+    By the Part 14 reindexing `C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k)`
+    and evenness of the central binomial `C(2k,k)` (15e). This is what
+    absorbs the `/2` of the alternating summand. -/
+theorem two_dvd_choose_mul_choose_add {n k : ℕ} (hk : 0 < k) :
+    2 ∣ Nat.choose n k * Nat.choose (n + k) k := by
+  rw [choose_mul_choose_reindex]
+  exact (two_dvd_central_binom hk).mul_left _
+
+/-- **(Part 15g) Per-term denominator divisibility, capstone**: for
+    `0 < m ≤ k ≤ n`,
+    `2 · m³ · C(n,m) · C(n+m,m) ∣ (lcmRange n)³ · C(n,k)² · C(n+k,k)²`.
+
+    This is the full denominator of the van der Poorten §6 alternating
+    summand `(-1)^{m-1} / (2 m³ C(n,m) C(n+m,m))` cleared against
+    `(lcmRange n)³` times the outer Apéry square `C(n,k)² C(n+k,k)²` —
+    the reduction target stated in Part 14, factor 2 included. The
+    factor 2 is absorbed by the *second* copy of the outer pair via
+    15f; the core `m³·C(n,m)·C(n+m,m)` block consumes the first copy
+    and `(lcmRange n)³` via 15d. -/
+theorem alt_denom_dvd_lcmRange_cube_mul_sq {n k m : ℕ} (hm : 0 < m) (hmk : m ≤ k)
+    (hkn : k ≤ n) :
+    2 * m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m)
+      ∣ (lcmRange n) ^ 3 * (Nat.choose n k ^ 2 * Nat.choose (n + k) k ^ 2) := by
+  have hk : 0 < k := hm.trans_le hmk
+  have hmul := mul_dvd_mul (two_dvd_choose_mul_choose_add (n := n) hk)
+    (alt_denom_core_dvd hm hmk hkn)
+  have e1 : 2 * (m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m))
+      = 2 * m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m) := by ring
+  have e2 : Nat.choose n k * Nat.choose (n + k) k
+        * ((lcmRange n) ^ 3 * (Nat.choose n k * Nat.choose (n + k) k))
+      = (lcmRange n) ^ 3 * (Nat.choose n k ^ 2 * Nat.choose (n + k) k ^ 2) := by
+    ring
+  rwa [e1, e2] at hmul
+
+/-- **(Part 15h) ℚ-level per-term clearing**: for `0 < m ≤ k ≤ n`, the
+    alternating summand's denominator divides out exactly over `ℚ`:
+
+    `(lcmRange n)³ · C(n,k)² · C(n+k,k)² / (2 m³ C(n,m) C(n+m,m))`
+    is a natural number.
+
+    This is the `Nat.cast_div` lift of the capstone 15g — the exact
+    shape the summation-level assembly of `denominator_control`
+    consumes (mirroring how `harmonicCubed_lcm_clear_nat` consumed
+    `pow_dvd_lcmRange_pow` in Part 4). -/
+theorem alt_term_lcm_clear {n k m : ℕ} (hm : 0 < m) (hmk : m ≤ k) (hkn : k ≤ n) :
+    ∃ z : ℕ, ((lcmRange n : ℕ) : ℚ) ^ 3
+        * ((Nat.choose n k : ℚ) ^ 2 * (Nat.choose (n + k) k : ℚ) ^ 2)
+        / (2 * (m : ℚ) ^ 3 * ((Nat.choose n m : ℚ) * (Nat.choose (n + m) m : ℚ)))
+      = (z : ℚ) := by
+  have hdvd := alt_denom_dvd_lcmRange_cube_mul_sq hm hmk hkn
+  have hDpos : 0 < 2 * m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m) := by
+    have hA : 0 < Nat.choose n m := Nat.choose_pos (hmk.trans hkn)
+    have hB : 0 < Nat.choose (n + m) m := Nat.choose_pos (Nat.le_add_left m n)
+    positivity
+  refine ⟨(lcmRange n ^ 3 * (Nat.choose n k ^ 2 * Nat.choose (n + k) k ^ 2))
+      / (2 * m ^ 3 * (Nat.choose n m * Nat.choose (n + m) m)), ?_⟩
+  rw [Nat.cast_div hdvd (by exact_mod_cast hDpos.ne')]
+  push_cast
+  ring
+
+end Part15
+
 end BaselProblemOQ01OQ01OQ02OQ02
