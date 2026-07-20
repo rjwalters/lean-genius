@@ -44,6 +44,18 @@ first structural theorems.
    bounding the extremal `g(n)` from above (`Nat.sInf` membership) — the hook the
    grid upper-bound construction feeds.
 
+7. `distinctDistances_mono` / `numDistinctDistances_mono` — the distance set and
+   its count are monotone under inclusion (`S ⊆ T`), the structural input behind
+   monotonicity of `g`.
+
+8. `minDistinctDistances_mono` — **Erdős's function `g` is nondecreasing**:
+   `g(n) ≤ g(n+1)` by deleting a point from an `(n+1)`-point minimizer.
+   `exists_card_eq` records that an `n`-point configuration exists for every `n`
+   (so the defining `sInf` is attained).
+
+9. `minDistinctDistances_zero` / `minDistinctDistances_one` — the remaining low
+   values `g(0) = g(1) = 0`, completing the exact table `g(0)=g(1)=0, g(2)=1`.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -202,7 +214,7 @@ theorem minDistinctDistances_mono : Monotone minDistinctDistances := by
   have hUpos : U.Nonempty := by rw [← Finset.card_pos, hUcard]; omega
   obtain ⟨a, ha⟩ := hUpos
   have hScard : (U.erase a).card = n := by
-    rw [Finset.card_erase_of_mem ha, hUcard]
+    rw [Finset.card_erase_of_mem ha, hUcard]; omega
   calc minDistinctDistances n
       ≤ numDistinctDistances (U.erase a) := minDistinctDistances_le_of_card_eq hScard
     _ ≤ numDistinctDistances U := numDistinctDistances_mono (Finset.erase_subset a U)
