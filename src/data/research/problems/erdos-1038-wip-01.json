@@ -28,7 +28,18 @@
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
     "focus": "Added the faithful predicate MonicRealRootedIn01' (complete real splitting f.roots.card=f.natDegree) + sublevelSup'; transferred the 2√2 sup lower bound (le_sublevelSup') to the faithful object and proved X²+1 is excluded (sq_add_one_not_admissible'), so the literal-predicate sublevelInf_eq_zero degeneracy does not affect the faithful infimum.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "sharp faithful supremum sublevelSup' = 2√2 (currently only the elementary sandwich 2√2 ≤ sublevelSup' ≤ 4 is machine-checked)",
+        "reopenCriterion": "materially new mechanism required — logarithmic potential theory (Tao 2025) enters Mathlib; the elementary |x−r| ≥ |x|−1 argument caps at the non-tight ≤ 4",
+        "blockedAt": "2026-07-19"
+      },
+      {
+        "route": "exact faithful infimum sublevelInf = 2^(4/3) − 1 (currently only sublevelInf ≤ 2 via linear X; the degree-2 slice infimum is exactly 2, separated from the true degree→∞ infimum)",
+        "reopenCriterion": "materially new mechanism required — potential theory + the (x+1)(x−1)^m extremal family; needs degree→∞ analysis beyond Mathlib",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "The faithful sup lower bound 2√2 ≤ sublevelSup' is done. Remaining OPEN/blocked: the faithful infimum exact value 2^(4/3)−1 (needs logarithmic potential theory beyond Mathlib) and both matching upper bounds. A cheap next win: the linear witness X also gives sublevelInf' ≤ 2 under the faithful predicate (define sublevelInf', mirror linear_admissible').",
     "attemptCounts": {
       "total": 2,
