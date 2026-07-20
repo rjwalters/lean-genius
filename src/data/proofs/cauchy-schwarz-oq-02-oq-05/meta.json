@@ -92,20 +92,36 @@
       "mathContext": "L² = Lp 𝕜 2 μ; for RCLike 𝕜 it is a Hilbert space, so (L²)* ≅ L² via the inner product."
     },
     {
-      "id": "exists-unique",
-      "title": "Existence and uniqueness of the representing element",
+      "id": "existence",
+      "title": "Existence of the representing element",
       "startLine": 50,
-      "endLine": 75,
-      "summary": "riesz_L2_exists produces the witness (toDual 𝕜 _).symm g with g h = ⟪f, h⟫ from toDual_symm_apply. riesz_L2_inner_ext is inner-product extensionality (ext_inner_right): an L² element is determined by its inner products. riesz_L2_existsUnique packages these into the parent's ∃! statement.",
-      "mathContext": "Every bounded functional on L² is inner product with a unique element."
+      "endLine": 63,
+      "summary": "riesz_L2_exists produces the witness (toDual 𝕜 _).symm g with g h = ⟪f, h⟫ from toDual_symm_apply — the existence half of Fréchet–Riesz in L², obtained directly from Mathlib's InnerProductSpace.toDual equivalence. riesz_L2_inner_ext is the supporting inner-product extensionality lemma (ext_inner_right): an L² element is determined by its inner products against all test vectors, which is what makes the representer unique.",
+      "mathContext": "$g(h) = \\langle f, h\\rangle$ for $f = (\\text{toDual}\\,\\Bbbk)^{-1}(g)$; extensionality $\\langle f_1, h\\rangle = \\langle f_2, h\\rangle\\ \\forall h \\Rightarrow f_1 = f_2$ gives uniqueness."
     },
     {
-      "id": "integral-norm",
-      "title": "The concrete integral form and the isometry",
+      "id": "exists-unique",
+      "title": "The ∃! Riesz representation statement",
+      "startLine": 64,
+      "endLine": 75,
+      "summary": "riesz_L2_existsUnique packages existence (riesz_L2_exists) and inner-product extensionality (riesz_L2_inner_ext) into the parent's target ∃! statement: every bounded linear functional g on L² is inner product with a UNIQUE element f. This is the clean Hilbert-space form the parent open question asked to establish for L².",
+      "mathContext": "$\\exists!\\, f \\in L^2,\\ \\forall h,\\ g(h) = \\langle f, h\\rangle$ — the Fréchet–Riesz theorem specialised to $L^2(\\mu; \\Bbbk)$."
+    },
+    {
+      "id": "integral",
+      "title": "The concrete integral form",
       "startLine": 76,
+      "endLine": 82,
+      "summary": "riesz_L2_integral rewrites the abstract inner product ⟪f, h⟫ via L2.inner_def to the classical integral form g h = ∫ a, ⟪f a, h a⟫ ∂μ — connecting the abstract Hilbert-space representer to the measure-theoretic integral pairing that Riesz representation is usually stated with in analysis textbooks.",
+      "mathContext": "$g(h) = \\int_\\alpha \\langle f(a), h(a)\\rangle \\, d\\mu(a)$ — the functional acts by integration against the representer $f$."
+    },
+    {
+      "id": "norm",
+      "title": "The representation is isometric",
+      "startLine": 83,
       "endLine": 90,
-      "summary": "riesz_L2_integral rewrites ⟪f, h⟫ via L2.inner_def to the classical integral form g h = ∫ a, ⟪f a, h a⟫ ∂μ. riesz_L2_norm records that the representation preserves norms, ‖f‖ = ‖g‖, since toDual is a linear isometry (LinearIsometryEquiv.norm_map).",
-      "mathContext": "Functional = integration against f; the L² ≅ (L²)* identification is isometric."
+      "summary": "riesz_L2_norm records that the representation preserves norms, ‖f‖ = ‖g‖, because InnerProductSpace.toDual is a linear isometry equivalence (LinearIsometryEquiv.norm_map). So the map g ↦ f is not just a bijection L² ≅ (L²)* but an isometric one, matching the operator norm of the functional to the L²-norm of its representer.",
+      "mathContext": "$\\|f\\| = \\|g\\|$: the identification $L^2 \\cong (L^2)^*$ is an isometry, so the representer's norm equals the functional's operator norm."
     }
   ],
   "references": [
