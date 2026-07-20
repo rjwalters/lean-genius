@@ -194,9 +194,31 @@ lemma cfs_constant : (1 : ℝ) / 256 = 2^(-(8 : ℝ)) := by norm_num
 -/
 
 /--
-**Triple log grows unboundedly.**
+**Triple log tends to `atTop`.** `log(log(log n)) → ∞` as `n → ∞`: the cast
+`ℕ → ℝ` tends to `atTop`, and `Real.log` preserves `atTop`, so the threefold
+composition does too.
 -/
-axiom tripleLog_unbounded : ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, tripleLog n > M
+theorem tripleLog_tendsto_atTop :
+    Filter.Tendsto (fun n : ℕ => tripleLog n) Filter.atTop Filter.atTop := by
+  have hcast : Filter.Tendsto (fun n : ℕ => (n : ℝ)) Filter.atTop Filter.atTop :=
+    tendsto_natCast_atTop_atTop
+  have h :=
+    Real.tendsto_log_atTop.comp
+      (Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp hcast))
+  simpa only [Function.comp_def, tripleLog] using h
+
+/--
+**Triple log grows unboundedly.** For every threshold `M` there is `N` beyond
+which `tripleLog n > M`. Formerly an `axiom`; now proved axiom-free from
+`tripleLog_tendsto_atTop` (the elementary divergence of `log log log n`),
+retiring one of this entry's four assumptions.
+-/
+theorem tripleLog_unbounded : ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, tripleLog n > M := by
+  intro M
+  have h := tripleLog_tendsto_atTop.eventually (Filter.eventually_gt_atTop M)
+  rw [Filter.eventually_atTop] at h
+  obtain ⟨N, hN⟩ := h
+  exact ⟨N, fun n hn => hN n hn⟩
 
 /--
 **The main theorem follows from CFS bound + unboundedness of triple log.**

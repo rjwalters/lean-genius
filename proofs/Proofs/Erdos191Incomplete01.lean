@@ -17,11 +17,12 @@ import Mathlib
   `atTop`, and the threefold composition therefore tends to `atTop`; a `Tendsto …
   atTop` statement immediately gives the `∀ M, ∃ N, ∀ n ≥ N, … > M` form.
 
-  (Proved standalone because `Erdos191Problem.lean` does not currently compile
-  against this Mathlib under its declared imports — several supporting imports,
-  e.g. `Real.log_two_gt_d9` and `rpow`, are missing there — so this entry
-  re-states `tripleLog` and supplies the elementary divergence axiom-free,
-  ready to drop in once those imports are repaired.)
+  (Originally proved standalone because `Erdos191Problem.lean` was reported not
+  to compile under its declared imports. That is no longer the case: the parent
+  now compiles under `import Mathlib`, and this axiom-free proof has been dropped
+  in there — `tripleLog_unbounded` is now a `theorem` in `Erdos191Problem.lean`,
+  retiring one of that entry's four axioms. This file is kept as the minimal
+  self-contained witness of the divergence argument.)
 
   ## Results
   * `tripleLog_tendsto_atTop` : `log(log(log n)) → ∞`.
