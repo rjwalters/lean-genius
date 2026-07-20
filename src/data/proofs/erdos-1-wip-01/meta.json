@@ -33,7 +33,7 @@
       "not_dss_of_mem_zero: If 0 ∈ A then A does NOT have DSS (∅ and {0} give the same sum)",
       "dss_elements_pos: All elements of a non-empty DSS set are positive",
       "dss_subset: Any subset of a DSS set also has DSS (hereditary property)",
-      "dss_singleton: Any singleton {a} has DSS",
+      "dss_singleton: Any singleton {a} with a > 0 has DSS (the a = 0 case fails, since ∅ and {0} both sum to 0)",
       "dss_sum_lower_bound: 2^n ≤ sum(A) + 1 for any n-element DSS set A (pigeonhole argument)",
       "dss_sum_ge_pow_sub_one: sum(A) ≥ 2^n − 1 (corollary of sum lower bound)",
       "minDSS_witness: Fills the sorry in OQ03's minDSSBound definition via powers-of-2 witness",
@@ -110,7 +110,7 @@
       "title": "Part V: Structural Properties of DSS Sets",
       "startLine": 227,
       "endLine": 259,
-      "summary": "Four elementary constraints: `not_dss_of_mem_zero` (0 ∈ A blocks DSS), `dss_elements_pos` (all elements positive), `dss_subset` (hereditary: B ⊆ A has DSS), `dss_singleton` (any singleton has DSS).",
+      "summary": "Four elementary constraints: `not_dss_of_mem_zero` (0 ∈ A blocks DSS), `dss_elements_pos` (all elements positive), `dss_subset` (hereditary: B ⊆ A has DSS), `dss_singleton` (any positive singleton {a}, a > 0, has DSS).",
       "mathContext": "DSS sets form a downward-closed family (hereditary/independence system): $\\mathcal{F}_{DSS} = \\{A : \\text{hasDistinctSubsetSums}(A)\\}$ satisfies $A \\in \\mathcal{F}_{DSS}, B \\subseteq A \\Rightarrow B \\in \\mathcal{F}_{DSS}$."
     },
     {
