@@ -71,7 +71,8 @@
       "**Reindexing beats subtraction.** Writing $m = n-r$ converts $F_n^2 - F_{n-r}F_{n+r}$ into the subtraction-free $F_{m+r}^2 - F_m F_{m+2r}$, sidestepping all the friction of truncated natural-number subtraction in the formal proof.",
       "**One addition formula does the expansion.** Three applications of `Nat.fib_add` express $F_{m+r}$, $F_{m+r+1}$ and $F_{m+2r}$ in the basis $\\{F_m, F_{m+1}, F_s, F_{s+1}\\}$, after which the identity is pure polynomial algebra.",
       "**Catalan = Cassini × F_r².** The entire dependence on $m$ collapses into the single Cassini scalar $F_{m+1}^2 - F_m F_{m+1} - F_m^2 = (-1)^m$; the step parameter $r$ contributes only the multiplicative factor $F_r^2$. So Catalan is literally Cassini scaled by $F_r^2$.",
-      "**Stay in ℤ.** Casting Fibonacci values into $\\mathbb{Z}$ up front makes the squared differences genuine and lets `linear_combination` and `ring` close the algebra in one step."
+      "**Stay in ℤ.** Casting Fibonacci values into $\\mathbb{Z}$ up front makes the squared differences genuine and lets `linear_combination` and `ring` close the algebra in one step.",
+      "**A single induction powers the whole family.** Only `cassini_sub` (the $r=1$ base) is proved by induction; `catalan_aux` extends it to an arbitrary step $r$ with *no second induction* — just the `fib_add` addition formula and that one Cassini scalar — and `catalan` is a bare reindexing $m = n-r$. So the entire $r$-parameter generalization costs zero extra inductive work, in contrast to the naive plan of inducting on $r$ itself."
     ],
     "prerequisites": [
       "Fibonacci numbers and the recurrence F_{n+2} = F_n + F_{n+1}",
@@ -93,24 +94,32 @@
       "id": "cassini-core",
       "title": "The Cassini core (normalized form)",
       "startLine": 37,
-      "endLine": 54,
-      "summary": "cassini_sub proves F_{m+1}² − F_m·F_{m+1} − F_m² = (−1)^m by induction off Nat.fib_add_two. This is the r = 1 engine that the general identity scales by F_r².",
+      "endLine": 51,
+      "summary": "cassini_sub proves F_{m+1}² − F_m·F_{m+1} − F_m² = (−1)^m by induction off Nat.fib_add_two. This is the r = 1 engine that the general identity scales by F_r² — and the only induction in the whole file.",
       "mathContext": "$F_{m+1}^2 - F_m F_{m+1} - F_m^2 = (-1)^m$ — the normalized Cassini core, by induction on $m$ off $F_{m+2} = F_{m+1} + F_m$."
     },
     {
       "id": "catalan-subtraction-free",
       "title": "Catalan's identity, subtraction-free",
-      "startLine": 57,
-      "endLine": 83,
-      "summary": "catalan_aux proves F_{m+r}² − F_m·F_{m+2r} = (−1)^m·F_r². Three applications of Nat.fib_add expand the compound terms into the basis {F_m, F_{m+1}, F_s, F_{s+1}}, and a single linear_combination against the Cassini core closes the goal.",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "catalan_aux proves F_{m+r}² − F_m·F_{m+2r} = (−1)^m·F_r². Three applications of Nat.fib_add expand the compound terms into the basis {F_m, F_{m+1}, F_s, F_{s+1}}, and a single linear_combination against the Cassini core closes the goal — no second induction.",
       "mathContext": "Subtraction-free form $F_{m+r}^2 - F_m F_{m+2r} = (-1)^m F_r^2$; expand via $F_{a+b+1} = F_a F_b + F_{a+1}F_{b+1}$ (`Nat.fib_add`) and close by linear_combination against the Cassini core."
     },
     {
       "id": "catalan-classical",
-      "title": "Classical signed form and sanity checks",
-      "startLine": 85,
+      "title": "Catalan's identity: classical signed form",
+      "startLine": 82,
+      "endLine": 92,
+      "summary": "catalan reindexes catalan_aux by m = n − r to the classical F_n² − F_{n−r}·F_{n+r} = (−1)^{n−r}·F_r² for r ≤ n, using Nat.sub_add_cancel and an omega step to normalize the shifted indices.",
+      "mathContext": "$F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ for $r \\le n$ — the classical signed form, by $m := n-r$ in catalan_aux."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity checks against the classical statement",
+      "startLine": 94,
       "endLine": 114,
-      "summary": "catalan reindexes catalan_aux by m = n − r to the classical F_n² − F_{n−r}·F_{n+r} = (−1)^{n−r}·F_r² for r ≤ n. catalan_one recovers Cassini (r = 1); catalan_5_2 and catalan_6_2 check concrete instances (F₅²−F₃F₇=−1, F₆²−F₄F₈=1).",
+      "summary": "catalan_one recovers Cassini (r = 1): F_n² − F_{n−1}·F_{n+1} = (−1)^{n−1}. catalan_5_2 and catalan_6_2 verify concrete instances (F₅²−F₃F₇ = 25−26 = −1; F₆²−F₄F₈ = 64−63 = 1), confirming both the value and the sign against the general theorem.",
       "mathContext": "Reindex $m = n-r$ to recover the classical $F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ ($r \\le n$); $r=1$ gives Cassini, and $F_5^2 - F_3 F_7 = -1$, $F_6^2 - F_4 F_8 = 1$ are checked."
     }
   ],
