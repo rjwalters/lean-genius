@@ -51,63 +51,63 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 37,
       "summary": "Header documenting Erdős Problem #890 with references to Erdős-Selfridge [ErSe67] and Pólya's theorem. Imports `ArithmeticFunction.Defs` (for $\\omega$), `PrimeCounting` (for $\\pi$), `Finset.Basic`, `Filter.Basic`, `SpecialFunctions.Log.Basic` (for $\\log$), and `Tactic`. Opens `Nat`, `Finset`, `Filter`, and `ArithmeticFunction.omega` namespaces."
     },
     {
       "id": "primitives",
       "title": "Core Definitions",
-      "startLine": 43,
-      "endLine": 57,
+      "startLine": 38,
+      "endLine": 52,
       "summary": "Defines `cumulativeOmega k n = (Finset.range k).sum (\\lambda i \\Rightarrow \\omega(n+i))` for $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. Defines `pi k = Nat.primeCounting k` as a convenience alias for $\\pi(k)$. Both are marked `noncomputable`."
     },
     {
       "id": "asymptotics",
       "title": "Liminf and Limsup Predicates",
-      "startLine": 58,
-      "endLine": 86,
+      "startLine": 53,
+      "endLine": 81,
       "summary": "Defines `LiminfAtMost f L`: $\\forall N_0,\\, \\exists n \\geq N_0,\\, f(n) \\leq L$ (liminf $\\leq L$). Defines `LiminfAtLeast f L`: $\\exists N_0,\\, \\forall n \\geq N_0,\\, f(n) \\geq L$ (liminf $\\geq L$). Defines `LimsupRatioIsOne f`: for all $\\varepsilon > 0$, eventually $f(n) \\cdot \\log\\log n \\leq (1+\\varepsilon) \\log n$ and infinitely often $f(n) \\cdot \\log\\log n \\geq (1-\\varepsilon) \\log n$."
     },
     {
       "id": "conjecture-liminf",
       "title": "Conjecture 1: Liminf Upper Bound",
-      "startLine": 87,
-      "endLine": 99,
+      "startLine": 82,
+      "endLine": 94,
       "summary": "Defines `ErdosConjecture890_liminf : Prop` as $\\forall k \\geq 1,\\, \\text{LiminfAtMost}\\,(S_k)\\,(k + \\pi(k))$. This would show $\\liminf S_k(n) \\leq k + \\pi(k)$, complementing the Erdős-Selfridge lower bound."
     },
     {
       "id": "conjecture-limsup",
       "title": "Conjecture 2: Limsup Ratio",
-      "startLine": 100,
-      "endLine": 110,
+      "startLine": 95,
+      "endLine": 105,
       "summary": "Defines `ErdosConjecture890_limsup k : Prop` as `LimsupRatioIsOne (cumulativeOmega k)`. This states $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the Hardy-Ramanujan result from $k = 1$ to arbitrary $k$."
     },
     {
       "id": "known-results",
       "title": "Known Results (Axioms)",
-      "startLine": 111,
-      "endLine": 131,
+      "startLine": 106,
+      "endLine": 126,
       "summary": "Axiomatizes `erdos_selfridge_lower_bound`: $\\forall k \\geq 1,\\, \\text{LiminfAtLeast}\\,(S_k)\\,(k + \\pi(k) - 1)$. Axiomatizes `classical_omega_limsup`: $\\text{LimsupRatioIsOne}\\,(\\omega)$. Both are deep number-theoretic results."
     },
     {
       "id": "structural",
       "title": "Structural Theorems",
-      "startLine": 132,
-      "endLine": 172,
+      "startLine": 127,
+      "endLine": 166,
       "summary": "Proves `cumulativeOmega_mono`: $S_k(n) \\leq S_{k+1}(n)$ via `Finset.sum_le_sum_of_subset`. Proves `erdos_890_lower_bound_k1`: the Erdős-Selfridge bound at $k=1$. Proves `erdos_890_liminf_sandwich`: conditional on Conjecture 1, $k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. Proves `erdos_890_known_lower_bound`: restates the Erdős-Selfridge axiom."
     },
     {
       "id": "additional-lemmas",
       "title": "Additional Structural Lemmas",
-      "startLine": 172,
-      "endLine": 187,
+      "startLine": 167,
+      "endLine": 182,
       "summary": "Proves `cumulativeOmega_zero`: $S_0(n) = 0$ (empty sum). Proves `cumulativeOmega_one`: $S_1(n) = \\omega(n)$ via `Finset.sum_range_one`. Proves `cumulativeOmega_add`: additivity $S_{k+j}(n) = S_k(n) + S_j(n+k)$ via `Finset.sum_range_add`."
     },
     {
       "id": "conjecture1-k1",
       "title": "Conjecture 1 Verified for k = 1",
-      "startLine": 188,
-      "endLine": 210,
+      "startLine": 183,
+      "endLine": 199,
       "summary": "Proves `omega_prime`: $\\omega(p) = 1$ for any prime $p$. Proves `conjecture1_k1`: an unconditional verification of Conjecture 1 at $k = 1$ ($\\text{LiminfAtMost}\\,(S_1)\\,(1 + \\pi(1))$), using Euclid's infinitude of primes (`Nat.exists_infinite_primes`) since $S_1(p) = \\omega(p) = 1 \\leq 1 + \\pi(1)$ for infinitely many primes $p$."
     }
   ],
