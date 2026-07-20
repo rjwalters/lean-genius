@@ -25,7 +25,7 @@
     "goal": "Formalize the elementary order theory of the basis predicates and the basic growth-ratio/limit facts from Mathlib; keep the deep oscillation content cleanly isolated as the open target."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-20T13:00:00-07:00",
     "iteration": 2,
     "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio.",
@@ -36,7 +36,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Formalize the standard bₖ = O(k²) upper bound for order-2 bases (density ≥ c√n ⟹ k-th element ≤ Ck²); and the perfect squares as a concrete order-4 basis via Lagrange four-square (Mathlib: Nat.sum_four_squares).",
+    "nextAction": "Formalize the standard bₖ = O(k²) upper bound for order-2 bases (density ≥ c√n ⟹ k-th element ≤ Ck²); triangular numbers as an order-3 basis if Gauss Eureka is in Mathlib. Deep oscillation content stays open.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos326WIP01.lean — session 2 added the perfect squares as a concrete additive basis of ORDER 4 (Squares, isAddBasisOfOrder_squares_four via Lagrange Nat.sum_four_squares, isAddBasis_squares). First non-vacuous instance of IsAddBasisOfOrder, complementing the existing monotonicity/extremal-case order theory. 14 theorems + 1 def, 0 sorry / 0 axiom, #print axioms clean [propext, Classical.choice, Quot.sound]. Deep oscillation/growth content (the open order-2 sub-basis question) untouched.",
+    "progressSummary": "PROGRESS: Erdos326WIP01.lean — proved IsAddBasisOfOrder.infinite: a basis of FIXED order k must be infinite (a finite set is bounded by M, so sums of ≤ k elements are ≤ k·M and cannot cover all large n). This distinguishes bounded-order bases from IsAddBasis, which permits arbitrarily many summands so e.g. {1} qualifies. 15 theorems + 1 def, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker. Deep growth content (bₖ=O(k²) upper bound, order-2 sub-basis question) untouched.",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -52,7 +52,8 @@
       "not_isAddBasis_empty, not_isAddBasisOfOrder_zero",
       "growthRatio_nonneg, growthRatio_zero",
       "HasGrowthLimit.unique, HasGrowthLimit.not_hasNoGrowthLimit, hasNoGrowthLimit_iff",
-      "Squares (the set {m^2}), isAddBasisOfOrder_squares_four, isAddBasis_squares in Erdos326WIP01.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])"
+      "Squares (the set {m^2}), isAddBasisOfOrder_squares_four, isAddBasis_squares in Erdos326WIP01.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])",
+      "IsAddBasisOfOrder.infinite (Erdos326WIP01.lean): a bounded-order additive basis is infinite, via Set.Finite.bddAbove + sum ≤ k·M ceiling (2026-07-20)"
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
@@ -90,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T13:00:00.000Z",
-  "lastUpdate": "2026-07-20T13:00:00.000Z",
+  "lastUpdate": "2026-07-20T23:20:00.000Z",
   "significance": 6,
   "tractability": 5
 }
