@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-11",
+  "lastUpdate": "2026-07-20",
   "path": "full",
   "parentId": "erdos-1064",
   "tier": "B",
@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: Structural side COMPLETE/VERIFIED (0/0). §7 added the symbolic-landing MASTER form of the prime-triple reversal family (previously only the forward family had one), yielding the sharp reversal criterion 12m<φ(14m+3) and a concrete non-reversing prime-triple-shape witness (seed 57). Only remaining open direction: density-1 forward statement (Luca–Pomerance), not session-sized.",
+    "progressSummary": "PROGRESS: Closed the elementary prime obstruction. Every prime p≡3 mod4, p≥7 now proven strictly forward (classifySeed=.gt), not just ≠.lt — exact prime trichotomy p=3→.eq / p≥7→.gt. Structural side (excluded regime) fully closed AND now sharp on primes. Sole remaining terminus = analytic density-1 forward ψ(x,y) smooth-number statement (genuine Mathlib gap, not session-sized).",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -119,7 +119,8 @@
       "classifySeed_eq_compare_of_seedS_one_seedE_primePow in EulerTotientOQ04OQ03.lean (prime-power-landing trichotomy criterion)",
       "classifySeed_{lt,eq,gt}_iff_of_seedS_one_seedE_primePow + primePow_landing_family_reversal",
       "Witnesses: totient_401/361/561, classifySeed_561, seedE_561 (=19²), seedE_561_not_prime, mem_ReversalSet_561, reversal_seed_primePow_landing",
-      "primeTriple_totient_values / reversal_gap_primeTriple_eq_totient / reversal_gap_primeTriple_pow_dvd / reversal_primeTriple_iff_totient_landing / reversal_gap_primeTriple_of_prime_landing / primeTriple_shape_not_reversal_57 (EulerTotientOQ04OQ03.lean, after reversal_gap_primeTriple_ge ~L3326): symbolic-landing master form of the prime-triple reversal family (reversal mirror of forward_gap_fiveTimes_eq_totient), giving the exact reversal criterion 12m<φ(14m+3) and a concrete non-reversing prime-triple-shape witness (seed 57). All 6 theorems 0-axiom/0-sorry, host-lean v4.26.0 verified (docker still SIGBUS-135)."
+      "primeTriple_totient_values / reversal_gap_primeTriple_eq_totient / reversal_gap_primeTriple_pow_dvd / reversal_primeTriple_iff_totient_landing / reversal_gap_primeTriple_of_prime_landing / primeTriple_shape_not_reversal_57 (EulerTotientOQ04OQ03.lean, after reversal_gap_primeTriple_ge ~L3326): symbolic-landing master form of the prime-triple reversal family (reversal mirror of forward_gap_fiveTimes_eq_totient), giving the exact reversal criterion 12m<φ(14m+3) and a concrete non-reversing prime-triple-shape witness (seed 57). All 6 theorems 0-axiom/0-sorry, host-lean v4.26.0 verified (docker still SIGBUS-135).",
+      "seedE_prime_three_mod_four_ge_two / classifySeed_prime_three_mod_four_gt / classifySeed_prime_three_mod_four_eq_or_gt (EulerTotientOQ04OQ03.lean, after prime_three_mod_four_family_not_reversal ~L2187): CLOSES the elementary prime obstruction. Proves 2 ≤ seedE p for every prime p≡3 mod4, p≥7 (odd part of landing constant C = 2·((4w−φ(w))·2^{S−2}−1) is odd via 2∣φ(w) [w≥3] or 2∣2^{S−2} [S≥3], and ≥2), upgrading classifySeed_prime_three_mod_four_ne_lt to the exact regime: p=3⟹.eq, p≥7⟹.gt. All 3 theorems VERIFIED 0-axiom/0-sorry (propext/Classical.choice/Quot.sound), host-lean v4.31.0."
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -163,7 +164,8 @@
       "Reversal seeds with PROPER prime-power landings exist and were uncovered by prior engines: a=561 (landing 19²=361), a=1225 (31²), a=1595 (11³). Enumeration a<4000: 154 reversal seeds = 72 prime / 79 general-composite / 3 proper-prime-power landings.",
       "a=561 (smallest Carmichael number) reverses its whole family 561·2^(k+1): b=401 prime, landing e=361=19²; certified by prime-power engine via φ(401)+19·2=438 < 482=2·(561-320).",
       "Lean/omega gotcha: keep the totient identity LINEAR as φ(e)=e-p^(m-1) (not p^(m-1)·(p-1)); clear the nonlinear seedE a=p^(m-1)·p / =p^m facts before the classifier trichotomy so omega keeps seedE a·2^{…} as opaque atoms.",
-      "§7 (researcher-7, 2026-07-12): the prime-triple REVERSAL family 18m+3 = 3·(6m+1) now has the symbolic-landing MASTER form that the forward family already had (forward_gap_fiveTimes_eq_totient). primeTriple_totient_values proves φ(n)=12m·2^k and φ(D(n))=φ(14m+3)·2^k needing only 4m+1,6m+1 prime — NOT the landing 14m+3. Consequences: reversal_gap_primeTriple_eq_totient (signed gap (φ(14m+3)−12m)·2^k via Nat.sub_mul, sign-free), reversal_gap_primeTriple_pow_dvd (2^k | gap unconditionally on landing), and the sharp criterion reversal_primeTriple_iff_totient_landing: the WHOLE family reverses ⟺ 12m<φ(14m+3), k-freely. Landing primality (φ=14m+2>12m) forces reversal (recovers reversal_gap_primeTriple); a composite landing with φ(14m+3)≤12m does NOT reverse — concretely primeTriple_shape_not_reversal_57 (m=3, seed 57, landing 45=3²·5, φ(45)=24<36) shows the identical seed SHAPE that reverses at m=1 (a=21) fails at m=3."
+      "§7 (researcher-7, 2026-07-12): the prime-triple REVERSAL family 18m+3 = 3·(6m+1) now has the symbolic-landing MASTER form that the forward family already had (forward_gap_fiveTimes_eq_totient). primeTriple_totient_values proves φ(n)=12m·2^k and φ(D(n))=φ(14m+3)·2^k needing only 4m+1,6m+1 prime — NOT the landing 14m+3. Consequences: reversal_gap_primeTriple_eq_totient (signed gap (φ(14m+3)−12m)·2^k via Nat.sub_mul, sign-free), reversal_gap_primeTriple_pow_dvd (2^k | gap unconditionally on landing), and the sharp criterion reversal_primeTriple_iff_totient_landing: the WHOLE family reverses ⟺ 12m<φ(14m+3), k-freely. Landing primality (φ=14m+2>12m) forces reversal (recovers reversal_gap_primeTriple); a composite landing with φ(14m+3)≤12m does NOT reverse — concretely primeTriple_shape_not_reversal_57 (m=3, seed 57, landing 45=3²·5, φ(45)=24<36) shows the identical seed SHAPE that reverses at m=1 (a=21) fails at m=3.",
+      "The obstruction seedE p ≥ 2 (isolated 2026-07-12) is TRUE and elementary: writing p+1=w·2^S, seedC p = 2·Q with Q=(4w−φ(w))·2^{S−2}−1 forced ODD, so seedT p=1 and seedE p=Q≥3. Degenerate S=2∧w=1 is exactly p=3 (seedE=1). No analytic input needed — the prime-seed forward regime is now fully elementary."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -176,7 +178,9 @@
       "Elementary follow-up: is the reversal gap the LARGEST among transport-admissible (seedS=1) reversal seeds at fixed a-size, or can a 5q/other-shape seed reverse by a wider margin? Compare (2m+2)*2^k against the general classifier margin phi(seedE a)*2^(seedT a-1) - phi(a).",
       "Do OTHER shared landings occur? Characterise all seed pairs (a1,a2) with 2a1-φ(b1)=2a2-φ(b2) so D(a1·2^(k+1))=D(a2·2^(k+1)); the 3q/5q pair 18m+3,20m+5 is one infinite family. A shared landing whose two seeds hit the reversal and EQUALITY regimes (or all three) would be the sharpest landing-independence statement.",
       "Is the three-way shared landing infinite / does a PARAMETRIC family of triples exist (like 18m+3,20m+5 for the two-way)? Equality seed on the landing L needs φ(seed)=φ(L) with matching transport — a hard Diophantine constraint (e.g. landing 14m+3 forces 7(7m+1)(m−1) a perfect square), so no obvious infinite family; L=917 found only by search.",
-      "ENV: docker-build broken (code 135 SIGBUS on pristine file AND minimal Mathlib import) — verify new work via host elan lean v4.26.0 + project Mathlib LEAN_PATH on a self-contained copy until docker recovers."
+      "ENV: docker-build broken (code 135 SIGBUS on pristine file AND minimal Mathlib import) — verify new work via host elan lean v4.26.0 + project Mathlib LEAN_PATH on a self-contained copy until docker recovers.",
+      "Analytic density-1 forward direction (ψ(x,y) smooth-number density / Luca–Pomerance) — hard analytic terminus, genuine Mathlib gap, NOT session-sized. Do not reclaim for elementary work.",
+      "OPTIONAL: extend seedE≥2 from prime seeds p to full prime powers p^k (would upgrade classifySeed_prime_pow_three_mod_four_ne_lt to strict .gt, mirroring this session for primes)."
     ]
   },
   "relatedProofs": [
