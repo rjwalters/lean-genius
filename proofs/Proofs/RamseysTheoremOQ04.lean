@@ -36,7 +36,7 @@ abbrev Coloring (s : Finset α) (k : ℕ) (r : ℕ) [DecidableEq α] : Type _ :=
   kSubsets s k → Fin r
 
 /-- A subset is monochromatic for a coloring if all its k-element subsets have the same color. -/
-def IsMonochromatic [DecidableEq α] (s t : Finset α) (k : ℕ) (c : Coloring s k r)
+def IsMonochromatic [DecidableEq α] {r : ℕ} (s t : Finset α) (k : ℕ) (c : Coloring s k r)
     (color : Fin r) (ht : t ⊆ s) : Prop :=
   ∀ e ∈ kSubsets t k, ∀ (he : e ∈ kSubsets s k), c ⟨e, he⟩ = color
 
@@ -52,7 +52,7 @@ def HypergraphRamseyProperty (k r n N : ℕ) : Prop :=
 
 /-- k = 1 is the pigeonhole principle: coloring singletons with r colors
     among enough elements forces some color to appear many times. -/
-theorem k1_is_pigeonhole : HypergraphRamseyProperty 1 r n N →
+theorem k1_is_pigeonhole {r n N : ℕ} : HypergraphRamseyProperty 1 r n N →
     ∀ (S : Finset ℕ), S.card = N →
       ∀ (c : kSubsets S 1 → Fin r),
         ∃ (T : Finset ℕ) (i : Fin r), T ⊆ S ∧ T.card ≥ n ∧
@@ -198,7 +198,7 @@ theorem kSubsets_subset [DecidableEq α] {s t : Finset α} (h : t ⊆ s) (k : �
   exact Finset.powersetCard_mono h
 
 /-- A k-subset of T is a k-subset of S when T ⊆ S. -/
-theorem kSubsets_mem_of_subset [DecidableEq α] {s t : Finset α} {e : Finset α}
+theorem kSubsets_mem_of_subset [DecidableEq α] {k : ℕ} {s t : Finset α} {e : Finset α}
     (h : t ⊆ s) (he : e ∈ kSubsets t k) : e ∈ kSubsets s k :=
   kSubsets_subset h k he
 
