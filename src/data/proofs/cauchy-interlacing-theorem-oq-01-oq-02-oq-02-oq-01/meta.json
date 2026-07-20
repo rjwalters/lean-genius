@@ -107,7 +107,8 @@
       "The Karamata convex-function inequality ∑ φ(dᵢ) ≤ ∑ φ(λⱼ) is the form of majorization that proves itself: it needs only that each dᵢ is a convex combination of the λⱼ, which is exactly Jensen — no sorting, no partial-sum bookkeeping",
       "The change-of-basis squared-modulus matrix D i j = |⟨vⱼ, eᵢ⟩|² is automatically doubly stochastic by Parseval applied in each of the two orthonormal bases — this is the bridge from the spectral theorem to majorization and needs no Birkhoff theorem",
       "diag_decomp re ⟪T(e i), e i⟫ = ∑ⱼ λⱼ |⟨vⱼ, eᵢ⟩|² is the single nontrivial identity; everything downstream is Jensen plus a Fubini-style sum swap collapsed by the column sums",
-      "Phrasing the result for an abstract convex φ on an arbitrary set s containing the spectrum makes the trace equality and the sum-of-squares inequality immediate specializations rather than separate proofs"
+      "Phrasing the result for an abstract convex φ on an arbitrary set s containing the spectrum makes the trace equality and the sum-of-squares inequality immediate specializations rather than separate proofs",
+      "Pointwise confinement is the k=1 extreme of the majorization and needs strictly less than the aggregate results: because diag_decomp writes each diagonal entry as the convex combination ∑ⱼ λⱼ·Dᵢⱼ, a weighted average with weights summing to 1 cannot escape the eigenvalues' hull, so λ_min ≤ dᵢ ≤ λ_max using ONLY the row-stochasticity ∑ⱼ Dᵢⱼ = 1 — the column sums (hence full double-stochasticity) are never invoked. This recovers the classical fact that the diagonal of a Hermitian operator, in any orthonormal basis, sits inside its numerical range [λ_min, λ_max]"
     ],
     "prerequisites": [
       "The finite-dimensional spectral theorem: a symmetric operator has an orthonormal eigenbasis (LinearMap.IsSymmetric.eigenvectorBasis) with real eigenvalues",
@@ -144,6 +145,14 @@
       "startLine": 120,
       "endLine": 178,
       "summary": "schur_majorization_convexOn: for convex φ on s ⊇ spectrum, ConvexOn.map_sum_le applied with weights D i j (nonnegative, summing to 1 by the row sums) and points λ j ∈ s gives φ(d i) ≤ ∑ⱼ D i j • φ(λ j); summing over i, swapping the order (Finset.sum_comm), and collapsing each column with ∑ᵢ D i j = 1 (Finset.sum_smul, one_smul) yields ∑ᵢ φ(d i) ≤ ∑ⱼ φ(λ j). schur_trace_eq specializes to the equality case ∑ d i = ∑ λ j directly from diag_decomp and the column sums (no convexity), and schur_sum_sq_le applies the master theorem with φ = (·)² (Even.convexOn_pow at n=2) to bound ∑ d i² ≤ ∑ λ j²."
+    },
+    {
+      "id": "pointwise-confinement",
+      "title": "Pointwise Confinement (numerical-range bound)",
+      "startLine": 181,
+      "endLine": 250,
+      "summary": "The '## Pointwise confinement' block: the k=1 pointwise shadow of the aggregate majorization — every individual diagonal entry lies in the closed interval spanned by the eigenvalues, λ_{n-1} ≤ re ⟪T(e i), e i⟫ ≤ λ_0. diag_le_of_forall_le / le_diag_of_forall_le are the abstract two-sided bounds (a diagonal entry is the convex combination ∑ⱼ λⱼ·Dᵢⱼ, so it cannot exceed a common bound on the λⱼ), needing only row-stochasticity ∑ⱼ Dᵢⱼ = 1 (not the column sums). diag_le_top / bot_le_diag instantiate M, L at the extreme eigenvalues via eigenvalues_antitone, and diag_mem_Icc bundles them into the numerical-range containment dᵢ ∈ [λ_min, λ_max].",
+      "mathContext": "$\\lambda_{n-1} \\le \\operatorname{re}\\langle T(e_i), e_i\\rangle \\le \\lambda_0$, i.e. $d_i \\in [\\lambda_{\\min}, \\lambda_{\\max}]$ — the $k=1$ extreme of $\\operatorname{diag} T \\prec \\operatorname{spec} T$."
     }
   ],
   "mainTheorems": [
