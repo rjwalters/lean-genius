@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (base witness 945 + Route-1 σ-engine + Route-1 DIVISOR STRUCTURE; infinitude OPEN): added mem_properDivisors_mul_prime (proper divisors of m·p = divisors of m ⊔ p·(proper divisors of m), p prime) and isPrimitiveAbundant_mul_prime (full A006038 criterion reducing primitivity of m·p to deficiency conditions on m and its p-multiples). Closes the divisor-decomposition gap from the previous session. All axiom-free [propext,Classical.choice,Quot.sound], host-verified v4.31, no native_decide. Infinitude still open (needs an explicit infinite (m,p) family).",
+    "progressSummary": "PROGRESS: Simplified the Route-1 primitivity criterion. Proved deficiency is downward-closed under divisibility (deficient_of_dvd, dual of Nat.Abundant.of_dvd) via abundancy-index monotonicity, so isPrimitiveAbundant_mul_prime′ needs only m.Deficient in place of every-divisor-of-m-deficient. Route-1 obligation is now (a) 2mp<σ(m)(p+1), (b) m deficient, (c) p·e deficient for proper divisors e of m. Infinitude still genuinely open (no explicit odd family provably primitive-abundant infinitely often).",
     "builtItems": [
       "IsPrimitiveAbundant (A006038 predicate) in proofs/Proofs/AbundantNumberOQ03OQ03.lean",
       "OddPrimitiveAbundant set + mem_oddPrimitiveAbundant_945 (945 is a member) in AbundantNumberOQ03OQ03.lean",
@@ -51,7 +51,10 @@
       "sum_divisors_mul_prime: σ(m·p)=σ(m)(p+1) for p prime, p∤m via Nat.Coprime.sum_divisors_mul (axiom-free) in AbundantNumberOQ03OQ03.lean",
       "abundant_mul_prime_iff: (m·p).Abundant ↔ 2mp < σ(m)(p+1) via Nat.abundant_iff_sum_divisors (axiom-free) in AbundantNumberOQ03OQ03.lean",
       "deficient_left_of_primitive_mul_prime: Route-1 base m must be deficient (axiom-free) in AbundantNumberOQ03OQ03.lean",
-      "mem_properDivisors_mul_prime + isPrimitiveAbundant_mul_prime in AbundantNumberOQ03OQ03.lean (axiom-free [propext, Classical.choice, Quot.sound]; via Nat.dvd_mul split + p prime)"
+      "mem_properDivisors_mul_prime + isPrimitiveAbundant_mul_prime in AbundantNumberOQ03OQ03.lean (axiom-free [propext, Classical.choice, Quot.sound]; via Nat.dvd_mul split + p prime)",
+      "deficient_iff_abundancyIndex_lt_two (AbundantNumberOQ03OQ03.lean) — Deficient n ↔ abundancyIndex n < 2 (n≠0); deficient counterpart of Nat.abundant_iff_two_lt_abundancyIndex. 0 axiom.",
+      "deficient_of_dvd (AbundantNumberOQ03OQ03.lean) — deficiency inherited by divisors. 0 axiom.",
+      "isPrimitiveAbundant_mul_prime′ (AbundantNumberOQ03OQ03.lean) — simplified Route-1 primitivity criterion: needs only m.Deficient (not all-divisors-deficient). 0 axiom."
     ],
     "insights": [
       "945 = 3³·5·7 is not just the smallest odd abundant number but is odd PRIMITIVE abundant (OEIS A006038): all 15 proper divisors 1,3,5,7,9,15,21,27,35,45,63,105,135,189,315 are deficient — verified axiom-free.",
@@ -60,7 +63,9 @@
       "Mathlib already contains the PARENT result Nat.infinite_odd_abundant (infinitely many odd abundant) in NumberTheory.FactorisationProperties, plus Prime.deficient / IsPrimePow.deficient (explaining why only the composite proper divisors 15,21,...,315 need a genuine check).",
       "Route-1 σ-arithmetic engine complete: σ is multiplicative on coprime factors (Mathlib isMultiplicative_sigma / Nat.Coprime.sum_divisors_mul), so σ(m·p)=σ(m)(p+1) and abundance of m·p becomes the LINEAR-in-p test 2mp < σ(m)(p+1). This is the exact lever an odd-family construction pulls: fix odd deficient base m, then pick prime p in the window keeping m·p abundant.",
       "The remaining Route-1 obstruction is PRIMITIVITY not abundance: need every proper divisor of m·p (the set {d, p·d : d ∣ m}) deficient. Mathlib v4.31 lacks a clean Nat.Coprime.divisors_mul Finset equality, so the coprime proper-divisor decomposition (m·p).properDivisors = m.divisors ∪ (p·)  m.properDivisors must be built from filter_dvd_eq_divisors before abundant_mul_prime_iff upgrades to a full IsPrimitiveAbundant iff.",
-      "Route-1 primitivity is now reducible to conditions purely on m and its p-multiples: mem_properDivisors_mul_prime shows every proper divisor of m·p (p prime, 0<m) is either a divisor of m or p·(a proper divisor of m), and isPrimitiveAbundant_mul_prime turns primitivity of m·p into (m·p abundant) ∧ (all divisors of m deficient) ∧ (all p·(proper divisors of m) deficient). The divisor-structure gap flagged in the prior next step is closed."
+      "Route-1 primitivity is now reducible to conditions purely on m and its p-multiples: mem_properDivisors_mul_prime shows every proper divisor of m·p (p prime, 0<m) is either a divisor of m or p·(a proper divisor of m), and isPrimitiveAbundant_mul_prime turns primitivity of m·p into (m·p abundant) ∧ (all divisors of m deficient) ∧ (all p·(proper divisors of m) deficient). The divisor-structure gap flagged in the prior next step is closed.",
+      "Deficiency is downward-closed under divisibility: deficient_of_dvd (m ∣ n, n deficient, m≠0 ⇒ m deficient), the dual of Mathlib Nat.Abundant.of_dvd, via monotonicity of the abundancy index (abundancyIndex_le_of_dvd) and the helper deficient_iff_abundancyIndex_lt_two (n≠0 ⇒ (Deficient n ↔ abundancyIndex n < 2)).",
+      "Consequence: the isPrimitiveAbundant_mul_prime obligation ∀ d ∈ m.divisors, d.Deficient is EQUIVALENT to just m.Deficient. Route-1 witness search therefore only needs (i) m·p abundant, (ii) m deficient, (iii) every p·e (e proper divisor of m) deficient."
     ],
     "mathlibGaps": [
       "No Nat.Coprime.divisors_mul (Finset equality for divisors of a coprime product) in Mathlib v4.31 — only Nat.Coprime.sum_divisors_mul (the sum) and card_divisors_mul (the count). Blocks a clean coprime proper-divisor decomposition."
@@ -245,5 +250,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Unconditional.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-20"
 }

@@ -210,4 +210,48 @@ theorem isPrimitiveAbundant_mul_prime {m p : ℕ} (hp : p.Prime) (hm : 0 < m)
   · exact hmdef d h
   · exact hpdef e he
 
+-- ============================================================
+-- Deficiency is inherited by divisors — simplifying the criterion
+-- ============================================================
+
+/-- **Deficiency via the abundancy index.**  For `n ≠ 0`, `n` is deficient exactly when its
+abundancy index `σ(n)/n` is below `2`.  The deficient counterpart of Mathlib's
+`Nat.abundant_iff_two_lt_abundancyIndex`. -/
+theorem deficient_iff_abundancyIndex_lt_two {n : ℕ} (hn : n ≠ 0) :
+    n.Deficient ↔ n.abundancyIndex < 2 := by
+  have hpos : (0 : ℚ) < (n : ℚ) := by exact_mod_cast Nat.pos_of_ne_zero hn
+  rw [abundancyIndex, div_lt_iff₀ hpos]
+  have hcast : ((∑ i ∈ n.divisors, i : ℕ) : ℚ) < 2 * (n : ℚ)
+      ↔ (∑ i ∈ n.divisors, i) < 2 * n := by
+    rw [show (2 : ℚ) * (n : ℚ) = ((2 * n : ℕ) : ℚ) by push_cast; ring]
+    exact Nat.cast_lt
+  rw [hcast, sum_divisors_eq_sum_properDivisors_add_self]
+  unfold Nat.Deficient
+  omega
+
+/-- **Deficiency is inherited by divisors.**  If `n` is deficient and `m ∣ n` (`m ≠ 0`), then
+`m` is deficient.  The abundancy index is monotone under divisibility
+(`Nat.abundancyIndex_le_of_dvd`), so `m`'s index is at most `n`'s, which is `< 2`.  This is the
+divisibility-downward dual of `Nat.Abundant.of_dvd`: every divisor of a deficient number is
+itself deficient. -/
+theorem deficient_of_dvd {m n : ℕ} (hn : n.Deficient) (hd : m ∣ n) (hm : m ≠ 0) :
+    m.Deficient := by
+  have hn0 : n ≠ 0 := by rintro rfl; exact absurd hn (by decide)
+  rw [deficient_iff_abundancyIndex_lt_two hm]
+  exact lt_of_le_of_lt (abundancyIndex_le_of_dvd hn0 hd)
+    ((deficient_iff_abundancyIndex_lt_two hn0).mp hn)
+
+/-- **Simplified primitivity criterion for `m · p`.**  Since deficiency is inherited by divisors
+(`deficient_of_dvd`), the "every divisor of `m` is deficient" hypothesis of
+`isPrimitiveAbundant_mul_prime` collapses to `m` itself being deficient.  So `m·p` is primitive
+abundant as soon as it is abundant, `m` is deficient, and every `p`-multiple of a proper divisor
+of `m` is deficient — one fewer obligation for a Route-1 witness search. -/
+theorem isPrimitiveAbundant_mul_prime' {m p : ℕ} (hp : p.Prime) (hm : 0 < m)
+    (hab : (m * p).Abundant) (hmdef : m.Deficient)
+    (hpdef : ∀ e ∈ m.properDivisors, (p * e).Deficient) :
+    IsPrimitiveAbundant (m * p) :=
+  isPrimitiveAbundant_mul_prime hp hm hab
+    (fun _ hd => deficient_of_dvd hmdef (mem_divisors.mp hd).1 (pos_of_mem_divisors hd).ne')
+    hpdef
+
 end AbundantNumberOQ03OQ03
