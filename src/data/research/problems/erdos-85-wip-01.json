@@ -20,7 +20,7 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
@@ -31,20 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added 7 axiom-free foundational lemmas to the previously definitions-only Erdos85Problem.lean (the four C4 edges + a diagonal non-edge, containsC4 monotonicity, and starGraph_not_containsC4 = stars are C4-free, the extremal fact behind the Ramsey reformulation). Deep results (asymptotics, f(4)=2, Ramsey connection, monotonicity) remain documented-only. Meta synced (theoremCount 0 -> 7).",
+    "progressSummary": "PROGRESS: Erdos85Problem.lean — session 2 added 4 axiom-free structural lemmas (7->11 theorems) that bracket the C4 extremal question: containsC4_four_le_card (necessary size >=4), completeGraph_containsC4 (dense graphs contain C4), containsC4_C4 (non-vacuity), C4_not_adj_one_three (C4 adjacency fully pinned). 0 sorry / 0 axiom, #print axioms clean. Deep results (f(4)=2, asymptotics, KST, monotonicity) remain documented-only.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
       "containsC4_mono (C4 copy survives adding edges) in Erdos85Problem.lean",
-      "starGraph_not_containsC4 (stars are C4-free) in Erdos85Problem.lean"
+      "starGraph_not_containsC4 (stars are C4-free) in Erdos85Problem.lean",
+      "C4_not_adj_one_three, containsC4_C4, containsC4_four_le_card, completeGraph_containsC4 in Erdos85Problem.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
       "Stars are C4-free: a C4 has two DISJOINT edges (0-1 and 2-3); in a star every edge meets the centre 0, so both disjoint edges would put two distinct cycle-vertices at 0, contradicting injectivity of the embedding. Only the two disjoint edges are needed for the proof.",
-      "SimpleGraph structure-literal Adj fields have no Decidable instance, so `decide` fails on C4.Adj 0 1; `by simp [C4]` unfolds the field and evaluates the arithmetic disjunction instead."
+      "SimpleGraph structure-literal Adj fields have no Decidable instance, so `decide` fails on C4.Adj 0 1; `by simp [C4]` unfolds the field and evaluates the arithmetic disjunction instead.",
+      "The extremal question for C4 is bracketed by two structural facts now both formalized: complete graphs on >=4 vertices always contain a C4 (completeGraph_containsC4, dense extreme) while stars K_{1,n} never do (starGraph_not_containsC4, sparse extreme). A C4 also forces >=4 vertices (containsC4_four_le_card)."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Base case f(4)=2: on Fin 4, minDegree >= 2 forces containsC4 (finite but quantifies over all SimpleGraph (Fin 4) — needs a Fintype/decidability bridge for SimpleGraph on a finite type).",
+      "Kővári–Sós–Turán edge bound for C4-free graphs (deep, likely not in Mathlib).",
+      "minDegreeForC4 monotonicity/basic bounds from the sInf definition."
+    ],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
