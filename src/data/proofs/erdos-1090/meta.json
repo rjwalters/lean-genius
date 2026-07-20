@@ -139,92 +139,140 @@
   ],
   "sections": [
     {
-      "id": "definitions",
-      "title": "Basic Definitions",
-      "summary": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure with point/direction/nonzero, and `OnLine` via `∃ t : ℝ, p = l.point + t • l.direction`.",
-      "startLine": 36,
-      "endLine": 80,
-      "mathContext": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure with point/direction/nonzero, and `OnLine` via `∃ t : ℝ, p = l.point + t • l.direction`."
+      "id": "header",
+      "title": "Header: Erdős #1090 — Monochromatic Collinear Points",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring stating Erdős Problem #1090 (SOLVED, affirmative): for k ≥ 3 there is a finite A ⊂ ℝ² such that every 2-coloring of A contains a line with at least k points of A all of the same color. Records the source, status, and the plan (Ramsey-type existence via Hales–Jewett, plus quantitative size bounds).",
+      "mathContext": "For all $k\\ge3$, $\\exists$ finite $A\\subset\\mathbb{R}^2$: every 2-coloring yields a monochromatic line meeting $A$ in $\\ge k$ points."
     },
     {
-      "id": "monochromatic",
-      "title": "Monochromatic Lines",
-      "summary": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-color conditions.",
-      "startLine": 81,
-      "endLine": 107,
-      "mathContext": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-color conditions."
+      "id": "part-i-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 41,
+      "endLine": 85,
+      "summary": "Basic geometric predicates: three-point Collinear, the OnLine/Line incidence structures, and IsKCollinear (a line carrying at least k points of the set). The vocabulary in which the Ramsey property is phrased.",
+      "mathContext": "A line $\\ell$ is $k$-collinear in $A$ when $|\\ell\\cap A|\\ge k$; monochromatic if all those points share a color."
     },
     {
-      "id": "ramsey-property",
-      "title": "Ramsey Property",
-      "summary": "Defines `HasRamseyProperty A k` (∀ c : Point → Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k ≥ 3 → ∃ A, HasRamseyProperty A k).",
-      "startLine": 108,
-      "endLine": 126,
-      "mathContext": "Defines `HasRamseyProperty A k` (∀ c : Point $\\to$ Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k $\\geq$ 3 $\\to$ ∃ A, HasRamseyProperty A k)."
+      "id": "part-ii-monochromatic-lines",
+      "title": "Part II: Monochromatic Lines",
+      "startLine": 86,
+      "endLine": 112,
+      "summary": "Defines a monochromatic k-collinear line under a coloring c: a line containing ≥ k points of A that all receive the same color, the object whose forced existence is the content of the problem.",
+      "mathContext": "$\\exists\\ \\ell:\\ |\\ell\\cap A|\\ge k \\ \\wedge\\ c\\restriction(\\ell\\cap A)\\ \\text{constant}.$"
     },
     {
-      "id": "graham-selfridge",
-      "title": "Graham-Selfridge (k=3)",
-      "summary": "Proves `graham_selfridge : ∃ A, HasRamseyProperty A 3` as the k=3 instance of `erdos1090_construction` (formerly an axiom, now a theorem). Proves `k3_case : Erdos1090Question 3` by applying it after `intro _`.",
-      "startLine": 256,
-      "endLine": 282,
-      "mathContext": "Verified: `graham_selfridge : ∃ A, HasRamseyProperty A 3` is now a theorem, the k=3 instance of `erdos1090_construction`. `k3_case : Erdos1090Question 3` follows by applying it after `intro _`."
+      "id": "part-iii-main-property",
+      "title": "Part III: The Main Property (Ramsey Property)",
+      "startLine": 113,
+      "endLine": 131,
+      "summary": "Defines HasRamseyProperty A k: every 2-coloring of A admits a monochromatic k-collinear line. This is the Ramsey-type property whose realizability (over all finite A) is Erdős #1090.",
+      "mathContext": "$\\text{HasRamseyProperty}(A,k):\\ \\forall c:A\\to\\{0,1\\},\\ \\exists$ monochromatic $k$-collinear line."
     },
     {
-      "id": "hales-jewett",
-      "title": "Hales-Jewett Approach",
-      "summary": "Proves `hunter_observation : ∀ k ≥ 3, ∃ A, HasRamseyProperty A k` (formerly an axiom) as `erdos1090_construction`. Also defines the documentary `CombinatorialLine k n` structure; the actual proof uses Mathlib's `Combinatorics.Line` and `exists_mono_in_high_dimension`.",
-      "startLine": 283,
-      "endLine": 322,
-      "mathContext": "Verified: `hunter_observation : ∀ k ≥ 3, ∃ A, HasRamseyProperty A k` is now a theorem (= `erdos1090_construction`), proved from Mathlib's Hales-Jewett theorem `Combinatorics.Line.exists_mono_in_high_dimension` rather than axiomatized."
+      "id": "part-iii-half-hales-jewett",
+      "title": "Part III½: Construction via Hales–Jewett (Axiom Elimination)",
+      "startLine": 132,
+      "endLine": 349,
+      "summary": "Derives the two constructions that were originally axiomatized — graham_selfridge (k=3) and Hunter's hunter_observation (general k) — as honest theorems from Mathlib's Hales–Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension), via an explicit generic projection of the combinatorial cube [k]^ι into ℝ² that sends combinatorial lines to genuine collinear points. This is the axiom-elimination heart that makes the entry verified (0-axiom).",
+      "mathContext": "Hales–Jewett gives a monochromatic combinatorial line in $[k]^\\iota$; a generic affine projection $[k]^\\iota\\to\\mathbb{R}^2$ carries it to a monochromatic $k$-collinear line."
     },
     {
-      "id": "main-result",
-      "title": "Main Result",
-      "summary": "Proves `erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result.",
-      "startLine": 202,
-      "endLine": 215,
-      "mathContext": "Proves `erdos_1090_affirmative : ∀ k $\\geq$ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result."
+      "id": "part-iv-graham-selfridge",
+      "title": "Part IV: Graham–Selfridge for k = 3",
+      "startLine": 350,
+      "endLine": 373,
+      "summary": "The k = 3 case (Graham–Selfridge): an explicit finite configuration in ℝ² whose every 2-coloring contains a monochromatic collinear triple, now a theorem following from the Part III½ Hales–Jewett projection.",
+      "mathContext": "$k=3$: a finite $A$ forcing a monochromatic collinear triple under any 2-coloring."
     },
     {
-      "id": "constructions",
-      "title": "Special Constructions",
-      "summary": "Documentary block comments only (no Lean declarations) describing alternative point-set constructions: regular n-gon plus center, m × m grid, and finite projective plane points. The verified construction in `erdos1090_construction` is the Hales-Jewett projection, not these.",
-      "startLine": 332,
-      "endLine": 358,
-      "mathContext": "Documentary section: block comments sketching alternative constructions (regular n-gon + center, grid, projective plane). No axioms or declarations are introduced here."
+      "id": "part-v-hales-jewett-approach",
+      "title": "Part V: Hales–Jewett Approach",
+      "startLine": 374,
+      "endLine": 415,
+      "summary": "The general-k existence via the Hales–Jewett route: packaging the projection argument into the affirmative construction for arbitrary k ≥ 3 (and, via ramsey_construction_general, arbitrary finite palettes).",
+      "mathContext": "For every $k\\ge3$ the Hales–Jewett dimension bound yields a finite witness $A$ with $\\text{HasRamseyProperty}(A,k)$."
     },
     {
-      "id": "bounds",
-      "title": "Size Bounds",
-      "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property via sInf). Proves `hasRamseyProperty_card_ge` (any Ramsey set has ≥ k points) and `ramsey_lower_bound : ramseyNumber k ≥ k` — both fully proved, no sorry (the lower bound now uses the witnessing set from the construction).",
-      "startLine": 360,
-      "endLine": 398,
-      "mathContext": "Defines `ramseyNumber k` via `sInf`. `hasRamseyProperty_card_ge` and `ramsey_lower_bound : ramseyNumber k ≥ k` are both fully proved (0 sorries), using the constant coloring and the witnessing set supplied by `erdos1090_construction`."
+      "id": "part-vi-main-result",
+      "title": "Part VI: Main Result",
+      "startLine": 416,
+      "endLine": 429,
+      "summary": "The main affirmative theorem: for every k ≥ 3 there exists a finite A ⊂ ℝ² with the Ramsey property — Erdős #1090 resolved in the affirmative.",
+      "mathContext": "$\\forall k\\ge3,\\ \\exists$ finite $A\\subset\\mathbb{R}^2:\\ \\text{HasRamseyProperty}(A,k)$."
     },
     {
-      "id": "related",
-      "title": "Related Results",
-      "summary": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). documents in source comments `sylvester_gallai` (no Lean declaration exists) for ≥ 3 non-collinear points.",
-      "startLine": 266,
-      "endLine": 295,
-      "mathContext": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). documents in source comments `sylvester_gallai` (no Lean declaration exists) for $\\geq$ 3 non-collinear points."
+      "id": "part-vii-special-constructions",
+      "title": "Part VII: Special Constructions",
+      "startLine": 430,
+      "endLine": 450,
+      "summary": "Explicit special-case constructions and worked configurations realizing the Ramsey property, illustrating the abstract existence result with concrete point sets.",
+      "mathContext": "Concrete finite witnesses realizing $\\text{HasRamseyProperty}$ for small $k$."
     },
     {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). documents in source comments `erdos_1090_generalized` (no Lean declaration exists) via Hales-Jewett for r colors.",
-      "startLine": 296,
-      "endLine": 328,
-      "mathContext": "Formal definition: Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). documents in source comments `erdos_1090_generalized` (no Lean declaration exists) via Hales-Jewett for r colors."
+      "id": "part-viii-lower-bounds",
+      "title": "Part VIII: Lower Bounds on Set Size",
+      "startLine": 451,
+      "endLine": 687,
+      "summary": "Introduces the Ramsey number R(k): the minimum |A| for which A has the Ramsey property for k. Establishes lower bounds on R(k) and the basic API (attainment, monotonicity in k) around this extremal quantity.",
+      "mathContext": "$R(k)=\\min\\{|A|:\\text{HasRamseyProperty}(A,k)\\}$, the least witness size."
     },
     {
-      "id": "summary",
-      "title": "Main Results Summary",
-      "summary": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k ≥ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem.",
-      "startLine": 329,
-      "endLine": 333,
-      "mathContext": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k $\\geq$ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem."
+      "id": "part-viii-half-colored-ramsey",
+      "title": "Part VIII½: The Colored Ramsey Number and Monotonicity in the Palette",
+      "startLine": 688,
+      "endLine": 1007,
+      "summary": "Defines the C-colored Ramsey number for an arbitrary finite palette C and proves the quantitative structural fact that enlarging the palette can only raise the threshold: with more colors it is harder to force a monochromatic k-collinear configuration, so at least as many points are required. Monotonicity of ramseyNumberColored in the number of colors.",
+      "mathContext": "$|C|\\le|C'|\\Rightarrow \\text{ramseyNumberColored}(k,C)\\le \\text{ramseyNumberColored}(k,C')$: more colors ⇒ larger threshold."
+    },
+    {
+      "id": "part-ix-connections",
+      "title": "Part IX: Connection to Other Results",
+      "startLine": 1008,
+      "endLine": 1060,
+      "summary": "Relates the Ramsey property to neighboring combinatorial results (classical Ramsey / van der Waerden / Gallai-type statements), situating Erdős #1090 within the density and partition-regularity landscape.",
+      "mathContext": "Erdős #1090 as a geometric partition-regularity statement adjacent to Gallai/Hales–Jewett."
+    },
+    {
+      "id": "part-x-generalizations",
+      "title": "Part X: Generalizations",
+      "startLine": 1061,
+      "endLine": 1214,
+      "summary": "Generalizations of the theorem: the r-coloring version (r colors instead of 2) and higher-dimensional or palette-variant forms, established from the general-palette construction of Parts V and VIII½.",
+      "mathContext": "The affirmative answer persists for any finite number $r$ of colors via $\\text{ramsey\\_construction\\_general}$."
+    },
+    {
+      "id": "part-x-three-quarter-faithfulness",
+      "title": "Part X¾: Faithfulness of the Collinearity Predicates",
+      "startLine": 1215,
+      "endLine": 1290,
+      "summary": "Proves the bespoke collinearity predicates of the entry — the three-point Collinear, the geometric OnLine/Line, and IsKCollinear — agree with Mathlib's canonical Collinear ℝ (vectorSpan of rank ≤ 1), so the reader need not trust the ad hoc definitions: they are faithful to the standard notion.",
+      "mathContext": "The entry's $\\text{Collinear}$/$\\text{OnLine}$/$\\text{IsKCollinear}$ coincide with Mathlib's $\\text{Collinear}\\ \\mathbb{R}$ ($\\dim\\text{vectorSpan}\\le1$)."
+    },
+    {
+      "id": "part-xi-summary",
+      "title": "Part XI: Main Results Summary",
+      "startLine": 1291,
+      "endLine": 1313,
+      "summary": "A consolidated summary theorem bundling the affirmative existence, the axiom-free status, and the size-bound API into the headline statement of the entry.",
+      "mathContext": "The affirmative resolution of Erdős #1090 with the Ramsey-number bounds, packaged as one summary."
+    },
+    {
+      "id": "ramsey-least-element",
+      "title": "The Ramsey Number as a Least Element",
+      "startLine": 1314,
+      "endLine": 1348,
+      "summary": "ramseyNumber / ramseyNumberColored are defined as sInf of the set of realizable witness sizes; the exists_…_card_eq_ramseyNumber theorems show the infimum is attained and the …_le_of_hasRamseyProperty theorems show it lower-bounds every realizable size, so R(k) is the IsLeast element of the realizable-size set.",
+      "mathContext": "$R(k)=\\inf\\{n:\\ldots\\}$ is attained and minimal: $\\text{IsLeast}\\{\\text{realizable sizes}\\}\\ (R\\,k)$."
+    },
+    {
+      "id": "realizable-size-upray",
+      "title": "The Realizable-Size Set as an Up-Ray Set.Ici",
+      "startLine": 1349,
+      "endLine": 1452,
+      "summary": "The …_realizable_card_iff theorems characterize which cardinalities n admit a Ramsey witness by the pointwise condition R(k) ≤ n; repackaging that iff as a set equality identifies the realizable-size set with the order up-ray Set.Ici (R k) = [R(k), ∞), a gap-free closed interval, exhibiting it as infinite — the Set.Ici counterpart of the IsLeast packaging.",
+      "mathContext": "$\\{n:\\exists\\text{ witness of size }n\\}=\\text{Set.Ici}(R\\,k)=[R(k),\\infty)$: closed, gap-free, infinite."
     }
   ],
   "conclusion": {
