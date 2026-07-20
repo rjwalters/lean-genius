@@ -70,27 +70,27 @@
       "id": "chcv-oq02oq03-sec-cyclic",
       "title": "Cyclic vectors for an endomorphism and Krylov independence",
       "startLine": 54,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines IsEndCyclicVector T v (no nonzero polynomial of degree < finrank K V annihilates v) and proves endKrylov_linearIndependent: the Krylov vectors {Tᵏ·v}_{k<finrank K V} of a cyclic vector are linearly independent. A dependence is repackaged as a nonzero annihilating polynomial of degree < finrank, contradicting cyclicity; coefficient extraction uses Fintype.linearIndependent_iff and Polynomial.coeff of a monomial sum."
     },
     {
       "id": "chcv-oq02oq03-sec-commute",
       "title": "Polynomials in T commute with powers of T",
-      "startLine": 93,
-      "endLine": 106,
+      "startLine": 94,
+      "endLine": 108,
       "summary": "aeval_end_commute_pow: p(T) commutes with Tʲ, because aeval T is a K-algebra homomorphism (p(T)·T = T·p(T) from mul_comm p X and aeval_X), then Commute.pow_right. The endomorphism analogue of the parent's aeval_commute_pow."
     },
     {
       "id": "chcv-oq02oq03-sec-main",
       "title": "Main theorem: commuting endomorphisms are polynomials in T",
-      "startLine": 108,
-      "endLine": 176,
+      "startLine": 110,
+      "endLine": 168,
       "summary": "commuting_end_is_polynomial: with a cyclic vector, the Krylov vectors form a basis b; the polynomial p reading off the coordinates of A·v satisfies p(T)·v = A·v (Basis.sum_repr); A and p(T) then agree on every basis vector Tⁱ·v via the two commutation lemmas, so A = p(T) by Basis.ext. The trivial finrank = 0 case is closed by Subsingleton on Module.End K V."
     },
     {
       "id": "chcv-oq02oq03-sec-consequences",
       "title": "Consequences: commutative centralizer and the K[T] inclusion",
-      "startLine": 177,
+      "startLine": 170,
       "endLine": 197,
       "summary": "end_commutant_commutative: two endomorphisms commuting with a cyclic T commute with each other (both are polynomials in T, which commute). aeval_end_commute: the trivial inclusion K[T] ⊆ centralizer(T); together with the main theorem this gives the exact equality centralizer(T) = K[T]."
     }
