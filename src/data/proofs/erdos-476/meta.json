@@ -55,8 +55,8 @@
       "erdos_476_summary theorem: combines main result with tightness (fully proved)"
     ],
     "axiomCount": 1,
-    "lineCount": 384,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `B` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'B'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom: erdos_heilbronn_bound (the Erdős-Heilbronn bound). All other results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are fully proved theorems. 0 sorries.",
+    "lineCount": 380,
+    "assumptions": "Repaired (issue #39077): machine-checked on Lean v4.31 (autoImplicit off), 0 sorries. The earlier non-compilation was caused by a broken unused `+̂` notation (which declared an identifier `B` its expansion dropped), the two sumset definitions using `A.product A` instead of `A ×ˢ A` (so the `mem_product` simp lemma never fired, breaking every membership `rcases`), a renamed lemma (`Finset.card_Ico` → `Nat.card_Ico`), a `simp` set missing `Finset.mem_range` (leaving `omega` unable to see the range bounds), a `subst`-orientation failure in `card_two_case`, and an unannotated `fun i => …` whose scalar type was ambiguous. Status remains axiomatized: 1 stated axiom, erdos_heilbronn_bound (the Erdős-Heilbronn lower bound |A +̂ A| ≥ min(2|A|−3, p), the deep da Silva-Hamidoune result). All supporting results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are now fully proved theorems.",
     "theoremCount": 10,
     "definitionCount": 4,
     "additionalFiles": [
@@ -185,7 +185,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos476",
-    "lineCount": 384,
+    "lineCount": 380,
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 4,

@@ -33,7 +33,7 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 open Finset BigOperators
 
@@ -53,19 +53,14 @@ This excludes the "diagonal" sums 2a.
 The set of all sums a + b where a and b are distinct elements of A.
 -/
 def restrictedSumset (A : Finset (ZMod p)) : Finset (ZMod p) :=
-  (A.product A).filter (fun ab => ab.1 ≠ ab.2) |>.image (fun ab => ab.1 + ab.2)
-
-/--
-Notation for restricted sumset.
--/
-notation:65 A " +̂ " B => restrictedSumset _ A
+  (A ×ˢ A).filter (fun ab => ab.1 ≠ ab.2) |>.image (fun ab => ab.1 + ab.2)
 
 /--
 **Ordinary Sumset** (A + A):
 The set of all sums a + b (including a = b).
 -/
 def sumset (A : Finset (ZMod p)) : Finset (ZMod p) :=
-  (A.product A).image (fun ab => ab.1 + ab.2)
+  (A ×ˢ A).image (fun ab => ab.1 + ab.2)
 
 /-
 ## Part II: Basic Properties
@@ -169,11 +164,10 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
       (Finset.Ico 1 (2 * n - 2)).image (fun k : ℕ => 2 * a + (k : ZMod p) * d) := by
     ext x
     simp only [restrictedSumset, arithmeticProgression, Finset.mem_image,
-      Finset.mem_filter, Finset.mem_product, Finset.mem_Ico]
+      Finset.mem_filter, Finset.mem_product, Finset.mem_Ico, Finset.mem_range]
     constructor
     · rintro ⟨⟨ai, aj⟩, ⟨⟨⟨i, hi, rfl⟩, ⟨j, hj, rfl⟩⟩, hne⟩, rfl⟩
-      have hne_nat : i ≠ j := by
-        intro heq; apply hne; subst heq
+      have hne_nat : i ≠ j := fun heq => hne (by rw [heq])
       exact ⟨i + j, ⟨by omega, by omega⟩, by simp only [nsmul_eq_mul]; push_cast; ring⟩
     · rintro ⟨k, ⟨hk1, hk2⟩, rfl⟩
       have hk_lt_p : k < p := by omega
@@ -217,7 +211,7 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
         Nat.mod_eq_of_lt (by omega : k1 < p),
         Nat.mod_eq_of_lt (by omega : k2 < p)] at hval
     exact hval
-  rw [Finset.card_image_of_injOn hinj, Finset.card_Ico]
+  rw [Finset.card_image_of_injOn hinj, Nat.card_Ico]
   omega
 
 /--
@@ -314,11 +308,11 @@ theorem card_two_case (A : Finset (ZMod p)) (h : A.card = 2) :
       Finset.mem_insert, Finset.mem_singleton]
     constructor
     · rintro ⟨⟨c, d⟩, ⟨⟨hc, hd⟩, hne⟩, rfl⟩
-      rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
-      · exact absurd rfl hne
-      · rfl
-      · exact add_comm b a
-      · exact absurd rfl hne
+      rcases hc with hc | hc <;> rcases hd with hd | hd
+      · exact absurd (hc.trans hd.symm) hne
+      · rw [hc, hd]
+      · rw [hc, hd]; exact add_comm b a
+      · exact absurd (hc.trans hd.symm) hne
     · rintro rfl
       exact ⟨(a, b), ⟨⟨Or.inl rfl, Or.inr rfl⟩, hab⟩, rfl⟩
   simp [heq]
@@ -366,7 +360,7 @@ theorem erdos_476_summary (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
     have hle : A.card ≤ p := by omega
     have hAP_card : (arithmeticProgression p a d A.card).card = A.card := by
       unfold arithmeticProgression
-      have hinj : Set.InjOn (fun i => a + i • d) ↑(Finset.range A.card) := by
+      have hinj : Set.InjOn (fun i : ℕ => a + i • d) ↑(Finset.range A.card) := by
         intro i hi j hj hij
         simp only [Finset.mem_coe, Finset.mem_range] at hi hj
         have h0 : (i : ℕ) • d = (j : ℕ) • d := add_left_cancel hij
