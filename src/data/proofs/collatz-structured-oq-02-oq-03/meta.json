@@ -52,36 +52,116 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Tao's 2019 Almost-All Bound — Roadmap and Honest Assessment",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Module docstring stating OQ-03 (can Tao's 2019 logarithmic-density-1 result be formalized?), an honest assessment of why Tao's 3-adic concentration/transport proof is out of reach of Mathlib today, and the file's plan: pin the theorem as a machine-checkable statement (tao_2019) while proving unconditionally that explicit residue families drop below their start, covering 115/128 of the integers. Imports Mathlib, opens the CollatzStructuredOQ02OQ03 namespace and Filter.",
+      "mathContext": "OQ-03 target: $\\{n : \\mathrm{Col_{min}}(n) < f(n)\\}$ has logarithmic density $1$ for every $f\\to\\infty$."
+    },
+    {
       "id": "collatz-map",
-      "title": "The Collatz Map (Self-Contained)",
-      "startLine": 60,
-      "endLine": 73,
-      "summary": "Defines collatz n = if n % 2 = 0 then n / 2 else 3n + 1 and the helper lemmas collatz_even and collatz (2·n) = n.",
-      "mathContext": "$\\mathrm{collatz}(2m) = m$ is the single dynamical fact powering the dyadic collapse."
+      "title": "Part I: The Collatz Map (Self-Contained)",
+      "startLine": 71,
+      "endLine": 101,
+      "summary": "Defines collatz n = if n % 2 = 0 then n / 2 else 3n + 1 together with the helper lemmas collatz_even and collatz (2·n) = n, the single dynamical fact powering the dyadic collapse. Self-contained, no Mathlib Collatz API assumed.",
+      "mathContext": "$\\mathrm{collatz}(2m) = m$ is the one dynamical identity driving every dyadic drop."
     },
     {
       "id": "explicit-families",
-      "title": "Two Explicit Families That Drop Below Their Start",
-      "startLine": 75,
-      "endLine": 109,
-      "summary": "AttainsBelow n := ∃ k>0, collatz^[k] n < n. Proves even_attainsBelow (even n ≥ 1 drops in one step), pow_two_reaches_one (collatz^[k] (2^k) = 1), and pow_two_attainsBelow (2^k drops to 1 for k ≥ 1). All axiom-free.",
-      "mathContext": "$\\mathrm{collatz}^{[k]}(2^k) = 1 < 2^k$, so every dyadic starting value attains a value below itself."
+      "title": "Part II: Explicit Residue Families That Drop Below Their Start",
+      "startLine": 102,
+      "endLine": 192,
+      "summary": "AttainsBelow n := ∃ k>0, collatz^[k] n < n. Proves the elementary families drop below themselves, axiom-free: even_attainsBelow (even n ≥ 1 in one step), pow_two_reaches_one and pow_two_attainsBelow (2^k ↦ 1), and the odd residue classes 1 (mod 4), 3 (mod 16), and 11,23 (mod 32) via the 3n+1 branch.",
+      "mathContext": "$\\mathrm{collatz}^{[k]}(2^k) = 1 < 2^k$; the odd families exercise the non-trivial $3n+1$ branch."
+    },
+    {
+      "id": "affine-engine",
+      "title": "Part II: Reusable Affine Step-Composition Lemmas (Terras Law)",
+      "startLine": 193,
+      "endLine": 477,
+      "summary": "The reusable engine behind the family proofs: affine_residue_attainsBelow and the step lemmas affine_step_even / affine_step_odd track how a residue-determined window (M, r) evolves under collatz as an affine map c·m + d, so that a forced parity sequence certifies a drop below the start. This is the leading-coefficient law of Terras in composable form.",
+      "mathContext": "On the class $n \\equiv r \\pmod M$ each step is affine $m \\mapsto c'm + d'$, and a certified window forces $\\mathrm{collatz}^{[k]}(n) = 3^{a} m + d < n$."
+    },
+    {
+      "id": "density-floor-3-4",
+      "title": "Part II.5: A Quantitative Density Floor (3/4 → 115/128)",
+      "startLine": 478,
+      "endLine": 977,
+      "summary": "Machine-checked lower bounds on the (lower) density of starting values known to attain a value below themselves: attainsBelow_density_lower_16 (≥ 13/16), _32 (≥ 7/8), sharpened to attainsBelow_density_lower_128 (≥ 115/128). The dyadic refinement is genuine — level 64 adds no new stable class, level 128 adds exactly 7,15,59 (mod 128), each dropping in eleven forced steps to 81m + d.",
+      "mathContext": "$\\underline{d}\\{n : \\mathrm{AttainsBelow}(n)\\} \\ge \\tfrac{115}{128}$ via elementary residue dynamics."
     },
     {
       "id": "orbit-min-density",
-      "title": "Orbit Minimum and Logarithmic Density",
-      "startLine": 111,
-      "endLine": 137,
-      "summary": "colMin n = sInf {m : ∃ k, collatz^[k] n = m}; colMin_le_self (visit at k=0) and colMin_pow_two_le_one. logDensity and HasLogDensityOne formalize the 'logarithmic density 1' target via Tendsto.",
-      "mathContext": "$\\mathrm{logDensity}(S,N) = \\left(\\sum_{n\\le N,\\,n\\in S} \\tfrac1n\\right)\\big/\\left(\\sum_{n\\le N}\\tfrac1n\\right)$."
+      "title": "Part III: Orbit Minimum and Logarithmic Density",
+      "startLine": 978,
+      "endLine": 1315,
+      "summary": "colMin n = sInf {m : ∃ k, collatz^[k] n = m}; colMin_le_self, the characterizations colMin_lt_iff_attainsBelow / colMin_eq_self_iff, and the bridge collatz_conjecture_iff_colMin_eq_one (the full conjecture is equivalent to colMin ≡ 1). logDensity and HasLogDensityOne formalize the 'logarithmic density 1' target via Tendsto.",
+      "mathContext": "$\\mathrm{logDensity}(S,N) = \\left(\\sum_{n\\le N,\\,n\\in S}\\tfrac1n\\right)\\big/\\left(\\sum_{n\\le N}\\tfrac1n\\right)$."
     },
     {
       "id": "tao-axiom",
-      "title": "Tao's Theorem (Axiomatized, Deep)",
-      "startLine": 138,
-      "endLine": 145,
-      "summary": "tao_2019: for every f : ℕ → ℝ with f → ∞, {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. Recorded as an axiom; no file theorem depends on it. The answer to OQ-03: statement formalizes cleanly, proof is BLOCKED on Mathlib-absent concentration estimates.",
+      "title": "Part IV: Tao's Theorem (Axiomatized, Deep)",
+      "startLine": 1316,
+      "endLine": 1332,
+      "summary": "tao_2019: for every f : ℕ → ℝ with f → ∞, {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. Recorded as an axiom (the sole assumption in the file); no other theorem depends on it. The answer to OQ-03: the statement formalizes cleanly, but the proof is BLOCKED on Mathlib-absent 3-adic concentration/transport estimates.",
       "mathContext": "Taking $f(n) = n$ recovers 'almost all $n$ have finite stopping time'; arbitrary slow $f$ is the strength."
+    },
+    {
+      "id": "terras-engine",
+      "title": "Part V: The Terras Leading-Coefficient Law — Residue-Drop Engine",
+      "startLine": 1333,
+      "endLine": 1576,
+      "summary": "A general residue-drop engine expressed as data: leadCoeff, affStep, affOrbit computing the affine composition along a parity vector, with affOrbit_realize proving the abstract orbit realizes the true collatz orbit on the certified window. Turns each family proof into an instance of one general theorem.",
+      "mathContext": "A parity vector $v \\in \\{0,1\\}^k$ composes to an affine map with leading coefficient $3^{\\#\\{i : v_i = 1\\}}$."
+    },
+    {
+      "id": "decidable-certificates",
+      "title": "Part V: Decidable Certificates and Parity-Vector Derivation",
+      "startLine": 1577,
+      "endLine": 1772,
+      "summary": "The engine as decidable certificates: affValidB and affValidB_sound expose the drop condition as a one-shot `by decide`, validation lemmas reproduce every gallery family from its certificate, and further blocks derive the parity vector from (M, r) alone and re-validate every family from (M, r, b) only — so the certificates are self-generating, not hand-supplied.",
+      "mathContext": "$\\mathrm{affValidB}(v,c,d) = \\texttt{true} \\Rightarrow$ the window drops, checkable by kernel reduction."
+    },
+    {
+      "id": "density-floor-general",
+      "title": "Part VI: A General Residue-Class Density Floor",
+      "startLine": 1773,
+      "endLine": 1880,
+      "summary": "A general theorem converting a finite set of certified residue classes into a lower bound on the density of attaining values, abstracting the concrete 115/128 computation of Part II.5 into a reusable density-floor engine parameterized by the modulus and the certified residues.",
+      "mathContext": "Certified classes of total relative size $\\rho$ give $\\underline{d}\\{n:\\mathrm{AttainsBelow}(n)\\} \\ge \\rho$."
+    },
+    {
+      "id": "auto-derived-certificates",
+      "title": "Part VII: Fully Auto-Derived Certificates",
+      "startLine": 1881,
+      "endLine": 2020,
+      "summary": "The end of the pipeline: supplying only a modulus and residue, the engine auto-derives the full certificate, validation reproduces the gallery families with zero hand-input, and a bridge connects the certified windows back to the orbit-minimum machinery of Part III.",
+      "mathContext": "Input $(M, r)$ alone $\\Rightarrow$ a checked certificate that $n \\equiv r \\pmod M$ attains below itself."
+    },
+    {
+      "id": "parity-forcing",
+      "title": "Part VIII: Parity Forcing — the Certificate is the Orbit's Parity Sequence",
+      "startLine": 2021,
+      "endLine": 2106,
+      "summary": "Proves that on a certified residue window the parity sequence is forced: the certificate's Boolean vector is exactly the sequence of even/odd choices the true collatz orbit makes, so the affine model is not an approximation but a faithful transcript of the dynamics over the window.",
+      "mathContext": "For $n \\equiv r \\pmod M$, $\\big(n \\bmod 2, \\mathrm{collatz}(n)\\bmod 2, \\dots\\big) = v$ is forced by $r$."
+    },
+    {
+      "id": "interior-affine",
+      "title": "Part IX: Interior Affine Realization",
+      "startLine": 2107,
+      "endLine": 2187,
+      "summary": "Strengthens realization from the endpoints to every interior step: the certified window is affine at each intermediate iterate, giving colMin/orbit control not just at the drop but throughout the window — the precise input needed to chain certificates.",
+      "mathContext": "$\\mathrm{collatz}^{[j]}(n) = c_j m + d_j$ holds for every $0 \\le j \\le k$, not only at $j = k$."
+    },
+    {
+      "id": "certificate-composition",
+      "title": "Part X: Certificate Composition — Chaining and Slicing Windows",
+      "startLine": 2188,
+      "endLine": 2329,
+      "summary": "Closes the file with the algebra of certificates: certified windows can be chained end-to-end and sliced, so drops proven on short windows compose into drops over longer orbits. This makes the residue-drop engine a modular toolkit rather than a fixed list of families.",
+      "mathContext": "If window $A$ maps class $r$ to class $r'$ and window $B$ drops $r'$, the composite drops $r$."
     }
   ],
   "conclusion": {
