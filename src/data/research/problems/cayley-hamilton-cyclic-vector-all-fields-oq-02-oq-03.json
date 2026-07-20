@@ -29,19 +29,21 @@
     "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (researcher-1, 2026-07-20, VERIFIED 0-axiom/0-sorry): lifted the matrix commutant characterization (oq-02) to the endomorphism setting Module.End K V. commuting_end_is_polynomial: a cyclic vector forces every operator commuting with T to be a polynomial in T, so centralizer(T) = K[T] and is commutative (end_commutant_commutative). Self-contained (imports only Mathlib); the Krylov vectors form a basis and Basis.ext replaces the parent matrix proof column-by-column recovery. New gallery entry + tracker updated. Answers the Module.End lift open question recorded on sibling oq-02-oq-01.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom Docker): Frobenius EQUALITY dim C(T)=dim V for cyclic endomorphisms (finrank_centralizer_eq_of_cyclic), via injective evaluation-at-v map for ≤ plus the existing general endK_centralizer_bound for ≥. Completes the dimension-count edge of the nonderogatory⟺cyclic⟺C(T)=K[T] triangle in Module.End.",
     "builtItems": [
       "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
-      "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original."
+      "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original.",
+      "commuting_end_eq_of_apply_eq, finrank_centralizer_le_of_cyclic, finrank_centralizer_eq_of_cyclic in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean (0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound])"
     ],
     "insights": [
       "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
       "The endomorphism formulation is strictly SIMPLER than the matrix parent at the final step: agreement of A and p(T) on the Krylov basis closes with a single Basis.ext, replacing the parent column-by-column matrix recovery (ext i j + Pi.single + dotProduct).",
-      "endKrylov_linearIndependent and the two commutation lemmas need no FiniteDimensional hypothesis (stated with omit [FiniteDimensional K V] in); only the main theorem uses finrank/basisOfLinearIndependentOfCardEqFinrank; the finrank=0 case is a Subsingleton on Module.End K V (Module.finrank_zero_iff). Module.End.mul_apply is the (f*g) v = f (g v) rewrite."
+      "endKrylov_linearIndependent and the two commutation lemmas need no FiniteDimensional hypothesis (stated with omit [FiniteDimensional K V] in); only the main theorem uses finrank/basisOfLinearIndependentOfCardEqFinrank; the finrank=0 case is a Subsingleton on Module.End K V (Module.finrank_zero_iff). Module.End.mul_apply is the (f*g) v = f (g v) rewrite.",
+      "Frobenius bound is EQUALITY in the cyclic case: for T:Module.End K V with a cyclic vector, dim_K C(T) = dim_K V. The clean ≤ half is that evaluation A↦A·v is injective on the centralizer (operators commuting with T agreeing on a cyclic vector agree on the whole Krylov basis); ≥ is the general endK_centralizer_bound. This is the minimal-centralizer/nonderogatory edge of the triangle."
     ],
     "nextSteps": [
-      "Lift the remaining triple-equivalence edges (nonderogatory iff cyclic and centralizer = K[T] implies cyclic) to Module.End to complete the coordinate-free triangle matching matrix oq-02 / oq-02-oq-01.",
-      "Prove the endomorphism Frobenius bound dim_K (centralizer of T) >= finrank K V in the Module.End setting (matrix version: finrank_centralizer_ge in oq-02-oq-01)."
+      "Lift the last equivalence edge to Module.End: centralizer = K[T] (or dim C(T)=n) IMPLIES T has a cyclic vector — the converse direction completing nonderogatory⟺cyclic⟺C(T)=K[T].",
+      "Optionally package C(T)=K[T] as an equality of subalgebras (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) in the Module.End setting."
     ]
   },
   "tags": [
