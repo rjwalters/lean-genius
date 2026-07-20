@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 152,
-    "assumptions": "None. Fully machine-verified: `lake env lean` builds Proofs/PartitionTheoremOQ02.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for card_restricted_not_dvd_mono and card_distincts_le_card_not_dvd_three. The file imports only Mathlib and is self-contained, building directly on Mathlib's Nat.Partition.card_restricted_eq_card_countRestricted (Glaisher's theorem) and Nat.Partition.card_odds_eq_card_distincts (Euler's theorem).",
+    "assumptions": "None. Fully machine-verified: `lake env lean` builds Proofs/PartitionTheoremOQ02.lean to exit 0 against the pinned Mathlib (v4.31.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for card_restricted_not_dvd_mono and card_distincts_le_card_not_dvd_three. The file imports only Mathlib and is self-contained, building directly on Mathlib's Nat.Partition.card_restricted_eq_card_countRestricted (Glaisher's theorem) and Nat.Partition.card_odds_eq_card_distincts (Euler's theorem).",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.31.0",
     "mathlibDependencies": [
