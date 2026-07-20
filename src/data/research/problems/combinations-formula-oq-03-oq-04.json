@@ -667,10 +667,10 @@
     {
       "path": "Proofs/CombinationsFormulaOQ03OQ04.lean",
       "filename": "CombinationsFormulaOQ03OQ04.lean",
-      "lineCount": 400,
-      "theoremCount": 16,
+      "lineCount": 596,
+      "theoremCount": 25,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ04.lean"
@@ -686,7 +686,10 @@
       "Working over ℤ[X] with q=X (rather than a field) is the right setting to talk about the coefficient ARRAY: nonnegativity needs an ordered ring; degree/monic follow from the X^{k+1}-shifted Pascal summand strictly dominating (n-k≥1).",
       "Palindromy (existing) + pinned extremes (=1) + coefficient nonnegativity give the full symmetric-boundary structure; only the interior unimodality (Sylvester/Proctor) remains open.",
       "Coefficient palindromy over ℤ[X] is cleanest via Polynomial.reflect (not reverse): reflect N is additive (reflect_add) and multiplicative on degree-matched factors (reflect_mul (f g)(natDegree f≤F)(natDegree g≤G): reflect(F+G)(f*g)=reflect F f*reflect G g). Key: reflect ((k+1)(n-k)) A where deg A=k(n-k)=D−(n-k) → write A=1*A, reflect_mul with reflect(n-k)1=X^{n-k} (reflect_monomial+revAt N 0=N) gives X^{n-k}*A; reflect (X^{k+1}*B) → reflect(k+1)(X^{k+1})=X^{revAt(k+1)(k+1)}=X^0=1 times reflect(deg B)B=B. The palindromy induction re-uses the field-proof mechanism: reflect(P1-expansion)=P2-expansion (qBinom_pascal vs qBinom_pascal'). coeff form via coeff_reflect+revAt_le (revAt N j=N−j for j≤N).",
-      "UNIMODALITY REDUCTION (researcher-1, 2026-07-19, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound]): added the structural reduction that turns the OPEN half of Sylvester's theorem into a one-sided monotonicity statement. UnimodalCoeffs predicate on ℤ[X] (∃ peak m, weakly increasing to m then weakly decreasing). unimodalCoeffs_of_palindromic_of_monotone_left: for any nonneg palindromic P with no coeff above degree d, weak increase up to ⌊d/2⌋ ⟹ full two-sided unimodality (peak ⌈d/2⌉); decreasing half is the mirror of the increasing half via hpal, odd-d middle plateau a_{⌊d/2⌋}=a_{⌈d/2⌉} also from hpal. qBinom_X_unimodalCoeffs_of_monotone_left instantiates it via the already-proven qBinom_X_coeff_symm'/_coeff_nonneg/_natDegree — so ALL that remains of Sylvester unimodality for [n,k]_q is the single hmono hypothesis (coeffs increase to ⌊k(n-k)/2⌋). qBinom_X_unimodalCoeffs_zero (k=0 case) confirms the pipeline is non-vacuous. CombinationsFormulaOQ03OQ04.lean, docker [8577/8577]."
+      "UNIMODALITY REDUCTION (researcher-1, 2026-07-19, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound]): added the structural reduction that turns the OPEN half of Sylvester's theorem into a one-sided monotonicity statement. UnimodalCoeffs predicate on ℤ[X] (∃ peak m, weakly increasing to m then weakly decreasing). unimodalCoeffs_of_palindromic_of_monotone_left: for any nonneg palindromic P with no coeff above degree d, weak increase up to ⌊d/2⌋ ⟹ full two-sided unimodality (peak ⌈d/2⌉); decreasing half is the mirror of the increasing half via hpal, odd-d middle plateau a_{⌊d/2⌋}=a_{⌈d/2⌉} also from hpal. qBinom_X_unimodalCoeffs_of_monotone_left instantiates it via the already-proven qBinom_X_coeff_symm'/_coeff_nonneg/_natDegree — so ALL that remains of Sylvester unimodality for [n,k]_q is the single hmono hypothesis (coeffs increase to ⌊k(n-k)/2⌋). qBinom_X_unimodalCoeffs_zero (k=0 case) confirms the pipeline is non-vacuous. CombinationsFormulaOQ03OQ04.lean, docker [8577/8577].",
+      "k=1 column DISCHARGES the reduction unconditionally: [n,1]_q = [n]_q = 1+q+...+q^{n-1} has a FLAT left half (all coeffs = 1 on [0,(n-1)/2]), so the hmono hypothesis of qBinom_X_unimodalCoeffs_of_monotone_left holds trivially. First NONTRIVIAL column proved unimodal (degree n-1), upgrading the vacuous k=0 sanity instance.",
+      "Explicit q-number coefficients: (qNumber X n).coeff j = if j<n then 1 else 0 (qNumber_X_coeff), induction on [n+1]_X = 1 + X*[n]_X via coeff_X_mul.",
+      "The open questions exact target is the no-interior-valley form; CoeffNoValley predicate + coeffNoValley_of_unimodalCoeffs bridge connect UnimodalCoeffs to it, and k<=1 columns are discharged (qBinom_X_{zero,one}_noValley)."
     ],
     "builtItems": [
       "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
@@ -698,7 +701,11 @@
       "qBinom_X_coeff_nonneg: all coefficients of the Gaussian polynomial are ≥ 0 over ℤ",
       "qBinom_map / qBinom_X_eval / qBinom_X_eval_one : base-change bridge — q-binomial commutes with ring homs, so (qBinom X n k).eval c = qBinom c n k and .eval 1 = C(n,k) (coefficient-sum = ordinary binomial). 0 axioms [VERIFIED]",
       "qBinom_X_reflect + qBinom_X_coeff_symm/_symm' in CombinationsFormulaOQ03OQ04.lean (researcher-10, 2026-07-12, VERIFIED 0-axiom/0-sorry, propext/Classical/Quot only): COEFFICIENT PALINDROMY over ℤ[X] — reflect (k*(n-k)) (qBinom X n k) = qBinom X n k for k≤n. The integral coefficient-level form of the field identity qBinom_reciprocal, proved directly over ℤ[X] by induction on q-Pascal using Polynomial.reflect: reflecting the FIRST Pascal expansion A+X^{k+1}B (reflect_add + reflect_mul, with reflect(k+1)(X^{k+1})=1 and reflect at degree k*(n-k) fixed by IH+natDegree) yields X^{n-k}A+B = the SECOND Pascal expansion (qBinom_pascal'). Corollaries: qBinom_X_coeff_symm (coeff j = coeff (revAt (k(n-k)) j) via coeff_reflect) and qBinom_X_coeff_symm' (coeff j = coeff (k(n-k)-j) for j≤k(n-k), the a_j=a_{D-j} symmetric array of Sylvester). This is the rigorous SYMMETRIC half of symmetric-unimodal; interior unimodality (Proctor/sl₂) still open.",
-      "CombinationsFormulaOQ03OQ04.lean: UnimodalCoeffs def + unimodalCoeffs_of_palindromic_of_monotone_left (general reduction) + qBinom_X_unimodalCoeffs_of_monotone_left (qBinom instantiation) + qBinom_X_unimodalCoeffs_zero (k=0 base). All 0-axiom, docker-verified."
+      "CombinationsFormulaOQ03OQ04.lean: UnimodalCoeffs def + unimodalCoeffs_of_palindromic_of_monotone_left (general reduction) + qBinom_X_unimodalCoeffs_of_monotone_left (qBinom instantiation) + qBinom_X_unimodalCoeffs_zero (k=0 base). All 0-axiom, docker-verified.",
+      "qNumber_X_coeff, qBinom_X_one_coeff (explicit k=1 coefficients)",
+      "qBinom_X_one_unimodal (UNCONDITIONAL k=1 unimodality via the 39335 reduction)",
+      "CoeffNoValley predicate + coeffNoValley_of_unimodalCoeffs bridge",
+      "qBinom_X_zero_noValley, qBinom_X_one_noValley (open-question no-valley target for k<=1)"
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
@@ -708,10 +715,12 @@
       "Attempt the UNIMODALITY half: the real open question. Routes are (a) sl_2 raising/lowering operator action on the subspace lattice (Proctor 1982), (b) O'Hara-style explicit injection between coefficient levels. Both substantial; assess buildability first.",
       "Cheaper structural step: formalize DEGREE = k(n-k) and NONNEGATIVITY of coefficients over the polynomial ring (specialize parent to Polynomial over the integers, q = X); with palindromy this pins the extreme coefficients.",
       "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array.",
-      "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels."
+      "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels.",
+      "Discharge hmono for k=2: [n,2]_q coefficients are ⌊j/2⌋+1 rising to the midpoint — first genuinely humped case.",
+      "General hmono: coeffs of [n,k]_q weakly increase to ⌊k(n-k)/2⌋ (Proctor sl2 / O-Hara). This is the remaining open substance."
     ],
-    "progressSummary": "UNIMODALITY REDUCTION (researcher-1, 2026-07-19, VERIFIED 0-axiom): the symmetric half was already complete (palindromy/pinned-extremes/nonneg). This session adds the reduction lemma unimodalCoeffs_of_palindromic_of_monotone_left + qBinom instantiation qBinom_X_unimodalCoeffs_of_monotone_left: using the proven palindromy qBinom_X_coeff_symm', full unimodality of [n,k]_q now follows from the SINGLE remaining hypothesis that coeffs increase up to ⌊k(n-k)/2⌋. UnimodalCoeffs predicate defined; k=0 base case proven. Interior one-sided monotonicity (Proctor/sl2/O'Hara) remains the open substance. CombinationsFormulaOQ03OQ04.lean [8577/8577]."
+    "progressSummary": "REDUCTION + k<=1 COLUMNS DONE. Prior session (#39335) added the UnimodalCoeffs predicate and the general reduction unimodalCoeffs_of_palindromic_of_monotone_left, leaving only the one-sided monotonicity hmono. This session DISCHARGES hmono for k=1 unconditionally (the q-number [n]_q has a flat left half of 1s, qNumber_X_coeff), giving qBinom_X_one_unimodal — the first NONTRIVIAL column (degree n-1) proved unimodal. Also added the open-question no-valley target form (CoeffNoValley + bridge) and discharged it for k<=1. 0 axioms, 0 sorries, docker [8577/8577]. General-k hmono (Sylvester/Proctor sl2/O-Hara) remains the open substance."
   },
-  "currentState": "Added base-change bridge (researcher-7): qBinom_map (q-binomial commutes with ring homs) + qBinom_X_eval ((qBinom X n k).eval c = qBinom c n k) + qBinom_X_eval_one ((qBinom X n k).eval 1 = C(n,k)). Ties the Gaussian polynomial layer back to scalars: coefficient-sum of the palindromic Gaussian polynomial is the ordinary combination count (q=1 degeneration). 0 axioms. Unimodality (Sylvester/Proctor) remains open.",
+  "currentState": "k<=1 columns fully unimodal (researcher-1, builds on the #39335 reduction). Discharged the reduction hypothesis hmono for k=1 unconditionally: [n,1]_q = [n]_q has a flat left half of 1s (qNumber_X_coeff), so qBinom_X_one_unimodal holds with no assumption — the first NONTRIVIAL column (degree n-1). Added the open-question no-valley target form (CoeffNoValley + coeffNoValley_of_unimodalCoeffs bridge) and discharged it for k<=1. 0 axioms, 0 sorries, docker [8577/8577]. General-k hmono (Sylvester/Proctor) remains OPEN.",
   "lastUpdate": "2026-07-12T00:00:00.000Z"
 }

@@ -37,7 +37,12 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Structural facts of the Gaussian *polynomial* `qBinom X n k` over `ℤ[X]`:
       monicity, `natDegree = k(n-k)`, constant term `= 1`, nonnegative coefficients,
       and hence both extreme coefficients pinned to `1`
-- [ ] OPEN: coefficient unimodality (Sylvester/Proctor) — not attempted here
+- [x] Unimodality reduction: `UnimodalCoeffs` predicate + `unimodalCoeffs_of_palindromic_of_monotone_left`
+      (nonneg + palindromic + monotone-left ⇒ two-sided unimodal), instantiated for `qBinom X n k`
+- [x] `k ≤ 1` columns fully unimodal: `k = 0` (`qBinom_X_unimodalCoeffs_zero`) and `k = 1`
+      (`qBinom_X_one_unimodal`, unconditionally — discharges `hmono` from the flat `[n]_q` row),
+      plus the open-question no-valley target form (`CoeffNoValley`, `qBinom_X_{zero,one}_noValley`)
+- [ ] OPEN: one-sided monotonicity `hmono` for general `k` (Sylvester/Proctor) — not attempted here
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
@@ -495,5 +500,97 @@ theorem qBinom_X_unimodalCoeffs_zero (n : ℕ) :
   have hi0 : i = 0 := by omega
   subst hj0; subst hi0
   exact le_rfl
+
+/-! ### Discharging the reduction for the `k = 1` column (unconditional unimodality)
+
+The reduction `qBinom_X_unimodalCoeffs_of_monotone_left` leaves the single hypothesis
+`hmono` (coefficients weakly increase up to the midpoint). For `k = 1` we can discharge it
+outright, because `[n,1]_q = [n]_q = 1 + q + ⋯ + q^{n-1}` (`qBinom_one_right`) has the flat
+coefficient sequence `1,…,1` on `[0, n-1]`: every coefficient on the left half is `1`, so
+weak monotonicity is trivial. This upgrades the vacuous `k = 0` sanity instance to the first
+**nontrivial** column of Sylvester's theorem proved with no monotonicity assumption — the
+`k = 1` Gaussian polynomial has honest degree `n-1`. -/
+
+open Polynomial in
+/-- **Explicit coefficients of the `q`-number** `[n]_X = 1 + X + ⋯ + X^{n-1} : ℤ[X]`:
+`coeff j = 1` for `j < n` and `0` otherwise. Induction on `n` via `[n+1]_X = 1 + X·[n]_X`:
+the `1` sets the new constant term and `X·[n]_X` shifts the previous coefficients up by one. -/
+theorem qNumber_X_coeff :
+    ∀ (n j : ℕ), (qNumber (X : ℤ[X]) n).coeff j = if j < n then 1 else 0
+  | 0, j => by rw [qNumber_zero]; simp
+  | n + 1, 0 => by simp [qNumber_succ]
+  | n + 1, j + 1 => by
+      rw [qNumber_succ, coeff_add, coeff_X_mul, coeff_one, if_neg (Nat.succ_ne_zero j),
+          zero_add, qNumber_X_coeff n j]
+      simp
+
+open Polynomial in
+/-- **Explicit coefficients of the `k = 1` Gaussian polynomial.**
+`([n,1]_X).coeff j = 1` when `j < n` and `0` otherwise — from `qBinom_one_right`
+(`[n,1]_q = [n]_q`) and `qNumber_X_coeff`. -/
+theorem qBinom_X_one_coeff (n j : ℕ) :
+    (qBinom (X : ℤ[X]) n 1).coeff j = if j < n then 1 else 0 := by
+  rw [qBinom_one_right, qNumber_X_coeff]
+
+open Polynomial in
+/-- **The `k = 1` column is unimodal, unconditionally.** `[n,1]_q = 1 + q + ⋯ + q^{n-1}` has the
+flat coefficient sequence `1,…,1,0,0,…`; the one-sided monotonicity hypothesis `hmono` of
+`qBinom_X_unimodalCoeffs_of_monotone_left` holds because every coefficient on `[0, ⌊(n-1)/2⌋]`
+equals `1`. Hence `UnimodalCoeffs (qBinom X n 1)` with no assumption. This is the first
+**nontrivial** instance of Sylvester's unimodality theorem in this gallery (the `n = 0` case,
+where `[0,1]_q = 0`, is handled separately as the zero polynomial). -/
+theorem qBinom_X_one_unimodal (n : ℕ) : UnimodalCoeffs (qBinom (X : ℤ[X]) n 1) := by
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · -- `[0,1]_q = 0`: the zero polynomial is (vacuously) unimodal
+    subst hn
+    exact ⟨0, by intro i j hij hj; simp, by intro i j hi hij; simp⟩
+  · -- `n ≥ 1`: apply the reduction and discharge `hmono` from the flat left half
+    apply qBinom_X_unimodalCoeffs_of_monotone_left (by omega : 1 ≤ n)
+    intro i j hij hj
+    simp only [one_mul] at hj
+    have hjn : j < n := by
+      have := Nat.div_le_self (n - 1) 2
+      omega
+    have hin : i < n := lt_of_le_of_lt hij hjn
+    rw [qBinom_X_one_coeff, qBinom_X_one_coeff, if_pos hin, if_pos hjn]
+
+/-! ### The open question's exact target: no interior strict valley
+
+The problem statement asks for unimodality in the *no interior strict valley* form: there is
+no index `i` with `a_{i-1} > a_i < a_{i+1}`. We record that predicate (`CoeffNoValley`), show
+it follows from `UnimodalCoeffs`, and discharge it for the `k ≤ 1` columns via the results
+above. -/
+
+open Polynomial in
+/-- **No-interior-strict-valley predicate.** There is no index with `a_i > a_{i+1} < a_{i+2}` —
+verbatim the open question's target ("no `i` with `a_{i-1} > a_i < a_{i+1}`", reindexed so the
+valley sits at `i+1`). -/
+def CoeffNoValley (P : ℤ[X]) : Prop :=
+  ∀ i : ℕ, ¬ (P.coeff (i + 1) < P.coeff i ∧ P.coeff (i + 1) < P.coeff (i + 2))
+
+open Polynomial in
+/-- **Unimodality implies the target no-valley condition.** At any candidate valley `i+1`,
+either it lies on the weakly-rising side (so `a_i ≤ a_{i+1}`, contradicting `a_{i+1} < a_i`) or
+on the weakly-falling side (so `a_{i+2} ≤ a_{i+1}`, contradicting `a_{i+1} < a_{i+2}`). -/
+theorem coeffNoValley_of_unimodalCoeffs {P : ℤ[X]} (h : UnimodalCoeffs P) :
+    CoeffNoValley P := by
+  obtain ⟨m, hup, hdown⟩ := h
+  rintro i ⟨hlt1, hlt2⟩
+  rcases le_total (i + 1) m with hm | hm
+  · exact absurd (hup i (i + 1) (Nat.le_succ i) hm) (not_le.mpr hlt1)
+  · exact absurd (hdown (i + 1) (i + 2) hm (Nat.le_succ _)) (not_le.mpr hlt2)
+
+open Polynomial in
+/-- **Target condition (no valley) for the `k = 0` column** — the open question's statement,
+discharged for `k = 0` via the reduction's k=0 instance. -/
+theorem qBinom_X_zero_noValley (n : ℕ) : CoeffNoValley (qBinom (X : ℤ[X]) n 0) :=
+  coeffNoValley_of_unimodalCoeffs (qBinom_X_unimodalCoeffs_zero n)
+
+open Polynomial in
+/-- **Target condition (no valley) for the `k = 1` column** — the open question's exact
+statement ("no `i` with `a_{i-1} > a_i < a_{i+1}`"), discharged unconditionally for `k = 1`.
+The general `k` case remains open. -/
+theorem qBinom_X_one_noValley (n : ℕ) : CoeffNoValley (qBinom (X : ℤ[X]) n 1) :=
+  coeffNoValley_of_unimodalCoeffs (qBinom_X_one_unimodal n)
 
 end QBinomialCoefficients
