@@ -63,6 +63,56 @@ noncomputable def sublevelMeasure (P : UnitDiskPoly n) : ℝ :=
 /-  Pólya's bound: the sublevel measure is at most π, and equality holds
     only when all roots coincide (p(z) = (z - z₀)ⁿ for some |z₀| ≤ 1) -/
 
+/- ## Foundational Structure Lemmas (axiom-free)
+
+The deep quantitative bounds above (Pommerenke `c/n⁴`, KLR `c/log n`,
+KLR `C/log log n`, Pólya `π`) rest on logarithmic-potential and measure
+machinery not presently available in Mathlib, so they are stated only in
+the header prose. What *is* machine-checkable here is the basic geometry of
+the lemniscate `{|p(z)| < 1}` directly from the root factorization. These
+lemmas are proved with no axioms and no `sorry`. -/
+
+/-- Evaluating `p` at one of its own roots gives `0`: the factor `(zᵢ - zᵢ)`
+    vanishes, so the whole product does. -/
+@[simp] theorem UnitDiskPoly.eval_root_eq_zero (P : UnitDiskPoly n) (i : Fin n) :
+    P.eval (P.roots i) = 0 := by
+  refine Finset.prod_eq_zero (Finset.mem_univ i) ?_
+  simp
+
+/-- Every root lies in the sublevel set: `|p(zᵢ)| = 0 < 1`. -/
+theorem UnitDiskPoly.root_mem_sublevelSet (P : UnitDiskPoly n) (i : Fin n) :
+    P.roots i ∈ P.sublevelSet := by
+  show Complex.abs (P.eval (P.roots i)) < 1
+  rw [P.eval_root_eq_zero i]
+  simp [Complex.abs]
+
+/-- For a positive-degree polynomial the sublevel set is nonempty — it contains
+    every root. -/
+theorem UnitDiskPoly.sublevelSet_nonempty (P : UnitDiskPoly n) (hn : 0 < n) :
+    P.sublevelSet.Nonempty :=
+  ⟨P.roots ⟨0, hn⟩, P.root_mem_sublevelSet ⟨0, hn⟩⟩
+
+/-- The degenerate degree-`0` polynomial is the empty product `p ≡ 1`. -/
+@[simp] theorem UnitDiskPoly.eval_of_degree_zero (P : UnitDiskPoly 0) (z : ℂ) :
+    P.eval z = 1 := by
+  simp [UnitDiskPoly.eval]
+
+/-- In degree `0`, `p ≡ 1`, so `{|p(z)| < 1}` is empty: the boundary case that
+    makes the positive-degree hypothesis in `sublevelSet_nonempty` essential. -/
+theorem UnitDiskPoly.sublevelSet_of_degree_zero (P : UnitDiskPoly 0) :
+    P.sublevelSet = (∅ : Set ℂ) := by
+  ext z
+  simp only [Set.mem_empty_iff_false, iff_false]
+  show ¬ Complex.abs (P.eval z) < 1
+  rw [P.eval_of_degree_zero z]
+  simp [Complex.abs]
+
+/-- The sublevel measure is always nonnegative (it is the real part of an
+    `ℝ≥0∞`-valued measure). -/
+theorem UnitDiskPoly.sublevelMeasure_nonneg (P : UnitDiskPoly n) :
+    0 ≤ sublevelMeasure P :=
+  ENNReal.toReal_nonneg
+
 /- ## The Erdős–Herzog–Piranian Conjecture (PROVED) -/
 
 /-  Erdős Problem 116 (Erdős–Herzog–Piranian, PROVED):

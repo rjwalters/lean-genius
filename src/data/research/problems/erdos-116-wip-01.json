@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,11 +31,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: converted bare stub into a formalization with a verified axiom-free foundational core (6 theorems: root membership, degree-0 emptiness vs positive-degree nonemptiness, measure nonnegativity). Corrected gallery meta which falsely described non-existent axioms/ErdosProblem116; theoremCount 0->6, imports/lineCount synced, assumptions text made honest. Deep bounds remain documented-only (Mathlib infra gap).",
+    "builtItems": [
+      "UnitDiskPoly.eval_root_eq_zero / root_mem_sublevelSet / sublevelSet_nonempty / eval_of_degree_zero / sublevelSet_of_degree_zero / sublevelMeasure_nonneg in proofs/Proofs/Erdos116Problem.lean (6 axiom-free foundational theorems; host-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound only)"
+    ],
+    "insights": [
+      "Erdos116Problem.lean was a bare statement-stub: real definitions (UnitDiskPoly, eval, sublevelSet, sublevelMeasure) but ZERO theorems, while gallery meta prose falsely described four bounds \"stated as axioms\" and a main theorem ErdosProblem116 that did not exist in source.",
+      "The lemniscate {|p(z)|<1} has a clean degree dichotomy: for n=0 the empty product gives p≡1 so the set is EMPTY; for n>0 every root zi satisfies p(zi)=0<1 so each root lies in the set (nonempty). This is the axiom-free core the deep measure bounds build on.",
+      "The four quantitative bounds (Pommerenke c/n^4, KLR c/log n, KLR C/loglog n, Polya pi) need logarithmic-potential / planar-measure machinery absent from Mathlib v4.31 — not formalizable without substantial new infrastructure; correctly left as documented prose, not axioms."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "The genuine open formalization target is Polya pi upper bound (area of {|p|<1} <= pi) — the most self-contained of the four; still requires planar Lebesgue-measure-of-lemniscate infra Mathlib lacks.",
+      "Consider proving sublevelSet is measurable/open (p is continuous) as the next foundational step enabling any measure lower bound."
+    ],
     "markdown": "# Knowledge Base: erdos-116-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
