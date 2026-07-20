@@ -70,13 +70,13 @@
       "id": "splitting-newton-n2",
       "title": "The splitting polynomial and Newton at n = 2",
       "startLine": 96,
-      "endLine": 128,
+      "endLine": 138,
       "summary": "Vieta for two roots (prod_two_linear_eq: (X - x)(X - y) = X^2 - (x+y) X + x y), the fact that x is a root (root_of_prod_two_linear), then newton_two_vars: x y <= ((x+y)/2)^2 for ALL real x, y via the discriminant, and its normalized restatement newton_two_vars_normalized emphasizing the p_1^2 >= p_0 p_2 shape."
     },
     {
       "id": "newton-n3-strategy",
       "title": "Newton at n = 3: the derivative-quadratic strategy",
-      "startLine": 128,
+      "startLine": 139,
       "endLine": 146,
       "summary": "Docstring for the n = 3 case: the splitting cubic (X - x)(X - y)(X - z) = X^3 - e_1 X^2 + e_2 X - e_3 gives, via Rolle, two degree-two derivatives whose nonnegative discriminants are the two Newton inequalities. Differentiating once yields P' = 3X^2 - 2 e_1 X + e_2 (so 4 e_1^2 - 12 e_2 >= 0, i.e. e_1^2 >= 3 e_2); passing to the reciprocal cubic and differentiating yields -3 e_3 X^2 + 2 e_2 X - e_1 (so e_2^2 >= 3 e_1 e_3). Each derivative quadratic's discriminant is established directly as a sum of squares, so the case needs no general Rolle-iteration lemma and no sign hypothesis."
     },
@@ -105,8 +105,106 @@
       "id": "part-iv-newton-n4-sos",
       "title": "Part IV: Newton at n = 4 via explicit SOS certificates",
       "startLine": 278,
-      "endLine": 351,
+      "endLine": 350,
       "summary": "All THREE Newton log-concavity steps at n = 4 for arbitrary signed reals, extending the Part II SOS method one arity further and covering the middle (k = 2) and top (k = 3) steps that Part III's general k = 1 route does not reach. newton_four_first: 8 e_2 <= 3 e_1^2, SOS sum_{i<j}(x_i - x_j)^2 (also the n = 4 instance of newton_first_general). newton_four_second: 9 e_1 e_3 <= 4 e_2^2, SOS 3[(ab-cd)^2+(ac-bd)^2+(ad-bc)^2] + (1/2)[((a-b)(c-d))^2+((a-c)(b-d))^2+((a-d)(b-c))^2] over the three opposite-pair splittings of {a,b,c,d}. newton_four_third: 8 e_2 e_4 <= 3 e_3^2, SOS sum_{i<j}(x_i - x_j)^2 (x_k x_l)^2, the reciprocal-polynomial image of the k = 1 certificate. newton_four_normalized assembles all three steps in normalized p-form (p_0=1, p_1=e_1/4, p_2=e_2/6, p_3=e_3/4, p_4=e_4). Each certificate is exact (verified symbolically) and closed by nlinarith; no sign hypothesis."
+    },
+    {
+      "id": "part-v-rolle-crux",
+      "title": "Part V: the general Rolle crux — differentiation preserves real-rootedness",
+      "startLine": 351,
+      "endLine": 450,
+      "summary": "The arbitrary-n engine the per-arity SOS certificates (Parts II/IV) were standing in for: each derivative of a fully real-rooted real polynomial is again fully real-rooted (counting multiplicity). exists_isRoot_derivative_Ioo packages polynomial Rolle (a root of the derivative between two roots of p) via Mathlib's exists_hasDerivAt_eq_zero. derivative_roots_card_eq is the crux: Mathlib's card_roots_le_derivative (card p.roots <= card (derivative p).roots + 1), card_roots', and natDegree_derivative_lt sandwich card (derivative p).roots between natDegree p - 1 and itself, so omega forces equality — the derivative splits. splits_derivative restates it in Splits form; splits_iterate_derivative iterates to all k successive derivatives. Closes the real-rootedness half of the classical proof (the coefficient identification is deferred to Parts VII+).",
+      "mathContext": "For p : R[X] with card p.roots = natDegree p, the sandwich natDegree p - 1 <= card (derivative p).roots <= (derivative p).natDegree <= natDegree p - 1 gives card (derivative p).roots = (derivative p).natDegree. Iterated Rolle on prod (X - x_i).",
+      "relatedConcepts": [
+        "Rolle's theorem",
+        "real-rooted polynomial",
+        "card_roots_le_derivative",
+        "Splits"
+      ]
+    },
+    {
+      "id": "join-discrim-from-splits",
+      "title": "Closing the loop: real-rootedness produces a discriminant inequality",
+      "startLine": 451,
+      "endLine": 502,
+      "summary": "Joins the two engine halves at the coefficient level. discrim_coeff_nonneg_of_splits_deg_two: a real polynomial that Splits with natDegree = 2 has 0 <= discrim (coeff 2) (coeff 1) (coeff 0). Proof: a split degree-two polynomial has card roots = 2 > 0, so a real root r exists; expanding p.eval r = 0 via eval_eq_sum_range (a length-three sum) gives coeff 2 . r^2 + coeff 1 . r + coeff 0 = 0, and the Part I atom discrim_nonneg_of_root finishes. Combined with splits_iterate_derivative (which reduces a split degree-n polynomial to a split quadratic, its (n-2)-nd derivative), this is the general per-derivative Newton step, stated once for all n with no sign hypothesis.",
+      "mathContext": "A split quadratic a X^2 + b X + c with a real root r has b^2 - 4ac = discrim a b c >= 0. The (n-2)-nd derivative of a split degree-n polynomial is such a quadratic.",
+      "relatedConcepts": [
+        "discriminant",
+        "eval_eq_sum_range",
+        "coordinate-free coeff form",
+        "per-derivative Newton step"
+      ]
+    },
+    {
+      "id": "part-vii-top-step",
+      "title": "Part VII: the general-n TOP Newton step via the Rolle route",
+      "startLine": 503,
+      "endLine": 586,
+      "summary": "Runs the whole program on one split polynomial of arbitrary degree. discrim_iterate_derivative_top differentiates a split degree-(m+2) polynomial m times down to a split quadratic (splits_iterate_derivative) and reads off its discriminant on the top three coefficients via discrim_coeff_nonneg_of_splits_deg_two, with coeff_iterate_derivative supplying the descFactorial weights. newton_top_coeff_ineq states the resulting nonnegative-discriminant inequality on p.coeff (m+2), p.coeff (m+1), p.coeff m for any real-rooted p — the honest calculus/Rolle top step for all arities, no sign hypothesis.",
+      "mathContext": "For split p with natDegree = m + 2, derivative^[m] p is a split quadratic; its coefficients are the descFactorial-weighted top three coefficients of p, and discrim >= 0 there is Newton's top log-concavity step.",
+      "relatedConcepts": [
+        "iterated derivative",
+        "coeff_iterate_derivative",
+        "descFactorial weights",
+        "top Newton step"
+      ]
+    },
+    {
+      "id": "part-viii-bottom-step",
+      "title": "Part VIII: the general-n BOTTOM Newton step via a single reversal",
+      "startLine": 587,
+      "endLine": 696,
+      "summary": "Reaches the steps Parts III/VII cannot: reversing p reads its coefficients bottom-up, so applying the top-step engine to reverse p yields Newton's discriminant inequality on p's three BOTTOM coefficients (for the monic splitting polynomial, the classical bottom step e_{n-1}^2 >= e_{n-2} e_n). The infrastructure Mathlib lacks is that reversal preserves splitting: splits_reverse_linear (reverse (X - C a) has degree <= 1 with invertible leading coefficient), splits_reverse_prod (reverse distributes over products in a domain), and splits_reverse (a real-rooted polynomial has a real-rooted reversal, from splits_iff_exists_multiset + reverse_mul_of_domain). discrim_reverse_bottom then gives the bottom-coefficient discriminant inequality; newton_bottom_coeff_ineq states it. Needs only p.coeff 0 != 0 (nonzero constant term).",
+      "mathContext": "reverse p has coefficient revAt-mirrored from p; if p splits so does reverse p, and applying the top-step engine to reverse p reads p's bottom window coeff 0, coeff 1, coeff 2.",
+      "relatedConcepts": [
+        "polynomial reversal",
+        "reverse_mul_of_domain",
+        "bottom Newton step",
+        "reciprocal polynomial"
+      ]
+    },
+    {
+      "id": "part-iii-normalized",
+      "title": "Part III in explicit normalized (p) form",
+      "startLine": 697,
+      "endLine": 728,
+      "summary": "newton_first_general_normalized restates the general first Newton inequality in genuine normalized Maclaurin-mean shape p_0 . p_2 <= p_1^2, with p_0 = 1, p_1 = e_1 / n, and p_2 = e_2 / binom n 2, for every arity n >= 2 and all signed reals. It is newton_first_general (2 n . e_2 <= (n-1) . e_1^2) divided down by the binomial normalizations, matching the p-form used by newton_two_vars_normalized and newton_three_normalized.",
+      "mathContext": "p_1^2 - p_0 p_2 = (e_1/n)^2 - e_2/binom(n,2) >= 0 is the cleared-denominator inequality 2 n e_2 <= (n-1) e_1^2 rescaled to the Maclaurin means.",
+      "relatedConcepts": [
+        "Maclaurin means",
+        "normalized Newton inequality",
+        "elementary symmetric functions",
+        "binomial normalization"
+      ]
+    },
+    {
+      "id": "vieta-top-closure",
+      "title": "Vieta closure of the TOP step: coefficients to esymm of the roots",
+      "startLine": 729,
+      "endLine": 843,
+      "summary": "Turns the coefficient inequality of Part VII into a symmetric-function inequality in the roots. Using Mathlib's coeff_eq_esymm_roots_of_splits (Vieta: p.coeff k = leadingCoeff . (-1)^{n-k} . e_{n-k}(roots)), newton_top_esymm_roots reads the top three coefficients of a split degree-(m+2) polynomial as lc, -lc . e_1, lc . e_2 and substitutes into newton_top_coeff_ineq, giving a discriminant inequality in e_1 = roots.esymm 1, e_2 = roots.esymm 2 with descFactorial weights. newton_top_esymm_roots_monic collapses those weights (Nat.succ_descFactorial) to the classical constants: 2(m+2) . e_2 <= (m+1) . e_1^2, the first Newton/Maclaurin inequality for n = m+2 — now the END PRODUCT of the genuine Rolle/discriminant engine (the same inequality Part III obtained independently by QM-AM). Closes the top-step coefficient-bookkeeping gap.",
+      "mathContext": "Vieta: for split p, coeff (natDegree - k) = leadingCoeff . (-1)^k . e_k(roots). Substituting the top three coefficients turns newton_top_coeff_ineq into 2(m+2) e_2 <= (m+1) e_1^2 in the monic case.",
+      "relatedConcepts": [
+        "Vieta's formulas",
+        "coeff_eq_esymm_roots_of_splits",
+        "elementary symmetric polynomial",
+        "Maclaurin's inequality"
+      ]
+    },
+    {
+      "id": "part-ix-interior-step",
+      "title": "Part IX: the general-n INTERIOR Newton step — an arbitrary window",
+      "startLine": 844,
+      "endLine": 960,
+      "summary": "Closes every remaining step of the classical calculus proof by composing the two engine atoms. For any window j with j + 2 <= natDegree p: differentiate p exactly j times (Part V: derivative^[j] p still splits, and coeff_iterate_derivative makes its three bottom coefficients the descFactorial-weighted p.coeff j, p.coeff (j+1), p.coeff (j+2)), then reverse (Part VIII: reversal preserves splitting and turns that bottom window into the top window of a genuine quadratic) and read the discriminant with discrim_iterate_derivative_top. discrim_reverse_interior gives the nonnegative-discriminant inequality on p.coeff j, p.coeff (j+1), p.coeff (j+2); newton_interior_coeff_ineq states it. The j = 0 case is discrim_reverse_bottom; general j is Newton's log-concavity on an arbitrary consecutive-coefficient window of any real-rooted polynomial. Side hypothesis p.coeff j != 0 (automatic for the monic splitting polynomial with nonzero roots, where every coeff is +/- e_k).",
+      "mathContext": "Interior window (j, j+1, j+2) = top window of reverse (derivative^[j] p), a split quadratic; its discriminant is Newton's step e_k^2 >= e_{k-1} e_{k+1} at the corresponding index.",
+      "relatedConcepts": [
+        "interior Newton step",
+        "coeff_iterate_derivative",
+        "coeff_reverse / revAt",
+        "log-concavity of coefficients"
+      ]
     }
   ],
   "crossReferences": [
