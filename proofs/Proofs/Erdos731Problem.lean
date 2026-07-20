@@ -127,12 +127,6 @@ theorem least_nondiv_counterexample : ¬Nat.Prime 4 ∧ centralBinom 2 = 6 := by
 
 /- ## Bounds -/
 
-/-- Lower bound: for any P, there exists a density threshold.
-    Placeholder: the actual density claim requires measure theory. -/
-theorem lower_bound_most_n :
-    ∀ (P : ℕ), ∃ (D : ℕ), D > 0 ∧ True :=
-  fun _ => ⟨1, by omega, trivial⟩
-
 /-- C(N, k) divides lcm(1, ..., N) for k ≤ N.
     Proof: For each prime p, v_p(C(N,k)) ≤ log_p(N) = v_p(lcm(1,...,N)).
     The key steps are:
