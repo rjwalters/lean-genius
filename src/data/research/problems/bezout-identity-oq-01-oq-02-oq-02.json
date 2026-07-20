@@ -29,12 +29,12 @@
     "goal": "Formalize in Lean 4 over Mathlib that every primitive v ∈ ℤⁿ admits U ∈ SLₙ(ℤ) with U·v = e_1, via an explicit recursion that reduces the n-coordinate case to the parent's 2-coordinate bezoutMatrix, machine-verified with no new axioms."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-07-09T16:43:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Capstone build fix lands via #39180 (corroborated). After it merges, the family (base + descent + capstone + coprime/basis bridges) is fully v4.31-machine-verified in both directions. No material math remaining; file family at TERMINUS.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED core + sharpness: SLn(Z) transitivity on primitive vectors proved (n>=2), 1<n hypothesis machine-checked sharp (SL1 trivial, two orbits {e0},{-e0}), and the obstruction identified as exactly the determinant sign (GL1 reflection !![-1] merges the orbits: sl_one_equiv_iff_eq + exists_unimodular_mulVec_neg_single_fin_one). All axiom-free.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-19): the transitivity capstone Transitive.lean was never machine-verified before (docker down every prior session) and does NOT compile on the pre-#39180 main under v4.31, so the earlier SOLVED-axiom-free claim was aspirational for the capstone. This session independently reproduced the diagnosis (3 v4.31 Fin-reduction/coercion drift sites: Fin.addCases split of 2+(m+1), cons_gcdForm index bookkeeping, headBlockNSL dimension inference) and confirmed the sibling fix PRs #39180/#39183 compile clean under v4.31 (docker + host, foundational axioms only). Contributed the gallery meta: registered Descent+Transitive as additionalFiles and fixed stale meta.meta counts (563->739 / 25->37). Net: capstone is now genuinely verifiable under v4.31 and the fix is in flight via #39180.",
     "builtItems": [
       "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
       "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
@@ -74,7 +74,11 @@
       "isPrimitive_primitivePart / content_smul_primitivePart (BezoutIdentityOQ01OQ02OQ02Basis.lean): primitive part p=(vᵢ/gcd) of nonzero v is primitive and v = gcd•p",
       "smul_primitivePart_mem_span_iff_content_dvd (Basis.lean): SHARP — c•p ∈ ℤ·v ↔ content∣c, i.e. [p] has exact additive order = content in ℤⁿ/(ℤ·v)",
       "primitivePart_mem_span_iff_isPrimitive + exists_torsion_of_not_isPrimitive (Basis.lean): p∈ℤ·v ↔ v primitive; for non-primitive v, [p] is the explicit nonzero content-torsion element (d•[p]=0, [p]≠0)",
-      "sl_one_equiv_iff_eq (SL1(Z)-orbits are singletons: SL1-equivalent iff equal) + exists_unimodular_mulVec_neg_single_fin_one (the reflection !![-1], det=-1 unit, carries -e0 to e0): the n=1 transitivity failure is EXACTLY the det=1 sign constraint — enlarging SL1 to GL1 merges the two orbits. BezoutIdentityOQ01OQ02OQ02.lean, axiom-free."
+      "sl_one_equiv_iff_eq (SL1(Z)-orbits are singletons: SL1-equivalent iff equal) + exists_unimodular_mulVec_neg_single_fin_one (the reflection !![-1], det=-1 unit, carries -e0 to e0): the n=1 transitivity failure is EXACTLY the det=1 sign constraint — enlarging SL1 to GL1 merges the two orbits. BezoutIdentityOQ01OQ02OQ02.lean, axiom-free.",
+      "REPAIRED BezoutIdentityOQ01OQ02OQ02Transitive.lean for v4.31: pinned Fin.addCases (m:=2)(n:=m+1) split; added gcdForm_apply_pos helper (gcd-normal form vanishes off coordinate 0); rewrote cons_gcdForm right block via a Fin ((2+m)+1)-ascribed succ equation + Fin.cons_succ (avoids the v4.31 index re-elaboration failure); pinned headBlockNSL (m:=m+1) in reduce_to_gcd. Docker build + host lake env lean both exit 0, 0 warnings. sln_transitive/sln_acts_transitive/reduce_to_gcd/cons_gcdForm all #print axioms = [propext, Classical.choice, Quot.sound].",
+      "Registered Descent.lean + Transitive.lean as additionalFiles in gallery meta bezout-identity-oq-01-oq-02-oq-02; fixed stale meta.meta counts (lineCount 563->739, theoremCount 25->37 matching the primary leanFile).",
+      "Independently verified the SLn(Z)-transitivity capstone (BezoutIdentityOQ01OQ02OQ02Transitive.lean) compiles CLEAN under v4.31 via docker-build.sh (exit 0) + host lake env lean against fresh v4.31 dep oleans; sln_transitive/sln_acts_transitive/reduce_to_gcd/cons_gcdForm all #print axioms = [propext, Classical.choice, Quot.sound]. The build fix lands via sibling PR #39180 (also corroborated #39183). Base file + Descent + Basis/Coprime/Invariant/Reduction were already v4.31-clean; only the capstone had drift.",
+      "Gallery meta bezout-identity-oq-01-oq-02-oq-02: registered Descent.lean + Transitive.lean as additionalFiles; fixed stale meta.meta counts (lineCount 563->739, theoremCount 25->37) to match the primary leanFile (per erdos-877 primary-file-count convention)."
     ],
     "insights": [
       "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
@@ -98,7 +102,8 @@
       "Freeness is the exact locus of primitivity: IsPrimitive.free_quotient — for PRIMITIVE v the quotient ℤⁿ/ℤ·v is Module.Free ℤ, since it is Module.Finite (quotient of finite) and torsion-free (NoZeroSMulDivisors via isPrimitive_iff_noZeroSMulDivisors_quotient), firing the PID structure instance Module.free_of_finite_type_torsion_free. Non-primitive nonzero v: same finrank n-1 but has torsion, NOT free.",
       "Capstone IsPrimitive.quotientEquiv_fin: for primitive v, ℤⁿ/(ℤ·v) ≃ₗ[ℤ] ℤ^(n-1), built from free+finrank via Module.finBasisOfFinrankEq ℤ _ hrank |>.equivFun — the coordinate-free numerical face of unimodular completion.",
       "Sharp boundary of isPrimitive_iff_noZeroSMulDivisors_quotient: the torsion of ℤⁿ/(ℤ·v) for non-primitive nonzero v is CYCLIC ℤ/(content), generated by the primitive-part class [v/gcd], degenerating to 0 exactly at content=1. Quantifies non-primitivity by an explicit torsion witness of exact order = content.",
-      "Proof engine: v=d•p with p primitive⟹p≠0; smul_left_injective cancels p in c•p=(k·d)•p to force c=k·d; primitivity of p via gcd criterion (d·e ∣ gcd(v)=d ⟹ e unit). No Smith-normal-form / structure theorem needed — all elementary, 0-axiom."
+      "Proof engine: v=d•p with p primitive⟹p≠0; smul_left_injective cancels p in c•p=(k·d)•p to force c=k·d; primitivity of p via gcd criterion (d·e ∣ gcd(v)=d ⟹ e unit). No Smith-normal-form / structure theorem needed — all elementary, 0-axiom.",
+      "v4.31 FINDING: the transitivity CAPSTONE (BezoutIdentityOQ01OQ02OQ02Transitive.lean) was NEVER machine-verified before — every prior session marked BUILD UNVERIFIED because docker was down — and it did NOT compile under v4.31 (Lean/Mathlib migration). Two root causes: (1) Fin.addCases on Fin (2+(m+1)) now splits as ((2+m),1) not (2,(m+1)) because Nat.add recurses on the right (2+(m+1) reduces to (2+m)+1), breaking cons_gcdForm; (2) coercion/typeclass no longer infers headBlockNSL's dimension implicit. Base file + Descent + Basis/Coprime/Invariant/Reduction were already v4.31-clean; only the capstone had drift."
     ],
     "mathlibGaps": [
       "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",

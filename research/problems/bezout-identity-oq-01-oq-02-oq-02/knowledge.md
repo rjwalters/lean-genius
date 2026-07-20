@@ -128,3 +128,51 @@ Mathematical content is now COMPLETE both directions: necessity (`orbit_e_isPrim
 NB: gallery meta tracks only the base file `BezoutIdentityOQ01OQ02OQ02.lean` with `additionalFiles: []`,
 so `Transitive.lean`/`Descent.lean` (incl. this capstone) are not yet surfaced in the gallery —
 a registration task for enricher/mechanic once a clean build is available.
+
+## Session 2026-07-19 (researcher-1) — CAPSTONE REPAIRED + machine-verified under v4.31 (was never built)
+
+Every prior OQ01OQ02OQ02 session marked the transitivity capstone BUILD: UNVERIFIED because
+docker was down, and the tracker claimed "SOLVED core + sharpness ... All axiom-free". This
+session finally build-verified the family under the v4.31 toolchain and discovered the
+**capstone did not actually compile** — the SOLVED-axiom-free claim was aspirational for
+`BezoutIdentityOQ01OQ02OQ02Transitive.lean` (the base file and the other companions WERE clean).
+
+**Three v4.31 drift sites fixed in Transitive.lean:**
+1. `cons_gcdForm`: `Fin.addCases` on `Fin (2+(m+1))` now splits as `((2+m),1)` instead of
+   `(2,(m+1))` — because `Nat.add` recurses on the right, `2+(m+1)` reduces to `(2+m)+1`.
+   Fixed by pinning `Fin.addCases (m := 2) (n := m + 1)`.
+2. `cons_gcdForm` right block: the old `Fin.natAdd 2 j = (Fin.natAdd 1 j).succ` restatement
+   is ill-typed under v4.31 (`(Fin.natAdd 1 j).succ : Fin (1+(m+1)+1)` ≠ `Fin (2+(m+1))`), and
+   even a corrected `show`/`have` fails because re-elaborating `Fin.natAdd 2 j` in the addCases
+   branch mis-splits. Fixed with a new helper `gcdForm_apply_pos` (gcd-normal form is 0 off
+   coordinate 0) + a `have key : (Fin.natAdd 2 j : Fin ((2+m)+1)) = Fin.succ ⟨1+j.val,_⟩`
+   ascribed to the ambient's reduced form `(2+m)+1` (NOT `2+(m+1)`), then `Fin.cons_succ`.
+3. `reduce_to_gcd`: `headBlockNSL N` coercion no longer infers the dimension implicit; pinned
+   `headBlockNSL (m := m + 1) N` at the coe site and in the `SL·SL` product.
+Also cleaned a pre-existing unused `simp [h]` in `sl2_gcd_reduction`.
+
+**Verification:** Docker build (`docker-build.sh Proofs.BezoutIdentityOQ01OQ02OQ02Transitive`)
+exit 0, 0 warnings; independent host `lake env lean` against fresh v4.31 dep oleans also clean.
+`#print axioms` on `sln_transitive`, `sln_acts_transitive`, `reduce_to_gcd`, `cons_gcdForm` =
+`[propext, Classical.choice, Quot.sound]`. Companions Basis/Coprime/Invariant/Reduction were
+already v4.31-clean (they import only the base file).
+
+**Gallery:** registered `Descent.lean` (descent engine / converse) + `Transitive.lean` (capstone)
+as `additionalFiles` in `src/data/proofs/bezout-identity-oq-01-oq-02-oq-02/meta.json`, and fixed
+stale `meta.meta` counts (lineCount 563→739, theoremCount 25→37) to match the primary leanFile
+(erdos-877 convention: meta counts track the primary file, additionalFiles listed separately).
+
+★v4.31 host-iteration recipe (fast, no docker): build dep oleans from the WORKTREE proofs dir
+(`cd worktree/proofs; LEAN_PATH=$MAIN_BASEPATH lean -o /tmp/scratch/Proofs/X.olean Proofs/X.lean`),
+then verify importers with `LEAN_PATH=/tmp/scratch:$MAIN_BASEPATH` so fresh oleans SHADOW main's
+stale pre-v4.31 Proofs/*.olean (which throw 'incompatible header'). `-o` requires the input under
+cwd root, hence running from the worktree proofs dir.
+
+> **Collision note (researcher-1, 2026-07-19):** two sibling PRs already carry an equivalent
+> v4.31 fix for Transitive.lean — **#39180** (Research, warning-free) and **#39183** (Fix/#39077).
+> Both were independently verified clean under v4.31 this session (docker + host). To avoid an
+> add/add conflict on Transitive.lean, THIS session's PR does **not** commit the proof fix — it
+> defers the build fix to #39180 and contributes only the gallery meta (additionalFiles + stale
+> count correction). The drift diagnosis above stands as an independent reproduction and is what
+> #39180/#39183 resolve. LESSON: run `gh pr list --author @me --search <file>` BEFORE starting
+> repair work on a #39077 / v4.31-drift file, not just at the pre-PR supersession check.
