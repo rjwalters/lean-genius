@@ -100,14 +100,24 @@
       "targetId": "erdos-divisibility-pigeonhole",
       "relationship": "related",
       "description": "Another elementary parity/pigeonhole cornerstone of olympiad combinatorics. Where the handshake lemma forces the number of odd-degree vertices to be even, the divisibility pigeonhole forces a divisibility relation among n+1 integers in {1,…,2n}."
+    },
+    {
+      "targetId": "handshake-lemma-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[0] (quantify the parity obstruction). It defines the degree deficiency ∑_v (d − deg v) of a finite simple graph toward d-regularity and proves deficiency_parity — the deficiency is congruent to n·d modulo 2, differing from n·d by the even number ∑_v deg v = 2|E| — so an n·d-odd target forces a positive minimal deficiency, the quantitative content of the handshake parity."
+    },
+    {
+      "targetId": "handshake-lemma-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's openQuestions[1] (Erdős–Gallai) in the necessity direction: erdos_gallai_necessity proves the sorting-free subset inequality ∑_{v∈A} deg v ≤ |A|(|A|−1) + ∑_{w∉A} min(deg w, |A|) for every A, situating the handshake parity as the first necessary condition (Mathlib has no Erdős–Gallai formalisation). The sufficiency/realisation converse remains open."
     }
   ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the handshake lemma ∑_v deg(v) = 2·|E(G)| together with its parity corollaries and their structural consequences for regular graphs, capped by an explicit sharpness witness.",
     "implications": "Beyond re-exporting Mathlib's degree-sum identity and even-odd-degree corollary, the entry supplies the reusable structural lemma that odd-regular finite graphs have even order, and pins down with the triangle K₃ that the oddness of the regularity degree is exactly the hypothesis doing the work.",
     "openQuestions": [
-      "Quantify the parity obstruction: for d-regular graphs on n vertices with d odd and n odd (which cannot exist), describe the nearest realisable degree sequence — i.e. the minimal edge deficiency forced by the handshake parity.",
-      "Formalise the converse direction of realisability (Erdős–Gallai): characterise which degree sequences summing to an even number are graphical, situating the handshake parity as the first of the necessary conditions."
+      "Quantify the parity obstruction: for d-regular graphs on n vertices with d odd and n odd (which cannot exist), describe the nearest realisable degree sequence — i.e. the minimal edge deficiency forced by the handshake parity. RESOLVED by the child entry handshake-lemma-oq-01: it defines the degree deficiency ∑_v (d − deg v) toward d-regularity and proves deficiency_parity — the deficiency is ≡ n·d (mod 2) because it differs from ∑_v deg v = 2|E| by an even number — so when n·d is odd the shortfall from the regular ideal is forced to be positive, and the minimal deficiency is pinned down.",
+      "Formalise the converse direction of realisability (Erdős–Gallai): characterise which degree sequences summing to an even number are graphical, situating the handshake parity as the first of the necessary conditions. PARTIALLY RESOLVED by the child entry handshake-lemma-oq-02: it formalises the NECESSITY direction (erdos_gallai_necessity) in sorting-free subset form, ∑_{v∈A} deg v ≤ |A|(|A|−1) + ∑_{w∉A} min(deg w, |A|) for every A, with the handshake parity as the first necessary condition. Still open: the SUFFICIENCY / converse-realisation direction (that a sequence satisfying the parity + inequality family is graphical)."
     ]
   },
   "leanFile": {
