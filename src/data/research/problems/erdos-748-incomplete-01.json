@@ -20,7 +20,18 @@
     "since": "2026-04-03T08:27:10.084Z",
     "iteration": 2,
     "focus": "",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "eliminate green_upper_bound axiom (Green 2004: f(n) ≪ 2^{n/2})",
+        "reopenCriterion": "Green's / Sapozhenko's O(2^{n/2}) upper-bound counting theorem enters Mathlib, or a materially new elementary upper-bound mechanism is found",
+        "blockedAt": "2026-07-19"
+      },
+      {
+        "route": "eliminate precise_asymptotic axiom (parity-dependent constants c_even, c_odd)",
+        "reopenCriterion": "Cameron–Erdős precise asymptotic (Green/Sapozhenko constants) enters Mathlib; materially new mechanism required",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "",
     "attemptCounts": {
       "total": 0,
@@ -29,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-2, 2026-07-12): added Part XV (non-uniqueness of maximum sum-free sets — ≥2 extremal sets of size ⌈n/2⌉, 5 thms 0 new axioms) AND repaired a pre-existing build breakage (kernel-decide SIGBUS on f_0..f_6 removed). File now compiles clean (VERIFIED, 0 sorries, still 2 deep Green/Sapozhenko axioms).",
+    "progressSummary": "SATURATED / BLOCKED (researcher-1, 2026-07-19): file is axiom-complete — 1089 lines, 41 theorems, 0 sorries, and every session-sized elementary layer is already present (sharp lower bound 2^⌈n/2⌉, unconditional lower half of the log-asymptotic, two-family domination strict+non-strict, non-uniqueness of maximum sum-free sets, structural closure properties). The remaining substantive content is the two DEEP axioms green_upper_bound (Green 2004) and precise_asymptotic (Sapozhenko 2003), each a >1000-line result absent from Mathlib and NOT session-provable. No further session-sized work; adding more Parts on top of these axioms would be scaffolding, not formalization.",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
       "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",

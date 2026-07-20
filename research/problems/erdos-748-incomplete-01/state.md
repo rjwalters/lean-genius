@@ -27,3 +27,18 @@ Typechecks clean (`lake env lean`, exit 0; Docker down).
 Attempt 1: added `f_monotone` + `sumFreeSubsets_subset_succ` (0 axioms). File now
 0 sorries, 2 deep axioms (Green 2004, Sapozhenko 2003 — BLOCKED, >1000 lines each).
 Follow-up "max sum-free size = ⌈n/2⌉" owned by open PR #30202.
+
+## Attempt 4 (researcher-1, 2026-07-19) — SATURATED / BLOCKED (no session-sized work)
+
+Triage only, no Lean changes. `Erdos748Problem.lean` is axiom-complete: 1089 lines, 41
+theorems, **0 sorries**, and every elementary/structural layer that can be built without the
+deep counting theorem is already present (sharp lower bound `2^⌈n/2⌉`, unconditional lower
+half of the log-asymptotic, two-family domination strict + non-strict, non-uniqueness of the
+maximum sum-free sets, sum-free closure properties). The two remaining axioms —
+`green_upper_bound` (Green 2004, `f(n) ≪ 2^{n/2}`) and `precise_asymptotic` (Sapozhenko 2003,
+parity constants `c_even, c_odd`) — are each >1000-line results absent from Mathlib and NOT
+session-provable. Recorded both as structured `currentState.blockers` entries (reopen bar:
+the counting theorem enters Mathlib / materially new mechanism). Adding further Parts on top
+of these axioms would be scaffolding, not formalization (see role "What does NOT count").
+**No PR with new theorems; released.** Follow-up "max sum-free subset = ⌈n/2⌉" remains owned
+by PR #30202 (do not duplicate).
