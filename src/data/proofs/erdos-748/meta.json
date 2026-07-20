@@ -88,76 +88,108 @@
   },
   "sections": [
     {
-      "id": "sum-free-definition",
-      "title": "Sum-Free Sets",
-      "summary": "Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`.",
-      "startLine": 46,
-      "endLine": 72,
-      "mathContext": "Formal definition: Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`."
+      "id": "header",
+      "title": "Overview — Erdős #748: The Cameron–Erdős Conjecture",
+      "summary": "Module docstring and imports. States Erdős #748 (SOLVED): the number f(n) of sum-free subsets of {1,…,n} satisfies f(n) = 2^{(1/2+o(1))n}, proved independently by Green (2004) and Sapozhenko (2003). Imports Finset, powerset, and Real.log.",
+      "startLine": 1,
+      "endLine": 44,
+      "mathContext": "**Erdős #748 (Cameron–Erdős).** The count $f(n)$ of sum-free subsets of $\\{1,\\dots,n\\}$ grows like $2^{(1/2 + o(1))n}$ — i.e. $\\log_2 f(n) \\sim n/2$. The dominant contribution comes from subsets of the upper half $(n/2, n]$ and subsets of the odd numbers, each giving $\\sim 2^{n/2}$."
     },
     {
-      "id": "counting",
-      "title": "Counting Sum-Free Sets",
-      "summary": "Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865).",
-      "startLine": 74,
-      "endLine": 89,
-      "mathContext": "Formal definition: Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865)."
+      "id": "part-i-sum-free-def",
+      "title": "Part I — Sum-Free Sets",
+      "summary": "IsSumFree A (no a = b + c with a,b,c ∈ A), an alternative formulation IsSumFree', and their proved equivalence sumFree_iff.",
+      "startLine": 45,
+      "endLine": 81,
+      "mathContext": "A set $A$ is *sum-free* if $\\forall a,b,c \\in A,\\ a \\ne b + c$ — it contains no solution to $x + y = z$. The two formalizations (`IsSumFree`, `IsSumFree'`) are proved equivalent."
     },
     {
-      "id": "lower-bound",
-      "title": "Trivial Lower Bound",
-      "summary": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge 2^{n/2}$.",
-      "startLine": 91,
-      "endLine": 114,
-      "mathContext": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge $$2^{{n/2}$}$$."
+      "id": "part-ii-counting",
+      "title": "Part II — Counting Sum-Free Sets",
+      "summary": "sumFreeSubsets n (the sum-free subsets of {1,…,n}, as a filtered power set) and the counting function f n = |sumFreeSubsets n| — the sequence OEIS A007865.",
+      "startLine": 82,
+      "endLine": 98,
+      "mathContext": "$f(n) = |\\{A \\subseteq \\{1,\\dots,n\\} : A \\text{ sum-free}\\}|$ counts sum-free subsets; this is OEIS A007865. The Cameron–Erdős problem is the asymptotics of $f(n)$."
     },
     {
-      "id": "conjecture",
-      "title": "The Cameron-Erdős Conjecture",
-      "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
-      "startLine": 116,
-      "endLine": 130,
-      "mathContext": "Formal definition: Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$."
+      "id": "part-iii-lower-bound",
+      "title": "Part III — Lower Bounds (proved)",
+      "summary": "The machine-checked lower bounds (no axioms here). upperHalf_sumFree shows every subset of (n/2, n] is sum-free (any two elements sum past n), giving trivial_lower_bound f(n) ≥ 2^{n/2} and the sharper sharp_lower_bound. Plus the monotonicity/growth toolkit: sumFreeSubsets_subset_succ, f_monotone, f_strictMono, f_injective, f_lt_succ, and f_unbounded.",
+      "startLine": 99,
+      "endLine": 273,
+      "mathContext": "Every subset of the upper half $(n/2, n]$ is sum-free (the sum of any two elements exceeds $n$), so $f(n) \\ge 2^{\\lfloor n/2\\rfloor}$ — the elementary lower half of the asymptotic, fully proved. $f$ is strictly increasing and unbounded."
     },
     {
-      "id": "solution",
-      "title": "The Solution",
-      "summary": "Axiomatizes Green's $f(n) \\le C \\cdot 2^{n/2}$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot 2^{n/2}$ with parity-dependent constants. Proves `cameron_erdos_proved`.",
-      "startLine": 132,
-      "endLine": 217,
-      "mathContext": "Axiomatizes Green's $f(n) \\le C \\cdot $$2^{{n/2}$}$$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot $$2^{{n/2}$}$$ with parity-dependent constants. Proves `cameron_erdos_proved`."
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "summary": "Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd).",
-      "startLine": 219,
-      "endLine": 254,
-      "mathContext": "Verified: Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd)."
-    },
-    {
-      "id": "structure",
-      "title": "Structure of Sum-Free Sets",
-      "summary": "Informal docstring commentary on the two dominant types of sum-free sets (subsets of $[n/2+1, n]$ and subsets of odd numbers) and the Schur connection (maximum sum-free subset of $[1,n]$ has size $\\lceil n/2 \\rceil$). No axioms or theorems are declared in this section.",
-      "startLine": 256,
-      "endLine": 272,
-      "mathContext": "Commentary only: Two dominant types of sum-free sets — subsets of the upper half $[n/2+1, n]$ (type 1) and subsets of odd numbers (type 2) — account for essentially all sum-free sets. Schur connection: maximum size of a sum-free subset of $[1,n]$ is $\\lceil n/2 \\rceil$."
-    },
-    {
-      "id": "oeis",
-      "title": "OEIS A007865",
-      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by kernel `decide`, matching OEIS A007865. These are fully kernel-checked results (no `native_decide`, so no `Lean.ofReduceBool` dependency), not axioms.",
+      "id": "part-iv-cameron-erdos",
+      "title": "Part IV — The Cameron–Erdős Conjecture",
+      "summary": "The definition cameronErdosConjecture stating the asymptotic target: ∀ ε > 0, eventually (1−ε)n/2 ≤ log₂ f(n) ≤ (1+ε)n/2, i.e. log₂ f(n) ~ n/2.",
       "startLine": 274,
       "endLine": 289,
-      "mathContext": "Verified by kernel `decide` (axiom-free): $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. The `decidableIsSumFree` instance reduces sum-freeness to a bounded $\\forall \\in A$ decision, so these small values compute in the kernel without `native_decide`. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
+      "mathContext": "The conjecture: $\\log_2 f(n) = \\left(\\tfrac12 + o(1)\\right)n$. The lower half $\\ge n/2$ is elementary (Part III); the matching upper half — that the two 'obvious' families essentially exhaust all sum-free sets — is the deep content."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$.",
-      "startLine": 291,
-      "endLine": 325,
-      "mathContext": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$."
+      "id": "part-v-solution",
+      "title": "Part V — The Solution (Green / Sapozhenko)",
+      "summary": "The two external inputs and the assembled theorem. axiom green_upper_bound records Green's matching upper bound f(n) ≤ C·2^{n/2}; axiom precise_asymptotic records the refined f(n) ~ c_n·2^{n/2} with parity-dependent constants; cameron_erdos_proved then proves cameronErdosConjecture from them.",
+      "startLine": 290,
+      "endLine": 376,
+      "mathContext": "**Axioms green_upper_bound / precise_asymptotic** (Green 2004, Sapozhenko 2003): the deep upper bound $f(n) \\le C\\,2^{n/2}$ and the precise $f(n) \\sim c_n\\,2^{n/2}$ (with $c_n$ depending on $n \\bmod 2$). These are the only two assumptions; combined with the proved lower bound they give the full $\\log_2 f(n) \\sim n/2$."
+    },
+    {
+      "id": "part-vi-examples",
+      "title": "Part VI — Examples and the Two-Family Bound",
+      "summary": "Concrete sum-free families and a stronger explicit lower bound. empty_sumFree, singleton_sumFree, oddNumbers_sumFree (odd + odd is even), and sumFree_of_subset. The two_family_lower_bound counts the union of the upper-half and odd-number families (with two_family_bound_ge/gt_upperHalf and _ge/gt_oddFamily comparing them), and oddFamily_lower_bound / oddNumbers_card / oddFamily_lower_bound_ceil give f(n) ≥ 2^{⌈(n+1)/2⌉}.",
+      "startLine": 377,
+      "endLine": 661,
+      "mathContext": "The odd numbers in $[1,n]$ form a sum-free set of size $\\lceil n/2\\rceil$ (odd + odd = even), giving $f(n) \\ge 2^{\\lceil (n+1)/2\\rceil}$. Combining the upper-half and odd families sharpens the elementary lower bound while staying axiom-free."
+    },
+    {
+      "id": "part-vii-structure",
+      "title": "Part VII — Structure of Sum-Free Sets (maximum size = ⌈n/2⌉)",
+      "summary": "The extremal structure. exists_sumFree_card_ceil and sumFree_card_le_ceil bracket the maximum sum-free subset size, yielding max_sumFree_card_eq_ceil: the largest sum-free subset of {1,…,n} has cardinality exactly ⌈n/2⌉. Plus sumFreeSubsets_mono and f_mono.",
+      "startLine": 662,
+      "endLine": 803,
+      "mathContext": "The maximum size of a sum-free subset of $[1,n]$ is $\\lceil n/2\\rceil$ (attained by the odd numbers or the upper half) — a Schur-type extremal fact, here fully proved, underpinning why $\\log_2 f(n) \\approx n/2$."
+    },
+    {
+      "id": "part-viii-oeis",
+      "title": "Part VIII — OEIS A007865",
+      "summary": "Documents the connection to OEIS A007865 (the sum-free subset counts) and its small values; the counting function f is computable, so small f(n) evaluate directly.",
+      "startLine": 804,
+      "endLine": 827,
+      "mathContext": "The sequence $f(n) = 2, 3, 6, 9, 16, 24, 42, \\dots$ is OEIS A007865 (number of sum-free subsets of $\\{1,\\dots,n\\}$). The decidable sum-free predicate makes small values kernel-computable."
+    },
+    {
+      "id": "part-ix-summary",
+      "title": "Part IX — Summary",
+      "summary": "erdos_748_summary combines the lower bound, Green's upper bound, and the precise asymptotic into the statement that the Cameron–Erdős conjecture f(n) = 2^{(1+o(1))n/2} is TRUE (Green 2004, Sapozhenko 2003).",
+      "startLine": 828,
+      "endLine": 857,
+      "mathContext": "The solved answer: $f(n) = 2^{(1/2 + o(1))n}$, with the precise refinement $f(n) \\sim c_n\\,2^{n/2}$. Packaged as $\\mathrm{erdos\\_748\\_summary}$ from the proved lower bound plus the two Green/Sapozhenko axioms."
+    },
+    {
+      "id": "part-vi-bis-unconditional-lower",
+      "title": "Part VI (bis) — The Unconditional Lower Half of the Log-Asymptotic",
+      "summary": "The lower half of log₂ f(n) ~ n/2 made unconditional (no axioms). logDiv_log_two_f_ge bounds log₂ f(n) below, and cameronErdos_lower_unconditional proves (1−ε)n/2 ≤ log₂ f(n) eventually for every ε > 0 — the half of the conjecture that needs no external input. erdos_748 re-exports the solved conjecture.",
+      "startLine": 858,
+      "endLine": 915,
+      "mathContext": "From the proved $f(n) \\ge 2^{\\lceil n/2\\rceil}$ one gets $\\log_2 f(n) \\ge \\lceil n/2\\rceil \\ge (1-\\varepsilon)n/2$ eventually — the lower bound of the Cameron–Erdős asymptotic holds *unconditionally*; only the matching upper bound rests on the Green/Sapozhenko axioms."
+    },
+    {
+      "id": "part-xiv-closure-properties",
+      "title": "Part XIV — Structural Closure Properties of Sum-Free Sets",
+      "summary": "Closure lemmas for the sum-free predicate. sumFree_of_forall_odd (all-odd ⇒ sum-free), and dilation invariance: sumFree_image_mul (k·A is sum-free when A is, k > 0), card_image_mul (|k·A| = |A|), and sumFree_image_mul_card combining them.",
+      "startLine": 916,
+      "endLine": 984,
+      "mathContext": "Sum-freeness is preserved by positive dilation $A \\mapsto kA$ (scaling cannot create a new relation $ka = kb + kc$ without $a = b + c$) and is implied by all-odd membership. These closures generate many sum-free families from a single one."
+    },
+    {
+      "id": "part-xv-nonuniqueness",
+      "title": "Part XV — Non-Uniqueness of the Maximum Sum-Free Sets",
+      "summary": "The extremal size ⌈n/2⌉ is achieved by more than one family. oddNumbers_mem_sumFreeSubsets and upperHalf_mem_sumFreeSubsets show both canonical families are maximum; oddNumbers_ne_upperHalf (for n ≥ 3) shows they are distinct, giving exists_two_distinct_max_sumFree and two_le_card_max_sumFree — at least two distinct maximum sum-free subsets exist.",
+      "startLine": 985,
+      "endLine": 1089,
+      "mathContext": "For $n \\ge 3$ both the odd numbers and the upper half $(n/2, n]$ are sum-free subsets of size $\\lceil n/2\\rceil$, and they differ — so the maximum sum-free subset is *not unique*. This non-uniqueness is part of why the counting problem is delicate."
     }
   ],
   "conclusion": {
