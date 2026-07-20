@@ -1,3 +1,39 @@
+## Session 2026-07-20 (researcher-1) — capacity CONCAVE in the scalar total power budget
+
+New file `ShannonChannelCodingAWGNOQ03OQ01CapacityBudgetConcave.lean` (namespace
+`ShannonWaterFilling`, imports `...Concave`). VERIFIED clean Docker build (v4.31.0);
+both theorems depend only on `[propext, Classical.choice, Quot.sound]` (0 axioms / 0 sorries,
+confirmed by `#print axioms`).
+
+Fills the last easy gap in the concavity story. Prior files gave concavity in the power
+VECTOR (`parallelRate_concaveOn_power`, `parallelRate_strictConcaveOn_power`), in the
+BANDWIDTH/channel-count (`wideRate_strictConcaveOn`), and scalar-power concavity ONLY in the
+degenerate equal-noise case (`EqualNoise.lean`). Missing was the general-profile macroscopic
+law: the water-filling value function `C(P) = max{R(x) : x≥0, ∑xᵢ≤P}` is CONCAVE in the
+scalar total power `P` — diminishing marginal capacity as the budget grows.
+
+- `capacity_concave_budget` — `a·C(P₁) + b·C(P₂) ≤ C(a·P₁+b·P₂)`, parametrised by three water
+  levels μ₁,μ₂,μ₃ with `g(μ₃)=a·g(μ₁)+b·g(μ₂)` (matches the file's existing water-level
+  parametrisation convention, e.g. `capacity_mono_budget`). Proof: the convex combination
+  `x = a•waterAlloc μ₁ N + b•waterAlloc μ₂ N` is feasible for budget `g(μ₃)` (nonneg;
+  ∑x = a·g(μ₁)+b·g(μ₂) via `Finset.sum_add_distrib`+`Finset.mul_sum`), so `waterfilling_optimal`
+  gives `R(x) ≤ R(waterAlloc μ₃ N)`; `parallelRate_concaveOn_power .2` gives
+  `a·C(P₁)+b·C(P₂) ≤ R(x)`; `linarith` chains. NO envelope theorem needed.
+- `capacity_midpoint_concave_budget` — `a=b=½` corollary: `(C(P₁)+C(P₂))/2 ≤ C((P₁+P₂)/2)`.
+
+### Gotchas
+- Corollary call `capacity_concave_budget N hN hμ₃ (a:=1/2)(b:=1/2) …` left the implicit
+  `{μ₁ μ₂}` unpinned → Lean unified BOTH to μ₃ (hmain collapsed to `½C(μ₃)+½C(μ₃)≤C(μ₃)`),
+  `linarith` failed. Fix: pass `(μ₁ := μ₁) (μ₂ := μ₂)` explicitly.
+- `waterfilling_optimal` needs `0 < μ₃`; taken as an explicit hypothesis (auto-holds whenever
+  the combined budget is positive, via `waterLevel_pos`).
+
+INFRA NOTE: worktree `/Volumes/Stripe/lean-genius/researcher-1` was janitor-reaped mid first
+Docker build (disk 10% — the fresh-no-commit-worktree reap, not disk-full). Recreated via
+`git worktree add <path> <branch>` and committed the .lean file BEFORE rebuilding.
+
+---
+
 ## Session 2026-07-20 (researcher-1) — wideband rate STRICT CONCAVITY in bandwidth (diminishing returns)
 
 New file `ShannonChannelCodingAWGNOQ03OQ01WidebandConcave.lean` (namespace `ShannonWaterFilling`,
