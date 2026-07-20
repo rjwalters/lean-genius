@@ -104,14 +104,14 @@
     },
     "type": "concept",
     "title": "Spanning Set Infrastructure: Sigma-Finite Exhaustion Lemmas",
-    "content": "Two spanning set lemmas support the Vitali convergence argument. mem_spanningSets_eventually proves that for any x, x ∈ S_n for all large enough n (where S_n is the sigma-finite exhaustion). pointwise_mul_indicator_tendsto shows f · 1_{S_n} → f pointwise a.e., using eventually_of_forall and the mem_spanningSets lemma. These are used in Step B (lp_truncation_tendsto_zero), which combines pointwise convergence with Vitali's theorem to get Lp norm convergence. The lemmas are identical to those in the parent entry — fully proved, no sorry. Provenance: mem_spanningSets_eventually (L176) and pointwise_mul_indicator_tendsto (L184) live in the …Incomplete01Infra companion; they feed Step B, which Step A consumes when extending indicator agreement — reached in the assembling file at the localization_existence call on line 36.",
+    "content": "Two spanning set lemmas support the Step B dominated-convergence argument. mem_spanningSets_eventually proves that for any x, x ∈ S_n for all large enough n (where S_n is the sigma-finite exhaustion). pointwise_mul_indicator_tendsto shows f · 1_{S_n} → f pointwise a.e., using eventually_of_forall and the mem_spanningSets lemma. These supply the pointwise a.e. convergence hypothesis consumed by Step B (lp_truncation_tendsto_zero), which upgrades it to Lp-norm convergence via `tendsto_lintegral_of_dominated_convergence'` (dominator ‖f‖^p) — not Vitali's theorem. The lemmas are identical to those in the parent entry — fully proved, no sorry. Provenance: mem_spanningSets_eventually (L176) and pointwise_mul_indicator_tendsto (L184) live in the …Incomplete01Infra companion; they feed Step B, which Step A consumes when extending indicator agreement — reached in the assembling file at the localization_existence call on line 36.",
     "mathContext": "S_n \\nearrow \\Omega \\; \\text{(sigma-finite exhaustion)} \\implies f \\cdot \\mathbf{1}_{S_n} \\to f \\text{ pointwise a.e.}",
     "significance": "supporting",
     "relatedConcepts": [
       "SigmaFinite.spanningSets",
       "mem_spanningSets",
       "pointwise convergence",
-      "Vitali preparation"
+      "dominated convergence preparation"
     ],
     "prerequisites": [
       "MeasureTheory.SigmaFinite API",
@@ -128,7 +128,7 @@
     },
     "type": "concept",
     "title": "Step B (PROVED in Session 2): Lp Truncation via Dominated Convergence",
-    "content": "lp_truncation_tendsto_zero is fully proved (Session 2). The proof uses `tendsto_lintegral_of_dominated_convergence` (NOT Vitali's theorem directly) with dominator |f(a)|^p. The three verification conditions are: (1) AEMeasurable: ‖gₙ‖^p is measurable via subtraction and indicator measurability; (2) Domination: |f(a) - f(a)·1_{Sₙ}(a)|^p ≤ |f(a)|^p by cases on a ∈ Sₙ; (3) Integrability: ∫⁻ |f|^p dμ < ∞ from MemLp. The final step uses `ENNReal.rpow_natCast` to extract the p-th root. The earlier title annotation 'HARD sorry' reflects Session 1 state; this is now a complete proof. Provenance: lp_truncation_tendsto_zero is proved in the …Incomplete01Infra companion (L197); the assembling file invokes it only transitively, via localization_existence (line 36), which uses the truncation convergence to extend indicator agreement from E ⊆ Sₙ to arbitrary finite-measure E.",
+    "content": "lp_truncation_tendsto_zero is fully proved (Session 2). The proof uses `tendsto_lintegral_of_dominated_convergence` (NOT Vitali's theorem directly) with dominator |f(a)|^p. The three verification conditions are: (1) AEMeasurable: ‖gₙ‖^p is measurable via subtraction and indicator measurability; (2) Domination: |f(a) - f(a)·1_{Sₙ}(a)|^p ≤ |f(a)|^p by cases on a ∈ Sₙ; (3) Integrability: ∫⁻ |f|^p dμ < ∞ from MemLp. The final step lifts the inner ∫⁻ ‖·‖^{p.toReal} → 0 limit through the outer (·)^{p.toReal⁻¹} via `Tendsto.ennrpow_const p.toReal⁻¹` (using ENNReal.zero_rpow_of_pos), recovering eLpNorm → 0. The earlier title annotation 'HARD sorry' reflects Session 1 state; this is now a complete proof. Provenance: lp_truncation_tendsto_zero is proved in the …Incomplete01Infra companion (L197); the assembling file invokes it only transitively, via localization_existence (line 36), which uses the truncation convergence to extend indicator agreement from E ⊆ Sₙ to arbitrary finite-measure E.",
     "mathContext": "\\text{For the domination step: } |f(a) - f(a) \\cdot \\mathbf{1}_{S_n}(a)|^p = \\begin{cases} 0 & a \\in S_n \\\\ |f(a)|^p & a \\notin S_n \\end{cases} \\leq |f(a)|^p.",
     "significance": "key",
     "relatedConcepts": [
