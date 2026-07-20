@@ -1,0 +1,96 @@
+{
+  "slug": "erdos-507-wip-01",
+  "title": "Complete the Lean Formalization of Erdős Problem #507 (Heilbronn's Triangle Problem)",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Estimate } \\alpha(n) = \\sup_{|P|=n,\\ P \\subset \\text{unit disk}} \\ \\min_{\\{p,q,r\\} \\subseteq P} \\operatorname{area}(p,q,r).",
+    "plain": "Heilbronn's triangle problem asks for the growth of α(n): the largest value such that some configuration of n points in the unit disk keeps every triangle (over triples of points) of area at least α(n). Equivalently, over all n-point sets one maximizes the minimum triangle area. The trivial bounds are 1/n² ≪ α(n) ≪ 1/n; Komlós–Pintz–Szemerédi improved these to (log n)/n² ≤ α(n) ≤ n^{-8/7}, and Cohen–Pohoata–Zakharov (2024) pushed the upper bound to n^{-7/6-o(1)}. The exponent β with α(n)=n^{-β+o(1)} is only known to satisfy 7/6 ≤ β ≤ 2 — the problem is OPEN. The Lean file Erdos507Problem.lean defines triangleArea, IsInUnitDisk, minTriangleArea and heilbronn but proves nothing; this WIP node formalizes the elementary geometry of the building block triangleArea.",
+    "whyMatters": [
+      "Heilbronn's problem is a flagship open question in discrete/incidence geometry; a clean Lean treatment of the shoelace area and its symmetries seeds reusable planar-geometry infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "triangleArea nonneg; full permutation symmetry (transpositions negate signed area, cyclic rotations fix it) (this session).",
+      "Degenerate (repeated-vertex) triangles vanish; triangleArea=0 ↔ collinear (this session).",
+      "Unit-disk coordinate bounds |p₁|,|p₂| ≤ 1 and uniform area bound triangleArea ≤ 3 (this session)."
+    ],
+    "open": [
+      "The exponent β of α(n)=n^{-β+o(1)}: only 7/6 ≤ β ≤ 2 known.",
+      "Closing the (log n)/n² vs n^{-7/6} gap."
+    ],
+    "goal": "Formalize the elementary geometry of triangleArea / IsInUnitDisk from Mathlib; keep the deep α(n) bounds cleanly isolated as the open target."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-20T12:30:00-07:00",
+    "iteration": 1,
+    "focus": "Axiom-free foundational lemmas on the shoelace triangle area and the unit-disk predicate.",
+    "blockers": [
+      {
+        "route": "the α(n) growth exponent via elementary planar geometry",
+        "reopenCriterion": "materially new mechanism required",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Formalize minTriangleArea/heilbronn structural facts: minTriangleArea P ≤ triangleArea p q r for distinct p,q,r ∈ P (biInf_le over the nested membership binders), minTriangleArea nonneg, and BddAbove of the heilbronn sSup set via triangleArea_le_three.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Proofs/Erdos507WIP01.lean (14 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound]). Established the elementary geometry of the shoelace triangleArea and the IsInUnitDisk predicate: nonnegativity, full permutation symmetry (all 6 orderings, via signed-area alternation), the three degenerate cases, collinearity ⟺ zero area, an explicit value 1/2, unit-disk coordinate bounds |p₁|,|p₂| ≤ 1, and the uniform area bound triangleArea ≤ 3 (so heilbronn's sSup is over a bounded set). The deep α(n) bounds are untouched.",
+    "builtItems": [
+      "triangleArea_nonneg in Erdos507WIP01.lean",
+      "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
+      "triangleArea_self_left / _self_mid / _self_outer (degenerate cases vanish)",
+      "triangleArea_eq_zero_iff (collinearity)",
+      "triangleArea_unit (= 1/2 explicit)",
+      "isInUnitDisk_empty, IsInUnitDisk.subset",
+      "unitDisk_abs_fst_le, unitDisk_abs_snd_le (coordinate bounds)",
+      "triangleArea_le_three (uniform area bound in the unit disk)"
+    ],
+    "insights": [
+      "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
+      "triangleArea_le_three bounds the heilbronn sSup set: every triangle in the unit disk has area ≤ 3, so heilbronn n is finite (its defining set is bounded above) — the first step toward showing heilbronn is well-defined and decreasing.",
+      "The coordinate bound |p_i| ≤ 1 falls out of p₁²+p₂² ≤ 1 by nlinarith [sq_nonneg (p_i ± 1)] with the other coordinate's square dropped as nonneg — no sqrt needed."
+    ],
+    "mathlibGaps": [
+      "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly."
+    ],
+    "nextSteps": [
+      "minTriangleArea P ≤ triangleArea p q r for distinct p,q,r ∈ P (nested biInf_le).",
+      "BddAbove of the heilbronn defining set via triangleArea_le_three; hence heilbronn n ≤ 3.",
+      "minTriangleArea nonneg (handling the empty-binder junk values)."
+    ],
+    "markdown": "# Knowledge Base: erdos-507-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational triangle-area / unit-disk scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos507Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos507WIP01.lean` (14 theorems) on the shoelace area `triangleArea p q r = |p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂)|/2` and the `IsInUnitDisk` predicate:\n- **Nonnegativity**: `triangleArea_nonneg`.\n- **Permutation symmetry**: `triangleArea_swap_left`, `triangleArea_swap_right` (transpositions, via signed-area negation + `abs_neg`), `triangleArea_cyclic` (rotation fixes it).\n- **Degenerate cases**: `triangleArea_self_left / _self_mid / _self_outer` (= 0).\n- **Collinearity**: `triangleArea_eq_zero_iff`.\n- **Explicit value**: `triangleArea_unit` (`(0,0),(1,0),(0,1) ↦ 1/2`).\n- **Unit disk**: `isInUnitDisk_empty`, `IsInUnitDisk.subset`, `unitDisk_abs_fst_le`, `unitDisk_abs_snd_le`, and the uniform bound `triangleArea_le_three`.\n\n### Key findings\n- The signed shoelace form is alternating: transpositions negate, cyclic rotations fix — full `S₃` symmetry after `|·|`.\n- Every unit-disk triangle has area `≤ 3`, so `heilbronn n`'s `sSup` set is bounded above (a step toward finiteness/monotonicity of `heilbronn`).\n\n### Reusable Lean recipe\n- Signed-area alternation: `rw [show <permuted expr> = -(<base expr>) from by ring, abs_neg]`.\n- Coordinate bound from the disk: `nlinarith [sq_nonneg (p.1 - 1), sq_nonneg (p.1 + 1)]` after `have hsq : p.1^2 ≤ 1 := by nlinarith [sq_nonneg p.2]`.\n- Three-term abs bound: `abs_add_le` twice (note `abs_add` was renamed to `abs_add_le` in this pin) + `gcongr`, each summand `≤ 2` via `mul_le_mul` on `|a|·|b−c| ≤ 1·2`.\n- v4.31 renames hit this session: `abs_add → abs_add_le`, `Finset.not_mem_empty → Finset.notMem_empty`.\n\n### Next steps\n- `minTriangleArea P ≤ triangleArea p q r` (nested membership `biInf_le`).\n- `heilbronn n ≤ 3` via `BddAbove` of the defining set.\n\n### Still open (unchanged)\nThe growth exponent of `α(n)` — deep; only `7/6 ≤ β ≤ 2` known (KPS, Cohen–Pohoata–Zakharov).\n"
+  },
+  "tags": [
+    "erdos",
+    "discrete-geometry",
+    "incidence-geometry",
+    "extremal-combinatorics",
+    "heilbronn",
+    "open",
+    "wip"
+  ],
+  "relatedProofs": [
+    "erdos-507"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/507"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-07-20T12:30:00.000Z",
+  "lastUpdate": "2026-07-20T12:30:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
