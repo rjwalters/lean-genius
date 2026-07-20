@@ -134,35 +134,35 @@ axiom kruskal_katona_upper (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
 -/
 
 /-- **Erdős Problem #712:** Determine the Turán density π_r(K_k^r)
-    for all k > r > 2 as an explicit (preferably rational) value. -/
+    for all k > r > 2 as an explicit (preferably rational) value. This is
+    the *goal* of the problem, stated as a proposition; it is neither
+    asserted nor refuted here. -/
 def erdos_712_problem (r k : ℕ) (hr : r > 2) (hk : k > r) : Prop :=
   ∃ explicit : ℚ, turanDensity r k = explicit
 
-/-- The problem is unsolved for all k > r > 2 -/
-axiom erdos_712_open (r k : ℕ) (hr : r > 2) (hk : k > r) :
-  ¬∃ explicit : ℚ, turanDensity r k = explicit
+/-- Erdős Problem #712: The main statement.
 
-/-- Erdős Problem #712: The main statement -/
+    The Turán density exists and is bounded strictly inside `(0, 1)` (via
+    positivity and the Kruskal-Katona upper bound). The *exact* value is
+    unknown for every `k > r > 2` — but that openness is **epistemic** and is
+    deliberately NOT encoded as a theorem. Encoding it as `¬∃ q : ℚ,
+    turanDensity r k = q` would assert the strictly stronger, unproven, and
+    almost-certainly-false claim that the density is irrational, contradicting
+    the file's own conjectures `turanDensity 3 4 = 5/9` and `π_3(K_5^3) = 3/4`
+    (both rational). We therefore prove only what is genuinely true. -/
 theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
-    -- The Turán density exists and has nice bounds
-    (∃ π : ℝ, turanDensity r k = π ∧ 0 < π ∧ π < 1) ∧
-    -- But the exact value is unknown
-    (¬∃ explicit : ℚ, turanDensity r k = explicit) := by
-  constructor
-  · use turanDensity r k
-    constructor
-    · rfl
-    constructor
-    · exact turan_density_positive r k (by omega) hk
-    · -- Use Kruskal-Katona bound: π ≤ 1 - 1/k < 1 for k > 1
-      have hkk := kruskal_katona_upper r k (by omega) hk
-      have hk_pos : (0 : ℝ) < k := by
-        have : 0 < k := by omega
-        exact_mod_cast this
-      have h_one_div_k_pos : (0 : ℝ) < 1 / k := by positivity
-      calc turanDensity r k ≤ 1 - 1 / k := hkk
-        _ < 1 := by linarith
-  · exact erdos_712_open r k hr hk
+    ∃ π : ℝ, turanDensity r k = π ∧ 0 < π ∧ π < 1 := by
+  use turanDensity r k
+  refine ⟨rfl, ?_, ?_⟩
+  · exact turan_density_positive r k (by omega) hk
+  · -- Use Kruskal-Katona bound: π ≤ 1 - 1/k < 1 for k > 1
+    have hkk := kruskal_katona_upper r k (by omega) hk
+    have hk_pos : (0 : ℝ) < k := by
+      have : 0 < k := by omega
+      exact_mod_cast this
+    have h_one_div_k_pos : (0 : ℝ) < 1 / k := by positivity
+    calc turanDensity r k ≤ 1 - 1 / k := hkk
+      _ < 1 := by linarith
 
 /-
 ## Part VIII: Related Conjectures
@@ -208,10 +208,8 @@ Prize: $500 for any case, $1000 for full solution -/
 theorem erdos_712_summary :
     -- Turán solved the graph case (r = 2)
     (∀ k ≥ 2, turanDensity 2 k = turanGraphDensity k) ∧
-    -- Hypergraph case (r > 2) is open for all k > r
-    (∀ r k, r > 2 → k > r → ¬∃ explicit : ℚ, turanDensity r k = explicit) ∧
     -- Turán's K_4^3 conjecture: lower bound 5/9
     (turanDensity 3 4 ≥ 5 / 9) := by
-  exact ⟨fun k hk => turan_theorem k hk, erdos_712_open, K43_lower_bound⟩
+  exact ⟨fun k hk => turan_theorem k hk, K43_lower_bound⟩
 
 end Erdos712
