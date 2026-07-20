@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Module Header & Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File docstring stating OQ-03 (combine the parent isosceles↔midpoint-free bridge with quantitative 3-AP-free bounds to pin down P₁(n)) and the classical elementary answer proved here: the base-3 \"digits 0,1 only\" set Sₖ ⊆ [0,3ᵏ) is midpoint-free with |Sₖ| = 2ᵏ, giving the fully explicit machine-checked lower bound P₁(3ᵏ) ≥ 2ᵏ ≈ n^{log₃2}. Imports Mathlib and the parent Proofs.Erdos1207Problem; opens namespace Erdos1207OQ03.",
+      "mathContext": "$S_k=\\{\\sum_{i<k} b_i\\,3^i : b_i\\in\\{0,1\\}\\}\\subseteq\\{0,\\dots,3^k-1\\}$; $|S_k|=2^k=(3^k)^{\\log_3 2}$ with $\\log_3 2\\approx0.6309$. Weaker than Behrend's $n/\\exp(O(\\sqrt{\\log n}))$ but explicit and optimal among restricted-digit constructions."
+    },
+    {
       "id": "encoding",
       "title": "The base-3 digit map",
       "summary": "toNat encodes b : Fin k → Fin 2 as ∑ bᵢ·3ⁱ, with the least-significant-digit recursion toNat_succ.",

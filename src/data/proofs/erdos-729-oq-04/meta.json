@@ -116,6 +116,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Module Header & Imports",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "File docstring: the OQ-04 question and a self-contained account of what the file proves (0 axioms / 0 sorries) — a Legendre/Kummer p-adic valuation identity for multinomial coefficients and its no-carry divisibility consequences. Imports Mathlib; opens namespace Erdos729Multinomial with Nat and Finset.",
+      "mathContext": "Legendre: $v_p(n!) = \\sum_{i\\ge1}\\lfloor n/p^i\\rfloor = (n - s_p(n))/(p-1)$. Kummer: $v_p\\binom{n}{k}$ counts base-$p$ carries in $k+(n-k)$; the multinomial form distributes $v_p$ over $\\prod a_j!$."
+    },
+    {
       "id": "prod-and-legendre",
       "title": "Valuation of a Factorial Product and Additive Legendre",
       "startLine": 61,
