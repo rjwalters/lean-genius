@@ -33,7 +33,7 @@
     "type": "definition",
     "title": "Partial Sums of the Conway-Guy Sequence",
     "content": "`conwayGuySum n` computes S_n = \u03a3\u1d62\u208c\u2081\u207f a_i by simple structural recursion. The base S_0 = 0 and S_{n+1} = S_n + a_{n+1}. These partial sums are central to the recurrence: the k-th Conway-Guy element is a_{k-1} + \u2308S_{k-1}/2\u2309. The values S_1 = 1, S_2 = 3, S_3 = 7, S_4 = 14, S_5 = 27 are verified computationally. Note the near-doubling pattern: each partial sum is approximately twice the previous Conway-Guy element.",
-    "mathContext": "$S_n = \\sum_{i=1}^n a_i$. Values: $S_1=1, S_2=3, S_3=7, S_4=14, S_5=27, S_6=51, S_7=95, S_8=179$. Note $S_k < 2a_k + 1$ for all $k \\leq 8$ \u2014 the key structural bound that implies distinct subset sums.",
+    "mathContext": "$S_n = \\sum_{i=1}^n a_i$. Values: $S_1=1, S_2=3, S_3=7, S_4=14, S_5=27, S_6=51, S_7=95, S_8=179$. Note $S_k < 2a_k + 1$ holds only for $k \\leq 4$ (with equality $S_5 = 2a_5 + 1 = 27$ at $k = 5$, so it fails for $k \\geq 5$); the bound that actually drives distinct subset sums is the strict inequality $2a_k > S_{k-1}$, which holds for the full range $k \\leq 8$.",
     "significance": "supporting",
     "relatedConcepts": [
       "partial sums",
