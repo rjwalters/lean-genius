@@ -99,6 +99,14 @@
       "startLine": 123,
       "endLine": 138,
       "mathContext": "The engine is exercised over ℝ (driving the parent's odd case) and over ℂ (the field of the n≡2 mod 4 reduction, where the effective complex dimension n/2 is odd)."
+    },
+    {
+      "id": "product-engine",
+      "title": "The Product Engine: Moving an Anticommuting Element Through a Product",
+      "startLine": 139,
+      "endLine": 203,
+      "summary": "The reusable ring-level engine behind the n ≡ 2 (mod 4) reduction. mul_prod_anticomm: an element a that anticommutes with every factor of a list t picks up the sign (−1)^t.length when moved across the whole product — a * t.prod = (−1)^t.length * (t.prod * a). Its parity corollaries commute_prod_of_anticomm_of_even (even length ⇒ a commutes with the product) and anticommute_prod_of_anticomm_of_odd (odd length ⇒ a anticommutes) are the algebraic core controlling how a fresh structure moves through P = M₁⋯M_{n−1}. Stated over an arbitrary ring, so they apply verbatim to the real crossMat family and its complexification.",
+      "mathContext": "$a\\,\\prod t = (-1)^{|t|}\\,(\\prod t)\\,a$ when $a$ anticommutes with each factor; parity of $|t|$ decides commute vs. anticommute."
     }
   ],
   "references": [
