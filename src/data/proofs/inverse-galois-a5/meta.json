@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: `three_dvd_gal_card` (3 ∣ |Gal(q/ℚ)|), representing Dedekind's theorem (cycle structure of Frobenius at primes forces divisibility) — not yet in Mathlib 4.26.0. This axiom is supported by two distinct computations: (1) q factors mod 7 as (linear)(linear)(irreducible cubic), implying a 3-cycle in the Galois group; (2) the resolvent sextic has no rational root, excluding order-15 and order-30 subgroups.",
+    "assumptions": "1 axiom: `three_dvd_gal_card` (3 ∣ |Gal(q/ℚ)|), representing Dedekind's theorem (cycle structure of Frobenius at primes forces divisibility) — not yet in Mathlib 4.26.0. This axiom is supported by two distinct computations: (1) q factors mod 7 as (linear)(linear)(irreducible cubic), implying a 3-cycle in the Galois group; (2) the resolvent sextic has no rational root, excluding order-15 and order-30 subgroups. Additionally, the formalization relies on `native_decide` (introducing the `Lean.ofReduceBool` axiom / trust in compiled-code kernel reduction) for finite group-theoretic and resolvent computations: element-order incompatibility in S₅, Sylow 5- and 3-subgroup cardinalities, |A₅|=60, and the resolvent-sextic-has-no-rational-root check cited above. `#print axioms` on the main theorem therefore lists `Lean.ofReduceBool` in addition to `three_dvd_gal_card`.",
     "originalContributions": [
       "q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5: Eisenstein irreducibility at p=5 (q_irreducible), degree, monicness, separability",
       "q_rootSet_card: |roots of q in q.SplittingField| = 5 (proved via Mathlib's Polynomial.roots API)",
@@ -130,7 +130,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A 2067-line axiomatized formalization (1 axiom, 0 sorries) of the A₅ Inverse Galois theorem. The main theorem `a5_realizable_iso` establishes that A₅ is realizable as a Galois group over ℚ via q(x). The Vandermonde discriminant proof (Parts VIII–XV) is the central technical contribution, spanning 1100 lines to establish that disc(q) = 32000². The one remaining axiom, `three_dvd_gal_card`, corresponds to Dedekind's theorem applied to the Frobenius at 7.",
+    "summary": "A 2067-line axiomatized formalization (1 axiom, 0 sorries) of the A₅ Inverse Galois theorem. The main theorem `a5_realizable_iso` establishes that A₅ is realizable as a Galois group over ℚ via q(x). The Vandermonde discriminant proof (Parts VIII–XV) is the central technical contribution, spanning 1100 lines to establish that disc(q) = 32000². The one remaining explicit axiom, `three_dvd_gal_card`, corresponds to Dedekind's theorem applied to the Frobenius at 7. The trust base additionally includes `Lean.ofReduceBool`, introduced by the `native_decide` computations (finite group orders, Sylow cardinalities, |A₅|=60, and the resolvent-sextic rational-root check); so the complete disclosure is 1 explicit axiom + `Lean.ofReduceBool` (native_decide compiled-code trust), 0 sorries.",
     "implications": "This is the first non-solvable Galois group formalized in the lean-genius gallery. A₅ being simple and non-solvable means it lies outside the scope of Shafarevich's theorem. The methods — Eisenstein criterion, discriminant via Vandermonde, index-2 subgroup characterization — are representative of Galois group computation for degree-5 polynomials.",
     "openQuestions": [
       "Prove three_dvd_gal_card using Dedekind's theorem on Frobenius elements at prime ideals (requires Mathlib's algebraic number theory)",
