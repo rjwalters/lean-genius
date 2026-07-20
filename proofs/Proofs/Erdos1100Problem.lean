@@ -34,6 +34,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Real Nat Finset
 
+set_option autoImplicit false
+
 namespace Erdos1100
 
 /-
