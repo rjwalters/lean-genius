@@ -131,14 +131,20 @@
       "targetId": "cantors-theorem",
       "relationship": "related",
       "description": "Products leave the continuum fixed (𝔠 · 𝔠 = 𝔠), whereas Cantor's theorem #A < #𝒫(A) shows the power set strictly increases it"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-07-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes this entry's n = 2 case #(ℝ × ℝ) = #ℝ to all finite and countable powers: #(ℝⁿ) = #ℝ for every n ≥ 1 (from the finite-power absorption 𝔠 ^ n = 𝔠, theorem mk_pi_real) and #(ℕ → ℝ) = 𝔠 (from 𝔠 ^ ℵ₀ = 𝔠, theorem mk_nat_arrow_real_eq_continuum), each unpacked through Cardinal.eq to an explicit bijection. Directly resolves this entry's openQuestions[0]; its mk_pi_two_real recovers the present #(ℝ × ℝ) = #ℝ as the n = 2 instance."
     }
   ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization that #(ℝ × ℝ) = #ℝ: the continuum is multiplicatively idempotent (𝔠 · 𝔠 = 𝔠), the plane carries an explicit bijection to the line (ℝ × ℝ ≃ ℝ), and the complex plane has the same cardinality as the real line (#ℂ = #ℝ).",
     "implications": "Pins down that dimension does not affect cardinality — the surprising 1878 companion to Cantor's diagonal theorems. The same absorption law κ · κ = κ underlies the stability of every infinite cardinal under finite (and countable) products.",
     "openQuestions": [
-      "Formalize the n-fold and countable versions: #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = 𝔠.",
-      "Exhibit a concrete interleaving-of-digits bijection ℝ × ℝ ≃ ℝ rather than routing through cardinal arithmetic."
+      "**Resolved** by cantor-diagonalization-oq-07-oq-01: the n-fold and countable versions #(ℝⁿ) = #ℝ (mk_pi_real, for every n ≥ 1, from 𝔠 ^ n = 𝔠) and #(ℕ → ℝ) = 𝔠 (mk_nat_arrow_real_eq_continuum, from 𝔠 ^ ℵ₀ = 𝔠), each unpacked through Cardinal.eq to an explicit bijection.",
+      "Exhibit a concrete interleaving-of-digits bijection ℝ × ℝ ≃ ℝ rather than routing through cardinal arithmetic.",
+      "Cross the absorption threshold: formalize #(ℝ → ℝ) = 2^𝔠 (i.e. 𝔠 ^ 𝔠 = 2 ^ 𝔠), the first exponent at which the continuum *does* strictly grow — contrasting the stability of finite and countable powers (𝔠 ^ n = 𝔠, 𝔠 ^ ℵ₀ = 𝔠) with the strict jump to a larger cardinal once the exponent reaches continuum-many arguments."
     ]
   },
   "leanFile": {
