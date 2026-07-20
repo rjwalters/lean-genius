@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added the cross-power algebraic-DEPENDENCE layer to BaselProblemOQ01OQ02.lean — ζ(2n)^m/ζ(2m)^n ∈ ℚ (zeta_even_cross_pow_ratio_rational) and its proportionality form (zeta_even_cross_pow_proportional). Both axiom-free (NO hermite_lindemann; π cancels exactly), complementing the existing π-power-incommensurability of plain ratios and showing all even zeta values lie in the transcendence-degree-1 field ℚ(π).",
+    "progressSummary": "PROGRESS: proved the N-family ℚ-linear independence LinearIndependent ℚ (fun i:Fin N => ζ(2(i+1))) (zeta_even_linearIndependent_family) — the strictly-stronger generalization of the pairwise result, via a single polynomial identity at π and transcendental_iff. Verified, axioms identical to parent (hermite_lindemann only, no new axiom, no sorry). Node saturated on the provable ℚ·π^(even) side; open frontier remains odd-zeta irrationality (Apéry/Ball–Rivoal), not session-sized.",
     "builtItems": [
       "basel_hasSum : HasSum (fun n => 1/n^2) (pi^2/6) — Euler's Basel identity via Mathlib hasSum_zeta_two (Wiedijk #14).",
       "basel_tsum : tsum form of the Basel identity.",
@@ -57,7 +57,9 @@
       "BaselProblemOQ01OQ02.lean (researcher-6, 2026-07-11): subtraction family completing the ± frontier — zeta_even_sub_transcendental (ζ(2n)−ζ(2m), m<n; polynomial C qn·X^2n + C(−qm)·X^2m, natDegree 2n≠0 via natDegree_add_eq_left_of_natDegree_lt, aeval via map_neg+eq_ratCast+ring), zeta_four_sub_zeta_two_transcendental, transcendental_sub_ratCast (axiom-free, via transcendental_add_ratCast(−q)), zeta_even_sub_ratCast_transcendental. 3 carry only hermite_lindemann, engine is 0-axiom; VERIFIED green lake env lean v4.26.0.",
       "BaselProblemOQ01OQ02.lean: zeta_even_cross_pow_ratio_rational — ζ(2n)^m/ζ(2m)^n ∈ ℚ (π cancels exactly), axiom-free.",
       "BaselProblemOQ01OQ02.lean: zeta_even_cross_pow_proportional — ∃ q≠0, ζ(2n)^m = q·ζ(2m)^n (proportionality form), axiom-free.",
-      "Proofs/BaselProblemOQ01OQ02Graded.lean — graded multiplicativity ζ(2n)ζ(2m)=q·ζ(2(n+m)) + ratio form; researcher-5, axiom-free"
+      "Proofs/BaselProblemOQ01OQ02Graded.lean — graded multiplicativity ζ(2n)ζ(2m)=q·ζ(2(n+m)) + ratio form; researcher-5, axiom-free",
+      "zeta_even_linearIndependent_family (N:ℕ): LinearIndependent ℚ (fun i:Fin N => ζ(2(i+1))) in BaselProblemOQ01OQ02LinIndep.lean — verified, no new axiom",
+      "zeta_two_four_six_linearIndependent: concrete Fin 3 instance ζ(2),ζ(4),ζ(6) in BaselProblemOQ01OQ02LinIndep.lean"
     ],
     "insights": [
       "The odd-zeta question asked by this slug is OPEN; it cannot be closed, only framed/contrasted with the even case.",
@@ -69,7 +71,8 @@
       "The n=0 term is 0 by the 1/0=0 convention, so the natural-number-indexed sum agrees with the classical n>=1 sum.",
       "Classical clean extensions are saturated in siblings: pi^2/8 (odd), pi^2/12 (alternating), zeta(6); a new brick here would be pure accretion.",
       "Transcendence over ℚ is preserved when scaling a transcendental by a nonzero rational: q·x algebraic ⟹ x = q⁻¹·(q·x) algebraic. This upgrades ζ(2n) from irrational to transcendental with no extra axiom, since π^(2n) is already transcendental (pi_transcendental_over_rationals.pow).",
-      "Even zeta values are algebraically DEPENDENT (commensurable after crossing exponents): ζ(2n)^m/ζ(2m)^n ∈ ℚ, since both equal (rational)·π^(2nm) with the identical π-power. This is axiom-free (no hermite_lindemann — π cancels), complementing the incommensurability of plain ratios, and shows all even zetas lie in ℚ(π)."
+      "Even zeta values are algebraically DEPENDENT (commensurable after crossing exponents): ζ(2n)^m/ζ(2m)^n ∈ ℚ, since both equal (rational)·π^(2nm) with the identical π-power. This is axiom-free (no hermite_lindemann — π cancels), complementing the incommensurability of plain ratios, and shows all even zetas lie in ℚ(π).",
+      "N-family ℚ-linear independence of even zeta values ζ(2),…,ζ(2N) collapses to a SINGLE polynomial-vanishing fact via transcendental_iff.mp on π: a relation ∑ gᵢ ζ(2(i+1))=0 becomes aeval π P=0 for P=∑ C(gᵢqᵢ)X^(2(i+1)), forcing P=0 and (distinct exponents) gⱼqⱼ=0. This scales where the pairwise Irrational(π^(2(n-m))) route does not."
     ],
     "mathlibGaps": [
       "No 0-axiom route to Irrational(π^n) for n≥2: Mathlib has irrational_pi (does NOT lift to powers) but no Irrational(π^2)/Irrational(π^n) lemma.",
