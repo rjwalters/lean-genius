@@ -74,7 +74,7 @@
       }
     ],
     "axiomCount": 3,
-    "lineCount": 3713,
+    "lineCount": 3640,
     "assumptions": "3 assumptions: (1) konyagin_lower_2004 and (2) konyagin_upper_2004 (literal `axiom` declarations importing Konyagin's 2004 analytic lower/upper bounds on f(N)); (3) Lean.ofReduceBool — the credited concrete results (the explicit squarefree-sumset constructions pair_1_5/triple/.../dodeca, the lower bounds f_ge_two..f_ge_twelve, f_lower_bound_chain, f_complete_bounds, and the residue-image / density bounds mod_9_residue_image_le_4, general_residue_image_le, mod_900/44100/5336100 bounds, density_improvement_chain) are discharged with `native_decide` (185 occurrences across ~20 theorems), which trusts the Lean compiler kernel reduction and adds `Lean.ofReduceBool` to `#print axioms`. Per the project native_decide policy these substantive credited theorems are counted, so meta.axiomCount = 3 (leanFile.axiomCount remains 2, counting only the literal axioms). The foundational axioms propext / Classical.choice / Quot.sound are not counted. 0 sorries.",
     "theoremCount": 151,
     "definitionCount": 8
@@ -217,210 +217,210 @@
       "id": "header-context",
       "title": "Module Header and Problem Context",
       "startLine": 1,
-      "endLine": 47,
+      "endLine": 39,
       "summary": "Module docstring: Erdős #1109 statement, history, and squarefree-sumset framing"
     },
     {
       "id": "squarefree",
       "title": "Squarefree Numbers",
-      "startLine": 48,
-      "endLine": 106,
+      "startLine": 40,
+      "endLine": 98,
       "summary": "Definition using Mathlib's Squarefree, basic properties"
     },
     {
       "id": "sumset",
       "title": "The Sumset",
-      "startLine": 107,
-      "endLine": 118,
+      "startLine": 99,
+      "endLine": 110,
       "summary": "sumset definition and hasSquarefreeSumset predicate"
     },
     {
       "id": "f-function",
       "title": "The Function f(N)",
-      "startLine": 119,
-      "endLine": 126,
+      "startLine": 111,
+      "endLine": 118,
       "summary": "Definition of f(N) as max size of squarefree-sumset sets"
     },
     {
       "id": "erdos-sarkozy",
       "title": "Erdős-Sárközy Bounds (1987)",
-      "startLine": 127,
-      "endLine": 140,
+      "startLine": 119,
+      "endLine": 132,
       "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N"
     },
     {
       "id": "konyagin",
       "title": "Konyagin's Improvements (2004)",
-      "startLine": 141,
-      "endLine": 162,
+      "startLine": 133,
+      "endLine": 154,
       "summary": "Current best bounds and current_bounds theorem"
     },
     {
       "id": "current-state-of-knowledge",
       "title": "Current State of Knowledge",
-      "startLine": 163,
-      "endLine": 180,
+      "startLine": 155,
+      "endLine": 172,
       "summary": "Survey of the known upper/lower bounds and the polylog–polynomial gap"
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
-      "startLine": 181,
-      "endLine": 206,
+      "startLine": 173,
+      "endLine": 198,
       "summary": "Subpolynomial and polylogarithmic conjectures"
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "startLine": 207,
-      "endLine": 225,
+      "startLine": 199,
+      "endLine": 217,
       "summary": "Connection to #1103, k-power-free generalization"
     },
     {
       "id": "intuition",
       "title": "Structural Constraints on Squarefree Sumsets",
-      "startLine": 226,
-      "endLine": 314,
+      "startLine": 218,
+      "endLine": 306,
       "summary": "Density of squarefree numbers and modular constraint intuition"
     },
     {
       "id": "summary",
       "title": "Main Results",
-      "startLine": 315,
-      "endLine": 338,
+      "startLine": 307,
+      "endLine": 330,
       "summary": "erdos_1109_summary theorem combining both bounds"
     },
     {
       "id": "concrete-examples-and-constructions",
       "title": "Concrete Examples and Constructions",
-      "startLine": 339,
-      "endLine": 589,
+      "startLine": 331,
+      "endLine": 581,
       "summary": "Explicit witness sets and worked squarefree-sumset constructions"
     },
     {
       "id": "deeper-residue-class-analysis",
       "title": "Deeper Residue Class Analysis",
-      "startLine": 590,
-      "endLine": 705,
+      "startLine": 582,
+      "endLine": 697,
       "summary": "Finer residue-class structure underlying the density bounds"
     },
     {
       "id": "density-constraints-via-multiple-primes",
       "title": "Density Constraints via Multiple Primes",
-      "startLine": 706,
-      "endLine": 785,
+      "startLine": 698,
+      "endLine": 777,
       "summary": "Per-prime residue avoidance mod p² combined multiplicatively via CRT"
     },
     {
       "id": "explicit-lower-bound-fn-ge-2",
       "title": "Explicit Lower Bound f(N) ≥ 2",
-      "startLine": 786,
-      "endLine": 816,
+      "startLine": 778,
+      "endLine": 808,
       "summary": "{1,5} witnesses f(N) ≥ 2 for N ≥ 5, lifted from pair_1_5_squarefree_sumset"
     },
     {
       "id": "mod-25-constraints-p-5",
       "title": "Mod 25 Constraints (p = 5)",
-      "startLine": 817,
-      "endLine": 866,
+      "startLine": 809,
+      "endLine": 858,
       "summary": "p = 5: elements avoid residue 0 mod 25; no pair sums to a multiple of 25"
     },
     {
       "id": "residue-class-counting-framework",
       "title": "Residue Class Counting Framework",
-      "startLine": 867,
-      "endLine": 935,
+      "startLine": 859,
+      "endLine": 927,
       "summary": "Counting allowed residue classes mod p² to derive density bounds"
     },
     {
       "id": "counting-allowed-residues-mod-9",
       "title": "Counting Allowed Residues mod 9",
-      "startLine": 936,
-      "endLine": 1301,
+      "startLine": 928,
+      "endLine": 1293,
       "summary": "p = 3: residues mod 9 pair as {r,9-r}; at most one per pair, class 0 forbidden"
     },
     {
       "id": "counting-allowed-residues-mod-25",
       "title": "Counting Allowed Residues mod 25",
-      "startLine": 1302,
-      "endLine": 1516,
+      "startLine": 1294,
+      "endLine": 1497,
       "summary": "p = 5: residues mod 25 pair as {r,25-r}; at most one per pair"
     },
     {
       "id": "general-density-framework",
       "title": "General Density Framework",
-      "startLine": 1517,
-      "endLine": 1563,
+      "startLine": 1498,
+      "endLine": 1544,
       "summary": "Product of per-prime allowed-fraction constraints across primes"
     },
     {
       "id": "improved-lower-bound-fn-ge-4",
       "title": "Improved Lower Bound f(N) ≥ 4",
-      "startLine": 1564,
-      "endLine": 1643,
+      "startLine": 1545,
+      "endLine": 1624,
       "summary": "{1,5,21,37} witnesses f(N) ≥ 4 for N ≥ 37 (all pairwise sums squarefree)"
     },
     {
       "id": "fn-ge-5",
       "title": "f(N) ≥ 5",
-      "startLine": 1644,
-      "endLine": 1745,
+      "startLine": 1625,
+      "endLine": 1726,
       "summary": "{1,5,21,37,41} witnesses f(N) ≥ 5 for N ≥ 41"
     },
     {
       "id": "general-residue-counting-theorem",
       "title": "General Residue Counting Theorem",
-      "startLine": 1746,
-      "endLine": 1857,
+      "startLine": 1727,
+      "endLine": 1841,
       "summary": "image of A mod p² has ≤ (p²-1)/2 elements, via injection g(r)=min(r,p²-r)"
     },
     {
       "id": "fn-ge-6",
       "title": "f(N) ≥ 6",
-      "startLine": 1858,
-      "endLine": 1992,
+      "startLine": 1842,
+      "endLine": 1976,
       "summary": "{1,5,21,37,41,65} witnesses f(N) ≥ 6 for N ≥ 65"
     },
     {
       "id": "coprime-moduli-and-crt",
       "title": "Coprime Moduli and CRT",
-      "startLine": 1993,
-      "endLine": 2235,
+      "startLine": 1977,
+      "endLine": 2201,
       "summary": "CRT independence of constraints from distinct primes p ≠ q"
     },
     {
       "id": "fn-ge-7-and-fn-ge-8",
       "title": "f(N) >= 7 and f(N) >= 8",
-      "startLine": 2236,
-      "endLine": 2799,
+      "startLine": 2202,
+      "endLine": 2765,
       "summary": "Witness sets give f(N) ≥ 7 (N ≥ 73) and f(N) ≥ 8 (N ≥ 101); all elements ≡ 1 mod 4"
     },
     {
       "id": "four-prime-crt-density-bound",
       "title": "Four-Prime CRT Density Bound",
-      "startLine": 2800,
-      "endLine": 2908,
+      "startLine": 2766,
+      "endLine": 2856,
       "summary": "Primes 2,3,5,7 (moduli 4,9,25,49, lcm 44100) per-prime density bounds"
     },
     {
       "id": "density-bound-from-residue-constraints",
       "title": "Density Bound from Residue Constraints",
-      "startLine": 2909,
-      "endLine": 2995,
+      "startLine": 2857,
+      "endLine": 2944,
       "summary": "k residue classes mod m give |A| ≤ k·(N/m+1); combined with 4-prime CRT"
     },
     {
       "id": "general-k-prime-crt-density-product",
       "title": "General k-Prime CRT Density Product",
-      "startLine": 2996,
-      "endLine": 3177,
+      "startLine": 2945,
+      "endLine": 3104,
       "summary": "General k-prime pattern: allowed residues mod ∏ p² bounded by product of per-prime bounds"
     },
     {
       "id": "fn-ge-11",
       "title": "f(N) >= 11",
-      "startLine": 3178,
-      "endLine": 3713,
+      "startLine": 3105,
+      "endLine": 3640,
       "summary": "{1,5,21,37,41,65,73,101,137,165,181} witnesses f(N) ≥ 11 for N ≥ 181"
     }
   ],
@@ -523,7 +523,7 @@
       "Real"
     ],
     "namespace": "Erdos1109",
-    "lineCount": 3713,
+    "lineCount": 3640,
     "axiomCount": 2,
     "theoremCount": 151,
     "definitionCount": 8,
