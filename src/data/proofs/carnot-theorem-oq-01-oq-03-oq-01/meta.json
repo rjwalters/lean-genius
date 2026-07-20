@@ -93,13 +93,31 @@
       "id": "strict-jensen-eq"
     },
     {
-      "title": "Uniqueness of the maximiser",
+      "title": "Uniqueness theorem: statement and setup",
       "startLine": 65,
+      "endLine": 86,
+      "description": "sin_sum_eq_iff_equilateral: for reals with A + B + C = π and A, B, C ≥ 0, sin A + sin B + sin C = 3√3/2 ↔ A = π/3 ∧ B = π/3 ∧ C = π/3. The forward branch opens by fixing the midpoint M = (B+C)/2, establishing the [0, π] memberships of A, B, C, M — the upper bounds are automatic from the angle-sum, e.g. A = π − B − C ≤ π — and extracting the ordinary (non-strict) concavity of sin via strictConcaveOn_sin_Icc.concaveOn for the two averaging steps to follow.",
+      "summary": "Equality-iff statement and forward-direction setup",
+      "mathContext": "$\\sin A + \\sin B + \\sin C = \\tfrac{3\\sqrt3}{2} \\iff A=B=C=\\tfrac{\\pi}{3}$ (with $A+B+C=\\pi$, $A,B,C\\ge 0$); set $M=\\tfrac{B+C}{2}$, note $A,B,C,M\\in[0,\\pi]$ (upper bounds free from the angle-sum), and take the non-strict Jensen field of $\\mathrm{sin}$'s concavity.",
+      "id": "uniqueness-statement"
+    },
+    {
+      "title": "Two Jensen steps and their forced tightness",
+      "startLine": 87,
+      "endLine": 103,
+      "description": "The two ordinary Jensen averaging steps: step1 averages B and C at equal weights, giving (sin B + sin C)/2 ≤ sin M; step2 combines A (weight 1/3) with M (weight 2/3), landing the argument at (A + B + C)/3 = π/3 where sin = √3/2, giving (1/3)sin A + (2/3)sin M ≤ √3/2. Chaining bounds the sum by 3√3/2. Saturating the global bound (hsum) via a single linear balance of the two non-negative slacks forces both steps to be equalities: ht1 gives (sin B + sin C)/2 = sin M and ht2 gives (1/3)sin A + (2/3)sin M = √3/2.",
+      "summary": "Chaining two Jensen steps; saturation forces both tight",
+      "mathContext": "Step 1: $\\tfrac{\\sin B+\\sin C}{2}\\le\\sin M$. Step 2: $\\tfrac13\\sin A+\\tfrac23\\sin M\\le\\sin\\tfrac{\\pi}{3}=\\tfrac{\\sqrt3}{2}$. Their non-negative slacks satisfy $2s_1+3s_2=\\tfrac{3\\sqrt3}{2}-(\\sin A+\\sin B+\\sin C)$, so saturating the bound forces $s_1=s_2=0$.",
+      "id": "jensen-steps-tightness"
+    },
+    {
+      "title": "Decoding tightness to equilateral, and the converse",
+      "startLine": 104,
       "endLine": 118,
-      "description": "sin_sum_eq_iff_equilateral: sin A + sin B + sin C = 3√3/2 ↔ A = π/3 ∧ B = π/3 ∧ C = π/3. Forward: two ordinary Jensen steps (midpoint M = (B+C)/2 of B,C, then A weighted 1/3 against M weighted 2/3 landing at π/3) bound the sum by 3√3/2; saturating the bound forces both steps tight (the two non-negative slacks sum to zero), and sin_jensen_eq_imp_eq turns each tightness into B = C and A = M = (B+C)/2 = C, with A + B + C = π pinning each angle to π/3. Backward: substitute the equilateral angles and evaluate 3·sin(π/3) = 3√3/2.",
-      "summary": "Equality iff equilateral, via strict-Jensen tightness",
-      "mathContext": "$\\sin A + \\sin B + \\sin C = \\tfrac{3\\sqrt3}{2} \\iff A=B=C=\\tfrac{\\pi}{3}$: saturating the two Jensen steps forces both slacks to $0$, so $B=C$ and $A=\\tfrac{B+C}{2}$, which with $A+B+C=\\pi$ pins each angle to $\\tfrac{\\pi}{3}$.",
-      "id": "uniqueness"
+      "description": "Feeding each saturated step to sin_jensen_eq_imp_eq decodes the tightness: step 1 gives B = C, step 2 gives A = M = (B+C)/2; with B = C this yields A = C, and A + B + C = π then pins each angle to π/3 (closed by linarith). The backward direction substitutes the equilateral angles A = B = C = π/3 and evaluates 3·sin(π/3) = 3√3/2.",
+      "summary": "Strict-Jensen lemma yields B=C, A=M; angle-sum pins π/3",
+      "mathContext": "Tight step 1 $\\Rightarrow B=C$; tight step 2 $\\Rightarrow A=M=\\tfrac{B+C}{2}=C$; with $A+B+C=\\pi$ each angle is $\\tfrac{\\pi}{3}$. Converse: $3\\sin\\tfrac{\\pi}{3}=\\tfrac{3\\sqrt3}{2}$.",
+      "id": "decode-converse"
     }
   ],
   "crossReferences": [
