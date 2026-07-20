@@ -29,11 +29,17 @@ import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Topology.Basic
 import Mathlib.Analysis.Complex.Basic
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 namespace Erdos1119
 
 open Cardinal Set
+
+-- Index type for a family of entire functions {f_α : α ∈ ι}.
+-- Declared explicitly (previously bound silently via `autoImplicit`).
+-- Fixed at universe 0 so that `#ι` lives in `Cardinal.{0}`, matching
+-- `continuum`, `ℵ₀`, and the parameter `m : Cardinal`.
+variable {ι : Type}
 
 /- ## Part I: Basic Definitions -/
 

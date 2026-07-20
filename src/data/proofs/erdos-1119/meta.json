@@ -57,8 +57,8 @@
       "erdos_1119_summary theorem"
     ],
     "axiomCount": 3,
-    "lineCount": 133,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `ι` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'ι'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 3 axioms: IsEntire (entire function predicate — axiomatized), erdos_1964_wetzel (Erdős 1964 — if ¬CH then Wetzel families of entire functions are countable), easy_case (intermediate cardinality case ℵ₁ < m < 𝔠 via diagonalization). 0 sorries.",
+    "lineCount": 141,
+    "assumptions": "Machine-checked under Lean v4.31.0 with `set_option autoImplicit false`: 0 sorries, builds clean (verified during #39077 repair). REPAIR (Class A, issue #39061/#39077): the file previously relied on the old `autoImplicit true` default to silently bind the index type `ι` as a free implicit; under v4.31 (autoImplicit off) this fails with `unknownIdentifier 'ι'`. Repaired by declaring `variable {ι : Type}` explicitly (fixed at universe 0 so `#ι` lives in `Cardinal.{0}`, matching `continuum`/`ℵ₀`/`m`) and setting `set_option autoImplicit false` as a guard. The entry remains legitimately `axiomatized`: 3 axioms encode the mathematical content — IsEntire (entire-function predicate, axiomatized since full complex-analysis formalization is extensive), erdos_1964_wetzel (Erdős 1964: if ¬CH then Wetzel families of entire functions are countable), and easy_case (Hayman 1974: 𝔪⁺ < 𝔠 implies the family has size ≤ 𝔪 via diagonalization over value sets). The Kumar-Shelah (2017) and Schilhan-Weinert (2024) independence results are documented in source comments only, not as Lean axioms. `erdos_1119_summary` combines erdos_1964_wetzel and easy_case by `exact ⟨...⟩`.",
     "theoremCount": 2,
     "definitionCount": 6
   },
@@ -258,7 +258,7 @@
       "Set"
     ],
     "namespace": "Erdos1119",
-    "lineCount": 133,
+    "lineCount": 141,
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 6,
