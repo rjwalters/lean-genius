@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #875 on admissible sequences with three proved results (powers of 2 strictly increasing, growth lower bound a(n) ≥ n+1, partial powers-of-2 admissibility). The gap threshold and ratio-one questions remain open, with the popcount argument for full powers-of-2 admissibility axiomatized.",
+    "summary": "The formalization captures Erdős Problem #875 on admissible sequences with three fully proved supporting results (powers of 2 strictly increasing, growth lower bound a(n) ≥ n+1, and full powers-of-2 admissibility via the binary-uniqueness lemma pow2_subset_sum_inj — no popcount axiom). The gap threshold and ratio-one questions remain open and are defined only as predicates (HasPolynomialGaps, HasRatioOne). The sole remaining trust dependency is Lean.ofReduceBool, from the native_decide-discharged pow2_small_example.",
     "implications": "Understanding admissible sequences connects to Sidon set theory, the subset sum problem, additive bases, and binary coding theory. The critical exponent c₀ would quantify how efficiently the disjoint sumsets condition constrains growth.",
     "openQuestions": [
       "What is the critical exponent c₀ for polynomial gaps in admissible sequences?",
