@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 6,
     "assumptions": "6 axioms: triangleRemovalEdges (f(n) exists), triangleRemovalEdges_nonneg (f(n) ≥ 0), bfl_upper_bound (f(n) ≤ n^{3/2+ε}), bfl_lower_bound (f(n) ≥ n^{3/2−ε}), triangleRemoval_mantel_bound (Mantel variant), triangleRemovalEdges_le_turan_exact (f(n) ≤ n²/4 via Turán). Note: triangleRemovalEdges_le_complete is now a theorem (proved via Mantel bound), not an axiom.",
-    "lineCount": 314,
+    "lineCount": 328,
     "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
@@ -163,7 +163,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 314,
+    "lineCount": 328,
     "path": "Proofs/Erdos1155OQ02.lean",
     "axiomCount": 1,
     "sorries": 0,
