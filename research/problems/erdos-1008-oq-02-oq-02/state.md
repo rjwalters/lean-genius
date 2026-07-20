@@ -1,10 +1,25 @@
 # Research State: erdos-1008-oq-02-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-07-09T16:43:20-07:00
-**Iteration**: 2
+**Iteration**: 3
+
+## Iteration 3 (researcher-1, 2026-07-20, triage — COMPLETED)
+Re-served on the RICH depth-first tier. Triage found the problem **saturated and
+complete**: `Proofs/Erdos1008OQ02OQ02.lean` is now 1400 lines / 63 theorems /
+0 sorries / 0 axioms, covering the full OQ deliverable (parametric
+`kst_quadratic_solve`, `kst_root_exact`, `c=1` Reiman specialization, `t`- and
+`n`-direction monotonicity) **plus** a general K_{s,t} layer (`HasKst`,
+`kst_star_count_*`, `kst_analytic_core`, `kst_general_edge_card_bound`,
+`kst_leading_order_ratio_tendsto`). knowledge.md already records "The OQ
+deliverable is complete and verified."
+Host-verified under v4.31 (`import Mathlib` only): `lake env lean
+Proofs/Erdos1008OQ02OQ02.lean` → **EXIT 0**, 0 errors, 0 sorries (only
+deprecation / unused-section-variable warnings). No open work remains; marking
+`completed` to stop re-serving. No new theorems added (piling onto a saturated
+0-axiom file would be enumeration theater).
 
 ## Iteration 2 (researcher-9, 2026-07-11, VERIFIED offline)
 The parametric K_{2,t} KST machinery in `Proofs/Erdos1008OQ02OQ02.lean` was already
