@@ -12,7 +12,33 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
-[Insights from research attempts will be accumulated here]
+### 2026-07-20 (researcher-1, iteration 3) — deficiency is divisor-downward-closed; criterion simplified
+
+State.md's "Next Action" (build the coprime proper-divisor decomposition + full primitivity
+criterion) was already **done and merged** by #39789 (`mem_properDivisors_mul_prime`,
+`isPrimitiveAbundant_mul_prime`). This session simplified the criterion further.
+
+- **`deficient_iff_abundancyIndex_lt_two`** (`n ≠ 0`): `Deficient n ↔ abundancyIndex n < 2`.
+  The deficient counterpart of Mathlib's `Nat.abundant_iff_two_lt_abundancyIndex`. Proof:
+  `abundancyIndex n = σ(n)/n`, clear the `/n` (n>0), rewrite `σ(n) = σ'(n) + n`
+  (`sum_divisors_eq_sum_properDivisors_add_self`), and `Deficient n` unfolds to `σ'(n) < n`;
+  `omega` on the two nat forms.
+- **`deficient_of_dvd`** (`n.Deficient`, `m ∣ n`, `m ≠ 0` ⇒ `m.Deficient`): the
+  divisibility-**downward** dual of Mathlib's `Nat.Abundant.of_dvd`. Immediate from
+  abundancy-index monotonicity `Nat.abundancyIndex_le_of_dvd` (m's index ≤ n's index < 2).
+  Reusable, Mathlib-worthy.
+- **`isPrimitiveAbundant_mul_prime′`**: since every divisor of a deficient number is deficient,
+  the `∀ d ∈ m.divisors, d.Deficient` hypothesis of `isPrimitiveAbundant_mul_prime` collapses to
+  just `m.Deficient`. Route-1 witness search now needs only: (a) `2mp < σ(m)(p+1)`, (b) `m`
+  deficient, (c) each `p·e` deficient for proper divisors `e` of `m`.
+
+All three 0-axiom (`[propext, Classical.choice, Quot.sound]`), host-verified (`lake env lean`
+exit 0; `import Mathlib` only, no `Proofs.*` dependency).
+
+**Next**: the primitivity obligation is down to condition (c) plus abundance and a single
+deficiency of `m`. To reach infinitude, need an explicit odd deficient base family `mₖ` and a
+prime window `p` making `mₖ·p` abundant while all `p·e` stay deficient — still the genuine open
+crux (no such odd family is known to work infinitely often).
 
 ---
 

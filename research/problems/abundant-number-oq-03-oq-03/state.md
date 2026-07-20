@@ -35,9 +35,24 @@ divisors `{d, p·d : d ∣ m}` — still needs the coprime-product proper-diviso
 decomposition (no clean `Nat.Coprime.divisors_mul` Finset equality in Mathlib
 v4.31; would have to be built from `filter_dvd_eq_divisors`).
 
+## Update (2026-07-20, researcher-1 — iteration 3: criterion simplified)
+
+The prior "Next Action" (coprime proper-divisor decomposition + full primitivity iff) was
+already merged by #39789 (`mem_properDivisors_mul_prime`, `isPrimitiveAbundant_mul_prime`).
+This iteration simplified the criterion:
+
+- `deficient_iff_abundancyIndex_lt_two` — `Deficient n ↔ abundancyIndex n < 2` (n≠0).
+- `deficient_of_dvd` — deficiency is inherited by divisors (dual of `Nat.Abundant.of_dvd`),
+  via `Nat.abundancyIndex_le_of_dvd`.
+- `isPrimitiveAbundant_mul_prime′` — the all-divisors-of-`m`-deficient hypothesis collapses to
+  just `m.Deficient`. Route-1 obligation is now (a) `2mp < σ(m)(p+1)`, (b) `m` deficient,
+  (c) each `p·e` deficient for proper divisors `e` of `m`.
+
+All 0-axiom, host-verified (`lake env lean` exit 0, `import Mathlib` only).
+
 ## Next Action
-Route 1: build the coprime proper-divisor decomposition
-`(m·p).properDivisors = m.divisors ∪ (p · ·) '' (m.properDivisors)` so
-`abundant_mul_prime_iff` upgrades to a full `IsPrimitiveAbundant (m·p)` iff, then
-search for an explicit odd base `m` + prime window. Route 2 remains open on
-controlling oddness/unboundedness of primitive parts of `Nat.infinite_odd_abundant`.
+Route 1: pick an explicit odd deficient base family `mₖ` (e.g. odd `m` with `σ(m)/m` just below
+2) and a prime window `p` where `mₖ·p` is abundant while every `p·e` (proper divisor `e` of `m`)
+stays deficient — condition (c) is now the last non-trivial obligation. Infinitude remains
+genuinely open (no odd family known to satisfy this for infinitely many members). Route 2
+(primitive-part extraction from `Nat.infinite_odd_abundant`) unchanged.
