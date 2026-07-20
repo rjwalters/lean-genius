@@ -61,11 +61,10 @@
       "IsBlocker/HasBoundedIntersection/IsGoodBlocker: transversal theory definitions",
       "ErdosQuestion664: formal statement with correct quantifier order (k depends on c, not n)",
       "alon_disproof axiom: ¬ErdosQuestion664 (the answer is NO)",
-      "projectivePlaneOrder and projective_plane_exists: PG(2,q) parameters",
+      "projectivePlaneOrder: PG(2,q) parameters (q^2 + q + 1)",
       "alon_construction axiom: explicit counterexample with Ω(log n) intersection",
       "IsBalancedBlockDesign: original 1981 formulation (still open)",
-      "ErdosQuestion664_Original: balanced block design version",
-      "minimum_blocking_set_size: Bruen's bound q + √q + 1 for projective planes"
+      "ErdosQuestion664_Original: balanced block design version"
     ],
     "axiomCount": 2,
     "lineCount": 236,
@@ -137,8 +136,8 @@
       "title": "Why the Counterexample Works",
       "startLine": 140,
       "endLine": 167,
-      "summary": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic lower bound via coupon-collector argument",
-      "mathContext": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration."
+      "summary": "The disproof is captured by the two axioms `alon_disproof`/`alon_construction`; the mechanism here is illustrative rather than formalized — `randomSubsetConstruction` is a `True`-valued placeholder, with the geometry (projective lines have $q+1$ points, two lines meet in one point, random thinning preserves near-linearity while forcing $\\Omega(\\log n)$ blocker concentration) described in prose",
+      "mathContext": "Descriptive (not axiomatized): `randomSubsetConstruction` is a `True`-valued stub; the projective-plane geometry — $q+1$ points per line, two lines meeting in exactly one point, random thinning preserving near-linearity — is explanatory prose, not formalized properties."
     },
     {
       "id": "balanced-designs",
@@ -153,8 +152,8 @@
       "title": "Finite Geometry Interpretation",
       "startLine": 187,
       "endLine": 206,
-      "summary": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159",
-      "mathContext": "Bound: Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159"
+      "summary": "Interprets the construction in terms of blocking sets in projective planes and its connection to Problem #1159 (descriptive context; no blocking-set bound is formalized in the file)",
+      "mathContext": "Interpretive context: blocking sets in projective planes and the connection to Problem #1159. Bruen's bound $q + \\sqrt{q} + 1$ is background prose only — not a formalized declaration."
     },
     {
       "id": "constant-analysis",
@@ -174,7 +173,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #664, posed in 1981, asked whether near-linear set families (sets of size $> c\\sqrt{n}$ with pairwise intersection $\\leq 1$) always admit blocking sets with $O(1)$ intersection. Alon disproved this using random subsets of projective plane lines: for $n = q^2+q+1$, any blocker must have $\\Omega(\\log n)$ intersection with some set. The formalization captures the disproof as axioms, with the full construction mechanism (projective plane structure, random thinning, covering argument) explained through supporting axioms. The original balanced block design version remains open.",
+    "summary": "Erdős Problem #664, posed in 1981, asked whether near-linear set families (sets of size $> c\\sqrt{n}$ with pairwise intersection $\\leq 1$) always admit blocking sets with $O(1)$ intersection. Alon disproved this using random subsets of projective plane lines: for $n = q^2+q+1$, any blocker must have $\\Omega(\\log n)$ intersection with some set. The formalization captures the disproof through two axioms (`alon_disproof`, `alon_construction`); the construction mechanism (projective plane structure, random thinning, covering argument) is described in prose and an illustrative `True`-valued stub, not additional axioms. The original balanced block design version remains open.",
     "implications": "**Theoretical Significance**: Alon's disproof reveals a fundamental asymmetry in transversal theory: the near-linear condition ($|A_i \\cap A_j| \\leq 1$) prevents *local* overlap but cannot prevent *global* concentration of transversals. The tight logarithmic bound ($\\Theta(\\log n)$) connects to covering theory and the coupon collector problem.\n\nThe projective plane construction bridges finite geometry and probabilistic combinatorics, and the unresolved BBD version tests whether the stronger design-theoretic structure ($\\lambda = 1$ BIBD) can overcome this limitation. Problem #1159 extends the question by asking whether $O(\\log n)$-bounded blocking sets always exist in projective planes (the ESS theorem confirms this for Desarguesian planes).",
     "openQuestions": [
       "Is the balanced block design version (ErdosQuestion664_Original) also false, as Alon conjectured?",
