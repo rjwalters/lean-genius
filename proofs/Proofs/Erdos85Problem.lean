@@ -256,4 +256,45 @@ theorem starGraph_not_containsC4 (n : ℕ) :
   · exact absurd (hinj (h1.trans h2.symm)) (by decide)
   · exact absurd (hinj (h1.trans h3.symm)) (by decide)
 
+/-- **Full minimum degree forces the complete graph.**  On `Fin n`, a simple graph
+whose minimum degree is at least `n - 1` must be the complete graph `⊤`: every
+vertex `i` has `deg i ≤ n - 1` (its neighbours avoid `i`), so `deg i ≥ n - 1`
+forces its neighbourhood to be *all* other vertices, i.e. `i` is adjacent to every
+`j ≠ i`. -/
+theorem eq_top_of_minDegree_ge {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hmin : n - 1 ≤ G.minDegree) : G = ⊤ := by
+  ext i j
+  rw [top_adj]
+  refine ⟨fun h => h.ne, fun hij => ?_⟩
+  -- `deg i ≥ n - 1`, and the neighbourhood of `i` sits inside the `n - 1` other vertices
+  have hdeg : n - 1 ≤ (G.neighborFinset i).card := by
+    rw [G.card_neighborFinset_eq_degree]
+    exact le_trans hmin (G.minDegree_le_degree i)
+  have hsub : G.neighborFinset i ⊆ Finset.univ.erase i := by
+    intro x hx
+    refine Finset.mem_erase.mpr ⟨?_, Finset.mem_univ x⟩
+    exact (G.ne_of_adj ((G.mem_neighborFinset i x).mp hx)).symm
+  have hcard : (Finset.univ.erase i).card ≤ (G.neighborFinset i).card := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ, Fintype.card_fin]
+    exact hdeg
+  have heq : G.neighborFinset i = Finset.univ.erase i :=
+    Finset.eq_of_subset_of_card_le hsub hcard
+  have hjmem : j ∈ G.neighborFinset i := by
+    rw [heq]; exact Finset.mem_erase.mpr ⟨(Ne.symm hij), Finset.mem_univ j⟩
+  exact (G.mem_neighborFinset i j).mp hjmem
+
+/-- **A crude but honest upper bound on `f(n)`.**  For `n ≥ 4`,
+`minDegreeForC4 n ≤ n - 1`: minimum degree `n - 1` on `Fin n` forces the complete
+graph (`eq_top_of_minDegree_ge`), which contains a `C₄` (`completeGraph_containsC4`).
+In particular the threshold set defining `minDegreeForC4` is non-empty, so the
+`sInf` is a genuine minimum rather than the junk value `sInf ∅ = 0` — some finite
+minimum degree really does force a 4-cycle.  (The true value is `f(n) = (1+o(1))√n`,
+far below this bound, but that requires Kővári–Sós–Turán, beyond current Mathlib.) -/
+theorem minDegreeForC4_le_sub_one {n : ℕ} (hn : 4 ≤ n) :
+    minDegreeForC4 n ≤ n - 1 := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  rw [eq_top_of_minDegree_ge G hmin]
+  exact completeGraph_containsC4 hn
+
 end Erdos85
