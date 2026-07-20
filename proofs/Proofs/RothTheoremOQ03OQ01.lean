@@ -123,6 +123,32 @@ theorem gowersNorm_zero (N s : ℕ) [NeZero N] :
         Finset.sum_congr rfl (fun h _ => hzero x h))]
   simp
 
+/-- **Nonnegativity of the Gowers norm.** `gowersNorm N s f` is defined as the
+    modulus of a (normalized) complex average, so it is nonnegative for every
+    `f`, `s`. Basic foundational fact for the barely-developed `gowersNorm`. -/
+theorem gowersNorm_nonneg (N s : ℕ) [NeZero N] (f : ZMod N → ℂ) :
+    0 ≤ gowersNorm N s f := by
+  unfold gowersNorm
+  exact norm_nonneg _
+
+/-- **Order-`0` Gowers norm = modulus of the mean.** The `U^0` case of the
+    Gowers hierarchy: the only hypercube vertex is the empty `ω` (weight `0`,
+    even, so no conjugation) and the only shift vector is empty (`hypercubeShift`
+    is the empty sum `0`), collapsing the average to
+    `‖N⁻¹ · Σ_x f x‖ = |E_x f|`. This grounds the whole `U^s` tower at its base
+    and identifies `‖f‖_{U^0}` with the modulus of the average of `f`. -/
+theorem gowersNorm_order_zero {N : ℕ} [NeZero N] (f : ZMod N → ℂ) :
+    gowersNorm N 0 f = ‖((N : ℂ)⁻¹) * ∑ x : ZMod N, f x‖ := by
+  unfold gowersNorm
+  congr 1
+  rw [pow_one]
+  congr 1
+  refine Finset.sum_congr rfl (fun x _ => ?_)
+  rw [Fintype.sum_unique, Fintype.prod_unique]
+  -- Empty hypercube shift is `0` (empty sum); the empty-weight vertex `default`
+  -- has even Hamming weight `0`, so `conjugateByWeight` applies no conjugation.
+  simp [hypercubeShift, conjugateByWeight]
+
 /-- The k-AP counting operator on the constant tuple `(c,…,c)` equals
     `c ^ k`: the inner product is `∏_{i} c = cᵏ`, and the normalized
     double average `(N⁻¹)² · ∑_{x,d} cᵏ = cᵏ` cancels the `N²` pairs

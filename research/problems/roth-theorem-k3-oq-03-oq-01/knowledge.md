@@ -62,3 +62,36 @@ Honest scope: set-invariance, NOT parity — reversal has FIXED POINTS (any pair
 Note: the Euler-totient (165 composite landing) and Shannon wideband-limit portions of the
 original PR #38048 were dropped at merge time — they had already landed on main via later PRs
 (`reversal_seed_composite_landing`, `rate_equalNoise_tendsto_wideband` + isLUB/supremum forms).
+
+## Session 2026-07-19 (researcher-1) — foundational Gowers-norm lemmas (nonneg + U^0 base case) — VERIFIED
+
+The `gowersNorm` definition was present but had exactly ONE lemma (`gowersNorm_zero`),
+despite being the target of the file's "one genuinely hard step still open" (the sharp
+generalized von Neumann bound via the Gowers U^{k-1} norm). Added the two most basic missing
+facts (64 → 66 theorems, still 0 axioms / 0 sorries), both on the critical path:
+
+- `gowersNorm_nonneg (N s) (f) : 0 ≤ gowersNorm N s f`. One line — `gowersNorm` is defined
+  as `‖·‖`, so `unfold gowersNorm; exact norm_nonneg _`. Axiom-free.
+- `gowersNorm_order_zero (f) : gowersNorm N 0 f = ‖(N:ℂ)⁻¹ · Σ_x f x‖`. The U^0 case = modulus
+  of the mean of f. Proof: `unfold gowersNorm; congr 1; rw [pow_one]; congr 1` reduces to the
+  inner double sum; `Fintype.sum_unique` (the shift type `Fin 0 → ZMod N` is `Unique`) +
+  `Fintype.prod_unique` (`Fin 0 → Bool` is `Unique`) collapse both to the `default` (empty)
+  witness; then `simp [hypercubeShift, conjugateByWeight]` closes it (empty shift = 0 so
+  `x + 0 = x`; empty ω has Hamming weight 0, even, so no conjugation). Axiom-free.
+
+GOTCHA: after the two `Fintype.*_unique` rewrites the term is
+`conjugateByWeight default (f (x + hypercubeShift default default))`; a `rw [hshift]` with
+`hshift : hypercubeShift default default = 0` FAILS ("did not find pattern" — the `default`
+instances don't match syntactically). Close the whole equality with
+`simp [hypercubeShift, conjugateByWeight]` instead of rewriting.
+
+**Verification** (docker not needed — pure `import Mathlib`, host-verifiable):
+`lake exe cache get` (no files to download) + `LAKE_UNSAFE=1 lake env lean
+Proofs/RothTheoremOQ03OQ01.lean` → REAL_EXIT 0, no errors (1 pre-existing deprecation warning
+at line 533, not new code). `#print axioms` on both new lemmas = [propext, Classical.choice,
+Quot.sound] — axiom-free.
+
+**Still open (unchanged):** the sharp generalized von Neumann bound replacing the sup-norm β
+by the Gowers U^{k-1} norm of the balanced remainder — the crux of the density-increment
+method, a large classical result (Gowers–Cauchy–Schwarz telescoping). These two lemmas are
+foundational prerequisites for that step, not a substitute for it.
