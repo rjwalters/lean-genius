@@ -71,10 +71,10 @@
       "erdos_83_summary: both directions (bound + tightness)",
       "erdos_83: final theorem statement"
     ],
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 404,
-    "assumptions": "5 axioms: erdos_ko_rado_bound, starLikeFamily_achieves, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 2 sorry(s) (both DEFINITION sorries: criticalRatio, akFamily). (starLikeFamily_valid was previously an axiom; it is now a proved theorem — the majority family is 2-intersecting by a pure pigeonhole argument on the 2n-element core, |A∩B| ≥ (n+1)+(n+1)-2n = 2. The starLikeFamily construction sorry is also now completed via a concrete filter over the core erdos83Core, whose cardinality 2n is proved via the Fin (2n) ↪ Fin (4n) embedding. ekr_achieved was likewise previously an axiom, now a proved counting identity.)",
-    "theoremCount": 8,
+    "assumptions": "4 axioms: starLikeFamily_achieves, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 2 sorry(s) (both DEFINITION sorries: criticalRatio, akFamily). The Erdős–Ko–Rado bound (erdos_ko_rado_bound: max 1-intersecting k-uniform family on [n], n≥2k, has ≤ C(n-1,k-1) members) is now proved from Mathlib Finset.erdos_ko_rado (formerly an axiom). starLikeFamily_valid, the starLikeFamily construction, and ekr_achieved were also previously axioms and are now proved.",
+    "theoremCount": 9,
     "definitionCount": 13,
     "additionalFiles": [
       "Proofs/Stubs/Erdos83Aristotle.lean"
@@ -205,8 +205,8 @@
     ],
     "namespace": "Erdos83",
     "lineCount": 404,
-    "axiomCount": 5,
-    "theoremCount": 8,
+    "axiomCount": 4,
+    "theoremCount": 9,
     "definitionCount": 13,
     "path": "Proofs/Erdos83Problem.lean",
     "sorries": 2,

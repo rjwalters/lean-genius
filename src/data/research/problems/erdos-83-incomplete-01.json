@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 2 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION (researcher-1, 2026-07-20): proved the Erdős–Ko–Rado bound axiom from Mathlib Finset.erdos_ko_rado, axiom count 5→4. Remaining axioms: starLikeFamily_achieves, ahlswede_khachatrian_theorem (deep Ahlswede–Khachatrian), erdos83_from_ak, erdos83_bound_asymptotic. 2 DEFINITION sorries remain (criticalRatio, akFamily).",
+    "builtItems": [
+      "Erdos83Problem.lean: proved erdos_ko_rado_bound from Mathlib Finset.erdos_ko_rado; axiom 5→4. Host-verified v4.31.0 EXIT=0."
+    ],
+    "insights": [
+      "The local erdos_ko_rado_bound axiom is directly provable from Mathlib Finset.erdos_ko_rado: isIntersecting F (every pair meets in ≥1) ↔ Set.Intersecting (no two members Disjoint), isKUniform F k ↔ Set.Sized k, and n≥2k ↔ k≤n/2 (omega). Needs import Mathlib.Combinatorics.SetFamily.KruskalKatona."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
