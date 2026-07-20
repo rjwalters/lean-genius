@@ -56,7 +56,8 @@
       "The cyclic condition 'no nonzero polynomial of degree < deg μ annihilates v' is equivalent to 'the M-order of v equals μ'; when μ = qᵏ the order is some qʲ, and equals qᵏ exactly when qᵏ⁻¹ fails to annihilate v.",
       "Bézout collapses an arbitrary annihilating p to the gcd d = gcd(p, μ), and the prime-power structure of μ forces d to be a pure power qʲ — turning an unstructured hypothesis into a clean divisibility.",
       "The degree obstruction j ≠ k is exactly 'μ does not divide a nonzero polynomial of smaller degree', the same mechanism that made the irreducible case work.",
-      "Commutativity of polynomial evaluations in M is what lets qᵏ⁻¹ = e·d be reordered so that the known relation d(M) v = 0 applies."
+      "Commutativity of polynomial evaluations in M is what lets qᵏ⁻¹ = e·d be reordered so that the known relation d(M) v = 0 applies.",
+      "The characterization degenerates correctly at k = 1: there qᵏ⁻¹ = q⁰ = 1, so qᵏ⁻¹(M) v = v and 'cyclic ⟺ qᵏ⁻¹(M) v ≠ 0' collapses to the sibling's irreducible-case result 'cyclic ⟺ v ≠ 0'. This entry is thus one rung up the primary-decomposition ladder from the base case, and the geometric meaning of qᵏ⁻¹ is 'the unique maximal submodule q·K[X]/(qᵏ)' whose complement is exactly the generators of the local module K[X]/(qᵏ)."
     ],
     "prerequisites": [
       "Parent: cayley-hamilton-minpoly-oq-04-backward-incomplete-01 (IsCyclicVector, gcd_aeval_mulVec_eq_zero)",
@@ -95,12 +96,20 @@
       "mathContext": "Kⁿ as a K[X]-module via X ↦ M; μ = qᵏ gives the local module K[X]/(qᵏ)."
     },
     {
-      "id": "hard",
-      "title": "Hard Direction: qᵏ⁻¹(M) v ≠ 0 ⟹ cyclic",
+      "id": "hard-bezout",
+      "title": "Hard Direction, Phase 1: Bézout Collapse and the Prime-Power Divisor Obstruction",
       "startLine": 52,
+      "endLine": 83,
+      "summary": "cyclic_of_qkm1_ne_zero, first phase. Suppose a nonzero p with deg p < n annihilates v. The parent's Bézout lemma gcd_aeval_mulVec_eq_zero sends d = gcd(p, μ) to an annihilator of v (d(M) v = 0), and d ∣ p, d ∣ μ = qᵏ. Because q is prime (Irreducible.prime), dvd_prime_pow forces d ~ qʲ with j ≤ k. The degree obstruction then rules out j = k: it would give μ = qᵏ ∣ p, so natDegree_le_of_dvd yields n ≤ deg p, contradicting deg p < n (closed by omega). Hence j < k.",
+      "mathContext": "d = gcd(p, qᵏ), d(M)v = 0, d ~ qʲ (j ≤ k); j = k ⟹ μ ∣ p ⟹ n ≤ deg\\,p < n, so j < k."
+    },
+    {
+      "id": "hard-commute",
+      "title": "Hard Direction, Phase 2: Commutativity Contradiction",
+      "startLine": 84,
       "endLine": 91,
-      "summary": "cyclic_of_qkm1_ne_zero: given an annihilating nonzero p of degree < n, Bézout sends d = gcd(p, μ) to an annihilator of v; the prime-power divisor structure makes d ~ qʲ with j ≤ k−1 (j = k would force μ ∣ p), so d ∣ qᵏ⁻¹ and qᵏ⁻¹(M) v = 0 — contradicting the hypothesis.",
-      "mathContext": "d = gcd(p, qᵏ) ~ qʲ, j ≤ k−1 ⟹ d ∣ qᵏ⁻¹ ⟹ qᵏ⁻¹(M) v = e(M)(d(M) v) = 0."
+      "summary": "cyclic_of_qkm1_ne_zero, second phase. With j < k in hand, d ∣ qᵏ⁻¹ (via pow_dvd_pow and Nat.le_sub_one_of_lt), so write qᵏ⁻¹ = e·d. Since aeval-images of polynomials in M commute, qᵏ⁻¹(M) v = e(M)(d(M) v); substituting the Phase-1 relation d(M) v = 0 (map_mul, Matrix.mulVec_mulVec, Matrix.mulVec_zero) gives qᵏ⁻¹(M) v = 0 — directly contradicting the hypothesis qᵏ⁻¹(M) v ≠ 0, so no such p exists and v is cyclic.",
+      "mathContext": "j < k ⟹ d ∣ qᵏ⁻¹, qᵏ⁻¹ = e·d ⟹ qᵏ⁻¹(M) v = e(M)(d(M) v) = 0, contradicting qᵏ⁻¹(M) v ≠ 0."
     },
     {
       "id": "easy",
