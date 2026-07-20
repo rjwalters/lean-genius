@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 1786,
+    "lineCount": 1882,
     "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The two headline placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). Four narrative theorems remain as String-literal descriptors carrying no formal content (curve_branches_are_puiseux, newton_polygon_tropicalization, galois_group_is_profinite_integers, char_zero_required); each merely asserts ∃ desc : String, desc = \"…\" and marks an informal application/connection rather than a machine-checked result. This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
     "mathlib_version": "4.31.0",
     "theoremCount": 63,
@@ -85,76 +85,156 @@
   },
   "sections": [
     {
-      "id": "overview",
+      "id": "header",
       "title": "Overview — Puiseux's Theorem (Wiedijk #41)",
       "startLine": 1,
-      "endLine": 100,
-      "summary": "Imports, file docstring, and namespace setup: states Puiseux's theorem (the field of Puiseux series is algebraically closed in characteristic 0), summarizes what the file contains, and opens the PuiseuxTheorem namespace.",
-      "mathContext": "Puiseux's theorem (Wiedijk #41) states that the field of Puiseux series $K\\{\\{x\\}\\}$ — formal series in fractional powers of $x$ — is algebraically closed whenever $K$ is algebraically closed of characteristic 0. This file surveys the conceptual definition, the closure theorem, the Newton-Puiseux algorithm, Galois theory, applications, and worked examples."
+      "endLine": 116,
+      "summary": "Imports (HahnSeries basics, multiplication, summability, valuation; PowerSeries; IsAlgClosed) and the file docstring: states Puiseux's theorem (the field of fractional power series is algebraically closed in characteristic 0), lays out what the file contains, its mathematical significance, historical context, current 'wip' status, Mathlib dependencies, and references.",
+      "mathContext": "Puiseux's theorem (Wiedijk #41) states that the field of Puiseux series $K\\{\\{x\\}\\} = \\bigcup_{n \\geq 1} K((x^{1/n}))$ — formal series in fractional powers of $x$ — is algebraically closed whenever $K$ is algebraically closed of characteristic 0. This file surveys the conceptual definition, the closure theorem, the Newton–Puiseux algorithm, Galois theory, applications, and worked examples, then builds the honest subring/subalgebra/subfield structure, the ramification filtration, and the order valuation."
     },
     {
-      "id": "puiseux-series",
-      "title": "Puiseux Series via Hahn Series",
-      "startLine": 101,
-      "endLine": 143,
-      "summary": "Defines IsPuiseuxSeries as the common-denominator condition on HahnSeries ℚ K exponents, with illustrative examples of fractional powers.",
-      "mathContext": "A Puiseux series over $K$ is a formal power series in fractional powers of $x$: $\\sum_{n \\geq n_0} a_n x^{n/d}$ for some common denominator $d$. In Lean, formalized as `HahnSeries \\mathbb{Q} K$ with the common-denominator condition `IsPuiseuxSeries`."
+      "id": "part-i-definition",
+      "title": "Part I — Puiseux Series via Hahn Series",
+      "startLine": 117,
+      "endLine": 174,
+      "summary": "Defines IsPuiseuxSeries as the common-denominator condition on the exponents of a HahnSeries ℚ K, and proves isPuiseux_single: every single-term Hahn series a·x^m is a Puiseux series. Establishes the conceptual model that fractional-exponent series live inside HahnSeries ℚ K.",
+      "mathContext": "A Puiseux series over $K$ is a formal series in fractional powers of $x$: $\\sum_{k \\geq k_0} a_k x^{k/d}$ for a single common denominator $d$. Realized as `HahnSeries \\mathbb{Q} K` (well-ordered ℚ-indexed support) cut out by the predicate `IsPuiseuxSeries f`: there exists $n \\geq 1$ with every exponent in $\\tfrac1n\\mathbb{Z}$."
     },
     {
-      "id": "algebraic-closure",
-      "title": "Algebraic Closure Theorem",
-      "startLine": 144,
-      "endLine": 206,
-      "summary": "Main theorem axiomatized: K{{x}} is algebraically closed when K is algebraically closed of characteristic 0.",
-      "mathContext": "The main theorem (Puiseux, 1850): the field of Puiseux series $K\\{\\{x\\}\\}$ is algebraically closed when $K$ is algebraically closed of characteristic 0. Equivalently, every polynomial over $K((x))$ (Laurent series) splits in $K\\{\\{x\\}\\}$. This is the function-field analogue of the fundamental theorem of algebra."
+      "id": "part-ii-algebraic-closure",
+      "title": "Part II — The Algebraic Closure Theorem (binomial base case)",
+      "startLine": 175,
+      "endLine": 316,
+      "summary": "States the algebraic-closure theorem and proves its binomial base case honestly: puiseux_binomial_root gives, over any algebraically closed K, a genuine Puiseux root c^{1/n}·x^{m/n} of Yⁿ = c·xᵐ; puiseux_binomial_ramification/puiseux_binomial_orderTop compute its ramification and orderTop exactly (1/n outside the Laurent field for n≥2); puiseux_binomial_isRoot lifts it to an honest Polynomial.IsRoot of Xⁿ − C(single m c).",
+      "mathContext": "The headline theorem (Puiseux, 1850): $K\\{\\{x\\}\\}$ is algebraically closed when $K$ is algebraically closed of characteristic 0 — the function-field analogue of the fundamental theorem of algebra. Formalized here is the binomial base case: every $Y^n = c\\,x^m$ has the honest root $c^{1/n} x^{m/n}$ of ramification exactly $n$, a single Newton-polygon edge. The full term-by-term assembly for arbitrary polynomials is not formalized (badge 'wip')."
     },
     {
-      "id": "newton-polygon",
-      "title": "Newton-Puiseux Algorithm",
-      "startLine": 207,
-      "endLine": 264,
-      "summary": "The constructive root-finding algorithm: Newton polygon → edge slopes → characteristic polynomial → substitution → recurse.",
-      "mathContext": "Newton's polygon method: given $f(x, y) = \\sum a_{ij} x^i y^j$, plot the support $\\{(i,j) : a_{ij} \\neq 0\\}$ and take the lower convex hull. Each edge of slope $-p/q$ yields a term $y \\sim c \\cdot x^{p/q}$ in the Puiseux expansion. Iterating gives the full series."
+      "id": "part-iii-newton-puiseux",
+      "title": "Part III — The Newton–Puiseux Algorithm",
+      "startLine": 317,
+      "endLine": 402,
+      "summary": "Formalizes the Newton-polygon data: leadingExponentFromSlope maps an edge slope p/q to the leading exponent, and puiseux_nth_root_of_monomial extracts the nth-root branch of a monomial — the constructive engine behind the iterative refinement (Newton polygon → edge slope → characteristic polynomial → substitute → recurse).",
+      "mathContext": "Newton's polygon method: for $f(x,y) = \\sum a_{ij} x^i y^j$, plot the support and take the lower convex hull; each edge of slope $-p/q$ yields a term $y \\sim c\\,x^{p/q}$. Iterating produces the full Puiseux expansion; termination in characteristic 0 follows because the polygon strictly improves at each step."
     },
     {
-      "id": "applications",
-      "title": "Applications: Singularities and Tropical Geometry",
-      "startLine": 265,
-      "endLine": 317,
-      "summary": "Resolution of curve singularities via Puiseux parameterization; connection to tropical geometry through Newton polygon slopes.",
-      "mathContext": "Applications: resolution of algebraic curve singularities via Puiseux parameterization ($y = \\sum a_n t^{n/d}$, $x = t^e$), tropical geometry (Newton polygons as tropical curves), and ramification theory in algebraic geometry."
+      "id": "part-iv-applications",
+      "title": "Part IV — Applications and Examples",
+      "startLine": 403,
+      "endLine": 455,
+      "summary": "Records the geometric applications as informal String descriptors (curve_branches_are_puiseux, newton_polygon_tropicalization): resolution of plane-curve singularities via local Puiseux parameterization, and the Newton polygon as a tropicalization. These carry no formal content — they mark narrative connections.",
+      "mathContext": "Applications: resolution of algebraic curve singularities via Puiseux parameterization ($y = \\sum a_k t^{k/d}$, $x = t^e$), tropical geometry (Newton polygons as tropical curves / tropicalizations), and ramification theory in algebraic geometry."
     },
     {
-      "id": "galois-theory",
-      "title": "Galois Group: Profinite Integers",
-      "startLine": 318,
-      "endLine": 347,
-      "summary": "Gal(K{{x}}/K((x))) ≅ Ẑ acts by x^{1/n} ↦ ζₙ · x^{1/n}; key example in infinite Galois theory.",
-      "mathContext": "The Galois group $\\text{Gal}(K\\{\\{x\\}\\}/K((x))) \\cong \\hat{\\mathbb{Z}}$ acts by $x^{1/n} \\mapsto \\zeta_n \\cdot x^{1/n}$, where $\\hat{\\mathbb{Z}} = \\varprojlim \\mathbb{Z}/n\\mathbb{Z}$ is the profinite completion of $\\mathbb{Z}$. This is a key example in infinite Galois theory."
+      "id": "part-v-galois",
+      "title": "Part V — Galois Theory of Puiseux Series",
+      "startLine": 456,
+      "endLine": 485,
+      "summary": "Records the Galois-theoretic structure as an informal String descriptor (galois_group_is_profinite_integers): Gal(K{{x}}/K((x))) ≅ Ẑ acts by x^{1/n} ↦ ζₙ·x^{1/n}. Not formalized — a narrative marker.",
+      "mathContext": "The Galois group $\\mathrm{Gal}(K\\{\\{x\\}\\}/K((x))) \\cong \\hat{\\mathbb{Z}} = \\varprojlim \\mathbb{Z}/n\\mathbb{Z}$ (profinite integers) acts by $x^{1/n} \\mapsto \\zeta_n\\,x^{1/n}$. Every finite quotient $\\mathbb{Z}/n\\mathbb{Z}$ is realized by $K((x^{1/n}))/K((x))$ — a key example in infinite Galois theory."
     },
     {
-      "id": "calculations",
-      "title": "Concrete Calculations",
-      "startLine": 348,
-      "endLine": 400,
-      "summary": "Worked examples: Y² = x (square root), Y² = x³ (cusp), Y³ = x (cube root) with Newton polygon analysis.",
-      "mathContext": "Worked examples: $y^2 = x$ gives $y = x^{1/2}$ (Newton polygon has slope $-1/2$); $y^2 = x^3$ (cusp) gives $y = x^{3/2}$; $y^3 = x$ gives $y = x^{1/3}$. Each demonstrates the Newton polygon algorithm and the fractional power expansion."
+      "id": "part-vi-calculations",
+      "title": "Part VI — Concrete Calculations",
+      "startLine": 486,
+      "endLine": 571,
+      "summary": "Worked examples computed as honest theorems: square_root_puiseux (Y² = x ⇒ y = x^{1/2}) and cusp_parameterization (Y² = x³, the cusp ⇒ y = x^{3/2}), each exercising the binomial-root machinery on a specific Newton-polygon edge.",
+      "mathContext": "Worked examples: $y^2 = x$ gives $y = x^{1/2}$ (slope $-1/2$); the cusp $y^2 = x^3$ gives $y = x^{3/2}$; $y^3 = x$ gives $y = x^{1/3}$. Each instantiates the Newton-polygon algorithm and the fractional-power expansion."
     },
     {
-      "id": "connections",
-      "title": "Connections: Hensel's Lemma and Characteristic Zero",
-      "startLine": 401,
-      "endLine": 448,
-      "summary": "p-adic analogy via Hensel's lemma; failure in characteristic p demonstrated by Artin-Schreier counterexample.",
-      "mathContext": "The $p$-adic analogy: Hensel's lemma plays the same role for $p$-adic completions $\\mathbb{Q}_p$ that Puiseux's theorem plays for $K((x))$ — both lift approximate roots to exact roots. In characteristic $p > 0$, Puiseux's theorem fails: the Artin-Schreier equation $y^p - y = x^{-1}$ has no solution in $\\overline{\\mathbb{F}_p}\\{\\{x\\}\\}$."
+      "id": "part-vii-connections",
+      "title": "Part VII — Connections to Other Theorems",
+      "startLine": 572,
+      "endLine": 619,
+      "summary": "Records the p-adic / characteristic-zero connections, including char_zero_required (informal String descriptor of the Artin–Schreier obstruction): Hensel's lemma is the p-adic analogue, and the characteristic-0 hypothesis is essential.",
+      "mathContext": "The $p$-adic analogy: Hensel's lemma lifts approximate roots to exact roots over $\\mathbb{Q}_p$ just as Puiseux's theorem does over $K((x))$. In characteristic $p>0$ the theorem fails: the Artin–Schreier equation $y^p - y = x^{-1}$ has no Puiseux root over $\\overline{\\mathbb{F}_p}$."
+    },
+    {
+      "id": "part-viii-subring",
+      "title": "Part VIII — The Puiseux Series Form a Subring",
+      "startLine": 620,
+      "endLine": 756,
+      "summary": "Proves IsPuiseuxSeries is closed under the ring operations — isPuiseux_zero/one/add/neg/sub/mul/pow — by common-denominator arithmetic on exponent supports (denominator n·m works for both sum and product), then bundles them into puiseuxSubring : Subring (HahnSeries ℚ K). This turns the prose claim 'the Puiseux series form a ring' into an honest structure.",
+      "mathContext": "Closure under $+,-,\\times$ follows because if $f$ has exponents in $\\tfrac1n\\mathbb{Z}$ and $g$ in $\\tfrac1m\\mathbb{Z}$, then $f\\pm g$ and $f\\cdot g$ have exponents in $\\tfrac{1}{nm}\\mathbb{Z}$. Packaged as an honest `Subring (HahnSeries \\mathbb{Q} K)` — the structural backbone the narrative asserted."
+    },
+    {
+      "id": "part-ix-subalgebra",
+      "title": "Part IX — The Puiseux Series Form a K-Subalgebra",
+      "startLine": 757,
+      "endLine": 807,
+      "summary": "Upgrades the subring to puiseuxSubalgebra : Subalgebra K (HahnSeries ℚ K) via isPuiseux_algebraMap (constants are Puiseux series), and proves isPuiseux_inv_single: the inverse of a single-term series is again a Puiseux series — the base case for the full inverse-closure in Part X.",
+      "mathContext": "Extending the subring with the scalar action $K \\to \\mathrm{HahnSeries}\\,\\mathbb{Q}\\,K$, $c \\mapsto c\\cdot 1$, gives a $K$-subalgebra. The single-term inverse $(a\\,x^m)^{-1} = a^{-1} x^{-m}$ stays Puiseux, seeding the general inverse-closure argument."
+    },
+    {
+      "id": "part-x-subfield",
+      "title": "Part X — Full Inverse-Closure: the Puiseux Series Form a Subfield",
+      "startLine": 808,
+      "endLine": 930,
+      "summary": "Proves the general inverse-closure isPuiseux_inv: if f is a Puiseux series then so is f⁻¹ (using exists_embDomain_of_support_subset_range to control the support of the Hahn-series inverse), and assembles puiseuxSubfield : Subfield (HahnSeries ℚ K). This completes the field structure the theorem's prose depends on.",
+      "mathContext": "The Hahn-series inverse of $f = a_{m}x^{m}(1 + \\text{higher})$ is $a_m^{-1}x^{-m}\\sum_{k}(-\\text{higher})^k$; its support stays inside the same $\\tfrac1n\\mathbb{Z}$, so $f^{-1}$ is Puiseux. With Part VIII this yields an honest `Subfield (HahnSeries \\mathbb{Q} K)`."
+    },
+    {
+      "id": "part-xi-ramification-filtration",
+      "title": "Part XI — The Ramification Filtration (ring level)",
+      "startLine": 931,
+      "endLine": 1097,
+      "summary": "Fixes the existential ramification index: IsPuiseuxOfRamification n f (exponents in (1/n)ℤ), proved equivalent to IsPuiseuxSeries via isPuiseux_iff_exists_ramification. Builds the ring-level filtration puiseuxRamificationSubring K n, shows it is monotone in n∣n′, directed, and has supremum the full puiseuxSubring (iSup_puiseuxRamificationSubring).",
+      "mathContext": "$\\mathrm{IsPuiseuxSeries}$ is $\\exists n,\\ \\mathrm{IsPuiseuxOfRamification}\\,n$. Fixing $n$ gives the level-$n$ Laurent ring $K((x^{1/n}))$; these form a directed system indexed by $(\\mathbb{N}^+, \\mid)$ whose colimit $\\bigsqcup_n K((x^{1/n}))$ is exactly the Puiseux ring."
+    },
+    {
+      "id": "part-xii-ramification-tower",
+      "title": "Part XII — The Ramification Tower at the Field Level",
+      "startLine": 1098,
+      "endLine": 1218,
+      "summary": "Lifts the filtration to fields: isPuiseuxOfRamification_inv shows a fixed ramification level is inverse-closed, giving puiseuxRamificationSubfield K n; proves monotonicity, the fit inside puiseuxSubfield, directedness, and iSup_puiseuxRamificationSubfield = the full Puiseux subfield.",
+      "mathContext": "Each level-$n$ subring is already a field ($K((x^{1/n}))$), because inverse-closure refines to the same ramification level. The tower $\\{K((x^{1/n}))\\}_n$ is directed under divisibility with union the Puiseux field — the field-level colimit picture."
+    },
+    {
+      "id": "part-xiii-value-group-grading",
+      "title": "Part XIII — The Value Group: ℚ-graded vs ℤ-graded",
+      "startLine": 1219,
+      "endLine": 1317,
+      "summary": "Computes attained orderTop values: puiseux_orderTop_range shows the Puiseux field attains every value in ℚ (ℚ-graded), while ramification_orderTop_range shows the level-n Laurent field attains exactly (1/n)ℤ (ℤ-graded after rescaling), via exists_puiseux_orderTop_eq / exists_ramification_orderTop_eq.",
+      "mathContext": "The valuation $\\mathrm{orderTop}$ (least exponent) takes the Puiseux field onto all of $\\mathbb{Q}$, whereas $K((x))$ only reaches $\\mathbb{Z}$ and $K((x^{1/n}))$ reaches $\\tfrac1n\\mathbb{Z}$. This is the value-group manifestation of ramification: passing to $x^{1/n}$ multiplies the value group by $1/n$."
+    },
+    {
+      "id": "part-xiv-value-chain",
+      "title": "Part XIV — The Chain ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ … and its Union ℚ",
+      "startLine": 1318,
+      "endLine": 1418,
+      "summary": "Assembles the per-level value sets into a tower: ramification_valueGroup_mono (monotone in n∣n′), ramification_valueGroup_directed, and iUnion_ramification_valueGroup showing the union over all n is all of ℚ — the set-level statement that the Puiseux value group exhausts ℚ.",
+      "mathContext": "As raw sets in $\\mathrm{WithTop}\\,\\mathbb{Q}$, the level value groups form the increasing chain $\\mathbb{Z} \\subseteq \\tfrac12\\mathbb{Z} \\subseteq \\tfrac13\\mathbb{Z} \\subseteq \\cdots$ (directed by $n \\mid n'$) whose union is $\\bigcup_n \\tfrac1n\\mathbb{Z} = \\mathbb{Q}$."
+    },
+    {
+      "id": "part-xv-value-subgroup",
+      "title": "Part XV — The Value Group as an Honest AddSubgroup ℚ",
+      "startLine": 1419,
+      "endLine": 1618,
+      "summary": "Upgrades the set-level chain to genuine groups: ramificationValueSubgroup n = the cyclic AddSubgroup ⟨1/n⟩ ≤ ℚ. Proves the order-embedding ramificationValueSubgroup_le_iff ((1/n)ℤ ≤ (1/n′)ℤ ↔ n∣n′) and ramificationValueSubgroup_injective (distinct levels give distinct subgroups), plus the lattice laws gcd_bezout / inf / sup relating meet and join to gcd/lcm.",
+      "mathContext": "The level-$n$ value group is the cyclic subgroup $\\langle 1/n\\rangle = \\tfrac1n\\mathbb{Z} \\le \\mathbb{Q}$. The map $n \\mapsto \\tfrac1n\\mathbb{Z}$ is an order embedding of the divisibility poset $(\\mathbb{N}^+,\\mid)$ into $\\mathrm{AddSubgroup}\\,\\mathbb{Q}$: $\\tfrac1n\\mathbb{Z} \\le \\tfrac1{n'}\\mathbb{Z} \\iff n \\mid n'$, with $\\inf = \\tfrac1{\\gcd}\\mathbb{Z}$ and $\\sup = \\tfrac1{\\mathrm{lcm}}\\mathbb{Z}$ (Bézout)."
+    },
+    {
+      "id": "part-xvi-order-valuation",
+      "title": "Part XVI — orderTop as a Genuine HahnSeries.addVal",
+      "startLine": 1619,
+      "endLine": 1763,
+      "summary": "Packages the order function as Mathlib's first-class AddValuation: puiseuxAddVal K : AddValuation (HahnSeries ℚ K) (WithTop ℚ), with the valuation axioms puiseuxAddVal_mul (v(fg)=v f+v g), puiseuxAddVal_add (ultrametric min ≤ v(f+g)), the field laws puiseuxAddVal_inv/div/pow, and surjectivity results (value group all of WithTop ℚ; level-n exactly (1/n)ℤ).",
+      "mathContext": "The order valuation is Mathlib's `HahnSeries.addVal \\mathbb{Q} K : \\mathrm{AddValuation}\\,(\\mathrm{HahnSeries}\\,\\mathbb{Q}\\,K)\\,(\\mathrm{WithTop}\\,\\mathbb{Q})$, satisfying $v(fg)=v f+v g$, the ultrametric $\\min(vf,vg)\\le v(f+g)$, $v(f^{-1})=-vf$, $v(f/g)=vf-vg$, and $v(f)=\\top \\iff f=0$. This upgrades the ad-hoc orderTop computations of Parts XIII–XV to a genuine valuation object with all axioms stated."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 449,
-      "endLine": 471,
-      "summary": "Recap of the key results — Puiseux's theorem, the Newton-Puiseux algorithm, the Galois group Ẑ, and applications — and the theorem's significance bridging algebra, analysis, and geometry.",
-      "mathContext": "Puiseux's theorem bridges algebra (algebraic closure, Galois theory with $\\text{Gal} \\cong \\hat{\\mathbb{Z}}$), analysis (convergent local expansions), and geometry (resolution of singularities, branch points), making it a foundational result for the local study of algebraic curves."
+      "title": "Summary — Key Results",
+      "startLine": 1764,
+      "endLine": 1786,
+      "summary": "Recap of the key results: the binomial base case of Puiseux's theorem, the Newton–Puiseux algorithm, the subring/subalgebra/subfield structure, the ramification filtration and its value-group tower, and the order valuation — plus the theorem's significance bridging algebra, analysis, and geometry.",
+      "mathContext": "Puiseux's theorem bridges algebra (algebraic closure, Galois theory with $\\mathrm{Gal} \\cong \\hat{\\mathbb{Z}}$), analysis (convergent local expansions), and geometry (resolution of singularities, branch points), making it foundational for the local study of algebraic curves."
+    },
+    {
+      "id": "properness",
+      "title": "Properness — the Puiseux Field is a Strict Subfield",
+      "startLine": 1787,
+      "endLine": 1882,
+      "summary": "Shows the subfield structure is non-vacuous: nonPuiseuxSeries K is an explicit Hahn series with unbounded-denominator exponents (the ω-chain nonPuiseuxExp n = −1/(n+1), monotone with IsPWO support) that is not Puiseux; not_isPuiseuxSeries_nonPuiseuxSeries, exists_not_isPuiseuxSeries, and puiseuxSubfield_ne_top conclude IsPuiseuxSeries cuts out a proper subfield of HahnSeries ℚ K.",
+      "mathContext": "Not every Hahn series is Puiseux: the series with support $\\{-\\tfrac1{n+1} : n \\in \\mathbb{N}\\}$ has exponents of unbounded denominator, so it lies in no single $\\tfrac1n\\mathbb{Z}$. Hence `puiseuxSubfield K \\ne \\top` — the Puiseux predicate is a genuine restriction, making the subring/subalgebra/subfield of Parts VIII–X strict substructures."
     }
   ],
   "conclusion": {
@@ -179,7 +259,7 @@
       "Polynomial"
     ],
     "namespace": "PuiseuxTheorem",
-    "lineCount": 1786,
+    "lineCount": 1882,
     "axiomCount": 0,
     "theoremCount": 68,
     "definitionCount": 10,
