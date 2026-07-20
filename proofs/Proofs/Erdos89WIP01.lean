@@ -163,4 +163,66 @@ theorem minDistinctDistances_two : minDistinctDistances 2 = 1 := by
     rw [← hSeq]
     exact one_le_numDistinctDistances_of_two_le_card S (by omega)
 
+/-! ## Subset monotonicity and monotonicity of `g`
+
+Adding points to a configuration can only add distances, and every `n`-point
+configuration restricts to an `(n+1)`-point one by deleting a point.  Together
+these give that Erdős's extremal function `g(n) = minDistinctDistances n` is
+nondecreasing, and pin the remaining low values `g(0) = g(1) = 0`. -/
+
+/-- Distinct-distance sets are monotone under inclusion. -/
+theorem distinctDistances_mono {S T : Finset (EuclideanSpace ℝ (Fin 2))}
+    (h : S ⊆ T) : distinctDistances S ⊆ distinctDistances T := by
+  rw [distinctDistances_eq_image, distinctDistances_eq_image]
+  exact Finset.image_subset_image (Finset.offDiag_mono h)
+
+/-- The distinct-distance count is monotone under inclusion. -/
+theorem numDistinctDistances_mono {S T : Finset (EuclideanSpace ℝ (Fin 2))}
+    (h : S ⊆ T) : numDistinctDistances S ≤ numDistinctDistances T :=
+  Finset.card_le_card (distinctDistances_mono h)
+
+/-- For every `n` there is an `n`-point configuration (the plane is infinite),
+so the defining set of `minDistinctDistances n` is always nonempty. -/
+theorem exists_card_eq (n : ℕ) :
+    ∃ S : Finset (EuclideanSpace ℝ (Fin 2)), S.card = n :=
+  Infinite.exists_subset_card_eq _ n
+
+/-- **Erdős's function is nondecreasing.**  `g(n) ≤ g(n+1)`: take an
+`(n+1)`-point set `U` attaining `g(n+1)` (the minimum is achieved since such sets
+exist), delete a point to get an `n`-point subset `S ⊆ U`; then
+`g(n) ≤ numDistinctDistances S ≤ numDistinctDistances U = g(n+1)`. -/
+theorem minDistinctDistances_mono : Monotone minDistinctDistances := by
+  apply monotone_nat_of_le_succ
+  intro n
+  obtain ⟨T, hTcard⟩ := exists_card_eq (n + 1)
+  have hne : {numDistinctDistances S |
+      (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = n + 1)}.Nonempty :=
+    ⟨numDistinctDistances T, T, hTcard, rfl⟩
+  obtain ⟨U, hUcard, hUeq⟩ := Nat.sInf_mem hne
+  have hUpos : U.Nonempty := by rw [← Finset.card_pos, hUcard]; omega
+  obtain ⟨a, ha⟩ := hUpos
+  have hScard : (U.erase a).card = n := by
+    rw [Finset.card_erase_of_mem ha, hUcard]
+  calc minDistinctDistances n
+      ≤ numDistinctDistances (U.erase a) := minDistinctDistances_le_of_card_eq hScard
+    _ ≤ numDistinctDistances U := numDistinctDistances_mono (Finset.erase_subset a U)
+    _ = minDistinctDistances (n + 1) := hUeq
+
+/-- **`g(0) = 0`.** The only `0`-point set is empty and determines no distance. -/
+theorem minDistinctDistances_zero : minDistinctDistances 0 = 0 := by
+  refine Nat.le_zero.mp ?_
+  calc minDistinctDistances 0
+      ≤ numDistinctDistances (∅ : Finset (EuclideanSpace ℝ (Fin 2))) :=
+        minDistinctDistances_le_of_card_eq Finset.card_empty
+    _ = 0 := numDistinctDistances_eq_zero_of_card_le_one _ (by simp)
+
+/-- **`g(1) = 0`.** A single point determines no distance. -/
+theorem minDistinctDistances_one : minDistinctDistances 1 = 0 := by
+  refine Nat.le_zero.mp ?_
+  have hcard : ({0} : Finset (EuclideanSpace ℝ (Fin 2))).card = 1 := Finset.card_singleton _
+  calc minDistinctDistances 1
+      ≤ numDistinctDistances ({0} : Finset (EuclideanSpace ℝ (Fin 2))) :=
+        minDistinctDistances_le_of_card_eq hcard
+    _ = 0 := numDistinctDistances_eq_zero_of_card_le_one _ (by rw [hcard])
+
 end Erdos89
