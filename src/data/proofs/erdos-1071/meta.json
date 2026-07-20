@@ -72,7 +72,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 323,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `s` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 's'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom (danzer_finite_maximal_packing), 0 sorries. Zorn existence proof added. Danzer finite maximal packing axiomatized.",
+    "assumptions": "VERIFIED under Lean v4.31 (host-verified via `lake env lean`, EXIT=0, 0 errors, 0 sorries). The #39061 audit note (retracting this entry as a Class A 'never-compiled / unknownIdentifier `s`' case) was a FALSE POSITIVE: the source has no `set_option autoImplicit true`, every `s` is a bound parameter (∀ s / (s : UnitSegment)), and the file compiles cleanly with only `push_neg` deprecation warnings. The formalization carries exactly ONE axiom, `danzer_finite_maximal_packing` (Danzer's SOLVED result — a finite maximal packing of unit segments in [0,1]² exists; the $10 Erdős prize was awarded), plus 23 machine-checked supporting theorems and the OPEN part 1071(b) (does some region admit a countably infinite maximal packing?) stated as a definition. status=axiomatized / badge=axiom / axiomCount=1 accordingly.",
     "theoremCount": 23,
     "definitionCount": 16
   },
