@@ -193,3 +193,56 @@ Bertrand gives `q ≤ 2x`; `q−p ≤ maxPrimeGap(2x) ≤ εx` eventually via th
 Nat well-ordering construction absent from both this file and Mathlib. That is the honest next
 tractable-but-nontrivial target; it was scoped this session but deferred rather than shipped as an
 unfinished fragment. No code change made.
+
+## Session 2026-07-19 (researcher-1) — PRIMES IN SHORT INTERVALS (the deferred nontrivial target) — VERIFIED
+
+The 2026-07-12 saturation assessment named exactly one genuinely-new direction and
+deferred it as "tractable but nontrivial": **BHP ⟹ ∀ε>0, ∀ᶠ x, ∃ prime in (x,(1+ε)x]**,
+which "requires constructing the largest-prime-≤-x / next-prime pair and proving their
+consecutiveness (~50-line Nat well-ordering, absent from file and Mathlib)." Built it.
+
+**Two new theorems (37 → 39 decls; lines 728 → 821; axiomCount unchanged = 1):**
+
+1. `exists_consecutive_primes_straddling (x) (hx : 2 ≤ x) : ∃ p q, Prime p ∧ Prime q ∧
+   p ≤ x ∧ x < q ∧ p < q ∧ (∀ r, Prime r → p<r → q≤r) ∧ q ≤ 2x`. **Axiom-free**
+   ([propext, Classical.choice, Quot.sound]). Construction:
+   - `q` = smallest prime > x: `Nat.exists_infinite_primes (x+1)` gives the nonempty
+     witness; `Nat.find` + `Nat.find_spec`/`Nat.find_min'` inside a `classical` block
+     (keeps the DecidablePred instance local — no leak) give minimality.
+   - `p` = largest prime ≤ x: `((Finset.range (x+1)).filter Nat.Prime).max'` (nonempty
+     via 2). Obtained through an `∃ p ∈ …, ∀ m ∈ …, m ≤ p` existential (Finset.max'_mem
+     + Finset.le_max') to AVOID `set`/`.max'` defeq-unification pain with `apply`.
+   - Consecutiveness: a prime `r > p` is either `≤ x` (then `r ∈ filter`, so `r ≤ p` by
+     maximality — contradiction) or `> x` (then `q ≤ r` by minimality). `by_cases hrx`.
+   - `q ≤ 2x`: `Nat.bertrand p hp.ne_zero` gives prime `s ∈ (p, 2p]`; consecutiveness
+     `q ≤ s`, and `s ≤ 2p ≤ 2x` — one `omega`.
+
+2. `bhp_prime_in_short_interval (ε) (hε : 0 < ε) : ∀ᶠ x, ∃ q, Prime q ∧ (x:ℝ)<q ∧
+   (q:ℝ) ≤ (1+ε)*x`. Inherits only `baker_harman_pintz`
+   (#print axioms = {propext, Classical.choice, Quot.sound, baker_harman_pintz}).
+   - `maxPrimeGap (2x) ≤ ε·x` eventually: `bhp_gap_eventually_le_eps (ε/2)` pulled back
+     along `Tendsto (2·) atTop atTop` (`h2x.eventually`), then `(ε/2)·(2x) = ε·x`.
+   - `q - p ∈ primeGapSet (2x)` (membership witness `⟨p,q,hp,hq,hpq,hq2x,hcons,rfl⟩`,
+     needs `q ≤ 2x`), so `q - p ≤ maxPrimeGap (2x)` via `le_csSup primeGapSet_bddAbove`.
+   - `q = p + (q-p) ≤ x + maxPrimeGap(2x)` (ℕ omega, p≤x), cast to ℝ, `linarith` with the
+     ε-bound: `q ≤ x + εx = (1+ε)x`.
+
+**Why this is NOT enumeration theater:** it produces a concrete prime near x, a different
+logical form from every prior asymptotic (littleO/bigO/rpow/consecutive-gap) packaging.
+It strictly sharpens Bertrand's fixed interval `(x,2x]` to an ε-shrinking one, conditional
+on BHP. The new `exists_consecutive_primes_straddling` is reusable, axiom-free
+infrastructure (the straddling-pair analogue of the file's large-gap
+`exists_consecutive_prime_gap_ge`).
+
+**GOTCHA:** `tendsto_atTop_mono (fun x => by omega) tendsto_id` FAILS — the mono hyp type
+is `∀ n, id n ≤ 2n` and omega chokes on the un-reduced `id x`; use
+`fun x => by simp only [id_eq]; omega`.
+
+**Verification.** `./proofs/scripts/docker-build.sh Proofs.Erdos1138OQ03OQ01`
+→ `✔ Built (Lean v4.31.0)`, 0 errors. Only pre-existing `push_neg` deprecation warnings
+(in the older `exists_consecutive_prime_gap_ge` block, not new code). `#print axioms`
+confirmed both results as stated above. meta synced (stale 418L/16-29thm → 821L/37thm).
+
+**Remaining open:** only lever left is proving/replacing `baker_harman_pintz` itself
+(deep analytic number theory, out of session scope). The elementary/abstract corollary
+surface — asymptotic AND now concrete-existence — is exhausted.
