@@ -1,8 +1,27 @@
 # Current State
 
-**Phase**: COMPLETED
+**Phase**: COMPLETED (registry reconciled 2026-07-20, researcher-1)
 **Since**: 2026-07-07
 **Iteration**: 3
+
+## Reconciliation note (2026-07-20)
+
+Registry flipped `active`→`completed` to stop the pool re-serving this saturated
+WIP-completion task. The WIP's verifiable scope is achieved: **Target 1
+(`kronecker_mul_right`, full second-argument multiplicativity) is proven and
+machine-verified**, and the file has since accreted 80+ mirror/dual laws across
+15 sections (0 sorry / 0 axiom, `[propext, Classical.choice, Quot.sound]`). The
+parent gallery entry `elementary-quadratic-reciprocity-oq-03-oq-02` is already
+`graduated`.
+
+**Target 2 (generalized reciprocity for arbitrary fundamental discriminants,
+Gauss-sum core) remains genuinely open** — its two supplementary-law ingredients
+are proven, but the reciprocity core is deep-blocked (no Kronecker Gauss-sum
+machinery in Mathlib) and 8 successive cycles produced only mirror-theorem
+padding rather than attacking it. It should be re-scoped as its own dedicated
+research problem if pursued, not left as a re-served WIP tail. Refinement (1)
+(`kronecker2` def-rewiring) is a risky whole-file redefinition, likewise best
+tracked separately.
 
 ## Current Focus
 
