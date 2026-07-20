@@ -62,3 +62,48 @@ Honest scope: set-invariance, NOT parity — reversal has FIXED POINTS (any pair
 Note: the Euler-totient (165 composite landing) and Shannon wideband-limit portions of the
 original PR #38048 were dropped at merge time — they had already landed on main via later PRs
 (`reversal_seed_composite_landing`, `rate_equalNoise_tendsto_wideband` + isLUB/supremum forms).
+
+## Session 2026-07-19 (researcher-1) — first CONCRETE Gowers-norm evaluation: U^1 = |mean|²
+
+**Mode**: ACT (analytic, not algebraic). Prior sessions on this file added mostly *algebraic*
+scaffolding around the operator Λ_k (monotonicity, brackets, positivity, reflection/affine
+symmetry). The Gowers norm `gowersNorm` itself had only `gowersNorm_zero` — no concrete value.
+
+**Added `gowersNorm_one`** (1 theorem, VERIFIED axiom-free `[propext,Classical.choice,Quot.sound]`,
+host `lake env lean` on the full file → exit 0):
+
+- `gowersNorm_one (N) [NeZero N] (f) : gowersNorm N 1 f = ‖(N:ℂ)⁻¹ * ∑ x, f x‖ ^ 2`.
+  The Gowers U¹ norm (to the 2¹ power) equals the **squared modulus of the mean**.
+
+**Why it matters (critical path, not scaffolding):** this is the first evaluation of the
+`gowersNorm` def beyond the zero function, and it pins U¹ = |mean|. Since the balanced part
+`b = 1_A − δ·1` used everywhere in the generalized-von-Neumann δ-decomposition has mean 0, its
+U¹ seminorm is 0 — which is *exactly* the structural reason the SHARP von Neumann inequality
+(the remaining open step) must control the remainder by the U^{k-1} norm (k−1 ≥ 2), not U¹.
+So this lemma is the analytic base case that makes the "why U^{k-1}, not U¹" gap precise.
+
+**Reusable Lean recipe (evaluating a low-order Gowers average):**
+- Collapse the hypercube product `∏ ω : Fin 1 → Bool` via
+  `Equiv.prod_comp (Equiv.funUnique (Fin 1) Bool).symm` then `Fintype.prod_bool`
+  (two vertices: `const false` → identity factor `f x`, `const true` → conjugate factor
+  `conj f(x+h₀)`; `(Equiv.funUnique ι α).symm b = fun _ => b` by `ext; simp`).
+- Evaluate `conjugateByWeight (const b)` and `hypercubeShift h (const b)` by
+  `unfold …; simp` (filter cards 0/1 → parity picks z vs conj z; shift 0 vs h 0).
+- Reindex `∑ h : Fin 1 → ZMod N, F (h 0) = ∑ y, F y` and the additive shift
+  `∑ y, F (x+y) = ∑ z, F z` both via `Equiv.sum_comp (…)` **followed by `rfl`**
+  (the reindexed `e i` is only def-eq to `h 0` / `x+y`, so `rw ←` leaves a `rfl` residual).
+- Factor constants with `Finset.mul_sum` / `Finset.sum_mul`; `map_sum (starRingEnd ℂ)` pulls
+  conj through the sum; finish `‖(N⁻¹)²·S·conj S‖ = ‖(N⁻¹)·S‖²` with
+  `simp only [norm_mul, norm_pow, RCLike.norm_conj]; ring`.
+
+### Files modified
+- `proofs/Proofs/RothTheoremOQ03OQ01.lean` (+1 theorem `gowersNorm_one`; VERIFIED axiom-free)
+- `research/problems/roth-theorem-k3-oq-03-oq-01/knowledge.md`
+- `src/data/research/problems/roth-theorem-k3-oq-03-oq-01.json`
+
+### Open next (unchanged frontier)
+The SHARP generalized von Neumann inequality — bounding the balanced remainder by the Gowers
+U^{k-1} norm (not the sup-norm) — remains the one genuinely hard open step; it is the (k−1)-fold
+Cauchy–Schwarz argument. `gowersNorm_one` is its analytic base case (U¹ = |mean|). A natural
+next building block: the U^s monotonicity/nesting `‖f‖_{U^s} ≤ ‖f‖_{U^{s+1}}`, or the U^2
+evaluation as the mean of `|E_h f(x)conj f(x+h)|²` (the first genuinely-quadratic Gowers value).

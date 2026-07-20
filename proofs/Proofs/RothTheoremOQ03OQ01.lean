@@ -123,6 +123,63 @@ theorem gowersNorm_zero (N s : ℕ) [NeZero N] :
         Finset.sum_congr rfl (fun h _ => hzero x h))]
   simp
 
+/-- **The Gowers `U^1` norm is the squared modulus of the mean.**
+    For `s = 1` the hypercube `{0,1}^1` has two vertices, so the Gowers average
+    collapses to `E_{x,h} f(x)·conj f(x+h) = |E_x f(x)|²`; hence
+    `‖f‖_{U^1}^{2} = ‖(N⁻¹) ∑_x f(x)‖²`, the squared modulus of the mean.
+
+    This is the first *concrete evaluation* of `gowersNorm` beyond the zero
+    function (`gowersNorm_zero`), and it ties the Gowers machinery directly to
+    the density `δ = E 1_A` used throughout the `1_A = δ·1 + b` decomposition:
+    the `U^1` seminorm is exactly `|mean|`, which annihilates the balanced part
+    `b` (`E b = 0`) — the structural reason the sharp generalized von Neumann
+    inequality must climb to the `U^{k-1}` norm rather than `U^1`.
+
+    Proof: reindex the length-1 hypercube product over `Fin 1 → Bool` (two
+    vertices `const false`/`const true`) to `f x · conj f(x+h₀)`
+    (`Equiv.prod_comp`, `Fintype.prod_bool`), then reindex the `Fin 1 → ZMod N`
+    average of `h` and the additive shift `y = x + h₀` (`Equiv.sum_comp`) so the
+    double average telescopes to `S·conj S` with `S = ∑_x f x`; finally
+    `‖(N⁻¹)²·(S·conj S)‖ = ‖(N⁻¹)·S‖²`. -/
+theorem gowersNorm_one (N : ℕ) [NeZero N] (f : ZMod N → ℂ) :
+    gowersNorm N 1 f = ‖(N : ℂ)⁻¹ * ∑ x : ZMod N, f x‖ ^ 2 := by
+  have hprod : ∀ (x : ZMod N) (h : Fin 1 → ZMod N),
+      (∏ ω : Fin 1 → Bool, conjugateByWeight ω (f (x + hypercubeShift h ω)))
+        = f x * starRingEnd ℂ (f (x + h 0)) := by
+    intro x h
+    rw [← Equiv.prod_comp (Equiv.funUnique (Fin 1) Bool).symm
+          (fun ω => conjugateByWeight ω (f (x + hypercubeShift h ω))),
+       Fintype.prod_bool]
+    have he : ∀ b : Bool, (Equiv.funUnique (Fin 1) Bool).symm b = (fun _ => b) := by
+      intro b; ext i; simp
+    simp only [he]
+    have hfalse : conjugateByWeight (fun _ : Fin 1 => false)
+        (f (x + hypercubeShift h (fun _ => false))) = f x := by
+      unfold conjugateByWeight hypercubeShift; simp
+    have htrue : conjugateByWeight (fun _ : Fin 1 => true)
+        (f (x + hypercubeShift h (fun _ => true))) = starRingEnd ℂ (f (x + h 0)) := by
+      unfold conjugateByWeight hypercubeShift; simp
+    rw [hfalse, htrue]; ring
+  have hinner : ∀ x : ZMod N, (∑ h : Fin 1 → ZMod N, starRingEnd ℂ (f (x + h 0)))
+      = starRingEnd ℂ (∑ z : ZMod N, f z) := by
+    intro x
+    rw [show (∑ h : Fin 1 → ZMod N, starRingEnd ℂ (f (x + h 0)))
+          = ∑ y : ZMod N, starRingEnd ℂ (f (x + y)) from by
+        rw [← Equiv.sum_comp (Equiv.funUnique (Fin 1) (ZMod N))
+              (fun y => starRingEnd ℂ (f (x + y)))]; rfl]
+    rw [show (∑ y : ZMod N, starRingEnd ℂ (f (x + y)))
+          = ∑ z : ZMod N, starRingEnd ℂ (f z) from by
+        rw [← Equiv.sum_comp (Equiv.addLeft x) (fun z => starRingEnd ℂ (f z))]; rfl]
+    exact (map_sum (starRingEnd ℂ) f Finset.univ).symm
+  have hsum : (∑ x : ZMod N, ∑ h : Fin 1 → ZMod N,
+        ∏ ω : Fin 1 → Bool, conjugateByWeight ω (f (x + hypercubeShift h ω)))
+      = (∑ x : ZMod N, f x) * starRingEnd ℂ (∑ x : ZMod N, f x) := by
+    simp_rw [hprod, ← Finset.mul_sum, hinner, ← Finset.sum_mul]
+  unfold gowersNorm
+  rw [hsum]
+  simp only [norm_mul, norm_pow, RCLike.norm_conj]
+  ring
+
 /-- The k-AP counting operator on the constant tuple `(c,…,c)` equals
     `c ^ k`: the inner product is `∏_{i} c = cᵏ`, and the normalized
     double average `(N⁻¹)² · ∑_{x,d} cᵏ = cᵏ` cancels the `N²` pairs
