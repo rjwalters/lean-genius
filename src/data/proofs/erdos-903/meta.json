@@ -55,7 +55,7 @@
       "Noted (in docstring only, not axiomatized) the stronger bound t ≥ n + 1.148p for non-broken-projective-plane designs"
     ],
     "axiomCount": 5,
-    "lineCount": 211,
+    "lineCount": 205,
     "assumptions": "5 axioms: de_bruijn_erdos, projective_plane_design, efsw_1985, gap_theorem, fisher_inequality. 0 sorries.",
     "theoremCount": 3,
     "definitionCount": 8
@@ -83,63 +83,63 @@
       "title": "Basic Definitions",
       "summary": "BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize",
       "startLine": 29,
-      "endLine": 56,
+      "endLine": 53,
       "mathContext": "Formal definition: BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize"
     },
     {
       "id": "de-bruijn-erdos",
       "title": "The de Bruijn-Erdős Theorem",
       "summary": "de_bruijn_erdos axiom (t ≥ n) and IsMinimalDesign predicate",
-      "startLine": 57,
-      "endLine": 71,
+      "startLine": 54,
+      "endLine": 68,
       "mathContext": "Axiomatized: de_bruijn_erdos (t $\\geq$ n). Defined: IsMinimalDesign."
     },
     {
       "id": "projective-planes",
       "title": "Projective Plane Constructions",
       "summary": "ProjectivePlane structure and projective_plane_design axiom",
-      "startLine": 72,
-      "endLine": 93,
+      "startLine": 69,
+      "endLine": 90,
       "mathContext": "Defined: ProjectivePlane structure. Axiomatized: projective_plane_design (a projective plane gives a block design with t = n)."
     },
     {
       "id": "erdos-sos-theorem",
       "title": "The Erdős-Sós Conjecture (Now Theorem)",
       "summary": "efsw_1985 axiom (gap theorem); 1.148p stronger bound noted in docstring only (not axiomatized)",
-      "startLine": 94,
-      "endLine": 106,
+      "startLine": 91,
+      "endLine": 103,
       "mathContext": "Axiomatized: efsw_1985 (t > n implies t ≥ n + p). The 1.148p stronger bound under non-broken-projective-plane condition appears only in a docstring comment, not as an axiom or theorem."
     },
     {
       "id": "gap-structure",
       "title": "The Gap Structure",
       "summary": "achievableBlocks set, gap_theorem axiom, first_above_n (proved by contradiction)",
-      "startLine": 107,
-      "endLine": 130,
+      "startLine": 104,
+      "endLine": 127,
       "mathContext": "Defined: achievableBlocks. Axiomatized: gap_theorem. Proved: first_above_n (by contradiction from gap_theorem)."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete gap computations for p = 2, 3, 4, 5 via norm_num",
-      "startLine": 131,
-      "endLine": 146,
+      "startLine": 128,
+      "endLine": 143,
       "mathContext": "Mathematical content: Concrete gap computations for p = 2, 3, 4, 5 via norm_num"
     },
     {
       "id": "2-designs",
       "title": "Connection to Combinatorial Designs",
       "summary": "Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)",
-      "startLine": 147,
-      "endLine": 165,
+      "startLine": 144,
+      "endLine": 163,
       "mathContext": "Defined: Is2Design. Axiomatized: fisher_inequality. Proved: de_bruijn_erdos_from_fisher (direct application of fisher_inequality)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem",
-      "startLine": 166,
-      "endLine": 211,
+      "startLine": 164,
+      "endLine": 205,
       "mathContext": "Proved: erdos_903_summary, a three-part conjunction combining the de Bruijn-Erdős, projective_plane_design, and efsw_1985 axioms into a single statement."
     }
   ],
@@ -163,7 +163,7 @@
     ],
     "opens": [],
     "namespace": "Erdos903",
-    "lineCount": 211,
+    "lineCount": 205,
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 8,
