@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/1059",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 147,
+    "lineCount": 150,
     "assumptions": "density_one_conjecture (imported from OQ-01): the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, k · C(x) ≥ π(x). This requires the Prime Number Theorem and Brun-Titchmarsh inequality, not yet in Mathlib.",
     "mathlib_version": "4.31.0",
     "originalContributions": [
@@ -65,7 +65,7 @@
     "definitionCount": 1
   },
   "leanFile": {
-    "lineCount": 147,
+    "lineCount": 150,
     "axiomCount": 0,
     "note": "axiomCount=0 reflects declarations in this file only; meta.axiomCount=1 counts the inherited axiom from Proofs.Erdos1059OQ01 (density_one_conjecture)",
     "sorries": 0,

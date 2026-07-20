@@ -39,7 +39,7 @@
       "Sharpness theorem ErdosProblem115_sharp proved from the Chebyshev asymptotic axiom: for every ε>0 and large n there exist connected-lemniscate polynomials with max|p'| ≥ (1/2−ε)n² (the only non-axiom result)"
     ],
     "axiomCount": 6,
-    "lineCount": 64,
+    "lineCount": 66,
     "assumptions": "6 axioms: ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate, chebyshev_poly, chebyshev_connected, chebyshev_deriv_asymptotic. See Lean source for complete statements.",
     "mathlib_version": "4.31.0",
     "theoremCount": 1,
@@ -122,7 +122,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 64,
+    "lineCount": 66,
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 0,

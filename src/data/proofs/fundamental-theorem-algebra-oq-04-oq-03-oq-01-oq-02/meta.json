@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 1,
-    "lineCount": 111,
+    "lineCount": 112,
     "mathlib_version": "4.31.0",
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results (any_equiv_ofAdd_one, eq_galoisGroupEquivZMod2_symm, mathlibGaloisIso_eq, mathlibGaloisIso_ofAdd_one) depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). Classical.choice enters solely through Mathlib's noncomputable zmodCyclicMulEquiv (which the parent's explicit iso deliberately avoided); it is a foundational axiom and does not count against the 0-axiom status. No `Lean.ofReduceBool` and no `native_decide`: the cyclic instance comes from isCyclic_of_prime_card and the finite checks reuse the parent's kernel `decide`.",
     "originalContributions": [
@@ -121,7 +121,7 @@
       "Classical"
     ],
     "namespace": "FTAGaloisIso",
-    "lineCount": 111,
+    "lineCount": 112,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 1,

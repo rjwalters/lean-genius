@@ -51,7 +51,7 @@
       "bad_interval_v_bound: bad intervals satisfy v < 2u (Bertrand + no-prime)"
     ],
     "axiomCount": 1,
-    "lineCount": 396,
+    "lineCount": 427,
     "assumptions": "1 axiom: gpfSquare_asymptotic (deep analytic result on smooth number asymptotics). Previously 7 axioms; 4 eliminated by defining greatestPrimeFactor via Nat.primeFactors.max'; erdos_graham_lower derived from gpfSquare_asymptotic + badCount_ge_gpfSquareCount; bad_interval_no_prime proved via Bertrand's postulate.",
     "theoremCount": 17,
     "definitionCount": 12
@@ -166,7 +166,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 396,
+    "lineCount": 427,
     "axiomCount": 1,
     "theoremCount": 17,
     "definitionCount": 12,

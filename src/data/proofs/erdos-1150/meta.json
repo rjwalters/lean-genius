@@ -43,7 +43,7 @@
       "Axiom flat_does_not_imply_ultraflat (BBMST ratio bounded but not converging to 1)"
     ],
     "axiomCount": 3,
-    "lineCount": 390,
+    "lineCount": 392,
     "assumptions": "3 axioms: parseval_lower_bound (Littlewood polynomials have sup norm ≥ √(deg+1), via Parseval/DFT), bbmst_flat (flat Littlewood polynomials with bounded sup-to-√n ratio exist, BBMST 2019), flat_does_not_imply_ultraflat (encodes the BBMST bounded-but-not-converging gap as an explicit witness). 0 sorries. Kahane's unimodular ultraflat theorem is referenced in docstrings as background but is NOT axiomatized or formalized. The Rudin-Shapiro construction is now formalized at the definition level (rudinShapiroPair, rudinShapiroP/Q) with recursive unfolding identities; the sup-norm bound itself is left for future iterations.",
     "theoremCount": 13,
     "definitionCount": 7
@@ -171,7 +171,7 @@
       "Filter"
     ],
     "namespace": "Erdos1150",
-    "lineCount": 390,
+    "lineCount": 392,
     "axiomCount": 3,
     "theoremCount": 13,
     "definitionCount": 7,

@@ -32,7 +32,7 @@
       "Single-AP witness refinement (ThreeSquaresSingleAP.lean, sorry-free and axiom-free, Mathlib-only): the quadratic side-condition legendreSym p (−n) = 1 of dirichlet_key_lemma is satisfied uniformly by the single arithmetic progression p ≡ 1 (mod 4n), removing the rigid p = d·n − 1 tie and its Residue3 (n ≡ 3 mod 4) carve-out. Pure quadratic reciprocity plus Dirichlet's theorem on primes in AP. The underlying dirichlet_key_lemma is now a proved theorem (ThreeSquares.lean) for the d ≤ 2 slice the construction uses, rather than an axiom."
     ],
     "dateAdded": "2026-04-13",
-    "lineCount": 226,
+    "lineCount": 230,
     "theoremCount": 11,
     "definitionCount": 0,
     "mathlibDependencies": [],
@@ -159,7 +159,7 @@
       "Proofs.LagrangeFourSquares"
     ],
     "namespace": "ThreeSquareTheorem",
-    "lineCount": 226,
+    "lineCount": 230,
     "axiomCount": 1,
     "theoremCount": 11,
     "definitionCount": 0,

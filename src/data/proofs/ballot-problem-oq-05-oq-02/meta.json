@@ -11,7 +11,7 @@
       "BallotProblemOQ05"
     ],
     "namespace": "BallotProblemOQ05OQ02",
-    "lineCount": 147,
+    "lineCount": 245,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 1,
@@ -40,7 +40,7 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "Machine-checked against the repo's Lean v4.26.0 / Mathlib pin (compiles green via ./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ05OQ02: ✔ [7744/7744] Built Proofs.BallotProblemOQ05OQ02). 0 sorries, 0 axiom declarations, no native_decide; the four worked examples use decide (kernel reduction, not the compiler), so no Lean.ofReduceBool. The development imports the sibling entry Proofs.BallotProblemOQ05 and reuses its cycle-lemma arithmetic (ballotNumber_mul_add, ballotNumber_div, ballotNumber_catalan) as input; #print axioms of the results lists only the standard foundational axioms (propext / Classical.choice / Quot.sound) supplied by Mathlib. Scope is honest: this file establishes the arithmetic reconciliation of the two reflection forms of the ballot number and their consequences; it does not re-derive the cycle lemma itself (that is BallotProblemOQ01).",
-    "lineCount": 147,
+    "lineCount": 245,
     "theoremCount": 5,
     "definitionCount": 1,
     "originalContributions": [

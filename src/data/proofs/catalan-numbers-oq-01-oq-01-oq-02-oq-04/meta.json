@@ -63,7 +63,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The two concrete sanity checks (row 3 sums to 14, row 4 sums to 42) use kernel `decide` on Nat.choose computations, hence no native_decide and no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
-    "lineCount": 157,
+    "lineCount": 161,
     "theoremCount": 4,
     "definitionCount": 0
   },
@@ -185,7 +185,7 @@
       "Finset"
     ],
     "namespace": "CatalanRowSum",
-    "lineCount": 157,
+    "lineCount": 161,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,

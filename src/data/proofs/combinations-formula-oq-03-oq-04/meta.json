@@ -10,7 +10,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 262,
+    "lineCount": 400,
     "theoremCount": 10,
     "definitionCount": 0,
     "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). The Gaussian-polynomial layer (degree, monicity, constant term, coefficient nonnegativity, pinned extreme coefficients) is proved over ℤ[X] with q = X — no field hypothesis there, since it inducts directly on the q-Pascal recurrence over the ordered ring ℤ. No characteristic or positivity hypotheses on R. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",

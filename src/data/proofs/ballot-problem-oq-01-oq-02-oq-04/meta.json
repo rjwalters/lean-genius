@@ -34,7 +34,7 @@
     ],
     "dateAdded": "2026-04-05",
     "axiomCount": 1,
-    "lineCount": 311,
+    "lineCount": 351,
     "assumptions": "Depends on Lean.ofReduceBool: the headline counterexample probability (counterexample_good_count, \"out of 6 orderings exactly 2 are good\" → actual P = 2/6 = 1/3) is discharged by native_decide, so the entry is not axiom-free. 0 sorries, 0 axiom declarations (leanFile.axiomCount stays 0). norm_num and kernel decide carry no extra axioms.",
     "mathlib_version": "4.31.0",
     "theoremCount": 24,
@@ -128,7 +128,7 @@
       "BigOperators"
     ],
     "namespace": "WeightedBallot",
-    "lineCount": 311,
+    "lineCount": 351,
     "axiomCount": 0,
     "theoremCount": 24,
     "definitionCount": 4,

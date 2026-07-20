@@ -40,7 +40,7 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
     "assumptions": "1 axiom, imported: `hermite_lindemann` in `Proofs.HermiteLindemann` (the Hermite-Lindemann theorem; Hermite 1873). This file declares no axiom of its own — the main theorem `e_transcendental` is proved as `HermiteLindemann.e_transcendental_int` (Hermite-Lindemann at α = 1), and all corollaries (`e_irrational`, `exp_nat_transcendental`, `e_inv_transcendental`, `e_plus_one_transcendental`) are then proved from it. The proof remains conditional on the single imported axiom, so the status is axiomatized.",
-    "lineCount": 304,
+    "lineCount": 303,
     "relatedProblems": [
       {
         "id": "e-transcendental-oq-01",
@@ -208,7 +208,7 @@
       "Polynomial"
     ],
     "namespace": null,
-    "lineCount": 304,
+    "lineCount": 303,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 0,

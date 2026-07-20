@@ -41,7 +41,7 @@
     ],
     "dateAdded": "2026-03-27",
     "axiomCount": 1,
-    "lineCount": 154,
+    "lineCount": 201,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. S₂/S₃ are discharged by `decide`, but the presented theorem `s4_solvable` (derivedSeries 3 = ⊥ over the 24-element group, consumed by the headline `solvable_iff_le_four`) is proved by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "mathlib_version": "4.31.0",
     "theoremCount": 6,
@@ -196,7 +196,7 @@
       "Equiv"
     ],
     "namespace": "AbelRuffiniOQ04OQ02",
-    "lineCount": 154,
+    "lineCount": 201,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0,

@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
     "assumptions": "The substantive computational results (per-type contribution sizes, multinomial signatures, type counts, and r₄(n) checks for n ≤ 16) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). No `axiom` declarations and no sorries; the literal `axiom` count in the Lean source is 0.",
-    "lineCount": 651,
+    "lineCount": 667,
     "theoremCount": 105,
     "definitionCount": 17,
     "originalContributions": [
@@ -70,7 +70,7 @@
   },
   "leanFile": {
     "namespace": "LagrangeFourSquaresOQ02",
-    "lineCount": 651,
+    "lineCount": 667,
     "axiomCount": 0,
     "theoremCount": 105,
     "definitionCount": 17,

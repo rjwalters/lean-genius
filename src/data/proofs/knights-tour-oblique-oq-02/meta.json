@@ -26,7 +26,7 @@
     "axiomCount": 1,
     "assumptions": "1 effective assumption: Lean.ofReduceBool. The support lower bound obliqueDistribution_zero_below_four lifts the parent's oblique_lower_bound (obliqueCount t ≥ 4), which is established in the base file KnightsTourOblique.lean via native_decide (corner-adjacency case analysis). native_decide trusts the compiler's kernel reduction and therefore depends on Lean.ofReduceBool (confirmed by #print axioms), so this entry transitively carries that assumption and is classified axiomatized per the project's axiom-integrity policy. It does NOT depend on the base file's knuth_unique_four_oblique axiom. The Fintype and DecidableEq instances for ClosedTour are noncomputable (built via Fintype.ofInjective / Classical.decEq), so the development also uses Classical.choice — a standard foundational axiom (like propext and Quot.sound) that does not count toward axiomCount. The D4 group-action results (composition, associativity, identities, inverses) and the companion file's reversal results (reverseTour involution, isOblique_comm, isOblique_neg_neg) are proved algebraically (omega, fin_cases, simp, List lemmas) and are ofReduceBool-free; the full count-invariance capstone obliqueCount (reverseTour t) = obliqueCount t is now PROVED (S11, 2026-06-30) in the second companion KnightsTourObliqueOQ02ReverseCount.lean (0 sorries, 0 axiom declarations, ofReduceBool-free) via a reusable cyclic-pair-count abstraction (a permutation-and-map workhorse with three cyclic-count invariances — map-negation, reversal, rotation — plus the structural index identity tourMoves (reverseTour t) = ((tourMoves t).map MoveVector.neg).reverse.rotate 1). This establishes tour reversal as a verified order-2 symmetry of the oblique-count distribution, independent of the D4 board action; it adds no new ofReduceBool dependency, so the entry's single effective assumption is unchanged. S10 addition: the dihedral group is packaged on a type synonym D4 := Bool × Fin 4 (a synonym is required because Mathlib already gives Bool × Fin 4 a componentwise boolean-ring Mul/One with unit (true,1), distinct from the dihedral unit (false,0)); the resulting Group D4 / MulAction D4 ClosedTour and the orbit-stabilizer divisibility d4Orbit_card_dvd_eight are verified with #print axioms reporting only propext / Classical.choice / Quot.sound — they add NO new ofReduceBool dependency. The single effective assumption remains Lean.ofReduceBool, inherited transitively from the parent oblique_lower_bound.",
     "dateAdded": "2026-06-19",
-    "lineCount": 811,
+    "lineCount": 809,
     "mathlibDependencies": [
       {
         "theorem": "Fintype.ofInjective",
@@ -191,7 +191,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 811,
+    "lineCount": 809,
     "path": "Proofs/KnightsTourObliqueOQ02.lean",
     "axiomCount": 0,
     "sorries": 0,

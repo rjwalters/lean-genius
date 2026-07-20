@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 361,
+    "lineCount": 363,
     "assumptions": "0 axioms, 0 sorries — fully machine-verified (no `native_decide`; the finite homomorphism/injectivity checks on `dihedralFourToPerm` use ordinary kernel `decide`). `dihedral_galois_xPow4_sub_2 : IsDihedralGaloisOfXnMinusA 4 2` is discharged via the new self-contained group-theoretic lemma `order_eight_iso_dihedralFour` (any order-8 subgroup of S₄ is ≅ DihedralGroup 4, by Sylow.ofCard + MulAction.exists_smul_eq conjugacy + conjugation MulEquiv), transported by `order_eight_iso_dihedralFour_of_card` and applied to `Polynomial.Gal.galActionHom` on the four roots (|Gal| = 8 from the parent's x4_sub_2_gal_card). The only remaining open content is the *general-n* Schinzel–Velez predicate (`schinzel_velez_characterization_exists` is a vacuous existential), blocked by Capelli's irreducibility theorem upstream. Imports: Mathlib FieldTheory.Galois.Basic, GroupTheory.Sylow, GroupTheory.SpecificGroups.Dihedral, GroupTheory.Perm.Fin, Data.Nat.Factorization.Basic, Data.Fintype.EquivFin, Algebra.Group.End, Algebra.Polynomial.{Basic,AlgebraMap}, Proofs.InverseGaloisD4.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-05-12",
@@ -183,7 +183,7 @@
       "scoped Pointwise"
     ],
     "namespace": "InverseGaloisD4OQ03",
-    "lineCount": 361,
+    "lineCount": 363,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 5,

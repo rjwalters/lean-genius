@@ -49,7 +49,7 @@
         "relationship": "Companion entry on Pythagorean triples: the integer solutions a² + b² = c²"
       }
     ],
-    "lineCount": 214,
+    "lineCount": 213,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core theorem is an original construction (badge: original) using Mathlib's `InnerProductSpace` infrastructure — the proof expands $\\langle v+w, v+w \\rangle$ via `inner_add_left`/`inner_add_right` and applies the orthogonality hypothesis to zero the cross terms. The converse direction uses the same bilinearity expansion in reverse.",
     "mathlib_version": "4.31.0",
     "theoremCount": 8,
@@ -281,7 +281,7 @@
     ],
     "opens": [],
     "namespace": "PythagoreanTheorem",
-    "lineCount": 214,
+    "lineCount": 213,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 3,

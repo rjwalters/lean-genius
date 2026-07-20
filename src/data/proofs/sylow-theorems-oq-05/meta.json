@@ -23,7 +23,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None beyond Lean/Mathlib's foundational axioms. `#print axioms` on every headline declaration (diff_comp, transfer_comp, transferAb, transfer_eq_lift_comp_transferAb, transferAb_ker_le, transferSylowAb_universal, transferCenterPow_eq_lift_comp_transferAb) reports only `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`. 6 theorems, 2 definitions, 0 axiom declarations, 0 sorries.",
-    "lineCount": 157,
+    "lineCount": 158,
     "theoremCount": 6,
     "definitionCount": 2
   },
@@ -191,7 +191,7 @@
       "Subgroup"
     ],
     "namespace": "MonoidHom",
-    "lineCount": 157,
+    "lineCount": 158,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 2,

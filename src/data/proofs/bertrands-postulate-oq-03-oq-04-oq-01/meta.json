@@ -24,7 +24,7 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
     "assumptions": "cramer_implies_nextPrime_bound: The bridge from Cramér's nth-prime gap formulation to the interval formulation. Mathematically routine but technically involved: if gap p_{n+1}-p_n ≤ C·log(p_n)² then nextPrime(x) ≤ x + C·log(x)². Deferred to avoid Nat.nth/Nat.count index arithmetic.",
-    "lineCount": 257,
+    "lineCount": 244,
     "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
@@ -197,7 +197,7 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
-    "lineCount": 257,
+    "lineCount": 244,
     "theoremCount": 7,
     "definitionCount": 1,
     "axiomCount": 1,

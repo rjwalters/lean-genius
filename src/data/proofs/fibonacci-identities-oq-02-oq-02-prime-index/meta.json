@@ -52,7 +52,7 @@
       "Sharpness and one-directionality witnessed by decide: fib 4 = 3 is prime with 4 composite (the escape is real and pinned to 4), and 19 prime while fib 19 = 4181 = 37·113 composite (the converse fails)"
     ],
     "dateAdded": "2026-07-01",
-    "lineCount": 120,
+    "lineCount": 121,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound). fib_prime_imp_index_prime_or_four was #print axioms-checked to depend only on the standard foundational axioms. All concrete instances (fib 4 = 3, fib 19 = 4181, primality of 4/19) use decide (kernel evaluation of Nat.fib and Nat.Prime), not native_decide, so no Lean.ofReduceBool is introduced.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
@@ -152,7 +152,7 @@
       "Nat"
     ],
     "namespace": "FibonacciIdentitiesOQ02OQ02PrimeIndex",
-    "lineCount": 120,
+    "lineCount": 121,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,

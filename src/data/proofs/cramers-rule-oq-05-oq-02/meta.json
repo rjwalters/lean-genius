@@ -23,7 +23,7 @@
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified over an arbitrary commutative ring using Mathlib's Units.inv_mul / Units.mul_inv, Algebra.commutes, Polynomial.aeval_algHom_apply, and Matrix.charpoly_units_conj. Depends only on propext, Classical.choice, and Quot.sound.",
-    "lineCount": 208,
+    "lineCount": 209,
     "theoremCount": 15,
     "definitionCount": 2,
     "originalContributions": [
@@ -64,7 +64,7 @@
   },
   "leanFile": {
     "namespace": "CramersRuleOQ05OQ02",
-    "lineCount": 208,
+    "lineCount": 209,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,

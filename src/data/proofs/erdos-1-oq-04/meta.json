@@ -19,7 +19,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 245,
+    "lineCount": 249,
     "theoremCount": 15,
     "definitionCount": 4,
     "assumptions": "One assumption: `Lean.ofReduceBool` (no `axiom` declarations, no sorries). The verified small-case witnesses f(1)=1 through f(5)≤13 and the `hasDistinctSubsetSums` checks are discharged by `native_decide`, which trusts the Lean compiler's kernel-reduction (`Lean.ofReduceBool`) — so under the gallery convention the entry is `axiomatized` (axiomCount 1), not axiom-free. The headline theorem `powers_of_two_dss` (binary representation gives distinct subset sums, hence f(n) ≤ 2^{n-1}) is proved by structural induction with NO `native_decide`. The Conway-Guy conjecture itself (that A005318 gives the exact minima) is stated as a `Prop` (`conwayGuyConjecture`) and is NOT proved — it remains open.",
@@ -165,7 +165,7 @@
   "leanFile": {
     "path": "Proofs/Erdos1OQ04.lean",
     "filename": "Erdos1OQ04.lean",
-    "lineCount": 245,
+    "lineCount": 249,
     "theoremCount": 15,
     "axiomCount": 0,
     "definitionCount": 4,

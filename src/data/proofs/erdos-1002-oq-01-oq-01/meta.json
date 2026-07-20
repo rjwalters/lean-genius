@@ -31,7 +31,7 @@
       "euler-identity"
     ],
     "axiomCount": 1,
-    "lineCount": 705,
+    "lineCount": 730,
     "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory not yet in Mathlib. One sorry: `equidist_approx` (density of trig polynomials in L∞ — Stone-Weierstrass for periodic functions). Three previously open sorries (`continuous_comp_fract` integer case and two integral bounds for `deviation_sandwich`) are now fully proved. Both main theorems (weyl_equidist_continuous, weyl_fract_average_zero) are proved modulo equidist_approx.",
     "theoremCount": 16,
     "definitionCount": 6,
@@ -159,7 +159,7 @@
   "sorries": 1,
   "leanFile": {
     "axiomCount": 1,
-    "lineCount": 705,
+    "lineCount": 730,
     "sorries": 1,
     "path": "Proofs/Erdos1002OQ01OQ01.lean",
     "definitionCount": 6,

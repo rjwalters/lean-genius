@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "assumptions": "None. Built on the parent's prime-norm entry (and its EuclideanDomain (ℤ√d) value for −2 ≤ d < 0) plus Mathlib's UniqueFactorizationMonoid.irreducible_iff_prime, Zsqrtd.norm_eq_mul_conj / norm_intCast / norm_mul / norm_nonneg / norm_eq_zero_iff / norm_eq_one_iff, Nat.exists_prime_and_dvd, and Nat.dvd_prime_pow. Depends only on the standard foundational axioms (propext, Classical.choice, Quot.sound); no sorry, no native_decide.",
-    "lineCount": 130,
+    "lineCount": 139,
     "theoremCount": 2,
     "definitionCount": 0,
     "originalContributions": [
@@ -59,7 +59,7 @@
   },
   "leanFile": {
     "namespace": "NormEuclideanZsqrtdFamilyIrredNorm",
-    "lineCount": 130,
+    "lineCount": 139,
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0,

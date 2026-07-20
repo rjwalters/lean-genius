@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 155,
+    "lineCount": 159,
     "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib (single-file elaboration via `lake env lean Proofs/HermiteLegendreFactorialOQ02.lean`, exit 0; `#print axioms` on factorization_factorial_rec, factorization_factorial_legendre, and padicValNat_factorial_legendre lists only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). Crucially, NONE of the proofs invoke Mathlib's `padicValNat_factorial` (Legendre's formula) or `Nat.Prime.factorization_factorial`: the recursion and the full Legendre formula are both derived from first principles using only the additivity API of Nat.factorization (Nat.factorization_prod, Nat.factorization_mul, Prime.factorization_self, Nat.factorization_eq_zero_of_not_dvd), the factorial-as-product lemma Finset.prod_Ico_id_eq_factorial, and elementary Euclidean-division facts (Nat.le_div_iff_mul_le, Nat.div_div_eq_div_mul, Nat.log_div_base, Nat.log_pos).",
     "dateAdded": "2026-07-01",
     "originalContributions": [
@@ -136,7 +136,7 @@
       "Mathlib"
     ],
     "namespace": "HermiteLegendreFactorialOQ02",
-    "lineCount": 155,
+    "lineCount": 159,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,

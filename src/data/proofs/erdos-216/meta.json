@@ -75,7 +75,7 @@
     ],
     "axiomCount": 9,
     "assumptions": "9 axiom declarations: InGeneralPosition (no three collinear predicate), IsConvexKGon (convex k-gon predicate), IsEmptyConvexKGon (empty interior predicate), g_3 (g(3)=3), g_4 (g(4)=5), g_5 (g(5)=10), g_6 (g(6)=30, Heule-Scheucher 2024), horton_sets_exist (arbitrary-size Horton sets), g_ge_7_not_exists (no g(k) for k>=7). The exact values g(3)..g(6) and the k>=7 non-existence are taken directly as axioms from the literature; the file does not formalize lower bounds, the Horton recursive construction, or SAT-based computational witnesses (no such declarations are present). Only g_7_not_exists, g_exists_le_6, g_exists_iff, and the summary theorems (erdos_216_summary, erdos_216, known_g_values) are proved in Lean from these axioms.",
-    "lineCount": 233,
+    "lineCount": 235,
     "theoremCount": 6,
     "definitionCount": 9
   },
@@ -209,7 +209,7 @@
       "Finset"
     ],
     "namespace": "Erdos216",
-    "lineCount": 233,
+    "lineCount": 235,
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 9,

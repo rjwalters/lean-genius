@@ -57,7 +57,7 @@
       "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
     ],
     "axiomCount": 1,
-    "lineCount": 380,
+    "lineCount": 381,
     "assumptions": "Depends on Lean.ofReduceBool: 33 named deliverable theorems (sigma_val_*, solution_*, not_solution_*, *_in_A110177) are discharged by native_decide, which trusts the Lean compiler's kernel reduction rather than producing a fully kernel-checked proof (#print axioms lists Lean.ofReduceBool). No literal axiom declarations and 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
     "theoremCount": 48,
     "definitionCount": 5
@@ -298,7 +298,7 @@
       "Asymptotics"
     ],
     "namespace": "Erdos1061",
-    "lineCount": 380,
+    "lineCount": 381,
     "axiomCount": 0,
     "theoremCount": 48,
     "definitionCount": 5,

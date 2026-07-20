@@ -13,7 +13,7 @@
       "Finset"
     ],
     "namespace": "ZolotarevBaseCase",
-    "lineCount": 340,
+    "lineCount": 344,
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 2,
@@ -98,7 +98,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 340,
+    "lineCount": 344,
     "theoremCount": 17,
     "defCount": 2,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. All results are fully machine-checked against Mathlib v4.26.0 (#print axioms on the three headline theorems reports only propext / Classical.choice / Quot.sound). Self-contained note: the grandparent file ElementaryQuadraticReciprocityOQ01 (the units-level Zolotarev lemma) no longer compiles against Mathlib 4.26.0 (forward references and deprecations — a separate bit-rot repair), so the units-level statement is re-established from scratch here on the modern API, importing only the building parent ElementaryQuadraticReciprocityOQ01OQ03 for the CRT machinery. Honest scope: the base case is complete and unconditional for p ≠ 2. The loop-closing corollary is stated for a TWO-PRIME modulus p·q; fully general squarefree (and then prime-power) odd n follows by iterating sign_ringMulPerm_mul_of_odd over the factorization, a routine induction adding no new idea, left to a follow-up.",

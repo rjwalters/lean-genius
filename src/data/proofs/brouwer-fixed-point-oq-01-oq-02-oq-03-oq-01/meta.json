@@ -68,7 +68,7 @@
       "brouwer_fixed_point_explicit: Brouwer FPT proved without retraction_construction axiom"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 214,
+    "lineCount": 212,
     "assumptions": "1 axiom: no_retraction_axiom (from BrouwerFixedPoint.lean — the Brouwer no-retraction theorem, which requires algebraic topology/degree theory). This file proves retraction_construction as a theorem, reducing the axiom count from 2→1 in the BFP import chain.",
     "definitionCount": 3
   },
@@ -173,7 +173,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 214,
+    "lineCount": 212,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,

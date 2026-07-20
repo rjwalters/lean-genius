@@ -16,7 +16,7 @@
       "MeasureTheory.Measure"
     ],
     "namespace": "GreensTheoremOQ01OQ01OQ02OQ03",
-    "lineCount": 216,
+    "lineCount": 230,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
@@ -41,7 +41,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 216,
+    "lineCount": 230,
     "assumptions": "0 sorries, 0 axioms. All three intervalIntegral_swap theorems for `f : ℝ → ℝ → E` are fully proved: ordered case (S2), general case (S3, 4-sign-case analysis with sign-flip helpers), and continuous case (S3, reduces to general via Continuous.measurable + ContinuousOn.integrableOn_compact). The two private helpers `flip_bounds_E` and `neg_outside_E` are also fully proved (one-line ports of the parent's real-valued helpers). Confirms the S1 OBSERVE audit finding that the parent's proof structure is fully codomain-generic — no Mathlib gaps for Banach-valued interval-integral Fubini.",
     "mathlib_version": "4.31.0",
     "historicalContext": "Fubini's theorem (Fubini 1907) states that under integrability, ∫∫f dxdy = ∫∫f dydx for any iterated integral. Mathlib's `MeasureTheory.integral_integral_swap` provides this for the Bochner integral of a function `f : α × β → E` valued in a Banach space E. However, Mathlib does NOT provide a corresponding `intervalIntegral_swap` lemma for the *interval integral* `∫ x in a..b, f x` notation — every application of Fubini to interval integrals must reimplement the Icc/Ioc bridge. The parent slug `greens-theorem-oq-01-oq-01-oq-02` proves three real-valued versions of this missing lemma (ordered case, general case via sign-flip, continuous specialization). This OQ-03 sibling asks the natural follow-up: does the same proof structure work for a Banach codomain E? The S1 OBSERVE audit confirms YES, with no mathematical novelty — the question is purely a portability/codomain-genericity check. This S2 SCAFFOLD ships the first fully-ported lemma (ordered case) and stubs the remaining two for S3.",

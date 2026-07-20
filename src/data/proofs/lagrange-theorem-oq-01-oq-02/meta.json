@@ -21,7 +21,7 @@
     "dateAdded": "2026-05-05",
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The headline `A4_no_subgroup_order6_finset` (a finite enumeration over all 2¹² subsets of A₄), together with `A4_card`, `A4_no_element_order6`, and the order-count theorems, are proved by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
-    "lineCount": 121,
+    "lineCount": 146,
     "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
@@ -43,7 +43,7 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 121,
+    "lineCount": 146,
     "theoremCount": 8,
     "definitionCount": 1
   },

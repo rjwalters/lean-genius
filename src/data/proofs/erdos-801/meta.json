@@ -58,7 +58,7 @@
       "Asymptotic notation and logarithmic growth",
       "Lean 4 / Mathlib: SimpleGraph, Finset, Filter.atTop"
     ],
-    "lineCount": 123,
+    "lineCount": 126,
     "assumptions": "3 axioms encoding Alon's 1996 result and matching bounds: (1) `alon_1996` — for every graph G on n vertices with α(G) ≤ √n, there exists S ⊆ V with |S| ≤ √n and e(S) ≥ c√n log n (the main theorem, proved via the probabilistic method), (2) `log_factor_necessary` — the √n log n bound is tight: for all C > 0, there exist graphs with α(G) ≤ √n where every √n-subset has at most C√n log n induced edges (from Paley graph constructions), (3) `vertex_set_size_optimal` — the √n vertex budget is optimal: reducing to ε√n drops the edge guarantee below √n (using Filter.atTop for the 'eventually' quantifier). No sorries.",
     "theoremCount": 2,
     "definitionCount": 5
@@ -203,7 +203,7 @@
       "Real"
     ],
     "namespace": "Erdos801",
-    "lineCount": 123,
+    "lineCount": 126,
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 5,

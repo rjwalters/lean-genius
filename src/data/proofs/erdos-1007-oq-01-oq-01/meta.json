@@ -56,7 +56,7 @@
       "Growth classification: d ≤ f(d) ≤ d(d+1)/2 for all d ≥ 1"
     ],
     "axiomCount": 1,
-    "lineCount": 388,
+    "lineCount": 387,
     "assumptions": "Depends on Lean.ofReduceBool: six theorems are discharged by native_decide — known_deficiency and d4_deficiency_satisfies_bound (the named deliverable 'known deficiency values all satisfy δ(d) ≤ d'), f6_bounds (the f(6) ∈ [6,21] range), optimal_implies_monotone', known_deficiency_bound, and anomaly_gap. native_decide trusts the compiler's kernel reduction, so #print axioms lists Lean.ofReduceBool; these results are not axiom-free. 0 sorries; no literal axiom declarations (leanFile.axiomCount = 0). The abstract framework (deficiency bound theorem, monotonicity equivalences, gap theorem) is native_decide-free.",
     "mathlib_version": "4.31.0",
     "theoremCount": 32,
@@ -165,7 +165,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 388,
+    "lineCount": 387,
     "axiomCount": 0,
     "theoremCount": 32,
     "definitionCount": 4,

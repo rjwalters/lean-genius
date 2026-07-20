@@ -52,7 +52,7 @@
       "carmichael_two_pow: recovery of λ(2ᵏ) = 2ᵏ⁻² as the lcm of the two factor orders, tying the structure theorem back to the parent's exponent value (this single step delegates to Mathlib's carmichael_two_pow_of_ne_two)."
     ],
     "axiomCount": 0,
-    "lineCount": 166,
+    "lineCount": 165,
     "assumptions": "0 axioms, 0 sorries; all theorems machine-checked. #print axioms on isComplement'_neg_one_five, neg_one_notMem_zpowers_five, and carmichael_two_pow reports only [propext, Classical.choice, Quot.sound]. The two `decide` calls (computing 5 ≢ 1 and −1 ≢ 1 in the finite ring ℤ/4ℤ) use kernel reduction, NOT native_decide, so Lean.ofReduceBool is absent. The parametrisation k = n + 3 keeps all exponents free of truncated natural subtraction.",
     "theoremCount": 11,
     "definitionCount": 2,
@@ -151,7 +151,7 @@
       "Subgroup"
     ],
     "namespace": "EulerTotientOQ01OQ02OQ03",
-    "lineCount": 166,
+    "lineCount": 165,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 2,

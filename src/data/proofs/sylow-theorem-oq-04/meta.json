@@ -20,7 +20,7 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented results include the exact Sylow numbers for A₅ (`card_A5`, `n2_eq`, `n3_eq`, `n5_eq`) discharged by `native_decide`, on which the non-normality theorems (`sylow{2,3,5}_not_normal`) and the simplicity/non-solvability chain depend. `native_decide` is accepted by the kernel via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations). Shares `Proofs/SylowTheoremOQ04.lean` with the `sylow-theorems-oq-04` entry, which carries the identical classification.",
-    "lineCount": 276,
+    "lineCount": 498,
     "theoremCount": 21,
     "definitionCount": 1,
     "originalContributions": [
@@ -137,7 +137,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 276,
+    "lineCount": 498,
     "path": "Proofs/SylowTheoremOQ04.lean",
     "axiomCount": 0,
     "sorries": 0,

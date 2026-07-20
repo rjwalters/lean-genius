@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 149,
+    "lineCount": 155,
     "assumptions": "None. Fully machine-checked: 0 axiom declarations, 0 sorries, no native_decide. All numeric facts are discharged by `decide` (Odd/≤ over the six-element covering-prime finset) and `omega` (large-constant modular arithmetic), which depend only on the standard foundational axioms. The result is built entirely on top of two verified, axiom-free sibling entries (Erdos10Incomplete01's `mem_one_iff` and Erdos10OQ01Incomplete01's `prime_forced_small`); no new assumptions are introduced.",
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.31.0",
@@ -131,7 +131,7 @@
       "Proofs.Erdos10OQ01Incomplete01"
     ],
     "namespace": "Erdos10Incomplete01OQ02",
-    "lineCount": 149,
+    "lineCount": 155,
     "axiomCount": 0,
     "theoremCount": 7,
     "path": "Proofs/Erdos10Incomplete01OQ02.lean",

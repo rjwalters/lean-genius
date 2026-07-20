@@ -48,7 +48,7 @@
       "erdos1142_ge_4"
     ],
     "axiomCount": 1,
-    "lineCount": 192,
+    "lineCount": 194,
     "assumptions": "0 literal `axiom` declarations, 0 sorries. The seven known solutions (erdos1142_value_4/7/15/21/45/75/105), the three non-examples (erdos1142_not_6/9/10), and the completeness theorem erdos1142_complete_le_105 are discharged by `native_decide`, which trusts the Lean compiler and therefore introduces the `Lean.ofReduceBool` axiom (axiomCount: 1). The structural lemmas (erdos1142_ge_4, erdos1142_n_minus_2_prime, erdos1142_odd_or_4, erdos1142_mod2) are proved symbolically without native_decide. The headline conjecture itself remains OPEN — it is stated as a definition (erdos_1142_conjecture), not proved.",
     "dateAdded": "2026-03-15",
     "references": [
@@ -222,7 +222,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 192,
+    "lineCount": 194,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 4,

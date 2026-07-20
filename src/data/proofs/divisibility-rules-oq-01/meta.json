@@ -20,7 +20,7 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
     "assumptions": "Depends on Lean.ofReduceBool: the headline divisibility rules (three_dvd_iff, nine_dvd_iff, thirtyseven_dvd_iff, twentyseven_dvd_iff, nineninenine_dvd_iff, ninetynine_dvd_iff, onehundredone_dvd_iff, the cross-base hex/octal rules, etc.) and the oq01_rules_verification summary discharge their base-coprimality/modulus side conditions via `by native_decide`, which trusts the compiler's kernel reduction (#print axioms lists Lean.ofReduceBool). No literal axiom declarations and no structure-encoded assumptions (leanFile.axiomCount remains 0).",
-    "lineCount": 412,
+    "lineCount": 423,
     "theoremCount": 42,
     "definitionCount": 2,
     "originalContributions": [
@@ -153,7 +153,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 412,
+    "lineCount": 423,
     "path": "Proofs/DivisibilityRulesOQ01.lean",
     "axiomCount": 0,
     "sorries": 0,

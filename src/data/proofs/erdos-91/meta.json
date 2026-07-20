@@ -28,7 +28,7 @@
       }
     ],
     "axiomCount": 5,
-    "lineCount": 276,
+    "lineCount": 284,
     "assumptions": "5 axioms: n3_unique, n4_two_optima, kovacs_2024_n5_unique, n6_to_9_nonunique, guth_katz_bound. 0 sorries. Scaffolding note: the similarity relation AreSimilar stubs its geometric transform with a True placeholder ('Simplified; actual transform is complex'), so AreSimilar holds for any two equal-cardinality nonempty sets and AreNonSimilar is correspondingly vacuous. The small-case axioms (n4_two_optima, n6_to_9_nonunique) are therefore stated over these simplified predicates rather than a faithful encoding of Euclidean similarity; minDistinctDistances is likewise a simplified placeholder definition. This entry is an axiomatized scaffold for an OPEN problem, not a verified formalization of the geometry.",
     "mathlib_version": "4.31.0",
     "theoremCount": 2,
@@ -141,7 +141,7 @@
       "Finset"
     ],
     "namespace": "Erdos91",
-    "lineCount": 276,
+    "lineCount": 284,
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 10,

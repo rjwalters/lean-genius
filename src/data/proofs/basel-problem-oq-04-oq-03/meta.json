@@ -52,7 +52,7 @@
       "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
     ],
     "axiomCount": 1,
-    "lineCount": 558,
+    "lineCount": 568,
     "assumptions": "Lean.ofReduceBool — the advertised small-case numerical verification (countCoprimePairs_one … countCoprimePairs_ten, N=1,2,3,4,5,10) is discharged by native_decide, which trusts the Lean compiler's kernel reduction. The headline results (the Möbius decomposition, the Dirichlet-series identity Σ μ(d)/d² = 6/π², and the density limit) are proved symbolically and remain free of native_decide.",
     "theoremCount": 24,
     "definitionCount": 1
@@ -218,7 +218,7 @@
       "ArithmeticFunction"
     ],
     "namespace": "BaselProblemOQ04OQ03",
-    "lineCount": 558,
+    "lineCount": 568,
     "axiomCount": 0,
     "theoremCount": 24,
     "definitionCount": 1,

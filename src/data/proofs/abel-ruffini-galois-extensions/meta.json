@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
     "assumptions": "Relies on `Lean.ofReduceBool`. The named computational deliverables — group-order certificates `card_s7`/`card_s8`/`card_a7`/`card_a8` (Part XIV) and non-commutativity witnesses `s5_not_comm`/`a4_not_comm`/`a5_not_comm` (Part XIII), plus the `klein_four` normality/commutativity facts — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (it appears under `#print axioms`). The Galois-theoretic solvability classification itself is built on Mathlib's solvability infrastructure and is axiom-free apart from this. `leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.",
-    "lineCount": 534,
+    "lineCount": 535,
     "theoremCount": 59,
     "definitionCount": 1,
     "instanceCount": 15,
@@ -155,7 +155,7 @@
   },
   "leanFile": {
     "namespace": "AbelRuffiniGaloisExtensions",
-    "lineCount": 534,
+    "lineCount": 535,
     "axiomCount": 0,
     "theoremCount": 59,
     "definitionCount": 1,

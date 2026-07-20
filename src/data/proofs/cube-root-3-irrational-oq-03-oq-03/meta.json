@@ -24,7 +24,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 116,
+    "lineCount": 117,
     "path": "Proofs/CubeRoot3IrrationalOQ03OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
@@ -53,7 +53,7 @@
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
     "assumptions": "None beyond Lean/Mathlib's foundational propext / Classical.choice / Quot.sound (0 axiom declarations, 0 sorries, no native_decide). Verified via #print axioms on not_normal_adjoin_cbrt3 and not_isGalois_adjoin_cbrt3. Builds on CubeRoot3IrrationalOQ03 (minpoly_cbrt3 : minpoly ℚ ∛3 = X³ − 3, cbrt3_pow_three : ∛3³ = 3), which is itself 0-axiom. Uses Mathlib's Normal.splits, IntermediateField.minpoly_gen, Polynomial.splits_of_algHom, Polynomial.splits_iff_card_roots, Polynomial.separable_X_pow_sub_C, Polynomial.nodup_roots, and Odd.strictMono_pow.",
-    "lineCount": 116,
+    "lineCount": 117,
     "theoremCount": 6,
     "definitionCount": 0,
     "originalContributions": [

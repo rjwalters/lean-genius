@@ -16,7 +16,7 @@
       "Cardinal"
     ],
     "namespace": "CantorsTheoremOQ01OQ03OQ04",
-    "lineCount": 248,
+    "lineCount": 244,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0,
@@ -41,7 +41,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 248,
+    "lineCount": 244,
     "assumptions": "0 axioms, 0 sorries. Uses the parent CantorsTheoremOQ01OQ03.lean's `cf_powerSet_real_gt_continuum` and standard Mathlib cardinal API (`Cardinal.aleph0_le_continuum`, `lt_irrefl`, `LE.le.trans_lt`). The parent's caveats on `Classical.choice` carry through unchanged.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-05-12",

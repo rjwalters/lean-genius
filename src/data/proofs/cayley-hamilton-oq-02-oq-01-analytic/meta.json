@@ -21,7 +21,7 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 164,
+    "lineCount": 163,
     "theoremCount": 8,
     "definitionCount": 1,
     "assumptions": "Fully machine-checked over ℝ/ℂ (0 sorries, 0 axiom declarations, no structure-encoded assumptions). Uses Mathlib's fundamental theorem of calculus (intervalIntegral.integral_hasDerivAt_right), the derivative of the complex exponential (HasDerivAt.cexp), and continuity of parametric primitives (intervalIntegral.continuous_primitive). SCOPE: this file constructs the scalar ODE coefficients Pₖ and proves their derivative/initial-condition properties — the analytic half of Putzer's algorithm. It does NOT yet assemble the full matrix identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}; that requires the matrix-valued ODE-uniqueness step (ODE_solution_unique for M ↦ A·M against NormedSpace.exp), which remains open.",
@@ -36,7 +36,7 @@
   "leanFile": {
     "namespace": "PutzerMatrixExp",
     "path": "Proofs/CayleyHamiltonOQ02OQ01Analytic.lean",
-    "lineCount": 164,
+    "lineCount": 163,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 8,

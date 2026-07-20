@@ -57,7 +57,7 @@
       "erdos_203_statement theorem: formal main statement"
     ],
     "axiomCount": 1,
-    "lineCount": 390,
+    "lineCount": 396,
     "assumptions": "Depends on Lean.ofReduceBool: the Selfridge supporting result selfridge_sierpinski_is_sierpinski (78557 is a Sierpiński number) is proved via covering_prime, which discharges its divisibility and period facts with `native_decide` (7 calls). native_decide trusts the compiler's kernel reduction and so introduces the Lean.ofReduceBool axiom (the proof is not axiom-free). No literal `axiom` declarations and 0 sorries. The main Erdős #203 conjecture (ErdosConjecture203) remains OPEN and is stated, not proved.",
     "theoremCount": 44,
     "definitionCount": 13
@@ -177,7 +177,7 @@
       "Nat"
     ],
     "namespace": "Erdos203",
-    "lineCount": 390,
+    "lineCount": 396,
     "axiomCount": 0,
     "theoremCount": 44,
     "definitionCount": 13,

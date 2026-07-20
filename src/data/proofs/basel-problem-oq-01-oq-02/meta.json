@@ -67,7 +67,7 @@
       "REPAIR: zeta_even_weighted_prod_eq_rat_mul_pi_pow was committed [UNVERIFIED] (#37361) with a double-counted exponent (coefficient qa^(g a) instead of qa, since zeta_even_pow_eq_rat_mul_pi_pow already absorbs the g a power) — the file did not compile on Mathlib 4.26.0. Fixed to qa; whole file now compiles and is axiom-clean (single hermite_lindemann assumption)."
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 637,
+    "lineCount": 706,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.31.0",
     "theoremCount": 36,
@@ -168,7 +168,7 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 637,
+    "lineCount": 706,
     "axiomCount": 0,
     "theoremCount": 36,
     "definitionCount": 0,

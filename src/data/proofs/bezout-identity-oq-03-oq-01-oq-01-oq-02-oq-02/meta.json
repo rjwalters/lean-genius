@@ -56,7 +56,7 @@
     ],
     "dateAdded": "2026-06-24",
     "axiomCount": 0,
-    "lineCount": 152,
+    "lineCount": 154,
     "assumptions": "0 axioms, 0 sorries — verified via #print axioms (depends only on the foundational propext / Classical.choice / Quot.sound; no sorryAx, no Lean.ofReduceBool). The decide-discharged facts (coprimality of [2,3,5], φ(2)·φ(3)·φ(5)=8) use kernel decidability, NOT native_decide. The pure unit-count statements (card_units_CRTProd, card_units_preservation) are hypothesis-free (Nat.card throughout); the totient reading (natCard_units_zmod, card_units_eq_totient_prod) requires 0 < nᵢ, since ℤ/0ℤ = ℤ has units {±1} (count 2) whereas φ(0) = 0. Reuses the parent's crtKFold isomorphism and CRTProd product type from Proofs/BezoutIdentityOQ03OQ01OQ01.lean. Multiplicativity of φ itself is Mathlib's Nat.totient_mul and is NOT re-proved here; this entry's new content is the unit-group cardinality transport.",
     "mathlib_version": "4.31.0",
     "theoremCount": 8,
@@ -156,7 +156,7 @@
       "BezoutCRTKFold"
     ],
     "namespace": "BezoutCRTUnits",
-    "lineCount": 152,
+    "lineCount": 154,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0,

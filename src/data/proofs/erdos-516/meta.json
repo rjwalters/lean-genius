@@ -62,7 +62,7 @@
       "Fixed four dangling `/--` docstrings (historical results with no attached declaration) that were parse errors under Lean 4 / Mathlib 4.26.0, so the file now compiles"
     ],
     "axiomCount": 1,
-    "lineCount": 299,
+    "lineCount": 303,
     "assumptions": "1 axiom: fuchs_theorem (deep complex analysis — Nevanlinna theory / Phragmén-Lindelöf — beyond current Mathlib). 0 sorries. The three auxiliary theorems (fabry_gaps_ge, fabry_tendsto_atTop, fejer_implies_fabry) are fully machine-checked with no axioms or sorries.",
     "theoremCount": 4,
     "definitionCount": 8
@@ -172,7 +172,7 @@
       "Topology"
     ],
     "namespace": "Erdos516",
-    "lineCount": 299,
+    "lineCount": 303,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 8,

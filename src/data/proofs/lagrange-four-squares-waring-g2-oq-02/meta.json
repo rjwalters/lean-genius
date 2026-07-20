@@ -24,7 +24,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound); there are no axiom declarations, no sorries, and no structure-encoded assumptions. The decidable congruence facts (cubes mod 9, fourth powers mod 16) are discharged by kernel `decide` over the finite rings ZMod 9 / ZMod 16 — ordinary kernel reduction, NOT native_decide, so Lean.ofReduceBool is not used.",
-    "lineCount": 183,
+    "lineCount": 187,
     "theoremCount": 11,
     "definitionCount": 2
   },
@@ -173,7 +173,7 @@
       "BigOperators"
     ],
     "namespace": "WaringGgLowerBoundsOQ02",
-    "lineCount": 183,
+    "lineCount": 187,
     "axiomCount": 0,
     "theoremCount": 11,
     "substantiveTheoremCount": 4,

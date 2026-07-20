@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
     "assumptions": "None as axioms. Hough's minimum-modulus theorem (every covering system with distinct moduli has minimum modulus ≤ B) is carried as an explicit hypothesis `hbound` on the theorems that need it (separatesSmall_avoids, exists_difficulty_maximizing_coloring, erdos_8_oq02_resolution), exactly as the parent proof Erdos8Problem keeps it. The lower-bound theorem separatesSmall_needs_ge_B_colors and the construction bottleneckColoring_separatesSmall need no such hypothesis. No structure-encoded assumptions: CongruenceClass and CoveringSystem are definitional scaffolding (a covering system is required to genuinely cover ℤ), not assumption carriers.",
-    "lineCount": 299,
+    "lineCount": 311,
     "theoremCount": 11,
     "definitionCount": 10,
     "mathlibDependencies": [
@@ -93,7 +93,7 @@
   },
   "leanFile": {
     "namespace": "Erdos8OQ02",
-    "lineCount": 299,
+    "lineCount": 311,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 10,

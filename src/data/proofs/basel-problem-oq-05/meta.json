@@ -41,7 +41,7 @@
     "theoremCount": 9,
     "substantiveTheoremCount": 4,
     "trueStubs": 0,
-    "lineCount": 189,
+    "lineCount": 195,
     "assumptions": "1 axiom: weierstrass_sin_product (Weierstrass product formula for sin(πx)/(πx) = ∏(1 - x²/n²)). This is a deep result in complex analysis not yet in Mathlib. Note: product_x2_coefficient is proved algebraically (field_simp + ring). The euler_coefficient_comparison theorem is now proved via hasSum_zeta_two (Mathlib); its hypotheses are tautological but the conclusion HasSum (fun n => 1/n²) (π²/6) is correct.",
     "mathlib_version": "4.31.0",
     "definitionCount": 0
@@ -154,7 +154,7 @@
       "Topology"
     ],
     "namespace": "BaselOQ05",
-    "lineCount": 189,
+    "lineCount": 195,
     "axiomCount": 1,
     "theoremCount": 9,
     "substantiveTheoremCount": 3,

@@ -51,7 +51,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 70,
     "axiomCount": 1,
-    "lineCount": 202,
+    "lineCount": 203,
     "assumptions": "Relies on `Lean.ofReduceBool`: the four concrete examples (`six_is_perfect`, `twentyeight_is_perfect`, `fourhundredninetysix_is_perfect`, `eightthousandonetwentyeight_is_perfect`) discharge the Mersenne-prime primality checks via `native_decide`, which trusts the Lean compiler's kernel reduction. The Euclid-Euler characterization theorems themselves delegate to Mathlib's verified results. 0 sorries, 0 literal `axiom` declarations.",
     "mathlib_version": "4.31.0",
     "theoremCount": 10,
@@ -154,7 +154,7 @@
       "Nat"
     ],
     "namespace": "PerfectNumbers",
-    "lineCount": 202,
+    "lineCount": 203,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0,

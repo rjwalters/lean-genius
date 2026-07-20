@@ -121,7 +121,7 @@
       "Nat"
     ],
     "namespace": "EulerTotientOQ01OQ02OQ02",
-    "lineCount": 162,
+    "lineCount": 163,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 0,
@@ -193,7 +193,7 @@
       "exists_primitiveRoot_four together with isCyclic_units_four pinning the sharp boundary at k = 2, plus exponent_units_two_pow (λ = group exponent) and concrete values λ(2)=1, λ(4)=2, λ(8)=2, λ(16)=4, λ(32)=8 derived by norm_num"
     ],
     "axiomCount": 0,
-    "lineCount": 162,
+    "lineCount": 163,
     "assumptions": "0 axioms, 0 sorries; all 13 theorems machine-checked (no native_decide — the concrete λ(2), λ(4), λ(8), λ(16), λ(32) follow from carmichael_two_pow / carmichael_two_pow_of_le_two by norm_num). #print axioms reports only [propext, Classical.choice, Quot.sound] for the main results (no_primitiveRoot_two_pow, carmichael_lt_totient, not_isCyclic_units_two_pow, carmichael_thirtytwo verified). The 2-power cyclic dichotomy (isCyclic_units_two_pow_iff), the value λ(2ᵏ) = 2ᵏ⁻², λ = exponent, and the totient formula are from Mathlib; the original content is the non-cyclicity specialization, the no-primitive-root contraposition (no single Mathlib lemma), and the strict inequality λ < φ — none a one-line restatement.",
     "theoremCount": 13,
     "definitionCount": 0,

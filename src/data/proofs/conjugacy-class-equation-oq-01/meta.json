@@ -56,7 +56,7 @@
       "Concrete instance: every conjugacy class of Equiv.Perm (Fin 3) has cardinality dividing 6"
     ],
     "dateAdded": "2026-06-20",
-    "lineCount": 79,
+    "lineCount": 80,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). The concrete example uses kernel decide (not native_decide) on Nat.factorial 3 = 6, so no Lean.ofReduceBool is introduced. The Nat.card-valued statements hold for any group; they are non-vacuous precisely for finite groups, where they recover the classical per-class class equation.",
     "mathlib_version": "4.31.0",
     "theoremCount": 3,
@@ -152,7 +152,7 @@
       "ConjAct"
     ],
     "namespace": "ConjugacyClassEquationOQ01",
-    "lineCount": 79,
+    "lineCount": 80,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0,

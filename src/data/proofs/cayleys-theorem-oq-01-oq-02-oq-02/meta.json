@@ -87,7 +87,7 @@
       "card_mulAut_eq_card_out_mul_card_inn / card_mulAut_eq_card_out_mul_card_quotient_center: |Aut(G)| = |Out(G)| · |Inn(G)| = |Out(G)| · |G/Z(G)| for finite G — the Lagrange order formula for the automorphism group along the exact sequence"
     ],
     "dateAdded": "2026-06-24",
-    "lineCount": 156,
+    "lineCount": 157,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used. The exact sequence and isomorphism hold for an arbitrary (possibly infinite) group G; finiteness of G is assumed only for the two order-formula theorems.",
     "mathlib_version": "4.31.0",
     "theoremCount": 8,
@@ -196,7 +196,7 @@
     ],
     "opens": [],
     "namespace": "CayleyOuter",
-    "lineCount": 156,
+    "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 4,
