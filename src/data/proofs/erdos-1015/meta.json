@@ -23,7 +23,7 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "lineCount": 149,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 2 axioms: ramseyNumber (Ramsey number function — axiomatized, requires finite combinatorics), burr_erdos_spencer (Burr-Erdős-Spencer — f(t) = R(t,t-1) + x for 0 ≤ x < t). 0 sorries.",
+    "assumptions": "Compiles green on Lean v4.31 (autoImplicit off, verified via docker-build.sh) with 0 sorries following the Class A Lean-source repair in PR #39078 (the earlier #39061 audit finding is resolved). Stated assumptions: 2 axioms: ramseyNumber (Ramsey number function — axiomatized, requires finite combinatorics), burr_erdos_spencer (Burr-Erdős-Spencer — f(t) = R(t,t-1) + x for 0 ≤ x < t).",
     "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 10
