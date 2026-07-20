@@ -58,9 +58,9 @@
     ],
     "externalAttribution": "Proof structure adapted from github.com/Suro-One/auro-zera_Erdos-Straus_proof",
     "axiomCount": 1,
-    "lineCount": 590,
+    "lineCount": 677,
     "assumptions": "1 axiom: dyachenko_box (Dyachenko's Theorem 9.21, arXiv:2511.07465) asserting the existence of ED2 lattice box parameters for primes p = 1 mod 4. Used only for 6 hard residue classes mod 840: {1, 121, 169, 289, 361, 529}. All other cases fully proved.",
-    "theoremCount": 50,
+    "theoremCount": 51,
     "definitionCount": 5
   },
   "overview": {
@@ -231,9 +231,9 @@
     ],
     "opens": [],
     "namespace": "Erdos242",
-    "lineCount": 590,
+    "lineCount": 677,
     "axiomCount": 1,
-    "theoremCount": 50,
+    "theoremCount": 51,
     "definitionCount": 5,
     "path": "Proofs/Erdos242Problem.lean",
     "sorries": 0
@@ -358,7 +358,7 @@
       "type": "theorem",
       "statement": "n > 0, n ≡ 3 mod 4 ⟹ ES n",
       "significance": "Handles the residue class n ≡ 3 mod 4 with a uniform explicit construction, one of the elementary families that reduce the conjecture to the genuinely hard primes p ≡ 1 mod 4.",
-      "description": "Writes n = 4k+3 and gives the closed-form solution (k+1, 2(k+1), 2(k+1)(4k+3))."
+      "description": "Writes n = 4k+3 and gives the closed-form solution (k+1, 2(k+1)(4k+3), 2(k+1)(4k+3)), i.e. 4/(4k+3) = 1/(k+1) + 1/(2(k+1)(4k+3)) + 1/(2(k+1)(4k+3))."
     },
     {
       "name": "hard_residues_norm_split",

@@ -163,7 +163,7 @@
     },
     "type": "concept",
     "title": "Easy Residue Classes [PROVED]",
-    "content": "Four explicit constructions handle the 'easy' cases:\n\n- **n = 0 mod 4**: 4/(4k) = 1/(2k) + 1/(3k) + 1/(6k)\n- **n = 3 mod 4**: 4/(4k+3) = 1/(k+1) + 1/(2(k+1)) + 1/(2(k+1)(4k+3))\n- **n = 2 mod 3**: 4/(3k+2) = 1/(k+1) + 1/(2(k+1)) + 1/(6(k+1)(3k+2))\n- **p = 5 mod 8**: Uses (p+3)/4 and p(p+3)/8 as denominators\n\nAll four are fully proved with no axiom dependency.",
+    "content": "Four explicit constructions handle the 'easy' cases:\n\n- **n = 0 mod 4**: 4/(4k) = 1/(2k) + 1/(3k) + 1/(6k)\n- **n = 3 mod 4**: 4/(4k+3) = 1/(k+1) + 1/(2(k+1)(4k+3)) + 1/(2(k+1)(4k+3))\n- **n = 2 mod 3**: 4/(3k+2) = 1/(3k+2) + 1/(k+1) + 1/((3k+2)(k+1))\n- **p = 5 mod 8**: Uses (p+3)/4 and p(p+3)/8 as denominators\n\nAll four are fully proved with no axiom dependency.",
     "mathContext": "Each construction is verified by field_simp and ring/ring_nf in the rational number field.",
     "significance": "key",
     "relatedConcepts": [
