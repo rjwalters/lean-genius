@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1039-oq-05",
   "title": "How does ρ(f) relate to the transfinite diameter of the root set and to the logarithmic capacity of the lemniscate complement?",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,12 +29,12 @@
     "goal": "Formalize transfinite diameter of the root multiset and logarithmic capacity of the lemniscate complement in the Erdos1039 framework, and state the quantitative links ρ(f) ≳ g(d, cap) as theorems where provable and axioms where they cite the literature."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 1,
-    "focus": "Define transfinite diameter of the root multiset and logarithmic capacity of {|f|≥1}, then state their relationship to ρ(f).",
+    "iteration": 2,
+    "focus": "Finite discrete transfinite diameter (n-point spread) now formalized axiom-free in Erdos1039TransfiniteDiameter.lean. Next: the limit d(Z) = limₙ dₙ and the logarithmic-capacity side (cap of {|f|≥1}), plus the ρ(f) ≳ g(d,cap) links.",
     "blockers": [],
-    "nextAction": "Survey Mathlib for any capacity/transfinite-diameter API and choose between building definitions from scratch or axiomatizing them, mirroring the pommerenke_lower/klr_area_bound pattern in Erdos1039Problem.lean.",
+    "nextAction": "Formalize the transfinite diameter as the limit/inf of the n-point diameters dₙ(Z) (Fekete monotonicity dₙ₊₁ ≤ dₙ is the key missing lemma), then define logarithmic capacity of the lemniscate complement and axiomatize the cap=1 normalization (mirroring pommerenke_lower/klr_area_bound).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,15 +42,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "Key Lemma 1 delivered: the finite discrete transfinite diameter (n-point spread) is formalized axiom-free in Erdos1039TransfiniteDiameter.lean — definition, Vandermonde-determinant identity, nondegeneracy (distinct-roots ⇔ positive), and the classical dₙ(K) ≤ diam(K) bound. Parent conjecture ρ(f) ≫ 1/n remains OPEN; capacity side and the transfinite-diameter limit are the next targets.",
+    "builtItems": [
+      "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
+      "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
+      "spreadProduct_eq_norm_det_vandermonde: spread = |det Vandermonde|, tying it to the discriminant (Mathlib Matrix.det_vandermonde).",
+      "spreadProduct_pos_iff: spread > 0 ↔ roots distinct (Function.Injective); vanishes exactly at a repeated root.",
+      "discreteDiameter_le_two: dₙ(Z) ≤ 2 for n≥2 unit-disc roots — the classical dₙ(K) ≤ diam(K) with diam(unit disc)=2 (axiom-free)."
+    ],
+    "insights": [
+      "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
+      "The n-point diameter dₙ is bounded above by the set diameter (2 on the unit disc); the substantive open input is the LOWER direction and the Fekete monotonicity dₙ₊₁ ≤ dₙ giving the transfinite-diameter limit."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent."
+    ],
     "nextSteps": [
-      "Locate any logarithmic-capacity or transfinite-diameter definitions in Mathlib (expected: none).",
-      "Formalize d({z_i}) via the finite discrete spread ∏_{i<j}|z_i−z_j|^{2/(n(n-1))}.",
-      "Formalize logarithmic capacity of the compact complement piece and the cap=1 normalization.",
-      "State ρ(f) ≳ g(d, cap) relations, proving special cases (degree 1, clustered roots) and axiomatizing literature-dependent inequalities."
+      "Prove Fekete monotonicity dₙ₊₁(Z) ≤ dₙ(Z) so the transfinite diameter d(Z)=infₙ dₙ is well-defined (needs the (n+1)-choose-n sub-configuration product argument).",
+      "Define logarithmic capacity of the compact complement {|f|≥1}∩B(0,R) and axiomatize the cap=1 normalization for monic f (literature: Fekete–Szegő).",
+      "State ρ(f) ≳ g(d(Z), cap) as theorems where provable / axioms where they cite Pommerenke/KLR, extending the Erdos1039Problem axiom pattern.",
+      "Bridge spreadProduct to Erdos1039Problem.UnitDiscPolynomial.roots (this requires importing Proofs.Erdos1039Problem → Docker verification)."
     ],
     "markdown": "# Knowledge Base: erdos-1039-oq-05\n\nInsights accumulated during research on relating ρ(f) to transfinite diameter and logarithmic capacity.\n\n---\n\n## Problem Understanding\n\nρ(f) is the inscribed-disc radius of the lemniscate interior {|f|<1}. The lemniscate {|f|=1} is the level-1 curve of the Green's function of the complement, so ρ(f) is potential-theoretic. Two capacity-type invariants attach to f: the transfinite diameter d of the root multiset, and the logarithmic capacity of {|f|≥1}.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -123,6 +134,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039ProblemAristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039TransfiniteDiameter.lean",
+      "filename": "Erdos1039TransfiniteDiameter.lean",
+      "lineCount": 187,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039TransfiniteDiameter.lean"
     }
   ]
 }

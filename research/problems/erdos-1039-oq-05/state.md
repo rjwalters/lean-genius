@@ -1,25 +1,28 @@
 # Research State: erdos-1039-oq-05
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ORIENT
 **Path**: full
 **Since**: 2026-07-09T15:40:19-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Finite discrete transfinite diameter (n-point spread) is now formalized axiom-free
+in `Proofs/Erdos1039TransfiniteDiameter.lean`. Next: the limit d(Z) = limₙ dₙ
+(Fekete monotonicity) and the logarithmic-capacity side.
 
 ## Active Approach
-None yet.
+Approach B (Fekete points / transfinite diameter of the root set), building the
+finite discrete spread first and advancing toward the limiting diameter.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+None (parent conjecture ρ(f) ≫ 1/n remains OPEN, but out of scope for this OQ).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Prove Fekete monotonicity dₙ₊₁ ≤ dₙ (sub-configuration product argument), then
+define logarithmic capacity of the lemniscate complement and axiomatize cap=1.
