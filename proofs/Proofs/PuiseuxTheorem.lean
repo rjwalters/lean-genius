@@ -351,7 +351,7 @@ section NewtonPuiseux
 
 /-- The Newton polygon slope determines leading exponents for roots.
     For an edge of slope -p/q, roots have leading exponent p/q. -/
-def leadingExponentFromSlope (p q : ℕ) (hq : 0 < q) : ℚ := p / q
+def leadingExponentFromSlope (p q : ℕ) (_hq : 0 < q) : ℚ := p / q
 
 /-- **Ramification: every monomial `x` has fractional roots as a Puiseux series.**
 
@@ -378,7 +378,7 @@ theorem puiseux_nth_root_of_monomial {K : Type*} [Field K] (n : ℕ+) :
   · rw [HahnSeries.single_pow]
     have hn : (n : ℚ) ≠ 0 := by exact_mod_cast n.ne_zero
     congr 1
-    · rw [nsmul_eq_mul]; push_cast; field_simp
+    · rw [nsmul_eq_mul]; field_simp
     · rw [one_pow]
 
 /- The Newton-Puiseux algorithm terminates and produces valid roots.
@@ -703,7 +703,7 @@ theorem isPuiseux_mul {K : Type*} [NonUnitalNonAssocSemiring K] {f g : HahnSerie
   have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
   have hm0 : ((m : ℕ) : ℚ) ≠ 0 := by exact_mod_cast m.pos.ne'
   refine ⟨n * m, fun q hq => ?_⟩
-  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset hq)
   obtain ⟨k, hk⟩ := hn a ha
   obtain ⟨l, hl⟩ := hm b hb
   refine ⟨k * (m : ℤ) + l * (n : ℤ), ?_⟩
@@ -1032,7 +1032,7 @@ theorem isPuiseuxOfRamification_mul {K : Type*} [NonUnitalNonAssocSemiring K] {n
     {f g : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f)
     (hg : IsPuiseuxOfRamification n g) : IsPuiseuxOfRamification n (f * g) := by
   intro q hq
-  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset hq)
   obtain ⟨k, hk⟩ := hf a ha
   obtain ⟨l, hl⟩ := hg b hb
   refine ⟨k + l, ?_⟩
