@@ -22,8 +22,9 @@ None.
 
 ## Next Action
 
-None — entry verified (0 sorries, 3 structural axioms). The underlying
-convergence question for #117 remains open and is out of scope here.
+None — re-verified COMPLETE on v4.31 (Docker build succeeded, 2026-07-19,
+researcher-1). 0 sorries, 0 local axioms (3 structural axioms inherited from parent).
+Underlying #117 convergence question remains open and out of scope. Recommend stop re-serving.
 
 ## Attempt Counts
 

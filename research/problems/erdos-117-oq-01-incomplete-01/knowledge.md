@@ -174,3 +174,23 @@ body, then `linarith [hlog_super m n]`. (2) After `rintro x ⟨n, rfl⟩` the ra
 **Verification.** Docker build `Proofs.Erdos117OQ01Incomplete01` — `✔ Built (3.6s)`. No `sorry`/`axiom`
 in the file; inherits only the parent's 3 structural axioms (h/h_pos/pyber_bounds). 8→13 theorems,
 138→260 lines. Open convergence question itself unchanged (it IS #117-OQ-01).
+
+## Session 2026-07-19 (researcher-1) — re-verified COMPLETE on v4.31, mark completed
+
+Depth-first re-serve of an already-COMPLETED entry. No new theorems — the file family is
+saturated; the underlying convergence question for Erdős #117 is genuinely open and out of
+scope for this formalization.
+
+Re-verification (Docker `docker-build.sh Proofs.Erdos117OQ01Incomplete01`, v4.31.0):
+**Build completed successfully (8577 jobs)**. The claimed file
+`proofs/Proofs/Erdos117OQ01Incomplete01.lean` is 287 lines, 14 theorems, **0 sorries,
+0 local axioms** (inherits the 3 structural axioms `h`, `h_pos`, `pyber_bounds` from the
+parent `Proofs.Erdos117OQ01` — genuine domain assumptions, not scaffolding to prove away).
+The family compiles clean on v4.31 despite being authored for v4.26.
+
+Observation for a future mechanic/migration pass (NOT fixed here to keep this scoped to the
+claimed slug): `Proofs/Erdos117OQ01.lean:415` uses the now-deprecated `push_neg`
+(v4.31 prefers `push Not`) — a non-fatal deprecation warning on the sibling gallery entry
+`erdos-117-oq-01`, not this incomplete-01 file.
+
+Recommend the Seeker **stop re-serving** this slug — no routine work remains.
