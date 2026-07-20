@@ -40,8 +40,8 @@
       "title": "Definitions",
       "startLine": 22,
       "endLine": 38,
-      "summary": "Defines `IsPseudoperfect` (a subset of proper divisors sums to $n$), `IsPrimitivePseudoperfect` (pseudoperfect with no pseudoperfect proper divisor), and the set `primitivePseudoperfectSet`.",
-      "mathContext": "$\\text{IsPseudoperfect}(n):\\exists S\\subseteq\\text{properDivisors}(n),\\ \\sum S=n$; primitive if no proper divisor is pseudoperfect."
+      "summary": "Defines `IsPseudoperfect` (a nonempty subset of proper divisors sums to $n$), `IsPrimitivePseudoperfect` (pseudoperfect with no pseudoperfect proper divisor), and the set `primitivePseudoperfectSet`.",
+      "mathContext": "$\\text{IsPseudoperfect}(n):\\exists S\\neq\\emptyset,\\ S\\subseteq\\text{properDivisors}(n),\\ \\sum S=n$ (nonemptiness excludes the degenerate empty-sum representation of $0$); primitive if no proper divisor is pseudoperfect."
     },
     {
       "id": "perfect-pseudoperfect",
