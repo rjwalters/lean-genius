@@ -45,10 +45,10 @@
         "relationship": "Both are solved Erdős problems in analytic number theory with density/measure-theoretic conclusions"
       }
     ],
-    "lineCount": 395,
-    "assumptions": "This file states the problem (definitions IsRomanoff, ExceptionalSet, density, lowerDensity, IsCoveringSystem, ErdosConjecture16, erdosCovering, and the related Props Erdos9/10/11Question) and proves 13 axiom-free foundational lemmas about those definitions. It contains 0 axioms and 0 sorries. The deep results (Romanoff 1934 positive density, Erdos 1950 covering construction, Chen 2023 disproof) require analytic number theory beyond current Mathlib and remain described in doc-comments only, NOT formalized as theorems or axioms. The formalized lemmas are elementary structural facts: the Romanoff floor (2^k+p >= 4), concrete Romanoff witnesses (5=2+3, 7=4+3), membership of 1 and 3 in the exceptional set, the 0<=density<=1 range, and a full machine-checked proof that the explicit Erdos covering system {0 mod 2, 0 mod 3, 1 mod 4, 1 mod 6, 3 mod 8, 7 mod 12, 23 mod 24} genuinely covers the integers. Session 3 adds a finite-range refinement isRomanoff_iff_mem_range (the witness exponent lies in Finset.range n since 2^k<n forces k<2^k<n), a Decidable (IsRomanoff n) instance derived from it (kernel reduction only, no native_decide), and two further A006285 terms proved exceptional: 251 (249=3·83, 247=13·19, 243=3^5, 235=5·47, 219=3·73, 187=11·17, 123=3·41 all composite) and 331 (329=7·47, 327=3·109, 323=17·19, 315=5·63, 299=13·23, 267=3·89, 203=7·29, 75=3·25 all composite). Still 0 axioms, 0 sorries.",
+    "lineCount": 479,
+    "assumptions": "This file states the problem (definitions IsRomanoff, ExceptionalSet, density, lowerDensity, IsCoveringSystem, ErdosConjecture16, erdosCovering, and the related Props Erdos9/10/11Question) and proves 13 axiom-free foundational lemmas about those definitions. It contains 0 axioms and 0 sorries. The deep results (Romanoff 1934 positive density, Erdos 1950 covering construction, Chen 2023 disproof) require analytic number theory beyond current Mathlib and remain described in doc-comments only, NOT formalized as theorems or axioms. The formalized lemmas are elementary structural facts: the Romanoff floor (2^k+p >= 4), concrete Romanoff witnesses (5=2+3, 7=4+3), membership of 1 and 3 in the exceptional set, the 0<=density<=1 range, and a full machine-checked proof that the explicit Erdos covering system {0 mod 2, 0 mod 3, 1 mod 4, 1 mod 6, 3 mod 8, 7 mod 12, 23 mod 24} genuinely covers the integers. Session 3 adds a finite-range refinement isRomanoff_iff_mem_range (the witness exponent lies in Finset.range n since 2^k<n forces k<2^k<n), a Decidable (IsRomanoff n) instance derived from it (kernel reduction only, no native_decide), and two further A006285 terms proved exceptional: 251 (249=3·83, 247=13·19, 243=3^5, 235=5·47, 219=3·73, 187=11·17, 123=3·41 all composite) and 331 (329=7·47, 327=3·109, 323=17·19, 315=5·63, 299=13·23, 267=3·89, 203=7·29, 75=3·25 all composite). Still 0 axioms, 0 sorries. Session 4 formalizes the covering-congruence OBSTRUCTION mechanism behind Erdos's 1950 argument (5 new axiom-free theorems, still 0 axioms/0 sorries): two_pow_mod_three (order of 2 mod 3 is 2: 2^k%3 = 1 if k even else 2), two_pow_modEq_of_dvd (the core algebraic gear: if 2^d = 1 mod p and k = r mod d then 2^k = 2^r mod p), covering_prime_not_prime_sub (the general obstruction: given a prime p with 2^d = 1 mod p, an exponent k = r mod d, and n = 2^r mod p, then p divides n-2^k, so n-2^k is composite whenever it exceeds p — this is exactly how one residue class of exponents is eliminated), and two concrete gears not_prime_sub_even_mod_three (prime 3 kills even exponents for n = 1 mod 3) and not_prime_sub_mod_seven (prime 7 kills exponents divisible by 3 for n = 1 mod 7). Assembling all gears over a full covering system into a single arithmetic progression via CRT remains the deep step (documented only).",
     "mathlib_version": "4.31.0",
-    "theoremCount": 23,
+    "theoremCount": 28,
     "definitionCount": 11
   },
   "overview": {
@@ -189,10 +189,10 @@
       "BigOperators"
     ],
     "namespace": "Erdos16",
-    "lineCount": 337,
+    "lineCount": 479,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 10,
+    "theoremCount": 28,
+    "definitionCount": 11,
     "path": "Proofs/Erdos16Problem.lean",
     "sorries": 0
   },

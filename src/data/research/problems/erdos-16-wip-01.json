@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 4,
+    "focus": "Session 4: formalized the covering-congruence obstruction mechanism (Erdős 1950 gear + 2 concrete instances).",
     "blockers": [],
-    "nextAction": "Deep results (Romanoff 1934 density, Erdős 1950 covering-progression, Chen 2023 disproof) need analytic number theory absent from Mathlib; remaining tractable work is further A006285 verification (via decide for small n or interval_cases) and possibly a lowerDensity monotonicity/containment lemma.",
+    "nextAction": "CRT-assemble the individual covering gears over a full covering system of the exponent to force an infinite arithmetic progression into the exceptional set (formalizing Erdős 1950). Needs order-of-2 facts for primes 5,13,17,241 and CRT packaging — substantial but analytic-free.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos16Problem.lean — added finite-range characterization isRomanoff_iff_mem_range + Decidable (IsRomanoff n) instance (kernel-only, axiom-clean infrastructure), and proved A006285 terms 251 and 331 exceptional. 23 theorems + 11 defs/instances, 0 sorry, 0 axiom; #print axioms clean on all new results.",
+    "progressSummary": "PROGRESS: Erdos16Problem.lean — session 4 formalized the Erdős 1950 covering-congruence OBSTRUCTION mechanism (the actual math, not more A006285 enumeration): general gear covering_prime_not_prime_sub (prime p with 2^d≡1 mod p kills exponent class k≡r mod d for n≡2^r mod p, since p∣n−2^k), its algebraic core two_pow_modEq_of_dvd, two_pow_mod_three, and two concrete gears (primes 3 and 7). 28 theorems + 11 defs/instances, 0 sorry, 0 axiom; #print axioms clean on all new results. Remaining deep step: CRT-assemble gears over a full covering system to get the infinite AP (needs orders of 2 mod 5,13,17,241 + CRT, no analytic input).",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
@@ -43,7 +43,8 @@
       "isRomanoff_iff_mem_range (bounded existential over Finset.range n) in Erdos16Problem.lean",
       "decidableIsRomanoff : Decidable (IsRomanoff n) instance in Erdos16Problem.lean",
       "not_isRomanoff_251 / twoHundredFiftyOne_mem_exceptionalSet in Erdos16Problem.lean",
-      "not_isRomanoff_331 / threeHundredThirtyOne_mem_exceptionalSet in Erdos16Problem.lean"
+      "not_isRomanoff_331 / threeHundredThirtyOne_mem_exceptionalSet in Erdos16Problem.lean",
+      "two_pow_mod_three, two_pow_modEq_of_dvd, covering_prime_not_prime_sub, not_prime_sub_even_mod_three, not_prime_sub_mod_seven in Proofs/Erdos16Problem.lean (session 4, axiom-free)"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
@@ -53,10 +54,16 @@
       "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n−2^k) for each residue.",
       "isRomanoff_iff can be refined to a bounded search: 2^k<n forces k<2^k<n, so the witness exponent lies in Finset.range n. This makes IsRomanoff decidable (decidableIsRomanoff instance) by kernel reduction only — no native_decide, axioms stay [propext, Classical.choice, Quot.sound].",
       "decide over Finset.range n is impractical for the A006285 exceptional terms (>250) because the kernel would evaluate 2^{n-1} and hit the exponentiation threshold / recursion depth; the explicit interval_cases refutations (bounding k≤log2 n) keep 2^k small and are the robust route for specific numbers.",
-      "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n−2^k composite)."
+      "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n−2^k composite).",
+      "Erdős 1950 covering mechanism formalized as a reusable gear (covering_prime_not_prime_sub): for a prime p with 2^d ≡ 1 (mod p), any exponent k ≡ r (mod d) and any n ≡ 2^r (mod p) satisfy p ∣ n − 2^k, so n − 2^k is composite once it exceeds p. This eliminates a whole residue class of exponents at once — the structural upgrade over per-k A006285 checks.",
+      "Core algebraic lemma two_pow_modEq_of_dvd: 2^d ≡ 1 (mod p) ∧ k ≡ r (mod d) ⟹ 2^k ≡ 2^r (mod p), proved by writing k = r + d·t and using (2^d)^t ≡ 1. This is exponent-periodicity of 2 modulo p — the fact that makes one prime cover an arithmetic progression of exponents.",
+      "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n ≡ 1 (mod 3); prime 7 (order 3) kills exponents ≡ 0 (mod 3) for n ≡ 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Assemble the individual covering gears over a full covering system of the exponent (moduli 2,3,4,6,8,12,24 → primes with matching orders of 2) and use CRT to produce a single arithmetic progression of n all of whose exponents are covered — this would formalize Erdős 1950 (exceptional set contains an infinite AP). Blocker: needs the order-of-2 facts for primes 5,13,17,241 and a CRT packaging; substantial but no analytic input required.",
+      "Prove lowerDensity monotonicity/containment lemmas (density A ≤ density B when A ⊆ B) as further axiom-free density infrastructure."
+    ],
     "markdown": "# Knowledge Base: erdos-16-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

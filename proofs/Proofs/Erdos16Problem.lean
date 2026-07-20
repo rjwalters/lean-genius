@@ -366,6 +366,90 @@ theorem threeHundredThirtyOne_mem_exceptionalSet : (331 : ℕ) ∈ ExceptionalSe
   ⟨⟨165, by norm_num⟩, not_isRomanoff_331⟩
 
 /-
+## The covering-congruence obstruction mechanism (axiom-free)
+
+The A006285 refutations above check each exponent `k` individually.  Erdős's 1950
+argument is structural: it groups the exponents into finitely many residue classes
+(a covering system of `ℤ`, e.g. `erdosCovering`), and to each class `k ≡ r (mod d)`
+attaches a *fixed prime* `p` with `2^d ≡ 1 (mod p)`.  Then `2^k ≡ 2^r (mod p)` for
+every `k` in that class, so choosing `n ≡ 2^r (mod p)` forces `p ∣ n - 2^k`, making
+`n - 2^k` composite whenever it exceeds `p`.  Running this over a covering system
+kills *all* exponents simultaneously, placing an entire arithmetic progression of
+`n` into the exceptional set.  The lemmas below formalize this mechanism (one prime
+= one "gear"); assembling all gears into a single progression via CRT is the
+remaining deep step (Romanoff/Erdős-grade, documented above only). -/
+
+/-- The residue of `2^k` modulo `3` is periodic with period `2`: it is `1` for even
+`k` and `2` for odd `k` (the order of `2` mod `3` is `2`).  This is the smallest
+"gear" of the covering machine. -/
+theorem two_pow_mod_three (k : ℕ) : (2 : ℕ) ^ k % 3 = if k % 2 = 0 then 1 else 2 := by
+  induction k with
+  | zero => rfl
+  | succ n ih =>
+    rw [pow_succ, Nat.mul_mod, ih]
+    rcases (by omega : n % 2 = 0 ∨ n % 2 = 1) with h | h
+    · rw [if_pos h, if_neg (by omega : ¬ (n + 1) % 2 = 0)]
+    · rw [if_neg (by omega : ¬ n % 2 = 0), if_pos (by omega : (n + 1) % 2 = 0)]
+
+/-- **Exponent periodicity of `2` modulo `p`.**  If `2^d ≡ 1 (mod p)` (i.e. the
+multiplicative order of `2` mod `p` divides `d`), then `2^k ≡ 2^r (mod p)` whenever
+`k ≡ r (mod d)` with `r ≤ k`.  This is the core algebraic fact that lets a single
+prime cover a whole residue class of exponents. -/
+theorem two_pow_modEq_of_dvd {p d k r : ℕ} (hd : (2 : ℕ) ^ d ≡ 1 [MOD p])
+    (hle : r ≤ k) (hdvd : d ∣ (k - r)) : (2 : ℕ) ^ k ≡ 2 ^ r [MOD p] := by
+  obtain ⟨t, ht⟩ := hdvd
+  have hk : k = r + d * t := by omega
+  subst hk
+  calc (2 : ℕ) ^ (r + d * t)
+      = 2 ^ r * (2 ^ d) ^ t := by rw [pow_add, pow_mul]
+    _ ≡ 2 ^ r * 1 ^ t [MOD p] := (Nat.ModEq.refl _).mul (hd.pow t)
+    _ = 2 ^ r := by rw [one_pow, mul_one]
+
+/-- **The covering obstruction (general gear).**  Fix a prime `p` and an exponent
+period `d` with `2^d ≡ 1 (mod p)`.  For any exponent `k ≡ r (mod d)` and any `n`
+with `n ≡ 2^r (mod p)`, the prime `p` divides `n - 2^k`; hence if additionally
+`p < n - 2^k` (so the quotient is `> 1`), the complement `n - 2^k` is **composite**.
+This is exactly the step by which one residue class of exponents is eliminated in
+Erdős's construction. -/
+theorem covering_prime_not_prime_sub {p d k r n : ℕ}
+    (hp : Nat.Prime p) (hd : (2 : ℕ) ^ d ≡ 1 [MOD p])
+    (hle : r ≤ k) (hdvd : d ∣ (k - r)) (hn : n ≡ 2 ^ r [MOD p])
+    (hlt : 2 ^ k < n) (hbig : p < n - 2 ^ k) : ¬ Nat.Prime (n - 2 ^ k) := by
+  have hper : (2 : ℕ) ^ k ≡ 2 ^ r [MOD p] := two_pow_modEq_of_dvd hd hle hdvd
+  have hnk : (2 : ℕ) ^ k ≡ n [MOD p] := hper.trans hn.symm
+  have hdvd2 : p ∣ n - 2 ^ k := (Nat.modEq_iff_dvd' hlt.le).mp hnk
+  intro hprime
+  rcases hprime.eq_one_or_self_of_dvd p hdvd2 with h | h
+  · have := hp.two_le; omega
+  · omega
+
+/-- **Concrete gear (prime `3`, even exponents).**  If `n ≡ 1 (mod 3)` then for
+every *even* exponent `k` with `2^k < n` and `n - 2^k > 3`, the complement `n - 2^k`
+is composite (since `2^k ≡ 1 (mod 3)` for even `k`, so `3 ∣ n - 2^k`).  Thus in the
+progression `n ≡ 1 (mod 3)` no even exponent can witness a Romanoff representation. -/
+theorem not_prime_sub_even_mod_three {n k : ℕ}
+    (hn : n % 3 = 1) (hk : Even k) (hlt : 2 ^ k < n) (hbig : 3 < n - 2 ^ k) :
+    ¬ Nat.Prime (n - 2 ^ k) := by
+  obtain ⟨m, hm⟩ := hk
+  refine covering_prime_not_prime_sub (p := 3) (d := 2) (r := 0)
+    (by norm_num) (by decide) (Nat.zero_le k) ⟨m, by omega⟩ ?_ hlt hbig
+  show n % 3 = 2 ^ 0 % 3
+  norm_num [hn]
+
+/-- **Concrete gear (prime `7`, exponents `≡ 0 mod 3`).**  If `n ≡ 1 (mod 7)` then
+for every exponent `k` divisible by `3` with `2^k < n` and `n - 2^k > 7`, the
+complement `n - 2^k` is composite (the order of `2` mod `7` is `3`, so `2^k ≡ 1
+(mod 7)`, giving `7 ∣ n - 2^k`).  A second prime covering a *different* class of
+exponents, demonstrating the mechanism is not special to `p = 3`. -/
+theorem not_prime_sub_mod_seven {n k : ℕ}
+    (hn : n % 7 = 1) (hk : k % 3 = 0) (hlt : 2 ^ k < n) (hbig : 7 < n - 2 ^ k) :
+    ¬ Nat.Prime (n - 2 ^ k) := by
+  refine covering_prime_not_prime_sub (p := 7) (d := 3) (r := 0)
+    (by norm_num) (by decide) (Nat.zero_le k) ⟨k / 3, by omega⟩ ?_ hlt hbig
+  show n % 7 = 2 ^ 0 % 7
+  norm_num [hn]
+
+/-
 ## Summary
 
 **Problem Status: SOLVED (Disproved)**
