@@ -1,7 +1,7 @@
 {
   "slug": "erdos-46-wip-01",
   "title": "Complete the Erdős #46 Monochromatic Unit-Fraction Formalization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -18,12 +18,18 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "iteration": 2,
+    "focus": "Discharge provable structural lemmas; isolate Croot's theorem as the single external input.",
+    "blockers": [
+      {
+        "route": "Croot's theorem (monochromatic unit-fraction representation of 1)",
+        "reopenCriterion": "density Hales–Jewett / Croot's analytic input formalized in Mathlib",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Prove ErdosGraham_rational follows from ErdosProblem46_infinitely_many (elementary reduction); keep Croot's theorem isolated as the density-Hales–Jewett external input.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,9 +37,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: discharged the two structural lemmas the completion task flagged as 'asserted rather than proved' — singleton exclusion (not_unitFractionRepr_singleton) and the ≥2-elements bound (two_le_card_unitFractionRepr), both axiom-free, host-verified v4.31. Erdos46Problem.lean theoremCount 3→5, lineCount 84→106. Remaining open: Croot's theorem (needs density Hales–Jewett, absent from Mathlib) as the single genuine external input; the Erdős–Graham rational generalization should reduce to the infinitely-many version elementarily (next provable target).",
+    "builtItems": [
+      "not_unitFractionRepr_singleton (Erdos46Problem.lean): ¬IsUnitFractionRepr {n}, axiom-free (via div_eq_one_iff_eq + n≥2).",
+      "two_le_card_unitFractionRepr (Erdos46Problem.lean): 2 ≤ S.card for any IsUnitFractionRepr S, axiom-free (empty/singleton exclusion)."
+    ],
+    "insights": [
+      "The two structural facts previously stated only as comments in Erdos46Problem.lean (singleton exclusion and |S|≥2) are elementary and axiom-free: a singleton {n} fails because n≥2 ⟹ 1/n<1, and any unit-fraction representation of 1 is neither ∅ (sum 0) nor a singleton, so has ≥2 elements.",
+      "Remaining genuine external inputs toward `verified`: Croot's theorem (ErdosProblem46 / _infinitely_many) rests on the density Hales–Jewett input, not in Mathlib; ErdosGraham_rational should follow from the infinitely-many version by an elementary reduction (candidate next provable lemma)."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -56,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-10T00:41:25.928Z",
+  "lastUpdate": "2026-07-20",
   "significance": 6,
   "tractability": 7
 }

@@ -69,7 +69,16 @@ theorem not_unitFractionRepr_empty : ¬IsUnitFractionRepr ∅ := by
   intro ⟨_, hsum⟩
   simp at hsum
 
-/-  A singleton {n} is a unit fraction representation iff n = 1, which contradicts n ≥ 2. -/
+/-- A singleton `{n}` is never a unit fraction representation of `1`: the
+constraint `n ≥ 2` forces `1/n ≤ 1/2 < 1`, so its sum cannot equal `1`. -/
+theorem not_unitFractionRepr_singleton (n : ℕ) : ¬IsUnitFractionRepr {n} := by
+  rintro ⟨hge, hsum⟩
+  have hn : 2 ≤ n := hge n (mem_singleton_self n)
+  have hn0 : (n : ℚ) ≠ 0 := by exact_mod_cast (show n ≠ 0 by omega)
+  rw [Finset.sum_singleton, div_eq_one_iff_eq hn0] at hsum
+  have : n = 1 := by exact_mod_cast hsum.symm
+  omega
+
 /-- Any monochromatic set under a 1-colouring is trivially monochromatic. -/
 theorem mono_one_colour (c : FiniteColouring 1) (S : Finset ℕ) :
     IsMonochromatic c S := by
@@ -81,4 +90,17 @@ theorem mono_subset {r : ℕ} {c : FiniteColouring r} {S T : Finset ℕ}
   obtain ⟨col, hcol⟩ := hS
   exact ⟨col, fun n hn => hcol n (hTS hn)⟩
 
-/- A unit fraction representation has at least two elements. -/
+/-- A unit fraction representation of `1` has at least two elements: it is
+neither empty (sum `0 ≠ 1`) nor a singleton (`not_unitFractionRepr_singleton`). -/
+theorem two_le_card_unitFractionRepr {S : Finset ℕ} (h : IsUnitFractionRepr S) :
+    2 ≤ S.card := by
+  rcases Nat.lt_or_ge S.card 2 with hlt | hge
+  · exfalso
+    have : S.card = 0 ∨ S.card = 1 := by omega
+    rcases this with h0 | h1
+    · rw [Finset.card_eq_zero] at h0
+      subst h0
+      exact not_unitFractionRepr_empty h
+    · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp h1
+      exact not_unitFractionRepr_singleton a h
+  · exact hge
