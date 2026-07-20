@@ -89,12 +89,28 @@
   },
   "sections": [
     {
-      "id": "curvature-sine",
+      "id": "header",
+      "title": "Overview: The Curvature-κ Open Question",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports the parent (cevas-theorem-non-euclidean, source of ceva_unified_principle) and the analysis lemmas for √, sin, and sinh. The module docstring states the parent's open question — extend the unified Ceva framework to arbitrary curvature κ via the curvature sine sin_κ — records the piecewise definition sin_κ(x) = sin(√κ·x)/√κ (κ>0), x (κ=0), sinh(√(−κ)·x)/√(−κ) (κ<0), and lists the eight results: the definition, its three specializations, the positivity lemma, the unified theorem, and the three recovered classical cases. Opens the namespace and Real.",
+      "mathContext": "$\\sin_\\kappa(x) = \\sin(\\sqrt\\kappa\\,x)/\\sqrt\\kappa$ ($\\kappa>0$), $x$ ($\\kappa=0$), $\\sinh(\\sqrt{-\\kappa}\\,x)/\\sqrt{-\\kappa}$ ($\\kappa<0$) — one function interpolating the three constant-curvature geometries."
+    },
+    {
+      "id": "curvature-sine-def",
       "title": "Section I: The Curvature Sine and Its Specializations",
       "startLine": 38,
+      "endLine": 61,
+      "summary": "Defines the (noncomputable) curvature sine sinKappa κ x by cases on the sign of κ, then proves the three specialization identities that tie it back to the classical distance functions: sinKappa_one (κ=1 ⟹ sin, via sqrt_one), sinKappa_neg_one (κ=−1 ⟹ sinh, via the two if-branches), and sinKappa_zero (κ=0 ⟹ the identity, both guards false). These are the rewrites that later collapse the unified theorem to each classical geometry.",
+      "mathContext": "$\\sin_1 = \\sin$, $\\sin_{-1} = \\sinh$, $\\sin_0 = \\mathrm{id}$: the curvature sine specializes to the spherical, hyperbolic, and Euclidean distance functions at $\\kappa = 1, -1, 0$."
+    },
+    {
+      "id": "positivity",
+      "title": "Section I(b): Positivity of the Curvature Sine",
+      "startLine": 63,
       "endLine": 74,
-      "summary": "Defines sinKappa κ x by cases on sign(κ); proves sinKappa_one (= sin), sinKappa_neg_one (= sinh), sinKappa_zero (= id), and sinKappa_pos (positivity with the spherical range condition √κ·x < π).",
-      "mathContext": "sin_κ is the single function interpolating the three geometries; its specializations identify the classical distance functions."
+      "summary": "sinKappa_pos: for a positive argument x, sin_κ(x) > 0. The proof splits on sign(κ): the spherical case κ>0 uses sin_pos_of_pos_of_lt_pi and needs the range hypothesis √κ·x < π (the geodesic is shorter than half the great circle); the hyperbolic case uses sinh_pos_of_pos, and the Euclidean case is x itself — both unconditional. This positivity is exactly the hypothesis the unified Ceva theorem requires of all six sub-segments so the ratios are well-defined.",
+      "mathContext": "$0 < x$ (and $\\sqrt\\kappa\\,x < \\pi$ when $\\kappa>0$) $\\Rightarrow \\sin_\\kappa(x) > 0$; the spherical range condition is the only non-vacuous hypothesis."
     },
     {
       "id": "unified-ceva",
