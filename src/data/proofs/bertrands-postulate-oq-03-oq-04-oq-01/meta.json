@@ -45,8 +45,8 @@
       {
         "title": "Key Asymptotic: log² = o(x^ε)",
         "content": "For any ε > 0 and constant C > 0, the bound C · log(n)² eventually falls below n^ε. The proof uses `isLittleO_log_rpow_atTop` from Mathlib: log = o(x^(ε/4)), so log² = o(x^(ε/2)). For large n, the factor n^(ε/2) exceeds C, giving C · log²(n) < n^ε. This is the analytic engine for the main theorem.",
-        "startLine": 62,
-        "endLine": 119,
+        "startLine": 61,
+        "endLine": 115,
         "theorems": [
           "log_sq_lt_rpow_eventually"
         ]
@@ -54,8 +54,8 @@
       {
         "title": "Next-Prime Definition and Bridge Axiom",
         "content": "nextPrimeFrom(x) is the smallest prime ≥ x, defined via Nat.infinite_setOf_prime.exists_gt. The bridge axiom cramer_implies_nextPrime_bound converts Cramér's nth-prime formulation to an interval bound: Cramér gap p_{n+1}-p_n ≤ C·log²(p_n) implies nextPrime(x) ≤ x + C·log²(x). This avoids technical Nat.nth index manipulation while preserving mathematical substance.",
-        "startLine": 121,
-        "endLine": 163,
+        "startLine": 117,
+        "endLine": 152,
         "theorems": [
           "nextPrimeFrom_prime",
           "nextPrimeFrom_ge",
@@ -64,9 +64,9 @@
       },
       {
         "title": "Main Theorem: Cramér → PrimeGapConjecture(ε) for All ε > 0",
-        "content": "cramer_implies_primeGapConjecture_eventually proves existence eventually: for any ε > 0, for all large enough x, there is a prime in [x, x+x^ε]. The proof chains the bridge axiom with the log² asymptotic: nextPrime(x) ≤ x + C·log²(x) < x + x^ε for large x. The full cramer_implies_primeGapConjecture extends this to ALL x ≥ 2 by using BHP (0.525 unconditional) for small x.",
-        "startLine": 165,
-        "endLine": 230,
+        "content": "cramer_implies_primeGapConjecture_eventually proves existence eventually: for any ε > 0, for all large enough x, there is a prime in [x, x+x^ε]. The proof chains the bridge axiom with the log² asymptotic: nextPrime(x) ≤ x + C·log²(x) < x + x^ε for large x. cramer_implies_primeGapConjecture is definitionally the eventual form (`:= cramer_implies_primeGapConjecture_eventually ε hε`); the file deliberately states the honest *eventual* conclusion rather than a for-all-x claim, because for ε < 0.525 and small x the interval [x, x+x^ε] is narrower than BHP's [x, x+x^0.525], so BHP supplies no prime there.",
+        "startLine": 154,
+        "endLine": 201,
         "theorems": [
           "cramer_implies_primeGapConjecture_eventually",
           "cramer_implies_primeGapConjecture"
@@ -75,8 +75,8 @@
       {
         "title": "The Density Gap and Hierarchy",
         "content": "PrimeGapConjecture(ε) guarantees EXISTENCE of a prime in [x, x+x^ε]; ShortIntervalPNT(ε) requires COUNT ≈ x^ε/log(x). The converse of existence_is_weaker_than_density is not known: gap bounds alone do not control density. cramer_hierarchy summarizes: BHP gives ε ≥ 0.525 unconditionally; Cramér gives all ε > 0; RH gives density for ε > 0 (from parent entry).",
-        "startLine": 232,
-        "endLine": 257,
+        "startLine": 203,
+        "endLine": 244,
         "theorems": [
           "existence_is_weaker_than_density",
           "cramer_hierarchy"
@@ -92,12 +92,12 @@
   },
   "overview": {
     "historicalContext": "Prime gaps — the spaces between consecutive primes — have fascinated mathematicians since antiquity. Bertrand's postulate (1845, proved by Chebyshev) showed there is always a prime between n and 2n, giving a multiplicative gap bound. Cramér (1936) proposed a probabilistic model for primes, treating them as independent Bernoulli trials with probability 1/log(p), and predicted the maximum prime gap near p to be O(log² p). This conjecture remains one of the deepest unsolved problems in prime number theory.\n\nBaker, Harman, and Pintz (2001) established unconditionally that prime gaps satisfy p_{n+1} - p_n = O(p_n^0.525), the current best unconditional result. The gap between BHP's exponent 0.525 and Cramér's conjectured exponent 0 (polylogarithmic in scale) is precisely the content of this entry: Cramér's conjecture would imply prime gaps are O(log² p), which is o(p^ε) for every ε > 0, giving a prime in every interval [x, x+x^ε].",
-    "problemStatement": "**Open Question OQ-01 from BertrandsPostulateOQ03OQ04**: Does Cramér's conjecture (prime gaps are O(log² p)) imply PrimeGapConjecture(ε) for all ε > 0?\n\n**Formal statement**: If `cramer_conjecture` holds (∃ C > 0, ∀ n, gap(p_n, p_{n+1}) ≤ C·log²(p_n)), then for every ε > 0, for all x ≥ 2, there exists a prime p with x ≤ p ≤ x + x^ε.\n\n**Answer here**: Yes, proved via the key asymptotic log²(x) = o(x^ε) for all ε > 0, combined with a bridge axiom and BHP as a base case.",
-    "proofStrategy": "The proof has four components assembled in sequence:\n\n1. **Key asymptotic** (log_sq_lt_rpow_eventually): For any ε > 0 and constant C > 0, `C · log²(n) < n^ε` for all sufficiently large n. Proved rigorously via `isLittleO_log_rpow_atTop`: log = o(n^(ε/4)), so log² = o(n^(ε/2)), and n^(ε/2) eventually exceeds C.\n\n2. **Bridge axiom** (cramer_implies_nextPrime_bound): Converts Cramér's nth-prime gap bound to an interval bound: if gap ≤ C·log²(p_n) for all n, then nextPrime(x) ≤ x + C·log²(x) for all x. Axiomatized to avoid Nat.nth/Nat.count index manipulation.\n\n3. **Eventual result** (cramer_implies_primeGapConjecture_eventually): Chains steps 1-2: nextPrime(x) ≤ x + C·log²(x) < x + x^ε for x ≥ N (threshold from the asymptotic).\n\n4. **Full result** (cramer_implies_primeGapConjecture): Uses BHP for x < N (since ε ≥ 0 > −∞, for small x BHP covers ε ≥ 0.525; for ε < 0.525 BHP is also used below the threshold).",
+    "problemStatement": "**Open Question OQ-01 from BertrandsPostulateOQ03OQ04**: Does Cramér's conjecture (prime gaps are O(log² p)) imply PrimeGapConjecture(ε) for all ε > 0?\n\n**Formal statement**: If `cramer_conjecture` holds (∃ C > 0, ∀ n, gap(p_n, p_{n+1}) ≤ C·log²(p_n)), then for every ε > 0, for all x ≥ 2, there exists a prime p with x ≤ p ≤ x + x^ε.\n\n**Answer here**: Yes, in the honest *eventual* sense — for every ε > 0, a prime lies in [x, x+x^ε] for all sufficiently large x. This is proved via the key asymptotic log²(x) = o(x^ε) combined with a bridge axiom. (The file deliberately does not claim all x ≥ 2, since for ε < 0.525 and small x the interval is too narrow for BHP to help.)",
+    "proofStrategy": "The proof has four components assembled in sequence:\n\n1. **Key asymptotic** (log_sq_lt_rpow_eventually): For any ε > 0 and constant C > 0, `C · log²(n) < n^ε` for all sufficiently large n. Proved rigorously via `isLittleO_log_rpow_atTop`: log = o(n^(ε/4)), so log² = o(n^(ε/2)), and n^(ε/2) eventually exceeds C.\n\n2. **Bridge axiom** (cramer_implies_nextPrime_bound): Converts Cramér's nth-prime gap bound to an interval bound: if gap ≤ C·log²(p_n) for all n, then nextPrime(x) ≤ x + C·log²(x) for all x. Axiomatized to avoid Nat.nth/Nat.count index manipulation.\n\n3. **Eventual result** (cramer_implies_primeGapConjecture_eventually): Chains steps 1-2: nextPrime(x) ≤ x + C·log²(x) < x + x^ε for x ≥ N (threshold from the asymptotic).\n\n4. **Packaged result** (cramer_implies_primeGapConjecture): definitionally the eventual statement (`:= cramer_implies_primeGapConjecture_eventually ε hε`). The file states the eventual conclusion rather than an all-x claim: for ε < 0.525 and small x the interval [x, x+x^ε] is narrower than BHP's [x, x+x^0.525], so BHP does not supply a prime there. BHP re-appears only in cramer_hierarchy, as the unconditional ε = 0.525 anchor.",
     "keyInsights": [
       "**The analytic core is one asymptotic**: The entire proof reduces to log²(x) = o(x^ε). This is proved in 50 lines via isLittleO squaring — a clean application of Mathlib's asymptotic infrastructure to a classical result.",
       "**Cramér bridges exponents**: The result shows that Cramér's polylogarithmic conjecture (if true) would simultaneously resolve ALL positive-exponent prime gap questions — an implication that is proved here.",
-      "**BHP as base case**: Baker-Harman-Pintz (0.525) is used not as the main result but as a finite base case (covering small x below the asymptotic threshold). This is the correct architectural role for BHP in this conditional result.",
+      "**BHP as the unconditional anchor**: Baker-Harman-Pintz (0.525) is not used as a base case for the all-ε result (that result is stated eventually, not for all x). Instead BHP appears in cramer_hierarchy as the unconditional ε = 0.525 endpoint against which the Cramér-conditional all-ε statement is contrasted.",
       "**Existence vs density dichotomy**: The density gap theorem (existence_is_weaker_than_density) shows that even with Cramér's conjecture, we cannot prove ShortIntervalPNT(ε) for ε < 1 — the equidistribution of primes in short intervals requires additional conjectures (e.g., about zeta zeros).",
       "**The bridge axiom defers index arithmetic**: Converting from nth-prime to interval formulation is mathematically straightforward but technically involves Nat.nth/Nat.count. Deferring this to an axiom keeps the main proof clean while honestly flagging the formalization gap."
     ],
@@ -121,32 +121,32 @@
     {
       "id": "log-sq-asymptotic",
       "title": "Key Asymptotic: log²(n) = o(n^ε)",
-      "startLine": 62,
-      "endLine": 119,
+      "startLine": 61,
+      "endLine": 115,
       "summary": "log_sq_lt_rpow_eventually proves C·log²(n) < n^ε for large n, for any C, ε > 0. Uses isLittleO_log_rpow_atTop with exponent ε/4, squares the little-o bound, and combines with the threshold where n^(ε/2) exceeds C.",
       "mathContext": "$\\log(n) = o(n^{\\varepsilon/4})$ (Mathlib), so $\\log^2(n) = o(n^{\\varepsilon/2})$. For large $n$: $n^{\\varepsilon/2} \\geq C$, giving $C \\cdot \\log^2(n) < n^{\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^\\varepsilon$."
     },
     {
       "id": "bridge-axiom",
       "title": "Next-Prime Definition and Bridge Axiom",
-      "startLine": 121,
-      "endLine": 163,
+      "startLine": 117,
+      "endLine": 152,
       "summary": "nextPrimeFrom(x) is the smallest prime ≥ x. The axiom cramer_implies_nextPrime_bound converts Cramér's gap bound on consecutive primes (p_{n+1}-p_n ≤ C·log²(p_n)) to an interval bound: nextPrime(x) ≤ x + C·log²(x).",
       "mathContext": "If $p_n \\leq x < p_{n+1}$, then nextPrime$(x) = p_{n+1}$ and $p_{n+1} - x \\leq p_{n+1} - p_n \\leq C \\log^2 p_n \\leq C \\log^2 x$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Cramér → PrimeGapConjecture(ε)",
-      "startLine": 165,
-      "endLine": 230,
-      "summary": "cramer_implies_primeGapConjecture chains the bridge axiom and log² asymptotic. For x ≥ N: nextPrime(x) ≤ x + C·log²(x) < x + x^ε. For x < N: BHP covers ε ≥ 0.525; case split handles ε < 0.525 using BHP as base case.",
-      "mathContext": "The calc chain: nextPrime$(x) \\leq x + C\\log^2 x < x + x^\\varepsilon$. The `by_cases h : ε ≥ 0.525` splits into BHP-direct vs Cramér-eventual cases."
+      "startLine": 154,
+      "endLine": 201,
+      "summary": "cramer_implies_primeGapConjecture_eventually chains the bridge axiom and log² asymptotic: for x ≥ max(N₁, 2), nextPrime(x) ≤ x + C·log²(x) < x + x^ε, and the prime nextPrimeFrom x witnesses the gap. cramer_implies_primeGapConjecture is definitionally this eventual form — the file states the honest eventual conclusion, not an all-x claim (for ε < 0.525, small x, BHP's wider interval supplies no prime).",
+      "mathContext": "The calc chain: nextPrime$(x) \\leq x + C\\log^2 x \\leq x + x^\\varepsilon$ for $x \\geq \\max(N_1, 2)$, closed by `linarith` using $C\\log^2 x < x^\\varepsilon$."
     },
     {
       "id": "density-gap",
       "title": "Existence vs Density and Hierarchy Summary",
-      "startLine": 232,
-      "endLine": 257,
+      "startLine": 203,
+      "endLine": 244,
       "summary": "existence_is_weaker_than_density shows ShortIntervalPNT → PrimeGapConjecture. cramer_hierarchy collects: BHP (unconditional ε ≥ 0.525), Cramér (conditional all ε > 0), and the open density question.",
       "mathContext": "ShortIntervalPNT(ε): $\\pi(x+x^\\varepsilon) - \\pi(x) \\sim x^\\varepsilon / \\log x$. PrimeGapConjecture(ε): count $\\geq 1$. Implication is one-way; the converse is open."
     }
