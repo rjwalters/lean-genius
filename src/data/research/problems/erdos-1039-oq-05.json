@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iter 3): the combinatorial core of Fekete monotonicity is formalized axiom-free. prod_spreadProduct_deleteAt proves prod_k V(delete k Z) = V(Z)^(n-1) directly, with a succAbove reindexing lemma, the cardinality count, and the additive log-energy form. Builds on Key Lemma 1 (n-point spread) in Erdos1039TransfiniteDiameter.lean. Remaining: lift to supremum-level d_(n+1) <= d_n (needs sup over configurations); logarithmic capacity + cap=1 (axiomatize). Parent rho(f) >> 1/n remains OPEN. | +discreteDiameter_pos & discreteDiameter_pos_iff (strict positivity ⟺ distinct roots), the positivity underpinning every log/exp step. 0 sorry, 0 axiom.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): lifted Fekete monotonicity to the SUPREMUM level. New defs unitDiscDiameters/transfiniteDiameterN (sup of dₙ(Z) over configs in the closed unit disc) + transfiniteDiameterN_succ_le (d_{n+1} ≤ dₙ, n≥2) and transfiniteDiameterN_mem_Icc (0 ≤ dₙ ≤ 2). The transfinite diameter d = infₙ dₙ is now a well-defined monotone bounded limit. Parent ρ(f) ≫ 1/n remains OPEN.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -56,7 +56,8 @@
       "prod_spreadProduct_deleteAt (Fekete deletion identity) in Erdos1039TransfiniteDiameter.lean",
       "sum_logSpread_deleteAt (additive energy form) in Erdos1039TransfiniteDiameter.lean",
       "discreteDiameter_pos (0 < dₙ z for injective z) in Erdos1039TransfiniteDiameter.lean",
-      "discreteDiameter_pos_iff (n≥2: 0 < dₙ z ↔ Injective z) in Erdos1039TransfiniteDiameter.lean"
+      "discreteDiameter_pos_iff (n≥2: 0 < dₙ z ↔ Injective z) in Erdos1039TransfiniteDiameter.lean",
+      "unitDiscDiameters, transfiniteDiameterN, zero_mem_unitDiscDiameters, unitDiscDiameters_nonempty/bddAbove, transfiniteDiameterN_succ_le, transfiniteDiameterN_mem_Icc in Erdos1039TransfiniteDiameter.lean (0 axioms, 0 sorries; host-verified v4.31.0)"
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
@@ -65,16 +66,17 @@
       "Fekete deletion identity prod_k V(delete k Z) = V(Z)^(n-1) is provable axiom-free and unconditionally (any tuple): each pair a<b survives exactly n-1 of the n+1 deletions (those removing neither endpoint).",
       "Order-preserving pair reindexing under Fin.succAbove is a nested Finset.prod_bij; the k-dependent erase-guard is pulled through prod_k by rewriting erase -> filter(.neq.k) -> if via Finset.filter_ne'/prod_filter, then prod_comm.",
       "Additive shadow: sum_k logSpread(delete k Z) = (n-1)*logSpread Z for distinct roots, connecting the deletion identity to the logarithmic-energy/capacity bridge already in the file.",
-      "Strict positivity of discreteDiameter: dₙ z = spreadProduct z ^ (2/(n(n-1))); for injective z the base is positive (spreadProduct_pos_iff) so Real.rpow_pos_of_pos gives 0 < dₙ. The n≥2 iff uses that the exponent 2/(n(n-1)) is nonzero, so a zero spread would force dₙ=0 (Real.zero_rpow). This is the positivity that Real.log(dₙ) and the energy bridge silently need."
+      "Strict positivity of discreteDiameter: dₙ z = spreadProduct z ^ (2/(n(n-1))); for injective z the base is positive (spreadProduct_pos_iff) so Real.rpow_pos_of_pos gives 0 < dₙ. The n≥2 iff uses that the exponent 2/(n(n-1)) is nonzero, so a zero spread would force dₙ=0 (Real.zero_rpow). This is the positivity that Real.log(dₙ) and the energy bridge silently need.",
+      "Fekete monotonicity LIFTS to the supremum level: defining dₙ = sup over n-point configs in the closed unit disc of discreteDiameter, the pointwise exists_deleteAt_discreteDiameter_ge gives transfiniteDiameterN_succ_le (d_{n+1} ≤ dₙ, n≥2) directly via csSup_le + le_csSup — no compactness API needed, only that the config values stay in the disc under deletion and that dₙ(Z)≤2 bounds the sup. The disc is the natural compact set (parent lemniscate roots lie in it)."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent."
     ],
     "nextSteps": [
-      "Prove Fekete monotonicity dₙ₊₁(Z) ≤ dₙ(Z) so the transfinite diameter d(Z)=infₙ dₙ is well-defined (needs the (n+1)-choose-n sub-configuration product argument).",
-      "Define logarithmic capacity of the compact complement {|f|≥1}∩B(0,R) and axiomatize the cap=1 normalization for monic f (literature: Fekete–Szegő).",
-      "State ρ(f) ≳ g(d(Z), cap) as theorems where provable / axioms where they cite Pommerenke/KLR, extending the Erdos1039Problem axiom pattern.",
-      "Bridge spreadProduct to Erdos1039Problem.UnitDiscPolynomial.roots (this requires importing Proofs.Erdos1039Problem → Docker verification)."
+      "Package d(disc) = ⨅ₙ transfiniteDiameterN n and show the sequence converges to it (Antitone + BddBelow ⟹ Tendsto to iInf).",
+      "Define logarithmic capacity of the lemniscate complement and axiomatize cap=1 normalization for monic f (Fekete–Szegő).",
+      "State ρ(f) ≳ g(d(Z),cap) as theorems/axioms citing Pommerenke/KLR.",
+      "Bridge spreadProduct to Erdos1039Problem.UnitDiscPolynomial.roots (needs Docker)."
     ],
     "markdown": "# Knowledge Base: erdos-1039-oq-05\n\nInsights accumulated during research on relating ρ(f) to transfinite diameter and logarithmic capacity.\n\n---\n\n## Problem Understanding\n\nρ(f) is the inscribed-disc radius of the lemniscate interior {|f|<1}. The lemniscate {|f|=1} is the level-1 curve of the Green's function of the complement, so ρ(f) is potential-theoretic. Two capacity-type invariants attach to f: the transfinite diameter d of the root multiset, and the logarithmic capacity of {|f|≥1}.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
