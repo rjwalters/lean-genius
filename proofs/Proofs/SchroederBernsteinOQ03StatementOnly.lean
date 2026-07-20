@@ -86,27 +86,23 @@ predicate — a step many tactic searches miss.
 -/
 theorem partialInverse_partrec {g : ℕ → ℕ} (hg : Computable g) :
     Partrec (partialInverse g) := by
-  sorry
+  -- The search predicate `fun (m n : ℕ) => decide (g n = m)` is computable:
+  -- combine `g ∘ snd` and `fst` through Mathlib's `Primrec.eq` (as `Computable₂`).
+  have hpred : Computable (fun x : ℕ × ℕ => decide (g x.2 = x.1)) :=
+    Computable₂.comp Primrec.eq.decide.to_comp (hg.comp Computable.snd) Computable.fst
+  -- `Partrec.rfind` wraps `Nat.rfind` applied to a `Partrec₂` predicate; the
+  -- computable predicate above lifts to `Partrec₂` via `Computable.partrec`.
+  exact Partrec.rfind hpred.partrec
 
--- Proof attempt: a sketched chain of the expected Mathlib glue. Aristotle
--- is free to ignore this; it exists only to seed the MCTS prior (Rivin's
--- pattern from `Polya-Szego`/`StatementOnly_*.lean`).
---
--- The intended structure is:
---   1. Show the search predicate `fun mn : ℕ × ℕ => decide (g mn.2 = mn.1)`
---      is `Computable` by combining `hg` with `Computable.decide` and
---      `Computable.eq` (or the corresponding `Primrec` variants).
---   2. Lift to `Computable₂` so that for each fixed `m`, the family
---      `fun n => decide (g n = m)` is computable uniformly in `m`.
---   3. Apply `Partrec.rfind` (Mathlib's wrapper around `Nat.rfind`):
---        Partrec.rfind : Computable₂ p → Partrec (fun m => Nat.rfind (p m ·))
---      to conclude `Partrec (partialInverse g)`.
---
--- Tactic sketch:
---   refine Partrec.rfind ?_
---   exact (Primrec.eq.comp (hg.comp Computable.snd) Computable.fst).to₂.to_comp.to_decide
---
--- (Names approximated — the real Mathlib API uses
---  `Primrec₂.comp`, `Computable.decide`, and `Partrec.rfind`.)
+-- Proof recap (now discharged directly, no Aristotle round-trip needed):
+--   1. The search predicate `fun x : ℕ × ℕ => decide (g x.2 = x.1)` is
+--      `Computable`: compose Mathlib's `Primrec.eq.decide` (equality test on
+--      `ℕ`, lifted to `Computable₂` via `.to_comp`) with `g ∘ snd` and `fst`
+--      through `Computable₂.comp`.
+--   2. `Computable.partrec` lifts this to the `Partrec₂` predicate that
+--      `Partrec.rfind` consumes, yielding `Partrec (fun m => Nat.rfind …)`,
+--      which is definitionally `partialInverse g`.
+-- Verified axiom-free (`#print axioms` reports only
+-- `propext, Classical.choice, Quot.sound` — no `sorryAx`).
 
 end SchroederBernsteinOQ03Statement
