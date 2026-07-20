@@ -19,6 +19,8 @@ ratio and its limit:
 * order monotonicity `IsAddBasisOfOrder A k → k ≤ k' → IsAddBasisOfOrder A k'`
   and set monotonicity under `⊆`, for both `IsAddBasisOfOrder` and `IsAddBasis`;
 * `Set.univ` is an order-1 basis; the empty set and order 0 are never bases;
+* the perfect squares are a concrete additive basis of **order 4** (Lagrange's
+  four-square theorem) — the canonical non-vacuous witness for the predicate;
 * `growthRatio` is nonnegative, `growthRatio b 0 = 0`;
 * the growth limit is unique, and existence of a limit contradicts
   `HasNoGrowthLimit`.
@@ -94,6 +96,27 @@ theorem not_isAddBasisOfOrder_zero (A : Set ℕ) : ¬ IsAddBasisOfOrder A 0 := b
   subst hm0
   simp only [Fin.sum_univ_zero] at hsum
   omega
+
+/-! ## A concrete basis: the perfect squares (Lagrange) -/
+
+/-- The set of perfect squares `{0, 1, 4, 9, …}`. -/
+def Squares : Set ℕ := { n : ℕ | ∃ m : ℕ, n = m ^ 2 }
+
+/-- **The perfect squares form an additive basis of order `4`.**  This is
+Lagrange's four-square theorem (`Nat.sum_four_squares`): *every* natural number
+is a sum of at most four squares.  It is the canonical concrete witness that the
+`IsAddBasisOfOrder` predicate is non-vacuous, and the running example behind
+Erdős #326 (whose growth question concerns order-`2` bases). -/
+theorem isAddBasisOfOrder_squares_four : IsAddBasisOfOrder Squares 4 := by
+  refine ⟨0, fun n _ => ?_⟩
+  obtain ⟨a, b, c, d, habcd⟩ := Nat.sum_four_squares n
+  refine ⟨4, le_refl 4, ![a ^ 2, b ^ 2, c ^ 2, d ^ 2], ?_, ?_⟩
+  · intro i; fin_cases i <;> exact ⟨_, rfl⟩
+  · rw [Fin.sum_univ_four]; simpa using habcd
+
+/-- The perfect squares form an additive basis (of some finite order). -/
+theorem isAddBasis_squares : IsAddBasis Squares :=
+  isAddBasisOfOrder_squares_four.isAddBasis
 
 /-! ## The growth ratio and its limit -/
 
