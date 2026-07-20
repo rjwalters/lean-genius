@@ -590,4 +590,47 @@ theorem sqDiffFree_card_le_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N
   rw [hcount, hmf, Real.div_sqrt] at hbase
   simpa using hbase
 
+/-- **L¹-reduction capstone: the first moment is `≤ N^{3/2}·τ(N)`, reducing the
+    composite-`N` Sárközy requirement to the elementary divisor bound `τ(N)=o(√N)`.**
+
+    The exact first moment `∑_r ‖G(r)‖ = √N · ∑_{d∣N} φ(N/d)·√d`
+    (`sum_norm_sqGaussSum_eq_of_odd`) is bounded termwise: for each divisor `d ∣ N`,
+    `φ(N/d)·√d ≤ (N/d)·d = N` (using `φ(m) ≤ m`, `√d ≤ d` for `d ≥ 1`, and
+    `(N/d)·d = N`). Summing over the `τ(N) = #N.divisors` divisors gives
+    `∑_{d∣N} φ(N/d)·√d ≤ N·τ(N)`, hence `∑_r ‖G(r)‖ ≤ √N·N·τ(N) = N^{3/2}·τ(N)`.
+
+    This is the structural endpoint of the L¹ circle-method direction: the whole
+    analytic Sárközy input `∑_r ‖G(r)‖ = o(N²)` collapses to the *elementary
+    arithmetic* statement `τ(N) = o(√N)` (Wigert's `τ(N) = N^{o(1)}`), with NO
+    quadratic-Gauss-sum reciprocity required. Mathlib v4.31 has only
+    `Nat.card_divisors_le_self` (`τ(N) ≤ N`) and an average-order `O(N log N)` sum
+    formula — the individual bound `τ(N) = o(√N)` is a genuine Mathlib gap, so this
+    lemma pins the sole remaining input precisely. `0` axioms. -/
+theorem sum_norm_sqGaussSum_le_sqrt_mul_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖ ≤ Real.sqrt N * ((N : ℝ) * (N.divisors.card : ℝ)) := by
+  have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_norm_sqGaussSum_eq_of_odd hodd]
+  refine mul_le_mul_of_nonneg_left ?_ (Real.sqrt_nonneg _)
+  calc ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d
+      ≤ ∑ _d ∈ N.divisors, (N : ℝ) := by
+        refine Finset.sum_le_sum fun d hd => ?_
+        have hdN : d ∣ N := Nat.dvd_of_mem_divisors hd
+        have hd1 : 1 ≤ d := Nat.pos_of_mem_divisors hd
+        have hd1R : (1 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd1
+        -- `√d ≤ d` for `d ≥ 1`.
+        have hsd : Real.sqrt d ≤ d := by
+          have h := Real.sqrt_le_sqrt (show (d : ℝ) ≤ (d : ℝ) ^ 2 by nlinarith)
+          rwa [Real.sqrt_sq (by positivity)] at h
+        -- `φ(N/d) ≤ N/d`.
+        have htot : ((N / d).totient : ℝ) ≤ ((N / d : ℕ) : ℝ) := by
+          exact_mod_cast Nat.totient_le (N / d)
+        have hdiv : (N / d) * d = N := Nat.div_mul_cancel hdN
+        calc ((N / d).totient : ℝ) * Real.sqrt d
+            ≤ ((N / d : ℕ) : ℝ) * (d : ℝ) :=
+              mul_le_mul htot hsd (Real.sqrt_nonneg _) (by positivity)
+          _ = ((N / d * d : ℕ) : ℝ) := by push_cast; ring
+          _ = (N : ℝ) := by rw [hdiv]
+    _ = (N : ℝ) * (N.divisors.card : ℝ) := by
+        rw [Finset.sum_const, nsmul_eq_mul]; ring
+
 end Szemeredi.Roth
