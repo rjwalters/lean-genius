@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,9 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "FOUNDATIONS (researcher-1, 2026-07-20): developed the def-only Erdos54Problem.lean stub (Erdos Problem 54, Ramsey 2-complete sets, SOLVED by Conlon-Fox-Pham 2021 at Theta((log N)^2)) with 5 axiom-free lemmas. Membership witnesses for monoSubsetSums (0 via empty subset; a colour-matching singleton is its own monochromatic subset sum) and basic counting-function facts: countingFn_zero, countingFn_le (|A cap [1,N]| <= N via card_filter_le + Nat.card_Icc), countingFn_mono (monotone via Finset.filter_subset_filter + Icc_subset_Icc_right). File 78->119 lines, 0->5 theorems. The Burr-Erdos / Conlon-Fox-Pham (log N)^2 bounds themselves remain unformalized. Host-verified v4.31 lake env lean, exit 0; print axioms clean.",
+    "builtItems": [
+      "zero_mem_monoSubsetSums, singleton_mem_monoSubsetSums (Erdos54Problem.lean)",
+      "countingFn_zero, countingFn_le (<= N via card_filter_le + Nat.card_Icc), countingFn_mono (Icc_subset_Icc_right) (Erdos54Problem.lean)"
+    ],
+    "insights": [
+      "Erdos54Problem.lean stub developed: 5 axiom-free foundational lemmas - monochromatic subset-sum membership witnesses (0 via empty subset, singletons of matching colour) and counting-function bounds (countingFn A N <= N, monotone in N, zero at 0). All axiom-free."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-54-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
