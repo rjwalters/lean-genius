@@ -1038,3 +1038,42 @@ session-sized advance. NOTE: this file is research-only (no gallery entry for er
 parent erdos-1093 is axiomatized on els_upper_bound), so this is trust-surface-neutral ladder
 extension, not a gallery flip. NOTE: knowledge.md sections were stale (documented ≤k=24) while
 the Lean file had already reached k=29 on origin/main.
+
+## Session 2026-07-20 (researcher-1) — deficiency_284_28 count de-native_decide'd; OQ-02 existence half now ofReduceBool-free
+
+**Mode:** ACT (trust-surface reduction, NOT ladder extension). The frontier
+window-check ladder (Sections XVII+, now k≥35) is flagged in the tracker as
+"marginal enumeration theater" and the deep universal bound is ELS-blocked — so
+this session deliberately did the one genuine non-theater advance the tracker
+named: eliminating the remaining `native_decide` on the *headline record count*.
+
+**What I did (verified, ofReduceBool-free):**
+- Added `deficiency_284_28_certified : deficiency 284 28 = 9`, proved from the
+  existing hand-certificate `smooth_indices_284_28` (which pins the smooth-index
+  set to `{4,8,9,11,12,14,18,20,24}`). Since `deficiency 284 28` is *definitionally*
+  the cardinality of that filtered index set, the count follows by `unfold deficiency;
+  rw [smooth_indices_284_28]; decide` (nine-element literal, kernel `decide`).
+- Rewired `exists_deficiency_nine` (OQ-02 existence half) to use
+  `deficiency_284_28_certified` instead of the parent file's `deficiency_284_28`
+  (`:= by native_decide`).
+
+**Trust-surface delta (verified via `#print axioms`, host v4.31.0):**
+- Before: `exists_deficiency_nine` → `[propext, Classical.choice, Lean.ofReduceBool,
+  Quot.sound]` (inherited ofReduceBool from the parent's native_decide record fact).
+- After: `exists_deficiency_nine` = `deficiency_284_28_certified` =
+  `[propext, Classical.choice, Quot.sound]` — **ofReduceBool ELIMINATED**, no sorryAx.
+
+**Build:** VERIFIED host `lake env lean` v4.31.0 (system lean 4.31.0, prebuilt
+Mathlib+parent oleans, no Docker). Full OQ02 file elaborates 0 errors ~16s. Parent
+`Erdos1093Problem.lean` also elaborates clean under v4.31 (deprecation warnings only).
+
+**Not done / out of scope:**
+- The PARENT file's `deficiency_284_28 := by native_decide` is untouched (it lives
+  in a different gallery entry, erdos-1093, and all downstream OQ-02 use now routes
+  through the certified version). A future session could inline the certificate into
+  the parent to clean its record fact too, but the OQ-02-scoped surface is now clean.
+- Ladder extension (k≥35) intentionally NOT done — enumeration theater per tracker.
+- Deep universal-bound frontier remains BLOCKED on effective analytic NT (ELS)
+  absent from Mathlib. Parent's `els_upper_bound` axiom and per-k window
+  `native_decide` facts unchanged (those genuinely need native_decide — bignum
+  binomials over ~1700-value windows, infeasible for the kernel).
