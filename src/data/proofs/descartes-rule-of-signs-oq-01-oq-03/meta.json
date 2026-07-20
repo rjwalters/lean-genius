@@ -49,7 +49,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1044,
+    "lineCount": 1565,
     "assumptions": "The general direction (Sturm ⟹ Descartes for an arbitrary polynomial) is a reduction: it is conditional on a `SturmReduction p` bridge structure whose five fields package Sturm's exact positive-root count on (0, B] together with the three classical coefficient-comparison facts σ_p(0) ≤ V(p), Even(V(p) − σ_p(0)), and Even(σ_p(B)). Per the project's axiom-integrity policy these structure fields are mathematical assumptions (counted here as axiomCount 1; obtaining the data for a general p requires Sturm's theorem, axiomatized in the parent entry as sturm_exact_count_axiom, plus standard Sturm/Descartes comparison theory). No `axiom` declarations and no sorries appear in the file (leanFile.axiomCount = 0). The reduction theorems (upper_bound_core, parity_core, descartes_upper_bound_via_sturm, descartes_parity_via_sturm, descartes_rule_via_sturm) are fully machine-checked implications, and the Sturm half is validated UNCONDITIONALLY and axiom-free on linear polynomials X − c (c > 0), reusing the gallery's axiom-free Sturm computations. The linear-polynomial validation (X − c, c > 0) is now fully unconditional and axiom-free: the coefficient sign-change count V(X − c) = 1 is computed directly (linear_signChanges, via the new axiom-free countSignChanges_two), so the previously-assumed hypothesis hV has been discharged and linearReduction/linear_descartes_bound carry no standing assumption for the linear case. A companion module (DescartesRuleOfSignsOQ01OQ03Split.lean, namespace DescartesRuleOfSignsOQ01OQ03) further discharges Descartes' rule UNCONDITIONALLY and axiom-free for all products of positive linear factors ∏(X − cᵢ), cᵢ > 0 (descartes_sharp_prod_X_sub_C_of_pos, esymm_pos_of_pos), independent of the SturmReduction bridge; it depends only on propext / Classical.choice / Quot.sound.",
     "theoremCount": 35,
     "mathlib_version": "4.31.0",
@@ -76,17 +76,17 @@
   "sections": [
     {
       "id": "module-header",
-      "title": "Module: Sturm ⟹ Descartes",
+      "title": "Module Header: Sturm ⟹ Descartes",
       "startLine": 1,
-      "endLine": 53,
-      "summary": "Docstring stating the result as a reduction: Sturm's exact count on (0, B] plus three coefficient-comparison facts (B1)-(B3) yield Descartes' bound and parity, and the Sturm half is validated axiom-free on linear polynomials. Includes an honest accounting of what is unconditional versus assumed.",
+      "endLine": 63,
+      "summary": "Docstring stating the result as a reduction: Sturm's exact count on (0, B] plus three coefficient-comparison facts (B1)-(B3) yield Descartes' bound and parity, and the Sturm half is validated axiom-free on linear polynomials. Includes an honest accounting of what is unconditional versus assumed. Imports the parent Sturm entry and the base Descartes definitions, opens the DescartesRuleOfSigns namespace.",
       "mathContext": "Sets up #{roots in (a,b]} = σ_p(a) − σ_p(b) (Sturm) versus #{positive roots} ≤ V(p) with even defect (Descartes), and the bridge σ_p(0) ↔ V(p)."
     },
     {
       "id": "reduction-skeleton",
       "title": "§1. Abstract Reduction Skeleton (axiom-free)",
       "startLine": 64,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "upper_bound_core: pos = hi − lo, lo ≤ hi, hi ≤ bound ⟹ pos ≤ bound. parity_core: additionally Even(bound − hi) and Even(lo) ⟹ Even(bound − pos). Both closed by omega; reading hi = σ(0), lo = σ(B), bound = V(p).",
       "mathContext": "Working modulo 2, bound − pos = (bound − hi) + lo, so an even gap and even tail force an even defect. The exact-count hypothesis pos = hi − lo is what makes Descartes' inequality and parity simultaneous consequences."
     },
@@ -94,17 +94,113 @@
       "id": "sturm-reduction-data",
       "title": "§2. The SturmReduction Bridge and Derived Descartes Laws",
       "startLine": 87,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "SturmReduction p packages B > 0, pos_eq (Sturm exact count on (0,B]), sturm_le (antitonicity), and the three comparison facts bridge_bound, bridge_parity, tail_even. descartes_upper_bound_via_sturm, descartes_parity_via_sturm, and descartes_rule_via_sturm derive Descartes' bound, parity, and combined existence form from the core lemmas.",
       "mathContext": "Each structure field is an explicit hypothesis. For a general polynomial these are exactly Sturm's theorem plus the classical Sturm/Descartes comparison estimates, which the entry does not re-derive — hence the conditional, reduction status of the general direction."
     },
     {
-      "id": "linear-validation",
-      "title": "§3. Axiom-Free Validation on Linear Polynomials",
+      "id": "two-term-count",
+      "title": "§2½. The Two-Term Coefficient Sign-Change Count (axiom-free)",
       "startLine": 140,
-      "endLine": 206,
-      "summary": "For X − c with c > 0: linear_positiveRoots computes countPositiveRoots = 1 via roots_X_sub_C; linear_sturm_count verifies the Sturm identity 1 − 0 = 1 with B = c + 1; linearReduction assembles the full bridge (comparison facts trivialise to 1 ≤ 1, Even 0, Even 0); linear_descartes_bound runs it end-to-end. All axiom-free.",
-      "mathContext": "The linear case discharges the Sturm half unconditionally, reusing the parent entry's axiom-free sturm_linear_left/sturm_linear_right, so the only standing assumption for X − c is the single coefficient fact V(X − c) = 1."
+      "endLine": 176,
+      "summary": "countSignChanges_two: for f : Fin 2 → ℝ with f 0 · f 1 < 0 the count is exactly 1. This is the length-2 base case, computing the single adjacent pair directly and supplying the axiom-free V(X − c) = 1 fact used by the linear validation below.",
+      "mathContext": "For Fin 2 there is one adjacent index pair (0,1); a sign change means f 0 · f 1 < 0, so countSignChanges = 1 iff the two entries have opposite signs. The seed for every longer count."
+    },
+    {
+      "id": "three-term-zero-middle",
+      "title": "§2¾. Three-Term Counts with a Zero Middle (axiom-free)",
+      "startLine": 177,
+      "endLine": 245,
+      "summary": "countSignChanges_three_mid_zero_pos and countSignChanges_three_mid_zero_zero enumerate the Fin 3 sign-change count when the middle coefficient vanishes: a zero middle is transparent, so the count is determined by the two outer entries. These discharge the base file's hardcoded quadratic examples (x² ± 1) axiom-free.",
+      "mathContext": "With f 1 = 0 the only possible sign change is the outer pair (0,2); the count collapses to the two-term rule on f 0, f 2. Covers the b = 0 quadratics whose middle term is absent."
+    },
+    {
+      "id": "three-term-nonzero-middle",
+      "title": "§2⅞. Three-Term Counts with a Nonzero Middle (axiom-free)",
+      "startLine": 246,
+      "endLine": 382,
+      "summary": "countSignChanges_three_alternating (= 2), countSignChanges_three_mid_ne_left, countSignChanges_three_mid_ne_right, and countSignChanges_three_mid_ne_zero exhaustively classify the Fin 3 count for a nonzero middle coefficient by the sign pattern of the three entries — two changes when strictly alternating, one when exactly one adjacent pair alternates, zero otherwise.",
+      "mathContext": "For a nowhere-zero length-3 sequence the count equals the number of the two adjacent pairs (0,1), (1,2) that alternate sign — the n = 3 shadow of the Descartes ceiling V ≤ n − 1 = 2."
+    },
+    {
+      "id": "linear-validation",
+      "title": "§3. Axiom-Free Validation of the Sturm Half on Linear Polynomials",
+      "startLine": 383,
+      "endLine": 468,
+      "summary": "For X − c with c > 0: linear_positiveRoots computes countPositiveRoots = 1 via roots_X_sub_C; linear_sturm_count verifies the Sturm identity 1 − 0 = 1 with B = c + 1; linear_signChanges computes V(X − c) = 1 via countSignChanges_two; linearReduction assembles the full bridge (comparison facts trivialise to 1 ≤ 1, Even 0, Even 0); linear_descartes_bound runs it end-to-end. All axiom-free.",
+      "mathContext": "The linear case discharges the Sturm half unconditionally, reusing the parent entry's axiom-free sturm_linear_left/sturm_linear_right, so even the coefficient fact V(X − c) = 1 is now computed rather than assumed."
+    },
+    {
+      "id": "quadratic-deaxiomatization",
+      "title": "§4. De-Axiomatizing the Base File's Quadratic Examples (axiom-free)",
+      "startLine": 469,
+      "endLine": 553,
+      "summary": "x2_minus_1_signChanges, x2_plus_1_signChanges, and x2_minus_x_plus_1_signChanges recompute the base entry's three hardcoded quadratic sign-change counts using the §2¾ / §2⅞ Fin 3 machinery, replacing the base file's axioms with fully machine-checked, axiom-free evaluations.",
+      "mathContext": "Each concrete quadratic X² − 1, X² + 1, X² − X + 1 becomes an instance of the general Fin 3 counts, giving 1, 0, and 2 sign changes respectively — the strictly-alternating X² − X + 1 realising the maximal count 2."
+    },
+    {
+      "id": "general-vanishing",
+      "title": "§5. General Fin n Vanishing of the Sign-Change Count (axiom-free)",
+      "startLine": 554,
+      "endLine": 631,
+      "summary": "countSignChanges_eq_zero_of_nonneg and _of_nonpos: for any length n, a sequence all of whose entries share a sign has zero sign changes (a sign change needs a strictly-negative product f i · f j). Lifted to polynomials by signChangesInCoeffs_eq_zero_of_coeff_nonneg / _nonpos — the coefficient-side statement behind 'a polynomial with one-signed coefficients has no positive root'.",
+      "mathContext": "The one-signed extreme V = 0, general in n. For coefficients all ≥ 0 (or all ≤ 0) no adjacent or non-adjacent pair can produce f i · f j < 0, so V(p) = 0."
+    },
+    {
+      "id": "sharp-general-bound",
+      "title": "§6. The Sharp General Fin n Bound V ≤ n − 1, Attained by Alternation (axiom-free)",
+      "startLine": 632,
+      "endLine": 757,
+      "summary": "countSignChanges_le bounds the count of any f : Fin n → ℝ by n − 1; countSignChanges_alternating shows a strictly alternating nowhere-zero sequence attains exactly n − 1; signChangesInCoeffs_le_natDegree lifts the ceiling to V(p) ≤ deg p for every nonzero polynomial. Settles the opposite extreme to §5.",
+      "mathContext": "Sign changes are carried by the n − 1 adjacent index pairs, so V ≤ n − 1; a fully alternating pattern saturates every pair. The sequence-level form of the Descartes degree bound V(p) ≤ deg p."
+    },
+    {
+      "id": "invariances",
+      "title": "§7. Invariances of the Sign-Change Count (axiom-free)",
+      "startLine": 758,
+      "endLine": 921,
+      "summary": "The symmetries that fix the positive-root count and hence V: countSignChanges_const_smul (scaling by c ≠ 0), countSignChanges_neg, countSignChanges_comp_rev (index reversal), and their polynomial-level companions signChangesInCoeffs_C_mul, _neg, _smul, and _leadingCoeff_inv_smul (monic normalisation).",
+      "mathContext": "The sign-change predicate sees only the product (c f i)(c f j) = c² f i f j with c² > 0, so nonzero rescaling and negation are invariances; reversal of the coefficient vector likewise preserves the adjacent-alternation pattern."
+    },
+    {
+      "id": "polynomial-sharpness",
+      "title": "§8. Polynomial-Level Sharpness and Reverse-Scale Invariances (axiom-free)",
+      "startLine": 922,
+      "endLine": 1111,
+      "summary": "signChangesInCoeffs_eq_natDegree_of_alternating shows a strictly-alternating nowhere-zero coefficient pattern attains V(p) = deg p exactly (with the explicit witness x3_minus_x2_plus_x_minus_1_signChanges = 3). signChangesInCoeffs_reverse / _reverse_neg / _reverse_smul, countSignChanges_mul_pos, and signChangesInCoeffs_comp_C_mul_X record how V behaves under reversal, positive-scalar multiplication, and the dilation X ↦ cX.",
+      "mathContext": "Descartes' upper bound V(p) ≤ deg p cannot be improved: for every degree d there is a degree-d polynomial with d positive roots realising V(p) = d. The reversal and positive-dilation maps fix the positive-root count and so leave V invariant."
+    },
+    {
+      "id": "reflection-negative-roots",
+      "title": "§9. The Reflection p(X) ↦ p(−X) and the Nowhere-Zero Count Machinery (axiom-free)",
+      "startLine": 1112,
+      "endLine": 1187,
+      "summary": "Sets up the reflection X ↦ −X underlying Descartes for negative roots: unlike a positive dilation, p(−X) alternates coefficient signs and does NOT preserve V, obeying instead the complementarity V(p) + V(p(−X)) = deg p for gap-free coefficient patterns. Supporting lemmas countSignChanges_nowhere_zero (routes every count through adjacent opposite-sign pairs) and card_adjacent (there are exactly n − 1 adjacent pairs).",
+      "mathContext": "(p(−X)).coeff k = (−1)^k · p.coeff k, so each of the n − 1 adjacent gaps is a sign change of exactly one of p, p(−X): persistence in p becomes a change in p(−X). This is the identity behind 'Descartes bounds positive AND negative roots'."
+    },
+    {
+      "id": "finn-template-and-reflection",
+      "title": "General Fin n Sign-Change Bounds and the Negative-Root Reflection (axiom-free)",
+      "startLine": 1188,
+      "endLine": 1380,
+      "summary": "The Fin 3 results uniformized to arbitrary n as one-line corollaries of countSignChanges_nowhere_zero and card_adjacent: countSignChanges_le_of_nowhere_zero (ceiling n − 1), countSignChanges_alternating_eq (alternation attains n − 1), countSignChanges_same_sign_eq_zero, and countSignChanges_alternate_add. The reflection identities signChangesInCoeffs_comp_neg_X_add, _comp_neg_X_eq_sub, and _comp_neg_X_eq_zero_iff make the V(p) + V(p(−X)) = deg p complementarity precise.",
+      "mathContext": "For a nowhere-zero sequence the strictly-alternating pattern realises the maximum n − 1, a constant-sign pattern realises 0, and no sequence exceeds n − 1 — the sequence-level shadow of V(p) ≤ deg p, together with the exact positive/negative-root split."
+    },
+    {
+      "id": "monomials-no-sign-change",
+      "title": "Monomials Have No Sign Changes (axiom-free)",
+      "startLine": 1381,
+      "endLine": 1452,
+      "summary": "signChangesInCoeffs_eq_zero_of_support_subsingleton, signChangesInCoeffs_monomial, signChangesInCoeffs_C, and signChangesInCoeffs_X_pow: a monomial c · X^k (and its special cases, constants and pure powers) has V = 0, since its coefficient support is a singleton and a single nonzero coefficient admits no adjacent sign change.",
+      "mathContext": "A monomial has at most one nonzero coefficient, so no pair of coefficients can alternate sign; V(c X^k) = 0, matching that c X^k = 0 has no positive root for c ≠ 0, k ≥ 1."
+    },
+    {
+      "id": "general-quadratic-family",
+      "title": "§12. The General Quadratic Sign-Change Count (axiom-free)",
+      "startLine": 1453,
+      "endLine": 1565,
+      "summary": "section QuadraticFamily generalises §4's three hardcoded quadratics to the full family a·X² + b·X + c with a ≠ 0. coeffSequence_quadratic identifies the coefficient vector as ![a, b, c]; feeding it through the §2¾ Fin 3 engine yields signChangesInCoeffs_quadratic and the complete sign-pattern case split (alternating ⇒ 2, one adjacent alternation ⇒ 1, none ⇒ 0, plus the middle-zero variants), with signChanges_x2_sub_3x_add_2 as a concrete witness.",
+      "mathContext": "For a genuine quadratic the highest-degree-first coefficient vector is exactly ![a, b, c], so its Descartes count is the Fin 3 sign-change count of (a, b, c) — closing the standing 'full Fin 3 count for quadratics with nonzero middle term' step."
     }
   ],
   "conclusion": {
@@ -122,7 +218,7 @@
       "Proofs.DescartesRuleOfSignsOQ02OQ01OQ02"
     ],
     "namespace": "DescartesRuleOfSignsOQ01OQ03",
-    "lineCount": 1044,
+    "lineCount": 1565,
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 2,
