@@ -2,7 +2,7 @@
   "id": "erdos-1006-oq-01",
   "title": "Robustly Acyclic Orientations and Cover Graphs",
   "slug": "erdos-1006-oq-01",
-  "description": "Formalizes Erdős Problem #1006 (OQ-01): characterize which graphs admit robustly acyclic orientations. Proves the Pretzel-Brightwell characterization (1985) — a graph admits a robustly acyclic orientation iff it is a cover graph of some poset — with no axiom: the forward direction uses the reachability order (transitive closure of the orientation), the reverse is cover_graph_admits_robust. Still axiomatizes two deeper results: Nešetřil-Rödl counterexamples (1978) for all girths, and the Fisher-Fraughnaugh-Langley-West criterion (χ < girth implies robust). Also proves empty and bipartite graphs have robust orientations. 18 theorems, 2 axioms.",
+  "description": "Formalizes Erdős Problem #1006 (OQ-01): characterize which graphs admit robustly acyclic orientations. Proves the Pretzel-Brightwell characterization (1985) — a graph admits a robustly acyclic orientation iff it is a cover graph of some poset — with no axiom: the forward direction uses the reachability order (transitive closure of the orientation), the reverse is cover_graph_admits_robust. Still axiomatizes two deeper results: Nešetřil-Rödl counterexamples (1978) for all girths, and the Fisher-Fraughnaugh-Langley-West criterion (χ < girth implies robust). Also proves the triangle obstruction, the sharp Kₙ threshold (robust ⟺ n ≤ 2), the complete-bipartite positive family, and closure under subgraphs, isomorphism, and disjoint union. 42 theorems/lemmas, 2 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -22,7 +22,7 @@
     "axiomCount": 2,
     "assumptions": "2 axioms: chromatic_lt_girth_implies_robust (Fisher-Fraughnaugh-Langley-West 1997: χ(G) < girth(G) → G has robust orientation), nesetril_rodl_counterexample (Nešetřil-Rödl 1978: for every girth g≥3, there exists a graph with girth g that does NOT have a robust orientation). The Pretzel-Brightwell characterization (cover_graph_characterization) is now a proved theorem, not an axiom.",
     "lineCount": 1094,
-    "theoremCount": 20,
+    "theoremCount": 42,
     "definitionCount": 14,
     "originalContributions": [
       "admitsRobustAcyclicOrientation: predicate — G has an orientation that stays acyclic under any single edge reversal",
@@ -55,10 +55,10 @@
   "sections": [
     {
       "id": "sec-imports",
-      "title": "Imports and Setup",
-      "startLine": 28,
+      "title": "Overview, Imports and Setup",
+      "startLine": 1,
       "endLine": 39,
-      "summary": "Imports all of Mathlib and opens SimpleGraph namespace. Introduces universe-polymorphic vertex type V. Names the orientation structure GraphOrientation to avoid conflict with Mathlib's Orientation from linear algebra."
+      "summary": "Module docstring framing Erdős #1006 OQ-01 (robustly acyclic orientations / cover graphs), imports all of Mathlib, and opens the SimpleGraph namespace. Introduces the universe-polymorphic vertex type V. Names the orientation structure GraphOrientation to avoid conflict with Mathlib's Orientation from linear algebra."
     },
     {
       "id": "sec-definitions",
@@ -90,21 +90,77 @@
     },
     {
       "id": "sec-bipartite",
-      "title": "Bipartite Orientation",
+      "title": "Sufficient Condition: Bipartite Orientation",
       "startLine": 169,
-      "endLine": 230,
-      "summary": "Defines isBipartite' and bipartiteOrientation (orient false-side to true-side). Proves bipartiteOrientation_acyclic (rank: false→0, true→1), bipartiteOrientation_robust (no arc can be dependent since reversing would cross the bipartition), and bipartite_admits_robust."
+      "endLine": 269,
+      "summary": "Defines isBipartite' and bipartiteOrientation (orient false-side to true-side). Proves bipartiteOrientation_acyclic (rank: false→0, true→1), bipartiteOrientation_robust (no arc can be dependent since reversing would cross the bipartition), and bipartite_admits_robust: every bipartite graph admits a robustly acyclic orientation."
+    },
+    {
+      "id": "sec-characterization",
+      "title": "Pretzel–Brightwell Characterization (de-axiomatized)",
+      "startLine": 270,
+      "endLine": 451,
+      "summary": "Defines isCoverGraph (existence of a PartialOrder making G the Hasse diagram of some poset) and reachOrder (the reflexive-transitive-closure order of an acyclic orientation, shown antisymmetric via the rank witness). Proves cover_graph_characterization (Pretzel–Brightwell 1985: admitsRobustAcyclicOrientation ↔ isCoverGraph) with NO axiom — the forward direction shows each arc is a covering pair of reachOrder exactly because there is no dependent arc; the reverse direction is cover_graph_admits_robust. Private helpers rank_le_of_rtg / rank_lt_of_tg give rank monotonicity along directed paths."
+    },
+    {
+      "id": "sec-triangle",
+      "title": "Triangle Obstruction (necessary condition)",
+      "startLine": 452,
+      "endLine": 548,
+      "summary": "Proves triangle_not_robust': any graph containing three mutually adjacent vertices admits no robustly acyclic orientation (an acyclic orientation ranks them source/middle/sink, making the long arc dependent). triangle_not_robust specializes it to K₃ on Fin 3, and isCoverGraph_of_triangle transports it through the characterization: the Hasse diagram of a poset is triangle-free."
+    },
+    {
+      "id": "sec-closure-subgraph-iso",
+      "title": "Closure: Subgraphs, Isomorphism, Edgeless Graphs",
+      "startLine": 549,
+      "endLine": 667,
+      "summary": "admitsRobust_mono: robust orientability is subgraph-monotone (H ≤ G, G robust ⟹ H robust) by restricting the orientation; not_robust_of_subgraph is the contrapositive obstruction-propagation form. admitsRobust_of_iso / admitsRobust_iso_iff give isomorphism invariance (transport the arc relation across a graph iso). edgeless_admits_robust generalises the empty-graph base case from ⊥ to any edge-free graph."
+    },
+    {
+      "id": "sec-girth-clique",
+      "title": "Girth Soundness, Clique-Freeness, Cover-Graph Corollaries",
+      "startLine": 668,
+      "endLine": 748,
+      "summary": "closedWalk_girth_formulation_unsound shows the 'every closed walk has length 0 or ≥ g' phrasing of girth is unsound (a length-2 backtrack forces edgelessness, hence robustness), motivating the egirth (shortest-cycle) formalization of the axioms below. robust_cliqueFree_three / isCoverGraph_cliqueFree_three restate the triangle obstruction in Mathlib's CliqueFree 3 vocabulary. isCoverGraph_of_bipartite, isCoverGraph_of_edgeless, and isCoverGraph_mono lift the positive constructions and subgraph closure to the poset (isCoverGraph) level."
+    },
+    {
+      "id": "sec-complete-graph-threshold",
+      "title": "Sharp Complete-Graph Threshold",
+      "startLine": 749,
+      "endLine": 809,
+      "summary": "top_not_robust generalises triangle_not_robust to Kₙ for n ≥ 3. top_isBipartite'_of_card_le_two / top_admits_robust_of_card_le_two give the positive side for n ≤ 2. Combined, top_robust_iff proves the sharp threshold: Kₙ admits a robustly acyclic orientation ⟺ n ≤ 2, and isCoverGraph_top_iff is its poset-level form (Kₙ is a cover graph ⟺ n ≤ 2)."
+    },
+    {
+      "id": "sec-complete-bipartite-iso",
+      "title": "Complete Bipartite Family & Cover-Graph Isomorphism Invariance",
+      "startLine": 810,
+      "endLine": 932,
+      "summary": "isBipartite'_completeBipartiteGraph / completeBipartiteGraph_admits_robust / isCoverGraph_completeBipartiteGraph establish that every K_{V,W} is a cover graph — a named, infinite positive family (the height-two 'standard example' posets). isCoverGraph_of_iso / isCoverGraph_iso_iff give isomorphism invariance at the poset level; isCoverGraph_bot and not_isCoverGraph_top record the ⊥/⊤ endpoints."
+    },
+    {
+      "id": "sec-disjoint-union",
+      "title": "Closure under Disjoint Union",
+      "startLine": 933,
+      "endLine": 1013,
+      "summary": "admitsRobust_sum: the disjoint union G ⊕g H is robustly orientable when both summands are (reuse each summand's arcs — no arc crosses between parts, so any dependent arc would project to one summand, contradicting its robustness). isCoverGraph_sum is the poset-level corollary. Together with subgraph monotonicity and isomorphism invariance this rounds out the closure properties of the robustly-orientable class."
     },
     {
       "id": "sec-axioms",
-      "title": "Cover-Graph Characterization (proved) and Remaining Deep Axioms",
-      "startLine": 270,
-      "endLine": 456,
-      "summary": "Defines isCoverGraph (existence of a PartialOrder making G a cover graph) and reachOrder (transitive-closure order of an acyclic orientation). Proves cover_graph_characterization (Pretzel-Brightwell 1985: robust ↔ cover graph) with no axiom — the forward direction shows each arc is a covering pair of reachOrder exactly because no dependent arc exists. Still axiomatizes chromatic_lt_girth_implies_robust (Fisher et al. 1997) and nesetril_rodl_counterexample (1978)."
+      "title": "Axiomatized Deep Results (girth via egirth)",
+      "startLine": 1014,
+      "endLine": 1038,
+      "summary": "The two remaining assumptions, both stated with girth measured by SimpleGraph.egirth (shortest cycle): chromatic_lt_girth_implies_robust (Fisher–Fraughnaugh–Langley–West 1997 — χ(G) < girth ⟹ robust) and nesetril_rodl_counterexample (Nešetřil–Rödl 1978 — for every g ≥ 3 a finite graph of egirth ≥ g that admits no robust orientation). Deep extremal/probabilistic results with no Mathlib counterpart; the base case g = 3 is discharged unconditionally by triangle_not_robust."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary",
+      "startLine": 1039,
+      "endLine": 1094,
+      "summary": "Docstring inventory of the file: the proved results (empty/bipartite/edgeless positive cases, the de-axiomatized Pretzel–Brightwell characterization, the triangle obstruction and its clique/complete-graph/complete-bipartite consequences, and the subgraph/isomorphism/disjoint-union closure properties) versus the two remaining axioms (chromatic_lt_girth_implies_robust, nesetril_rodl_counterexample)."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős #1006 OQ-01: characterizes robustly acyclic orientations as cover graphs of posets. Proves the full Pretzel-Brightwell equivalence (1985) with no axiom — the forward direction via the reachability order, the reverse via cover_graph_admits_robust — along with the empty and bipartite special cases. Still axiomatizes the counterexample existence (Nešetřil-Rödl 1978) and the χ < girth criterion (FFLW 1997). 18 theorems, 691 lines, 2 axioms.",
+    "summary": "Formalizes Erdős #1006 OQ-01: characterizes robustly acyclic orientations as cover graphs of posets. Proves the full Pretzel-Brightwell equivalence (1985) with no axiom — the forward direction via the reachability order, the reverse via cover_graph_admits_robust — along with the empty and bipartite special cases. Still axiomatizes the counterexample existence (Nešetřil-Rödl 1978) and the χ < girth criterion (FFLW 1997). 42 theorems/lemmas, 14 definitions, 1094 lines, 2 axioms.",
     "implications": "The Pretzel-Brightwell characterization is a striking bridge between orientation theory and order theory — it says that 'robustness under perturbation' in orientations is exactly captured by the poset structure of cover graphs. This has applications in scheduling (finding a robust ordering for job dependencies), lattice theory (identifying which graphs are Hasse diagrams), and database theory (stable acyclic transactions). The Nešetřil-Rödl result implies that the property is not monotone in girth alone — high-girth graphs can still fail to be cover graphs.",
     "openQuestions": [
       "Sharpen the characterization to a decidable recognizer: with [Fintype V] and DecidableEq, is admitsRobustAcyclicOrientation a DecidablePred? The reachOrder construction is computable, so the obstruction is quantifying over all orientations.",
