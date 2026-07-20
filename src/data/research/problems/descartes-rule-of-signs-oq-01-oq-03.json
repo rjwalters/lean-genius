@@ -29,7 +29,13 @@
     "since": "2026-07-08T00:00:00.000Z",
     "iteration": 4,
     "focus": "Added §9 reflection layer: V(p)+V(p(-X))=deg p complementarity (Descartes for negative roots), via the nowhere-zero sequence identity V(f)+V(alt f)=n-1.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "discharge descartes_upper_bound_axiom via Mathlib Polynomial.roots_countP_pos_le_signVariations",
+        "reopenCriterion": "REOPENED 2026-07-19 -- materially new mechanism now available (Mathlib RuleOfSigns.lean added the theorem). Next step is the bridge lemma signChangesInCoeffs = Polynomial.signVariations, not blocked.",
+        "blockedAt": "2026-07-19"
+      }
+    ],
     "nextAction": "§9 reflection complementarity closes the invariance/transformation family (scaling, negation, reversal, positive-dilation, and now reflection). Remaining open work is the deep (B1)-(B3) Sturm/Descartes comparison for general polynomials (structure-encoded, multi-week).",
     "attemptCounts": {
       "total": 1,
@@ -65,13 +71,16 @@
       "The full Fin 3 sign-change count is governed by the two ADJACENT pairs: count = [f0*f1<0] + [f1*f2<0] whenever the middle f1 is nonzero (the jump-over pair (0,2) is impossible once f1 != 0). A zero middle instead activates (0,2) and caps the count at 1; so the value 2 is exactly the nonzero-middle alternating case, matching Descartes' bound being tight for quadratics with two positive roots (r7).",
       "The degree bound V(p) <= natDegree p is SHARP at the polynomial level: any p whose coefficients are all nonzero and strictly alternate in sign attains V(p) = natDegree p (signChangesInCoeffs_eq_natDegree_of_alternating), a direct lift of the sequence-level countSignChanges_alternating via coeffSequence; the cubic X^3-X^2+X-1 realises the degree-3 case (r6).",
       "§4 (de-axiomatize X²±1) and §12 (general nonzero-middle quadratic sign-change count) were already complete from prior sessions; the stale nextSteps did not reflect §12.",
-      "General Fin n sign-change bounds (DescartesRuleOfSignsOQ01OQ03.lean): V(f)<=n-1 universal ceiling (sequence form of Descartes degree bound), all-alternating => V=n-1 (maximal), all-same-sign => V=0. One-line corollaries of countSignChanges_nowhere_zero + card_adjacent; generalize the hand-written Fin 3 fin_cases family to arbitrary n."
+      "General Fin n sign-change bounds (DescartesRuleOfSignsOQ01OQ03.lean): V(f)<=n-1 universal ceiling (sequence form of Descartes degree bound), all-alternating => V=n-1 (maximal), all-same-sign => V=0. One-line corollaries of countSignChanges_nowhere_zero + card_adjacent; generalize the hand-written Fin 3 fin_cases family to arbitrary n.",
+      "MATHLIB CLOSED THE GAP (researcher-1, 2026-07-19): Mathlib now has the Descartes upper bound as Polynomial.roots_countP_pos_le_signVariations : P.roots.countP (0 < .) <= P.signVariations (Mathlib/Algebra/Polynomial/RuleOfSigns.lean; the file ALREADY imports it at line 5). This makes descartes_upper_bound_axiom (countPositiveRoots p <= signChangesInCoeffs p) NO LONGER deep-blocked -- it is dischargeable. Two bridges: (a) TRIVIAL: countPositiveRoots p = p.roots.countP (0 < .) for p != 0 (countPositiveRoots = card(roots.filter (.>0)); Multiset.countP_eq_card_filter, and .>0 is 0<.); (b) the CRUX bridge lemma signChangesInCoeffs p = Polynomial.signVariations p. Both count adjacent-nonzero opposite-sign transitions over the SAME leading-to-constant coefficient order: Mathlib coeffList P is leading-term-to-constant, and the file coeffSequence p natDegree i = p.coeff (natDegree - i) is also leading-to-constant, so NO reversal is needed. The bridge is a genuine ~150-300 line combinatorial induction (mirror Mathlib signVariations_eq_eraseLead_add_ite / signVariations_eraseLead via eraseLead, which the file countSignChanges lacks and would need built). Not attempted this session (large/uncertain; a partial proof would be scaffolding), but the route is concrete and the reopen bar (materially new mechanism) is met.",
+      "Axiom knock-on: once descartes_upper_bound is a theorem, descartes_negative_roots_axiom (card(roots.filter (.<0)) <= signChangesInCoeffs (negSubst p)) likely follows by applying the upper bound to negSubst p = p.comp(-X) plus the in-file bijection negative_root_iff_positive_of_negSubst, modest extra work. Remaining genuinely-deep axioms not addressed by Mathlib RuleOfSigns: descartes_parity_axiom (Even(signChanges - countPos) -- Mathlib gives only the <= bound, not the parity), alternating_signs_max_roots_axiom, derivative_reduces_sign_changes_axiom."
     ],
     "mathlibGaps": [
       "No packaged Sturm-sequence sign-variation theory in Mathlib connecting sigma_p to the coefficient sign-change count V(p); the comparison facts (B1)-(B3) must be supplied as assumptions."
     ],
     "nextSteps": [
-      "Prove (B1)-(B3) for GENERAL polynomials to make Sturm⟹Descartes unconditional — this is the deep content behind the 5 standing axioms (descartes_upper_bound/parity/negative_roots, alternating_signs_max_roots, derivative_reduces_sign_changes), not elementary."
+      "AXIOM ELIMINATION now tractable: discharge descartes_upper_bound_axiom (and knock-on descartes_negative_roots_axiom) using Mathlib Polynomial.roots_countP_pos_le_signVariations. Crux = prove bridge lemma signChangesInCoeffs p = Polynomial.signVariations p (both count adjacent-nonzero opposite-sign transitions over the same leading-to-constant order; ~150-300 LOC eraseLead induction). File host-verifies (pure Mathlib imports) via lake env lean -- no docker. Candidate for a focused DEEP-DIVE session or an Aristotle StatementOnly submission (verify Aristotle v4.28 Mathlib actually contains RuleOfSigns first).",
+      "Remaining deep axioms after that: descartes_parity_axiom (parity, not in Mathlib), alternating_signs_max_roots_axiom, derivative_reduces_sign_changes_axiom -- still need Sturm/Rolle B1-B3 general-polynomial content."
     ]
   },
   "tags": [
