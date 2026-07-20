@@ -67,7 +67,8 @@
       "π is a non-decreasing step function, so its value at any real x equals its value at ⌊x⌋, and a lower bound at the largest even integer ≤ m already bounds π(m) — no new analytic input is needed to leave the even subsequence",
       "The even-only deficit costs only o(1): replacing 2n = 2⌊m/2⌋ by m changes the base by at most one factor and ⌊m/2⌋/m → 1/2, so the Chebyshev constant log 2 survives intact in the limit",
       "All three places where the even integer 2n appears (prefactor, base, exponent) move monotonically in the right direction, so the transfer is a pure inequality chain with no error term to track",
-      "Real.log turns the multiplicative Nat bound 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} into the linear estimate ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, the shape in which the density constant log 2 = ½ log 4 is read off"
+      "Real.log turns the multiplicative Nat bound 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} into the linear estimate ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, the shape in which the density constant log 2 = ½ log 4 is read off",
+      "Dividing through by log m > 0 puts the estimate in the quotient shape π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m, the form directly comparable to the prime number theorem's π(x) ~ x/log x: the right side is asymptotically (½ log 4)·m/log m = (log 2)·m/log m, exhibiting log 2 = ½ log 4 as the explicit constant of the elementary lower half of π(x) = Θ(x/log x)"
     ],
     "prerequisites": [
       "the prime-counting function π and its monotonicity",
@@ -84,11 +85,19 @@
       "summary": "Module docstring framing OQ#5: extend the even-only Chebyshev lower bound to all m via monotonicity of π, plus imports (parent bridge, PrimeCounting, Real.log) and the `open Nat` namespace setup."
     },
     {
+      "id": "nat-mono",
+      "title": "Monotonicity of π (PART I setup)",
+      "startLine": 47,
+      "endLine": 58,
+      "summary": "PART I banner framing the even→all-m extension, plus the helper primeCounting_mono: a ≤ b ⟹ π(a) ≤ π(b), a one-line re-export of Nat.monotone_primeCounting. This is the only structural (rather than value-wise) property of π the whole file uses, and it is exactly what licenses raising the exponent π(2⌊m/2⌋) ≤ π(m) in the main bound.",
+      "mathContext": "a ≤ b ⟹ π(a) ≤ π(b); enlarging the bound can only admit more primes below it."
+    },
+    {
       "id": "nat-bound",
       "title": "Natural-Number Lower Bound for All m",
-      "startLine": 47,
+      "startLine": 60,
       "endLine": 92,
-      "summary": "PART I. The helper primeCounting_mono (monotonicity of π, wrapping Nat.monotone_primeCounting) followed by the main four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for all m ≥ 2, transferring the parent's even-only bound by collapsing 2⌊m/2⌋ into m on prefactor, base, and exponent.",
+      "summary": "The main four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for all m ≥ 2, transferring the parent's even-only bound by collapsing 2⌊m/2⌋ into m on prefactor (2n+1 ≤ m+1, omega), base ((2n)^k ≤ m^k, Nat.pow_le_pow_left) and exponent (π(2n) ≤ π(m), Nat.pow_le_pow_right ∘ primeCounting_mono), then multiplying with Nat.mul_le_mul.",
       "mathContext": "n = ⌊m/2⌋ gives 2n ≤ m; Nat.pow_le_pow_left/right and primeCounting_mono do the three collapses."
     },
     {
