@@ -107,10 +107,10 @@
     {
       "id": "hales-jewett",
       "title": "Density Hales-Jewett",
-      "summary": "density_hales_jewett axiom, reduction_to_hales_jewett",
+      "summary": "CombLine placeholder def, density_hales_jewett axiom",
       "startLine": 169,
       "endLine": 201,
-      "mathContext": "Axiomatized: density_hales_jewett axiom, reduction_to_hales_jewett"
+      "mathContext": "Axiomatized: density_hales_jewett axiom (Furstenberg-Katznelson 1991). CombLine is a placeholder definition; the reduction to Hales-Jewett is discussed in comments only, not formalized."
     },
     {
       "id": "solymosi-bounds",
@@ -123,18 +123,18 @@
     {
       "id": "examples",
       "title": "Small Cases and Examples",
-      "summary": "small_case_2x2, density_threshold_3x3, small_counterexamples",
+      "summary": "small_case_2x2 axiom, density_threshold_3x3",
       "startLine": 230,
       "endLine": 266,
-      "mathContext": "Mathematical content: small_case_2x2, density_threshold_3x3, small_counterexamples"
+      "mathContext": "Mathematical content: small_case_2x2 axiom, density_threshold_3x3. Non-square-free configurations for small N are discussed in comments only, not formalized."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "summary": "higher_dimensional_cubes, tilted_squares_exist",
+      "summary": "higher_dimensional_cubes",
       "startLine": 267,
       "endLine": 290,
-      "mathContext": "Mathematical content: higher_dimensional_cubes, tilted_squares_exist"
+      "mathContext": "Mathematical content: higher_dimensional_cubes. Tilted (non-axis-aligned) squares are discussed in comments only, not formalized."
     },
     {
       "id": "summary",
