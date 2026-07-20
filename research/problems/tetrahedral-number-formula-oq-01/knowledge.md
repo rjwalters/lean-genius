@@ -184,3 +184,22 @@ moment IS a size-axis moment of the fixed row `P_n`. Completes the file's
 size/dimension pairing (cf. `weighted_sum_simplex` vs `weighted_sum_simplex_over_dim`).
 Axiom-free `[propext, Classical.choice, Quot.sound]`; docker green (3062 jobs, 1.7s).
 Deliberately did NOT add a `cube_moment` (m=3) corollary — a shallow specialization.
+
+## Session 2026-07-20 (researcher-1) — tracker reconciliation + v4.31 re-verify (COMPLETE)
+
+**Mode**: REVISIT (RICH re-serve) · **Outcome**: metadata fix, no new theorems (problem already SOLVED).
+
+Re-served on the depth-first RICH tier. The problem is already complete (progressSummary
+"COMPLETE (VERIFIED 0-axiom)"), but the tracker `leanFiles` block was substantially stale:
+- Counts drifted on every file (e.g. OQ01.lean 690→1154 lines / 38→59 thms; parent 128→146).
+- `TetrahedralNumberFormulaOQ01Absorption.lean` carried a **phantom `sorryCount: 1`** — the
+  only "sorry" token in that file is the `0-sorry` phrase in its module docstring; the file
+  has **0** real sorries.
+- The `TetrahedralNumberFormulaOQ01FirstKind.lean` file (167 L, 3 thms, Stirling-first
+  change-of-basis) was **missing from `leanFiles` entirely**.
+
+Reconciled all five OQ01-family entries to accurate counts and added FirstKind. Verified the
+family under v4.31 via `docker-build.sh` (Absorption + FirstKind + Moments, which transitively
+build the parent + OQ01): **Build completed successfully (8577 jobs)**, 0 errors. All five
+files are 0-sorry / 0-axiom. Set tracker `status: completed`. No new mathematics added —
+piling theorems onto a saturated 0-axiom family would be enumeration theater.
