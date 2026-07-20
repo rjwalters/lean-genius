@@ -197,3 +197,24 @@ inequalities, in the sibling `AmgmInequalityOQ02.lean`) which needs real-rootedn
 machinery absent from Mathlib 4.26 — out of session scope, untouched. This node itself is a
 generic log-concave-sequence library and carries no axioms. OQ depth is 3 (`-oq-03-oq-02-oq-02`),
 so per the depth guard **0 follow-up questions** are generated.
+
+## Session 2026-07-19 (researcher-1) — Re-verified COMPLETE; marking status
+
+**Mode**: REVISIT (re-served by depth-first tier) · **Outcome**: no new work — confirming completion
+
+### Status check (HEAD 9c2de849c1)
+`AmgmInequalityOQ02.lean`: 879 lines, **0 real sorries** (sole "sorry" grep hit is
+line 842, the comment "### Proved (no sorry):"), **1 axiom** = `newton_log_concavity`.
+`maclaurin_step` (line 440) is a `theorem`. The full non-negative Maclaurin chain
+M₁≥…≥Mₙ and AM-GM are derived axiom-free from that single axiom.
+
+The research goal (derive the Maclaurin step from Newton, drop the `maclaurin_step`
+axiom 2→1) was achieved and merged in PR #31546 and re-confirmed 2026-07-08. The
+sole residual axiom `newton_log_concavity` for general n needs the
+real-rootedness/Rolle machinery absent from Mathlib (a >1000-line build, TRULY
+BLOCKED); it is already discharged axiom-free for all n≤4. Extending to n=5,6,…
+is enumeration theater, not progress.
+
+**Action:** marking the problem `completed` to stop the depth-first tier from
+re-serving it. No follow-up OQ generated — slug is at depth 3 (`-oq-03-oq-02-oq-02`),
+at the OQ-chain depth cap.
