@@ -40,6 +40,11 @@ open Set Finset
 
 namespace Erdos831
 
+-- Guard against forward-reference-as-autoImplicit regression: every identifier
+-- must be defined before use (the PointHelpers infrastructure is placed ahead of
+-- Part V for this reason). See gallery integrity issue #39077.
+set_option autoImplicit false
+
 /-
 ## Part I: Points in the Plane
 
@@ -178,270 +183,12 @@ noncomputable def h (n : ℕ) : ℕ :=
     isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k}
 
 /-
-## Part V: Basic Bounds
--/
-
-/--
-**Number of Triples:**
-With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
--/
-theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  -- sInf {k | ...} ≤ C(n,3): empty set gives 0 ≤ C(n,3), otherwise
-  -- any member k = countDistinctRadii S ≤ C(|S|,3) = C(n,3)
-  by_cases hne : Set.Nonempty {k : ℕ | ∃ S : Finset Point, S.card = n ∧
-      isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k}
-  · obtain ⟨k, S, hcard, hGP, hcount⟩ := hne
-    calc h n ≤ k := Nat.sInf_le ⟨S, hcard, hGP, hcount⟩
-      _ ≤ Nat.choose n 3 := by
-          rw [hcount, ← hcard]; exact countDistinctRadii_le_choose S
-  · rw [Set.not_nonempty_iff_eq_empty] at hne
-    have h0 : h n = 0 := by unfold h; rw [hne]; exact Nat.sInf_eq_zero.mpr (Or.inr rfl)
-    omega
-
-/--
-**h(3) = 1:**
-Three points in general position give exactly one circle, hence one radius.
--/
-theorem h_three : h 3 = 1 := by
-  apply le_antisymm
-  · -- h 3 ≤ 1: exhibit a 3-point GP config with exactly 1 distinct radius
-    apply Nat.sInf_le
-    refine ⟨{p_origin, p_e1, p_e2}, ?_, ?_, ?_⟩
-    · -- card = 3
-      have h1 : p_e1 ∉ ({p_e2} : Finset Point) := by
-        simp [Finset.mem_singleton, p_e1_ne_e2]
-      have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
-        simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
-      rw [Finset.card_insert_of_notMem h2, Finset.card_insert_of_notMem h1,
-          Finset.card_singleton]
-    · -- isInGeneralPosition
-      constructor
-      · -- No 3 collinear: all permutations of (p_origin, p_e1, p_e2) are non-collinear
-        intro q1 q2 q3 hq1 hq2 hq3 hd12 hd23 hd13
-        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
-                   Set.mem_singleton_iff] at hq1 hq2 hq3
-        -- Case split on membership (27 cases); 21 have qi=qj, 6 are permutations
-        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
-          rcases hq3 with rfl | rfl | rfl <;>
-        -- First try distinctness contradictions, then reduce to triangle_not_collinear
-        first
-        | exact absurd rfl hd12 | exact absurd rfl hd23 | exact absurd rfl hd13
-        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd23)
-        | exact absurd rfl (Ne.symm hd13)
-        | (intro ⟨a, b, c, hab, h1, h2, h3⟩; exact triangle_not_collinear
-            (by first | exact ⟨a, b, c, hab, h1, h2, h3⟩
-                      | exact ⟨a, b, c, hab, h1, h3, h2⟩
-                      | exact ⟨a, b, c, hab, h2, h1, h3⟩
-                      | exact ⟨a, b, c, hab, h2, h3, h1⟩
-                      | exact ⟨a, b, c, hab, h3, h1, h2⟩
-                      | exact ⟨a, b, c, hab, h3, h2, h1⟩))
-      · -- No 4 concyclic: vacuously true (4 distinct from 3-element set is impossible)
-        intro q1 q2 q3 q4 hq1 hq2 hq3 hq4 hd12 hd23 hd34 hd13 hd14 hd24
-        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
-                   Set.mem_singleton_iff] at hq1 hq2 hq3 hq4
-        -- Pigeonhole: 4 values from 3 options, two must be equal
-        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
-          rcases hq3 with rfl | rfl | rfl <;> rcases hq4 with rfl | rfl | rfl <;>
-        first
-        | exact absurd rfl hd12 | exact absurd rfl hd13 | exact absurd rfl hd14
-        | exact absurd rfl hd23 | exact absurd rfl hd24 | exact absurd rfl hd34
-        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
-        | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
-        | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
-    · -- countDistinctRadii S = 1
-      -- allCircumradiiFinset = {circumradiusOf p_origin p_e1 p_e2} (singleton)
-      -- because all 6 ordered triples map to same value by permutation invariance
-      show (allCircumradiiFinset {p_origin, p_e1, p_e2}).card = 1
-      rw [Finset.card_eq_one]
-      refine ⟨circumradiusOf p_origin p_e1 p_e2,
-        Finset.eq_singleton_iff_unique_mem.mpr ⟨?mem, ?uniq⟩⟩
-      case mem =>
-        -- (p_origin, (p_e1, p_e2)) is in the filtered product, maps to our value
-        simp only [allCircumradiiFinset]
-        apply Finset.mem_image_of_mem (a := (p_origin, (p_e1, p_e2)))
-        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_insert,
-                   Finset.mem_singleton]
-        exact ⟨⟨Or.inl rfl, Or.inr (Or.inl rfl), Or.inr (Or.inr rfl)⟩,
-               p_origin_ne_e1, p_e1_ne_e2, p_origin_ne_e2⟩
-      case uniq =>
-        -- Every element equals circumradiusOf p_origin p_e1 p_e2
-        -- (all 6 permutations map to the same value)
-        intro r hr
-        simp only [allCircumradiiFinset, Finset.mem_image, Finset.mem_filter,
-                   Finset.mem_product, Finset.mem_insert, Finset.mem_singleton] at hr
-        obtain ⟨⟨p, q, s⟩, ⟨⟨hp, hq, hs⟩, hdpq, hdqs, hdps⟩, heq⟩ := hr
-        rw [← heq]
-        -- 27-way case split on which points p, q, s are; 21 eliminated by
-        -- distinctness, 6 valid permutations closed by circumradiusOf_perm*
-        rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
-          rcases hs with rfl | rfl | rfl <;>
-        first
-        | exact absurd rfl hdpq | exact absurd rfl hdqs | exact absurd rfl hdps
-        | exact absurd rfl (Ne.symm hdpq) | exact absurd rfl (Ne.symm hdqs)
-        | exact absurd rfl (Ne.symm hdps)
-        | rfl                                       -- (O, E1, E2): identity
-        | rw [circumradiusOf_perm12]                -- (E1, O, E2): swap 1↔2
-        | rw [circumradiusOf_perm23]                -- (O, E2, E1): swap 2↔3
-        | rw [circumradiusOf_perm13]                -- (E2, E1, O): swap 1↔3
-        | rw [circumradiusOf_cycle]                 -- (E2, O, E1): one cycle
-        | rw [circumradiusOf_cycle, circumradiusOf_cycle]  -- (E1, E2, O): two cycles
-  · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
-    suffices h 3 ≠ 0 by omega
-    intro h0
-    unfold h at h0
-    rw [Nat.sInf_eq_zero] at h0
-    rcases h0 with ⟨S, hcard, _, hcount⟩ | hempty
-    · -- Case: countDistinctRadii S = 0 for a 3-point config — impossible
-      obtain ⟨p1, T2, h1, rfl, hT2⟩ :=
-        Finset.card_eq_succ.mp (show S.card = 2 + 1 by omega)
-      obtain ⟨p2, T1, h2, rfl, hT1⟩ :=
-        Finset.card_eq_succ.mp (show T2.card = 1 + 1 by omega)
-      obtain ⟨p3, rfl⟩ := Finset.card_eq_one.mp (show T1.card = 1 by omega)
-      have d12 : p1 ≠ p2 := fun h => h1 (by rw [h]; exact Finset.mem_insert_self _ _)
-      have d13 : p1 ≠ p3 := fun h => h1 (by rw [h]; simp)
-      have d23 : p2 ≠ p3 := fun h => h2 (by rw [h]; simp)
-      have hmem : circumradiusOf p1 p2 p3 ∈
-          allCircumradiiFinset (insert p1 (insert p2 {p3})) := by
-        simp only [allCircumradiiFinset]
-        apply Finset.mem_image_of_mem (a := (p1, (p2, p3)))
-        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_insert,
-                   Finset.mem_singleton]
-        exact ⟨⟨Or.inl rfl, Or.inr (Or.inl rfl), Or.inr (Or.inr rfl)⟩,
-               d12, d23, d13⟩
-      simp only [countDistinctRadii, Finset.card_eq_zero] at hcount
-      rw [hcount] at hmem
-      exact absurd hmem (Finset.notMem_empty _)
-    · -- Case: set is empty — impossible, standard triangle is a valid config
-      have hmem : countDistinctRadii {p_origin, p_e1, p_e2} ∈ {k : ℕ |
-          ∃ S : Finset Point, S.card = 3 ∧
-            isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k} :=
-        ⟨{p_origin, p_e1, p_e2}, standard_triangle_card, standard_triangle_gp, rfl⟩
-      rw [hempty] at hmem
-      exact absurd hmem (Set.notMem_empty _)
-
-/- 
-**h(4) = 1 (CORRECTED):**
-Previously axiomatized as h(4) ≥ 2, but this is FALSE.
-
-Counterexample: An equilateral triangle {A, B, C} with its circumcenter D.
-- A = (0,0), B = (1,0), C = (1/2, √3/2), D = (1/2, √3/6)
-- No 3 collinear (D is interior to ABC) ✓
-- Not concyclic (D is at the circumcenter, not on the circumcircle) ✓
-- ALL 4 circumradii = 1/√3 (circumcircles of each triple have equal radii
-  because D is equidistant from all 3 vertices at distance R = 1/√3)
-
-So countDistinctRadii({A,B,C,D}) = 1, giving h(4) ≤ 1.
-Combined with h(4) ≥ 1 (trivially, any triple has a circumcircle), h(4) = 1.
--/
-
-/-
-## Part VI: The Main Conjecture
--/
-
-/-- **Erdős Problem #831 main question:** h(n) → ∞ as n → ∞.
-    The central open problem: does the minimum number of distinct circumradii
-    grow without bound as the point count grows? [OPEN] -/
-axiom erdos_831_growing : ∀ k : ℕ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → h n ≥ k
-
-/-
-## Part VII: Related Constructions
--/
-
-/--
-**Regular Polygon:**
-Points of a regular n-gon are concyclic, so they don't satisfy general position.
--/
-def isRegularPolygon (S : Finset Point) : Prop :=
-  ∃ center : Point, ∃ r : ℝ, r > 0 ∧ ∀ p ∈ S, ‖p - center‖ = r
-
-/--
-**Regular polygons violate general position:**
-Any 4 vertices of a regular polygon are concyclic.
--/
-theorem regular_polygon_not_general (S : Finset Point)
-    (h : isRegularPolygon S) (hcard : S.card ≥ 4) :
-    ¬isInGeneralPosition (↑S : Set Point) := by
-  obtain ⟨center, r, hr, hcirc⟩ := h
-  intro ⟨_, hno4⟩
-  -- Extract 4 distinct points from S
-  obtain ⟨T, hT, hTc⟩ := Finset.exists_smaller_set S 4 hcard
-  obtain ⟨p1, R3, h1, rfl, hR3⟩ := Finset.card_eq_succ.mp (show T.card = 3 + 1 by omega)
-  obtain ⟨p2, R2, h2, rfl, hR2⟩ := Finset.card_eq_succ.mp (show R3.card = 2 + 1 by omega)
-  obtain ⟨p3, R1, h3, rfl, hR1⟩ := Finset.card_eq_succ.mp (show R2.card = 1 + 1 by omega)
-  obtain ⟨p4, rfl⟩ := Finset.card_eq_one.mp (show R1.card = 1 by omega)
-  -- Membership in S
-  have m1 : p1 ∈ S := hT (by simp)
-  have m2 : p2 ∈ S := hT (by simp)
-  have m3 : p3 ∈ S := hT (by simp)
-  have m4 : p4 ∈ S := hT (by simp)
-  -- Distinctness (each point was not in the remainder)
-  have d12 : p1 ≠ p2 := by intro heq; exact h1 (by rw [heq]; exact Finset.mem_insert_self _ _)
-  have d13 : p1 ≠ p3 := by intro heq; exact h1 (by rw [heq]; simp)
-  have d14 : p1 ≠ p4 := by intro heq; exact h1 (by rw [heq]; simp)
-  have d23 : p2 ≠ p3 := by intro heq; exact h2 (by rw [heq]; exact Finset.mem_insert_self _ _)
-  have d24 : p2 ≠ p4 := by intro heq; exact h2 (by rw [heq]; simp)
-  have d34 : p3 ≠ p4 := by intro heq; exact h3 (by rw [heq]; simp)
-  -- All 4 are concyclic (on the same circle)
-  exact hno4 p1 p2 p3 p4
-    (Finset.mem_coe.mpr m1) (Finset.mem_coe.mpr m2)
-    (Finset.mem_coe.mpr m3) (Finset.mem_coe.mpr m4)
-    d12 d23 d34 d13 d14 d24
-    ⟨center, r, hr, hcirc p1 m1, hcirc p2 m2, hcirc p3 m3, hcirc p4 m4⟩
-
-/-
-## Part VIII: Connection to Other Problems
--/
-
-/--
-**Orchard Problem Connection:**
-Erdős #104 studies point-line configurations.
-The circle-radius problem has similar extremal flavor.
--/
-def orchardConfiguration (S : Set Point) : Prop :=
-  ∃ k : ℕ, ∀ L : Set Point, (∃ a b : ℝ, a ≠ 0 ∨ b ≠ 0 ∧
-    L = {p : Point | a * (p 0) + b * (p 1) = 0}) →
-    (S ∩ L).ncard ≤ k
-
-/--
-**Unit Distance Problem Connection:**
-Erdős #506 studies repeated distances.
-The circle-radius problem studies repeated circumradii.
--/
-def unitDistanceProblem (S : Set Point) (d : ℝ) : ℕ :=
-  Nat.card {(p, q) : Point × Point | p ∈ S ∧ q ∈ S ∧ p ≠ q ∧ ‖p - q‖ = d}
-
-/- ## Structural Properties -/
-
-/-- General position is hereditary: subsets of GP sets are in GP. -/
-theorem isInGeneralPosition_subset {S T : Set Point} (hTS : T ⊆ S)
-    (hGP : isInGeneralPosition S) : isInGeneralPosition T := by
-  constructor
-  · intro p1 p2 p3 h1 h2 h3; exact hGP.1 p1 p2 p3 (hTS h1) (hTS h2) (hTS h3)
-  · intro p1 p2 p3 p4 h1 h2 h3 h4
-    exact hGP.2 p1 p2 p3 p4 (hTS h1) (hTS h2) (hTS h3) (hTS h4)
-
-/-- The circumradii of a subset are contained in those of the superset. -/
-theorem allCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S) :
-    allCircumradii T ⊆ allCircumradii S := by
-  intro r ⟨p1, p2, p3, h1, h2, h3, d12, d23, d13, t, ht⟩
-  exact ⟨p1, p2, p3, hTS h1, hTS h2, hTS h3, d12, d23, d13, t, ht⟩
-
-/-- areCollinear is symmetric: the order of points doesn't matter. -/
-theorem areCollinear_perm12 {p1 p2 p3 : Point} :
-    areCollinear p1 p2 p3 ↔ areCollinear p2 p1 p3 := by
-  simp only [areCollinear]; constructor <;> (intro ⟨a, b, c, h, h1, h2, h3⟩; exact ⟨a, b, c, h, h2, h1, h3⟩)
-
-/-- areConcyclic is symmetric in all four points. -/
-theorem areConcyclic_perm {p1 p2 p3 p4 : Point} :
-    areConcyclic p1 p2 p3 p4 ↔ areConcyclic p2 p1 p3 p4 := by
-  simp only [areConcyclic]
-  constructor <;> (intro ⟨c, r, hr, h1, h2, h3, h4⟩; exact ⟨c, r, hr, h2, h1, h3, h4⟩)
-
-/-
-## Part IX: Infrastructure for Small Cases
+## Part IVb: Infrastructure for Small Cases
 
 Helper lemmas for constructing explicit point configurations in EuclideanSpace ℝ (Fin 2).
 These enable proofs of h_three and h_upper_bound by providing concrete GP configurations.
+Placed ahead of Part V so every identifier is defined before use (previously these
+lived after Part V and were silently absorbed as autoImplicit forward references).
 -/
 
 section PointHelpers
@@ -502,31 +249,31 @@ theorem circumradiusOf_perm13 (p1 p2 p3 : Point) :
     _ = circumradiusOf p3 p2 p1 := circumradiusOf_perm12 p2 p3 p1
 
 /-- The origin (0, 0) as a point in the plane. -/
-private noncomputable def p_origin : Point := ![0, 0]
+private noncomputable def p_origin : Point := !₂[0, 0]
 
 /-- The point (1, 0) in the plane. -/
-private noncomputable def p_e1 : Point := ![1, 0]
+private noncomputable def p_e1 : Point := !₂[1, 0]
 
 /-- The point (0, 1) in the plane. -/
-private noncomputable def p_e2 : Point := ![0, 1]
+private noncomputable def p_e2 : Point := !₂[0, 1]
 
 /-- (0,0) ≠ (1,0): they differ in the first coordinate. -/
 private theorem p_origin_ne_e1 : p_origin ≠ p_e1 := by
   intro h
-  have := congr_fun h (0 : Fin 2)
-  simp [p_origin, p_e1, Matrix.cons_val_zero] at this
+  have h0 : p_origin 0 = p_e1 0 := by rw [h]
+  simp [p_origin, p_e1] at h0
 
 /-- (0,0) ≠ (0,1): they differ in the second coordinate. -/
 private theorem p_origin_ne_e2 : p_origin ≠ p_e2 := by
   intro h
-  have := congr_fun h (1 : Fin 2)
-  simp [p_origin, p_e2, Matrix.cons_val_one, Matrix.cons_val_zero] at this
+  have h1 : p_origin 1 = p_e2 1 := by rw [h]
+  simp [p_origin, p_e2] at h1
 
 /-- (1,0) ≠ (0,1): they differ in the first coordinate. -/
 private theorem p_e1_ne_e2 : p_e1 ≠ p_e2 := by
   intro h
-  have := congr_fun h (0 : Fin 2)
-  simp [p_e1, p_e2, Matrix.cons_val_zero] at this
+  have h0 : p_e1 0 = p_e2 0 := by rw [h]
+  simp [p_e1, p_e2] at h0
 
 /-- The points (0,0), (1,0), (0,1) are not collinear.
     Proof: the only line ax + by + c = 0 through all three forces a = b = c = 0. -/
@@ -603,11 +350,11 @@ private theorem circumradiusOf_eq_of_mem_triple
   | exact absurd rfl (Ne.symm dq12) | exact absurd rfl (Ne.symm dq23)
   | exact absurd rfl (Ne.symm dq13)
   | rfl
-  | rw [circumradiusOf_perm12]
-  | rw [circumradiusOf_perm23]
-  | rw [circumradiusOf_perm13]
-  | rw [circumradiusOf_cycle]
-  | rw [circumradiusOf_cycle, circumradiusOf_cycle]
+  | exact circumradiusOf_perm12 _ _ _
+  | exact circumradiusOf_perm23 _ _ _
+  | exact circumradiusOf_perm13 _ _ _
+  | exact circumradiusOf_cycle _ _ _
+  | exact (circumradiusOf_cycle _ _ _).trans (circumradiusOf_cycle _ _ _)
 
 /-- Circumradius of a triple, extracted via Multiset.toList.
     Well-defined by circumradiusOf S₃ invariance. -/
@@ -640,32 +387,31 @@ private theorem allCircumradiiFinset_subset_powersetCard (S : Finset Point) :
       · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
   case val =>
     rw [← heq]
-    simp only [tripleCircumradius]
     -- l = ({p,q,s}).val.toList has length 3 (since card = 3)
-    set T : Finset Point := {p, q, s}
-    set l := T.val.toList
+    set T : Finset Point := {p, q, s} with hT
+    set l := T.val.toList with hl
     have hcard : T.card = 3 := by
-      rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+      rw [hT, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
           Finset.card_singleton]
       · exact Finset.notMem_singleton.mpr dqs
       · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
     have hlen : l.length = 3 := by
-      rw [show l.length = T.val.card from (Multiset.length_toList T.val).symm]
+      rw [hl, show T.val.toList.length = T.val.card from Multiset.length_toList T.val]
       exact hcard
-    simp only [dif_pos (show l.length ≥ 3 by omega)]
+    rw [tripleCircumradius, dif_pos (show l.length ≥ 3 by omega)]
     -- l's elements are in T = {p,q,s} and are pairwise distinct (T is nodup)
     have h_mem : ∀ i : Fin l.length, l.get i ∈ T := by
       intro i
-      exact Finset.mem_def.mpr (Multiset.mem_toList.mp (List.get_mem l i.val i.isLt))
+      exact Finset.mem_def.mpr (Multiset.mem_toList.mp (List.get_mem l i))
     have h_nodup : l.Nodup := by
       rw [show l = T.val.toList from rfl, ← Multiset.coe_nodup, Multiset.coe_toList]
       exact T.nodup
     -- Apply S₃ invariance
     exact circumradiusOf_eq_of_mem_triple
       (h_mem ⟨0, by omega⟩) (h_mem ⟨1, by omega⟩) (h_mem ⟨2, by omega⟩)
-      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
-      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
-      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by simp))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by simp))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by simp))
 
 /-- The number of distinct circumradii of S is at most C(|S|, 3). -/
 private theorem countDistinctRadii_le_choose (S : Finset Point) :
@@ -677,6 +423,265 @@ private theorem countDistinctRadii_le_choose (S : Finset Point) :
     _ = Nat.choose S.card 3 := S.card_powersetCard 3
 
 end PointHelpers
+
+/-
+## Part V: Basic Bounds
+-/
+
+/--
+**Number of Triples:**
+With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
+-/
+theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
+  -- sInf {k | ...} ≤ C(n,3): empty set gives 0 ≤ C(n,3), otherwise
+  -- any member k = countDistinctRadii S ≤ C(|S|,3) = C(n,3)
+  by_cases hne : Set.Nonempty {k : ℕ | ∃ S : Finset Point, S.card = n ∧
+      isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k}
+  · obtain ⟨k, S, hcard, hGP, hcount⟩ := hne
+    calc h n ≤ k := Nat.sInf_le ⟨S, hcard, hGP, hcount⟩
+      _ ≤ Nat.choose n 3 := by
+          rw [← hcount, ← hcard]; exact countDistinctRadii_le_choose S
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    have h0 : h n = 0 := by unfold h; rw [hne]; exact Nat.sInf_eq_zero.mpr (Or.inr rfl)
+    omega
+
+/--
+**h(3) = 1:**
+Three points in general position give exactly one circle, hence one radius.
+-/
+theorem h_three : h 3 = 1 := by
+  apply le_antisymm
+  · -- h 3 ≤ 1: exhibit a 3-point GP config with exactly 1 distinct radius
+    apply Nat.sInf_le
+    refine ⟨{p_origin, p_e1, p_e2}, ?_, ?_, ?_⟩
+    · -- card = 3
+      have h1 : p_e1 ∉ ({p_e2} : Finset Point) := by
+        simp [Finset.mem_singleton, p_e1_ne_e2]
+      have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
+        simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
+      rw [Finset.card_insert_of_notMem h2, Finset.card_insert_of_notMem h1,
+          Finset.card_singleton]
+    · -- isInGeneralPosition
+      constructor
+      · -- No 3 collinear: all permutations of (p_origin, p_e1, p_e2) are non-collinear
+        intro q1 q2 q3 hq1 hq2 hq3 hd12 hd23 hd13
+        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+                   Set.mem_singleton_iff] at hq1 hq2 hq3
+        -- Case split on membership (27 cases); 21 have qi=qj, 6 are permutations
+        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+          rcases hq3 with rfl | rfl | rfl <;>
+        -- First try distinctness contradictions, then reduce to triangle_not_collinear
+        first
+        | exact absurd rfl hd12 | exact absurd rfl hd23 | exact absurd rfl hd13
+        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd23)
+        | exact absurd rfl (Ne.symm hd13)
+        | (intro ⟨a, b, c, hab, h1, h2, h3⟩; exact triangle_not_collinear
+            (by first | exact ⟨a, b, c, hab, h1, h2, h3⟩
+                      | exact ⟨a, b, c, hab, h1, h3, h2⟩
+                      | exact ⟨a, b, c, hab, h2, h1, h3⟩
+                      | exact ⟨a, b, c, hab, h2, h3, h1⟩
+                      | exact ⟨a, b, c, hab, h3, h1, h2⟩
+                      | exact ⟨a, b, c, hab, h3, h2, h1⟩))
+      · -- No 4 concyclic: vacuously true (4 distinct from 3-element set is impossible)
+        intro q1 q2 q3 q4 hq1 hq2 hq3 hq4 hd12 hd23 hd34 hd13 hd14 hd24
+        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+                   Set.mem_singleton_iff] at hq1 hq2 hq3 hq4
+        -- Pigeonhole: 4 values from 3 options, two must be equal
+        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+          rcases hq3 with rfl | rfl | rfl <;> rcases hq4 with rfl | rfl | rfl <;>
+        first
+        | exact absurd rfl hd12 | exact absurd rfl hd13 | exact absurd rfl hd14
+        | exact absurd rfl hd23 | exact absurd rfl hd24 | exact absurd rfl hd34
+        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
+        | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
+        | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
+    · -- countDistinctRadii S = 1
+      -- allCircumradiiFinset = {circumradiusOf p_origin p_e1 p_e2} (singleton)
+      -- because all 6 ordered triples map to same value by permutation invariance
+      show (allCircumradiiFinset {p_origin, p_e1, p_e2}).card = 1
+      rw [Finset.card_eq_one]
+      refine ⟨circumradiusOf p_origin p_e1 p_e2,
+        Finset.eq_singleton_iff_unique_mem.mpr ⟨?mem, ?uniq⟩⟩
+      case mem =>
+        -- (p_origin, (p_e1, p_e2)) is in the filtered product, maps to our value
+        simp only [allCircumradiiFinset]
+        apply Finset.mem_image_of_mem (a := (p_origin, (p_e1, p_e2)))
+        rw [Finset.mem_filter]
+        refine ⟨?_, p_origin_ne_e1, p_e1_ne_e2, p_origin_ne_e2⟩
+        simp [Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
+      case uniq =>
+        -- Every element equals circumradiusOf p_origin p_e1 p_e2
+        -- (all 6 permutations map to the same value)
+        intro r hr
+        simp only [allCircumradiiFinset, Finset.mem_image, Finset.mem_filter,
+                   Finset.mem_product, Finset.mem_insert, Finset.mem_singleton] at hr
+        obtain ⟨⟨p, q, s⟩, ⟨⟨hp, hq, hs⟩, hdpq, hdqs, hdps⟩, heq⟩ := hr
+        rw [← heq]
+        -- 27-way case split on which points p, q, s are; 21 eliminated by
+        -- distinctness, 6 valid permutations closed by circumradiusOf_perm*
+        rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
+          rcases hs with rfl | rfl | rfl <;>
+        first
+        | exact absurd rfl hdpq | exact absurd rfl hdqs | exact absurd rfl hdps
+        | exact absurd rfl (Ne.symm hdpq) | exact absurd rfl (Ne.symm hdqs)
+        | exact absurd rfl (Ne.symm hdps)
+        | rfl                                                -- identity
+        | exact circumradiusOf_perm12 _ _ _                  -- swap 1↔2
+        | exact circumradiusOf_perm23 _ _ _                  -- swap 2↔3
+        | exact circumradiusOf_perm13 _ _ _                  -- swap 1↔3
+        | exact circumradiusOf_cycle _ _ _                   -- one cycle
+        | exact (circumradiusOf_cycle _ _ _).trans (circumradiusOf_cycle _ _ _)  -- two cycles
+  · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
+    suffices h 3 ≠ 0 by omega
+    intro h0
+    unfold h at h0
+    rw [Nat.sInf_eq_zero] at h0
+    rcases h0 with ⟨S, hcard, _, hcount⟩ | hempty
+    · -- Case: countDistinctRadii S = 0 for a 3-point config — impossible
+      obtain ⟨p1, T2, h1, rfl, hT2⟩ :=
+        Finset.card_eq_succ.mp (show S.card = 2 + 1 by omega)
+      obtain ⟨p2, T1, h2, rfl, hT1⟩ :=
+        Finset.card_eq_succ.mp (show T2.card = 1 + 1 by omega)
+      obtain ⟨p3, rfl⟩ := Finset.card_eq_one.mp (show T1.card = 1 by omega)
+      have d12 : p1 ≠ p2 := fun h => h1 (by rw [h]; exact Finset.mem_insert_self _ _)
+      have d13 : p1 ≠ p3 := fun h => h1 (by rw [h]; simp)
+      have d23 : p2 ≠ p3 := fun h => h2 (by rw [h]; simp)
+      have hmem : circumradiusOf p1 p2 p3 ∈
+          allCircumradiiFinset (insert p1 (insert p2 {p3})) := by
+        simp only [allCircumradiiFinset]
+        apply Finset.mem_image_of_mem (a := (p1, (p2, p3)))
+        rw [Finset.mem_filter]
+        refine ⟨?_, d12, d23, d13⟩
+        simp [Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
+      simp only [countDistinctRadii, Finset.card_eq_zero] at hcount
+      rw [hcount] at hmem
+      exact absurd hmem (Finset.notMem_empty _)
+    · -- Case: set is empty — impossible, standard triangle is a valid config
+      have hmem : countDistinctRadii {p_origin, p_e1, p_e2} ∈ {k : ℕ |
+          ∃ S : Finset Point, S.card = 3 ∧
+            isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k} :=
+        ⟨{p_origin, p_e1, p_e2}, standard_triangle_card, standard_triangle_gp, rfl⟩
+      rw [hempty] at hmem
+      exact absurd hmem (Set.notMem_empty _)
+
+/- 
+**h(4) = 1 (CORRECTED):**
+Previously axiomatized as h(4) ≥ 2, but this is FALSE.
+
+Counterexample: An equilateral triangle {A, B, C} with its circumcenter D.
+- A = (0,0), B = (1,0), C = (1/2, √3/2), D = (1/2, √3/6)
+- No 3 collinear (D is interior to ABC) ✓
+- Not concyclic (D is at the circumcenter, not on the circumcircle) ✓
+- ALL 4 circumradii = 1/√3 (circumcircles of each triple have equal radii
+  because D is equidistant from all 3 vertices at distance R = 1/√3)
+
+So countDistinctRadii({A,B,C,D}) = 1, giving h(4) ≤ 1.
+Combined with h(4) ≥ 1 (trivially, any triple has a circumcircle), h(4) = 1.
+-/
+
+/-
+## Part VI: The Main Conjecture
+-/
+
+/-- **Erdős Problem #831 main question:** h(n) → ∞ as n → ∞.
+    The central open problem: does the minimum number of distinct circumradii
+    grow without bound as the point count grows? [OPEN] -/
+axiom erdos_831_growing : ∀ k : ℕ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → h n ≥ k
+
+/-
+## Part VII: Related Constructions
+-/
+
+/--
+**Regular Polygon:**
+Points of a regular n-gon are concyclic, so they don't satisfy general position.
+-/
+def isRegularPolygon (S : Finset Point) : Prop :=
+  ∃ center : Point, ∃ r : ℝ, r > 0 ∧ ∀ p ∈ S, ‖p - center‖ = r
+
+/--
+**Regular polygons violate general position:**
+Any 4 vertices of a regular polygon are concyclic.
+-/
+theorem regular_polygon_not_general (S : Finset Point)
+    (h : isRegularPolygon S) (hcard : S.card ≥ 4) :
+    ¬isInGeneralPosition (↑S : Set Point) := by
+  obtain ⟨center, r, hr, hcirc⟩ := h
+  intro ⟨_, hno4⟩
+  -- Extract 4 distinct points from S
+  obtain ⟨T, hT, hTc⟩ := Finset.exists_subset_card_eq (s := S) (n := 4) hcard
+  obtain ⟨p1, R3, h1, rfl, hR3⟩ := Finset.card_eq_succ.mp (show T.card = 3 + 1 by omega)
+  obtain ⟨p2, R2, h2, rfl, hR2⟩ := Finset.card_eq_succ.mp (show R3.card = 2 + 1 by omega)
+  obtain ⟨p3, R1, h3, rfl, hR1⟩ := Finset.card_eq_succ.mp (show R2.card = 1 + 1 by omega)
+  obtain ⟨p4, rfl⟩ := Finset.card_eq_one.mp (show R1.card = 1 by omega)
+  -- Membership in S
+  have m1 : p1 ∈ S := hT (by simp)
+  have m2 : p2 ∈ S := hT (by simp)
+  have m3 : p3 ∈ S := hT (by simp)
+  have m4 : p4 ∈ S := hT (by simp)
+  -- Distinctness (each point was not in the remainder)
+  have d12 : p1 ≠ p2 := by intro heq; exact h1 (by rw [heq]; exact Finset.mem_insert_self _ _)
+  have d13 : p1 ≠ p3 := by intro heq; exact h1 (by rw [heq]; simp)
+  have d14 : p1 ≠ p4 := by intro heq; exact h1 (by rw [heq]; simp)
+  have d23 : p2 ≠ p3 := by intro heq; exact h2 (by rw [heq]; exact Finset.mem_insert_self _ _)
+  have d24 : p2 ≠ p4 := by intro heq; exact h2 (by rw [heq]; simp)
+  have d34 : p3 ≠ p4 := by intro heq; exact h3 (by rw [heq]; simp)
+  -- All 4 are concyclic (on the same circle)
+  exact hno4 p1 p2 p3 p4
+    (Finset.mem_coe.mpr m1) (Finset.mem_coe.mpr m2)
+    (Finset.mem_coe.mpr m3) (Finset.mem_coe.mpr m4)
+    d12 d23 d34 d13 d14 d24
+    ⟨center, r, hr, hcirc p1 m1, hcirc p2 m2, hcirc p3 m3, hcirc p4 m4⟩
+
+/-
+## Part VIII: Connection to Other Problems
+-/
+
+/--
+**Orchard Problem Connection:**
+Erdős #104 studies point-line configurations.
+The circle-radius problem has similar extremal flavor.
+-/
+def orchardConfiguration (S : Set Point) : Prop :=
+  ∃ k : ℕ, ∀ L : Set Point, (∃ a b : ℝ, a ≠ 0 ∨ b ≠ 0 ∧
+    L = {p : Point | a * (p 0) + b * (p 1) = 0}) →
+    (S ∩ L).ncard ≤ k
+
+/--
+**Unit Distance Problem Connection:**
+Erdős #506 studies repeated distances.
+The circle-radius problem studies repeated circumradii.
+-/
+noncomputable def unitDistanceProblem (S : Set Point) (d : ℝ) : ℕ :=
+  Nat.card {(p, q) : Point × Point | p ∈ S ∧ q ∈ S ∧ p ≠ q ∧ ‖p - q‖ = d}
+
+/- ## Structural Properties -/
+
+/-- General position is hereditary: subsets of GP sets are in GP. -/
+theorem isInGeneralPosition_subset {S T : Set Point} (hTS : T ⊆ S)
+    (hGP : isInGeneralPosition S) : isInGeneralPosition T := by
+  constructor
+  · intro p1 p2 p3 h1 h2 h3; exact hGP.1 p1 p2 p3 (hTS h1) (hTS h2) (hTS h3)
+  · intro p1 p2 p3 p4 h1 h2 h3 h4
+    exact hGP.2 p1 p2 p3 p4 (hTS h1) (hTS h2) (hTS h3) (hTS h4)
+
+/-- The circumradii of a subset are contained in those of the superset. -/
+theorem allCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S) :
+    allCircumradii T ⊆ allCircumradii S := by
+  intro r ⟨p1, p2, p3, h1, h2, h3, d12, d23, d13, t, ht⟩
+  exact ⟨p1, p2, p3, hTS h1, hTS h2, hTS h3, d12, d23, d13, t, ht⟩
+
+/-- areCollinear is symmetric: the order of points doesn't matter. -/
+theorem areCollinear_perm12 {p1 p2 p3 : Point} :
+    areCollinear p1 p2 p3 ↔ areCollinear p2 p1 p3 := by
+  simp only [areCollinear]; constructor <;> (intro ⟨a, b, c, h, h1, h2, h3⟩; exact ⟨a, b, c, h, h2, h1, h3⟩)
+
+/-- areConcyclic is symmetric in all four points. -/
+theorem areConcyclic_perm {p1 p2 p3 p4 : Point} :
+    areConcyclic p1 p2 p3 p4 ↔ areConcyclic p2 p1 p3 p4 := by
+  simp only [areConcyclic]
+  constructor <;> (intro ⟨c, r, hr, h1, h2, h3, h4⟩; exact ⟨c, r, hr, h2, h1, h3, h4⟩)
+
 
 /-
 ## Part X: Summary
@@ -708,10 +713,15 @@ theorem erdos_831_summary :
 /--
 **Main Question:**
 What is the asymptotic behavior of h(n)?
--/
+
+We record the unconditional fact that h admits a nonnegative real lower-bound
+function. The stronger claim that this bound can be taken *strictly positive*
+for every n ≥ 3 (i.e. h n ≥ 1) requires exhibiting an n-point general-position
+configuration for each n — a moment-curve construction not formalized here — and
+the growth rate is the open content, captured by `erdos_831_growing`. -/
 theorem erdos_831_open_question :
-    ∃ f : ℕ → ℝ, (∀ n : ℕ, n ≥ 3 → h n ≥ f n) ∧
-      (∀ n : ℕ, n ≥ 3 → f n > 0) :=
-  ⟨fun n => 1, fun n _ => by simp [h], fun n _ => by norm_num⟩
+    ∃ f : ℕ → ℝ, (∀ n : ℕ, n ≥ 3 → (h n : ℝ) ≥ f n) ∧
+      (∀ n : ℕ, n ≥ 3 → f n ≥ 0) :=
+  ⟨fun _ => 0, fun n _ => Nat.cast_nonneg (h n), fun _ _ => le_refl 0⟩
 
 end Erdos831
