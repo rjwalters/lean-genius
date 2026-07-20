@@ -148,6 +148,118 @@
       "endLine": 113,
       "summary": "awgn_multisymbol_output_power: writing Pᵢ = E[Wᵢ²], the aggregate output power is ∑_{i∈s} Pᵢ — the n-symbol analogue of the parent's E[Y²] = P + N, obtained by rewriting the powers into the core identity.",
       "mathContext": "$\\mathbb{E}\\left[\\left(\\sum_{i\\in s} W_i\\right)^2\\right] = \\sum_{i\\in s} P_i$"
+    },
+    {
+      "id": "sharp-uncorrelated-suffices",
+      "title": "Sharp Form: Pairwise Uncorrelatedness Already Suffices",
+      "startLine": 114,
+      "endLine": 173,
+      "summary": "Weakens the hypothesis from pairwise independence to mere pairwise uncorrelatedness: variance_sum_of_pairwise_uncorrelated proves Var[∑ Wᵢ] = ∑ Var[Wᵢ] whenever every off-diagonal covariance vanishes, with variance_sum_of_pairwise_indep recovering the independent case and awgn_multisymbol_power_of_uncorrelated the power identity — pinpointing that only the second-order (covariance) structure, not full independence, drives power additivity.",
+      "mathContext": "$\\operatorname{Cov}(W_i,W_j)=0\\ (i\\ne j) \\implies \\operatorname{Var}\\big[\\textstyle\\sum_i W_i\\big] = \\sum_i \\operatorname{Var}[W_i]$ — uncorrelatedness, not independence, is what powers need."
+    },
+    {
+      "id": "sharp-necessity-covariance-zero",
+      "title": "Sharp Necessity: the Exact Condition for Power to Add",
+      "startLine": 174,
+      "endLine": 296,
+      "summary": "Turns the sufficient condition into an iff. variance_sum_eq_iff_offDiag_covariance_zero shows the variance-of-a-sum equals the sum of variances exactly when the aggregate off-diagonal covariance is zero (with variance_add_eq_iff_covariance_zero the two-term case), via the decomposition variance_sum_eq_diag_add_two_mul_lowerTriangle expanding Var[∑ Wᵢ] into its diagonal plus twice the lower-triangular covariance sum.",
+      "mathContext": "$\\operatorname{Var}\\big[\\sum_i W_i\\big] = \\sum_i\\operatorname{Var}[W_i] + 2\\!\\!\\sum_{i<j}\\!\\operatorname{Cov}(W_i,W_j)$, so equality $\\iff \\sum_{i<j}\\operatorname{Cov}(W_i,W_j)=0$."
+    },
+    {
+      "id": "sharp-inequality-subadditivity",
+      "title": "Sharp Inequality Boundary: the Correlated Case",
+      "startLine": 297,
+      "endLine": 400,
+      "summary": "The correlated regime. covariance_sq_le_variance_mul_variance is the Cauchy–Schwarz inequality for covariance, abs_covariance_le_sqrt its rooted form, and stddev_add_le / stddev_sum_le the resulting subadditivity (triangle inequality) of the standard deviation — the quantitative statement that correlation can only add power up to the Cauchy–Schwarz ceiling.",
+      "mathContext": "$\\operatorname{Cov}(X,Y)^2 \\le \\operatorname{Var}[X]\\operatorname{Var}[Y]$ and $\\sigma\\big[\\sum_i W_i\\big] \\le \\sum_i \\sigma[W_i]$ (standard-deviation triangle inequality)."
+    },
+    {
+      "id": "sharp-necessity-power-language",
+      "title": "Sharp Necessity in Power (Second-Moment) Language",
+      "startLine": 401,
+      "endLine": 457,
+      "summary": "Restates the equality condition in the channel's power (second-moment) vocabulary: awgn_multisymbol_power_eq_iff_offDiag_covariance_zero and its two-symbol case awgn_two_symbol_power_eq_iff_covariance_zero say the output power equals ∑ E[Wᵢ²] exactly when the symbols are pairwise uncorrelated.",
+      "mathContext": "$\\mathbb{E}\\big[(\\sum_i W_i)^2\\big] = \\sum_i \\mathbb{E}[W_i^2] \\iff \\sum_{i<j}\\operatorname{Cov}(W_i,W_j)=0$ (zero-mean signals)."
+    },
+    {
+      "id": "quantitative-defect-monotonicity",
+      "title": "Quantitative Defect and Sign-Definite Monotonicity",
+      "startLine": 458,
+      "endLine": 544,
+      "summary": "Measures the deviation exactly. variance_sum_sub_eq_offDiag_covariance identifies the defect Var[∑ Wᵢ] − ∑ Var[Wᵢ] with (twice) the aggregate off-diagonal covariance, giving the sign-definite monotonicity variance_sum_ge_of_nonneg_covariance / variance_sum_le_of_nonpos_covariance (and awgn_multisymbol_power_ge_of_nonneg_covariance): nonnegative correlations only raise the power, nonpositive ones only lower it.",
+      "mathContext": "$\\operatorname{Var}\\big[\\sum_i W_i\\big] - \\sum_i\\operatorname{Var}[W_i] = 2\\!\\sum_{i<j}\\!\\operatorname{Cov}(W_i,W_j)$; nonneg. covariances $\\Rightarrow$ power $\\ge \\sum_i\\operatorname{Var}[W_i]$."
+    },
+    {
+      "id": "sharp-signed-boundary",
+      "title": "Sharp Signed Boundary: Aggregate Covariance Controls the Defect",
+      "startLine": 545,
+      "endLine": 636,
+      "summary": "Sharpens the inequalities to strict iffs governed by the sign of the aggregate off-diagonal covariance: variance_sum_lt_iff_offDiag_covariance_neg and variance_sum_gt_iff_offDiag_covariance_pos (with their power-language companions awgn_multisymbol_power_lt/gt_iff_offDiag_covariance_neg/pos) pin the strict direction of the power deviation exactly to the sign of ∑_{i<j} Cov(Wᵢ,Wⱼ).",
+      "mathContext": "$\\operatorname{Var}\\big[\\sum_i W_i\\big] < \\sum_i\\operatorname{Var}[W_i] \\iff \\sum_{i<j}\\operatorname{Cov}(W_i,W_j)<0$ (and the $>$ / $+$ dual)."
+    },
+    {
+      "id": "sharp-equality-affine",
+      "title": "Sharp Equality Boundary: When Cauchy–Schwarz Is Tight",
+      "startLine": 637,
+      "endLine": 770,
+      "summary": "Characterizes equality in the covariance Cauchy–Schwarz inequality. variance_eq_zero_iff and variance_regression_residual set up the L² geometry; covariance_sq_eq_variance_mul_variance_iff and exists_affine_of_covariance_sq_eq show Cov(X,Y)² = Var[X]Var[Y] holds exactly when Y is a.e. an affine function of X (the degenerate/perfect-correlation case), with covariance_congr_left and covariance_sq_eq_of_affine the supporting affine-transport lemmas.",
+      "mathContext": "$\\operatorname{Cov}(X,Y)^2 = \\operatorname{Var}[X]\\operatorname{Var}[Y] \\iff Y = aX+b$ almost everywhere (a.e. affine dependence)."
+    },
+    {
+      "id": "pearson-correlation-capstone",
+      "title": "The Pearson Correlation Coefficient ρ = cov/(σ_X σ_Y)",
+      "startLine": 771,
+      "endLine": 1010,
+      "summary": "The normalised capstone in three movements. correlation_sq / abs_correlation_le_one give the bound |ρ| ≤ 1 with correlation_sq_eq_one_iff_affine / abs_correlation_eq_one_iff_affine the equality case; the signed refinements correlation_eq_one_iff_affine_pos and correlation_eq_neg_one_iff_affine_neg (via variance_eq_of_affine, correlation_eq_of_affine) distinguish perfect positive from perfect negative correlation; and correlation_affine_invariant (with its sign-specialised forms) records that ρ is invariant under affine rescaling of either variable.",
+      "mathContext": "$\\rho(X,Y) = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X\\,\\sigma_Y}$ satisfies $|\\rho|\\le 1$; $\\rho=\\pm1 \\iff$ a.e. affine with matching sign; $\\rho$ is affine-invariant."
+    },
+    {
+      "id": "stddev-triangle-equality",
+      "title": "Sharp Equality Boundary of the Standard-Deviation Triangle Inequality",
+      "startLine": 1011,
+      "endLine": 1261,
+      "summary": "Determines when the standard-deviation triangle inequality is tight, in the two-term and multivariate forms. stddev_add_eq_iff_covariance_eq_sqrt / stddev_add_eq_iff_correlation_eq_one / stddev_add_eq_iff_affine_pos (and the strict stddev_add_lt_iff_* forms) show σ[X+Y] = σ[X]+σ[Y] exactly at perfect positive correlation; stddev_sum_eq_iff_pairwise_correlation_eq_one and companions extend this to σ[∑ Wᵢ] = ∑ σ[Wᵢ] iff the family is pairwise perfectly positively correlated.",
+      "mathContext": "$\\sigma[X+Y] = \\sigma[X]+\\sigma[Y] \\iff \\rho(X,Y)=1$; multivariate: $\\sigma\\big[\\sum_i W_i\\big] = \\sum_i \\sigma[W_i] \\iff \\rho(W_i,W_j)=1$ for all $i\\ne j$."
+    },
+    {
+      "id": "weighted-combining-power",
+      "title": "Weighted Combining: Output Power of a Scaled Sum",
+      "startLine": 1262,
+      "endLine": 1349,
+      "summary": "Introduces gains/weights. variance_smul_sum' expands the variance of a weighted sum ∑ aᵢWᵢ, variance_smul_sum_of_pairwise_uncorrelated reduces it to ∑ aᵢ²Var[Wᵢ] under uncorrelatedness, and awgn_weighted_multisymbol_power_of_uncorrelated gives the corresponding weighted output power — the setup for combining diversity branches with per-branch gains.",
+      "mathContext": "$\\operatorname{Var}\\big[\\sum_i a_i W_i\\big] = \\sum_i a_i^2 \\operatorname{Var}[W_i]$ for pairwise-uncorrelated $W_i$ (weighted power budget)."
+    },
+    {
+      "id": "mrc-cauchy-schwarz-optimum",
+      "title": "Maximal-Ratio Combining: the Cauchy–Schwarz SNR Optimum",
+      "startLine": 1350,
+      "endLine": 1489,
+      "summary": "The maximal-ratio-combining (MRC) SNR bound. mrc_signal_sq_le and mrc_snr_le bound the combined signal-to-noise ratio of a weighted sum by the sum of per-branch SNRs (Cauchy–Schwarz), mrc_snr_matched attains it, and mrc_output_signal_sq_le_variance_mul / mrc_max_snr_mono / mrc_max_snr_lt_of_signal record the monotonicity and strictness — the classical result that MRC maximises output SNR.",
+      "mathContext": "$\\mathrm{SNR}\\big(\\sum_i a_i W_i\\big) \\le \\sum_i \\mathrm{SNR}(W_i)$ (Cauchy–Schwarz), with equality at the matched weights — the MRC optimum."
+    },
+    {
+      "id": "mrc-equality-matched-ray",
+      "title": "Cauchy–Schwarz Equality Case: the MRC Optimum Is the Matched Ray",
+      "startLine": 1490,
+      "endLine": 1620,
+      "summary": "Identifies the equality case of the MRC bound. lagrange_sum_identity supplies the Lagrange identity behind Cauchy–Schwarz, cauchy_schwarz_eq_iff its equality condition (proportional vectors), and mrc_signal_sq_eq_iff / mrc_matched_ray_eq show the MRC optimum is achieved exactly along the matched ray — weights proportional to the signal-to-noise profile.",
+      "mathContext": "Cauchy–Schwarz is tight $\\iff$ the vectors are proportional; the MRC optimum is the matched ray $a_i \\propto s_i/\\sigma_i^2$."
+    },
+    {
+      "id": "covariance-matrix-psd",
+      "title": "The Covariance Matrix Is Positive Semidefinite (Gram Matrix of L²)",
+      "startLine": 1621,
+      "endLine": 1708,
+      "summary": "Establishes the covariance matrix as the Gram matrix of the L² inner product. covariance_quadratic_form_nonneg shows the covariance quadratic form is nonnegative (PSD), covariance_quadratic_form_eq_zero_iff its degeneracy condition, and awgn_weighted_power_eq_covariance_quadratic_form identifies the weighted output power with that quadratic form — the matrix-level reformulation of the whole power calculus.",
+      "mathContext": "$Q(a) = \\sum_{i,j} a_i a_j \\operatorname{Cov}(W_i,W_j) = \\operatorname{Var}\\big[\\sum_i a_i W_i\\big] \\ge 0$ — the covariance matrix is PSD (an L² Gram matrix)."
+    },
+    {
+      "id": "correlated-mrc-matrix-cauchy-schwarz",
+      "title": "Correlated-Noise MRC Optimum (Matrix Cauchy–Schwarz)",
+      "startLine": 1709,
+      "endLine": 1810,
+      "summary": "Generalises MRC to correlated noise via the matrix (covariance-weighted) Cauchy–Schwarz inequality. covariance_smul_sum' expands the correlated weighted covariance, covariance_quadratic_form_cauchy_schwarz is the matrix Cauchy–Schwarz, and mrc_correlated_snr_le / mrc_correlated_snr_matched give the optimal SNR for correlated noise and the whitening-matched weights that attain it.",
+      "mathContext": "For correlated noise with covariance $\\Sigma$: $\\mathrm{SNR} \\le s^\\top \\Sigma^{-1} s$ (matrix Cauchy–Schwarz), attained at the whitened matched weights $a \\propto \\Sigma^{-1} s$."
     }
   ],
   "conclusion": {
