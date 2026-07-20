@@ -63,7 +63,7 @@
       "gafni_tao_main_theorem axiom: almost all n satisfy property",
       "erdos682_answer theorem: YES answer",
       "leastPrimeFactor_prime, leastPrimeFactor_dvd: proved theorems",
-      "one_rough_all: every positive integer is 1-rough",
+      "one_rough_all: every integer m > 1 is 1-rough",
       "exceptional_density_zero, most_gaps_have_rough: density results",
       "erdos_682_summary, erdos_682: main results"
     ],
@@ -123,8 +123,8 @@
       "title": "$k$-Rough Numbers",
       "startLine": 83,
       "endLine": 112,
-      "summary": "`isKRough m k` ($p(m) \\geq k$), `one_rough_all` (every positive integer is 1-rough), example: 7 is 7-rough",
-      "mathContext": "An integer $m \\geq 1$ is $k$-rough if $p(m) \\geq k$, i.e., no prime $< k$ divides $m$. Dually, $m$ is $k$-smooth if all prime factors are $\\leq k$. The theorem `one_rough_all` ($\\forall m \\geq 1$, $m$ is 1-rough) is trivial; the example $7$ is 7-rough since $p(7) = 7$."
+      "summary": "`isKRough m k` ($p(m) \\geq k$), `one_rough_all` (every integer $m > 1$ is 1-rough), example: 7 is 7-rough",
+      "mathContext": "An integer $m \\geq 1$ is $k$-rough if $p(m) \\geq k$, i.e., no prime $< k$ divides $m$. Dually, $m$ is $k$-smooth if all prime factors are $\\leq k$. The theorem `one_rough_all` ($\\forall m > 1$, $m$ is 1-rough) is trivial ($m = 1$ is excluded, since $p(1)$ is the $\\infty$ sentinel $0$); the example $7$ is 7-rough since $p(7) = 7$."
     },
     {
       "id": "prime-gaps",
