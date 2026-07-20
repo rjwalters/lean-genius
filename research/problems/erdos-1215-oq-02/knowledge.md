@@ -245,3 +245,46 @@ touch `maclane_labyrinth`). File 100→113 lines, 2→3 theorems, axiomCount sta
 ### Still open (unchanged)
 The genuinely deep Mac Lane labyrinth (`maclane_labyrinth` axiom): paths forced through
 neighbourhoods of `0` in the `C > 1` regime — needs polynomial-lemniscate topology Mathlib lacks.
+
+## Session 2026-07-19 (researcher-1) — escape-region topology (new orthogonal layer)
+
+**Mode**: ACT. **Outcome**: progress — 1 new file, 5 theorems, VERIFIED 0-axiom
+(docker `[8579/8579]`, `[propext,Classical.choice,Quot.sound]`).
+
+### What I did
+New file `proofs/Proofs/CyclotomicPolynomialsOQ02OQ09.lean`. The 15 prior companions
+pinned the **metric** geometry of the sublevel set (radius sandwich both sides sharp,
+area sandwich, monotone/antitone, conjugation symmetry). This file adds the one **topological**
+fact reachable with the existing sharp outer radius: the far field is a *single connected
+escape region*.
+
+- `isPathConnected_norm_gt (R) (hR : 0 ≤ R)` — **general, reusable**: the exterior
+  `{z : ℂ | R < ‖z‖}` of a closed ball is path-connected. Proof: it is the continuous
+  image of the punctured plane `{0}ᶜ` (path-connected since `dim_ℝ ℂ = 2 > 1`,
+  `isPathConnected_compl_singleton_of_one_lt_rank`) under the radial rescaling
+  `f w = (R + ‖w‖)‖w‖⁻¹ • w`, via `IsPathConnected.image'`. Avoids needing a product
+  path-connectivity lemma (Mathlib has none).
+- `not_isBounded_norm_gt` — the exterior is unbounded.
+- `exterior_subset_cyclotomic_superlevel` — `{1+C^{1/φ(n)}<‖z‖} ⊆ {C≤|Φ_n(z)|}`
+  (contrapositive of `OQ02OQ02.cyclotomic_sublevel_norm_lt_sharp`).
+- `cyclotomic_superlevel_exterior_isPathConnected` and headline
+  `cyclotomic_superlevel_has_connected_unbounded_subset`: `{C ≤ |Φ_n(z)|}` contains a
+  path-connected, unbounded subset. So however intricate the bounded labyrinth `{|Φ_n|<C}`,
+  there is exactly one connected way to escape to infinity.
+
+### Key API / gotchas
+- `Complex.rank_real_complex ▸ Nat.one_lt_ofNat : 1 < Module.rank ℝ ℂ` (rank = 2).
+- The image set-equality is the fiddly part: for the reverse inclusion, the witness is
+  `w = (‖z‖-R)‖z‖⁻¹ • z` (so `‖w‖ = ‖z‖-R`, direction of `z`), and `f w = z` closes by
+  `smul_smul` + a `field_simp`-discharged scalar identity (`‖z‖-R ≠ 0`, `‖z‖ ≠ 0` in scope).
+- Radius point for unboundedness must be provably `≥ 0`: use `M := |R|+|r|+1` (not
+  `max R r + 1`, which `positivity` can't sign since `R,r` are arbitrary reals).
+- Companion imports need `open Polynomial` for `cyclotomic n ℂ` (autoImplicit otherwise
+  swallows `cyclotomic` as an implicit variable → "Function expected").
+
+### Blocked driver (recorded as structured `currentState.blockers` entry)
+The genuinely-open Mac Lane path-length driver — connected-**component count** of the
+bounded sublevel labyrinth `{|Φ_n|<C}` — remains blocked: Mathlib lacks polynomial-
+lemniscate topology / rectifiable-path arc length. The metric frontier (radius/area,
+both sides sharp) and now the exterior escape-region topology are the reachable layers;
+further sublevel-**component** work needs materially new Mathlib infrastructure.
