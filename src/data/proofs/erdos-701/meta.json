@@ -28,8 +28,8 @@
       "Hereditary families (downsets / independence systems)",
       "Extremal set theory fundamentals"
     ],
-    "lineCount": 284,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `A` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'A'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 0 axioms. All constructs are definitions and theorems; no axiom declarations or structure-encoded assumptions. Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 285,
+    "assumptions": "REPAIR (issue #39077, follow-on to #39061): the Lean source was repaired for Lean v4.31 and compiles green — the #39061 audit flagged a masked free identifier `A`, which was fixed by binding it explicitly. No axiom declarations and no structure-encoded assumptions (axiomCount 0); 0 sorries. Chvátal's conjecture itself is OPEN and is only stated (as the Prop `ChvatalConjecture`), not asserted; the supporting lemmas on hereditary/intersecting families, stars, and covering number are fully verified. Status stays axiomatized/wip to signal the conjecture is unresolved.",
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 8
@@ -140,7 +140,7 @@
       "Set"
     ],
     "namespace": "Erdos701",
-    "lineCount": 284,
+    "lineCount": 285,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 8,

@@ -32,7 +32,7 @@
       "pigeonhole_ramsey: k=1 proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
     ],
     "axiomCount": 1,
-    "assumptions": "AUDIT (issue #39061): NOT machine-verified. This entry never validly compiled. Even under Lean v4.26 the proof only 'passed' because the old `autoImplicit true` default silently bound the undefined identifier `n` as a free implicit variable, rendering the stated theorem vacuously general; under v4.31 (autoImplicit off by default) the file fails with `unknownIdentifier 'n'` and typically additional genuine proof errors. The verification claims below are therefore retracted pending a Lean-source repair (Class A). ORIGINAL METADATA: 1 axiom: hypergraph_ramsey_k2 (k ≥ 2 existence requiring the stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k=1 pigeonhole), and monotonicity are fully proved. The axiom isolates exactly the inductive step of the k-uniform stepping-up argument.",
+    "assumptions": "Formalized with one stated assumption: the axiom hypergraph_ramsey_k2 (the k ≥ 2 hypergraph Ramsey existence bound requiring the k-uniform stepping-up lemma). REPAIR (issue #39077, follow-on to #39061): the Lean source was repaired for Lean v4.31 and compiles green — the earlier autoImplicit-masked free identifier `n` was fixed by binding the offending variables explicitly, so the stated theorem is no longer vacuously general. All infrastructure, special cases, both base cases (n ≤ k and k = 1 pigeonhole), and monotonicity are fully proved; 0 sorries. The single axiom isolates exactly the inductive step of the k-uniform stepping-up argument — a deliberate, disclosed mathematical assumption, not reproved here.",
     "lineCount": 260,
     "mathlibDependencies": [
       {
