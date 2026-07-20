@@ -57,7 +57,8 @@
       "The Ravi substitution x=s−a, y=s−b, z=s−c turns the triangle inequalities into the single condition x,y,z>0 and makes all centre barycentrics polynomial — every denominator (x+y+z, 2x, yz+zx+xy, 2x+y+z, …) is then manifestly positive, discharged by `positivity`.",
       "The defining feature of an excenter is a SINGLE negative barycentric weight (−a at A for the A-excenter). The proof shows this signed mass still places the A-excenter on the INTERNAL A-bisector — the same foot footBisectorA = (0 : b : c) as the incenter — so internally the excenter and incenter share the A-cevian; the externality lives in the other two (negative-weight) cevians.",
       "Nagel and Gergonne are 'dual' on each side: the Nagel A-foot (extouch) has barycentric (0 : y : z) while the Gergonne A-foot (incircle contact) has (0 : z : y) — reflections of each other in the midpoint of BC, matching extouch BD=s−c vs contact BD=s−b.",
-      "Concurrency is proved as honest affine geometry: each centre is `wₐ·vertex + w_foot·foot` with wₐ+w_foot=1 in an arbitrary ℝ-module, so it genuinely lies on the cevian line — not merely a ratio coincidence."
+      "Concurrency is proved as honest affine geometry: each centre is `wₐ·vertex + w_foot·foot` with wₐ+w_foot=1 in an arbitrary ℝ-module, so it genuinely lies on the cevian line — not merely a ratio coincidence.",
+      "The entire development lives in an arbitrary real vector space with no inner product, distance, or angle: the metric content is compiled once into the closed-form Ravi barycentrics, and what Lean certifies is a purely affine identity — each centre collapses to `wₐ·A + w_foot·foot` via `match_scalars`/`field_simp`, seeing no geometry at all. This separates the metric 'modeling' step (declaring which barycentric each classical centre has) from the affine 'certification' step, and is precisely why a single ℝ-module proof covers every Euclidean plane at once."
     ],
     "prerequisites": [
       "Barycentric coordinates and Ceva's theorem (parent cevas-theorem-oq-04, cevas-theorem-oq-04-oq-04)",
@@ -79,9 +80,17 @@
       "id": "centres",
       "title": "Triangle centres in tangent-length barycentric coordinates",
       "startLine": 62,
+      "endLine": 90,
+      "summary": "Defines the six centre points as normalized weighted sums of A, B, C: incenter (y+z:z+x:x+y), the three excenters excenterA/B/C each carrying exactly one negative weight (−a at A, −b at B, −c at C), the Nagel point (x:y:z), and the Gergonne point (yz:zx:xy). Every coordinate is a polynomial in the Ravi variables x,y,z and every normalizing denominator (2(x+y+z), 2x, x+y+z, yz+zx+xy) is manifestly positive.",
+      "mathContext": "With x=s−a, y=s−b, z=s−c the classical centres become polynomial barycentrics normalized to weights summing to 1; a single negative weight distinguishes each excenter from the incenter."
+    },
+    {
+      "id": "cevian-feet",
+      "title": "Cevian feet on side BC (opposite vertex A)",
+      "startLine": 92,
       "endLine": 110,
-      "summary": "Defines incenter (y+z:z+x:x+y), the three excenters with one negative weight each, the Nagel point (x:y:z), the Gergonne point (yz:zx:xy), and the three A-cevian feet on BC (footBisectorA, extouchA, contactA) by dropping the apex barycentric coordinate.",
-      "mathContext": "With x=s−a, y=s−b, z=s−c the classical centres become polynomial barycentrics; the feet are the normalized two-coordinate restrictions to side BC."
+      "summary": "Defines the three A-cevian feet on BC obtained by dropping the apex (A) barycentric coordinate: footBisectorA (0:z+x:x+y), shared by the incenter AND the A-excenter; extouchA (0:y:z), the A-extouch point dividing BC as BD:DC = z:y; and contactA (0:z:y), the incircle contact point dividing BC as BD:DC = y:z. The extouch and contact feet are reflections of each other in the midpoint of BC.",
+      "mathContext": "Each foot is the normalized restriction of a centre's barycentric to the two base (B,C) coordinates; extouch BD = s−c and contact BD = s−b give the dual divisions z:y and y:z."
     },
     {
       "id": "nagel-gergonne",
