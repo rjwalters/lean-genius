@@ -172,4 +172,42 @@ theorem deficient_left_of_primitive_mul_prime {m p : ℕ} (hp : p.Prime)
   have hle : m * 2 ≤ m * p := by gcongr; exact hp.two_le
   omega
 
+/-- **Proper-divisor decomposition for `m · p`** (`p` prime, `0 < m`): every proper
+divisor of `m·p` is either a divisor of `m`, or `p` times a *proper* divisor of `m`.
+Splitting `d ∣ m·p` into `d = d₁·d₂` with `d₁ ∣ m`, `d₂ ∣ p` (`Nat.dvd_mul`), the
+prime `p` forces `d₂ ∈ {1, p}`; the `d₂ = p` branch gives `d = p·d₁` with `d₁ < m`
+(from `d < m·p`).  This is the membership half of the Route-1 divisor structure that
+turns a primitivity check on `m·p` into checks on `m`'s divisors and their
+`p`-multiples. -/
+theorem mem_properDivisors_mul_prime {m p d : ℕ} (hp : p.Prime) (hm : 0 < m)
+    (hd : d ∈ (m * p).properDivisors) :
+    d ∈ m.divisors ∨ ∃ e ∈ m.properDivisors, d = p * e := by
+  rw [Nat.mem_properDivisors] at hd
+  obtain ⟨hdvd, hlt⟩ := hd
+  obtain ⟨d₁, d₂, hd1, hd2, hprod⟩ := Nat.dvd_mul.mp hdvd
+  rcases hp.eq_one_or_self_of_dvd d₂ hd2 with h1 | hpp
+  · left
+    rw [Nat.mem_divisors]
+    exact ⟨by rw [← hprod, h1, mul_one]; exact hd1, hm.ne'⟩
+  · right
+    refine ⟨d₁, Nat.mem_properDivisors.mpr ⟨hd1, ?_⟩, by rw [← hprod, hpp, mul_comm]⟩
+    have hdp : d₁ * p < m * p := by rw [← hprod, hpp] at hlt; exact hlt
+    exact lt_of_mul_lt_mul_right hdp (Nat.zero_le p)
+
+/-- **Full primitivity criterion for `m · p`** (`p` prime, `0 < m`): `m·p` is
+primitive abundant as soon as it is abundant, *every* divisor of `m` is deficient,
+and every `p`-multiple of a proper divisor of `m` is deficient.  This upgrades
+`abundant_mul_prime_iff` (which only handles abundance) to the full A006038
+predicate, reducing the Route-1 primitivity obligation to conditions purely on `m`
+and its `p`-multiples via `mem_properDivisors_mul_prime`. -/
+theorem isPrimitiveAbundant_mul_prime {m p : ℕ} (hp : p.Prime) (hm : 0 < m)
+    (hab : (m * p).Abundant)
+    (hmdef : ∀ d ∈ m.divisors, d.Deficient)
+    (hpdef : ∀ e ∈ m.properDivisors, (p * e).Deficient) :
+    IsPrimitiveAbundant (m * p) := by
+  refine ⟨hab, fun d hd => ?_⟩
+  rcases mem_properDivisors_mul_prime hp hm hd with h | ⟨e, he, rfl⟩
+  · exact hmdef d h
+  · exact hpdef e he
+
 end AbundantNumberOQ03OQ03
