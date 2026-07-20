@@ -397,6 +397,16 @@ function sync(): void {
           poolEntry.status = 'completed'
           updatedInPool++
           console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} pool status: ${entry.slug} → completed`)
+        } else if ((entry.status === 'blocked' || entry.status === 'abandoned') && poolEntry.status !== 'skipped') {
+          // Mirror the completed/graduated branch: a registry entry that is
+          // blocked or abandoned must stop being served from the pool.
+          // registryToPoolStatus() already maps these to 'skipped'; without this
+          // branch the pool entry keeps its servable status forever and the
+          // depth-first claimer re-serves finished/blocked problems (see the
+          // 140-entry drift observed 2026-07-19).
+          poolEntry.status = 'skipped'
+          updatedInPool++
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} pool status: ${entry.slug} → skipped`)
         }
       }
     }
