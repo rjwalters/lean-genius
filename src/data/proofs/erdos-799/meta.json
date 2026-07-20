@@ -99,10 +99,10 @@
     {
       "id": "comparison-chromatic",
       "title": "Comparison with Ordinary Chromatic Number",
-      "summary": "Two structural results: χ_L(G) ≥ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L ≥ log₂ n + 1)",
+      "summary": "Documentation only (comment blocks, not formalized): two structural facts — χ_L(G) ≥ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L ≥ log₂ n + 1). Note the ordinary chromatic number χ(G) is not defined in this file",
       "startLine": 80,
       "endLine": 100,
-      "mathContext": "Two structural results: χ_L(G) $\\geq$ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L $\\geq$ log₂ n + 1)"
+      "mathContext": "Documentation only (comment blocks, not formalized): two structural facts — χ_L(G) $\\geq$ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L $\\geq$ log₂ n + 1)"
     },
     {
       "id": "random-graph-model",
@@ -131,10 +131,10 @@
     {
       "id": "chromatic-comparison",
       "title": "Asymptotic Ratio χ_L/χ",
-      "summary": "The ratio χ_L(G)/χ(G) → 2/ln(2) ≈ 2.885 for random graphs, formalized as χ_L(G) ~ n/log n",
+      "summary": "Documentation only (comment block, not formalized): the ratio χ_L(G)/χ(G) → 2/ln(2) ≈ 2.885 for random graphs",
       "startLine": 161,
       "endLine": 177,
-      "mathContext": "The ratio χ_L(G)/χ(G) $\\to$ 2/ln(2) ≈ 2.885 for random graphs, formalized as χ_L(G) ~ n/$\\log n$"
+      "mathContext": "Documentation only (comment block, not formalized): the ratio χ_L(G)/χ(G) $\\to$ 2/ln(2) ≈ 2.885 for random graphs"
     },
     {
       "id": "main-results",
