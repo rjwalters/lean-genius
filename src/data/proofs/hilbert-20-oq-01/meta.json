@@ -44,7 +44,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "2 axioms: IsLocallySolvable (requires distribution theory), nirenberg_treves (biconditional characterization combining Hörmander 1960 necessity + Dencker 2006 sufficiency, requires microlocal analysis not yet in Mathlib). BicharacteristicCurve is a concrete structure; hormander_necessity and dencker_sufficiency are proved theorems.",
-    "lineCount": 211,
+    "lineCount": 221,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
@@ -172,7 +172,7 @@
       "NNReal"
     ],
     "namespace": "Hilbert20LocalSolvability",
-    "lineCount": 211,
+    "lineCount": 221,
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 9,

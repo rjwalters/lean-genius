@@ -66,7 +66,7 @@
       "Added the point-set extraction map and counting-argument scaffold for the OpenAI 2026 unit-distance lower bound (Proofs/Erdos90/OpenAI2026LowerBound.lean, issue #22608, sub-issue (d) of #20576). Concretely defines the extraction map pointSet K φ₀ φ₁ r : Finset (EuclideanSpace ℝ (Fin 2)) as the image, under a planar projection reading real parts at two chosen complex embeddings, of the finite lattice-ball finset built from NumberField.canonicalEmbedding.integerLattice.inter_ball_finite (Mathlib v4.26.0, no new axioms); proves sorry-free structural facts pointSet_eq_image and pointSet_card_le. States the counting lemma as two axioms (unitDistanceCountingBound: extracted point set of an infinite-tower level has ≥ m^(1+α₀) unit-distance pairs for the construction exponent α₀>0; towerYieldsGrowingPointSets: an infinite ℓ-class field tower transfers the bound to maxUnitDistances) — both gated on the peer-reviewed OpenAI counting formula. Bundles the construction output as the PointSetExtraction structure (3 assumption-carrying fields: alpha, alpha_pos, lowerBound), with lowerBound_of_extraction giving the sorry-free reduction. Headline openai_2026_unit_distance_lower_bound (∃ α>0, eventually maxUnitDistances n ≥ n^(1+α)) is left as sorry pending the peer-reviewed exponent (parent #20576 external blocker). New assumptions: 2 axiom declarations + 3 structure fields = 5, plus 1 sorry."
     ],
     "axiomCount": 21,
-    "lineCount": 81,
+    "lineCount": 76,
     "additionalFiles": [
       "Proofs/Erdos90/ClassFieldTower.lean",
       "Proofs/Erdos90/GolodShafarevich.lean",
@@ -236,7 +236,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 81,
+    "lineCount": 76,
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 3,

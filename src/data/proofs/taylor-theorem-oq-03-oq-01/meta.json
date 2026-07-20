@@ -61,7 +61,7 @@
     ],
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
-    "lineCount": 160,
+    "lineCount": 165,
     "theoremCount": 6,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms). The Taylor-polynomial expansion (taylor_within_apply), the local-to-global derivative bridge (iteratedDerivWithin_eq_iteratedDeriv), and the abstract Lagrange remainder (taylor_mean_remainder_lagrange_iteratedDeriv) come from Mathlib; the original work is the identification of taylorWithinEval for exp with the explicit partial sum and the explicit remainder statement.",
@@ -174,7 +174,7 @@
       "Nat"
     ],
     "namespace": "TaylorExpBridge",
-    "lineCount": 160,
+    "lineCount": 165,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0,

@@ -22,7 +22,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 159,
+    "lineCount": 157,
     "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (which all Mathlib developments use). #print axioms on trapezoidal_peano_kernel, trapezoid_overestimates_of_convex and trapezoid_underestimates_of_concave reports exactly these three. The hypotheses are a global C² assumption on f (twice differentiable on all of ℝ with continuous second derivative), stated as ∀ x, HasDerivAt f (f' x) x, ∀ x, HasDerivAt f' (f'' x) x, Continuous f''; the two sign corollaries additionally assume a ≤ b and a one-sided bound on f'' over Set.Icc a b. The exact identity is proved from intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt (Mathlib integration by parts) applied twice.",
     "sourceUrl": "https://en.wikipedia.org/wiki/Trapezoidal_rule#Error_analysis",
     "mathlib_version": "4.31.0",
@@ -184,7 +184,7 @@
       "Set"
     ],
     "namespace": "TrapezoidalPeanoKernel",
-    "lineCount": 159,
+    "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,

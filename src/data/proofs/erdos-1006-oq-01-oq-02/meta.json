@@ -46,7 +46,7 @@
       "cover_strictly_subset_comparability: strict separation witness — K₃ is comparability but not cover"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 256,
+    "lineCount": 254,
     "assumptions": "2 axioms: (1) cover_graph_recognition_in_p — the open conjecture that cover recognition is in P; (2) comparability_recognition_in_p — Golumbic's 1977 theorem that comparability graphs are recognized in polynomial time.",
     "definitionCount": 4
   },
@@ -140,7 +140,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 256,
+    "lineCount": 254,
     "path": "Proofs/Erdos1006OQ01OQ02.lean",
     "axiomCount": 2,
     "sorries": 0,

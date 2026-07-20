@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
-    "lineCount": 303,
+    "lineCount": 333,
     "theoremCount": 26,
     "definitionCount": 0,
     "assumptions": "Lean.ofReduceBool: the exact term values φ(n)/2^n (termFn_four/six/eight/nine/ten) — advertised deliverables that the partial-sum and interval bounds (partial_sum_6/7/11, totientPowerSum_ge/gt_*) build on — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom. There are no literal `axiom` declarations (leanFile.axiomCount is 0), and Erdos249Problem.lean is itself axiom-free; the only assumption is the native_decide kernel-reduction dependency. The Erdős 249 conjecture itself remains open — only the bounding theorems are formalized.",
@@ -134,7 +134,7 @@
   ],
   "leanFile": {
     "namespace": "Erdos249OQ01",
-    "lineCount": 303,
+    "lineCount": 333,
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 0,

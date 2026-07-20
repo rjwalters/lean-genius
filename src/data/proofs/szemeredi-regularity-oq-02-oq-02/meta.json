@@ -16,7 +16,7 @@
       "Classical"
     ],
     "namespace": "SzemerediFKComparisonSharp",
-    "lineCount": 229,
+    "lineCount": 233,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0,
@@ -49,7 +49,7 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ02OQ02` builds green (Lean v4.26.0, Mathlib pin, 7746 jobs). 0 sorries, 0 axiom declarations, no native_decide, no structure-encoded assumptions; only the standard foundational axioms (propext / Classical.choice / Quot.sound) via Mathlib. Reuses the definitions IsEpsilonRegular, edgeDensity, IsCutApproximation and the partition-decomposition lemmas (edge_count_partition_sum, parts_product_sum_eq_card_sq) from the parent szemeredi-regularity-oq-02 entry, all themselves 0-axiom. Scope: this is a factor-of-2 constant improvement that answers the stated open question (the 2 is not tight — it is 1) and corrects the parent's 'sharpness' claim. It does not change the qualitative Szemerédi ⟹ FK hierarchy, nor the tower-vs-singly-exponential parts-count comparison, both established in the parent.",
-    "lineCount": 229,
+    "lineCount": 233,
     "theoremCount": 3,
     "definitionCount": 0,
     "originalContributions": [

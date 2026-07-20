@@ -14,7 +14,7 @@
       "Finset"
     ],
     "namespace": "ZolotarevQR",
-    "lineCount": 817,
+    "lineCount": 838,
     "axiomCount": 0,
     "theoremCount": 28,
     "definitionCount": 6,
@@ -95,7 +95,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 817,
+    "lineCount": 838,
     "theoremCount": 28,
     "defCount": 6,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The capstone zolotarev_quadratic_reciprocity was checked with #print axioms and depends only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions) — no sorryAx, no Lean.ofReduceBool. Critically, the proof does NOT use Mathlib's legendreSym.quadratic_reciprocity: it is a genuine self-contained Zolotarev derivation, consuming only the parent program's Frobenius sign identity for the per-line signs. The theorem is stated for distinct odd primes p, q (p ≠ 2, q ≠ 2, p ≠ q); the even prime is genuinely outside scope, as the supplementary law (2/p) is a separate phenomenon.",

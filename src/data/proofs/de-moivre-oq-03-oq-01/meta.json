@@ -19,7 +19,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
     "assumptions": "1 axiom: weyl_equidistribution (density of irrational rotations on unit circle). 1 True stub: irrational_exponent_single_valued (proves True, not the actual claim). de_moivre_real_exponent proved with principal branch hypothesis θ ∈ (-π, π].",
-    "lineCount": 74,
+    "lineCount": 73,
     "theoremCount": 4,
     "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",
     "problemStatement": "De Moivre's classical theorem states: for integer n ≥ 1,\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta).$$\n\nThis file investigates three extensions:\n\n1. **Real exponents**: For α ∈ ℝ and θ ∈ (-π, π], using the principal branch z^α = exp(α log z),\n$$e^{i\\theta\\alpha} = (e^{i\\theta})^\\alpha.$$\n\n2. **Rational exponents**: For α = p/q ∈ ℚ, (cos θ + i sin θ)^{p/q} takes exactly q distinct values,\n$$e^{i(p\\theta + 2\\pi k)/q}, \\quad k = 0, 1, \\ldots, q-1.$$\n\n3. **Irrational exponents and equidistribution**: For irrational α, the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle S¹.",
@@ -43,7 +43,7 @@
   },
   "leanFile": {
     "namespace": "DeMoivreOQ03OQ01",
-    "lineCount": 74,
+    "lineCount": 73,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 0,

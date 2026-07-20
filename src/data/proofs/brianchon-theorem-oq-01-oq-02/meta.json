@@ -52,7 +52,7 @@
     ],
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
-    "lineCount": 323,
+    "lineCount": 325,
     "assumptions": "None. All results are axiom-free and sorry-free (verified via `#print axioms`: the main theorems depend only on the foundational propext / Classical.choice / Quot.sound). The file is self-contained and Mathlib-only; it deliberately re-ports the geometric infrastructure from the parent rather than importing the Pascal axiom, so the converse and equivalence are fully verified. The converse and the equivalence require the nondegeneracy hypothesis `det C ≠ 0`, which is a stated mathematical hypothesis of those theorems (and is shown necessary by `zero_conic_concurrent`), not an axiom.",
     "mathlib_version": "4.31.0",
     "theoremCount": 13,
@@ -111,7 +111,7 @@
   ],
   "leanFile": {
     "path": "Proofs/BrianchonTheoremOQ01OQ02.lean",
-    "lineCount": 323,
+    "lineCount": 325,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 13,

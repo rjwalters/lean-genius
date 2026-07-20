@@ -16,7 +16,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "assumptions": "0 sorries, 0 literal axiom declarations. The named concrete-value theorems (totient_six, totient_twelve, totient_fifteen, totient_thirty, totient_hundred) are discharged by native_decide, so they depend on the Lean.ofReduceBool compiler-reduction axiom; axiomCount=1 reflects this. All structural results (multiplicativity, prime power formula, group-theoretic interpretation) come from Mathlib's Nat.totient API, ZMod, and CRT.",
-    "lineCount": 172,
+    "lineCount": 174,
     "theoremCount": 16,
     "definitionCount": 0,
     "mathlib_version": "4.31.0",
@@ -138,7 +138,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 172,
+    "lineCount": 174,
     "path": "Proofs/EulerTotientOQ02.lean",
     "axiomCount": 0,
     "sorries": 0,

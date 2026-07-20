@@ -57,7 +57,7 @@
     ],
     "axiomCount": 5,
     "assumptions": "5 axioms in Erdos634Problem.lean: Tiles (abstract tiling predicate), known_positive_dissectable (the positive dissection families squares/two/three/six/sum, each a genuine reptiling construction axiomatized pending Mathlib's missing polygonal-tiling API), seven_not_dissectable, eleven_not_dissectable, soifer_theorem. 0 sorries (the five positive-result stubs were folded into the single known_positive_dissectable axiom in #38353, making the file sorry-free). SOUNDNESS (resolved): a prior version was internally inconsistent — the area-only IsDissectable is provable for every n >= 1 (constant equilateral witnesses of side 1/sqrt(n), proven in Erdos634AreaCollapse.lean), which contradicted the Beeson non-dissectability axioms; and congruent_implies_similar was a sorry on a false statement (unordered-multiset Congruent vs order-pinned Similar). Both are now fixed: IsDissectable additionally requires an abstract Tiles (covering + interior-disjointness) witness, blocking the trivial equal-area construction so Beeson's negatives are consistent; and Similar is restated on the unordered side multiset, making congruent_implies_similar a real 1-line proof. A faithful non-abstract Tiles still awaits a Mathlib tiling API (the oq-02 covering line).",
-    "lineCount": 412,
+    "lineCount": 503,
     "theoremCount": 18,
     "definitionCount": 20,
     "additionalFiles": [

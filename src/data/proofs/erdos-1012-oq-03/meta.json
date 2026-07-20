@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1781,
+    "lineCount": 1848,
     "dateUpdated": "2026-05-04",
     "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 0 sorries: removed dead sc_walk_to_simple_path and sc_simple_path_exists lemmas (never referenced by any theorem). Rédei, Moon-Moser, directed_hamiltonian_threshold, and ghouila_houri all fully proved.",
     "dateAdded": "2026-03-30",
@@ -262,7 +262,7 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1781,
+    "lineCount": 1848,
     "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/Erdos1012OQ03.lean",

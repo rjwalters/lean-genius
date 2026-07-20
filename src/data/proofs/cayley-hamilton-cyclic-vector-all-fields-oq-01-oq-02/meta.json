@@ -29,7 +29,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 688,
+    "lineCount": 701,
     "theoremCount": 21,
     "definitionCount": 2,
     "assumptions": "0 assumptions. Fully machine-verified. The previous hMn_axiom is now `private theorem hMn_axiom`, derived from `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic (Matrix.isIntegral M)` (giving the leading coefficient is 1), and a local lemma `aeval_eq_sum_pow_local` that expands aeval via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. Applying mulVec v to both sides of M^n = -∑_{k<n} c_k • M^k yields the desired identity. **Session 3** adds the *converse* direction (`similar_to_companion_implies_nonderogatory`) via cyclic-vector transport: the standard basis vector e₀ is cyclic for `companionMx p` for any p (subdiagonal structure), and similarity P⁻¹ M P = N transports cyclic vectors. The full biconditional `nonderogatory_iff_similar_to_companion` is now machine-verified. **Session 4** adds the vector-level Cayley-Hamilton identity for the companion: for monic p of degree n, `(aeval (companionMx p) p).mulVec e₀ = 0`. Three new private lemmas (`companionMx_mulVec_eNm1`, `companionMx_pow_n_eq_lastCol_e0`, `aeval_companionMx_p_mulVec_e0_zero`) make the last-column structure of `companionMx p` explicit, computing `C^n e₀ = -∑ p.coeff i • e_i` and showing monicity cancels with the lower-power sum. **Session 5** lifts the vector-level annihilation at e₀ to the *matrix-level* identity `aeval (companionMx p) p = 0`. Three new lemmas: `matrix_eq_zero_of_mulVec_basis` (a matrix is zero iff every Pi.single column is annihilated, since `A.mulVec (Pi.single j 1) = (A i j)_i`), `aeval_companionMx_p_mulVec_ek_zero` (vector annihilation at every e_k for k < n, using `e_k = C^k.mulVec e₀` from S3 plus commutation `aeval C p · C^k = C^k · aeval C p` via the AlgHom + commutativity of K[X]), and the public theorem `aeval_companionMx_p_eq_zero` combining them. This is the matrix-level Cayley-Hamilton identity for the companion matrix. **Session 6** closes the chain: `minpoly_companionMx_eq` proves `minpoly K (companionMx p) = p` for monic p of natDegree n. Three-step argument: (1) divisibility `(minpoly K (companionMx p)) ∣ p` from S5 via `minpoly.dvd`; (2) degree equality `(minpoly K (companionMx p)).natDegree = n` from S3's `companionMx_isCyclic_e0` plus sibling OQ-01-OQ-01's `minpoly_natDegree_of_cyclic`; (3) monic + monic + equal natDegree + dvd ⇒ equal, by writing `p = minpoly · c`, forcing `c.natDegree = 0` from `Polynomial.natDegree_mul`-additivity, forcing `c.leadingCoeff = 1` from `Polynomial.leadingCoeff_mul` plus monicity, and concluding `c = C (c.coeff 0) = C 1 = 1`. This identity is missing from Mathlib v4.26.0 and closes `openQuestions[Q2]`.",
@@ -94,7 +94,7 @@
       "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01"
     ],
     "namespace": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02",
-    "lineCount": 688,
+    "lineCount": 701,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 2,

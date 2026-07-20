@@ -57,7 +57,7 @@
       "Part XI valid-asymptotic-constant interface (2 defs + 11 thm, no new axioms): ValidUpperConstant/ValidLowerConstant name the recurring upper/lower half-predicates; up-set (ValidUpperConstant_mono) / down-set (ValidLowerConstant_anti) structure; proven members (Shearer 1 / HHKP 1/2) and fences (every upper >=1/2, every lower <=1); validLowerConstant_le_validUpperConstant (every valid lower <= every valid upper); headline mainConjecture_iff_validUpperConstant_half (Erdos #165 <-> 1/2 is a valid upper constant) and mainConjecture_imp_isLeast_validUpperConstant (under the conjecture 1/2 = least valid upper constant = the exact asymptotic constant)"
     ],
     "axiomCount": 10,
-    "lineCount": 751,
+    "lineCount": 933,
     "assumptions": "10 axioms (unchanged): ramseyNumber, ramseyNumber_symm, ramseyNumber_recurrence, R3_small_values, aks_upper_bound, shearer_upper_bound, kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound. 0 sorries. New theorems add no axioms; asymptotic_constant_le is fully axiom-free; pgm_conjecture_refuted depends only on the existing hhkp_bound.",
     "mathlib_version": "4.31.0",
     "theoremCount": 37,
@@ -167,7 +167,7 @@
       "Real"
     ],
     "namespace": "Erdos165",
-    "lineCount": 895,
+    "lineCount": 933,
     "axiomCount": 10,
     "theoremCount": 48,
     "definitionCount": 8,

@@ -53,7 +53,7 @@
       "Concrete witnesses 9 = 0²+3², 45 = 6²+3² (representable) and 147 = 3·7² (obstructed), all verified without native_decide"
     ],
     "dateAdded": "2026-06-26",
-    "lineCount": 186,
+    "lineCount": 183,
     "assumptions": "0 axioms, 0 sorries (core result via Mathlib bridge). Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms; no native_decide / Lean.ofReduceBool). The hard analytic content — the core biconditional Nat.eq_sq_add_sq_iff — is from Mathlib and is obtained here by a direct rewrite (hence badge 'mathlib'); the all-primes repackaging, the necessity corollary, the prime-case recovery, and the worked composite witnesses are the contribution.",
     "theoremCount": 14,
     "definitionCount": 0
@@ -163,7 +163,7 @@
       "Nat"
     ],
     "namespace": "PythagoreanTriplesOQ04OQ01OQ01",
-    "lineCount": 186,
+    "lineCount": 183,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0,

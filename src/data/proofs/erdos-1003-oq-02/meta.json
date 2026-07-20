@@ -32,7 +32,7 @@
       "Contrapositive packaging: finiteness at run length k forces finiteness at every longer run length"
     ],
     "axiomCount": 0,
-    "lineCount": 158,
+    "lineCount": 157,
     "assumptions": "0 axioms, 0 sorries. All results are fully machine-checked and depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No native_decide is used, so no Lean.ofReduceBool dependency. The underlying Erdős open problem itself is NOT resolved; only its structural reduction is formalized.",
     "theoremCount": 10,
     "definitionCount": 4
@@ -79,7 +79,7 @@
     "imports": ["Mathlib.Data.Nat.Totient", "Mathlib.Data.Set.Finite.Basic"],
     "opens": ["Nat", "Set"],
     "namespace": "Erdos1003.OQ02",
-    "lineCount": 158,
+    "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4,

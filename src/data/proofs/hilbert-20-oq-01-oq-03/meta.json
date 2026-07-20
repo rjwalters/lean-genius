@@ -40,7 +40,7 @@
       "Proved real-symbol solvability and self-adjoint solvability as corollaries of Dencker sufficiency",
       "Concretized BicharacteristicCurve (axiom Type -> structure with vanishing-symbol field) and imSymbolAlongCurve (axiom -> concrete def), proving imSymbolAlongCurve_spec by rfl — eliminates 3 axioms (8 -> 5)"
     ],
-    "lineCount": 355,
+    "lineCount": 363,
     "assumptions": [
       "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
       "IsLocallySolvable: local solvability (needs distribution theory)",
@@ -130,7 +130,7 @@
   ],
   "leanFile": {
     "namespace": "Hilbert20OQ01OQ03",
-    "lineCount": 355,
+    "lineCount": 363,
     "axiomCount": 5,
     "theoremCount": 10,
     "definitionCount": 11,

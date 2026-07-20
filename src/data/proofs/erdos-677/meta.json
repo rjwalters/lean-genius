@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "assumptions": "2 axioms: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k) and `Lean.ofReduceBool`. The credited k=3 small-n resolutions (erdos677_k3_at_zero/_one/_two/_three) and the example collisions (lcmInterval_example1/2, lcmInterval_two_three_collision) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. Former axioms now proved: lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity). The general large-m bound (erdos677_large_m, erdos677_k3_large_m) is free of both axioms. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Conjecture verified for k=1 and k=2.",
-    "lineCount": 353,
+    "lineCount": 355,
     "mathlib_version": "4.31.0",
     "theoremCount": 31,
     "originalContributions": [
@@ -176,7 +176,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 353,
+    "lineCount": 355,
     "axiomCount": 1,
     "theoremCount": 31,
     "definitionCount": 5,

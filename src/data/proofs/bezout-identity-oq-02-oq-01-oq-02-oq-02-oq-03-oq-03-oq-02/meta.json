@@ -21,7 +21,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "assumptions": "None. Built on the parent's EuclideanDomain (ℤ√d) value (−2 ≤ d < 0) and Mathlib's EuclideanDomain.to_principal_ideal_domain, PrincipalIdealRing.to_uniqueFactorizationMonoid, and Zsqrtd.norm_mul / norm_eq_one_iff. Depends only on the standard foundational axioms (propext, Classical.choice, Quot.sound); no sorry, no native_decide.",
-    "lineCount": 120,
+    "lineCount": 134,
     "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
@@ -58,7 +58,7 @@
   },
   "leanFile": {
     "namespace": "NormEuclideanZsqrtdFamilyPIDUFD",
-    "lineCount": 120,
+    "lineCount": 134,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0,

@@ -55,7 +55,7 @@
       "erdos_144_summary: four-part conjunction of all results"
     ],
     "axiomCount": 5,
-    "lineCount": 188,
+    "lineCount": 189,
     "assumptions": "5 axioms encode the main mathematical results awaiting Lean proof:\n\n1. **maier_tenenbaum_theorem**: `naturalDensity closeDivisorsSet 1` — the density of integers having two divisors d₁ < d₂ < 2d₁ equals 1. Proved by Maier and Tenenbaum (1984) using sieve methods and divisor distribution theory.\n\n2. **maier_tenenbaum_strong**: `∀ c : ℝ, c > 1 → naturalDensity (closeDivisorsSetC c) 1` — the stronger version holds for any constant c > 1, not just c = 2. Resolves the stronger conjecture Erdős posed in 1979.\n\n3. **erdos_hall_theorem**: `∀ β > criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 0` — when the proximity parameter β exceeds log 3 - 1, the density of integers with (log n)^{-β}-close divisors is 0. Proved by Erdős and Hall (1979) as the complementary result before the main theorem was established.\n\n4. **maier_tenenbaum_refined**: `∀ β < criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 1` — the sharp converse: when β < log 3 - 1, density equals 1. Together with axiom 3, this establishes the complete phase transition.\n\n5. **prime_powers_fail**: `∀ p k, Nat.Prime p → k ≥ 1 → ¬hasCloseDivisors (p^k)` — prime powers have no close divisors because consecutive divisors p^j and p^{j+1} differ by factor p ≥ 2.",
     "theoremCount": 2,
     "definitionCount": 10
@@ -203,7 +203,7 @@
     ],
     "opens": [],
     "namespace": "Erdos144",
-    "lineCount": 188,
+    "lineCount": 189,
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 10,

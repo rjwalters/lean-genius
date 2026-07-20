@@ -57,7 +57,7 @@
       "adjugate_mulVec_solve: the determinant form of Cramer's rule, A·(adj A · b) = (det A)·b — the adjugate solves Ax = b up to the determinant, from the SAME adjugate identity"
     ],
     "axiomCount": 0,
-    "lineCount": 71,
+    "lineCount": 68,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The Cayley–Hamilton and adjugate facts are invoked from Mathlib; the packaging and the Cramer-solution lemma are assembled here.",
     "theoremCount": 5,
     "definitionCount": 0,
@@ -188,7 +188,7 @@
       "Polynomial"
     ],
     "namespace": "CramersRuleOQ04OQ01",
-    "lineCount": 71,
+    "lineCount": 68,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,

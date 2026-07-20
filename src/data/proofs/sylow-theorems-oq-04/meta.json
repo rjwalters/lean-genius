@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup_five; the presented theorem `card_A5` (|A₅| = 60) and the exact Sylow-number computations are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
-    "lineCount": 276,
+    "lineCount": 498,
     "theoremCount": 21,
     "definitionCount": 1
   },
@@ -205,7 +205,7 @@
       "Equiv.Perm"
     ],
     "namespace": "SylowA5",
-    "lineCount": 276,
+    "lineCount": 498,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 1,

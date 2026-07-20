@@ -63,7 +63,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All 17 theorems are fully machine-checked and depend only on the standard foundational axioms propext/Quot.sound/Classical.choice (verified via #print axioms; no sorryAx, no Lean.ofReduceBool). This includes the de Bruijn–Erdős coloring theorem, its induced-subgraph contrapositive, and the now-complete finite_case via an original discrete intermediate-value theorem for chromatic number. The open conjecture itself (Taylor's conjecture) is only stated as a Lean definition — it is NOT proved or assumed here, and is independent of ZFC (Komjáth–Shelah 2005).",
-    "lineCount": 444,
+    "lineCount": 437,
     "theoremCount": 17,
     "prerequisites": [
       "Set-theoretic graph theory: infinite chromatic numbers (ℵ₁, ℵ₂)",
@@ -176,7 +176,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos736",
-    "lineCount": 444,
+    "lineCount": 437,
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 10,

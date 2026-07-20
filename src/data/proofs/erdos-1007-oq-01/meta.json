@@ -69,7 +69,7 @@
       "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
     ],
     "axiomCount": 1,
-    "lineCount": 1337,
+    "lineCount": 1361,
     "assumptions": "The headline dimension-specific results — `dim4_beats_complete`, `dim5_matches_complete`, the deficiency values `deficiency_dim3/4/5`, `minEdges_upper_bound`, `optimal_implies_monotone`, and `small_dim_complete` — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). The entry is therefore axiomatized rather than axiom-free. No other assumptions; 0 sorries, 0 literal `axiom` declarations.",
     "mathlib_version": "4.31.0",
     "theoremCount": 89,
@@ -454,7 +454,7 @@
       "in"
     ],
     "namespace": null,
-    "lineCount": 1337,
+    "lineCount": 1361,
     "axiomCount": 0,
     "theoremCount": 89,
     "definitionCount": 14,

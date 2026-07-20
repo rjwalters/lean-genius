@@ -18,7 +18,7 @@
       "MeanValueTheoremOQ02OQ01"
     ],
     "namespace": "MeanValueTheoremOQ02OQ01OQ02",
-    "lineCount": 178,
+    "lineCount": 177,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0,
@@ -45,7 +45,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 178,
+    "lineCount": 177,
     "assumptions": "None. All six theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms on sin_taylor_tendsto, cos_taylor_tendsto, and taylorPolynomial_tendsto_globalBound. The convergence engine taylorPolynomial_tendsto is reused from the parent file Proofs/MeanValueTheoremOQ02OQ01.lean as a proven, 0-axiom theorem; no axioms or sorries are introduced or inherited.",
     "dateAdded": "2026-06-24",
     "mathlib_version": "4.31.0",

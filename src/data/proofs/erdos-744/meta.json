@@ -66,7 +66,7 @@
       "bipartitionNumber_add_edge_sandwich / maxCut_add_edge_sandwich: both extremal invariants are 1-Lipschitz under a single-edge edit — if H = G + {a,b} then the invariant lands in {value(G), value(G)+1}. Sharpens the earlier monotonicity (which only gave the lower bound ≥) with a matching +1 upper bound; the exact modulus of continuity for the edge-edit metric. Axiom-free."
     ],
     "axiomCount": 1,
-    "lineCount": 969,
+    "lineCount": 1114,
     "assumptions": "1 axiom: rodl_tuza_theorem (the deep Rödl–Tuza 1985 result, stated as an assumption since a full formalization of the extremal argument is out of scope). The chromatic number is now defined intrinsically (least number of colors admitting a proper coloring) rather than axiomatized, and is proved well-defined by chromaticNumber_le_card. 0 sorries.",
     "theoremCount": 39,
     "definitionCount": 13

@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 3,
-    "lineCount": 142,
+    "lineCount": 143,
     "mathlib_version": "4.31.0",
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound) — verified by #print axioms on galEquivZMod2, galCyclicEquiv, and complex_gal_equiv_zmod2. No native_decide, so no Lean.ofReduceBool. The isomorphism is noncomputable (it uses mulEquivOfPrimeCardEq / zmodCyclicMulEquiv, which rest on Classical.choice), but this introduces no axioms beyond the three foundational ones.",
     "originalContributions": [
@@ -119,7 +119,7 @@
       "Complex"
     ],
     "namespace": "FTAGaloisIsoGeneral",
-    "lineCount": 142,
+    "lineCount": 143,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 3,

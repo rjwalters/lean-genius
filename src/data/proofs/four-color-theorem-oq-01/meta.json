@@ -46,7 +46,7 @@
     "assumptions": "0 axioms. 0 sorries. The graph-coloring lemmas (color-swap preserves proper coloring, free-color-from-low-degree, Kempe chain interference) are fully proved. The deep geometric facts — notably the Jordan-curve crossing that forces two Kempe chains to intersect — are illustrated via trivial arithmetic witnesses or a `True` placeholder hypothesis, not formalized. This is an exploratory entry; see the 'What a Human-Readable 4CT Proof Would Need' section.",
     "proofRepoPath": "Proofs/FourColorTheoremOQ01.lean",
     "mathlib_version": "4.31.0",
-    "lineCount": 458,
+    "lineCount": 455,
     "prerequisites": [
       "Graph theory (graph coloring, Kempe chains)",
       "Combinatorics (pigeonhole principle, counting)",
@@ -232,7 +232,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 458,
+    "lineCount": 455,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 17,

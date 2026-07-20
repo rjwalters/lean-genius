@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 382,
+    "lineCount": 384,
     "assumptions": "gb_local (local Gauss-Bonnet: angle excess = integrated curvature, for each geodesic triangle), spherical/flat/hyperbolic curvature formulas (K=1/r², K=0, K=-1 respectively), discrete_gb (discrete Gauss-Bonnet for triangulations: total excess = 2π·χ). All are classical theorems of differential geometry requiring Riemannian geometry infrastructure not yet in Mathlib.",
     "mathlib_version": "4.31.0",
     "theoremCount": 25,
@@ -139,7 +139,7 @@
       "Real"
     ],
     "namespace": "TriangleAngleSumGaussBonnet",
-    "lineCount": 382,
+    "lineCount": 384,
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/TriangleAngleSumOQ02.lean",

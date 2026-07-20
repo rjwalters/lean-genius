@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None (purely algebraic). The main theorem four_oblique_corners_rect is complete for all m, n ≥ 5: it exhibits 4 distinct tour positions (the board corners) where the turn is oblique. No native_decide, no enumeration. The argument never uses m = n.",
     "dateAdded": "2026-06-26",
-    "lineCount": 567,
+    "lineCount": 569,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -123,7 +123,7 @@
   ],
   "leanFile": {
     "path": "Proofs/KnightsTourObliqueOQ01OQ02.lean",
-    "lineCount": 567,
+    "lineCount": 569,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 15,

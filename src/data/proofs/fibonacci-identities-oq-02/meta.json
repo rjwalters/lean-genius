@@ -56,7 +56,7 @@
       "fib_dvd_iff: for 3 ≤ m, fib m ∣ fib n ↔ m ∣ n — the full divisibility characterization; the forward direction is new beyond Mathlib's one-directional Nat.fib_dvd"
     ],
     "dateAdded": "2026-06-20",
-    "lineCount": 109,
+    "lineCount": 110,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). The numerical example uses decide (kernel evaluation), not native_decide, so no Lean.ofReduceBool is introduced.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
@@ -142,7 +142,7 @@
     ],
     "opens": [],
     "namespace": "FibonacciIdentitiesOQ02",
-    "lineCount": 109,
+    "lineCount": 110,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,

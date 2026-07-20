@@ -44,7 +44,7 @@
     "hilbertNumber": 4,
     "axiomCount": 5,
     "assumptions": "5 axiom declarations. Substantive geometric statements: minkowski_geodesics_are_straight (lines are geodesics in Minkowski geometry), minkowski_straight_line_shortest (line is shortest path), busemann_classification (Busemann's exhaustive metric classification). Currently VACUOUS placeholders: hamel_theorem_2d concludes only `∃ M : MinkowskiGeometry, True` (independent of the input metric d), and funk_geodesics_straight is stated over `FunkMetric := fun _ _ => 0`, so it reduces to 0 + 0 = 0. Additionally, the headline theorem `hilbert_geodesics_are_straight` has conclusion `True` (a formal-statement placeholder proved by `trivial`). The only genuinely machine-checked theorems are `euclidean_triangle` and `taxicab_triangle` (triangle inequalities for the Euclidean and taxicab norms). This entry is a formal scaffold for Hilbert's 4th problem, not a verified solution.",
-    "lineCount": 459,
+    "lineCount": 488,
     "prerequisites": [
       "Metric spaces and geodesics",
       "Normed vector spaces and Minkowski geometry",
@@ -172,7 +172,7 @@
       "NNReal"
     ],
     "namespace": "Hilbert4Geodesics",
-    "lineCount": 459,
+    "lineCount": 488,
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 18,

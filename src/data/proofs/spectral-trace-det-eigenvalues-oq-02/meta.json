@@ -55,7 +55,7 @@
       "trace_mul_comm_noncomm_example / _ne / _value and trace_commutator_example: a non-commuting pair with A·B ≠ B·A (proved by decide) but tr(A·B) = tr(B·A) = 3, whose commutator has trace 0."
     ],
     "dateAdded": "2026-06-20",
-    "lineCount": 204,
+    "lineCount": 208,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). The concrete inequality of two products uses decide (kernel reduction, not native_decide), so Lean.ofReduceBool is not introduced. The headline cyclic identities and the commutator/similarity results hold over an arbitrary commutative ring; the eigenvalue-multiset results are stated over an arbitrary field.",
     "mathlib_version": "4.31.0",
     "theoremCount": 14,
@@ -135,7 +135,7 @@
       "Matrix"
     ],
     "namespace": "SpectralTraceDetEigenvaluesOQ02",
-    "lineCount": 204,
+    "lineCount": 208,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1,

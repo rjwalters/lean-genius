@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/875",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 212,
+    "lineCount": 213,
     "assumptions": "No `axiom` declarations, no sorries. Supporting lemmas fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, finite_version_connection. The theorem `pow2_small_example` is discharged by `native_decide`, so it depends on `Lean.ofReduceBool` (Lean's compiler kernel-reduction axiom; #print axioms lists it) — it is free of mathematical axioms but not axiom-free in the strict sense. Open conjecture; supporting lemmas otherwise verified.",
     "mathlib_version": "4.31.0",
     "theoremCount": 7,
@@ -125,7 +125,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 212,
+    "lineCount": 213,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 7,

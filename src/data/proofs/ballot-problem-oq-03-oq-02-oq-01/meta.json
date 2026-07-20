@@ -27,7 +27,7 @@
     "sorries": 0,
     "dateAdded": "2026-06-24",
     "axiomCount": 0,
-    "lineCount": 154,
+    "lineCount": 155,
     "theoremCount": 6,
     "definitionCount": 1,
     "assumptions": "None. Imports only Mathlib and the verified sibling entry Proofs.BallotProblemOQ03OQ02OQ03 (the weighted LGV algebraic core, itself 0-axiom). The theorems use standard Mathlib API: Matrix.mul_apply / Matrix.det_mul (the matrix product and Cauchy–Binet determinant-of-product law), Fintype.sum_sigma / Fintype.sum_prod_type / Fintype.sum_mul_sum (the distributive expansion over the intermediate layer), List.foldr/List.map/List.prod recursors (the iterated stack law), and Finset.sum_const / Finset.card_univ / nsmul_eq_mul (the unweighted specialisation). No axiom declarations, no structure-encoded assumptions, no native_decide, no sorry. Kernel-verified on Mathlib v4.26.0: comp_matrix, det_comp, det_comp_list, and det_comp_signed_family_sum each depend on exactly the standard [propext, Classical.choice, Quot.sound] triple (confirmed via #print axioms).",
@@ -140,7 +140,7 @@
   ],
   "leanFile": {
     "namespace": "BallotOQ03OQ02OQ01",
-    "lineCount": 154,
+    "lineCount": 155,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 1,

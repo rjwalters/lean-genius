@@ -26,7 +26,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_perfect_square (proved via k×k grid construction + g_ap_bounded upper bound), g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). 0 sorries.",
-    "lineCount": 749,
+    "lineCount": 831,
     "theoremCount": 39,
     "definitionCount": 19
   },
@@ -243,7 +243,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 749,
+    "lineCount": 831,
     "axiomCount": 5,
     "theoremCount": 39,
     "substantiveTheoremCount": 11,

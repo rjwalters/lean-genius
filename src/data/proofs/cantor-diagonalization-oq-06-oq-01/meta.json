@@ -61,7 +61,7 @@
       "seqReal / seqEmbedding / seqReal_injective / mk_seq_le_mk_real: the EXPLICIT INJECTION (ℕ → Bool) ↪ ℝ — the constructive cardinality LOWER bound 𝔠 ≤ #ℝ, answering the entry's own open question 'package the result as an explicit injection {sequences} ↪ ℝ' and dual to the no-surjection UPPER form. To a binary sequence s : ℕ → Bool associate the listing n ↦ (if s n then 10^{-(n+1)} else 0), whose n-th diagonal digit is 1 exactly when s n = true (digit_indicator, the same floor computation attaining the endpoints of [1/9,2/9]); feeding it to diagonalReal gives seqReal s, whose n-th digit is 2 when s n = true and 1 otherwise (digit_seqReal). The whole sequence s is thus READ BACK from the digits of the single real seqReal s, so seqReal is injective (seqReal_injective) — packaged as a Function.Embedding seqEmbedding : (ℕ → Bool) ↪ ℝ. The image lies entirely in the tiny interval [1/9,2/9] (seqReal_mem_Icc): a continuum-sized set embedded in an interval of length 1/9. The cardinality corollary #(ℕ → Bool) ≤ #ℝ (mk_seq_le_mk_real) is obtained via Cardinal.mk_le_of_injective from the explicit witness — NO appeal to Cardinal.not_countable_real or #ℝ = 𝔠. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "dateAdded": "2026-07-11",
-    "lineCount": 557,
+    "lineCount": 615,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only [propext, Classical.choice, Quot.sound]. No use of Cardinal.not_countable_real.",
     "mathlib_version": "4.31.0",
     "theoremCount": 41,
@@ -166,7 +166,7 @@
     ],
     "opens": [],
     "namespace": "CantorDiagonalizationOQ06OQ01",
-    "lineCount": 557,
+    "lineCount": 615,
     "axiomCount": 0,
     "theoremCount": 41,
     "definitionCount": 6,

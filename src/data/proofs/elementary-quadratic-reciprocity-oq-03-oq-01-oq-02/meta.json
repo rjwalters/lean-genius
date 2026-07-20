@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 189,
+    "lineCount": 192,
     "assumptions": "Relies on `Lean.ofReduceBool`: the headline certified-computation theorems (`certified_J_7_13`, `certified_J_1001_9907`, `certified_J_219_383`, and the `step_J*` lemmas) discharge the final Jacobi-symbol value via `native_decide`, which trusts the Lean compiler's kernel reduction. `#print axioms` therefore lists `Lean.ofReduceBool`, so the entry is not axiom-free. (`leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.)",
     "dateAdded": "2026-03-30",
     "originalContributions": [
@@ -63,7 +63,7 @@
       "Mathlib.Tactic"
     ],
     "namespace": "JacobiCertifiedComputation",
-    "lineCount": 189,
+    "lineCount": 192,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 2,

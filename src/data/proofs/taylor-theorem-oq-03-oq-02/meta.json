@@ -67,7 +67,7 @@
     ],
     "dateAdded": "2026-06-24",
     "axiomCount": 0,
-    "lineCount": 230,
+    "lineCount": 232,
     "theoremCount": 14,
     "definitionCount": 1,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms). The Taylor remainder bound (taylor_mean_remainder_bound), the Taylor-polynomial expansion (taylor_within_apply), and the local-to-global derivative bridge (iteratedDerivWithin_eq_iteratedDeriv) come from Mathlib; the original work is the uniform derivative cycle bound for cos, the clean x^(n+1)/n! estimate, and the axiom-free discharge of the remainder bound that the sibling file TaylorSinCosConvergence.lean postulated.",
@@ -204,7 +204,7 @@
       "Nat"
     ],
     "namespace": "TaylorCosBridge",
-    "lineCount": 230,
+    "lineCount": 232,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1,

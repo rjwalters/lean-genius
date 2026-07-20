@@ -24,7 +24,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 371,
+    "lineCount": 452,
     "assumptions": "0 sorries; 0 literal `axiom` declarations. The census cardinality theorems (card_sixCycles = 120, card_doubleThreeCycles = 40, card_tripleTranspositions = 15, card_fourTwoCycles = 90, card_fixedPointFree = 265), the anchor card_sym6 = 720, the fixed-point-free classification, and the parity-structure theorems (sixCycle_sign, fourTwo_sign, doubleThreeCycle_sign, tripleTransposition_sign, even_derangement_iff_census, card_even_derangements = 130, card_odd_derangements = 135) are all discharged by `native_decide`, which trusts the Lean compiler and so depends on the `Lean.ofReduceBool` (and `Lean.trustCompiler`) axiom (counted as axiomCount = 1). Under the project axiom-integrity policy this makes the entry `axiomatized`. The geometric bijection from these conjugacy classes to the actual Steiner/Kirkman/Plücker/Salmon points and lines is NOT formalized here — only the combinatorial class sizes are certified; the projective concurrence (the open steiner_count_eq_20 / kirkman_count_eq_60 targets in oq-03) remains future work.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-07-04",

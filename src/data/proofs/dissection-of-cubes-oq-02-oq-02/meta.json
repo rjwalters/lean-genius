@@ -54,7 +54,7 @@
       "Dehn-Sydler completeness theorem stated as a `True`-valued placeholder (sufficiency direction not formalized)",
       "tmul_infinite_order_ne_zero: proved via Module.Flat (ℝ flat over ℤ as Bézout + NoZeroSMulDivisors) — lTensor ℝ f injective for injective f : ℤ →ₗ AngleQuot"
     ],
-    "lineCount": 454,
+    "lineCount": 451,
     "assumptions": "0 axioms, 0 sorries. The genuinely proved headline (Hilbert's Third Problem: D(cube) ≠ D(tetrahedron)) is axiom-free — tmul_infinite_order_ne_zero is proved via Module.Flat (ℝ is flat over ℤ as a Bézout domain + NoZeroSMulDivisors ℤ ℝ), so lTensor ℝ f is injective for any injective f : ℤ →ₗ[ℤ] AngleQuot, giving r⊗x≠0 when r≠0 and x has infinite order (previously 6 axioms, all eliminated). NOTE: the Dehn-Sydler completeness direction is NOT formalized — `dehn_preserved_by_scissors` (`True → d₁ = d₁`) and `volume_preserved_by_scissors` (`True → v₁ = v₁`) are inert `True`-valued placeholder theorems carrying no geometric content; no proved result depends on them.",
     "mathlib_version": "4.31.0",
     "relatedProblems": [
@@ -250,7 +250,7 @@
       "Real"
     ],
     "namespace": "DehnSydler",
-    "lineCount": 454,
+    "lineCount": 451,
     "axiomCount": 0,
     "theoremCount": 24,
     "definitionCount": 7,

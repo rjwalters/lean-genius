@@ -20,7 +20,7 @@
       "scoped"
     ],
     "namespace": "CarlesonTheorem",
-    "lineCount": 859,
+    "lineCount": 857,
     "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 6,
@@ -93,7 +93,7 @@
       "fourierPartialSum_zero_fn: partial sums of zero"
     ],
     "axiomCount": 2,
-    "lineCount": 859,
+    "lineCount": 857,
     "assumptions": "2 axioms: carlesonData (existence of universal Carleson constant C ≥ 0) and carleson_hunt_maximal (the Carleson-Hunt maximal inequality for the S* maximal operator on L²). The 4 previously axiomatized lemmas (trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg) were proved in PR #10486. 0 sorries.",
     "theoremCount": 22,
     "definitionCount": 6

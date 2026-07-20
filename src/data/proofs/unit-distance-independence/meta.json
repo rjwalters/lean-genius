@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
     "assumptions": "1 axiom in the parent file UnitDistanceIndependence.lean: hadwiger_nelson_lower_bound (chi(R^2) >= 5, de Grey 2018, genuinely hard - requires the explicit 1581-vertex graph). The upper bound hadwiger_nelson_upper_bound (chi(R^2) <= 7) is now a fully machine-checked THEOREM in the parent file, discharged directly by hadwiger_nelson_7coloring from the companion UnitDistanceHN7.lean (explicit hexagonal 7-coloring + A2-lattice Voronoi covering-radius bound; 0 sorries, 0 axioms, no native_decide; #print axioms = [propext, Classical.choice, Quot.sound]). Thus the only remaining assumption is the de Grey lower bound.",
-    "lineCount": 959,
+    "lineCount": 961,
     "theoremCount": 66,
     "definitionCount": 12,
     "additionalFiles": [
@@ -75,7 +75,7 @@
   },
   "leanFile": {
     "namespace": "UnitDistanceIndependence",
-    "lineCount": 959,
+    "lineCount": 961,
     "axiomCount": 1,
     "theoremCount": 66,
     "definitionCount": 12,

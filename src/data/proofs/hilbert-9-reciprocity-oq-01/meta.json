@@ -7,7 +7,7 @@
     "imports": ["Mathlib.NumberTheory.Cyclotomic.Gal", "Mathlib.NumberTheory.Cyclotomic.Rat", "Mathlib.Data.Nat.Totient", "Mathlib.SetTheory.Cardinal.Finite", "Mathlib.Tactic.NormNum"],
     "opens": ["Polynomial", "IsCyclotomicExtension"],
     "namespace": "Hilbert9CyclotomicReciprocity",
-    "lineCount": 145,
+    "lineCount": 162,
     "axiomCount": 0,
     "theoremCount": 9,
     "substantiveTheoremCount": 4,
@@ -61,7 +61,7 @@
       "Euler's totient as the order of (ℤ/n)ˣ"
     ],
     "mathlib_version": "4.31.0",
-    "lineCount": 145,
+    "lineCount": 162,
     "relatedProblems": ["hilbert-9-reciprocity", "hilbert-9-reciprocity-oq-04", "quadratic-reciprocity", "elementary-quadratic-reciprocity", "cyclotomic-polynomials-oq-01"],
     "theoremCount": 9,
     "definitionCount": 1

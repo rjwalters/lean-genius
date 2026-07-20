@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 3,
     "assumptions": "3 structure-encoded assumptions in RiemannianVolumeData: vol_pos (geodesic ball volumes are positive), vol_mono (monotonicity), bishop_gromov (Bishop-Gromov volume ratio monotonicity). These encode the properties of a complete Riemannian manifold with Ric >= 0, which cannot be defined in Mathlib (no Riemannian metric or curvature yet).",
-    "lineCount": 272,
+    "lineCount": 271,
     "theoremCount": 18,
     "definitionCount": 4,
     "originalContributions": [
@@ -121,7 +121,7 @@
   },
   "leanFile": {
     "namespace": "BishopGromov",
-    "lineCount": 272,
+    "lineCount": 271,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 4,

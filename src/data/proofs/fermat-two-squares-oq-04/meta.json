@@ -66,7 +66,7 @@
       "jacobiSum_prime_three_mod_four: δ(p) = 0 for p ≡ 3 (mod 4), matching r₂(p) = 0"
     ],
     "dateAdded": "2026-06-21",
-    "lineCount": 225,
+    "lineCount": 230,
     "assumptions": "0 axioms, 0 sorries. The headline theorems (jacobiSum_pos_iff_sq_add_sq, jacobiSum_eq_zero_iff, isMultiplicative_jacobiSum, jacobiSum_prime_one_mod_four) depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The full Jacobi counting identity r₂(n) = 4 δ(n) — connecting δ to the actual representation count — requires the arithmetic of the Gaussian integers ℤ[i] and is NOT formalized here; this entry formalizes the divisor-sum (right-hand) side and its qualitative bridge to representability.",
     "theoremCount": 10,
     "definitionCount": 1
@@ -165,7 +165,7 @@
       "Finset"
     ],
     "namespace": "FermatTwoSquaresOQ04",
-    "lineCount": 225,
+    "lineCount": 230,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1,

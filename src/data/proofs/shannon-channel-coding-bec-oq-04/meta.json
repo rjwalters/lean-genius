@@ -41,7 +41,7 @@
     "assumptions": "None. The result is fully machine-checked with 0 sorries and 0 axiom declarations. The #print axioms audit at the end of the file confirms that beec_capacity, beec_uniform_mi, and beec_mi_le_general depend only on the ordinary foundational axioms [propext, Classical.choice, Quot.sound] — no Lean.ofReduceBool, no sorryAx. The file imports ShannonChannelCoding, which declares 2 operational-coding axioms (channel_coding_achievability, channel_coding_converse), but the information-capacity result proved here provably does not invoke them (they do not appear in the axiom audit). The DMChannel and InputDist structures carry only proved data-validity fields (non-negativity, normalization), not free assumptions. The channel is not weakly symmetric (its erasure column has mass ε against (1-ε) for the delivered columns), so the symmetric-channel capacity machinery does not apply; the chain rule I = H(Y) - H(Y|X) with a constant H(Y|X) and a grouping bound on H(Y) is the engine instead.",
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
-    "lineCount": 431,
+    "lineCount": 432,
     "prerequisites": [
       "Shannon entropy, conditional entropy, and mutual information (ShannonEntropy.lean)",
       "Discrete memoryless channels and channel capacity (ShannonChannelCoding.lean)",
@@ -190,7 +190,7 @@
   ],
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 431,
+    "lineCount": 432,
     "path": "Proofs/ShannonChannelCodingBECOQ04.lean",
     "sorries": 0,
     "definitionCount": 1,

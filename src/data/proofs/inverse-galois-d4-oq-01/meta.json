@@ -21,7 +21,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 202,
+    "lineCount": 204,
     "assumptions": "0 axioms, 0 sorries. MACHINE-CHECKED: Docker build green on 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01`, 7745 jobs, 0 errors; one cosmetic unused-simp-arg linter warning at line 144). Status upgraded `formalized` → `verified`. All proofs use only standard Mathlib DihedralGroup simp lemmas (r_mul_r, sr_mul_r, r_mul_sr, sr_mul_sr, inv_r, inv_sr, sr_mul_self, r_zero, orderOf_r_one, orderOf_sr) and Subgroup API (MonoidHom.range/mem_range, MonoidHom.ofInjective, Subgroup.mem_inf/mem_sup_left/mul_mem_sup/eq_bot_iff_forall, Nat.card_congr, ZMod.card). Imports: Proofs.InverseGaloisD4 (transitively Mathlib). EXTERNAL packaging (companion InverseGaloisD4OQ01External.lean, 171 lines, 0 axioms/0 sorries, 8 theorems + 5 defs incl. d4Equiv) also MACHINE-CHECKED green 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01External`, 7746 jobs, 0 errors) and registered in Proofs.lean.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-15",
@@ -149,7 +149,7 @@
       "DihedralGroup"
     ],
     "namespace": "InverseGaloisD4OQ01",
-    "lineCount": 202,
+    "lineCount": 204,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 4,

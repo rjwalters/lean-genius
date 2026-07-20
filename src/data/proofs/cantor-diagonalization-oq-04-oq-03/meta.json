@@ -32,7 +32,7 @@
         "module": "Mathlib.Order.CompleteLattice"
       }
     ],
-    "lineCount": 299,
+    "lineCount": 301,
     "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) ≤ ⊔ₙ f(cₙ) = f(b) by ω-continuity.",
     "definitionCount": 6,
     "additionalFiles": [
@@ -157,7 +157,7 @@
   ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ04OQ03",
-    "lineCount": 299,
+    "lineCount": 301,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 6,

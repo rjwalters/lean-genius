@@ -54,7 +54,7 @@
       "solymosi_d3_10 axiom + d3_10_bounds: 13 ≤ d_3(10) ≤ 14 (gap of 1 from conjectured 13)"
     ],
     "axiomCount": 3,
-    "lineCount": 278,
+    "lineCount": 274,
     "assumptions": "3 axioms: sarkozy_selkow_result (Sárközy-Selkow 2005 upper bound construction), bes_lower_bound (Brown-Erdős-Sós 1973 lower bound via Steiner systems), and solymosi_d3_10 (Solymosi-Solymosi 2017 specific bound dr 3 10 ≤ 14). All three are deep published results not available in Mathlib. All derived theorems (dr_spec, dr_minimal, sarkozy_selkow_upper, ruzsa_szemeredi_d3_3, efr_e3, solymosi_d3_10_gap, bes_d3_10_lower, d3_10_bounds) are fully proved from these axioms. 0 sorries.",
     "theoremCount": 16,
     "definitionCount": 11
@@ -261,7 +261,7 @@
       "Filter"
     ],
     "namespace": "Erdos1178",
-    "lineCount": 278,
+    "lineCount": 274,
     "axiomCount": 3,
     "theoremCount": 16,
     "definitionCount": 11,

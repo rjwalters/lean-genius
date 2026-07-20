@@ -21,7 +21,7 @@
     "axiomCount": 1,
     "assumptions": "The entire entry is computational verification of the Rogers-Ramanujan identities for n = 0..8 via native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free). Depends on PartitionTheoremOQ01 for definitions (rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions, rr2Mod5Partitions).",
     "mathlib_version": "4.31.0",
-    "lineCount": 71,
+    "lineCount": 112,
     "relatedProblems": [
       {
         "id": "partition-theorem-oq-01",
@@ -161,7 +161,7 @@
       "RogersRamanujan"
     ],
     "namespace": "PartitionTheoremOQ01OQ01",
-    "lineCount": 71,
+    "lineCount": 112,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 0,

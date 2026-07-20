@@ -69,14 +69,14 @@
       "Proved allOffsetsPrime_mono (subset monotonicity)"
     ],
     "axiomCount": 1,
-    "lineCount": 220,
+    "lineCount": 215,
     "assumptions": "1 axiom: erdos_graham_limsup (k-tuple conjecture implies limsup variant). All theorems fully proved (0 sorries).",
     "theoremCount": 12,
     "definitionCount": 6
   },
   "leanFile": {
     "path": "Proofs/Erdos428Problem.lean",
-    "lineCount": 220,
+    "lineCount": 215,
     "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

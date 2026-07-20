@@ -19,7 +19,7 @@
       "Finset"
     ],
     "namespace": "Erdos1017OQ01",
-    "lineCount": 696,
+    "lineCount": 749,
     "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 9,
@@ -47,7 +47,7 @@
     "dateAdded": "2026-03-25",
     "mathlib_version": "4.31.0",
     "axiomCount": 2,
-    "lineCount": 696,
+    "lineCount": 749,
     "assumptions": "2 axioms: EGP theorem (deep combinatorial result, 1966) and Gyori-Keszegh K_4-free partition formula (2017, full strength: cp(G) = floor(n^2/4) - m). The previously redundant gyori_keszegh_triangles axiom (m distinct 3-cliques) was eliminated since it is logically weaker than the partition formula and was unused in the file. All other statements PROVED including triangleFree partition = edges (via injection), dense_contains_triangle (via Mathlib Turan), cliquePartition_le_vertices (via EGP + edge bound).",
     "mathlibDependencies": [
       {

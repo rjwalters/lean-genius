@@ -61,7 +61,7 @@
       "trace_pow_diagonal_example / sum_pow_eigenvalues_example: for diag(2,3) both sides read tr(A³) = 2³ + 3³ = 35, the trace power sum and the eigenvalue cube sum agreeing concretely"
     ],
     "dateAdded": "2026-06-25",
-    "lineCount": 177,
+    "lineCount": 181,
     "assumptions": "None beyond a diagonalizable hypothesis on the matrix. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count); #print axioms confirms the headline theorems depend on no Lean.ofReduceBool or sorryAx, and no decide/native_decide is used. The headline trace_pow_eq_sum_pow_eigenvalues, roots_charpoly_diagonal, and card_eigenvalues_diagonalizable hold over ANY field — no algebraic closure is required, because the characteristic polynomial of a diagonalizable matrix splits by construction. trace_diagonal_pow and the conjugation lemmas hold over any commutative ring. SCOPE: the theorem is stated for diagonalizable matrices A = M·diag(d)·M⁻¹ (the dense/generic case). The fully general statement for every matrix over an algebraically closed field additionally requires triangularization — similarity to an upper-triangular matrix with the eigenvalues on the diagonal — which the Mathlib snapshot used here does not expose at the matrix level (only the endomorphism generalized-eigenspace decomposition). That extension is recorded as the standing open follow-up.",
     "mathlib_version": "4.31.0",
     "theoremCount": 8,
@@ -158,7 +158,7 @@
       "Polynomial"
     ],
     "namespace": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02",
-    "lineCount": 177,
+    "lineCount": 181,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0,

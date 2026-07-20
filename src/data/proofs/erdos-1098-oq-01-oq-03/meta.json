@@ -37,7 +37,7 @@
       "center_finiteIndex_iff_relIndex_core: ω(Γ(G)) finite ⟹ [G:Z(G)] finite iff Z(G) has finite index within the explicit finite-index core H = ⋂ₐ C_G(a); localizes the residual axiom to (center G).relIndex H, whose Mathlib endgame is Subgroup.index_center_le_pow gated on Finite (commutatorSet G)",
       "boundedCliques_quotient: bounded cliques pass to quotients — ω(Γ(G/N)) ≤ ω(Γ(G)) for every normal N, since QuotientGroup.mk' N is surjective (the mk'-instance of boundedCliques_of_surjective); with boundedCliques_of_subgroup this makes both subgroups AND quotients of a bounded-clique group bounded-clique. Axiom-free."
     ],
-    "lineCount": 726,
+    "lineCount": 793,
     "theoremCount": 20,
     "defCount": 3,
     "definitionCount": 3
@@ -140,7 +140,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 726,
+    "lineCount": 793,
     "path": "Proofs/Erdos1098OQ01OQ03.lean",
     "axiomCount": 1,
     "sorries": 0,

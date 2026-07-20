@@ -64,7 +64,7 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta) — but the axiom's actual Lean statement is the tautology 'exists d, d = rho(1/alpha)*rho(1/beta)', a placeholder that does not itself assert the logarithmic-density limit), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Former axioms lpf_divides, lpf_prime, lpf_of_prime, dickman_at_one, dickman_at_two, dickman_positive, dickman_decreasing, dickman_theorem, elliott_halberstam_conjecture, schinzel_product now proved as theorems or definitions.",
-    "lineCount": 259,
+    "lineCount": 261,
     "theoremCount": 2,
     "definitionCount": 9
   },
@@ -200,7 +200,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos928",
-    "lineCount": 259,
+    "lineCount": 261,
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 9,

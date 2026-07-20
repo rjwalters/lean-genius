@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
     "assumptions": "None added. #print axioms reports only propext, Classical.choice, Quot.sound for cyclotomicField_isGalois, autEquivUnitsZMod, galois_mul_comm, galois_finite, and unitsZMod_realizableOverRat. NOTE on scope: the entry verifies the cyclotomic realization — that every group (ZMod n)ˣ is the Galois group of an abelian extension of ℚ. The full abelian inverse Galois statement (every finite abelian group is Gal(L/ℚ)) additionally requires (1) Dirichlet's theorem on primes in arithmetic progressions, to choose n so that the target abelian group is a quotient of (ZMod n)ˣ, and (2) the Galois correspondence for abelian extensions, to descend to the fixed field of the relevant subgroup. Both are classical and provable but are NOT formalized here; they are stated for reference in the kroneckerWeber_realization_target docstring and are not asserted as axioms.",
-    "lineCount": 131,
+    "lineCount": 148,
     "theoremCount": 4,
     "definitionCount": 3,
     "originalContributions": [
@@ -34,7 +34,7 @@
   },
   "leanFile": {
     "namespace": "AbelRuffiniOQ03",
-    "lineCount": 131,
+    "lineCount": 148,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 3,
