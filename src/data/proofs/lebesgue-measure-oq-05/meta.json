@@ -112,9 +112,17 @@
       "id": "regularity-and-conditioning",
       "title": "Pointwise Regularity and Conditional Expectation as a Density",
       "startLine": 146,
-      "endLine": 202,
+      "endLine": 200,
       "summary": "Pointwise regularity of the density — rnDeriv_lt_top_ae / rnDeriv_ne_top_ae (dμ/dν < ∞ and ≠ ∞, ν-a.e.), rnDeriv_pos_ae (0 < dμ/dν, μ-a.e. for μ ≪ ν), and inv_rnDeriv_ae ((dμ/dν)⁻¹ = dν/dμ, μ-a.e.) — followed by condExp_ae_eq_signed_rnDeriv, identifying the conditional expectation μ[f|m] with the signed Radon–Nikodym derivative of the f-weighted measure trimmed to the sub-σ-algebra m.",
       "mathContext": "The density is a.e. finite ($d\\mu/d\\nu < \\infty$, $\\nu$-a.e.) and, for $\\mu \\ll \\nu$, strictly positive $\\mu$-a.e. with pointwise inverse $(d\\mu/d\\nu)^{-1} = d\\nu/d\\mu$ ($\\mu$-a.e.). Conditional expectation is itself a density: $\\mu[f\\mid m] =^{ae}_\\mu \\mathrm{rnDeriv}\\big((\\mu.\\mathrm{withDensity}_v\\, f).\\mathrm{trim}\\,m,\\ \\mu.\\mathrm{trim}\\,m\\big)$, placing conditioning inside the same Radon–Nikodym calculus (Mathlib's rnDeriv_ae_eq_condExp)."
+    },
+    {
+      "id": "conditional-expectation",
+      "title": "Conditional Expectation as a Radon–Nikodym Derivative",
+      "startLine": 201,
+      "endLine": 229,
+      "summary": "condExp_ae_eq_signed_rnDeriv places conditional expectation inside the Radon–Nikodym calculus: for a sub-σ-algebra m ≤ m₀ with ρ.trim σ-finite and f integrable, the conditional expectation ρ[f|m] equals ρ-a.e. the signed Radon–Nikodym derivative of the f-weighted measure ρ.withDensityᵥ f trimmed to m, with respect to ρ trimmed to m. A thin wrapper over Mathlib's rnDeriv_ae_eq_condExp, recorded as the probabilistic face of the σ-finite Radon–Nikodym package.",
+      "mathContext": "$\\rho[f\\mid m] = \\dfrac{d\\,(\\rho.\\mathrm{withDensity}_v f)\\!\\restriction_m}{d\\,\\rho\\!\\restriction_m}$ $\\rho$-a.e., the signed Radon–Nikodym derivative trimmed to the sub-σ-algebra $m$."
     }
   ],
   "conclusion": {
