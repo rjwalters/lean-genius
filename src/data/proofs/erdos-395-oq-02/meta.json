@@ -72,49 +72,56 @@
       "id": "header",
       "title": "Background: HJNS 2024 and the higher-dimensional question",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 55,
       "summary": "Module docstring framing the parent result (HJNS 2024, the 2-dimensional/complex case) and the open higher-dimensional follow-up. States plainly that the fixed-dimension question is NOT resolved; what is proved is the orthogonality obstruction showing the dimension-free analogue is false."
     },
     {
       "id": "definitions",
       "title": "§I Sign vectors and signed sums",
-      "startLine": 55,
-      "endLine": 72,
+      "startLine": 56,
+      "endLine": 74,
       "summary": "IsSign ε (each component ±1), signedSum z ε := Σ εᵢ•zᵢ over an arbitrary real inner product space E (so ℝ^d for all d at once, complex case included), and sign_mul_self: εᵢ·εᵢ = 1."
     },
     {
       "id": "orthogonality",
       "title": "§II The orthogonality identity ‖Σεᵢzᵢ‖² = n",
       "startLine": 75,
-      "endLine": 101,
+      "endLine": 103,
       "summary": "signedSum_norm_sq_of_orthonormal: for an orthonormal family, the squared norm of every sign sum equals n, independent of the signs — proved by expanding the real inner product and collapsing the double sum via orthonormal_iff_ite and εᵢ²=1. signedSum_norm_of_orthonormal: hence ‖Σεᵢzᵢ‖ = √n."
     },
     {
       "id": "obstruction",
       "title": "§III The obstruction: the small-sum set is empty",
-      "startLine": 103,
-      "endLine": 121,
+      "startLine": 104,
+      "endLine": 123,
       "summary": "orthonormal_smallSum_eq_empty: for a threshold C with C² < n, the set of sign vectors whose orthonormal sign sum has norm ≤ C is empty. Proved by comparing squared norms — ‖S‖ ≤ C forces ‖S‖² ≤ C², but ‖S‖² = n > C², a contradiction (nlinarith)."
+    },
+    {
+      "id": "saturation",
+      "title": "§III½ Saturation: the complementary threshold C = √n",
+      "startLine": 124,
+      "endLine": 151,
+      "summary": "orthonormal_signedSum_le_of_sqrt_le and orthonormal_smallSum_eq_univ: the mirror image of §III. Because ‖Σεᵢzᵢ‖ = √n exactly, once C ≥ √n *every* sign choice lands within C — the favourable set becomes the entire sign space. Combined with §III (empty below √n) this pins the threshold sharply at C = √n for orthonormal configurations."
     },
     {
       "id": "headline",
       "title": "§IV Probability formulation and falsity of the dimension-free analogue",
-      "startLine": 123,
-      "endLine": 203,
-      "summary": "Boolean sign space {±1}ⁿ via toSign/signOf; smallSumCount and smallSumProb (= count / 2ⁿ) in EuclideanSpace ℝ (Fin d). orthonormal_smallSumCount_eq_zero / orthonormal_smallSumProb_eq_zero give probability 0 when C² < n. basisFun_orthonormal supplies the standard-basis witness, and dimensionFree_reverseLO_false (headline) refutes any dimension-free, fixed-threshold c/n bound."
+      "startLine": 152,
+      "endLine": 269,
+      "summary": "Boolean sign space {±1}ⁿ via toSign/signOf; smallSumCount and smallSumProb (= count / 2ⁿ) in EuclideanSpace ℝ (Fin d). orthonormal_smallSumCount_eq_zero / orthonormal_smallSumProb_eq_zero give probability 0 when C² < n, while orthonormal_smallSumProb_eq_one and orthonormal_smallSumProb_dichotomy handle the saturated regime. basisFun_orthonormal supplies the standard-basis witness, and dimensionFree_reverseLO_false (headline) refutes any dimension-free, fixed-threshold c/n bound."
     },
     {
       "id": "open-question",
       "title": "§V The genuine open question (left unproven)",
-      "startLine": 205,
-      "endLine": 222,
+      "startLine": 270,
+      "endLine": 288,
       "summary": "ReverseLO_fixedDim d: the fixed-dimension reverse Littlewood–Offord question for ambient dimension d, recorded as a Prop and deliberately NOT proved — this is the honest boundary with the open problem."
     },
     {
       "id": "summary",
       "title": "§VI Summary",
-      "startLine": 224,
-      "endLine": 238,
+      "startLine": 289,
+      "endLine": 309,
       "summary": "Recap: parent HJNS gives c/n in dimension 2; this file proves ‖Σεᵢzᵢ‖² = n for orthonormal families, hence the dimension-free analogue is false; the fixed-dimension question remains open."
     }
   ],
