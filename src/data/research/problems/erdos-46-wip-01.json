@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-20, VERIFIED host lake env lean exit 0, #print axioms=[propext,Classical.choice,Quot.sound] on both new thms): added the multiplicative scaling engine isRatFractionRepr_smul (repr of q ↦ repr of q/t with all denoms ≥2t) and exists_isRatFractionRepr_inv_min_ge ({2t,3t,6t} reps 1/t). Complements the additive union lemma. Remaining obstruction toward pairwise-disjoint reprs of 1 with min>N is collision-free assembly (documented), not arithmetic. Deep Croot 2003 monochromatic result stays unformalized.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-21, host lake env lean EXIT=0, #print axioms=[propext,Classical.choice,Quot.sound] on all 4 new thms): added the TELESCOPING engine (sum_Ico_inv_mul_succ, isRatFractionRepr_telescope, exists_isRatFractionRepr_min_gt, injective_mul_succ). Realises the min-denominator>N regime for the positive-rational family 1/a−1/b. Remaining obstruction toward min>N repr of EXACTLY 1 is collision-free assembly (documented). Deep Croot 2003 monochromatic result stays unformalized.",
     "builtItems": [
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
       "two_le_card_of_isUnitFractionRepr — a UFR of 1 has >= 2 elements (Erdos46Problem.lean)",
@@ -40,19 +40,25 @@
       "term_le_half / sum_inv_nonneg / isRatFractionRepr_pos / isRatFractionRepr_unique / pos_of_mem / forall_two_le_of_subset / isMonochromatic_empty / isMonochromatic_singleton / isRatFractionRepr_one_iff",
       "exists_isUnitFractionRepr_card_ge, infinite_isUnitFractionRepr in Erdos46Problem.lean — arbitrarily-long + infinitely-many unit-fraction reprs of 1, 0-axiom host-verified",
       "isRatFractionRepr_smul — scaling all denominators by t≥1 (n↦t·n, injective) sends a repr of q to a repr of q/t, all denoms ≥2t (Erdos46Problem.lean); multiplicative counterpart of isRatFractionRepr_union",
-      "exists_isRatFractionRepr_inv_min_ge — {2t,3t,6t} represents 1/t with min denom ≥2t (scale {2,3,6}); large-denominator regime reachable for arbitrary reciprocals"
+      "exists_isRatFractionRepr_inv_min_ge — {2t,3t,6t} represents 1/t with min denom ≥2t (scale {2,3,6}); large-denominator regime reachable for arbitrary reciprocals",
+      "sum_Ico_inv_mul_succ (Erdos46Problem.lean): ∑_{k∈[a,b)} 1/(k(k+1)) = 1/a − 1/b, telescoping via inv_mul_succ (0-axiom)",
+      "isRatFractionRepr_telescope (Erdos46Problem.lean): pronic set {k(k+1):a≤k<b} represents 1/a−1/b, min denom ≥ a(a+1) (0-axiom)",
+      "exists_isRatFractionRepr_min_gt (Erdos46Problem.lean): ∀ B L≥1, ∃ repr of a POSITIVE rational using exactly L denominators all > B (0-axiom)",
+      "injective_mul_succ (Erdos46Problem.lean): k↦k(k+1) injective on ℕ (strictMono_nat_of_lt_succ)"
     ],
     "insights": [
       "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide).",
       "Infinitely many distinct unit-fraction representations of 1 exist (infinite_isUnitFractionRepr): via reprs of arbitrarily large cardinality (exists_isUnitFractionRepr_card_ge), obtained by iterating isUnitFractionRepr_replace on the LARGEST denominator m — both split denominators m+1, m(m+1) exceed m so ∉S, legal replacement raising |S| by exactly one.",
       "Set.Infinite from unbounded card: by_contra, (hfin.image Finset.card).bddAbove gives M, then exists_...card_ge (M+1) overflows it. Finset.card_insert_of_not_mem renamed → card_insert_of_notMem in v4.31.",
       "Multiplicative scaling engine added: image under (t·) divides represented rational by t (Finset.sum_image with pairwise-injectivity from Nat.eq_of_mul_eq_mul_left; 1/(t·n)=(1/t)(1/n) via mul_inv then ring). Complements the additive union lemma; the two engines (additive-union + multiplicative-scale) are the assembly toolkit for disjoint-support reprs.",
-      "Disjoint-chaining obstruction is collision-freeness, not the arithmetic: splitting the LARGEST denom leaves small heads {2,3} fixed (reprs share them); scaling a whole repr by different factors produces cross-copy denominator collisions; multiplicative/additive assembly of a min>N repr of 1 needs exact collision bookkeeping (open)."
+      "Disjoint-chaining obstruction is collision-freeness, not the arithmetic: splitting the LARGEST denom leaves small heads {2,3} fixed (reprs share them); scaling a whole repr by different factors produces cross-copy denominator collisions; multiplicative/additive assembly of a min>N repr of 1 needs exact collision bookkeeping (open).",
+      "Telescoping engine (pronic reciprocals) is the third construction primitive alongside additive-union and multiplicative-scaling: it BUILDS reprs from scratch and directly realises the min-denominator>N regime for positive-rational targets by starting the interval at a large a.",
+      "The min>N regime is now reached for the two-parameter family 1/a−1/b (a>B); the ONLY remaining gap toward pairwise-disjoint chaining is assembling a repr of EXACTLY 1 with min>N (collision-free), which telescoping alone does not give (its value 1/a−1/b < 1)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Collision-free assembly of a unit-fraction repr of 1 with all denominators > N: candidate route is combining the additive union lemma with scaled sub-reprs of a fixed decomposition 1=∑ 1/mᵢ, choosing scale factors that guarantee pairwise-disjoint denominator sets (needs a coprimality/valuation argument to rule out cross-copy collisions).",
-      "Given exists_...min_gt N, infinitely many PAIRWISE-DISJOINT reprs of 1 follow immediately by chaining Nᵢ₊₁ = max Sᵢ.",
+      "Assemble a repr of EXACTLY 1 with min denom > N collision-free: candidate = telescope-tail (1/a−1/b large-denom) glued to a large-denom repr of the leftover 1−(1/a−1/b) via isRatFractionRepr_union under a disjointness proof.",
+      "Given exists_...(exactly 1, min>N), infinitely many PAIRWISE-DISJOINT reprs of 1 follow by chaining N_{i+1}=max S_i.",
       "Deep monochromatic statement (Croot 2003) remains unformalized — needs density/covering machinery."
     ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

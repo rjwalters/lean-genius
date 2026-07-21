@@ -357,3 +357,82 @@ theorem exists_isRatFractionRepr_inv_min_ge (t : ℕ) (ht : 1 ≤ t) :
     rw [Finset.mem_image] at hm
     obtain ⟨n, hn, rfl⟩ := hm
     fin_cases hn <;> omega
+
+/-! ## Telescoping engine: representations with arbitrarily large denominators
+
+The additive union lemma (`isRatFractionRepr_union`) and the multiplicative
+scaling lemma (`isRatFractionRepr_smul`) both *reshape* existing representations.
+The complementary **telescoping engine** *builds* representations from scratch out
+of the pronic numbers `k(k+1)`: since `1/(k(k+1)) = 1/k - 1/(k+1)` (`inv_mul_succ`),
+the reciprocals over any interval `[a, b)` collapse to `1/a - 1/b`. Starting the
+interval at a large `a` forces every denominator above any prescribed bound — the
+exact "min denominator > N" regime flagged as the prerequisite for pairwise-disjoint
+chaining toward `ErdosProblem46_infinitely_many`. (The remaining step, assembling a
+representation of *exactly `1`* with min > N collision-free, stays open — see the
+knowledge tracker.) -/
+
+/-- **Telescoping sum.** For `1 ≤ a ≤ b`, the reciprocals of the pronic numbers
+`k(k+1)` over `k ∈ [a, b)` telescope: `∑ 1/(k(k+1)) = 1/a - 1/b`. -/
+theorem sum_Ico_inv_mul_succ (a b : ℕ) (ha : 1 ≤ a) (hab : a ≤ b) :
+    (Finset.Ico a b).sum (fun k => (1 : ℚ) / (k * (k + 1))) = 1 / a - 1 / b := by
+  induction b, hab using Nat.le_induction with
+  | base => simp
+  | succ b hb ih =>
+    rw [Finset.sum_Ico_succ_top hb, ih, inv_mul_succ b (le_trans ha hb)]
+    push_cast
+    ring
+
+/-- The map `k ↦ k(k+1)` is injective on `ℕ` (it is strictly monotone). -/
+theorem injective_mul_succ : Function.Injective (fun k : ℕ => k * (k + 1)) :=
+  (strictMono_nat_of_lt_succ (fun n => by nlinarith)).injective
+
+/-- **Telescoping representation.** For `1 ≤ a ≤ b`, the pronic set
+`{k(k+1) : a ≤ k < b}` is a rational-fraction representation of `1/a - 1/b`, with
+every denominator at least `a(a+1)`. This is the telescoping counterpart of the
+additive-union and multiplicative-scaling engines. -/
+theorem isRatFractionRepr_telescope (a b : ℕ) (ha : 1 ≤ a) (hab : a ≤ b) :
+    IsRatFractionRepr ((Finset.Ico a b).image (fun k => k * (k + 1)))
+      (1 / a - 1 / b) := by
+  refine ⟨?_, ?_⟩
+  · intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    have hk1 : 1 ≤ k := le_trans ha (Finset.mem_Ico.mp hk).1
+    nlinarith [hk1]
+  · rw [Finset.sum_image (fun x _ y _ h => injective_mul_succ h)]
+    simp only [Nat.cast_mul, Nat.cast_add, Nat.cast_one]
+    exact sum_Ico_inv_mul_succ a b ha hab
+
+/-- **Arbitrarily large minimum denominator.** For any bound `B` and any length
+`L ≥ 1`, there is a rational-fraction representation of a *positive* rational using
+exactly `L` denominators, all strictly greater than `B`. Take the telescoping set
+on `[B+1, B+1+L)`, which represents `1/(B+1) - 1/(B+1+L) > 0`.
+
+This realises the "min denominator > N" regime for a genuine (positive-rational)
+target. The stronger requirement — target exactly `1` with min > N — remains open;
+it needs a collision-free assembly of several such large-denominator pieces. -/
+theorem exists_isRatFractionRepr_min_gt (B L : ℕ) (hL : 1 ≤ L) :
+    ∃ (S : Finset ℕ) (q : ℚ),
+      IsRatFractionRepr S q ∧ 0 < q ∧ S.card = L ∧ ∀ n ∈ S, B < n := by
+  set a := B + 1 with ha_def
+  set b := B + 1 + L with hb_def
+  have ha : 1 ≤ a := by omega
+  have hab : a ≤ b := by omega
+  have haltb : a < b := by omega
+  refine ⟨(Finset.Ico a b).image (fun k => k * (k + 1)), 1 / a - 1 / b,
+    isRatFractionRepr_telescope a b ha hab, ?_, ?_, ?_⟩
+  · -- positivity: a < b ⟹ 1/a > 1/b
+    have hapos : (0 : ℚ) < a := by exact_mod_cast (by omega : 0 < a)
+    have hlt : (1 : ℚ) / b < 1 / a :=
+      one_div_lt_one_div_of_lt hapos (by exact_mod_cast haltb)
+    linarith
+  · -- cardinality: injective image of an interval of length L
+    rw [Finset.card_image_of_injective _ injective_mul_succ, Nat.card_Ico]
+    omega
+  · -- every denominator k(k+1) ≥ k ≥ a = B+1 > B
+    intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    have hka : a ≤ k := (Finset.mem_Ico.mp hk).1
+    have hkn : k ≤ k * (k + 1) := Nat.le_mul_of_pos_right k (by omega)
+    omega
