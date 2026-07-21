@@ -23,7 +23,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 126,
-    "theoremCount": 7,
+    "theoremCount": 6,
     "definitionCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The development rests on elementary Mathlib divisibility infrastructure: `Nat.Prime.dvd_factorial` (p ∣ n! ↔ p ≤ n, for prime p), `Nat.coprime_primes` (Coprime p q ↔ p ≠ q for primes p, q), `Nat.Coprime.mul_dvd_of_dvd_of_dvd` (coprime a, b each dividing c ⟹ a·b ∣ c), `Nat.dvd_factorial`, and the order lemmas `lt_mul_of_one_lt_right` / `lt_mul_of_one_lt_left` for the strict drop. The Kempner function is built on `Nat.sInf` (`Nat.sInf_mem`, `Nat.sInf_le`). The three numeric sanity checks (S(6)=3, S(15)=5, S(35)=7) use `decide` on concrete `max` values — plain kernel decidability, NOT native_decide — so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
     "mathlib_version": "4.31.0",
@@ -88,7 +88,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 7
+    "theoremCount": 6
   },
   "sorries": 0,
   "overview": {
@@ -111,7 +111,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The parent's prime-power value is extended to the first multi-prime case: defining S m = sInf{n | m ∣ n!}, for distinct primes p, q we prove S(p·q) = max(p, q) by antisymmetry — an upper bound from p·q ∣ (max p q)! (each prime divides the factorial, coprimality multiplies them) and a lower bound from p·q ∣ (S(p·q))! forcing both primes below S(p·q). The corollary S(p·q) < p·q makes the grandparent's Kempner drop explicit. 7 theorems, 1 definition, 126 lines, 0 sorries, 0 axioms; numeric checks use plain decide, no native_decide.",
+    "summary": "The parent's prime-power value is extended to the first multi-prime case: defining S m = sInf{n | m ∣ n!}, for distinct primes p, q we prove S(p·q) = max(p, q) by antisymmetry — an upper bound from p·q ∣ (max p q)! (each prime divides the factorial, coprimality multiplies them) and a lower bound from p·q ∣ (S(p·q))! forcing both primes below S(p·q). The corollary S(p·q) < p·q makes the grandparent's Kempner drop explicit. 6 theorems, 1 definition, 126 lines, 0 sorries, 0 axioms; numeric checks use plain decide, no native_decide.",
     "implications": "Confirms the 'S(n) = max over prime powers p^k ∥ n of S(p^k)' law in its first multi-prime case and isolates coprimality as the assembly mechanism. The natural next step is the general squarefree value S(p₁···p_r) = max p_i, and beyond it the full S(n) = max over prime powers, combining this coprime-product argument with the per-prime-power values of the parent.",
     "openQuestions": [
       "Generalize to an arbitrary squarefree number: prove S(p₁·p₂···p_r) = max_i p_i for distinct primes, by induction on the number of prime factors using the same coprime-product upper bound and prime-forced lower bound.",
