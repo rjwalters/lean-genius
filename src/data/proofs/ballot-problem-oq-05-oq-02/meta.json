@@ -118,11 +118,27 @@
     },
     {
       "id": "consequences",
-      "title": "Aggregate, Probability, Catalan Diagonal, and Worked Examples",
-      "summary": "reflectBallot_mul (cycle-lemma aggregate), reflectBallot_div (probability (a+1-b)/(a+1+b) over ℚ), and reflectBallot_catalan (diagonal = catalan n) transport the parent's results along a ↦ a+1; four decide-checked examples.",
+      "title": "Aggregate, Probability, and Catalan Diagonal",
+      "summary": "reflectBallot_mul (cycle-lemma aggregate: reflectBallot a b·(a+1+b) = (a+1−b)·C(a+1+b,a+1)), reflectBallot_div (probability (a+1−b)/(a+1+b) over ℚ), and reflectBallot_catalan (diagonal reflectBallot n n = catalan n) transport the parent's cycle-lemma results along a ↦ a+1.",
       "startLine": 111,
-      "endLine": 147,
+      "endLine": 132,
       "mathContext": "Everything past the reconciliation is the parent's cycle-lemma arithmetic read at shifted parameters (a+1,b); the diagonal recovers Dyck paths of semilength n."
+    },
+    {
+      "id": "catalan-triangle-recurrence",
+      "title": "The Catalan-Triangle Recurrence",
+      "summary": "The non-negative ballot numbers are the entries of the Catalan triangle and obey the Pascal-type recurrence T(a,b)=T(a−1,b)+T(a,b−1). reflectBallot_add_choose (exactness of the ℕ subtraction on the full range b ≤ a+1), reflectBallot_one (first column reflectBallot a 1 = a), reflectBallot_diag_succ (super-diagonal reflectBallot a (a+1) = 0), and reflectBallot_recurrence (the interior additive recurrence for 2 ≤ b ≤ a), with decide-checked interior sanity checks. Together these generate the whole triangle from its first column.",
+      "startLine": 133,
+      "endLine": 230,
+      "mathContext": "$T(a,b)=T(a-1,b)+T(a,b-1)$ in the interior; edges pinned by $T(a,1)=a$ and $T(a,a+1)=0$ (ℕ-truncated subtraction is exact for $b\\le a+1$)."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Worked Examples",
+      "summary": "decide-checked concrete evaluations (hence 0-axiom): reflectBallot 2 1 = 2, reflectBallot 3 2 = 5, and the diagonal Catalan values reflectBallot 2 2 = 2 = catalan 2, reflectBallot 3 3 = 5 = catalan 3.",
+      "startLine": 231,
+      "endLine": 245,
+      "mathContext": "$\\mathrm{reflectBallot}\\,a\\,b=\\binom{a+b}{b}-\\binom{a+b}{b-1}$; diagonal recovers $C_n$."
     }
   ],
   "conclusion": {
