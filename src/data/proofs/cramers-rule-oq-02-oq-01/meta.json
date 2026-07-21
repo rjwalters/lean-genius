@@ -74,11 +74,11 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports",
-      "summary": "Imports the full Mathlib library (for Finset.sum, Finset.sum_range_succ, omega, ring, norm_num) and the parent file Proofs.CramersRuleOQ02 (for CramersComplexity.cramersRuleMuls and gauss_beats_cramer).",
+      "title": "Module Overview and Imports",
+      "summary": "Module docstring and imports. Research question: the parent CramersRuleOQ02 compares Cramer's rule (≈ n·n! or a loose n³ model) against Gaussian elimination; this file pins the EXACT elimination operation count and answers YES — the exact count is (n³ − n)/3 multiplications+divisions, tightening the loose n³ model. States what is proved (all 0-axiom / 0-sorry): the closed forms, the sharp crossover, and the ~2n³/3 textbook flop headline. Imports full Mathlib (Finset.sum, sum_range_succ, omega, ring, norm_num).",
       "startLine": 1,
-      "endLine": 2,
-      "mathContext": "Builds on the parent Cramer-vs-Gauss complexity file, reusing its cramersRuleMuls model and gauss_beats_cramer comparison theorem."
+      "endLine": 52,
+      "mathContext": "Exact Gaussian-elimination cost: $(n^3-n)/3$ mult+div; the complete linear solve is $\\approx n^3/3$ mult+div and $\\approx 2n^3/3$ total flops — the classic textbook count."
     },
     {
       "id": "exact-model",
@@ -109,14 +109,22 @@
       "title": "Comparison Preserved Under Tightening",
       "summary": "Proves gaussExact_beats_cramer: for n ≥ 4 the exact (n³ − n)/3 model still uses fewer operations than Cramer's rule, a fortiori from gaussExactOps n ≤ n³ and the parent's gauss_beats_cramer. The summary theorem gauss_exact_summary bundles the closed form, division form, both bounds, and the preserved comparison.",
       "startLine": 117,
-      "endLine": 133,
+      "endLine": 132,
       "mathContext": "Since gaussExactOps n ≤ n³ = gaussMuls n and the parent proved gaussMuls n < cramersRuleMuls n for n ≥ 4, the tighter model beats Cramer's rule a fortiori — tightening the winner's cost cannot overturn the comparison."
+    },
+    {
+      "id": "flops-total",
+      "title": "Additions/Subtractions and the Full ~2n³/3 Flop Total",
+      "startLine": 133,
+      "endLine": 194,
+      "summary": "gaussExactSubs n = ∑_{j<n} j² counts the additions/subtractions in elimination, with closed form gaussExactSubs_closed. gaussExactFlops n = gaussExactOps n + gaussExactSubs n is the total flop count, and gaussExactFlops_closed proves 6·gaussExactFlops n + 3n² + n = 4n³ (i.e. (4n³ − 3n² − n)/6 ≈ 2n³/3) — the textbook leading flop count for dense Gaussian elimination / LU factorization. gaussExactOps_le_flops records that the subtractions are genuine extra work.",
+      "mathContext": "Total elimination flops $= (4n^3 - 3n^2 - n)/6 \\approx \\tfrac{2n^3}{3}$: $\\approx \\tfrac{n^3}{3}$ multiplications + $\\approx \\tfrac{n^3}{3}$ additions, the classic LU-factorization headline."
     },
     {
       "id": "back-substitution",
       "title": "Back-Substitution and the Full Solve Cost",
       "summary": "Counts the back-substitution phase: backSubOps n = ∑_{j<n}(j+1) mult/div (2·backSubOps = n²+n) and backSubSubs n = ∑_{j<n} j subtractions (2·backSubSubs + n = n²), summing to backSubFlops n = n² exactly (backSubFlops_eq). Composes the full solve cost fullSolveFlops n = gaussExactFlops n + backSubFlops n with closed form 6·fullSolveFlops n + n = 4n³ + 3n² (leading term 2n³/3), proves back-substitution is dominated by forward elimination for n ≥ 3 (backSubFlops_le_gaussFlops), the full solve stays ≤ n³ for n ≥ 2, and still beats Cramer's rule for n ≥ 4 (fullSolve_beats_cramer). Bundled in fullSolve_summary with concrete small-n checks.",
-      "startLine": 196,
+      "startLine": 195,
       "endLine": 332,
       "mathContext": "Back-substitution on the upper-triangular system costs exactly n² flops (n(n+1)/2 mult/div + n(n−1)/2 subtractions), an O(n²) term negligible against the ~2n³/3 of forward elimination. The complete dense-solve cost is therefore (4n³ + 3n² − n)/6 ~ 2n³/3."
     },
@@ -124,9 +132,25 @@
       "id": "sharp-crossover",
       "title": "Sharp Crossover: Gauss Beats Cramer for Every n ≥ 1",
       "summary": "Sharpens the inherited n ≥ 4 comparison threshold: because the exact full-solve cost fullSolveFlops n ≈ 2n³/3 is a constant factor smaller than the loose n³ model, fullSolve_beats_cramer_all shows Gaussian elimination beats Cramer's rule for every n ≥ 1 (the small cases n ∈ {1,2,3} decided directly as 1<2, 7<12, 22<72; n ≥ 4 reuses fullSolve_beats_cramer). fullSolve_beats_cramer_sharp proves the 1 ≤ n hypothesis is sharp — the strict inequality fails at n = 0 where both costs are 0.",
-      "startLine": 334,
+      "startLine": 333,
       "endLine": 370,
       "mathContext": "The n ≥ 4 threshold in the parent comparison is an artifact of bounding Gauss by the conservative n³ model (whose beat-Cramer proof relies on factorial_gt_sq, established only for n ≥ 4). Under the honest ≈ 2n³/3 cost, the crossover drops to the smallest nontrivial dimension: Gauss wins for all n ≥ 1, and n = 0 is the sharp boundary (both models cost 0)."
+    },
+    {
+      "id": "rhs-complete-solve",
+      "title": "Right-Hand-Side Handling and the Complete Linear Solve (mult/div count)",
+      "startLine": 371,
+      "endLine": 489,
+      "summary": "gaussSum n = ∑_{j<n} j (with gaussSum_closed: 2·gaussSum n + n = n²) drives the RHS-elimination and back-substitution multiplication counts (rhsElimMuls, backSubMuls). solveMulsDivs n counts the complete solve's mult+div, with solveMulsDivs_closed (3·solveMulsDivs n + n = n³ + 3n², i.e. (n³ + 3n² − n)/3 ≈ n³/3). solve_overhead_quadratic shows the cubic term lives entirely in the factorization: solveMulsDivs n = gaussExactOps n + n², so RHS handling is a lower-order n² correction. solveMulsDivs_le_cube and solve_beats_cramer carry the comparison through.",
+      "mathContext": "Complete-solve mult/div $= (n^3 + 3n^2 - n)/3 \\approx \\tfrac{n^3}{3}$, with $\\text{solveMulsDivs}(n) = \\text{gaussExactOps}(n) + n^2$ — the RHS + back-substitution overhead is exactly $n^2$."
+    },
+    {
+      "id": "complete-flops",
+      "title": "The Complete-Solve Full Flop Count — the ~2n³/3 Headline",
+      "startLine": 490,
+      "endLine": 588,
+      "summary": "solveFlops n adds the subtraction counts (rhsElimSubs, backSubSubs) to the complete-solve total. solveFlops_closed proves 6·solveFlops n + 7n = 4n³ + 9n² (i.e. (4n³ + 9n² − 7n)/6 ≈ 2n³/3) — the classic textbook flop count for solving a dense linear system by Gaussian elimination. solveMulsDivs_le_flops (subtractions are genuine work), solveFlops_le_cube, solveFlops_beats_cramer, and solve_flops_summary complete the picture.",
+      "mathContext": "Complete-solve total flops $= (4n^3 + 9n^2 - 7n)/6 \\approx \\tfrac{2n^3}{3}$ — the headline cost of a dense Gaussian-elimination solve, versus Cramer's superpolynomial/loose-$n^3$ count."
     }
   ],
   "conclusion": {
