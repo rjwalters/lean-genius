@@ -318,6 +318,7 @@ frequencies `n, m ≥ 1`,
 Proof by the product-to-sum identity `cos(nθ)cos(mθ) = ½(cos((n+m)θ) + cos((n−m)θ))`: the
 `(n+m)`-term always integrates to `0` (positive frequency), while the `(n−m)`-term is
 `cos 0 = 1` (integral `2π`) exactly when `n = m` and integrates to `0` otherwise. -/
+set_option maxHeartbeats 800000 in
 theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
     (∫ θ in (0 : ℝ)..(2 * π), Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
       = if n = m then π else 0 := by
@@ -374,14 +375,14 @@ theorem integral_cosineSum_sq (A : Finset ℕ) (hA : 0 ∉ A) :
   have hintinner : ∀ n : ℕ, IntervalIntegrable
       (fun θ => ∑ m ∈ A, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
       MeasureTheory.volume 0 (2 * π) :=
-    fun n => (continuous_finset_sum A (fun m _ => (hcont n).mul (hcont m))).intervalIntegrable _ _
+    fun n => (continuous_finsetSum A (fun m _ => (hcont n).mul (hcont m))).intervalIntegrable _ _
   rw [intervalIntegral.integral_congr (fun θ _ => hexp θ),
-      intervalIntegral.integral_finsetSum A (fun n _ => hintinner n)]
+      intervalIntegral.integral_finsetSum (fun n _ => hintinner n)]
   have hstep : ∀ n ∈ A,
       (∫ θ in (0 : ℝ)..(2 * π), ∑ m ∈ A, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
         = ∑ m ∈ A, if n = m then π else (0 : ℝ) := by
     intro n hn
-    rw [intervalIntegral.integral_finsetSum A (fun m _ => hintprod n m)]
+    rw [intervalIntegral.integral_finsetSum (fun m _ => hintprod n m)]
     refine Finset.sum_congr rfl (fun m hm => ?_)
     exact integral_cos_mul_cos (Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hn)))
       (Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hm)))
