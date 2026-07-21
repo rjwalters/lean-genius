@@ -1897,16 +1897,32 @@ theorem two_common_neighbours_dist
 The linear bound `n - 1 ≤ 3 · h n` (`three_mul_h_ge`) already pins several exact
 threshold values of `h` from below, with no imported theorem and no open conjecture. -/
 
-/-- **`h n ≥ 3` for `n ≥ 8`.** From `n - 1 ≤ 3 · h n`: at `n = 8` this reads `7 ≤ 3 · h 8`,
-forcing `h 8 ≥ 3` (since `3 · 2 = 6 < 7`); monotonicity carries it to all `n ≥ 8`.  The
-first place the elementary bound alone certifies three distinct distances. -/
-theorem three_le_h_of_eight_le (hn : 8 ≤ n) : 3 ≤ h n := by
+/-- **General elementary lower bound: `k ≤ h n` once `n ≥ 3·k − 1`.**  The linear
+counting bound `n − 1 ≤ 3 · h n` (`three_mul_h_ge`) yields, for *every* target `k`,
+that `h n ≥ k` as soon as `n ≥ 3·k − 1`: then `3 · h n ≥ n − 1 ≥ 3·k − 2 > 3·(k − 1)`,
+so `h n > k − 1`, i.e. `h n ≥ k`.  This single statement subsumes the entire ladder of
+concrete values below (`k = 3 ⇒ n ≥ 8`, `k = 4 ⇒ n ≥ 11`, `k = 5 ⇒ n ≥ 14`, …), each a
+one-line specialization — no case-by-case enumeration needed.  It is the sharpest
+*elementary* general lower bound on `h`; the conjectured super-linear rate `h n / n → ∞`
+(Erdős #98) is far beyond it and remains open. -/
+theorem le_h_of_three_mul_sub_one_le {k : ℕ} (hn : 3 * k - 1 ≤ n) : k ≤ h n := by
   have := three_mul_h_ge n; omega
 
-/-- **`h n ≥ 4` for `n ≥ 11`.** From `n - 1 ≤ 3 · h n`: at `n = 11` this reads `10 ≤ 3 · h 11`,
-forcing `h 11 ≥ 4` (since `3 · 3 = 9 < 10`); monotonicity carries it to all `n ≥ 11`. -/
-theorem four_le_h_of_eleven_le (hn : 11 ≤ n) : 4 ≤ h n := by
-  have := three_mul_h_ge n; omega
+/-- **`h n ≥ 3` for `n ≥ 8`.**  The `k = 3` case of `le_h_of_three_mul_sub_one_le`
+(`3·3 − 1 = 8`): the first place the elementary bound alone certifies three distinct
+distances. -/
+theorem three_le_h_of_eight_le (hn : 8 ≤ n) : 3 ≤ h n :=
+  le_h_of_three_mul_sub_one_le (by omega)
+
+/-- **`h n ≥ 4` for `n ≥ 11`.**  The `k = 4` case of `le_h_of_three_mul_sub_one_le`
+(`3·4 − 1 = 11`). -/
+theorem four_le_h_of_eleven_le (hn : 11 ≤ n) : 4 ≤ h n :=
+  le_h_of_three_mul_sub_one_le (by omega)
+
+/-- **`h n ≥ 5` for `n ≥ 14`.**  The `k = 5` case of `le_h_of_three_mul_sub_one_le`
+(`3·5 − 1 = 14`), the next rung above `four_le_h_of_eleven_le`. -/
+theorem five_le_h_of_fourteen_le (hn : 14 ≤ n) : 5 ≤ h n :=
+  le_h_of_three_mul_sub_one_le (by omega)
 
 /-! ## Reduction of `h 5 ≥ 3` to a two-distance structure
 
