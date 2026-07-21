@@ -117,12 +117,28 @@
       "mathContext": "Kovac and van Doorn showed that for all large $n$, signs $\\delta_k$ exist with $0 < |\\sum \\delta_k/k| \\leq 2^{-n \\cdot (\\log\\log\\log n)^{1+o(1)}/\\log n}$. This is sub-exponential in $n$ — much larger than $c/2^n$ — suggesting Q1 may be false."
     },
     {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "The proved theorem `erdos_317_summary` combines the weak inequality with the small-$n$ counterexample, packaging the known results into a single statement.",
+      "id": "existence-nonzero-sums",
+      "title": "Existence of Nonzero Signed Sums",
+      "summary": "The all-ones sign function `allOnesDelta n = fun _ => 1` and the proved theorems `allOnesDelta_isSign` (it is a valid sign function), `allOnes_sum_pos` (for n ≥ 1 its signed sum is strictly positive — it is the n-th harmonic number, shown positive via Finset.sum_pos), and `nonzero_signed_sum_exists` (for every n ≥ 1 some sign function yields a nonzero signed sum, witnessed trivially by the harmonic number). Establishes that the nonemptiness hypothesis of Question 2 is never vacuous.",
       "startLine": 105,
-      "endLine": 158,
-      "mathContext": "The summary theorem states: (1) for all $n$ and all sign functions $\\delta$, $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}(1,\\ldots,n)$ (weak inequality), AND (2) there exists a sign function at $n = 4$ achieving equality. This is the provable content of the file; Questions 1 and 2 remain open."
+      "endLine": 130,
+      "mathContext": "Taking $\\delta_k = 1$ for all $k$ gives $\\sum \\delta_k/(k+1) = H_n = \\sum_{k=1}^{n} 1/k > 0$, the harmonic number, so a nonzero signed sum always exists. This shows the set of nonzero sums is nonempty for every $n \\ge 1$, so asking for its infimum (Questions 1 and 2) is well-posed."
+    },
+    {
+      "id": "weak-inequality",
+      "title": "Weak Inequality (Part V)",
+      "summary": "Proved theorem `weak_inequality`: every nonzero signed unit fraction sum satisfies |∑ δ_k/(k+1)| ≥ 1/lcm(1,…,n). The proof clears the trivial L=0 case, then shows L·S is an integer m (each denominator k+1 divides L=lcm_1_to_n n via Finset.dvd_lcm, so field_simp/push_cast/ring reduce each term to an integer), deduces m ≠ 0 from S ≠ 0, and concludes via 1 ≤ |m| = |L·S| = |S|·L (an omega bound on the integer m, then div_le_iff₀). This is the provable half of Question 2 — the strict version is what fails for small n.",
+      "startLine": 132,
+      "endLine": 173,
+      "mathContext": "Since each $k+1 \\mid \\operatorname{lcm}(1,\\ldots,n) =: L$, the quantity $L\\cdot S$ is an integer $m$; when $S \\neq 0$, $m \\neq 0$ so $|m| \\ge 1$, giving $|S| = |m|/L \\ge 1/L = 1/\\operatorname{lcm}(1,\\ldots,n)$. The strict inequality $>$ is what Question 2 asks and what fails at $n=4$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem (Part VI)",
+      "summary": "The proved theorem `erdos_317_summary` combines the weak inequality, the small-n counterexample, and the existence result into a single statement, packaging the file's provable content.",
+      "startLine": 175,
+      "endLine": 192,
+      "mathContext": "The summary theorem states: (1) for all $n$ and all sign functions $\\delta$, $|\\sum \\delta_k/(k+1)| \\geq 1/\\text{lcm}(1,\\ldots,n)$ (weak inequality); (2) there exists a sign function at $n = 4$ achieving equality (so the strict inequality of Question 2 fails); and (3) for every $n \\ge 1$ a nonzero signed sum exists. This is the provable content of the file; Questions 1 and 2 remain open."
     }
   ],
   "conclusion": {
