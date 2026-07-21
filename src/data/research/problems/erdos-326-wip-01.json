@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): pinned the additive-basis order of the squares to EXACTLY 4. not_isAddBasisOfOrder_squares_three (8N+7 obstruction, mod-8 decide) + not_isAddBasisOfOrder_squares_of_le_three + mem_squares_mod_eight. Sharpens isAddBasisOfOrder_squares_four (order 4 is tight, not just an upper bound). 18 axiom-free theorems. Deep growth content (b_k=O(k^2), oscillation) untouched.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): formalized Key Observation 1 of the parent — an order-2 additive basis is quadratically dense (IsAddBasisOfOrder.two_quadratic_density / '). For every n≥N there is a finite S⊆A of elements ≤n with |Icc N n| ≤ (|S|+1)², i.e. the counting function up to n is ≥√(n+1-N)-1 (the √n density behind b_k=O(k²)), via an injection of [N,n] into padded summand pairs. 20 axiom-free theorems. The deep oscillation dichotomy (the open part of #326) is untouched and remains a structured blocker.",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -54,14 +54,16 @@
       "HasGrowthLimit.unique, HasGrowthLimit.not_hasNoGrowthLimit, hasNoGrowthLimit_iff",
       "Squares (the set {m^2}), isAddBasisOfOrder_squares_four, isAddBasis_squares in Erdos326WIP01.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])",
       "IsAddBasisOfOrder.infinite (Erdos326WIP01.lean): a bounded-order additive basis is infinite, via Set.Finite.bddAbove + sum ≤ k·M ceiling (2026-07-20)",
-      "mem_squares_mod_eight, not_isAddBasisOfOrder_squares_three, not_isAddBasisOfOrder_squares_of_le_three in Erdos326WIP01.lean (0 axioms, 0 sorries; host-verified v4.31.0 via fresh-parent-olean; #print axioms clean)"
+      "mem_squares_mod_eight, not_isAddBasisOfOrder_squares_three, not_isAddBasisOfOrder_squares_of_le_three in Erdos326WIP01.lean (0 axioms, 0 sorries; host-verified v4.31.0 via fresh-parent-olean; #print axioms clean)",
+      "IsAddBasisOfOrder.two_quadratic_density + .two_quadratic_density' (Erdos326WIP01.lean): an order-2 additive basis is quadratically dense — ∃N, ∀n≥N ∃ finite S⊆A with elements ≤n and |Icc N n| ≤ (|S|+1)² (equivalently n+1-N ≤ (|S|+1)², so the counting function up to n is ≥√(n+1-N)-1). Formalizes the parent's stated Key Observation 1 behind b_k=O(k²). Proof: pad each m∈[N,n] to an ordered summand pair (a_m,b_m)∈(A∪{0})²; m↦(a_m,b_m) is injective (sum recovers m), so [N,n] injects into (S∪{0})². Axiom-free (propext/Choice/Quot), host-verified v4.31 via fresh-parent-olean (2026-07-20)."
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
       "Order 0 and the empty set are degenerate non-bases (only 0 is representable), so all substantive work happens at order ≥ 1 with an infinite set.",
       "growthRatio b 0 = 0 by the ℝ junk convention x/0 = 0 — worth pinning so downstream limit arguments can ignore the k=0 term.",
       "The perfect squares are a concrete additive basis of order 4 (Lagrange four-square theorem, Nat.sum_four_squares) — the canonical non-vacuous witness for IsAddBasisOfOrder. Order 4 is the correct order: numbers of the form 4^a(8b+7) (e.g. 7,15,23,28) are never sums of three squares, so squares are not an order-3 basis (that stronger negative needs Legendre three-square, deeper).",
-      "The additive-basis order of the perfect squares is EXACTLY 4: Lagrange gives order 4, and order 3 fails because 8N+7 ≡ 7 mod 8 is never a sum of ≤3 squares. This is the EASY (necessary) direction of Legendre three-square — no full Legendre needed, just squares ≡ 0/1/4 mod 8 and no three summing to 7 mod 8, a decide over ZMod 8."
+      "The additive-basis order of the perfect squares is EXACTLY 4: Lagrange gives order 4, and order 3 fails because 8N+7 ≡ 7 mod 8 is never a sum of ≤3 squares. This is the EASY (necessary) direction of Legendre three-square — no full Legendre needed, just squares ≡ 0/1/4 mod 8 and no three summing to 7 mod 8, a decide over ZMod 8.",
+      "The √n density lower bound for order-2 bases (Key Observation 1) is now machine-checked axiom-free — the elementary counting core behind b_k=O(k²). The remaining open content is the growth/oscillation dichotomy (Erdős #326 proper), which this bound does not touch: it bounds b_k above but says nothing about the non-convergence of b_k/k² for a sub-basis."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."

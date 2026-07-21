@@ -220,4 +220,120 @@ theorem not_isAddBasisOfOrder_squares_of_le_three {k : ℕ} (hk : k ≤ 3) :
     ¬ IsAddBasisOfOrder Squares k :=
   fun h => not_isAddBasisOfOrder_squares_three (h.mono_order hk)
 
+/-! ## Order-2 bases are quadratically dense (Key Observation 1)
+
+The parent file records as *Key Observation 1* that any order-`2` additive basis
+must have density at least `√n` — there are `≥ c√n` elements up to `n`, hence the
+`k`-th element is `≤ Ck²`.  This is the elementary counting fact underlying the
+whole growth question of Erdős #326.  We formalize it here.
+
+The mechanism: every `m ∈ [N, n]` is a sum of at most two elements of `A`, each
+`≤ m ≤ n`.  Pad each representation to an ordered pair `(aₘ, bₘ)` with
+`aₘ + bₘ = m` and `aₘ, bₘ ∈ A ∪ {0}`.  Because the sum recovers `m`, the map
+`m ↦ (aₘ, bₘ)` is injective on `[N,n]`, so `[N,n]` injects into `(S ∪ {0})²`
+where `S ⊆ A ∩ [0,n]` collects the nonzero coordinates.  Hence
+`|[N,n]| ≤ (|S| + 1)²`, i.e. `|S| ≥ √(n+1−N) − 1`.  Axiom-free.  The deep
+oscillation dichotomy (the open part of #326) is untouched. -/
+
+/-- **An order-2 additive basis is quadratically dense.**  If `A` is an additive
+basis of order `2`, there is a threshold `N` such that for every `n ≥ N` some
+finite `S ⊆ A` of elements `≤ n` satisfies `|Icc N n| ≤ (|S| + 1)²`.  This is the
+counting bound behind the standard `bₖ = O(k²)` growth estimate (Key Observation
+1 of `Erdos326Problem`). -/
+theorem IsAddBasisOfOrder.two_quadratic_density {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      ∃ S : Finset ℕ, ↑S ⊆ A ∧ (∀ s ∈ S, s ≤ n) ∧
+        (Finset.Icc N n).card ≤ (S.card + 1) ^ 2 := by
+  classical
+  obtain ⟨N, hN⟩ := h
+  -- For each `m ≥ N`, choose an ordered `0`-padded summand pair from `A ∪ {0}`.
+  have hpair : ∀ m : ℕ, N ≤ m → ∃ a b : ℕ,
+      a + b = m ∧ (a ∈ A ∨ a = 0) ∧ (b ∈ A ∨ b = 0) ∧ a ≤ m ∧ b ≤ m := by
+    intro m hm
+    obtain ⟨k, hk, f, hf, hsum⟩ := hN m hm
+    interval_cases k
+    · simp only [Fin.sum_univ_zero] at hsum
+      exact ⟨0, 0, by omega, Or.inr rfl, Or.inr rfl, by omega, by omega⟩
+    · simp only [Fin.sum_univ_one] at hsum
+      exact ⟨f 0, 0, by omega, Or.inl (hf 0), Or.inr rfl, by omega, by omega⟩
+    · rw [Fin.sum_univ_two] at hsum
+      exact ⟨f 0, f 1, hsum, Or.inl (hf 0), Or.inl (hf 1), by omega, by omega⟩
+  choose! a b hsum hmemA hmemB hlea hleb using hpair
+  refine ⟨N, fun n hn => ?_⟩
+  set imgs : Finset ℕ :=
+    (Finset.Icc N n).image a ∪ (Finset.Icc N n).image b with himgs
+  set T : Finset ℕ := insert 0 imgs with hTdef
+  have h0T : (0 : ℕ) ∈ T := Finset.mem_insert_self 0 imgs
+  refine ⟨T.erase 0, ?_, ?_, ?_⟩
+  · -- `S ⊆ A`
+    intro s hs
+    rw [Finset.mem_coe, Finset.mem_erase, hTdef, Finset.mem_insert, himgs,
+      Finset.mem_union] at hs
+    obtain ⟨hs0, hmem⟩ := hs
+    rcases hmem with h0 | hmem
+    · exact absurd h0 hs0
+    rcases hmem with hima | himb
+    · obtain ⟨m, hmIcc, rfl⟩ := Finset.mem_image.mp hima
+      rw [Finset.mem_Icc] at hmIcc
+      rcases hmemA m hmIcc.1 with h | h
+      · exact h
+      · exact absurd h hs0
+    · obtain ⟨m, hmIcc, rfl⟩ := Finset.mem_image.mp himb
+      rw [Finset.mem_Icc] at hmIcc
+      rcases hmemB m hmIcc.1 with h | h
+      · exact h
+      · exact absurd h hs0
+  · -- every element of `S` is `≤ n`
+    intro s hs
+    rw [Finset.mem_erase, hTdef, Finset.mem_insert, himgs, Finset.mem_union] at hs
+    obtain ⟨_, hmem⟩ := hs
+    rcases hmem with h0 | hmem
+    · omega
+    rcases hmem with hima | himb
+    · obtain ⟨m, hmIcc, rfl⟩ := Finset.mem_image.mp hima
+      rw [Finset.mem_Icc] at hmIcc
+      exact (hlea m hmIcc.1).trans hmIcc.2
+    · obtain ⟨m, hmIcc, rfl⟩ := Finset.mem_image.mp himb
+      rw [Finset.mem_Icc] at hmIcc
+      exact (hleb m hmIcc.1).trans hmIcc.2
+  · -- the cardinality bound
+    have hTcard : (T.erase 0).card + 1 = T.card := Finset.card_erase_add_one h0T
+    have hle : (Finset.Icc N n).card ≤ (T ×ˢ T).card := by
+      apply Finset.card_le_card_of_injOn (fun m => (a m, b m))
+      · intro m hm
+        rw [Finset.mem_coe, Finset.mem_Icc] at hm
+        rw [Finset.mem_coe, Finset.mem_product]
+        refine ⟨Finset.mem_insert_of_mem ?_, Finset.mem_insert_of_mem ?_⟩
+        · exact Finset.mem_union_left _
+            (Finset.mem_image.mpr ⟨m, Finset.mem_Icc.mpr hm, rfl⟩)
+        · exact Finset.mem_union_right _
+            (Finset.mem_image.mpr ⟨m, Finset.mem_Icc.mpr hm, rfl⟩)
+      · intro m1 hm1 m2 hm2 hEq
+        rw [Finset.mem_coe, Finset.mem_Icc] at hm1 hm2
+        simp only [Prod.mk.injEq] at hEq
+        have e1 := hsum m1 hm1.1
+        have e2 := hsum m2 hm2.1
+        omega
+    calc (Finset.Icc N n).card
+        ≤ (T ×ˢ T).card := hle
+      _ = T.card * T.card := Finset.card_product T T
+      _ = ((T.erase 0).card + 1) * ((T.erase 0).card + 1) := by rw [hTcard]
+      _ = ((T.erase 0).card + 1) ^ 2 := by ring
+
+/-- Counting-function form: for an order-2 basis there is a threshold `N` such
+that for every `n ≥ N` the witnessing finite subset `S ⊆ A` of elements `≤ n`
+satisfies `n + 1 − N ≤ (|S| + 1)²`.  Equivalently the number of basis elements
+used up to `n` is `≥ √(n+1−N) − 1`, the `√n` density behind `bₖ = O(k²)`. -/
+theorem IsAddBasisOfOrder.two_quadratic_density' {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      ∃ S : Finset ℕ, ↑S ⊆ A ∧ (∀ s ∈ S, s ≤ n) ∧
+        n + 1 - N ≤ (S.card + 1) ^ 2 := by
+  obtain ⟨N, hN⟩ := h.two_quadratic_density
+  refine ⟨N, fun n hn => ?_⟩
+  obtain ⟨S, hS, hSn, hcard⟩ := hN n hn
+  rw [Nat.card_Icc] at hcard
+  exact ⟨S, hS, hSn, hcard⟩
+
 end Erdos326
