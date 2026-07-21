@@ -81,63 +81,83 @@
   "sections": [
     {
       "id": "problem-statement",
-      "title": "Problem Statement: The Infinite Friendship Theorem",
+      "title": "Problem Statement and Overview",
       "startLine": 1,
-      "endLine": 52,
-      "summary": "License header, imports (Mathlib and the parent Proofs.FriendshipTheorem), and the module docstring framing OQ-04: the finite Friendship Theorem (Erdős–Rényi–Sós 1966) fails for infinite graphs (Chvátal–Kotzig–Rosenberg–Davies C₅ free-amalgamation counterexample), and this file identifies local finiteness as the sharp restoring hypothesis — proved via a finiteness-free diameter-2 covering rather than the finite-only spectral argument.",
-      "mathContext": "Finite theorem: exactly-one-common-neighbour ⇒ a universal vertex (windmill). Infinite: false in general; the obstruction is an infinite-degree vertex, and local finiteness restores the conclusion."
+      "endLine": 113,
+      "summary": "The infinite Friendship Theorem question (friendship-theorem-oq-04): does the finite friendship theorem — a graph in which every two vertices have exactly one common friend has a universal vertex — survive on infinite vertex sets? Module docstring maps the whole strategy: recover finiteness, build the windmill, and prove the hub-vs-ℵ₀-regular structural dichotomy without the finite spectral argument.",
+      "mathContext": "Finite friendship theorem (Erdős–Rényi–Sós 1966): if every pair of distinct vertices has exactly one common neighbour, some vertex is adjacent to all others (a windmill/Dutch-windmill). The finite proof is finite-matrix spectral algebra (trace + eigenvalue integrality) with no infinite analogue; this file replaces it with covering/equinumerosity arguments valid for any $V$."
     },
     {
       "id": "part1-friendship-graph",
       "title": "Part I: Friendship Graphs and Common Neighbours",
-      "startLine": 55,
-      "endLine": 70,
-      "summary": "IsFriendshipGraph: every two distinct vertices have exactly one common neighbour; exists_common_neighbor extracts that neighbour."
+      "startLine": 114,
+      "endLine": 129,
+      "summary": "`IsFriendshipGraph` — the `[Fintype V]`-free friendship property, $\\forall u \\ne v,\\ |N(u)\\cap N(v)| = 1$ — and `exists_common_neighbor`: any two distinct vertices share at least one common neighbour.",
+      "mathContext": "Stated via `(G.commonNeighbors u v).ncard = 1` so it applies to infinite vertex types (`Set.ncard` rather than `Finset.card`). Definitionally identical to Mathlib's `FriendshipTheorem.IsFriendshipGraph` on finite types."
     },
     {
       "id": "part2-diameter-two",
-      "title": "Part II: Diameter ≤ 2 (No Finiteness)",
-      "startLine": 71,
-      "endLine": 95,
-      "summary": "friendship_diameter_two and univ_subset_two_ball: every vertex is within distance 2 of a fixed v, a purely local covering."
+      "title": "Part II: Diameter ≤ 2 (Survives Infinity)",
+      "startLine": 130,
+      "endLine": 154,
+      "summary": "`friendship_diameter_two`: any vertex $u \\ne v$ is either adjacent to $v$ or shares a common neighbour with it, and `univ_subset_two_ball`: the whole vertex set is covered by a base vertex's 2-ball. Both hold with no finiteness assumption.",
+      "mathContext": "The friendship condition forces graph diameter $\\le 2$: $V = \\{v\\} \\cup N(v) \\cup \\{$vertices at distance 2$\\}$, and every distance-2 vertex reaches $v$ through the unique common neighbour. This 2-ball covering is the engine that later restores finiteness under local finiteness."
     },
     {
       "id": "part3-local-finiteness",
       "title": "Part III: Local Finiteness Forces Finiteness",
-      "startLine": 96,
-      "endLine": 119,
-      "summary": "univ_finite_of_locallyFinite and locally_finite_is_finite: the diameter-2 covering is a finite union of finite neighbourhoods, so V is finite; infinite_friendship_has_infinite_degree is the contrapositive."
+      "startLine": 155,
+      "endLine": 189,
+      "summary": "`univ_finite_of_locallyFinite` and `locally_finite_is_finite`: if every neighbourhood is finite the whole graph is finite (the 2-ball covering is a finite union of finite sets); contrapositive `infinite_friendship_has_infinite_degree`: every infinite friendship graph has a vertex of infinite degree.",
+      "mathContext": "The diameter-2 covering writes $V$ as a finite union $\\{v\\}\\cup N(v)\\cup\\bigcup_{w\\in N(v)} N(w)$; if each $N(\\cdot)$ is finite so is $V$. Hence the only way to escape the finite theorem is an infinite-degree vertex — the sharp obstruction the rest of the file analyzes."
     },
     {
       "id": "part4-universal-vertex",
       "title": "Part IV: Recovering a Universal Vertex",
-      "startLine": 120,
-      "endLine": 145,
-      "summary": "locally_finite_friendship_has_universal: combine finiteness with the finite gallery theorem FriendshipTheorem.friendship_theorem to obtain a universal vertex."
+      "startLine": 190,
+      "endLine": 211,
+      "summary": "`locally_finite_friendship_has_universal`: a locally finite friendship graph on ≥ 3 vertices has a universal vertex, recovered from Mathlib's finite friendship theorem via the finiteness of Part III.",
+      "mathContext": "Once local finiteness gives `Fintype V`, the classical result `FriendshipTheorem.exists_politician` applies verbatim, yielding a hub $c$ adjacent to all others. This isolates exactly where the finite spectral theorem is (re)used and confines it to the locally finite case."
     },
     {
       "id": "part5-infinite-windmill",
       "title": "Part V: Infinite Windmill Structure",
-      "startLine": 154,
-      "endLine": 196,
-      "summary": "universal_noncentral_neighborSet: in any friendship graph (finite or infinite) with a universal vertex c, every non-centre vertex u has N(u) = {c, w} for a unique partner w — a windmill of triangles sharing the centre, proved with no [Fintype V]. universal_noncentral_ncard_two reads off (N(u)).ncard = 2, the finiteness-free analogue of the finite gallery's friendship_noncentral_degree (G.degree u = 2).",
-      "mathContext": "$N(u) = \\{c, w\\}$ with $w$ the unique common neighbour of $u$ and $c$; hence $|N(u)| = 2$ even on infinite vertex types."
+      "startLine": 212,
+      "endLine": 294,
+      "summary": "With a universal vertex $c$ (finite or infinite), every non-centre vertex has exactly two neighbours (`universal_noncentral_neighborSet`, `universal_noncentral_ncard_two`); only the centre can have infinite degree (`infinite_degree_vertex_eq_universal`), the hub of an infinite graph does (`universal_vertex_infinite_degree`), and it is the unique such vertex (`unique_infinite_degree_vertex`).",
+      "mathContext": "A universal vertex makes the graph a windmill: each non-centre $u$ is joined to $c$ and to exactly one 'partner', so $\\deg u = 2$. Thus in an infinite windmill the centre is the sole infinite-degree vertex — a rigidity used to separate the windmill branch of the dichotomy from the hub-free branch."
+    },
+    {
+      "id": "part6-regularity-matching",
+      "title": "Part VI: Non-Adjacent Regularity and the Perfect Matching",
+      "startLine": 295,
+      "endLine": 418,
+      "summary": "`nonadjacent_neighborSet_equinum`: two non-adjacent vertices have equinumerous neighbourhoods (finiteness-free bijection through the unique common neighbour). For a universal-vertex graph, partnership off the centre is symmetric (`universal_partner_symm`), unique (`universal_noncentral_unique_partner`), and characterizes adjacency (`universal_noncentral_adj_iff`) — the windmill is a perfect matching off the hub.",
+      "mathContext": "For non-adjacent $u,v$ the map $x \\mapsto$ (the unique common neighbour of $x$ and $v$) is a bijection $N(u)\\to N(v)$, giving $|N(u)| = |N(v)|$ with no cardinality assumption. Off the centre, adjacency is exactly the partner relation, so the non-central vertices pair up into a perfect matching."
     },
     {
       "id": "part7-adjacent-regularity",
-      "title": "Part VII: Regularity Across an Adjacent Pair",
-      "startLine": 380,
-      "endLine": 413,
-      "summary": "neighborSet_equinum_of_common_nonneighbor composes the two non-adjacent bijections N(u) ≃ N(z) ≃ N(v) so that two vertices sharing a common non-neighbour z have equinumerous neighbourhoods — bridging the adjacent case that nonadjacent_neighborSet_equinum cannot reach. neighborSet_equinum_of_nonadj_or_common_nonneighbor packages the dichotomy: any pair that is non-adjacent or has a common non-neighbour is equinumerous, the structure of the ℵ₀-regular hub-free counterexample. Finiteness-free.",
-      "mathContext": "The classical finite proof shows a hub-free friendship graph is regular before applying the spectral step; the adjacent-pair equality is obtained by routing through a common non-neighbour. This file supplies that routing finiteness-freely, leaving only the existence of a common non-neighbour (finite-counting in the classical proof) as the open ingredient on the infinite side."
+      "title": "Part VII: Regularity Across Adjacent Pairs and Unique Triangles",
+      "startLine": 419,
+      "endLine": 486,
+      "summary": "Adjacent-pair regularity: neighbourhoods are equinumerous when the pair has a common non-neighbour (`neighborSet_equinum_of_common_nonneighbor`) or is non-adjacent, packaged as `neighborSet_equinum_of_nonadj_or_common_nonneighbor`. Also `common_neighbor_unique` (the `∃!` upgrade) and `edge_unique_triangle`: every edge lies in a unique triangle — the local windmill.",
+      "mathContext": "The friendship condition makes common neighbours unique ($\\exists!$), so every edge $uv$ extends to exactly one triangle $uvw$. Equinumerosity of neighbourhoods across a broad class of pairs is the finiteness-free substitute for the finite theorem's regularity step."
     },
     {
-      "id": "part6-perfect-matching",
-      "title": "Part VI: The Windmill is a Perfect Matching",
-      "startLine": 318,
-      "endLine": 378,
-      "summary": "universal_partner_symm shows the partner relation is an involution: N(u) = {c, w} ⟹ N(w) = {c, u}, so deleting the hub c leaves a disjoint union of edges. universal_noncentral_unique_partner gives each non-centre vertex a unique non-centre neighbour, and universal_noncentral_adj_iff characterises off-centre adjacency as partnership (G.Adj u u' ↔ N(u) = {c, u'}). Together they pin down the full edge set of the (possibly infinite) windmill, all with no [Fintype V].",
-      "mathContext": "With hub $c$ deleted, the graph is a perfect matching: the spokes pair $u \\leftrightarrow w$ with $N(u) = \\{c,w\\}$ and $N(w) = \\{c,u\\}$, and $u \\sim u' \\iff N(u) = \\{c,u'\\}$."
+      "id": "part8-hub-dichotomy",
+      "title": "Part VIII: The Bridge Lemma and Hub-Free Regularity",
+      "startLine": 487,
+      "endLine": 588,
+      "summary": "`adjacent_dominating_implies_universal`: a dominating edge forces a hub; contrapositive `no_universal_adjacent_has_common_nonneighbor`: a hub-free graph has a common non-neighbour for every edge, which upgrades to `no_universal_regular` (hub-free ⟹ regular, unconditional) and `no_universal_infinite_aleph0_regular` (infinite hub-free ⟹ ℵ₀-regular — the counterexample shape).",
+      "mathContext": "If an adjacent pair dominates the graph, uniqueness of common neighbours forces one endpoint universal. So a hub-free friendship graph has no dominating edge; combined with adjacent-pair regularity this makes all neighbourhoods equinumerous, and in the infinite case all of them are infinite — an ℵ₀-regular hub-free graph, bypassing the finite spectral argument entirely."
+    },
+    {
+      "id": "part9-capstone-dichotomy",
+      "title": "Part IX: The Capstone Structural Dichotomy",
+      "startLine": 589,
+      "endLine": 627,
+      "summary": "`universal_infinite_not_regular`: an infinite windmill is *not* regular (the hub has infinite degree, non-centres degree two), and the capstone `friendship_infinite_exclusive_dichotomy`: every infinite friendship graph satisfies *exactly one* of — it has a unique universal vertex (windmill), or it is hub-free and ℵ₀-regular.",
+      "mathContext": "The two branches are mutually exclusive: a windmill fails regularity (degrees $\\infty$ vs $2$), while hub-free graphs are ℵ₀-regular and hubless. This exclusive dichotomy is the file's main structural result on infinite friendship graphs, obtained without any finite-matrix spectral theory."
     }
   ],
   "conclusion": {
