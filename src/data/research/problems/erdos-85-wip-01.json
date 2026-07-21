@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1, VERIFIED 0-axiom host v4.31.0): generalised the C5 point-witness f(5)≥3 to the GENERAL lower bound f(n)≥3 for ALL n≥5 (three_le_minDegreeForC4), via the structural ±1-step telescoping proof that the n-cycle is C4-free (cycleGraph_not_containsC4) + Cn 2-regularity. 19 axiom-free theorems (was 16). Deep results (f(4)=2 upper half, KST √n scale, monotonicity) remain documented-only.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1, VERIFIED 0-axiom host v4.31.0): proved the FIRST TWO exact threshold values f(4)=2 (minDegreeForC4_four) and f(5)=3 (minDegreeForC4_five) plus the sharpened general upper bound f(n)≤n-2 for n≥4 (minDegreeForC4_le_sub_two), via containsC4_of_minDegree_ge (min-degree n-2 forces a C4: non-adjacent pair ⟹ ≥2 common neighbours) and the reusable rim-embedding helper containsC4_of_rim. 24 axiom-free theorems (was 19). Deep results (KST √n scale, monotonicity) remain documented-only.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -53,7 +53,12 @@
       "Lower bound f(n+1) ≥ 2 for n≥3 (two_le_minDegreeForC4): the star K_{1,n} is a min-degree-1 C4-free witness, so 0,1 are not in the threshold set. With f(n)≤n-1 this brackets 2≤f(n+1)≤n and pins f(4)≥2 (true value 2).",
       "Recipe for a Nat.sInf lower bound k≤sInf S: le_csInf hne (fun k hk => ...) then contradict a k≤m case with an explicit witness graph; needs S nonempty (upper-bound witness reused).",
       "A SimpleGraph defined by an explicit Adj (starGraph) needs a DecidableRel instance to even mention its minDegree in a theorem SIGNATURE (classical in the body is too late); added starGraph_decidableAdj via unfold+infer_instance. minDegree lower bound via exists_minimal_degree_vertex + card_neighborFinset_eq_degree + Finset.one_le_card + a concrete neighbor.",
-      "The n-cycle Cn (n≥5) is C4-free by a STRUCTURAL argument, no enumeration: consecutive vertices of a C4-copy differ by ±1 in the additive group Fin n, the four steps telescope to 0, injectivity of the two diagonals forces all three interior steps to share one sign, so the closing step is ±3 — contradicting ±1 because 2≠0 and 4≠0 in Fin n. Fails at n=4 precisely because cycleGraph 4 = C4."
+      "The n-cycle Cn (n≥5) is C4-free by a STRUCTURAL argument, no enumeration: consecutive vertices of a C4-copy differ by ±1 in the additive group Fin n, the four steps telescope to 0, injectivity of the two diagonals forces all three interior steps to share one sign, so the closing step is ±3 — contradicting ±1 because 2≠0 and 4≠0 in Fin n. Fails at n=4 precisely because cycleGraph 4 = C4.",
+      "containsC4_of_minDegree_ge: min-degree n-2 on Fin n forces a C4 (n≥4). Non-adjacent-pair a,c ⟹ each has ≤1 non-neighbour, forced to be each other ⟹ all n-2 other vertices are common neighbours ⟹ pick two as b,d for cycle a-b-c-d-a. G=⊤ case handled by completeGraph_containsC4.",
+      "minDegreeForC4_le_sub_two: f(n) ≤ n-2 for n≥4, sharpening the crude complete-graph bound f(n) ≤ n-1.",
+      "minDegreeForC4_four: f(4) = 2 EXACTLY (first determined threshold value), combining star lower bound f(4)≥2 with n=4 case of the n-2 upper bound. Resolves the previously documented-only base case.",
+      "Lean idiom: for a ∀G-with-[DecidableRel] statement, the sInf-membership pattern `apply Nat.sInf_le; intro G _ hmin` handles the instance binder cleanly. Non-neighbour cardinality via Finset.card_sdiff_add_card_eq_card (subset form) + omega; card_sdiff hypothesis-free in v4.31.",
+      "minDegreeForC4_five: f(5) = 3 EXACTLY — the cycle lower bound f(5)≥3 (three_le_minDegreeForC4) meets the n-2 upper bound at n=5 (5-2=3). Second determined value, immediate corollary of the two new bounds."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
