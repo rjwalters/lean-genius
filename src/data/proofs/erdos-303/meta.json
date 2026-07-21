@@ -82,48 +82,48 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 54,
       "summary": "Introduction to the monochromatic unit fraction problem"
     },
     {
       "id": "equation",
       "title": "The Unit Fraction Equation",
-      "startLine": 32,
-      "endLine": 54,
+      "startLine": 55,
+      "endLine": 81,
       "summary": "Definition of 1/a = 1/b + 1/c and equivalence with bc = a(b+c)"
     },
     {
       "id": "examples",
       "title": "Examples of Solutions",
-      "startLine": 55,
-      "endLine": 83,
+      "startLine": 82,
+      "endLine": 110,
       "summary": "Verified concrete solutions: (2,3,6), (3,4,12), (4,5,20), (6,7,42)"
     },
     {
       "id": "colouring",
       "title": "Finite Colourings",
-      "startLine": 84,
-      "endLine": 107,
+      "startLine": 111,
+      "endLine": 135,
       "summary": "Definitions of finite colouring and monochromaticity"
     },
     {
       "id": "theorem",
       "title": "Brown-Rödl Theorem (SOLVED)",
-      "startLine": 108,
-      "endLine": 139,
-      "summary": "The main result as an axiom"
+      "startLine": 136,
+      "endLine": 173,
+      "summary": "The main result stated as axioms: brownRodl_theorem, erdos303Statement, and erdos303_true"
     },
     {
       "id": "sketch",
       "title": "Proof Sketch",
-      "startLine": 140,
-      "endLine": 164,
+      "startLine": 174,
+      "endLine": 225,
       "summary": "Why the theorem is true: infinite solutions and Ramsey arguments"
     },
     {
       "id": "density",
       "title": "Connection to Density Version",
-      "startLine": 190,
+      "startLine": 226,
       "endLine": 258,
       "summary": "Relation to Erdős #302 and the general pattern"
     }
