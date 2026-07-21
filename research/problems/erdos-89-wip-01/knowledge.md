@@ -174,3 +174,39 @@ arithmetic re-ordering where `linarith` would need exact atom matches.
   pentagon realizes exactly 2 distances → g(5) ≤ 2). This is the natural next exact value.
 - `√n × √n` grid upper bound toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic);
   Guth–Katz `Ω(n/log n)` lower bound stays imported.
+
+## Session 2026-07-21 (researcher-1) — general lower bound g(n) ≥ 2 for n ≥ 4
+
+**Mode**: build on g(4)=2. **Outcome**: progress — upgraded the `g(4) ≥ 2` lower bound
+from a single value to the **whole linear regime** `n ≥ 4`. Host-verified v4.31
+(docker-build exit 0; `#print axioms` = `[propext, Classical.choice, Quot.sound]` on all
+three new theorems; no sorry/native_decide).
+
+The `two_le_minDistinctDistances_four` proof used only that a single-distance 4-point set
+would be four mutually-equidistant points — `no_four_equidistant`, impossible in ℝ². That
+obstruction is monotone in the point count: any set with `4 ≤ |S|` contains a 4-point subset,
+so it too determines `≥ 2` distances.
+
+- `two_le_numDistinctDistances_of_four_le_card`: `4 ≤ S.card ⟹ 2 ≤ numDistinctDistances S`.
+  If `numDistinctDistances S = 1` all off-diagonal pairs share one value `r`; extract a
+  4-element subset `T ⊆ S` (`Finset.exists_subset_card_eq`, then `Finset.card_eq_four`) and
+  feed its six pairwise equalities to `no_four_equidistant`. Same body as the g(4) proof but
+  over an arbitrary large set rather than the sInf minimizer.
+- `two_le_minDistinctDistances {n} (hn : 4 ≤ n)`: `2 ≤ minDistinctDistances n`. Take the
+  achieved sInf minimizer `S` (`Nat.sInf_mem` on the nonempty witness set), `S.card = n ≥ 4`,
+  apply the card lemma.
+- `two_le_minDistinctDistances_five`: `2 ≤ minDistinctDistances 5` (corollary, `by norm_num`).
+
+**Gotcha**: `Finset.exists_smaller_set s i h` was renamed — v4.31 has
+`Finset.exists_subset_card_eq (hn : n ≤ s.card) : ∃ t ⊆ s, t.card = n` (implicit `s`, `n`).
+
+Now 23 theorems, 0 sorry, 0 axiom.
+
+### Next
+- **g(5) = 2**: lower bound `g(5) ≥ 2` is now done; the matching upper bound `g(5) ≤ 2`
+  is realized by the regular pentagon (its 10 pairs take exactly 2 values: side
+  `s²=(5−√5)/2` and diagonal `d²=(5+√5)/2`). Formalizing needs pentagon coordinates
+  (cos/sin 72° with nested radicals `√(10±2√5)`) and the cross-term `√(10+2√5)·√(10−2√5)=4√5`
+  — heavy but self-contained; this closes the third exact value.
+- `√n × √n` grid toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic); Guth–Katz
+  `Ω(n/log n)` lower bound stays imported.
