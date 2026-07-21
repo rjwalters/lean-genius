@@ -82,95 +82,95 @@
       "title": "Module Header and Imports",
       "summary": "Module docstring stating Erdős Problem #558 — determine the multicolor Ramsey number $R(K_{s,t};k)$, the least $m$ such that every $k$-colouring of $K_m$ contains a monochromatic $K_{s,t}$ — with status partially solved (asymptotics known). Imports `SimpleGraph` basics/cliques, Finset, and real power functions; `namespace Erdos558`; `open SimpleGraph`.",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 36,
       "mathContext": "Background: Chung-Graham (1975) gave general bounds and $R(K_{2,2};k)=(1+o(1))k^2$; Alon-Rónyai-Szabó (1999) gave $R(K_{3,3};k)=(1+o(1))k^3$ and $k^t$ growth when $s\\ge(t-1)!+1$. Unlike $R(K_n;2)$, these grow polynomially in $k$."
     },
     {
       "id": "definitions",
       "title": "Part 1: Basic Definitions",
       "summary": "Defines `CompleteBipartite` with $K[s,t]$ notation, `vertexCount` $=s+t$, `edgeCount` $=st$, `EdgeColoring m k` as $\\mathrm{Fin}\\,m\\to\\mathrm{Fin}\\,m\\to\\mathrm{Fin}\\,k$, and `hasMonochromaticBipartite` (disjoint $S,T$ with all cross edges one colour). Axiomatizes `ramseyBipartite` with $R(G;k)$ notation.",
-      "startLine": 36,
-      "endLine": 72,
+      "startLine": 37,
+      "endLine": 73,
       "mathContext": "One structure, five definitions, one axiom (`ramseyBipartite`, the Ramsey number itself)."
     },
     {
       "id": "basic-properties",
       "title": "Part 2: Basic Properties",
       "summary": "Section banner noting that the Ramsey number is well-defined and monotone. Exposition placeholder; declares no Lean content.",
-      "startLine": 73,
-      "endLine": 78,
+      "startLine": 74,
+      "endLine": 79,
       "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
     },
     {
       "id": "chung-graham",
       "title": "Part 3: Chung-Graham Bounds (1975)",
       "summary": "Defines the explicit bound functions `chungGrahamLower` and `chungGrahamUpper`, and axiomatizes `chung_graham_bounds`: for $s,t\\ge1$, $k\\ge2$, $\\texttt{chungGrahamLower}\\le R(K[s,t];k)\\le\\texttt{chungGrahamUpper}$.",
-      "startLine": 79,
-      "endLine": 99,
+      "startLine": 80,
+      "endLine": 100,
       "mathContext": "Two definitions and one axiom (`chung_graham_bounds`). The lower bound has the form $\\sim k^{(st-1)/(s+t)}$; the upper bound $\\sim (t-1)(k+k^{1/s})^s$."
     },
     {
       "id": "k22",
       "title": "Part 4: The Case K_{2,2} (Four-Cycle)",
       "summary": "Defines $C_4 = K[2,2]$ and axiomatizes `ramsey_K22`: $R(C_4;k)=\\Theta(k^2)$, i.e. $\\exists c_1,c_2>0$ with $c_1k^2\\le R(C_4;k)\\le c_2k^2$ for $k\\ge2$ (Chung-Graham 1975).",
-      "startLine": 100,
-      "endLine": 113,
+      "startLine": 101,
+      "endLine": 114,
       "mathContext": "One definition and one axiom (`ramsey_K22`)."
     },
     {
       "id": "k33",
       "title": "Part 5: The Case K_{3,3}",
       "summary": "Defines $K_{3,3}=K[3,3]$ and axiomatizes `ramsey_K33`: $R(K_{3,3};k)=\\Theta(k^3)$ (Alon-Rónyai-Szabó 1999, via norm-graph constructions).",
-      "startLine": 114,
-      "endLine": 127,
+      "startLine": 115,
+      "endLine": 128,
       "mathContext": "One definition and one axiom (`ramsey_K33`)."
     },
     {
       "id": "ars-general",
       "title": "Part 6: The General Theorem of Alon-Rónyai-Szabó",
       "summary": "Defines the threshold `criticalS(t) = (t-1)!+1` and axiomatizes `alon_ronyai_szabo`: when $s\\ge(t-1)!+1$ and $t\\ge2$, $R(K[s,t];k)=\\Theta(k^t)$.",
-      "startLine": 128,
-      "endLine": 142,
+      "startLine": 129,
+      "endLine": 143,
       "mathContext": "One definition and one axiom (`alon_ronyai_szabo`), the general $k^t$-growth result above the factorial threshold."
     },
     {
       "id": "statement",
       "title": "Part 7: Erdős Problem #558 Statement",
       "summary": "Proves `erdos_558`: for $s,t\\ge1$, $k\\ge2$, the Chung-Graham bounds hold, and if additionally $s\\ge(t-1)!+1$ the exponent is exactly $t$. Assembled by `constructor` from `chung_graham_bounds` and `alon_ronyai_szabo`.",
-      "startLine": 143,
-      "endLine": 161,
+      "startLine": 144,
+      "endLine": 189,
       "mathContext": "One theorem combining the Part 3 and Part 6 axioms; no new axioms here."
     },
     {
       "id": "norm-graphs",
       "title": "Part 8: Norm Graphs and Lower Bounds",
       "summary": "Section banner for the algebraic (norm-graph) constructions giving tight lower bounds. Exposition placeholder; declares no Lean content.",
-      "startLine": 162,
-      "endLine": 167,
+      "startLine": 190,
+      "endLine": 195,
       "mathContext": "Empty docstring banner."
     },
     {
       "id": "specific-values",
       "title": "Part 9: Specific Values and Bounds",
       "summary": "Section banner for specific values and numeric bounds of $R(K_{s,t};k)$. Exposition placeholder; declares no Lean content.",
-      "startLine": 168,
-      "endLine": 171,
+      "startLine": 196,
+      "endLine": 199,
       "mathContext": "Empty docstring banner."
     },
     {
       "id": "extremal-connection",
       "title": "Part 10: Connection to Extremal Graph Theory",
       "summary": "Section banner relating these Ramsey numbers to extremal (Turán-type) graph theory. Exposition placeholder; declares no Lean content.",
-      "startLine": 172,
-      "endLine": 175,
+      "startLine": 200,
+      "endLine": 203,
       "mathContext": "Empty docstring banner."
     },
     {
       "id": "summary",
       "title": "Part 11: Summary",
       "summary": "Concluding part: `erdos_558_summary` bundles the three asymptotic results — $R(C_4;k)\\sim k^2$, $R(K_{3,3};k)\\sim k^3$, and $R(K[s,t];k)=\\Theta(k^t)$ for $s\\ge(t-1)!+1$ — directly from `ramsey_K22`, `ramsey_K33`, and `alon_ronyai_szabo`.",
-      "startLine": 176,
-      "endLine": 194,
+      "startLine": 204,
+      "endLine": 222,
       "mathContext": "One theorem. Net file axioms (5): `ramseyBipartite`, `chung_graham_bounds`, `ramsey_K22`, `ramsey_K33`, `alon_ronyai_szabo`."
     }
   ],

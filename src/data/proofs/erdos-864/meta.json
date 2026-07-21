@@ -97,7 +97,7 @@
       "id": "reflected-construction",
       "title": "Reflected Construction: Validity Proof and Quantitative Lower Bound",
       "startLine": 506,
-      "endLine": 806,
+      "endLine": 834,
       "summary": "The largest section (300 lines): reflected_construction_valid proves that B union (N-B) is almost-Sidon when B is Sidon in {1,...,N/3}. The proof analyzes collision structure showing any repeated sum must equal N (the only cross-pair collision from b+(N-b)=N). Closes with reflected_construction_bound: maxAlmostSidon N >= 2*|B| for any Sidon B in {1,...,N/3}.",
       "mathContext": "The reflected construction B union (N-B): for B Sidon in [1,N/3] and b in B, N-b lies in [2N/3, N-1] disjoint from B. Cross-pair sums: b + (N-b') = N only if b = b' (since B is Sidon). Same-side sums from B are distinct (Sidon property). Same-side sums from N-B: (N-b) + (N-b') = 2N - (b+b') are also distinct (Sidon). So the only repeated sum is N, confirming at most one collision."
     }
