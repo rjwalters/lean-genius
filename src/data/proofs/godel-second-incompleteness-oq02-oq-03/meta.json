@@ -75,22 +75,22 @@
       "title": "Löb's Theorem (Derived Rule)",
       "summary": "GL ⊢ (□A → A) ⟹ GL ⊢ A, proved by necessitation, the Löb axiom, and two modus ponens steps — the hard direction of the boundary.",
       "startLine": 49,
-      "endLine": 57,
+      "endLine": 55,
       "mathContext": "From $\\vdash \\Box A \\to A$: $\\vdash \\Box(\\Box A \\to A)$ (nec); $\\vdash \\Box(\\Box A\\to A)\\to\\Box A$ (Löb); hence $\\vdash \\Box A$, and $\\vdash A$."
     },
     {
       "id": "reflection-boundary",
       "title": "The Löb Boundary",
       "summary": "The biconditional GL ⊢ (□A → A) ↔ GL ⊢ A. The converse (provable ⟹ reflection) uses the propositional axiom k1; together they give the precise characterization.",
-      "startLine": 66,
-      "endLine": 68,
+      "startLine": 56,
+      "endLine": 69,
       "mathContext": "$\\text{GL} \\vdash (\\Box A \\to A) \\iff \\text{GL} \\vdash A$: GL proves a reflection sentence exactly for its own theorems."
     },
     {
       "id": "consistency-boundary",
       "title": "The Consistency Boundary (Second Incompleteness)",
       "summary": "Defines Con = ¬□⊥ and proves GL ⊢ Con ↔ GL ⊢ ⊥ — the A = ⊥ instance of the boundary, i.e. GL proves its own consistency iff it is inconsistent.",
-      "startLine": 81,
+      "startLine": 70,
       "endLine": 88,
       "mathContext": "$\\text{Con} = \\neg\\Box\\bot = (\\Box\\bot \\to \\bot)$ is the reflection sentence for $\\bot$, so $\\text{GL}\\vdash\\text{Con} \\iff \\text{GL}\\vdash\\bot$."
     },
