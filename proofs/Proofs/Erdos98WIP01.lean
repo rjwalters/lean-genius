@@ -1120,15 +1120,14 @@ theorem centeredTriangleConfig_dist_mem {i j : Fin 4} (hij : i ≠ j) :
   have hd0 : 0 ≤ dist (centeredTriangleConfig i) (centeredTriangleConfig j) := dist_nonneg
   have hsq : dist (centeredTriangleConfig i) (centeredTriangleConfig j) ^ 2 = 1 ∨
       dist (centeredTriangleConfig i) (centeredTriangleConfig j) ^ 2 = 3 := by
+    rw [EuclideanSpace.dist_sq_eq]
     fin_cases i <;> fin_cases j <;>
       first
       | exact absurd rfl hij
-      | (simp only [centeredTriangleConfig, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two,
-           Real.dist_eq, sq_abs, Matrix.cons_val_zero, Matrix.cons_val_one,
-           Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]
-         first
-         | (left; nlinarith [hs2])
-         | (right; nlinarith [hs2]))
+      | (left; simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+               norm_num [hs2] <;> nlinarith [hs2])
+      | (right; simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+                norm_num [hs2] <;> nlinarith [hs2])
   rcases hsq with h | h
   · have hone : dist (centeredTriangleConfig i) (centeredTriangleConfig j) = 1 := by
       rw [← Real.sqrt_sq hd0, h, Real.sqrt_one]
@@ -1151,9 +1150,9 @@ theorem centeredTriangleConfig_injective : Function.Injective centeredTriangleCo
     rw [← h] at hpos
     exact lt_irrefl 0 hpos
 
+set_option maxHeartbeats 1000000 in
 /-- **No three of the four points are collinear.** A line through any three forces
 `(a,b,c) = 0`; the two vertices sharing the abscissa `−½` need `√3 > 0` to conclude. -/
-set_option maxHeartbeats 1000000 in
 theorem noThreeCollinear_centeredTriangleConfig : NoThreeCollinear centeredTriangleConfig := by
   have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
   intro i j k hcard
@@ -1187,10 +1186,10 @@ theorem centeredTriangle_not_equidistant (center : EuclideanSpace ℝ (Fin 2)) (
     Matrix.head_cons, Matrix.tail_cons] at e01 e02 e03
   nlinarith [e01, e02, e03, hs2]
 
+set_option maxHeartbeats 1000000 in
 /-- **No four of the four points are concyclic.** The only 4-subset (in every ordering) is
 all four points; by `centeredTriangle_not_equidistant` no centre is equidistant from them,
 so no common circle exists. -/
-set_option maxHeartbeats 1000000 in
 theorem noFourConcyclic_centeredTriangleConfig : NoFourConcyclic centeredTriangleConfig := by
   intro a b c d hcard
   rintro ⟨center, r, ha, hb, hc, hd⟩
