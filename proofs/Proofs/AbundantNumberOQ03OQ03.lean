@@ -63,11 +63,18 @@
      window, so `m·p` is abundant for the first time at itself.  The obstruction:
      odd `m` approach the abundance boundary slowly, and proper-divisor deficiency
      is a real case analysis, not the clean "powers of two are deficient" fact.
-  2. *Primitive-part extraction* — every abundant `n` has a primitive abundant
-     divisor; show the primitive parts of an infinite odd abundant family
-     (`Nat.infinite_odd_abundant`) are odd and unbounded.  The obstruction:
-     controlling oddness and unboundedness of the primitive part needs a
-     pigeonhole that a single bounded part could defeat.
+  2. *Primitive-part extraction* — one might hope every abundant `n` has a
+     primitive abundant divisor, then show the primitive parts of an infinite odd
+     abundant family (`Nat.infinite_odd_abundant`) are odd and unbounded.  **This
+     route is blocked at its first step under the strict definition used here:**
+     `no_isPrimitiveAbundant_dvd_12` proves *no* divisor of the abundant number
+     `12` is `IsPrimitiveAbundant`, because the perfect proper divisor `6 ∣ 12`
+     violates the "all proper divisors deficient" clause and the smallest strict
+     primitive abundant number is `20 > 12`.  Extraction works only for the weaker
+     "no abundant proper divisor" notion (OEIS A091191); recovering a *strict*
+     (deficient-divisors) primitive part additionally requires excluding perfect
+     divisors, and controlling oddness/unboundedness still needs a pigeonhole that
+     a single bounded part could defeat.
 
   Reference: OEIS A006038 (odd primitive abundant numbers); A091191 (primitive
   abundant numbers).  Sibling gallery entries: `abundant-number-oq-02` (945 is the
@@ -85,6 +92,9 @@ divisor of `n` is deficient. Abundance appears for the first time, under
 divisibility, exactly at `n`. -/
 def IsPrimitiveAbundant (n : ℕ) : Prop :=
   n.Abundant ∧ ∀ d ∈ n.properDivisors, d.Deficient
+
+instance : DecidablePred IsPrimitiveAbundant := fun n =>
+  decidable_of_iff (n.Abundant ∧ ∀ d ∈ n.properDivisors, d.Deficient) Iff.rfl
 
 /-- The set of **odd primitive abundant** numbers, OEIS A006038. Whether this set
 is infinite is the open problem `abundant-number-oq-03-oq-03`. -/
@@ -120,6 +130,34 @@ theorem primitive_945 : IsPrimitiveAbundant 945 := by
 (OEIS A006038), and the base witness that any infinitude construction must extend. -/
 theorem mem_oddPrimitiveAbundant_945 : 945 ∈ OddPrimitiveAbundant :=
   ⟨odd_945, primitive_945⟩
+
+-- ============================================================
+-- The strict definition bites: Route-2 extraction fails
+-- ============================================================
+
+/-- **`12` is abundant but *not* primitive abundant.** Its proper divisor `6` is
+*perfect* (`σ'(6) = 6`), hence not deficient, so the "all proper divisors deficient"
+clause of `IsPrimitiveAbundant` fails even though `12` is the smallest abundant
+number. -/
+theorem not_isPrimitiveAbundant_12 : ¬ IsPrimitiveAbundant 12 := by
+  set_option maxRecDepth 4000 in decide
+
+/-- **Route-2 extraction is FALSE under the strict definition.** No divisor of the
+abundant number `12` is primitive abundant: the smallest primitive abundant number
+(all proper divisors deficient, OEIS A071395) is `20 > 12`, and the perfect proper
+divisor `6 ∣ 12` blocks strict primitivity of `12` itself.
+
+Consequently the naive extraction *"every abundant `n` has a primitive abundant
+divisor"* — recorded as Route 2 in this file's header — does **not** hold for
+`IsPrimitiveAbundant` (which demands *deficient* proper divisors). It holds only for
+the weaker notion *"abundant with no abundant proper divisor"* (OEIS A091191), under
+which `12` itself is primitive. A perfect proper divisor is exactly the obstruction
+that separates the two notions, so Route-2 cannot be run against the strict
+definition without first passing through the A091191 notion and separately excluding
+perfect divisors. -/
+theorem no_isPrimitiveAbundant_dvd_12 :
+    ∀ d ∈ Nat.divisors 12, ¬ IsPrimitiveAbundant d := by
+  set_option maxRecDepth 4000 in decide
 
 -- ============================================================
 -- Toward infinitude: the σ-arithmetic engine for `m · p`
