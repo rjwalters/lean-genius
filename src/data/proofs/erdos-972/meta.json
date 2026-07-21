@@ -112,8 +112,15 @@
       "id": "vinogradov",
       "title": "Vinogradov's Theorem",
       "startLine": 93,
-      "endLine": 132,
+      "endLine": 124,
       "summary": "Related result and why it differs from the main problem"
+    },
+    {
+      "id": "why-hard",
+      "title": "Why the Problem is Hard",
+      "startLine": 125,
+      "endLine": 144,
+      "summary": "Defines vinogradovSet α = {p prime : ∃ n, p = ⌊αn⌋} — the primes that arise as floors ⌊αn⌋ — making explicit the distinction between Vinogradov's tractable question (are there infinitely many primes among the ⌊nα⌋?) and Erdős #972 (are there infinitely many primes p with ⌊pα⌋ prime?). A prose note records that the two sets are not always distinct — for α = 1 both equal the set of all primes — so the difficulty lies in the image of the primes under the floor map, not in prime-valued floors."
     },
     {
       "id": "examples",
