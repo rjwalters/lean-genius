@@ -71,38 +71,38 @@
       "id": "sec-header",
       "title": "Module Header and A₄ Definition",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 45,
       "summary": "Module docstring explaining the theorem, proof outline, and alternative mathematical argument via conjugacy classes. Defines abbrev A4 = alternatingGroup (Fin 4) as a type alias.",
       "mathContext": "$A_4 = \\{\\sigma \\in S_4 \\mid \\text{sgn}(\\sigma) = 1\\}$, the group of even permutations of $\\{0,1,2,3\\}$. Order 12. Conjugacy class sizes: 1 (identity), 3 (double transpositions), 4 (3-cycles type 1), 4 (3-cycles type 2)."
     },
     {
       "id": "sec-basic-facts",
       "title": "Basic Facts: Order and Element Structure",
-      "startLine": 33,
-      "endLine": 52,
+      "startLine": 46,
+      "endLine": 78,
       "summary": "A4_card: |A₄| = 12 by native_decide. A4_no_element_order6: all elements have order 1, 2, or 3. A4_three_order2_elements: exactly 3 elements of order 2 (double transpositions). A4_eight_order3_elements: exactly 8 elements of order 3 (3-cycles).",
       "mathContext": "Element order distribution: $1 \\times 1$ (identity), $3 \\times 2$ (double transpositions $(12)(34)$, $(13)(24)$, $(14)(23)$), $8 \\times 3$ (eight 3-cycles). Total: $1+3+8=12$. No order-6 elements, so no cyclic $\\mathbb{Z}_6 \\leq A_4$."
     },
     {
       "id": "sec-finset-enumeration",
       "title": "Finite Enumeration: No 6-Element Subgroup",
-      "startLine": 54,
-      "endLine": 68,
+      "startLine": 79,
+      "endLine": 94,
       "summary": "A4_no_subgroup_order6_finset: universal statement over all 6-element subsets of A₄ satisfying the three subgroup axioms (identity, closure, inverses) — none exist. Proved by native_decide over all 2¹² = 4096 subsets.",
       "mathContext": "The theorem checks: for all $S \\subseteq A_4$ with $|S|=6$, $1 \\in S$, $S$ closed under $\\cdot$ and $(\\cdot)^{-1}$ — no such $S$ exists. There are $\\binom{12}{6} = 924$ size-6 subsets; none satisfy all three axioms."
     },
     {
       "id": "sec-main-subgroup",
       "title": "Main Theorem: Subgroup Formulation",
-      "startLine": 70,
-      "endLine": 98,
+      "startLine": 95,
+      "endLine": 123,
       "summary": "A4_no_subgroup_order6: lifts the Finset result to the Subgroup type using Finset.univ.filter (· ∈ H) to convert a Subgroup to its underlying Finset. The Finset.card_subtype identity bridges the two representations.",
       "mathContext": "For $H \\leq A_4$ with $|H|=6$: construct $S = \\{x \\in A_4 \\mid x \\in H\\}$ as a Finset; show $|S|=6$ via `Fintype.card_subtype`; verify $1 \\in S$ and closure via $H.one\\_mem$, $H.mul\\_mem$, $H.inv\\_mem$; apply `A4_no_subgroup_order6_finset` for contradiction."
     },
     {
       "id": "sec-corollaries",
       "title": "Corollaries: Index 2 and Formal Statement",
-      "startLine": 100,
+      "startLine": 124,
       "endLine": 146,
       "summary": "A4_no_index2_subgroup: no index-2 subgroup of A₄ (since an index-2 subgroup would have order 6). lagrange_converse_fails: the precise counterexample statement — 6 divides |A₄| but no subgroup of order 6 exists.",
       "mathContext": "Index-2 corollary: $[A_4:H]=2 \\Rightarrow |H|=6$ (from $|H| \\cdot [A_4:H] = |A_4| = 12$). Then `A4_no_subgroup_order6` gives contradiction. Formal counterexample: $6 \\mid 12$ (witnessed by $6 \\times 2 = 12$) and $\\forall H \\leq A_4,\\, |H| \\neq 6$."
