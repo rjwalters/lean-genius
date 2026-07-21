@@ -73,7 +73,7 @@
       "id": "imports-and-docstring",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 54,
       "summary": "Imports from Mathlib (interval integrals, Bochner FTC, Vitali families, differentiation, Stieltjes measures, bounded variation, derivatives, Lipschitz) and module-level documentation explaining the Lebesgue FTC and its relationship to the classical version.",
       "mathContext": "Imports Mathlib's interval integral, Bochner FTC, Vitali families, and Stieltjes measure. The Lebesgue generalization of FTC: an absolutely continuous function $F$ is differentiable a.e. and $F(b) - F(a) = \\int_a^b F'(x)\\,dx$."
     },
@@ -89,41 +89,49 @@
       "id": "lipschitz-implies-ac",
       "title": "Part II: Lipschitz Implies AC",
       "startLine": 82,
-      "endLine": 103,
+      "endLine": 118,
       "summary": "Proves that K-Lipschitz functions are absolutely continuous by choosing δ = ε/(K+1). The Lipschitz bound on each interval gives total variation ≤ K times total length, which is less than ε. Contains one sorry for the final arithmetic chain.",
       "mathContext": "$K$-Lipschitz $\\Rightarrow$ absolutely continuous: choose $\\delta = \\varepsilon/(K+1)$, then $\\sum|F(b_i) - F(a_i)| \\leq K\\sum(b_i - a_i) < K\\delta < \\varepsilon$. The Lipschitz constant provides a uniform modulus of absolute continuity."
     },
     {
       "id": "ac-implies-uniform",
       "title": "Part III: AC Implies Uniformly Continuous",
-      "startLine": 104,
-      "endLine": 124,
-      "summary": "Proves AC implies uniform continuity by instantiating the AC definition with a single interval (n=1). Contains one sorry for the technical Fin 1 specialization.",
-      "mathContext": "Absolutely continuous $\\Rightarrow$ uniformly continuous: instantiate the AC definition with a single interval $(a_1, b_1)$ to get $|F(b_1) - F(a_1)| < \\varepsilon$ when $|b_1 - a_1| < \\delta$. AC is strictly stronger: the Cantor function is uniformly continuous but not AC."
+      "startLine": 119,
+      "endLine": 183,
+      "summary": "Proves three structural consequences of absolute continuity: (1) ac_implies_uniformly_continuous instantiates the AC definition with a single interval (n=1) to get uniform continuity; (2) ac_implies_continuousOn packages this as Mathlib's ContinuousOn predicate; (3) ac_on_subinterval shows AC is inherited by subintervals [c,d] ⊆ [a,b] using the same δ, since any disjoint family in [c,d] is also one in [a,b].",
+      "mathContext": "Absolutely continuous $\\Rightarrow$ uniformly continuous: instantiate the AC definition with a single interval $(a_1, b_1)$ to get $|F(b_1) - F(a_1)| < \\varepsilon$ when $|b_1 - a_1| < \\delta$. AC is strictly stronger: the Cantor function is uniformly continuous but not AC. Restriction: if $F$ is AC on $[a,b]$ and $[c,d] \\subseteq [a,b]$, then $F$ is AC on $[c,d]$ with the same $\\delta$."
     },
     {
       "id": "lebesgue-ftc-axioms",
       "title": "Part IV: Lebesgue FTC Axioms",
-      "startLine": 125,
-      "endLine": 164,
-      "summary": "States the two core axioms of the Lebesgue FTC: (1) AC functions are a.e. differentiable (via AC → BV → monotone decomposition → Lebesgue's theorem), and (2) the Lebesgue integral of the a.e. derivative recovers the function's net change.",
-      "mathContext": "Two core axioms: (1) AC functions are a.e. differentiable (Lebesgue, 1904), and (2) for AC functions, $F(b) - F(a) = \\int_a^b F'(x)\\,dx$. Together these constitute the Lebesgue FTC, which drops the hypothesis $F' \\in C^0$ from the classical version."
+      "startLine": 184,
+      "endLine": 218,
+      "summary": "Establishes the two halves of the Lebesgue FTC. Part 1 (AC functions are a.e. differentiable) was formerly an axiom here but is now PROVED in the companion file FundamentalTheoremCalculusLebesgueOQ01.lean (AC → BV → a.e. differentiable), so its axiom is removed and only a documenting comment remains. Part 2 — the integral-recovery identity ∫ₐᵇ F'(x)dx = F(b) - F(a) — remains the single axiom lebesgue_ftc_integral, the deepest part of the theorem.",
+      "mathContext": "The Lebesgue FTC has two halves: (1) AC functions are a.e. differentiable (Lebesgue, 1904) — now proved in the companion file, no longer an axiom; and (2) the remaining axiom, for AC functions $F(b) - F(a) = \\int_a^b F'(x)\\,dx$. Together they drop the hypothesis $F' \\in C^0$ from the classical version. The classical FTC (`integral_eq_sub_of_hasDerivAt`) needs $F'$ to exist everywhere; the Lebesgue version needs only a.e. differentiability plus absolute continuity."
     },
     {
       "id": "consequences",
       "title": "Part V: Consequences and Counterexamples",
-      "startLine": 165,
-      "endLine": 201,
+      "startLine": 219,
+      "endLine": 255,
       "summary": "Derives the classical FTC as a one-line corollary of the Lebesgue FTC (C^1 → Lipschitz → AC). States the Cantor function counterexample: a continuous monotone function on [0,1] that is NOT AC, proving AC is a necessary hypothesis.",
       "mathContext": "Classical FTC as a corollary: $F \\in C^1 \\Rightarrow F$ Lipschitz $\\Rightarrow F$ AC $\\Rightarrow F(b) - F(a) = \\int_a^b F'(x)\\,dx$. The chain $C^1 \\subset \\text{Lip} \\subset \\text{AC} \\subset \\text{BV}$ is strict, and the Lebesgue FTC applies to the entire AC class."
     },
     {
       "id": "mathlib-connections",
       "title": "Part VI: Mathlib Infrastructure",
-      "startLine": 202,
-      "endLine": 252,
-      "summary": "Re-exports key Mathlib results that form the building blocks for a full proof: Monotone.ae_differentiableAt (Lebesgue's 1904 theorem on monotone functions), VitaliFamily (abstract differentiation framework), and the Lebesgue density theorem.",
-      "mathContext": "Re-exports key Mathlib building blocks: `Monotone.ae_differentiableAt` (monotone functions are a.e. differentiable), `intervalIntegral.integral_eq_sub_of_hasDerivAt` (classical FTC), and connections to the Vitali covering lemma."
+      "startLine": 256,
+      "endLine": 276,
+      "summary": "Re-exports key Mathlib results that form the building blocks for a full proof: monotone_ae_differentiable wraps Monotone.ae_differentiableAt (Lebesgue's 1904 theorem on monotone functions), with documenting comments pointing to VitaliFamily (abstract differentiation framework) and VitaliFamily.ae_tendsto_measure_inter_div (Lebesgue density theorem).",
+      "mathContext": "Re-exports key Mathlib building blocks: `Monotone.ae_differentiableAt` (monotone functions are a.e. differentiable), which combined with AC → BV → Jordan decomposition into monotone functions supplies the a.e.-differentiability half of the FTC. Comments record the Vitali covering framework (`VitaliFamily`) and Lebesgue density theorem (`VitaliFamily.ae_tendsto_measure_inter_div`) as the tools for the integral-recovery half."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Path Forward",
+      "startLine": 277,
+      "endLine": 309,
+      "summary": "Closing docstring inventorying the file's status: what is proved (the AbsolutelyContinuousOn definition, Lipschitz → AC, AC → uniformly continuous, AC → ContinuousOn, AC inherited by subintervals, and monotone a.e. differentiability from Mathlib), what remains axiomatized (the Lebesgue FTC integral identity), what was previously axiomatized but is now proved in the companion file (AC → a.e. differentiable), and the sorry that remains (the Cantor function construction). Ends with the four-step path forward for discharging the integral-recovery axiom.",
+      "mathContext": "Status ledger: proved results (definition, the regularity-hierarchy implications, monotone a.e. differentiability), one remaining axiom (integral recovery), one remaining $\\texttt{sorry}$ (Cantor construction). Path forward: AC $\\to$ BV, Jordan decomposition into monotone functions, monotone a.e. differentiability, and integral recovery via the Vitali covering lemma and Lebesgue differentiation theorem."
     }
   ],
   "conclusion": {
