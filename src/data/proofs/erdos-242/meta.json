@@ -94,14 +94,14 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 48,
-      "endLine": 60,
+      "endLine": 59,
       "summary": "ES (Erdős-Straus property) and HasNormSplit (sum of two nonzero squares)",
       "mathContext": "ES(n) := exists x y z > 0, 4/n = 1/x + 1/y + 1/z. HasNormSplit(n) := exists a b != 0, n = a^2 + b^2."
     },
     {
       "id": "fermat",
       "title": "Fermat's Two-Squares Theorem",
-      "startLine": 61,
+      "startLine": 60,
       "endLine": 85,
       "summary": "Every prime p = 1 mod 4 is a sum of two nonzero squares [PROVED]",
       "mathContext": "Uses Mathlib's Nat.Prime.sq_add_sq, then verifies both summands are nonzero via primality contradiction"
@@ -110,95 +110,95 @@
       "id": "ed2-structure",
       "title": "Dyachenko ED2 Triple",
       "startLine": 86,
-      "endLine": 115,
+      "endLine": 120,
       "summary": "Structure encoding ED2 decomposition parameters and algebraic bound [PROVED]",
       "mathContext": "ED2Triple captures delta, b, c satisfying (4b-1)(4c-1) = 4*p*delta + 1 with divisibility and bound conditions"
     },
     {
       "id": "lattice",
       "title": "Lattice Infrastructure and Dyachenko Axiom",
-      "startLine": 116,
-      "endLine": 155,
+      "startLine": 121,
+      "endLine": 175,
       "summary": "Rectangle-hitting lemma [PROVED] and Dyachenko box existence [AXIOMATIZED]",
       "mathContext": "The lattice L(d') has index 2d' in Z^2. Rectangle lemma proved; Dyachenko's box theorem axiomatized from arXiv:2511.07465"
     },
     {
       "id": "ed2-construction",
       "title": "ED2 Triple Construction and Algebraic Correctness",
-      "startLine": 156,
-      "endLine": 225,
+      "startLine": 176,
+      "endLine": 291,
       "summary": "Constructing witnesses from Dyachenko box [AXIOM-DEP] and proving 4/p = 1/A + 1/(bp) + 1/(cp) [PROVED]",
       "mathContext": "The algebraic identity proof is axiom-free; only the witness existence depends on dyachenko_box"
     },
     {
       "id": "arithmetic-helpers",
       "title": "Arithmetic Helpers",
-      "startLine": 226,
-      "endLine": 245,
+      "startLine": 292,
+      "endLine": 307,
       "summary": "Modular arithmetic lemmas: pmod_dvd and coprime_sq_4k1 [PROVED]",
       "mathContext": "Key helper: gcd(k^2, 4k-1) = 1, used to ensure conic family denominators are well-formed"
     },
     {
       "id": "conic-family",
       "title": "Conic (k,d) Family Method",
-      "startLine": 246,
-      "endLine": 340,
+      "startLine": 308,
+      "endLine": 399,
       "summary": "Main workhorse theorem covering most residue classes, plus 5 specializations [PROVED]",
       "mathContext": "For k >= 2 and d | k^2, if (4k-1) | (p + 4d) then ES(p). Specializations: k=2 with d=1,2,4 and k=4 with d=2,8"
     },
     {
       "id": "easy-cases",
       "title": "Explicit Families for Special Residue Classes",
-      "startLine": 341,
-      "endLine": 380,
+      "startLine": 400,
+      "endLine": 457,
       "summary": "Direct constructions for n = 0 mod 4, n = 3 mod 4, n = 2 mod 3, p = 5 mod 8 [PROVED]",
       "mathContext": "Four explicit algebraic decompositions handling the majority of natural numbers"
     },
     {
       "id": "hard-residues",
       "title": "Hard Residues mod 840",
-      "startLine": 381,
-      "endLine": 405,
+      "startLine": 458,
+      "endLine": 486,
       "summary": "The 6 hard residue classes handled via Fermat + Dyachenko [AXIOM-DEPENDENT]",
       "mathContext": "p % 840 in {1, 121, 169, 289, 361, 529} -> HasNormSplit -> ES via ED2. Plus machine-checked proof no small conic works."
     },
     {
       "id": "conic-witnesses",
       "title": "23 Conic Witnesses for Non-Hard Residues",
-      "startLine": 406,
-      "endLine": 455,
+      "startLine": 487,
+      "endLine": 540,
       "summary": "Each non-hard residue class mod 840 dispatched to a specific conic specialization [PROVED]",
       "mathContext": "23 theorems, each reducing a specific residue to ES_k2_d1/d2/d4 or ES_k4_d2/d8"
     },
     {
       "id": "mod24-case-split",
       "title": "Primes p = 1 mod 24: Full Case Split",
-      "startLine": 456,
-      "endLine": 495,
+      "startLine": 541,
+      "endLine": 576,
       "summary": "All 29 residues mod 840 covered: 23 by conics [PROVED], 6 by Dyachenko [AXIOM-DEP]",
       "mathContext": "Uses interval_cases to enumerate all valid residues, then dispatches to appropriate theorem"
     },
     {
       "id": "es-prime",
       "title": "ES for All Primes",
-      "startLine": 496,
-      "endLine": 520,
+      "startLine": 577,
+      "endLine": 597,
       "summary": "Case split on p mod 8 reducing to easy families or the mod-24 analysis",
       "mathContext": "p=2: direct. p=3,7 mod 8: mod3_mod4. p=5 mod 8: explicit. p=1 mod 8: split on p mod 24."
     },
     {
       "id": "main-theorem",
       "title": "Scaling and Main Theorem",
-      "startLine": 521,
-      "endLine": 580,
+      "startLine": 598,
+      "endLine": 668,
       "summary": "ES_scale [PROVED] and ErdosStraus_conjecture by strong induction [AXIOMATIZED]",
       "mathContext": "Strong induction: 4|n direct, 2 mod 4 halve, prime by ES_prime, composite by minFac + scaling"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 581,
-      "endLine": 590,
+      "startLine": 669,
+      "endLine": 677,
       "summary": "Verified examples for n=3, 5, 7 via norm_num [PROVED]",
       "mathContext": "4/3 = 1/1 + 1/4 + 1/12, 4/5 = 1/2 + 1/4 + 1/20, 4/7 = 1/2 + 1/15 + 1/210"
     }
