@@ -212,3 +212,43 @@ lineCount 496 → 610, theoremCount 19 → 23.
   bound gives only f(5) ≤ 3 at n=5 (since 5−2=3), so **f(5) = 3 is now also within reach**
   by combining `minDegreeForC4_le_sub_two` (n=5) with `three_le_minDegreeForC4`!
 - Monotonicity core and the √n asymptotics remain genuinely open / documented-only.
+
+## Session 2026-07-21 (researcher-1) — KST cherry-counting bound + f(6) = 3 (third exact value)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (verified, 0-axiom) — the first upper bound
+of the *correct order* `√n`, and the third exact value `f(6) = 3`. Docker-build exit 0,
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` on all three new theorems (no
+sorry/native_decide). theoremCount 24 → 27, lineCount 621 → 722.
+
+The linear bounds (`f(n) ≤ n − 2`) never reach `f(6) = 3` — at `n = 6` they give only `≤ 4`.
+The truth `f(n) = (1+o(1))√n` needs the **Kővári–Sós–Turán double count of cherries**:
+
+- **`containsC4_of_card_choose_two_lt`** (the KST heart): `C(|V|,2) < Σ_v C(deg v,2) ⟹ C₄`.
+  Model cherries as `C := univ.sigma (fun v => (G.neighborFinset v).powersetCard 2)` — an
+  element `⟨v, e⟩` is a centre `v` with a 2-element endpoint set `e ⊆ N(v)`. Then
+  `C.card = Σ_v C(deg v, 2)` (`Finset.card_sigma`, `Finset.card_powersetCard`,
+  `card_neighborFinset_eq_degree`). The endpoint map `⟨v,e⟩ ↦ e` lands in
+  `univ.powersetCard 2` (card `C(|V|,2)`). `Finset.exists_ne_map_eq_of_card_lt_of_maps_to`
+  gives two distinct cherries `⟨v,e⟩ ≠ ⟨v',e⟩` with the same `e`; distinctness + equal `e`
+  forces `v ≠ v'`, so `e = {x,y}` has two common neighbours `v, v'`, i.e. the rim
+  `x–v–y–v'–x` (fed to the existing `containsC4_of_rim`).
+- **`minDegreeForC4_le_of_choose_lt`**: `n.choose 2 < n * k.choose 2 ⟹ f(n) ≤ k`. If `δ ≥ k`
+  then every `(deg v).choose 2 ≥ k.choose 2` (`Nat.choose_le_choose`), so
+  `Σ ≥ n·C(k,2) > C(n,2)`. The hypothesis holds whenever `n ≤ k(k−1)`, giving `f(n) = O(√n)`.
+- **`minDegreeForC4_six`**: `f(6) = 3`. Upper `C(6,2)=15 < 18 = 6·C(3,2)` ⟹ `f(6) ≤ 3`
+  (`by decide`); lower `three_le_minDegreeForC4`.
+
+### Lean idioms (recorded)
+- Sigma-indexed Finset for "structure with a chosen sub-object": `univ.sigma (fun v => …)`;
+  `Finset.card_sigma` sums the fibres, `Finset.card_powersetCard s n = s.card.choose n`.
+- Pigeonhole: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to (hc : t.card < s.card) (hf : ∀
+  a ∈ s, f a ∈ t) : ∃ x ∈ s, ∃ y ∈ s, x ≠ y ∧ f x = f y`.
+- `ne_of_adj G h : u ≠ v` for `h : G.Adj u v` — the direction is `u ≠ v` (no `.symm` for the
+  `b ≠ a` / `d ≠ c` rim inequalities when the adjacency is `Adj v x`).
+
+### Next
+- **f(7) = 3?**: the KST count gives only `f(7) ≤ 4` (`7 ≤ 4·3 = 12`, but `7 > 3·2 = 6`); the
+  true `f(7) = 3` needs the sharper C₄-free edge bound `ex(7; C₄) = 9` (min degree 3 on 7
+  vertices has `≥ ⌈21/2⌉ = 11 > 9` edges) — a genuine extremal input beyond the crude cherry
+  count. This is the next exact value and the point where naive KST stops being sharp.
+- The general monotonicity core `f(n+1) ≥ f(n)` (the actual open Erdős question) stays open.

@@ -618,4 +618,105 @@ theorem minDegreeForC4_five : minDegreeForC4 5 = 3 := by
   have hge : 3 ≤ minDegreeForC4 5 := three_le_minDegreeForC4 (by norm_num)
   omega
 
+/-! ## The Kővári–Sós–Turán counting bound
+
+The upper bounds above (`f(n) ≤ n − 2`) are linear, far from the truth `f(n) = (1+o(1))√n`.
+The real mechanism is a double count of **cherries** (paths of length two): a vertex `v` of
+degree `d` is the centre of `C(d, 2)` cherries, and a cherry `x–v–y` is determined by its
+centre together with its *unordered* endpoint pair `{x, y}`.  If the total number of cherries
+`∑_v C(deg v, 2)` exceeds the number `C(|V|, 2)` of available endpoint pairs, two distinct
+cherries share an endpoint pair — i.e. some pair `{x, y}` has two common neighbours `v ≠ v'`,
+which is exactly a `4`-cycle `x–v–y–v'–x`.  This is the Kővári–Sós–Turán argument at its
+simplest (the `C₄` / `z(n; 2, 2)` case), and it drives the true `√n`-order threshold. -/
+
+/-- **Cherry-counting forces a `C₄`.**  If the number of cherries `∑_v C(deg v, 2)` strictly
+exceeds the number `C(|V|, 2)` of unordered vertex pairs, then `G` contains a `4`-cycle.
+Proof: the cherries `⟨v, e⟩` (centre `v`, endpoint pair `e ⊆ N(v)`, `|e| = 2`) form a Finset
+of size `∑_v C(deg v, 2)`; the map `⟨v, e⟩ ↦ e` lands in the `C(|V|, 2)` two-element vertex
+subsets, so by pigeonhole two distinct cherries `⟨v, e⟩ ≠ ⟨v', e⟩` share their endpoint pair.
+Then `v ≠ v'` are two common neighbours of the pair `e = {x, y}`, giving the rim
+`x–v–y–v'–x`. -/
+theorem containsC4_of_card_choose_two_lt {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h : (Fintype.card V).choose 2 < ∑ v : V, (G.degree v).choose 2) :
+    containsC4 V G := by
+  classical
+  -- The Finset of cherries: centre `v` with a two-element subset `e ⊆ N(v)`.
+  set C : Finset (Σ _ : V, Finset V) :=
+    univ.sigma (fun v => (G.neighborFinset v).powersetCard 2) with hC
+  -- Its cardinality is exactly the cherry count `∑_v C(deg v, 2)`.
+  have hCcard : C.card = ∑ v : V, (G.degree v).choose 2 := by
+    rw [hC, Finset.card_sigma]
+    refine Finset.sum_congr rfl (fun v _ => ?_)
+    rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree]
+  -- The endpoint-pair map lands in the two-element subsets of `V`.
+  set T : Finset (Finset V) := (univ : Finset V).powersetCard 2 with hT
+  have hTcard : T.card = (Fintype.card V).choose 2 := by
+    rw [hT, Finset.card_powersetCard, Finset.card_univ]
+  have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+    intro p hp
+    rw [hC, Finset.mem_sigma] at hp
+    rw [hT, Finset.mem_powersetCard]
+    exact ⟨Finset.subset_univ _, (Finset.mem_powersetCard.mp hp.2).2⟩
+  have hlt : T.card < C.card := by rw [hTcard, hCcard]; exact h
+  -- Pigeonhole: two distinct cherries with the same endpoint pair.
+  obtain ⟨p, hp, q, hq, hpq, hfe⟩ :=
+    Finset.exists_ne_map_eq_of_card_lt_of_maps_to hlt hmaps
+  obtain ⟨v, e⟩ := p
+  obtain ⟨v', e'⟩ := q
+  simp only at hfe
+  subst hfe
+  -- Different cherries with equal endpoint pair ⟹ different centres.
+  have hvv : v ≠ v' := by
+    rintro rfl; exact hpq rfl
+  -- Unpack `e ⊆ N(v)`, `e ⊆ N(v')`, `|e| = 2`.
+  rw [hC, Finset.mem_sigma] at hp hq
+  obtain ⟨-, hpe⟩ := hp
+  obtain ⟨-, hqe⟩ := hq
+  obtain ⟨hsubv, hecard⟩ := Finset.mem_powersetCard.mp hpe
+  obtain ⟨hsubv', -⟩ := Finset.mem_powersetCard.mp hqe
+  obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hecard
+  have hxv : x ∈ G.neighborFinset v := hsubv (by simp)
+  have hyv : y ∈ G.neighborFinset v := hsubv (by simp)
+  have hxv' : x ∈ G.neighborFinset v' := hsubv' (by simp)
+  have hyv' : y ∈ G.neighborFinset v' := hsubv' (by simp)
+  -- The four rim adjacencies of `x–v–y–v'–x`.
+  have avx : G.Adj v x := (G.mem_neighborFinset v x).mp hxv
+  have avy : G.Adj v y := (G.mem_neighborFinset v y).mp hyv
+  have av'x : G.Adj v' x := (G.mem_neighborFinset v' x).mp hxv'
+  have av'y : G.Adj v' y := (G.mem_neighborFinset v' y).mp hyv'
+  exact containsC4_of_rim avx.symm avy av'y.symm av'x hxy hvv
+    (G.ne_of_adj avx) (G.ne_of_adj avy)
+    (G.ne_of_adj av'x) (G.ne_of_adj av'y)
+
+/-- **The counting upper bound on the threshold.**  If `C(n, 2) < n · C(k, 2)` then every
+`n`-vertex graph of minimum degree `≥ k` has more than `C(n, 2)` cherries, hence a `C₄`; so
+`f(n) ≤ k`.  This is the Kővári–Sós–Turán ceiling: since `C(n,2) < n · C(k,2)` holds as soon
+as `n ≤ k(k−1)`, it gives `f(n) = O(√n)`, matching the true order and far beating the linear
+`f(n) ≤ n − 2`. -/
+theorem minDegreeForC4_le_of_choose_lt {n k : ℕ}
+    (h : n.choose 2 < n * k.choose 2) : minDegreeForC4 n ≤ k := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  apply containsC4_of_card_choose_two_lt
+  rw [Fintype.card_fin]
+  calc n.choose 2
+      < n * k.choose 2 := h
+    _ = ∑ _v : Fin n, k.choose 2 := by
+        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+    _ ≤ ∑ v : Fin n, (G.degree v).choose 2 :=
+        Finset.sum_le_sum fun v _ =>
+          Nat.choose_le_choose 2 (le_trans hmin (G.minDegree_le_degree v))
+
+/-- **A third exact value: `f(6) = 3`.**  The lower half `f(6) ≥ 3` is the `6`-cycle witness
+(`three_le_minDegreeForC4`).  The upper half `f(6) ≤ 3` is the counting bound
+`minDegreeForC4_le_of_choose_lt`: `C(6,2) = 15 < 18 = 6 · C(3,2)`, so minimum degree `3` on
+six vertices already yields more cherries than vertex pairs, forcing a `C₄`.  Note the linear
+bound `f(6) ≤ 6 − 2 = 4` is *not* sharp here — it is the Kővári–Sós–Turán count that pins the
+value, the first place the two upper bounds diverge. -/
+theorem minDegreeForC4_six : minDegreeForC4 6 = 3 := by
+  have hle : minDegreeForC4 6 ≤ 3 := minDegreeForC4_le_of_choose_lt (by decide)
+  have hge : 3 ≤ minDegreeForC4 6 := three_le_minDegreeForC4 (by norm_num)
+  omega
+
 end Erdos85
