@@ -209,17 +209,6 @@ Concrete examples for small grids.
 -/
 
 /--
-**Example: 2×2 grid**
-Any 3 points in the 2×2 grid contain a square vertex set.
-(In fact, any 3 points of a 2×2 grid contain 3 corners of a square.)
--/
-/- small_case_2x2: Any 3 points in a 2×2 grid contain a square
-   (3 corners suffice by pigeonhole on the 2 rows). Proof requires case analysis. -/
-axiom small_case_2x2 :
-    ∀ A : Finset (ℕ × ℕ), A ⊆ grid 2 → A.card ≥ 3 →
-      containsAxisAlignedSquare A
-
-/--
 **Density threshold for 3×3:**
 In a 3×3 grid, having at least 5 points guarantees a square.
 -/
