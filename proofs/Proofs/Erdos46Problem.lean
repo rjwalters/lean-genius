@@ -294,6 +294,40 @@ theorem exists_isUnitFractionRepr_card_ge (k : ℕ) :
       Finset.card_erase_of_mem hmS]
     omega
 
+/-- **Unit-fraction representations of `1` of every cardinality `k ≥ 3` exist.**
+Strengthening of `exists_isUnitFractionRepr_card_ge` from `k ≤ |S|` to `|S| = k`
+exactly. The split-largest step of `isUnitFractionRepr_replace` raises the
+cardinality by *exactly one* (it removes `m` and inserts the two distinct new
+denominators `m+1`, `m(m+1)`), so starting from the length-`3` base `{2, 3, 6}`
+every cardinality `≥ 3` is realised. (Cardinalities `0, 1, 2` are impossible:
+`two_le_card_of_isUnitFractionRepr` rules out `< 2`, and a two-element
+representation `1/a + 1/b = 1` with `a, b ≥ 2` forces `a = b = 2`, not a
+`Finset` of two *distinct* elements — so `3` is the exact minimum.) -/
+theorem exists_isUnitFractionRepr_card_eq (k : ℕ) (hk : 3 ≤ k) :
+    ∃ S : Finset ℕ, IsUnitFractionRepr S ∧ S.card = k := by
+  induction k, hk using Nat.le_induction with
+  | base => exact ⟨{2, 3, 6}, isUnitFractionRepr_two_three_six, by decide⟩
+  | succ k hk ih =>
+    obtain ⟨S, hS, hcard⟩ := ih
+    have hne : S.Nonempty := by rw [← Finset.card_pos]; omega
+    -- split the largest denominator `m`; the replacement adds exactly one element
+    set m := S.max' hne with hm_def
+    have hmS : m ∈ S := S.max'_mem hne
+    have hmax : ∀ a ∈ S, a ≤ m := fun a ha => S.le_max' a ha
+    have hm2 : 2 ≤ m := hS.1 m hmS
+    have h1 : m + 1 ∉ S := fun h => by have := hmax _ h; omega
+    have h2 : m * (m + 1) ∉ S := fun h => by have := hmax _ h; nlinarith
+    have hrepl := isUnitFractionRepr_replace hS hmS h1 h2
+    refine ⟨insert (m + 1) (insert (m * (m + 1)) (S.erase m)), hrepl, ?_⟩
+    have hne' : m + 1 ≠ m * (m + 1) := by nlinarith
+    have h2erase : m * (m + 1) ∉ S.erase m := fun h => h2 (Finset.mem_of_mem_erase h)
+    have h1insert : m + 1 ∉ insert (m * (m + 1)) (S.erase m) := by
+      simp only [Finset.mem_insert, not_or]
+      exact ⟨hne', fun h => h1 (Finset.mem_of_mem_erase h)⟩
+    rw [Finset.card_insert_of_notMem h1insert, Finset.card_insert_of_notMem h2erase,
+      Finset.card_erase_of_mem hmS]
+    omega
+
 /-- **There are infinitely many distinct unit-fraction representations of `1`.**
 Consequence of `exists_isUnitFractionRepr_card_ge`: the representations have
 unbounded cardinality, so the set of them cannot be finite (a finite family of
