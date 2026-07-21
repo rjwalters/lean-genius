@@ -146,8 +146,16 @@ noncomputable def radical (n : ℕ) : ℕ := n.primeFactors.prod id
 The problem remains open.
 -/
 
-/-- Known: Lower bound (log x)/(log log x)² -/
-axiom known_lower_bound (x : ℕ) (hx : x ≥ 3) :
+/-- Known: Lower bound (log x)/(log log x)² in the asymptotic regime.
+
+    The threshold `x ≥ 16` is required: the bound `log x / (log log x)²` is an
+    asymptotic statement and is numerically vacuous for small `x`. Since a valid
+    interval lives in `[x, 2x]` its length is at most `x + 1`, but for `3 ≤ x ≤ 5`
+    the right-hand side exceeds `x + 1` (as `log log x → 0⁺` blows the fraction up),
+    so asserting the bound there would be *false* and make the theory inconsistent.
+    From `x ≥ 16` onward the fraction stays below `x + 1` and the CRT construction
+    applies. -/
+axiom known_lower_bound (x : ℕ) (hx : x ≥ 16) :
     ∃ a b : ℕ, validInterval x a b ∧
       (intervalLength a b : ℝ) ≥ Real.log x / (Real.log (Real.log x))^2
 
@@ -166,8 +174,8 @@ theorem erdos_452_summary :
     -- Density result exists
     (∀ ε > 0, ∃ N : ℕ, ∀ x ≥ N,
       |(({n ∈ Finset.Icc 1 x | satisfiesCondition n}.card : ℝ) / x - 1/2)| < ε) ∧
-    -- CRT lower bound exists
-    (∀ x : ℕ, x ≥ 3 → ∃ a b : ℕ, validInterval x a b ∧
+    -- CRT lower bound exists (asymptotic regime x ≥ 16)
+    (∀ x : ℕ, x ≥ 16 → ∃ a b : ℕ, validInterval x a b ∧
       (intervalLength a b : ℝ) ≥ Real.log x / (Real.log (Real.log x))^2) ∧
     -- Primes fail the condition
     (∀ x : ℕ, x ≥ 16 → ∃ p : ℕ, p.Prime ∧ x ≤ p ∧ p ≤ 2*x ∧ ¬satisfiesCondition p) :=
