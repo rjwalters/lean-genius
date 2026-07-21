@@ -122,55 +122,55 @@
       "title": "Part III: Root Distinctness",
       "summary": "Proves $j \\neq k$ with $0 \\leq j,k < q$ implies $\\zeta_j \\neq \\zeta_k$ via a pigeonhole argument on $|j - k| < q$",
       "startLine": 98,
-      "endLine": 148,
+      "endLine": 172,
       "mathContext": "$j \\neq k,\\ 0 \\leq j, k < q \\Rightarrow \\zeta_j \\neq \\zeta_k$. Proof: $\\zeta_j = \\zeta_k \\Rightarrow \\omega_j = \\omega_k \\Rightarrow e^{2\\pi i(j-k)/q} = 1 \\Rightarrow q \\mid (j-k)$, contradicting $|j-k| < q$."
     },
     {
       "id": "principal-value",
       "title": "Part IV: Principal Value via cpow",
       "summary": "Connects Mathlib's $\\texttt{cpow}(e^{i\\theta}, p/q)$ to $\\zeta_0 = \\exp(ip\\theta/q)$ using `log_exp` for $-\\pi < \\theta \\leq \\pi$; includes trigonometric form $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$",
-      "startLine": 149,
-      "endLine": 184,
+      "startLine": 173,
+      "endLine": 208,
       "mathContext": "$\\text{cpow}(e^{i\\theta}, p/q) = \\zeta_0 = \\exp(ip\\theta/q)$ for $\\theta \\in (-\\pi, \\pi]$. Mathlib's `Complex.cpow` selects the principal branch via the principal logarithm."
     },
     {
       "id": "consistency",
       "title": "Part V: Consistency with Integer De Moivre",
       "summary": "Shows $z^{p/1} = z^p$ and $(z^{p/q})^q = z^p$, confirming the principal value is a genuine $q$-th root of $z^p$",
-      "startLine": 185,
-      "endLine": 200,
+      "startLine": 209,
+      "endLine": 224,
       "mathContext": "$z^{p/1} = z^p$ (integer exponents). $(z^{p/q})^q = z^p$ (power-of-power). These verify that fractional exponents extend integer exponents consistently."
     },
     {
       "id": "sqrt-case",
       "title": "Part VI: Square Root Special Case",
       "summary": "Proves both square roots satisfy $\\zeta_k^2 = e^{i\\theta}$ and that $\\zeta_1 = -\\zeta_0$ via Euler's identity $e^{i\\pi} = -1$",
-      "startLine": 201,
-      "endLine": 224,
+      "startLine": 225,
+      "endLine": 248,
       "mathContext": "$q=2$: $\\zeta_0 = e^{i\\theta/2}$, $\\zeta_1 = e^{i(\\theta + 2\\pi)/2} = -e^{i\\theta/2} = -\\zeta_0$. Both satisfy $\\zeta_k^2 = e^{i\\theta}$. The two square roots are antipodal on the unit circle."
     },
     {
       "id": "cube-root-case",
       "title": "Part VII: Cube Root Special Case",
       "summary": "Verifies all three cube roots satisfy $\\zeta_k^3 = e^{i\\theta}$ and factor as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ with $\\omega_k \\in \\mu_3$",
-      "startLine": 225,
-      "endLine": 237,
+      "startLine": 249,
+      "endLine": 261,
       "mathContext": "$q=3$: $\\zeta_k = e^{i(\\theta + 2\\pi k)/3}$ for $k \\in \\{0,1,2\\}$. All satisfy $\\zeta_k^3 = e^{i\\theta}$. Factored: $\\zeta_k = \\omega^k \\cdot \\zeta_0$ where $\\omega = e^{2\\pi i/3}$."
     },
     {
       "id": "examples",
       "title": "Part VIII: Verified Examples",
       "summary": "Concrete computations: $\\zeta_0(0,1,2) = 1$, $\\zeta_0(0,1,3) = 1$, and $\\zeta_1(0,1,4) = i$ (the fourth root $e^{i\\pi/2}$)",
-      "startLine": 238,
-      "endLine": 256,
+      "startLine": 262,
+      "endLine": 279,
       "mathContext": "$\\zeta_0(0, 1, 2) = e^0 = 1$ (principal square root of 1). $\\zeta_0(0, 1, 3) = e^0 = 1$ (principal cube root of 1). $\\zeta_1(0, 1, 2) = e^{i\\pi} = -1$ (other square root of 1)."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary Theorem",
       "summary": "Bundles all four main results into a single conjunction: root verification, unity factorization, principal value identification, and consistency",
-      "startLine": 257,
-      "endLine": 275,
+      "startLine": 280,
+      "endLine": 300,
       "mathContext": "Four main results: (1) $\\zeta_k^q = (e^{i\\theta})^p$, (2) $\\omega_k^q = 1$ and $\\zeta_k = \\omega_k \\zeta_0$, (3) distinctness ($q$ distinct roots), (4) $\\text{cpow}$ consistency with $\\zeta_0$."
     }
   ],
