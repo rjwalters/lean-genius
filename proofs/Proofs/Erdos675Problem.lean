@@ -54,19 +54,7 @@ def bFreeSet (B : Set ℕ) : Set ℕ :=
 def IsPairwiseCoprime (B : Set ℕ) : Prop :=
   ∀ b₁ ∈ B, ∀ b₂ ∈ B, b₁ ≠ b₂ → Nat.Coprime b₁ b₂
 
-/-- The reciprocal sum condition: ∑_{b < x, b ∈ B} 1/b = o(log log x) -/
-def HasSmallReciprocalSum (B : Set ℕ) : Prop :=
-  ∀ ε : ℚ, 0 < ε → ∃ N : ℕ, ∀ x : ℕ, N ≤ x →
-    -- Abstractly: the partial reciprocal sum up to x is ≤ ε · log(log x)
-    True
-
-/- ## Known Results -/
-
-/-- Brun's sieve: if B is pairwise coprime with small reciprocal sums,
-    then the B-free set has the translation property -/
-axiom brun_sieve_translation (B : Set ℕ) (hpc : IsPairwiseCoprime B)
-    (hsmall : HasSmallReciprocalSum B) :
-  HasTranslationProperty (bFreeSet B)
+/- ## Known Results (Brun's Sieve) -/
 
 /-- The set of prime squares {p² | p prime} -/
 def primeSquares : Set ℕ := {n | ∃ p : ℕ, Nat.Prime p ∧ n = p ^ 2}
@@ -81,9 +69,23 @@ theorem primeSquares_pairwise_coprime : IsPairwiseCoprime primeSquares := by
     fun h => hpq ((hq.eq_one_or_self_of_dvd p h).resolve_left hp.one_lt.ne')
   exact Nat.Coprime.pow _ _ hcop
 
-/-- HasSmallReciprocalSum is trivially satisfied (placeholder definition) -/
-theorem primeSquares_small_reciprocal : HasSmallReciprocalSum primeSquares := by
-  intro ε _; exact ⟨0, fun _ _ => trivial⟩
+/-- Brun's sieve, specialized to the prime squares B = {p² : p prime}.
+
+    The prime squares are pairwise coprime (`primeSquares_pairwise_coprime`)
+    AND have a convergent reciprocal sum, ∑_{p prime} 1/p² < ∑_{n ≥ 1} 1/n² =
+    π²/6, so they genuinely satisfy the hypotheses of Brun's sieve. The sieve
+    then yields the translation property for the prime-squares-free set, which
+    is exactly the set of squarefree numbers (`squarefreeSet_eq_bfree`).
+
+    We axiomatize this *specialized* consequence rather than a general
+    B-free statement. Coprimality alone does NOT suffice: for B = all primes,
+    bFreeSet B = {1}, which fails the translation property (for t ≥ 1, a = 1
+    gives 1 ∈ {1} but 1 + t ∉ {1}). The genuine analytic hypothesis — the
+    convergence of the reciprocal sum, which the prime squares satisfy and the
+    primes do not — is what makes the statement true, and it is recorded here
+    in prose because a fully formal ∑ 1/p² < ∞ bound is out of scope. -/
+axiom brun_sieve_translation_primeSquares :
+  HasTranslationProperty (bFreeSet primeSquares)
 
 /-- Squarefree numbers equal the B-free set for B = primeSquares -/
 theorem squarefreeSet_eq_bfree : squarefreeSet = bFreeSet primeSquares := by
@@ -99,8 +101,7 @@ theorem squarefreeSet_eq_bfree : squarefreeSet = bFreeSet primeSquares := by
 theorem squarefree_translation :
     HasTranslationProperty squarefreeSet := by
   rw [squarefreeSet_eq_bfree]
-  exact brun_sieve_translation primeSquares primeSquares_pairwise_coprime
-    primeSquares_small_reciprocal
+  exact brun_sieve_translation_primeSquares
 
 /- ## The Erdős Conjectures -/
 

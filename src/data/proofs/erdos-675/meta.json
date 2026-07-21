@@ -21,17 +21,17 @@
     "erdosUrl": "https://erdosproblems.com/675",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 135,
-    "assumptions": "1 axiom: brun_sieve_translation (Brun's sieve — deep sieve theory). 3 open conjectures converted from axioms to defs. squarefree_translation proved from Brun's sieve via prime-squares B-free set.",
+    "lineCount": 136,
+    "assumptions": "1 axiom: brun_sieve_translation_primeSquares — Brun's sieve specialized to B = {p² : p prime}, a genuinely true statement (prime squares are pairwise coprime AND have convergent reciprocal sum ∑ 1/p² < π²/6). squarefree_translation is proved from it via the prime-squares B-free characterization. 3 open conjectures are stated as unproved defs (not axiomatized).",
     "mathlib_version": "4.31.0",
-    "theoremCount": 4,
-    "definitionCount": 13
+    "theoremCount": 3,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős introduced the translation property in the 1970s as a measure of 'quasi-periodicity' for number-theoretic sets. A set A ⊆ ℕ has this property if every finite initial pattern of A reappears at some translate—weaker than periodicity but capturing a form of self-similarity. The key tool is Brun's sieve (1920), which establishes the property for B-free sets (integers avoiding divisibility by elements of B) when B is pairwise coprime with convergent reciprocal sum. This immediately gives the translation property for squarefree numbers (B = {p² : p prime}, where Σ 1/p² < ∞). Problem 675 asks three deeper questions: (1) Do sums of two squares have the property? This is non-trivial because sums of two squares have density C/√(log x) by the Landau-Ramanujan theorem and are defined by an exponent-parity condition (primes p ≡ 3 mod 4 must divide to even power), not a non-divisibility condition, so Brun's sieve does not directly apply. (2) For balanced partitions P ∪ Q of primes, can P-smooth numbers have the property? This connects to multiplicative number theory and Dickman's function. (3) For squarefree numbers, must the minimal translation t_n grow at least as exp(n^c)? The CRT gives an upper bound t_n ≤ e^{O(n)}, and the question is whether a matching lower bound holds, quantifying the local non-periodicity of the squarefree pattern.",
     "problemStatement": "Three questions: (1) Does the set of sums of two squares have the translation property? (2) For balanced partitions of primes, can integers with prime factors from one part have this property? (3) For squarefree numbers, does the minimal translation t_n grow at least exponentially, i.e., t_n > exp(n^c)?",
     "text": "Does the set of sums of two squares have the translation property? For squarefree numbers, how fast does the minimal translation grow? Brun's sieve establishes the property for squarefree numbers.",
-    "proofStrategy": "The formalization defines HasTranslationProperty as ∀ n, ∃ t ≥ 1, ∀ a ∈ [1,n], (a ∈ A ↔ a+t ∈ A), and minTranslation via sInf. Number-theoretic sets (sumOfTwoSquares, squarefreeSet, bFreeSet) are defined as Set ℕ predicates, and the sieve conditions (IsPairwiseCoprime, HasSmallReciprocalSum) as Prop-valued definitions. Only the CRT-based result (brun_sieve_translation) is axiomatized; the squarefree special case (squarefree_translation) is then proved from it via the prime-squares B-free characterization. The three parts of Problem 675 are stated as unproved `def` Props (open, not axiomatized). The HasSmallReciprocalSum condition uses a True placeholder for the asymptotic bound, a pragmatic simplification.",
+    "proofStrategy": "The formalization defines HasTranslationProperty as ∀ n, ∃ t ≥ 1, ∀ a ∈ [1,n], (a ∈ A ↔ a+t ∈ A), and minTranslation via sInf. Number-theoretic sets (sumOfTwoSquares, squarefreeSet, bFreeSet) are defined as Set ℕ predicates, and IsPairwiseCoprime as a Prop-valued definition. The single axiom, brun_sieve_translation_primeSquares, is Brun's sieve *specialized to B = {p² : p prime}*: it asserts only that the prime-squares-free set has the translation property. This specialized statement is genuinely true — the prime squares are pairwise coprime (proved: primeSquares_pairwise_coprime) and have a convergent reciprocal sum ∑ 1/p² < π²/6 — so the axiom does not overreach. (An earlier general B-free version guarded by a placeholder `True` reciprocal-sum condition was unsound, since coprimality alone admits B = all primes with bFreeSet B = {1}, which lacks the translation property; that vacuous guard has been removed and the axiom narrowed to the case actually used.) The squarefree special case (squarefree_translation) is then proved from the axiom via the prime-squares B-free characterization (squarefreeSet_eq_bfree). The three parts of Problem 675 are stated as unproved `def` Props (open, not axiomatized).",
     "keyInsights": [
       "**CRT-based translation**: For B-free sets with pairwise coprime B, the Chinese Remainder Theorem constructs translations t_n ≤ lcm(b₁,...,b_k) by choosing k moduli with product > n",
       "**Sums of two squares are not B-free**: The characterization via even exponents of primes p ≡ 3 mod 4 is fundamentally different from non-divisibility, so Brun's sieve approach fails",
@@ -50,63 +50,55 @@
       "id": "imports",
       "title": "Number Theory Imports",
       "startLine": 20,
-      "endLine": 24,
+      "endLine": 26,
       "summary": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib.",
       "mathContext": "Mathematical content: Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib."
     },
     {
       "id": "translation-property",
       "title": "The Translation Property",
-      "startLine": 25,
-      "endLine": 37,
+      "startLine": 27,
+      "endLine": 38,
       "summary": "Defines HasTranslationProperty and the minimal translation function via sInf.",
       "mathContext": "Formal definition: Defines HasTranslationProperty and the minimal translation function via sInf."
     },
     {
       "id": "number-theoretic-sets",
       "title": "Number-Theoretic Sets",
-      "startLine": 38,
-      "endLine": 51,
-      "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates.",
-      "mathContext": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set $\\mathbb{N}$ predicates."
-    },
-    {
-      "id": "sieve-conditions",
-      "title": "Sieve Conditions",
-      "startLine": 52,
-      "endLine": 61,
-      "summary": "Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve.",
-      "mathContext": "Formal definition: Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve."
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates, plus IsPairwiseCoprime.",
+      "mathContext": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set $\\mathbb{N}$ predicates, together with the pairwise-coprimality predicate IsPairwiseCoprime."
     },
     {
       "id": "known-results",
       "title": "Known Results (Brun's Sieve)",
-      "startLine": 62,
-      "endLine": 74,
-      "summary": "Axiomatizes the CRT-based translation for B-free sets (brun_sieve_translation); the squarefree special case is proved from it as a theorem, not axiomatized.",
-      "mathContext": "Axiomatized: the CRT-based translation for B-free sets (brun_sieve_translation). The squarefree special case (squarefree_translation) is a proved theorem, not axiomatized."
+      "startLine": 57,
+      "endLine": 105,
+      "summary": "Defines primeSquares, proves they are pairwise coprime, and axiomatizes Brun's sieve specialized to B = {p² : p prime} (brun_sieve_translation_primeSquares — a genuinely true statement); the squarefree case (squarefree_translation) is then proved from it, not axiomatized.",
+      "mathContext": "Axiomatized: Brun's sieve specialized to the prime squares (brun_sieve_translation_primeSquares), applied via the prime-squares B-free characterization. The squarefree special case (squarefree_translation) is a proved theorem, not axiomatized."
     },
     {
       "id": "part1-two-squares",
       "title": "Part 1: Sums of Two Squares",
-      "startLine": 75,
-      "endLine": 81,
+      "startLine": 106,
+      "endLine": 112,
       "summary": "States the conjecture that sums of two squares have the translation property.",
       "mathContext": "Mathematical content: States the conjecture that sums of two squares have the translation property."
     },
     {
       "id": "balanced-partition",
       "title": "Balanced Prime Partition and P-Smooth Numbers",
-      "startLine": 82,
-      "endLine": 98,
+      "startLine": 113,
+      "endLine": 130,
       "summary": "Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture.",
       "mathContext": "Formal definition: Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture."
     },
     {
       "id": "growth-rate",
       "title": "Part 3: Squarefree Growth Rate",
-      "startLine": 99,
-      "endLine": 105,
+      "startLine": 131,
+      "endLine": 136,
       "summary": "States the conjecture that minimal translations for squarefree numbers grow super-polynomially.",
       "mathContext": "Mathematical content: States the conjecture that minimal translations for squarefree numbers grow super-polynomially."
     }
@@ -131,10 +123,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 135,
+    "lineCount": 136,
     "axiomCount": 1,
-    "theoremCount": 4,
-    "definitionCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 12,
     "path": "Proofs/Erdos675Problem.lean",
     "sorries": 0
   },
