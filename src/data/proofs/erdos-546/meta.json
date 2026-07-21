@@ -75,39 +75,39 @@
       "id": "multicolor",
       "title": "Multi-Color Generalization (Open)",
       "startLine": 102,
-      "endLine": 115,
+      "endLine": 121,
       "summary": "MultiColorConjecture and ThreeColorConjecture: does R_r(G) ≤ 2^{O(√m)} for r ≥ 3? Complement argument fails for 3+ colors",
       "mathContext": "OPEN: r ≥ 3 color Ramsey. Complement fails."
     },
     {
       "id": "specific-graphs",
       "title": "Specific Graph Classes",
-      "startLine": 117,
-      "endLine": 147,
+      "startLine": 122,
+      "endLine": 163,
       "summary": "Defines pathGraph P_n, cycleGraph C_n, completeBipartite K_{a,b}; axiomatizes edge count formulas n-1 and n",
       "mathContext": "P_n: n-1 edges. C_n: n edges. K_{a,b}: ab edges."
     },
     {
       "id": "sparse-bounds",
       "title": "Ramsey Bounds for Sparse Graphs",
-      "startLine": 149,
-      "endLine": 165,
+      "startLine": 164,
+      "endLine": 182,
       "summary": "Axiomatizes path_ramsey_linear (R(P_n) ≤ 2n-1), cycle_ramsey_linear (R(C_n) ≤ 2n-1), and probabilistic_lower_bound (R(G) ≥ c√m)",
       "mathContext": "Paths/cycles: linear R. Probabilistic: R(G) ≥ c√m."
     },
     {
       "id": "problem-545",
       "title": "Connection to Problem #545",
-      "startLine": 167,
-      "endLine": 175,
+      "startLine": 183,
+      "endLine": 192,
       "summary": "Problem545Conjecture: precise exponent R(G) ≤ C_ε · 2^{(1/2+ε) log m} refinement of Sudakov",
       "mathContext": "#545: precise exponent. Related open problem."
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "startLine": 177,
-      "endLine": 199,
+      "startLine": 193,
+      "endLine": 212,
       "summary": "erdos_546_solved (= sudakov_theorem) and erdos_546_tight (combining upper and lower bounds into Θ(√m) statement)",
       "mathContext": "SOLVED: R(G) = 2^{Θ(√m)}. Upper: Sudakov. Lower: probabilistic."
     }
