@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Definitions: The Four Means",
+      "summary": "Module setup and the four power-mean definitions on positive reals: HM (harmonic, 2ab/(a+b)), GM (geometric, √(ab)), AM (arithmetic, (a+b)/2), and QM (quadratic, √((a²+b²)/2)). The file establishes the full chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max.",
+      "startLine": 1,
+      "endLine": 54,
+      "mathContext": "Formal definitions: $\\mathrm{HM} = \\frac{2ab}{a+b}$, $\\mathrm{GM} = \\sqrt{ab}$, $\\mathrm{AM} = \\frac{a+b}{2}$, $\\mathrm{QM} = \\sqrt{\\frac{a^2+b^2}{2}}$."
+    },
+    {
       "id": "min-le-hm",
       "title": "min ≤ HM",
       "summary": "Case split proof using mul_nonneg; gap = a*(b-a) after ring",
