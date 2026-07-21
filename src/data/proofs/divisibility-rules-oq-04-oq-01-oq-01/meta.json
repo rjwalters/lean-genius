@@ -124,20 +124,20 @@
       "id": "master",
       "title": "The Master Parametric Lemma",
       "startLine": 62,
-      "endLine": 94,
+      "endLine": 91,
       "summary": "dvd_iff_dvd_ofDigits_pow_ten: for any k, ε, and m ∣ 10^k − ε, m ∣ n ↔ (m:ℤ) ∣ ofDigits ε (digits (10^k) n). The two named tests dvd_iff_dvd_blockSum (ε=1) and dvd_iff_dvd_blockAltSum (ε=−1) specialize it and rewrite to explicit (alternating) block sums."
     },
     {
       "id": "families",
       "title": "Both Signs and All Widths, Packaged",
-      "startLine": 96,
-      "endLine": 103,
+      "startLine": 92,
+      "endLine": 99,
       "summary": "block_divisibility_families: one statement asserting that for every k the block sum tests every divisor of 10^k − 1 and the alternating block sum tests every divisor of 10^k + 1."
     },
     {
       "id": "congruence",
       "title": "Residue Identities",
-      "startLine": 105,
+      "startLine": 100,
       "endLine": 133,
       "summary": "modEq_blockSum and modEq_blockAltSum give the full congruences n ≡ blockSum k n and n ≡ blockAltSum k n modulo any m ∣ 10^k ∓ 1, from Nat.zmodeq_ofDigits_digits and the pivots 10^k ≡ ±1 (mod m)."
     },
