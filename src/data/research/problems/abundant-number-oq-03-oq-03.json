@@ -32,7 +32,18 @@
     "since": "2026-07-20",
     "iteration": 4,
     "focus": "Route-1 primitivity reduced to pure divisor-sum arithmetic; infinitude still open",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "Route 1 — odd deficient family mₖ with I(mₖ)→2⁻ + Bertrand-type prime window",
+        "reopenCriterion": "materially new mechanism required (an explicit infinite odd deficient family with a prime in each (I*/(2−I*), I/(2−I)) window)",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "Route 2 — primitive-part extraction from an abundant number",
+        "reopenCriterion": "permanently closed: DISPROVEN under strict IsPrimitiveAbundant (A071395) — not_isPrimitiveAbundant_12 / no_isPrimitiveAbundant_dvd_12",
+        "blockedAt": "2026-07-21"
+      }
+    ],
     "nextAction": "Exhibit an infinite family of odd deficient m_k with abundancy index I(m_k)->2 and controllable I*(m_k), so the rational prime window (I*/(2-I*), I(m)/(2-I(m))) is nonempty and contains a prime coprime to m_k (Bertrand-type input). Infinitude remains genuinely open.",
     "attemptCounts": {
       "total": 0,

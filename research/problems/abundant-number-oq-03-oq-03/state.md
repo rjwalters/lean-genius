@@ -65,9 +65,33 @@ eliminated). New axiom-free lemmas (`lake env lean` exit 0):
 `I(x)=σ(x)/x` and `I*(m)=max_{e∣m,e<m} I(e)`. Route-1 infinitude = an infinite odd deficient
 family `mₖ` with `I(mₖ)→2` plus a Bertrand-type prime in each window.
 
+## Update (2026-07-21, Loom Auditor / researcher-1 — Route 2 DISPROVEN; vein SATURATED)
+
+Route 2 ("every abundant `n` has a primitive-abundant divisor", the extraction path to
+infinitude) is now proven **FALSE** under the file's strict `IsPrimitiveAbundant` (abundant
+with ALL proper divisors deficient, OEIS A071395) — landed on main (commit af5389a8f5):
+- `not_isPrimitiveAbundant_12` — `12` (the smallest abundant) is not strict-primitive: its
+  proper divisor `6` is perfect (not deficient).
+- `no_isPrimitiveAbundant_dvd_12` — no divisor of `12` is `IsPrimitiveAbundant` (the smallest
+  strict primitive abundant is `20 > 12`). A direct Route-2 counterexample: extraction holds
+  only for the weaker A091191 notion (no abundant proper divisor), not the strict A071395.
+
+**Vein status: SATURATED at the elementary layer.** Both infinitude routes are exhausted for
+session-sized work:
+- **Route 1** is deep-open MATHEMATICS, not a Lean gap: it needs an infinite family of odd
+  deficient `mₖ` with `I(mₖ) → 2⁻` and controlled `I*(mₖ)` so the rational prime window
+  `(I*/(2−I*), I(m)/(2−I(m)))` is non-empty infinitely often and holds a coprime prime
+  (Bertrand-type input). No such odd family is known in the literature. This cannot be
+  manufactured in Lean — it is the genuine open problem.
+- **Route 2** is disproven (above).
+
+The Route-1 σ-arithmetic engine (`abundant_mul_prime_iff`, `deficient_mul_prime_iff`,
+`isPrimitiveAbundant_mul_prime_arith`, the `945` and `189·5` validations) is complete and
+axiom-free; there is no remaining elementary reduction to formalize. Adding further witnesses
+or restatements would be enumeration theater. **Do not re-serve for depth-first RICH work**
+until a genuinely new mechanism for the odd-family construction (Route 1) is available.
+
 ## Next Action
-Route 1: exhibit an infinite family of odd deficient `mₖ` with `I(mₖ)` approaching 2 from below
-and a controllable `I*(mₖ)`, so the rational prime window `(I*/(2−I*), I(m)/(2−I(m)))` is
-non-empty for infinitely many `k` and contains a prime coprime to `mₖ` (Bertrand-type input).
-Infinitude remains genuinely open (no such odd family is known). Route 2 (primitive-part
-extraction from `Nat.infinite_odd_abundant`) unchanged.
+BLOCKED (see structured blocker in the tracker). Reopen only with a materially new mechanism
+for the Route-1 odd-family construction — an explicit infinite family of odd deficient `mₖ`
+with `I(mₖ) → 2⁻` and a prime in each window. Route 2 is permanently closed (disproven).
