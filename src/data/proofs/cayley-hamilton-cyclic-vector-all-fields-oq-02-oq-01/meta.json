@@ -97,36 +97,36 @@
       "id": "header",
       "title": "Header: the triple equivalence and the converse edge",
       "startLine": 1,
-      "endLine": 65,
-      "summary": "States the three classical conditions (cyclic vector ⟺ minpoly = charpoly ⟺ centralizer = K[M]), locates the sibling forward edge and parent biconditional, and lays out the dimension-squeeze proof of the converse edge. The Status note confirms the entry is fully verified with 0 axioms, including the now-proved Frobenius bound."
+      "endLine": 74,
+      "summary": "States the three classical conditions (cyclic vector ⟺ minpoly = charpoly ⟺ centralizer = K[M]), locates the sibling forward edge and parent biconditional, and lays out the dimension-squeeze proof of the converse edge. The Status note confirms the entry is fully verified with 0 axioms, including the now-proved Frobenius bound. Imports (Mathlib + the two sibling files), opens noncomputable section, namespace CyclicCommutantConverse, open Matrix Polynomial, and the variable {K : Type*} [Field K] {n : ℕ}."
     },
     {
       "id": "dim-adjoin",
       "title": "Section I — dim K[M] = deg(minpoly): finrank_adjoin_eq_natDegree_minpoly",
-      "startLine": 67,
-      "endLine": 99,
+      "startLine": 75,
+      "endLine": 108,
       "summary": "Computes dim_K K[M] = deg(minpoly M) through the first isomorphism theorem K[M] = range(aeval M) ≅ K[X]/(minpoly), avoiding the noncommutative PowerBasis obstruction. Uses Algebra.adjoin_singleton_eq_range_aeval, minpoly.ker_aeval_eq_span_minpoly, Ideal.quotientKerEquivRange, and finrank_quotient_span_eq_natDegree."
     },
     {
       "id": "frobenius-bound",
       "title": "Section II — the Frobenius bound (now proved, 0 axioms): finrank_centralizer_ge",
-      "startLine": 101,
-      "endLine": 130,
-      "summary": "dim_K C(M) ≥ n, the classical Frobenius bound, proved in Lean from Mathlib's PID primary-decomposition structure theorem. The matrix centralizer is transferred along the algebra equivalence Matrix.toLinAlgEquiv' to the operator centralizer, identified with the K[X]-endomorphisms of Module.AEval' φ, and lower-bounded by dim_K V = n via the multiplication embedding of the decomposed module (Algebra.lmul). Supporting lemmas: lmul_finrank_bound, aeval_end_bound, endK_centralizer_bound."
+      "startLine": 109,
+      "endLine": 264,
+      "summary": "dim_K C(M) ≥ n, the classical Frobenius bound (1878), proved in Lean from Mathlib's PID primary-decomposition structure theorem (no longer an axiom). Three general-purpose supporting lemmas build the operator-side bound: lmul_finrank_bound (a finite commutative K[X]-algebra S injects K-linearly into End_{K[X]} S via Algebra.lmul, so dim_K S ≤ dim_K End_{K[X]} S), aeval_end_bound (decomposing the finite torsion module AEval' φ as ⊕ᵢ K[X]/(pᵢ^eᵢ) via Module.equiv_directSum_of_isTorsion lower-bounds dim_K End_{K[X]}(AEval' φ) by dim_K V), and endK_centralizer_bound (those endomorphisms inject into the operator centralizer C(φ)). finrank_centralizer_ge then transfers the bound to the matrix centralizer along the algebra equivalence Matrix.toLinAlgEquiv', which carries C(M) isomorphically onto C(φ) for φ := toLinAlgEquiv' M."
     },
     {
       "id": "deg-minpoly-le",
       "title": "Section III — deg(minpoly) ≤ n: natDegree_minpoly_le",
-      "startLine": 131,
-      "endLine": 158,
+      "startLine": 265,
+      "endLine": 279,
       "summary": "minpoly K M ∣ charpoly M (Cayley–Hamilton, Matrix.aeval_self_charpoly) and deg(charpoly) = n give deg(minpoly) ≤ n via Polynomial.natDegree_le_of_dvd."
     },
     {
       "id": "main",
       "title": "Section IV — converse edge and capstone",
-      "startLine": 159,
-      "endLine": 197,
-      "summary": "centralizer_eq_adjoin_implies_nonderogatory runs the squeeze n ≤ dim C(M) = dim K[M] = deg(minpoly) ≤ n to force deg(minpoly) = n, then concludes minpoly = charpoly by Polynomial.eq_of_monic_of_dvd_of_natDegree_le. centralizer_eq_adjoin_implies_cyclic composes this with the parent biconditional to produce a cyclic vector."
+      "startLine": 280,
+      "endLine": 330,
+      "summary": "centralizer_eq_adjoin_implies_nonderogatory runs the squeeze n ≤ dim C(M) = dim K[M] = deg(minpoly) ≤ n to force deg(minpoly) = n, then concludes minpoly = charpoly by Polynomial.eq_of_monic_of_dvd_of_natDegree_le. centralizer_eq_adjoin_implies_cyclic composes this with the parent biconditional (nonderogatory_iff_has_cyclic_vector) to produce a cyclic vector, closing the triple equivalence. Closes namespace CyclicCommutantConverse."
     }
   ],
   "conclusion": {
