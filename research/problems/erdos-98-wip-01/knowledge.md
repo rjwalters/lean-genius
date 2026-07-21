@@ -1,5 +1,71 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=1 sub-case (isosceles) — SUB-CASES COMPLETE
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 1` (final) geometric
+sub-case of the degree-3 exclusion proved, axiom-free. With it, **all four sub-cases k=0,1,2,3
+are now proved.** **Docker-verified** `Proofs.Erdos98WIP01` via `./proofs/scripts/docker-build.sh`
+(8577 jobs, "Build succeeded", 0 `error:`, only pre-existing deprecation / unused-simp-arg
+warnings). `grep -c '^axiom '` = 0, `grep -c sorry` = 0, no `native_decide` (the single
+`native_decide` grep hit is docstring text). Tactics (`set`/`rw`/`simp only`/`linarith`/
+`nlinarith`/`positivity`/`linear_combination`/`fin_cases`/`omega`/`abel`, plus
+`real_inner_smul_left`/`_right`) are all axiom-clean, matching the k=0/k=2 footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+### What I did
+Proved the `k = 1` sub-case (exactly ONE of the three neighbour pairs at the SHORT distance
+`a`): `dist x y = a`, `dist x z = dist y z = b`. Geometry: `{v,x,y}` equilateral of side `a`,
+`z` sits off it.
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean:2297`, +1 theorem):
+
+- **`degree_three_isosceles_impossible`** (axiom-free, `set_option maxHeartbeats 1600000`):
+  5 points `v,x,y,z,w` with `dist v {x,y,z}=a`, `dist x y = a`, `dist x z = dist y z = b`,
+  `dist v w = b`, `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (the k=1 twist vs k=0/k=2):
+1. Edge vectors `uⱼ=j−v`. `⟪uₓ,u_y⟫=a²/2` (dist `a`), `⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2` (dist `b`).
+2. Three vectors in ℝ² dependent ⟹ singular Gram. Solving the Gram system (independence ⟹
+   `g₀=g₁`, then eliminate `g₂`: `linear_combination (-2a²)e1 + (2a²−b²)e3` gives
+   `g₀·(a⁴−4a²b²+b⁴)=0`) forces **`a⁴−4a²b²+b⁴=0`** — the CLEAN polynomial form of
+   `(a²−b²/2)²=¾a⁴`, roots `b²=(2±√3)a²`. NO clean `b²=3a²` substitution (quadratic irrational,
+   both √3 branches metrically realizable).
+3. That relation makes `‖(2a²−b²)(uₓ+u_y) − 3a²·u_z‖² = −3a²(a⁴−4a²b²+b⁴) = 0`, giving the
+   linear dependence **`(2a²−b²)(uₓ+u_y) = 3a²·u_z`** (coefficients are quadratic irrationals).
+4. `⟪u_w, (2a²−b²)(uₓ+u_y) − 3a²u_z⟫ = 0`; each `⟪u_w,uⱼ⟫=(b²+a²−dist(w,j)²)/2` with
+   `dist(w,j)²∈{a²,b²}`. 8-way `rcases`: each assignment gives a homogeneous degree-4 relation
+   `H_case` which together with `key` has no common root for `a>0`; closed uniformly by
+   `nlinarith` with a degree-6 Positivstellensatz certificate (products `a²·H, b²·H, a²·key,
+   b²·key` sum to a positive multiple of `a⁶`; hints `pow_pos ha 6` + `a⁴b², a²b⁴` positivity).
+
+Also bumped `degree_three_rhombus_impossible` (k=2) `maxHeartbeats` 800000→1600000 — it tipped
+over 800000 at `whnf` this build (heartbeat variance; it had passed at 800000 before).
+
+### Degree-3 exclusion status — ALL SUB-CASES DONE
+- `k=3` `no_four_equidistant_indices`, `k=0` `degree_three_equilateral_impossible`,
+  `k=2` `degree_three_rhombus_impossible`, **`k=1` `degree_three_isosceles_impossible` (this
+  session)**. The four sub-case lemmas are complete and axiom-free.
+
+### Exact remaining gap (for next iteration, cold) — HONEST SCOPE
+The four sub-cases are proved as STANDALONE lemmas; they are **not yet assembled** into the
+theorem "no short-degree-3 vertex", and the `h 5 ≥ 3` lower bound is NOT yet closed. Remaining:
+1. **Assemble**: prove `¬(∃ vertex of a-degree 3)` by dispatching on `k=#{a-edges among the 3
+   neighbour pairs}∈{0,1,2,3}` (exhaustive), permuting `x,y,z` so the odd-one-out pair matches
+   each lemma, and feeding the 5th point `w` (the non-neighbour of `v`, at `dist b`). Care:
+   identify `w` and confirm `dist w {x,y,z}∈{a,b}` from the two-distance hypothesis.
+2. **`a↔b` symmetry**: b-degree=4−a-degree; the swapped lemmas exclude b-degree-3 ⟹ a-degree-1
+   also excluded ⟹ all a-degrees=2 ⟹ short-graph 2-regular.
+3. **C₅ endgame**: 2-regular on 5 vertices ⟹ 5-cycle ⟹ regular pentagon ⟹ 5 concyclic ⟹
+   `¬NoFourConcyclic`. Closes `h 5 ≥ 3`. Bounds remain `2 ≤ h 5 ≤ 3` until this lands.
+
+### Reusable idiom (k=1 specific)
+When the singular-Gram relation is a quadratic irrational (`b²=(2±√3)a²`, no linear
+substitution): (i) express `key` as the CLEAN quartic `a⁴−4a²b²+b⁴=0` (det Gram cleared of
+`/2`s) for `nlinarith`/`linear_combination`; (ii) get the vector dependence via
+`‖(coeff-with-irrational)·combo‖² = const·key = 0` rather than a scalar substitution; (iii) the
+final many-way distance split needs a degree-6 (not degree-2) Positivstellensatz certificate —
+feed `nlinarith` the `a⁶,b⁶,a⁴b²,a²b⁴` positivity facts so it can form `a²·H,b²·H,a²·key,b²·key`.
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=2 sub-case (60°-rhombus)
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 2` geometric sub-case of

@@ -16,28 +16,30 @@ Short-distance-graph structure: degree bounds (1–3) + handshake parity ⟹ som
 exactly 2 short neighbours. Pushing toward full 2-regularity by ruling out degree 3.
 Degree-3 exclusion splits by `k = #{a-edges among the 3 neighbour pairs}`:
 - k=3 DONE (`no_four_equidistant_indices`), k=0 DONE (`degree_three_equilateral_impossible`),
-  k=2 DONE (`degree_three_rhombus_impossible`).
-- k=1 OPEN (same Gram-system inner-product method; forces `b=a√3`, then 5th point `w` has no
-  consistent position).
+  k=2 DONE (`degree_three_rhombus_impossible`), **k=1 DONE (`degree_three_isosceles_impossible`,
+  this session)**. ALL FOUR SUB-CASES NOW PROVED axiom-free (docker-verified).
 Then 2-regular ⟹ C₅ ⟹ regular pentagon ⟹ concyclic ⟹ contradiction with NoFourConcyclic.
 
 ## Attempt Count
 - See knowledge.md session log.
 
 ## Blockers
-Full 2-regularity requires ruling out short-degree 3 in all sub-cases (only k=1 remains);
-pure graph theory does not force C₅ — each sub-case needs the geometric fifth point.
+Full 2-regularity now requires only the ASSEMBLY of the four sub-case lemmas (all proved) into
+"no short-degree-3 vertex" + the `a↔b` symmetry; then the C₅ endgame. Pure graph theory does
+not force C₅ — each sub-case needed (and now has) the geometric fifth point.
 
 ## Next Action
-Prove the k=1 sub-case: a degree-3 vertex `v` whose neighbours `x,y,z` have exactly one
-`a`-edge among them (say `dist x y = a`, `dist x z = dist y z = b`) — so `{v,x,y}` is
-equilateral of side `a` and `z` sits off it.  Mirror `degree_three_rhombus_impossible`, BUT
-NOTE the Gram system here is DIFFERENT: `⟪uₓ,u_y⟫=a²/2`, `⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2`, and
-`det Gram = 0` gives `(a²−b²/2)² = ¾a⁴`, i.e. **`b² = (2±√3)a²`** (verified numerically —
-both signs realizable), NOT `b²=3a²`.  So the k=1 obstruction is a genuine two-branch case:
-extract the explicit linear relation among `uₓ,u_y,u_z` (its coefficients now depend on which
-√3 branch), then contradict on the forced inner products of `u_w` in each branch.  Harder than
-k=0/k=2 because `b²` is a quadratic irrational in `a²`; may need `nlinarith` with the
-`(a²−b²/2)²=¾a⁴` relation rather than a clean `b²=3a²` substitution.  After k=1: short-degree
-∈ {1,2}, and by the `a↔b` symmetry the same family excludes b-degree 3, giving full
-2-regularity ⟹ C₅.
+1. **Assemble degree-3 exclusion.** Prove "no short-degree-3 vertex" by combining the four
+   sub-case lemmas (`degree_three_{equilateral,isosceles,rhombus}_impossible` for k=0,1,2 and
+   `no_four_equidistant_indices` for k=3). The three neighbour pairs `{xy,xz,yz}` each carry an
+   `a`- or `b`-edge; `k = #{a-edges} ∈ {0,1,2,3}` is exhaustive. For each `k`, permute
+   `x,y,z` so the odd-one-out pair matches the lemma's hypotheses (k=1: the single a-edge is
+   `xy`; k=2: the single b-edge is `yz`), and the 5th point `w` (the non-neighbour of `v`, at
+   `dist b`) feeds `hwx/hwy/hwz`. Careful: need to also identify which vertex is `w` (the one
+   of the 5 not in `{v,x,y,z}`) and that its distances to `x,y,z` lie in `{a,b}` (two-distance
+   set). Output: a lemma `¬ (∃ vertex of a-degree 3)`.
+2. **`a↔b` symmetry.** b-degree = 4 − a-degree (each vertex has 4 others, `card_fiber_dist_le_three`
+   bounds both). The SAME four lemmas with `a,b` swapped exclude b-degree 3, so a-degree 1 (⟺
+   b-degree 3) is also excluded ⟹ every a-degree = 2 ⟹ short-graph is 2-regular.
+3. **C₅ endgame.** 2-regular on 5 vertices ⟹ single 5-cycle ⟹ metric realization forces a
+   regular pentagon ⟹ its 5 vertices concyclic ⟹ contradicts `NoFourConcyclic`. Closes `h 5 ≥ 3`.
