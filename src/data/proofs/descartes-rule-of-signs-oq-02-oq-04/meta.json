@@ -90,9 +90,9 @@
     {
       "id": "soundness",
       "title": "Containment and Soundness",
-      "startLine": 116,
+      "startLine": 107,
       "endLine": 175,
-      "summary": "vasIsolate_isolated_subset (each isolated interval ⊆ (a,b]); vasIsolate_isolated_one_root (each isolated interval is nondegenerate and holds exactly one root).",
+      "summary": "Opens the Correctness section with the two midpoint helper lemmas lt_mid / mid_lt (a < (a+b)/2 < b for a < b), used throughout the bisection arguments. vasIsolate_isolated_subset (each isolated interval ⊆ (a,b]); vasIsolate_isolated_one_root (each isolated interval is nondegenerate and holds exactly one root).",
       "mathContext": "Induction over the bisection tree, discharging leaves with the unique-root certificate."
     },
     {
