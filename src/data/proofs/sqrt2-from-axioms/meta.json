@@ -95,6 +95,14 @@
       "mathContext": "The main result: no coprime integers $a, b$ satisfy $a^2 = 2b^2$. Proof: $a^2 = 2b^2 \\Rightarrow a^2$ even $\\Rightarrow a$ even $\\Rightarrow a = 2c \\Rightarrow 4c^2 = 2b^2 \\Rightarrow b^2$ even $\\Rightarrow b$ even, contradicting coprimality."
     },
     {
+      "id": "alternative-formulation",
+      "title": "Part 6: Alternative Formulation",
+      "startLine": 167,
+      "endLine": 187,
+      "summary": "sqrt2_no_rational_form: for any a, b with a^2 = 2b^2, either b = 0 or both a and b are even — the descent step stated without the coprimality hypothesis, exposing the parity dichotomy that drives the irrationality proof.",
+      "mathContext": "Restates the core of the argument as a dichotomy: $a^2 = 2b^2 \\Rightarrow b = 0 \\lor (2 \\mid a \\land 2 \\mid b)$. Iterating the 'both even' branch is the infinite-descent engine; the coprime version (`sqrt2_irrational`) is the special case $b > 0$."
+    },
+    {
       "id": "educational-notes",
       "title": "Educational Notes",
       "startLine": 188,
