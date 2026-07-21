@@ -87,9 +87,17 @@
       "mathContext": "The key lemma: $n^2$ even $\\Rightarrow n$ even. Proved by contrapositive: $n$ odd $\\Rightarrow n = 2k+1 \\Rightarrow n^2 = 4k^2+4k+1$ odd."
     },
     {
+      "id": "coprimality",
+      "title": "Coprimality (Built from Scratch)",
+      "startLine": 124,
+      "endLine": 130,
+      "summary": "Defines Coprime a b as ¬(Even a ∧ Even b) — the minimal from-scratch notion of coprimality needed for the descent: two naturals are coprime here iff they are not both even. This is exactly the hypothesis contradicted by the main theorem, which shows any solution of a² = 2b² forces both a and b even.",
+      "mathContext": "$\\operatorname{Coprime}(a,b) := \\neg(\\operatorname{Even} a \\land \\operatorname{Even} b)$. Rather than the full gcd-based coprimality, the proof needs only the weaker 'not both even' predicate: infinite descent on the powers of $2$ dividing $a$ and $b$ is stopped precisely by ruling out a common factor of $2$."
+    },
+    {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 133,
+      "startLine": 131,
       "endLine": 166,
       "summary": "No coprime solution to a^2 = 2b^2 exists.",
       "mathContext": "The main result: no coprime integers $a, b$ satisfy $a^2 = 2b^2$. Proof: $a^2 = 2b^2 \\Rightarrow a^2$ even $\\Rightarrow a$ even $\\Rightarrow a = 2c \\Rightarrow 4c^2 = 2b^2 \\Rightarrow b^2$ even $\\Rightarrow b$ even, contradicting coprimality."
