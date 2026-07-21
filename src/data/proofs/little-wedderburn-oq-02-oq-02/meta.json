@@ -109,9 +109,9 @@
     {
       "id": "fiber",
       "title": "Conjugate Count: deg Roots per Minimal Polynomial",
-      "startLine": 46,
+      "startLine": 40,
       "endLine": 91,
-      "summary": "Nfield defines the degree-d count via the minimal-polynomial image. card_minpoly_fiber proves the elements of GF(p^m) sharing a given minimal polynomial g number exactly deg g, identifying the fibre with the (separable, splitting) root set of g. mdeg_dvd shows every such degree divides m.",
+      "summary": "Setup: the ambient prime p (variable [Fact p.Prime]) and the noncomputable DecidableEq/Fintype instances on (ZMod p)[X] and GaloisField p m that make the Finset image/filter counts below well-defined. Nfield defines the degree-d count via the minimal-polynomial image. card_minpoly_fiber proves the elements of GF(p^m) sharing a given minimal polynomial g number exactly deg g, identifying the fibre with the (separable, splitting) root set of g. mdeg_dvd shows every such degree divides m.",
       "mathContext": "$\\#\\{y : \\mathrm{minpoly}\\,y = g\\} = \\deg g$, and $\\deg g \\mid m$."
     },
     {

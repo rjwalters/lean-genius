@@ -57,31 +57,31 @@
       "id": "definition",
       "title": "AllFactorialSubtractionsComposite Definition",
       "startLine": 19,
-      "endLine": 22,
+      "endLine": 27,
       "summary": "Defines the AFSC property: all factorial subtractions p - k! (with k! < p) are composite and ≥ 2.",
       "mathContext": "$\\mathrm{AFSC}(n) :\\!\\!\\iff \\forall k \\in \\mathbb{N},\\, k! < n \\Rightarrow (\\neg\\, \\mathrm{Prime}(n - k!) \\land n - k! \\geq 2)$. The $\\geq 2$ condition ensures the subtraction is meaningful (avoids 0 and 1 which are not prime but also not 'composite' in the standard sense)."
     },
     {
       "id": "primality-lemmas",
       "title": "Primality Computations: 223 and 199",
-      "startLine": 24,
-      "endLine": 31,
+      "startLine": 28,
+      "endLine": 38,
       "summary": "Proves 223 and 199 are prime by decide. Also proves no prime exists in (211, 223).",
       "mathContext": "Three facts by \\texttt{decide}: (1) $223$ is prime; (2) $199$ is prime; (3) $\\forall n \\in \\{212, \\ldots, 222\\}$, $n$ is not prime. These are verified by the Lean kernel computing trial division. $\\sqrt{223} < 15$ and $\\sqrt{199} < 15$, so only divisors $\\leq 14$ need to be checked."
     },
     {
       "id": "counterexample",
       "title": "223 Fails AFSC via 223 - 4! = 199",
-      "startLine": 33,
-      "endLine": 38,
+      "startLine": 39,
+      "endLine": 45,
       "summary": "Proves AFSC(223) is false: k=4 gives 223 - 24 = 199 which is prime.",
       "mathContext": "Proof by contradiction: assume $\\mathrm{AFSC}(223)$ holds. Instantiate with $k = 4$: since $4! = 24 < 223$, AFSC would require $\\neg\\mathrm{Prime}(223 - 24)$ and $223 - 24 \\geq 2$. But $223 - 24 = 199$ and $\\mathrm{Prime}(199)$ (proved above). Contradiction."
     },
     {
       "id": "smallest-failing",
       "title": "Main Result: 223 is the Smallest Failing Prime after 211",
-      "startLine": 40,
-      "endLine": 45,
+      "startLine": 46,
+      "endLine": 51,
       "summary": "Bundles all three results: 223 is prime, AFSC(223) fails, and no prime exists between 211 and 223.",
       "mathContext": "The conjunction $\\mathrm{Prime}(223) \\land \\neg\\mathrm{AFSC}(223) \\land (\\forall p,\\, 211 < p < 223 \\Rightarrow \\neg\\mathrm{Prime}(p))$ directly encodes '223 is the smallest prime $> 211$ failing AFSC.' The conjunction is assembled from the three previously proved lemmas."
     }
