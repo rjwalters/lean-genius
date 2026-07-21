@@ -166,55 +166,55 @@
       "id": "module-header",
       "title": "Module Header and Open Question Statement",
       "startLine": 1,
-      "endLine": 47,
+      "endLine": 71,
       "summary": "States OQ-02 (equidistribution density 1/φ(d) for primes), notes the prime statement is the PNT for arithmetic progressions and unavailable in Mathlib, and frames the entry's content: the exact elementary skeleton for coprime integers. Lists the four main results.",
       "mathContext": "Distinguishes the deep prime equidistribution (requires L(1,χ)≠0 + Tauberian theorem) from the exact, elementary equidistribution of coprime integers formalized here."
     },
     {
       "id": "count-class-eq",
       "title": "count_class_eq: Exact Per-Class Count",
-      "startLine": 49,
-      "endLine": 62,
+      "startLine": 72,
+      "endLine": 84,
       "summary": "For 0 < d, exactly N integers in [0, N·d) are ≡ v (mod d), for every v. Applies Nat.count_modEq_card and uses (N·d)%d = 0 to kill the Iverson correction term.",
       "mathContext": "count (· ≡ v [MOD d]) (N·d) = N·d/d + [v%d < (N·d)%d] = N + [v%d < 0] = N."
     },
     {
       "id": "count-coprime-eq",
       "title": "count_coprime_eq: Exact Coprime Count via Block Induction",
-      "startLine": 64,
-      "endLine": 84,
+      "startLine": 85,
+      "endLine": 106,
       "summary": "For 0 < d, exactly N·φ(d) integers in [0, N·d) are coprime to d. Induction on N: split [0,(N+1)d) into prefix [0,Nd) (IH gives N·φ(d)) and block [Nd, Nd+d) (Nat.filter_coprime_Ico_eq_totient gives φ(d)).",
       "mathContext": "#{x < N·d | gcd(d,x)=1} = N·φ(d); each of the N periods contributes φ(d) coprime residues."
     },
     {
       "id": "class-subset-coprime",
       "title": "class_subset_coprime: Reduced Classes Lie in the Coprimes",
-      "startLine": 86,
-      "endLine": 99,
+      "startLine": 107,
+      "endLine": 119,
       "summary": "When gcd(d,v)=1, every member of the residue class v in the window is coprime to d. Uses Nat.gcd_rec so gcd(d,x) depends only on x mod d = v mod d.",
       "mathContext": "x ≡ v (mod d) ⇒ gcd(d,x) = gcd(d, x%d) = gcd(d, v%d) = gcd(d,v) = 1."
     },
     {
       "id": "reduced-class-density",
       "title": "reduced_class_density: Exact Relative Density 1/φ(d)",
-      "startLine": 101,
-      "endLine": 116,
+      "startLine": 120,
+      "endLine": 136,
       "summary": "For 0 < d and N ≥ 1, the proportion of coprime integers in [0, N·d) in class v is exactly 1/φ(d). Substitutes the two counts (N and N·φ(d)) and cancels N over ℚ.",
       "mathContext": "(N : ℚ)/(N·φ(d)) = 1/φ(d); exact for every finite N, the elementary form of OQ-02's density for coprime integers."
     },
     {
       "id": "coprime-equipartition",
       "title": "Exact Finite Equipartition of the Coprime Integers",
-      "startLine": 132,
-      "endLine": 231,
+      "startLine": 137,
+      "endLine": 241,
       "summary": "Sharpens the density ratio into the equal-pieces statement. count_class_card_eq: Finset.card form of count_class_eq. coprime_class_card_eq: for gcd(v,d)=1, exactly N integers in [0,N·d) are both coprime and ≡ v (mod d) (the coprimality conjunct is automatic on a reduced class). coprime_partition_card: the coprimes partition over the φ(d) reduced residues via card_eq_sum_card_fiberwise along x ↦ x%d. coprime_card_eq_totient_mul: #coprime = φ(d)·N re-derived from the equipartition. reduced_class_density_coprime: honest density 1/φ(d) with the numerator restricted to coprimes.",
       "mathContext": "Each reduced class carries EXACTLY N coprimes; the coprime integers split into φ(d) equinumerous classes — the finite, exact avatar of 'density 1/φ(d)', resolving the partition open question of the original entry."
     },
     {
       "id": "worked-examples",
       "title": "Worked Examples: modulus d = 4",
-      "startLine": 233,
-      "endLine": 264,
+      "startLine": 242,
+      "endLine": 273,
       "summary": "Modulus 4 (φ(4)=2, reduced residues 1,3): class 3 (mod 4) has exactly 5 members in [0,20); 10 coprime integers total; relative density 1/φ(4)=1/2; and the equipartition form — exactly 5 integers in [0,20) are both coprime to 4 and ≡ 3 (mod 4) (namely 3,7,11,15,19), honest density 1/2. Examples discharge by applying the proved theorems (small coprimality side-goals by kernel `decide`).",
       "mathContext": "The two reduced classes ≡ 1, 3 (mod 4) of the parent entry each carry density 1/2 among coprime integers; the prime analogue is the deep PNT-for-APs statement."
     }
