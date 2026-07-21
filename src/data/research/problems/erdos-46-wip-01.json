@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 3,
     "focus": "Session 2: splitting identity (Fibonacci–Sylvester 1/n=1/(n+1)+1/(n(n+1))), telescoping form, concrete witness {2,3,6}, existence, and the term-replacement lengthening step (isUnitFractionRepr_replace). 5 axiom-free theorems, theoremCount 16→21, host-verified.",
@@ -56,7 +56,8 @@
       "isRatFractionRepr_telescope (Erdos46Problem.lean): pronic set {k(k+1):a≤k<b} represents 1/a−1/b, min denom ≥ a(a+1) (0-axiom)",
       "exists_isRatFractionRepr_min_gt (Erdos46Problem.lean): ∀ B L≥1, ∃ repr of a POSITIVE rational using exactly L denominators all > B (0-axiom)",
       "injective_mul_succ (Erdos46Problem.lean): k↦k(k+1) injective on ℕ (strictMono_nat_of_lt_succ)",
-      "exists_isUnitFractionRepr_card_eq in proofs/Proofs/Erdos46Problem.lean (|S|=k for all k≥3, 0-axiom, host-verified)"
+      "exists_isUnitFractionRepr_card_eq in proofs/Proofs/Erdos46Problem.lean (|S|=k for all k≥3, 0-axiom, host-verified)",
+      "Divisor-sum bridge (Erdos46Problem.lean): isUnitFractionRepr_of_divisorSum — distinct divisors T of M with 2d≤M and Σ_{d∈T}d=M yield IsUnitFractionRepr {M/d}; divisorSum_min_gt — N·d<M ∀d∈T forces every denominator M/d > N. Host-verified v4.31.0, #print axioms = [propext, Classical.choice, Quot.sound] (0 added axioms, 0 sorries)."
     ],
     "insights": [
       "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide).",
@@ -67,14 +68,16 @@
       "Telescoping engine (pronic reciprocals) is the third construction primitive alongside additive-union and multiplicative-scaling: it BUILDS reprs from scratch and directly realises the min-denominator>N regime for positive-rational targets by starting the interval at a large a.",
       "The min>N regime is now reached for the two-parameter family 1/a−1/b (a>B); the ONLY remaining gap toward pairwise-disjoint chaining is assembling a repr of EXACTLY 1 with min>N (collision-free), which telescoping alone does not give (its value 1/a−1/b < 1).",
       "Exact-cardinality: unit-fraction reprs of 1 exist for EVERY cardinality k≥3, and 3 is the exact minimum (a 2-term 1/a+1/b=1 with a,b≥2 forces a=b=2, not distinct). Split-largest raises |S| by exactly 1.",
-      "EQUIVALENT-STRENGTH BLOCKER (min>N repr of exactly 1): every elementary bootstrap bottoms out at representing a fixed unit fraction 1/c with min>N. But scaling by t maps a min>M repr of 1 to a min>tM repr of 1/t, and two nested-scale disjoint 1/2-reprs union back to a min>N repr of 1 — so \"1/c with min>N\" and \"1 with min>N\" are equivalent strength. Hence the union-assembly and raise-min-by-one routes earn ZERO decomposition credit."
+      "EQUIVALENT-STRENGTH BLOCKER (min>N repr of exactly 1): every elementary bootstrap bottoms out at representing a fixed unit fraction 1/c with min>N. But scaling by t maps a min>M repr of 1 to a min>tM repr of 1/t, and two nested-scale disjoint 1/2-reprs union back to a min>N repr of 1 — so \"1/c with min>N\" and \"1 with min>N\" are equivalent strength. Hence the union-assembly and raise-min-by-one routes earn ZERO decomposition credit.",
+      "Divisor-sum reformulation of the open crux: repr of 1 with min>N ⟺ some M is a sum of distinct divisors each < M/N (forward = isUnitFractionRepr_of_divisorSum; converse via M=lcm S, d_s=M/s). Being an iff, the reduction is EQUIVALENT-STRENGTH (no decomposition credit), but it re-expresses the crux in multiplicative NT where Nat.divisors is available. The residual open content is a practical-number completeness fact: exhibit M with enough SMALL divisors (all < M/N) summing exactly to M. This is a materially new mechanism distinct from the two blocked bootstrap routes (union/scaling, raise-min-by-one)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Assemble a repr of EXACTLY 1 with min denom > N collision-free: candidate = telescope-tail (1/a−1/b large-denom) glued to a large-denom repr of the leftover 1−(1/a−1/b) via isRatFractionRepr_union under a disjointness proof.",
       "Given exists_...(exactly 1, min>N), infinitely many PAIRWISE-DISJOINT reprs of 1 follow by chaining N_{i+1}=max S_i.",
       "Deep monochromatic statement (Croot 2003) remains unformalized — needs density/covering machinery.",
-      "min>N repr of exactly 1 needs a NON-bootstrap mechanism (greedy harmonic segment N+1..M with sum≥1 then a large-denominator excess-adjustment, OR an explicit Diophantine block-tuning). The union/scaling/telescoping engines alone cannot reach it (equivalent-strength). This is the genuine remaining nugget for ErdosProblem46_infinitely_many."
+      "min>N repr of exactly 1 needs a NON-bootstrap mechanism (greedy harmonic segment N+1..M with sum≥1 then a large-denominator excess-adjustment, OR an explicit Diophantine block-tuning). The union/scaling/telescoping engines alone cannot reach it (equivalent-strength). This is the genuine remaining nugget for ErdosProblem46_infinitely_many.",
+      "Practical-number route (materially new mechanism): find an explicit infinite family of M (e.g. factorials/primorials, which are practical) admitting a distinct-divisor decomposition Σd=M using only divisors below M/N, for N→∞. Formalize small-divisor practical-number completeness for that family, then combine with isUnitFractionRepr_of_divisorSum + divisorSum_min_gt to close exact-1-with-min>N, unlocking pairwise-disjoint chaining toward ErdosProblem46_infinitely_many."
     ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

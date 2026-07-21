@@ -470,3 +470,81 @@ theorem exists_isRatFractionRepr_min_gt (B L : ℕ) (hL : 1 ≤ L) :
     have hka : a ≤ k := (Finset.mem_Ico.mp hk).1
     have hkn : k ≤ k * (k + 1) := Nat.le_mul_of_pos_right k (by omega)
     omega
+
+/-! ## Divisor-sum bridge: the pseudoperfect / practical-number attack surface
+
+The three engines above (additive union, multiplicative scaling, telescoping) all
+reshape or build representations whose target value stays *below* `1`; the open crux
+toward `ErdosProblem46_infinitely_many` is a representation of *exactly* `1` with
+minimum denominator `> N`. This section opens a structurally different attack surface
+by translating that crux into multiplicative number theory.
+
+If `T` is a set of distinct divisors of a positive integer `M` with
+`∑_{d ∈ T} d = M` (so `M` is *pseudoperfect via `T`*), then dividing through by `M`
+turns the divisor sum into a unit-fraction representation of `1`: each `d ∈ T`
+contributes `1/(M/d)`, and `∑ 1/(M/d) = (∑ d)/M = 1`. The denominators are the
+cofactors `{M/d : d ∈ T}`, so the minimum denominator is `M / max T` — it exceeds
+`N` exactly when every chosen divisor `d` satisfies `N · d < M`, i.e. `d < M/N`.
+
+This reduces "represent `1` with min denominator `> N`" to "write `M` as a sum of
+distinct divisors of `M`, each `< M/N`", for some `M`. The reduction is an
+**equivalence** (conversely, from any Egyptian representation `S` of `1`, taking
+`M = lcm S` and `d_s = M/s` gives distinct divisors of `M` summing to `M`), so per
+the equivalent-strength rule it earns **no decomposition credit** toward the open
+crux. It is recorded here as infrastructure that exposes the divisor /
+practical-number route: with the crux phrased as divisor sums, Mathlib's
+`Nat.divisors` machinery becomes available, and the genuine open content becomes a
+practical-number completeness fact (producing an `M` with enough *small* divisors
+summing exactly to `M`). -/
+
+/-- **Divisor-sum bridge.** If every element of `T` divides `M` with `2 * d ≤ M`
+(equivalently the cofactor `M/d ≥ 2`) and `∑_{d ∈ T} d = M > 0`, then the set of
+cofactors `{M/d : d ∈ T}` is a unit-fraction representation of `1`.  The cofactor
+map `d ↦ M/d` is injective on divisors of `M`, and each term equals `1/(M/d) = d/M`,
+so the reciprocals sum to `(∑ d)/M = 1`. -/
+theorem isUnitFractionRepr_of_divisorSum {M : ℕ} (hM : 1 ≤ M) {T : Finset ℕ}
+    (hdvd : ∀ d ∈ T, d ∣ M) (hle : ∀ d ∈ T, 2 * d ≤ M)
+    (hsum : T.sum id = M) :
+    IsUnitFractionRepr (T.image (fun d => M / d)) := by
+  have hM0 : M ≠ 0 := by omega
+  have hdpos : ∀ d ∈ T, 0 < d := by
+    intro d hd
+    rcases Nat.eq_zero_or_pos d with rfl | hpos
+    · exact absurd (Nat.eq_zero_of_zero_dvd (hdvd 0 hd)) hM0
+    · exact hpos
+  -- the cofactor map is injective on divisors of `M` (left inverse `q ↦ M/q`)
+  have hinj : ∀ x ∈ T, ∀ y ∈ T, M / x = M / y → x = y := by
+    intro x hx y hy h
+    have i₁ : M / (M / x) = x := Nat.div_div_self (hdvd x hx) hM0
+    have i₂ : M / (M / y) = y := Nat.div_div_self (hdvd y hy) hM0
+    rw [← i₁, ← i₂, h]
+  refine ⟨?_, ?_⟩
+  · -- every cofactor denominator is at least `2`
+    intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨d, hd, rfl⟩ := hn
+    exact (Nat.le_div_iff_mul_le (hdpos d hd)).mpr (hle d hd)
+  · -- the reciprocals of the cofactors sum to `1`
+    rw [Finset.sum_image hinj]
+    have hterm : ∀ d ∈ T, (1 : ℚ) / ((M / d : ℕ) : ℚ) = (d : ℚ) / (M : ℚ) := by
+      intro d hd
+      rw [Nat.cast_div (hdvd d hd) (by exact_mod_cast (hdpos d hd).ne'), one_div_div]
+    rw [Finset.sum_congr rfl hterm, ← Finset.sum_div,
+      show (∑ d ∈ T, (d : ℚ)) = (M : ℚ) from by rw [← Nat.cast_sum]; exact_mod_cast hsum,
+      div_self (by exact_mod_cast hM0 : (M : ℚ) ≠ 0)]
+
+/-- **Minimum-denominator criterion for the divisor-sum bridge.** If every chosen
+divisor of `M` satisfies `N * d < M` (i.e. `d < M/N`), then every cofactor
+denominator `M/d` exceeds `N`.  Combined with `isUnitFractionRepr_of_divisorSum`, a
+pseudoperfect decomposition of `M` into distinct divisors all below `M/N` yields a
+representation of `1` with minimum denominator `> N` — the open crux, now phrased
+entirely in terms of divisor sums. -/
+theorem divisorSum_min_gt {M N : ℕ} {T : Finset ℕ}
+    (hdvd : ∀ d ∈ T, d ∣ M) (hlt : ∀ d ∈ T, N * d < M) :
+    ∀ n ∈ T.image (fun d => M / d), N < n := by
+  intro n hn
+  rw [Finset.mem_image] at hn
+  obtain ⟨d, hd, rfl⟩ := hn
+  have hMeq : M / d * d = M := Nat.div_mul_cancel (hdvd d hd)
+  have hcmp : N * d < M / d * d := by rw [hMeq]; exact hlt d hd
+  exact lt_of_mul_lt_mul_right hcmp (Nat.zero_le d)
