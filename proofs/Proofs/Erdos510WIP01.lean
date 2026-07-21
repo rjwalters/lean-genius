@@ -417,13 +417,17 @@ theorem minCosineSum_le_neg_half (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonemp
     intro θ _
     exact mul_nonneg (by linarith [hlow θ]) (by linarith [hupp θ])
   -- Evaluate that integral in closed form.
+  have hneg2 : IntervalIntegrable (fun θ => -(g θ) ^ 2) MeasureTheory.volume 0 (2 * π) :=
+    hg2_int.neg
+  have hcm : IntervalIntegrable (fun θ => (N + m) * g θ) MeasureTheory.volume 0 (2 * π) :=
+    hg_int.const_mul _
   have hA1 : IntervalIntegrable (fun θ => -(g θ) ^ 2 + (N + m) * g θ)
-      MeasureTheory.volume 0 (2 * π) := hg2_int.neg.add (hg_int.const_mul _)
+      MeasureTheory.volume 0 (2 * π) := hneg2.add hcm
   have hcompute : (∫ θ in (0 : ℝ)..(2 * π), (g θ - m) * (N - g θ)) = -(π * N) - 2 * π * m * N := by
     rw [intervalIntegral.integral_congr
           (fun θ _ => show (g θ - m) * (N - g θ) = -(g θ) ^ 2 + (N + m) * g θ - m * N by ring),
         intervalIntegral.integral_sub hA1 intervalIntegrable_const,
-        intervalIntegral.integral_add hg2_int.neg (hg_int.const_mul _),
+        intervalIntegral.integral_add hneg2 hcm,
         intervalIntegral.integral_neg, intervalIntegral.integral_const_mul,
         intervalIntegral.integral_const, I1, I2]
     simp only [smul_eq_mul]; ring
