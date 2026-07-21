@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): lower bound 2 ≤ minDegreeForC4 (n+1) for n≥3 (two_le_minDegreeForC4) via the star K_{1,n} as a min-degree-1 C4-free witness (one_le_starGraph_minDegree) — nails the lower half of the base case f(4)≥2 and, with f(n)≤n-1, brackets 2≤f(n+1)≤n. 16 axiom-free theorems. Deep results (f(4)=2 upper half needs enumeration, KST √n-scale, monotonicity) remain documented-only.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1, VERIFIED 0-axiom host v4.31.0): generalised the C5 point-witness f(5)≥3 to the GENERAL lower bound f(n)≥3 for ALL n≥5 (three_le_minDegreeForC4), via the structural ±1-step telescoping proof that the n-cycle is C4-free (cycleGraph_not_containsC4) + Cn 2-regularity. 19 axiom-free theorems (was 16). Deep results (f(4)=2 upper half, KST √n scale, monotonicity) remain documented-only.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -39,7 +39,10 @@
       "starGraph_not_containsC4 (stars are C4-free) in Erdos85Problem.lean",
       "C4_not_adj_one_three, containsC4_C4, containsC4_four_le_card, completeGraph_containsC4 in Erdos85Problem.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])",
       "eq_top_of_minDegree_ge, minDegreeForC4_le_sub_one in Erdos85Problem.lean (0 axioms, 0 sorries; host-verified v4.31.0, #print axioms = [propext, Classical.choice, Quot.sound]). theoremCount 11→13.",
-      "one_le_starGraph_minDegree, two_le_minDegreeForC4, starGraph_decidableAdj in Erdos85Problem.lean — f(n+1)≥2 lower bound, 0-axiom host-verified"
+      "one_le_starGraph_minDegree, two_le_minDegreeForC4, starGraph_decidableAdj in Erdos85Problem.lean — f(n+1)≥2 lower bound, 0-axiom host-verified",
+      "cycleGraph_not_containsC4 (Erdos85Problem.lean): ∀ n≥5, ¬ containsC4 (Fin n) (cycleGraph n) — axiom-free, uses open Fin.CommRing for linear_combination/ring on Fin n",
+      "two_le_cycleGraph_minDegree (Erdos85Problem.lean): ∀ n≥3, 2 ≤ (cycleGraph n).minDegree (Cn is 2-regular)",
+      "three_le_minDegreeForC4 (Erdos85Problem.lean): ∀ n≥5, 3 ≤ minDegreeForC4 n — GENERAL lower bound f(n)≥3, generalises the C5 point-witness"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -49,13 +52,16 @@
       "First honest UPPER bound on f(n) from the sInf definition: minDegreeForC4 n ≤ n-1 for n≥4. On Fin n, minDegree ≥ n-1 forces the complete graph (eq_top_of_minDegree_ge: neighborFinset i ⊆ univ.erase i, card n-1, so equality ⟹ i adjacent to all j≠i), which contains C4. Also proves the threshold set is non-empty, so f(n) is a genuine minimum not sInf ∅ = 0.",
       "Lower bound f(n+1) ≥ 2 for n≥3 (two_le_minDegreeForC4): the star K_{1,n} is a min-degree-1 C4-free witness, so 0,1 are not in the threshold set. With f(n)≤n-1 this brackets 2≤f(n+1)≤n and pins f(4)≥2 (true value 2).",
       "Recipe for a Nat.sInf lower bound k≤sInf S: le_csInf hne (fun k hk => ...) then contradict a k≤m case with an explicit witness graph; needs S nonempty (upper-bound witness reused).",
-      "A SimpleGraph defined by an explicit Adj (starGraph) needs a DecidableRel instance to even mention its minDegree in a theorem SIGNATURE (classical in the body is too late); added starGraph_decidableAdj via unfold+infer_instance. minDegree lower bound via exists_minimal_degree_vertex + card_neighborFinset_eq_degree + Finset.one_le_card + a concrete neighbor."
+      "A SimpleGraph defined by an explicit Adj (starGraph) needs a DecidableRel instance to even mention its minDegree in a theorem SIGNATURE (classical in the body is too late); added starGraph_decidableAdj via unfold+infer_instance. minDegree lower bound via exists_minimal_degree_vertex + card_neighborFinset_eq_degree + Finset.one_le_card + a concrete neighbor.",
+      "The n-cycle Cn (n≥5) is C4-free by a STRUCTURAL argument, no enumeration: consecutive vertices of a C4-copy differ by ±1 in the additive group Fin n, the four steps telescope to 0, injectivity of the two diagonals forces all three interior steps to share one sign, so the closing step is ±3 — contradicting ±1 because 2≠0 and 4≠0 in Fin n. Fails at n=4 precisely because cycleGraph 4 = C4."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
+    ],
     "nextSteps": [
-      "f(4)=2 upper half: minDegree ≥ 2 on Fin 4 forces containsC4 — quantifies over all SimpleGraph (Fin 4); needs a decidability/enumeration bridge (Fintype (SimpleGraph (Fin 4)) + decide, or a direct pigeonhole argument).",
-      "Kővári–Sós–Turán edge bound for C4-free graphs (deep, likely not in Mathlib) — the true √n-scale bound.",
-      "minDegreeForC4 monotonicity in the threshold structure / sInf bounds toward the Erdős #85 monotonicity question."
+      "f(4)=2 upper half: ∀ G on Fin 4 with minDegree ≥ 2 contains a C4 (Dirac n=4). Needs enumeration of SimpleGraph (Fin 4) or a direct 2-regular-⇒-Hamiltonian argument; the decide-over-all-graphs route is blocked by the [DecidableRel G.Adj] instance binder in minDegreeForC4.",
+      "Sharpen f(n)≥3 toward the true √n scale: needs the Kővári–Sós–Turán edge bound for C4-free graphs (deep, not in Mathlib).",
+      "Monotonicity f(n+1)≥f(n) (the actual Erdős #85 question) — genuinely open."
     ],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
