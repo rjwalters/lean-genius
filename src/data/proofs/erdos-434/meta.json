@@ -69,7 +69,7 @@
       "Proved zero_representable, mem_representable, add_representable"
     ],
     "axiomCount": 3,
-    "lineCount": 465,
+    "lineCount": 516,
     "assumptions": "3 axioms (kiss_2002, sylvester_count, frobenius_consecutive). 0 sorries: all supporting lemmas are fully proved. The Sylvester–Frobenius / Chicken McNugget value formula (frobeniusNumber {a,b} = ab-a-b, formerly axiom sylvester_frobenius) is now proved from Mathlib's Nat.frobeniusNumber_pair via the new representable_iff_mem_closure bridge. The count formula sylvester_count ((a-1)(b-1)/2) remains axiomatized (no Mathlib genus formula).",
     "theoremCount": 21,
     "definitionCount": 10,
@@ -106,7 +106,7 @@
     ],
     "opens": [],
     "namespace": "Erdos434",
-    "lineCount": 465,
+    "lineCount": 516,
     "axiomCount": 3,
     "theoremCount": 21,
     "definitionCount": 10,
@@ -131,103 +131,111 @@
   "sections": [
     {
       "id": "representability",
-      "title": "Representability",
+      "title": "Header & Representability (Part I)",
       "startLine": 1,
-      "endLine": 77,
-      "summary": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +).",
-      "mathContext": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +)."
+      "endLine": 73,
+      "summary": "Module docstring (statement, answer, historical context, Kiss 2002 reference) followed by Part I. Defines IsRepresentableAs n A via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). Together these show the representable set forms an additive submonoid of (ℕ, +).",
+      "mathContext": "$n$ is representable by $A$ iff $\\exists S \\in \\mathrm{Multiset}(\\mathbb{N})$ with every element in $A$ and $\\sum S = n$. Closure under $0$, singletons, and $+$ makes the representable set a submonoid of $(\\mathbb{N},+)$."
     },
     {
       "id": "non-representable",
-      "title": "Non-Representable Integers",
-      "startLine": 78,
-      "endLine": 91,
-      "summary": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in Kiss's theorem).",
-      "mathContext": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in Kiss's theorem)."
+      "title": "The Set of Non-Representable Integers (Part II)",
+      "startLine": 74,
+      "endLine": 87,
+      "summary": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via Set.encard, handles the infinite gcd > 1 case) and nCardNonRepresentable (ℕ via Set.ncard, the quantity Kiss's theorem bounds).",
+      "mathContext": "$\\mathrm{NonRepresentable}(A) = \\{n \\mid \\neg\\,\\mathrm{IsRepresentableAs}\\,n\\,A\\}$; counted by $\\mathrm{encard}$ ($\\mathbb{N}_\\infty$-valued) or $\\mathrm{ncard}$ ($\\mathbb{N}$-valued when finite)."
     },
     {
       "id": "frobenius",
-      "title": "The Frobenius Number",
-      "startLine": 92,
-      "endLine": 105,
-      "summary": "frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer. IsComplete A checks gcd condition ensuring finiteness. Note: #434 maximizes count, not Frobenius number.",
-      "mathContext": "Mathematical content: frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer. IsComplete A checks gcd condition ensuring finiteness. Note: #434 maximizes count, not Frobenius number."
+      "title": "The Frobenius Number (Part III)",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer (well-defined when finitely many gaps exist). IsComplete A packages the nonemptiness + gcd = 1 condition ensuring finiteness. Note: #434 maximizes the COUNT of gaps, not the Frobenius number itself (that is #433).",
+      "mathContext": "$g(A) = \\sup(\\mathrm{NonRepresentable}(A))$; finiteness requires $\\gcd(A) = 1$ (Chicken McNugget). $\\mathrm{IsComplete}$ records $A \\ne \\emptyset \\wedge \\gcd = 1$."
     },
     {
       "id": "extremal",
-      "title": "The Extremal Problem",
-      "startLine": 106,
-      "endLine": 123,
-      "summary": "topK n k = Set.Icc (n-k+1) n. topK_card (proved): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).",
-      "mathContext": "topK n k = Set.Icc (n-k+1) n. topK_card (proved): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) $\\leq$ nCardNonRepresentable(topK n k)."
+      "title": "The Extremal Problem (Part IV)",
+      "startLine": 102,
+      "endLine": 119,
+      "summary": "topK n k = Set.Icc (n-k+1) n, the 'top k' block. topK_card (proved): |topK n k| = k for 0 < k ≤ n, via Finset.coe_Icc + Nat.card_Icc. ExtremalFrobeniusQuestion n k states ∀ valid A, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k) — the exact predicate Kiss's theorem asserts.",
+      "mathContext": "$\\mathrm{topK}(n,k) = \\{n-k+1,\\dots,n\\} = [n-k+1, n]$, with $|\\mathrm{topK}(n,k)| = k$. The question: does this block maximize the gap count over all $k$-subsets of $[1,n]$?"
+    },
+    {
+      "id": "sylvester-input",
+      "title": "Sylvester–Frobenius Input / Chicken McNugget Count (Part V)",
+      "startLine": 120,
+      "endLine": 197,
+      "summary": "representable_iff_mem_closure (proved): bridges the local IsRepresentableAs to membership in AddSubmonoid.closure A (forward via multiset_sum_mem, reverse via closure_induction). sylvester_frobenius (PROVED, formerly an axiom): frobeniusNumber {a,b} = ab-a-b for coprime a,b > 0, derived from Mathlib's frobeniusNumber_pair through the bridge, with the a=1/b=1 edge case handled separately. sylvester_count (axiom): count = (a-1)(b-1)/2 (no Mathlib genus formula). consecutive_count (proved): specializes to {n-1,n} giving (n-2)(n-1)/2.",
+      "mathContext": "For coprime $a,b>0$: $g(\\{a,b\\}) = ab-a-b$ (Sylvester 1884, here PROVED via $\\texttt{Nat.frobeniusNumber\\_pair}$) and $\\#\\text{gaps} = \\tfrac{(a-1)(b-1)}{2}$ (axiomatized). Consecutive $n-1,n$ give $\\tfrac{(n-2)(n-1)}{2}$, quadratic in $n$."
     },
     {
       "id": "examples",
-      "title": "Small Examples",
-      "startLine": 124,
-      "endLine": 193,
-      "summary": "Three examples: example_2_3 (proved: NonRepresentable {2,3} = {1}), example_3_5_frobenius (proved: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega).",
-      "mathContext": "Mathematical content: Three examples: example_2_3 (proved: NonRepresentable {2,3} = {1}), example_3_5_frobenius (proved: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega)."
+      "title": "Small Examples (Part VI)",
+      "startLine": 198,
+      "endLine": 267,
+      "summary": "Three fully-proved worked examples: example_2_3 (NonRepresentable {2,3} = {1}, via strong induction that every m ≥ 2 is representable), example_3_5_frobenius (frobeniusNumber {3,5} = 7 = 3·5-3-5 from sylvester_frobenius), and topK_5_2 (topK 5 2 = {4,5} via ext + simp + omega).",
+      "mathContext": "$\\mathrm{NonRep}(\\{2,3\\}) = \\{1\\}$; $g(\\{3,5\\}) = 7$; $\\mathrm{topK}(5,2) = \\{4,5\\}$. These ground the abstract theory in concrete decidable instances."
     },
     {
       "id": "kiss",
-      "title": "Kiss's Theorem",
-      "startLine": 194,
-      "endLine": 212,
-      "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 ≤ k ≤ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002.",
-      "mathContext": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 $\\leq$ k $\\leq$ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
+      "title": "Kiss's Theorem (Part VII)",
+      "startLine": 268,
+      "endLine": 286,
+      "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k holds for all 1 ≤ k ≤ n — the deep 2002 result requiring detailed Frobenius analysis for general sets, beyond current Mathlib scope. erdos_434_answer: the YES answer stated as a direct corollary, proved by exact application of kiss_2002.",
+      "mathContext": "Kiss (2002): $\\mathrm{topK}(n,k)$ attains $\\max_{|A|=k,\\,A\\subseteq[1,n]} \\#\\mathrm{NonRep}(A)$. Axiomatized as the load-bearing external theorem."
     },
     {
       "id": "intuition",
-      "title": "Why topK is Optimal",
-      "startLine": 213,
-      "endLine": 241,
-      "summary": "larger_numbers_fewer_reps (proved):nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 2. Illustrates that larger numbers create more gaps in representability.",
-      "mathContext": "larger_numbers_fewer_reps (proved):nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n $\\geq$ 2. Illustrates that larger numbers create more gaps in representability."
-    },
-    {
-      "id": "sylvester",
-      "title": "Sylvester-Frobenius Connection",
-      "startLine": 242,
-      "endLine": 263,
-      "summary": "Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (proved):specializes to {n-1,n} giving (n-2)(n-1)/2.",
-      "mathContext": "Axiomatized: Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (proved):specializes to {n-1,n} giving (n-2)(n-1)/2."
+      "title": "Why topK is Optimal (Part VIII)",
+      "startLine": 287,
+      "endLine": 320,
+      "summary": "Heuristic banner (large numbers create widely-spaced multiples, hence more gaps) plus larger_numbers_fewer_reps (proved): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 3, combining consecutive_count and sylvester_count. Concretely demonstrates the mechanism behind Kiss's theorem.",
+      "mathContext": "For $n \\ge 3$: $\\#\\mathrm{NonRep}(\\{n-1,n\\}) = \\tfrac{(n-2)(n-1)}{2} > 0 = \\#\\mathrm{NonRep}(\\{1,2\\})$ — larger blocks strictly beat the smallest."
     },
     {
       "id": "greedy",
-      "title": "Greedy Construction",
-      "startLine": 264,
-      "endLine": 277,
-      "summary": "greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal.",
-      "mathContext": "Formal definition: greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal."
+      "title": "The Greedy Construction (Part IX)",
+      "startLine": 321,
+      "endLine": 334,
+      "summary": "greedyConstruct n k = Set.Icc (n-k+1) n, the always-pick-the-largest strategy. greedy_eq_topK (proved by rfl): the greedy set is definitionally topK. A rare case where the greedy algorithm is provably globally optimal.",
+      "mathContext": "$\\mathrm{greedyConstruct}(n,k) = [n-k+1,n] = \\mathrm{topK}(n,k)$ definitionally: greedy $=$ optimal, unlike most combinatorial optimization problems."
     },
     {
-      "id": "bounds",
-      "title": "Bounds on Non-Representables",
-      "startLine": 278,
-      "endLine": 292,
-      "summary": "nonrep_finite (proved): coprime elements imply finite NonRepresentable. topK_finite (proved): NonRepresentable(topK n k) is finite for k ≥ 2.",
-      "mathContext": "nonrep_finite (proved): coprime elements imply finite NonRepresentable. topK_finite (proved): NonRepresentable(topK n k) is finite for k $\\geq$ 2."
+      "id": "finiteness",
+      "title": "Finiteness of Non-Representables / Chicken McNugget (Part X)",
+      "startLine": 335,
+      "endLine": 437,
+      "summary": "The substantive unconditionally-proved core. representable_of_one_mem: 1 ∈ A ⟹ everything representable. exists_nat_combo_of_ge (Chicken McNugget existence): coprime a,b > 0 and n ≥ ab ⟹ n = xa + yb, built directly from ZMod b unit arithmetic (a is a unit mod b, solve the congruence with x < b, get b ∣ n-xa). representable_of_ge_of_mem lifts this to representability; nonrep_finite_of_one_mem, nonrep_finite (any coprime pair ⟹ NonRepresentable ⊆ Set.Iio(ab), finite), and topK_finite (the block contains the coprime pair n-1,n) follow.",
+      "mathContext": "Chicken McNugget: coprime $a,b>0$, $n \\ge ab \\Rightarrow n = xa+yb$ with $x,y \\in \\mathbb{N}$ (solved via a unit of $\\mathbb{Z}/b$). Hence $\\mathrm{NonRep}(A) \\subseteq [0, ab)$ is finite whenever $A$ holds a coprime pair — making all gap counts well-defined."
     },
     {
       "id": "problem433",
-      "title": "Connection to Problem #433",
-      "startLine": 293,
-      "endLine": 308,
-      "summary": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count).",
-      "mathContext": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count)."
+      "title": "Comparison with Problem #433 (Part XI)",
+      "startLine": 438,
+      "endLine": 453,
+      "summary": "problem433Set n k = Set.Icc n (n+k-1), the consecutive block of #433. frobenius_consecutive (axiom): the closed-form Frobenius number (n-1)(n+k-1)/k - 1 for consecutive integers, the object #433 maximizes. Contrasts #433 (maximize the Frobenius NUMBER) with #434 (maximize the COUNT of non-representables).",
+      "mathContext": "#433 studies $g(\\{n,\\dots,n+k-1\\}) = \\tfrac{(n-1)(n+k-1)}{k} - 1$ (axiomatized); #434 studies $\\#\\mathrm{NonRep}$. Same starting data, different extremal objective."
     },
     {
       "id": "main-result",
-      "title": "Main Result",
-      "startLine": 309,
-      "endLine": 372,
-      "summary": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (proved):strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002.",
-      "mathContext": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (proved):strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
+      "title": "Main Result (Part XII)",
+      "startLine": 454,
+      "endLine": 483,
+      "summary": "erdos_434_complete: the full answer — for all 1 ≤ k ≤ n, every k-subset A ⊆ [1,n] has nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k), proved by exact kiss_2002. topK_is_maximum (proved): the strongest packaging via IsGreatest of the achievable-count set, combining membership (topK is a valid witness, using topK_card) with the kiss_2002 upper bound. Closes the Erdos434 namespace.",
+      "mathContext": "$\\mathrm{topK}(n,k)$ is a member of and the greatest element of $\\{m \\mid \\exists A \\subseteq [1,n],\\,|A|=k,\\,\\#\\mathrm{NonRep}(A)=m\\}$ — the IsGreatest formulation of the answer."
+    },
+    {
+      "id": "summary-comment",
+      "title": "Closing Summary Commentary",
+      "startLine": 484,
+      "endLine": 516,
+      "summary": "Trailing prose block recapping the problem, the SOLVED (Kiss 2002) status, the answer {n-k+1,...,n}, the twelve formalized components, the key insight (larger numbers create more gaps), and the historical link to the classical Frobenius / coin problem.",
+      "mathContext": "Narrative wrap-up; no new Lean declarations. Frames the result within the money-changing / numerical-semigroup tradition: #434 maximizes the count, not the largest, unreachable amount."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #434 on the extremal Frobenius problem. Kiss (2002) proved that the 'top k' set {n-k+1, ..., n} maximizes the count of non-representable integers among all k-element subsets of {1, ..., n}. The formalization rests on 4 axioms (Kiss's theorem, Sylvester-Frobenius formula and count, consecutive Frobenius); there are no sorries. Core representability theory, examples, and the finiteness lemmas are fully proved.",
+    "summary": "This formalization captures Erdős Problem #434 on the extremal Frobenius problem. Kiss (2002) proved that the 'top k' set {n-k+1, ..., n} maximizes the count of non-representable integers among all k-element subsets of {1, ..., n}. The formalization rests on 3 axioms (kiss_2002, sylvester_count, frobenius_consecutive); there are no sorries. The Sylvester–Frobenius value formula frobeniusNumber {a,b} = ab-a-b (sylvester_frobenius) is now a proved theorem, derived from Mathlib's Nat.frobeniusNumber_pair via the representable_iff_mem_closure bridge. Core representability theory, the worked examples, and the Chicken-McNugget finiteness lemmas are all fully proved.",
     "implications": "**Theoretical Significance**: The problem connects the classical Frobenius (coin) problem with extremal combinatorics and numerical semigroup theory.\n\nThe greedy approach of selecting largest elements is optimal, contrasting with many optimization problems where greedy fails. The result also connects to computational complexity: while the Frobenius problem for ≥ 3 elements is NP-hard, the extremal problem has a clean, explicit optimal solution.",
     "openQuestions": [
       "Exact formula for the maximum count of non-representables as a function of n and k?",
