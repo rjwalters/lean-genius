@@ -66,20 +66,23 @@ def IsMonochromaticCycle (coloring : EdgeColoring3 m) (c : Fin 3)
   ∀ i : Fin n,
     coloring (embedding i, embedding ⟨(i.val + 1) % n, Nat.mod_lt _ i.pos⟩) = c
 
-/-- R(C_n;3) = minimum m such that any 3-coloring of K_m contains a monochromatic C_n -/
-noncomputable def R_cycle_3 (n : ℕ) : ℕ :=
-  Nat.find (⟨4 * n, by
-    -- A constant embedding sends the whole cycle to a single vertex `v`,
-    -- so every edge is `(v, v)` and the "cycle" is trivially monochromatic
-    -- in the color `coloring (v, v)`.
-    intro coloring
-    rcases Nat.eq_zero_or_pos n with hn | hn
-    · subst hn
-      exact ⟨0, Fin.elim0, fun i => i.elim0⟩
-    · have hm : 0 < 4 * n := by omega
-      exact ⟨coloring (⟨0, hm⟩, ⟨0, hm⟩), fun _ => ⟨0, hm⟩, fun _ => rfl⟩⟩ :
-    ∃ m, ∀ coloring : EdgeColoring3 m,
-    ∃ c : Fin 3, ∃ embedding : Fin n → Fin m, IsMonochromaticCycle coloring c embedding)
+/-- R(C_n;3) = minimum m such that any 3-coloring of K_m contains a monochromatic C_n.
+
+    Declared as an **opaque** symbol rather than a concrete `Nat.find` definition.
+    A naive `Nat.find` over `IsMonochromaticCycle` is unsound here: that predicate
+    imposes no injectivity / adjacency-preserving constraint on `embedding`, so a
+    *constant* embedding (every vertex ↦ vertex `0`) makes every checked edge
+    `(0,0)` and is trivially monochromatic. That would collapse `R_cycle_3 n = 1`
+    for all `n ≥ 1`, contradicting the value axioms below (KSS: `≥ 4n-3`;
+    Benevides–Skokan: `= 2n`) and rendering the axiom set inconsistent
+    (a closed proof of `False` builds against the module — see gallery integrity
+    issue #40895). Constraining the embedding to a genuine cycle copy instead would
+    require *proving* Ramsey finiteness to discharge the `Nat.find` witness, which is
+    exactly the axiomatized content. Keeping `R_cycle_3` opaque leaves the value
+    axioms sound: an opaque `ℕ → ℕ` cannot be reduced to a concrete value, so nothing
+    contradicts `R_cycle_3 n = 4n-3` / `= 2n`. `opaque` (backed by the `Inhabited`
+    instance on `ℕ → ℕ`) introduces no new axiom. -/
+opaque R_cycle_3 : ℕ → ℕ
 
 /-
 ## Part 2: The Bondy-Erdős Conjecture
