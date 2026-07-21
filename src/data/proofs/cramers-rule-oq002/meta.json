@@ -52,7 +52,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 158,
-    "assumptions": "None. All ten theorems are fully proved with 0 axioms and 0 sorries (no native_decide, no decide). The parent cramer_solution supplies xᵢ = det(Aᵢ)/det A; det_fin_two, det_fin_three, updateCol_self, and updateCol_ne are invoked from Mathlib. The specialization to the entrywise closed forms is assembled here.",
+    "assumptions": "None. All ten theorems are fully proved with 0 axioms and 0 sorries (no native_decide; the only `decide` uses are kernel-checked `Fin` index-inequality literals, which add no axioms — verified via `#print axioms`, which shows only propext / Classical.choice / Quot.sound). The parent cramer_solution supplies xᵢ = det(Aᵢ)/det A; det_fin_two, det_fin_three, updateCol_self, and updateCol_ne are invoked from Mathlib. The specialization to the entrywise closed forms is assembled here.",
     "theoremCount": 10,
     "definitionCount": 0,
     "prerequisites": [
