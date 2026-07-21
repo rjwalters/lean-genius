@@ -548,3 +548,77 @@ theorem divisorSum_min_gt {M N : ℕ} {T : Finset ℕ}
   have hMeq : M / d * d = M := Nat.div_mul_cancel (hdvd d hd)
   have hcmp : N * d < M / d * d := by rw [hMeq]; exact hlt d hd
   exact lt_of_mul_lt_mul_right hcmp (Nat.zero_le d)
+
+/-! ## Greedy harmonic block: a consecutive segment of sum `≥ 1` with min `> N`
+
+The three "build/reshape" engines above all deliver representations whose value stays
+*below* `1`, and the divisor-sum bridge is equivalent-strength to the crux. The
+complementary sanctioned brick toward `ErdosProblem46_infinitely_many` is the **greedy
+harmonic segment**: for every threshold `N`, the block of consecutive reciprocals
+`∑_{k=N+1}^{4N} 1/k` already *exceeds* `1`, with every denominator `> N`.
+
+Unlike the telescoping/union/scaling pieces this is genuinely below the crux — it only
+attains `≥ 1`, not `= 1`. It is the first half of the classical greedy construction
+(overshoot with a large-minimum consecutive block, then trim the excess). The overshoot
+is proved by an elementary, purely rational **block-doubling** bound — no real analysis
+and no `axiom`: the `N` terms in `[N+1, 2N]` are each `≥ 1/(2N)`, so their sum is
+`≥ 1/2`; applying this at `N` and again at `2N` and concatenating the two blocks over
+`[N+1, 4N]` yields `≥ 1`. The residual open content is the exact-excess trimming
+(removing/replacing a subset of value `(∑ - 1)` collision-free), recorded in the
+knowledge tracker. -/
+
+/-- **Half-block bound.** For `N ≥ 1`, the consecutive reciprocals over the `N`-term
+block `[N+1, 2N]` sum to at least `1/2`: each of the `N` terms is `≥ 1/(2N)`. -/
+theorem sum_Ico_inv_ge_half (N : ℕ) (hN : 1 ≤ N) :
+    (1 : ℚ) / 2 ≤ (Finset.Ico (N + 1) (2 * N + 1)).sum (fun k => (1 : ℚ) / k) := by
+  have hcard : (Finset.Ico (N + 1) (2 * N + 1)).card = N := by
+    rw [Nat.card_Ico]; omega
+  have hlb : ∀ k ∈ Finset.Ico (N + 1) (2 * N + 1),
+      (1 : ℚ) / (2 * N) ≤ (1 : ℚ) / k := by
+    intro k hk
+    rw [Finset.mem_Ico] at hk
+    apply one_div_le_one_div_of_le
+    · exact_mod_cast (by omega : 0 < k)
+    · exact_mod_cast (by omega : k ≤ 2 * N)
+  have hsum := Finset.card_nsmul_le_sum _ _ _ hlb
+  rw [hcard, nsmul_eq_mul] at hsum
+  have hNpos : (0 : ℚ) < 2 * N := by exact_mod_cast (by omega : 0 < 2 * N)
+  have hhalf : (N : ℚ) * ((1 : ℚ) / (2 * N)) = 1 / 2 := by
+    field_simp
+  rw [hhalf] at hsum
+  exact hsum
+
+/-- **Greedy overshoot block.** For `N ≥ 1`, the consecutive reciprocals over the block
+`[N+1, 4N]` sum to at least `1`, with every denominator `> N`. Concatenating the
+half-block bound at `N` (covering `[N+1, 2N]`) and at `2N` (covering `[2N+1, 4N]`)
+gives `1/2 + 1/2 = 1`. -/
+theorem sum_Ico_inv_ge_one (N : ℕ) (hN : 1 ≤ N) :
+    (1 : ℚ) ≤ (Finset.Ico (N + 1) (4 * N + 1)).sum (fun k => (1 : ℚ) / k) := by
+  have hsplit :
+      (Finset.Ico (N + 1) (2 * N + 1)).sum (fun k => (1 : ℚ) / k)
+        + (Finset.Ico (2 * N + 1) (4 * N + 1)).sum (fun k => (1 : ℚ) / k)
+        = (Finset.Ico (N + 1) (4 * N + 1)).sum (fun k => (1 : ℚ) / k) :=
+    Finset.sum_Ico_consecutive _ (by omega) (by omega)
+  have h1 := sum_Ico_inv_ge_half N hN
+  have h2 := sum_Ico_inv_ge_half (2 * N) (by omega)
+  rw [show 2 * (2 * N) + 1 = 4 * N + 1 from by ring] at h2
+  linarith [hsplit]
+
+/-- **Greedy harmonic segment (overshoot).** For every threshold `N ≥ 1` there is a
+consecutive-block rational-fraction representation of some value `q ≥ 1`, with every
+denominator `> N`. This is the sanctioned first half of the greedy route toward a
+minimum-denominator-`> N` representation of *exactly* `1` (`ErdosProblem46_infinitely_many`):
+overshoot with a large-minimum block, then trim the excess `q - 1`. The block
+`[N+1, 4N]` witnesses the overshoot; the exact trimming stays open (see the tracker). -/
+theorem exists_isRatFractionRepr_ge_one_min_gt (N : ℕ) (hN : 1 ≤ N) :
+    ∃ (S : Finset ℕ) (q : ℚ),
+      IsRatFractionRepr S q ∧ 1 ≤ q ∧ (∀ n ∈ S, N < n) := by
+  refine ⟨Finset.Ico (N + 1) (4 * N + 1),
+    (Finset.Ico (N + 1) (4 * N + 1)).sum (fun k => (1 : ℚ) / k), ⟨?_, rfl⟩, ?_, ?_⟩
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
+  · exact sum_Ico_inv_ge_one N hN
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
