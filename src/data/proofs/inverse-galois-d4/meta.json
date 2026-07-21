@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports and v4.31 Compatibility Shims",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports (Mathlib, NthRootIrrationalOQ01) and two v4.31 migration-compat shims for the #38065 cyclotomic-cluster root cause: demoting DivisionRing.toRatAlgebra to priority 10 (so structure-canonical Algebra ℚ instances win synthesis) and a retained ℚ-specialized IsCyclotomicExtension instance (isCyclotomicExtensionRatCompatInverseGaloisD4). Both are harmless and defeq to the canonical instances.",
+      "mathContext": "Infrastructure only: ensures `Normal`, `IsGalois`, `IsCyclotomicExtension` on the canonical `Algebra ℚ K` synthesize after the v4.31 default-instance change."
+    },
+    {
       "id": "infrastructure-cyclic",
       "title": "Parts I–II: Degree Divisibility and Cyclic Realization",
       "startLine": 24,
@@ -81,7 +89,7 @@
       "id": "main-results",
       "title": "Main Results: |Gal| = 8 and D₄ Realizable",
       "startLine": 656,
-      "endLine": 682,
+      "endLine": 701,
       "summary": "x4_sub_2_gal_card: |Gal(X⁴-2/ℚ)| = 8 by Nat.dvd_antisymm (8 | |Gal| and |Gal| | 8). d4_realizable: the dihedral group D₄ of order 8 is realizable as a Galois group over ℚ, witnessed by the splitting field of X⁴-2.",
       "mathContext": "$8 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 8 \\Rightarrow |\\text{Gal}| = 8$. $\\exists K/\\mathbb{Q}$ Galois, $|\\text{Gal}(K/\\mathbb{Q})| = 8$."
     }
