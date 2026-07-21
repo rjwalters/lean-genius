@@ -111,9 +111,9 @@
     {
       "id": "q2-placeholder",
       "title": "Question 2: Anti-Concentration (Placeholder)",
-      "summary": "Trivially proved placeholder for the anti-concentration question",
+      "summary": "Declares `erdos_1156_q2_conjecture`, an explicit honesty placeholder for the anti-concentration question: its conclusion is `∀ n, True`, so the statement is trivially inhabited (`fun _ _ => ⟨fun _ => 0, fun _ => trivial⟩`) and carries no mathematical content. A faithful formalization would use MeasureTheory to express $\\Pr[|\\chi(G) - f(n)| < \\omega(n)] < 1/2$; the docstring records this gap rather than overclaiming a proof.",
       "startLine": 116,
-      "endLine": 124,
+      "endLine": 130,
       "mathContext": "erdos_1156_q2_conjecture theorem (body is True, proved trivially)"
     }
   ],

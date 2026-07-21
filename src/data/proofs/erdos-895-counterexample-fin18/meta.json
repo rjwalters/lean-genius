@@ -104,7 +104,7 @@
       "id": "no-triple-and-package",
       "title": "No Distinct Independent Additive Triple, and the Packaged Witness",
       "startLine": 100,
-      "endLine": 111,
+      "endLine": 122,
       "summary": "ce895_no_distinct_independent_additive_triple proves by `decide` that G895 has no independent additive triple among three DISTINCT vertices a, b, a+b, and counterexample_fin18 bundles this with triangle-freeness into the existential sharp-threshold witness ∃ G, IsTriangleFree G ∧ ¬∃ a b c, …",
       "mathContext": "$\\neg\\exists a,b,c$ distinct with $a{+}b{=}c$ pairwise non-adjacent; combined with triangle-freeness gives $\\exists G$, the corrected counterexample."
     }

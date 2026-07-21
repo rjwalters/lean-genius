@@ -102,8 +102,8 @@
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 87,
-      "endLine": 119,
-      "summary": "Compute concrete values of central binomials and Somani's parameter."
+      "endLine": 124,
+      "summary": "Compute concrete values of the central binomial coefficients and Somani's parameter by `native_decide`, e.g. `C_three : C 3 = 20` (the central binomial $\\binom{6}{3}$) and `somaniC_two : somaniC 2 = 49` ($8\\cdot 4 + 8\\cdot 2 + 1$). These anchor the abstract Somani family in checkable arithmetic."
     }
   ],
   "conclusion": {

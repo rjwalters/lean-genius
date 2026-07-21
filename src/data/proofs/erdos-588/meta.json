@@ -131,7 +131,14 @@
       "title": "Part III: The $k \\ge 4$ Case (Open)",
       "summary": "Documents the open k ≥ 4 case via docstring remarks only. The Solymosi-Stojaković lower bound $n^{2-c/\\sqrt{\\log n}}$ and Erdős's $o(n^2)$ conjecture are described in comments; no axioms or theorems are declared in this range.",
       "startLine": 62,
-      "endLine": 79
+      "endLine": 72
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main Theorem",
+      "summary": "States and proves `erdos_588`, the packaged resolution of the formalized content: there is a constant $C>0$ with $|f_3(n) - n^2/6| \\le C\\,n$ for all $n \\ge 3$. The proof is `sylvester_k3` — i.e. the machine-checked claim is exactly the resolved $k=3$ case, while the $k \\ge 4$ conjecture (the $\\$100$ prize) remains open and appears only in the docstring. This honestly scopes what the Lean file proves versus what Erdős asked.",
+      "startLine": 73,
+      "endLine": 88
     }
   ],
   "conclusion": {
