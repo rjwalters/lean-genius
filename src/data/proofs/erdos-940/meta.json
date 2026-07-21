@@ -86,91 +86,98 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Header docstring for Erdős Problem #940 (sums of $r$-powerful numbers): definition of $r$-powerful ($p \\mid n \\Rightarrow p^r \\mid n$), the open density-0 conjecture for $r \\geq 3$, and the partial results (Baker–Brüdern, Heath-Brown) that are formalized as axioms below."
+    },
+    {
       "id": "powerful-numbers",
       "title": "r-Powerful Numbers",
       "summary": "Defines `isPowerful r n` ($n \\neq 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$). Proves `one_isPowerful`, `zero_not_isPowerful`, and `power_isPowerful` ($n^r$ is $r$-powerful via `Nat.Prime.dvd_of_dvd_pow`).",
-      "startLine": 39,
-      "endLine": 77,
+      "startLine": 41,
+      "endLine": 81,
       "mathContext": "Defines `isPowerful r n` ($n \\neq 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$). Proves `one_isPowerful`, `zero_not_isPowerful`, and `power_isPowerful` ($n^r$ is $r$-powerful via `Nat.Prime.dvd_of_dvd_pow`)."
     },
     {
       "id": "sums-set",
       "title": "The Set of Sums",
       "summary": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1).",
-      "startLine": 78,
-      "endLine": 105,
+      "startLine": 82,
+      "endLine": 109,
       "mathContext": "Formal definition: Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1)."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "summary": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0.",
-      "startLine": 106,
-      "endLine": 118,
+      "startLine": 110,
+      "endLine": 122,
       "mathContext": "Formal definition: Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (proved: density 0 $\\Rightarrow$ complement infinite).",
-      "startLine": 119,
-      "endLine": 187,
+      "startLine": 123,
+      "endLine": 197,
       "mathContext": "Mathematical content: States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (proved: density 0 $\\Rightarrow$ complement infinite)."
     },
     {
       "id": "squarefull",
       "title": "The Squarefull Case (r = 2)",
       "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'.",
-      "startLine": 188,
-      "endLine": 204,
+      "startLine": 198,
+      "endLine": 214,
       "mathContext": "Verified: Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'."
     },
     {
       "id": "heath-brown",
       "title": "Heath-Brown's Representation Theorem",
       "summary": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms).",
-      "startLine": 205,
-      "endLine": 234,
+      "startLine": 215,
+      "endLine": 244,
       "mathContext": "Verified: Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms)."
     },
     {
       "id": "cubefull",
       "title": "The Cubefull Case and Three Cubes",
       "summary": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case).",
-      "startLine": 235,
-      "endLine": 257,
+      "startLine": 245,
+      "endLine": 267,
       "mathContext": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($$n^{3}$$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case)."
     },
     {
       "id": "universal",
       "title": "The Large Integer Representation Question",
       "summary": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case).",
-      "startLine": 258,
-      "endLine": 277,
+      "startLine": 268,
+      "endLine": 287,
       "mathContext": "Mathematical content: States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case)."
     },
     {
       "id": "relationship",
       "title": "Relationship Between the Questions",
       "summary": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
-      "startLine": 278,
-      "endLine": 301,
+      "startLine": 288,
+      "endLine": 311,
       "mathContext": "Verified: Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases."
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`.",
-      "startLine": 302,
-      "endLine": 334,
+      "startLine": 312,
+      "endLine": 341,
       "mathContext": "Concrete proofs: $4 = $2^{2}$$ is squarefull, $8 = $2^{3}$$ is cubefull, $72 = $2^{3}$ \\cdot $3^{2}$$ is squarefull. All use `interval_cases` and `simp_all`."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
-      "startLine": 335,
-      "endLine": 349,
+      "startLine": 342,
+      "endLine": 399,
       "mathContext": "Formal definition: Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal)."
     }
   ],
