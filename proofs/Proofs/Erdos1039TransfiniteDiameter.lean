@@ -905,29 +905,35 @@ private theorem rou_mod (hζ : IsPrimitiveRoot ζ (m + 2)) (a : ℕ) :
 the modulus of the classical identity `∏_{k=1}^{n-1}(1 - ζᵏ) = n`. -/
 private theorem prod_erase_zero (hζ : IsPrimitiveRoot ζ (m + 2)) :
     ∏ d ∈ (Finset.univ : Finset (Fin (m + 2))).erase 0, ‖1 - ζ ^ (d : ℕ)‖ = ((m : ℝ) + 2) := by
+  haveI : NeZero (m + 2) := ⟨by omega⟩
   have hreindex : ∏ d ∈ (Finset.univ : Finset (Fin (m + 2))).erase 0, ‖1 - ζ ^ (d : ℕ)‖
       = ∏ k ∈ Finset.range (m + 1), ‖1 - ζ ^ (k + 1)‖ := by
-    apply Finset.prod_nbij' (fun d => (d : ℕ) - 1) (fun k => ((k + 1 : ℕ) : Fin (m + 2)))
+    apply Finset.prod_nbij' (fun d : Fin (m + 2) => (d : ℕ) - 1)
+      (fun k : ℕ => (⟨(k + 1) % (m + 2), Nat.mod_lt _ (by omega)⟩ : Fin (m + 2)))
     · intro d _
       simp only [Finset.mem_range]
       have := d.isLt; omega
     · intro k hk
       simp only [Finset.mem_range] at hk
       simp only [Finset.mem_erase, Finset.mem_univ, and_true]
-      intro hcontra
-      have hv : ((k + 1 : ℕ) : Fin (m + 2)).val = k + 1 := by
-        rw [Fin.val_natCast]; exact Nat.mod_eq_of_lt (by omega)
-      rw [hcontra, Fin.val_zero] at hv; omega
+      apply Fin.ne_of_val_ne
+      show (k + 1) % (m + 2) ≠ (0 : Fin (m + 2)).val
+      rw [Fin.val_zero, Nat.mod_eq_of_lt (show k + 1 < m + 2 by omega)]
+      omega
     · intro d hd
       simp only [Finset.mem_erase, Finset.mem_univ, and_true] at hd
       have hpos : 1 ≤ (d : ℕ) := by
         rcases Nat.eq_zero_or_pos (d : ℕ) with h | h
         · exact absurd (Fin.val_eq_zero_iff.mp h) hd
         · exact h
-      rw [Nat.sub_add_cancel hpos, Fin.cast_val_eq_self]
+      apply Fin.ext
+      show ((d : ℕ) - 1 + 1) % (m + 2) = (d : ℕ)
+      rw [Nat.sub_add_cancel hpos, Nat.mod_eq_of_lt d.isLt]
     · intro k hk
       simp only [Finset.mem_range] at hk
-      rw [Fin.val_natCast, Nat.mod_eq_of_lt (by omega)]
+      show (k + 1) % (m + 2) - 1 = k
+      rw [Nat.mod_eq_of_lt (show k + 1 < m + 2 by omega)]
+      omega
     · intro d hd
       simp only [Finset.mem_erase, Finset.mem_univ, and_true] at hd
       have hpos : 1 ≤ (d : ℕ) := by
@@ -942,8 +948,9 @@ private theorem prod_erase_zero (hζ : IsPrimitiveRoot ζ (m + 2)) :
 /-- **Per-index spread.**  For each index `i`, `∏_{j ≠ i} ‖ζⁱ - ζʲ‖ = m + 2`:
 after translating `j ↦ j - i` and pulling out the unit `ζⁱ`, this is `prod_erase_zero`. -/
 private theorem prod_erase_root (hζ : IsPrimitiveRoot ζ (m + 2)) (i : Fin (m + 2)) :
-    ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i, ‖ζ ^ (i : ℕ) - ζ ^ (j : ℕ)‖
-      = ((m : ℝ) + 2) := by
+    ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+      ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖ = ((m : ℝ) + 2) := by
+  simp only [rootConfig]
   have hfactor : ∀ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
       ‖ζ ^ (i : ℕ) - ζ ^ (j : ℕ)‖ = ‖1 - ζ ^ ((j - i : Fin (m + 2)) : ℕ)‖ := by
     intro j _
@@ -958,13 +965,16 @@ private theorem prod_erase_root (hζ : IsPrimitiveRoot ζ (m + 2)) (i : Fin (m +
       rw [mul_sub, mul_one, key]
     rw [harg, norm_mul, rou_norm hζ, one_mul]
   -- translation reindex `Fin (m+2) → Fin (m+2)`, `j ↦ j - i`, sends `erase i` to `erase 0`
-  have T : Fin (m + 2) ≃ Fin (m + 2) :=
-    ⟨fun j => j - i, fun d => d + i, fun j => by abel, fun d => by abel⟩
   rw [Finset.prod_congr rfl hfactor,
-    Finset.prod_equiv T
-      (fun a => by
-        simp only [Finset.mem_erase, Finset.mem_univ, and_true, T, Equiv.coe_fn_mk, sub_ne_zero])
-      (fun a _ => rfl),
+    show (∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+          ‖1 - ζ ^ ((j - i : Fin (m + 2)) : ℕ)‖)
+        = ∏ d ∈ (Finset.univ : Finset (Fin (m + 2))).erase 0, ‖1 - ζ ^ (d : ℕ)‖ from
+      Finset.prod_equiv
+        (⟨fun j => j - i, fun d => d + i, fun j => by simp, fun d => by simp⟩ :
+          Fin (m + 2) ≃ Fin (m + 2))
+        (fun a => by
+          simp only [Finset.mem_erase, Finset.mem_univ, and_true, Equiv.coe_fn_mk, sub_ne_zero])
+        (fun a _ => by simp only [Equiv.coe_fn_mk]),
     prod_erase_zero hζ]
 
 /-- **Vandermonde discriminant of the roots of unity.**  `(spreadProduct)² = n^n`
@@ -999,7 +1009,10 @@ private theorem spreadProduct_rootConfig_sq (hζ : IsPrimitiveRoot ζ (m + 2)) :
         = (∏ j ∈ Finset.Iio i, ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
           * (∏ j ∈ Finset.Ioi i, ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖) := by
       intro i; rw [hsplit i, Finset.prod_union (hdisj i)]
-    rw [Finset.prod_congr rfl (fun i _ => herase i), Finset.prod_mul_distrib, hlow, sq]
+    have hup : (∏ i, ∏ j ∈ Finset.Ioi i,
+        ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
+        = spreadProduct (rootConfig ζ (m + 2)) := rfl
+    rw [Finset.prod_congr rfl (fun i _ => herase i), Finset.prod_mul_distrib, hlow, hup, sq]
   -- … and it is also `n^n`, since each factor is `n`.
   have hval : (∏ i, ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
       ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖) = ((m : ℝ) + 2) ^ (m + 2) := by
@@ -1022,7 +1035,10 @@ private theorem discreteDiameter_rootConfig (hζ : IsPrimitiveRoot ζ (m + 2)) :
     show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, hSsq,
     ← Real.rpow_natCast ((m : ℝ) + 2) (m + 2), ← Real.rpow_mul (le_of_lt hbase)]
   congr 1
-  rw [he]; push_cast; field_simp; ring
+  rw [he, show (((m + 2 : ℕ) : ℝ)) = (m : ℝ) + 2 by push_cast; ring,
+    show ((m : ℝ) + 2) - 1 = (m : ℝ) + 1 by ring]
+  field_simp
+  ring
 
 /-- **The general lower bound `dₙ ≥ n^{1/(n-1)}`** for the closed unit disc, realised
 by the `n = m+2` roots of unity.  Generalises `d₂ = 2`, `d₃ ≥ √3`, `d₄ ≥ 4^{1/3}`. -/

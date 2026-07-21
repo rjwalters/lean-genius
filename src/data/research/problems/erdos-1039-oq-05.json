@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: elementary sharp-value program now has THREE exact lower-bound terms d2=2, d3>=sqrt3, d4>=4^(1/3) (all 0-axiom), making the general pattern d_n>=n^(1/(n-1)) visible. Next: the general roots-of-unity lower bound (route fully scoped, ~200 lines) which yields d=lim_n d_n>=1. Remaining beyond: extremal upper bounds (Fekete-Szego). Parent Erdos #1039 OPEN.",
+    "progressSummary": "PROGRESS: the general roots-of-unity lower bound d_n >= n^(1/(n-1)) is now PROVED (0-axiom), the milestone the sharp-value program (d2=2, d3>=sqrt3, d4>=4^(1/3)) was building toward. It yields d = lim_n d_n >= 1, pinning the transfinite diameter of the closed unit disc into [1,2] (transfiniteDiameter_mem_Icc_one_two). Remaining: the sharp value d=1 (log capacity) needs the Fekete-Szego extremal UPPER bound (deep). Parent Erdos #1039 OPEN.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -72,7 +72,12 @@
       "transfiniteDiameterN_three_mem_Icc : d₃ ∈ [√3, 2] (0-axiom)",
       "spreadProduct_three / discreteDiameter_three : 3-point diameter = geometric mean of the three pairwise gaps (exponent 2/(n(n-1))=1/3 at n=3)",
       "norm_mk_eq_sqrt : ‖x+yi‖ = √(x²+y²) helper",
-      "spreadProduct_four / discreteDiameter_four / transfiniteDiameterN_four_ge / transfiniteDiameterN_four_mem_Icc in Erdos1039TransfiniteDiameter.lean -- d4 in [4^(1/3), 2], 0-axiom (propext/Classical.choice/Quot.sound), Docker-verified."
+      "spreadProduct_four / discreteDiameter_four / transfiniteDiameterN_four_ge / transfiniteDiameterN_four_mem_Icc in Erdos1039TransfiniteDiameter.lean -- d4 in [4^(1/3), 2], 0-axiom (propext/Classical.choice/Quot.sound), Docker-verified.",
+      "rootConfig (zeta) (N) : Fin N -> C := k |-> zeta^k in Erdos1039TransfiniteDiameter.lean",
+      "prod_erase_zero / prod_erase_root: the discriminant core prod_{d!=0}||1-zeta^d|| = n and per-index prod_{j!=i}||zeta^i-zeta^j|| = n",
+      "spreadProduct_rootConfig_sq : (spreadProduct (rootConfig zeta (m+2)))^2 = (m+2)^(m+2) (Vandermonde discriminant)",
+      "discreteDiameter_rootConfig : discreteDiameter (rootConfig zeta (m+2)) = (m+2)^(1/(m+1))",
+      "transfiniteDiameterN_rootsOfUnity_ge, one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc_one_two in Erdos1039TransfiniteDiameter.lean (all 0-axiom)"
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
@@ -87,7 +92,10 @@
       "d₂ = transfiniteDiameterN 2 = 2 EXACTLY: the 2-point diameter reduces to the single gap ‖z₀-z₁‖ (exponent 2/(n(n-1))=1 at n=2), max over the closed disc is 2, attained by antipodal ![1,-1]. Only elementary exact stage; sharp d=1 needs Fekete–Szegő.",
       "Lean: collapse ∏ i:Fin 2, ∏ j∈Ioi i via Fin.prod_univ_two + (Finset.Ioi (0:Fin 2)={1}, Ioi (1:Fin 2)=∅) by decide; ![1,-1] value/membership goals by norm_num / fin_cases.",
       "Second exact term d₃ is sandwiched in [√3, 2]: lower bound √3 attained by the equilateral triangle of cube roots of unity {1, ω, ω²} (all three pairwise gaps = √3, so diameter ((√3)³)^{1/3} = √3); upper bound from Fekete monotonicity d₃ ≤ d₂ = 2. Exact d₃ = √3 needs the Fekete–Szegő extremal upper bound (no 3-point disc config beats the inscribed equilateral triangle), NOT yet done.",
-      "d4 = 4^(1/3): the square {1,i,-1,-i} of 4th roots of unity has four side gaps sqrt2 and two diagonal gaps 2, so spreadProduct = (sqrt2)^4 * 2^2 = 16 and discreteDiameter = 16^(1/6) = 4^(1/3). Confirms the pattern d_n >= n^(1/(n-1)) at the third term (d2=2^(1/1), d3=3^(1/2), d4=4^(1/3))."
+      "d4 = 4^(1/3): the square {1,i,-1,-i} of 4th roots of unity has four side gaps sqrt2 and two diagonal gaps 2, so spreadProduct = (sqrt2)^4 * 2^2 = 16 and discreteDiameter = 16^(1/6) = 4^(1/3). Confirms the pattern d_n >= n^(1/(n-1)) at the third term (d2=2^(1/1), d3=3^(1/2), d4=4^(1/3)).",
+      "GENERAL lower bound d_n >= n^(1/(n-1)) now PROVED (0-axiom) via the n-th roots of unity, generalising the exact terms d2=2, d3>=sqrt3, d4>=4^(1/3): transfiniteDiameterN_rootsOfUnity_ge (m) : (m+2)^(1/(m+1)) <= transfiniteDiameterN (m+2).",
+      "Consequence one_le_transfiniteDiameter : 1 <= transfiniteDiameter (each d_{n+2} >= (n+2)^(1/(n+1)) >= 1, so the infimum is >= 1); with d<=2 this pins d in [1,2] (transfiniteDiameter_mem_Icc_one_two). Sharp d=1 (log capacity of the disc) still needs Fekete-Szego upper bound.",
+      "Vandermonde-discriminant identity spreadProduct(roots of unity)^2 = n^n proved via: (a) per-index prod_{j!=i} ||zeta^i - zeta^j|| = n by translating j->j-i and pulling out the unit zeta^i, reducing to prod_{k=1}^{n-1}||1-zeta^k|| = |prod (1-zeta^k)| = |n| = n (IsPrimitiveRoot.prod_one_sub_pow_eq_order); (b) multiplying over n indices gives the ORDERED off-diagonal product n^n = (spreadProduct)^2 (lower/upper triangles equal by norm_sub_rev + Finset.prod_comm)."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent.",
