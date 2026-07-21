@@ -622,3 +622,55 @@ theorem exists_isRatFractionRepr_ge_one_min_gt (N : ℕ) (hN : 1 ≤ N) :
   · intro n hn
     rw [Finset.mem_Ico] at hn
     omega
+
+/-- **Controlled greedy overshoot.** For every threshold `N ≥ 1` there is a consecutive
+block `[N+1, M]` (with `M ≤ 4N` guaranteed by `sum_Ico_inv_ge_one`) whose reciprocals sum
+to a value `q` with `1 ≤ q < 1 + 1/(N+1)`, every denominator `> N`. Taking the *minimal*
+`M` for which the block sum reaches `1` bounds the overshoot: the block one term shorter
+sums to `< 1`, and the single extra term `1/(M-1) ≤ 1/(N+1)`, so `q - 1 < 1/(N+1)`.
+
+This sharpens `exists_isRatFractionRepr_ge_one_min_gt` from an *unbounded* overshoot to a
+*controlled* one: the excess `q - 1` is a positive rational below `1/(N+1)`, the precise
+quantity the remaining exact-trimming step must cancel to land a representation of exactly
+`1` with minimum denominator `> N`. The excess-cancellation itself stays open (see the
+tracker) — it is a bounded-rational Diophantine subset-sum, no longer an unbounded search. -/
+theorem exists_isRatFractionRepr_controlled_overshoot (N : ℕ) (hN : 1 ≤ N) :
+    ∃ (S : Finset ℕ) (q : ℚ),
+      IsRatFractionRepr S q ∧ 1 ≤ q ∧ q < 1 + 1 / (N + 1) ∧ (∀ n ∈ S, N < n) := by
+  classical
+  -- overshoot property `P b` : the block `[N+1, b)` already sums to at least `1`
+  set P : ℕ → Prop :=
+    fun b => (1 : ℚ) ≤ (Finset.Ico (N + 1) b).sum (fun k => (1 : ℚ) / k) with hP
+  have hex : ∃ b, P b := ⟨4 * N + 1, sum_Ico_inv_ge_one N hN⟩
+  set b₀ := Nat.find hex with hb₀
+  have hPb₀ : P b₀ := Nat.find_spec hex
+  -- the minimal `b₀` satisfies `b₀ ≥ N+2`: for `b ≤ N+1` the block is empty, sum `0 < 1`
+  have hb₀_ge : N + 2 ≤ b₀ := by
+    by_contra h
+    have hempty : Finset.Ico (N + 1) b₀ = ∅ := Finset.Ico_eq_empty (by omega)
+    simp only [hP, hempty, Finset.sum_empty] at hPb₀
+    norm_num at hPb₀
+  set c := b₀ - 1 with hc_def
+  have hb₀eq : b₀ = c + 1 := by omega
+  have hc : N + 1 ≤ c := by omega
+  -- one term shorter, the block still falls short of `1`
+  have hnPc : ¬ P c := Nat.find_min hex (by omega)
+  have hlt : (Finset.Ico (N + 1) c).sum (fun k => (1 : ℚ) / k) < 1 := by
+    simpa only [hP, not_le] using hnPc
+  refine ⟨Finset.Ico (N + 1) b₀,
+    (Finset.Ico (N + 1) b₀).sum (fun k => (1 : ℚ) / k), ⟨?_, rfl⟩, ?_, ?_, ?_⟩
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
+  · simpa only [hP] using hPb₀
+  · -- the overshoot bound `q < 1 + 1/(N+1)`
+    rw [hb₀eq, Finset.sum_Ico_succ_top (by omega : N + 1 ≤ c)]
+    have h1c : (1 : ℚ) / (c : ℚ) ≤ 1 / ((N : ℚ) + 1) := by
+      apply one_div_le_one_div_of_le
+      · exact_mod_cast (by omega : 0 < N + 1)
+      · exact_mod_cast hc
+    push_cast
+    linarith
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
