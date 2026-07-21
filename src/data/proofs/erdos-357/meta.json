@@ -102,7 +102,7 @@
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 41,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Defines f(n) = sSup{k | ∃ a : Fin k → ℤ, range a ⊆ [1,n], StrictMono a, HasDistinctSums a}. Noncomputable via sSup.",
       "mathContext": "f(n) is the maximum k for strictly increasing integer sequences in [1,n] with all consecutive sums distinct."
     },
@@ -110,7 +110,7 @@
       "id": "variants-g-h",
       "title": "Variants g(n) and h(n)",
       "startLine": 53,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "g(n): unrestricted sequences (no monotonicity), elements in ℕ. h(n): weakly increasing sequences (Monotone), elements in ℤ. Both defined via sSup.",
       "mathContext": "f(n) ≤ h(n) ≤ g(n) since each relaxes monotonicity constraints. g(n) = Θ(n) vs conjectured f(n) = o(n)."
     },

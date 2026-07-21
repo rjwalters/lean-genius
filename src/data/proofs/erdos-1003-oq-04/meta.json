@@ -90,7 +90,7 @@
       "title": "Definitions — the #1003 set, the run-length family, and the OQ-04 target",
       "summary": "ConsecutiveEqualTotients = {n | φ(n)=φ(n+1)} (A001274), ConsecutiveKEqualTotients k = {n | ∀ i ≤ k, φ n = φ(n+i)} (the run-length hierarchy), FourConsecutiveEqualTotients (the OQ-04 target), and oq04_infinitude_conjecture (the open Infinite statement). They mirror the parent #1003 entry verbatim.",
       "startLine": 64,
-      "endLine": 85,
+      "endLine": 86,
       "mathContext": "$\\text{CKE}\\,k = \\{n \\mid \\forall i \\le k,\\ \\varphi(n)=\\varphi(n+i)\\}$; the OQ-04 target is the $k=3$ slice."
     },
     {
@@ -98,7 +98,7 @@
       "title": "§1 The Run Reduction — a run is a block of consecutive #1003 solutions",
       "summary": "mem_cke_iff_run telescopes CKE k membership to the vanishing of all k adjacent differences (induction on run length). mem_cke_iff_consecutive_cet reads this as: n, …, n+k-1 all lie in A001274. fcet_eq_cke_three and mem_fcet_iff_three_consecutive specialize k = 3: a four-run at n is exactly n, n+1, n+2 being three consecutive members of A001274.",
       "startLine": 87,
-      "endLine": 148,
+      "endLine": 149,
       "mathContext": "$n \\in \\text{CKE}\\,k \\iff \\forall i<k,\\ \\varphi(n+i)=\\varphi(n+i+1)$; four-run at $n \\iff n,n+1,n+2 \\in$ A001274."
     },
     {
