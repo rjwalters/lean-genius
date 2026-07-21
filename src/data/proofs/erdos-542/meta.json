@@ -114,27 +114,27 @@
       "id": "main-results",
       "title": "Schinzel-Szekeres Theorem",
       "startLine": 37,
-      "endLine": 49,
+      "endLine": 46,
       "summary": "States `ErdosProblem542`: $\\sum 1/a \\le 31/30$ under the LCM condition. Axiomatizes the tight example $\\{2,3,5\\}$ with $1/2 + 1/3 + 1/5 = 31/30$ and its validity for $n = 5$."
     },
     {
       "id": "chen-bound",
       "title": "Chen's Stronger Bound (1996)",
-      "startLine": 52,
+      "startLine": 47,
       "endLine": 62,
       "summary": "States `ChenBound`: for $n > 172509$, $\\sum 1/a < 1/3 + 1/4 + 1/5 + 1/7 + 1/11 = 4699/4620$. Proves the rational equality via `norm_num`."
     },
     {
       "id": "maximal-sets",
       "title": "Maximal Sets Conjecture",
-      "startLine": 66,
-      "endLine": 79,
+      "startLine": 63,
+      "endLine": 75,
       "summary": "States `MaximalSetsConjecture`: only $\\{2,3,5\\}$ and $\\{3,4,5,7,11\\}$ achieve $\\sum 1/a > 1$. Axiomatizes that $\\{3,4,5,7,11\\}$ has sum $> 1$ and satisfies the LCM condition for $n = 11$."
     },
     {
       "id": "structural",
       "title": "Structural Properties and Final Theorem",
-      "startLine": 83,
+      "startLine": 76,
       "endLine": 97,
       "summary": "documents in source comments `lcm_condition_no_divisibility` (no Lean declaration exists) ($a \\mid b \\implies b > n$, i.e., $A$ is an antichain). Proves `singleton_satisfies_lcm` (vacuous satisfaction) and `reciprocal_sum_singleton` ($\\sum_{\\{a\\}} 1/x = 1/a$). `schinzel_szekeres_solves_542` axiomatizes the full resolution."
     }
