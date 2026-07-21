@@ -163,10 +163,10 @@
     {
       "id": "properties",
       "title": "Good Neighbor Properties",
-      "summary": "$T.\\text{vertices} \\subseteq \\text{goodNeighbors}$ and $\\text{bookPages} \\subseteq \\text{goodNeighbors}$ structural lemmas",
+      "summary": "Structural lemmas culminating in $\\text{book\\_subset\\_good}$: $T.\\text{vertices} \\subseteq \\text{goodNeighbors}$, $\\text{book\\_pages\\_are\\_good}$, and $\\text{book\\_subset\\_good}$ (a book's pages, when disjoint from $T$, are all good neighbors of $T$). Closes with the file-level Summary docstring recording the resolved status (DISPROVED by Ma-Tang) and the known bounds $\\tfrac16 n \\le h(n) \\le (2-\\sqrt{5/2})n \\approx 0.4189n$.",
       "startLine": 305,
-      "endLine": 744,
-      "mathContext": "Structural: triangle vertices are good neighbors of $T$. Book pages are subsets of good neighbors."
+      "endLine": 779,
+      "mathContext": "Structural: triangle vertices are good neighbors of $T$. Book pages are subsets of good neighbors, so a large book around $T$ forces many good neighbors — the source of the $h(n) \\ge (1/6 - o(1))n$ lower bound."
     }
   ],
   "conclusion": {
