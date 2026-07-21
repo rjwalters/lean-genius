@@ -134,69 +134,69 @@
       "summary": "**rankin_theorem**: $\\exists C > 0$ (specifically $C = e^\\gamma/3$) achieving the bound. Stood for 75+ years without improvement to the constant.",
       "mathContext": "Rankin (1938): $\\limsup g_n / f(n) \\geq e^\\gamma / 3 \\approx 0.593$. This constant was not improved for 75 years (Erdős offered \\$10,000 for any improvement).",
       "startLine": 82,
-      "endLine": 97
+      "endLine": 94
     },
     {
       "id": "breakthrough-2016",
       "title": "2016 Breakthrough: Maynard and FGKT",
       "summary": "**maynard_theorem** and **ford_green_konyagin_tao_theorem**: Two independent proofs for ALL $C > 0$. Maynard used multidimensional sieve weights; FGKT used probabilistic methods with hypergraph covering.",
       "mathContext": "Maynard (2016) and FGKT (2016): $\\limsup g_n / f(n) = \\infty$, resolving Erdős's conjecture. Two independent proofs: multidimensional sieve weights vs. probabilistic hypergraph covering.",
-      "startLine": 98,
-      "endLine": 117
+      "startLine": 95,
+      "endLine": 113
     },
     {
       "id": "improved-bounds",
       "title": "Improved Bounds: FGKMT (2018)",
       "summary": "**fgkmt_improved_bound**: All five authors proved a stronger bound with $\\log\\log\\log n$ (not squared) in the denominator, combining both teams' techniques.",
       "mathContext": "FGKMT (2018): $g_n \\geq c \\cdot \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{\\log\\log\\log n}$ (removed the square in the denominator vs. Rankin's function).",
-      "startLine": 118,
-      "endLine": 133
+      "startLine": 114,
+      "endLine": 125
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds: Baker-Harman-Pintz (2001)",
       "summary": "**baker_harman_pintz_upper_bound**: $g_n \\leq n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$. The gap to lower bounds remains enormous.",
       "mathContext": "BHP (2001): $g_n \\leq p_n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$ (Cramér 1920). Gap: lower bound $\\omega(\\log n)$ vs. upper bound $n^{0.525}$.",
-      "startLine": 134,
-      "endLine": 148
+      "startLine": 126,
+      "endLine": 138
     },
     {
       "id": "cramer-conjecture",
       "title": "Cramér's Conjecture and Refinements",
       "summary": "**cramer_conjecture**: $g_n = O((\\log p_n)^2)$ (OPEN). **Cramér-Granville**: lim sup = $2e^{-\\gamma} \\approx 1.1229$, correcting Cramér's original constant of 1.",
       "mathContext": "Cramér (1936): $\\limsup g_n / (\\log p_n)^2 \\leq 1$ (OPEN). Granville's refinement: $\\limsup g_n / (\\log p_n)^2 = 2e^{-\\gamma} \\approx 1.1229$.",
-      "startLine": 149,
-      "endLine": 167
+      "startLine": 139,
+      "endLine": 157
     },
     {
       "id": "simple-properties",
       "title": "Simple Properties",
       "summary": "**gap_0** = 1 (the only odd gap), **prime_gap_pos**, and **average_gap_asymptotic** ($p_n/(n\\log n) \\to 1$ via PNT).",
       "mathContext": "$g_0 = p_1 - p_0 = 3 - 2 = 1$ (only odd gap). $g_n \\geq 1$ for all $n$. Average: $\\sum_{k<n} g_k / n = p_n / n \\sim \\log n$ by PNT.",
-      "startLine": 168,
-      "endLine": 179
+      "startLine": 158,
+      "endLine": 159
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "**erdos_function_growth**: $f(n) < (\\log n)^{1+\\varepsilon}$ eventually. **improved_stronger**: the FGKMT function dominates the original, $f(n) \\leq f'(n)$ for $n \\geq 100$ — fully proved by case-splitting on whether $\\log\\log\\log n \\lessgtr 1$.",
       "mathContext": "$f(n) < (\\log n)^{1+\\varepsilon}$ eventually for any $\\varepsilon > 0$. The FGKMT improved function $f'(n)$ satisfies $f'(n) / f(n) \\to \\infty$.",
-      "startLine": 180,
-      "endLine": 192
+      "startLine": 160,
+      "endLine": 216
     },
     {
       "id": "related-conjectures",
       "title": "Related Conjectures",
       "summary": "**erdos_stronger_conjecture**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erdős's $\\$10{,}000$ prize, OPEN). **firoozbakht_conjecture**: $p_n^{1/n}$ strictly decreasing (OPEN, incompatible with the stronger conjecture).",
       "mathContext": "Erdős \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
-      "startLine": 193,
-      "endLine": 215
+      "startLine": 217,
+      "endLine": 239
     },
     {
       "id": "summary-comment",
       "title": "Summary and References",
-      "startLine": 216,
-      "endLine": 219,
+      "startLine": 240,
+      "endLine": 267,
       "summary": "Closing commentary summarizing the SOLVED status, key results from Rankin through FGKMT, and remaining open questions (Cramér's conjecture, growth rate $> (\\log n)^{1+c}$). Closes the Erdos4 namespace.",
       "mathContext": "SOLVED: $\\forall C > 0$, infinitely many $n$ with $p_{n+1} - p_n > C \\cdot R(n)$ where $R(n)$ is the Rankin function. Remaining open: Cramér ($g_n \\sim (\\log p_n)^2$) and Erdős's $\\$10{,}000$ ($g_n > (\\log n)^{1+c}$)."
     }
