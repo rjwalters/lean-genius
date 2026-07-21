@@ -135,48 +135,48 @@
       "title": "Basic Properties",
       "summary": "g_le_n theorem (g(n) ≤ n, discharged from axiom); g_le_n_sub_one theorem (g(n) ≤ n-1, n ≥ 2); g_pos and g_mono discussed only in docstrings",
       "startLine": 138,
-      "endLine": 210,
-      "mathContext": "discharged g_le_n theorem (g(n) ≤ n) plus the proved sharp bound g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2); g_pos and g_mono appear only in docstrings"
+      "endLine": 231,
+      "mathContext": "discharged g_le_n theorem (g(n) ≤ n) plus the proved sharp bound g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2), whose card_erase / Finset.Icc counting argument runs to line 231; g_pos and g_mono appear only in docstrings"
     },
     {
       "id": "special-configs",
       "title": "Special Configurations",
-      "summary": "IsCollinear, IsRegularPolygon, regular_polygon_r_value",
-      "startLine": 154,
-      "endLine": 178,
-      "mathContext": "Mathematical content: IsCollinear, IsRegularPolygon, regular_polygon_r_value"
+      "summary": "IsCollinear, IsRegularPolygon (regular_polygon_r_value is a documentary note, not formalized)",
+      "startLine": 232,
+      "endLine": 257,
+      "mathContext": "Mathematical content: IsCollinear (points on a common line via affine parametrization) and IsRegularPolygon (common circumradius); the regular-polygon R-value claim is a documentary note only"
     },
     {
       "id": "extremal-configs",
       "title": "Extremal Configurations",
-      "summary": "IsOptimalConfig, optimal_exists",
-      "startLine": 179,
-      "endLine": 193,
-      "mathContext": "Mathematical content: IsOptimalConfig, optimal_exists"
+      "summary": "IsOptimalConfig (existence of optimal configs is a documentary note)",
+      "startLine": 258,
+      "endLine": 273,
+      "mathContext": "Formal definition: IsOptimalConfig (numDistinctRValues S = g S.card); the existence of optimal configurations for each n is a documentary note, not formalized"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "Asymptotic gap commentary in docstrings (no axioms in this section)",
-      "startLine": 194,
-      "endLine": 203,
-      "mathContext": "Mathematical content: asymptotic gap commentary (gap_lower_bound and gap_bounds in docstrings only)"
+      "startLine": 274,
+      "endLine": 285,
+      "mathContext": "Mathematical content: asymptotic gap commentary — the Ω(n^{2/3}) lower gap and the combined cn^{2/3} ≤ n - g(n) ≤ (3/10)n bound appear in docstrings only"
     },
     {
       "id": "connections",
       "title": "Connection to Unit Distance Problem",
       "summary": "unitDistPairs, totalDistinctDistances",
-      "startLine": 204,
-      "endLine": 223,
-      "mathContext": "Mathematical content: unitDistPairs, totalDistinctDistances"
+      "startLine": 286,
+      "endLine": 305,
+      "mathContext": "Mathematical content: unitDistPairs (points at unit distance from some other point) and totalDistinctDistances (biUnion of per-point distance sets), tying the R-value diversity to the unit-distance and distinct-distances problems"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_653_summary theorem, erdos_653 theorem",
-      "startLine": 224,
-      "endLine": 253,
-      "mathContext": "Verified: erdos_653_summary theorem, erdos_653 theorem"
+      "startLine": 306,
+      "endLine": 335,
+      "mathContext": "Verified: erdos_653_summary and erdos_653 bundle the three formalized facts — Csizmadia's g(n) > 7n/10 (axiom), the trivial g(n) ≤ n, and the nontrivial n - cn^{2/3} upper gap (axiom)"
     }
   ],
   "conclusion": {
