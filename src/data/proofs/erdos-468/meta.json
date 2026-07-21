@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/468",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos468Problem.lean",
     "tags": [
       "erdos",
@@ -24,7 +24,7 @@
     "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 56,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "Definitions-only formalization: 5 noncomputable definitions build the partial-divisor-sum construction (0 axioms, 0 theorems, 0 sorries). Neither of the two open conjectures is stated, axiomatized, or proved in Lean; no supporting lemmas are formalized.",
     "theoremCount": 0,
     "definitionCount": 5
   },
@@ -32,7 +32,7 @@
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new — not appearing in any D_m for m < n? This asks about the rate at which the union ⋃_n D_n grows. Second, for a given target N, what is the smallest n such that N ∈ D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function σ(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",
     "problemStatement": "Let D_n be the set of partial sums of divisors of n (excluding 1). (1) How many elements of D_n are new? (2) If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)?",
     "text": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ ⋃_{m<n} D_m? If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)? Status: OPEN.",
-    "proofStrategy": "The formalization constructs $D_n$ from `Nat.divisors` filtered to $d > 1$, sorted via `Finset.sort`, with prefix sums via `List.take` and `List.sum`. The first-appearance function $f(N) = \\inf\\{n : N \\in D_n\\}$ uses `sInf`. Both conjectures are axiomatized: the strong form ($f(N) = o(N)$ for all $N$) and the almost-all form (density of exceptions $\\to 0$). Boundary elements ($\\min = p_1(n)$, $\\max = \\sigma(n) - 1$) and examples ($D_6$, $D_{12}$) are also stated. All results are axioms (0 sorries).",
+    "proofStrategy": "This is a definitions-only formalization that sets up the objects of the problem; it does not state or prove either conjecture. Five `noncomputable def`s are provided: $D_n$ is constructed from `Nat.divisors` filtered to $d > 1$, sorted via `Finset.sort`, with prefix sums via `List.take` and `List.sum` (`properDivisorsSorted`, `partialDivisorSums`); the running union $\\bigcup_{m<n} D_m$ and its complement give `previousPartialSums` and `newElements`; and the first-appearance function $f(N) = \\inf\\{n : N \\in D_n\\}$ is defined via `sInf` (`firstAppearance`). The conjectures ($f(N) = o(N)$ in strong and almost-all forms), the boundary identities ($\\min = p_1(n)$, $\\max = \\sigma(n) - 1$), and the examples $D_6, D_{12}$ are discussed below as mathematical background but are not formalized — there are no axioms, theorems, or examples in the Lean file (0 axioms, 0 sorries).",
     "keyInsights": [
       "**Cumulative sum construction**: $D_n = \\{d_1, d_1+d_2, \\ldots, \\sum_{i=1}^k d_i\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. The ordering is essential — different orderings yield different partial sum sets. We have $|D_n| = d(n) - 1$ where $d(n)$ is the divisor count.",
       "**Boundary anchoring**: $\\min(D_n) = p_1(n)$ (smallest prime factor) and $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$. This bounds $D_n \\subseteq [p_1(n),\\, \\sigma(n) - 1]$.",
@@ -67,12 +67,7 @@
       "partialDivisorSums: D_n as Finset of cumulative sums",
       "previousPartialSums: union of all D_m for m < n",
       "newElements: D_n minus all previous sets",
-      "firstAppearance: f(N) = sInf {n : N ∈ D_n}",
-      "new_elements_exist: axiom that each n ≥ 2 has new elements",
-      "erdos_468_conjecture: f(N) = o(N) strong form",
-      "erdos_468_almost_all: f(N) = o(N) almost-all form",
-      "d6_example, d12_example: concrete computations",
-      "smallest_partial_sum, largest_partial_sum: boundary axioms"
+      "firstAppearance: f(N) = sInf {n : N ∈ D_n}"
     ],
     "relatedProofs": [
       {
@@ -117,21 +112,21 @@
       "id": "question-1",
       "title": "Question 1: New Elements",
       "startLine": 44,
-      "endLine": 56,
-      "summary": "Axiomatizes $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$ and conjectures $|D_n| \\to \\infty$.",
-      "mathContext": "Question 1: $\\forall n \\geq 2, D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ (each $D_n$ has a new element). Axiomatized as an open conjecture. The size $|D_n| = d(n) - 1$ where $d(n)$ is the number of divisors, so $|D_n| \\to \\infty$ along highly composite numbers."
+      "endLine": 45,
+      "summary": "Empty placeholder header for Question 1 (size of new elements). No declarations appear here; the underlying `newElements` definition is given in Core Definitions above.",
+      "mathContext": "Question 1 (background, not formalized): how large is $D_n \\setminus \\bigcup_{m<n} D_m$? One expects $\\forall n \\geq 2, D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ (each $D_n$ has a new element). The size $|D_n| = d(n) - 1$ where $d(n)$ is the number of divisors, so $|D_n| \\to \\infty$ along highly composite numbers. None of these statements is stated or axiomatized in the Lean file."
     },
     {
       "id": "question-2",
       "title": "Question 2: First Appearance Function",
       "startLine": 46,
       "endLine": 56,
-      "summary": "Defines firstAppearance f(N) = sInf{n : N ∈ D_n}, states the main conjecture f(N) = o(N), the almost-all weakening, and concrete examples D_6 and D_12.",
-      "mathContext": "Main conjecture: $f(N) = o(N)$, i.e., $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N)/N < \\varepsilon$. Boundary: $\\min(D_n) = \\text{minFac}(n)$, $\\max(D_n) = \\sigma(n) - 1$. Examples: $D_6 = \\{2, 5, 11\\}$ (divisors $> 1$: 2, 3, 6), $D_{12} = \\{2, 5, 9, 15, 27\\}$ (divisors $> 1$: 2, 3, 4, 6, 12)."
+      "summary": "Defines `firstAppearance` f(N) = sInf{n : N ∈ D_n}. The following `Small Examples` and `Trivial Observations` headers (lines 52–54) are empty placeholders — the conjecture f(N) = o(N), its almost-all weakening, and the examples D_6, D_12 are not formalized.",
+      "mathContext": "The single declaration here is `firstAppearance`. The remaining content is mathematical background, not Lean code. Main conjecture: $f(N) = o(N)$, i.e., $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N)/N < \\varepsilon$. Boundary: $\\min(D_n) = \\text{minFac}(n)$, $\\max(D_n) = \\sigma(n) - 1$. Examples: $D_6 = \\{2, 5, 11\\}$ (divisors $> 1$: 2, 3, 6), $D_{12} = \\{2, 5, 9, 15, 27\\}$ (divisors $> 1$: 2, 3, 4, 6, 12). None of these are stated or axiomatized in the Lean file."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 468 asks about partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open. The formalization captures the construction, examples, and both the strong and almost-all conjectures. 0 sorries.",
+    "summary": "Erdős Problem 468 asks about partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open. The formalization captures only the construction — the five definitions for $D_n$, the running union, the new-element set, and the first-appearance function $f(N)$. The conjectures and the worked examples are described here as background but are not formalized. 0 axioms, 0 sorries.",
     "implications": "Understanding partial divisor sums would shed light on the additive structure of divisor sets, connecting multiplicative number theory to additive combinatorics.",
     "openQuestions": [
       "How large is $|D_n \\setminus \\bigcup_{m<n} D_m|$ as a function of $n$? Does it grow like $d(n)$ or slower?",
