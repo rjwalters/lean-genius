@@ -73,56 +73,56 @@
     "lineCount": 224,
     "assumptions": "0 axioms. 0 sorries. The core estimate is the C = 1 specialization of Mathlib's Cauchy estimate Complex.norm_deriv_le_of_forall_mem_sphere_norm_le; the inscribed-disc and polynomial results are corollaries, and the obstruction is an explicit witness. The parent open problem (is ρ(f) ≫ 1/n?) is NOT asserted — only the elementary conformal estimate and its critical-point degeneracy. The obstruction witness f ≡ 0 is a constant, not a monic polynomial; it is used solely to certify that the hypothesis f'(c) ≠ 0 in the radius bound is necessary, which is the mathematical point. Verified against Mathlib v4.31.0 (the current pinned toolchain, `mathlib_version: 4.31.0`): the entry is merged on `main` with `status: verified` / `badge: original`, and the file uses no `native_decide` and no `axiom` declarations, so `#print axioms` reports only the foundational axioms propext, Classical.choice, Quot.sound (no `Lean.ofReduceBool`). The core Mathlib lemmas it rests on are Complex.norm_deriv_le_of_forall_mem_sphere_norm_le, Differentiable.diffContOnCl, closure_ball (with the r ≠ 0 hypothesis), isClosed_le, sphere_subset_closedBall, the finite-product differentiability of the monic polynomial (via fun_prop), le_div_iff₀, and deriv_const'.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 2
   },
   "sections": [
     {
       "title": "Module header",
       "startLine": 1,
-      "endLine": 48,
-      "description": "Frames oq-03 (can conformal-mapping estimates beat the area approach?), recalls ρ(f) and the KLR area bound, and states the conformal core estimate, its inscribed-disc consequence, the polynomial specialization, and the critical-point obstruction.",
+      "endLine": 54,
+      "description": "Frames oq-03 (can conformal-mapping estimates beat the area approach?), recalls ρ(f) and the KLR area bound, and states the eight main results: the conformal core estimate, the boundary bridge, the inscribed-disc bound (derivative, radius, and product forms), the polynomial specialization, the critical-point obstruction, and the sharpness identity. Closes with the imports and the Erdos1039Conformal namespace (open Complex Metric Set).",
       "summary": "Module header and problem framing",
       "id": "module-header"
     },
     {
       "title": "Sublevel set and the conformal core estimate",
-      "startLine": 50,
-      "endLine": 64,
+      "startLine": 55,
+      "endLine": 69,
       "description": "sublevel f = {z : ‖f z‖ < 1} is the lemniscate interior. norm_deriv_le_inv_of_sphere_le_one specializes Mathlib's Cauchy estimate to the unit codomain: f holomorphic on ball c r, continuous up to the closure, with ‖f‖ ≤ 1 on the boundary sphere, has ‖f'(c)‖ ≤ 1/r.",
       "summary": "Cauchy/Schwarz estimate, unit codomain",
       "id": "core-estimate"
     },
     {
       "title": "Boundary bridge",
-      "startLine": 66,
-      "endLine": 82,
+      "startLine": 70,
+      "endLine": 88,
       "description": "norm_le_one_on_closedBall: an open disc inscribed in {|f| < 1} gives |f| ≤ 1 on the whole closed disc. The set {w : ‖f w‖ ≤ 1} is closed (isClosed_le), contains the open ball, hence contains its closure = closedBall (closure_ball).",
       "summary": "Strict open-disc bound passes to the closed disc",
       "id": "boundary-bridge"
     },
     {
-      "title": "Inscribed-disc conformal bound",
-      "startLine": 84,
-      "endLine": 113,
-      "description": "inscribed_ball_norm_deriv_le: for entire f with D(c,r) ⊆ {|f| < 1}, ‖f'(c)‖ ≤ 1/r. inscribed_radius_le_inv_norm_deriv: equivalently r ≤ 1/‖f'(c)‖ when f'(c) ≠ 0 (via le_div_iff₀). This is the direct conformal estimate of oq-03.",
-      "summary": "r ≤ 1/|f'(c)| from the derivative alone",
+      "title": "Inscribed-disc conformal bound (derivative, radius, and product forms)",
+      "startLine": 89,
+      "endLine": 136,
+      "description": "inscribed_ball_norm_deriv_le: for entire f with D(c,r) ⊆ {|f| < 1}, ‖f'(c)‖ ≤ 1/r. inscribed_radius_le_inv_norm_deriv: equivalently r ≤ 1/‖f'(c)‖ when f'(c) ≠ 0 (via le_div_iff₀) — the direct conformal estimate of oq-03. inscribed_radius_mul_norm_deriv_le_one: the division-free product form r·‖f'(c)‖ ≤ 1, valid unconditionally (no f'(c) ≠ 0 needed) — it absorbs the critical-point case as 0 ≤ 1 rather than producing Lean's junk value 1/0 = 0, the sharpest packaging of the bound.",
+      "summary": "r ≤ 1/|f'(c)| and r·|f'(c)| ≤ 1 from the derivative alone",
       "id": "inscribed-bound"
     },
     {
       "title": "Specialisation to a monic polynomial",
-      "startLine": 115,
-      "endLine": 141,
-      "description": "rootPoly roots = ∏ᵢ (z - rootsᵢ) is the monic polynomial; rootPoly_differentiable shows it is entire (fun_prop over the finite product). polynomial_inscribed_radius_le_inv_norm_deriv applies the conformal bound to the actual lemniscate of Erdős #1039.",
-      "summary": "Conformal bound for the actual polynomial",
+      "startLine": 138,
+      "endLine": 181,
+      "description": "rootPoly roots = ∏ᵢ (z - rootsᵢ) is the monic polynomial; rootPoly_differentiable shows it is entire (fun_prop over the finite product). rootPoly_root_eq_zero: each rootⱼ is a zero of f. root_mem_sublevel: hence every root lies in the lemniscate interior {|f| < 1} (‖f(rootⱼ)‖ = 0 < 1) — the elementary geometric fact placing the n roots as interior points whose inscribed discs define ρ(f). polynomial_inscribed_radius_le_inv_norm_deriv applies the conformal bound to the actual lemniscate of Erdős #1039.",
+      "summary": "Conformal bound for the actual polynomial; roots are interior points",
       "id": "polynomial"
     },
     {
-      "title": "The critical-point obstruction",
-      "startLine": 143,
-      "endLine": 164,
-      "description": "conformal_estimate_vacuous_at_critical_point: the witness f ≡ 0 has sublevel set = ℂ (every disc inscribed) yet f' ≡ 0, so the bound r ≤ 1/‖f'(c)‖ = 1/0 = 0 is false for r > 0. The estimate carries no information at critical points — where extremal inscribed discs of lemniscates tend to live — so a direct conformal bound on ρ(f) is unavailable.",
-      "summary": "Estimate degenerates where f is flat",
+      "title": "The critical-point obstruction and sharpness",
+      "startLine": 183,
+      "endLine": 224,
+      "description": "conformal_estimate_vacuous_at_critical_point: the witness f ≡ 0 has sublevel set = ℂ (every disc inscribed) yet f' ≡ 0, so the bound r ≤ 1/‖f'(c)‖ = 1/0 = 0 is false for r > 0 — the estimate carries no information at critical points, where extremal inscribed discs of lemniscates tend to live, so a direct conformal bound on ρ(f) is unavailable. conformal_estimate_sharp_identity: the counterpart — for f = id the lemniscate interior is exactly the unit disc, inscribed with r = 1, f'(0) = 1 ≠ 0, and the bound holds with equality (r = 1/‖f'(0)‖ and r·‖f'(0)‖ = 1), so the constant 1 cannot be improved.",
+      "summary": "Estimate degenerates where f is flat, but is tight away from critical points",
       "id": "obstruction"
     }
   ],
