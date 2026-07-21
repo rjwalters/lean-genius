@@ -50,7 +50,7 @@
       "samePrimeFactors_refl/symm/trans: proved equivalence relation"
     ],
     "axiomCount": 1,
-    "lineCount": 158,
+    "lineCount": 164,
     "assumptions": "1 axiom: shorey_tijdeman. Additionally, three auxiliary theorems (makowski_same_primes_base, makowski_same_primes_shift, zero_shift_has_solution) use native_decide, which adds a Lean.ofReduceBool compiled-kernel-trust dependency. See Lean source for the complete statement.",
     "theoremCount": 11,
     "definitionCount": 8
@@ -93,28 +93,28 @@
       "id": "two-shift",
       "title": "Weaker Variant: Two Consecutive Shifts",
       "startLine": 40,
-      "endLine": 61,
-      "summary": "Defines `TwoShiftSolvable` (the $k=1$ case IS solvable), `ParametricFamily(r)` giving $x = 2(2^r - 1)$, `MakowskiExample` $(75, 1215)$, and proves `makowski_distinct`."
-    },
-    {
-      "id": "abc",
-      "title": "Connection to ABC Conjecture",
-      "startLine": 62,
-      "endLine": 77,
-      "summary": "Defines `radical(n) = \\prod_{p \\mid n} p$ and `StrongABCConjecture` (Baker's form: $c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$). Axiomatizes `shorey_tijdeman`: strong ABC $\\Rightarrow$ Problem 850."
+      "endLine": 76,
+      "summary": "Defines `TwoShiftSolvable` (the $k=1$ case IS solvable), `ParametricFamily(r)` giving $x = 2(2^r - 1)$, and `MakowskiExample` $(75, 1215)$. Proves `makowski_distinct`, verifies the Makowski witness (`makowski_same_primes_base`: $75, 1215$ share prime factors; `makowski_same_primes_shift`: so do $76, 1216$), and concludes `two_shift_is_solvable`."
     },
     {
       "id": "k-shift",
       "title": "General k-Shift Version",
-      "startLine": 78,
-      "endLine": 104,
-      "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k+1$) via `omega`."
+      "startLine": 77,
+      "endLine": 107,
+      "summary": "Defines `KShiftProblem k`, the general $k$-shift version (do distinct $x, y$ exist sharing prime factors at every offset $0, \\ldots, k$?). `zero_shift_has_solution` gives trivial solutions at $k = 0$; `kshift_hard_monotone` shows a $(k+1)$-shift obstruction propagates down to $k$ — larger $k$ is strictly easier to negate."
+    },
+    {
+      "id": "abc",
+      "title": "Connection to ABC Conjecture",
+      "startLine": 108,
+      "endLine": 148,
+      "summary": "Defines `radical(n) = \\prod_{p \\mid n} p` and `StrongABCConjecture` (Baker's form: $c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$), and axiomatizes `shorey_tijdeman` (strong ABC $\\Rightarrow$ Problem 850). Then locates Problem 850 in the $k$-shift framework: `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases`, and `kshift_monotone` ($k \\Rightarrow k+1$) via `omega`."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
-      "startLine": 105,
-      "endLine": 120,
+      "startLine": 149,
+      "endLine": 164,
       "summary": "Proves `SamePrimeFactors` is an equivalence relation: `samePrimeFactors_refl` (by `rfl`), `samePrimeFactors_symm` (by `.symm`), `samePrimeFactors_trans` (by `.trans`)."
     }
   ],
@@ -137,7 +137,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 158,
+    "lineCount": 164,
     "axiomCount": 1,
     "theoremCount": 11,
     "definitionCount": 8,
