@@ -83,60 +83,164 @@
   },
   "sections": [
     {
-      "id": "imports-docstring",
+      "id": "overview",
       "title": "Imports and Module Overview",
       "startLine": 1,
-      "endLine": 62,
-      "summary": "Imports Mathlib computability modules. Module docstring explains the theorem statement, the easy vs hard directions, the orbit classification for the back-and-forth argument (Type A/B/C), and references to Myhill (1955), Rogers (1967), and Soare (2016).",
-      "mathContext": "The theorem: $p \\equiv_1 q \\iff \\exists$ computable permutation $e$ with $\\forall n, p(n) \\leftrightarrow q(e(n))$. One-one equivalence: $p \\equiv_1 q$ means $\\exists$ computable injective $f$ with $p \\leftrightarrow q \\circ f$ AND $\\exists$ computable injective $g$ with $q \\leftrightarrow p \\circ g$."
+      "endLine": 85,
+      "summary": "Module docstring for the constructive/computable Myhill isomorphism theorem — the effective refinement of Schröder–Bernstein: two sets that are computably one-one equivalent (each computably injects into the other) are computably isomorphic (related by a total computable permutation). Imports Mathlib's computability library (`Computability.Partrec`, `Partrec.Code`), sets up the `MyhillIsomorphism` namespace, and previews the hard direction's back-and-forth construction driven by the computable extension-only scheduler `sigmaC` (Section 5·C).",
+      "mathContext": "Myhill (1955): $A \\equiv_1 B$ (one-one equivalent) $\\Rightarrow A \\equiv B$ via a computable permutation of $\\mathbb{N}$. This is the recursion-theoretic Schröder–Bernstein; the file makes every step computable (no `Classical.choice` in the final scheduler)."
     },
     {
-      "id": "setup",
-      "title": "Section 1: Setup — Corresponds Predicate",
-      "startLine": 64,
-      "endLine": 72,
-      "summary": "Defines the Corresponds predicate: p Corresponds e q means ∀ n, p n ↔ q (e n). This captures that a permutation e maps p to q setwise.",
-      "mathContext": "Corresponds $(p, e, q) \\equiv \\forall n, p(n) \\leftrightarrow q(e(n))$. Abstracting this as a named predicate simplifies theorem statements and allows rewriting. It expresses that $e$ is a 'computable isomorphism' between the characteristic functions $p$ and $q$."
+      "id": "setup-corresponds",
+      "title": "Section 1: Setup — the Corresponds Predicate",
+      "startLine": 86,
+      "endLine": 93,
+      "summary": "Defines `Corresponds`, the relation between the two injections that the back-and-forth construction must preserve — the invariant tracking which domain/range elements have been paired so far.",
+      "mathContext": "The `Corresponds` predicate encodes a partial correspondence between $A$ and $B$ consistent with both computable injections; the hard direction extends it to a total bijection."
     },
     {
       "id": "easy-direction",
-      "title": "Section 2: Easy Direction (Computable Bijection → OneOneEquiv)",
-      "startLine": 73,
-      "endLine": 96,
-      "summary": "Proves the easy direction: a computable bijection e with Corresponds p e q implies OneOneEquiv p q. Uses e for p ≤₁ q and e.symm for q ≤₁ p. Also proves a variant with explicit Computable hypotheses.",
-      "mathContext": "Given $e : \\mathbb{N} \\simeq \\mathbb{N}$ with $e.\\text{Computable}$ (both $e$ and $e^{-1}$ computable) and $\\forall n, p(n) \\leftrightarrow q(e(n))$: use $(e, \\text{injective}, \\text{computable})$ to witness $p \\leq_1 q$; use $(e^{-1}, \\text{injective}, \\text{computable})$ and the identity $q(m) \\leftrightarrow p(e^{-1}(m))$ (from $e(e^{-1}(m)) = m$) to witness $q \\leq_1 p$."
+      "title": "Section 2: Easy Direction (Computable Bijection → One-One Equivalence)",
+      "startLine": 94,
+      "endLine": 117,
+      "summary": "`myhill_easy` and `one_one_equiv_of_computable_perm` establish the trivial direction: a computable isomorphism (total computable permutation) between the sets immediately yields a one-one equivalence, since a bijection restricts to injections both ways.",
+      "mathContext": "Isomorphism $\\Rightarrow$ one-one equivalence is immediate: a computable permutation is in particular a pair of computable injections."
     },
     {
-      "id": "partial-inverse",
+      "id": "infrastructure-partial-inverse",
       "title": "Section 3: Infrastructure — Partial Inverses and Orbits",
-      "startLine": 97,
-      "endLine": 136,
-      "summary": "Defines the partial inverse g⁻¹(m) = Nat.rfind(n ↦ g(n) = m) and proves three key lemmas: partial inverse is Partrec, recovers the input under injection, and is defined on elements in range(g) — all fully proved. Also defines the forward orbit (g∘f)^k(n) and the isGFree predicate for orbit classification.",
-      "mathContext": "$g^{-1}(m) := \\mu n[g(n) = m]$ (partial recursive unbounded search). By `Partrec.rfind`, since $(m, n) \\mapsto \\text{decide}(g(n) = m)$ is computable (as $g$ is computable), $g^{-1}$ is partial recursive. For injective $g$: $n \\in g^{-1}(m) \\Rightarrow g(n) = m$. Forward orbit: $\\text{fwdOrbit}(f, g, n, k) = (g \\circ f)^k(n)$. isGFree: $n$ is not in $\\text{range}(g)$."
+      "startLine": 118,
+      "endLine": 166,
+      "summary": "Builds the partial-recursive inverse of an injection: `partialInverse` with its partial-recursiveness (`partialInverse_partrec`), specification (`partialInverse_spec`), domain characterisation (`partialInverse_dom`) and uniqueness (`partialInverse_unique`). This is the effective substitute for the (non-computable) set-theoretic inverse used in the classical back-and-forth.",
+      "mathContext": "For a computable injection $g$, `partialInverse g` is partial recursive with domain exactly `range g`; it is the computable stand-in for $g^{-1}$."
     },
     {
-      "id": "myhill-main",
-      "title": "Section 4–5: Myhill's Isomorphism Theorem",
-      "startLine": 137,
-      "endLine": 196,
-      "summary": "States and partially proves Myhill's theorem. The easy direction (←) follows immediately from myhill_easy. The hard direction (→) has a sorry covering the back-and-forth priority construction: classify orbits, define σ using f or g⁻¹ according to orbit type, prove σ is total, bijective, computable, and maps p to q.",
-      "mathContext": "Hard direction plan: given $f: p \\leq_1 q$ and $g: q \\leq_1 p$, for each $n$ trace backward: $n \\leftarrow g^{-1}(n) \\leftarrow f^{-1}(g^{-1}(n)) \\leftarrow \\cdots$. Type A (terminates not in range($g$)): $\\sigma(n) := f(n)$. Type B (terminates not in range($f$)): $\\sigma(n) := g^{-1}(n)$. Type C (infinite): $\\sigma(n) := f(n)$. Each stage terminates by injectivity; the construction is computable by `partialInverse_partrec`."
+      "id": "orbit-structure",
+      "title": "Section 4: Orbit Structure for the Back-and-Forth",
+      "startLine": 167,
+      "endLine": 242,
+      "summary": "Introduces the forward orbit `fwdOrbit` (the iterate sequence under the composite map), its `fwdOrbit_eq_iterate` characterisation and computability (`fwdOrbit_computable`), and the `isGFree` predicate (an element not in `range g`) with `isGFree_iff_not_mem_range`. These orbits are the tracks along which the augmenting paths of the construction run.",
+      "mathContext": "The alternating dynamics of $f$ and $g^{-1}$ organise $\\mathbb{N}$ into forward orbits; `isGFree` marks the orbit endpoints (elements outside `range g`) where fresh anchoring is possible."
+    },
+    {
+      "id": "collision-chase",
+      "title": "Section 4·chase: The Collision Chase — a Bounded Forward-Orbit Walk",
+      "startLine": 243,
+      "endLine": 384,
+      "summary": "Establishes that the collision chase — the search for a fresh target along a forward orbit — terminates: `fwdOrbit_prefix_distinct` (orbit prefixes are duplicate-free), `fwdOrbit_chase_length_le` (a length bound), and correspondence preservation along the walk (`fwdOrbit_corr`, `chase_target_corr`). Boundedness makes the chase computable rather than an unbounded (potentially divergent) search.",
+      "mathContext": "The chase walks a forward orbit until it exits `range g`; distinctness of orbit prefixes bounds its length, so the search is a total computable function."
+    },
+    {
+      "id": "complexity-gfree",
+      "title": "Section 4a–4b: Σ₁/Π₁ Complexity of range g and the Computable Case",
+      "startLine": 385,
+      "endLine": 506,
+      "summary": "Analyses the complexity of the range obstruction: `mem_range_re` (range g is recursively enumerable / Σ₁), `not_isGFree_re`, and — when g is surjective — the fully computable `totalInverse` with its inverse laws (`totalInverse_left`/`_right`), plus `decidableIsGFree`. This isolates the single Π₁ obstruction (deciding `isGFree`) that the extension-only scheduler must route around.",
+      "mathContext": "`range g` is Σ₁ but not in general decidable; `isGFree` (its complement membership) is the Π₁ obstruction. Under surjective g it collapses to a decidable/total inverse, the base case for the general construction."
+    },
+    {
+      "id": "matchings-freshness",
+      "title": "Section 4c–4d: Finite Partial Bijections (Matchings) and the Least-Fresh Primitive",
+      "startLine": 507,
+      "endLine": 729,
+      "summary": "Defines `IsMatching` (a finite partial bijection given as a list of pairs) with its functionality/cofunctionality lemmas and the `MatchingCorr` correspondence invariant, together with the atomic extension steps. `firstMissing` (Section 4d) is the computable least-fresh-element primitive that drives monotone exhaustion of the domain and range.",
+      "mathContext": "A matching is a finite list-encoded partial bijection; `firstMissing L` returns the least natural not covered by `L`, the computable exhaustion primitive guaranteeing the enumeration eventually reaches every element."
+    },
+    {
+      "id": "duality-exhaustion",
+      "title": "Section 4e: Domain/Range Duality and Monotone Exhaustion",
+      "startLine": 730,
+      "endLine": 826,
+      "summary": "Establishes the coordinate-swap duality (`isMatching_map_swap`, `matchingCorr_map_swap`): the range-side steps are obtained for free from the domain-side steps by swapping `(p,q)`. Combined with `firstMissing` monotonicity (`le_firstMissing_of_range_subset`, `range_succ_firstMissing_subset_cons_self`), this halves the proof burden and guarantees the exhaustion makes progress.",
+      "mathContext": "The `Prod.swap` duality lets every domain lemma yield its range dual automatically; monotonicity of `firstMissing` ensures each stage covers strictly more, so the limit is total."
+    },
+    {
+      "id": "readoff",
+      "title": "Section 4f: Reading the Permutation off a Matching",
+      "startLine": 827,
+      "endLine": 966,
+      "summary": "`mLookup` evaluates a matching as a function, with computability (`mLookup_computable`), membership/stability laws and injectivity on its domain (`mLookup_injOn`, `mLookup_stable`). Read-off coherence (Section 4f-bis) shows the limit function is well-defined and injective independently of how the scheduler resolves collisions.",
+      "mathContext": "`mLookup` turns the finite matching into a partial function; stability across stage extensions makes the stage-wise read-offs cohere into a single well-defined injective limit permutation."
+    },
+    {
+      "id": "collision-correspondence",
+      "title": "Section 4g–4h: Collision Structure and Correspondence Preservation",
+      "startLine": 967,
+      "endLine": 1188,
+      "summary": "`BuiltFrom` records the provenance of a matching under the augmenting steps, with its cons/ swap laws. The collision analysis (`collision_f_source`, `collision_g_source`, `step_f_available_or_collision`) classifies what blocks a fresh extension, and the section proves the `MatchingCorr` correspondence is preserved along the whole chase — the invariant that keeps the construction consistent with both injections.",
+      "mathContext": "An atomic step either finds a fresh target or hits a collision (the target is already matched); in the latter case the chase reroutes while preserving `MatchingCorr`, so consistency with $f$ and $g$ is never broken."
+    },
+    {
+      "id": "escape-existence",
+      "title": "Section 4i: Escape Existence — the Orbit Dichotomy and Cycle-Balance Machinery",
+      "startLine": 1189,
+      "endLine": 1982,
+      "summary": "The technical heart guaranteeing the chase always finds a fresh target. `escape_of_infinite_orbit` handles the infinite-orbit arm; the `OnCycle` predicate with `orbitPeriod` handles the periodic arm; and the `Balanced` cycle-invariant (Sections 4i-ter/quater/quinquies) is shown preserved by both the domain and range cons-steps (`balanced_cons_domain`, `balanced_cons_range`). Together the orbit dichotomy (finite/periodic vs infinite) proves a fresh escape target always exists, `BuiltFrom`-free.",
+      "mathContext": "Every forward orbit is either infinite (escape by unboundedness) or a cycle (escape by a balance/parity invariant on the cycle). The `Balanced` invariant, preserved along both step directions, rules out the failure mode where a cycle blocks all fresh extensions."
+    },
+    {
+      "id": "augmenting-path",
+      "title": "Section 4j–4l: The Augmenting Path and the Dual Range Step",
+      "startLine": 1983,
+      "endLine": 2358,
+      "summary": "`augPath` builds the augmenting path and splices it into the matching as a `BuiltFrom`-preserving domain step (`augment_domain_step`), with membership/domain/range and correspondence lemmas (`augPath_matchingCorr`, `augPath_isMatching`). The odd-stage range step (Section 4l) is obtained for free from the even-stage domain step by the `Prod.swap` duality of Section 4e.",
+      "mathContext": "The even stage anchors a fresh *domain* element by splicing an augmenting path (à la Hopcroft–Karp); the odd stage anchors a fresh *range* element as its coordinate-swap dual — the two moves alternate in the back-and-forth."
+    },
+    {
+      "id": "stage-sequence",
+      "title": "Section 4m: The Stage Sequence — Iterating into a Back-and-Forth",
+      "startLine": 2359,
+      "endLine": 2533,
+      "summary": "`stageSeq` iterates the atomic augmenting steps (`stageStep`) into an increasing sequence of matchings maintaining the `StageInv` invariant (`stageSeq_isMatching`, `stageSeq_matchingCorr`, `stageSeq_builtFrom`), with monotonicity of the covered domain/range (`stageStep_mDom_subset`, `stageStep_mRan_subset`). This is the full back-and-forth as a stage-indexed process.",
+      "mathContext": "Alternating domain/range augmenting steps generate a monotone chain of finite partial bijections whose union covers all of $\\mathbb{N}$; `StageInv` carries the correspondence invariant through every stage."
+    },
+    {
+      "id": "entry-pathB",
+      "title": "Section 5·entry / 5·B: Entry Threshold and the Extension-Only Limit (Path B)",
+      "startLine": 2534,
+      "endLine": 3054,
+      "summary": "`entryStageDom`/`entryStageRan` give the stage at which each element first enters the matching (`mem_mDom_stageSeq_iff_entryStageDom_le`), the threshold that makes the limit read-off well-defined. Path B (`StageInvB`, the extension-only cons scheduler) rebuilds the sequence so every step is a pure extension (cons), and its computable escape-depth core (Section 5·B-comp) removes the `Classical.choose` from the escape search.",
+      "mathContext": "Because each element enters at a definite finite stage and never moves thereafter, the stage-wise partial permutations converge pointwise to a total permutation; the extension-only (cons) reformulation is what later makes the scheduler computable."
+    },
+    {
+      "id": "computable-scheduler",
+      "title": "Section 5·C: The Computable Extension-Only Scheduler",
+      "startLine": 3055,
+      "endLine": 3433,
+      "summary": "Replaces the `noncomputable` Path-B scheduler with a fully computable one: `escScan` computably locates the escape depth (`escScan_eq_escapeDepth`, `escScan_computable`), and `stageStepC`/`stageListC` drive the extension-only construction (`sigmaC`) with the collision resolution certified to reproduce the Path-B behaviour. This discharges the last source of noncomputability in the hard direction.",
+      "mathContext": "`stageSeqB` was `noncomputable` only because its escape search used `Classical.choose`; `escScan` performs that bounded search computably, so the entire read-off `sigmaC` is a genuine total computable function."
+    },
+    {
+      "id": "myhill-theorem",
+      "title": "Section 5: The Myhill Isomorphism Theorem",
+      "startLine": 3434,
+      "endLine": 3484,
+      "summary": "`myhill_isomorphism` — the main theorem. Assembles the machinery: from a computable one-one equivalence it produces a total computable permutation identifying the two sets, closing the hard direction with the computable Section 5·C scheduler in place of the earlier noncomputable read-off.",
+      "mathContext": "Main result: computable $A \\equiv_1 B \\Rightarrow$ there is a computable permutation $\\sigma$ of $\\mathbb{N}$ with $\\sigma(A) = B$ — the effective Schröder–Bernstein / Myhill isomorphism theorem."
     },
     {
       "id": "corollaries",
-      "title": "Sections 6–7: Corollaries — Equivalence Relation",
-      "startLine": 197,
-      "endLine": 248,
-      "summary": "Proves that computable isomorphism is an equivalence relation: reflexivity (identity permutation), symmetry (inverse permutation), transitivity (composition). Also exposes the two directions of Myhill's theorem as standalone lemmas and packages all three properties as an Equivalence instance.",
-      "mathContext": "Reflexivity: $p \\simeq_c p$ via $\\text{id} : \\mathbb{N} \\simeq \\mathbb{N}$ (identity is computable, trivially $p(n) \\leftrightarrow p(n)$). Symmetry: if $p \\simeq_c q$ via $e$, then $q \\simeq_c p$ via $e^{-1}$ (computable by hypothesis; $q(n) \\leftrightarrow p(e^{-1}(n))$ by applying $e^{-1}$ to the correspondence). Transitivity: if $p \\simeq_c q$ via $e_1$ and $q \\simeq_c r$ via $e_2$, then $p \\simeq_c r$ via $e_1 \\circ e_2$."
+      "title": "Section 6: Immediate Corollaries",
+      "startLine": 3485,
+      "endLine": 3511,
+      "summary": "`myhill_self`, `myhill_symm`, `myhill_trans` — reflexivity, symmetry and transitivity of computable isomorphism, the corollaries that make it an equivalence relation.",
+      "mathContext": "Computable isomorphism is reflexive (identity), symmetric (inverse permutation) and transitive (composition), so it partitions sets into computable-isomorphism types."
+    },
+    {
+      "id": "oneone-equiv-structure",
+      "title": "Section 7: Connection to the OneOneEquiv Structure",
+      "startLine": 3512,
+      "endLine": 3536,
+      "summary": "Bridges to Mathlib's/the gallery's `OneOneEquiv` structure: `exists_computable_perm_of_one_one_equiv` (the existence form of the main theorem), its converse `one_one_equiv_of_computable_iso`, and `computable_iso_is_equivalence` packaging the relation as a formal equivalence.",
+      "mathContext": "The theorem is restated at the structure level: `OneOneEquiv A B` ⟺ existence of a computable permutation matching $A$ and $B$, an `Equivalence`."
     },
     {
       "id": "special-cases",
       "title": "Section 8: Key Special Cases",
-      "startLine": 249,
-      "endLine": 269,
-      "summary": "Proves that ∅ and ℕ (the empty and universal predicates) are fixed points of computable isomorphism: any computable permutation maps ∅ to ∅ and ℕ to ℕ. These are the extreme cases in the one-one degree hierarchy.",
-      "mathContext": "For the empty predicate $p = \\bot$: if $e$ maps $\\bot$ to $q$ (meaning $\\bot(n) \\leftrightarrow q(e(n))$), then $q(m) = \\bot$ for all $m$ (surjectivity of $e$). Dually for $p = \\top$. These facts follow from surjectivity of $e$ as a bijection."
+      "startLine": 3537,
+      "endLine": 3557,
+      "summary": "`myhill_empty_unique` and `myhill_univ_unique`: the degenerate endpoints — the empty set and all of ℕ each form a single computable-isomorphism class, sanity-checking the theorem at its boundaries.",
+      "mathContext": "$\\emptyset$ and $\\mathbb{N}$ are each their own computable-isomorphism type: the only set computably isomorphic to $\\emptyset$ (resp. $\\mathbb{N}$) is itself."
     }
   ],
   "crossReferences": [
