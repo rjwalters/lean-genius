@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos16Problem.lean — session 4 formalized the Erdős 1950 covering-congruence OBSTRUCTION mechanism (the actual math, not more A006285 enumeration): general gear covering_prime_not_prime_sub (prime p with 2^d≡1 mod p kills exponent class k≡r mod d for n≡2^r mod p, since p∣n−2^k), its algebraic core two_pow_modEq_of_dvd, two_pow_mod_three, and two concrete gears (primes 3 and 7). 28 theorems + 11 defs/instances, 0 sorry, 0 axiom; #print axioms clean on all new results. Remaining deep step: CRT-assemble gears over a full covering system to get the infinite AP (needs orders of 2 mod 5,13,17,241 + CRT, no analytic input).",
+    "progressSummary": "PROGRESS (session 5): Assembled the covering-congruence gears into the full Erdos 1950 obstruction covering_obstruction_not_isRomanoff — 8 new axiom-free theorems (theoremCount 28->36, lineCount 479->582). Any n satisfying the six CRT congruences over primes {3,5,7,13,17,241} and a size hypothesis n-2^k>241 is proved non-Romanoff, so the entire CRT arithmetic progression lies in the exceptional set. Remaining documented-only: the analytic wrapper showing infinitely many progression members meet the size hypothesis (Erdos's infinite-AP conclusion), Romanoff 1934 density, Chen 2023 disproof.",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
@@ -44,7 +44,10 @@
       "decidableIsRomanoff : Decidable (IsRomanoff n) instance in Erdos16Problem.lean",
       "not_isRomanoff_251 / twoHundredFiftyOne_mem_exceptionalSet in Erdos16Problem.lean",
       "not_isRomanoff_331 / threeHundredThirtyOne_mem_exceptionalSet in Erdos16Problem.lean",
-      "two_pow_mod_three, two_pow_modEq_of_dvd, covering_prime_not_prime_sub, not_prime_sub_even_mod_three, not_prime_sub_mod_seven in Proofs/Erdos16Problem.lean (session 4, axiom-free)"
+      "two_pow_mod_three, two_pow_modEq_of_dvd, covering_prime_not_prime_sub, not_prime_sub_even_mod_three, not_prime_sub_mod_seven in Proofs/Erdos16Problem.lean (session 4, axiom-free)",
+      "two_pow_four_modEq_five, two_pow_eight_modEq_seventeen, two_pow_twelve_modEq_thirteen, two_pow_twentyfour_modEq_241 (order-of-2 gears) in Erdos16Problem.lean",
+      "covering_obstruction_not_isRomanoff in Erdos16Problem.lean — the assembled Erdos 1950 covering obstruction (conditional on explicit size hypothesis)",
+      "covering_progression_mem_exceptionalSet in Erdos16Problem.lean — membership form for odd n"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
@@ -57,7 +60,10 @@
       "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n−2^k composite).",
       "Erdős 1950 covering mechanism formalized as a reusable gear (covering_prime_not_prime_sub): for a prime p with 2^d ≡ 1 (mod p), any exponent k ≡ r (mod d) and any n ≡ 2^r (mod p) satisfy p ∣ n − 2^k, so n − 2^k is composite once it exceeds p. This eliminates a whole residue class of exponents at once — the structural upgrade over per-k A006285 checks.",
       "Core algebraic lemma two_pow_modEq_of_dvd: 2^d ≡ 1 (mod p) ∧ k ≡ r (mod d) ⟹ 2^k ≡ 2^r (mod p), proved by writing k = r + d·t and using (2^d)^t ≡ 1. This is exponent-periodicity of 2 modulo p — the fact that makes one prime cover an arithmetic progression of exponents.",
-      "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n ≡ 1 (mod 3); prime 7 (order 3) kills exponents ≡ 0 (mod 3) for n ≡ 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime."
+      "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n ≡ 1 (mod 3); prime 7 (order 3) kills exponents ≡ 0 (mod 3) for n ≡ 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime.",
+      "Session 5: assembled the individual covering gears into the full Erdos 1950 obstruction. The six exponent classes {0 mod 2, 0 mod 3, 1 mod 4, 3 mod 8, 7 mod 12, 23 mod 24} cover Z (omega), each carrying a prime whose order of 2 equals the modulus: (2,3),(3,7),(4,5),(8,17),(12,13),(24,241).",
+      "Session 5: covering_obstruction_not_isRomanoff proves that any n meeting the six CRT congruences (n=1 mod 3, 1 mod 7, 2 mod 5, 8 mod 17, 11 mod 13, 121 mod 241) with n-2^k>241 for all valid k is NOT Romanoff — the whole CRT progression (mod 3*5*7*13*17*241) is exceptional, subject only to a size hypothesis. Axiom-free.",
+      "Session 5: the required n-residues are 2^r mod p per class: 2^0=1 (p=3,7), 2^1=2 (p=5), 2^3=8 (p=17), 2^7=128=11 mod 13, 2^23=121 mod 241. Verified 2^23 mod 241 = 121 and 2*121=242=1 mod 241."
     ],
     "mathlibGaps": [],
     "nextSteps": [
