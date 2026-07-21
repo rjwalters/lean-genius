@@ -68,10 +68,18 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Definitions: Intersecting Families and the Star",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring plus the two core objects (verbatim from the parent entry): IsIntersectingFamily A k — a family of k-subsets of Fin n that is uniform of size k with pairwise non-empty intersection — and Star x k, the family of all k-subsets containing a fixed center x. These are the extremal-set-theory objects the whole file reasons about.",
+      "mathContext": "The star $\\mathrm{Star}(x,k) = \\{S : |S| = k, x \\in S\\}$ is the canonical intersecting family; Erdős–Ko–Rado says it is largest when $n \\ge 2k$."
+    },
+    {
       "id": "bridge",
       "title": "Bridging to Mathlib's Predicates",
-      "startLine": 51,
-      "endLine": 65,
+      "startLine": 50,
+      "endLine": 66,
       "summary": "sized_of_isIntersectingFamily and intersecting_of_isIntersectingFamily translate the parent's IsIntersectingFamily into Set.Sized k and Set.Intersecting.",
       "mathContext": "The bespoke 'uniform size k, pairwise nonempty intersection' predicate is Mathlib's Set.Sized + Set.Intersecting."
     },
@@ -86,18 +94,26 @@
     {
       "id": "sharpness",
       "title": "Sharpness: the Star Attains the Bound",
-      "startLine": 86,
-      "endLine": 138,
+      "startLine": 85,
+      "endLine": 137,
       "summary": "star_is_intersecting and star_card (the erase-the-center bijection) show the star has exactly C(n-1,k-1) members.",
       "mathContext": "The star is the extremal family; deleting the center bijects onto (k-1)-subsets."
     },
     {
       "id": "exact-max",
       "title": "The Exact Maximum",
-      "startLine": 140,
-      "endLine": 170,
-      "summary": "ekr_isGreatest pins the maximum at C(n-1,k-1) (IsGreatest); ekr_max_6_3 = 10 and ekr_max_4_2 = 3 instantiate it.",
-      "mathContext": "Combining the axiom-free upper bound with star sharpness gives the full extremal statement."
+      "startLine": 138,
+      "endLine": 153,
+      "summary": "ekr_isGreatest pins the maximum at C(n-1,k-1) (IsGreatest): the axiom-free upper bound ekr_bound together with the star's exact cardinality shows C(n-1,k-1) is both an upper bound and attained.",
+      "mathContext": "Combining the axiom-free upper bound with star sharpness gives the full extremal statement $\\max |A| = \\binom{n-1}{k-1}$."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Instances",
+      "startLine": 154,
+      "endLine": 171,
+      "summary": "ekr_max_6_3 = 10 and ekr_max_4_2 = 3 instantiate the general theorem at (n,k) = (6,3) and (4,2), turning the abstract IsGreatest statement into concrete numeric maxima.",
+      "mathContext": "$\\binom{5}{2} = 10$ and $\\binom{3}{1} = 3$ are the largest intersecting families of 3-subsets of $[6]$ and 2-subsets of $[4]$."
     }
   ],
   "conclusion": {
