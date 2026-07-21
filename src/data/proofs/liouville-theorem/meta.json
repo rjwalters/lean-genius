@@ -84,71 +84,71 @@
       "id": "part2",
       "title": "Part II: Liouville's Approximation Theorem",
       "startLine": 108,
-      "endLine": 238,
+      "endLine": 241,
       "summary": "PROVES `liouville_approximation_theorem` (1844, formerly an axiom, now proved): an algebraic irrational of degree $n$ cannot be approximated by rationals faster than order $n$. Includes the `_axiom`-named variant (also a theorem).",
       "mathContext": "Algebraic $\\alpha$ of degree $n$: $|\\alpha-p/q|>c/q^n$ (Liouville 1844, proved)."
     },
     {
       "id": "part3",
       "title": "Part III: Liouville Numbers and Their Transcendence",
-      "startLine": 239,
-      "endLine": 279,
+      "startLine": 242,
+      "endLine": 282,
       "summary": "Defines/characterizes Liouville numbers (`liouville_def`) and PROVES the main theorem `liouville_transcendental` (Wiedijk #18: every Liouville number is transcendental) and `liouville_not_algebraic`.",
       "mathContext": "Liouville number $\\Rightarrow$ transcendental (not algebraic)."
     },
     {
       "id": "part4",
       "title": "Part IV: The Liouville Constant",
-      "startLine": 280,
-      "endLine": 333,
+      "startLine": 283,
+      "endLine": 336,
       "summary": "PROVES properties of the Liouville constant $\\sum 10^{-n!}$: `liouville_constant_is_liouville`, `liouville_constant_transcendental` (the first explicit transcendental, 1844), and `liouville_constant_irrational` (formerly axiom, now proved).",
       "mathContext": "$\\sum_n 10^{-n!}$ is a Liouville number, hence transcendental and irrational."
     },
     {
       "id": "part5",
       "title": "Part V: Properties of Liouville Numbers",
-      "startLine": 334,
-      "endLine": 382,
+      "startLine": 337,
+      "endLine": 385,
       "summary": "PROVES closure/structure properties (all formerly axioms, now proved): `liouville_uncountable` (the Liouville numbers are uncountable), `liouville_add_rat` (adding a rational preserves the property), and `liouville_mul_rat` (scaling by a nonzero rational preserves it).",
       "mathContext": "Liouville set uncountable; closed under $+\\mathbb{Q}$ and $\\times\\mathbb{Q}^\\times$."
     },
     {
       "id": "part6",
       "title": "Part VI: Generalizations and Improvements",
-      "startLine": 383,
-      "endLine": 431,
+      "startLine": 386,
+      "endLine": 434,
       "summary": "States Roth's theorem (1955) as the file's single AXIOM `roth_theorem` (algebraic irrationals have approximation exponent exactly $2$) — the sharp improvement of Liouville's bound.",
       "mathContext": "Axiom (Roth 1955): algebraic irrational $\\alpha$ has $|\\alpha-p/q|>c/q^{2+\\varepsilon}$."
     },
     {
       "id": "part7",
       "title": "Part VII: Connections to Other Results",
-      "startLine": 432,
-      "endLine": 458,
+      "startLine": 435,
+      "endLine": 461,
       "summary": "A documentation section relating Liouville's theorem to broader results in transcendence theory and Diophantine approximation (no declarations).",
       "mathContext": "Connections: transcendence theory, Diophantine approximation, Roth/Thue–Siegel."
     },
     {
       "id": "part8",
       "title": "Part VIII: Examples and Computations",
-      "startLine": 459,
-      "endLine": 471,
+      "startLine": 462,
+      "endLine": 474,
       "summary": "PROVES base-generalized examples: `liouville_base_2_transcendental` ($\\sum 2^{-n!}$ transcendental) and `liouville_any_base_transcendental` ($\\sum b^{-n!}$ transcendental for any base $b\\geq2$).",
       "mathContext": "$\\sum_n b^{-n!}$ is transcendental for every integer base $b\\geq2$."
     },
     {
       "id": "part9",
       "title": "Part IX: Measure-Theoretic Perspective",
-      "startLine": 472,
-      "endLine": 496,
+      "startLine": 475,
+      "endLine": 499,
       "summary": "A documentation section on the measure-theoretic viewpoint: the Liouville numbers, though uncountable, form a set of Lebesgue measure zero (no declarations).",
       "mathContext": "Liouville numbers: uncountable but Lebesgue-measure zero."
     },
     {
       "id": "part10",
       "title": "Part X: Summary",
-      "startLine": 497,
-      "endLine": 528,
+      "startLine": 500,
+      "endLine": 531,
       "summary": "Closing documentation recapping the results: Liouville's approximation theorem, transcendence of Liouville numbers (Wiedijk #18), the explicit Liouville constant, closure properties, and Roth's sharpening.",
       "mathContext": "Recap: Liouville numbers transcendental (#18); explicit constant; Roth's exponent-2 sharpening."
     }
