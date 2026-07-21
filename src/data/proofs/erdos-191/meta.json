@@ -97,99 +97,107 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header & Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring stating Erdős Problem #191 (Erdős–Graham): for any C>0 and n large, every 2-colouring of the edges of K({2,…,n}) has a monochromatic X with ∑_{x∈X} 1/log x ≥ C. Records the answer (YES; Rödl 2003 affirmative + upper construction, Conlon–Fox–Sudakov 2013 tight lower bound ≥ 2⁻⁸ log log log n), the [ErGr80]/[Ro03]/[CFS13] references, and the imports/opens (`import Mathlib`, `open Real Finset`, `namespace Erdos191`).",
+      "mathContext": "For any $C>0$ and $n$ sufficiently large, every 2-colouring of $K(\\{2,\\dots,n\\})$ admits a monochromatic $X$ with $\\sum_{x\\in X} 1/\\log x \\ge C$; the extremal sum grows like $\\log\\log\\log n$."
+    },
+    {
       "id": "basic-defs",
       "title": "Basic Definitions",
       "summary": "IntegerSet, EdgeColoring, SimpleEdgeColoring",
-      "startLine": 37,
-      "endLine": 62,
+      "startLine": 33,
+      "endLine": 58,
       "mathContext": "Integer set $X \\\\subseteq \\\\{2, \\\\ldots, n\\\\}$. Edge coloring of $K(\\\\{2,\\\\ldots,n\\\\})$: assign red/blue to each pair $\\\\{x, y\\\\}$."
     },
     {
       "id": "monochromatic",
       "title": "Monochromatic Subsets",
       "summary": "IsMonochromatic, HasMonochromaticSubset, IsClique",
-      "startLine": 63,
-      "endLine": 86,
+      "startLine": 59,
+      "endLine": 82,
       "mathContext": "Monochromatic $X$: all edges within $X$ have the same color. Clique: pairwise connected (complete subgraph on $X$)."
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum Function",
       "summary": "logInverseSum definition and properties",
-      "startLine": 87,
-      "endLine": 116,
+      "startLine": 83,
+      "endLine": 112,
       "mathContext": "$S(X) = \\\\sum_{x \\\\in X} 1/\\\\log x$. This weight function grows slowly, making large weighted sums require many elements."
     },
     {
       "id": "problem-statement",
       "title": "The Main Problem Statement",
       "summary": "MonochromaticWithLargeSum, erdos191Conjecture",
-      "startLine": 117,
-      "endLine": 135,
+      "startLine": 113,
+      "endLine": 131,
       "mathContext": "For any $C > 0$, if $n$ is large enough, any 2-coloring of $K(\\\\{2,\\\\ldots,n\\\\})$ contains monochromatic $X$ with $S(X) \\\\geq C$."
     },
     {
       "id": "solution",
       "title": "Rödl's Theorem",
       "summary": "erdos_191 axiom (main solution)",
-      "startLine": 136,
-      "endLine": 153,
+      "startLine": 132,
+      "endLine": 149,
       "mathContext": "SOLVED: for any $C$, there exists $n_0$ such that for $n \\\\geq n_0$, every 2-coloring has monochromatic $X$ with $\\\\sum 1/\\\\log x \\\\geq C$."
     },
     {
       "id": "tight-bounds",
       "title": "Tight Bounds",
       "summary": "tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound",
-      "startLine": 154,
-      "endLine": 195,
+      "startLine": 150,
+      "endLine": 191,
       "mathContext": "Tight: $C \\\\leq c \\\\cdot \\\\log\\\\log\\\\log n$ (triple logarithm). Conlon-Fox-Sudakov: matching upper bound via probabilistic construction."
     },
     {
       "id": "derivation",
       "title": "Derivation from CFS Bound",
       "summary": "erdos_191_from_cfs theorem",
-      "startLine": 196,
-      "endLine": 224,
+      "startLine": 192,
+      "endLine": 244,
       "mathContext": "Derives from Ramsey-type density arguments: large monochromatic subgraphs contain enough elements to make $\\\\sum 1/\\\\log x$ large."
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "RamseyStyleProperty, classical_ramsey_connection",
-      "startLine": 225,
-      "endLine": 247,
+      "startLine": 245,
+      "endLine": 263,
       "mathContext": "Ramsey property: 2-coloring forces structure. The $1/\\\\log x$ weight makes this a quantitative refinement of classical Ramsey theory."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "small_n_bound, monochromatic_pair_exists, sum asymptotic",
-      "startLine": 248,
-      "endLine": 283,
+      "startLine": 264,
+      "endLine": 351,
       "mathContext": "Small cases: $n = 100$, monochromatic pairs always exist (Ramsey). The weighted sum condition requires larger monochromatic sets."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "r-coloring, different weight functions",
-      "startLine": 284,
-      "endLine": 313,
+      "startLine": 352,
+      "endLine": 376,
       "mathContext": "$r$-colorings (for $r \\\\geq 3$): analogous results hold with different thresholds. Other weight functions $w(x)$ give different growth rates."
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "tight_asymptotic theorem",
-      "startLine": 314,
-      "endLine": 338,
+      "startLine": 377,
+      "endLine": 399,
       "mathContext": "Tight asymptotic: maximum guaranteed $\\\\sum 1/\\\\log x = \\\\Theta(\\\\log\\\\log\\\\log n)$. The triple-log growth is intrinsic to the $1/\\\\log$ weight."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_191_summary, erdos_191_answer",
-      "startLine": 339,
-      "endLine": 357,
+      "startLine": 400,
+      "endLine": 432,
       "mathContext": "SOLVED. Any 2-coloring of $\\\\{2,\\\\ldots,n\\\\}$ has monochromatic $X$ with $\\\\sum 1/\\\\log x \\\\geq c\\\\log\\\\log\\\\log n$. Tight up to constants."
     }
   ],
