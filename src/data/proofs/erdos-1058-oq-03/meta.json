@@ -79,41 +79,73 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 48,
-      "summary": "Module docstring: relation to Erdős #1058, statement of oq-03, and the axiom-free results; imports Mathlib; namespace Erdos1058OQ03",
-      "mathContext": "The parent axiomatizes prime_seq and Luca's classification; this companion proves the underlying Wilson-based technique with 0 axioms."
+      "endLine": 49,
+      "summary": "Module docstring relating this file to Erdős #1058 and stating oq-03 (the least/large prime factors of $n! \\pm 1$ and the prime-power / Brocard structure), the imports, and `namespace Erdos1058OQ03`. All results are axiom-free.",
+      "mathContext": "Erdős–Stewart studied the largest prime factor $P(n!+1)$; oq-03 collects the elementary, fully-verified core: divisibility obstructions, Wilson-type characterizations, the Euclid engine $p \\mid n!\\pm 1 \\Rightarrow p > n$, and the Brocard–Ramanujan squares $n!+1=m^2$."
     },
     {
       "id": "obstruction",
-      "title": "General Obstruction",
-      "startLine": 49,
-      "endLine": 62,
-      "summary": "not_dvd_factorial_add_one_of_dvd_factorial: any divisor of n! larger than 1 cannot divide n!+1",
-      "mathContext": "If 1 < d ∣ n! and d ∣ n!+1 then d ∣ 1, impossible. This is why every prime ≤ n is barred from dividing n!+1."
+      "title": "The General Obstruction",
+      "startLine": 50,
+      "endLine": 61,
+      "summary": "`not_dvd_factorial_add_one_of_dvd_factorial`: any divisor $d>1$ of $n!$ cannot divide $n!+1$ — the divisibility seed of every result below.",
+      "mathContext": "If $d \\mid n!$ and $d \\mid n!+1$ then $d \\mid (n!+1)-n! = 1$, forcing $d=1$. Consecutive integers $n!$ and $n!+1$ are coprime."
     },
     {
       "id": "wilson-plus",
-      "title": "Wilson for n!+1 and the Flagship Characterization",
-      "startLine": 63,
+      "title": "Wilson's Theorem for n!+1 and the Flagship Characterization",
+      "startLine": 62,
       "endLine": 95,
-      "summary": "prime_dvd_factorial_pred_add_one (classical Wilson divisibility) and succ_dvd_factorial_add_one_iff_prime (the exact characterization), plus the composite corollary",
-      "mathContext": "(n+1) ∣ n!+1 ↔ (n+1).Prime, via ZMod.natCast_eq_zero_iff and Nat.prime_iff_fac_equiv_neg_one. The composite case falls out immediately."
+      "summary": "`prime_dvd_factorial_pred_add_one` (classical Wilson divisibility $(p-1)!+1 \\equiv 0 \\bmod p$), the exact characterization `succ_dvd_factorial_add_one_iff_prime` ($(n+1) \\mid n!+1 \\iff n+1$ prime), and the composite corollary `not_succ_dvd_factorial_add_one_of_not_prime`.",
+      "mathContext": "Wilson's theorem: $p$ is prime $\\iff (p-1)! \\equiv -1 \\pmod p$. Rewriting with $n=p-1$ gives $(n+1)\\mid n!+1 \\iff n+1$ prime — the flagship equivalence linking factorial-plus-one divisibility to primality."
     },
     {
       "id": "wilson-minus",
       "title": "Transfer to the Sibling n!−1",
       "startLine": 96,
-      "endLine": 110,
-      "summary": "prime_dvd_factorial_pred_sub_one_iff: p ∣ (p-1)!−1 ↔ p = 2",
-      "mathContext": "Using ZMod.wilsons_lemma and Nat.cast_sub, (p-1)!−1 ≡ −2 (mod p), so divisibility holds iff p ∣ 2 iff p = 2."
+      "endLine": 111,
+      "summary": "`prime_dvd_factorial_pred_sub_one_iff`: $p \\mid (p-1)!-1 \\iff p = 2$ — the Wilson-style behaviour of the sibling expression, degenerate except at $p=2$.",
+      "mathContext": "Since $(p-1)! \\equiv -1 \\pmod p$ for prime $p$, one has $(p-1)!-1 \\equiv -2 \\pmod p$, which vanishes only when $p \\mid 2$, i.e. $p=2$. The $-1$ sibling has no rich Wilson divisibility beyond that."
     },
     {
       "id": "prime-power",
-      "title": "Prime-Power Classification of Small Values",
-      "startLine": 111,
-      "endLine": 151,
-      "summary": "eq_of_prime_dvd_of_isPrimePow and the concrete classifications for n!±1, small n, all axiom-free",
-      "mathContext": "4!+1=5², 5!+1=11² are prime powers; 6!+1=721=7·103 and 5!−1=119=7·17 are not; sibling 3!−1=5 is prime. Non-prime-powers refuted via two distinct prime divisors."
+      "title": "Prime-Power Classification of Small Values (axiom-free)",
+      "startLine": 112,
+      "endLine": 163,
+      "summary": "`eq_of_prime_dvd_of_isPrimePow` plus concrete `IsPrimePow` classifications: $4!+1=5^2$, $5!+1=11^2$, $7!+1=71$ are prime powers while $6!+1$ is not, and $3!-1=5$ is while $5!-1=119=7\\cdot 17$ is not — all machine-checked, no axioms.",
+      "mathContext": "$\\text{IsPrimePow}\\,k$ means $k=p^e$ for a prime $p$ and $e\\ge 1$. The values $5^2, 11^2, 71$ are exactly the prime-power (indeed square/prime) factorial-plus-one values that also appear as Brocard solutions below; $6!+1=721=7\\cdot 103$ and $5!-1=119$ are not prime powers."
+    },
+    {
+      "id": "euclid-engine",
+      "title": "The Euclid Engine: Every Prime Factor of n!±1 Exceeds n",
+      "startLine": 164,
+      "endLine": 215,
+      "summary": "The sharp universally-quantified engine: `prime_dvd_factorial_add_one_gt` and its sibling `prime_dvd_factorial_sub_one_gt` ($p \\mid n!\\pm 1 \\Rightarrow n < p$), which re-prove Euclid's infinitude of primes through the factorial construction (`exists_prime_gt`, `exists_prime_gt_dvd_factorial_sub_one`).",
+      "mathContext": "If $p \\le n$ then $p \\mid n!$, so $p$ dividing $n!\\pm 1$ would give $p \\mid 1$ — impossible. Hence every prime factor of $n!\\pm 1$ lies in $(n,\\infty)$, and any prime factor of $n!+1$ is a prime exceeding $n$: Euclid's theorem via factorials."
+    },
+    {
+      "id": "least-prime-factor",
+      "title": "The Least Prime Factor of n!+1",
+      "startLine": 216,
+      "endLine": 253,
+      "summary": "Applying the engine to the least prime factor: `factorial_add_one_minFac_gt` ($(n!+1).\\text{minFac} > n$) and, via the Wilson flagship, `factorial_add_one_minFac_eq_succ_iff`: $(n!+1).\\text{minFac} = n+1$ exactly when $n+1$ is prime (otherwise it is $\\ge n+2$).",
+      "mathContext": "The engine bounds every prime factor below by $n$; the Wilson equivalence supplies the matching value $n+1$ precisely at primes. The elementary lower bound is sharp at the primality boundary; the analytic *upper* bound / distinctness at composite $n+1$ lies beyond elementary reach."
+    },
+    {
+      "id": "twin-coprimality",
+      "title": "Twin Coprimality of the Sibling Expressions",
+      "startLine": 254,
+      "endLine": 274,
+      "summary": "`coprime_factorial_sub_one_add_one`: for $n \\ge 2$, $\\gcd(n!-1,\\,n!+1)=1$ — the two siblings share no prime factor.",
+      "mathContext": "Their difference is $2$, so any common divisor divides $2$; but $2 \\mid n!$ makes $n!+1$ odd, ruling out $2$. Hence $\\gcd(n!-1, n!+1)=1$: the factorial 'twins' are coprime."
+    },
+    {
+      "id": "brocard",
+      "title": "Brocard's Problem: the Factorial Squares n!+1 = m²",
+      "startLine": 275,
+      "endLine": 333,
+      "summary": "The Brocard–Ramanujan equation: `IsBrocardSolution` and the three known Brown numbers $4!+1=5^2$, $5!+1=11^2$, $7!+1=71^2$ (`isBrocardSolution_four/five/seven`), the exclusion `not_isBrocardSolution_six`, and the structural constraint `brocard_root_gt` — via the Euclid engine — that any solution has root $m > n$.",
+      "mathContext": "Brocard (1876) / Ramanujan (1913): find all $n$ with $n!+1=m^2$. Only $n=4,5,7$ are known (Brown numbers); whether more exist is open. Here $m>n$ is forced because $m$'s least prime factor divides $m^2=n!+1$, so by the engine it exceeds $n$, and it is $\\le m$."
     }
   ],
   "crossReferences": [
