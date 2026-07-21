@@ -223,7 +223,7 @@ to and including it. -/
 
 /-- The `ω`-tower `T 0 = ω`, `T (n+1) = ω ^ (T n)`: the sequence `ω, ω^ω, ω^(ω^ω), …`
 whose supremum is `ε₀`. -/
-def omegaTower : ℕ → Ordinal
+noncomputable def omegaTower : ℕ → Ordinal
   | 0 => Ordinal.omega0
   | (n + 1) => Ordinal.omega0 ^ (omegaTower n)
 
