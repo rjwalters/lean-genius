@@ -1,25 +1,27 @@
 # Research State: erdos-98-wip-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-07-09T17:33:19-07:00
-**Iteration**: 1
+**Since**: 2026-07-21
+**Iteration**: (see knowledge.md session log)
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Lower bound `h 5 ≥ 3` ⟺ no general-position `PointConfig 5` is a two-distance set.
+Reduction proved on the combinatorial side; parity obstruction gives one degree-2 vertex.
 
 ## Active Approach
-None yet.
+Short-distance-graph structure: degree bounds (1–3) + handshake parity ⟹ some vertex
+has exactly 2 short neighbours. Pushing toward full 2-regularity ⟹ C₅ ⟹ regular
+pentagon ⟹ concyclic ⟹ contradiction with NoFourConcyclic.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- See knowledge.md session log.
 
 ## Blockers
-None.
+Full 2-regularity requires the geometric step (rule out short-degree 3); pure graph
+theory does not force C₅.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Prove `∀ i, d_a(i) = 2` (rule out degree 3, equiv. degree 1 by a↔b symmetry) using
+no-3-collinear / no-4-concyclic on the three short-neighbours around a vertex.
