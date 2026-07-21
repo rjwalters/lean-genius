@@ -94,24 +94,39 @@
   },
   "sections": [
     {
+      "id": "overview-and-definitions",
       "title": "Overview and Definitions",
-      "text": "fineRow p n is the finset of columns k ∈ {0,…,n} with p ∤ C(n,k); fineCount p n is its cardinality — the number of entries in row n not divisible by p. These generalise the parent's oddRow / oddCount (the p = 2 case counting odd entries). The goal is the closed form fineCount p n = ∏ᵢ (nᵢ+1) over the base-p digits of n."
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "fineRow p n is the finset of columns k ∈ {0,…,n} with p ∤ C(n,k); fineCount p n is its cardinality — the number of entries in row n not divisible by p. These generalise the parent's oddRow / oddCount (the p = 2 case counting odd entries). The goal is the closed form fineCount p n = ∏ᵢ (nᵢ+1) over the base-p digits of n."
     },
     {
+      "id": "digit-wise-coprimality",
       "title": "Digit-wise Coprimality (choose_not_dvd_iff)",
-      "text": "For a prime p and a digit value r < p, the small binomial C(r,s) is coprime to p exactly when s ≤ r. If s > r then C(r,s) = 0 and p ∣ 0. If s ≤ r, the factorial identity C(r,s)·s!·(r−s)! = r! together with p ∤ r! (which holds because r < p, via Nat.Prime.dvd_factorial) forces p ∤ C(r,s). This is the survival criterion for a single base-p digit."
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "For a prime p and a digit value r < p, the small binomial C(r,s) is coprime to p exactly when s ≤ r. If s > r then C(r,s) = 0 and p ∣ 0. If s ≤ r, the factorial identity C(r,s)·s!·(r−s)! = r! together with p ∤ r! (which holds because r < p, via Nat.Prime.dvd_factorial) forces p ∤ C(r,s). This is the survival criterion for a single base-p digit."
     },
     {
+      "id": "pointwise-non-divisibility-lucas",
       "title": "Pointwise Non-Divisibility via Lucas (not_dvd_choose_step)",
-      "text": "Writing the row index as p·n+r with last digit r < p, the single base-p step of Lucas' theorem gives C(p·n+r, k) ≡ C(r, k%p)·C(n, k/p) (mod p). Since p is prime it divides the product iff it divides a factor; with C(r, k%p) coprime to p ⟺ k%p ≤ r, this yields p ∤ C(p·n+r, k) ⟺ k%p ≤ r ∧ p ∤ C(n, k/p) — the general-p analogue of the parent's two parity laws."
+      "startLine": 77,
+      "endLine": 98,
+      "summary": "Writing the row index as p·n+r with last digit r < p, the single base-p step of Lucas' theorem gives C(p·n+r, k) ≡ C(r, k%p)·C(n, k/p) (mod p). Since p is prime it divides the product iff it divides a factor; with C(r, k%p) coprime to p ⟺ k%p ≤ r, this yields p ∤ C(p·n+r, k) ⟺ k%p ≤ r ∧ p ∤ C(n, k/p) — the general-p analogue of the parent's two parity laws."
     },
     {
+      "id": "multiplicative-recursion",
       "title": "The Multiplicative Recursion (fineCount_recursion)",
-      "text": "Partition row p·n+r by the last base-p digit s = k%p. The pointwise law identifies the surviving columns with the image of fineRow p n ×ˢ {0,…,r} under the injection (j,s) ↦ p·j+s (injective because s < p pins down s = k%p and j = k/p). Counting the product gives fineCount p (p·n+r) = (r+1)·fineCount p n — the (r+1)-branch generalisation of the parent's even/odd j ↦ 2j, 2j+1 reindexing."
+      "startLine": 99,
+      "endLine": 168,
+      "summary": "Partition row p·n+r by the last base-p digit s = k%p. The pointwise law identifies the surviving columns with the image of fineRow p n ×ˢ {0,…,r} under the injection (j,s) ↦ p·j+s (injective because s < p pins down s = k%p and j = k/p). Counting the product (Finset.card_image_of_injOn, card_product) gives fineCount p (p·n+r) = (r+1)·fineCount p n — the (r+1)-branch generalisation of the parent's even/odd j ↦ 2j, 2j+1 reindexing. The base case fineCount_zero (row 0 has the single surviving entry k = 0) is also established here."
     },
     {
+      "id": "fine-closed-form",
       "title": "Fine's Closed Form (fine_theorem)",
-      "text": "A strong induction on n, peeling the last base-p digit via Nat.digits_def' (digits p n = n%p :: digits p (n/p)) and applying the multiplicative recursion at each step, assembles fineCount p n = ((Nat.digits p n).map (· + 1)).prod = ∏ᵢ (nᵢ+1). Specialising to p = 2 recovers Glaisher's oddCount n = 2^(s₂ n) from the parent entry."
+      "startLine": 169,
+      "endLine": 211,
+      "summary": "A strong induction on n, peeling the last base-p digit via Nat.digits_def' (digits p n = n%p :: digits p (n/p)) and applying the multiplicative recursion at each step, assembles fineCount p n = ((Nat.digits p n).map (· + 1)).prod = ∏ᵢ (nᵢ+1). Specialising to p = 2 recovers Glaisher's oddCount n = 2^(s₂ n) from the parent entry. Closed by sanity checks fineCount 2 5 = 4, fineCount 3 7 = 6, fineCount 3 10 = 4 (kernel decide)."
     }
   ],
   "crossReferences": [

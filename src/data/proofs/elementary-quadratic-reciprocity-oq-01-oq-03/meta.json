@@ -42,24 +42,39 @@
   },
   "sections": [
     {
+      "id": "mult-by-unit-permutation-whole-ring",
       "title": "Multiplication by a unit as a permutation of the whole ring",
-      "content": "ringMulPerm a is the permutation x ↦ a·x of all of ℤ/n (not just the units), assembled into a group homomorphism ringMulPermHom : (ℤ/n)ˣ →* Perm (ℤ/n)."
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "ringMulPerm a is the permutation x ↦ a·x of all of ℤ/n (not just the units), with ringMulPerm_one, ringMulPerm_mul and the simp lemma ringMulPerm_apply establishing that it is multiplicative, assembled into the group homomorphism ringMulPermHom : (ℤ/n)ˣ →* Perm (ℤ/n). Acting on the whole ring is essential: |ℤ/n| = n is odd for odd n, whereas |(ℤ/n)ˣ| = φ(n) is even and would trivialise every sign."
     },
     {
+      "id": "zolotarev-sign-character-any-modulus",
       "title": "The Zolotarev sign character for any modulus",
-      "content": "signRingHom = sign ∘ ringMulPermHom : (ℤ/n)ˣ →* ℤˣ, a quadratic character (squares to 1) defined for every positive modulus."
+      "startLine": 81,
+      "endLine": 98,
+      "summary": "signRingHom = sign ∘ ringMulPermHom : (ℤ/n)ˣ →* ℤˣ, the Zolotarev sign character defined for every positive modulus (the parent only had the prime case). signRingHom_sq shows it is a quadratic character (squares to 1) via Int.units_sq."
     },
     {
+      "id": "sign-of-product-permutation",
       "title": "Sign of a product permutation",
-      "content": "sign_prodCongr: sign(σ ×ₚ τ) = sign σ ^ |β| · sign τ ^ |α|, plus units_pow_odd (u^k = u for u ∈ ℤˣ and odd k). General lemmas not in Mathlib."
+      "startLine": 99,
+      "endLine": 127,
+      "summary": "sign_prodCongr: sign(σ ×ₚ τ) = sign σ ^ |β| · sign τ ^ |α|, derived by decomposing σ.prodCongr τ into prodCongrLeft/prodCongrRight of constant families and applying sign_prodCongrLeft / sign_prodCongrRight. Accompanied by units_pow_odd (u^k = u for u ∈ ℤˣ and odd k, since ℤˣ = {±1} has exponent 2). Both are general lemmas not in Mathlib."
     },
     {
+      "id": "crt-decomposition",
       "title": "The CRT decomposition",
-      "content": "sign_ringMulPerm_crt factors the sign through ZMod.chineseRemainder; sign_ringMulPerm_mul_of_odd specializes to odd coprime moduli, where the character is multiplicative — the permutation image of jacobiSym.mul_right."
+      "startLine": 128,
+      "endLine": 178,
+      "summary": "sign_ringMulPerm_crt factors the sign through the Chinese Remainder isomorphism ZMod.chineseRemainder: sign(ringMulPerm a) = sign(ringMulPerm a₁)^n · sign(ringMulPerm a₂)^m, because the CRT iso intertwines multiplication-by-a with the product permutation (sign_eq_sign_of_equiv + sign_prodCongr + ZMod.card). sign_ringMulPerm_mul_of_odd specializes to odd coprime moduli, where the odd exponents collapse via units_pow_odd and the character becomes genuinely multiplicative — the permutation image of jacobiSym.mul_right."
     },
     {
+      "id": "parallel-with-jacobi-symbol",
       "title": "Parallel with the Jacobi symbol",
-      "content": "jacobiSym_mul_right_mirror restates Mathlib's jacobiSym.mul_right (the value-level statement mirrored by the sign decomposition); legendre_eq_jacobi records the prime base case legendreSym.to_jacobiSym."
+      "startLine": 179,
+      "endLine": 261,
+      "summary": "jacobiSym_mul_right_mirror restates Mathlib's jacobiSym.mul_right (the value-level statement mirrored by the sign decomposition); legendre_eq_jacobi records the prime base case legendreSym.to_jacobiSym. The trailing examples confirm signRingHom is a group homomorphism (map_one, map_mul) for composite moduli, and the closing summary block recaps the CRT mechanism and its honest scope (structural decomposition, not yet closing the loop to Jacobi values)."
     }
   ],
   "meta": {

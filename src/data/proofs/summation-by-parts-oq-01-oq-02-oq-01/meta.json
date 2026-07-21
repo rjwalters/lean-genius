@@ -83,20 +83,34 @@
   },
   "sections": [
     {
+      "id": "second-moment-closed-form",
       "title": "The Second-Moment Closed Form over Any Field",
-      "body": ""
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Establishes the headline identity `sum_range_sq_geom`: for a field element r ≠ 1, ∑_{k<n} k²·rᵏ = (rⁿ·(n² + (1+2n−2n²)·r + (n−1)²·r²) − r − r²)/(r−1)³. Unlike the sibling entry (real, bare induction), this holds over an arbitrary field K as a purely algebraic fact. Proved by induction on n: Finset.sum_range_succ adds the next term, then push_cast/field_simp/ring close the polynomial identity after clearing (r−1)³.",
+      "mathContext": "$\\sum_{k<n} k^2 r^k = \\dfrac{r^n\\bigl(n^2 + (1+2n-2n^2)r + (n-1)^2 r^2\\bigr) - r - r^2}{(r-1)^3}$"
     },
     {
+      "id": "falling-factorial-companion",
       "title": "The Falling-Factorial Companion ∑ k(k−1)·rᵏ",
-      "body": ""
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "`sum_range_falling_geom` evaluates the second falling-factorial sum ∑_{k<n} k(k−1)·rᵏ = (rⁿ·(n(n−1) + (4n−2n²)·r + (n−1)(n−2)·r²) − 2r²)/(r−1)³, the discrete analogue of the second derivative of the geometric series (limit 2r²/(1−r)³ for |r|<1). Same induction + field_simp + ring method over any field.",
+      "mathContext": "$\\sum_{k<n} k(k-1) r^k = \\dfrac{r^n\\bigl(n(n-1) + (4n-2n^2)r + (n-1)(n-2)r^2\\bigr) - 2r^2}{(r-1)^3}$"
     },
     {
+      "id": "decomposition-k-squared",
       "title": "The Decomposition k² = k(k−1) + k",
-      "body": ""
+      "startLine": 87,
+      "endLine": 98,
+      "summary": "`sum_sq_eq_falling_add_linear` realizes k² = k(k−1) + k as a term-by-term identity of finite sums: the second moment splits as the second falling moment plus the first moment, with no closed forms required. Proved by Finset.sum_add_distrib and ring on the summand."
     },
     {
+      "id": "abel-summation-by-parts",
       "title": "The Abel Summation-by-Parts Derivation",
-      "body": ""
+      "startLine": 99,
+      "endLine": 118,
+      "summary": "`sum_range_sq_geom_eq_byParts` re-derives the second-moment sum through genuine Abel summation via Finset.sum_range_by_parts, taking weight f(k)=k² and geometric sequence g(k)=rᵏ. It exposes that the forward differences f(k+1)−f(k)=2k+1 are linear, so each nested geometric partial sum is weighted by 2i+1 — the discrete signature of differentiating k². The sibling entry never actually used Abel summation despite the family name."
     }
   ],
   "mainTheorems": [

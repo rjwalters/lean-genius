@@ -107,27 +107,37 @@
     {
       "id": "trap",
       "title": "The generalized trap",
-      "content": "From |x| ≤ B (which forces 0 ≤ B), the identity |xⁿ| = |x|ⁿ (abs_pow) together with pow_le_pow_left₀ gives |xⁿ| ≤ Bⁿ. Splitting this with abs_le yields the two walls −Bⁿ ≤ xⁿ ≤ Bⁿ: every power of a magnitude-≤ B base lives in the n-dependent band [−Bⁿ, Bⁿ]. This is the verbatim generalization of the parent's band [−1, 1]."
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "From |x| ≤ B (which forces 0 ≤ B), the identity |xⁿ| = |x|ⁿ (abs_pow) together with pow_le_pow_left₀ gives |xⁿ| ≤ Bⁿ (abs_pow_le). Splitting this with abs_le yields the two walls −Bⁿ ≤ xⁿ (neg_pow_le_pow) and xⁿ ≤ Bⁿ (pow_le_pow_band): every power of a magnitude-≤ B base lives in the n-dependent band [−Bⁿ, Bⁿ]. This is the verbatim generalization of the parent's fixed band [−1, 1]."
     },
     {
       "id": "engine",
       "title": "The escape engine",
-      "content": "Two one-step comparisons hold for any B: anything strictly below the lower wall, c < −Bⁿ, is beaten by every power (lt_pow_of_lt_neg_pow: c < xⁿ); anything strictly above the upper wall, Bⁿ < c, beats every power (pow_lt_of_pow_lt: xⁿ < c). These are the building blocks for both sides of the dichotomy."
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "Two one-step comparisons hold for any B: anything strictly below the lower wall, c < −Bⁿ, is beaten by every power (lt_pow_of_lt_neg_pow: c < xⁿ); anything strictly above the upper wall, Bⁿ < c, beats every power (pow_lt_of_pow_lt: xⁿ < c). These are the building blocks for both sides of the dichotomy."
     },
     {
       "id": "shrinking",
       "title": "Shrinking / critical band (0 ≤ B ≤ 1): lines escape",
-      "content": "When B ≤ 1 the wall Bⁿ never exceeds 1 (pow_le_one₀), so the band sits inside [−1, 1] and the parent's argument survives unchanged. A negative-slope line b + n·s eventually drops below −1 ≤ −Bⁿ (threshold N > (b+1)/(−s) from exists_nat_gt), hence below every power (eventually_line_lt_pow_band); the positive-slope mirror is eventually_pow_lt_line_band. The parent (B = 1) is the boundary case."
+      "startLine": 84,
+      "endLine": 127,
+      "summary": "When B ≤ 1 the wall Bⁿ never exceeds 1 (pow_le_one₀, via pow_le_one_of_le_one), so the band sits inside [−1, 1] and the parent's argument survives unchanged. A negative-slope line b + n·s eventually drops below −1 ≤ −Bⁿ (threshold N > (b+1)/(−s) from exists_nat_gt), hence below every power (eventually_line_lt_pow_band); the positive-slope mirror is eventually_pow_lt_line_band. The parent (B = 1) is the boundary case."
     },
     {
       "id": "growing",
       "title": "Growing band (B > 1): the band captures every line",
-      "content": "When B > 1 the walls ±Bⁿ grow exponentially. The quotient (|b| + |s|·n)/Bⁿ → 0 (tendsto_linear_div_pow, built from tendsto_pow_const_div_const_pow_of_one_lt with k = 0, 1), so eventually |b| + |s|·n < Bⁿ (div_lt_one). Bounding the line by its linear envelope (abs_add_le) gives |b + n·s| < Bⁿ, i.e. the line is trapped strictly inside (−Bⁿ, Bⁿ) (eventually_line_mem_band). No line of any slope escapes — the exact opposite of the B ≤ 1 case."
+      "startLine": 128,
+      "endLine": 184,
+      "summary": "When B > 1 the walls ±Bⁿ grow exponentially. The quotient (|b| + |s|·n)/Bⁿ → 0 (tendsto_linear_div_pow, built from tendsto_pow_const_div_const_pow_of_one_lt with k = 0, 1), so eventually |b| + |s|·n < Bⁿ (div_lt_one). Bounding the line by its linear envelope (abs_add_le) gives |b + n·s| < Bⁿ, i.e. the line is trapped strictly inside (−Bⁿ, Bⁿ) (eventually_line_mem_band, unpacked as eventually_neg_pow_lt_line_lt_pow). No line of any slope escapes — the exact opposite of the B ≤ 1 case."
     },
     {
       "id": "dichotomy",
       "title": "The boundary dichotomy",
-      "content": "escape_or_capture packages the contrast for a fixed negative-slope line: if B > 1 the line is eventually captured inside the band, while if B ≤ 1 it eventually escapes below every power. The single comparison B ≷ 1 flips capture into escape, identifying the parent's fixed band B = 1 as the precise critical threshold the parent's open question asked about."
+      "startLine": 185,
+      "endLine": 215,
+      "summary": "escape_or_capture packages the contrast for a fixed negative-slope line: if B > 1 the line is eventually captured inside the band, while if B ≤ 1 it eventually escapes below every power. The single comparison B ≷ 1 flips capture into escape, identifying the parent's fixed band B = 1 as the precise critical threshold the parent's open question asked about. The closing sanity checks exhibit both regimes (line 10 − n escaping the B = 1/2 band; line 5 + 100·n captured inside the B = 2 band)."
     }
   ],
   "overview": {

@@ -74,11 +74,45 @@
     }
   ],
   "sections": [
-    { "title": "Exponent Identity 2·C(k,2) = k(k-1)", "description": "Twice the second binomial coefficient equals the falling factorial k(k-1), proved through descFactorial." },
-    { "title": "Arithmetic Core: Threshold ⟹ Criterion", "description": "n^2 ≤ 2^(k-1) implies 2·C(n,k) < 2^(C(k,2)) via 2·C(n,k) < k!·C(n,k) = n^(k̲) ≤ n^k ≤ 2^(C(k,2)), the last step by squaring the threshold." },
-    { "title": "Closed-Form Ramsey Bound", "description": "Combining the core with the parent's first_moment_ramsey gives R(k,k) > n whenever n ≤ 2^((k-1)/2)." },
-    { "title": "Odd-Diagonal Side Condition", "description": "2j+1 ≤ 2^j for j ≥ 3 (by Nat.le_induction), placing the clique size below the vertex count." },
-    { "title": "Exponential Growth and Concrete Witness", "description": "R(2j+1,2j+1) > 2^j for j ≥ 3, and the instance R(7,7) > 8." }
+    {
+      "id": "exponent-identity",
+      "title": "Exponent Identity 2·C(k,2) = k(k-1)",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "After the header framing the open question (turn the parent's implication criterion 2·C(n,k) < 2^C(k,2) ⟹ R(k,k) > n into a closed-form growth statement), two_mul_choose_two proves that twice the second binomial coefficient equals the falling factorial k(k-1), via descFactorial (Nat.descFactorial_eq_factorial_mul_choose).",
+      "mathContext": "$2\\binom{k}{2} = k(k-1)$"
+    },
+    {
+      "id": "arithmetic-core",
+      "title": "Arithmetic Core: Threshold ⟹ Criterion",
+      "startLine": 56,
+      "endLine": 97,
+      "summary": "firstMoment_hyp_of_sq: the fraction-free threshold n² ≤ 2^(k-1) (equivalently n ≤ 2^((k-1)/2)) implies the first-moment Ramsey criterion 2·C(n,k) < 2^C(k,2), for k ≥ 3 and k ≤ n. The estimate chain is 2·C(n,k) < k!·C(n,k) = n^(k̲) ≤ n^k ≤ 2^C(k,2), using 2 < k! (for k ≥ 3), C(n,k) ≥ 1, descFactorial = k!·choose, and squaring the threshold with 2·C(k,2) = k(k-1). This is the estimation step the parent entry left open.",
+      "mathContext": "$2\\binom{n}{k} < k!\\binom{n}{k} = n^{\\underline{k}} \\le n^k \\le 2^{\\binom{k}{2}}$"
+    },
+    {
+      "id": "closed-form-ramsey-bound",
+      "title": "Closed-Form Ramsey Bound",
+      "startLine": 98,
+      "endLine": 104,
+      "summary": "ramsey_no_mono_of_sq combines the arithmetic core with the parent's first_moment_ramsey: if k ≥ 3, k ≤ n and n² ≤ 2^(k-1), then K_n has a 2-coloring with no monochromatic K_k, i.e. R(k,k) > n."
+    },
+    {
+      "id": "odd-diagonal-side-condition",
+      "title": "Odd-Diagonal Side Condition",
+      "startLine": 105,
+      "endLine": 116,
+      "summary": "two_mul_add_one_le_pow: for j ≥ 3, 2j+1 ≤ 2^j, keeping the clique size below the vertex count so the closed-form bound applies along the odd diagonal. Proved by Nat.le_induction.",
+      "mathContext": "$2j+1 \\le 2^j \\quad (j \\ge 3)$"
+    },
+    {
+      "id": "exponential-growth-witness",
+      "title": "Exponential Growth and Concrete Witness",
+      "startLine": 117,
+      "endLine": 138,
+      "summary": "ramsey_diagonal_growth: for j ≥ 3, R(2j+1, 2j+1) > 2^j, so writing k = 2j+1 gives R(k,k) > 2^((k-1)/2) = (√2)^(k-1) — the classical Erdős exponential order recovered purely from the first moment method. ramsey_seven_gt_eight gives the concrete instance R(7,7) > 8 (here 8² = 64 = 2⁶ = 2^(7-1), the threshold met with equality).",
+      "mathContext": "$R(2j+1, 2j+1) > 2^j,\\quad R(k,k) > (\\sqrt 2)^{k-1}$"
+    }
   ],
   "crossReferences": [
     {

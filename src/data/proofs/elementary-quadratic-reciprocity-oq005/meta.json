@@ -43,16 +43,28 @@
   },
   "sections": [
     {
+      "id": "left-regular-representation-generic",
       "title": "The left regular representation of a finite group (generic)",
-      "content": "mulLeftHom : G →* Perm G packages left translation as a monoid hom. mulLeft_no_fixed: translation by a ≠ 1 has no fixed point (mul_right_cancel). mulLeft_generator_isCycle / mulLeft_support_eq_univ: a generator's translation is a single full-support cycle. sign_mulLeft_generator: its sign is -1 when |G| is even. sign_mulLeft_pow: sign of translation is multiplicative under powers. These hold for any finite group and isolate the group-theoretic core."
+      "startLine": 1,
+      "endLine": 124,
+      "summary": "mulLeftHom : G →* Perm G packages left translation as a monoid hom. mulLeft_no_fixed: translation by a ≠ 1 has no fixed point (mul_right_cancel). mulLeft_generator_isCycle / mulLeft_support_eq_univ: a generator's translation is a single full-support cycle. generator_ne_one: a generator of a group with >1 element is nontrivial. sign_mulLeft_generator: its sign is -1 when |G| is even. sign_mulLeft_pow: sign of translation is multiplicative under powers. These hold for any finite group and isolate the group-theoretic core.",
+      "mathContext": "$\\operatorname{sign}(\\operatorname{mulLeft} g) = -1$ for a generator $g$ of an even-order cyclic group"
     },
     {
+      "id": "prime-power-unit-group-even",
       "title": "The prime-power unit group has even order",
-      "content": "card_units_prime_pow_even: |(ℤ/pⁿ)ˣ| = pⁿ⁻¹(p-1) via ZMod.card_units_eq_totient and Nat.totient_prime_pow, which is even because p-1 is even for an odd prime p."
+      "startLine": 125,
+      "endLine": 137,
+      "summary": "card_units_prime_pow_even: |(ℤ/pⁿ)ˣ| = pⁿ⁻¹(p-1) via ZMod.card_units_eq_totient and Nat.totient_prime_pow, which is even because p-1 is even for an odd prime p.",
+      "mathContext": "$|(\\mathbb{Z}/p^n)^\\times| = p^{n-1}(p-1)$ is even for odd prime $p$"
     },
     {
+      "id": "units-level-prime-power-zolotarev",
       "title": "The units-level prime-power Zolotarev lemma",
-      "content": "sign_mulLeft_eq_quadraticChar and sign_mulLeft_eq_legendre: for an odd prime p and n ≥ 1, the sign of left multiplication by u on (ℤ/pⁿ)ˣ equals the quadratic character (resp. Legendre symbol mod p) of the reduction ρ u. Proof: instantiate the generic machinery on the cyclic group (ℤ/pⁿ)ˣ; both sides are -1 at a generator g (single even cycle; ρ g a non-residue), and u = gᵏ makes both (-1)ᵏ."
+      "startLine": 138,
+      "endLine": 202,
+      "summary": "sign_mulLeft_eq_quadraticChar and sign_mulLeft_eq_legendre: for an odd prime p and n ≥ 1, the sign of left multiplication by u on (ℤ/pⁿ)ˣ equals the quadratic character (resp. Legendre symbol mod p) of the reduction ρ u. Proof: instantiate the generic machinery on the cyclic group (ℤ/pⁿ)ˣ (ZMod.isCyclic_units_of_prime_pow); both sides are -1 at a generator g (single even cycle; ρ g a non-residue, ρ surjective), and u = gᵏ makes both (-1)ᵏ.",
+      "mathContext": "$\\operatorname{sign}(x \\mapsto u\\cdot x \\text{ on } (\\mathbb{Z}/p^n)^\\times) = \\left(\\tfrac{\\rho u}{p}\\right)$"
     }
   ],
   "meta": {

@@ -44,16 +44,27 @@
   },
   "sections": [
     {
+      "id": "integer-unit-from-coprimality",
       "title": "The integer unit from a coprimality hypothesis",
-      "content": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k (where k = 0) to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor."
+      "startLine": 1,
+      "endLine": 82,
+      "summary": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k (where k = 0) to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor. The header sets up the goal: the squarefree-odd Frobenius/Jacobi Zolotarev lemma sign(ringMulPerm a on ℤ/n) = J(a | n).",
+      "mathContext": "$\\operatorname{sign}(x \\mapsto a\\cdot x \\text{ on } \\mathbb{Z}/n) = \\left(\\tfrac{a}{n}\\right)$ for $n$ odd squarefree"
     },
     {
+      "id": "main-induction",
       "title": "The main induction",
-      "content": "main: strong induction on n via its smallest prime factor. The n = 1 base uses the subsingleton structure of ℤ/1; the inductive step splits n = p·m coprimely, applies the grandparent's CRT multiplicativity, the parent's prime base case, the inductive hypothesis on the cofactor, and jacobiSym.mul_right to assemble J(a | n)."
+      "startLine": 83,
+      "endLine": 162,
+      "summary": "main: strong induction on n via its smallest prime factor. The n = 1 base uses the subsingleton structure of ℤ/1; the inductive step splits n = p·m coprimely, applies the grandparent's CRT multiplicativity (sign_ringMulPerm_mul_of_odd), the parent's prime base case (sign = legendreSym), the inductive hypothesis on the cofactor m, and jacobiSym.mul_right to assemble J(a | n).",
+      "mathContext": "$\\operatorname{sign}(\\operatorname{ringMulPerm} u) = \\operatorname{sign}(\\operatorname{ringMulPerm} u_1)\\cdot\\operatorname{sign}(\\operatorname{ringMulPerm} u_2) = \\left(\\tfrac{c}{p}\\right)\\left(\\tfrac{c}{m}\\right) = \\left(\\tfrac{c}{pm}\\right)$"
     },
     {
+      "id": "clean-statement",
       "title": "Clean statement",
-      "content": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n)."
+      "startLine": 163,
+      "endLine": 211,
+      "summary": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n). Followed by the summary docstring recording the honest scope (squarefree odd only; prime-power factors left to a follow-up) and the #check lines."
     }
   ],
   "meta": {
