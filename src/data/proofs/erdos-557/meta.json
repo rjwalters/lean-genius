@@ -33,7 +33,7 @@
       "title": "Problem Statement and Imports",
       "summary": "Documentation header with problem statement, star lower bound, path results, Burr-Erdős connection, references, and Mathlib imports for SimpleGraph.",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "mathContext": "Conjecture: $\\exists C, \\forall T, k: R(T; k) \\leq kn + C$ where $T$ is a tree on $n$ vertices."
     },
     {
@@ -41,32 +41,32 @@
       "title": "Core Definitions: Trees, Colorings, Ramsey Numbers",
       "summary": "Tree structure on Fin n, EdgeColoring as m→m→Fin k, HasMonochromaticCopy via injective embedding with uniform color, noncomputable multicolorRamseyTree, axiomatized ramseyTree.",
       "startLine": 29,
-      "endLine": 51,
+      "endLine": 53,
       "mathContext": "$R(T; k) = \\min\\{m : \\text{every } k\\text{-coloring of } K_m \\text{ contains a monochromatic copy of } T\\}$."
     },
     {
       "id": "main-conjecture",
       "title": "Erdős Problem #557: Linear Bound Conjecture (OPEN)",
       "summary": "Axiom erdos_557_conjecture: ∃ C, ∀ n, ∀ T (tree on n vertices), ∀ k ≥ 1, ramseyTree n T k ≤ k·n + C.",
-      "startLine": 53,
+      "startLine": 54,
       "endLine": 61,
       "mathContext": "$\\exists C \\in \\mathbb{N}, \\forall T \\text{ tree on } n \\text{ vertices}, \\forall k \\geq 1: R(T; k) \\leq kn + C$."
     },
     {
       "id": "star-construction",
       "title": "Star Graph and Lower Bound",
-      "summary": "starTree defines K_{1,n-1} with center vertex 0; star_ramsey_lower: R(S_n;k) ≥ k(n-1)+1 (shows conjecture is tight).",
-      "startLine": 63,
-      "endLine": 78,
-      "mathContext": "$R(K_{1,n-1}; k) \\geq k(n-1) + 1$: extremal coloring partitions $k(n-1)$ vertices into $k$ groups of $n-1$, each group monochromatically colored."
+      "summary": "starTree defines the star graph S_n = K_{1,n-1} on Fin n with center vertex 0 (adjacency: exactly one endpoint is 0); symmetry and looplessness are discharged by case analysis.",
+      "startLine": 62,
+      "endLine": 81,
+      "mathContext": "$S_n = K_{1,n-1}$ has one center joined to $n-1$ leaves. The multicolor star lower bound $R(K_{1,n-1};k) \\geq k(n-2)+2$ follows because a coloring giving every vertex color-degree $\\leq n-2$ in each color avoids a monochromatic $K_{1,n-1}$."
     },
     {
       "id": "known-results",
       "title": "Known Results: 2-Color Bound, Monotonicity, Star Lower Bound",
-      "summary": "Axioms: two_color_tree_ramsey (R(T;2) ≤ 2n-2), ramseyTree_mono_k (monotone in k), star_ramsey_lower (R(S_n;k) ≥ k(n-1)+1).",
-      "startLine": 80,
-      "endLine": 95,
-      "mathContext": "$R(T; 2) \\leq 2n-2$ (classical); $R(T; k) \\leq R(T; k+1)$ (monotonicity); $R(K_{1,n-1}; k) \\geq k(n-1)+1$ (pigeonhole lower bound)."
+      "summary": "Axioms: two_color_tree_ramsey (R(T;2) ≤ 2n-2), ramseyTree_mono_k (monotone in k), star_ramsey_lower (R(S_n;k) ≥ k(n-2)+2, the Burr–Roberts multicolor star bound). Ends with the Burr–Erdős connection banner.",
+      "startLine": 82,
+      "endLine": 100,
+      "mathContext": "$R(T; 2) \\leq 2n-2$ (classical); $R(T; k) \\leq R(T; k+1)$ (monotonicity); $R(K_{1,n-1}; k) \\geq k(n-2)+2$ (Burr–Roberts). At $k=2$ this gives exactly $2n-2$, matching the upper bound."
     }
   ],
   "overview": {
