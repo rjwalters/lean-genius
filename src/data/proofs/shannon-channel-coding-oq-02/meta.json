@@ -132,25 +132,25 @@
       "id": "bsc-mi",
       "title": "BSC Mutual Information Bounds",
       "startLine": 163,
-      "endLine": 220,
+      "endLine": 248,
       "description": "MI = log 2 - h(p) for uniform input; MI ≤ log 2 - h(p) for all inputs.",
-      "summary": "MI = log 2 - h(p) for uniform input; MI ≤ log 2 - h(p) for all inputs."
+      "summary": "The MI computations for the BSC: `bsc_uniform_mi` proves MI = log 2 - h(p) is achieved by the uniform input, then `bsc_mi_le` and `bsc_mi_le_general` prove MI ≤ log 2 - h(p) for every input distribution (the point-mass edge case is handled by bounding H(Y) ≤ log 2 and H(Y|X) = h(p) via the chain rule)."
     },
     {
       "id": "capacity",
       "title": "BSC Capacity Theorem",
-      "startLine": 222,
-      "endLine": 240,
+      "startLine": 249,
+      "endLine": 273,
       "description": "Channel capacity equals log 2 - h(p), proved via antisymmetry of sSup.",
-      "summary": "Channel capacity equals log 2 - h(p), proved via antisymmetry of sSup."
+      "summary": "`bsc_capacity_proved`: the channel capacity (a supremum of MI over all input distributions) equals log 2 - h(p), by `le_antisymm` — the upper bound from `bsc_mi_le_general` via `csSup_le`, and achievability from the uniform input via `le_csSup`. This is the exact value the parent file formerly axiomatized."
     },
     {
       "id": "random-coding",
       "title": "Random Coding Existence Lemma",
-      "startLine": 242,
-      "endLine": 262,
+      "startLine": 274,
+      "endLine": 298,
       "description": "The probabilistic method for codebook selection in Shannon's achievability proof.",
-      "summary": "The probabilistic method for codebook selection in Shannon's achievability proof."
+      "summary": "`random_coding_existence`: the probabilistic-method step for codebook selection — if the average of `error : ι → ℝ` over a finite nonempty index set is ≤ ε, then some specific index achieves error ≤ ε. Proved by contradiction: if every index exceeded ε, `Finset.sum_lt_sum` would force the average above ε. This is the non-constructive core of Shannon's achievability argument."
     }
   ],
   "conclusion": {

@@ -138,11 +138,19 @@
     },
     {
       "id": "special-cases",
-      "title": "Special Cases k = 1, 2, 3",
+      "title": "Special Cases k = 1, 2, 3, 4",
       "startLine": 286,
-      "endLine": 318,
-      "summary": "Verifies H_1/1 = 1 (classical Leibniz), H_2/2 = 3/4, H_3/3 = 11/18 by unfolding `harmonic_succ` repeatedly and closing with `push_cast; norm_num`.",
-      "mathContext": "Sanity checks: $H_1/1 = 1$, $H_2/2 = (1 + 1/2)/2 = 3/4$, $H_3/3 = (1 + 1/2 + 1/3)/3 = 11/18$. The k=1 case is exactly Leibniz's identity, confirming the generalization recovers the base case."
+      "endLine": 328,
+      "summary": "Verifies the harmonic-number values H_1/1 = 1 (classical Leibniz), H_2/2 = 3/4, H_3/3 = 11/18, and H_4/4 = 25/48 by unfolding `harmonic_succ` repeatedly down to `harmonic_zero` and closing with `push_cast; norm_num`.",
+      "mathContext": "Sanity checks: $H_1/1 = 1$, $H_2/2 = (1 + 1/2)/2 = 3/4$, $H_3/3 = (1 + 1/2 + 1/3)/3 = 11/18$, $H_4/4 = (1 + 1/2 + 1/3 + 1/4)/4 = 25/48$. The k=1 case is exactly Leibniz's identity, confirming the generalization recovers the base case."
+    },
+    {
+      "id": "tsum-values",
+      "title": "Closed-Form Series Values",
+      "startLine": 329,
+      "endLine": 353,
+      "summary": "Composes the main theorem `generalized_triangular_reciprocals_tsum` with the harmonic special cases to read off the actual infinite-series values: ∑_{n≥1} 1/(n(n+1)) = 1 (the classical Leibniz triangular sum), ∑_{n≥1} 1/(n(n+2)) = 3/4, and ∑_{n≥1} 1/(n(n+3)) = 11/18. Each proof rewrites with the main identity at the concrete k and closes via `simpa using special_case_k*`.",
+      "mathContext": "$\\sum_{n\\ge 1}\\frac{1}{n(n+1)} = 1$, $\\ \\sum_{n\\ge 1}\\frac{1}{n(n+2)} = \\tfrac34$, $\\ \\sum_{n\\ge 1}\\frac{1}{n(n+3)} = \\tfrac{11}{18}$ — the numerical payoff of the general identity $\\sum_{n\\ge1}\\frac{1}{n(n+k)} = H_k/k$."
     }
   ],
   "crossReferences": [
