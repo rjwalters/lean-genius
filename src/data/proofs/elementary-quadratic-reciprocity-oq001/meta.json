@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 243,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 1,
     "dateAdded": "2026-05-07",
     "mathlibDependencies": [
@@ -76,7 +76,8 @@
       "MulChar.ringHomComp pattern for casting characters"
     ],
     "parentSlug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-    "rootSlug": "elementary-quadratic-reciprocity"
+    "rootSlug": "elementary-quadratic-reciprocity",
+    "assumptions": "None for the QR theorems (0 axioms, 0 sorries). Part VII contains four illustrative concrete-instance examples proved by native_decide; these are anonymous sanity checks and do not affect the axiom set of any named theorem (the QR theorems remain axiom-free)."
   },
   "leanFile": {
     "imports": [
