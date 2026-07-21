@@ -133,8 +133,16 @@
       "title": "Natural Density and Its Dichotomy",
       "summary": "HasNaturalDensity d (the ratio count/(N+1) → d), the ratio bounds in [0,1], then the two structural results: hasNaturalDensity_zero_of_finite (finiteness squeezes the density to 0) and infinite_of_pos_density (a positive density forces infinitude, by uniqueness of limits against the finite case).",
       "startLine": 125,
-      "endLine": 175,
+      "endLine": 185,
       "mathContext": "Finite $\\Rightarrow$ density $0$ (squeeze $0 \\le \\text{count}/(N+1) \\le C/(N+1) \\to 0$); density $> 0 \\Rightarrow$ infinite."
+    },
+    {
+      "id": "admissibility-constraints",
+      "title": "What an Answer Must Supply — Uniqueness and Range",
+      "summary": "The well-definedness constraints any candidate density value must satisfy: hasNaturalDensity_unique (uniqueness of limits — the question asks for a well-defined real, not merely some limit point), hasNaturalDensity_nonneg, hasNaturalDensity_le_one and hasNaturalDensity_mem_Icc (the value lies in [0,1]), pos_density_count_unbounded (positive density forces an unbounded counting function), and the capstone oq03_answer_constraints packaging these admissibility conditions (0 axioms, 0 sorries).",
+      "startLine": 186,
+      "endLine": 238,
+      "mathContext": "Any answer $d$ to OQ-03 must be a genuine limit (unique by uniqueness of limits) with $d \\in [0,1]$; and $d > 0$ already forces $\\text{count}(N) \\to \\infty$, tying a positive density to the open infinitude of $\\{n : \\varphi(n)=\\varphi(n+1)\\}$."
     },
     {
       "id": "upper-density",
