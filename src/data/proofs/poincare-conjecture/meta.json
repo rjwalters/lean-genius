@@ -169,14 +169,14 @@
       "id": "consequences",
       "title": "Consequences and Applications",
       "startLine": 298,
-      "endLine": 343,
+      "endLine": 346,
       "summary": "**Proves** corollaries: `trivial_pi1_implies_sphere`, `poincare_of_trivial_pi1` (bridging FundamentalGroup), contrapositive, and dichotomy.",
       "mathContext": "Corollaries: pi_1(M) = 0 implies M ~ S^3 (the conjecture). Both directions: classification."
     },
     {
       "id": "sphere-properties",
       "title": "Generalized $n$-Sphere Properties",
-      "startLine": 351,
+      "startLine": 347,
       "endLine": 377,
       "summary": "**Proves** connectedness, path-connectedness, nonemptiness, and compactness of $S^n \\subset \\mathbb{R}^{n+1}$ for all $n$.",
       "mathContext": "S^3: connected, path-connected, compact, non-empty. All proved from Mathlib."
@@ -249,7 +249,7 @@
       "id": "summary",
       "title": "Summary of Verified Results",
       "startLine": 629,
-      "endLine": 17663,
+      "endLine": 17684,
       "summary": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration.",
       "mathContext": "SOLVED (Perelman 2003). Simply connected closed 3-manifold ~ S^3. Via Ricci flow with surgery."
     }
