@@ -258,3 +258,53 @@ theorem isUnitFractionRepr_replace
     rw [herase]
     simp only [hcast1, hcast2]
     linarith [hsplit]
+
+/-- **Arbitrarily long unit-fraction representations of `1`.** For every `k` there
+is a representation `S` with `k ≤ |S|`.  Induction on `k`: start from `{2, 3, 6}`
+and, at each step, split the *largest* denominator `m` of the current
+representation via `isUnitFractionRepr_replace` — both split denominators `m+1` and
+`m(m+1)` exceed `m` (hence lie outside `S`), so the replacement is legal and
+strictly increases the cardinality by one. -/
+theorem exists_isUnitFractionRepr_card_ge (k : ℕ) :
+    ∃ S : Finset ℕ, IsUnitFractionRepr S ∧ k ≤ S.card := by
+  induction k with
+  | zero => exact ⟨{2, 3, 6}, isUnitFractionRepr_two_three_six, Nat.zero_le _⟩
+  | succ k ih =>
+    obtain ⟨S, hS, hcard⟩ := ih
+    have hc2 : 2 ≤ S.card := two_le_card_of_isUnitFractionRepr hS
+    have hne : S.Nonempty := by rw [← Finset.card_pos]; omega
+    -- split the largest denominator `m`
+    set m := S.max' hne with hm_def
+    have hmS : m ∈ S := S.max'_mem hne
+    have hmax : ∀ a ∈ S, a ≤ m := fun a ha => S.le_max' a ha
+    have hm2 : 2 ≤ m := (hS.1) m hmS
+    -- `m+1` and `m(m+1)` both exceed `m`, so neither is already in `S`
+    have h1 : m + 1 ∉ S := fun h => by have := hmax _ h; omega
+    have h2 : m * (m + 1) ∉ S := fun h => by
+      have := hmax _ h; nlinarith
+    have hrepl := isUnitFractionRepr_replace hS hmS h1 h2
+    refine ⟨insert (m + 1) (insert (m * (m + 1)) (S.erase m)), hrepl, ?_⟩
+    -- the replacement raises the cardinality by exactly one
+    have hne' : m + 1 ≠ m * (m + 1) := by nlinarith
+    have h2erase : m * (m + 1) ∉ S.erase m := fun h => h2 (Finset.mem_of_mem_erase h)
+    have h1insert : m + 1 ∉ insert (m * (m + 1)) (S.erase m) := by
+      simp only [Finset.mem_insert]
+      push_neg
+      exact ⟨hne', fun h => h1 (Finset.mem_of_mem_erase h)⟩
+    rw [Finset.card_insert_of_not_mem h1insert, Finset.card_insert_of_not_mem h2erase,
+      Finset.card_erase_of_mem hmS]
+    omega
+
+/-- **There are infinitely many distinct unit-fraction representations of `1`.**
+Consequence of `exists_isUnitFractionRepr_card_ge`: the representations have
+unbounded cardinality, so the set of them cannot be finite (a finite family of
+`Finset`s would have bounded cardinality). This is the elementary,
+colouring-free lower bound behind Erdős Problem 46 — the deep monochromatic
+statement (Croot 2003) remains unformalized. -/
+theorem infinite_isUnitFractionRepr :
+    {S : Finset ℕ | IsUnitFractionRepr S}.Infinite := by
+  intro hfin
+  obtain ⟨M, hM⟩ := (hfin.image Finset.card).bddAbove
+  obtain ⟨S, hS, hcard⟩ := exists_isUnitFractionRepr_card_ge (M + 1)
+  have hle : S.card ≤ M := hM ⟨S, hS, rfl⟩
+  omega
