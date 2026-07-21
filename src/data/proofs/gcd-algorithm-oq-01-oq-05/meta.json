@@ -68,14 +68,69 @@
     }
   ],
   "sections": [
-    "Module Overview and References",
-    "Self-Contained Step Counter and Basic Lemmas",
-    "The Two-Sided Lamé Bound (Strong Induction)",
-    "The Fibonacci Pair Achieves n Steps",
-    "The a-Side Bound",
-    "The Forcing / Uniqueness Result",
-    "Size Bound",
-    "Numerical Sanity Checks"
+    {
+      "id": "overview",
+      "title": "Module Overview and References",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring stating the uniqueness open question OQ-05: any Euclidean pair (a,b) with 0<b<a taking n division steps satisfies fib(n+2)≤a and fib(n+1)≤b, with equality forcing (a,b)=(fib(n+2),fib(n+1)). Explains that the forcing is one-directional (the larger input a is the rigid one) and that the whole entry runs off the single strong-induction bound lame_pair_bound, staying axiom-free by discharging small Fibonacci values with kernel `decide` (no Lean.ofReduceBool).",
+      "mathContext": "Lamé's 1844 theorem: a pair requiring $n$ steps has $a\\ge F_{n+2}$, $b\\ge F_{n+1}$. Attaining the $b$-bound does not force the Fibonacci pair (e.g. $n=2$, $b=F_3=2$, $a=5$ also takes 2 steps), but attaining $a=F_{n+2}$ squeezes $b$ into $[F_{n+1},F_{n+2})$ and the remainder bound $F_n\\le a\\bmod b$ collapses it to $F_{n+1}$."
+    },
+    {
+      "id": "step-counter",
+      "title": "Self-Contained Step Counter and Basic Lemmas",
+      "startLine": 65,
+      "endLine": 109,
+      "summary": "Defines the well-founded step counter `euclideanSteps a b` (0 when b=0, else euclideanSteps b (a%b)+1) with termination on b, re-derived here so the entry stands alone. Provides `euclideanSteps_zero`, the positive-argument unfolding `euclideanSteps_pos_eq`, the lower bound `euclideanSteps_ge_one`, the zero characterisation `euclideanSteps_eq_zero_iff`, and the Fibonacci mod identity `fib_mod_fib`: fib(n+2) % fib(n+1) = fib n for n≥2.",
+      "mathContext": "The counter mirrors the Euclidean recursion $\\gcd(a,b)=\\gcd(b,a\\bmod b)$. The key arithmetic fact $F_{n+2}\\bmod F_{n+1}=F_n$ follows from $F_{n+2}=F_n+F_{n+1}$ with $0\\le F_n<F_{n+1}$, so one Euclidean step sends the pair $(F_{n+2},F_{n+1})$ to $(F_{n+1},F_n)$."
+    },
+    {
+      "id": "lame-bound",
+      "title": "The Two-Sided Lamé Bound (Strong Induction)",
+      "startLine": 111,
+      "endLine": 170,
+      "summary": "The proof engine `lame_pair_bound`: by strong induction on the step count n, if euclideanSteps a b = n and b>0 then fib(n+1)≤b, and moreover fib n ≤ a%b once n≥2. The base cases n=0,1 are handled by unfolding; the inductive step peels one division, applies the hypothesis to (b, a%b), and lifts via the Fibonacci recurrence. `lame_b_lower_bound` extracts the b-side as a standalone corollary.",
+      "mathContext": "Returning both $F_{n+1}\\le b$ and $F_n\\le a\\bmod b$ from one induction is what makes the later forcing possible: the remainder bound one level down is exactly the extra rigidity needed to pin $b$."
+    },
+    {
+      "id": "fib-achieves",
+      "title": "The Fibonacci Pair Achieves n Steps",
+      "startLine": 172,
+      "endLine": 198,
+      "summary": "`euclideanSteps_fib`: consecutive Fibonacci numbers realise the worst case, euclideanSteps (fib(n+2)) (fib(n+1)) = n for n≥1. Induction from the base euclideanSteps (fib 3) (fib 2) = euclideanSteps 2 1 = 1, using the reduction fib(n+3) % fib(n+2) = fib(n+1) to drop the count by one each step.",
+      "mathContext": "This is the existence (achievability) half of Lamé sharpness; combined with the lower bound it shows the Fibonacci pair is extremal, and combined with the forcing result it shows it is the *unique* extremal pair."
+    },
+    {
+      "id": "a-side",
+      "title": "The a-Side Bound",
+      "startLine": 200,
+      "endLine": 234,
+      "summary": "`steps_a_lower_bound`: if (a,b) takes n≥1 steps with 0<b<a then fib(n+2)≤a. For n=1 the remainder vanishes so b∣a with a>b gives a≥2b; for n≥2 the remainder bound fib n ≤ a%b combines with fib(n+1)≤b through a = b·(a/b) + a%b ≥ b + a%b and the recurrence fib(n+2)=fib n + fib(n+1).",
+      "mathContext": "The $a$-side is the bound Lamé's original argument targets; it is the constraint that, once tight, forces the whole pair."
+    },
+    {
+      "id": "forcing",
+      "title": "The Forcing / Uniqueness Result",
+      "startLine": 236,
+      "endLine": 284,
+      "summary": "The heart of the entry. `worst_case_forces_fib`: a pair with 0<b<a taking n≥1 steps and attaining a=fib(n+2) has b forced to exactly fib(n+1). `worst_case_pair_unique` packages the pair equality, and `worst_case_iff` gives the full characterisation: for n≥1 the pairs with 0<b<a, n steps, and a=fib(n+2) are precisely {(fib(n+2),fib(n+1))}. The forcing uses a%b = a-b (valid since a<2b) together with fib n ≤ a%b.",
+      "mathContext": "Uniqueness upgrades Lamé from an inequality to an equality-with-rigidity statement: the extremal input is not just bounded but pinned. The identity $a\\bmod b=a-b$ holds because $F_{n+1}\\le b$ and $a=F_{n+2}<2F_{n+1}$."
+    },
+    {
+      "id": "size-bound",
+      "title": "Size Bound",
+      "startLine": 286,
+      "endLine": 297,
+      "summary": "`steps_sum_lower_bound`: any pair taking n≥1 steps with 0<b<a has a+b ≥ fib(n+3), with equality for the Fibonacci pair since fib(n+2)+fib(n+1)=fib(n+3). Follows by adding the a-side and b-side bounds and applying the Fibonacci recurrence.",
+      "mathContext": "The sum bound is the natural 'total size' formulation of Lamé's theorem, matching the classical statement that inputs below a size threshold force at most logarithmically many steps."
+    },
+    {
+      "id": "sanity",
+      "title": "Numerical Sanity Checks",
+      "startLine": 299,
+      "endLine": 313,
+      "summary": "Kernel-`decide` verifications that Fibonacci values are concrete: worst_pair_four (fib 6, fib 5)=(8,5) and sum_seven fib6+fib5=13=fib7, plus `#print axioms` confirmations that the main theorems depend only on the standard foundational axioms (no Lean.ofReduceBool), keeping the entry axiom-free."
+    }
   ],
   "sorries": [],
   "overview": {

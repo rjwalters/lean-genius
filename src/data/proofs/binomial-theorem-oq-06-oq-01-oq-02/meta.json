@@ -55,10 +55,38 @@
     }
   ],
   "sections": [
-    "Module Overview and Comparison of the Two Proofs",
-    "The Parity Sign Identity",
-    "The Vanishing Theorem via Reflection",
-    "Numerical Sanity Checks"
+    {
+      "id": "overview",
+      "title": "Module Overview and Comparison of the Two Proofs",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring: the parent proves ∑_k (-1)^k C(n,k)^2 = 0 for odd n via the signed Vandermonde convolution ([x^n](1-X^2)^n); this entry gives a second, elementary proof that the odd-n vanishing is a *pairing phenomenon*. The map k↦n-k is a fixed-point-free, sign-reversing involution on {0,…,n} for odd n, so each term is sent to its own negative and the sum equals its negative, hence 0. Includes a comparison table of the two routes. Opens Finset.",
+      "mathContext": "For odd $n$, $\\binom{n}{n-k}=\\binom{n}{k}$ and $(-1)^{n-k}=-(-1)^k$, so the reflection $k\\mapsto n-k$ negates every term. The even case has a fixed point $k=n/2$ where the term $(-1)^{n/2}\\binom{n}{n/2}^2$ survives — exactly why the even sum is generally nonzero."
+    },
+    {
+      "id": "parity-sign",
+      "title": "The Parity Sign Identity",
+      "startLine": 56,
+      "endLine": 75,
+      "summary": "`neg_one_pow_sub`: for odd n and k≤n, (-1)^{n-k} = -(-1)^k over ℤ. Proved by noting (-1)^k·(-1)^k = 1 and (-1)^{n-k}·(-1)^k = (-1)^n = -1 (since n is odd), then chaining the two equalities.",
+      "mathContext": "The sign-reversing heart of the involution: reflecting the exponent across an odd total $n$ flips the sign because $n-k$ and $k$ have opposite parities."
+    },
+    {
+      "id": "vanishing-reflection",
+      "title": "The Vanishing Theorem via Reflection",
+      "startLine": 77,
+      "endLine": 109,
+      "summary": "`alternating_choose_sq_odd_reflect`: for odd n, ∑_{k=0}^n (-1)^k C(n,k)^2 = 0, purely by reflection. Establishes termwise that the reflected term equals -1 times the original (via Nat.choose_symm and neg_one_pow_sub), then uses Finset.sum_range_reflect to get S = -S and concludes S = 0 by linarith.",
+      "mathContext": "A fixed-point-free sign-reversing involution on a finite set forces the alternating sum to vanish: $S=-S\\Rightarrow S=0$. No polynomials or generating functions are used, only reflection and parity."
+    },
+    {
+      "id": "sanity",
+      "title": "Numerical Sanity Checks",
+      "startLine": 111,
+      "endLine": 123,
+      "summary": "Kernel-`decide` checks: check_three ∑_{k=0}^3 (-1)^k C(3,k)^2 = 1-9+9-1 = 0 and check_five ∑_{k=0}^5 (-1)^k C(5,k)^2 = 1-25+100-100+25-1 = 0, plus `#print axioms` confirming the reflection theorem is axiom-free.",
+      "mathContext": "Both odd cases evaluate to $0$, illustrating the involution vanishing, verified by kernel reduction (no Lean.ofReduceBool)."
+    }
   ],
   "sorries": [],
   "overview": {
