@@ -403,7 +403,7 @@ theorem eqp1_ne_eqp2 : eqp1 ≠ eqp2 := by
 
 /-- The equilateral triangle has exactly three (distinct) vertices. -/
 theorem eqTri_card : eqTri.card = 3 := by
-  rw [eqTri, Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+  rw [eqTri, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
     Finset.card_singleton]
   · simp only [Finset.mem_singleton]; exact eqp1_ne_eqp2
   · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
