@@ -675,4 +675,69 @@ arithmetic progression is again not extremal. -/
 theorem minDistinctDistances_four : minDistinctDistances 4 = 2 :=
   le_antisymm minDistinctDistances_four_le_two two_le_minDistinctDistances_four
 
+/-! ## The general lower bound `g(n) ≥ 2` for `n ≥ 4`
+
+The `g(4) ≥ 2` argument above uses only that a single-distance set of four points would
+be four mutually-equidistant points, impossible in the plane (`no_four_equidistant`).  That
+obstruction survives adding more points: any configuration of **at least** four points still
+contains a four-point subset, so it too determines at least two distances.  This upgrades
+`two_le_minDistinctDistances_four` from the single value `n = 4` to the whole linear regime
+`n ≥ 4`, and in particular pins `g(5) ≥ 2`. -/
+
+/-- **General lower bound `numDistinctDistances S ≥ 2` for `|S| ≥ 4`.**  A set of four or
+more points with only a single distinct distance would contain four mutually-equidistant
+points (`no_four_equidistant`), impossible in the plane.  So *every* configuration of at
+least four points determines at least two distances. -/
+theorem two_le_numDistinctDistances_of_four_le_card
+    (S : Finset (EuclideanSpace ℝ (Fin 2))) (hcard : 4 ≤ S.card) :
+    2 ≤ numDistinctDistances S := by
+  by_contra hlt
+  have hlt2 : numDistinctDistances S < 2 := not_le.mp hlt
+  have hge1 := one_le_numDistinctDistances_of_two_le_card S (by omega)
+  have heq1 : numDistinctDistances S = 1 := by omega
+  have hcard1 : (distinctDistances S).card = 1 := heq1
+  obtain ⟨r, hr⟩ := Finset.card_eq_one.mp hcard1
+  have hall : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → Erdos89.dist p q = r := by
+    intro p hp q hq hpq
+    have hmem : Erdos89.dist p q ∈ distinctDistances S := by
+      rw [distinctDistances_eq_image, Finset.mem_image]
+      exact ⟨(p, q), Finset.mem_offDiag.mpr ⟨hp, hq, hpq⟩, rfl⟩
+    rw [hr, Finset.mem_singleton] at hmem
+    exact hmem
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_smaller_set S 4 hcard
+  rw [Finset.card_eq_four] at hTcard
+  obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, hTset⟩ := hTcard
+  have ha : a ∈ S := hTsub (by rw [hTset]; simp)
+  have hb : b ∈ S := hTsub (by rw [hTset]; simp)
+  have hc : c ∈ S := hTsub (by rw [hTset]; simp)
+  have hd : d ∈ S := hTsub (by rw [hTset]; simp)
+  exact no_four_equidistant hab
+    (hall a ha b hb hab) (hall a ha c hc hac) (hall a ha d hd had)
+    (hall b hb c hc hbc) (hall b hb d hd hbd) (hall c hc d hd hcd)
+
+/-- **General lower bound `g(n) ≥ 2` for `n ≥ 4`.**  Every `n`-point configuration with
+`n ≥ 4` determines at least two distances
+(`two_le_numDistinctDistances_of_four_le_card`), so the minimum over them is `≥ 2`.  This
+subsumes `two_le_minDistinctDistances_four` and pins the floor of Erdős's function across the
+whole linear regime. -/
+theorem two_le_minDistinctDistances {n : ℕ} (hn : 4 ≤ n) :
+    2 ≤ minDistinctDistances n := by
+  obtain ⟨S₀, hS₀⟩ := exists_card_eq n
+  have hne : {numDistinctDistances S |
+      (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = n)}.Nonempty :=
+    ⟨numDistinctDistances S₀, S₀, hS₀, rfl⟩
+  obtain ⟨S, hScard, hSeq⟩ := Nat.sInf_mem hne
+  show 2 ≤ minDistinctDistances n
+  unfold minDistinctDistances
+  rw [← hSeq]
+  exact two_le_numDistinctDistances_of_four_le_card S (by rw [hScard]; exact hn)
+
+/-- **Lower bound `g(5) ≥ 2`.**  Immediate from the general floor
+`two_le_minDistinctDistances`: a five-point set contains four points, which cannot be
+mutually equidistant in the plane.  (The matching upper bound `g(5) ≤ 2` is realized by the
+regular pentagon — two distinct distances, side and diagonal — and remains to be
+formalized.) -/
+theorem two_le_minDistinctDistances_five : 2 ≤ minDistinctDistances 5 :=
+  two_le_minDistinctDistances (by norm_num)
+
 end Erdos89
