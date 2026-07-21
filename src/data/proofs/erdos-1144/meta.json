@@ -170,6 +170,14 @@
       "endLine": 226,
       "summary": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁√N and C₂√N(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold.",
       "mathContext": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁$\\sqrt{N}$ and C₂$\\sqrt{N}$(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold."
+    },
+    {
+      "id": "conjecture-atherfold-pinch",
+      "title": "Capstone: Conjecture and Atherfold Pinch",
+      "startLine": 227,
+      "endLine": 253,
+      "summary": "`conjecture_and_atherfold_pinch`: assuming the probabilistic conjecture, the partial sums are pinched between $C_1\\sqrt{N}$ (infinitely often, from the conjecture) and $C_2\\sqrt{N}(\\log N)^{1+\\varepsilon}$ (eventually, from Atherfold’s upper bound), so the growth rate is $\\sqrt{N}$ up to logarithmic factors.",
+      "mathContext": "$C_1\\sqrt{N} \\le |S_f(N)| \\le C_2\\sqrt{N}(\\log N)^{1+\\varepsilon}$."
     }
   ],
   "conclusion": {
