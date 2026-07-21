@@ -103,52 +103,84 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports (Mathlib, Proofs.ContinuumHypothesis), the research question (does a cardinal κ with ℵ₀ < κ < 2^ℵ₀ exist?), and its answer sketch: independent of ZFC, ZFC-provable facts vs. the axiomatized independence framework, with references to Gödel, Cohen, Easton, and Kanamori.",
+      "mathContext": "Research question: is there $\\kappa$ with $\\aleph_0 < \\kappa < 2^{\\aleph_0}$? Answer: undecidable in ZFC — no under CH, yes ($\\kappa = \\aleph_1$) under ¬CH."
+    },
+    {
       "id": "cardinal-basics",
-      "title": "Cardinal Arithmetic Basics",
-      "startLine": 51,
-      "endLine": 76,
-      "summary": "Proves $\\aleph_0 < \\aleph_1$ and $\\aleph_1 \\leq 2^{\\aleph_0}$ from Mathlib's cardinal and successor APIs.",
+      "title": "Part I — Cardinal Arithmetic Basics",
+      "startLine": 49,
+      "endLine": 74,
+      "summary": "Proves $\\aleph_0 < \\aleph_1$ and $\\aleph_1 \\leq 2^{\\aleph_0}$ from Mathlib's cardinal and successor APIs, plus strict monotonicity of the aleph hierarchy (aleph_strictly_increasing).",
       "mathContext": "$\\aleph_1 = \\text{succ}(\\aleph_0)$ is the smallest uncountable cardinal. By Cantor's theorem $\\aleph_0 < 2^{\\aleph_0}$, so $\\aleph_1 \\leq 2^{\\aleph_0}$ (successor is least upper bound)."
     },
     {
       "id": "under-ch",
-      "title": "Under CH: No Intermediate",
-      "startLine": 82,
-      "endLine": 112,
+      "title": "Part II — Under CH: No Intermediate",
+      "startLine": 75,
+      "endLine": 107,
       "summary": "Proves CH → no intermediate cardinal exists. Under CH, the continuum is the successor of $\\aleph_0$, so every uncountable subset of $\\mathbb{R}$ has the full cardinality of the continuum.",
       "mathContext": "CH says $2^{\\aleph_0} = \\aleph_1$. Since $\\aleph_1 = \\text{succ}(\\aleph_0)$, there's no cardinal strictly between $\\aleph_0$ and $\\aleph_1$ by the definition of successor."
     },
     {
       "id": "under-not-ch",
-      "title": "Under ¬CH: Explicit Intermediates",
-      "startLine": 118,
-      "endLine": 147,
-      "summary": "Proves ¬CH → $\\aleph_1$ is an explicit intermediate cardinal. If $2^{\\aleph_0} \\neq \\aleph_1$, then $2^{\\aleph_0} > \\aleph_1$, giving $\\aleph_0 < \\aleph_1 < 2^{\\aleph_0}$.",
+      "title": "Part III — Under ¬CH: Explicit Intermediates",
+      "startLine": 108,
+      "endLine": 137,
+      "summary": "Proves ¬CH → $\\aleph_1$ is an explicit intermediate cardinal (not_ch_has_intermediate), and that ¬CH yields multiple intermediates (not_ch_multiple_intermediates). If $2^{\\aleph_0} \\neq \\aleph_1$, then $2^{\\aleph_0} > \\aleph_1$, giving $\\aleph_0 < \\aleph_1 < 2^{\\aleph_0}$.",
       "mathContext": "$\\aleph_1 \\leq 2^{\\aleph_0}$ always holds. ¬CH means $\\neq$, so the inequality is strict."
     },
     {
       "id": "independence",
-      "title": "The Independence Result",
-      "startLine": 153,
-      "endLine": 179,
-      "summary": "Combines results: intermediate exists ↔ ¬CH, and both are consistent with ZFC. This is the complete answer.",
+      "title": "Part IV — The Independence Result",
+      "startLine": 138,
+      "endLine": 164,
+      "summary": "Combines results: intermediate_cardinal_independent (the statement is independent of ZFC) and intermediate_iff_not_ch (an intermediate exists ↔ ¬CH).",
       "mathContext": "The combination of Gödel (Con(ZFC) → Con(ZFC+CH)) and Cohen (Con(ZFC) → Con(ZFC+¬CH)) shows the question is undecidable. Both answers are mathematically valid."
     },
     {
       "id": "constraints",
-      "title": "König's Constraint and Easton's Theorem",
-      "startLine": 185,
-      "endLine": 216,
-      "summary": "States König's cofinality constraint (cf(2^{ℵ₀}) > ℵ₀) and Easton's completeness theorem (these are the only constraints).",
+      "title": "Part V — König's Constraint and Easton's Theorem",
+      "startLine": 165,
+      "endLine": 197,
+      "summary": "States König's cofinality constraint (KonigConstraint: cf(2^{ℵ₀}) > ℵ₀) and Easton's completeness theorem (easton_consistent_values: these are the only constraints on 2^{ℵ₀}).",
       "mathContext": "König: $2^{\\aleph_0} \\neq \\aleph_\\omega$ (cofinality too small). Easton: for any regular $\\kappa \\geq \\aleph_1$, there's a model with $2^{\\aleph_0} = \\kappa$. Together: ZFC pins down $2^{\\aleph_0}$ to regular uncountable cardinals $\\geq \\aleph_1$."
     },
     {
+      "id": "large-cardinals",
+      "title": "Part VI — Large Cardinals and CH",
+      "startLine": 198,
+      "endLine": 230,
+      "summary": "Expository discussion of whether large-cardinal axioms settle CH: measurable/supercompact cardinals leave CH open, Martin's Axiom is compatible with both CH and ¬CH, PFA implies 2^{ℵ₀} = ℵ₂ (Todorcevic–Veličković), and Woodin's program. Bottom line: no known large-cardinal axiom settles CH by itself.",
+      "mathContext": "No large-cardinal axiom of the form ``there exists a κ with property P'' decides $2^{\\aleph_0}$; forcing can change the continuum while preserving such axioms."
+    },
+    {
+      "id": "characterization",
+      "title": "Part VII — Characterization Theorem",
+      "startLine": 231,
+      "endLine": 260,
+      "summary": "complete_answer: the definitive answer to the research question, bundling (1) intermediate cardinal exists ↔ ¬CH, (2) both CH and ¬CH are relatively consistent with ZFC, and (3) under ¬CH, ℵ₁ is an explicit intermediate. Proof inlines the ℵ₁-witness argument to avoid depending on Exists.choose being defeq to the witness.",
+      "mathContext": "$\\big((\\exists \\kappa,\\ \\aleph_0 < \\kappa < 2^{\\aleph_0}) \\iff \\neg\\text{CH}\\big) \\wedge \\text{Con}(\\text{CH}) \\wedge \\text{Con}(\\neg\\text{CH}) \\wedge \\big(\\neg\\text{CH} \\to \\aleph_0 < \\aleph_1 < 2^{\\aleph_0}\\big)$."
+    },
+    {
       "id": "gch",
-      "title": "The GCH Picture",
-      "startLine": 258,
-      "endLine": 295,
-      "summary": "Under GCH, no intermediate cardinals exist at ANY level ($\\aleph_\\alpha$ to $\\aleph_{\\alpha+1}$). Conversely, intermediate cardinals at level 0 imply ¬GCH.",
+      "title": "Part VIII — The GCH Picture",
+      "startLine": 261,
+      "endLine": 287,
+      "summary": "Under GCH, no intermediate cardinals exist at ANY level (gch_no_intermediates_anywhere: $\\aleph_\\alpha$ to $\\aleph_{\\alpha+1}$). Conversely, intermediate cardinals at level 0 imply ¬GCH (not_gch_from_intermediate).",
       "mathContext": "GCH: $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all $\\alpha$. Since $\\aleph_{\\alpha+1} = \\text{succ}(\\aleph_\\alpha)$, no cardinals can fit between them."
+    },
+    {
+      "id": "verification",
+      "title": "Part IX — Verification",
+      "startLine": 288,
+      "endLine": 301,
+      "summary": "#check statements confirming the type signatures of the nine principal results (aleph_one_gt_aleph_zero through not_gch_from_intermediate), and closes the CantorDiagOQ01OQ01 namespace.",
+      "mathContext": "Kernel-checked type signatures document that each stated theorem elaborates; the independence-flavored results rest on the axiomatized framework imported from ContinuumHypothesis."
     }
   ],
   "crossReferences": [

@@ -139,12 +139,28 @@
       "mathContext": "Mathematical content: Erdős-Hajnal: finite partition fails without CH"
     },
     {
+      "id": "countable-vs-finite",
+      "title": "Part VIII: The Countable vs Finite Distinction",
+      "startLine": 210,
+      "endLine": 219,
+      "summary": "Key insight: CH lets the countable decomposition succeed, yet without CH even a finite decomposition fails. The finite-to-countable transition is the crux of the problem.",
+      "mathContext": "Under CH a countable partition of $\\mathbb{R}^n$ into distinct-distance sets exists; under $\\neg$CH the Erdős–Hajnal obstruction already blocks finite partitions."
+    },
+    {
+      "id": "related-concepts",
+      "title": "Part IX: Related Concepts",
+      "startLine": 220,
+      "endLine": 236,
+      "summary": "numDistinctDistances: for a finite point set, counts distinct pairwise distances (via powersetCard 2), and notes the related Erdős distinct-distances problem (n points determine Ω(n/√log n) distinct distances).",
+      "mathContext": "$\\text{numDistinctDistances}(S) = |\\{\\,d(p,q) : \\{p,q\\} \\subseteq S\\,\\}|$; the Erdős distinct-distances bound is $\\Omega(n/\\sqrt{\\log n})$."
+    },
+    {
       "id": "summary",
-      "title": "Summary",
+      "title": "Part X: Summary",
       "startLine": 237,
       "endLine": 279,
-      "summary": "Main theorem and key results combined",
-      "mathContext": "Verified: Main theorem and key results combined"
+      "summary": "Main theorem and key results combined: Erdős Problem #1127 is solved assuming CH — ℝⁿ admits a countable decomposition into sets with distinct pairwise distances.",
+      "mathContext": "Verified: under CH, $\\mathbb{R}^n = \\bigsqcup_{k} S_k$ with each $S_k$ realizing distinct pairwise distances."
     }
   ],
   "conclusion": {

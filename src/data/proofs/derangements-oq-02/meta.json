@@ -121,12 +121,20 @@
       "id": "section-iii",
       "title": "The Bijection",
       "startLine": 96,
-      "endLine": 150,
-      "summary": "permSupportEqEquiv: explicit Equiv between {σ | σ.support = S} and derangements ↑S. card_perms_with_support_eq: cardinality equals numDerangements |S|. card_perms_with_kfixed: main S(n,k) = C(n,k)·D(n-k) theorem.",
+      "endLine": 141,
+      "summary": "permSupportEqEquiv: explicit Equiv between {σ | σ.support = S} and derangements ↑S, built from subtypePerm (forward) and ofSubtype (backward) with proved round-trips. card_perms_with_support_eq: each support class has cardinality numDerangements |S|.",
       "mathContext": "$\\{\\sigma \\mid \\sigma.\\text{support} = S\\} \\cong \\text{derangements}(S)$, so $|\\{\\sigma \\mid \\sigma.\\text{support} = S\\}| = D(|S|)$."
     },
     {
       "id": "section-iv",
+      "title": "Main Counting Theorem",
+      "startLine": 142,
+      "endLine": 193,
+      "summary": "card_perms_with_kfixed: the central result S(n,k) = C(n,k)·D(n-k). Rewrites |Fix(σ)| = k as |support| = n-k, decomposes {σ | |support| = n-k} as a disjoint biUnion over (n-k)-element subsets S (Finset.card_biUnion with pairwise disjointness by support), counts each class as D(n-k) via card_perms_with_support_eq, then evaluates the constant sum with Finset.card_powersetCard and Nat.choose_symm to turn C(n,n-k) into C(n,k).",
+      "mathContext": "$|\\{\\sigma \\mid |\\text{Fix}(\\sigma)| = k\\}| = \\sum_{|S| = n-k} |\\{\\sigma \\mid \\sigma.\\text{support} = S\\}| = \\binom{n}{n-k}\\, D(n-k) = \\binom{n}{k}\\, D(n-k)$."
+    },
+    {
+      "id": "section-v",
       "title": "Concrete Verifications",
       "startLine": 194,
       "endLine": 242,
@@ -134,7 +142,7 @@
       "mathContext": "$S(3,0)=2, S(3,1)=3, S(3,2)=0, S(3,3)=1$. Check: $2+3+0+1 = 6 = 3!$."
     },
     {
-      "id": "section-v",
+      "id": "section-vi",
       "title": "Special Cases",
       "startLine": 243,
       "endLine": 300,
@@ -142,7 +150,7 @@
       "mathContext": "$S(n,0) = D(n)$, $S(n,n) = 1$, $S(n,n-1) = 0$ (no permutation has exactly $n-1$ fixed points)."
     },
     {
-      "id": "section-vi",
+      "id": "section-vii",
       "title": "Algebraic Identity",
       "startLine": 301,
       "endLine": 357,
