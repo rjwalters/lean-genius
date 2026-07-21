@@ -170,6 +170,14 @@
       "startLine": 197,
       "endLine": 248,
       "mathContext": "Chvátal-Harary: $R(T) \\leq 2n - 2$. $R(S_n) = 2n - 1$. $R(P_n) = n$. Burr-Erdős: $R(T) = (\\chi(T) - 1)(|T| - 1) + 1 = |T|$ for trees (proved)."
+    },
+    {
+      "id": "main-disproof",
+      "title": "Main Disproof Statements",
+      "summary": "States the two headline results, both left as `sorry` (this entry is work-in-progress): erdos_549 (¬erdosConjecture549 — the R(T) = 4k−1 conjecture is false, refuted by the double star whose Ramsey number is ≥ 4.2k > 4k−1) and erdos_549_counterexample (for all sufficiently large k, some bipartite (k,2k) tree has RamseyNumber ≠ 4k−1). Closes with #check lines exposing erdos_549, norin_sun_zhao_counterexample, double_star_lower_bound, and flag_algebra_upper_bound.",
+      "startLine": 249,
+      "endLine": 266,
+      "mathContext": "$\\neg\\,(R(T) = 4k - 1)$ for bipartite $(k, 2k)$ trees, witnessed by the double star: $4.2k \\leq R(\\text{double star}) \\leq 4.21526k$, so $R > 4k - 1$ for large $k$. Both statements carry `sorry`, reflecting the entry's WIP status."
     }
   ],
   "conclusion": {

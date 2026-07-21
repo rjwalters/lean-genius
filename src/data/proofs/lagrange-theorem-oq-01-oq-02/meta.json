@@ -103,7 +103,7 @@
       "id": "sec-corollaries",
       "title": "Corollaries: Index 2 and Formal Statement",
       "startLine": 100,
-      "endLine": 121,
+      "endLine": 146,
       "summary": "A4_no_index2_subgroup: no index-2 subgroup of A₄ (since an index-2 subgroup would have order 6). lagrange_converse_fails: the precise counterexample statement — 6 divides |A₄| but no subgroup of order 6 exists.",
       "mathContext": "Index-2 corollary: $[A_4:H]=2 \\Rightarrow |H|=6$ (from $|H| \\cdot [A_4:H] = |A_4| = 12$). Then `A4_no_subgroup_order6` gives contradiction. Formal counterexample: $6 \\mid 12$ (witnessed by $6 \\times 2 = 12$) and $\\forall H \\leq A_4,\\, |H| \\neq 6$."
     }

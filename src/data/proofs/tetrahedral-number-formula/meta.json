@@ -96,8 +96,8 @@
       "id": "tetrahedral-closed-form",
       "title": "Tetrahedral closed form and triangular-division phrasing",
       "startLine": 109,
-      "endLine": 126,
-      "summary": "six_mul_choose_three (6·C(n+2,3) = n(n+1)(n+2)) is obtained for free by rewriting the hockey-stick identity backwards into the polynomial sum formula — no separate degree-3 Pascal induction is needed. sum_triangular_div restates the identity with the elementary summand k(k+1)/2 via Finset.sum_congr and triangular_choose_eq."
+      "endLine": 146,
+      "summary": "six_mul_choose_three (6·C(n+2,3) = n(n+1)(n+2)) is obtained for free by rewriting the hockey-stick identity backwards into the polynomial sum formula — no separate degree-3 Pascal induction is needed. Dividing by 6 gives the classical closed forms choose_three_closed_form (C(n+2,3) = n(n+1)(n+2)/6) and sum_triangular_closed_form (∑ T_k = n(n+1)(n+2)/6, the familiar /6 phrasing). sum_triangular_div restates the hockey-stick identity with the elementary summand k(k+1)/2 via Finset.sum_congr and triangular_choose_eq."
     }
   ],
   "overview": {
