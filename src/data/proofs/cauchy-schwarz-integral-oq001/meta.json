@@ -124,7 +124,14 @@
       "title": "Transitivity Corollaries",
       "summary": "Direct corollaries: HM ≤ AM, GM ≤ max, min ≤ AM",
       "startLine": 172,
-      "endLine": 194
+      "endLine": 201
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 202,
+      "endLine": 218,
+      "summary": "Closing recap of the power-mean chain min(a,b) ≤ HM ≤ GM ≤ AM ≤ QM ≤ max(a,b) for two positive reals, together with the direct transitivity corollary min_le_max' (min a b ≤ max a b). Every inequality is proved from first principles via nlinarith and sqrt monotonicity, with all five tight iff a = b; the file is 0-axiom, 0-sorry, fully verified."
     }
   ],
   "conclusion": {
