@@ -55,38 +55,52 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Header docstring: the open question (is every $\\alpha \\in [0,1)$ a $k$-density-jump for the strengthened liminf definition?), the answer/status, key changes over the placeholder model, and the single-axiom accounting (Erdős–Stone–Simonovits)."
+    },
+    {
       "id": "strengthened-def",
       "title": "Section I: Strengthened Definition",
-      "startLine": 40,
-      "endLine": 71,
+      "startLine": 51,
+      "endLine": 82,
       "summary": "Defines IsDensityJumpLiminf using Filter.liminf and Filter.Tendsto, and the corresponding densityJumpSetLiminf."
     },
     {
       "id": "relationship",
       "title": "Section II: Relationship to Original",
-      "startLine": 72,
-      "endLine": 83,
+      "startLine": 83,
+      "endLine": 94,
       "summary": "Shows the strengthened definition implies the original placeholder."
     },
     {
       "id": "ess-theorem",
       "title": "Section III: A_2 Characterization",
-      "startLine": 84,
-      "endLine": 105,
+      "startLine": 95,
+      "endLine": 120,
       "summary": "Defines Turán densities 1-1/m, proves they're in [0,1), axiomatizes A_2 = {1-1/m}."
     },
     {
       "id": "properties",
-      "title": "Section IV: Supersaturation infrastructure and Properties",
-      "startLine": 119,
-      "endLine": 245,
-      "summary": "Proves choose_tendsto_atTop (C(m,k) → ∞) and edgeDensity_nonneg, then proves 0 ∈ A_k for k ≥ 2 fully (no sorry) and A_k ⊆ [0,1)."
+      "title": "Section IV: Supersaturation Infrastructure",
+      "startLine": 121,
+      "endLine": 150,
+      "summary": "Proves choose_tendsto_atTop ($\\binom{m}{k} \\to \\infty$ as $m \\to \\infty$) and edgeDensity_nonneg, the counting-model lemmas underpinning the supersaturation argument."
+    },
+    {
+      "id": "properties-ak",
+      "title": "Section V: Properties of A_k",
+      "startLine": 151,
+      "endLine": 267,
+      "summary": "Proves the structural properties of the jump set $A_k$: zero_is_jump ($0 \\in A_k$ for $k \\geq 2$, proved fully with no sorry via the supersaturation infrastructure) and densityJumpSet_subset_Ico ($A_k \\subseteq [0,1)$)."
     },
     {
       "id": "open-problem",
-      "title": "Section V: The Open Problem and Verification",
-      "startLine": 123,
-      "endLine": 149,
+      "title": "Section VI: The Open Problem",
+      "startLine": 268,
+      "endLine": 294,
       "summary": "Marks the characterization of A_3 as open and lists #check verification commands.",
       "mathContext": "The open problem: characterize densityJumpSetLiminf 3, i.e., determine which values α ∈ [0,1) are density jump values for 3-uniform hypergraphs."
     }
