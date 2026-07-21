@@ -79,7 +79,7 @@
       "id": "infrastructure",
       "title": "Basic Formula Infrastructure",
       "startLine": 47,
-      "endLine": 62,
+      "endLine": 64,
       "description": "Defines Formula, neg, godelNum, and Prov — the same simplified model as OQ-01.",
       "summary": "Formula structure with code:Nat, negation, Gödel numbering, and provability formula constructor."
     },
@@ -111,17 +111,25 @@
       "id": "main-theorems",
       "title": "Incompleteness Theorems",
       "startLine": 158,
-      "endLine": 208,
+      "endLine": 198,
       "description": "G_not_provable, neg_G_not_provable, first_incompleteness, and G_undecidable.",
       "summary": "The full incompleteness theorem suite, now derived from the cleaner 5-axiom basis."
     },
     {
       "id": "generality",
       "title": "Generality of the Diagonal Lemma",
-      "startLine": 211,
-      "endLine": 228,
+      "startLine": 199,
+      "endLine": 218,
       "description": "Additional fixed-point instances showing the Diagonal Lemma applies beyond just ¬Prov.",
       "summary": "prov_fixed_point_exists and consistency_sentence_exists as other Diagonal Lemma instances."
+    },
+    {
+      "id": "forward-self-reference",
+      "title": "Forward Direction of Self-Reference",
+      "startLine": 219,
+      "endLine": 234,
+      "description": "G_self_reference_fwd: the forward half of OQ-01’s biconditional axiom, derived rather than assumed.",
+      "summary": "Derives (⊢ G) → ¬(⊢ Prov(⌈G⌉)) — the only direction needed for incompleteness — replacing OQ-01’s full self-reference axiom."
     }
   ],
   "conclusion": {
