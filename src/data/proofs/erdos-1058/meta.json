@@ -116,8 +116,8 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 137,
-      "endLine": 165,
-      "summary": "Combined result: finiteness + complete classification",
+      "endLine": 181,
+      "summary": "Combined result: finiteness + complete classification. `erdos_1058_status` packages the two halves — the Erdős–Stewart conjecture (only finitely many solutions) and the exact classification {1,2,3,4,5} — while `erdos_1058_solved` restates the finiteness, both discharged from Luca’s 2001 theorem.",
       "mathContext": "Combined status: finiteness (Luca 2001) + complete list $\\{1,2,3,4,5\\}$. The result demonstrates that super-exponential growth of $n!$ forces $n!+1$ to acquire diverse prime factors, making restricted factorization impossible for large $n$."
     }
   ],
