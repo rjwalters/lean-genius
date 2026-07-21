@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Foundational Heilbronn toolkit complete. n=3 now SANDWICHED: 3√3/4 ≤ heilbronn 3 ≤ 3/2 (heilbronn_three_mem_Icc). Sharp lower bound heilbronn 3 ≥ 3√3/4 = conjectured exact value; improved upper bound heilbronn n ≤ 3/2 (was ≤3) via origin-determinant decomposition E=(p×q)+(q×r)+(r×p) + Lagrange. Open: sharp upper bound heilbronn 3 ≤ 3√3/4 (maximal-inscribed-triangle optimization), and the deep α(n) exponent bounds (KPS/CPZ).",
+    "progressSummary": "Foundational Heilbronn toolkit + quantitative decay. n=3 SANDWICHED 3√3/4 ≤ heilbronn 3 ≤ 3/2. NEW (2026-07-21): heilbronn n ≤ 4/m for 2(m+1)<n (pigeonhole over vertical strips, heilbronn_le_four_div) ⇒ heilbronn n → 0 (heilbronn_tendsto_zero) — first bound showing genuine DECAY (all prior bounds constant in n); formalizes the elementary α(n)≪1/n remark. Open: sharp heilbronn 3 ≤ 3√3/4, and the deep α(n) exponent bounds (KPS/CPZ, 7/6≤β≤2).",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -72,7 +72,11 @@
       "abs_cross_le_one (Erdos507WIP01.lean): |a₁b₂−a₂b₁| ≤ 1 for a,b in unit disk (Lagrange identity + |a|²|b|² ≤ 1), 0-axiom",
       "triangleArea_le_three_halves (Erdos507WIP01.lean): improved uniform area bound ≤ 3/2 via E=(p×q)+(q×r)+(r×p) and abs_cross_le_one — sharpens triangleArea_le_three (≤3)",
       "heilbronn_le_three_halves (Erdos507WIP01.lean): heilbronn n ≤ 3/2 for n≥3, sharpens heilbronn_le_three",
-      "heilbronn_three_mem_Icc (Erdos507WIP01.lean): sandwich heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299,1.5], 0-axiom, docker-verified v4.31"
+      "heilbronn_three_mem_Icc (Erdos507WIP01.lean): sandwich heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299,1.5], 0-axiom, docker-verified v4.31",
+      "triangleArea_le_spread in Erdos507WIP01.lean: three points within a w×h box span area ≤ w·h (determinant identity + abs_mul bounds), 0-axiom",
+      "strip_spread (private) in Erdos507WIP01.lean: equal strip index ⌊(x+1)·m/2⌋₊ ⇒ |Δx|·m ≤ 2, 0-axiom",
+      "heilbronn_le_four_div in Erdos507WIP01.lean: heilbronn n ≤ 4/m for 1≤m, 2(m+1)<n (Finset pigeonhole), 0-axiom",
+      "heilbronn_tendsto_zero in Erdos507WIP01.lean: Tendsto heilbronn atTop (𝓝 0), 0-axiom"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -92,7 +96,9 @@
       "heilbronn 3 ≥ 3√3/4 (heilbronn_three_ge): sharp lower bound at n=3 via the equilateral triangle inscribed in the unit circle — (1,0),(−1/2,√3/2),(−1/2,−√3/2), all on the boundary, every ordering has triangleArea = 3√3/4 (the largest triangle inscribable in a radius-1 disk). Strengthens the crude right-triangle witness heilbronn 3 ≥ 1/2 to the conjectured EXACT value; the matching upper bound heilbronn 3 ≤ 3√3/4 (open here) would pin heilbronn 3 = 3√3/4, improving the current crude ≤ 3.",
       "The signed shoelace area equals a sum of three origin-based 2×2 determinants: E = (p×q)+(q×r)+(r×p) with a×b := a₁b₂−a₂b₁ (verified by ring). Each determinant is twice the signed area of triangle O-a-b.",
       "|a×b| ≤ 1 for unit-disk a,b via Lagrange: (a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|² ≤ 1; nlinarith needs sq_nonneg ⟨a,b⟩ plus the product bound |a|²|b|²≤1. This gives |E| ≤ 3 (abs_add_le twice + gcongr), hence area ≤ 3/2 — strictly better than the summand-wise ≤3.",
-      "The upper bound 3/2 is NOT sharp (true max |E|=3√3/2≈2.598, area 3√3/4≈1.299): the three determinants cannot be simultaneously maximal. Closing to the sharp 3√3/4 needs the central-angle constraint (angles subtended at O sum to 2π when O is interior) + Jensen on sin over [0,π] + an O-exterior case split — the genuine open optimization."
+      "The upper bound 3/2 is NOT sharp (true max |E|=3√3/2≈2.598, area 3√3/4≈1.299): the three determinants cannot be simultaneously maximal. Closing to the sharp 3√3/4 needs the central-angle constraint (angles subtended at O sum to 2π when O is interior) + Jensen on sin over [0,π] + an O-exterior case split — the genuine open optimization.",
+      "Quantitative decay heilbronn n = O(1/n): pigeonhole over ⌊(x+1)·m/2⌋₊ vertical strips gives heilbronn n ≤ 4/m whenever 2(m+1)<n (heilbronn_le_four_div), hence heilbronn n → 0 (heilbronn_tendsto_zero). First non-constant upper bound; formalizes the α(n)≪1/n pigeonhole remark of the problem statement.",
+      "Reusable recipe: the determinant form E=(p₁−r₁)(q₂−r₂)−(q₁−r₁)(p₂−r₂) (anchored at a vertex) is the right handle for LOCAL box/strip area bounds — spread hypotheses |Δx|≤w,|Δy|≤h collapse to two |·|≤w·h products (triangleArea_le_spread: area ≤ w·h)."
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",

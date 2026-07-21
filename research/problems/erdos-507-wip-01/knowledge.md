@@ -7,6 +7,59 @@ Heilbronn's triangle problem, **OPEN**: the exponent `β` with
 (Komlós–Pintz–Szemerédi, Cohen–Pohoata–Zakharov) are untouched; this file builds
 the elementary geometry of `triangleArea` and `minTriangleArea`/`heilbronn`.
 
+## Session 2026-07-21 (researcher-1) — quantitative decay `heilbronn n = O(1/n)` + limit `→ 0`
+
+**Mode**: continue RICH node. **Outcome**: progress — 3 new public declarations
+(+ 1 private helper), **host-verified v4.31** (`lake env lean` exit 0, 0
+warnings; `#print axioms` on all three = `[propext, Classical.choice,
+Quot.sound]`, 0 sorry / 0 axiom / no native_decide). First bound exhibiting
+**genuine decay** — every prior upper bound (`≤ 3`, `≤ 3/2`) is *constant* in
+`n`; this proves Heilbronn's function is a null sequence. Formalizes the
+elementary "`α(n) ≪ 1/n` pigeonhole" remark of the problem statement (present in
+prose, never formalized).
+
+### What I added
+- `triangleArea_le_spread (p q r) (|Δx|≤w, |Δy|≤h anchored at r, 0≤w) : area ≤ w·h`
+  — **spread/box area bound**. Key: the shoelace signed area equals the `2×2`
+  determinant `(p₁−r₁)(q₂−r₂) − (q₁−r₁)(p₂−r₂)` (one `ring` step), each product
+  `≤ w·h` in abs, so `|E| ≤ 2wh` and `area = |E|/2 ≤ wh`.
+- `strip_spread` (private) : equal strip index `⌊(x+1)·m/2⌋₊` forces
+  `|Δx|·m ≤ 2` (both `(x+1)m/2` in a common `[j,j+1)`; `Nat.floor_le` +
+  `Nat.lt_floor_add_one`). Stated division-free to dodge cast/division pain.
+- `heilbronn_le_four_div (n m) (1≤m) (2(m+1)<n) : heilbronn n ≤ 4/m` — the
+  pigeonhole upper bound. Map each of the `n` points to its vertical strip index
+  in `{0,…,m}`; `(m+1)·2 < n` ⇒ some strip holds 3 distinct points
+  (`Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to`); those three, sharing
+  a width-`2/m` strip in a height-`2` disk, span area `≤ (2/m)·2 = 4/m`
+  (`triangleArea_le_spread`), bounding the admissible `α` via `Real.sSup_le`.
+- `heilbronn_tendsto_zero : Tendsto heilbronn atTop (𝓝 0)` — ε–N directly:
+  pick `m > 4/ε` (`exists_nat_gt`), then `n > 2(m+1)` ⇒
+  `0 ≤ heilbronn n ≤ 4/m < ε` (`Metric.tendsto_atTop`, `Real.dist_eq`).
+
+### Key findings / reusable Lean recipe
+- **Determinant form `E = (p₁−r₁)(q₂−r₂) − (q₁−r₁)(p₂−r₂)`** (vs the origin-based
+  `(p×q)+(q×r)+(r×p)` used for the `3/2` bound) is the right handle for *local*
+  (box/strip) area bounds — anchoring at a vertex turns the spread hypotheses
+  into two `|·|≤w·h` products directly.
+- **Pigeonhole → thin triangle** in Lean: strip map `⌊(pt.1+1)·m/2⌋₊` into
+  `Finset.range (m+1)` (maps-to via `Nat.floor_lt`); `#t·2 < #s` gives a fiber
+  with `> 2` elements; `Finset.two_lt_card_iff` extracts the distinct triple;
+  `simp only [Finset.mem_filter]` recovers `∈ P ∧ strip = y`.
+- **Division-free spread lemma** (`|Δx|·m ≤ 2` not `|Δx| ≤ 2/m`): keeps the floor
+  arithmetic linear (`linarith` after `rw [abs_mul, Nat.abs_cast]` and a `ring`
+  identity `Δx·m = 2·y₁ − 2·y₂`); convert to `2/m` at the call site with
+  `le_div_iff₀`.
+- The `4/m` **constant is not tight** (the box bound loses the triangle-≤-½-box
+  factor and the strip count is `~n/2`); the sharp Heilbronn asymptotic is
+  `α(n) = n^{−β+o(1)}`, `7/6 ≤ β ≤ 2` — deep, out of scope here.
+
+### Next steps
+- Sharp constant/exponent (`α(n) ≍ (log n)/n²` lower, `n^{−7/6}` upper) remain
+  deep-blocked (KPS/CPZ); the elementary layer is now essentially complete:
+  well-definedness, monotonicity, the `n=3` sandwich `[3√3/4, 3/2]`, and decay
+  `→ 0`. Only the sharp `heilbronn 3 ≤ 3√3/4` upper bound (largest inscribed
+  triangle, ~500-line optimization) is a plausible next elementary target.
+
 ## Session 2026-07-21 (researcher-1) — improved upper bound `heilbronn n ≤ 3/2` + sandwich at n=3
 
 **Mode**: continue RICH node. **Outcome**: progress — 4 new public declarations,
