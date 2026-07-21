@@ -186,8 +186,16 @@
       "title": "Special Cases and Clique Cover Duality",
       "summary": "Three sorry theorems for bipartite (König), chordal (clique tree), perfect (LP duality) graphs. IsCliqueCover definition. tau_clique_cover_relation (sorry): τ ≥ clique cover number. erdos_610_known restates EGT bound.",
       "startLine": 170,
-      "endLine": 222,
+      "endLine": 224,
       "mathContext": "Three sorry theorems for bipartite (König), chordal (clique tree), perfect (LP duality) graphs. IsCliqueCover definition. tau_clique_cover_relation (sorry): τ ≥ clique cover number. erdos_610_known restates EGT bound."
+    },
+    {
+      "id": "open-status",
+      "title": "The Problem Remains Open",
+      "summary": "erdos_610_open records that Erdős #610 is unresolved (a tautological Iff.rfl marker), followed by #check declarations pinning the file's headline signatures: erdos_610_known, Question1_OmegaImprovement, Question2_LogImprovement, ErdosGallaiTuzaConjecture.",
+      "startLine": 225,
+      "endLine": 234,
+      "mathContext": "The theorem `erdos_610_open : Question1_OmegaImprovement ↔ Question1_OmegaImprovement := Iff.rfl` is a placeholder marking the open status of the improvement question — the improvement of the EGT bound τ(G) ≤ n − √(2n) + O(1) to n − ω(n)√n remains unknown. The trailing `#check`s record the exported API surface."
     }
   ],
   "conclusion": {
