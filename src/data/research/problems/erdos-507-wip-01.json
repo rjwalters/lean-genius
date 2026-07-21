@@ -64,7 +64,8 @@
       "heilbronn_defining_bddAbove (private) in Erdos507WIP01.lean — defining sSup-set bounded by 3 for n≥3",
       "heilbronn_nonneg in Erdos507WIP01.lean — 0 ≤ heilbronn n for n≥3 via le_csSup (α=0 admissible)",
       "heilbronn_succ_le in Erdos507WIP01.lean — heilbronn (n+1) ≤ heilbronn n for n≥3, delete-a-point (Finset.erase) restriction",
-      "heilbronn_antitone in Erdos507WIP01.lean — full antitonicity on {n≥3} via Nat.le_induction"
+      "heilbronn_antitone in Erdos507WIP01.lean — full antitonicity on {n≥3} via Nat.le_induction",
+      "heilbronn_mem_Icc in Erdos507WIP01.lean — sandwich 0 ≤ heilbronn n ≤ 3 for n≥3 (PR #39991), 0-axiom"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
