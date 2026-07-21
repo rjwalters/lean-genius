@@ -132,4 +132,40 @@ theorem volume_realProd_sublevelSet_lt_top (P : UnitDiskPoly n) :
   rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
   exact P.volume_sublevelSet_lt_top
 
+/-! ## Positivity of the 2D Lebesgue measure
+
+For positive degree, `Sₚ` is a *nonempty open* set (it contains every root), and a
+nonempty open set in the plane has strictly positive Lebesgue measure.  Combined with
+finiteness this pins the volume in `(0, ⊤)`, so the parent's `sublevelMeasure` (a
+`.toReal`) is not merely well-defined but genuinely **positive** — the lemniscate area
+is a real nonzero quantity, never the `⊤ ↦ 0` truncation nor a degenerate `0`. -/
+
+/-- **`0 < volume Sₚ`** (`ℂ`-side) for positive degree.  `Sₚ` is open
+(`isOpen_sublevelSet`) and nonempty (`sublevelSet_nonempty`, it contains a root); a
+nonempty open set has positive volume (`volume` is an open-positive measure on `ℂ`). -/
+theorem volume_sublevelSet_pos (P : UnitDiskPoly n) (hn : 0 < n) :
+    0 < volume P.sublevelSet :=
+  (isOpen_sublevelSet P).measure_pos volume (P.sublevelSet_nonempty hn)
+
+/-- **`0 < volume` of the parent's `ℝ × ℝ` sublevel set** for positive degree,
+transported from the `ℂ`-side positivity across the volume-preserving equivalence
+`ℂ ≃ᵐ ℝ × ℝ` (mirror of `volume_realProd_sublevelSet_lt_top`). -/
+theorem volume_realProd_sublevelSet_pos (P : UnitDiskPoly n) (hn : 0 < n) :
+    0 < volume {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} := by
+  rw [P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+  exact P.volume_sublevelSet_pos hn
+
+/-- **The lemniscate area is strictly positive.**  For a positive-degree polynomial the
+parent's `sublevelMeasure` — the `.toReal` of the planar volume of `{|p| < 1}` — is
+`> 0`: the volume is positive (`volume_realProd_sublevelSet_pos`) and finite
+(`volume_realProd_sublevelSet_lt_top`), so its `.toReal` is a genuine positive real.
+Together with `sublevelMeasure_nonneg` this shows `0 < sublevelMeasure P` sharply. -/
+theorem sublevelMeasure_pos (P : UnitDiskPoly n) (hn : 0 < n) :
+    0 < sublevelMeasure P := by
+  rw [sublevelMeasure]
+  exact ENNReal.toReal_pos (P.volume_realProd_sublevelSet_pos hn).ne'
+    (P.volume_realProd_sublevelSet_lt_top).ne
+
 end UnitDiskPoly
