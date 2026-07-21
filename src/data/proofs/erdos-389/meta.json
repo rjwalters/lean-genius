@@ -83,15 +83,15 @@
       "title": "Mehta's Computation",
       "summary": "Records Bhavik Mehta's result: $\\texttt{minimalK}(4) = 207$, meaning $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdot 212 \\cdots 417$. Proves minimality: no $k \\in [1, 206]$ works.",
       "startLine": 72,
-      "endLine": 83,
+      "endLine": 94,
       "mathContext": "Mehta: $\\text{minimalK}(4) = 207$. Product $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdots 417$."
     },
     {
       "id": "ratio",
       "title": "Ratio Interpretation",
       "summary": "Expresses the divisibility as $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} \\in \\mathbb{Z}$. Establishes the identity $(n)_k = k! \\binom{n+k-1}{k}$ connecting to binomial coefficients and Kummer's theorem.",
-      "startLine": 84,
-      "endLine": 98,
+      "startLine": 95,
+      "endLine": 122,
       "mathContext": "Ratio form: $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} \\in \\mathbb{Z}$. Equivalently $\\binom{n+2k-1}{k} / \\binom{n+k-1}{k} \\in \\mathbb{Z}$."
     }
   ],
