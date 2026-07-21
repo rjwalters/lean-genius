@@ -116,13 +116,21 @@
       "id": "h-bound",
       "title": "Key Result: h(n) ≤ n + 1",
       "startLine": 363,
-      "endLine": 484,
+      "endLine": 478,
       "summary": "Proves `gcdPowerSeq_at_succ_eq_one`: for all $n \\geq 1$, $\\gcd(2^n-1, \\ldots, (n+1)^n-1) = 1$, giving $h(n) \\leq n+1$. The proof eliminates all prime divisors: primes $q \\leq n+1$ are in the fold and self-refute ($q \\mid q^n$ and $q \\mid q^n-1$ gives $q \\mid 1$); primes $q > n+1$ would give $n+1$ distinct roots of $X^n - 1$ in $\\mathbb{Z}/q\\mathbb{Z}$, violating the degree-$n$ polynomial root bound. Corollary: `h_eq_succ_of_prime` gives $h(n) = n+1$ when $n+1$ is prime."
+    },
+    {
+      "id": "formal-definition",
+      "title": "Formal Definition of h(n)",
+      "startLine": 479,
+      "endLine": 503,
+      "summary": "Defines $h(n)$ formally as `hMinK n`, the least $k$ with $\\gcd(2^n-1, \\ldots, k^n-1) = 1$ (via `Nat.find`, well-defined because $k = n+1$ works). Establishes its defining properties: `hMinK_spec` ($\\gcd$ at $k = h(n)$ is 1), `hMinK_le_succ` (the $h(n) \\leq n+1$ bound restated for `hMinK`), and `hMinK_is_min` (minimality — no $k < h(n)$ gives $\\gcd = 1$).",
+      "mathContext": "`hMinK n = Nat.find ⟨n+1, gcdPowerSeq_at_succ_eq_one hn⟩`, so `hMinK_spec`/`hMinK_le_succ`/`hMinK_is_min` are the `Nat.find_spec`/`Nat.find_le`/`Nat.find_min` characterizations of the least witness. This turns the informal $h(n)$ into a computable Lean function on which the downstream formula and unboundedness results are stated."
     },
     {
       "id": "fermat-formula",
       "title": "Fermat Formula and Unboundedness",
-      "startLine": 497,
+      "startLine": 504,
       "endLine": 540,
       "summary": "PROVED: `hMinK_prime_minus_one` — for every prime $p$, $h(p-1) = p$. PROVED: `hMinK_succ_of_prime` — $h(n) = n+1$ iff $n+1$ is prime (formal statement). PROVED: `hMinK_unbounded` — for any $M$, $\\exists n$ with $h(n) > M$.",
       "mathContext": "For prime $p$: (i) $h(p-1) \\leq p$ because $\\gcd(2^{p-1}-1, \\ldots, p^{p-1}-1) = 1$ by `gcdPowerSeq_at_succ_eq_one`. (ii) $h(p-1) \\geq p$: for any $k < p$, Fermat gives $p \\mid \\gcd(2^{p-1}-1, \\ldots, k^{p-1}-1)$ so the gcd is not 1. Unboundedness follows: for any $M$, take a prime $p > M$ (by `Nat.exists_infinite_primes`); then $h(p-1) = p > M$."
@@ -131,7 +139,7 @@
       "id": "open-question-axioms",
       "title": "Open-Question Axioms: Q1 (Density) and Q3 (Dominant Prime)",
       "startLine": 541,
-      "endLine": 559,
+      "endLine": 558,
       "summary": "The two genuinely-open questions, stated as axioms. `erdos_770_q1`: for each prime p the natural density of {n : hMinK n = p} exists (OPEN — needs density theory for multiplicative functions). `erdos_770_q3`: for large n, hMinK n is determined by the largest prime p with (p−1) ∣ n (OPEN — no proof in the literature). These are the assumptions that keep the entry `axiomatized`; Q2 (unboundedness) is proved above, not axiomatized."
     }
   ],
