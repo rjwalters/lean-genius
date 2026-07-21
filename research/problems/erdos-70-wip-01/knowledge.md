@@ -99,3 +99,36 @@ fails against a `α ^ (↑n + 1)` goal. Route the successor step through
 Countability of the limit power `ω ^ ω` (`Ordinal.omega0 ^ Ordinal.omega0`),
 referenced by `conjecture_omega_tower` — needs a countable-sup argument
 (`ω^ω = ⨆ n, ω^n`); no direct `Ordinal.card_opow` exists in Mathlib v4.31.
+
+## Session 2026-07-20 (researcher-1, session 3): ω^ω countable — the limit-exponent step
+
+Picked up the session-1 "Next Steps" flag (`isCountableOrdinal_opow` for `ω^ω`). The
+finite-power closure `isCountableOrdinal_opow_nat` handles `ω^n` (n:ℕ) but not the
+*limit* exponent `ω^ω`. Added 3 axiom-free theorems to `Proofs/Erdos70WIP01.lean`
+(host-verified: parent `Erdos70Problem.lean` fresh-built to olean, child `lake env lean`
+exit 0; `#print axioms` = `[propext, Classical.choice, Quot.sound]` on all three).
+
+- **`isCountableOrdinal_iff_lt_omega_one`** — bridge `IsCountableOrdinal α ↔ α < ω₁`
+  (`card α ≤ ℵ₀ ↔ α < ω₁`), via `Cardinal.lt_omega_iff_card_lt` (`x < ω_ o ↔ x.card < ℵ_ o`)
+  and `Cardinal.lt_aleph_one_iff` (`c < ℵ₁ ↔ c ≤ ℵ₀`).
+
+- **`omega0_opow_omega0_countable`** — `ω^ω` is countable. Since `ω` is a successor-limit,
+  `Ordinal.opow_le_of_isSuccLimit` gives `ω^ω ≤ c ↔ ∀ β<ω, ω^β ≤ c`; each `β<ω` is a finite
+  `k` (`Ordinal.lt_omega0`), so `ω^β = ω^k ≤ ⨆ n:ℕ, ω^n` (`Ordinal.le_iSup`). That ℕ-indexed
+  supremum of the countable ordinals `ω^n` (`omega0_opow_nat_countable`) is `< ω₁` by
+  **`Ordinal.iSup_lt_omega_one`** (a countable sup of countable ordinals is countable —
+  regularity of ℵ₁). Hence `ω^ω ≤ (⨆ n, ω^n) < ω₁`, so `ω^ω` is countable.
+
+- **`erdos_70_conjecture_imp_omega_tower`** — specializes the open conjecture to
+  `conjecture_omega_tower` (β=ω^ω), completing the ω / ω² / ω^ω trio of flagship cases.
+
+### Gotcha
+Universe must be pinned to `Ordinal.{0}` (write `Ordinal.omega0.{0}`) so the theorem
+matches the parent's `conjecture_omega_tower`, which lives in `Ordinal.{0}`. Without the
+pin the auto-generalized universe metavariable clashes (`LE.le.{u_1+1}` vs `.{1}`).
+Also `Cardinal.lt_omega_iff_card_lt` is in the **`Cardinal`** namespace (not `Ordinal`).
+
+### Next Steps
+- General closure `isCountableOrdinal_opow` (α, β countable ⟹ α^β countable) by transfinite
+  induction on β using `opow_limit` + `iSup_lt_omega_one` at each limit stage.
+- Towers `ω^(ω^ω)` etc. up to `ε₀`; all countable, each a `le_iSup`-over-ℕ argument.
