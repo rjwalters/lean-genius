@@ -80,11 +80,19 @@
     },
     {
       "id": "conjecture",
-      "title": "Literal Conjecture (Refuted) and Consequences",
+      "title": "Literal Conjecture (Packaged, Not Assumed) and Consequences",
       "startLine": 131,
-      "endLine": 178,
-      "summary": "Packages the literal conjecture as a proposition (Erdos1210Statement, NOT assumed) and refutes it (not_Erdos1210Statement via the counterexample n=5, A={4}); retains genuine consequences for the empty set and prime singletons.",
+      "endLine": 162,
+      "summary": "Packages the literal Erdős-1210 inequality as a proposition (Erdos1210Statement) — deliberately a def, NOT an axiom, since it is false and assuming it would make the development inconsistent. Records two genuine consequences that hold unconditionally: the empty-set bound (erdos_1210_empty) and the prime-singleton bound (erdos_1210_prime_singleton, {p} ≤ full prime sum via sum_le_sum_of_subset_of_nonneg).",
       "mathContext": "$\\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
+    },
+    {
+      "id": "counterexample",
+      "title": "Counterexample: The Literal Statement Is False (n = 5, A = {4})",
+      "startLine": 164,
+      "endLine": 244,
+      "summary": "Machine-checks the concrete refutation. Computes primesBelow 5 = {2,3} (primesBelow_five, decide) and its weighted sum 5/6 (primesBelow_five_sum); verifies {4} satisfies ValidSubset 5 and PairwiseCoprime (singleton_four_valid_at_five); shows the A-sum 1/(5−4) = 1 strictly exceeds 5/6 (erdos_1210_literal_counterexample); and concludes ¬ Erdos1210Statement (not_Erdos1210Statement). A prior revision unsoundly declared the statement as an axiom, which combined with this counterexample derives False — the docstring records the fix.",
+      "mathContext": "At $n=5,\\ A=\\{4\\}$: $\\sum_{a\\in A}\\frac{1}{5-a} = 1 > \\tfrac{5}{6} = \\frac{1}{3}+\\frac{1}{2} = \\sum_{p<5,\\,p\\text{ prime}}\\frac{1}{5-p}$, so the literal inequality fails."
     }
   ],
   "conclusion": {
