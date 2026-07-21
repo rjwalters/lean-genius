@@ -100,7 +100,7 @@
     {
       "id": "greens-theorem-main",
       "title": "Green's Theorem (Main Proof)",
-      "startLine": 145,
+      "startLine": 116,
       "endLine": 202,
       "summary": "greens_theorem_concrete: under differentiability, integrability, and Fubini hypotheses, rectLineIntegral P Q a b c d = rectDoubleIntegral (∂Q/∂x - ∂P/∂y) a b c d. Eight steps: split inner integral, lift to outer, apply FTC for Q, split boundary terms, apply Fubini, apply FTC for P, split, ring arithmetic.",
       "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. Proved in 8 steps: (1-2) split and lift inner integral, (3) split outer, (4) FTC for $\\partial Q/\\partial x$, (5) split $Q$ terms, (6) Fubini swap, (7) FTC for $\\partial P/\\partial y$, (8) `ring`."
@@ -108,7 +108,7 @@
     {
       "id": "axiomatic-connection",
       "title": "Connection to Axiomatic Formulation",
-      "startLine": 217,
+      "startLine": 204,
       "endLine": 232,
       "summary": "concrete_matches_stub_zero: the concrete integrals agree with the abstract stubs on the zero field. area_double_integral: rectDoubleIntegral 1 a b c d = (b-a)*(d-c), proved concretely with integral_const. Shows our definitions compute correctly.",
       "mathContext": "Verification: $\\iint_R 1\\,dA = (b-a)(d-c)$ via `integral_const`. This confirms the iterated integral definition computes the correct area."
