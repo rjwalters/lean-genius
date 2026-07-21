@@ -100,7 +100,7 @@
       "id": "smallest-weird",
       "title": "The Smallest Weird Number: 70",
       "startLine": 80,
-      "endLine": 116,
+      "endLine": 126,
       "summary": "Proves 70 is abundant (native_decide), not pseudoperfect (powerset exhaustion), and no number below 70 is weird (exhaustive computation). Formerly axiomatized, now fully proved.",
       "mathContext": "$\\sigma(70) = 144 > 140 = 2 \\times 70$. No subset of $\\{1,2,5,7,10,14,35\\}$ sums to 70."
     },
@@ -130,11 +130,11 @@
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 538,
+      "title": "Prime-Indexing Infrastructure and the Melfi Conditional",
+      "startLine": 525,
       "endLine": 566,
-      "summary": "The erdos_470 summary theorem combining: 70 is smallest weird, 70 is primitive weird, odd weird > 3465, positive density, Melfi conditional.",
-      "mathContext": "Combined theorem asserting all key established results about Erdős Problem #470."
+      "summary": "Prime-indexing helpers used by the conditional-infinitude results: nthPrime n = Nat.nth Nat.Prime n with nthPrime_zero (= 2) and nthPrime_prime, the primeGap definition, the melfi_conditional axiom (a prime-gap hypothesis implies infinitely many primitive weird numbers), and the WeirdSet = { n | IsWeird n } definition.",
+      "mathContext": "$\\text{nthPrime}(n) = p_{n}$ (Mathlib's $\\texttt{Nat.nth}$), $\\text{primeGap}(n) = p_{n+1} - p_n$. The Melfi conditional axiom: if $p_{n+1} - p_n < \\sqrt{p_n}/10$ eventually, then $\\text{PrimitiveWeirdSet}$ is infinite. $\\text{WeirdSet} := \\{ n \\mid \\text{IsWeird } n \\}$."
     },
     {
       "id": "density-axiom-main-theorem",
