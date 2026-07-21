@@ -123,6 +123,36 @@ theorem sumset_lower_bound (A : Finset ℤ) (hne : A.Nonempty) :
   rw [sumset_eq_add, two_mul]
   exact cauchy_davenport_add_of_linearOrder_isCancelAdd hne hne
 
+/--
+**Product set lower bound (proved):** `|A| ≤ |A · A|` for any `A ⊆ ℤ` containing a
+nonzero element.
+
+This is the multiplicative analogue of `sumset_lower_bound`, completing the
+comment-only "Lower bound on product set" of Part II. Fix a nonzero `a₀ ∈ A`;
+since `ℤ` is an integral domain, `a ↦ a₀ · a` is injective (`mul_left_cancel₀`),
+and it maps `A` into the product set `A · A` (each `a₀ · a` is the product of two
+elements of `A`). Hence `|A| = |a₀ · A| ≤ |A · A|`. Axiom-free.
+
+The nonzero hypothesis is necessary: for `A = {0}`, `A · A = {0}`, so `|A| = 1`
+holds, but for e.g. `A = {0}` the injection argument needs the nonzero pivot; a
+set can fail to have a nonzero element only when `A ⊆ {0}`, where the bound is
+still trivially true but not via this cancellation route.
+-/
+theorem productSet_lower_bound (A : Finset ℤ) {a₀ : ℤ} (ha₀ : a₀ ∈ A)
+    (hne : a₀ ≠ 0) :
+    A.card ≤ (productSet A).card := by
+  have hinj : Set.InjOn (fun a => a₀ * a) A :=
+    fun x _ y _ h => mul_left_cancel₀ hne h
+  calc A.card
+      = (A.image (fun a => a₀ * a)).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (productSet A).card := by
+        apply Finset.card_le_card
+        intro x hx
+        simp only [Finset.mem_image] at hx
+        obtain ⟨a, ha, rfl⟩ := hx
+        rw [productSet, Finset.mem_image]
+        exact ⟨(a₀, a), Finset.mem_product.mpr ⟨ha₀, ha⟩, rfl⟩
+
 /-
 ## Part III: The Original Conjecture
 -/

@@ -69,3 +69,27 @@ Cleaned `proofs/Proofs/Erdos818Aristotle.lean` (imports Mathlib only):
 The main file (`Erdos818Problem.lean`) is untouched: its `solymosi_theorem`
 axiom and `proof_outline` sorry are both genuine deep external inputs (Solymosi
 2009), not session-eliminable.
+
+## Session 2026-07-20 (researcher-1) — product-set lower bound
+
+**Mode**: continue. **Outcome**: progress — host-verified, axiom-free, no Docker.
+
+Added `productSet_lower_bound` to `Erdos818Problem.lean` (Part II): for `A ⊆ ℤ`
+with a nonzero element `a₀ ∈ A`, `|A| ≤ |A · A|`. This is the multiplicative
+analogue of the already-proved `sumset_lower_bound` and fills the previously
+comment-only "Lower bound on product set" of Part II. Proof: `a ↦ a₀ · a` is
+injective on ℤ (domain, `mul_left_cancel₀`), and maps `A` into `A · A`, so
+`|A| = |a₀·A| ≤ |A·A|`. `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+(axiom-free by project convention). File still compiles with only the
+pre-existing `proof_outline` sorry warning.
+
+**Saturation note.** With both Part II trivial bounds now proved, the file's
+elementary content is exhausted. The two remaining items are research-depth and
+unchanged:
+- axiom `solymosi_theorem` — Solymosi's multiplicative-energy upper bound
+  `E×(A) ≤ C·|A+A|²·log|A|`, not in Mathlib (dyadic pigeonhole on multiplicative
+  fibers; BUILD/BLOCKED tier).
+- sorry `proof_outline` — the sharp `1/(K·log|A|)` product-set bound, a
+  registered blocked route (`currentState.blockers`) requiring a materially new
+  mechanism (the standard energy argument yields only `1/(C·K²·log|A|)`, proved
+  axiom-free modulo the energy hypothesis as `product_lower_of_mult_energy`).
