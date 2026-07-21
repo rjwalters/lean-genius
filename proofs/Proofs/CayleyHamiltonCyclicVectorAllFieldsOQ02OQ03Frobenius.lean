@@ -228,7 +228,7 @@ theorem centralizerEvalEquiv_apply [FiniteDimensional K V]
 theorem minpoly_natDegree_eq_finrank_of_cyclic [FiniteDimensional K V]
     (T : Module.End K V) (v : V) (hcyc : IsEndCyclicVector T v) :
     (minpoly K T).natDegree = Module.finrank K V := by
-  have hint : IsIntegral K T := T.isIntegral
+  have hint : IsIntegral K T := LinearMap.isIntegral T
   have hne : minpoly K T ≠ 0 := minpoly.ne_zero hint
   have haeval : (aeval T) (minpoly K T) = 0 := minpoly.aeval K T
   -- lower bound: a nonzero annihilator of degree `< n` contradicts cyclicity
@@ -239,7 +239,7 @@ theorem minpoly_natDegree_eq_finrank_of_cyclic [FiniteDimensional K V]
     exact hne (hcyc (minpoly K T) h hv0)
   -- upper bound: minpoly divides the characteristic polynomial (Cayley–Hamilton)
   have hle : (minpoly K T).natDegree ≤ Module.finrank K V := by
-    have hdvd : minpoly K T ∣ T.charpoly := minpoly.dvd (LinearMap.aeval_self_charpoly T)
+    have hdvd : minpoly K T ∣ T.charpoly := minpoly.dvd K T (LinearMap.aeval_self_charpoly T)
     have hcp_ne : T.charpoly ≠ 0 := T.charpoly_monic.ne_zero
     have hdeg : (minpoly K T).natDegree ≤ T.charpoly.natDegree :=
       Polynomial.natDegree_le_of_dvd hdvd hcp_ne
