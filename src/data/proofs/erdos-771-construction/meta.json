@@ -52,41 +52,97 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 1,
-      "endLine": 60,
-      "summary": "Docstring framing the file as the verified construction behind the Erdős–Graham lower bound, plus self-contained definitions Icc_n, subsetSums, AvoidSum, and primeMultiples.",
+      "endLine": 54,
+      "summary": "Docstring framing the file as the verified construction behind the Erdős–Graham lower bound, plus self-contained definitions Icc_n (the ground set {1,…,n}), subsetSums (all positive nonempty subset sums), AvoidSum, and primeMultiples.",
       "mathContext": "$S = \\{k \\in \\{1,\\dots,n\\} : p \\mid k\\}$; $S$ avoids $m$ iff $m$ is not a positive subset sum."
     },
     {
       "id": "size",
       "title": "Size of the Construction",
-      "startLine": 61,
-      "endLine": 73,
-      "summary": "prime_multiples_size: the multiples of p in {1,…,n} number exactly ⌊n/p⌋.",
+      "startLine": 55,
+      "endLine": 65,
+      "summary": "prime_multiples_size: the multiples of p in {1,…,n} number exactly ⌊n/p⌋, via rewriting {1,…,n} as Ioc 0 n and Nat.Ioc_filter_dvd_card_eq_div.",
       "mathContext": "$|\\{k \\le n : p \\mid k\\}| = \\lfloor n/p \\rfloor$."
     },
     {
       "id": "avoidance",
       "title": "The Avoidance Property",
-      "startLine": 74,
-      "endLine": 92,
-      "summary": "prime_multiples_avoid: if p ∤ m then the multiples of p avoid m, because every subset sum is divisible by p.",
+      "startLine": 66,
+      "endLine": 83,
+      "summary": "prime_multiples_avoid: if p ∤ m then the multiples of p avoid m, because every subset sum is divisible by p (Finset.dvd_sum), so equality to m would force p ∣ m.",
       "mathContext": "$p \\nmid m \\Rightarrow m \\notin \\{\\textstyle\\sum_{a\\in A} a : A \\subseteq S\\}$."
     },
     {
       "id": "existence",
       "title": "Existence: the Construction Always Applies",
-      "startLine": 83,
-      "endLine": 98,
-      "summary": "exists_prime_not_dvd (a prime above m misses m) and exists_avoiding_multiples (hence an m-avoiding subset of {1,…,n} exists for every m ≥ 1).",
+      "startLine": 84,
+      "endLine": 100,
+      "summary": "exists_prime_not_dvd (a prime above m misses m, via Nat.exists_infinite_primes) and exists_avoiding_multiples (hence an m-avoiding subset of {1,…,n} exists for every m ≥ 1).",
       "mathContext": "$\\forall m \\ge 1,\\ \\exists p\\ \\text{prime},\\ p \\nmid m$, giving an $m$-avoiding $S \\subseteq \\{1,\\dots,n\\}$."
     },
     {
       "id": "quantitative",
       "title": "Quantitative Existence via Bertrand's Postulate",
-      "startLine": 100,
-      "endLine": 140,
+      "startLine": 101,
+      "endLine": 130,
       "summary": "prime_gt_not_dvd (a prime > m ≥ 1 cannot divide m) and exists_avoiding_multiples_quantitative: Bertrand gives a prime m < p ≤ 2m, so an m-avoiding subset of size ⌊n/p⌋ ≥ ⌊n/(2m)⌋ exists for every m ≥ 1.",
       "mathContext": "$\\forall m \\ge 1,\\ \\exists p\\ \\text{prime},\\ m < p \\le 2m$ and $|S| = \\lfloor n/p \\rfloor \\ge \\lfloor n/(2m) \\rfloor$."
+    },
+    {
+      "id": "base-case-m1",
+      "title": "The Base Case m = 1",
+      "startLine": 131,
+      "endLine": 206,
+      "summary": "The exact value f(n) at m = 1. one_mem_subsetSums_iff characterizes 1 as a subset sum (1 ∈ S), avoid_one_iff (S avoids 1 iff 1 ∉ S), Icc_two_n_avoid_one (the explicit witness {2,…,n}), and avoid_one_card_le (optimality: any 1-avoiding subset of {1,…,n} has size ≤ n − 1).",
+      "mathContext": "$f(n) = n-1$ at $m=1$: a set avoids the subset sum $1$ iff it omits $1$; $\\{2,\\dots,n\\}$ realizes the maximum."
+    },
+    {
+      "id": "case-m2",
+      "title": "The Case m = 2",
+      "startLine": 207,
+      "endLine": 285,
+      "summary": "two_mem_subsetSums_iff (2 is a subset sum iff 2 ∈ S — no pair of distinct positives sums to 2), avoid_two_iff, Icc_erase_two_avoid_two ({1,…,n}∖{2} witnesses for n ≥ 2), and avoid_two_card_le (optimality: 2-avoiding subsets have size ≤ n − 1).",
+      "mathContext": "$f(n) = n-1$ at $m=2$: the value stays at $n-1$ because only the singleton $\\{2\\}$ can realize the sum $2$."
+    },
+    {
+      "id": "case-m3",
+      "title": "The Case m = 3: the Value First Drops Below n − 1",
+      "startLine": 286,
+      "endLine": 407,
+      "summary": "three_mem_subsetSums_iff (3 is a subset sum iff 3 ∈ S or both 1 ∈ S and 2 ∈ S — the first case where a pair 1+2 matters), avoid_three_iff, Icc_erase_two_three_avoid_three ({1,…,n}∖{2,3} witnesses for n ≥ 3), and avoid_three_card_le (optimality: size ≤ n − 2).",
+      "mathContext": "$f(n) = n-2$ at $m=3$: to avoid $3$ one must break the pair $1+2$, forcing a second deletion."
+    },
+    {
+      "id": "case-m4",
+      "title": "The Case m = 4: the First Plateau at n − 2",
+      "startLine": 408,
+      "endLine": 519,
+      "summary": "four_mem_subsetSums_iff (4 is a subset sum iff 4 ∈ S or both 1 ∈ S and 3 ∈ S — the sole complementary pair is 1+3, as 2+2 needs distinct elements), avoid_four_iff, Icc_erase_three_four_avoid_four ({1,…,n}∖{3,4} witnesses for n ≥ 4), and avoid_four_card_le (optimality: size ≤ n − 2).",
+      "mathContext": "$f(n) = n-2$ at $m=4$: breaking the single complementary pair $\\{1,3\\}$ plus omitting $4$ costs two deletions."
+    },
+    {
+      "id": "structural-upper-bound",
+      "title": "General Structural Lemmas: the Uniform Upper Bound f(n) ≤ n − 1",
+      "startLine": 520,
+      "endLine": 561,
+      "summary": "The general engine: subsetSums_self_mem (the singleton {m} is always a subset sum when m ∈ S), avoid_imp_notMem (any m-avoiding set must omit m), and avoid_card_le (uniform bound f(n) ≤ n − 1 for every 1 ≤ m ≤ n, since m itself must be deleted).",
+      "mathContext": "For all $1 \\le m \\le n$, every $m$-avoiding $S \\subseteq \\{1,\\dots,n\\}$ omits $m$, so $|S| \\le n-1$."
+    },
+    {
+      "id": "summary-monotonicity",
+      "title": "Summary and Monotonicity",
+      "startLine": 562,
+      "endLine": 595,
+      "summary": "A recap of the exact small-m values, plus two structural monotonicity lemmas: subsetSums_mono (enlarging the ground set only adds subset sums) and AvoidSum_antitone (avoidance is downward closed — if T avoids m and S ⊆ T then S avoids m).",
+      "mathContext": "$S \\subseteq T \\Rightarrow \\mathrm{subsetSums}(S) \\subseteq \\mathrm{subsetSums}(T)$, and avoidance descends to subsets."
+    },
+    {
+      "id": "general-pairing-bound",
+      "title": "General Pairing Bound: Uniform Optimality of the Per-m Ladder",
+      "startLine": 596,
+      "endLine": 690,
+      "summary": "The uniform optimality argument abstracting the per-case ladder: avoid_not_mem_self (m ∉ S) and avoid_not_pair (no complementary pair a + b = m with a ≠ b both in S) are the two avoidance atoms; avoid_low_card_le bounds the low part {1,…,⌊m/2⌋-region} by pairing a with m − a; and avoid_card_le_general assembles them into a uniform upper bound on |S| for every 1 ≤ m ≤ n.",
+      "mathContext": "An $m$-avoiding set contains neither $m$ nor any pair $\\{a, m-a\\}$; pairing $a \\leftrightarrow m-a$ caps its low part at $\\lfloor m/2 \\rfloor$ elements."
     }
   ],
   "conclusion": {
