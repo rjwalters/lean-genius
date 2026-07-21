@@ -254,4 +254,70 @@ theorem erdos_70_conjecture_imp_epsilon0 (h : erdos_70_conjecture) (n : ℕ)
     PartitionArrow continuum_card (⨆ k : ℕ, omegaTower k) n :=
   h (⨆ k : ℕ, omegaTower k) n iSup_omegaTower_countable hn
 
+/-! ## The single missing ingredient: infinite Ramsey for 3-uniform 2-colourings
+
+Every result above runs *from* the conjecture *to* a special case (it assumes
+`erdos_70_conjecture` and specializes `β`).  This section runs the other way: it
+identifies the *one* partition-calculus fact that would establish the whole
+formalized conjecture at a stroke, uniformly in `β`, and proves the reduction.
+
+That fact is the **infinite Ramsey theorem** for 2-colourings of 3-element
+subsets: on any continuum-sized `S`, some colour class admits an *infinite*
+homogeneous set.  It is a classical theorem but is **absent from Mathlib v4.31**
+(there is no infinite Ramsey / hypergraph-partition development — see
+`Mathlib.Combinatorics`, which stops at Hales–Jewett, Hindman, and finite
+pigeonhole).  The reduction below shows it is the sole obstruction.
+
+**Faithfulness caveat.**  Because the parent's `HasOrderTypeAtLeast` is the
+*cardinality* surrogate `α.card ≤ #H` (an explicitly "simplified version", see
+`Erdos70Problem.lean`), the colour-0 disjunct is met by any set of cardinality
+`≥ ℵ₀`.  Consequently the *formalized* conjecture is **strictly weaker** than the
+genuine partition relation `𝔠 → (β, n)₂³` of Erdős #70, which demands a colour-0
+homogeneous set of true order type `β`.  The reduction proves the formalized
+statement is in fact a *theorem modulo infinite Ramsey* — it does **not** settle
+the real order-type problem, which remains open. -/
+
+/-- **The missing ingredient.**  Infinite Ramsey for 2-colourings of 3-element
+subsets of a continuum-sized set: some colour class has an *infinite* homogeneous
+set.  A classical theorem, but not present in Mathlib v4.31; carried here as a
+named hypothesis rather than an `axiom` so the reduction stays assumption-free. -/
+def InfiniteRamsey3 : Prop :=
+  ∀ (S : Type) [DecidableEq S] (_ : Cardinal.mk S = continuum_card) (c : Coloring S 3 2),
+    ∃ (H : Set S) (i : Fin 2), H.Infinite ∧ IsHomogeneous H 3 c i
+
+/-- **Reduction of the whole formalized conjecture to one Ramsey fact.**
+`InfiniteRamsey3` implies `erdos_70_conjecture` — uniformly in every countable
+`β` and every `2 ≤ n` — under the file's cardinality surrogate for order type.
+
+Given a 2-colouring of the 3-subsets of a continuum-sized `S`, take the infinite
+homogeneous set `H` supplied by `InfiniteRamsey3`.
+* If its colour is `0`, `H` witnesses the left disjunct: it is homogeneous, and
+  `β.card ≤ ℵ₀ ≤ #H` (`β` countable; `H` infinite), so `HasOrderTypeAtLeast S H β`.
+* If its colour is `1`, any `n`-element finite subset of the infinite `H` witnesses
+  the right disjunct (`Set.Infinite.exists_subset_card_eq`), homogeneous because a
+  subset of an `IsHomogeneous` set is homogeneous. -/
+theorem infiniteRamsey3_imp_conjecture (h : InfiniteRamsey3) : erdos_70_conjecture := by
+  intro β n hβ _hn S _ hS c
+  obtain ⟨H, i, hHinf, hHom⟩ := h S hS c
+  fin_cases i
+  · -- colour 0: the infinite homogeneous set meets the order-type (cardinality) side
+    refine Or.inl ⟨H, ?_, hHom⟩
+    have hcard : Cardinal.aleph0 ≤ Cardinal.mk H :=
+      Cardinal.aleph0_le_mk_iff.mpr (Set.infinite_coe_iff.mpr hHinf)
+    exact le_trans hβ hcard
+  · -- colour 1: any n-subset of the infinite homogeneous set meets the size side
+    obtain ⟨t, hts, htc⟩ := hHinf.exists_subset_card_eq n
+    refine Or.inr ⟨t, htc.ge, ?_⟩
+    intro s hs hsub
+    exact hHom s hs (subset_trans (Finset.coe_subset.mpr hsub) hts)
+
+/-- Contrapositive packaging: a genuine counterexample to the formalized conjecture
+would refute infinite Ramsey for 3-uniform 2-colourings.  Since the latter is a
+theorem, this reconfirms that the *formalized* conjecture (cardinality surrogate)
+cannot have a counterexample — the open content lives entirely in the gap between
+`HasOrderTypeAtLeast` and true order type. -/
+theorem counterexample_imp_not_infiniteRamsey3
+    (h : erdos_70_counterexample) : ¬ InfiniteRamsey3 :=
+  fun hR => conjecture_xor_counterexample.mp (infiniteRamsey3_imp_conjecture hR) h
+
 end Erdos70
