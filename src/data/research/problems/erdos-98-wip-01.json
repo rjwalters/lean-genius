@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: h5>=3 degree-3 exclusion + 2-REGULARITY COMPLETE (no_short_degree_three, two_distance_two_regular; axiom-free, docker-verified 8577 jobs). Every vertex of a general-position two-distance 5-set has exactly 2 short neighbours. Remaining: C5 endgame (2-regular => single 5-cycle => regular pentagon => concyclic => contradiction with NoFourConcyclic). Bounds still 2 <= h 5 <= 3.",
+    "progressSummary": "COMPLETE: h 5 = 3 fully proved, docker-verified, axiom-free (h_five_eq_three). The C5-endgame was bypassed: 2-regularity gives constant row-sum of squared distances, and a centroid identity forces all 5 points equidistant from the centroid (concyclic), contradicting NoFourConcyclic. Only the asymptotic Erdos #98 conjecture remains open.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -89,7 +89,10 @@
       "degree_three_rhombus_impossible (Erdos98WIP01.lean, axiom-free): k=2 sub-case of short-degree-3 exclusion — v with neighbours x,y,z at dist a, two neighbour pairs at a (60°-rhombus) + one at b, fifth point w at dist b, dist(w,·)∈{a,b} ⟹ False. Gram forces b²=3a², rhombus relation uₓ=u_y+u_z, then dist(w,y)²+dist(w,z)²=4a²+dist(w,x)² has no {a²,3a²} solution.",
       "degree_three_isosceles_impossible (Erdos98WIP01.lean:2297, axiom-free, maxHeartbeats 1600000): k=1 sub-case of degree-3 exclusion — v with 3 neighbours x,y,z at dist a, exactly one neighbour-pair a-edge (dist x y=a, dist x z=dist y z=b), fifth pt w at dist b from v with dist w{x,y,z} in {a,b} implies False. Singular Gram forces a^4-4a^2b^2+b^4=0 (b^2=(2±sqrt3)a^2, quadratic irrational, both sqrt3 branches realizable); vector relation (2a^2-b^2)(ux+uy)=3a^2*uz via norm^2=-3a^2*keyexpr=0; 8-way squared-distance split closed by nlinarith with degree-6 Positivstellensatz cert landing on a^6>0.",
       "no_short_degree_three (Erdos98WIP01.lean): general-position two-distance PointConfig 5 has no vertex with a-degree 3 — assembles the four degree-3 sub-case lemmas via 8-way rcases on neighbour-pair colours + permutation; axiom-free, docker-verified. hgp/hab UNUSED (obstruction is purely metric).",
-      "two_distance_two_regular (Erdos98WIP01.lean): every vertex of a general-position two-distance PointConfig 5 has exactly two a-neighbours (short-graph is 2-regular) — degree bounds {1,2,3} + no-degree-3 + a<->b mirror + A.card+B.card=4; axiom-free, docker-verified."
+      "two_distance_two_regular (Erdos98WIP01.lean): every vertex of a general-position two-distance PointConfig 5 has exactly two a-neighbours (short-graph is 2-regular) — degree bounds {1,2,3} + no-degree-3 + a<->b mirror + A.card+B.card=4; axiom-free, docker-verified.",
+      "two_distance_row_sq_sum (Erdos98WIP01.lean): sum_k dist(Pm,Pk)^2 = 2a^2+2b^2 for every vertex m of a general-position two-distance PointConfig 5 (axiom-free, docker-verified).",
+      "three_le_h_five (Erdos98WIP01.lean): 3 <= h 5, via centroid concyclicity contradicting NoFourConcyclic (axiom-free, maxHeartbeats 1600000, docker-verified).",
+      "h_five_eq_three (Erdos98WIP01.lean): h 5 = 3, pinned exactly via le_antisymm h_five_le_three three_le_h_five (axiom-free, docker-verified)."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -134,16 +137,21 @@
       "Degree-6 Positivstellensatz endgame: with key homogeneous-quartic (not linear in b^2), each of the 8 squared-distance assignments gives a homogeneous degree-4 relation H_case; {H_case=0, key=0} has NO common root for a>0 (verified per case). nlinarith closes each via products a^2*H, b^2*H, a^2*key, b^2*key summing to a positive multiple of a^6 (e.g. case aaa: 26/3*a^2H - 7/3*b^2H + a^2key - 14/3*b^2key = a^6); hints pow_pos ha 6 plus a^4b^2,a^2b^4 positivity suffice.",
       "DEGREE-3 EXCLUSION NOW COMPLETE as four standalone axiom-free lemmas: k=3 no_four_equidistant_indices, k=0 degree_three_equilateral_impossible, k=2 degree_three_rhombus_impossible, k=1 degree_three_isosceles_impossible. Remaining for h5>=3: (a) ASSEMBLE these into no-short-degree-3-vertex plus a<->b symmetry implies short-graph 2-regular; (b) 2-regular implies C5 implies regular pentagon implies 5 concyclic implies not NoFourConcyclic.",
       "The degree-3 exclusion is METRIC, not general-position-dependent: no_short_degree_three does not use hgp or hab (they enter only through the sub-case lemmas geometry).",
-      "a<->b symmetry: apply no_short_degree_three with (a,b) swapped and hcov = (hcov . .).symm to kill b-degree 3; with A.card+B.card=4 that excludes a-degree 1, forcing degree exactly 2."
+      "a<->b symmetry: apply no_short_degree_three with (a,b) swapped and hcov = (hcov . .).symm to kill b-degree 3; with A.card+B.card=4 that excludes a-degree 1, forcing degree exactly 2.",
+      "THE C5 ENDGAME IS UNNECESSARY: a 2-regular two-distance 5-set need not be shown to be a single 5-cycle or a regular pentagon. Only the constant row-sum of squared distances (Ri = 2a^2+2b^2, from 2-regularity) matters.",
+      "Centroid concyclicity: for O = (1/5) sum Pk, 5(Pi-O) = sum_k (Pi-Pk), so 25||Pi-O||^2 = sum_k sum_l <Pi-Pk,Pi-Pl> = sum polarized = 5*Ri - (1/2)*sum_k Rk = 5a^2+5b^2, INDEPENDENT of i. Hence all 5 points equidistant (radius sqrt((a^2+b^2)/5)) from the centroid => concyclic => contradicts NoFourConcyclic.",
+      "This is the general phenomenon: a REGULAR two-distance set (each point has the same distance-multiset) is cospherical, centred at the centroid. The derivation is dimension- and n-agnostic.",
+      "a=b degenerate branch of the reduction is killed separately by no_four_equidistant_indices (5 mutually equidistant points impossible in the plane)."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3.",
-      "Mathlib v4.31 Finset.card_sdiff is the unconditional form #(s\\t)=#s-#(t∩s) (no subset-hyp arg); use Finset.sdiff_nonempty.mpr + Finset.card_le_card for complement-of-small-subset-nonempty."
+      "Mathlib v4.31 Finset.card_sdiff is the unconditional form #(s\\t)=#s-#(t∩s) (no subset-hyp arg); use Finset.sdiff_nonempty.mpr + Finset.card_le_card for complement-of-small-subset-nonempty.",
+      "None new. Note: `sum k in s` no longer parses in this toolchain (use `sum k IN-set s`); InGeneralPosition is a bare And so hgp.injective fails (use hgp.1); the `module` tactic cleanly discharges the 5^{-1} field-scalar centroid identity."
     ],
     "nextSteps": [
-      "C5 endgame step 1: from two_distance_two_regular, build 5-cycle permutation sigma of Fin 5 (two a-neighbours = sigma i, sigma^-1 i). Hard sub-step: pure graph fact 2-regular on 5 vertices => single 5-cycle (rule out triangle+edge).",
-      "C5 endgame step 2: cyclic + all a-edges equal => regular pentagon => 5 vertices concyclic (circumcircle of 3 consecutive + law of cosines, or explicit order-5 rotation).",
-      "C5 endgame step 3: feed 4 concyclic points to NoFourConcyclic => contradiction, closing h 5 >= 3."
+      "h 5 = 3 is DONE. Follow-up: is h 6 = 3 reachable? The row-sum/centroid method only kills REGULAR two-distance sets; irregular 2-distance 6-sets need a different argument.",
+      "Extract `equal row sums => cospherical` as a standalone reusable lemma (dimension/n-agnostic).",
+      "Asymptotic Erdos #98 (weak h(n)>=n, strong h(n)/n->inf) remain genuinely open; not attackable by these elementary methods."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
