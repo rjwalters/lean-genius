@@ -702,7 +702,8 @@
       "Resolved the fork with isCoeffUnimodal_iff_unimodal_coeff: the predicates are provably equivalent (forward = specialise blocks to single steps; backward = telescope adjacent steps into monotone blocks by induction on the gap). Transports k=2 (and any future Unimodal-based result) into IsCoeffUnimodal for free; qBinom_X_unimodal_two now holds without re-proof.",
       "Going forward, prove new k-cases ONCE against Unimodal (which has the palindrome criterion + coefficient machinery) and transport via the bridge; do not re-develop IsCoeffUnimodal-specific proofs.",
       "General palindrome→unimodal criterion (any degree, odd included): unimodal_of_palindrome_first_half_mono in CombinationsFormulaOQ03OQ04.lean. A nonneg sequence supported on [0,d], palindromic (f j = f(d-j)), and weakly rising while 2j+2≤d is unimodal with peak ⌊d/2⌋. The odd-degree central step (d=2i+1, f i = f(i+1) forced equal by palindromy) is the case the prior even-only lemma could not reach.",
-      "The whole Sylvester problem for a fixed k now reduces to ONE inequality: qBinomCoeff_unimodal_of_first_half_mono (k≤n) packages nonnegativity (qBinom_X_coeff_nonneg), degree/support (qBinom_X_natDegree), and palindromy (qBinom_X_coeff_symm) — any future k-case need only supply coeff j ≤ coeff (j+1) for 2j+2 ≤ k(n-k)."
+      "The whole Sylvester problem for a fixed k now reduces to ONE inequality: qBinomCoeff_unimodal_of_first_half_mono (k≤n) packages nonnegativity (qBinom_X_coeff_nonneg), degree/support (qBinom_X_natDegree), and palindromy (qBinom_X_coeff_symm) — any future k-case need only supply coeff j ≤ coeff (j+1) for 2j+2 ≤ k(n-k).",
+      "Blocked route (researcher-1, 2026-07-20): the k=2 unimodality proof (qBinom_X_two_coeff_le) used the n-INDEPENDENT first-half ramp coeff j = ⌊j/2⌋+1, valid because for k=2 the size bound (parts ≤ n-2) is non-binding across the ENTIRE first half j ≤ n-2. This does NOT extend to k≥3: the first half reaches j = k(n-k)/2 > n-k, so the 'parts ≤ n-k' bound binds within the first half at j = n-k+1. Verified concretely: [6,3]_q coeff array = [1,1,2,3,3,3,3,2,1,1]; at j=4 the coefficient is 3, CAPPED below the unbounded ≤3-part count 4. Hence no n-independent first-half ramp exists for k≥3 and qBinomCoeff_unimodal_of_first_half_mono cannot be discharged by the k=2 method. Reopen criterion: materially new mechanism (sl₂ raising/lowering per Proctor 1982, or O'Hara injection 1990) required."
     ],
     "builtItems": [
       "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
@@ -723,7 +724,8 @@
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
-      "For a COEFFICIENT-LEVEL palindromy over the polynomial ring (Polynomial.reflect), the parent q-binomial would need specializing to Polynomial over the integers with q = X; not done here (field formulation avoids Polynomial machinery)."
+      "For a COEFFICIENT-LEVEL palindromy over the polynomial ring (Polynomial.reflect), the parent q-binomial would need specializing to Polynomial over the integers with q = X; not done here (field formulation avoids Polynomial machinery).",
+      "Bounded-partition counting: no Mathlib API for #{partitions of j into ≤k parts each ≤ N} as a function whose first-half monotonicity (in j) can be established. This is the object needed to discharge qBinomCoeff_unimodal_of_first_half_mono for k≥3; the size bound binds on the first half so the count is not the (formulaic) unbounded ≤k-part count."
     ],
     "nextSteps": [
       "Attempt the UNIMODALITY half: the real open question. Routes are (a) sl_2 raising/lowering operator action on the subspace lattice (Proctor 1982), (b) O'Hara-style explicit injection between coefficient levels. Both substantial; assess buildability first.",
@@ -731,9 +733,9 @@
       "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array.",
       "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels."
     ],
-    "progressSummary": "PROGRESS: Reduced Sylvester unimodality for every (n,k) to a single first-half-monotonicity inequality. Added a general any-degree palindrome→unimodal criterion (odd degrees now covered, generalising the previous even-only lemma) and the packaged reduction qBinomCoeff_unimodal_of_first_half_mono. Base/small cases k=0,1,2 already discharged upstream. Open crux k≥3: supply the first-half monotone inequality (still needs sl₂/hard-Lefschetz or O Hara)."
+    "progressSummary": "k=0,1,2 unimodality VERIFIED (0 axioms); general reduction qBinomCoeff_unimodal_of_first_half_mono in place (Sylvester for fixed k ⇐ first-half monotonicity). Blocked route documented: k=2 n-independent ramp fails for k≥3 because the parts≤(n-k) bound binds within the first half (witness [6,3]_q first half [1,1,2,3,3] vs unbounded [1,1,2,3,4]); k≥3 needs sl₂/O_Hara. Family at tractable ceiling."
   },
   "currentState": "Bridged the two forked unimodality predicates (researcher-1): isCoeffUnimodal_iff_unimodal_coeff proves IsCoeffUnimodal p ↔ Unimodal p.coeff, unifying CombinationsFormulaOQ03OQ04Unimodal.lean (IsCoeffUnimodal, was k≤1) with CombinationsFormulaOQ03OQ04.lean (Unimodal, has k=0,1,2 + palindrome criterion). k=2 transported (qBinom_X_unimodal_two), no re-proof. 0 axioms. k≥3 open.",
   "lastUpdate": "2026-07-20",
-  "nextAction": "Prove new k-cases against Unimodal + palindrome criterion and transport via the bridge (do not re-fork IsCoeffUnimodal). k≥3 needs sl2/hard-Lefschetz (Proctor 1982) or O_Hara (1990) — research-grade, not started."
+  "nextAction": "k≥3 is BLOCKED for elementary methods: the k=2 first-half ramp has no analogue (size bound binds within first half; witness [6,3]_q). Reopen only with a materially new mechanism — sl₂ raising/lowering (Proctor 1982) or an O_Hara-style injection between adjacent coefficient levels (1990). Do NOT re-attempt an n-independent ramp for k≥3."
 }
