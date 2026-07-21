@@ -28,11 +28,13 @@ needed). Bound `heilbronn n` (`n ≥ 3`) via `Real.sSup_le` + `triangleArea_le_t
 
 ## Next Action
 
-Sharpen the `n=3` lower bound toward the exact `heilbronn 3 = 3√3/4` (largest
-inscribed triangle); the upper half needs a max-inscribed-triangle bound, likely
-not session-sized. Otherwise the deep `α(n)` exponent bounds (KPS/CPZ) remain
-out of scope.
+Elementary layer is now essentially complete: well-definedness, monotonicity,
+the `n=3` sandwich `[3√3/4, 3/2]`, and **quantitative decay** `heilbronn n ≤ 4/m`
+(`heilbronn_le_four_div`) hence `heilbronn n → 0` (`heilbronn_tendsto_zero`, added
+2026-07-21). Remaining plausible elementary target: the sharp
+`heilbronn 3 ≤ 3√3/4` (largest inscribed triangle, ~500-line optimization). The
+deep `α(n)` exponent bounds (KPS/CPZ, `7/6 ≤ β ≤ 2`) remain out of scope.
 
 ## Attempt Counts
 
-- Total attempts: 3
+- Total attempts: 4

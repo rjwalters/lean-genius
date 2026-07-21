@@ -47,7 +47,15 @@ of the atomic building block `triangleArea`:
 * the resulting sandwich `heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299, 1.5]`
   (`heilbronn_three_mem_Icc`) — the conjectured exact value is the lower
   endpoint `3√3/4`, and the remaining gap is the sharp inscribed-triangle upper
-  bound `heilbronn 3 ≤ 3√3/4`.
+  bound `heilbronn 3 ≤ 3√3/4`;
+* **quantitative decay** `heilbronn n = O(1/n)`: a spread/box area bound
+  (`triangleArea_le_spread` — three points within a `w × h` box span area
+  `≤ w·h`) plus a `Finset` pigeonhole over `⌊(x+1)·m/2⌋₊` vertical strips give
+  `heilbronn n ≤ 4/m` whenever `2(m+1) < n` (`heilbronn_le_four_div`), hence
+  `heilbronn n → 0` (`heilbronn_tendsto_zero`).  This is the first bound
+  exhibiting genuine decay — all the bounds above are constant in `n` — and
+  formalizes the elementary "`α(n) ≪ 1/n`" pigeonhole remark of the problem
+  statement.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -55,6 +63,7 @@ Reference: <https://erdosproblems.com/507>
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Combinatorics.Pigeonhole
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
@@ -585,5 +594,157 @@ sharp maximal-inscribed-triangle upper bound `heilbronn 3 ≤ 3√3/4`. -/
 theorem heilbronn_three_mem_Icc :
     heilbronn 3 ∈ Set.Icc (3 * Real.sqrt 3 / 4) (3 / 2) :=
   ⟨heilbronn_three_ge, heilbronn_le_three_halves 3 (by norm_num)⟩
+
+/-! ## Quantitative decay: `heilbronn n = O(1/n)`
+
+All the upper bounds above (`heilbronn n ≤ 3`, `≤ 3/2`) are *constant* in `n` —
+they witness finiteness but not decay.  The elementary pigeonhole argument
+sketched in the problem statement shows that Heilbronn's function actually
+**decays**: cut the unit disk into `m + 1` vertical strips of width `2/m`; once
+`2(m+1) < n`, some strip must contain three of the `n` points, and three points
+sharing a strip of width `2/m` and height `2` span a triangle of area at most
+`(2/m)·2 = 4/m`.  Hence `heilbronn n ≤ 4/m` for every admissible `m`, so
+`heilbronn n → 0`.  This is qualitatively stronger than the constant bounds:
+combined with `heilbronn_antitone` it shows Heilbronn's function is a strictly
+decaying-to-zero sequence, matching the (much finer) known asymptotic
+`α(n) = n^{−β+o(1)}` with `7/6 ≤ β ≤ 2` at the crudest exponent level. -/
+
+/-- **Spread bound for the triangle area.**  If the `x`-coordinates of `p, q`
+lie within `w` of `r.1` and their `y`-coordinates within `h` of `r.2`, then the
+triangle `p q r` has area at most `w · h`.  Proof: the shoelace signed area
+equals the `2×2` determinant `(p₁−r₁)(q₂−r₂) − (q₁−r₁)(p₂−r₂)`, whose two
+products are each `≤ w·h` in absolute value, so `|signed area| ≤ 2wh` and
+`triangleArea = |signed area| / 2 ≤ wh`. -/
+theorem triangleArea_le_spread (p q r : ℝ × ℝ) {w h : ℝ}
+    (hpx : |p.1 - r.1| ≤ w) (hqx : |q.1 - r.1| ≤ w)
+    (hpy : |p.2 - r.2| ≤ h) (hqy : |q.2 - r.2| ≤ h)
+    (hw : 0 ≤ w) :
+    triangleArea p q r ≤ w * h := by
+  have hA : |(p.1 - r.1) * (q.2 - r.2)| ≤ w * h := by
+    rw [abs_mul]; exact mul_le_mul hpx hqy (abs_nonneg _) hw
+  have hB : |(q.1 - r.1) * (p.2 - r.2)| ≤ w * h := by
+    rw [abs_mul]; exact mul_le_mul hqx hpy (abs_nonneg _) hw
+  have key : |(p.1 - r.1) * (q.2 - r.2) - (q.1 - r.1) * (p.2 - r.2)|
+      ≤ |(p.1 - r.1) * (q.2 - r.2)| + |(q.1 - r.1) * (p.2 - r.2)| := by
+    have h := abs_add_le ((p.1 - r.1) * (q.2 - r.2)) (-((q.1 - r.1) * (p.2 - r.2)))
+    rwa [abs_neg, ← sub_eq_add_neg] at h
+  unfold triangleArea
+  have hid : p.1 * (q.2 - r.2) + q.1 * (r.2 - p.2) + r.1 * (p.2 - q.2)
+      = (p.1 - r.1) * (q.2 - r.2) - (q.1 - r.1) * (p.2 - r.2) := by ring
+  rw [hid]
+  linarith [key, hA, hB]
+
+/-- **Same-strip `x`-spread bound.**  If two points `pt₁, pt₂` (both with
+`x`-coordinate `≥ −1`) fall in the same strip `⌊(x+1)·m/2⌋₊`, their
+`x`-coordinates differ by at most `2/m`, stated division-free as
+`|pt₁.1 − pt₂.1| · m ≤ 2`.  Equal `⌊·⌋₊` forces both `(x+1)m/2` into a common
+unit interval `[j, j+1)`. -/
+private theorem strip_spread {pt₁ pt₂ : ℝ × ℝ} {m : ℕ}
+    (h₁ : -1 ≤ pt₁.1) (h₂ : -1 ≤ pt₂.1)
+    (hfe : ⌊(pt₁.1 + 1) * m / 2⌋₊ = ⌊(pt₂.1 + 1) * m / 2⌋₊) :
+    |pt₁.1 - pt₂.1| * m ≤ 2 := by
+  have hnn1 : (0 : ℝ) ≤ (pt₁.1 + 1) * m / 2 :=
+    div_nonneg (mul_nonneg (by linarith) (Nat.cast_nonneg m)) (by norm_num)
+  have hnn2 : (0 : ℝ) ≤ (pt₂.1 + 1) * m / 2 :=
+    div_nonneg (mul_nonneg (by linarith) (Nat.cast_nonneg m)) (by norm_num)
+  have l1 := Nat.floor_le hnn1
+  have u1 := Nat.lt_floor_add_one ((pt₁.1 + 1) * m / 2)
+  have l2 := Nat.floor_le hnn2
+  have u2 := Nat.lt_floor_add_one ((pt₂.1 + 1) * m / 2)
+  rw [hfe] at l1 u1
+  have goalform : |pt₁.1 - pt₂.1| * (m : ℝ) = |(pt₁.1 - pt₂.1) * m| := by
+    rw [abs_mul, Nat.abs_cast]
+  have hDm : (pt₁.1 - pt₂.1) * (m : ℝ)
+      = 2 * ((pt₁.1 + 1) * m / 2) - 2 * ((pt₂.1 + 1) * m / 2) := by ring
+  rw [goalform, abs_le]
+  constructor
+  · rw [hDm]; linarith [l1, u2]
+  · rw [hDm]; linarith [u1, l2]
+
+/-- **Pigeonhole decay bound.**  For every number of strips `m ≥ 1` with
+`2(m + 1) < n`, Heilbronn's function satisfies `heilbronn n ≤ 4/m`.  Since the
+right-hand side can be made arbitrarily small by taking `m` (hence `n`) large,
+this is the first bound exhibiting genuine decay `heilbronn n → 0` (all previous
+uniform bounds are constant).  Proof: in any witnessing `n`-point configuration,
+map each point to its strip index `⌊(x+1)·m/2⌋₊ ∈ {0,…,m}`; as `(m+1)·2 < n`,
+some strip holds three distinct points (`Finset` pigeonhole), and those three —
+sharing a strip of width `2/m` and lying in the disk (height `≤ 2`) — span a
+triangle of area `≤ (2/m)·2 = 4/m` (`triangleArea_le_spread`), bounding the
+admissible `α`. -/
+theorem heilbronn_le_four_div (n m : ℕ) (hm : 1 ≤ m) (hmn : 2 * (m + 1) < n) :
+    heilbronn n ≤ 4 / m := by
+  have hmR : (0 : ℝ) < m := by exact_mod_cast hm
+  unfold heilbronn
+  apply Real.sSup_le
+  · rintro α ⟨P, hcard, hdisk, hbound⟩
+    -- Each point maps to its vertical strip index in `{0, …, m}`.
+    have hmaps : ∀ pt ∈ P, ⌊(pt.1 + 1) * m / 2⌋₊ ∈ Finset.range (m + 1) := by
+      intro pt hpt
+      rw [Finset.mem_range]
+      have hx : |pt.1| ≤ 1 := unitDisk_abs_fst_le hdisk hpt
+      have hxn : -1 ≤ pt.1 := (abs_le.mp hx).1
+      have hx1 : pt.1 ≤ 1 := (abs_le.mp hx).2
+      have hnn : (0 : ℝ) ≤ (pt.1 + 1) * m / 2 :=
+        div_nonneg (mul_nonneg (by linarith) (Nat.cast_nonneg m)) (by norm_num)
+      have h2m : (pt.1 + 1) * (m : ℝ) ≤ 2 * m :=
+        mul_le_mul_of_nonneg_right (by linarith) hmR.le
+      exact (Nat.floor_lt hnn).mpr (by push_cast; linarith [h2m])
+    have hcardgt : (Finset.range (m + 1)).card * 2 < P.card := by
+      rw [Finset.card_range, hcard]; omega
+    obtain ⟨y, -, hy3⟩ :=
+      Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to hmaps hcardgt
+    -- The fiber (points in one strip) has `> 2` elements: extract three distinct.
+    obtain ⟨a, b, c, ha, hb, hc, hab, hac, hbc⟩ := Finset.two_lt_card_iff.mp hy3
+    simp only [Finset.mem_filter] at ha hb hc
+    obtain ⟨haP, hay⟩ := ha
+    obtain ⟨hbP, hby⟩ := hb
+    obtain ⟨hcP, hcy⟩ := hc
+    have hxa : -1 ≤ a.1 := (abs_le.mp (unitDisk_abs_fst_le hdisk haP)).1
+    have hxb : -1 ≤ b.1 := (abs_le.mp (unitDisk_abs_fst_le hdisk hbP)).1
+    have hxc : -1 ≤ c.1 := (abs_le.mp (unitDisk_abs_fst_le hdisk hcP)).1
+    -- `x`-spread within the strip: `|Δx| · m ≤ 2`, i.e. `|Δx| ≤ 2/m`.
+    have hwa : |a.1 - c.1| ≤ 2 / m := by
+      rw [le_div_iff₀ hmR]; exact strip_spread hxa hxc (by rw [hay, hcy])
+    have hwb : |b.1 - c.1| ≤ 2 / m := by
+      rw [le_div_iff₀ hmR]; exact strip_spread hxb hxc (by rw [hby, hcy])
+    -- `y`-spread across the disk: `|Δy| ≤ 2`.
+    have hya : |a.2 - c.2| ≤ 2 := by
+      have g1 := abs_le.mp (unitDisk_abs_snd_le hdisk haP)
+      have g2 := abs_le.mp (unitDisk_abs_snd_le hdisk hcP)
+      rw [abs_le]; constructor <;> linarith [g1.1, g1.2, g2.1, g2.2]
+    have hyb : |b.2 - c.2| ≤ 2 := by
+      have g1 := abs_le.mp (unitDisk_abs_snd_le hdisk hbP)
+      have g2 := abs_le.mp (unitDisk_abs_snd_le hdisk hcP)
+      rw [abs_le]; constructor <;> linarith [g1.1, g1.2, g2.1, g2.2]
+    have harea : triangleArea a b c ≤ 2 / m * 2 :=
+      triangleArea_le_spread a b c hwa hwb hya hyb (by positivity)
+    have hα : α ≤ triangleArea a b c := hbound a haP b hbP c hcP hab hbc hac
+    have heq : (2 : ℝ) / m * 2 = 4 / m := by ring
+    linarith [hα, harea, heq]
+  · positivity
+
+/-- **Heilbronn's function tends to `0`.**  A direct consequence of the
+pigeonhole decay bound `heilbronn n ≤ 4/m` (`heilbronn_le_four_div`): given
+`ε > 0`, pick `m > 4/ε`; then for all `n > 2(m+1)` we have
+`0 ≤ heilbronn n ≤ 4/m < ε`.  This is the qualitative content the constant
+bounds `heilbronn n ≤ 3/2` cannot supply — Heilbronn's function is a genuinely
+null sequence (consistent with the known `α(n) = n^{−β+o(1)}`, `7/6 ≤ β ≤ 2`). -/
+theorem heilbronn_tendsto_zero :
+    Filter.Tendsto heilbronn Filter.atTop (nhds 0) := by
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨m, hm⟩ := exists_nat_gt (4 / ε)
+  have hmpos : 0 < m := by
+    exact_mod_cast lt_of_le_of_lt (by positivity : (0 : ℝ) ≤ 4 / ε) hm
+  refine ⟨2 * (m + 1) + 1, fun n hn => ?_⟩
+  have hmn : 2 * (m + 1) < n := by omega
+  have hbound := heilbronn_le_four_div n m hmpos hmn
+  have hpos := heilbronn_nonneg n (by omega)
+  have h4m : 4 / (m : ℝ) < ε := by
+    rw [div_lt_iff₀ (show (0 : ℝ) < m by exact_mod_cast hmpos)]
+    rw [div_lt_iff₀ hε] at hm
+    linarith [hm]
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg hpos]
+  linarith [hbound, h4m]
 
 end Erdos507WIP01
