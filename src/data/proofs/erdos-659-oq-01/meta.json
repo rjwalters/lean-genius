@@ -87,11 +87,19 @@
     },
     {
       "id": "proof-body",
-      "title": "Proof Body: Contradiction and Biconditional Optimality Theorem",
+      "title": "Proof Body: no_improvement_possible Contradiction",
       "startLine": 161,
-      "endLine": 207,
-      "summary": "Continuation of the no_improvement_possible proof: after extracting N₀ from isLittleO_iff and taking n = max(N₀, 4), establishes a contradiction between the little-o upper bound (< c/2 · n/√(log n)) and the Landau lower bound (≥ c · n/√(log n)). Closes with bound_is_tight: the biconditional theorem stating that O(n/√(log n)) is the exact asymptotic rate for families with the 4-point property.",
-      "mathContext": "The contradiction uses the halving trick: little-o at ε = c/2 gives distinctDistances < (c/2)·n/√(log n), while the axiom gives distinctDistances ≥ c·n/√(log n). Since c/2 < c, this is the desired contradiction. The final theorem bound_is_tight: ∀ family with 4-point property, distinctDistances = Θ(n/√(log n)), formalized as both directions: ≤ from Moree-Osburn upper bound axiom and ≥ from uniform_landau_lower_bound."
+      "endLine": 222,
+      "summary": "The no_improvement_possible proof: after extracting N₀ from isLittleO_iff and taking n = max(N₀, 4), establishes a contradiction between the little-o upper bound (< c/2 · n/√(log n)) and the Landau lower bound (≥ c · n/√(log n)). Sets D = n₀/√(log n₀) > 0 so both bounds share one positive nonlinear atom, then closes with nlinarith.",
+      "mathContext": "The contradiction uses the halving trick: little-o at ε = c/2 gives distinctDistances < (c/2)·n/√(log n), while the Landau axiom gives distinctDistances ≥ c·n/√(log n). Rewriting both over D = n₀/√(log n₀) > 0, `c·D ≤ d ≤ (c/2)·D` with c, D > 0 forces (c/2)·D ≤ 0, a contradiction."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: OQ-01 Answer and Θ-Tightness",
+      "startLine": 223,
+      "endLine": 252,
+      "summary": "erdos_659_oq01: the answer to OQ-01 is \"No\" — no family with the 4-point property achieves the improved bound (a direct restatement of no_improvement_possible). bound_is_tight: the O(n/√(log n)) rate is exactly tight, packaged as both directions — the Moree-Osburn upper bound (moreeosburn_upper_bound) and a uniform Landau lower bound (uniform_landau_lower_bound), the latter lifted to an ∀ᶠ n in atTop statement via Filter.eventually_atTop with threshold 4.",
+      "mathContext": "bound_is_tight asserts $\\mathrm{distinctDistances}(A_n) = \\Theta(n/\\sqrt{\\log n})$ for 4-point-property families: the upper direction from moreeosburn_upper_bound, the lower direction from uniform_landau_lower_bound holding eventually (for all $n \\geq 4$)."
     }
   ],
   "conclusion": {
