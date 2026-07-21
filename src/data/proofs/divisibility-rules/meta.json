@@ -63,56 +63,56 @@
       "id": "section-altsum-framework",
       "title": "Part I: Alternating Digit Sum Framework",
       "startLine": 40,
-      "endLine": 116,
+      "endLine": 129,
       "summary": "Defines alternatingDigitSum and altDigitSum, proves alternatingDigitSum_cons (key telescoping recursion), then proves ofDigits_modEq_alternatingDigitSum (inductive congruence proof when b ≡ -1 mod d) and modEq_alternating_digits_sum (the public wrapper)."
     },
     {
       "id": "section-last-digit",
       "title": "Part II: Last-Digit Rules (2, 5, 10)",
-      "startLine": 123,
-      "endLine": 140,
+      "startLine": 130,
+      "endLine": 153,
       "summary": "Proves two_dvd_iff, five_dvd_iff, and ten_dvd_iff: divisibility by 2, 5, and 10 depends only on the last decimal digit, via Nat.div_add_mod identity and omega."
     },
     {
       "id": "section-last-k-digits",
       "title": "Parts III–IV: Last-Two and Last-Three Digit Rules (4, 25, 8, 125)",
-      "startLine": 147,
-      "endLine": 180,
+      "startLine": 154,
+      "endLine": 193,
       "summary": "Proves four_dvd_iff (4|n ↔ 4|n%100), twentyfive_dvd_iff, eight_dvd_iff (8|n ↔ 8|n%1000), and onehundredtwentyfive_dvd_iff. Each pair (4,25) and (8,125) are cofactors of 100 and 1000 respectively."
     },
     {
       "id": "section-coprime-rules",
       "title": "Part V: Combined Coprime Factorization Rules (6, 12, 15, 18, 30)",
-      "startLine": 187,
-      "endLine": 238,
+      "startLine": 194,
+      "endLine": 250,
       "summary": "Defines coprime_mul_dvd_iff (the general principle: gcd(d₁,d₂)=1 implies d₁d₂|n ↔ d₁|n ∧ d₂|n) and specializes to 6, 12, 15, 18, and 30 via Nat.Coprime.mul_dvd_of_dvd_of_dvd and native_decide."
     },
     {
       "id": "section-digit-sum-mathlib",
       "title": "Part VI: Digit Sum Rules via Mathlib (b ≡ 1 Framework)",
-      "startLine": 244,
-      "endLine": 282,
+      "startLine": 251,
+      "endLine": 295,
       "summary": "Derives dvd_iff_dvd_digits_sum from Mathlib's modEq_digits_sum, then specializes to: 3 and 9 in base 10, 7 in octal (base 8), 3/5/15 in hexadecimal (base 16), 2/3/6 in base 7."
     },
     {
       "id": "section-seven-truncation",
       "title": "Part VII: Divisibility by 7 — Truncation Method",
-      "startLine": 291,
-      "endLine": 311,
+      "startLine": 296,
+      "endLine": 323,
       "summary": "Proves seven_dvd_truncation: 7|n ↔ 7|(n/10 - 2·(n%10)), using the identity 10(q-2r) = n-21r and IsCoprime.dvd_of_dvd_mul_left for gcd(7,10)=1."
     },
     {
       "id": "section-digitalroot",
       "title": "Part VIII: Digital Root Definition and Properties",
-      "startLine": 319,
-      "endLine": 341,
+      "startLine": 324,
+      "endLine": 353,
       "summary": "Defines digitalRoot via closed-form (0 if n=0, 9 if 9|n and n>0, else n%9), proves it is ≤ 9, and verifies concrete values by native_decide."
     },
     {
       "id": "section-verification",
       "title": "Parts IX–X: Verification Examples and Master Theorem",
-      "startLine": 342,
-      "endLine": 392,
+      "startLine": 354,
+      "endLine": 404,
       "summary": "Part IX exercises every rule on concrete numbers (divisibility by 2, 4, 5, 6, 8, 7, 3, 15, 12, 30), each discharged by rewriting with the corresponding `*_dvd_iff` lemma and `native_decide`; Part X's `rules_verification` master theorem then bundles 11 of these facts into a single conjunction, serving as a machine-checked sanity check for the entire formalization."
     }
   ],
