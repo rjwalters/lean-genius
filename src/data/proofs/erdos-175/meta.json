@@ -109,74 +109,90 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 25,
-      "endLine": 34,
+      "startLine": 1,
+      "endLine": 31,
       "summary": "Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace.",
       "mathContext": "Mathematical content: Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 35,
-      "endLine": 51,
+      "startLine": 32,
+      "endLine": 50,
       "summary": "Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$.",
       "mathContext": "Formal definition: Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$."
     },
     {
       "id": "divisibility-by-4",
       "title": "Divisibility by 4",
-      "startLine": 52,
-      "endLine": 76,
-      "summary": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$. Handles the $n = 2^k$ case where $v_2 = 1$.",
-      "mathContext": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq $2^{k}$$. Handles the $n = $2^{k}$$ case where $v_2 = 1$."
+      "startLine": 51,
+      "endLine": 127,
+      "summary": "Proves (not axiomatizes) $v_2\\binom{2n}{n} = s_2(n)$ — the binary digit sum — from Mathlib's Legendre/Kummer lemma sub_one_mul_padicValNat_choose_eq_sub_sum_digits', then derives digitSum_two_eq_one_iff and four_divides_iff: $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$.",
+      "mathContext": "Fully verified (0 axioms): padicValNat_two_centralBinom proves $v_2\\binom{2n}{n} = s_2(n)$ via Mathlib's sub_one_mul_padicValNat_choose_eq_sub_sum_digits'; digitSum_two_eq_one_iff characterizes $s_2(n) = 1 \\iff n = 2^k$; four_divides_iff concludes $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$ for $n \\ge 2$."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 77,
-      "endLine": 94,
+      "startLine": 128,
+      "endLine": 137,
       "summary": "Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$.",
       "mathContext": "Axiomatized: Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$."
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
-      "startLine": 95,
-      "endLine": 129,
+      "startLine": 138,
+      "endLine": 172,
       "summary": "Defines $f(n) = \\max_p v_p\\binom{2n}{n}$ and axiomatizes: Sander (1992) $f(n) \\to \\infty$, upper bound $f(n) = O(\\log n)$, Sander (1995) lower bound $(\\log n)^{1/10}$, and Erdős–Kolesnik (1999) improvement to $(\\log n)^{1/4}$.",
       "mathContext": "Defines $f(n) = \\max_p v_p\\binom{2n}{n}$ and axiomatizes: Sander (1992) $f(n) \\to \\infty$, upper bound $f(n) = O(\\log n)$, Sander (1995) lower bound $(\\log n)^{1/10}$, and Erdős–Kolesnik (1999) improvement to $(\\log n)^{1/4}$."
     },
     {
       "id": "power-of-2-case",
       "title": "Power of 2 Case",
-      "startLine": 130,
-      "endLine": 144,
+      "startLine": 173,
+      "endLine": 184,
       "summary": "For $n = 2^k$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times 3^2 \\times 5 \\times 11 \\times 13$.",
       "mathContext": "For $n = $2^{k}$$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times $3^{2}$ \\times 5 \\times 11 \\times 13$."
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "startLine": 145,
-      "endLine": 159,
+      "startLine": 185,
+      "endLine": 190,
       "summary": "Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor.",
       "mathContext": "Mathematical content: Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor."
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "startLine": 160,
-      "endLine": 174,
+      "startLine": 191,
+      "endLine": 200,
       "summary": "States the open question $f(n) \\gg \\log n$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved.",
       "mathContext": "States the open question $f(n) \\gg \\$\\log n$$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved."
     },
     {
       "id": "explicit-examples",
       "title": "Explicit Examples",
-      "startLine": 175,
-      "endLine": 182,
-      "summary": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`.",
-      "mathContext": "Concrete computations: $\\binom{10}{5} = 252 = $2^{2}$ \\cdot $3^{2}$ \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`."
+      "startLine": 201,
+      "endLine": 218,
+      "summary": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ and $\\binom{12}{6} = 924$ (each via `native_decide` in benign `example` blocks). The theorem `c_10_5_not_squarefree` is proved from $2^2 \\mid 252$ via `norm_num`.",
+      "mathContext": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ and $\\binom{12}{6} = 924$, each checked by native_decide inside `example` blocks (no axiom impact); c_10_5_not_squarefree is a genuine theorem, discharged by exhibiting $2^2 \\mid 252$ and closing with norm_num."
+    },
+    {
+      "id": "main-problem-statement",
+      "title": "Main Problem Statement",
+      "startLine": 219,
+      "endLine": 237,
+      "summary": "erdos_175_statement bundles the three headline facts: $\\binom{2n}{n}$ non-squarefree for $n \\ge 5$ (granville_ramare_1996), $f(n) \\to \\infty$ (sander_1992), and the $(\\log n)^{1/4}$ lower bound (erdos_kolesnik_1999).",
+      "mathContext": "erdos_175_statement conjoins granville_ramare_1996, sander_1992_f_unbounded, and erdos_kolesnik_1999 into the complete answer: for $n \\ge 5$ the central binomial coefficient is never squarefree, $f$ is unbounded, and $f(n) \\ge C(\\log n)^{1/4}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 238,
+      "endLine": 261,
+      "summary": "erdos_175_summary sandwiches $f$ between $(\\log n)^{1/4}$ and $\\log n$; erdos_175_answer restates the headline result $\\neg\\,\\mathrm{IsSquarefree}(\\binom{2n}{n})$ for $n \\ge 5$, cited to Granville–Ramaré (1996).",
+      "mathContext": "erdos_175_summary combines erdos_kolesnik_1999 (lower) and sander_1995_upper_bound (upper) into $C_1(\\log n)^{1/4} \\le f(n) \\le C_2 \\log n$; erdos_175_answer is the one-line corollary $n \\ge 5 \\Rightarrow \\neg\\,\\mathrm{IsSquarefree}(\\mathrm{centralBinom}\\,n)$."
     }
   ],
   "conclusion": {
