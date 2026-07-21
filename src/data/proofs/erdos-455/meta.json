@@ -126,27 +126,27 @@
       "id": "open-conjecture",
       "title": "The Open Conjecture",
       "startLine": 71,
-      "endLine": 88,
+      "endLine": 82,
       "summary": "States Erdős's full conjecture as an abstract `Prop` and proves equivalence: the conjecture holds iff $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$ for all monotone-gap prime sequences."
     },
     {
       "id": "consequences",
       "title": "Consequences of Richter's Bound",
-      "startLine": 96,
-      "endLine": 103,
+      "startLine": 83,
+      "endLine": 94,
       "summary": "Derives $\\exists c > 0,\\, \\forall^\\mathrm{f} n,\\, q_n \\geq c \\cdot n^2$ from the liminf bound, establishing eventual quadratic growth."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
-      "startLine": 111,
-      "endLine": 124,
+      "startLine": 95,
+      "endLine": 115,
       "summary": "Proves `gaps_pos` (strict monotonicity implies positive gaps), `first_prime_ge_two` and `all_ge_two` (primality implies $q_n \\geq 2$) using Mathlib's `Nat.Prime.two_le`."
     },
     {
       "id": "restrictiveness",
       "title": "Alternative Characterization",
-      "startLine": 137,
+      "startLine": 116,
       "endLine": 142,
       "summary": "Proves `nonDecGaps_alt`: the non-decreasing gaps condition is equivalent to $\\forall n \\geq 1,\\, q(n+1) - q(n) \\geq q(n) - q(n-1)$. The $n = 0$ case is trivial by `simp`."
     }
