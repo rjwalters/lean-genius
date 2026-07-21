@@ -70,34 +70,34 @@
       "id": "module-doc",
       "title": "Module Documentation: Putzer's Algorithm and the Algebraic Core",
       "startLine": 4,
-      "endLine": 52,
+      "endLine": 61,
       "summary": "Header stating Putzer's identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}, the triangular ODE system for Pₖ, the four algebraic results proved here, and an explicit note that the analytic completion is deferred."
     },
     {
       "id": "rho-def",
       "title": "The Putzer partial product ρ",
-      "startLine": 61,
-      "endLine": 73,
+      "startLine": 62,
+      "endLine": 83,
       "summary": "Ordered recursion ρ₀ = 1, ρ_{k+1} = ρₖ·(A - λₖ•1) (rho), with rho_zero and rho_succ. Defined recursively to avoid requiring a CommMonoid instance on matrices."
     },
     {
       "id": "commutation",
       "title": "Commutation of A with the partial products",
-      "startLine": 75,
-      "endLine": 89,
+      "startLine": 84,
+      "endLine": 99,
       "summary": "commute_A_factor (A commutes with each A - λᵢ•1) and commute_A_rho (A commutes with every ρₖ, by induction), giving A·ρₖ = ρₖ·A."
     },
     {
       "id": "telescoping",
       "title": "The key telescoping identity",
-      "startLine": 91,
-      "endLine": 98,
+      "startLine": 100,
+      "endLine": 107,
       "summary": "A_mul_rho: A·ρₖ = ρ_{k+1} + λₖ•ρₖ, the algebraic engine of the derivative computation Ṁ = A·M."
     },
     {
       "id": "truncation",
       "title": "Cayley–Hamilton truncation",
-      "startLine": 100,
+      "startLine": 108,
       "endLine": 132,
       "summary": "aeval_X_sub_C, the bridge lemma rho_eq_aeval_prod (ρₖ = aeval A ∏(X - C λᵢ)), and rho_card (ρₙ = 0 when χ_A splits), via Matrix.aeval_self_charpoly."
     },
