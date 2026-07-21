@@ -29,46 +29,61 @@
   "sections": [
     {
       "id": "header",
-      "title": "Header and Imports",
+      "title": "Header: Problem Statement and What Is Proved",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Documentation header describing the problem and its OPEN status, followed by Mathlib imports for natural numbers, real numbers, finite sets, and tactics."
+      "endLine": 44,
+      "summary": "Documentation header. States the OPEN problem — is $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1))(n/2)^{1+1/k}$ for $k \\ge 2$? — and explains that the *lower-bound* half is unconditional: the dense $C_{2k}$-free graphs from incidence geometry (Wenger 1991, Lazebnik–Ustimenko–Woldar 1995) are bipartite, hence contain no odd cycle, hence are $C_{2k-1}$-free for free. Lists the three structural theorems the file proves (bipartite_not_hasCycle_odd, bipartite_no_odd_consecutive, bipartite_evenFree_consecutiveFree) with 0 axioms and 0 sorries. Then `import Mathlib`."
     },
     {
       "id": "definitions",
-      "title": "Graph and Cycle Definitions",
-      "startLine": 24,
-      "endLine": 38,
-      "summary": "Defines a custom simple graph structure with symmetric, irreflexive adjacency, edge counting via filtered pair enumeration, cycle containment via injective vertex sequences, the consecutive cycle-free predicate $\\neg\\text{HasCycle}(G, 2k-1) \\wedge \\neg\\text{HasCycle}(G, 2k)$, and the extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$."
+      "title": "Definitions",
+      "startLine": 45,
+      "endLine": 80,
+      "summary": "Custom SimpleGraph' n structure (symmetric, irreflexive adjacency on Fin n); edgeCount' via a filtered enumeration of ordered pairs p.1 < p.2; HasCycle G ℓ as an injective Fin ℓ → Fin n with ℓ ≥ 3 and successive (mod-ℓ) adjacencies; IsConsecutiveCycleFree G k = ¬HasCycle G (2k-1) ∧ ¬HasCycle G (2k); the extremal number exConsecutiveCycles n k as the sSup of achievable edge counts; and IsBipartite G as the existence of a 2-colouring c : Fin n → Bool with no monochromatic edge."
     },
     {
-      "id": "section-39",
-      "title": "Graph and Cycle Definitions (continued)",
-      "startLine": 39,
-      "endLine": 52,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "id": "odd-cycle-free",
+      "title": "The Odd-Cycle Constraint Is Free on Bipartite Graphs",
+      "startLine": 81,
+      "endLine": 162,
+      "summary": "The structural core, all fully proved. not_iterate_eq (private): iterating Boolean negation m times flips the bit iff m is odd. bipartite_not_hasCycle_odd: a bipartite graph has no cycle of any odd length — a 2-colouring alternates along the closed walk (colour after j steps = (!·)^[j] of the start), and closing up after an odd ℓ forces c(w 0) = !c(w 0), a contradiction (injectivity is unused). bipartite_no_odd_consecutive: hence no $C_{2k-1}$ for k ≥ 1. bipartite_evenFree_consecutiveFree: a bipartite, $C_{2k}$-free graph is automatically $\\{C_{2k-1}, C_{2k}\\}$-free — the even-cycle condition is the only real constraint."
+    },
+    {
+      "id": "extremal-transfer",
+      "title": "The Lower-Bound Transfer at the Level of the Extremal Function",
+      "startLine": 163,
+      "endLine": 199,
+      "summary": "Lifts the structural transfer to the extremal function, all proved. edgeCount'_le: every graph on Fin n has at most n·n edges (edge set ⊆ Fin n × Fin n). bddAbove_consecutiveFree_edgeCounts: the achievable-count set is bounded above by n·n, so exConsecutiveCycles is a genuine sSup. edgeCount_le_exConsecutive: any admissible graph's edge count is ≤ exConsecutiveCycles n k (le_csSup). bipartite_evenFree_le_ex: a bipartite $C_{2k}$-free graph contributes its full edge count — the formal bridge from $\\text{ex}(n; C_{2k})$ lower bounds to $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$."
     },
     {
       "id": "main-conjecture",
-      "title": "Erdős–Simonovits Conjecture",
-      "startLine": 54,
-      "endLine": 61,
-      "summary": "The central conjecture: for $k \\ge 2$, $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$, formalized as a two-sided asymptotic bound with arbitrary $\\varepsilon > 0$."
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 200,
+      "endLine": 205,
+      "summary": "Prose statement (a comment, not a formal declaration) of the Erdős–Simonovits conjecture: for $k \\ge 2$, $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1))(n/2)^{1+1/k}$. The matching *upper* bound is the open content."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 63,
-      "endLine": 78,
-      "summary": "Axiomatized known results: the even cycle Turán number $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$, the Bondy–Simonovits upper bound $\\text{ex}(n; C_{2k}) \\le c \\cdot n^{1+1/k}$, and the special case $k=2$ relating to Problem #573."
+      "startLine": 206,
+      "endLine": 213,
+      "summary": "Prose (comment) recording the even-cycle Turán number $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$, the Bondy–Simonovits (1974) upper bound, and the algebraic bipartite lower-bound constructions for k = 2, 3, 5 — which, being bipartite, are also $C_{2k-1}$-free (see bipartite_evenFree_consecutiveFree). Not axiomatized in the file."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 214,
+      "endLine": 221,
+      "summary": "Closing prose (comment): the conjecture says forbidding $C_{2k-1}$ is 'free'. On the lower-bound side this is now a theorem (the bipartite witnesses have no odd cycle); the open content is the matching upper bound."
     }
   ],
   "overview": {
     "historicalContext": "Erdős and Simonovits formulated this conjecture in 1982 as part of their systematic study of extremal numbers for cycles. The question builds on a rich tradition beginning with Turán's 1941 theorem for complete graphs and extending through the Kővári–Sós–Turán theorem (1954) for bipartite Turán problems. The pivotal result framing this problem is the Bondy–Simonovits theorem (1974), which established that $\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$. Matching lower bounds were obtained through algebraic constructions: Wenger (1991) and Lazebnik–Ustimenko–Woldar (1995) used incidence geometries of projective planes and generalized polygons to build dense $C_{2k}$-free graphs for $k = 2, 3, 5$. Critically, these algebraic constructions are bipartite and therefore automatically $C_{2k-1}$-free, providing evidence that the odd cycle exclusion imposes no additional asymptotic cost. For general $k$, the exact order of $\\text{ex}(n; C_{2k})$ remains unknown, making the consecutive pair problem even more challenging.",
     "problemStatement": "For $k \\ge 2$, prove that $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$. That is, the maximum number of edges in a graph on $n$ vertices containing neither a $(2k-1)$-cycle nor a $2k$-cycle is asymptotically $(n/2)^{1+1/k}$, the same as for forbidding $C_{2k}$ alone.",
     "text": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
-    "proofStrategy": "The formalization defines a custom simple graph structure with cycle containment as an injective mapping from $\\text{Fin}\\,\\ell$ to vertices with successive adjacencies. The consecutive cycle-free predicate requires simultaneous avoidance of both $C_{2k-1}$ and $C_{2k}$. The main conjecture is stated in the $\\varepsilon$-$N_0$ form of asymptotic equivalence. Supporting axioms encode the Bondy–Simonovits upper bound and the even cycle Turán number, grounding the formalization in established extremal graph theory.",
+    "proofStrategy": "The formalization defines a custom simple graph structure (SimpleGraph' n) with cycle containment (HasCycle) as an injective map from $\\text{Fin}\\,\\ell$ to vertices with successive mod-$\\ell$ adjacencies, and the consecutive cycle-free predicate as simultaneous avoidance of $C_{2k-1}$ and $C_{2k}$. It then proves — unconditionally, with 0 axioms and 0 sorries — the *lower-bound transfer*: bipartite_not_hasCycle_odd shows a proper 2-colouring alternates along any closed walk (colour after $j$ steps is $(!\\cdot)^{[j]}$ of the start), so an odd-length closed walk is impossible; bipartite_no_odd_consecutive specializes this to $C_{2k-1}$; and bipartite_evenFree_consecutiveFree concludes that a bipartite $C_{2k}$-free graph is $\\{C_{2k-1}, C_{2k}\\}$-free. A second block (edgeCount'_le, bddAbove_consecutiveFree_edgeCounts, edgeCount_le_exConsecutive, bipartite_evenFree_le_ex) lifts this to the extremal function exConsecutiveCycles n k, defined as a genuine sSup. The main conjecture and the Bondy–Simonovits / even-cycle known results appear only as documentation comments — they are neither axiomatized nor stated as sorries — so the matching upper bound remains fully open.",
     "keyInsights": [
+      "This file makes the 'odd cycle is free' half a **theorem, not evidence**: bipartite_not_hasCycle_odd proves any bipartite graph has no odd cycle (a 2-colouring forces even closed-walk length), so every bipartite $C_{2k}$-free witness is $\\{C_{2k-1}, C_{2k}\\}$-free — established unconditionally with 0 axioms and 0 sorries, and lifted to the extremal function via bipartite_evenFree_le_ex",
       "The conjecture is a precise quantitative claim: forbidding $C_{2k-1}$ alongside $C_{2k}$ incurs zero asymptotic cost, i.e., $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\sim \\text{ex}(n; C_{2k})$",
       "All known extremal constructions for the even cycle problem are bipartite (odd-girth infinity), so they automatically satisfy the consecutive pair constraint without any modification",
       "The asymptotic formulation $(1+o(1)) \\cdot (n/2)^{1+1/k}$ pins down both the exponent $1+1/k$ and the leading constant $1/2^{1+1/k}$, making this stronger than a mere $\\Theta$-bound",
@@ -83,7 +98,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #574 conjectures that the Turán number for the consecutive cycle pair $\\{C_{2k-1}, C_{2k}\\}$ is asymptotically identical to the even cycle Turán number $\\text{ex}(n; C_{2k})$. The formalization captures this in Lean 4 via an $\\varepsilon$-$N_0$ asymptotic statement, supported by axiomatized versions of the Bondy–Simonovits bound and related known results.",
+    "summary": "Erdős Problem #574 conjectures that the Turán number for the consecutive cycle pair $\\{C_{2k-1}, C_{2k}\\}$ is asymptotically identical to the even cycle Turán number $\\text{ex}(n; C_{2k})$. The Lean file proves — unconditionally (0 axioms, 0 sorries) — the structural reason the *lower bound* transfers: a bipartite graph has no odd cycle (bipartite_not_hasCycle_odd), so the dense $C_{2k}$-free bipartite constructions are automatically $\\{C_{2k-1}, C_{2k}\\}$-free (bipartite_evenFree_consecutiveFree), and this passes to the extremal function (bipartite_evenFree_le_ex). The conjecture itself and the Bondy–Simonovits upper bound remain documentation comments, not formal statements — the matching upper bound is the open content.",
     "implications": "A positive resolution would establish that odd cycle avoidance is 'free' in the extremal setting for consecutive cycle pairs, confirming the optimality of bipartite algebraic constructions. It would also contribute to the broader program of classifying when $\\text{ex}(n; \\mathcal{F}) = \\text{ex}(n; F)$ for a family $\\mathcal{F}$ and a single member $F \\in \\mathcal{F}$, a central question in extremal graph theory connected to the Erdős–Simonovits supersaturation lemma.",
     "openQuestions": [
       "Is $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$ for all $k \\ge 2$?",
