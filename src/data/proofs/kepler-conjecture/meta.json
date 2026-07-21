@@ -68,14 +68,14 @@
       "id": "docstring",
       "title": "Module Docstring",
       "startLine": 5,
-      "endLine": 65,
+      "endLine": 72,
       "summary": "Historical introduction covering Kepler (1611), Gauss (1831), Thue (1892), Hales (1998), Flyspeck (2014), and Viazovska (2016). Lists formalization status and references.",
       "mathContext": "Introduces the sphere packing problem: maximize the packing density $\\delta = \\lim_{R \\to \\infty} \\frac{\\text{Vol}(\\bigcup B_i \\cap B(0,R))}{\\text{Vol}(B(0,R))}$ in $\\mathbb{R}^3$. The conjectured optimum is $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$."
     },
     {
       "id": "basic-definitions",
       "title": "Part 1: Basic Definitions",
-      "startLine": 77,
+      "startLine": 73,
       "endLine": 98,
       "summary": "Defines sphereVolume (4/3)πr³, diskArea πr², and PackingDensity structure with 0 ≤ density ≤ 1 invariants.",
       "mathContext": "Defines $V_{\\text{sphere}}(r) = \\frac{4}{3}\\pi r^3$, $A_{\\text{disk}}(r) = \\pi r^2$, and the $\\texttt{PackingDensity}$ structure with field $\\delta \\in [0, 1]$ satisfying $0 \\leq \\delta$ and $\\delta \\leq 1$."
@@ -83,48 +83,48 @@
     {
       "id": "hexagonal-2d",
       "title": "Part 2: Hexagonal Packing (2D)",
-      "startLine": 103,
-      "endLine": 158,
+      "startLine": 99,
+      "endLine": 174,
       "summary": "Defines hexagonalDensity2D = π/(2√3), proves positivity, axiomatizes < 1, defines kissingNumber2D = 6, and axiomatizes Thue's optimality theorem via Voronoi cell argument.",
       "mathContext": "Defines $\\delta_{\\text{hex}} = \\frac{\\pi}{2\\sqrt{3}} \\approx 0.9069$, proves $\\delta_{\\text{hex}} > 0$, axiomatizes $\\delta_{\\text{hex}} < 1$. Sets kissing number $\\tau_2 = 6$. Axiomatizes Thue's theorem: $\\forall\\, \\delta,\\; \\delta \\leq \\delta_{\\text{hex}}$ (hexagonal packing is optimal in $\\mathbb{R}^2$)."
     },
     {
       "id": "fcc-3d",
       "title": "Part 3: FCC Lattice (3D)",
-      "startLine": 164,
-      "endLine": 240,
+      "startLine": 175,
+      "endLine": 256,
       "summary": "Defines fccDensity = π/(3√2) with positivity proof, alternative fccDensityAlt = π√2/6, kissingNumber3D = 12, and axiomatized numerical bounds 0.74 < δ < 0.75.",
       "mathContext": "Defines $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}}$ with alternative form $\\frac{\\pi\\sqrt{2}}{6}$. Proves $\\delta_{\\text{FCC}} > 0$. Sets kissing number $\\tau_3 = 12$. Axiomatizes bounds $0.74 < \\delta_{\\text{FCC}} < 0.75$."
     },
     {
       "id": "kepler-conjecture",
       "title": "Part 4: The Kepler Conjecture",
-      "startLine": 246,
-      "endLine": 291,
+      "startLine": 257,
+      "endLine": 326,
       "summary": "Axiomatizes kepler_conjecture (all packings ≤ fccDensity), proves fcc_is_optimal_3D, and axiomatizes gauss_lattice_theorem (lattice-only version).",
       "mathContext": "Axiomatizes the Kepler conjecture: $\\forall\\, \\delta \\in \\texttt{PackingDensity},\\; \\delta \\leq \\delta_{\\text{FCC}}$. Proves $\\delta_{\\text{FCC}}$ is an optimal $\\texttt{PackingDensity}$. Axiomatizes Gauss's lattice theorem: $\\forall$ lattice packings $\\Lambda$, $\\delta(\\Lambda) \\leq \\delta_{\\text{FCC}}$."
     },
     {
       "id": "higher-dimensions",
       "title": "Part 5: Higher Dimensions",
-      "startLine": 296,
-      "endLine": 350,
+      "startLine": 327,
+      "endLine": 398,
       "summary": "Defines e8Density = π⁴/384 with positivity proof, kissing numbers k(8) = 240, k(24) = 196560, and axiomatizes viazovska_theorem_8d.",
       "mathContext": "Defines $\\delta_{E_8} = \\frac{\\pi^4}{384} \\approx 0.2537$ with positivity proof. Sets kissing numbers $\\tau_8 = 240$ and $\\tau_{24} = 196560$. Axiomatizes Viazovska's theorem: $\\forall$ packings in $\\mathbb{R}^8$, $\\delta \\leq \\delta_{E_8}$."
     },
     {
       "id": "applications",
       "title": "Part 6: Applications",
-      "startLine": 356,
-      "endLine": 374,
+      "startLine": 399,
+      "endLine": 422,
       "summary": "Documents applications to error-correcting codes (E₈, Leech lattice), crystallography (FCC metals), digital communications (Shannon bounds), and computational geometry.",
       "mathContext": "Discusses applications: the $E_8$ and Leech lattices yield optimal error-correcting codes with minimum distance $d_{\\min}$; FCC structure explains close-packed metals (Cu, Al, Au); sphere packing bounds connect to Shannon channel capacity $C = W \\log_2(1 + S/N)$."
     },
     {
       "id": "density-comparison",
       "title": "Part 7: Density Comparison",
-      "startLine": 380,
-      "endLine": 430,
+      "startLine": 423,
+      "endLine": 478,
       "summary": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results.",
       "mathContext": "Axiomatizes $\\delta_{\\text{hex}} > \\delta_{\\text{FCC}}$ and $\\delta_{\\text{FCC}} > \\delta_{E_8}$, then proves the chain $\\frac{\\pi}{2\\sqrt{3}} > \\frac{\\pi}{3\\sqrt{2}} > \\frac{\\pi^4}{384}$, i.e., optimal packing density decreases: $\\delta_2 > \\delta_3 > \\delta_8$."
     }
