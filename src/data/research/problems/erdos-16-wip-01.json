@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 5): Assembled the covering-congruence gears into the full Erdos 1950 obstruction covering_obstruction_not_isRomanoff — 8 new axiom-free theorems (theoremCount 28->36, lineCount 479->582). Any n satisfying the six CRT congruences over primes {3,5,7,13,17,241} and a size hypothesis n-2^k>241 is proved non-Romanoff, so the entire CRT arithmetic progression lies in the exceptional set. Remaining documented-only: the analytic wrapper showing infinitely many progression members meet the size hypothesis (Erdos's infinite-AP conclusion), Romanoff 1934 density, Chen 2023 disproof.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1-4, host-verified 0-axiom): Formalized Erdős 1950 in FULL — ExceptionalSet is INFINITE (exceptionalSet_infinite), upgrading the prior conditional covering construction (covering_progression_mem_exceptionalSet, needs size hypothesis) to unconditional infinitude via exists_exceptional_gt. The CRT progression n≡7629217 (mod 11184810) meets every dyadic window [2^m+242,2^{m+1}) where the size condition holds automatically (k≤m ⟹ n−2^k≥242). theoremCount 36→38, lineCount 582→640. Remaining DEEP: Romanoff 1934 positive-density (analytic sieve+PNT) and Chen 2023 disproof (rich structure) stay documented-only.",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
@@ -47,7 +47,9 @@
       "two_pow_mod_three, two_pow_modEq_of_dvd, covering_prime_not_prime_sub, not_prime_sub_even_mod_three, not_prime_sub_mod_seven in Proofs/Erdos16Problem.lean (session 4, axiom-free)",
       "two_pow_four_modEq_five, two_pow_eight_modEq_seventeen, two_pow_twelve_modEq_thirteen, two_pow_twentyfour_modEq_241 (order-of-2 gears) in Erdos16Problem.lean",
       "covering_obstruction_not_isRomanoff in Erdos16Problem.lean — the assembled Erdos 1950 covering obstruction (conditional on explicit size hypothesis)",
-      "covering_progression_mem_exceptionalSet in Erdos16Problem.lean — membership form for odd n"
+      "covering_progression_mem_exceptionalSet in Erdos16Problem.lean — membership form for odd n",
+      "exists_exceptional_gt (∀B ∃ exceptional n>B) in Erdos16Problem.lean",
+      "exceptionalSet_infinite : ExceptionalSet.Infinite (via Set.Finite.bddAbove contradiction)"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
@@ -63,7 +65,8 @@
       "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n ≡ 1 (mod 3); prime 7 (order 3) kills exponents ≡ 0 (mod 3) for n ≡ 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime.",
       "Session 5: assembled the individual covering gears into the full Erdos 1950 obstruction. The six exponent classes {0 mod 2, 0 mod 3, 1 mod 4, 3 mod 8, 7 mod 12, 23 mod 24} cover Z (omega), each carrying a prime whose order of 2 equals the modulus: (2,3),(3,7),(4,5),(8,17),(12,13),(24,241).",
       "Session 5: covering_obstruction_not_isRomanoff proves that any n meeting the six CRT congruences (n=1 mod 3, 1 mod 7, 2 mod 5, 8 mod 17, 11 mod 13, 121 mod 241) with n-2^k>241 for all valid k is NOT Romanoff — the whole CRT progression (mod 3*5*7*13*17*241) is exceptional, subject only to a size hypothesis. Axiom-free.",
-      "Session 5: the required n-residues are 2^r mod p per class: 2^0=1 (p=3,7), 2^1=2 (p=5), 2^3=8 (p=17), 2^7=128=11 mod 13, 2^23=121 mod 241. Verified 2^23 mod 241 = 121 and 2*121=242=1 mod 241."
+      "Session 5: the required n-residues are 2^r mod p per class: 2^0=1 (p=3,7), 2^1=2 (p=5), 2^3=8 (p=17), 2^7=128=11 mod 13, 2^23=121 mod 241. Verified 2^23 mod 241 = 121 and 2*121=242=1 mod 241.",
+      "EXCEPTIONAL SET IS INFINITE (Erdős 1950 conclusion, axiom-free): exceptionalSet_infinite. Upgraded the covering construction from conditional (needs size hypothesis) to unconditional infinitude via exists_exceptional_gt: for any B, the CRT-progression member (n ≡ 7629217 mod 2M=11184810) landing in the dyadic window [2^m+242, 2^{m+1}) exceeds B, is odd, meets the six covering congruences, AND satisfies the size condition automatically (any k with 2^k<n has k≤m ⟹ n−2^k ≥ 242). Key: window-based size discharge sidesteps the messy largest-power-of-2 analysis."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -155,3 +155,37 @@ analytic, not a covering gap anymore): the wrapper showing infinitely many progr
 satisfy the size hypothesis `n − 2^k > 241` — i.e. Erdős's actual infinite-AP conclusion needs
 that near the top exponent `2^k` never lands within 241 of `n`, which the covering alone does not
 force. Romanoff 1934 density and Chen 2023 disproof remain analytic/deep.
+
+## Session 2026-07-21 (researcher-1-4) — the exceptional set is INFINITE (Erdős 1950 in full)
+
+**Mode**: upgrade the conditional covering construction to unconditional infinitude.
+**Outcome**: progress — 2 theorems, axiom-free (`#print axioms exceptionalSet_infinite` =
+`[propext, Classical.choice, Quot.sound]`), host-verified `lake env lean` exit 0, 0 warnings.
+theoremCount 36→38, lineCount 582→640.
+
+- **`exceptionalSet_infinite : ExceptionalSet.Infinite`** — Erdős's 1950 conclusion in full.
+  Proof: `Set.Finite.bddAbove` gives a bound `B`; `exists_exceptional_gt B` contradicts it.
+- **`exists_exceptional_gt (B) : ∃ n, B < n ∧ n ∈ ExceptionalSet`** — the engine. Pick
+  `m = B + 2M + 243` (so `2^m > m` via `Nat.lt_two_pow_self`, giving `2^m > B` and
+  `2^m ≥ 242 + 2M`). The CRT progression `n₀ + q·2M` (`n₀ = 7629217`, `2M = 11184810`) meets
+  the window `[2^m+242, 2^{m+1})`; that member is `> B`, odd, and satisfies the six covering
+  congruences (all by `omega` from `n = 7629217 + q·11184810` — `2M ≡ 0` mod each prime and
+  mod 2, `7629217` has the right residues). The size condition is DISCHARGED CHEAPLY: for the
+  window member, any `k` with `2^k < n < 2^{m+1}` has `k ≤ m` (else `2^{m+1} ≤ 2^k`), so
+  `2^k ≤ 2^m` and `n − 2^k ≥ (2^m+242) − 2^m = 242 > 241`.
+
+### Key idea (reusable)
+- **Window-based size discharge** avoids the messy "largest power of 2 below n" analysis:
+  confining `n` to `[2^m+242, 2^{m+1})` makes `hsize` a one-line consequence (`k ≤ m`).
+- The CRT witness `n₀ = 7629217 mod 11184810` (2·3·5·7·13·17·241) computed once (Python
+  `sympy.crt`); ALL six congruences + oddness fall out of `omega` on `n = 7629217 + q·2M`
+  because each modulus divides `2M` — no per-prime `ModEq.of_dvd` needed.
+- `set m := …; clear_value m` BEFORE any `ring`/`pow_succ` so tactics don't unfold `m` to the
+  literal sum (else "exponent exceeds threshold 256" warning on `2^(m+1)`).
+- AP-meets-window existence: `q := (L − n₀ + 2M − 1)/2M`, then `L ≤ n₀+q·2M < L+2M` both by
+  `omega` (division by the literal `2M` is within omega).
+
+### State of this node
+Erdős 1950 (covering ⟹ infinite exceptional AP) is now COMPLETE and unconditional. Remaining
+are the genuinely analytic/deep pieces, documented-only: Romanoff 1934 positive-density lower
+bound (sieve + PNT) and Chen 2023 disproof (exceptional set richer than one AP + density-0).
