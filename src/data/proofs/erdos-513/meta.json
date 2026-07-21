@@ -90,29 +90,37 @@
       "id": "known-results",
       "title": "Known Results and Bounds",
       "startLine": 54,
-      "endLine": 73,
-      "summary": "μ(r) ≤ M(r) (axiom), Kövári lower bound > 1/2, Clunie-Hayman upper bound ≤ 2/π - c.",
+      "endLine": 84,
+      "summary": "μ(r) ≤ M(r) (axiom), Kövári lower bound > 1/2 (axiom kovari_lower_bound), Clunie-Hayman upper bound ≤ 2/π - c (axiom clunie_hayman_upper_bound).",
       "mathContext": "Bounds: $1/2 < \\sup_f \\liminf \\mu(r)/M(r) \\leq 2/\\pi - c$ where $c > 0$ (Clunie-Hayman 1964)."
     },
     {
       "id": "structural-theorems",
       "title": "Proved Structural Theorems",
-      "startLine": 89,
+      "startLine": 85,
       "endLine": 121,
       "summary": "Five proved theorems from axioms: ratio in [0,1], set membership, degenerate case (ratio = 0 when M(r) = 0), and ratio-equals-quotient.",
       "mathContext": "Proved: $0 \\leq \\mu(r)/M(r) \\leq 1$, and $\\mu(r)/M(r) = \\mu(r) \\cdot M(r)^{-1}$ when $M(r) > 0$."
     },
     {
-      "id": "formal-conjecture",
-      "title": "Formal Conjecture",
+      "id": "derived-consistency",
+      "title": "Derived Bounds and Consistency",
       "startLine": 122,
-      "endLine": 151,
-      "summary": "erdos_513_exact_value: axiom asserting existence of exact supremum L ∈ (1/2, 2/π). Summary theorem packaging all known results.",
+      "endLine": 155,
+      "summary": "Corollaries of the axiomatized bounds: half_lt_two_div_pi (the interval (1/2, 2/π) is non-empty), supremum_exceeds_half (from Kövári), supremum_lt_two_div_pi and clunie_hayman_gap (from Clunie-Hayman, ratio bounded away from 2/π by an absolute constant c).",
+      "mathContext": "The known bounds are consistent: $1/2 < 2/\\pi$, and every transcendental entire function satisfies $\\liminf_{r\\to\\infty}\\mu(r)/M(r) + c \\leq 2/\\pi$ for an absolute $c > 0$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 156,
+      "endLine": 168,
+      "summary": "erdos_513_exact_value: axiom asserting existence of the exact supremum L ∈ (1/2, 2/π) — an attained-in-the-limit least upper bound of liminf μ(r)/M(r) over transcendental entire functions. Determining L is Erdős Problem #513, still open.",
       "mathContext": "$\\exists L \\in (1/2, 2/\\pi)$ such that $\\sup_f \\liminf_{r\\to\\infty} \\mu(r)/M(r) = L$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #513 is formalized in 167 lines with 8 axioms encoding the maximum term and modulus functions and their known bounds. Five structural theorems are proved. The exact supremum of liminf μ(r)/M(r) over transcendental entire functions lies in (1/2, 2/π) but remains unknown.",
+    "summary": "Erdős Problem #513 is formalized in 167 lines with 4 axioms: the trivial bound μ(r) ≤ M(r), the Kövári lower bound, the Clunie-Hayman upper bound, and the open-question assertion erdos_513_exact_value. The maximum term and modulus functions themselves are constructive definitions, not axioms. Five structural theorems are proved. The exact supremum of liminf μ(r)/M(r) over transcendental entire functions lies in (1/2, 2/π) but remains unknown.",
     "implications": "Resolution would clarify the fundamental relationship between the maximum term and maximum modulus of entire functions, connecting Wiman-Valiron theory to the distribution of the argument of f(re^{iθ}). The appearance of 2/π suggests a connection to harmonic analysis and Fourier coefficients.",
     "openQuestions": [
       "What is the exact value of sup liminf μ(r)/M(r)? The gap (1/2, 2/π) has not narrowed since 1964",
