@@ -60,14 +60,14 @@
       "title": "Zeta Values",
       "summary": "zetaAtSucc: axioms for ζ(d+1) values, Basel problem, monotonicity, limit",
       "startLine": 50,
-      "endLine": 75,
+      "endLine": 73,
       "mathContext": "ζ(2) = π²/6, ζ(d+1) ≥ 1, ζ(d+1) → 1 as d → ∞"
     },
     {
       "id": "jordan",
       "title": "Jordan's Totient",
       "summary": "jordanTotient J_d, J_1=φ, multiplicative formula (axiomatized)",
-      "startLine": 77,
+      "startLine": 74,
       "endLine": 95,
       "mathContext": "J_d(q) = q^d ∏_{p|q}(1-p^{-d}), generalizing Euler's φ"
     },
@@ -76,14 +76,14 @@
       "title": "d-Dimensional Approximation Set",
       "summary": "isApproximable_d, approximationSet_d, S_d measure",
       "startLine": 97,
-      "endLine": 120,
+      "endLine": 119,
       "mathContext": "max_i |α_i - p_i/q| < A/q^{1+1/d}, primitive p, denominator in [N,cN]"
     },
     {
       "id": "formula",
       "title": "Limit Formula",
       "summary": "f_d = (2A)^d·log(c)/ζ(d+1), properties (positivity, scaling, monotonicity)",
-      "startLine": 122,
+      "startLine": 120,
       "endLine": 165,
       "mathContext": "f_1 = 12A·log(c)/π² ✓, f_d > 0 for A,c > 0,1, scale A^d"
     },
@@ -92,14 +92,14 @@
       "title": "Main Theorem",
       "summary": "jordan_mertens (axiom), main_theorem_d (axiom): S_d → f_d",
       "startLine": 167,
-      "endLine": 200,
+      "endLine": 198,
       "mathContext": "Jordan-Mertens: Σ J_d/q^{d+1}·ζ(d+1) → log(c); d-dim Mertens-type"
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "summary": "d=1 consistency, d=2 (Apéry's constant), dimension decay, recurrence",
-      "startLine": 202,
+      "startLine": 199,
       "endLine": 227,
       "mathContext": "f_d → 0 as d → ∞ for A < 1/2; recurrence f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1)"
     }
