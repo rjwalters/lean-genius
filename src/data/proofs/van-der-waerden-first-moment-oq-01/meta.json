@@ -105,11 +105,18 @@
       "summary": "two_mul_sum_sq_le: the strengthened invariant 2c·∑(N-c·d) + (N-c·m)² ≤ N², proved by induction with a per-step square completion. card_vdwFamily_two_mul_le: specialising gives 2(k-1)·|family| ≤ n², twice as sharp as the requested n²/(k-1), with no hypothesis on k."
     },
     {
-      "id": "lower-bound",
+      "id": "floor-bound",
+      "title": "The Literal Floor Bound (the Open Question's Stated Form)",
+      "startLine": 124,
+      "endLine": 166,
+      "summary": "card_vdwFamily_le_floor: the literal first-moment bound |family| ≤ n·⌊(n-1)/(k-1)⌋ the open question asks for, proved directly by bounding the AP step — a length-k AP of step d fits only when (k-1)d ≤ n-1, so there are at most ⌊(n-1)/(k-1)⌋ admissible steps, each pairing with at most n first terms. Records the exact n²/(k-1) shape the question states; it is NOT dominated by the sharper telescoping bound card_vdwFamily_two_mul_le — in the regime n ≤ k-1 no positive-step AP fits and this lemma returns the exact value 0, where n²/(2(k-1)) is strictly positive. The filter of admissible steps is identified with Icc 1 ⌊(n-1)/(k-1)⌋ via Nat.le_div_iff_mul_le."
+    },
+    {
+      "id": "sharpened-lower-bound",
       "title": "The Sharpened Lower Bound",
-      "startLine": 125,
-      "endLine": 152,
-      "summary": "vdw_lower_bound_sharp: if n² < 2(k-1)·2^(k-1), cancel 2(k-1) to get |family| < 2^(k-1), invoke the base entry's Property B engine, and verify each fitting AP is in the family — giving W(k) ≳ √(2(k-1))·2^((k-1)/2)."
+      "startLine": 167,
+      "endLine": 198,
+      "summary": "vdw_lower_bound_sharp: if n² < 2(k-1)·2^(k-1), cancel 2(k-1) (lt_of_mul_lt_mul_left) to get |family| < 2^(k-1), invoke the base entry's Property B engine (vdw_two_coloring_exists) as a black box, and verify each fitting AP lies in vdwFamily — yielding a 2-colouring of [n] with no monochromatic positive-step length-k AP, i.e. W(k) ≳ √(2(k-1))·2^((k-1)/2), a factor √(2(k-1)) widening over the base bound n² < 2^(k-1). Closes with the axiom audit (#print axioms card_vdwFamily_le_floor: foundational axioms only)."
     }
   ],
   "conclusion": {
