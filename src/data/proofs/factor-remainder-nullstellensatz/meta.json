@@ -105,9 +105,17 @@
       "id": "multivariate",
       "title": "Multivariate Zero Loci and Vanishing Ideals",
       "startLine": 150,
-      "endLine": 254,
+      "endLine": 253,
       "summary": "Defines the zero locus V(S) and vanishing ideal I(W) for multivariate polynomials over any commutative ring. Proves the fundamental Galois connection: S ⊆ V(I(S)), S ⊆ I(V(S)), and the idempotence properties V(I(V(S))) = V(S) and I(V(I(W))) = I(W). Also proves union distribution V(S ∪ T) = V(S) ∩ V(T) and basic structural results.",
       "mathContext": "The V-I correspondence is the foundation of algebraic geometry: zero loci (geometry) and vanishing ideals (algebra) form a Galois connection between the lattice of subsets of affine space and the lattice of ideals. The strong Nullstellensatz would say I(V(J)) = √J, strengthening the idempotence to a precise characterization. The definitions here work over any commutative ring, not just algebraically closed fields."
+    },
+    {
+      "id": "numerical-examples",
+      "title": "Numerical Examples and Exported Results",
+      "startLine": 254,
+      "endLine": 282,
+      "summary": "PART 6 concrete instances: x²−1 has roots ±1 in any field of characteristic ≠ 2 (the Factor Theorem supplies the linear factors), while x²+1 has no rational root — demonstrating why the weak Nullstellensatz requires algebraic closure. Closes with a `#check` export block naming the nine headline results (factor_theorem_ideal, weak_nullstellensatz_univariate, exists_linear_factor, root_count_le_degree, nonconstant_not_unit, and the four Nullstellensatz V–I correspondence lemmas).",
+      "mathContext": "The examples ground the abstract theory: over ℚ, $x^2-1=(x-1)(x+1)$ evaluates to $0$ at $\\pm 1$, whereas $x^2+1$ is irreducible over ℚ and ℝ yet splits over ℂ — the algebraic-closure hypothesis of the weak Nullstellensatz is exactly what rules out this obstruction. The `#check` stanza serves as a machine-checked table of contents for the file’s public API."
     }
   ],
   "crossReferences": [

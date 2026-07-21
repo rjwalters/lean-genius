@@ -116,6 +116,22 @@
       "endLine": 202,
       "summary": "analyticAt_taylor_convergence: existential form, analyticAt_tsum_eq",
       "mathContext": "The AnalyticAt hypothesis (which only asserts existence of a power series) is used to extract p and r, then the HasFPowerSeriesAt versions apply. The radius positivity follows from HasFPowerSeriesOnBall.r_pos."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Section 5: Concrete Instances",
+      "startLine": 203,
+      "endLine": 215,
+      "summary": "An `example` instantiating the FPS-derivative bridge fps_coeff_eq_taylor_coeff at n=1: p 1 (fun _ => 1) = iteratedDeriv 1 f x₀ / 1! = f′(x₀), the first-derivative special case, checked against the general lemma.",
+      "mathContext": "At $n=1$ the bridge lemma specialises to $p_1(1,\\ldots,1) = f'(x_0)/1! = f'(x_0)$, confirming the abstract multilinear coefficient recovers the ordinary first derivative. The `example` form validates the general lemma against a hand-verifiable instance."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 216,
+      "endLine": 228,
+      "summary": "Closing `#check` block asserting the public signatures of the eight headline results: multilinear_eval_const, fps_coeff_eq_taylor_coeff, fps_eval_eq_taylor_term, taylor_hasSum_of_hasFPS, taylor_tendsto_of_hasFPS, taylor_remainder_tendsto_zero, taylor_tsum_eq, and analyticAt_taylor_convergence.",
+      "mathContext": "The `#check` stanza is a compile-time table of contents: each command elaborates the named declaration’s type, so a signature regression in any of the eight exported lemmas breaks the build."
     }
   ],
   "conclusion": {
