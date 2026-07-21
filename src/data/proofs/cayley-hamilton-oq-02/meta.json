@@ -146,17 +146,25 @@
     },
     {
       "id": "part6-nilpotent",
-      "title": "Part 6: Nilpotent Matrices — Charpoly = X^n",
+      "title": "Part 6: Special Cases — Nilpotent & Idempotent",
       "startLine": 226,
-      "endLine": 251,
-      "summary": "nilpotent_from_charpoly (χ_A = X^n → A^n = 0, direct from Cayley-Hamilton) and nilpotent_higher_powers_vanish (A^d = 0 → A^k = 0 for k ≥ d via pow_add)."
+      "endLine": 271,
+      "summary": "nilpotent_from_charpoly ($\\chi_A = X^n \\Rightarrow A^n = 0$, direct from Cayley–Hamilton), nilpotent_higher_powers_vanish ($A^d = 0 \\Rightarrow A^k = 0$ for $k \\ge d$ via pow_add), and idempotent_power ($A^2 = A \\Rightarrow A^k = A$ for $k > 0$ by induction, giving the closed-form $\\exp(tA) = I + (e^t - 1)A$)."
     },
     {
       "id": "part7-special",
-      "title": "Parts 7: Idempotent Matrices and Concrete Examples",
-      "startLine": 253,
-      "endLine": 310,
-      "summary": "idempotent_power (A^k = A by induction, closed-form exponential I+(e^t-1)A). Concrete 2×2 power reduction, identity powers (one_pow), zero powers (zero_pow), scalar matrices. Closes with summary comment and 5 #check commands."
+      "title": "Part 7: Concrete Examples",
+      "startLine": 272,
+      "endLine": 316,
+      "summary": "Concrete instances of the reduction: power_2x2_reduction ($A^k = \\mathrm{aeval}\\,A\\,(X^k \\bmod \\chi_A)$ for $2\\times2$), identity_powers ($1^k = 1$), zero_powers ($0^k = 0$ for $k > 0$), and scalar_power_reduction (scalar matrices obey the same Cayley–Hamilton reduction)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Exported Results",
+      "startLine": 317,
+      "endLine": 358,
+      "summary": "Catalogs the file's results by theme — polynomial reduction, degree bounds, power reduction, algebraic (annihilator-ideal) structure, power-series foundation, and special cases — and connects them to the matrix exponential $\\exp(tA) = \\sum (tA)^k/k!$, which by these results lies in $\\mathrm{span}\\{I, A, \\dots, A^{n-1}\\}$. Closes with five `#check` exports of the headline theorems.",
+      "mathContext": "The coefficients $\\alpha_i(t)$ of $\\exp(tA) = \\sum_{i<n}\\alpha_i(t)A^i$ are fixed by solving $\\exp(t\\lambda_j) = \\sum_{i<n}\\alpha_i(t)\\lambda_j^i$ at each eigenvalue $\\lambda_j$ — the Lagrange/Putzer interpolation underlying the algebraic reduction."
     }
   ],
   "sorries": 0
