@@ -73,71 +73,71 @@
       "id": "part2-turan-bound",
       "title": "Part II: Turán Number and ⌊n²/4⌋",
       "startLine": 89,
-      "endLine": 137,
+      "endLine": 155,
       "summary": "Defines `turanBound n = ⌊n²/4⌋` and proves its basic arithmetic: explicit small values (0,0,1,2,4 for n=0..4), monotonicity (`turanBound_mono`), the product form `turanBound_eq_product` (⌊n²/4⌋ = (n/2)(n − n/2)), and positivity `turanBound_pos` for n ≥ 2.",
       "mathContext": "Turán bound: $\\lfloor n^2/4 \\rfloor = (n/2)(n - n/2)$, the EGP upper bound on cp(G)."
     },
     {
       "id": "part3-egp",
       "title": "Part III: Erdős-Goodman-Pósa Theorem (1966)",
-      "startLine": 138,
-      "endLine": 162,
+      "startLine": 156,
+      "endLine": 180,
       "summary": "Axiomatizes `egp_theorem` (every graph satisfies cp(G) ≤ ⌊n²/4⌋) and derives the corollary `cliquePartitionNum_le_turan`.",
       "mathContext": "EGP (1966): $cp(G) \\leq \\lfloor n^2/4 \\rfloor$ for every graph G on n vertices."
     },
     {
       "id": "part4-extremal-bipartite",
       "title": "Part IV: Extremal Example — Complete Bipartite Graph",
-      "startLine": 163,
-      "endLine": 457,
+      "startLine": 181,
+      "endLine": 469,
       "summary": "Constructs the extremal complete bipartite graph K_{a,b} (`completeBipartite` with its decidable adjacency instance), proves it is triangle-free (`completeBipartite_cliqueFree`) with exactly a·b edges (`completeBipartite_edgeCount`), establishes `triangleFree_cliquePartition_eq_edges` (cp(G) = |E| for triangle-free G, via one 2-vertex clique per edge for the upper bound and clique counting for the lower bound), and concludes `egp_tight_example`/`egp_tight_matches_turan`: K_{k,k} attains cp = k² = ⌊(2k)²/4⌋, so the EGP bound is tight.",
       "mathContext": "Extremal: $K_{k,k}$ achieves equality $cp(K_{k,k}) = k^2 = \\lfloor (2k)^2/4 \\rfloor$. For triangle-free G, $cp(G) = |E(G)|$."
     },
     {
       "id": "part5-open-question",
       "title": "Part V: The Open Question — Dense Graphs with Large Cliques",
-      "startLine": 458,
-      "endLine": 513,
+      "startLine": 470,
+      "endLine": 550,
       "summary": "Defines `isDense` and proves `dense_contains_triangle`; formalizes the open question `erdos1017_question` (is there c ∈ (0,1) with cp(G) ≤ c·⌊n²/4⌋ for all sufficiently dense graphs?) and proves the clique-savings arithmetic (`triangle_saves` = 2, `k4_saves` = 5, `k5_saves` = 9, `k4_saves_more_than_triangle`, `clique_savings`, `savings_growth`), quantifying how a K_r saves ⌊r(r−1)/2⌋ − 1 over using individual edges.",
       "mathContext": "Open question: can $\\lfloor n^2/4\\rfloor$ be improved to $c\\lfloor n^2/4\\rfloor$, $c<1$, for dense graphs? A $K_r$ saves $\\binom{r}{2}-1$ cliques."
     },
     {
       "id": "part6-k4free",
       "title": "Part VI: K₄-Free Case — Győri-Keszegh (2017)",
-      "startLine": 514,
-      "endLine": 563,
+      "startLine": 551,
+      "endLine": 604,
       "summary": "Axiomatizes `k4free_partition_number` (Győri-Keszegh 2017: a K₄-free graph with ⌊n²/4⌋ + m edges has m edge-disjoint triangles, so cp(G) = ⌊n²/4⌋ − m) and derives `k4free_improves` and `k4free_savings_linear` — the resolved K₄-free instance of the open question.",
       "mathContext": "Győri-Keszegh (2017): for K₄-free G with $\\lfloor n^2/4\\rfloor + m$ edges, $cp(G) = \\lfloor n^2/4\\rfloor - m$."
     },
     {
       "id": "part7-lovasz",
       "title": "Part VII: Lovász Covering Bound (1968)",
-      "startLine": 564,
-      "endLine": 579,
+      "startLine": 605,
+      "endLine": 620,
       "summary": "Proves `lovasz_covering`, the Lovász (1968) edge-covering bound for clique partitions.",
       "mathContext": "Lovász (1968) covering bound for edge clique partitions."
     },
     {
       "id": "part8-connections",
       "title": "Part VIII: Connections and Consequences",
-      "startLine": 580,
-      "endLine": 609,
+      "startLine": 621,
+      "endLine": 650,
       "summary": "Proves `cliquePartition_le_vertices` (cp(G) ≤ |V|) and `supersaturation_triangles`, linking edge surplus over the Turán threshold to forced triangles.",
       "mathContext": "cp(G) $\\leq$ |V|; supersaturation forces triangles past the Turán edge count."
     },
     {
       "id": "part9-additional",
       "title": "Part IX: Additional Proved Results",
-      "startLine": 610,
-      "endLine": 647,
+      "startLine": 651,
+      "endLine": 700,
       "summary": "Further lemmas: `k4free_double_savings`, `turanBound_succ_diff` (the increment ⌊(n+1)²/4⌋ − ⌊n²/4⌋), `turanBound_le_choose_two` (⌊n²/4⌋ ≤ C(n,2)), and `triangle_free_not_dense`.",
       "mathContext": "Auxiliary bounds: Turán increments, $\\lfloor n^2/4\\rfloor \\leq \\binom{n}{2}$, triangle-free graphs are not dense."
     },
     {
       "id": "part10-verification",
       "title": "Part X: Verification",
-      "startLine": 648,
-      "endLine": 696,
+      "startLine": 701,
+      "endLine": 750,
       "summary": "`#check` commands confirming all main definitions, theorems, and the two remaining axioms (`egp_theorem`, `k4free_partition_number`) type-check; closes the namespace.",
       "mathContext": "Type-check verification of all definitions, theorems, and the 2 remaining axioms."
     }
