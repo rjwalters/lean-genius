@@ -140,9 +140,17 @@
       "id": "conjecture",
       "title": "Conjecture and Disproof",
       "startLine": 174,
-      "endLine": 188,
+      "endLine": 191,
       "summary": "Erdos1147Conjecture definition and erdos_1147_false theorem.",
       "mathContext": "Formal definition: Erdos1147Conjecture definition and erdos_1147_false theorem."
+    },
+    {
+      "id": "connection-density",
+      "title": "Connection Between Diophantine Approximation and Density",
+      "startLine": 192,
+      "endLine": 206,
+      "summary": "The diophantine_set_infinite axiom records that for any irrational α > 0 the Diophantine set {n : ‖αn²‖ < 1/log n} is infinite — a consequence of Dirichlet's approximation theorem. Yet, as the disproof shows, this set is too sparse and too irregularly distributed to serve as an additive basis of order 2 for almost every α, so infinitude alone does not yield the basis property.",
+      "mathContext": "Axiomatized: infinitude of the Diophantine set follows from Dirichlet ($\\exists^\\infty n,\\ \\|\\alpha n^2\\| < 1/n$), but sparsity obstructs the order-2 basis property that Erdős #1147 conjectured."
     },
     {
       "id": "summary",
