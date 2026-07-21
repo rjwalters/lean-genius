@@ -252,25 +252,32 @@
       "summary": "`burnside_p_squared_q` and `burnside_p_q_squared`: top-level axiom-free theorems that consolidate the per-case results of Part III.6 into clean statements for the `(a, b) = (2, 1)` and `(a, b) = (1, 2)` shapes, dispatching internally on the `p` vs `q` ordering (and the `|G| = 12` exception) so callers need not case-split."
     },
     {
+      "id": "p-squared-q-squared",
+      "title": "Part III.7 (cont.): |G| = p² · q² shape, (a, b) = (2, 2) (axiom-free, excl. |G| = 36)",
+      "startLine": 1675,
+      "endLine": 1817,
+      "summary": "The `(a, b) = (2, 2)` shape `|G| = p^2 q^2`. `burnside_p_squared_q_squared_p_lt_q` / `_q_lt_p` and the consolidated `burnside_p_squared_q_squared` prove solvability axiom-free by re-using the same Sylow-counting helper `sylow_count_eq_one_of_lt_prime_pow_two` (the constraint $n_q \\mid p^2$, $n_q \\equiv 1 \\pmod q$ is identical to the $|G| = p^2 q$ analysis), forcing a normal Sylow away from the lone exceptional pair $(p, q) = (2, 3)$, i.e. $|G| = 36 = 2^2 \\cdot 3^2$, which is excluded and would need the finer $|G| = 12$-style element-counting. These theorems are proved but not yet wired into the `burnside_pq` dispatch, which still routes $4 \\le a + b$ through the axiom."
+    },
+    {
       "id": "main-theorem",
       "title": "Part IV: Main theorem",
-      "startLine": 1675,
-      "endLine": 1754,
+      "startLine": 1818,
+      "endLine": 1897,
       "summary": "`burnside_pq`: combines the three axiom-free trivial cases with the squarefree-order case (a = b = 1) and the conjectural `burnside_pq_nontrivial` axiom into the unified statement `Nat.card G = p^a · q^b → IsSolvable G`."
     },
     {
       "id": "sanity-checks",
       "title": "Part V: Sanity checks",
-      "startLine": 1755,
-      "endLine": 1828,
-      "summary": "Six `example`s that exercise the axiom-free portions of the file at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$) …"
+      "startLine": 1898,
+      "endLine": 1971,
+      "summary": "Six `example`s that exercise the axiom-free portions of the file at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$), squarefree $|G| = pq$, the three-prime squarefree $|G| = 30$, the normal-Sylow $|G| = 12$ (realized by $A_4 \\supseteq V_4$), and the Sylow-counting $|G| = 75 = 5^2 \\cdot 3$. All are axiom-free (the lone `native_decide` sits inside a `Squarefree 30` `example`, not a theorem)."
     },
     {
       "id": "sharpness",
       "title": "Part VI: Sharpness witness",
-      "startLine": 1829,
-      "endLine": 1973,
-      "summary": "`alternatingGroupFin5_card`: $|A_5| = 2^2 \\cdot 3 \\cdot 5$ via `Nat.card_eq_fintype_card` + `native_decide`."
+      "startLine": 1972,
+      "endLine": 2115,
+      "summary": "$A_5$ as the canonical sharpness witness. `alternatingGroupFin5_card`: $|A_5| = 2^2 \\cdot 3 \\cdot 5$ via `Nat.card_eq_fintype_card` + kernel `decide` (axiom-free); `alternatingGroupFin5_not_solvable`: $\\neg\\,\\mathrm{IsSolvable}(A_5)$ by reduction to `Equiv.Perm.not_solvable (Fin 5)` through the short exact sequence $A_5 \\to S_5 \\to \\mathbb{Z}/2$; and `burnside_pq_sharp` bundles both, showing Burnside's two-prime bound cannot extend to three distinct primes (and that the `Squarefree` route also fails, since $60 = 2^2 \\cdot 3 \\cdot 5$ is not squarefree). Closes with the file's iteration summary and `#check` roster."
     }
   ],
   "crossReferences": [
