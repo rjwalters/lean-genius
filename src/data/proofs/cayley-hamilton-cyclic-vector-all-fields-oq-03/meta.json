@@ -107,42 +107,62 @@
       "id": "header",
       "title": "Header: Statement and Basis-Reduction Strategy",
       "startLine": 1,
-      "endLine": 60,
+      "endLine": 87,
       "summary": "States the coordinate-free goal (nonderogatory operator has a cyclic vector) and lays out the four-step basis reduction to the verified matrix theorem: minpoly transport, nonderogatory matrix, matrix cyclic vector, and coordinate transport. Records the PID-module direction as an explicit open gap."
     },
     {
       "id": "definitions",
       "title": "Coordinate-free definitions: IsCyclicVectorOp, IsNonderogatoryOp",
-      "startLine": 61,
-      "endLine": 80,
+      "startLine": 88,
+      "endLine": 102,
       "summary": "Operator analogues of the matrix notions: v is cyclic for T if no nonzero polynomial of degree < finrank K V annihilates v; T is nonderogatory if (minpoly K T).natDegree = finrank K V."
     },
     {
       "id": "nonderog-from-degree",
       "title": "Matrix nonderogatory from minpoly degree: matrix_nonderog_of_minpoly_natDegree",
-      "startLine": 81,
-      "endLine": 120,
+      "startLine": 103,
+      "endLine": 141,
       "summary": "If (minpoly K M).natDegree = n then minpoly K M = M.charpoly. Uses minpoly ∣ charpoly (Cayley–Hamilton), charpoly_natDegree_eq_dim, and the monic-cofactor argument: the cofactor has degree 0 and leading coefficient 1, hence equals 1."
     },
     {
       "id": "transport-bridge",
       "title": "Basis-transport bridge: toMatrix_mulVec_repr",
-      "startLine": 121,
-      "endLine": 140,
+      "startLine": 142,
+      "endLine": 163,
       "summary": "Proves (toMatrix b b f).mulVec (b.repr x) = b.repr (f x) directly from LinearMap.toMatrix_apply by expanding x in the basis and pushing f and b.repr through the sum, intertwining operator application with mulVec."
     },
     {
       "id": "main",
       "title": "Main theorem: operator_nonderogatory_has_cyclic_vector",
-      "startLine": 141,
-      "endLine": 200,
+      "startLine": 164,
+      "endLine": 215,
       "summary": "A nonderogatory operator on a finite-dimensional space has a cyclic vector. Handles finrank 0 vacuously, then via b := finBasis sets M := toMatrix b b T, transports the minpoly (algEquiv_eq), gets nonderogatory M and a matrix cyclic vector w, and pulls w back through b.equivFun.symm using the transport bridge and aeval_algHom_apply."
+    },
+    {
+      "id": "span-form-cyclic",
+      "title": "Bridge to the Span-Form Cyclic Subspace",
+      "startLine": 216,
+      "endLine": 284,
+      "summary": "Connects the minpoly-degree nonderogatory criterion to the Krylov/span form of a cyclic vector: `krylov_linearIndependent_op` (the iterates T^i v are independent up to the minpoly degree), `cyclicSubspace_eq_top_of_isCyclicVectorOp` (a cyclic vector spans V), and `operator_nonderogatory_has_span_cyclic_vector` (the span-form restatement of the main theorem).",
+      "mathContext": "For a cyclic vector $v$, $\\{v, Tv, T^2v, \\dots, T^{d-1}v\\}$ ($d=\\deg m_T$) is a basis, so the cyclic subspace $K[T]\\cdot v = V$; equivalently $T$ nonderogatory $\\Rightarrow$ a span-generating cyclic vector exists.",
+      "significance": "key",
+      "relatedConcepts": [
+        "Krylov subspace",
+        "cyclic subspace",
+        "minimal polynomial",
+        "linear independence"
+      ],
+      "prerequisites": [
+        "minimal polynomial",
+        "module over K[X]",
+        "linear independence"
+      ]
     },
     {
       "id": "pid-gap",
       "title": "PID direction (documented open gap)",
-      "startLine": 201,
-      "endLine": 221,
+      "startLine": 285,
+      "endLine": 310,
       "summary": "Records the deferred PID-module generalization with an infrastructure assessment: it requires Mathlib's structure theorem for finitely generated modules over a PID plus a cyclic-recombination lemma (> 500 lines), and is left for a focused future session."
     }
   ],
