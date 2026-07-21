@@ -70,46 +70,60 @@
   },
   "sections": [
     {
+      "id": "imports-overview",
+      "title": "Imports, Overview, and Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Mathlib imports (inner-product spaces, normed fields, Fréchet derivatives, complex numbers) and the module docstring framing OQ-01/OQ-03 of Hilbert's 20th problem: local solvability of linear PDOs. Opens `Classical`, `Finset`, `Complex` and the `Hilbert20OQ01OQ03` namespace extending the parent framework."
+    },
+    {
       "id": "pdo-framework",
       "title": "PDO Structure and Principal Symbol",
-      "startLine": 52,
-      "endLine": 65,
+      "startLine": 51,
+      "endLine": 73,
       "summary": "Defines multi-indices, linear PDOs of order m, and the principal symbol extraction."
     },
     {
       "id": "monomial-conjugation",
       "title": "Monomial Reality and Conjugation",
-      "startLine": 71,
-      "endLine": 94,
+      "startLine": 74,
+      "endLine": 98,
       "summary": "Proves monomials with real arguments are real and fixed by conjugation — the algebraic linchpin for the adjoint symbol theorem."
     },
     {
       "id": "adjoint-theory",
       "title": "Formal Adjoint and Symbol Relation",
-      "startLine": 100,
-      "endLine": 139,
+      "startLine": 99,
+      "endLine": 145,
       "summary": "Defines the formal adjoint by conjugating coefficients, proves p*(x,ξ) = conj(p(x,ξ)), adjoint involutivity, and self-adjointness for real coefficients."
     },
     {
       "id": "hormander-duality",
       "title": "Hörmander Duality Framework",
-      "startLine": 141,
-      "endLine": 162,
+      "startLine": 146,
+      "endLine": 168,
       "summary": "Axiomatizes a priori estimates, local solvability, and Hörmander's duality theorem connecting solvability to adjoint estimates."
     },
     {
       "id": "dencker-weight",
       "title": "Dencker Weight and Condition (Ψ)",
-      "startLine": 168,
-      "endLine": 225,
+      "startLine": 169,
+      "endLine": 244,
       "summary": "Defines Dencker weight structure, condition (Ψ) via bicharacteristic sign control, and axiomatizes weight existence and estimate derivation."
     },
     {
       "id": "sufficiency-theorem",
       "title": "Dencker's Sufficiency Theorem and Corollaries",
-      "startLine": 227,
-      "endLine": 284,
+      "startLine": 245,
+      "endLine": 319,
       "summary": "Proves the main theorem: condition (Ψ) → solvability via the three-step chain. Derives corollaries for real-symbol and self-adjoint operators."
+    },
+    {
+      "id": "summary",
+      "title": "PART 8: Summary of Results",
+      "startLine": 320,
+      "endLine": 363,
+      "summary": "Closing summary docstring cataloguing the 10 axiom-free proved results (from `monomial_real` through `self_adjoint_solvable` and the now-`rfl` `imSymbolAlongCurve_spec`), the structures/defs concretized out of axiom status (`BicharacteristicCurve`, `imSymbolAlongCurve`), and the 5 genuinely-deep remaining axioms (`HasAPrioriEstimate`, `IsLocallySolvable`, `hormander_duality`, `dencker_weight_exists`, `weight_implies_estimate`), each requiring Sobolev-space / distribution machinery not yet in scope. Ends with `#check`s of the key proved theorems. 0 sorries."
     }
   ],
   "conclusion": {
