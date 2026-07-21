@@ -130,11 +130,19 @@
     },
     {
       "id": "sec-1009-corollaries",
-      "title": "Turán's Theorem and Corollaries",
-      "summary": "Proves `turan_extremal` ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) from Mathlib's `CliqueFree.card_edgeFinset_le`, then derives `exceeds_turan_has_triangle` by contraposition. Both are fully proved (all 7 theorems in the file are proof-complete; the axiomatized content is the opaque `boundFunction` and `gyori_bound`).",
+      "title": "Turán's Theorem",
+      "summary": "Proves `turan_extremal` ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) from Mathlib's `CliqueFree.card_edgeFinset_le`: unpacks a 3-clique into three pairwise-adjacent vertices to contradict triangle-freeness, then splits on the parity of $n$ and closes each case with `norm_num [Nat.choose]` + `omega`. (The axiomatized content of the file is the opaque `boundFunction` and `gyori_bound`; every theorem is proof-complete.)",
       "startLine": 174,
-      "endLine": 194,
-      "mathContext": "`exceeds_turan_has_triangle`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\exists$ triangle in $G$. Proved by contraposition: if no triangle exists, `turan_extremal` (a bridge to Mathlib's `CliqueFree.card_edgeFinset_le` Turán bound) gives $|E| \\leq \\lfloor n^2/4 \\rfloor$, contradicting the hypothesis."
+      "endLine": 208,
+      "mathContext": "`turan_extremal`: a triangle-free graph on $n$ vertices has $|E| \\leq \\lfloor n^2/4 \\rfloor$, obtained by bridging the local `Triangle` structure to Mathlib's `SimpleGraph.CliqueFree 3` and invoking `CliqueFree.card_edgeFinset_le`."
+    },
+    {
+      "id": "sec-1009-threshold-lemmas",
+      "title": "Symmetry, Threshold Lemmas, and Triangle Existence",
+      "summary": "Closing utility lemmas: `edgeDisjoint_comm` (edge-disjointness is symmetric, via `Finset.inter_comm`); the `turanThreshold` arithmetic (`turanThreshold_zero`/`_one` by `simp`, `turanThreshold_pos` for $n \\geq 2$, `turanThreshold_mono` via `Nat.div_le_div_right`); and `exceeds_turan_has_triangle` — the contrapositive of `turan_extremal`: any graph with $|E(G)| > \\lfloor n^2/4 \\rfloor$ contains a triangle.",
+      "startLine": 209,
+      "endLine": 240,
+      "mathContext": "`exceeds_turan_has_triangle`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\exists$ triangle in $G$. Proved by contraposition: if no triangle exists, `turan_extremal` gives $|E| \\leq \\lfloor n^2/4 \\rfloor$, contradicting the hypothesis. `turanThreshold n = n^2/4$ is monotone and positive for $n \\geq 2$."
     }
   ],
   "conclusion": {

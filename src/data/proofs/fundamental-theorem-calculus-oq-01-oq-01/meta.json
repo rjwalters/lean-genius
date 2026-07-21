@@ -96,6 +96,14 @@
       "endLine": 185,
       "summary": "Combines Lemmas 4 and 5 to prove BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b. Degenerate case a = b: variation = 0 ≠ ⊤. Generic case: extract δ from AC at ε = 1, set n = ⌈(b−a)/δ⌉+1 so step = (b−a)/n < δ, verify a + n·step = b, dispatch each of the n pieces via Lemma 4, then conclude via Lemma 5 that eVariationOn ≤ n ≠ ⊤.",
       "mathContext": "Quantitative: $V_F[a,b] \\le \\lceil (b-a)/\\delta \\rceil + 1$. The +1 in the definition of n is what makes the ceiling inequality strict (b − a ≤ ⌈·⌉·δ < n·δ), giving step < δ — without this slack the AC condition would not apply."
+    },
+    {
+      "id": "sec-lebesgue-ftc",
+      "title": "Lebesgue FTC (Part 1): AC ⟹ a.e. differentiable",
+      "startLine": 186,
+      "endLine": 234,
+      "summary": "lebesgue_ftc_differentiable: an absolutely continuous function on [a,b] is differentiable at almost every point of (a,b), packaged as an explicit measurable full-measure subset S ⊆ (a,b). Chains the ac_implies_bv result (AC → BV) with Mathlib's BoundedVariationOn.ae_differentiableAt_of_mem_uIcc, then converts the a.e. statement to a concrete S by discarding a measurable null cover (toMeasurable) of the non-differentiable points. This discharges the former FTCLebesgue.lebesgue_ftc_differentiable axiom in the parent file.",
+      "mathContext": "AC on $[a,b]$ ⟹ BV on $\\mathrm{uIcc}\\,a\\,b$ ⟹ (Mathlib) a.e. $x$, $\\mathrm{DifferentiableAt}\\,\\mathbb{R}\\,F\\,x$. The null set $B = \\{x : \\lnot(x \\in \\mathrm{uIcc}\\,a\\,b \\to \\mathrm{DifferentiableAt}\\,F\\,x)\\}$ is covered by `toMeasurable volume B` (measurable, same null measure); $S := (a,b) \\setminus \\mathrm{toMeasurable}\\,B$ is measurable, full-measure in $(a,b)$, and everywhere-differentiable."
     }
   ],
   "crossReferences": [
