@@ -1876,8 +1876,9 @@ theorem two_common_neighbours_dist
       simp only [inner_add_left, inner_add_right, euu, evv] at h
       linarith
     have hd2 : inner ℝ d d = 3 * a ^ 2 := by
-      rw [hddef, inner_sub_left, inner_sub_right, inner_sub_right, euu, evv, hc, htval]
-      ring
+      rw [hddef]
+      simp only [inner_sub_left, inner_sub_right, euu, evv]
+      linarith [htval, hc]
     have hnd2 : ‖d‖ ^ 2 = 3 * a ^ 2 := by rw [← real_inner_self_eq_norm_sq]; exact hd2
     have hnd : ‖d‖ = a * Real.sqrt 3 := by
       rw [← Real.sqrt_sq (norm_nonneg d), hnd2, mul_comm (3 : ℝ) (a ^ 2),
