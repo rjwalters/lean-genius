@@ -83,44 +83,68 @@
   },
   "sections": [
     {
-      "id": "representation-count",
-      "title": "The Representation Count r₄ and its Box",
-      "startLine": 55,
-      "endLine": 73,
-      "summary": "Defines box n = [-√n,√n]⊆ℤ (all admissible signed components, since x²≤n ⟹ |x|≤√n) and r4 n as the Finset.card of quadruples in box n⁴ whose squares sum to n — the ordered, signed count r₄(n). A sanity example checks r₄(0)=1.",
-      "mathContext": "Every component x of a representation of n satisfies x²≤n, hence |x|≤⌊√n⌋, so all representations live in the finite box [-√n,√n]⁴. r₄(n) is then a genuine computable Finset.card."
+      "id": "overview-scope",
+      "title": "Overview: Honest Scope — Machine-Checkable Increment vs. Mathlib Gap",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating precisely what is and is not proved. The general Jacobi four-square theorem is a genuine Mathlib gap — Mathlib has four-square existence (Nat.sum_four_squares) and Euler multiplicativity (Nat.euler_four_squares) but no representation count r₄, no two-square count r₂, and no Jacobi formula; all three classical routes (weight-2 modular forms θ⁴∈M₂(Γ₀(4)), Hurwitz-quaternion orders, the elementary Lambert/Liouville method) each need ≫1000 LOC of absent number theory. The file therefore pins the counting convention, proves the general 0-axiom lemmas, and provides a native_decide oracle rather than claiming the blocked theorem. Opens the namespace and Finset scope.",
+      "mathContext": "The honest increment mirrors the parent OQ-01's 'verified for small cases' pattern: prove what is elementary and 0-axiom (the odd/prime/prime-power closed forms), guard the load-bearing 4∤d convention, and pin the general equality r₄=jacobiCount by a finite-range native_decide oracle."
     },
     {
-      "id": "jacobi-rhs",
-      "title": "The Jacobi Right-Hand Side and the Odd Case",
-      "startLine": 74,
-      "endLine": 113,
-      "summary": "Defines jacobiCount n = 8·Σ_{d|n,4∤d}d and proves jacobiCount_odd: for odd n the exclusion 4∤d is vacuous (no divisor of an odd number is even), so jacobiCount n = 8·σ(n); jacobiCount_prime specialises to an odd prime p (jacobiCount p = 8(p+1)). These 0-axiom general lemmas capture the elementary odd half of Jacobi's formula.",
-      "mathContext": "If n is odd and d|n then d is odd, so 4∤d; the filter keeps every divisor (Finset.filter_true_of_mem) and the count collapses to 8·σ(n)."
+      "id": "part1-r4-box",
+      "title": "Part 1: The Representation Count r₄ and its Search Box",
+      "startLine": 63,
+      "endLine": 80,
+      "summary": "Defines box n = {i−⌊√n⌋ : i∈[0,2⌊√n⌋]} = [-√n,√n]∩ℤ (all admissible signed components, since x²≤n ⟹ |x|≤√n) and r4 n as the Finset.card of quadruples in box n⁴ whose squares sum to n — the ordered, signed count r₄(n) Mathlib lacks entirely. A decide example checks r₄(0)=1 (only the all-zero quadruple).",
+      "mathContext": "Every component x of a representation of n satisfies x²≤n, hence |x|≤⌊√n⌋, so all representations live in the finite box [-√n,√n]⁴; r₄(n) is then a genuine computable Finset.card, which is exactly what makes native_decide a valid oracle later."
     },
     {
-      "id": "two-adic-structure",
-      "title": "Powers of Two and the 2-adic Structure",
-      "startLine": 114,
-      "endLine": 196,
-      "summary": "The 4∤d exclusion makes jacobiCount depend only on the odd part of n. jacobiCount_two_pow: jacobiCount(2ᵏ)=24 for k≥1 (only d=1,2 survive); jacobiCount_two_pow_const: independence of the exponent for 2ʲ vs 2ᵏ; jacobiCount_of_not_four_dvd handles the 4∤n case; jacobiCount_two_mul and jacobiCount_two_mul_odd_eq give the doubling relation jacobiCount(2m)=3·jacobiCount(m) for odd m — the even-side multiplicative structure, all 0-axiom.",
-      "mathContext": "Since divisors ≡ 0 mod 4 are excluded, only the 2⁰ and 2¹ parts of a power of two contribute (1+2=3, ×8=24); doubling an odd m adds exactly the factor-2 divisors, multiplying the count by 3."
+      "id": "part2-jacobi-rhs-closed-forms",
+      "title": "Part 2: The Jacobi Right-Hand Side — Odd, Prime, and Prime-Power Closed Forms",
+      "startLine": 81,
+      "endLine": 178,
+      "summary": "Defines jacobiCount n = 8·Σ_{d|n,4∤d}d and derives the elementary 0-axiom general closed forms on the 'no 2²' side: jacobiCount_odd (odd n ⟹ filter vacuous ⟹ 8·σ(n)), jacobiCount_prime (odd prime p ⟹ 8(p+1)), jacobiCount_two_pow (jacobiCount(2ᵏ)=24 for k≥1, only d=1,2 survive) and its exponent-independence corollary jacobiCount_two_pow_const, jacobiCount_odd_prime_pow (8·Σ_{i≤k}pⁱ) with its geometric closed form jacobiCount_odd_prime_pow_geom (8·(pᵏ⁺¹−1)/(p−1)), and the anchor jacobiCount_nine (jacobiCount(3²)=104).",
+      "mathContext": "For odd n every divisor is odd so 4∤d holds for all d (Finset.filter_true_of_mem), collapsing the count to 8·σ(n); on powers of two only 2⁰ and 2¹ escape the 4∤d filter, giving the constant 24 independent of the exponent. These closed forms, plus multiplicativity of the normalized count, determine jacobiCount on every n from its factorization."
     },
     {
-      "id": "convention-guard",
-      "title": "Convention Guard: the Naive 8·σ Fails",
-      "startLine": 197,
-      "endLine": 200,
-      "summary": "naive_sigma_fails proves 8·σ(4)=56 while jacobiCount 4 = r₄ 4 = 24 — the 4∤d exclusion drops d=4 and is load-bearing. This blocks any statement that silently uses 8·σ for all n.",
-      "mathContext": "σ(4)=1+2+4=7, so 8·σ(4)=56, but the true count is r₄(4)=24; the discrepancy is exactly the excluded divisor d=4."
+      "id": "part2-two-adic-collapse-doubling",
+      "title": "The 2-adic Valuation ≤ 1 Regime: Collapse to 8·σ and the Doubling Law",
+      "startLine": 179,
+      "endLine": 226,
+      "summary": "Isolates the common root of the odd and 2·(odd) cases: jacobiCount_of_not_four_dvd shows that whenever 4∤n the exclusion is vacuous, so jacobiCount n = 8·σ(n) — i.e. the count collapses to 8·σ exactly in the 2-adic-valuation-≤1 regime. jacobiCount_two_mul then proves the doubling law jacobiCount(2m)=3·jacobiCount(m) for odd m (via σ-multiplicativity on coprime 2,m), and jacobiCount_two_mul_odd_eq gives its closed form 24·σ(m), the classical r₄(2m) value (r₄ 6 = 96 = 24·σ(3)). All 0-axiom, general.",
+      "mathContext": "4∤n means no divisor of n is a multiple of 4, so the 4∤d filter keeps every divisor; multiplicativity σ(2m)=σ(2)·σ(m)=3σ(m) on the coprime factors 2,m turns the collapse into the pure multiple 24·σ(m) on n=2·(odd)."
     },
     {
-      "id": "oracle",
-      "title": "The Jacobi Oracle and Anchor Values",
-      "startLine": 201,
-      "endLine": 217,
-      "summary": "jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n by native_decide — a machine-checked regression oracle that Jacobi's divisor-sum formula reproduces the brute-force lattice count over a range of small n. r4_anchor_values states the spot anchors r₄(1)=8, r₄(2)=24, r₄(3)=32, r₄(4)=24, r₄(5)=48, r₄(7)=64.",
-      "mathContext": "native_decide compiles both sides to native code and compares; it depends on Lean.ofReduceBool, so this is an axiomatized verified computation, not a proof of the general theorem."
+      "id": "part2-four-dvd-recursion",
+      "title": "The 4 ∣ n Case: Even-Side Recursion via σ(n/4)",
+      "startLine": 227,
+      "endLine": 283,
+      "summary": "Handles the complementary 4∣n side where the naive 8·σ genuinely fails. sum_divisors_four_dvd establishes that d↦d/4 bijects the divisors of n divisible by 4 onto all divisors of n/4, so Σ_{d|n,4|d}d = 4·σ(n/4). Feeding this into the divisor split gives jacobiCount_four_dvd: jacobiCount n + 32·σ(n/4) = 8·σ(n), the general even-side recursion reducing the count on n to plain divisor sums of n and n/4 (n=4: 24+32=56=8·σ(4); n=8: 24+96=120=8·σ(8)). Both 0-axiom, general.",
+      "mathContext": "The excluded ('4∣d') part of σ(n) is exactly 4·σ(n/4) via the scaling bijection (Finset.sum_nbij'); subtracting it from the naive 8·σ(n) recovers the true count, i.e. jacobiCount n = 8·(σ(n) − 4·σ(n/4)) whenever 4∣n."
+    },
+    {
+      "id": "part2-global-bounds-guard",
+      "title": "Global Bounds and the Convention Guard: Positivity, 8 ∣ count, the σ-Envelope",
+      "startLine": 284,
+      "endLine": 386,
+      "summary": "Uniform 0-axiom general properties: eight_le_jacobiCount (8 ≤ jacobiCount n for n≥1, since d=1 always survives) and its corollary jacobiCount_pos; eight_dvd_jacobiCount (8 ∣ jacobiCount n, the sign/transposition-orbit shadow); the boundary values jacobiCount_zero and jacobiCount_eq_zero_iff (vanishes exactly at 0); and the sharp naive-formula boundary jacobiCount_le (≤ 8·σ(n) always), jacobiCount_lt_of_four_dvd (strict exactly when 4∣n, deficit 32·σ(n/4)), jacobiCount_eq_eight_sigma_iff (= 8·σ(n) ⟺ 4∤n). Closes with the convention guard naive_sigma_fails: 8·σ(4)=56 while jacobiCount 4 = r₄ 4 = 24.",
+      "mathContext": "The filter only removes divisors, so 8·(filtered sum) ≤ 8·σ(n) with equality iff nothing is removed (4∤n); the strict deficit when 4∣n is quantified as 32·σ(n/4)>0 by the even-side recursion, and the guard witnesses this deficit concretely at n=4 (the excluded divisor d=4 accounts for 56−24=32)."
+    },
+    {
+      "id": "part3-oracle",
+      "title": "Part 3: The native_decide Oracle — Formula Matches Brute Force for 1 ≤ n ≤ 24",
+      "startLine": 387,
+      "endLine": 402,
+      "summary": "jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n by native_decide — a machine-checked regression oracle that Jacobi's divisor-sum formula reproduces the brute-force ordered-signed lattice count over the small-n range. r4_anchor_values extracts explicit spot values r₄(1)=8, r₄(2)=24, r₄(3)=32, r₄(4)=24, r₄(5)=48, r₄(7)=64 so the intended convention is legible. This pins the convention without proving the Mathlib-blocked general theorem.",
+      "mathContext": "native_decide compiles both the finite lattice count r4 and the divisor sum jacobiCount to native code and compares numerals; it trusts the compiler and so depends on the Lean.ofReduceBool axiom, making this an axiomatized verified computation rather than a general proof."
+    },
+    {
+      "id": "part4-r4-positivity",
+      "title": "Part 4: A General 0-Axiom Property of the True Count — r₄(n) > 0 for Every n",
+      "startLine": 403,
+      "endLine": 455,
+      "summary": "The first general, 0-axiom, native_decide-free statement about the honest lattice count r4 itself. natCast_mem_box shows any x with x²≤n has signed image in box n (via Nat.le_sqrt'). r4_pos then proves 0 < r4 n for all n by pulling a,b,c,d from Mathlib's Nat.sum_four_squares, whose squares each ≤ n land the quadruple in box n⁴ and satisfy the defining equation — the counting-side form of Lagrange's four-square theorem and the r4 mirror of jacobiCount_pos. r4_ne_zero restates it, noting even r₄(0)=1.",
+      "mathContext": "This is the r₄ (left-hand) mirror of the jacobiCount (right-hand) positivity: it shows the oracle's equality r₄ n = jacobiCount n is at least sign-consistent for ALL n, not merely the checked 1≤n≤24 range, since both sides are positive throughout; unlike the oracle it needs no native_decide."
     }
   ],
   "crossReferences": [
