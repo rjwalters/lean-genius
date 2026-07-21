@@ -186,7 +186,8 @@ theorem connected_hasMinDegree_two_not_isAcyclic
   have h2 : 2 ≤ G.minDegree := by
     apply SimpleGraph.le_minDegree_of_forall_le_degree
     intro v
-    simpa [SimpleGraph.degree] using hdeg v
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]
+    exact hdeg v
   omega
 
 /-- A nontrivial connected graph with minimum degree at least `2` contains a cycle
@@ -196,10 +197,9 @@ theorem connected_hasMinDegree_two_exists_cycle
     (G : SimpleGraph W) [DecidableRel G.Adj]
     (hconn : G.Connected) (hdeg : HasMinDegree G 2) :
     ∃ (v : W) (c : G.Walk v v), c.IsCycle := by
-  have h := connected_hasMinDegree_two_not_isAcyclic G hconn hdeg
-  unfold SimpleGraph.IsAcyclic at h
-  push_neg at h
-  exact h
+  by_contra hcon
+  exact connected_hasMinDegree_two_not_isAcyclic G hconn hdeg
+    (fun v c hc => hcon ⟨v, c, hc⟩)
 
 /-- The Problem-64 hypothesis (minimum degree ≥ `3`) forces at least one cycle, for
 connected graphs. The **open** content of Problem 64 is that some such cycle can be
