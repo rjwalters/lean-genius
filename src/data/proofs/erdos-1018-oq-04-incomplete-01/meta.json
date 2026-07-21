@@ -62,55 +62,55 @@
       "id": "concrete-def",
       "title": "Part I — Concrete isEmbeddable Definition",
       "startLine": 43,
-      "endLine": 59,
+      "endLine": 61,
       "summary": "Defines isEmbeddableConc via vertex maps φ : V → Fin d → ℝ with convex hull separation.",
       "mathContext": "H embeddable in ℝ^d iff ∃ injective φ : V → ℝ^d, ∀ e₁ ≠ e₂ ∈ H.edges: ConvHull(φ(e₁)) ∩ ConvHull(φ(e₂)) ⊆ ConvHull(φ(e₁ ∩ e₂))."
     },
     {
       "id": "properties-k3",
       "title": "Part II — Properties of the Concrete Definition (incl. K₃)",
-      "startLine": 60,
-      "endLine": 233,
+      "startLine": 62,
+      "endLine": 302,
       "summary": "Proves `embeddable_injective`, `embeddable_mono` (higher dimensions only help), and `K3_planar` via the explicit coordinate embedding (0,0),(1,0),(0,1) with linear-functional convex-hull arguments.",
       "mathContext": "K₃ at {(0,0),(1,0),(0,1)}: non-degenerate triangle, embeddable in ℝ²."
     },
     {
       "id": "k4-planar",
       "title": "Part IV — K₄ is Planar",
-      "startLine": 234,
-      "endLine": 614,
+      "startLine": 303,
+      "endLine": 888,
       "summary": "`K4_planar`: a fully-proved planar embedding of K₄ at (0,0),(3,0),(1,2),(2,2), establishing the non-crossing condition for all edge pairs via explicit linear functionals on convex hulls (a long, detailed proof).",
       "mathContext": "K₄ at {(0,0),(3,0),(1,2),(2,2)}: valid planar configuration, embeddable in ℝ²."
     },
     {
       "id": "graph-recovery",
       "title": "Part V — Graph Case Recovery",
-      "startLine": 615,
-      "endLine": 635,
+      "startLine": 889,
+      "endLine": 909,
       "summary": "Edge counts for complete graphs: `Kn_edges` (|E(K_n)| = C(n,2)), and the concrete `K5_edges`, `K3_edges`, `K4_edges`.",
       "mathContext": "|E(K_n)| = \\binom{n}{2}; K5 has 10 edges, K3 has 3, K4 has 6."
     },
     {
       "id": "density",
       "title": "Part VI — Density and Non-Embeddability",
-      "startLine": 636,
-      "endLine": 672,
+      "startLine": 910,
+      "endLine": 946,
       "summary": "`planar_graphs_edge_bound` (|E| ≤ 3|V| − 6, the file's sole sorry — Euler's formula, not yet in Mathlib) and `dense_graph_not_planar` (graphs with n^{1+ε} edges eventually exceed the planar bound).",
       "mathContext": "Planar: |E| ≤ 3n − 6. For ε > 0, n^{1+ε} = n·n^ε eventually exceeds 3n − 6, so such graphs are non-planar."
     },
     {
       "id": "kostochka-pyber",
       "title": "Part VII — Connection to Main Conjecture",
-      "startLine": 673,
-      "endLine": 709,
+      "startLine": 947,
+      "endLine": 988,
       "summary": "The file's sole axiom `kostochka_pyber_r2` (the r=2 graph case, Kostochka–Pyber 1988) and `r2_implies_main_r2` deriving the r=2 case of the main conjecture from it.",
       "mathContext": "∀ε>0, ∃C,N: graphs on n≥N vertices with n^{1+ε} edges contain a non-planar subgraph on ≤C vertices."
     },
     {
       "id": "summary",
       "title": "Part VIII — Summary",
-      "startLine": 710,
-      "endLine": 738,
+      "startLine": 989,
+      "endLine": 1017,
       "summary": "Closing docstring: the parent's isEmbeddable sorry is resolved (→ isEmbeddableConc); turanNumber and the planar edge bound remain as the remaining gaps."
     }
   ],
