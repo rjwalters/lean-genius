@@ -64,28 +64,28 @@
       "id": "overview-docstring",
       "title": "Statement of the equality condition",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Module docstring fixing the goal: SSA H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) holds with equality iff X–Y–Z is a Markov chain, p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z). Outlines the two-step reduction (deficit = CMI, then CMI = 0 iff factorization) and notes the file is self-contained over Mathlib."
     },
     {
       "id": "entropy-marginals",
       "title": "Shannon entropy and three-variable marginals",
       "startLine": 44,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Self-contained definitions: shannonEntropy' p = −Σ p log p with the 0·log 0 = 0 convention, and the three marginals marginalXY (sum over z), marginalYZ (sum over x), marginalY_3 (sum over x and z). These mirror the parent SSA formalization so the equality file stands alone."
     },
     {
       "id": "telescope-kl-bounds",
       "title": "Marginal telescoping and pointwise KL bounds",
       "startLine": 72,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Helper lemmas: marginal_telescope (S log S = Σ_i a_i log S for S = Σ a_i, used to align marginal-entropy terms), rlog_lt_sub_one (log y < y − 1 strictly for y ≠ 1), the non-strict KL bound kl_lb (p log(p/q) ≥ p − q), and its strict refinement kl_lb_strict (p log(p/q) > p − q when p ≠ q) — the engine of the equality case."
     },
     {
       "id": "cmisum-definition",
       "title": "Conditional mutual information as a relative entropy",
       "startLine": 124,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "cmiSum pXYZ = Σ_{x,y,z} p(x,y,z)·log( p(x,y,z)·p_Y(y) / (p_{XY}(x,y)·p_{YZ}(y,z)) ), the relative entropy D(p ‖ q) against the conditional-independence law q = p_{XY}·p_{YZ}/p_Y, written division-free so zero-probability slices contribute 0."
     },
     {
@@ -108,6 +108,54 @@
       "startLine": 429,
       "endLine": 446,
       "summary": "Combining the two reductions: H(X,Y,Z)+H(Y) = H(X,Y)+H(Y,Z) iff X and Z are conditionally independent given Y, i.e. X–Y–Z is a Markov chain — the sharp boundary of the deepest classical entropy inequality."
+    },
+    {
+      "id": "cmi-nonneg-ssa-inequality",
+      "title": "Nonnegativity of CMI and the strong-subadditivity inequality",
+      "startLine": 447,
+      "endLine": 579,
+      "summary": "cmiSum_nonneg (the conditional mutual information I(X;Z|Y) ≥ 0, from pointwise nonnegativity of the KL contributions) and ssa_inequality: a self-contained proof of the strong-subadditivity inequality H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z), obtained by combining the deficit-equals-CMI identity with CMI nonnegativity.",
+      "mathContext": "$I(X;Z\\mid Y) \\ge 0$, hence $H(X,Y,Z) + H(Y) \\le H(X,Y) + H(Y,Z)$ — strong subadditivity as an inequality."
+    },
+    {
+      "id": "per-y-slices-local-ssa",
+      "title": "Per-y slices and local strong subadditivity",
+      "startLine": 580,
+      "endLine": 696,
+      "summary": "cmiSlice (the per-conditioning-value slice of the CMI, I(X;Z|Y=y)), cmiSum_eq_sum_cmiSlice (I(X;Z|Y) = ∑_y slice), and cmiSlice_nonneg (local SSA: every individual slice is nonnegative), refining the global inequality to a per-value statement.",
+      "mathContext": "$I(X;Z\\mid Y) = \\sum_y I(X;Z\\mid Y{=}y)$ with each slice $\\ge 0$ — strong subadditivity holds conditioning-value by conditioning-value."
+    },
+    {
+      "id": "deficit-decomposition-conditioning",
+      "title": "Slice decomposition of the deficit; conditioning reduces entropy",
+      "startLine": 697,
+      "endLine": 748,
+      "summary": "ssa_deficit_eq_sum_cmiSlice (the SSA deficit decomposes into the nonnegative per-y slice contributions) and conditioning_reduces_entropy_eq_iff (the equality condition for H(X|Y,Z) ≤ H(X|Y): conditioning on the extra variable strictly reduces entropy unless the relevant CMI vanishes).",
+      "mathContext": "$\\big(H(X,Y)+H(Y,Z)\\big) - \\big(H(X,Y,Z)+H(Y)\\big) = \\sum_y I(X;Z\\mid Y{=}y) \\ge 0$."
+    },
+    {
+      "id": "reflection-symmetry",
+      "title": "X ↔ Z reflection symmetry of the equality condition",
+      "startLine": 749,
+      "endLine": 866,
+      "summary": "The reflectXZ involution swapping the outer variables, and the suite of symmetry lemmas it supports: cmiSum_reflectXZ (I(X;Z|Y) = I(Z;X|Y)), ssa_deficit_reflectXZ, reflectXZ_involutive, the marginal-swap lemmas (reflection fixes p_Y and swaps the (X,Y)/(Y,Z) marginals), and cmiSum_eq_zero_reflectXZ_iff (the SSA equality condition is symmetric in X and Z).",
+      "mathContext": "$I(X;Z\\mid Y) = I(Z;X\\mid Y)$; the reflection $(z,y,x)\\mapsto(x,y,z)$ is an involution fixing $p_Y$ and swapping the $(X,Y)$ and $(Y,Z)$ marginals."
+    },
+    {
+      "id": "markov-reversibility",
+      "title": "Reversibility of the Markov condition",
+      "startLine": 867,
+      "endLine": 908,
+      "summary": "Mass-preservation of the reflection and markov_reflectXZ_iff: the Markov chain condition X–Y–Z is symmetric, i.e. X–Y–Z is Markov iff Z–Y–X is — the informational content of a Markov chain is direction-independent.",
+      "mathContext": "$X\\text{–}Y\\text{–}Z$ Markov $\\iff Z\\text{–}Y\\text{–}X$ Markov (conditional independence of the outer variables given the middle one is symmetric)."
+    },
+    {
+      "id": "slice-localization-markov",
+      "title": "Slice-localization of vanishing CMI and the Markov condition",
+      "startLine": 909,
+      "endLine": 958,
+      "summary": "cmiSum_eq_zero_iff_forall_cmiSlice (CMI vanishes iff every slice vanishes), ssa_deficit_eq_zero_iff_forall_cmiSlice (SSA equality iff every per-y deficit slice vanishes), and markov_iff_forall_cmiSlice (the Markov condition localizes over the conditioning variable) — completing the per-value characterization of the equality case.",
+      "mathContext": "$I(X;Z\\mid Y) = 0 \\iff \\forall y,\\ I(X;Z\\mid Y{=}y) = 0 \\iff X\\text{–}Y\\text{–}Z$ Markov, checked value-by-value."
     }
   ],
   "crossReferences": [
