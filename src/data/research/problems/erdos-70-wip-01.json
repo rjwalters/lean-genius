@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 2,
-    "focus": "Batch 2: countability closure toolkit (mono/add/mul), conjecture=>specialization theorems (omega, omega^2), PartitionArrow boundary cases (0). Theorem count 9->18, 0 axioms, host-verified.",
+    "iteration": 3,
+    "focus": "Session 4: general closure isCountableOrdinal_opow — countable ordinals closed under α^β for arbitrary countable α,β (transfinite induction on exponent + iSup_lt_omega_one/regularity of ℵ₁). Plus omega0_opow_omega0_opow_omega0_countable (ω^(ω^ω), 2nd tower level) and its conjecture specialization. 0 axioms, host-verified.",
     "blockers": [],
-    "nextAction": "Prove ω^ω countable (countable-sup argument) to unlock conjecture_omega_tower; Erdős-Rado positive result needs partition-calculus machinery not in Mathlib.",
+    "nextAction": "Frontier: Erdős #70 itself (general countable β) OPEN — Erdős–Rado positive result 𝔠→(ω+n,4)₂³ needs partition-calculus machinery absent from Mathlib. Ordinal-arithmetic countability toolkit now complete (+, ·, ^ all closed; towers below ε₀ free).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 3): Proved ω^ω countable (omega0_opow_omega0_countable) — the limit-exponent closure past all finite powers of ω, and the missing witness for the parent's conjecture_omega_tower. Added the bridge isCountableOrdinal_iff_lt_omega_one (card≤ℵ₀ ↔ <ω₁) and the conjecture specialization erdos_70_conjecture_imp_omega_tower. 3 new axiom-free theorems in Erdos70WIP01.lean, host-verified (lake env lean exit 0, #print axioms = propext/Classical.choice/Quot.sound). Next: general opow closure (countable^countable countable) via transfinite induction, or ε₀-type towers.",
+    "progressSummary": "Countable-ordinal class proved closed under +, ·, and (this session) general exponentiation α^β; conjecture specialized to the ω, ω², ω^ω, and ω^(ω^ω) tower levels. 0 axioms, 0 sorries.",
     "builtItems": [
       "Erdos70.IsCountableOrdinal.of_le in Erdos70WIP01.lean",
       "Erdos70.isCountableOrdinal_add in Erdos70WIP01.lean",
@@ -52,7 +52,10 @@
       "Session 3: key Mathlib lemmas — Ordinal.opow_le_of_isSuccLimit (ω^ω ≤ c ↔ ∀β<ω, ω^β≤c), Ordinal.isSuccLimit_omega0, Ordinal.lt_omega0 (β<ω ↔ β=k:ℕ), Ordinal.le_iSup/iSup_le (needs Small.{0} ℕ). Universe must be pinned to Ordinal.{0} (via .{0}) to match the parent's conjecture_omega_tower (Ordinal.{0})."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Erdős #70 positive direction (Erdős–Rado partition calculus) is out of reach — no 𝔠→(ω+n,4)₂³ machinery in Mathlib v4.31.",
+      "Countability toolkit is complete for ordinal arithmetic; further tower levels are one-liners from isCountableOrdinal_opow."
+    ],
     "markdown": "# Knowledge Base: erdos-70-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -73,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.782Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-21",
   "significance": 8,
   "tractability": 5
 }
