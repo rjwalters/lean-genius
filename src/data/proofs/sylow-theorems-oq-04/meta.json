@@ -46,66 +46,74 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header & A₅ Setup",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Docstring, imports, and the `SylowA5` namespace with `A5 := alternatingGroup (Fin 5)`; the proof establishes simplicity of A₅ purely from Sylow counting.",
+      "mathContext": "$A_5 = \\\\mathrm{Alt}(5)$, $|A_5| = 60 = 2^2\\\\cdot 3\\\\cdot 5$. The Sylow theorems constrain $n_p \\\\equiv 1 \\\\pmod p$ and $n_p \\\\mid [G:P]$; the file computes each $n_p$ exactly and derives simplicity."
+    },
+    {
       "id": "order",
       "title": "Order of A₅",
-      "startLine": 28,
-      "endLine": 48,
+      "startLine": 35,
+      "endLine": 50,
       "summary": "Defines A₅ = alternatingGroup(Fin 5) and proves |A₅| = 60 via native_decide.",
       "mathContext": "$|A_5| = 5!/2 = 60$. Uses Mathlib's `alternatingGroup` as the kernel of `Equiv.Perm.sign`."
     },
     {
       "id": "factorization",
       "title": "Prime Factorization of 60",
-      "startLine": 49,
-      "endLine": 63,
+      "startLine": 51,
+      "endLine": 65,
       "summary": "Establishes the p-adic valuations: v₂(60) = 2, v₃(60) = 1, v₅(60) = 1, confirming 60 = 2²·3·5.",
       "mathContext": "$60 = 2^2 \\cdot 3 \\cdot 5$. The Sylow p-subgroup orders are $p^{v_p(60)}$: 4, 3, 5 respectively."
     },
     {
       "id": "sylow-constraints",
       "title": "Sylow Counting Constraints",
-      "startLine": 64,
-      "endLine": 110,
+      "startLine": 66,
+      "endLine": 104,
       "summary": "Applies Sylow III to A₅: n_p ≡ 1 (mod p) and n_p | [A₅:P_p] for p ∈ {2,3,5}. Uses Mathlib's card_sylow_modEq_one and card_sylow_dvd_index.",
       "mathContext": "$n_2 \\mid 15,\\, n_2 \\equiv 1 \\pmod{2}$; $n_3 \\mid 20,\\, n_3 \\equiv 1 \\pmod{3}$; $n_5 \\mid 12,\\, n_5 \\equiv 1 \\pmod{5}$."
     },
     {
       "id": "exact-sylow",
       "title": "Exact Sylow Numbers",
-      "startLine": 111,
-      "endLine": 136,
+      "startLine": 105,
+      "endLine": 338,
       "summary": "Computes by native_decide: n₂ = 5 (Klein 4-groups), n₃ = 10 (cyclic order 3), n₅ = 6 (cyclic order 5). All are greater than 1.",
       "mathContext": "The 5 Sylow 2-subgroups are the Klein 4-groups $V_4 \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ inside $A_5$."
     },
     {
       "id": "non-normality",
       "title": "Non-Normality of Sylow Subgroups",
-      "startLine": 137,
-      "endLine": 171,
+      "startLine": 339,
+      "endLine": 379,
       "summary": "Proves no Sylow p-subgroup of A₅ is normal: if any were, Sylow.unique_of_normal would force Fintype.card = 1, contradicting the computed values 5, 10, 6.",
       "mathContext": "$n_p = 1 \\iff P_p \\trianglelefteq G$. Since $n_2 = 5,\\, n_3 = 10,\\, n_5 = 6$, no Sylow subgroup is normal."
     },
     {
       "id": "conjugacy-classes",
       "title": "Conjugacy Class Analysis",
-      "startLine": 172,
-      "endLine": 205,
+      "startLine": 380,
+      "endLine": 417,
       "summary": "Verifies the conjugacy class arithmetic: no subset of {12, 12, 15, 20} when added to 1 gives a proper divisor of 60 greater than 1. This rules out all intermediate normal subgroups.",
       "mathContext": "Conjugacy class sizes of $A_5$: $\\{1, 12, 12, 15, 20\\}$. Any normal subgroup order must be a partial sum of these dividing 60."
     },
     {
       "id": "simplicity",
       "title": "Simplicity of A₅",
-      "startLine": 206,
-      "endLine": 220,
+      "startLine": 418,
+      "endLine": 433,
       "summary": "States A₅ is simple using Mathlib's alternatingGroup.isSimpleGroup_five. The Sylow analysis provides the concrete counting argument for why this holds.",
       "mathContext": "$A_5$ is the smallest non-abelian simple group. Simplicity: the only normal subgroups are $\\{e\\}$ and $A_5$ itself."
     },
     {
       "id": "corollaries",
       "title": "Corollaries: Non-Solvability and Normal Subgroup Classification",
-      "startLine": 221,
-      "endLine": 244,
+      "startLine": 434,
+      "endLine": 498,
       "summary": "Proves A₅ is not solvable (via short exact sequence A₅ → S₅ → ℤ/2 and Perm.not_solvable) and classifies its normal subgroups as only ⊥ and ⊤.",
       "mathContext": "If $A_5$ were solvable, then $S_5$ (extension of $A_5$ by $\\mathbb{Z}/2$) would be solvable, contradicting $S_n$ non-solvable for $n \\geq 5$."
     }
