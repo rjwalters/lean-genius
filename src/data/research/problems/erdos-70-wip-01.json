@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session): extended the countable-ordinal closure toolkit in Erdos70WIP01.lean with closure under natural-number exponentiation (isCountableOrdinal_opow_nat) and its ω-corollary (omega0_opow_nat_countable), generalizing the parent s omega0_squared_countable to all finite powers ω^n. Both axiom-free, host-verified Lean v4.31.0. WIP01 theoremCount 5→7. Full countability of ω^ω (limit power) remains the next structural target — needs a countable-sup argument (no Ordinal.card_opow in Mathlib).",
+    "progressSummary": "PROGRESS (session 3): Proved ω^ω countable (omega0_opow_omega0_countable) — the limit-exponent closure past all finite powers of ω, and the missing witness for the parent's conjecture_omega_tower. Added the bridge isCountableOrdinal_iff_lt_omega_one (card≤ℵ₀ ↔ <ω₁) and the conjecture specialization erdos_70_conjecture_imp_omega_tower. 3 new axiom-free theorems in Erdos70WIP01.lean, host-verified (lake env lean exit 0, #print axioms = propext/Classical.choice/Quot.sound). Next: general opow closure (countable^countable countable) via transfinite induction, or ε₀-type towers.",
     "builtItems": [
       "Erdos70.IsCountableOrdinal.of_le in Erdos70WIP01.lean",
       "Erdos70.isCountableOrdinal_add in Erdos70WIP01.lean",
@@ -39,12 +39,17 @@
       "Erdos70.erdos_70_conjecture_imp_omega in Erdos70WIP01.lean",
       "Erdos70.erdos_70_conjecture_imp_omega_squared in Erdos70WIP01.lean",
       "isCountableOrdinal_opow_nat — closure of the countable-ordinal class under natural-number exponentiation α^n (Erdos70WIP01.lean)",
-      "omega0_opow_nat_countable — every finite power ω^n is countable, generalizing omega0_squared_countable (Erdos70WIP01.lean)"
+      "omega0_opow_nat_countable — every finite power ω^n is countable, generalizing omega0_squared_countable (Erdos70WIP01.lean)",
+      "isCountableOrdinal_iff_lt_omega_one in Erdos70WIP01.lean — bridge card≤ℵ₀ ↔ <ω₁",
+      "omega0_opow_omega0_countable in Erdos70WIP01.lean — ω^ω is a countable ordinal (the tower witness)",
+      "erdos_70_conjecture_imp_omega_tower in Erdos70WIP01.lean — specializes the open conjecture to β=ω^ω"
     ],
     "insights": [
       "The parent proved specific instances (omega0_plus_n_countable, omega0_squared_countable); these are corollaries of three general closure lemmas: IsCountableOrdinal is downward-closed (Ordinal.card_le_card), and closed under ordinal + (Cardinal.add_le_aleph0) and * (mul_le_mul + Cardinal.aleph0_mul_aleph0).",
       "The open conjecture erdos_70_conjecture (∀ countable β, 2≤n, PartitionArrow c β n) specializes definitionally to conjecture_omega n and conjecture_omega_squared n by feeding the parent countability witnesses omega0_countable / omega0_squared_countable.",
-      "Closure under α^n follows by induction: α^0=1 (one_countable), α^(n+1)=α^n·α countable by IsCountableOrdinal.mul. Ordinal.opow_succ is stated with Order.succ, so route the step via Nat.cast_add + Ordinal.opow_add + Ordinal.opow_one to match the ↑n+1 shape."
+      "Closure under α^n follows by induction: α^0=1 (one_countable), α^(n+1)=α^n·α countable by IsCountableOrdinal.mul. Ordinal.opow_succ is stated with Order.succ, so route the step via Nat.cast_add + Ordinal.opow_add + Ordinal.opow_one to match the ↑n+1 shape.",
+      "Session 3: proved ω^ω is a countable ordinal (omega0_opow_omega0_countable), the limit-exponent case the finite-power closure isCountableOrdinal_opow_nat could not reach. Route: bridge IsCountableOrdinal α ↔ α<ω₁ (Cardinal.lt_omega_iff_card_lt + Cardinal.lt_aleph_one_iff), then ω^ω = sup_{β<ω} ω^β ≤ ⨆ n:ℕ ω^n, a countable sup of countable ordinals, so <ω₁ by Ordinal.iSup_lt_omega_one (regularity of ℵ₁).",
+      "Session 3: key Mathlib lemmas — Ordinal.opow_le_of_isSuccLimit (ω^ω ≤ c ↔ ∀β<ω, ω^β≤c), Ordinal.isSuccLimit_omega0, Ordinal.lt_omega0 (β<ω ↔ β=k:ℕ), Ordinal.le_iSup/iSup_le (needs Small.{0} ℕ). Universe must be pinned to Ordinal.{0} (via .{0}) to match the parent's conjecture_omega_tower (Ordinal.{0})."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

@@ -90,4 +90,49 @@ theorem erdos_70_conjecture_imp_omega_squared (h : erdos_70_conjecture) (n : ℕ
     (hn : 2 ≤ n) : conjecture_omega_squared n :=
   h (Ordinal.omega0 * Ordinal.omega0) n omega0_squared_countable hn
 
+/-! ## Countability of `ω^ω` (the tower case)
+
+The finite-power closure `isCountableOrdinal_opow_nat` above stops at `ω^n` for
+`n : ℕ`.  The genuinely new step is the *limit* exponent `ω^ω`, which the
+parent's `conjecture_omega_tower` needs a witness for.  The clean route is to
+bridge `IsCountableOrdinal` (`card ≤ ℵ₀`) to `< ω₁` and then use that a countable
+supremum of countable ordinals stays below `ω₁` (`Ordinal.iSup_lt_omega_one`,
+i.e. the regularity of `ℵ₁`): `ω^ω` is the supremum of the finite powers `ω^n`,
+each of which is countable. -/
+
+/-- **Bridge: `IsCountableOrdinal α ↔ α < ω₁`.**  A `card`-level restatement of
+countability as being below the first uncountable ordinal, via
+`Ordinal.lt_omega_iff_card_lt` and `Cardinal.lt_aleph_one_iff` (`c < ℵ₁ ↔ c ≤ ℵ₀`). -/
+theorem isCountableOrdinal_iff_lt_omega_one {α : Ordinal} :
+    IsCountableOrdinal α ↔ α < Ordinal.omega 1 := by
+  unfold IsCountableOrdinal
+  rw [Cardinal.lt_omega_iff_card_lt, Cardinal.lt_aleph_one_iff]
+
+/-- **`ω^ω` is a countable ordinal.**  Writing `ω` as a successor-limit, ordinal
+exponentiation gives `ω^ω = ⨆_{β < ω} ω^β`, and every `β < ω` is a finite `k`, so
+`ω^β ≤ ω^k ≤ ⨆_{n} ω^n`.  That supremum is a *countable* supremum (indexed by `ℕ`)
+of *countable* ordinals `ω^n` (`omega0_opow_nat_countable`), hence `< ω₁` by
+`Ordinal.iSup_lt_omega_one`; so `ω^ω < ω₁` and is countable.  This supplies the
+witness for the parent's `conjecture_omega_tower`, the `β = ω^ω` case of Erdős #70,
+and completes the countability toolkit past all *finite* powers of `ω`. -/
+theorem omega0_opow_omega0_countable :
+    IsCountableOrdinal (Ordinal.omega0.{0} ^ Ordinal.omega0.{0}) := by
+  have hS_lt : (⨆ n : ℕ, Ordinal.omega0.{0} ^ (n : Ordinal)) < Ordinal.omega 1 := by
+    apply Ordinal.iSup_lt_omega_one
+    intro n
+    exact isCountableOrdinal_iff_lt_omega_one.mp (omega0_opow_nat_countable n)
+  have hle : Ordinal.omega0.{0} ^ Ordinal.omega0.{0}
+      ≤ ⨆ n : ℕ, Ordinal.omega0.{0} ^ (n : Ordinal) := by
+    rw [Ordinal.opow_le_of_isSuccLimit Ordinal.omega0_ne_zero Ordinal.isSuccLimit_omega0]
+    intro b' hb'
+    obtain ⟨k, rfl⟩ := Ordinal.lt_omega0.mp hb'
+    exact Ordinal.le_iSup (fun n : ℕ => Ordinal.omega0.{0} ^ (n : Ordinal)) k
+  exact isCountableOrdinal_iff_lt_omega_one.mpr (lt_of_le_of_lt hle hS_lt)
+
+/-- The open conjecture specializes to the tower case `𝔠 → (ω^ω, n)₂³`, using the
+countability witness `omega0_opow_omega0_countable`. -/
+theorem erdos_70_conjecture_imp_omega_tower (h : erdos_70_conjecture) (n : ℕ)
+    (hn : 2 ≤ n) : conjecture_omega_tower n :=
+  h (Ordinal.omega0 ^ Ordinal.omega0) n omega0_opow_omega0_countable hn
+
 end Erdos70
