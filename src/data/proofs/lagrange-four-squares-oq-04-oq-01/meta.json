@@ -60,15 +60,15 @@
     {
       "id": "definitions",
       "title": "Section I: Predicates",
-      "startLine": 41,
-      "endLine": 47,
+      "startLine": 38,
+      "endLine": 44,
       "summary": "Defines IsSumOfThreeSquares and IsSumOfFourSquares as the obvious existential predicates over ℕ.",
       "mathContext": "S₃ = {n : ∃ a b c, a²+b²+c² = n}, S₄ = {n : ∃ a b c d, a²+b²+c²+d² = n}."
     },
     {
       "id": "mod8-obstruction",
       "title": "Section II: The mod-8 Obstruction",
-      "startLine": 49,
+      "startLine": 45,
       "endLine": 70,
       "summary": "Proves sq_mod_eight (every square is ≡ 0,1,4 mod 8), three_sq_not_seven_mod_eight (a sum of three squares is never ≡ 7 mod 8), and the corollary not_isSumOfThreeSquares_of_seven_mod_eight.",
       "mathContext": "a² mod 8 ∈ {0,1,4} ⟹ (a²+b²+c²) mod 8 ≠ 7."
