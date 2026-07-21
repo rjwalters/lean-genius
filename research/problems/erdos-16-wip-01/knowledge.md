@@ -118,3 +118,40 @@ an infinite arithmetic progression of `n` into the exceptional set — this woul
 formalize Erdős 1950 itself. It needs the order-of-2 facts for primes 5,13,17,241
 plus a CRT packaging, but **no analytic number theory** — a tractable (if sizable)
 future BUILD. Romanoff 1934 density and Chen 2023 disproof remain analytic/deep.
+
+## Session note (2026-07-20, researcher-1, session 5): CRT assembly of the covering obstruction
+
+Built on the session-4 gears. The remaining "deep step" flagged in session 4 (CRT-assemble
+the gears over a full covering system) is now formalized as a conditional but unconditional-
+mechanism theorem. 8 new axiom-free theorems (host-verified, Lean v4.31.0, `#print axioms`
+= propext/Classical.choice/Quot.sound):
+
+- **Four order-of-2 gears** — `two_pow_four_modEq_five` (2⁴≡1 mod 5),
+  `two_pow_eight_modEq_seventeen` (2⁸≡1 mod 17), `two_pow_twelve_modEq_thirteen`
+  (2¹²≡1 mod 13), `two_pow_twentyfour_modEq_241` (2²⁴≡1 mod 241). These are the primes
+  closing the four exponent classes k≡1 mod 4, k≡3 mod 8, k≡7 mod 12, k≡23 mod 24
+  (the p=3, p=7 gears already existed as `two_pow_two/three_modEq_*`, added here too).
+  Small ones by `decide`; 2¹² and 2²⁴ by `norm_num [Nat.ModEq]` (kernel `decide` on 2²⁴
+  = 16777216 is heavy).
+
+- **`covering_obstruction_not_isRomanoff`** — the crown jewel. Any `n` satisfying the six
+  CRT congruences `n≡1 (3), 1 (7), 2 (5), 8 (17), 11 (13), 121 (241)` AND the size condition
+  `n − 2^k > 241` for every `k≥1` with `2^k < n` is **not Romanoff**. Proof: `isRomanoff_iff`
+  reduces to a witness exponent `k`; `omega` shows `k` lands in one of the six covering classes
+  `{0 mod 2, 0 mod 3, 1 mod 4, 3 mod 8, 7 mod 12, 23 mod 24}` (a covering system of ℤ); the
+  attached prime `p` (order of 2 = the modulus) divides `n − 2^k` via `covering_prime_not_prime_sub`,
+  and the size hypothesis (`p ≤ 241 < n − 2^k`) makes the complement composite. This is Erdős's
+  1950 construction in full — every exponent killed by a single fixed prime — so the **entire**
+  CRT progression `n ≡ a (mod 3·5·7·13·17·241)` meeting the size condition is exceptional.
+
+- **`covering_progression_mem_exceptionalSet`** — membership form: odd `n` with the six
+  congruences + size condition ⟹ `n ∈ ExceptionalSet`.
+
+The n-residue per class is `2^r mod p` (r = the class residue): 2⁰=1 (p=3,7), 2¹=2 (p=5),
+2³=8 (p=17), 2⁷=128≡11 (p=13), 2²³≡121 (p=241). Verified 2²³ mod 241 = 121 (and 2·121=242≡1).
+
+Meta synced: theoremCount 28→36, lineCount 479→582. **Remaining documented-only** (genuinely
+analytic, not a covering gap anymore): the wrapper showing infinitely many progression members
+satisfy the size hypothesis `n − 2^k > 241` — i.e. Erdős's actual infinite-AP conclusion needs
+that near the top exponent `2^k` never lands within 241 of `n`, which the covering alone does not
+force. Romanoff 1934 density and Chen 2023 disproof remain analytic/deep.

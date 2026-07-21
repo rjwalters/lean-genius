@@ -450,6 +450,109 @@ theorem not_prime_sub_mod_seven {n k : ℕ}
   norm_num [hn]
 
 /-
+## Assembling the gears: the full covering obstruction (axiom-free)
+
+The gears above each handle *one* residue class of the exponent `k`.  Erdős's
+1950 construction runs a whole **covering system** of the exponent — the six
+classes `k ≡ 0 (mod 2)`, `k ≡ 0 (mod 3)`, `k ≡ 1 (mod 4)`, `k ≡ 3 (mod 8)`,
+`k ≡ 7 (mod 12)`, `k ≡ 23 (mod 24)` cover every integer — and attaches to each
+class a prime `p` whose multiplicative order of `2` equals that modulus:
+
+| exponent class | modulus `d` | prime `p` | `2^d ≡ 1 (mod p)` | needed `n ≡ 2^r (mod p)` |
+|----------------|-------------|-----------|-------------------|--------------------------|
+| `k ≡ 0 (2)`  | 2  | 3   | `2² = 4 ≡ 1`      | `n ≡ 1 (mod 3)`   |
+| `k ≡ 0 (3)`  | 3  | 7   | `2³ = 8 ≡ 1`      | `n ≡ 1 (mod 7)`   |
+| `k ≡ 1 (4)`  | 4  | 5   | `2⁴ = 16 ≡ 1`     | `n ≡ 2 (mod 5)`   |
+| `k ≡ 3 (8)`  | 8  | 17  | `2⁸ = 256 ≡ 1`    | `n ≡ 8 (mod 17)`  |
+| `k ≡ 7 (12)` | 12 | 13  | `2¹² ≡ 1`         | `n ≡ 11 (mod 13)` |
+| `k ≡ 23 (24)`| 24 | 241 | `2²⁴ ≡ 1`         | `n ≡ 121 (mod 241)` |
+
+Because the six primes are distinct, the Chinese Remainder Theorem produces an
+arithmetic progression `n ≡ a (mod 3·5·7·13·17·241)` meeting all six congruences
+at once.  For any such `n`, *every* exponent `k` falls into one covering class,
+its prime divides `n - 2^k`, and (once `n - 2^k` exceeds that prime) the
+complement is composite — so `n` is not Romanoff.  This is Erdős's theorem that
+the exceptional set contains an infinite arithmetic progression, formalized here
+as an unconditional obstruction subject to a single explicit size hypothesis.
+The order-of-`2` facts (the table's third column) come first. -/
+
+/-- Order gear: `2² ≡ 1 (mod 3)` (order of `2` mod `3` is `2`). -/
+theorem two_pow_two_modEq_three : (2 : ℕ) ^ 2 ≡ 1 [MOD 3] := by decide
+
+/-- Order gear: `2³ ≡ 1 (mod 7)` (order of `2` mod `7` is `3`). -/
+theorem two_pow_three_modEq_seven : (2 : ℕ) ^ 3 ≡ 1 [MOD 7] := by decide
+
+/-- Order gear: `2⁴ ≡ 1 (mod 5)` (order of `2` mod `5` is `4`). -/
+theorem two_pow_four_modEq_five : (2 : ℕ) ^ 4 ≡ 1 [MOD 5] := by decide
+
+/-- Order gear: `2⁸ ≡ 1 (mod 17)` (order of `2` mod `17` is `8`). -/
+theorem two_pow_eight_modEq_seventeen : (2 : ℕ) ^ 8 ≡ 1 [MOD 17] := by decide
+
+/-- Order gear: `2¹² ≡ 1 (mod 13)` (order of `2` mod `13` is `12`). -/
+theorem two_pow_twelve_modEq_thirteen : (2 : ℕ) ^ 12 ≡ 1 [MOD 13] := by
+  norm_num [Nat.ModEq]
+
+/-- Order gear: `2²⁴ ≡ 1 (mod 241)` (order of `2` mod `241` is `24`; this is the
+prime that closes the `k ≡ 23 (mod 24)` class). -/
+theorem two_pow_twentyfour_modEq_241 : (2 : ℕ) ^ 24 ≡ 1 [MOD 241] := by
+  norm_num [Nat.ModEq]
+
+/-- **Erdős's covering obstruction, assembled.**  Suppose `n` simultaneously
+satisfies the six congruences from the table above —
+`n ≡ 1 (mod 3)`, `n ≡ 1 (mod 7)`, `n ≡ 2 (mod 5)`, `n ≡ 8 (mod 17)`,
+`n ≡ 11 (mod 13)`, `n ≡ 121 (mod 241)` — and is large enough that
+`n - 2^k > 241` for every exponent `k ≥ 1` with `2^k < n`.  Then `n` is **not
+Romanoff**: each exponent `k` lands in one of the six covering classes, the
+attached prime divides `n - 2^k`, and the size hypothesis makes the quotient
+`> 1`, so `n - 2^k` is composite.  This is the full covering-congruence
+mechanism of Erdős (1950) — every one of the (infinitely many) exponents is
+killed by a *single* fixed prime — so the entire CRT progression
+`n ≡ a (mod 3·5·7·13·17·241)` satisfying the size hypothesis lies in the
+exceptional set. -/
+theorem covering_obstruction_not_isRomanoff {n : ℕ}
+    (h3 : n % 3 = 1) (h7 : n % 7 = 1) (h5 : n % 5 = 2)
+    (h17 : n % 17 = 8) (h13 : n % 13 = 11) (h241 : n % 241 = 121)
+    (hsize : ∀ k, 1 ≤ k → 2 ^ k < n → 241 < n - 2 ^ k) :
+    ¬ IsRomanoff n := by
+  rw [isRomanoff_iff]
+  rintro ⟨k, hk, hlt, hp⟩
+  have hbig : 241 < n - 2 ^ k := hsize k hk hlt
+  -- Every exponent falls into one of the six covering classes.
+  have hcov : k % 2 = 0 ∨ k % 3 = 0 ∨ k % 4 = 1 ∨ k % 8 = 3 ∨ k % 12 = 7 ∨
+      k % 24 = 23 := by omega
+  rcases hcov with h | h | h | h | h | h
+  · exact covering_prime_not_prime_sub (p := 3) (d := 2) (r := 0)
+      (by norm_num) two_pow_two_modEq_three (Nat.zero_le k) (by omega)
+      (by show n % 3 = 2 ^ 0 % 3; norm_num [h3]) hlt (by omega) hp
+  · exact covering_prime_not_prime_sub (p := 7) (d := 3) (r := 0)
+      (by norm_num) two_pow_three_modEq_seven (Nat.zero_le k) (by omega)
+      (by show n % 7 = 2 ^ 0 % 7; norm_num [h7]) hlt (by omega) hp
+  · exact covering_prime_not_prime_sub (p := 5) (d := 4) (r := 1)
+      (by norm_num) two_pow_four_modEq_five hk (by omega)
+      (by show n % 5 = 2 ^ 1 % 5; norm_num [h5]) hlt (by omega) hp
+  · exact covering_prime_not_prime_sub (p := 17) (d := 8) (r := 3)
+      (by norm_num) two_pow_eight_modEq_seventeen (by omega) (by omega)
+      (by show n % 17 = 2 ^ 3 % 17; norm_num [h17]) hlt (by omega) hp
+  · exact covering_prime_not_prime_sub (p := 13) (d := 12) (r := 7)
+      (by norm_num) two_pow_twelve_modEq_thirteen (by omega) (by omega)
+      (by show n % 13 = 2 ^ 7 % 13; norm_num [h13]) hlt (by omega) hp
+  · exact covering_prime_not_prime_sub (p := 241) (d := 24) (r := 23)
+      (by norm_num) two_pow_twentyfour_modEq_241 (by omega) (by omega)
+      (by show n % 241 = 2 ^ 23 % 241; norm_num [h241]) hlt (by omega) hp
+
+/-- **The covering progression lies in the exceptional set.**  An odd `n`
+meeting the six covering congruences and the size hypothesis of
+`covering_obstruction_not_isRomanoff` is a genuine exceptional integer.  This is
+the membership form of Erdős's 1950 result: the whole CRT progression (odd
+members, large enough) sits inside `ExceptionalSet`. -/
+theorem covering_progression_mem_exceptionalSet {n : ℕ} (hodd : Odd n)
+    (h3 : n % 3 = 1) (h7 : n % 7 = 1) (h5 : n % 5 = 2)
+    (h17 : n % 17 = 8) (h13 : n % 13 = 11) (h241 : n % 241 = 121)
+    (hsize : ∀ k, 1 ≤ k → 2 ^ k < n → 241 < n - 2 ^ k) :
+    n ∈ ExceptionalSet :=
+  ⟨hodd, covering_obstruction_not_isRomanoff h3 h7 h5 h17 h13 h241 hsize⟩
+
+/-
 ## Summary
 
 **Problem Status: SOLVED (Disproved)**
