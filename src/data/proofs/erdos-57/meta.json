@@ -57,14 +57,14 @@
       "title": "Problem Statement, History, and Imports",
       "summary": "Documentation header with Erdős-Hajnal (1966) conjecture, historical progression through density conjectures, Liu-Montgomery (2020) solution, Mathlib import",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 30,
       "mathContext": "Erdős-Hajnal (1966): if $\\chi(G) = \\infty$ and $a_1 < a_2 < \\cdots$ are odd cycle lengths of $G$, then $\\sum 1/a_i = \\infty$. Solved by Liu-Montgomery (2020)."
     },
     {
       "id": "definitions",
       "title": "Core Definitions: Cycles, Coloring, Infinite Chromatic Number",
       "summary": "cycleLengths via Walk.IsCycle existential, oddCycleLengths as odd-parity filter, IsColorable via proper k-coloring, HasInfiniteChromaticNumber as ∀ k negation",
-      "startLine": 28,
+      "startLine": 31,
       "endLine": 50,
       "mathContext": "$\\mathcal{C}(G) = \\{|p| : p \\text{ cycle in } G\\}$, $\\mathcal{C}_{\\text{odd}}(G) = \\{n \\in \\mathcal{C}(G) : n \\text{ odd}\\}$. $\\chi(G) = \\infty \\iff \\forall k, \\neg\\text{IsColorable}(G, k)$."
     },
@@ -81,14 +81,14 @@
       "title": "Main Result: erdos_57 Axiom (Liu-Montgomery 2020)",
       "summary": "Axiom: HasInfiniteChromaticNumber G → oddCycleHarmonicSum G = ⊤. The solved Erdős-Hajnal conjecture",
       "startLine": 57,
-      "endLine": 65,
+      "endLine": 68,
       "mathContext": "$\\chi(G) = \\infty \\implies \\sum_{n \\in \\mathcal{C}_{\\text{odd}}(G)} 1/n = \\infty$. Axiomatized as $\\text{oddCycleHarmonicSum}(G) = \\top$."
     },
     {
       "id": "proved-lemmas",
       "title": "Proved Lemmas: Finite Sum, Positivity, Corollary",
       "summary": "finite_reciprocal_sum_ne_top via tsum→Finset.sum conversion + ENNReal.sum_lt_top. oddCycleLengths_pos via three_le_length. infinite_odd_cycle_lengths by contradiction combining both",
-      "startLine": 66,
+      "startLine": 69,
       "endLine": 120,
       "mathContext": "Three results proved from the axiom: (1) $|S| < \\infty \\implies \\sum_{n \\in S} 1/n < \\infty$, (2) $n \\in \\mathcal{C}_{\\text{odd}} \\implies n \\geq 3$, (3) $\\chi(G) = \\infty \\implies |\\mathcal{C}_{\\text{odd}}(G)| = \\infty$."
     },
@@ -103,17 +103,17 @@
     {
       "id": "bipartite",
       "title": "Bipartite Characterization (fully proved, 0 sorries)",
-      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (both directions proved; the forward direction via noOddCycles_of_boolColoring, the reverse direction via the crux lemma exists_odd_cycle_of_odd_closed_walk). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (fully proved). Classical foundation for the chromatic-cycle connection",
+      "summary": "The fully-proved chromatic-cycle bridge, developed from scratch. The forward-easy direction is noOddCycles_of_boolColoring (a 2-colouring kills all odd cycles). The hard reverse direction is built via a walk-rotation toolkit: aux_length_rotate and isPath_length_one_of_mem_edges support exists_odd_cycle_aux and exists_odd_cycle_of_odd_closed_walk (an odd closed walk contains an odd cycle). These combine into bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅, and colorable_two_no_odd_cycles: IsColorable G 2 → no odd cycles — the classical König characterization, machine-checked with 0 sorries.",
       "startLine": 143,
-      "endLine": 154,
+      "endLine": 331,
       "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical König characterization."
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and References",
       "summary": "Liu-Montgomery proof technique overview, fundamental bipartite-odd cycle connection, references to Erdős-Hajnal (1966) and Liu-Montgomery (2020)",
-      "startLine": 155,
-      "endLine": 166,
+      "startLine": 332,
+      "endLine": 343,
       "mathContext": "Liu-Montgomery used dependent random choice to embed dense bipartite subgraphs, then derive contradictions from the odd-cycle-free structure."
     }
   ],
