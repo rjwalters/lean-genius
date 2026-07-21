@@ -112,9 +112,17 @@
       "id": "sec-obstruction",
       "title": "The Artin–Schreier Obstruction",
       "startLine": 123,
-      "endLine": 131,
+      "endLine": 135,
       "summary": "artinSchreier_support_not_puiseux: any Hahn series whose support contains all artinSchreierExp p k is not a Puiseux series — an immediate consequence of the unbounded-denominator core applied through the support.",
       "mathContext": "Applied to the Artin–Schreier root y (support = {−1/pᵏ}), this is the formal statement that an algebraic element over the Laurent series fails to be Puiseux — Puiseux's theorem fails in characteristic p."
+    },
+    {
+      "id": "sec-witness",
+      "title": "The Obstruction Is Non-Vacuous: an Explicit Hahn-Series Witness",
+      "startLine": 136,
+      "endLine": 194,
+      "summary": "Shows the obstruction is realised by a genuine element of the Hahn field, not merely a hypothetical one. artinSchreierExp_range_isPWO: the exponent set {−1/p^{k+1}} is partially well-ordered — as the strictly monotone image of ℕ (well-ordered) it inherits IsPWO — hence a legitimate Hahn-series support. artinSchreierSeries: an explicit (noncomputable) Hahn series over any field K with coeff = the indicator of that exponent set (all coefficients 1), well-defined via the IsPWO support. artinSchreierSeries_carries: the witness carries every artinSchreierExp p k in its support (indicator_of_mem + one_ne_zero). artinSchreierSeries_not_puiseux and the capstone exists_hahnSeries_not_puiseux: over every field K and every p ≥ 2 there genuinely exists a Hahn series carrying the Artin–Schreier exponents that is not a Puiseux series, so the hypothesis of artinSchreier_support_not_puiseux is satisfiable. Closes namespace PuiseuxTheoremOQ01.",
+      "mathContext": "A Hahn series is well-defined only on a partially well-ordered support, so exhibiting the witness requires first certifying $\\{-1/p^{k+1}\\}$ is IsPWO. The coefficients are taken to be $1$ rather than the true characteristic-$p$ root values of $y^p - y = x^{-1}$ — only *a* series with this support is needed for non-vacuousness, not one satisfying the Artin–Schreier equation (which would need $\\operatorname{char} K = p$)."
     }
   ],
   "crossReferences": [
