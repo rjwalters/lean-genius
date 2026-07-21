@@ -22,8 +22,8 @@
     "proofRepoPath": "Proofs/EulerPolyhedralOQ02OQ01.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 7,
-    "assumptions": "7 structure-encoded axioms: (1) gauss_bonnet: ∫K dA = 2πχ (in CompactRiemannianSurface); (2) chi_genus: χ = 2 - 2g (in OrientableClosedSurface); (3) gauss_bonnet_boundary: ∫K dA + ∫κ_g ds = 2πχ (in CompactSurfaceWithBoundary); (4) gauss_bonnet_polygon: ∫K dA + Σθ_ext = 2π (in GeodesicPolygon); (5) curvature_is_K_area: ∫K dA = K·Area for constant curvature (in ConstCurvatureGeodesicPolygon); (6) gauss_bonnet_triangle: K·Area = α+β+γ−π (in GeodesicTriangle); (7) poincare_hopf: Σ index(v) = χ(M) (in VectorFieldOnSurface). Mathlib 4.26.0 lacks Riemannian metrics, Gaussian curvature, and integration on manifolds.",
+    "axiomCount": 9,
+    "assumptions": "9 structure-encoded axioms: (1) gauss_bonnet: ∫K dA = 2πχ (in CompactRiemannianSurface); (2) chi_genus: χ = 2 - 2g (in OrientableClosedSurface); (3) gauss_bonnet_boundary: ∫K dA + ∫κ_g ds = 2πχ (in CompactSurfaceWithBoundary); (4) gauss_bonnet_polygon: ∫K dA + Σθ_ext = 2π (in GeodesicPolygon); (5) curvature_is_K_area: ∫K dA = K·Area for constant curvature (in ConstCurvatureGeodesicPolygon); (6) gauss_bonnet_triangle: K·Area = α+β+γ−π (in GeodesicTriangle); (7) poincare_hopf: Σ index(v) = χ(M) (in VectorFieldOnSurface); (8) chern_gauss_bonnet: ∃n, dim = 2n ∧ ∫Pfaffian = (2π)^n·χ (in ChernGaussBonnetManifold, the higher-dimensional Chern–Gauss-Bonnet theorem); (9) morse_relation: χ = minima − saddles + maxima (in MorseFunctionOnSurface, the Morse/Euler–Poincaré relation; consumed by sphere_morse_critical_points, torus_morse_lower_bound, genus_g_morse_bound). Mathlib 4.26.0 lacks Riemannian metrics, Gaussian curvature, and integration on manifolds.",
     "originalContributions": [
       "CompactRiemannianSurface: axiomatized compact Riemannian 2-manifold (with gauss_bonnet field)",
       "OrientableClosedSurface: genus-parametrized surface (with chi_genus field)",
@@ -252,7 +252,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A 786-line axiomatized formalization of smooth Gauss-Bonnet theory. The 9 structures encode 7 mathematical axioms (the main theorems that require Riemannian geometry not yet in Mathlib). The 60 consequences cover genus determination, curvature-topology duality, Girard's formula, Gauss-Bonnet with boundary, Poincaré-Hopf, and Morse inequalities.",
+    "summary": "A 786-line axiomatized formalization of smooth Gauss-Bonnet theory. The 9 structures encode 9 mathematical axioms (the main theorems that require Riemannian geometry not yet in Mathlib). The 60 consequences cover genus determination, curvature-topology duality, Girard's formula, Gauss-Bonnet with boundary, Poincaré-Hopf, and Morse inequalities.",
     "implications": "The structural axiomatization provides a clean interface for Gauss-Bonnet consequences: any future Mathlib formalization of Riemannian geometry can simply prove that compact Riemannian surfaces satisfy the `CompactRiemannianSurface` axioms, and all 61 theorems here become available immediately. This is a common 'future-proof' strategy for formalizing deep theorems.",
     "openQuestions": [
       "Formalize Riemannian metrics in Lean 4 to prove the gauss_bonnet axiom from first principles (requires: tangent bundles, covariant derivatives, Gaussian curvature formula, Stokes' theorem on manifolds)",
