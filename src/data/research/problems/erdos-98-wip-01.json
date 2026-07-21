@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 8577 jobs, 0 sorry/0 axiom/no native_decide): proved MONOTONICITY of h (h_mono: Monotone h) via a reusable sub-configuration lemma (inGeneralPosition_comp + numDistinctDistances_comp_le along an injective index map, instantiated at Fin.castSucc) — the first structural comparison across cardinalities. Also pinned the first exact value h 2 = 1 (h_two) by squeezing the linear lower bound 1 ≤ 3·h 2 against the sharp envelope h 2 ≤ (2 choose 2)=1. Builds on prior three_mul_h_ge / h_le_choose_two / tendsto_h_atTop. Parent Erdős #98 (h(n)/n→∞) remains OPEN; the RATE is the sole open piece.",
+    "progressSummary": "PROGRESS: h 2 = h 3 = 1 both pinned exactly (h_two, h_three via equilateral triangle + monotonicity); h monotone; unconditional h→∞. Parent rate h(n)/n→∞ OPEN.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -63,7 +63,12 @@
       "numDistinctDistances_comp_le (Erdos98WIP01.lean:931): numDistinctDistances (P∘e) ≤ numDistinctDistances P — every positive distance of a sub-config is realized by the image pair",
       "h_mono (Erdos98WIP01.lean:947): Monotone h — h n ≤ h (n+1) via deleting the last point (Fin.castSucc) of the h_attained minimizer; first comparison ACROSS cardinalities",
       "h_two (Erdos98WIP01.lean:962): h 2 = 1 pinned EXACTLY by squeezing 1 ≤ 3·h 2 (three_mul_h_ge) against h 2 ≤ (2 choose 2)=1 (h_le_choose_two); no explicit distance computation",
-      "card_triple_image / card_quad_image (Erdos98WIP01.lean): injective-image cardinality helpers (card {e i,e j,e k}=card{i,j,k}) via Finset.card_image_of_injective"
+      "card_triple_image / card_quad_image (Erdos98WIP01.lean): injective-image cardinality helpers (card {e i,e j,e k}=card{i,j,k}) via Finset.card_image_of_injective",
+      "equilateralConfig (Erdos98WIP01.lean:984): explicit unit equilateral triangle (0,0),(1,0),(1/2,√3/2) as PointConfig 3",
+      "inGeneralPosition_equilateralConfig (Erdos98WIP01.lean:1019): equilateral triangle is in general position (injective + no-3-collinear via √3>0 + vacuous no-4-concyclic)",
+      "equilateral_dist_off (Erdos98WIP01.lean:1027): every side of the equilateral triangle has length 1 (squared-distance = 1 via (√3)^2=3, then Real.sqrt_one)",
+      "numDistinctDistances_equilateralConfig (Erdos98WIP01.lean:1041): the equilateral triangle has EXACTLY ONE distinct distance — first exact computation of numDistinctDistances for an explicit config",
+      "h_three (Erdos98WIP01.lean:1069): h 3 = 1, pinned exactly — equilateral witness gives h 3 ≤ 1, h_mono+h_two give 1 = h 2 ≤ h 3. So h 2 = h 3 = 1"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -83,13 +88,15 @@
       "ELEMENTARY LINEAR LOWER BOUND from no-4-concyclic: fix a base point P b; any circle centred at P b holds ≤3 of the other points (a 4th ⟹ 4 concyclic pts with centre P b, forbidden). So the n-1 distances dist(P b)(P i) take ≥(n-1)/3 distinct values ⟹ n-1 ≤ 3·numDistinctDistances P for every GP config ⟹ n-1 ≤ 3·h n. Lean: Finset.card_le_mul_card_image (fibre ≤3) + Finset.three_lt_card to extract the 4 concyclic indices.",
       "h(n)→∞ is provable UNCONDITIONALLY and ELEMENTARILY (tendsto_h_atTop) — from the /3 linear bound n-1 ≤ 3·h n, needing NO imported deep theorem. This is strictly better than guthKatz_imp_tendsto (assumed the imported Ω(n/log n) baseline) and weak_imp_tendsto (assumed the open weak conjecture). The conjectured RATE h(n)/n→∞ (Erdős #98) is untouched; even the linear order here is /3 of the conjectured n.",
       "Monotonicity of h is structural, not analytic: sub-configurations of general-position sets are themselves in general position and drop distinct distances, so h n ≤ h(n+1) with a one-injective-map argument (Fin.castSucc) — independent of any deep upper/lower bound",
-      "The two bounds three_mul_h_ge and h_le_choose_two SQUEEZE at n=2: ⌈(2-1)/3⌉=1 ≤ h 2 ≤ C(2,2)=1 forces h 2 = 1. At n=3 the squeeze gives only 1 ≤ h 3 ≤ 3 (equilateral triangle would pin h 3=1 but needs an explicit distance computation)"
+      "The two bounds three_mul_h_ge and h_le_choose_two SQUEEZE at n=2: ⌈(2-1)/3⌉=1 ≤ h 2 ≤ C(2,2)=1 forces h 2 = 1. At n=3 the squeeze gives only 1 ≤ h 3 ≤ 3 (equilateral triangle would pin h 3=1 but needs an explicit distance computation)",
+      "Pinning an exact value of h needs an explicit minimal-distance witness (equilateral triangle), not the elementary envelope: three_mul_h_ge/h_le_choose_two leave only 1 ≤ h 3 ≤ 3",
+      "EuclideanSpace.dist_sq_eq introduces an .ofLp coordinate wrapper that Matrix.cons_val lemmas do NOT reduce; use EuclideanSpace.dist_eq (direct application) + norm_num to reduce !₂[..] k coordinate accesses, then nlinarith with (√3)^2=3 for the diagonal side"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Pin h 3 = 1 with an explicit equilateral-triangle witness (numDistinctDistances = 1, general position); combine with h_mono to get h 2 = h 3 = 1",
-      "Strengthen the lower-bound constant: replace the /3 (no-4-concyclic ⇒ ≤3 per circle) — e.g. combine no-3-collinear + no-4-concyclic, or count from two base points, aiming toward h n ≥ (n-1)/2 or the conjectured ≥ n",
-      "Attack the conjectured RATE h n / n → ∞ (Erdős #98 itself) — the sole remaining open piece; the divergence h n → ∞ is now elementary (tendsto_h_atTop)"
+      "Improve the lower-bound constant beyond /3 (three_mul_h_ge) toward the conjectured (n-1)/2 or ≥ n — the /3 comes from ≤3 points per circle centred at a base point",
+      "Pin h 4: h 4 ≥ h 3 = 1 (h_mono); is h 4 = 1 (needs a 4-point general-position config with 1 distinct distance — impossible? a single distance forces a regular structure) or h 4 = 2?",
+      "Attack the conjectured rate h n / n → ∞ (Erdős #98 proper) — the sole open piece; divergence h n → ∞ is already elementary (tendsto_h_atTop)"
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

@@ -97,6 +97,13 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     (`1 ≤ 3·h 2`) against the sharp envelope (`h 2 ≤ (2 choose 2) = 1`) determines the first
     nontrivial value with no explicit distance computation.
 
+15. `equilateralConfig` / `numDistinctDistances_equilateralConfig` / `h_three` — **`h 3 = 1`,
+    pinned exactly.** The unit equilateral triangle `(0,0), (1,0), (½, √3⁄2)` is in general
+    position and has *exactly one* distinct distance (all three sides length `1`), the first
+    explicit configuration whose `numDistinctDistances` is computed exactly. This gives
+    `h 3 ≤ 1`; with `h_mono` and `h_two` (`1 = h 2 ≤ h 3`) it pins `h 2 = h 3 = 1`. The
+    elementary envelope alone leaves only `1 ≤ h 3 ≤ 3`.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -963,6 +970,119 @@ theorem h_two : h 2 = 1 := by
   have hlo := three_mul_h_ge 2
   have hhi := h_le_choose_two 2
   have hchoose : Nat.choose 2 2 = 1 := by decide
+  omega
+
+/-! ## The pinned value `h 3 = 1` via an explicit equilateral triangle
+
+`h 2 = 1` and `h_mono` give `1 = h 2 ≤ h 3`, so `h 3 ≥ 1`.  For the matching
+upper bound we exhibit a *single* general-position 3-configuration with exactly
+**one** distinct distance — the equilateral triangle `(0,0), (1,0), (½, √3⁄2)`,
+all three pairwise distances equal to `1`.  This is the first time an explicit
+configuration's `numDistinctDistances` is computed *exactly* (earlier witnesses
+only bounded it), and it forces `h 3 ≤ 1`.  Squeezing, `h 2 = h 3 = 1`.
+
+The linear lower bound is far from tight here — `three_mul_h_ge 3` gives only
+`h 3 ≥ 1` and `h_le_choose_two 3` only `h 3 ≤ 3`; the exact value needs the
+equilateral witness, not the elementary envelope. -/
+
+/-- An explicit unit **equilateral triangle** `(0,0), (1,0), (½, √3⁄2)` in `ℝ²`.
+All three pairwise distances equal `1`, so it realizes the minimum possible
+distinct-distance count for three non-collinear points. -/
+noncomputable def equilateralConfig : PointConfig 3 :=
+  ![!₂[0, 0], !₂[1, 0], !₂[1 / 2, Real.sqrt 3 / 2]]
+
+/-- The three equilateral vertices are distinct (their abscissae `0, 1, ½` already
+differ, so the `x`-coordinate alone separates every pair). -/
+theorem equilateralConfig_injective : Function.Injective equilateralConfig := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    first
+    | rfl
+    | (exfalso
+       have h0 := congrArg (fun p => p 0) hij
+       norm_num [equilateralConfig] at h0)
+
+/-- **No three equilateral vertices are collinear.** A line `a·x + b·y + c = 0`
+through all three forces `c = 0` (from `(0,0)`), then `a = 0` (from `(1,0)`), then
+`b·(√3⁄2) = 0`; since `√3 > 0` this gives `b = 0`, i.e. `(a,b,c) = 0`. -/
+theorem noThreeCollinear_equilateralConfig : NoThreeCollinear equilateralConfig := by
+  have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | (simp only [equilateralConfig] at hi hj hk
+       norm_num at hi hj hk
+       simp only [Prod.mk.injEq]
+       refine ⟨?_, ?_, ?_⟩ <;> nlinarith [hs, hi, hj, hk])
+
+/-- No four equilateral vertices are concyclic (vacuous: only three points). -/
+theorem noFourConcyclic_equilateralConfig : NoFourConcyclic equilateralConfig :=
+  noFourConcyclic_of_le_three _ (by norm_num)
+
+/-- **The equilateral triangle is in general position.** -/
+theorem inGeneralPosition_equilateralConfig : InGeneralPosition equilateralConfig :=
+  ⟨equilateralConfig_injective, noThreeCollinear_equilateralConfig,
+    noFourConcyclic_equilateralConfig⟩
+
+/-- **Every side of the equilateral triangle has length `1`.** For distinct indices
+`i ≠ j`, `dist (equilateralConfig i) (equilateralConfig j) = 1`: each squared side is
+`(Δx)² + (Δy)² = 1` (using `(√3)² = 3`), and the distance is the nonnegative square
+root of `1`. -/
+theorem equilateral_dist_off {i j : Fin 3} (hij : i ≠ j) :
+    dist (equilateralConfig i) (equilateralConfig j) = 1 := by
+  have hs : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have hsum : (∑ k : Fin 2,
+      dist (equilateralConfig i k) (equilateralConfig j k) ^ 2) = 1 := by
+    fin_cases i <;> fin_cases j <;>
+      first
+      | exact absurd rfl hij
+      | (simp only [equilateralConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+         norm_num [hs]
+         all_goals nlinarith [hs])
+  rw [EuclideanSpace.dist_eq, hsum, Real.sqrt_one]
+
+/-- **The equilateral triangle has exactly one distinct distance.** Every off-diagonal
+pair realizes the common side length `1`, and the diagonal pairs contribute `0` (filtered
+out); so the set of positive distances is `{1}`, of cardinality `1`. -/
+theorem numDistinctDistances_equilateralConfig :
+    numDistinctDistances equilateralConfig = 1 := by
+  -- Any positive distance of the configuration equals `1`.
+  have hoff : ∀ p : Fin 3 × Fin 3,
+      (0 : ℝ) < dist (equilateralConfig p.1) (equilateralConfig p.2) →
+      dist (equilateralConfig p.1) (equilateralConfig p.2) = 1 := by
+    rintro ⟨x, y⟩ hpos
+    by_cases hxy : x = y
+    · subst hxy; simp only [dist_self, lt_self_iff_false] at hpos
+    · exact equilateral_dist_off hxy
+  unfold numDistinctDistances
+  have hset : ((univ.product univ).image
+      (fun p : Fin 3 × Fin 3 => dist (equilateralConfig p.1) (equilateralConfig p.2))).filter
+      (· > 0) = {1} := by
+    apply Finset.ext
+    intro d
+    simp only [Finset.mem_filter, Finset.mem_image, Finset.mem_singleton, gt_iff_lt]
+    constructor
+    · rintro ⟨⟨p, -, hp⟩, hpos⟩
+      rw [← hp]; exact hoff p (by rw [hp]; exact hpos)
+    · rintro rfl
+      refine ⟨⟨(0, 1), ?_, equilateral_dist_off (by decide)⟩, by norm_num⟩
+      simp
+  rw [hset, Finset.card_singleton]
+
+/-- **`h 3 = 1`, pinned exactly.** The upper bound `h 3 ≤ 1` comes from the equilateral
+witness (`numDistinctDistances_equilateralConfig`); the lower bound `1 = h 2 ≤ h 3` from
+monotonicity (`h_mono`) and the pinned `h_two`. Together with `h_two` this shows
+`h 2 = h 3 = 1` — the elementary envelope alone leaves `1 ≤ h 3 ≤ 3`. -/
+theorem h_three : h 3 = 1 := by
+  have hle : h 3 ≤ 1 := by
+    have hwit := h_le_of_inGeneralPosition inGeneralPosition_equilateralConfig
+    rwa [numDistinctDistances_equilateralConfig] at hwit
+  have hge : 1 ≤ h 3 :=
+    calc 1 = h 2 := h_two.symm
+      _ ≤ h 3 := h_mono (by norm_num)
   omega
 
 end Erdos98WIP01
