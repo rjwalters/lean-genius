@@ -66,36 +66,68 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "File header: context on Legendre's conjecture and its Oppermann strengthening, scope/honesty notes, imports, and the `Legendre` / prime-counting Mathlib dependencies used below.",
+      "mathContext": "Legendre's conjecture: a prime lies in $(n^2, (n+1)^2)$ for every $n \\ge 1$ — open. Oppermann's 1882 strengthening splits that gap at $n^2+n$ and demands a prime in each half, so Oppermann $\\Rightarrow$ Legendre. This file formalizes the split form, its equivalences, and small-case verification."
+    },
+    {
       "id": "statement",
       "title": "Statement: OppermannAt and OppermannConjecture",
-      "summary": "OppermannAt n asserts a prime in each half of the square-gap (n², (n+1)²) split at n²+n; OppermannConjecture quantifies it over all n ≥ 2",
-      "startLine": 51,
-      "endLine": 64,
-      "mathContext": "$\\mathrm{OppermannAt}(n) := (\\exists p\\text{ prime},\\ n^2 < p < n^2+n) \\wedge (\\exists q\\text{ prime},\\ n^2+n < q < (n+1)^2)$; $\\mathrm{OppermannConjecture} := \\forall n\\ge 2,\\ \\mathrm{OppermannAt}(n)$."
+      "startLine": 74,
+      "endLine": 101,
+      "summary": "`OppermannAt n` asserts a prime in each half of the square-gap $(n^2, (n+1)^2)$ split at $n^2+n$; `OppermannConjecture` quantifies it over all $n \\ge 2$. `OppermannClassicalAt`/`OppermannClassical` record Oppermann's original 1882 two-sided form for the faithfulness comparison below.",
+      "mathContext": "$\\text{OppermannAt}(n)$: $\\exists p\\in(n^2, n^2+n)$ prime and $\\exists q\\in(n^2+n, (n+1)^2)$ prime. The classical form instead flanks each square $n^2$ with $(n^2-n, n^2)$ and $(n^2, n^2+n)$; the two are re-indexings of the same half-interval family."
     },
     {
       "id": "structural-verified",
       "title": "Structural Theorems (VERIFIED, 0-axiom)",
-      "summary": "oppermann_at_implies_legendre_at (lower-half prime witnesses Legendre), oppermann_at_two_primes (≥ 2 primes per square-gap via a 2-element embedding into the prime filter), and their conjecture-level corollaries",
-      "startLine": 66,
-      "endLine": 116,
-      "mathContext": "$\\mathrm{OppermannAt}(n)\\Rightarrow\\mathrm{LegendreAt}(n)$ (since $n^2 < p < (n+1)^2$); and $\\mathrm{OppermannAt}(n)\\Rightarrow 2\\le \\#\\{\\text{primes in }(n^2,(n+1)^2)\\}$ (the halves' primes $p<n^2+n<q$ are distinct). Kernel-checked: propext/Classical.choice/Quot.sound only."
+      "startLine": 102,
+      "endLine": 152,
+      "summary": "`oppermann_at_implies_legendre_at` (a lower-half prime witnesses Legendre), `oppermann_at_two_primes` (≥ 2 primes per square-gap via a 2-element embedding into the prime filter), and their conjecture-level corollaries `oppermann_implies_legendre` / `oppermann_implies_two_primes`. All axiom-free.",
+      "mathContext": "Since $(n^2, n^2+n) \\subseteq (n^2, (n+1)^2)$, a lower-half prime immediately gives a prime in the full gap (Legendre). The two half-primes are distinct (separated by the composite midpoint $n^2+n$), so each gap holds at least two primes under Oppermann."
+    },
+    {
+      "id": "brocard-mechanism",
+      "title": "The Brocard Mechanism (VERIFIED, 0-axiom)",
+      "startLine": 153,
+      "endLine": 211,
+      "summary": "`oppermann_at_four_primes_two_gaps`: if Oppermann holds at both $n$ and $n+1$, the double gap $(n^2, (n+2)^2)$ contains ≥ 4 distinct primes — the elementary combinatorial core of Brocard's conjecture — with the conjecture-level form `oppermann_implies_four_primes`.",
+      "mathContext": "Brocard (1904, open): between the squares of consecutive primes $p<q$ ($p\\ge 3$) lie ≥ 4 primes. Two consecutive odd primes give $q \\ge p+2$, so $(p^2, q^2)$ covers the two adjacent square-gaps; Oppermann puts two primes in each, and the composites $n^2+n$, $(n+1)^2$, $(n+1)^2+(n+1)$ keep all four distinct. Proof: a 4-element `Finset {p,q,r,s}` embeds into the prime filter, with distinctness by `omega`."
+    },
+    {
+      "id": "faithfulness",
+      "title": "Faithfulness: Split Form ⟺ Oppermann's 1882 Two-Sided Form (VERIFIED, 0-axiom)",
+      "startLine": 212,
+      "endLine": 264,
+      "summary": "Certifies the split-interval formalization is faithful to Oppermann's historical statement: the re-indexing identity `classical_first_succ_iff_upper`, the single boundary fact `upper_half_one` ($3 \\in (2,4)$), and the equivalence `oppermann_conjecture_iff_classical` (`OppermannConjecture ↔ OppermannClassical`).",
+      "mathContext": "The interval $(n^2-n, n^2)$ just below $n^2$ is exactly the upper half $((n-1)^2+(n-1), n^2)$ of the square-gap at $n-1$, since $(n-1)^2+(n-1) = n^2-n$. So the two conjecture forms are re-indexings of one half-interval family; the only boundary input is the trivial prime $3 \\in (2,4)$ (upper half of the gap at $n=1$)."
+    },
+    {
+      "id": "pi-counting",
+      "title": "π-counting Form (VERIFIED, 0-axiom)",
+      "startLine": 265,
+      "endLine": 392,
+      "summary": "Bridges interval-existence to Mathlib's `Nat.primeCounting`: `card_primes_Ioc` (primes in $(a,b]$ = $\\pi(b)-\\pi(a)$), `card_primes_Ioo_eq_Ioc` and `exists_prime_Ioo_iff_card` (open vs. half-open reconciliation), and `oppermann_at_iff_pi` / `oppermann_conjecture_iff_pi` / `oppermann_at_pi_total` / `oppermann_implies_pi_total` recasting Oppermann as lower bounds on differences of $\\pi$.",
+      "mathContext": "$\\pi(n) = \\#\\{p \\le n : p \\text{ prime}\\}$. The number of primes in a half-open interval is a difference of $\\pi$ values; Oppermann's two-half statement becomes $\\pi(n^2+n) - \\pi(n^2) \\ge 1$ and $\\pi((n+1)^2) - \\pi(n^2+n) \\ge 1$. All lemmas are elementary and axiom-free."
     },
     {
       "id": "computational-verification",
       "title": "Computational Verification for n = 2..20 (native_decide)",
-      "summary": "oppermann_2 … oppermann_20 supply explicit (lower-half, upper-half) prime witness pairs, each checked by native_decide (this is what introduces the Lean.ofReduceBool assumption); two_primes_2 an illustrative instance",
-      "startLine": 117,
-      "endLine": 166,
-      "mathContext": "Each $\\mathrm{OppermannAt}(n)$ reduces to two existential witnesses plus decidable primality/inequality checks; e.g. $n=2$: $p=5\\in(4,6)$, $q=7\\in(6,9)$. `native_decide` compiles to native code — hence the $\\mathrm{Lean.ofReduceBool}$ assumption (counted in meta.axiomCount)."
+      "startLine": 393,
+      "endLine": 459,
+      "summary": "`oppermann_2 … oppermann_20` supply explicit (lower-half, upper-half) prime witness pairs, each checked by `native_decide` (this is what introduces the `Lean.ofReduceBool` assumption), plus illustrative instances `two_primes_2`, `four_primes_2`, `pi_bounds_2` of the structural, Brocard, and π-counting corollaries.",
+      "mathContext": "E.g. `oppermann_2 = ⟨⟨5, ·⟩, ⟨7, ·⟩⟩`: $5 \\in (4,6)$ and $7 \\in (6,9)$. Each `native_decide` trusts kernel reduction and so depends on `Lean.ofReduceBool` — the reason this entry is `badge: axiom` despite the structural theory being 0-axiom."
     },
     {
       "id": "open-conjecture",
       "title": "The Open Conjecture and its Legendre Consequence",
-      "summary": "axiom oppermann_conjecture states the open general case; legendre_of_oppermann derives Legendre for all n ≥ 2 from it",
-      "startLine": 168,
-      "endLine": 179,
-      "mathContext": "$\\mathrm{oppermann\\_conjecture}:\\mathrm{OppermannConjecture}$ (declared axiom, the open case); $\\mathrm{legendre\\_of\\_oppermann}:\\forall n\\ge 2,\\ \\mathrm{LegendreAt}(n)$ inherits the assumption."
+      "startLine": 460,
+      "endLine": 471,
+      "summary": "`axiom oppermann_conjecture` states the open general case, and `legendre_of_oppermann` derives Legendre for all $n \\ge 2$ from it — the single genuine assumption of the file.",
+      "mathContext": "The general Oppermann conjecture is open, so it is recorded as an `axiom`; everything downstream about its *consequences* (Legendre, Brocard, two/four-prime bounds, π-counting equivalences) is proved from it or outright. This is the second contributor to `axiomCount`, alongside the `native_decide` verifications."
     }
   ],
   "conclusion": {
