@@ -318,24 +318,23 @@ frequencies `n, m ≥ 1`,
 Proof by the product-to-sum identity `cos(nθ)cos(mθ) = ½(cos((n+m)θ) + cos((n−m)θ))`: the
 `(n+m)`-term always integrates to `0` (positive frequency), while the `(n−m)`-term is
 `cos 0 = 1` (integral `2π`) exactly when `n = m` and integrates to `0` otherwise. -/
-set_option maxHeartbeats 800000 in
 theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
     (∫ θ in (0 : ℝ)..(2 * π), Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
       = if n = m then π else 0 := by
-  have hpts : ∀ θ : ℝ, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ)
-      = (Real.cos (((n : ℝ) + (m : ℝ)) * θ) + Real.cos (((n : ℝ) - (m : ℝ)) * θ)) / 2 := by
-    intro θ
+  -- product-to-sum, as a function equality (avoids `integral_congr`/`integral_div` whnf blowup)
+  have hfun : (fun θ : ℝ => Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
+      = fun θ => (1 / 2) * Real.cos (((n : ℝ) + (m : ℝ)) * θ)
+                 + (1 / 2) * Real.cos (((n : ℝ) - (m : ℝ)) * θ) := by
+    funext θ
     have e1 : ((n : ℝ) + (m : ℝ)) * θ = (n : ℝ) * θ + (m : ℝ) * θ := by ring
     have e2 : ((n : ℝ) - (m : ℝ)) * θ = (n : ℝ) * θ - (m : ℝ) * θ := by ring
     rw [e1, e2, Real.cos_add, Real.cos_sub]; ring
-  have hI1 : IntervalIntegrable (fun θ => Real.cos (((n : ℝ) + (m : ℝ)) * θ))
+  have hI1 : IntervalIntegrable (fun θ => (1 / 2) * Real.cos (((n : ℝ) + (m : ℝ)) * θ))
       MeasureTheory.volume 0 (2 * π) :=
-    (Real.continuous_cos.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _
-  have hI2 : IntervalIntegrable (fun θ => Real.cos (((n : ℝ) - (m : ℝ)) * θ))
+    ((Real.continuous_cos.comp (continuous_const.mul continuous_id)).const_mul _).intervalIntegrable _ _
+  have hI2 : IntervalIntegrable (fun θ => (1 / 2) * Real.cos (((n : ℝ) - (m : ℝ)) * θ))
       MeasureTheory.volume 0 (2 * π) :=
-    (Real.continuous_cos.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _
-  rw [intervalIntegral.integral_congr (fun θ _ => hpts θ),
-      intervalIntegral.integral_div, intervalIntegral.integral_add hI1 hI2]
+    ((Real.continuous_cos.comp (continuous_const.mul continuous_id)).const_mul _).intervalIntegrable _ _
   have hsum : (∫ θ in (0 : ℝ)..(2 * π), Real.cos (((n : ℝ) + (m : ℝ)) * θ)) = 0 := by
     rw [show ((n : ℝ) + (m : ℝ)) = ((n + m : ℕ) : ℝ) by push_cast; ring]
     exact integral_cos_mul_eq_zero (by omega)
@@ -349,10 +348,11 @@ theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
     · rw [if_neg hnm,
         show ((n : ℝ) - (m : ℝ)) = (((n : ℤ) - (m : ℤ)) : ℝ) by push_cast; ring]
       exact integral_cos_int_mul_eq_zero _ (sub_ne_zero.mpr (by exact_mod_cast hnm))
-  rw [hsum, zero_add, hdiff]
+  rw [hfun, intervalIntegral.integral_add hI1 hI2,
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, hsum, hdiff]
   by_cases hnm : n = m
   · rw [if_pos hnm, if_pos hnm]; ring
-  · rw [if_neg hnm, if_neg hnm]; norm_num
+  · rw [if_neg hnm, if_neg hnm]; ring
 
 /-- **The second moment of the Chowla cosine sum: `∫₀^{2π} (cosineSum A)² = π · |A|`.**
 Expand the square as the double sum `∑_{n,m} cos(nθ)cos(mθ)`, integrate term by term, and
