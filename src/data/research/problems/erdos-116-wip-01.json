@@ -18,12 +18,18 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "blockers": [
+      {
+        "route": "KLR c/log n lower bound via logarithmic potential theory / value-distribution",
+        "reopenCriterion": "materially new Mathlib potential-theory API required",
+        "blockedAt": "2026-07-20"
+      }
+    ],
+    "nextAction": "Finiteness of sublevelMeasure: Sₚ bounded+measurable ⟹ finite 2D Lebesgue measure; bridge the parent ℝ×ℝ sublevel set to Sₚ⊆ℂ via the ℂ≅ℝ² measure iso, then measure_lt_top.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,14 +37,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: converted bare stub into a formalization with a verified axiom-free foundational core (6 theorems: root membership, degree-0 emptiness vs positive-degree nonemptiness, measure nonnegativity). Corrected gallery meta which falsely described non-existent axioms/ErdosProblem116; theoremCount 0->6, imports/lineCount synced, assumptions text made honest. Deep bounds remain documented-only (Mathlib infra gap).",
+    "progressSummary": "PROGRESS: New file proofs/Proofs/Erdos116WIP01.lean discharges Key lemma 1 — the polynomial lemniscate Sₚ={z:|p(z)|<1} is open, measurable, and bounded (Sₚ ⊆ closedBall 0 2), all 0-axiom/0-sorry, host-verified [propext, Classical.choice, Quot.sound]. Built directly from the root product p(z)=∏(z-zᵢ). The deep KLR c/log n lower bound and Pólya π upper bound remain isolated (potential theory, not in Mathlib).",
     "builtItems": [
-      "UnitDiskPoly.eval_root_eq_zero / root_mem_sublevelSet / sublevelSet_nonempty / eval_of_degree_zero / sublevelSet_of_degree_zero / sublevelMeasure_nonneg in proofs/Proofs/Erdos116Problem.lean (6 axiom-free foundational theorems; host-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound only)"
+      "UnitDiskPoly.eval_root_eq_zero / root_mem_sublevelSet / sublevelSet_nonempty / eval_of_degree_zero / sublevelSet_of_degree_zero / sublevelMeasure_nonneg in proofs/Proofs/Erdos116Problem.lean (6 axiom-free foundational theorems; host-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound only)",
+      "proofs/Proofs/Erdos116WIP01.lean — 6 axiom-free decls (continuous_eval, sublevelSet_eq_preimage, isOpen_sublevelSet, measurableSet_sublevelSet, sublevelSet_subset_closedBall, isBounded_sublevelSet)"
     ],
     "insights": [
       "Erdos116Problem.lean was a bare statement-stub: real definitions (UnitDiskPoly, eval, sublevelSet, sublevelMeasure) but ZERO theorems, while gallery meta prose falsely described four bounds \"stated as axioms\" and a main theorem ErdosProblem116 that did not exist in source.",
       "The lemniscate {|p(z)|<1} has a clean degree dichotomy: for n=0 the empty product gives p≡1 so the set is EMPTY; for n>0 every root zi satisfies p(zi)=0<1 so each root lies in the set (nonempty). This is the axiom-free core the deep measure bounds build on.",
-      "The four quantitative bounds (Pommerenke c/n^4, KLR c/log n, KLR C/loglog n, Polya pi) need logarithmic-potential / planar-measure machinery absent from Mathlib v4.31 — not formalizable without substantial new infrastructure; correctly left as documented prose, not axioms."
+      "The four quantitative bounds (Pommerenke c/n^4, KLR c/log n, KLR C/loglog n, Polya pi) need logarithmic-potential / planar-measure machinery absent from Mathlib v4.31 — not formalizable without substantial new infrastructure; correctly left as documented prose, not axioms.",
+      "Sₚ = {z : |p(z)|<1} is OPEN: it is the continuous preimage of the open ray Set.Iio 1 under z ↦ ‖p(z)‖; p(z)=∏(z-zᵢ) is continuous via continuous_finsetProd. Hence measurable (IsOpen.measurableSet).",
+      "Sₚ ⊆ closedBall 0 2 (BOUNDED): if ‖z‖>2 then each factor ‖z-zᵢ‖ ≥ ‖z‖-‖zᵢ‖ ≥ ‖z‖-1 > 1 (roots in unit disk), so ‖p(z)‖=∏‖z-zᵢ‖ ≥ 1 and z∉Sₚ. Holds for all n incl. n=0 (Sₚ=∅).",
+      "Lean gotcha: Finset.one_le_prod does NOT work on ℝ (needs MulLeftMono ℝ, false for a field with negatives). Use Finset.prod_le_prod against the constant-1 product: 1 = ∏ 1 ≤ ∏ f via Finset.prod_const_one. norm_prod rewrites ‖∏ f‖ = ∏ ‖f‖; norm_sub_norm_le for the reverse-triangle per-factor bound."
     ],
     "mathlibGaps": [],
     "nextSteps": [
