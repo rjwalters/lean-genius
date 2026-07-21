@@ -86,76 +86,95 @@
   },
   "sections": [
     {
-      "id": "hypercube",
-      "title": "Hypercube Graph",
-      "summary": "Definition of Qₙ via XOR, vertices, edges, regularity",
-      "startLine": 36,
-      "endLine": 81,
-      "mathContext": "Formal definition: Definition of Qₙ via XOR, vertices, edges, regularity"
+      "id": "overview",
+      "title": "Overview & Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring for Erdős #666 (must a positively-dense subgraph of the hypercube Qₙ contain a 6-cycle C₆?) with the disproof history, notes on the @[irreducible] propositional definitions HasCycle/HasC6/EpsilonDenseSubgraph, imports, and the Erdos666 namespace declaration."
     },
     {
-      "id": "cycles",
-      "title": "Cycles in Graphs",
-      "summary": "HasCycle, HasC4, HasC6, HasC2k definitions",
-      "startLine": 82,
-      "endLine": 115,
-      "mathContext": "Formal definition: HasCycle, HasC4, HasC6, HasC2k definitions"
+      "id": "part1-hypercube",
+      "title": "Part I: Hypercube Graph",
+      "startLine": 46,
+      "endLine": 173,
+      "summary": "Defines the hypercube graph Hypercube n on Fin (2^n) (adjacency = Hamming distance 1) and the counting functions hypercubeVertices n = 2^n, hypercubeEdges n = n·2^(n-1). Proves the two_mul_hypercubeEdges handshake identity, the succ recurrences, positivity, and strict monotonicity / injectivity of the vertex and edge counts.",
+      "mathContext": "$Q_n$ has $2^n$ vertices and $n\\,2^{n-1}$ edges; the handshake lemma gives $\\sum_v \\deg v = 2|E| = n\\,2^n$ since $Q_n$ is $n$-regular."
     },
     {
-      "id": "density",
-      "title": "Subgraphs and Density",
-      "summary": "DenseSubgraph, EpsilonDenseSubgraph",
-      "startLine": 116,
-      "endLine": 140,
-      "mathContext": "Mathematical content: DenseSubgraph, EpsilonDenseSubgraph"
+      "id": "part2-cycles",
+      "title": "Part II: Cycles in Graphs",
+      "startLine": 174,
+      "endLine": 208,
+      "summary": "Defines HasCycle G k (an injective k-cycle exposed over G.Adj, kept @[irreducible] to avoid definitional blowup) and the specializations HasC4 = HasCycle G 4, HasC6 = HasCycle G 6, and HasC2k G k = HasCycle G (2k).",
+      "mathContext": "A $C_{2k}$ is an even cycle; the conjecture concerns $C_6$ (hexagons) forced by edge density in $Q_n$."
     },
     {
-      "id": "conjecture",
-      "title": "Erdős's Conjecture (Disproved)",
-      "summary": "ErdosConjecture, erdos_conjecture_false",
-      "startLine": 141,
-      "endLine": 307,
-      "mathContext": "Mathematical content: ErdosConjecture, erdos_conjecture_false"
+      "id": "part3-density",
+      "title": "Part III: Subgraphs and Edge Density",
+      "startLine": 209,
+      "endLine": 233,
+      "summary": "Defines the DenseSubgraph structure: a subgraph H ≤ G on m vertices whose edge count is at least a density fraction ε of the ambient edges, packaging the 'positive-density subgraph' notion at the heart of the conjecture."
     },
     {
-      "id": "chung",
-      "title": "Chung's Result (1992)",
-      "summary": "4-partition into C₆-free subgraphs",
-      "startLine": 308,
-      "endLine": 326,
-      "mathContext": "Mathematical content: 4-partition into C₆-free subgraphs"
+      "id": "part4a-conjecture",
+      "title": "Part IV: Erdős's Conjecture — Statement & Monotonicity",
+      "startLine": 234,
+      "endLine": 314,
+      "summary": "States the conjecture: DenseForcesC6 n ε (every ε-dense subgraph of Qₙ contains a C₆), ConjectureAt ε (this holds for all large n), and ErdosConjecture (∃ ε > 0 at which it holds). Proves the monotonicity lemmas epsilonDense_antitone, denseForcesC6_mono, conjectureAt_mono: the property only gets easier as ε increases.",
+      "mathContext": "Erdős asked whether some fixed density threshold $\\varepsilon>0$ forces a hexagon in every large hypercube subgraph."
     },
     {
-      "id": "bdt",
-      "title": "Brouwer-Dejter-Thomassen (1993)",
-      "summary": "Informal commentary on BDT independent 4-coloring result (no formal declarations in file)",
-      "startLine": 327,
-      "endLine": 333,
-      "mathContext": "Informal commentary: BDT independent 4-coloring result (no formal declarations)"
+      "id": "part4b-disproof",
+      "title": "Part IV: The Disproof — Conder/Chung Thresholds & Consequences",
+      "startLine": 315,
+      "endLine": 507,
+      "summary": "The core disproof. Takes conder_no_threshold : ¬ ConjectureAt (1/3) as the single axiom (Conder 1993), derives chung_no_threshold (¬ ConjectureAt (1/4)) and chung_c6free, and concludes erdos_conjecture_false : ¬ErdosConjecture. Adds the threshold characterization erdosConjecture_iff_small, the downward-closed forms chung/conder_no_threshold_le, the necessary condition conjectureAt_imp_gt_third (any working ε exceeds 1/3), the ε ≤ 0 degeneracy lemmas (positivity conjectureAt_imp_pos), and conder_counterexamples_unbounded.",
+      "mathContext": "Conder exhibited $C_6$-free subgraphs of $Q_n$ of edge density $\\to 1/3$, so no fixed $\\varepsilon>0$ threshold forces a hexagon; the conjecture is false."
     },
     {
-      "id": "conder",
-      "title": "Conder's Improvement (1993)",
-      "summary": "conder_no_threshold (axiom, ε=1/3) with chung_no_threshold derived as a corollary; conder_no_threshold_le (interval ε≤1/3) and conder_counterexample (existence)",
-      "startLine": 334,
-      "endLine": 365,
-      "mathContext": "Mathematical content: Conder 1993 sharpened refutation — axiom conder_no_threshold (¬ConjectureAt 1/3), theorem conder_no_threshold_le (ε≤1/3 interval), theorem conder_counterexample (existence witness)"
+      "id": "part5-chung",
+      "title": "Part V: Chung's Result (1992)",
+      "startLine": 508,
+      "endLine": 526,
+      "summary": "Chung's constructive counterexample: chung_counterexample gives, for every n ≥ 3, a subgraph of Qₙ of density about 1/4 with no C₆ — the first refutation of a positive density threshold.",
+      "mathContext": "Chung (1992) achieved edge density $\\approx 1/4$ with no hexagon, later improved to $1/3$ by Conder."
     },
     {
-      "id": "generalized",
-      "title": "Generalized Conjecture",
-      "summary": "GeneralizedConjecture: open question for C_{2k} in dense hypercube subgraphs",
-      "startLine": 366,
-      "endLine": 392,
-      "mathContext": "Mathematical content: GeneralizedConjecture definition (open question for C_{2k})"
+      "id": "part6-bdt",
+      "title": "Part VI: Brouwer-Dejter-Thomassen (1993)",
+      "startLine": 527,
+      "endLine": 533,
+      "summary": "Documents the independent Brouwer–Dejter–Thomassen result (1993): Qₙ can be 4-colored with no monochromatic C₄ or C₆."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_666_summary: combined theorem stating conjecture is false and C₆-free subgraphs exist",
-      "startLine": 393,
-      "endLine": 424,
-      "mathContext": "Mathematical content: erdos_666_summary theorem"
+      "id": "part7-conder",
+      "title": "Part VII: Conder's Improvement (1993)",
+      "startLine": 534,
+      "endLine": 564,
+      "summary": "Conder's improvement: conder_counterexample gives, for every n ≥ 3, a C₆-free subgraph of Qₙ of density approaching 1/3 — the sharp constant behind conder_no_threshold.",
+      "mathContext": "$1/3$ is the current best density achievable while avoiding hexagons; whether it is optimal is the residual open question."
+    },
+    {
+      "id": "part8-generalized",
+      "title": "Part VIII: Erdős's Generalization",
+      "startLine": 565,
+      "endLine": 721,
+      "summary": "The C₂ₖ generalization: GeneralizedConjecture (some density forces C₂ₖ for all k). Proves the reductions hasC2k_three_iff_hasC6 and hasC2k_two_iff_hasC4, generalizedConjecture_three_forces_c6, the density card bound epsilonDense_card_ge, and generalizedConjecture_false — the generalized statement fails at k = 3 (C₆) via the same Conder counterexamples.",
+      "mathContext": "Since $C_6=C_{2\\cdot 3}$, the $k=3$ instance of the generalization is exactly the disproved hexagon conjecture, so the generalization is false too."
+    },
+    {
+      "id": "part9-related",
+      "title": "Part IX: Related Results",
+      "startLine": 722,
+      "endLine": 728,
+      "summary": "Notes the related Turán-type fact: the maximum number of edges in a C₄-free subgraph of Qₙ is Θ(n^{1/2}·2ⁿ)."
+    },
+    {
+      "id": "part10-summary",
+      "title": "Part X: Summary",
+      "startLine": 729,
+      "endLine": 759,
+      "summary": "Closing erdos_666_summary theorem bundling the resolution — Erdős's C₆ density conjecture (and its C₂ₖ generalization) is disproved, with Conder's density-1/3 hexagon-free construction as the single axiom — and closes the Erdos666 namespace."
     }
   ],
   "conclusion": {
