@@ -1852,9 +1852,9 @@ theorem exists_two_distances_of_numDistinct_le_two
     intro i j hij
     left
     have hx := hmem i j hij
-    by_cases hxa : dist (P i) (P j) = a
-    · exact hxa
-    · exact absurd (Finset.mem_erase.mpr ⟨hxa, hx⟩) (by rw [hemp]; exact Finset.not_mem_empty _)
+    by_contra hxa
+    have hxer : dist (P i) (P j) ∈ D.erase a := Finset.mem_erase.mpr ⟨hxa, hx⟩
+    simp [hemp] at hxer
 
 /-- **Per-vertex degree structure of a general-position two-distance 5-set.**  Suppose
 `P : PointConfig 5` is in general position and every pairwise distance is `a` or `b`
@@ -1881,7 +1881,7 @@ theorem two_distance_near_degree_bounds
     intro j hjA hjB
     rw [hA, mem_filter] at hjA
     rw [hB, mem_filter] at hjB
-    exact hab (hjA.2 ▸ hjB.2.symm)
+    exact hab (hjA.2.symm.trans hjB.2)
   have hcover : univ.erase i = A ∪ B := by
     apply Finset.Subset.antisymm
     · intro j hj
