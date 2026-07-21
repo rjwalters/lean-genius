@@ -20,10 +20,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 1,
-    "assumptions": "buDim_crt_semiprime: For distinct primes p, q, buDim(pq, d) ≤ max(buDim(p,d), buDim(q,d)). Motivated by the CRT isomorphism ℤ/pqℤ ≅ ℤ/pℤ × ℤ/qℤ for distinct primes. Estimated proof: ~200 lines using Smith theory for cyclic prime-order groups.",
-    "lineCount": 212,
-    "theoremCount": 10,
+    "axiomCount": 3,
+    "assumptions": "3 axioms (transitive). New local axiom: buDim_crt_semiprime — for distinct primes p, q, buDim(pq, d) ≤ max(buDim(p,d), buDim(q,d)); motivated by the CRT isomorphism ℤ/pqℤ ≅ ℤ/pℤ × ℤ/qℤ; estimated proof ~200 lines using Smith theory for cyclic prime-order groups. Inherited from the parent buDim framework (BorsukUlamOQ02OQ01.lean): buDim (axiom defining the BU dimension function, used throughout) and buDim_mono (subgroup monotonicity, used in the lower-bound theorems). #print axioms on the main results therefore lists these 3 math axioms. The full-formula axiom buDim_le_formula is NOT used (this entry replaces it with the weaker buDim_crt_semiprime). Note: leanFile.axiomCount counts only the single local axiom declaration.",
+    "lineCount": 210,
+    "theoremCount": 9,
     "definitionCount": 0,
     "additionalFiles": [
       "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01.lean"
@@ -104,12 +104,12 @@
       "id": "part5-comparison-and-summary",
       "title": "Part 5: CRT vs Full Formula Conjecture, Summary",
       "startLine": 172,
-      "endLine": 212,
-      "summary": "Discussion of the strict inclusion CRT axiom ⊊ formula conjecture (CRT fails for prime powers p^k). A trivial theorem `crt_axiom_vs_formula_conjecture` serves as a Lean anchor. The closing docstring summarizes all 10 theorems, 1 axiom, and 0 sorries, and explains why the CRT axiom is the minimal assumption for the semiprime case."
+      "endLine": 210,
+      "summary": "Discussion of the strict inclusion CRT axiom ⊊ formula conjecture (CRT fails for prime powers p^k). The closing docstring summarizes all 9 theorems, the local CRT axiom, and 0 sorries, and explains why the CRT axiom is the minimal assumption for the semiprime case."
     }
   ],
   "conclusion": {
-    "summary": "This file establishes $\\text{buDim}(pq, d) = \\max(\\text{buDim}(p,d), \\text{buDim}(q,d))$ for distinct primes $p, q$ using one axiom (CRT compatibility) and zero sorries. The lower bound is proved axiom-free from monotonicity. The CRT compatibility axiom is the minimal new assumption for the semiprime case, strictly weaker than the full formula conjecture. Ten theorems cover lower bounds, the equality, the formula conjecture for semiprimes, non-existence of exotic representations, and concrete cases for $n = 6, 10, 15$.",
+    "summary": "This file establishes $\\text{buDim}(pq, d) = \\max(\\text{buDim}(p,d), \\text{buDim}(q,d))$ for distinct primes $p, q$ using one axiom (CRT compatibility) and zero sorries. The lower bound is proved axiom-free from monotonicity. The CRT compatibility axiom is the minimal new assumption for the semiprime case, strictly weaker than the full formula conjecture. Nine theorems cover lower bounds, the equality, the formula conjecture for semiprimes, non-existence of exotic representations, and concrete cases for $n = 6, 10, 15$.",
     "implications": "The result clarifies the axiomatic structure of the BU dimension formula for cyclic groups. For the semiprime case, the CRT decomposition is the right tool — not the full machinery of Smith theory. This suggests a hierarchical proof strategy: prove the CRT axiom for semiprimes first, handle prime powers via Smith theory separately, and then combine for general squarefree $n$. The absence of exotic representations for $\\mathbb{Z}/pq\\mathbb{Z}$ suggests that if exotic behavior exists at all in the BU dimension framework, it must arise from prime power cyclic groups rather than from products of distinct primes.",
     "openQuestions": [
       "Can `buDim_crt_semiprime` be proved in Lean using Smith theory for prime-order groups? The proof would use: (1) the CRT isomorphism $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$, (2) factorization of equivariant maps through the product, (3) BU dimension of a product action bounded by max of factor dimensions. Estimated effort: ~200 lines.",
@@ -121,8 +121,8 @@
     "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03.lean",
     "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 212,
-    "theoremCount": 10,
+    "lineCount": 210,
+    "theoremCount": 9,
     "definitionCount": 0,
     "additionalFiles": [
       "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01.lean"

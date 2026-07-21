@@ -173,18 +173,16 @@ theorem buDim_fifteen_eq_max (d : ℕ) :
 -- PART 5: Relationship to Full Formula Conjecture
 -- ============================================================
 
-/-- The CRT axiom for semiprimes implies the formula conjecture for semiprimes,
-    which is a STRICT weakening of the full `buDim_le_formula`.
+/- The CRT axiom for semiprimes implies the formula conjecture for semiprimes,
+   which is a STRICT weakening of the full `buDim_le_formula`.
 
-    The full formula conjecture covers:
-    - Prime powers p^k (k ≥ 2): NOT covered by CRT axiom
-    - Semiprimes pq: covered by CRT axiom
-    - General composite numbers: NOT covered by CRT axiom
+   The full formula conjecture covers:
+   - Prime powers p^k (k ≥ 2): NOT covered by CRT axiom
+   - Semiprimes pq: covered by CRT axiom
+   - General composite numbers: NOT covered by CRT axiom
 
-    So: CRT axiom ⊊ formula conjecture (strictly weaker for n with p² | n).
-    The CRT axiom suffices to prove everything in the semiprime case. -/
-theorem crt_axiom_vs_formula_conjecture :
-    True := trivial
+   So: CRT axiom ⊊ formula conjecture (strictly weaker for n with p² | n).
+   The CRT axiom suffices to prove everything in the semiprime case. -/
 
 /-
 ## Summary
