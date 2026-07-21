@@ -23,7 +23,7 @@
     "iteration": 2,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Formalize the √n×√n grid upper bound feeding minDistinctDistances_le_of_card_eq for a concrete O(n) ceiling on g(n); or an exact g(3). Guth–Katz lower bound stays an imported assumption.",
+    "nextAction": "Exact g(4): the unit square gives 2 distinct distances (side + diagonal). Determine and prove g(4)=2. Or the sqrt(n)-grid upper bound (deep, number-theoretic).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: g(n) now bracketed on the elementary side — exact small values g(0)=g(1)=0, g(2)=1, monotone, and a new linear upper bound g(n) ≤ n−1 via an explicit collinear AP construction (axiom-free). Only remaining upper-bound gap is the sharp √(log n) improvement (deep).",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, print axioms = propext/Classical.choice/Quot.sound): exact value g(3)=minDistinctDistances 3 = 1 via an explicit equilateral triangle (all three pairwise distances = 1). First exact value beyond the trivial table g(0)=g(1)=0, g(2)=1, and strictly below the linear AP bound g(3)<=2 - the collinear AP is not extremal at n=3. Prior work: g(n)<=n-1 (collinear AP), monotonicity, sharp n.choose 2 ceiling. Guth-Katz Omega(n/log n) lower bound stays imported.",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -49,7 +49,11 @@
       "dist_apPoint: dist(apPoint i)(apPoint j) = |i−j| via EuclideanSpace.dist_eq + Fin.sum_univ_two + Nat.cast_natAbs (Erdos89WIP01.lean)",
       "apPoint_injective + apSet_card: |apSet n| = n (Erdos89WIP01.lean)",
       "apSet_distinctDistances_subset: distances ⊆ image of Icc 1 (n−1) (Erdos89WIP01.lean)",
-      "minDistinctDistances_le_pred: g(n) ≤ n−1, axiom-free (Erdos89WIP01.lean)"
+      "minDistinctDistances_le_pred: g(n) ≤ n−1, axiom-free (Erdos89WIP01.lean)",
+      "eqTri equilateral triangle (0,0),(1,0),(1/2, sqrt3/2) as a Finset (Erdos89WIP01.lean)",
+      "dist_eqPts closed form dist(!2[a,b],!2[c,d]) = sqrt((a-c)^2+(b-d)^2); dist_comm symmetry",
+      "dist_eqp01/02/12 all three pairwise distances = 1 (via Real.sq_sqrt for sqrt(3)^2=3)",
+      "numDistinctDistances_eqTri = 1; minDistinctDistances_three: exact g(3)=1"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -57,13 +61,15 @@
       "minDistinctDistances n = sInf over n-point sets is bounded above by any single n-point witness (Nat.sInf_le ⟨S, hcard, rfl⟩) — the membership hook the √n×√n grid upper-bound construction ultimately supplies.",
       "The custom Erdos89.dist (‖p−q‖) is symmetric via norm_sub_rev, so it factors through Sym2; routing S.offDiag.image through Sym2.mk.uncurry and applying Sym2.card_image_offDiag gives the sharp ceiling numDistinctDistances S ≤ S.card.choose 2 (halving |S|·(|S|−1)). Same technique as erdos-98-wip-01.",
       "The distinct-distances envelope is now an EQUALITY at the base: numDistinctDistances_eq_one_of_card_eq_two shows any 2-point set has exactly 1 distance (sharp ceiling 2.choose 2 = 1 meets the ≥1 floor), and minDistinctDistances_two gives the first exact value of Erdős g(n): g(2) = 1.",
-      "Linear upper bound g(n) ≤ n−1 (minDistinctDistances_le_pred): the collinear arithmetic progression {(0,0),…,(n−1,0)} has distances exactly {1,…,n−1}. First non-quadratic upper bound in the file (prior best was worst-case n.choose 2)."
+      "Linear upper bound g(n) ≤ n−1 (minDistinctDistances_le_pred): the collinear arithmetic progression {(0,0),…,(n−1,0)} has distances exactly {1,…,n−1}. First non-quadratic upper bound in the file (prior best was worst-case n.choose 2).",
+      "g(3)=1 EXACT via equilateral triangle, strictly below the collinear-AP upper bound g(3)<=2, so the arithmetic progression is NOT extremal at n=3. Lower bound g(3)>=1 from one_le_numDistinctDistances_of_two_le_card + Nat.sInf_mem (nonempty witness eqTri).",
+      "Distance-computation technique: dist_eqPts closed form via dist_eq_norm + EuclideanSpace.dist_eq + Fin.sum_univ_two + sq_abs; equilateral coords sqrt(3)^2=3 via Real.sq_sqrt; distinctDistances subset {1} by rcases over the 3x3 vertex pairs (diagonal killed by absurd rfl hne, off-diagonal by dist_eqpXX + dist_comm for reversed order)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Sharpen upper bound toward g(n) = Θ(n/√(log n)) via the √n×√n grid (deep: needs number-theoretic count of distinct distances in a square grid).",
-      "Lower bound Ω(n/log n) (Guth–Katz) stays an imported assumption.",
-      "Connect singlePointConjecture (#604) to the global count."
+      "Exact g(4): the unit square (0,0),(1,0),(0,1),(1,1) has distances {1, sqrt2} -> 2 distinct; g(4)>=2 needs ruling out a 4-point set with 1 distance (a regular simplex, impossible in R^2). Prove g(4)=2.",
+      "sqrt(n) x sqrt(n) grid upper bound toward g(n)=Theta(n/sqrt(log n)) - deep, needs the number-theoretic count of distinct distances in a square grid.",
+      "Guth-Katz Omega(n/log n) lower bound stays an imported assumption."
     ],
     "markdown": "# Knowledge Base: erdos-89-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

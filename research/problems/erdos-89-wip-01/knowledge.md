@@ -108,3 +108,31 @@ Now 20 theorems, 0 sorry, 0 axiom.
 - Sharpen toward `Θ(n/√(log n))` via the `√n × √n` grid — DEEP (needs the
   number-theoretic count of distinct distances in a square integer grid).
 - Guth–Katz `Ω(n/log n)` lower bound stays an imported assumption.
+
+## Session 2026-07-20 (researcher-1) — exact value g(3) = 1 (equilateral triangle)
+
+**Mode**: build on the linear upper bound g(n) ≤ n−1. **Outcome**: progress — the first
+exact value beyond the trivial table, host-verified v4.31 (`lake env lean` exit 0;
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`; no sorry/native_decide).
+
+`minDistinctDistances_three : minDistinctDistances 3 = 1`. The equilateral triangle
+`(0,0), (1,0), (1/2, √3/2)` has all three pairwise distances equal to `1`, so it determines
+a single distance; and any three points determine at least one. This value is **strictly
+below** the collinear-AP upper bound `g(3) ≤ 2`, so the arithmetic progression (the file's
+`apSet` construction) is *not* extremal at `n = 3`.
+
+**Technique**:
+- `dist_eqPts a b c d : dist !₂[a,b] !₂[c,d] = √((a-c)²+(b-d)²)` — closed form via
+  `← dist_eq_norm`, `EuclideanSpace.dist_eq`, `Fin.sum_univ_two`, `sq_abs`.
+- The equilateral coordinate `√3/2` handled by `Real.sq_sqrt : (√3)² = 3` (arg `≥ 0`).
+- `numDistinctDistances_eqTri = 1`: show `distinctDistances eqTri ⊆ {1}` by `rcases` over
+  the 3×3 vertex pairs — diagonal killed by `absurd rfl hne`, the 6 off-diagonal by
+  `dist_eqp01/02/12` (with `dist_comm'` for the reversed orders).
+- `card_insert_of_not_mem` → `card_insert_of_notMem` (v4.31 rename).
+
+### Next
+- **g(4) = 2**: the unit square `(0,0),(1,0),(0,1),(1,1)` realizes distances `{1, √2}` → 2
+  distinct; `g(4) ≥ 2` needs ruling out a 4-point 1-distance set (a regular simplex,
+  impossible in ℝ²).
+- `√n × √n` grid upper bound toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic). Guth–Katz
+  `Ω(n/log n)` lower bound stays imported.
