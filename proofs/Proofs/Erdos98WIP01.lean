@@ -1897,4 +1897,68 @@ theorem two_distance_near_degree_bounds
     rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
   exact ⟨by omega, hcardA⟩
 
+/-- **Handshaking lemma for a symmetric, irreflexive relation.**  The sum over all
+vertices of the neighbour-count of a symmetric, loopless relation is even: each
+unordered related pair `{i, j}` is counted once from `i` and once from `j`.  We
+route this through Mathlib's `SimpleGraph.sum_degrees_eq_twice_card_edges`, whose
+right-hand side `2 · #edges` is manifestly even. -/
+theorem even_sum_symm_degree {α : Type*} [Fintype α] [DecidableEq α]
+    (r : α → α → Prop) [DecidableRel r]
+    (hsymm : ∀ i j, r i j → r j i) (hirr : ∀ i, ¬ r i i) :
+    Even (∑ i, ((univ.erase i).filter (fun j => r i j)).card) := by
+  let G : SimpleGraph α := { Adj := r, symm := ⟨hsymm⟩, loopless := ⟨hirr⟩ }
+  haveI : DecidableRel G.Adj := fun a b => (inferInstance : Decidable (r a b))
+  have h2 : Even (∑ v, G.degree v) :=
+    ⟨#G.edgeFinset, by rw [G.sum_degrees_eq_twice_card_edges, two_mul]⟩
+  convert h2 using 2 with i
+  -- pointwise: `#((univ.erase i).filter (r i ·)) = G.degree i`, using the goal's own instance
+  rw [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter]
+  congr 1
+  ext j
+  simp only [mem_filter, mem_erase, mem_univ, and_true, true_and]
+  exact ⟨fun h => h.2, fun hrj => ⟨fun h => hirr i (h ▸ hrj), hrj⟩⟩
+
+/-- **Some vertex of a general-position two-distance 5-set has exactly two
+short-distance neighbours (parity obstruction toward `C₅`).**  Suppose `P` is a
+general-position `5`-point configuration whose pairwise distances take only the
+two values `a ≠ b`.  By `two_distance_near_degree_bounds` each short-distance
+degree `dₐ(i)` lies in `{1, 2, 3}`; by `even_sum_symm_degree` the sum
+`∑ᵢ dₐ(i)` is even (handshake).  A sum of five odd numbers is odd, so the degrees
+cannot all be odd — at least one equals `2`.  This is the parity step that begins
+forcing the short-distance graph of a putative two-distance 5-set to be the
+`2`-regular pentagon `C₅` (whose unique realisation is the regular pentagon, all
+five points concyclic — contradicting `NoFourConcyclic`, the eventual route to
+`h 5 ≥ 3`). -/
+theorem two_distance_exists_degree_two
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ} (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b) :
+    ∃ i : Fin 5, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card = 2 := by
+  -- `a` is a genuine (positive) distance: it is realised from vertex `0`.
+  obtain ⟨hlow0, _⟩ := two_distance_near_degree_bounds hgp hab hcov 0
+  have hapos : 0 < a := by
+    obtain ⟨j, hj⟩ := Finset.card_pos.mp
+      (by omega : 0 < ((univ.erase 0).filter (fun j => dist (P 0) (P j) = a)).card)
+    rw [mem_filter, mem_erase] at hj
+    obtain ⟨⟨hj0, _⟩, hdj⟩ := hj
+    have hPne : P 0 ≠ P j := fun h => hj0 (hgp.1 h).symm
+    rw [← hdj]; exact dist_pos.mpr hPne
+  -- Handshake parity on the short-distance relation.
+  have heven : Even (∑ i, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card) :=
+    even_sum_symm_degree (fun i j => dist (P i) (P j) = a)
+      (fun i j h => by rw [dist_comm]; exact h)
+      (fun i => by simp only [dist_self]; exact ne_of_lt hapos)
+  -- Degrees in `{1,2,3}` cannot all be odd (a sum of five odd numbers is odd).
+  by_contra h
+  push_neg at h
+  have hpar : ∀ i, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card % 2 = 1 := by
+    intro i
+    obtain ⟨hlo, hhi⟩ := two_distance_near_degree_bounds hgp hab hcov i
+    have := h i
+    omega
+  obtain ⟨k, hk⟩ := heven
+  rw [Fin.sum_univ_five] at hk
+  have h0 := hpar 0; have h1 := hpar 1; have h2 := hpar 2
+  have h3 := hpar 3; have h4 := hpar 4
+  omega
+
 end Erdos98WIP01

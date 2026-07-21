@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: h 5 ≥ 3 rigorously reduced to pentagon rigidity; 2-distance reduction + per-vertex degree structure (1–3) proved axiom-free. Bounds remain 2 ≤ h 5 ≤ 3.",
+    "progressSummary": "PROGRESS: h 5 ≥ 3 reduction advanced — parity obstruction proved (some vertex has exactly 2 short-distance neighbours) via handshake, axiom-free. Full 2-regularity (rule out degree 3) is the remaining geometric gap. Bounds still 2 ≤ h 5 ≤ 3.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -82,7 +82,9 @@
       "three_le_h_of_eight_le (Erdos98WIP01.lean): n ≥ 8 → 3 ≤ h n, from three_mul_h_ge.",
       "four_le_h_of_eleven_le (Erdos98WIP01.lean): n ≥ 11 → 4 ≤ h n, from three_mul_h_ge.",
       "exists_two_distances_of_numDistinct_le_two (Erdos98WIP01.lean): injective PointConfig with numDistinctDistances ≤ 2 is a 2-distance set — ∃ a b>0 covering every pairwise distance. Axiom-free, all n.",
-      "two_distance_near_degree_bounds (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 has 1 ≤ (short-distance degree) ≤ 3 at every vertex. Axiom-free."
+      "two_distance_near_degree_bounds (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 has 1 ≤ (short-distance degree) ≤ 3 at every vertex. Axiom-free.",
+      "even_sum_symm_degree (Erdos98WIP01.lean): ∑_i #{j≠i : r i j} is Even for any symmetric irreflexive DecidableRel r on a Fintype — handshaking lemma routed through Mathlib SimpleGraph.sum_degrees_eq_twice_card_edges (2·#edges). Axiom-free, host-verified v4.31.",
+      "two_distance_exists_degree_two (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 ⟹ ∃ vertex with exactly 2 short-distance neighbours. Combines two_distance_near_degree_bounds (degrees∈{1,2,3}) + even_sum_symm_degree parity + Fin.sum_univ_five/omega. Axiom-free, host-verified v4.31."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -116,7 +118,8 @@
       "Degree structure of a general-position 5-point 2-distance set (distances a<b): by card_fiber_dist_le_three each point has a-degree and b-degree in {1,2,3}; the a-graph is either 2-regular (C5, pentagon-type) or has a degree-3 vertex.",
       "Four mutually equidistant points cannot lie in the plane (regular tetrahedron needs dim 3): the 3 edge vectors from one vertex have Gram matrix r²·[[1,½,½],[½,1,½],[½,½,1]] (det r⁶/2 ≠ 0), hence linearly independent, contradicting finrank(EuclideanSpace ℝ (Fin 2))=2.",
       "h 5 ≥ 3 reduces exactly to refuting a general-position 2-distance PointConfig 5. The pigeonhole/no-4-concyclic frame stalls at C₅ (the pentagon pattern): the short-distance graph of any counterexample has min-degree ≥1, max-degree ≤3, and no K₄ in graph or complement — constraints C₅ satisfies. The sole residual is geometric (pentagon rigidity: equilateral+equidiagonal pentagon is regular, hence concyclic), NOT combinatorial.",
-      "Per-vertex degree structure of a general-position 2-distance 5-set: each vertex has exactly 1–3 short-distance neighbours. Both the a-circle and b-circle around a vertex hold ≤3 of the other 4 points (card_fiber_dist_le_three from no-4-concyclic), and the 4 others split between them, forcing 4−3 ≤ deg_a ≤ 3."
+      "Per-vertex degree structure of a general-position 2-distance 5-set: each vertex has exactly 1–3 short-distance neighbours. Both the a-circle and b-circle around a vertex hold ≤3 of the other 4 points (card_fiber_dist_le_three from no-4-concyclic), and the 4 others split between them, forcing 4−3 ≤ deg_a ≤ 3.",
+      "Handshake parity obstructs a uniform-odd short-distance degree sequence: for a general-position 2-distance 5-set the short-degrees d_a(i) lie in {1,2,3} and sum to an even number (each unordered a-pair counted twice), so a sum of five odd numbers being odd forces at least one vertex to have EXACTLY 2 short-distance neighbours (and 2 long). First structural pin toward the 2-regular pentagon C5."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3."
@@ -124,7 +127,9 @@
     "nextSteps": [
       "Close h 5 ≥ 3: prove pentagon rigidity — a general-position 2-distance PointConfig 5 whose short-distance graph is C₅ is the regular pentagon, whose 5 vertices are concyclic, contradicting NoFourConcyclic. Needs coordinate geometry (equilateral+equidiagonal ⇒ regular).",
       "Alternatively enumerate the short-distance graph via two_distance_near_degree_bounds + no_four_equidistant_indices (min-deg≥1, max-deg≤3, K₄-free graph and complement on 5 vertices ⇒ C₅), then apply pentagon rigidity to the single surviving case.",
-      "Abstract the Gram/dimension argument: equilateral set in ℝ^d has ≤ d+1 points (generalizes no_four_mutually_equidistant via ∑-of-inner-products, no determinant needed)."
+      "Abstract the Gram/dimension argument: equilateral set in ℝ^d has ≤ d+1 points (generalizes no_four_mutually_equidistant via ∑-of-inner-products, no determinant needed).",
+      "Upgrade the single degree-2 vertex to FULL 2-regularity: rule out short-degree 3 (equiv. long-degree 1 by a↔b symmetry) using geometry — 3 concyclic short-neighbours on a circle about the vertex plus the two-distance constraint. Pure graph theory (degrees{1,2,3}, both K4-free) does NOT force C5; the extra geometric (no-3-collinear / no-4-concyclic) constraints are essential.",
+      "After 2-regularity: 2-regular graph on Fin 5 = single 5-cycle C5 (finite/decidable graph fact); then C5 two-distance realisation ⟹ regular pentagon ⟹ 5 concyclic points ⟹ contradicts NoFourConcyclic ⟹ h 5 ≥ 3."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
