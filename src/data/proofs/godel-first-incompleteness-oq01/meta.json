@@ -83,49 +83,49 @@
       "id": "overview-setup",
       "title": "Overview & Setup",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 53,
       "summary": "Module docstring contrasting this file with the companion GodelIncompleteness.lean, whose placeholder Provable := (fun _ => False) makes every incompleteness theorem vacuously true (G_not_provable is `intro hG; exact hG`). Here Provable is instead an opaque axiom, and five axioms (Provable, d1_representability, G_self_reference, omega_consistency_G, neg_G_prov_G) encode Gödel's diagonal construction and the ω-consistency hypothesis, so the incompleteness theorems follow as genuine non-vacuous deductions. Notes Rosser's 1936 strengthening (consistency in place of ω-consistency) but follows Gödel's original 1931 argument.",
       "mathContext": "The design goal is a *non-vacuous* formalization: rather than defining $\\mathrm{Provable}\\,\\varphi \\equiv \\bot$ (which trivializes every claim), the provability predicate is left opaque and constrained only by axioms mirroring the Hilbert-Bernays-Löb derivability condition D1, the diagonal lemma ($\\vdash G \\iff \\neg\\vdash \\mathrm{Prov}(\\ulcorner G\\urcorner)$), and ω-consistency."
     },
     {
       "id": "syntax",
       "title": "Part 1: Syntax",
-      "startLine": 40,
-      "endLine": 55,
+      "startLine": 54,
+      "endLine": 67,
       "summary": "Formula structure (code : Nat), neg (code + 1), impl (code * 3 + ψ.code). The same simplified encoding as GodelIncompleteness.lean."
     },
     {
       "id": "provability-axiom",
       "title": "Part 2: Provability Predicate (Opaque Axiom)",
-      "startLine": 57,
-      "endLine": 75,
+      "startLine": 68,
+      "endLine": 85,
       "summary": "axiom Provable : Formula → Prop — opaque, not definitionally False. The ⊢ notation is defined. Key contrast with companion file."
     },
     {
       "id": "godel-numbering",
       "title": "Part 3: Gödel Numbering",
-      "startLine": 77,
-      "endLine": 90,
+      "startLine": 86,
+      "endLine": 97,
       "summary": "godelNum φ = φ.code. Prov : Nat → Formula = fun n => ⟨n * 2⟩ (simplified encoding of the provability formula)."
     },
     {
       "id": "godel-sentence",
       "title": "Part 4: The Gödel Sentence",
-      "startLine": 92,
-      "endLine": 100,
+      "startLine": 98,
+      "endLine": 109,
       "summary": "def G : Formula := ⟨42⟩. Self-referential property captured by G_self_reference axiom."
     },
     {
       "id": "five-axioms",
       "title": "Part 5: The Five Key Axioms",
-      "startLine": 102,
-      "endLine": 155,
+      "startLine": 110,
+      "endLine": 165,
       "summary": "d1_representability (D1 condition), G_self_reference (Diagonal Lemma), omega_consistency_G (ω-consistency), neg_G_prov_G (object-level self-reference). Each axiom is mathematically justified with a full docstring."
     },
     {
       "id": "first-incompleteness",
       "title": "Parts 6–8: First Incompleteness Theorem & Corollaries",
-      "startLine": 157,
+      "startLine": 166,
       "endLine": 271,
       "summary": "Part 6 defines Consistent (¬ ⊢ ⊥, i.e. not both G and ¬G provable) and Complete (every sentence decided). Part 7 proves the two halves — G_not_provable (⊢ G leads to ⊢ Prov(⌜G⌝) via d1, contradicting G_self_reference) and not_neg_G_provable (⊢ ¬G gives ⊢ Prov(⌜G⌝) via neg_G_prov_G while ω-consistency forbids it) — and combines them into the capstone theorem first_incompleteness (¬ Complete for any consistent system). Part 8 packages the corollaries no_consistent_complete and G_is_undecidable (G is neither provable nor refutable). These are genuine non-vacuous deductions, not the type-level trivialities of the companion file."
     }
