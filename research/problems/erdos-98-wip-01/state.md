@@ -1,40 +1,34 @@
 # Research State: erdos-98-wip-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED (for the `h 5 = 3` sub-goal)
 **Path**: full
 **Since**: 2026-07-21
 **Iteration**: (see knowledge.md session log)
 
 ## Current Focus
-Lower bound `h 5 ≥ 3` ⟺ no general-position `PointConfig 5` is a two-distance set.
-Reduction + degree structure + degree-3 exclusion + **2-regularity all proved**. Only the
-`C₅` endgame (2-regular ⟹ regular pentagon ⟹ concyclic contradiction) remains.
+`h 5 = 3` is **fully proved, docker-verified, axiom-free** (`h_five_eq_three`, this session).
+The lower bound `h 5 ≥ 3` (`three_le_h_five`) is closed. The overall Erdős #98 conjecture
+(`h(n)/n → ∞`) remains open — only the exact value `h 5` was in reach here.
 
-## Active Approach
-Short-distance-graph structure. Degree bounds (1–3) + handshake parity + degree-3 exclusion
-now yield **full 2-regularity** (`two_distance_two_regular`, this session): every vertex has
-exactly two short neighbours. Degree-3 exclusion assembled from the four sub-cases
-(`no_short_degree_three`, this session). Remaining: 2-regular ⟹ C₅ ⟹ regular pentagon ⟹
-concyclic ⟹ contradiction with NoFourConcyclic.
+## Active Approach — CLOSED
+The anticipated "C₅ endgame" (2-regular ⟹ single 5-cycle ⟹ regular pentagon ⟹ concyclic)
+was **bypassed entirely**. Key realization: 2-regularity gives every vertex a *constant row
+sum of squared distances* `∑ₖ dist(Pᵢ,Pₖ)² = 2a²+2b²`. A centroid identity
+(`25‖Pᵢ−O‖² = 5·rowᵢ − ½∑ₖrowₖ`) then forces `‖Pᵢ−O‖² = (a²+b²)/5` **independent of `i`**,
+so all five points are equidistant from the centroid `O = ⅕∑Pₖ` — concyclic — contradicting
+`NoFourConcyclic`. No cyclic order, no pentagon rigidity, no graph-connectivity fact needed.
 
 ## Attempt Count
 - See knowledge.md session log.
 
 ## Blockers
-`h 5 ≥ 3` now reduces to the **C₅ endgame** (pure): from `two_distance_two_regular`, force a
-single 5-cycle, then a regular pentagon, then concyclicity, contradicting `NoFourConcyclic`.
-No known obstruction — it is a (nontrivial) Lean formalization effort. Hardest piece:
-2-regular graph on 5 vertices is a single 5-cycle (not triangle+edge) — a pure graph fact.
+None for `h 5 = 3` — proved. The remaining open targets are the *asymptotic* Erdős #98
+statements (weak `h(n) ≥ n`, strong `h(n)/n → ∞`), which are genuinely open in mathematics
+and not attackable by these elementary methods.
 
-## Next Action — C₅ ENDGAME (see knowledge.md "Next Steps" for full detail)
-1. **Cyclic order.** From `two_distance_two_regular`, build a 5-cycle permutation `σ` of
-   `Fin 5` with each vertex's two `a`-neighbours `= σ i, σ⁻¹ i`. Need the graph fact
-   "2-regular on 5 vertices ⟹ connected single cycle" (rules out triangle+disjoint-edge;
-   note the mono-triangle is already killed by `no_four_equidistant_indices`, but a general
-   K₃-component needs the pure count/connectivity argument). Consider `SimpleGraph.IsCycle`
-   API or a direct `Fin 5` case analysis on the ≤ (5−1)!/2 = 12 cyclic orders.
-2. **Regular pentagon ⟹ concyclic.** All five `a`-edges equal + cyclic ⟹ regular pentagon;
-   its 5 vertices lie on one circle (circumcircle of 3 consecutive vertices + law-of-cosines,
-   or an explicit order-5 rotation `ρ`).
-3. **Contradiction.** Feed 4 of the concyclic points to `NoFourConcyclic`. Closes `h 5 ≥ 3`.
+## Next Action — FOLLOW-UPS (h 5 done)
+1. **`h 6`** — is `h 6 = 3` reachable? The centroid/row-sum method only kills *regular*
+   2-distance sets; irregular 2-distance 6-sets need more.
+2. **Regular two-distance sets are cospherical (general `n`/dimension)** — the centroid
+   row-sum lemma proved here is dimension- and `n`-agnostic; extract as a standalone lemma.
