@@ -133,25 +133,41 @@
       "id": "relationship",
       "title": "Relationship Between Problems",
       "startLine": 166,
-      "endLine": 192,
-      "summary": "Main conjecture implies EGRS variant.",
-      "mathContext": "Mathematical content: Main conjecture implies EGRS variant."
+      "endLine": 207,
+      "summary": "`main_conjecture_implies_egrs`: the main conjecture (for k ≥ 2) implies the weaker EGRS divisibility variant, so a positive answer to #727 subsumes the solved EGRS case.",
+      "mathContext": "If $((n+k)!)^2 \\mid (2n)!$ infinitely often, then $(n+k)!\\,(n+1)! \\mid (2n)!$ infinitely often — the main conjecture is at least as strong as the EGRS variant."
     },
     {
       "id": "erdos-bound",
-      "title": "Erdős's Related Result",
-      "startLine": 193,
-      "endLine": 209,
-      "summary": "The 1968 bound on factorial divisibility.",
-      "mathContext": "Bound: The 1968 bound on factorial divisibility."
+      "title": "Erdős's Related Result (1968 Bound)",
+      "startLine": 208,
+      "endLine": 225,
+      "summary": "`erdos_factorial_bound` (axiom): Erdős's 1968 result that if a!·b! | n! then a + b ≤ n + O(log n), stated qualitatively as the existence of a constant C with a + b ≤ n + C·log n. Bounds how large the factorial factors can be.",
+      "mathContext": "$a!\\,b! \\mid n! \\implies a + b \\le n + C\\log n$ for some constant $C$ — an upper bound on the size of factorial divisors."
+    },
+    {
+      "id": "numerical-evidence",
+      "title": "Numerical Evidence",
+      "startLine": 226,
+      "endLine": 248,
+      "summary": "Small-n divisibility checks for the k = 2 case ((n+2)!)² | (2n)!: n = 2, 3, 4 all fail, and the ratio (2n)!/((n+2)!)² grows with n, so exact divisibility requires prime-factorization analysis rather than direct computation. Includes the checked example ¬ divides_factorial 1 2.",
+      "mathContext": "For $k = 2$: $(4!)^2 = 576 \\nmid 24$, $(5!)^2 \\nmid 720$, $(6!)^2 \\nmid 40320$; the quotient $(2n)!/((n+2)!)^2$ grows, so no obvious infinitude."
+    },
+    {
+      "id": "why-interesting",
+      "title": "Why This Problem Is Interesting",
+      "startLine": 249,
+      "endLine": 270,
+      "summary": "Motivation and the `square_difficulty` marker: the squared factor ((n+k)!)² is what makes k ≥ 2 hard, tying the problem to factorial arithmetic, Catalan numbers, Legendre's prime-power formula, and analytic estimates. The sharp gap between the solved k = 1 and open k = 2 signals subtle number-theoretic phenomena.",
+      "mathContext": "The square in $((n+k)!)^2$ raises the divisibility threshold sharply; `square_difficulty` records why $k \\ge 2$ resists the $k = 1$ techniques."
     },
     {
       "id": "status-summary",
       "title": "Status Summary",
-      "startLine": 256,
-      "endLine": 278,
-      "summary": "Summary of what is solved and what remains open.",
-      "mathContext": "Mathematical content: Summary of what is solved and what remains open."
+      "startLine": 271,
+      "endLine": 293,
+      "summary": "`erdos_727_status`: the headline theorem packaging the state of the problem — the k = 1 case is solved (Balakran) and the EGRS variant holds, while the main k ≥ 2 question remains open. Summarizes what is proved versus assumed.",
+      "mathContext": "Formal status: $k = 1$ solved and EGRS variant infinite; the $k \\ge 2$ conjecture $((n+k)!)^2 \\mid (2n)!$ infinitely often is open."
     }
   ],
   "conclusion": {
