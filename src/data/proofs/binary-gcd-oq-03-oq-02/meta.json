@@ -353,7 +353,7 @@
       "id": "summary-status",
       "title": "Summary: Proved Results and Status of the Row-Output Bound",
       "startLine": 1958,
-      "endLine": 2225,
+      "endLine": 2278,
       "summary": "Closing Summary docstring enumerating the proved result-groups (0 axioms): composition, determinant, gcd preservation, Lehmer row-vector invariant + monotonicity, Cramer + sign pattern + entry bounds, perturbation/row-decomposition/row-output infrastructure, shift bounds, sign-pattern and pattern-det invariants for all fuel, and the Part XIV counterexample. Documents that the unconditional recursive hgcdMatrix_row_output_le is FALSE (Part IX now proves only the true non-recursive regime; paths A/B/C forward) and the out-of-scope O(M(n)·log n) bit-complexity bound (needs Mathlib fast-multiplication infrastructure).",
       "mathContext": "Status snapshot: the matrix-algebra layer (determinant, gcd preservation, patterns, entry bounds) is fully proved; the one unmet goal is the recursive row-output size-reduction bound, refuted as stated, requiring an algorithm or statement refinement."
     }
