@@ -684,5 +684,94 @@ theorem qBinomCoeff_unimodal_of_first_half_mono {n k : ℕ} (h : k ≤ n)
   · intro j hj; exact qBinom_X_coeff_symm' h hj
   · exact hmono
 
+/-! ### Toward `k = 3`: the coefficient recurrence and box-free prefix monotonicity
+
+The general reduction `qBinomCoeff_unimodal_of_first_half_mono` leaves, for each fixed
+`k`, exactly the first-half inequality `coeff j ≤ coeff (j+1)` for `2j + 2 ≤ k(n-k)`.  For
+`k = 2` the whole first half admits the `n`-independent closed form `⌊j/2⌋+1` because the
+box constraint "each part `≤ n-2`" never binds there (`qBinom_X_two_coeff_le`).  For
+`k = 3` this breaks: with box `3 × N` (`N = n - 3`, degree `3N`) the constraint binds once
+`j > N`, while the first half runs to `j ≈ 3N/2 > N`.  So the first half splits into
+
+* a **box-free prefix** `j ≤ N`, where coefficients equal the unbounded `≤ 3`-part
+  partition counts, and
+* a **box-binding tail** `N < j ≤ ⌊(3N - 2)/2⌋` — the genuinely hard Sylvester range that
+  needs `𝔰𝔩₂`-representation theory (Proctor 1982) or O'Hara's decomposition (1990).
+
+This section supplies the `k = 3` coefficient recurrence and settles the box-free prefix:
+the coefficient sequence of `[N+3, 3]_q` is weakly increasing on `j + 1 ≤ N`.  The tail
+stays open.
+
+**Why the elementary induction stops at the prefix.**  A naive induction on `n` across the
+*whole* first half fails: once `j` passes the `[n,2]` peak the `q`-Pascal increment
+`(qBinom X n 2).coeff (j+1) − (qBinom X n 2).coeff j` turns negative, so the shifted
+`[n,3]` term would have to *strictly* compensate — precisely the quantitative control an
+`𝔰𝔩₂`/O'Hara argument provides and this recurrence does not.  On the prefix `j + 1 ≤ N`
+both increments are `≥ 0`, so the induction closes there and only there. -/
+
+open Polynomial in
+/-- **The `k = 3` coefficient recurrence.**  From the `q`-Pascal identity
+`[n+1,3]_q = [n,2]_q + q³·[n,3]_q` (`qBinom_pascal` at `k = 2`), the coefficient array of
+`[n+1 choose 3]_q` is the `[n,2]_q` array plus the `q³`-shifted `[n,3]_q` array:
+
+  `(qBinom X (n+1) 3).coeff j = (qBinom X n 2).coeff j + [3 ≤ j]·(qBinom X n 3).coeff (j-3)`.
+
+The `k = 3` analogue of `qBinom_X_two_coeff_succ`; the reusable engine for any
+coefficient-level `k = 3` argument. -/
+theorem qBinom_X_three_coeff_succ (n j : ℕ) :
+    (qBinom (X : ℤ[X]) (n + 1) 3).coeff j
+      = (qBinom (X : ℤ[X]) n 2).coeff j
+        + (if 3 ≤ j then (qBinom (X : ℤ[X]) n 3).coeff (j - 3) else 0) := by
+  have hp : qBinom (X : ℤ[X]) (n + 1) 3
+      = qBinom (X : ℤ[X]) n 2 + X ^ 3 * qBinom (X : ℤ[X]) n 3 :=
+    qBinom_pascal (X : ℤ[X]) n 2
+  rw [hp, coeff_add, mul_comm, coeff_mul_X_pow']
+
+open Polynomial in
+/-- **Box-free prefix monotonicity for `k = 3`.**  With box `3 × N` (`n = N + 3`), the
+coefficient sequence of `[N+3 choose 3]_q` is weakly increasing across the prefix
+`j + 1 ≤ N`, the range where the constraint "each part `≤ N`" does not yet bind.  Proof by
+induction on `N` via `qBinom_X_three_coeff_succ`: the `[n,2]` increment is `≥ 0` on this
+prefix (the `k = 2` ramp `⌊j/2⌋+1`, `qBinom_X_two_coeff_le`) and the shifted `[n,3]`
+increment is `≥ 0` by the induction hypothesis (or, for `j < 3`, trivially — the left `if`
+vanishes and the right coefficient is nonnegative, `qBinom_X_coeff_nonneg`).
+
+This is the *easy* portion of Sylvester's first-half inequality for `k = 3` — the first
+`k = 3` monotonicity result formalised.  The box-binding tail `N < j ≤ ⌊(3N - 2)/2⌋`,
+where the target's substantive open content lives, is **not** covered here. -/
+theorem qBinom_X_three_coeff_prefix_mono :
+    ∀ (N j : ℕ), j + 1 ≤ N →
+      (qBinom (X : ℤ[X]) (N + 3) 3).coeff j
+        ≤ (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j + 1)
+  | 0, j, hj => by omega
+  | N + 1, j, hj => by
+      rw [show N + 1 + 3 = (N + 3) + 1 from by omega]
+      simp only [qBinom_X_three_coeff_succ]
+      -- `k = 2` increment ≥ 0 on the prefix, via the ramp `⌊j/2⌋+1`
+      have e0 : (qBinom (X : ℤ[X]) (N + 3) 2).coeff j = ((j / 2 : ℕ) : ℤ) + 1 :=
+        qBinom_X_two_coeff_le (N + 1) j (by omega)
+      have e1 : (qBinom (X : ℤ[X]) (N + 3) 2).coeff (j + 1) = (((j + 1) / 2 : ℕ) : ℤ) + 1 :=
+        qBinom_X_two_coeff_le (N + 1) (j + 1) (by omega)
+      have hA : (qBinom (X : ℤ[X]) (N + 3) 2).coeff j
+          ≤ (qBinom (X : ℤ[X]) (N + 3) 2).coeff (j + 1) := by
+        rw [e0, e1]
+        have hdiv : (j / 2 : ℕ) ≤ (j + 1) / 2 := Nat.div_le_div_right (Nat.le_succ j)
+        have : ((j / 2 : ℕ) : ℤ) ≤ (((j + 1) / 2 : ℕ) : ℤ) := by exact_mod_cast hdiv
+        linarith
+      -- shifted `k = 3` increment ≥ 0
+      have hB : (if 3 ≤ j then (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j - 3) else (0 : ℤ))
+          ≤ (if 3 ≤ j + 1 then (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j + 1 - 3) else 0) := by
+        rcases lt_or_ge j 3 with hj3 | hj3
+        · -- `j < 3`: left `if` is `0`, right side is nonnegative
+          rw [if_neg (by omega : ¬ 3 ≤ j)]
+          split_ifs
+          · exact qBinom_X_coeff_nonneg (N + 3) 3 _
+          · exact le_refl 0
+        · -- `j ≥ 3`: both `if`s fire; induction hypothesis at index `j - 3`
+          rw [if_pos hj3, if_pos (by omega : 3 ≤ j + 1),
+              show j + 1 - 3 = (j - 3) + 1 from by omega]
+          exact qBinom_X_three_coeff_prefix_mono N (j - 3) (by omega)
+      linarith
+
 end QBinomialCoefficients
 
