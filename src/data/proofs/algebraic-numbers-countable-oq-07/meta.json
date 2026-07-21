@@ -90,60 +90,52 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "overview",
       "title": "Module Header and Overview",
       "startLine": 1,
-      "endLine": 69,
-      "summary": "Imports (Lebesgue measure on ℝ and ℂ, NoAtoms typeclass, the parent countability entry), the module docstring stating the open question and the cardinality/category/measure trichotomy, the list of main results, and the namespace with opens (MeasureTheory, Set).",
-      "mathContext": "Open question: complete the smallness trichotomy by proving the algebraic reals are Lebesgue-null."
+      "endLine": 34,
+      "summary": "Docstring, imports (Mathlib), and namespace. The parent chain shows the algebraic reals are small in cardinality (countable), measure (Lebesgue-null), and Hausdorff dimension (0); this file adds the remaining classical smallness notion — Baire category (meagreness) — and contrasts it with the Liouville numbers to show measure-smallness and category-smallness are genuinely independent. All results are 0-sorry / 0-axiom over Mathlib.",
+      "mathContext": "The four classical 'smallness' notions: countability, Lebesgue measure zero, Hausdorff dimension zero, and Baire category (meagreness). The algebraic reals are small in all four; the Liouville numbers separate measure from category."
     },
     {
-      "id": "section-1-algebraic-null",
-      "title": "§1. The Algebraic Reals are Null",
-      "startLine": 70,
-      "endLine": 80,
-      "summary": "`algebraic_reals_null`: volume {x : ℝ | IsAlgebraic ℚ x} = 0, from countability (parent) + atomless Lebesgue measure. `algebraicRealsOfBoundedDegree_null`: each bounded-degree stratum is null as a subset.",
-      "mathContext": "A countable set is null for the atomless Lebesgue measure: $\\mathrm{vol}\\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\} = 0$."
+      "id": "algebraic-reals-meagre",
+      "title": "The Algebraic Reals are Meagre (Baire Category on ℝ)",
+      "startLine": 35,
+      "endLine": 87,
+      "summary": "liouville_null (Liouville numbers are Lebesgue-null) and liouville_comeagre (they are residual) wrap Mathlib. Since every Liouville number is transcendental and the Liouville set is comeagre, comeagre_setOf_transcendental and isMeagre_setOf_isAlgebraic follow — the algebraic reals are meagre, the Baire-category counterpart of the parent chain's null / dimension-0 / countability results. exists_null_comeagre exhibits a null-yet-comeagre set (so null ⇏ meagre); dense_setOf_transcendental and dense_setOf_liouville record topological ubiquity.",
+      "mathContext": "$\\{x : \\text{Liouville}\\ x\\}$ is null yet comeagre; its transcendentality (`Liouville.transcendental`) makes the transcendentals comeagre and the algebraic reals — their complement — meagre ($s^c \\in \\mathrm{residual}$)."
     },
     {
-      "id": "section-2-conull-transcendentals",
-      "title": "§2. The Transcendentals are Conull",
-      "startLine": 81,
-      "endLine": 117,
-      "summary": "`compl_transcendental_eq_algebraic`: the complement of the transcendentals is the algebraic reals. `transcendental_reals_conull`: the transcendentals have conull complement. `ae_transcendental`: almost every real is transcendental.",
-      "mathContext": "$\\{x : \\mathrm{Transcendental}_\\mathbb{Q}\\,x\\}^c = \\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ is null, so a.e. $x$ is transcendental."
+      "id": "complex-algebraic-meagre",
+      "title": "The Complex Algebraic Numbers are Meagre (Baire Category in ℂ)",
+      "startLine": 88,
+      "endLine": 137,
+      "summary": "Crosses the category results to ℂ, where no explicit Liouville-type witness is available: isMeagre_of_countable (any countable subset of a T1 perfect Baire space is meagre) applied via Algebraic.countable gives isMeagre_setOf_isAlgebraic_complex, and dense_setOf_transcendental_complex follows since the complement of a meagre set in a Baire space is comeagre hence dense.",
+      "mathContext": "In ℂ the Liouville explicit witness is unavailable; instead countability of the algebraic numbers ($\\mathbb{C}$ is a perfect $T_1$ Baire space) gives meagreness directly, and the transcendentals are the comeagre dense complement."
     },
     {
-      "id": "section-3-intervals",
-      "title": "§3. Transcendentals Fill Almost All of Every Interval",
-      "startLine": 118,
-      "endLine": 143,
-      "summary": "`algebraic_inter_interval_null`: algebraic reals contribute zero measure to any interval. `transcendental_full_on_interval`: the transcendental part of Ioo a b has the full measure ofReal (b − a), via measure_diff_null.",
-      "mathContext": "$\\mathrm{vol}(\\mathrm{Ioo}\\,a\\,b \\cap \\{\\text{transcendental}\\}) = \\mathrm{ofReal}(b-a)$."
+      "id": "measure-category-duality",
+      "title": "The Measure–Category Duality on ℝ (the Four Corners)",
+      "startLine": 138,
+      "endLine": 197,
+      "summary": "Fills the classical measure/category square. not_liouville_meagre (the non-Liouville reals are meagre) and not_liouville_conull (they are co-null) realise the dual corner — meagre yet full measure — complementing the null-yet-comeagre Liouville corner. exists_meagre_conull and exists_meagre_null_decomposition give the choice-and-CH-free Sierpiński–Erdős splitting: ℝ is the disjoint union of a meagre set and a null set.",
+      "mathContext": "Sierpiński–Erdős duality: $\\mathbb{R} = A \\sqcup B$ with $A$ meagre and $B$ null (split along Liouville / ¬Liouville). Neither smallness notion refines the other."
     },
     {
-      "id": "section-4-existence",
-      "title": "§4. Measure-Theoretic Existence of Transcendentals",
-      "startLine": 144,
-      "endLine": 168,
-      "summary": "`exists_transcendental_of_pos_measure`: any positive-measure set contains a transcendental (else it would be a subset of the null algebraic set). `exists_transcendental_mem_Ioo`: the special case for intervals.",
-      "mathContext": "$0 < \\mathrm{vol}(s) \\implies \\exists x \\in s,\\ \\mathrm{Transcendental}_\\mathbb{Q}\\,x$."
+      "id": "gdelta-structure-real",
+      "title": "Descriptive-Set Structure: Gδ vs not-Gδ on ℝ (the ℚ / irrationals pattern)",
+      "startLine": 198,
+      "endLine": 271,
+      "summary": "Refines category to the Borel hierarchy. Being countable the algebraic reals are Fσ, so the transcendentals form a dense Gδ (isGδ_setOf_transcendental), strengthening mere comeagreness. Dually not_isGδ_setOf_isAlgebraic: the algebraic reals are not Gδ — the exact analogue of 'ℚ is Fσ but not Gδ' — since a dense Gδ would be residual, contradicting meagreness. isAlgebraic_ratCast and dense_setOf_isAlgebraic supply the dense algebraic set; transcendental_isGδ_and_algebraic_not_isGδ packages the dichotomy.",
+      "mathContext": "Algebraic reals are $F_\\sigma$ (countable), transcendentals a dense $G_\\delta$; algebraic reals are not $G_\\delta$ because in a nonempty Baire space no dense $G_\\delta$ can be meagre (`residual_of_dense_Gδ` vs `not_isMeagre_of_mem_residual`)."
     },
     {
-      "id": "section-5-complex",
-      "title": "§5. The Complex Algebraic Numbers are Null",
-      "startLine": 169,
-      "endLine": 205,
-      "summary": "Local instance `NoAtoms (volume : Measure ℂ)` by transporting singletons through ℂ ≃ᵐ ℝ × ℝ. `algebraic_complex_null`: complex algebraic numbers have planar measure zero. `ae_transcendental_complex`: almost every complex number is transcendental.",
-      "mathContext": "$\\mathrm{vol}\\{z : \\mathbb{C} \\mid \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,z\\} = 0$ via the atomless planar Lebesgue measure."
-    },
-    {
-      "id": "section-6-cantor-bendixson",
-      "title": "§6. Cantor–Bendixson: Empty Perfect Kernel",
-      "startLine": 438,
-      "endLine": 487,
-      "summary": "A fourth, order-topological smallness notion. `perfect_not_countable`: a nonempty perfect set in a complete metric space is uncountable, via the injection from Cantor space ℕ → Bool (`Perfect.exists_nat_bool_injection`) whose cardinality is the continuum 2^ℵ₀ > ℵ₀. `algebraic_reals_no_perfect_subset` and `algebraic_complex_no_perfect_subset`: the countable algebraic reals (resp. complex algebraic numbers) contain no nonempty perfect subset, so their Cantor–Bendixson kernel is empty.",
-      "mathContext": "A nonempty perfect $P\\subseteq\\mathbb{R}$ satisfies $|P|\\ge 2^{\\aleph_0}>\\aleph_0$, so $P\\subseteq\\{x\\mid\\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ (a countable set) forces $P=\\varnothing$."
+      "id": "gdelta-structure-complex",
+      "title": "Complex Analogue: the Gδ / not-Gδ Dichotomy in ℂ",
+      "startLine": 272,
+      "endLine": 370,
+      "summary": "Transfers the Borel-hierarchy dichotomy to ℂ. The Gδ half is identical bookkeeping (algebraic ⟹ Fσ ⟹ complement Gδ). The not-Gδ half needs density of the algebraic numbers in ℂ, absent from Mathlib and the parent chain; it is supplied via the Gaussian rationals ℚ + ℚ·i — each a+b·i is algebraic (isAlgebraic_I, isAlgebraic_ratCast_complex, IsAlgebraic.add/.mul) and they are dense along both axes. Yields not_isGδ_setOf_isAlgebraic_complex, isGδ_setOf_transcendental_complex, and the packaged transcendental_isGδ_and_algebraic_not_isGδ_complex. All axiom-free.",
+      "mathContext": "Density of algebraic numbers in ℂ via Gaussian rationals $\\mathbb{Q} + \\mathbb{Q}i$: $i$ is a root of $X^2+1$, each $a+bi$ ($a,b\\in\\mathbb{Q}$) is algebraic, and they are dense; hence the complex algebraic numbers are $F_\\sigma$ but not $G_\\delta$, as in $\\mathbb{R}$."
     }
   ],
   "conclusion": {
