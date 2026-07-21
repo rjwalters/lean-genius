@@ -73,6 +73,7 @@
     "keyInsights": [
       "**Primitive Root**: An element g with ord_p(g) = p - 1 generates (ℤ/pℤ)×",
       "**Existence Guaranteed**: Every odd prime has primitive roots, but finding PRIME ones is harder",
+      "**Exact count φ(p−1)**: Unconditionally, there are exactly φ(p−1) primitive roots modulo p — the generators of the cyclic group (ℤ/pℤ)× of order p−1 (card_primitiveRoots_units, via IsCyclic.card_orderOf_eq_totient). Since φ(p−1) > 0, a primitive root always exists; the open difficulty is only whether one of the φ(p−1) generators is itself a prime below p.",
       "**Heath-Brown's Breakthrough**: At least one of {2, 3, 5} works for infinitely many primes",
       "**Artin's Conjecture**: an *effective* (Linnik-type) form would imply Erdős 985; the qualitative \"infinitely many primes\" form alone does not (no pointwise control)",
       "**Heuristic Argument**: φ(p-1)/log(p) prime primitive roots expected by PNT",
@@ -94,67 +95,67 @@
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties",
+      "title": "Basic Properties of Primitive Roots",
       "summary": "zmod_units_cyclic: (ℤ/pℤ)× is cyclic; exists_primitiveRoot_lt: a primitive root exists in {1,…,p-1} (only primality of the witness is open)",
       "startLine": 42,
-      "endLine": 52,
+      "endLine": 79,
       "mathContext": "Proved via Mathlib: zmod_units_cyclic; exists_primitiveRoot_lt (verified, 0-axiom) shows the unconditional existence of a primitive root below p."
     },
     {
       "id": "small-examples",
       "title": "Small Prime Examples",
-      "summary": "Verification of primitive roots for 2, 3, 5 modulo small primes",
-      "startLine": 53,
-      "endLine": 86,
-      "mathContext": "Mathematical content: Verification of primitive roots for 2, 3, 5 modulo small primes"
+      "summary": "Verification of primitive roots for 2, 3, 5 modulo small primes (primitiveRoot_2_mod_3/5, primitiveRoot_3_mod_7, primitiveRoot_2_mod_11/13, primitiveRoot_5_mod_23, and not_primitiveRoot_2_mod_7 showing 2 is not always a primitive root).",
+      "startLine": 80,
+      "endLine": 123,
+      "mathContext": "Concrete order computations in (ℤ/pℤ)×: e.g. orderOf (2 : ZMod 5) = 4, orderOf (3 : ZMod 7) = 6, orderOf (2 : ZMod 7) ≠ 6."
     },
     {
       "id": "erdos-verification",
       "title": "Verified Cases of Erdős 985",
       "summary": "erdos985_for_3, erdos985_for_5, erdos985_for_7, erdos985_for_11, erdos985_for_13, erdos985_for_23",
-      "startLine": 87,
-      "endLine": 112,
-      "mathContext": "Mathematical content: erdos985_for_3, erdos985_for_5, erdos985_for_7, erdos985_for_11, erdos985_for_13, erdos985_for_23"
+      "startLine": 124,
+      "endLine": 149,
+      "mathContext": "Mathematical content: erdos985_for_3, erdos985_for_5, erdos985_for_7, erdos985_for_11, erdos985_for_13, erdos985_for_23 — each exhibits a prime q < p with orderOf (q : ZMod p) = p − 1."
     },
     {
       "id": "artin-heathbrown",
-      "title": "Artin's Conjecture and Heath-Brown",
+      "title": "Artin's Conjecture and Related Results",
       "summary": "heath_brown_theorem axiom: at least one of {2, 3, 5} is a primitive root for infinitely many primes",
-      "startLine": 113,
-      "endLine": 127,
+      "startLine": 150,
+      "endLine": 164,
       "mathContext": "Axiomatized: heath_brown_theorem (Heath-Brown 1986 unconditional result)"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "summary": "erdos_985_conjecture axiom, erdos_985_iff_all_odd_primes equivalence",
-      "startLine": 128,
-      "endLine": 170,
-      "mathContext": "Axiomatized: erdos_985_conjecture axiom, erdos_985_iff_all_odd_primes equivalence"
+      "startLine": 165,
+      "endLine": 208,
+      "mathContext": "Axiomatized: erdos_985_conjecture axiom, erdos_985_iff_all_odd_primes equivalence (reformulating the conjecture as primesWithPrimePrimitiveRoot = {odd primes})."
     },
     {
       "id": "density",
       "title": "Density Considerations",
-      "summary": "Heuristic argument based on prime number theorem",
-      "startLine": 171,
-      "endLine": 178,
-      "mathContext": "Verified: Heuristic argument based on prime number theorem"
+      "summary": "Heuristic (φ(p-1)/log p prime primitive roots by PNT) made rigorous at its starting point: card_primitiveRoots_units proves there are exactly φ(p−1) primitive roots modulo p (via IsCyclic.card_orderOf_eq_totient on the cyclic group (ℤ/pℤ)× of order p−1), and exists_primitiveRoot_units upgrades this to the unconditional existence of a unit of order p−1 (since φ(p−1) > 0).",
+      "startLine": 209,
+      "endLine": 247,
+      "mathContext": "In the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ of order $p-1$, the number of generators (elements of maximal order $p-1$) is exactly $\\varphi(p-1)$; as $\\varphi(p-1) > 0$, at least one primitive root exists. The prime-among-these count is heuristically $\\varphi(p-1)/\\log p$, whose positivity for large $p$ underlies the conjecture."
     },
     {
       "id": "connections",
-      "title": "Connections to Other Problems",
+      "title": "Connection to Other Problems",
       "summary": "erdos985_of_heathBrown_witness + infinitely_many_erdos985_primes: infinitely many confirmed instances from Heath-Brown",
-      "startLine": 179,
-      "endLine": 193,
-      "mathContext": "Caveat: qualitative Artin does NOT imply Erdős 985 pointwise (the prior artin_implies_erdos_985 sorry was mathematically invalid and has been removed). Verified replacement: erdos985_of_heathBrown_witness turns the Heath-Brown {2,3,5} covering into actual cases, and infinitely_many_erdos985_primes proves the set of primes satisfying Erdős 985 is infinite."
+      "startLine": 248,
+      "endLine": 299,
+      "mathContext": "Caveat: qualitative Artin does NOT imply Erdős 985 pointwise (the prior artin_implies_erdos_985 sorry was mathematically invalid and has been removed). Verified replacement: erdos985_of_heathBrown_witness turns the Heath-Brown {2,3,5} covering into actual cases, and infinitely_many_erdos985_primes proves (via Set.Infinite.mono, discarding only the finitely many primes ≤ 5) the set of primes satisfying Erdős 985 is infinite."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_985_summary combining verified cases and Heath-Brown",
-      "startLine": 194,
-      "endLine": 223,
-      "mathContext": "Mathematical content: erdos_985_summary combining verified cases and Heath-Brown"
+      "startLine": 300,
+      "endLine": 330,
+      "mathContext": "erdos_985_summary bundles the verified cases (p = 3, 5, 7, 11, 13) together with the Heath-Brown infinitude into a single statement."
     }
   ],
   "conclusion": {
