@@ -79,7 +79,7 @@
       "id": "properties",
       "title": "Part III: Basic Properties",
       "startLine": 163,
-      "endLine": 174,
+      "endLine": 187,
       "summary": "Three one-liners: binaryGcd_comm via gcd_comm + correctness; binaryGcd_zero_left by simp; binaryGcd_zero_right by cases + simp.",
       "mathContext": "Commutativity: $\\text{binaryGcd}(a,b) = \\text{Nat.gcd}(a,b) = \\text{Nat.gcd}(b,a) = \\text{binaryGcd}(b,a)$, using correctness twice and Nat.gcd_comm. Zero cases follow directly from the base case equations of the definition."
     }

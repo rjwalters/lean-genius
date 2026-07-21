@@ -132,7 +132,7 @@
       "id": "concrete-values",
       "title": "Concrete Values",
       "startLine": 399,
-      "endLine": 410,
+      "endLine": 421,
       "summary": "error_n0_pos: D(0)/0! - 1/e = 1 - 1/e > 0 (instance of error_strict_pos_even 0). error_n1_neg: D(1)/1! - 1/e = -1/e < 0 (instance of error_strict_neg_odd 0). Concrete base cases confirming the sign alternation.",
       "mathContext": "$\\frac{D(0)}{0!} = 1 > \\frac{1}{e}$ and $\\frac{D(1)}{1!} = 0 < \\frac{1}{e}$."
     }
