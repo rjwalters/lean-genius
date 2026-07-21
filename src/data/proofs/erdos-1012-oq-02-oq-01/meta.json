@@ -99,36 +99,44 @@
       "id": "triangle-free",
       "title": "Part I: Triangle-Freeness of Complete Bipartite Graphs",
       "startLine": 91,
-      "endLine": 110,
+      "endLine": 107,
       "summary": "completeBipartite_no_triangle: no three vertices a,b,c are cyclically pairwise adjacent. Proof unfolds completeBipartiteGraph_adj and case-splits on the two sides (Sum.inl/inr) of each vertex; two of any three vertices share a side and are non-adjacent."
     },
     {
       "id": "no-3cycle",
       "title": "Part II: No Vertex on a 3-Cycle",
-      "startLine": 111,
-      "endLine": 135,
+      "startLine": 108,
+      "endLine": 129,
       "summary": "completeBipartite_no_3cycle: no vertex lies on a 3-cycle. A closed walk of length 3 yields adjacencies getVert 0~1, 1~2, 2~3 with getVert 0 = getVert 3 = v (getVert_zero, getVert_length), forming a triangle — contradiction via completeBipartite_no_triangle."
     },
     {
       "id": "not-pancyclic",
       "title": "Part III: Failure of (Vertex-)Pancyclicity",
-      "startLine": 136,
-      "endLine": 165,
+      "startLine": 130,
+      "endLine": 151,
       "summary": "completeBipartite_not_pancyclic and completeBipartite_not_vertexPancyclic: once the length window reaches 3, the absence of any 3-cycle (resp. through a chosen left vertex) defeats pancyclicity and vertex-pancyclicity."
     },
     {
       "id": "bondy-exception",
       "title": "Part IV: Realizing Bondy's Exception Structure",
-      "startLine": 166,
-      "endLine": 190,
+      "startLine": 152,
+      "endLine": 176,
       "summary": "completeBipartite_realizes_bondy_exception: the left/right vertex partition (filtered by isLeft/isRight) satisfies A ∪ B = univ, Disjoint A B, and all cross pairs adjacent — exactly the exception predicate in the parent's bondy_vertex_pancyclic axiom."
     },
     {
+      "id": "extremal-edge-count",
+      "title": "Part V: Exact Extremal Edge Count (Threshold Sharpness)",
+      "startLine": 177,
+      "endLine": 246,
+      "summary": "Makes the threshold sharpness quantitative. A DecidableRel instance for completeBipartiteGraph.Adj makes degrees and the edge set computable; completeBipartite_degree_inl/_inr give left/right degrees |W|/|V|; completeBipartite_card_edgeFinset gives the exact edge count |E| = |V|·|W| via the degree-sum (handshake) formula; and completeBipartite_balanced_card_edgeFinset shows the balanced graph K_{m,m} on n = 2m vertices has exactly m² = ⌊n²/4⌋ edges — one below the n²/4 + 1 threshold of Bondy's theorem, so the extremal example sits precisely at the boundary and the threshold cannot be lowered.",
+      "mathContext": "Handshake: $\\sum_v \\deg v = |V|\\!\\cdot\\!|W| + |W|\\!\\cdot\\!|V| = 2|V||W| = 2|E|$, so $|E| = |V||W|$; balanced $K_{m,m}$ gives $|E| = m^2 = \\lfloor (2m)^2/4\\rfloor$."
+    },
+    {
       "id": "summary",
-      "title": "Part V: Summary",
-      "startLine": 191,
-      "endLine": 203,
-      "summary": "Documents the five proved theorems, the 0-axiom/0-sorry status, the significance (necessity and sharpness), and the deferred exact-edge-count follow-up."
+      "title": "Part VI: Summary",
+      "startLine": 247,
+      "endLine": 279,
+      "summary": "Results status (8 theorems, 0 axioms, 0 sorries) and significance: the parent Erdos1012OQ02 proves vertex-pancyclicity above the edge threshold while carrying Bondy's bipartite exception as an unexplored disjunct; this file shows that disjunct is necessary (the complete bipartite graph fits the exception predicate exactly yet fails pancyclicity because it is triangle-free) and, via Part V, makes the sharpness quantitative."
     }
   ],
   "sorries": 0
