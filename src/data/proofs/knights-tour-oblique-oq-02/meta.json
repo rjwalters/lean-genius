@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec0-header",
+      "title": "Open Question, Knuth 2025, and Formalization Targets",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring framing OQ-02 — the distribution of oblique-turn counts across the ≈1.3 × 10¹³ closed knight's tours on the 8×8 board, following Knuth's 2025 Christmas Lecture (every tour has ≥ 4 oblique turns, minimum unique up to D4). States what is reachable in Lean (the Fintype instance, the histogram obliqueDistribution, the support lower bound, the D4-orbit divisibility, reversal symmetry) versus what is deferred (exact histogram values, winding-parity constraints), with a target checklist. Imports Mathlib and the parent Proofs.KnightsTourOblique, opening the namespace.",
+      "mathContext": "Structural skeleton of $\\text{obliqueDistribution}(k)$ over closed $8\\times 8$ tours: support, $D_4$-orbit divisibility, reversal — reachable without enumerating $\\sim\\!1.3\\times10^{13}$ tours."
+    },
+    {
       "id": "sec1-fintype",
       "title": "Fintype Instance for ClosedTour",
       "startLine": 53,
@@ -108,6 +116,14 @@
       "startLine": 374,
       "endLine": 705,
       "summary": "The composition law d4Mul with applyD4_mul, the equivalence relation d4Equiv (reflexive, symmetric, transitive) and its Setoid, and the five algebraic laws (associativity, two-sided identity, two-sided inverse) making (Bool × Fin 4) the D4 group carrier."
+    },
+    {
+      "id": "sec7-group-orbit-stabilizer",
+      "title": "The Dihedral Group D₄ and Sharp Orbit-Stabilizer Divisibility",
+      "startLine": 706,
+      "endLine": 809,
+      "summary": "The S10 headline: the five algebraic laws proved above are packaged into a genuine Mathlib Group instance on the type synonym D4 := Bool × Fin 4 (a synonym is mandatory because Bool × Fin 4 already carries Mathlib's componentwise boolean-ring Mul/One with unit (true,1), a different structure from the dihedral unit (false,0)), with card_D4 : Fintype.card D4 = 8. applyD4Tour then becomes a bona-fide MulAction D4 ClosedTour (one_smul = applyD4Tour_id, mul_smul = applyD4Tour_mul), so d4Orbit t coincides with Mathlib's MulAction.orbit (d4Orbit_eq_orbit_toFinset). The orbit-stabilizer theorem (card_orbit_mul_card_stabilizer_eq_card_group) upgrades the earlier cardinality bound d4Orbit_card_le_eight (≤ 8) to the sharp divisibility d4Orbit_card_dvd_eight ((d4Orbit t).card ∣ 8), and combined with orbit nonemptiness the block-size enumeration d4Orbit_card_eq_one_two_four_or_eight pins every orbit to size 1, 2, 4, or 8 — the divisor lattice of 8. This adds no new ofReduceBool dependency (only propext / Classical.choice / Quot.sound).",
+      "mathContext": "Orbit-stabilizer on $\\text{MulAction}\\ D_4\\ \\text{ClosedTour}$: $|d4Orbit\\,t|\\cdot|\\text{Stab}(t)| = |D_4| = 8$, so $|d4Orbit\\,t| \\mid 8$, hence $\\in\\{1,2,4,8\\}$ — each oblique level set decomposes into $D_4$-blocks of these sizes."
     }
   ],
   "conclusion": {
