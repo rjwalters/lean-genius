@@ -102,55 +102,55 @@
       "id": "axiom-elimination",
       "title": "Axiom Elimination: Containment Geometry and Provable Bounds",
       "startLine": 158,
-      "endLine": 506,
+      "endLine": 588,
       "summary": "The section AxiomElimination proves (previously axiomatized) facts directly: edge-midpoint closure membership, the side·|cos θ| ≤ 1 and side·|sin θ| ≤ 1 bounds, side ≤ √2, boundedness/nonemptiness of the achievable sets, g(n) ≤ f_rot(n), g(n) ≤ √n, and the perfect-square values g(k²) = k and f_rot(k²) = k via the k×k grid.",
       "mathContext": "For a contained square, $s|\\cos\\theta| \\le 1$ and $s|\\sin\\theta| \\le 1$, so $s \\le \\sqrt2$. The $k\\times k$ grid of unit/k squares realizes $g(k^2) = k$, and $f_{\\text{rot}}(k^2) = k$ follows from $g(k^2) \\le f_{\\text{rot}}(k^2) \\le \\sqrt{k^2}$."
     },
     {
       "id": "bku-derived",
       "title": "BKU Theorem and Derived Bounds at k²+1",
-      "startLine": 507,
-      "endLine": 538,
+      "startLine": 589,
+      "endLine": 620,
       "summary": "States the BKU (2024) axis-parallel result g(k²+1) = k as an axiom, then derives f_rot's upper bound √n, the lower bound f_rot(k²+1) ≥ k, and the upper bound f_rot(k²+1) ≤ √(k²+1).",
       "mathContext": "BKU: $g(k^2+1) = k$. Monotonicity gives $f_{\\text{rot}}(k^2+1) \\ge f_{\\text{rot}}(k^2) = k$, while the area bound gives $f_{\\text{rot}}(k^2+1) \\le \\sqrt{k^2+1}$."
     },
     {
       "id": "open-question",
       "title": "The Main Open Question",
-      "startLine": 539,
-      "endLine": 564,
+      "startLine": 621,
+      "endLine": 646,
       "summary": "Formalizes the open question via rotationHelps (∃ n, f_rot(n) > g(n)), axisParallelSuboptimal (witness n ≥ 2), and rotationNeverHelps (∀ n, f_rot(n) = g(n)); proves that rotationNeverHelps reduces the general case to BKU.",
       "mathContext": "Open: $\\exists n,\\ f_{\\text{rot}}(n) > g(n)$? No example is known. If rotation never helps, then $f_{\\text{rot}}(k^2+1) = g(k^2+1) = k$ by BKU."
     },
     {
       "id": "erdos-equivalence",
       "title": "Equivalence with the General Erdős Conjecture",
-      "startLine": 565,
-      "endLine": 593,
+      "startLine": 647,
+      "endLine": 675,
       "summary": "Defines the general Erdős conjecture f_rot(k²+1) = k and proves rotationNeverHelps + BKU imply it; proves agreement of f_rot and g at n = 1 and at all perfect squares.",
       "mathContext": "$\\text{erdos106GeneralConjecture}: \\forall k \\ge 1,\\ f_{\\text{rot}}(k^2+1) = k$. Follows from rotationNeverHelps and BKU. Also $f_{\\text{rot}}(k^2) = g(k^2) = k$ for all $k \\ge 1$."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
-      "startLine": 594,
-      "endLine": 617,
+      "startLine": 676,
+      "endLine": 699,
       "summary": "Observes that if rotation ever helps it cannot be at a perfect square (since the functions agree there), and proves f_rot(2) = g(2) = 1, extending Erdős's original two-square argument to rotated squares.",
       "mathContext": "Rotation cannot help at $k^2$ since $f_{\\text{rot}}(k^2) = g(k^2)$. At $n=2$, axiom $f_{\\text{rot}}(2) = 1$ combined with $g(2) = g(1^2+1) = 1$ gives agreement."
     },
     {
       "id": "boundary-cases",
       "title": "Boundary Cases: n = 0 and the Dichotomy",
-      "startLine": 618,
-      "endLine": 701,
+      "startLine": 700,
+      "endLine": 784,
       "summary": "Builds the empty packings of 0 squares to prove f_rot(0) = g(0) = 0 unconditionally, then proves the dichotomy rotationHelps ↔ ¬rotationNeverHelps and that the 'witness n ≥ 2' form is equivalent to the unrestricted form (rotation cannot help at n ∈ {0,1}).",
       "mathContext": "The empty packing gives achievable-sum singleton $\\{0\\}$, so $f_{\\text{rot}}(0) = g(0) = 0$. Combined with agreement at $n \\in \\{0,1\\}$, axisParallelSuboptimal $\\leftrightarrow$ rotationHelps."
     },
     {
       "id": "tight-bounds-k2-plus-1",
       "title": "Tight Bounds at k²+1: Rotation Benefit in [0, 1)",
-      "startLine": 702,
-      "endLine": 749,
+      "startLine": 785,
+      "endLine": 831,
       "summary": "Proves √(k²+1) < k+1, hence f_rot(k²+1) ∈ [k, k+1), and concludes the rotation benefit f_rot(k²+1) − g(k²+1) lies in [0, 1): rotation can improve on the axis-parallel value but never by a full unit.",
       "mathContext": "$(k+1)^2 = k^2+2k+1 > k^2+1$ gives $\\sqrt{k^2+1} < k+1$, so $f_{\\text{rot}}(k^2+1) \\in [k, k+1)$ and the benefit $f_{\\text{rot}}(k^2+1) - g(k^2+1) \\in [0,1)$."
     }
