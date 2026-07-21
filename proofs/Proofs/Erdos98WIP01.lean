@@ -1815,7 +1815,7 @@ theorem two_common_neighbours_dist
   have hew : inner ℝ e w = 0 := by
     rw [hedef]; simp only [inner_sub_left, inner_add_left, euw, evw, eww]; ring
   have hed : inner ℝ e d = 0 := by
-    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm v u
+    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm _ _
     rw [hedef, hddef]
     simp only [inner_sub_left, inner_add_left, inner_sub_right,
       euu, evv, ewu, ewv]
@@ -1870,7 +1870,7 @@ theorem two_common_neighbours_dist
       omega
     -- From `e = 0`: `u + v = w`, so `⟨u,v⟩ = −a²/2` and `‖d‖² = 3a²`.
     have hsum : u + v = w := sub_eq_zero.mp (by rw [← hedef]; exact he0)
-    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm v u
+    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm _ _
     have htval : inner ℝ u v = -(a ^ 2) / 2 := by
       have h : inner ℝ (u + v) (u + v) = a ^ 2 := by rw [hsum, eww]
       simp only [inner_add_left, inner_add_right, euu, evv] at h
