@@ -239,23 +239,23 @@
       "id": "involution-properties-cancellation",
       "title": "Part 7l: Involution Properties and Cancellation Theorem",
       "startLine": 1938,
-      "endLine": 2525,
+      "endLine": 2576,
       "summary": "PART 7l proves the involution's defining properties: value-extraction lemmas, canonCrossN_preserved (the crossing invariant), gvCanon_self_inverse (ι² = id), gvCanon_sign_reversal, gvCanon_no_fixed, then cancellable_sum_eq_zero (via Finset.sum_involution) and the headline gv_involution_cancellation: the signed permutation sum equals niTupleCount.",
       "mathContext": "The two key invariants are $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ and $\\iota^2 = \\mathrm{id}$, giving $\\sum_{\\text{cancellable}}\\mathrm{sgn}(\\sigma) = 0$ and hence $\\sum_\\sigma \\mathrm{sgn}(\\sigma)\\,|\\mathrm{PermPathTuple}(\\sigma)| = \\mathrm{niTupleCount}$."
     },
     {
       "id": "lgv-lemma",
       "title": "Part 8: The r×r LGV Lemma",
-      "startLine": 2526,
-      "endLine": 2540,
+      "startLine": 2577,
+      "endLine": 2589,
       "summary": "lgv_lemma_rxr: niTupleCount = det(pathMatrix), proved by combining the algebraic bridge (det = signed permutation sum) with the GV involution cancellation. Generalizes the 2×2 case from BallotProblemOQ03.lean.",
       "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det\\bigl[\\binom{m+(b_j-a_i)}{m}\\bigr]_{i,j=1}^{r}$"
     },
     {
       "id": "corollaries",
       "title": "Parts 9–10: Corollaries and Combinatorial Applications",
-      "startLine": 2541,
-      "endLine": 2589,
+      "startLine": 2590,
+      "endLine": 2640,
       "summary": "PART 9 corollaries: non-negativity of the path-matrix determinant, r = 1 vacuous non-intersection, and lgv_universality. PART 10 surveys applications — Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, and MacMahon plane partitions.",
       "mathContext": "$\\det M \\ge 0$ since $\\det M = \\mathrm{niTupleCount} \\in \\mathbb{N}$. For $r=1$ every singleton tuple is vacuously non-intersecting, so $\\mathrm{niTupleCount} = \\binom{m+(b_1-a_1)}{m}$."
     }
