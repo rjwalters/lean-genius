@@ -57,7 +57,7 @@
       "title": "Header and Imports (continued)",
       "startLine": 14,
       "endLine": 25,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "summary": "Continuation of the module docstring listing the known results, followed by the Mathlib imports (Real.Basic, Finset.Basic, InnerProductSpace.Basic). No declarations in this range."
     },
     {
       "id": "core-definitions",
@@ -78,7 +78,7 @@
       "title": "Low-Dimensional Positive Results",
       "startLine": 57,
       "endLine": 60,
-      "summary": "Axioms: Borsuk's conjecture holds for n = 2 (classical) and n = 3 (Eggleston 1955)."
+      "summary": "Four empty section headers (Low-Dimensional Results, Kahn–Kalai Counterexample, Bounds on α(n), Status of Intermediate Dimensions) marking where the known results are discussed. No Lean declarations follow — the results (n ≤ 3 true, n ≥ 64 false, the quantitative bounds) are recorded in the module docstring as background only; they are not axiomatized or proved."
     }
   ],
   "conclusion": {
