@@ -773,5 +773,29 @@ theorem qBinom_X_three_coeff_prefix_mono :
           exact qBinom_X_three_coeff_prefix_mono N (j - 3) (by omega)
       linarith
 
+/-! ### High-codimension cases `k ≥ n − 2` via the symmetry `[n,k]_q = [n,n−k]_q`
+
+Sylvester's theorem is symmetric under `k ↦ n − k` because the Gaussian polynomials are
+*literally equal* there (`qBinom_symm` — choosing `k` from `n` is choosing `n − k`).  So the
+already-proved low-codimension cases `n − k ≤ 2` (`qBinomCoeff_unimodal_{zero,one,two}`)
+immediately give unimodality for every `k` with `k ≥ n − 2`, an infinite family of
+high-`k` cases at no extra analytic cost.  Combined with the low-`k` cases `k ≤ 2`, the
+*only* range where Sylvester unimodality remains open is the genuine interior
+`3 ≤ k ≤ n − 3` (whose first genuinely-hard instance is the box-binding tail of `k = 3`). -/
+
+open Polynomial in
+/-- **Sylvester unimodality for high codimension `k ≥ n − 2`.**  Via `qBinom_symm`
+(`[n,k]_q = [n,n−k]_q`) the coefficient sequence equals that of `[n, n−k]_q` with
+`n − k ≤ 2`, so it is unimodal by the `k = 0, 1, 2` base cases.  This closes every
+`k ∈ {n−2, n−1, n}` for all `n`; only the interior `3 ≤ k ≤ n − 3` stays open. -/
+theorem qBinomCoeff_unimodal_of_codim_le_two {n k : ℕ} (hk : k ≤ n) (hnk : n - 2 ≤ k) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n k).coeff j) := by
+  rw [qBinom_symm (X : ℤ[X]) n k hk]
+  rcases Nat.lt_or_ge (n - k) 1 with h0 | h1
+  · rw [show n - k = 0 from by omega]; exact qBinomCoeff_unimodal_zero n
+  · rcases Nat.lt_or_ge (n - k) 2 with h1' | h2
+    · rw [show n - k = 1 from by omega]; exact qBinomCoeff_unimodal_one n
+    · rw [show n - k = 2 from by omega]; exact qBinomCoeff_unimodal_two n
+
 end QBinomialCoefficients
 
