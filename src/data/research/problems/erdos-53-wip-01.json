@@ -31,19 +31,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added the additive-side sharpness dual to Erdos53Problem.lean (theoremCount 24→26, 0 sorry / 0 axiom, host-verified). subsetSum_injOn_of_superincreasing: a superincreasing set (each element exceeds the sum of the strictly smaller ones) has injective subset sums; subsetSums_card_of_superincreasing: hence exactly 2^|A| distinct subset sums, so the trivial bound subsetSums_card_le is SHARP. This is the additive analogue of the existing subsetProducts_card_of_prime (=2^|A|-1). Deep results (Chang 2003, Erdős–Szemerédi upper bound) remain documented-only.",
+    "progressSummary": "Parent Erdos53Problem.lean is a rich 0-axiom base (k=1 case, trivial 2^{|A|+1} upper bracket, distinct-prime product richness 2^|A|-1, superincreasing subset-sum injectivity). WIP01 adds the exponential lower bound for prime sets |sumsOrProducts A| ≥ 2^|A| (adjoining empty-sum 0 to the 2^|A|-1 products), a pinning corollary, n^2≤2^n, and the honest conditional connection to Problem 53 (witnessed for k=2, |A|≥4). All 0-axiom, host-verified. Chang’s theorem (uniform over all large sets) stays documented, not axiomatized.",
     "builtItems": [
       "zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem in Erdos53Problem.lean",
       "subsetSums/Products_subset_sumsOrProducts, subsetSumCount/subsetProductCount_le_card in Erdos53Problem.lean",
       "subsetSums_card_le (<=2^|A|), subsetSums_mono, subsetSums_empty in Erdos53Problem.lean",
       "sumset_card_le, productset_card_le (<=|A|^2) in Erdos53Problem.lean",
       "subsetSum_injOn_of_superincreasing (Erdos53Problem.lean): superincreasing ⇒ injective subset sums, via max-element-of-symmetric-difference argument (2026-07-20)",
-      "subsetSums_card_of_superincreasing: |subsetSums A| = 2^|A| for superincreasing A — additive sharpness, dual of subsetProducts_card_of_prime (2026-07-20)"
+      "subsetSums_card_of_superincreasing: |subsetSums A| = 2^|A| for superincreasing A — additive sharpness, dual of subsetProducts_card_of_prime (2026-07-20)",
+      "Erdos53WIP01.lean (new, 0-axiom, host-verified v4.31): sumsOrProducts_card_ge_two_pow_of_prime — for distinct positive primes A, 2^|A| ≤ |sumsOrProducts A| (strengthens parent subsetProducts_card_of_prime by adjoining the empty-sum value 0)",
+      "sq_le_two_pow: n^2 ≤ 2^n for n≥4 (elementary induction, no analysis import)",
+      "erdosProblem53_prime_exponent_two: distinct positive primes with |A|≥4 realise ≥ |A|^2 representable integers (first superlinear instance on the prime family)",
+      "sumsOrProducts_card_prime_pinned: prime sets pinned in [2^|A|, 2^{|A|+1}]"
     ],
     "insights": [
       "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
       "Clean generic Finset targets that generalize across these stubs: image-of-powerset card bound (card_image_le + card_powerset gives <= 2^|A|), image-of-product card bound (card_image_le + card_product gives <= |A|^2), monotonicity via powerset_mono + image_subset_image, membership via singleton subset.",
-      "k=1 slice of Problem 53 is elementary: A ⊆ subsetSums A ⊆ sumsOrProducts A gives |A| ≤ |sumsOrProducts A| (erdosProblem53_exponent_one, N₀=0). Distinct-prime richness |subsetProducts A|=2^|A|-1 requires 0<p (Prime over ℤ is closed under negation; positivity kills the p↔-p product collision). Proved axiom-free via Prime.dvd_finsetProd_iff + Prime.associated_of_dvd + Int.associated_iff_natAbs."
+      "k=1 slice of Problem 53 is elementary: A ⊆ subsetSums A ⊆ sumsOrProducts A gives |A| ≤ |sumsOrProducts A| (erdosProblem53_exponent_one, N₀=0). Distinct-prime richness |subsetProducts A|=2^|A|-1 requires 0<p (Prime over ℤ is closed under negation; positivity kills the p↔-p product collision). Proved axiom-free via Prime.dvd_finsetProd_iff + Prime.associated_of_dvd + Int.associated_iff_natAbs.",
+      "Exponential-richness witness (researcher-1, 2026-07-20): the additive side contributes exactly one value the multiplicative side cannot — 0 (empty subset sum), which is never a product of positive primes. So for distinct positive primes |sumsOrProducts A| ≥ (2^|A|-1)+1 = 2^|A|, exhibiting sets where the Problem-53 count is exponential. This is the strongest witness on the EASY direction; it does NOT bear on Chang’s theorem, which is the uniform bound over ALL large sets (prime sets are never the obstruction)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,7 +72,8 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-20T23:00:00.000Z",
+  "lastUpdate": "2026-07-20",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "nextAction": "Optional extensions: (a) general polynomial-vs-exponential domination ∀k ∃N ∀n≥N, n^k ≤ 2^n (needs induction/analysis) to lift the prime-set connection to every k; (b) an additive richness lower bound for prime sets on the SUM side (subset sums of primes are not generally injective — quantify collisions). Chang’s theorem for arbitrary large sets remains the deep open crux and should stay axiom-documented, not axiomatized."
 }
