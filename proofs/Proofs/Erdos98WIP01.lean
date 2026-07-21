@@ -104,6 +104,22 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     `h 3 ≤ 1`; with `h_mono` and `h_two` (`1 = h 2 ≤ h 3`) it pins `h 2 = h 3 = 1`. The
     elementary envelope alone leaves only `1 ≤ h 3 ≤ 3`.
 
+16. `centeredTriangleConfig` / `numDistinctDistances_centeredTriangleConfig_le` /
+    `h_four_le_two` — **`h 4 ≤ 2`.** The classical minimum-distance witness for four points,
+    the square, is *disqualified* (its vertices are concyclic). The equilateral triangle
+    `(1,0), (−½,√3⁄2), (−½,−√3⁄2)` together with its centroid `(0,0)` is the smallest
+    2-distance set that is general position — circumradius `1`, side `√3`, and the centroid
+    is not on the vertices' circumcircle — giving `numDistinctDistances ≤ 2`, hence `h 4 ≤ 2`.
+
+17. `not_four_equidistant` / `two_le_numDistinctDistances_four` / `h_four_ge_two` / `h_four`
+    — **`h 4 = 2`, pinned exactly.** The matching lower bound rules out a 1-distance
+    4-configuration: four pairwise-equidistant points would make the three difference vectors
+    `pₖ₊₁−p₀` linearly independent (their Gram matrix `r²·½(I+J)` is nonsingular), impossible
+    in the 2-dimensional plane (`LinearIndependent.fintype_card_le_finrank`: `3 ≤ 2`). With
+    `h_four_le_two` this pins `h 4 = 2` — the first value of `h` exceeding `1`, and the first
+    result to use the *dimension* of the ambient plane rather than only metric/combinatorial
+    facts.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
