@@ -81,59 +81,67 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Part I: Definitions",
       "startLine": 45,
-      "endLine": 55,
+      "endLine": 58,
       "summary": "Core definitions: termCount (support cardinality) and f(k) (minimum squared term count).",
       "mathContext": "For $P \\in \\mathbb{Q}[x]$, $\\text{termCount}(P) = |\\text{supp}(P)|$. $f(k) = \\min\\{\\text{termCount}(P^2) : \\text{termCount}(P) = k\\}$."
     },
     {
       "id": "convolution",
-      "title": "Convolution Structure",
-      "startLine": 57,
-      "endLine": 82,
-      "summary": "The coefficient of P^2 at n is the convolution sum. Nonneg coefficients yield nonneg P^2 coefficients.",
+      "title": "Part II: Convolution Structure",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "The coefficient of P^2 at n is the convolution sum (coeff_sq_convolution). Nonneg coefficients yield nonneg P^2 coefficients (sq_coeff_nonneg).",
       "mathContext": "$(P^2)_n = \\sum_{a+b=n} P_a \\cdot P_b$. If all $P_a \\geq 0$, then all $(P^2)_n \\geq 0$."
     },
     {
       "id": "sumset-connection",
-      "title": "Support-Sumset Connection",
-      "startLine": 84,
-      "endLine": 122,
-      "summary": "Proved: support(P^2) is a subset of the Minkowski sum support(P) + support(P).",
+      "title": "Part III: Support-Sumset Connection",
+      "startLine": 86,
+      "endLine": 125,
+      "summary": "Proved: support(P^2) is a subset of the Minkowski sum support(P) + support(P) (support_sq_subset_sumset), hence termCount(P^2) ≤ |A + A| (termCount_sq_le_sumset).",
       "mathContext": "$\\text{supp}(P^2) \\subseteq \\text{supp}(P) + \\text{supp}(P)$ where $A + A = \\{a + b : a, b \\in A\\}$."
     },
     {
       "id": "positive-case",
-      "title": "Positive Coefficient Case",
-      "startLine": 124,
-      "endLine": 165,
-      "summary": "For nonneg-coefficient polynomials: support(P^2) equals the sumset exactly. No cancellation occurs.",
+      "title": "Part IV: Positive Coefficient Case",
+      "startLine": 126,
+      "endLine": 170,
+      "summary": "For nonneg-coefficient polynomials: support(P^2) equals the sumset exactly (support_sq_eq_sumset_of_nonneg). No cancellation occurs.",
       "mathContext": "If all $P_a \\geq 0$, then $\\text{supp}(P^2) = \\text{supp}(P) + \\text{supp}(P)$. Each sumset element has positive coefficient."
     },
     {
       "id": "sumset-bound",
-      "title": "Sumset Lower Bound",
-      "startLine": 167,
-      "endLine": 190,
-      "summary": "Statement of |A + A| >= 2|A| - 1 for nonempty finite A in N. Standard combinatorial fact, proved via a min/max chain argument.",
+      "title": "Part V: Sumset Lower Bound",
+      "startLine": 171,
+      "endLine": 225,
+      "summary": "sumset_card_lower_bound: |A + A| >= 2|A| - 1 for nonempty finite A in N. Standard combinatorial fact, proved via a min/max chain argument (the left injection a ↦ min(A)+a and right injection a ↦ a+max(A) overlap in exactly {min+max}).",
       "mathContext": "$|A + A| \\geq 2|A| - 1$ by the min/max chain argument: the $2|A| - 1$ elements $\\min + a_i$ and $a_j + \\max$ are all distinct."
     },
     {
       "id": "combined-result",
-      "title": "Combined Positive-Coefficient Result",
-      "startLine": 192,
-      "endLine": 216,
-      "summary": "For nonneg-coefficient polynomials with k terms, termCount(P^2) >= 2k - 1.",
+      "title": "Part VI: Combined Positive-Coefficient Result",
+      "startLine": 226,
+      "endLine": 251,
+      "summary": "termCount_sq_nonneg_lower: for nonneg-coefficient polynomials with k ≥ 1 terms, termCount(P^2) >= 2k - 1, chaining Part IV (support = sumset) with Part V (sumset bound).",
       "mathContext": "$\\text{termCount}(P^2) = |A + A| \\geq 2k - 1$ when all coefficients are nonneg."
     },
     {
       "id": "cancellation-barrier",
-      "title": "The Cancellation Barrier",
-      "startLine": 218,
-      "endLine": 259,
-      "summary": "Why the combinatorial approach fails for general polynomials. Upper bound termCount(P^2) <= k^2.",
-      "mathContext": "Coefficient cancellation can reduce $|\\text{supp}(P^2)|$ below $|A + A|$. Example: $P = 1 - x^2 - \\frac{1}{2}x^4$ has cancellation at degree 4."
+      "title": "Part VII: The Cancellation Barrier",
+      "startLine": 252,
+      "endLine": 295,
+      "summary": "Why the combinatorial approach fails for general polynomials: mixed-sign coefficients let convolution terms cancel, shrinking support(P^2) below |A + A| (worked example P = 1 - x² - ½x⁴). cancellation_positions_bound and termCount_sq_upper give the trivial upper bound termCount(P^2) <= k^2.",
+      "mathContext": "Coefficient cancellation can reduce $|\\text{supp}(P^2)|$ below $|A + A|$. Example: $P = 1 - x^2 - \\frac{1}{2}x^4$ cancels at degree 4: $c_0 c_4 + c_2^2 + c_4 c_0 = -\\tfrac12 + 1 - \\tfrac12 = 0$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Open-Question Status and Obstacles",
+      "startLine": 296,
+      "endLine": 331,
+      "summary": "Status: partially resolved. The sumset approach yields f_+(k) ≥ 2k - 1 for positive-coefficient polynomials, but the general case is open — a full combinatorial proof would need to bound cancellable positions as o(|A + A|). Records the known obstacles (cancellation is algebraic, not additive; Schinzel-Zannier uses multiplicative height structure) and connections to Freiman-Ruzsa / Plünnecke-Ruzsa additive combinatorics.",
+      "mathContext": "A combinatorial proof of $f(k) \\to \\infty$ would follow if the number of positions lost to cancellation is $o(|A+A|)$ as $|A| \\to \\infty$; the reverse direction (bounding cancellation from sumset size) is the harder, less-studied one."
     }
   ],
   "conclusion": {
