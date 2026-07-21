@@ -345,4 +345,39 @@ theorem two_le_minDegreeForC4 {n : ℕ} (hn : 3 ≤ n) :
   rw [not_le] at hk2
   exact hfree (hk (starGraph n) (le_trans (by omega : k ≤ 1) hstar))
 
+/-- `C₄`'s adjacency `(i+1)%4 = j ∨ (j+1)%4 = i` is a decidable predicate, so `C4`
+has computable degrees and finite membership tests — needed to `decide` whether a
+concrete graph contains a `C₄`. -/
+instance : DecidableRel C4.Adj := fun i j => by unfold C4; infer_instance
+
+/-- **A cycle beats the star: `f(5) ≥ 3`.**  The 5-cycle `C₅` (`SimpleGraph.cycleGraph 5`)
+has *every* degree equal to `2` (`cycleGraph_degree_three_le`) yet contains no `C₄`
+(a `4`-cycle needs four consecutive `±1` steps in `ℤ/5` summing to `0`, forcing two of
+the four vertices to coincide — verified by `decide`).  So no threshold `k ≤ 2` can force
+a `C₄` on `5` vertices, giving `minDegreeForC4 5 ≥ 3`.  This strictly improves the generic
+star bound `f(5) ≥ 2` and confirms `f(5) ≥ 3` (the true asymptotic is `f(n) = (1+o(1))√n`,
+so `f(5)` sits just above `√5 ≈ 2.24`). -/
+theorem three_le_minDegreeForC4_five : 3 ≤ minDegreeForC4 5 := by
+  -- `C₅` is `C₄`-free (concrete `Decidable` instances, no `classical`).
+  have hfree : ¬ containsC4 (Fin 5) (cycleGraph 5) := by
+    unfold containsC4
+    set_option maxRecDepth 100000 in decide
+  -- `C₅` has minimum degree `2` (every vertex has degree `2`).
+  have hdeg : ∀ v : Fin 5, 2 ≤ (cycleGraph 5).degree v := by decide
+  have hmin2 : 2 ≤ (cycleGraph 5).minDegree := by
+    apply le_minDegree_of_forall_le_degree
+    exact hdeg
+  -- The threshold set is nonempty (min-degree `≥ 4` forces `⊤`, hence a `C₄`).
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin 5)) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin 5) G}.Nonempty := by
+    refine ⟨4, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G (by simpa using hmin)]
+    exact completeGraph_containsC4 (by norm_num)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  -- Any threshold `k` in the set is `≥ 3`: else `C₅` (min-degree `2 ≥ k`) forces a `C₄`.
+  by_contra hk3
+  rw [not_le] at hk3
+  exact hfree (hk (cycleGraph 5) (le_trans (by omega : k ≤ 2) hmin2))
+
 end Erdos85
