@@ -124,73 +124,73 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines IsFloorPowerCoprime α n (coprimality predicate), coprimeFloorPowerSet α (the set of coprime positive n), countCoprime α N (counting function via Set.ncard), and HasNaturalDensity S d (asymptotic density via Filter.Tendsto)."
     },
     {
       "id": "main-theorem",
       "title": "Bergelson-Richter Theorem",
-      "startLine": 50,
-      "endLine": 82,
-      "summary": "Axiomatizes the main result: for non-integer α > 0, the density of coprime floor-powers is 6/π². Proves density_equals_inv_zeta2 (6/π² = 1/(π²/6)) and wraps as erdos_1149_solved."
+      "startLine": 51,
+      "endLine": 107,
+      "summary": "Basic properties of the coprime floor-power set (one_isFloorPowerCoprime, one_mem_coprimeFloorPowerSet, coprimeFloorPowerSet_nonempty, coprime_of_floor_eq_one), then axiomatizes the main result: for non-integer α > 0, the density of coprime floor-powers is 6/π². Proves density_equals_inv_zeta2 (6/π² = 1/(π²/6)) and wraps it as erdos_1149_solved."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds: 0 < 6/π² < 1",
-      "startLine": 83,
-      "endLine": 98,
+      "startLine": 108,
+      "endLine": 123,
       "summary": "Proves density_pos (from π² > 0) and density_lt_one (from π > 3 ⟹ π² > 9 > 6 via nlinarith)."
     },
     {
       "id": "integer-case",
       "title": "Integer Exponent Exclusion",
-      "startLine": 99,
-      "endLine": 111,
+      "startLine": 124,
+      "endLine": 135,
       "summary": "Proves integer_alpha_trivial: for positive integer k and n > 1, gcd(n, n^k) ≠ 1, since n | n^k by dvd_pow_self. Justifies the non-integer hypothesis."
     },
     {
       "id": "coprime-probability",
       "title": "Classical Coprime Probability",
-      "startLine": 112,
-      "endLine": 132,
-      "summary": "Proves random_coprime_density: the density of coprime pairs in {1,...,N}² is 6/π² = 1/ζ(2), via Set.ncard/Finset.card bridge and BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius+Tannery)."
-    },
-    {
-      "id": "verification",
-      "title": "Computational Verification and Summary",
-      "startLine": 133,
-      "endLine": 168,
-      "summary": "Computational check for α = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, ⌊√n⌋) = 1 (ratio 0.6, close to 6/π² ≈ 0.608). Extended summary combining all results."
+      "startLine": 136,
+      "endLine": 182,
+      "summary": "Restates the density as density_mem_Ioo (6/π² ∈ (0,1)) and bergelson_richter_density (via HasNaturalDensity), then proves random_coprime_density: the density of coprime pairs in {1,...,N}² is 6/π² = 1/ζ(2), via a Set.ncard/Finset.card bridge and BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius+Tannery)."
     },
     {
       "id": "coprime-pair-infra",
       "title": "Coprime Pair Infrastructure",
-      "startLine": 168,
-      "endLine": 182,
+      "startLine": 183,
+      "endLine": 197,
       "summary": "Defines `countCoprimePairs N` as a decidable/computable count of coprime pairs in $\\{1,\\ldots,N\\}^2$ via `Finset.filter`. Proves `coprime_pair_symm` ($\\gcd(a,b) = 1 \\Leftrightarrow \\gcd(b,a) = 1$) and `countCoprimePairs_one = 1$ by `native_decide`.",
       "mathContext": "The computable counting function $C(N) = |\\{(a,b) \\in [1,N]^2 : \\gcd(a,b) = 1\\}|$ serves as the numerator for the coprime pair density $C(N)/N^2 \\to 6/\\pi^2$. The `Finset` formulation enables `native_decide` evaluation at small values."
     },
     {
+      "id": "verification",
+      "title": "Computational Verification and Summary",
+      "startLine": 198,
+      "endLine": 231,
+      "summary": "Computational check for α = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, ⌊√n⌋) = 1 (ratio 0.6, close to 6/π² ≈ 0.608). Extended summary combining all results."
+    },
+    {
       "id": "moebius-infrastructure",
       "title": "Möbius Inversion Infrastructure",
-      "startLine": 218,
-      "endLine": 266,
+      "startLine": 232,
+      "endLine": 281,
       "summary": "Proves `moebius_sum_divisors_eq`: $\\sum_{d \\mid n} \\mu(d) = [n = 1]$ (Möbius inversion principle), via the Dirichlet identity $\\mu * \\zeta = \\varepsilon$ in `ArithmeticFunction \\mathbb{Z}$. Uses `Finset.sum_nbij` for the divisor-antidiagonal bijection.",
       "mathContext": "The identity $\\sum_{d \\mid n} \\mu(d) = \\begin{cases} 1 & n = 1 \\\\ 0 & n > 1 \\end{cases}$ is the key tool for detecting coprimality: $\\sum_{d \\mid \\gcd(a,b)} \\mu(d) = [\\gcd(a,b) = 1]$. In Lean, this is proved via the Dirichlet convolution algebra: $\\mu * \\zeta = \\varepsilon$ (the identity function), where $\\varepsilon(n) = [n=1]$."
     },
     {
       "id": "counting-lemmas",
       "title": "Counting Lemmas: Multiples and Common Factors",
-      "startLine": 268,
-      "endLine": 312,
+      "startLine": 282,
+      "endLine": 327,
       "summary": "Proves `card_multiples`: $|\\{a \\in [1,N] : d \\mid a\\}| = \\lfloor N/d \\rfloor$ via an explicit bijection $a \\mapsto a/d - 1$. Proves `pairs_with_common_factor`: $|\\{(a,b) \\in [1,N]^2 : p \\mid \\gcd(a,b)\\}| = \\lfloor N/p \\rfloor^2$ by factoring the product Finset.",
       "mathContext": "These are the combinatorial building blocks for the coprime counting formula $C(N) = \\sum_{d=1}^{N} \\mu(d) \\lfloor N/d \\rfloor^2$, obtained by Möbius inversion. The asymptotic analysis $C(N)/N^2 \\to \\sum_{d=1}^{\\infty} \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$ then proves `random_coprime_density`."
     },
     {
       "id": "zeta-identity",
       "title": "Zeta Function Identity",
-      "startLine": 314,
-      "endLine": 320,
+      "startLine": 328,
+      "endLine": 335,
       "summary": "Proves `six_div_pi_sq_eq_inv_zeta_two`: $6/\\pi^2 = (\\pi^2/6)^{-1}$ by `inv_div`, connecting the coprime density to the inverse of the Basel sum $\\zeta(2) = \\pi^2/6$. Closes the `Erdos1149` namespace.",
       "mathContext": "The identity $6/\\pi^2 = 1/\\zeta(2)$ is the link between coprime density and the Riemann zeta function: $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2$, where the Euler product encodes the independence of divisibility by distinct primes."
     }
