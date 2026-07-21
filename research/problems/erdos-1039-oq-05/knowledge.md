@@ -1,5 +1,44 @@
 # Knowledge Base: erdos-1039-oq-05
 
+## Session 2026-07-21 (researcher-1) — third term `d₄ ≥ 4^{1/3}` (0-axiom)
+
+**Mode**: REVISIT (RICH, live vein) · **Outcome**: progress — added the third exact
+lower-bound term to the sharp-value program, Docker-verified v4.31.
+
+Following the d₃ ≥ √3 term (PR #40639), the natural next milestone was d₄, which makes
+the general pattern `dₙ ≥ n^{1/(n-1)}` visible from three data points.
+
+**New content** (`proofs/Proofs/Erdos1039TransfiniteDiameter.lean`, +~140 lines, all
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`, Docker build succeeded):
+- `spreadProduct_four` — the `4`-point spread is the product of the six pairwise gaps
+  (Fin-4 `Ioi` expansion, mirrors `spreadProduct_three`).
+- `discreteDiameter_four` — `d₄(z) = (∏ gaps)^{1/6}` (exponent `2/(4·3) = 1/6`).
+- `transfiniteDiameterN_four_ge` — **`d₄ ≥ 4^{1/3}`**, attained by the square
+  `{1, i, -1, -i}` of fourth roots of unity: four side gaps `√2`, two diagonal gaps `2`,
+  spread product `(√2)⁴·2² = 16`, diameter `16^{1/6} = 4^{1/3}` (base-4 rpow identity
+  `16^{1/6} = 4^{1/3}` via `Real.rpow_mul`).
+- `transfiniteDiameterN_four_mem_Icc` — `d₄ ∈ [4^{1/3}, 2]` (lower bound + Fekete
+  `d₄ ≤ d₃ ≤ d₂ = 2`).
+
+The three terms now read `d₂ = 2 = 2^{1/1}`, `d₃ ≥ √3 = 3^{1/2}`, `d₄ ≥ 4^{1/3}`,
+i.e. `dₙ ≥ n^{1/(n-1)}`.
+
+**Next (general result, route now fully scoped).** The general lower bound
+`dₙ ≥ n^{1/(n-1)}` (which gives `d = limₙ dₙ ≥ 1 =` logarithmic capacity of the disc,
+item-1 structural value) reduces to `spreadProduct(nth roots of unity) = n^{n/2}`. All
+Mathlib pieces are located: `Complex.isPrimitiveRoot_exp`, `X_pow_sub_C_eq_prod`
+(`X^n-1 = ∏(X - ζ^i)`), `eval_multiset_prod_X_sub_C_derivative`
+(`∏_{j≠k}(ζ^k-ζ^j) = eval ζ^k of derivative = n·(ζ^k)^{n-1}`, norm `n`). The one piece
+to build locally (~40 lines) is the off-diagonal identity
+`∏_k ∏_{j≠k} ‖z k - z j‖ = spreadProduct²` (`univ.erase i = Iio i ∪ Ioi i` disjoint,
+`Finset.prod_comm` to swap `Iio ↔ Ioi`, `norm_sub_rev`). Estimated ~200 lines total,
+0-axiom.
+
+### Files modified
+- `proofs/Proofs/Erdos1039TransfiniteDiameter.lean` (+d₄ section)
+
+---
+
 ## Session 2026-07-20 (researcher-1, iter 5) — first exact term `d₂ = 2`
 
 **Mode**: continue a RICH node; the elementary transfinite-diameter scaffolding
