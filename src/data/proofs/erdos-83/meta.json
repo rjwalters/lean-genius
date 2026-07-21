@@ -100,84 +100,92 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "summary": "Module docstring stating Erdős #83 (Complete Intersection Theorem): for a family F of 2n-subsets of [4n] with |A ∩ B| ≥ 2 for all A, B ∈ F, |F| ≤ ½(C(4n,2n) − C(2n,n)²). Notes the problem is SOLVED (Ahlswede–Khachatrian 1997, $500 Erdős prize), the tight extremal 'majority family' (2n-subsets with ≥ n+1 core elements), and the 'pushing–pulling' shifting technique. Imports Finset/Choose basics plus Mathlib's SetFamily.Intersecting and KruskalKatona; opens Finset Nat; namespace Erdos83.",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "Goal: max size of a 2-intersecting 2n-uniform family on [4n] is $\\tfrac12(\\binom{4n}{2n}-\\binom{2n}{n}^2)$ (Ahlswede–Khachatrian 1997)."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)",
-      "startLine": 40,
-      "endLine": 70,
-      "mathContext": "Mathematical content: groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)"
+      "title": "Part I: Basic Definitions",
+      "summary": "groundSet [m] as Fin m, isKUniform (every member has k elements), isTIntersecting (every pair meets in ≥ t elements), isIntersecting (the classical t=1 EKR specialization).",
+      "startLine": 43,
+      "endLine": 73,
+      "mathContext": "$\\text{isTIntersecting}\\,F\\,t := \\forall A,B\\in F,\\ |A\\cap B|\\geq t$; $\\text{isIntersecting}=\\text{isTIntersecting}(\\cdot,1)$."
     },
     {
       "id": "ekr-background",
-      "title": "Erdős-Ko-Rado Background",
-      "summary": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)",
-      "startLine": 71,
-      "endLine": 97,
-      "mathContext": "Verified: erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)"
+      "title": "Part II: The Erdős-Ko-Rado Theorem (Background)",
+      "summary": "The classical t=1 theory, now FULLY PROVED from Mathlib (both formerly axioms): erdos_ko_rado_bound derives |F| ≤ C(n−1,k−1) for k-uniform intersecting families (n ≥ 2k) via `Finset.erdos_ko_rado` (translating the local predicates to `Set.Intersecting`/`Set.Sized`); ekrStarFamily is the star of all k-sets through a fixed point; ekr_achieved proves the star attains C(n−1,k−1) via the bijection T ↦ insert x T with `card_powersetCard`/`card_erase_of_mem`. Axiom-free.",
+      "startLine": 74,
+      "endLine": 152,
+      "mathContext": "EKR: k-uniform intersecting family on [n] ($n\\geq2k$) has $|F|\\leq\\binom{n-1}{k-1}$, tight at the star (both machine-checked from Mathlib)."
     },
     {
       "id": "problem-setup",
-      "title": "The t-Intersecting Problem",
-      "summary": "erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)",
-      "startLine": 98,
-      "endLine": 114,
-      "mathContext": "Mathematical content: erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)"
+      "title": "Part III: The t-Intersecting Problem",
+      "summary": "Specializes to Erdős #83's parameters: erdos83Params n = (4n, 2n, 2) and isValidErdos83Family (2n-uniform ∧ 2-intersecting families of subsets of [4n]).",
+      "startLine": 153,
+      "endLine": 169,
+      "mathContext": "$(m,k,t)=(4n,2n,2)$; valid family = 2n-uniform and 2-intersecting on $[4n]$."
     },
     {
       "id": "conjectured-bound",
-      "title": "The Conjectured Bound",
-      "summary": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)",
-      "startLine": 115,
-      "endLine": 132,
-      "mathContext": "Bound: erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)"
+      "title": "Part IV: The Conjectured Bound",
+      "summary": "erdos83Bound n = ½(C(4n,2n) − C(2n,n)²) and erdos83Question, the formal statement that every valid family has card ≤ erdos83Bound n.",
+      "startLine": 170,
+      "endLine": 188,
+      "mathContext": "$\\text{erdos83Bound}(n)=\\tfrac12(\\binom{4n}{2n}-\\binom{2n}{n}^2)$."
     },
     {
       "id": "extremal-construction",
-      "title": "Extremal Construction",
-      "summary": "starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)",
-      "startLine": 134,
-      "endLine": 160,
-      "mathContext": "Axiomatized: starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)"
+      "title": "Part V: The Extremal Construction",
+      "summary": "The majority (star-like) family. erdos83Core (the fixed 2n-element core [0,2n) ⊆ [4n]) with erdos83Core_card (= 2n, PROVED via the order embedding Fin 2n ↪ Fin 4n); starLikeFamily = all 2n-subsets containing ≥ n+1 core elements. starLikeFamily_valid is PROVED axiom-free: any two majority sets meet in ≥ 2 points by pigeonhole ((n+1)+(n+1)−2n = 2 on the core, via inclusion–exclusion). Only starLikeFamily_achieves (the family attains the bound) remains an AXIOM.",
+      "startLine": 189,
+      "endLine": 276,
+      "mathContext": "Majority family: $\\{S:|S|=2n,\\ |S\\cap\\text{core}|\\geq n+1\\}$; 2-intersecting proved by pigeonhole; tightness (`starLikeFamily_achieves`) is an axiom."
     },
     {
       "id": "complete-intersection",
-      "title": "Complete Intersection Theorem",
-      "summary": "criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)",
-      "startLine": 161,
-      "endLine": 194,
-      "mathContext": "Verified: criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)"
+      "title": "Part VI: The Complete Intersection Theorem",
+      "summary": "The general Ahlswede–Khachatrian framework: criticalRatio and akFamily are placeholder DEFINITIONS (both `sorry`); ahlswede_khachatrian_theorem (the landmark 1997 result — max t-intersecting k-uniform family on [m] is A(r) for the critical r, using 'pushing–pulling') is stated as an AXIOM.",
+      "startLine": 277,
+      "endLine": 310,
+      "mathContext": "AK 1997: optimal family = A(r), all k-subsets with ≥ t+r of a fixed (t+2r)-set, r the critical ratio; stated as an axiom (criticalRatio/akFamily are def-sorries)."
     },
     {
       "id": "resolution",
-      "title": "Resolution of Erdős #83",
-      "summary": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem",
-      "startLine": 195,
-      "endLine": 221,
-      "mathContext": "Verified: erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem"
+      "title": "Part VII: Resolution of Erdős #83",
+      "summary": "erdos83_from_ak (an AXIOM: the AK family at (4n,2n,2) has size erdos83Bound n) and erdos83_answer, which PROVES erdos83Question by instantiating the AK axiom at (m,k,t)=(4n,2n,2) and rewriting with erdos83_from_ak.",
+      "startLine": 311,
+      "endLine": 337,
+      "mathContext": "erdos83_answer = AK theorem @ (4n,2n,2) rewritten via erdos83_from_ak; the resolution is conditional on those two axioms."
     },
     {
       "id": "bound-computation",
-      "title": "Bound Computation",
-      "summary": "Small cases (n=1: bound 1, n=2: bound 17) and asymptotic growth (≈ ½C(4n,2n) for large n)",
-      "startLine": 222,
-      "endLine": 244,
-      "mathContext": "Bound: Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)"
+      "title": "Part VIII: Bound Computation",
+      "summary": "Small cases erdos83_bound_n1 (bound 1: ½(6−4)) and erdos83_bound_n2 (bound 17: ½(70−36)) by native_decide, and erdos83_bound_asymptotic (an AXIOM: bound ≳ ½C(4n,2n) − C(2n,n) for n ≥ 10, from C(2n,n) ~ 4ⁿ/√(πn)).",
+      "startLine": 338,
+      "endLine": 361,
+      "mathContext": "$n{=}1\\!:\\tfrac12(6-4)=1$; $n{=}2\\!:\\tfrac12(70-36)=17$ (native_decide). Asymptotic $\\text{bound}\\approx\\tfrac12\\binom{4n}{2n}$ stated as axiom."
     },
     {
       "id": "implications",
-      "title": "Implications and Generalizations",
-      "summary": "Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions",
-      "startLine": 246,
-      "endLine": 268,
-      "mathContext": "Mathematical content: Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions"
+      "title": "Part IX: Implications and Generalizations",
+      "summary": "Doc-comment discussion (no declarations): discrete phase transitions in the optimal family as (m,k,t) cross thresholds, the constant-weight binary code correspondence, probabilistic intersection distributions, and multipartite extensions of the Complete Intersection Theorem.",
+      "startLine": 362,
+      "endLine": 391,
+      "mathContext": "t-intersecting k-uniform families ↔ constant-weight codes (length m, weight k, agreement t); extremal structure jumps discontinuously at critical r."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n ≥ 1)",
-      "startLine": 270,
-      "endLine": 307,
-      "mathContext": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n $\\geq$ 1)"
+      "title": "Part X: Summary",
+      "summary": "erdos_83_summary packages both directions (every valid family ≤ erdos83Bound n, via erdos83_answer, AND the majority family attains it, via starLikeFamily_achieves), and erdos_83 is the headline theorem that erdos83Question holds for all n ≥ 1 — both conditional on the file's 4 axioms.",
+      "startLine": 392,
+      "endLine": 422,
+      "mathContext": "erdos_83_summary = (upper bound) ∧ (tightness); erdos_83 : erdos83Question n for n ≥ 1 (modulo the AK / achieves axioms)."
     }
   ],
   "conclusion": {
