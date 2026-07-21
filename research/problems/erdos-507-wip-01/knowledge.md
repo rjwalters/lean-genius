@@ -7,6 +7,60 @@ Heilbronn's triangle problem, **OPEN**: the exponent `β` with
 (Komlós–Pintz–Szemerédi, Cohen–Pohoata–Zakharov) are untouched; this file builds
 the elementary geometry of `triangleArea` and `minTriangleArea`/`heilbronn`.
 
+## Session 2026-07-20 (researcher-1) — `heilbronn` monotonicity + config existence
+
+**Mode**: continue a RICH node (18 declarations already on main).
+**Outcome**: progress — 5 new declarations, VERIFIED axiom-free
+(`[propext, Classical.choice, Quot.sound]`, 0 sorry / 0 axiom / no
+native_decide). Host-verified without Docker (parent is Mathlib-only):
+`lake exe cache get`, fresh-built `Erdos507Problem.olean`, `lake env lean` on the
+child, `#print axioms` on all four public results.
+
+### What I added
+- `exists_unitDisk_config (n) : ∃ P, P.card = n ∧ IsInUnitDisk P` — a config of
+  *every* cardinality exists in the disk, via the equally spaced chord points
+  `(k/n, 0)`, `k = 0..n−1` (`(Finset.range n).image`, injective for `n ≥ 1`,
+  membership `(k/n)² ≤ 1` since `0 ≤ k/n < 1`). Makes the `heilbronn` defining
+  set nonempty.
+- `heilbronn_defining_bddAbove (n) (3 ≤ n)` (private) — the `sSup` defining set
+  is bounded above by `3` (the boundedness half of `heilbronn_le_three`, isolated
+  for reuse).
+- `heilbronn_nonneg (n) (3 ≤ n) : 0 ≤ heilbronn n` — `α = 0` is admissible (all
+  areas `≥ 0`) and a config exists, so `0 ∈` the set; `le_csSup`.
+- `heilbronn_succ_le (n) (3 ≤ n) : heilbronn (n+1) ≤ heilbronn n` — every
+  `(n+1)`-witness restricts (delete one point via `Finset.erase`) to an
+  `n`-witness with the same bound, so the `(n+1)`-set `⊆` the `n`-set;
+  `csSup_le_csSup`.
+- `heilbronn_antitone (3 ≤ m ≤ n) : heilbronn n ≤ heilbronn m` — full
+  antitonicity on `{n ≥ 3}` by `Nat.le_induction` on `heilbronn_succ_le`.
+
+### Key findings / reusable Lean recipe
+- **`csSup_le_csSup (BddAbove t) (s.Nonempty) (s ⊆ t) : sSup s ≤ sSup t`** is the
+  right tool for monotone `sSup`s of a *shrinking* defining set. The
+  easy-to-miss side condition is `s.Nonempty` on the **smaller** (here `n+1`)
+  set — supplied by `exists_unitDisk_config` + the always-admissible bound `0`.
+- **The `n ≥ 3` hypothesis is forced by the junk value, not laziness.** For
+  `n < 3` no distinct triple exists, the `∀`-bound condition is vacuous, the
+  defining set is all of `ℝ` (unbounded above) and `heilbronn n` is the
+  `sSup`-junk `0`. Since `heilbronn 3 > 0` (a genuine triangle has positive
+  area) but `heilbronn 2 = 0`, monotonicity is **false** across the `2→3`
+  boundary — state it from `3` onward.
+- **Binder-annotation pitfall.** `fun k => ((k : ℝ)/n, 0)` inside a
+  `Finset.range n` image: the ascription `(k : ℝ)` silently retypes the binder
+  as `ℝ`, so `Finset.range n : Finset ℕ` no longer matches. Annotate the binder
+  `fun k : ℕ => ((k : ℝ)/n, 0)` and cast in the body.
+- **Dot notation fails on a `def`-Prop.** `IsInUnitDisk P` unfolds to
+  `∀ p ∈ P, …` (a Pi type), so `hdisk.subset` resolves to `Function.subset`
+  (nonexistent). Call the namespaced lemma directly: `IsInUnitDisk.subset hdisk …`.
+
+### Next steps
+- Sandwich corollary `0 ≤ heilbronn n ≤ 3` (`heilbronn_nonneg` +
+  `heilbronn_le_three`).
+- Concrete `heilbronn 3` lower witness (largest inscribed equilateral triangle),
+  separating it from the junk `heilbronn 2 = 0`.
+- The deep `α(n)` exponent bounds (KPS lower, CPZ upper) remain open — not
+  session-sized; only `7/6 ≤ β ≤ 2` is known.
+
 ## Session 2026-07-20 (researcher-1) — `minTriangleArea` + `heilbronn` bound
 
 **Mode**: continue a MODERATE node (14 lemmas already on main via #39642).
