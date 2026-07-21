@@ -102,75 +102,106 @@
   ],
   "sections": [
     {
-      "id": "imports-docstring",
-      "title": "Imports and Module Documentation",
+      "id": "overview",
+      "title": "Imports & Module Documentation",
       "startLine": 1,
-      "endLine": 53,
-      "summary": "Imports Gelfand-Mazur, complex finrank, and normed field infrastructure. Docstring explains the field vs. non-commutative split, the planned NSquareIdentity reduction, and lists the verified Frobenius Steps 1–2 plus the Step 3 preparation (anticommutator_real_affine)."
+      "endLine": 56,
+      "summary": "Module docstring for the 'only-if' half of Hurwitz's theorem: a normed real division algebra has dimension in {1,2,4,8}. States the strategy (Gelfand–Mazur for the field case, a Frobenius-style argument for division rings), the relation to HurwitzTheorem.lean, and the list of key results — including that hurwitz_only_if_ring carries the one remaining sorry (the strictly non-commutative global structure step)."
     },
     {
-      "id": "gelfand-mazur-lemma",
-      "title": "Gelfand-Mazur: finrank 1 or 2 for Normed Fields",
-      "startLine": 64,
-      "endLine": 77,
-      "summary": "finrank_normed_field_eq_one_or_two: uses NormedAlgebra.Real.nonempty_algEquiv_or to get F ≅ ℝ (finrank 1) or F ≅ ℂ (finrank 2), then LinearEquiv.finrank_eq + CommSemiring.finrank_self/Complex.finrank_real_complex",
-      "mathContext": "Gelfand-Mazur: every normed ℝ-algebra that is also a field is isomorphic to ℝ or ℂ. Key Mathlib lemma: `NormedAlgebra.Real.nonempty_algEquiv_or`."
-    },
-    {
-      "id": "admissible-def",
-      "title": "Admissible Dimensions Definition",
-      "startLine": 59,
-      "endLine": 62,
-      "summary": "Defines admissibleDimensions := {1, 2, 4, 8} as a Set ℕ — the four dimensions permitted by Hurwitz's theorem.",
-      "mathContext": "The four values correspond to ℝ (dim 1), ℂ (dim 2), ℍ (dim 4), 𝕆 (dim 8) via the Cayley-Dickson construction."
+      "id": "admissible-dims",
+      "title": "Admissible Dimensions",
+      "startLine": 57,
+      "endLine": 65,
+      "summary": "Opens the HurwitzOnlyIf namespace and defines admissibleDimensions = {1, 2, 4, 8}, the target set of possible real dimensions (ℝ, ℂ, ℍ, 𝕆)."
     },
     {
       "id": "field-case",
-      "title": "Commutative Case: Proved via Gelfand-Mazur",
-      "startLine": 64,
-      "endLine": 86,
-      "summary": "finrank_normed_field_eq_one_or_two and hurwitz_field_case: normed fields over ℝ have finrank 1 or 2, both in {1,2,4,8}. Both proved with 0 sorries. No finite-dimensionality assumption needed — Gelfand-Mazur implies it.",
-      "mathContext": "Uses NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand-Mazur): F ≅ ℝ or F ≅ ℂ. Then LinearEquiv.finrank_eq + CommSemiring.finrank_self / Complex.finrank_real_complex give finrank = 1 or 2."
+      "title": "The Field (Commutative) Case via Gelfand–Mazur",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "finrank_normed_field_eq_one_or_two: a normed field that is an ℝ-algebra has ℝ-dimension 1 or 2 (Gelfand–Mazur — it is ℝ or ℂ), and hurwitz_field_case packages this as membership in admissibleDimensions.",
+      "mathContext": "Gelfand–Mazur: a normed division algebra over ℝ that is a field is either ℝ or ℂ, so its dimension is 1 or 2."
     },
     {
       "id": "frobenius-step1",
       "title": "Frobenius Step 1: Quadratic Minimal Polynomials",
-      "startLine": 88,
-      "endLine": 143,
-      "summary": "minpoly_natDegree_le_two and exists_quadratic (0 sorries): every element of a finite-dim real normed division ring has minimal polynomial of degree ≤ 2, and hence satisfies an explicit real quadratic a²=p•a+q•1. This is the 'each element generates ℝ or ℂ' heart of Frobenius' theorem.",
-      "mathContext": "minpoly is irreducible over the division-ring domain (element is integral by Module.Finite); irreducible real polynomials have degree ≤ 2 (Irreducible.natDegree_le_two). The quadratic is extracted via aeval_eq_sum_range' over range 3 with interval_cases on the degree."
+      "startLine": 90,
+      "endLine": 146,
+      "summary": "minpoly_natDegree_le_two: every element of a normed real division algebra has a minimal polynomial of degree ≤ 2 over ℝ, and exists_quadratic extracts the quadratic relation a² = βa + γ·1 each element satisfies.",
+      "mathContext": "Since ℝ[a] is a finite-dimensional commutative division algebra it is ℝ or ℂ, so a satisfies a real quadratic — the starting point of Frobenius's argument."
     },
     {
       "id": "frobenius-step2",
-      "title": "Frobenius Step 2: Completing the Square, Real/Imaginary Dichotomy",
-      "startLine": 145,
-      "endLine": 189,
-      "summary": "exists_real_shift_sq_scalar and eq_smul_one_of_sq_eq_nonneg_smul (0 sorries): completing the square, (a-(p/2)•1)²=r•1 gives the concrete A=ℝ•1⊕Im A shift; and b²=r•1 with r≥0 forces b∈ℝ•1 (via no zero divisors: (b-√r•1)(b+√r•1)=0). Thus the genuinely imaginary elements are exactly those whose shifted square scalar is negative.",
-      "mathContext": "The difference-of-squares factorization uses that a division ring has no zero divisors (DivisionRing ⟹ NoZeroDivisors), so a nonnegative-scalar square pins the element to ±√r•1 ∈ ℝ•1. Ring/module manipulations discharged by simp normalization + the module tactic."
+      "title": "Frobenius Step 2: Completing the Square & the Real/Imaginary Dichotomy",
+      "startLine": 147,
+      "endLine": 192,
+      "summary": "exists_real_shift_sq_scalar: shifting a by a real scalar makes its square a real scalar, and eq_smul_one_of_sq_eq_nonneg_smul: if that scalar is nonnegative the element was already real — establishing the dichotomy between real and 'imaginary' elements.",
+      "mathContext": "Completing the square, $(a-\\tfrac{\\beta}{2})^2 = (\\gamma+\\tfrac{\\beta^2}{4})\\cdot 1$; a negative square marks a genuinely imaginary direction."
     },
     {
       "id": "frobenius-step3-prep",
       "title": "Frobenius Step 3 Preparation: The Anticommutator is Real-Affine",
-      "startLine": 191,
-      "endLine": 215,
-      "summary": "anticommutator_real_affine (0 sorries): for all x, y, the anticommutator x*y+y*x lies in span_ℝ{x, y, 1}. Obtained by polarising the Step-1 quadratics of x, y, and x+y: (x+y)²=x²+(xy+yx)+y² lets the linear+scalar quadratic data be read off, expressing xy+yx as (ps-px)•x+(ps-py)•y+(qs-qx-qy)•1. No commutativity assumed. This is the first algebraic constraint toward the Clifford relations; restricting to imaginary x, y (where the x, y coefficients vanish by trace-additivity) upgrades it to x*y+y*x ∈ ℝ•1.",
-      "mathContext": "Polarisation identity (x+y)²=x²+(xy+yx)+y² is discharged by noncomm_ring (associative, non-commutative); the coefficient bookkeeping across the three Step-1 quadratics is closed by linear_combination with the module normaliser."
+      "startLine": 193,
+      "endLine": 218,
+      "summary": "anticommutator_real_affine: for elements with scalar squares the anticommutator ab + ba is a real scalar, the affine identity underpinning the inner-product construction.",
+      "mathContext": "$ab+ba = (a+b)^2 - a^2 - b^2$ is a real scalar when the squares are, giving a symmetric ℝ-bilinear pairing."
     },
     {
-      "id": "frobenius-step3",
-      "title": "Frobenius Step 3: The Imaginary Subspace and its Scalar Anticommutator",
-      "startLine": 217,
-      "endLine": 277,
-      "summary": "IsImaginary (def: a²=r•1 with r≤0) names the Im A summand. eq_zero_of_smul_one_sq_nonpos and isImaginary_smul_one_iff (0 sorries) prove the directness ℝ•1 ∩ Im A = {0}: a real multiple s•1 with nonpositive square scalar is 0 (s²≥0 forces s=0 via injectivity of algebraMap ℝ A). anticommutator_scalar_of_sq_scalar (0 sorries) proves the Clifford relation: whenever x², y², (x+y)² are real scalars a•1, b•1, c•1, the anticommutator x*y+y*x = (c−a−b)•1, by polarising (x+y)²=x²+(x*y+y*x)+y².",
-      "mathContext": "Directness uses that s²≥0 and r≤0 force s²=r=0 (le_antisymm + mul_self_nonneg) with algebraMap ℝ A injective. The scalar anticommutator is pure polarisation (noncomm_ring for the associative-but-noncommutative square expansion) closed by linear_combination with the module normaliser; no division-ring hypothesis beyond the ambient algebra is used. For imaginary x, y it is exactly eᵢeⱼ+eⱼeᵢ ∈ ℝ•1 — the missing input being (x+y)²∈ℝ•1, i.e. closure of Im A under addition."
+      "id": "frobenius-step3-imsubspace",
+      "title": "Frobenius Step 3: The Imaginary Subspace & its Scalar Anticommutator",
+      "startLine": 219,
+      "endLine": 279,
+      "summary": "Defines IsImaginary (a² is a nonpositive real scalar), proves eq_zero_of_smul_one_sq_nonpos, the characterization isImaginary_smul_one_iff, and anticommutator_scalar_of_sq_scalar: anticommutators of such elements are scalar.",
+      "mathContext": "Imaginary elements are those squaring to $-\\lambda\\cdot 1$ with $\\lambda\\ge 0$; they form the orthogonal complement of ℝ·1."
+    },
+    {
+      "id": "frobenius-step3-keystone",
+      "title": "Frobenius Step 3: Keystone — Imaginary Anticommutators are Scalar",
+      "startLine": 280,
+      "endLine": 423,
+      "summary": "The keystone anticommutator_scalar_imaginary (the anticommutator of two imaginary elements is a real scalar) and isImaginary_add (closure of the imaginary set under addition), the technical crux enabling the bilinear form.",
+      "mathContext": "That $ab+ba\\in\\mathbb{R}\\cdot 1$ for imaginary $a,b$ is exactly what makes $\\mathrm{Im}\\,A$ a real inner-product space."
+    },
+    {
+      "id": "frobenius-step3-realpart",
+      "title": "Frobenius Step 3 (continued): The Real-Part Functional & the Imaginary Submodule",
+      "startLine": 424,
+      "endLine": 569,
+      "summary": "Closure lemmas (isImaginary_neg/_smul/_sub), exists_unique_real_part (unique decomposition a = re(a)·1 + imaginary), the realPartValue functional and its additivity/homogeneity, and the definitions realPart, imaginarySubmodule with its membership criterion mem_imaginarySubmodule_iff.",
+      "mathContext": "Every element splits uniquely as real part plus imaginary part; $\\mathrm{Im}\\,A$ is an ℝ-submodule complementary to ℝ·1."
+    },
+    {
+      "id": "bilinear-form",
+      "title": "The Positive-Definite Symmetric Bilinear Form on Im A",
+      "startLine": 570,
+      "endLine": 696,
+      "summary": "Builds the inner product: realMulForm, the symmetric ℝ-bilinear form imaginaryBilin with its apply/symm formulas, positive-semidefiniteness imaginaryBilin_self_nonneg, definiteness imaginaryBilin_self_eq_zero_iff, and the orthogonality-vs-anticommutation link imaginaryBilin_eq_zero_iff_anticomm.",
+      "mathContext": "$\\langle a,b\\rangle = -\\tfrac12(ab+ba)$ is a positive-definite inner product on $\\mathrm{Im}\\,A$; orthogonality ⟺ anticommutation."
+    },
+    {
+      "id": "quaternion-generation",
+      "title": "Quaternion Generation: Products of Anticommuting Imaginaries",
+      "startLine": 697,
+      "endLine": 813,
+      "summary": "mul_anticomm_left/_right, isImaginary_mul_of_anticomm (a product of two anticommuting imaginaries is imaginary), commutes_mul_of_anticomm_both, and eq_zero_of_anticomm_pair_and_product — the relations that force a quaternion sub-structure among mutually anticommuting imaginaries.",
+      "mathContext": "Anticommuting imaginary units $i,j$ with $ij$ imaginary reproduce the quaternion multiplication table $i^2=j^2=(ij)^2=-1$."
+    },
+    {
+      "id": "frobenius-cap",
+      "title": "The Metric-Level Frobenius Cap: finrank ℝ (Im A) Bookkeeping",
+      "startLine": 814,
+      "endLine": 903,
+      "summary": "finrank_eq_imaginary_add_one (dim A = dim Im A + 1), imaginary_mul_mem_imaginarySubmodule, imaginaryBilin_mul_orthogonal, and eq_zero_of_orthogonal_to_triple — the dimension bookkeeping that caps finrank ℝ (Im A) and forces the total dimension into {1,2,4}.",
+      "mathContext": "Once three mutually orthogonal imaginary units generate a quaternion copy, any fourth orthogonal imaginary vanishes, bounding $\\dim\\mathrm{Im}\\,A\\le 3$."
     },
     {
       "id": "general-case",
-      "title": "General Division Ring Case (1 sorry)",
-      "startLine": 278,
-      "endLine": 347,
-      "summary": "hurwitz_only_if_ring_comm (0 sorries) discharges the commutative subcase of the general-ring statement — a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) gives finrank ∈ {1,2} ⊆ {1,2,4,8}. hurwitz_only_if_ring then case-splits on commutativity: the commutative branch is closed by hurwitz_only_if_ring_comm, leaving 1 sorry scoped to the strictly non-commutative case (hnc : ∃ x y, x*y ≠ y*x available). The remaining Step 3 is the single global fact that Im A is closed under addition (the real-part functional A→ℝ is ℝ-linear), which upgrades the scalar anticommutator to a positive-definite bilinear form forcing finrank ℝ (Im A) ∈ {0,1,3}, hence finrank ∈ {1,2,4}.",
-      "mathContext": "The commutative subcase builds a NormedField instance from the commutativity hypothesis via letI and reuses hurwitz_field_case. The remaining sorry covers strictly non-commutative NormedDivisionRing A, NormedAlgebra ℝ A, Module.Finite ℝ A. By Frobenius, the associative case only admits dims 1, 2, 4 — the '8' entry is vacuous for NormedDivisionRing."
+      "title": "The General (Division Ring) Case (1 sorry)",
+      "startLine": 904,
+      "endLine": 973,
+      "summary": "hurwitz_only_if_ring_comm handles the commutative subcase (dimension 1 or 2 via Gelfand–Mazur), and hurwitz_only_if_ring assembles the full statement — its remaining sorry (line 971) is scoped to the strictly non-commutative global structure argument, which classically uses Clifford representation theory not yet in Mathlib. Closes the namespace.",
+      "mathContext": "The non-commutative closure (dimension 4 or 8) needs the Clifford-algebra / representation-theoretic step; it is the single sorry remaining in the file."
     }
   ],
   "leanFile": {
