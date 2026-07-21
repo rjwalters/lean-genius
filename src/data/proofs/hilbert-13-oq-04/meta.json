@@ -124,74 +124,82 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Status",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "What the file contains, the mathematical background (Hilbert's 13th, the Kolmogorov–Arnold superposition theorem, and its generalization to compact metric spaces via covering dimension), the AXIOMATIZED status disclosure, and references. Six axioms encode the deep dimension-theory inputs (the unit-cube dimension bounds, Ostrand separating maps, the generalized KA representation, Sternfeld necessity, and the 2n+1 sharpness); everything else is proved from them.",
+      "mathContext": "Hilbert's 13th problem and the Kolmogorov–Arnold superposition theorem: every continuous $f$ on $[0,1]^n$ is a finite superposition of continuous univariate functions; this file develops the dimension-theoretic generalization to compact metric spaces."
+    },
+    {
       "id": "covering-dimension",
       "title": "Covering Dimension",
-      "startLine": 62,
-      "endLine": 118,
+      "startLine": 70,
+      "endLine": 134,
       "summary": "Definition of Lebesgue covering dimension via finite open cover refinements: dim(X) <= n if every finite open cover has a refinement of order <= n+1.",
       "mathContext": "The Lebesgue covering dimension (or topological dimension) is the standard dimension notion for separable metrizable spaces. For compact metric spaces it coincides with the small and large inductive dimensions."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of Covering Dimension",
-      "startLine": 119,
-      "endLine": 141,
+      "startLine": 135,
+      "endLine": 157,
       "summary": "Monotonicity (dim <= n implies dim <= n+1) and the dimension-0 characterization (disjoint refinements).",
       "mathContext": "These are foundational properties that establish covering dimension as a well-behaved topological invariant."
     },
     {
       "id": "standard-spaces",
       "title": "Dimension of Standard Spaces",
-      "startLine": 142,
-      "endLine": 214,
+      "startLine": 158,
+      "endLine": 232,
       "summary": "The unit cube [0,1]^n has covering dimension exactly n (axiomatized upper and lower bounds).",
       "mathContext": "The fact that dim([0,1]^n) = n is a deep result requiring the Lebesgue covering theorem for the lower bound and explicit refinement constructions for the upper bound."
     },
     {
       "id": "generalized-ka",
       "title": "Generalized Kolmogorov-Arnold Representation",
-      "startLine": 215,
-      "endLine": 281,
+      "startLine": 233,
+      "endLine": 299,
       "summary": "The generalized KA representation structure for compact metric spaces and Ostrand's separating maps theorem.",
       "mathContext": "Every continuous function on a compact metrizable space of dimension n can be decomposed into 2n+1 compositions of continuous univariate functions with continuous maps from X to R."
     },
     {
       "id": "sternfeld",
       "title": "Sternfeld's Characterization",
-      "startLine": 282,
-      "endLine": 322,
+      "startLine": 300,
+      "endLine": 370,
       "summary": "Complete characterization: a compact metrizable space has the superposition property with 2n+1 maps iff its covering dimension is at most n.",
       "mathContext": "Sternfeld (1985) proved the definitive result linking dimension theory to function representation, showing that covering dimension is both necessary and sufficient for superposition."
     },
     {
       "id": "classical-recovery",
       "title": "Connection to the Classical Theorem",
-      "startLine": 323,
-      "endLine": 344,
+      "startLine": 371,
+      "endLine": 392,
       "summary": "Recovering the classical KA theorem as a special case: [0,1]^n has dimension n, so the generalized theorem applies.",
       "mathContext": "The classical Kolmogorov-Arnold theorem for [0,1]^n follows immediately from the generalized theorem and the fact that dim([0,1]^n) = n."
     },
     {
       "id": "sharpness",
       "title": "Sharpness: 2n+1 is Optimal",
-      "startLine": 345,
-      "endLine": 373,
+      "startLine": 393,
+      "endLine": 421,
       "summary": "The number 2n+1 in the KA theorem is sharp: 2n compositions do not suffice for n-dimensional spaces.",
       "mathContext": "The optimality of 2n+1 uses cohomological obstructions and properties of Menger compacta (universal n-dimensional spaces)."
     },
     {
       "id": "dimension-embeddings",
       "title": "Dimension and Embeddings",
-      "startLine": 374,
-      "endLine": 440,
+      "startLine": 422,
+      "endLine": 499,
       "summary": "Monotonicity of covering dimension under continuous maps: covDimLE_of_embedding shows a topological embedding into an n-dimensional space bounds the subspace's dimension by n.",
       "mathContext": "If $X$ embeds topologically into $Y$ with $\\dim Y \\le n$, then $\\dim X \\le n$ — covering dimension is monotone under embeddings."
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
-      "startLine": 441,
-      "endLine": 480,
+      "startLine": 500,
+      "endLine": 540,
       "summary": "Remaining open questions raised by the generalized KA theorem, stated as Lean Props: smooth_generalization_open (does a smooth/differentiable analogue hold?) and computational_complexity_open (complexity of computing the inner/outer functions).",
       "mathContext": "Open directions: smoothness of the superposition functions and the computational complexity of constructing KA representations."
     }
