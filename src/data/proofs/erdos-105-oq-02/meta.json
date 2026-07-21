@@ -78,14 +78,14 @@
       "id": "bounds",
       "title": "§3: Threshold Function Bounds",
       "startLine": 102,
-      "endLine": 130,
+      "endLine": 132,
       "summary": "Axiomatizes f(n) ≥ cn (Beck-SzTr) and f(n) ≤ n (Xichuan/Hickerson).",
       "mathContext": "The lower bound $f(n) \\geq cn$ follows from Beck-Szemerédi-Trotter: with $\\leq cn$ obstacles, a rich unblocked line always exists. The upper bound $f(n) \\leq n$ follows since $n-3$ obstacles can block all rich lines (Xichuan 2024)."
     },
     {
       "id": "main",
       "title": "§4: Main Theorem — f(n) = Θ(n)",
-      "startLine": 132,
+      "startLine": 134,
       "endLine": 168,
       "summary": "Proves thresholdFunction = Θ(idFn) and resolves openProblem_exact_threshold.",
       "mathContext": "$c_1 n \\leq f(n) \\leq n$ for all $n$, so $f = \\Theta(n)$ with constants $c_1$ (from Beck-SzTr) and $c_2 = 1$."
@@ -94,7 +94,7 @@
       "id": "constant",
       "title": "§5: The Optimal Constant",
       "startLine": 170,
-      "endLine": 215,
+      "endLine": 222,
       "summary": "Defines c* = sSup{c : cn ≤ f(n) ∀n} and proves c* ∈ (0, 1].",
       "mathContext": "The optimal constant $c^* = \\sup\\{c > 0 : cn \\leq f(n)\\}$ is well-defined (nonempty set, bounded above by 1). Its precise value is the main open problem."
     },
