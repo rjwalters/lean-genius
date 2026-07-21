@@ -52,16 +52,16 @@
       "factorialResidueSet: A_p = {k! mod p} as Finset (ZMod p)",
       "factorialResidueCount: |A_p| via Finset.card",
       "conjecturedDensity: 1 - exp(-1) ≈ 0.6321",
-      "wilson_factorial_residue: (p-1)! ≡ -1 (mod p) (axiomatized)",
-      "factorial_residues_nonzero: 0 ∉ A_p (axiomatized)",
-      "factorial_residue_upper: |A_p| ≤ p-2 for p > 5 (axiomatized)",
+      "wilson_factorial_residue: (p-1)! ≡ -1 (mod p) (PROVED — via Mathlib ZMod.wilsons_lemma)",
+      "factorial_residues_nonzero: 0 ∉ A_p for p > 2 (PROVED — p ∤ k! for k < p via Nat.Prime.dvd_factorial)",
+      "factorial_residue_upper: |A_p| ≤ p-2 for p > 5 (stated in comments; not formalized)",
       "ratio_set_full: A_p/A_p = (Z/pZ)* (PROVED — consecutive factorial ratios k!/(k-1)! = k cover all nonzero residues)",
       "factorial_residue_sqrt_lower: |A_p|² ≥ p-1 (PROVED — ratio-map surjectivity argument via Finset.image cardinality)",
-      "product_set_near_full: GSSV 2024 improved bound (axiomatized)",
-      "erdos_478_conjecture: |A_p|/p → 1-1/e (axiomatized)",
-      "random_model_heuristic: birthday-problem convergence (axiomatized)",
-      "factorial_as_multiplicative_walk: k! = k·(k-1)! recursion (axiomatized)",
-      "klurman_munsch_average: average result over primes (axiomatized)"
+      "product_set_near_full: GSSV 2024 improved bound |A_p·A_p| = (1+o(1))p (external result, referenced in comments)",
+      "erdos_478_conjecture: |A_p|/p → 1-1/e (OPEN conjecture, stated in comments; not formalized)",
+      "random_model_heuristic: birthday-problem convergence (heuristic, described in comments)",
+      "factorial_as_multiplicative_walk: (k+1)! = (k+1)·k! recursion (PROVED — via Nat.factorial_succ)",
+      "klurman_munsch_average: average result over primes (external result [Klurman–Munsch 2017], referenced in comments)"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
@@ -89,66 +89,66 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 21,
-      "endLine": 25,
-      "summary": "Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ for modular arithmetic, finite set cardinality, and proof automation.",
-      "mathContext": "Verified: Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ for modular arithmetic, finite set cardinality, and proof automation."
+      "id": "overview",
+      "title": "Overview: Factorial Residues Modulo Primes",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Header docstring, key results, and references for Erdős #478: is $|A_p| \\sim (1 - 1/e)\\,p$, where $A_p = \\{k! \\bmod p : 1 \\leq k < p\\}$? Sets up the $\\texttt{Mathlib}$ import and the $\\texttt{Erdos478}$ namespace.",
+      "mathContext": "The problem asks for the asymptotic density of factorial residues. The heuristic constant $1 - 1/e \\approx 0.6321$ arises from a random-coverage model. Known results: $|A_p| \\geq \\sqrt{p-1}$ (ratio-set identity), and $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$ [GSSV 2024]."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 29,
-      "endLine": 39,
+      "startLine": 25,
+      "endLine": 37,
       "summary": "Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$.",
       "mathContext": "Formal definition: Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$."
     },
     {
       "id": "wilson-consequences",
       "title": "Wilson's Theorem Consequences",
-      "startLine": 40,
-      "endLine": 53,
-      "summary": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$.",
-      "mathContext": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$."
+      "startLine": 38,
+      "endLine": 60,
+      "summary": "Two proved theorems: $(p-1)! \\equiv -1 \\pmod{p}$ (`wilson_factorial_residue`, from Mathlib's `ZMod.wilsons_lemma`) and $0 \\notin A_p$ for $p > 2$ (`factorial_residues_nonzero`, since $p \\nmid k!$ for $k < p$). A commented remark records the upper bound $|A_p| \\leq p - 2$ for $p > 5$. Together these place $A_p \\subseteq \\{1, \\ldots, p-1\\}$.",
+      "mathContext": "Two proved theorems: $(p-1)! \\equiv -1 \\pmod{p}$ (`wilson_factorial_residue`, from Mathlib's `ZMod.wilsons_lemma`) and $0 \\notin A_p$ for $p > 2$ (`factorial_residues_nonzero`, since $p \\nmid k!$ for $k < p$). A commented remark records the upper bound $|A_p| \\leq p - 2$ for $p > 5$. Together these place $A_p \\subseteq \\{1, \\ldots, p-1\\}$."
     },
     {
       "id": "ratio-set-identity",
       "title": "Ratio Set Identity and $\\sqrt{p}$ Bound",
-      "startLine": 54,
-      "endLine": 68,
+      "startLine": 61,
+      "endLine": 138,
       "summary": "$A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$.",
       "mathContext": "Mathematical content: $A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$."
     },
     {
       "id": "improved-lower-bound",
       "title": "GSSV 2024 Improved Bound",
-      "startLine": 69,
-      "endLine": 75,
+      "startLine": 139,
+      "endLine": 141,
       "summary": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound.",
       "mathContext": "Bound: Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
-      "startLine": 76,
-      "endLine": 84,
+      "startLine": 142,
+      "endLine": 145,
       "summary": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$.",
       "mathContext": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$."
     },
     {
       "id": "heuristic-motivation",
       "title": "Heuristic Motivation",
-      "startLine": 85,
-      "endLine": 100,
+      "startLine": 146,
+      "endLine": 161,
       "summary": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
       "mathContext": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
     {
       "id": "average-results",
       "title": "Klurman–Munsch Average Result (2017)",
-      "startLine": 101,
-      "endLine": 108,
+      "startLine": 162,
+      "endLine": 164,
       "summary": "The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$ [Klurman–Munsch 2017]. This confirms the random model prediction in an averaged sense.",
       "mathContext": "Mathematical content: The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$ [Klurman–Munsch 2017]. This confirms the random model prediction in an averaged sense."
     }
