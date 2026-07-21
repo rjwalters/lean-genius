@@ -186,10 +186,10 @@
     {
       "id": "main",
       "title": "Main Problem Statement",
-      "summary": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/log N), and the liminf positivity statement.",
+      "summary": "Properties of the primeSquares3mod4 witness and the final packaging. infinitely_many_primes_3mod4 derives the infinitude of primes p ≡ 3 (mod 4) from Mathlib's Nat.infinite_setOf_prime_and_modEq; primeSquares3mod4_infinite pushes it through the injective p ↦ p² image; primeSquares3mod4_is_good is the fully proved conjunction of infiniteness and divisibility-freedom. primeCount3mod4 defines the counting function {p prime : p ≡ 3 mod 4, p ≤ N} whose Dirichlet asymptotics (~√N/log N) drive the density claim, and Erdos12Problem finally packages all three questions (Q1 dichotomy, Q2, Q3) into a single proposition.",
       "startLine": 248,
-      "endLine": 280,
-      "mathContext": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/log N), and the liminf positivity statement."
+      "endLine": 293,
+      "mathContext": "The witness set is the squares of primes p ≡ 3 (mod 4): infinitude comes from Dirichlet (Nat.infinite_setOf_prime_and_modEq), and squaring is injective on ℕ so the image stays infinite. primeCount3mod4 counts the underlying primes, whose density x/(2 log x) yields |primeSquares3mod4 ∩ [1,N]| ~ √N/log N — matching the √N threshold of Q1. Erdos12Problem bundles the three sub-questions unproven, encoding the open status."
     }
   ],
   "conclusion": {
