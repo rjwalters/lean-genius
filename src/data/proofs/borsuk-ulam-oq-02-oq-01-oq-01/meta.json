@@ -56,34 +56,66 @@
     {
       "id": "formula",
       "title": "The Dimension Formula Definition",
-      "startLine": 34,
-      "endLine": 35,
+      "startLine": 26,
+      "endLine": 36,
       "summary": "Defines buDimFormula(n,d) = Nat.primeFactors(n).sup (fun p => buDim p d), the maximum BU dimension over all prime divisors of n.",
       "mathContext": "Uses Finset.sup on the prime factorization: the supremum over {buDim p d | p prime, p | n}. Empty for n=1 giving 0."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound (Proved)",
-      "startLine": 42,
-      "endLine": 46,
+      "startLine": 37,
+      "endLine": 47,
       "summary": "Proves buDimFormula(n,d) ≤ buDim(n,d) via Finset.sup_le + Nat.mem_primeFactors + buDim_mono.",
       "mathContext": "For each p ∈ primeFactors(n): buDim(p,d) ≤ buDim(n,d) by restriction. Finset.sup_le packages this into the formula bound."
     },
     {
-      "id": "conjecture",
-      "title": "The Open Conjecture",
-      "startLine": 60,
-      "endLine": 60,
-      "summary": "AXIOM: buDim(n,d) ≤ buDimFormula(n,d) for n ≥ 2. The hard direction: no composite group exceeds its prime factor bounds.",
+      "id": "upper-bound",
+      "title": "Upper Bound: Prime Case and the Open Conjecture",
+      "startLine": 48,
+      "endLine": 83,
+      "summary": "buDimFormula_prime (proved): for prime n the upper bound buDim(n,d) ≤ buDimFormula(n,d) is immediate. buDim_le_formula_composite (AXIOM): the composite case buDim(n,d) ≤ max_{p|n} buDim(p,d) is the open conjecture. buDim_le_formula dispatches n ≥ 2 into the proved prime case and the axiomatized composite case.",
       "mathContext": "Equivalent to: the Fadell-Husseini index of a Z/n-space is bounded by the maximum FH index over prime subgroups."
     },
     {
-      "id": "consequences",
-      "title": "Concrete Cases and Applications",
-      "startLine": 66,
-      "endLine": 136,
-      "summary": "Derives: buDim(4,d) = buDim(2,d), buDim(6,d) = max(buDim(2,d), buDim(3,d)), buDim(9,d) = buDim(3,d), buDim(4,n+1) = n, buDim(6,2n) = 2n-1.",
-      "mathContext": "Uses native_decide to compute Nat.primeFactors for concrete n, then applies the formula theorem. buDim(6,2n)=2n-1 follows because both prime factor bounds equal 2n-1."
+      "id": "formula-theorem",
+      "title": "The Formula Theorem",
+      "startLine": 84,
+      "endLine": 91,
+      "summary": "buDim_eq_formula: for n ≥ 2, buDim(n,d) = buDimFormula(n,d), combining the proved lower bound with the (partly axiomatized) upper bound into the two-sided identity.",
+      "mathContext": "$\\text{buDim}(n,d)=\\max_{p\\mid n}\\text{buDim}(p,d)$ for $n\\ge2$ — the conjectured formula, two-sided."
+    },
+    {
+      "id": "formula-at-primes",
+      "title": "Formula at Primes",
+      "startLine": 92,
+      "endLine": 111,
+      "summary": "buDimFormula_prime and buDim_prime_eq_formula: for a prime p the formula recovers buDim(p,d) directly (primeFactors p = {p}), so the conjecture holds trivially at primes — the base case of the reduction.",
+      "mathContext": "$\\text{primeFactors}(p)=\\{p\\}$, hence $\\text{buDimFormula}(p,d)=\\text{buDim}(p,d)$."
+    },
+    {
+      "id": "concrete-cases",
+      "title": "Concrete Cases",
+      "startLine": 112,
+      "endLine": 141,
+      "summary": "Discharges small composite cases via native_decide on Nat.primeFactors: buDim(4,d)=buDim(2,d), buDim(6,d)=max(buDim(2,d),buDim(3,d)), buDim(9,d)=buDim(3,d). These evaluate primeFactors 4={2}, 6={2,3}, 9={3}, then apply the formula theorem — depending on Lean.ofReduceBool.",
+      "mathContext": "$\\mathbb{Z}/4$ and $\\mathbb{Z}/2$ share BU dimension; $\\mathbb{Z}/9=\\mathbb{Z}/3^2$ collapses to $\\mathbb{Z}/3$; $\\mathbb{Z}/6$ takes the max over its prime factors $2,3$."
+    },
+    {
+      "id": "prime-powers",
+      "title": "Prime Powers (General)",
+      "startLine": 142,
+      "endLine": 168,
+      "summary": "buDimFormula_prime_pow and buDim_prime_pow_eq: the formula collapses at any prime power p^k (k ≥ 1) to the single prime p, so prime powers do not increase the BU dimension — the general form of the n=4,9 concrete collapses.",
+      "mathContext": "$\\text{primeFactors}(p^k)=\\{p\\}$ for $k\\ge1$, hence $\\text{buDim}(p^k,d)=\\text{buDim}(p,d)$."
+    },
+    {
+      "id": "specific-bu-dims",
+      "title": "Specific BU Dimensions",
+      "startLine": 169,
+      "endLine": 187,
+      "summary": "Closed-form BU dimensions: buDim(4,n+1)=n (Z/4-equivariant odd maps S^n → R^{n+1} must vanish) and buDim(6,2n)=2n-1 for n ≥ 1 (both prime-factor bounds of 6 coincide at 2n-1).",
+      "mathContext": "$\\text{buDim}(4,n+1)=n$ and $\\text{buDim}(6,2n)=2n-1$ — explicit values from the formula."
     }
   ],
   "conclusion": {
