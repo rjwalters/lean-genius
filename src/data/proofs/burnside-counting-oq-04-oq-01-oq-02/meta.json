@@ -181,7 +181,7 @@
       "description": "Extends the grandparent's per-length kernel-decide bracelet counts b(5)=8, b(6)=13 (which it imports) into an explicit closed form b(n) = (rotTerm n + reflTerm n) / (2n), and adds the fresh ground-truth counts b(3)=4 and b(4)=6 with the same generic dihedral action."
     },
     {
-      "targetId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+      "targetId": "burnside-counting-oq002",
       "relationship": "builds-on",
       "description": "Uses the sibling's rotation closed form card_rotFixed (|Fix(r i)| = 2^gcd(n, i.val)) to prove rotTerm_eq — that the rotation half of the bracelet formula is the true rotation fixed-point total — and completes its stated open question by supplying and validating the reflection half."
     },

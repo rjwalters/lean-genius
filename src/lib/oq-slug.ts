@@ -164,6 +164,57 @@ export function ancestrySlugs(slug: string): string[] {
   return chain
 }
 
+/**
+ * Minimal lineage view of an entry, as carried on a gallery listing after the
+ * #39828 backfill. `parentSlug === undefined` means "no lineage metadata"
+ * (legacy entry) — the meta-preferring walkers fall back to slug-parsing.
+ */
+export interface LineageEntry {
+  slug: string
+  parentSlug?: string | null
+}
+
+/**
+ * Meta-preferring ancestry: the chain root → … → immediate parent for `slug`,
+ * following persisted `parentSlug` pointers (issue #39828) and falling back to
+ * {@link ancestrySlugs} slug-parsing wherever lineage metadata is absent.
+ *
+ * This is the lineage source of truth AFTER the deep-chain migration re-slugs
+ * entries to the bounded form (`<root>-oqNNN`), whose slug no longer encodes
+ * ancestry — {@link ancestrySlugs} on a bounded slug yields only its root, so
+ * the breadcrumb MUST walk the meta pointers instead.
+ *
+ * `resolve` maps a slug to its {@link LineageEntry} (e.g. a lookup into the
+ * gallery listings). Pure over `resolve`; guards against pointer cycles.
+ */
+export function ancestrySlugsFromMeta(
+  slug: string,
+  resolve: (slug: string) => LineageEntry | undefined
+): string[] {
+  const start = resolve(slug)
+  // No metadata for the entry itself → pure legacy slug-parsing.
+  if (!start || start.parentSlug === undefined) return ancestrySlugs(slug)
+
+  const chain: string[] = []
+  const seen = new Set<string>([slug])
+  let parent: string | null | undefined = start.parentSlug
+
+  while (parent) {
+    if (seen.has(parent)) break // cycle guard
+    seen.add(parent)
+    chain.unshift(parent)
+    const entry = resolve(parent)
+    if (!entry || entry.parentSlug === undefined) {
+      // Ancestor lacks lineage metadata (e.g. an unmigrated shallow parent or a
+      // root): recover the rest of its ancestry by slug-parsing and stop.
+      chain.unshift(...ancestrySlugs(parent))
+      return chain
+    }
+    parent = entry.parentSlug
+  }
+  return chain
+}
+
 // ---------------------------------------------------------------------------
 // Bounded slug generation
 // ---------------------------------------------------------------------------

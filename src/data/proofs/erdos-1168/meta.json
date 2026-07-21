@@ -109,7 +109,7 @@
       "description": "Proves cf(2^ℵ₀) > ℵ₀ from Mathlib's Cardinal.lt_power_cof — König's constraint on the continuum function. This ZFC cofinality bound is closely related to the difficulty of #1168: a ZFC proof would need to control ℵ_ω^{ℵ₀} without GCH, and König's theorem provides the prototype for such cofinality arguments."
     },
     {
-      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+      "targetId": "cantor-diagonalization-oq002",
       "relationship": "context",
       "description": "Formalizes Easton's necessary conditions for the GCH spectrum: Cantor lower bounds, monotonicity, König's cofinality constraint, and the non-achievability of the least satisfying cardinal. Easton's theorem shows how freely the GCH function can vary; #1168 is precisely the kind of problem — about singular cardinal successors — where GCH-freeness matters most."
     },

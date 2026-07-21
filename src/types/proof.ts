@@ -519,6 +519,20 @@ export interface ProofListing {
   mathlibCount?: number
   sorries?: number
   annotationCount: number
+  /**
+   * Immediate parent slug of an OQ-derived entry, backfilled onto meta by the
+   * deep-chain migration (issue #39828). `null` marks a known root; `undefined`
+   * means no lineage metadata (legacy entry) — consumers fall back to parsing
+   * the slug via `src/lib/oq-slug.ts`. Preferred over slug-parsing because
+   * bounded slugs (`<root>-oqNNN`) no longer encode ancestry.
+   */
+  parentSlug?: string | null
+  /**
+   * Root-ancestor slug of an OQ-derived entry (issue #39828). When present the
+   * gallery groups off this instead of `rootSlug(slug)`. `undefined` for legacy
+   * entries — consumers fall back to slug-parsing.
+   */
+  rootSlug?: string
 }
 
 /**

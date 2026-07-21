@@ -1,0 +1,159 @@
+{
+  "id": "birthday-problem-oq002",
+  "title": "Schur-Convexity of Collision Probability: the Global Doubly-Stochastic Inequality",
+  "slug": "birthday-problem-oq002",
+  "description": "Globalizes the parent's local smoothing step into full Schur-convexity of the two-draw collision probability C(p) = ∑ pᵢ². In the Hardy–Littlewood–Pólya form of majorization, p is majorized by q iff p = Dq for a doubly stochastic D; we prove the substantive content directly: for every doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Each output coordinate is a convex combination of the qⱼ, so Jensen for x↦x² gives the per-row bound, and the column-stochasticity collapses the double sum. As a corollary the uniform distribution minimizes collision (1/d ≤ ∑ qᵢ²), recovering the parent chain's sharp lower endpoint as the bottom of the majorization order.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "extremal",
+      "schur-convexity",
+      "majorization",
+      "doubly-stochastic",
+      "jensen-inequality",
+      "collision-probability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 135,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. Fully machine-verified from Mathlib.",
+    "originalContributions": [
+      "sum_sq_mulVec_le_of_mem_doublyStochastic: the global Schur-convexity inequality ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ² for every doubly stochastic D — averaging a vector through any doubly stochastic operator can only decrease its sum of squares. Via the Hardy–Littlewood–Pólya theorem (p ≺ q ⟺ p = Dq for doubly stochastic D) this is exactly the global statement p majorized by q ⟹ ∑ pᵢ² ≤ ∑ qᵢ², which the parent left open at the local-step level. Mathlib has the doubly-stochastic matrix API but no Schur-convexity / majorization theory.",
+      "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic — the averaging operator whose output is the uniform vector.",
+      "one_div_card_le_sum_sq: 1/d ≤ ∑ᵢ qᵢ² for every probability vector, recovered as the majorization endpoint (the uniform vector (1/d,…,1/d) = Jq is majorized by every probability vector, so its collision 1/d is the minimum). This re-derives the parent chain's sharp lower bound from the global inequality."
+    ],
+    "parentSlug": "birthday-problem-oq001",
+    "rootSlug": "birthday-problem"
+  },
+  "overview": {
+    "historicalContext": "The parent chain pinned the two-draw collision probability C(p) = ∑ pᵢ² between 1/d (uniform, the minimum) and maxᵢ pᵢ (concentration, the maximum), and isolated the local 'Robin Hood' transfer — averaging two coordinates weakly decreases C — as the mechanism (BirthdayProblemOQ02OQ01OQ02OQ01.lean, smoothing_sum_sq_le). The parent's open question asked to globalize that single transfer into the full Schur-convexity statement. The classical route is Muirhead/Hardy–Littlewood–Pólya: majorization q ≻ p is equivalent to p being obtained from q by a finite chain of such transfers, equivalently to p = Dq for a doubly stochastic matrix D (Birkhoff–von Neumann). This entry proves the operator form of Schur-convexity directly in the doubly-stochastic language, which is the substantive half of the equivalence and the form most useful in applications.",
+    "problemStatement": "Prove the global Schur-convexity of the sum of squares: for every doubly stochastic matrix D over Fin d and every vector q, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Equivalently (via the HLP characterization of majorization), if p is majorized by q then ∑ pᵢ² ≤ ∑ qᵢ². Recover the uniform-minimizer endpoint 1/d ≤ ∑ qᵢ² for probability vectors as a corollary.",
+    "proofStrategy": "**Per-row Jensen.** Row i of a doubly stochastic D has nonnegative entries summing to 1 (sum_row_of_mem_doublyStochastic, nonneg_of_mem_doublyStochastic), so (Dq)ᵢ = ∑ⱼ Dᵢⱼ qⱼ is a genuine convex combination of the qⱼ. Since x ↦ x² is convex on all of ℝ (Even.convexOn_pow), Jensen's inequality (ConvexOn.map_sum_le) gives (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ².\n\n**Column collapse.** Summing the per-row bound over i and swapping the order of summation (Finset.sum_comm) yields ∑ᵢ (Dq)ᵢ² ≤ ∑ⱼ (∑ᵢ Dᵢⱼ) qⱼ². The columns of D also sum to 1 (sum_col_of_mem_doublyStochastic), so each inner factor is 1 and the bound collapses to ∑ⱼ qⱼ².\n\n**Uniform endpoint.** The all-1/d matrix J is doubly stochastic (rows and columns each sum to d·(1/d) = 1). For a probability vector q, Jq is the constant uniform vector 1/d, so ∑ᵢ (Jq)ᵢ² = d·(1/d)² = 1/d. Applying the global inequality to J gives 1/d ≤ ∑ qᵢ², the parent's lower bound as a special case.",
+    "keyInsights": [
+      "Schur-convexity of ∑ xᵢ² is, in operator form, a one-line Jensen argument: every doubly stochastic operator is a row-wise convex combination, and squaring is convex, so applying it can only decrease the sum of squares. No transfer-chain combinatorics are needed once the doubly-stochastic formulation is adopted.",
+      "The two stochasticity constraints play distinct roles: the *row* sums = 1 make each output a convex combination (the Jensen step), while the *column* sums = 1 make the doubled sum collapse back to ∑ qⱼ² (the global step).",
+      "The uniform-minimizer endpoint is not a separate computation but a single instance of the global inequality at the all-1/d matrix, exhibiting the uniform vector as the unique HLP-bottom of the majorization order on the simplex.",
+      "Mathlib supplies the doubly-stochastic matrix API (entrywise nonnegativity, row/column sums) but no majorization or Schur-convexity layer; this monotonicity-under-averaging result is the missing global statement the parent's open question requested.",
+      "Because x ↦ x² is *strictly* convex, the Jensen step is an equality only when each row of D is a degenerate convex combination — a 0/1 row selecting a single coordinate — so the sum of squares is preserved exactly when D acts as a permutation on the support of q. This is why permutation matrices are the only extreme points of the Birkhoff polytope that leave collision probability unchanged, and it is the seed of the equality-case open question below."
+    ],
+    "prerequisites": [
+      "doublyStochastic and its API: nonneg_of_mem_doublyStochastic, sum_row_of_mem_doublyStochastic, sum_col_of_mem_doublyStochastic, mem_doublyStochastic_iff_sum",
+      "Even.convexOn_pow: x ↦ xⁿ is convex on ℝ for even n (here n = 2)",
+      "ConvexOn.map_sum_le: Jensen's inequality in finite-sum form",
+      "Finset.sum_comm: swapping the order of a double finite sum",
+      "Matrix.mulVec and dotProduct: (Dq)ᵢ = ∑ⱼ Dᵢⱼ qⱼ",
+      "Birthday problem OQ-02-OQ-01-OQ-02-OQ-01 (the parent: the local smoothing transfer and its Schur-convexity open question)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports Mathlib and carries the module docstring. It frames the entry as the globalization of the parent's local smoothing step (smoothing_sum_sq_le) into the full Schur-convexity of the collision probability, states the two exported results (the doubly-stochastic operator inequality and the recovered uniform-minimizer corollary), and records the 'Why This Is Not the Parent' scoping note: the parent proves a two-coordinate transfer, this file proves the operator inequality for the whole Birkhoff polytope at once.",
+      "mathContext": "Collision probability $C(p) = \\sum_i p_i^2$; by the Hardy–Littlewood–Pólya theorem $p \\prec q$ (p majorized by q) $\\iff p = Dq$ for some doubly stochastic $D$ (Birkhoff–von Neumann)."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace, Notation and the Global-Inequality Heading",
+      "startLine": 56,
+      "endLine": 62,
+      "summary": "Opens the Finset and Matrix namespaces (bringing mulVec/dotProduct and the doublyStochastic API into scope with unqualified names), declares the BirthdaySchurConvexity namespace, and fixes the ambient dimension variable d : ℕ shared by every theorem. The section-level docstring announces the doubly-stochastic / HLP form of the global Schur-convexity inequality that follows.",
+      "mathContext": "Ambient setup over $\\mathrm{Fin}\\,d$: matrices $D : \\mathrm{Fin}\\,d \\to \\mathrm{Fin}\\,d \\to \\mathbb{R}$, vectors $q : \\mathrm{Fin}\\,d \\to \\mathbb{R}$, and $(D \\ast_v q)_i = \\sum_j D_{ij} q_j$ via Matrix.mulVec / dotProduct."
+    },
+    {
+      "id": "global-inequality",
+      "title": "The Global Schur-Convexity Inequality",
+      "startLine": 63,
+      "endLine": 94,
+      "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². The single analytic input is Even.convexOn_pow certifying x² is convex; per-row Jensen (ConvexOn.map_sum_le with row sums = 1) gives (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ², then a Finset.sum_comm swap and the column-sum collapse (sum_col_of_mem_doublyStochastic) return ∑ⱼ qⱼ².",
+      "mathContext": "$\\sum_i (Dq)_i^2 \\le \\sum_i q_i^2$ for doubly stochastic $D$: per-row Jensen $(Dq)_i^2 = \\bigl(\\sum_j D_{ij} q_j\\bigr)^2 \\le \\sum_j D_{ij} q_j^2$, then column-stochasticity $\\sum_i D_{ij} = 1$ collapses the double sum."
+    },
+    {
+      "id": "uniform-doubly-stochastic",
+      "title": "The All-1/d Averaging Matrix Is Doubly Stochastic",
+      "startLine": 96,
+      "endLine": 107,
+      "summary": "uniformAveraging_mem_doublyStochastic: the constant matrix J with every entry 1/d lies in doublyStochastic ℝ (Fin d) for d ≥ 1 — the bridge lemma that supplies the extreme point at which the global inequality will be instantiated. Via mem_doublyStochastic_iff_sum the three obligations (entrywise nonnegativity, row sums = 1, column sums = 1) reduce to the single computation ∑_{k<d} 1/d = d·(1/d) = 1, discharged uniformly because J is symmetric and constant.",
+      "mathContext": "$J = \\mathrm{of}(\\lambda\\,i\\,j.\\ d^{-1})$: entries $d^{-1} \\ge 0$ and each row/column sum $\\sum_{k<d} d^{-1} = d\\cdot d^{-1} = 1$. $J$ is the center of the Birkhoff polytope — the maximally-averaging doubly stochastic matrix."
+    },
+    {
+      "id": "uniform-endpoint",
+      "title": "Uniform Distribution Minimizes Collision Probability",
+      "startLine": 108,
+      "endLine": 135,
+      "summary": "one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for every probability vector, obtained by applying the global inequality to J. Since J q is the constant uniform vector 1/d, the left side ∑ᵢ (Jq)ᵢ² collapses to d·(1/d)² = 1/d, so the operator bound reads 1/d ≤ ∑ qᵢ² — the parent chain's sharp lower endpoint recovered as one instance of the global statement rather than a separate variance computation.",
+      "mathContext": "The all-$1/d$ matrix $J$ is doubly stochastic and $Jq$ = the uniform vector, so the global inequality gives $1/d \\le \\sum_i q_i^2$ — the uniform distribution uniquely minimizes collision probability."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Marshall, A.W.",
+        "Olkin, I.",
+        "Arnold, B.C."
+      ],
+      "title": "Inequalities: Theory of Majorization and Its Applications",
+      "year": "2011",
+      "venue": "2nd ed., Springer Series in Statistics",
+      "note": "Standard reference for Schur-convexity, majorization and doubly-stochastic smoothing."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "Majorization and the doubly-stochastic characterization underlying Schur-convexity."
+    }
+  ],
+  "conclusion": {
+    "summary": "Globalized the parent's local smoothing transfer into the full Schur-convexity of the collision probability in doubly-stochastic (Hardy–Littlewood–Pólya) form: for every doubly stochastic matrix D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². The proof is per-row Jensen for x² (each output coordinate is a convex combination via row-stochasticity) followed by a column-stochastic collapse of the double sum. As a corollary the uniform distribution minimizes collision (1/d ≤ ∑ qᵢ²), recovering the parent chain's sharp lower endpoint as the bottom of the majorization order. 135 lines, 3 theorems, 0 sorries, 0 axioms.",
+    "implications": "Passing a vector through any averaging (doubly stochastic) operator can only decrease its sum of squares — the operator form of Schur-convexity of ∑ xᵢ². Via Birkhoff–von Neumann and the HLP theorem this is exactly the majorization statement p ≺ q ⟹ ∑ pᵢ² ≤ ∑ qᵢ², so the parent's two extremal endpoints (uniform minimum, concentration maximum) sit at the two ends of a single monotone order rather than being isolated bounds. The uniform-minimizer corollary shows the bottom endpoint falling out as one instance at the all-1/d matrix.",
+    "openQuestions": [
+      "Prove the equality case: ∑ᵢ (Dq)ᵢ² = ∑ᵢ qᵢ² holds iff D acts as a permutation on the support of q (each row that meets the support concentrates on a single equal-q coordinate), pinning down exactly when averaging fails to strictly decrease collision.",
+      "Extend the operator inequality from ∑ xᵢ² to ∑ φ(xᵢ) for an arbitrary convex φ — the general Schur-convexity / Karamata statement — and identify which φ are handled verbatim by the same per-row-Jensen + column-collapse argument.",
+      "Quantify the operator inequality into a stability bound: does a defect estimate ∑ᵢ qᵢ² − ∑ᵢ (Dq)ᵢ² ≥ c·‖Dq − q‖² (or ≥ c·Var of the row combinations) hold uniformly in every doubly stochastic D? This would be the operator-level lift of the sibling entry's two-coordinate Pinsker bound ∑ pᵢ² − 1/d ≥ (4/d)·dTV(p,u)², upgrading 'averaging cannot increase collision' to 'averaging strictly decreases collision by at least how far it moved the vector.'"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq001",
+      "relationship": "extends",
+      "description": "Parent. Proves the local smoothing transfer (averaging two coordinates weakly decreases ∑ pᵢ²) and lists globalizing it to full Schur-convexity as an open question; this entry supplies that global statement in doubly-stochastic form and recovers the uniform-minimizer endpoint."
+    },
+    {
+      "targetId": "birthday-problem-oq-02-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Grandparent: the lower bound 1/d ≤ ∑ pᵢ² (uniform minimizes collision), recovered here as a corollary of the global inequality."
+    },
+    {
+      "targetId": "birthday-problem-oq003",
+      "relationship": "related",
+      "description": "Sibling under the same grandparent: the QUANTITATIVE complement to this entry's qualitative Schur-convexity. Where this entry shows uniform is the HLP-bottom of the majorization order (∑ pᵢ² minimized at 1/d), that entry sharpens the gap into a Pinsker-flavored bound ∑ pᵢ² − 1/d ≥ (4/d)·dTV(p,u)², measuring exactly how much distance-from-uniform raises collision. Together: averaging toward uniform decreases collision (here), and quantifiably so (there)."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BirthdaySchurConvexity",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

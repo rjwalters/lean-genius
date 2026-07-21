@@ -211,7 +211,7 @@
       "description": "Parent: proves the 2D Fubini bridge (∫y∫x f = ∫x∫y f for continuous f). This entry generalizes that result to 3D and n dimensions, importing GreensTheoremOQ01OQ01.fubini_of_continuous as a key subroutine."
     },
     {
-      "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+      "proofId": "greens-theorem-oq001",
       "relationship": "depends-on",
       "description": "Subsidiary module: proves the n-D iteratedIntervalIntegral_order_independent theorem in full generality via Equiv.Perm.swap_induction_on plus an adjacent-swap Fubini lemma. This is what allowed the previously-axiomatized statement here to be retired."
     },

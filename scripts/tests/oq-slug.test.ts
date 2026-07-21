@@ -25,6 +25,8 @@ import {
   rootSlug,
   computeLineage,
   ancestrySlugs,
+  ancestrySlugsFromMeta,
+  type LineageEntry,
   boundedSlugSequential,
   boundedSlugHash,
   shortHash,
@@ -210,6 +212,47 @@ ok('loadRedirects rejects a self-redirect', (() => {
 })())
 
 fs.rmSync(tmp, { recursive: true, force: true })
+
+// --- ancestrySlugsFromMeta (meta-preferring lineage, #39828) --------------
+{
+  // Resolver over a small lineage table. Entries WITHOUT a parentSlug field
+  // (undefined) model legacy entries that carry no lineage metadata.
+  const table: Record<string, LineageEntry> = {
+    r: { slug: 'r', parentSlug: null }, // known root
+    'r-oq001': { slug: 'r-oq001', parentSlug: 'r-oq-01-oq-01' }, // migrated, legacy parent
+    'r-oq002': { slug: 'r-oq002', parentSlug: 'r-oq001' }, // migrated, bounded parent
+    'x-oq-01': { slug: 'x-oq-01', parentSlug: undefined }, // legacy, no meta
+  }
+  const resolve = (s: string): LineageEntry | undefined => table[s]
+
+  eq('meta walk: root has empty ancestry', ancestrySlugsFromMeta('r', resolve), [])
+  eq(
+    'meta walk: bounded slug recovers legacy parent ancestry',
+    ancestrySlugsFromMeta('r-oq001', resolve),
+    ['r', 'r-oq-01', 'r-oq-01-oq-01']
+  )
+  eq(
+    'meta walk: chains through a migrated bounded parent',
+    ancestrySlugsFromMeta('r-oq002', resolve),
+    ['r', 'r-oq-01', 'r-oq-01-oq-01', 'r-oq001']
+  )
+  eq(
+    'meta walk: entry without lineage metadata falls back to slug-parsing',
+    ancestrySlugsFromMeta('x-oq-01', resolve),
+    ancestrySlugs('x-oq-01')
+  )
+  eq(
+    'meta walk: unknown slug falls back to slug-parsing',
+    ancestrySlugsFromMeta('y-oq-03-oq-01', resolve),
+    ancestrySlugs('y-oq-03-oq-01')
+  )
+  // Cycle guard: a → b → a must terminate.
+  const cyclic: Record<string, LineageEntry> = {
+    a: { slug: 'a', parentSlug: 'b' },
+    b: { slug: 'b', parentSlug: 'a' },
+  }
+  ok('meta walk: cycle-guarded (terminates)', Array.isArray(ancestrySlugsFromMeta('a', (s) => cyclic[s])))
+}
 
 // --- summary -------------------------------------------------------------
 console.log(`\noq-slug tests: ${PASS} passed, ${FAIL} failed`)

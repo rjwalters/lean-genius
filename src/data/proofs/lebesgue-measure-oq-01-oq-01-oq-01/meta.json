@@ -134,7 +134,7 @@
       "significance": "high"
     },
     {
-      "id": "lebesgue-measure-oq-01-oq-01-oq-01-oq-02",
+      "id": "lebesgue-measure-oq001",
       "question": "Quantify the discontinuity: prove that the oscillation of Thomae's function at a rational p/q (in lowest terms) is exactly 1/q, and that the set where oscillation ≥ ε is finite in every bounded interval — the finer form of Lebesgue's criterion via the oscillation function.",
       "significance": "medium"
     },
@@ -156,7 +156,7 @@
       "description": "Sibling that classified the continuity of Thomae's function (continuous at irrationals, discontinuous at rationals). The continuity-at-irrationals result is reproved here self-containedly because that file has bit-rotted against the current Mathlib."
     },
     {
-      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+      "targetId": "lebesgue-measure-oq002",
       "relationship": "related",
       "description": "Prior Riemann-integrability entry which proved integrability and ∫₀¹ = 0 through `thomae =ᵐ 0`, explicitly stating it sidestepped the Lebesgue criterion. This entry supplies precisely the criterion it routed around: the null discontinuity set and a.e.-continuity."
     }
