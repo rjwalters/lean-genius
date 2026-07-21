@@ -39,11 +39,10 @@
       "IsPartitionOrdinal: partition ordinal for triangles",
       "HasPartitionProperty: ω^β partition property",
       "IsAdditivelyIndecomposable: indecomposable ordinal definition",
-      "cantorNFLength: CNF-length axiom",
-      "partition_ordinal_classification: complete classification summary"
+      "cantorNFLength: CNF-length axiom"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: ordinalPartition (ordinal Ramsey arrow alpha -> (alpha,k)^2 predicate), cantorNFLength (Cantor normal form length function). Former axioms specker_beta_two, specker_finite_fail, chang_beta_omega, galvin_larson_necessary, schipperus_leq_two, schipperus_geq_four, erdos_592_open_case, partition_ordinal_classification now proved as theorems or definitions.",
+    "assumptions": "2 axiom declarations, both opaque object symbols asserting no proposition: ordinalPartition (ordinal Ramsey arrow alpha -> (alpha,k)^2 predicate), cantorNFLength (Cantor normal form length function). These supply only vocabulary. The historical partition results (Specker's positive beta=2 and negative 3<=n<omega, Chang's omega^omega, the Galvin-Larson necessary condition, Schipperus's CNF-length classification, and the open CNF-length-3 case) are described in the module docstring but are NOT formalized: the file contains no axiom, theorem, or definition asserting any of these partition relations. Derived definitions: IsCountableOrdinal, IsPartitionOrdinal, HasPartitionProperty, IsAdditivelyIndecomposable.",
     "proofRepoPath": "Proofs/Erdos592Problem.lean",
     "lineCount": 65,
     "theoremCount": 0,
@@ -71,31 +70,31 @@
       "title": "Specker's Results (1957)",
       "startLine": 46,
       "endLine": 53,
-      "summary": "Axiomatizes Specker's two results: $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative), establishing the surprising non-monotonicity of the partition property.",
-      "mathContext": "Axiomatizes Specker's two results: $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative), establishing the surprising non-monotonicity of the partition property."
+      "summary": "A comment section header only. Specker's two results — $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative) — are noted in the module docstring but are not formalized here (no axiom or theorem).",
+      "mathContext": "A comment section header only. Specker's two results — $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative) — are noted in the module docstring but are not formalized here (no axiom or theorem)."
     },
     {
       "id": "chang-theorem",
       "title": "Chang's Theorem (1972)",
       "startLine": 55,
       "endLine": 58,
-      "summary": "Axiomatizes Chang's theorem: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, showing the partition property recovers at the first limit ordinal exponent.",
-      "mathContext": "Verified: Axiomatizes Chang's theorem: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, showing the partition property recovers at the first limit ordinal exponent."
+      "summary": "A comment section header only. Chang's theorem $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$ is noted in the module docstring but is not formalized here (no axiom or theorem).",
+      "mathContext": "A comment section header only. Chang's theorem $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$ is noted in the module docstring but is not formalized here (no axiom or theorem)."
     },
     {
       "id": "galvin-larson",
       "title": "Galvin-Larson Necessary Condition (1974)",
       "startLine": 60,
       "endLine": 65,
-      "summary": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$.",
-      "mathContext": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$."
+      "summary": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and declares the opaque `cantorNFLength` axiom. The Galvin-Larson necessary condition (partition ordinals $\\beta \\geq 3$ must be additively indecomposable) is noted in the module docstring but is not itself formalized as an axiom or theorem.",
+      "mathContext": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and declares the opaque `cantorNFLength` axiom. The Galvin-Larson necessary condition (partition ordinals $\\beta \\geq 3$ must be additively indecomposable) is noted in the module docstring but is not itself formalized as an axiom or theorem."
     }
   ],
   "overview": {
     "historicalContext": "**Ordinal Partition Calculus (1956-2010)**\n\nErdős and Rado (1956) founded the **partition calculus** for ordinals, establishing the Ramsey arrow notation $\\alpha \\to (\\beta, \\gamma)^n$ that became the standard language for infinite combinatorics. The specific problem of classifying **partition ordinals** — ordinals $\\alpha$ satisfying $\\alpha \\to (\\alpha, 3)^2$ — was posed by Erdős in 1982 (restated 1987), motivated by the surprising early results.\n\n**Specker (1957)** proved both the first positive result ($\\omega^2 \\to (\\omega^2, 3)^2$) and the first negative result ($\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$), revealing the stunning **non-monotonicity** of the partition property. **Chang (1972)** showed the property recovers at $\\omega^\\omega$, deepening the mystery. **Galvin and Larson (1974)** established the necessary condition that partition ordinals $\\beta \\geq 3$ must be additively indecomposable ($\\beta = \\omega^\\gamma$), focusing the problem on ordinal towers.\n\n**Schipperus (2010)** achieved the near-complete classification: the partition property for $\\omega^{\\omega^\\gamma}$ depends on the **Cantor normal form length** of $\\gamma$. Length $\\leq 2$ gives the property; length $\\geq 4$ fails. Only the case CNF-length $= 3$ remains open, carrying Erdős's $1,000 bounty.",
     "problemStatement": "**Open Problem ($1,000 Bounty)**\n\nDetermine which countable ordinals $\\beta$ satisfy $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$: for every 2-coloring of pairs from $\\omega^\\beta$, there exists either a red-homogeneous set of order type $\\omega^\\beta$ or a blue triangle.\n\nThe complete classification reduces to a single open case: does the partition property hold when $\\beta = \\omega^{\\omega^\\gamma}$ and $\\gamma$ has Cantor normal form length exactly 3?",
     "text": "For which countable ordinals β does ω^β → (ω^β, 3)² hold? Specker (1957): β=2 yes, 3≤β<ω no. Chang (1972): β=ω yes. Schipperus (2010): β=ω^γ with CNF-length(γ)≤2 yes, ≥4 no. The case CNF-length(γ)=3 is OPEN. $1,000 bounty.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define countable ordinals, the ordinal Ramsey arrow $\\alpha \\to (\\alpha, k)^2$, and the partition property `HasPartitionProperty` for $\\omega^\\beta$.\n2. **Historical results:** Axiomatize Specker's positive ($\\beta = 2$) and negative ($3 \\leq \\beta < \\omega$) results, and Chang's theorem ($\\beta = \\omega$).\n3. **Structural reduction:** Define additive indecomposability and axiomatize the Galvin-Larson necessary condition.\n4. **Schipperus classification:** Define CNF-length and axiomatize the positive (length $\\leq 2$) and negative (length $\\geq 4$) results.\n5. **Open problem:** State the CNF-length 3 case as a disjunction axiom, capturing the $1,000 bounty question.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define countable ordinals, the ordinal Ramsey arrow $\\alpha \\to (\\alpha, k)^2$, and the partition property `HasPartitionProperty` for $\\omega^\\beta$.\n2. **Structural vocabulary:** Define additive indecomposability (`IsAdditivelyIndecomposable`) and declare the Cantor-normal-form-length function `cantorNFLength` as an opaque axiom.\n3. **Historical results (documentation only):** Specker's positive/negative results, Chang's theorem, the Galvin-Larson necessary condition, Schipperus's CNF-length classification, and the open CNF-length-3 case are recorded in the module docstring for context. They are NOT formalized — the file asserts no partition relation as an axiom or theorem.",
     "keyInsights": [
       "**Non-monotonicity:** The partition property holds for $\\beta = 2$ but fails for all finite $\\beta \\geq 3$, then recovers at $\\beta = \\omega$ — a striking structural phenomenon",
       "**Galvin-Larson reduction:** Partition ordinals $\\geq \\omega^3$ must be additively indecomposable ($= \\omega^\\gamma$), focusing the classification on ordinal towers",
