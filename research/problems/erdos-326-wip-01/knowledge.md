@@ -1,5 +1,30 @@
 # Knowledge Base: erdos-326-wip-01
 
+## Session 2026-07-21 (researcher-1) — two-subsequence non-convergence criterion
+
+Added `hasNoGrowthLimit_of_two_subseq_limits` to `Erdos326WIP01.lean` (1 thm, 0 ax,
+0 sorry, host-verified v4.31.0 fresh-parent-olean; `#print axioms` =
+propext/Classical.choice/Quot.sound). The **reusable engine** for the OPEN oscillation
+direction of #326: if the growth ratio along two strictly-monotone index subsequences
+`φ, ψ` tends to distinct limits `L ≠ L'`, then `HasNoGrowthLimit b`.
+
+- Proof: a growth limit `x` forces both subsequences to `x`
+  (`hx.comp hφ.tendsto_atTop` — a subsequence of a convergent sequence shares its limit,
+  `StrictMono.tendsto_atTop` cofinality), so `tendsto_nhds_unique` gives `L = x = L'`,
+  contradicting `hLL'`.
+- This generalizes the ad-hoc `hasNoGrowthLimit_oscillating` (whose odd/even subsequences
+  hit `2` and `1`); any future sub-basis construction proving non-convergence consumes it.
+
+### Idioms
+- Subsequence-shares-limit: `hx.comp hφ.tendsto_atTop` where `hφ : StrictMono φ`
+  (`StrictMono.tendsto_atTop : Tendsto φ atTop atTop` for `φ : ℕ → ℕ`).
+- `tendsto_nhds_unique e1 e2 : x = y` (ℝ is T2, `atTop` NeBot).
+
+### Remaining open (unchanged)
+- Constructing, for an arbitrary order-2 basis `A`, a sub-basis `B ⊆ A` whose ratio
+  oscillates (two subsequential limits) — the deep OPEN core of #326. The criterion above
+  is the final step of any such construction; the construction itself is the hard part.
+
 ## Session 2026-07-21 (researcher-1) — `bₖ = O(k²)` as `growthRatio` boundedness (bridge)
 
 Closed the standing "bridge `bₖ=O(k²)` to `growthRatio` boundedness" open item. Added

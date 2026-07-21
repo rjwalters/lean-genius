@@ -27,6 +27,10 @@ ratio and its limit:
   (the `growthRatio` restatement of the `bₖ = O(k²)` bound);
 * the growth limit is unique, and existence of a limit contradicts
   `HasNoGrowthLimit`;
+* a **two-subsequence criterion** for non-convergence
+  (`hasNoGrowthLimit_of_two_subseq_limits`): two strictly-monotone index
+  subsequences along which the growth ratio tends to distinct limits force
+  `HasNoGrowthLimit` — the reusable engine behind the oscillation direction;
 * both growth-limit predicates are non-vacuous: an exactly-quadratic
   enumeration `bₖ = c·k²` has growth limit `c`, while an enumeration whose
   quadratic coefficient oscillates between `1` and `2` has **no** growth limit.
@@ -149,6 +153,33 @@ theorem hasNoGrowthLimit_iff (b : ℕ → ℕ) :
     HasNoGrowthLimit b ↔ ¬ ∃ x, HasGrowthLimit b x := by
   unfold HasNoGrowthLimit
   rw [not_exists]
+
+/-! ## A two-subsequence criterion for non-convergence
+
+The standard route to `HasNoGrowthLimit` is to exhibit two subsequences of the
+growth ratio converging to **different** limits: since a convergent sequence has
+*every* subsequence converging to the same limit, two distinct subsequential
+limits preclude convergence.  This is exactly the mechanism behind the oscillating
+toy example below (`growthRatio_oscillating_odd`/`_even` give subsequential limits
+`2` and `1`), and it is the reusable tool the open oscillation direction of #326
+(building a sub-basis whose ratio does not converge) must ultimately consume. -/
+
+/-- **Two-subsequence criterion for `HasNoGrowthLimit`.**  If the growth ratio
+restricted to two subsequences `φ, ψ` (strictly monotone index maps, hence cofinal)
+converges to distinct limits `L ≠ L'`, then `b` has no growth limit.  A growth limit
+`x` would force *both* subsequences to converge to `x` (a subsequence of a convergent
+sequence shares its limit), giving `L = x = L'`. -/
+theorem hasNoGrowthLimit_of_two_subseq_limits {b : ℕ → ℕ} {φ ψ : ℕ → ℕ} {L L' : ℝ}
+    (hφ : StrictMono φ) (hψ : StrictMono ψ)
+    (hL : Tendsto (fun k => growthRatio b (φ k)) atTop (𝓝 L))
+    (hL' : Tendsto (fun k => growthRatio b (ψ k)) atTop (𝓝 L'))
+    (hLL' : L ≠ L') : HasNoGrowthLimit b := by
+  intro x hx
+  have e1 : Tendsto (fun k => growthRatio b (φ k)) atTop (𝓝 x) :=
+    hx.comp hφ.tendsto_atTop
+  have e2 : Tendsto (fun k => growthRatio b (ψ k)) atTop (𝓝 x) :=
+    hx.comp hψ.tendsto_atTop
+  exact hLL' ((tendsto_nhds_unique e1 hL).symm.trans (tendsto_nhds_unique e2 hL'))
 
 /-! ## Bounded-order bases are infinite -/
 
