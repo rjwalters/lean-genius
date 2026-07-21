@@ -62,7 +62,7 @@
       "powers_of_2_convergent theorem: verified convergence"
     ],
     "axiomCount": 1,
-    "lineCount": 235,
+    "lineCount": 236,
     "assumptions": "1 axiom: yip_counterexample. 0 sorries.",
     "theoremCount": 5,
     "definitionCount": 11
@@ -87,10 +87,18 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header, Problem Statement, and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "File header for Erdős problem #967 — the Erdős–Ingham conjecture on generalized Dirichlet sums restricted to a finite prime set — with references and the `import Mathlib` / `namespace Erdos967` preamble.",
+      "mathContext": "The conjecture concerns the density/Tauberian behaviour of sums $\\sum_{n} a_n n^{-s}$ supported on integers built from a fixed finite prime set $\\{p_1,\\dots,p_k\\}$; Yip (2025) supplied a counterexample."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 30,
-      "endLine": 50,
+      "startLine": 26,
+      "endLine": 46,
       "summary": "Defines IntegerSequence structure and convergence condition.",
       "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition ∑(1/aᵢ) < ∞ ensures the Dirichlet series converges.",
       "mathContext": "Formal definition: Defines IntegerSequence structure and convergence condition."
@@ -98,8 +106,8 @@
     {
       "id": "dirichlet-sum",
       "title": "The Generalized Dirichlet Sum",
-      "startLine": 51,
-      "endLine": 75,
+      "startLine": 47,
+      "endLine": 71,
       "summary": "Defines complex power a^(1+it) and the generalized Dirichlet sum.",
       "description": "The key object is 1 + ∑ₖ 1/aₖ^(1+it), where a^(1+it) = a · e^(it·log(a)) involves oscillating complex exponentials.",
       "mathContext": "Formal definition: Defines complex power a^(1+it) and the generalized Dirichlet sum."
@@ -107,8 +115,8 @@
     {
       "id": "conjecture",
       "title": "The Erdős-Ingham Conjecture",
-      "startLine": 76,
-      "endLine": 96,
+      "startLine": 72,
+      "endLine": 92,
       "summary": "States the original conjecture and the finite sequence variant.",
       "description": "The conjecture asks if the sum is nonzero for all t. The finite case remains open after Yip's work.",
       "mathContext": "Mathematical content: States the original conjecture and the finite sequence variant."
@@ -116,8 +124,8 @@
     {
       "id": "simplest-case",
       "title": "The {2, 3, 5} Case",
-      "startLine": 97,
-      "endLine": 117,
+      "startLine": 93,
+      "endLine": 109,
       "summary": "The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials.",
       "description": "Whether sum235(t) = 0 for some t is related to transcendence questions in number theory.",
       "mathContext": "Mathematical content: The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials."
@@ -125,8 +133,8 @@
     {
       "id": "tauberian",
       "title": "Tauberian Equivalence",
-      "startLine": 118,
-      "endLine": 132,
+      "startLine": 110,
+      "endLine": 124,
       "summary": "The connection to Tauberian theorems that motivated the problem.",
       "description": "Erdős-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations.",
       "mathContext": "Verified: The connection to Tauberian theorems that motivated the problem."
@@ -134,8 +142,8 @@
     {
       "id": "yip-counterexample",
       "title": "Yip's Counterexample (2025)",
-      "startLine": 133,
-      "endLine": 167,
+      "startLine": 125,
+      "endLine": 159,
       "summary": "Yip's theorem disproving the conjecture and the main result.",
       "description": "For any t ≠ 0, there exists a sequence where the sum equals zero. This proves ¬erdosInghamConjecture.",
       "mathContext": "Verified: Yip's theorem disproving the conjecture and the main result."
@@ -143,8 +151,8 @@
     {
       "id": "open-questions",
       "title": "What Remains Open",
-      "startLine": 168,
-      "endLine": 189,
+      "startLine": 160,
+      "endLine": 181,
       "summary": "The finite sequence case and structure of counterexamples.",
       "description": "Whether the conjecture holds for finite sequences remains open. Yip's counterexamples depend on t.",
       "mathContext": "Formal definition: The finite sequence case and structure of counterexamples."
@@ -152,8 +160,8 @@
     {
       "id": "properties",
       "title": "Properties of the Sum",
-      "startLine": 190,
-      "endLine": 233,
+      "startLine": 182,
+      "endLine": 219,
       "summary": "Special case t = 0, oscillatory behavior, and concrete examples.",
       "description": "At t = 0, the sum is real and positive. Includes geometricSequence example {2^n} with proven convergence.",
       "mathContext": "Mathematical content: Special case t = 0, oscillatory behavior, and concrete examples."
@@ -161,8 +169,8 @@
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 234,
-      "endLine": 240,
+      "startLine": 220,
+      "endLine": 236,
       "summary": "Main results: conjecture disproved, finite case open.",
       "description": "The 60-year-old conjecture was disproved in 2025. Key questions about finite sequences remain.",
       "mathContext": "Mathematical content: Main results: conjecture disproved, finite case open."
@@ -190,7 +198,7 @@
       "Complex"
     ],
     "namespace": "Erdos967",
-    "lineCount": 235,
+    "lineCount": 236,
     "axiomCount": 1,
     "theoremCount": 5,
     "definitionCount": 11,
