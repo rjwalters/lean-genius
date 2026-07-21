@@ -62,10 +62,18 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "File header and imports. Formalizes Brahmagupta's formula for the area of a cyclic quadrilateral and its reduction (d = 0) to Heron's formula, together with algebraic identities, non-negativity, special cases, an isoperimetric bound, and concrete checks. The area-equals-root identity itself is stated as an axiom (PART VII); everything else is proved.",
+      "mathContext": "Brahmagupta: a cyclic quadrilateral with sides $a,b,c,d$ and $s=(a+b+c+d)/2$ has area $\\sqrt{(s-a)(s-b)(s-c)(s-d)}$; setting $d=0$ recovers Heron's $\\sqrt{s(s-a)(s-b)(s-c)}$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 30,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines semiperimeter and Brahmagupta product for a quadrilateral.",
       "mathContext": "$s = (a+b+c+d)/2$, $(s-a)(s-b)(s-c)(s-d)$"
     },
@@ -80,15 +88,15 @@
     {
       "id": "heron-reduction",
       "title": "Reduction to Heron's Formula",
-      "startLine": 68,
-      "endLine": 88,
+      "startLine": 67,
+      "endLine": 86,
       "summary": "When d=0, Brahmagupta product equals Heron product: the degenerate quadrilateral is a triangle.",
       "mathContext": "$(s-a)(s-b)(s-c)(s-0) = s(s-a)(s-b)(s-c)$ with $s = (a+b+c)/2$"
     },
     {
       "id": "nonnegativity",
       "title": "Non-negativity",
-      "startLine": 90,
+      "startLine": 87,
       "endLine": 106,
       "summary": "Brahmagupta product is non-negative when all four generalized triangle inequalities hold.",
       "mathContext": "$(s-a)(s-b)(s-c)(s-d) \\geq 0$ when each side is at most the sum of the other three"
@@ -96,26 +104,34 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 108,
-      "endLine": 135,
+      "startLine": 107,
+      "endLine": 133,
       "summary": "Rectangle: product = (ab)^2, area = ab. Square: product = a^4, area = a^2.",
       "mathContext": "For rectangle: $\\sqrt{(s-a)(s-b)(s-a)(s-b)} = ab$"
     },
     {
       "id": "isoperimetric",
       "title": "Isoperimetric Inequality",
-      "startLine": 137,
-      "endLine": 154,
+      "startLine": 134,
+      "endLine": 183,
       "summary": "Square maximizes area for fixed perimeter. Product <= ((a+b+c+d)/4)^4 by AM-GM.",
       "mathContext": "$(s-a)(s-b)(s-c)(s-d) \\leq \\left(\\frac{a+b+c+d}{4}\\right)^4$"
     },
     {
       "id": "axiom-examples",
-      "title": "Brahmagupta Formula and Examples",
-      "startLine": 156,
-      "endLine": 193,
-      "summary": "Axiomatized Brahmagupta formula and concrete examples: 3-4-5 triangle, unit square, 2x3 rectangle.",
-      "mathContext": "Numerical verification of the formula"
+      "title": "PART VII: The Brahmagupta Formula (Axiomatized)",
+      "startLine": 184,
+      "endLine": 204,
+      "summary": "The single axiom of the file: brahmagupta_formula asserts that the area of a cyclic quadrilateral with positive sides equals √((s−a)(s−b)(s−c)(s−d)). This is the one unproved assumption (badge: axiom, axiomCount 1) — the geometric area↔product identity — from which the surrounding algebraic results draw meaning.",
+      "mathContext": "$\\text{axiom }\\ \\mathrm{area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ for $a,b,c,d>0$ — the sole assumption; all other declarations are proved from Mathlib."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "PART VIII: Concrete Examples",
+      "startLine": 205,
+      "endLine": 225,
+      "summary": "Numerical checks of the Brahmagupta product by `norm_num`/`decide`: the degenerate 3-4-5 triangle (product 36, area 6), the unit square (product 1, area 1), and the 2×3 rectangle (product 36, area 6).",
+      "mathContext": "$(s-a)(s-b)(s-c)(s-d)$ evaluates to $36$ for $(3,4,5,0)$, $1$ for $(1,1,1,1)$, and $36$ for $(2,3,2,3)$ — matching the known areas $6, 1, 6$."
     }
   ],
   "crossReferences": [
