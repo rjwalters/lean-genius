@@ -83,24 +83,32 @@
       "title": "Part III: General Maximum Theorem",
       "startLine": 90,
       "endLine": 163,
-      "summary": "lllThreshold_is_maximum (sorry): x·(1-x)^d ≤ T(d) for all x ∈ [0,1] and d ≥ 1. Blocked on AM-GM over ℝ or inductive polynomial argument.",
-      "mathContext": "The AM-GM strategy is mathematically clear but requires casting ℚ→ℝ and applying Real.geom_mean_le_arith_mean3_weighted, or constructing the polynomial factorization by induction."
+      "summary": "lllThreshold_is_maximum (fully proved, 0 sorries): x·(1-x)^d ≤ T(d) for all x ∈ [0,1] and d ≥ 1. The proof casts ℚ→ℝ, substitutes the two weights 1/(d+1) and d/(d+1) with values x and (1-x)/d summing (weighted) to 1, applies the weighted two-point AM-GM (Real.geom_mean_le_arith_mean2_weighted), and rescales by dᵈ to recover the rational inequality via exact_mod_cast.",
+      "mathContext": "AM-GM realization of the bound: $x(1-x)^d = \\left(x^{1/(d+1)}((1-x)/d)^{d/(d+1)}\\right)^{d+1} d^d \\le \\left(\\tfrac{1}{d+1}\\right)^{d+1} d^d = T(d)$. Uses Real.geom_mean_le_arith_mean2_weighted plus rpow monotonicity; no sorry."
     },
     {
       "id": "sec-tightness",
       "title": "Part IV: Algebraic Tightness Corollary",
       "startLine": 164,
       "endLine": 187,
-      "summary": "lll_threshold_tight and lll_threshold_no_improvement: p > T(d) implies no x ∈ [0,1] satisfies p ≤ x·(1-x)^d. Proved modulo lllThreshold_is_maximum.",
-      "mathContext": "These corollaries follow immediately from the maximum theorem by linarith, confirming the algebraic lower bound on the LLL threshold."
+      "summary": "lll_threshold_tight and lll_threshold_no_improvement: p > T(d) implies no x ∈ [0,1] satisfies p ≤ x·(1-x)^d, and no probability T(d)+ε is feasible. Both follow from the (now unconditionally proved) lllThreshold_is_maximum by linarith.",
+      "mathContext": "These corollaries give the algebraic lower bound on the LLL threshold: T(d) cannot be raised. Immediate from the maximum theorem — no residual assumption."
     },
     {
       "id": "sec-uniqueness",
-      "title": "Part V: Uniqueness and Exact Threshold",
+      "title": "Part V: Uniqueness — x* = 1/(d+1) Is the Strict Maximizer",
       "startLine": 188,
-      "endLine": 240,
-      "summary": "lllThreshold_strict_maximum (sorry for equality case), lllThreshold_fixed_point, lllThreshold_exact_algebraic_threshold. The biconditional is proved completely.",
-      "mathContext": "The exact threshold biconditional captures the full algebraic content: the symmetric LLL condition p ≤ T(d) is both necessary and sufficient for the existence of a valid LLL witness x ∈ [0,1]."
+      "endLine": 286,
+      "summary": "lllThreshold_strict_maximum (fully proved, 0 sorries): for every x ≠ 1/(d+1) in [0,1], x·(1-x)^d < T(d) strictly. The proof mirrors lllThreshold_is_maximum line-for-line with ≤ → <, swapping the non-strict AM-GM for the strict equality characterization geom_mean_lt_arith_mean_weighted_iff_of_pos — over the two-element index, equality holds iff the two values coincide, i.e. x = (1-x)/d ⟺ x = 1/(d+1), so x ≠ 1/(d+1) forces strictness.",
+      "mathContext": "Strict weighted AM-GM: equality in $\\prod v_i^{w_i} \\le \\sum w_i v_i$ holds iff all $v_i$ are equal. Here $v = (x, (1-x)/d)$, so equality ⟺ $x = 1/(d+1)$; every other $x$ gives a strict inequality $x(1-x)^d < T(d)$."
+    },
+    {
+      "id": "sec-exact-threshold",
+      "title": "Part V (capstone): Fixed-Point Equation and Exact Biconditional",
+      "startLine": 287,
+      "endLine": 318,
+      "summary": "lllThreshold_fixed_point rewrites T(d) = 1/(d+1)·(1-1/(d+1))^d (the self-consistency equation used by the parent's threshold proof). lllThreshold_exact_algebraic_threshold assembles the full biconditional: (∃ x ∈ [0,1] with p ≤ x·(1-x)^d) ↔ p ≤ T(d) — forward direction from lllThreshold_is_maximum, reverse from the achievability witness x = 1/(d+1). Closes the file with end ProbMethod.LovaszLocal.OQ02.",
+      "mathContext": "Exact algebraic threshold: $\\bigl(\\exists x\\in[0,1],\\ p \\le x(1-x)^d\\bigr) \\iff p \\le T(d)$. Combines achievability (witness $x=1/(d+1)$) with maximality (lllThreshold_is_maximum) into a necessary-and-sufficient condition for a valid symmetric-LLL assignment."
     }
   ],
   "crossReferences": [
@@ -116,12 +124,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The algebraic tightness of T(d) is proved for d=1,2,3 via explicit polynomial factoring, and the achievability result holds for all d ≥ 1. The general maximum theorem (all d) remains as a sorry requiring AM-GM over ℝ.",
+    "summary": "The algebraic tightness of T(d) is fully proved: the small cases d=1,2,3 via explicit polynomial factoring, the general maximum theorem for all d ≥ 1 via weighted two-point AM-GM (cast ℚ→ℝ), and the strict uniqueness of the maximizer x* = 1/(d+1) via the AM-GM equality characterization. Achievability, the tightness corollaries, and the exact-threshold biconditional are all machine-verified — the file is closed at 0 sorries / 0 axioms.",
     "implications": "**Mathematical significance**: The fact that T(d) = max_{x ∈ [0,1]} x·(1-x)^d confirms the LLL threshold is optimal in the algebraic sense. No alternative assignment of probabilities to variables can make the LLL condition hold for p > T(d).\n\n**Connection to optimization**: The maximizer x* = 1/(d+1) is the unique root of the first-order condition d/dx [x·(1-x)^d] = (1-x)^{d-1}(1-(d+1)x) = 0, confirming the algebraic derivation of the threshold.",
     "openQuestions": [
-      "Can lllThreshold_is_maximum be proved for general d using Real.geom_mean_le_arith_mean3_weighted after casting ℚ→ℝ? The substitution t = (d+1)*x reduces the AM-GM application to d+1 numbers summing to d+1.",
-      "Can the strict maximum (lllThreshold_strict_maximum) be proved by showing the polynomial gap (T(d) - x*(1-x)^d) has a unique rational root at x = 1/(d+1)? This requires the general factorization (x-1/(d+1))^2 * Q_d(x) ≥ 0.",
-      "What is the minimal Lean 4 infrastructure needed to formalize the AM-GM inequality in the form used here? Mathlib has Real.inner_mul_le_norm_mul_iff but not the weighted product form needed."
+      "The general maximum theorem (lllThreshold_is_maximum) is now proved via the weighted two-point AM-GM Real.geom_mean_le_arith_mean2_weighted after casting ℚ→ℝ; is there a fully rational (ℚ-only) proof avoiding the cast, e.g. via the general polynomial factorization (x-1/(d+1))² · Q_d(x) ≥ 0 with Q_d strictly positive on [0,1]?",
+      "The strict maximizer result (lllThreshold_strict_maximum) is proved via the AM-GM equality characterization; can it instead be derived from an explicit rational factorization exhibiting the double root at x = 1/(d+1), and would that yield a quantitative gap bound T(d) - x·(1-x)^d ≥ c_d·(x-1/(d+1))²?",
+      "The Aristotle companion file (LovaszLocalLemmaOQ02Aristotle.lean) still carries 8 sorries on routine supporting lemmas; can those be discharged to make the companion self-contained (it is not imported by the main file, so the verified status here is unaffected)?"
     ]
   },
   "leanFile": {
@@ -191,7 +199,7 @@
     {
       "name": "lllThreshold_is_maximum",
       "type": "core",
-      "description": "T(d) is the maximum of x*(1-x)^d on [0,1] (sorry — general AM-GM needed)",
+      "description": "T(d) is the maximum of x*(1-x)^d on [0,1] for all d ≥ 1 (fully proved via weighted two-point AM-GM after ℚ→ℝ cast)",
       "leanType": "(d : ℕ) → 0 < d → (x : ℚ) → 0 ≤ x → x ≤ 1 → x * (1 - x)^d ≤ lllThreshold d"
     },
     {
