@@ -51,7 +51,7 @@
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers (Axiomatized)",
       "startLine": 57,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Axiomatizes ramseyNumber R(H) and ramseyNumberColors R_r(H) as functions, avoiding the complex subgraph-embedding formalism",
       "mathContext": "R(H) = min N: any 2-coloring of K_N contains mono copy of H."
     },
@@ -67,7 +67,7 @@
       "id": "bipartite-case",
       "title": "Bipartite Case (AKS 2003)",
       "startLine": 93,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Axiomatizes aks_bipartite_bound: R(G) ≤ 2^{O(√m)} for bipartite G, proved 8 years before the general case",
       "mathContext": "AKS 2003: bipartite R(G) ≤ 2^{O(√m)} via dependent random choice."
     },
