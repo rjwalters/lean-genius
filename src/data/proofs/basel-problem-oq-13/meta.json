@@ -105,14 +105,14 @@
       "id": "even-part",
       "title": "hasSum_even_zeta_four — ∑ 1/(2k)⁴ = π⁴/1440",
       "startLine": 35,
-      "endLine": 46,
+      "endLine": 43,
       "summary": "Rewrites 1/(2k)⁴ = (1/16)(1/k⁴) and scales ζ(4) by 1/16.",
       "mathContext": "The even-indexed fourth-power terms form a sixteenth-scaled copy of ζ(4)."
     },
     {
       "id": "odd-part",
       "title": "hasSum_odd_zeta_four — ∑ 1/(2k+1)⁴ = π⁴/96",
-      "startLine": 48,
+      "startLine": 44,
       "endLine": 62,
       "summary": "Odd subseries summable via Summable.comp_injective with k ↦ 2k+1; reassemble ζ(4) = even + odd through HasSum.even_add_odd, then HasSum.unique against hasSum_zeta_four forces π⁴/1440 + (odd) = π⁴/90, so linarith gives the odd sum = π⁴/96.",
       "mathContext": "The lambda value λ(4), recovered by uniqueness as ζ(4) minus its even part: π⁴/90 − π⁴/1440 = π⁴/96."

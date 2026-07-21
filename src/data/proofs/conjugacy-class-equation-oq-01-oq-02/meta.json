@@ -106,14 +106,14 @@
       "id": "noncentral-prime-pow",
       "title": "Noncentral Classes Have Size a Positive Power of p",
       "startLine": 59,
-      "endLine": 80,
+      "endLine": 74,
       "summary": "noncentral_class_card_eq_prime_pow: with |G| = pⁿ (IsPGroup.iff_card), a class size divides pⁿ so equals pᵏ (Nat.dvd_prime_pow); a noncentral carrier is a nontrivial set with more than one element, forcing k > 0.",
       "mathContext": "Noncentral $\\Rightarrow |x| = p^k,\\ k > 0 \\Rightarrow p \\mid |x|$."
     },
     {
       "id": "center-nontrivial",
       "title": "The Center Is Nontrivial",
-      "startLine": 82,
+      "startLine": 75,
       "endLine": 113,
       "summary": "center_nontrivial_of_isPGroup: p ∣ |G| and p ∣ Σ (noncentral sum, via finsum→Finset and Finset.dvd_sum) give p ∣ |Z(G)| through the class equation and Nat.dvd_sub; with |Z(G)| > 0 and p ≥ 2, conclude 1 < |Z(G)| and Nontrivial (center G).",
       "mathContext": "$p \\mid |Z(G)|,\\ |Z(G)| > 0 \\Rightarrow 1 < |Z(G)|$."
