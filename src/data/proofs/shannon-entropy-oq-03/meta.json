@@ -96,7 +96,7 @@
       "title": "Consequences of SSA",
       "id": "consequences",
       "startLine": 68,
-      "endLine": 92,
+      "endLine": 109,
       "summary": "Three three-variable corollaries derived from strong subadditivity by linear rearrangement (linarith), not present in the parent file: conditioning_reduces_entropy_general (H(X|Y,Z) ≤ H(X|Y), extra conditioning cannot increase entropy), conditioning_reduces_entropy_general′ (H(Z|X,Y) ≤ H(Z|Y), the X↔Z dual), and conditional_mi_nonneg (I(X;Z|Y) ≥ 0, the conditional mutual information is non-negative).",
       "mathContext": "SSA implies (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y) \\geq 0$."
     },
