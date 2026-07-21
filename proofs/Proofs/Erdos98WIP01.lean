@@ -1085,4 +1085,160 @@ theorem h_three : h 3 = 1 := by
       _ ≤ h 3 := h_mono (by norm_num)
   omega
 
+/-! ## The upper bound `h 4 ≤ 2` via an equilateral triangle plus its centroid
+
+For four points both nondegeneracy constraints are genuine, and the classical
+minimal-distance witness — the **square** — is *disqualified*: its four vertices are
+concyclic, so the square is not a general-position configuration.  The smallest
+2-distance set that survives is the equilateral triangle `(1,0), (−½,√3⁄2), (−½,−√3⁄2)`
+together with its **centroid** `(0,0)`.  The centroid lies at distance `1` (the
+circumradius) from each vertex, and the three sides have the common length `√3`, so only
+the two distances `1` and `√3` occur: `numDistinctDistances ≤ 2`, hence `h 4 ≤ 2`.
+
+The configuration is in general position: no three of the four points are collinear
+(the centroid is interior to the triangle), and the four are **not** concyclic — the
+only point equidistant from the three vertices is their circumcenter, the centroid
+itself, which is at distance `0 ≠ 1` from itself, so no circle passes through all four.
+Combined with `three_mul_h_ge 4` (which gives only `h 4 ≥ 1`) this traps `1 ≤ h 4 ≤ 2`;
+the exact value `h 4 = 2` additionally requires the lower bound `h 4 ≥ 2` — four
+pairwise-equidistant points are impossible in the plane — recorded as the next step. -/
+
+/-- The equilateral triangle `(1,0), (−½,√3⁄2), (−½,−√3⁄2)` together with its centroid
+`(0,0)`, as a four-point configuration in `ℝ²`.  A 2-distance set (circumradius `1`,
+side length `√3`) which — unlike the square — is not concyclic. -/
+noncomputable def centeredTriangleConfig : PointConfig 4 :=
+  ![!₂[0, 0], !₂[1, 0], !₂[-1/2, Real.sqrt 3 / 2], !₂[-1/2, -(Real.sqrt 3 / 2)]]
+
+/-- **Every pairwise distance of the centred triangle is `1` or `√3`.** For distinct
+indices the distance is either the circumradius `1` (centroid to a vertex) or the common
+side length `√3` (between two vertices): its square is `1` or `3`, and the nonnegative
+square root is `1` or `√3`. -/
+theorem centeredTriangleConfig_dist_mem {i j : Fin 4} (hij : i ≠ j) :
+    dist (centeredTriangleConfig i) (centeredTriangleConfig j) ∈
+      ({1, Real.sqrt 3} : Finset ℝ) := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have hd0 : 0 ≤ dist (centeredTriangleConfig i) (centeredTriangleConfig j) := dist_nonneg
+  have hsq : dist (centeredTriangleConfig i) (centeredTriangleConfig j) ^ 2 = 1 ∨
+      dist (centeredTriangleConfig i) (centeredTriangleConfig j) ^ 2 = 3 := by
+    fin_cases i <;> fin_cases j <;>
+      first
+      | exact absurd rfl hij
+      | (simp only [centeredTriangleConfig, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two,
+           Real.dist_eq, sq_abs, Matrix.cons_val_zero, Matrix.cons_val_one,
+           Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]
+         first
+         | (left; nlinarith [hs2])
+         | (right; nlinarith [hs2]))
+  rcases hsq with h | h
+  · have hone : dist (centeredTriangleConfig i) (centeredTriangleConfig j) = 1 := by
+      rw [← Real.sqrt_sq hd0, h, Real.sqrt_one]
+    simp [hone]
+  · have hrt : dist (centeredTriangleConfig i) (centeredTriangleConfig j) = Real.sqrt 3 := by
+      rw [← Real.sqrt_sq hd0, h]
+    simp [hrt]
+
+/-- The four points are distinct: every pairwise distance is positive (it is `1` or `√3`),
+so equal indices are forced. -/
+theorem centeredTriangleConfig_injective : Function.Injective centeredTriangleConfig := by
+  intro i j hij
+  by_contra hne
+  have hmem := centeredTriangleConfig_dist_mem hne
+  rw [hij, dist_self] at hmem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+  rcases hmem with h | h
+  · norm_num at h
+  · have hpos : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+    rw [← h] at hpos
+    exact lt_irrefl 0 hpos
+
+/-- **No three of the four points are collinear.** A line through any three forces
+`(a,b,c) = 0`; the two vertices sharing the abscissa `−½` need `√3 > 0` to conclude. -/
+theorem noThreeCollinear_centeredTriangleConfig : NoThreeCollinear centeredTriangleConfig := by
+  have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | (simp only [centeredTriangleConfig] at hi hj hk
+       norm_num at hi hj hk
+       simp only [Prod.mk.injEq]
+       refine ⟨?_, ?_, ?_⟩ <;> nlinarith [hs, hi, hj, hk])
+
+/-- **No centre is equidistant from all four points.** The squared-distance equality with
+`P₁` forces `c₀ = ½`, while those with `P₂, P₃` give `c₀ + 1 ∓ c₁√3 = 0`; adding the latter
+two yields `c₀ = −1`, contradicting `c₀ = ½`. -/
+theorem centeredTriangle_not_equidistant (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (centeredTriangleConfig 0) = r)
+    (h1 : dist center (centeredTriangleConfig 1) = r)
+    (h2 : dist center (centeredTriangleConfig 2) = r)
+    (h3 : dist center (centeredTriangleConfig 3) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e01 : dist center (centeredTriangleConfig 0) ^ 2 = dist center (centeredTriangleConfig 1) ^ 2 := by
+    rw [h0, h1]
+  have e02 : dist center (centeredTriangleConfig 0) ^ 2 = dist center (centeredTriangleConfig 2) ^ 2 := by
+    rw [h0, h2]
+  have e03 : dist center (centeredTriangleConfig 0) ^ 2 = dist center (centeredTriangleConfig 3) ^ 2 := by
+    rw [h0, h3]
+  simp only [centeredTriangleConfig, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq,
+    sq_abs, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.head_cons, Matrix.tail_cons] at e01 e02 e03
+  nlinarith [e01, e02, e03, hs2]
+
+/-- **No four of the four points are concyclic.** The only 4-subset (in every ordering) is
+all four points; by `centeredTriangle_not_equidistant` no centre is equidistant from them,
+so no common circle exists. -/
+theorem noFourConcyclic_centeredTriangleConfig : NoFourConcyclic centeredTriangleConfig := by
+  intro a b c d hcard
+  rintro ⟨center, r, ha, hb, hc, hd⟩
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact centeredTriangle_not_equidistant center r (by assumption) (by assumption)
+        (by assumption) (by assumption)
+
+/-- **The centred triangle is in general position.** -/
+theorem inGeneralPosition_centeredTriangleConfig : InGeneralPosition centeredTriangleConfig :=
+  ⟨centeredTriangleConfig_injective, noThreeCollinear_centeredTriangleConfig,
+    noFourConcyclic_centeredTriangleConfig⟩
+
+/-- **The centred triangle realizes at most two distinct distances.** Every positive
+pairwise distance lies in the two-element set `{1, √3}` (`centeredTriangleConfig_dist_mem`),
+so the distinct-distance count is at most `2`. -/
+theorem numDistinctDistances_centeredTriangleConfig_le :
+    numDistinctDistances centeredTriangleConfig ≤ 2 := by
+  unfold numDistinctDistances
+  have hsub :
+      ((univ.product univ).image
+          (fun p : Fin 4 × Fin 4 =>
+            dist (centeredTriangleConfig p.1) (centeredTriangleConfig p.2))).filter (· > 0)
+        ⊆ ({1, Real.sqrt 3} : Finset ℝ) := by
+    intro d hd
+    rw [mem_filter, mem_image] at hd
+    obtain ⟨⟨p, -, hpd⟩, hpos⟩ := hd
+    have hne : p.1 ≠ p.2 := by
+      intro he
+      rw [he, dist_self] at hpd
+      rw [← hpd] at hpos
+      exact lt_irrefl 0 hpos
+    rw [← hpd]
+    exact centeredTriangleConfig_dist_mem hne
+  calc (((univ.product univ).image
+          (fun p : Fin 4 × Fin 4 =>
+            dist (centeredTriangleConfig p.1) (centeredTriangleConfig p.2))).filter (· > 0)).card
+      ≤ ({1, Real.sqrt 3} : Finset ℝ).card := card_le_card hsub
+    _ ≤ 2 := by
+        have hc := Finset.card_insert_le (1 : ℝ) ({Real.sqrt 3} : Finset ℝ)
+        simpa using hc
+
+/-- **`h 4 ≤ 2`, an exact upper bound.** The centred-triangle witness is in general
+position and realizes at most two distinct distances, so it bounds the minimum:
+`h 4 ≤ numDistinctDistances ≤ 2`.  With the linear lower bound `three_mul_h_ge 4`
+(`h 4 ≥ 1`) this traps `1 ≤ h 4 ≤ 2`; only the matching lower bound `h 4 ≥ 2` (no four
+equidistant points in the plane) is missing to pin `h 4 = 2`. -/
+theorem h_four_le_two : h 4 ≤ 2 :=
+  le_trans (h_le_of_inGeneralPosition inGeneralPosition_centeredTriangleConfig)
+    numDistinctDistances_centeredTriangleConfig_le
+
 end Erdos98WIP01
