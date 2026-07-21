@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Session 4: unconditional upper bound h(n) ≤ n.choose 2 (h_le_choose_two, sidesteps the missing general-position existence witness via the sInf-empty case) + degenerate values h(n)=0 for n≤1. 2 axiom-free theorems, theoremCount 10→12, host-verified.",
     "blockers": [],
-    "nextAction": "Elementary superconstant lower bound (Erdős pigeonhole ≥ √(n−3/4)−1/2 via max multiplicity of a single distance) would be the first genuinely nontrivial floor; needs the max-degree-of-a-distance counting argument.",
+    "nextAction": "Genuine next target: prove general-position configurations exist for all n (Injective ∧ NoThreeCollinear ∧ NoFourConcyclic) — makes h(n) a true minimum over a nonempty set. Parent Erdős #98 (h(n)/n→∞) OPEN.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -79,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.785Z",
-  "lastUpdate": "2026-07-20T00:00:00.000Z",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6
 }
