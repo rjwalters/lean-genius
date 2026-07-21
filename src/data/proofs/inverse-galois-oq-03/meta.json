@@ -68,51 +68,84 @@
       "id": "sec-overview",
       "title": "Overview: The Monster 𝕄 as a Galois Group over ℚ (Resolved Sporadic Case)",
       "startLine": 1,
-      "endLine": 76,
+      "endLine": 75,
       "summary": "Imports (Mathlib, InverseGalois, InverseGaloisOQ01), module docstring, and setup (open scoped Classical; namespace InverseGaloisOQ03). Unlike the Mathieu group M₂₃ (OQ-02, still open), the Monster 𝕄 — the largest sporadic simple group, |𝕄| = 2⁴⁶·3²⁰·5⁹·7⁶·11²·13³·17·19·23·29·31·41·47·59·71 — IS known to be a Galois group over ℚ, established by Thompson (1984) via his rigidity criterion (rigid rational triple 2A,3B,29A). Since the smallest faithful permutation representation has degree ~10¹⁹, 𝕄 is axiomatized as an abstract finite group. From 6 cited axioms (Monster type/group/finiteness, Monster_card, Monster_isSimple, Monster_realizable_over_Q) the file derives with no further assumptions: the order value, nontriviality, non-primality, divisibility by each prime factor (Sylow inputs), non-commutativity, perfectness [𝕄,𝕄]=𝕄, non-solvability, and that 𝕄 lies beyond Shafarevich's solvable-group theorem.",
       "mathContext": "The positive bookend to OQ-02: the same simplicity ⇒ non-solvability ⇒ beyond-Shafarevich machinery, but with an affirmative realizability answer via Thompson's rigidity method. NOTE: this entry is honestly AXIOMATIZED — the 6 classification-of-finite-simple-groups / Thompson inputs are cited facts, not reproved; see the entry's status and assumptions fields."
     },
     {
       "id": "axiomatization",
       "title": "Part I: Axiomatization of the Monster 𝕄",
-      "startLine": 77,
+      "startLine": 76,
       "endLine": 106,
       "summary": "Axiomatizes 𝕄 as an abstract finite group with its order (Griess 1982) and simplicity (CFSG)"
     },
     {
       "id": "order-properties",
       "title": "Part II: Order-Theoretic Properties",
-      "startLine": 108,
-      "endLine": 151,
+      "startLine": 107,
+      "endLine": 173,
       "summary": "Prime factorization |𝕄| = 2⁴⁶·3²⁰·5⁹·7⁶·11²·13³·17·19·23·29·31·41·47·59·71, non-primality, divisibility"
     },
     {
       "id": "non-solvability",
       "title": "Part III: Non-Solvability — The Core Structural Result",
-      "startLine": 153,
-      "endLine": 220,
+      "startLine": 174,
+      "endLine": 242,
       "summary": "𝕄 is non-commutative, perfect ([𝕄,𝕄] = 𝕄), has trivial center (Z(𝕄) = ⊥), and is not solvable — all derived without sorry"
     },
     {
       "id": "shafarevich-gap",
       "title": "Part IV: Position in the Inverse Galois Program",
-      "startLine": 222,
-      "endLine": 235,
+      "startLine": 243,
+      "endLine": 257,
       "summary": "Since 𝕄 is non-solvable, Shafarevich's theorem does not cover it; realization needs the rigidity method"
     },
     {
       "id": "realizability",
       "title": "Part V: The Realizability Theorem (Thompson 1984)",
-      "startLine": 237,
-      "endLine": 288,
+      "startLine": 258,
+      "endLine": 329,
       "summary": "Thompson's theorem (axiom): 𝕄 is realizable over ℚ; the explicit contrast with the open M₂₃ case; and the extracted numerical consequence that any realizing field K has degree [K:ℚ] = |𝕄| over ℚ"
     },
     {
+      "id": "field-side-degree",
+      "title": "Part VI: Field-Side Consequences of the Realizing Degree",
+      "startLine": 330,
+      "endLine": 368,
+      "summary": "Transports the Part II arithmetic of |𝕄| to the realizing field K/ℚ via [K:ℚ] = |𝕄| (from Part V). Monster_realizing_field_not_solvable: Gal(K/ℚ) is non-solvable. Monster_realizing_field_finrank_factored: [K:ℚ] carries the full prime factorization of |𝕄|. Monster_realizing_field_finrank_not_prime: [K:ℚ] is not prime. No new assumptions beyond the six axioms.",
+      "mathContext": "With $[K:\\mathbb{Q}] = |\\mathbb{M}|$, every arithmetic fact about $|\\mathbb{M}|$ transports to the degree: $\\mathrm{Gal}(K/\\mathbb{Q})$ non-solvable, $[K:\\mathbb{Q}]$ non-prime, and its factorization is $2^{46}3^{20}5^{9}\\cdots 71$."
+    },
+    {
       "id": "sporadic-census",
-      "title": "Part VI: The Sporadic Realizability Census",
-      "startLine": 290,
-      "endLine": 303,
-      "summary": "25 sporadic groups realized over ℚ (including 𝕄) + 1 open (M₂₃) = 26"
+      "title": "Part VII: The Sporadic Realizability Census and Small Element Orders",
+      "startLine": 369,
+      "endLine": 421,
+      "summary": "sporadic_census (25 sporadic groups realized over ℚ including 𝕄, plus the still-open M₂₃ = 26). Under '### More element orders (Cauchy)': existence of elements of order 3, 5, 7 (Cauchy from the prime factorization), Monster_not_cyclic and Monster_not_nilpotent (structural refinements from multi-prime order).",
+      "mathContext": "Cauchy's theorem: each prime $p \\mid |\\mathbb{M}|$ yields an element of order $p$ (orders $3,5,7,\\ldots$). Non-cyclic and non-nilpotent follow since $\\mathbb{M}$ is a non-abelian simple group with several prime divisors."
+    },
+    {
+      "id": "uniform-cauchy-rigid-triple",
+      "title": "Part VIII: The Uniform Cauchy Principle and Thompson's Rigid Triple (2A, 3B, 29A)",
+      "startLine": 422,
+      "endLine": 512,
+      "summary": "Monster_cauchy: the uniform statement that every prime dividing |𝕄| is realised as an element order. Completes the field-side transport: 11 ∣ |𝕄|, 13 ∣ |𝕄|, elements of order 11 and 13, and [K:ℚ] even / 71 ∣ [K:ℚ]. Under '### Thompson's rigid triple (2A, 3B, 29A)': 29 ∣ |𝕄|, an element of order 29, and Monster_rigid_triple_orders — the element-order skeleton of the rigidity data Thompson used.",
+      "mathContext": "Uniform Cauchy: $\\forall p\\ \\text{prime}, p \\mid |\\mathbb{M}| \\Rightarrow \\exists g,\\ \\mathrm{ord}(g) = p$. Thompson's rigid rational triple $(2A, 3B, 29A)$ — conjugacy classes of orders $2, 3, 29$ generating $\\mathbb{M}$ — is the input to his rigidity realizability criterion."
+    },
+    {
+      "id": "not-prime-power",
+      "title": "Part IX: 𝕄 Is Not a Prime Power — Genuinely Multi-Prime Sylow Theory",
+      "startLine": 513,
+      "endLine": 573,
+      "summary": "Monster_not_prime_power: |𝕄| is divisible by more than one prime, so 𝕄 is not a p-group. Monster_not_pgroup (for every prime p) and Monster_two_le_card_primeFactors (at least two prime factors) formalize that Sylow theory for 𝕄 is genuinely multi-prime.",
+      "mathContext": "$|\\mathbb{M}| = 2^{46}3^{20}\\cdots 71$ has $15$ distinct prime factors, so $\\mathbb{M}$ is not a $p$-group for any $p$ and $|\\mathrm{primeFactors}(|\\mathbb{M}|)| \\ge 2$."
+    },
+    {
+      "id": "perfectness-no-abelian-quotient",
+      "title": "Perfectness: No Nontrivial Abelian Quotient and Its Field-Side Consequence",
+      "startLine": 574,
+      "endLine": 640,
+      "summary": "Monster_no_nontrivial_abelian_quotient: any homomorphism from 𝕄 to a commutative group is trivial (𝕄 is perfect, [𝕄,𝕄] = 𝕄). Monster_realizing_field_gal_commutator_eq_top: the field-side analogue — the commutator subgroup of Gal(K/ℚ) is the whole group, so K/ℚ has no nontrivial abelian sub-extension fixed setwise. (Labeled 'Part VII' in the source — a numbering artifact.)",
+      "mathContext": "Perfect: $[\\mathbb{M},\\mathbb{M}] = \\mathbb{M}$, so $\\mathrm{Hom}(\\mathbb{M}, A) = \\{1\\}$ for abelian $A$. Transported: $[\\mathrm{Gal}(K/\\mathbb{Q}), \\mathrm{Gal}(K/\\mathbb{Q})] = \\mathrm{Gal}(K/\\mathbb{Q})$."
     }
   ],
   "conclusion": {
