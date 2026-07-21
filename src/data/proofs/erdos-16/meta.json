@@ -183,15 +183,23 @@
       "id": "assembling-the-gears",
       "title": "Assembling the Gears: The Full Covering Obstruction (Axiom-Free)",
       "startLine": 453,
-      "endLine": 555,
+      "endLine": 554,
       "summary": "Runs the full covering system of the *exponent*: the six classes k ≡ 0 (2), 0 (3), 1 (4), 3 (8), 7 (12), 23 (24) cover ℤ, each closed by a prime whose order of 2 equals that modulus — 3, 7, 5, 17, 13, 241. The order gears two_pow_two_modEq_three, two_pow_three_modEq_seven, two_pow_four_modEq_five, two_pow_eight_modEq_seventeen, two_pow_twelve_modEq_thirteen, two_pow_twentyfour_modEq_241 (all by decide/norm_num) supply the third table column. The assembled theorem covering_obstruction_not_isRomanoff shows any n meeting the six residues n ≡ 1(3),1(7),2(5),8(17),11(13),121(241) and the size hypothesis (n − 2^k > 241 for all valid k) is not Romanoff, and covering_progression_mem_exceptionalSet packages the odd such n as members of ExceptionalSet — the membership form of Erdős's 1950 theorem that the exceptional set contains a full CRT arithmetic progression mod 3·5·7·13·17·241. All axiom-free.",
       "mathContext": "Six primes with $\\text{ord}_p(2)=d$ close a covering system of the exponent $k$; by CRT the progression $n \\equiv a \\pmod{3\\cdot5\\cdot7\\cdot13\\cdot17\\cdot241}$ (odd, large) makes every $n-2^k$ composite, so the whole progression lies in $\\text{ExceptionalSet}$ — Erdős (1950), assembled unconditionally modulo one explicit size hypothesis."
     },
     {
+      "id": "infinite-progression",
+      "title": "Erdős's Infinite Arithmetic Progression: The Exceptional Set is Infinite",
+      "startLine": 555,
+      "endLine": 613,
+      "summary": "Promotes the CRT membership form into an unconditional infinitude result. exists_exceptional_gt: for every bound B there is an exceptional n > B, obtained by picking a member of the covering progression large enough that the size hypothesis (n − 2^k composite for every valid k) holds inside the confining window. exceptionalSet_infinite: ExceptionalSet.Infinite follows immediately, since arbitrarily large exceptional integers exist — the full Erdős (1950) theorem that infinitely many odd numbers are not of the form 2^k + p, proved axiom-free.",
+      "mathContext": "From the covering progression modulo $3\\cdot5\\cdot7\\cdot13\\cdot17\\cdot241$ one extracts, above any bound $B$, an odd $n$ with every $n-2^k$ composite; hence $\\text{ExceptionalSet}$ is unbounded and therefore infinite (Erdős 1950), with no axioms."
+    },
+    {
       "id": "summary",
       "title": "Summary",
-      "startLine": 556,
-      "endLine": 582,
+      "startLine": 614,
+      "endLine": 640,
       "summary": "Closing prose: Problem #16 is SOLVED (disproved by Chen 2023). Recap of Romanoff (1934, positive density are representable), Erdős (1950, exceptional set contains an AP), Chen (2023, not a single AP + noise); the exceptional set has small positive density (~0.09) and complex multi-progression structure. References including OEIS A006285.",
       "mathContext": "Status recap: Erdős #16 disproved; the exceptional set has density $\\approx 0.09$, contains arithmetic progressions via covering congruences, but is not captured by any single progression up to density 0."
     }
