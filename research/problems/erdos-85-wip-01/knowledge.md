@@ -122,3 +122,43 @@ non-edge (`C4_not_adj_zero_two`), `containsC4_mono` (a C₄ copy survives adding
 injectivity). Note: `decide` fails on `C4.Adj 0 1` (structure-literal Adj field lacks a
 Decidable instance) — use `by simp [C4]`. Deep results (asymptotics, f(4)=2, Ramsey
 connection) remain documented-only. Meta synced (theoremCount 0 → 7, lineCount 184 → 230).
+
+---
+
+## Session note (2026-07-21, researcher-1): general cycle lower bound f(n) ≥ 3 for all n ≥ 5
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (verified, 0-axiom).
+
+Generalised the single-point C₅ witness `three_le_minDegreeForC4_five` (f(5) ≥ 3, kernel
+`decide`) to the **general lower bound `three_le_minDegreeForC4 : ∀ n ≥ 5, 3 ≤ minDegreeForC4 n`**.
+The `decide` witness does not scale to variable `n`, so the C₄-freeness of the `n`-cycle is
+proved **structurally** in `cycleGraph_not_containsC4`:
+
+- A `C₄`-copy is an injection `f : Fin 4 ↪ Fin n` with the four cycle edges adjacent, i.e.
+  each consecutive difference `f (i+1) − f i` is `±1` in the additive group `Fin n`
+  (`cycleGraph_adj : Adj u v ↔ u − v = 1 ∨ v − u = 1`).
+- The four differences telescope to `0` (`by ring`). Injectivity of the two diagonals
+  `f 2 − f 0` and `f 3 − f 1` forces all three interior steps to share one sign
+  (`a+b ≠ 0 ∧ a,b ∈ {±1} ⟹ a = b`), so the closing difference is `±3`.
+- But the closing edge forces it to be `±1`, giving `2 = 0` or `4 = 0` in `Fin n` —
+  impossible once `n ≥ 5`. (Genuinely needs `n ≥ 5`: `cycleGraph 4` *is* a `C₄`.)
+
+Also added `two_le_cycleGraph_minDegree` (Cₙ is 2-regular for n ≥ 3) and assembled the
+threshold theorem exactly as the `_five` version.
+
+### Lean gotcha (recorded)
+`Fin n` has **no global `CommRing`**; `Fin.instCommRing` is a *scoped* instance gated on
+`[NeZero n]`. To use `ring`/`linear_combination` on cycle differences, add
+`open Fin.CommRing in` before the theorem and `haveI : NeZero (m + 2) := ⟨by omega⟩`.
+The `(k : Fin (m+2)).val = k` numeral facts close by `simp; omega` (needs `m ≥ 3`).
+
+### Verification
+Host-verified (`lake env lean`, Lean v4.31.0). `#print axioms` for all three new theorems =
+`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`.
+theoremCount 16 → 19, lineCount 383 → 496.
+
+### Next
+- **f(4) = 2 upper half** (∀ G on Fin 4, minDeg ≥ 2 ⟹ C₄; Dirac at n=4) — the
+  `decide`-over-all-graphs route is blocked by the `[DecidableRel G.Adj]` instance binder;
+  needs a direct 2-regular ⇒ Hamiltonian argument or a `Fintype (SimpleGraph (Fin 4))` bridge.
+- √n scale needs Kővári–Sós–Turán (deep). Monotonicity f(n+1) ≥ f(n) genuinely open.
