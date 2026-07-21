@@ -52,82 +52,90 @@
     {
       "id": "set-families",
       "title": "Set Families on {1,...,n}",
-      "summary": "SetFamily, powerSet definitions",
-      "startLine": 60,
-      "endLine": 76,
-      "mathContext": "Formal definition: SetFamily, powerSet definitions"
+      "summary": "Module setup and basic definitions: SetFamily (a Finset of subsets of Fin n), the powerSet, and powerSet_card establishing there are 2^n subsets.",
+      "startLine": 1,
+      "endLine": 46,
+      "mathContext": "Formal definitions: SetFamily, powerSet, powerSet_card"
     },
     {
       "id": "union-free",
       "title": "Union-Free Families",
-      "summary": "familyUnion, isUnionOf, isUnionFree, equivalence proof",
-      "startLine": 77,
-      "endLine": 106,
-      "mathContext": "Verified: familyUnion, isUnionOf, isUnionFree, equivalence proof"
+      "summary": "familyUnion and isUnionOf, then two equivalent formulations isUnionFree/isUnionFree' with the equivalence proof unionFree_equiv.",
+      "startLine": 47,
+      "endLine": 80,
+      "mathContext": "Formal definitions + equivalence: familyUnion, isUnionOf, isUnionFree, isUnionFree', unionFree_equiv"
     },
     {
       "id": "extremal",
       "title": "The Extremal Function F(n)",
-      "summary": "unionFreeMax definition and achievability",
-      "startLine": 107,
-      "endLine": 125,
-      "mathContext": "Formal definition: unionFreeMax definition and achievability"
+      "summary": "The extremal function unionFreeMax as the supremum of union-free family sizes, with unionFree_sizes_bddAbove and unionFree_sizes_nonempty justifying the supremum.",
+      "startLine": 81,
+      "endLine": 101,
+      "mathContext": "Formal definition + support lemmas: unionFree_sizes_bddAbove, unionFree_sizes_nonempty, unionFreeMax"
     },
     {
       "id": "antichains",
       "title": "Antichains are Union-Free",
-      "summary": "isAntichain, antichain_unionFree proof",
-      "startLine": 126,
-      "endLine": 151,
-      "mathContext": "Verified: isAntichain, antichain_unionFree proof"
+      "summary": "isAntichain and the key lemma antichain_unionFree: every antichain is union-free, since a union of ≥2 distinct sets strictly contains each member.",
+      "startLine": 102,
+      "endLine": 136,
+      "mathContext": "Verified: isAntichain, mem_sub_familyUnion, antichain_unionFree"
     },
     {
       "id": "middle-layer",
       "title": "The Middle Layer",
-      "summary": "layer, middleLayer, middleLayer_antichain, middleLayer_unionFree",
-      "startLine": 152,
-      "endLine": 187,
-      "mathContext": "Mathematical content: layer, middleLayer, middleLayer_antichain, middleLayer_unionFree"
+      "summary": "The layer/middleLayer families with their cardinalities (layer_card = C(n,k), middleLayer_card = C(n,⌊n/2⌋)), and that the middle layer is an antichain, hence union-free.",
+      "startLine": 137,
+      "endLine": 168,
+      "mathContext": "Verified: layer, middleLayer, layer_card, middleLayer_card, middleLayer_antichain, middleLayer_unionFree"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound: F(n) ≥ C(n, n/2)",
-      "summary": "unionFreeMax_ge_middle",
-      "startLine": 188,
-      "endLine": 204,
-      "mathContext": "Mathematical content: unionFreeMax_ge_middle"
+      "summary": "unionFreeMax_ge_middle: the middle layer witnesses the lower bound F(n) ≥ C(n, ⌊n/2⌋).",
+      "startLine": 169,
+      "endLine": 180,
+      "mathContext": "Verified: unionFreeMax_ge_middle"
+    },
+    {
+      "id": "problem-447",
+      "title": "Connection to Problem 447: 2-Union-Free Families",
+      "summary": "2-union-free families: isTwoUnionOf/isTwoUnionFree, unionFree_implies_twoUnionFree, twoUnionFreeMax with its boundedness, and the problem_447_solution axiom linking to Erdős #447 (Hunter's observation).",
+      "startLine": 181,
+      "endLine": 242,
+      "mathContext": "Axiomatized: isTwoUnionOf, isTwoUnionFree, unionFree_implies_twoUnionFree, twoUnionFreeMax, twoUnionFree_sizes_bddAbove, twoUnionFreeMax_ge, problem_447_solution axiom"
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound: F(n) ≤ C(n, n/2)",
-      "summary": "erdos_kleitman_upper axiom, unionFreeMax_eq_middle",
-      "startLine": 205,
-      "endLine": 221,
-      "mathContext": "Axiomatized: erdos_kleitman_upper axiom, unionFreeMax_eq_middle"
+      "title": "Upper Bound and Exact Value: F(n) = C(n, n/2)",
+      "summary": "hunter_observation and unionFreeMax_eq_middle: combining the lower bound with the Problem 447 upper bound yields the exact value F(n) = C(n, ⌊n/2⌋).",
+      "startLine": 243,
+      "endLine": 263,
+      "mathContext": "Verified: hunter_observation, unionFreeMax_eq_middle"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Form",
-      "summary": "centralBinomial, stirling_central, asymptoticConstant, unionFreeMax_asymptotic",
-      "startLine": 222,
-      "endLine": 255,
-      "mathContext": "Mathematical content: centralBinomial, stirling_central, asymptoticConstant, unionFreeMax_asymptotic"
+      "summary": "centralBinomial and the Stirling-based asymptotics: axioms stirling_central, asymptoticConstant(_pos), and unionFreeMax_asymptotic give F(n) ~ √(2/π) · 2^n / √n.",
+      "startLine": 264,
+      "endLine": 290,
+      "mathContext": "Axiomatized: centralBinomial, stirling_central axiom, asymptoticConstant, asymptoticConstant_pos, unionFreeMax_asymptotic axiom"
     },
     {
       "id": "main-result",
       "title": "The Main Question Answered",
-      "summary": "erdos_1023_question, erdos_1023_solved axiom",
-      "startLine": 256,
-      "endLine": 276,
-      "mathContext": "Axiomatized: erdos_1023_question, erdos_1023_solved axiom"
+      "summary": "erdos_1023_question phrases the conjecture; erdos_1023_solved proves it — now a theorem derived from unionFreeMax_asymptotic, not an axiom.",
+      "startLine": 291,
+      "endLine": 335,
+      "mathContext": "Verified: erdos_1023_question, erdos_1023_solved theorem"
     },
     {
-      "id": "problem-447",
-      "title": "Connection to Problem 447",
-      "summary": "isTwoUnionFree, problem_447_solution axiom, hunter_observation",
-      "startLine": 277,
-      "endLine": 366,
-      "mathContext": "Axiomatized: isTwoUnionFree, problem_447_solution axiom, hunter_observation"
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Closing recap of the result F(n) = C(n, ⌊n/2⌋), its ingredients (Sperner's theorem, antichains, Stirling), and the axiomatized components.",
+      "startLine": 336,
+      "endLine": 374,
+      "mathContext": "Context: closing summary and proof-status notes"
     }
   ],
   "conclusion": {
