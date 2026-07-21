@@ -69,7 +69,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 350,
-    "assumptions": "2 axioms: berend_existence (Berend — for any set S of primes, infinitely many n have all even p-adic valuations for p in S), berend_bounded_gaps (bounded gaps between such n). 0 sorries.",
+    "assumptions": "2 axioms: berend_existence (Berend — for any set S of primes, infinitely many n have all even p-adic valuations for p in S), berend_bounded_gaps (bounded gaps between such n). 0 sorries. Additionally, three illustrative example theorems (example_even_val_2_at_7, example_even_val_3_at_8, example_even_vals_at_31) verify concrete valuations via native_decide, introducing the Lean.ofReduceBool axiom into those results; the main theorem erdos_646 does not depend on them.",
     "mathlib_version": "4.31.0",
     "theoremCount": 10,
     "definitionCount": 6
