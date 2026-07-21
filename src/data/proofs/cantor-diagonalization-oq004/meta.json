@@ -21,11 +21,13 @@
       "extension",
       "open-question"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "No axioms, no sorries. All 3 theorems fully proved. Uses only the foundational propext / Classical.choice / Quot.sound (via the Mathlib cardinal API); no axiom declarations and no assumption-carrying structure fields.",
-    "originalContributions": "Phrases the parent's Cantor obstruction at the cardinal level and shows the resulting strict gap #A < #(A → Prop) re-implies non-surjectivity (not_surjective_of_cardinality_gap), making explicit that the quantitative statement is strictly stronger than the qualitative one. The one-line reduction to Cardinal.cantor via the defeq A → Prop ≡ Set A is the point the parent's bespoke Lawvere development left unstated.",
+    "assumptions": "Core result via Mathlib: the strict gap #A < #(A → Prop) is Mathlib's Cardinal.cantor transported along Cardinal.mk_set (A → Prop is definitionally Set A). No axioms, no sorries. All 3 theorems fully proved. Uses only the foundational propext / Classical.choice / Quot.sound (via the Mathlib cardinal API); no axiom declarations and no assumption-carrying structure fields.",
+    "originalContributions": [
+      "Phrases the parent's Cantor obstruction at the cardinal level and shows the resulting strict gap #A < #(A → Prop) re-implies non-surjectivity (not_surjective_of_cardinality_gap), making explicit that the quantitative statement is strictly stronger than the qualitative one. The one-line reduction to Cardinal.cantor via the defeq A → Prop ≡ Set A is the point the parent's bespoke Lawvere development left unstated."
+    ],
     "mathlib_version": "4.31.0",
     "lineCount": 84,
     "theoremCount": 3,

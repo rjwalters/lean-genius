@@ -24,7 +24,9 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "No axioms, no sorries. All 13 theorems fully proved. Uses only Classical (for a decidability instance inside a by_cases in exists_fixedPointFree_of_ne); no axiom declarations and no assumption-carrying structure fields. #print axioms reports only [propext, Classical.choice, Quot.sound] (several theorems depend on no axioms at all).",
-    "originalContributions": "The sharp characterization reflexive_iff_subsingleton_nonempty (A is reflexive ⟺ A is a nonempty subsingleton) packages the diagonal case of Lawvere's theorem as an iff, making explicit that the terminal object is the only reflexive object of Set — the categorical reason the untyped λ-calculus has no set-theoretic model. The abstract EvalStructure packaging unifies Lawvere, Cantor, and the fixed-point-free obstruction under one lemma.",
+    "originalContributions": [
+      "The sharp characterization reflexive_iff_subsingleton_nonempty (A is reflexive ⟺ A is a nonempty subsingleton) packages the diagonal case of Lawvere's theorem as an iff, making explicit that the terminal object is the only reflexive object of Set — the categorical reason the untyped λ-calculus has no set-theoretic model. The abstract EvalStructure packaging unifies Lawvere, Cantor, and the fixed-point-free obstruction under one lemma."
+    ],
     "mathlib_version": "4.31.0",
     "lineCount": 235,
     "theoremCount": 13,
