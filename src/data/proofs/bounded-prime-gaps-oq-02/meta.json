@@ -134,17 +134,17 @@
     {
       "id": "bv-eh",
       "title": "Bombieri–Vinogradov and Elliott–Halberstam",
-      "summary": "BV := EHAtLevel D (1/2), EH := all levels θ<1, and EH ⟹ BV (and the [1/2,1) restriction)",
+      "summary": "BV := EHAtLevel D (1/2), EH := all levels θ<1. The implication block: eHAtLevel_of_elliottHalberstam (EH gives the bound at every level), bombieriVinogradov_of_elliottHalberstam (EH ⟹ BV), bombieriVinogradov_of_EHAtLevel (for level-monotone D, the bound at any θ≥1/2 already gives BV), and elliottHalberstam_iff_levels_near_one (EH is equivalent to its restriction to levels near 1).",
       "startLine": 95,
-      "endLine": 133,
+      "endLine": 166,
       "mathContext": "$\\mathrm{BV}(D) := \\mathrm{EHAtLevel}(D,1/2)$, $\\mathrm{EH}(D) := \\forall \\theta\\in(0,1),\\ \\mathrm{EHAtLevel}(D,\\theta)$; $\\mathrm{EH}\\Rightarrow\\mathrm{BV}$, and EH is equivalent to its restriction to $\\theta\\in[1/2,1)$."
     },
     {
       "id": "non-vacuity",
       "title": "Non-Vacuity: the Zero Functional",
-      "summary": "The zero functional satisfies the full hierarchy, certifying the predicates are satisfiable",
-      "startLine": 135,
-      "endLine": 154,
+      "summary": "The zero functional satisfies the full hierarchy, certifying the predicates are satisfiable: EHAtLevel_zero (D≡0 meets the level-θ bound at every θ, with C=1), levelMonotone_zero (trivially level-monotone), and elliottHalberstam_zero (D≡0 is a concrete witness that ElliottHalberstam ∧ LevelMonotone is consistent).",
+      "startLine": 167,
+      "endLine": 185,
       "mathContext": "$D\\equiv 0$ is level-monotone and satisfies $\\mathrm{EHAtLevel}$ at every level (take $C=1$, using $x>0$ and $(\\log x)^A>0$ for $x\\ge 2$), hence models the full Elliott–Halberstam hierarchy."
     },
     {
