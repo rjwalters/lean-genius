@@ -85,23 +85,23 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 36,
       "summary": "Module docstring stating the per-class class equation and listing the Mathlib vehicles. Mathlib import, open MulAction Subgroup ConjAct, namespace, and the variable {G : Type*} [Group G].",
       "mathContext": "$|\\mathrm{class}(g)|\\cdot|C_G(g)| = |G|$, so $|\\mathrm{class}(g)| \\mid |G|$."
     },
     {
       "id": "orbit-stabilizer",
       "title": "Orbit–Stabilizer for Conjugation",
-      "startLine": 40,
-      "endLine": 56,
+      "startLine": 37,
+      "endLine": 54,
       "summary": "conjClass_card_mul_card_centralizer: identify the class with the conjugation orbit, rewrite its size as the stabilizer index (index_stabilizer), identify the stabilizer with the centralizer (stabilizer_eq_centralizer), and apply index_mul_card transported along ConjAct.toConjAct.",
       "mathContext": "$|\\mathrm{class}(g)|\\cdot|C_G(g)| = |G|$."
     },
     {
       "id": "index-form",
       "title": "Class Size = Index of the Centralizer",
-      "startLine": 58,
-      "endLine": 66,
+      "startLine": 55,
+      "endLine": 64,
       "summary": "conjClass_card_eq_index_centralizer: |class(g)| = [G : C_G(g)], proved by rewriting through stabilizer_eq_centralizer, orbit_eq_carrier_conjClasses, and index_stabilizer.",
       "mathContext": "$|\\mathrm{class}(g)| = [G : C_G(g)]$."
     },
@@ -109,7 +109,7 @@
       "id": "divisibility",
       "title": "Per-Class Divisibility",
       "startLine": 65,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "conjClass_card_dvd_card: |class(g)| ∣ |G| as an immediate corollary of the product identity, the divisibility witness being the centralizer order as explicit cofactor. This is the per-class form Mathlib leaves implicit and the engine behind the p-group-center and Sylow corollaries.",
       "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$, with cofactor $|C_G(g)|$."
     },
@@ -117,7 +117,7 @@
       "id": "s3-example",
       "title": "Concrete Instance: S₃",
       "startLine": 71,
-      "endLine": 79,
+      "endLine": 81,
       "summary": "The closing example specializes to S₃ = Equiv.Perm (Fin 3) (order 3! = 6 by kernel decide), showing every conjugacy class size divides 6 — the three classes have sizes 1, 2, 3.",
       "mathContext": "$|S_3| = 6$; class sizes $1, 2, 3$ each divide $6$."
     }
