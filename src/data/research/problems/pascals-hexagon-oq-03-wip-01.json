@@ -1,0 +1,57 @@
+{
+  "slug": "pascals-hexagon-oq-03-wip-01",
+  "title": "Steiner (20) and Kirkman (60) Point Counts for the Hexagrammum Mysticum",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\#\\{\\text{Steiner points}\\} = 20, \\qquad \\#\\{\\text{Kirkman points}\\} = 60.",
+    "plain": "Pascal's theorem says the three pairs of opposite sides of a hexagon inscribed",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T20:46:01-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: pascals-hexagon-oq-03-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "projective-geometry",
+    "combinatorics",
+    "hexagrammum-mysticum"
+  ],
+  "relatedProofs": [
+    "pascals-hexagon",
+    "pascals-hexagon-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-11T23:12:11.283Z",
+  "lastUpdate": "2026-07-11T23:12:11.324Z",
+  "significance": 6,
+  "tractability": 4
+}
