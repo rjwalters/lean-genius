@@ -285,13 +285,13 @@ theorem exists_unitDisk_config (n : ℕ) :
   rcases Nat.eq_zero_or_pos n with hn | hn
   · exact ⟨∅, by simp [hn], isInUnitDisk_empty⟩
   · have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
-    have inj : Function.Injective (fun k : ℕ => (((k : ℝ) / n, (0 : ℝ)) : ℝ × ℝ)) := by
+    have inj : Function.Injective (fun k : ℕ => ((k : ℝ) / n, (0 : ℝ))) := by
       intro a b hab
       simp only [Prod.mk.injEq] at hab
       have h1 := hab.1
       field_simp at h1
       exact_mod_cast h1
-    refine ⟨(Finset.range n).image (fun k => ((k : ℝ) / n, (0 : ℝ))), ?_, ?_⟩
+    refine ⟨(Finset.range n).image (fun k : ℕ => ((k : ℝ) / n, (0 : ℝ))), ?_, ?_⟩
     · rw [Finset.card_image_of_injective _ inj, Finset.card_range]
     · intro p hp
       simp only [Finset.mem_image, Finset.mem_range] at hp
@@ -299,7 +299,8 @@ theorem exists_unitDisk_config (n : ℕ) :
       have hkn : (k : ℝ) / n < 1 := by
         rw [div_lt_one (by exact_mod_cast hn)]
         exact_mod_cast hk
-      have hknneg : 0 ≤ (k : ℝ) / n := by positivity
+      have hknneg : 0 ≤ (k : ℝ) / n :=
+        div_nonneg (Nat.cast_nonneg k) (Nat.cast_nonneg n)
       simp only
       nlinarith [hkn, hknneg]
 
@@ -351,8 +352,9 @@ theorem heilbronn_succ_le (n : ℕ) (hn : 3 ≤ n) :
     rintro α ⟨P, hcard, hdisk, hbound⟩
     have hpos : 0 < P.card := by omega
     obtain ⟨x, hx⟩ := Finset.card_pos.mp hpos
-    refine ⟨P.erase x, ?_, hdisk.subset (Finset.erase_subset x P), ?_⟩
+    refine ⟨P.erase x, ?_, IsInUnitDisk.subset hdisk (Finset.erase_subset x P), ?_⟩
     · rw [Finset.card_erase_of_mem hx, hcard]
+      omega
     · intro p hp q hq r hr hpq hqr hpr
       exact hbound p (Finset.mem_of_mem_erase hp) q (Finset.mem_of_mem_erase hq)
         r (Finset.mem_of_mem_erase hr) hpq hqr hpr
