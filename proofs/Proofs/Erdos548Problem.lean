@@ -284,9 +284,9 @@ axiom erdos_gallai_matching (n k : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel 
 /-- The Turán number for paths. -/
 noncomputable def turanPath (n k : ℕ) : ℕ := extremalNumber n (pathGraph k)
 
-/-- Turán number for P_k is (k-2)(n-1)/2 for n ≥ k-1. -/
+/-- Turán number for P_k is (k-2)n/2 for n ≥ k-1 (Erdős–Gallai). -/
 axiom turan_path_formula (n k : ℕ) (hn : n ≥ k - 1) (hk : k ≥ 2) :
-    turanPath n k = (k - 2) * (n - 1) / 2
+    turanPath n k = (k - 2) * n / 2
 
 /- ## Part X: Open Status -/
 
