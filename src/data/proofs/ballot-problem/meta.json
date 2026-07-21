@@ -142,6 +142,22 @@
       "mathContext": "Unanimous ($q = 0$): $\\frac{p-0}{p+0} = 1$. Tied ($p = q$): $\\frac{p-p}{2p} = 0$. These verify the formula at its extremes: $P \\in [0, 1]$ for $0 \\leq q \\leq p$. Numerical examples: $(2,1) \\to 1/3$, $(3,1) \\to 1/2$, $(4,2) \\to 1/3$, $(5,2) \\to 3/7$."
     },
     {
+      "id": "concrete-values",
+      "title": "Concrete Probability Values",
+      "startLine": 168,
+      "endLine": 190,
+      "summary": "Worked numerical instances of the formula $(p-q)/(p+q)$, each checked by norm_num.",
+      "mathContext": "The formula is exercised on specific counts via `example : (p - q : \\mathbb{Q}) / (p + q) = \\ldots`: $(2,1)\\to\\tfrac13$, $(3,1)\\to\\tfrac12$, $(4,2)\\to\\tfrac13$, $(5,2)\\to\\tfrac37$, $(10,4)\\to\\tfrac37$. The $(2,1)$ case is spelled out combinatorially: of the $\\binom{3}{2}=3$ sequences only $[+1,+1,-1]$ stays strictly positive, giving $\\tfrac13$. Note $(4,2)$ and $(2,1)$, and $(10,4)$ and $(5,2)$, share a value — the probability depends only on the ratio-like reduction of $(p-q)/(p+q)$."
+    },
+    {
+      "id": "lattice-paths-catalan",
+      "title": "Connection to Lattice Paths and Catalan Numbers",
+      "startLine": 191,
+      "endLine": 215,
+      "summary": "Interprets vote-counting as a $\\pm 1$ lattice path / simple random walk and relates the weakly-ahead count to Catalan numbers.",
+      "mathContext": "Counting ballots as a lattice path, the number of weakly-ahead paths at $p=q=n$ is the Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$; the ballot problem counts the *strictly* ahead paths by the same reflection technique. Equivalently the count is a simple random walk on $\\mathbb{Z}$ starting at $0$ with $+1$ steps (prob. $p/(p+q)$) and $-1$ steps (prob. $q/(p+q)$) conditioned to stay positive — a model recurring in barrier problems for stock prices, non-emptying queues, and branching processes."
+    },
+    {
       "id": "reflection-principle",
       "title": "The Reflection Principle",
       "startLine": 216,
