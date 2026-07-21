@@ -861,4 +861,203 @@ theorem transfiniteDiameterN_four_mem_Icc :
   rw [transfiniteDiameterN_two] at h32
   linarith
 
+/-! ### The general lower bound `dₙ ≥ n^{1/(n-1)}`: the `n`-th roots of unity
+
+The `n = m+2` complex `n`-th roots of unity `ζᵏ` (`ζ = exp(2πi/n)`, a primitive
+`n`-th root) all lie on the unit circle, so they form a configuration in the closed
+unit disc.  Their spread product is the **Vandermonde discriminant** `n^{n/2}`:
+
+* For each fixed index `i`, the product over `j ≠ i` telescopes — after the
+  translation `j ↦ j - i` on `Fin n` and factoring out the unit `ζⁱ` — to
+  `∏_{k=1}^{n-1}‖1 - ζᵏ‖ = |∏_{k=1}^{n-1}(1 - ζᵏ)| = |n| = n`, using the classical
+  identity `∏_{k=1}^{n-1}(1 - ζᵏ) = n` (`IsPrimitiveRoot.prod_one_sub_pow_eq_order`).
+* Multiplying `∏_{j≠i} = n` over the `n` values of `i` gives the *ordered*
+  off-diagonal product `n^n`, which equals `(spreadProduct)²` because the lower and
+  upper triangles `{j < i}` and `{i < j}` carry equal products (`‖zᵢ-zⱼ‖ = ‖zⱼ-zᵢ‖`).
+
+Hence `spreadProduct = n^{n/2}` and
+`dₙ(roots of unity) = (n^{n/2})^{2/(n(n-1))} = n^{1/(n-1)}`, giving the sharp lower
+bound `dₙ ≥ n^{1/(n-1)}`.  Passing to the limit, every term of `d = infₙ dₙ` is `≥ 1`
+(`n^{1/(n-1)} ≥ 1`), so `d ≥ 1` — the logarithmic capacity of the closed unit disc.
+This generalises the exact terms `d₂ = 2`, `d₃ ≥ √3`, `d₄ ≥ 4^{1/3}` above.  The
+matching Fekete–Szegő *upper* bound (`d = 1` exactly) is not established here. -/
+
+/-- The `n`-point **roots-of-unity configuration** `k ↦ ζᵏ` for a primitive root `ζ`. -/
+noncomputable def rootConfig (ζ : ℂ) (N : ℕ) : Fin N → ℂ := fun k => ζ ^ (k : ℕ)
+
+section RootsOfUnity
+
+open Complex
+
+variable {m : ℕ} {ζ : ℂ}
+
+/-- Every power of a primitive `(m+2)`-th root of unity has modulus `1`. -/
+private theorem rou_norm (hζ : IsPrimitiveRoot ζ (m + 2)) (k : ℕ) : ‖ζ ^ k‖ = 1 := by
+  rw [norm_pow, Complex.norm_eq_one_of_pow_eq_one hζ.pow_eq_one (by omega), one_pow]
+
+/-- Powers of `ζ` (order `m+2`) only depend on the exponent modulo `m+2`. -/
+private theorem rou_mod (hζ : IsPrimitiveRoot ζ (m + 2)) (a : ℕ) :
+    ζ ^ (a % (m + 2)) = ζ ^ a := by
+  conv_rhs => rw [← Nat.div_add_mod a (m + 2)]
+  rw [pow_add, pow_mul, hζ.pow_eq_one, one_pow, one_mul]
+
+/-- **Core discriminant value.**  `∏_{d ≠ 0} ‖1 - ζᵈ‖ = m + 2` over `Fin (m+2)`,
+the modulus of the classical identity `∏_{k=1}^{n-1}(1 - ζᵏ) = n`. -/
+private theorem prod_erase_zero (hζ : IsPrimitiveRoot ζ (m + 2)) :
+    ∏ d ∈ (Finset.univ : Finset (Fin (m + 2))).erase 0, ‖1 - ζ ^ (d : ℕ)‖ = ((m : ℝ) + 2) := by
+  have hreindex : ∏ d ∈ (Finset.univ : Finset (Fin (m + 2))).erase 0, ‖1 - ζ ^ (d : ℕ)‖
+      = ∏ k ∈ Finset.range (m + 1), ‖1 - ζ ^ (k + 1)‖ := by
+    apply Finset.prod_nbij' (fun d => (d : ℕ) - 1) (fun k => ((k + 1 : ℕ) : Fin (m + 2)))
+    · intro d _
+      simp only [Finset.mem_range]
+      have := d.isLt; omega
+    · intro k hk
+      simp only [Finset.mem_range] at hk
+      simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+      intro hcontra
+      have hv : ((k + 1 : ℕ) : Fin (m + 2)).val = k + 1 := by
+        rw [Fin.val_natCast]; exact Nat.mod_eq_of_lt (by omega)
+      rw [hcontra, Fin.val_zero] at hv; omega
+    · intro d hd
+      simp only [Finset.mem_erase, Finset.mem_univ, and_true] at hd
+      have hpos : 1 ≤ (d : ℕ) := by
+        rcases Nat.eq_zero_or_pos (d : ℕ) with h | h
+        · exact absurd (Fin.val_eq_zero_iff.mp h) hd
+        · exact h
+      rw [Nat.sub_add_cancel hpos, Fin.cast_val_eq_self]
+    · intro k hk
+      simp only [Finset.mem_range] at hk
+      rw [Fin.val_natCast, Nat.mod_eq_of_lt (by omega)]
+    · intro d hd
+      simp only [Finset.mem_erase, Finset.mem_univ, and_true] at hd
+      have hpos : 1 ≤ (d : ℕ) := by
+        rcases Nat.eq_zero_or_pos (d : ℕ) with h | h
+        · exact absurd (Fin.val_eq_zero_iff.mp h) hd
+        · exact h
+      rw [Nat.sub_add_cancel hpos]
+  rw [hreindex, ← norm_prod, hζ.prod_one_sub_pow_eq_order]
+  rw [show ((m + 1 : ℕ) : ℂ) + 1 = ((m + 2 : ℕ) : ℂ) by push_cast; ring, Complex.norm_natCast]
+  push_cast; ring
+
+/-- **Per-index spread.**  For each index `i`, `∏_{j ≠ i} ‖ζⁱ - ζʲ‖ = m + 2`:
+after translating `j ↦ j - i` and pulling out the unit `ζⁱ`, this is `prod_erase_zero`. -/
+private theorem prod_erase_root (hζ : IsPrimitiveRoot ζ (m + 2)) (i : Fin (m + 2)) :
+    ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i, ‖ζ ^ (i : ℕ) - ζ ^ (j : ℕ)‖
+      = ((m : ℝ) + 2) := by
+  have hfactor : ∀ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+      ‖ζ ^ (i : ℕ) - ζ ^ (j : ℕ)‖ = ‖1 - ζ ^ ((j - i : Fin (m + 2)) : ℕ)‖ := by
+    intro j _
+    have key : ζ ^ (i : ℕ) * ζ ^ ((j - i : Fin (m + 2)) : ℕ) = ζ ^ (j : ℕ) := by
+      rw [← pow_add, ← rou_mod hζ ((i : ℕ) + ((j - i : Fin (m + 2)) : ℕ))]
+      congr 1
+      rw [← Fin.val_add]
+      congr 1
+      abel
+    have harg : ζ ^ (i : ℕ) - ζ ^ (j : ℕ)
+        = ζ ^ (i : ℕ) * (1 - ζ ^ ((j - i : Fin (m + 2)) : ℕ)) := by
+      rw [mul_sub, mul_one, key]
+    rw [harg, norm_mul, rou_norm hζ, one_mul]
+  -- translation reindex `Fin (m+2) → Fin (m+2)`, `j ↦ j - i`, sends `erase i` to `erase 0`
+  have T : Fin (m + 2) ≃ Fin (m + 2) :=
+    ⟨fun j => j - i, fun d => d + i, fun j => by abel, fun d => by abel⟩
+  rw [Finset.prod_congr rfl hfactor,
+    Finset.prod_equiv T
+      (fun a => by
+        simp only [Finset.mem_erase, Finset.mem_univ, and_true, T, Equiv.coe_fn_mk, sub_ne_zero])
+      (fun a _ => rfl),
+    prod_erase_zero hζ]
+
+/-- **Vandermonde discriminant of the roots of unity.**  `(spreadProduct)² = n^n`
+for the `n = m+2` roots-of-unity configuration. -/
+private theorem spreadProduct_rootConfig_sq (hζ : IsPrimitiveRoot ζ (m + 2)) :
+    (spreadProduct (rootConfig ζ (m + 2))) ^ 2 = ((m : ℝ) + 2) ^ (m + 2) := by
+  have hsplit : ∀ i : Fin (m + 2),
+      (Finset.univ : Finset (Fin (m + 2))).erase i = Finset.Iio i ∪ Finset.Ioi i := by
+    intro i; ext a
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true, Finset.mem_union, Finset.mem_Iio,
+      Finset.mem_Ioi]
+    exact lt_or_lt_iff_ne.symm
+  have hdisj : ∀ i : Fin (m + 2), Disjoint (Finset.Iio i) (Finset.Ioi i) := by
+    intro i; rw [Finset.disjoint_left]; intro a ha ha'
+    exact absurd (Finset.mem_Iio.mp ha) (not_lt.mpr (le_of_lt (Finset.mem_Ioi.mp ha')))
+  -- lower triangle equals the spread product (via `norm_sub_rev` and Fubini)
+  have hlow : (∏ i, ∏ j ∈ Finset.Iio i, ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
+      = spreadProduct (rootConfig ζ (m + 2)) := by
+    rw [Finset.prod_comm' (s := (Finset.univ : Finset (Fin (m + 2)))) (t := fun i => Finset.Iio i)
+      (t' := (Finset.univ : Finset (Fin (m + 2)))) (s' := fun j => Finset.Ioi j)
+      (fun x y => by
+        simp only [Finset.mem_univ, Finset.mem_Iio, Finset.mem_Ioi, true_and, and_true])]
+    unfold spreadProduct
+    exact Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => norm_sub_rev _ _
+  -- the ordered off-diagonal product is the square of the spread product …
+  have hsq : (∏ i, ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+      ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
+      = (spreadProduct (rootConfig ζ (m + 2))) ^ 2 := by
+    have herase : ∀ i : Fin (m + 2),
+        (∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+          ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
+        = (∏ j ∈ Finset.Iio i, ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖)
+          * (∏ j ∈ Finset.Ioi i, ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖) := by
+      intro i; rw [hsplit i, Finset.prod_union (hdisj i)]
+    rw [Finset.prod_congr rfl (fun i _ => herase i), Finset.prod_mul_distrib, hlow, sq]
+  -- … and it is also `n^n`, since each factor is `n`.
+  have hval : (∏ i, ∏ j ∈ (Finset.univ : Finset (Fin (m + 2))).erase i,
+      ‖rootConfig ζ (m + 2) i - rootConfig ζ (m + 2) j‖) = ((m : ℝ) + 2) ^ (m + 2) := by
+    rw [Finset.prod_congr rfl (fun i _ => prod_erase_root hζ i), Finset.prod_const,
+      Finset.card_univ, Fintype.card_fin]
+  rw [← hsq, hval]
+
+/-- **The `n`-point diameter of the roots of unity is `n^{1/(n-1)}`.** -/
+private theorem discreteDiameter_rootConfig (hζ : IsPrimitiveRoot ζ (m + 2)) :
+    discreteDiameter (rootConfig ζ (m + 2)) = ((m : ℝ) + 2) ^ ((1 : ℝ) / ((m : ℝ) + 1)) := by
+  have hSsq : (spreadProduct (rootConfig ζ (m + 2))) ^ 2 = ((m : ℝ) + 2) ^ (m + 2) :=
+    spreadProduct_rootConfig_sq hζ
+  have hSnn : 0 ≤ spreadProduct (rootConfig ζ (m + 2)) := spreadProduct_nonneg _
+  have hbase : (0 : ℝ) < (m : ℝ) + 2 := by positivity
+  have h1 : (m : ℝ) + 2 ≠ 0 := by positivity
+  have h2 : (m : ℝ) + 1 ≠ 0 := by positivity
+  unfold discreteDiameter
+  set e : ℝ := 2 / (((m + 2 : ℕ) : ℝ) * (((m + 2 : ℕ) : ℝ) - 1)) with he
+  rw [show e = 2 * (e / 2) by ring, Real.rpow_mul hSnn,
+    show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, hSsq,
+    ← Real.rpow_natCast ((m : ℝ) + 2) (m + 2), ← Real.rpow_mul (le_of_lt hbase)]
+  congr 1
+  rw [he]; push_cast; field_simp; ring
+
+/-- **The general lower bound `dₙ ≥ n^{1/(n-1)}`** for the closed unit disc, realised
+by the `n = m+2` roots of unity.  Generalises `d₂ = 2`, `d₃ ≥ √3`, `d₄ ≥ 4^{1/3}`. -/
+theorem transfiniteDiameterN_rootsOfUnity_ge (m : ℕ) :
+    ((m : ℝ) + 2) ^ ((1 : ℝ) / ((m : ℝ) + 1)) ≤ transfiniteDiameterN (m + 2) := by
+  have hζ : IsPrimitiveRoot (Complex.exp (2 * ↑Real.pi * Complex.I / ↑(m + 2))) (m + 2) :=
+    Complex.isPrimitiveRoot_exp (m + 2) (by omega)
+  set ζ := Complex.exp (2 * ↑Real.pi * Complex.I / ↑(m + 2)) with hζdef
+  have hmem : ∀ i, ‖rootConfig ζ (m + 2) i‖ ≤ 1 := fun i => by
+    simp only [rootConfig]; exact le_of_eq (rou_norm hζ (i : ℕ))
+  have hin : ((m : ℝ) + 2) ^ ((1 : ℝ) / ((m : ℝ) + 1)) ∈ unitDiscDiameters (m + 2) :=
+    ⟨rootConfig ζ (m + 2), hmem, discreteDiameter_rootConfig hζ⟩
+  exact le_csSup (unitDiscDiameters_bddAbove (by omega)) hin
+
+/-- **The transfinite diameter of the closed unit disc is `≥ 1`.**  Each term of the
+monotone sequence satisfies `d_{n+2} ≥ (n+2)^{1/(n+1)} ≥ 1`, so its infimum — the
+transfinite diameter — is at least `1`.  Combined with `transfiniteDiameter_mem_Icc`
+(`d ≤ 2`), this pins `d ∈ [1, 2]`; the sharp value `d = 1` (logarithmic capacity) is
+the Fekete–Szegő content and is not established here. -/
+theorem one_le_transfiniteDiameter : (1 : ℝ) ≤ transfiniteDiameter := by
+  rw [transfiniteDiameter]
+  refine le_ciInf (fun n => ?_)
+  have hcast : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have h1 : (1 : ℝ) ≤ ((n : ℝ) + 2) ^ ((1 : ℝ) / ((n : ℝ) + 1)) := by
+    calc (1 : ℝ) = (1 : ℝ) ^ ((1 : ℝ) / ((n : ℝ) + 1)) := (Real.one_rpow _).symm
+      _ ≤ ((n : ℝ) + 2) ^ ((1 : ℝ) / ((n : ℝ) + 1)) :=
+        Real.rpow_le_rpow (by norm_num) (by linarith) (by positivity)
+  exact le_trans h1 (transfiniteDiameterN_rootsOfUnity_ge n)
+
+/-- **The transfinite diameter of the closed unit disc lies in `[1, 2]`.**  Lower bound
+from `one_le_transfiniteDiameter` (roots of unity); upper bound from
+`transfiniteDiameter_mem_Icc`.  The exact value `d = 1` needs the Fekete–Szegő theorem. -/
+theorem transfiniteDiameter_mem_Icc_one_two : transfiniteDiameter ∈ Set.Icc (1 : ℝ) 2 :=
+  ⟨one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc.2⟩
+
+end RootsOfUnity
+
 end Erdos1039TransfiniteDiameter
