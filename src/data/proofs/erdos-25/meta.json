@@ -95,17 +95,25 @@
       "id": "membership-bounds",
       "title": "Basic Membership and Density Bounds",
       "startLine": 118,
-      "endLine": 153,
+      "endLine": 155,
       "summary": "Proves `zero_in_sieved` (0 passes all conditions via `moduli_pos`), `small_in_sieved` (any $m < n_0$ is in $A(\\sigma)$ by monotonicity), and `sieved_set_nonempty` ($\\exists m > 0$ when $n_0 \\ge 2$, using $m = 1$). Notes removal of false `sieve_density_positive` axiom.",
       "mathContext": "Proved: $0 \\in A(\\sigma)$ since $0 < n_i$ for all $i$. For $m < n_0$: $m < n_0 \\le n_i$ by `StrictMono.monotone` and `Nat.zero_le`. When $n_0 \\ge 2$: $1 < n_0 \\le n_i$, so $1 \\in A(\\sigma)$. The former axiom claiming positive density for coprime sieves was false: the prime sieve $\\{p_i\\}$ leaves only $\\{1\\}$, which has density $0$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
-      "startLine": 155,
-      "endLine": 166,
+      "startLine": 156,
+      "endLine": 178,
       "summary": "Proves `sieve_monotone`: removing any modulus $k$ from the sieve enlarges the sieved set, since fewer exclusion conditions means more integers pass. One-line proof: `intro m hm i hi; exact hm i`.",
       "mathContext": "Proved: $A(\\sigma) \\subseteq \\{m : \\forall i \\ne k,\\, m < n_i \\lor m \\not\\equiv a_i \\pmod{n_i}\\}$. This is set-theoretic monotonicity: dropping a universal quantifier condition weakens the constraint. The proof is immediate since if $m$ satisfies all conditions, it satisfies any subset of them."
+    },
+    {
+      "id": "reduction-natural-density",
+      "title": "Section VII: Reduction to Natural Density",
+      "startLine": 179,
+      "endLine": 208,
+      "summary": "sieved_set_logDensity_of_naturalDensity and LogDensityExists_of_naturalDensity: if a sieved set has a natural density d then it has logarithmic density d (natural ⟹ logarithmic), so existence of logarithmic density follows. erdos_25_via_naturalDensity packages this reduction of Erdős Problem 25 to the natural-density statement.",
+      "mathContext": "Natural density $\\Rightarrow$ logarithmic density (with the same value); the log-density existence for congruence-sieved sets reduces to the easier natural-density question."
     }
   ],
   "conclusion": {
