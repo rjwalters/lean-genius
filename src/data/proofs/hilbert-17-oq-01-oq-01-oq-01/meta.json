@@ -214,35 +214,35 @@
       "id": "header",
       "title": "Module header, imports, and the structural idea",
       "startLine": 1,
-      "endLine": 37,
-      "summary": "Docstring framing the sharpening: the parent's symmetric upper bound 2·deg u, 2·deg v ≤ deg p versus the exact certificate pinned down here via the no-collapse fact deg(u²+v²) = 2·max(deg u, deg v). Imports Mathlib and the parent file Proofs.Hilbert17OQ01OQ01, opens Polynomial, and brings in the parent's IsPSD predicate."
+      "endLine": 42,
+      "summary": "Docstring framing the sharpening: the parent's symmetric upper bound 2·deg u, 2·deg v ≤ deg p versus the exact certificate pinned down here via the no-collapse fact deg(u²+v²) = 2·max(deg u, deg v). Imports Mathlib and the parent file Proofs.Hilbert17OQ01OQ01, opens Polynomial, opens namespace Hilbert17OQ01OQ01OQ01, and brings in the parent's IsPSD predicate."
     },
     {
       "id": "coeff-engine",
       "title": "Reading the leading data of a square",
-      "startLine": 39,
-      "endLine": 57,
+      "startLine": 43,
+      "endLine": 61,
       "summary": "coeff_sq_two: for deg w ≤ n, (w²).coeff (2n) = (w.coeff n)². Splits into deg w < n (both sides 0, via natDegree_pow_le) and deg w = n (the leading coefficient, via natDegree_mul / leadingCoeff_mul)."
     },
     {
       "id": "no-collapse",
       "title": "No degree collapse for a sum of two squares",
-      "startLine": 59,
-      "endLine": 99,
+      "startLine": 62,
+      "endLine": 102,
       "summary": "natDegree_sq_add_sq: deg(u² + v²) = 2·max(deg u, deg v). A symmetric helper handles the maximal-degree polynomial; the lower bound exhibits a nonzero coefficient (a positive sum of squares) at index 2·max via le_natDegree_of_ne_zero, the upper bound is natDegree_add_le."
     },
     {
       "id": "even-degree",
       "title": "A nonzero PSD polynomial has even degree",
-      "startLine": 101,
-      "endLine": 106,
+      "startLine": 103,
+      "endLine": 110,
       "summary": "IsPSD.natDegree_even: from a two-squares decomposition p = u² + v², natDegree_sq_add_sq gives deg p = 2·max(deg u, deg v), which is even — the classical parity fact obtained algebraically."
     },
     {
       "id": "leading-positive",
       "title": "A nonzero PSD polynomial has positive leading coefficient",
-      "startLine": 108,
-      "endLine": 122,
+      "startLine": 111,
+      "endLine": 123,
       "summary": "IsPSD.leadingCoeff_pos: at n = ½·deg p the leading coefficient of p = u² + v² equals (u.coeff n)² + (v.coeff n)² via coeff_sq_two — a sum of squares that is ≥ 0 and nonzero since p ≠ 0, hence strictly positive."
     },
     {
@@ -251,6 +251,14 @@
       "startLine": 124,
       "endLine": 202,
       "summary": "univariate_psd_two_sos_degree_exact: for p ≠ 0, the orthogonal rotation (c·a + s·b, c·b − s·a) with c = la/r, s = lb/r, r = √(la² + lb²), of an existing decomposition p = a² + b² gives p = u² + v² with deg v < deg u and 2·deg u = deg p — top coefficient of u is r ≠ 0, of v is 0."
+    },
+    {
+      "id": "sharpness-every-rep",
+      "title": "Sharpness in every representation and the asymmetric normal form",
+      "startLine": 203,
+      "endLine": 329,
+      "summary": "Recovered from PR #31649, this block pins down what happens in ANY sum-of-two-squares representation, plus a standalone reusable rotation. two_sos_max_degree_eq: in any p = u² + v², the larger summand has degree exactly ½·deg p (2·max(deg u, deg v) = deg p, immediate from natDegree_sq_add_sq) — the parent's upper bound 2·deg u ≤ deg p is attained and cannot be lowered. natDegree_two_sos_even: hence any nonzero sum of two squares has even degree. two_sos_rotate_normalize: a standalone reusable orthogonal rotation (u,v) ↦ (αu+βv, −βu+αv) with α²+β²=1 — the polynomial avatar of multiplying the complex factor u+iv by a unit α−iβ — normalizing any pair with positive larger degree n to u'²+v'² = u²+v² with deg u' = n and deg v' < n. univariate_psd_two_sos_normalized: the asymmetric Fejér–Riesz normal form (natDegree version) — every PSD polynomial of degree ≥ 2 is u² + v² with 2·deg u = deg p and 2·deg v < deg p, combining the max-degree identity with the rotation. Closes namespace Hilbert17OQ01OQ01OQ01 with an axiom audit (#print axioms on the four recovered theorems) confirming only the foundational trio propext / Classical.choice / Quot.sound.",
+      "mathContext": "For any $p = u^2 + v^2 \\ne 0$: $2\\max(\\deg u, \\deg v) = \\deg p$ (so $\\deg p$ is even), and every PSD $p$ with $\\deg p \\ge 2$ admits the asymmetric normal form $p = u^2 + v^2$ with $2\\deg u = \\deg p$ and $2\\deg v < \\deg p$."
     }
   ]
 }
