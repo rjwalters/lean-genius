@@ -70,60 +70,76 @@
   },
   "sections": [
     {
+      "id": "imports-and-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring stating Problem #892 (find conditions on b for a primitive sequence a ≪ b to exist), its OPEN status, and the Erdős / Erdős-Sárközy-Szemerédi references. Imports Mathlib basics (Nat, Real, Finset, Filter, Log) and opens a noncomputable section with classical decidability.",
+      "mathContext": "Sets up the formalization: sequences modeled as $\\mathbb{N} \\to \\mathbb{N}$, with classical logic (`Classical.dec`) enabled for the divisibility and domination predicates that follow."
+    },
+    {
       "id": "primitive-sequences",
-      "title": "Primitive Sequences",
-      "startLine": 29,
-      "endLine": 36,
+      "title": "Section I: Primitive Sequences",
+      "startLine": 28,
+      "endLine": 40,
       "summary": "Defines `IsPrimitive a` as $\\forall i \\neq j,\\, a_i \\nmid a_j$: the sequence forms an antichain in the divisibility partial order. Also defines `IsStrictlyIncreasing a$ as $i < j \\implies a_i < a_j$."
     },
     {
       "id": "domination",
-      "title": "Domination",
-      "startLine": 37,
-      "endLine": 45,
+      "title": "Section II: Domination",
+      "startLine": 41,
+      "endLine": 49,
       "summary": "Defines `IsDominatedBy a b` as $\\exists C > 0,\\, \\forall n,\\, a_n \\leq C \\cdot b_n$."
     },
     {
       "id": "main-problem",
-      "title": "The Problem",
-      "startLine": 46,
-      "endLine": 58,
+      "title": "Section III: The Problem",
+      "startLine": 50,
+      "endLine": 62,
       "summary": "Defines `ErdosProblem892 b`: given strictly increasing $b$, does there exist a strictly increasing, primitive $a$ with $a \\ll b$?"
     },
     {
       "id": "proved-lemmas",
-      "title": "Proved Lemmas",
-      "startLine": 59,
-      "endLine": 152,
+      "title": "Section IV: Necessary Conditions — Proved Lemmas",
+      "startLine": 63,
+      "endLine": 153,
       "summary": "Five fully proved results: (1) `primitive_elements_ge_two`: $a_n \\geq 2$ for primitive $a$. (2) `strict_inc_lower_bound`: $a_n \\geq n+2$. (3) `strict_inc_eventually_ge`: $a$ eventually exceeds any bound. (4) `product_log_comparison`: $a \\cdot \\log a \\leq 2C \\cdot (b \\cdot \\log b)$ when $a \\leq Cb$ and $b \\geq C$. (5) `reciprocal_log_comparison`: division form $1/(b\\log b) \\leq 2C/(a\\log a)$."
     },
     {
       "id": "axioms",
-      "title": "Axioms (Deep Results)",
-      "startLine": 153,
-      "endLine": 178,
-      "summary": "Three axioms for deep number-theoretic results: (1) Erdős 1935 convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$. (2) Erdős-Sárközy-Szemerédi 1967 partial sum growth bound. (3) Primitive counting bound $|A \\cap [N]| \\ll N/\\sqrt{\\log N}$."
+      "title": "Section V: Necessary Conditions — Axioms",
+      "startLine": 154,
+      "endLine": 188,
+      "summary": "The two axioms actually used: (1) `primitive_reciprocal_log_convergent` — Erdős 1935, convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$; (2) `harmonic_log_plus2_diverges` — divergence of $\\sum 1/((n+2)\\log(n+2))$ via Cauchy condensation (not yet in Mathlib). Two further deep results — the Erdős-Sárközy-Szemerédi 1967 partial-sum bound and the primitive counting bound $|A \\cap [N]| \\ll N/\\sqrt{\\log N}$ — are kept only as documentation comments (previously axiomatized but unused), not as axioms."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 179,
-      "endLine": 271,
+      "title": "Section VI: Main Theorem",
+      "startLine": 189,
+      "endLine": 274,
       "summary": "`erdos_1935_necessary`: fully proves $\\sum 1/(b_n \\log b_n) < \\infty$ is necessary for primitive domination. Splits sum at threshold $N_0$ where $a(n) \\geq C^2$; head bounded by finite sum, tail bounded via `reciprocal_log_comparison` and primitive convergence axiom."
     },
     {
       "id": "gcd-condition",
-      "title": "GCD-Free Condition",
-      "startLine": 273,
-      "endLine": 282,
-      "summary": "Defines `IsGCDFree b` and formulates `ErdosProblem892GCDFree`: is the GCD-free condition sufficient for the existence of a primitive dominator?"
+      "title": "Section VII: GCD Condition",
+      "startLine": 275,
+      "endLine": 291,
+      "summary": "Defines `IsGCDFree b` (no distinct $i,j,k$ with $\\gcd(b_i,b_j) = b_k$) and formulates `ErdosProblem892GCDFree`: is the GCD-free condition sufficient for the existence of a strictly increasing primitive dominator $a \\ll b$? This is the specific variant Erdős asked about."
+    },
+    {
+      "id": "concrete-non-example",
+      "title": "Section VIII: Concrete Non-Example",
+      "startLine": 292,
+      "endLine": 333,
+      "summary": "Proves `linear_growth_no_primitive_dominator`: the linear sequence $b(n) = n+2$ admits no primitive dominator. The argument applies the Erdős 1935 necessary condition (`erdos_1935_necessary`) to $b = (\\cdot + 2)$, then derives a contradiction from `harmonic_log_plus2_diverges`, since $\\sum 1/((n+2)\\log(n+2))$ diverges while the necessary condition would bound its partial sums. The `hbound` cast-simplification step is fully proved (no sorry).",
+      "mathContext": "If a primitive $a$ dominated $b(n)=n+2$, then $\\sum 1/((n+2)\\log(n+2)) < \\infty$ by the necessary condition; but this series diverges (Cauchy condensation to $(1/\\log 2)\\sum 1/k$), a contradiction. This exhibits a concrete sequence outside the domination-admissible class, complementing the abstract necessary condition of Section VI."
     }
   ],
   "overview": {
     "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erdős (1935). Erdős proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges — a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erdős, Sárközy, and Szemerédi in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erdős, Sárközy, and Szemerédi (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
     "problemStatement": "Given $b_1 < b_2 < \\cdots$, find necessary and sufficient conditions for the existence of a primitive sequence $a_1 < a_2 < \\cdots$ (no $a_i \\mid a_j$) with $a_n \\ll b_n$.",
     "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
-    "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, and domination via an explicit constant. Six theorems are fully proved, including the key comparison bound and the Erdős 1935 necessary condition. The proof of `erdos_1935_necessary` splits the sum at threshold $N_0$ where $a(n) \\geq C^2$: the head is bounded by a finite constant, the tail uses `reciprocal_log_comparison` to reduce to the convergent series $\\sum 1/(a_n \\log a_n)$. Three deep results remain as axioms.",
+    "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, and domination via an explicit constant. Six theorems are fully proved, including the key comparison bound and the Erdős 1935 necessary condition. The proof of `erdos_1935_necessary` splits the sum at threshold $N_0$ where $a(n) \\geq C^2$: the head is bounded by a finite constant, the tail uses `reciprocal_log_comparison` to reduce to the convergent series $\\sum 1/(a_n \\log a_n)$. Two deep results remain as axioms (the Erdős 1935 convergence and the Cauchy-condensation divergence of $\\sum 1/((n+2)\\log(n+2))$); the concrete non-example $b(n)=n+2$ shows the necessary condition has teeth.",
     "keyInsights": [
       "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse — the primes form the densest primitive sequence",
       "Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n) < \\infty$ for any primitive $a$ with $a_n \\geq 2$. This is an analog of the prime harmonic series divergence, showing primitive sets are even thinner than primes in the $1/(n \\log n)$ metric",
