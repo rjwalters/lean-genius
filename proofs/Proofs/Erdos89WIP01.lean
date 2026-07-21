@@ -953,4 +953,170 @@ Combined with `g(0)=g(1)=0, g(2)=g(3)=1, g(4)=2`, this completes the exact table
 theorem minDistinctDistances_five : minDistinctDistances 5 = 2 :=
   le_antisymm minDistinctDistances_five_le_two two_le_minDistinctDistances_five
 
+/-!
+### The regular pentagon plus its centre: `g(6) ≤ 3`
+
+Adding the circumcentre `O = (0,0)` to the regular pentagon of circumradius `4`
+gives a `6`-point configuration.  Every pentagon vertex has norm `4`, so each of
+the five new distances `O Pᵢ` equals the circumradius `4`.  The ten intra-pentagon
+distances are the two values `√(40 − 8√5)` (side) and `√(40 + 8√5)` (diagonal)
+already computed for `g(5) = 2`.  Hence the whole configuration realizes only the
+three distances `{4, √(40 − 8√5), √(40 + 8√5)}`, giving `g(6) ≤ 3`.
+
+This is the upper half of the conjectured value `g(6) = 3`.  The matching lower
+bound `g(6) ≥ 3` is equivalent to the sharp planar statement "a two-distance set
+in `ℝ²` has at most `5` points" (Kelly / Erdős), which lies strictly beyond the
+Larman–Rogers–Seidel ceiling `≤ (d+1)(d+2)/2 = 6` available by the elementary
+rank bound and is left as the open lower-bound direction.
+-/
+
+/-- The circumcentre `O = (0,0)` of the regular pentagon. -/
+noncomputable def pentCenter : EuclideanSpace ℝ (Fin 2) := !₂[0, 0]
+
+-- Each pentagon vertex lies at distance `4` (the circumradius) from the centre.
+
+theorem dist_centerP0 : Erdos89.dist pentCenter pentP0 = 4 := by
+  rw [pentCenter, pentP0, dist_eqPts]
+  rw [show ((0 : ℝ) - 4) ^ 2 + ((0 : ℝ) - 0) ^ 2 = 4 ^ 2 by norm_num,
+    Real.sqrt_sq (by norm_num)]
+theorem dist_centerP1 : Erdos89.dist pentCenter pentP1 = 4 := by
+  rw [pentCenter, pentP1, dist_eqPts]
+  rw [show ((0 : ℝ) - (Real.sqrt 5 - 1)) ^ 2 + ((0 : ℝ) - Real.sqrt (10 + 2 * Real.sqrt 5)) ^ 2
+      = 4 ^ 2 by linear_combination pent_s_sq + pent_t1_sq, Real.sqrt_sq (by norm_num)]
+theorem dist_centerP2 : Erdos89.dist pentCenter pentP2 = 4 := by
+  rw [pentCenter, pentP2, dist_eqPts]
+  rw [show ((0 : ℝ) - -(Real.sqrt 5 + 1)) ^ 2 + ((0 : ℝ) - Real.sqrt (10 - 2 * Real.sqrt 5)) ^ 2
+      = 4 ^ 2 by linear_combination pent_s_sq + pent_t2_sq, Real.sqrt_sq (by norm_num)]
+theorem dist_centerP3 : Erdos89.dist pentCenter pentP3 = 4 := by
+  rw [pentCenter, pentP3, dist_eqPts]
+  rw [show ((0 : ℝ) - -(Real.sqrt 5 + 1)) ^ 2 + ((0 : ℝ) - -Real.sqrt (10 - 2 * Real.sqrt 5)) ^ 2
+      = 4 ^ 2 by linear_combination pent_s_sq + pent_t2_sq, Real.sqrt_sq (by norm_num)]
+theorem dist_centerP4 : Erdos89.dist pentCenter pentP4 = 4 := by
+  rw [pentCenter, pentP4, dist_eqPts]
+  rw [show ((0 : ℝ) - (Real.sqrt 5 - 1)) ^ 2 + ((0 : ℝ) - -Real.sqrt (10 + 2 * Real.sqrt 5)) ^ 2
+      = 4 ^ 2 by linear_combination pent_s_sq + pent_t1_sq, Real.sqrt_sq (by norm_num)]
+
+-- The centre is distinct from every vertex (all vertices have norm `4 ≠ 0`).
+
+theorem pentCenter_ne_pentP0 : pentCenter ≠ pentP0 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentCenter, pentP0, Matrix.cons_val_zero] at h0; norm_num at h0
+theorem pentCenter_ne_pentP1 : pentCenter ≠ pentP1 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [pentCenter, pentP1, Matrix.cons_val_one, Matrix.cons_val_zero] at h1
+  have hu : (0 : ℝ) < Real.sqrt (10 + 2 * Real.sqrt 5) := Real.sqrt_pos.mpr (by positivity)
+  linarith
+theorem pentCenter_ne_pentP2 : pentCenter ≠ pentP2 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentCenter, pentP2, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_nonneg 5; linarith
+theorem pentCenter_ne_pentP3 : pentCenter ≠ pentP3 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentCenter, pentP3, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_nonneg 5; linarith
+theorem pentCenter_ne_pentP4 : pentCenter ≠ pentP4 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [pentCenter, pentP4, Matrix.cons_val_one, Matrix.cons_val_zero] at h1
+  have hu : (0 : ℝ) < Real.sqrt (10 + 2 * Real.sqrt 5) := Real.sqrt_pos.mpr (by positivity)
+  linarith
+
+/-- The regular pentagon together with its circumcentre, a `6`-point configuration. -/
+noncomputable def pentagonPlusCenter : Finset (EuclideanSpace ℝ (Fin 2)) :=
+  {pentCenter, pentP0, pentP1, pentP2, pentP3, pentP4}
+
+/-- The configuration has six distinct points. -/
+theorem pentagonPlusCenter_card : pentagonPlusCenter.card = 6 := by
+  rw [pentagonPlusCenter, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+    Finset.card_insert_of_notMem, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+    Finset.card_singleton]
+  · simp only [Finset.mem_singleton]; exact pentP3_ne_pentP4
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP2_ne_pentP3, pentP2_ne_pentP4⟩
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP1_ne_pentP2, pentP1_ne_pentP3, pentP1_ne_pentP4⟩
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP0_ne_pentP1, pentP0_ne_pentP2, pentP0_ne_pentP3, pentP0_ne_pentP4⟩
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentCenter_ne_pentP0, pentCenter_ne_pentP1, pentCenter_ne_pentP2,
+      pentCenter_ne_pentP3, pentCenter_ne_pentP4⟩
+
+/-- **The pentagon-plus-centre determines at most three distances.**  Every pairwise
+distance is a pentagon side `√(40−8√5)`, a pentagon diagonal `√(40+8√5)`, or a
+centre-to-vertex spoke `4` (the circumradius). -/
+theorem numDistinctDistances_pentagonPlusCenter_le_three :
+    numDistinctDistances pentagonPlusCenter ≤ 3 := by
+  have hsub : distinctDistances pentagonPlusCenter ⊆
+      ({Real.sqrt (40 - 8 * Real.sqrt 5), Real.sqrt (40 + 8 * Real.sqrt 5), (4 : ℝ)}
+        : Finset ℝ) := by
+    rw [distinctDistances_eq_image]
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨p, q⟩, hpq, rfl⟩ := hd
+    rw [Finset.mem_offDiag] at hpq
+    obtain ⟨hp, hq, hne⟩ := hpq
+    simp only [pentagonPlusCenter, Finset.mem_insert, Finset.mem_singleton] at hp hq
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rcases hp with rfl | rfl | rfl | rfl | rfl | rfl <;>
+      rcases hq with rfl | rfl | rfl | rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hne
+        | (right; right; exact dist_centerP0)
+        | (right; right; exact dist_centerP1)
+        | (right; right; exact dist_centerP2)
+        | (right; right; exact dist_centerP3)
+        | (right; right; exact dist_centerP4)
+        | (right; right; rw [dist_comm']; exact dist_centerP0)
+        | (right; right; rw [dist_comm']; exact dist_centerP1)
+        | (right; right; rw [dist_comm']; exact dist_centerP2)
+        | (right; right; rw [dist_comm']; exact dist_centerP3)
+        | (right; right; rw [dist_comm']; exact dist_centerP4)
+        | (left; exact dist_pent01)
+        | (left; exact dist_pent12)
+        | (left; exact dist_pent23)
+        | (left; exact dist_pent34)
+        | (left; exact dist_pent40)
+        | (left; rw [dist_comm']; exact dist_pent01)
+        | (left; rw [dist_comm']; exact dist_pent12)
+        | (left; rw [dist_comm']; exact dist_pent23)
+        | (left; rw [dist_comm']; exact dist_pent34)
+        | (left; rw [dist_comm']; exact dist_pent40)
+        | (right; left; exact dist_pent02)
+        | (right; left; exact dist_pent03)
+        | (right; left; exact dist_pent13)
+        | (right; left; exact dist_pent14)
+        | (right; left; exact dist_pent24)
+        | (right; left; rw [dist_comm']; exact dist_pent02)
+        | (right; left; rw [dist_comm']; exact dist_pent03)
+        | (right; left; rw [dist_comm']; exact dist_pent13)
+        | (right; left; rw [dist_comm']; exact dist_pent14)
+        | (right; left; rw [dist_comm']; exact dist_pent24)
+  calc numDistinctDistances pentagonPlusCenter
+      ≤ ({Real.sqrt (40 - 8 * Real.sqrt 5), Real.sqrt (40 + 8 * Real.sqrt 5), (4 : ℝ)}
+          : Finset ℝ).card := Finset.card_le_card hsub
+    _ ≤ 3 := by
+        have h1 := Finset.card_insert_le (Real.sqrt (40 - 8 * Real.sqrt 5))
+          ({Real.sqrt (40 + 8 * Real.sqrt 5), (4 : ℝ)} : Finset ℝ)
+        have h2 := Finset.card_insert_le (Real.sqrt (40 + 8 * Real.sqrt 5))
+          ({(4 : ℝ)} : Finset ℝ)
+        simp only [Finset.card_singleton] at h2
+        omega
+
+/-- **Upper bound `g(6) ≤ 3`.**  The regular pentagon plus its circumcentre is a
+`6`-point witness with at most three distinct distances.  This is the upper half of the
+conjectured value `g(6) = 3`; the lower bound `g(6) ≥ 3` is the sharp planar two-distance
+statement (a two-distance set in `ℝ²` has `≤ 5` points), beyond the elementary rank
+ceiling. -/
+theorem minDistinctDistances_six_le_three : minDistinctDistances 6 ≤ 3 :=
+  le_trans (minDistinctDistances_le_of_card_eq pentagonPlusCenter_card)
+    numDistinctDistances_pentagonPlusCenter_le_three
+
+/-- **Sandwich `2 ≤ g(6) ≤ 3`.**  The lower bound is the general floor lifted through
+monotonicity (`g(6) ≥ g(5) = 2`); the upper bound is the pentagon-plus-centre witness.
+Pinning `g(6) = 3` requires the sharp two-distance-set bound, left open. -/
+theorem minDistinctDistances_six_mem_Icc :
+    minDistinctDistances 6 ∈ Set.Icc 2 3 := by
+  refine ⟨?_, minDistinctDistances_six_le_three⟩
+  calc 2 = minDistinctDistances 5 := minDistinctDistances_five.symm
+    _ ≤ minDistinctDistances 6 := minDistinctDistances_mono (by norm_num)
+
 end Erdos89
