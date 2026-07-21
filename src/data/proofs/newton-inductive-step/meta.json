@@ -121,11 +121,35 @@
     },
     {
       "id": "final-identity-completion",
-      "title": "Final Identity and Proof Completion",
+      "title": "binom_ineq — Final Identity and Proof Completion",
       "startLine": 130,
-      "endLine": 152,
-      "summary": "Combines all five key identities via a single linear_combination call with six terms to prove D*(LHS-RHS) = r*(k+r)^2*b^4. The positivity tactic closes the goal since r > 0, (k+r)^2 >= 0, b^4 >= 0. The inequality is strict for valid parameters since b = C(m,k-1) > 0 and r >= 1.",
+      "endLine": 153,
+      "summary": "Completes the first main theorem `binom_ineq` (b·(b+a)·(d+c) ≥ a·d·(c+b)² for binomial coefficients a,b,c,d = C(m,k−2..k+1)): combines all five key identities via a single linear_combination call with six terms to prove D*(LHS-RHS) = r*(k+r)^2*b^4. The positivity tactic closes the goal since r > 0, (k+r)^2 >= 0, b^4 >= 0. The inequality is strict for valid parameters since b = C(m,k-1) > 0 and r >= 1.",
       "mathContext": "$k^3(k+1)(r+1)(\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$. Verified by `linear_combination` combining six derived identities, then `positivity`."
+    },
+    {
+      "id": "newton-disc-hat",
+      "title": "newton_disc_hat — Normalized Discriminant Inequality (4α̂γ̂ ≥ β̂²)",
+      "startLine": 154,
+      "endLine": 294,
+      "summary": "The core discriminant inequality in normalized form, valid whenever the linear coefficient β̂ ≤ 0 (the only case where the discriminant is needed — for β̂ ≥ 0 the quadratic α̂t² + β̂t + γ̂ is trivially ≥ 0 for t ≥ 0). With e1..e4 standing for e_{k−2}(y)…e_{k+1}(y), the proof is an EXACT algebraic certificate verified by `ring`: kr·e₂²e₃²·(4α̂γ̂ − β̂²) is written as a sum of four visibly non-negative terms (the last using β̂ ≤ 0). Equality holds exactly at geometric data (all inputs equal), which is why no nlinarith hint list could close it; the inequality is genuinely false without the β̂ ≤ 0 restriction. Handles the degenerate e₂e₃ = 0 case separately.",
+      "mathContext": "$\\hat\\alpha = kr\\,e_2^2 - (k{+}1)(r{+}1)e_1e_3$, $\\hat\\gamma = kr\\,e_3^2 - (k{+}1)(r{+}1)e_2e_4$; the exact certificate for $4\\hat\\alpha\\hat\\gamma \\ge \\hat\\beta^2$ under $\\hat\\beta \\le 0$."
+    },
+    {
+      "id": "newton-disc-of-beta-nonpos",
+      "title": "newton_disc_of_beta_nonpos — Binomial-Level Discriminant (4αγ ≥ β²)",
+      "startLine": 295,
+      "endLine": 412,
+      "summary": "The discriminant inequality 4·α·γ ≥ β² at the cleared-denominator (binomial) level, valid when β = 2·e₃e₂·AD − (e₃e₂+e₁e₄)·B2 ≤ 0 (AD = (b+a)(d+c), B2 = (c+b)²). Reduces to `newton_disc_hat` via the absorption identities k·c = r·b, (k+1)·d = (r−1)·c, (r+1)·a = (k−1)·b (a,b,c,d the binomial coefficients C(m,k−2..k+1), r = m−k+1), using the exact ratio identity (k+1)(r+1)·AD = kr·B2 for the Pascal-combined level-(m+1) coefficients.",
+      "mathContext": "Transports $4\\hat\\alpha\\hat\\gamma \\ge \\hat\\beta^2$ to the binomial level via the absorption identities and $(k{+}1)(r{+}1)\\,AD = kr\\,B2$."
+    },
+    {
+      "id": "binom-ineq-dual",
+      "title": "binom_ineq_dual — Dual Binomial Inequality (b²·(b+a)(d+c) ≥ a·c·(c+b)²)",
+      "startLine": 413,
+      "endLine": 487,
+      "summary": "The dual binomial inequality b²·(b+a)·(d+c) ≥ a·c·(c+b)², companion to `binom_ineq`, needed for the α ≥ 0 branch of the normalized-Newton inductive step. Proved by the same absorption technique: after multiplying by k³(k+1)(r+1) > 0 (r = m−k+1) and substituting the absorption identities, the cleared expression equals r·(k+r)²·b⁴ ≥ 0 — the single non-trivial factor being k² − (k−1)(k+1) = 1.",
+      "mathContext": "$b^2(b+a)(d+c) \\ge a\\,c\\,(c+b)^2$; cleared form $= r(k+r)^2 b^4 \\ge 0$ (dual of `binom_ineq`, for the $\\alpha \\ge 0$ branch)."
     }
   ],
   "crossReferences": [
