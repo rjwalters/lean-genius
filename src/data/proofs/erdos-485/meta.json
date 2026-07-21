@@ -68,33 +68,40 @@
       "id": "basic-properties",
       "title": "Basic Properties (Aristotle-proved)",
       "startLine": 79,
-      "endLine": 135,
+      "endLine": 134,
       "summary": "Fully proved: f(1) = 1 (monomial), f(2) = 3 (binomial), f(k) ≥ 1 for k ≥ 1. The f(2) = 3 proof constructs the witness (1+x) and shows every binomial square has support ⊇ {2d₁, d₁+d₂, 2d₂}.",
       "mathContext": "The proof of $f(2) = 3$ is the most substantial: for the lower bound, given $P = c_1 x^{d_1} + c_2 x^{d_2}$ with $d_1 < d_2$ and $c_1, c_2 \\neq 0$, the square $P^2 = c_1^2 x^{2d_1} + 2c_1 c_2 x^{d_1+d_2} + c_2^2 x^{2d_2}$ has three terms because (1) the exponents $2d_1 < d_1 + d_2 < 2d_2$ are strictly increasing, and (2) all coefficients are nonzero since $\\text{char}(\\mathbb{Q}) = 0$."
     },
     {
       "id": "upper-bound",
       "title": "Erdős Upper Bound",
-      "startLine": 136,
-      "endLine": 145,
+      "startLine": 135,
+      "endLine": 139,
       "summary": "Erdős (1949): ∃ c > 0 such that f(k) < k^{1-c} for large k. Squaring can achieve sublinear compression. Axiomatized.",
       "mathContext": "The construction uses polynomials with $\\pm 1$ coefficients whose support forms a set with large additive energy, enabling massive cancellation in the square.  The constant $c$ is small; the best known value gives $f(k) < k^{1-c}$ for $c \\approx 1/\\log \\log k$."
     },
     {
       "id": "main-result",
       "title": "Main Divergence Result",
-      "startLine": 148,
-      "endLine": 174,
-      "summary": "The three main theorems: Schinzel's (log log k)/log 2 lower bound, Schinzel–Zannier's log k improvement, and the main divergence f(k) → ∞. All axiomatized.",
+      "startLine": 140,
+      "endLine": 157,
+      "summary": "The Main Result banner and its three lower-bound statements: Schinzel's (log log k)/log 2 bound, the Schinzel–Zannier `schinzel_zannier_improved` axiom (f(k) ≥ c·log k), and the resulting divergence f(k) → ∞; closes with two worked examples ((1+x)² has 3 terms, (1+x+x²)² has 5). All bounds axiomatized.",
       "mathContext": "The bounds satisfy $\\frac{\\log \\log k}{\\log 2} < f(k) \\ll \\log k \\ll f(k) < k^{1-c}$, with the Schinzel–Zannier bound as the state of the art.  The main theorem $f(k) \\to \\infty$ follows from either lower bound via the monotone convergence criterion."
     },
     {
       "id": "related",
       "title": "Related Concepts: Sparse and Lacunary Polynomials",
-      "startLine": 194,
-      "endLine": 225,
-      "summary": "Generalization g(k,n) for P^n, sparse polynomial definition, product density axiom, lacunary polynomial definition, and lacunary square term lower bound.",
+      "startLine": 158,
+      "endLine": 193,
+      "summary": "Generalization g(k,n) = min terms in Pⁿ for k-term P, the sparse polynomial definition isSparse, the product-density remark, and the lacunary polynomial definition isLacunary with the no-cancellation heuristic.",
       "mathContext": "The section connects Problem 485 to the broader theory of sparse polynomials.  A polynomial is *sparse* if $|\\text{supp}(P)| \\leq c \\log(\\deg P + 1)$, and *lacunary* if consecutive exponents have gaps $\\geq 2$.  Lacunary polynomials satisfy $\\text{termCount}(P^2) \\geq 2k - 1$ (no cancellation possible when gaps are large enough), showing that the minimum $f(k)$ must be achieved by non-lacunary, specifically engineered polynomials."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 194,
+      "endLine": 224,
+      "summary": "Closing overview: Problem 485 is SOLVED — f(k) → ∞ as k → ∞ — recording the term-count definitions, the proved small cases f(1)=1 and f(2)=3, and the axiomatized Schinzel–Zannier lower bound that forces divergence."
     }
   ],
   "conclusion": {
