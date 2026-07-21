@@ -33,7 +33,10 @@ of the atomic building block `triangleArea`:
   nested `⨅` with `ciInf_le_of_le` under the junk-value semantics of an empty
   real infimum;
 * `heilbronn n ≤ 3` for `n ≥ 3` (`heilbronn_le_three`): the defining `sSup` set
-  is bounded above by the uniform area bound, so Heilbronn's function is finite.
+  is bounded above by the uniform area bound, so Heilbronn's function is finite;
+* a concrete positive lower bound `heilbronn 3 ≥ 1/2` (`heilbronn_three_ge_half`)
+  from the unit right triangle, hence `heilbronn 3 > 0` (`heilbronn_three_pos`) —
+  separating `heilbronn 3` from the junk value `heilbronn 2 = 0`.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -377,5 +380,51 @@ area envelope `0 ≤ heilbronn n ≤ 3`.  (The true order of magnitude is
 this records the elementary two-sided bound the foundational lemmas already give.) -/
 theorem heilbronn_mem_Icc (n : ℕ) (hn : 3 ≤ n) : heilbronn n ∈ Set.Icc (0 : ℝ) 3 :=
   ⟨heilbronn_nonneg n hn, heilbronn_le_three n hn⟩
+
+/-! ## A concrete positive lower bound at `n = 3`
+
+The `heilbronn_nonneg` bound above (`0 ≤ heilbronn n`) does not separate the
+`n ≥ 3` regime from the junk value `heilbronn 2 = 0`; a genuine *positive*
+witness is needed.  The unit right triangle `(0,0), (1,0), (0,1)` is a
+three-point unit-disk configuration all of whose orderings have `triangleArea`
+equal to `1/2` (`triangleArea_unit` together with the permutation lemmas), so
+`1/2` is admissible for `heilbronn 3`.  This gives `heilbronn 3 ≥ 1/2 > 0`,
+confirming that `heilbronn 3 > heilbronn 2 = 0` and hence that the `n ≥ 3`
+hypothesis on the monotonicity lemmas is forced rather than cosmetic. -/
+
+/-- **`heilbronn 3 ≥ 1/2`.**  The right triangle `(0,0), (1,0), (0,1)` lies in the
+unit disk and every ordering of its three distinct vertices has `triangleArea`
+exactly `1/2`, so `1/2` lies in the defining `sSup` set of `heilbronn 3`
+(`le_csSup`, using `heilbronn_defining_bddAbove` for boundedness). -/
+theorem heilbronn_three_ge_half : (1 : ℝ) / 2 ≤ heilbronn 3 := by
+  unfold heilbronn
+  refine le_csSup (heilbronn_defining_bddAbove 3 (by norm_num)) ?_
+  refine ⟨{((0 : ℝ), (0 : ℝ)), (1, 0), (0, 1)}, ?_, ?_, ?_⟩
+  · -- the three vertices are distinct, so the configuration has cardinality `3`
+    rw [Finset.card_eq_three]
+    exact ⟨(0, 0), (1, 0), (0, 1),
+      by simp [Prod.ext_iff], by simp [Prod.ext_iff], by simp [Prod.ext_iff], rfl⟩
+  · -- each vertex lies in the closed unit disk
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl <;> norm_num
+  · -- every ordered distinct triple has area `1/2 ≥ 1/2`
+    intro p hp q hq r hr hpq hqr hpr
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp hq hr
+    rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
+        rcases hr with rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hpq
+        | exact absurd rfl hqr
+        | exact absurd rfl hpr
+        | (show (1 : ℝ) / 2 ≤ triangleArea _ _ _; unfold triangleArea; norm_num)
+
+/-- **`heilbronn 3` is strictly positive.**  Immediate from
+`heilbronn_three_ge_half`.  Since `heilbronn 2 = 0` (no distinct triple exists
+below `n = 3`, so the defining `sSup` collapses to its junk value `0`), this
+shows Heilbronn's function is *not* monotone across the `2 → 3` boundary — the
+reason the monotonicity lemmas are stated only from `n = 3` onward. -/
+theorem heilbronn_three_pos : 0 < heilbronn 3 :=
+  lt_of_lt_of_le (by norm_num) heilbronn_three_ge_half
 
 end Erdos507WIP01
