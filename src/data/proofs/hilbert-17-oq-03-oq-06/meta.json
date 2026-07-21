@@ -218,10 +218,18 @@
       "summary": "multiplier_mul_robinson_eq is the integer-coefficient identity (4x²+4y²+4z²)·R = Q1² + 3Q2² + Ga² + Gb² + Gc², closed by ring; robinson_mul_isSumOfSquares packages it as IsSumOfSquaresMv, and multiplier_isSumOfSquares shows the multiplier is (2x)²+(2y)²+(2z)²."
     },
     {
+      "id": "positivstellensatz",
+      "title": "The certificate proves nonnegativity (Positivstellensatz payoff)",
+      "startLine": 139,
+      "endLine": 180,
+      "summary": "The SOS certificate is cashed out as pointwise nonnegativity: multiplier_eval_nonneg (the multiplier 4x²+4y²+4z², a sum of squares, evaluates ≥ 0 everywhere) and robinson_eval_nonneg (since multiplier·Robinson is a sum of squares and the multiplier is positive off the origin, Robinson itself is nonnegative on ℝ³). This is the Positivstellensatz payoff — an explicit certificate forcing the sign of a form that is not itself a polynomial sum of squares.",
+      "mathContext": "$0\\le\\operatorname{eval}_v(\\text{multiplier}\\cdot R)$ and $\\text{multiplier}\\ge 0$ give $\\operatorname{eval}_v R\\ge 0$ for all $v\\in\\mathbb R^3$."
+    },
+    {
       "id": "rational-corollary",
       "title": "Artin for Robinson, constructively",
-      "startLine": 139,
-      "endLine": 191,
+      "startLine": 181,
+      "endLine": 235,
       "summary": "multiplier_ne_zero / toRF_multiplier_ne_zero validate division by the multiplier in ℝ(x,y,z); product_identity is the 21-term polynomial identity Σ(qᵢdⱼ)² = (multiplier·R)·multiplier; robinson_isSOS_ratFunc divides through and reindexes Fin 7 × Fin 3 ≃ Fin 21 to conclude R = Σ (qᵢdⱼ/multiplier)², a sum of squares of rational functions."
     }
   ]

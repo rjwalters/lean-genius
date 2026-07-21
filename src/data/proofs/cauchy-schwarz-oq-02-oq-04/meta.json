@@ -156,6 +156,14 @@
       "startLine": 143,
       "endLine": 201,
       "summary": "For a positive symmetric T on a real inner product space: positive_operator_diagonal_nonneg (restated positivity), positive_operator_cauchy_schwarz (⟪T x, y⟫² ≤ ⟪T x, x⟫·⟪T y, y⟫ via discrim_le_zero on the quadratic t ↦ ⟪T(x+t·y), x+t·y⟫ ≥ 0), and positive_operator_cs_abs (the √ form)."
+    },
+    {
+      "id": "sec-06-induced-seminorm",
+      "title": "Induced Seminorm from a Positive Operator",
+      "startLine": 202,
+      "endLine": 246,
+      "summary": "positive_operator_seminorm_smul: the functional p(x) = √⟪T x, x⟫ is absolutely homogeneous, p(c • x) = |c|·p(x), needing neither symmetry nor positivity of T. positive_operator_seminorm_triangle: for a positive symmetric T, p is subadditive — √⟪T(x+y),x+y⟫ ≤ √⟪T x,x⟫ + √⟪T y,y⟫ — proved by expanding the diagonal ⟪T(x+y),x+y⟫ = ⟪T x,x⟫ + 2⟪T x,y⟫ + ⟪T y,y⟫ and bounding the cross term with the Kadison–Schwarz inequality. Homogeneity, subadditivity and nonnegativity together show the form induces a genuine seminorm on F.",
+      "mathContext": "The Kadison–Schwarz inequality upgrades a positive symmetric operator $T$ to a seminorm $p(x)=\\sqrt{\\langle Tx,x\\rangle}$ satisfying $p(cx)=|c|\\,p(x)$ and $p(x+y)\\le p(x)+p(y)$."
     }
   ],
   "sorries": 0,
