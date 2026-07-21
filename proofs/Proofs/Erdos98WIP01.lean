@@ -2111,7 +2111,7 @@ theorem degree_three_equilateral_impossible
   rw [inner_add_right, inner_add_right] at hsum
   linarith [pwx, pwy, pwz]
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 1600000 in
 /-- **A short-degree-`3` vertex with exactly two of its three neighbour pairs at the short
 distance is impossible (`k = 2` sub-case of the degree-`3` exclusion).**  Suppose `v` has
 three neighbours `x, y, z` all at distance `a`, that among the three neighbour pairs exactly
