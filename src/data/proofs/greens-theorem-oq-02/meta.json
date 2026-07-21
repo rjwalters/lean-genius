@@ -116,7 +116,7 @@
       "id": "unit-circle",
       "title": "Part V: Unit Circle Example",
       "startLine": 452,
-      "endLine": 518,
+      "endLine": 533,
       "summary": "unitCircle def, unitCircle_lipschitz (K=1, proved via sup_le for product edist), unitCircle_closed (γ(0)=γ(2π) from cos/sin periodicity), unitCircleCurve instance, unitCircle_diameter_bound.",
       "mathContext": "$\\gamma(t) = (\\cos t, \\sin t)$ is Lipschitz-1 since $\\text{edist}(\\cos x, \\cos y) \\leq \\text{edist}(x,y)$ and $\\text{edist}(\\sin x, \\sin y) \\leq \\text{edist}(x,y)$ by Mathlib's `lipschitzWith_cos` and `lipschitzWith_sin`. The product edist is $\\leq \\sup$, closed by `sup_le`."
     }
