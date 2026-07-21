@@ -96,52 +96,100 @@
   },
   "sections": [
     {
+      "id": "overview-header",
+      "title": "Overview: Statement, Answer, and Axiom Disclosure",
+      "summary": "Module docstring: the two questions (existence and positivity of the density), the answer (YES to both via Granville–Ramaré 1996, observed by Aggarwal–Cambie), the density formula 1 − Σ η_m, an explicit list of the two axioms carrying all deep analytic content, and the verified parity result squarefreeCount_even_of_odd.",
+      "startLine": 1,
+      "endLine": 46,
+      "mathContext": "Erdős #378 is SOLVED. The file isolates exactly two axioms ($\\texttt{granville\\_ramare\\_density\\_exists}$, $\\texttt{complement\\_density}$) and derives both questions with 0 sorries; everything else is machine-checked."
+    },
+    {
       "id": "binomial-squarefree",
-      "title": "Squarefree Binomial Coefficients",
-      "summary": "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions over Mathlib's Squarefree",
+      "title": "Part I: Squarefree Binomial Coefficients",
+      "summary": "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions built over Mathlib's decidable Squarefree predicate on ℕ.",
       "startLine": 47,
-      "endLine": 65,
-      "mathContext": "Formal definition: BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree"
+      "endLine": 66,
+      "mathContext": "Core definitions: $\\texttt{BinomialSquarefree}(n,k) := \\texttt{Squarefree}\\binom{n}{k}$ and $\\texttt{squarefreeCount}(n) := |\\{k \\in (0,n) : \\texttt{Squarefree}\\binom{n}{k}\\}|$."
     },
     {
       "id": "examples",
-      "title": "Concrete Examples",
-      "summary": "C(2,1)=2 and C(4,2)=6 squarefree; C(6,3)=20 not squarefree (fully verified)",
+      "title": "Part II: Concrete Examples",
+      "summary": "Fully verified small cases: C(2,1)=2 and C(4,2)=6 are squarefree; C(6,3)=20 = 2²·5 is not squarefree — machine-checked by decide.",
       "startLine": 67,
-      "endLine": 92,
-      "mathContext": "Verified: C(2,1), C(4,2), C(6,3) squarefree status"
+      "endLine": 93,
+      "mathContext": "Sanity checks anchoring the definitions to Pascal's triangle: $\\binom{6}{3}=20=2^2\\cdot 5$ witnesses a non-squarefree interior entry."
     },
     {
       "id": "symmetry-parity",
-      "title": "Symmetry and Parity Structure",
-      "summary": "binomialSquarefree_symm and squarefreeCount_even_of_odd (verified, 0-axiom): the involution k ↦ n−k forces an even count for odd n",
+      "title": "Part III: Symmetry and the Parity Structure",
+      "summary": "binomialSquarefree_symm (C(n,k)=C(n,n−k) preserves squarefreeness), squarefreeCount_le, squarefreeCount_ge_two_of_squarefree, squarefreeCount_even_of_odd (odd rows have an even count — the fixed-point-free involution k ↦ n−k), and the even-row refinement squarefreeCount_odd_iff_central_squarefree / odd_squarefreeCount_iff (an even row's count is odd iff its central binomial C(n,n/2) is squarefree). All verified, 0-axiom.",
       "startLine": 94,
-      "endLine": 172,
-      "mathContext": "Verified: symmetry under k ↦ n−k and the resulting parity of squarefreeCount"
+      "endLine": 350,
+      "mathContext": "The involution $k \\mapsto n-k$ has no fixed point for odd $n$ (forcing an even count) and a single fixed point $k=n/2$ for even $n$, giving $\\texttt{squarefreeCount}(n) = 2|A| + |F|$ with $|F|\\in\\{0,1\\}$. This is the elementary reason Granville–Ramaré only ever count even numbers $2m+2$."
     },
     {
       "id": "density",
-      "title": "Natural Density",
-      "summary": "NaturalDensity (via Set.ncard), HasDensity, and natDensity_compl (verified): complement of density d has density 1−d",
-      "startLine": 174,
-      "endLine": 224,
-      "mathContext": "Formal definition and verified complementation lemma"
+      "title": "Part IV: Natural Density",
+      "summary": "NaturalDensity (via Set.ncard, no decidability assumption), HasDensity, natDensity_compl (complement of a density-d set has density 1−d), and naturalDensity_unique (density is well-defined when it exists).",
+      "startLine": 351,
+      "endLine": 428,
+      "mathContext": "$\\texttt{NaturalDensity}(S,d)$ says $|S\\cap[0,N)|/N \\to d$. Complementation: partitioning $[0,N)$ gives $|S^c\\cap[0,N)|/N \\to 1-d$, the engine behind the existence half of the resolution."
     },
     {
       "id": "granville-ramare",
-      "title": "Granville-Ramaré Inputs (Axioms)",
-      "summary": "exactlySquarefree, eta, and the two axioms granville_ramare_density_exists and complement_density",
-      "startLine": 226,
-      "endLine": 260,
-      "mathContext": "Axiomatized deep analytic content of Granville-Ramaré (1996)"
+      "title": "Part V: The Granville–Ramaré Inputs (Axioms)",
+      "summary": "exactlySquarefree m, the noncomputable density eta m, and the two axioms: granville_ramare_density_exists (η_m exists for each m) and complement_density (the low-count complement has density Σ_{0≤m≤(r-1)/2} η_m < 1). These are the only assumptions in the file.",
+      "startLine": 429,
+      "endLine": 458,
+      "mathContext": "Both axioms isolate the deep 1996 analytic input (bounds on exponential sums). The $d<1$ clause of $\\texttt{complement\\_density}$ carries the positive-mass content that makes the answer strictly positive."
     },
     {
       "id": "resolution",
-      "title": "Resolution of Erdős Problem #378",
-      "summary": "atLeastSquarefree_eq_compl, erdos_378_density_exists/positive, erdos_378, erdos_378_answer (no sorries)",
-      "startLine": 261,
-      "endLine": 309,
-      "mathContext": "Verified derivation of both questions from the two axioms"
+      "title": "Part VI: Resolution of Erdős Problem #378",
+      "summary": "atLeastSquarefree, its antitonicity in r, erdos_378_density_exists (by complementation), erdos_378_density_positive (from the d<1 clause), erdos_378_density_eq (the explicit formula 1 − Σ η_m), and the capstones erdos_378 / erdos_378_answer — both questions answered with no sorries.",
+      "startLine": 459,
+      "endLine": 545,
+      "mathContext": "$\\texttt{atLeastSquarefree}(r)^c = \\{n : \\texttt{squarefreeCount}(n) < r\\}$, so existence follows from $\\texttt{natDensity\\_compl}$ and the density value is $1 - \\sum_{0\\le m\\le (r-1)/2}\\eta_m$."
+    },
+    {
+      "id": "density-bounds",
+      "title": "Part VII: Elementary Two-Sided Bounds on the Density",
+      "summary": "natDensity_nonneg and natDensity_le_one (any natural density lies in [0,1], proved from the counting ratio being in [0,1]) combine into erdos_378_density_mem_Ioc: the Erdős #378 density lies in (0,1]. Axiom-free structural lemmas.",
+      "startLine": 546,
+      "endLine": 596,
+      "mathContext": "Since $S\\cap[0,N)\\subseteq[0,N)$, the ratio is in $[0,1]$ termwise, so its limit $d$ satisfies $0\\le d\\le 1$; pairing with positivity pins the answer to $(0,1]$."
+    },
+    {
+      "id": "threshold-one",
+      "title": "Part VIII: The Threshold-0 Boundary (Density Exactly 1)",
+      "summary": "natDensity_univ (ℕ has density 1), atLeastSquarefree_zero_eq_univ (threshold r=0 admits every n), and erdos_378_density_zero: at threshold 0 the answer set is everything, so the density is exactly 1 — the top boundary of the density profile.",
+      "startLine": 597,
+      "endLine": 637,
+      "mathContext": "$\\texttt{hasAtLeastSquarefree}(n,0)$ is vacuously true, so $\\texttt{atLeastSquarefree}(0)=\\mathbb{N}$ and its density is $1$ — the $r=0$ endpoint of $1-\\sum_{m}\\eta_m$."
+    },
+    {
+      "id": "density-monotone",
+      "title": "Part IX: Monotonicity of Natural Density",
+      "summary": "natDensity_mono (S ⊆ T with both densities forces d ≤ d′), erdos_378_density_antitone (the Erdős densities are antitone in the threshold r), and erdos_378_density_odd_even_pair / atLeastSquarefree_density_odd_even_agree (an odd threshold and the next even threshold share every density — the Granville–Ramaré even-count structure).",
+      "startLine": 638,
+      "endLine": 724,
+      "mathContext": "Density is order-preserving under inclusion; since raising $r$ shrinks $\\texttt{atLeastSquarefree}(r)$, the density is antitone in $r$, and consecutive odd/even thresholds coincide because counts are always even."
+    },
+    {
+      "id": "density-strata",
+      "title": "Part X: Bottom Boundary and the Exact-Count Densities η_m",
+      "summary": "natDensity_empty (density 0), natDensity_eta / eta_nonneg / eta_le_one (each η_m is a genuine density in [0,1]), and eta_partialSum_compl_antitone (the partial sums Σ_{m<k} η_m are antitone in the excluded complement) — the bottom of the density profile and the basic η_m API.",
+      "startLine": 725,
+      "endLine": 778,
+      "mathContext": "$\\eta_m$ is the density of $\\texttt{exactlySquarefree}(m)$ (rows with exactly $2m+2$ squarefree binomials); each lies in $[0,1]$ and the excluded partial sums are monotone, framing the tail mass that forces positivity."
+    },
+    {
+      "id": "finite-additivity",
+      "title": "Part XI: Finite Additivity and the Exact-Count Strata",
+      "summary": "natDensity_union_of_disjoint (density is finitely additive over disjoint sets, generalising natDensity_compl), exactlySquarefree_disjoint (the strata are pairwise disjoint), natDensity_exactlySquarefree_pair (η_m + η_m′ for two strata), natDensity_biUnion_of_pairwiseDisjoint, and natDensity_exactlySquarefree_range: Σ_{m<k} η_m is genuinely the density of the union of strata — deriving the additive value the complement_density axiom asserts, leaving only its d<1 clause as residual analytic content.",
+      "startLine": 779,
+      "endLine": 905,
+      "mathContext": "Finite additivity $\\texttt{NaturalDensity}(S\\cup T, d_S+d_T)$ for disjoint $S,T$ lifts to a finite family, so $\\bigcup_{m<k}\\texttt{exactlySquarefree}(m)$ has density $\\sum_{m<k}\\eta_m$ — the additive $\\Sigma\\eta_m$ structure is now derived, not assumed."
     }
   ],
   "conclusion": {
