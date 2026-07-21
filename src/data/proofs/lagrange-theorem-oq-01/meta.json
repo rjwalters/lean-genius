@@ -55,43 +55,71 @@
       "id": "imports-setup",
       "title": "Imports, Namespace, and Variables",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Imports all of Mathlib. Opens Subgroup and Fintype for concise notation. Namespace LagrangeOQ01. Variable declarations: G is a finite group (uses the Fintype instance). File header explains the structure: Lagrange's theorem, three Sylow theorems, partial converse, and Cauchy"
+      "endLine": 29,
+      "summary": "Imports all of Mathlib. Opens Subgroup and Fintype for concise notation. Namespace LagrangeOQ01. Variable declarations: G is a finite group (uses the Fintype instance). File header explains the structure: Lagrange's theorem, three Sylow theorems, partial converse, and Cauchy."
     },
     {
       "id": "lagrange-core",
       "title": "Part I: Lagrange's Theorem and Index Formula",
-      "startLine": 33,
-      "endLine": 44,
-      "summary": "Proves three results from Mathlib: lagrange (|H| | |G| via H.card_subgroup_dvd_card), lagrange_index (|G| = |H| · [G:H] via Subgroup.card_mul_index), and order_dvd_card (|g| | |G| via orderOf_dvd_card). Each proof is a one-line delegation to Mathlib"
+      "startLine": 30,
+      "endLine": 47,
+      "summary": "Proves three results from Mathlib: lagrange (|H| ∣ |G| via H.card_subgroup_dvd_card), lagrange_index (|G| = |H| · [G:H] via Subgroup.card_mul_index), and order_dvd_card (|g| ∣ |G| via orderOf_dvd_card). Each proof is a one-line delegation to Mathlib."
     },
     {
       "id": "sylow-existence",
       "title": "Part II: First Sylow Theorem (Existence)",
-      "startLine": 55,
-      "endLine": 67,
-      "summary": "Proves sylow_exists (Nonempty (Sylow p G) from Sylow.nonempty), sylow_card_eq (|P| = p^vₚ(|G|) via Sylow.card_eq_multiplicity and Nat.factorization), and sylow_order_dvd (|P| | |G| as special case of Lagrange). The Sylow type in Mathlib encodes p-maximality"
+      "startLine": 48,
+      "endLine": 66,
+      "summary": "Proves sylow_exists (Nonempty (Sylow p G) from Sylow.nonempty), sylow_card_eq (|P| = p^vₚ(|G|) via Sylow.card_eq_multiplicity and Nat.factorization), and sylow_order_dvd (|P| ∣ |G| as special case of Lagrange). The Sylow type in Mathlib encodes p-maximality."
     },
     {
       "id": "sylow-conjugacy",
       "title": "Part III: Second Sylow Theorem (Conjugacy)",
-      "startLine": 77,
-      "endLine": 82,
-      "summary": "Proves sylow_conjugate: for any two Sylow p-subgroups P and Q, ∃ g ∈ G such that gPg⁻¹ = Q. Uses Sylow.conj_eq to get g, then unfolds the conjugation action via MulAut.conj_apply and aesop for the membership argument. The proof requires an ext step since subgroup equality is extensional"
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "Proves sylow_conjugate: for any two Sylow p-subgroups P and Q, ∃ g ∈ G such that gPg⁻¹ = Q. Uses Sylow.conj_eq to get g, then unfolds the conjugation action via MulAut.conj_apply and aesop for the membership argument. The proof requires an ext step since subgroup equality is extensional."
     },
     {
       "id": "sylow-counting",
-      "title": "Part IV: Third Sylow Theorem (Counting)",
-      "startLine": 93,
-      "endLine": 101,
-      "summary": "Proves sylow_count_dvd_index: n_p = card(Sylow p G) divides [G:P] via Sylow.card_sylow_dvd_index. Proves sylow_count_mod_p: n_p % p = 1 via Sylow.card_sylow_modEq_one. The Nat.ModEq.out extraction from the modular arithmetic type is the only nontrivial step"
+      "title": "Part IV: Third Sylow Theorem (Counting) and Its Sharp Form",
+      "startLine": 82,
+      "endLine": 178,
+      "summary": "The full counting data n_p := card(Sylow p G). sylow_count_dvd_index (n_p ∣ [G:P]) and sylow_count_dvd_card (n_p ∣ |G|); then the sharp form: sylow_index_eq_card_div_pow identifies [G:P] = |G|/p^k, so sylow_count_dvd_card_div_pow gives the classical n_p ∣ |G|/p^k (strictly sharper than n_p ∣ |G|). sylow_count_mod_p (n_p ≡ 1 mod p) and sylow_count_not_dvd_p (p ∤ n_p); sylow_count_eq_one_or_prime (for |G| = p·q, n_p ∈ {1, q}); and the Hall property sylow_index_not_dvd_p / sylow_card_coprime_index (|P| = p^k is coprime to its index)."
     },
     {
-      "id": "sylow-applications",
+      "id": "normality-criterion",
+      "title": "Part IV-B: The Normality Criterion (Structural Corollary of Sylow III)",
+      "startLine": 179,
+      "endLine": 214,
+      "summary": "The counting data controls normality. sylow_normal_iff_card_eq_one: a Sylow p-subgroup is normal in G iff it is the unique one (n_p = 1). sylow_characteristic_of_normal: a normal Sylow p-subgroup is even characteristic (invariant under every automorphism), since it is the unique subgroup of its order. This is the engine that turns the n_p ≡ 1 mod p / n_p ∣ |G|/p^k counting into non-simplicity proofs."
+    },
+    {
+      "id": "partial-converse",
       "title": "Part V: Partial Converse to Lagrange and Cauchy's Theorem",
-      "startLine": 111,
-      "endLine": 125,
-      "summary": "Proves partial_converse_lagrange: p^k | |G| implies ∃ H : Subgroup G with |H| = p^k, via Sylow.exists_subgroup_card_pow_prime. Proves cauchy_theorem: p prime, p | |G| implies ∃ g with orderOf g = p, via exists_prime_orderOf_dvd_card. Both are one-line delegations to Mathlib"
+      "startLine": 215,
+      "endLine": 252,
+      "summary": "The Sylow theorems as a partial converse to Lagrange. partial_converse_lagrange: p^k ∣ |G| implies ∃ H : Subgroup G with |H| = p^k (via Sylow.exists_subgroup_card_pow_prime); for composite divisors this can fail. cauchy_theorem: p ∣ |G| implies ∃ g with orderOf g = p; sylow_count_pos (n_p > 0, at least one Sylow subgroup always exists); and exists_subgroup_card_prime, the subgroup form of Cauchy (∃ subgroup of order p)."
+    },
+    {
+      "id": "pq-not-simple",
+      "title": "Part VI: Capstone — Groups of Order p·q Are Not Simple (and Solvable)",
+      "startLine": 253,
+      "endLine": 392,
+      "summary": "For |G| = p·q with p < q prime, the top Sylow prime q is pinned down: card_sylow_q_of_card_eq_pq (n_q ∈ {1, p} from n_q ≡ 1 mod q and n_q ∣ p), sylow_q_normal_of_card_eq_pq and card_sylow_q_eq_one_of_card_eq_pq (n_q = 1, so the Sylow q-subgroup is normal), exists_normal_subgroup_card_eq_pq, and not_isSimpleGroup_of_card_eq_pq (¬ IsSimpleGroup G) — a genuine structural consequence of Sylow III. isSolvable_of_card_eq_pq closes the part: the normal N (order q) and quotient (order p) are both cyclic, and solvability lifts along 1 → N → G → G/N → 1."
+    },
+    {
+      "id": "sylow-p-side",
+      "title": "Part VII: The Sylow p-Side — the q ≢ 1 (mod p) Regime",
+      "startLine": 393,
+      "endLine": 482,
+      "summary": "The bottom prime p is more delicate: n_p ≡ 1 mod p divides [G:P] = q, so n_p ∈ {1, q}. card_sylow_p_of_card_eq_pq records the dichotomy; sylow_p_normal_of_card_eq_pq and card_sylow_p_eq_one_of_card_eq_pq show that when q ≢ 1 (mod p) the value n_p = q is excluded, forcing n_p = 1 and normality; exists_normal_subgroup_card_eq_p_of_card_eq_pq then yields a normal subgroup of order p — the symmetric counterpart of the q-side and the coprime-normal-subgroup input for the cyclic classification."
+    },
+    {
+      "id": "classification-capstone",
+      "title": "Part VIII: Classification Capstone — q ≢ 1 (mod p) ⟹ G Is Cyclic",
+      "startLine": 483,
+      "endLine": 607,
+      "summary": "isCyclic_of_card_eq_pq: a group of order p·q with q ≢ 1 (mod p) is cyclic. Parts VI–VII give normal subgroups of both prime orders p and q; being coprime they intersect trivially and (both normal) commute elementwise, so generators of coprime orders p, q multiply to an element of order p·q = |G|. cyclic_or_q_mod_p_of_card_eq_pq packages the full dichotomy (either q ≡ 1 mod p or G is cyclic), and mul_comm_of_card_eq_pq the abelian corollary, closing the order-p·q classification. Ends with a Summary block cataloguing all proved results (0 sorries, 0 axioms)."
     }
   ],
   "references": [
