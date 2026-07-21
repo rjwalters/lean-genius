@@ -95,68 +95,76 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Docstring and Imports",
+      "summary": "Module docstring stating Erdős Problem #798 (SOLVED by Alon 1991): estimate t(n), the minimum number of points in {1,…,n}² whose determined lines cover the whole grid, and decide whether t(n) = o(n) (answer YES). Records the matching bounds — Erdős–Purdy t(n) ≫ n^{2/3} and Alon t(n) ≪ n^{2/3} log n — with the [Al91] reference. Imports Set/Finset cardinality and the real special-functions/asymptotics libraries, and opens Set, Real, Finset, Filter, Asymptotics.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "$t(n) = \\Theta(n^{2/3}\\log n)$, hence $t(n) = o(n)$."
+    },
+    {
       "id": "lattice-definitions",
-      "title": "Lattice Points and Lines",
-      "summary": "latticeGrid, lineThroughPoints, lines_from_points",
-      "startLine": 38,
-      "endLine": 78,
-      "mathContext": "Mathematical content: latticeGrid, lineThroughPoints, lines_from_points"
+      "title": "Part I: Lattice Points and Lines",
+      "summary": "Defines `latticeGrid n = {1,…,n}²` and proves `latticeGrid_card`: |{1,…,n}²| = n² (by rewriting the set as a coerced `Finset.Icc` product and counting). Defines `lineThroughPoints p q` (the collinear set through two points, using a rational parameter, with the degenerate p = q collapsing to {p}). `lines_from_points` (a set of k points determines ≤ C(k,2) lines) is stated but left as `sorry`.",
+      "startLine": 39,
+      "endLine": 87,
+      "mathContext": "$|\\{1,\\ldots,n\\}^2| = n^2$; the line through distinct $p,q$ is $\\{r : \\exists t\\in\\mathbb{Q},\\ r = p + t(q-p)\\}$."
     },
     {
       "id": "covering-function",
-      "title": "The Covering Function t(n)",
-      "summary": "linesCoversGrid, pointsCoversGrid, t definition",
-      "startLine": 79,
-      "endLine": 112,
-      "mathContext": "Formal definition: linesCoversGrid, pointsCoversGrid, t definition"
+      "title": "Part II: The Covering Function t(n)",
+      "summary": "Defines the covering predicates `linesCoversGrid` (the grid is contained in the union of a set of lines) and `pointsCoversGrid` (every grid point lies on a line determined by two points of S), then the central object `t n := sInf { k | ∃ S ⊆ grid, |S| = k ∧ pointsCoversGrid S }` — the minimum number of points whose determined lines cover {1,…,n}².",
+      "startLine": 88,
+      "endLine": 121,
+      "mathContext": "$t(n) = \\inf\\{\\,|S| : S \\subseteq \\{1,\\ldots,n\\}^2,\\ \\text{lines determined by } S \\text{ cover the grid}\\,\\}$."
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound (Erdos-Purdy)",
-      "summary": "erdos_purdy_lower_bound, counting argument",
-      "startLine": 113,
-      "endLine": 142,
-      "mathContext": "Bound: erdos_purdy_lower_bound, counting argument"
+      "title": "Part III: Lower Bound (Erdős–Purdy)",
+      "summary": "The Erdős–Purdy lower bound `erdos_purdy_lower_bound`: t(n) ≫ n^{2/3}, stated as an axiom (the deep combinatorial-counting result). `lower_bound_intuition` records the weaker heuristic t(n) ≥ √(2n) motivating the counting argument (each line hits ≤ n points, k points give ≤ k²/2 lines, so k² ≥ 2n) — stated as a `sorry`.",
+      "startLine": 122,
+      "endLine": 151,
+      "mathContext": "$\\exists c>0,\\ t(n) \\ge c\\, n^{2/3}$ (Erdős–Purdy). Heuristic: $t^2 \\cdot n \\gtrsim n^2 \\Rightarrow t \\gtrsim n^{2/3}$."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound (Alon)",
-      "summary": "alon_upper_bound, alon_construction",
-      "startLine": 143,
-      "endLine": 174,
-      "mathContext": "Bound: alon_upper_bound, alon_construction"
+      "title": "Part IV: Upper Bound (Alon)",
+      "summary": "Alon's 1991 upper bound `alon_upper_bound`: t(n) ≪ n^{2/3} log n, and the existence of an explicit covering set `alon_construction` (a set of ≤ 10·n^{2/3}·log n grid points whose lines cover the grid). Both are stated as axioms encoding Alon's probabilistic/structured construction.",
+      "startLine": 152,
+      "endLine": 183,
+      "mathContext": "$\\exists C>0,\\ t(n) \\le C\\, n^{2/3}\\log n$ (Alon 1991); the log factor is essentially optimal."
     },
     {
       "id": "asymptotic-answer",
-      "title": "The Asymptotic Answer",
-      "summary": "tight_bounds, t_is_o_n",
-      "startLine": 175,
-      "endLine": 204,
-      "mathContext": "Bound: tight_bounds, t_is_o_n"
+      "title": "Part V: The Asymptotic Answer",
+      "summary": "Combines the two bounds: `tight_bounds` packages n^{2/3} ≪ t(n) ≪ n^{2/3} log n, and `t_is_o_n` PROVES the headline t(n) = o(n) — a full ~40-line asymptotics proof deriving it from Alon's axiom via `isLittleO_log_rpow_atTop` (log x = o(x^{1/3})), so x^{2/3}·log x = o(x^{2/3}·x^{1/3}) = o(x), then transferring the eventual bound from ℝ to ℕ with `tendsto_natCast_atTop_atTop`.",
+      "startLine": 184,
+      "endLine": 246,
+      "mathContext": "$n^{2/3} \\ll t(n) \\ll n^{2/3}\\log n \\Rightarrow t(n) = o(n)$, since $\\log x = o(x^{1/3})$."
     },
     {
       "id": "examples",
-      "title": "Examples and Explicit Bounds",
-      "summary": "t_2_bound, t_3_bound, explicit_lower",
-      "startLine": 205,
-      "endLine": 235,
-      "mathContext": "Bound: t_2_bound, t_3_bound, explicit_lower"
+      "title": "Part VI: Examples and Explicit Bounds",
+      "summary": "Small-case bounds. `t_2_bound`: t(2) ≤ 4, fully PROVED via the four corners covered by vertical lines — with a correction note refuting an earlier false `t 2 ≤ 3` claim (three of the four corners form a right triangle whose three lines miss the fourth corner, so t(2) = 4). `t_3_bound` (t(3) ≤ 4) and `explicit_lower` (t(n) ≥ ⌈n^{2/3}⌉) are stated as `sorry`.",
+      "startLine": 247,
+      "endLine": 305,
+      "mathContext": "$t(2) = 4$ (proved as $\\le 4$; three corners cannot cover the fourth); conjectured $t(n) \\ge \\lceil n^{2/3}\\rceil$."
     },
     {
       "id": "geometric-insight",
-      "title": "Geometric Insight",
-      "summary": "exponent_explanation, linesThroughOrigin",
-      "startLine": 236,
-      "endLine": 263,
-      "mathContext": "Mathematical content: exponent_explanation, linesThroughOrigin"
+      "title": "Part VII: Geometric Insight",
+      "summary": "Explains why the exponent is 2/3 by balancing the O(t²) lines from t points against O(n) coverage per line over n² total points (t²·n ≈ n² ⟹ t ≈ n^{2/3}), packaged as the predicate `exponent_explanation`. Introduces `linesThroughOrigin` (lines y = mx over a slope set) as an illustrative efficient-covering construction.",
+      "startLine": 306,
+      "endLine": 333,
+      "mathContext": "$t^2 \\cdot n \\approx n^2 \\Rightarrow t \\approx n^{2/3}$; the extra $\\log n$ is (up to constants) unavoidable."
     },
     {
       "id": "main-results",
-      "title": "Main Results Summary",
-      "summary": "erdos_798, erdos_798_summary, erdos_798_answer",
-      "startLine": 264,
-      "endLine": 311,
-      "mathContext": "Mathematical content: erdos_798, erdos_798_summary, erdos_798_answer"
+      "title": "Part VIII: Main Results Summary",
+      "summary": "Assembles the resolution: `erdos_798` bundles t(n)=o(n) together with the Erdős–Purdy lower and Alon upper bounds; `erdos_798_summary` gives the two-sided Θ(n^{2/3} log n) statement (proved from the two bound axioms); `erdos_798_answer` restates the o(n) conclusion (= `t_is_o_n`). Closes the `Erdos798` namespace.",
+      "startLine": 334,
+      "endLine": 381,
+      "mathContext": "$t(n) = \\Theta(n^{2/3}\\log n)$ and $t(n) = o(n)$ — the answer to Erdős's question is YES."
     }
   ],
   "conclusion": {
