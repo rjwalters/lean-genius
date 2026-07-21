@@ -57,35 +57,51 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: the f_r(n) triangle-forcing threshold",
+      "summary": "Module docstring, imports and the plan. f_r(n) is the minimal number of edges forcing a triangle in an n-vertex graph of chromatic number ≥ r; f is known only for small r — f₂ (Turán), f₃ (Erdős–Gallai 1962), f₄ (Ren–Wang–Wang–Yang 2024, n ≥ 150) — while f₅(n) is open. This file adds no axioms and computes nothing new about f₅; it establishes the unconditional scaffolding (antitonicity, the degenerate boundary, the vertex-shift pattern, the conjecture as a Prop). Imports Proofs.Erdos1011Problem for the f / Forces framework.",
+      "startLine": 1,
+      "endLine": 55,
+      "mathContext": "f_r(n) = sInf { m | every n-vertex graph with χ ≥ r and ≥ m edges has a triangle }."
+    },
+    {
       "id": "forces",
       "title": "The forcing predicate and the threshold f",
-      "summary": "Factoring f r n = sInf {m | Forces r n m}; nonemptiness and the two interface lemmas",
+      "summary": "Factors f r n = sInf {m | Forces r n m} and pins it down. Forces r n m: every n-vertex graph with χ ≥ r and ≥ m edges has a triangle. forces_nonempty: the defining set is nonempty (once m > C(n,2) the edge hypothesis is unsatisfiable, so it holds vacuously). f_forces / f_le_of_forces: the infimum is attained and lower-bounds any forcing m. forces_mono: the predicate is an up-set in the edge bound. forces_iff_f_le: the complete characterization Forces r n m ↔ f r n ≤ m, exhibiting f r n as the least element of the up-set.",
       "startLine": 56,
-      "endLine": 87,
-      "mathContext": "Forces r n m: every n-vertex graph with χ ≥ r and ≥ m edges has a triangle. Nonempty via e(G) ≤ C(n,2)."
+      "endLine": 111,
+      "mathContext": "Forces r n m: every n-vertex graph with χ ≥ r and ≥ m edges has a triangle. Nonempty via e(G) ≤ C(n,2); Forces r n m ↔ f r n ≤ m."
     },
     {
       "id": "antitone",
       "title": "Antitonicity in the chromatic parameter",
-      "summary": "f r' n ≤ f r n for r ≤ r'; corollary f₅(n) ≤ f₄(n) and the full chain",
-      "startLine": 89,
-      "endLine": 119,
-      "mathContext": "A higher chromatic requirement lowers the triangle-forcing edge threshold."
+      "summary": "The one genuinely new theorem. f_antitone_in_chromatic: r ≤ r' ⇒ f r' n ≤ f r n, since the defining set for r is contained in that for r' (χ ≥ r' implies χ ≥ r) and sInf reverses inclusion. Corollary f_five_le_f_four: f₅(n) ≤ f₄(n), squeezing the open value below the now-known f₄. f_chain: the full antitone chain f₅ ≤ f₄ ≤ f₃ ≤ f₂.",
+      "startLine": 113,
+      "endLine": 142,
+      "mathContext": "A higher chromatic requirement is a stronger hypothesis, so it can only lower the triangle-forcing edge threshold: r ≤ r' ⇒ f r' n ≤ f r n."
+    },
+    {
+      "id": "degenerate-regime",
+      "title": "The degenerate regime: r > n forces the threshold to 0",
+      "summary": "The exact left boundary of the table. chromaticNumber_le_card: any n-vertex graph is n-colourable (the identity bijection V ≃ Fin n is a proper colouring), so χ(G) ≤ n. f_eq_zero_of_lt: hence if n < r no n-vertex graph attains χ ≥ r, the forcing condition is vacuous at every edge bound (including m = 0), and f r n = 0 — the antitone-in-r value has bottomed out.",
+      "startLine": 144,
+      "endLine": 172,
+      "mathContext": "χ(G) ≤ card V for every finite graph; so n < r ⇒ f r n = 0."
     },
     {
       "id": "shift",
       "title": "The vertex-shift pattern C(r-1,2)",
-      "summary": "chromaticShift r = (r-1).choose 2 reproduces 0,1,3 and predicts 6 for r=5",
-      "startLine": 121,
-      "endLine": 152,
-      "mathContext": "Closed form (r-1)(r-2)/2; monotone; matches the ⌊(n-s)²/4⌋ shifts."
+      "summary": "The empirical shift in the known formulas ⌊(n-s)²/4⌋ is s = 0, 1, 3 for r = 2, 3, 4 — exactly C(r-1,2). def chromaticShift r = (r-1).choose 2 packages this. chromaticShift_known: reproduces 0, 1, 3 and predicts shift 6 for the open case r = 5 (by decide). chromaticShift_eq: closed form (r-1)(r-2)/2. chromaticShift_mono: monotone in r.",
+      "startLine": 174,
+      "endLine": 202,
+      "mathContext": "s(r) = C(r-1,2) = (r-1)(r-2)/2; matches the ⌊(n-s)²/4⌋ shifts and predicts s(5) = 6."
     },
     {
       "id": "conjecture",
       "title": "The open statements",
-      "summary": "shiftConjecture and f5Conjecture recorded as Props (not proved)",
-      "startLine": 154,
-      "endLine": 174,
+      "summary": "The conjectures recorded as Props (neither proved here), plus one reduction. shiftConjecture: for all r ≥ 2, f_r(n) = ⌊(n − C(r-1,2))²/4⌋ + c_r for some constant c_r and all large n (true for r = 2, 3, 4 with c = 1, 2, 6). f5Conjecture: the concrete r = 5 case, ⌊(n-6)²/4⌋ + c. shiftConjecture_imp_f5: the general conjecture specializes to the f₅ conjecture. Closes with #check / #print axioms confirming the headline results are 0-axiom.",
+      "startLine": 204,
+      "endLine": 234,
       "mathContext": "f₅(n) = ⌊(n-6)²/4⌋ + c conjecturally; the general shift conjecture specializes to it."
     }
   ],
