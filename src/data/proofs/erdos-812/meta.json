@@ -130,9 +130,17 @@
       "id": "computations",
       "title": "Computational Verifications",
       "startLine": 112,
-      "endLine": 129,
-      "summary": "Seven `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, differences $4$ and $12$, BEFS values $0$, $4$, $8$.",
+      "endLine": 132,
+      "summary": "Seven `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, consecutive differences $4$ and $12$, and the small-$n$ BEFS values $4n-8 = 0, 4, 8$ for $n = 2, 3, 4$.",
       "mathContext": "Verified: Seven `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, differences $4$ and $12$, BEFS values $0$, $4$, $8$."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI — Summary Theorem",
+      "startLine": 134,
+      "endLine": 160,
+      "summary": "Capstone `erdos_812_summary`: a single theorem bundling the two best known unconditional results, proved from the axioms as `⟨BEFS_theorem, problem_165_bound⟩`. Component (1): the Burr–Erdős–Faudree–Schelp linear bound R(n+1) − R(n) ≥ 4n − 8 for all n ≥ 2. Component (2): the two-step bound from Problem #165, R(n+2) − R(n) ≫ n^{2-o(1)}, packaged with an explicit subpolynomial error function f. Closes namespace Erdos812. Neither of the two open conjectures (ratio ≥ 1+c, difference ≫ n²) is resolved — the theorem records only what is known.",
+      "mathContext": "$\\bigl(\\forall n \\ge 2,\\ R(n{+}1) - R(n) \\ge 4n - 8\\bigr) \\wedge \\bigl(\\exists f: \\mathbb{N}\\to\\mathbb{R}$ subpolynomial$,\\ \\exists C>0,\\ \\forall n \\ge 3,\\ R(n{+}2) - R(n) \\ge C n^2 / f(n)\\bigr)$. Best known bounds sit against the still-open $2^{n/2} \\le R(n) \\le 4^n/\\sqrt{n}$."
     }
   ],
   "conclusion": {
