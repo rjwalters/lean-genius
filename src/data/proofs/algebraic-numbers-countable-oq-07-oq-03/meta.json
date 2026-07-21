@@ -67,7 +67,9 @@
       "atLeastOneAlgebraicComplex_null: the ℂⁿ analogue — points with some algebraic coordinate are planar-Lebesgue-null",
       "allAlgebraicComplex_countable: the all-algebraic points of ℂⁿ are countable",
       "allAlgebraicComplex_null: for n ≥ 1 the all-algebraic points of ℂⁿ are null",
-      "ae_all_transcendental_complex: almost every point of ℂⁿ has all coordinates transcendental"
+      "ae_all_transcendental_complex: almost every point of ℂⁿ has all coordinates transcendental",
+      "atLeastOneAlgebraicReal_uncountable / atLeastOneAlgebraicComplex_uncountable: for n ≥ 2 the at-least-one-algebraic set is uncountable (cardinality ≥ 𝔠), via the injection t ↦ (fix coordinate 0 at the algebraic 0, put t in coordinate 1); with the nullity results this exhibits an explicit continuum-sized Lebesgue-null set",
+      "atLeastOne_uncountable_allAlgebraic_countable: the crisp n ≥ 2 separation — the at-least-one set is uncountable while the all-algebraic set is countable (both null), formally witnessing that 'measure-zero' is strictly weaker than 'countable' in dimension ≥ 2"
     ]
   },
   "overview": {
@@ -128,13 +130,21 @@
       "id": "section-4-complex",
       "title": "§4. ℂⁿ: The Same Statements for the Complex Algebraic Numbers",
       "startLine": 161,
-      "endLine": 201,
+      "endLine": 200,
       "summary": "`atLeastOneAlgebraicComplex_null`, `allAlgebraicComplex_countable`, `allAlgebraicComplex_null` (n ≥ 1), and `ae_all_transcendental_complex`: the verbatim ℂⁿ analogues, using the parent algebraic_complex_null and algebraic_complex_countable as the one-dimensional inputs.",
       "mathContext": "$\\mathrm{vol}\\{z \\in \\mathbb{C}^n \\mid \\exists i,\\ \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,z_i\\} = 0$ and a.e. point of $\\mathbb{C}^n$ is coordinatewise transcendental."
+    },
+    {
+      "id": "section-5-uncountable",
+      "title": "§5. The At-Least-One-Algebraic Set is Uncountable Once n ≥ 2",
+      "startLine": 201,
+      "endLine": 288,
+      "summary": "Makes the 'null but not countable' separation formal. `atLeastOneAlgebraicReal_uncountable` (n ≥ 2): the at-least-one-algebraic set of ℝⁿ is uncountable — fixing coordinate 0 at the algebraic value 0 and letting coordinate 1 range over ℝ gives an injection ℝ ↪ set (Function.update + Cardinal.mk_le_of_injective, Cardinal.mk_real, aleph0_lt_continuum), so its cardinality is at least 𝔠 > ℵ₀. `atLeastOneAlgebraicComplex_uncountable` (n ≥ 2): the ℂⁿ analogue via the same real one-parameter family inside ℂ. `atLeastOne_uncountable_allAlgebraic_countable` (n ≥ 2): packages the crisp separation — the at-least-one set is uncountable while the all-algebraic set is countable, yet both are Lebesgue-null. This phenomenon is invisible to the one-dimensional parent, where the algebraic reals are both null and countable.",
+      "mathContext": "For $n \\ge 2$: $\\{x \\in \\mathbb{R}^n \\mid \\exists i,\\ \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x_i\\}$ is uncountable ($\\ge \\mathfrak{c}$) yet Lebesgue-null, while $\\{x \\mid \\forall i,\\ \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x_i\\}$ is countable — so null is strictly weaker than countable."
     }
   ],
   "conclusion": {
-    "summary": "This entry lifts the measure pillar of the algebraic-number smallness trichotomy to ℝⁿ and ℂⁿ. The single new ingredient is that a coordinate cylinder over a Lebesgue-null factor has product measure zero (Fubini: a slice has no full-dimensional volume). From it, the points with at least one algebraic coordinate are null for every n — an uncountable null set once n ≥ 2 — and the all-algebraic points are countable, hence (for n ≥ 1) null by containment. Dually, almost every point of ℝⁿ and ℂⁿ has all coordinates transcendental. All 9 theorems are proved with 0 sorries and 0 axioms.",
+    "summary": "This entry lifts the measure pillar of the algebraic-number smallness trichotomy to ℝⁿ and ℂⁿ. The single new ingredient is that a coordinate cylinder over a Lebesgue-null factor has product measure zero (Fubini: a slice has no full-dimensional volume). From it, the points with at least one algebraic coordinate are null for every n — an uncountable null set once n ≥ 2 — and the all-algebraic points are countable, hence (for n ≥ 1) null by containment. Dually, almost every point of ℝⁿ and ℂⁿ has all coordinates transcendental. A final §5 makes the separation formal: for n ≥ 2 the at-least-one-algebraic set is proved uncountable (an injection ℝ ↪ set via a fixed algebraic coordinate), so a continuum-sized set is Lebesgue-null while the all-algebraic set stays countable. All 12 theorems are proved with 0 sorries and 0 axioms.",
     "implications": "The n-dimensional picture cleanly separates two notions that coincide in dimension one. The all-algebraic points remain countable (cardinality-small), but the geometrically natural set — at least one algebraic coordinate — is uncountable yet still measure-zero, showing 'null' is strictly weaker than 'countable' for n ≥ 2. The a.e. statement is the multidimensional form of 'almost every real is transcendental': a uniformly random point of any box in ℝⁿ has all coordinates transcendental with probability one. Because the coordinate-cylinder lemma is stated over an arbitrary σ-finite factor, the same conclusions hold for any finite product of atomless Borel measures, not just Lebesgue.",
     "openQuestions": [
       "Sharpen 'null' to Hausdorff dimension: the at-least-one-algebraic set in ℝⁿ is a countable union of (n−1)-dimensional cylinders and should have Hausdorff dimension exactly n − 1, while the all-algebraic set has dimension 0. Formalizing this would refine the measure statement into the fractal-dimension hierarchy.",
@@ -212,6 +222,18 @@
       "type": "supporting",
       "description": "The ℂⁿ headline: almost every point has all coordinates transcendental.",
       "leanType": "{n : ℕ} : ∀ᵐ z : Fin n → ℂ ∂volume, ∀ i, Transcendental ℚ (z i)"
+    },
+    {
+      "name": "atLeastOneAlgebraicReal_uncountable",
+      "type": "main",
+      "description": "For n ≥ 2 the at-least-one-algebraic set of ℝⁿ is uncountable: fixing coordinate 0 at the algebraic value 0 and letting coordinate 1 range over ℝ injects ℝ into the set, so its cardinality is at least 𝔠 > ℵ₀ (Cardinal.mk_le_of_injective, Cardinal.mk_real, aleph0_lt_continuum). With atLeastOneAlgebraicReal_null this is an explicit continuum-sized Lebesgue-null set.",
+      "leanType": "{n : ℕ} (hn : 2 ≤ n) : ¬ {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)}.Countable"
+    },
+    {
+      "name": "atLeastOne_uncountable_allAlgebraic_countable",
+      "type": "main",
+      "description": "The crisp separation for n ≥ 2: the at-least-one-algebraic set is uncountable while the all-algebraic set is countable — yet both are Lebesgue-null. Formally witnesses that 'measure-zero' is strictly weaker than 'countable' in dimension ≥ 2, a distinction the one-dimensional parent cannot exhibit.",
+      "leanType": "{n : ℕ} (hn : 2 ≤ n) : ¬ {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)}.Countable ∧ {x : Fin n → ℝ | ∀ i, IsAlgebraic ℚ (x i)}.Countable"
     }
   ],
   "leanFile": {
