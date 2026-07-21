@@ -192,28 +192,68 @@
       "mathContext": "The hyperbolic law of sines: the common ratio sinh(side)/sin(opposite angle) is the Gram determinant normalization, recovered here from the second law of cosines alone."
     },
     {
-      "id": "realizability",
-      "title": "Realizability: the Defect Condition is Sufficient",
+      "id": "law-of-sines-ratio",
+      "title": "PART 9a — Closed Form of the Common Law-of-Sines Ratio",
       "startLine": 793,
-      "endLine": 887,
-      "summary": "angle_ineq and exists_triangle_of_defect construct a HyperbolicTriangle for any three angles in (0,π) with A+B+C<π; exists_iff_defect packages the biconditional and exists_equilateral specializes to equal angles.",
-      "mathContext": "The angular defect A+B+C<π is not only necessary but SUFFICIENT: every admissible angle triple is realized by an actual hyperbolic triangle."
+      "endLine": 846,
+      "summary": "Square-root extraction upgrades the squared law of sines to an explicit value: sinh_a_mul_sin_eq_sqrt_gram shows sinh a · sin B · sin C = √(gramNumerator) (the positive root, since the base is positive). law_of_sines_common_ratio and its symmetric form law_of_sines_common_ratio_symm then exhibit the shared ratio sinh(side)/sin(opposite) = √(gram)/(sin A · sin B · sin C) in closed form.",
+      "mathContext": "sinh_a_num_sq only fixes the square (sinh a · sin B · sin C)² = gramNumerator; positivity of the base selects the positive square root, turning the squared law of sines into an unsquared, explicit common ratio."
+    },
+    {
+      "id": "first-law-of-cosines",
+      "title": "PART 9b — The First Law of Cosines (Dual Identity)",
+      "startLine": 847,
+      "endLine": 1059,
+      "summary": "The b- and c-companions of the Gram square-root extraction (sinh_b_mul_sin_eq_sqrt_gram, sinh_c_mul_sin_eq_sqrt_gram) supply the ingredients for the FIRST law of cosines, derived at every vertex from the structure's second law: first_law_of_cosines_C (cosh c = cosh a · cosh b − sinh a · sinh b · cos C), and its cyclic images first_law_of_cosines_A and first_law_of_cosines_B.",
+      "mathContext": "In hyperbolic geometry the first and second laws of cosines are genuinely distinct identities (unlike the Euclidean single law); here the first law is a derived theorem, not an axiom, obtained from the second law via the law-of-sines ratio."
+    },
+    {
+      "id": "realizability",
+      "title": "PART 10 — Realizability: the Defect Condition is Sufficient",
+      "startLine": 1060,
+      "endLine": 1154,
+      "summary": "angle_ineq and exists_triangle_of_defect construct a HyperbolicTriangle for any three angles in (0,π) with A+B+C<π; exists_iff_defect packages the biconditional (a triple is realizable ⟺ it has positive angular defect) and exists_equilateral specializes to equal angles θ ∈ (0, π/3).",
+      "mathContext": "The angular defect A+B+C<π is not only necessary but SUFFICIENT: every admissible angle triple is realized by an actual hyperbolic triangle, so the structure's fields carve out exactly the geometrically realizable triangles."
     },
     {
       "id": "equilateral-arcosh",
-      "title": "Equilateral Side Lengths in Closed Form",
-      "startLine": 888,
-      "endLine": 937,
+      "title": "PART 11 — Equilateral Side Lengths in Closed Form",
+      "startLine": 1155,
+      "endLine": 1204,
       "summary": "equilateral_side and equilateral_pi_four_side upgrade the cosh values to explicit side lengths via Real.arcosh_cosh (arcosh(cos θ/(1−cos θ)); arcosh(1+√2) at θ=π/4). equilateral_sides_eq (A=B=C ⟹ a=b∧b=c) and equilateral_cosh_a complete the side-metric picture.",
       "mathContext": "arcosh inverts cosh on [0,∞), turning the implicit cosh values into genuine metric side lengths."
     },
     {
       "id": "equilateral-iff",
-      "title": "The Full Equilateral ⟺ Equiangular Characterization",
-      "startLine": 938,
-      "endLine": 978,
-      "summary": "HyperbolicTriangle.rotate is the cyclic relabeling (A,B,C)↦(B,C,A), (a,b,c)↦(b,c,a) permuting the law fields; side_eq_iff_angle_eq_bc (b=c ↔ B=C) is its payoff. equilateral_iff_equiangular packages both isosceles criteria into (a=b ∧ b=c) ↔ (A=B ∧ B=C): a hyperbolic triangle is equilateral iff it is equiangular.",
+      "title": "PART 12 — The Full Equilateral ⟺ Equiangular Characterization",
+      "startLine": 1205,
+      "endLine": 1254,
+      "summary": "HyperbolicTriangle.rotate is the cyclic relabeling (A,B,C)↦(B,C,A), (a,b,c)↦(b,c,a) permuting the law fields; side_eq_iff_angle_eq_bc (b=c ↔ B=C) and side_eq_iff_angle_eq_ca are its payoff. equilateral_iff_equiangular packages the isosceles criteria into (a=b ∧ b=c) ↔ (A=B ∧ B=C): a hyperbolic triangle is equilateral iff it is equiangular.",
       "mathContext": "With AAA congruence this pins down the equilateral triangles as exactly the equiangular ones — a single congruence class for each admissible common angle θ ∈ (0, π/3)."
+    },
+    {
+      "id": "side-angle-cyclic",
+      "title": "PART 12b — Cyclic Completion of the Side–Angle Order-Equivalence",
+      "startLine": 1255,
+      "endLine": 1292,
+      "summary": "The order-equivalences established for the (a,b)/(A,B) pair are extended to the remaining pairs by cyclic relabeling: side_lt_iff_angle_lt_bc/_ca (strict) and side_le_iff_angle_le_bc/_ca (non-strict). sides_ordered_of_angles_ordered assembles them into a full order-correspondence: sorting the angles sorts the sides identically.",
+      "mathContext": "Rotational symmetry of the HyperbolicTriangle structure lets every two-index monotonicity fact be transported to all three side–angle pairs without re-proving, yielding a global order isomorphism between the angle vector and the side vector."
+    },
+    {
+      "id": "triangle-inequality",
+      "title": "PART 8b — The Hyperbolic Triangle Inequality",
+      "startLine": 1293,
+      "endLine": 1340,
+      "summary": "hyperbolic_triangle_inequality_a/_b/_c establish a < b + c and its cyclic images for every hyperbolic triangle, and hyperbolic_abs_sub_lt_a gives the reverse inequality |b − c| < a. Together they confirm the triangle-inequality axioms of a metric hold for the derived side lengths.",
+      "mathContext": "That the side lengths satisfy the (strict) triangle inequality is the metric-geometry consistency check: the HyperbolicTriangle fields describe genuine distances in a length space, not merely an algebraic identity system."
+    },
+    {
+      "id": "sss-sas-asa",
+      "title": "PART 13 — Angle-from-Sides Inversion and SSS/SAS/ASA Congruence",
+      "startLine": 1341,
+      "endLine": 1427,
+      "summary": "cos_A_eq_of_sides/_B/_C invert the first law of cosines to recover each angle from the three sides. Building on these, sss_congruence (three equal sides ⟹ congruent), sas_congruence (two sides and the included angle) and asa_congruence (two angles and the included side) complete the classical congruence criteria in the hyperbolic setting, dual to the AAA congruence of PART 4.",
+      "mathContext": "In hyperbolic geometry AAA is already a congruence criterion (unlike Euclidean geometry); adding SSS, SAS and ASA shows all four classical criteria hold, with cos = (cosh·cosh − cosh)/(sinh·sinh) inverting sides back to angles."
     }
   ],
   "mainTheorems": [
