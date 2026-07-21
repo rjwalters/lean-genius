@@ -112,9 +112,9 @@
       "id": "completeness",
       "title": "Completeness Theorem",
       "startLine": 151,
-      "endLine": 159,
-      "summary": "All five formulas packaged as a single completeness theorem.",
-      "mathContext": "Conjunction of all five Faulhaber formulas"
+      "endLine": 193,
+      "summary": "faulhaber_completeness packages all five power-sum formulas (k∈{1,2,3,4,5}) as a single conjunction, each discharged from the unified Bernoulli identity with no induction, answering OQ-01. Closes with the Numerical Verification block: norm_num examples at n=4 for k=2 (14), k=3 (36), k=4 (98), k=5 (276).",
+      "mathContext": "Conjunction of all five Faulhaber formulas ∑_{i<n} i^k, each a special case of ∑_{i<n} i^k = (1/(k+1)) ∑_{j≤k} C(k+1,j) B_j n^{k+1-j}. The example blocks evaluate the closed forms at n=4 to cross-check the Bernoulli-derived polynomials."
     }
   ],
   "crossReferences": [
