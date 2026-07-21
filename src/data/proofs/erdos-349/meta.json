@@ -113,41 +113,49 @@
     {
       "id": "main-question",
       "title": "Main Characterization Problem",
-      "startLine": 38,
-      "endLine": 44,
-      "summary": "States Erdős Problem #349: characterize the set $\\mathcal{G} \\subseteq (0,\\infty)^2$ of all good pairs $(t,\\alpha)$. Formalized as an existential axiom asserting the completeness region exists.",
-      "mathContext": "Axiom: $\\exists S \\subseteq \\mathbb{R}^2,\\ \\forall t > 0,\\ \\forall \\alpha > 0,\\ (t,\\alpha) \\in S \\iff \\{\\lfloor t\\alpha^n \\rfloor\\}$ is complete. The problem asks for an explicit description of $S$."
+      "startLine": 37,
+      "endLine": 50,
+      "summary": "States Erdős Problem #349: characterize the set $\\mathcal{G} \\subseteq (0,\\infty)^2$ of all good pairs $(t,\\alpha)$. The theorem `erdos_349_characterization` formalizes the existence of the region tautologically (witness $S = \\mathcal{G}$ itself); the real content — an explicit description of $S$ — is the open problem.",
+      "mathContext": "Theorem (tautological): $\\exists S \\subseteq \\mathbb{R}^2,\\ \\forall t > 0,\\ \\forall \\alpha > 0,\\ (t,\\alpha) \\in S \\iff \\{\\lfloor t\\alpha^n \\rfloor\\}$ is complete, witnessed by $S = \\{p \\mid \\text{IsGoodPair } p_1\\, p_2\\}$. The mathematical problem asks for an explicit, non-tautological description of $S$."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Conjecture",
-      "startLine": 46,
-      "endLine": 52,
+      "startLine": 51,
+      "endLine": 54,
       "summary": "The central conjecture: $\\lfloor t\\alpha^n \\rfloor$ is complete for all $t > 0$ and $1 < \\alpha < \\varphi = (1+\\sqrt{5})/2$. The golden ratio threshold arises from the Fibonacci sequence's completeness via Zeckendorf's theorem.",
       "mathContext": "Conjecture: $(0,\\infty) \\times (1, \\varphi) \\subseteq \\mathcal{G}$. The Fibonacci sequence satisfies $F_n = \\lfloor \\varphi^n / \\sqrt{5} + 1/2 \\rfloor$ (i.e., $t = 1/\\sqrt{5}$, $\\alpha = \\varphi$), and Zeckendorf proved it is complete."
     },
     {
       "id": "known-results",
       "title": "Graham's Disjoint Segments",
-      "startLine": 54,
-      "endLine": 64,
+      "startLine": 55,
+      "endLine": 59,
       "summary": "Formalizes Graham's 1964 result: for any $k$, there exists $t_k \\in (0,1)$ such that the completeness set $\\{\\alpha : (t_k, \\alpha) \\in \\mathcal{G}\\}$ consists of $\\geq k$ disjoint intervals, revealing fractal-like complexity.",
       "mathContext": "Graham (1964): $\\forall k,\\ \\exists t_k,\\ \\{\\alpha : (t_k, \\alpha) \\in \\mathcal{G}\\}$ contains $\\geq k$ disjoint open intervals. This implies the boundary $\\partial \\mathcal{G}$ is highly non-trivial — not a simple curve in $(t,\\alpha)$-space."
     },
     {
       "id": "parity-questions",
       "title": "Parity of $\\lfloor (3/2)^n \\rfloor$",
-      "startLine": 66,
-      "endLine": 77,
+      "startLine": 60,
+      "endLine": 66,
       "summary": "States the two fundamental parity sub-problems: is $\\lfloor (3/2)^n \\rfloor$ odd infinitely often? Even infinitely often? Both remain open and connect to equidistribution of $\\{(3/2)^n\\}$ modulo 1.",
       "mathContext": "$\\lfloor (3/2)^n \\rfloor \\pmod{2}$ is determined by $\\{(3/2)^n\\} = (3/2)^n - \\lfloor (3/2)^n \\rfloor$. If $\\{(3/2)^n\\}$ were equidistributed mod 1, then $\\lfloor (3/2)^n \\rfloor$ would be odd $\\sim 50\\%$ of the time. But equidistribution of $\\{\\alpha^n\\}$ for non-Pisot $\\alpha$ (like $3/2$) is a major open problem."
     },
     {
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "startLine": 67,
+      "endLine": 74,
+      "summary": "The one machine-checked lemma of the file: `expFloorSeq_at_one` shows that at $\\alpha = 1$ the sequence $\\lfloor t \\cdot 1^n \\rfloor = \\lfloor t \\rfloor$ is constant — the degenerate boundary case sitting just below the conjectured completeness threshold $1 < \\alpha$.",
+      "mathContext": "$\\text{expFloorSeq}\\, t\\, 1\\, n = \\lfloor t \\rfloor$ for every $n$ (since $1^n = 1$), by `simp [expFloorSeq, one_pow]`. A constant sequence is not additively complete, consistent with the conjecture requiring $\\alpha > 1$."
+    },
+    {
       "id": "waring-observation",
-      "title": "Waring Connection",
-      "startLine": 79,
-      "endLine": 83,
-      "summary": "Notes the link to Waring's problem: the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ depends on the same exponential floor values that appear in Problem #349.",
+      "title": "Observations: Waring and Fibonacci",
+      "startLine": 75,
+      "endLine": 84,
+      "summary": "Two closing observations. (1) Waring connection: the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ depends on the same exponential floor values that appear in Problem #349. (2) Fibonacci threshold: the golden ratio $\\varphi = (1+\\sqrt{5})/2$ is the growth rate of the (complete) Fibonacci sequence, and the conjecture posits that completeness persists for growth rates just below $\\varphi$.",
       "mathContext": "$g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ when $\\{(3/2)^k\\} \\leq 1 - (3/4)^k$. This condition holds for all verified $k \\leq 471{,}600{,}000$ (Kubina-Wunderlich). If it fails for some $k$, then $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 1$."
     }
   ],
