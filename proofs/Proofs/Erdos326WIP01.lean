@@ -22,6 +22,9 @@ ratio and its limit:
 * the perfect squares are a concrete additive basis of **order 4** (Lagrange's
   four-square theorem) — the canonical non-vacuous witness for the predicate;
 * `growthRatio` is nonnegative, `growthRatio b 0 = 0`;
+* for an order-2 basis the growth ratio `bₖ/k²` of its increasing enumeration is
+  bounded above — eventually by a constant `C`, and its full range is `BddAbove`
+  (the `growthRatio` restatement of the `bₖ = O(k²)` bound);
 * the growth limit is unique, and existence of a limit contradicts
   `HasNoGrowthLimit`;
 * both growth-limit predicates are non-vacuous: an exactly-quadratic
@@ -397,6 +400,67 @@ theorem IsAddBasisOfOrder.two_nth_le_mul_sq {A : Set ℕ}
       ≤ N + (k + 1) ^ 2 := hN k
     _ ≤ N * k ^ 2 + 4 * k ^ 2 := by omega
     _ = (N + 4) * k ^ 2 := by ring
+
+/-! ## The `bₖ = O(k²)` bound as `growthRatio` boundedness
+
+The `two_nth_le_*` lemmas above bound the enumeration `bₖ = Nat.nth (· ∈ A) k`
+of an order-2 basis by `C·k²`.  We translate that into the language of the
+`growthRatio b k = bₖ/k²` object itself (until now only exercised on toy
+sequences): the growth ratio of the actual basis enumeration is **bounded
+above**.  This is the precise sense in which Key Observation 1 controls `bₖ`
+from above — it does **not** touch non-convergence, the open part of #326. -/
+
+/-- **The growth ratio of an order-2 basis is eventually bounded above.**  For an
+order-2 additive basis `A`, enumerated increasingly by `bₖ = Nat.nth (· ∈ A) k`,
+there are constants `C, N₀` with `bₖ/k² ≤ C` for all `k ≥ N₀`.  This is the
+`growthRatio` restatement of `two_nth_le_mul_sq` (`bₖ ≤ C·k²`). -/
+theorem IsAddBasisOfOrder.two_growthRatio_le {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ C N₀ : ℕ, ∀ k : ℕ, N₀ ≤ k → growthRatio (Nat.nth (· ∈ A)) k ≤ (C : ℝ) := by
+  obtain ⟨C, N₀, hC⟩ := h.two_nth_le_mul_sq
+  refine ⟨C, max N₀ 1, fun k hk => ?_⟩
+  have hk1 : 1 ≤ k := le_trans (le_max_right _ _) hk
+  have hkR : (0 : ℝ) < (k : ℝ) ^ 2 := by
+    have : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk1
+    positivity
+  have hb : (Nat.nth (· ∈ A) k : ℝ) ≤ (C : ℝ) * (k : ℝ) ^ 2 := by
+    exact_mod_cast hC k (le_trans (le_max_left _ _) hk)
+  unfold growthRatio
+  rw [div_le_iff₀ hkR]
+  exact hb
+
+/-- The growth ratio of an order-2 basis eventually lies in `[0, C]`: it is
+nonnegative (`growthRatio_nonneg`) and bounded above by `C`
+(`two_growthRatio_le`). -/
+theorem IsAddBasisOfOrder.two_growthRatio_mem_Icc {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ C N₀ : ℕ, ∀ k : ℕ, N₀ ≤ k →
+      growthRatio (Nat.nth (· ∈ A)) k ∈ Set.Icc (0 : ℝ) (C : ℝ) := by
+  obtain ⟨C, N₀, hC⟩ := h.two_growthRatio_le
+  exact ⟨C, N₀, fun k hk => ⟨growthRatio_nonneg _ k, hC k hk⟩⟩
+
+/-- **The full range of the growth ratio of an order-2 basis is bounded above.**
+Removing the eventual-threshold from `two_growthRatio_le`: the finitely many
+values on the initial segment `k < N₀` are absorbed into the (nonnegative) bound
+`C + ∑_{j < N₀} growthRatio b j`, so `{bₖ/k² : k ∈ ℕ}` is `BddAbove`.  This is
+`bₖ = O(k²)` expressed as literal boundedness of the ratio sequence. -/
+theorem IsAddBasisOfOrder.two_growthRatio_bddAbove {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    BddAbove (Set.range (growthRatio (Nat.nth (· ∈ A)))) := by
+  obtain ⟨C, N₀, hC⟩ := h.two_growthRatio_le
+  set b := Nat.nth (· ∈ A) with hbdef
+  set S : ℝ := ∑ j ∈ Finset.range N₀, growthRatio b j with hSdef
+  refine ⟨(C : ℝ) + S, ?_⟩
+  rintro _ ⟨k, rfl⟩
+  rcases Nat.lt_or_ge k N₀ with hk | hk
+  · have hmem : k ∈ Finset.range N₀ := Finset.mem_range.mpr hk
+    have hle : growthRatio b k ≤ S :=
+      Finset.single_le_sum (fun j _ => growthRatio_nonneg b j) hmem
+    have hCnonneg : (0 : ℝ) ≤ (C : ℝ) := by positivity
+    linarith
+  · have hCk : growthRatio b k ≤ (C : ℝ) := hC k hk
+    have hSnonneg : 0 ≤ S := Finset.sum_nonneg fun j _ => growthRatio_nonneg b j
+    linarith
 
 /-! ## The growth-limit predicates are non-vacuous (realizability)
 
