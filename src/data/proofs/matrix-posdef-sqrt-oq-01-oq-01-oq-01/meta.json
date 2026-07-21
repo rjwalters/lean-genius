@@ -78,17 +78,23 @@
     {
       "id": "operator-absolute-value",
       "title": "The operator absolute value |A| = √(AᴴA)",
-      "description": "Defines the modulus absValue A = CFC.sqrt (Aᴴ·A) and records its structure: positive semidefinite (absValue_posSemidef), Hermitian (absValue_isHermitian), the defining identity |A|² = AᴴA (absValue_mul_self), the form |A|ᴴ·|A| = AᴴA (absValue_conjTranspose_mul_self), and uniqueness as the PSD square root of AᴴA (absValue_unique)."
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Module docstring, imports, and namespace, then the modulus absValue A = CFC.sqrt (Aᴴ·A) and its structure: positive semidefinite (absValue_posSemidef), Hermitian (absValue_isHermitian), the defining identity |A|² = AᴴA (absValue_mul_self), the form |A|ᴴ·|A| = AᴴA (absValue_conjTranspose_mul_self), and uniqueness as the PSD square root of AᴴA (absValue_unique)."
     },
     {
       "id": "quadratic-form",
       "title": "The fundamental quadratic-form identity",
-      "description": "For any matrix M and vector x, the Hermitian quadratic form of Mx collapses to the form of MᴴM on x: star (M *ᵥ x) ⬝ᵥ (M *ᵥ x) = star x ⬝ᵥ ((Mᴴ·M) *ᵥ x) (star_mulVec_dotProduct_self), a pure matrix-algebra computation."
+      "startLine": 81,
+      "endLine": 89,
+      "summary": "For any matrix M and vector x, the Hermitian quadratic form of Mx collapses to the form of MᴴM on x: star (M *ᵥ x) ⬝ᵥ (M *ᵥ x) = star x ⬝ᵥ ((Mᴴ·M) *ᵥ x) (star_mulVec_dotProduct_self), a pure matrix-algebra computation."
     },
     {
       "id": "norm-preservation",
       "title": "Norm preservation ‖Ax‖ = ‖|A|x‖",
-      "description": "A and its modulus induce the same quadratic form ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩ (absValue_star_mulVec_dotProduct); via star y ⬝ᵥ y = ∑ᵢ‖yᵢ‖² (dotProduct_star_self) this descends to the Euclidean-norm identity ∑ᵢ‖(Ax)ᵢ‖² = ∑ᵢ‖(|A|x)ᵢ‖² (absValue_normSq_eq)."
+      "startLine": 90,
+      "endLine": 118,
+      "summary": "A and its modulus induce the same quadratic form ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩ (absValue_star_mulVec_dotProduct); via star y ⬝ᵥ y = ∑ᵢ‖yᵢ‖² (dotProduct_star_self) this descends to the Euclidean-norm identity ∑ᵢ‖(Ax)ᵢ‖² = ∑ᵢ‖(|A|x)ᵢ‖² (absValue_normSq_eq)."
     }
   ],
   "openQuestions": [
