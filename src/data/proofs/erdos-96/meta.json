@@ -78,52 +78,84 @@
   },
   "sections": [
     {
+      "id": "imports-and-module-setup",
+      "title": "Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Mathlib imports, `open scoped Classical`, `open Finset`, and the `Erdos96` namespace for the unit-distances-in-convex-position problem.",
+      "mathContext": "Erdős #96: how many pairs of a convex $n$-gon can be at unit distance?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 45,
-      "endLine": 63,
+      "startLine": 47,
+      "endLine": 82,
       "summary": "Point type, distance, unit distance pairs and count"
     },
     {
       "id": "convex-position",
       "title": "Convex Position",
-      "startLine": 64,
-      "endLine": 74,
+      "startLine": 83,
+      "endLine": 109,
       "summary": "inConvexPosition and IsConvexPolygon definitions"
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
-      "startLine": 75,
-      "endLine": 86,
+      "startLine": 110,
+      "endLine": 129,
       "summary": "Erdős-Moser O(n) and Erdős-Fishburn 2n conjectures"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "startLine": 87,
-      "endLine": 98,
+      "startLine": 130,
+      "endLine": 150,
       "summary": "Füredi O(n log n) and Aggarwal n log₂n + 4n"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Construction",
-      "startLine": 99,
-      "endLine": 114,
+      "startLine": 151,
+      "endLine": 179,
       "summary": "Edelsbrunner-Hajnal 2n-7 construction and proved lower_bound"
     },
     {
       "id": "related",
       "title": "Related Conjectures",
-      "startLine": 115,
-      "endLine": 133,
+      "startLine": 180,
+      "endLine": 203,
       "summary": "Equidistant count, sum conjecture, and sum lower bound"
+    },
+    {
+      "id": "part-vii-connection-to-problem-97",
+      "title": "Part VII: Connection to Problem #97",
+      "startLine": 204,
+      "endLine": 214,
+      "summary": "Commentary: Problem #97 (a general conjecture on equidistant pairs in convex position) generalizes this one — a positive answer to #97 would imply the unit-distance bound as a special case.",
+      "mathContext": "The unit-distance question is the special case of #97 with distance fixed to $1$."
+    },
+    {
+      "id": "part-viii-geometric-observations",
+      "title": "Part VIII: Geometric Observations",
+      "startLine": 215,
+      "endLine": 231,
+      "summary": "Commentary on the geometry behind the bounds: a unit circle meets a convex $n$-gon boundary in at most 2 arcs (key to the $O(n\\log n)$ proofs); consecutive unit-distance pairs along the polygon are strongly constrained; the log factor arises from a recursive counting argument.",
+      "mathContext": "Unit circle ∩ convex polygon boundary $\\le 2$ arcs; the $\\log n$ factor is a recursion artifact."
+    },
+    {
+      "id": "part-ix-special-cases",
+      "title": "Part IX: Special Cases",
+      "startLine": 232,
+      "endLine": 246,
+      "summary": "Commentary on special configurations: in a regular $n$-gon only $O(1)$ pairs are at unit distance for most circumradii, and exact small-case counts — triangle $\\le 3$, quadrilateral $\\le 4$, pentagon $\\le 5$ unit distances.",
+      "mathContext": "Small cases: $n=3\\Rightarrow\\le 3$, $n=4\\Rightarrow\\le 4$, $n=5\\Rightarrow\\le 5$."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 134,
-      "endLine": 285,
+      "startLine": 247,
+      "endLine": 287,
       "summary": "Proved conjunction of Füredi upper bound and lower bound"
     }
   ],
