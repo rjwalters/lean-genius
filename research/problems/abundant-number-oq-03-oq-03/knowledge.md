@@ -138,3 +138,26 @@ and `card_divisors_mul` but **no** `Nat.Coprime.divisors_mul` Finset equality, s
 the decomposition `(m·p).properDivisors = m.divisors ∪ (p·) '' m.properDivisors`
 must be built from `filter_dvd_eq_divisors` before `abundant_mul_prime_iff`
 upgrades to a full `IsPrimitiveAbundant (m·p)` criterion.
+
+## Session 2026-07-21 (researcher-1): Route-2 extraction is FALSE under the strict definition
+
+The file's header recorded Route 2 ("primitive-part extraction") as *every abundant
+`n` has a primitive abundant divisor*. This is **false** for the file's strict
+`IsPrimitiveAbundant` (= abundant with *all proper divisors deficient*, OEIS A071395),
+because a **perfect** proper divisor blocks strict primitivity.
+
+- **`not_isPrimitiveAbundant_12`** — 12 (smallest abundant) is NOT strict-primitive:
+  its proper divisor 6 is perfect (σ'(6)=6), not deficient.
+- **`no_isPrimitiveAbundant_dvd_12`** — NO divisor of 12 is `IsPrimitiveAbundant`
+  (smallest strict primitive abundant is 20 > 12). Direct counterexample to Route-2.
+- Added `instance : DecidablePred IsPrimitiveAbundant` (the `def` blocked `decide`
+  synthesis; `primitive_945` had only `decide`d the unfolded ∀-conjunct). Both new
+  theorems `decide` (kernel, maxRecDepth 4000), axiom-free (`#print axioms` =
+  propext/Classical.choice/Quot.sound), host-verified `lake env lean` exit 0.
+- Fixed the header Route-2 paragraph to state the block: extraction works only for
+  the weaker A091191 notion ("no abundant proper divisor", under which 12 IS
+  primitive); recovering a strict primitive part additionally requires excluding
+  perfect divisors.
+
+### Status: vein remains OPEN/blocked. σ-arithmetic engine saturated (do NOT extend);
+Route-1 odd-family construction and a *corrected* Route-2 (A091191 → strict) both open.
