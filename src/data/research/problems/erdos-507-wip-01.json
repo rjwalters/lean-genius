@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Foundational Heilbronn toolkit complete (triangleArea geometry, unit-disk bounds, minTriangleArea/heilbronn junk-value semantics, heilbronn_le_three, antitone/succ_le monotonicity, heilbronn_three_pos). Lower bound at n=3 now SHARP: heilbronn 3 ≥ 3√3/4 (= conjectured exact value). Open: matching upper bound heilbronn 3 ≤ 3√3/4 (largest-triangle-in-disk optimization), and the deep α(n) exponent bounds (KPS/CPZ).",
+    "progressSummary": "Foundational Heilbronn toolkit complete. n=3 now SANDWICHED: 3√3/4 ≤ heilbronn 3 ≤ 3/2 (heilbronn_three_mem_Icc). Sharp lower bound heilbronn 3 ≥ 3√3/4 = conjectured exact value; improved upper bound heilbronn n ≤ 3/2 (was ≤3) via origin-determinant decomposition E=(p×q)+(q×r)+(r×p) + Lagrange. Open: sharp upper bound heilbronn 3 ≤ 3√3/4 (maximal-inscribed-triangle optimization), and the deep α(n) exponent bounds (KPS/CPZ).",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -68,7 +68,11 @@
       "heilbronn_mem_Icc in Erdos507WIP01.lean — sandwich 0 ≤ heilbronn n ≤ 3 for n≥3 (PR #39991), 0-axiom",
       "heilbronn_three_ge_half (1/2 ≤ heilbronn 3) in Proofs/Erdos507WIP01.lean",
       "heilbronn_three_pos (0 < heilbronn 3) in Proofs/Erdos507WIP01.lean",
-      "heilbronn_three_ge (Erdos507WIP01.lean): heilbronn 3 ≥ 3√3/4, axiom-free (propext/Classical.choice/Quot.sound), host-verified v4.31. Area computed once for the canonical ordering (unfold triangleArea; rw show <signed> = 3√3/2 by ring; abs_of_nonneg; ring); the other 5 ordered triples reduced to it via the permutation lemmas triangleArea_swap_left/right/cyclic inside a first-combinator."
+      "heilbronn_three_ge (Erdos507WIP01.lean): heilbronn 3 ≥ 3√3/4, axiom-free (propext/Classical.choice/Quot.sound), host-verified v4.31. Area computed once for the canonical ordering (unfold triangleArea; rw show <signed> = 3√3/2 by ring; abs_of_nonneg; ring); the other 5 ordered triples reduced to it via the permutation lemmas triangleArea_swap_left/right/cyclic inside a first-combinator.",
+      "abs_cross_le_one (Erdos507WIP01.lean): |a₁b₂−a₂b₁| ≤ 1 for a,b in unit disk (Lagrange identity + |a|²|b|² ≤ 1), 0-axiom",
+      "triangleArea_le_three_halves (Erdos507WIP01.lean): improved uniform area bound ≤ 3/2 via E=(p×q)+(q×r)+(r×p) and abs_cross_le_one — sharpens triangleArea_le_three (≤3)",
+      "heilbronn_le_three_halves (Erdos507WIP01.lean): heilbronn n ≤ 3/2 for n≥3, sharpens heilbronn_le_three",
+      "heilbronn_three_mem_Icc (Erdos507WIP01.lean): sandwich heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299,1.5], 0-axiom, docker-verified v4.31"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -85,16 +89,19 @@
       "Finset.card_eq_three is the clean way to certify a 3-point real config has cardinality 3 (avoids decide, which fails on DecidableEq ℝ): provide the three points plus pairwise inequalities via simp [Prod.ext_iff].",
       "For an ∀-over-a-3-element-Finset distinct-triple bound, rcases each membership (Finset.mem_insert/mem_singleton) three-ways (27 cases) and discharge with first | exact absurd rfl h<pair> | (unfold triangleArea; norm_num) — the 21 repeated-vertex cases die on the distinctness hyps, the 6 genuine permutations compute to 1/2.",
       "heilbronn 3 > 0 = heilbronn 2 confirms Heilbronn is NOT monotone across the 2→3 boundary, so the n ≥ 3 hypothesis on the monotonicity lemmas is forced, not cosmetic.",
-      "heilbronn 3 ≥ 3√3/4 (heilbronn_three_ge): sharp lower bound at n=3 via the equilateral triangle inscribed in the unit circle — (1,0),(−1/2,√3/2),(−1/2,−√3/2), all on the boundary, every ordering has triangleArea = 3√3/4 (the largest triangle inscribable in a radius-1 disk). Strengthens the crude right-triangle witness heilbronn 3 ≥ 1/2 to the conjectured EXACT value; the matching upper bound heilbronn 3 ≤ 3√3/4 (open here) would pin heilbronn 3 = 3√3/4, improving the current crude ≤ 3."
+      "heilbronn 3 ≥ 3√3/4 (heilbronn_three_ge): sharp lower bound at n=3 via the equilateral triangle inscribed in the unit circle — (1,0),(−1/2,√3/2),(−1/2,−√3/2), all on the boundary, every ordering has triangleArea = 3√3/4 (the largest triangle inscribable in a radius-1 disk). Strengthens the crude right-triangle witness heilbronn 3 ≥ 1/2 to the conjectured EXACT value; the matching upper bound heilbronn 3 ≤ 3√3/4 (open here) would pin heilbronn 3 = 3√3/4, improving the current crude ≤ 3.",
+      "The signed shoelace area equals a sum of three origin-based 2×2 determinants: E = (p×q)+(q×r)+(r×p) with a×b := a₁b₂−a₂b₁ (verified by ring). Each determinant is twice the signed area of triangle O-a-b.",
+      "|a×b| ≤ 1 for unit-disk a,b via Lagrange: (a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|² ≤ 1; nlinarith needs sq_nonneg ⟨a,b⟩ plus the product bound |a|²|b|²≤1. This gives |E| ≤ 3 (abs_add_le twice + gcongr), hence area ≤ 3/2 — strictly better than the summand-wise ≤3.",
+      "The upper bound 3/2 is NOT sharp (true max |E|=3√3/2≈2.598, area 3√3/4≈1.299): the three determinants cannot be simultaneously maximal. Closing to the sharp 3√3/4 needs the central-angle constraint (angles subtended at O sum to 2π when O is interior) + Jensen on sin over [0,π] + an O-exterior case split — the genuine open optimization."
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",
-      "No Heilbronn-specific machinery in Mathlib; the α(n) exponent bounds (KPS lower, CPZ upper) are genuine open research, not a tactical search."
+      "No Heilbronn-specific machinery in Mathlib; the α(n) exponent bounds (KPS lower, CPZ upper) are genuine open research, not a tactical search.",
+      "No Mathlib lemma for the maximal-area triangle inscribed in a disk (max = equilateral, area 3√3/4·R²); the sharp heilbronn 3 ≤ 3√3/4 upper bound needs this and is not a tactic search."
     ],
     "nextSteps": [
-      "Sandwich corollary: 0 ≤ heilbronn n ≤ 3 for n ≥ 3 (combine heilbronn_nonneg + heilbronn_le_three).",
-      "Explicit lower witness: heilbronn 3 = area of the largest inscribed triangle (equilateral) — a concrete positive value separating heilbronn 3 from the junk heilbronn 2 = 0.",
-      "The deep α(n) growth exponent bounds (KPS lower, CPZ upper) — not session-sized."
+      "SHARP upper bound heilbronn 3 ≤ 3√3/4 (would pin heilbronn 3 = 3√3/4 exactly via heilbronn_three_ge). Statement to prove: for p,q,r with |p|,|q|,|r|≤1, triangleArea p q r ≤ 3√3/4. Approach: E = Σ|a||b|sin θ over central angles θ_ab+θ_bc+θ_ca=2π (O interior) → 3·sin(2π/3)=3√3/2 by Jensen (sin concave on [0,π]); plus O-exterior case. Large (~500+ lines); not yet session-sized.",
+      "The deep α(n) growth exponent bounds (KPS lower, CPZ upper) — 7/6 ≤ β ≤ 2, genuine open research, not session-sized."
     ],
     "markdown": "# Knowledge Base: erdos-507-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational triangle-area / unit-disk scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos507Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos507WIP01.lean` (14 theorems) on the shoelace area `triangleArea p q r = |p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂)|/2` and the `IsInUnitDisk` predicate:\n- **Nonnegativity**: `triangleArea_nonneg`.\n- **Permutation symmetry**: `triangleArea_swap_left`, `triangleArea_swap_right` (transpositions, via signed-area negation + `abs_neg`), `triangleArea_cyclic` (rotation fixes it).\n- **Degenerate cases**: `triangleArea_self_left / _self_mid / _self_outer` (= 0).\n- **Collinearity**: `triangleArea_eq_zero_iff`.\n- **Explicit value**: `triangleArea_unit` (`(0,0),(1,0),(0,1) ↦ 1/2`).\n- **Unit disk**: `isInUnitDisk_empty`, `IsInUnitDisk.subset`, `unitDisk_abs_fst_le`, `unitDisk_abs_snd_le`, and the uniform bound `triangleArea_le_three`.\n\n### Key findings\n- The signed shoelace form is alternating: transpositions negate, cyclic rotations fix — full `S₃` symmetry after `|·|`.\n- Every unit-disk triangle has area `≤ 3`, so `heilbronn n`'s `sSup` set is bounded above (a step toward finiteness/monotonicity of `heilbronn`).\n\n### Reusable Lean recipe\n- Signed-area alternation: `rw [show <permuted expr> = -(<base expr>) from by ring, abs_neg]`.\n- Coordinate bound from the disk: `nlinarith [sq_nonneg (p.1 - 1), sq_nonneg (p.1 + 1)]` after `have hsq : p.1^2 ≤ 1 := by nlinarith [sq_nonneg p.2]`.\n- Three-term abs bound: `abs_add_le` twice (note `abs_add` was renamed to `abs_add_le` in this pin) + `gcongr`, each summand `≤ 2` via `mul_le_mul` on `|a|·|b−c| ≤ 1·2`.\n- v4.31 renames hit this session: `abs_add → abs_add_le`, `Finset.not_mem_empty → Finset.notMem_empty`.\n\n### Next steps\n- `minTriangleArea P ≤ triangleArea p q r` (nested membership `biInf_le`).\n- `heilbronn n ≤ 3` via `BddAbove` of the defining set.\n\n### Still open (unchanged)\nThe growth exponent of `α(n)` — deep; only `7/6 ≤ β ≤ 2` known (KPS, Cohen–Pohoata–Zakharov).\n"
   },
@@ -118,7 +125,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T12:30:00.000Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-21",
   "significance": 6,
   "tractability": 5
 }
