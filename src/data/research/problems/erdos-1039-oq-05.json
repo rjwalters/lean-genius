@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): lifted Fekete monotonicity to the SUPREMUM level. New defs unitDiscDiameters/transfiniteDiameterN (sup of dₙ(Z) over configs in the closed unit disc) + transfiniteDiameterN_succ_le (d_{n+1} ≤ dₙ, n≥2) and transfiniteDiameterN_mem_Icc (0 ≤ dₙ ≤ 2). The transfinite diameter d = infₙ dₙ is now a well-defined monotone bounded limit. Parent ρ(f) ≫ 1/n remains OPEN.",
+    "progressSummary": "Discrete/transfinite diameter API is 0-axiom and now closes the limit: dₙ non-increasing (Fekete, transfiniteDiameterN_succ_le) and bounded in [0,2], so d = ⨅ₙ dₙ = limₙ dₙ is a well-defined real in [0,2] (transfiniteDiameter, tendsto_transfiniteDiameterN, transfiniteDiameter_mem_Icc). Remaining: sharp value d=1 (Fekete–Szegő + roots-of-unity extremal configs); connection to ρ(f) via capacity.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -57,7 +57,10 @@
       "sum_logSpread_deleteAt (additive energy form) in Erdos1039TransfiniteDiameter.lean",
       "discreteDiameter_pos (0 < dₙ z for injective z) in Erdos1039TransfiniteDiameter.lean",
       "discreteDiameter_pos_iff (n≥2: 0 < dₙ z ↔ Injective z) in Erdos1039TransfiniteDiameter.lean",
-      "unitDiscDiameters, transfiniteDiameterN, zero_mem_unitDiscDiameters, unitDiscDiameters_nonempty/bddAbove, transfiniteDiameterN_succ_le, transfiniteDiameterN_mem_Icc in Erdos1039TransfiniteDiameter.lean (0 axioms, 0 sorries; host-verified v4.31.0)"
+      "unitDiscDiameters, transfiniteDiameterN, zero_mem_unitDiscDiameters, unitDiscDiameters_nonempty/bddAbove, transfiniteDiameterN_succ_le, transfiniteDiameterN_mem_Icc in Erdos1039TransfiniteDiameter.lean (0 axioms, 0 sorries; host-verified v4.31.0)",
+      "transfiniteDiameter (def) + tendsto_transfiniteDiameterN: the n-point diameters d_{n+2} converge to d = ⨅ₙ d_{n+2} (antitone + bounded-below ⟹ tendsto_atTop_ciInf). Makes the transfinite diameter of the unit disc a genuine LIMIT, not just an infimum.",
+      "transfiniteDiameter_mem_Icc: d ∈ [0,2]; transfiniteDiameter_le: d ≤ d_{n+2} for all n. All 0-axiom, host-verified v4.31.",
+      "Fekete monotonicity (sup form) transfiniteDiameterN_succ_le was ALREADY DONE in-tree (knowledge Next#1 was stale)."
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
@@ -67,7 +70,8 @@
       "Order-preserving pair reindexing under Fin.succAbove is a nested Finset.prod_bij; the k-dependent erase-guard is pulled through prod_k by rewriting erase -> filter(.neq.k) -> if via Finset.filter_ne'/prod_filter, then prod_comm.",
       "Additive shadow: sum_k logSpread(delete k Z) = (n-1)*logSpread Z for distinct roots, connecting the deletion identity to the logarithmic-energy/capacity bridge already in the file.",
       "Strict positivity of discreteDiameter: dₙ z = spreadProduct z ^ (2/(n(n-1))); for injective z the base is positive (spreadProduct_pos_iff) so Real.rpow_pos_of_pos gives 0 < dₙ. The n≥2 iff uses that the exponent 2/(n(n-1)) is nonzero, so a zero spread would force dₙ=0 (Real.zero_rpow). This is the positivity that Real.log(dₙ) and the energy bridge silently need.",
-      "Fekete monotonicity LIFTS to the supremum level: defining dₙ = sup over n-point configs in the closed unit disc of discreteDiameter, the pointwise exists_deleteAt_discreteDiameter_ge gives transfiniteDiameterN_succ_le (d_{n+1} ≤ dₙ, n≥2) directly via csSup_le + le_csSup — no compactness API needed, only that the config values stay in the disc under deletion and that dₙ(Z)≤2 bounds the sup. The disc is the natural compact set (parent lemniscate roots lie in it)."
+      "Fekete monotonicity LIFTS to the supremum level: defining dₙ = sup over n-point configs in the closed unit disc of discreteDiameter, the pointwise exists_deleteAt_discreteDiameter_ge gives transfiniteDiameterN_succ_le (d_{n+1} ≤ dₙ, n≥2) directly via csSup_le + le_csSup — no compactness API needed, only that the config values stay in the disc under deletion and that dₙ(Z)≤2 bounds the sup. The disc is the natural compact set (parent lemniscate roots lie in it).",
+      "Limit existence (researcher-1, 2026-07-20): the transfinite diameter of the closed unit disc is now a well-defined real number d = limₙ dₙ = ⨅ₙ dₙ ∈ [0,2], via Mathlib tendsto_atTop_ciInf on the antitone (Fekete) bounded-below sequence. The SHARP value d = 1 (= logarithmic capacity of the disc) remains open: it needs the Fekete–Szegő theorem plus extremal root-of-unity configurations (spreadProduct of nth roots of unity → the discriminant), not yet formalized. The current upper bound is the coarse dₙ ≤ 2."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent."
@@ -162,5 +166,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039TransfiniteDiameter.lean"
     }
   ],
-  "lastUpdate": "2026-07-20T00:00:00.000Z"
+  "lastUpdate": "2026-07-20",
+  "nextAction": "Sharpen the transfinite diameter to its true value d = 1: (a) compute discreteDiameter of the n-th roots of unity via the Vandermonde/discriminant product (spreadProduct of roots of unity), giving a lower bound dₙ ≥ n^{1/(n-1)} → 1; (b) matching upper bound d ≤ 1 (needs a capacity/potential argument, likely axiomatize citing Fekete–Szegő). Then connect d(disc)=cap=1 to the Erdős-1039 radius bound ρ(f)."
 }
