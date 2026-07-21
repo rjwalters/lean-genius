@@ -95,14 +95,14 @@
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 43,
-      "endLine": 72,
+      "endLine": 70,
       "summary": "Every WP is ≥ 5, odd, and either 1 or 3 mod 4.",
       "mathContext": "Eliminates small cases computationally (native_decide for p=2,3) and by primality (decide for p=0,1,4). Since p ≥ 5 and prime, p is odd."
     },
     {
       "id": "non-examples",
       "title": "Small Primes Are NOT Wolstenholme",
-      "startLine": 79,
+      "startLine": 71,
       "endLine": 100,
       "summary": "Computational proof that primes 5 through 23 fail the mod p⁴ test.",
       "mathContext": "native_decide computes C(2p-1,p-1) mod p⁴ and verifies it differs from 1 for p = 5, 7, 11, 13, 17, 19, 23."
@@ -119,14 +119,14 @@
       "id": "residue-analysis",
       "title": "Residue Analysis",
       "startLine": 136,
-      "endLine": 175,
+      "endLine": 179,
       "summary": "Both known WPs are ≡ 3 (mod 4), with finer analysis mod 8 and mod 12.",
       "mathContext": "16843 ≡ 3 (mod 4) ≡ 3 (mod 8) ≡ 7 (mod 12). 2124679 ≡ 3 (mod 4) ≡ 7 (mod 8) ≡ 7 (mod 12). Different mod 8, same mod 12."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "startLine": 182,
+      "startLine": 180,
       "endLine": 218,
       "summary": "WPMod1Exists and AllWPMod3 are mutually exclusive conjectures; their equivalence is proved.",
       "mathContext": "AllWPMod3 ↔ ¬WPMod1Exists: every WP is 1 or 3 mod 4 (since odd), so ruling out mod 1 forces all to be mod 3, and vice versa."
