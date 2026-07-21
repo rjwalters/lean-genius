@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: h 2=h 3=1, h 4=2 pinned; 2 ≤ h 5 ≤ 3. Toward h 5 ≥ 3: no_four_mutually_equidistant (axiom-free, no 4 coplanar points mutually equidistant) kills the regular-tetrahedron sub-case of the 5-point 2-distance classification; remaining cases (mixed degree-3, and C5/pentagon) are coordinate-geometry heavy and open. Unconditional thresholds h n ≥ 3 (n≥8), h n ≥ 4 (n≥11) from n-1 ≤ 3·h n.",
+    "progressSummary": "PROGRESS: h 5 ≥ 3 rigorously reduced to pentagon rigidity; 2-distance reduction + per-vertex degree structure (1–3) proved axiom-free. Bounds remain 2 ≤ h 5 ≤ 3.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -80,7 +80,9 @@
       "no_four_mutually_equidistant (Erdos98WIP01.lean): axiom-free — no 4 points in EuclideanSpace ℝ (Fin 2) are mutually equidistant at r>0, via Gram linear independence + finrank_euclideanSpace_fin.",
       "no_four_equidistant_indices (Erdos98WIP01.lean): config-level specialization to PointConfig indices.",
       "three_le_h_of_eight_le (Erdos98WIP01.lean): n ≥ 8 → 3 ≤ h n, from three_mul_h_ge.",
-      "four_le_h_of_eleven_le (Erdos98WIP01.lean): n ≥ 11 → 4 ≤ h n, from three_mul_h_ge."
+      "four_le_h_of_eleven_le (Erdos98WIP01.lean): n ≥ 11 → 4 ≤ h n, from three_mul_h_ge.",
+      "exists_two_distances_of_numDistinct_le_two (Erdos98WIP01.lean): injective PointConfig with numDistinctDistances ≤ 2 is a 2-distance set — ∃ a b>0 covering every pairwise distance. Axiom-free, all n.",
+      "two_distance_near_degree_bounds (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 has 1 ≤ (short-distance degree) ≤ 3 at every vertex. Axiom-free."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -112,15 +114,17 @@
       "Empirical: no triangular-lattice 5-cap (origin-fixed radius ≤4) has ≤3 distinct distances in general position; the 3-distance witness needs the off-lattice point E=(1/2,−(2+√3)/2). Bowtie/centered-triangle + 1 point always lands the 5th on a lattice line (3 collinear) or on the shared circle (4 concyclic).",
       "h 5 ≥ 3 is NOT the one-line \"regular pentagon is concyclic\" argument: the plane has several 5-point 2-distance sets, so the lower bound needs 2-distance-set structure. The h_five_bounds docstring claiming the pentagon is the only planar 2-distance 5-set is mathematically false.",
       "Degree structure of a general-position 5-point 2-distance set (distances a<b): by card_fiber_dist_le_three each point has a-degree and b-degree in {1,2,3}; the a-graph is either 2-regular (C5, pentagon-type) or has a degree-3 vertex.",
-      "Four mutually equidistant points cannot lie in the plane (regular tetrahedron needs dim 3): the 3 edge vectors from one vertex have Gram matrix r²·[[1,½,½],[½,1,½],[½,½,1]] (det r⁶/2 ≠ 0), hence linearly independent, contradicting finrank(EuclideanSpace ℝ (Fin 2))=2."
+      "Four mutually equidistant points cannot lie in the plane (regular tetrahedron needs dim 3): the 3 edge vectors from one vertex have Gram matrix r²·[[1,½,½],[½,1,½],[½,½,1]] (det r⁶/2 ≠ 0), hence linearly independent, contradicting finrank(EuclideanSpace ℝ (Fin 2))=2.",
+      "h 5 ≥ 3 reduces exactly to refuting a general-position 2-distance PointConfig 5. The pigeonhole/no-4-concyclic frame stalls at C₅ (the pentagon pattern): the short-distance graph of any counterexample has min-degree ≥1, max-degree ≤3, and no K₄ in graph or complement — constraints C₅ satisfies. The sole residual is geometric (pentagon rigidity: equilateral+equidiagonal pentagon is regular, hence concyclic), NOT combinatorial.",
+      "Per-vertex degree structure of a general-position 2-distance 5-set: each vertex has exactly 1–3 short-distance neighbours. Both the a-circle and b-circle around a vertex hold ≤3 of the other 4 points (card_fiber_dist_le_three from no-4-concyclic), and the 4 others split between them, forcing 4−3 ≤ deg_a ≤ 3."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3."
     ],
     "nextSteps": [
-      "h 5 ≥ 3 degree-3 remaining sub-cases: formalize \"two radius-a circles at centre-distance a meet at points a√3 apart\" as reusable EuclideanSpace ℝ (Fin 2) algebra, killing the mixed a/b sub-cases around a degree-3 vertex.",
-      "h 5 ≥ 3 all-degree-2 (C5) case: prove \"equilateral + equidiagonal convex pentagon is concyclic\", excluded by no-4-concyclic.",
-      "Parent Erdős #98 open: rate h(n)/n → ∞ still requires imported incidence geometry."
+      "Close h 5 ≥ 3: prove pentagon rigidity — a general-position 2-distance PointConfig 5 whose short-distance graph is C₅ is the regular pentagon, whose 5 vertices are concyclic, contradicting NoFourConcyclic. Needs coordinate geometry (equilateral+equidiagonal ⇒ regular).",
+      "Alternatively enumerate the short-distance graph via two_distance_near_degree_bounds + no_four_equidistant_indices (min-deg≥1, max-deg≤3, K₄-free graph and complement on 5 vertices ⇒ C₅), then apply pentagon rigidity to the single surviving case.",
+      "Abstract the Gram/dimension argument: equilateral set in ℝ^d has ≤ d+1 points (generalizes no_four_mutually_equidistant via ∑-of-inner-products, no determinant needed)."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

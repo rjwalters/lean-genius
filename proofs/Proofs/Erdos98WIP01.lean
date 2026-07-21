@@ -1770,4 +1770,131 @@ forcing `h 11 ≥ 4` (since `3 · 3 = 9 < 10`); monotonicity carries it to all `
 theorem four_le_h_of_eleven_le (hn : 11 ≤ n) : 4 ≤ h n := by
   have := three_mul_h_ge n; omega
 
+/-! ## Reduction of `h 5 ≥ 3` to a two-distance structure
+
+The remaining pinning target for `h` is `h 5 = 3`; the elementary counting
+envelope gives only `2 ≤ h 5 ≤ 3` (`h_five_bounds`).  Closing `h 5 ≥ 3` means
+ruling out a general-position `PointConfig 5` with `numDistinctDistances ≤ 2` —
+i.e. a **2-distance set** in general position.  This section supplies the
+rigorous reduction and the exact combinatorial frame such a hypothetical
+counterexample must inhabit, isolating the single residual geometric fact
+(pentagon rigidity) for a future session.
+
+* `exists_two_distances_of_numDistinct_le_two` — a config with `≤ 2` distinct
+  distances *is* a 2-distance set: two positive reals `a, b` cover every
+  pairwise distance.  (Reusable at any `n`.)
+* `two_distance_near_degree_bounds` — in a **general-position** 2-distance
+  `PointConfig 5`, every vertex has between `1` and `3` neighbours at the short
+  distance `a` (and dually at `b`): no-four-concyclic caps each of the two
+  circles around a vertex at `3` points, and the four other points fill both.
+* Combined with `no_four_equidistant_indices` (no four points mutually at one
+  distance — no monochromatic `K₄`), the "short-distance graph" of any such
+  config is a graph on five vertices with min degree `≥ 1`, max degree `≤ 3`,
+  and no `K₄` in the graph or its complement.  The only survivor of these purely
+  combinatorial constraints is the `5`-cycle `C₅` (the regular-pentagon pattern),
+  which is concyclic — the residual to refute is precisely that an equilateral,
+  equidiagonal pentagon is regular, hence has its five vertices concyclic,
+  contradicting no-four-concyclic. -/
+
+/-- **A configuration with `≤ 2` distinct distances is a two-distance set.**  If an
+injective `PointConfig` on `n ≥ 2` points realizes at most two distinct positive
+distances, there are two positive reals `a, b` such that *every* pairwise distance
+equals `a` or `b`.  (No general-position hypothesis needed — only injectivity, so
+that all pairwise distances are positive and hence counted by
+`numDistinctDistances`.)  This is the entry point of the `h 5 ≥ 3` reduction, but
+holds for all `n`. -/
+theorem exists_two_distances_of_numDistinct_le_two
+    {P : PointConfig n} (hP : Function.Injective P)
+    (h2 : 2 ≤ n) (hnum : numDistinctDistances P ≤ 2) :
+    ∃ a b : ℝ, 0 < a ∧ 0 < b ∧
+      ∀ i j : Fin n, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b := by
+  -- `D` is the finset of realized positive distances; `numDistinctDistances P = D.card`.
+  set D : Finset ℝ :=
+    ((univ.product univ).image (fun p : Fin n × Fin n => dist (P p.1) (P p.2))).filter (· > 0)
+    with hD
+  -- Every off-diagonal distance lies in `D` and is positive.
+  have hmem : ∀ i j : Fin n, i ≠ j → dist (P i) (P j) ∈ D := by
+    intro i j hij
+    have hpos : (0 : ℝ) < dist (P i) (P j) := dist_pos.mpr (fun heq => hij (hP heq))
+    rw [hD, mem_filter]
+    exact ⟨mem_image.mpr ⟨(i, j), by simp, rfl⟩, hpos⟩
+  have hposD : ∀ x ∈ D, (0 : ℝ) < x := by
+    intro x hx; rw [hD, mem_filter] at hx; exact hx.2
+  have hcard : D.card ≤ 2 := hnum
+  -- `D` is nonempty: use the distance between indices `0` and `1` (`n ≥ 2`).
+  have h01 : (⟨0, by omega⟩ : Fin n) ≠ ⟨1, by omega⟩ := by
+    intro h; simpa using congrArg Fin.val h
+  have hne : D.Nonempty := ⟨_, hmem _ _ h01⟩
+  obtain ⟨a, haD⟩ := hne
+  -- Split off `a`; the remainder has `≤ 1` element.
+  have hcard' : (D.erase a).card ≤ 1 := by
+    rw [Finset.card_erase_of_mem haD]; omega
+  by_cases hemp : (D.erase a).Nonempty
+  · -- Two genuine distances `a` and `b`.
+    obtain ⟨b, hbmem⟩ := hemp
+    have hbD : b ∈ D := (Finset.mem_erase.mp hbmem).2
+    -- The remainder is exactly `{b}`, so `D ⊆ {a, b}`.
+    have hsub : D ⊆ {a, b} := by
+      intro x hx
+      by_cases hxa : x = a
+      · simp [hxa]
+      · have hxer : x ∈ D.erase a := Finset.mem_erase.mpr ⟨hxa, hx⟩
+        have := (Finset.card_le_one.mp hcard') x hxer b hbmem
+        simp [this]
+    refine ⟨a, b, hposD a haD, hposD b hbD, ?_⟩
+    intro i j hij
+    have := hsub (hmem i j hij)
+    rw [Finset.mem_insert, Finset.mem_singleton] at this
+    exact this
+  · -- Only one distance: take `b = a`.
+    rw [Finset.not_nonempty_iff_eq_empty] at hemp
+    refine ⟨a, a, hposD a haD, hposD a haD, ?_⟩
+    intro i j hij
+    left
+    have hx := hmem i j hij
+    by_contra hxa
+    have hxer : dist (P i) (P j) ∈ D.erase a := Finset.mem_erase.mpr ⟨hxa, hx⟩
+    simp [hemp] at hxer
+
+/-- **Per-vertex degree structure of a general-position two-distance 5-set.**  Suppose
+`P : PointConfig 5` is in general position and every pairwise distance is `a` or `b`
+with `a ≠ b`.  Then from each vertex `i`, the number of the four other points at the
+short distance `a` is between `1` and `3`: no-four-concyclic (`card_fiber_dist_le_three`)
+caps both the `a`-circle and the `b`-circle around `P i` at three points, and the four
+other points are split between them.  With `no_four_equidistant_indices` (no monochromatic
+`K₄`), this pins the "short-distance graph" to min-degree `≥ 1`, max-degree `≤ 3`, `K₄`-free
+graph and complement — whose sole realization is the pentagon `C₅`. -/
+theorem two_distance_near_degree_bounds
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ} (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (i : Fin 5) :
+    1 ≤ ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card ∧
+        ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card ≤ 3 := by
+  set A := (univ.erase i).filter (fun j => dist (P i) (P j) = a) with hA
+  set B := (univ.erase i).filter (fun j => dist (P i) (P j) = b) with hB
+  -- Each circle around `P i` holds `≤ 3` of the others (no four concyclic).
+  have hcardA : A.card ≤ 3 := card_fiber_dist_le_three hgp i a
+  have hcardB : B.card ≤ 3 := card_fiber_dist_le_three hgp i b
+  -- The two neighbour-sets are disjoint (`a ≠ b`) and cover all four other points.
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro j hjA hjB
+    rw [hA, mem_filter] at hjA
+    rw [hB, mem_filter] at hjB
+    exact hab (hjA.2.symm.trans hjB.2)
+  have hcover : univ.erase i = A ∪ B := by
+    apply Finset.Subset.antisymm
+    · intro j hj
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      rcases hcov i j (Ne.symm hji) with hda | hdb
+      · exact Finset.mem_union_left _ (by rw [hA, mem_filter]; exact ⟨hj, hda⟩)
+      · exact Finset.mem_union_right _ (by rw [hB, mem_filter]; exact ⟨hj, hdb⟩)
+    · exact Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  -- `card (erase i) = 4`, and disjoint union gives `card A + card B = 4`.
+  have herase : (univ.erase i).card = 4 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  have hsum : A.card + B.card = 4 := by
+    rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
+  exact ⟨by omega, hcardA⟩
+
 end Erdos98WIP01
