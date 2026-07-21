@@ -86,43 +86,43 @@
     {
       "id": "definitions",
       "title": "Smooth and Rough Number Definitions",
-      "startLine": 54,
-      "endLine": 76,
+      "startLine": 53,
+      "endLine": 72,
       "summary": "Defines IsSmooth, IsRough, smoothSet, and primesUpTo."
     },
     {
       "id": "smooth-infrastructure",
       "title": "Squarefree Decomposition Infrastructure",
-      "startLine": 78,
-      "endLine": 177,
+      "startLine": 73,
+      "endLine": 172,
       "summary": "Defines sqfPart/sqRtPart via Nat.sq_mul_squarefree_of_pos. Proves key lemma: squarefree positive naturals with same prime divisors are equal. Defines smoothInj injection."
     },
     {
       "id": "smooth-count",
       "title": "Smooth Count Bound",
-      "startLine": 179,
-      "endLine": 243,
+      "startLine": 173,
+      "endLine": 238,
       "summary": "Proves |smoothSet N n| ≤ √n · 2^{π(N)} via injection into range(√n) × powerset(primesUpTo N). Fully proved, no sorries."
     },
     {
       "id": "rough-count",
       "title": "Counting Rough Numbers and Multiples",
-      "startLine": 245,
+      "startLine": 239,
       "endLine": 286,
       "summary": "Proves multiples_count (bijection with scaled range) and rough_count_bound. Fully proved."
     },
     {
       "id": "main-theorem",
       "title": "Infinitely Many Primes (Erdős's Argument)",
-      "startLine": 288,
-      "endLine": 353,
+      "startLine": 287,
+      "endLine": 347,
       "summary": "Proves infinitely_many_primes_erdos by contradiction and derives prime_reciprocals_unbounded."
     },
     {
       "id": "reciprocal-corollary-notes",
       "title": "Reciprocal Divergence Corollary and Proof-Path Notes",
-      "startLine": 354,
-      "endLine": 396,
+      "startLine": 348,
+      "endLine": 395,
       "summary": "prime_reciprocals_unbounded packages infinitely_many_primes_erdos as the statement that primes are unbounded (∀ N, ∃ p > N prime), the finite-form corollary underlying Σ 1/p = ∞. A closing PART V \"Notes\" block honestly separates what is proved (Euclid-style infinitude via the rough-number counting argument) from what is not (the full quantitative divergence Σ_{p≤x} 1/p ~ log log x), and compares this Erdős-style smooth-number path with the classical proofs.",
       "mathContext": "The rough-number count gives infinitude of primes; the reciprocal sum $\\sum_{p}1/p=\\infty$ follows from the same argument under $\\sum_{p>N}1/p<1/2$, but the sharp $\\sum_{p\\le x}1/p\\sim\\log\\log x$ is not formalised here."
     }
