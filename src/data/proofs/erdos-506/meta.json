@@ -31,7 +31,7 @@
     "historicalContext": "This problem asks for the minimum number of distinct circles determined by $n$ points in the plane, not all lying on a single circle. The question is a natural analogue of the Sylvester-Gallai problem for lines, where $n$ non-collinear points determine at least $n$ ordinary lines. For circles, three non-collinear points determine a unique circumcircle, so $n$ points produce at most $\\binom{n}{3}$ candidate circles, but many triples may share a circumcircle. P.D.T.A. Elliott proved in 1967 that for $n > 393$ non-degenerate points (not all concyclic, not all collinear), at least $\\binom{n-1}{2} = (n-1)(n-2)/2$ distinct circles arise. His proof used an inductive point-deletion argument. However, Beniamino Segre showed this bound fails for small $n$: projecting the 8 vertices of a cube onto a suitable plane produces 8 non-degenerate points with fewer than $\\binom{7}{2} = 21$ circles, because the cube's symmetry forces many triples to share circumcircles. The gap between Segre's counterexample and Elliott's threshold ($4 \\leq n \\leq 393$) remains open. The problem connects to Erdős Problems #104 (distinct distances) and #831, and to the broader program in incidence geometry studying how combinatorial structure constrains geometric configurations.",
     "problemStatement": "What is the minimum number of distinct circles determined by $n$ points in $\\mathbb{R}^2$, not all on a single circle (and not all collinear)?",
     "text": "What is the minimum number of distinct circles determined by n points in ℝ², not all concyclic? Elliott (1967): ≥ C(n-1,2) for n > 393. Segre: fails for n = 8. Open for small n.",
-    "proofStrategy": "The formalization defines circumcircles of point triples via the perpendicular bisector formula, introduces predicates for concyclic and collinear configurations, and counts distinct circles as the image cardinality of the circumcircle map over all triples. Elliott's theorem for $n > 393$ is axiomatized, as is Segre's counterexample for $n = 8$. The open question for small $n$ is stated as the existence of a lower bound function, and the Sylvester-Gallai analogy is recorded as a separate axiom.",
+    "proofStrategy": "The formalization defines circumcircles of point triples via the perpendicular bisector formula, introduces predicates for concyclic and collinear configurations, and counts distinct circles as the image cardinality of the circumcircle map over all triples. Elliott's theorem for $n > 393$, Segre's counterexample for $n = 8$, the open question for small $n$, and the Sylvester-Gallai analogy are recorded as documentation comments rather than as axioms or theorems — the Lean file itself is axiom-free. What is machine-checked is a suite of nine foundational lemmas: degenerate-triple collinearity and symmetry facts, small-$n$ triviality of the configuration predicates, and a degeneracy theorem showing the current $\\texttt{minCircles}$ definition ignores its argument $n$ and is identically $0$, hence a placeholder rather than the intended extremal quantity.",
     "keyInsights": [
       "Three non-collinear points determine a unique circumcircle; the circle count equals the image cardinality of the circumcircle map on triples",
       "Elliott (1967): for $n > 393$ non-degenerate points, at least $\\binom{n-1}{2}$ distinct circles — tight for points on two concentric circles",
@@ -81,25 +81,41 @@
       "id": "elliott-theorem",
       "title": "Elliott's Theorem (1967)",
       "startLine": 79,
-      "endLine": 86,
-      "summary": "Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles.",
-      "mathContext": "Axiomatized: Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles."
+      "endLine": 82,
+      "summary": "Documentation comment (not a formal axiom or theorem) recording Elliott's 1967 result: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles arise.",
+      "mathContext": "Recorded as commentary, not formalized: Elliott (1967) proved that $n > 393$ points in general position determine at least $\\binom{n-1}{2}$ distinct circles."
     },
     {
       "id": "segre-counterexample",
       "title": "Segre's Cube Counterexample",
-      "startLine": 87,
-      "endLine": 96,
-      "summary": "Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n.",
-      "mathContext": "Axiomatized: Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n."
+      "startLine": 83,
+      "endLine": 87,
+      "summary": "Documentation comment (not a formal axiom or theorem) recording Segre's counterexample: projecting the 8 vertices of a cube gives 8 points determining fewer than C(7,2) = 21 circles, so Elliott's bound does not extend to small n.",
+      "mathContext": "Recorded as commentary, not formalized: Segre's cube projection yields 8 points with fewer than $\\binom{7}{2} = 21$ distinct circles."
     },
     {
       "id": "open-question",
-      "title": "Open Question: Small n",
-      "startLine": 97,
-      "endLine": 97,
-      "summary": "Axiom: existence of a lower bound function f(n) for 4 ≤ n ≤ 393, the unresolved range.",
-      "mathContext": "Axiom: existence of a lower bound function f(n) for 4 $\\leq$ n $\\leq$ 393, the unresolved range."
+      "title": "Main Open Question",
+      "startLine": 88,
+      "endLine": 91,
+      "summary": "Documentation comment (not a formal axiom or theorem) stating the open problem: determine the minimum number of circles for small n (4 ≤ n ≤ 393), the range where Elliott's theorem does not apply.",
+      "mathContext": "The unresolved range $4 \\leq n \\leq 393$ between Segre's counterexample and Elliott's threshold is stated in prose, not as a Lean declaration."
+    },
+    {
+      "id": "sylvester-gallai-connection",
+      "title": "Connection to Sylvester–Gallai",
+      "startLine": 92,
+      "endLine": 98,
+      "summary": "Commentary relating the circle problem to the Sylvester–Gallai theorem for lines (n non-collinear points determine at least n ordinary lines); the circle analogue asks for the minimum number of circles determined by non-concyclic points.",
+      "mathContext": "The circle-counting problem is the concyclic analogue of the Sylvester–Gallai incidence bound for collinear points."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (axiom-free)",
+      "startLine": 99,
+      "endLine": 152,
+      "summary": "Nine machine-checked lemmas (0 axioms, 0 sorries, host-verified on Lean v4.31.0): degenerate-triple collinearity (areCollinear_left_eq / right_eq / outer_eq) and symmetry (areCollinear_swap); small-n triviality of the configuration predicates (allCollinear_fin_zero / one, allConcyclic_fin_zero, numCircles_fin_zero); and the DEGENERACY theorem minCircles_eq_zero showing the current minCircles definition ignores its argument n and is identically 0 — an explicit honesty record that minCircles is a placeholder, not yet the intended minimum over non-degenerate configurations.",
+      "mathContext": "The proved content is elementary API for AreCollinear / AllCollinear / AllConcyclic / numCircles together with $\\texttt{minCircles}(n) = 0$ for all $n$, flagging the definition as degenerate."
     }
   ],
   "conclusion": {
