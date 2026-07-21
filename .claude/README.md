@@ -110,6 +110,7 @@ The `commands/` directory contains slash commands that define Loom roles. Each c
 | `/doctor` | Doctor | Addresses PR feedback and resolves conflicts |
 | `/guide` | Guide | Triages issues and applies `loom:urgent` to top 3 |
 | `/champion` | Champion | Auto-merges approved PRs with `loom:pr` label |
+| `/loom:help` | Help | Read-only overview of the installed `/loom:*` commands; `/loom:help <command>` describes one |
 | `/loom help` | Help | Comprehensive help guide with sub-topics (roles, workflow, commands, etc.) |
 
 ### How Slash Commands Work
@@ -168,7 +169,7 @@ The `agents/` directory contains custom subagent definitions for Loom roles. The
 | `loom-guide` | sonnet | Prioritize and triage issues |
 | `loom-auditor` | sonnet | Verify runtime behavior of built software |
 
-> **Note**: the `loom-shepherd` subagent was removed in v0.10.0 along with the `/shepherd` slash command — see [the migration guide](../../docs/migration/v0.10.0-shepherd-deprecation.md). Use `/loom:sweep <issue>` (Tier 1) for the equivalent lifecycle. The `loom-daemon` subagent is preserved and now documents the shell-level daemon surface (`./.loom/scripts/daemon.sh` + tmux + token rotation) rather than the deleted Python brain.
+> **Note**: the `loom-shepherd` subagent was removed in v0.10.0 along with the `/shepherd` slash command — see [the migration guide](https://github.com/rjwalters/loom/blob/main/docs/migration/v0.10.0-shepherd-deprecation.md). Use `/loom:sweep <issue>` (Tier 1) for the equivalent lifecycle. The `loom-daemon` subagent is preserved and now documents the shell-level daemon surface (`./.loom/scripts/daemon.sh` + tmux + token rotation) rather than the deleted Python brain.
 
 ### How Subagents Work
 
