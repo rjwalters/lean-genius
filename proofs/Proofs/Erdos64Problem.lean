@@ -213,13 +213,56 @@ theorem connected_hasMinDegree_three_exists_cycle
   connected_hasMinDegree_two_exists_cycle G hconn
     (fun v => le_trans (by norm_num) (hdeg v))
 
-/- **Remaining step toward the finite-graph statement.** The above covers connected
-graphs. For an arbitrary finite graph with minimum degree ≥ 2, pass to the connected
-component of any vertex: degrees are preserved inside a component (every neighbour of
-a vertex lies in its own component), the component is connected and nontrivial (the
-vertex has ≥ 2 neighbours), so the connected case yields a cycle there, which lifts to
-`G` along the induced-subgraph embedding. Formalizing this needs the component-degree
-preservation lemma and `Walk.IsCycle` transport through `SimpleGraph.induce`. -/
+/-- **The finite-graph statement (connectivity dropped).** An arbitrary — not necessarily
+connected — nonempty finite graph with minimum degree at least `2` contains a cycle.
+
+The proof passes to the connected component `C` of an arbitrary vertex `v` and works inside
+the induced graph `C.toSimpleGraph = G.induce C.supp`:
+
+* every neighbour of a vertex lies in that vertex's own component
+  (`ConnectedComponent.mem_supp_of_adj_mem_supp`), so `G.neighborSet` is contained in
+  `C.supp` and **degrees are preserved** inside the component
+  (`SimpleGraph.degree_induce_of_neighborSet_subset`);
+* if `G` were acyclic then `C.toSimpleGraph` would be a tree
+  (`SimpleGraph.IsAcyclic.isTree_connectedComponent`), and — being nontrivial, since `v`
+  has a neighbour — it would have a vertex `w` of degree exactly `1`
+  (`SimpleGraph.IsTree.exists_vert_degree_one_of_nontrivial`);
+* degree preservation then forces `G.degree w = 1`, contradicting the hypothesis
+  `2 ≤ G.degree w`.
+
+This is still a strict weakening of Problem 64 (a cycle exists; its length need not be a
+power of two), but it removes the connectivity assumption from the earlier lemmas. -/
+theorem hasMinDegree_two_exists_cycle
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hdeg : HasMinDegree G 2) :
+    ∃ (v : W) (c : G.Walk v v), c.IsCycle := by
+  by_contra hcon
+  have hacyc : G.IsAcyclic := fun v c hc => hcon ⟨v, c, hc⟩
+  obtain ⟨v⟩ : Nonempty W := inferInstance
+  -- Work inside the connected component of `v`.
+  set C := G.connectedComponentMk v with hC
+  have hvC : v ∈ C.supp := (ConnectedComponent.mem_supp_iff C v).mpr hC.symm
+  -- `v` has a neighbour `u`; it lies in the same component, so the component is nontrivial.
+  have hdv : 0 < (G.neighborFinset v).card := lt_of_lt_of_le (by norm_num) (hdeg v)
+  obtain ⟨u, hu⟩ := Finset.card_pos.mp hdv
+  have hadj : G.Adj v u := (G.mem_neighborFinset v u).mp hu
+  have huC : u ∈ C.supp := C.mem_supp_of_adj_mem_supp hvC hadj
+  haveI : Nontrivial C :=
+    ⟨⟨v, hvC⟩, ⟨u, huC⟩, fun h => hadj.ne (congrArg Subtype.val h)⟩
+  -- Under `hacyc` the component graph is a nontrivial tree, hence has a degree-one vertex.
+  have htree : C.toSimpleGraph.IsTree := hacyc.isTree_connectedComponent C
+  obtain ⟨w, hw⟩ := htree.exists_vert_degree_one_of_nontrivial
+  -- Degrees are preserved inside the component.
+  have hsub : G.neighborSet w.val ⊆ C.supp := fun x hx =>
+    C.mem_supp_of_adj_mem_supp w.property ((G.mem_neighborSet w.val x).mp hx)
+  have hpres : C.toSimpleGraph.degree w = G.degree w.val :=
+    degree_induce_of_neighborSet_subset hsub
+  -- But `w` has `G`-degree at least `2`: contradiction.
+  have hge : 2 ≤ G.degree w.val := by
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]; exact hdeg w.val
+  rw [hpres] at hw
+  omega
 
 /- ## Known Cycle Results -/
 
