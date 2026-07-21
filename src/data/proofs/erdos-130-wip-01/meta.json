@@ -62,14 +62,14 @@
       "id": "x-coord",
       "title": "X-Coordinate Formula",
       "startLine": 38,
-      "endLine": 70,
+      "endLine": 66,
       "summary": "Proves $2D \\cdot x = 2as - s^2 + D^2$ from the distance equations, showing the x-coordinate is rational with denominator dividing $2D$.",
       "mathContext": "Pure algebra: subtract the two distance equations to eliminate $y^2$."
     },
     {
       "id": "signed-diff",
       "title": "Signed Difference Bound",
-      "startLine": 73,
+      "startLine": 67,
       "endLine": 87,
       "summary": "Triangle inequality gives $|s| \\leq D$, so $s$ takes at most $2D+1$ integer values. The cardinality of $\\{s \\in \\mathbb{Z} : |s| \\leq D\\}$ is $2D+1$.",
       "mathContext": "$|a - b| \\leq d(P,Q) = D$ by the triangle inequality applied to the distances from $X$ to $P$ and $Q$."
@@ -94,9 +94,17 @@
       "id": "count",
       "title": "Anning–Erdős Count",
       "startLine": 168,
-      "endLine": 195,
-      "summary": "Formalizes the bound: $(2D+1)(2E+1)$ signed-difference pairs times $4$ (two roots, two $y$-signs) equals $4(2D+1)(2E+1)$. Includes concrete examples.",
+      "endLine": 190,
+      "summary": "anning_erdos_algebraic_core bundles the three key identities (x-formula, y-linearity, key quadratic) into one theorem. Formalizes the bound: $(2D+1)(2E+1)$ signed-difference pairs times $4$ (two roots, two $y$-signs) equals $4(2D+1)(2E+1)$.",
       "mathContext": "Pure combinatorics: $|\\{s \\in \\mathbb{Z} : |s| \\leq D\\}| \\times |\\{t \\in \\mathbb{Z} : |t| \\leq E\\}| \\times 4$."
+    },
+    {
+      "id": "finiteness",
+      "title": "Part VII: Finiteness Corollary",
+      "startLine": 191,
+      "endLine": 199,
+      "summary": "anning_erdos_finiteness: for any non-collinear triple with integer distances D, E, the number of additional integer-distance points is bounded by a finite $N = 4(2D+1)(2E+1) > 0$ — the finiteness conclusion of the Anning–Erdős argument.",
+      "mathContext": "$\\exists N,\\ N = 4(2D+1)(2E+1) \\land 0 < N$: the count bound packaged as an explicit finite, positive cap on the extra integer-distance points."
     }
   ],
   "conclusion": {
