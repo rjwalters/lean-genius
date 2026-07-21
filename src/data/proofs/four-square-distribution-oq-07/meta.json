@@ -56,8 +56,15 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring and setup: an **axiom-free** generalization of the four-squares type-decomposition contribution formula to sums of $d = 2k$ squares, framed as the orbit-stabilizer theorem in arithmetic form for the hyperoctahedral group $B_d = S_d \\ltimes (\\mathbb{Z}/2)^d$ of signed permutations. States the target identity $\\mathrm{contribution}(\\text{type}) = 2^{\\text{nonzero}} \\cdot (2k)! / \\prod m_i!$ and opens the `noncomputable` namespace."
+    },
+    {
       "title": "Group and Stabilizer Orders",
-      "startLine": 61,
+      "startLine": 60,
       "endLine": 79,
       "description": "Defines the hyperoctahedral group order |B_d| = 2^d · d!, the stabilizer order 2^(d−z) · ∏(m v)! of a representation type, and the contribution 2^z · multinomial.",
       "summary": "Group and Stabilizer Orders",
@@ -65,7 +72,7 @@
     },
     {
       "title": "The Orbit-Stabilizer Identity (general dimension)",
-      "startLine": 81,
+      "startLine": 80,
       "endLine": 125,
       "description": "Proves contribution · stabilizerOrder = 2^d · d! for any dimension d via Nat.multinomial_spec, plus the divisibility stab ∣ order and the quotient form contribution = order / stab.",
       "summary": "The Orbit-Stabilizer Identity (general dimension)",
@@ -73,7 +80,7 @@
     },
     {
       "title": "The Sum-of-Squares Interpretation of z",
-      "startLine": 127,
+      "startLine": 126,
       "endLine": 138,
       "description": "Shows the nonzero-coordinate count is z = d − m 0, so the stabilizer's sign-flip factor 2^(d−z) counts exactly the sign freedom on the zero coordinates.",
       "summary": "The Sum-of-Squares Interpretation of z",
@@ -81,11 +88,18 @@
     },
     {
       "title": "Concrete Instances — d = 4 (Jacobi) and d = 8",
-      "startLine": 140,
+      "startLine": 139,
       "endLine": 182,
       "description": "Instantiates the general formula: four-square types (0,0,0,1)→8 and all-distinct→384, the order 2^4·4!=384, and the eight-square generalization |B₈|=10321920 with a sample contribution 16 — all by `decide` (not native_decide).",
       "summary": "Concrete Instances — d = 4 (Jacobi) and d = 8",
       "id": "concrete-instances"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 183,
+      "endLine": 208,
+      "summary": "Recaps the verified results (0 axioms, 0 sorries): the hyperoctahedral order $|B_d| = 2^d \\cdot d!$ and stabilizer order, the orbit-stabilizer identity $\\mathrm{contribution} \\cdot \\mathrm{stabilizer} = 2^d \\cdot d!$ for every $d$, the divisibility/quotient forms, the sum-of-squares reading $z = d - m_0$, and the concrete $d=4$ and $d=8$ instances — all discharged by `decide` (not `native_decide`, so no `Lean.ofReduceBool`). Closes with `#check` commands over the main theorems."
     }
   ],
   "overview": {
@@ -141,26 +155,37 @@
   ],
   "references": [
     {
-      "authors": ["C. G. J. Jacobi"],
+      "authors": [
+        "C. G. J. Jacobi"
+      ],
       "title": "Fundamenta nova theoriae functionum ellipticarum",
       "year": 1829,
       "note": "Origin of the four-square formula r₄(n) = 8·Σ_{4∤d|n} d (1834 in published form), the d = 4 base case generalized here to sums of 2k squares."
     },
     {
-      "authors": ["M. Bhargava", "J. Hanke"],
+      "authors": [
+        "M. Bhargava",
+        "J. Hanke"
+      ],
       "title": "Universal quaternary quadratic forms and the 290-theorem",
       "year": 2005,
       "note": "Broader quaternary-form context for the open question on extending the hyperoctahedral symmetry beyond x²+y²+z²+w², where the symmetry group is no longer the full B_d."
     },
     {
-      "authors": ["G. E. Andrews", "R. Askey", "R. Roy"],
+      "authors": [
+        "G. E. Andrews",
+        "R. Askey",
+        "R. Roy"
+      ],
       "title": "Special Functions",
       "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications 71",
       "year": 1999,
       "note": "Standard reference for sums-of-squares representation functions r_k(n) and the underlying theta-function identities (Jacobi, Liouville, Glaisher)."
     },
     {
-      "authors": ["N. Bourbaki"],
+      "authors": [
+        "N. Bourbaki"
+      ],
       "title": "Groupes et algèbres de Lie, Chapitres 4–6 (Coxeter group B_d / type C_d)",
       "venue": "Hermann / Springer",
       "year": 1968,
