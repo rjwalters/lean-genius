@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos89WIP01.lean — proved g is nondecreasing (minDistinctDistances_mono: g(n)≤g(n+1) by deleting a point from an (n+1)-minimizer) plus subset-monotonicity of the distance set/count (distinctDistances_mono, numDistinctDistances_mono) and the base values g(0)=g(1)=0, completing the exact table g(0)=g(1)=0, g(2)=1. 15 theorems, 0 sorry, 0 axiom; #print axioms = [propext, Classical.choice, Quot.sound]. Guth–Katz lower bound and √n grid upper bound remain open.",
+    "progressSummary": "PROGRESS: g(n) now bracketed on the elementary side — exact small values g(0)=g(1)=0, g(2)=1, monotone, and a new linear upper bound g(n) ≤ n−1 via an explicit collinear AP construction (axiom-free). Only remaining upper-bound gap is the sharp √(log n) improvement (deep).",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -44,19 +44,26 @@
       "distinctDistances_mono / numDistinctDistances_mono (subset monotonicity) in Erdos89WIP01.lean (2026-07-20)",
       "exists_card_eq: an n-point set exists for every n (Infinite.exists_subset_card_eq)",
       "minDistinctDistances_mono: Monotone g (g nondecreasing) (2026-07-20)",
-      "minDistinctDistances_zero / _one: g(0)=g(1)=0 (2026-07-20)"
+      "minDistinctDistances_zero / _one: g(0)=g(1)=0 (2026-07-20)",
+      "apPoint/apSet: collinear AP point set in EuclideanSpace ℝ (Fin 2) (Erdos89WIP01.lean)",
+      "dist_apPoint: dist(apPoint i)(apPoint j) = |i−j| via EuclideanSpace.dist_eq + Fin.sum_univ_two + Nat.cast_natAbs (Erdos89WIP01.lean)",
+      "apPoint_injective + apSet_card: |apSet n| = n (Erdos89WIP01.lean)",
+      "apSet_distinctDistances_subset: distances ⊆ image of Icc 1 (n−1) (Erdos89WIP01.lean)",
+      "minDistinctDistances_le_pred: g(n) ≤ n−1, axiom-free (Erdos89WIP01.lean)"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
       "Counting envelope: numDistinctDistances S ≤ |S|·(|S|−1) via card_image_le + Finset.offDiag_card; and it vanishes iff too few points (|S|≤1 ⟹ 0, |S|≥2 ⟹ ≥1 via one_lt_card giving a distinct pair).",
       "minDistinctDistances n = sInf over n-point sets is bounded above by any single n-point witness (Nat.sInf_le ⟨S, hcard, rfl⟩) — the membership hook the √n×√n grid upper-bound construction ultimately supplies.",
       "The custom Erdos89.dist (‖p−q‖) is symmetric via norm_sub_rev, so it factors through Sym2; routing S.offDiag.image through Sym2.mk.uncurry and applying Sym2.card_image_offDiag gives the sharp ceiling numDistinctDistances S ≤ S.card.choose 2 (halving |S|·(|S|−1)). Same technique as erdos-98-wip-01.",
-      "The distinct-distances envelope is now an EQUALITY at the base: numDistinctDistances_eq_one_of_card_eq_two shows any 2-point set has exactly 1 distance (sharp ceiling 2.choose 2 = 1 meets the ≥1 floor), and minDistinctDistances_two gives the first exact value of Erdős g(n): g(2) = 1."
+      "The distinct-distances envelope is now an EQUALITY at the base: numDistinctDistances_eq_one_of_card_eq_two shows any 2-point set has exactly 1 distance (sharp ceiling 2.choose 2 = 1 meets the ≥1 floor), and minDistinctDistances_two gives the first exact value of Erdős g(n): g(2) = 1.",
+      "Linear upper bound g(n) ≤ n−1 (minDistinctDistances_le_pred): the collinear arithmetic progression {(0,0),…,(n−1,0)} has distances exactly {1,…,n−1}. First non-quadratic upper bound in the file (prior best was worst-case n.choose 2)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "g(3) = 1: exhibit an equilateral triangle (3 points, all pairwise distances equal) so numDistinctDistances = 1, matching the ≥1 floor — needs an explicit 3-point construction in EuclideanSpace ℝ (Fin 2) with card 3 and a single distance value.",
-      "A grid upper bound g(n) ≤ O(n/√(log n)) for the √n×√n grid (the Erdős extremal candidate) — substantial, needs lattice distance-counting."
+      "Sharpen upper bound toward g(n) = Θ(n/√(log n)) via the √n×√n grid (deep: needs number-theoretic count of distinct distances in a square grid).",
+      "Lower bound Ω(n/log n) (Guth–Katz) stays an imported assumption.",
+      "Connect singlePointConjecture (#604) to the global count."
     ],
     "markdown": "# Knowledge Base: erdos-89-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
