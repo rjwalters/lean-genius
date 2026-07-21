@@ -55,7 +55,7 @@
       "erdos_476_summary theorem: combines main result with tightness (fully proved)"
     ],
     "axiomCount": 1,
-    "lineCount": 380,
+    "lineCount": 381,
     "assumptions": "Repaired (issue #39077): machine-checked on Lean v4.31 (autoImplicit off), 0 sorries. The earlier non-compilation was caused by a broken unused `+̂` notation (which declared an identifier `B` its expansion dropped), the two sumset definitions using `A.product A` instead of `A ×ˢ A` (so the `mem_product` simp lemma never fired, breaking every membership `rcases`), a renamed lemma (`Finset.card_Ico` → `Nat.card_Ico`), a `simp` set missing `Finset.mem_range` (leaving `omega` unable to see the range bounds), a `subst`-orientation failure in `card_two_case`, and an unannotated `fun i => …` whose scalar type was ambiguous. Status remains axiomatized: 1 stated axiom, erdos_heilbronn_bound (the Erdős-Heilbronn lower bound |A +̂ A| ≥ min(2|A|−3, p), the deep da Silva-Hamidoune result). All supporting results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are now fully proved theorems.",
     "theoremCount": 10,
     "definitionCount": 4,
@@ -82,83 +82,91 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header, Problem Statement, and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File header for Erdős problem #476 — restricted sumsets and the Erdős–Heilbronn bound $|A \\hat{+} A| \\ge \\min(p, 2|A|-3)$ over $\\mathbb{Z}/p\\mathbb{Z}$ — with references and the Mathlib imports / `namespace Erdos476` preamble.",
+      "mathContext": "The restricted sumset $A \\hat{+} A = \\{a+a' : a \\ne a'\\}$; Erdős–Heilbronn (proved by da Silva–Hamidoune via the polynomial method) gives $|A\\hat{+}A| \\ge \\min(p, 2|A|-3)$."
+    },
+    {
       "id": "restricted-sumsets",
       "title": "Restricted Sumsets",
       "summary": "Definition of A +̂ A and ordinary sumset A + A",
-      "startLine": 42,
-      "endLine": 67,
+      "startLine": 44,
+      "endLine": 64,
       "mathContext": "Formal definition: Definition of A +̂ A and ordinary sumset A + A"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Subset relation, singleton case, nonemptiness",
-      "startLine": 68,
-      "endLine": 96,
+      "startLine": 65,
+      "endLine": 94,
       "mathContext": "Mathematical content: Subset relation, singleton case, nonemptiness"
     },
     {
       "id": "main-bound",
       "title": "The Erdős-Heilbronn Bound",
       "summary": "erdos_heilbronn_bound axiom and erdos_476 theorem",
-      "startLine": 97,
-      "endLine": 120,
+      "startLine": 95,
+      "endLine": 118,
       "mathContext": "Verified: erdos_heilbronn_bound axiom and erdos_476 theorem"
     },
     {
       "id": "da-silva-hamidoune",
       "title": "Da Silva-Hamidoune Theorem",
       "summary": "The 1994 proof using exterior algebra",
-      "startLine": 121,
-      "endLine": 135,
+      "startLine": 119,
+      "endLine": 132,
       "mathContext": "Verified: The 1994 proof using exterior algebra"
     },
     {
       "id": "tightness",
       "title": "Tightness - Arithmetic Progressions",
       "summary": "APs achieve the bound 2|A| - 3 exactly",
-      "startLine": 136,
-      "endLine": 229,
+      "startLine": 133,
+      "endLine": 226,
       "mathContext": "Bound: APs achieve the bound 2|A| - 3 exactly"
     },
     {
       "id": "cauchy-davenport",
       "title": "Comparison with Cauchy-Davenport",
       "summary": "Ordinary sumsets have bound 2|A| - 1",
-      "startLine": 231,
-      "endLine": 253,
+      "startLine": 227,
+      "endLine": 250,
       "mathContext": "Bound: Ordinary sumsets have bound 2|A| - 1"
     },
     {
       "id": "polynomial-method",
       "title": "The Polynomial Method",
       "summary": "Combinatorial Nullstellensatz and ANR proof",
-      "startLine": 255,
-      "endLine": 278,
+      "startLine": 251,
+      "endLine": 274,
       "mathContext": "Verified: Combinatorial Nullstellensatz and ANR proof"
     },
     {
       "id": "generalization",
       "title": "Generalization to r-Sums",
       "summary": "r-fold restricted sumsets with bound r|A| - r² + 1",
-      "startLine": 279,
-      "endLine": 297,
+      "startLine": 275,
+      "endLine": 293,
       "mathContext": "Bound: r-fold restricted sumsets with bound r|A| - r² + 1"
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Cases |A| = 2 and |A| = 3",
-      "startLine": 298,
-      "endLine": 335,
+      "startLine": 294,
+      "endLine": 332,
       "mathContext": "Mathematical content: Cases |A| = 2 and |A| = 3"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_476_summary combining main results",
-      "startLine": 337,
-      "endLine": 384,
+      "startLine": 333,
+      "endLine": 381,
       "mathContext": "Mathematical content: erdos_476_summary combining main results"
     }
   ],
@@ -185,7 +193,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos476",
-    "lineCount": 380,
+    "lineCount": 381,
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 4,
