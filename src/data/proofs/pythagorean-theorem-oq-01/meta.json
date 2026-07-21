@@ -145,11 +145,52 @@
       "summary": "geometric_mean_A/B prove |CA|² = |AB|·|AH| and |CB|² = |AB|·|HB| (the similar-sub-triangle fingerprint); segments_sum proves |AH| + |HB| = |AB|; pythagorean_via_altitude multiplies betweenness by |AB| and substitutes the geometric means to rebuild |AB|² = |CA|² + |CB|²."
     },
     {
+      "id": "altitude-geometric-mean",
+      "title": "Layer 3d: Altitude geometric-mean and Einstein's area dissection",
+      "startLine": 249,
+      "endLine": 374,
+      "summary": "altitude_geometric_mean (|CH|² = |AH|·|HB|), altitude_length (|CH| = |CA|·|CB|/|AB|, the legs' product over the hypotenuse), and triArea_hypotenuse_eq_legs (area computed on the hypotenuse equals area from the legs). triArea_sub_A_ratio / triArea_sub_B_ratio give each similar sub-triangle's area as the squared side ratio times the whole, and triArea_pieces_sum_whole reconstitutes the whole — Einstein's dissection at the level of area.",
+      "mathContext": "Altitude geometric mean $|CH|^2 = |AH|\\cdot|HB|$ and $|CH| = |CA||CB|/|AB|$. Each piece scales as $(|CA|/|AB|)^2$, $(|CB|/|AB|)^2$; the two squared ratios sum to $1$, so $\\mathrm{Area}(AHC)+\\mathrm{Area}(HBC)=\\mathrm{Area}(ABC)$ — area proportional to the square of a side."
+    },
+    {
+      "id": "inverse-pythagorean-inradius",
+      "title": "The inverse Pythagorean theorem, inradius, and Area = r·s",
+      "startLine": 375,
+      "endLine": 453,
+      "summary": "inverse_pythagorean (1/|CH|² = 1/|CA|² + 1/|CB|², the reciprocal-squares companion of Pythagoras). The right-triangle inradius def r = (|CA|+|CB|−|AB|)/2 with inradius_nonneg (from the triangle inequality) and two_area_eq_inradius_mul_perimeter (2·Area = r·(perimeter), i.e. Area = r·s). foot_divides_hypotenuse_sq_ratio: the altitude foot splits the hypotenuse in the ratio of the squared adjacent legs.",
+      "mathContext": "Inverse Pythagorean: $1/|CH|^2 = 1/|CA|^2 + 1/|CB|^2$. Right-triangle inradius $r = (a+b-c)/2$; $(a+b-c)(a+b+c) = (a+b)^2 - c^2 = 2ab$ gives $\\mathrm{Area}=rs$. Foot ratio: $|AH|/|HB| = |CA|^2/|CB|^2$."
+    },
+    {
+      "id": "altitude-foot-projection",
+      "title": "The altitude foot as orthogonal projection: distance split and minimization",
+      "startLine": 454,
+      "endLine": 501,
+      "summary": "altitude_foot_dist_split: for any point P = A + s·(B−A) on the hypotenuse line, |CP|² = |CH|² + |HP|² (orthogonal decomposition, cross term vanishes by foot_perp). altitude_foot_minimizes: the foot H realises the shortest distance from C to the hypotenuse line, |CH| ≤ |CP| — the orthogonal-projection characterisation. Closes `section Geometric`.",
+      "mathContext": "Since $H - P = (t-s)(B-A) \\parallel$ hypotenuse and $\\langle C-H, A-B\\rangle = 0$, the cross term in $\\|(C-H)+(H-P)\\|^2$ vanishes: $|CP|^2 = |CH|^2 + |HP|^2 \\ge |CH|^2$, so $|CH| \\le |CP|$ for all $s$."
+    },
+    {
       "id": "capstone",
       "title": "Capstone: the two routes agree",
-      "startLine": 249,
-      "endLine": 267,
-      "summary": "einstein_matches_core packages that the altitude route (pythagorean_via_altitude) and the polarization one-liner (pythagorean_core) prove the same identity, confirming the similar-triangles decomposition is faithful."
+      "startLine": 502,
+      "endLine": 514,
+      "summary": "einstein_matches_core: the altitude/similar-triangles route reproduces the metric Pythagorean identity |CA|² + |CB|² = |AB|² (and its symmetric form), confirming that Einstein's dissection is faithful to the coordinate proof `pythagorean_core`.",
+      "mathContext": "The altitude-dissection derivation and the direct inner-product identity `pythagorean_core` yield the same $|CA|^2+|CB|^2=|AB|^2$; the capstone records their equivalence."
+    },
+    {
+      "id": "euclid-classical-figures",
+      "title": "Euclid VI.31 and classical figures: semicircles, Hippocrates' lunes, Thales' circle",
+      "startLine": 515,
+      "endLine": 619,
+      "summary": "euclid_VI_31 (generalized Pythagorean theorem: for any shape functional, the figure on the hypotenuse equals the sum of the similar figures on the legs). semicircles_on_sides and hippocrates_lunes (the two lunes on the legs have combined area equal to the triangle). thales_circumradius (the hypotenuse midpoint is equidistant from all three vertices) and hypotenuse_midpoint_circumcenter (it is the circumcenter) — Thales' theorem.",
+      "mathContext": "Euclid VI.31: $F(c) = F(a) + F(b)$ for any area functional $F(x) = k x^2$ on similar figures, since $c^2 = a^2 + b^2$. Semicircles/lunes and Thales' circle (right angle ⟺ vertex on the circle with the hypotenuse as diameter) are corollaries."
+    },
+    {
+      "id": "converse-classification",
+      "title": "Converses, law of cosines, cevian identities, and angle classification",
+      "startLine": 620,
+      "endLine": 771,
+      "summary": "pythagorean_core_converse / pythagorean_core_iff recover the right angle from the metric identity. law_of_cosines gives the general |AB|² = |CA|² + |CB|² − 2⟪…⟫ law. median_apollonius and stewart_cevian are the median/cevian length identities. pythagorean_acute_iff / pythagorean_obtuse_iff classify the angle at C by comparing |AB|² with |CA|²+|CB|², and thales_converse / thales_iff give the circle characterisation both ways.",
+      "mathContext": "Converse: $|AB|^2 = |CA|^2 + |CB|^2 \\Rightarrow \\langle A-C, B-C\\rangle = 0$. Law of cosines: $|AB|^2 = |CA|^2 + |CB|^2 - 2\\langle A-C, B-C\\rangle$. Acute/obtuse: sign of $|CA|^2+|CB|^2 - |AB|^2$ = sign of $\\langle A-C, B-C\\rangle$. Apollonius/Stewart: cevian-length identities."
     }
   ],
   "sorries": 0
