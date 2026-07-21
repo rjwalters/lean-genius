@@ -73,7 +73,7 @@
       "id": "header",
       "title": "Module Header: Taxonomy Table and References",
       "startLine": 1,
-      "endLine": 57,
+      "endLine": 60,
       "summary": "Module docstring with full taxonomy table (six encodings × rule subset × step count), incomparability and ζ-dominance observations, and references (Coquand-Huet, de Moura-Ullrich, Principia Mathematica). Imports `Proofs.OnePlusOne` (no Mathlib).",
       "mathContext": "The taxonomy: ∅ (unfolded), {δ, ι} (Peano), {δ, ι, β} (raw recursor), {δ, β} (Church), {δ, ι} (binary), {δ, ι, ζ} (let-bound Peano). Step counts 0, 5, 6, 6, 3, 7 respectively. Church-Rosser ensures order-independence of the rule *set* (but not of the count). Two structural observations: rows 1 and 3 are incomparable in the subset order (no minimum); row 5 strictly dominates row 1 by {δ, ι} ⊊ {δ, ι, ζ}."
     },
@@ -81,7 +81,7 @@
       "id": "row-0-unfolded",
       "title": "Row 0 — Unfolded Baseline (Rules = ∅)",
       "startLine": 61,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "`theorem row0_unfolded`: both sides are already in fully-applied constructor form `Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero)`. Witnesses the bottom of the subset lattice: no reduction is required because the goal is already a syntactic identity.",
       "mathContext": "Goal: `succ (succ zero) = succ (succ zero)`. Closed by `Eq.refl _` without any kernel rewrite. `Rules(E) = ∅`, step count = 0."
     },
@@ -89,7 +89,7 @@
       "id": "row-1-peano-pattern",
       "title": "Row 1 — Pattern-Matched Peano (Rules = {δ, ι})",
       "startLine": 71,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "`theorem row1_peano_pattern`: the parent file's encoding. Kernel sequence: δ unfolds `Peano.one`, `Peano.add`, `Peano.two`; ι reduces the two pattern-match clauses of `Peano.add`. 5 steps total. β is *hidden* inside ι because the equation compiler folds the case-split lambda.",
       "mathContext": "`Peano.one + Peano.one ▷_δ succ zero + succ zero ▷_ι succ (succ zero + zero) ▷_ι succ (succ zero) ≡ Peano.two`. δ unfolds the three abbreviations; ι reduces the recursive and base cases."
     },
@@ -97,7 +97,7 @@
       "id": "row-2-peano-recursor",
       "title": "Row 2 — Raw Recursor (Rules = {δ, ι, β})",
       "startLine": 84,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "`noncomputable def addRec` via `Peano.ℕ.rec` with `(motive := fun _ => Peano.ℕ)`, then `theorem row2_peano_recursor`. The step function `fun _ acc => Peano.ℕ.succ acc` is a literal lambda, so β reappears as a separate rule. 6 steps total. Marked `noncomputable` because Lean's code generator does not support `Peano.ℕ.rec` with non-Prop motives at runtime — kernel reduction (for `rfl`) is unaffected.",
       "mathContext": "Kernel sequence: δ unfolds `addRec`, `one`, `two`; ι fires `Nat.rec_succ` then `Nat.rec_zero`; β applies the step function `fun _ acc => succ acc` twice. This row exposes the β-redex that pattern matching hides inside ι."
     },
@@ -105,7 +105,7 @@
       "id": "row-3-church",
       "title": "Row 3 — Church Numerals (Rules = {δ, β})",
       "startLine": 110,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Pure lambda calculus: `def Church : Type 1 := (α : Type) → (α → α) → α → α`. Church numerals `cOne`, `cTwo` and `cAdd := fun m n => fun α f x => m α f (n α f x)`. `theorem row3_church : cAdd cOne cOne = cTwo := rfl`. 6 steps: δ unfolds `cAdd`, `cOne` (twice), `cTwo`; β fires three nested lambda applications. **No ι** because there are no constructors to match — this is the structural incomparability with the Peano row.",
       "mathContext": "`Church` lives in `Type 1` because Π over `Type 0` raises the universe. `cAdd cOne cOne = fun α f x => cOne α f (cOne α f x) = fun α f x => f (f x) = cTwo` — purely β-reduction after δ-unfolding."
     },
@@ -113,7 +113,7 @@
       "id": "row-4-binary",
       "title": "Row 4 — Binary Naturals (Rules = {δ, ι})",
       "startLine": 138,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Little-endian binary representation: `inductive Bin = one | b0 | b1`. `Bin.succ` propagates carries via `b1 n → b0 n.succ`. `Bin.add` recurses on the second argument with three cases. `theorem row4_binary : Bin.add Bin.one Bin.one = Bin.b0 Bin.one := rfl` (`2 = 1·2 + 0` in little-endian). 3 steps — the shortest of any encoding for this specific input. Same rule subset as pattern-matched Peano `{δ, ι}` but a different step count and structurally distinct encoding.",
       "mathContext": "`Bin.add m .one = m.succ`; `Bin.one.succ = .b0 .one`. So `Bin.add Bin.one Bin.one ▷_{δ+ι} Bin.one.succ ▷_ι Bin.b0 Bin.one`. The shallow `1+1` depth is *illusory*: for `2^k + 2^k` the carry chain walks the bit-string, giving an `O(k)` ι-step count."
     },
@@ -121,7 +121,7 @@
       "id": "row-5-let",
       "title": "Row 5 — Let-Bound Peano (Rules = {δ, ι, ζ})",
       "startLine": 177,
-      "endLine": 222,
+      "endLine": 223,
       "summary": "`def addLet (n m : Peano.ℕ) := let n' := n; let m' := m; Peano.add n' m'`, then `theorem row5_let : addLet Peano.one Peano.one = Peano.two := rfl`. ζ-demonstrator row: 7 kernel steps (row 1's 5 plus two ζ-steps, one per `let`-binder). Necessity argument (no β/ι/δ rule has `let` in its LHS pattern, so without ζ the LHS is stuck at `let n' := one; let m' := one; Peano.add n' m'`) and sufficiency argument (after ζ fires the term reduces to row 1's LHS) documented in the docstring.",
       "mathContext": "`addLet one one ▷_δ (let n' := one; let m' := one; Peano.add n' m') ▷_ζ (let m' := one; Peano.add one m') ▷_ζ Peano.add one one ▷_{δ+ι+ι} Peano.two`. Isolates ζ as the fourth CIC primitive — not derivable from {β, ι, δ} on closed terms with let-bindings."
     },
@@ -129,9 +129,17 @@
       "id": "part-6-axiom-freedom",
       "title": "Part 6 — Axiom-Freedom Verification (#print axioms)",
       "startLine": 224,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "Six `#print axioms` stanzas, one per row. Each produces a build-time info message confirming the corresponding theorem depends on no axioms — the *propositional* dual to the *reductional* taxonomy of Parts 1–5 plus §5. Doubles as a lightweight regression detector: if a future refactor introduces a `Classical.choice`/`propext`/`Quot.sound` dependency into any row, the build log will surface it by inspection.",
       "mathContext": "Each theorem's axiom set is queried by Lean's kernel introspection. Output for each row: `'<row_name>' does not depend on any axioms`. Establishes that the {β, ι, δ, ζ} reduction alphabet is *all that is needed* — no recourse to extensions of CIC."
+    },
+    {
+      "id": "part-7-schematic-transparency",
+      "title": "Part 7 — Schematic Transparency Lemmas",
+      "startLine": 251,
+      "endLine": 278,
+      "summary": "Strengthens two row witnesses from the single input `1+1` to all inputs: `addLet_eq_add` (the `let`-bound row-5 encoding is definitionally `Peano.add` for every n,m — ζ erases the binders with no residue) and `bin_add_one` (binary `_ + one` is exactly binary successor for every `m : Bin`). Both hold by `rfl`, with `#print axioms` confirming axiom-freedom.",
+      "mathContext": "`addLet n m = Peano.add n m` and `Bin.add m one = m.succ`, both by `rfl` (schematic ζ- and δι-transparency)."
     }
   ],
   "conclusion": {

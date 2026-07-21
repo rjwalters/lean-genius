@@ -98,8 +98,16 @@
       "id": "chcv-oq02oq03-sec-consequences",
       "title": "Consequences: commutative centralizer and the K[T] inclusion",
       "startLine": 170,
-      "endLine": 197,
+      "endLine": 198,
       "summary": "end_commutant_commutative: two endomorphisms commuting with a cyclic T commute with each other (both are polynomials in T, which commute). aeval_end_commute: the trivial inclusion K[T] ⊆ centralizer(T); together with the main theorem this gives the exact equality centralizer(T) = K[T]."
+    },
+    {
+      "id": "chcv-oq02oq03-sec-adjoin",
+      "title": "Centralizer = K[T] as subalgebras",
+      "startLine": 199,
+      "endLine": 226,
+      "summary": "`end_centralizer_eq_adjoin`: for `T : Module.End K V` with a cyclic vector, the centralizer subalgebra `Subalgebra.centralizer K {T}` equals `Algebra.adjoin K {T} = K[T]`. Packages both inclusions — `commuting_end_is_polynomial` gives centralizer ⊆ K[T] (needs the cyclic vector) and `aeval_end_commute` the trivial K[T] ⊆ centralizer — into one canonical subalgebra equality consumers can use directly.",
+      "mathContext": "$\\{A:AT=TA\\}=K[T]=\\operatorname{adjoin}_K\\{T\\}$ as subalgebras of $\\operatorname{End}_K V$."
     }
   ],
   "conclusion": {

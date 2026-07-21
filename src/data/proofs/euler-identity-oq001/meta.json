@@ -103,10 +103,18 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Euler’s formula as a smooth Lie group exponential",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring framing the open question and its affirmative answer: the parent’s continuous homomorphism $t\\mapsto e^{it}$ is repackaged as Mathlib’s smooth (C∞, in fact analytic) Lie group exponential map `Circle.exp` on the circle group `S¹`, with Lie algebra the imaginary axis $i\\mathbb{R}$. Lists the four ingredients (bridge, smoothness, homomorphism, Lie algebra) and the 0-axiom / 0-sorry status.",
+      "mathContext": "$e^{it}:(\\mathbb{R},+)\\to S^1$ realised as the Lie group exponential; Lie algebra $\\mathfrak{u}(1)=i\\mathbb{R}$ with generator $i$."
+    },
+    {
       "id": "sec-bridge",
       "title": "§1. Bridge: the parent map is Mathlib's Lie group exponential",
       "startLine": 56,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Proves circleMap t = ↑(Circle.exp t), identifying the gallery construction with Mathlib's canonical circle exponential, the object carrying the smooth Lie group structure.",
       "concepts": [
         "complex exponential",
@@ -118,7 +126,7 @@
       "id": "sec-smoothness",
       "title": "§2. Smoothness: the C∞ (in fact analytic) Lie group exponential",
       "startLine": 69,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "States contMDiff_circleExp_packaged: Circle.exp is ContMDiff of every order m, so C∞ (m = ∞) and analytic (m = ω), within Mathlib's LieGroup framework.",
       "concepts": [
         "ContMDiff",
@@ -131,7 +139,7 @@
       "id": "sec-homomorphism",
       "title": "§3. Homomorphism in the genuine circle group",
       "startLine": 83,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Proves circleExp_homomorphism (Circle.exp_add) and circleHom_coe_eq_circleExp, relating the parent's circleHom into ℂˣ to Mathlib's Circle.exp.",
       "concepts": [
         "group homomorphism",
@@ -143,7 +151,7 @@
       "id": "sec-lie-algebra",
       "title": "§4. Lie algebra iℝ: the left-invariant velocity field",
       "startLine": 98,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "Proves the defining ODE γ'(t) = γ(t)·I (hasDerivAt_circleExp), the velocity at the identity γ'(0) = I (hasDerivAt_circleExp_zero), and that the generator lies on the imaginary axis (generator_mem_imaginary_axis).",
       "concepts": [
         "Lie algebra",
@@ -153,10 +161,18 @@
       ]
     },
     {
+      "id": "sec-lattice",
+      "title": "§4b. The integral lattice 2πℤ: kernel of the exponential",
+      "startLine": 128,
+      "endLine": 154,
+      "summary": "Proves `circleExp_eq_one_iff`: `Circle.exp t = 1 ↔ ∃ n : ℤ, t = n·(2π)`, identifying the kernel of the Lie group exponential as the integral lattice $2\\pi\\mathbb{Z}\\subseteq i\\mathbb{R}$. This period lattice realises the circle as the quotient $S^1\\cong\\mathbb{R}/2\\pi\\mathbb{Z}$ of its Lie algebra.",
+      "mathContext": "$\\ker(\\exp)=2\\pi\\mathbb{Z}$, hence $S^1\\cong\\mathbb{R}/2\\pi\\mathbb{Z}$."
+    },
+    {
       "id": "sec-summary",
       "title": "§5. Summary",
-      "startLine": 128,
-      "endLine": 147,
+      "startLine": 155,
+      "endLine": 176,
       "summary": "Bundles homomorphism, all-order smoothness, and the Lie algebra generator into the theorem main, the packaged answer to the open question.",
       "concepts": [
         "summary",

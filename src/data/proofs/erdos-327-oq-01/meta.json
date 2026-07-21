@@ -55,40 +55,56 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 27,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "id": "construction",
       "title": "Explicit Construction",
-      "startLine": 26,
-      "endLine": 50,
+      "startLine": 28,
+      "endLine": 57,
       "summary": "Proves that (m(a'+b')a', m(a'+b')b') satisfies sum-divides-product for coprime a', b', and that the pair is distinct when a' ≠ b'.",
       "mathContext": "If $\\gcd(a', b') = 1$ and $m \\geq 1$, then $(m s a', m s b')$ with $s = a' + b'$ satisfies $(a+b) \\mid ab$ since $a+b = m s^2$ divides $a b = m^2 s^2 a' b'$."
     },
     {
       "id": "examples",
       "title": "Concrete Verified Examples",
-      "startLine": 52,
-      "endLine": 76,
+      "startLine": 58,
+      "endLine": 80,
       "summary": "Verifies 5 sum-dvd-prod pairs ((3,6), (4,12), (5,20), (6,12), (10,15)) and 2 non-examples ((2,3), (4,5)) by direct computation.",
       "mathContext": "$(3,6)$: from $(1,2)$ with $m=1$. $(4,12)$: from $(1,3)$ with $m=1$. $(10,15)$: from $(2,3)$ with $m=1$."
     },
     {
       "id": "classification",
       "title": "Classification of Small Pairs",
-      "startLine": 78,
-      "endLine": 86,
+      "startLine": 81,
+      "endLine": 90,
       "summary": "Proves that (3,6) is the smallest sum-dvd-prod pair by exhaustive check of all pairs with b ≤ 5.",
       "mathContext": "For all $1 \\leq a < b \\leq 5$, $(a+b) \\nmid ab$. The first pair is $(3,6)$ from coprime $(1,2)$."
     },
     {
       "id": "counting",
-      "title": "Pair Counting and Density",
-      "startLine": 88,
-      "endLine": 135,
-      "summary": "Defines sumDvdProdPairs and numSumDvdProdPairs, proves the count is 0 for N ≤ 5 and positive for N ≥ 6. States the density conjecture: pair count ~ C·N·log(N).",
+      "title": "Pair Counting",
+      "startLine": 91,
+      "endLine": 122,
+      "summary": "Defines `sumDvdProdPairs N` and `numSumDvdProdPairs N`; proves the count is 0 for N ≤ 5 (`numSumDvdProdPairs_small`) and strictly positive for N ≥ 6 (`numSumDvdProdPairs_pos`), since (3,6) already lies in {1,…,6}.",
       "mathContext": "$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = 0$ for $N \\leq 5$, positive for $N \\geq 6$, conjectured $\\Theta(N \\log N)$."
+    },
+    {
+      "id": "density-question",
+      "title": "Density Question",
+      "startLine": 123,
+      "endLine": 146,
+      "summary": "States the open asymptotic-density question via `pairCountAsymptotics`: the number of sum-divides-product pairs in {1,…,N} is conjectured to grow as Θ(N·log N). `SumDvdProdTriple N` records the conjectured bijection between such pairs and coprime triples (a′,b′,m).",
+      "mathContext": "$\\#\\{(a,b):1\\le a<b\\le N,\\ a{+}b\\mid ab\\}\\sim C\\,N\\log N$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 147,
+      "endLine": 164,
+      "summary": "`construction_produces_valid_pairs`: the explicit map $(m,a′,b′)\\mapsto(m\\,s\\,a′,\\ m\\,s\\,b′)$ with $s=a′+b′$ always yields a valid distinct sum-divides-product pair, tying the construction, enumeration, and Θ(N log N) density heuristic together.",
+      "mathContext": "$m(a′+b′)a′ < m(a′+b′)b′$ and $(a+b)\\mid ab$."
     }
   ],
   "conclusion": {
