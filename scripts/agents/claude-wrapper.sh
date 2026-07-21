@@ -47,30 +47,52 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     _tokens_dir="$_repo_root/.loom/tokens"
 
-    # Bootstrap: if .loom/tokens is missing/empty/broken-symlink but .env
-    # has ACCOUNT_KEY_N entries, materialize them into the tokens dir.
+    # Bootstrap: if .loom/tokens is missing/empty/broken-symlink, materialize
+    # the account pool from two layered sources, in precedence order:
+    #   1. ~/.claude/accounts.env  — the UNIVERSAL home-directory pool, shared
+    #      across every repo on this host (base layer).
+    #   2. $_repo_root/.env        — this repo's local accounts, which OVERRIDE
+    #      a home account at the same index N and ADD new indices (top layer).
+    # Layering is by positional index N: each source's ACCOUNT_KEY_N writes
+    # agent-N.token, and because the repo .env is applied SECOND it overwrites
+    # any home account sharing that N. Absent either file, the other still works;
+    # absent both, we fall through to the single-token path below.
     #
     # NOTE (see issue #38967): tokens are written POSITIONALLY as
     # "agent-N.token" using the index N from ACCOUNT_KEY_N. Selection/rotation
     # below globs "*.token", so the .token files are the source of truth. The
-    # .env ACCOUNT_TOKEN_FILE_N column is a human-facing label only and is NOT
+    # ACCOUNT_TOKEN_FILE_N column is a human-facing label only and is NOT
     # read here; to stay accurate it must equal "agent-N.token". Verify with
     # scripts/agents/check-token-registry.sh; regenerate with
     # scripts/agents/sync-token-registry.sh. Do NOT switch this to
     # ACCOUNT_TOKEN_FILE_N naming without migrating the live pool first.
+    _home_accts="${LOOM_ACCOUNTS_FILE:-$HOME/.claude/accounts.env}"
+    # Materialize every ACCOUNT_KEY_N= line from a file into agent-N.token.
+    _materialize_accounts() {
+        local _src="$1"
+        [[ -f "$_src" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_src" 2>/dev/null || return 1
+        local key val _n
+        while IFS='=' read -r key val; do
+            _n="${key#ACCOUNT_KEY_}"
+            [[ "$_n" =~ ^[0-9]+$ ]] || continue
+            printf '%s' "$val" | tr -d "'\"\n" > "$_tokens_dir/agent-$_n.token"
+            chmod 600 "$_tokens_dir/agent-$_n.token" 2>/dev/null || true
+        done < <(grep '^ACCOUNT_KEY_[0-9]\+=' "$_src")
+        return 0
+    }
     if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null 2>&1; then
         _env_file="$_repo_root/.env"
-        if [[ -f "$_env_file" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null; then
+        # Only rebuild the dir if at least one source has accounts.
+        if { [[ -f "$_home_accts" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_home_accts" 2>/dev/null; } \
+           || { [[ -f "$_env_file" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null; }; then
             # Replace whatever is at $_tokens_dir (broken symlink, etc) with a real dir.
             rm -f "$_tokens_dir" 2>/dev/null || true
             mkdir -p "$_tokens_dir" 2>/dev/null || true
-            while IFS='=' read -r key val; do
-                _n="${key#ACCOUNT_KEY_}"
-                [[ "$_n" =~ ^[0-9]+$ ]] || continue
-                printf '%s' "$val" | tr -d "'\"\n" > "$_tokens_dir/agent-$_n.token"
-                chmod 600 "$_tokens_dir/agent-$_n.token" 2>/dev/null || true
-            done < <(grep '^ACCOUNT_KEY_[0-9]\+=' "$_env_file")
-            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth tokens from .env" >&2
+            _home_n=0; _repo_n=0
+            _materialize_accounts "$_home_accts" && _home_n=$(grep -c '^ACCOUNT_KEY_[0-9]\+=' "$_home_accts" 2>/dev/null)
+            # Repo .env applied SECOND so its indices override the home layer.
+            _materialize_accounts "$_env_file" && _repo_n=$(grep -c '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null)
+            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth tokens (home:$_home_n + repo:$_repo_n, repo overrides by index)" >&2
         fi
     fi
 
