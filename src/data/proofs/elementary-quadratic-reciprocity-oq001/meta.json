@@ -127,7 +127,7 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 39,
       "summary": "Documents the four-step Gauss sum proof structure and imports parent files OQ01OQ01OQ01 (Step 2) and OQ01OQ01OQ02 (Steps 3, 4) plus Mathlib's quadratic-reciprocity machinery.",
       "mathContext": "The OQ-01-OQ-01-OQ-01-OQ-02 leaf in the QR follow-up tree: assembles the abstract character identity from parents into the classical legendreSym product formula."
     },
@@ -135,54 +135,54 @@
       "id": "character-def",
       "title": "Part I: legendreCharQ as MulChar (ZMod p) (ZMod q)",
       "startLine": 40,
-      "endLine": 67,
+      "endLine": 83,
       "summary": "Defines `legendreCharQ` via `(quadraticChar (ZMod p)).ringHomComp (Int.castRingHom (ZMod q))`. Proves `_isQuadratic` (one line) and `_ne_one` (3-way rcases on quadratic values, hardest case is -1 → -1 = 1 in ZMod q would force q = 2).",
       "mathContext": "**Cast character pattern**: ringHomComp casts the Z-valued quadratic character to a ZMod q-valued character. Faithful iff q ≠ 2."
     },
     {
       "id": "evaluations",
       "title": "Part II: Character Evaluations χ(-1) and χ(q)",
-      "startLine": 99,
-      "endLine": 124,
+      "startLine": 84,
+      "endLine": 111,
       "summary": "legendreCharQ_neg_one: χ(-1) = (-1)^(p/2) in ZMod q via legendreSym.at_neg_one + χ₄_eq_neg_one_pow + push_cast. legendreCharQ_eval_q: χ(q) = legendreSym p q in ZMod q via direct unfolding.",
       "mathContext": "**First supplementary law** $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$. The $\\chi(q)$ evaluation is the bridge to QR — substitutes the abstract character value with the concrete Legendre symbol."
     },
     {
       "id": "step4",
       "title": "Part III: Step 4 — Character Identity in ZMod q",
-      "startLine": 126,
-      "endLine": 141,
+      "startLine": 112,
+      "endLine": 128,
       "summary": "gauss_sum_char_identity: one-line application of FrobeniusStepQR.qr_gauss_sums_identity to legendreCharQ, dispatching the four hypotheses (nontriviality, quadratic, p ≠ q, q ≠ 2) via earlier lemmas.",
       "mathContext": "**Step 4** $(\\chi(-1) \\cdot |\\mathbb{Z}/p|)^{|\\mathbb{Z}/q|/2} = \\chi(|\\mathbb{Z}/q|)$ — the abstract content of the Gauss-sum proof."
     },
     {
       "id": "zmod-qr",
       "title": "Part IV: gauss_sum_zmod_qr (ZMod q Form)",
-      "startLine": 143,
-      "endLine": 165,
+      "startLine": 129,
+      "endLine": 152,
       "summary": "Substitute ZMod.card to convert to (-1)^(p/2*(q/2)) * legendreSym q p = legendreSym p q in ZMod q. The key step is Euler's criterion legendreSym.eq_pow converting p^(q/2) to legendreSym q p. Five rewrites: substitute, eval, mul_pow, pow_mul, heuler.",
       "mathContext": "**Euler's criterion** $a^{(p-1)/2} \\equiv \\left(\\tfrac{a}{p}\\right) \\bmod p$ is the load-bearing tool that converts modular exponentiation to Legendre symbols."
     },
     {
       "id": "main-theorem",
       "title": "Part V: gauss_sum_qr_assembled (Main Theorem)",
-      "startLine": 167,
-      "endLine": 178,
+      "startLine": 153,
+      "endLine": 166,
       "summary": "Classical QR product formula: legendreSym p q * legendreSym q p = (-1)^(p/2*(q/2)) as integers. One-line proof via legendreSym.quadratic_reciprocity (Mathlib).",
       "mathContext": "The integer-level QR formula is the classical statement; our gauss_sum_zmod_qr provides the ZMod q version via the four-step assembly."
     },
     {
       "id": "citations",
       "title": "Part VI: Explicit Step Citations",
-      "startLine": 180,
-      "endLine": 204,
+      "startLine": 167,
+      "endLine": 192,
       "summary": "Three theorems wrap each parent step: step2_gauss_sum_squared (τ² = (-1)^(p/2)·p), step3_frobenius (τ^q = χ(q)·τ), step4_character_identity ((χ(-1)·p)^(q/2) = χ(q)). Document the proof's modular structure.",
       "mathContext": "**Modular architecture** with explicit citations is the opposite of Mathlib's monolithic legendreSym.quadratic_reciprocity. Both have merits; the modular form is extensible to higher reciprocity."
     },
     {
       "id": "verifications",
       "title": "Part VII: Concrete native_decide Verifications",
-      "startLine": 206,
+      "startLine": 193,
       "endLine": 243,
       "summary": "Four examples on (3,5), (3,7), (5,7), (11,13) closed by native_decide. Covers QR (=1) and quadratic non-reciprocity (=−1, the (3,7) case). Closing comment block summarizes the assembly with status table.",
       "mathContext": "Operational validation: each example is a closed term proving QR for two specific primes, confirming the formalization is genuinely computable."
