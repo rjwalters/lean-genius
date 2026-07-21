@@ -90,52 +90,60 @@
   },
   "sections": [
     {
+      "id": "overview-header",
+      "title": "Overview: The Grabiner Algebraic Method",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module header (import Mathlib, maxHeartbeats 800000) and docstring. Lays out Grabiner's purely algebraic proof of Descartes' Rule of Signs (AMM 1999), which replaces Rolle's theorem by factoring out positive roots one at a time via p = (x−r)·q and tracking sign variations: the Coefficient Transformation Lemma (constant term of p is −r·q(0), opposite in sign to q(0)) forces V(p) ≥ V(q)+1, and a base case (no positive roots ⇒ even sign variations, via IVT) closes the induction. Records the 0-axiom budget and the Grabiner reference.",
+      "mathContext": "Grabiner's method: $p(x) = (x-r_1)\\cdots(x-r_k)\\cdot s$ with each $(x-r_i)$ adding $\\ge 1$ sign variation and $V(s)$ even, so $V(p) \\ge k$ with $V(p)-k$ even."
+    },
+    {
       "id": "coefficient-recurrence",
-      "title": "Coefficient Recurrence for Linear Factor Multiplication",
-      "startLine": 55,
-      "endLine": 85,
+      "title": "Part I: Coefficient Recurrence for Linear Factor Multiplication",
+      "startLine": 50,
+      "endLine": 79,
       "summary": "Formal analysis of how coefficients transform when multiplying by (X - C r).",
       "mathContext": "When $p = (x-r)q$, the constant term of $p$ is $-r \\cdot q_0$. For $r > 0$, this has opposite sign to $q_0$, which is the key algebraic observation."
     },
     {
       "id": "grabiner-lemma",
-      "title": "The Grabiner Multiplication Lemma",
-      "startLine": 87,
-      "endLine": 122,
+      "title": "Part II: The Grabiner Multiplication Lemma",
+      "startLine": 80,
+      "endLine": 147,
       "summary": "The core lemma: multiplying by (X - r) with r > 0 adds at least one sign variation.",
       "mathContext": "From Mathlib: $V((X - C\\,r) \\cdot q) \\geq V(q) + 1$ when $r > 0$ and $q \\neq 0$. This replaces Rolle's theorem in the algebraic proof."
     },
     {
       "id": "sv-parity",
-      "title": "Sign Variation Parity (Combinatorial)",
-      "startLine": 124,
-      "endLine": 178,
+      "title": "Part III: Sign Variation Parity (Combinatorial)",
+      "startLine": 148,
+      "endLine": 228,
       "summary": "The parity of sign variations is determined by whether the first and last nonzero coefficients have the same sign.",
       "mathContext": "For $p \\neq 0$ with $p(0) \\neq 0$: $V(p) \\equiv 0 \\pmod{2}$ iff $\\text{sign}(a_0) = \\text{sign}(a_n)$. Proved by induction on support cardinality using the eraseLead recursive formula."
     },
     {
       "id": "ivt-sign",
-      "title": "No Positive Roots Implies Same-Sign Endpoints (IVT)",
-      "startLine": 180,
-      "endLine": 296,
+      "title": "Part IV: No Positive Roots Implies Same-Sign Endpoints (IVT)",
+      "startLine": 229,
+      "endLine": 367,
       "summary": "If p has no positive roots, then p(0) and the leading coefficient have the same sign.",
       "mathContext": "If $\\text{sign}(p(0)) \\neq \\text{sign}(a_n)$, then IVT on $[0, R]$ for large $R$ produces a positive root — contradiction. This is the sole analytic ingredient."
     },
     {
       "id": "parity-proof",
-      "title": "The Complete Algebraic Parity Proof",
-      "startLine": 298,
-      "endLine": 430,
+      "title": "Part V: The Complete Algebraic Parity Proof",
+      "startLine": 368,
+      "endLine": 509,
       "summary": "Full proof of Descartes' parity result by strong induction on degree, following Grabiner's factoring method.",
       "mathContext": "The inductive step: if $p = (x-r)s$ with $r > 0$, the sign conditions flip between $p$ and $s$ at the constant term but agree at the leading coefficient, causing $V(p)$ and $V(s)$ to have different parities. Combined with $\\text{countP}(p) = \\text{countP}(s) + 1$, parity is preserved."
     },
     {
       "id": "applications",
-      "title": "Applications and Comparison",
-      "startLine": 432,
-      "endLine": 495,
-      "summary": "Consequences (exact root count, root-free certificates) and comparison of algebraic vs analytic proof methods.",
-      "mathContext": "The algebraic proof gives the same result as the Rolle-based proof but via a different route: polynomial factoring instead of differentiation, induction on root count instead of degree."
+      "title": "Part VI: Applications and Method Comparison",
+      "startLine": 510,
+      "endLine": 550,
+      "summary": "Consequences of the algebraic parity proof: exactly_one_root_of_one_variation (V(p)=1 ⇒ exactly one positive root), no_roots_of_zero_variations (V(p)=0 ⇒ none), and algebraic_agrees_with_mathlib (the algebraic route reproduces Mathlib's upper bound countP(0<·) ≤ V(p)). Closes with the Summary comparing the algebraic vs analytic proof methods.",
+      "mathContext": "The algebraic proof gives the same result as the Rolle-based proof but via a different route: polynomial factoring instead of differentiation, induction on root count instead of degree. $V(p)=1 \\Rightarrow$ exactly one positive root; $V(p)=0 \\Rightarrow$ none."
     }
   ],
   "conclusion": {
