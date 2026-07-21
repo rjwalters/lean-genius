@@ -147,17 +147,88 @@
       "id": "monotonicity",
       "title": "Part XII: Monotonicity",
       "startLine": 180,
-      "endLine": 189,
+      "endLine": 201,
       "summary": "Proves monotonicity from definitions: $\\kappa \\to (\\beta, m)_k^n$ with $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$ (via ordinal card monotonicity), and similarly for $m' \\le m$ (via natural number inequality).",
       "mathContext": "Monotonicity proved: ordinal parameter via `Ordinal.card_le_card`, size parameter via `le_trans`."
     },
     {
       "id": "ordinal-arithmetic",
-      "title": "Part XIII: Ordinal Arithmetic",
-      "startLine": 190,
-      "endLine": 225,
-      "summary": "Proves $\\omega + n$ and $\\omega^2$ are countable using `card_add`, `card_mul`, `aleph0_add_nat`, and `aleph0_mul_aleph0` from Mathlib.",
-      "mathContext": "$|\\omega + n| = \\aleph_0$ and $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. Both countable."
+      "title": "Part XIII: Related Ordinal Arithmetic",
+      "startLine": 202,
+      "endLine": 213,
+      "summary": "Proves the sample ordinals $\\omega+n$ and $\\omega\\cdot\\omega$ are countable, via `Ordinal.card_add`/`card_mul` and the `aleph0` arithmetic lemmas — the concrete cases that motivate the general closure toolkit below.",
+      "mathContext": "$|\\omega+n|=\\aleph_0$ and $|\\omega\\cdot\\omega|=\\aleph_0\\cdot\\aleph_0=\\aleph_0$, so both lie in the countable range of Erdős 70."
+    },
+    {
+      "id": "countability-closure",
+      "title": "Part XIV: Countability Closure Toolkit",
+      "startLine": 214,
+      "endLine": 252,
+      "summary": "Extracts the general principle behind the concrete cases: `IsCountableOrdinal` is closed under $\\le$ (`.mono`), addition (`.add`) and multiplication (`.mul`), with `0` and `1` as base cases. The earlier ad-hoc countability facts become one-line corollaries.",
+      "mathContext": "Countable ordinals form a downward-closed set closed under $+$ and $\\times$; `zero_countable`, `one_countable`, `IsCountableOrdinal.mono/.add/.mul`.",
+      "significance": "key",
+      "relatedConcepts": [
+        "ordinal arithmetic",
+        "cardinality",
+        "aleph-null",
+        "closure properties"
+      ],
+      "prerequisites": [
+        "ordinals",
+        "cardinal arithmetic"
+      ]
+    },
+    {
+      "id": "named-specializations",
+      "title": "Part XV: Conjecture Implies Named Specializations",
+      "startLine": 253,
+      "endLine": 268,
+      "summary": "Derives the two headline instances — $\\mathfrak{c}\\to(\\omega,n)_2^3$ and $\\mathfrak{c}\\to(\\omega\\cdot\\omega,n)_2^3$ for every $n\\ge 2$ — as consequences of the general (open) conjecture, showing how the abstract statement specializes to the classically-studied targets.",
+      "mathContext": "`erdos_70_conjecture_omega` and `erdos_70_conjecture_omega_squared`: if Erdős 70 holds for all countable $\\beta$, it holds for $\\beta=\\omega$ and $\\beta=\\omega^2$.",
+      "significance": "supporting",
+      "relatedConcepts": [
+        "partition calculus",
+        "Erdős–Rado theorem",
+        "countable ordinals"
+      ],
+      "prerequisites": [
+        "partition arrow notation",
+        "ordinals"
+      ]
+    },
+    {
+      "id": "boundary-cases",
+      "title": "Part XVI: Boundary Cases of the Partition Arrow",
+      "startLine": 269,
+      "endLine": 299,
+      "summary": "Handles the degenerate parameters: $\\kappa\\to(0,m)_2^3$ and $\\kappa\\to(\\alpha,0)_2^3$ both hold trivially, witnessed by the empty homogeneous set. These anchor the induction and confirm the arrow is well-behaved at its extremes.",
+      "mathContext": "`partition_arrow_ordinal_zero` and `partition_arrow_size_zero`: the empty set is homogeneous of order type $0$ and size $\\ge 0$ for either colour.",
+      "significance": "technical",
+      "relatedConcepts": [
+        "partition arrow",
+        "homogeneous sets",
+        "edge cases"
+      ],
+      "prerequisites": [
+        "partition arrow notation"
+      ]
+    },
+    {
+      "id": "summary-open",
+      "title": "Part XVII: Summary and Open Questions",
+      "startLine": 300,
+      "endLine": 323,
+      "summary": "Closing documentation: records the OPEN status of Erdős 70, the known Erdős–Rado result $\\mathfrak{c}\\to(\\omega+n,4)_2^3$, the open targets ($\\omega^2$, $\\omega^\\omega$), the relationship to CH, and the primary references.",
+      "mathContext": "Status OPEN; known: $\\mathfrak{c}\\to(\\omega+n,4)_2^3$ (Erdős–Rado); open whether $\\mathfrak{c}\\to(\\omega^2,n)_2^3$ or $\\mathfrak{c}\\to(\\omega^\\omega,n)_2^3$.",
+      "significance": "context",
+      "relatedConcepts": [
+        "Continuum Hypothesis",
+        "Ramsey theory",
+        "partition calculus"
+      ],
+      "prerequisites": [
+        "set theory"
+      ]
     }
   ],
   "conclusion": {
