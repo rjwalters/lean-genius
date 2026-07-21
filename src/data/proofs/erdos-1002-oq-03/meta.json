@@ -94,12 +94,20 @@
       "mathContext": "Since deviation(p/q·(k+1)) is q-periodic in k, summing over n full periods adds the per-period constant 1/2 each time: S(p/q, n·q) = n·(1/2) = n/2. The growth is exactly linear with per-step rate 1/(2q), determined solely by the denominator q."
     },
     {
-      "id": "corollaries",
-      "title": "Part V: Sanity-Check Corollaries",
-      "summary": "Two example corollaries: after two periods the sum is exactly 1 (S(p/q, 2q) = 1, instantiating linear growth at n = 2), and concretely for α = 1/2 one period sums to 1/2 (S(1/2, 2) = 1/2).",
+      "id": "gcd-general",
+      "title": "Part V: The gcd Governs the Per-Period Sum",
+      "summary": "innerSum_period_sum_general drops the coprimality hypothesis: for any p, q with q ≥ 1, S(p/q, q) = gcd(p,q)/2. Reducing p/q to lowest terms p'/q' makes the length-q block consist of exactly gcd(p,q) full periods of p'/q', so innerSum_linear (applied to p', q', with n = gcd) yields gcd(p,q)/2. This strengthens innerSum_period_sum, which is the special case gcd(p,q) = 1.",
       "startLine": 200,
-      "endLine": 212,
-      "mathContext": "These instantiate the general theorems at small parameters, confirming the universal-constant and linear-growth claims numerically and demonstrating that the growth is genuinely unbounded (n/2 → ∞ as n → ∞)."
+      "endLine": 238,
+      "mathContext": "Writing p/q = p'/q' in lowest terms with q = gcd(p,q)·q', the block of length q is gcd(p,q) periods of p'/q', so S(p/q, q) = gcd(p,q)·(1/2) = gcd(p,q)/2. The per-period sum thus reads off the gcd rather than assuming coprimality."
+    },
+    {
+      "id": "corollaries",
+      "title": "Part VI: Sanity-Check Corollaries",
+      "summary": "Three example corollaries: after two periods the sum is exactly 1 (S(p/q, 2q) = 1 for coprime p, q, instantiating linear growth at n = 2), concretely S(1/2, 2) = 1/2 (one period for α = 1/2), and a non-reduced check S(2/4, 4) = gcd(2,4)/2 = 1 (two full periods of 1/2, not 1/2), which exercises the general gcd formula.",
+      "startLine": 239,
+      "endLine": 259,
+      "mathContext": "These instantiate the general theorems at small parameters, confirming the linear-growth and gcd claims numerically. The non-reduced 2/4 check demonstrates why coprimality matters for innerSum_period_sum and that the gcd version is the correct generalization; unbounded growth follows since n/2 → ∞."
     }
   ],
   "conclusion": {
