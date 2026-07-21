@@ -135,6 +135,14 @@
       "startLine": 308,
       "endLine": 364,
       "summary": "lllThreshold_eq_product: T(d) = (1/(d+1))·(d/(d+1))^d. threshold_satisfies_lll: prob_i ≤ T(d) → LLL condition holds. symmetric_lll_complete: full symmetric LLL combining condition and positivity."
+    },
+    {
+      "id": "part-xi-threshold-monotonicity",
+      "title": "Part XI: Threshold Monotonicity",
+      "startLine": 365,
+      "endLine": 471,
+      "summary": "lllThreshold_mul_succ (bridge identity (d+1)·T(d) = (d/(d+1))ᵈ, the symmetric avoidance-product form), threshold_mono_key (the private arithmetic kernel (d+1)^{2(d+1)} ≤ dᵈ·(d+2)^{d+2} after cross-multiplication), lllThreshold_succ_le (T(d+1) ≤ T(d): higher-degree dependency graphs get a smaller per-event probability budget, subsuming T(d) ≤ 1/4), and lllThreshold_antitone (the full ≤-chain T(d) ≤ T(c) for 1 ≤ c ≤ d, by induction on the gap).",
+      "mathContext": "$T(d)=\\tfrac{d^d}{(d+1)^{d+1}}$ is antitone: $(d+1)T(d)=(d/(d+1))^d$ and $T(d+1)\\le T(d)$, so $T(d)\\le T(1)=\\tfrac14$."
     }
   ],
   "mainTheorems": [
