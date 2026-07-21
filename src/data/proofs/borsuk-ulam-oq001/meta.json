@@ -63,46 +63,46 @@
       "id": "definitions",
       "title": "Exotic Representations and Defect",
       "startLine": 40,
-      "endLine": 58,
+      "endLine": 57,
       "summary": "Defines IsExotic(n,d) := buDimFormula(n,d) < buDim(n,d) and exoticDefect(n,d) := buDim(n,d) - buDimFormula(n,d). Proves defect = 0 iff not exotic.",
       "mathContext": "IsExotic captures the failure of the formula conjecture for specific (n,d). exoticDefect measures the gap. Since buDimFormula ≤ buDim always holds (lower bound), defect is a valid ℕ subtraction."
     },
     {
       "id": "non-exotic",
       "title": "Non-Exotic Cases: Primes and Prime Powers",
-      "startLine": 62,
-      "endLine": 105,
+      "startLine": 58,
+      "endLine": 85,
       "summary": "Proves primes and prime powers are non-exotic. For primes: buDimFormula(p,d) = buDim(p,d) by definition. For prime powers p^k: only prime factor is p, so buDimFormula(p^k,d) = buDim(p,d), and buDim(p^k,d) ≤ buDim(p,d) by formula axiom.",
       "mathContext": "Uses Nat.primeFactors_prime_pow: (p^k).primeFactors = {p} for prime p, k ≠ 0. Then buDimFormula_le + buDim_le_formula give the equality."
     },
     {
       "id": "monotonicity",
       "title": "Formula Monotonicity Under Divisibility",
-      "startLine": 109,
-      "endLine": 120,
+      "startLine": 86,
+      "endLine": 100,
       "summary": "Proves buDimFormula(n,d) ≤ buDimFormula(m,d) when n | m (structural, no axioms). Also states buDim_dvd_mono (n|m → buDim n d ≤ buDim m d).",
       "mathContext": "Nat.primeFactors_mono: n|m,m≠0 → primeFactors(n) ⊆ primeFactors(m). Finset.sup_mono packages this into the formula monotonicity."
     },
     {
       "id": "structural-constraints",
       "title": "Structural Constraints on Exotic Representations",
-      "startLine": 124,
-      "endLine": 155,
+      "startLine": 101,
+      "endLine": 122,
       "summary": "Proves: exotic → ¬prime (trivial), exotic (with n≥2) → card(primeFactors n) ≥ 2. The two-prime-factors result uses Finset.card_eq_one + Nat.mem_primeFactors.",
       "mathContext": "Key argument: if card(primeFactors) = 1, then primeFactors = {p} for some prime p, so n is a prime power → not_exotic_prime_pow contradicts exotic. For n ≥ 2, card ≥ 1 by nonempty_primeFactors."
     },
     {
       "id": "equivalences",
       "title": "Equivalences with the Conjecture",
-      "startLine": 159,
-      "endLine": 175,
+      "startLine": 123,
+      "endLine": 141,
       "summary": "Proves: IsExotic ↔ ¬(buDim ≤ buDimFormula). Under conjecture: no exotic for n ≥ 2. Conjecture ↔ no exotic for all n ≥ 2.",
       "mathContext": "Direct logical reformulations. The conjecture_iff_no_exotic theorem establishes that eliminating exotic representations is exactly equivalent to proving the formula conjecture."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Non-Exotic Examples and the n=6 Case",
-      "startLine": 179,
+      "startLine": 142,
       "endLine": 201,
       "summary": "Proves not_exotic for 4, 8, 9, 25 (prime powers). Shows n=6 has 2 prime factors and is not exotic (via conjecture axiom). buDimFormula_six = max(buDim 2, buDim 3).",
       "mathContext": "n=6 is the smallest n with 2 distinct prime factors — the minimal case where exotic behavior would be novel. Under the conjecture, buDim(6,d) = max(buDim(2,d), buDim(3,d))."
