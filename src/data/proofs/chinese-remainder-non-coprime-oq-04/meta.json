@@ -130,16 +130,16 @@
       "id": "golden-ratio",
       "title": "Golden Ratio Properties",
       "startLine": 176,
-      "endLine": 208,
+      "endLine": 233,
       "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations.",
       "mathContext": "The golden ratio $\\varphi = (1+\\sqrt{5})/2$: key identities $\\varphi^2 = \\varphi + 1$, $\\varphi > 1$, and $\\varphi$ is the 'hardest to approximate' irrational — its continued fraction $[1;1,1,1,\\ldots]$ has the slowest convergence among all irrationals (Hurwitz's theorem)."
     },
     {
       "id": "crt-examples",
       "title": "CRT Non-Coprime Lattice Examples",
-      "startLine": 209,
-      "endLine": 239,
-      "summary": "Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), Bézout witness verification, and the classical Sunzi problem for coprime moduli.",
+      "startLine": 235,
+      "endLine": 265,
+      "summary": "Part 7 plus the closing summary. Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12, with gcd 6 4 = 2 dividing 3−1), an unsolvable system (gcd 2 ∤ 1), a Bézout witness 6·(−1)+4·2 = 2, and the classical Sunzi (~3rd century) coprime system x ≡ 2,3,2 (mod 3,5,7) → x = 23 mod 105. A final docstring recaps how Dirichlet approximation, lattice-coset CRT solvability, the golden-ratio Hurwitz constant, and Stern-Brocot mediants fit together.",
       "mathContext": "Concrete CRT examples: the non-coprime system $x \\equiv 3 \\pmod{6}$, $x \\equiv 1 \\pmod{4}$ has solution $x = 9$ (checking: $9 = 6+3$ and $9 = 2 \\cdot 4 + 1$). Demonstrates that CRT extends beyond coprime moduli when compatibility conditions hold."
     }
   ],
