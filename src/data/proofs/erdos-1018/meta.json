@@ -58,82 +58,106 @@
     {
       "id": "graph-basics",
       "title": "Graph Basics",
-      "summary": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency.",
-      "startLine": 14,
-      "endLine": 37,
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File header and the two counting primitives: $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency.",
       "mathContext": "$|E(G)| = |\\{\\{u,v\\} : G.\\text{Adj}\\,u\\,v\\}|$ for `SimpleGraph V` with `[Fintype V]` and `[DecidableRel G.Adj]`. The edge count is half the degree sum by the handshaking lemma: $|E| = \\frac{1}{2}\\sum_{v} \\deg(v)$."
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graphs",
-      "summary": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold separating planar-possible from forced-non-planar regimes.",
-      "startLine": 38,
-      "endLine": 47,
-      "mathContext": "$\\text{isDense}(G, \\varepsilon) :\\equiv |E(G)| \\geq \\lceil n^{1+\\varepsilon} \\rceil$ where $n = |V|$. For $\\varepsilon = 0$ this is linear density (planar graphs can have this many edges); for $\\varepsilon > 0$ this exceeds the Euler bound $3n - 6$ for large $n$, forcing non-planarity."
+      "startLine": 45,
+      "endLine": 85,
+      "summary": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold, and proves it is antitone in the exponent (`isDense_of_le`) and monotone under adding edges (`edgeCount_mono`, `isDense_mono_graph`).",
+      "mathContext": "For a nonempty vertex set ($1 \\le n$), $\\varepsilon' \\le \\varepsilon$ gives $n^{1+\\varepsilon'} \\le n^{1+\\varepsilon}$, so a smaller exponent is a weaker requirement: $\\text{isDense}(G,\\varepsilon) \\Rightarrow \\text{isDense}(G,\\varepsilon')$. Adding edges only increases $|E|$, so density is preserved under $G \\le H$."
     },
     {
-      "id": "planar-graphs",
-      "title": "Planar Graphs",
-      "summary": "Abstract $\\text{isPlanar}$ definition (sorry) and $\\text{isNonPlanar} = \\neg\\text{isPlanar}$. Full definition requires topological embedding theory.",
-      "startLine": 48,
-      "endLine": 62,
-      "mathContext": "A graph $G$ is planar if it can be embedded in $\\mathbb{R}^2$ without edge crossings. Formally: $\\exists f : V \\to \\mathbb{R}^2$ injective, with edges mapped to Jordan arcs intersecting only at endpoints. The definition is left as `sorry` since Lean/Mathlib lacks topological planarity."
+      "id": "complete-graphs",
+      "title": "Complete Graphs $K_5$ and $K_{3,3}$",
+      "startLine": 86,
+      "endLine": 106,
+      "summary": "Constructs the two Kuratowski obstruction graphs as explicit `SimpleGraph` structures: the complete graph $K_n$ on `Fin n` and the complete bipartite graph $K_{m,n}$ on `Fin m ⊕ Fin n`.",
+      "mathContext": "$K_5$ (all $\\binom{5}{2}=10$ edges on 5 vertices) and $K_{3,3}$ (all $3\\cdot 3 = 9$ edges across a $3+3$ bipartition) are the minimal non-planar graphs; every non-planar graph contains a subdivision of one of them (Kuratowski 1930)."
     },
     {
-      "id": "kuratowski",
-      "title": "Complete Graphs and Kuratowski's Theorem",
-      "summary": "Defines $K_n$, $K_{m,n}$, graph subdivisions, and axiomatizes Kuratowski (1930): non-planar $\\iff$ contains $\\text{TK}_5$ or $\\text{TK}_{3,3}$.",
-      "startLine": 63,
-      "endLine": 104,
-      "mathContext": "Kuratowski (1930): $G$ is non-planar $\\iff$ $G$ contains a subdivision of $K_5$ or $K_{3,3}$. A subdivision $TK_t$ replaces each edge of $K_t$ with a path; the 'branch vertices' (original $K_t$ vertices) and 'path vertices' together form the subdivision. Wagner (1937) proved the equivalent minor characterization."
+      "id": "subdivisions",
+      "title": "Graph Subdivisions",
+      "startLine": 107,
+      "endLine": 135,
+      "summary": "Defines $\\text{containsSubdivision}\\,G\\,H$ — the statement that $H$ is a topological minor of $G$ — the notion in which the Kuratowski obstruction is phrased here.",
+      "mathContext": "A subdivision of $H$ replaces each edge of $H$ by an internally-disjoint path. $G$ contains a *subdivision* of $H$ (a topological minor) when a copy of $H$ with edges expanded into paths embeds into $G$; the branch vertices of $H$ map injectively into $V(G)$."
     },
     {
-      "id": "subgraphs",
+      "id": "planarity-kuratowski",
+      "title": "Planarity via the Kuratowski Characterization",
+      "startLine": 136,
+      "endLine": 257,
+      "summary": "Defines $\\text{isPlanar}\\,G$ combinatorially as the absence of a $K_5$- or $K_{3,3}$-subdivision, making Kuratowski's theorem hold definitionally (`kuratowski_theorem`). Proves $K_5$ and $K_{3,3}$ non-planar (formerly axioms, now theorems), that non-planarity forces $\\ge 5$ vertices, that $\\le 4$ vertices are always planar, that $K_4$ is planar, and the two $K_5$/$K_{3,3}$ sufficient-condition tests.",
+      "mathContext": "By taking $\\text{isPlanar}\\,G := \\neg(\\text{contains a }K_5\\text{- or }K_{3,3}\\text{-subdivision})$, Kuratowski's characterization becomes true by definition. The vertex-count floor `nonPlanar_imp_five_le_card` ($\\ge 5$) and its converse `card_le_four_isPlanar` pin the planar/non-planar boundary at exactly four versus five vertices, with $K_4$ planar and $K_5$ non-planar as the tight witnesses."
+    },
+    {
+      "id": "induced-subgraphs",
       "title": "Induced Subgraphs",
-      "summary": "Defines $G[S]$ (induced subgraph on $S \\subseteq V$) and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists |S| \\le k$ with $G[S]$ non-planar.",
-      "startLine": 105,
-      "endLine": 120,
-      "mathContext": "$G[S] = (S, \\{\\{u,v\\} \\in E(G) : u, v \\in S\\})$ is the induced subgraph on vertex subset $S$. The predicate $\\text{hasSmallNonPlanarSubgraph}(G, k) :\\equiv \\exists S \\subseteq V,\\, |S| \\leq k \\wedge \\neg\\text{isPlanar}(G[S])$ captures Erdős's question."
+      "startLine": 258,
+      "endLine": 273,
+      "summary": "Defines the induced subgraph $G[S]$ on a vertex set $S \\subseteq V$ and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists S,\\ |S| \\le k$ with $G[S]$ non-planar — the object the main question bounds.",
+      "mathContext": "$G[S]$ keeps exactly the edges of $G$ with both endpoints in $S$. The problem asks whether super-linear density forces a *small* non-planar induced piece, i.e. one whose vertex set has size bounded by a constant depending only on $\\varepsilon$, not on $n$."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "Formalizes Erdős's question: $\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon$ such that $|E| \\ge n^{1+\\varepsilon} \\implies$ non-planar subgraph on $\\le C_\\varepsilon$ vertices.",
-      "startLine": 121,
-      "endLine": 136,
-      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists C_\\varepsilon \\in \\mathbb{N},\\, \\forall G$ with $|V(G)| = n$ and $|E(G)| \\geq n^{1+\\varepsilon}$: $\\exists S \\subseteq V(G)$ with $|S| \\leq C_\\varepsilon$ and $G[S]$ non-planar. The constant $C_\\varepsilon$ depends only on $\\varepsilon$, not on $n$."
+      "startLine": 274,
+      "endLine": 294,
+      "summary": "Formalizes Erdős's question as `erdos_1018_question`: $\\forall \\varepsilon > 0,\\ \\exists C_\\varepsilon$ such that every large $\\varepsilon$-dense graph contains a non-planar subgraph on $\\le C_\\varepsilon$ vertices (`existsBoundingConstant`).",
+      "mathContext": "Formally $\\forall \\varepsilon>0,\\ \\exists C_\\varepsilon,\\ \\exists N,\\ \\forall G$ with $|V(G)| \\ge N$ and $|E(G)| \\ge |V|^{1+\\varepsilon}$: $\\text{hasSmallNonPlanarSubgraph}(G, C_\\varepsilon)$. The constant $C_\\varepsilon$ may depend on $\\varepsilon$ but must be uniform in $n$."
     },
     {
       "id": "kostochka-pyber",
-      "title": "Kostochka-Pyber Theorem (1988)",
-      "summary": "Axiomatizes the solution: dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Derives $\\text{erdos\\_1018\\_solved}$ from this.",
-      "startLine": 137,
-      "endLine": 167,
-      "mathContext": "Kostochka-Pyber (1988): $|E(G)| \\geq n^{1+\\varepsilon} \\Rightarrow G$ contains a $TK_5$ on at most $C_\\varepsilon$ vertices. The proof finds high-degree vertices whose neighborhoods have enough common adjacencies to form short connecting paths, yielding a $K_5$ subdivision. Since $TK_5$ is non-planar (by Kuratowski), this resolves Erdős's question."
+      "title": "Kostochka–Pyber Theorem (1988)",
+      "startLine": 295,
+      "endLine": 334,
+      "summary": "States the deep input `kostochka_pyber` as an axiom — dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices — bridges it to non-planar subgraphs (`smallK5_forces_smallNonPlanar`), and derives the affirmative answer `erdos_1018_solved`.",
+      "mathContext": "Kostochka (1982) and Pyber–Rödl–Szemerédi–style extremal results give that average degree $\\ge c\\cdot k\\sqrt{\\log k}$ forces a $K_k$-subdivision. Specialized to $k=5$ over an $\\varepsilon$-dense graph, this yields a $K_5$-subdivision on constantly many vertices; a $K_5$-subdivision is in particular a non-planar subgraph. This is the one genuine mathematical assumption carried by the affirmative answer."
     },
     {
       "id": "constant-grows",
-      "title": "The Constant $C_\\varepsilon$ Grows",
-      "summary": "The naive `constant_grows` axiom was mis-stated and provably false; it is removed in favor of `constant_grows_as_stated_is_false`. The genuine $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$ (about the *least* valid constant) remains open.",
-      "startLine": 184,
-      "endLine": 212,
-      "mathContext": "Erdős observed $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0^+$, where $C_\\varepsilon$ is the *minimal* bounding constant. The earlier formalization `∀ M, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C, existsBoundingConstant ε → C ≥ M` does not capture this: its body is independent of $C$, so the inner clause collapses (take $C=0$, $M \\ge 1$) to $\\neg\\,\\text{existsBoundingConstant}\\,\\varepsilon$, which contradicts `erdos_1018_solved` (proving `existsBoundingConstant ε` for every $\\varepsilon$). As an `axiom` it rendered the file inconsistent, so it is replaced by the machine-checked disproof `constant_grows_as_stated_is_false`. A faithful statement about the least valid $C_\\varepsilon$ needs lower-bound / planarity theory absent from Mathlib and remains open (cf. the still-`sorry` `sparse_hides_nonplanarity`)."
+      "title": "The Constant $C_\\varepsilon$ Grows as $\\varepsilon \\to 0$",
+      "startLine": 335,
+      "endLine": 446,
+      "summary": "Records that the previously-assumed `constant_grows` axiom was mis-stated and provably false (`constant_grows_as_stated_is_false`), and supplies honest replacements: non-planarity needs five vertices (`nonPlanar_needs_five`), the $\\varepsilon$-free floor $C \\ge 5$ (`bounding_constant_ge_five`), and the vacuously-true literal `sparse_hides_nonplanarity`.",
+      "mathContext": "The genuine asymptotic $\\lim_{\\varepsilon\\to 0^+} C_\\varepsilon = \\infty$ concerns the *least* valid constant and remains open here. What is proved unconditionally is the lower floor: any bounding constant satisfies $C_\\varepsilon \\ge 5$, because every non-planar graph — hence every witness $G[S]$ — has $|S| \\ge 5$."
     },
     {
       "id": "extremal",
-      "title": "Extremal Graph Theory Connection",
-      "summary": "Euler bound $|E| \\le 3n-6$ for planar graphs and the consequence that $n^{1+\\varepsilon} > 3n-6$ forces the whole graph to be non-planar.",
-      "startLine": 186,
-      "endLine": 204,
-      "mathContext": "Euler's formula: $|V| - |E| + |F| = 2$ for connected planar graphs, giving $|E| \\leq 3|V| - 6$ (since each face has $\\geq 3$ boundary edges). For $\\varepsilon > 0$ and $n$ large enough, $n^{1+\\varepsilon} > 3n - 6$, so the *whole graph* is non-planar. The non-trivial content of Erdős's question is finding a *small* non-planar subgraph."
+      "title": "Connection to Extremal Graph Theory",
+      "startLine": 447,
+      "endLine": 586,
+      "summary": "Uses the planar Euler budget `planar_linear_bound` ($|E| \\le 3n-6$) to give a threshold-free non-planarity test (`nonPlanar_of_edgeCount_gt`, `five_le_card_of_edgeCount_gt`), then isolates the axiom-free analytic crossover $n^{1+\\varepsilon} > c\\,n$ (`superlinear_gt_linear`, `superlinear_gt_linear_const`) and combines them into `superlinear_forces_nonplanar` and its dual `planar_not_dense`.",
+      "mathContext": "A simple planar graph has at most $3n-6$ edges (Euler's formula). The crossover $n^{1+\\varepsilon} > c\\,n$ holds for all $n \\ge \\lceil c^{1/\\varepsilon}\\rceil + 1$, since $n^{1+\\varepsilon} = n\\cdot n^{\\varepsilon}$ and $n^{\\varepsilon} > c \\iff n > c^{1/\\varepsilon}$. Chaining $3n < n^{1+\\varepsilon} \\le |E| \\le 3n$ (a contradiction) shows a large $\\varepsilon$-dense graph cannot be planar."
     },
     {
-      "id": "quantitative",
-      "title": "Quantitative Bounds and Turán Numbers",
-      "summary": "Explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$, Turán number $\\text{ex}(n, \\text{TK}_5) = O(n)$ by Mader, and dense graphs exceeding the Turán threshold.",
-      "startLine": 205,
-      "endLine": 260,
-      "mathContext": "Mader (1967): $\\text{ex}(n, TK_t) = O(t\\sqrt{\\log t} \\cdot n)$, so for $t = 5$: $\\text{ex}(n, TK_5) = O(n)$. Since $n^{1+\\varepsilon} \\gg O(n)$ for large $n$, dense graphs vastly exceed the Turán threshold for $K_5$ subdivisions. The explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$ quantifies the subdivision size."
+      "id": "quantitative-false",
+      "title": "Quantitative Bounds — the Naive $\\lceil 1/\\varepsilon^2\\rceil$ Bound Is False",
+      "startLine": 587,
+      "endLine": 678,
+      "summary": "Retains $\\text{explicitBound}(\\varepsilon) = \\lceil 1/\\varepsilon^2\\rceil$ only as a definition and machine-checks that it is *too small*: complete graphs are $1/2$-dense (`complete_graph_half_dense`), yet $\\text{explicitBound}(1/2)=4 < 5$ contradicts the five-vertex floor (`explicit_bound_half_is_false`), so the removed `kostochka_pyber_explicit` axiom was inconsistent.",
+      "mathContext": "At $\\varepsilon = 1/2$, $\\lceil 1/(1/2)^2\\rceil = \\lceil 4\\rceil = 4$, which would force every $1/2$-dense graph to contain a $K_5$-subdivision on $\\le 4$ vertices — impossible, since a $K_5$-subdivision needs $5$ branch vertices and arbitrarily large $1/2$-dense graphs exist ($K_n$ has $\\binom{n}{2} \\ge n^{3/2}$ edges for $n \\ge 16$). The genuine explicit bound is a larger polynomial in $1/\\varepsilon$."
+    },
+    {
+      "id": "related-turan",
+      "title": "Related Problems and Turán Numbers",
+      "startLine": 679,
+      "endLine": 709,
+      "summary": "Frames the result as a Turán-type extremal statement: with $\\text{turanK5Subdivision}(n) = 3n-6$ taken as the extremal edge count, `dense_exceeds_turan` shows $n^{1+\\varepsilon} > 3n-6$ for large $n$ — super-linear density always beats the planar Turán threshold.",
+      "mathContext": "The Turán number $\\text{ex}(n, TK_5)$ for $K_5$-subdivision-free graphs is $\\Theta(n)$ (Mader), matched here by the planar Euler value $3n-6$. Since $n^{1+\\varepsilon}$ is super-linear, it eventually exceeds any linear extremal bound, which is exactly why density $n^{1+\\varepsilon}$ forces the forbidden topological structure."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 710,
+      "endLine": 732,
+      "summary": "Closing overview: Erdős #1018 is SOLVED (Kostochka–Pyber 1988) — every $\\varepsilon$-dense graph contains a $K_5$ subdivision, hence a non-planar subgraph, on $O_\\varepsilon(1)$ vertices — recapping the key results and their Kuratowski, Turán, and topological-graph-theory context.",
+      "mathContext": "Affirmative answer: YES. The formalization is honest about its one genuine assumption (`kostochka_pyber`) and the planar edge budget (`planar_linear_bound`), while everything downstream — the crossover analysis, the five-vertex floor, and the disproof of the naive $\\lceil 1/\\varepsilon^2\\rceil$ bound — is axiom-free."
     }
   ],
   "conclusion": {
