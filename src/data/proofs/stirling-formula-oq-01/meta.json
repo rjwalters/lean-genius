@@ -132,32 +132,32 @@
       "id": "main-theorem",
       "title": "Part III: Main Theorem \u2014 Stirling's First Correction",
       "startLine": 557,
-      "endLine": 802,
+      "endLine": 864,
       "summary": "stirling_first_correction proves |stirlingSeq(n)/\u221a\u03c0 \u2212 (1 + 1/(12n))| \u2264 2/n\u00b2 for n \u2265 2. Takes L = log(stirlingSeq n/\u221a\u03c0) = \u03a3_{k\u2265n} d_k, sandwiches L via the partial-sum bounds and the limit stirlingSeq(n+M)\u2192\u221a\u03c0, then converts to the ratio bound with Real.exp_bound. Fully proved, C = 2.",
       "mathContext": "$\\left|\\frac{\\mathrm{stirlingSeq}(n)}{\\sqrt\\pi} - \\left(1 + \\tfrac{1}{12n}\\right)\\right| \\le \\frac{2}{n^2}$"
     },
     {
       "id": "two-term",
       "title": "Two-Term Expansion of n!",
-      "startLine": 804,
-      "endLine": 839,
+      "startLine": 865,
+      "endLine": 901,
       "summary": "stirling_two_term_expansion restates the correction for n! itself, derived from the main theorem via the factorization \u221a(2\u03c0n) = \u221a(2n)\u00b7\u221a\u03c0.",
       "mathContext": "$\\left|\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} - \\left(1 + \\tfrac{1}{12n}\\right)\\right| \\le \\frac{C}{n^2}$"
     },
     {
       "id": "error-bound",
       "title": "Part IV: Error Bound (Replaces Axiom)",
-      "startLine": 841,
-      "endLine": 869,
+      "startLine": 902,
+      "endLine": 931,
       "summary": "error_bound_from_correction derives stirlingSeq(n)/\u221a\u03c0 \u2212 1 \u2264 1/n for n \u2265 2 \u2014 the statement axiomatized in StirlingFormula.lean. Reduces to (11n \u2212 12)/(12n\u00b2) \u2265 0, closed by ring + nlinarith.",
       "mathContext": "$\\frac{1}{n} - \\left(\\frac{1}{n^2} + \\frac{1}{12n}\\right) = \\frac{11n-12}{12n^2} \\ge 0$"
     },
     {
       "id": "numerical",
-      "title": "Part V: Numerical Verification and Notes",
-      "startLine": 871,
-      "endLine": 915,
-      "summary": "Two norm_num checks anchor the correction at n=10 (1+1/120) and n=100 (1+1/1200), followed by development notes recording the path to 0 sorries and the iteration-5 addition of the quintic log bound.",
+      "title": "Part V: Numerical Verification and Summary Notes",
+      "startLine": 932,
+      "endLine": 993,
+      "summary": "Two norm_num checks anchor the correction at n=10 (1+1/120) and n=100 (1+1/1200), followed by a Summary block of development notes: the path to 0 sorries (upper-half exp-Taylor bound via Real.exp_bound), iteration 5 adding the quintic log bound log_one_plus_le_quintic, and iteration 6 adding stirling_step_upper_refined which sharpens the 1/k³ step coefficient to −1/12 (matching stirling_step_lower, the prerequisite for the second correction term 1/(288n²)).",
       "mathContext": "$n = 10:\\ 1 + \\frac{1}{120} \\approx 1.00833;\\ \\text{true} \\approx 1.00834$"
     }
   ],
