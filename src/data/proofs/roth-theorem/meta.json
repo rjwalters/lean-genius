@@ -46,14 +46,15 @@
   "overview": {
     "historicalContext": "Roth's theorem (1953) was a landmark in additive combinatorics: every subset of integers with positive upper density contains a 3-term arithmetic progression. The original proof used Fourier analysis (the density increment strategy). The k=3 case was later subsumed by Szemerédi's theorem (1975) for general k-APs, but Roth's Fourier method remains fundamental.\n\nThe Fourier-analytic proof proceeds by density increment: if A ⊆ Z/NZ has density δ but no 3-AP, then A's Fourier transform has a large coefficient at some frequency r≠0 (the key analytic lemma). This large coefficient means A looks 'structured' — concentrated in a coset of a subgroup. Restricting to that coset increases the density to δ + δ²/4. Iterating O(1/δ²) times reaches density 1, giving a 3-AP by the pigeonhole principle.\n\nModern proofs achieve better quantitative bounds: Bourgain (1999) gave N/(log log N)^{1/2} and Bloom-Sisask (2020) gave N/log^{1+c} N. The qualitative result here suffices for Roth's original theorem.",
     "problemStatement": "**Roth's Theorem**: For every δ > 0, there exists N₀ such that for all N ≥ N₀, every subset A ⊆ Z/NZ with |A| ≥ δN contains a 3-term arithmetic progression {a, a+d, a+2d} with d ≠ 0.",
-    "text": "A 1745-line formalization developing the full Fourier-analytic proof of Roth's theorem from first principles on Z/NZ. Parts I–V (Fourier analysis, AP counting, large coefficient, density increment) are fully self-contained; Part VI wraps via Mathlib's `roth_3ap_theorem_nat`. The key standalone result is `fourier_large_coefficient` — a complete, independently verified proof of the crucial analytic step.",
+    "text": "An 8239-line formalization developing the full Fourier-analytic proof of Roth's theorem from first principles on Z/NZ. Parts I–V (Fourier analysis, AP counting, large coefficient, density increment) are fully self-contained; Part VI wraps via Mathlib's `roth_3ap_theorem_nat`. The key standalone result is `fourier_large_coefficient` — a complete, independently verified proof of the crucial analytic step. Parts VII–LXII then develop a large companion thread on the **Sárközy square-difference-free problem** — quadratic Gauss sums, their exact magnitudes/moments, Paley coset-lift constructions, and the complete classification of moduli whose square-difference graph has independence number 1.",
     "proofStrategy": "**Part I (AP-free basics)**: Define `APFree A` on `ZMod N`; prove empty/singleton cases; monotonicity under subset. Cardinality bound `card_le_nat` via `ZMod.card N`.\n\n**Part II (AP counting)**: `tripleCount A` counts nontrivial 3-APs via filter on `ZMod N × ZMod N`. Prove `apFree_iff_tripleCount_zero` using Finset.card_eq_zero.\n\n**Part III (Fourier analysis)**: `fourierCoeff A r = Σ_{x∈A} exp(2πi val(r·x)/N)`. Additive character `ψ`: prove `psi_add`, `psi_zero`, `psi_ne_one`, `psi_norm`, `conj_psi`. Prove `char_orthogonality`: `Σ_r ψ(rc) = N·δ(c,0)` via shift argument. Use to prove `parseval_on_zmod` and `triple_count_fourier`.\n\n**Part IV (Large coefficient)**: `fourier_large_coefficient` — two cases: (1) δ²N < 2: Parseval gives max ≥ 1 > δ²N/2; (2) δ²N ≥ 2: contradiction via Fourier identity + AM-GM bound on sum over T₁ ∪ T₂ splitting by kernel of ×2.\n\n**Part V (Density increment)**: `cosetRestrict A g hg hgN j hj` restricts A to the j-th coset in ZMod(N/g). Prove `apFree_coset_restrict` (AP-free preserved) and `density_increment_lemma` (some coset achieves density δ + δ²/4).\n\n**Part VI (Main theorem)**: `roth_density_bound` maps A to ℕ via `ZMod.val`, verifies `apFree_imp_threeAPFree_val`, then invokes `roth_3ap_theorem_nat`.",
     "keyInsights": [
       "**Character Orthogonality as Foundation**: The entire Fourier-analytic approach rests on `char_orthogonality` — the sum of ψ(rc) over all r vanishes when c≠0. This is proved via a shift argument: multiplication by ψ(c)≠1 is a bijection on the sum, forcing it to zero. All subsequent results build on this.",
       "**AP Count Fourier Identity**: `triple_count_fourier` shows `tripleCount A + |A| = N⁻¹ Σ_r Â(r)² conj(Â(2r))`. This converts combinatorial AP counting to a Fourier sum, enabling analytic methods.",
       "**Two-Case Analysis in `fourier_large_coefficient`**: The proof splits on δ²N < 2 vs ≥ 2. In the first case, Parseval forces a Fourier coefficient ≥ 1. In the second, a contradiction is derived using the Fourier counting identity, the AM-GM bound, and careful handling of the kernel of multiplication by 2 in ZMod N (which has at most one nonzero element).",
       "**Coset Restriction Preserves AP-Freeness**: `apFree_coset_restrict` shows that a 3-AP in ZMod(N/g) lifts to a 3-AP in ZMod N via the map k ↦ j + k·g. This requires careful mod arithmetic: `val(a+b)*g ≡ (val a + val b)*g (mod N)` when `g·(N/g) = N`.",
-      "**Mathlib Integration Point**: The main theorem defers to Mathlib's `roth_3ap_theorem_nat` (via `ThreeAPFree` and the corners theorem bound). The custom machinery provides `fourier_large_coefficient` and `density_increment_lemma` as independently verified results — showing the Fourier approach is fully formalized even though the iteration is handled by Mathlib."
+      "**Mathlib Integration Point**: The main theorem defers to Mathlib's `roth_3ap_theorem_nat` (via `ThreeAPFree` and the corners theorem bound). The custom machinery provides `fourier_large_coefficient` and `density_increment_lemma` as independently verified results — showing the Fourier approach is fully formalized even though the iteration is handled by Mathlib.",
+      "**Companion Sárközy Development**: Beyond Roth, the file formalizes the square-difference-free problem via quadratic Gauss sums `G(r)=Σ_n ψ(r·n²)`. The Weyl-differencing identity `‖G(r)‖²=N·Σ_{h:2rh=0}ψ(−r·h²)` reduces the magnitude to a gcd kernel count, culminating in the exact value-1 locus classification `maxSqDiffFreeCard N = 1 ↔ N∈{1,2}∪{p,2p : p≡3 mod 4 prime}` and the exact even-modulus dichotomy (4∣N ⟹ ‖G(r)‖²=2N; N≡2 mod 4 ⟹ G(r)=0). All 0-axiom, 0-sorry."
     ],
     "prerequisites": [
       "Fourier analysis on finite groups",
@@ -164,15 +165,106 @@
       "endLine": 1401,
       "summary": "Proves `roth_density_bound`: for all δ > 0, ∃ N₀ such that every subset of ZMod N with density ≥ δ contains a 3-AP. Maps A to ℕ via ZMod.val, uses apFree_imp_threeAPFree_val, and invokes Mathlib's `roth_3ap_theorem_nat`.",
       "mathContext": "$\\forall \\delta > 0, \\exists N_0, \\forall N \\geq N_0, \\forall A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ with $|A| \\geq \\delta N$: $A$ has a 3-AP."
+    },
+    {
+      "startLine": 1410,
+      "endLine": 1639,
+      "title": "Part VII: Sárközy Square-Difference Fourier Identity",
+      "summary": "Pivots from Roth to the companion Sárközy problem: how large can a square-difference-free set A ⊆ ℤ/Nℤ be (no x, x+n² both in A, n≠0)? Defines the quadratic Gauss sum `sqGaussSum r = Σ_n ψ(r·n²)` and the square-difference count `sqDiffCount A`, then proves the exact Fourier identity `sqDiffCount A · N = Σ_r |Â(r)|²·G(r)` (`sqDiffCount_fourier_complex`). Separating the principal term `G(0)=N` reduces the whole problem, via the circle method, to a single analytic input — a magnitude bound `‖G(r)‖ ≤ M` on the nonzero-frequency Gauss sums (`sqDiffFree_density_bound`)."
+    },
+    {
+      "startLine": 1640,
+      "endLine": 1825,
+      "title": "Part VII (cont.): Weyl-Differencing Magnitude of the Gauss Sum",
+      "summary": "Supplies the analytic input by Weyl differencing: squaring G(r) and reindexing m=n+h linearises the phase, giving the exact identity `‖G(r)‖² = N·Σ_{h : 2rh=0} ψ(−r·h²)` (`sqGaussSum_mul_conj`). The inner linear character sum collapses under `char_orthogonality` so only the diagonal kernel {h : 2rh=0} survives. Immediate consequences: `‖G(r)‖² ≤ N·#{h:2rh=0}` (triangle inequality) and `‖G(r)‖ = √N` whenever the kernel is trivial (odd N, 2r a unit) — the classical Gauss-sum magnitude in the accessible regime. All 0-axiom."
+    },
+    {
+      "startLine": 1826,
+      "endLine": 2369,
+      "title": "Parts VIII–IX: Composite-Modulus Kernel Count and Shift-Vanishing Criterion",
+      "summary": "Evaluates the surviving kernel #{h : 2rh=0} as a gcd quantity for composite moduli (the Weyl kernel count is `gcd(2r, N)`), then analyses when the residual phase sum vanishes. Isolates the two-torsion branch and shows it is always the zero branch, and states the general shift-vanishing criterion governing when the character sum over the kernel cancels versus adds coherently."
+    },
+    {
+      "startLine": 2370,
+      "endLine": 2750,
+      "title": "Parts X–XIV: Exact Iff-Characterization of the Vanishing Set",
+      "summary": "Refines the vanishing analysis into an exact, decidable iff-characterization of the shift-reachable vanishing set (Part XIII) and shows the residual case is maximal, giving a decidable characterization of exactly which frequencies produce a vanishing quadratic exponential sum."
+    },
+    {
+      "startLine": 2751,
+      "endLine": 3211,
+      "title": "Parts XV–XIX: Prime-Modulus Second Moment and the Sárközy Cardinality Bound",
+      "summary": "At a prime modulus, computes the exact second moment of the Gauss sum (the L² direction is capped) and converts it into the quantitative Sárközy cardinality bound. Culminates in the master explicit cardinality bound valid for any Weyl sup-norm parameter M — the effective form of the density-o(1) conclusion for square-difference-free sets."
+    },
+    {
+      "startLine": 3212,
+      "endLine": 3561,
+      "title": "Parts XX–XXIII: Odd-Modulus Moments — L² Cap, Θ(N²), and Subquadratic L¹",
+      "summary": "Establishes the exact second moment at every odd modulus via Plancherel (Pillai), showing `Σ_{r≠0}‖G(r)‖² = Θ(N²)` (the L² cap for every odd N), a divisor-based upper bound `N^{2+o(1)}` (tight bracket), and that the first moment `Σ_{r≠0}‖G(r)‖` is subquadratic — an L¹ bound o(N²)."
+    },
+    {
+      "startLine": 3562,
+      "endLine": 4028,
+      "title": "Parts XXIV–XXVII: Exact Spectral Level-Set Distribution",
+      "summary": "Computes the exact pointwise maximum of the Weyl coefficient at odd modulus, then determines the exact spectral level-set distribution — the multiset of magnitudes ‖G(r)‖ takes and their multiplicities. Proves the level-set partition is exhaustive (the level sets tile the whole spectrum) and extracts the sharp single-scale cardinality bound."
+    },
+    {
+      "startLine": 4029,
+      "endLine": 4778,
+      "title": "Parts XXVIII–XXXIII: Sharpness Constructions (√N and Paley Coset-Lifts)",
+      "summary": "Turns to lower bounds via explicit constructions. Gives a √N square-difference-free set at a prime-square modulus, shows √N is not extremal via a two-coset 2√N construction for p≡1 (mod 4), and develops the general Paley coset-lift construction — proving it is an exact correspondence, that the extremal square-difference-free count is super-multiplicative, and that the coset lift works at every squarefree modulus (primality dropped)."
+    },
+    {
+      "startLine": 4779,
+      "endLine": 5219,
+      "title": "Parts XXXIV–XXXVIII: CRT Multiplicativity and the Prime Dichotomy",
+      "summary": "Proves CRT multiplicativity of the extremal count `maxSqDiffFreeCard` across coprime moduli and over an arbitrary coprime family. Establishes the sharp upper bound at primes p≡3 (mod 4), the sharp lower bound and full dichotomy at primes p≡1 (mod 4), and derives an exponential-in-ω(N) lower bound from the coprime-multiplicative law."
+    },
+    {
+      "startLine": 5220,
+      "endLine": 5744,
+      "title": "Parts XXXIX–XLIII: Value-1 Characterization and Necessity Halves",
+      "summary": "Builds toward classifying which moduli have `maxSqDiffFreeCard N = 1`. Gives the general value-1 characterization, the doubling law `maxSqDiffFreeCard(2N)=maxSqDiffFreeCard N` for odd N, and the necessity obstructions: a prime factor p≡1 (mod 4), a prime-power factor p²∣N, or two distinct odd prime factors each force the count above 1."
+    },
+    {
+      "startLine": 5745,
+      "endLine": 5879,
+      "title": "Parts XLIV–XLV: Capstone Value-1 Locus Classification",
+      "summary": "Assembles both halves into the exact classification `maxSqDiffFreeCard N = 1 ↔ N ∈ {1,2} ∪ {p, 2p : p prime, p≡3 (mod 4)}` (`maxSqDiffFreeCard_eq_one_iff_locus`), the capstone of the square-difference-free thread. Follows with structural corollaries: divisor-closedness of the value-1 locus and a single unified statement."
+    },
+    {
+      "startLine": 5880,
+      "endLine": 6453,
+      "title": "Parts XLVI–LII: Quantitative L¹ Mass and the Multiplicative Product Formula",
+      "summary": "Develops the analytic Sárközy quantitative upper bound and the master spectral-sum (pushforward) identity capturing every Lᵖ moment at once. Computes the L¹ mass carried by unit frequencies (`Σ_{r unit}‖G(r)‖ = φ(N)·√N`) and the total mass over all frequencies, shows the total-mass coefficient `C(N)=Σ_{d∣N} φ(N/d)√d` is multiplicative with prime-power closed form, and gives the fully explicit product formula `C(N)=∏_{pᵏ‖N} C(pᵏ)`."
+    },
+    {
+      "startLine": 6454,
+      "endLine": 7413,
+      "title": "Parts LIII–LIX: Coset Energy and the Density-Increment Machinery",
+      "summary": "Builds a density-increment argument for square-difference-free sets. Splits unit from non-unit frequencies (the good part is Sárközy-harmless), proves a subgroup Parseval identity (frequency-subgroup energy = coset energy), an equidistribution floor (excess subgroup energy = deviation from balance) and the coset-partition identity (additive energy = Σ (coset counts)²). Derives the relative-density increment (a dense coset carries genuinely higher density) and pins the exact main-term deficit, showing the main-term size κ = #{n : n²=0} satisfies κ²∣N, hence κ ≤ √N."
+    },
+    {
+      "startLine": 7414,
+      "endLine": 7798,
+      "title": "Parts LX–LXII: Single-Coefficient Extraction and Even Moduli",
+      "summary": "Extracts a single large Fourier coefficient — the density-increment input — from the main-term deficit, handles the even modulus by showing the factor of 2 is irrelevant, and localises the deficit to the major arcs via the structured-frequency extraction, completing the analytic inputs for the density increment."
+    },
+    {
+      "startLine": 7799,
+      "endLine": 8236,
+      "title": "Parts IX–X: Plancherel Second Moment, Exact Magnitude, and Even-Modulus Phenomena",
+      "summary": "Closes with the exact averaged theory. The Plancherel identity `Σ_r G(r)·conj G(r) = N·#{(n,m):n²=m²}` (`sqGaussSum_second_moment_complex`) gives the average magnitude √N — the matching lower bound to the pointwise ‖G(r)‖=√N at unit frequencies. Proves the exact odd-modulus magnitude `‖G(r)‖² = N·gcd((2r).val, N)` (no residual cancellation), then the qualitatively new even-modulus phenomena at unit frequencies: 4∣N doubles the magnitude to `‖G(r)‖²=2N`, while N≡2 (mod 4) forces G(r)=0 identically — both traced to the single sign ψ(N/2)=−1."
     }
   ],
   "conclusion": {
-    "summary": "Fully verified formalization (0 sorries, 0 axioms) of Roth's theorem and its key Fourier-analytic components. The 42-theorem file develops complete machinery: character theory, Parseval, AP counting, large Fourier coefficient (the key standalone lemma), and density increment. The main theorem wraps via Mathlib's `roth_3ap_theorem_nat`.",
+    "summary": "Fully verified formalization (0 sorries, 0 axioms) of Roth's theorem and its key Fourier-analytic components. The file develops complete machinery: character theory, Parseval, AP counting, large Fourier coefficient (the key standalone lemma), and density increment. The main theorem wraps via Mathlib's `roth_3ap_theorem_nat`. A large companion development (Parts VII–LXII) formalizes the Sárközy square-difference-free problem: quadratic Gauss-sum magnitudes and moments, Paley coset-lift constructions, CRT multiplicativity, and the exact value-1 locus classification, all 0-axiom and 0-sorry.",
     "implications": "The independently verified `fourier_large_coefficient` theorem provides a formalized version of the core analytic step that underlies quantitative improvements to Roth's theorem (Bourgain, Bloom-Sisask). The density increment infrastructure could be extended to prove better bounds.",
     "openQuestions": [
       "Formalize Bourgain's quantitative bound r₃(N) = O(N/(log log N)^{1/2})",
       "Formalize the Bloom-Sisask bound r₃(N) = O(N/log^{1+c} N)",
-      "Prove Szemerédi's theorem (k=4 case) using the regularity lemma approach"
+      "Prove Szemerédi's theorem (k=4 case) using the regularity lemma approach",
+      "Extend the square-difference-free classification to a full quantitative `maxSqDiffFreeCard N` formula for all N (beyond the value-1 locus)"
     ]
   },
   "sorries": 0,
