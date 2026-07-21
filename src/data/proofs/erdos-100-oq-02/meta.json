@@ -75,6 +75,14 @@
       "endLine": 57,
       "summary": "filter_upwards [n_over_log_sublinear 1 (by norm_num)] instantiates the parent lemma at parameter 1 to get ∀ᶠ n, 1 * n / log n < 1 * n. After rw [mul_one] and rw [mul_div_assoc], mul_lt_mul_of_pos_left scales by c > 0 to conclude c * n / log n < c * n.",
       "mathContext": "`filter_upwards` is the key filter manipulation tactic: it converts ∀ᶠ h ∈ F, P h into ∀ n, H n → P n for a given hypothesis H. The `mul_div_assoc : a * b / c = a * (b / c)` rewrite exposes the structure c * (n / log n), enabling `mul_lt_mul_of_pos_left` (if 0 < c and a < b then c*a < c*b) to scale from n/log n < n to c*(n/log n) < c*n."
+    },
+    {
+      "id": "shortfall-vanishes",
+      "title": "The Shortfall Factor Vanishes",
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "gk_shortfall_factor_tendsto_zero : Tendsto (fun n : ℕ => 1 / Real.log n) atTop (nhds 0). The Guth-Katz bound cn/log n is a 1/log n fraction of the conjectured linear bound cn, and this fraction tends to 0 — so the two growth rates are not merely eventually distinct (gk_bound_strictly_sublinear) but asymptotically separated. This is the precise sense in which the log n gap is an unbounded factor, and why closing the Θ(n/log n) vs Θ(n) gap in Erdős #100 is hard.",
+      "mathContext": "$\\lim_{n\\to\\infty} 1/\\log n = 0$. Proof: `Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop` gives $\\log n \\to \\infty$ along $\\mathbb{N}$, then `hlog.inv_tendsto_atTop` (reciprocal of a function tending to $+\\infty$ tends to $0$) with `simpa only [one_div, Pi.inv_def]` yields the goal. The vanishing of $1/\\log n$ upgrades the strict inequality of the previous section to genuine asymptotic separation of the two conjectured diameter growth rates."
     }
   ],
   "overview": {
