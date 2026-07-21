@@ -154,8 +154,16 @@
       "title": "Antichain Structure",
       "summary": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs.",
       "startLine": 206,
-      "endLine": 238,
+      "endLine": 213,
       "mathContext": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs."
+    },
+    {
+      "id": "order-foundations",
+      "title": "Order-Theoretic Foundations and Complete-Graph Properties",
+      "summary": "The structural facts that make the 'minimal element' language well-posed. isProperSubgraph is exactly the strict order < on graphs: isProperSubgraph_irrefl, isProperSubgraph_asymm (the two-graph form of incomparability, for all graphs not just minimal ones), and isProperSubgraph_trans together give a strict partial order, so minimal_form_antichain is an instance of 'minimal elements of a strict partial order are pairwise incomparable'. completeGraphN_mono places the complete graphs K₀ ≤ K₁ ≤ K₂ ≤ ⋯ in a chain, and completeGraphN_zero / completeGraphN_one identify K₀ = K₁ = ⊥ (the empty graph). Closes with the file's status summary (SOLVED, Wigderson 2024; K₄ the only explicit example).",
+      "startLine": 214,
+      "endLine": 291,
+      "mathContext": "isProperSubgraph F G := F ≤ G ∧ F ≠ G, the strict order on SimpleGraph ℕ. Irreflexivity is fun h => h.2 rfl; asymmetry uses le_antisymm on the two ≤ witnesses; transitivity combines le_trans with le_antisymm. completeGraphN_mono: m ≤ n → completeGraphN m ≤ completeGraphN n, since an edge {u,v} of Kₘ has u,v < m ≤ n. completeGraphN_zero and completeGraphN_one show K₀ and K₁ have no edges (⊥) via the vertex-index bound and omega."
     }
   ],
   "conclusion": {
