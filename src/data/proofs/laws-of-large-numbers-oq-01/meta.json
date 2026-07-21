@@ -122,14 +122,14 @@
       "id": "pareto",
       "title": "Pareto Distribution: Key Example",
       "startLine": 154,
-      "endLine": 168,
-      "summary": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1.",
+      "endLine": 180,
+      "summary": "The α > 1 threshold for Pareto (Chebyshev requires α > 2; Kolmogorov only α > 1), concluded by finite_variance_implies_slln_applicable: any L² random variable is L¹, so wherever the Chebyshev/WLLN argument applies Kolmogorov's SLLN also applies — the converse failing precisely for Pareto(α) with 1 < α ≤ 2 (finite mean, infinite variance).",
       "mathContext": "Pareto$(\\alpha, x_m)$: $E[X] = \\alpha x_m/(\\alpha-1)$ (finite iff $\\alpha > 1$), $E[X^2] = \\alpha x_m^2/(\\alpha-2)$ (finite iff $\\alpha > 2$). For $1 < \\alpha \\leq 2$: Chebyshev fails ($E[X^2] = \\infty$) but Kolmogorov's SLLN holds ($E[|X|] < \\infty$)."
     },
     {
       "id": "main-theorem",
       "title": "Main Answer to the Open Question",
-      "startLine": 191,
+      "startLine": 181,
       "endLine": 229,
       "summary": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary).",
       "mathContext": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary)."
