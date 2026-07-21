@@ -102,3 +102,30 @@ for v4.31 (`Complex.abs` removed). `simp [Complex.abs]` unfolds the shim; `Compl
 **Still open (Mathlib infra gap)**: the four deep bounds (Pommerenke `c/n⁴`, KLR `c/log n` & `C/loglog n`,
 Pólya `π`) need logarithmic-potential / planar-measure-of-lemniscate machinery absent from Mathlib v4.31.
 Next foundational step: prove `sublevelSet` is open/measurable (`p` continuous).
+
+## Session 2026-07-20 (researcher-1) — finiteness / well-definedness of sublevelMeasure
+
+**Mode**: build on Key lemma 1 (open/measurable/bounded). **Outcome**: progress — 3
+axiom-free theorems, **host-verified v4.31** (`lake env lean` exit 0; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` on all three; no sorry/native_decide).
+
+The parent (`Erdos116Problem.lean`) defines
+`sublevelMeasure P := (volume {p:ℝ×ℝ | Complex.abs (P.eval ⟨p.1,p.2⟩) < 1}).toReal`.
+This `.toReal` is only faithful when the underlying `volume` is finite (otherwise `⊤`
+truncates to `0`). This session discharges that finiteness:
+
+- `volume_sublevelSet_lt_top` — `volume Sₚ < ⊤` on the ℂ side: `Sₚ ⊆ closedBall 0 2`
+  (previous session), the closed ball is compact in the proper space `ℂ`, and `volume`
+  is finite on compacts (`isCompact_closedBall` + `IsCompact.measure_lt_top`, then
+  `measure_lt_top_of_subset`).
+- `realProd_sublevelSet_eq_preimage` — the parent's `ℝ×ℝ` set equals
+  `Complex.measurableEquivRealProd.symm ⁻¹' Sₚ` (the inverse equiv sends `(a,b) ↦ {re:=a,im:=b}`).
+- `volume_realProd_sublevelSet_lt_top` — the parent's planar measure is finite, obtained by
+  transporting via `Complex.volume_preserving_equiv_real_prod.symm` +
+  `MeasurePreserving.measure_preimage` (needs `NullMeasurableSet`, from
+  `measurableSet_sublevelSet.nullMeasurableSet`) down to the ℂ-side bound.
+
+**Now saturated**: the elementary topology + measure-theoretic well-definedness layer
+(open, measurable, bounded, finite planar measure). Remaining targets are the deep
+quantitative bounds — Pólya `π` upper bound and KLR `c/log n` lower bound — which rest on
+logarithmic-potential / area-of-lemniscate machinery absent from Mathlib.
