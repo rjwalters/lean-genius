@@ -259,25 +259,49 @@
       "id": "general-upper-bound",
       "title": "Part XV: General Upper Bound C(n,k) ≤ nᵏ / k!",
       "startLine": 926,
-      "endLine": 950,
-      "mathContext": "The elementary estimate $\\binom{n}{k}\\le n^k/k!$ used to control `ramseyUpperBound` asymptotically.",
-      "summary": "Part XV. The general binomial estimate $\\binom{n}{k}\\le n^k/k!$, providing clean asymptotic control on the Ramsey upper bound."
+      "endLine": 962,
+      "mathContext": "The elementary estimate $\\binom{n}{k}\\le n^k/k!$ used to control `ramseyUpperBound` asymptotically; concretely `ramseyUpperBound_le_two_pow` proves $R(r,s)\\le 2^{r+s-2}$ from $\\binom{r+s-2}{r-1}\\le\\sum_i\\binom{r+s-2}{i}=2^{r+s-2}$.",
+      "summary": "Part XV. The general exponential upper bound R(r,s) ≤ 2^(r+s-2) for r,s ≥ 1 (ramseyUpperBound_le_two_pow), proved from the binomial sum identity, with the concrete verification ramseyUpperBound_le_two_pow_check (R(3,5) ≤ 2^6)."
     },
     {
       "id": "extensions-summary",
       "title": "Part IX: Summary of Extensions and Frontier Results",
-      "startLine": 951,
-      "endLine": 1142,
-      "mathContext": "Frontier results: genuine axioms CGMS $R(k,k)\\le(4-\\varepsilon)^k$, Bohman-Keevash, Mattheus-Verstraete $R(4,t)$; plus documentation-only placeholders (Burr-Erdős, multiplicity, book algorithm) now proved as trivial `True`.",
-      "summary": "Part IX. Summary of extensions and recent frontier results. Genuine axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate, Bohman-Keevash $R(3,t)$, and Mattheus-Verstraete $R(4,t)$. The book-algorithm structure, off-diagonal bounds, the Burr-Erdős conjecture, and Ramsey multiplicity are now proved theorems rather than axioms — their Lean propositions are trivially true (`True` or bare existence of positive constants) and their docstrings state explicitly that the underlying deep theorems are NOT formalized here."
+      "startLine": 963,
+      "endLine": 1006,
+      "mathContext": "Inventory of the file's 76 proved theorems (14 native_decide upper bounds, explicit lower-bound constructions R(3,3)=6…R(3,5)≥14, and de-axiomatized results) versus the 6 remaining deep asymptotic axioms (AKS, Kim, R(4,k) bounds, Spencer diagonal, R(4,k) quadratic).",
+      "summary": "Part IX. Summary docstring cataloguing the extension file's contents: 76 proved theorems (0 sorries) — concrete native_decide upper bounds, the C₅/Paley/circulant lower-bound constructions, central-binomial diagonal bounds, and the de-axiomatized Erdős probabilistic lower bound — alongside the 6 remaining deep probabilistic/asymptotic axioms and the mathematical significance of each frontier result."
+    },
+    {
+      "id": "cgms-breakthrough",
+      "title": "Part X: Campos-Griffiths-Morris-Sahasrabudhe Breakthrough (2023)",
+      "startLine": 1007,
+      "endLine": 1083,
+      "mathContext": "The 2023 CGMS result $R(k,k)\\le(4-\\varepsilon)^k$ (with $\\varepsilon\\approx 2^{-7}$) is the first exponential improvement over Erdős-Szekeres' $4^k$; recorded as axioms with the derived consequence proved.",
+      "summary": "Part X. The Campos-Griffiths-Morris-Sahasrabudhe exponential improvement of the diagonal Ramsey upper bound: axioms cgms_diagonal_upper_bound (R(k,k) ≤ (4-ε)^k) and cgms_epsilon_estimate, with proved consequences cgms_improves_erdos_szekeres, book_algorithm_structure, and cgms_exponentially_better (the bound is strictly below 4^k for all large k)."
+    },
+    {
+      "id": "off-diagonal-graph-ramsey",
+      "title": "Part XI: Off-Diagonal and Graph Ramsey Theory",
+      "startLine": 1084,
+      "endLine": 1164,
+      "mathContext": "Off-diagonal $R(s,t)$ with $s$ fixed, $t\\to\\infty$ grows polynomially in $t$; graph Ramsey $R(G,H)$ and multiplicity round out the frontier. Deep results are axioms; symmetry $R(s,t)=R(t,s)$ is proved.",
+      "summary": "Part XI. Off-diagonal and graph Ramsey theory: polynomial-in-t off-diagonal bounds off_diagonal_ramsey_bounds with the aks_is_off_diagonal_s3 instance, axioms bohman_keevash_r3t and mattheus_verstraete_r4t, the graphRamsey definition, the (documentation-placeholder, trivially-True) burr_erdos_conjecture and ramsey_multiplicity, and the fully proved symmetry ramsey_symmetric' (ramseyUpperBound s t = ramseyUpperBound t s)."
     },
     {
       "id": "lll-analytic-core",
       "title": "Part XII: The Symmetric Lovász Local Lemma — Analytic Core",
       "startLine": 1165,
-      "endLine": 1272,
+      "endLine": 1271,
       "mathContext": "The symmetric LLL ($e\\,p\\,(d+1)\\le1\\Rightarrow\\Pr[\\bigcap\\overline{A_i}]>0$) reduces to the asymmetric LLL via the inequality $(1-1/(d+1))^d\\ge1/e$.",
       "summary": "Part XII. The axiom-free analytic core of the symmetric Lovász Local Lemma, which Mathlib lacks. `lll_exp_weight_bound` proves $e^{-1}\\le(1-1/(d+1))^d$ (by taking logs: $d\\log(1-1/(d+1))\\ge-1$ from $\\log x\\le x-1$). `lll_symmetric_condition` uses it for the symmetric→asymmetric bridge: $e\\,p\\,(d+1)\\le1\\Rightarrow p\\le\\tfrac{1}{d+1}(1-\\tfrac{1}{d+1})^d$, i.e. the uniform weights $x_i=1/(d+1)$ satisfy the general LLL hypothesis. Only the general LLL's probability-space induction is left to close the full symmetric statement."
+    },
+    {
+      "id": "verification-checks",
+      "title": "Verification Checks (Parts X-XII)",
+      "startLine": 1272,
+      "endLine": 1294,
+      "mathContext": "`#check` commands confirm each frontier declaration elaborates and is in scope, grouped by part, before the namespace closes.",
+      "summary": "Closing #check verification block confirming the Parts X-XII declarations type-check and are in scope — CGMS breakthrough results, off-diagonal/graph Ramsey theorems, and the symmetric-LLL analytic core — followed by the namespace end."
     }
   ],
   "sorries": 0,
