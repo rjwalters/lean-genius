@@ -215,4 +215,72 @@ theorem minCosineSum_nonpos (A : Finset ℕ) (hA : 0 ∉ A) : minCosineSum A ≤
   simp only [smul_eq_mul, sub_zero] at hmono
   nlinarith [Real.two_pi_pos]
 
+/-! ## The minimum is *strictly* negative for nonempty positive-frequency sets
+
+The nonpositivity bound above is not tight: for a *nonempty* positive-frequency set the
+minimum is strictly below `0`.  The point is that `cosineSum A` cannot be `≡ 0`: it takes
+the value `N = A.card ≥ 1` at `θ = 0`.  If its minimum were `0` the (continuous, nonnegative)
+integrand would still have integral `0` over a full period, yet it is *strictly* positive on
+a whole subinterval near `0` — forcing the period integral to be positive, a contradiction.
+So the minimum must be `< 0`, i.e. every nonempty positive-frequency cosine sum genuinely
+dips below zero somewhere. -/
+
+/-- **The Chowla cosine sum is strictly negative at its minimum** for a nonempty
+positive-frequency set.  If `0 ∉ A` and `A ≠ ∅` then `minCosineSum A < 0`.  Combined with
+`∫₀^{2π} cosineSum A = 0`: were the minimum `0`, the nonnegative integrand would be strictly
+positive on a subinterval about `θ = 0` (where `cosineSum A 0 = A.card ≥ 1`), making the
+period integral positive — impossible. This strengthens `minCosineSum_nonpos` and is the
+qualitative core of the Chowla problem (the quantitative `−c√N` bound stays deep). -/
+theorem minCosineSum_neg (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty) :
+    minCosineSum A < 0 := by
+  rcases (minCosineSum_nonpos A hA).lt_or_eq with h | h
+  · exact h
+  exfalso
+  -- If the minimum is `0`, the sum is pointwise `≥ 0`.
+  have hnn : ∀ θ, 0 ≤ cosineSum A θ := fun θ => h ▸ minCosineSum_le A θ
+  -- The sum is strictly positive at `θ = 0` (value `A.card ≥ 1`).
+  have hc0 : 0 < cosineSum A 0 := by
+    rw [cosineSum_zero_angle]; exact_mod_cast Finset.card_pos.mpr hne
+  -- `{θ | 0 < cosineSum A θ}` is open and contains `0`, so it holds on a ball `(−ε, ε)`.
+  have hopen : IsOpen {θ : ℝ | 0 < cosineSum A θ} :=
+    isOpen_lt continuous_const (continuous_cosineSum A)
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp hopen 0 hc0
+  -- Work on the interval `[δ/2, δ]` with `δ = min ε π`, safely inside `(0, 2π)`.
+  set δ := min ε π with hδ
+  have hδpos : 0 < δ := lt_min hε Real.pi_pos
+  have hδle : δ ≤ π := min_le_right _ _
+  have hδε : δ ≤ ε := min_le_left _ _
+  have hcd : ∀ x ∈ Set.Ioo (δ / 2) δ, 0 < cosineSum A x := by
+    intro x hx
+    apply hball
+    rw [Real.ball_eq_Ioo]
+    exact ⟨by simp only [zero_sub]; linarith [hx.1], by simpa using lt_of_lt_of_le hx.2 hδε⟩
+  -- Strict positivity of the middle integral, nonnegativity of the two outer ones.
+  have hpos : 0 < ∫ x in (δ / 2)..δ, cosineSum A x :=
+    intervalIntegral.intervalIntegral_pos_of_pos_on
+      ((continuous_cosineSum A).intervalIntegrable _ _) hcd (by linarith)
+  have hn1 : 0 ≤ ∫ x in (0 : ℝ)..(δ / 2), cosineSum A x :=
+    intervalIntegral.integral_nonneg (by linarith) (fun u _ => hnn u)
+  have hn3 : 0 ≤ ∫ x in δ..(2 * π), cosineSum A x :=
+    intervalIntegral.integral_nonneg (by linarith [Real.pi_pos]) (fun u _ => hnn u)
+  -- Split `∫₀^{2π} = ∫₀^{δ/2} + ∫_{δ/2}^{δ} + ∫_δ^{2π}`, which is then `> 0`.
+  have i1 : IntervalIntegrable (cosineSum A) MeasureTheory.volume 0 (δ / 2) :=
+    (continuous_cosineSum A).intervalIntegrable _ _
+  have i2 : IntervalIntegrable (cosineSum A) MeasureTheory.volume (δ / 2) δ :=
+    (continuous_cosineSum A).intervalIntegrable _ _
+  have i3 : IntervalIntegrable (cosineSum A) MeasureTheory.volume δ (2 * π) :=
+    (continuous_cosineSum A).intervalIntegrable _ _
+  have hadd1 := intervalIntegral.integral_add_adjacent_intervals i1 i2
+  have hadd2 := intervalIntegral.integral_add_adjacent_intervals (i1.trans i2) i3
+  have hint : ∫ θ in (0 : ℝ)..(2 * π), cosineSum A θ = 0 := integral_cosineSum_eq_zero A hA
+  linarith [hadd1, hadd2, hpos, hn1, hn3, hint]
+
+/-- **Every nonempty positive-frequency cosine sum dips below zero.**  There is an angle
+`θ` with `cosineSum A θ < 0`.  Immediate from `minCosineSum_neg` and the attainment of the
+minimum (`exists_eq_minCosineSum`): the minimizing angle already realises a negative value. -/
+theorem exists_angle_cosineSum_neg (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty) :
+    ∃ θ : ℝ, cosineSum A θ < 0 := by
+  obtain ⟨θ₀, hθ₀⟩ := exists_eq_minCosineSum A
+  exact ⟨θ₀, hθ₀.trans_lt (minCosineSum_neg A hA hne)⟩
+
 end Erdos510WIP01
