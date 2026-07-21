@@ -47,30 +47,30 @@
       "id": "graph-definitions",
       "title": "Graph Structure and Edge Counting",
       "startLine": 25,
-      "endLine": 33,
+      "endLine": 36,
       "summary": "Defines simple graphs via symmetric irreflexive adjacency on $\\text{Fin}\\;n$ and edge counting $|E(G)| = |\\{(u,v) : u < v \\land \\text{adj}(u,v)\\}|$.",
       "mathContext": "Formal definition: Defines simple graphs via symmetric irreflexive adjacency on $\\text{Fin}\\;n$ and edge counting $|E(G)| = |\\{(u,v) : u < v \\land \\text{adj}(u,v)\\}|$."
     },
     {
       "id": "sparsity-definitions",
       "title": "Sparsity and Nondegeneracy Conditions",
-      "startLine": 35,
-      "endLine": 45,
+      "startLine": 37,
+      "endLine": 48,
       "summary": "Defines $(2k-3)$-sparsity ($\\forall S,\\;|E(G[S])| \\le 2|S|-3$) and the no-isolated-vertices condition ($\\forall v,\\;\\deg(v) \\ge 1$), the two key hypotheses in the conjecture.",
       "mathContext": "Formal definition: Defines $(2k-3)$-sparsity ($\\forall S,\\;|E(G[S])| \\le 2|S|-3$) and the no-isolated-vertices condition ($\\forall v,\\;\\deg(v) \\ge 1$), the two key hypotheses in the conjecture."
     },
     {
       "id": "size-ramsey-def",
       "title": "Size Ramsey Number",
-      "startLine": 47,
-      "endLine": 51,
+      "startLine": 49,
+      "endLine": 54,
       "summary": "Defines $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. Axiomatized since the actual construction requires Ramsey theory.",
       "mathContext": "Defines $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. Axiomatized since the actual construction requires Ramsey theory."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (Problem #566)",
-      "startLine": 53,
+      "startLine": 55,
       "endLine": 62,
       "summary": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. Formalized as an axiom since the problem is unresolved.",
       "mathContext": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. Formalized as an axiom since the problem is unresolved."
