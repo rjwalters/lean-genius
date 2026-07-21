@@ -112,59 +112,67 @@
   ],
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup and Helper Lemmas",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring, namespace/variable setup, and the two helper lemmas used throughout: minpoly_natDegree_pos (0 < deg μ_M) and modByMonic_natDegree_lt (deg(X^m mod μ_M) < deg μ_M).",
+      "mathContext": "Both helpers relay facts about the minimal polynomial μ_M of the matrix M: its degree d is positive, and reduction mod μ_M strictly lowers degree below d."
+    },
+    {
       "id": "coefficient-functions",
       "title": "Section 1: Coefficient Functions p_k(t)",
-      "startLine": 57,
-      "endLine": 60,
+      "startLine": 53,
+      "endLine": 61,
       "summary": "Defines the noncomputable function expPolyCoeff M k t = ∑' m, t^m/m! · coeff_k(X^m mod μ_M), the k-th coefficient in the polynomial expansion of exp(t·M).",
       "mathContext": "The coefficient p_k(t) is the k-th component of the vector ∑' m, t^m/m! · c_m where c_m ∈ ℝ^d encodes the expansion of M^m in the basis {I,...,M^{d-1}}. This is a scalar power series in t with radius of convergence ∞ (entire function)."
     },
     {
       "id": "summability-companion",
       "title": "Section 1b: Summability via Companion Matrix Orbit",
-      "startLine": 71,
-      "endLine": 154,
+      "startLine": 62,
+      "endLine": 172,
       "summary": "Proves expPolyCoeff_summable as a theorem (no axiom). The key auxiliary lemma coeff_pow_X_eq_companion shows coeff_k(X^m mod μ) = (C^m)_{k,0} where C is the companion matrix of μ_M. Norm bound |C^m_{k,0}| ≤ ‖C‖^m then reduces convergence to the scalar exponential series. Case k ≥ d handled separately (coefficient is 0).",
       "mathContext": "The companion matrix identity is the crux: $C^m = \\mathrm{aeval}_C(X^m) = \\mathrm{aeval}_C(X^m \\bmod \\mu) = \\sum_{j<d} c_{m,j} C^j$ (since $\\mu_C = \\mu_M$). Taking the $(k,0)$ entry and using the orbit structure $(C^j)_{k,0} = \\delta_{j,k}$ (companionMatrix_pow_basis) collapses the sum: $(C^m)_{k,0} = c_{m,k}$. The Banach-algebra norm bound $\\|C^m\\| \\leq \\|C\\|^m$ then gives $|c_{m,k}| \\leq \\|C\\|^m$, so $\\sum_m |t|^m/m! \\cdot |c_{m,k}| \\leq e^{|t|\\|C\\|}$ converges by comparison."
     },
     {
       "id": "power-series",
       "title": "Section 2: Power Series for Matrix Exponential",
-      "startLine": 160,
-      "endLine": 166,
+      "startLine": 173,
+      "endLine": 187,
       "summary": "matrixExp_eq_tsum proves exp(t·M) = ∑' m, (t^m/m!)·M^m using NormedSpace.exp_eq_tsum and Algebra.smul_pow.",
       "mathContext": "The NormedSpace.exp_eq_tsum gives exp x = ∑' m, m!⁻¹·x^m. For x = t·M: (t·M)^m = t^m·M^m by Algebra.smul_pow, giving exp(t·M) = ∑' m, t^m/m! · M^m."
     },
     {
       "id": "basis-expansion",
       "title": "Section 3: Basis Expansion of Matrix Powers",
-      "startLine": 172,
-      "endLine": 178,
+      "startLine": 188,
+      "endLine": 199,
       "summary": "power_eq_basis_sum proves M^m = ∑_{k<d} c_{m,k}·M^k via power_eq_aeval_mod_minpoly and eval₂_eq_sum_range'.",
       "mathContext": "Uses aeval M (X^m mod μ) = eval₂ (algebraMap) M (X^m mod μ) = ∑_{k<d} coeff_k · M^k via the polynomial evaluation sum formula. The degree bound natDegree(X^m mod μ) < d enables eval₂_eq_sum_range'."
     },
     {
       "id": "interchange",
       "title": "Section 4: Component-wise Interchange and Main Theorem",
-      "startLine": 184,
-      "endLine": 222,
+      "startLine": 200,
+      "endLine": 239,
       "summary": "exp_tsum_interchange exchanges ∑' m with ∑ k using Matrix.ext (entry-wise) and tsum_sum. matrixExp_poly_form is the main theorem, assembling matrixExp_eq_tsum + power_eq_basis_sum + the entry-wise interchange.",
       "mathContext": "Working entry-wise reduces the matrix interchange to a real-valued one: ∑_m f_m · ∑_k c_{m,k} · v_k = ∑_k (∑_m f_m · c_{m,k}) · v_k. Real-valued tsum_sum applies with summability from expPolyCoeff_summable."
     },
     {
       "id": "corollaries",
       "title": "Section 5: Corollaries",
-      "startLine": 228,
+      "startLine": 240,
       "endLine": 264,
-      "summary": "expPolyCoeff_depends_only_on_minpoly (similar matrices give same p_k), matrixExp_in_span (exp(tM) ∈ span{I,...,M^{d-1}}), matrixExp_zero_eq_one (consistency check), matrixExp_atMost_n_terms (n-term bound via minpoly_dvd_charpoly).",
-      "mathContext": "The span membership follows from the polynomial form. The n-term bound uses deg(minpoly) ≤ deg(charpoly) = n. The minpoly-only dependence is the basis for the spectral viewpoint: exp(tM) is determined by the spectrum of M (with multiplicities matching the minimal, not characteristic, polynomial)."
+      "summary": "expPolyCoeff_depends_only_on_minpoly (matrices with the same minimal polynomial share the same p_k), matrixExp_in_span (exp(tM) ∈ span{I,...,M^{d-1}}), and matrixExp_zero_eq_one (the base case exp 0 = 1).",
+      "mathContext": "The span membership follows from the polynomial form. The minpoly-only dependence is the basis for the spectral viewpoint: exp(tM) is determined by the spectrum of M (with multiplicities matching the minimal, not characteristic, polynomial)."
     },
     {
       "id": "degree-bound",
       "title": "Degree Bound: at most n terms",
       "startLine": 265,
-      "endLine": 288,
-      "summary": "matrixExp_atMost_n_terms sharpens the polynomial representation to the dimension bound: exp(t·M) is a linear combination of I, M, …, M^(n-1) with n = Fintype.card n, since deg(minpoly M) ≤ deg(charpoly M) = n (minpoly_dvd_charpoly + charpoly_natDegree_eq_dim). Terms beyond the minimal polynomial degree vanish, extending the sum from d to n. matrixExp_zero_eq_one records the base case exp 0 = 1.",
+      "endLine": 287,
+      "summary": "matrixExp_atMost_n_terms sharpens the polynomial representation to the dimension bound: exp(t·M) is a linear combination of I, M, …, M^(n-1) with n = Fintype.card n, since deg(minpoly M) ≤ deg(charpoly M) = n (minpoly_dvd_charpoly + charpoly_natDegree_eq_dim). Terms beyond the minimal polynomial degree vanish, extending the sum from d to n.",
       "mathContext": "$\\exp(tM) = \\sum_{k=0}^{n-1} c_k(t)\\,M^k$ with $n = \\dim$, because $\\deg(\\operatorname{minpoly} M) \\le \\deg(\\operatorname{charpoly} M) = n$ by Cayley–Hamilton."
     }
   ],
