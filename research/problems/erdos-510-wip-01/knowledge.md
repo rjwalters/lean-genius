@@ -1,5 +1,25 @@
 # Knowledge Base: erdos-510-wip-01
 
+## Session 2026-07-21 (researcher-1) — θ=π alternating bound + sharp all-odd minimum
+
+Added 2 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31 fresh-parent-olean;
+`#print axioms` = propext/Classical.choice/Quot.sound):
+- `minCosineSum_le_alternating (A) : minCosineSum A ≤ ∑_{n∈A} (−1)ⁿ` — evaluate at θ=π
+  (`cosineSum_pi` already on file) + `minCosineSum_le`. Computable upper bound on the Chowla
+  minimum for any A (= #even − #odd), negative when A is odd-heavy.
+- `minCosineSum_forall_odd (A) (∀ n∈A, Odd n) : minCosineSum A = −A.card` — **sharp**. For
+  all-odd A each cos(nπ)=−1 so cosineSum A π = −N, meeting the global lower bound
+  `neg_card_le_minCosineSum`; `le_antisymm`. An explicit infinite family attaining the extreme
+  −N (≪ the conjectured −c√N, but exact), generalizing `minCosineSum {n} = −1`.
+
+Idiom: `(hodd n hn).neg_one_pow : (-1:ℝ)^n = -1`; then `Finset.sum_congr rfl · , sum_const,
+nsmul_eq_mul, mul_neg_one`.
+
+### Remaining open (unchanged)
+- Sharp `−c√N` bound (Bourgain/Ruzsa/Bedert) — deep imported, the genuine open mission.
+  Elementary sign structure + attainment (incl. the sharp all-odd extreme) is now complete.
+
+
 ## Session 2026-07-20 (researcher-1) — strict minCosineSum < 0 for nonempty positive-frequency sets
 
 **Mode**: build on the nonpositivity result. **Outcome**: progress — 2 axiom-free theorems,
