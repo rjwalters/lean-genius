@@ -95,65 +95,73 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Namespace",
-      "startLine": 29,
+      "title": "Overview",
+      "startLine": 1,
       "endLine": 34,
-      "summary": "Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace.",
+      "summary": "Header docstring and setup for Erdős Problem #1146: is the set of 3-smooth numbers $\\{2^m 3^n\\}$ an *essential component* (does $d_s(A+B) > d_s(B)$ for every $B$ with $0 < d_s(B) < 1$, using Schnirelmann density)? Includes imports and the `Erdos1146` namespace.",
       "mathContext": "Formal definition: Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace."
     },
     {
       "id": "smooth-properties",
       "title": "Properties of 3-Smooth Numbers",
       "startLine": 35,
-      "endLine": 90,
+      "endLine": 89,
       "summary": "Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness.",
       "mathContext": "Verified: Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness."
     },
     {
       "id": "non-lacunary",
       "title": "Non-Lacunary Property",
-      "startLine": 91,
-      "endLine": 109,
+      "startLine": 90,
+      "endLine": 105,
       "summary": "States that {2^m · 3^n} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets.",
       "mathContext": "States that {$2^{m}$ · $3^{n}$} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets."
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
-      "startLine": 110,
-      "endLine": 133,
+      "startLine": 106,
+      "endLine": 181,
       "summary": "Proves that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2. The key algebraic bound C·x² - x ≥ x^(3/2) is fully formalized using sqrt substitution and nlinarith.",
       "mathContext": "Proves that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2. The key algebraic bound C·x² - x ≥ x^(3/2) is fully formalized using sqrt substitution and nlinarith."
     },
     {
       "id": "density",
       "title": "Schnirelmann Density",
-      "startLine": 134,
-      "endLine": 150,
+      "startLine": 182,
+      "endLine": 197,
       "summary": "Axiom: d_s({2^m · 3^n}) = 0. Smooth numbers become sparse in initial segments.",
       "mathContext": "Axiom: d_s({$2^{m}$ · $3^{n}$}) = 0. Smooth numbers become sparse in initial segments."
     },
     {
       "id": "mann-bound",
       "title": "Sumset Growth via Mann's Theorem",
-      "startLine": 151,
-      "endLine": 175,
+      "startLine": 198,
+      "endLine": 221,
       "summary": "Proves mann_lower_bound: d_s(A + B) ≥ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality.",
       "mathContext": "Proves mann_lower_bound: d_s(A + B) $\\geq$ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Open Question",
-      "startLine": 176,
-      "endLine": 211,
+      "startLine": 222,
+      "endLine": 243,
       "summary": "States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem.",
       "mathContext": "Verified: States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem."
     },
     {
+      "id": "resolution",
+      "title": "What Would Resolve This?",
+      "startLine": 244,
+      "endLine": 258,
+      "summary": "Prose analysis of why the problem is open: to PROVE {2^m·3^n} essential one must show $d_s(A+B) > d_s(B)$ for all valid $B$; to DISPROVE it, exhibit a $B$ with $0 < d_s(B) < 1$ and $d_s(A+B) = d_s(B)$. The $(\\log N)^2$ counting rate sits exactly at Ruzsa's threshold, so neither growth nor sparsity arguments suffice.",
+      "mathContext": "The counting function of $\\{2^m 3^n\\}$ up to $N$ is $\\sim \\tfrac{1}{2}\\log_2 N \\log_3 N = \\Theta((\\log N)^2)$, precisely Ruzsa's essential-component boundary between $O(\\log N)$ (too sparse) and polynomial growth (essential)."
+    },
+    {
       "id": "generalization",
       "title": "Generalization to k-Smooth Numbers",
-      "startLine": 212,
-      "endLine": 238,
+      "startLine": 259,
+      "endLine": 287,
       "summary": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary → not essential from #37).",
       "mathContext": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary $\\to$ not essential from #37)."
     }
