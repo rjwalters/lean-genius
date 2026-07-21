@@ -524,6 +524,24 @@
         "unit group structure (ZMod 84)ˣ",
         "CRT"
       ]
+    },
+    {
+      "id": "order24-c2c2c6-realization",
+      "title": "Order-24 Realization: C₂ × C₂ × C₆ via (ℤ/84ℤ)ˣ",
+      "startLine": 1878,
+      "endLine": 1922,
+      "summary": "Concludes the census by realizing the non-cyclic group C₂ × C₂ × C₆ as a Galois group: zmod84_units_not_cyclic, zmod84_units_exp_exactly_6 (exponent 6), and zmod84_units_has_order_6 pin down (ℤ/84ℤ)ˣ ≅ C₂ × C₂ × C₆, and c2_c2_c6_realized transports this through units_zmod_realizable to an actual field extension K/ℚ. Closes the InverseGaloisProblem namespace.",
+      "mathContext": "$(\\mathbb{Z}/84\\mathbb{Z})^\\times$ has order $\\varphi(84)=24$, exponent $6$, is non-cyclic, and contains an element of order $6$ — the invariants $C_2\\times C_2\\times C_6$ that distinguish it from $C_4\\times C_6$, $C_2\\times C_{12}$, and $C_2^3\\times C_3$. Since every $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is realizable over $\\mathbb{Q}$ (Kronecker–Weber), this yields a concrete field $K$ with $\\mathrm{Gal}(K/\\mathbb{Q})\\cong C_2\\times C_2\\times C_6$.",
+      "significance": "key",
+      "relatedConcepts": [
+        "units_zmod_realizable",
+        "Kronecker–Weber",
+        "group exponent",
+        "C₂ × C₂ × C₆"
+      ],
+      "prerequisites": [
+        "cyclotomic Galois group (ℤ/nℤ)ˣ"
+      ]
     }
   ],
   "conclusion": {

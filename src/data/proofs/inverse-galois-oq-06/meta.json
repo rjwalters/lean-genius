@@ -201,10 +201,10 @@
     },
     {
       "id": "part-xvii-non-solvable",
-      "title": "Part XVII: Non-Solvability — Beyond Shafarevich",
-      "startLine": 2035,
-      "endLine": 2067,
-      "summary": "Proves Gal(q) not solvable via A₅'s non-solvability and the isomorphism. First non-solvable realization in the library."
+      "title": "Parts XVI–XVII: A₅ Isomorphism, Non-Solvability, and Axiom Status",
+      "startLine": 2026,
+      "endLine": 2118,
+      "summary": "Constructs q_gal_iso_a5 (the explicit isomorphism Gal(q/ℚ) ≅ A₅) and its corollary a5_realizable_iso, then proves gal_not_solvable — Gal(q) is not solvable, transferred from A₅ — making this the first non-solvable Galois realization in the library, going beyond Shafarevich's solvable-groups theorem. Closes with an axiom-status summary: one remaining axiom (three_dvd_gal_card, Dedekind's theorem) and the elimination history of the four others."
     }
   ],
   "sorries": 0
