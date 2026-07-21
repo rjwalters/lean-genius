@@ -86,7 +86,7 @@
       }
     ],
     "assumptions": "One explicit sieve axiom: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3). The former second axiom primes_growth_in_levels (p(l) ≥ l) is now the PROVED theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate); the downstream results only ever used positivity of the level prime count, so the axiom count drops from 2 to 1. The file is SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels) are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the single disclosed axiom.",
-    "theoremCount": 18,
+    "theoremCount": 39,
     "definitionCount": 3
   },
   "overview": {
@@ -109,68 +109,121 @@
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "overview",
+      "title": "Overview & Imports",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring for Erdős #1059 OQ-01-01: a strong Selberg-type density axiom on primorial intervals and its consequences for the density of 'qualifying' primes at factorial points. States strategy, what is proved (many results de-axiomatized from first principles), and the Erdos1059OQ01OQ01 namespace.",
+      "mathContext": "The file studies, level by level in the primorial interval $I(l)$, the fraction of primes that 'qualify' (satisfy the AFSC property) and shows density $\\to 1$ at factorial arguments."
+    },
+    {
+      "id": "part1",
       "title": "Part I: Interval-Level Counting Functions",
-      "summary": "Defines primesInLevel(l) and qualifyingInLevel(l): the number of primes and qualifying primes in the l-th primorial interval I(l) = (l!, (l+1)!], and proves the subset bound qualifyingInLevel_le_primesInLevel: q(l) ≤ p(l).",
-      "startLine": 52,
-      "endLine": 76,
-      "mathContext": "$p(l) = |\\{n \\in I(l) : n \\text{ prime}\\}|$, $q(l) = |\\{n \\in I(l) : n \\text{ prime} \\wedge \\text{AFSC}(n)\\}|$"
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "Defines primesInLevel l (number of primes in the l-th primorial interval I(l)) and qualifyingInLevel l (those satisfying the qualifying property), with qualifyingInLevel_le_primesInLevel (q(l) ≤ p(l))."
     },
     {
-      "id": "axioms",
+      "id": "part2",
       "title": "Part II: The Strong Selberg Density Axiom",
-      "summary": "States the single axiom strong_selberg_density, the bound q(l)·(l+1) ≥ p(l)·l capturing the Selberg sieve prediction. The former growth axiom primes_growth_in_levels (p(l) ≥ l) is replaced by the proved theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate), which is all the downstream results require.",
-      "startLine": 77,
-      "endLine": 116,
-      "mathContext": "The sieve argument gives $q(l) \\geq p(l) \\cdot (1 - O((l+1)/\\log(l!)))$. The axiom $q(l)(l+1) \\geq p(l)l$ captures the leading term."
+      "startLine": 83,
+      "endLine": 139,
+      "summary": "States the single axiom strong_selberg_density: q(l)·(l+1) ≥ p(l)·l for l ≥ 3 (at most a 1/(l+1) fraction of primes in I(l) are non-qualifying; requires PNT-for-intervals + Brun–Titchmarsh + Selberg sieve). Proves primesInLevel_pos from Bertrand's postulate.",
+      "mathContext": "The axiom encodes the sieve-theoretic bound that bad primes are sparse: $q(l)/p(l)\\ge l/(l+1)\\to 1$."
     },
     {
-      "id": "weak-implication",
+      "id": "part3",
       "title": "Part III: Strong Axiom Implies Weak Axiom",
-      "summary": "Proves qualifyingInLevel_pos (q(l) ≥ 1 for l ≥ 3), qualifyingPrime_exists, and strong_implies_weak: the strong axiom recovers the weak selberg_density_axiom by extracting a qualifying prime from each interval.",
-      "startLine": 117,
-      "endLine": 162,
-      "mathContext": "If $q(l)(l+1) \\geq p(l)l \\geq l^2 \\geq 9 > 0$, then $q(l) \\geq 1$."
+      "startLine": 140,
+      "endLine": 185,
+      "summary": "qualifyingInLevel_pos and qualifyingPrime_exists (a qualifying prime exists at each level ≥ 3), and strong_implies_weak deriving the weak density statement from the strong axiom."
     },
     {
-      "id": "levelwise-bounds",
+      "id": "part4",
       "title": "Part IV: Level-Wise Density Bound",
-      "summary": "Proves levelwise_density_bound (monotonicity l/(l+1) ≥ k/(k+1) for interval counts when l ≥ k) and levelwise_strict_surplus (per-level surplus ≥ 1 for l ≥ max(3, k+2)).",
-      "startLine": 163,
-      "endLine": 253,
-      "mathContext": "Key algebraic identity: $l(k+1) \\geq k(l+1) \\iff l \\geq k$. The strict surplus uses equality analysis: if surplus = 0, then $q = p$ but $p(k+1) \\leq pk$ forces $p = 0$."
+      "startLine": 186,
+      "endLine": 283,
+      "summary": "levelwise_density_bound (the per-level qualifying density lower bound), levelwise_strict_surplus (a strict surplus once l ≥ k+2), and levelwise_deficit_le (the complementary deficit bound)."
     },
     {
-      "id": "gap-analysis",
-      "title": "Part V: Gap Analysis — Why General x Fails",
-      "summary": "Documents the precise obstruction to extending the bound from factorial points to general x: at x ∈ (l!, (l+1)!], the partial-interval deficit can reach primesInLevel(l)·k, which grows factorially and outstrips the cumulative surplus from earlier levels. Closing it needs within-interval density estimates.",
-      "startLine": 254,
-      "endLine": 274,
-      "mathContext": "Partial deficit $p_{\\text{partial}}k - c_{\\text{partial}}(k+1)$ can be $\\sim p(l)k$; cumulative surplus $\\sim p(l)/l$ cannot absorb it."
-    },
-    {
-      "id": "main-theorem",
-      "title": "Part VI: Density Bound at Factorial Points (Level-Sum Form)",
-      "summary": "Proves density_at_levels (the fully-proved main theorem): for every k, eventually Σ q(l)·(k+1) ≥ Σ p(l)·k. The proof splits the sum at L₀ = max(3, k+2), accumulates per-level surplus ≥ 1 from high levels (levelwise_strict_surplus), and absorbs the early-level deficit (earlyDeficit).",
-      "startLine": 275,
+      "id": "part4-5",
+      "title": "Part IV.5: The Non-Qualifying (Bad) Prime Bound",
+      "startLine": 284,
       "endLine": 357,
-      "mathContext": "For $n \\geq L_0 + D$: surplus $\\geq n - L_0 + 1 \\geq D + 1 >$ deficit."
+      "summary": "The bad-prime fraction is at most 1/(l+1): nonqualifying_fraction_bound and nonqualifying_le_qualifying_div_level, sharpened by levelwise_strict_deficit_lt and nonqualifying_strict_fraction_sharp — cross-multiplied forms of the strong axiom.",
+      "mathContext": "$(p(l)-q(l))(l+1)\\le p(l)$: at most a $1/(l+1)$ fraction of primes fail the qualifying property."
     },
     {
-      "id": "connection-conjecture",
-      "title": "Part VII: Connection to density_one_conjecture",
-      "summary": "States the interval-decomposition theorems primeCount_decomposition and qualifyingCount_decomposition (π(n!) and C(n!) as level sums, each with a sorry pending Finset partition machinery), then derives density_one_at_factorials by combining them with density_at_levels.",
+      "id": "part5",
+      "title": "Part V: Gap Analysis — Why General x Fails",
       "startLine": 358,
-      "endLine": 408,
-      "mathContext": "$\\pi(n!) = \\sum_{l<n} p(l)$, $C(n!) = \\sum_{l<n} q(l)$; these reduce the factorial-point density bound to the level-sum form."
+      "endLine": 378,
+      "summary": "Prose analysis of why the density result must be restricted to factorial points: for general x the level-sum decomposition does not control the boundary interval."
+    },
+    {
+      "id": "part6",
+      "title": "Part VI: Density Bound at Factorial Points (Level-Sum Form)",
+      "startLine": 379,
+      "endLine": 461,
+      "summary": "density_at_levels: at factorial arguments the qualifying-prime density is bounded below (level-sum form), the first place the per-level bounds assemble into a global statement.",
+      "mathContext": "Summing the level-wise bounds over $l\\le k$ telescopes cleanly precisely at $x=k!$-type arguments."
+    },
+    {
+      "id": "part7",
+      "title": "Part VII: Connection to density_one_conjecture",
+      "startLine": 462,
+      "endLine": 558,
+      "summary": "The general count-decomposition machinery count_decomp, primeCount_decomposition, qualifyingCount_decomposition (splitting counts across levels — previously a sorry, now proved), and density_one_at_factorials linking to the density-one conjecture.",
+      "mathContext": "The generic count over $[1,n]$ decomposes into a sum of level counts, letting the per-level density bounds imply density $\\to 1$."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: The Non-Qualifying Deficit — Sharp Form of \"Density → 1\"",
+      "startLine": 559,
+      "endLine": 610,
+      "summary": "deficit_le_iff_density (deficit form equivalent to the density statement) and nonqualifying_deficit_at_factorials: the count of non-qualifying primes stays a bounded deficit below the total, the sharp 'density → 1' phrasing."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: The Density Surplus is Unbounded",
+      "startLine": 611,
+      "endLine": 696,
+      "summary": "density_at_levels_surplus and density_surplus_at_factorials: the qualifying count exceeds any fixed multiple margin M for large factorial arguments — the surplus is unbounded, strengthening mere density → 1."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: The Sharp Margin Deficit — Deficit Side of the Unbounded Surplus",
+      "startLine": 697,
+      "endLine": 763,
+      "summary": "deficit_add_le_iff_density_surplus and nonqualifying_deficit_surplus_at_factorials: the deficit-side dual of Part IX, pinning the sharp margin between qualifying count and total."
+    },
+    {
+      "id": "part11",
+      "title": "Part XI: Absolute Growth of the Qualifying Count at Factorial Points",
+      "startLine": 764,
+      "endLine": 885,
+      "summary": "Absolute (not just relative) growth: qualifyingCount_factorial_ge, _unbounded, monotonicity qualifyingCount_factorial_mono, the strict step qualifyingCount_factorial_lt_succ / _succ, and _strictMono — the qualifying count itself diverges."
+    },
+    {
+      "id": "part12",
+      "title": "Part XII: Absolute Growth of the Prime Count at Factorial Points",
+      "startLine": 886,
+      "endLine": 981,
+      "summary": "The prime-count analogue: primeCount_factorial_succ, _mono, _ge, _lt_succ, _strictMono, and primeCount_factorial_unbounded — π at factorial points grows without bound, the denominator companion to Part XI."
+    },
+    {
+      "id": "part13",
+      "title": "Part XIII: Absolute Growth of the Non-Qualifying (Bad) Prime Count",
+      "startLine": 982,
+      "endLine": 1092,
+      "summary": "badCount_decomposition and the bad-count growth lemmas badCount_factorial_succ, _mono, and badCount_factorial_increment_fraction — the non-qualifying count also grows, but its incremental fraction stays controlled, completing the three-way (qualifying / prime / bad) growth picture."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Inventory of results: all theorems proved from first principles including the interval decompositions and density_one_at_factorials (0 sorries), and the single axiom strong_selberg_density (the former primes_growth_in_levels is now the proved theorem primesInLevel_pos). Notes the open extension to all x.",
-      "startLine": 409,
-      "endLine": 434,
-      "mathContext": "1 axiom, 0 sorries; the factorial-point result is unconditional given the single Selberg axiom, while the all-x extension remains open."
+      "startLine": 1093,
+      "endLine": 1152,
+      "summary": "Docstring inventory: the results proved from first principles (the level-wise bounds, the count decompositions, the factorial-point density/surplus/deficit theorems, and the three absolute-growth families) versus the single remaining assumption strong_selberg_density. Notes the file is now sorry-free (two former sorries discharged). Closes the namespace."
     }
   ],
   "crossReferences": [
@@ -198,7 +251,7 @@
     ],
     "structureCount": 0,
     "axiomCount": 1,
-    "theoremCount": 20,
+    "theoremCount": 39,
     "substantiveTheoremCount": 12,
     "computationalVerifications": 0,
     "lemmaCount": 0,
