@@ -252,3 +252,34 @@ The truth `f(n) = (1+o(1))√n` needs the **Kővári–Sós–Turán double coun
   vertices has `≥ ⌈21/2⌉ = 11 > 9` edges) — a genuine extremal input beyond the crude cherry
   count. This is the next exact value and the point where naive KST stops being sharp.
 - The general monotonicity core `f(n+1) ≥ f(n)` (the actual open Erdős question) stays open.
+
+## Session 2026-07-21 (researcher-1-4) — explicit closed-form upper bound f(n) ≤ √n + 2
+
+**Mode**: build on the KST cherry-count. **Outcome**: progress — 4 theorems (2 private helpers),
+axiom-free (`#print axioms` = `[propext, Classical.choice, Quot.sound]`, no `native_decide`),
+host-verified `lake env lean` exit 0. File 722→778 lines.
+
+Unfolded the implicit `O(√n)` of `minDegreeForC4_le_of_choose_lt` into a quotable **closed form**:
+
+- `minDegreeForC4_le_sqrt (hn : 1 ≤ n) : minDegreeForC4 n ≤ Nat.sqrt n + 2`. Take `k = √n + 2`:
+  `Nat.lt_succ_sqrt n` gives `n < (√n+1)²`, so `n ≤ (√n)²+2√n`, while
+  `k(k−1) = (√n+2)(√n+1) = (√n)²+3√n+2 ≥ n`; `nlinarith` closes it. Leading constant `1`
+  matches the true `f(n)=(1+o(1))√n`; only additive `O(1)` lost vs sharp `(1+√(4n−3))/2`.
+- `minDegreeForC4_le_of_le_mul_pred (hn : 1≤n) : n ≤ k(k−1) → minDegreeForC4 n ≤ k` — clean
+  reformulation of the counting bound; makes the `√n` order transparent (`k(k−1)≥n ≈ k≈√n`).
+- `choose_two_lt_of_le_mul_pred (hn : 1≤n) : n ≤ k(k−1) → C(n,2) < n·C(k,2)` — arithmetic
+  bridge to `minDegreeForC4_le_of_choose_lt`.
+
+### Reusable Lean recipe
+- `2 * m.choose 2 = m*(m−1)`: `rw [Nat.choose_two_right]; exact Nat.mul_div_cancel' h2dvd`
+  where `h2dvd : 2 ∣ m*(m−1)` (case `Even m` / `Odd m ⟹ Even (m−1)` via `Nat.Odd.sub_odd`).
+- Clear the `Nat.choose 2` floor-division by DOUBLING: prove `2*LHS < 2*RHS` then
+  `Nat.lt_of_mul_lt_mul_left`. Avoids fighting `/2` under `omega`/`nlinarith`.
+- `mul_left_comm 2 n (k.choose 2)` to move the `2` next to `k.choose 2` before rewriting.
+- Sqrt closed forms: `Nat.lt_succ_sqrt n : n < (√n+1)*(√n+1)` feeds `nlinarith` directly.
+
+### Next
+- Sharpen the additive constant toward `√n + 1` (holds when `n ≤ (√n)²+√n`, i.e. the lower
+  half of each `[s²+1, (s+1)²]` window); a case split on `n ≤ √n·(√n+1)` gives `√n+1` there.
+- `f(7)` exact needs `ex(7; C₄) = 9` (KST count only gives `f(7) ≤ 4`, cycle gives `≥ 3`).
+- The OPEN core remains eventual monotonicity `f(n+1) ≥ f(n)` — untouched.

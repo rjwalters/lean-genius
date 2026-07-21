@@ -719,4 +719,60 @@ theorem minDegreeForC4_six : minDegreeForC4 6 = 3 := by
   have hge : 3 ≤ minDegreeForC4 6 := three_le_minDegreeForC4 (by norm_num)
   omega
 
+/-!
+## An explicit `O(√n)` upper bound
+
+The counting bound `minDegreeForC4_le_of_choose_lt` gives `f(n) = O(√n)` only implicitly,
+through the choose inequality `C(n,2) < n · C(k,2)`.  We now unfold that into a clean,
+quotable **closed form** valid for every `n ≥ 1`:
+
+  `f(n) ≤ √n + 2`.
+
+This is the matching upper bound of the correct order — the true asymptotics are
+`f(n) = (1 + o(1))√n`, so the leading constant `1` here is sharp; only an additive `O(1)`
+is lost relative to the sharp Kővári–Sós–Turán constant `(1 + √(4n−3))/2`.  It dwarfs the
+elementary linear bound `f(n) ≤ n − 2`.
+-/
+
+/-- Divisibility helper: `m · (m − 1)` is always even (one of two consecutive integers is). -/
+private theorem two_dvd_mul_pred (m : ℕ) : 2 ∣ m * (m - 1) := by
+  rcases Nat.even_or_odd m with he | ho
+  · exact Dvd.dvd.mul_right he.two_dvd _
+  · exact Dvd.dvd.mul_left (Nat.Odd.sub_odd ho odd_one).two_dvd _
+
+/-- Doubling identity: `2 · C(m, 2) = m · (m − 1)` (the halving in `Nat.choose 2` is exact). -/
+private theorem two_mul_choose_two (m : ℕ) : 2 * m.choose 2 = m * (m - 1) := by
+  rw [Nat.choose_two_right]; exact Nat.mul_div_cancel' (two_dvd_mul_pred m)
+
+/-- **Arithmetic core of the counting bound.**  For `n ≥ 1`, the hypothesis `n ≤ k(k−1)`
+implies the strict cherry-vs-pair inequality `C(n,2) < n · C(k,2)` consumed by
+`minDegreeForC4_le_of_choose_lt`.  (Both `n(n−1)` and `k(k−1)` are even, so doubling
+reduces the claim to `n − 1 < k(k−1)`, which follows from `n ≤ k(k−1)`.) -/
+theorem choose_two_lt_of_le_mul_pred {n k : ℕ} (hn : 1 ≤ n) (h : n ≤ k * (k - 1)) :
+    n.choose 2 < n * k.choose 2 := by
+  have key : 2 * n.choose 2 < 2 * (n * k.choose 2) := by
+    rw [two_mul_choose_two n, mul_left_comm 2 n (k.choose 2), two_mul_choose_two k]
+    have hstep : n - 1 < k * (k - 1) := by omega
+    exact Nat.mul_lt_mul_of_pos_left hstep (by omega)
+  exact Nat.lt_of_mul_lt_mul_left key
+
+/-- **`n ≤ k(k−1)` forces `f(n) ≤ k`.**  A cleaner packaging of the counting bound: as soon
+as `k(k−1) ≥ n`, minimum degree `k` on `n` vertices already yields more cherries than vertex
+pairs, hence a `C₄`.  This is the reformulation that makes the `√n` order transparent. -/
+theorem minDegreeForC4_le_of_le_mul_pred {n k : ℕ} (hn : 1 ≤ n) (h : n ≤ k * (k - 1)) :
+    minDegreeForC4 n ≤ k :=
+  minDegreeForC4_le_of_choose_lt (choose_two_lt_of_le_mul_pred hn h)
+
+/-- **Explicit `O(√n)` upper bound: `f(n) ≤ √n + 2` for all `n ≥ 1`.**  Take `k = √n + 2`.
+Since `n < (√n + 1)²` we have `n ≤ (√n)² + 2√n`, while `k(k−1) = (√n + 2)(√n + 1) =
+(√n)² + 3√n + 2 ≥ n`, so `minDegreeForC4_le_of_le_mul_pred` applies.  The leading constant
+`1` matches the true `f(n) = (1 + o(1))√n`; only an additive constant is lost. -/
+theorem minDegreeForC4_le_sqrt {n : ℕ} (hn : 1 ≤ n) :
+    minDegreeForC4 n ≤ Nat.sqrt n + 2 := by
+  apply minDegreeForC4_le_of_le_mul_pred hn
+  have hlt : n < (Nat.sqrt n + 1) * (Nat.sqrt n + 1) := Nat.lt_succ_sqrt n
+  have hsub : Nat.sqrt n + 2 - 1 = Nat.sqrt n + 1 := by omega
+  rw [hsub]
+  nlinarith [hlt]
+
 end Erdos85
