@@ -7,6 +7,41 @@ Heilbronn's triangle problem, **OPEN**: the exponent `β` with
 (Komlós–Pintz–Szemerédi, Cohen–Pohoata–Zakharov) are untouched; this file builds
 the elementary geometry of `triangleArea` and `minTriangleArea`/`heilbronn`.
 
+## Session 2026-07-21 (researcher-1) — improved upper bound `heilbronn n ≤ 3/2` + sandwich at n=3
+
+**Mode**: continue RICH node. **Outcome**: progress — 4 new public declarations,
+**docker-verified** (`Proofs.Erdos507WIP01` built clean, 2970 jobs), 0 sorry /
+0 axiom. Sharpens the crude `heilbronn n ≤ 3` and produces the first genuine
+two-sided sandwich at `n = 3`.
+
+### What I added
+- `abs_cross_le_one` : `|a₁b₂ − a₂b₁| ≤ 1` for `a,b` in the unit disk — Lagrange's
+  identity `(a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|² ≤ 1`.
+- `triangleArea_le_three_halves` : any unit-disk triangle has `area ≤ 3/2`.
+  Key: the signed area is a **sum of three origin-based determinants**
+  `E = (p×q) + (q×r) + (r×p)` (verified by `ring`), each `|·| ≤ 1`, so `|E| ≤ 3`.
+- `heilbronn_le_three_halves` : `heilbronn n ≤ 3/2` for `n ≥ 3` (sharpens `≤ 3`).
+- `heilbronn_three_mem_Icc` : **sandwich** `heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299, 1.5]`,
+  combining the sharp lower bound `heilbronn_three_ge` with the new upper bound.
+
+### Key findings / reusable Lean recipe
+- **Determinant decomposition** `E = (p×q)+(q×r)+(r×p)` with `a×b := a₁b₂−a₂b₁`
+  is the right handle for unit-disk area bounds — turns a 6-variable degree-4
+  optimization into three independent `|a×b| ≤ |a||b|` bounds.
+- `|a×b| ≤ 1`: prove `(a×b)² ≤ 1` first (`nlinarith [sq_nonneg ⟨a,b⟩, |a|²|b|²≤1]`),
+  then `|x| ≤ 1` from `x² ≤ 1` via `rw [abs_le]; constructor <;> nlinarith [hsq,
+  sq_nonneg (x-1), sq_nonneg (x+1)]`.
+- `|a|²|b|² ≤ 1` from `|a|²≤1, |b|²≤1, |a|²≥0`: single `nlinarith`.
+
+### Why 3/2 is not sharp (the remaining gap)
+- True max `|E| = 3√3/2 ≈ 2.598` (area `3√3/4 ≈ 1.299`); the crude `|E| ≤ 3`
+  overcounts because the three determinants `p×q, q×r, r×p` cannot be
+  simultaneously maximal. Sharpening to `heilbronn 3 ≤ 3√3/4` (which would pin
+  `heilbronn 3 = 3√3/4` exactly against `heilbronn_three_ge`) needs the central
+  angles at `O` (summing to `2π` when `O` is interior) + Jensen on `sin` over
+  `[0,π]` + an `O`-exterior case split — a genuine ~500-line optimization, not
+  yet session-sized.
+
 ## Session 2026-07-20 (researcher-1, iter 3) — concrete positive lower bound `heilbronn 3 ≥ 1/2`
 
 **Mode**: continue a RICH node (24 declarations already on main).

@@ -36,7 +36,18 @@ of the atomic building block `triangleArea`:
   is bounded above by the uniform area bound, so Heilbronn's function is finite;
 * a concrete positive lower bound `heilbronn 3 ≥ 1/2` (`heilbronn_three_ge_half`)
   from the unit right triangle, hence `heilbronn 3 > 0` (`heilbronn_three_pos`) —
-  separating `heilbronn 3` from the junk value `heilbronn 2 = 0`.
+  separating `heilbronn 3` from the junk value `heilbronn 2 = 0`;
+* the *sharp* lower bound `heilbronn 3 ≥ 3√3/4` (`heilbronn_three_ge`) from the
+  inscribed equilateral triangle;
+* the determinant bound `|a₁b₂ − a₂b₁| ≤ 1` in the unit disk
+  (`abs_cross_le_one`, Lagrange's identity), giving the improved uniform area
+  bound `triangleArea ≤ 3/2` (`triangleArea_le_three_halves`) via
+  `E = (p×q)+(q×r)+(r×p)`, hence `heilbronn n ≤ 3/2` for `n ≥ 3`
+  (`heilbronn_le_three_halves`, sharpening `heilbronn n ≤ 3`);
+* the resulting sandwich `heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299, 1.5]`
+  (`heilbronn_three_mem_Icc`) — the conjectured exact value is the lower
+  endpoint `3√3/4`, and the remaining gap is the sharp inscribed-triangle upper
+  bound `heilbronn 3 ≤ 3√3/4`.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -486,5 +497,93 @@ theorem heilbronn_three_ge : 3 * Real.sqrt 3 / 4 ≤ heilbronn 3 := by
         | (rw [triangleArea_cyclic]; exact ge_of_eq hval)
         | (rw [triangleArea_cyclic, triangleArea_cyclic]; exact ge_of_eq hval)
         | (rw [triangleArea_swap_left, triangleArea_cyclic]; exact ge_of_eq hval)
+
+/-! ## An improved uniform upper bound: `area ≤ 3/2`
+
+The crude bound `triangleArea ≤ 3` (`triangleArea_le_three`) came from bounding
+each of the three signed-area summands by `2`.  A sharper argument uses that the
+signed area is a *sum of three 2×2 determinants* (cross products) taken from the
+origin:
+
+    E := p₁(q₂−r₂) + q₁(r₂−p₂) + r₁(p₂−q₂)
+       = (p × q) + (q × r) + (r × p),   where  a × b := a₁b₂ − a₂b₁.
+
+For points in the unit disk each determinant satisfies `|a × b| ≤ |a|·|b| ≤ 1`
+(Lagrange's identity `(a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|²`), so `|E| ≤ 3` and
+`triangleArea = |E|/2 ≤ 3/2`.  This improves `heilbronn n ≤ 3` to
+`heilbronn n ≤ 3/2` for every `n ≥ 3`, and combined with the sharp lower bound
+`heilbronn 3 ≥ 3√3/4` it sandwiches `heilbronn 3 ∈ [3√3/4, 3/2] ≈ [1.299, 1.5]`.
+(The exact value is conjectured to be the lower endpoint `3√3/4`; closing the
+gap needs the sharp maximal-inscribed-triangle bound, still open here.) -/
+
+/-- **Determinant bound in the unit disk.**  For two points `a, b` in the closed
+unit disk, the `2×2` determinant `a₁b₂ − a₂b₁` (the cross product / twice the
+signed area of the triangle `O a b`) has absolute value at most `1`.  This is
+Lagrange's identity: `(a₁b₂−a₂b₁)² = (a₁²+a₂²)(b₁²+b₂²) − (a₁b₁+a₂b₂)²`, and both
+squared norms are `≤ 1`. -/
+theorem abs_cross_le_one {P : Finset (ℝ × ℝ)} (h : IsInUnitDisk P)
+    {a b : ℝ × ℝ} (ha : a ∈ P) (hb : b ∈ P) :
+    |a.1 * b.2 - a.2 * b.1| ≤ 1 := by
+  have hda : a.1 ^ 2 + a.2 ^ 2 ≤ 1 := h a ha
+  have hdb : b.1 ^ 2 + b.2 ^ 2 ≤ 1 := h b hb
+  have hA : (0 : ℝ) ≤ a.1 ^ 2 + a.2 ^ 2 := by positivity
+  have hAB : (a.1 ^ 2 + a.2 ^ 2) * (b.1 ^ 2 + b.2 ^ 2) ≤ 1 := by nlinarith [hda, hdb, hA]
+  -- Lagrange: (a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|² ≤ 1
+  have hsq : (a.1 * b.2 - a.2 * b.1) ^ 2 ≤ 1 := by
+    nlinarith [sq_nonneg (a.1 * b.1 + a.2 * b.2), hAB]
+  rw [abs_le]
+  constructor <;>
+    nlinarith [hsq, sq_nonneg (a.1 * b.2 - a.2 * b.1 - 1),
+      sq_nonneg (a.1 * b.2 - a.2 * b.1 + 1)]
+
+/-- **Improved uniform area bound `area ≤ 3/2`.**  Any triangle with all three
+vertices in the unit disk has area at most `3/2`.  Write the signed area as the
+sum of three determinants `E = (p×q) + (q×r) + (r×p)`; each has `|·| ≤ 1`
+(`abs_cross_le_one`), so `|E| ≤ 3` and `triangleArea = |E|/2 ≤ 3/2`.  This
+sharpens `triangleArea_le_three`. -/
+theorem triangleArea_le_three_halves {P : Finset (ℝ × ℝ)} (h : IsInUnitDisk P)
+    {p q r : ℝ × ℝ} (hp : p ∈ P) (hq : q ∈ P) (hr : r ∈ P) :
+    triangleArea p q r ≤ 3 / 2 := by
+  have c1 := abs_cross_le_one h hp hq
+  have c2 := abs_cross_le_one h hq hr
+  have c3 := abs_cross_le_one h hr hp
+  unfold triangleArea
+  have hE : |p.1 * (q.2 - r.2) + q.1 * (r.2 - p.2) + r.1 * (p.2 - q.2)| ≤ 3 := by
+    have hid : p.1 * (q.2 - r.2) + q.1 * (r.2 - p.2) + r.1 * (p.2 - q.2)
+        = (p.1 * q.2 - p.2 * q.1) + (q.1 * r.2 - q.2 * r.1) + (r.1 * p.2 - r.2 * p.1) := by
+      ring
+    rw [hid]
+    calc |(p.1 * q.2 - p.2 * q.1) + (q.1 * r.2 - q.2 * r.1) + (r.1 * p.2 - r.2 * p.1)|
+        ≤ |(p.1 * q.2 - p.2 * q.1) + (q.1 * r.2 - q.2 * r.1)| + |r.1 * p.2 - r.2 * p.1| :=
+          abs_add_le _ _
+      _ ≤ |p.1 * q.2 - p.2 * q.1| + |q.1 * r.2 - q.2 * r.1| + |r.1 * p.2 - r.2 * p.1| := by
+          gcongr; exact abs_add_le _ _
+      _ ≤ 3 := by linarith [c1, c2, c3]
+  linarith [hE]
+
+/-- **`heilbronn n ≤ 3/2` for `n ≥ 3`.**  Every admissible bound `α` in the
+defining `sSup` is `≤` the area of some distinct triple in the witness
+configuration, and every unit-disk triangle has area `≤ 3/2`
+(`triangleArea_le_three_halves`).  Improves `heilbronn_le_three`. -/
+theorem heilbronn_le_three_halves (n : ℕ) (hn : 3 ≤ n) : heilbronn n ≤ 3 / 2 := by
+  unfold heilbronn
+  apply Real.sSup_le
+  · rintro α ⟨P, hcard, hdisk, hbound⟩
+    have hcard3 : 2 < P.card := by omega
+    obtain ⟨p, q, r, hp, hq, hr, hpq, hpr, hqr⟩ := Finset.two_lt_card_iff.mp hcard3
+    have h1 : α ≤ triangleArea p q r := hbound p hp q hq r hr hpq hqr hpr
+    have h2 : triangleArea p q r ≤ 3 / 2 := triangleArea_le_three_halves hdisk hp hq hr
+    linarith
+  · norm_num
+
+/-- **Sandwich for `heilbronn 3`.**  Combining the sharp lower bound
+`heilbronn 3 ≥ 3√3/4` (`heilbronn_three_ge`, the inscribed equilateral triangle)
+with the improved upper bound `heilbronn 3 ≤ 3/2` (`heilbronn_le_three_halves`)
+locates `heilbronn 3` in the interval `[3√3/4, 3/2] ≈ [1.299, 1.5]`.  The
+conjectured exact value is the lower endpoint `3√3/4`; the remaining gap is the
+sharp maximal-inscribed-triangle upper bound `heilbronn 3 ≤ 3√3/4`. -/
+theorem heilbronn_three_mem_Icc :
+    heilbronn 3 ∈ Set.Icc (3 * Real.sqrt 3 / 4) (3 / 2) :=
+  ⟨heilbronn_three_ge, heilbronn_le_three_halves 3 (by norm_num)⟩
 
 end Erdos507WIP01
