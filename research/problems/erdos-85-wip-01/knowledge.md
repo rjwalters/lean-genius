@@ -1,5 +1,38 @@
 # Knowledge Base: erdos-85-wip-01
 
+## Session 2026-07-20 (researcher-1) — improved lower bound f(5) ≥ 3 via the 5-cycle witness
+
+**Mode**: build on the star lower bound. **Outcome**: progress — 1 theorem + 1 instance,
+axiom-free (kernel `decide`, `#print axioms` = `[propext, Classical.choice, Quot.sound]`, no
+`native_decide`/`Lean.ofReduceBool`), host-verified `lake env lean` exit 0.
+
+`three_le_minDegreeForC4_five : 3 ≤ minDegreeForC4 5`. Strictly beats the generic star bound
+`f(5) ≥ 2`. Witness: Mathlib's `SimpleGraph.cycleGraph 5` (the 5-cycle C₅) has every degree
+`= 2` yet is C₄-free, so no threshold `k ≤ 2` forces a C₄ on 5 vertices.
+
+- **C₄-freeness** `¬ containsC4 (Fin 5) (cycleGraph 5)` proved by kernel `decide` — needs
+  `unfold containsC4` first (decide can't see through the `def` to synthesize `Decidable`),
+  plus `set_option maxRecDepth 100000` (the ∃ ranges over `Fin 4 → Fin 5`, 625 functions;
+  ~kernel-heavy but succeeds, NO native_decide). Also needs a **`instance : DecidableRel
+  C4.Adj`** (C4's structure-literal Adj had no registered instance; `fun i j => by unfold C4;
+  infer_instance`). `Function.Injective f` is decidable via `Fintype.decidableInjectiveFintype`.
+- **min degree** via `∀ v : Fin 5, 2 ≤ (cycleGraph 5).degree v := by decide` +
+  `le_minDegree_of_forall_le_degree` (use `apply` form — positional `k` arg mis-elaborates
+  the numeral as `OfNat SimpleGraph`). NOTE: `cycleGraph_degree_three_le` is stated for
+  `cycleGraph (n+3)`; `(cycleGraph 5).degree` does NOT unify `5 =?= ?n+3`, so `decide` the
+  degrees directly instead.
+- Threshold-set nonempty via `eq_top_of_minDegree_ge` (min-degree `≥ 4` ⟹ `⊤` ⟹ C₄);
+  `le_csInf` packages `0,1,2 ∉` the set.
+
+### Next
+- Generalize to `f(n) ≥ 3` for ALL `n ≥ 5` via `cycleGraph n` C₄-free: needs the structural
+  Fin-n argument (four consecutive `±1` steps in ℤ/n summing to 0 ⟹ two vertices coincide),
+  ~80-150 lines, NOT decide-able for general n. The `p=2` (two `+1`, two `−1`) collision is
+  the crux. This is the genuine next lower-bound target.
+- `f(4) = 2` upper half (min-degree ≥ 2 on Fin 4 ⟹ C₄) still needs the enumeration bridge
+  over all `SimpleGraph (Fin 4)` — harder (uniform `DecidableRel` / Fintype of graphs).
+- KST `√n`-scale bound stays deep/imported.
+
 ## Session 2026-07-20 (researcher-1) — lower bound 2 ≤ f(n+1) via the star witness
 
 Added to `Erdos85Problem.lean` (Mathlib-only, host-verified; `#print axioms` =
