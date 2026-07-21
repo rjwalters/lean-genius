@@ -81,67 +81,91 @@
   },
   "sections": [
     {
-      "title": "Core Definitions",
-      "startLine": 38,
-      "endLine": 87,
-      "summary": "Defines representation function, sumset, and additive basis of order 2",
-      "mathContext": "Formal definition: Defines representation function, sumset, and additive basis of order 2",
-      "id": "core-definitions"
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Header docstring stating Erdős Problem #871, the DISPROVED status (Larsen 2026), the Erdős-Nathanson (1989) background, and the arXiv:2601.18507 reference; imports and namespace.",
+      "mathContext": "Problem #871 asks whether an additive basis $A$ of order 2 with $r_A(n) \\to \\infty$ can always be split into two disjoint order-2 bases. Answer: NO.",
+      "id": "problem-statement"
     },
     {
-      "title": "Growth Conditions",
-      "startLine": 88,
-      "endLine": 116,
-      "summary": "RepTendsToInfty and RepEventuallyGe conditions on r_A(n)",
-      "mathContext": "Mathematical content: RepTendsToInfty and RepEventuallyGe conditions on r_A(n)",
-      "id": "growth-conditions"
+      "title": "Part I: Core Definitions",
+      "startLine": 40,
+      "endLine": 86,
+      "summary": "Defines the representation function repFunc r_A(n), the sumset A+A, additive basis of order 2 (IsAdditiveBasis2 and the cofinite-complement variant IsAdditiveBasis2'), and proves basis2_equiv that the two definitions coincide.",
+      "mathContext": "$r_A(n)=\\#\\{(a,b)\\in A\\times A: a+b=n\\}$; $A$ is an order-2 basis iff $A+A$ contains all sufficiently large integers, equivalently $(A+A)^{c}$ is finite.",
+      "id": "part-i-core-definitions"
     },
     {
-      "title": "Partition Predicate",
-      "startLine": 117,
-      "endLine": 122,
-      "summary": "Definition of CanPartitionIntoBases",
-      "mathContext": "Formal definition: Definition of CanPartitionIntoBases",
-      "id": "partition-predicate"
+      "title": "Part II: Structural Properties of Sumsets",
+      "startLine": 87,
+      "endLine": 178,
+      "summary": "Elementary sumset lemmas: mem_sumset_of_mem, monotonicity sumset_mono, zero_mem_sumset, basis-upward-closure basis2_of_supset, mem_sumset_iff, sumset_empty/sumset_singleton, that finite sets cannot be bases (not_basis2_of_finite) and hence bases are infinite (basis2_infinite), positivity mem_sumset_of_repFunc_pos, and the partition-subset lemmas partition_subset_left/right.",
+      "mathContext": "If $A\\subseteq B$ then $A+A\\subseteq B+B$, so supersets of bases are bases; a finite $A$ has bounded $A+A$ and cannot cover a cofinite set, forcing every order-2 basis to be infinite.",
+      "id": "part-ii-structural-properties"
     },
     {
-      "title": "The Conjecture",
-      "startLine": 123,
-      "endLine": 130,
-      "summary": "Formal statement of Erdős Problem #871",
-      "mathContext": "Mathematical content: Formal statement of Erdős Problem #871",
-      "id": "the-conjecture"
+      "title": "Part III: Representation Function Properties",
+      "startLine": 179,
+      "endLine": 240,
+      "summary": "Growth predicates on the representation function: RepTendsToInfty (r_A(n) → ∞) and the weaker RepEventuallyGe (r_A(n) ≥ t eventually), with repTendsToInfty_implies_eventuallyGe, and proofs that either growth condition forces A to be a basis (repTendsToInfty_implies_basis, repEventuallyGe_implies_basis).",
+      "mathContext": "$r_A(n)\\to\\infty$ implies $r_A(n)\\ge t$ eventually for every fixed $t$; and $r_A(n)\\ge 1$ eventually means $n\\in A+A$ eventually, so $A$ is an order-2 basis.",
+      "id": "part-iii-representation-function"
     },
     {
-      "title": "Erdős-Nathanson Results",
-      "startLine": 131,
-      "endLine": 147,
-      "summary": "1989 negative and positive results on partitioning",
-      "mathContext": "Mathematical content: 1989 negative and positive results on partitioning",
-      "id": "erdős-nathanson-results"
+      "title": "Part IV: Partitions of Bases",
+      "startLine": 241,
+      "endLine": 282,
+      "summary": "Defines CanPartitionIntoBases (A splits into two disjoint order-2 bases) and the HasBlockingProperty obstruction; proves blocking_prevents_partition (a blocking set admits no such partition) and partition_robust_finite (a partition yields a uniform covering threshold).",
+      "mathContext": "The blocking property says for every partition $A=B\\sqcup C$ there are infinitely many $n$ with $n\\notin B+B$ or $n\\notin C+C$, contradicting the uniform threshold a genuine partition into bases would provide.",
+      "id": "part-iv-partitions-of-bases"
     },
     {
-      "title": "Larsen Counterexample",
-      "startLine": 148,
-      "endLine": 159,
-      "summary": "The disproof axiom and main theorem",
-      "mathContext": "Verified: The disproof axiom and main theorem",
-      "id": "larsen-counterexample"
+      "title": "Part V: The Erdős Conjecture and Its Refutation",
+      "startLine": 283,
+      "endLine": 290,
+      "summary": "Formal statement Erdos871Conjecture: every order-2 basis with r_A(n) → ∞ can be partitioned into two disjoint order-2 bases.",
+      "mathContext": "$\\forall A,\\ \\mathrm{IsAdditiveBasis2}(A)\\wedge r_A(n)\\to\\infty \\Rightarrow \\mathrm{CanPartitionIntoBases}(A)$ — the claim shown to be false.",
+      "id": "part-v-conjecture"
     },
     {
-      "title": "Blocking Property",
-      "startLine": 182,
-      "endLine": 226,
-      "summary": "Technical blocking condition preventing partition",
-      "mathContext": "Mathematical content: Technical blocking condition preventing partition",
-      "id": "blocking-property"
+      "title": "Part VI: Known Results (Axioms for Deep Constructions)",
+      "startLine": 291,
+      "endLine": 321,
+      "summary": "The three imported deep results as axioms — erdos_nathanson_1989 (fixed-threshold counterexample), erdos_nathanson_positive (partition under log-growth), larsen_construction_blocking (the Larsen set has the blocking property) — and larsen_counterexample, now a THEOREM derived from the blocking axiom via blocking_prevents_partition (reducing the axiom count from 4 to 3).",
+      "mathContext": "Erdős-Nathanson: partition is possible once $r_A(n) > c\\log n$ with $c > (\\log 4/3)^{-1}\\approx 3.48$; Larsen exhibits a basis with $r_A(n)\\to\\infty$ that still blocks.",
+      "id": "part-vi-known-results"
+    },
+    {
+      "title": "Part VII: Main Theorem",
+      "startLine": 322,
+      "endLine": 329,
+      "summary": "erdos_871_disproved: the conjecture is FALSE, obtained by feeding the Larsen counterexample to any purported partition procedure.",
+      "mathContext": "From a basis $A$ with $r_A(n)\\to\\infty$ and no valid partition, $\\neg\\mathrm{Erdos871Conjecture}$ follows immediately.",
+      "id": "part-vii-main-theorem"
+    },
+    {
+      "title": "Part VIII: Alternative Disproof via Blocking Directly",
+      "startLine": 330,
+      "endLine": 338,
+      "summary": "erdos_871_disproved': a second refutation that applies blocking_prevents_partition to larsen_construction_blocking directly, without routing through the intermediate larsen_counterexample theorem.",
+      "mathContext": "Same conclusion $\\neg\\mathrm{Erdos871Conjecture}$, exhibiting the blocking property as the single structural mechanism behind the disproof.",
+      "id": "part-viii-alternative-disproof"
+    },
+    {
+      "title": "Part IX: Consequences and Structure",
+      "startLine": 339,
+      "endLine": 363,
+      "summary": "Structural corollaries: growth_rate_dichotomy locating the critical growth rate between r_A(n) → ∞ (insufficient) and r_A(n) > c log n (sufficient); larsen_strictly_stronger and larsen_subsumes_erdos_nathanson showing the ∞-growth counterexample implies the fixed-threshold Erdős-Nathanson negative result.",
+      "mathContext": "The threshold for guaranteed partition lies strictly between $r_A(n)\\to\\infty$ and $r_A(n) > c\\log n$; Larsen's stronger counterexample recovers Erdős-Nathanson for every fixed $t$ via repTendsToInfty_implies_eventuallyGe.",
+      "id": "part-ix-consequences"
     },
     {
       "title": "Summary",
-      "startLine": 227,
+      "startLine": 364,
       "endLine": 420,
-      "summary": "Overview of results and references",
-      "mathContext": "Mathematical content: Overview of results and references",
+      "summary": "Closing docstring: status DISPROVED, the three-way comparison of growth conditions (r_A(n) ≥ t false, r_A(n) > c log n true, r_A(n) → ∞ false), the full list of 20+ proved theorems (0 sorries), the 3 remaining construction axioms, and references.",
+      "mathContext": "Larsen's result shows $r_A(n)\\to\\infty$ is not fast enough growth to force a partition, closing the gap left open by Erdős-Nathanson.",
       "id": "summary"
     }
   ],
