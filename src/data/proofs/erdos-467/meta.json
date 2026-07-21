@@ -132,6 +132,13 @@
       "startLine": 241,
       "endLine": 265,
       "summary": "Two structural constraints on any dual covering. `zero_assign_no_dual_cover` proves the zero assignment cannot achieve dual coverage (n=1 is uncovered). `dual_cover_needs_unit_class` proves any dual covering requires both A and B to contain a prime with assignment congruent to 1 mod p — a direct constraint on the class selection."
+    },
+    {
+      "id": "problem-summary",
+      "title": "Problem Summary",
+      "startLine": 266,
+      "endLine": 278,
+      "summary": "Records the problem status and the elementary observation underlying it. `erdos_467_status = \"OPEN\"` documents that no proof or disproof of Erdős #467 is known, and `coverage_exceeds_target` proves the trivial-but-essential fact that every n ≥ 2 has a prime factor (via `has_prime_factor`), the starting point for any prime-based dual-covering argument."
     }
   ],
   "conclusion": {

@@ -111,7 +111,7 @@
       "id": "part-v",
       "title": "Part V: Concrete Examples",
       "startLine": 113,
-      "endLine": 124,
+      "endLine": 136,
       "summary": "sqrt2_between_1_and_2 via Real.sqrt witness with monotonicity bounds. bisect_10_width and bisect_20_error: concrete convergence rate computations via norm_num.",
       "mathContext": "Concrete application: $\\sqrt{2} \\in (1, 2)$ since $1^2 < 2 < 2^2$. Bisection examples: 10 steps narrow to width $\\approx 0.00098$, 20 steps to $\\approx 9.5 \\times 10^{-7}$. Demonstrates the algorithm's linear convergence rate."
     }
