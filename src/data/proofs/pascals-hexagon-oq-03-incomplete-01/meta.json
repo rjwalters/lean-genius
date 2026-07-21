@@ -28,7 +28,7 @@
     "assumptions": "0 sorries; 0 literal `axiom` declarations. The census cardinality theorems (card_sixCycles = 120, card_doubleThreeCycles = 40, card_tripleTranspositions = 15, card_fourTwoCycles = 90, card_fixedPointFree = 265), the anchor card_sym6 = 720, the fixed-point-free classification, and the parity-structure theorems (sixCycle_sign, fourTwo_sign, doubleThreeCycle_sign, tripleTransposition_sign, even_derangement_iff_census, card_even_derangements = 130, card_odd_derangements = 135) are all discharged by `native_decide`, which trusts the Lean compiler and so depends on the `Lean.ofReduceBool` (and `Lean.trustCompiler`) axiom (counted as axiomCount = 1). Under the project axiom-integrity policy this makes the entry `axiomatized`. The geometric bijection from these conjugacy classes to the actual Steiner/Kirkman/Plücker/Salmon points and lines is NOT formalized here — only the combinatorial class sizes are certified; the projective concurrence (the open steiner_count_eq_20 / kirkman_count_eq_60 targets in oq-03) remains future work.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-07-04",
-    "theoremCount": 27,
+    "theoremCount": 33,
     "definitionCount": 5,
     "originalContributions": [
       "Identifies the Conway–Ryba (Math. Intelligencer 34 (2012) 4–8) conjugacy-class indexing of the Hexagrammum Mysticum and certifies its three governing class sizes in Lean over the concrete group Equiv.Perm (Fin 6).",
@@ -113,12 +113,36 @@
       "mathContext": "Derangements of Fin 6: D₆ = 265 = 120 + 90 + 40 + 15; the 90-element (4,2) class is geometrically inert."
     },
     {
-      "id": "object-counts",
+      "id": "derangement-bridge",
       "startLine": 185,
-      "endLine": 213,
-      "title": "Hexagrammum object counts and the (95₃, 95₃) totals",
+      "endLine": 222,
+      "title": "Bridge to Mathlib's Derangement Theory (kernel-checkable D₆)",
+      "summary": "Identifies the census total with Mathlib's derangement theory and gives a native_decide-free derivation of D₆ = 265. card_fixedPointFree_eq_numDerangements: since FixedPointFree σ unfolds to σ ∈ derangements (Fin 6), the fixed-point-free count equals numDerangements 6 (via card_derangements_eq_numDerangements). card_fixedPointFree_eq_265_kernel: routing through this identity reduces D₆ = 265 to numDerangements 6 = 265, which the kernel evaluates by `decide` from the derangement recurrence — no native_decide, hence no Lean.ofReduceBool for this particular count.",
+      "mathContext": "#{σ ∈ Sym(6) : FixedPointFree σ} = numDerangements 6 = 265 = D₆; kernel-`decide`-checkable via the derangement recurrence, unlike the native_decide census cards."
+    },
+    {
+      "id": "object-counts",
+      "startLine": 223,
+      "endLine": 250,
+      "title": "Hexagrammum Object Counts and the (95₃, 95₃) Totals",
       "summary": "The geometric object counts as arithmetic corollaries of the census under the Conway–Ryba 2:1 outer-automorphism pairing (self-paired at the (2,2,2) class): 60 Pascal lines, 60 Kirkman points (120/2), 20 Steiner points, 20 Cayley–Salmon lines (40/2), 15 Plücker lines and 15 Salmon points; and the configuration totals 60+20+15 = 95 points and 95 lines, i.e. a (95₃, 95₃) configuration.",
       "mathContext": "Points: 60 Kirkman + 20 Steiner + 15 Salmon = 95; lines: 60 Pascal + 20 Cayley + 15 Plücker = 95."
+    },
+    {
+      "id": "census-partition",
+      "startLine": 251,
+      "endLine": 329,
+      "title": "Census Exactness and Pairwise Disjointness (the census is a partition)",
+      "summary": "Upgrades the census from a bare numeral identity to a genuine partition of derangements (Fin 6). census_cards_sum_eq_fixedPointFree: the four *proven* filter cardinalities sum to card_fixedPointFree = 265; hexagrammum_total_from_census sources the 95 totals from those cardinalities via the 2:1 pairing. census_classes_pairwise_exclusive (native_decide): no permutation satisfies two cycle-type predicates at once; hexagrammum_classes_disjoint derives from it, via Finset.disjoint_filter, that the six-cycle / double-3-cycle / triple-transposition filters are pairwise disjoint — so the 120/40/15 counts add with no double-counting and the 60+20+15 = 95 totals are honest sums (cover + exactness ⇒ partition).",
+      "mathContext": "Exact count + exhaustive cover (fixedPointFree_iff_census) ⇒ the four cycle-type classes partition derangements (Fin 6); disjointness is what makes 120 + 90 + 40 + 15 = 265 and 60 + 20 + 15 = 95 non-overlapping sums."
+    },
+    {
+      "id": "parity-structure",
+      "startLine": 330,
+      "endLine": 452,
+      "title": "Sign (Parity) Structure of the Census (the A₆ refinement)",
+      "summary": "Records the uniform sign of each fixed-point-free class and the A₆-refinement of D₆ = 265. sixCycle_sign = −1 and tripleTransposition_sign = −1 (the geometrically-active Pascal/Kirkman and Plücker/Salmon classes are odd); fourTwo_sign = +1 and doubleThreeCycle_sign = +1 (the Steiner/Cayley class and the inert (4,2) class are even). even_derangement_iff_census pins the even derangements as exactly the (4,2) and (3,3) classes; card_even_derangements = 130 and card_odd_derangements = 135 with derangement_parity_split (130 + 135 = 265) give the A₆ split. card_even/odd_derangements_eq_*_classes restate the split at the level of the proven class cardinalities (130 = 90 + 40, 135 = 120 + 15), and pascal_lines_eq_half_card_sixCycles / steiner_points_eq_half_card_doubleThreeCycles anchor the geometric 60 and 20 to card_sixCycles / card_doubleThreeCycles (no new native_decide).",
+      "mathContext": "Derangements of Fin 6 split by sign as 135 odd (120 six-cycles + 15 triple-transpositions) and 130 even (90 (4,2) + 40 (3,3)); the two odd classes carry the Pascal/Kirkman and Plücker/Salmon objects, the two even classes the Steiner/Cayley objects and the inert (4,2) class."
     }
   ],
   "conclusion": {
@@ -147,7 +171,7 @@
     "namespace": "PascalsHexagonOQ03Incomplete01",
     "lineCount": 452,
     "axiomCount": 0,
-    "theoremCount": 31,
+    "theoremCount": 33,
     "definitionCount": 5,
     "path": "Proofs/PascalsHexagonOQ03Incomplete01.lean",
     "sorries": 0
