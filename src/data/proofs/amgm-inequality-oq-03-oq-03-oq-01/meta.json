@@ -89,9 +89,17 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Definitions: The Power Mean M_r",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module setup and the central definition: the unweighted power mean M(r) = ((∑ xᵢʳ)/n)^(1/r), together with the cardinality helpers hN_pos and hN_ne asserting the vertex count n = |ι| is positive (nonzero) as a real.",
+      "mathContext": "$M_r(x) = \\left(\\frac{1}{n}\\sum_i x_i^r\\right)^{1/r}$ for a finite nonempty index type $\\iota$ with $n = |\\iota|$; hN_pos/hN_ne record $0 < (n:\\mathbb{R})$ and $(n:\\mathbb{R}) \\ne 0$."
+    },
+    {
       "id": "helpers",
       "title": "Helper Lemmas",
-      "startLine": 40,
+      "startLine": 36,
       "endLine": 74,
       "summary": "tendsto_rpow_inv_atTop (c^{1/r} → 1 as r → +∞) and rpow_le_rpow_of_nonpos (monotone rpow for nonpositive exponents).",
       "mathContext": "$c^{r^{-1}} = e^{(\\log c)/r} \\to e^0 = 1$ as $r \\to +\\infty$ (continuity of $\\exp$ at 0). For $0 < a \\leq b$ and $z \\leq 0$: $b^z \\leq a^z$ (proved via $z = -(-z)$ and `rpow_neg`)."
