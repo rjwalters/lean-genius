@@ -100,6 +100,30 @@
       "startLine": 108,
       "endLine": 116,
       "summary": "Defines subsetSumCount and subsetProductCount, with axioms that the union count dominates each individual count."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Section 7: Foundational lemmas (axiom-free)",
+      "startLine": 117,
+      "endLine": 196,
+      "summary": "The structural toolkit for subsetSums / subsetProducts / sumsOrProducts, all axiom-free: membership facts (zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem) and the two inclusions into sumsOrProducts; the exponential cardinality bounds subsetSums_card_le and subsetProducts count ≤ 2^|A|; the quadratic bounds sumset_card_le and productset_card_le (≤ |A|²); monotonicity (subsetSums_mono) and the empty-set base case subsetSums_empty = {0}.",
+      "mathContext": "$|\\mathrm{subsetSums}\\,A| \\le 2^{|A|}$, $|A+A| \\le |A|^2$; every element of $A$ and $0$ are representable, and the representable sets are monotone in $A$."
+    },
+    {
+      "id": "base-case-upper-bracket",
+      "title": "Section 8: The k = 1 base case and the trivial upper bracket",
+      "startLine": 197,
+      "endLine": 274,
+      "summary": "The elementary slice of Problem 53 and the matching trivial upper bound. subset_subsetSums and card_le_sumsOrProducts embed A into the representable set; erdosProblem53_exponent_one proves the k = 1 (exponent-one) instance of the Erdős–Szemerédi lower bound — the one elementary case; and sumsOrProducts_card_le supplies the trivial upper bracket |sumsOrProducts A| ≤ 2^(|A|+1), together with the subsetProducts analogues of the Section-7 lemmas (empty, cardinality, monotonicity) and basic sumsOrProducts facts (nonempty, contains 0).",
+      "mathContext": "$|A| \\le |\\mathrm{sumsOrProducts}\\,A| \\le 2^{|A|+1}$; the exponent-one lower bound $|\\mathrm{sumsOrProducts}\\,A| \\ge |A|$ is the elementary $k=1$ case of Erdős–Szemerédi."
+    },
+    {
+      "id": "sharp-cardinality-prime-superincreasing",
+      "title": "Section 8 (cont.): Sharp cardinality for distinct primes and superincreasing sets",
+      "startLine": 275,
+      "endLine": 405,
+      "summary": "The structure that makes the trivial bounds attained. subsetProd_injOn_of_prime and subsetProducts_card_of_prime: for a set of distinct positive primes the subset products are pairwise distinct, so |subsetProducts A| = 2^|A| − 1 (Chang's 'Key lemma 2', positivity ruling out the p ↔ −p collision). Dually, subsetSum_injOn_of_superincreasing and subsetSums_card_of_superincreasing: a superincreasing sequence (each term exceeding the sum of its predecessors) has all 2^|A| subset sums distinct — the sum-side witness that the 2^|A| bound is sharp.",
+      "mathContext": "Distinct positive primes: $|\\mathrm{subsetProducts}\\,A| = 2^{|A|}-1$; superincreasing $A$ (each $a_i > \\sum_{j<i} a_j$): $|\\mathrm{subsetSums}\\,A| = 2^{|A|}$."
     }
   ],
   "conclusion": {
