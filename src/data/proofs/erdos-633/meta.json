@@ -101,87 +101,95 @@
       "id": "triangle-representation",
       "title": "Triangle Representation",
       "startLine": 37,
-      "endLine": 66,
+      "endLine": 101,
       "summary": "Defines the Triangle structure (three positive side lengths with the triangle inequalities), the TriangleByAngles structure (three angles in (0,π) summing to π), and Triangle.area via Heron's formula.",
       "mathContext": "A triangle is encoded by side lengths $a,b,c>0$ satisfying the three triangle inequalities, or alternatively by angles $\\alpha,\\beta,\\gamma \\in (0,\\pi)$ with $\\alpha+\\beta+\\gamma=\\pi$. Area uses Heron: $\\sqrt{s(s-a)(s-b)(s-c)}$ with $s=(a+b+c)/2$."
     },
     {
       "id": "dissection-definitions",
       "title": "Dissection Definitions",
-      "startLine": 67,
-      "endLine": 83,
+      "startLine": 102,
+      "endLine": 137,
       "summary": "Defines CongruentDissection T S n (n copies of S tile T, with an area condition and a congruence/proportionality condition), CanDissectInto T n (∃ such S), and DissectionCounts T (the set of n ≥ 1 into which T can be congruently dissected).",
       "mathContext": "CongruentDissection requires $\\mathrm{area}(T)=n\\cdot\\mathrm{area}(S)$ together with proportional side ratios. DissectionCounts$(T)=\\{n\\geq 1 : T$ can be cut into $n$ congruent copies$\\}$."
     },
     {
       "id": "square-number-property",
       "title": "Square Number Property",
-      "startLine": 84,
-      "endLine": 97,
+      "startLine": 138,
+      "endLine": 153,
       "summary": "Defines IsPerfectSquare n (n = k²), HasSquareOnlyProperty T (every achievable dissection count is a perfect square), and the set SquareOnlyTriangles of triangles with that property — the central object Erdős #633 asks to classify.",
       "mathContext": "$\\mathrm{HasSquareOnlyProperty}(T) :\\Leftrightarrow \\forall n \\in \\mathrm{DissectionCounts}(T),\\ \\exists k,\\ n=k^2$. SquareOnlyTriangles is the subset of all such $T$; the open problem is to characterize it geometrically."
     },
     {
       "id": "universal-dissection",
       "title": "Universal Dissection into Squares",
-      "startLine": 98,
-      "endLine": 112,
+      "startLine": 154,
+      "endLine": 185,
       "summary": "Triangle.scale and Triangle.area_scale (degree-2 homogeneity of Heron's area, fully verified) provide the engine. universal_square_dissection (now PROVED): every triangle dissects into n² congruent copies for any n ≥ 1, witnessed by the similar copy of linear scale 1/n. squares_always_achievable (proved from it): every perfect square ≥ 1 lies in DissectionCounts T.",
       "mathContext": "The $n \\times n$ scaling subdivision gives $k^2 \\in \\mathrm{DissectionCounts}(T)$ for all $k\\geq 1$ and every triangle $T$. Thus square counts are universal; the problem is whether any *non-square* count is also achievable."
     },
     {
+      "id": "model-adequacy",
+      "title": "Model Adequacy: the simplified model collapses",
+      "startLine": 186,
+      "endLine": 262,
+      "summary": "Turns the informal caveat that the simplified congruent-dissection model is too permissive into three theorems: all_counts_achievable (every n ≥ 1, not just n², is an achievable count), dissectionCounts_eq (DissectionCounts T = {n | 1 ≤ n} for any triangle), not_isPerfectSquare_two (helper), and no_square_only_in_model (no triangle has the square-only property in this model, since 2 is achievable but not a perfect square). This is why the file's honest namesake result is a *model-collapse* statement rather than a classification.",
+      "mathContext": "In the simplified model every $n \\ge 1$ is achievable, so $\\mathrm{DissectionCounts}(T) = \\{n \\mid 1 \\le n\\}$ for all $T$; since $2 \\notin \\{k^2\\}$, no triangle is square-only — the model cannot distinguish the Erdős #633 class and collapses."
+    },
+    {
       "id": "soifer-example",
       "title": "Soifer's Example",
-      "startLine": 113,
-      "endLine": 150,
+      "startLine": 263,
+      "endLine": 303,
       "summary": "Defines soiferTriangle, the triangle with sides √2, √3, √4 (= 2), discharging its positivity and triangle-inequality obligations with explicit sqrt bounds. soiferTriangle_not_square_only_in_model (PROVED) records that Soifer's genuine geometric claim is model-false in this relaxation: no_square_only_in_model already disproves HasSquareOnlyProperty soiferTriangle.",
       "mathContext": "Soifer's witness has sides $\\sqrt2,\\sqrt3,2$; the triangle inequalities follow from $1<\\sqrt2,\\sqrt3<2$. It is the canonical example conjectured to be cuttable only into square numbers of congruent copies."
     },
     {
       "id": "integral-independence",
       "title": "Integral Independence",
-      "startLine": 151,
-      "endLine": 164,
+      "startLine": 304,
+      "endLine": 321,
       "summary": "Defines HasIntegrallyIndependentAngles (no non-trivial integer combination of the angles vanishes). no_square_only_witness_in_model (PROVED) records that the heuristic 'integrally independent angles ⇒ square-only' is model-false here: the existence conclusion ∃ T', HasSquareOnlyProperty T' fails outright since no triangle is square-only in the relaxation.",
       "mathContext": "Integral independence of $(\\alpha,\\beta,\\gamma)$ rules out the rational angle relations that enable non-square dissections, suggesting a link between angle arithmetic and the square-only property."
     },
     {
       "id": "non-square-dissections",
       "title": "Non-Square Dissections for Generic Triangles",
-      "startLine": 165,
-      "endLine": 180,
+      "startLine": 322,
+      "endLine": 383,
       "summary": "Defines HasNonSquareDissection (some achievable count is not a perfect square) and gives two existence witnesses (both now PROVED via area_scale): equilateral triangles dissect into 3 copies, and right isosceles triangles (legs equal, hypotenuse = leg·√2) dissect into 2 copies — both non-square counts in the area-compatibility model.",
       "mathContext": "Generic triangles admit non-square counts: equilaterals give $3\\in\\mathrm{DissectionCounts}$, right isosceles give $2$. These are the obstructions that a square-only triangle must avoid."
     },
     {
       "id": "similar-vs-congruent",
       "title": "Similar vs Congruent Dissections",
-      "startLine": 181,
-      "endLine": 198,
+      "startLine": 384,
+      "endLine": 436,
       "summary": "Defines CanDissectIntoSimilar (the area+side-ratio relaxation of similar dissection) and proves it collapses just like the congruent model: all_similar_counts (CanDissectIntoSimilar T n for every triangle and every n ≥ 1). Hence similar_dissection_characterization is now PROVED with a vacuous {2,3,5} exclusion, and no_exceptional_similar_in_model refutes the model-false exceptional-cases claim (every triangle satisfies the relaxation at n = 2,3,5).",
       "mathContext": "The genuine Problem #634 ($n \\notin \\{2,3,5\\}$ with real exceptions at $2,3,5$) needs a faithful tiling. The relaxation $\\mathrm{CanDissectIntoSimilar}$ used here is too coarse: by area homogeneity it holds for every $n \\geq 1$, so the #634 exceptions are invisible — the same collapse that defeats the congruent model of #633."
     },
     {
       "id": "classification-problem",
       "title": "The Classification Problem (OPEN)",
-      "startLine": 199,
-      "endLine": 212,
+      "startLine": 437,
+      "endLine": 450,
       "summary": "Defines erdos633Classification (the existence of a 'nice' geometric predicate P characterizing HasSquareOnlyProperty) and the placeholder theorem erdos_633_open (a tautology marking the problem as unresolved). The $25 prize is for a complete characterization.",
       "mathContext": "The classification target: a geometric predicate $P$ with $\\mathrm{HasSquareOnlyProperty}(T) \\Leftrightarrow P(T)$ for all $T$. No such characterization is known; this remains the open core of Erdős #633."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "startLine": 213,
-      "endLine": 225,
+      "startLine": 451,
+      "endLine": 469,
       "summary": "Defines soiferFamily (triangles with sides √p, √q, √r for distinct naturals satisfying the triangle inequality). squareOnly_empty_in_model (PROVED) records that the partial result 'soiferFamily ⊆ SquareOnlyTriangles' is model-false: here SquareOnlyTriangles ⊆ ∅ (no triangle is square-only) while soiferFamily is nonempty, pinning down exactly why the relaxation is too coarse.",
       "mathContext": "soiferFamily $=\\{T : a=\\sqrt p, b=\\sqrt q, c=\\sqrt r,\\ p,q,r$ distinct$\\}$ is nonempty (it contains soiferTriangle), yet $\\mathrm{SquareOnlyTriangles}=\\emptyset$ in the relaxation, so the genuine containment cannot be seen without a faithful tiling predicate."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem Statement",
-      "startLine": 226,
-      "endLine": 236,
+      "startLine": 470,
+      "endLine": 497,
       "summary": "erdos_633_model_collapse: the honest namesake theorem. Both relaxations accept all n ≥ 1 (DissectionCounts T = {n | 1 ≤ n} and CanDissectIntoSimilar T n for all n ≥ 1), so the square-only property is vacuous and any faithful resolution of #633/#634 needs strictly finer geometric data than area + side ratios. Closes with #check commands.",
       "mathContext": "Top-level proven statement: $(\\forall T,\\ \\mathrm{DissectionCounts}(T)=\\{n\\mid 1\\le n\\}) \\wedge (\\forall T,\\ \\neg\\mathrm{HasSquareOnlyProperty}(T))$. This does NOT resolve #633 (still OPEN); it sharply delimits what the area+ratio relaxation can express."
     }
