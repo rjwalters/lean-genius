@@ -561,4 +561,52 @@ theorem transfiniteDiameter_le (n : ℕ) :
     transfiniteDiameter ≤ transfiniteDiameterN (n + 2) :=
   ciInf_le transfiniteDiameterN_shift_bddBelow n
 
+/-! ### The first term is exact: `d₂ = 2`
+
+The `2`-point diameter reduces to the single gap `d₂(z) = ‖z₀ - z₁‖`, whose
+supremum over the closed unit disc is `2`, attained by the antipodal pair
+`{1, -1}`.  This is the only stage of the sequence whose value is elementary
+(the sharp `d = 1` for the disc is the deep Fekete–Szegő content); it pins the
+top of the monotone sequence exactly and shows the uniform bound
+`dₙ ≤ 2` is attained at `n = 2`. -/
+
+/-- The spread product of a `2`-point configuration is the single gap
+`‖z₀ - z₁‖` (the only pair `i < j` in `Fin 2`). -/
+theorem spreadProduct_two (z : Fin 2 → ℂ) : spreadProduct z = ‖z 0 - z 1‖ := by
+  unfold spreadProduct
+  rw [Fin.prod_univ_two]
+  have h0 : Finset.Ioi (0 : Fin 2) = {1} := by decide
+  have h1 : Finset.Ioi (1 : Fin 2) = (∅ : Finset (Fin 2)) := by decide
+  rw [h0, h1, Finset.prod_singleton, Finset.prod_empty, mul_one]
+
+/-- The `2`-point diameter is exactly the gap `‖z₀ - z₁‖`: the normalising
+exponent `2/(n(n-1))` equals `1` at `n = 2`. -/
+theorem discreteDiameter_two (z : Fin 2 → ℂ) :
+    discreteDiameter z = ‖z 0 - z 1‖ := by
+  rw [discreteDiameter, spreadProduct_two]
+  norm_num
+
+/-- **`d₂ = 2`.**  The `2`-point transfinite diameter of the closed unit disc is
+exactly `2`, attained by the antipodal configuration `{1, -1}`: the upper bound
+`d₂ ≤ 2` (from `discreteDiameter_le_two`) is achieved, since
+`d₂({1,-1}) = ‖1 - (-1)‖ = 2`. -/
+theorem transfiniteDiameterN_two : transfiniteDiameterN 2 = 2 := by
+  refine le_antisymm (transfiniteDiameterN_mem_Icc (le_refl 2)).2 ?_
+  have hwit : discreteDiameter (![(1 : ℂ), -1]) = 2 := by
+    rw [discreteDiameter_two]
+    norm_num
+  refine le_csSup (unitDiscDiameters_bddAbove (le_refl 2))
+    ⟨![(1 : ℂ), -1], ?_, hwit⟩
+  intro i
+  fin_cases i <;> norm_num
+
+/-- **The transfinite diameter of the disc is at most `2`, sharply.**  Since
+`d = ⨅ₙ d_{n+2}` and the first term `d₂ = 2` (`transfiniteDiameterN_two`), the
+bound `d ≤ 2` from `transfiniteDiameter_mem_Icc` is exactly the `n = 0` term of
+the defining infimum. -/
+theorem transfiniteDiameter_le_two_via_d2 :
+    transfiniteDiameter ≤ 2 := by
+  have := transfiniteDiameter_le 0
+  rwa [transfiniteDiameterN_two] at this
+
 end Erdos1039TransfiniteDiameter
