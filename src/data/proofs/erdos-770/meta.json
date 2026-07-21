@@ -123,9 +123,16 @@
       "id": "fermat-formula",
       "title": "Fermat Formula and Unboundedness",
       "startLine": 497,
-      "endLine": 531,
+      "endLine": 540,
       "summary": "PROVED: `hMinK_prime_minus_one` — for every prime $p$, $h(p-1) = p$. PROVED: `hMinK_succ_of_prime` — $h(n) = n+1$ iff $n+1$ is prime (formal statement). PROVED: `hMinK_unbounded` — for any $M$, $\\exists n$ with $h(n) > M$.",
       "mathContext": "For prime $p$: (i) $h(p-1) \\leq p$ because $\\gcd(2^{p-1}-1, \\ldots, p^{p-1}-1) = 1$ by `gcdPowerSeq_at_succ_eq_one`. (ii) $h(p-1) \\geq p$: for any $k < p$, Fermat gives $p \\mid \\gcd(2^{p-1}-1, \\ldots, k^{p-1}-1)$ so the gcd is not 1. Unboundedness follows: for any $M$, take a prime $p > M$ (by `Nat.exists_infinite_primes`); then $h(p-1) = p > M$."
+    },
+    {
+      "id": "open-question-axioms",
+      "title": "Open-Question Axioms: Q1 (Density) and Q3 (Dominant Prime)",
+      "startLine": 541,
+      "endLine": 559,
+      "summary": "The two genuinely-open questions, stated as axioms. `erdos_770_q1`: for each prime p the natural density of {n : hMinK n = p} exists (OPEN — needs density theory for multiplicative functions). `erdos_770_q3`: for large n, hMinK n is determined by the largest prime p with (p−1) ∣ n (OPEN — no proof in the literature). These are the assumptions that keep the entry `axiomatized`; Q2 (unboundedness) is proved above, not axiomatized."
     }
   ],
   "overview": {
