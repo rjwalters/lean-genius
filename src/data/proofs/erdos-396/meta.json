@@ -49,43 +49,43 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 25,
       "summary": "Documents the problem, known results (Catalan divisibility, Pomerance 2014), and imports Mathlib modules for natural numbers, central binomial coefficients, and factorials."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 27,
-      "endLine": 34,
-      "summary": "References Mathlib's `Nat.descFactorial` for descending factorials and `Nat.centralBinom` for central binomial coefficients."
+      "startLine": 26,
+      "endLine": 50,
+      "summary": "References Mathlib's `Nat.descFactorial` and `Nat.centralBinom`, defines `descProduct n k` (the descending product $n(n-1)\\cdots(n-k)$) with the identity `descProduct_eq_descFactorial` and base case `descProduct_zero`, and states the Erdős–Graham conjecture `Conjecture`: $\\forall k,\\ \\exists n>k,\\ n^{\\underline{k+1}} \\mid \\binom{2n}{n}$."
     },
     {
       "id": "basic-divisibility",
       "title": "Basic Divisibility Results",
-      "startLine": 35,
-      "endLine": 46,
+      "startLine": 51,
+      "endLine": 66,
       "summary": "Proves Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ via Mathlib's `Nat.succ_dvd_centralBinom`. Also includes `n_divides_rarely`, a vacuous placeholder theorem (witnessed by the empty set S=∅ with a `True` conjunct) that says nothing substantive about the rarity of divisibility."
+    },
+    {
+      "startLine": 67,
+      "endLine": 83,
+      "title": "Witnesses for Small k",
+      "summary": "Proves the conjecture for the smallest cases: `conjecture_holds_for_zero` ($k=0$, witness $n=2$) and `conjecture_holds_for_one` ($k=1$, witness $n=2$), each discharged by `decide` on the concrete divisibility.",
+      "mathContext": "For $k=0,1$ the witness $n=2$ works because $\\operatorname{descProduct} 2\\,0 = 2$ and $\\operatorname{descProduct} 2\\,1 = 2$ both divide $\\binom{4}{2}=6$."
     },
     {
       "id": "pomerance-results",
       "title": "Pomerance's Results (2014)",
-      "startLine": 47,
-      "endLine": 62,
+      "startLine": 84,
+      "endLine": 90,
       "summary": "Docstring comments summarizing Pomerance's 2014 results (single-factor divisibility for infinitely many $n$, upper density $< 1/3$, density 1 for ascending factorials). No Lean axioms or theorems formalize these results in this file — the section contains only commented-out narrative."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "The Erdős–Graham Conjecture",
-      "startLine": 63,
-      "endLine": 69,
-      "summary": "Docstring commentary on the Erdős–Graham conjecture ($\\forall k, \\exists n: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$). No formal Lean axiom or theorem stating the conjecture is present in this section."
     },
     {
       "id": "computational-evidence",
       "title": "Computational Evidence",
-      "startLine": 70,
-      "endLine": 78,
-      "summary": "Axiomatizes `smallest_witness : ℕ → ℕ`, a function-typed axiom for the witness sequence (OEIS A375077). No validity property relating the function to actual smallest witnesses is stated."
+      "startLine": 91,
+      "endLine": 103,
+      "summary": "Three `example` sanity checks discharged by `decide`: `Nat.centralBinom 2 = 6`, `¬(3 ∣ centralBinom 3)`, and `6 ∣ centralBinom 6` — confirming the smallest witness $n=2$, the non-universality of $n \\mid \\binom{2n}{n}$, and the next $k=0$ witness $n=6$. (No axioms are introduced.)"
     }
   ],
   "conclusion": {
