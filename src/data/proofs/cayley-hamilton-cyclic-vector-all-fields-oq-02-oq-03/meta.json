@@ -165,6 +165,21 @@
     "definitionCount": 1,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean",
     "sorries": 0,
-    "additionalFiles": []
+    "additionalFiles": [
+      {
+        "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean",
+        "imports": [
+          "Mathlib",
+          "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03",
+          "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01"
+        ],
+        "namespace": "EndCyclicCommutant",
+        "lineCount": 205,
+        "axiomCount": 0,
+        "theoremCount": 5,
+        "definitionCount": 2,
+        "sorries": 0
+      }
+    ]
   }
 }

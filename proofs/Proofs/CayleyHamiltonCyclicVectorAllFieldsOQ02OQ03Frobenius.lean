@@ -143,6 +143,63 @@ theorem finrank_centralizer_eq_of_cyclic [FiniteDimensional K V]
   le_antisymm (finrank_centralizer_le_of_cyclic T v hcyc)
     (CyclicCommutantConverse.endK_centralizer_bound T)
 
+-- ============================================================
+-- SECTION IV: the evaluation isomorphism  C(T) ≃ₗ[K] V
+-- ============================================================
+
+/-- **Evaluation at `v`**, `A ↦ A·v`, as a `K`-linear map from the centralizer
+    submodule of `T` into `V`.  (Named form of the map used implicitly in
+    `finrank_centralizer_le_of_cyclic`; here we upgrade it to an isomorphism.) -/
+def centralizerEval (T : Module.End K V) (v : V) :
+    ↥(Subalgebra.toSubmodule (Subalgebra.centralizer K ({T} : Set (Module.End K V))))
+      →ₗ[K] V where
+  toFun A := (A : Module.End K V) v
+  map_add' A B := by simp only [Submodule.coe_add, LinearMap.add_apply]
+  map_smul' c A := by simp only [Submodule.coe_smul, LinearMap.smul_apply, RingHom.id_apply]
+
+/-- Evaluation at a cyclic vector is injective on the centralizer: two operators
+    commuting with `T` that agree on `v` are equal (`commuting_end_eq_of_apply_eq`). -/
+theorem centralizerEval_injective [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (hcyc : IsEndCyclicVector T v) :
+    Function.Injective (centralizerEval T v) := by
+  set S := Subalgebra.centralizer K ({T} : Set (Module.End K V)) with hS_def
+  intro A B hAB
+  have hAB' : (A : Module.End K V) v = (B : Module.End K V) v := hAB
+  have hAmem : (A : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule S).mp A.2
+  have hBmem : (B : Module.End K V) ∈ S := (Subalgebra.mem_toSubmodule S).mp B.2
+  have hAcomm : (A : Module.End K V) * T = T * (A : Module.End K V) :=
+    ((Subalgebra.mem_centralizer_iff K).mp hAmem T (Set.mem_singleton _)).symm
+  have hBcomm : (B : Module.End K V) * T = T * (B : Module.End K V) :=
+    ((Subalgebra.mem_centralizer_iff K).mp hBmem T (Set.mem_singleton _)).symm
+  exact Subtype.ext (commuting_end_eq_of_apply_eq T v hcyc _ _ hAcomm hBcomm hAB')
+
+/-- **The evaluation isomorphism.**  For `T : Module.End K V` (over a
+    finite-dimensional `V`) with a cyclic vector `v`, evaluation at `v`,
+    `A ↦ A·v`, is a `K`-linear **isomorphism** from the centralizer `C(T)` onto
+    the whole space `V`:
+
+        C(T) ≃ₗ[K] V,   A ↦ A·v.
+
+    This strengthens the Frobenius dimension *equality*
+    (`finrank_centralizer_eq_of_cyclic`) to a canonical *equivalence*: the map is
+    injective by `centralizerEval_injective` and the two spaces have equal
+    dimension, so it is bijective.  It is the `K`-linear shadow of the statement
+    "`V` is a free rank-`1` module over the commutative ring `K[T] = C(T)`" — the
+    module-theoretic content of `v` being a cyclic vector. -/
+noncomputable def centralizerEvalEquiv [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (hcyc : IsEndCyclicVector T v) :
+    ↥(Subalgebra.toSubmodule (Subalgebra.centralizer K ({T} : Set (Module.End K V))))
+      ≃ₗ[K] V :=
+  (centralizerEval T v).linearEquivOfInjective
+    (centralizerEval_injective T v hcyc)
+    (finrank_centralizer_eq_of_cyclic T v hcyc)
+
+@[simp]
+theorem centralizerEvalEquiv_apply [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (hcyc : IsEndCyclicVector T v)
+    (A : ↥(Subalgebra.toSubmodule (Subalgebra.centralizer K ({T} : Set (Module.End K V))))) :
+    centralizerEvalEquiv T v hcyc A = (A : Module.End K V) v := rfl
+
 end EndCyclicCommutant
 
 end

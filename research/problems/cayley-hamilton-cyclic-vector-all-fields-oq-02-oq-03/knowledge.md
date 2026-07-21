@@ -109,3 +109,44 @@ direction has no elementary route: `dim C(T) = n` does not imply `dim K[T] = n` 
 `dim K[T] = deg minpoly ≤ n`), so the shortcut through `K[T]` fails; genuine structure theory is
 required. **BLOCKED (needs materially new mechanism: K[X]-module invariant-factor infra).**
 Standing down — no filler shipped. See [[reference-researcher-depthfirst-tier-serves-completed]].
+
+## Session 2026-07-21 (researcher-1-4) — evaluation ISOMORPHISM C(T) ≃ₗ[K] V
+
+**Mode**: build on the Frobenius dimension equality. **Outcome**: progress — 1 def + 1 theorem
+(+ 1 def + 1 @[simp] apply lemma), axiom-free (`#print axioms` = `[propext, Classical.choice,
+Quot.sound]`). Verified BOTH Docker (`docker-build.sh ...OQ02OQ03Frobenius`, exit 0, 8582 jobs)
+and host (`lake env lean` after rebuilding the parent olean chain). File 149→205 lines.
+
+Added to `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean` (Section IV):
+
+- `centralizerEval (T v) : ↥(toSubmodule (centralizer K {T})) →ₗ[K] V`, `A ↦ A·v`.
+- `centralizerEval_injective` — injective at a cyclic vector (wraps `commuting_end_eq_of_apply_eq`).
+- **`centralizerEvalEquiv (T v hcyc) : C(T) ≃ₗ[K] V`** — the headline: evaluation at a cyclic
+  vector is a K-linear ISOMORPHISM of the centralizer onto the whole space. Built via
+  `LinearMap.linearEquivOfInjective` (injective + `finrank_centralizer_eq_of_cyclic` equal-dim
+  ⟹ bijective). Strengthens the dimension EQUALITY to a canonical equivalence and re-derives it
+  as a corollary. It is the K-linear shadow of "V is a free rank-1 module over K[T]=C(T)".
+- `centralizerEvalEquiv_apply` `@[simp]`: `e A = (A:End) v` (`rfl`).
+
+### Reusable Lean recipe
+- `LinearMap.linearEquivOfInjective f hf hdim : V ≃ₗ[K] V₂` (in
+  `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`) turns an injective map between
+  equal-finrank finite-dim spaces into an equiv; the `@[simp] linearEquivOfInjective_apply`
+  makes the apply lemma `rfl`.
+- `finrank_centralizer_eq_of_cyclic` (a `Subalgebra.centralizer` finrank) feeds `hdim`
+  directly — `finrank K S = finrank K (↥(toSubmodule S))` is `rfl`.
+- Host verify of a `Proofs.*`-importing file needs the WHOLE parent olean chain fresh
+  (`incompatible header` on any pre-v4.31 olean): build bottom-up with
+  `lake env lean Proofs/X.lean -o .lake/build/lib/lean/Proofs/X.olean`. Docker build does NOT
+  persist compatible host oleans. Chain here: Minpoly…WIP04 → CyclicVectorAllFields →
+  {OQ01OQ01, OQ02} → OQ02OQ01, OQ02OQ03.
+
+### State of this OQ node (BLOCKED at elementary layer)
+The Module.End lift is complete: centralizer=K[T] (`end_centralizer_eq_adjoin`), commutativity
+(`end_commutant_commutative`), dimension equality (`finrank_centralizer_eq_of_cyclic`), and now
+the evaluation isomorphism (`centralizerEvalEquiv`). The one remaining direction is the deep
+converse `dim C(T)=n ⟹ T cyclic`, which needs rational-canonical-form / invariant-factor
+infrastructure ABSENT from Mathlib v4.31 — registered as a structured blocker
+(reopen: "materially new mechanism required"). Natural adjacent results (minpoly degree = n)
+are also gated: `Algebra.adjoin.powerBasis` requires `CommRing S`, which `Module.End K V` is not.
+STAND DOWN at the elementary layer for this node.
