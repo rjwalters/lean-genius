@@ -51,36 +51,52 @@
     {
       "id": "sec-761-header",
       "title": "Problem Overview",
-      "startLine": 30,
-      "endLine": 38,
+      "startLine": 1,
+      "endLine": 39,
       "summary": "Imports from `Mathlib.Combinatorics.SimpleGraph` for graph structure and coloring, plus `Mathlib.Data.Fintype.Basic` for finite vertex sets. All declarations are wrapped in `namespace Erdos761` to avoid the `Orientation` name collision with `Mathlib.LinearAlgebra.Orientation`."
     },
     {
       "id": "sec-761-definitions",
       "title": "Core Definitions",
-      "startLine": 39,
-      "endLine": 98,
+      "startLine": 40,
+      "endLine": 99,
       "summary": "Defines `Orientation G` (directed edge assignment), `colorClassEdge` (directed edge relation within a color class), `IsAcyclicColoring` (no monochromatic directed **cycle** via `Relation.TransGen` — the correct mathematical definition from Neumann-Lara 1982), `HasAcyclicColoring`, `dichromNumber` $\\delta(G)$, `IsCochromatic` (each class is clique or independent set), and `cochromNumber` $\\zeta(G)$."
     },
     {
       "id": "sec-761-bridge",
       "title": "Bridge Lemma",
-      "startLine": 99,
-      "endLine": 122,
+      "startLine": 100,
+      "endLine": 123,
       "summary": "The key `isAcyclicColoring_of_no_mono_edge` theorem: if no directed edge is monochromatic (the stronger condition), then no directed cycle is monochromatic (the acyclic condition). This bridges proper-coloring arguments to the cycle-free definition."
     },
     {
       "id": "sec-761-properties",
-      "title": "Proved Properties (formerly axioms)",
-      "startLine": 123,
-      "endLine": 287,
-      "summary": "The `section ProvedProperties` block establishes the structural results, all fully proved: $\\delta(G) \\le \\chi(G)$ and $\\zeta(G) \\le \\chi(G)$ (`dichrom_le_chrom`, `cochrom_le_chrom`), the colorability bounds `dichrom_le_of_colorable` / `cochrom_le_of_colorable`, the lifts to Mathlib's `SimpleGraph.chromaticNumber` (`dichrom_le_chromaticNumber`, `cochrom_le_chromaticNumber`), the bipartite bound $\\delta(G) \\le 2$ (`bipartite_dichrom_le_two`), `acyclic_orientation_exists`, and subgraph monotonicity $H \\subseteq G \\Rightarrow \\delta(H) \\le \\delta(G)$ (`dichrom_mono`)."
+      "title": "Proved Properties: Chromatic Bounds & Monotonicity",
+      "startLine": 124,
+      "endLine": 364,
+      "summary": "The `section ProvedProperties` block, all fully proved: $\\delta(G) \\le \\chi(G)$ and $\\zeta(G) \\le \\chi(G)$ (`dichrom_le_chrom`, `cochrom_le_chrom`), the colorability bounds (`dichrom_le_of_colorable` / `cochrom_le_of_colorable`), lifts to Mathlib's `SimpleGraph.chromaticNumber` (`dichrom_le_chromaticNumber`, `cochrom_le_chromaticNumber`), the bipartite bound $\\delta(G) \\le 2$ (`bipartite_dichrom_le_two`), `acyclic_orientation_exists`, and the monotonicity chain: subgraph $H \\subseteq G \\Rightarrow \\delta(H) \\le \\delta(G)$ (`dichrom_mono`), the embedding/injective-map generalization (`dichrom_mono_of_embedding`), and induced-subgraph monotonicity (`dichrom_induce_le`)."
+    },
+    {
+      "id": "colorcount-sinf",
+      "title": "Color-Count Monotonicity & sInf Characterizations",
+      "startLine": 365,
+      "endLine": 455,
+      "summary": "Monotonicity of `HasAcyclicColoring` in the color count (`hasAcyclicColoring_of_injection`, `hasAcyclicColoring_mono`) plus the clean `sInf` characterizations that follow from upward-closedness of the defining sets: $\\delta(G) \\le k \\iff \\exists$ acyclic $k$-coloring (`dichromNumber_le_iff`), $\\delta(G) > 0$ on a nonempty graph (`dichromNumber_pos`), and the cochromatic analogues (`isCochromatic_of_injection`, `cochromNumber_le_iff`, `cochromNumber_pos`).",
+      "mathContext": "$\\delta(G) = \\inf\\{k : \\exists\\text{ acyclic } k\\text{-coloring}\\}$; the set $\\{k : \\ldots\\}$ is upward closed (add unused colors via `hasAcyclicColoring_mono`), so `Nat.sInf` gives $\\delta(G) \\le k \\iff \\exists$ acyclic $k$-coloring and $\\delta(G) \\ge 1$ whenever $V$ is nonempty."
+    },
+    {
+      "id": "delta-le-one",
+      "title": "The δ ≤ 1 Characterization (Forests)",
+      "startLine": 456,
+      "endLine": 506,
+      "summary": "The structural heart of the file: `dichromNumber_le_one_iff` characterizes $\\delta(G) \\le 1$ (a graph is 1-dichromatic exactly when it admits an acyclic orientation with a single color class — i.e. it is a forest), and `dichromNumber_bot` computes $\\delta(\\bot) = 1$ for the edgeless graph on a nonempty vertex set.",
+      "mathContext": "$\\delta(G) \\le 1 \\iff G$ has an acyclic orientation whose (unique) color class induces no monochromatic directed cycle — the digraph analogue of \"$\\chi(G) \\le 1 \\iff G$ edgeless\", here reading as the forest characterization. The edgeless graph $\\bot$ has $\\delta(\\bot) = 1$ (not $0$) on nonempty $V$."
     },
     {
       "id": "sec-761-conjectures",
       "title": "Open Conjectures (2 axioms)",
-      "startLine": 288,
-      "endLine": 314,
+      "startLine": 507,
+      "endLine": 532,
       "summary": "States the two open questions as axioms: **Question 1** (Erdős-Neumann-Lara) `erdos_761_question1`: $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel) `erdos_761_question2`: $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$. These two `axiom` declarations are the only assumptions in the file."
     }
   ],
