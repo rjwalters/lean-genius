@@ -175,9 +175,17 @@
       "id": "character-uniqueness",
       "title": "Part X: Character Uniqueness",
       "startLine": 511,
-      "endLine": 577,
+      "endLine": 573,
       "summary": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). Two such homomorphisms must agree. This forces `signMulHom = legendreCharOnUnits`, proving Zolotarev's Lemma.",
       "mathContext": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). This forces `signMulHom = legendreCharOnUnits`, proving Zolotarev's Lemma."
+    },
+    {
+      "id": "summary-verification",
+      "title": "Summary and Verification",
+      "startLine": 574,
+      "endLine": 624,
+      "summary": "Closing docstring recapping what is proved (0 sorries, 0 axioms): mulPerm / mulPermHom / signMulHom, multiplicativity of the sign, squares have sign +1, the QR statement and both supplements (from Mathlib), five computational examples, the cyclic-group infrastructure (Parts VIII–X), and Zolotarev’s Lemma legendreSym p a = sign(mulPerm a) (Part XI). Followed by a #check verification block over the headline declarations.",
+      "mathContext": "Key insight: Eisenstein counts lattice points, Zolotarev counts transpositions; both give $(-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$. The permutation route is algebraic and generalizes to higher reciprocity via Artin symbols."
     }
   ],
   "conclusion": {
