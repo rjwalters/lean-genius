@@ -1754,6 +1754,136 @@ theorem no_four_equidistant_indices {P : PointConfig n} {i j k l : Fin n} {r : �
     False :=
   no_four_mutually_equidistant hr hij hik hil hjk hjl hkl
 
+/-! ## Intersecting-circles rigidity: two common `a`-neighbours of an `a`-apart pair
+
+The `h 5 ≥ 3` degree-`3` sub-cases reduce to the metric geometry of two circles of
+equal radius `a` whose centres are themselves `a` apart.  The following lemma pins that
+geometry exactly: **two points each at distance `a` from both endpoints of a segment of
+length `a` are either equal or exactly `a√3` apart** — the two intersection points of the
+two circles are the far vertices of the rhombus built from two equilateral triangles, at
+distance `2·(a√3/2) = a√3`.
+
+The proof is planar rigidity.  Write `u = x − p`, `v = y − p`, `w = q − p`; all three have
+norm `a`, and `⟨u,w⟩ = ⟨v,w⟩ = a²/2` (each of `x, y` is `a` from both `p` and `q`).  The
+vector `e = u + v − w` is orthogonal to both `w` and `d = u − v` (direct inner-product
+computation).  If `x ≠ y` then `d ≠ 0`; were `e ≠ 0`, the three pairwise-orthogonal nonzero
+vectors `e, w, d` would be linearly independent — impossible in the `2`-dimensional plane
+(`LinearIndependent.fintype_card_le_finrank`: `3 ≤ 2`).  Hence `e = 0`, i.e. `u + v = w`;
+taking norms gives `⟨u,v⟩ = −a²/2`, whence `‖x − y‖² = ‖u − v‖² = 3a²` and `dist x y = a√3`.
+This is the same "regular simplex needs dimension" mechanism as `no_four_mutually_equidistant`,
+run one dimension lower. -/
+open scoped InnerProductSpace in
+/-- **Two common `a`-neighbours of an `a`-apart pair are equal or `a√3` apart.** In
+`EuclideanSpace ℝ (Fin 2)`, if `dist p q = a` and both `x` and `y` are at distance `a`
+from `p` and from `q` (with `a > 0`), then either `x = y` or `dist x y = a · √3`.  Two
+circles of radius `a` with centres `a` apart meet in at most two points, and those two
+points are `a√3` apart.  This discharges the intersecting-circle distance equations that
+arise in the degree-`3` sub-cases of the `h 5 ≥ 3` classification. -/
+theorem two_common_neighbours_dist
+    {p q x y : EuclideanSpace ℝ (Fin 2)} {a : ℝ} (ha : 0 < a)
+    (hpq : dist p q = a)
+    (hxp : dist x p = a) (hxq : dist x q = a)
+    (hyp : dist y p = a) (hyq : dist y q = a) :
+    x = y ∨ dist x y = a * Real.sqrt 3 := by
+  set u : EuclideanSpace ℝ (Fin 2) := x - p with hudef
+  set v : EuclideanSpace ℝ (Fin 2) := y - p with hvdef
+  set w : EuclideanSpace ℝ (Fin 2) := q - p with hwdef
+  set d : EuclideanSpace ℝ (Fin 2) := u - v with hddef
+  set e : EuclideanSpace ℝ (Fin 2) := u + v - w with hedef
+  -- Edge-vector norms are all `a`.
+  have hnu : ‖u‖ = a := by rw [hudef, ← dist_eq_norm]; exact hxp
+  have hnv : ‖v‖ = a := by rw [hvdef, ← dist_eq_norm]; exact hyp
+  have hnw : ‖w‖ = a := by rw [hwdef, ← dist_eq_norm, dist_comm]; exact hpq
+  -- Self inner products.
+  have euu : inner ℝ u u = a ^ 2 := by rw [real_inner_self_eq_norm_sq, hnu]
+  have evv : inner ℝ v v = a ^ 2 := by rw [real_inner_self_eq_norm_sq, hnv]
+  have eww : inner ℝ w w = a ^ 2 := by rw [real_inner_self_eq_norm_sq, hnw]
+  -- Cross inner products with `w` are `a²/2` (each of `x, y` is `a` from both `p` and `q`).
+  have euw : inner ℝ u w = a ^ 2 / 2 := by
+    have hn : ‖u - w‖ = a := by
+      rw [show u - w = x - q from by rw [hudef, hwdef]; abel, ← dist_eq_norm]; exact hxq
+    have h := norm_sub_sq_real u w
+    rw [hn, hnu, hnw] at h; linarith
+  have evw : inner ℝ v w = a ^ 2 / 2 := by
+    have hn : ‖v - w‖ = a := by
+      rw [show v - w = y - q from by rw [hvdef, hwdef]; abel, ← dist_eq_norm]; exact hyq
+    have h := norm_sub_sq_real v w
+    rw [hn, hnv, hnw] at h; linarith
+  have ewu : inner ℝ w u = a ^ 2 / 2 := by rw [real_inner_comm]; exact euw
+  have ewv : inner ℝ w v = a ^ 2 / 2 := by rw [real_inner_comm]; exact evw
+  -- `e = u + v − w` is orthogonal to `w` and to `d = u − v`; `d` is orthogonal to `w`.
+  have hew : inner ℝ e w = 0 := by
+    rw [hedef]; simp only [inner_sub_left, inner_add_left, euw, evw, eww]; ring
+  have hed : inner ℝ e d = 0 := by
+    rw [hedef, hddef]
+    simp only [inner_sub_left, inner_add_left, inner_sub_right, inner_add_right,
+      euu, evv, ewu, ewv]
+    rw [real_inner_comm v u]; ring
+  have hdw : inner ℝ d w = 0 := by
+    rw [hddef]; simp only [inner_sub_left, euw, evw]; ring
+  have hwe : inner ℝ w e = 0 := by rw [real_inner_comm]; exact hew
+  have hde : inner ℝ d e = 0 := by rw [real_inner_comm]; exact hed
+  have hwd : inner ℝ w d = 0 := by rw [real_inner_comm]; exact hdw
+  rcases eq_or_ne x y with hxy | hxy
+  · exact Or.inl hxy
+  · right
+    -- `x ≠ y` forces `u ≠ v`, hence `d ≠ 0`.
+    have huv_ne : u ≠ v := by
+      rw [hudef, hvdef]; intro h; exact hxy (sub_left_inj.mp h)
+    have hd_ne : d ≠ 0 := by rw [hddef]; exact sub_ne_zero.mpr huv_ne
+    have hdd : (0 : ℝ) < inner ℝ d d := by
+      rw [real_inner_self_eq_norm_sq]; exact pow_pos (norm_pos_iff.mpr hd_ne) 2
+    -- The obstruction `e` must vanish: else `e, w, d` are three orthogonal nonzero
+    -- vectors, impossible in the `2`-dimensional plane.
+    have he0 : e = 0 := by
+      by_contra he_ne
+      have hee : (0 : ℝ) < inner ℝ e e := by
+        rw [real_inner_self_eq_norm_sq]; exact pow_pos (norm_pos_iff.mpr he_ne) 2
+      have hli : LinearIndependent ℝ ![e, w, d] := by
+        rw [Fintype.linearIndependent_iff]
+        intro g hg
+        rw [Fin.sum_univ_three] at hg
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+          Matrix.cons_val_two, Matrix.tail_cons] at hg
+        have hg0 : g 0 = 0 := by
+          have h := congrArg (fun z => (inner ℝ z e : ℝ)) hg
+          simp only [inner_add_left, real_inner_smul_left, inner_zero_left, hwe, hde,
+            mul_zero, add_zero] at h
+          exact (mul_eq_zero.mp h).resolve_right hee.ne'
+        have hg1 : g 1 = 0 := by
+          have h := congrArg (fun z => (inner ℝ z w : ℝ)) hg
+          simp only [inner_add_left, real_inner_smul_left, inner_zero_left, hew, hdw,
+            mul_zero, zero_add, add_zero] at h
+          rw [eww] at h
+          exact (mul_eq_zero.mp h).resolve_right (pow_pos ha 2).ne'
+        have hg2 : g 2 = 0 := by
+          have h := congrArg (fun z => (inner ℝ z d : ℝ)) hg
+          simp only [inner_add_left, real_inner_smul_left, inner_zero_left, hed, hwd,
+            mul_zero, zero_add, add_zero] at h
+          exact (mul_eq_zero.mp h).resolve_right hdd.ne'
+        intro i
+        fin_cases i <;> assumption
+      have hcard := hli.fintype_card_le_finrank
+      rw [finrank_euclideanSpace_fin] at hcard
+      simp only [Fintype.card_fin] at hcard
+      omega
+    -- From `e = 0`: `u + v = w`, so `⟨u,v⟩ = −a²/2` and `‖d‖² = 3a²`.
+    have hsum : u + v = w := sub_eq_zero.mp (by rw [← hedef]; exact he0)
+    have htval : inner ℝ u v = -(a ^ 2) / 2 := by
+      have h : inner ℝ (u + v) (u + v) = a ^ 2 := by rw [hsum, eww]
+      simp only [inner_add_left, inner_add_right, euu, evv] at h
+      rw [real_inner_comm v u] at h; linarith
+    have hd2 : inner ℝ d d = 3 * a ^ 2 := by
+      rw [hddef]
+      simp only [inner_sub_left, inner_sub_right, euu, evv]
+      rw [real_inner_comm v u, htval]; ring
+    have hnd2 : ‖d‖ ^ 2 = 3 * a ^ 2 := by rw [← real_inner_self_eq_norm_sq]; exact hd2
+    have hnd : ‖d‖ = a * Real.sqrt 3 := by
+      rw [← Real.sqrt_sq (norm_nonneg d), hnd2, mul_comm (3 : ℝ) (a ^ 2),
+        Real.sqrt_mul (sq_nonneg a), Real.sqrt_sq ha.le]
+    have hxyd : x - y = d := by rw [hddef, hudef, hvdef]; abel
+    rw [dist_eq_norm, hxyd]; exact hnd
+
 /-! ## Concrete unconditional lower-bound values of `h`
 
 The linear bound `n - 1 ≤ 3 · h n` (`three_mul_h_ge`) already pins several exact
