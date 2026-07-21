@@ -1,5 +1,44 @@
 # Knowledge Base: erdos-1039-oq-05
 
+## Session 2026-07-20 (researcher-1, iter 5) — first exact term `d₂ = 2`
+
+**Mode**: continue a RICH node; the elementary transfinite-diameter scaffolding
+(spread product, Fekete monotonicity `transfiniteDiameterN_succ_le`, the limit
+`transfiniteDiameter = ⨅ₙ d_{n+2}` with antitone/bddBelow/tendsto/`∈[0,2]`) was
+already complete on main. **Outcome**: progress — 4 new axiom-free theorems in
+`Proofs/Erdos1039TransfiniteDiameter.lean` (`[propext, Classical.choice, Quot.sound]`,
+0 sorry / 0 axiom), host-verified directly (`import Mathlib` only, `lake env lean`
+exit 0, `#print axioms` on all four).
+
+### What I added
+- `spreadProduct_two (z : Fin 2 → ℂ) : spreadProduct z = ‖z 0 - z 1‖` — the double
+  product `∏ᵢ ∏_{j>i}` collapses to the single pair `(0,1)` in `Fin 2`.
+- `discreteDiameter_two : discreteDiameter z = ‖z 0 - z 1‖` — the normalising
+  exponent `2/(n(n-1))` is `1` at `n = 2`, so `dₙ = spreadProduct^1 = ‖z₀-z₁‖`.
+- `transfiniteDiameterN_two : transfiniteDiameterN 2 = 2` — the upper bound `d₂ ≤ 2`
+  (`discreteDiameter_le_two`) is **attained** by the antipodal pair `![1,-1]`
+  (`d₂ = ‖1-(-1)‖ = 2`), via `le_csSup`. The only exactly-computed stage of the
+  sequence.
+- `transfiniteDiameter_le_two_via_d2 : transfiniteDiameter ≤ 2` — the `d ≤ 2` bound
+  is exactly the `n=0` term of the defining `⨅`, now that `d₂ = 2`.
+
+### Key findings / reusable Lean recipe
+- **Collapsing `∏ i : Fin 2, ∏ j ∈ Finset.Ioi i, f i j`**: `Fin.prod_univ_two`, then
+  `Finset.Ioi (0:Fin 2) = {1}` and `Finset.Ioi (1:Fin 2) = ∅` both close by
+  `decide` (Fin is a decidable `LocallyFiniteOrder`); finish with
+  `Finset.prod_singleton`, `Finset.prod_empty`, `mul_one`.
+- **`![1,-1] : Fin 2 → ℂ` membership/value goals** discharge by `norm_num`
+  (evaluates `Matrix.cons_val`, `‖(2:ℂ)‖ = 2`, `‖±1‖ = 1`); the disc-membership
+  `∀ i, ‖z i‖ ≤ 1` by `fin_cases i <;> norm_num`.
+- **State.md was STALE**: it claimed Fekete monotonicity `dₙ₊₁ ≤ dₙ` was still "next",
+  but `transfiniteDiameterN_succ_le` (sup level) + the full limit were already on
+  main. Verify the actual .lean before trusting the tracker's "Next Action".
+
+### Next steps (all fiddly, not clearly session-sized)
+- Exact `d₃` via 3 cube-roots-of-unity on the boundary (spread `3√3`, `d₃ = 3^{1/2}`).
+- Strict `d₃ < d₂ = 2` (Fekete monotonicity strict at the top).
+- Sharp limit `d = 1` (= log-capacity of disc) stays deep-blocked (Fekete–Szegő).
+
 ## Session 2026-07-20 (researcher-1) — Fekete monotonicity at the SUPREMUM level
 
 Added the sup-over-configurations capstone to `Erdos1039TransfiniteDiameter.lean` (host-verified
