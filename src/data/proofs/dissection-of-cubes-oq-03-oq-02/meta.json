@@ -46,37 +46,37 @@
     {
       "id": "sec-no-unit-cube",
       "title": "Part 1: No Unit-Side Cube in a Multi-Cube Dissection",
-      "startLine": 47,
-      "endLine": 86,
+      "startLine": 56,
+      "endLine": 103,
       "summary": "Proves no_unit_cube_in_multi_dissection: if any cube c has side = 1 and card >= 2, contradiction follows from pairwise_disjoint. The cube c = [0,1]^3 and any other cube c' has nonempty interior in (0,1)^3, so interiorDisjoint fails for all 6 possible separation conditions."
     },
     {
       "id": "sec-all-lt-one",
       "title": "Part 2: All Cubes Have Side < 1",
-      "startLine": 88,
-      "endLine": 98,
+      "startLine": 104,
+      "endLine": 117,
       "summary": "Corollary: all cubes in a multi-cube dissection have side strictly less than 1. Follows from inUnitCube (side <= 1) and no_unit_cube_in_multi_dissection (side != 1)."
     },
     {
       "id": "sec-bottom-min",
       "title": "Parts 3-4: Bottom-Floor Minimum Does Not Reach the Top",
-      "startLine": 100,
-      "endLine": 118,
+      "startLine": 118,
+      "endLine": 142,
       "summary": "bottom_floor_min_side_lt_one and bottom_floor_min_not_reaching_top: the minimum-side cube on z = 0 has side < 1, so z + side < 1. This is the h_not_top precondition for exists_smaller_cube from DissectionOfCubesOQ03."
     },
     {
       "id": "sec-descent-ready",
       "title": "Part 5: Descent-Ready Starting Point",
-      "startLine": 120,
-      "endLine": 143,
+      "startLine": 143,
+      "endLine": 168,
       "summary": "bottom_floor_min_is_descent_ready: if card >= 2 and CoversUnitCube, there exists c_start in d.cubes with c_start.z = 0 and c_start.z + c_start.side < 1. This is the correct starting point for Littlewood's infinite descent."
     },
     {
       "id": "sec-counterexample",
       "title": "Part 6: Formal Counterexample",
-      "startLine": 145,
-      "endLine": 163,
-      "summary": "global_min_false_for_unit_cube: formally proves the 1-cube dissection satisfies all hypotheses of global_min_not_reaching_top yet has c_min.z + c_min.side = 1. Machine-checked proof that the sorry in OQ-03 is a false theorem as stated."
+      "startLine": 169,
+      "endLine": 209,
+      "summary": "global_min_false_for_unit_cube: formally proves the 1-cube dissection (d.cubes = {⟨0,0,0,1⟩}) satisfies all hypotheses of global_min_not_reaching_top yet has c_min.z + c_min.side = 1 (proof by Finset.mem_singleton and norm_num). Machine-checked proof that the sorry in OQ-03 is a false theorem as stated. Closes with a prose 'Summary of the Mathematical Contribution' recording Littlewood's correct descent strategy: start from the bottom floor (z = 0), whose minimum has side < 1 (Parts 1-3), so z + side < 1 (Part 4), then apply exists_smaller_cube floor-by-floor — the globally minimum cube never enters the argument."
     }
   ],
   "conclusion": {
