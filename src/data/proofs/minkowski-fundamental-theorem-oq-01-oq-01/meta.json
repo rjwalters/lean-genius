@@ -84,6 +84,14 @@
       "endLine": 195,
       "summary": "secondTheorem_lower_statement (companion scaffold), firstMinimum_pow_volume_le_of_secondTheorem (upper bound ⟹ λ₀ⁿ·vol ≤ 2ⁿ·covol), lower_le_lastMinimum_pow_volume_of_secondTheorem (lower bound ⟹ (2ⁿ/n!)·covol ≤ λₙ₋₁ⁿ·vol).",
       "mathContext": "Multiplying the bracket by the positive volume and chaining with the (granted) product bound reduces each side of Minkowski's two-sided second theorem to a statement about a single extreme minimum."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Bracketing the Product of Successive Minima",
+      "startLine": 196,
+      "endLine": 230,
+      "summary": "Recaps the 0-sorry, 0-axiom development: the extreme indices botIndex/topIndex, the order chain λ₀ ≤ λᵢ ≤ λₙ₋₁, non-negativity of the product, the bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ, and the reduction of Minkowski's second theorem to single-minimum volume bounds. States the honest scope: the analytic product bound itself is NOT proved here — only its order-theoretic bracketing and the reduction to single-minimum statements.",
+      "mathContext": "Delivered: $\\lambda_0^n \\le \\prod_i \\lambda_i \\le \\lambda_{n-1}^n$ and, granting the second theorem, $\\lambda_0^n\\,\\mathrm{vol}(S) \\le 2^n\\,\\mathrm{covol}(L)$ and $\\tfrac{2^n}{n!}\\,\\mathrm{covol}(L) \\le \\lambda_{n-1}^n\\,\\mathrm{vol}(S)$. Open: the product bound $\\prod_i \\lambda_i \\cdot \\mathrm{vol}(S) \\asymp \\mathrm{covol}(L)$."
     }
   ],
   "conclusion": {
