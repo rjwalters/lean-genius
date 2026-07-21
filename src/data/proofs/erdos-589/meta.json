@@ -57,84 +57,97 @@
       "id": "erd-s-problem-589-points-in-ge",
       "title": "Erdős Problem #589: Points in General Position",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Erdős Problem #589: Points in General Position",
-      "mathContext": "Mathematical content: Erdős Problem #589: Points in General Position"
+      "endLine": 41,
+      "summary": "Module header, imports, and the Erdos589 namespace",
+      "mathContext": "Imports (Real.Basic, Nat.Basic, Log/Pow special functions), Real namespace open, and the Erdos589 namespace opening"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 41,
-      "endLine": 82,
-      "summary": "Basic Definitions"
+      "startLine": 42,
+      "endLine": 83,
+      "summary": "Point, Collinear3, Collinear4, InGeneralPosition (no 3 collinear), InAlmostGeneralPosition (no 4 collinear)",
+      "mathContext": "Formal definitions: the collinearity predicates Collinear3/Collinear4 and the two position hypotheses — InGeneralPosition (no 3 points collinear) and the weaker InAlmostGeneralPosition (no 4 points collinear)"
+    },
+    {
+      "id": "structural-relationships",
+      "title": "Structural Relationships (verified, 0 axioms)",
+      "startLine": 84,
+      "endLine": 139,
+      "summary": "Fully verified 0-axiom lemmas: Collinear3 symmetry (collinear3_swap_right/left) and degeneracy (collinear3_self_left/right), subset-monotonicity of both position predicates (inGeneralPosition_subset, inAlmostGeneralPosition_subset), and inGeneralPosition_imp_inAlmostGeneralPosition",
+      "mathContext": "The verified backbone: Collinear3 is symmetric under swapping arguments and trivially holds when two arguments coincide; both position predicates are downward-closed under subsets; and general position (no 3 collinear) implies almost general position (no 4 collinear), the fact that makes g(n) well-posed"
     },
     {
       "id": "the-function-g-n",
       "title": "The Function g(n)",
-      "startLine": 83,
-      "endLine": 107,
-      "summary": "The Function g(n)"
+      "startLine": 140,
+      "endLine": 175,
+      "summary": "maxGeneralPositionSubset, g(n) as the min guaranteed general-position subset size, and the furedi_upper_bound axiom (o(n))",
+      "mathContext": "Formal definition: maxGeneralPositionSubset (largest no-3-collinear subset of a finset) and g(n) = min over n-point almost-general-position sets of that maximum; furedi_upper_bound axiomatizes g(n) = o(n)"
     },
     {
       "id": "erd-s-s-original-belief",
       "title": "Erdős's Original Belief",
-      "startLine": 108,
-      "endLine": 128,
-      "summary": "Erdős's Original Belief",
-      "mathContext": "Mathematical content: Erdős's Original Belief"
+      "startLine": 176,
+      "endLine": 201,
+      "summary": "ErdosBelief (the false Ω(n) claim) and erdos_belief_false disproving it via the o(n) upper bound",
+      "mathContext": "ErdosBelief states g(n) = Ω(n); erdos_belief_false : ¬ErdosBelief derives the contradiction from the sublinear (o(n)) upper bound"
     },
     {
       "id": "the-trivial-lower-bound",
       "title": "The Trivial Lower Bound",
-      "startLine": 129,
-      "endLine": 155,
-      "summary": "The Trivial Lower Bound",
-      "mathContext": "Bound: The Trivial Lower Bound"
+      "startLine": 202,
+      "endLine": 229,
+      "summary": "greedy_lower_bound axiom and trivial_lower_bound: the greedy √n bound obtained by avoiding collinear triples",
+      "mathContext": "Bound: greedy_lower_bound axiomatizes g(n) ≥ c√n; trivial_lower_bound repackages it as ∃ c > 0, ∀ n ≥ 1, g(n) ≥ c√n"
     },
     {
       "id": "f-redi-s-result-1991",
       "title": "Füredi's Result (1991)",
-      "startLine": 156,
-      "endLine": 188,
-      "summary": "Füredi's Result (1991)",
-      "mathContext": "Mathematical content: Füredi's Result (1991)"
+      "startLine": 230,
+      "endLine": 253,
+      "summary": "furedi_lower_bound axiom (g(n) ≥ c√n·log n) and furedi_bounds combining lower and upper bounds",
+      "mathContext": "Füredi's 1991 improvement: furedi_lower_bound axiomatizes g(n) ≥ c·√n·log n; furedi_bounds packages the lower bound together with the o(n) upper bound"
     },
     {
       "id": "density-hales-jewett-connectio",
       "title": "Density Hales-Jewett Connection",
-      "startLine": 189,
-      "endLine": 216,
-      "summary": "Density Hales-Jewett Connection",
-      "mathContext": "Mathematical content: Density Hales-Jewett Connection"
+      "startLine": 254,
+      "endLine": 281,
+      "summary": "dhj_implies_sublinear: the density Hales-Jewett theorem (Furstenberg-Katznelson) forces g(n) = o(n)",
+      "mathContext": "dhj_implies_sublinear derives ∀ ε > 0, ∃ N, ∀ n ≥ N, g(n) < εn — the o(n) upper bound that contradicts Erdős's linear belief"
     },
     {
       "id": "balogh-solymosi-result-2018",
       "title": "Balogh-Solymosi Result (2018)",
-      "startLine": 217,
-      "endLine": 252,
-      "summary": "Balogh-Solymosi Result (2018)",
-      "mathContext": "Mathematical content: Balogh-Solymosi Result (2018)"
+      "startLine": 282,
+      "endLine": 317,
+      "summary": "balogh_solymosi_2018 axiom (g(n) ≤ n^(5/6+o(1))) and current_bounds pairing it with Füredi's lower bound",
+      "mathContext": "The container-method upper bound: balogh_solymosi_2018 axiomatizes g(n) ≤ n^(5/6+o(1)); current_bounds states the best-known sandwich √n·log n ≲ g(n) ≲ n^(5/6+o(1))"
     },
     {
       "id": "generalization",
       "title": "Generalization",
-      "startLine": 253,
-      "endLine": 275,
-      "summary": "Generalization"
+      "startLine": 318,
+      "endLine": 345,
+      "summary": "g_eq_g43_spec: the original g is definitionally the (k,l)=(4,3) instance of the generalized problem",
+      "mathContext": "g_eq_g43_spec : g n = g_{4,3}(n) by rfl — the base problem is the case 'no 4 collinear ⇒ extract no-3-collinear subset' of the general (k,l) framework"
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "startLine": 276,
-      "endLine": 300,
-      "summary": "Open Questions"
+      "startLine": 346,
+      "endLine": 366,
+      "summary": "ExactGrowthOpen: the unresolved exponent α ∈ [1/2, 5/6] with g(n) = Θ(n^α), plus the Balogh-Solymosi optimality conjecture",
+      "mathContext": "ExactGrowthOpen encodes the open question whether some α ∈ [1/2, 5/6] gives g(n) = Θ(n^α); the Balogh-Solymosi conjecture that 5/6 may be sharp is a docstring note"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 301,
-      "endLine": 339,
-      "summary": "Summary"
+      "startLine": 367,
+      "endLine": 408,
+      "summary": "erdos_589_summary: bundles ¬ErdosBelief, Füredi's lower bound, the o(n) sublinearity, and the Balogh-Solymosi upper bound",
+      "mathContext": "erdos_589_summary conjoins the four formalized facts — Erdős's belief is false, g(n) ≥ c√n·log n, g(n) = o(n), and g(n) ≤ n^(5/6+ε) — assembled from the section axioms and verified lemmas"
     }
   ],
   "conclusion": {
