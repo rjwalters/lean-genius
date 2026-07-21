@@ -282,4 +282,34 @@ theorem guthKatz_imp_tendsto (H : GuthKatzBaseline) :
   filter_upwards [hreal.eventually_ge_atTop (M : ℝ)] with n hn
   exact_mod_cast hn
 
+
+/-- **Unconditional upper bound on the minimum.** `h n ≤ n.choose 2` for every `n`,
+holding *without* a general-position existence hypothesis: either some general-position
+configuration exists — then `h n ≤ numDistinctDistances P ≤ n.choose 2` by the extremal
+witness fact and the sharp envelope — or the defining set is empty, in which case
+`h n = sInf ∅ = 0 ≤ n.choose 2`. Combined with the unconditional divergence
+`guthKatz_imp_tendsto`, this pins the minimum distinct-distance count into the envelope
+`h n → ∞` yet `h n ≤ n.choose 2`.  (In the degenerate empty regime the bound is vacuous;
+the interesting content is the nonempty branch, where general-position configurations do
+exist for points in `ℝ²`.) -/
+theorem h_le_choose_two (n : ℕ) : h n ≤ n.choose 2 := by
+  rcases Set.eq_empty_or_nonempty
+      {numDistinctDistances P | (P : PointConfig n) (_ : InGeneralPosition P)} with he | hne
+  · rw [h, he, Nat.sInf_empty]
+    exact Nat.zero_le _
+  · obtain ⟨x, P, hgp, hx⟩ := hne
+    calc h n ≤ numDistinctDistances P := h_le_of_inGeneralPosition hgp
+      _ ≤ n.choose 2 := numDistinctDistances_le_choose_two P
+
+
+
+/-- **Degenerate values.** `h n = 0` for `n ≤ 1`: with fewer than two points there is
+no positive distance to count, and `n.choose 2 = 0` caps the minimum at `0`. A concrete
+consequence of `h_le_choose_two`. -/
+theorem h_eq_zero_of_le_one (hn : n ≤ 1) : h n = 0 := by
+  have hle := h_le_choose_two n
+  have hc : n.choose 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
+  omega
+
+
 end Erdos98WIP01
