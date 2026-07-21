@@ -166,23 +166,23 @@
       "id": "sec-iteration",
       "title": "Part I: Iterated Puiseux Series",
       "startLine": 54,
-      "endLine": 90,
+      "endLine": 118,
       "summary": "Defines MultiHahnSeries : ℕ → Type* → Type* by recursion: level 0 is K, level n+1 is HahnSeries ℚ (MultiHahnSeries n K). Proves dimensional facts: multiHahn_zero, multiHahn_one, multiHahn_succ (all definitional equalities, 0 sorries).",
       "mathContext": "MultiHahnSeries 0 K = K, MultiHahnSeries (n+1) K = HahnSeries ℚ (MultiHahnSeries n K). This models K⦃⦃x₁⦄⦄⦃⦃x₂⦄⦄...⦃⦃xₙ⦄⦄ as an n-fold iterated Hahn series over ℚ."
     },
     {
       "id": "sec-instances",
       "title": "Part II: Algebraic Instances for Iterated Construction",
-      "startLine": 92,
-      "endLine": 129,
-      "summary": "Proves instZeroMultiHahn and instCommRingMultiHahn by induction on n. Base: inherits from K. Inductive step: haveI : CommRing (MultiHahnSeries n K) := ih, then exact inferInstance (Mathlib's CommRing instance for HahnSeries). Both compile with 0 sorries.",
+      "startLine": 119,
+      "endLine": 167,
+      "summary": "Builds the CommRing instance instCommRingMultiHahn (via the commRingAux helper) by induction on n. Base: inherits from K. Inductive step: haveI : CommRing (MultiHahnSeries n K) := ih, then exact inferInstance (Mathlib's CommRing instance for HahnSeries). Compiles with 0 sorries. (The Zero instance instZeroMultiHahn is defined alongside the recursion in Part I.)",
       "mathContext": "The tower K ⊂ HahnSeries ℚ K ⊂ HahnSeries ℚ (HahnSeries ℚ K) ⊂ ... consists of commutative rings at every level. HahnSeries ℚ R is a CommRing when R is, propagating via Mathlib's typeclass system."
     },
     {
       "id": "sec-predicate",
       "title": "Part III: The Multivariate Puiseux Property",
-      "startLine": 131,
-      "endLine": 214,
+      "startLine": 168,
+      "endLine": 215,
       "summary": "Defines IsMultiPuiseuxSeries : (n : ℕ) → MultiHahnSeries n K → Prop by recursion. At level 0: True; at level n+1: (∃ d : ℕ+, exponents ∈ (1/d)·ℤ) ∧ (∀ coefficient recursively satisfies the predicate). Proves isMultiPuiseux_base (trivial) and isMultiPuiseux_zero (empty support + recursion). Both compile 0 sorries.",
       "mathContext": "IsMultiPuiseuxSeries captures elements of MultiHahnSeries n K whose support has a common denominator at every level of the iteration. This is the correct multivariate generalization of the Puiseux condition."
     },
@@ -190,7 +190,7 @@
       "id": "sec-main-comment",
       "title": "Part IV: Multivariate Algebraic Closure (Documented)",
       "startLine": 216,
-      "endLine": 248,
+      "endLine": 249,
       "summary": "Documents the multivariate_puiseux_theorem (MultiHahnSeries n K is IsAlgClosed when K is algebraically closed and CharZero). The inductive structure is clear; the gap is that IsAlgClosed (HahnSeries ℚ K) is not yet in Mathlib 4.26. Recorded in comments with proof sketch.",
       "mathContext": "By induction on n: base case is K (algebraically closed by hypothesis); inductive step applies Puiseux's theorem to conclude HahnSeries ℚ (MultiHahnSeries n K) is algebraically closed. The induction also requires CharZero propagation."
     },
