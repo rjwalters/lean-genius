@@ -140,7 +140,7 @@
       "id": "base-recurrences",
       "title": "Base Recurrences",
       "startLine": 57,
-      "endLine": 91,
+      "endLine": 82,
       "summary": "The defining bit-flip recurrences t(2n) = t(n) and t(2n+1) = t(n) + 1, plus t(0) and t(1).",
       "mathContext": "Doubling prepends a $0$ bit; $2n+1$ prepends a $1$ bit. The digit recursion `Nat.digits_def'` supplies the leading digit."
     },
@@ -148,15 +148,15 @@
       "id": "distinct-and-powers",
       "title": "Consecutive Pairs and Powers of Two",
       "startLine": 83,
-      "endLine": 98,
+      "endLine": 101,
       "summary": "Consecutive even/odd values differ, and t(2^k) = 1 for every k.",
       "mathContext": "$t(2n) \\neq t(2n+1)$ because they differ by $1$ in $\\mathbb{Z}/2\\mathbb{Z}$; $2^k$ has a single $1$ bit so $t(2^k) = 1$."
     },
     {
       "id": "pte-blocks",
       "title": "Prouhet-Tarry-Escott Block Identities",
-      "startLine": 114,
-      "endLine": 144,
+      "startLine": 102,
+      "endLine": 146,
       "summary": "The four-term identities t(4n)=t(4n+3), t(4n+1)=t(4n+2), and Prouhet's level-2 equal-sum partition.",
       "mathContext": "Blocks read $a\\,(a{+}1)\\,(a{+}1)\\,a$ with $a = t(n)$, giving the $\\{0,3\\}\\,/\\,\\{1,2\\}$ partition with $0+3 = 1+2$."
     }
