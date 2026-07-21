@@ -165,12 +165,21 @@ axiom beck_theorem (n : ℕ) (hn : n ≥ 100) (cfg : PointConfig n) :
 /- ## Part VII: Szemerédi-Trotter Incidence Bound -/
 
 /-- **Szemerédi-Trotter Theorem** (1983): The number of incidences between
-    n points and m lines in ℝ² is at most O((nm)^(2/3) + n + m). -/
-axiom szemeredi_trotter_bound (n m : ℕ) :
-    ∀ (pts : Fin n → Point) (lines : Fin m → Line),
-      let incidences := (Finset.univ ×ˢ Finset.univ).filter
-        fun p => onLine (pts p.1) (lines p.2)
-      (incidences.card : ℝ) ≤ 10 * ((n : ℝ) * m) ^ ((2 : ℝ) / 3) + n + m
+    n **distinct** points and m **distinct** lines in ℝ² is at most
+    O((nm)^(2/3) + n + m).
+
+    The distinctness hypotheses are essential: `hpts` requires the points to be
+    genuinely distinct, and `hlines` requires the lines to be pairwise distinct
+    **as geometric lines** (two `Line` structs coincide iff they have the same
+    point set). Without them the bound is trivially false — e.g. all `n·m`
+    incidences collapse onto a single point/line where the RHS is smaller. -/
+axiom szemeredi_trotter_bound (n m : ℕ)
+    (pts : Fin n → Point) (lines : Fin m → Line)
+    (hpts : Function.Injective pts)
+    (hlines : ∀ i j, i ≠ j → ¬ (∀ x, onLine x (lines i) ↔ onLine x (lines j))) :
+    let incidences := (Finset.univ ×ˢ Finset.univ).filter
+      fun p => onLine (pts p.1) (lines p.2)
+    (incidences.card : ℝ) ≤ 10 * ((n : ℝ) * m) ^ ((2 : ℝ) / 3) + n + m
 
 /- ## Part VIII: Complete Characterization -/
 
