@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-awgn-oq-03",
   "slug": "shannon-channel-coding-awgn-oq-03",
   "title": "The Bandlimited Shannon–Hartley Capacity C = B·log₂(1 + P/N) bits/s",
-  "description": "Turns the parent AWGN per-use capacity awgnCapacity P N = ½ log(1 + P/N) nats/use into the classical bandlimited Shannon–Hartley formula C(B, P, N) = B·log₂(1 + P/N) bits per second. The bridge is two exact textbook conversions: change of logarithm base (one nat = 1/log 2 bits) and the Nyquist rate (a bandwidth-B channel supports 2B independent signalling dimensions per second), giving the single identity C = (2B / log 2)·awgnCapacity P N. All structural properties follow: non-negativity, vanishing at zero power or zero bandwidth, strict positivity, monotonicity in bandwidth and power, antitonicity in noise, and the low-SNR linear bound C ≤ B·(P/N)/log 2 from log(1+x) ≤ x. 220 lines, 11 theorems, 1 definition, 0 axioms, 0 sorries. The vector/parallel Gaussian channel via water-filling is left open.",
+  "description": "Turns the parent AWGN per-use capacity awgnCapacity P N = ½ log(1 + P/N) nats/use into the classical bandlimited Shannon–Hartley formula C(B, P, N) = B·log₂(1 + P/N) bits per second. The bridge is two exact textbook conversions: change of logarithm base (one nat = 1/log 2 bits) and the Nyquist rate (a bandwidth-B channel supports 2B independent signalling dimensions per second), giving the single identity C = (2B / log 2)·awgnCapacity P N. All structural properties follow: non-negativity, vanishing at zero power or zero bandwidth, strict positivity, monotonicity in bandwidth and power, antitonicity in noise, and the low-SNR linear bound C ≤ B·(P/N)/log 2 from log(1+x) ≤ x. A final part lifts the scalar formula to the parallel (vector) channel: parallelAwgnCapacity P N = Σᵢ ½ log(1 + Pᵢ/Nᵢ), the additive capacity of n independent sub-bands, shown non-negative, monotone in each signal power and antitone in each noise power. 284 lines, 16 theorems, 2 definitions, 0 axioms, 0 sorries. Only the water-filling power-allocation optimisation over the parallel channel is left open.",
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -15,7 +15,7 @@
     "namespace": "ShannonHartley",
     "lineCount": 284,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 16,
     "definitionCount": 2,
     "path": "Proofs/ShannonChannelCodingAWGNOQ03.lean",
     "sorries": 0
@@ -39,7 +39,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 284,
-    "theoremCount": 17,
+    "theoremCount": 16,
     "definitionCount": 2,
     "badge": "verified",
     "originalContributions": [
@@ -135,16 +135,24 @@
       "id": "linear-bound",
       "title": "Part IV: The Low-SNR / Wideband Linear Bound",
       "startLine": 200,
-      "endLine": 220,
+      "endLine": 219,
       "summary": "theorem shannonHartley_le_snr_linear: C ≤ B·(P/N)/log 2, the formal 'capacity grows at most linearly in SNR'. Uses log(1 + P/N) ≤ P/N (Real.log_le_sub_one_of_pos) divided by the positive constant log 2; equality is approached as P/N → 0.",
       "mathContext": "$C(B,P,N) \\le \\dfrac{B\\,(P/N)}{\\log 2}$"
+    },
+    {
+      "id": "parallel-vector-channel",
+      "title": "Part V: The Parallel (Multi-Band / Vector) AWGN Capacity",
+      "startLine": 220,
+      "endLine": 284,
+      "summary": "Lifts the scalar formula to a bank of n independent Gaussian sub-channels (the discrete model of a frequency-selective channel). def parallelAwgnCapacity P N = Σᵢ awgnCapacity (P i) (N i) = Σᵢ ½ log(1 + Pᵢ/Nᵢ), the additive per-use capacity object that water-filling optimises. parallelAwgnCapacity_eq_sum writes it out explicitly; parallelAwgnCapacity_one reduces the single-band case to the scalar awgnCapacity; parallelAwgnCapacity_nonneg, parallelAwgnCapacity_mono_power (monotone in each signal power) and parallelAwgnCapacity_antitone_noise (antitone in each noise power) inherit the scalar structural theory term-by-term via Finset.sum monotonicity. The water-filling optimisation over the power budget Σ Pᵢ ≤ P is deliberately left open (see openQuestions).",
+      "mathContext": "$C_v(P,N) = \\sum_{i} \\tfrac{1}{2}\\log\\!\\left(1 + \\dfrac{P_i}{N_i}\\right)$"
     }
   ],
   "conclusion": {
-    "summary": "The bandlimited Shannon–Hartley capacity C(B, P, N) = B·log₂(1 + P/N) bits/s is assembled axiom-free from the parent's per-use AWGN capacity ½ log(1 + P/N) nats/use by the bridge identity C = (2B/log 2)·awgnCapacity P N (Nyquist rate × change of base). Its full qualitative theory follows: non-negative, zero exactly when bandwidth or signal power vanishes, strictly positive otherwise, increasing in bandwidth and signal power, decreasing in noise, and bounded above by the linear SNR form B·(P/N)/log 2. 220 lines, 11 theorems, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "summary": "The bandlimited Shannon–Hartley capacity C(B, P, N) = B·log₂(1 + P/N) bits/s is assembled axiom-free from the parent's per-use AWGN capacity ½ log(1 + P/N) nats/use by the bridge identity C = (2B/log 2)·awgnCapacity P N (Nyquist rate × change of base). Its full qualitative theory follows: non-negative, zero exactly when bandwidth or signal power vanishes, strictly positive otherwise, increasing in bandwidth and signal power, decreasing in noise, and bounded above by the linear SNR form B·(P/N)/log 2. A final part lifts the theory to the parallel (vector) channel: parallelAwgnCapacity P N = Σᵢ awgnCapacity Pᵢ Nᵢ, proved additive, non-negative, monotone in each signal power and antitone in each noise power term-by-term — the additive object that water-filling optimises. 284 lines, 16 theorems, 2 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The entry completes the standard textbook chain from the per-symbol AWGN capacity to the engineering-units bandlimited formula, with the two unit conversions (sampling and base change) made fully explicit and verified. The structural suite gives a reusable formal account of how data rate responds to the three resources — bandwidth, signal power, and noise — and the linear bound isolates the low-SNR/wideband regime in which bandwidth, not power, is the efficient lever on rate.",
     "openQuestions": [
-      "Vector / parallel Gaussian channel via water-filling: prove the capacity of n independent sub-channels with noise powers Nᵢ under a total power budget Σ Pᵢ ≤ P is Σ ½ log(1 + Pᵢ/Nᵢ) maximised by the water-filling allocation Pᵢ = (μ − Nᵢ)₊, and that the optimal level μ is fixed by Σ (μ − Nᵢ)₊ = P. This is the genuinely separate optimisation half of OQ-03.",
+      "Water-filling optimisation of the parallel channel: the additive vector capacity parallelAwgnCapacity P N = Σᵢ ½ log(1 + Pᵢ/Nᵢ) and its structural properties (additivity, non-negativity, monotonicity in power, antitonicity in noise) are now formalised in Part V of this entry; what remains open is the *optimisation* — prove this sum, over allocations with total power budget Σ Pᵢ ≤ P, is maximised by the water-filling allocation Pᵢ = (μ − Nᵢ)₊ with the optimal level μ fixed by Σ (μ − Nᵢ)₊ = P. This is the genuinely separate optimisation half of OQ-03.",
       "Wideband limit: formalise lim_{B → ∞} C = P/(N₀ log 2) for a fixed noise spectral density N = N₀·B, the asymptotic capacity of the infinite-bandwidth AWGN channel, as the rigorous limit behind the linear bound shannonHartley_le_snr_linear."
     ]
   },
