@@ -1,5 +1,60 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — h 5 = 3 CLOSED (centroid concyclicity bypasses C₅ endgame)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: **COMPLETED** the `h 5 = 3` sub-goal. Two new
+axiom-free theorems + a capstone, **docker-verified** `Proofs.Erdos98WIP01`
+(`docker-build.sh`: "Build succeeded", 0 `error:`). `grep -c '^axiom '` = 0, `grep -c sorry`
+= 0, no `native_decide` (only kernel `decide` on `Fin 5` inequalities/card, axiom-free).
+
+### THE KEY REALIZATION — the "C₅ endgame" is unnecessary
+Prior sessions framed the last mile as: 2-regular ⟹ single 5-cycle ⟹ regular pentagon ⟹
+concyclic. This needs a hard graph-connectivity fact AND hard pentagon geometry. **Both are
+avoided.** The only property of a 2-regular two-distance 5-set that matters is that each
+vertex has a *constant row sum of squared distances* `Rᵢ = ∑ₖ dist(Pᵢ,Pₖ)² = 2a²+2b²`
+(2 neighbours at `a`, 2 at `b`, self at 0). For the centroid `O = ⅕∑ₖ Pₖ`:
+`5(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)`, so polarising `⟪Pᵢ−Pₖ,Pᵢ−Pₗ⟫ = ½(dᵢₖ²+dᵢₗ²−dₖₗ²)`,
+`25‖Pᵢ−O‖² = ∑ₖ∑ₗ ½(dᵢₖ²+dᵢₗ²−dₖₗ²) = 5Rᵢ − ½∑ₖRₖ = 5a²+5b²` — **independent of `i`**.
+Hence `‖Pᵢ−O‖² = (a²+b²)/5` for all `i`: all five points lie on the circle centred at the
+centroid, radius `√((a²+b²)/5)`. Feeding four of them to `NoFourConcyclic` closes it. No
+cyclic order, no pentagon rigidity, no "2-regular ⟹ single cycle" graph fact. This is the
+"regular two-distance set is cospherical" phenomenon, and its derivation is dimension- and
+`n`-agnostic.
+
+### Lean results added (`proofs/Proofs/Erdos98WIP01.lean`, +2 theorems +1 capstone)
+- **`two_distance_row_sq_sum`** (axiom-free): `∑ₖ dist(Pₘ,Pₖ)² = 2a²+2b²` for every vertex
+  `m`, from `two_distance_two_regular` (A=a-neighbours card 2, B=b-neighbours card 2, disjoint
+  cover of `univ.erase m`; split the sum, self-term `dist_self=0`). `Finset.sum_const` +
+  `nsmul_eq_mul` + `norm_num` to turn `card • x` into `2*x`.
+- **`three_le_h_five`** (axiom-free, `maxHeartbeats 1600000`): `3 ≤ h 5`. `by_contra` →
+  `numDistinctDistances P ≤ 2` on the `h_attained` minimiser → `exists_two_distances…` gives
+  `a,b>0` cover. `by_cases a=b`: **`a=b`** ⟹ all pairs equidistant ⟹ `no_four_equidistant_indices`
+  on `0,1,2,3`; **`a≠b`** ⟹ centroid argument above, contradict `hgp.2.2` (`NoFourConcyclic`)
+  on `{0,1,2,3}`.
+- **`h_five_eq_three`**: `h 5 = 3` via `le_antisymm h_five_le_three three_le_h_five`.
+
+### Key Lean idioms (this session)
+- `∑ k in s` is a **parse error** in this toolchain — must write `∑ k ∈ s`.
+- `InGeneralPosition` unfolds to a bare `And`, so `hgp.injective` fails (`And.injective`
+  missing) — use `hgp.1`; `NoFourConcyclic` is `hgp.2.2`.
+- `hscaled : (5:ℝ)•(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)` closed by `simp only [Fin.sum_univ_five]; module`
+  (the `module` tactic handles the `5⁻¹` field-scalar linear identity cleanly).
+- Norm→distance polarisation via `norm_sub_sq_real (Pᵢ−Pₖ) (Pᵢ−Pₗ)` with
+  `(Pᵢ−Pₖ)−(Pᵢ−Pₗ) = Pₗ−Pₖ` (`abel`), then `dist_eq_norm`/`dist_comm`.
+- The double-sum identity closes by `simp only [inner_add_left, inner_add_right]; simp_rw [pol];
+  linarith [hrow i, hrow 0..4]` — the row-sum facts are the exact linear certificate
+  (`5·rowᵢ − ½∑rowₖ`); no distance-symmetry lemmas needed because both sides carry matching
+  `dist(Pₖ,Pₗ)²` atoms.
+
+### Files Modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+~130 lines, 3 theorems; commits on `research/erdos98-wip01-h5-lb`)
+
+### Next Steps
+`h 5` is done. Candidate follow-ups: (1) `h 6 = 3`? (needs a fresh 2-distance-impossibility
+for 6 points — the row-sum method only kills *regular* patterns; irregular 2-distance 6-sets
+need more). (2) Extract "equal row sums ⟹ cospherical" as a standalone reusable lemma. The
+asymptotic Erdős #98 statements remain genuinely open (not attackable elementarily).
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: ASSEMBLE degree-3 exclusion + 2-REGULARITY
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — the four degree-3 sub-case
