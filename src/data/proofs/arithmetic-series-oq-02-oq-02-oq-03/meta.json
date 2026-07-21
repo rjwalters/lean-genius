@@ -122,10 +122,18 @@
     {
       "id": "verification",
       "title": "Concrete Verification",
-      "summary": "Numerical checks via native_decide",
+      "summary": "Numerical checks via native_decide: `simplicial 3 3 = 20` and the antidiagonal convolution `∑ simplicial 1 p.1 · simplicial 1 p.2 = 20` over `antidiagonal 3`.",
       "startLine": 167,
-      "endLine": 178,
+      "endLine": 182,
       "mathContext": "Verification: $a=b=1, n=3$ gives $(1 \\cdot 4) + (2 \\cdot 3) + (3 \\cdot 2) + (4 \\cdot 1) = 20 = \\binom{6}{3}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: The Generating-Function Proof",
+      "summary": "Closing docstring on the generating-function route to the parallel Vandermonde identity: define negBin(k) = (∑ xⁿ)^{k+1} as a formal power series, prove its n-th coefficient is C(n+k, k) (induction + 1D hockey stick), reduce the identity to negBin(a)·negBin(b) = negBin(a+b+1) — literally `pow_add` — then extract coefficients. This replaces the parent file's nested induction on (b, n) with a trivial algebraic identity in the power-series ring, shifting the combinatorial work to the coefficient-extraction lemma. (The numerical checks use native_decide, so the entry is axiomatized via Lean.ofReduceBool.)",
+      "startLine": 183,
+      "endLine": 208,
+      "mathContext": "$\\mathrm{negBin}(k) = \\left(\\sum_n x^n\\right)^{k+1}$ with $[x^n]\\,\\mathrm{negBin}(k) = \\binom{n+k}{k}$; the identity $\\mathrm{negBin}(a)\\cdot\\mathrm{negBin}(b) = \\mathrm{negBin}(a+b+1)$ is `pow_add`, and coefficient extraction yields the Vandermonde convolution."
     }
   ],
   "conclusion": {
