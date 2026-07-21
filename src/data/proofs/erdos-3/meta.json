@@ -100,60 +100,124 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring framing Erdős Problem #3 ($5,000): every set of naturals with divergent reciprocal sum contains arbitrarily long arithmetic progressions. Imports Mathlib, opens Set/Filter/Nat/Finset, and registers `Classical.propDecidable` as a local instance so the `Finset.filter` predicates (`· ∈ A`, `IsAPFree ↑S k`) synthesise `DecidablePred` under recent Mathlib.",
+      "mathContext": "Erdős–Turán (1936) conjecture, Erdős #3: $\\sum_{a\\in A} 1/a = \\infty \\Rightarrow A$ contains $k$-term APs for every $k$. Open for $k\\ge 3$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
-      "startLine": 33,
-      "endLine": 58,
-      "mathContext": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable)."
+      "startLine": 41,
+      "endLine": 69,
+      "summary": "Defines `ArithProg a d k` (a k-term AP as `(range k).image (i ↦ a + i·d)`, needing no injectivity hypothesis), `ContainsAP`/`ContainsArbitrarilyLongAP` (AP containment with `d > 0`), `IsAPFree` (AP avoidance), `reciprocalSum` ($\\sum_{a\\in A} 1/a$ as a real tsum), and `HasDivergentSum` (non-summability of the reciprocals).",
+      "mathContext": "$\\texttt{ArithProg}(a,d,k) = \\{a, a+d, \\ldots, a+(k-1)d\\}$; $\\texttt{HasDivergentSum}(A) \\iff \\neg\\,\\text{Summable}\\,(a \\mapsto 1/a)$ on $A$."
     },
     {
       "id": "roth-number",
-      "title": "Roth Number r_k(N)",
-      "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
-      "startLine": 59,
-      "endLine": 70,
-      "mathContext": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$."
+      "title": "Roth Function r_k(N) and Counting Function",
+      "startLine": 70,
+      "endLine": 82,
+      "summary": "Defines `rothNumber k N` as the maximum cardinality of a k-AP-free subset of `{0,…,N}` (via `Finset.sup` over the filtered powerset) and `countingFunction A N` as $|A \\cap \\{0,\\ldots,N\\}|$. These are the quantitative objects the conjecture is phrased against.",
+      "mathContext": "$r_k(N) = \\max\\{|S| : S \\subseteq \\{0,\\ldots,N\\},\\ S \\text{ is } k\\text{-AP-free}\\}$; the conjecture is equivalent to $r_k(N) = o(N/\\log N)$ for all $k$."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture",
-      "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
-      "startLine": 71,
-      "endLine": 81,
-      "mathContext": "Mathematical content: States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$."
+      "id": "threshold-conjecture",
+      "title": "Key Threshold and the Main Conjecture",
+      "startLine": 83,
+      "endLine": 95,
+      "summary": "Defines `SublogarithmicGrowth k` and states `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. A `## Historical Results` banner marks the transition to the analytic obstruction (the historical bounds of Roth/Szemerédi/Gowers/Behrend are now recorded as prose in the `## Problem Status` block at the end of the file, not as axioms — the file carries 0 axiom declarations).",
+      "mathContext": "$\\texttt{Erdos3Conjecture} \\iff \\forall A,\\ \\text{HasDivergentSum}(A) \\Rightarrow \\text{ContainsArbitrarilyLongAP}(A)$."
     },
     {
-      "id": "historical",
-      "title": "Historical Results",
-      "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
-      "startLine": 82,
-      "endLine": 114,
-      "mathContext": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$)."
+      "id": "gap-and-thresholds",
+      "title": "The Critical Gap: RequiredBound and the Reduction Thresholds",
+      "startLine": 96,
+      "endLine": 208,
+      "summary": "The analytic heart. `RequiredBound k` is the $o(N/\\log N)$ threshold; the bridge lemma `countingFunction_le_rothNumber` (fully proved, 0 axioms) turns AP-freeness into the density bound $f_A(N) \\le r_k(N)$. The docstrings then explain WHY $o(N/\\log N)$ is not known to suffice (the counting function $N/(\\log N\\cdot\\log\\log N)$ is $o(N/\\log N)$ yet has divergent reciprocal sum) and record the three genuinely-sufficient strengthenings as definitions: `StrongRequiredBound` ($O(N/(\\log N)^{1+δ})$), `SharpRequiredBound` ($O(N/(\\log N\\,(\\log\\log N)^{1+δ}))$) and `SuperSharpRequiredBound` (a further iterated-log refinement). `required_bound_implies_conjecture` states the (currently) open reduction from `RequiredBound` — this is the file's single `sorry` (line 207), isolating exactly the missing analytic summation step; `status: axiomatized`, `badge: axiom` correctly reflect it.",
+      "mathContext": "The gap: $o(N/\\log N)$ (RequiredBound) vs $O(N/(\\log N)^{1+δ})$ (StrongRequiredBound). The former does not yield a convergent $\\sum 1/a$ via dyadic summation ($\\sum o(1/j)$ may diverge); the latter does. The file's one open step is `RequiredBound ⇒ conjecture`."
     },
     {
-      "id": "gap",
-      "title": "The Critical Gap",
-      "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
-      "startLine": 115,
-      "endLine": 135,
-      "mathContext": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation)."
+      "id": "foundational-lemmas",
+      "title": "Foundational AP-Monotonicity and Roth-Number Bounds",
+      "startLine": 209,
+      "endLine": 375,
+      "summary": "Preparatory lemmas, all 0-axiom/0-sorry: `containsAP_of_le`/`isAPFree_of_le` (monotonicity of AP containment in the length), `rothNumber_mono`/`rothNumber_mono_size` (monotonicity in k and N), `rothNumber_le_window` ($r_k(N)\\le N+1$), `arithProg_card` (a genuine AP has exactly k elements), `isAPFree_of_card_lt` (sets too small to hold a k-AP are AP-free), `rothNumber_ge_min` (the floor $\\min(k-1,N+1)\\le r_k(N)$), and `infinite_of_containsArbitrarilyLongAP` (arbitrarily long APs force infinitude).",
+      "mathContext": "Establishes the order structure of $r_k(N)$ in both arguments and the trivial floor/ceiling $\\min(k-1,N+1) \\le r_k(N) \\le N+1$, matching the arithmetic-content threshold at $k=3$."
     },
     {
-      "id": "constructions",
-      "title": "AP-Free Constructions",
-      "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
-      "startLine": 136,
-      "endLine": 155,
-      "mathContext": "Axiomatized: Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$)."
+      "id": "low-length-regime",
+      "title": "The Unconditional Low-Length Regime (k ≤ 2)",
+      "startLine": 376,
+      "endLine": 482,
+      "summary": "Proves Erdős #3 verbatim for $k \\le 2$ with no Roth-type input, pinning the difficulty entirely at $k \\ge 3$: `infinite_of_hasDivergentSum` (divergent reciprocal sum ⟹ infinite), `containsAP_two_of_lt`/`containsAP_two_of_infinite` (any two ordered elements form a genuine 2-AP; infinite sets contain 2-APs), and `hasDivergentSum_containsAP_le_two` (the combined k≤2 conclusion). `rothNumber_two` computes $r_2(N)=1$ exactly. All axiom-free.",
+      "mathContext": "For $k\\le 2$ the conclusion holds for ANY infinite set — there is no arithmetic content below length 3, matching $r_2(N)=1$ and the floor $r_k(N)\\ge\\min(k-1,N+1)$."
+    },
+    {
+      "id": "small-roth-numbers",
+      "title": "Small Roth Numbers and the r₃ Lower Bound",
+      "startLine": 483,
+      "endLine": 593,
+      "summary": "Concrete Roth-number computations: `powersOfTwo_isAPFree` (the powers of 2 avoid 3-APs), `rothNumber_three_ge_log` ($r_3(2^m) \\ge m+1$, a logarithmic lower bound from the powers-of-two construction) and `rothNumber_three_unbounded` ($r_3$ is unbounded), plus the degenerate `rothNumber_zero_length` ($r_0(N)=0$) and `rothNumber_one_length` ($r_1(N)=0$). Axiom-free.",
+      "mathContext": "$\\{2^0,2^1,\\ldots,2^{m-1}\\}$ is 3-AP-free (no term is the average of two others), giving $r_3(2^m)\\ge m+1$ — a first non-trivial lower bound, far below the required $o(N/\\log N)$ ceiling."
+    },
+    {
+      "id": "strong-bound-reduction",
+      "title": "The Strong-Bound Reduction: (log N)^{1+δ} Threshold",
+      "startLine": 594,
+      "endLine": 801,
+      "summary": "`summable_of_strongBound` — the analytic core — proves that if $f_A(N) \\le C\\,N/(\\log N)^{1+δ}$ for large N ($δ>0$) then $\\sum_{a\\in A} 1/a$ converges, by dyadic blocking: the block $A\\cap[2^j,2^{j+1})$ contributes reciprocal mass $\\le 2C/((j+1)\\log 2)^{1+δ}$, the general term of a convergent p-series. `strong_required_bound_implies_conjecture` chains it into `StrongRequiredBound k (k≥3) ⇒ Erdos3Conjecture`, a fully machine-checked, 0-axiom conditional theorem.",
+      "mathContext": "$p$-series with $p=1+δ>1$: $\\sum_j 1/((j+1)\\log 2)^{1+δ} < \\infty$. This is the exact strength the $o(N/\\log N)$ threshold lacks."
+    },
+    {
+      "id": "sharp-bound-reduction",
+      "title": "The Sharp-Bound Reduction: log N·(log log N)^{1+δ}",
+      "startLine": 802,
+      "endLine": 1038,
+      "summary": "`summable_of_sharpBound` weakens the sufficient hypothesis to $f_A(N) \\le C\\,N/(\\log N\\,(\\log\\log N)^{1+δ})$ and still concludes summability, via the iterated-log Bertrand series `Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const`. `sharp_required_bound_implies_conjecture` chains it into the conjecture from `SharpRequiredBound`. Axiom-free (depends only on the verified Bertrand series of the companion file).",
+      "mathContext": "First-axis Bertrand refinement: $\\sum 1/(n\\log n\\,(\\log\\log n)^{1+δ})$ converges for $δ>0$, so the required density threshold is pushed closer to the true $N/(\\log N\\cdot\\log\\log N)$ borderline of Erdős #3."
+    },
+    {
+      "id": "super-sharp-reduction",
+      "title": "The Super-Sharp Reduction: Triple-Log Threshold",
+      "startLine": 1039,
+      "endLine": 1271,
+      "summary": "`summable_of_superSharpBound` pushes the sufficient threshold to $f_A(N) \\le C\\,N/(\\log N\\cdot\\log\\log N\\cdot(\\log\\log\\log N)^{1+δ})$ using the constant-in-log second-axis Bertrand series `summable_one_div_nat_mul_log_mul_loglog_rpow_const`. `superSharp_required_bound_implies_conjecture` completes the corresponding conditional. Axiom-free.",
+      "mathContext": "Second-axis Bertrand series: the dyadic substitution $\\log N = (j+1)\\log 2$ spends one iterated logarithm, so the level-N factor $(\\log\\log\\log N)^{1+δ}$ becomes $(\\log\\log((j+1)\\log 2))^{1+δ}$ in the block index."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of the Super-Sharp Reduction (δ = 0 Borderline)",
+      "startLine": 1272,
+      "endLine": 1363,
+      "summary": "Pins the convergence/divergence transition of the dyadic method exactly at $δ=0$: `summable_superSharp_envelope` (δ>0, the envelope converges — the engine of the super-sharp reduction) and `not_summable_superSharp_envelope_borderline` (δ=0, dropping the innermost exponent to 1 gives the divergent second-axis Bertrand borderline). `countingFunction_frequently_gt_of_divergent` supplies the frequently-large counting-function fact. The `1+δ` power in `SuperSharpRequiredBound` is therefore sharp for this method. Axiom-free.",
+      "mathContext": "The dyadic method cannot reach the $N/(\\log N\\cdot\\log\\log N\\cdot\\log\\log\\log N)$ borderline: at $δ=0$ the block-mass envelope becomes the divergent second-axis Bertrand series, so $1+δ$ with $δ>0$ is essential."
+    },
+    {
+      "id": "implication-lattice",
+      "title": "The Required-Bound Implication Lattice",
+      "startLine": 1364,
+      "endLine": 1702,
+      "summary": "Organises the four threshold notions into a proved implication/monotonicity lattice: `strongRequiredBound_implies_requiredBound`, `strongRequiredBound_implies_sharpRequiredBound`, `sharpRequiredBound_implies_requiredBound`, `superSharpRequiredBound_implies_requiredBound`, `sharpRequiredBound_implies_superSharpRequiredBound`, the length-monotonicity companions (`strongRequiredBound_mono`, `sharpRequiredBound_mono`, `superSharpRequiredBound_mono`, `requiredBound_mono`), and `requiredBound_iff_sublogarithmicGrowth`. All axiom-free, showing exactly how the sufficient thresholds refine RequiredBound.",
+      "mathContext": "Strong ⟹ Sharp ⟹ SuperSharp ⟹ Required, with each notion monotone in the AP length k. Only the final `Required ⇒ conjecture` step (the file's lone sorry) is open."
     },
     {
       "id": "green-tao",
-      "title": "Green-Tao Connection",
-      "summary": "Proves `euler_prime_sum_diverges` ($\\sum 1/p = \\infty$) from Mathlib's `not_summable_one_div_on_primes` (no longer an axiom), then formally proves `erdos3_implies_green_tao`: assuming Erdős #3, the primes contain arbitrarily long APs — the Green-Tao theorem — as an immediate corollary.",
-      "startLine": 387,
-      "endLine": 405,
-      "mathContext": "Verified: `euler_prime_sum_diverges` ($\\sum 1/p = \\infty$) is discharged from Mathlib (`not_summable_one_div_on_primes`), and `erdos3_implies_green_tao` derives Green-Tao (arbitrarily long prime APs) as an immediate corollary of the conjecture."
+      "title": "Equivalent Formulations and the Green–Tao Connection",
+      "startLine": 1703,
+      "endLine": 1727,
+      "summary": "Records the Behrend-type equivalent-formulation note, then `euler_prime_sum_diverges` ($\\sum 1/p=\\infty$, discharged from Mathlib's `not_summable_one_div_on_primes` — a former axiom now fully proved, 0 axioms) and `erdos3_implies_green_tao`: if Erdős #3 holds then the primes contain arbitrarily long APs (the Green–Tao theorem as a corollary), since the primes have divergent reciprocal sum.",
+      "mathContext": "Green–Tao (2004) is unconditional, but here it is derived AS a corollary of the (open) Erdős #3, illustrating the conjecture's strength: $\\text{HasDivergentSum}(\\text{primes})$ via Euler, then apply the conjecture."
+    },
+    {
+      "id": "examples-status",
+      "title": "Small Examples and Problem Status",
+      "startLine": 1728,
+      "endLine": 1770,
+      "summary": "Concrete `decide`-checked examples (`ArithProg 1 2 3 = {1,3,5}`, `ArithProg 2 3 4 = {2,5,8,11}`, Roth's 3-AP-free set) and the `## Problem Status` block surveying the state of the art (Szemerédi 1975, Gowers 2001, Kelley–Meka 2023, Leng–Sah–Sawhney 2024) and the open gap between constructions ($\\approx N/\\exp(\\sqrt{\\log N})$) and the required $N/\\log N$. Closes with `erdos_3_open` (`Erdos3Conjecture ∨ ¬Erdos3Conjecture`, by `Classical.em` — a formal marker that the problem is undecided here, not a resolution).",
+      "mathContext": "The $5{,}000 prize remains open: no proof of $r_k(N)=o(N/\\log N)$ nor a divergent-sum counterexample avoiding some k-AP is known."
     }
   ],
   "conclusion": {
