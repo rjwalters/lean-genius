@@ -2273,4 +2273,173 @@ theorem degree_three_rhombus_impossible
   rcases hdx with hx | hx <;> rcases hdy with hy | hy <;> rcases hdz with hz | hz <;>
     rw [hx, hy, hz] at hrel <;> nlinarith [key, pow_pos ha 2, hrel]
 
+set_option maxHeartbeats 1600000 in
+/-- **A short-degree-`3` vertex whose neighbour triangle is isosceles with exactly one edge
+at the short distance is impossible (`k = 1` sub-case of the degree-`3` exclusion).**  Suppose
+`v` has three neighbours `x, y, z` all at distance `a`, that among the three neighbour pairs
+exactly one is at distance `a` (`dist x y = a`) and two at the other distance `b`
+(`dist x z = dist y z = b`) — so `{v, x, y}` is equilateral of side `a` and `z` sits off it —
+and there is a fifth point `w` at distance `b` from `v` with each of `dist w x, dist w y,
+dist w z` in `{a, b}`.  Then `False`.
+
+**Proof (coordinate-free).**  Put `uⱼ = j − v`.  The three vectors `uₓ, u_y, u_z` live in the
+`2`-dimensional plane, so they are linearly dependent; solving the resulting Gram system
+(`⟪uₓ,u_y⟫ = a²/2`, `⟪uₓ,u_z⟫ = ⟪u_y,u_z⟫ = a² − b²/2`) forces the *singular-Gram* relation
+`a⁴ − 4a²b² + b⁴ = 0` (i.e. `b² = (2 ± √3)a²`; unlike `k = 0, 2` this is a quadratic irrational,
+so there is no clean `b² = 3a²` substitution — both √3 branches are metrically realizable).
+That relation makes `‖(2a² − b²)(uₓ + u_y) − 3a²·u_z‖² = −3a²(a⁴ − 4a²b² + b⁴) = 0`, i.e. the
+linear dependence `(2a² − b²)(uₓ + u_y) = 3a²·u_z`.  Taking the inner product of that relation
+with `u_w` and writing each `⟪u_w, uⱼ⟫ = (b² + a² − dist w j ²)/2` (with `dist w j ² ∈ {a², b²}`)
+gives, in each of the eight assignments, a homogeneous degree-`4` relation which together with
+`a⁴ − 4a²b² + b⁴ = 0` forces `a = 0` — contradiction (a degree-`6` Positivstellensatz
+certificate, discharged by `nlinarith`).  This is the `k = 1` case; with `k = 0, 2, 3` already
+excluded, no short-degree-`3` vertex exists, so the short-distance graph is `2`-regular. -/
+theorem degree_three_isosceles_impossible
+    {v x y z w : EuclideanSpace ℝ (Fin 2)} {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (hvx : dist v x = a) (hvy : dist v y = a) (hvz : dist v z = a)
+    (hxy : dist x y = a) (hxz : dist x z = b) (hyz : dist y z = b)
+    (hvw : dist v w = b)
+    (hwx : dist w x = a ∨ dist w x = b)
+    (hwy : dist w y = a ∨ dist w y = b)
+    (hwz : dist w z = a ∨ dist w z = b) : False := by
+  set ux : EuclideanSpace ℝ (Fin 2) := x - v with hux
+  set uy : EuclideanSpace ℝ (Fin 2) := y - v with huy
+  set uz : EuclideanSpace ℝ (Fin 2) := z - v with huz
+  set uw : EuclideanSpace ℝ (Fin 2) := w - v with huw
+  -- Edge-vector norms.
+  have nux : ‖ux‖ = a := by rw [hux, ← dist_eq_norm, dist_comm]; exact hvx
+  have nuy : ‖uy‖ = a := by rw [huy, ← dist_eq_norm, dist_comm]; exact hvy
+  have nuz : ‖uz‖ = a := by rw [huz, ← dist_eq_norm, dist_comm]; exact hvz
+  have nuw : ‖uw‖ = b := by rw [huw, ← dist_eq_norm, dist_comm]; exact hvw
+  -- Self inner products.
+  have iuu : inner ℝ ux ux = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nux]
+  have ivv : inner ℝ uy uy = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuy]
+  have iww : inner ℝ uz uz = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuz]
+  -- One neighbour pair at the short distance `a` (inner `a²/2`), two at `b` (inner `a²−b²/2`).
+  have ixy : inner ℝ ux uy = a ^ 2 / 2 := by
+    have hn : ‖ux - uy‖ = a := by
+      have : ux - uy = x - y := by rw [hux, huy]; abel
+      rw [this, ← dist_eq_norm]; exact hxy
+    have h := norm_sub_sq_real ux uy
+    rw [hn, nux, nuy] at h; linarith
+  have ixz : inner ℝ ux uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖ux - uz‖ = b := by
+      have : ux - uz = x - z := by rw [hux, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hxz
+    have h := norm_sub_sq_real ux uz
+    rw [hn, nux, nuz] at h; linarith
+  have iyz : inner ℝ uy uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖uy - uz‖ = b := by
+      have : uy - uz = y - z := by rw [huy, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hyz
+    have h := norm_sub_sq_real uy uz
+    rw [hn, nuy, nuz] at h; linarith
+  -- Symmetric copies.
+  have iyx : inner ℝ uy ux = a ^ 2 / 2 := by rw [real_inner_comm]; exact ixy
+  have izx : inner ℝ uz ux = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact ixz
+  have izy : inner ℝ uz uy = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact iyz
+  -- Three vectors in a `2`-dimensional space cannot be independent; the singular Gram
+  -- determinant forces `a⁴ − 4a²b² + b⁴ = 0`.
+  have key : a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4 = 0 := by
+    by_contra hne
+    have hli : LinearIndependent ℝ ![ux, uy, uz] := by
+      rw [Fintype.linearIndependent_iff]
+      intro g hg
+      rw [Fin.sum_univ_three] at hg
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.tail_cons] at hg
+      have e1 : g 0 * a ^ 2 + g 1 * (a ^ 2 / 2) + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t ux : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [iuu, iyx, izx] at h; linarith
+      have e2 : g 0 * (a ^ 2 / 2) + g 1 * a ^ 2 + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uy : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixy, ivv, izy] at h; linarith
+      have e3 : g 0 * (a ^ 2 - b ^ 2 / 2) + g 1 * (a ^ 2 - b ^ 2 / 2) + g 2 * a ^ 2 = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uz : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixz, iyz, iww] at h; linarith
+      have hane2 : (a ^ 2 / 2 : ℝ) ≠ 0 := by positivity
+      have hane : (a ^ 2 : ℝ) ≠ 0 := by positivity
+      -- `e1 − e2`: `(a²/2)(g 0 − g 1) = 0`, so `g 0 = g 1`.
+      have hg01 : g 0 = g 1 := by
+        have h := (mul_eq_zero.mp
+          (show (a ^ 2 / 2) * (g 0 - g 1) = 0 by linear_combination e1 - e2)).resolve_left hane2
+        linarith
+      -- Substitute `g 1 = g 0` into `e1, e3` and eliminate `g 2`: `g 0 · (a⁴−4a²b²+b⁴) = 0`.
+      rw [← hg01] at e1 e3
+      have hkey0 : g 0 * (a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4) = 0 := by
+        linear_combination (-2 * a ^ 2) * e1 + (2 * a ^ 2 - b ^ 2) * e3
+      have hg0 : g 0 = 0 := (mul_eq_zero.mp hkey0).resolve_right hne
+      -- `e3` with `g 0 = g 1 = 0` gives `g 2 · a² = 0`, so `g 2 = 0`.
+      have hg2 : g 2 = 0 := by
+        have h2 : g 2 * a ^ 2 = 0 := by
+          linear_combination e3 - (2 * a ^ 2 - b ^ 2) * hg0
+        exact (mul_eq_zero.mp h2).resolve_right hane
+      intro i
+      fin_cases i
+      · show g 0 = 0; exact hg0
+      · show g 1 = 0; rw [← hg01]; exact hg0
+      · show g 2 = 0; exact hg2
+    have hcard := hli.fintype_card_le_finrank
+    rw [finrank_euclideanSpace_fin] at hcard
+    simp only [Fintype.card_fin] at hcard
+    omega
+  -- The singular-Gram relation makes the length of `(2a²−b²)(uₓ+u_y) − 3a²·u_z` vanish.
+  have hSsq : inner ℝ ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz)
+                      ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz)
+             = -3 * a ^ 2 * (a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4) := by
+    simp only [inner_sub_left, inner_sub_right, inner_add_left, inner_add_right,
+      real_inner_smul_left, real_inner_smul_right, iuu, ivv, iww, ixy, ixz, iyz, iyx, izx, izy]
+    ring
+  have hnorm0 : ‖(2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz‖ ^ 2 = 0 := by
+    rw [← real_inner_self_eq_norm_sq, hSsq, key]; ring
+  have hS : (2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz = 0 := by
+    have hz : ‖(2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz‖ = 0 := by
+      have h2 := hnorm0
+      rwa [pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)] at h2
+    exact norm_eq_zero.mp hz
+  -- Inner products of `u_w` with the neighbour edge vectors.
+  have iwx : inner ℝ uw ux = (b ^ 2 + a ^ 2 - (dist w x) ^ 2) / 2 := by
+    have hn : ‖uw - ux‖ = dist w x := by
+      have : uw - ux = w - x := by rw [huw, hux]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw ux
+    rw [hn, nuw, nux] at h; linarith
+  have iwy : inner ℝ uw uy = (b ^ 2 + a ^ 2 - (dist w y) ^ 2) / 2 := by
+    have hn : ‖uw - uy‖ = dist w y := by
+      have : uw - uy = w - y := by rw [huw, huy]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uy
+    rw [hn, nuw, nuy] at h; linarith
+  have iwz : inner ℝ uw uz = (b ^ 2 + a ^ 2 - (dist w z) ^ 2) / 2 := by
+    have hn : ‖uw - uz‖ = dist w z := by
+      have : uw - uz = w - z := by rw [huw, huz]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uz
+    rw [hn, nuw, nuz] at h; linarith
+  -- `⟪u_w, (2a²−b²)(uₓ+u_y) − 3a²·u_z⟫ = 0` in terms of the squared distances from `w`.
+  have hrel : inner ℝ uw ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz) = 0 := by
+    rw [hS, inner_zero_right]
+  simp only [inner_sub_right, inner_add_right, real_inner_smul_right, iwx, iwy, iwz] at hrel
+  -- Each squared distance from `w` is `a²` or `b²`; with `a⁴−4a²b²+b⁴ = 0` no assignment works.
+  have hdx : (dist w x) ^ 2 = a ^ 2 ∨ (dist w x) ^ 2 = b ^ 2 := by
+    rcases hwx with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdy : (dist w y) ^ 2 = a ^ 2 ∨ (dist w y) ^ 2 = b ^ 2 := by
+    rcases hwy with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdz : (dist w z) ^ 2 = a ^ 2 ∨ (dist w z) ^ 2 = b ^ 2 := by
+    rcases hwz with h | h
+    · left; rw [h]
+    · right; rw [h]
+  rcases hdx with hx | hx <;> rcases hdy with hy | hy <;> rcases hdz with hz | hz <;>
+    rw [hx, hy, hz] at hrel <;>
+    nlinarith [key, hrel, pow_pos ha 2, pow_pos hb 2, pow_pos ha 6, pow_pos hb 6,
+      mul_pos (pow_pos ha 2) (pow_pos hb 2), mul_pos (pow_pos ha 4) (pow_pos hb 2),
+      mul_pos (pow_pos ha 2) (pow_pos hb 4), mul_pos (pow_pos ha 4) (pow_pos ha 2)]
+
 end Erdos98WIP01
