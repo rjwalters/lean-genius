@@ -144,11 +144,19 @@
     },
     {
       "id": "transcendental-corollaries",
-      "title": "Transcendentals: Residual, Dense, and Existent",
+      "title": "Transcendentals, and Abstract Baire Uncountability of ℝ",
       "startLine": 104,
-      "endLine": 165,
-      "summary": "The comeagre dual and the existence corollaries. transcendentalReals_residual unfolds IsMeagre (the complement lies in residual ℝ); transcendentalReals_dense applies dense_of_mem_residual in the Baire space ℝ; algebraicReals_ne_univ and exists_transcendental_real recover the existence of a transcendental purely from meagreness (a nonempty Baire space is not meagre in itself), with no explicit construction. Closes with #print axioms confirming 0 axioms. Adds not_countable_of_perfect_t1_baire — the abstract Baire Category Theorem (a nonempty T1 perfect Baire space is uncountable) — and not_countable_real recovering Cantor uncountability of ℝ from it with no diagonal/nested-interval argument.",
+      "endLine": 160,
+      "summary": "The comeagre dual, the existence corollaries, and the abstract uncountability lemma. transcendentalReals_residual unfolds IsMeagre (the complement lies in residual ℝ); transcendentalReals_dense applies dense_of_mem_residual in the Baire space ℝ; algebraicReals_ne_univ and exists_transcendental_real recover the existence of a transcendental purely from meagreness (a nonempty Baire space is not meagre in itself), with no explicit construction. not_countable_of_perfect_t1_baire is the abstract Baire Category Theorem (a nonempty T1 perfect Baire space is uncountable), and not_countable_real recovers Cantor uncountability of ℝ from it with no diagonal/nested-interval argument.",
       "mathContext": "$\\operatorname{IsMeagre}A \\iff A^c\\in\\operatorname{residual}$, dense in a Baire space; $\\neg\\operatorname{IsMeagre}(\\operatorname{univ})$ $\\Rightarrow$ algebraic $\\subsetneq\\mathbb{R}$ $\\Rightarrow \\exists x,\\ \\neg\\operatorname{IsAlgebraic}_{\\mathbb{Q}}x$."
+    },
+    {
+      "id": "baire-perfect-polish",
+      "title": "The Baire Category Theorem for Perfect Polish Spaces",
+      "startLine": 161,
+      "endLine": 226,
+      "summary": "The Baire Category Theorem at its standard descriptive-set-theory generality — perfect Polish spaces — obtained for free from the abstract lemma. baireSpace_of_completeMetricSpace: every complete metric space is Baire (Mathlib's BaireSpace.of_completelyPseudoMetrizable, exposed as a named result). t1Space_of_polishSpace and baireSpace_of_polishSpace record that a Polish space supplies T1 (via metrizability) and the Baire property (via complete metrizability) by instance resolution. not_countable_univ_of_perfect_polishSpace and uncountable_of_perfect_polishSpace then apply not_countable_of_perfect_t1_baire verbatim: every nonempty perfect Polish space is uncountable; uncountable_real recovers uncountability of ℝ as the perfect-Polish instance. The file closes with #print axioms on the seven headline results, confirming 0 axioms.",
+      "mathContext": "$\\text{PolishSpace}\\Rightarrow \\text{T1}\\wedge\\text{BaireSpace}$; perfect Polish $\\Rightarrow$ uncountable, and $\\mathbb{R}$ as an instance."
     }
   ],
   "crossReferences": [
@@ -251,10 +259,10 @@
     }
   ],
   "conclusion": {
-    "summary": "A 136-line, 0-sorry, 0-axiom formalization establishing that the algebraic reals are meagre in ℝ and the transcendentals are comeagre and dense, built on a reusable abstract lemma that countable sets are meagre in any T1 perfect space.",
+    "summary": "A 226-line, 0-sorry, 0-axiom formalization establishing that the algebraic reals are meagre in ℝ and the transcendentals are comeagre and dense, built on a reusable abstract lemma that countable sets are meagre in any T1 perfect space. The same lemma yields a purely category-theoretic proof of Cantor's theorem: not_countable_of_perfect_t1_baire shows every nonempty T1 perfect Baire space is uncountable, and — packaged at the standard descriptive-set-theory level via the Mathlib instance chain — uncountable_of_perfect_polishSpace shows every nonempty perfect Polish space is uncountable, with uncountable_real as the ℝ instance.",
     "implications": "Meagreness is a strict topological strengthening of countability. Combined with the measure-zero and countability results for the algebraic reals, it shows the transcendentals are co-small in the three classical senses — cardinality, measure, and Baire category — so 'almost every real is transcendental' holds categorically, not merely cardinally. The abstract lemma countable_isMeagre is reusable for any T1 perfect space (e.g. any nontrivial real/complex normed space, or any connected T1 nontrivial space) and directly subsumes the Baire-category follow-up flagged by the companion nested-interval entry.",
     "openQuestions": [
-      "Pair the now-formalized abstract uncountability theorem (not_countable_of_perfect_t1_baire: a nonempty T1 perfect BaireSpace is uncountable) with an arbitrary perfect Polish space to package the full Baire Category Theorem in that generality; the ℝ instance (not_countable_real) already subsumes the companion nested-interval entry.",
+      "Extend the perfect-Polish uncountability packaging (uncountable_of_perfect_polishSpace, now formalized) to a quantitative cardinality statement — that every nonempty perfect Polish space has cardinality exactly the continuum 𝔠 (the full perfect-set property / Cantor–Bendixson strength), rather than merely being uncountable.",
       "Quantify the comeagre transcendental complement as an explicit dense Gδ set, exhibiting the residual witness from mem_residual concretely rather than abstractly.",
       "Formalize the independence of the three smallness notions on ℝ: construct a meagre set of full Lebesgue measure (and a null comeagre set) to show measure-smallness and category-smallness of the algebraic reals are genuinely distinct facts rather than one implying the other."
     ]
