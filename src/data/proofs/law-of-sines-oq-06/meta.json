@@ -103,9 +103,17 @@
       "id": "law-of-sines",
       "title": "Part VII: Law of Sines",
       "startLine": 237,
-      "endLine": 279,
+      "endLine": 283,
       "summary": "Derives a/sin(α) = b/sin(β) and a/sin(α) = c/sin(γ) by equating area formulas and canceling with mul_left_cancel₀.",
       "mathContext": "From $cb\\sin\\alpha = ca\\sin\\beta$: cancel $c$ via \\texttt{mul\\_left\\_cancel₀} to get $b\\sin\\alpha = a\\sin\\beta$, then \\texttt{div\\_eq\\_div\\_iff} gives $a/\\sin\\alpha = b/\\sin\\beta$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 284,
+      "endLine": 313,
+      "summary": "Recaps the 0-axiom, 0-sorry development: the 2D Lagrange identity, the sin-angle/cross-product identity (via arccos → sin_arccos → Lagrange → sqrt_sq_eq_abs), the three vertex area formulas, sin positivity, and the law of sines a/sin α = b/sin β = c/sin γ obtained by equating areas and cancelling. Lists every proved lemma and the mathematical thread Area = ½cb sin α = ½ca sin β ⇒ a/sin α = b/sin β.",
+      "mathContext": "$\\text{Area} = \\tfrac12 cb\\sin\\alpha = \\tfrac12 ca\\sin\\beta = \\tfrac12 ba\\sin\\gamma \\Rightarrow \\dfrac{a}{\\sin\\alpha}=\\dfrac{b}{\\sin\\beta}=\\dfrac{c}{\\sin\\gamma}$, all from Mathlib primitives with `ring_nf`, `linarith`, and `mul_left_cancel₀`; no axioms, no sorries."
     }
   ],
   "conclusion": {
