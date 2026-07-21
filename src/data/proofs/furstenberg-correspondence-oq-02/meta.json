@@ -67,49 +67,49 @@
       "id": "sec-overview",
       "title": "Overview: ergodic decomposition — feasibility survey against Mathlib",
       "startLine": 1,
-      "endLine": 69,
+      "endLine": 71,
       "summary": "Header docstring and imports: a feasibility survey of formalizing the ergodic decomposition theorem, an inventory of the Mathlib building blocks that exist, the precise remaining gap, an effort estimate, and the FEASIBLE conclusion.",
       "mathContext": "This file (open question furstenberg-correspondence-oq-02) is a feasibility survey — NOT a completed formalization — of the ergodic decomposition theorem using Mathlib's existing infrastructure. The theorem: every T-invariant probability measure μ on a standard Borel probability space decomposes uniquely as μ = ∫ μ_x dμ(x) with μ_x ergodic for μ-a.e. x (the measure-theoretic analogue of spectral decomposition). The header docstring (lines 1–69) inventories the Mathlib building blocks that already exist (ergodic measures, ergodic = extreme point of invariant measures, Krein–Milman, measure disintegration, Radon–Nikodym derivatives and their T-invariance, invariant functions a.e. constant, conditional expectation) and identifies the precise gap: Choquet representation (integral representation via extreme points), the ergodic σ-algebra of T-invariant sets, conditional measures w.r.t. it (the decomposition kernel), and the Birkhoff ergodic theorem (pointwise Cesàro convergence, needed for the conditional-measure construction). It gives an effort estimate (~2000–2500 lines) and concludes FEASIBLE: the characterization of ergodic measures as extreme points (already in Mathlib) is the backbone; the main technical challenge is Birkhoff and the conditional-measure construction. This entry is a survey/roadmap: it demonstrates the available components and states the theorem rather than proving it. References: Einsiedler & Ward (2011), Furstenberg (1981), Glasner (2003)."
     },
     {
-      "title": "Mathlib's Ergodic Theory — What Exists",
-      "startLine": 70,
-      "endLine": 145,
-      "description": "Demonstrates 7 key building blocks already in Mathlib: ergodic maps, extreme point characterization, Poincaré recurrence, RN derivative invariance, invariant function constancy, disintegration, Krein-Milman.",
-      "summary": "Mathlib's Ergodic Theory — What Exists",
-      "id": "mathlib's-ergodic-theory-—-wha"
+      "id": "mathlib-ergodic-theory",
+      "title": "Part I — Mathlib's Ergodic Theory: What Exists",
+      "startLine": 72,
+      "endLine": 190,
+      "summary": "Demonstrates the key building blocks already in Mathlib — ergodic maps, the extreme-point characterization of ergodic measures, Poincaré recurrence, Radon–Nikodym derivative invariance, a.e.-constancy of invariant functions, measure disintegration, and Krein–Milman — with the `invariantProbs` definition and worked `example`s exhibiting each.",
+      "mathContext": "The backbone fact: a $T$-invariant probability measure is ergodic iff it is an extreme point of the convex set of invariant measures (`invariantProbs`). Combined with Krein–Milman and Mathlib's `Kernel.Disintegration`, this supplies the convex-geometric and measure-theoretic scaffolding for the ergodic decomposition $\\mu = \\int \\mu_x\\, d\\mu(x)$."
     },
     {
-      "title": "The Gap — What's Needed",
-      "startLine": 150,
-      "endLine": 210,
-      "description": "Identifies three missing components: Birkhoff ergodic theorem, Choquet representation, and the connection between disintegration and invariant σ-algebra.",
-      "summary": "The Gap — What's Needed",
-      "id": "the-gap-—-what's-needed"
-    },
-    {
-      "title": "Roadmap — Three Approaches",
-      "startLine": 215,
+      "id": "the-gap",
+      "title": "Part II — The Gap: What's Needed",
+      "startLine": 191,
       "endLine": 260,
-      "description": "Three paths to ergodic decomposition with line estimates: (A) conditional expectation ~1700 lines, (B) Choquet theory ~1700 lines, (C) existing disintegration ~1200 lines.",
-      "summary": "Roadmap — Three Approaches",
-      "id": "roadmap-—-three-approaches"
+      "summary": "Identifies the three missing components between Mathlib's current state and a full ergodic decomposition: the Birkhoff pointwise ergodic theorem, a Choquet integral representation via extreme points, and the connection between measure disintegration and the invariant σ-algebra.",
+      "mathContext": "The decomposition kernel $x \\mapsto \\mu_x$ is the disintegration of $\\mu$ over the invariant σ-algebra $\\mathcal{I} = \\{S : T^{-1}S = S\\}$. Constructing it requires the Birkhoff ergodic theorem (pointwise Cesàro convergence $\\frac1N\\sum_{n<N} f\\circ T^n \\to \\mathbb{E}[f\\mid\\mathcal{I}]$), which is the principal gap."
     },
     {
-      "title": "Infrastructure Demonstration",
-      "startLine": 265,
-      "endLine": 310,
-      "description": "Defines the invariant σ-algebra in Lean 4 and proves basic properties (preimage stability, intersection closure).",
-      "summary": "Infrastructure Demonstration",
-      "id": "infrastructure-demonstration"
+      "id": "roadmap",
+      "title": "Part III — Roadmap: Three Approaches",
+      "startLine": 261,
+      "endLine": 302,
+      "summary": "Three candidate paths to the ergodic decomposition with effort estimates: (A) via conditional expectation (~1700 lines), (B) via Choquet theory and Krein–Milman (~1700 lines), and (C) via Mathlib's existing measure disintegration (~1200 lines, lowest effort).",
+      "mathContext": "Approach C leverages `MeasureTheory.Measure.disintegration`: once the invariant σ-algebra is realized as a sub-σ-algebra, the conditional-measure family it produces is exactly the ergodic decomposition, avoiding a from-scratch Choquet construction."
     },
     {
-      "title": "Feasibility Assessment",
-      "startLine": 315,
-      "endLine": 380,
-      "description": "Final assessment: YES, feasible. Recommends Approach C via Mathlib disintegration as the lowest-effort path (~1200 lines).",
-      "summary": "Feasibility Assessment",
-      "id": "feasibility-assessment"
+      "id": "infrastructure-demo",
+      "title": "Part IV — Infrastructure Demonstration",
+      "startLine": 303,
+      "endLine": 349,
+      "summary": "Concretely defines the invariant σ-algebra in Lean 4 (`invariantSigmaAlgebra`) and proves its basic properties: preimage stability (`invariant_preimage_eq`), intersection closure (`invariant_inter`), and that the whole space is invariant (`invariant_univ`).",
+      "mathContext": "The invariant σ-algebra $\\mathcal{I}$ collects the measurable sets $S$ with $T^{-1}S = S$; `invariantSigmaAlgebra_le` shows $\\mathcal{I} \\le m$ is a genuine sub-σ-algebra. This is the object over which the decomposition kernel disintegrates, so its formalization is the first concrete step of any of the three approaches."
+    },
+    {
+      "id": "feasibility-assessment",
+      "title": "Part V — Feasibility Assessment",
+      "startLine": 350,
+      "endLine": 408,
+      "summary": "Final assessment — YES, feasible — recommending Approach C via Mathlib disintegration as the lowest-effort path (~1200 lines), and closing `#check`s confirming the Mathlib components (`Ergodic`, `MeasurePreserving`, `Conservative`) and the file's new contributions (`invariantSigmaAlgebra`, `invariant_preimage_eq`, `invariant_inter`) type-check.",
+      "mathContext": "Conclusion: the extreme-point characterization of ergodic measures (already in Mathlib) is the mathematical backbone; the remaining work is the Birkhoff ergodic theorem and the conditional-measure construction over the invariant σ-algebra — substantial but standard, hence the HIGH feasibility rating."
     }
   ],
   "overview": {
