@@ -31,19 +31,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FOUNDATIONS (researcher-1, 2026-07-20): developed the def-only Erdos46Problem.lean stub (Erdos Problem 46, monochromatic unit-fraction representations, Croot) with 13 axiom-free elementary lemmas: singleton/empty exclusions, the two-element lower bound (card>=2), term bound 1/n<=1/2, reciprocal-sum nonnegativity/positivity, uniqueness of the represented rational, additivity over disjoint unions (isRatFractionRepr_union — the arithmetic backbone for assembling disjoint monochromatic solutions), and the structural reduction erdosProblem46_of_infinitely_many (base Croot statement follows from the infinitely-many-disjoint-solutions version at N=0). File 84->188 lines, 3->16 theorems. Deep result (Croot 2003) itself unformalized. Host-verified v4.31 lake env lean, exit 0.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-20, VERIFIED 0/0 host): realized the chain-to-∞ direction — exists_isUnitFractionRepr_card_ge (unit-fraction reprs of 1 with arbitrarily large cardinality, by splitting the largest denominator via isUnitFractionRepr_replace) and infinite_isUnitFractionRepr (the set of such reprs is Set.Infinite). The colouring-free lower bound behind Erdős 46; the deep monochromatic Croot 2003 result stays unformalized. 28 axiom-free theorems.",
     "builtItems": [
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
       "two_le_card_of_isUnitFractionRepr — a UFR of 1 has >= 2 elements (Erdos46Problem.lean)",
       "isRatFractionRepr_union — reciprocal-sum representations add over disjoint unions (Erdos46Problem.lean)",
       "erdosProblem46_of_infinitely_many — base Croot statement reduces to the infinitely-many version (Erdos46Problem.lean)",
-      "term_le_half / sum_inv_nonneg / isRatFractionRepr_pos / isRatFractionRepr_unique / pos_of_mem / forall_two_le_of_subset / isMonochromatic_empty / isMonochromatic_singleton / isRatFractionRepr_one_iff"
+      "term_le_half / sum_inv_nonneg / isRatFractionRepr_pos / isRatFractionRepr_unique / pos_of_mem / forall_two_le_of_subset / isMonochromatic_empty / isMonochromatic_singleton / isRatFractionRepr_one_iff",
+      "exists_isUnitFractionRepr_card_ge, infinite_isUnitFractionRepr in Erdos46Problem.lean — arbitrarily-long + infinitely-many unit-fraction reprs of 1, 0-axiom host-verified"
     ],
     "insights": [
-      "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide)."
+      "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide).",
+      "Infinitely many distinct unit-fraction representations of 1 exist (infinite_isUnitFractionRepr): via reprs of arbitrarily large cardinality (exists_isUnitFractionRepr_card_ge), obtained by iterating isUnitFractionRepr_replace on the LARGEST denominator m — both split denominators m+1, m(m+1) exceed m so ∉S, legal replacement raising |S| by exactly one.",
+      "Set.Infinite from unbounded card: by_contra, (hfin.image Finset.card).bddAbove gives M, then exists_...card_ge (M+1) overflows it. Finset.card_insert_of_not_mem renamed → card_insert_of_notMem in v4.31."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Disjoint-support chaining: produce infinitely many PAIRWISE-DISJOINT unit-fraction reprs (needed for the monochromatic pigeonhole toward ErdosProblem46_infinitely_many) — splitting the largest denom keeps introducing fresh large denominators, so consecutive reprs can be made disjoint on their tails.",
+      "The deep monochromatic statement (Croot 2003) itself remains unformalized."
+    ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -64,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-21",
+  "lastUpdate": "2026-07-20",
   "significance": 6,
   "tractability": 7
 }
