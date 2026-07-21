@@ -68,39 +68,63 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Stewart's Theorem via Inner Products",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module header for research problem `law-of-cosines-oq-04-oq-01`: it lifts Stewart's theorem from the scalar law-of-cosines derivation to genuine inner-product geometry, valid in any real inner product space and any dimension. Lists the main results (bilinear expansion, master cevian identity, classical form, Apollonius median, bisector length, and the genuine bisector property) and records 0 axioms, 0 sorries.",
+      "mathContext": "The cevian foot is written as the affine combination $D = (1-s)B + sC$, so $BD = s\\cdot a$ and $DC = (1-s)a$ with $m + n = a$ holding by construction — no sign hypotheses needed. Tags: geometry, stewarts-theorem, cevian, inner-product-space, law-of-cosines."
+    },
+    {
       "id": "part1-bilinear-expansion",
       "title": "Part I: Bilinear Norm Expansion",
+      "summary": "The basic identity ‖p•u + q•v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u,v⟫, the algebraic engine for every later result.",
       "startLine": 47,
-      "endLine": 56,
-      "summary": "The basic identity ‖p•u + q•v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u,v⟫, the algebraic engine for every later result."
+      "endLine": 71
     },
     {
       "id": "part2-master-identity",
       "title": "Part II: Coordinate-Free Stewart Identity",
-      "startLine": 58,
-      "endLine": 83,
-      "summary": "stewart_cevian_inner: ‖A−D‖² = (1−s)‖A−B‖² + s‖A−C‖² − s(1−s)‖B−C‖² for D = (1−s)·B + s·C, in any real inner product space."
+      "summary": "stewart_cevian_inner: ‖A−D‖² = (1−s)‖A−B‖² + s‖A−C‖² − s(1−s)‖B−C‖² for D = (1−s)·B + s·C, in any real inner product space.",
+      "startLine": 72,
+      "endLine": 88
     },
     {
       "id": "part3-classical-form",
       "title": "Part III: Classical Form and Segment Relation",
-      "startLine": 85,
-      "endLine": 100,
-      "summary": "stewarts_theorem_inner recovers b²m + c²n = a(d² + mn); stewart_m_add_n records m + n = a by construction."
+      "summary": "stewarts_theorem_inner recovers b²m + c²n = a(d² + mn); stewart_m_add_n records m + n = a by construction.",
+      "startLine": 89,
+      "endLine": 100
     },
     {
       "id": "part4-median",
       "title": "Part IV: Apollonius' Median Theorem",
-      "startLine": 102,
-      "endLine": 112,
-      "summary": "The s = 1/2 specialization: ‖A − midpoint(B,C)‖² = ½‖A−B‖² + ½‖A−C‖² − ¼‖B−C‖²."
+      "summary": "The s = 1/2 specialization: ‖A − midpoint(B,C)‖² = ½‖A−B‖² + ½‖A−C‖² − ¼‖B−C‖².",
+      "startLine": 101,
+      "endLine": 122
     },
     {
       "id": "part5-bisector",
       "title": "Part V: Internal Angle-Bisector Length",
-      "startLine": 114,
-      "endLine": 130,
-      "summary": "angle_bisector_length_inner: for the foot dividing BC in ratio c:b, (b+c)²‖A−D‖² = bc((b+c)² − a²)."
+      "summary": "angle_bisector_length_inner: for the foot dividing BC in ratio c:b, (b+c)²‖A−D‖² = bc((b+c)² − a²).",
+      "startLine": 123,
+      "endLine": 152
+    },
+    {
+      "id": "part6-bisector-ratio",
+      "title": "Part VI: Genuine Angle-Bisector Property",
+      "startLine": 153,
+      "endLine": 165,
+      "summary": "angle_bisector_ratio_inner: with the same ratio hypothesis $s(\\|A-C\\| + \\|A-B\\|) = \\|A-B\\|$, ray $AD$ actually bisects $\\angle BAC$ — the equal-half-angle-cosine identity $\\|A-C\\|\\,\\langle B-A, D-A\\rangle = \\|A-B\\|\\,\\langle C-A, D-A\\rangle$. This upgrades Part V from a stipulated-ratio cevian to the genuine internal bisector.",
+      "mathContext": "The proof rewrites $D - A = (1-s)(B-A) + s(C-A)$, expands via bilinearity to $b((1-s)c^2 + sw) = c((1-s)w + sb^2)$ with $w = \\langle B-A, C-A\\rangle$, and closes with `linear_combination` since the difference factors as $(w - bc)(s(b+c) - c)$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 166,
+      "endLine": 178,
+      "summary": "Recaps how the file lifts Stewart's theorem to inner-product geometry: the master identity `stewart_cevian_inner` holds in any real inner product space and any dimension, with the classical $b^2 m + c^2 n = a(d^2 + mn)$ form and Apollonius' median theorem following as specializations. 0 axioms, 0 sorries.",
+      "mathContext": "The inner-product formulation makes every result dimension-free and coordinate-free, generalizing the planar scalar derivation in `LawOfCosinesOQ04.lean`."
     }
   ],
   "conclusion": {
