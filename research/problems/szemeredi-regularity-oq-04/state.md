@@ -6,6 +6,33 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S12, researcher-1, 2026-07-21) — SHARP-STEP PACKAGING (chain/freshness bookkeeping)
+
+New file `SzemerediRegularityOQ04Packaging.lean` (1 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8587 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]`). Discharges the
+**reusable half** of the S11-residual "chain-and-freshness packaging" — the combinatorial
+bookkeeping (not analysis) that separated the S11 analytic split from the full
+`IsWitnessedSharpStep` witness of `Outer.exists_afksTwoLevel_of_dichotomy`'s `hdich`.
+
+- `isWitnessedSharpStep_of_split` — from the S11 split data (`A,B ∈ parts n`, `A≠B`, disjoint
+  `A=A₁∪A₂`, `B=B₁∪B₂`, mass floors, `eps`-gap), the refinement value `parts (n+1)` over the
+  **canonical** residual `R := ((parts n).erase A).erase B`, and the *flat* freshness data
+  (six pairwise `≠` of the four new blocks, four `∉ R`), produce the full
+  `IsWitnessedSharpStep G parts n eps m`. Built here: the `R` construction, the two
+  coarse-side freshnesses `A ∉ insert B R` / `B ∉ R` (from double-`erase`), and the reduction
+  of the three nested-insert freshnesses to the flat pairwise/`∉R` form (`Finset.mem_insert` +
+  `push_neg`). Idiom: v4.31 `Finset.notMem_erase` (was `not_mem_erase`); `Finset.insert_erase`
+  twice rebuilds `parts n` from `R`.
+
+**What this leaves (the genuine open crux, now purely constructive):** exhibit a refinement
+chain `parts : ℕ → Finset (Finset V)` such that at each non-fine-regular step, `parts (n+1)`
+equals `insert A₁ (insert A₂ (insert B₁ (insert B₂ R)))` for the S11 split, AND the four new
+blocks are pairwise distinct and `∉ R`. The pairwise-`≠`/`∉R` freshness is the real content
+(degenerate cases: an empty split piece `A₂ = A∖A' = ∅` can collide with another empty piece
+or with an `∅ ∈ R`; needs either nonemptiness of the pieces or a tagging/relabelling to force
+distinctness). With this file, no nested-membership wrangling remains — only the chain and its
+flat freshness.
+
 ## Status (S11, researcher-1, 2026-07-21) — DICHOTOMY analytic realizability core DONE
 
 New file `SzemerediRegularityOQ04Dichotomy.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,

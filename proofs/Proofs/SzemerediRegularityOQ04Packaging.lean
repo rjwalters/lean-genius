@@ -79,8 +79,8 @@ theorem isWitnessedSharpStep_of_split
   have hBeR : B ∈ (parts n).erase A := Finset.mem_erase.mpr ⟨hAB.symm, hB⟩
   have hpartsn : parts n = insert A (insert B R) := by
     rw [hR, Finset.insert_erase hBeR, Finset.insert_erase hA]
-  have hBR : B ∉ R := by rw [hR]; exact Finset.not_mem_erase B _
-  have hAR : A ∉ R := fun h => Finset.not_mem_erase A (parts n) (Finset.mem_of_mem_erase h)
+  have hBR : B ∉ R := by rw [hR]; exact Finset.notMem_erase B _
+  have hAR : A ∉ R := fun h => Finset.notMem_erase A (parts n) (Finset.mem_of_mem_erase h)
   have hAinsBR : A ∉ insert B R := by
     rw [Finset.mem_insert]; push_neg; exact ⟨hAB, hAR⟩
   refine ⟨R, A, B, A₁, A₂, B₁, B₂, hpartsn, hnext, hsplitA, hsplitB, hdA, hdB,
