@@ -137,14 +137,14 @@
       "id": "cube-zero",
       "title": "Part V: Cube Dehn Invariant is Zero",
       "startLine": 174,
-      "endLine": 181,
+      "endLine": 178,
       "summary": "**Proved.** $D(\\text{cube}) = 12a \\otimes [\\pi/2] = 0$ since $\\pi/2 = (1/2)\\pi$ is a rational multiple of $\\pi$.",
       "mathContext": "$D(\\text{cube}) = 0$ because all 12 cube edges have dihedral angle $\\pi/2$, which is rational $\\times \\pi$."
     },
     {
       "id": "irrational-angles",
       "title": "Part VI-VII: Irrational Angles and Tetrahedron D ≠ 0",
-      "startLine": 187,
+      "startLine": 180,
       "endLine": 252,
       "summary": "Defines `tetAngle = arccos(1/3)`. Niven's theorem (cross-referenced from parent file) shows $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order. Flatness of $\\mathbb{R}$ over $\\mathbb{Z}$ (now proved, not assumed) gives $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$.",
       "mathContext": "$\\arccos(1/3)/\\pi$ irrational (Niven) $\\Rightarrow$ $[\\arccos(1/3)]$ has infinite order $\\Rightarrow$ $6a \\otimes [\\arccos(1/3)] \\neq 0$ by flatness."
@@ -153,14 +153,14 @@
       "id": "hilbert-third",
       "title": "Part VIII: Hilbert's Third Problem",
       "startLine": 258,
-      "endLine": 285,
+      "endLine": 282,
       "summary": "**Proved.** $D(\\text{cube}) = 0 \\neq D(\\text{tet})$, so the cube and regular tetrahedron are not scissors congruent.",
       "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0 \\Rightarrow$ cube $\\not\\cong_{\\text{sc}}$ tetrahedron."
     },
     {
       "id": "octahedron",
       "title": "Part IX: Octahedron Computation",
-      "startLine": 291,
+      "startLine": 284,
       "endLine": 328,
       "summary": "Uses $\\arccos(-1/3) = \\pi - \\arccos(1/3)$ to show $[\\arccos(-1/3)] = -[\\arccos(1/3)]$. Therefore $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$.",
       "mathContext": "$[\\arccos(-1/3)] = [\\pi] - [\\arccos(1/3)] = -[\\arccos(1/3)]$ since $[\\pi] = 0$."
