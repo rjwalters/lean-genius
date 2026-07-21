@@ -51,22 +51,22 @@
       "id": "preamble",
       "title": "Imports and Module Setup",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 22,
       "summary": "Docblock describing the mathematical goal; imports Nat.Factorization.Basic, Nat.GCD.Basic, and Tactic from Mathlib; opens FundamentalArithmeticOQ01 namespace.",
       "mathContext": "Three Mathlib imports supply the machinery: \\texttt{Nat.Factorization.Basic} provides \\texttt{Nat.factorization} (the Finsupp-valued prime factorization) and \\texttt{Nat.factorization\\_mul}; \\texttt{Nat.GCD.Basic} supplies \\texttt{Nat.Coprime} and \\texttt{Nat.coprime\\_iff\\_disjoint}; \\texttt{Tactic} enables \\texttt{by\\_contra}, \\texttt{push\\_neg}, \\texttt{simp}, and \\texttt{native\\_decide}."
     },
     {
       "id": "multiplicativity",
       "title": "Multiplicativity of Factorization",
-      "startLine": 34,
-      "endLine": 41,
+      "startLine": 23,
+      "endLine": 40,
       "summary": "factorization(mn) = factorization(m) + factorization(n) and its pointwise form.",
       "mathContext": "$\\text{factorization}(mn) = \\text{factorization}(m) + \\text{factorization}(n)$ as Finsupp elements. Pointwise: $v_p(mn) = v_p(m) + v_p(n)$. The Lean proof is a one-liner: \\texttt{Nat.factorization\\_mul hm hn}. The pointwise form uses \\texttt{rfl} after rewriting by the Finsupp equality, since Finsupp application is definitionally equal to pointwise evaluation."
     },
     {
       "id": "coprime-disjoint",
       "title": "Coprime Factorizations Have Disjoint Support",
-      "startLine": 52,
+      "startLine": 41,
       "endLine": 64,
       "summary": "For coprime m,n: Disjoint support of factorizations, and v_p(m)=0 or v_p(n)=0 for each prime p.",
       "mathContext": "$\\gcd(m,n) = 1 \\iff \\text{supp}(\\text{fact}(m)) \\cap \\text{supp}(\\text{fact}(n)) = \\emptyset$. This is \\texttt{Nat.coprime\\_iff\\_disjoint}. The pointwise consequence uses contradiction: if both $v_p(m) > 0$ and $v_p(n) > 0$, then $p$ is in both supports, contradicting \\texttt{Disjoint.ne\\_of\\_mem}. The Finsupp.mem\\_support\\_iff lemma converts between $f(x) \\neq 0$ and $x \\in \\text{supp}(f)$."
@@ -74,7 +74,7 @@
     {
       "id": "examples",
       "title": "Concrete Examples: 420 = 12 × 35",
-      "startLine": 71,
+      "startLine": 65,
       "endLine": 94,
       "summary": "Verifies factorization(12), factorization(35), factorization(420) = 2²·3·5·7 by computation.",
       "mathContext": "$420 = 2^2 \\cdot 3 \\cdot 5 \\cdot 7 = 12 \\cdot 35$. The coprime decomposition: $\\gcd(12, 35) = 1$ (12 uses primes 2,3; 35 uses primes 5,7). \\texttt{factorization\\_420\\_split} proves $\\text{fact}(420) = \\text{fact}(12) + \\text{fact}(35)$ using \\texttt{factorization\\_mul\\_eq} directly — no computation needed, just the multiplicativity theorem."
@@ -82,7 +82,7 @@
     {
       "id": "iterated",
       "title": "Iterated Factorization for Lists",
-      "startLine": 103,
+      "startLine": 95,
       "endLine": 111,
       "summary": "factorization of a list product = sum of individual factorizations, proved by list induction.",
       "mathContext": "For a list $[a_1, \\ldots, a_k]$ of nonzero naturals: $\\text{fact}(a_1 \\cdots a_k) = \\text{fact}(a_1) + \\cdots + \\text{fact}(a_k)$. The Lean proof uses structural induction on lists. Nil case: $\\text{fact}(1) = 0$ (the Finsupp zero). Cons case: $\\text{fact}(a \\cdot l.\\text{prod}) = \\text{fact}(a) + \\text{fact}(l.\\text{prod})$ by \\texttt{Nat.factorization\\_mul}, then IH. The key auxiliary: \\texttt{List.prod\\_ne\\_zero} ensures the list product is nonzero when all elements are."
