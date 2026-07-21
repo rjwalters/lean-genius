@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview & Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring contrasting this file with the companion GodelIncompleteness.lean, whose placeholder Provable := (fun _ => False) makes every incompleteness theorem vacuously true (G_not_provable is `intro hG; exact hG`). Here Provable is instead an opaque axiom, and five axioms (Provable, d1_representability, G_self_reference, omega_consistency_G, neg_G_prov_G) encode Gödel's diagonal construction and the ω-consistency hypothesis, so the incompleteness theorems follow as genuine non-vacuous deductions. Notes Rosser's 1936 strengthening (consistency in place of ω-consistency) but follows Gödel's original 1931 argument.",
+      "mathContext": "The design goal is a *non-vacuous* formalization: rather than defining $\\mathrm{Provable}\\,\\varphi \\equiv \\bot$ (which trivializes every claim), the provability predicate is left opaque and constrained only by axioms mirroring the Hilbert-Bernays-Löb derivability condition D1, the diagonal lemma ($\\vdash G \\iff \\neg\\vdash \\mathrm{Prov}(\\ulcorner G\\urcorner)$), and ω-consistency."
+    },
+    {
       "id": "syntax",
       "title": "Part 1: Syntax",
       "startLine": 40,
@@ -116,10 +124,10 @@
     },
     {
       "id": "first-incompleteness",
-      "title": "Parts 6–7: First Incompleteness Theorem",
+      "title": "Parts 6–8: First Incompleteness Theorem & Corollaries",
       "startLine": 157,
-      "endLine": 214,
-      "summary": "Consistent and Complete defined. G_not_provable, not_neg_G_provable, and first_incompleteness proved as genuine non-vacuous deductions. Corollaries G_is_undecidable and no_consistent_complete."
+      "endLine": 271,
+      "summary": "Part 6 defines Consistent (¬ ⊢ ⊥, i.e. not both G and ¬G provable) and Complete (every sentence decided). Part 7 proves the two halves — G_not_provable (⊢ G leads to ⊢ Prov(⌜G⌝) via d1, contradicting G_self_reference) and not_neg_G_provable (⊢ ¬G gives ⊢ Prov(⌜G⌝) via neg_G_prov_G while ω-consistency forbids it) — and combines them into the capstone theorem first_incompleteness (¬ Complete for any consistent system). Part 8 packages the corollaries no_consistent_complete and G_is_undecidable (G is neither provable nor refutable). These are genuine non-vacuous deductions, not the type-level trivialities of the companion file."
     }
   ],
   "conclusion": {
