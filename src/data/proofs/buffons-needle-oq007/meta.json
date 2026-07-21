@@ -50,9 +50,17 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "The Open Question and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring: the open question of proving the Buffon crossing-factor asymptotic αₙ ~ √(2/(πn)) directly from the telescoping products (even Eₘ, odd Oₘ) rather than via Stirling's formula, plus imports, the linter option, and namespace.",
+      "mathContext": "$\\alpha_n = \\mathbb{E}_{S^{n-1}}[|u_1|]$ with recurrence $\\alpha_{n+2} = \\tfrac{n}{n+1}\\alpha_n$, $\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$; the goal is $\\alpha_n \\sim \\sqrt{2/(\\pi n)}$."
+    },
+    {
       "id": "defs-closed-forms",
       "title": "Crossing Factor, Products, and Closed Forms",
-      "startLine": 56,
+      "startLine": 52,
       "endLine": 132,
       "summary": "Re-declares the crossing factor alpha_n and the even/odd telescoping products E_m, O_m, with positivity and successor lemmas, then the closed forms alpha_{2m+2} = (2/pi) E_m and alpha_{2m+3} = (1/2) O_m relating the crossing factor to the products.",
       "mathContext": "alpha_{2m+2} = (2/pi) prod_{j<m}(2j+2)/(2j+3); alpha_{2m+3} = (1/2) prod_{j<m}(2j+3)/(2j+4)."

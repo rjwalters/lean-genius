@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and the Similarity Relation",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring framing the open question — upgrade the companion entry's equality of kernel dimensions to an explicit functorial kernel isomorphism kerEquiv : ker B ≃ₗ[K] ker A — plus imports, namespace, and the core relation Similar (B = P·A·P⁻¹ for an invertible P).",
+      "mathContext": "$A \\sim B \\iff \\exists P \\in (\\mathrm{Matrix}\\,n\\,n\\,K)^\\times,\\ B = P A P^{-1}$. Conjugation is a change of basis carrying $\\ker B$ to $\\ker A$ via $x \\mapsto P^{-1} \\cdot x$."
+    },
+    {
       "id": "intertwine",
       "title": "The Conjugation Identities",
       "startLine": 63,
