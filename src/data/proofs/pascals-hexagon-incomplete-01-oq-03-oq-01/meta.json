@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: the conic dichotomy and Sylvester reduction",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring framing the goal — completing the diagonal half of the projective conic dichotomy: a diagonal real conic diag(a,b,c) is stdConic-equivalent iff its signature is indefinite (2,1). Outlines the three movements: the diagonal API and rescaling, the off-diagonal congruence engine (projEquiv_of_congr, projEquiv_trans), and the spectral closure discharging the last open Sylvester statement via Mathlib’s spectral theorem. Conic definitions are reproduced locally because PascalsHexagon.lean is bit-rotted under toolchain 4.26.0.",
+      "mathContext": "A real conic is a symmetric $3\\times3$ matrix $C$; projective equivalence $\\mathrm{projEquiv}\\,C_1\\,C_2$ holds when a congruence $M^{\\mathsf T} C_2 M = C_1$ with $\\det M\\ne0$ intertwines their quadratic forms."
+    },
+    {
       "id": "api",
       "title": "Minimal Conic API and the Rescaling",
       "startLine": 49,
@@ -106,6 +114,14 @@
       "endLine": 314,
       "summary": "Discharges the remaining spectral statement via Mathlib's spectral theorem. diagConic_eq_diagonal bridges the bespoke diagConic to Matrix.diagonal of the eigenvalue vector; symm_congr_diagEigenvalues congruence-diagonalises any Hermitian conic C as Mᵀ·diag(λ₀,λ₁,λ₂)·M = C with M = Uᵀ invertible (the eigenvector matrix U is unitary, so det Uᵀ = det U ≠ 0). Chaining through the congruence engine, symm_eigen_indefinite_projEquiv_stdConic shows a symmetric conic with eigenvalue signs (+,+,−) in index order is projectively equivalent to stdConic — the hard Sylvester half, closed modulo the elementary permutation reordering an arbitrary (2,1) signature.",
       "mathContext": "Spectral theorem C = U·diag(λ)·Uᵀ (U unitary) recast with M := Uᵀ; eigenvalue signs (+,+,−) supply the signature (2,1) hypothesis consumed by the congruence engine."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 315,
+      "endLine": 364,
+      "summary": "Closing docstring recapping the completed chain: qform_stdConic_rescale + det_rescale_ne_zero give diagConic_indefinite_projEquiv_stdConic (indefinite diagonals ≡ stdConic); the congruence pull-back law conicQuadraticForm_projTransform with projEquiv_of_congr/projEquiv_trans lifts this to the full congruence orbit (congrDiag_indefinite_projEquiv_stdConic); and symm_congr_diagEigenvalues + symm_eigen_indefinite_projEquiv_stdConic discharge the remaining spectral statement via Mathlib’s spectral theorem, closing the hard Sylvester half for the ordered signature (+,+,−). Status: 0 sorries, 0 axiom declarations, no native_decide.",
+      "mathContext": "The boundary is the $\\emph{signature}$: a diagonal conic is $\\mathrm{stdConic}$-equivalent iff indefinite of type $(2,1)$; the spectral theorem congruence-diagonalises any symmetric $C$ as $M^{\\mathsf T}\\mathrm{diag}(\\lambda_0,\\lambda_1,\\lambda_2)M=C$."
     }
   ],
   "conclusion": {
