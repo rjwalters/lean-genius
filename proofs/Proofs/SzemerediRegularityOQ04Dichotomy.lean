@@ -93,13 +93,11 @@ theorem exists_irregular_pair_of_not_afksFineRegular (G : SimpleGraph V)
   have hcard_pos : 0 < ((parts.product parts).filter (fun pq =>
       pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G E pq.1 pq.2)).card := by
     by_contra hle
-    push_neg at hle
+    rw [not_lt, Nat.le_zero] at hle
     apply hnot
     unfold IsAFKSFineRegular
     refine ⟨hequit, ?_⟩
-    have hz : ((parts.product parts).filter (fun pq =>
-        pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G E pq.1 pq.2)).card = 0 := Nat.le_zero.mp hle
-    rw [hz]
+    rw [hle]
     simpa using mul_nonneg hε hknn
   obtain ⟨⟨P, Q⟩, hmem⟩ := Finset.card_pos.mp hcard_pos
   have hf := Finset.mem_filter.mp hmem
