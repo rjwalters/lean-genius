@@ -85,37 +85,44 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 47,
+      "startLine": 46,
       "endLine": 79,
       "summary": "Defines `CongruenceClass a n` as $\\{x : x \\bmod n = a \\bmod n\\}$. `CoveringSystem` is a structure with `classes : Finset (ℤ \\times \\mathbb{N})$, nonemptiness, positive moduli, and the covering property $\\forall x, \\exists p \\in \\text{classes}, x \\bmod p.2 = p.1 \\bmod p.2$. `hasDistinctModuli` requires modulus-injectivity. `isExact` requires $\\exists!$ for each integer."
     },
     {
       "id": "density-argument",
       "title": "The Density Argument",
-      "startLine": 83,
-      "endLine": 101,
+      "startLine": 80,
+      "endLine": 98,
       "summary": "Defines `density n = 1/n` as $\\mathbb{Q}$-valued density and `densitySum C = \\sum_{p \\in C} 1/p.2$. Includes a docstring describing the density lemma (for an exact covering, $\\sum 1/n_i = 1$), but no `exact_density_sum` axiom or theorem declaration exists in the file."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 107,
-      "endLine": 121,
+      "startLine": 99,
+      "endLine": 118,
       "summary": "Axiomatizes `no_exact_covering_system`: $\\neg\\exists C, \\text{hasDistinctModuli}(C) \\wedge \\text{isExact}(C)$. *Proves* `distinct_moduli_not_exact` as the universal contrapositive: $\\forall C, \\text{hasDistinctModuli}(C) \\to \\neg\\text{isExact}(C)$."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "startLine": 129,
-      "endLine": 148,
+      "startLine": 119,
+      "endLine": 135,
       "summary": "Includes docstrings describing the Mirsky-Newman generating function approach ($f(x) = \\sum x^{a_i}/(1 - x^{n_i}) = 1/(1-x)$) and the Davenport-Rado LCM argument (largest modulus divides LCM of smaller). Neither `mirsky_newman_argument` nor `davenport_rado_argument` exist as axiom declarations — both are docstring-only explanations of the proof techniques."
     },
     {
       "id": "related-results",
       "title": "Related Results and Constructions",
-      "startLine": 157,
-      "endLine": 183,
-      "summary": "Axiomatizes `covering_systems_exist` (ordinary coverings with distinct moduli $> 1$ exist — real axiom line 144). Includes a docstring about the Erdős covering system $\\{2, 3, 4, 6, 12\\}$ but no `erdos_covering_example` axiom declaration. *Verifies* `exactCoveringWithRepeats`: the construction $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ with proved nonemptiness, positive moduli, and coverage via case split on $x \\bmod 2$."
+      "startLine": 136,
+      "endLine": 167,
+      "summary": "Axiomatizes `covering_systems_exist` (ordinary coverings with distinct moduli $> 1$ exist — real axiom line 143). Includes a docstring about the Erdős covering system $\\{2, 3, 4, 6, 12\\}$ but no `erdos_covering_example` axiom declaration. *Verifies* `exactCoveringWithRepeats`: the construction $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ with proved nonemptiness, positive moduli, and coverage via case split on $x \\bmod 2$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 168,
+      "endLine": 191,
+      "summary": "*Proves* `erdos_947_summary` (theorem line 184), the capstone that packages both results into a single conjunction: the impossibility $\\neg\\exists C, \\text{hasDistinctModuli}(C) \\wedge \\text{isExact}(C)$ together with the existence of ordinary distinct-moduli coverings $\\exists C, \\text{hasDistinctModuli}(C)$. The proof pairs `no_exact_covering_system` with the witness extracted from `covering_systems_exist`, exhibiting the sharp contrast between exact coverings (impossible) and ordinary coverings (possible) under distinct moduli."
     }
   ],
   "conclusion": {
