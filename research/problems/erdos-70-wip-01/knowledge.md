@@ -132,3 +132,42 @@ Also `Cardinal.lt_omega_iff_card_lt` is in the **`Cardinal`** namespace (not `Or
 - General closure `isCountableOrdinal_opow` (α, β countable ⟹ α^β countable) by transfinite
   induction on β using `opow_limit` + `iSup_lt_omega_one` at each limit stage.
 - Towers `ω^(ω^ω)` etc. up to `ε₀`; all countable, each a `le_iSup`-over-ℕ argument.
+
+## Session 2026-07-21 (researcher-1): general closure under ordinal exponentiation
+
+Extended `Proofs/Erdos70WIP01.lean` with the **general** exponentiation-closure
+theorem (theoremCount 10→13, still 0 axioms, 0 sorries; host-verified: fresh
+parent olean + `lake env lean`, `#print axioms` = propext/Classical.choice/Quot.sound).
+
+- **`isCountableOrdinal_opow {α β} (hα : IsCountableOrdinal α) : IsCountableOrdinal β →
+  IsCountableOrdinal (α ^ β)`** — the capstone the prior sessions were building toward.
+  Subsumes both `isCountableOrdinal_opow_nat` (only `ω^n`, n:ℕ) and the bespoke
+  `omega0_opow_omega0_countable` (only `ω^ω`). Transfinite induction on the exponent
+  (`Ordinal.limitRecOn`):
+  - `β=0`: `α^0=1` (`one_countable`).
+  - `β=o+1`: `α^(o+1)=α^o·α` (`opow_add_one`), mul-closure.
+  - `β` succ-limit, `α≠0`: `α^β = ⨆_{x:Iio β} α^x` (`opow_limit`); `Iio β` is a
+    *countable* index type (`Cardinal.mk_Iio_ordinal` + `Cardinal.lift_le_aleph0`),
+    each `α^x` countable by IH, so `⨆ < ω₁` via `Ordinal.iSup_lt_omega_one`
+    (regularity of ℵ₁). `α=0`: `0^β=0` (`zero_opow`, limit exponent ≠ 0).
+- **`omega0_opow_omega0_opow_omega0_countable`** — `ω^(ω^ω)` (2nd tower level),
+  now a two-line corollary `isCountableOrdinal_opow omega0_countable (isCountableOrdinal_opow …)`.
+- **`erdos_70_conjecture_imp_omega_tower_two`** — conjecture specialized to `β = ω^(ω^ω)`.
+
+### Consequence
+The whole exponential tower `ω, ω^ω, ω^(ω^ω), …` below `ε₀` is countable, and the
+countable-ordinal class is now proved closed under all three ordinal operations
+(`+`, `·`, `^`). Every further tower level is a one-liner.
+
+### Gotchas (v4.31)
+- `limitRecOn`'s successor case is stated with `o + 1` (not `Order.succ o`), so use
+  `Ordinal.opow_add_one` (`a^(b+1)=a^b*a`) and `self_le_add_right o 1` for `o ≤ o+1`.
+- `opow_limit` indexes the sup by `Set.Iio b` (a subtype in `Type 1` for `Ordinal.{0}`);
+  `Cardinal.mk_Iio_ordinal` gives `#(Iio b) = lift b.card`, and `Cardinal.lift_le_aleph0`
+  clears the universe lift so `Countable (Iio b)` follows from `IsCountableOrdinal b`.
+- `IsSuccLimit.ne_bot` gives `o ≠ ⊥`; convert to `o ≠ 0` via `Ordinal.bot_eq_zero`.
+
+### Frontier (UNCHANGED)
+Erdős #70 itself (positive partition relation for general countable β) remains OPEN —
+the Erdős–Rado result `𝔠 → (ω+n, 4)₂³` needs partition-calculus machinery absent from
+Mathlib v4.31. The ordinal-arithmetic countability toolkit is now complete.

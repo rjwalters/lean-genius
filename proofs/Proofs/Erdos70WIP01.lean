@@ -32,6 +32,15 @@ and `*`; and it wires the open conjecture to its published special cases.
    specializes to its two flagship cases `𝔠 → (ω, n)` and `𝔠 → (ω², n)`, using
    the parent's countability witnesses.
 
+4. `isCountableOrdinal_opow_nat` / `omega0_opow_omega0_countable` /
+   `isCountableOrdinal_opow` — closure under exponentiation, from `α ^ (n:ℕ)`
+   through the single limit power `ω^ω` up to the **general** statement that the
+   countable ordinals are closed under `α ^ β` for arbitrary countable `α, β`
+   (transfinite induction on the exponent + regularity of `ℵ₁`). Consequently the
+   whole exponential tower `ω`, `ω^ω`, `ω^(ω^ω)`, … below `ε₀` is countable, and
+   the conjecture specializes to every such `β` (`erdos_70_conjecture_imp_omega_tower`,
+   `_imp_omega_tower_two`).
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -134,5 +143,70 @@ countability witness `omega0_opow_omega0_countable`. -/
 theorem erdos_70_conjecture_imp_omega_tower (h : erdos_70_conjecture) (n : ℕ)
     (hn : 2 ≤ n) : conjecture_omega_tower n :=
   h (Ordinal.omega0 ^ Ordinal.omega0) n omega0_opow_omega0_countable hn
+
+/-! ## General closure under ordinal exponentiation
+
+`isCountableOrdinal_opow_nat` (above) closes the countable ordinals only under
+exponentiation by a *natural number*, and `omega0_opow_omega0_countable` handles
+the single limit exponent `ω^ω`.  The theorem below is the full statement: the
+countable ordinals are closed under ordinal exponentiation `α ^ β` for **arbitrary**
+countable base and exponent.  With it, every ordinal built from `ω` by finitely
+many `+`, `*`, `^` steps — the whole tower `ω`, `ω^ω`, `ω^(ω^ω)`, … below `ε₀` —
+is a countable ordinal, so the parent conjecture's hypothesis `IsCountableOrdinal β`
+holds throughout that range.
+
+The proof is transfinite induction on the exponent (`Ordinal.limitRecOn`):
+* `β = 0`: `α ^ 0 = 1` is countable.
+* `β = o + 1`: `α ^ (o+1) = α ^ o · α` (`opow_add_one`), countable by the mul-closure.
+* `β` a succ-limit: for `α ≠ 0`, `α ^ β = ⨆_{x < β} α ^ x` (`opow_limit`); the index
+  `Set.Iio β` is *countable* because `β` is (`mk_Iio_ordinal` + `lift_le_aleph0`), and
+  each `α ^ x` is countable by the induction hypothesis, so the supremum stays below
+  `ω₁` (`Ordinal.iSup_lt_omega_one`, regularity of `ℵ₁`).  The degenerate base `α = 0`
+  gives `0 ^ β = 0` (`zero_opow`, since a limit exponent is nonzero). -/
+theorem isCountableOrdinal_opow {α β : Ordinal} (hα : IsCountableOrdinal α) :
+    IsCountableOrdinal β → IsCountableOrdinal (α ^ β) := by
+  induction β using Ordinal.limitRecOn with
+  | zero =>
+    intro _
+    rw [Ordinal.opow_zero]; exact one_countable
+  | add_one o ih =>
+    intro hβ
+    have ho : IsCountableOrdinal o := hβ.of_le (self_le_add_right o 1)
+    rw [Ordinal.opow_add_one]
+    exact isCountableOrdinal_mul (ih ho) hα
+  | limit o hlim ih =>
+    intro hβ
+    rcases eq_or_ne α 0 with rfl | hα0
+    · have ho0 : o ≠ 0 := by
+        have := hlim.ne_bot; simpa [Ordinal.bot_eq_zero] using this
+      rw [Ordinal.zero_opow ho0]
+      exact zero_countable
+    · have hcount : Countable (Set.Iio o) := by
+        rw [← Cardinal.mk_le_aleph0_iff, Cardinal.mk_Iio_ordinal, Cardinal.lift_le_aleph0]
+        exact hβ
+      rw [isCountableOrdinal_iff_lt_omega_one, Ordinal.opow_limit hα0 hlim]
+      apply Ordinal.iSup_lt_omega_one
+      rintro ⟨x, hx⟩
+      exact isCountableOrdinal_iff_lt_omega_one.mp (ih x hx (hβ.of_le (le_of_lt hx)))
+
+/-- **The second tower level `ω^(ω^ω)` is a countable ordinal.**  An immediate
+consequence of the general closure `isCountableOrdinal_opow` applied twice to
+`omega0_countable`; whereas `omega0_opow_omega0_countable` needed a bespoke
+countable-supremum argument, every further tower level is now free.  Supplies the
+`β = ω^(ω^ω)` countability witness for `erdos_70_conjecture`. -/
+theorem omega0_opow_omega0_opow_omega0_countable :
+    IsCountableOrdinal
+      (Ordinal.omega0.{0} ^ (Ordinal.omega0.{0} ^ Ordinal.omega0.{0})) :=
+  isCountableOrdinal_opow omega0_countable
+    (isCountableOrdinal_opow omega0_countable omega0_countable)
+
+/-- The open conjecture specializes to the second tower level `𝔠 → (ω^(ω^ω), n)₂³`,
+using the countability witness `omega0_opow_omega0_opow_omega0_countable`. -/
+theorem erdos_70_conjecture_imp_omega_tower_two (h : erdos_70_conjecture) (n : ℕ)
+    (hn : 2 ≤ n) :
+    PartitionArrow continuum_card
+      (Ordinal.omega0 ^ (Ordinal.omega0 ^ Ordinal.omega0)) n :=
+  h (Ordinal.omega0 ^ (Ordinal.omega0 ^ Ordinal.omega0)) n
+    omega0_opow_omega0_opow_omega0_countable hn
 
 end Erdos70
