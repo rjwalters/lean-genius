@@ -56,7 +56,7 @@
       "id": "preamble",
       "title": "§0: Module Setup and Statement",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Imports, namespace, and the module docstring stating the σ-finite Radon–Nikodym package and its honest formalization scope.",
       "mathContext": "Fixes a measurable space $\\alpha$ and measures $\\mu, \\nu$ on it. The classical σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are the targets."
     },
@@ -64,7 +64,7 @@
       "id": "measurability-witness",
       "title": "Measurability and the Canonical Density",
       "startLine": 66,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "rnDeriv_measurable (the Radon–Nikodym derivative is measurable) and rnDeriv_isDensity (ν.withDensity (dμ/dν) = μ for σ-finite μ ≪ ν).",
       "mathContext": "$d\\mu/d\\nu$ is measurable, and for $\\sigma$-finite $\\mu \\ll \\nu$ it is a density: $\\nu.\\mathrm{withDensity}(d\\mu/d\\nu) = \\mu$. The HaveLebesgueDecomposition instance comes from σ-finiteness."
     },
@@ -72,7 +72,7 @@
       "id": "existence",
       "title": "Existence of a Density",
       "startLine": 76,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "exists_density: there is a measurable f with ν.withDensity f = μ.",
       "mathContext": "Packages measurability and the witness identity into the existential form of the Radon–Nikodym theorem."
     },
@@ -80,7 +80,7 @@
       "id": "integral-characterization",
       "title": "Integral Characterization and Total Mass",
       "startLine": 82,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "rnDeriv_setLIntegral (∫⁻_s (dμ/dν) dν = μ s for measurable s) and rnDeriv_lintegral (the total-mass specialization to s = univ).",
       "mathContext": "$\\int_s (d\\mu/d\\nu)\\, d\\nu = \\mu(s)$ via withDensity_apply and the witness identity; specializing to $s = \\mathrm{univ}$ gives $\\int (d\\mu/d\\nu)\\, d\\nu = \\mu(\\mathrm{univ})$."
     },
@@ -88,7 +88,7 @@
       "id": "uniqueness",
       "title": "ν-a.e. Uniqueness",
       "startLine": 95,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "density_unique: any two measurable densities for μ with respect to σ-finite ν agree ν-a.e.",
       "mathContext": "From Measure.rnDeriv_withDensity, any density $f$ satisfies $f =^{ae}_\\nu (\\nu.\\mathrm{withDensity}\\,f).\\mathrm{rnDeriv}\\,\\nu = \\mu.\\mathrm{rnDeriv}\\,\\nu$; transitivity gives $f =^{ae}_\\nu g$."
     },
@@ -96,7 +96,7 @@
       "id": "lebesgue-decomposition",
       "title": "General Lebesgue Decomposition",
       "startLine": 107,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "lebesgue_decomposition: μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) for any σ-finite pair, no absolute continuity assumed.",
       "mathContext": "Measure.haveLebesgueDecomposition_add: every σ-finite $\\mu$ splits as a $\\nu$-singular part plus an absolutely-continuous part with density $d\\mu/d\\nu$."
     },
@@ -104,7 +104,7 @@
       "id": "calculus-of-densities",
       "title": "Calculus of Densities: Chain Rule, Self-Derivative, Reciprocal",
       "startLine": 114,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "rnDeriv_chain ((dμ/dν)·(dν/dλ) = dμ/dλ, λ-a.e.), rnDeriv_self_ae_one (dμ/dμ = 1, μ-a.e.), and rnDeriv_mul_symm_ae_one ((dμ/dν)·(dν/dμ) = 1, μ-a.e. for μ ≪ ν).",
       "mathContext": "The Radon–Nikodym derivative composes multiplicatively (chain rule, Measure.rnDeriv_mul_rnDeriv), has constant value 1 against its own base measure (Measure.rnDeriv_self), and therefore satisfies a reciprocal law $(d\\mu/d\\nu)(d\\nu/d\\mu) = 1$ — the chain rule at $\\lambda = \\mu$ composed with the self-derivative."
     },
@@ -120,7 +120,7 @@
       "id": "conditional-expectation",
       "title": "Conditional Expectation as a Radon–Nikodym Derivative",
       "startLine": 201,
-      "endLine": 229,
+      "endLine": 228,
       "summary": "condExp_ae_eq_signed_rnDeriv places conditional expectation inside the Radon–Nikodym calculus: for a sub-σ-algebra m ≤ m₀ with ρ.trim σ-finite and f integrable, the conditional expectation ρ[f|m] equals ρ-a.e. the signed Radon–Nikodym derivative of the f-weighted measure ρ.withDensityᵥ f trimmed to m, with respect to ρ trimmed to m. A thin wrapper over Mathlib's rnDeriv_ae_eq_condExp, recorded as the probabilistic face of the σ-finite Radon–Nikodym package.",
       "mathContext": "$\\rho[f\\mid m] = \\dfrac{d\\,(\\rho.\\mathrm{withDensity}_v f)\\!\\restriction_m}{d\\,\\rho\\!\\restriction_m}$ $\\rho$-a.e., the signed Radon–Nikodym derivative trimmed to the sub-σ-algebra $m$."
     }
