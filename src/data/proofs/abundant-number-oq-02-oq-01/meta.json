@@ -104,7 +104,7 @@
       "id": "sec-abn0201-membership",
       "title": "Oddness, Coprimality, and the Membership Certificate",
       "startLine": 96,
-      "endLine": 114,
+      "endLine": 127,
       "summary": "odd_N and not_three_dvd_N (kernel decide on modular reductions) establish the remaining two conditions; mem_odd_three_free_abundant bundles all three via the anonymous constructor to certify N as an upper bound for the least such number. A closing #print axioms audits that only propext / Classical.choice / Quot.sound appear — no Lean.ofReduceBool or sorryAx."
     }
   ],
