@@ -283,4 +283,159 @@ theorem exists_angle_cosineSum_neg (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.None
   obtain ⟨θ₀, hθ₀⟩ := exists_eq_minCosineSum A
   exact ⟨θ₀, hθ₀.trans_lt (minCosineSum_neg A hA hne)⟩
 
+/-! ## A quantitative uniform bound: `minCosineSum A ≤ −1/2`
+
+The strict bound `minCosineSum A < 0` above is qualitative.  A **second-moment / L²
+averaging** argument upgrades it to a *uniform quantitative constant*: every nonempty
+positive-frequency set satisfies `minCosineSum A ≤ −1/2`.  The mechanism is orthogonality
+of the characters `cos(nθ)` over a full period:
+
+* first moment  `∫₀^{2π} cosineSum A = 0`                    (`integral_cosineSum_eq_zero`);
+* second moment `∫₀^{2π} (cosineSum A)² = π · N`             (`integral_cosineSum_sq`).
+
+Writing `f = cosineSum A`, `m = minCosineSum A`, `N = |A|`, the sum obeys the pointwise
+sandwich `m ≤ f ≤ N`, so `(f − m)(N − f) ≥ 0` pointwise and its period integral is
+nonnegative.  Expanding, `∫(f − m)(N − f) = −πN − 2πmN ≥ 0`, and dividing by `2πN > 0`
+gives `m ≤ −1/2`.  This is a *fixed constant* — it does **not** grow like `√N` — so it is a
+genuinely different (and unblocked) result from the deep `−c√N` lower bound, which stays
+open. -/
+
+/-- A single nonzero-integer-frequency cosine integrates to zero over a full period.  The
+`ℤ`-frequency generalisation of `integral_cos_mul_eq_zero`, needed for the orthogonality
+relation where the difference frequency `n − m` can be negative. -/
+theorem integral_cos_int_mul_eq_zero (k : ℤ) (hk : k ≠ 0) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((k : ℝ) * θ) = 0 := by
+  have hck : (k : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hk
+  rw [intervalIntegral.integral_comp_mul_left (f := fun x => Real.cos x) hck, integral_cos]
+  have h1 : Real.sin ((k : ℝ) * (2 * π)) = 0 := by
+    rw [show (k : ℝ) * (2 * π) = ((2 * k : ℤ) : ℝ) * π by push_cast; ring]
+    exact Real.sin_int_mul_pi (2 * k)
+  rw [mul_zero, h1, Real.sin_zero, sub_zero, smul_zero]
+
+/-- **Orthogonality of the cosine characters over a full period.**  For positive
+frequencies `n, m ≥ 1`,
+  `∫₀^{2π} cos(nθ)·cos(mθ) dθ = π` if `n = m` and `0` otherwise.
+Proof by the product-to-sum identity `cos(nθ)cos(mθ) = ½(cos((n+m)θ) + cos((n−m)θ))`: the
+`(n+m)`-term always integrates to `0` (positive frequency), while the `(n−m)`-term is
+`cos 0 = 1` (integral `2π`) exactly when `n = m` and integrates to `0` otherwise. -/
+theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
+    (∫ θ in (0 : ℝ)..(2 * π), Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
+      = if n = m then π else 0 := by
+  -- product-to-sum, as a function equality (avoids `integral_congr`/`integral_div` whnf blowup)
+  have hfun : (fun θ : ℝ => Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
+      = fun θ => (1 / 2) * Real.cos (((n : ℝ) + (m : ℝ)) * θ)
+                 + (1 / 2) * Real.cos (((n : ℝ) - (m : ℝ)) * θ) := by
+    funext θ
+    have e1 : ((n : ℝ) + (m : ℝ)) * θ = (n : ℝ) * θ + (m : ℝ) * θ := by ring
+    have e2 : ((n : ℝ) - (m : ℝ)) * θ = (n : ℝ) * θ - (m : ℝ) * θ := by ring
+    rw [e1, e2, Real.cos_add, Real.cos_sub]; ring
+  have hI1 : IntervalIntegrable (fun θ => (1 / 2) * Real.cos (((n : ℝ) + (m : ℝ)) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    ((Real.continuous_cos.comp (continuous_const.mul continuous_id)).const_mul _).intervalIntegrable _ _
+  have hI2 : IntervalIntegrable (fun θ => (1 / 2) * Real.cos (((n : ℝ) - (m : ℝ)) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    ((Real.continuous_cos.comp (continuous_const.mul continuous_id)).const_mul _).intervalIntegrable _ _
+  have hsum : (∫ θ in (0 : ℝ)..(2 * π), Real.cos (((n : ℝ) + (m : ℝ)) * θ)) = 0 := by
+    rw [show ((n : ℝ) + (m : ℝ)) = ((n + m : ℕ) : ℝ) by push_cast; ring]
+    exact integral_cos_mul_eq_zero (by omega)
+  have hdiff : (∫ θ in (0 : ℝ)..(2 * π), Real.cos (((n : ℝ) - (m : ℝ)) * θ))
+      = if n = m then 2 * π else 0 := by
+    by_cases hnm : n = m
+    · rw [if_pos hnm]
+      have h0 : (n : ℝ) - (m : ℝ) = 0 := by rw [hnm]; ring
+      simp only [h0, zero_mul, Real.cos_zero]
+      rw [intervalIntegral.integral_const, smul_eq_mul]; ring
+    · rw [if_neg hnm]
+      have hk : ((n : ℤ) - (m : ℤ)) ≠ 0 := by rw [sub_ne_zero]; exact_mod_cast hnm
+      have h := integral_cos_int_mul_eq_zero ((n : ℤ) - (m : ℤ)) hk
+      rw [Int.cast_sub, Int.cast_natCast, Int.cast_natCast] at h
+      exact h
+  rw [hfun, intervalIntegral.integral_add hI1 hI2,
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, hsum, hdiff]
+  by_cases hnm : n = m
+  · rw [if_pos hnm, if_pos hnm]; ring
+  · rw [if_neg hnm, if_neg hnm]; ring
+
+/-- **The second moment of the Chowla cosine sum: `∫₀^{2π} (cosineSum A)² = π · |A|`.**
+Expand the square as the double sum `∑_{n,m} cos(nθ)cos(mθ)`, integrate term by term, and
+apply orthogonality (`integral_cos_mul_cos`): only the diagonal `n = m` survives, each
+contributing `π`, for a total of `π · |A|`.  (Requires `0 ∉ A` so every frequency is
+`≥ 1`.) -/
+theorem integral_cosineSum_sq (A : Finset ℕ) (hA : 0 ∉ A) :
+    ∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 2 = π * A.card := by
+  have hexp : ∀ θ : ℝ, (cosineSum A θ) ^ 2
+      = ∑ n ∈ A, ∑ m ∈ A, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ) := by
+    intro θ
+    rw [sq]
+    simp only [cosineSum]
+    rw [Finset.sum_mul_sum]
+  have hcont : ∀ n : ℕ, Continuous (fun θ : ℝ => Real.cos ((n : ℝ) * θ)) :=
+    fun n => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hintprod : ∀ n m : ℕ, IntervalIntegrable
+      (fun θ => Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ)) MeasureTheory.volume 0 (2 * π) :=
+    fun n m => ((hcont n).mul (hcont m)).intervalIntegrable _ _
+  have hintinner : ∀ n : ℕ, IntervalIntegrable
+      (fun θ => ∑ m ∈ A, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    fun n => (continuous_finsetSum A (fun m _ => (hcont n).mul (hcont m))).intervalIntegrable _ _
+  rw [intervalIntegral.integral_congr (fun θ _ => hexp θ),
+      intervalIntegral.integral_finsetSum (fun n _ => hintinner n)]
+  have hstep : ∀ n ∈ A,
+      (∫ θ in (0 : ℝ)..(2 * π), ∑ m ∈ A, Real.cos ((n : ℝ) * θ) * Real.cos ((m : ℝ) * θ))
+        = ∑ m ∈ A, if n = m then π else (0 : ℝ) := by
+    intro n hn
+    rw [intervalIntegral.integral_finsetSum (fun m _ => hintprod n m)]
+    refine Finset.sum_congr rfl (fun m hm => ?_)
+    exact integral_cos_mul_cos (Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hn)))
+      (Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hm)))
+  rw [Finset.sum_congr rfl hstep]
+  have hdiag : ∀ n ∈ A, (∑ m ∈ A, if n = m then π else (0 : ℝ)) = π := by
+    intro n hn
+    rw [Finset.sum_ite_eq A n (fun _ => (π : ℝ)), if_pos hn]
+  rw [Finset.sum_congr rfl hdiag, Finset.sum_const, nsmul_eq_mul]
+  ring
+
+/-- **Uniform quantitative bound: `minCosineSum A ≤ −1/2`** for every nonempty
+positive-frequency set.  Second-moment argument: with `f = cosineSum A`, `m = minCosineSum A`,
+`N = |A|`, the first and second moments are `∫f = 0` and `∫f² = πN`, and `m ≤ f ≤ N`
+pointwise.  Hence `∫(f − m)(N − f) ≥ 0`; expanding gives `−πN − 2πmN ≥ 0`, so `m ≤ −1/2`.
+A fixed constant (not the deep `−c√N` growth), and strictly sharper than `minCosineSum_neg`. -/
+theorem minCosineSum_le_neg_half (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty) :
+    minCosineSum A ≤ -1 / 2 := by
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  set N : ℝ := (A.card : ℝ) with hN
+  have hNpos : 0 < N := by rw [hN]; exact_mod_cast Finset.card_pos.mpr hne
+  have I1 : ∫ θ in (0 : ℝ)..(2 * π), g θ = 0 := integral_cosineSum_eq_zero A hA
+  have I2 : ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 = π * N := integral_cosineSum_sq A hA
+  have hlow : ∀ θ, m ≤ g θ := fun θ => minCosineSum_le A θ
+  have hupp : ∀ θ, g θ ≤ N := fun θ => cosineSum_le_card A θ
+  have hg_int : IntervalIntegrable g MeasureTheory.volume 0 (2 * π) :=
+    (continuous_cosineSum A).intervalIntegrable _ _
+  have hg2_int : IntervalIntegrable (fun θ => (g θ) ^ 2) MeasureTheory.volume 0 (2 * π) :=
+    ((continuous_cosineSum A).pow 2).intervalIntegrable _ _
+  -- The nonnegative integrand `(f − m)(N − f)`.
+  have hnonneg : 0 ≤ ∫ θ in (0 : ℝ)..(2 * π), (g θ - m) * (N - g θ) := by
+    apply intervalIntegral.integral_nonneg (by positivity)
+    intro θ _
+    exact mul_nonneg (by linarith [hlow θ]) (by linarith [hupp θ])
+  -- Evaluate that integral in closed form.
+  have hneg2 : IntervalIntegrable (fun θ => -(g θ) ^ 2) MeasureTheory.volume 0 (2 * π) :=
+    hg2_int.neg
+  have hcm : IntervalIntegrable (fun θ => (N + m) * g θ) MeasureTheory.volume 0 (2 * π) :=
+    hg_int.const_mul _
+  have hA1 : IntervalIntegrable (fun θ => -(g θ) ^ 2 + (N + m) * g θ)
+      MeasureTheory.volume 0 (2 * π) := hneg2.add hcm
+  have hcompute : (∫ θ in (0 : ℝ)..(2 * π), (g θ - m) * (N - g θ)) = -(π * N) - 2 * π * m * N := by
+    rw [intervalIntegral.integral_congr
+          (fun θ _ => show (g θ - m) * (N - g θ) = -(g θ) ^ 2 + (N + m) * g θ - m * N by ring),
+        intervalIntegral.integral_sub hA1 intervalIntegrable_const,
+        intervalIntegral.integral_add hneg2 hcm,
+        intervalIntegral.integral_neg, intervalIntegral.integral_const_mul,
+        intervalIntegral.integral_const, I1, I2]
+    simp only [smul_eq_mul]; ring
+  rw [hcompute] at hnonneg
+  have hpi : 0 < π := Real.pi_pos
+  nlinarith [hnonneg, mul_pos hpi hNpos]
+
 end Erdos510WIP01
