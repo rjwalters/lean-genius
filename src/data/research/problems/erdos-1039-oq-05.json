@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: the general roots-of-unity lower bound d_n >= n^(1/(n-1)) is now PROVED (0-axiom), the milestone the sharp-value program (d2=2, d3>=sqrt3, d4>=4^(1/3)) was building toward. It yields d = lim_n d_n >= 1, pinning the transfinite diameter of the closed unit disc into [1,2] (transfiniteDiameter_mem_Icc_one_two). Remaining: the sharp value d=1 (log capacity) needs the Fekete-Szego extremal UPPER bound (deep). Parent Erdos #1039 OPEN.",
+    "progressSummary": "PROGRESS (2026-07-21): the general roots-of-unity lower bound d_n >= n^(1/(n-1)) is PROVED (0-axiom, #40737), yielding d = lim_n d_n >= 1 and pinning d into [1,2] (transfiniteDiameter_mem_Icc_one_two). ALSO (researcher-1-6): the transformation laws — scaling covariance discreteDiameter_smul (dₙ(cZ)=‖c‖·dₙ(Z)) and translation invariance discreteDiameter_add_const, plus their spreadProduct forms, general over all n/configs (0-axiom). Remaining: the sharp value d=1 (log capacity) needs the Fekete-Szego extremal UPPER bound (deep). Parent Erdos #1039 OPEN.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -77,7 +77,10 @@
       "prod_erase_zero / prod_erase_root: the discriminant core prod_{d!=0}||1-zeta^d|| = n and per-index prod_{j!=i}||zeta^i-zeta^j|| = n",
       "spreadProduct_rootConfig_sq : (spreadProduct (rootConfig zeta (m+2)))^2 = (m+2)^(m+2) (Vandermonde discriminant)",
       "discreteDiameter_rootConfig : discreteDiameter (rootConfig zeta (m+2)) = (m+2)^(1/(m+1))",
-      "transfiniteDiameterN_rootsOfUnity_ge, one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc_one_two in Erdos1039TransfiniteDiameter.lean (all 0-axiom)"
+      "transfiniteDiameterN_rootsOfUnity_ge, one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc_one_two in Erdos1039TransfiniteDiameter.lean (all 0-axiom)",
+      "spreadProduct_smul — V(cZ) = ‖c‖^{pairCount n}·V(Z) (Erdos1039TransfiniteDiameter.lean)",
+      "discreteDiameter_smul — scaling covariance dₙ(cZ)=‖c‖·dₙ(Z) for n≥2 (via pairCount_mul_exp normalisation)",
+      "spreadProduct_add_const / discreteDiameter_add_const — translation invariance V(Z+c)=V(Z), dₙ(Z+c)=dₙ(Z)"
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
@@ -95,7 +98,8 @@
       "d4 = 4^(1/3): the square {1,i,-1,-i} of 4th roots of unity has four side gaps sqrt2 and two diagonal gaps 2, so spreadProduct = (sqrt2)^4 * 2^2 = 16 and discreteDiameter = 16^(1/6) = 4^(1/3). Confirms the pattern d_n >= n^(1/(n-1)) at the third term (d2=2^(1/1), d3=3^(1/2), d4=4^(1/3)).",
       "GENERAL lower bound d_n >= n^(1/(n-1)) now PROVED (0-axiom) via the n-th roots of unity, generalising the exact terms d2=2, d3>=sqrt3, d4>=4^(1/3): transfiniteDiameterN_rootsOfUnity_ge (m) : (m+2)^(1/(m+1)) <= transfiniteDiameterN (m+2).",
       "Consequence one_le_transfiniteDiameter : 1 <= transfiniteDiameter (each d_{n+2} >= (n+2)^(1/(n+1)) >= 1, so the infimum is >= 1); with d<=2 this pins d in [1,2] (transfiniteDiameter_mem_Icc_one_two). Sharp d=1 (log capacity of the disc) still needs Fekete-Szego upper bound.",
-      "Vandermonde-discriminant identity spreadProduct(roots of unity)^2 = n^n proved via: (a) per-index prod_{j!=i} ||zeta^i - zeta^j|| = n by translating j->j-i and pulling out the unit zeta^i, reducing to prod_{k=1}^{n-1}||1-zeta^k|| = |prod (1-zeta^k)| = |n| = n (IsPrimitiveRoot.prod_one_sub_pow_eq_order); (b) multiplying over n indices gives the ORDERED off-diagonal product n^n = (spreadProduct)^2 (lower/upper triangles equal by norm_sub_rev + Finset.prod_comm)."
+      "Vandermonde-discriminant identity spreadProduct(roots of unity)^2 = n^n proved via: (a) per-index prod_{j!=i} ||zeta^i - zeta^j|| = n by translating j->j-i and pulling out the unit zeta^i, reducing to prod_{k=1}^{n-1}||1-zeta^k|| = |prod (1-zeta^k)| = |n| = n (IsPrimitiveRoot.prod_one_sub_pow_eq_order); (b) multiplying over n indices gives the ORDERED off-diagonal product n^n = (spreadProduct)^2 (lower/upper triangles equal by norm_sub_rev + Finset.prod_comm).",
+      "The discrete diameter transforms like a length: scaling covariance dₙ(cZ)=‖c‖·dₙ(Z) and translation invariance dₙ(Z+c)=dₙ(Z), general over all n and all configurations, 0-axiom — the finite-n shadows of cap(cK+a)=‖c‖·cap(K), explaining why the transfinite diameter of a disc of radius R (centred anywhere) is R."
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent.",

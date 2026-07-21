@@ -213,6 +213,62 @@ theorem discreteDiameter_le_two {z : Fin n → ℂ} (hn : 2 ≤ n)
         rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
     _ = 2 := by rw [pairCount_mul_exp hn, Real.rpow_one]
 
+/-! ## Transformation laws: scaling covariance and translation invariance
+
+The discrete diameter transforms like a *length*: scaling every root by `c ∈ ℂ`
+multiplies `dₙ` by `‖c‖`, and translating every root by a constant leaves `dₙ`
+unchanged.  These are the finite-`n` shadows of the defining behaviour of
+logarithmic capacity under affine maps — `cap(cK + a) = ‖c‖ · cap(K)` — and in
+particular explain why the transfinite diameter of a disc of radius `R` (centred
+anywhere) is `R`.  Both laws are exact and hold for *every* configuration; they
+are `0`-axiom. -/
+
+/-- **Spread product under scaling.**  Multiplying every root by `c` scales each of
+the `#pairs = pairCount n` gap factors by `‖c‖`, so `V(cZ) = ‖c‖^{#pairs}·V(Z)`. -/
+theorem spreadProduct_smul (c : ℂ) (z : Fin n → ℂ) :
+    spreadProduct (fun i => c * z i) = ‖c‖ ^ pairCount n * spreadProduct z := by
+  simp only [spreadProduct]
+  have key : ∀ i : Fin n,
+      (∏ j ∈ Finset.Ioi i, ‖c * z i - c * z j‖)
+        = ‖c‖ ^ (Finset.Ioi i).card * ∏ j ∈ Finset.Ioi i, ‖z i - z j‖ := by
+    intro i
+    rw [← Finset.prod_const, ← Finset.prod_mul_distrib]
+    refine Finset.prod_congr rfl fun j _ => ?_
+    rw [← norm_mul, mul_sub]
+  rw [Finset.prod_congr rfl fun i _ => key i, Finset.prod_mul_distrib,
+    Finset.prod_pow_eq_pow_sum]
+  rfl
+
+/-- **Scaling covariance of the discrete diameter.**  For `n ≥ 2`, scaling every
+root by `c` multiplies the `n`-point diameter by `‖c‖`: `dₙ(cZ) = ‖c‖·dₙ(Z)`.  The
+exponent bookkeeping is `#pairs · 2/(n(n-1)) = 1` (`pairCount_mul_exp`), so the
+`‖c‖^{#pairs}` from `spreadProduct_smul` normalises to a single factor of `‖c‖`. -/
+theorem discreteDiameter_smul (hn : 2 ≤ n) (c : ℂ) (z : Fin n → ℂ) :
+    discreteDiameter (fun i => c * z i) = ‖c‖ * discreteDiameter z := by
+  unfold discreteDiameter
+  rw [spreadProduct_smul,
+    Real.mul_rpow (by positivity) (spreadProduct_nonneg z),
+    ← Real.rpow_natCast (‖c‖) (pairCount n),
+    ← Real.rpow_mul (norm_nonneg c),
+    pairCount_mul_exp hn, Real.rpow_one]
+
+/-- **Translation invariance of the spread product.**  Adding a constant `c` to
+every root leaves each gap `zᵢ − zⱼ` unchanged, so `V(Z + c) = V(Z)`. -/
+theorem spreadProduct_add_const (c : ℂ) (z : Fin n → ℂ) :
+    spreadProduct (fun i => z i + c) = spreadProduct z := by
+  simp only [spreadProduct]
+  refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_
+  congr 1
+  ring
+
+/-- **Translation invariance of the discrete diameter.**  `dₙ(Z + c) = dₙ(Z)`: the
+`n`-point diameter depends only on the pairwise gaps, which are translation
+invariant. -/
+theorem discreteDiameter_add_const (c : ℂ) (z : Fin n → ℂ) :
+    discreteDiameter (fun i => z i + c) = discreteDiameter z := by
+  unfold discreteDiameter
+  rw [spreadProduct_add_const]
+
 /- ## The logarithmic-energy bridge
 
 The transfinite diameter is a *multiplicative* invariant, while logarithmic
