@@ -81,36 +81,121 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 29,
-      "summary": "Statement of Part I (OPEN, not asserted) and the four verified deliverables."
+      "endLine": 43,
+      "summary": "Statement of Part I of Erdős #897 (OPEN, not asserted) — whether limsup_{p,k} f(p^k)/log(p^k) = ∞ for additive f forces limsup_n (f(n+1)−f(n))/log n = ∞ — and the verified deliverables this companion proves about the hypothesis class UnboundedOnPrimePowers.",
+      "mathContext": "The hypothesis is $\\limsup_{p,k} f(p^k)/\\log(p^k) = \\infty$, packaged as the predicate `UnboundedOnPrimePowers f`. The file studies this class structurally rather than attempting the open Part I implication."
     },
     {
       "id": "non-vacuity",
-      "title": "(1) Non-vacuity witness",
-      "startLine": 35,
-      "endLine": 96,
-      "summary": "logSqWeight(n)=∑_{p|n}(log p)² is additive, strongly additive, and unbounded on prime powers, so the #897 hypothesis is satisfiable."
+      "title": "(1) Non-vacuity: an Explicit Witness",
+      "startLine": 44,
+      "endLine": 106,
+      "summary": "logSqWeight(n) = ∑_{p|n}(log p)² is additive (logSqWeight_additive), strongly additive (logSqWeight_stronglyAdditive), and unbounded on prime powers (logSqWeight_unboundedOnPrimePowers), so the #897 hypothesis is satisfiable (exists_additive_unboundedOnPrimePowers).",
+      "mathContext": "$w(n) = \\sum_{p \\mid n} (\\log p)^2$ has $w(p^k) = (\\log p)^2$, so $w(p^k)/\\log(p^k) = (\\log p)/k \\cdot \\log p \\to \\infty$ along $p \\to \\infty$ — a concrete additive witness that the hypothesis is non-vacuous."
     },
     {
       "id": "selectivity",
-      "title": "(2) Selectivity",
-      "startLine": 98,
-      "endLine": 135,
-      "summary": "log and ω both fail the hypothesis, so it isolates strictly super-logarithmic growth on prime powers."
+      "title": "(2) Selectivity: the Classical Examples Fail",
+      "startLine": 107,
+      "endLine": 145,
+      "summary": "The classical additive functions fail the hypothesis: not_unboundedOnPrimePowers_logN (log N) and not_unboundedOnPrimePowers_omega (ω, the number of distinct prime factors), so the hypothesis isolates strictly super-logarithmic growth on prime powers.",
+      "mathContext": "$\\log(p^k)/\\log(p^k) = 1$ is bounded and $\\omega(p^k) = 1$, so neither $\\log$ nor $\\omega$ is unbounded on prime powers — the hypothesis genuinely excludes the standard additive functions."
     },
     {
       "id": "plain-unbounded",
-      "title": "(3) Plain unboundedness",
-      "startLine": 137,
-      "endLine": 165,
-      "summary": "The hypothesis forces f unbounded on prime powers (every B is exceeded)."
+      "title": "(3) The Hypothesis Forces Plain Unboundedness on Prime Powers",
+      "startLine": 146,
+      "endLine": 175,
+      "summary": "unboundedOnPrimePowers_unbounded: the hypothesis forces f to be plainly unbounded on prime powers (every bound B is exceeded at some p^k) — the weakest downstream consequence of the growth condition.",
+      "mathContext": "If $f(p^k)/\\log(p^k) \\to \\infty$ then in particular $f(p^k) \\to \\infty$ (since $\\log(p^k) \\ge \\log 2 > 0$), so $\\{f(p^k)\\}$ is unbounded above."
+    },
+    {
+      "id": "closure-properties",
+      "title": "Closure Properties: a Positive Cone",
+      "startLine": 176,
+      "endLine": 249,
+      "summary": "UnboundedOnPrimePowers is a positive cone: preserved by scaling with a positive constant (unboundedOnPrimePowers_smul) and by adding any function nonnegative on prime powers (unboundedOnPrimePowers_add_nonneg) or bounded below (unboundedOnPrimePowers_add_bddBelow).",
+      "mathContext": "If $f$ is unbounded on prime powers then so is $c\\cdot f$ ($c > 0$) and $f + g$ whenever $g$ is $\\ge 0$ (or bounded below) on prime powers — the class is closed under the operations of a positive cone."
     },
     {
       "id": "reduction",
-      "title": "(4) Strongly-additive reduction",
-      "startLine": 167,
-      "endLine": 214,
-      "summary": "For strongly additive f the hypothesis is equivalent to f(p)/log p unbounded over the primes."
+      "title": "(4) A Strongly-Additive Reduction",
+      "startLine": 250,
+      "endLine": 296,
+      "summary": "stronglyAdditive_unboundedOnPrimePowers_iff: for strongly additive f (where f(p^k) = f(p) is constant in k), the prime-power hypothesis reduces to a statement about primes alone — f is unbounded on prime powers iff f(p)/log p is unbounded over the primes.",
+      "mathContext": "Strong additivity gives $f(p^k) = f(p)$, so $f(p^k)/\\log(p^k) = f(p)/(k\\log p)$; its limsup is $\\infty$ iff $f(p)/\\log p$ is unbounded over primes — localizing the hypothesis to prime values."
+    },
+    {
+      "id": "converse-fails",
+      "title": "(5) The Converse of (3) Fails: Ω Separates the Classes",
+      "startLine": 297,
+      "endLine": 354,
+      "summary": "Plain unboundedness on prime powers does NOT imply the hypothesis: bigOmega (Ω, counting prime factors with multiplicity) is the witness. bigOmega_prime, not_unboundedOnPrimePowers_bigOmega, bigOmega_unbounded_on_primePowers, and unbounded_not_implies_unboundedOnPrimePowers show Ω(p^k) = k is unbounded on prime powers yet Ω fails the log-normalized hypothesis.",
+      "mathContext": "$\\Omega(p^k) = k \\to \\infty$, so $\\Omega$ is plainly unbounded on prime powers; but $\\Omega(p^k)/\\log(p^k) = k/(k\\log p) = 1/\\log p \\to 0$, so $\\Omega$ fails the hypothesis — the converse of (3) is false."
+    },
+    {
+      "id": "master-domination",
+      "title": "(6) The Master Domination Lemma and a Cone of Witnesses",
+      "startLine": 355,
+      "endLine": 413,
+      "summary": "The hypothesis is a largeness (upward-closed) condition: unboundedOnPrimePowers_of_ge — if f satisfies it and g ≥ f on prime powers then g satisfies it too — plus the logSqWeight-anchored corollaries unboundedOnPrimePowers_of_ge_logSqWeight, unboundedOnPrimePowers_congr, and _of_eq_logSqWeight, generating a whole cone of witnesses.",
+      "mathContext": "If $g(p^k) \\ge f(p^k)$ for all prime powers and $f$ is unbounded on prime powers, so is $g$: the class is upward closed in the prime-power domination order. Any $g$ dominating $w = \\text{logSqWeight}$ inherits the property."
+    },
+    {
+      "id": "witness-structure",
+      "title": "(7) Structural Properties of the Witness logSqWeight",
+      "startLine": 414,
+      "endLine": 463,
+      "summary": "logSqWeight as a prime-support functional: logSqWeight_nonneg (a sum of nonnegative terms), logSqWeight_eq_of_primeFactors_eq (depends only on the radical / set of prime divisors), logSqWeight_mono_of_dvd (monotone under divisibility), and logSqWeight_eq_zero_iff (zero exactly at n ∈ {0,1}).",
+      "mathContext": "$w(n) = \\sum_{p \\mid n} (\\log p)^2 \\ge 0$ depends only on $\\mathrm{rad}(n)$, is monotone under $m \\mid n$, and vanishes iff $n \\in \\{0, 1\\}$ — the signature of a nonnegative prime-support functional."
+    },
+    {
+      "id": "anti-domination",
+      "title": "(8) The Dual Boundary: Anti-Domination and the O(log) Criterion",
+      "startLine": 464,
+      "endLine": 524,
+      "summary": "The dual (smallness) boundary: not_unboundedOnPrimePowers_of_le (dominated below a failing function ⟹ fails), the O(log) selectivity criterion not_unboundedOnPrimePowers_of_le_const_mul_log (f ≤ C·log on prime powers ⟹ fails), and not_unboundedOnPrimePowers_smul (scaling a failing function keeps it failing).",
+      "mathContext": "If $f(p^k) \\le C\\log(p^k)$ on prime powers then $f(p^k)/\\log(p^k) \\le C$ is bounded, so $f$ fails the hypothesis — the $O(\\log)$ criterion that uniformly subsumes the ad-hoc failures of $\\log$ and $\\omega$."
+    },
+    {
+      "id": "sup-closure-lattice",
+      "title": "(9) Sup-Closure: a Lattice Filter / Ideal Structure",
+      "startLine": 525,
+      "endLine": 581,
+      "summary": "The order structure: unboundedOnPrimePowers_max_left / _max_right (max with anything preserves the hypothesis — a sup-closed filter) and not_unboundedOnPrimePowers_max (max of two failing functions still fails), establishing the join structure of the class.",
+      "mathContext": "$\\max(f, g)(p^k) \\ge f(p^k)$, so the large class is closed under $\\max$ with an arbitrary $g$ (an up-set / filter); dually the failing class is closed under $\\max$ of two failers."
+    },
+    {
+      "id": "boundedness-criterion",
+      "title": "(10) The Boundedness Selectivity Criterion",
+      "startLine": 582,
+      "endLine": 623,
+      "summary": "not_unboundedOnPrimePowers_of_bounded: any function bounded on prime powers fails the hypothesis — the coarsest selectivity criterion, subsuming the O(log) test of (8) as the C = 0 (or bounded-numerator) degenerate case.",
+      "mathContext": "If $|f(p^k)| \\le C$ then $f(p^k)/\\log(p^k) \\to 0$, so a bounded function trivially fails the hypothesis."
+    },
+    {
+      "id": "failing-class-ideal",
+      "title": "(11) The Failing Class is a Genuine Order Ideal and Additive Cone",
+      "startLine": 624,
+      "endLine": 698,
+      "summary": "The failing O(log) functions form a downward-closed additive cone: not_unboundedOnPrimePowers_add (sum of two failing functions fails) and not_unboundedOnPrimePowers_min_left / _min_right (min with a failing function fails), the meet-structure dual to (9)'s join structure.",
+      "mathContext": "If $f, g$ are both $O(\\log)$ on prime powers then so is $f + g$, and $\\min(f, g) \\le f$ stays $O(\\log)$ — the failing class is an order ideal closed under addition (an additive cone), mirroring the filter structure of the large class."
+    },
+    {
+      "id": "affine-invariance",
+      "title": "Positive-Affine Invariance of the Hypothesis Class",
+      "startLine": 699,
+      "endLine": 741,
+      "summary": "The class is insensitive to positive-affine perturbation: unboundedOnPrimePowers_sub_bddAbove (subtracting a bounded-above function preserves it), unboundedOnPrimePowers_add_const (adding a constant), and unboundedOnPrimePowers_affine (a·f + b for a > 0) — the exact algebraic invariance the earlier cone/ideal lemmas imply.",
+      "mathContext": "For $a > 0$ and bounded $b$, $af + b$ is unbounded on prime powers iff $f$ is: the hypothesis depends only on the positive-affine class of $f$, being blind to bounded-below/above shifts."
+    },
+    {
+      "id": "nnf-witness-value",
+      "title": "(15) Negation Normal Form and the Explicit Witness Value",
+      "startLine": 742,
+      "endLine": 793,
+      "summary": "The unifying negation normal form not_unboundedOnPrimePowers_iff (f fails iff f(p^k)/log(p^k) is bounded — a single fact instantiating every selectivity criterion of (2)/(8)/(10)), and the explicit witness values logSqWeight_primePow and logSqWeight_primePow_div_log computing w(p^k) = (log p)² and its log-normalization.",
+      "mathContext": "$f$ fails $\\iff \\exists C,\\ \\forall p^k,\\ f(p^k) \\le C\\log(p^k)$. For the witness, $w(p^k) = (\\log p)^2$ and $w(p^k)/\\log(p^k) = (\\log p)^2/(k\\log p) = (\\log p)/k \\to \\infty$, re-certifying non-vacuity from the normal form."
     }
   ],
   "conclusion": {
