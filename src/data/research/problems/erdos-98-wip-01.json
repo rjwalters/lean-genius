@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, #print axioms=[propext,Classical.choice,Quot.sound]): n=3 general-position existence discharged via explicit right triangle (first non-vacuous no-3-collinear case) — exists_inGeneralPosition_three + exists_inGeneralPosition_of_le_three, so h n is an attained minimum for all n≤3 (was n≤2). Parent Erdős #98 (h(n)/n→∞) OPEN; full GP existence for all n (parabola fails no-4-concyclic) remains the deep constructive piece.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 0 sorry/0 axiom/no native_decide): RESOLVED general-position existence for EVERY n via parabolaConfig i↦(i+1,(i+1)²) — positive abscissae avoid concyclicity (4 parabola points concyclic iff abscissae sum to 0), strict convexity avoids collinearity. exists_inGeneralPosition (all n) supersedes the n≤4 tower; h_attained makes h n a genuine attained minimum for all n. The constructive piece flagged open by every prior session is now closed. Parent Erdős #98 (h(n)/n→∞) remains OPEN.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -47,7 +47,13 @@
       "triangleConfig — explicit right triangle (0,0),(1,0),(0,1) via EuclideanSpace.single (Erdos98WIP01.lean)",
       "triangleConfig_injective, noThreeCollinear_triangleConfig (first non-vacuous no-3-collinear case), noFourConcyclic_triangleConfig",
       "exists_inGeneralPosition_three — GP configs exist for n=3",
-      "exists_inGeneralPosition_of_le_three — GP configs exist for all n≤3, so h n is an attained minimum through n=3"
+      "exists_inGeneralPosition_of_le_three — GP configs exist for all n≤3, so h n is an attained minimum through n=3",
+      "parabolaConfig n : i↦(i+1,(i+1)²) + parabolaConfig_zero/one coord lemmas (Erdos98WIP01.lean)",
+      "parabolaConfig_injective, noThreeCollinear_parabolaConfig, noFourConcyclic_parabolaConfig",
+      "exists_inGeneralPosition (n) : ∃P, InGeneralPosition P — for ALL n (supersedes _of_le_four)",
+      "h_attained (n) : ∃P, InGeneralPosition P ∧ numDistinctDistances P = h n (via Nat.sInf_mem)",
+      "Abstract real lemmas parabola_collinear_trivial + parabola_concyclic_sum_zero (difference-and-cancel, linear_combination + mul_eq_zero)",
+      "Distinctness helpers card_triple_pairwise_ne / card_quad_pairwise_ne (Finset.card_insert_of_notMem)"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -62,13 +68,13 @@
       "OBSTRUCTION to full GP existence: the natural parabola construction (t,t²) gives no-3-collinear (a line meets a parabola in ≤2 pts) but FAILS no-4-concyclic — a circle meets y=x² in a quartic with zero cubic term, so any 4 parabola points whose x-coordinates SUM TO 0 are concyclic (e.g. x=-3,-1,1,3). Full GP existence needs a genericity/perturbation argument (config space minus finitely many proper algebraic subvarieties), not a single explicit curve.",
       "EuclideanSpace.single_apply deprecated → PiLp.single_apply (v4.31); coordinate extraction via congrArg (·0) then simpa [PiLp.single_apply].",
       "n=3 GP existence discharged with the right triangle (0,0),(1,0),(0,1): a line a·x+b·y+c=0 through all three forces c=0 (from origin), a=0 (from (1,0)), b=0 (from (0,1)). Proof by fin_cases over the 27 index triples: degenerate (repeat) triples killed by absurd hcard (by decide) on card{i,j,k}=3; the 6 permutations reduced by simp[cons_val_*, EuclideanSpace.single_apply]+norm_num then linarith.",
-      "Coordinate technique: build points with EuclideanSpace.single for uniform single_apply coordinate access; ![...] index reduction needs Matrix.cons_val_zero/one/two + head_cons/tail_cons; full simp (not simp only) closes false coordinate equalities in injectivity."
+      "Coordinate technique: build points with EuclideanSpace.single for uniform single_apply coordinate access; ![...] index reduction needs Matrix.cons_val_zero/one/two + head_cons/tail_cons; full simp (not simp only) closes false coordinate equalities in injectivity.",
+      "RESOLVED the general-n GP existence obstruction: four parabola points (t,t²) are concyclic IFF abscissae sum to 0 (Vieta, x³-coeff of the circle-cut quartic is 0). Choosing POSITIVE abscissae 1..n makes every 4-subset sum ≥4>0, so no four concyclic; strict convexity gives no three collinear. Earlier sessions wrongly deemed the parabola construction dead — the fix (positive x) is elementary, no genericity/perturbation argument needed."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "General-position existence for n=4 (first non-vacuous no-4-concyclic case): needs the four-points-concyclic determinant/circle computation over EuclideanSpace — the analog of the n=3 triangle step for concyclicity.",
-      "Full GP existence for all n via genericity: failure locus is a finite union of proper algebraic subvarieties of (ℝ²)ⁿ, complement nonempty (measure/dimension argument) — deep constructive piece.",
-      "Parent Erdős #98 conjecture h(n)/n→∞ remains OPEN (Erdős could not even prove h(n)≥n)."
+      "Constructive existence is now CLOSED for all n. Remaining tractable increment: concrete lower bound 2 ≤ h n for n≥3, or monotonicity h n ≤ h(n+1) (subconfiguration of general position is general position).",
+      "Parent Erdős #98 quantitative content — h(n)/n→∞ (strong) and h(n)≥n (weak) — remains OPEN in mathematics; not attackable by construction."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
