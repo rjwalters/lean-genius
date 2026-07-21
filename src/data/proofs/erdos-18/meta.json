@@ -68,10 +68,13 @@
       "conjecture_part2_weak: h(n!) < n^o(1)?",
       "conjecture_part2_strong: h(n!) < (log n)^O(1)?",
       "practicalCount definition for the density counting function",
-      "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)"
+      "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)",
+      "Foundational lemmas (axiom-free): representability witnesses and the isRepresentable_le_sigma bound",
+      "Decidability instances for IsRepresentable and IsPractical (finite powerset / bounded search)",
+      "Worked examples via kernel decide: 4, 6, 8 practical; 3, 5 not practical (axiom-free)"
     ],
     "axiomCount": 0,
-    "lineCount": 187,
+    "lineCount": 261,
     "prerequisites": [
       "Divisors and divisibility in number theory",
       "Factorial function and its divisor structure",
@@ -79,14 +82,14 @@
       "Analytic number theory (growth rates of arithmetic functions)"
     ],
     "assumptions": "Fully verified. 0 axioms, 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 2,
+    "theoremCount": 15,
     "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
     "problemStatement": "**Definition:** A positive integer m is **practical** if every integer 1 <= k < m can be expressed as a sum of distinct divisors of m.\n\n**Function h(m):** The minimum number of divisors of m needed so that every k < m is representable.\n\n**Questions:**\n1. Are there infinitely many practical m where h(m) < (log log m)^{O(1)}?\n2. Is h(n!) < n^{o(1)}? (Prize: $250)\n3. Even stronger: is h(n!) < (log n)^{O(1)}?",
     "text": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
-    "proofStrategy": "The Lean file formalizes:\n\n1. **Core definitions:** divisors, divisorSubsetSum, IsRepresentable, IsPractical, PracticalNumbers, h(m), practicalCount\n2. **Small examples (proved):** one_practical and two_practical verify that 1 and 2 are practical (by omega / interval_cases)\n3. **Main conjectures (stated as Props):** conjecture_part1, conjecture_part2_weak, conjecture_part2_strong\n4. **OEIS data:** knownPracticalNumbers lists the first 17 practical numbers\n\nThe remaining topics — non-examples (3, 5), the Stewart-Sierpiński characterization, the Erdős/Vose bounds on h(m), practical Goldbach and twins, density, and Egyptian fractions — appear as documented comment-header sections that provide mathematical context. They are not formalized as declarations and are not axiomatized (the file contains 0 axioms).",
+    "proofStrategy": "The Lean file formalizes:\n\n1. **Core definitions:** divisors, divisorSubsetSum, IsRepresentable, IsPractical, PracticalNumbers, h(m), practicalCount\n2. **Small examples (proved):** one_practical and two_practical verify that 1 and 2 are practical (by omega / interval_cases)\n3. **Main conjectures (stated as Props):** conjecture_part1, conjecture_part2_weak, conjecture_part2_strong\n4. **OEIS data:** knownPracticalNumbers lists the first 17 practical numbers\n5. **Foundational lemmas (axiom-free):** representability witnesses (zero_isRepresentable, one_isRepresentable, isRepresentable_self), the bound isRepresentable_le_sigma, mem_divisors_le, isPractical_pos, and not_isPractical_zero — plus two Decidable instances (decidableIsRepresentable, decidableIsPractical) reducing practicality to a finite powerset/bounded search\n6. **Worked (non-)examples (proved by kernel `decide`):** 4, 6, 8 are practical while 3 and 5 are not (not_practical_three, not_practical_five), discharged by the decision procedure\n\nAll 15 theorems are fully proved with 0 axioms and 0 sorries (only kernel `decide`, no `native_decide`, so no `Lean.ofReduceBool` dependency). The remaining topics — the Stewart-Sierpiński characterization, the Erdős/Vose bounds on h(m), practical Goldbach and twins, density, and Egyptian fractions — appear as documented comment-header sections that provide mathematical context; only the main conjectures (parts 1 and 2) remain open.",
     "keyInsights": [
       "**Practical = divisor completeness:** Every k < m is a subset sum of divisors of m",
       "**Powers of 2 are practical:** Binary representation using {1, 2, 4, ..., 2^n}",
@@ -209,12 +212,36 @@
       "mathContext": "First practical numbers: $1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 42, 48, \\ldots$ (OEIS A005153)."
     },
     {
-      "id": "summary",
-      "title": "Summary and Why Hard",
-      "summary": "Open problem, $250 prize, difficulty explanation",
+      "id": "why-hard",
+      "title": "Why This Problem is Hard",
+      "summary": "Difficulty: minimum representing subsets and factorial divisor structure",
       "startLine": 152,
-      "endLine": 187,
-      "mathContext": "Finding minimum representing subsets is NP-hard in general (subset sum variant). For $n!$, understanding the divisor structure requires deep number-theoretic machinery."
+      "endLine": 153,
+      "mathContext": "Finding minimum representing subsets is NP-hard in general (a subset-sum variant). For $n!$, understanding the divisor structure well enough to bound $h(n!)$ requires deep number-theoretic machinery."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (Axiom-Free)",
+      "summary": "Representability witnesses/bounds and decidability of IsRepresentable / IsPractical",
+      "startLine": 154,
+      "endLine": 210,
+      "mathContext": "Elementary structural facts, all fully proved: $0$ is representable (empty subset); any representable $k$ satisfies $k \\leq \\sigma(m)$; every divisor is $\\leq m$; for $m \\geq 1$ both $1$ and $m$ are representable; $0$ is not practical. The key computational content is two `Decidable` instances: $\\text{IsRepresentable}(k,m)$ reduces to a powerset search of $\\text{divisors}(m)$, and $\\text{IsPractical}(m)$ to a bounded search over $k < m$, each a finite powerset search. These subsume all future example verification."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Small Worked Examples",
+      "summary": "4, 6, 8 practical and 3, 5 not practical, all discharged by `decide`",
+      "startLine": 211,
+      "endLine": 227,
+      "mathContext": "Concrete (non-)examples closed by the decision procedure via kernel `decide` (axiom-free): $4, 6, 8$ are practical, while $3$ and $5$ are not ($2$ is not a sum of distinct divisors of $3$ or $5$). No `native_decide` is used, so these carry no `Lean.ofReduceBool` dependency."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Open problem, $250 prize, known results and why hard",
+      "startLine": 228,
+      "endLine": 261,
+      "mathContext": "Closing summary: Problem #18 is OPEN with a $\\$250$ prize for $h(n!) < n^{o(1)}$. Recaps the definition, key question, known results (Erdős $h(n!) < n$; Vose $h(m) \\ll \\sqrt{\\log m}$; Stewart-Sierpiński characterization), and the difficulty."
     }
   ],
   "conclusion": {
