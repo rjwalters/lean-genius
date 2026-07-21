@@ -78,26 +78,36 @@
     {
       "id": "module-header",
       "title": "Module: Genericity and Map-Invariance",
+      "startLine": 1,
+      "endLine": 59,
       "summary": "Frames the two loose threads of the parent — the ℚ-pinned coefficient field and the merely-rational root bound — and states the hinge result: signVariations is invariant under strictly monotone ring homs."
     },
     {
       "id": "generic-count",
       "title": "Part I: The Computable Count over an Arbitrary Ordered Field",
+      "startLine": 60,
+      "endLine": 94,
       "summary": "signVarList : List F → ℕ for [Field F] [LinearOrder F] [IsStrictOrderedRing F], the rfl bridge signVarList_coeffList, the transported bound posRoots_le_signVarList, and the no-positive-roots certificate — all field-generic."
     },
     {
       "id": "map-invariance",
       "title": "Part II: Invariance under a Strictly Monotone Ring Homomorphism",
+      "startLine": 95,
+      "endLine": 143,
       "summary": "coeffList_map_of_injective (the coefficient list commutes with an injective hom), sign_map_of_strictMono (signs are preserved), and the headline signVariations_map combining them: (P.map φ).signVariations = P.signVariations."
     },
     {
       "id": "rat-real-bridge",
       "title": "Part III: The ℚ → ℝ Bridge — Seeing the Real Roots",
+      "startLine": 144,
+      "endLine": 174,
       "summary": "signVarList_eq_signVariations_ratCast: the computable ℚ count equals the real polynomial's sign-variation count. realRoots_countP_pos_le_signVarList: Descartes' bound for positive REAL roots, computed from rational coefficients."
     },
     {
       "id": "worked-examples",
       "title": "Part IV: Worked Computable Examples",
+      "startLine": 175,
+      "endLine": 202,
       "summary": "The parent's ℚ examples recovered as instances of the now field-generic definition, discharged by kernel decide (no native_decide)."
     }
   ],

@@ -53,16 +53,36 @@
   ],
   "sections": [
     {
-      "title": "Fixed Set as a Group-Action Fixed Set"
+      "id": "fixed-set-as-group-action",
+      "title": "Fixed Set as a Group-Action Fixed Set",
+      "startLine": 1,
+      "endLine": 77,
+      "summary": "Module overview plus the reconciliation of two fixed-set notions. A noncomputable Fintype instance is placed on the orbit quotient of the Sₙ-action (needed to state the Burnside count). `fixedBy_eq_fixedPoints`: Mathlib's group-action fixed set `MulAction.fixedBy (Fin n) σ` equals the dynamical `Function.fixedPoints σ` — both are {x | σ x = x}, the only content being unfolding the `Equiv.Perm` scalar action σ • x = σ x. `ncard_fixedPoints_eq_card_fixedBy`: the parent's `Set.ncard` count used in the trace formula equals the `Fintype.card` of that group-action fixed set consumed by Burnside's lemma.",
+      "mathContext": "$\\mathrm{fixedBy}(\\mathrm{Fin}\\,n)\\,\\sigma=\\mathrm{Fix}(\\sigma)=\\{x\\mid\\sigma x=x\\}$"
     },
     {
-      "title": "Transitivity: a Single Orbit"
+      "id": "transitivity-single-orbit",
+      "title": "Transitivity: a Single Orbit",
+      "startLine": 78,
+      "endLine": 93,
+      "summary": "`card_orbits_eq_one`: for n ≥ 1 (`[NeZero n]`, with `Fin n` nonempty via 0) the natural action of Sₙ = Perm (Fin n) on Fin n is pretransitive, so by `pretransitive_iff_unique_quotient_of_nonempty` the orbit quotient is a singleton and its cardinality is exactly 1 — the symmetric group has a single orbit.",
+      "mathContext": "$\\#\\bigl((\\mathrm{Fin}\\,n)/S_n\\bigr)=1$"
     },
     {
-      "title": "The Burnside Count: Total Fixed Points = n!"
+      "id": "burnside-count",
+      "title": "The Burnside Count: Total Fixed Points = n!",
+      "startLine": 94,
+      "endLine": 107,
+      "summary": "`sum_card_fixedBy`: the Cauchy–Frobenius/Burnside identity `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`, ∑_{σ∈Sₙ} |Fix σ| = (#orbits)·|Sₙ|, specialised to the transitive symmetric-group action. The single orbit and |Sₙ| = n! (via `Fintype.card_perm`, `Fintype.card_fin`) collapse the total to 1·n! = n!.",
+      "mathContext": "$\\sum_{\\sigma\\in S_n}|\\mathrm{Fix}\\,\\sigma|=(\\#\\text{orbits})\\cdot|S_n|=1\\cdot n!=n!$"
     },
     {
-      "title": "Trace Bridge and the Expected Value"
+      "id": "trace-bridge-and-expected-value",
+      "title": "Trace Bridge and the Expected Value",
+      "startLine": 108,
+      "endLine": 157,
+      "summary": "`trace_permMatrix_eq_card_fixedBy` recasts the parent's `Matrix.trace_permutation` so trace (σ.permMatrix ℝ) equals the fixed-point count. `sum_trace_permMatrix`: summing over all σ transports the Burnside total, giving total trace = n!. `expected_trace_eq_one` and `expected_fixed_points_eq_one`: dividing by |Sₙ| = n! (nonzero via `Nat.factorial_ne_zero`) yields the expected trace — equivalently the expected number of fixed points of a uniformly random permutation of Fin n — exactly 1 for every n ≥ 1.",
+      "mathContext": "$\\dfrac{1}{n!}\\sum_{\\sigma\\in S_n}\\mathrm{tr}(\\sigma.\\mathrm{permMatrix}\\,\\mathbb{R})=1$"
     }
   ],
   "references": [

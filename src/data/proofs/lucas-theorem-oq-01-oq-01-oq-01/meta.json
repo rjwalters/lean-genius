@@ -90,20 +90,32 @@
   },
   "sections": [
     {
+      "id": "gauss-triangular-number",
       "title": "Gauss's Triangular Number (tri_sum)",
-      "text": "The per-digit factor of the block sum is ∑_{r<p}(r+1) = 1+2+⋯+p = p(p+1)/2. To stay clear of natural-number division, the doubled identity tri_two proves 2·∑_{r<p}(r+1) = p(p+1) by induction (peeling the last term with Finset.sum_range_succ and closing with ring), and tri_sum then recovers the divided form by omega."
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "The per-digit factor of the block sum is ∑_{r<p}(r+1) = 1+2+⋯+p = p(p+1)/2. To stay clear of natural-number division, the doubled identity tri_two proves 2·∑_{r<p}(r+1) = p(p+1) by induction (peeling the last term with Finset.sum_range_succ and closing with ring), and tri_sum then recovers the divided form by omega."
     },
     {
+      "id": "euclidean-division-reindexing",
       "title": "Euclidean-Division Reindexing (sum_range_mul_split)",
-      "text": "A range of length p·M splits into M blocks of p: ∑_{n<p·M} f n = ∑_{j<M} ∑_{r<p} f(p·j+r), since every n < p·M is uniquely p·j+r with j < M and r < p. The proof inducts on M, using Finset.sum_range_add to peel off the top block of p rows and Finset.sum_range_succ to match it against the j = M summand. The lemma is stated for an arbitrary f, independent of the binomial content."
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "A range of length p·M splits into M blocks of p: ∑_{n<p·M} f n = ∑_{j<M} ∑_{r<p} f(p·j+r), since every n < p·M is uniquely p·j+r with j < M and r < p. The proof inducts on M, using Finset.sum_range_add to peel off the top block of p rows and Finset.sum_range_succ to match it against the j = M summand. The lemma is stated for an arbitrary f, independent of the binomial content."
     },
     {
+      "id": "row-sum-identity",
       "title": "The Row-Sum Identity (rowSum_eq)",
-      "text": "Define rowSum p m = ∑_{n<pᵐ} fineCount p n. Induct on m. The base case m = 0 is fineCount p 0 = 1. For m+1, write pᵐ⁺¹ = p·pᵐ and apply the block reindexing; the parent recursion fineCount p (p·j+r) = (r+1)·fineCount p j turns the inner sum over r into (∑_{r<p}(r+1))·fineCount p j = (p(p+1)/2)·fineCount p j. Factoring out the constant gives rowSum p (m+1) = (p(p+1)/2)·rowSum p m, and the induction hypothesis closes (p(p+1)/2)·(p(p+1)/2)ᵐ = (p(p+1)/2)ᵐ⁺¹."
+      "startLine": 75,
+      "endLine": 110,
+      "summary": "Define rowSum p m = ∑_{n<pᵐ} fineCount p n. Induct on m. The base case m = 0 is fineCount p 0 = 1. For m+1, write pᵐ⁺¹ = p·pᵐ and apply the block reindexing; the parent recursion fineCount p (p·j+r) = (r+1)·fineCount p j turns the inner sum over r into (∑_{r<p}(r+1))·fineCount p j = (p(p+1)/2)·fineCount p j. Factoring out the constant gives rowSum p (m+1) = (p(p+1)/2)·rowSum p m, and the induction hypothesis closes (p(p+1)/2)·(p(p+1)/2)ᵐ = (p(p+1)/2)ᵐ⁺¹."
     },
     {
+      "id": "sierpinski-count-box-dimension",
       "title": "Sierpiński Count and Box Dimension",
-      "text": "At p = 2 the identity reads ∑_{n<2ᵐ} fineCount 2 n = 3ᵐ — the number of odd entries in the first 2ᵐ rows of Pascal's triangle, the Sierpiński-gasket count of the parent oq-01-oq-02 entry. The growth rate of the block sum, log_p(p(p+1)/2), is the box-counting (fractal) dimension of the limiting mod-p Pascal triangle; for p = 2 it is log₂3 ≈ 1.585, the Sierpiński dimension."
+      "startLine": 111,
+      "endLine": 129,
+      "summary": "At p = 2 the identity reads ∑_{n<2ᵐ} fineCount 2 n = 3ᵐ — the number of odd entries in the first 2ᵐ rows of Pascal's triangle, the Sierpiński-gasket count of the parent oq-01-oq-02 entry. The growth rate of the block sum, log_p(p(p+1)/2), is the box-counting (fractal) dimension of the limiting mod-p Pascal triangle; for p = 2 it is log₂3 ≈ 1.585, the Sierpiński dimension. The sanity checks (rowSum 2 2 = 9, rowSum 2 3 = 27, rowSum 3 1 = 6, rowSum 3 2 = 36) confirm the closed form by kernel decide."
     }
   ],
   "crossReferences": [

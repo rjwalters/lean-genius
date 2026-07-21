@@ -57,52 +57,11 @@
   },
   "sections": [
     {
-      "id": "turan-framework",
-      "title": "The Turán Density Framework",
-      "summary": "Defines the Turán bound turanBound(n) = n²/4 (Mantel's extremal number for triangle-free graphs) and the Turán ratio turanRatio(n) = f(n)/(n²/4). The ratio measures how Turán-like the terminal graph is. Shows turanBound is positive for n ≥ 1 and turanRatio ≤ 1 (from the Mantel bound).",
-      "theorems": [
-        "turanBound_pos",
-        "triangleRemoval_le_turan",
-        "turanRatio_nonneg",
-        "turanRatio_le_one"
-      ]
-    },
-    {
-      "id": "main-structural-result",
-      "title": "Main Result: Terminal Graph Is Not Turán-Like",
-      "summary": "Proves the main structural theorem: for any δ > 0, eventually f(n) ≤ δ·(n²/4), and consequently turanRatio(n) → 0. The proof uses BFL (ε=1/4) to get f(n) ≤ n^{7/4}, then shows n^{7/4} ≤ δ·n²/4 for n ≥ (4/δ)^4, via the estimate n^{1/4} ≥ 4/δ.",
-      "theorems": [
-        "terminal_sub_turan",
-        "turanRatio_tendsto_zero"
-      ],
-      "mathContext": "Key identity: n^{7/4} = n^{1/4} · n^{3/2} and n² = n^{1/4} · n^{7/4} (both via Real.rpow_add). From (4/δ)^4 ≤ n, monotonicity gives n^{1/4} ≥ 4/δ, hence δ·n^{1/4}/4 ≥ 1, so n^{7/4} ≤ (δ·n^{1/4}/4)·n^{7/4} = δ·n²/4."
-    },
-    {
-      "id": "exponent-gap",
-      "title": "Exponent Gap: 3/2 vs 2",
-      "summary": "Formalizes the exponent-level distinction: the terminal graph has exponent 3/2 (BFL) while the Turán maximum has exponent 2 (Mantel). For any α ∈ (3/2, 2), eventually f(n) ≤ n^α. The terminal graph eventually has strictly fewer edges than the Turán bound.",
-      "theorems": [
-        "turan_exponent_gap",
-        "terminal_sub_power",
-        "terminal_not_turan_optimal"
-      ]
-    },
-    {
-      "id": "no-lower-bound",
-      "title": "No Positive Turán Fraction from Below",
-      "summary": "Proves that no constant c > 0 satisfies c·(n²/4) ≤ f(n) eventually. This is the contrapositive of Turán-likeness: the terminal graph cannot be bounded below by any fixed fraction of the Turán density. Equivalently, the turanRatio has no positive lower limit.",
-      "theorems": [
-        "terminal_not_positive_turan_density",
-        "bipartite_cannot_be_turan_dense"
-      ]
-    },
-    {
-      "id": "open-questions",
-      "title": "Open Questions: Bipartiteness and Structure",
-      "summary": "Formally states the bipartiteness question (Is the terminal graph bipartite?) and the Turán ratio monotonicity question. Being bipartite is compatible with the BFL scaling — a sparse bipartite graph can have n^{3/2} edges. The question is whether the random process produces bipartite graphs.",
-      "theorems": [
-        "structural_summary"
-      ]
+      "id": "placeholder-stub",
+      "title": "Placeholder Stub for Terminal Graph Structure",
+      "startLine": 1,
+      "endLine": 10,
+      "summary": "This file is a placeholder stub for Erdős Problem #1155 OQ-01-OQ-06 (terminal graph structure). It contains only a header docstring, an `import Mathlib`, and a comment noting that full formalization is pending (tracked in researcher PR #9455). No definitions, theorems, or lemmas are present yet — the Turán-density framework, structural non-Turán-likeness result, exponent gap, and bipartiteness questions described in the problem remain to be formalized."
     }
   ],
   "overview": {

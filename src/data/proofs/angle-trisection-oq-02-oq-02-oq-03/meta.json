@@ -130,30 +130,40 @@
     {
       "id": "rationals-negation",
       "title": "Part I: Rationals and negation are constructible",
+      "startLine": 1,
+      "endLine": 88,
       "summary": "isConstructibleFromQ_rat: every rational is a constructible real (witnessed by ⊥, degree 1=2⁰). isConstructibleFromQ_zero/one. isConstructibleFromQ_neg: the constructible reals are closed under negation, reusing the same field K (an intermediate field is closed under negation).",
       "mathContext": "$q\\in\\mathbb{Q}$ lies in $\\bot$ with $[\\bot:\\mathbb{Q}]=1=2^0$; closure under negation needs no compositum since $\\alpha\\in K\\Rightarrow-\\alpha\\in K$."
     },
     {
       "id": "complex-constructibility",
       "title": "Part II: Complex constructibility",
+      "startLine": 89,
+      "endLine": 151,
       "summary": "IsConstructibleℂ z := IsConstructibleFromQ z.re ∧ IsConstructibleFromQ z.im. Proves 0, 1, i constructible; the real/imaginary embedding iff; Gaussian rationals; conjugation closure and its iff; closure under multiplication by i (Re(i·z)=−Im z, Im(i·z)=Re z).",
       "mathContext": "The structural backbone of the complex constructibles obtainable purely from real-part/imaginary-part identities plus negation closure — no field-degree arithmetic."
     },
     {
       "id": "analytic-bridge",
       "title": "Part III: The analytic bridge (sin from cos)",
+      "startLine": 152,
+      "endLine": 165,
       "summary": "axiom sin_constructible_of_cos: for n ≥ 3, IsConstructibleFromQ (cos(2π/n)) → IsConstructibleFromQ (sin(2π/n)). The only new assumption, capturing closure of the constructible reals under the non-negative square root sin(2π/n)=√(1−cos²(2π/n)).",
       "mathContext": "For $n\\ge3$, $2\\pi/n\\in(0,\\pi)$ so $\\sin(2\\pi/n)\\ge0$; the constructible reals form a field closed under square roots, which supplies the imaginary coordinate."
     },
     {
       "id": "headline",
       "title": "Part IV: The headline — planar Gauss–Wantzel",
+      "startLine": 166,
+      "endLine": 188,
       "summary": "rootOfUnity_isConstructibleℂ_iff_cos: vertex constructible ↔ cos(2π/n) constructible. ngon_vertex_isConstructibleℂ_iff: vertex constructible ↔ φ(n) a power of two (combining the cos bridge with the parent's gauss_wantzel_theorem).",
       "mathContext": "$\\exp(2\\pi i/n)=\\cos(2\\pi/n)+i\\sin(2\\pi/n)$; constructibility of the complex vertex is equivalent to that of its real coordinate, hence to $\\varphi(n)=2^k$."
     },
     {
       "id": "instances",
       "title": "Parts V–VI: Constructible and non-constructible vertices",
+      "startLine": 189,
+      "endLine": 274,
       "summary": "Constructible: 3-, 4-, 5-, 15-, 17-gon vertices (φ = 2,2,4,8,16). Not constructible: 7- and 9-gon vertices (φ(7)=φ(9)=6, not a power of two). All via kernel decide on the totients.",
       "mathContext": "Worked planar instances derived from the headline equivalence."
     }

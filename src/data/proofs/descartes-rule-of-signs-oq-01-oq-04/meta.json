@@ -68,26 +68,36 @@
     {
       "id": "module-header",
       "title": "Module: Constructive Sign-Variation Count",
+      "startLine": 1,
+      "endLine": 53,
       "summary": "Module docstring framing the OQ: Mathlib's signVariations is noncomputable over ℝ/ℚ (coeffList and the real sign map do not reduce). Spells out which half of Descartes' Rule is constructive (the bound) and which is not (the root count, needing Sturm)."
     },
     {
       "id": "computable-count",
       "title": "Part 1: The Computable Core",
+      "startLine": 54,
+      "endLine": 66,
       "summary": "signVarList : List ℚ → ℕ, a decidable mirror of Polynomial.signVariations on an explicit rational coefficient list. Every operation reduces in the kernel, so the function #evals and is provable by decide."
     },
     {
       "id": "bridge-and-bound",
       "title": "Part 2: Correctness Bridge and Transported Bound",
+      "startLine": 67,
+      "endLine": 84,
       "summary": "signVarList_coeffList: signVarList P.coeffList = P.signVariations by rfl, certifying the algorithm. posRoots_le_signVarList: Mathlib's Descartes bound restated with the computable count on the right."
     },
     {
       "id": "decidable-certificate",
       "title": "Part 3: Decidable Certificate of No Positive Roots",
+      "startLine": 85,
+      "endLine": 104,
       "summary": "no_pos_roots_of_signVarList_zero: the decidable test signVarList P.coeffList = 0 soundly proves P has no positive roots. signVarList_pos_of_pos_roots: the contrapositive — a positive root forces a positive variation count."
     },
     {
       "id": "worked-examples",
       "title": "Part 4: Worked Computable Examples",
+      "startLine": 105,
+      "endLine": 134,
       "summary": "Seven explicit coefficient lists discharged by kernel decide: [1,-1,-1,1]→2, [1,3,2]→0 (certificate fires), [1,0,-1]→1, interior zeros never count, fully alternating lists realise the maximum, and the empty/singleton lists give 0."
     }
   ],

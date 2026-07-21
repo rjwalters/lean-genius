@@ -70,21 +70,29 @@
     {
       "id": "module-header",
       "title": "Module: Boundary Exact Count via IVT",
+      "startLine": 1,
+      "endLine": 64,
       "summary": "Module docstring framing the boundary cases of Descartes' Rule, why the parity refinement is unavailable (hard FTA content, only ever assumed in the gallery), and how root existence — not parity — settles signVariations ∈ {0,1}. Notes the ℝ-only scope (X²−2 counterexample over ℚ)."
     },
     {
       "id": "zero-case",
       "title": "Part 1: Zero Sign Variations ⟹ No Positive Roots",
+      "startLine": 65,
+      "endLine": 74,
       "summary": "no_pos_roots_of_signVariations_zero: from Mathlib's Descartes bound, signVariations = 0 forces the positive-root count to 0. No parity, no analysis."
     },
     {
       "id": "ivt-existence",
       "title": "Part 2: Opposite Leading/Trailing Signs Force a Positive Root (IVT)",
+      "startLine": 75,
+      "endLine": 165,
       "summary": "exists_pos_root_of_sign_opposition: the analytic heart. Deflate P = Xᵐ·Q (largest power of X), establish Q.eval 0 = trailingCoeff ≠ 0, Q.leadingCoeff = P.leadingCoeff, and positive degree of Q. Use the ±∞ asymptotics to find a far point carrying the leading sign, then the Intermediate Value Theorem to cross zero in (0, ∞)."
     },
     {
       "id": "boundary-count",
       "title": "Part 3: One Sign Variation ⟹ Exactly One Positive Root",
+      "startLine": 166,
+      "endLine": 192,
       "summary": "exactly_one_pos_root_of_sign_opposition: combine Descartes' upper bound (≤ 1) with the IVT existence (≥ 1) to pin the count at exactly 1, conditional on the combinatorial sign opposition. No parity refinement used."
     }
   ],
