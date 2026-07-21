@@ -54,15 +54,15 @@
     "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "Euler published $e^{ix} = \\cos(x) + i\\sin(x)$ in 1748 in *Introductio in analysin infinitorum* (Chapter 8), using precisely this Taylor series splitting argument: he expanded $e^{ix}$ as a power series, separated even and odd terms, and identified them as the cosine and sine series. Euler was working in an era before rigorous convergence theory (Cauchy's work came ~80 years later), treating the manipulation of infinite series as formal algebra. The result was so striking that it connected the five most important constants in mathematics \u2014 $e$, $i$, $\\pi$, $1$, and $0$ \u2014 in a single equation $e^{i\\pi} + 1 = 0$, which physicist Richard Feynman called 'the most remarkable formula in mathematics.' The formula is foundational to complex analysis, appearing in Fourier analysis, quantum mechanics (where wave functions $e^{ikx}$ encode momentum states), signal processing, and the theory of Lie groups. The modern Lean formalization faces an extra challenge: Mathlib defines $\\cos$ and $\\sin$ via the complex exponential (not via Taylor series), creating a circularity that requires careful handling.",
+    "historicalContext": "Euler published $e^{ix} = \\cos(x) + i\\sin(x)$ in 1748 in *Introductio in analysin infinitorum* (Chapter 8), using precisely this Taylor series splitting argument: he expanded $e^{ix}$ as a power series, separated even and odd terms, and identified them as the cosine and sine series. Euler was working in an era before rigorous convergence theory (Cauchy's work came ~80 years later), treating the manipulation of infinite series as formal algebra. The result was so striking that it connected the five most important constants in mathematics — $e$, $i$, $\\pi$, $1$, and $0$ — in a single equation $e^{i\\pi} + 1 = 0$, which physicist Richard Feynman called 'the most remarkable formula in mathematics.' The formula is foundational to complex analysis, appearing in Fourier analysis, quantum mechanics (where wave functions $e^{ikx}$ encode momentum states), signal processing, and the theory of Lie groups. The modern Lean formalization faces an extra challenge: Mathlib defines $\\cos$ and $\\sin$ via the complex exponential (not via Taylor series), creating a circularity that requires careful handling.",
     "problemStatement": "**Question**: Can the full Taylor series proof of Euler's formula be formalized independently of Complex.exp_mul_I?\n\n**Answer**: Yes, with 0 axioms. The even/odd `tsum` splitting and the cos/sin Taylor series identifications are all proved from Mathlib (`tsum_even_add_odd`, `Complex.cos_eq_tsum`, `Complex.sin_eq_tsum`). The algebraic core (powers of i) is also fully proved.",
     "text": "Derives e^{ix} = cos(x) + i*sin(x) by: (1) expanding exp(ix) as sum of (ix)^n/n!, (2) splitting into even/odd indices using tsum_even_add_odd, (3) simplifying (ix)^{2k} = (-1)^k x^{2k} and (ix)^{2k+1} = i*(-1)^k x^{2k+1} using the proved identities I^{2k} = (-1)^k, (4) identifying the even subseries as cos and odd as i*sin.",
-    "proofStrategy": "Split the exponential Taylor series \u2211 (ix)^n/n! into even-indexed terms (giving the cosine series) and odd-indexed terms (giving i times the sine series). The key algebraic identities i^{2k} = (-1)^k and i^{2k+1} = i*(-1)^k are proved by induction from i^2 = -1.",
+    "proofStrategy": "Split the exponential Taylor series ∑ (ix)^n/n! into even-indexed terms (giving the cosine series) and odd-indexed terms (giving i times the sine series). The key algebraic identities i^{2k} = (-1)^k and i^{2k+1} = i*(-1)^k are proved by induction from i^2 = -1.",
     "keyInsights": [
       "The powers-of-i identities $i^{2k} = (-1)^k$ and $i^{2k+1} = i \\cdot (-1)^k$ are the algebraic heart of the proof, proved by induction from $i^2 = -1$ using just `pow_succ` and `I_sq`",
-      "The `tsum` even/odd splitting is the analytic bottleneck: while mathematically obvious, formalizing `\u2211_n a_n = \u2211_k a_{2k} + \u2211_k a_{2k+1}` requires the bijection `\u2115 \u2243 \u2115 \u2295 \u2115` and careful use of Mathlib's `HasSum` API",
+      "The `tsum` even/odd splitting is the analytic bottleneck: while mathematically obvious, formalizing `∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}` requires the bijection `ℕ ≃ ℕ ⊕ ℕ` and careful use of Mathlib's `HasSum` API",
       "The three definitions `expTerm`, `evenTerm`, `oddTerm` are designed so that `expTerm_even` and `expTerm_odd` hold definitionally after `rw [I_pow_even/odd]`, making the main proof a clean sequence of rewrites",
-      "Mathlib's circular definition \u2014 cos and sin are defined via exp, not via Taylor series \u2014 once made the Taylor series identification feel axiomatic, but Mathlib's `Complex.cos_eq_tsum` and `Complex.sin_eq_tsum` close the gap, so the proof now stands at 0 axioms",
+      "Mathlib's circular definition — cos and sin are defined via exp, not via Taylor series — once made the Taylor series identification feel axiomatic, but Mathlib's `Complex.cos_eq_tsum` and `Complex.sin_eq_tsum` close the gap, so the proof now stands at 0 axioms",
       "This proof follows Euler's original 1748 argument step-by-step, while Mathlib's `Complex.exp_mul_I` uses a different (more modern) approach; having both gives a cross-check of the formula's derivation"
     ]
   },
@@ -102,9 +102,18 @@
       "id": "main-theorem",
       "title": "Euler's Formula and Euler's Identity",
       "startLine": 137,
-      "endLine": 174,
+      "endLine": 191,
       "summary": "Main theorem euler_formula_taylor: exp(ix) = cos(x) + i*sin(x) via four-step Taylor series proof. Then euler_identity_taylor: exp(i*pi) + 1 = 0 by substituting x=pi and using cos(pi)=-1, sin(pi)=0.",
       "mathContext": "$e^{ix} = \\cos x + i\\sin x$ (Euler's formula, 1748). Proof: expand exp as power series, split by even/odd index, match to cos/sin series. Special case $x = \\pi$: $e^{i\\pi} = -1 + 0 = -1$, so $e^{i\\pi} + 1 = 0$ (Euler's identity). These are the most celebrated equations in mathematics."
+    },
+    {
+      "id": "axiom-status",
+      "title": "Axiom Status and Independence Notes",
+      "startLine": 192,
+      "endLine": 212,
+      "significance": "context",
+      "summary": "Closing documentation: confirms the Taylor-series route to Euler's formula and identity uses zero axioms beyond Mathlib, and notes the logical independence of this power-series derivation from Mathlib's own Complex.exp definition.",
+      "mathContext": "The entry derives $e^{ix}=\\cos x+i\\sin x$ from the exp power series rather than importing it, so the identity $e^{i\\pi}+1=0$ is obtained with an axiom budget of $0$."
     }
   ],
   "conclusion": {
@@ -128,7 +137,7 @@
     {
       "targetId": "euler-identity",
       "relationship": "alternative-proof",
-      "description": "Alternative derivation using Taylor series splitting vs Mathlib's Complex.exp_mul_I \u2014 the parent entry uses the Mathlib definition while this entry follows Euler's original 1748 argument"
+      "description": "Alternative derivation using Taylor series splitting vs Mathlib's Complex.exp_mul_I — the parent entry uses the Mathlib definition while this entry follows Euler's original 1748 argument"
     },
     {
       "targetId": "fourier-series",
@@ -138,7 +147,7 @@
     {
       "targetId": "ptolemys-complex-proof",
       "relationship": "related",
-      "description": "Ptolemy's theorem has an elegant proof via complex exponentials that uses Euler's formula \u2014 the product formula for e^{ix} gives the distance product identity"
+      "description": "Ptolemy's theorem has an elegant proof via complex exponentials that uses Euler's formula — the product formula for e^{ix} gives the distance product identity"
     }
   ],
   "leanFile": {
