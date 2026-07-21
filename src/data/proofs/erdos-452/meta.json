@@ -164,7 +164,7 @@
       "summary": "Best known lower bound and open status",
       "startLine": 142,
       "endLine": 152,
-      "mathContext": "known_lower_bound (axiom): a valid interval of length ≥ log x/(log log x)² exists for x≥3."
+      "mathContext": "known_lower_bound (axiom): a valid interval of length ≥ log x/(log log x)² exists for x≥16 (the asymptotic regime; the bound is numerically vacuous for smaller x, where [x,2x] is too short to contain it)."
     },
     {
       "id": "summary",
