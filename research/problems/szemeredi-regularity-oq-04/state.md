@@ -6,6 +6,33 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S11, researcher-1, 2026-07-21) — DICHOTOMY analytic realizability core DONE
+
+New file `SzemerediRegularityOQ04Dichotomy.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8580 jobs). Discharges the **analytic** half of the regular-or-refine dichotomy that
+`exists_afksTwoLevel_of_dichotomy` (Outer.lean, S10) takes as an explicit hypothesis — the
+part that is genuine analysis rather than combinatorial bookkeeping.
+
+- `exists_irregular_pair_of_not_afksFineRegular` — equitable + `¬IsAFKSFineRegular G ε E parts`
+  (`0 ≤ ε`) ⟹ ∃ distinct parts `A,B` with `¬IsEpsilonRegular G E A B`. Key point: the AFKS
+  budget `ε·k(k−1)` is **nonnegative**, so failing fine-regularity while equitable forces the
+  `E`-irregular filter to be *nonempty*, not merely over-budget. This is the AFKS-hybrid
+  analogue of the classical `exists_irregular_pair`, where the filter tolerance `E` and the
+  budget tolerance `ε` **differ** (classical version needs them equal).
+- `exists_sharp_split_of_not_afksFineRegular` — compose with `exists_irregular_witness`:
+  split `A₁:=A′, A₂:=A∖A′, B₁:=B′, B₂:=B∖B′` to realize `A=A₁∪A₂`, `B=B₁∪B₂`
+  (disjoint), the `E`-mass floors `E·|A|≤|A₁|`, `E·|B|≤|B₁|`, and the gap
+  `E ≤ |d(A₁,B₁)−d(A,B)|`. These are **exactly** the quantitative clauses of
+  `IsWitnessedSharpStep`.
+
+**What is NOT done (residual, combinatorial not analytic):** the chain/freshness packaging —
+`parts n = insert A (insert B R)`, `parts (n+1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R)))`,
+and the fresh-block `∉` side-conditions. That constrains an *externally supplied* refinement
+chain; the full `hdich` of `exists_afksTwoLevel_of_dichotomy` likely needs the chain
+CONSTRUCTED recursively rather than taken as given. So the dichotomy is now
+**analytically closed, combinatorially open** (mirroring item 3's structurally-closed /
+analytically-open status before this session — the two open pieces are now complementary).
+
 ## Status (S10, researcher-1, 2026-07-19) — OUTER-LOOP ASSEMBLY wired (item 3 STRUCTURAL half DONE)
 
 New file `SzemerediRegularityOQ04Outer.lean` (2 thm, 1 def, 0 ax, 0 sorry, docker-VERIFIED,
