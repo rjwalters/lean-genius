@@ -60,21 +60,21 @@
       "id": "setup",
       "title": "Statement and parent import",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Docstring framing the goal — the p-independent sawtooth average (q−1)/2 over a complete residue system — as the arithmetic input to Eisenstein's lemma, followed by `import Proofs.HermiteSawtoothIdentity` (the parent gallery entry supplying hermite_sawtooth_identity) and `open Finset` for the residue-permutation API."
     },
     {
       "id": "sawtooth-zero",
       "title": "Sawtooth at x = 0",
       "startLine": 45,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "sum_fract_div: ∑_{k<q} {k/q} = (q−1)/2. A one-line specialisation of the parent identity hermite_sawtooth_identity at x = 0, where {q·0} = 0 collapses the right-hand side to the bare diagonal term (q−1)/2; `simpa` discharges the residual 0 + k/q simplifications."
     },
     {
       "id": "residue-permutation",
       "title": "Multiplication by a unit permutes residues",
       "startLine": 52,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "sum_mul_mod_coprime: ∑_{k<q} (k·p mod q) = ∑_{k<q} k. The map σ k = k·p mod q sends range q into itself (Nat.mod_lt) and is injective — a·p ≡ b·p [MOD q] with gcd(p,q)=1 forces a ≡ b [MOD q] (Nat.ModEq.cancel_right_of_coprime), and a, b < q then gives a = b. Injective + same-cardinality image ⟹ image = range q (eq_of_subset_of_card_le, card_image_of_injOn), so sum_image reindexes the sum to ∑_{k<q} k."
     },
     {
@@ -83,6 +83,14 @@
       "startLine": 79,
       "endLine": 99,
       "summary": "sum_fract_mul_div_coprime: each summand {kp/q} is rewritten as the residue (k·p mod q)/q via Int.fract_div_natCast_eq_div_natCast_mod; the 1/q is pulled out (← Finset.sum_div), the cast pushed through the sum (← Nat.cast_sum), and the residue sum replaced by ∑_{k<q} k via sum_mul_mod_coprime. The Gauss sum (sum_range_id_mul_two) then closes ↑(∑ k)/q = (q−1)/2 with field_simp and linear_combination."
+    },
+    {
+      "id": "eisenstein-lattice-count",
+      "title": "The Eisenstein Lattice-Point Count",
+      "startLine": 100,
+      "endLine": 136,
+      "summary": "`sum_floor_mul_div_coprime`: for coprime p,q≥1, ∑_{k<q} ⌊kp/q⌋ = (p−1)(q−1)/2, the floor twin of the sawtooth identity. Writing ⌊kp/q⌋ = kp/q − {kp/q} and summing, the linear part contributes p(q−1)/2 and the sawtooth part (q−1)/2, so the difference is (p−1)(q−1)/2. Geometrically it counts the lattice points strictly below the diagonal of the q×p rectangle — the symmetry underlying Eisenstein’s lattice-point proof of quadratic reciprocity.",
+      "mathContext": "$\\sum_{k=0}^{q-1}\\lfloor kp/q\\rfloor=\\tfrac{(p-1)(q-1)}{2}$."
     }
   ],
   "overview": {
