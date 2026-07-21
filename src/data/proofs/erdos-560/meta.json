@@ -54,11 +54,9 @@
       "erdos_rousseau_lower_bound axiom: (1/60)n^2*2^n",
       "upper_bound axiom: (3/2)n^3*2^n",
       "size_ramsey_bounds combined theorem",
-      "cfw_general_lower: CFW 2023 general result",
-      "cfw_asymptotic: asymptotic bounds",
-      "cfw_conjecture: conjectured n^3*2^n",
-      "size_ramsey_monotone and size_ramsey_lower properties",
-      "classicalRamseyNumber and relationship",
+      "CFW 2023 results (general lower bound, asymptotics, conjecture) documented as comments, not formalized",
+      "size_ramsey_monotone_bipartite axiom",
+      "classicalRamseyNumber definition",
       "bounds_gap analysis showing O(n) factor",
       "erdos_560_summary main results"
     ],
@@ -114,10 +112,10 @@
     {
       "id": "cfw-results",
       "title": "Conlon-Fox-Wigderson Results",
-      "summary": "cfw_general_lower, cfw_asymptotic, cfw_conjecture",
+      "summary": "CFW 2023 general lower bound, asymptotics, and conjecture (documented as comments, not formalized)",
       "startLine": 150,
       "endLine": 183,
-      "mathContext": "Mathematical content: cfw_general_lower, cfw_asymptotic, cfw_conjecture"
+      "mathContext": "Mathematical content: CFW 2023 results stated in comments; no declarations"
     },
     {
       "id": "basic-properties",
@@ -138,10 +136,10 @@
     {
       "id": "bounds-gap",
       "title": "Gap Analysis",
-      "summary": "bounds_gap theorem, cfw_implies_tight_lower",
+      "summary": "bounds_gap theorem (cfw_implies_tight_lower discussed in comments only)",
       "startLine": 239,
       "endLine": 265,
-      "mathContext": "Verified: bounds_gap theorem, cfw_implies_tight_lower"
+      "mathContext": "Verified: bounds_gap theorem; CFW tightness implication in comments only"
     }
   ],
   "conclusion": {
