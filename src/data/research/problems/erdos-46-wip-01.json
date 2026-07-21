@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Session 2: splitting identity (Fibonacci–Sylvester 1/n=1/(n+1)+1/(n(n+1))), telescoping form, concrete witness {2,3,6}, existence, and the term-replacement lengthening step (isUnitFractionRepr_replace). 5 axiom-free theorems, theoremCount 16→21, host-verified.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Croot's theorem (existence of monochromatic representation) is deep/unformalized — needs density/covering machinery from the 2003 paper. Elementary splitting/lengthening toolkit now in place; a full lengthening-to-infinity chain would need denominator-freshness bookkeeping.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -64,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-10T00:41:25.928Z",
+  "lastUpdate": "2026-07-21",
   "significance": 6,
   "tractability": 7
 }
