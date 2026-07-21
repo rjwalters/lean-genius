@@ -56,46 +56,46 @@
       "id": "gaussian-arithmetic",
       "title": "Gaussian Integer Arithmetic",
       "startLine": 24,
-      "endLine": 46,
+      "endLine": 41,
       "summary": "Defines four functions on integer pairs: `gaussMul` (complex multiplication formula), `gaussNorm` (a² + b²), `gaussConj` (negates imaginary part), and `gaussSq` (squaring via gaussMul with itself). These are explicit formulas over ℤ, not using Mathlib's ℤ[i] typeclass — this keeps the formalization elementary.",
       "mathContext": "`gaussMul (a₁ b₁ a₂ b₂) = (a₁a₂ - b₁b₂, a₁b₂ + b₁a₂)` is complex multiplication $(a_1+b_1 i)(a_2+b_2 i)$. `gaussNorm a b = a² + b²` is the norm $|a+bi|^2$. `gaussConj a b = (a, -b)$ is the conjugate. `gaussSq a b = gaussMul a b a b = (a²-b², 2ab)$."
     },
     {
       "id": "core-properties",
       "title": "Core Properties: Norm Multiplicativity",
-      "startLine": 51,
-      "endLine": 68,
+      "startLine": 42,
+      "endLine": 62,
       "summary": "Three theorems proved by ring: (1) norm_multiplicative: N(z₁z₂) = N(z₁)N(z₂); (2) gaussSq_formula: (a+bi)² = (a²-b²) + 2abi as pairs; (3) mul_conj_eq_norm: z · conj(z) = (N(z), 0). Norm multiplicativity is the algebraic heart: it gives Brahmagupta-Fibonacci and the product rule for triples.",
       "mathContext": "$N(z_1 z_2) = N(z_1) N(z_2)$: expands as $(a_1 a_2 - b_1 b_2)^2 + (a_1 b_2 + b_1 a_2)^2 = (a_1^2 + b_1^2)(a_2^2 + b_2^2)$, an algebraic identity. $z \\cdot \\bar{z} = (a+bi)(a-bi) = a^2+b^2 = N(z)$: the norm as a product with the conjugate."
     },
     {
       "id": "pythagorean-triples",
       "title": "Pythagorean Triples from Gaussian Squaring",
-      "startLine": 73,
-      "endLine": 95,
+      "startLine": 63,
+      "endLine": 88,
       "summary": "Three theorems: (1) pythagorean_from_gaussian: (m²-n²)² + (2mn)² = (m²+n²)² by ring; (2) gaussSq_pythagorean: sq.1² + sq.2² = gaussNorm m n ^ 2, showing the norm of z² equals |z|⁴; (3) gaussian_gives_pythagorean_triple: connects to Mathlib's PythagoreanTriple predicate via unfold + ring.",
       "mathContext": "For $z = m+ni$: $z^2 = (m^2-n^2) + 2mni$, $N(z^2) = (m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2 = N(z)^2$. This is $|z^2| = |z|^2$ since $N(z) = |z|^2$. The Pythagorean identity is precisely this norm calculation."
     },
     {
       "id": "brahmagupta-fibonacci",
       "title": "Brahmagupta-Fibonacci Identity and Triple Products",
-      "startLine": 100,
-      "endLine": 120,
+      "startLine": 89,
+      "endLine": 114,
       "summary": "brahmagupta_fibonacci: (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)², proved by ring — this is N(z₁)·N(z₂) = N(z₁z₂) expanded. pythagorean_triple_product: if (a₁,b₁,c₁) and (a₂,b₂,c₂) are Pythagorean triples, then (a₁a₂-b₁b₂, a₁b₂+b₁a₂, c₁c₂) is also a triple, proved by nlinarith using brahmagupta_fibonacci.",
       "mathContext": "Brahmagupta-Fibonacci = $N((a+bi)(c+di)) = N(a+bi)\\cdot N(c+di)$. Triple product: given $a_1^2 + b_1^2 = c_1^2$ and $a_2^2 + b_2^2 = c_2^2$, Brahmagupta-Fibonacci gives $(a_1 a_2 - b_1 b_2)^2 + (a_1 b_2 + b_1 a_2)^2 = (a_1^2+b_1^2)(a_2^2+b_2^2) = c_1^2 c_2^2 = (c_1 c_2)^2$."
     },
     {
       "id": "factoring",
       "title": "The Factoring Perspective",
-      "startLine": 125,
-      "endLine": 140,
+      "startLine": 115,
+      "endLine": 130,
       "summary": "sum_sq_factors: the real part of z · conj(z) is a² + b² — showing a²+b² = c² factors as (a+bi)(a-bi) = c² in ℤ[i]. triple_from_square_norm: if N(a,b) = c², then (a,b,c) is a Pythagorean triple. These give the algebraic factoring perspective on Pythagorean triples.",
       "mathContext": "In $\\mathbb{Z}[i]$: $a^2 + b^2 = (a+bi)(a-bi)$. So $a^2 + b^2 = c^2$ means $(a+bi)(a-bi) = c^2$. For the Gaussian integer $c$ (viewed as $c + 0i$), this factors $c^2$ into conjugate pairs in $\\mathbb{Z}[i]$. The full characterization uses unique factorization in $\\mathbb{Z}[i]$: $c^2$ factors into primes $p \\equiv 1 \\pmod 4$ (which split as $(a+bi)(a-bi)$) and $p = 2 = -i(1+i)^2$ (which ramifies)."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 145,
+      "startLine": 131,
       "endLine": 170,
       "summary": "Three Pythagorean triples derived from gaussian_gives_pythagorean_triple: (3,4,5) from z=2+i (z²=3+4i), (5,12,13) from z=3+2i, (8,15,17) from z=4+i. The Brahmagupta-Fibonacci example: (1²+2²)(3²+4²) = 5·25 = 125 = 11²+2².",
       "mathContext": "Parameterization: $m=2, n=1 \\Rightarrow (m^2-n^2, 2mn, m^2+n^2) = (3, 4, 5)$. $m=3, n=2 \\Rightarrow (5, 12, 13)$. $m=4, n=1 \\Rightarrow (15, 8, 17)$ (equivalently $(8, 15, 17)$). BF example: $(1+2i)(3+4i) = (3-8) + (4+6)i = -5 + 10i$, and $|-5+10i|^2 = 125 = |1+2i|^2 \\cdot |3+4i|^2 = 5 \\cdot 25$."
