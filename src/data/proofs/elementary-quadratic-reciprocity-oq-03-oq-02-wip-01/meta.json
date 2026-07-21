@@ -96,14 +96,14 @@
       "id": "section-a",
       "title": "Section A: the Dirichlet-character property of (·/n)",
       "startLine": 48,
-      "endLine": 77,
+      "endLine": 88,
       "summary": "`kronecker_congr_left` (odd positive n: a ≡ b mod n ⟹ (a/n)=(b/n), via kronecker_eq_jacobi + jacobiSym.mod_left'), `kronecker_add_mul_left` (full period n: (a+n·k/n)=(a/n)), and `kronecker_periodic_left` (the k=1 textbook unit shift).",
       "mathContext": "For odd positive $n$: $(a/n)$ is a function of $a \\bmod n$, and $(a+nk\\,/\\,n)=(a/n)$ for all $k\\in\\mathbb{Z}$."
     },
     {
       "id": "section-b",
       "title": "Section B: full periodicity of the (·/2) character kronecker2",
-      "startLine": 79,
+      "startLine": 89,
       "endLine": 106,
       "summary": "Private helper `kronecker2_mod_eight` (kronecker2 x = kronecker2 (x % 8) via Int.emod_emod_of_dvd), then `kronecker2_congr` (a ≡ b mod 8 ⟹ equal) and `kronecker2_add_mul_eight` (full period 8, generalizing the parent's single-step kronecker2_periodic).",
       "mathContext": "$(\\cdot/2)$ is the even real Dirichlet character $\\chi_8$ modulo $8$: $\\mathrm{kronecker2}(a+8k)=\\mathrm{kronecker2}(a)$."
@@ -112,7 +112,7 @@
       "id": "section-c",
       "title": "Section C: 8 is the minimal period — (·/2) is primitive (conductor 8)",
       "startLine": 107,
-      "endLine": 142,
+      "endLine": 151,
       "summary": "`kronecker2_not_period_four` (period 4 fails, witnessed by kronecker2 5 = −1 ≠ 1 = kronecker2 1) and `kronecker2_not_period_two` (period 2 fails, witnessed by kronecker2 3 = −1 ≠ 1 = kronecker2 1), bundled with the full period-8 result in `kronecker2_conductor_eight`: 8 is the exact minimal period, so (·/2) = χ₈ is a *primitive* Dirichlet character mod 8, not induced from any smaller modulus. This upgrades the period-8 statement to the sharp conductor — the input the Gauss-sum route requires, since only primitive characters have nonvanishing Gauss sums.",
       "mathContext": "$\\chi_8=(\\cdot/2)$ has exact conductor $8$: periodic mod $8$ but not mod $4$ or mod $2$, hence primitive with nonvanishing Gauss sum $\\tau(\\chi_8)$."
     },
