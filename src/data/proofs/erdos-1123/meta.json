@@ -86,46 +86,46 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 36,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "id": "density-definitions",
       "title": "Density Definitions",
-      "startLine": 35,
-      "endLine": 58,
-      "summary": "hasDensityZero, hasLogDensityZero, implication, strict containment",
+      "startLine": 37,
+      "endLine": 109,
+      "summary": "**Part I.** `countUpTo A n` counts $A \\cap [0,n)$; `hasDensityZero` and `hasLogDensityZero` express $d(A)=0$ / $\\delta(A)=0$. Supporting lemmas `countUpTo_union_le`, `countUpTo_mono`, `hasDensityZero_mono` (subset-closed) and `hasDensityZero_union` (finite-union-closed) establish the ideal structure. Two axioms close the part: `density_zero_implies_log_density_zero` (implication) and `log_density_ideal_strictly_larger` (strict containment — the structural asymmetry at the heart of the problem).",
       "mathContext": "hasDensityZero, hasLogDensityZero, implication, strict containment"
     },
     {
       "id": "boolean-algebras",
       "title": "The Boolean Algebras",
-      "startLine": 59,
-      "endLine": 79,
-      "summary": "B1 and B2 as quotient types, erdos_ulam_question",
+      "startLine": 110,
+      "endLine": 161,
+      "summary": "**Part II.** Builds $B_1 = \\mathcal P(\\mathbb N)/I_1$ and $B_2 = \\mathcal P(\\mathbb N)/I_2$ as quotient types: `hasDensityZero_empty`, the `densityZeroSetoid`/`logDensityZeroSetoid` (symmetric-difference equivalences, verified via `symmDiff_self`/`symmDiff_comm`/`symmDiff_triangle`), the quotients `B1`/`B2`, and `erdos_ulam_question` (∃ a bijection $B_1 \\to B_2$).",
       "mathContext": "B1 and B2 as quotient types, erdos_ulam_question"
     },
     {
       "id": "just-krawczyk",
       "title": "Just-Krawczyk's Resolution",
-      "startLine": 80,
-      "endLine": 88,
+      "startLine": 162,
+      "endLine": 170,
       "summary": "Historical context in docstrings: Just-Krawczyk (1984) B₁ ≅ B₂ under CH, and ZFC independence. No Lean axiom or theorem declarations in this section.",
       "mathContext": "Docstring-only: Just-Krawczyk conditional isomorphism under CH and ZFC independence. No Lean declarations exist for these results."
     },
     {
       "id": "ideal-properties",
       "title": "Ideal Properties",
-      "startLine": 89,
-      "endLine": 94,
+      "startLine": 171,
+      "endLine": 176,
       "summary": "Docstring context: both I₁ and I₂ are σ-ideals; P(ℕ)/Fin is not isomorphic to B₁ or B₂. No Lean declarations in this section.",
       "mathContext": "Docstring-only: σ-ideal closure properties and comparison with P(ℕ)/Fin."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 95,
-      "endLine": 110,
+      "startLine": 177,
+      "endLine": 192,
       "summary": "erdos_1123_summary theorem: conjunction of density_zero_implies_log_density_zero and log_density_ideal_strictly_larger, proved by exact ⟨..., ...⟩.",
       "mathContext": "erdos_1123_summary theorem combining the two axioms into a conjunction via exact ⟨density_zero_implies_log_density_zero, log_density_ideal_strictly_larger⟩."
     }
