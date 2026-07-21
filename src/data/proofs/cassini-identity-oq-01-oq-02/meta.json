@@ -80,43 +80,51 @@
       "id": "q-matrix",
       "title": "The Fibonacci Q-Matrix",
       "startLine": 37,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "The companion matrix Q = !![1,1;1,0] over ℤ, whose powers carry the Fibonacci numbers and whose determinant −1 drives Cassini's identity."
     },
     {
       "id": "matrix-power",
       "title": "Closed Form of the Q-Matrix Power (the single induction)",
       "startLine": 41,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n] by induction on n. The base case is Q^1 = Q; the step multiplies by Q (Matrix.mul_fin_two) and closes each of the four entries with the Fibonacci recurrence and ring. This is the only induction in the file."
     },
     {
       "id": "factorisation",
       "title": "The Single Factorisation Q^{(m+1)+(n+1)} = Q^{m+1} Q^{n+1}",
       "startLine": 69,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Both sides of pow_add put in closed form: the left side is the closed power Q^{(m+n+1)+1}, the right the product of two closed powers. Every addition identity below is one entry of this single equation."
     },
     {
       "id": "addition-formulas",
       "title": "Addition Formulas by Reading Off Entries",
       "startLine": 89,
-      "endLine": 110,
-      "summary": "The (2,2) entry gives F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Mathlib's Nat.fib_add); the (1,2) entry gives the addition formula of the problem statement F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n. Each is extracted by congrFun on the matrix equation and simplifying the matrix-product entry."
+      "endLine": 118,
+      "summary": "The (2,2) entry gives F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Mathlib's Nat.fib_add); the (1,2) entry gives the addition formula of the problem statement F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n (fib_add_offdiag). Each is extracted by congrFun on the matrix equation and simplifying the matrix-product entry."
     },
     {
       "id": "cassini",
       "title": "Cassini's Identity from the Same Matrix",
-      "startLine": 116,
-      "endLine": 123,
+      "startLine": 119,
+      "endLine": 130,
       "summary": "F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} from det(Q^{n+1}) = (det Q)^{n+1} = (−1)^{n+1}, recovering the parent entry's identity through the same Q used for the addition formulas."
     },
     {
       "id": "duplication",
       "title": "Duplication Formulas (the m = n diagonal)",
-      "startLine": 125,
-      "endLine": 150,
+      "startLine": 131,
+      "endLine": 156,
       "summary": "Setting m = n in the addition formulas — reading the entries of the square Q^{n+1}·Q^{n+1} = Q^{2n+2} — yields the classical duplication identities with no new induction: F_{2n+1} = F_{n+1}² + F_n² (the (2,2) entry, fib_two_mul_add_one) and F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n (the (1,2) entry, fib_two_mul_add_two)."
+    },
+    {
+      "id": "docagne-adjugate",
+      "title": "Subtraction-Type Identities via the Adjugate (d'Ocagne)",
+      "startLine": 157,
+      "endLine": 221,
+      "summary": "The product Q^a·Q^b gives the addition formulas; the subtraction-type identities (d'Ocagne, Catalan, Vajda) need a difference index F_{a−b}, i.e. an inverse power. Over ℤ this is avoided with the adjugate: Q_adj_factor gives Q^{m+n+1}·adjugate(Q^{n+1}) = det(Q^{n+1})•Q^m = (−1)^{n+1}•Q^m (from Matrix.mul_adjugate + Q_pow_succ_det). Reading off the (2,1) entry — valid for every m via Q_pow_entry_10, including m=0 — yields d'Ocagne's identity fib_dOcagne: F_{m+n+1}F_n − F_{m+n}F_{n+1} = (−1)^{n+1}F_m, the standard F_a F_{b+1} − F_{a+1}F_b = (−1)^b F_{a−b} at a=m+n, b=n with the difference a−b=m materialised as the bare exponent, so no negative-index convention is required.",
+      "mathContext": "$Q^{m+n+1}\\cdot\\operatorname{adj}(Q^{n+1}) = \\det(Q^{n+1})\\cdot Q^m = (-1)^{n+1}Q^m$; the $(2,1)$ entry reads $F_{m+n+1}F_n - F_{m+n}F_{n+1} = (-1)^{n+1}F_m$."
     }
   ],
   "overview": {
