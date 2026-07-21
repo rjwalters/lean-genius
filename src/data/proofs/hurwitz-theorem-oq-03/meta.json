@@ -117,25 +117,57 @@
       "id": "small-identities",
       "title": "Existence: 1-, 2-, 4-, and 8-Square Identities",
       "startLine": 91,
-      "endLine": 297,
+      "endLine": 305,
       "summary": "Constructs NSquareIdentity instances for n=1 (trivial), n=2 (Brahmagupta-Fibonacci via complex multiplication), n=4 (Euler's 4-square via quaternion multiplication), and n=8 (octonionic identity).",
       "mathContext": "n=2: $(x_1^2+x_2^2)(y_1^2+y_2^2) = (x_1y_1-x_2y_2)^2 + (x_1y_2+x_2y_1)^2$. n=4: Euler's 4-square identity = quaternion norm multiplicativity."
     },
     {
-      "id": "helpers",
-      "title": "Inner Product and Orthogonality Infrastructure",
-      "startLine": 299,
-      "endLine": 846,
-      "summary": "Builds the supporting machinery for the n=3 impossibility proof: inner product, orthonormality, 3D geometry lemmas (Gram-Schmidt, projection, expansion).",
-      "mathContext": "Key lemmas: orthogonality_constraint (bilinearity forces orthogonal images), inner_expansion_three (3D expansion in terms of basis), unit_ortho_two_eq_pm_third (unit vector orthogonal to two of three is ±third)."
+      "id": "inner-product-setup",
+      "title": "Part 7 — Non-Existence Setup: Inner Product and Orthogonality Constraints",
+      "startLine": 306,
+      "endLine": 505,
+      "summary": "Opens the n=3 impossibility argument (PART 7). Defines the inner product `innerProd` and standard basis `stdBasis`, proves the normSq↔innerProd dictionary (`normSq_eq_innerProd`, `normSq_add/sub/neg`, `normSq_nonneg`, `normSq_eq_zero`, `innerProd_eq_normSq`), and derives the key `orthogonality_constraint` / `orthogonality_constraint_right`: bilinearity of an n-square identity forces the image vectors to be orthogonal.",
+      "mathContext": "$\\langle u,v\\rangle = \\sum_i u_i v_i$; `orthogonality_constraint` shows that if $\\|xy\\|=\\|x\\|\\|y\\|$ is bilinear then $\\langle \\mathrm{mul}(e_i,\\,\\cdot),\\ \\mathrm{mul}(e_j,\\,\\cdot)\\rangle = 0$ for $i \\neq j$."
+    },
+    {
+      "id": "polarization",
+      "title": "Polarization Identities for NSquareIdentity",
+      "startLine": 506,
+      "endLine": 589,
+      "summary": "Proves the polarization identities `left_polarization`, `right_polarization`, and `cross_polarization` that convert the multiplicative norm condition into bilinear inner-product statements — the algebraic engine that turns $\\|xy\\| = \\|x\\|\\|y\\|$ into orthonormality of the product vectors.",
+      "mathContext": "Polarization: $\\langle \\mathrm{mul}(x,y),\\mathrm{mul}(x',y)\\rangle = \\langle x,x'\\rangle\\,\\|y\\|^2$ (and its right/cross analogues), obtained by expanding $\\|\\mathrm{mul}(x\\pm x',y)\\|^2$."
+    },
+    {
+      "id": "bilinear-r3",
+      "title": "Bilinearity and the Orthonormal-Triple Lemma in ℝ³",
+      "startLine": 590,
+      "endLine": 723,
+      "summary": "Develops the ℝ³ inner-product calculus: scalar multiplication `smul`, projection `proj3`, full bilinearity (`innerProd_add_left/right`, `innerProd_sub_left`, `innerProd_smul_left`, `innerProd_smul_smul`, `innerProd_comm`), `normSq_smul`, and `ortho_to_orthonormal_triple_eq_zero` — a vector orthogonal to an orthonormal triple in ℝ³ is zero.",
+      "mathContext": "In $\\mathbb{R}^3$ an orthonormal triple is a basis, so any vector orthogonal to all three vanishes — the dimensional pigeonhole that ultimately blocks $n=3$."
+    },
+    {
+      "id": "parseval-expansion",
+      "title": "Parseval and Bilinear Expansion in ℝ³",
+      "startLine": 724,
+      "endLine": 937,
+      "summary": "Proves the Parseval-style expansion lemmas `inner_expansion_three` (expand a vector against an orthonormal basis), `unit_ortho_two_eq_pm_third` (a unit vector orthogonal to two of three orthonormal vectors equals ±the third), and `inner_bilinear_expansion` — the identities that make the overdetermined-orthonormality contradiction quantitative.",
+      "mathContext": "For an orthonormal basis $\\{f_1,f_2,f_3\\}$ of $\\mathbb{R}^3$, $v = \\sum_k \\langle v,f_k\\rangle f_k$; a unit $v \\perp f_1,f_2$ forces $v = \\pm f_3$."
+    },
+    {
+      "id": "contradiction",
+      "title": "The n=3 Contradiction (Overdetermined Orthonormality)",
+      "startLine": 938,
+      "endLine": 1315,
+      "summary": "Proves `no_three_square_identity_proof`: any NSquareIdentity 3 makes the nine product vectors $m_{ij} = \\mathrm{mul}(e_i,e_j)$ satisfy both row- and column-orthonormality, packing more mutually orthogonal unit vectors into ℝ³ than its dimension allows. The Parseval expansion closes the contradiction quantitatively.",
+      "mathContext": "Column/row orthonormality from bilinearity yields orthonormal triples whose members are simultaneously constrained; `inner_bilinear_expansion` forces an equation with no solution in $\\dim(\\mathbb{R}^3)=3$."
     },
     {
       "id": "impossibility",
-      "title": "No 3-Square Identity: Overdetermined Orthonormality",
-      "startLine": 848,
+      "title": "No Three-Square Identity Theorem",
+      "startLine": 1316,
       "endLine": 1685,
-      "summary": "Proves no_three_square_identity: any NSquareIdentity 3 leads to a contradiction via overdetermined orthonormality. Bilinearity forces the nine product vectors m_{ij} = mul(e_i, e_j) to satisfy both row- and column-orthonormality, packing more mutually orthogonal unit vectors into ℝ³ than its dimension allows. The contradiction is closed via a Parseval expansion (no_three_square_identity_proof).",
-      "mathContext": "Column/row orthonormality from bilinearity gives 9 orthogonal unit vectors in $\\mathbb{R}^3$, impossible since $\\dim(\\mathbb{R}^3) = 3$. Derived via `inner_bilinear_expansion` and dimensional contradiction."
+      "summary": "Packages the contradiction into the headline theorem `no_three_square_identity`: NSquareIdentity 3 is empty. Bilinearity forces nine mutually orthogonal unit vectors into ℝ³, which is impossible since $\\dim(\\mathbb{R}^3)=3$ — the first non-trivial obstruction in Hurwitz's classification.",
+      "mathContext": "Column/row orthonormality from bilinearity gives orthogonal unit vectors exceeding $\\dim(\\mathbb{R}^3) = 3$, so no bilinear 3-square identity exists; derived from `no_three_square_identity_proof`."
     },
     {
       "id": "admissible-dimensions",
