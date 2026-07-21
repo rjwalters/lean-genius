@@ -72,8 +72,9 @@
     ],
     "originalContributions": [
       "Structure MonotoneGapPrimeSeq capturing the problem constraints",
-      "Formal statement of Richter's lower bound on liminf",
-      "Equivalence formulation of the open conjecture",
+      "Predicate HasNonDecreasingGaps for the discrete-convexity gap condition",
+      "Richter's 1976 lower bound recorded in documentation prose only (not formalized as a theorem or axiom)",
+      "Open conjecture recorded as an opaque placeholder axiom erdos_455_conjecture : Prop",
       "Proved gaps_pos, first_prime_ge_two, all_ge_two from Mathlib",
       "Alternative characterization nonDecGaps_alt with proof"
     ],
@@ -87,7 +88,7 @@
     "historicalContext": "**Erdős Problem #455: Monotone Prime Gap Sequences**\n\nThis problem concerns sequences of primes where consecutive gaps never decrease — a discrete convexity condition. Such sequences must spread out increasingly, but the question is: how fast?\n\n**Historical Development:**\n- **Erdős** posed the problem: if $q_1 < q_2 < \\cdots$ are primes with $q_{n+1} - q_n \\geq q_n - q_{n-1}$, must $\\lim q_n/n^2 = \\infty$?\n- **Bernd Richter (1976)**, in *Über die Monotonie von Differenzenfolgen* (Acta Arithmetica), proved the partial result $\\liminf q_n/n^2 > 0.352$, establishing at least quadratic growth.\n- The full conjecture — superquadratic growth — remains open.\n\n**Context:** The sequence of all consecutive primes $(2, 3, 5, 7, 11, 13, \\ldots)$ does NOT satisfy the monotone-gap condition, since the gaps $1, 2, 2, 4, 2, \\ldots$ are not non-decreasing. Monotone-gap prime sequences must be carefully chosen subsequences. The problem connects to the Prime Number Theorem (which gives average gap $\\sim \\log n$) and to Cramér's conjecture on maximal gaps.",
     "problemStatement": "Let $q_1 < q_2 < \\cdots$ be a sequence of primes with non-decreasing gaps:\n$$q_{n+1} - q_n \\geq q_n - q_{n-1}$$\n\n**Open Question**: Must $\\lim_{n \\to \\infty} \\frac{q_n}{n^2} = \\infty$?\n\n**Partial Result (Richter 1976)**: $\\liminf_{n \\to \\infty} \\frac{q_n}{n^2} > 0.352$",
     "text": "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?",
-    "proofStrategy": "We formalize the problem using a structure `MonotoneGapPrimeSeq` that bundles strict monotonicity, primality, and non-decreasing gaps.\n\n1. **HasNonDecreasingGaps**: Predicate $\\forall n,\\, q(n+1) - q(n) \\geq q(n) - q(n-1)$\n2. **MonotoneGapPrimeSeq**: Structure combining `StrictMono`, `allPrime`, and `nonDecGaps`\n3. **Richter's bound**: Axiomatized as $\\liminf q_n/n^2 > 0.352$ (proof requires PNT)\n4. **Open conjecture**: Stated as a `Prop` with equivalence to $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$\n5. **Structural properties**: `gaps_pos`, `all_ge_two`, and `nonDecGaps_alt` proved from Mathlib",
+    "proofStrategy": "We formalize the problem using a structure `MonotoneGapPrimeSeq` that bundles strict monotonicity, primality, and non-decreasing gaps.\n\n1. **HasNonDecreasingGaps**: Predicate $\\forall n,\\, q(n+1) - q(n) \\geq q(n) - q(n-1)$\n2. **MonotoneGapPrimeSeq**: Structure combining `StrictMono`, `allPrime`, and `nonDecGaps`\n3. **Richter's bound**: recorded in documentation prose only (not axiomatized); its proof requires prime-distribution estimates (PNT-type) beyond current Mathlib\n4. **Open conjecture**: recorded as an opaque placeholder `axiom erdos_455_conjecture : Prop` — no `Tendsto` statement and no equivalence theorem is formalized\n5. **Structural properties**: `gaps_pos`, `all_ge_two`, and `nonDecGaps_alt` proved from Mathlib",
     "keyInsights": [
       "**Non-decreasing gaps force discrete convexity**: The condition $q_{n+1} - q_n \\geq q_n - q_{n-1}$ means the sequence lies above its secant lines, a discrete analogue of convexity. This forces gaps to grow at least linearly, hence terms at least quadratically.",
       "**Consecutive primes fail the condition**: The sequence $(2, 3, 5, 7, 11, 13, \\ldots)$ has gaps $1, 2, 2, 4, 2, \\ldots$ — the drop from $4$ to $2$ violates monotonicity. Only carefully chosen prime subsequences qualify.",
@@ -120,21 +121,21 @@
       "title": "Richter's Lower Bound",
       "startLine": 54,
       "endLine": 70,
-      "summary": "Axiomatizes Richter's 1976 result: $\\liminf_{n \\to \\infty} q_n/n^2 > 0.352$ for any `MonotoneGapPrimeSeq`. Proof requires prime distribution estimates beyond current Mathlib."
+      "summary": "Records Richter's 1976 result $\\liminf_{n \\to \\infty} q_n/n^2 > 0.352$ in documentation prose only (no `theorem`/`axiom`); a docstring notes it was previously an axiom but was removed. Its proof requires prime distribution estimates beyond current Mathlib."
     },
     {
       "id": "open-conjecture",
       "title": "The Open Conjecture",
       "startLine": 71,
       "endLine": 82,
-      "summary": "States Erdős's full conjecture as an abstract `Prop` and proves equivalence: the conjecture holds iff $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$ for all monotone-gap prime sequences."
+      "summary": "Records Erdős's full conjecture as an opaque placeholder `axiom erdos_455_conjecture : Prop`. A docstring notes the intended equivalence to $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$, but no `Tendsto` statement or equivalence theorem is formalized."
     },
     {
       "id": "consequences",
       "title": "Consequences of Richter's Bound",
       "startLine": 83,
       "endLine": 94,
-      "summary": "Derives $\\exists c > 0,\\, \\forall^\\mathrm{f} n,\\, q_n \\geq c \\cdot n^2$ from the liminf bound, establishing eventual quadratic growth."
+      "summary": "Documentation prose noting that the liminf bound would give eventual quadratic growth $\\exists c > 0,\\, \\forall^\\mathrm{f} n,\\, q_n \\geq c \\cdot n^2$; no `theorem` is stated (comment-only)."
     },
     {
       "id": "structural-properties",
