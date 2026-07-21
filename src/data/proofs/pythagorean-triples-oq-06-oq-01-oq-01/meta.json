@@ -73,10 +73,26 @@
       "mathContext": "$3 \\perp 4 \\Rightarrow 12 \\mid xyz$; $\\ 12 \\perp 5 \\Rightarrow 60 \\mid xyz$."
     },
     {
+      "id": "locating-factor-3",
+      "title": "Locating the factor 3 in a primitive triple",
+      "startLine": 100,
+      "endLine": 138,
+      "summary": "For a primitive triple (coprime legs), `three_not_dvd_hyp_of_coprime` shows 3 never divides the hypotenuse z; hence `three_dvd_leg_of_coprime` locates the guaranteed factor of 3 on one of the two legs x or y rather than on z.",
+      "mathContext": "If 3 ∣ z with x,y coprime then x²+y² ≡ 0 (mod 3) forces 3 ∣ x and 3 ∣ y, contradicting coprimality; so 3 divides a leg."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: 60 is exactly the universal divisor",
+      "startLine": 139,
+      "endLine": 159,
+      "summary": "`sixty_greatest_universal_divisor`: any d dividing xyz for every triple must divide 60 (tested against the primitive witnesses (3,4,5) and (20,21,29)); combined with `sixty_dvd_prod` this gives the characterization `dvd_all_prod_iff_dvd_sixty : (∀ triple, d ∣ xyz) ↔ d ∣ 60`.",
+      "mathContext": "60 = lcm of the forced factors 3, 4, 5 and is the greatest integer dividing xyz for all Pythagorean triples: d ∣ (∀ xyz) ↔ d ∣ 60."
+    },
+    {
       "id": "instances",
       "title": "Concrete instances",
-      "startLine": 100,
-      "endLine": 115,
+      "startLine": 160,
+      "endLine": 175,
       "summary": "Four worked instances exercise the general theorem: (3,4,5) with xyz = 60, (5,12,13) with 780, (8,15,17) with 2040, and (20,21,29) — each discharged by `sixty_dvd_prod (by norm_num)`.",
       "mathContext": "$60 \\mid 3{\\cdot}4{\\cdot}5,\\ 5{\\cdot}12{\\cdot}13,\\ 8{\\cdot}15{\\cdot}17,\\ 20{\\cdot}21{\\cdot}29$."
     }
