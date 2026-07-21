@@ -62,50 +62,50 @@
     {
       "id": "angle-setup",
       "title": "Triangle Angle Setup",
-      "summary": "TriangleAngles structure and trisected angles",
+      "summary": "TriangleAngles structure and the three trisected angles α₃, β₃, γ₃",
       "startLine": 39,
-      "endLine": 54
+      "endLine": 57
     },
     {
       "id": "angle-identities",
       "title": "Key Angle Identities",
       "summary": "Trisected sum = π/3, positivity, bound < π/3",
-      "startLine": 56,
-      "endLine": 79
+      "startLine": 58,
+      "endLine": 80
     },
     {
       "id": "ear-construction",
       "title": "Conway's Ear Construction",
       "summary": "Ear apex angles, their sum (4π/3), base angles",
       "startLine": 81,
-      "endLine": 133
+      "endLine": 137
     },
     {
       "id": "angle-verification",
       "title": "Angle Verification at Vertices",
       "summary": "Conway angle identities at A, B, C",
-      "startLine": 135,
-      "endLine": 175
+      "startLine": 138,
+      "endLine": 192
     },
     {
       "id": "side-formula",
       "title": "The Side Length Formula",
       "summary": "Morley side length = 8R·sin(α/3)·sin(β/3)·sin(γ/3), symmetry, positivity",
-      "startLine": 177,
-      "endLine": 210
+      "startLine": 193,
+      "endLine": 223
     },
     {
       "id": "reduction",
       "title": "Verification Reduction",
       "summary": "Equilateral follows from side formula by symmetry",
-      "startLine": 212,
-      "endLine": 230
+      "startLine": 224,
+      "endLine": 242
     },
     {
       "id": "trig-identities",
       "title": "Trig Identities for Computation",
       "summary": "Product-to-sum, cos(α₃+β₃) = cos(π/3-γ₃), and cos_pi_third_sub (the cos(π/3 − θ) expansion used in the angle computation).",
-      "startLine": 232,
+      "startLine": 243,
       "endLine": 293
     }
   ],
