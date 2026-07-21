@@ -83,28 +83,44 @@
       "mathContext": "$\\mathrm{minpoly}_{\\mathbb Q}(p^{1/n}) = X^n - p$, hence $[\\mathbb Q(p^{1/n}):\\mathbb Q]=n$, uniformly in prime $p$ and $n\\ge 1$."
     },
     {
-      "id": "radical-power",
-      "title": "The Real Radical and Its Power Relation",
+      "id": "eisenstein-core",
+      "title": "Reusable Eisenstein-then-Gauss Core (Xⁿ − p Irreducible)",
       "startLine": 49,
-      "endLine": 67,
-      "summary": "rpow_inv_natCast_pow ((p^{1/n})ⁿ = p), aeval_primeRoot (root of Xⁿ − p), and primeRoot_isIntegral (integral over ℚ).",
-      "mathContext": "Bridges the analytic Real.rpow radical to the algebraic minimal-polynomial setting."
+      "endLine": 128,
+      "summary": "The irreducibility half, packaged reusably. coeff_X_pow_sub_C computes the coefficients of Xⁿ − C a over any commutative ring; irreducible_X_pow_sub_C_prime_int applies Eisenstein's criterion at the prime p over ℤ for every n ≥ 1; irreducible_X_pow_sub_C_prime_rat lifts to ℚ by Gauss's lemma, with the natural-number convenience form irreducible_X_pow_sub_C_natPrime_rat. Specialized to the headline even family irreducible_X_two_pow_sub_two_rat (X^(2^k) − 2), the ⁴√2 instance irreducible_X4_sub_2_rat, and the arbitrary prime-power base irreducible_X_pow_sub_C_primePow_prime_rat.",
+      "mathContext": "Eisenstein at $p$ gives $X^n - p$ irreducible over $\\mathbb Z$; Gauss's lemma transfers irreducibility to $\\mathbb Q[X]$, for every $n \\ge 1$ and every prime $p$."
+    },
+    {
+      "id": "minpoly-lemmas",
+      "title": "Reusable Minimal-Polynomial Lemmas",
+      "startLine": 130,
+      "endLine": 146,
+      "summary": "minpoly_eq_of_pow_eq_prime: if α in a ℚ-algebra domain satisfies αⁿ = p (prime) then its minimal polynomial is exactly Xⁿ − p, since that monic polynomial is irreducible (Eisenstein core) and annihilates α. natDegree_minpoly_eq_of_pow_eq_prime reads off the field degree [ℚ(α):ℚ] = n. These are the abstract engines the concrete radical results below instantiate.",
+      "mathContext": "$\\alpha^n = p$ prime $\\Rightarrow \\mathrm{minpoly}_{\\mathbb Q}(\\alpha) = X^n - p$ and $[\\mathbb Q(\\alpha):\\mathbb Q] = n$."
+    },
+    {
+      "id": "real-radical",
+      "title": "The Real Radical and Its Power Relation",
+      "startLine": 147,
+      "endLine": 168,
+      "summary": "rpow_inv_natCast_pow: (p^{1/n})ⁿ = p for p > 0, n ≥ 1, modeling the real n-th root as Real.rpow. aeval_primeRoot shows p^{1/n} is a root of Xⁿ − p over ℚ; primeRoot_isIntegral certifies it is integral over ℚ (a root of the monic Xⁿ − p).",
+      "mathContext": "Bridges the analytic Real.rpow radical to the algebraic minimal-polynomial setting: $(p^{1/n})^n = p$, so $p^{1/n}$ is a root of the monic $X^n - p$."
     },
     {
       "id": "minpoly-degree",
-      "title": "Minimal Polynomial and Exact Degree",
-      "startLine": 69,
-      "endLine": 104,
-      "summary": "minpoly_primeRoot (minpoly = Xⁿ − p), minpoly_natDegree_primeRoot (degree n), finrank_adjoin_primeRoot ([ℚ(p^{1/n}):ℚ] = n), and linearIndependent_primeRoot_powers (power basis).",
-      "mathContext": "The core sharp results: exact algebraic degree and a ℚ-basis."
+      "title": "The Minimal Polynomial and the Exact Field Degree",
+      "startLine": 169,
+      "endLine": 204,
+      "summary": "minpoly_primeRoot: the minimal polynomial of p^{1/n} over ℚ is exactly Xⁿ − p (instantiating minpoly_eq_of_pow_eq_prime through the power relation). minpoly_natDegree_primeRoot gives degree n; finrank_adjoin_primeRoot gives the exact field degree [ℚ(p^{1/n}):ℚ] = n for every prime p and n ≥ 1; linearIndependent_primeRoot_powers shows the power basis {1, r, r², …, rⁿ⁻¹} is ℚ-linearly independent.",
+      "mathContext": "The sharp results: $\\mathrm{minpoly}_{\\mathbb Q}(p^{1/n}) = X^n - p$, $[\\mathbb Q(p^{1/n}):\\mathbb Q] = n$, and $\\{r^i\\}_{i<n}$ a $\\mathbb Q$-basis."
     },
     {
       "id": "specializations",
-      "title": "The Exponents Named by OQ-02",
-      "startLine": 106,
-      "endLine": 125,
-      "summary": "finrank_adjoin_two_pow_k ([ℚ(2^{1/2^k}):ℚ] = 2^k), finrank_adjoin_prime_pow ([ℚ(p^{1/p^k}):ℚ] = p^k), finrank_adjoin_fourthRoot_two ([ℚ(2^{1/4}):ℚ] = 4).",
-      "mathContext": "Instantiates the even / prime-power cases Mathlib's Kummer API marks TODO, and recovers the parent."
+      "title": "The Headline Specializations Named by OQ-02",
+      "startLine": 206,
+      "endLine": 227,
+      "summary": "finrank_adjoin_two_pow_k ([ℚ(2^{1/2^k}):ℚ] = 2^k, the even / prime-power exponent), finrank_adjoin_prime_pow ([ℚ(p^{1/p^k}):ℚ] = p^k, the general X^{p^k} − p case named by OQ-02), and finrank_adjoin_fourthRoot_two ([ℚ(2^{1/4}):ℚ] = 4, recovering the parent entry's finrank_adjoin_fr2). Closes the namespace.",
+      "mathContext": "Instantiates the even / prime-power cases Mathlib's Kummer API marks TODO, and recovers the parent $[\\mathbb Q(2^{1/4}):\\mathbb Q] = 4$."
     }
   ],
   "conclusion": {
