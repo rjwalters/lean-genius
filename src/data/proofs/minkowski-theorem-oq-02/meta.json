@@ -139,6 +139,14 @@
       "endLine": 254,
       "summary": "Derives |α − p/q| < 1/(Qq) from the main theorem: divides |αq−p| < 1/Q by q and rearranges, using nlinarith to close the nonlinear inequality.",
       "mathContext": "|α−p/q| = |αq−p|/q < (1/Q)/q = 1/(Qq). The cross-multiplication gives |αq−p|·Q·q < q, which follows from |αq−p|·Q < 1 (the main bound) and q > 0."
+    },
+    {
+      "id": "gallery-export",
+      "title": "Gallery Export: dirichlet_from_minkowski",
+      "startLine": 255,
+      "endLine": 274,
+      "summary": "Restates the result in clean, namespace-free form for the gallery: `dirichlet_from_minkowski` — for any real α and positive integer Q there exist integers p, q with 1 ≤ q ≤ Q and |αq − p| < 1/Q — as a direct wrapper around `dirichlet_approximation_from_minkowski`.",
+      "mathContext": "The exported statement $\\exists\\, p, q,\\; 1 \\le q \\le Q \\wedge |\\alpha q - p| < 1/Q$ is the classical form of Dirichlet's approximation theorem, the punchline the entry advertises."
     }
   ],
   "conclusion": {
