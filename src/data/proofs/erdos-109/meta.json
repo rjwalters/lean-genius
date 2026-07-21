@@ -78,39 +78,47 @@
       "id": "density-defs",
       "title": "Density Definitions",
       "startLine": 31,
-      "endLine": 94,
-      "summary": "Define counting function, upper/lower density, and prove lower ≤ upper density.",
-      "mathContext": "Define counting function, upper/lower density, and prove lower ≤ upper density."
+      "endLine": 110,
+      "summary": "Define counting function, upper/lower density, and prove lower ≤ upper density (plus posLowerDensity_implies_posUpperDensity).",
+      "mathContext": "Define counting function, upper/lower density, and prove lower ≤ upper density (plus posLowerDensity_implies_posUpperDensity)."
     },
     {
       "id": "sumset-defs",
       "title": "Sumset Definitions",
-      "startLine": 95,
-      "endLine": 117,
+      "startLine": 111,
+      "endLine": 133,
       "summary": "Define sumsets B + C with notation, prove zero membership and commutativity.",
       "mathContext": "Define sumsets B + C with notation, prove zero membership and commutativity."
     },
     {
       "id": "main-theorem",
       "title": "The Erdős Sumset Conjecture",
-      "startLine": 118,
-      "endLine": 144,
+      "startLine": 134,
+      "endLine": 160,
       "summary": "State the conjecture as ErdosSumsetConjecture and axiomatize the Moreira-Richter-Robertson theorem.",
       "mathContext": "State the conjecture as ErdosSumsetConjecture and axiomatize the Moreira-Richter-Robertson theorem."
     },
     {
       "id": "consequences",
       "title": "Consequences",
-      "startLine": 145,
-      "endLine": 182,
+      "startLine": 161,
+      "endLine": 199,
       "summary": "Prove that sets containing infinite sumsets are infinite, and that positive density sets are infinite.",
       "mathContext": "Prove that sets containing infinite sumsets are infinite, and that positive density sets are infinite."
     },
     {
+      "id": "strengthenings",
+      "title": "Stronger Sumset Conjecture",
+      "startLine": 200,
+      "endLine": 224,
+      "summary": "State StrongerSumsetConjecture: the infinite sets B, C can additionally be chosen with arbitrarily large prescribed gaps between consecutive elements, showing the sumset structure is robust. Includes a remark connecting the result to Szemerédi's theorem (both extract additive structure from positive density, but sumsets vs. arithmetic progressions).",
+      "mathContext": "The strengthening quantifies over a growth function $f : \\mathbb{N} \\to \\mathbb{N}$ and demands $B$ with gaps $b_2 - b_1 \\ge f(b_1)$, so the extracted sumset structure survives arbitrary sparsification of $B$. This is complementary to Szemerédi's theorem, which forces arbitrarily long arithmetic progressions rather than an infinite sumset $B +_s C$."
+    },
+    {
       "id": "examples",
       "title": "Examples",
-      "startLine": 208,
-      "endLine": 437,
+      "startLine": 225,
+      "endLine": 438,
       "summary": "Verify that ℕ has full density, define even numbers, and prove even + even ⊆ even.",
       "mathContext": "Verify that ℕ has full density, define even numbers, and prove even + even ⊆ even."
     }
