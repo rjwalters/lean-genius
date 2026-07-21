@@ -136,32 +136,32 @@
     {
       "id": "general-crt",
       "title": "Part 1: General CRT Formula (All n ≥ 2)",
-      "startLine": 55,
-      "endLine": 95,
+      "startLine": 57,
+      "endLine": 86,
       "summary": "buDim_eq_sup_primeFactors, buDim_squarefree_crt, buDim_le_sup_primeFactors: the main theorem and its squarefree specialization. All follow from buDim_eq_formula + definition of buDimFormula.",
       "mathContext": "For all $n \\geq 2$: $\\text{buDim}(n, d) = \\bigsqcup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$. This is the CRT compatibility in its most general form."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds from Monotonicity",
-      "startLine": 98,
-      "endLine": 115,
+      "startLine": 87,
+      "endLine": 100,
       "summary": "buDim_prime_le_of_dvd, buDim_le_prod_primes: lower bounds using buDim_mono — each prime factor's BU dimension is a lower bound.",
       "mathContext": "$p \\mid n \\Rightarrow \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$ by monotonicity."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples (native_decide)",
-      "startLine": 118,
-      "endLine": 143,
+      "startLine": 101,
+      "endLine": 131,
       "summary": "buDim_thirty (30=2·3·5), buDim_twohundredten (210=2·3·5·7), buDim_twothreeten (2310=2·3·5·7·11). primeFactors computed by native_decide.",
       "mathContext": "Primorials: $30 = 2 \\cdot 3 \\cdot 5$, $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$, $2310 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11$."
     },
     {
       "id": "general-k-prime",
       "title": "Part 4: General k-Prime Formula (Induction)",
-      "startLine": 146,
-      "endLine": 204,
+      "startLine": 132,
+      "endLine": 205,
       "summary": "Three structural lemmas + the k-prime CRT theorem: (1) `sup_buDim_le_buDim_prod` — the lower-bound direction for a Finset of primes; (2) `primeFactors_prod_primes` — for a Finset $S$ of distinct primes, primeFactors(∏ S) = S, proved by Finset induction (the only nontrivial proof in this file); (3) `two_le_prod_primes` — any nonempty product of primes is ≥ 2 (needed to invoke the n ≥ 2 hypothesis of buDim_eq_sup_primeFactors); (4) `buDim_prod_primes_eq` — the headline k-prime CRT result, proved as a one-liner by composing buDim_eq_sup_primeFactors with primeFactors_prod_primes.",
       "mathContext": "$\\text{primeFactors}(\\prod_{p \\in S} p) = S$ for $S$ a Finset of distinct primes (proved by Finset induction — the only inductive argument in the file). Composing with the general CRT formula: $\\text{buDim}\\bigl(\\prod_{p \\in S} p,\\, d\\bigr) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$. The induction handles the multi-prime case in one move; the bookkeeping is in the prime-distinctness propagation through `Finset.prod_insert`."
     },
