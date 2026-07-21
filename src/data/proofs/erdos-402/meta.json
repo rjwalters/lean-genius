@@ -61,7 +61,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 755,
-    "assumptions": "1 sorry: erdos_402_graham_conjecture (main conjecture, requires Balasubramanian-Soundararajan sieve argument). Quadruple case fully proved.",
+    "assumptions": "1 sorry: erdos_402_graham_conjecture (main conjecture, requires Balasubramanian-Soundararajan sieve argument). Quadruple case fully proved. The two `native_decide` checks (`graham_special_card`: |{2,3,4,6}| = 4, and the final step of `graham_special_example`) depend on `Lean.ofReduceBool` (the compiler-reduction axiom), so those small computed facts are not kernel-only; this does not affect `axiomCount`, which counts literal `axiom` declarations (= 0).",
     "theoremCount": 25,
     "definitionCount": 4
   },
@@ -145,23 +145,23 @@
       "id": "key-lemmas",
       "title": "Key Lemmas",
       "startLine": 257,
-      "endLine": 490,
+      "endLine": 527,
       "summary": "Proved supporting lemmas and the small-cardinality cases. `gcd_one_suffices`/`one_in_singleton_set`: a coprime pair (or the element $1$) discharges the bound when $|A|\\le a$. `dvd_lt_imp_le_half` and the private divisor lemmas (`dvd_gt_third_imp_eq_half`, `dvd_gt_quarter_cases`, `mult_of_dvd_lt_double`/`_triple`, `element_eq_half`, `element_in_thirds`) drive the quotient analysis. The conjecture is fully proved for pairs (`erdos_402_pair`) and triples (`erdos_402_triple`). Structural facts: `max_ge_card_of_pos`, `erdos_402_contains_one`, `erdos_402_coprime_with_max`, `erdos_402_small_min`.",
       "mathContext": "If $d\\mid n$ and $d<n$ then $d\\le n/2$; if $n/3<d\\mid n$ then $d=n/2$; quotient $d/\\gcd(d,x)\\in\\{2,3\\}$ when $\\gcd>d/4$. Pair and triple cases proved directly."
     },
     {
       "id": "four-element",
       "title": "Four-Element Case",
-      "startLine": 491,
-      "endLine": 666,
+      "startLine": 528,
+      "endLine": 728,
       "summary": "`erdos_402_quadruple`: a complete proof of Graham's conjecture for any 4-element set. If some $\\gcd(d,x)\\le d/4$ the pair $(d,x)$ works; otherwise all gcds exceed $d/4$, forcing each quotient $d/\\gcd(d,x)\\in\\{2,3\\}$. At most one element has $\\gcd=d/2$ and at most two have $\\gcd=d/3$, so achieving three such elements forces $6\\mid d$ and $\\{a,b,c\\}=\\{d/3,d/2,2d/3\\}$, where $\\gcd(2d/3,d/2)=(2d/3)/4$ closes the bound. Fully proved via the divisor-quotient lemmas of the previous section.",
       "mathContext": "For 4 distinct positive naturals with max $d$: either a pair has $\\gcd\\le d/4$, or $6\\mid d$ and $\\{d/3,d/2,2d/3\\}$ realizes equality $\\gcd(2d/3,d/2)=(2d/3)/4$."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 667,
-      "endLine": 693,
+      "startLine": 729,
+      "endLine": 755,
       "summary": "Closing status docstring. Problem #402 is SOLVED (answer YES; Szegedy 1986 / Zaharescu 1987 for large sets, Balasubramanian–Soundararajan 1996 in full). Records the formalization scope: the main conjecture is stated with 1 `sorry` (the BS sieve argument is not formalized); the singleton, range, pair, triple, and quadruple cases are proved (quadruple fully via divisor-quotient analysis); structural lemmas and the ℚ ratio formulation are proved; and the $\\{1,2,4\\}$ counterexample disproves Graham's additional equality conjecture."
     }
   ],
