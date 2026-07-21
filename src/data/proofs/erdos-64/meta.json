@@ -182,33 +182,33 @@
     {
       "id": "cycle-existence",
       "title": "Cycle Existence from Minimum Degree (machine-checked, axiom-free)",
-      "summary": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ ≥ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ ≥ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree ≥ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. A closing comment outlines the remaining step (component-degree preservation) to reach the arbitrary-finite-graph statement. This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length.",
+      "summary": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ ≥ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ ≥ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree ≥ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. A fourth theorem `hasMinDegree_two_exists_cycle` drops the connectivity hypothesis entirely: an arbitrary nonempty finite graph with δ ≥ 2 contains a cycle, proved by passing to the connected component of some vertex and using that neighbours stay inside the component so degrees are preserved there (`SimpleGraph.degree_induce_of_neighborSet_subset`) — an acyclic graph's component would then be a nontrivial tree with a degree-one vertex, contradicting δ ≥ 2. This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length.",
       "startLine": 161,
-      "endLine": 223,
-      "mathContext": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ $\\geq$ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ $\\geq$ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree $\\geq$ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length."
+      "endLine": 271,
+      "mathContext": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ $\\geq$ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ $\\geq$ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree $\\geq$ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. A fourth theorem `hasMinDegree_two_exists_cycle` drops connectivity, proving the arbitrary-finite-graph statement (δ $\\geq$ 2 $\\Rightarrow$ a cycle exists) by passing to a connected component where degrees are preserved (`SimpleGraph.degree_induce_of_neighborSet_subset`). This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length."
     },
     {
       "id": "known-results",
       "title": "Known Cycle Results",
       "summary": "Documents in source comments the classical Dirac theorem (1952: δ ≥ n/2 → Hamiltonian) and Bondy theorem (1971: ≥ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3.",
-      "startLine": 224,
-      "endLine": 235,
+      "startLine": 272,
+      "endLine": 283,
       "mathContext": "Documents in source comments the classical Dirac theorem (1952: δ $\\geq$ n/2 → Hamiltonian) and Bondy theorem (1971: $\\geq$ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3."
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
       "summary": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ ≥ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared.",
-      "startLine": 236,
-      "endLine": 243,
+      "startLine": 284,
+      "endLine": 291,
       "mathContext": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ $\\geq$ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared."
     },
     {
       "id": "summary-status",
       "title": "Summary and Problem Status",
       "summary": "Closing source-comment digest of Problem 64's status (OPEN, $1000 prize): the main question (δ ≥ 3 forces a 2^k-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace.",
-      "startLine": 244,
-      "endLine": 268,
+      "startLine": 292,
+      "endLine": 316,
       "mathContext": "Closing source-comment digest of Problem 64's status (OPEN, \\$1000 prize): the main question (δ $\\geq$ 3 forces a $2^{k}$-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace."
     }
   ],
