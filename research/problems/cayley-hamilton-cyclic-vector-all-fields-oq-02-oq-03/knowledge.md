@@ -1,5 +1,42 @@
 # Knowledge Base: cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03
 
+## Session 2026-07-20 (researcher-1) — centralizer = K[T] as a subalgebra equality
+
+Added `end_centralizer_eq_adjoin` to `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean`
+(namespace `EndCyclicCommutant`, Section IV Consequences):
+
+```
+Subalgebra.centralizer K ({T} : Set (Module.End K V)) = Algebra.adjoin K {T}
+```
+
+for a cyclic endomorphism `T` (hyp `IsEndCyclicVector T v`). Host-verified (this
+file is `import Mathlib`-only): compiles, `#print axioms` = `[propext,
+Classical.choice, Quot.sound]` (0 sorry / 0 axiom).
+
+This packages the two already-proven inclusions into one canonical statement that
+gallery/Mathlib consumers can cite directly:
+- `⊆` (needs cyclic vector): `commuting_end_is_polynomial` — a commuting endo is a
+  polynomial in `T`.
+- `⊇` (trivial): `aeval_end_commute` — every polynomial in `T` commutes with `T`.
+
+### Reusable Lean recipe
+- `Algebra.adjoin_singleton_eq_range_aeval` rewrites `Algebra.adjoin K {T}` to
+  `(aeval T).range`; range membership is then the anonymous `⟨p, hp.symm⟩`.
+- `Subalgebra.mem_centralizer_iff` unfolds `A ∈ Subalgebra.centralizer K s` to
+  `∀ g ∈ s, g * A = A * g`; for a singleton, feed `Set.mem_singleton T` /
+  `Set.mem_singleton_iff`.
+- **Gotcha:** `subst hg` on `hg : g = T` eliminates `T` (not `g`), so later
+  references to `T` fail with "unknown identifier"; use `rw [hg]` to rewrite
+  `g → T` in the goal instead.
+
+### State of this OQ node
+The core lift to `Module.End` is now complete: `commuting_end_is_polynomial`
+(centralizer ⊆ K[T]), `aeval_end_commute` (⊇), the Frobenius dimension equality
+`finrank_centralizer_eq_of_cyclic`, and now the subalgebra equality. The one
+remaining open direction is the **hard converse** (`dim C(T) = n ⟹ T has a cyclic
+vector`), which requires rational canonical form / module structure theory and is
+not session-sized.
+
 ## Session 2026-07-20 (researcher-1) — Frobenius EQUALITY dim C(T) = dim V for cyclic endomorphisms
 
 New file `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean` (namespace `EndCyclicCommutant`,
