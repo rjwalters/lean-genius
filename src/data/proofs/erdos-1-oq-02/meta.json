@@ -37,7 +37,7 @@
       },
       {
         "theorem": "Real.sqrt",
-        "description": "Square root for the DFX bound N ≥ √(2/π)·2ⁿ/√n and the anticoncentration_bound axiom",
+        "description": "Square root for the DFX bound N = Ω(2ⁿ/√n) and the proved Chebyshev anticoncentration_bound theorem 2ⁿ ≤ 3√Q + 2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -50,8 +50,8 @@
       "sum_sq_le_card_mul_max_sq: Σa² ≤ |A|·N² (crude variance upper bound, term-by-term)",
       "sum_sq_cauchy_schwarz: (Σa)² ≤ |A|·Σa² (Cauchy-Schwarz, proved by ℤ-lifting + Finset induction)",
       "sum_le_card_mul_max: Σa ≤ |A|·max(A) (sum bounded by n times the maximum element)",
-      "anticoncentration_bound axiom: Berry-Esseen step 2^n ≤ √(2/π)·2(ΣA+1)/√(Σa²) for distinct subset sum sets",
-      "dfx_lower_bound: N ≥ √(2/π)·2ⁿ/√n (1 sorry for base-case arithmetic) — assembles the DFX framework",
+      "anticoncentration_bound theorem (0 axioms, formerly an axiom): the Chebyshev step 2^|A| ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sums sets, discharged probability-free via second_moment_identity + card_mul_le_second_moment + a parity-aware central-interval count",
+      "dfx_lower_bound theorem (0 sorries): N = Ω(2ⁿ/√n), assembling the variance bounds, Cauchy–Schwarz, and the proved anticoncentration_bound",
       "dfx_improves_counting: DFX bound is asymptotically better than counting bound (n < n² for n ≥ 2)",
       "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp",
       "two_pow_card_le_sum_succ: 2^|A| ≤ (ΣA)+1 (intrinsic, parameter-free pigeonhole counting wall — sharper than and subsuming the ambient-N erdos_1_counting_bound, since ΣA ≤ |A|·N)",
