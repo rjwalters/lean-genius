@@ -57,79 +57,79 @@
       "id": "trees",
       "title": "Part I: Trees",
       "startLine": 46,
-      "endLine": 87,
+      "endLine": 101,
       "summary": "Defines `IsTree` (connected + acyclic), axiomatizes the edge count formula $|E| = |V| - 1$. Constructs `pathGraph` on `Fin n` with consecutive-integer adjacency and `starGraph` $K_{1,k}$ with center-leaf adjacency. Both include inline proofs of `symm` and `loopless`.",
       "mathContext": "Defines `IsTree` (connected + acyclic), axiomatizes the edge count formula $|E| = |V| - 1$. Constructs `pathGraph` on `Fin n` with consecutive-integer adjacency and `starGraph` $K_{1,k}$ with center-leaf adjacency."
     },
     {
       "id": "subgraph-containment",
       "title": "Part II: Subgraph Containment",
-      "startLine": 88,
-      "endLine": 97,
+      "startLine": 102,
+      "endLine": 111,
       "summary": "Defines `ContainsSubgraph G H` via an injective graph homomorphism preserving edges, and `TreeFree G T` as its negation. This formalizes the standard notion of subgraph isomorphism used in extremal graph theory.",
       "mathContext": "Defines `ContainsSubgraph G H` via an injective graph homomorphism preserving edges, and `TreeFree G T` as its negation. This formalizes the standard notion of subgraph isomorphism used in extremal graph theory."
     },
     {
       "id": "edge-counting",
       "title": "Part III: Edge Counting and Average Degree",
-      "startLine": 98,
-      "endLine": 117,
+      "startLine": 112,
+      "endLine": 131,
       "summary": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg = 2|E|$, and defines `avgDegree` over $\\mathbb{Q}$. Proves the equivalence between average degree $> k-1$ and edge count $> (k-1)n/2$ formulations.",
       "mathContext": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg = 2|E|$, and defines `avgDegree` over $\\mathbb{Q}$. Proves the equivalence between average degree $> k-1$ and edge count $> (k-1)n/2$ formulations."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Erdos-Sos Conjecture",
-      "startLine": 118,
-      "endLine": 142,
+      "startLine": 132,
+      "endLine": 157,
       "summary": "States the conjecture in two equivalent forms: `ErdosSosConjecture` with generic vertex types and strict edge inequality, and `Erdos548Statement` with `Fin n` and the original $\\ge (k-1)n/2 + 1$ phrasing.",
       "mathContext": "States the conjecture in two equivalent forms: `ErdosSosConjecture` with generic vertex types and strict edge inequality, and `Erdos548Statement` with `Fin n` and the original $\\ge (k-1)n/2 + 1$ phrasing."
     },
     {
       "id": "known-results",
       "title": "Part V: Known Partial Results",
-      "startLine": 143,
-      "endLine": 210,
+      "startLine": 158,
+      "endLine": 227,
       "summary": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs.",
       "mathContext": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs."
     },
     {
       "id": "extremal-function",
       "title": "Part VI: Extremal Function",
-      "startLine": 211,
-      "endLine": 223,
+      "startLine": 228,
+      "endLine": 240,
       "summary": "Defines $\\text{ex}(n, T)$ via `sSup` over $T$-free graphs. States that the conjecture implies the uniform bound $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees with $k$ edges.",
       "mathContext": "Formal definition: Defines $\\text{ex}(n, T)$ via `sSup` over $T$-free graphs. States that the conjecture implies the uniform bound $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees with $k$ edges."
     },
     {
       "id": "special-trees",
       "title": "Part VII: Special Trees",
-      "startLine": 224,
-      "endLine": 236,
+      "startLine": 241,
+      "endLine": 253,
       "summary": "Contrasts paths (extremal: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly) with stars (easy: pigeonhole gives a vertex of degree $\\ge k$ when $|E| \\ge kn/2$). Paths are the tightest case; stars are trivial.",
       "mathContext": "Contrasts paths (extremal: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly) with stars (easy: pigeonhole gives a vertex of degree $\\ge k$ when $|E| \\ge kn/2$)."
     },
     {
       "id": "komlos-sos",
       "title": "Part VIII: Large k Result",
-      "startLine": 237,
-      "endLine": 250,
+      "startLine": 254,
+      "endLine": 267,
       "summary": "Axiomatizes the Komlos-Sos-Szemeredi result: the conjecture holds for all $k \\ge k_0$ for some absolute constant $k_0$. Uses the regularity-blow-up method; exact threshold unknown, full proof unpublished.",
       "mathContext": "Axiomatizes the Komlos-Sos-Szemeredi result: the conjecture holds for all $k \\ge k_0$ for some absolute constant $k_0$."
     },
     {
       "id": "related-theorems",
       "title": "Part IX: Related Theorems",
-      "startLine": 251,
-      "endLine": 273,
+      "startLine": 268,
+      "endLine": 290,
       "summary": "Axiomatizes the Erdos-Gallai matching theorem (max edges without $(k+1)$-matching) and the Turan number for paths $\\text{ex}(n, P_k) = (k-2)(n-1)/2$. Both provide context for the tree Turan problem.",
       "mathContext": "Verified: Axiomatizes the Erdos-Gallai matching theorem (max edges without $(k+1)$-matching) and the Turan number for paths $\\text{ex}(n, P_k) = (k-2)(n-1)/2$. Both provide context for the tree Turan problem."
     },
     {
       "id": "open-status",
       "title": "Part X: Open Status",
-      "startLine": 274,
-      "endLine": 319,
+      "startLine": 291,
+      "endLine": 336,
       "summary": "States the conjecture's open status as a tautological disjunction $P \\lor \\neg P$. The conjecture is marked 'falsifiable' but no counterexample has been found despite extensive computational search.",
       "mathContext": "Mathematical content: States the conjecture's open status as a tautological disjunction $P \\lor \\neg P$. The conjecture is marked 'falsifiable' but no counterexample has been found despite extensive computational search."
     }

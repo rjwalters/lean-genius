@@ -54,63 +54,63 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 45,
       "summary": "Problem statement, timeline, references, and Mathlib imports",
       "mathContext": "#606: achievable line counts for n points in R^2. Solved by Erdős-Salamon 1988."
     },
     {
       "id": "points-lines",
       "title": "Points and Lines in ℝ²",
-      "startLine": 44,
-      "endLine": 75,
+      "startLine": 46,
+      "endLine": 69,
       "summary": "`Point` (EuclideanSpace ℝ (Fin 2)), `PointConfig n` (injective map), `Line` (two distinct points), `onLine`, `maxLines = n(n-1)/2`",
       "mathContext": "n distinct points. Line: parametric. maxLines = C(n,2)."
     },
     {
       "id": "collinearity",
       "title": "Collinearity and Configurations",
-      "startLine": 77,
-      "endLine": 103,
+      "startLine": 70,
+      "endLine": 89,
       "summary": "`Collinear`, `AllCollinear`, `GeneralPosition`, `IsOrdinaryLine` — the geometric predicates used in all main theorems",
       "mathContext": "Collinear: 3 points on common line. Ordinary line: exactly 2 config points."
     },
     {
       "id": "line-count-axioms",
       "title": "Line Count Function (Axiomatized)",
-      "startLine": 105,
-      "endLine": 131,
+      "startLine": 90,
+      "endLine": 112,
       "summary": "Axioms: `numDistinctLines` (function), `numDistinctLines_collinear` (→1), `numDistinctLines_general_position` (→C(n,2)), `numDistinctLines_min_noncollinear` (≥n)",
       "mathContext": "numDistinctLines axiomatized. Collinear→1, GenPos→C(n,2), NonCol≥n."
     },
     {
       "id": "sylvester-gallai",
       "title": "Sylvester-Gallai Theorem",
-      "startLine": 133,
-      "endLine": 143,
+      "startLine": 113,
+      "endLine": 121,
       "summary": "Axiom `sylvester_gallai`: non-collinear points determine an ordinary line (exactly 2 config points). Gallai proved this in 1944.",
       "mathContext": "Sylvester-Gallai (1944): non-collinear ⟹ ∃ ordinary line with exactly 2 points."
     },
     {
       "id": "achievable-counts",
       "title": "The Achievable Line Counts",
-      "startLine": 145,
-      "endLine": 191,
+      "startLine": 122,
+      "endLine": 153,
       "summary": "`AchievableLineCounts n` definition; axioms for gaps (C(n,2)-1 and C(n,2)-3), achievable value C(n,2)-2, Erdős density result for [cn^{3/2}, C(n,2)-4]",
       "mathContext": "Gaps: C(n,2)-1 and C(n,2)-3. C(n,2)-2 achievable. Density in [cn^{3/2}, C(n,2)-4]."
     },
     {
       "id": "beck-szemeredi",
       "title": "Beck's Theorem and Szemerédi-Trotter",
-      "startLine": 193,
-      "endLine": 222,
+      "startLine": 154,
+      "endLine": 183,
       "summary": "Axiom `beck_theorem`: n/100 collinear or n²/10000 lines. Axiom `szemeredi_trotter_bound`: I(P,L) ≤ 10(nm)^(2/3)+n+m",
       "mathContext": "Beck (1983): dichotomy. ST (1983): I≤C(nm)^(2/3)+n+m."
     },
     {
       "id": "complete-characterization",
       "title": "Complete Characterization and Main Theorems",
-      "startLine": 224,
-      "endLine": 243,
+      "startLine": 184,
+      "endLine": 254,
       "summary": "Axiom `erdos_salamon_characterization`; proved theorems `erdos_606_solved` and `min_lines_noncollinear`",
       "mathContext": "Erdős-Salamon: {1}∪[n,C(n,2)]\\{C(n,2)-1, C(n,2)-3}. SOLVED."
     }
