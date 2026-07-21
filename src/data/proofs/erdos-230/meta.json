@@ -36,72 +36,72 @@
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's complex analysis, normed fields, $\\sqrt{\\cdot}$, and Finset. Opens `Complex` and `Finset` namespaces within `Erdos230`.",
-      "startLine": 32,
-      "endLine": 42,
+      "startLine": 1,
+      "endLine": 43,
       "mathContext": "Mathematical content: Imports Mathlib's complex analysis, normed fields, $\\sqrt{\\cdot}$, and Finset. Opens `Complex` and `Finset` namespaces within `Erdos230`."
     },
     {
       "id": "unimodular",
       "title": "Unimodular Polynomials",
       "summary": "Defines the `UnimodularPolynomial` structure ($a_k \\in S^1$), polynomial evaluation $P(z) = \\sum a_k z^{k+1}$, and the sup norm $\\|P\\|_\\infty = \\sup_{|z|=1} |P(z)|$.",
-      "startLine": 43,
-      "endLine": 68,
+      "startLine": 44,
+      "endLine": 69,
       "mathContext": "Formal definition: Defines the `UnimodularPolynomial` structure ($a_k \\in S^1$), polynomial evaluation $P(z) = \\sum a_k z^{k+1}$, and the sup norm $\\|P\\|_\\infty = \\sup_{|z|=1} |P(z)|$."
     },
     {
       "id": "parseval",
       "title": "Parseval's Identity and Lower Bound",
       "summary": "Defines $L^2$ norm ($= \\sqrt{n}$ for unimodular $P$), proves Parseval's identity $\\|P\\|_2^2 = n$, and states the trivial lower bound $\\|P\\|_\\infty \\geq \\sqrt{n}$.",
-      "startLine": 69,
-      "endLine": 96,
+      "startLine": 70,
+      "endLine": 106,
       "mathContext": "Formal definition: Defines $L^2$ norm ($= \\sqrt{n}$ for unimodular $P$), proves Parseval's identity $\\|P\\|_2^2 = n$, and states the trivial lower bound $\\|P\\|_\\infty \\geq \\sqrt{n}$."
     },
     {
       "id": "conjecture",
       "title": "The False Erdős-Newman Conjecture",
       "summary": "Defines the conjecture $\\exists c > 0, \\forall P \\in \\mathcal{U}_n : \\|P\\|_\\infty \\geq (1+c)\\sqrt{n}$ and states its negation. The proof of falsity relies on Kahane's ultraflat construction.",
-      "startLine": 97,
-      "endLine": 120,
+      "startLine": 107,
+      "endLine": 128,
       "mathContext": "Formal definition: Defines the conjecture $\\exists c > 0, \\forall P \\in \\mathcal{U}_n : \\|P\\|_\\infty \\geq (1+c)\\sqrt{n}$ and states its negation. The proof of falsity relies on Kahane's ultraflat construction."
     },
     {
       "id": "kahane",
       "title": "Kahane's Ultraflat Polynomials (1980)",
       "summary": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erdős-Newman conjecture.",
-      "startLine": 121,
-      "endLine": 156,
+      "startLine": 129,
+      "endLine": 190,
       "mathContext": "Defines $\\varepsilon$-ultraflatness: $(1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z|=1$. States Kahane's existence theorem and derives the disproof of the Erdős-Newman conjecture."
     },
     {
       "id": "korner",
       "title": "Körner's Construction (1980)",
       "summary": "Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior.",
-      "startLine": 158,
-      "endLine": 165,
+      "startLine": 191,
+      "endLine": 199,
       "mathContext": "Bound: Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior."
     },
     {
       "id": "bombieri-bourgain",
       "title": "Bombieri-Bourgain Improvement (2009)",
       "summary": "Quantitative ultraflat bound: $|P(z)| = \\sqrt{n} + O(n^{7/18} (\\log n)^{O(1)})$. Records the error exponent $7/18 \\approx 0.389$ as a rational constant.",
-      "startLine": 167,
-      "endLine": 181,
+      "startLine": 200,
+      "endLine": 215,
       "mathContext": "Quantitative ultraflat bound: $|P(z)| = \\sqrt{n} + $O(n^{7/18} (\\$\\log n$)$^{$O(1)$})$. Records the error exponent $7/18 \\approx 0.389$ as a rational constant."
     },
     {
       "id": "rudin-shapiro",
-      "title": "Rudin-Shapiro Polynomials",
+      "title": "Random Polynomial Heuristics (Rudin-Shapiro)",
       "summary": "Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228).",
-      "startLine": 183,
-      "endLine": 190,
+      "startLine": 216,
+      "endLine": 224,
       "mathContext": "Mathematical content: Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228)."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$.",
-      "startLine": 192,
-      "endLine": 230,
+      "startLine": 225,
+      "endLine": 264,
       "mathContext": "Verified: Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$."
     }
   ],
