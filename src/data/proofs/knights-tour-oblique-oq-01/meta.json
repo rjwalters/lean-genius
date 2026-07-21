@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring stating the oblique knight’s-tour question — whether every closed knight’s tour on an n×n board (n ≥ 5) must make an oblique (non-straight) turn at each of the four corners — with a checklist of the proved components (corner degree-2, corner-forces-oblique), followed by the Mathlib graph/list/tactic imports.",
+      "mathContext": "A closed knight’s tour is a Hamiltonian cycle in the knight graph on $[n]\\times[n]$; at a corner the two incident tour edges are forced to be non-collinear (an *oblique* turn)."
+    },
+    {
       "id": "sec1-board",
       "title": "Section 1: Parameterized Board and Knight Graph",
       "startLine": 30,
@@ -96,7 +104,7 @@
       "id": "sec7-main-theorem",
       "title": "Section 7: Main Theorem",
       "startLine": 366,
-      "endLine": 512,
+      "endLine": 564,
       "summary": "The main theorem: every closed oblique knight's tour on an n×n board has oblique turns at all four corners (TL, TR, BL, BR), proved by applying corner_forces_oblique at each corner via the cyclic adjacency structure."
     }
   ],
