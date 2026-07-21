@@ -90,6 +90,14 @@
       "mathContext": "$\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2+1)}$, $V_n(r) = \\omega_n r^n$, $S_n(r) = n\\omega_n r^{n-1}$. The key relationship: $S_n(r) = \\frac{d}{dr}V_n(r)$ — this is the mathematical content of Steiner's formula, immediate from the power rule."
     },
     {
+      "id": "sec-supporting-lemmas",
+      "title": "Supporting Lemmas: Unit-Ball Volume Values and Continuity",
+      "startLine": 84,
+      "endLine": 129,
+      "summary": "Concrete evaluations and regularity for the unit-ball volume constant and sphere area: unitBallVolume_nonneg (ω_n ≥ 0 from nonnegativity of the Gamma quotient), unitBallVolume_two (ω₂ = π) and unitBallVolume_three (ω₃ = 4π/3) computed via the Gamma-function values Γ(3/2)=√π/2 and Γ(5/2)=3√π/4, continuous_nSphereArea (Sₙ is continuous, a constant times a power), and nBallVol_zero (Vₙ(0)=0 for n ≥ 1).",
+      "mathContext": "Evaluating $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ at small $n$ recovers the classical constants: $\\omega_2 = \\pi$ (area of the unit disc) and $\\omega_3 = \\tfrac{4}{3}\\pi$ (volume of the unit ball), using $\\Gamma(1/2)=\\sqrt{\\pi}$ and the recurrence $\\Gamma(x+1)=x\\Gamma(x)$. These lemmas supply the nonnegativity, continuity, and base-value facts consumed by the FTC-based volume recovery in Parts III–IV."
+    },
+    {
       "id": "sec-steiner",
       "title": "Part I: Steiner's Formula (Two Forms)",
       "startLine": 130,

@@ -179,6 +179,22 @@
       "mathContext": "Sanity-check computations anchor the theory: $d(\\mathbb{N})=1$ and $d(A)=0$ for finite $A$, the latter shown by bounding $|A\\cap[1,N]|\\le|A|$ so the ratio $|A|/N\\to 0$."
     },
     {
+      "id": "singleton-translates",
+      "title": "Singleton Translates and Strict Density Bounds",
+      "startLine": 366,
+      "endLine": 416,
+      "summary": "Translation and boundary lemmas: Sumset_singleton_left/right (adding {k} translates A by k), density_additive_zero_singleton (the trivial pair ({0}, A) is always density-additive when d(A) exists), and the strict bounds density_additive_lt_one_left/right (in a density-additive pair where one side has positive density, the other side's density is < 1).",
+      "mathContext": "Adjoining a singleton $\\{k\\}$ acts by translation, $\\{k\\}+A = k+A$, which preserves density; the trivial pair $(\\{0\\},A)$ is therefore always density-additive. When both densities are positive the additivity constraint $d(A)+d(B)\\le 1$ becomes strict, $d(A)<1$ and $d(B)<1$."
+    },
+    {
+      "id": "nondegenerate-witness",
+      "title": "A Non-Degenerate Density-Additive Witness",
+      "startLine": 417,
+      "endLine": 460,
+      "summary": "Exhibits a genuine (both-sides-positive-density) example: exists_positive_density_additive_pair, and the concrete √2-rotation witness exists_self_additive_density_quarter whose set has density exactly 1/4 with an additive self-sumset, showing the additivity phenomenon is not confined to degenerate translate/complement pairs.",
+      "mathContext": "Beyond the trivial singleton translates, a concrete $\\sqrt{2}$-equidistribution witness has density exactly $1/4$ and is density-additive with itself ($d(A+A)=2d(A)=1/2$), certifying that positive-density additive pairs exist."
+    },
+    {
       "id": "schnirelmann-bridge",
       "title": "Bridge to Mathlib's Schnirelmann Density",
       "startLine": 461,
