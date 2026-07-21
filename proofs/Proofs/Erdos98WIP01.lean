@@ -2442,4 +2442,141 @@ theorem degree_three_isosceles_impossible
       mul_pos (pow_pos ha 2) (pow_pos hb 2), mul_pos (pow_pos ha 4) (pow_pos hb 2),
       mul_pos (pow_pos ha 2) (pow_pos hb 4), mul_pos (pow_pos ha 4) (pow_pos ha 2)]
 
+/-- **No vertex of the short-distance graph has degree `3`.**  Assembles the four
+degree-`3` exclusion sub-cases into a single obstruction.  Suppose `P : PointConfig 5`
+is in general position and two-distance (`{a, b}`, `a ≠ b`), and some vertex `i` has
+exactly three `a`-neighbours `p, q, r`.  The fifth point `w` (the unique non-neighbour of
+`i`) is then at distance `b` from `P i` — otherwise it would be a fourth `a`-neighbour.
+The three neighbour pairs `{pq, pr, qr}` each realise `a` or `b`; the number `k` of
+`a`-pairs is `0, 1, 2, 3`, matching (after a permutation of `p, q, r`) exactly one of
+`degree_three_equilateral_impossible` (`k = 0`, equilateral neighbour triangle),
+`degree_three_isosceles_impossible` (`k = 1`), `degree_three_rhombus_impossible`
+(`k = 2`), and `no_four_equidistant_indices` (`k = 3`, the monochromatic `K₄`).  Every
+one of the eight sign patterns is contradictory, so the short (`a`) degree is never `3`. -/
+theorem no_short_degree_three
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (i : Fin 5) :
+    ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card ≠ 3 := by
+  intro hdeg
+  set A := (univ.erase i).filter (fun j => dist (P i) (P j) = a) with hA
+  obtain ⟨p, q, r, hpq, hpr, hqr, hApqr⟩ := Finset.card_eq_three.mp hdeg
+  -- The three neighbours belong to `A`: each is at distance `a` from `P i`.
+  have hpA : p ∈ A := by rw [hApqr]; simp
+  have hqA : q ∈ A := by rw [hApqr]; simp
+  have hrA : r ∈ A := by rw [hApqr]; simp
+  have hip : dist (P i) (P p) = a := by
+    have h := hpA; rw [hA, mem_filter] at h; exact h.2
+  have hiq : dist (P i) (P q) = a := by
+    have h := hqA; rw [hA, mem_filter] at h; exact h.2
+  have hir : dist (P i) (P r) = a := by
+    have h := hrA; rw [hA, mem_filter] at h; exact h.2
+  -- The fifth index `w`, distinct from `i, p, q, r`.
+  have h3card : ({p, q, r} : Finset (Fin 5)).card = 3 := by rw [← hApqr]; exact hdeg
+  have hcardle : ({i, p, q, r} : Finset (Fin 5)).card ≤ 4 := by
+    have hins := Finset.card_insert_le i ({p, q, r} : Finset (Fin 5))
+    omega
+  have hwex : (univ \ ({i, p, q, r} : Finset (Fin 5))).Nonempty := by
+    apply Finset.sdiff_nonempty.mpr
+    intro hsub
+    have hle := Finset.card_le_card hsub
+    rw [Finset.card_univ, Fintype.card_fin] at hle
+    omega
+  obtain ⟨w, hw⟩ := hwex
+  rw [Finset.mem_sdiff] at hw
+  have hwnotin := hw.2
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hwnotin
+  obtain ⟨hw_i, hw_p, hw_q, hw_r⟩ := hwnotin
+  -- `P i` to `P w` is the remaining `b`-distance (else `w` would be a fourth `a`-neighbour).
+  have hiw : dist (P i) (P w) = b := by
+    rcases hcov i w (Ne.symm hw_i) with h | h
+    · exfalso
+      have hwA : w ∈ A := by
+        rw [hA, mem_filter]; exact ⟨Finset.mem_erase.mpr ⟨hw_i, mem_univ _⟩, h⟩
+      rw [hApqr] at hwA
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hwA
+      rcases hwA with h' | h' | h'
+      · exact hw_p h'
+      · exact hw_q h'
+      · exact hw_r h'
+    · exact h
+  -- Neighbour-pair and `w`-neighbour distances (each `a` or `b`).
+  have h1 := hcov p q hpq
+  have h2 := hcov p r hpr
+  have h3 := hcov q r hqr
+  have hWp := hcov w p hw_p
+  have hWq := hcov w q hw_q
+  have hWr := hcov w r hw_r
+  -- Eight-way case split on the neighbour-pair colours; each dispatches to a sub-case lemma.
+  rcases h1 with h1 | h1
+  · rcases h2 with h2 | h2
+    · rcases h3 with h3 | h3
+      · -- k = 3: monochromatic K₄ on {i, p, q, r}.
+        exact no_four_equidistant_indices ha hip hiq hir h1 h2 h3
+      · -- k = 2: b-pair qr, x = p, y = q, z = r.
+        exact degree_three_rhombus_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+    · rcases h3 with h3 | h3
+      · -- k = 2: b-pair pr, x = q, y = p, z = r.
+        exact degree_three_rhombus_impossible ha hb hiq hip hir
+          (by rw [dist_comm]; exact h1) h3 h2 hiw hWq hWp hWr
+      · -- k = 1: a-pair pq, x = p, y = q, z = r.
+        exact degree_three_isosceles_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+  · rcases h2 with h2 | h2
+    · rcases h3 with h3 | h3
+      · -- k = 2: b-pair pq, x = r, y = p, z = q.
+        exact degree_three_rhombus_impossible ha hb hir hip hiq
+          (by rw [dist_comm]; exact h2) (by rw [dist_comm]; exact h3) h1 hiw hWr hWp hWq
+      · -- k = 1: a-pair pr, x = p, y = r, z = q.
+        exact degree_three_isosceles_impossible ha hb hip hir hiq h2 h1
+          (by rw [dist_comm]; exact h3) hiw hWp hWr hWq
+    · rcases h3 with h3 | h3
+      · -- k = 1: a-pair qr, x = q, y = r, z = p.
+        exact degree_three_isosceles_impossible ha hb hiq hir hip h3
+          (by rw [dist_comm]; exact h1) (by rw [dist_comm]; exact h2) hiw hWq hWr hWp
+      · -- k = 0: equilateral neighbour triangle, x = p, y = q, z = r.
+        exact degree_three_equilateral_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+
+/-- **The short-distance graph of a general-position two-distance `5`-set is `2`-regular.**
+Every vertex has exactly two short (`a`) neighbours.  `two_distance_near_degree_bounds`
+confines each `a`-degree to `{1, 2, 3}`; `no_short_degree_three` rules out `3`; and its
+`a ↔ b` mirror rules out `1`, because the `b`-degree equals `4 − (a`-degree`)` (the two
+neighbour circles partition the four other points) and a `b`-degree of `3` is likewise
+impossible.  Hence every `a`-degree is `2`.  This is the last combinatorial step before the
+`C₅` endgame (`2`-regular on `5` vertices ⟹ a single `5`-cycle ⟹ regular pentagon ⟹
+concyclic ⟹ contradiction with `NoFourConcyclic`), which closes `h 5 ≥ 3`. -/
+theorem two_distance_two_regular
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (i : Fin 5) :
+    ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card = 2 := by
+  obtain ⟨hlo, hhi⟩ := two_distance_near_degree_bounds hgp hab hcov i
+  have hne3 := no_short_degree_three hgp ha hb hab hcov i
+  have hcov' : ∀ j k : Fin 5, j ≠ k → dist (P j) (P k) = b ∨ dist (P j) (P k) = a :=
+    fun j k hjk => (hcov j k hjk).symm
+  have hbne3 := no_short_degree_three hgp hb ha hab.symm hcov' i
+  set A := (univ.erase i).filter (fun j => dist (P i) (P j) = a) with hAdef
+  set B := (univ.erase i).filter (fun j => dist (P i) (P j) = b) with hBdef
+  -- `A.card + B.card = 4`: the two neighbour circles partition the four other vertices.
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro j hjA hjB
+    rw [hAdef, mem_filter] at hjA
+    rw [hBdef, mem_filter] at hjB
+    exact hab (hjA.2.symm.trans hjB.2)
+  have hcover : univ.erase i = A ∪ B := by
+    apply Finset.Subset.antisymm
+    · intro j hj
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      rcases hcov i j (Ne.symm hji) with hda | hdb
+      · exact Finset.mem_union_left _ (by rw [hAdef, mem_filter]; exact ⟨hj, hda⟩)
+      · exact Finset.mem_union_right _ (by rw [hBdef, mem_filter]; exact ⟨hj, hdb⟩)
+    · exact Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have herase : (univ.erase i).card = 4 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  have hsum : A.card + B.card = 4 := by
+    rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
+  omega
+
 end Erdos98WIP01
