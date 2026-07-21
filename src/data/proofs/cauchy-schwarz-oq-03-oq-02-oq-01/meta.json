@@ -91,7 +91,7 @@
       "id": "reverse-holder",
       "title": "Reverse Holder Inequality (0 < p < 1)",
       "summary": "reverse_holder: for nonnegative u and strictly positive v, (sum u^p)^(1/p) * (sum v^(p/(p-1)))^(1/(p/(p-1))) <= sum u*v. Derived from forward Holder applied to the conjugate pair P = 1/p, P' = 1/(1-p) on f = (uv)^p, g = v^(-p).",
-      "startLine": 78,
+      "startLine": 65,
       "endLine": 142,
       "mathContext": "The engine. Forward Holder with $f_i = (u_iv_i)^p$, $g_i = v_i^{-p}$ gives $\\sum u_i^p \\leq (\\sum u_iv_i)^p(\\sum v_i^q)^{1-p}$; raising to $1/p$ and reorganising yields reverse Holder. The conjugate exponent $q = p/(p-1)$ is negative."
     },
