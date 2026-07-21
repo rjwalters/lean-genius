@@ -92,76 +92,92 @@
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement & Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating Erdős #818 (small sumset forces large product set), Solymosi's affirmative 2009 answer in the stronger form |A·A| ≫ |A|²/log|A|, the sum-product intuition, the [So09d] reference, and the Mathlib imports (Finset, Real, additive Energy, Cauchy–Davenport).",
+      "mathContext": "Erdős #818: if $|A+A| \\ll |A|$ then is $|A\\cdot A| \\gg |A|^2/(\\log|A|)^C$? Answer YES (Solymosi 2009), even with $C=1$."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "startLine": 46,
-      "endLine": 77,
-      "summary": "Sumset, product set, additive doubling, small sumset condition",
-      "mathContext": "Mathematical content: Sumset, product set, additive doubling, small sumset condition"
+      "title": "Part I — Basic Definitions",
+      "startLine": 51,
+      "endLine": 82,
+      "summary": "Defines `sumset A = A + A` and `productSet A = A * A` as Finsets over ℤ, and `hasSmallSumset A K := (A+A).card ≤ K·|A|`, the small-additive-doubling hypothesis that drives the whole problem.",
+      "mathContext": "$A+A=\\{a+b\\}$, $A\\cdot A=\\{ab\\}$; small sumset: $|A+A|\\le K|A|$."
     },
     {
       "id": "trivial-bounds",
-      "title": "Trivial Bounds",
-      "startLine": 78,
-      "endLine": 105,
-      "summary": "Elementary bounds on sumset and product set sizes",
-      "mathContext": "Bound: Elementary bounds on sumset and product set sizes"
+      "title": "Part II — Trivial Bounds",
+      "startLine": 83,
+      "endLine": 156,
+      "summary": "Elementary machine-checked bounds: `productSet_upper_bound` (|A·A| ≤ |A|²), `sumset_eq_add` identifying the local sumset with Mathlib's pointwise `A + A`, `sumset_lower_bound` (|A+A| ≥ |A| for nonempty A), and `productSet_lower_bound` (|A·A| ≥ |A| via translation by a fixed element a₀ ∈ A).",
+      "mathContext": "$|A|\\le|A+A|$ and $|A|\\le|A\\cdot A|\\le|A|^2$ for nonempty finite $A$."
     },
     {
       "id": "original-conjecture",
-      "title": "The Original Conjecture",
-      "startLine": 106,
-      "endLine": 121,
-      "summary": "Erdős's question about product sets under small sumset hypothesis",
-      "mathContext": "Mathematical content: Erdős's question about product sets under small sumset hypothesis"
+      "title": "Part III — The Original Conjecture",
+      "startLine": 157,
+      "endLine": 178,
+      "summary": "Formalizes `ErdosConjecture818` as the proposition that a small-sumset set admits a product-set lower bound of the shape |A·A| ≥ |A|²/(C·log|A|)^C for some constant, i.e. the exact statement Erdős posed.",
+      "mathContext": "$\\exists C>0:\\ |A+A|\\le K|A|\\Rightarrow |A\\cdot A|\\ge |A|^2/(\\log|A|)^C$."
     },
     {
       "id": "solymosi-theorem",
-      "title": "Solymosi's Theorem",
-      "startLine": 122,
-      "endLine": 155,
-      "summary": "The main result: |AA| ≥ c·|A|²/log|A|",
-      "mathContext": "The main result: |AA| $\\geq$ c·|A|²/log|A|"
+      "title": "Part IV — Solymosi's Theorem (2009)",
+      "startLine": 179,
+      "endLine": 210,
+      "summary": "States Solymosi's stronger result as the axiom `solymosi_theorem` (an absolute constant c>0 with |A·A| ≥ c·|A|²/log|A| whenever |A+A| ≤ K|A|) — the single mathematical assumption of the file — and derives `erdos_818_proved`, discharging the original conjecture from it.",
+      "mathContext": "Axiom: $\\exists c>0,\\ |A+A|\\le K|A|\\Rightarrow |A\\cdot A|\\ge c|A|^2/\\log|A|$."
     },
     {
       "id": "multiplicative-energy",
-      "title": "Multiplicative Energy",
-      "startLine": 156,
-      "endLine": 190,
-      "summary": "Energy definitions and key bounds",
-      "mathContext": "Formal definition: Energy definitions and key bounds"
+      "title": "Part V — Multiplicative Energy",
+      "startLine": 211,
+      "endLine": 236,
+      "summary": "Defines `multiplicativeEnergy A` and `additiveEnergy A` as counts of quadruples with equal products/sums — the central quantities of the Solymosi argument, measuring multiplicative/additive structure.",
+      "mathContext": "$E^\\times(A)=\\#\\{(a,b,c,d)\\in A^4: ab=cd\\}$."
+    },
+    {
+      "id": "cauchy-schwarz-energy",
+      "title": "Part V·b — Cauchy–Schwarz Energy Lower Bound (proved)",
+      "startLine": 237,
+      "endLine": 337,
+      "summary": "The axiom-free heart of the file. `productSet_eq_mul` and `multiplicativeEnergy_eq_mulEnergy` bridge the local definitions to Mathlib's pointwise product and `Finset.mulEnergy`; `cauchy_schwarz_energy` then proves |A|⁴ ≤ |A·A|·E×(A) via `Finset.le_card_mul_mul_mulEnergy` (step 1 of Solymosi's strategy, no sorry, no new axiom). `product_lower_of_mult_energy` machine-checks the full reduction from the energy upper bound hypothesis to |A·A| ≥ |A|²/(C·K²·log|A|), with an honest note that substituting |A+A| ≤ K|A| costs a factor K² (not the sharper K).",
+      "mathContext": "$|A|^4\\le |A\\cdot A|\\,E^\\times(A)$; combined with $E^\\times(A)\\le C|A+A|^2\\log|A|$ gives $|A\\cdot A|\\ge |A|^2/(CK^2\\log|A|)$."
     },
     {
       "id": "proof-sketch",
-      "title": "Proof Sketch",
-      "startLine": 191,
-      "endLine": 229,
-      "summary": "How energy bounds combine to prove the theorem, log tightness",
-      "mathContext": "Verified: How energy bounds combine to prove the theorem, log tightness"
+      "title": "Part VI — Proof Sketch",
+      "startLine": 338,
+      "endLine": 383,
+      "summary": "The five-step energy argument in prose, and `proof_outline`, the one remaining `sorry` in the file: the sharper K-linear bound |A·A| ≥ |A|²/(K·log|A|). Its docstring explains this is NOT a consequence of `solymosi_theorem` (which supplies only an absolute constant) and pins the open gap to Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, not yet in Mathlib.",
+      "mathContext": "Open target: $|A\\cdot A|\\ge |A|^2/(K\\log|A|)$ — strictly stronger than the $K^2$ form proved in Part V·b."
     },
     {
       "id": "sum-product-connection",
-      "title": "Connection to Sum-Product",
-      "startLine": 230,
-      "endLine": 260,
-      "summary": "Relation to Problem 52 and sum-product dichotomy",
-      "mathContext": "Mathematical content: Relation to Problem 52 and sum-product dichotomy"
+      "title": "Part VII — Connection to the Sum-Product Conjecture",
+      "startLine": 384,
+      "endLine": 405,
+      "summary": "Situates #818 within the sum-product dichotomy: max(|A+A|,|A·A|) is always large (Erdős–Szemerédi Problem 52). #818 is the conditional refinement — forcing |A+A| small compels the product set to compensate.",
+      "mathContext": "Problem 52: $\\max(|A+A|,|A\\cdot A|)\\ge |A|^{2-\\varepsilon}$; #818 is its small-sumset special case."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 261,
-      "endLine": 291,
-      "summary": "Arithmetic and geometric progressions as extremes",
-      "mathContext": "Mathematical content: Arithmetic and geometric progressions as extremes"
+      "title": "Part VIII — Examples",
+      "startLine": 406,
+      "endLine": 426,
+      "summary": "Two extremal illustrations: an arithmetic progression {1,…,n} has |A+A|=2n−1 but |A·A|~n²/log n (Erdős multiplication-table problem), while a geometric progression has |A·A|=2n−1 but |A+A|~n² — the two opposite structural extremes the dichotomy interpolates.",
+      "mathContext": "AP: $|A+A|=2n-1$, $|A\\cdot A|\\sim n^2/\\log n$. GP: $|A\\cdot A|=2n-1$, $|A+A|\\sim n^2$."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 292,
-      "endLine": 294,
-      "summary": "Main results and key insight",
-      "mathContext": "Mathematical content: Main results and key insight"
+      "title": "Part IX — Summary",
+      "startLine": 427,
+      "endLine": 467,
+      "summary": "`erdos_818_summary` packages the original conjecture together with Solymosi's stronger existential bound, and `key_insight` restates the sum-product phenomenon (small additive doubling forces multiplicative expansion) with the constant c stated explicitly rather than the unsound c=1 form.",
+      "mathContext": "$\\exists c>0:\\ |A+A|\\le K|A|\\Rightarrow |A\\cdot A|\\ge c|A|^2/\\log|A|$ — the quantified sum-product dichotomy."
     }
   ],
   "conclusion": {
