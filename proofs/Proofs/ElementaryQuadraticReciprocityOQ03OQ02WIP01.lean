@@ -278,4 +278,62 @@ theorem kronecker2_sq_sum_period :
     Nat.cast_zero, Nat.cast_one]
   decide
 
+/-- **Translation-invariant `L²`-norm: `∑_{a=0}^{7} (c+a/2)² = 4` for every `c`.**
+
+        ∀ c, ∑_{a = 0}^{7} kronecker2 (c + a) * kronecker2 (c + a) = 4.
+
+    The parent's `kronecker2_sq_sum_period` proves the second moment over the base window
+    `[0, 8)`; this is the full self-orthogonality statement — the `L²`-norm of `χ₈` over
+    *every* length-`8` window is `φ(8) = 4` (the `c = 0` case recovers the parent lemma).
+    It is the diagonal counterpart of the mean-zero `kronecker2_sum_shifted_period`: any
+    `8` consecutive integers contain exactly four units mod `2`, each contributing
+    `(±1)² = 1` (`kronecker2_sq`), the four evens contributing `0`.  Together they give the
+    translation-invariant orthogonality `⟨χ₈(c+·), χ₈(c+·)⟩ = φ(8)` that fixes the modulus
+    of the Gauss sum `|τ(χ₈)|² = 8` independently of where the period window is centred. -/
+theorem kronecker2_sq_sum_shifted_period (c : ℤ) :
+    (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a)) = 4 := by
+  simp only [kronecker2_sq, Finset.sum_range_succ, Finset.sum_range_zero,
+    Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one, add_zero, zero_add]
+  split_ifs <;> omega
+
+/-- **Anti-period autocorrelation: `∑_{a=0}^{7} (a/2)·(a+4/2) = −4`.**
+
+        ∑_{a = 0}^{7} kronecker2 a * kronecker2 (a + 4) = -4.
+
+    The shift-`4` autocorrelation of `χ₈` is `−4`, the exact negative of the diagonal
+    self-orthogonality `kronecker2_sq_sum_period` (shift `0`, value `+4`).  Immediate from
+    the anti-periodicity `kronecker2_add_four` (`(a+4/2) = −(a/2)`): every term becomes
+    `(a/2)·(−(a/2)) = −(a/2)²`.  Together `C(0) = 4` and `C(4) = −4` pin down the two
+    non-zero values of the length-`8` autocorrelation `C(t) = ∑_a χ₈(a) χ₈(a+t)` of the
+    conductor-`8` character — the correlation data underlying `|τ(χ₈)|² = 8`. -/
+theorem kronecker2_autocorr_four :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 4)) = -4 := by
+  have h : ∀ a ∈ Finset.range 8,
+      kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 4)
+        = (-1) * (kronecker2 (a : ℤ) * kronecker2 (a : ℤ)) := by
+    intro a _
+    rw [kronecker2_add_four]; ring
+  rw [Finset.sum_congr rfl h, ← Finset.mul_sum, kronecker2_sq_sum_period]
+  norm_num
+
+/-- **Translation-invariant anti-period autocorrelation: `∑_{a=0}^{7} (c+a/2)·(c+a+4/2) = −4`.**
+
+        ∀ c, ∑_{a = 0}^{7} kronecker2 (c + a) * kronecker2 (c + a + 4) = -4.
+
+    The shift-`4` autocorrelation of `χ₈` is `−4` over *every* period window, not just
+    `[0, 8)` (`c = 0` recovers `kronecker2_autocorr_four`).  Same one-line mechanism —
+    anti-periodicity `kronecker2_add_four` turns each term into `−(c+a/2)²` — now reduced
+    against the translation-invariant `L²`-norm `kronecker2_sq_sum_shifted_period`.  This is
+    the off-diagonal, re-centring-invariant orthogonality the Gauss-sum evaluation uses when
+    it shifts the correlation window to an arbitrary residue. -/
+theorem kronecker2_autocorr_four_shifted (c : ℤ) :
+    (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a + 4)) = -4 := by
+  have h : ∀ a ∈ Finset.range 8,
+      kronecker2 (c + a) * kronecker2 (c + a + 4)
+        = (-1) * (kronecker2 (c + a) * kronecker2 (c + a)) := by
+    intro a _
+    rw [kronecker2_add_four]; ring
+  rw [Finset.sum_congr rfl h, ← Finset.mul_sum, kronecker2_sq_sum_shifted_period]
+  norm_num
+
 end KroneckerSymbol
