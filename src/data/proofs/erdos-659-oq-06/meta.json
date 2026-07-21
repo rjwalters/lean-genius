@@ -95,8 +95,16 @@
       "id": "summary",
       "title": "Packaged examples",
       "startLine": 191,
-      "endLine": 199,
+      "endLine": 198,
       "summary": "two_distance_examples bundles the three results: square and rhombus are two-distance sets, the rectangle is not."
+    },
+    {
+      "id": "triangle-centroid",
+      "title": "Equilateral triangle plus centroid — a second {1,3} realization",
+      "startLine": 199,
+      "endLine": 247,
+      "summary": "A fourth configuration (e0 the centroid at the origin, e1/e2/e3 the vertices on the unit circle 120° apart): `triangleCenter_spectrum` computes the squared-distance set as {1,3} and `triangleCenter_isTwoDistance` confirms it is a two-distance set. Its spectrum {1,3} is numerically identical to the 60° rhombus, yet the two are not similar — here the squared-distance multiset is three 1s and three 3s (centroid equidistant from all vertices) versus the rhombus's five 1s and one 3. This shows the two-distance spectrum alone does not determine the configuration; the √3 coordinates again cancel to a rational spectrum.",
+      "mathContext": "Vertices at radius $1$, $120°$ apart: centre-to-vertex squared distance $1$, side squared distance $(\\sqrt3)^2 = 3$, so $\\mathrm{sqDistSet4} = \\{1,3\\}$ with multiplicities $(3,3)$ vs the rhombus's $(5,1)$."
     }
   ],
   "relatedProblems": [
