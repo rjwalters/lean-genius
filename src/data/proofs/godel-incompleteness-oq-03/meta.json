@@ -109,6 +109,25 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Independence and Incompleteness Setup",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring for a fully-verified (0-axiom, 0-sorry) formalization of independence in first-order logic: what is proved — the double-negation satisfiability bridge, the Independent predicate, and the completeness characterization — and what remains genuinely open / out of scope (e.g. the syntactic Gödel sentence).",
+      "mathContext": "Works in Mathlib's `FirstOrder.Language` framework over a theory `T` and sentence `φ`; independence is defined semantically via boolean satisfiability (`⊨ᵇ`).",
+      "significance": "context",
+      "relatedConcepts": [
+        "first-order logic",
+        "model theory",
+        "Gödel incompleteness",
+        "independence"
+      ],
+      "prerequisites": [
+        "first-order logic",
+        "satisfiability"
+      ]
+    },
+    {
       "id": "double-negation-bridge",
       "title": "The Double-Negation Satisfiability Bridge",
       "startLine": 55,
@@ -136,9 +155,28 @@
       "id": "characterization",
       "title": "Model-Theoretic Characterization and Completeness",
       "startLine": 119,
-      "endLine": 145,
+      "endLine": 152,
       "summary": "independent_iff_satisfiable_both: Independent T φ ↔ IsSatisfiable (T ∪ {¬φ}) ∧ IsSatisfiable (T ∪ {φ}). isComplete_iff_forall_not_independent: for satisfiable T, T.IsComplete ↔ ∀ φ, ¬ Independent T φ.",
       "mathContext": "$\\varphi$ is independent of $T$ iff $T$ has both a model satisfying $\\varphi$ and a model refuting it; equivalently, a satisfiable theory is complete iff it admits no independent sentence."
+    },
+    {
+      "id": "calculus-of-independence",
+      "title": "A Calculus of Independence",
+      "startLine": 153,
+      "endLine": 240,
+      "summary": "Structural closure properties of the independence predicate: independence implies consistency (`isSatisfiable`), is invariant under negation (`neg_iff`, `neg`), descends to subtheories (`mono`), fails for inconsistent theories (`not_independent_of_not_isSatisfiable`), and — the capstone — an independent sentence yields two complete extensions of T disagreeing on φ (`Independent.exists_isComplete_extensions`).",
+      "mathContext": "For `T ⊆ T₀` with `φ` independent of `T`, both `T ∪ {φ}` and `T ∪ {¬φ}` are satisfiable and extend to complete theories deciding φ oppositely — the semantic engine behind incompleteness.",
+      "significance": "key",
+      "relatedConcepts": [
+        "completeness",
+        "consistency",
+        "Lindenbaum extension",
+        "monotonicity"
+      ],
+      "prerequisites": [
+        "satisfiability",
+        "complete theories"
+      ]
     }
   ],
   "conclusion": {
