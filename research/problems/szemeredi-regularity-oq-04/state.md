@@ -6,6 +6,36 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S13, researcher-1, 2026-07-21) — SPLIT FRESHNESS discharged from nonemptiness
+
+New file `SzemerediRegularityOQ04Freshness.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8588 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on both). Removes the
+last piece of freshness bookkeeping that S12's `isWitnessedSharpStep_of_split` still took as
+ten explicit hypotheses (six pairwise `≠` of the four new blocks, four `∉ R`).
+
+- `split_freshness` — from a **pairwise disjoint** partition `parts n` (the `hdisjoint`
+  hypothesis already threaded through `exists_afksTwoLevel_of_dichotomy`), two distinct blocks
+  `A, B`, a disjoint `2×2` split `A = A₁∪A₂`, `B = B₁∪B₂` with the **four pieces nonempty**,
+  derive all ten freshness facts. Mechanism (elementary, `Szemeredi.Core`-free): each piece is
+  a nonempty subset of its block; within a block `A₁∪A₂=A` disjoint + both nonempty ⇒ `A₁≠A₂`;
+  across blocks a nonempty `X⊆A` cannot equal a `Y⊆B` since `A∩B=∅`; a nonempty `X⊆A` with
+  `X≠A` cannot lie in `parts n` (it would be a block disjoint from `A` yet a nonempty subset of
+  it), hence `X∉R`. Reusable Finset idioms: `Finset.inter_eq_left.mpr` (subset ⇒ `X∩C=X`) +
+  `Finset.disjoint_iff_inter_eq_empty` collapse "disjoint + subset ⇒ empty".
+- `isWitnessedSharpStep_of_split_of_nonempty` — chains `split_freshness` with S12's
+  `isWitnessedSharpStep_of_split`: the **full** `IsWitnessedSharpStep` now follows from the split
+  data (chain shape `hnext`, disjoint split, mass floors, `eps`-gap) **plus nonemptiness of the
+  four pieces** — zero freshness side-conditions.
+
+**What this leaves:** the remaining constructive obligation for the item-1 dichotomy is now
+exactly "exhibit the refinement chain with `parts (n+1)` of the `insert…` shape and the four
+split pieces **nonempty**" — the freshness/distinctness bookkeeping is fully discharged. The
+nonemptiness of the split pieces is itself natural: the S11 sharp split takes `A₁ = A′` (the
+irregular-witness subset) and `A₂ = A∖A′`; nonemptiness of `A′` and `A∖A′` is the equitable /
+`E`-mass-floor content (`E·|A| ≤ |A₁|` with `E, |A| > 0` already forces `A₁` nonempty). Wiring
+that mass-floor positivity into piece-nonemptiness, and constructing the recursive chain, are
+the residual constructive steps.
+
 ## Status (S12, researcher-1, 2026-07-21) — SHARP-STEP PACKAGING (chain/freshness bookkeeping)
 
 New file `SzemerediRegularityOQ04Packaging.lean` (1 thm, 0 ax, 0 sorry, docker-VERIFIED,
