@@ -57,10 +57,10 @@
     {
       "id": "hypercube-properties",
       "title": "Properties of Hypercube Graphs",
-      "summary": "hypercube_vertex_count, hypercube_degree, hypercube_edge_count",
+      "summary": "hypercube_vertex_count (proves Q_k has 2^k vertices); degree and edge-count formulas described in commentary",
       "startLine": 79,
       "endLine": 99,
-      "mathContext": "Mathematical content: hypercube_vertex_count, hypercube_degree, hypercube_edge_count"
+      "mathContext": "Mathematical content: hypercube_vertex_count"
     },
     {
       "id": "turan-numbers",
@@ -81,10 +81,10 @@
     {
       "id": "recent-progress",
       "title": "Recent Progress",
-      "summary": "sudakov_tomon_bound, janzerSudakovExponent, janzer_sudakov_bound",
+      "summary": "janzerSudakovExponent definition, janzer_sudakov_k3_exponent (13/8 for k=3); Sudakov-Tomon bound described in commentary",
       "startLine": 148,
       "endLine": 173,
-      "mathContext": "Bound: sudakov_tomon_bound, janzerSudakovExponent, janzer_sudakov_bound"
+      "mathContext": "Bound: janzerSudakovExponent, janzer_sudakov_k3_exponent"
     },
     {
       "id": "open-conjecture",
@@ -97,18 +97,18 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "erdos_simonovits_minus_edge showing sensitivity to single edge removal",
+      "summary": "Commentary: Erdős-Simonovits result that Q_3 minus one edge has exponent 3/2 (no formal declarations in this section)",
       "startLine": 196,
       "endLine": 210,
-      "mathContext": "Mathematical content: erdos_simonovits_minus_edge showing sensitivity to single edge removal"
+      "mathContext": "Commentary only: sensitivity of the exponent to single edge removal"
     },
     {
       "id": "bipartite-context",
       "title": "Bipartite Turán Theory",
-      "summary": "hypercube_bipartite, bipartite_turan_subquadratic context",
+      "summary": "Commentary: hypercube bipartiteness and the broader bipartite Turán / Kővári-Sós-Turán context (no formal declarations in this section)",
       "startLine": 211,
       "endLine": 223,
-      "mathContext": "Mathematical content: hypercube_bipartite, bipartite_turan_subquadratic context"
+      "mathContext": "Commentary only: bipartite Turán theory context"
     }
   ],
   "conclusion": {
