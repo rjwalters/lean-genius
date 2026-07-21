@@ -99,56 +99,56 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 40,
       "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Cardinal SimpleGraph); namespace `Erdos736`",
       "mathContext": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 45,
-      "endLine": 79,
-      "summary": "Chromatic number, finite subgraphs, and subgraph embeddings",
+      "startLine": 41,
+      "endLine": 82,
+      "summary": "Part I. The Cardinal-valued chromaticNumber of a graph (as an infimum over colorings), the predicate isFiniteSubgraph, the subgraph-embedding relation isSubgraphOf, and the finiteSubgraphClass of a graph — the infrastructure for talking about which finite graphs a colouring must contain.",
       "mathContext": "$\\chi(G) = \\inf\\{\\kappa : G \\text{ has a proper } \\kappa\\text{-coloring}\\}$. For infinite graphs, $\\chi(G)$ is a cardinal number. Finite subgraph $G[S]$ = induced subgraph on finite $S \\subseteq V(G)$."
     },
     {
       "id": "taylor-conjecture",
       "title": "The Taylor Conjecture",
-      "startLine": 80,
-      "endLine": 111,
-      "summary": "Walter Taylor's original conjecture and its generalization",
+      "startLine": 83,
+      "endLine": 114,
+      "summary": "Part II. Walter Taylor's original conjecture (TaylorConjecture) that a graph of uncountable chromatic number contains, as subgraphs, every member of some family determining all uncountable chromatic numbers, and its generalization (GeneralizedTaylorConjecture) — stated as Props, not asserted.",
       "mathContext": "$\\chi(G) = \\aleph_1 \\implies \\forall m,\\, \\exists G_m: \\chi(G_m) = m \\wedge (\\text{fin. subgraphs of } G_m \\subseteq \\text{fin. subgraphs of } G)$. Taylor's conjecture: $\\aleph_1$-chromatic graphs have universally rich finite structure."
     },
     {
       "id": "general-question",
       "title": "Erdős's General Question",
-      "startLine": 112,
-      "endLine": 139,
-      "summary": "Characterizing realizable families of finite graphs",
+      "startLine": 115,
+      "endLine": 143,
+      "summary": "Part III. Erdős's general question, formalized: a FiniteGraphFamily (indexed finite graphs), the predicate realizableAt F α (some graph of chromatic number α has exactly F as its finite-subgraph class), and ErdosGeneralQuestion asking which families are realizable at which ordinals.",
       "mathContext": "$\\mathcal{F}$ is realizable at $\\aleph_\\alpha$ iff $\\exists G: \\chi(G) = \\aleph_\\alpha \\wedge \\{\\text{fin. subgraphs of } G\\} = \\mathcal{F}$. Erdős's generalization: characterize which families $\\mathcal{F}$ are realizable at each cardinal."
     },
     {
       "id": "consistency-result",
       "title": "Komjáth-Shelah Consistency",
-      "startLine": 140,
-      "endLine": 166,
-      "summary": "Independence from ZFC and the ℵ₂ bound",
+      "startLine": 144,
+      "endLine": 156,
+      "summary": "Part IV. The Komjáth-Shelah consistency result — the answer to the general question is independent of ZFC and sensitive to the ℵ₂ bound — documented as commentary.",
       "mathContext": "$\\text{Con}(\\text{ZFC} + \\exists G: \\chi(G) = \\aleph_1 \\wedge \\forall H\\,(\\text{fin. sub. of } H \\subseteq \\text{fin. sub. of } G \\implies \\chi(H) \\le \\aleph_2))$. Komjáth-Shelah: Taylor's conjecture is independent of ZFC."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
-      "startLine": 167,
-      "endLine": 197,
-      "summary": "De Bruijn-Erdős theorem and chromatic compactness",
+      "startLine": 157,
+      "endLine": 208,
+      "summary": "Part V. The De Bruijn-Erdős compactness principle in action: deBruijn_erdos_coloring (if a graph is not n-colourable then some finite subgraph is not n-colourable) and its contrapositive exists_finite_subgraph_not_colorable — the bridge that lets finite obstructions certify infinite chromatic number.",
       "mathContext": "De Bruijn-Erdős: $(\\forall \\text{finite } S \\subseteq V,\\, G[S] \\text{ is } k\\text{-colorable}) \\implies \\chi(G) \\le k$. Finite chromatic number IS determined by finite subgraphs, but infinite ones may not be."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 198,
-      "endLine": 203,
-      "summary": "Countable and finite chromatic number cases",
+      "startLine": 209,
+      "endLine": 437,
+      "summary": "Part VI. The verified core: the ℕ-valued chromatic number and its finite theory. First the Cardinal-valued chromaticNumber is bridged to Mathlib's Colorable predicate (chromSet_nonempty, chromaticNumber_eq_of_colorable, colorable_of_chromaticNumber_eq, not_colorable_of_chromaticNumber_eq). Then chiN G = sInf { n | G.Colorable n } is introduced with its basic laws (colorable_chiN, chiN_le_of_colorable, not_colorable_of_lt_chiN) and monotonicity under induced subgraphs (colorable_induce_mono, chiN_induce_mono, colorable_induce_insert, chiN_induce_insert_le). The technical heart is exists_induce_chiN_eq — every finite vertex set has an induced subgraph attaining chiN — feeding exists_finite_induce_not_colorable and exists_finite_chiN_ge (finite subgraphs of arbitrarily large chromatic number), culminating in finite_case: for finite graphs the realizability question is settled outright. This is the fully machine-checked, axiom-free content underneath the otherwise open/consistency-governed problem.",
       "mathContext": "Countable case: if $\\chi(G) = \\aleph_0$, finite subgraphs determine everything by compactness. The critical gap is at $\\chi(G) = \\aleph_1$ where set-theoretic independence emerges."
     }
   ],
