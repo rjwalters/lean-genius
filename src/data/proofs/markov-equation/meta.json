@@ -41,15 +41,15 @@
       "id": "intro",
       "title": "The Markov equation and the Markov tree",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Docstring framing: positive solutions of x²+y²+z²=3xyz form a tree rooted at (1,1,1); the file proves the structural theorem by descent on the coordinate sum, mirroring negative-Pell descent. Defines IsMarkov.",
+      "endLine": 35,
+      "summary": "Docstring framing: positive solutions of x²+y²+z²=3xyz form a tree rooted at the singular solution (1,1,1), every other obtained by Vieta jumping plus coordinate permutation; the file proves the structural theorem by descent on the coordinate sum, mirroring negative-Pell descent. Defines IsMarkov.",
       "mathContext": "$x^2+y^2+z^2=3xyz$; the Markov tree organizes all positive solutions."
     },
     {
       "id": "singular-symmetry",
       "title": "The singular solution and coordinate symmetry",
-      "startLine": 31,
-      "endLine": 49,
+      "startLine": 36,
+      "endLine": 50,
       "summary": "markov_one: (1,1,1) is a Markov triple. markov_swap12 / markov_swap23: transposing coordinates preserves Markov triples (the equation is symmetric).",
       "mathContext": "The equation is symmetric in x,y,z; (1,1,1) is the singular root."
     },
@@ -57,7 +57,7 @@
       "id": "vieta-jump",
       "title": "Vieta jumping",
       "startLine": 51,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "markov_root_prod (z·z' = x²+y²), markov_vieta (the jump z ↦ 3xy−z preserves Markov triples with positivity), and markov_vieta_involutive (the jump is an involution).",
       "mathContext": "Fixing x,y, the equation is a quadratic in z with roots z, z'=3xy−z (Vieta)."
     },
@@ -65,31 +65,47 @@
       "id": "descent",
       "title": "The descent inequality",
       "startLine": 76,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "markov_top_strict (a sorted triple with z ≥ 2 has strict max y < z) and markov_vieta_lt (the descent 3xy − z < z via g(y) ≤ 0 and the root product), the arithmetic engine of the descent.",
       "mathContext": "$g(y)=(y-z)(y-z')\\le 0$ forces $z'\\le y<z$, so the jump strictly decreases the sum."
     },
     {
+      "id": "geometric-growth",
+      "title": "Geometric growth of the maximal coordinate",
+      "startLine": 114,
+      "endLine": 150,
+      "summary": "markov_two_mul_mid_le_top: in a sorted Markov triple with z ≥ 2 the top coordinate is at least twice the middle (2y ≤ z), so one Vieta-descent move at least halves the maximum and a triple with max ≤ N sits at tree depth ≤ log₂ N. Docstring flags this O(log N) depth as only the elementary half of Zagier's counting law M(N) ∼ C(log N)²; the sharp analytic constant stays open.",
+      "mathContext": "$2y\\le z$ in a sorted triple $\\Rightarrow$ depth $\\le\\log_2 N$, the elementary half of $M(N)\\sim C(\\log N)^2$."
+    },
+    {
+      "id": "strict-growth",
+      "title": "Strict geometric growth and the unique tight case",
+      "startLine": 151,
+      "endLine": 220,
+      "summary": "markov_two_mul_mid_lt_top (z ≥ 3 ⇒ 2y < z: strict more-than-halving), markov_growth_tight (equality 2y = z holds iff the triple is (1,1,2), the first Vieta child of the root), and markov_sum_lt_top (z ≥ 3 ⇒ x + y < z). Pins down (1,1,2) as the single exceptional base case of the geometric descent.",
+      "mathContext": "$2y<z$ for $z\\ge 3$; equality $2y=z$ only at $(1,1,2)$; hence $x+y<z$."
+    },
+    {
       "id": "reachability",
       "title": "Reachability and sorting",
-      "startLine": 114,
-      "endLine": 167,
-      "summary": "Step (transpositions + Vieta jump) and its closure Reachable; isMarkov_of_step (moves preserve IsMarkov); sort_reachable (any triple reaches a sorted representative by ≤ 3 transpositions, same sum).",
-      "mathContext": "Reachable = ReflTransGen(Step); sorting preserves the coordinate sum."
+      "startLine": 221,
+      "endLine": 311,
+      "summary": "Step (transpositions + Vieta jump) and its closure Reachable; isMarkov_of_step (moves preserve IsMarkov); sort_reachable (any triple reaches a sorted representative by ≤ 3 transpositions, same sum); markov_reachable_one (strong induction on the coordinate sum: sort, then Vieta-jump the max to strictly descend to the root).",
+      "mathContext": "Reachable = ReflTransGen(Step); sorting preserves the coordinate sum; descent on (x+y+z).toNat."
     },
     {
       "id": "classification",
       "title": "The classification theorem",
-      "startLine": 169,
-      "endLine": 207,
-      "summary": "markov_reachable_one (strong induction on the sum: sort, then Vieta-jump the max to descend) and markov_classification (every positive Markov triple reaches (1,1,1)).",
-      "mathContext": "Descent terminates only at the root (1,1,1)."
+      "startLine": 312,
+      "endLine": 315,
+      "summary": "markov_classification: every positive Markov triple is Reachable from (1,1,1) — the headline structural result, an immediate corollary of the descent-form markov_reachable_one.",
+      "mathContext": "Descent terminates only at the root $(1,1,1)$."
     },
     {
       "id": "consequences",
       "title": "Consequences and small triples",
-      "startLine": 209,
-      "endLine": 237,
+      "startLine": 316,
+      "endLine": 344,
       "summary": "markov_all_eq (uniqueness: (t,t,t) Markov iff t=1), concrete triples (1,1,2), (1,2,5), (2,5,29), and markov_step_root_to_112 (the first Vieta jump from the root).",
       "mathContext": "$(t,t,t)$ Markov $\\iff t=1$; small triples ground the tree."
     }
