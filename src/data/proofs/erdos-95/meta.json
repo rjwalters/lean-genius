@@ -85,63 +85,71 @@
       "id": "problem-statement",
       "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 39,
       "summary": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman.",
       "mathContext": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($$n^{3}$ \\$\\log n$$), \\$500 prize, and references to [GK15] and Fishburn/Altman."
     },
     {
       "id": "point-configs",
       "title": "Point Configurations and Distances",
-      "startLine": 35,
-      "endLine": 61,
+      "startLine": 40,
+      "endLine": 74,
       "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)$, `dist p q := \\|p - q\\|$, `PointConfig` (Finset with card > 0), `distanceSet P$ (pairwise distances via `image`), and `multiplicity P d$ (pair count via `filter`).",
       "mathContext": "Defines `Point := EuclideanSpace ℝ (Fin 2)$, `dist p q := \\|p - q\\|$, `PointConfig` (Finset with card > 0), `distanceSet P$ (pairwise distances via `image`), and `multiplicity P d$ (pair count via `filter`)."
     },
     {
       "id": "sum-squared",
       "title": "The Sum of Squared Multiplicities",
-      "startLine": 62,
-      "endLine": 74,
+      "startLine": 75,
+      "endLine": 102,
       "summary": "Proves `sum_multiplicities`: $\\sum_d f(d) = n(n-1)$ by fibre decomposition over `offDiag` (`Finset.card_eq_sum_card_fiberwise` + `offDiag_card`). Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`.",
       "mathContext": "Formal definition: Proves `sum_multiplicities`: $\\sum_d f(d) = n(n-1)$ by fibre decomposition over `offDiag`. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
-      "startLine": 75,
-      "endLine": 86,
+      "startLine": 103,
+      "endLine": 114,
       "summary": "Defines `ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. The exponent $3+\\varepsilon$ is tight up to the $\\varepsilon$ (lattice achieves $n^3 \\log n$).",
       "mathContext": "Defines `ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. The exponent $3+\\varepsilon$ is tight up to the $\\varepsilon$ (lattice achieves $n^3 \\log n$)."
     },
     {
       "id": "guth-katz",
       "title": "Guth-Katz Theorem (2015)",
-      "startLine": 87,
-      "endLine": 113,
+      "startLine": 115,
+      "endLine": 165,
       "summary": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (now fully proved): $\\varepsilon \\log m \\le m^\\varepsilon$ from $\\log x \\le x-1$, then split $m^{3+\\varepsilon} = m^3 \\cdot m^\\varepsilon$.",
       "mathContext": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (now fully proved) by absorbing the logarithm into the $n^\\varepsilon$ factor."
     },
     {
+      "id": "cauchy-schwarz-bridge",
+      "title": "The Cauchy–Schwarz Bridge to Distinct Distances (#94)",
+      "startLine": 166,
+      "endLine": 234,
+      "summary": "`sq_sum_multiplicities_le` and `distinctDistances_lower_bound`: an unconditional Cauchy–Schwarz inequality $n^2(n-1)^2 \\\\le t\\\\cdot\\\\sum f(u_i)^2$ links #95 to the distinct-distances theorem #94",
+      "mathContext": "Over the $t = |{\\\\rm distanceSet}|$ distinct distances, Cauchy–Schwarz gives $(\\\\sum_i f(u_i))^2 \\\\le t\\\\cdot\\\\sum_i f(u_i)^2$. Since $\\\\sum_i f(u_i) = n(n-1)$ (`sum_multiplicities`), this is $n^2(n-1)^2 \\\\le t\\\\cdot\\\\sum f^2$ (`sq_sum_multiplicities_le`, axiom-free). Feeding the Guth–Katz bound $\\\\sum f^2 \\\\le Cn^3\\\\log n$ yields $t \\\\gg n/\\\\log n$ — the distinct-distances theorem #94 (`distinctDistances_lower_bound`, same `guth_katz_theorem` axiom)."
+    },
+    {
       "id": "polynomial-method",
       "title": "The Polynomial Method",
-      "startLine": 114,
-      "endLine": 133,
+      "startLine": 235,
+      "endLine": 253,
       "summary": "Commentary on the Guth-Katz proof techniques: point-line duality via Elekes-Sharir, polynomial partitioning of $\\mathbb{R}^3$, ruled surface structure for constant-distance lines, and incidence bounds ($O(n^{3/2})$ unless many lines share a surface).",
       "mathContext": "Commentary on the Guth-Katz proof techniques: point-line duality via Elekes-Sharir, polynomial partitioning of $\\mathbb{R}^3$, ruled surface structure for constant-distance lines, and incidence bounds ($O(n^{3/2})$ unless many lines share a surface)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 134,
-      "endLine": 148,
+      "startLine": 254,
+      "endLine": 266,
       "summary": "Axiomatizes `convex_polygon_case`: for convex-position points, $\\sum f(d)^2 = O(n^3)$ (Fishburn/Altman 1963). Notes that the $\\sqrt{n} \\times \\sqrt{n}$ lattice is the extremal general-position example.",
       "mathContext": "Axiomatizes `convex_polygon_case`: for convex-position points, $\\sum f(d)^2 = O(n^3)$ (Fishburn/Altman 1963). Notes that the $\\sqrt{n} \\times \\sqrt{n}$ lattice is the extremal general-position example."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 149,
-      "endLine": 184,
+      "startLine": 267,
+      "endLine": 304,
       "summary": "Main theorem `erdos_95`: `ErdosConjecture ∧ Guth-Katz bound`, proved as $\\langle$`erdos_conjecture_proved`, `guth_katz_theorem`$\\rangle$. Documentation strings `erdos_95_answer` and `erdos_95_status`. `#check` commands verify key definitions.",
       "mathContext": "Main theorem `erdos_95`: `ErdosConjecture ∧ Guth-Katz bound`, proved as $\\langle$`erdos_conjecture_proved`, `guth_katz_theorem`$\\rangle$."
     }
