@@ -147,23 +147,23 @@
       "id": "bounds",
       "title": "§7: Correct Bounds on Interval LCM",
       "startLine": 177,
-      "endLine": 214,
+      "endLine": 224,
       "summary": "Proves upper bounds on the interval lcm: a helper `Nat.lcm a b ≤ a*b`, `intervalLcm_le_prod` (M(n,k) is at most the product of the k consecutive elements), and the polynomial bound `intervalLcm_poly_upper` : intervalLcm n k ≤ (n+k)^k.",
       "mathContext": "$M(n,k) \\le \\prod_{i=1}^{k}(n+i) \\le (n+k)^k$."
     },
     {
       "id": "observations",
       "title": "§8: Erdős's Observations on Growth Rate",
-      "startLine": 215,
-      "endLine": 225,
-      "summary": "Defines `minimalN k`, the least n at which a comparison holds for k-element intervals, and states `erdos_growth_rate` (n_k / k → ∞, i.e. minimalN k > C·k eventually for every C). Stated as a `sorry`-backed theorem capturing Erdős's superlinear-growth observation.",
+      "startLine": 225,
+      "endLine": 264,
+      "summary": "Defines `minimalN k`, the least n at which a comparison holds for k-element intervals (guarded by `Nat.find` on the existence hypothesis, `0` otherwise), with its totality/characterization lemmas `minimalN_spec` (realized by an actual comparison), `minimalN_le` (lower bound), and `minimalN_eq_zero_of_not_exists`. Then states `erdos_growth_rate` (n_k / k → ∞, i.e. minimalN k > C·k eventually for every C), a `sorry`-backed theorem capturing Erdős's superlinear-growth observation.",
       "mathContext": "$n_k = \\text{minimalN}(k)$; Erdős showed $n_k/k \\to \\infty$, formalized as $\\forall C,\\ \\exists K,\\ \\forall k \\ge K,\\ n_k > Ck$ (stated with `sorry`)."
     },
     {
       "id": "summary",
       "title": "§9: Main Result Summary",
-      "startLine": 226,
-      "endLine": 236,
+      "startLine": 265,
+      "endLine": 276,
       "summary": "Closes with `erdos_678` : ∃ n m k, erdosLcmComparison n m k, proved unconditionally from `selfridge_example_1` — the existence statement of the problem, settled by an explicit Selfridge witness while the full infinitude (cambie_2024) remains `sorry`.",
       "mathContext": "$\\exists n,m,k,\\ M(n,k) > M(m,k+1)$, discharged by the explicit witness $(96,104,7)$."
     }
