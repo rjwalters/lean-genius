@@ -41,48 +41,56 @@
   },
   "sections": [
     {
-      "id": "metadata-header",
-      "title": "Problem Metadata: Title, Source, Status",
+      "id": "problem-statement",
+      "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 7,
-      "summary": "Opening of the Lean block comment identifying this as Erdős Problem #1217, with source URL (erdosproblems.com/1217) and status SOLVED. The problem is attributed to Erdős-Sárközy-Sós 1966 [ESS66].",
-      "mathContext": "The **upper log-log density** of a sequence $A = \\{a_1 < a_2 < \\cdots\\}$ is $\\overline{d}_{\\text{ll}}(A) = \\limsup_{x \\to \\infty} \\frac{1}{\\log\\log x} \\sum_{a_n \\leq x} \\frac{1}{a_n}$. By Mertens' second theorem ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$), the primes have $\\overline{d}_{\\text{ll}} = 1$. Problem #1217 (ESS66, 1966) asks: if $\\overline{d}_{\\text{ll}}(A) > 0$, must $A$ contain a structurally constrained subsequence with the same property?"
+      "endLine": 18,
+      "significance": "context",
+      "summary": "Header for Erdős #1217 (SOLVED by Erdős–Sárközy–Sós 1966): a sequence with positive iterated-log (log-log) density admits a subsequence that is itself positive-density and satisfies additional convergence structure.",
+      "mathContext": "Iterated-log density of $A$: $\\limsup_{x\\to\\infty}\\tfrac{1}{\\log\\log x}\\sum_{a_n\\le x}\\tfrac1{a_n}$."
     },
     {
-      "id": "corrupted-statement",
-      "title": "Problem Statement (Corrupted Source)",
-      "startLine": 8,
-      "endLine": 14,
-      "summary": "The problem statement block is severely corrupted — LaTeX encoding issues stripped mathematical content. Legible fragments: a sequence A = {a₁, ...}, a reference to [ESS66], and a limsup over 1/(log log x) · ∑_{aₙ < x} 1/aₙ being positive implying the existence of a subsequence with the same limsup positive. The full statement requires consulting the original ESS66 paper.",
-      "mathContext": "From legible fragments: the hypothesis is $\\overline{d}_{\\text{ll}}(A) > 0$; the conclusion is $\\exists B \\subseteq A,\\, \\overline{d}_{\\text{ll}}(B) > 0$ and $B$ satisfies property $P$. Candidate properties from ESS66 context: (a) **primitive** ($a \\nmid b$ for $a, b \\in B$, $a \\neq b$); (b) **sum-free** ($B + B \\cap B = \\emptyset$); (c) **Sidon** (all pairwise sums distinct). Erdős's primitive set theorem (1935) gives $\\sum_{a \\in P} 1/(a \\log a) \\leq C$ for any primitive $P$, the key bound used in density-preservation arguments."
+      "id": "imports-namespace",
+      "title": "Imports, Opens, and Namespace",
+      "startLine": 19,
+      "endLine": 27,
+      "significance": "technical",
+      "summary": "Imports Real.Log and Topology.Filter, opens Classical / Filter / Real, and enters the Erdos1217 namespace."
     },
     {
-      "id": "imports",
-      "title": "Mathlib Import",
-      "startLine": 16,
-      "endLine": 16,
-      "summary": "Full Mathlib import, providing `Filter.limsup`, `Finset.sum`, `Real.log`, and prime-counting infrastructure for formalizing the log-log density and Mertens-type results.",
-      "mathContext": "The Mathlib tools needed for a full formalization: `Filter.limsup` (for the $\\limsup_{x \\to \\infty}$ in the log-log density definition), `Real.log` (for $\\log\\log x$), `Finset.sum` / `Finset.filter` (for $\\sum_{a_n \\leq x} 1/a_n$ as a sum over a filtered index set), and `Nat.Primes.sum_reciprocals_atTop` (Mertens' second theorem, if available). Importing all of Mathlib provides these but at compile cost; a production formalization would import only `Mathlib.NumberTheory.PrimeCounting` and `Mathlib.Topology.Filter`."
+      "id": "density-definitions",
+      "title": "Iterated-Log Density Definitions",
+      "startLine": 28,
+      "endLine": 37,
+      "significance": "key",
+      "summary": "Defines iterLogDensity (the log-log-normalized reciprocal-sum limsup of a set) and HasPositiveIterLogDensity (a strictly monotone sequence whose range has positive such density).",
+      "mathContext": "$\\mathrm{iterLogDensity}(A)=\\limsup_x \\tfrac{1}{\\log\\log x}\\sum_{n\\in A,\\,n\\le x}\\tfrac1n$; the predicate asks this to be $>0$ for $\\mathrm{range}(a)$.",
+      "relatedConcepts": [
+        "limsup",
+        "logarithmic density",
+        "StrictMono"
+      ]
     },
     {
-      "id": "theorem-scaffold",
-      "title": "Theorem Scaffold Comments",
-      "startLine": 18,
-      "endLine": 19,
-      "summary": "Two-line comment block marking this as a placeholder to be replaced with the actual statement and proof of the ESS66 result once the problem statement is recovered and Mathlib's analytic number theory is ready.",
-      "mathContext": "The scaffold comment marks where the actual formalization would go. The eventual theorem statement would take the form: `theorem erdos_1217 (A : Set ℕ) (hA : upperLogLogDensity A > 0) : ∃ B ⊆ A, upperLogLogDensity B > 0 ∧ P B` where `upperLogLogDensity A = Filter.limsup (fun x => (Real.log (Real.log x))⁻¹ * ∑ n ∈ A ∩ Icc 1 ⌊x⌋, (n : ℝ)⁻¹) Filter.atTop` and $P$ is the recovered structural property from ESS66."
+      "id": "axiomatized-ess",
+      "title": "Axiomatized Erdős–Sárközy–Sós Theorem (1966)",
+      "startLine": 38,
+      "endLine": 49,
+      "significance": "key",
+      "summary": "axiom erdos_sarkozy_sos_1966: any positive-iterated-log-density strictly monotone sequence has a strictly monotone reindexing whose image keeps positive density and whose consecutive ratios a(f n)/a(f(n+1)) → 1.",
+      "mathContext": "The extracted subsequence satisfies $a_{f(n)}/a_{f(n+1)}\\to 1$, the 'converges in an appropriate sense' clause. Assumed as the file's single axiom."
     },
     {
-      "id": "placeholder-theorem",
-      "title": "Placeholder: Log-Log Density Subsequence Theorem",
-      "startLine": 20,
-      "endLine": 23,
-      "summary": "Placeholder `erdos_1217 : True := by sorry` and type-check `#check erdos_1217`. A Lean formalization would define upper log-log density via `Filter.limsup` of `(Real.log (Real.log x))⁻¹ * ∑_{aₙ ≤ x} aₙ⁻¹` and prove that positive density forces a structurally constrained (primitive / sum-free / Sidon) subsequence with the same property.",
-      "mathContext": "`erdos_1217 : True := trivial` — a placeholder with `True` as the statement. This is the standard Lean stub for a theorem whose statement is not yet formalized: `True` is trivially provable, making the file compile, while flagging that the mathematical content is missing. The actual theorem would be non-trivially proved via a greedy construction (primitive case: keep $a \\in A$ not divisible by any already-kept element; density argument shows the kept subset satisfies $\\sum_{b \\leq x} 1/b \\geq c \\cdot \\sum_{a \\leq x} 1/a$ for some fixed $c > 0$)."
+      "id": "main-theorem",
+      "title": "Main Theorem: Erdős #1217",
+      "startLine": 50,
+      "endLine": 59,
+      "significance": "key",
+      "summary": "theorem erdos_1217 restates the affirmative answer, extracting the positive-density subsequence from the axiom (dropping the ratio-convergence refinement)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1217 (solved via [ESS66]) concerns sequences A with positive upper log-log density—the limsup of (1/log log x) * ∑_{aₙ ≤ x} 1/aₙ being positive—and the existence of structurally constrained subsequences (primitive, sum-free, or Sidon) with the same density property. The problem statement is corrupted in the current source, preventing an exact reconstruction. The Lean formalization is a placeholder stub requiring analytic number theory infrastructure.",
+    "summary": "Erdős Problem #1217 (solved via [ESS66]) concerns sequences A with positive upper log-log density—the limsup of (1/log log x) * ∑_{aₙ ≤ x} 1/aₙ being positive—and the existence of structurally constrained subsequences (primitive, sum-free, or Sidon) with the same density property. The problem statement is corrupted in the current source, preventing an exact reconstruction. The Lean formalization defines the iterated-log density and the positive-density predicate, and encodes the Erdős–Sárközy–Sós resolution as a single axiom (erdos_sarkozy_sos_1966), from which the main theorem erdos_1217 is derived.",
     "implications": "Log-log density is the 'canonical' density scale for sets like the primes, semiprimes, and related multiplicatively structured sets. Results about density-preserving subsequence extraction are fundamental in additive combinatorics and connect to the Erdős-Turán conjecture on arithmetic progressions, the Sidon problem, and sieve theory. A Lean formalization of even the density definition (Filter.limsup of a Finset.sum over ℕ) would be a useful addition to Mathlib.",
     "openQuestions": [
       "What is the exact statement of Problem #1217? The source is corrupted; consulting erdosproblems.com directly or the original [ESS66] paper would clarify whether the problem is about primitive sets, Sidon sets, or another structural property.",
