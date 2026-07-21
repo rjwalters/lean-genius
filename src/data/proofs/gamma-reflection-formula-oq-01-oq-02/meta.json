@@ -133,22 +133,22 @@
       "id": "docstring",
       "title": "Module Docstring: 1/Γ, the Entire Dual of Γ",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 54,
       "summary": "Frames 1/Γ as the canonical entire completion of the meromorphic Γ: where Γ has simple poles (the non-positive integers), 1/Γ has its zeros, and nowhere else. States what Mathlib already provides as separate facts (differentiable_one_div_Gamma, Gamma_eq_zero_iff) and the new packaging: entire function + exact zero set + countability + isolated zeros.",
       "mathContext": "$1/\\Gamma(s) = s\\,e^{\\gamma s}\\prod_{n\\ge1}(1 + s/n)e^{-s/n}$ (Weierstrass), entire with zeros exactly at $\\{0,-1,-2,\\dots\\}$."
     },
     {
       "id": "entire",
       "title": "1/Γ is Entire",
-      "startLine": 60,
-      "endLine": 76,
+      "startLine": 56,
+      "endLine": 72,
       "summary": "differentiable_invGamma re-exports that s ↦ (Γ s)⁻¹ is differentiable on all of ℂ; analyticAt_invGamma and analyticOnNhd_invGamma promote this to analyticity at every point and on Set.univ via Differentiable.analyticAt — i.e. 1/Γ is an entire function.",
       "mathContext": "Holomorphic on $\\mathbb C$ $\\Rightarrow$ analytic on $\\mathbb C$. $1/\\Gamma$ has removable behavior across the poles of $\\Gamma$."
     },
     {
       "id": "zero-set",
       "title": "The Zero Set is Exactly the Non-Positive Integers",
-      "startLine": 78,
+      "startLine": 73,
       "endLine": 110,
       "summary": "invGamma_eq_zero_iff: (Γ z)⁻¹ = 0 ↔ ∃ n, z = -n (via inv_eq_zero and Gamma_eq_zero_iff). invGamma_ne_zero_iff is the dual. zeroSet_invGamma packages the set equality {z | (Γ z)⁻¹ = 0} = nonposInt; nonposInt_eq_range and countable_zeroSet show that set is the range of n ↦ -n, hence countable.",
       "mathContext": "$\\{z : (\\Gamma z)^{-1} = 0\\} = \\{0,-1,-2,\\dots\\}$, a countable set."

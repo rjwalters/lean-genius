@@ -106,7 +106,7 @@
       "id": "main-questions",
       "title": "The Two Main Conjectures",
       "startLine": 64,
-      "endLine": 72,
+      "endLine": 75,
       "summary": "Defines `ratio_conjecture` ($R(n+1)/R(n) \\geq 1 + c$ eventually) and `quadratic_difference_conjecture` ($R(n+1) - R(n) \\geq Cn^2$ eventually). Both are `Prop` values.",
       "mathContext": "Formal definition: Defines `ratio_conjecture` ($R(n+1)/R(n) \\geq 1 + c$ eventually) and `quadratic_difference_conjecture` ($R(n+1) - R(n) \\geq Cn^2$ eventually). Both are `Prop` values."
     },
@@ -122,7 +122,7 @@
       "id": "twostep",
       "title": "Two-Step Bound from Problem #165",
       "startLine": 91,
-      "endLine": 93,
+      "endLine": 96,
       "summary": "Axiomatizes $R(n+2) - R(n) \\geq Cn^2/f(n)$ where $f$ is subpolynomial. Derived from $R(3,k) \\sim k^2/\\log k$ asymptotics.",
       "mathContext": "Axiomatizes $R(n+2) - R(n) \\geq Cn^2/f(n)$ where $f$ is subpolynomial. Derived from $R(3,k) \\sim $k^{2}$/\\log k$ asymptotics."
     },
