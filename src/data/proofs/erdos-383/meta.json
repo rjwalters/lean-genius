@@ -84,75 +84,75 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: k-Good Primes and Erdős #383",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Header docstring and imports. A prime `p` is *k-good* if `p` is the largest prime factor of $\\prod_{i=0}^{k}(p^2+i)$; Erdős #383 asks whether infinitely many k-good primes exist for every `k`. Adapted from the formal-conjectures project.",
+      "mathContext": "The `k = 1` case implies Erdős #382 (all prime factors of $p^2+1$ are $\\leq p$). The file opens `Finset`, `Nat`, and the `Erdos383` namespace."
+    },
+    {
       "id": "prime-factors",
       "title": "Prime Factor Definitions",
       "summary": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p.",
-      "startLine": 34,
-      "endLine": 52,
+      "startLine": 44,
+      "endLine": 99,
       "mathContext": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p."
     },
     {
       "id": "product",
       "title": "The Product Definition",
       "summary": "Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1).",
-      "startLine": 53,
-      "endLine": 81,
+      "startLine": 100,
+      "endLine": 123,
       "mathContext": "Formal definition: Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1)."
     },
     {
       "id": "kgood",
       "title": "k-Good Primes",
       "summary": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p².",
-      "startLine": 82,
-      "endLine": 104,
+      "startLine": 124,
+      "endLine": 160,
       "mathContext": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p²."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
-      "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence.",
-      "startLine": 105,
-      "endLine": 121,
-      "mathContext": "Axiomatized: States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence."
+      "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using `maxPrimeFac` directly, and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom).",
+      "startLine": 161,
+      "endLine": 196,
+      "mathContext": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using `maxPrimeFac` directly, and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom)."
     },
     {
       "id": "partial",
       "title": "Partial Results",
       "summary": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density.",
-      "startLine": 122,
-      "endLine": 138,
+      "startLine": 197,
+      "endLine": 207,
       "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density."
     },
     {
       "id": "problem382",
       "title": "Relation to Problem #382",
       "summary": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382.",
-      "startLine": 139,
-      "endLine": 151,
+      "startLine": 208,
+      "endLine": 235,
       "mathContext": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382."
     },
     {
       "id": "smooth",
       "title": "Smooth Numbers",
-      "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u).",
-      "startLine": 152,
-      "endLine": 175,
-      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u)."
-    },
-    {
-      "id": "heuristic",
-      "title": "Heuristic Argument",
-      "summary": "Dickman ρ(2) ≈ 0.307 supports positive answer",
-      "startLine": 176,
-      "endLine": 190,
-      "mathContext": "Mathematical content: Dickman ρ(2) ≈ 0.307 supports positive answer"
+      "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307), which motivates a positive answer to the conjecture, is discussed in source comments only — no Dickman asymptotic is asserted as a Lean axiom.",
+      "startLine": 236,
+      "endLine": 281,
+      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307), which motivates a positive answer to the conjecture, is discussed in source comments only — no Dickman asymptotic is asserted as a Lean axiom."
     },
     {
       "id": "summary",
       "title": "Summary and Formal Statement",
       "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
-      "startLine": 191,
-      "endLine": 244,
+      "startLine": 282,
+      "endLine": 292,
       "mathContext": "Mathematical content: Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
     }
   ],
