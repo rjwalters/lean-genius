@@ -92,46 +92,46 @@
       "id": "module-header",
       "title": "Module Header and Scope",
       "startLine": 1,
-      "endLine": 56,
+      "endLine": 52,
       "mathContext": "Erdős #100 restricted-distance form in ℝ³: a scalene integer tetrahedron",
       "summary": "Frames the follow-up: the parent's Heronian tetrahedron repeats distance 7 and so fails the distinct-distance hypothesis. States the explicit scalene replacement with six consecutive-integer edges and the honest scope (the parent diameter conjecture stays open)."
     },
     {
       "id": "vertices",
       "title": "The Four Vertices",
-      "startLine": 58,
-      "endLine": 64,
+      "startLine": 53,
+      "endLine": 60,
       "mathContext": "$P_0=(0,0,0),\\ P_1=(0,0,6),\\ P_2=(0,8,6),\\ P_3=(6,2,9)$",
       "summary": "Defines the four integer-coordinate vertices as EuclideanSpace ℝ (Fin 3) literals !₂[·,·,·]."
     },
     {
       "id": "distances",
       "title": "The Six Pairwise Distances Are Consecutive Integers",
-      "startLine": 66,
-      "endLine": 118,
+      "startLine": 61,
+      "endLine": 110,
       "mathContext": "$|P_0P_1|{=}6,\\ |P_1P_2|{=}8,\\ |P_2P_3|{=}9,\\ |P_0P_2|{=}10,\\ |P_0P_3|{=}11,\\ |P_1P_3|{=}7$",
       "summary": "Each distance is computed via EuclideanSpace.dist_eq + Fin.sum_univ_three, reducing to √(perfect square) closed by Real.sqrt_sq. all_distances_integer bundles all six values {6,7,8,9,10,11}."
     },
     {
       "id": "distinct-distances",
       "title": "The Six Distances Are Pairwise Distinct",
-      "startLine": 120,
-      "endLine": 145,
+      "startLine": 111,
+      "endLine": 137,
       "mathContext": "all six pairwise distances differ; $\\{6,7,8,9,10,11\\}$",
       "summary": "distances_pairwise_distinct discharges the fifteen inequalities by norm_num after rewriting to numeric values; distance_set_eq identifies the distance set with the six consecutive integers. This is the property the parent example lacks (its 7 repeats)."
     },
     {
       "id": "vertices-distinct",
       "title": "The Vertices Are Pairwise Distinct",
-      "startLine": 147,
-      "endLine": 160,
+      "startLine": 138,
+      "endLine": 152,
       "mathContext": "$P_i \\ne P_j$ for all $i \\ne j$",
       "summary": "vertices_distinct: equality of two vertices would force their distance to 0, contradicting the positive integer values."
     },
     {
       "id": "nondegeneracy",
       "title": "Non-Degeneracy: the Simplex Spans 3 Dimensions",
-      "startLine": 162,
+      "startLine": 153,
       "endLine": 181,
       "mathContext": "$\\det\\begin{pmatrix}0&0&6\\\\0&8&6\\\\6&2&9\\end{pmatrix} = -288 \\ne 0$",
       "summary": "edgeMatrix is the 3×3 matrix of edge vectors; edgeMatrix_det computes det = −288 (Matrix.det_fin_three + norm_num); edges_linearIndependent applies Matrix.linearIndependent_rows_of_det_ne_zero, certifying the four points are not coplanar (genuinely 3-dimensional)."
