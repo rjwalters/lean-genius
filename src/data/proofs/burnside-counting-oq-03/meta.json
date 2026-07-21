@@ -113,6 +113,14 @@
       "mathContext": "$\\#\\text{necklaces}(4,2) = 24/4 = 6$. General: $n \\cdot \\#\\text{necklaces}(n,k) = \\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$."
     },
     {
+      "id": "sec-general-necklace-formulas",
+      "title": "§7 (cont.): General Necklace Formulas from Burnside",
+      "startLine": 403,
+      "endLine": 440,
+      "summary": "The general divisor-sum and self-contained necklace formulas for arbitrary n, k. polya_necklace_divisor_formula combines the statement-level formula with polya_sum_identity to give n · necklace_count = Σ_{d|n} φ(n/d) · k^d, generalizing the n=4,k=2 instance. polya_necklace_formula_of_burnside and polya_necklace_divisor_formula_of_burnside then discharge the fixed-point hypothesis internally (via this file's fully general polya_cyclic_fixed_count), so the sum-of-gcd-powers form and the divisor-sum form each follow from Burnside's lemma ALONE — the counting hypothesis is the only remaining input.",
+      "mathContext": "From $n\\cdot\\#\\text{necklaces} = \\sum_{r<n} k^{\\gcd(r,n)}$ (statement form) and the reindexing $\\sum_{r<n} k^{\\gcd(r,n)} = \\sum_{d\\mid n}\\varphi(n/d)k^d$, one gets $n\\cdot\\#\\text{necklaces}(n,k) = \\sum_{d\\mid n}\\varphi(n/d)\\,k^d$. Because $|\\mathrm{Fix}(r)| = k^{\\gcd(r,n)}$ is proved here for all $n,k$, the fixed-point premise is automatic and Burnside's orbit-count identity is the sole hypothesis."
+    },
+    {
       "id": "sec-fixedpoint-corollaries",
       "title": "§8: General Fixed-Point Corollaries (kernel-checked)",
       "startLine": 441,

@@ -139,42 +139,42 @@
     {
       "id": "l2-analysis",
       "title": "$L^2$ Analysis and Maximum-to-$L^2$ Gap",
-      "startLine": 148,
-      "endLine": 164,
-      "summary": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms.",
-      "mathContext": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms."
+      "startLine": 143,
+      "endLine": 154,
+      "summary": "Defines `L2Norm` (root-mean-square of $|f|$ over the unit circle, via a circle integral of $\\|f(e^{i\\theta})\\|^2$) and `kahaneConnection` (random $\\pm 1$ polynomials as a special case of Kahane's random Fourier series). Source comments record $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and that the maximum modulus exceeds the $L^2$ norm by a $\\sqrt{\\log n}$ factor.",
+      "mathContext": "$\\|f\\|_2^2 = \\frac{1}{2\\pi}\\int_0^{2\\pi} |f(e^{i\\theta})|^2\\, d\\theta = \\sum_k |\\varepsilon_k|^2 = n+1$ (Parseval, since $|\\varepsilon_k| = 1$), whereas $\\max_{|z|=1}|f(z)| \\asymp \\sqrt{n \\log n}$; the ratio is the $\\sqrt{\\log n}$ gap between the $L^2$ and $L^\\infty$ norms."
     },
     {
       "id": "littlewood",
       "title": "Littlewood Polynomials",
-      "startLine": 170,
-      "endLine": 183,
-      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and documents in source comments `typical_littlewood` (no Lean declaration exists) (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$).",
-      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and documents in source comments `typical_littlewood` (no Lean declaration exists) (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
+      "startLine": 159,
+      "endLine": 171,
+      "summary": "Defines `IsLittlewood` (polynomials whose coefficients are all $\\pm 1$) and `LittlewoodProblem` (the deterministic extremal question: minimize $\\max_{|z|=1}|p(z)|$ over Littlewood polynomials, a flatness problem). A source comment records that most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$, so the random model captures typical deterministic behavior.",
+      "mathContext": "$p$ is Littlewood iff $p_k \\in \\{+1,-1\\}$ for all $k \\le n$. The random $\\pm 1$ ensemble is the uniform measure on the $2^{n+1}$ Littlewood polynomials, so almost-sure statements about $M_n$ describe the typical (majority) deterministic Littlewood polynomial."
     },
     {
       "id": "bounds",
       "title": "Upper and Lower Bounds",
-      "startLine": 189,
-      "endLine": 203,
-      "summary": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: chaining for upper, second moment for lower.",
-      "mathContext": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.)."
+      "startLine": 176,
+      "endLine": 186,
+      "summary": "Records the matching high-probability bounds $\\max \\le (1+\\varepsilon)\\sqrt{n \\log n}$ and $\\max \\ge (1-\\varepsilon)\\sqrt{n \\log n}$ as source comments, and defines `halaszProofSketch` naming the two techniques Halász combined: a chaining / covering-number argument for the upper bound and a second-moment / correlation analysis for the lower bound.",
+      "mathContext": "$\\mathbb{P}\\big(M_n \\le (1+\\varepsilon)\\sqrt{n \\log n}\\big) \\to 1$ and $\\mathbb{P}\\big(M_n \\ge (1-\\varepsilon)\\sqrt{n \\log n}\\big) \\to 1$ as $n \\to \\infty$; together they pin $M_n/\\sqrt{n \\log n} \\to 1$ in probability, and Halász upgraded this to almost-sure convergence."
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "startLine": 210,
-      "endLine": 222,
-      "summary": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link).",
-      "mathContext": "Formal definition: Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
+      "startLine": 192,
+      "endLine": 205,
+      "summary": "Defines `RudinConjecture` (the minimum of $\\max_{|z|=1}|p(z)|$ over Littlewood polynomials, conjecturally $\\Theta(\\sqrt{n})$ — the opposite extreme from the typical $\\sqrt{n\\log n}$), `mahlerMeasure` (exponential of the log-average of $|f|$ on the circle), and `szegoConnection` (Mahler measure as the geometric mean on the circle, linking to Szegő's theorem).",
+      "mathContext": "Rudin's flatness question asks for $\\min_p \\max_{|z|=1}|p(z)|$ over Littlewood $p$; the Mahler measure $M(f) = \\exp\\!\\big(\\frac{1}{2\\pi}\\int_0^{2\\pi} \\log|f(e^{i\\theta})|\\, d\\theta\\big)$ is the geometric mean on the circle, so $\\log M(f)$ is the Szegő/entropy functional bounded above by $\\log \\|f\\|_2$."
     },
     {
       "id": "summary",
       "title": "Summary: SOLVED",
-      "startLine": 238,
+      "startLine": 211,
       "endLine": 238,
-      "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**",
-      "mathContext": "Verified: Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
+      "summary": "Four concluding theorems: `erdos_523` (the question resolved via `erdos_523_answer`), `erdos_523_constant` (the constant is exactly $C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: completely solved by Halász (1973).**",
+      "mathContext": "The formalized answer: $\\max_{|z|=1}|f(z)| = (1 + o(1))\\sqrt{n \\log n}$ almost surely, i.e. the Erdős constant is $C = 1$. `erdos_523_constant` packages the existential witness $C = 1 \\land \\text{ErdosQuestion523}$, and `erdos_523_solved` closes the file."
     }
   ],
   "conclusion": {
