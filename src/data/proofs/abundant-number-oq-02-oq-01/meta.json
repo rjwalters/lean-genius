@@ -69,41 +69,41 @@
       "id": "sec-abn0201-header",
       "title": "Header: Problem, Witness, and Method",
       "startLine": 1,
-      "endLine": 46,
+      "endLine": 58,
       "summary": "Module docstring stating that the smallest odd abundant number coprime to 3 is 5391411025 = 5²·7·11·13·17·19·23·29, contrasting with the smallest odd abundant 945 = 3³·5·7. Explains the razor-thin abundance margin (σ(N)/N ≈ 2.00306), that this file proves only the witness/membership half, and why divisor enumeration over the ≈5.4·10⁹ range is hopeless — motivating the multiplicative method."
     },
     {
       "id": "sec-abn0201-setup",
       "title": "Imports, Namespace, and the Witness",
-      "startLine": 47,
-      "endLine": 55,
+      "startLine": 59,
+      "endLine": 68,
       "summary": "Imports Mathlib, opens Nat and ArithmeticFunction (with the σ notation), and defines the witness N = 5391411025 as a definitionally transparent abbrev so norm_num/decide can unfold it."
     },
     {
       "id": "sec-abn0201-atoms",
       "title": "The Eight σ-Atoms",
-      "startLine": 57,
-      "endLine": 66,
+      "startLine": 69,
+      "endLine": 78,
       "summary": "Eight one-line lemmas computing σ₁ of each prime-power factor — σ(25)=31, σ(7)=8, σ(11)=12, σ(13)=14, σ(17)=18, σ(19)=20, σ(23)=24, σ(29)=30 — each via sigma_one_apply then kernel decide. These are the building blocks of the multiplicative assembly."
     },
     {
       "id": "sec-abn0201-sigma-N",
       "title": "Multiplicative Computation of σ(N)",
-      "startLine": 68,
-      "endLine": 83,
+      "startLine": 79,
+      "endLine": 95,
       "summary": "sigma_N computes σ(5391411025) = 10799308800 without enumerating divisors: norm_num renests N as a product of coprime factors, seven applications of isMultiplicative_sigma.map_mul_of_coprime peel them off (coprimality via norm_num on Nat.gcd, avoiding decide), and the eight atoms plus a final norm_num finish. No native_decide, so no Lean.ofReduceBool."
     },
     {
       "id": "sec-abn0201-abundant",
       "title": "Abundance of the Witness",
-      "startLine": 85,
-      "endLine": 94,
+      "startLine": 96,
+      "endLine": 108,
       "summary": "abundant_iff_two_mul_lt_sigma restates Nat.Abundant n as 2n < σ₁(n) via sum_divisors_eq_sum_properDivisors_add_self and omega; abundant_N then reduces to 2·5391411025 = 10782822050 < 10799308800 = σ(N), closed by norm_num (margin 16486750)."
     },
     {
       "id": "sec-abn0201-membership",
       "title": "Oddness, Coprimality, and the Membership Certificate",
-      "startLine": 96,
+      "startLine": 109,
       "endLine": 127,
       "summary": "odd_N and not_three_dvd_N (kernel decide on modular reductions) establish the remaining two conditions; mem_odd_three_free_abundant bundles all three via the anonymous constructor to certify N as an upper bound for the least such number. A closing #print axioms audits that only propext / Classical.choice / Quot.sound appear — no Lean.ofReduceBool or sorryAx."
     }
