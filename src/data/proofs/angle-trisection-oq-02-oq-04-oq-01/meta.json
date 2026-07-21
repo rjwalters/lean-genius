@@ -103,66 +103,73 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Mathlib field-theory / p-group imports plus the parent AngleTrisectionOQ02OQ04 and Sqrt2Minpoly modules, and the module docstring stating the open question: whether the Tower ↔ Galois-2-group equivalence can be built from Mathlib's Galois correspondence."
+    },
+    {
       "id": "part1-tower-def",
       "title": "Part 1: Proper Quadratic Tower Definition",
-      "startLine": 42,
-      "endLine": 76,
+      "startLine": 46,
+      "endLine": 85,
       "summary": "The inductive QuadraticTower (base + index-2 step) and ConstructibleViaTower predicate — the mathematically correct replacement for the old TowerCriterion alias."
     },
     {
       "id": "part2-tower-degree",
       "title": "Part 2: Tower → Degree 2^n (Proved)",
-      "startLine": 77,
-      "endLine": 109,
+      "startLine": 86,
+      "endLine": 154,
       "summary": "quadratic_tower_degree: a height-n quadratic tower has degree 2^n over the base, proved via Module.finrank_mul_finrank; tower_satisfies_degree."
     },
     {
       "id": "part3-two-group-lemmas",
       "title": "Part 3: 2-Group Structure Lemmas (Proved)",
-      "startLine": 110,
-      "endLine": 163,
+      "startLine": 155,
+      "endLine": 212,
       "summary": "2-group structure: two_group_card_pow_two, two_group_order_one, subgroup/solvable lemmas, and exists_index_two_subgroup (via Sylow.exists_subgroup_card_pow_prime)."
     },
     {
       "id": "part4-galois-connection",
       "title": "Part 4: The Galois Correspondence Connection",
-      "startLine": 164,
-      "endLine": 197,
+      "startLine": 213,
+      "endLine": 246,
       "summary": "galois_two_group_implies_tower: the Galois-2-group → quadratic-tower direction (sorry-deferred, ~500 lines of correspondence glue)."
     },
     {
       "id": "part5-tower-to-galois",
       "title": "Part 5: Tower → Galois 2-Group Direction",
-      "startLine": 198,
-      "endLine": 218,
+      "startLine": 247,
+      "endLine": 267,
       "summary": "tower_implies_galois_two_group: a quadratic tower forces the minimal polynomial's Galois group to be a 2-group (sorry-deferred, splitting-field degree argument)."
     },
     {
       "id": "part6-full-equivalence",
       "title": "Part 6: The Full Equivalence",
-      "startLine": 219,
-      "endLine": 235,
+      "startLine": 268,
+      "endLine": 284,
       "summary": "tower_iff_galois_two_group: the central equivalence ConstructibleViaTower α ↔ Gal(minpoly ℚ α) is a 2-group, combining the two directions."
     },
     {
       "id": "part7-feasibility",
       "title": "Part 7: Feasibility Assessment",
-      "startLine": 236,
-      "endLine": 282,
+      "startLine": 285,
+      "endLine": 331,
       "summary": "Gap analysis for a full Mathlib proof: available infrastructure (IsPGroup, Polynomial.Gal, Galois correspondence) vs missing API glue (~500-800 lines), concluding the equivalence is provable."
     },
     {
       "id": "part8-sqrt2-example",
       "title": "Part 8: Concrete Example — Quadratic Tower for √2",
-      "startLine": 283,
-      "endLine": 323,
+      "startLine": 332,
+      "endLine": 367,
       "summary": "sqrt2_constructible_tower: ℚ⟮√2⟯ is a height-1 quadratic tower containing √2 (via adjoin_sqrt_two_finrank + the finrank tower formula), and gal_x2_minus_2_is_two_group."
     },
     {
       "id": "part9-summary",
       "title": "Part 9: Summary of What's Proved vs Axiomatized",
-      "startLine": 324,
-      "endLine": 364,
+      "startLine": 368,
+      "endLine": 428,
       "summary": "Recap: 9 proved results (tower degree, index-2 subgroup, full equivalence skeleton, √2 witness), the 2 sorry-deferred correspondence directions, and #check exports."
     }
   ],
