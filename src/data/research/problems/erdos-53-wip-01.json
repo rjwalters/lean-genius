@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 2,
-    "focus": "Batch 2 axiom-free lemmas landed (Section 8): k=1 base case (erdosProblem53_exponent_one), distinct-prime richness |subsetProducts A|=2^|A|-1, trivial upper bracket 2^(|A|+1). Theorem count 12->24, 0 axioms, host-verified.",
+    "iteration": 3,
+    "focus": "Session: general poly-vs-exp domination exists_pow_le_two_pow (∀k ∃N, n≥N→n^k≤2^n, via isLittleO_pow_const_const_pow_of_one_lt) generalising sq_le_two_pow(k=2); + erdosProblem53_prime_exponent_eventually (Problem-53 on primes for arbitrary exponent k). 2 axiom-free theorems, theoremCount 7→9, host-verified.",
     "blockers": [],
-    "nextAction": "Additive/multiplicative sides now both shown sharp. Optional: an explicit superincreasing witness (e.g. {1,2,4,…}) instantiating subsetSums_card_of_superincreasing; small decide computations of |sumsOrProducts A|. Chang theorem + Erdős–Szemerédi upper bound stay documented (out of Mathlib scope).",
+    "nextAction": "Chang's theorem (|A|^k for arbitrary large A, not just primes) remains documented not axiomatized — needs Freiman/Plünnecke additive-combinatorics machinery absent from the file. Prime family fully handled for all k.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -72,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6,
   "nextAction": "Optional extensions: (a) general polynomial-vs-exponential domination ∀k ∃N ∀n≥N, n^k ≤ 2^n (needs induction/analysis) to lift the prime-set connection to every k; (b) an additive richness lower bound for prime sets on the SUM side (subset sums of primes are not generally injective — quantify collisions). Chang’s theorem for arbitrary large sets remains the deep open crux and should stay axiom-documented, not axiomatized."

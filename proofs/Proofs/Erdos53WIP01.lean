@@ -1,4 +1,5 @@
 import Proofs.Erdos53Problem
+import Mathlib.Analysis.SpecificLimits.Normed
 
 /-
 # Erdős Problem 53 — WIP-01: exponential richness of prime sets (axiom-free)
@@ -135,5 +136,36 @@ theorem erdosProblem53_prime_exponent_two {A : Finset ℤ}
     (hA : ∀ p ∈ A, Prime p) (hpos : ∀ p ∈ A, 0 < p) (hbig : 4 ≤ A.card) :
     A.card ^ 2 ≤ (sumsOrProducts A).card :=
   erdosProblem53_prime_of_dominates hA hpos (sq_le_two_pow A.card hbig)
+
+
+open Asymptotics Filter in
+/-- **General polynomial-vs-exponential domination.** For every exponent `k` there is a
+    threshold `N` beyond which `n^k ≤ 2^n`. Generalises the explicit `sq_le_two_pow`
+    (`k = 2`, threshold `4`) to all `k`, via `n^k =o[atTop] 2^n`
+    (`isLittleO_pow_const_const_pow_of_one_lt`) cast back to `ℕ`. -/
+theorem exists_pow_le_two_pow (k : ℕ) : ∃ N, ∀ n : ℕ, N ≤ n → n ^ k ≤ 2 ^ n := by
+  have h : (fun n : ℕ => (n : ℝ) ^ k) =o[atTop] fun n => (2 : ℝ) ^ n :=
+    isLittleO_pow_const_const_pow_of_one_lt k (by norm_num)
+  have hev := h.eventuallyLE
+  rw [eventually_atTop] at hev
+  obtain ⟨N, hN⟩ := hev
+  refine ⟨N, fun n hn => ?_⟩
+  have hb := hN n hn
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (by positivity), abs_of_nonneg (by positivity)] at hb
+  exact_mod_cast hb
+
+/-- **Problem 53 on prime sets, arbitrary exponent `k` (eventual form).** For each `k`
+    there is a threshold `N` such that every set of distinct positive primes with
+    `|A| ≥ N` realises at least `|A|^k` representable integers. Generalises
+    `erdosProblem53_prime_exponent_two` from `k = 2` to all `k`, so the prime family
+    unconditionally exhibits arbitrary polynomial growth of `|sumsOrProducts A|`. -/
+theorem erdosProblem53_prime_exponent_eventually (k : ℕ) :
+    ∃ N, ∀ (A : Finset ℤ), (∀ p ∈ A, Prime p) → (∀ p ∈ A, 0 < p) → N ≤ A.card →
+      A.card ^ k ≤ (sumsOrProducts A).card := by
+  obtain ⟨N, hN⟩ := exists_pow_le_two_pow k
+  exact ⟨N, fun A hA hpos hbig =>
+    erdosProblem53_prime_of_dominates hA hpos (hN _ hbig)⟩
+
 
 end Erdos53
