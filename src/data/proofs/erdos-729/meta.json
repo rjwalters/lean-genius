@@ -71,82 +71,89 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Header docstring: Erdős Problem #729 (factorial divisibility modulo small primes), source link, and the resolution — the small-prime relaxation does not break the classical $a+b \\leq n + O(\\log n)$ bound."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 31,
-      "endLine": 64,
+      "startLine": 32,
+      "endLine": 65,
       "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, proves `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$.",
       "mathContext": "Formal definition: Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, proves `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
       "title": "Erdős's Classical Result (1968)",
-      "startLine": 65,
-      "endLine": 82,
+      "startLine": 66,
+      "endLine": 94,
       "summary": "Proves the classical Erdős 1968 bound axiom-free (`Erdos729DigitSum.erdos_1968_uniform`): $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom-free 2-adic bound, documenting that the original proof uses only the $p = 2$ constraint.",
       "mathContext": "Proves the classical Erdős 1968 bound axiom-free (`Erdos729DigitSum.erdos_1968_uniform`): $a!b! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom-free 2-adic bound, documenting that the original proof uses only the $p = 2$ constraint."
     },
     {
       "id": "relaxed-condition",
       "title": "The Relaxed Condition",
-      "startLine": 83,
-      "endLine": 102,
+      "startLine": 95,
+      "endLine": 114,
       "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'.",
       "mathContext": "Formal definition: Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
     },
     {
       "id": "question",
       "title": "The Question",
-      "startLine": 103,
-      "endLine": 115,
+      "startLine": 115,
+      "endLine": 127,
       "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729.",
       "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\$\\log n$$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
       "title": "Barreto-Leeham Resolution",
-      "startLine": 116,
-      "endLine": 131,
+      "startLine": 128,
+      "endLine": 162,
       "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$.",
       "mathContext": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$."
     },
     {
       "id": "proof-strategy",
       "title": "Proof Strategy",
-      "startLine": 132,
-      "endLine": 140,
+      "startLine": 163,
+      "endLine": 173,
       "summary": "Prose discussion of the proof strategy: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition. No axiom declaration in this range — description only.",
       "mathContext": "Prose description of proof strategy for relaxed divisibility. No axiom declaration in this range."
     },
     {
       "id": "legendre-details",
       "title": "Legendre's Formula Details",
-      "startLine": 147,
-      "endLine": 178,
+      "startLine": 174,
+      "endLine": 208,
       "summary": "Defines `digitSum p n` recursively, proves `digitSum_eq_digits_sum` (it agrees with Mathlib's `(Nat.digits p n).sum`), and proves `legendre_for_two` ($v_2(n!) = n - s_2(n)$) outright from Mathlib's Legendre theorem `sub_one_mul_padicValNat_factorial`. No axiom is used.",
       "mathContext": "Formal definition: Defines `digitSum p n` recursively. The helper `digitSum_eq_digits_sum` bridges it to Mathlib's base-$p$ digit sum `(Nat.digits p n).sum` by strong induction. `legendre_for_two` ($v_2(n!) = n - s_2(n)$) then follows directly from `sub_one_mul_padicValNat_factorial`, since $p - 1 = 1$ for $p = 2$."
     },
     {
       "id": "implications",
       "title": "Implications and Rigidity",
-      "startLine": 163,
-      "endLine": 184,
+      "startLine": 209,
+      "endLine": 230,
       "summary": "Proves `binomial_rigidity`: when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer (proved via `Nat.choose_mul_factorial_mul_factorial`). Prose docstring notes the rigidity of factorial structure.",
       "mathContext": "Verified: proves `binomial_rigidity` via Nat.choose_mul_factorial_mul_factorial."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "startLine": 185,
-      "endLine": 199,
+      "startLine": 231,
+      "endLine": 252,
       "summary": "Proves `erdos_729_statement`: combines the axiom-free classical bound (`Erdos729DigitSum.erdos_1968_uniform`) and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness.",
       "mathContext": "Verified: Proves `erdos_729_statement`: combines the axiom-free classical bound (`Erdos729DigitSum.erdos_1968_uniform`) and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 200,
-      "endLine": 217,
+      "startLine": 253,
+      "endLine": 271,
       "summary": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`.",
       "mathContext": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\$\\log n$$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
     }
