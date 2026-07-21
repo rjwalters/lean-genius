@@ -107,6 +107,22 @@
       "startLine": 94,
       "endLine": 110,
       "summary": "The simplest open case C_5 and proof it follows from the full conjecture."
+    },
+    {
+      "id": "chromatic-relation",
+      "title": "Part VI: Relation to Graph Chromatic Number",
+      "startLine": 111,
+      "endLine": 125,
+      "summary": "`erdos_question_chromatic_3`: records the connection between the Ramsey ratio and chromatic-number questions, phrasing the k = 3 instance as a Prop that ties odd-cycle Ramsey growth to colorability constraints.",
+      "mathContext": "The ratio $R(C_{2n+1};k)/R(K_3;k)$ is linked to how chromatic thresholds grow with the number of colors $k$; `erdos_question_chromatic_3` states this for the $k = 3$ case."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 126,
+      "endLine": 128,
+      "summary": "Closing summary of the formalization: the conjecture, the verified classical 2-color results, and the open asymptotic ratio question.",
+      "mathContext": "Recap: $R(C_{2n+1};k)/R(K_3;k) \\to 0$ is conjectured; only classical 2-color values are proved, the limit remains open."
     }
   ],
   "conclusion": {
