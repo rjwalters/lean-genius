@@ -105,9 +105,16 @@
     {
       "id": "tighter-interval-2",
       "title": "Part VII: Second Tightening (87/64, 351/256) and 4/3 Exclusion",
-      "summary": "Terms n=7..10 computed exactly. partial_sum_11 = 87/64. Tail splitting at n=11 gives upper bound < 351/256. totientPowerSum_ne_four_thirds proved since 87/64 > 4/3.",
+      "summary": "Terms n=7..10 computed exactly. partial_sum_11 = 87/64. Tail splitting at n=11 gives upper bound < 351/256. `totientPowerSum_ne_four_thirds` proved since 87/64 > 4/3 (261/192 vs 256/192).",
       "startLine": 205,
-      "endLine": 303
+      "endLine": 311
+    },
+    {
+      "id": "summary",
+      "title": "§ Summary: The Interval (87/64, 351/256)",
+      "summary": "Collects the tight bounds $87/64 < \\sum \\varphi(n)/2^n < 351/256$ (value $\\approx 1.368$, width $3/256 \\approx 0.012$): the sum is not an integer, half-integer, quarter-integer, nor $4/3$. Status: OPEN — irrationality of the value remains unknown despite the narrow pinning.",
+      "startLine": 312,
+      "endLine": 334
     }
   ],
   "conclusion": {

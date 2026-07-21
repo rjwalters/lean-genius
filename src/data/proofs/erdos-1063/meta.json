@@ -116,12 +116,20 @@
       "mathContext": "Monier: $n_k \\leq k!$; Cambie: $n_k \\leq k \\cdot \\text{lcm}(2,\\ldots,k-1) \\leq e^{(1+o(1))k}$; open: $\\exists C,\\, n_k \\leq k^C$?"
     },
     {
+      "id": "unified-existence",
+      "title": "Problem Statement & Unified Existence",
+      "startLine": 133,
+      "endLine": 163,
+      "summary": "`ErdosProblem1063` proposition (the formal open statement) and Part V.5 `threshold_exists`: for every $k \\geq 2$ a threshold $n_k$ exists — bare existence with no size bound, via `monier_factorial_bound` for $k \\geq 3$ and `threshold_k2` for $k = 2$",
+      "mathContext": "`ErdosProblem1063` proposition (the formal open statement) and Part V.5 `threshold_exists`: for every $k \\geq 2$ a threshold $n_k$ exists — bare existence with no size bound, via `monier_factorial_bound` for $k \\geq 3$ and `threshold_k2` for $k = 2$"
+    },
+    {
       "id": "summary",
       "title": "Summary",
-      "startLine": 133,
-      "endLine": 159,
-      "summary": "`erdos_1063_summary`: combines Erdős-Selfridge nondivisibility with Monier bound via `exact ⟨..., ...⟩`",
-      "mathContext": "`erdos_1063_summary`: combines Erdős-Selfridge nondivisibility with Monier bound via `exact ⟨..., ...⟩`"
+      "startLine": 164,
+      "endLine": 191,
+      "summary": "`erdos_1063_summary`: bundles the Erdős–Selfridge non-divisibility ($\\forall k \\geq 2,\\, n \\geq 2k : \\text{divisibilityCount}(n,k) < k$) with Monier's factorial bound ($n_k \\leq k!$) via `exact ⟨..., ...⟩`; the growth rate — polynomial versus exponential — remains OPEN",
+      "mathContext": "`erdos_1063_summary`: bundles the Erdős–Selfridge non-divisibility ($\\forall k \\geq 2,\\, n \\geq 2k : \\text{divisibilityCount}(n,k) < k$) with Monier's factorial bound ($n_k \\leq k!$) via `exact ⟨..., ...⟩`; the growth rate — polynomial versus exponential — remains OPEN"
     }
   ],
   "conclusion": {
