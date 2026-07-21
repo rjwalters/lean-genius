@@ -47,7 +47,7 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 28,
+      "startLine": 25,
       "endLine": 53,
       "summary": "Defines the upper-half residue predicate $n \\bmod p > p/2$ (with decidable instance), and three weighted sums: $U(n)$, $L(n)$, $M(n) = \\sum_{p \\le n} 1/p$ satisfying $U + L = M$.",
       "mathContext": "Formal definition: Defines the upper-half residue predicate $n \\bmod p > p/2$ (with decidable instance), and three weighted sums: $U(n)$, $L(n)$, $M(n) = \\sum_{p \\le n} 1/p$ satisfying $U + L = M$."
@@ -55,15 +55,15 @@
     {
       "id": "mertens-conjecture",
       "title": "Mertens' Theorem and EGRS Conjecture",
-      "startLine": 59,
-      "endLine": 69,
+      "startLine": 55,
+      "endLine": 67,
       "summary": "States Mertens' theorem $M(n) \\sim \\log\\log n$ and the EGRS conjecture $U(n) \\sim (\\log\\log n)/2$. Both are formalized as $\\varepsilon$-$N$ asymptotic statements.",
       "mathContext": "States Mertens' theorem $M(n) \\sim \\log\\$\\log n$$ and the EGRS conjecture $U(n) \\sim (\\log\\$\\log n$)/2$. Both are formalized as $\\varepsilon$-$N$ asymptotic statements."
     },
     {
       "id": "residue-properties",
       "title": "Basic Residue Properties",
-      "startLine": 74,
+      "startLine": 68,
       "endLine": 109,
       "summary": "Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, that odd primes have exactly $(p-1)/2$ upper-half residues, and that $p=2$ has none.",
       "mathContext": "Verified: Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, that odd primes have exactly $(p-1)/2$ upper-half residues, and that $p=2$ has none."
@@ -96,9 +96,17 @@
       "id": "monotonicity",
       "title": "Monotonicity and Growth",
       "startLine": 291,
-      "endLine": 311,
+      "endLine": 312,
       "summary": "Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$).",
       "mathContext": "Verified: Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$)."
+    },
+    {
+      "id": "problem-status",
+      "title": "Problem Status",
+      "startLine": 314,
+      "endLine": 319,
+      "summary": "erdos_726_status: a string marker recording that Erdős Problem #726 (the EGRS conjecture) remains OPEN.",
+      "mathContext": "The Erdős–Graham–Ruzsa–Straus conjecture is still open; only the structural corollaries above are proved, the two asymptotic statements remaining axioms."
     }
   ],
   "overview": {
