@@ -46,7 +46,7 @@
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure",
       "startLine": 26,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$.",
       "mathContext": "Formal definition: Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
     },
@@ -62,7 +62,7 @@
       "id": "graph-predicates",
       "title": "Tree and Complete Graph Predicates",
       "startLine": 52,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis.",
       "mathContext": "Formal definition: Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
     },
