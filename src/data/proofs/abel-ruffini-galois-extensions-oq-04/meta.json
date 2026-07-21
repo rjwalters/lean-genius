@@ -199,8 +199,8 @@
       "id": "sec-normalizer-lemma",
       "title": "Part II: Key Normalizer Lemma",
       "startLine": 59,
-      "endLine": 66,
-      "summary": "A one-line bridge lemma `le_normalizer_of_normal_in_sup`: if H is relatively normal in $H \\sqcup K$, then $K \\leq H.\\text{normalizer}$.",
+      "endLine": 127,
+      "summary": "The supporting group-theory lemmas. `le_normalizer_of_normal_in_sup`: if H is relatively normal in $H \\sqcup K$, then $K \\leq H.\\text{normalizer}$. `sup_decomp`: an element of $H \\sqcup K$ decomposes as a product $h \\cdot k$ when $H$ is relatively normal. `sup_subgroupOf_normal`: normality transports through the sup construction — the infrastructure feeding the three lattice obligations below.",
       "relatedConcepts": [
         "normalizer",
         "normal_subgroupOf_iff_le_normalizer",
@@ -213,9 +213,9 @@
     {
       "id": "sec-instance-sup",
       "title": "Part III: Instance Declaration and Axiom 1 — sup_eq_of_isMaximal",
-      "startLine": 68,
-      "endLine": 96,
-      "summary": "The `noncomputable instance instJordanHolderLatticeSubgroup` declaration (lines 72–78) fills the Mathlib TODO, setting `IsMaximal := IsMaxNorm` and `Iso := GroupQuotIso`.",
+      "startLine": 128,
+      "endLine": 157,
+      "summary": "The `noncomputable instance instJordanHolderLatticeSubgroup` declaration (lines 132–137) fills the Mathlib TODO, setting `IsMaximal := IsMaxNorm`, `lt_of_isMaximal`, and `Iso := GroupQuotIso`. The first obligation `sup_eq_of_isMaximal` (lines 139–157) is proved here.",
       "relatedConcepts": [
         "subgroupOf_sup",
         "noncomputable instance",
@@ -228,8 +228,8 @@
     {
       "id": "sec-inf-max",
       "title": "Axiom 2 — isMaximal_inf_left_of_isMaximal_sup",
-      "startLine": 98,
-      "endLine": 156,
+      "startLine": 158,
+      "endLine": 218,
       "summary": "The longest and most technically demanding axiom proof. If x and y are both maximal normal in x⊔y, then x⊓y is maximal normal in x.",
       "relatedConcepts": [
         "Subgroup.mem_sup",
@@ -243,9 +243,9 @@
     {
       "id": "sec-iso-rel",
       "title": "Iso Relation Properties — iso_symm and iso_trans",
-      "startLine": 158,
-      "endLine": 170,
-      "summary": "`GroupQuotIso` must be an equivalence relation for the JordanHolderLattice axioms. `iso_symm` (lines 160–164): reverses K₁/H₁ ≃* K₂/H₂ using `MulEquiv.symm` lifted through `Nonempty.map`, swapping the Normal witnesses.",
+      "startLine": 219,
+      "endLine": 232,
+      "summary": "`GroupQuotIso` must be an equivalence relation for the JordanHolderLattice axioms. `iso_symm` (lines 221–225): reverses K₁/H₁ ≃* K₂/H₂ using `MulEquiv.symm` lifted through `Nonempty.map`, swapping the Normal witnesses. `iso_trans` (lines 227–231) composes two such isomorphisms.",
       "relatedConcepts": [
         "MulEquiv.symm",
         "MulEquiv.trans",
@@ -258,8 +258,8 @@
     {
       "id": "sec-second-iso",
       "title": "Axiom 3 — second_iso via First Isomorphism Theorem",
-      "startLine": 172,
-      "endLine": 206,
+      "startLine": 233,
+      "endLine": 273,
       "summary": "The second isomorphism theorem in JordanHolderLattice form: if x is maximal normal in x⊔y, then (x⊔y)/x ≃* y/(x⊓y).",
       "relatedConcepts": [
         "quotientKerEquivOfSurjective",
@@ -274,8 +274,8 @@
     {
       "id": "sec-jordan-holder",
       "title": "Part IV: Jordan-Hölder Uniqueness Theorem",
-      "startLine": 208,
-      "endLine": 225,
+      "startLine": 274,
+      "endLine": 292,
       "summary": "`jordan_holder_subgroups` and `jordan_holder_finite_groups`: one-line delegations to `CompositionSeries.jordan_holder` from Mathlib.",
       "relatedConcepts": [
         "CompositionSeries.jordan_holder",
@@ -289,8 +289,8 @@
     {
       "id": "sec-verification",
       "title": "Part V: Type Verification",
-      "startLine": 227,
-      "endLine": 234,
+      "startLine": 293,
+      "endLine": 300,
       "summary": "`#check @jordan_holder_subgroups` and `#check @instJordanHolderLatticeSubgroup` verify that the theorem and instance have the expected types, confirming the instance is correctly registered in Lean's typeclass system and that …",
       "relatedConcepts": [
         "#check command",
