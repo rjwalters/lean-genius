@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "problem-context",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "File header (docstring) stating Erdős Problem #663: for positive n, k, q(n,k) is the least prime not dividing (n+1)(n+2)···(n+k), and Erdős asked whether q(n,k) < (1+o(1)) log n as n → ∞ for fixed k. Notes the weak bound q(n,k) < (1+o(1))·k·log n from the prime number theorem, Tao's heuristic support, and the link to Erdős Problem #457. Reference: erdosproblems.com/663.",
+      "mathContext": "The gap between the conjectured $(1+o(1))\\log n$ and the PNT-provable $(1+o(1))\\,k\\log n$ is exactly the factor of $k$: every prime up to about $k\\log n$ must divide some term $n+i$ ($1 \\le i \\le k$), so the smallest *missing* prime cannot be too large, but removing the linear-in-$k$ dependence is the open crux."
+    },
+    {
       "id": "imports",
       "title": "Imports and Dependencies",
       "startLine": 18,
@@ -56,56 +64,56 @@
     {
       "id": "definitions",
       "title": "Consecutive Products and Smallest Missing Prime",
-      "startLine": 26,
-      "endLine": 45,
+      "startLine": 24,
+      "endLine": 60,
       "summary": "Defines $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1)$ as a Finset product, defines $q(n,k)$ concretely via `Nat.find`, and proves its three characterizing properties: primality, non-divisibility of $(n+1)\\cdots(n+k)$, and minimality among such primes.",
       "mathContext": "Defines $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1)$ as a Finset product, defines $q(n,k)$ concretely via `Nat.find`, and proves its three characterizing properties: primality, non-divisibility of $(n+1)\\cdots(n+k)$, and minimality among such primes."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture: Erdős Problem 663",
-      "startLine": 46,
-      "endLine": 55,
+      "startLine": 62,
+      "endLine": 70,
       "summary": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\log n$ for all $n \\geq N_0$.",
-      "mathContext": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\$\\log n$$ for all $n \\geq N_0$."
+      "mathContext": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\log n$ for all $n \\geq N_0$."
     },
     {
       "id": "weak-bound",
       "title": "Weak Bound from PNT",
-      "startLine": 56,
-      "endLine": 66,
+      "startLine": 72,
+      "endLine": 82,
       "summary": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\log n$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$.",
-      "mathContext": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\$\\log n$$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$."
+      "mathContext": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\log n$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$."
     },
     {
       "id": "k1-case",
       "title": "Special Case $k=1$",
-      "startLine": 67,
-      "endLine": 78,
+      "startLine": 83,
+      "endLine": 94,
       "summary": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\log n = \\log n$, the extra factor disappears. Proved by rewriting with `mul_one`.",
-      "mathContext": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\$\\log n$ = \\$\\log n$$, the extra factor disappears. Proved by rewriting with `mul_one`."
+      "mathContext": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\log n = \\log n$, the extra factor disappears. Proved by rewriting with `mul_one`."
     },
     {
       "id": "related-results",
       "title": "Consecutive Product Properties",
-      "startLine": 79,
-      "endLine": 99,
+      "startLine": 95,
+      "endLine": 115,
       "summary": "Establishes that $\\mathrm{consecutiveProduct}(n,1) = n+1$ via `simp`, proves positivity of the consecutive product for $k > 0$ via `Finset.prod_pos`, and states the connection to Erdős Problem #457 on small prime divisors.",
       "mathContext": "Establishes that $\\mathrm{consecutiveProduct}(n,1) = n+1$ via `simp`, proves positivity of the consecutive product for $k > 0$ via `Finset.prod_pos`, and states the connection to Erdős Problem #457 on small prime divisors."
     },
     {
       "id": "small-primes",
       "title": "Small Prime Divisibility and Lower Bound",
-      "startLine": 100,
-      "endLine": 111,
+      "startLine": 116,
+      "endLine": 151,
       "summary": "Proves that every prime $p \\leq k$ divides $(n+1)\\cdots(n+k)$ (`small_prime_divides_product`, by an explicit residue witness), and that $q(n,k) > k$ for $k > 1$ (`q_gt_k`) — the smallest missing prime is always larger than the product length.",
       "mathContext": "Proves that every prime $p \\leq k$ divides $(n+1)\\cdots(n+k)$ (`small_prime_divides_product`, by an explicit residue witness), and that $q(n,k) > k$ for $k > 1$ (`q_gt_k`) — the smallest missing prime is always larger than the product length."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity and Main Implication",
-      "startLine": 112,
-      "endLine": 127,
+      "startLine": 152,
+      "endLine": 190,
       "summary": "Proves non-decreasing monotonicity $q(n,k_1) \\leq q(n,k_2)$ for $k_1 \\leq k_2$ (`q_mono_k`; a longer product has more prime divisors, so the smallest missing prime can only grow), and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ using `mul_assoc` and `mul_le_mul_of_nonneg_left`.",
       "mathContext": "Proves non-decreasing monotonicity $q(n,k_1) \\leq q(n,k_2)$ for $k_1 \\leq k_2$ (`q_mono_k`; a longer product has more prime divisors, so the smallest missing prime can only grow), and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ using `mul_assoc` and `mul_le_mul_of_nonneg_left`."
     }
