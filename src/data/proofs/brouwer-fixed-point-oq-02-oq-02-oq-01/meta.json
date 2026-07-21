@@ -73,57 +73,121 @@
       "id": "estimates",
       "title": "Geometric decay and the a priori / a posteriori estimates",
       "startLine": 27,
-      "endLine": 107,
+      "endLine": 152,
       "summary": "iterate_dist (|xₙ − x*| ≤ Lⁿ·|x₀ − x*|, reproved self-containedly), initial_dist ((1−L)·|x₀ − x*| ≤ |x₁ − x₀|), and the two computable estimates apriori_estimate (Lⁿ/(1−L)·|x₁ − x₀|) and aposteriori_estimate (L/(1−L)·|xₙ₊₁ − xₙ|).",
       "mathContext": "The a priori bound answers 'how many steps for accuracy ε?' before iterating; the a posteriori bound is a computable stopping criterion using only the latest increment."
     },
     {
       "id": "composition",
       "title": "Lipschitz composition and composites of contractions",
-      "startLine": 109,
-      "endLine": 204,
+      "startLine": 153,
+      "endLine": 248,
       "summary": "lipschitz_comp (|g(f x) − g(f y)| ≤ L₂L₁·|x − y|) and contraction_comp (a composite of two contractions is a contraction), together with the List generalisations list_prod_le_one, list_prod_lt_one, lipschitz_comp_list and contraction_comp_list (a nonempty composite of contractions is a contraction with product constant).",
       "mathContext": "The structural fact behind iterating several maps: contraction constants multiply, and a finite composite of contractions is again a contraction."
     },
     {
       "id": "well-definedness",
       "title": "Uniqueness and sharpness",
-      "startLine": 205,
-      "endLine": 245,
+      "startLine": 249,
+      "endLine": 289,
       "summary": "fixed_point_unique (a contraction with L < 1 has at most one fixed point, so the x* of every estimate is well-defined) and iterate_dist_sharp (the linear map t ↦ L·t attains the geometric decay with equality, so iterate_dist cannot be improved).",
       "mathContext": "(1−L)·|p − q| ≤ 0 forces p = q; the equality-case witness shows the Lⁿ rate is best possible."
     },
     {
       "id": "existence",
       "title": "Existence of the fixed point (Banach on ℝ)",
-      "startLine": 246,
-      "endLine": 285,
+      "startLine": 290,
+      "endLine": 329,
       "summary": "exists_fixed_point (a contraction on the complete space ℝ has a fixed point, by bridging to Mathlib's ContractingWith) and exists_unique_fixed_point (the self-contained Banach existence-and-uniqueness statement), discharging the standing f x* = x* hypothesis.",
       "mathContext": "LipschitzWith.of_dist_le_mul + Real.dist_eq turn the raw bound into LipschitzWith L.toNNReal f; ContractingWith.exists_fixedPoint yields x*."
     },
     {
       "id": "unconditional",
       "title": "Unconditional (hypothesis-free) estimates",
-      "startLine": 286,
-      "endLine": 322,
+      "startLine": 330,
+      "endLine": 366,
       "summary": "apriori_estimate_unconditional and aposteriori_estimate_unconditional: the two computable estimates with no assumed fixed point, produced by threading exists_fixed_point so they invoke only f, L and the iterates.",
       "mathContext": "Since existence is automatic on ℝ, the practical estimates need no x* input — exactly what a computation with xₙ₊₁ = f xₙ can call."
     },
     {
+      "id": "aposteriori-lower",
+      "title": "A matching a posteriori lower bound (two-sided residual control)",
+      "startLine": 367,
+      "endLine": 411,
+      "summary": "aposteriori_lower_estimate and its hypothesis-free form aposteriori_lower_estimate_unconditional: the residual |xₙ₊₁ − xₙ| also bounds the error from BELOW, so a small residual is necessary (not merely sufficient) for proximity to x*. Together with the a posteriori upper bound this gives two-sided residual control.",
+      "mathContext": "Complementing $|x_{n+1}-x^*| \\le \\tfrac{L}{1-L}|x_{n+1}-x_n|$, the lower bound $\\tfrac{1}{1+L}|x_{n+1}-x_n| \\le |x_n - x^*|$ makes the observed increment a two-sided proxy for the true error."
+    },
+    {
       "id": "convergence",
       "title": "Convergence of the iteration",
-      "startLine": 323,
-      "endLine": 362,
+      "startLine": 412,
+      "endLine": 451,
       "summary": "iterate_tendsto (xₙ → x*, by squeezing the error between 0 and Lⁿ·|x₀ − x*| → 0) and its hypothesis-free form exists_iterate_tendsto.",
       "mathContext": "The qualitative limit behind the quantitative estimates: geometric decay plus Lⁿ → 0 gives convergence via squeeze_zero."
     },
     {
       "id": "stability",
       "title": "Stability of the fixed point under perturbation",
-      "startLine": 363,
-      "endLine": 421,
+      "startLine": 452,
+      "endLine": 510,
       "summary": "fixed_point_stability (|xf − xg| ≤ δ/(1−L) when |f x − g x| ≤ δ, f an L-contraction; conditional on both fixed points) and fixed_point_stability_unconditional (both maps contractions ⟹ their fixed points exist and lie within δ/(1−L)).",
       "mathContext": "|xf − xg| = |f xf − g xg| ≤ |f xf − f xg| + |f xg − g xg| ≤ L·|xf − xg| + δ, so (1−L)·|xf − xg| ≤ δ — the fixed point is a 1/(1−L)-Lipschitz function of the map."
+    },
+    {
+      "id": "cauchy-estimate",
+      "title": "The self-contained Cauchy estimate between iterates (no fixed point needed)",
+      "startLine": 511,
+      "endLine": 579,
+      "summary": "step_dist (geometric decay of increments, |x_{k+1} − x_k| ≤ Lᵏ·|x₁ − x₀|) and cauchy_estimate (|x_{n+m} − xₙ| ≤ Lⁿ/(1−L)·|x₁ − x₀|). The genuinely x*-free statement: it mentions no fixed point, is exactly what proves one exists on a complete space (the orbit is Cauchy), and recovers apriori_estimate as m → ∞.",
+      "mathContext": "Telescoping the geometric increments and summing the finite geometric series $\\sum_{j<m} L^{n+j} = L^n(1-L^m)/(1-L) \\le L^n/(1-L)$ gives $|x_{n+m}-x_n| \\le \\tfrac{L^n}{1-L}|x_1-x_0|$."
+    },
+    {
+      "id": "iterate-lipschitz",
+      "title": "The n-fold iterate is an Lⁿ-contraction (structural composition law)",
+      "startLine": 580,
+      "endLine": 601,
+      "summary": "iterate_lipschitz: |f^[n] x − f^[n] y| ≤ Lⁿ·|x − y| — the self-composition special case of the composition laws, stated with Mathlib's Function.iterate. This is the structural fact underlying the geometric decay iterate_dist (since xₙ = f^[n] x₀), and Lⁿ < 1 gives an alternate route to a unique fixed point of every iterate.",
+      "mathContext": "By induction on $n$ via `Function.iterate_succ_apply'`: $|f^{[n]}x - f^{[n]}y| \\le L^n|x-y|$; the $n$-fold iterate of an $L$-contraction is $L^n$-Lipschitz."
+    },
+    {
+      "id": "ostrowski-fundamental",
+      "title": "The fundamental (Ostrowski) a posteriori estimate at an arbitrary point",
+      "startLine": 602,
+      "endLine": 644,
+      "summary": "fundamental_error_estimate and fundamental_error_estimate_unconditional: the sequence-free Ostrowski bound |x − x*| ≤ |x − f x|/(1−L) at ANY single point x, with no iteration structure. The a posteriori estimates along the orbit are its specialization to x = xₙ.",
+      "mathContext": "At any point $x$: $|x - x^*| \\le \\tfrac{1}{1-L}|x - f(x)|$, bounding the distance to the fixed point purely by the observable residual $|x - f(x)|$ (Ostrowski's a posteriori estimate)."
+    },
+    {
+      "id": "aposteriori-refines-apriori",
+      "title": "The a posteriori estimate refines the a priori estimate, and a pointwise lower bound",
+      "startLine": 645,
+      "endLine": 715,
+      "summary": "aposteriori_le_apriori: at step n+1 the a posteriori bound (from the latest observed increment) is never larger than the a priori bound (from the first increment), so the computable stopping criterion is always at least as sharp. fundamental_error_lower (+ unconditional form): the pointwise lower bound |x − f x|/(1+L) ≤ |x − x*|, the Ostrowski complement making the residual a two-sided proxy.",
+      "mathContext": "Refinement: $\\tfrac{L}{1-L}|x_{n+1}-x_n| \\le \\tfrac{L^{n+1}}{1-L}|x_1-x_0|$ via `step_dist`. Pointwise lower bound: $\\tfrac{1}{1+L}|x - f(x)| \\le |x - x^*|$ from $|x-f(x)| \\le (1+L)|x-x^*|$."
+    },
+    {
+      "id": "orbit-path-length",
+      "title": "Total path length of the orbit and vanishing of the increments",
+      "startLine": 716,
+      "endLine": 773,
+      "summary": "total_path_length_bound: ∑_{k<m} |x_{k+1} − x_k| ≤ |x₁ − x₀|/(1−L) uniformly in m — the orbit has finite total length however long one iterates, dominating the net-displacement Cauchy bound (arc length ≥ chord). Its qualitative shadow: the step sizes vanish, |x_{n+1} − xₙ| → 0, squeezed by Lⁿ·|x₁ − x₀| → 0.",
+      "mathContext": "Arc length $\\sum_{k<m}|x_{k+1}-x_k| \\le |x_1-x_0|\\sum_k L^k \\le \\tfrac{|x_1-x_0|}{1-L}$, uniform in $m$: the quantitative statement that the orbit is a Cauchy sequence."
+    },
+    {
+      "id": "tail-arc-length",
+      "title": "Tail arc length and the arc-dominates-chord bridge",
+      "startLine": 774,
+      "endLine": 839,
+      "summary": "tail_path_length_bound (windowed arc length decays like Lⁿ: ∑ over [n,n+m) ≤ Lⁿ·|x₁−x₀|/(1−L), whose m→∞ limit bounds |xₙ − x*|) and displacement_le_path_length (the purely telescoping chord ≤ arc). Composed, they re-derive cauchy_estimate with arc length as the intermediate quantity — exhibiting the Cauchy bound as 'chord ≤ arc ≤ geometric tail'.",
+      "mathContext": "Tail arc: $\\sum_{k<m}|x_{n+k+1}-x_{n+k}| \\le \\tfrac{L^n}{1-L}|x_1-x_0|$; chord bound $|x_{n+m}-x_n| \\le$ arc (telescoping). Together: chord $\\le$ arc $\\le$ geometric tail."
+    },
+    {
+      "id": "sharpness-constants",
+      "title": "Sharpness of the estimate constants (the affine contraction is extremal)",
+      "startLine": 840,
+      "endLine": 938,
+      "summary": "apriori_estimate_sharp and aposteriori_estimate_sharp: the affine contraction f t = L·t (the extremal L-contraction, meeting |f a − f b| = L·|a − b|) attains BOTH derived constants Lⁿ/(1−L) and L/(1−L) with equality at every step, so neither can be lowered — the estimate suite is constant-optimal. iterate_dist_sharp certified only the raw geometric factor Lⁿ; these certify the estimate constants themselves.",
+      "mathContext": "For $f(t)=Lt$, $x_n = L^n x_0$ about the fixed point $0$: $|x_1-x_0|=(1-L)|x_0|$, $|x_{n+1}-x_n|=L^n(1-L)|x_0|$, so both estimate right-hand sides collapse to equalities — $L^n/(1-L)$ and $L/(1-L)$ are optimal."
     }
   ],
   "crossReferences": [
