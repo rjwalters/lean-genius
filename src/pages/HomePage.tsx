@@ -5,9 +5,11 @@ import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
-import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
+import { BadgeFilter } from '@/components/ui/proof-badge'
+import { GalleryCard } from '@/components/proof'
+import { groupListings } from '@/lib/oq-group'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
+import { Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
@@ -137,6 +139,12 @@ export function HomePage() {
       }
     })
   }, [listings, searchIndex, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
+
+  // Group each problem's recursive OQ descendants under their root problem so a
+  // family like erdos-396 renders as one rollup card instead of 15 flat cards
+  // (issue #39826). Grouping is derived purely from slugs and preserves the
+  // sorted order of the group headers.
+  const groups = useMemo(() => groupListings(proofs), [proofs])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -442,72 +450,8 @@ export function HomePage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {proofs.map((listing) => (
-            <Link
-              key={listing.slug}
-              to={`/proof/${listing.slug}`}
-              className="group block bg-card border border-border rounded-xl p-6 hover:border-annotation/50 hover:bg-card/80 transition-all"
-            >
-              {/* Badge row - prominently displayed at top */}
-              <div className="flex items-start justify-between mb-4">
-                <ProofBadge badge={listing.badge} />
-                <StatusBadge status={listing.status} />
-              </div>
-
-              <div className="flex items-start gap-3 mb-3">
-                {listing.wiedijkNumber ? (
-                  <WiedijkBadge number={listing.wiedijkNumber} size="md" />
-                ) : listing.erdosNumber ? (
-                  <ErdosBadge number={listing.erdosNumber} size="md" />
-                ) : (
-                  <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-annotation" />
-                  </div>
-                )}
-                <h3 className="text-lg font-semibold group-hover:text-annotation transition-colors pt-1">
-                  {listing.title}
-                </h3>
-              </div>
-
-              {/* Date - letter style */}
-              {listing.dateAdded && (
-                <p className="text-xs text-muted-foreground mb-2">
-                  {listing.dateAdded}
-                </p>
-              )}
-
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-5">
-                {listing.description}
-              </p>
-
-              {/* Mathlib dependency indicator */}
-              <MathlibIndicator
-                dependencyCount={listing.mathlibCount}
-                sorries={listing.sorries}
-                className="mb-4"
-              />
-
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex flex-wrap gap-2">
-                  {listing.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  {listing.annotationCount} annotations
-                </span>
-              </div>
-
-              <div className="mt-4 flex items-center text-sm text-annotation opacity-0 group-hover:opacity-100 transition-opacity">
-                <span>Explore proof</span>
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </div>
-            </Link>
+          {groups.map((group) => (
+            <GalleryCard key={group.rootSlug} group={group} />
           ))}
         </div>
 
@@ -529,44 +473,5 @@ export function HomePage() {
 
       <Footer />
     </div>
-  )
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { icon: typeof CheckCircle; className: string; label: string }> = {
-    verified: {
-      icon: CheckCircle,
-      className: 'bg-green-500/20 text-green-400',
-      label: 'Verified',
-    },
-    pending: {
-      icon: Clock,
-      className: 'bg-yellow-500/20 text-yellow-400',
-      label: 'Pending',
-    },
-    disputed: {
-      icon: AlertCircle,
-      className: 'bg-red-500/20 text-red-400',
-      label: 'Disputed',
-    },
-    axiomatized: {
-      icon: AlertCircle,
-      className: 'bg-purple-500/20 text-purple-400',
-      label: 'Axiomatized',
-    },
-    revised: {
-      icon: Clock,
-      className: 'bg-blue-500/20 text-blue-400',
-      label: 'Revised',
-    },
-  }
-
-  const { icon: Icon, className, label } = config[status] || config.pending
-
-  return (
-    <span className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${className}`}>
-      <Icon className="h-3 w-3" />
-      {label}
-    </span>
   )
 }

@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion } from '@/components/proof'
+import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion, LineageBreadcrumb } from '@/components/proof'
 import { getProofAsync } from '@/data/proofs'
 import type { Annotation, ProofSection, ProofData } from '@/types/proof'
 import { Menu, Github } from 'lucide-react'
@@ -238,6 +238,7 @@ export function ProofPage() {
 
         {/* Main proof viewer */}
         <main ref={viewerRef} className="flex-1 overflow-auto">
+          <LineageBreadcrumb slug={slug || proof.slug} currentTitle={proof.title} />
           <ProofOverview proof={proof} versionInfo={versionInfo} />
           <ProofViewer
             proof={proof}

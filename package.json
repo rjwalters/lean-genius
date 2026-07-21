@@ -10,6 +10,7 @@
     "gallery:build-redirects": "tsx scripts/gallery/build-redirects.ts",
     "gallery:migrate-oq-slugs": "tsx scripts/gallery/migrate-oq-slugs.ts",
     "test:oq-slug": "tsx scripts/tests/oq-slug.test.ts",
+    "test:oq-group": "tsx scripts/tests/oq-group.test.ts",
     "gallery:check-bundle-budget": "tsx scripts/gallery/check-bundle-budget.ts",
     "gallery:check-search-index": "tsx scripts/gallery/check-search-index.ts",
     "gallery:check-verified-companions": "tsx scripts/gallery/check-verified-companions.ts",
