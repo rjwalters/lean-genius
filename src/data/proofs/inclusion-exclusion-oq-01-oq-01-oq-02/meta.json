@@ -116,15 +116,15 @@
       "id": "sec-2bonf-inequality",
       "title": "Part IV: Inequality and Sharp Tightness",
       "startLine": 204,
-      "endLine": 284,
-      "summary": "Reads off second_bonferroni (S₁ - S₂ ≤ |U|), the sharp tightness criterion second_bonferroni_eq_iff (∀ x, deg x ≤ 2), and the equivalent geometric (all triple intersections empty) and algebraic (S₃ = 0) forms."
+      "endLine": 323,
+      "summary": "Reads off second_bonferroni (S₁ - S₂ ≤ |U|), the sharp tightness criterion second_bonferroni_eq_iff (∀ x, deg x ≤ 2), and its equivalent geometric form deg_le_two_iff_no_triple (all triple intersections A i ∩ A j ∩ A k empty) and algebraic form deg_le_two_iff_sieveLayer_three (S₃ = 0, the third sieve layer vanishes)."
     },
     {
       "id": "sec-2bonf-disjoint",
       "title": "Parts V–VI: Disjointness Sufficient, Not Necessary",
-      "startLine": 285,
-      "endLine": 328,
-      "summary": "Proves disjoint_imp_tight (pairwise-disjoint families are tight) and exhibits exFam over Fin 3 — sets {0,1} and {1,2} overlapping in 1 — which is tight despite the non-empty pairwise intersection, all verified by decide."
+      "startLine": 324,
+      "endLine": 369,
+      "summary": "Proves disjoint_imp_tight (pairwise-disjoint families are tight, since S₂ = 0 forces |U| = S₁) and exhibits the overlapping witness exFam over Fin 3 — sets {0,1} and {1,2} sharing the point 1 — which is tight despite the non-empty pairwise intersection (every point has degree ≤ 2), all verified by decide. Closes with #check declarations for the module's public API."
     }
   ],
   "sorries": 0
