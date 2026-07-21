@@ -55,7 +55,7 @@
       "id": "separation-neighbors",
       "title": "Separation and Neighborhood",
       "startLine": 29,
-      "endLine": 44,
+      "endLine": 48,
       "summary": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture.",
       "mathContext": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture."
     },
@@ -63,7 +63,7 @@
       "id": "triangular-lattice",
       "title": "Triangular Lattice Construction",
       "startLine": 49,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ with the Loeschian norm $a^2 + ab + b^2$, computable lattice point counting, and $f(t) = \\text{countInt}(\\lfloor t^2 \\rfloor)$.",
       "mathContext": "Constructs the triangular lattice with computable enumeration. All lattice norms are Loeschian integers, enabling $f(t) = \\text{countInt}(\\lfloor t^2 \\rfloor)$ via decidable counting over $[-T, T]^2$."
     },
@@ -103,7 +103,7 @@
       "id": "contact-number",
       "title": "Contact Number Bounds",
       "startLine": 300,
-      "endLine": 366,
+      "endLine": 367,
       "summary": "Proves the per-vertex bound $|N_1(p)| \\le 6$ by reduction to kissing_number_2d via translation, derives the ordered bound $6n$ by fiber decomposition, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$.",
       "mathContext": "Fully proved chain: unit_neighbor_bound (translation + kissing number) $\\Rightarrow$ ordered_unit_pairs_bound ($6n$) $\\Rightarrow$ contact_number_3n ($3n$). The resolved $t = 1$ case of the conjecture."
     },
