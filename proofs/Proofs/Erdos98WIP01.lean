@@ -425,4 +425,90 @@ theorem exists_inGeneralPosition_of_le_three (hn : n ≤ 3) :
   · exact exists_inGeneralPosition_of_le_two (by norm_num)
   · exact exists_inGeneralPosition_three
 
+/-! ## General-position existence for `n = 4` (the first non-vacuous no-four-concyclic case)
+
+For `n = 4` both constraints are genuine: no three of the four points may be collinear, and
+the four points may not be concyclic. The configuration `(0,0), (1,0), (0,1), (1,-1)` witnesses
+both. No-three-collinear is the triangle argument applied to each of the four triples. For
+no-four-concyclic, a common circle would put its centre equidistant from all four points; the
+three squared-distance equalities `‖c-P₀‖² = ‖c-Pᵢ‖²` (`i = 1,2,3`) are linear in the centre's
+coordinates and force `c₀ = ½`, `c₁ = ½`, and `c₀ - c₁ = 1` simultaneously — impossible. This
+upgrades the attained-minimum guarantee for `h n` from `n ≤ 3` to `n ≤ 4`. -/
+
+/-- An explicit four-point configuration `(0,0), (1,0), (0,1), (1,-1)` in `ℝ²`. Unlike the
+triangle, the last vertex is not an axis point, so it is written with the `!₂[·,·]` Euclidean
+vector notation. -/
+noncomputable def fourConfig : PointConfig 4 :=
+  ![!₂[0, 0], !₂[1, 0], !₂[0, 1], !₂[1, -1]]
+
+/-- The four vertices are distinct. -/
+theorem fourConfig_injective : Function.Injective fourConfig := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    first
+    | rfl
+    | (exfalso
+       have h0 := congrArg (fun p => p 0) hij
+       have h1 := congrArg (fun p => p 1) hij
+       simp [fourConfig] at h0 h1)
+
+/-- **No three of the four vertices are collinear.** Each of the four triples is affinely
+independent, so a line through any three forces `(a,b,c) = 0`. -/
+theorem noThreeCollinear_fourConfig : NoThreeCollinear fourConfig := by
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | (simp only [fourConfig] at hi hj hk
+       norm_num at hi hj hk
+       simp only [Prod.mk.injEq]
+       refine ⟨?_, ?_, ?_⟩ <;> linarith)
+
+/-- No centre is equidistant from all four vertices. The three squared-distance equalities
+`‖c-P₀‖² = ‖c-Pᵢ‖²` reduce (the `c₀²`, `c₁²` terms cancelling) to linear constraints forcing
+`c₀ = ½`, `c₁ = ½`, and `c₀ - c₁ = 1` at once — a contradiction. -/
+theorem fourConfig_not_equidistant (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (fourConfig 0) = r) (h1 : dist center (fourConfig 1) = r)
+    (h2 : dist center (fourConfig 2) = r) (h3 : dist center (fourConfig 3) = r) : False := by
+  have e01 : dist center (fourConfig 0) ^ 2 = dist center (fourConfig 1) ^ 2 := by rw [h0, h1]
+  have e02 : dist center (fourConfig 0) ^ 2 = dist center (fourConfig 2) ^ 2 := by rw [h0, h2]
+  have e03 : dist center (fourConfig 0) ^ 2 = dist center (fourConfig 3) ^ 2 := by rw [h0, h3]
+  simp only [fourConfig, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.head_cons, Matrix.tail_cons] at e01 e02 e03
+  nlinarith [e01, e02, e03]
+
+/-- **No four of the four vertices are concyclic.** The only 4-subset (in every ordering) is
+all four points; by `fourConfig_not_equidistant` no centre is equidistant from them, so no
+common circle exists. -/
+theorem noFourConcyclic_fourConfig : NoFourConcyclic fourConfig := by
+  intro a b c d hcard
+  rintro ⟨center, r, ha, hb, hc, hd⟩
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact fourConfig_not_equidistant center r (by assumption) (by assumption)
+        (by assumption) (by assumption)
+
+/-- **General-position configurations exist for `n = 4`.** The configuration
+`(0,0), (1,0), (0,1), (1,-1)` is injective, has no three collinear, and no four concyclic —
+the first case where the concyclicity constraint is non-vacuous. Hence the defining set of
+`h 4` is nonempty and `h 4` is a genuine attained minimum. -/
+theorem exists_inGeneralPosition_four :
+    ∃ P : PointConfig 4, InGeneralPosition P :=
+  ⟨fourConfig, fourConfig_injective, noThreeCollinear_fourConfig, noFourConcyclic_fourConfig⟩
+
+/-- **General-position configurations exist for every `n ≤ 4`.** Combines the `n ≤ 3` regime
+with the explicit four-point witness, so `h n` is an attained minimum — not the `sInf ∅` junk
+value — throughout `n ≤ 4`. -/
+theorem exists_inGeneralPosition_of_le_four (hn : n ≤ 4) :
+    ∃ P : PointConfig n, InGeneralPosition P := by
+  rcases Nat.lt_or_ge n 4 with h | h
+  · exact exists_inGeneralPosition_of_le_three (by omega)
+  · have : n = 4 := by omega
+    subst this
+    exact exists_inGeneralPosition_four
+
 end Erdos98WIP01
