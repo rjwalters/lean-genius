@@ -124,21 +124,21 @@
       "id": "upper-bound",
       "title": "Erdős-Graham Upper Bound",
       "startLine": 71,
-      "endLine": 79,
+      "endLine": 81,
       "summary": "`gExcess_upper_bound` (axiom): $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$. Establishes logarithmic order of magnitude from $p$-adic valuation constraints."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties (Proved)",
-      "startLine": 88,
-      "endLine": 151,
+      "startLine": 82,
+      "endLine": 149,
       "summary": "Three proved theorems: `factor_le_of_factorial_divides` (if $\\prod a_i! \\mid n!$ then each $a_i \\leq n$, by Finset divisibility and induction on $n$), `excess_set_bddAbove` (the excess set is bounded above by $k(n+1)$, a 25-line argument), `zero_mem_excess_set` (trivial tuple $(n,0,\\ldots,0)$ witnesses $0 \\in$ excess set), and `gExcess_nonneg` ($g_k(n) \\geq 0$ via `le_csSup`).",
       "mathContext": "Key: $\\prod a_i! \\mid n! \\Rightarrow a_i! \\mid \\prod a_j! \\mid n! \\Rightarrow a_i \\leq n$. Therefore excess $\\leq k \\cdot n - n = (k-1)n$. The trivial tuple $(n, 0, \\ldots, 0)$ has $n! \\cdot 1^{k-1} \\mid n!$ with excess $0$."
     },
     {
       "id": "binomial-connection",
       "title": "Binomial Connection for $k = 2$",
-      "startLine": 153,
+      "startLine": 150,
       "endLine": 168,
       "summary": "`g2_binomial_connection`: proves $g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$ by constructing a bijection between `Fin 2 → ℕ` tuples and pairs $(a, b)$ using `Fin.prod_univ_two` and the `![a, b]` matrix notation.",
       "mathContext": "$g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$. The condition $a! \\cdot b! \\mid n!$ is equivalent to $\\binom{a+b}{a} \\cdot (a+b)!/n! \\in \\mathbb{Z}$, connecting to Kummer's theorem on carries in base-$p$ addition."
