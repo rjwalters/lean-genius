@@ -71,6 +71,22 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
    rules out collinearity. Consequently `h_attained` upgrades the attained-minimum guarantee
    from `n ≤ 4` to all `n` — `h n` is never the `sInf ∅` junk value.
 
+10. `numDistinctDistances_lower` — **an elementary linear lower bound**
+    `n − 1 ≤ 3·numDistinctDistances P` for every general-position `P`: a circle centred at
+    any fixed point of the configuration holds at most three others (a fourth is four
+    concyclic points), so the `n−1` distances from a fixed point take `≥ (n−1)/3` distinct
+    values. This is the first lower bound that uses the *no-four-concyclic* hypothesis.
+
+11. `three_mul_h_ge` — the same bound for the extremal quantity: `n − 1 ≤ 3·h n` for all `n`,
+    obtained by applying (10) to the attained minimiser `h_attained`. Equivalently
+    `h n ≥ (n−1)/3`.
+
+12. `tendsto_h_atTop` — **`h n → ∞`, unconditionally.** A direct consequence of (11), needing
+    *no* imported deep theorem. This sharpens `guthKatz_imp_tendsto` (which assumed the
+    Guth–Katz baseline) and `weak_imp_tendsto` (which assumed the open weak conjecture): the
+    divergence of `h` is elementary. Only the conjectured *rate* `h n / n → ∞` (Erdős #98)
+    remains open.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -746,5 +762,104 @@ theorem h_attained (n : ℕ) :
       rfl⟩
   obtain ⟨P, hgp, hval⟩ := Nat.sInf_mem hne
   exact ⟨P, hgp, hval⟩
+
+/-! ## An elementary linear lower bound `n - 1 ≤ 3 · h n`, and unconditional `h n → ∞`
+
+The upper bounds (Pach, EFP) and `guthKatz_imp_tendsto` all rest on imported deep
+theorems.  The **no-four-concyclic** hypothesis, by contrast, already forces a
+*linear* lower bound by a one-line pigeonhole, straight from the gallery
+definitions.  Fix a base point `P b`.  Any circle centred at `P b` meets the other
+`n - 1` points in **at most three** of them — a fourth would put four points at a
+common distance from `P b`, i.e. four concyclic points (centre `P b`), forbidden.
+So the `n - 1` distances `dist (P b) (P i)` (`i ≠ b`) take at least `(n-1)/3`
+distinct values, and each is a genuine distinct distance of the configuration.
+Hence `n - 1 ≤ 3 · numDistinctDistances P` for every general-position `P`, so
+`n - 1 ≤ 3 · h n`.
+
+In particular `h n → ∞` **unconditionally** (`tendsto_h_atTop`) — no Guth–Katz
+input, sharpening `guthKatz_imp_tendsto` which needed the imported `Ω(n/log n)`
+baseline.  Only the *divergence* is elementary; the conjectured *rate*
+`h n / n → ∞` (Erdős #98 itself) remains open, and even the linear order here is
+`/3` of the conjectured `n`. -/
+
+/-- Converse of `card_quad_pairwise_ne`: four pairwise-distinct elements form a
+four-element finset. -/
+private theorem card_quad_of_pairwise_ne {α : Type*} [DecidableEq α] {a b c d : α}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d) :
+    ({a, b, c, d} : Finset α).card = 4 :=
+  Finset.card_eq_four.mpr ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩
+
+/-- **At most three points share a distance to a fixed point.** For general-position
+`P` and base index `b`, the fibre of `i ↦ dist (P b) (P i)` over any value `v`,
+restricted to `i ≠ b`, has at most three elements: a fourth would give four points
+equidistant from `P b` — four concyclic points (centre `P b`, radius `v`) —
+contradicting `NoFourConcyclic`. -/
+theorem card_fiber_dist_le_three {P : PointConfig n} (hgp : InGeneralPosition P)
+    (b : Fin n) (v : ℝ) :
+    ((univ.erase b).filter (fun i => dist (P b) (P i) = v)).card ≤ 3 := by
+  by_contra hlt
+  -- `3 < card` extracts four distinct fibre elements `i, j, k, l`.
+  obtain ⟨i, hi, j, hj, k, hk, l, hl, hij, hik, hil, hjk, hjl, hkl⟩ :=
+    Finset.three_lt_card.mp (not_le.mp hlt)
+  rw [mem_filter] at hi hj hk hl
+  -- Their common distance to `P b` makes them concyclic (centre `P b`, radius `v`).
+  exact hgp.2.2 i j k l (card_quad_of_pairwise_ne hij hik hil hjk hjl hkl)
+    ⟨P b, v, hi.2, hj.2, hk.2, hl.2⟩
+
+/-- **Linear lower bound (per configuration).** Any general-position configuration of
+`n ≥ 1` points has `n - 1 ≤ 3 · numDistinctDistances P`: the `n - 1` distances from a
+fixed point take at least `(n-1)/3` distinct values (each circle holds `≤ 3` points),
+all of which are genuine positive distinct distances. -/
+theorem numDistinctDistances_lower {P : PointConfig n} (hgp : InGeneralPosition P)
+    (hn : 0 < n) :
+    n - 1 ≤ 3 * numDistinctDistances P := by
+  let b : Fin n := ⟨0, hn⟩
+  -- Pigeonhole over distances from `P b`: each fibre `≤ 3`.
+  have hpig := Finset.card_le_mul_card_image (f := fun i => dist (P b) (P i))
+    (univ.erase b) 3 (fun v _ => card_fiber_dist_le_three hgp b v)
+  have hscard : (univ.erase b).card = n - 1 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  -- The distances from `P b` are genuine positive distinct distances of `P`.
+  have hsub : (univ.erase b).image (fun i => dist (P b) (P i)) ⊆
+      ((univ.product univ).image
+        (fun p : Fin n × Fin n => dist (P p.1) (P p.2))).filter (· > 0) := by
+    intro v hv
+    rw [mem_image] at hv
+    obtain ⟨i, hi, hiv⟩ := hv
+    rw [mem_erase] at hi
+    obtain ⟨hib, _⟩ := hi
+    have hpos : (0 : ℝ) < v := by
+      rw [← hiv]; exact dist_pos.mpr (fun heq => hib (hgp.1 heq.symm))
+    rw [mem_filter]
+    exact ⟨mem_image.mpr ⟨(b, i), by simp, hiv⟩, hpos⟩
+  have hle : ((univ.erase b).image (fun i => dist (P b) (P i))).card ≤
+      numDistinctDistances P := by
+    unfold numDistinctDistances
+    exact card_le_card hsub
+  calc n - 1 = (univ.erase b).card := hscard.symm
+    _ ≤ 3 * ((univ.erase b).image (fun i => dist (P b) (P i))).card := hpig
+    _ ≤ 3 * numDistinctDistances P := by omega
+
+/-- **Unconditional linear lower bound on the minimum.** `n - 1 ≤ 3 · h n` for every `n`:
+apply the per-configuration bound `numDistinctDistances_lower` to the attained minimiser
+`h_attained`. Equivalently `h n ≥ (n-1)/3` — the first lower bound that grows with `n`,
+using only the no-four-concyclic hypothesis. -/
+theorem three_mul_h_ge (n : ℕ) : n - 1 ≤ 3 * h n := by
+  obtain ⟨P, hgp, hval⟩ := h_attained n
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · subst hn; simp
+  · rw [← hval]; exact numDistinctDistances_lower hgp hn
+
+open scoped Filter Topology in
+/-- **`h n → ∞`, unconditionally.** The elementary bound `n - 1 ≤ 3 · h n`
+(`three_mul_h_ge`) already forces divergence — with **no** imported deep theorem, in
+contrast to `guthKatz_imp_tendsto` (which assumes the Guth–Katz `Ω(n/log n)` baseline)
+and `weak_imp_tendsto` (which assumes the *open* weak conjecture). Only the divergence is
+elementary; the conjectured rate `h n / n → ∞` (Erdős #98) stays open. -/
+theorem tendsto_h_atTop : Filter.Tendsto h Filter.atTop Filter.atTop := by
+  refine Filter.tendsto_atTop.mpr (fun M => ?_)
+  filter_upwards [Filter.eventually_ge_atTop (3 * M + 1)] with n hn
+  have hb := three_mul_h_ge n
+  omega
 
 end Erdos98WIP01
