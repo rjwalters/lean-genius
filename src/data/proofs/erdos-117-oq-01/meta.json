@@ -56,49 +56,49 @@
       "id": "preamble",
       "title": "Module Docstring, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Module block comment (lines 1-21): context, open question, references. `import Mathlib` (line 23), `open Real Filter` (line 25), `namespace Erdos117OQ01` (line 27).",
+      "endLine": 29,
+      "summary": "Module block comment (context, the open question, references), `import Mathlib`, `open Real Filter`, and `namespace Erdos117OQ01`.",
       "mathContext": "The docstring establishes: Pyber proved $c_1^n < h(n) < c_2^n$, giving $r(n) = \\log h(n)/n \\in (\\log c_1, \\log c_2)$. `open Real Filter` makes `Real.log`, `Filter.atTop`, `Filter.liminf`, `Filter.limsup` available unqualified."
     },
     {
       "id": "setup",
       "title": "Part I: Three Axioms Encoding Pyber's Theorem",
-      "startLine": 28,
-      "endLine": 48,
-      "summary": "Part I block comment (lines 29-34). Three axiom declarations: h : ℕ → ℕ (line 39), h_pos (line 42), pyber_bounds (lines 45-47). These 3 axioms drive axiomCount=3 and badge='axiom'.",
-      "mathContext": "$h: \\mathbb{N} \\to \\mathbb{N}$ axiomatized (not constructible). `pyber_bounds`: $\\exists c_1, c_2 > 1,\\; c_1 < c_2 \\wedge \\forall n \\geq 1: c_1^n \\leq h(n) \\leq c_2^n$."
+      "startLine": 30,
+      "endLine": 49,
+      "summary": "Part I banner (lines 30–36) and the three axiom declarations: `h : ℕ → ℕ` (line 39), `h_pos` (line 42), `pyber_bounds` (lines 45–47). These three axioms drive `axiomCount = 3` and `badge = 'axiom'`.",
+      "mathContext": "$h: \\mathbb{N} \\to \\mathbb{N}$ is axiomatized (not constructible). `pyber_bounds`: $\\exists c_1, c_2 > 1,; c_1 < c_2 \\wedge \\forall n \\geq 1:\\ c_1^n \\leq h(n) \\leq c_2^n$."
     },
     {
       "id": "growth-rate",
       "title": "Part II: Logarithmic Growth Rate and Bounds",
-      "startLine": 49,
-      "endLine": 98,
-      "summary": "Part II block comment (lines 49-54). `noncomputable def growthRate` (lines 57-58): log(h(n))/n with growthRate(0)=0. Two theorems: growthRate_lower_bound (lines 61-77, non-trivial chain) and growthRate_upper_bound (lines 80-97, mirrors lower bound).",
+      "startLine": 50,
+      "endLine": 88,
+      "summary": "Part II banner (lines 50–54). `noncomputable def growthRate` (lines 57–58): $\\log(h(n))/n$ with $\\text{growthRate}(0)=0$. Two theorems: `growthRate_lower_bound` (lines 61–72) and `growthRate_upper_bound` (lines 74–87), mirror-image chains through `Real.log_le_log` + `Real.log_pow`.",
       "mathContext": "$r(n) = \\log h(n)/n$ for $n \\geq 1$, $r(0) = 0$ by convention. Proved: $\\log c_1 \\leq r(n) \\leq \\log c_2$ for all $n \\geq 1$. Proof technique: `Real.log_le_log` + `Real.log_pow` + `div_le_div_iff`."
     },
     {
       "id": "liminf-limsup",
       "title": "Part III: liminf and limsup via Filter API",
-      "startLine": 99,
-      "endLine": 153,
-      "summary": "Part III block comment (lines 99-104). Definitions growthRateLimInf and growthRateLimSup using Filter.liminf/limsup with atTop (lines 107-112). Theorems limInf_ge_log_c1 (proved, lines 115-138) and limInf_le_limSup (proved, lines 141-151) using IsBoundedUnder witnesses from the bound theorems.",
-      "mathContext": "$\\text{LimInf} = \\inf\\{L : r(n) \\geq L \\text{ eventually}\\}$, $\\text{LimSup} = \\sup\\{L : r(n) \\leq L \\text{ eventually}\\}$. Both in $[\\log c_1, \\log c_2]$. `limInf_ge_log_c1` proved via `Filter.liminf_le_liminf` and `Filter.liminf_const`. `limInf_le_limSup` proof: supplies `IsBoundedUnder ≤ atTop growthRate` and `IsCoboundedUnder ≤ atTop growthRate` witnesses."
+      "startLine": 89,
+      "endLine": 172,
+      "summary": "Part III banner (lines 89–94). Definitions `growthRateLimInf` / `growthRateLimSup` (lines 96, 100) via `Filter.liminf`/`limsup` at `atTop`, and theorems `limInf_ge_log_c1` (line 104), `limSup_le_log_c2` (line 134), and `limInf_le_limSup` (line 162), supplying `IsBoundedUnder`/`IsCoboundedUnder` witnesses from the Part II bounds.",
+      "mathContext": "$\\text{LimInf} = \\inf\\{L : r(n) \\geq L \\text{ eventually}\\}$, $\\text{LimSup} = \\sup\\{L : r(n) \\leq L \\text{ eventually}\\}$. Both lie in $[\\log c_1, \\log c_2]$. `limInf_ge_log_c1` uses `Filter.liminf_le_liminf` / `Filter.liminf_const`; `limInf_le_limSup` supplies the boundedness witnesses that Mathlib's cluster-value API requires."
     },
     {
       "id": "open-question",
-      "title": "Part IV: The Open Question",
-      "startLine": 154,
-      "endLine": 229,
-      "summary": "Part IV poses the central open question: does the growth rate converge (liminf = limsup)? Propositions growthRateConverges, limInfEqLimSup, and exponentialBaseExists (∃c>1 with growthRate → log c) state it in three equivalent forms. Theorem limit_determines_base (proved) constructs the base c = exp(L) from a limit L via Real.log_exp. ExponentialBehavior c is defined for ε ∈ (0, c) as (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ eventually, and base_implies_behavior now *proves* it from convergence: with δ = min(log(c+ε)−log c, log c−log(c−ε)) > 0, convergence puts log(h n)/n within δ of log c eventually, and exp∘log monotonicity converts the two-sided log bound into the power bounds. The ε < c restriction is essential — the unrestricted ∀ ε > 0 form is false.",
-      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). `limit_determines_base` constructs $c = e^L$ from the limit $L$ via `Real.log_exp`. `base_implies_behavior` is now fully proved (no sorry): assuming convergence to $\\log c$, $h$ has `ExponentialBehavior c` for every $\\varepsilon \\in (0, c)$. The restriction $\\varepsilon < c$ keeps the lower base $c-\\varepsilon$ positive; the unrestricted $\\forall \\varepsilon > 0$ statement is genuinely false. `growthRateConverges`, `limInfEqLimSup`, `exponentialBaseExists` remain definitions of the open question, not claims."
+      "title": "Part IV: The Open Question and its Characterizations",
+      "startLine": 173,
+      "endLine": 388,
+      "summary": "Part IV banner (lines 173–176). States the open problem in three forms — `growthRateConverges`, `limInfEqLimSup`, `exponentialBaseExists` — and proves the surrounding structure: `limit_determines_base` (a limit $L$ yields base $e^L$), `convergent_limit_in_pyber_window` (any limit lies in $[\\log c_1,\\log c_2]$), `convergent_limit_pos` (any limit is $>0$, so the $L>0$ hypothesis is free), the two-sided `ExponentialBehavior c` predicate, and the full equivalence `exponential_behavior_iff_base` (`base_implies_behavior` + its converse `behavior_implies_base`) together with `exponentialBaseExists_iff_converges`.",
+      "mathContext": "Open: $\\exists c > 1,\\ \\lim r(n) = \\log c$, i.e. $h(n) = \\Theta(c^n)$. `ExponentialBehavior c`: for every $\\varepsilon\\in(0,c)$, eventually $(c-\\varepsilon)^n \\le h(n) \\le (c+\\varepsilon)^n$ — the $\\varepsilon<c$ restriction is essential (the unrestricted form is false). The characterization $\\text{Tendsto}\\,r\\,(\\text{nhds}(\\log c)) \\iff \\text{ExponentialBehavior}\\,c$ is proved both ways via continuity of $\\log$ at $c$; and `exponentialBaseExists \\iff growthRateConverges` because any limit is automatically positive."
     },
     {
       "id": "known-implications",
-      "title": "Part V: Known Implications",
-      "startLine": 201,
-      "endLine": 269,
-      "summary": "Part V block comment (lines 201-204) asks what an answer would tell us. AsymptoticallyMultiplicative (line 208) is a structural Prop encoding an asymptotic sub/supermultiplicativity constraint on the covering numbers. submultiplicative_implies_convergence (214-254, fully proved) applies Fekete's lemma via Mathlib's Subadditive.tendsto_lim: if h(m+n) ≤ h(m)·h(n) then growthRateConverges, using that log∘h is subadditive and f(n)/n is bounded below by 0. growthRate_1 (257, proved) records the trivial case h(1)=1 ⟹ growthRate 1 = 0. erdos117OQ01 (262) names the open question (exponentialBaseExists). Lines 264-267: #check statements; line 269: end namespace.",
-      "mathContext": "Fekete's lemma: for subadditive $f$ (here $f=\\log\\circ h$), $f(n)/n \\to \\inf_n f(n)/n$. Submultiplicativity $h(m+n)\\le h(m)h(n)$ makes $\\log h$ subadditive, so `Subadditive.tendsto_lim` yields convergence of $\\log h(n)/n = r(n)$. The base case $h(1)=1$ gives $r(1)=\\log 1 = 0$."
+      "title": "Part V: Known Implications and Quantitative Near-Convergence",
+      "startLine": 389,
+      "endLine": 614,
+      "summary": "Part V banner (lines 389–392). `AsymptoticallyMultiplicative` (line 396) and Fekete's lemma: `submultiplicative_implies_convergence` (line 402) derives `growthRateConverges` from $h(m+n)\\le h(m)h(n)$ via `Subadditive.tendsto_lim`. Positivity facts (`growthRate_1`@445, `growthRate_pos`@453, `growthRateLimInf_pos`@461, `growthRateLimSup_pos`@471). Shared-constant windows `growthRate_window` (479) and `limInfLimSup_window` (506) feed the oscillation bound `growthRate_oscillation_le_window` (558): $\\text{limsup}-\\text{liminf} \\le \\log(c_2/c_1)$. Finally the three equivalent restatements of the open question — `converges_iff_limInf_eq_limSup` (573), `exponentialBaseExists_iff_limInfEqLimSup` (592), `converges_iff_oscillation_zero` (601) — and the naming `erdos117OQ01 := exponentialBaseExists` (607).",
+      "mathContext": "Fekete: for subadditive $f=\\log\\circ h$, $f(n)/n \\to \\inf_n f(n)/n$, so $h(m+n)\\le h(m)h(n)$ forces convergence. The oscillation $\\text{limsup}-\\text{liminf}$ is bounded by the fixed log-width $\\log(c_2/c_1)$ of Pyber's window, uniformly in $n$; the open question is exactly whether this bounded oscillation vanishes. All three phrasings — convergence, $\\text{liminf}=\\text{limsup}$, and zero oscillation — are proved equivalent, so Erdős #117-OQ-01 is a single statement about a bounded sequence's cluster values."
     }
   ],
   "conclusion": {
