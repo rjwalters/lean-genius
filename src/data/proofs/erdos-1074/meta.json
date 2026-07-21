@@ -103,52 +103,68 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: EHS Numbers and Pillai Primes",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Header docstring and imports for Erdős #1074. EHS numbers are $m \\geq 1$ admitting a prime $p \\not\\equiv 1 \\pmod m$ with $p \\mid m! + 1$; Pillai primes are the primes arising as such witnesses. The two open questions ask whether the densities of $S = \\text{EHS}$ and $P = \\text{Pillai}$ exist.",
+      "mathContext": "$S$ begins $8, 9, 13, 14, \\ldots$ (OEIS A064164) and $P$ begins $23, 29, 59, 61, \\ldots$ (OEIS A063980). Both are known infinite (Erdős–Hardy–Subbarao); the density questions remain OPEN."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
-      "summary": "EHSNumbers and PillaiPrimes set definitions",
-      "startLine": 34,
-      "endLine": 47,
-      "mathContext": "EHSNumbers and PillaiPrimes set definitions"
+      "summary": "Defines `EHSNumbers` $= \\{m \\geq 1 : \\exists\\, p \\text{ prime},\\ p \\not\\equiv 1 \\ [\\mathrm{MOD}\\ m],\\ p \\mid m! + 1\\}$ and `PillaiPrimes` $= \\{p \\text{ prime} : \\exists\\, m \\geq 1,\\ p \\not\\equiv 1\\ [\\mathrm{MOD}\\ m],\\ p \\mid m! + 1\\}$.",
+      "startLine": 37,
+      "endLine": 55,
+      "mathContext": "The positivity requirement $1 \\leq m$ is essential: without it the modulus $0$ degenerates $\\equiv [\\mathrm{MOD}\\ 0]$ to equality and admits the spurious member $2$ (via $m = 0$, $0! + 1 = 2$)."
     },
     {
       "id": "chowla-example",
       "title": "Chowla's Example",
-      "summary": "23 is a Pillai prime: 14! + 1 ≡ 0 (mod 23)",
-      "startLine": 48,
-      "endLine": 73,
-      "mathContext": "23 is a Pillai prime: 14! + 1 ≡ 0 (mod 23)"
+      "summary": "Chowla's example: `pillai_23` proves $23 \\in$ `PillaiPrimes`, witnessed by $m = 14$. Supporting facts $23 \\mid 14! + 1$, $23 \\not\\equiv 1\\ [\\mathrm{MOD}\\ 14]$, and $\\mathrm{Prime}(23)$ are discharged by `native_decide`.",
+      "startLine": 56,
+      "endLine": 81,
+      "mathContext": "Pillai (1930) asked whether any such primes exist; Chowla answered affirmatively via $14! + 1 \\equiv 0 \\pmod{23}$. Note $23 \\equiv 9 \\pmod{14}$, so the non-congruence condition holds."
     },
     {
       "id": "ehs-examples",
       "title": "EHS Number Examples",
-      "summary": "Verified: 8 and 9 are EHS numbers",
-      "startLine": 74,
-      "endLine": 97,
-      "mathContext": "Verified: 8 and 9 are EHS numbers"
+      "summary": "`ehs_8` and `ehs_9` prove $8, 9 \\in$ `EHSNumbers`. The prime $61$ witnesses $8$ ($8! + 1 = 40321 = 61 \\times 661$, $61 \\equiv 5 \\bmod 8$); the prime $71$ witnesses $9$ ($9! + 1 = 362881 = 19 \\times 71 \\times 269$, $71 \\equiv 8 \\bmod 9$). Divisibility/primality checks use `native_decide`.",
+      "startLine": 82,
+      "endLine": 105,
+      "mathContext": "$8$ is the smallest EHS number. Each membership unfolds to a prime witness plus the two conditions $p \\not\\equiv 1\\ [\\mathrm{MOD}\\ m]$ and $p \\mid m! + 1$, all decidable numerically."
     },
     {
-      "id": "infinitude",
-      "title": "Infinitude Results",
-      "summary": "Both sets are infinite (Erdős-Hardy-Subbarao)",
-      "startLine": 98,
-      "endLine": 116,
-      "mathContext": "Both sets are infinite (Erdős-Hardy-Subbarao)"
-    },
-    {
-      "id": "open-problems",
-      "title": "Open Density Problems",
-      "summary": "Do the asymptotic densities exist?",
-      "startLine": 117,
-      "endLine": 146,
-      "mathContext": "Do the asymptotic densities exist?"
+      "id": "structural-results",
+      "title": "Structural Results",
+      "startLine": 106,
+      "endLine": 157,
+      "summary": "Fully-proved structural skeleton: `prime_dvd_pred_factorial_add_one` (Wilson: $p \\mid (p-1)! + 1$ via `ZMod.wilsons_lemma`), `prime_cong_one_mod_pred` ($p \\equiv 1\\ [\\mathrm{MOD}\\ p-1]$), `wilson_witness_excluded` (the canonical Wilson witness $m = p-1$ is always excluded by non-congruence), and `mem_pillai_iff` (EHS/Pillai duality).",
+      "mathContext": "These are proved from `propext`/`Classical.choice`/`Quot.sound` only — no `native_decide`. They explain *why* the sets are nontrivial: the Wilson witness satisfies the divisibility but also $p \\equiv 1\\ [\\mathrm{MOD}\\ (p-1)]$, so a genuine witness must avoid it."
     },
     {
       "id": "effective-bounds",
       "title": "Effective Witness Bounds",
-      "summary": "Witness window 1 ≤ m ≤ p-2 and the lower bound p ≥ 3 for Pillai primes",
+      "summary": "Effective witness window: `witness_lt_of_dvd_factorial_add_one` ($p \\mid m! + 1 \\Rightarrow m < p$), `witness_ne_pred` ($m \\neq p-1$), `witness_add_two_le` ($1 \\leq m \\leq p-2$), `pillai_bounded_witness`, and `three_le_of_mem_pillai` ($p \\geq 3$).",
       "startLine": 158,
-      "endLine": 209,
-      "mathContext": "p | m!+1 forces m < p; excluding the Wilson witness m=p-1 gives 1 ≤ m ≤ p-2, hence every Pillai prime is ≥ 3"
+      "endLine": 210,
+      "mathContext": "The bounded window $1 \\leq m \\leq p-2$ makes `PillaiPrimes` membership decidable by a finite search per prime. The structural lower bound $p \\geq 3$ (true minimum is $23$) follows from $m = 1$ already forcing $p \\geq 3$."
+    },
+    {
+      "id": "infinitude",
+      "title": "Infinitude Results",
+      "summary": "Documents (without asserting) that both $S$ and $P$ are infinite (Erdős–Hardy–Subbarao). These deep number-theoretic results are stated in comments only and are not formalized as theorems in this file.",
+      "startLine": 211,
+      "endLine": 228,
+      "mathContext": "The infinitude proofs use prime-factorization properties of factorial values and the distribution of primes in residue classes — beyond the elementary scope formalized here."
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Density Problems",
+      "summary": "The headline OPEN questions of #1074, stated in comments: does the natural density of EHS numbers exist (Erdős–Hardy–Subbarao conjectured $1$)? Does the relative density of Pillai primes among all primes exist (estimated $\\sim 0.5$–$0.6$, possibly $\\to 1$)?",
+      "startLine": 229,
+      "endLine": 259,
+      "mathContext": "$\\lim_{x\\to\\infty} |S \\cap [1,x]|/x$ and $\\lim_{x\\to\\infty} |P \\cap [1,x]|/\\pi(x)$. Hardy–Subbarao computed all EHS numbers up to $2^{10}$; these limits cannot be settled by finite computation."
     }
   ],
   "conclusion": {
