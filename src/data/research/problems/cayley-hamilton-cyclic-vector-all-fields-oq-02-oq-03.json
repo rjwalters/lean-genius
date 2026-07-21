@@ -29,21 +29,25 @@
     "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom Docker): Frobenius EQUALITY dim C(T)=dim V for cyclic endomorphisms (finrank_centralizer_eq_of_cyclic), via injective evaluation-at-v map for ≤ plus the existing general endK_centralizer_bound for ≥. Completes the dimension-count edge of the nonderogatory⟺cyclic⟺C(T)=K[T] triangle in Module.End.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, host-verified 0-axiom): Packaged the endomorphism centralizer=K[T] result as a canonical SUBALGEBRA equality end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for cyclic T, combining the two proven inclusions into one reusable statement. The core lift to Module.End (commuting_end_is_polynomial + Frobenius dimension equality) is complete. The deep converse (dim C(T)=n ⟹ cyclic vector exists, needing rational canonical form) remains open and is not session-sized.",
     "builtItems": [
       "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
       "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original.",
-      "commuting_end_eq_of_apply_eq, finrank_centralizer_le_of_cyclic, finrank_centralizer_eq_of_cyclic in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean (0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound])"
+      "commuting_end_eq_of_apply_eq, finrank_centralizer_le_of_cyclic, finrank_centralizer_eq_of_cyclic in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean (0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound])",
+      "end_centralizer_eq_adjoin in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean — Subalgebra.centralizer K {T} = Algebra.adjoin K {T} for cyclic T, 0-axiom host-verified"
     ],
     "insights": [
       "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
       "The endomorphism formulation is strictly SIMPLER than the matrix parent at the final step: agreement of A and p(T) on the Krylov basis closes with a single Basis.ext, replacing the parent column-by-column matrix recovery (ext i j + Pi.single + dotProduct).",
       "endKrylov_linearIndependent and the two commutation lemmas need no FiniteDimensional hypothesis (stated with omit [FiniteDimensional K V] in); only the main theorem uses finrank/basisOfLinearIndependentOfCardEqFinrank; the finrank=0 case is a Subsingleton on Module.End K V (Module.finrank_zero_iff). Module.End.mul_apply is the (f*g) v = f (g v) rewrite.",
-      "Frobenius bound is EQUALITY in the cyclic case: for T:Module.End K V with a cyclic vector, dim_K C(T) = dim_K V. The clean ≤ half is that evaluation A↦A·v is injective on the centralizer (operators commuting with T agreeing on a cyclic vector agree on the whole Krylov basis); ≥ is the general endK_centralizer_bound. This is the minimal-centralizer/nonderogatory edge of the triangle."
+      "Frobenius bound is EQUALITY in the cyclic case: for T:Module.End K V with a cyclic vector, dim_K C(T) = dim_K V. The clean ≤ half is that evaluation A↦A·v is injective on the centralizer (operators commuting with T agreeing on a cyclic vector agree on the whole Krylov basis); ≥ is the general endK_centralizer_bound. This is the minimal-centralizer/nonderogatory edge of the triangle.",
+      "Centralizer=K[T] now packaged as a subalgebra equality: end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for a cyclic endomorphism, combining commuting_end_is_polynomial (⊆) and aeval_end_commute (⊇).",
+      "Recipe: Algebra.adjoin_singleton_eq_range_aeval rewrites adjoin K {T} to (aeval T).range; Subalgebra.mem_centralizer_iff unfolds centralizer membership to ∀ g∈s, g*a=a*g; range membership discharged by the anonymous ⟨p, _⟩ constructor.",
+      "Gotcha: subst hg with hg : g = T eliminates T (not g), breaking later references to T; use rw [hg] to rewrite g→T instead."
     ],
     "nextSteps": [
-      "Lift the last equivalence edge to Module.End: centralizer = K[T] (or dim C(T)=n) IMPLIES T has a cyclic vector — the converse direction completing nonderogatory⟺cyclic⟺C(T)=K[T].",
-      "Optionally package C(T)=K[T] as an equality of subalgebras (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) in the Module.End setting."
+      "The hard converse: dim C(T)=n (or centralizer=K[T]) IMPLIES T has a cyclic vector — completes nonderogatory⟺cyclic⟺C(T)=K[T]. Requires rational canonical form / structure theory; not session-sized.",
+      "Optionally: end_commutant_commutative as a CommRing/CommMonoid instance on the centralizer subalgebra."
     ]
   },
   "tags": [
@@ -59,7 +63,7 @@
     "open-question"
   ],
   "started": "2026-07-09T00:00:00Z",
-  "lastUpdate": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-20",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
