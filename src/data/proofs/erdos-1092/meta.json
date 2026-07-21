@@ -67,23 +67,23 @@
       "id": "chromatic-reduce",
       "title": "Chromatic Reduction by Edge Deletion",
       "startLine": 44,
-      "endLine": 53,
+      "endLine": 64,
       "summary": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges.",
       "mathContext": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges."
     },
     {
       "id": "threshold",
       "title": "The Threshold Function $f_r(n)$",
-      "startLine": 54,
-      "endLine": 63,
+      "startLine": 65,
+      "endLine": 85,
       "summary": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem.",
       "mathContext": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem."
     },
     {
       "id": "questions",
       "title": "The Main Conjectures",
-      "startLine": 64,
-      "endLine": 75,
+      "startLine": 86,
+      "endLine": 93,
       "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain.",
       "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain."
     },
@@ -91,7 +91,7 @@
       "id": "rodl-bounds",
       "title": "Rödl's Construction and Structural Properties",
       "startLine": 94,
-      "endLine": 160,
+      "endLine": 164,
       "summary": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, Rödl upper bound) with counterexamples. No axioms remain.",
       "mathContext": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, Rödl upper bound) with counterexamples. No axioms remain."
     }
