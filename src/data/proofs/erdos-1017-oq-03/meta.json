@@ -94,6 +94,14 @@
       "startLine": 129,
       "endLine": 170,
       "mathContext": "The quarter-square multiplication identity follows from turanBound_four_mul plus the matching parity bits of m+n and m-n (they differ by 2n); the second difference is the increment of the increment floor((n+1)/2), discharged by omega; convexity is the non-negativity of that second difference."
+    },
+    {
+      "id": "extremal-product",
+      "title": "Extremal Product Characterization: T(n) = maxₐ₊ᵦ₌ₙ a·b",
+      "summary": "The §8 extremal principle behind the closed form. turanBound_ge_mul (every bipartition product a·b ≤ T(a+b), via 4ab = (a+b)² − (a−b)² with the odd-parity deficit absorbed by (a−b)² ≥ 1), turanBound_eq_mul_split (the balanced split ⌊n/2⌋·(n−⌊n/2⌋) attains T(n)), and turanBound_isGreatest_product (T(n) is the IsGreatest element of the achievable-product set) — the Turán/Mantel edge-count optimum realized by the complete bipartite graph K_{a,b}. Closes with a Significance prose block.",
+      "startLine": 171,
+      "endLine": 273,
+      "mathContext": "$T(n)=\\lfloor n^2/4\\rfloor=\\max_{a+b=n}ab$, achieved by the balanced split; AM-GM optimum $4ab=(a+b)^2-(a-b)^2$, the Turán/Mantel bound for $K_{a,b}$."
     }
   ],
   "conclusion": {
