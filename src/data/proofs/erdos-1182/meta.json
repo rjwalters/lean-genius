@@ -71,11 +71,19 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring for Erd\u0151s #1182 (Burr\u2013Erd\u0151s\u2013Faudree\u2013Rousseau\u2013Schelp): the edge thresholds f(n) and F(n) for connected n-vertex graphs G with R(K\u2083,G)=2n\u22121, the known bounds, and computed small values; followed by imports and the namespace.",
+      "mathContext": "$F(n)\\ge(17n+1)/15$; does $F(n)/n\\to\\infty$?"
+    },
+    {
       "id": "ramsey-numbers",
       "title": "Ramsey Number Definition",
       "summary": "ramseyNumber(s, t) via sInf over 2-colorings of complete graphs",
       "startLine": 40,
-      "endLine": 46,
+      "endLine": 47,
       "mathContext": "R(s,t) = min r such that any 2-coloring of K_r has a red K_s or blue K_t"
     },
     {
@@ -83,7 +91,7 @@
       "title": "Graph Infrastructure",
       "summary": "Graph structure, edgeCount, connectivity, and graphRamseyK3 definitions",
       "startLine": 48,
-      "endLine": 75,
+      "endLine": 76,
       "mathContext": "Custom Graph type on Fin n with adj/symm/irrefl, edge counting via filtered Finset, connectivity via ReflTransGen"
     },
     {
@@ -91,7 +99,7 @@
       "title": "Threshold Functions f(n) and F(n)",
       "summary": "f_threshold and bigF_threshold definitions via sSup",
       "startLine": 77,
-      "endLine": 97,
+      "endLine": 98,
       "mathContext": "f(n) = sSup{edges | exists G with edgeCount = e and R(K_3,G) = 2n-1}; F(n) = sSup{e | all connected G with <= e edges satisfy R(K_3,G) = 2n-1}"
     },
     {
@@ -99,7 +107,7 @@
       "title": "Axiomatized Known Results",
       "summary": "Chvatal's tree theorem, connected_min_edges, and BEFRS lower bound",
       "startLine": 99,
-      "endLine": 111,
+      "endLine": 112,
       "mathContext": "Chvatal (1977), connected graph minimum edges, and BEFRS (1980) linear lower bound"
     },
     {
@@ -107,7 +115,7 @@
       "title": "Small Case Infrastructure (K_2)",
       "summary": "completeGraph2 construction with edge count and connectivity proofs",
       "startLine": 113,
-      "endLine": 155,
+      "endLine": 156,
       "mathContext": "K_2 has exactly 1 edge, is connected, and serves as the base case for f(2) and F(2)"
     },
     {
@@ -115,7 +123,7 @@
       "title": "Proved Bounds",
       "summary": "F(n) >= n-1, f(2) = 1, F(2) = 1 -- all proved from axioms",
       "startLine": 157,
-      "endLine": 230,
+      "endLine": 231,
       "mathContext": "bigF_lower_bound_tree from Chvatal + connectivity; f_val_2 and bigF_val_2 via K_2 construction"
     },
     {
@@ -123,8 +131,16 @@
       "title": "The Main Open Question",
       "summary": "erdos_1182_conjecture: does F(n)/n -> infinity?",
       "startLine": 232,
-      "endLine": 242,
+      "endLine": 246,
       "mathContext": "For all C, exists N_0 such that F(n) >= C*n for n >= N_0"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 247,
+      "endLine": 280,
+      "summary": "Closing summary: problem status (OPEN), the 3 axioms (`chvatal_tree_ramsey`, `bigF_lower_linear`, `connected_min_edges`), the 3 proved bounds (`bigF_lower_bound_tree` F(n)\u2265n\u22121, `f_val_2`, `bigF_val_2`), the 6 definitions, and the note that `bigF_threshold` restricts to connected graphs per the original BEFRS (1980) definition.",
+      "mathContext": "3 axioms; $F(n)\\ge n-1$ and $f(2)=F(2)=1$ proved."
     }
   ],
   "conclusion": {
