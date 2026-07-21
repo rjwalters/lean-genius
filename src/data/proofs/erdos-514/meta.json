@@ -55,8 +55,8 @@
       "boas_existence axiom: path with super-polynomial growth exists",
       "erdos_514_part1 theorem: formalizes Boas's result",
       "DominatesMaxModulusPower definition: faster than M(r)^ε growth",
-      "path_length_bound_conjecture: formalized open Part 2 conjecture",
-      "faster_than_max_modulus_conjecture: formalized open Part 3 conjecture",
+      "Part 2 (path length estimates): stated as an open problem in comments only; not formalized as a theorem",
+      "Part 3 (faster than M(r)^ε growth): stated as an open problem in comments; property captured by DominatesMaxModulusPower definition, existence not formalized as a theorem",
       "pathLengthUpTo definition: arc length via polygonal approximation",
       "orderOfGrowth definition: order via sSup characterization",
       "Examples: exponential and sine functions",
@@ -73,7 +73,7 @@
     "historicalContext": "**Erdős Problem #514**\n\nThis problem explores the growth behavior of transcendental entire functions along paths to infinity in the complex plane.\n\n**Key History:**\n- Erdős posed this problem in [Er61, p.249] and [Er82e]\n- The problem has three parts, addressing different aspects of growth along paths\n- Boas (unpublished) proved Part 1: such a path always exists\n- Parts 2 and 3 remain open, concerning path length estimates and M(r)^ε growth\n\n**Mathematical Setting:**\n- An entire function is one that is analytic on all of ℂ\n- A transcendental entire function grows faster than any polynomial\n- M(r) = max_{|z|=r}|f(z)| is the maximum modulus function\n- The problem asks about the existence of special paths along which growth is exceptionally fast",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet f(z) be a transcendental entire function.\n\n**Part 1:** Does there exist a path L such that for every n, |f(z)/z^n| → ∞ as z → ∞ along L?\n\n**Answer: YES** (Boas, unpublished)\n\n**Part 2:** Can the length of this path be estimated in terms of M(r)?\n\n**Status: OPEN**\n\n**Part 3:** Does there exist a path along which |f(z)| grows faster than M(r)^ε for any fixed ε > 0?\n\n**Status: OPEN**",
     "text": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| → ∞ as z → ∞ along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via DifferentiableAt at every point\n\n2. **Maximum Modulus:** Define M(r) as supremum over circles of radius r\n\n3. **Transcendental Functions:** Define as entire functions dominating all polynomial growth\n\n4. **Paths to Infinity:** Define as continuous curves with |γ(t)| → ∞\n\n5. **Super-Polynomial Growth:** Define HasSuperPolynomialGrowth for paths where |f(γ(t))/γ(t)^n| → ∞ for all n\n\n6. **Boas's Result:** Axiomatize existence of such path for transcendental functions\n\n7. **Open Problems:** Mark Parts 2 and 3 as open with placeholder axioms\n\n8. **Examples:** Include exponential and sine as classical transcendental entire functions",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via DifferentiableAt at every point\n\n2. **Maximum Modulus:** Define M(r) as supremum over circles of radius r\n\n3. **Transcendental Functions:** Define as entire functions dominating all polynomial growth\n\n4. **Paths to Infinity:** Define as continuous curves with |γ(t)| → ∞\n\n5. **Super-Polynomial Growth:** Define HasSuperPolynomialGrowth for paths where |f(γ(t))/γ(t)^n| → ∞ for all n\n\n6. **Boas's Result:** Axiomatize existence of such path for transcendental functions\n\n7. **Open Problems:** Mark Parts 2 and 3 as open (described in comments; no placeholder axioms or theorems)\n\n8. **Examples:** Include exponential and sine as classical transcendental entire functions",
     "keyInsights": [
       "**Entire Functions:** A function f : ℂ → ℂ is entire if it is differentiable at every point, having a globally convergent Taylor series",
       "**Transcendental vs Polynomial:** Transcendental entire functions (like e^z, sin z) grow faster than any polynomial at infinity",
@@ -115,18 +115,18 @@
     {
       "id": "path-length",
       "title": "Path Length Estimates",
-      "summary": "pathLengthUpTo, path_length_bound_conjecture (Part 2 open problem)",
+      "summary": "pathLengthUpTo definition (Part 2 open problem, stated in comments only)",
       "startLine": 154,
       "endLine": 183,
-      "mathContext": "Bound: pathLengthUpTo, path_length_bound_conjecture (Part 2 open problem)"
+      "mathContext": "pathLengthUpTo definition; Part 2 (path length bound) remains open, described only in comments"
     },
     {
       "id": "faster-growth",
       "title": "Faster Than M(r)^ε Growth",
-      "summary": "DominatesMaxModulusPower, faster_than_max_modulus_conjecture (Part 3 open problem)",
+      "summary": "DominatesMaxModulusPower definition (Part 3 open problem, stated in comments only)",
       "startLine": 184,
       "endLine": 207,
-      "mathContext": "Mathematical content: DominatesMaxModulusPower, faster_than_max_modulus_conjecture (Part 3 open problem)"
+      "mathContext": "DominatesMaxModulusPower definition; Part 3 (faster-than-M(r)^ε growth) remains open, described only in comments"
     },
     {
       "id": "examples",
