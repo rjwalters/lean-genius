@@ -87,43 +87,51 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 28,
       "summary": "Module documentation explaining the conjecture and opening namespaces for graphs, filters, and real numbers."
     },
     {
       "id": "background",
       "title": "Background on Erdős–Hajnal",
-      "startLine": 32,
-      "endLine": 49,
+      "startLine": 29,
+      "endLine": 43,
       "summary": "Documentation explaining the connection to Ramsey theory and why forbidding subgraphs might help."
     },
     {
       "id": "main-definition",
       "title": "Erdős-Hajnal Lower Bound",
-      "startLine": 50,
-      "endLine": 68,
+      "startLine": 44,
+      "endLine": 64,
       "summary": "The key definition: when is f(n) a valid lower bound for graph H?"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 69,
-      "endLine": 90,
+      "startLine": 65,
+      "endLine": 86,
       "summary": "States ErdosHajnalConjecture as a Prop, asking for polynomial bounds."
     },
     {
       "id": "partial-results",
       "title": "Partial Results (Axioms)",
-      "startLine": 91,
-      "endLine": 119,
+      "startLine": 87,
+      "endLine": 112,
       "summary": "Axioms for the 1989 and 2023 bounds that have been proved."
     },
     {
       "id": "examples",
       "title": "Example Graphs",
-      "startLine": 120,
-      "endLine": 137,
+      "startLine": 113,
+      "endLine": 138,
       "summary": "Concrete definitions of triangle and 3-path graphs, plus axiom for paths."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (Axiom-Free)",
+      "startLine": 139,
+      "endLine": 170,
+      "summary": "Two axiom-free foundational lemmas: `isErdosHajnalLowerBound_zero` (the constant $0$ function is always a valid Erdos-Hajnal lower bound) and `IsErdosHajnalLowerBound.mono` (a valid lower bound stays valid under pointwise decrease). These are the only machine-checked results in the file; the quantitative bounds remain axioms.",
+      "mathContext": "If $f$ is admissible and $g\\le f$ pointwise then $g$ is admissible; and $f\\equiv 0$ is trivially admissible."
     }
   ],
   "conclusion": {

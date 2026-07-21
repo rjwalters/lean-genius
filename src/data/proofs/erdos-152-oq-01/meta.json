@@ -58,7 +58,7 @@
       "id": "endpoint-lemmas",
       "title": "Helper Lemmas: Endpoint Isolation Conditions",
       "startLine": 18,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Four private lemmas prove when 2·min±1 and 2·max±1 are absent from A+A: min_sum_left_isolated (2·min−1 below minimum sum), min_sum_right_isolated (2·min+1 needs min+1∈A), max_sum_left_isolated (2·max−1 needs max−1∈A), max_sum_right_isolated (2·max+1 above maximum sum).",
       "mathContext": "For $A$ with $\\min A = m,\\ \\max A = M$: $2m-1 \\notin A+A$ (below $2m$); $2m+1 \\notin A+A$ unless $m+1 \\in A$; $2M-1 \\notin A+A$ unless $M-1 \\in A$; $2M+1 \\notin A+A$ (above $2M$). These bound the four near-endpoint sums."
     },
@@ -74,31 +74,31 @@
       "id": "main-theorem-dispatch",
       "title": "Main Theorem: Statement, Case Dispatch, and the Two-Pairs Contradiction",
       "startLine": 133,
-      "endLine": 158,
+      "endLine": 179,
       "summary": "gap_existence_two: for Sidon A with |A| ≥ 7 and min ≥ 1, isolatedCount ≥ 2. After fixing m = min(A), M = max(A), the proof branches on the 2×2 case split (M−1 ∈ A?) × (m+1 ∈ A?). The first branch handled here is the both-consecutive-pairs case: if both (m, m+1) and (M−1, M) lie in A, sidon_diff_injective collapses A into {m, m+1}, forcing |A| ≤ 2 and contradicting |A| ≥ 7.",
       "mathContext": "An element $s \\in A+A$ is isolated if $s\\pm1 \\notin A+A$. The proof opens `by_cases hM1 : M-1 ∈ A` then `by_cases hm1 : m+1 ∈ A`, producing four branches. The both-pairs branch derives the contradiction from $m + M = (m+1) + (M-1)$: Sidon injectivity forces $\\{m, M\\} = \\{m+1, M-1\\}$, so $M - m \\leq 1$ and $A \\subseteq \\{m, m+1\\}$, giving $|A| \\leq 2 < 7$."
     },
     {
       "id": "one-pair-at-max",
       "title": "Case: One Consecutive Pair at the Maximum (Second-Smallest Element)",
-      "startLine": 159,
-      "endLine": 233,
+      "startLine": 180,
+      "endLine": 260,
       "summary": "Branch M−1 ∈ A, m+1 ∉ A. Here 2·min is isolated, and a second isolated element is built from s₂ = min(A \\ {m}), the second-smallest element. Since m+1 ∉ A we get s₂ ≥ m+2; the Sidon property forces s₂+1 ∉ A (else (s₂+1)+(M−1) = s₂+M gives a forbidden second representation, collapsing A to ≤ 3 elements). Then m+s₂ is isolated, and {2m, m+s₂} gives isolatedCount ≥ 2.",
       "mathContext": "With $s_2 = \\min(A \\setminus \\{m\\})$: from $m+1 \\notin A$, $s_2 \\geq m+2$. Sidon gives $s_2 + 1 \\notin A$ because $s_2 + M = (s_2+1) + (M-1)$ would be a second representation, forcing $\\{s_2, M\\} = \\{s_2+1, M-1\\}$ — impossible. Hence both $m + s_2 \\pm 1 \\notin A+A$ (the gap $s_2 \\geq m+2$ kills the left neighbour, $s_2+1 \\notin A$ kills the right), so $m+s_2$ joins $2m$ as a second isolated element."
     },
     {
       "id": "one-pair-at-min",
       "title": "Case: One Consecutive Pair at the Minimum (Second-Largest Element)",
-      "startLine": 234,
-      "endLine": 317,
+      "startLine": 261,
+      "endLine": 352,
       "summary": "Mirror branch M−1 ∉ A, m+1 ∈ A. Now 2·max is isolated, and the second isolated element comes from sL = max(A \\ {M}), the second-largest element. Since M−1 ∉ A, sL ≤ M−2; Sidon forces sL−1 ∉ A (else sL+m = (sL−1)+(m+1) collapses A to ≤ 3 elements), and sL+1 ∉ A since sL is the largest element below M. Then M+sL is isolated, and {2M, M+sL} gives isolatedCount ≥ 2.",
       "mathContext": "With $s_L = \\max(A \\setminus \\{M\\})$: from $M-1 \\notin A$, $s_L \\leq M-2$. Sidon gives $s_L - 1 \\notin A$ because $s_L + m = (s_L-1) + (m+1)$ would be a second representation of the same sum. Both neighbours of $M + s_L$ are absent: $M + s_L + 1 = (M+1) + s_L$ exceeds $\\max A$, and $M + s_L - 1 = M + (s_L-1)$ needs $s_L-1 \\in A$. So $M+s_L$ joins $2M$ as a second isolated element — the exact reflection of the second-smallest argument."
     },
     {
       "id": "final-no-pair-delegate",
       "title": "Case: No Consecutive Pair (Delegation to the Easy Case)",
-      "startLine": 318,
-      "endLine": 319,
+      "startLine": 353,
+      "endLine": 355,
       "summary": "Final branch M−1 ∉ A, m+1 ∉ A. With no consecutive pair at either endpoint, both 2·min and 2·max are isolated, so the goal reduces directly to two_isolated_no_consecutive, completing the 2×2 case analysis.",
       "mathContext": "When neither $\\min(A)+1$ nor $\\max(A)-1$ lies in $A$, all four endpoint conditions hold and $\\mathrm{isolatedCount}(A) \\geq 2$ follows from `two_isolated_no_consecutive`. This closes the last of the four branches of `by_cases hM1` / `by_cases hm1`, so the four exhaustive cases together establish $\\mathrm{isolatedCount}(A) \\geq 2$."
     }
