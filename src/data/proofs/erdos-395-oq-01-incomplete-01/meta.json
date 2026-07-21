@@ -38,7 +38,7 @@
       "counterexample_always_large_proved: |sum| ≥ √2 for all sign vectors, 0 axioms",
       "counterexample_always_large_proved: original threshold-1 problem is false, 0 axioms"
     ],
-    "theoremCount": 5,
+    "theoremCount": 4,
     "definitionCount": 0
   },
   "crossReferences": [
@@ -88,17 +88,9 @@
       "id": "sec-preamble",
       "title": "Preamble: Header, Imports, Namespace",
       "startLine": 1,
-      "endLine": 29,
-      "summary": "File docstring laying out the proof strategy (S = ε₀ + iT decomposition; T ≠ 0 by parity; |S|² ≥ 1 + 1 = 2). Imports Mathlib.Analysis.Complex.Basic, Mathlib.Data.Complex.Basic, Mathlib.Tactic, and the parent file Proofs.Erdos395Problem (source of signedSum, signedSumAbs, isSignVector, carnielli_carolino_counterexample, and the placeholder counterexample_always_large axiom that this file removes). Opens Complex/Erdos395/Real/Finset namespaces and enters Erdos395OQ01Incomplete01.",
-      "mathContext": "$S = \\sum_k \\varepsilon_k z_k = \\varepsilon_0 + i T,\\ T = \\sum_{k=1}^{n-1} \\varepsilon_k$. Goal: $|S| \\ge \\sqrt{2}$, ax-free."
-    },
-    {
-      "id": "sec-zmod-helper",
-      "title": "Section I.A — ZMod 2 Helper: neg_one_zmod2",
-      "startLine": 30,
       "endLine": 35,
-      "summary": "Section I header (Helpers) plus the trivial-but-load-bearing lemma neg_one_zmod2: (-1 : ZMod 2) = 1, discharged by `decide`. This identifies both possible integer sign values ±1 with the same ZMod 2 representative 1, which is the kernel of the parity argument later in tail_nonzero.",
-      "mathContext": "$-1 \\equiv 1 \\pmod 2$. In Lean: `(-1 : ZMod 2) = 1` by `decide` (ZMod 2 has only 2 elements, equality is decidable)."
+      "summary": "File docstring laying out the proof strategy (S = ε₀ + iT decomposition; T ≠ 0 by parity; |S|² ≥ 1 + 1 = 2). Imports Mathlib.Analysis.Complex.Basic, Mathlib.Data.Complex.Basic, Mathlib.Tactic, and the parent file Proofs.Erdos395Problem (source of signedSum, signedSumAbs, isSignVector, carnielli_carolino_counterexample, and the placeholder counterexample_always_large axiom that this file removes). Opens Complex/Erdos395/Real/Finset namespaces, enters Erdos395OQ01Incomplete01, and begins the Section I (Helpers) comment header (no declarations yet).",
+      "mathContext": "$S = \\sum_k \\varepsilon_k z_k = \\varepsilon_0 + i T,\\ T = \\sum_{k=1}^{n-1} \\varepsilon_k$. Goal: $|S| \\ge \\sqrt{2}$, ax-free."
     },
     {
       "id": "sec-cc-re",
@@ -121,7 +113,7 @@
       "title": "Section I.D — The Parity Heart: tail_nonzero",
       "startLine": 72,
       "endLine": 90,
-      "summary": "tail_nonzero: T = ε₁ + ⋯ + εₙ₋₁ ≠ 0 (as an integer). The mathematical heart of the file. Proof by contradiction: assume T = 0, so T mod 2 = 0. Independently compute T mod 2 = sum of (ε_i mod 2); each ε_i ∈ {-1,+1} gives ε_i ≡ 1 mod 2 (using neg_one_zmod2 for the −1 branch). The tail has n − 1 terms (Finset.card_erase_of_mem + Finset.card_fin), so T ≡ n − 1 mod 2. With n even, write n − 1 = 2(k − 1) + 1; push_cast + simp on (2 : ZMod 2) = 0 leaves T ≡ 1 mod 2. Contradiction with T ≡ 0.",
+      "summary": "tail_nonzero: T = ε₁ + ⋯ + εₙ₋₁ ≠ 0 (as an integer). The mathematical heart of the file. Proof by contradiction: assume T = 0, so T mod 2 = 0. Independently compute T mod 2 = sum of (ε_i mod 2); each ε_i ∈ {-1,+1} gives ε_i ≡ 1 mod 2 (the −1 branch reduces to 1 in ZMod 2 by `simp`). The tail has n − 1 terms (Finset.card_erase_of_mem + Finset.card_fin), so T ≡ n − 1 mod 2. With n even, write n − 1 = 2(k − 1) + 1; push_cast + simp on (2 : ZMod 2) = 0 leaves T ≡ 1 mod 2. Contradiction with T ≡ 0.",
       "mathContext": "$T \\equiv \\underbrace{1 + 1 + \\cdots + 1}_{n-1\\ \\text{terms}} \\equiv n - 1 \\pmod 2$. With $n$ even, $n - 1$ is odd, so $T \\equiv 1 \\not\\equiv 0 \\pmod 2$, hence $T \\ne 0$ as an integer."
     },
     {
@@ -147,17 +139,10 @@
     "path": "Proofs/Erdos395OQ01Incomplete01.lean",
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 5
+    "theoremCount": 4
   },
   "sorries": 0,
   "mainTheorems": [
-    {
-      "name": "neg_one_zmod2",
-      "type": "lemma",
-      "statement": "$(-1 : \\mathbb{Z}/2\\mathbb{Z}) = 1$",
-      "significance": "Trivial-but-load-bearing kernel of the parity argument: lifts both possible integer sign values $\\pm 1$ to the same ZMod 2 representative $1$. Discharged by `decide` since ZMod 2 has only 2 elements.",
-      "description": "(-1 : ZMod 2) = 1, by `decide`. Trivial but load-bearing: lifts integer ±1 sign values to the ZMod 2 representative 1 in the parity argument."
-    },
     {
       "name": "cc_re",
       "type": "lemma",
@@ -177,7 +162,7 @@
       "type": "lemma",
       "statement": "$\\forall n \\ge 2, n$ even, $\\forall \\varepsilon \\in \\{-1,+1\\}^n\\colon T := \\sum_{k=1}^{n-1} \\varepsilon_k \\ne 0$",
       "significance": "**The mathematical heart of the file.** Proof: each $\\varepsilon_k \\equiv 1 \\pmod 2$; tail has $n - 1$ terms; $n$ even $\\Rightarrow n - 1$ odd; so $T \\equiv n - 1 \\equiv 1 \\not\\equiv 0 \\pmod 2$, hence $T \\ne 0$ as an integer. Mechanized in ZMod 2 via `decide`; $n - 1 = 2(k - 1) + 1$ extracted from `Nat.even_iff`.",
-      "description": "**The mathematical heart of the file.** T ≠ 0 as an integer. Proof: each ε_k ≡ 1 mod 2 (via `neg_one_zmod2` for the −1 case). The tail has n − 1 terms; n even ⇒ n − 1 odd. So T ≡ n − 1 ≡ 1 ≢ 0 (mod 2), hence T ≠ 0 as an integer. Mechanized in ZMod 2 via the `decide` tactic; n − 1 = 2(k−1) + 1 extracted from `Nat.even_iff`."
+      "description": "**The mathematical heart of the file.** T ≠ 0 as an integer. Proof: each ε_k ≡ 1 mod 2 (the −1 case reduces to 1 in ZMod 2 by `simp`). The tail has n − 1 terms; n even ⇒ n − 1 odd. So T ≡ n − 1 ≡ 1 ≢ 0 (mod 2), hence T ≠ 0 as an integer. Mechanized in ZMod 2 via the `decide` tactic; n − 1 = 2(k−1) + 1 extracted from `Nat.even_iff`."
     },
     {
       "name": "counterexample_always_large_proved",
