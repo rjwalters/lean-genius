@@ -37,7 +37,8 @@
       "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$ — the current gap between this and the conjectured $k^{1-o(1)}$ is enormous and represents a fundamental open problem in multiplicative number theory",
       "The FGKMT upper bound $S(k) \\ll k \\cdot (\\log\\log\\log k)/(\\log\\log k \\cdot \\log\\log\\log\\log k)$ connects smooth numbers to prime gaps via the surprising fact that long prime-free intervals are rich in smooth numbers",
       "The formalization uses Lean's filter theory to express asymptotic bounds cleanly — `∀ᶠ (k : ℕ) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
-      "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$"
+      "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$",
+      "An elementary bracket $3 \\leq S(k) \\leq k+1$ holds for all $k \\geq 2$ (proved axiom-free): antitonicity in $k$ lifts the $x \\leq 2$ density-zero argument from the exact value $S(2) = 3$ to a general lower bound `smoothThreshold_ge_three`, while the factorial construction gives the trivial upper bound — pinning down $S(k)$ exactly at the smallest scale before the sieve-theoretic bounds take over"
     ],
     "prerequisites": [
       "Analysis (asymptotic estimates, generating functions)",
@@ -105,9 +106,17 @@
       "id": "structural",
       "title": "Structural Observations and S(2) = 3",
       "startLine": 269,
-      "endLine": 377,
+      "endLine": 382,
       "summary": "Proves `smoothBlockSet_antitone` and `smoothThreshold_mono` ($k_1 \\leq k_2 \\Rightarrow S(k_1) \\leq S(k_2)$). Then the substantial `smooth_threshold_2` proof ($S(2) = 3$, ~100 lines): shows $x \\leq 2$ gives density 0 (consecutive integers can't both have all prime factors $\\leq 2$ since one is odd $\\geq 3$), and $x = 3$ gives positive density (AP $n \\equiv 2 \\pmod{6}$). Includes helper proofs `smoothBlockSet_two_empty_of_le_one`, `smoothBlockSet_two_two_sub_zero`, and `upperDensity_singleton_zero`.",
       "mathContext": "$S(2) = 3$: for $x = 3$, the AP $n \\equiv 2 \\pmod{6}$ gives $3 \\mid (n+1)$ and $2 \\mid (n+2)$, so $\\overline{d} \\geq 1/6 > 0$. For $x = 2$: consecutive integers can't both be 2-smooth (one is odd $\\geq 3$ with $\\min\\text{Fac} \\geq 3 > 2$)."
+    },
+    {
+      "id": "general-lower-bound",
+      "title": "General Lower Bound: S(k) ≥ 3 for k ≥ 2",
+      "startLine": 383,
+      "endLine": 429,
+      "summary": "Generalizes the $x \\leq 2$ half of $S(2) = 3$ to all $k \\geq 2$ via antitonicity in $k$. Proves `smoothBlockSet_empty_of_ge_two_le_one` ($k \\geq 2, x \\leq 1 \\Rightarrow$ block set empty), `smoothBlockSet_two_sub_zero_of_ge_two` ($\\text{smoothBlockSet}\\ k\\ 2 \\subseteq \\{0\\}$), `upperDensity_empty`, and the capstone `smoothThreshold_ge_three`: for all $k \\geq 2$, $S(k) \\geq 3$. Combined with `trivial_upper` this brackets $3 \\leq S(k) \\leq k+1$ for $k \\geq 2$.",
+      "mathContext": "By `smoothBlockSet_antitone` in $k$, for $k \\geq 2$: any $x \\leq 1$ gives an empty block set and $x = 2$ gives a block set $\\subseteq \\{0\\}$, both of upper density $0$. Hence no $x \\leq 2$ witnesses positive density and $S(k) = \\text{Nat.find} \\geq 3$, so $3 \\leq S(k) \\leq k+1$."
     }
   ],
   "conclusion": {
