@@ -493,4 +493,129 @@ theorem three_le_minDegreeForC4 {n : ℕ} (hn : 5 ≤ n) :
   rw [not_le] at hk3
   exact hfree (hk (cycleGraph n) (le_trans (by omega : k ≤ 2) hmin2))
 
+/-- **Four vertices carrying the rim of a `4`-cycle host a `C₄`.**  Given pairwise
+adjacencies `a‑b`, `b‑c`, `c‑d`, `d‑a` and pairwise distinctness of `a, b, c, d`, the
+map `Fin 4 → V`, `![a, b, c, d]` is an injective `C₄`-embedding.  (Only the four rim
+edges and the six inequalities are needed; the diagonals `a‑c`, `b‑d` are irrelevant.) -/
+theorem containsC4_of_rim {V : Type*} {G : SimpleGraph V} {a b c d : V}
+    (hab : G.Adj a b) (hbc : G.Adj b c) (hcd : G.Adj c d) (hda : G.Adj d a)
+    (hac : a ≠ c) (hbd : b ≠ d) (hba : b ≠ a) (hbc' : b ≠ c) (hda' : d ≠ a) (hdc : d ≠ c) :
+    containsC4 V G := by
+  have hba' := hba.symm; have hcb := hbc.symm; have had := hda'.symm; have hcd' := hdc.symm
+  have hca := hac.symm; have hdb := hbd.symm
+  have s1 := hab.symm; have s2 := hbc.symm; have s3 := hcd.symm; have s4 := hda.symm
+  refine ⟨![a, b, c, d], ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [Fin.ext_iff]
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [C4]
+
+/-- **Minimum degree `n − 2` forces a `C₄` (`n ≥ 4`).**  If `δ(G) ≥ n − 2` on `Fin n`,
+every vertex misses at most one other vertex (its non-neighbours, excluding itself,
+number at most `(n−1) − (n−2) = 1`).  Either `G = ⊤` — and then `C₄ ⊆ G` by
+`completeGraph_containsC4` — or `G` has a non-adjacent distinct pair `a, c`.  In the
+latter case `a`'s unique possible non-neighbour is `c` and vice versa, so *every* other
+vertex is a common neighbour of both `a` and `c`.  Picking two such vertices `b, d`
+(there are `n − 2 ≥ 2` of them) gives the `4`-cycle `a‑b‑c‑d‑a`: the diagonals `a,c` and
+`b,d` carry the only possible non-edges, while all four rim edges are present. -/
+theorem containsC4_of_minDegree_ge {n : ℕ} (hn : 4 ≤ n)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hmin : n - 2 ≤ G.minDegree) : containsC4 (Fin n) G := by
+  by_cases htop : G = ⊤
+  · subst htop; exact completeGraph_containsC4 hn
+  -- `G ≠ ⊤` yields a non-adjacent distinct pair.
+  have hpair : ∃ a c : Fin n, a ≠ c ∧ ¬ G.Adj a c := by
+    by_contra hcon
+    apply htop
+    ext a b
+    simp only [top_adj]
+    refine ⟨fun h => h.ne, fun hab => ?_⟩
+    by_contra hnadj
+    exact hcon ⟨a, b, hab, hnadj⟩
+  obtain ⟨a, c, hac, hnac⟩ := hpair
+  -- Every vertex has at most one non-neighbour (other than itself).
+  have hfew : ∀ v : Fin n, ((univ.erase v) \ G.neighborFinset v).card ≤ 1 := by
+    intro v
+    have hsub : G.neighborFinset v ⊆ univ.erase v := by
+      intro x hx
+      exact Finset.mem_erase.mpr ⟨(G.ne_of_adj ((G.mem_neighborFinset v x).mp hx)).symm,
+        Finset.mem_univ x⟩
+    have hdeg : n - 2 ≤ (G.neighborFinset v).card := by
+      rw [G.card_neighborFinset_eq_degree]
+      exact le_trans hmin (G.minDegree_le_degree v)
+    have hkey : ((univ.erase v) \ G.neighborFinset v).card + (G.neighborFinset v).card
+        = (univ.erase v).card := Finset.card_sdiff_add_card_eq_card hsub
+    have herase : (univ.erase v).card = n - 1 := by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ, Fintype.card_fin]
+    omega
+  -- `c` is `a`'s only candidate non-neighbour, and symmetrically.
+  have hmemC : c ∈ (univ.erase a) \ G.neighborFinset a := by
+    refine Finset.mem_sdiff.mpr ⟨Finset.mem_erase.mpr ⟨(Ne.symm hac), Finset.mem_univ c⟩, ?_⟩
+    rw [G.mem_neighborFinset]; exact hnac
+  have hmemA : a ∈ (univ.erase c) \ G.neighborFinset c := by
+    refine Finset.mem_sdiff.mpr ⟨Finset.mem_erase.mpr ⟨hac, Finset.mem_univ a⟩, ?_⟩
+    rw [G.mem_neighborFinset]; exact fun h => hnac h.symm
+  -- Hence any vertex outside `{a, c}` is adjacent to both `a` and `c`.
+  have hadjA : ∀ x : Fin n, x ≠ a → x ≠ c → G.Adj a x := by
+    intro x hxa hxc
+    by_contra hnx
+    have hmemx : x ∈ (univ.erase a) \ G.neighborFinset a := by
+      refine Finset.mem_sdiff.mpr ⟨Finset.mem_erase.mpr ⟨hxa, Finset.mem_univ x⟩, ?_⟩
+      rw [G.mem_neighborFinset]; exact hnx
+    exact hxc (Finset.card_le_one.mp (hfew a) x hmemx c hmemC)
+  have hadjC : ∀ x : Fin n, x ≠ a → x ≠ c → G.Adj c x := by
+    intro x hxa hxc
+    by_contra hnx
+    have hmemx : x ∈ (univ.erase c) \ G.neighborFinset c := by
+      refine Finset.mem_sdiff.mpr ⟨Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩, ?_⟩
+      rw [G.mem_neighborFinset]; exact hnx
+    exact hxa (Finset.card_le_one.mp (hfew c) x hmemx a hmemA)
+  -- Two distinct vertices `b, d` outside `{a, c}` (there are `n − 2 ≥ 2`).
+  have hcard2 : 1 < ((univ.erase a).erase c).card := by
+    rw [Finset.card_erase_of_mem (Finset.mem_erase.mpr ⟨Ne.symm hac, Finset.mem_univ c⟩),
+      Finset.card_erase_of_mem (Finset.mem_univ a), Finset.card_univ, Fintype.card_fin]
+    omega
+  obtain ⟨b, hb, d, hd, hbd⟩ := Finset.one_lt_card.mp hcard2
+  have hb' := Finset.mem_erase.mp hb
+  have hd' := Finset.mem_erase.mp hd
+  have hbc : b ≠ c := hb'.1
+  have hba : b ≠ a := (Finset.mem_erase.mp hb'.2).1
+  have hdc : d ≠ c := hd'.1
+  have hda : d ≠ a := (Finset.mem_erase.mp hd'.2).1
+  -- The four rim edges of `a‑b‑c‑d‑a`.
+  exact containsC4_of_rim (hadjA b hba hbc) (hadjC b hba hbc).symm (hadjC d hda hdc)
+    (hadjA d hda hdc).symm hac hbd hba hbc hda hdc
+
+/-- **A sharpened upper bound: `f(n) ≤ n − 2` for `n ≥ 4`.**  By
+`containsC4_of_minDegree_ge`, minimum degree `n − 2` already forces a `C₄`, so
+`n − 2` lies in the threshold set and `minDegreeForC4 n ≤ n − 2`.  This strictly
+improves the crude complete-graph bound `f(n) ≤ n − 1`.  (The true value is
+`f(n) = (1+o(1))√n`, far below, but that needs Kővári–Sós–Turán.) -/
+theorem minDegreeForC4_le_sub_two {n : ℕ} (hn : 4 ≤ n) :
+    minDegreeForC4 n ≤ n - 2 := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_minDegree_ge hn G hmin
+
+/-- **The base case is exact: `f(4) = 2`.**  The lower half `f(4) ≥ 2` is the star
+witness (`two_le_minDegreeForC4`), and the upper half `f(4) ≤ 2` is the `n = 4`
+instance of `minDegreeForC4_le_sub_two`: on four vertices, minimum degree `2` already
+forces a `4`-cycle (indeed the graph must *be* a `C₄`, a diamond, or `K₄`).  This is
+the first exactly-determined value of the threshold function. -/
+theorem minDegreeForC4_four : minDegreeForC4 4 = 2 := by
+  have hle : minDegreeForC4 4 ≤ 2 := by simpa using minDegreeForC4_le_sub_two (n := 4) (le_refl 4)
+  have hge : 2 ≤ minDegreeForC4 4 := by simpa using two_le_minDegreeForC4 (n := 3) (by norm_num)
+  omega
+
+/-- **A second exact value: `f(5) = 3`.**  The lower half `f(5) ≥ 3` is the cycle
+witness (`three_le_minDegreeForC4`, the `5`-cycle is `2`-regular and `C₄`-free), and the
+upper half `f(5) ≤ 3` is the `n = 5` case of `minDegreeForC4_le_sub_two` (`5 − 2 = 3`).
+The two bounds coincide at `n = 5` precisely because `n − 2` first reaches the current
+lower bound `3` there. -/
+theorem minDegreeForC4_five : minDegreeForC4 5 = 3 := by
+  have hle : minDegreeForC4 5 ≤ 3 := by
+    simpa using minDegreeForC4_le_sub_two (n := 5) (by norm_num)
+  have hge : 3 ≤ minDegreeForC4 5 := three_le_minDegreeForC4 (by norm_num)
+  omega
+
 end Erdos85

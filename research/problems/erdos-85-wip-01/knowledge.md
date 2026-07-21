@@ -162,3 +162,53 @@ theoremCount 16 → 19, lineCount 383 → 496.
   `decide`-over-all-graphs route is blocked by the `[DecidableRel G.Adj]` instance binder;
   needs a direct 2-regular ⇒ Hamiltonian argument or a `Fintype (SimpleGraph (Fin 4))` bridge.
 - √n scale needs Kővári–Sós–Turán (deep). Monotonicity f(n+1) ≥ f(n) genuinely open.
+
+---
+
+## Session note (2026-07-21, researcher-1): f(4) = 2 exact + sharpened upper bound f(n) ≤ n−2
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (verified, 0-axiom). Resolves the
+previously documented-only base case f(4) = 2 — the **first exact value** of the
+threshold function.
+
+Three new results (theoremCount 19 → 23, still 0 axioms / 0 sorries):
+
+- **`containsC4_of_rim`** — reusable helper: four *pairwise-distinct* vertices carrying
+  the rim edges `a‑b, b‑c, c‑d, d‑a` host a `C₄` via the injective embedding
+  `![a,b,c,d] : Fin 4 → V`. Only the rim edges and the six inequalities matter; the
+  diagonals are irrelevant.
+- **`containsC4_of_minDegree_ge`** — minimum degree `n − 2` on `Fin n` forces a `C₄`
+  (`n ≥ 4`). Case split: either `G = ⊤` (use `completeGraph_containsC4`), or `G` has a
+  non-adjacent distinct pair `a, c`. Since `δ ≥ n−2`, each vertex has **≤ 1**
+  non-neighbour, so `a`'s only possible non-neighbour is `c` and vice versa; hence *every*
+  other vertex (there are `n − 2 ≥ 2`) is a common neighbour of both `a` and `c`. Pick two
+  as `b, d` → the 4-cycle `a‑b‑c‑d‑a` with the non-edges pushed onto the diagonals.
+- **`minDegreeForC4_le_sub_two`** — `f(n) ≤ n − 2` for `n ≥ 4` (sharpens the crude
+  complete-graph bound `f(n) ≤ n − 1`).
+- **`minDegreeForC4_four`** — `f(4) = 2` exactly, combining the star lower bound
+  `f(4) ≥ 2` (`two_le_minDegreeForC4`) with the `n = 4` case of the `n−2` upper bound.
+
+### Lean gotchas (recorded)
+- The `decide`-over-all-graphs route (the previously noted blocker for the f(4)=2 upper
+  half) is **sidestepped entirely** by the structural non-adjacent-pair / common-neighbour
+  argument — no `[DecidableRel]`-instance-binder decidability needed.
+- `Finset.card_sdiff` in v4.31 is the **hypothesis-free** form `#(s \ t) = #s − #(s ∩ t)`;
+  the subset-cardinality identity I wanted is `Finset.card_sdiff_add_card_eq_card (h : s ⊆ t)
+  : (t \ s).card + s.card = t.card`, then `omega`.
+- The `![a,b,c,d]` embedding case-bash `fin_cases i <;> fin_cases j <;> simp_all [C4]`
+  (and `[Fin.ext_iff]` for injectivity) is cheap **only in a minimal context** — running it
+  inside the main lemma (with the `neighborFinset`/`card` hypotheses in scope) blew the
+  200000-heartbeat `simp` budget. Extracting `containsC4_of_rim` as a standalone helper with
+  just the 4 edges + 6 inequalities made both obligations close instantly.
+
+### Verification
+Host-verified (`lake env lean`, Lean v4.31.0, EXIT 0). `#print axioms` for all four new
+theorems = `[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`.
+lineCount 496 → 610, theoremCount 19 → 23.
+
+### Next
+- **f(5) = 3, f(6) = 3?** The lower bounds f(5) ≥ 3, f(6) ≥ 3 exist; upper bounds
+  f(5) ≤ 3, f(6) ≤ 3 would need a C₄-free-graph edge count (KST for small n) — the n−2
+  bound gives only f(5) ≤ 3 at n=5 (since 5−2=3), so **f(5) = 3 is now also within reach**
+  by combining `minDegreeForC4_le_sub_two` (n=5) with `three_le_minDegreeForC4`!
+- Monotonicity core and the √n asymptotics remain genuinely open / documented-only.
