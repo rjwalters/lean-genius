@@ -130,8 +130,8 @@
       "title": "Prime Gaps",
       "startLine": 113,
       "endLine": 136,
-      "summary": "`primeGap n` ($g_n = p_{n+1} - p_n$), `gapInterval n` ($(p_n, p_{n+1})$), `gap_nonempty` for $n \\geq 2$",
-      "mathContext": "The prime gap $g_n = p_{n+1} - p_n$ and the open interval $(p_n, p_{n+1})$ of composite numbers between consecutive primes. By the Prime Number Theorem, $g_n \\sim \\log p_n$ on average, but individual gaps vary: the largest known gap of size $g$ near $p$ satisfies $g \\leq p^{0.525}$ unconditionally (Baker-Harman-Pintz). The theorem `gap_nonempty` shows $(p_n, p_{n+1}) \\neq \\emptyset$ for $n \\geq 2$."
+      "summary": "`primeGap n` ($g_n = p_{n+1} - p_n$), `gapInterval n` ($(p_n, p_{n+1})$); non-emptiness of the gap for $n \\geq 2$ is discussed in a comment (not formalized)",
+      "mathContext": "The prime gap $g_n = p_{n+1} - p_n$ and the open interval $(p_n, p_{n+1})$ of composite numbers between consecutive primes. By the Prime Number Theorem, $g_n \\sim \\log p_n$ on average, but individual gaps vary: the largest known gap of size $g$ near $p$ satisfies $g \\leq p^{0.525}$ unconditionally (Baker-Harman-Pintz). A comment notes that $(p_n, p_{n+1}) \\neq \\emptyset$ for $n \\geq 2$; this is not formalized as a theorem in the file."
     },
     {
       "id": "main-property",
@@ -146,7 +146,7 @@
       "title": "Erdős's Counterexample Construction",
       "startLine": 155,
       "endLine": 198,
-      "summary": "`primorial`, `dickson_special_case` (primes at $2183+30030d$, $2201+30030d$), `erdos_counterexample_condition`, infinitely many exceptions conditional on Dickson",
+      "summary": "Comment-only (not formalized): the primorial $13\\# = 30030$, Dickson's special case (primes at $2183+30030d$, $2201+30030d$), and Erdős's conditional counterexample giving infinitely many exceptions conditional on Dickson",
       "mathContext": "Erdős's conditional counterexample: the primorial $p\\# = \\prod_{q \\leq p} q$ guarantees that every integer in $[1, p\\#]$ shares a prime factor with $p\\#$. For $p = 13$: $13\\# = 30030$, and Dickson's conjecture predicts infinitely many $d$ where $2183 + 30030d$ and $2201 + 30030d$ are consecutive primes (gap 18). In such gaps, every composite $m$ satisfies $p(m) \\leq 13 < 18 = g_n$, giving infinitely many exceptions."
     },
     {
@@ -162,7 +162,7 @@
       "title": "Gafni-Tao Theorem (2025)",
       "startLine": 217,
       "endLine": 258,
-      "summary": "`exceptionalCount`, `gafni_tao_upper_bound` ($E(X) \\leq C \\cdot X/(\\log X)^2$), `gafni_tao_conditional_asymptotic`, `erdos682_answer`: YES",
+      "summary": "`exceptionalCount`, `gafni_tao_upper_bound` axiom ($E(X) \\leq C \\cdot X/(\\log X)^2$), the conditional asymptotic (comment-only, not formalized), `erdos682_answer`: YES",
       "mathContext": "The Gafni-Tao theorem (2025): $E(X) = |\\{n \\leq X : \\text{isExceptional}(n)\\}| \\leq C \\cdot X/(\\log X)^2$ for an absolute constant $C$. The bound $X/(\\log X)^2$ is tight: conditionally on the prime tuples conjecture, $E(X) \\sim c \\cdot X/(\\log X)^2$ for an explicit $c > 0$. The proof uses sieve methods to show primorial-based obstructions account for essentially all exceptions."
     },
     {
