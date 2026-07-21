@@ -95,9 +95,9 @@
     {
       "id": "header",
       "title": "Documentation and Context",
-      "summary": "Module documentation: the open question, an outline of the four parts (doubling identities, half-perimeter, nested-radical realization, convergence), and references.",
+      "summary": "Module documentation: the open question, an outline of the parts (doubling identities, half-perimeter, nested-radical realization, convergence, explicit rate, circumscribed sandwich), references, plus the Mathlib import and namespace/open declarations.",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 35,
       "mathContext": "Archimedes (~250 BCE) doubled polygon sides 6 → 12 → 24 → 48 → 96 using the half-angle identity $\\sin(\\theta/2) = \\sqrt{(1-\\cos\\theta)/2}$, extracting one square root per step."
     },
     {
@@ -145,24 +145,32 @@
       "title": "Sharp 1/6 Leading-Constant Rate",
       "summary": "pi_sub_halfPerimeter_le_sharp: keeping the quartic Taylor remainder separate (instead of absorbing x⁴ ≤ x³) gives π − p(m) ≤ π³/(6m²) + (5/96)·π⁴/m³ for m ≥ 4, with the EXACT second-order coefficient 1/6. The factored form pi_sub_halfPerimeter_le_sharp_factored writes this as (π³/(6m²))·(1 + 5π/(16m)), exhibiting 1/6 + o(1). Answers the entry's second open question.",
       "startLine": 267,
-      "endLine": 310,
+      "endLine": 319,
       "mathContext": "The error $\\pi - m\\sin(\\pi/m) = m(\\pi/m)^3/6 + O(m^{-3})$ has true leading coefficient $\\tfrac16$. Multiplying $\\sin x \\ge x - x^3/6 - \\tfrac{5}{96}x^4$ by $m$ keeps both terms: $\\pi - p(m) \\le \\tfrac{\\pi^3}{6m^2} + \\tfrac{5}{96}\\tfrac{\\pi^4}{m^3}$. For $m\\ge4$, $\\pi/m\\le1$ collapses this to the earlier $\\tfrac{7}{32}\\pi^3/m^2$ bound (since $\\tfrac16+\\tfrac{5}{96}=\\tfrac{7}{32}$)."
     },
     {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Packaging theorem bundling the doubling identity, hexagon seed, monotonicity, upper bound, and convergence into one statement.",
-      "startLine": 311,
-      "endLine": 329,
-      "mathContext": "The bundled result asserts the doubling radical holds for all $n \\ge 1$, $p(6) = 3$, $p(n) < p(2n)$, $p(m) < \\pi$, and $p(m) \\to \\pi$ — Archimedes' method, formalized end to end."
+      "id": "two-sided-rate",
+      "title": "PART V (cont.) — Two-Sided Θ(1/m²) Error and Geometric Recurrence",
+      "startLine": 320,
+      "endLine": 401,
+      "summary": "The matching lower bound and its consequences: `pi_sub_halfPerimeter_ge` (π − p(m) ≥ π³/(6m²) − … for m ≥ 4) combines with the sharp upper bound in `pi_sub_halfPerimeter_bounds` to give the two-sided statement that the doubling-method error π − p(m) is Θ(1/m²). `pi_sub_halfPerimeter_pow_le` specializes the O(1/m²) bound to m = 6·2ᵏ, giving the O(4⁻ᵏ) form, and `halfPerimeter_rate_bound_quarters` proves the exact geometric recurrence bound(k+1) = bound(k)/4 — the quantitative content of quadratic convergence.",
+      "mathContext": "$\\pi - p(m) = \\Theta(1/m^2)$; for $m = 6\\cdot2^k$ the guaranteed error bound is $\\tfrac{7}{1152}\\pi^3/4^k$ and quarters at each doubling."
     },
     {
-      "id": "two-sided-error-and-summary",
-      "title": "Two-Sided Θ(1/m²) Error and Verified Summary",
-      "startLine": 330,
-      "endLine": 386,
-      "summary": "`pi_sub_halfPerimeter_bounds` packages the upper and lower estimates into the two-sided statement that the doubling-method error `π − p_m` is Θ(1/m²), and `archimedes_doubling_method_verified` is the capstone theorem recording that Archimedes' half-angle doubling method, formalized constructively over the computable nested-radical realization, converges to π with this sharp rate.",
-      "mathContext": "$\\pi - p_m = \\Theta(1/m^2)$ — the inscribed half-perimeter of the $m$-gon under repeated doubling approximates $\\pi$ with error bounded above and below by constant multiples of $1/m^2$."
+      "id": "circumscribed-sandwich",
+      "title": "PART VI — Circumscribed Polygon and Archimedes' Sandwich",
+      "startLine": 402,
+      "endLine": 512,
+      "summary": "The upper-bound (circumscribed) side that the earlier sections omit. Defines q(m) = m·tan(π/m) (circumHalfPerimeter), proves the seed q(6) = 2√3, the over-estimate π < q(m) for m ≥ 3 (pi_lt_circumHalfPerimeter), that doubling strictly DECREASES q (circumHalfPerimeter_doubling: q(2n) < q(n)), and q(m) → π (circumHalfPerimeter_tendsto_pi). `archimedes_sandwich` then brackets π between the inscribed and circumscribed polygons: p(m) < π < q(m) — the exact logical shape of Archimedes' 3 + 10/71 < π < 3 + 1/7 from the 96-gon.",
+      "mathContext": "$q(m) = m\\tan(\\pi/m)$, $q(6) = 2\\sqrt3$; $p(m) < \\pi < q(m)$ for $m \\ge 3$, and $[p(m), q(m)]$ collapses onto $\\pi$ as $m \\to \\infty$."
+    },
+    {
+      "id": "summary",
+      "title": "PART VII — Summary (verified capstones)",
+      "startLine": 513,
+      "endLine": 551,
+      "summary": "Two capstone theorems and the axiom audit. `archimedes_doubling_method_verified` bundles the one-sided method: the doubling radical for all n ≥ 1, the hexagon seed p(6) = 3, strict monotonicity p(n) < p(2n), the upper bound p(m) < π, and convergence p(m) → π. `archimedes_two_sided_method_verified` bundles the full two-sided method as Archimedes ran it: the sandwich p(m) < π < q(m), p increasing / q decreasing under doubling, and both sequences converging to π. Closes with `#print axioms` confirming foundational axioms only (no Lean.ofReduceBool, no sorryAx).",
+      "mathContext": "Capstone: Archimedes' method computes π to arbitrary precision from both sides — $[p(m), q(m)] \\downarrow \\{\\pi\\}$ — machine-checked with 0 axioms and 0 sorries."
     }
   ],
   "conclusion": {
