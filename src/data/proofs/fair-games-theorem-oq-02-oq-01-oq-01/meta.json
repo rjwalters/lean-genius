@@ -142,10 +142,18 @@
     },
     {
       "id": "sec-wald",
-      "title": "Wald's Identity and Corollaries",
+      "title": "Wald's Identity",
       "startLine": 286,
-      "endLine": 361,
-      "summary": "Assembles Wald's Identity from the four fully proved pieces. Provides two corollaries: bounded stopping times and zero-mean processes (Gambler's Ruin connection)."
+      "endLine": 356,
+      "summary": "integral_sum_range_eq_tsum rewrites the stopped-sum integral as a tsum over the tail probabilities; wald_identity assembles the full identity E[Σ_{k<τ} X_{k+1}] = E[X₀]·E[τ] from the four fully proved pieces (independence computation, tail-sum formula, and the Fubini interchange)."
+    },
+    {
+      "id": "sec-wald-corollaries",
+      "title": "Corollaries: Bounded Stopping Times and the Gambler’s Ruin",
+      "startLine": 357,
+      "endLine": 405,
+      "summary": "wald_identity_bounded specialises Wald’s identity to a deterministically bounded stopping time τ ≤ N, where the Fubini step reduces to a finite sum and integrability of τ is automatic. wald_zero_mean_gives_zero_drift applies the identity to the Gambler’s Ruin: for i.i.d. fair steps (mean 0), the total drift E[Σ_{k<τ} X_{k+1}] = 0·E[τ] = 0, complementing the optional-stopping computation of the terminal fortune.",
+      "mathContext": "For $\\tau\\le N$ a.s., $\\mathbb E\\big[\\sum_{k<\\tau}X_{k+1}\\big]=\\mathbb E[X_0]\\,\\mathbb E[\\tau]$; when $\\mathbb E[X_0]=0$ the expected total drift vanishes."
     }
   ],
   "conclusion": {

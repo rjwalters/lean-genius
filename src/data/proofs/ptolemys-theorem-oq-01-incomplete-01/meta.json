@@ -101,15 +101,15 @@
       "id": "converse-theorem",
       "title": "Main Converse Theorem",
       "startLine": 215,
-      "endLine": 419,
+      "endLine": 455,
       "summary": "Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis on sine products.",
       "description": "ptolemy_equality_implies_ccw_or_cw: Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis"
     },
     {
       "id": "biconditional",
       "title": "The Full Biconditional",
-      "startLine": 420,
-      "endLine": 465,
+      "startLine": 456,
+      "endLine": 508,
       "summary": "Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points.",
       "description": "ptolemy_equality_iff_ccw_or_cw: Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points"
     }

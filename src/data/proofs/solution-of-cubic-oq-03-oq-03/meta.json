@@ -130,6 +130,14 @@
       "mathContext": "$m = t - 5p/6$ is a valid resolvent root."
     },
     {
+      "id": "cube-roots-of-unity",
+      "title": "Cube Roots of Unity",
+      "startLine": 146,
+      "endLine": 172,
+      "summary": "Defines the primitive cube root ω = exp(2πi/3) and proves the two facts Cardano’s three-root formula needs: omega_cubed (ω³ = 1) and omega_sum (1 + ω + ω² = 0). These let the resolvent root u + v be rotated to the other two roots ωu + ω²v and ω²u + ωv.",
+      "mathContext": "$\\omega=e^{2\\pi i/3}$ satisfies $\\omega^3=1$ and $1+\\omega+\\omega^2=0$, generating the three Cardano roots $\\omega^k u+\\omega^{2k}v$."
+    },
+    {
       "id": "verification",
       "title": "Root Correctness",
       "startLine": 173,
@@ -141,9 +149,17 @@
       "id": "chain",
       "title": "Complete Solution Chain",
       "startLine": 195,
-      "endLine": 220,
+      "endLine": 229,
       "summary": "Assembles the full quartic-to-Cardano chain in a single theorem.",
       "mathContext": "Quartic $\\to$ resolvent cubic $\\to$ depressed cubic $\\to$ Cardano $\\to$ radicals."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Complete Radical Solution Chain",
+      "startLine": 230,
+      "endLine": 262,
+      "summary": "A documentation block enumerating the eight theorems and five definitions (0 sorries, 0 axioms): the resolvent cubic (monic form, depression), the Cardano connection (recoverM_is_resolvent_root, resolvent_root_zero_correct), the cube-root-of-unity facts (omega_cubed, omega_sum), and the solution chain (quartic_to_cardano, isResolventRoot). It answers OQ-03-OQ-03 affirmatively: the resolvent cubic depresses to t³ + At + B with A = −p²/12 − r and B = −p³/108 + pr/3 − q²/8, exactly Cardano’s solvable form, completing Quartic → Ferrari → Resolvent → Depression → Cardano → Radicals.",
+      "mathContext": "The depressed resolvent $t^3+At+B=0$ with $A=-p^2/12-r$, $B=-p^3/108+pr/3-q^2/8$ is solved by $t=u+v$ with $u^3+v^3=-B$, $uv=-A/3$."
     }
   ],
   "crossReferences": [
