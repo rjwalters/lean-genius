@@ -97,4 +97,39 @@ theorem isBounded_sublevelSet (P : UnitDiskPoly n) :
     Bornology.IsBounded P.sublevelSet :=
   (Metric.isBounded_closedBall).subset P.sublevelSet_subset_closedBall
 
+/-! ## Finiteness of the 2D Lebesgue measure
+
+`Sₚ` is bounded and measurable, so its planar Lebesgue measure is finite.  This is
+exactly the well-definedness the parent's `sublevelMeasure` needs: it is defined as the
+`.toReal` of a `volume`, which is a faithful value (rather than the `⊤ ↦ 0` truncation)
+only when that `volume` is finite. -/
+
+/-- **`volume Sₚ < ⊤`** (`ℂ`-side).  `Sₚ ⊆ closedBall 0 2`, and a closed ball in the
+proper space `ℂ` is compact, hence of finite volume. -/
+theorem volume_sublevelSet_lt_top (P : UnitDiskPoly n) :
+    volume P.sublevelSet < ⊤ :=
+  measure_lt_top_of_subset P.sublevelSet_subset_closedBall
+    (isCompact_closedBall (0 : ℂ) 2).measure_lt_top.ne
+
+/-- The parent's `ℝ × ℝ` sublevel set is the preimage of `Sₚ ⊆ ℂ` under the measurable
+equivalence `ℂ ≃ᵐ ℝ × ℝ` (its inverse `(a, b) ↦ a + b·I`). -/
+theorem realProd_sublevelSet_eq_preimage (P : UnitDiskPoly n) :
+    {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1}
+      = Complex.measurableEquivRealProd.symm ⁻¹' P.sublevelSet := by
+  ext p
+  simp only [Set.mem_setOf_eq, Set.mem_preimage,
+    Complex.measurableEquivRealProd_symm_apply]
+  rfl
+
+/-- **`sublevelMeasure` is well-defined: the parent's `ℝ × ℝ` measure is finite.**  Via
+the volume-preserving equivalence `ℂ ≃ᵐ ℝ × ℝ`, the planar measure of the parent's
+sublevel set equals `volume Sₚ`, which is finite by `volume_sublevelSet_lt_top`.  Hence
+`sublevelMeasure P = (that volume).toReal` faithfully records the area of the lemniscate. -/
+theorem volume_realProd_sublevelSet_lt_top (P : UnitDiskPoly n) :
+    volume {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} < ⊤ := by
+  rw [P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+  exact P.volume_sublevelSet_lt_top
+
 end UnitDiskPoly
