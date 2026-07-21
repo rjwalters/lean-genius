@@ -9,16 +9,15 @@
      The antecedent (∀ n, deviation n ≤ 0) is unused; the conclusion follows from
      the axiom that prime gaps are unbounded.
 
-  2. example_f_3 — f(3) = 14.
-     f 3 = min over i < 3 of (nthPrime(3+i) + nthPrime(3-i)):
-       i=0: nthPrime 3 + nthPrime 3 = 7 + 7 = 14  ← minimum
+  2. example_f_3 — f(3) = 16.
+     f 3 = min over 0 < i < 3 of (nthPrime(3+i) + nthPrime(3-i)) (i = 0 excluded):
        i=1: nthPrime 4 + nthPrime 2 = 11 + 5 = 16
        i=2: nthPrime 5 + nthPrime 1 = 13 + 3 = 16
-     Proof strategy: rw [f_eq_f']; simp [f', nthPrime]; native_decide
+     Proof strategy: rw [f_eq_f']; simp [f', nthPrime]
 
-  3. example_deviation_3 — deviation(3) = f(3) - 2*nthPrime(3) = 14 - 14 = 0.
-     Proof strategy: simp [deviation]; rw [show f 3 = 14 from example_f_3];
-                     norm_num [show (nthPrime 3 : ℤ) = 7 from by simp [nthPrime]; native_decide]
+  3. example_deviation_3 — deviation(3) = f(3) - 2*nthPrime(3) = 16 - 14 = 2.
+     Proof strategy: simp [deviation]; rw [show f 3 = 16 from example_f_3];
+                     norm_num [show (nthPrime 3 : ℤ) = 7 from by simp [nthPrime]]
 
   NOT included:
   - Erdős #454 main conjecture (limsup deviationENat = ⊤) — open problem
@@ -48,14 +47,14 @@ theorem nth_prime_five_eq_thirteen : nth Nat.Prime 5 = 13 := by
   have hc : Nat.count Nat.Prime 13 = 5 := by decide
   simpa [hc] using Nat.nth_count h13
 
--- Target for Aristotle: f(3) = 14 (concrete Finset.inf' computation).
-theorem example_f_3 : f 3 = 14 := by
+-- Target for Aristotle: f(3) = 16 (concrete Finset.inf' computation, i = 0 excluded).
+theorem example_f_3 : f 3 = 16 := by
   rw [f_eq_f']
   simp [f', nthPrime, Finset.range_add_one, Finset.range_zero,
     Finset.inf'_insert, Finset.inf'_singleton]
 
--- Target for Aristotle: deviation(3) = 0 (follows from f(3) = 14 and nthPrime(3) = 7).
-theorem example_deviation_3 : deviation 3 = 0 := by
+-- Target for Aristotle: deviation(3) = 2 (follows from f(3) = 16 and nthPrime(3) = 7).
+theorem example_deviation_3 : deviation 3 = 2 := by
   simp only [deviation, example_f_3]
   norm_num [nthPrime, show nthPrime 3 = 7 from by simp [nthPrime]]
 

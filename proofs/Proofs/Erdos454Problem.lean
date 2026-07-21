@@ -5,8 +5,12 @@
   Status: OPEN (partial result by Pomerance 1979)
 
   Statement:
-  Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}), where p_k is the k-th prime.
+  Let f(n) = min_{0<i<n} (p_{n+i} + p_{n-i}), where p_k is the k-th prime.
   Is it true that limsup_{n→∞} (f(n) - 2p_n) = ∞?
+
+  Note: the minimum must EXCLUDE i = 0, since the i = 0 term p_n + p_n = 2p_n
+  would otherwise pin f(n) ≤ 2p_n and force the deviation to be ≤ 0 for all n
+  (making the limsup trivially 0 and contradicting Pomerance's lower bound).
 
   Known Results:
   - Pomerance (1979): The limsup is at least 2.
@@ -62,18 +66,21 @@ theorem nthPrime_strictMono : StrictMono nthPrime := (Nat.nth_strictMono Nat.inf
 noncomputable def symmetricPrimeSum (n i : ℕ) (hi : i < n) : ℕ :=
   nthPrime (n + i) + nthPrime (n - i)
 
-/-- f(n) = min_{i<n} (p_{n+i} + p_{n-i})
+/-- f(n) = min_{0<i<n} (p_{n+i} + p_{n-i})
 
-    This is the minimum sum of primes at equal distances from position n.
-    If primes were evenly spaced, f(n) would equal 2p_n. -/
+    This is the minimum sum of primes at equal distances from position n,
+    taken over 0 < i < n (the index i is written as `j + 1` for `j : Fin (n-1)`).
+    The i = 0 term is deliberately EXCLUDED: including it would fix the sum at
+    2p_n and force f(n) ≤ 2p_n, making the deviation ≤ 0 for every n. -/
 noncomputable def f (n : ℕ) : ℕ :=
-  if h : n = 0 then 0
-  else ⨅ i : Fin n, nthPrime (n + i) + nthPrime (n - i)
+  if h : n ≤ 1 then 0
+  else ⨅ j : Fin (n - 1), nthPrime (n + ((j : ℕ) + 1)) + nthPrime (n - ((j : ℕ) + 1))
 
 /-- Alternative definition using Finset.inf' for computability intuition. -/
 noncomputable def f' (n : ℕ) : ℕ :=
-  if h : n = 0 then 0
-  else (Finset.range n).inf' (Finset.nonempty_range_iff.mpr h) (fun i => nthPrime (n + i) + nthPrime (n - i))
+  if h : n ≤ 1 then 0
+  else (Finset.range (n - 1)).inf' (by rw [Finset.nonempty_range_iff]; omega)
+    (fun j => nthPrime (n + (j + 1)) + nthPrime (n - (j + 1)))
 
 /-- The two definitions are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
@@ -81,18 +88,18 @@ theorem f_eq_f' (n : ℕ) : f n = f' n := by
   split
   · rfl
   · rename_i h
-    have hn : 0 < n := Nat.pos_of_ne_zero h
-    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
-    have hbdd : BddBelow (Set.range (fun i : Fin n =>
-        nthPrime (n + ↑i) + nthPrime (n - ↑i))) :=
+    have hn : 1 < n := by omega
+    haveI : Nonempty (Fin (n - 1)) := ⟨⟨0, by omega⟩⟩
+    have hbdd : BddBelow (Set.range (fun j : Fin (n - 1) =>
+        nthPrime (n + ((j : ℕ) + 1)) + nthPrime (n - ((j : ℕ) + 1)))) :=
       ⟨0, fun _ _ => Nat.zero_le _⟩
     apply le_antisymm
-    · -- ⨅ i : Fin n, g i ≤ (range n).inf' _ h
+    · -- ⨅ j : Fin (n-1), g j ≤ (range (n-1)).inf' _ h
       apply Finset.le_inf'
       intro j hj
       exact ciInf_le hbdd ⟨j, Finset.mem_range.mp hj⟩
-    · -- (range n).inf' _ h ≤ ⨅ i : Fin n, g i
-      exact le_ciInf (fun i => Finset.inf'_le _ (Finset.mem_range.mpr i.isLt))
+    · -- (range (n-1)).inf' _ h ≤ ⨅ j : Fin (n-1), g j
+      exact le_ciInf (fun j => Finset.inf'_le _ (Finset.mem_range.mpr j.isLt))
 
 /- ## Part III: The Deviation from 2p_n -/
 
@@ -112,22 +119,12 @@ noncomputable def deviationENat (n : ℕ) : ℕ∞ :=
 
 /- ## Part IV: Understanding Symmetric Prime Sums -/
 
-/-- For i = 0: p_n + p_n = 2p_n, so this term contributes deviation 0. -/
+/-- The excluded i = 0 term equals 2p_n exactly: p_n + p_n = 2p_n.
+    This is precisely why i = 0 must be omitted from the minimum defining f —
+    keeping it would cap f(n) at 2p_n and make every deviation ≤ 0. -/
 theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
     nthPrime (n + 0) + nthPrime (n - 0) = 2 * nthPrime n := by
   simp [two_mul]
-
-/-- The minimum is at most 2p_n (achieved at i = 0). -/
-theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) : f n ≤ 2 * nthPrime n := by
-  simp only [f, dif_neg (show n ≠ 0 by omega)]
-  -- The infimum over Fin n is ≤ the value at index 0
-  have hbdd : BddBelow (Set.range fun i : Fin n =>
-      nthPrime (n + ↑i) + nthPrime (n - ↑i)) :=
-    ⟨0, fun _ _ => Nat.zero_le _⟩
-  calc ⨅ i : Fin n, nthPrime (n + ↑i) + nthPrime (n - ↑i)
-      ≤ nthPrime (n + ↑(⟨0, hn⟩ : Fin n)) + nthPrime (n - ↑(⟨0, hn⟩ : Fin n)) :=
-        ciInf_le hbdd ⟨0, hn⟩
-    _ = 2 * nthPrime n := by simp [two_mul]
 
 /-- For i > 0, by strict monotonicity of primes:
     p_{n+i} > p_n and p_{n-i} < p_n (assuming n - i ≥ 0). -/
@@ -228,19 +225,20 @@ theorem gap_deviation_connection :
 
 /- ## Part VIII: Examples -/
 
-/-- Example: Computing f(3) with 0-indexed primes (p_0=2, p_1=3, p_2=5, p_3=7):
-    f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
-         = min(7+7, 11+5, 13+3) = min(14, 16, 16) = 14.
-    2*p_3 = 2*7 = 14, so deviation(3) = 0. -/
-theorem example_f_3 : f 3 = 14 := by
+/-- Example: Computing f(3) with 0-indexed primes (p_0=2, p_1=3, p_2=5, p_3=7),
+    minimising over 0 < i < 3 (i.e. i ∈ {1, 2}):
+    f(3) = min(p_4 + p_2, p_5 + p_1)
+         = min(11+5, 13+3) = min(16, 16) = 16.
+    2*p_3 = 2*7 = 14, so deviation(3) = 16 - 14 = 2. -/
+theorem example_f_3 : f 3 = 16 := by
   sorry
 
 /-- Example: 2*p_3 = 14 (0-indexed: p_3 = 7) -/
 theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
   simp [nthPrime, Nat.nth_prime_three_eq_seven]
 
-/-- Example: The deviation at n=3 is 0. -/
-theorem example_deviation_3 : deviation 3 = 0 := by
+/-- Example: The deviation at n=3 is 2 (f(3) = 16 exceeds 2*p_3 = 14 by 2). -/
+theorem example_deviation_3 : deviation 3 = 2 := by
   sorry
 
 /- ## Part IX: Related Problems -/
@@ -260,9 +258,9 @@ axiom prime_number_theorem_asymptotic :
 /-- To prove the conjecture (limsup = ∞), one would need to show:
     For every M, there exists n with f(n) - 2p_n > M.
 
-    This requires finding n where all symmetric sums are large. -/
+    This requires finding n where all symmetric sums (over 0 < i < n) are large. -/
 def witnessForConjecture (M : ℕ) : Prop :=
-  ∃ n, ∀ i : Fin n, nthPrime (n + i) + nthPrime (n - i) > 2 * nthPrime n + M
+  ∃ n, ∀ i, 0 < i → i < n → nthPrime (n + i) + nthPrime (n - i) > 2 * nthPrime n + M
 
 /-- To disprove (limsup ≤ M), one would show:
     Eventually, f(n) ≤ 2p_n + M for all n.
@@ -303,8 +301,10 @@ This file formalizes Erdős Problem #454 on prime sum deviations.
 
 **Status**: OPEN (with lower bound by Pomerance 1979)
 
-**The Problem**: Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}).
+**The Problem**: Let f(n) = min_{0<i<n} (p_{n+i} + p_{n-i}).
 Is limsup_{n→∞} (f(n) - 2p_n) = ∞?
+(The minimum excludes i = 0, whose term p_n + p_n = 2p_n would otherwise cap
+f(n) at 2p_n and force every deviation to be ≤ 0.)
 
 **Known Results**:
 - Pomerance (1979): limsup ≥ 2

@@ -11,7 +11,8 @@
   - No axioms
 
   The main file formalizes: Is limsup_{n→∞} (f(n) - 2p_n) = ∞,
-  where f(n) = min_{i<n} (p_{n+i} + p_{n-i})?
+  where f(n) = min_{0<i<n} (p_{n+i} + p_{n-i})?  The minimum excludes i = 0,
+  whose term p_n + p_n = 2p_n would otherwise cap f(n) at 2p_n.
 -/
 import Mathlib
 import Mathlib.Data.Nat.Nth
@@ -25,16 +26,16 @@ open Nat Filter
 /-- The k-th prime number (0-indexed: p_0 = 2, p_1 = 3, ...). -/
 noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Nat.Prime
 
-/-- f(n) = min_{i<n} (p_{n+i} + p_{n-i}). -/
+/-- f(n) = min_{0<i<n} (p_{n+i} + p_{n-i}) (i = 0 excluded; index i = j + 1). -/
 noncomputable def f (n : ℕ) : ℕ :=
-  if n = 0 then 0
-  else ⨅ i : Fin n, nthPrime (n + i) + nthPrime (n - i)
+  if n ≤ 1 then 0
+  else ⨅ j : Fin (n - 1), nthPrime (n + ((j : ℕ) + 1)) + nthPrime (n - ((j : ℕ) + 1))
 
 /-- Alternative definition using Finset.inf'. -/
 noncomputable def f' (n : ℕ) : ℕ :=
-  if h : n = 0 then 0
-  else (Finset.range n).inf' (Finset.nonempty_range_iff.mpr h)
-    (fun i => nthPrime (n + i) + nthPrime (n - i))
+  if h : n ≤ 1 then 0
+  else (Finset.range (n - 1)).inf' (by rw [Finset.nonempty_range_iff]; omega)
+    (fun j => nthPrime (n + (j + 1)) + nthPrime (n - (j + 1)))
 
 /-- The deviation of f(n) from 2p_n. -/
 noncomputable def deviation (n : ℕ) : ℤ :=
@@ -67,18 +68,10 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := by
   exact Nat.prime_nth_prime k
 
 -- f(n) bounds
-/-- The i=0 term of the infimum equals 2*p_n. -/
+/-- The excluded i=0 term equals 2*p_n (this is why i = 0 is omitted from f). -/
 theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
     nthPrime (n + 0) + nthPrime (n - 0) = 2 * nthPrime n := by
   simp; ring
-
-/-- f(n) ≤ 2p_n, since the infimum includes the i=0 term. -/
-theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) :
-    f n ≤ 2 * nthPrime n := by
-  simp only [f, if_neg (by omega : n ≠ 0)]
-  refine (ciInf_le ⟨0, by rintro _ ⟨_, rfl⟩; exact Nat.zero_le _⟩ ⟨0, hn⟩).trans ?_
-  simp [symmetric_sum_at_zero n hn]
-  omega
 
 /-- The two definitions of f are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
