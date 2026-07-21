@@ -2615,15 +2615,15 @@ theorem two_distance_row_sq_sum
       rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
     omega
   have hsplit : ∑ k, (dist (P m) (P k)) ^ 2
-      = ∑ k in univ.erase m, (dist (P m) (P k)) ^ 2 := by
+      = ∑ k ∈ univ.erase m, (dist (P m) (P k)) ^ 2 := by
     rw [← Finset.add_sum_erase univ (fun k => (dist (P m) (P k)) ^ 2) (mem_univ m)]
     simp
   rw [hsplit, hcover, Finset.sum_union hdisj]
-  have hAsum : ∑ k in A, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 := by
+  have hAsum : ∑ k ∈ A, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 := by
     have hval : ∀ k ∈ A, (dist (P m) (P k)) ^ 2 = a ^ 2 := by
       intro k hk; rw [hAdef, mem_filter] at hk; rw [hk.2]
     rw [Finset.sum_congr rfl hval, Finset.sum_const, hAcard, nsmul_eq_mul]; norm_num
-  have hBsum : ∑ k in B, (dist (P m) (P k)) ^ 2 = 2 * b ^ 2 := by
+  have hBsum : ∑ k ∈ B, (dist (P m) (P k)) ^ 2 = 2 * b ^ 2 := by
     have hval : ∀ k ∈ B, (dist (P m) (P k)) ^ 2 = b ^ 2 := by
       intro k hk; rw [hBdef, mem_filter] at hk; rw [hk.2]
     rw [Finset.sum_congr rfl hval, Finset.sum_const, hBcard, nsmul_eq_mul]; norm_num
@@ -2654,7 +2654,7 @@ theorem three_le_h_five : 3 ≤ h 5 := by
   obtain ⟨P, hgp, hval⟩ := h_attained 5
   have hnum : numDistinctDistances P ≤ 2 := by omega
   obtain ⟨a, b, ha, hb, hcov⟩ :=
-    exists_two_distances_of_numDistinct_le_two hgp.injective (by norm_num) hnum
+    exists_two_distances_of_numDistinct_le_two hgp.1 (by norm_num) hnum
   by_cases hab : a = b
   · -- One distance only: five mutually equidistant points, ruled out by `no_four_equidistant`.
     have hall : ∀ x y : Fin 5, x ≠ y → dist (P x) (P y) = a := by
