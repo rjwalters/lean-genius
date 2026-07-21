@@ -211,13 +211,13 @@ theorem end_centralizer_eq_adjoin
     rw [Subalgebra.mem_centralizer_iff] at hA
     have hAT : A * T = T * A := (hA T (Set.mem_singleton T)).symm
     obtain ⟨p, hp⟩ := commuting_end_is_polynomial T v hcyc A hAT
-    exact AlgHom.mem_range.mpr ⟨p, hp.symm⟩
+    exact ⟨p, hp.symm⟩
   · -- range(aeval T) ⊆ centralizer: every polynomial in `T` commutes with `T`
     rintro A ⟨p, rfl⟩
     rw [Subalgebra.mem_centralizer_iff]
     intro g hg
     rw [Set.mem_singleton_iff] at hg
-    subst hg
+    rw [hg]
     exact (aeval_end_commute T p).symm
 
 end EndCyclicCommutant
