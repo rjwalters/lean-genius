@@ -112,15 +112,15 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Defines `repFunction` (representation count via Finset.filter), `sumSet` (A + A), `countingFn`, `densityRatio`, and defines `lowerDensity`/`upperDensity` via Filter.liminf/limsup. Proves basic properties: non-negativity, density ≤ 1, liminf ≤ limsup.",
+      "summary": "Defines `repFunction` (representation count via Finset.filter), `sumSet` (A + A), `countingFn`, `densityRatio`, and defines `lowerDensity`/`upperDensity` via Filter.liminf/limsup. Proves basic properties: non-negativity, density ≤ 1 (`upperDensity_le_one`, `lowerDensity_le_one`), liminf ≤ limsup.",
       "startLine": 30,
-      "endLine": 88
+      "endLine": 99
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "summary": "Proves fundamental structural lemmas: `sumSet_empty`, `repFunction_empty`, `repFunction_mono` (monotone under set inclusion), `repFunction_eq_zero_of_not_mem`, `mem_sumSet_iff_repFunction_pos` (bridge between sumset and rep function), `mem_sumSet_double`, `sumSet_monotone`.",
-      "startLine": 90,
+      "startLine": 100,
       "endLine": 147
     },
     {
@@ -135,21 +135,21 @@
       "title": "The Main Conjecture (OPEN)",
       "summary": "States `erdos_749_conjecture` as a dichotomy: either for all ε > 0 such sets exist, or there is a critical ε₀ below which no such A exists. Proved via excluded middle.",
       "startLine": 160,
-      "endLine": 177
+      "endLine": 188
     },
     {
       "id": "context",
       "title": "Sidon Sets and Erdős-Turán Connection",
-      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1), `sidon_counting_bound` (|A∩[1,N]| ≤ √(2N)+1), and `sidon_set_density_zero` (Sidon → upper density 0, fully proved via counting bound and limsup argument). Axiomatizes Erdős-Turán conjecture (#28, open), derives #749 false at ε=0 from ET.",
-      "startLine": 179,
-      "endLine": 304
+      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1), `sidon_counting_bound` (|A∩[1,N]| ≤ √(2N)+1), and `sidon_set_density_zero` (Sidon → upper density 0, fully proved via counting bound and limsup argument). Axiomatizes Erdős-Turán conjecture (#28, open), derives #749 false at ε=0 from ET (`erdos_749_false_at_zero_from_ET`).",
+      "startLine": 189,
+      "endLine": 323
     },
     {
       "id": "upper-variant",
       "title": "Upper Density Variant",
-      "summary": "States the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ. Proved via excluded middle.",
-      "startLine": 306,
-      "endLine": 321
+      "summary": "`erdos_749_upper_variant`: states the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ. Proved via excluded middle.",
+      "startLine": 324,
+      "endLine": 339
     }
   ],
   "conclusion": {
