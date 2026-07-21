@@ -102,7 +102,7 @@
       "title": "Original Bounds: $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$",
       "summary": "Proves `ert_lower_bound` (Aristotle) using the probabilistic method: bipartite graphs with $< 2^k$ vertices are $k$-choosable via random 2-partition of colors. States `ert_upper_bound` (sorry). Includes several auxiliary lemmas on bipartite partition structure and the probability bound.",
       "startLine": 633,
-      "endLine": 804,
+      "endLine": 815,
       "mathContext": "Proves `ert_lower_bound` (Aristotle) using the probabilistic method: bipartite graphs with $< 2^k$ vertices are $k$-choosable via random 2-partition of colors. Includes several auxiliary lemmas on bipartite partition structure and the probability bound."
     },
     {
@@ -126,7 +126,7 @@
       "title": "Complete Bipartite Graphs and Asymptotics",
       "summary": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$.",
       "startLine": 847,
-      "endLine": 911,
+      "endLine": 924,
       "mathContext": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$."
     }
   ],
