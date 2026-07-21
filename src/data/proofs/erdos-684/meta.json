@@ -86,75 +86,91 @@
   "sections": [
     {
       "id": "smooth-rough",
-      "title": "Smooth and Rough Parts",
-      "summary": "smoothPart, roughPart, binomialSmoothPart, binomialRoughPart",
+      "title": "Part 1: Smooth and Rough Parts of Binomial Coefficients",
+      "summary": "Defines the k-smooth part `smoothPart k m` (product of prime powers with p ≤ k) and its complementary `roughPart`, then lifts them to binomial coefficients as `binomialSmoothPart n k` and `binomialRoughPart n k`. Establishes the basic toolkit: `smoothPart_dvd` (smooth part divides m), `smooth_rough_decomposition` (m = smooth · rough), positivity `smoothPart_pos`, boundary values `smoothPart_zero`/`smoothPart_one`, the bound `smoothPart_le` (≤ m), and monotonicity in k both as a divisibility `smoothPart_dvd_mono` and as an inequality `smoothPart_mono_k`. Closes with the binomial boundary values `binomialSmoothPart_self = 1` and `binomialSmoothPart_zero = 1`.",
       "startLine": 38,
-      "endLine": 104,
-      "mathContext": "Mathematical content: smoothPart, roughPart, binomialSmoothPart, binomialRoughPart"
+      "endLine": 154,
+      "mathContext": "$C(n,k) = u \\cdot v$ with $u$ the $k$-smooth part (primes $\\le k$) and $v$ the $k$-rough part (primes in $(k,n]$). Definitions: smoothPart, roughPart, binomialSmoothPart, binomialRoughPart; foundational lemmas smoothPart_dvd, smooth_rough_decomposition, smoothPart_pos, smoothPart_le, smoothPart_mono_k."
     },
     {
       "id": "f-definition",
-      "title": "The Function f(n)",
-      "summary": "f, f_property, below_f_small",
-      "startLine": 105,
-      "endLine": 145,
-      "mathContext": "Mathematical content: f, f_property, below_f_small"
+      "title": "Part 2: The Function f(n)",
+      "summary": "Defines the central object `f n` = the least k for which `binomialSmoothPart n k > n²` (via `Nat.sInf`), and the domain predicate `f_domain n` marking the n for which such a k exists. `f_property` proves (from `Nat.sInf_mem`) that on the domain the smooth part genuinely exceeds n² at k = f(n) — this was formerly an axiom and is now a theorem. `f_domain_large` is retained as an axiom asserting the domain contains all sufficiently large n. `below_f_small` records that every k below f(n) has smooth part ≤ n².",
+      "startLine": 155,
+      "endLine": 196,
+      "mathContext": "$f(n) = \\min\\{k : u_k > n^2\\}$ where $u_k$ is the $k$-smooth part of $C(n,k)$. Definitions f, f_domain; theorem f_property (from Nat.sInf_mem); axiom f_domain_large; theorem below_f_small."
     },
     {
       "id": "mahler",
-      "title": "Mahler's Classical Result",
-      "summary": "mahler_ineffective, f_tendsto_infty_weak",
-      "startLine": 146,
-      "endLine": 203,
-      "mathContext": "Mathematical content: mahler_ineffective, f_tendsto_infty_weak"
+      "title": "Part 3: Mahler's Classical Result",
+      "summary": "Axiomatizes Mahler's classical (ineffective) bound `mahler_ineffective`: for fixed k₀ and any ε > 0, the k₀-smooth part of C(n,k₀) is eventually ≤ n^{1+ε}. From the two axioms (`mahler_ineffective`, `f_domain_large`) the file derives `f_tendsto_infty_weak`: f(n) → ∞, i.e. for every constant C there is N with f(n) > C for all n ≥ N.",
+      "startLine": 197,
+      "endLine": 254,
+      "mathContext": "Mahler: for fixed $k_0$ and $\\varepsilon>0$, the smooth part is $\\le n^{1+\\varepsilon}$ eventually (ineffective — no explicit N). axiom mahler_ineffective; theorem f_tendsto_infty_weak (f(n) → ∞)."
     },
     {
       "id": "modern-bounds",
-      "title": "Modern Bounds",
-      "summary": "tang_exponent, rh_exponent",
-      "startLine": 204,
-      "endLine": 215,
-      "mathContext": "Bound: tang_exponent, rh_exponent"
+      "title": "Part 4: Modern Bounds",
+      "summary": "Records the exponents from recent upper bounds as real constants: `tang_exponent = 30/43 ≈ 0.698` (Tang–ChatGPT unconditional bound f(n) ≤ n^{30/43+o(1)}) and `rh_exponent = 2/3` (the sharper f(n) ≤ n^{2/3+o(1)} conditional on the Riemann Hypothesis).",
+      "startLine": 255,
+      "endLine": 266,
+      "mathContext": "Upper bounds $f(n) \\le n^{30/43+o(1)}$ (unconditional) and $f(n) \\le n^{2/3+o(1)}$ (under RH). Definitions tang_exponent = 30/43, rh_exponent = 2/3."
     },
     {
       "id": "heuristic",
-      "title": "Heuristic Conjectures",
-      "summary": "heuristic_bound",
-      "startLine": 216,
-      "endLine": 228,
-      "mathContext": "Bound: heuristic_bound"
+      "title": "Part 5: Heuristic Conjectures",
+      "summary": "Encodes the heuristic prediction of Sothanaphan & ChatGPT as `heuristic_bound n = 2·log n`, the conjectured typical size of f(n) — vastly smaller than any proven upper bound, capturing the central mystery of the problem.",
+      "startLine": 267,
+      "endLine": 279,
+      "mathContext": "Heuristic: $f(n) \\sim 2\\log n$ for most $n$, far below the proven $n^{30/43}$. Definition heuristic_bound n = 2 * Real.log n."
     },
     {
       "id": "structure",
-      "title": "Structure of Smooth Part",
-      "summary": "legendreExponent, kummer_theorem",
-      "startLine": 229,
-      "endLine": 283,
-      "mathContext": "Verified: legendreExponent, kummer_theorem"
+      "title": "Part 6: Structure of Smooth Part",
+      "summary": "Connects the smooth part to prime-power structure. `legendreExponent n p` records the exponent of p in n! (Legendre's formula), and `kummer_theorem` gives the prime power dividing C(n,k) — the Kummer/Legendre bridge underlying every quantitative estimate of the smooth part.",
+      "startLine": 280,
+      "endLine": 344,
+      "mathContext": "Legendre/Kummer: the exponent of prime $p$ in $C(n,k)$ counts carries when adding $k$ and $n-k$ in base $p$. Definition legendreExponent; theorem kummer_theorem (proved from Mathlib)."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "f_lower_bound, prime_binomial_structure",
-      "startLine": 284,
-      "endLine": 330,
-      "mathContext": "Formal definition: f_lower_bound, prime_binomial_structure"
+      "title": "Part 7: Special Cases",
+      "summary": "`f_lower_bound` proves f(n) ≥ 2 for n ≥ 4 on the domain (k = 1 alone can never push the smooth part past n²). `prime_binomial_structure` records the divisibility structure p ∣ C(p,k) for 1 ≤ k ≤ p−1, a special case illuminating the smooth/rough split at prime n.",
+      "startLine": 345,
+      "endLine": 391,
+      "mathContext": "$f(n) \\ge 2$ for $n \\ge 4$; and $p \\mid \\binom{p}{k}$ for $1 \\le k \\le p-1$. Theorems f_lower_bound, prime_binomial_structure."
     },
     {
       "id": "generalized",
-      "title": "The Generalized Problem",
-      "summary": "fGeneral, f_is_fGeneral_0",
-      "startLine": 331,
-      "endLine": 348,
-      "mathContext": "Mathematical content: fGeneral, f_is_fGeneral_0"
+      "title": "Part 8: The Generalized Problem",
+      "summary": "`fGeneral n j` generalizes f by asking for the least k with smooth part > n^j, and `f_is_fGeneral_0` shows the original threshold n² is recovered as the j = 2 slice — actually f(n) = fGeneral(n, 0) under the file's `sInf` conventions, tying the specialized and general formulations together.",
+      "startLine": 392,
+      "endLine": 409,
+      "mathContext": "Generalized threshold $n^j$: $f_{\\mathrm{gen}}(n,j) = \\min\\{k : u_k > n^j\\}$. Definition fGeneral; theorem f_is_fGeneral_0 relating f to fGeneral."
+    },
+    {
+      "id": "oeis",
+      "title": "Part 9: OEIS Sequence",
+      "summary": "Notes that the sequence of values f(n) is catalogued as OEIS A392019, anchoring the formalization to the published integer sequence.",
+      "startLine": 410,
+      "endLine": 417,
+      "mathContext": "The values $f(n)$ form OEIS sequence A392019."
     },
     {
       "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_684_statement",
-      "startLine": 349,
-      "endLine": 401,
-      "mathContext": "Mathematical content: erdos_684_statement"
+      "title": "Part 10: Problem Status",
+      "summary": "States the main formal theorem `erdos_684_statement`: for every n in `f_domain`, there exists k ≤ n with `binomialSmoothPart n k > n²`. The proof handles n = 0 by the explicit witness k = 0 and, for n ≥ 1, takes k = f(n), discharging the k ≤ n bound by contradiction (k > n forces C(n,k) = 0, hence smooth part 1 ≤ n²) and the exceedance directly from `f_property`. The domain restriction is essential: the set is empty for small n (n = 2..9), so the naïve ∀ n ≥ 2 form is false.",
+      "startLine": 418,
+      "endLine": 455,
+      "mathContext": "Main statement: $\\forall n \\in f\\_domain,\\ \\exists k \\le n,\\ u_k > n^2$. Theorem erdos_684_statement (proved, modulo the two stated axioms). Problem status: OPEN."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Closing recap: f(n) = min k with k-smooth part of C(n,k) exceeding n²; Mahler's ineffective ≤ n^{1+ε}, Tang–ChatGPT's f(n) ≤ n^{30/43+o(1)}, the RH-conditional n^{2/3+o(1)}, versus the heuristic f(n) ~ 2 log n — a huge unresolved gap between proven bounds and expectation.",
+      "startLine": 456,
+      "endLine": 471,
+      "mathContext": "Gap between proven upper bounds ($n^{30/43}$, or $n^{2/3}$ under RH) and the heuristic $2\\log n$ remains wide open."
     }
   ],
   "conclusion": {
