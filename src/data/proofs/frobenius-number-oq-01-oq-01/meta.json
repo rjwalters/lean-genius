@@ -233,6 +233,38 @@
       "endLine": 179,
       "summary": "frobeniusNumber_triple_le: g(m, n, k) at most m*n - m - n for coprime m, n > 1 and any k > 1. frobeniusNumber_triple_strict: strict when k = m*n - m - n. Side-goals discharged by simp/omega.",
       "mathContext": "Directly answers the three-or-more-generators open question with a computable, verified bound, honestly framed as an upper bound (no closed form exists for n >= 3)."
+    },
+    {
+      "id": "explicit-representability",
+      "title": "Explicit Representability by {6, 9, 20}",
+      "startLine": 182,
+      "endLine": 215,
+      "summary": "Opens the second namespace FrobeniusNumberOQ01OQ01 and works the canonical three-generator instance concretely. Representable3 n := ∃ x y z, n = 6x + 9y + 20z; not_representable3_43 (43 is not representable, decided directly by omega on the linear Diophantine system); representable3_ge (every n ≥ 44 is representable — six explicit base-residue witnesses 44..49, then strong induction reducing by 6).",
+      "mathContext": "The `{6,9,20}` McNugget instance: $43 \\notin \\langle 6,9,20\\rangle$ but every $n\\geq 44$ is $6x+9y+20z$; the six residues mod 6 are covered by explicit witnesses, larger $n$ by descent."
+    },
+    {
+      "id": "closure-bridge",
+      "title": "Bridge to Mathlib's AddSubmonoid.closure",
+      "startLine": 216,
+      "endLine": 257,
+      "summary": "Connects the hand-rolled Representable3 predicate to Mathlib's numerical-semigroup API. R3 packages the representable numbers as an AddSubmonoid ℕ (0 and closure under +); the private nat_mul_mem lets a submonoid absorb ℕ-multiples of its members; mem_closure_iff proves n ∈ AddSubmonoid.closure {6,9,20} ↔ Representable3 n (⊆ via closure_le into R3, ⊇ by combining the three generators' closure memberships), the bridge that lets the Frobenius API be applied to the explicit set.",
+      "mathContext": "$n \\in \\mathrm{closure}\\{6,9,20\\} \\iff \\exists x,y,z,\\ n = 6x+9y+20z$: the concrete representability predicate is exactly membership in the generated submonoid."
+    },
+    {
+      "id": "chicken-mcnugget",
+      "title": "The Chicken McNugget Number: g(6, 9, 20) = 43",
+      "startLine": 258,
+      "endLine": 272,
+      "summary": "chickenMcNugget proves FrobeniusNumber 43 {6,9,20}: unfolding frobeniusNumber_iff and rewriting through mem_closure_iff, non-representability of 43 comes from not_representable3_43 and representability of every k > 43 from representable3_ge. The canonical instance with no closed-form value (the two-generator formula does not apply to three generators).",
+      "mathContext": "$g(6,9,20) = 43$: the largest integer not expressible as a non-negative combination of 6, 9, 20 — the Chicken McNugget theorem, verified end-to-end."
+    },
+    {
+      "id": "schur-welldefinedness",
+      "title": "Well-Definedness for Any Number of Generators (Schur)",
+      "startLine": 273,
+      "endLine": 288,
+      "summary": "The structural generalization to n ≥ 3 generators: exists_frobeniusNumber_of_setGcd_one shows that for any generator set s with setGcd s = 1 and 1 ∉ s a Frobenius number exists (Schur's theorem, via exists_frobeniusNumber_iff), and exists_frobeniusNumber_mcnugget instantiates it for {6,9,20} (= 43 by chickenMcNugget). Emphasizes that only a *closed form* is impossible for n ≥ 3 — existence/well-definedness is not.",
+      "mathContext": "Schur: $\\gcd(s)=1,\\ 1\\notin s \\Rightarrow$ a Frobenius number exists for any number of generators; only the closed *formula* fails for $n\\geq 3$, not existence."
     }
   ]
 }
