@@ -122,8 +122,8 @@
       "id": "mathlib-bridge",
       "title": "Bridge to Mathlib: Compatibility and Strong/Full Forms",
       "startLine": 323,
-      "endLine": 501,
-      "summary": "Four compatibility theorems bridging our definitions to Mathlib's: `edgeDensity_eq_mathlib` (density equivalence), `mathlib_uniform_imp_regular` (Mathlib uniformity → our regularity), `equipartition_imp_equitable` (equitability bridge), `irregular_subset_nonuniform` (irregular pairs subset). These yield `regularity_lemma_strong` (with m₀ ≤ k ≤ M) and `regularity_lemma_full` (with partition structure: coverage and disjointness) via `szemeredi_regularity` from Mathlib.",
+      "endLine": 533,
+      "summary": "Four compatibility theorems bridging our definitions to Mathlib's: `edgeDensity_eq_mathlib` (density equivalence), `mathlib_uniform_imp_regular` (Mathlib uniformity → our regularity), `equipartition_imp_equitable` (equitability bridge), `irregular_subset_nonuniform` (irregular pairs subset). These yield `regularity_lemma_strong` (with m₀ ≤ k ≤ M) and `regularity_lemma_full` (with partition structure: coverage and disjointness) via `szemeredi_regularity` from Mathlib. The closing block discharges the irregularity-count obligation (same argument as `regularity_lemma_strong`) and closes the `Szemeredi.Regularity` namespace.",
       "mathContext": "Bridge: our $\\varepsilon$-regularity (with $\\leq$) is implied by Mathlib's uniformity (with $<$). Our irregular pair set $\\subseteq$ Mathlib's non-uniform set. This yields: $\\forall \\varepsilon > 0, m_0 \\geq 1, \\exists M: n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition with $m_0 \\leq k \\leq M$."
     }
   ],

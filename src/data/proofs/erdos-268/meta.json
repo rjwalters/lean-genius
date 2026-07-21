@@ -185,9 +185,9 @@
     {
       "id": "examples",
       "title": "Specific Examples",
-      "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. Proves squares_convergent (bijection ℕ ≃ squaresSet + p-series for p=2) and powers_convergent (bijection ℕ ≃ powersOf2Set + geometric series). Defines squaresPoint and powers2Point as concrete elements of X. Adds harmonicPointSet_one_eq (X₁ = positive half-line) and harmonicSubseriesSum_surjective_on_pos (every s > 0 achievable).",
+      "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. Proves squares_convergent (bijection ℕ ≃ squaresSet + p-series for p=2) and powers_convergent (bijection ℕ ≃ powersOf2Set + geometric series). Defines squaresPoint and powers2Point as concrete elements of X. Adds harmonicPointSet_one_eq (X₁ = positive half-line) and harmonicSubseriesSum_surjective_on_pos (every s > 0 achievable). Closes with the file-level Summary docstring recording the problem, the answer (YES for all d ≥ 1), the Erdős-Straus / Kovač / Kovač-Tao history, and the two key axioms `erdos_268_solved` and `harmonicPointSet_path_connected_large`.",
       "startLine": 878,
-      "endLine": 979,
+      "endLine": 1009,
       "mathContext": "Proves squares_convergent and powers_convergent. Adds two new public theorems: harmonicPointSet_one_eq and harmonicSubseriesSum_surjective_on_pos."
     }
   ],

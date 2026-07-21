@@ -121,8 +121,8 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 281,
-      "endLine": 457,
-      "summary": "Euclidean, taxicab, and Chebyshev norms as examples.",
+      "endLine": 488,
+      "summary": "Euclidean, taxicab, and Chebyshev norms as worked examples of Minkowski geometries whose geodesics are straight lines. Closes with `#check` sanity checks on the marquee results and a file-level summary comment collecting the three headline theorems: `minkowski_geodesics_are_straight`, `busemann_classification`, and `hamel_theorem_2d`.",
       "mathContext": "Euclidean: $\\|x\\|_2 = \\sqrt{\\sum x_i^2}$, unit ball is a sphere. Taxicab: $\\|x\\|_1 = \\sum |x_i|$, unit ball is a cross-polytope. Chebyshev: $\\|x\\|_\\infty = \\max |x_i|$, unit ball is a hypercube. All are Minkowski geometries with convex unit balls, hence straight-line geodesics."
     }
   ],
