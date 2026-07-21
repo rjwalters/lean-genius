@@ -40,7 +40,7 @@
         "relationship": "Builds on: Erdős 1963 uniform first-moment theorem (reuses Mono, card_mono, exists_zero_of_sum_lt_card)"
       }
     ],
-    "theoremCount": 37,
+    "theoremCount": 45,
     "definitionCount": 3
   },
   "overview": {
@@ -63,44 +63,100 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Property B and Sparseness",
-      "startLine": 64,
-      "endLine": 80,
-      "summary": "Defines HasPropertyB (some 2-coloring leaves no member monochromatic) and IsSparse (for every X, fewer than c·|X| members lie inside X).",
-      "mathContext": "$\\mathrm{HasPropertyB}(F) \\iff \\exists c : V \\to \\{0,1\\},\\ \\forall e \\in F,\\ \\neg\\mathrm{Mono}(e,c)$; $\\ \\mathrm{IsSparse}(F,c) \\iff \\forall X,\\ |\\{A \\in F : A \\subseteq X\\}| < c\\,|X|$."
+      "id": "overview",
+      "title": "Overview, Imports & Setup",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module docstring for Erdős #1022 OQ-02 (the growth rate of the Property-B sparseness threshold), imports, and the Erdos1022OQ02 namespace over a finite ground set V. Frames the two intertwined thresholds studied: the first-moment threshold 2^(t-1) and the admissible sparseness coefficient.",
+      "mathContext": "Property B asks for a 2-coloring of a set family with no monochromatic edge; the question is how sparse a family of $t$-sets may be while still forcing Property B."
     },
     {
-      "id": "sparse-bound",
-      "title": "Sparseness Bounds the Family Size",
-      "startLine": 82,
-      "endLine": 94,
-      "summary": "sparse_card_lt: instantiating the sparseness condition at X = V gives |F| < c·|V|.",
-      "mathContext": "Taking $X = V$: every member is $\\subseteq V$, so $\\{A \\in F : A \\subseteq V\\} = F$ and $|F| < c\\,|V|$."
+      "id": "s1-propertyb",
+      "title": "§1: Property B and the Sparseness Condition",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "Defines HasPropertyB F (F admits a 2-coloring of the ground set with no monochromatic member) and IsSparse F c (a quantitative sparseness bound with coefficient c).",
+      "mathContext": "A family has Property B iff its vertices can be 2-colored so every edge is bichromatic; sparseness measures how few large edges the family packs."
     },
     {
-      "id": "min-size-first-moment",
-      "title": "First Moment for Minimum-Size Families",
-      "startLine": 96,
-      "endLine": 177,
-      "summary": "card_mono_le_of_min bounds the monochromatic count of an edge of size ≥ t by 2·2^{n-t}; property_b_min_size proves that |F| < 2^{t-1} with min size ≥ t implies Property B.",
-      "mathContext": "$\\sum_{c} |\\{e \\in F : \\mathrm{Mono}(e,c)\\}| \\le |F|\\cdot 2\\cdot 2^{n-t} < 2^n$ when $|F| < 2^{t-1}$, so some coloring has no monochromatic member."
+      "id": "s2-familysize",
+      "title": "§2: Sparseness Bounds the Family Size (global step)",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "sparse_card_lt: instantiating the sparseness condition bounds the total number of members of F — the global counting step feeding the first-moment argument.",
+      "mathContext": "A sparse family cannot be too large, which is what makes the union bound in the first-moment method succeed."
     },
     {
-      "id": "main-criterion",
-      "title": "Sparseness ⟹ Property B",
-      "startLine": 179,
-      "endLine": 191,
-      "summary": "propertyB_of_sparse: min size ≥ t, c-sparse, and c·|V| ≤ 2^{t-1} together imply Property B.",
-      "mathContext": "$\\mathrm{minSize}(F) \\ge t \\wedge \\mathrm{IsSparse}(F,c) \\wedge c\\,|V| \\le 2^{t-1} \\Rightarrow \\mathrm{HasPropertyB}(F)$."
+      "id": "s3-firstmoment",
+      "title": "§3: First Moment for Minimum-Size Families",
+      "startLine": 89,
+      "endLine": 170,
+      "summary": "card_mono_le_of_min (exact monochromatic count for an edge of size ≥ t under a random 2-coloring) and property_b_min_size (the first-moment inequality for families in which every member has size ≥ t), the probabilistic core of the criterion.",
+      "mathContext": "Under a uniform random 2-coloring, an edge of size $s\\ge t$ is monochromatic with probability $2^{1-s}\\le 2^{1-t}$; summing over members gives the first-moment bound."
     },
     {
-      "id": "growth-rate",
-      "title": "Growth Rate of the Threshold",
-      "startLine": 193,
-      "endLine": 233,
-      "summary": "firstMomentThreshold(t) = 2^{t-1} doubles per step and dominates t; the t=2 value is 2 (Lovász's c_2=1 is sharper).",
-      "mathContext": "$\\mathrm{threshold}(t+1) = 2\\,\\mathrm{threshold}(t)$, $t \\le \\mathrm{threshold}(t)$, exponential growth in $t$."
+      "id": "s4-criterion",
+      "title": "§4: Main Criterion — Sparseness ⟹ Property B",
+      "startLine": 171,
+      "endLine": 186,
+      "summary": "propertyB_of_sparse: a sufficiently sparse family of large sets is 2-colorable (first-moment form) — the main structural criterion combining §§2–3.",
+      "mathContext": "If the expected number of monochromatic edges is $<1$ then some coloring has none, so the family has Property B."
+    },
+    {
+      "id": "s5-threshold-growth",
+      "title": "§5: Growth Rate of the First-Moment Threshold",
+      "startLine": 187,
+      "endLine": 255,
+      "summary": "Defines firstMomentThreshold t = 2^(t-1) and studies it: firstMoment_threshold_doubles, strict monotonicity firstMoment_threshold_lt, firstMoment_threshold_ge_self, positivity, and the Lovász base cases firstMomentThreshold_two = 2, firstMomentThreshold_one = 1, and the degeneracy characterization firstMomentThreshold_eq_one_iff (= 1 ⟺ t ≤ 1).",
+      "mathContext": "The first-moment threshold is exactly $2^{t-1}$, doubling per unit of $t$ — the exponential density Lovász's argument tolerates."
+    },
+    {
+      "id": "s6-diverges",
+      "title": "§6: The Threshold Diverges — a Formal c_t → ∞",
+      "startLine": 256,
+      "endLine": 308,
+      "summary": "tendsto_div_const_atTop and firstMomentThreshold_tendsto_atTop (the first-moment threshold tends to infinity), and exists_admissible_coeff: an admissible sparseness coefficient exists for a bounded ground set and diverges with t.",
+      "mathContext": "$2^{t-1}\\to\\infty$, so the tolerated sparseness grows without bound as the edge size $t$ increases."
+    },
+    {
+      "id": "s7-coefficient-growth",
+      "title": "§7: Quantitative Growth Rate of the Admissible Coefficient",
+      "startLine": 309,
+      "endLine": 663,
+      "summary": "The quantitative heart of the file: introduces the integer admissible sparseness coefficient (floor tracking the real density) and pins its growth with two-sided bounds — threshold_lt_succ_coeff_mul, admissibleCoeff_ge_two_mul / _le_two_mul_succ, the exact step bracket admissibleCoeff_step_bracket, iterated exponential lower/upper bounds admissibleCoeff_two_pow_mul_le / _succ_le_two_pow_mul, the exact positivity threshold admissibleCoeff_pos_iff and explicit t₀ = |V|, eventual positivity, effective exponential divergence, the two-sided exponential bracket admissibleCoeff_bracket, and the exact power-of-two ground-set values admissibleCoeff_eq_of_card_eq_two_pow / _doubles_of_card_eq_two_pow.",
+      "mathContext": "The integer coefficient tracks the real density to within one vertex and satisfies $2^{k}\\cdot c(t)\\le c(t+k)\\le 2^{k}\\cdot(c(t)+1)$, so it grows exponentially in $t$."
+    },
+    {
+      "id": "s8-monotone",
+      "title": "§8: Monotonicity of the Admissible Coefficient in t",
+      "startLine": 664,
+      "endLine": 697,
+      "summary": "firstMomentThreshold_mono and admissibleCoeff_mono: both thresholds are (non-strictly) monotone in t — the unconditional monotone envelope used in the sharp modulus results below.",
+      "mathContext": "$a\\le b \\Rightarrow c(a)\\le c(b)$: enlarging the edge size never decreases the admissible sparseness."
+    },
+    {
+      "id": "s9-value-modulus",
+      "title": "§9: Modulus of Divergence (value form) & the Property-B Payoff",
+      "startLine": 698,
+      "endLine": 786,
+      "summary": "admissibleCoeff_tendsto_atTop, admissibleCoeff_ge_self, admissibleCoeff_eventually_ge (the coefficient eventually exceeds any target), and the payoff exists_min_size_for_sparse_bound: for any sparseness demand there is a minimum edge size guaranteeing Property B via §4.",
+      "mathContext": "Turning the growth bounds into a divergence modulus: for every $N$ there is a $t$ with $c(t)\\ge N$, so arbitrarily strong sparseness is achievable."
+    },
+    {
+      "id": "s10-log-modulus",
+      "title": "§10: Sharp Logarithmic Modulus of Divergence",
+      "startLine": 787,
+      "endLine": 915,
+      "summary": "The sharp logarithmic modulus: admissibleCoeff_ge_iff and admissibleCoeff_ge_iff_clog_le (the coefficient reaches N exactly when ⌈log₂⌉ of the demand is ≤ t), admissibleCoeff_log_modulus_le_linear, the sharpened admissibleCoeff_eventually_ge_sharp, and exists_min_size_for_sparse_bound_sharp — a logarithmic (rather than linear) bound on the required edge size.",
+      "mathContext": "Since $c(t)\\approx 2^{t-1}$, achieving coefficient $N$ needs only $t=\\Theta(\\log N)$: the modulus of divergence is logarithmic, which is sharp."
+    },
+    {
+      "id": "s11-strictmono",
+      "title": "§11: Strict Monotonicity past the Positivity Threshold",
+      "startLine": 916,
+      "endLine": 964,
+      "summary": "admissibleCoeff_lt_of_card_le_of_lt and admissibleCoeff_strictMonoOn: once the coefficient is positive it is strictly increasing in t, upgrading §8's non-strict envelope to strict monotonicity on the effective range. Closes the Erdos1022OQ02 namespace.",
+      "mathContext": "Past the positivity threshold $t_0=|V|$ the coefficient strictly increases, so the sparseness admits no plateaus in the divergent regime."
     }
   ],
   "conclusion": {
