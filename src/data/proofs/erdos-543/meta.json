@@ -56,12 +56,10 @@
       "IsSpanningSet predicate and equivalence with Set.univ",
       "spanningProbability formalization via k-subset counting",
       "f axiomatized as the worst-case spanning threshold",
-      "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
       "LittleOConjecture and ErdosCounterConjecture formal statements",
       "conjectures_complementary: proved logical negation equivalence",
       "chatgpt_tang_disproof: ErdosCounterConjecture holds",
       "little_o_conjecture_false: derived from disproof + complementarity",
-      "erdos_hall_lower: intermediate lower bound on log log log N",
       "erdos_543_summary: combines disproof and negation"
     ],
     "axiomCount": 2,
@@ -101,26 +99,26 @@
     {
       "id": "f-definition",
       "title": "The Function f(N)",
-      "summary": "spanningProbability, f axiom, f_le_card",
+      "summary": "spanningProbability, f axiom",
       "startLine": 59,
       "endLine": 75,
-      "mathContext": "Axiomatized: spanningProbability, f axiom, f_le_card"
+      "mathContext": "Axiomatized: spanningProbability, f axiom"
     },
     {
       "id": "elementary",
       "title": "Elementary Properties",
-      "summary": "empty_spanning_iff, spanning_of_generators",
+      "summary": "spanning_of_generators",
       "startLine": 76,
       "endLine": 83,
-      "mathContext": "Mathematical content: empty_spanning_iff, spanning_of_generators"
+      "mathContext": "Mathematical content: spanning_of_generators"
     },
     {
       "id": "erdos-renyi",
       "title": "Erdős-Rényi Upper Bound",
-      "summary": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
+      "summary": "Descriptive commentary: the Erdős-Rényi upper bound f(N) ≤ log₂ N + O(log log N) is discussed but not formalized",
       "startLine": 84,
       "endLine": 94,
-      "mathContext": "erdos_renyi_upper_bound: f(N) $\\leq$ log₂ N + $O(log log N)$"
+      "mathContext": "Commentary only (no formalized declaration): f(N) $\\leq$ log₂ N + $O(log log N)$"
     },
     {
       "id": "conjecture-disproof",
@@ -133,18 +131,18 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "naive_lower_bound, erdos_hall_lower",
+      "summary": "Descriptive commentary: the information-theoretic naive lower bound and the Erdős-Hall log log log N bound are discussed but not formalized",
       "startLine": 133,
       "endLine": 141,
-      "mathContext": "Bound: naive_lower_bound, erdos_hall_lower"
+      "mathContext": "Commentary only (no formalized declarations)"
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Summary",
-      "summary": "cyclic_spanning_characterization, prime_full_spanning; erdos_543_summary (the packaged main result: ErdosCounterConjecture ∧ ¬LittleOConjecture)",
+      "summary": "cyclic_spanning_characterization; erdos_543_summary (the packaged main result: ErdosCounterConjecture ∧ ¬LittleOConjecture)",
       "startLine": 142,
       "endLine": 167,
-      "mathContext": "Mathematical content: cyclic_spanning_characterization, prime_full_spanning, erdos_543_summary"
+      "mathContext": "Mathematical content: cyclic_spanning_characterization, erdos_543_summary"
     }
   ],
   "conclusion": {
