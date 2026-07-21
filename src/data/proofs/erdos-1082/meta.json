@@ -81,72 +81,80 @@
     {
       "id": "points-distances",
       "title": "Points and Distances in ℝ²",
-      "summary": "Point2D type, coordinate extraction, distance functions",
+      "summary": "Part I: Point2D type, coordinate extraction (Point2D.x/y), and the squared/actual distance functions distSq and dist'.",
       "startLine": 38,
-      "endLine": 58,
+      "endLine": 59,
       "mathContext": "Mathematical content: Point2D type, coordinate extraction, distance functions"
+    },
+    {
+      "id": "distance-properties",
+      "title": "Distance Properties",
+      "summary": "Part II: basic metric lemmas for distSq and dist' — nonnegativity (distSq_nonneg, dist'_nonneg), symmetry (distSq_comm, dist'_comm), vanishing on the diagonal (distSq_self, dist'_self), the identity-of-indiscernibles distSq_eq_zero_iff, and strict positivity for distinct points (distSq_pos_of_ne, dist'_pos_of_ne).",
+      "startLine": 60,
+      "endLine": 121,
+      "mathContext": "$\\mathrm{distSq}(p,q) \\ge 0$, $\\mathrm{distSq}(p,q) = \\mathrm{distSq}(q,p)$, $\\mathrm{distSq}(p,p)=0$, and $\\mathrm{distSq}(p,q)=0 \\iff p=q$; hence $\\mathrm{distSq}(p,q)>0$ for $p\\ne q$."
     },
     {
       "id": "general-position",
       "title": "General Position",
-      "summary": "areCollinear predicate and inGeneralPosition definition",
-      "startLine": 59,
-      "endLine": 70,
+      "summary": "Part III: areCollinear predicate, its permutation invariance (areCollinear_cycle, areCollinear_swap23), the inGeneralPosition definition (no three collinear), and its monotonicity under subsets.",
+      "startLine": 122,
+      "endLine": 151,
       "mathContext": "Formal definition: areCollinear predicate and inGeneralPosition definition"
     },
     {
       "id": "counting-distances",
       "title": "Counting Distinct Distances",
-      "summary": "distinctDistances, distancesFromPoint, numDistancesFromPoint",
-      "startLine": 71,
-      "endLine": 86,
+      "summary": "Part IV: distinctDistances, distancesFromPoint, numDistancesFromPoint, and the bound numDistancesFromPoint_le_distinctDistances relating single-point counts to the global count.",
+      "startLine": 152,
+      "endLine": 181,
       "mathContext": "Mathematical content: distinctDistances, distancesFromPoint, numDistancesFromPoint"
     },
     {
       "id": "szemeredi",
       "title": "Szemerédi's Theorem",
-      "summary": "The n/3 bound and the inverse result for no k collinear",
-      "startLine": 87,
-      "endLine": 107,
+      "summary": "Part V: the n/3 distinct-distances bound and the inverse result for configurations with no k collinear points.",
+      "startLine": 182,
+      "endLine": 196,
       "mathContext": "Bound: The n/3 bound and the inverse result for no k collinear"
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
-      "summary": "Conjecture1 (total) and Conjecture2 (single point) formal definitions",
-      "startLine": 108,
-      "endLine": 128,
-      "mathContext": "Formal definition: Conjecture1 (total) and Conjecture2 (single point) formal definitions"
+      "summary": "Part VI: Conjecture1 (total, ≥ n/2 distinct distances) and Conjecture2 (single point, ≥ n/2) formal definitions, plus conjecture2_implies_conjecture1 (the single-point form is stronger) and conjecture1_strengthens_szemeredi (it improves the n/3 bound to n/2).",
+      "startLine": 197,
+      "endLine": 234,
+      "mathContext": "Formal definition: Conjecture1 (total) and Conjecture2 (single point); $\\text{C2} \\Rightarrow \\text{C1} \\Rightarrow$ the $n/2$ bound $\\ge$ Szemerédi's $n/3$."
     },
     {
       "id": "counterexample",
       "title": "Xichuan's Counterexample",
-      "summary": "The 42-point construction disproving Conjecture2",
-      "startLine": 129,
-      "endLine": 155,
+      "summary": "Part VII: the 42-point construction disproving Conjecture2 (conjecture2_false), the resulting counterexample_gap, and counterexample_consistent_with_szemeredi showing it respects the n/3 bound.",
+      "startLine": 235,
+      "endLine": 276,
       "mathContext": "Mathematical content: The 42-point construction disproving Conjecture2"
     },
     {
-      "id": "open-problem",
-      "title": "The Remaining Open Problem",
-      "summary": "erdos_1082_status theorem summarizing current state",
-      "startLine": 156,
-      "endLine": 177,
-      "mathContext": "Verified: erdos_1082_status theorem summarizing current state"
+      "id": "gap-analysis",
+      "title": "The Gap Between n/3 and n/2",
+      "summary": "Part VIII: div3_le_div2 (n/3 ≤ n/2), szemeredi_weaker_than_conjecture1, and the remark conjecture2_false_does_not_imply_conjecture1_false_note — refuting the stronger single-point Conjecture2 leaves the total Conjecture1 open.",
+      "startLine": 277,
+      "endLine": 309,
+      "mathContext": "$\\lfloor n/3\\rfloor \\le \\lfloor n/2\\rfloor$; the counterexample kills C2 but Conjecture1 (the $n/2$ total bound) remains open."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "summary": "Guth-Katz, 3D generalizations",
-      "startLine": 178,
-      "endLine": 209,
+      "title": "Connection to Erdős Problem #89",
+      "summary": "Part IX: the link to Erdős #89 (the distinct-distances problem), including the Guth–Katz near-optimal n/log n lower bound and higher-dimensional generalizations.",
+      "startLine": 310,
+      "endLine": 319,
       "mathContext": "Mathematical content: Guth-Katz, 3D generalizations"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Final summary theorem",
-      "startLine": 234,
+      "summary": "Part X: the erdos_1082_status theorem summarizing the current state — Conjecture2 disproved, Conjecture1 open, Szemerédi's n/3 bound the best unconditional result.",
+      "startLine": 320,
       "endLine": 342,
       "mathContext": "Verified: Final summary theorem"
     }
