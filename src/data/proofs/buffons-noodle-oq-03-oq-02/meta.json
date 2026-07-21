@@ -173,29 +173,77 @@
       "id": "module-overview",
       "title": "Overview: the codimension dichotomy",
       "startLine": 1,
-      "endLine": 66,
+      "endLine": 68,
       "summary": "Frames the open question (expected intersections of a length-L curve with parallel k-flats of codimension c = n - k) and states the answer: c = 1 (hyperplanes) is the unique nondegenerate case (parent E = αₙ·L/d), while c ≥ 2 is degenerate. Explains the dimension-counting mechanism (projected curve, Hausdorff dimension ≤ 1 < c, Lebesgue-nullity) and contrasts with the Cauchy–Crofton theory needed for a genuinely nonzero higher-codimension law."
     },
     {
       "id": "core",
       "title": "Analytic core: Lipschitz curve image is Lebesgue-null in ℝᶜ, c ≥ 2",
-      "startLine": 82,
-      "endLine": 104,
-      "summary": "volume_lipschitzImage_eq_zero: bounds dimH (γ '' s) ≤ dimH s ≤ dimH (univ : Set ℝ) = 1 via LipschitzWith.dimH_image_le and dimH_mono, notes 1 < c, rewrites μH[c] = volume with hausdorffMeasure_pi_real, and concludes volume (γ '' s) = 0 through measure_zero_of_dimH_lt."
+      "startLine": 69,
+      "endLine": 105,
+      "summary": "Opens the BuffonsNoodleOQ03OQ02 namespace and proves volume_lipschitzImage_eq_zero: bounds dimH (γ '' s) ≤ dimH s ≤ dimH (univ : Set ℝ) = 1 via LipschitzWith.dimH_image_le and dimH_mono, notes 1 < c, rewrites μH[c] = volume with hausdorffMeasure_pi_real, and concludes volume (γ '' s) = 0 through measure_zero_of_dimH_lt."
     },
     {
       "id": "buffon-interpretation",
       "title": "Buffon interpretation and the ℝⁿ framing",
       "startLine": 106,
-      "endLine": 129,
+      "endLine": 131,
       "summary": "crossedOffsets_measure_zero rewrites the hit-offset set {w | ∃ t ∈ [0,L], γ t = w} as γ '' Icc 0 L and applies the core; spatialCurve_crossedOffsets_measure_zero composes a Lipschitz spatial curve with a Lipschitz projection (LipschitzWith.comp) to obtain the full ℝⁿ statement."
     },
     {
       "id": "expectation",
       "title": "Expectation consequence",
-      "startLine": 131,
-      "endLine": 136,
-      "summary": "crossing_ae_zero converts the Lebesgue-nullity of the hit-offset set into the almost-everywhere statement that a random offset is missed, so the expected number of crossings is 0."
+      "startLine": 132,
+      "endLine": 137,
+      "summary": "crossing_ae_zero converts the Lebesgue-nullity of the hit-offset set into the almost-everywhere statement that a random offset is missed, so the expected number of crossings is 0. Closes the BuffonsNoodleOQ03OQ02 namespace."
+    },
+    {
+      "id": "codim-companion-overview",
+      "title": "Companion: the Combinatorial Codimension Dichotomy (overview)",
+      "startLine": 138,
+      "endLine": 178,
+      "summary": "Docstring introducing the companion development (recovered from PR #32451) that expresses the same dichotomy at the parent's polygonal-noodle bookkeeping level: a codimension-aware expected-crossings functional reducing to the parent noodle law α·L/d in codimension 1 and vanishing otherwise, plus the deterministic grid-crossing backbone. Explains the c=1 (hyperplane, 0-dim intersection → αₙ·L/d), c≥2 (negative-dim → a.s. miss), and c=0 (degenerate) cases, and opens the BuffonsNoodleHighDim / Real / Finset scopes.",
+      "mathContext": "Two 1- and k-dimensional affine pieces in ℝⁿ meet in dimension $1 + k - n = 1 - c$: c=1 gives isolated crossings (law $\\alpha_n L/d$), c≥2 negative dimension (a.s. miss)."
+    },
+    {
+      "id": "part-i-grid-count",
+      "title": "Part I — The Deterministic Grid-Crossing Count",
+      "startLine": 179,
+      "endLine": 215,
+      "summary": "Opens the BuffonsNoodleCodim namespace. Defines gridCount d a b = ⌊b/d⌋ − ⌊a/d⌋ (the number of grid hyperplanes {x = j·d} in (a,b]) and proves gridCount_bounds: this integer differs from the continuous extent (b−a)/d by strictly less than 1 — the ±1 boundary fluctuation that averaging over a uniform offset turns into the crossing factor α·ℓ/d.",
+      "mathContext": "$\\mathrm{gridCount}(d,a,b) = \\lfloor b/d\\rfloor - \\lfloor a/d\\rfloor$, with $|\\mathrm{gridCount} - (b-a)/d| < 1$."
+    },
+    {
+      "id": "part-ii-codim-crossings",
+      "title": "Part II — Codimension-Aware Crossings and the Dichotomy",
+      "startLine": 216,
+      "endLine": 266,
+      "summary": "Defines codim n k = n − k and flatSegmentCrossings, the expected-crossings functional for one flat segment. Proves it reduces to the parent's α·ℓ/d in codimension 1 (flatSegmentCrossings_codim_one), vanishes identically otherwise (flatSegmentCrossings_of_codim_ne_one), specializes to hyperplanes (flatSegmentCrossings_hyperplane, hn : 1 ≤ n), scales linearly (flatSegmentCrossings_linear), and is non-negative (flatSegmentCrossings_nonneg).",
+      "mathContext": "$\\mathrm{flatSegmentCrossings}(n,k,\\alpha,\\ell,d) = \\alpha\\ell/d$ if $\\mathrm{codim}=1$, else $0$."
+    },
+    {
+      "id": "part-iii-noodle-law",
+      "title": "Part III — The Noodle-Level Codimension Law",
+      "startLine": 267,
+      "endLine": 309,
+      "summary": "Lifts the segment functional to a whole polygonal Noodle via expectedFlatCrossings (summing over segments). Proves the codimension-1 reduction to the parent noodle law (expectedFlatCrossings_codim_one), the full dichotomy (expectedFlatCrossings_dichotomy: the parent law in codim 1, else 0), the hyperplane specialization, and non-negativity.",
+      "mathContext": "$\\mathbb{E}[\\text{flat crossings of }N] = $ parent noodle law when $\\mathrm{codim}=1$, and $0$ for all other codimensions."
+    },
+    {
+      "id": "part-iv-structural-laws",
+      "title": "Part IV — Structural Laws in the Codimension-1 Regime",
+      "startLine": 310,
+      "endLine": 331,
+      "summary": "Two structural properties of the codim-1 expected-crossings functional: flatShape_independence (the expected count depends only on total length, not the noodle's shape — the defining feature of the Buffon phenomenon) and flatCrossings_mono (monotonicity in length across noodles N₁, N₂).",
+      "mathContext": "In codimension 1 the expected crossing count is shape-independent (a function of total length only) and monotone in length."
+    },
+    {
+      "id": "part-v-concrete-instances",
+      "title": "Part V — Concrete Instances",
+      "startLine": 332,
+      "endLine": 359,
+      "summary": "Three worked instances of the dichotomy: spatial_planes (a noodle vs parallel planes in ℝ³, codim 1 → the parent law), spatial_lines_vanish (a noodle vs parallel lines in ℝ³, codim 2 → 0, the higher-codimension vanishing), and planar_lines (a noodle vs parallel lines in ℝ², codim 1 → the classical planar Buffon law). Closes the BuffonsNoodleCodim namespace.",
+      "mathContext": "ℝ³ planes (codim 1) → $\\alpha L/d$; ℝ³ lines (codim 2) → $0$; ℝ² lines (codim 1) → classical Buffon $2L/(\\pi d)$-type law."
     }
   ],
   "conclusion": {
