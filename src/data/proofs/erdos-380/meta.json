@@ -78,64 +78,64 @@
     {
       "id": "greatest-prime-factor",
       "title": "Greatest Prime Factor",
-      "startLine": 26,
-      "endLine": 64,
+      "startLine": 1,
+      "endLine": 58,
       "summary": "Defines greatestPrimeFactor concretely via Nat.primeFactors.max' (previously 4 axioms, now all proved). Proves gpf_prime (primality for n≥2), gpf_dvd (P(n) ∣ n), and gpf_largest (P(n) is the largest prime divisor).",
       "mathContext": "$P(n)=\\max\\{p\\text{ prime}: p\\mid n\\}$, computed from `Nat.primeFactors`. All three structural properties follow from the definition — no axioms."
     },
     {
       "id": "bad-intervals",
       "title": "Bad Intervals",
-      "startLine": 65,
-      "endLine": 78,
+      "startLine": 59,
+      "endLine": 71,
       "summary": "Defines IsBadInterval u v (requires u≤v and P(Π)² ∣ Π where Π = ∏_{m=u}^{v} m) and InBadInterval n (∃ u≤n≤v with [u,v] bad).",
       "mathContext": "An interval $[u,v]$ is bad if the greatest prime factor of its product $\\Pi=\\prod_{m=u}^v m$ divides $\\Pi$ with exponent $\\ge 2$."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions",
-      "startLine": 79,
-      "endLine": 89,
+      "startLine": 72,
+      "endLine": 83,
       "summary": "Defines badCount(x) = |{n ≤ x : InBadInterval n}| and gpfSquareCount(x) = |{n ∈ [2,x] : P(n)² ∣ n}|, both noncomputable.",
       "mathContext": "$B(x)=|\\{n\\le x: n\\text{ in a bad interval}\\}|$ and $G(x)=|\\{n\\le x: P(n)^2\\mid n\\}|$ — the densities compared in the conjecture."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 90,
-      "endLine": 99,
+      "startLine": 84,
+      "endLine": 93,
       "summary": "States ErdosProblem380 as ratio convergence B(x)/G(x) → 1 (using ℚ to avoid reals).",
       "mathContext": "Conjecture: $\\forall\\varepsilon>0,\\ \\exists x_0,\\ \\forall x\\ge x_0:\\ G(x)>0\\wedge|B(x)/G(x)-1|<\\varepsilon$, i.e. almost all bad integers come from $P(n)^2\\mid n$."
     },
     {
-      "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 100,
-      "endLine": 123,
-      "summary": "States the single axiom gpfSquare_asymptotic (the GPF-square count exceeds x^{1−ε}) and PROVES erdos_graham_lower (B(x) ≥ x^{1−ε} for large x) via the chain x^{1−ε} ≤ G(x) ≤ B(x) using badCount_ge_gpfSquareCount.",
-      "mathContext": "$B(x)>x^{1-\\varepsilon}$ for every $\\varepsilon>0$ and large $x$ — derived from $G(x)\\le B(x)$ and the asymptotic lower bound on $G(x)$ (the only axiom in the file)."
-    },
-    {
       "id": "bad-primes",
       "title": "Bad Intervals and Primes",
-      "startLine": 124,
-      "endLine": 268,
+      "startLine": 94,
+      "endLine": 269,
       "summary": "PROVES bad_interval_no_prime (short bad intervals v<2u contain no primes) and bad_interval_no_prime_general (any bad interval is prime-free), plus bad_interval_v_bound (v < 2u for bad [u,v], via Bertrand's postulate).",
       "mathContext": "If prime $p\\in[u,v]$ with $v<2p$ then $p$ appears once in $\\Pi$, so $P(\\Pi)=p$ divides $\\Pi$ only once — contradicting badness. Bertrand forces $v<2u$."
     },
     {
       "id": "singleton-intervals",
       "title": "Singleton Intervals",
-      "startLine": 269,
-      "endLine": 297,
+      "startLine": 270,
+      "endLine": 295,
       "summary": "Links singleton intervals to gpfSquareCount: singleton_bad_iff ([n,n] bad ⟺ P(n)² ∣ n), gpfSquare_in_bad (each such n is in bad interval [n,n]), and badCount_ge_gpfSquareCount (B(x) ≥ G(x)).",
       "mathContext": "$[n,n]$ is bad $\\iff P(n)^2\\mid n$, so the singletons inject $G(x)$ into the bad integers: $B(x)\\ge G(x)$."
     },
     {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 296,
+      "endLine": 321,
+      "summary": "States the single axiom gpfSquare_asymptotic (the GPF-square count exceeds x^{1−ε}) and PROVES erdos_graham_lower (B(x) ≥ x^{1−ε} for large x) via the chain x^{1−ε} ≤ G(x) ≤ B(x) using badCount_ge_gpfSquareCount.",
+      "mathContext": "$B(x)>x^{1-\\varepsilon}$ for every $\\varepsilon>0$ and large $x$ — derived from $G(x)\\le B(x)$ and the asymptotic lower bound on $G(x)$ (the only axiom in the file)."
+    },
+    {
       "id": "very-bad-intervals",
       "title": "Very Bad Intervals and Powerful Numbers",
-      "startLine": 298,
-      "endLine": 396,
+      "startLine": 322,
+      "endLine": 428,
       "summary": "Defines IsPowerful, IsVeryBadInterval, veryBadCount, powerfulCount. Proves veryBad_is_bad, veryBad_interval_no_prime, singleton_veryBad_iff ([n,n] very bad ⟺ n powerful), powerful_in_veryBad, and the counting_chain powerfulCount ≤ veryBadCount ≤ badCount with gpfSquareCount ≤ badCount. States VeryBadConjecture.",
       "mathContext": "A very bad interval has every prime dividing its product squared. Singleton $[n,n]$ very bad $\\iff n$ powerful; powerful numbers count $\\sim c\\sqrt{x}$, giving $\\text{powerfulCount}\\le\\text{veryBadCount}\\le\\text{badCount}$."
     }

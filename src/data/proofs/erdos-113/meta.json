@@ -80,75 +80,83 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring: Erdos Problem #113 asks whether extremal numbers $\\mathrm{ex}(n;F)$ with the Erdos-Simonovits rational-exponent property force $F$ to be $2$-degenerate. States the conjecture, its 2023 disproof by Janzer, and the related Erdos problems #146/#147.",
+      "mathContext": "Erdos-Simonovits: $\\mathrm{ex}(n;F)=\\Theta(n^{\\alpha})$ with $\\alpha$ rational $\\Rightarrow F$ bipartite $2$-degenerate. Janzer (2023) disproves the general form."
+    },
+    {
       "id": "extremal-numbers",
       "title": "Extremal Numbers",
       "summary": "extremalNumber axiom, monotonicity, trivial upper bound",
-      "startLine": 42,
-      "endLine": 64,
+      "startLine": 43,
+      "endLine": 67,
       "mathContext": "Axiomatized: extremalNumber axiom, monotonicity, trivial upper bound"
     },
     {
       "id": "degeneracy",
       "title": "Graph Degeneracy",
       "summary": "isDegenerate axiom, existence, monotonicity, 2-degenerate characterization",
-      "startLine": 65,
-      "endLine": 90,
+      "startLine": 68,
+      "endLine": 98,
       "mathContext": "Axiomatized: isDegenerate axiom, existence, monotonicity, 2-degenerate characterization"
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs",
       "summary": "isBipartite axiom, complete bipartite encoding, properties",
-      "startLine": 91,
-      "endLine": 108,
+      "startLine": 99,
+      "endLine": 118,
       "mathContext": "Axiomatized: isBipartite axiom, complete bipartite encoding, properties"
     },
     {
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
       "summary": "Upper bound for complete bipartite subgraphs, C_4 special case",
-      "startLine": 109,
-      "endLine": 129,
+      "startLine": 119,
+      "endLine": 142,
       "mathContext": "Bound: Upper bound for complete bipartite subgraphs, C_4 special case"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
       "summary": "AsympLe definition, ≪ notation, transitivity for exponents",
-      "startLine": 130,
-      "endLine": 143,
+      "startLine": 143,
+      "endLine": 163,
       "mathContext": "Formal definition: AsympLe definition, ≪ notation, transitivity for exponents"
     },
     {
       "id": "conjecture",
       "title": "Erdős-Simonovits Conjecture",
       "summary": "ErdosSimonovitsConjecture definition, forward direction, backward direction (false)",
-      "startLine": 144,
-      "endLine": 180,
+      "startLine": 164,
+      "endLine": 198,
       "mathContext": "Formal definition: ErdosSimonovitsConjecture definition, forward direction, backward direction (false)"
     },
     {
       "id": "janzer",
       "title": "Janzer's Counterexample",
       "summary": "3-regular graphs not 2-degenerate, Janzer theorem, beats threshold",
-      "startLine": 181,
-      "endLine": 222,
+      "startLine": 199,
+      "endLine": 250,
       "mathContext": "Verified: 3-regular graphs not 2-degenerate, Janzer theorem, beats threshold"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents",
-      "startLine": 223,
-      "endLine": 244,
+      "startLine": 251,
+      "endLine": 277,
       "mathContext": "Bound: Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents"
     },
     {
       "id": "main-theorem",
-      "title": "Main Results",
+      "title": "Part IX: Main Results Summary",
       "summary": "erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed",
-      "startLine": 245,
-      "endLine": 271,
+      "startLine": 278,
+      "endLine": 304,
       "mathContext": "Verified: erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed"
     }
   ],
