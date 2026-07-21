@@ -334,4 +334,125 @@ theorem minDistinctDistances_le_pred (n : ℕ) : minDistinctDistances n ≤ n - 
     _ ≤ (Finset.Icc 1 (n - 1)).card := Finset.card_image_le
     _ = n - 1 := by rw [Nat.card_Icc]; omega
 
+/-! ## The exact value `g(3) = 1`
+
+The linear bound gives only `g(3) ≤ 2`; the sharp ceiling gives `g(3) ≤ 3.choose 2 = 3`.
+But three points can determine a *single* distance — an **equilateral triangle** — so in
+fact `g(3) = 1`. This is the first exact value beyond the trivial/base table
+`g(0)=g(1)=0, g(2)=1`, and it is *strictly below* the collinear-AP upper bound, showing the
+AP is not extremal at `n = 3`. -/
+
+/-- Symmetry of the (custom) distance: `dist a b = dist b a`. -/
+theorem dist_comm' (a b : EuclideanSpace ℝ (Fin 2)) :
+    Erdos89.dist a b = Erdos89.dist b a := by
+  unfold Erdos89.dist; exact norm_sub_rev a b
+
+/-- Closed form for the distance between two explicit planar points. -/
+theorem dist_eqPts (a b c d : ℝ) :
+    Erdos89.dist !₂[a, b] !₂[c, d] = Real.sqrt ((a - c) ^ 2 + (b - d) ^ 2) := by
+  unfold Erdos89.dist
+  rw [← dist_eq_norm, EuclideanSpace.dist_eq, Fin.sum_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Real.dist_eq,
+    sq_abs]
+
+/-- Vertex `(0,0)` of the equilateral triangle. -/
+noncomputable def eqp0 : EuclideanSpace ℝ (Fin 2) := !₂[0, 0]
+/-- Vertex `(1,0)` of the equilateral triangle. -/
+noncomputable def eqp1 : EuclideanSpace ℝ (Fin 2) := !₂[1, 0]
+/-- Vertex `(1/2, √3/2)` of the equilateral triangle. -/
+noncomputable def eqp2 : EuclideanSpace ℝ (Fin 2) := !₂[1 / 2, Real.sqrt 3 / 2]
+
+/-- The three equilateral-triangle vertices, as a `Finset`. -/
+noncomputable def eqTri : Finset (EuclideanSpace ℝ (Fin 2)) := {eqp0, eqp1, eqp2}
+
+theorem dist_eqp01 : Erdos89.dist eqp0 eqp1 = 1 := by
+  rw [eqp0, eqp1, dist_eqPts,
+    show ((0 : ℝ) - 1) ^ 2 + ((0 : ℝ) - 0) ^ 2 = 1 by ring, Real.sqrt_one]
+
+theorem dist_eqp02 : Erdos89.dist eqp0 eqp2 = 1 := by
+  have harg : ((0 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - Real.sqrt 3 / 2) ^ 2 = 1 := by
+    have h3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+    have hrw : ((0 : ℝ) - Real.sqrt 3 / 2) ^ 2 = Real.sqrt 3 ^ 2 / 4 := by ring
+    rw [hrw, h3]; norm_num
+  rw [eqp0, eqp2, dist_eqPts, harg, Real.sqrt_one]
+
+theorem dist_eqp12 : Erdos89.dist eqp1 eqp2 = 1 := by
+  have harg : ((1 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - Real.sqrt 3 / 2) ^ 2 = 1 := by
+    have h3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+    have hrw : ((0 : ℝ) - Real.sqrt 3 / 2) ^ 2 = Real.sqrt 3 ^ 2 / 4 := by ring
+    rw [hrw, h3]; norm_num
+  rw [eqp1, eqp2, dist_eqPts, harg, Real.sqrt_one]
+
+theorem eqp0_ne_eqp1 : eqp0 ≠ eqp1 := by
+  intro h
+  have h0 := congrArg (fun p => p 0) h
+  simp only [eqp0, eqp1, Matrix.cons_val_zero] at h0
+  norm_num at h0
+
+theorem eqp0_ne_eqp2 : eqp0 ≠ eqp2 := by
+  intro h
+  have h0 := congrArg (fun p => p 0) h
+  simp only [eqp0, eqp2, Matrix.cons_val_zero] at h0
+  norm_num at h0
+
+theorem eqp1_ne_eqp2 : eqp1 ≠ eqp2 := by
+  intro h
+  have h0 := congrArg (fun p => p 0) h
+  simp only [eqp1, eqp2, Matrix.cons_val_zero] at h0
+  norm_num at h0
+
+/-- The equilateral triangle has exactly three (distinct) vertices. -/
+theorem eqTri_card : eqTri.card = 3 := by
+  rw [eqTri, Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+    Finset.card_singleton]
+  · simp only [Finset.mem_singleton]; exact eqp1_ne_eqp2
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨eqp0_ne_eqp1, eqp0_ne_eqp2⟩
+
+/-- **The equilateral triangle determines exactly one distance.** All three pairwise
+distances equal `1`, so `numDistinctDistances = 1`. -/
+theorem numDistinctDistances_eqTri : numDistinctDistances eqTri = 1 := by
+  have hsub : distinctDistances eqTri ⊆ {(1 : ℝ)} := by
+    rw [distinctDistances_eq_image]
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨p, q⟩, hpq, rfl⟩ := hd
+    rw [Finset.mem_offDiag] at hpq
+    obtain ⟨hp, hq, hne⟩ := hpq
+    simp only [eqTri, Finset.mem_insert, Finset.mem_singleton] at hp hq
+    rw [Finset.mem_singleton]
+    rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hne
+        | exact dist_eqp01
+        | exact dist_eqp02
+        | exact dist_eqp12
+        | (rw [dist_comm']; exact dist_eqp01)
+        | (rw [dist_comm']; exact dist_eqp02)
+        | (rw [dist_comm']; exact dist_eqp12)
+  refine le_antisymm ?_
+    (one_le_numDistinctDistances_of_two_le_card _ (by have := eqTri_card; omega))
+  show (distinctDistances eqTri).card ≤ 1
+  calc (distinctDistances eqTri).card
+      ≤ ({(1 : ℝ)} : Finset ℝ).card := Finset.card_le_card hsub
+    _ = 1 := Finset.card_singleton _
+
+/-- **Exact value `g(3) = 1`.** The equilateral triangle realizes a single distance
+(`numDistinctDistances_eqTri`), giving `g(3) ≤ 1`; and any three points determine at least
+one distance, giving `g(3) ≥ 1`. This is *strictly below* the collinear-AP bound
+`g(3) ≤ 2`, so the arithmetic progression is not extremal at `n = 3`. -/
+theorem minDistinctDistances_three : minDistinctDistances 3 = 1 := by
+  refine le_antisymm ?_ ?_
+  · calc minDistinctDistances 3
+        ≤ numDistinctDistances eqTri := minDistinctDistances_le_of_card_eq eqTri_card
+      _ = 1 := numDistinctDistances_eqTri
+  · have hne : {numDistinctDistances S |
+        (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = 3)}.Nonempty :=
+      ⟨numDistinctDistances eqTri, eqTri, eqTri_card, rfl⟩
+    obtain ⟨S, hScard, hSeq⟩ := Nat.sInf_mem hne
+    show 1 ≤ minDistinctDistances 3
+    unfold minDistinctDistances
+    rw [← hSeq]
+    exact one_le_numDistinctDistances_of_two_le_card S (by omega)
+
 end Erdos89
