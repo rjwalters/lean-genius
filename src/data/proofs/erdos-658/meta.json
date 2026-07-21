@@ -80,67 +80,75 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header, Problem Statement, and Imports",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "File header documenting Erdős problem #658 — Graham's conjecture that any subset of the N×N grid with positive density contains the four corners of an axis-aligned square — together with references and the `import Mathlib` / `namespace Erdos658` preamble.",
+      "mathContext": "The problem asks whether every $A \\subseteq [N]^2$ with $|A| \\ge \\delta N^2$ must contain four points forming an axis-aligned square $\\{(x,y),(x+d,y),(x,y+d),(x+d,y+d)\\}$ for some $d \\ge 1$."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "grid, isAxisAlignedSquare, containsAxisAlignedSquare, density, isDense",
-      "startLine": 47,
-      "endLine": 114,
+      "startLine": 43,
+      "endLine": 110,
       "mathContext": "Mathematical content: grid, isAxisAlignedSquare, containsAxisAlignedSquare, density, isDense"
     },
     {
       "id": "graham-conjecture",
       "title": "Graham's Conjecture",
       "summary": "GrahamConjectureAxisAligned definition and main theorem",
-      "startLine": 115,
-      "endLine": 138,
+      "startLine": 111,
+      "endLine": 134,
       "mathContext": "Formal definition: GrahamConjectureAxisAligned definition and main theorem"
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "erdos_658 theorem (via graham_axis_aligned_true axiom)",
-      "startLine": 139,
-      "endLine": 168,
+      "startLine": 135,
+      "endLine": 157,
       "mathContext": "Axiomatized: erdos_658 theorem follows directly from graham_axis_aligned_true axiom"
     },
     {
       "id": "hales-jewett",
       "title": "Density Hales-Jewett",
       "summary": "CombLine placeholder def, density_hales_jewett axiom",
-      "startLine": 169,
-      "endLine": 201,
+      "startLine": 158,
+      "endLine": 188,
       "mathContext": "density_hales_jewett is a vacuous True-bodied placeholder axiom gesturing at the Furstenberg-Katznelson 1991 theorem — it asserts nothing mathematical and is not load-bearing. CombLine is a placeholder definition; the reduction to Hales-Jewett is discussed in comments only, not formalized."
     },
     {
       "id": "solymosi-bounds",
       "title": "Bounds and Small Cases",
       "summary": "Solymosi quantitative bounds discussed in comments only",
-      "startLine": 202,
-      "endLine": 229,
+      "startLine": 189,
+      "endLine": 204,
       "mathContext": "Solymosi (2004) tower-type bounds on N₀(δ) are described in section comments but not formalized as axioms in this file."
     },
     {
       "id": "examples",
       "title": "Small Cases and Examples",
       "summary": "density_threshold_3x3",
-      "startLine": 230,
-      "endLine": 266,
+      "startLine": 205,
+      "endLine": 223,
       "mathContext": "Mathematical content: density_threshold_3x3. Non-square-free configurations for small N are discussed in comments only, not formalized."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "higher_dimensional_cubes",
-      "startLine": 267,
-      "endLine": 290,
+      "startLine": 224,
+      "endLine": 244,
       "mathContext": "Mathematical content: higher_dimensional_cubes. Tilted (non-axis-aligned) squares are discussed in comments only, not formalized."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_658_summary, erdos_658_answer theorems",
-      "startLine": 291,
-      "endLine": 299,
+      "startLine": 245,
+      "endLine": 285,
       "mathContext": "Verified: erdos_658_summary, erdos_658_answer theorems"
     }
   ],
