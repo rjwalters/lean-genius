@@ -62,7 +62,8 @@
       "The BEC is not weakly symmetric (the erasure column sums to 2p while the others sum to 1 - p), so the parent's symmetric-channel capacity lemmas do not apply -- a separate development is genuinely needed.",
       "Erasure is symmetric in the input symbol, so the capacity-achieving input is still uniform Bernoulli(1/2), exactly as for the BSC.",
       "Capacity in bits is simply 1 - p: a clean operational reading as the surviving fraction of transmissions.",
-      "Erasures are strictly cheaper than errors: because the decoder knows *where* information was lost, C_BEC = 1 - p exceeds the binary symmetric channel's C_BSC = 1 - H₂(p) for every p ∈ (0, 1) (with equality only at the endpoints) -- quantifying the operational value of knowing the location of corruption."
+      "Erasures are strictly cheaper than errors: because the decoder knows *where* information was lost, C_BEC = 1 - p exceeds the binary symmetric channel's C_BSC = 1 - H₂(p) for every p ∈ (0, 1) (with equality only at the endpoints) -- quantifying the operational value of knowing the location of corruption.",
+      "The single-letter Fano converse specialises unusually cleanly to the BEC: with a binary input |α| = 2, the general P_e·log(|α| - 1) correction is P_e·log 1 = 0, so bec_fano_converse collapses to log 2 ≤ (1 - p)·log 2 + h(P_e), and the capacity gap log 2 - C = p·log 2 is exactly the floor on the residual Fano-error entropy h(P_e) -- all axiom-free, without invoking the parent's channel_coding_converse axiom."
     ]
   },
   "sections": [
@@ -118,9 +119,17 @@
       "id": "corollaries",
       "title": "Corollaries: Non-negativity and the One-bit Ceiling",
       "startLine": 229,
-      "endLine": 243,
+      "endLine": 242,
       "description": "bec_capacity_nonneg shows the capacity is ≥ 0, and bec_capacity_le_log_two bounds it above by log 2 (one bit), with equality only in the noiseless limit p → 0.",
       "summary": "The capacity sits in [0, log 2]: never negative, never above one bit, approaching one bit as p → 0."
+    },
+    {
+      "id": "fano-converse",
+      "title": "Operational Converse via Fano's Inequality",
+      "startLine": 243,
+      "endLine": 317,
+      "description": "Specialises the parent's proved (axiom-free) fano_converse_capacity to the BEC. bec_fano_converse: for the uniform 1-bit input, log 2 ≤ (1 - p)·log 2 + h(P_e); the general P_e·log(|α| - 1) correction vanishes because |Bool| = 2 gives log 1 = 0, and channelCapacity (bec p) = (1 - p)·log 2 by bec_capacity. bec_fano_error_lower rearranges this to the sharp floor p·log 2 ≤ h(P_e). No channel_coding_converse axiom is invoked.",
+      "summary": "The single-letter Fano converse specialised to BEC: the residual Fano-error entropy is bounded below by exactly the capacity gap, p·log 2 ≤ h(P_e), axiom-free."
     }
   ],
   "crossReferences": [
@@ -146,7 +155,7 @@
     "openQuestions": [
       "Generalize the erasure identity and capacity to the q-ary erasure channel, where C = (1 - p)·log q.",
       "Establish an operational coding theorem for the BEC (e.g. via random linear codes and the peeling decoder), connecting the information-theoretic supremum proved here to achievable rates through the parent's channel_coding_achievability.",
-      "Formalize the converse for the BEC operationally via Fano's inequality, discharging it against the parent's channel_coding_converse axiom.",
+      "The single-letter Fano converse is now formalized axiom-free (bec_fano_converse / bec_fano_error_lower); the remaining gap is the full block-length operational coding converse, connecting the per-symbol floor p·log 2 ≤ h(P_e) to achievable rates via the parent's channel_coding_converse axiom.",
       "Extend to channels with both erasures and errors (the binary error-and-erasure channel) and recover the BEC and BSC as boundary cases."
     ]
   },
@@ -174,6 +183,12 @@
       "type": "corollary",
       "description": "Capacity in bits: C₂(BEC(p)) = 1 - p.",
       "leanType": "channelCapacity (bec p ..) / Real.log 2 = 1 - p"
+    },
+    {
+      "name": "bec_fano_error_lower",
+      "type": "supporting",
+      "description": "Sharp single-letter Fano converse for BEC: the residual Fano-error entropy is bounded below by the capacity gap, p·log 2 ≤ h(P_e). Axiom-free specialisation of the parent's fano_converse_capacity.",
+      "leanType": "p * Real.log 2 ≤ InformationTheory.BinaryEntropy.h P_e"
     }
   ],
   "leanFile": {
