@@ -728,4 +728,137 @@ theorem transfiniteDiameterN_three_mem_Icc :
     transfiniteDiameterN_succ_le (le_refl 2)
   rwa [transfiniteDiameterN_two] at h32
 
+/-! ### The third term `d₄ ≥ 4^{1/3}`: the square of fourth roots of unity
+
+The `4`-point diameter is the geometric mean of the `6` pairwise gaps,
+`d₄(z) = (∏_{i<j}‖zᵢ-zⱼ‖)^{1/6}` (the normalising exponent `2/(n(n-1))` equals
+`1/6` at `n = 4`).  The square `{1, i, -1, -i}` of fourth roots of unity has four
+side gaps equal to `√2` and two diagonal gaps equal to `2`, so its spread product
+is `(√2)⁴·2² = 16` and its diameter is `16^{1/6} = 4^{1/3}`.  This yields the sharp
+**lower bound** `d₄ ≥ 4^{1/3}`.
+
+Together with `d₂ = 2 = 2^{1/(2-1)}` (`transfiniteDiameterN_two`) and
+`d₃ ≥ √3 = 3^{1/(3-1)}` (`transfiniteDiameterN_three_ge`), the value `4^{1/3} =
+4^{1/(4-1)}` makes the general pattern `dₙ ≥ n^{1/(n-1)}` (roots of unity,
+Vandermonde discriminant `n^{n/2}`) visible; that general lower bound — which
+gives `d = limₙ dₙ ≥ 1`, matching the logarithmic capacity of the disc — is the
+next milestone (`spreadProduct` of the `n`-th roots of unity `= n^{n/2}` via the
+derivative-at-a-root formula `∏_{j≠k}(ζᵏ-ζʲ) = n·ζ^{k(n-1)}`).  The matching
+upper bound `d₄ = 4^{1/3}` needs the Fekete–Szegő extremal theorem and is not
+established here. -/
+
+/-- The spread product of a `4`-point configuration is the product of its six
+pairwise gaps (the six pairs `i < j` in `Fin 4`). -/
+theorem spreadProduct_four (z : Fin 4 → ℂ) :
+    spreadProduct z = ‖z 0 - z 1‖ * ‖z 0 - z 2‖ * ‖z 0 - z 3‖ *
+      (‖z 1 - z 2‖ * ‖z 1 - z 3‖) * ‖z 2 - z 3‖ := by
+  unfold spreadProduct
+  rw [Fin.prod_univ_four]
+  have h0 : Finset.Ioi (0 : Fin 4) = {1, 2, 3} := by decide
+  have h1 : Finset.Ioi (1 : Fin 4) = {2, 3} := by decide
+  have h2 : Finset.Ioi (2 : Fin 4) = {3} := by decide
+  have h3 : Finset.Ioi (3 : Fin 4) = (∅ : Finset (Fin 4)) := by decide
+  rw [h0, h1, h2, h3,
+    Finset.prod_insert (by decide : (1 : Fin 4) ∉ ({2, 3} : Finset (Fin 4))),
+    Finset.prod_pair (by decide : (2 : Fin 4) ≠ 3),
+    Finset.prod_pair (by decide : (2 : Fin 4) ≠ 3),
+    Finset.prod_singleton, Finset.prod_empty, mul_one]
+  ring
+
+/-- The `4`-point diameter is the geometric mean of the six pairwise gaps:
+the normalising exponent `2/(n(n-1))` equals `1/6` at `n = 4`. -/
+theorem discreteDiameter_four (z : Fin 4 → ℂ) :
+    discreteDiameter z = (‖z 0 - z 1‖ * ‖z 0 - z 2‖ * ‖z 0 - z 3‖ *
+      (‖z 1 - z 2‖ * ‖z 1 - z 3‖) * ‖z 2 - z 3‖) ^ ((1 : ℝ) / 6) := by
+  rw [discreteDiameter, spreadProduct_four]
+  norm_num
+
+/-- **`d₄ ≥ 4^{1/3}`.**  The `4`-point transfinite diameter of the closed unit disc
+is at least `4^{1/3}`, attained by the square of fourth roots of unity
+`{1, i, -1, -i}`: its four side gaps equal `√2` and its two diagonal gaps equal `2`,
+so its spread product is `(√2)⁴·2² = 16` and its `4`-point diameter is
+`16^{1/6} = 4^{1/3}`.  This is the third term of the sharp lower bound
+`dₙ ≥ n^{1/(n-1)}` (after `d₂ = 2` and `d₃ ≥ √3`). -/
+theorem transfiniteDiameterN_four_ge : (4 : ℝ) ^ ((1 : ℝ) / 3) ≤ transfiniteDiameterN 4 := by
+  have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  -- the square of fourth roots of unity
+  set z : Fin 4 → ℂ := ![1, ⟨0, 1⟩, ⟨-1, 0⟩, ⟨0, -1⟩] with hz_def
+  have e0 : z 0 = 1 := by simp [hz_def]
+  have e1 : z 1 = (⟨0, 1⟩ : ℂ) := by simp [hz_def]
+  have e2 : z 2 = (⟨-1, 0⟩ : ℂ) := by simp [hz_def]
+  have e3 : z 3 = (⟨0, -1⟩ : ℂ) := by simp [hz_def]
+  -- the four side gaps are √2, the two diagonal gaps are 2
+  have g01 : ‖z 0 - z 1‖ = Real.sqrt 2 := by
+    have hd : z 0 - z 1 = (⟨1, -1⟩ : ℂ) := by
+      rw [e0, e1, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (1 : ℝ) ^ 2 + (-1 : ℝ) ^ 2 = 2 by norm_num]
+  have g02 : ‖z 0 - z 2‖ = 2 := by
+    have hd : z 0 - z 2 = (⟨2, 0⟩ : ℂ) := by
+      rw [e0, e2, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (2 : ℝ) ^ 2 + (0 : ℝ) ^ 2 = 2 ^ 2 by norm_num,
+      Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 2)]
+  have g03 : ‖z 0 - z 3‖ = Real.sqrt 2 := by
+    have hd : z 0 - z 3 = (⟨1, 1⟩ : ℂ) := by
+      rw [e0, e3, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (1 : ℝ) ^ 2 + (1 : ℝ) ^ 2 = 2 by norm_num]
+  have g12 : ‖z 1 - z 2‖ = Real.sqrt 2 := by
+    have hd : z 1 - z 2 = (⟨1, 1⟩ : ℂ) := by
+      rw [e1, e2, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (1 : ℝ) ^ 2 + (1 : ℝ) ^ 2 = 2 by norm_num]
+  have g13 : ‖z 1 - z 3‖ = 2 := by
+    have hd : z 1 - z 3 = (⟨0, 2⟩ : ℂ) := by
+      rw [e1, e3, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (0 : ℝ) ^ 2 + (2 : ℝ) ^ 2 = 2 ^ 2 by norm_num,
+      Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 2)]
+  have g23 : ‖z 2 - z 3‖ = Real.sqrt 2 := by
+    have hd : z 2 - z 3 = (⟨-1, 1⟩ : ℂ) := by
+      rw [e2, e3, Complex.ext_iff]; norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt, show (-1 : ℝ) ^ 2 + (1 : ℝ) ^ 2 = 2 by norm_num]
+  -- the numeric identity `16^{1/6} = 4^{1/3}`
+  have hnum : (16 : ℝ) ^ ((1 : ℝ) / 6) = (4 : ℝ) ^ ((1 : ℝ) / 3) := by
+    rw [show (16 : ℝ) = (4 : ℝ) ^ (2 : ℕ) by norm_num, ← Real.rpow_natCast (4 : ℝ) 2,
+      ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 4)]
+    norm_num
+  -- the diameter of the square is exactly 4^{1/3}
+  have hdiam : discreteDiameter z = (4 : ℝ) ^ ((1 : ℝ) / 3) := by
+    rw [discreteDiameter_four, g01, g02, g03, g12, g13, g23]
+    have hp16 : Real.sqrt 2 * 2 * Real.sqrt 2 * (Real.sqrt 2 * 2) * Real.sqrt 2
+        = (16 : ℝ) := by
+      have e : Real.sqrt 2 * 2 * Real.sqrt 2 * (Real.sqrt 2 * 2) * Real.sqrt 2
+          = (Real.sqrt 2 ^ 2) ^ 2 * 4 := by ring
+      rw [e, hs2]; norm_num
+    rw [hp16, hnum]
+  -- every vertex lies in the closed unit disc
+  have n0 : ‖z 0‖ ≤ 1 := by rw [e0]; simp
+  have n1 : ‖z 1‖ ≤ 1 := by
+    rw [e1, norm_mk_eq_sqrt, show (0 : ℝ) ^ 2 + (1 : ℝ) ^ 2 = 1 by norm_num, Real.sqrt_one]
+  have n2 : ‖z 2‖ ≤ 1 := by
+    rw [e2, norm_mk_eq_sqrt, show (-1 : ℝ) ^ 2 + (0 : ℝ) ^ 2 = 1 by norm_num, Real.sqrt_one]
+  have n3 : ‖z 3‖ ≤ 1 := by
+    rw [e3, norm_mk_eq_sqrt, show (0 : ℝ) ^ 2 + (-1 : ℝ) ^ 2 = 1 by norm_num, Real.sqrt_one]
+  have hmem : ∀ i, ‖z i‖ ≤ 1 := by
+    intro i; fin_cases i
+    · exact n0
+    · exact n1
+    · exact n2
+    · exact n3
+  -- 4^{1/3} is realised as the diameter of a disc configuration, hence ≤ the sSup
+  have hin : (4 : ℝ) ^ ((1 : ℝ) / 3) ∈ unitDiscDiameters 4 := ⟨z, hmem, hdiam⟩
+  exact le_csSup (unitDiscDiameters_bddAbove (by norm_num)) hin
+
+/-- **The third term is bounded below: `d₄ ≥ 4^{1/3}`, and `d₄ ∈ [4^{1/3}, 2]`.**  The
+lower bound is `transfiniteDiameterN_four_ge` (square of fourth roots of unity); the
+upper bound is Fekete monotonicity `d₄ ≤ d₂ = 2` (`transfiniteDiameterN_succ_le`
+twice, composed with `transfiniteDiameterN_two`).  The exact value `d₄ = 4^{1/3}`
+needs the extremal upper bound and is not established here. -/
+theorem transfiniteDiameterN_four_mem_Icc :
+    transfiniteDiameterN 4 ∈ Set.Icc ((4 : ℝ) ^ ((1 : ℝ) / 3)) 2 := by
+  refine ⟨transfiniteDiameterN_four_ge, ?_⟩
+  have h43 : transfiniteDiameterN 4 ≤ transfiniteDiameterN 3 :=
+    transfiniteDiameterN_succ_le (by norm_num)
+  have h32 : transfiniteDiameterN 3 ≤ transfiniteDiameterN 2 :=
+    transfiniteDiameterN_succ_le (le_refl 2)
+  rw [transfiniteDiameterN_two] at h32
+  linarith
+
 end Erdos1039TransfiniteDiameter
