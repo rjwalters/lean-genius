@@ -152,6 +152,14 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Setup: The Even Integers and the badFamily Counterexample",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring plus the two objects the counterexample turns on: E = {n : ℤ | Even n}, the positive-density set that will avoid the pattern, and badFamily = ![0, 2X+1], a two-point polynomial family whose second polynomial has a nonzero constant term (p₁(0) = 1). Because badFamily lies outside Bergelson–Leibman's NoConstantTerm hypothesis, E can dodge every configuration it generates.",
+      "mathContext": "$E = 2\\mathbb{Z}$ has density $\\tfrac12$; `badFamily` $= (0,\\ 2X+1)$ has $p_1(0) = 1 \\neq 0$, so it is inadmissible for the polynomial Szemerédi theorem."
+    },
+    {
       "id": "out-of-scope",
       "title": "badFamily is Outside Bergelson–Leibman's Scope",
       "startLine": 54,
