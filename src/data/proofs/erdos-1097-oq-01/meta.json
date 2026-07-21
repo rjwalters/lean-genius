@@ -63,33 +63,41 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 45,
+      "endLine": 51,
       "summary": "Defines IsKAP (k-term AP predicate), commonDiffK (set-level D_k), commonDiffKFinset (finite version), and numCommonDiffK (cardinality count).",
       "mathContext": "$\\text{IsKAP}(A, k, a, d) \\iff \\forall i < k,\\; a + id \\in A$. $D_k(A) = \\{d : \\exists a,\\; \\text{IsKAP}(A, k, a, d)\\}$."
     },
     {
       "id": "infrastructure",
       "title": "Infrastructure Lemmas",
-      "startLine": 47,
-      "endLine": 140,
-      "summary": "Proves 13 structural results: base membership, trivial AP (d=0), zero membership, anti-monotonicity in k, containment D_k ⊆ D_3, subset monotonicity, negation symmetry, degenerate cases (k=0, k=1), and the quadratic upper bound.",
+      "startLine": 52,
+      "endLine": 159,
+      "summary": "Proves 15 structural results: base membership, trivial AP (d=0), zero membership, anti-monotonicity in k, containment D_k ⊆ D_3, subset monotonicity, negation symmetry, degenerate cases (k=0, k=1), the quadratic upper bound, and the finset-level bridge lemmas (commonDiffKFinset_anti, numCommonDiffK_anti) transporting anti-monotonicity to the cardinality count.",
       "mathContext": "$D_{k+1}(A) \\subseteq D_k(A)$ (anti-monotonicity). $D_k(A) \\subseteq D_3(A)$ for $k \\geq 3$. $|D_k(A)| \\leq |A|^2$. $D_0(A) = \\mathbb{Z}$, $D_1(A) = \\mathbb{Z}$ (for nonempty $A$)."
     },
     {
       "id": "connection",
       "title": "Connection to 3-AP Case",
-      "startLine": 142,
-      "endLine": 155,
+      "startLine": 160,
+      "endLine": 173,
       "summary": "Proves isKAP_three_iff: IsKAP with k=3 is equivalent to the triple membership condition a ∈ A ∧ a+d ∈ A ∧ a+2d ∈ A, linking to the parent formalization.",
       "mathContext": "$\\text{IsKAP}(A, 3, a, d) \\iff a \\in A \\land (a+d) \\in A \\land (a+2d) \\in A$."
     },
     {
       "id": "open-question",
       "title": "Main Open Question",
-      "startLine": 157,
-      "endLine": 185,
-      "summary": "States the growth question kAP_growth_question as a definition. Proves kAP_growth_mono: if D_k has growth exponent α, then D_{k+1} has growth exponent at most α.",
+      "startLine": 174,
+      "endLine": 203,
+      "summary": "States the growth question kAP_growth_question as a definition, with kAP_three_bound specializing it to the k=3 Katz–Tao bound α ≤ 11/6. Proves kAP_growth_mono: if D_k has growth exponent α, then D_{k+1} has growth exponent at most α (via the anti-monotonicity numCommonDiffK_anti).",
       "mathContext": "Open: $\\exists \\alpha(k)$ such that $\\max_{|A|=n} |D_k(A)| = \\Theta(n^{\\alpha(k)})$? Is $\\alpha(k)$ strictly decreasing in $k$?"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 204,
+      "endLine": 211,
+      "summary": "kAP_basic_bounds records the unconditional facts: D_k is anti-monotone in k and bounded by |A|², so for k ≥ 3 one has |D_k(A)| ≤ |D_3(A)| ≤ |A|².",
+      "mathContext": "$|D_k(A)| \\leq |A|^2$ for all $k$, giving the trivial exponent $\\alpha \\leq 2$ against which the conjectured $\\alpha(k) < 2$ improvements are measured."
     }
   ],
   "conclusion": {
