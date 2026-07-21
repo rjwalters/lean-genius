@@ -112,54 +112,54 @@
       "id": "tri3graph-edgecount",
       "title": "Part I — Tripartite 3-Graphs and Their Edge Count",
       "startLine": 64,
-      "endLine": 97,
+      "endLine": 117,
       "summary": "Defines Tri3Graph as a ternary adjacency predicate, vertexTriples = |α||β||γ| (= Fintype.card (α × β × γ)), edgeFinset as a filter over α × β × γ, and edgeCount = edgeFinset.card. edgeCount_le bounds the count by |α||β||γ| via card_filter_le.",
       "mathContext": "$e(H) \\le |\\alpha||\\beta||\\gamma|$; a labeled single-hyperedge copy is literally an element of the edge Finset."
     },
     {
       "id": "density-main-term",
       "title": "Part II — Density and the Exact Main-Term Identity",
-      "startLine": 99,
-      "endLine": 125,
+      "startLine": 118,
+      "endLine": 145,
       "summary": "density = e(H)/vertexTriples ∈ ℚ, with density_nonneg and density_le_one (via div_le_one and edgeCount_le). edgeCount_eq_density_mul is the exact counting identity e(H) = d·|α||β||γ| — the counting lemma's main term in the e(F)=1 base case, holding with no error term.",
       "mathContext": "$e(H) = d \\cdot |\\alpha||\\beta||\\gamma|$ exactly; the $(1 \\pm f(\\varepsilon))$ error only appears for $e(F) \\ge 2$."
     },
     {
       "id": "cherry-inequality",
       "title": "Part III — Degrees and the Cauchy–Schwarz Cherry Inequality",
-      "startLine": 127,
-      "endLine": 157,
+      "startLine": 146,
+      "endLine": 177,
       "summary": "degA a counts edges with first coordinate a; sum_degA gives ∑_a deg(a) = e(H) via card_eq_sum_card_fiberwise. Feeding this into Mathlib's sq_sum_le_card_mul_sum_sq yields edgeCount_sq_le: e(H)² ≤ |α|·∑_a deg(a)² — the second-moment engine of regularity-based counting.",
       "mathContext": "$e(H)^2 \\le |\\alpha| \\sum_a \\deg(a)^2$ — pure Cauchy–Schwarz, no regularity needed."
     },
     {
       "id": "cherry-enumeration",
       "title": "Part IV — The Cherry Pattern: Exact e(F) = 2 Enumeration",
-      "startLine": 159,
-      "endLine": 210,
+      "startLine": 178,
+      "endLine": 230,
       "summary": "cherryFinset filters edgeFinset ×ˢ edgeFinset to ordered edge pairs sharing a first coordinate; cherryFinset_filter identifies the cherries centred at a as (a-edges) ×ˢ (a-edges). cherryCount_eq_sum_sq_degA gives cherryCount = ∑_a deg(a)² exactly (card_eq_sum_card_fiberwise + card_product), and edgeCount_sq_le_cherryCount restates CS as e(H)² ≤ |α|·cherryCount.",
       "mathContext": "$\\mathrm{cherryCount}(H) = \\sum_a \\deg(a)^2$ exactly; $e(H)^2 \\le |\\alpha| \\cdot \\mathrm{cherryCount}(H)$."
     },
     {
       "id": "structural",
       "title": "Part V — Structural Lemmas",
-      "startLine": 212,
-      "endLine": 269,
+      "startLine": 231,
+      "endLine": 268,
       "summary": "edgeCount_mono (count monotone in adjacency), and the extreme cases: complete/empty tripartite 3-graphs with edgeCount_complete = vertexTriples, edgeCount_empty = 0, density_empty = 0.",
       "mathContext": "$0 = e(\\text{empty}) \\le e(H) \\le e(\\text{complete}) = |\\alpha||\\beta||\\gamma|$."
     },
     {
       "id": "supersaturation",
       "title": "Part VI — Supersaturation: Density Forces Cherries",
-      "startLine": 270,
-      "endLine": 358,
+      "startLine": 269,
+      "endLine": 357,
       "summary": "cherryCount_ge_edgeCount (trivial second-moment floor e(H) ≤ cherryCount), density_mul_le_edgeCount (base-term identity as a hypothesis-free inequality), and the density engine cherry_supersaturation / cherryCount_ge_density_sq: a fixed density d forces d²·|α|·(|β||γ|)² cherries, with no positivity side conditions.",
       "mathContext": "$d(H)^2\\,(|\\alpha||\\beta||\\gamma|)^2 \\le |\\alpha|\\cdot \\mathrm{cherryCount}(H)$."
     },
     {
       "id": "defect-variance",
       "title": "Part VII — The Cauchy–Schwarz Defect is the Degree Variance",
-      "startLine": 359,
+      "startLine": 358,
       "endLine": 445,
       "summary": "sum_sq_sub_eq_two_mul_defect (Lagrange's identity ∑_{a,b}(f a − f b)² = 2(|α|∑ f² − (∑ f)²)) specialised to the degree sequence gives card_mul_cherryCount_sub_edgeCount_sq: |α|·cherryCount(H) − e(H)² = ½∑_{a,b}(deg a − deg b)². The deficit is a manifest sum of squares, so card_mul_cherryCount_eq_edgeCount_sq_iff characterises tightness of the cherry inequality as first-coordinate regularity (all α-degrees equal).",
       "mathContext": "$|\\alpha|\\cdot\\mathrm{cherryCount}(H) - e(H)^2 = \\tfrac12\\sum_{a,b}(\\deg a-\\deg b)^2 \\ge 0$, with equality iff $H$ is degree-regular."
