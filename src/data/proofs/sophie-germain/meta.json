@@ -75,30 +75,30 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 35,
-      "endLine": 45,
+      "endLine": 51,
       "summary": "Formal definitions of Sophie Germain primes, safe primes, and the conjecture.",
       "mathContext": "$\\text{IsSophieGermainPrime}(p) := \\text{Prime}(p) \\wedge \\text{Prime}(2p+1)$. $\\text{IsSafePrime}(q) := \\text{Prime}(q) \\wedge q \\equiv 1 \\pmod{2} \\wedge \\text{Prime}((q-1)/2)$."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 53,
-      "endLine": 95,
+      "startLine": 52,
+      "endLine": 101,
       "summary": "Computational verification of 10 Sophie Germain primes: 2, 3, 5, 11, 23, 29, 41, 53, 83, 89.",
       "mathContext": "Each $p$ in $\\{2, 3, 5, 11, 23, 29, 41, 53, 83, 89\\}$ is verified: both $p$ and $2p+1$ are prime, proved by `decide`."
     },
     {
       "id": "non-examples",
       "title": "Non-Examples",
-      "startLine": 103,
-      "endLine": 126,
+      "startLine": 102,
+      "endLine": 131,
       "summary": "Primes that are NOT Sophie Germain: 7, 13, 17, 19.",
       "mathContext": "$2 \\cdot 7 + 1 = 15 = 3 \\times 5$, $2 \\cdot 13 + 1 = 27 = 3^3$, $2 \\cdot 17 + 1 = 35 = 5 \\times 7$, $2 \\cdot 19 + 1 = 39 = 3 \\times 13$."
     },
     {
       "id": "structure-theorem",
       "title": "Structure Theorem",
-      "startLine": 127,
+      "startLine": 132,
       "endLine": 213,
       "summary": "The main result: Sophie Germain primes > 3 must satisfy p ≡ 5 (mod 6). Key lemma: primes > 3 are ≡ 1 or 5 (mod 6), and p ≡ 1 implies 3 | (2p+1).",
       "mathContext": "$p > 3 \\wedge \\text{IsSophieGermainPrime}(p) \\implies p \\equiv 5 \\pmod{6}$. Proof: $p \\equiv 1 \\pmod{6} \\implies 2p+1 \\equiv 3 \\pmod{6} \\implies 3 \\mid (2p+1)$, contradiction."
