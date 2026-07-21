@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Lawvere FPT Categorical Generalization",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports and module docstring. Answers OQ-03-OQ-01 — can the Lawvere fixed-point theorem be formalized topos-theoretically in Lean, recovering categorical generality beyond type theory? Formalizes Lawvere's 1969 result at increasing generality and builds on the type-theoretic `CantorDiagonalizationOQ03`.",
+      "mathContext": "Levels: (1) abstract fixed-point theorem for any evaluation structure with surjective point-mapping; (2) parametric diagonal lemma; (3) recovery of the type-theoretic version; (4) concrete instances (Cantor, Russell, Rice, the halting problem). Key insight: Lawvere's theorem holds in any cartesian closed category where 'surjection' means point-surjective ($e : A \\to B^A$ hits every global element $1 \\to B^A$)."
+    },
+    {
       "id": "eval-structure",
       "title": "§1: Abstract Evaluation Structure",
       "startLine": 35,
@@ -105,6 +113,14 @@
       "endLine": 253,
       "summary": "topos_proxy_cantor: no surjection A → (A → Prop) exists, using Prop as proxy for the subobject classifier Ω. Discussion of how full topos formalization would use Mathlib's topos typeclass (in development).",
       "mathContext": "Topos: CCC + subobject classifier $\\Omega$. Cantor: $B = \\Omega$, $f = \\lnot$ (negation morphism on $\\Omega$, fixed-point-free). Lean proxy: `Prop` plays the role of $\\Omega$, `Not` plays $\\lnot$. Full formalization requires $\\Omega$-valued predicate logic in a topos."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: What Is Achieved and What Remains",
+      "startLine": 254,
+      "endLine": 303,
+      "summary": "Concluding `## Summary`. Recaps the achievements: `lawvere_abstract` (abstract FPT in a minimal evaluation structure, no category-theory imports), `lawvere_type_recovery` (specializes to the parent file), three concrete instances (Prop/Cantor, Bool, ℕ-successor), the `CategoricalEval` CCC framework, and `topos_proxy_cantor` (Prop as a proxy for the subobject classifier Ω). Records 0 axioms, 0 sorries — `lawvere_categorical` is fully proved via an `e_pt` global-element action reducing to `lawvere_abstract`. Notes that a full topos formalization would still need a Mathlib topos typeclass and Ω with internal negation. Ends with `#check` commands.",
+      "mathContext": "NB: an in-source comment at line 274 still reads 'The full categorical proof has a sorry' — this is stale, contradicted by the file's own later note and the 0-sorry count (`lawvere_categorical` is now proved). meta.sorries=0 and status=verified are correct."
     }
   ],
   "references": [
