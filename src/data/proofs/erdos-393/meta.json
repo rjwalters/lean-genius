@@ -140,8 +140,16 @@
       "title": "Density Results",
       "summary": "Density zero and sparse values theorems",
       "startLine": 153,
-      "endLine": 162,
+      "endLine": 160,
       "mathContext": "Verified: Density zero and sparse values theorems"
+    },
+    {
+      "id": "summary",
+      "title": "Part 9: Summary",
+      "summary": "erdos_393: the headline status theorem packaging all three results — F_m(N) = o(N) for each m ≥ 1 (Berend-Osgood 1992), the power saving F_m(N) ≪ N^{33/34} (BPZ 2023), and the conditional f(n) → ∞ under the ABC conjecture (Luca 2002).",
+      "startLine": 161,
+      "endLine": 175,
+      "mathContext": "The theorem `erdos_393` is a conjunction of the three main results, proved by `⟨berend_osgood_1992, bpz_2023, luca_2002⟩`. It records the current status of Erdős #393: unconditional density/power-saving bounds plus the ABC-conditional divergence f(n) → ∞."
     }
   ],
   "conclusion": {
