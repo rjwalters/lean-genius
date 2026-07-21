@@ -71,25 +71,62 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 41,
+      "endLine": 43,
       "summary": "Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`.",
       "mathContext": "Formal definition: Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`."
     },
     {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas: arithProg / IsAPFree / r_k API (Axiom-Free)",
+      "startLine": 44,
+      "endLine": 145,
+      "summary": "The axiom-free, fully machine-checked core: basic API for `arithProg` (empty/singleton progressions, membership, cardinality bound, injectivity for d>0), `IsAPFree` closure (trivial for k≤1, empty set, subset-inheritance), and the density function `r_k(N)` (bounded by N, monotone in N, r_k(0)=0, r_k(N)=N for k≤1).",
+      "mathContext": "`arithProg a d k = (range k).image (i ↦ a+i·d)`; `IsAPFree S k := ∀ a d, 0<d → arithProg a d k ⊆ S → k≤1`; `r_k(N) := sup over AP-k-free subsets of range N of card`. All lemmas host-verified on Lean v4.31.0.",
+      "significance": "key",
+      "relatedConcepts": [
+        "arithmetic progressions",
+        "AP-free sets",
+        "Roth/Szemerédi density",
+        "Finset.sup"
+      ],
+      "prerequisites": [
+        "Finset API",
+        "arithmetic progressions"
+      ]
+    },
+    {
       "id": "szemeredi",
       "title": "Szemerédi's Theorem",
-      "startLine": 42,
-      "endLine": 49,
+      "startLine": 146,
+      "endLine": 148,
       "summary": "Placeholder comment header for Szemerédi's theorem ($\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$). Not yet formalized — no declaration is present in the source.",
       "mathContext": "Placeholder header only: Szemerédi's theorem ($r_k(N) = o(N)$) is described but not yet stated as an axiom or theorem in the Lean source."
     },
     {
       "id": "roth",
       "title": "Roth's Theorem ($k = 3$)",
-      "startLine": 50,
-      "endLine": 54,
+      "startLine": 149,
+      "endLine": 150,
       "summary": "Placeholder comment header for Roth's theorem ($r_3(N) = o(N)$) and the chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023). Not yet formalized — no declaration is present in the source.",
       "mathContext": "Placeholder header only: Roth's theorem ($r_3(N) = o(N)$) is described but not yet stated as an axiom or theorem in the Lean source."
+    },
+    {
+      "id": "roadmap-remainder",
+      "title": "Documented-Only: Behrend, Kelley–Meka, Erdős's $5000 Question, Green–Tao",
+      "startLine": 151,
+      "endLine": 159,
+      "summary": "Section banners describing the deep results that remain out of scope: Behrend's lower-bound construction, the Kelley–Meka (2023) upper bound, Erdős's $5000 question on the density of AP-free sets, the main open problem, and the k=4 Green–Tao result. Comment headers only — no declarations.",
+      "mathContext": "Roadmap of additive-combinatorial machinery beyond current Mathlib: Behrend $r_3(N)\\ge N e^{-c\\sqrt{\\log N}}$, Kelley–Meka $r_3(N)\\le N e^{-c(\\log N)^{1/11}}$, and higher-k analogues.",
+      "significance": "context",
+      "relatedConcepts": [
+        "Behrend construction",
+        "Kelley–Meka bound",
+        "Green–Tao theorem",
+        "additive combinatorics"
+      ],
+      "prerequisites": [
+        "additive combinatorics"
+      ]
     }
   ],
   "conclusion": {
