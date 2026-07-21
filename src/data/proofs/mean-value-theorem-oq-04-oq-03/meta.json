@@ -61,39 +61,39 @@
       "id": "kernel-derivatives",
       "title": "Derivatives of the kernel and its linear factor",
       "startLine": 42,
-      "endLine": 65,
+      "endLine": 64,
       "summary": "hasDerivAt_kernel: K'(x) = (2x − a − b)/2, from the product and quotient rules (`HasDerivAt` combinators + `ring`). hasDerivAt_kernelDeriv: the second derivative of K is the constant 1. A private helper continuous_of_hasDerivAt promotes pointwise differentiability everywhere to global continuity, discharging the regularity side conditions of the integration-by-parts lemma.",
       "mathContext": "$K'(x) = \\tfrac{2x-a-b}{2},\\qquad K''(x) = 1.$"
     },
     {
       "id": "main-identity",
       "title": "trapezoidal_peano_kernel: the exact error identity",
-      "startLine": 67,
-      "endLine": 105,
+      "startLine": 65,
+      "endLine": 104,
       "summary": "The headline theorem. Two applications of Mathlib's integral_mul_deriv_eq_deriv_mul_of_hasDerivAt: first with u = K, v = f' (boundary terms vanish because K(a) = K(b) = 0), reducing to −∫ K'·f'; then with u = K', v = f, peeling off the quadrature weights (2x−a−b)/2 at the endpoints to produce ±(b−a)/2·f and −∫ f. Combining and simplifying (`simp only [one_mul]; ring`) yields the exact identity — no mean value theorem and no unknown ξ.",
       "mathContext": "IBP twice: $\\int_a^b K f'' = -\\int_a^b K' f' = \\int_a^b f - \\tfrac{b-a}{2}(f(a)+f(b)).$"
     },
     {
       "id": "kernel-sign",
       "title": "kernel_nonpos: the kernel is nonpositive on [a,b]",
-      "startLine": 107,
-      "endLine": 113,
+      "startLine": 105,
+      "endLine": 112,
       "summary": "kernel_nonpos establishes K(x) = (x−a)(x−b)/2 ≤ 0 for x ∈ [a,b], since x − a ≥ 0 and x − b ≤ 0 make the product nonpositive (`mul_nonpos_of_nonneg_of_nonpos`, `linarith`). This sign fact is what converts the exact identity into one-sided inequalities under convexity/concavity.",
       "mathContext": "$x \\in [a,b] \\Rightarrow (x-a)(x-b)/2 \\le 0.$"
     },
     {
       "id": "convex-overestimate",
       "title": "trapezoid_overestimates_of_convex",
-      "startLine": 115,
-      "endLine": 138,
+      "startLine": 113,
+      "endLine": 137,
       "summary": "For convex f (f'' ≥ 0 on [a,b]) with a ≤ b, the trapezoidal estimate is an overestimate: ∫ₐᵇ f ≤ (b−a)/2·(f a + f b). Since K ≤ 0 and f'' ≥ 0, the kernel integrand K·f'' ≤ 0, so the kernel integral is ≤ 0 (via integral_nonneg on its negation, `nlinarith`); substituting the exact identity gives ∫ f − T ≤ 0.",
       "mathContext": "$f'' \\ge 0 \\Rightarrow \\int_a^b f \\le \\tfrac{b-a}{2}\\big(f(a)+f(b)\\big).$"
     },
     {
       "id": "concave-underestimate",
       "title": "trapezoid_underestimates_of_concave",
-      "startLine": 140,
-      "endLine": 159,
+      "startLine": 138,
+      "endLine": 157,
       "summary": "The mirror image: for concave f (f'' ≤ 0 on [a,b]) with a ≤ b, the trapezoidal estimate is an underestimate, T(a,b) ≤ ∫ₐᵇ f. Now K ≤ 0 and f'' ≤ 0 make K·f'' ≥ 0, so the kernel integral is ≥ 0 (`integral_nonneg`, `nlinarith`), and the exact identity yields ∫ f − T ≥ 0.",
       "mathContext": "$f'' \\le 0 \\Rightarrow \\tfrac{b-a}{2}\\big(f(a)+f(b)\\big) \\le \\int_a^b f.$"
     }
