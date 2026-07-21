@@ -46,82 +46,90 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Namespace",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring for Erdős Problem 932 (are there infinitely many prime gaps containing ≥2 smooth numbers?), imports, Classical decidability instance, and the Erdos932 namespace.",
+      "mathContext": "Erdős #932: for the gap $(p_r,p_{r+1})$, is $\\#\\{n\\in(p_r,p_{r+1}):\\,P^+(n)\\le B\\}\\ge2$ for infinitely many $r$?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
-      "startLine": 43,
-      "endLine": 64,
+      "startLine": 47,
+      "endLine": 73,
       "summary": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity.",
       "mathContext": "Axiomatized: The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
     },
     {
       "id": "prime-gap",
       "title": "Part II: Prime Gap",
-      "startLine": 65,
-      "endLine": 83,
+      "startLine": 74,
+      "endLine": 91,
       "summary": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity.",
       "mathContext": "Mathematical content: Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
     },
     {
       "id": "smooth-numbers",
       "title": "Part III: Smooth Numbers",
-      "startLine": 84,
-      "endLine": 120,
+      "startLine": 92,
+      "endLine": 173,
       "summary": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers.",
       "mathContext": "Formal definition: Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
     },
     {
       "id": "smooth-in-gap",
       "title": "Part IV: Smooth Numbers in Prime Gap",
-      "startLine": 121,
-      "endLine": 162,
+      "startLine": 174,
+      "endLine": 212,
       "summary": "Open interval between consecutive primes, filtering for smooth numbers, and the count function.",
       "mathContext": "Mathematical content: Open interval between consecutive primes, filtering for smooth numbers, and the count function."
     },
     {
       "id": "main-conjecture",
       "title": "Part V: The Main Conjecture (OPEN)",
-      "startLine": 163,
-      "endLine": 184,
+      "startLine": 213,
+      "endLine": 232,
       "summary": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite.",
       "mathContext": "The Erdős conjecture: {r : smoothCount(r) $\\geq$ 2} is infinite."
     },
     {
       "id": "density-zero",
       "title": "Part VI: The Density-Zero Result (SOLVED)",
-      "startLine": 185,
-      "endLine": 219,
+      "startLine": 233,
+      "endLine": 265,
       "summary": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0.",
       "mathContext": "Natural density definition and Erdős's result that density of r with smoothCount(r) $\\geq$ 1 is 0."
     },
     {
       "id": "examples",
       "title": "Part VII: Examples and Analysis",
-      "startLine": 220,
-      "endLine": 244,
+      "startLine": 266,
+      "endLine": 288,
       "summary": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3².",
       "mathContext": "Concrete example: r=3 (gap 7$\\to$11) has smoothCount = 2 via 8=2³ and 9=3²."
     },
     {
       "id": "difficulty",
       "title": "Part VIII: Why This Is Hard",
-      "startLine": 245,
-      "endLine": 263,
+      "startLine": 289,
+      "endLine": 307,
       "summary": "Discussion of the challenge: proving infinitude despite density zero.",
       "mathContext": "Mathematical content: Discussion of the challenge: proving infinitude despite density zero."
     },
     {
       "id": "smooth-distribution",
       "title": "Part IX: Smooth Number Distribution",
-      "startLine": 264,
-      "endLine": 285,
+      "startLine": 308,
+      "endLine": 333,
       "summary": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound.",
       "mathContext": "Bound: Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "startLine": 286,
-      "endLine": 314,
+      "startLine": 334,
+      "endLine": 356,
       "summary": "Summary theorem combining density result, example, and problem status.",
       "mathContext": "Verified: Summary theorem combining density result, example, and problem status."
     }
