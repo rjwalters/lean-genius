@@ -113,6 +113,13 @@
       "startLine": 146,
       "endLine": 158,
       "mathContext": "$\\forall a,b > 0: \\min(a,b) \\le \\text{HM}(a,b) \\le \\text{GM}(a,b) \\le \\text{AM}(a,b) \\le \\text{QM}(a,b) \\le \\max(a,b)$. The 5-link power mean chain in full generality for two positive reals."
+    },
+    {
+      "id": "automation-assessment",
+      "title": "Automation Assessment",
+      "startLine": 160,
+      "endLine": 187,
+      "summary": "Tabular comparison of the tactic scripts in this file against the parent proof for all five mean inequalities. Documents that for HM ≤ GM, GM ≤ AM, and AM ≤ QM the ring-normalizes-to-a-square then positivity approach removes every manually supplied sq_nonneg witness the parent needed, while min ≤ HM and QM ≤ max (case splits and linear factors rather than pure squares) use structured mul_nonneg factor bounds; concludes the core chain HM ≤ GM ≤ AM ≤ QM is fully hint-free."
     }
   ],
   "conclusion": {

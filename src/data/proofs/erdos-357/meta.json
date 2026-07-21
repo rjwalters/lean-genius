@@ -118,23 +118,23 @@
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 71,
-      "endLine": 82,
-      "summary": "Erdos357Conjecture := (f · : ℝ) =o[atTop] (· : ℝ): f(n) = o(n). The central open question.",
+      "endLine": 109,
+      "summary": "Erdos357Conjecture := (f · : ℝ) =o[atTop] (· : ℝ): f(n) = o(n), the central open question. Also states the ratio-limit reformulation Erdos357ConjectureAlt (f(n)/n → 0) and proves the two equivalent (conjecture_equiv, via Asymptotics.isLittleO_iff_tendsto' since n is eventually nonzero along atTop).",
       "mathContext": "Uses Mathlib's IsLittleO at atTop. Since g(n) = Θ(n), the conjecture asserts strict monotonicity fundamentally limits the sequence length."
     },
     {
       "id": "known-results",
       "title": "Known Results (Axiomatized)",
-      "startLine": 84,
-      "endLine": 114,
+      "startLine": 111,
+      "endLine": 141,
       "summary": "Three axioms: weisenberg_lower_bound (f(n) ≥ (2+o(1))√n via B₂), hegyvari_bounds ((1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n), infinite_set_lower_density_zero (proved: liminf #{A∩[1,n]}/n = 0 for infinite A).",
       "mathContext": "Weisenberg's bound exploits the B₂⊆distinct-consecutive-sums inclusion and Erdős–Turán (1941). Hegyvári (1986) uses a probabilistic/greedy construction for the lower bound and averaging for the upper. Lower density 0 follows from a counting argument on sums."
     },
     {
       "id": "open-conjectures",
       "title": "Open Conjectures for Infinite Sets",
-      "startLine": 116,
-      "endLine": 135,
+      "startLine": 143,
+      "endLine": 164,
       "summary": "InfiniteDensityZeroConjecture: #{A∩[1,n]}/n → 0 for any infinite A with distinct sums (open, stronger than lower density 0). InfiniteSumConvergesConjecture: Σ 1/A(k) < ∞ (open). g_ge_f_Remark: f(n) ≤ g(n) recorded as a Prop for future formalization.",
       "mathContext": "Both infinite-set conjectures strengthen the proved lower-density-0 result. Sum convergence Σ 1/a_k < ∞ implies faster-than-linear spacing, a strong sparsity assertion."
     }
