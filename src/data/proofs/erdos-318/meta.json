@@ -135,39 +135,39 @@
       "id": "part6",
       "title": "Part VI: Positive Density — Counterexamples",
       "startLine": 145,
-      "endLine": 228,
-      "summary": "Defines `hasPositiveDensity` and the `counterexampleSet m` (odds plus one even $2m$). PROVES `counterexample_positive_density` (density $\\geq1/4$, via counting odds $=(n+1)/2$). States the AXIOM `counterexample_fails_P1` (these sets lack P₁ — the lone even cannot cancel). PROVES `positive_density_insufficient` (positive density alone does not give P₁).",
+      "endLine": 353,
+      "summary": "Defines `hasPositiveDensity` and the `counterexampleSet m` (odds plus one even $2m$). PROVES `counterexample_positive_density` (density $\\geq1/4$, via counting odds $=(n+1)/2$). PROVES the supporting parity lemma `odd_unit_sum_ne_even_unit` and the theorem `counterexample_fails_P1` (these sets lack P₁ — the lone even $2m$ cannot cancel the odd denominators). PROVES `positive_density_insufficient` (positive density alone does not give P₁).",
       "mathContext": "Odds $\\cup\\{2m\\}$: density $\\geq1/4$ but no P₁ — positive density insufficient."
     },
     {
       "id": "part7",
       "title": "Part VII: The Squares Question (OPEN)",
-      "startLine": 229,
-      "endLine": 298,
-      "summary": "Defines `squaresExcludingOne` ($\\{k^2:k\\geq2\\}$). PROVES `sum_reciprocal_squares_less_than_one` ($\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$, via the Basel sum and $\\pi<3.15$) — the reason $1$ is excluded. Defines `erdos_318_squares_conjecture` and states the AXIOM `squares_case_open` (the squares case is unresolved; Sattler's announced proof never appeared).",
+      "startLine": 354,
+      "endLine": 435,
+      "summary": "Defines `squaresExcludingOne` ($\\{k^2:k\\geq2\\}$). PROVES `sum_reciprocal_squares_less_than_one` ($\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$, via the Basel sum and $\\pi<3.15$) — the reason $1$ is excluded. States the open problem as a `def erdos_318_squares_conjecture : Prop` (whether the squares excluding 1 have Property P₁ is unresolved; Sattler's announced proof never appeared) — it is left as a bare `Prop`, not axiomatized.",
       "mathContext": "$\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$; squares-excluding-1 P₁ is OPEN."
     },
     {
       "id": "part8",
       "title": "Part VIII: Key Lemmas and Techniques",
-      "startLine": 299,
-      "endLine": 345,
+      "startLine": 436,
+      "endLine": 480,
       "summary": "PROVES `zero_sum_integer_form` (clearing denominators: a zero signed unit sum becomes an integer equation $\\sum_{n\\in S}f(n)\\cdot(\\prod_{m\\in S}m)/n=0$, via exact division and ℤ→ℚ injectivity). Defines `parityObstruction` (the prime/parity obstruction explaining P₁ failures).",
       "mathContext": "Common-denominator: $\\sum_{n\\in S}f(n)/n=0\\Rightarrow\\sum_n f(n)(\\prod_m m)/n=0$ in ℤ."
     },
     {
       "id": "part9",
       "title": "Part IX: Relationship to Egyptian Fractions",
-      "startLine": 346,
-      "endLine": 364,
+      "startLine": 481,
+      "endLine": 499,
       "summary": "Defines `isEgyptianRepresentation` (a sum of unit fractions equals $q$) and `hasSignedZeroRepresentation` (a signed zero representation exists), relating P₁ to signed Egyptian-fraction decompositions.",
       "mathContext": "P₁ $\\leftrightarrow$ existence of a signed Egyptian-fraction representation of $0$."
     },
     {
       "id": "part10",
       "title": "Part X: Main Results Summary",
-      "startLine": 365,
-      "endLine": 409,
+      "startLine": 500,
+      "endLine": 543,
       "summary": "PROVES `erdos_318_summary`: APs satisfy P₁, $\\mathbb{N}$ satisfies P₁, odds satisfy P₁, but positive density is insufficient (some set lacks P₁). A closing comment records the mixed status (APs/positive-density SOLVED, squares OPEN).",
       "mathContext": "Summary: APs/$\\mathbb{N}$/odds have P₁; positive density insufficient; squares OPEN."
     }
