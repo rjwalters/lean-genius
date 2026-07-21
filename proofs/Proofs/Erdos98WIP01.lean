@@ -1981,6 +1981,7 @@ they are linearly dependent; solving the resulting Gram system forces `b² = 3a�
 *strictly positive* (as `dist w j ∈ {a, b}` and both `a², b² < b² + a²`), so their sum is
 positive — contradiction.  This is the `k = 0` case of ruling out short-degree `3`; the
 mixed sub-cases (`k = 1, 2`, some neighbour pair at the short distance) remain. -/
+set_option maxHeartbeats 800000 in
 theorem degree_three_equilateral_impossible
     {v x y z w : EuclideanSpace ℝ (Fin 2)} {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
     (hvx : dist v x = a) (hvy : dist v y = a) (hvz : dist v z = a)
