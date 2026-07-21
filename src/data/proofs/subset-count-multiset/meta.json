@@ -63,37 +63,37 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 38,
       "summary": "Imports Mathlib.Data.Finset.Powerset, Mathlib.Data.Multiset.Powerset, Mathlib.Data.Fintype.Card (+1 more). Module docstring and namespace setup."
     },
     {
       "id": "powerset",
       "title": "Multiset Powerset Cardinality",
-      "startLine": 37,
-      "endLine": 55,
+      "startLine": 39,
+      "endLine": 61,
       "summary": "Proves the multiset powerset has 2^n elements using Mathlib's card_powerset.",
       "mathContext": "card(powerset(s)) = 2^(card(s)) for any multiset s."
     },
     {
       "id": "choose",
       "title": "Fixed-Size Submultisets",
-      "startLine": 57,
-      "endLine": 74,
+      "startLine": 62,
+      "endLine": 83,
       "summary": "The number of k-element submultisets is C(n,k), the binomial coefficient.",
       "mathContext": "card(powersetCard(k, s)) = C(card(s), k)"
     },
     {
       "id": "connection",
       "title": "Connection to Set Case",
-      "startLine": 76,
-      "endLine": 87,
+      "startLine": 84,
+      "endLine": 96,
       "summary": "Shows the multiset formula specializes to the set formula for Finsets.",
       "mathContext": "For Finset s viewed as Multiset s.val, the powerset cardinality agrees."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 89,
+      "startLine": 97,
       "endLine": 110,
       "summary": "Examples: empty (1), singleton (2), triple (8), and C(4,2)=6.",
       "mathContext": "Concrete verification with natural number multisets."
